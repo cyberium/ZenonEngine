@@ -1,0 +1,328 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="3D\Light3D.cpp" />
+    <ClCompile Include="3D\Materials\MaterialDebug.cpp" />
+    <ClCompile Include="3D\Materials\MaterialTextured.cpp" />
+    <ClCompile Include="3D\Passes\AbstractPass.cpp" />
+    <ClCompile Include="3D\Passes\BasePass.cpp" />
+    <ClCompile Include="3D\Passes\BeginQueryPass.cpp" />
+    <ClCompile Include="3D\Passes\ClearRenderTargetPass.cpp" />
+    <ClCompile Include="3D\Passes\CopyBufferPass.cpp" />
+    <ClCompile Include="3D\Passes\CopyTexturePass.cpp" />
+    <ClCompile Include="3D\Passes\DeferredLightingPass.cpp" />
+    <ClCompile Include="3D\Passes\DispatchPass.cpp" />
+    <ClCompile Include="3D\Passes\EndQueryPass.cpp" />
+    <ClCompile Include="3D\Passes\FontPass.cpp" />
+    <ClCompile Include="3D\Passes\GBufferPass.cpp" />
+    <ClCompile Include="3D\Passes\GenerateMipMapsPass.cpp" />
+    <ClCompile Include="3D\Passes\InvokeFunctionPass.cpp" />
+    <ClCompile Include="3D\Passes\PostprocessPass.cpp" />
+    <ClCompile Include="3D\Passes\RenderTechnique.cpp" />
+    <ClCompile Include="3D\Scene3D.cpp" />
+    <ClCompile Include="3D\SceneNode3D.cpp" />
+    <ClCompile Include="3D\SceneNodeFont3D.cpp" />
+    <ClCompile Include="3D\SceneNodeModel3D.cpp" />
+    <ClCompile Include="Application.cpp" />
+    <ClCompile Include="ArcBallCameraController.cpp" />
+    <ClCompile Include="CameraControllerBase.cpp" />
+    <ClCompile Include="FreeCameraController.cpp" />
+    <ClCompile Include="CreatePasses.cpp" />
+    <ClCompile Include="Debug_Pass.cpp" />
+    <ClCompile Include="EngineTime.cpp" />
+    <ClCompile Include="GameState.cpp" />
+    <ClCompile Include="GBuffer.cpp" />
+    <ClCompile Include="Loader.cpp" />
+    <ClCompile Include="MaterialWrapper.cpp" />
+    <ClCompile Include="MeshWrapper.cpp" />
+    <ClCompile Include="RTSCameraController.cpp" />
+    <ClCompile Include="stdafx.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="UI\UIContainerListWithActivation.cpp" />
+    <ClCompile Include="UI\Fonts\Font.cpp" />
+    <ClCompile Include="UI\Fonts\FontsManager.cpp" />
+    <ClCompile Include="UI\Materials\UI_Button_Material.cpp" />
+    <ClCompile Include="UI\Materials\UI_Color_Material.cpp" />
+    <ClCompile Include="UI\Materials\UI_Font_Material.cpp" />
+    <ClCompile Include="UI\Materials\UI_Line_Material.cpp" />
+    <ClCompile Include="UI\Materials\UI_Texture_Material.cpp" />
+    <ClCompile Include="UI\Passes\BaseUIPass.cpp" />
+    <ClCompile Include="UI\Passes\RenderUITechnique.cpp" />
+    <ClCompile Include="UI\UIBaseNode.cpp" />
+    <ClCompile Include="UI\UIButton.cpp" />
+    <ClCompile Include="UI\UIColor.cpp" />
+    <ClCompile Include="UI\UIContainerGarmoshka.cpp" />
+    <ClCompile Include="UI\UIContainerGarmoshkaCategory.cpp" />
+    <ClCompile Include="UI\UIContainerGarmoshkaCategoryHeader.cpp" />
+    <ClCompile Include="UI\UIBeizerLine.cpp" />
+    <ClCompile Include="UI\UIContainerListBase.cpp" />
+    <ClCompile Include="UI\UIScene.cpp" />
+    <ClCompile Include="UI\UIText.cpp" />
+    <ClCompile Include="UI\UITexture.cpp" />
+    <ClCompile Include="UI\UIUtils.cpp" />
+    <ClCompile Include="UI\UIWindow.cpp" />
+    <ClCompile Include="WindowCreator.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\shared\znEngine.h" />
+    <ClInclude Include="3D\Light3D.h" />
+    <ClInclude Include="3D\Materials\MaterialDebug.h" />
+    <ClInclude Include="3D\Materials\MaterialTextured.h" />
+    <ClInclude Include="3D\Passes\AbstractPass.h" />
+    <ClInclude Include="3D\Passes\BasePass.h" />
+    <ClInclude Include="3D\Passes\BeginQueryPass.h" />
+    <ClInclude Include="3D\Passes\ClearRenderTargetPass.h" />
+    <ClInclude Include="3D\Passes\CopyBufferPass.h" />
+    <ClInclude Include="3D\Passes\CopyTexturePass.h" />
+    <ClInclude Include="3D\Passes\DeferredLightingPass.h" />
+    <ClInclude Include="3D\Passes\DispatchPass.h" />
+    <ClInclude Include="3D\Passes\EndQueryPass.h" />
+    <ClInclude Include="3D\Passes\FontPass.h" />
+    <ClInclude Include="3D\Passes\GBufferPass.h" />
+    <ClInclude Include="3D\Passes\GenerateMipMapsPass.h" />
+    <ClInclude Include="3D\Passes\InvokeFunctionPass.h" />
+    <ClInclude Include="3D\Passes\PostprocessPass.h" />
+    <ClInclude Include="3D\Passes\RenderPass.h" />
+    <ClInclude Include="3D\Passes\RenderTechnique.h" />
+    <ClInclude Include="3D\Scene3D.h" />
+    <ClInclude Include="3D\SceneNode3D.h" />
+    <ClInclude Include="3D\SceneNodeFont3D.h" />
+    <ClInclude Include="3D\SceneNodeModel3D.h" />
+    <ClInclude Include="Application.h" />
+    <ClInclude Include="ArcBallCameraController.h" />
+    <ClInclude Include="CameraControllerBase.h" />
+    <ClInclude Include="FreeCameraController.h" />
+    <ClInclude Include="common.h" />
+    <ClInclude Include="CreatePasses.h" />
+    <ClInclude Include="Debug_Pass.h" />
+    <ClInclude Include="EngineTime.h" />
+    <ClInclude Include="GameState.h" />
+    <ClInclude Include="GBuffer.h" />
+    <ClInclude Include="Loader.h" />
+    <ClInclude Include="MaterialWrapper.h" />
+    <ClInclude Include="MeshWrapper.h" />
+    <ClInclude Include="RTSCameraController.h" />
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="UI\Fonts\Font.h" />
+    <ClInclude Include="UI\Fonts\FontsManager.h" />
+    <ClInclude Include="UI\Materials\UI_Button_Material.h" />
+    <ClInclude Include="UI\Materials\UI_Color_Material.h" />
+    <ClInclude Include="UI\Materials\UI_Font_Material.h" />
+    <ClInclude Include="UI\Materials\UI_Line_Material.h" />
+    <ClInclude Include="UI\Materials\UI_Texture_Material.h" />
+    <ClInclude Include="UI\Passes\BaseUIPass.h" />
+    <ClInclude Include="UI\Passes\RenderUIPass.h" />
+    <ClInclude Include="UI\Passes\RenderUITechnique.h" />
+    <ClInclude Include="UI\UIBaseNode.h" />
+    <ClInclude Include="UI\UIButton.h" />
+    <ClInclude Include="UI\UIColor.h" />
+    <ClInclude Include="UI\UIContainerGarmoshka.h" />
+    <ClInclude Include="UI\UIContainerGarmoshkaCategory.h" />
+    <ClInclude Include="UI\UIContainerGarmoshkaCategoryHeader.h" />
+    <ClInclude Include="UI\UIBeizerLine.h" />
+    <ClInclude Include="UI\UIContainerListBase.h" />
+    <ClInclude Include="UI\UIContainerListWithActivation.h" />
+    <ClInclude Include="UI\UIScene.h" />
+    <ClInclude Include="UI\UIText.h" />
+    <ClInclude Include="UI\UITexture.h" />
+    <ClInclude Include="UI\UIUtils.h" />
+    <ClInclude Include="UI\UIWindow.h" />
+    <ClInclude Include="WindowCreator.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Externals\freetype-2.9.1\freetype.vcxproj">
+      <Project>{78b079bd-9fc7-4b9e-b4a6-96da0f00248b}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\znCore\znCore.vcxproj">
+      <Project>{a4e6f769-0036-4128-a409-495d9207f587}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\znIntfs\znIntfs.vcxproj">
+      <Project>{69aec773-3240-4644-a049-ababd643dbec}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\znRenderBase\znRenderBase.vcxproj">
+      <Project>{4bfb75a1-ee52-478a-bdac-30ffb977ebb7}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{51252F60-B8DC-4090-BBA3-DD05942110F0}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>znEngine</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LinkIncremental>true</LinkIncremental>
+    <OutDir>$(SolutionDir)\bin_x64\$(Configuration)\</OutDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <OutDir>$(SolutionDir)\bin_x86\$(Configuration)\</OutDir>
+    <IntDir>$(Platform)\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LinkIncremental>false</LinkIncremental>
+    <OutDir>$(SolutionDir)\bin_x64\$(Configuration)\</OutDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+    <OutDir>$(SolutionDir)\bin_x86\$(Configuration)\</OutDir>
+    <IntDir>$(Platform)\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>_DEBUG;_WINDOWS;_USRDLL;OW_GAME_DLL_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>false</SDLCheck>
+      <AdditionalIncludeDirectories>..\shared;..\Externals;..\Externals\freetype-2.9.1\include;..\znEngine\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <TreatSpecificWarningsAsErrors>
+      </TreatSpecificWarningsAsErrors>
+      <DisableSpecificWarnings>4244;4267</DisableSpecificWarnings>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>..\bin_x64\$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>_DEBUG;_WINDOWS;_USRDLL;OW_GAME_DLL_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>false</SDLCheck>
+      <AdditionalIncludeDirectories>..\shared;..\Externals;..\Externals\freetype-2.9.1\include;..\znEngine\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <TreatSpecificWarningsAsErrors>
+      </TreatSpecificWarningsAsErrors>
+      <DisableSpecificWarnings>4244;4267</DisableSpecificWarnings>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>..\bin_x64\$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>NDEBUG;_WINDOWS;_USRDLL;OW_GAME_DLL_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>false</SDLCheck>
+      <AdditionalIncludeDirectories>..\shared;..\Externals;..\Externals\freetype-2.9.1\include;..\znEngine\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <TreatSpecificWarningsAsErrors>
+      </TreatSpecificWarningsAsErrors>
+      <DisableSpecificWarnings>4244;4267</DisableSpecificWarnings>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>..\bin_x64\$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>NDEBUG;_WINDOWS;_USRDLL;OW_GAME_DLL_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>false</SDLCheck>
+      <AdditionalIncludeDirectories>..\shared;..\Externals;..\Externals\freetype-2.9.1\include;..\znEngine\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <TreatSpecificWarningsAsErrors>
+      </TreatSpecificWarningsAsErrors>
+      <DisableSpecificWarnings>4244;4267</DisableSpecificWarnings>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>..\bin_x64\$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

@@ -1,0 +1,423 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Common">
+      <UniqueIdentifier>{d0033b79-fd0f-4221-80fa-9a9bedd64d33}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine">
+      <UniqueIdentifier>{bff6234b-c347-4c9d-a52e-f7020b86d9e1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI">
+      <UniqueIdentifier>{ceacde36-956d-4881-adbb-a5866bf95bad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\Passes">
+      <UniqueIdentifier>{1c9f6a90-170f-43c8-bed7-d0cc1314f6ff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="3D">
+      <UniqueIdentifier>{8c49bf34-6b4c-469d-9001-5b6044462676}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="3D\Passes">
+      <UniqueIdentifier>{9c10106c-3ee3-4d08-8c8c-e89540f79455}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="3D\Passes\Base">
+      <UniqueIdentifier>{d276b478-70d8-4918-a392-4493565fde9f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="3D\Passes\Query">
+      <UniqueIdentifier>{315a420d-5e16-49f7-83c7-a3ccb81dfa2a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\Fonts">
+      <UniqueIdentifier>{00c4ea61-0dd2-4232-9832-90fe44d96dda}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="RenderStuff">
+      <UniqueIdentifier>{61ff063b-287f-4ae6-84e4-ab15b88e3880}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\Materials">
+      <UniqueIdentifier>{e65e5a5f-806d-4408-9cea-a0307a9b5e84}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="3D\Materials">
+      <UniqueIdentifier>{2bdba825-b205-4fb9-a50e-4418e1419057}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\CameraControllers">
+      <UniqueIdentifier>{f27e3d17-127e-4168-8467-5e08cd85a502}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\Nodes">
+      <UniqueIdentifier>{84cfd78f-4b9a-4c11-bff0-f0d2b0926e34}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\Core">
+      <UniqueIdentifier>{0dacc9cb-cf95-46f6-acda-50d67e6bdd2a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\Containers">
+      <UniqueIdentifier>{9bfc82a2-2d45-44e0-a767-71f1055434bd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\Core\Utils">
+      <UniqueIdentifier>{c516e9c8-ed14-4a0c-85f6-882ed6a79347}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\Containers\ContainerGarmoshka">
+      <UniqueIdentifier>{cb7b8eb3-6eea-4dff-930c-e2c8dd4a8432}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="GameState.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Loader.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Application.cpp" />
+    <ClCompile Include="EngineTime.cpp" />
+    <ClCompile Include="UI\Passes\BaseUIPass.cpp">
+      <Filter>UI\Passes</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\Passes\RenderUITechnique.cpp">
+      <Filter>UI\Passes</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\Fonts\Font.cpp">
+      <Filter>UI\Fonts</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\Fonts\FontsManager.cpp">
+      <Filter>UI\Fonts</Filter>
+    </ClCompile>
+    <ClCompile Include="3D\Passes\BeginQueryPass.cpp">
+      <Filter>3D\Passes\Query</Filter>
+    </ClCompile>
+    <ClCompile Include="3D\Passes\EndQueryPass.cpp">
+      <Filter>3D\Passes\Query</Filter>
+    </ClCompile>
+    <ClCompile Include="3D\Passes\AbstractPass.cpp">
+      <Filter>3D\Passes\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="3D\Passes\BasePass.cpp">
+      <Filter>3D\Passes\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="3D\Passes\RenderTechnique.cpp">
+      <Filter>3D\Passes\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="3D\Passes\ClearRenderTargetPass.cpp">
+      <Filter>3D\Passes</Filter>
+    </ClCompile>
+    <ClCompile Include="3D\Passes\CopyBufferPass.cpp">
+      <Filter>3D\Passes</Filter>
+    </ClCompile>
+    <ClCompile Include="3D\Passes\CopyTexturePass.cpp">
+      <Filter>3D\Passes</Filter>
+    </ClCompile>
+    <ClCompile Include="3D\Passes\DispatchPass.cpp">
+      <Filter>3D\Passes</Filter>
+    </ClCompile>
+    <ClCompile Include="3D\Passes\GenerateMipMapsPass.cpp">
+      <Filter>3D\Passes</Filter>
+    </ClCompile>
+    <ClCompile Include="3D\Passes\InvokeFunctionPass.cpp">
+      <Filter>3D\Passes</Filter>
+    </ClCompile>
+    <ClCompile Include="3D\Passes\PostprocessPass.cpp">
+      <Filter>3D\Passes</Filter>
+    </ClCompile>
+    <ClCompile Include="MeshWrapper.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="CreatePasses.cpp">
+      <Filter>RenderStuff</Filter>
+    </ClCompile>
+    <ClCompile Include="Debug_Pass.cpp">
+      <Filter>RenderStuff</Filter>
+    </ClCompile>
+    <ClCompile Include="3D\Scene3D.cpp">
+      <Filter>3D</Filter>
+    </ClCompile>
+    <ClCompile Include="3D\SceneNode3D.cpp">
+      <Filter>3D</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\Materials\UI_Color_Material.cpp">
+      <Filter>UI\Materials</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\Materials\UI_Texture_Material.cpp">
+      <Filter>UI\Materials</Filter>
+    </ClCompile>
+    <ClCompile Include="3D\Materials\MaterialDebug.cpp">
+      <Filter>3D\Materials</Filter>
+    </ClCompile>
+    <ClCompile Include="3D\Materials\MaterialTextured.cpp">
+      <Filter>3D\Materials</Filter>
+    </ClCompile>
+    <ClCompile Include="MaterialWrapper.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="3D\Passes\GBufferPass.cpp">
+      <Filter>3D\Passes</Filter>
+    </ClCompile>
+    <ClCompile Include="3D\Passes\DeferredLightingPass.cpp">
+      <Filter>3D\Passes</Filter>
+    </ClCompile>
+    <ClCompile Include="3D\Light3D.cpp">
+      <Filter>3D</Filter>
+    </ClCompile>
+    <ClCompile Include="GBuffer.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="3D\SceneNodeModel3D.cpp">
+      <Filter>3D</Filter>
+    </ClCompile>
+    <ClCompile Include="FreeCameraController.cpp">
+      <Filter>Engine\CameraControllers</Filter>
+    </ClCompile>
+    <ClCompile Include="CameraControllerBase.cpp">
+      <Filter>Engine\CameraControllers</Filter>
+    </ClCompile>
+    <ClCompile Include="RTSCameraController.cpp">
+      <Filter>Engine\CameraControllers</Filter>
+    </ClCompile>
+    <ClCompile Include="ArcBallCameraController.cpp">
+      <Filter>Engine\CameraControllers</Filter>
+    </ClCompile>
+    <ClCompile Include="3D\SceneNodeFont3D.cpp">
+      <Filter>3D</Filter>
+    </ClCompile>
+    <ClCompile Include="3D\Passes\FontPass.cpp">
+      <Filter>3D\Passes\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\Materials\UI_Font_Material.cpp">
+      <Filter>UI\Materials</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\UIText.cpp">
+      <Filter>UI\Nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\UITexture.cpp">
+      <Filter>UI\Nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\UIBaseNode.cpp">
+      <Filter>UI\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\UIScene.cpp">
+      <Filter>UI\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\UIColor.cpp">
+      <Filter>UI\Nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\UIButton.cpp">
+      <Filter>UI\Nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\Materials\UI_Button_Material.cpp">
+      <Filter>UI\Materials</Filter>
+    </ClCompile>
+    <ClCompile Include="WindowCreator.cpp" />
+    <ClCompile Include="UI\Materials\UI_Line_Material.cpp">
+      <Filter>UI\Materials</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\UIWindow.cpp">
+      <Filter>UI\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\UIBeizerLine.cpp">
+      <Filter>UI\Nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\UIUtils.cpp">
+      <Filter>UI\Core\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\UIContainerGarmoshka.cpp">
+      <Filter>UI\Containers\ContainerGarmoshka</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\UIContainerGarmoshkaCategory.cpp">
+      <Filter>UI\Containers\ContainerGarmoshka</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\UIContainerGarmoshkaCategoryHeader.cpp">
+      <Filter>UI\Containers\ContainerGarmoshka</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\UIContainerListBase.cpp">
+      <Filter>UI\Containers</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\UIContainerListWithActivation.cpp">
+      <Filter>UI\Containers</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="common.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="GameState.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Loader.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Application.h" />
+    <ClInclude Include="EngineTime.h" />
+    <ClInclude Include="UI\Passes\BaseUIPass.h">
+      <Filter>UI\Passes</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\Passes\RenderUIPass.h">
+      <Filter>UI\Passes</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\Passes\RenderUITechnique.h">
+      <Filter>UI\Passes</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\Fonts\Font.h">
+      <Filter>UI\Fonts</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\Fonts\FontsManager.h">
+      <Filter>UI\Fonts</Filter>
+    </ClInclude>
+    <ClInclude Include="3D\Passes\BeginQueryPass.h">
+      <Filter>3D\Passes\Query</Filter>
+    </ClInclude>
+    <ClInclude Include="3D\Passes\EndQueryPass.h">
+      <Filter>3D\Passes\Query</Filter>
+    </ClInclude>
+    <ClInclude Include="3D\Passes\AbstractPass.h">
+      <Filter>3D\Passes\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="3D\Passes\BasePass.h">
+      <Filter>3D\Passes\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="3D\Passes\RenderPass.h">
+      <Filter>3D\Passes\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="3D\Passes\RenderTechnique.h">
+      <Filter>3D\Passes\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="3D\Passes\ClearRenderTargetPass.h">
+      <Filter>3D\Passes</Filter>
+    </ClInclude>
+    <ClInclude Include="3D\Passes\CopyBufferPass.h">
+      <Filter>3D\Passes</Filter>
+    </ClInclude>
+    <ClInclude Include="3D\Passes\CopyTexturePass.h">
+      <Filter>3D\Passes</Filter>
+    </ClInclude>
+    <ClInclude Include="3D\Passes\DispatchPass.h">
+      <Filter>3D\Passes</Filter>
+    </ClInclude>
+    <ClInclude Include="3D\Passes\GenerateMipMapsPass.h">
+      <Filter>3D\Passes</Filter>
+    </ClInclude>
+    <ClInclude Include="3D\Passes\InvokeFunctionPass.h">
+      <Filter>3D\Passes</Filter>
+    </ClInclude>
+    <ClInclude Include="3D\Passes\PostprocessPass.h">
+      <Filter>3D\Passes</Filter>
+    </ClInclude>
+    <ClInclude Include="MeshWrapper.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="CreatePasses.h">
+      <Filter>RenderStuff</Filter>
+    </ClInclude>
+    <ClInclude Include="Debug_Pass.h">
+      <Filter>RenderStuff</Filter>
+    </ClInclude>
+    <ClInclude Include="3D\Scene3D.h">
+      <Filter>3D</Filter>
+    </ClInclude>
+    <ClInclude Include="3D\SceneNode3D.h">
+      <Filter>3D</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\Materials\UI_Color_Material.h">
+      <Filter>UI\Materials</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\Materials\UI_Texture_Material.h">
+      <Filter>UI\Materials</Filter>
+    </ClInclude>
+    <ClInclude Include="3D\Materials\MaterialDebug.h">
+      <Filter>3D\Materials</Filter>
+    </ClInclude>
+    <ClInclude Include="3D\Materials\MaterialTextured.h">
+      <Filter>3D\Materials</Filter>
+    </ClInclude>
+    <ClInclude Include="MaterialWrapper.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="3D\Passes\GBufferPass.h">
+      <Filter>3D\Passes</Filter>
+    </ClInclude>
+    <ClInclude Include="3D\Passes\DeferredLightingPass.h">
+      <Filter>3D\Passes</Filter>
+    </ClInclude>
+    <ClInclude Include="3D\Light3D.h">
+      <Filter>3D</Filter>
+    </ClInclude>
+    <ClInclude Include="GBuffer.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="3D\SceneNodeModel3D.h">
+      <Filter>3D</Filter>
+    </ClInclude>
+    <ClInclude Include="FreeCameraController.h">
+      <Filter>Engine\CameraControllers</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraControllerBase.h">
+      <Filter>Engine\CameraControllers</Filter>
+    </ClInclude>
+    <ClInclude Include="RTSCameraController.h">
+      <Filter>Engine\CameraControllers</Filter>
+    </ClInclude>
+    <ClInclude Include="ArcBallCameraController.h">
+      <Filter>Engine\CameraControllers</Filter>
+    </ClInclude>
+    <ClInclude Include="3D\SceneNodeFont3D.h">
+      <Filter>3D</Filter>
+    </ClInclude>
+    <ClInclude Include="3D\Passes\FontPass.h">
+      <Filter>3D\Passes\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\Materials\UI_Font_Material.h">
+      <Filter>UI\Materials</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\UIText.h">
+      <Filter>UI\Nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\UITexture.h">
+      <Filter>UI\Nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\UIBaseNode.h">
+      <Filter>UI\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\UIScene.h">
+      <Filter>UI\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\UIColor.h">
+      <Filter>UI\Nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\UIButton.h">
+      <Filter>UI\Nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\Materials\UI_Button_Material.h">
+      <Filter>UI\Materials</Filter>
+    </ClInclude>
+    <ClInclude Include="WindowCreator.h" />
+    <ClInclude Include="UI\Materials\UI_Line_Material.h">
+      <Filter>UI\Materials</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\UIWindow.h">
+      <Filter>UI\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\UIBeizerLine.h">
+      <Filter>UI\Nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\UIUtils.h">
+      <Filter>UI\Core\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\UIContainerGarmoshka.h">
+      <Filter>UI\Containers\ContainerGarmoshka</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\UIContainerGarmoshkaCategory.h">
+      <Filter>UI\Containers\ContainerGarmoshka</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\UIContainerGarmoshkaCategoryHeader.h">
+      <Filter>UI\Containers\ContainerGarmoshka</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\UIContainerListBase.h">
+      <Filter>UI\Containers</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\UIContainerListWithActivation.h">
+      <Filter>UI\Containers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\znEngine.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

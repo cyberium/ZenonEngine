@@ -1,0 +1,147 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="ConstantBuffer.cpp">
+      <Filter>Buffers</Filter>
+    </ClCompile>
+    <ClCompile Include="ShaderParameter.cpp" />
+    <ClCompile Include="RenderWindow.cpp" />
+    <ClCompile Include="RenderDevice.cpp" />
+    <ClCompile Include="Ray.cpp">
+      <Filter>Types</Filter>
+    </ClCompile>
+    <ClCompile Include="Shader.cpp" />
+    <ClCompile Include="Camera.cpp">
+      <Filter>Types</Filter>
+    </ClCompile>
+    <ClCompile Include="MaterialImpl.cpp">
+      <Filter>Materials</Filter>
+    </ClCompile>
+    <ClCompile Include="ShaderInputLayout.cpp" />
+    <ClCompile Include="D3D9_Types.cpp">
+      <Filter>D3D9 Support</Filter>
+    </ClCompile>
+    <ClCompile Include="Primitives\Geometry.cpp">
+      <Filter>Primitives</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="common.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="BufferBinding.h">
+      <Filter>Types</Filter>
+    </ClInclude>
+    <ClInclude Include="ConstantBuffer.h">
+      <Filter>Buffers</Filter>
+    </ClInclude>
+    <ClInclude Include="Buffer.h">
+      <Filter>Buffers</Filter>
+    </ClInclude>
+    <ClInclude Include="StructuredBuffer.h">
+      <Filter>Buffers</Filter>
+    </ClInclude>
+    <ClInclude Include="Texture.h" />
+    <ClInclude Include="ShaderParameter.h" />
+    <ClInclude Include="Shader.h" />
+    <ClInclude Include="RenderWindow.h" />
+    <ClInclude Include="RenderTarget.h" />
+    <ClInclude Include="RenderDevice.h" />
+    <ClInclude Include="Query.h" />
+    <ClInclude Include="Mesh.h" />
+    <ClInclude Include="Viewport.h">
+      <Filter>Types</Filter>
+    </ClInclude>
+    <ClInclude Include="Ray.h">
+      <Filter>Types</Filter>
+    </ClInclude>
+    <ClInclude Include="RaycastHit.h">
+      <Filter>Types</Filter>
+    </ClInclude>
+    <ClInclude Include="BlendState.h">
+      <Filter>Pipeline</Filter>
+    </ClInclude>
+    <ClInclude Include="DepthStencilState.h">
+      <Filter>Pipeline</Filter>
+    </ClInclude>
+    <ClInclude Include="RasterizerState.h">
+      <Filter>Pipeline</Filter>
+    </ClInclude>
+    <ClInclude Include="PipelineState.h">
+      <Filter>Pipeline</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>Types</Filter>
+    </ClInclude>
+    <ClInclude Include="Pixel.h">
+      <Filter>Types</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderEvents.h">
+      <Filter>Types</Filter>
+    </ClInclude>
+    <ClInclude Include="ClearFlags.h">
+      <Filter>Types\Enums</Filter>
+    </ClInclude>
+    <ClInclude Include="CPUAccess.h">
+      <Filter>Types\Enums</Filter>
+    </ClInclude>
+    <ClInclude Include="InputSemantic.h">
+      <Filter>Types</Filter>
+    </ClInclude>
+    <ClInclude Include="PrimitiveTopology.h">
+      <Filter>Types\Enums</Filter>
+    </ClInclude>
+    <ClInclude Include="Material.h">
+      <Filter>Materials</Filter>
+    </ClInclude>
+    <ClInclude Include="SamplerState.h" />
+    <ClInclude Include="MaterialImpl.h">
+      <Filter>Materials</Filter>
+    </ClInclude>
+    <ClInclude Include="ShaderInputLayout.h" />
+    <ClInclude Include="D3D9_Types.h">
+      <Filter>D3D9 Support</Filter>
+    </ClInclude>
+    <ClInclude Include="Primitives\Geometry.h">
+      <Filter>Primitives</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\znRenderBase.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Common">
+      <UniqueIdentifier>{98fc8d94-3730-4821-bb53-d891aea80641}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Buffers">
+      <UniqueIdentifier>{985f9813-a356-44df-b0f3-5d607f624c64}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pipeline">
+      <UniqueIdentifier>{123d88e5-6f73-4277-900f-1fac68a5662c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Materials">
+      <UniqueIdentifier>{440872ae-1af9-47f9-827d-8bad426aa57a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Types">
+      <UniqueIdentifier>{e4130516-475b-42b6-940c-b2ad68251d5d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Types\Enums">
+      <UniqueIdentifier>{57c74fbd-55e5-4070-b317-6527bbe4b296}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="D3D9 Support">
+      <UniqueIdentifier>{29bfb4ba-713a-499d-ab36-be273fccc185}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Primitives">
+      <UniqueIdentifier>{b1eafa2b-d1c4-458c-b150-51aa539e716f}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Texture.inl" />
+    <None Include="ShaderParameter.inl" />
+    <None Include="RenderDevice.inl" />
+  </ItemGroup>
+</Project>

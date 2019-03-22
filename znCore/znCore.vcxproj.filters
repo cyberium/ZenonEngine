@@ -1,0 +1,342 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Objects bindings">
+      <UniqueIdentifier>{680fac37-3ad8-4dee-8e50-970c2b108e10}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Files">
+      <UniqueIdentifier>{96b64482-0656-4ab7-b92a-fc7b484b7a9d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Files\INIFile">
+      <UniqueIdentifier>{4ea54957-7046-46cc-ac3f-7e2c3801412a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Files\XMLFile">
+      <UniqueIdentifier>{ed4969e3-9a15-4fd5-af0e-1c5a05639e0e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common">
+      <UniqueIdentifier>{ad29bc23-2620-4c7e-936f-19c0ecea08b4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="RefManager">
+      <UniqueIdentifier>{e8b7d06f-ce44-4d51-8bb0-e6370cc39c70}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="RefManager\1 Dim">
+      <UniqueIdentifier>{2d2bf5e2-b8bf-4ce5-8ac0-2e7f796bc4ab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="RefManager\2 Dim">
+      <UniqueIdentifier>{e6840d2f-52fd-4393-8f8e-ca1baa389a53}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Files\Common">
+      <UniqueIdentifier>{71df8466-a98b-4ab6-bb46-76fcc364a41b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common\Primitives">
+      <UniqueIdentifier>{93169e20-4b0c-45b2-82e2-49aad2886db8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common\Math">
+      <UniqueIdentifier>{65c16df5-8780-49cd-9979-027c9bafdb50}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Input">
+      <UniqueIdentifier>{99cc3793-975f-4c86-9eee-6ca69f13a6d3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Log">
+      <UniqueIdentifier>{ef746966-5439-4659-9eaa-b5406a1f5be7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Manager">
+      <UniqueIdentifier>{5f3b03a0-2561-4da8-8a90-9a4a70fb319d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Log\Console">
+      <UniqueIdentifier>{fe194fc7-63c1-4646-9d6d-142a164c36d0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Log\DebugOutput">
+      <UniqueIdentifier>{154efe91-d5a0-4a4d-9b1d-d053b1d5228b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Settings">
+      <UniqueIdentifier>{dc6e8c13-6444-4560-953e-9a380f8fab7b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Settings\Groups">
+      <UniqueIdentifier>{3067e420-7b54-4018-8d50-d4abb91d379a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="RefManager\1 Dim Assync">
+      <UniqueIdentifier>{d1c95b6f-a767-47df-bed7-b177d7d1e2eb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Timers">
+      <UniqueIdentifier>{4ed86a83-bc26-44a8-8c60-1dbec01ff0c6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Events">
+      <UniqueIdentifier>{3726dda1-960e-4c4a-bda0-7937a163f686}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common\Threads">
+      <UniqueIdentifier>{94a88278-a0a3-4d93-8432-ca705b1e488d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common\Helpers">
+      <UniqueIdentifier>{59b139b6-3568-49b9-afe7-7e6b75e45abd}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="DebugOutput.cpp">
+      <Filter>Log\DebugOutput</Filter>
+    </ClCompile>
+    <ClCompile Include="Log.cpp">
+      <Filter>Log</Filter>
+    </ClCompile>
+    <ClCompile Include="XMLFile.cpp">
+      <Filter>Files\XMLFile</Filter>
+    </ClCompile>
+    <ClCompile Include="INIFile.cpp">
+      <Filter>Files\INIFile</Filter>
+    </ClCompile>
+    <ClCompile Include="Random.cpp">
+      <Filter>Common\Helpers</Filter>
+    </ClCompile>
+    <ClCompile Include="Utils.cpp">
+      <Filter>Common\Helpers</Filter>
+    </ClCompile>
+    <ClCompile Include="UtilsConvert.cpp">
+      <Filter>Common\Helpers</Filter>
+    </ClCompile>
+    <ClCompile Include="FilesManager.cpp">
+      <Filter>Files</Filter>
+    </ClCompile>
+    <ClCompile Include="File.cpp">
+      <Filter>Files\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="ByteBuffer.cpp">
+      <Filter>Files\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="BoundingBox.cpp">
+      <Filter>Common\Primitives</Filter>
+    </ClCompile>
+    <ClCompile Include="Frustrum.cpp">
+      <Filter>Common\Primitives</Filter>
+    </ClCompile>
+    <ClCompile Include="Plane.cpp">
+      <Filter>Common\Primitives</Filter>
+    </ClCompile>
+    <ClCompile Include="BaseManager.cpp">
+      <Filter>Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="ConsoleCommand.cpp">
+      <Filter>Log\Console</Filter>
+    </ClCompile>
+    <ClCompile Include="Console.cpp">
+      <Filter>Log\Console</Filter>
+    </ClCompile>
+    <ClCompile Include="Settings.cpp">
+      <Filter>Settings</Filter>
+    </ClCompile>
+    <ClCompile Include="GroupRenderCaps.cpp">
+      <Filter>Settings\Groups</Filter>
+    </ClCompile>
+    <ClCompile Include="GroupQuality.cpp">
+      <Filter>Settings\Groups</Filter>
+    </ClCompile>
+    <ClCompile Include="GroupVideo.cpp">
+      <Filter>Settings\Groups</Filter>
+    </ClCompile>
+    <ClCompile Include="GroupOpenGL.cpp">
+      <Filter>Settings\Groups</Filter>
+    </ClCompile>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="RefManager1DimAssync.cpp">
+      <Filter>RefManager\1 Dim Assync</Filter>
+    </ClCompile>
+    <ClCompile Include="DebugOutputConsole.cpp">
+      <Filter>Log\DebugOutput</Filter>
+    </ClCompile>
+    <ClCompile Include="DebugOutputLog.cpp">
+      <Filter>Log\DebugOutput</Filter>
+    </ClCompile>
+    <ClCompile Include="NEW_Random.cpp">
+      <Filter>Common\Helpers</Filter>
+    </ClCompile>
+    <ClCompile Include="BoundingSphere.cpp">
+      <Filter>Common\Primitives</Filter>
+    </ClCompile>
+    <ClCompile Include="Object.cpp">
+      <Filter>Objects bindings</Filter>
+    </ClCompile>
+    <ClCompile Include="HighResolutionTimer.cpp">
+      <Filter>Timers</Filter>
+    </ClCompile>
+    <ClCompile Include="Timer.cpp">
+      <Filter>Timers</Filter>
+    </ClCompile>
+    <ClCompile Include="Events.cpp">
+      <Filter>Events</Filter>
+    </ClCompile>
+    <ClCompile Include="LocalFilesStorage.cpp">
+      <Filter>Files\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="BoundingRect.cpp">
+      <Filter>Common\Primitives</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="DebugOutput.h">
+      <Filter>Log\DebugOutput</Filter>
+    </ClInclude>
+    <ClInclude Include="Log.h">
+      <Filter>Log</Filter>
+    </ClInclude>
+    <ClInclude Include="XMLFile.h">
+      <Filter>Files\XMLFile</Filter>
+    </ClInclude>
+    <ClInclude Include="INIFile.h">
+      <Filter>Files\INIFile</Filter>
+    </ClInclude>
+    <ClInclude Include="Debug.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Macros.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="RefManager2Dim.h">
+      <Filter>RefManager\2 Dim</Filter>
+    </ClInclude>
+    <ClInclude Include="RefManager1Dim.h">
+      <Filter>RefManager\1 Dim</Filter>
+    </ClInclude>
+    <ClInclude Include="Random.h">
+      <Filter>Common\Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils.h">
+      <Filter>Common\Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="FilesManager.h">
+      <Filter>Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ByteBuffer.h">
+      <Filter>Files\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="File.h">
+      <Filter>Files\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="BoundingBox.h">
+      <Filter>Common\Primitives</Filter>
+    </ClInclude>
+    <ClInclude Include="Frustrum.h">
+      <Filter>Common\Primitives</Filter>
+    </ClInclude>
+    <ClInclude Include="Plane.h">
+      <Filter>Common\Primitives</Filter>
+    </ClInclude>
+    <ClInclude Include="Math.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Color.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Vec2f.h">
+      <Filter>Common\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Vec3f.h">
+      <Filter>Common\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Vec4f.h">
+      <Filter>Common\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Quaternion.h">
+      <Filter>Common\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Matrix.h">
+      <Filter>Common\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="MathCommon.h">
+      <Filter>Common\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseManager.h">
+      <Filter>Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="ConsoleCommand.h">
+      <Filter>Log\Console</Filter>
+    </ClInclude>
+    <ClInclude Include="Console.h">
+      <Filter>Log\Console</Filter>
+    </ClInclude>
+    <ClInclude Include="Settings.h">
+      <Filter>Settings</Filter>
+    </ClInclude>
+    <ClInclude Include="GroupRenderCaps.h">
+      <Filter>Settings\Groups</Filter>
+    </ClInclude>
+    <ClInclude Include="GroupQuality.h">
+      <Filter>Settings\Groups</Filter>
+    </ClInclude>
+    <ClInclude Include="GroupVideo.h">
+      <Filter>Settings\Groups</Filter>
+    </ClInclude>
+    <ClInclude Include="GroupOpenGL.h">
+      <Filter>Settings\Groups</Filter>
+    </ClInclude>
+    <ClInclude Include="common.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="RefManager1DimAssync.h">
+      <Filter>RefManager\1 Dim Assync</Filter>
+    </ClInclude>
+    <ClInclude Include="DebugOutputConsole.h">
+      <Filter>Log\DebugOutput</Filter>
+    </ClInclude>
+    <ClInclude Include="DebugOutputLog.h">
+      <Filter>Log\DebugOutput</Filter>
+    </ClInclude>
+    <ClInclude Include="NEW_Random.h">
+      <Filter>Common\Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="BoundingSphere.h">
+      <Filter>Common\Primitives</Filter>
+    </ClInclude>
+    <ClInclude Include="Object.h">
+      <Filter>Objects bindings</Filter>
+    </ClInclude>
+    <ClInclude Include="Events.h">
+      <Filter>Events</Filter>
+    </ClInclude>
+    <ClInclude Include="KeyCodes.h">
+      <Filter>Input</Filter>
+    </ClInclude>
+    <ClInclude Include="Timer.h">
+      <Filter>Timers</Filter>
+    </ClInclude>
+    <ClInclude Include="HighResolutionTimer.h">
+      <Filter>Timers</Filter>
+    </ClInclude>
+    <ClInclude Include="Timer_OLD.h">
+      <Filter>Timers</Filter>
+    </ClInclude>
+    <ClInclude Include="ThreadPool.h">
+      <Filter>Common\Threads</Filter>
+    </ClInclude>
+    <ClInclude Include="MapAssync.h">
+      <Filter>Common\Threads</Filter>
+    </ClInclude>
+    <ClInclude Include="LockedQueue.h">
+      <Filter>Common\Threads</Filter>
+    </ClInclude>
+    <ClInclude Include="LocalFilesStorage.h">
+      <Filter>Files\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Rect.h">
+      <Filter>Common\Primitives</Filter>
+    </ClInclude>
+    <ClInclude Include="BoundingRect.h">
+      <Filter>Common\Primitives</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\znCore.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="RefManager2Dim.inl">
+      <Filter>RefManager\2 Dim</Filter>
+    </None>
+    <None Include="RefManager1Dim.inl">
+      <Filter>RefManager\1 Dim</Filter>
+    </None>
+    <None Include="RefManager1DimAssync.inl">
+      <Filter>RefManager\1 Dim Assync</Filter>
+    </None>
+  </ItemGroup>
+</Project>

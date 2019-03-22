@@ -1,0 +1,106 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="owRenderOpenGL.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="QueryOGL.cpp" />
+    <ClCompile Include="RenderDeviceOGL.cpp" />
+    <ClCompile Include="RenderTargetOGL.cpp" />
+    <ClCompile Include="RenderWindowOGL.cpp" />
+    <ClCompile Include="ShaderOGL.cpp" />
+    <ClCompile Include="TextureOGL.cpp" />
+    <ClCompile Include="BufferOGL.cpp">
+      <Filter>Buffers</Filter>
+    </ClCompile>
+    <ClCompile Include="StructuredBufferOGL.cpp">
+      <Filter>Buffers</Filter>
+    </ClCompile>
+    <ClCompile Include="ConstantBufferOGL.cpp">
+      <Filter>Buffers</Filter>
+    </ClCompile>
+    <ClCompile Include="MeshOGL.cpp" />
+    <ClCompile Include="OpenGL.cpp">
+      <Filter>Helpers</Filter>
+    </ClCompile>
+    <ClCompile Include="BlendStateOGL.cpp">
+      <Filter>Pipeline</Filter>
+    </ClCompile>
+    <ClCompile Include="RasterizerStateOGL.cpp">
+      <Filter>Pipeline</Filter>
+    </ClCompile>
+    <ClCompile Include="PipelineStateOGL.cpp">
+      <Filter>Pipeline</Filter>
+    </ClCompile>
+    <ClCompile Include="DepthStencilStateOGL.cpp">
+      <Filter>Pipeline</Filter>
+    </ClCompile>
+    <ClCompile Include="SamplerStateOGL.cpp" />
+    <ClCompile Include="MaterialOGL.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="common.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="MeshOGL.h" />
+    <ClInclude Include="QueryOGL.h" />
+    <ClInclude Include="RenderDeviceOGL.h" />
+    <ClInclude Include="RenderTargetOGL.h" />
+    <ClInclude Include="RenderWindowOGL.h" />
+    <ClInclude Include="ShaderOGL.h" />
+    <ClInclude Include="TextureOGL.h" />
+    <ClInclude Include="BufferOGL.h">
+      <Filter>Buffers</Filter>
+    </ClInclude>
+    <ClInclude Include="StructuredBufferOGL.h">
+      <Filter>Buffers</Filter>
+    </ClInclude>
+    <ClInclude Include="ConstantBufferOGL.h">
+      <Filter>Buffers</Filter>
+    </ClInclude>
+    <ClInclude Include="OpenGL.h">
+      <Filter>Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="owRenderOpenGL.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="TextureOGLTranslate.h" />
+    <ClInclude Include="BlendStateOGL.h">
+      <Filter>Pipeline</Filter>
+    </ClInclude>
+    <ClInclude Include="RasterizerStateOGL.h">
+      <Filter>Pipeline</Filter>
+    </ClInclude>
+    <ClInclude Include="PipelineStateOGL.h">
+      <Filter>Pipeline</Filter>
+    </ClInclude>
+    <ClInclude Include="DepthStencilStateOGL.h">
+      <Filter>Pipeline</Filter>
+    </ClInclude>
+    <ClInclude Include="OpenGLTypes.h">
+      <Filter>Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="SamplerStateOGL.h" />
+    <ClInclude Include="MaterialOGL.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Common">
+      <UniqueIdentifier>{98fc8d94-3730-4821-bb53-d891aea80641}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Buffers">
+      <UniqueIdentifier>{0ef05b1f-3c29-44d2-97bf-af25d031b4cf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Helpers">
+      <UniqueIdentifier>{a2fe47b1-3fde-410c-b41d-b7ca826536a7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pipeline">
+      <UniqueIdentifier>{13b6b0a2-2c19-4017-9a18-c980bc74db19}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

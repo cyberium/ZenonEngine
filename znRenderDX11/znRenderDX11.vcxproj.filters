@@ -1,0 +1,105 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="MeshDX11.cpp" />
+    <ClCompile Include="QueryDX11.cpp" />
+    <ClCompile Include="RenderDeviceDX11.cpp" />
+    <ClCompile Include="RenderTargetDX11.cpp" />
+    <ClCompile Include="RenderWindowDX11.cpp" />
+    <ClCompile Include="ShaderDX11.cpp" />
+    <ClCompile Include="TextureDX11.cpp" />
+    <ClCompile Include="BufferDX11.cpp">
+      <Filter>Buffers</Filter>
+    </ClCompile>
+    <ClCompile Include="ConstantBufferDX11.cpp">
+      <Filter>Buffers</Filter>
+    </ClCompile>
+    <ClCompile Include="StructuredBufferDX11.cpp">
+      <Filter>Buffers</Filter>
+    </ClCompile>
+    <ClCompile Include="BlendStateDX11.cpp">
+      <Filter>Pipeline</Filter>
+    </ClCompile>
+    <ClCompile Include="DepthStencilStateDX11.cpp">
+      <Filter>Pipeline</Filter>
+    </ClCompile>
+    <ClCompile Include="RasterizerStateDX11.cpp">
+      <Filter>Pipeline</Filter>
+    </ClCompile>
+    <ClCompile Include="PipelineStateDX11.cpp">
+      <Filter>Pipeline</Filter>
+    </ClCompile>
+    <ClCompile Include="SamplerStateDX11.cpp" />
+    <ClCompile Include="MaterialDX11.cpp" />
+    <ClCompile Include="ShaderInputLayoutDX11.cpp" />
+    <ClCompile Include="D3D9_To_D3D11.cpp">
+      <Filter>Converters</Filter>
+    </ClCompile>
+    <ClCompile Include="znRenderDX11.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="common.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="MeshDX11.h" />
+    <ClInclude Include="QueryDX11.h" />
+    <ClInclude Include="RenderDeviceDX11.h" />
+    <ClInclude Include="RenderTargetDX11.h" />
+    <ClInclude Include="RenderWindowDX11.h" />
+    <ClInclude Include="ShaderDX11.h" />
+    <ClInclude Include="TextureDX11.h" />
+    <ClInclude Include="BufferDX11.h">
+      <Filter>Buffers</Filter>
+    </ClInclude>
+    <ClInclude Include="ConstantBufferDX11.h">
+      <Filter>Buffers</Filter>
+    </ClInclude>
+    <ClInclude Include="StructuredBufferDX11.h">
+      <Filter>Buffers</Filter>
+    </ClInclude>
+    <ClInclude Include="BlendStateDX11.h">
+      <Filter>Pipeline</Filter>
+    </ClInclude>
+    <ClInclude Include="DepthStencilStateDX11.h">
+      <Filter>Pipeline</Filter>
+    </ClInclude>
+    <ClInclude Include="RasterizerStateDX11.h">
+      <Filter>Pipeline</Filter>
+    </ClInclude>
+    <ClInclude Include="PipelineStateDX11.h">
+      <Filter>Pipeline</Filter>
+    </ClInclude>
+    <ClInclude Include="TextureDX11Translate.h" />
+    <ClInclude Include="SamplerStateDX11.h" />
+    <ClInclude Include="MaterialDX11.h" />
+    <ClInclude Include="ShaderInputLayoutDX11.h" />
+    <ClInclude Include="D3D9_To_D3D11.h">
+      <Filter>Converters</Filter>
+    </ClInclude>
+    <ClInclude Include="znRenderDX11.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Common">
+      <UniqueIdentifier>{98fc8d94-3730-4821-bb53-d891aea80641}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Buffers">
+      <UniqueIdentifier>{442800ef-12e7-44be-bb3c-374071446c94}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pipeline">
+      <UniqueIdentifier>{40b4cb14-a721-4704-9395-cfec84d76208}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Converters">
+      <UniqueIdentifier>{3dde30a2-8db8-4a81-a32e-d315ee685f1e}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

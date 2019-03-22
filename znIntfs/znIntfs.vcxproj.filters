@@ -1,0 +1,84 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClInclude Include="Types.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Console.h">
+      <Filter>Core\Debug, Console &amp; Log</Filter>
+    </ClInclude>
+    <ClInclude Include="DebugOutput.h">
+      <Filter>Core\Debug, Console &amp; Log</Filter>
+    </ClInclude>
+    <ClInclude Include="Log.h">
+      <Filter>Core\Debug, Console &amp; Log</Filter>
+    </ClInclude>
+    <ClInclude Include="GameState.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="GameStateManager.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Files.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseManager.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Loader.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Settings.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\owIntfs.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Networking.h">
+      <Filter>Networking</Filter>
+    </ClInclude>
+    <ClInclude Include="Visitor.h">
+      <Filter>Render</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneNodeProvider.h">
+      <Filter>Render</Filter>
+    </ClInclude>
+    <ClInclude Include="Application.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraController.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="WindowObject.h">
+      <Filter>Render</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Common">
+      <UniqueIdentifier>{06b24d03-f662-4f6f-9c69-988783e830f3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core">
+      <UniqueIdentifier>{5c265354-6698-48b5-b4f1-9fcd76d633da}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Debug, Console &amp; Log">
+      <UniqueIdentifier>{ea46065f-3629-447b-86c7-eaf0605943d0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Networking">
+      <UniqueIdentifier>{eaf559ac-5eba-4217-99fa-ba2e73a8d6a7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Render">
+      <UniqueIdentifier>{98b09ec3-003c-4139-bfc6-71ba4f9d8c85}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine">
+      <UniqueIdentifier>{09ac166e-fa8f-4f25-b9bb-8f5dac828b55}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
