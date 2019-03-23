@@ -14,18 +14,18 @@ typedef unsigned long long uint64;
 #pragma warning( push )
 #pragma warning( disable : 4201) // warning C4201: nonstandard extension used : nameless struct/union
 #define GLM_FORCE_SWIZZLE
-#include <glm/glm.hpp>
-#include <glm/gtc/constants.hpp>
-#include <glm/gtc/type_ptr.hpp>
-#include <glm/gtc/quaternion.hpp>
-#include <glm/gtc/random.hpp>
-#include <glm/gtx/vector_angle.hpp>
-#include <glm/gtx/compatibility.hpp>
-#include <glm/gtx/matrix_operation.hpp>
-#include <glm/gtx/transform.hpp>
-#include <glm/gtx/quaternion.hpp>
-#include <glm/gtx/euler_angles.hpp>
-#include <glm/gtx/norm.hpp>
+#include <glm/glm/glm.hpp>
+#include <glm/glm/gtc/constants.hpp>
+#include <glm/glm/gtc/type_ptr.hpp>
+#include <glm/glm/gtc/quaternion.hpp>
+#include <glm/glm/gtc/random.hpp>
+#include <glm/glm/gtx/vector_angle.hpp>
+#include <glm/glm/gtx/compatibility.hpp>
+#include <glm/glm/gtx/matrix_operation.hpp>
+#include <glm/glm/gtx/transform.hpp>
+#include <glm/glm/gtx/quaternion.hpp>
+#include <glm/glm/gtx/euler_angles.hpp>
+#include <glm/glm/gtx/norm.hpp>
 #pragma warning( pop ) 
 
 typedef glm::vec2 vec2;
