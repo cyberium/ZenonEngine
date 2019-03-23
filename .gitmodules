@@ -1,0 +1,3 @@
+[submodule "js"]
+	path = Externals/glm2
+	url = https://github.com/g-truc/glm.git
