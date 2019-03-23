@@ -5,12 +5,13 @@
 
 // Additional
 
-CGameState_World::CGameState_World()
+CGameState_World::CGameState_World(IApplication * Application)
+    : base(Application)
 {
 	m_Viewport = Viewport(0, 0, 1280.0f, 1024.0f);
 
 	m_3DScene = std::make_shared<Scene3D>();
-	m_UIScene = std::make_shared<SceneUI>();
+	m_UIScene = std::make_shared<CUIScene>();
 }
 
 CGameState_World::~CGameState_World()
@@ -32,8 +33,7 @@ bool CGameState_World::Init()
 	//
 	// Camera controller
 	//
-	m_CameraController = std::make_shared<CCameraController>();
-	m_CameraController->Init(app.GetRenderWindow());
+	m_CameraController = std::make_shared<CFreeCameraController>();
 	m_CameraController->GetCamera()->SetTranslate(vec3(0, 0, 0));
 	m_CameraController->GetCamera()->SetRotate(vec3(0, 0, 0));
 	m_CameraController->GetCamera()->SetViewport(m_Viewport);
@@ -77,8 +77,8 @@ void CGameState_World::OnPreRender(Render3DEventArgs& e)
 
 void CGameState_World::OnRender(Render3DEventArgs& e)
 {
-	e.Camera = m_CameraController->GetCameraConst().operator->(); // TODO: Shit code. Refactor me.
-	Application::Get().GetLoader()->SetCamera(m_CameraController->GetCamera());
+	e.Camera = m_CameraController->GetCamera().operator->(); // TODO: Shit code. Refactor me.
+	//Application::Get().GetLoader()->SetCamera(m_CameraController->GetCamera());
 
 	m_3DDeferredTechnique.Render(e);
 }
@@ -120,7 +120,7 @@ void CGameState_World::OnRenderUI(RenderUIEventArgs& e)
 
 void CGameState_World::Load3D()
 {
-	Application& app = Application::Get();
+	IApplication& app = Application::Get();
 	std::shared_ptr<IRenderDevice> renderDevice = app.GetRenderDevice();
 	std::shared_ptr<RenderWindow> renderWindow = app.GetRenderWindow();
 
@@ -148,7 +148,7 @@ void CGameState_World::Load3D()
 
 
 
-	Light dir;
+	/*Light dir;
 	dir.m_Enabled = true;
 	dir.m_Type = Light::LightType::Directional;
 	dir.m_DirectionWS = vec4(0.0, -1.0f, 0.0f, 0.0f);
@@ -157,7 +157,7 @@ void CGameState_World::Load3D()
 
 	m_DirLight = std::make_shared<CLight3D>();
 	m_DirLight->setLight(dir);
-	m_3DScene->GetRootNode()->AddLight(m_DirLight);
+	m_3DScene->GetRootNode()->AddLight(m_DirLight);*/
 
 
 	m_3DDeferredTechnique.AddPass(std::make_shared<ClearRenderTargetPass>(renderWindow->GetRenderTarget(), ClearFlags::All, g_ClearColor, 1.0f, 0));
@@ -166,17 +166,17 @@ void CGameState_World::Load3D()
 
 void CGameState_World::LoadUI()
 {
-	Application& app = Application::Get();
+	IApplication& app = Application::Get();
 	std::shared_ptr<IRenderDevice> renderDevice = app.GetRenderDevice();
 
 
 	// Font
-	m_CameraPosText = std::make_shared<UIText>();
+	m_CameraPosText = std::make_shared<CUITextNode>();
 	m_CameraPosText->SetParent(m_UIScene->GetRootNode());
 	m_CameraPosText->SetText("Camera position");
 	m_CameraPosText->SetTranslate(vec2(0.0f, 0.0f));
 
-	m_CameraRotText = std::make_shared<UIText>();
+	m_CameraRotText = std::make_shared<CUITextNode>();
 	m_CameraRotText->SetParent(m_UIScene->GetRootNode());
 	m_CameraRotText->SetText("Camera rotation");
 	m_CameraRotText->SetTranslate(vec2(0.0f, 20.0f));

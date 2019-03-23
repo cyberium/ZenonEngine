@@ -1,6 +1,5 @@
 #pragma once
 
-#include "GroupOpenGL.h"
 #include "GroupQuality.h"
 #include "GroupRenderCaps.h"
 #include "GroupVideo.h"

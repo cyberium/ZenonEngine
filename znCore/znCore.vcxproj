@@ -31,7 +31,6 @@
     <ClCompile Include="ByteBuffer.cpp" />
     <ClCompile Include="FilesManager.cpp" />
     <ClCompile Include="Frustrum.cpp" />
-    <ClCompile Include="GroupOpenGL.cpp" />
     <ClCompile Include="GroupQuality.cpp" />
     <ClCompile Include="GroupRenderCaps.cpp" />
     <ClCompile Include="GroupVideo.cpp" />
@@ -41,11 +40,11 @@
     <ClCompile Include="LocalFilesStorage.cpp" />
     <ClCompile Include="Log.cpp" />
     <ClCompile Include="DebugOutput.cpp" />
-    <ClCompile Include="NEW_Random.cpp" />
+    <ClCompile Include="Random.cpp" />
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="Plane.cpp" />
-    <ClCompile Include="Random.cpp" />
     <ClCompile Include="RefManager1DimAssync.cpp" />
+    <ClCompile Include="Resource.cpp" />
     <ClCompile Include="Settings.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -73,7 +72,6 @@
     <ClInclude Include="LockedQueue.h" />
     <ClInclude Include="MapAssync.h" />
     <ClInclude Include="ConsoleCommand.h" />
-    <ClInclude Include="GroupOpenGL.h" />
     <ClInclude Include="GroupQuality.h" />
     <ClInclude Include="GroupRenderCaps.h" />
     <ClInclude Include="GroupVideo.h" />
@@ -92,20 +90,18 @@
     <ClInclude Include="Console.h" />
     <ClInclude Include="Log.h" />
     <ClInclude Include="DebugOutput.h" />
-    <ClInclude Include="NEW_Random.h" />
+    <ClInclude Include="Random.h" />
     <ClInclude Include="Object.h" />
     <ClInclude Include="Plane.h" />
     <ClInclude Include="Quaternion.h" />
-    <ClInclude Include="Random.h" />
     <ClInclude Include="Rect.h" />
     <ClInclude Include="RefManager1Dim.h" />
     <ClInclude Include="RefManager1DimAssync.h" />
     <ClInclude Include="RefManager2Dim.h" />
+    <ClInclude Include="Resource.h" />
     <ClInclude Include="Settings.h" />
     <ClInclude Include="stdafx.h" />
-    <ClInclude Include="ThreadPool.h" />
     <ClInclude Include="Timer.h" />
-    <ClInclude Include="Timer_OLD.h" />
     <ClInclude Include="Utils.h" />
     <ClInclude Include="Vec2f.h" />
     <ClInclude Include="Vec3f.h" />

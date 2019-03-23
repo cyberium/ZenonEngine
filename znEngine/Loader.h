@@ -43,7 +43,5 @@ private:
 	std::promise<void>					   m_Thread_Sorter_Promise;
 	std::thread                            m_Thread_Sorter;
 
-	std::shared_ptr<ThreadPool>            m_ThreadPool;
-
 	std::shared_ptr<Camera>                m_Camera;
 };

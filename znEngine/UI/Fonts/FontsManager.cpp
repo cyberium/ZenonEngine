@@ -51,7 +51,7 @@ std::shared_ptr<CFontMesh> FontsManager::CreateAction(cstring _nameAndSize)
 	std::shared_ptr<IFile> f = GetManager<IFilesManager>()->Open(fontFileName);
 	if (f == nullptr)
 	{
-		Log::Fatal("FontsManager[%s]: Error while loading font.", f->Path_Name().c_str());
+		Log::Fatal("FontsManager[%s]: Error while loading font.", _nameAndSize.c_str());
 		return nullptr;
 	}
 

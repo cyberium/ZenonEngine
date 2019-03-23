@@ -33,14 +33,15 @@ int main(int argumentCount, char* arguments[])
 		std::shared_ptr<IFilesStorage> localFilesGamedata = std::make_shared<CLocalFilesStorage>("E:\\OpenWoW\\_gamedata\\");
 		filesManager->RegisterFilesStorage(localFilesGamedata);
 
-		std::shared_ptr<IFilesStorage> mpqFileStorage = std::make_shared<CMPQFilesStorage>("D:\\_games\\World of Warcraft 3.3.5a\\Data", IFilesStorageEx::PRIOR_HIGH);
-		filesManager->RegisterFilesStorage(mpqFileStorage);
+		//std::shared_ptr<IFilesStorage> mpqFileStorage = std::make_shared<CMPQFilesStorage>("D:\\_games\\World of Warcraft 3.3.5a\\Data", IFilesStorageEx::PRIOR_HIGH);
+		//filesManager->RegisterFilesStorage(mpqFileStorage);
 
 		//--
 
 		Application app;
-		app.Load();
-		app.AddGameState(GameStatesNames::GAME_STATE_WORLD, std::make_shared<CGameState_World>());
+
+
+		app.AddGameState(GameStatesNames::GAME_STATE_WORLD, std::make_shared<CGameState_World>(&app));
 		app.SetGameState(GameStatesNames::GAME_STATE_WORLD);
 		app.Run();
 	}

@@ -34,9 +34,6 @@
     <ClInclude Include="Settings.h">
       <Filter>Core</Filter>
     </ClInclude>
-    <ClInclude Include="..\shared\owIntfs.h">
-      <Filter>Common</Filter>
-    </ClInclude>
     <ClInclude Include="Networking.h">
       <Filter>Networking</Filter>
     </ClInclude>
@@ -54,6 +51,9 @@
     </ClInclude>
     <ClInclude Include="WindowObject.h">
       <Filter>Render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\znIntfs.h">
+      <Filter>Common</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

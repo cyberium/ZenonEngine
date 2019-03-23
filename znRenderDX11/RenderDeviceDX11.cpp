@@ -183,7 +183,7 @@ void RenderDeviceDX11::CreateDevice()
 		Log::Error("Failed to qauery adapter description.");
 	}
 
-	m_DeviceName = ConvertString(adapterDescription.Description);
+	m_DeviceName = Resources::ConvertString(adapterDescription.Description);
 }
 
 cstring RenderDeviceDX11::GetDeviceName() const

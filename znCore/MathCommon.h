@@ -18,11 +18,6 @@ namespace Math
 	const float Epsilon10000 = 0.01f;
 	const float ZeroEpsilon = 32.0f * MinFloat;  // Very small epsilon for checking against 0.0f
 	const float NaN = *(float*)&MaxUInt32;
-
-	enum NoInitHint
-	{
-		NO_INIT
-	};
 };
 
 // -------------------------------------------------------------------------------------------------

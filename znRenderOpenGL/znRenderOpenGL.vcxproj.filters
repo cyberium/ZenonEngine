@@ -67,9 +67,6 @@
     <ClInclude Include="OpenGL.h">
       <Filter>Helpers</Filter>
     </ClInclude>
-    <ClInclude Include="owRenderOpenGL.h">
-      <Filter>Common</Filter>
-    </ClInclude>
     <ClInclude Include="TextureOGLTranslate.h" />
     <ClInclude Include="BlendStateOGL.h">
       <Filter>Pipeline</Filter>
@@ -88,6 +85,9 @@
     </ClInclude>
     <ClInclude Include="SamplerStateOGL.h" />
     <ClInclude Include="MaterialOGL.h" />
+    <ClInclude Include="znRenderOpenGL.h">
+      <Filter>Common</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Common">

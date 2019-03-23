@@ -3,91 +3,63 @@
 // General
 #include "Random.h"
 
-unsigned long Random::rStateVector[Random::N];
-unsigned long Random::rStateVectorIndex;
 
-// Set random seed
-void Random::SetSeed(unsigned long TSeed)
+Random::Random(int seed)
+    : m_RandomGenerator(seed)
+{}
+
+int32_t Random::NextInt() const
 {
-	rStateVector[0] = TSeed & 0xffffffffUL;
-	for (rStateVectorIndex = 1; rStateVectorIndex < N; ++rStateVectorIndex)
-	{
-		rStateVector[rStateVectorIndex] = (1812433253UL * (rStateVector[rStateVectorIndex - 1] ^ (rStateVector[rStateVectorIndex - 1] >> 30)) + rStateVectorIndex);
-		rStateVector[rStateVectorIndex] &= 0xffffffffUL;
-	}
+    return m_IntDistribution(m_RandomGenerator);
 }
 
-// Generates a random number [0, 1)
-float Random::Generate()
+uint32_t Random::NextUInt() const
 {
-	return GenerateRange(0.0f, 0.999999f);
+    return m_UIntDistribution(m_RandomGenerator);
 }
 
-// Generates a random number [0, TMax]
-int Random::GenerateMax(int TMax)
+float Random::NextFloat() const
 {
-	return GenerateRandomInteger() % TMax;
+    return m_FloatDistribution(m_RandomGenerator);
 }
 
-// Generates a random number [0, TMax]
-uint32 Random::GenerateMax(uint32 TMax)
+float Random::Range(const float min, const float max) const
 {
-	return GenerateRandomInteger() % TMax;
+    return NextFloat() * (max - min) + min;
 }
 
-// Generates a random number [TMin, TMax]
-int Random::GenerateRange(int TMin, int TMax)
+vec2 Random::NextVec2f() const
 {
-	return GenerateRandomInteger() % (TMax - TMin + 1) + TMin;
+    return vec2(NextFloat(), NextFloat());
 }
 
-// Generates a random number [TMin, TMax]
-uint32 Random::GenerateRange(uint32 TMin, uint32 TMax)
+vec3 Random::NextVec3f() const
 {
-	return GenerateRandomInteger() % (TMax - TMin + 1) + TMin;
+    return vec3(NextFloat(), NextFloat(), NextFloat());
 }
 
-// Generates a random number [TMin, TMax]
-float Random::GenerateRange(float TMin, float TMax)
+vec2 Random::UnitVector2f() const
 {
-	return GenerateRandomInteger() * (1.0f / 4294967295.0f) * (TMax - TMin) + TMin;
+    float angle = NextFloat() * 2.0f * glm::pi<float>();
+    return vec2(std::cos(angle), std::sin(angle));
 }
 
-//
-
-unsigned long Random::GenerateRandomInteger()
+vec3 Random::UnitVector3f() const
 {
-	static unsigned long mag01[2] = {0x0UL, MATRIX_A};
-	unsigned long y;
+    float z = Range(-1, 1);
+    vec2 disc = UnitVector2f() * std::sqrt(1.0f - (z*z));
+    return vec3(disc.x, disc.y, z);
+}
 
-	if (rStateVectorIndex >= N)
-	{
-		uint32 kk;
+vec3 Random::Hemisphere(cvec3 normal)
+{
+    // 1. Generate a random unit vector in a sphere
+    vec3 unitVector = UnitVector3f();
+    // Negate it if it is pointing away from the normal
+    if (glm::dot(unitVector, normal) < 0.0f)
+    {
+        unitVector = -unitVector;
+    }
 
-		for (kk = 0; kk < N - M; ++kk)
-		{
-			y = (rStateVector[kk] & UPPER_MASK) | (rStateVector[kk + 1] & LOWER_MASK);
-			rStateVector[kk] = rStateVector[kk + M] ^ (y >> 1) ^ mag01[y & 0x1UL];
-		}
-
-		for (; kk < N - 1; ++kk)
-		{
-			y = (rStateVector[kk] & UPPER_MASK) | (rStateVector[kk + 1] & LOWER_MASK);
-			rStateVector[kk] = rStateVector[kk + (M - N)] ^ (y >> 1) ^ mag01[y & 0x1UL];
-		}
-
-		y = (rStateVector[N - 1] & UPPER_MASK) | (rStateVector[0] & LOWER_MASK);
-		rStateVector[N - 1] = rStateVector[M - 1] ^ (y >> 1) ^ mag01[y & 0x1UL];
-
-		rStateVectorIndex = 0;
-	}
-
-	y = rStateVector[rStateVectorIndex++];
-
-	y ^= (y >> 11);
-	y ^= (y << 7) & 0x9d2c5680UL;
-	y ^= (y << 15) & 0xefc60000UL;
-	y ^= (y >> 18);
-
-	return y;
+    return unitVector;
 }
