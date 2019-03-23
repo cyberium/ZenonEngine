@@ -35,7 +35,7 @@ std::string CWindowObject::GetWindowName()
 {
 	std::wstring title(GetWindowTextLength(m_HWnd) + 1, L'\0');
 	GetWindowText(m_HWnd, &title[0], title.size());
-	return ConvertString(title);
+	return Resources::ConvertString(title);
 }
 
 long CWindowObject::GetWindowWidth()

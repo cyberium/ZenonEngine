@@ -15,7 +15,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TestApp", "TestApp\TestApp.
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "znEngine", "znEngine\znEngine.vcxproj", "{51252F60-B8DC-4090-BBA3-DD05942110F0}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "znRenderBase", "znRenderBase\znRenderBase.vcxproj", "{4BFB75A1-EE52-478A-BDAC-30FFB977EBB7}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "znRender", "znRender\znRender.vcxproj", "{4BFB75A1-EE52-478A-BDAC-30FFB977EBB7}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "FreeImage", "FreeImage", "{F1C486BC-54D3-4499-8B55-4BED9C97B691}"
 EndProject

@@ -2,7 +2,7 @@
 
 #pragma comment(lib, "freetype.lib")
 
-// CORE
+// ZenonEngine
 
 #include <znIntfs.h>
 #pragma comment(lib, "znIntfs.lib")
@@ -10,8 +10,8 @@
 #include <znCore.h>
 #pragma comment(lib, "znCore.lib")
 
-#include <znRenderBase.h>
-#pragma comment(lib, "znRenderBase.lib")
+#include <znRender.h>
+#pragma comment(lib, "znRender.lib")
 
 #include <znEngine.h>
 #pragma comment(lib, "znEngine.lib")

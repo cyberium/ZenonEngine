@@ -111,7 +111,9 @@
     <ClInclude Include="Primitives\Geometry.h">
       <Filter>Primitives</Filter>
     </ClInclude>
-    <ClInclude Include="..\shared\znRenderBase.h" />
+    <ClInclude Include="..\shared\znRender.h">
+      <Filter>Common</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Common">

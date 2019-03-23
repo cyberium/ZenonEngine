@@ -97,12 +97,6 @@ std::shared_ptr<RenderWindow> Application::CreateRenderWindow(IWindowObject * Wi
 
 
 
-CLoader* Application::GetLoader()
-{
-	return &m_Loader;
-}
-
-
 //
 // IApplication
 //
@@ -208,7 +202,10 @@ void Application::SetRenderWindow(std::shared_ptr<RenderWindow> _renderWindow)
 	}
 }
 
-
+CLoader* Application::GetLoader()
+{
+    return &m_Loader;
+}
 
 
 //

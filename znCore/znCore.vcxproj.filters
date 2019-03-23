@@ -58,9 +58,6 @@
     <Filter Include="RefManager\1 Dim Assync">
       <UniqueIdentifier>{d1c95b6f-a767-47df-bed7-b177d7d1e2eb}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Timers">
-      <UniqueIdentifier>{4ed86a83-bc26-44a8-8c60-1dbec01ff0c6}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Events">
       <UniqueIdentifier>{3726dda1-960e-4c4a-bda0-7937a163f686}</UniqueIdentifier>
     </Filter>
@@ -72,6 +69,9 @@
     </Filter>
     <Filter Include="Resources">
       <UniqueIdentifier>{f6b2d17f-2043-4399-87eb-3ea48206e496}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common\Timers">
+      <UniqueIdentifier>{4ed86a83-bc26-44a8-8c60-1dbec01ff0c6}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -151,10 +151,10 @@
       <Filter>Objects bindings</Filter>
     </ClCompile>
     <ClCompile Include="HighResolutionTimer.cpp">
-      <Filter>Timers</Filter>
+      <Filter>Common\Timers</Filter>
     </ClCompile>
     <ClCompile Include="Timer.cpp">
-      <Filter>Timers</Filter>
+      <Filter>Common\Timers</Filter>
     </ClCompile>
     <ClCompile Include="Events.cpp">
       <Filter>Events</Filter>
@@ -291,10 +291,10 @@
       <Filter>Input</Filter>
     </ClInclude>
     <ClInclude Include="Timer.h">
-      <Filter>Timers</Filter>
+      <Filter>Common\Timers</Filter>
     </ClInclude>
     <ClInclude Include="HighResolutionTimer.h">
-      <Filter>Timers</Filter>
+      <Filter>Common\Timers</Filter>
     </ClInclude>
     <ClInclude Include="MapAssync.h">
       <Filter>Common\Threads</Filter>

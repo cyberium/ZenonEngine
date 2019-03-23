@@ -6,8 +6,8 @@
 #include <znCore.h>
 #pragma comment(lib, "znCore.lib")
 
-#include <znRenderBase.h>
-#pragma comment(lib, "znRenderBase.lib")
+#include <znRender.h>
+#pragma comment(lib, "znRender.lib")
 
 #include "common.h"
 

@@ -25,7 +25,7 @@ public:
 	std::shared_ptr<IRenderDevice>  CreateRenderDevice();
 	std::shared_ptr<RenderWindow>   CreateRenderWindow(IWindowObject * WindowObject, bool vSync);
 
-	CLoader*						GetLoader();
+	
 
 	// IApplication
 	void                            DoBeforeRun() override;
@@ -36,6 +36,8 @@ public:
 	void                            SetRenderDevice(std::shared_ptr<IRenderDevice> _renderDevice) override;
 	std::shared_ptr<RenderWindow>   GetRenderWindow() const override;
 	void                            SetRenderWindow(std::shared_ptr<RenderWindow> _renderWindow) override;
+
+    CLoader*						GetLoader();
 
 	// IGameStateManager
 	void                            AddGameState(GameStatesNames::List _name, std::shared_ptr<IGameState> _gameState) override;

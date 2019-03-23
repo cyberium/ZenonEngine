@@ -161,7 +161,7 @@
     <ProjectReference Include="..\znIntfs\znIntfs.vcxproj">
       <Project>{69aec773-3240-4644-a049-ababd643dbec}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\znRenderBase\znRenderBase.vcxproj">
+    <ProjectReference Include="..\znRender\znRender.vcxproj">
       <Project>{4bfb75a1-ee52-478a-bdac-30ffb977ebb7}</Project>
     </ProjectReference>
   </ItemGroup>

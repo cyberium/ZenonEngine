@@ -1,4 +1,5 @@
 #pragma once
+
 /**
  * Random number generator.
  * Makes use of the random classes in the C++11 standard template library.
