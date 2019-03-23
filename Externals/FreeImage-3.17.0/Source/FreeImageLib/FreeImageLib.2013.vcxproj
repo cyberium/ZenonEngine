@@ -338,7 +338,7 @@ copy ..\FreeImage.h ..\..\Dist\x64
     <ClInclude Include="..\FreeImageToolkit\Resize.h" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\ZLib\ZLib.vcxproj">
+    <ProjectReference Include="..\..\..\..\..\OpenWow\Externals\zlib\zlib.vcxproj">
       <Project>{33134f61-c1ad-4b6f-9cea-503a9f140c52}</Project>
     </ProjectReference>
     <ProjectReference Include="..\LibPNG\LibPNG.vcxproj">
