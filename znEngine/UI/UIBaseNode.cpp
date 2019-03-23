@@ -12,6 +12,7 @@ CUIBaseNode::CUIBaseNode()
 	, m_Translate(vec2())
 	, m_Rotate(vec3())
 	, m_Scale(1.0f, 1.0f)
+    , m_LocalTransform(1.0f)
 	, m_IsMouseOnNode(false)
 {
 }
@@ -217,7 +218,7 @@ mat4 CUIBaseNode::GetParentWorldTransform() const
 
 void CUIBaseNode::UpdateLocalTransform()
 {
-	m_LocalTransform = mat4();
+	m_LocalTransform = mat4(1.0f);
 
 	m_LocalTransform = glm::translate(m_LocalTransform, vec3(m_Translate, 0.0f));
 	m_LocalTransform = glm::rotate(m_LocalTransform, m_Rotate.x, vec3(1, 0, 0));
