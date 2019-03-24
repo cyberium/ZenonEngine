@@ -35,7 +35,7 @@ void CUIContainerGarmoshkaCategory::Initialize(glm::vec2 MaxSize, const std::str
     SetHeader(header);
 }
 
-void CUIContainerGarmoshkaCategory::SetCategoryName(cstring Name)
+void CUIContainerGarmoshkaCategory::SetCategoryName(const std::string& Name)
 {
     std::dynamic_pointer_cast<CUIContainerGarmoshkaCategoryHeader>(GetHeader())->SetText(Name);
 }

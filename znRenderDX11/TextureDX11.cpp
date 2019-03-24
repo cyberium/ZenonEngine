@@ -299,7 +299,7 @@ void PrintMetaData(FREE_IMAGE_MDMODEL model, FIBITMAP* dib)
 	}
 }
 
-bool TextureDX11::LoadTexture2D(cstring fileName)
+bool TextureDX11::LoadTexture2D(const std::string& fileName)
 {
 	std::shared_ptr<IFile> f = GetManager<IFilesManager>()->Open(fileName);
 	if (f == nullptr)
@@ -524,7 +524,7 @@ bool TextureDX11::LoadTexture2D(cstring fileName)
 	return true;
 }
 
-bool TextureDX11::LoadTextureCube(cstring fileName)
+bool TextureDX11::LoadTextureCube(const std::string& fileName)
 {
 	/*fs::path filePath( fileName );
 	if ( !fs::exists( filePath ) || !fs::is_regular_file( filePath ) )

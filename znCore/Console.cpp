@@ -73,7 +73,7 @@ bool CConsole::AddConsoleCommand(IConsoleCommand* _command)
 	return true;
 }
 
-IConsoleCommand* CConsole::GetConsoleCommandByName(cstring _commandName)
+IConsoleCommand* CConsole::GetConsoleCommandByName(const std::string& _commandName)
 {
 	if (_commandName.empty())
 	{

@@ -14,9 +14,9 @@ struct IRefManager : public IManager
 {	
 	virtual ~IRefManager() {};
 
-	virtual std::shared_ptr<T> Add(cstring name) = 0;
-	virtual bool Exists(cstring name) const = 0;
-	virtual void Delete(cstring name) = 0;
+	virtual std::shared_ptr<T> Add(const std::string& name) = 0;
+	virtual bool Exists(const std::string& name) const = 0;
+	virtual void Delete(const std::string& name) = 0;
 	virtual void Delete(std::shared_ptr<T> item) = 0;
 };
 
@@ -33,7 +33,7 @@ struct
 	virtual ~IFontsManager() {};
 
 	virtual std::shared_ptr<CFontMesh> GetMainFont() const = 0;
-	virtual std::shared_ptr<CFontMesh> Add(cstring _fontFileName, uint32 _fontSize) = 0;
+	virtual std::shared_ptr<CFontMesh> Add(const std::string& _fontFileName, uint32 _fontSize) = 0;
 };
 
 //--

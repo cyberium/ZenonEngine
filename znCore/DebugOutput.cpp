@@ -16,7 +16,7 @@ void CDebugOutput::PushMessage(CDebugOutput::DebugMessageType _type, const char*
 	}
 }
 
-void CDebugOutput::PushMessage(cstring _message, CDebugOutput::DebugMessageType _type)
+void CDebugOutput::PushMessage(const std::string& _message, CDebugOutput::DebugMessageType _type)
 {
 	std::string messageWithPrefix;
 

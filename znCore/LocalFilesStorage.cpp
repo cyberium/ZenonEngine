@@ -16,7 +16,11 @@ CLocalFilesStorage::~CLocalFilesStorage()
 {
 }
 
-std::shared_ptr<IFile> CLocalFilesStorage::CreateFile(cstring _name)
+
+//
+// IFilesStorage
+//
+std::shared_ptr<IFile> CLocalFilesStorage::CreateFile(const std::string& _name)
 {
 	std::shared_ptr<CFile> file = std::make_shared<CFile>(m_Path, _name);
 	CByteBuffer& byteBuffer = file->GetByteBuffer();
@@ -78,7 +82,7 @@ std::shared_ptr<IFile> CLocalFilesStorage::CreateFile(cstring _name)
 	return file;
 }
 
-size_t CLocalFilesStorage::GetFileSize(cstring _name)
+size_t CLocalFilesStorage::GetFileSize(const std::string& _name)
 {
 	// Open stream
 	std::ifstream stream;
@@ -99,7 +103,7 @@ size_t CLocalFilesStorage::GetFileSize(cstring _name)
 	return fileSize;
 }
 
-bool CLocalFilesStorage::IsFileExists(cstring _name)
+bool CLocalFilesStorage::IsFileExists(const std::string& _name)
 {
 	// Open stream
 	std::ifstream stream;

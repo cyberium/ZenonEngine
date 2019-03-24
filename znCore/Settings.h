@@ -13,12 +13,12 @@ public:
 	void AddDefaults();
 
 	// ISettings
-	void RegisterBool(cstring _name, bool _defaultValue) override;
-	bool& GetBool(cstring _name) override;
-	void RegisterUint32(cstring _name, uint32 _defaultValue) override;
-	uint32& GetUint32(cstring _name) override;
-	void RegisterString(cstring _name, std::string _defaultValue) override;
-	std::string& GetString(cstring _name) override;
+	void RegisterBool(const std::string& _name, bool _defaultValue) override;
+	bool& GetBool(const std::string& _name) override;
+	void RegisterUint32(const std::string& _name, uint32 _defaultValue) override;
+	uint32& GetUint32(const std::string& _name) override;
+	void RegisterString(const std::string& _name, std::string _defaultValue) override;
+	std::string& GetString(const std::string& _name) override;
 
 	void RegisterGroup(GUID _guid, ISettingGroup* _group) override;
 	ISettingGroup* GetGroup(GUID _guid) override;

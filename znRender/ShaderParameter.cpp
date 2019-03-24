@@ -15,7 +15,7 @@ ShaderParameter::ShaderParameter()
 	, m_ParameterType(Type::Invalid)
 {}
 
-ShaderParameter::ShaderParameter(cstring name, UINT slotID, std::shared_ptr<Shader> shader, Type parameterType)
+ShaderParameter::ShaderParameter(const std::string& name, UINT slotID, std::shared_ptr<Shader> shader, Type parameterType)
 	: m_Name(name)
 	, m_uiSlotID(slotID)
 	, m_Shader(shader)

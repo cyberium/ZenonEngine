@@ -57,9 +57,9 @@ struct
 {
 	virtual ~IFilesStorage() {};
 
-	virtual std::shared_ptr<IFile>  CreateFile(cstring _name) = 0;
-	virtual size_t                  GetFileSize(cstring _name) = 0;
-	virtual bool                    IsFileExists(cstring _name) = 0;
+	virtual std::shared_ptr<IFile>  CreateFile(const std::string& _name) = 0;
+	virtual size_t                  GetFileSize(const std::string& _name) = 0;
+	virtual bool                    IsFileExists(const std::string& _name) = 0;
 };
 
 //--
@@ -90,9 +90,9 @@ struct
 {
 	virtual ~IFilesManager() {}
 
-	virtual std::shared_ptr<IFile> Open(cstring _fileName) = 0;
-	virtual size_t                 GetFileSize(cstring _fileName) = 0;
-	virtual bool                   IsFileExists(cstring _fileName) = 0;
+	virtual std::shared_ptr<IFile> Open(const std::string& _fileName) = 0;
+	virtual size_t                 GetFileSize(const std::string& _fileName) = 0;
+	virtual bool                   IsFileExists(const std::string& _fileName) = 0;
 
 	virtual void RegisterFilesStorage(std::shared_ptr<IFilesStorage> _storage) = 0;
 	virtual void UnRegisterFilesStorage(std::shared_ptr<IFilesStorage> _storage) = 0;

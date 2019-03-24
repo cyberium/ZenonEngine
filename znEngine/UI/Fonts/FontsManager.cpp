@@ -29,14 +29,14 @@ std::shared_ptr<CFontMesh> FontsManager::GetMainFont() const
 	return m_MainFont;
 }
 
-std::shared_ptr<CFontMesh> FontsManager::Add(cstring _fontFileName, uint32 _fontSize)
+std::shared_ptr<CFontMesh> FontsManager::Add(const std::string& _fontFileName, uint32 _fontSize)
 {
 	return CRefManager1Dim::Add(_fontFileName + "__" + std::to_string(_fontSize));
 }
 
 //
 
-std::shared_ptr<CFontMesh> FontsManager::CreateAction(cstring _nameAndSize)
+std::shared_ptr<CFontMesh> FontsManager::CreateAction(const std::string& _nameAndSize)
 {
 	uint32_t _delimIndex = static_cast<uint32>(_nameAndSize.find_last_of("__"));
 	if (_delimIndex == -1)
@@ -208,7 +208,7 @@ std::shared_ptr<CFontMesh> FontsManager::CreateAction(cstring _nameAndSize)
 
 
 /*
-std::shared_ptr<CFontMesh> FontsManager::CreateAction(cstring _nameAndSize)
+std::shared_ptr<CFontMesh> FontsManager::CreateAction(const std::string& _nameAndSize)
 {
 	uint32_t _delimIndex = static_cast<uint32>(_nameAndSize.find_last_of("__"));
 	if (_delimIndex == -1)
@@ -381,7 +381,7 @@ std::shared_ptr<CFontMesh> FontsManager::CreateAction(cstring _nameAndSize)
 }
 */
 
-bool FontsManager::DeleteAction(cstring name)
+bool FontsManager::DeleteAction(const std::string& name)
 {
 	return true;
 }

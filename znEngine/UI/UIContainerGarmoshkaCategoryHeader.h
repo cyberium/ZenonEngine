@@ -19,7 +19,7 @@ public:
 
     // CUIContainerGarmoshkaCategoryHeader
     void Initialize();
-    void SetText(cstring Text);
+    void SetText(const std::string& Text);
 
     // CUIBaseNode
     glm::vec2 GetSize() const override final;

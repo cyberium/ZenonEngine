@@ -149,7 +149,7 @@ void CGameState::OnResize(ResizeEventArgs & e)
 {
 	m_Viewport.Width = e.Width;
 	m_Viewport.Height = e.Height;
-	m_Viewport.OrthoMatrix = glm::ortho(0.0f, m_Viewport.Width, m_Viewport.Height, 0.0f, -1.0f, 1.0f);
+	m_Viewport.OrthoMatrix = glm::ortho(0.0f, m_Viewport.Width, m_Viewport.Height, 0.0f, 0.0f, 1.0f);
 }
 
 
@@ -165,6 +165,11 @@ void CGameState::OnUpdate(UpdateEventArgs & e)
 
 
 
+
+const IApplication* CGameState::GetApplication()
+{
+    return m_Application;
+}
 
 void CGameState::SetCameraController(std::shared_ptr<ICameraController> CameraController)
 {

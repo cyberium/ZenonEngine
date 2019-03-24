@@ -9,14 +9,14 @@ struct InputSemantic
 		, GLSize(0)
 	{}
 
-	InputSemantic(cstring name, uint32 index)
+	InputSemantic(const std::string& name, uint32 index)
 		: Name(name)
 		, Index(index)
 		, GLType(0)
 		, GLSize(0)
 	{}
 
-	InputSemantic(cstring name, uint32 index, uint32 GLtype, uint32 GLsize)
+	InputSemantic(const std::string& name, uint32 index, uint32 GLtype, uint32 GLsize)
 		: Name(name)
 		, Index(index)
 		, GLType(GLtype)

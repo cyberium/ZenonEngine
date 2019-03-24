@@ -51,7 +51,7 @@ void CUIContainerGarmoshkaCategoryHeader::Initialize()
     m_Text->SetFont(GetManager<IFontsManager>()->Add("Fonts\\JustBreatheBd.otf", cDefaultTextHeight));
 }
 
-void CUIContainerGarmoshkaCategoryHeader::SetText(cstring Text)
+void CUIContainerGarmoshkaCategoryHeader::SetText(const std::string& Text)
 {
     _ASSERT(m_Background != nullptr);
     _ASSERT(m_Text != nullptr);

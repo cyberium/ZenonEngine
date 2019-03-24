@@ -9,14 +9,14 @@ public:
 	virtual ~ShaderDX11();
 
 	// IShader
-	bool LoadShaderFromString(ShaderType type, cstring fileName, cstring source, const ShaderMacros& shaderMacros, cstring entryPoint, cstring profile, std::shared_ptr<IShaderInputLayout> _customLayout) override final;
-	bool LoadShaderFromFile(ShaderType type, cstring fileName, const ShaderMacros& shaderMacros, cstring entryPoint, cstring profile, std::shared_ptr<IShaderInputLayout> _customLayout) override final;
+	bool LoadShaderFromString(ShaderType type, const std::string& fileName, const std::string& source, const ShaderMacros& shaderMacros, const std::string& entryPoint, const std::string& profile, std::shared_ptr<IShaderInputLayout> _customLayout) override final;
+	bool LoadShaderFromFile(ShaderType type, const std::string& fileName, const ShaderMacros& shaderMacros, const std::string& entryPoint, const std::string& profile, std::shared_ptr<IShaderInputLayout> _customLayout) override final;
 	
 	bool LoadInputLayoutFromReflector() override final;
 	bool LoadInputLayoutFromD3DElement(const std::vector<D3DVERTEXELEMENT9>& declIn) override final;
 
 	std::shared_ptr<IShaderInputLayout> GetInputLayout() const override final;
-	ShaderParameter& GetShaderParameterByName(cstring name) const override final;
+	ShaderParameter& GetShaderParameterByName(const std::string& name) const override final;
 
 	void Bind() override final;
 	void UnBind() override final;

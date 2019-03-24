@@ -17,24 +17,24 @@ public:
 	CRefManager1DimAssync();
 	~CRefManager1DimAssync();
 
-	std::shared_ptr<T> Add(cstring name);
+	std::shared_ptr<T> Add(const std::string& name);
 
-	bool Exists(cstring name) const;
+	bool Exists(const std::string& name) const;
 
-	void Delete(cstring name);
+	void Delete(const std::string& name);
 	void Delete(std::shared_ptr<T> item);
 
 	// Getters
-	std::shared_ptr<T> GetItemByName(cstring name) const;
+	std::shared_ptr<T> GetItemByName(const std::string& name) const;
 	std::string GetNameByItem(std::shared_ptr<T> item) const;
 
 	// Console
 	void PrintAllInfo();
 
 public:
-	virtual std::shared_ptr<T> CreateAction(cstring name);
+	virtual std::shared_ptr<T> CreateAction(const std::string& name);
 	virtual void LoadAction(std::string name, std::shared_ptr<T>& item);
-	virtual bool DeleteAction(cstring name);
+	virtual bool DeleteAction(const std::string& name);
 	virtual void MakeContext();
 
 public:

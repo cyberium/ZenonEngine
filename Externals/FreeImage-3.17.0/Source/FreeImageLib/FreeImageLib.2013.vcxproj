@@ -116,10 +116,8 @@
       <SuppressStartupBanner>true</SuppressStartupBanner>
     </Lib>
     <PostBuildEvent>
-      <Command>mkdir ..\..\Dist\x32
-copy $(TargetPath) ..\..\Dist\x32\$(ProjectName)d.lib
-copy ..\FreeImage.h ..\..\Dist\x32
-</Command>
+      <Command>
+      </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -153,10 +151,8 @@ copy ..\FreeImage.h ..\..\Dist\x32
       <SuppressStartupBanner>true</SuppressStartupBanner>
     </Lib>
     <PostBuildEvent>
-      <Command>mkdir ..\..\Dist\x64
-copy $(TargetPath) ..\..\Dist\x64\$(ProjectName)d.lib
-copy ..\FreeImage.h ..\..\Dist\x64
-</Command>
+      <Command>
+      </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -192,10 +188,8 @@ copy ..\FreeImage.h ..\..\Dist\x64
       <LinkTimeCodeGeneration>true</LinkTimeCodeGeneration>
     </Lib>
     <PostBuildEvent>
-      <Command>mkdir ..\..\Dist\x32
-copy $(TargetPath) ..\..\Dist\x32\$(ProjectName).lib
-copy ..\FreeImage.h ..\..\Dist\x32
-</Command>
+      <Command>
+      </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -234,10 +228,8 @@ copy ..\FreeImage.h ..\..\Dist\x32
       <LinkTimeCodeGeneration>true</LinkTimeCodeGeneration>
     </Lib>
     <PostBuildEvent>
-      <Command>mkdir ..\..\Dist\x64
-copy $(TargetPath) ..\..\Dist\x64\$(ProjectName).lib
-copy ..\FreeImage.h ..\..\Dist\x64
-</Command>
+      <Command>
+      </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>

@@ -9,7 +9,7 @@ struct
 	virtual const std::string GetName() const = 0;
 	virtual bool HasArgs() const = 0;
 	virtual void Execute() = 0;
-	virtual void Execute(cstring _args) = 0;
+	virtual void Execute(const std::string& _args) = 0;
 };
 
 // Forward BEGIN
@@ -25,7 +25,7 @@ struct
 	virtual ~IConsole() = 0 {};
 
 	virtual bool AddConsoleCommand(IConsoleCommand* _command) = 0;
-	virtual IConsoleCommand* GetConsoleCommandByName(cstring _commandName) = 0;
+	virtual IConsoleCommand* GetConsoleCommandByName(const std::string& _commandName) = 0;
 	virtual ConsoleCommands GetConsoleCommandHelp(std::string _input) = 0;
 	virtual bool ProcessConsoleCommand(std::string _line) = 0;
 };

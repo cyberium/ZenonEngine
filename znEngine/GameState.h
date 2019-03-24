@@ -9,7 +9,7 @@
 class CGameState : public IGameState
 {
 public:
-    CGameState(const IApplication * _application);
+    CGameState(const IApplication * Application);
 	virtual ~CGameState();
 
 	// IGameState
@@ -47,6 +47,8 @@ public:
 	virtual void OnRenderUI(RenderUIEventArgs& e) = 0;
 
 protected:
+    const IApplication* GetApplication();
+
 	void SetCameraController(std::shared_ptr<ICameraController> CameraController);
 	void UnsetCameraController();
 

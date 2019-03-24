@@ -14,7 +14,7 @@ public:
 	std::shared_ptr<Texture>  GetTexture() const;
 	std::shared_ptr<IMesh>    GetMesh() const;
 	uint32                    GetCharWidth(char _char) const;
-	uint32                    GetStringWidth(cstring _string) const;
+	uint32                    GetStringWidth(const std::string& _string) const;
 	uint32                    GetHeight() const;
 	 
 public:

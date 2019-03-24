@@ -5,8 +5,8 @@
 class CFile : public IFile
 {
 public:
-	 CFile(cstring _root, cstring _fullFileName);
-	 CFile(cstring _root, cstring _name, cstring _path);
+	 CFile(const std::string& _root, const std::string& _fullFileName);
+	 CFile(const std::string& _root, const std::string& _name, const std::string& _path);
 	 virtual ~CFile();
 
 	 CByteBuffer& GetByteBuffer() { return m_ByteBuffer; }

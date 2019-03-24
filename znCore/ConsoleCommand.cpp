@@ -3,7 +3,7 @@
 // General
 #include "ConsoleCommand.h"
 
-ConsoleCommand::ConsoleCommand(cstring _commandName, const std::function<void()>& _function, bool _hasArgs) :
+ConsoleCommand::ConsoleCommand(const std::string& _commandName, const std::function<void()>& _function, bool _hasArgs) :
 	m_Name(Utils::ToLower(_commandName)),
 	m_Function(_function),
 	m_HasArgs(_hasArgs)
@@ -27,7 +27,7 @@ void ConsoleCommand::Execute()
 	m_Function();
 }
 
-void ConsoleCommand::Execute(cstring _args)
+void ConsoleCommand::Execute(const std::string& _args)
 {
-	fail2("Unable to call ConsoleCommand::Execute(cstring _args) in base class!");
+	fail2("Unable to call ConsoleCommand::Execute(const std::string& _args) in base class!");
 }

@@ -35,7 +35,7 @@ void ShaderDX11::Destroy()
 
 }
 
-bool ShaderDX11::LoadShaderFromString(ShaderType shaderType, cstring fileName, cstring source, const ShaderMacros& shaderMacros, cstring entryPoint, cstring profile, std::shared_ptr<IShaderInputLayout> _customLayout)
+bool ShaderDX11::LoadShaderFromString(ShaderType shaderType, const std::string& fileName, const std::string& source, const ShaderMacros& shaderMacros, const std::string& entryPoint, const std::string& profile, std::shared_ptr<IShaderInputLayout> _customLayout)
 {
 	HRESULT hr;
 	{
@@ -207,7 +207,7 @@ bool ShaderDX11::LoadShaderFromString(ShaderType shaderType, cstring fileName, c
 	return true;
 }
 
-bool ShaderDX11::LoadShaderFromFile(ShaderType shaderType, cstring fileName, const ShaderMacros& shaderMacros, cstring entryPoint, cstring profile, std::shared_ptr<IShaderInputLayout> _customLayout)
+bool ShaderDX11::LoadShaderFromFile(ShaderType shaderType, const std::string& fileName, const ShaderMacros& shaderMacros, const std::string& entryPoint, const std::string& profile, std::shared_ptr<IShaderInputLayout> _customLayout)
 {
 	std::shared_ptr<IFile> file = GetManager<IFilesManager>()->Open(fileName);
 
@@ -261,7 +261,7 @@ std::shared_ptr<IShaderInputLayout> ShaderDX11::GetInputLayout() const
 	return m_InputLayout;
 }
 
-ShaderParameter& ShaderDX11::GetShaderParameterByName(cstring name) const
+ShaderParameter& ShaderDX11::GetShaderParameterByName(const std::string& name) const
 {
 	ParameterMap::const_iterator iter = m_ShaderParameters.find(name);
 	if (iter != m_ShaderParameters.end())

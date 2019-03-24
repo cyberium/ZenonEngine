@@ -55,6 +55,15 @@
     <Filter Include="UI\Containers\ContainerGarmoshka">
       <UniqueIdentifier>{cb7b8eb3-6eea-4dff-930c-e2c8dd4a8432}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resources">
+      <UniqueIdentifier>{d2566ee9-32c7-4f1c-80dd-bd0e32ff6663}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources\Shaders_D3D">
+      <UniqueIdentifier>{8542ee19-eb4b-4e80-81a7-75b3c80c327b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources\Shaders_D3D\UI">
+      <UniqueIdentifier>{56d7d5e3-a89f-4bf7-8536-07f565670fc9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -419,5 +428,53 @@
     <ClInclude Include="..\shared\znEngine.h">
       <Filter>Common</Filter>
     </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Resources</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="Resources\shaders_D3D\CommonTypes.hlsl">
+      <Filter>Resources\Shaders_D3D</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\shaders_D3D\DeferredRendering.hlsl">
+      <Filter>Resources\Shaders_D3D</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\shaders_D3D\ForwardRendering.hlsl">
+      <Filter>Resources\Shaders_D3D</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\shaders_D3D\Material.hlsl">
+      <Filter>Resources\Shaders_D3D</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\shaders_D3D\UI\UI_Button.hlsl">
+      <Filter>Resources\Shaders_D3D\UI</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\shaders_D3D\UI\UI_Color.hlsl">
+      <Filter>Resources\Shaders_D3D\UI</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\shaders_D3D\UI\UI_Common.hlsl">
+      <Filter>Resources\Shaders_D3D\UI</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\shaders_D3D\UI\UI_Font.hlsl">
+      <Filter>Resources\Shaders_D3D\UI</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\shaders_D3D\UI\UI_Line.hlsl">
+      <Filter>Resources\Shaders_D3D\UI</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\shaders_D3D\UI\UI_Texture.hlsl">
+      <Filter>Resources\Shaders_D3D\UI</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\shaders_D3D\UI\UI_VertexBase.hlsl">
+      <Filter>Resources\Shaders_D3D\UI</Filter>
+    </FxCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="znEngine.rc">
+      <Filter>Resources</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Resources\shaders_D3D\CommonInclude.hlsl">
+      <Filter>Resources\Shaders_D3D</Filter>
+    </Text>
   </ItemGroup>
 </Project>

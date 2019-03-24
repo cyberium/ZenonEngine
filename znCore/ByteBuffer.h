@@ -108,7 +108,7 @@ public:
 	// Write
 	void Append(const uint8* _data, size_t _size);
 
-	void Write(cstring _string, uint64 _expectedSize = UINT32_MAX);
+	void Write(const std::string& _string, uint64 _expectedSize = UINT32_MAX);
 	void WriteDummy(uint64 _size);
 
 	CByteBuffer& operator<<(int8 value)
@@ -179,7 +179,7 @@ public:
 		Append((uint8)0x00, 1);
 		return *this;
 	}
-	CByteBuffer& operator<<(cstring _string)
+	CByteBuffer& operator<<(const std::string& _string)
 	{
 		Append((uint8*)_string.c_str(), _string.size() + 1);
 		return *this;

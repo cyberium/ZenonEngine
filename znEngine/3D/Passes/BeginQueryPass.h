@@ -2,9 +2,6 @@
 
 #include "AbstractPass.h"
 
-class Query;
-
-// A render pass to begin a GPU query.
 class BeginQueryPass : public AbstractPass
 {
 public:

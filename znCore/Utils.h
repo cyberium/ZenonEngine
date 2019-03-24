@@ -8,9 +8,9 @@ public:
 
     // Common types
     template <typename T>
-    static   T ToType(cstring _string);
+    static   T ToType(const std::string& _string);
 
-    static   bool ToBool(cstring _string);
+    static   bool ToBool(const std::string& _string);
 
     // My types
     static  vec2 ToPoint(std::string& _string);
@@ -21,23 +21,23 @@ public:
     static   std::string ParseSectionAndIncludeName(std::string& _string, std::string& _includeSectionName);
     static   void ParseKeyPair(std::string& _string, std::string& key, std::string& val);
 
-    static   bool TryParse(const type_info& type, cstring _string, void* output);
+    static   bool TryParse(const type_info& type, const std::string& _string, void* output);
 
     // String
-    static   std::string Trim(std::string& _string, cstring delimiters = " \f\n\r\t\v");
-    static   std::string TrimLeft(std::string& _string, cstring delimiters = " \f\n\r\t\v");
-    static   std::string TrimRight(std::string& _string, cstring delimiters = " \f\n\r\t\v");
+    static   std::string Trim(std::string& _string, const std::string& delimiters = " \f\n\r\t\v");
+    static   std::string TrimLeft(std::string& _string, const std::string& delimiters = " \f\n\r\t\v");
+    static   std::string TrimRight(std::string& _string, const std::string& delimiters = " \f\n\r\t\v");
 
-    static   std::string ToLower(cstring _string);
-	static   std::string ToUpper(cstring _string);
+    static   std::string ToLower(const std::string& _string);
+	static   std::string ToUpper(const std::string& _string);
 
     static   int popFirstInt(std::string& _string, char separator = 0);
     static   double popFirstDouble(std::string& _string, char separator = 0);
     static   float popFirstFloat(std::string& _string, char separator = 0);
 
     static   std::string GetFirstSubString(std::string& _string, char separator = 0);
-    static   std::string getNextToken(cstring _string, uint32_t& cursor, char separator);
-    static   std::string stripCarriageReturn(cstring line);
+    static   std::string getNextToken(const std::string& _string, uint32_t& cursor, char separator);
+    static   std::string stripCarriageReturn(const std::string& line);
     static   std::string getLine(std::ifstream& infile);
 
     static   bool PointInRectangle(const vec2 _point, const vec2 _rectStart, const vec2 _rectEnd);
@@ -45,7 +45,7 @@ public:
 
 // Common types
 template <typename T>
-inline T Utils::ToType(cstring _string)
+inline T Utils::ToType(const std::string& _string)
 {
     T result;
     if (!(std::stringstream(_string) >> result))

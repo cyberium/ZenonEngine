@@ -32,8 +32,8 @@ public:
 	explicit CUIBaseNode();
 	virtual ~CUIBaseNode();
 
-	virtual cstring GetName() const;
-	virtual void SetName(cstring name);
+	virtual const std::string& GetName() const;
+	virtual void SetName(const std::string& name);
 
     // Translate functional
 	void SetTranslate(cvec2 _translate);

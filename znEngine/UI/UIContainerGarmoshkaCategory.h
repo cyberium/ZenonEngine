@@ -21,7 +21,7 @@ public:
     // CUIContainerGarmoshkaCategory
     void Initialize(glm::vec2 MaxSize, const std::string& CategoryName);
 
-    void SetCategoryName(cstring Name);
+    void SetCategoryName(const std::string& Name);
 
 private:
     // Weak refs

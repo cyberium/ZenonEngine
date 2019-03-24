@@ -9,9 +9,6 @@ CGameState_World::CGameState_World(IApplication * Application)
     : base(Application)
 {
 	m_Viewport = Viewport(0, 0, 1280.0f, 1024.0f);
-
-	m_3DScene = std::make_shared<Scene3D>();
-	m_UIScene = std::make_shared<CUIScene>();
 }
 
 CGameState_World::~CGameState_World()
@@ -24,11 +21,7 @@ CGameState_World::~CGameState_World()
 //
 bool CGameState_World::Init()
 {
-	std::shared_ptr<IFontsManager> fontsManager = std::make_shared<FontsManager>();
-	AddManager<IFontsManager>(fontsManager);
-
-	IApplication& app = Application::Get();
-	std::shared_ptr<IRenderDevice> renderDevice = app.GetRenderDevice();
+	std::shared_ptr<IRenderDevice> renderDevice = GetApplication()->GetRenderDevice();
 
 	//
 	// Camera controller
@@ -120,9 +113,8 @@ void CGameState_World::OnRenderUI(RenderUIEventArgs& e)
 
 void CGameState_World::Load3D()
 {
-	IApplication& app = Application::Get();
-	std::shared_ptr<IRenderDevice> renderDevice = app.GetRenderDevice();
-	std::shared_ptr<RenderWindow> renderWindow = app.GetRenderWindow();
+	std::shared_ptr<IRenderDevice> renderDevice = GetApplication()->GetRenderDevice();
+	std::shared_ptr<RenderWindow> renderWindow = GetApplication()->GetRenderWindow();
 
 	// ADD CODE HERE
 
@@ -166,8 +158,7 @@ void CGameState_World::Load3D()
 
 void CGameState_World::LoadUI()
 {
-	IApplication& app = Application::Get();
-	std::shared_ptr<IRenderDevice> renderDevice = app.GetRenderDevice();
+	std::shared_ptr<IRenderDevice> renderDevice = GetApplication()->GetRenderDevice();
 
 
 	// Font
@@ -199,5 +190,5 @@ void CGameState_World::LoadUI()
 	//
 	// UI Passes
 	//
-	//AddUIPasses(renderDevice, app.GetRenderWindow()->GetRenderTarget(), &m_UITechnique, &m_Viewport, m_UIScene);
+	AddUIPasses(renderDevice, GetApplication()->GetRenderWindow()->GetRenderTarget(), &m_UITechnique, m_Viewport, m_UIScene);
 }

@@ -7,9 +7,9 @@ public:
 	virtual ~CLocalFilesStorage();
 
 	// IFilesStorage
-	std::shared_ptr<IFile>  CreateFile(cstring _name) override;
-	size_t                  GetFileSize(cstring _name) override;
-	bool                    IsFileExists(cstring _name) override;
+	std::shared_ptr<IFile>  CreateFile(const std::string& _name) override;
+	size_t                  GetFileSize(const std::string& _name) override;
+	bool                    IsFileExists(const std::string& _name) override;
 
 	// IFilesStorageEx
 	Priority GetPriority() const;

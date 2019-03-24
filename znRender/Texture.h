@@ -108,12 +108,12 @@ public:
 	/**
 	 * Load a 2D texture from a file path.
 	 */
-	virtual bool LoadTexture2D(cstring fileName) = 0;
+	virtual bool LoadTexture2D(const std::string& fileName) = 0;
 
 	/**
 	 * Load a cubemap texture from a file path.
 	 */
-	virtual bool LoadTextureCube(cstring fileName) = 0;
+	virtual bool LoadTextureCube(const std::string& fileName) = 0;
 
 	/**
 	 * Generate mip maps for a texture.

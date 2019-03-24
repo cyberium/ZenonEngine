@@ -6,7 +6,7 @@ public:
 	virtual ~CDebugOutput()	{}
 
 	// IDebugOutput
-	void PushMessage(cstring _message, IDebugOutput::DebugMessageType _type) override;
+	void PushMessage(const std::string& _message, IDebugOutput::DebugMessageType _type) override;
 	void PushMessage(IDebugOutput::DebugMessageType _type, const char* _message, va_list& _vaList) override;
 
 protected:

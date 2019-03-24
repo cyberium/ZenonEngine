@@ -9,8 +9,7 @@
 // Additional
 #include "Loader.h"
 
-SceneNodeModel3D::SceneNodeModel3D(cmat4 localTransform)
-	: SceneNode3D(localTransform)
+SceneNodeModel3D::SceneNodeModel3D()
 {
 }
 

@@ -21,7 +21,7 @@ class PipelineState;
 class IRenderDevice : public Object
 {
 public:
-	virtual cstring GetDeviceName() const = 0;
+	virtual const std::string& GetDeviceName() const = 0;
 
 	// Create an vertex buffer (with std::vector)
 	template<typename T>
@@ -75,12 +75,12 @@ public:
 	virtual std::shared_ptr<IMesh> CreateMesh() = 0;
 	virtual void DestroyMesh(std::shared_ptr<IMesh> mesh) = 0;
 
-	virtual std::shared_ptr<Shader> CreateShader(Shader::ShaderType type, cstring fileName, const Shader::ShaderMacros& shaderMacros, cstring entryPoint, cstring profile, std::shared_ptr<IShaderInputLayout> _customLayout = nullptr) = 0;
+	virtual std::shared_ptr<Shader> CreateShader(Shader::ShaderType type, const std::string& fileName, const Shader::ShaderMacros& shaderMacros, const std::string& entryPoint, const std::string& profile, std::shared_ptr<IShaderInputLayout> _customLayout = nullptr) = 0;
 	virtual void DestroyShader(std::shared_ptr<Shader> shader) = 0;
 
 	// Create a texture from a file.
-	virtual std::shared_ptr<Texture> CreateTexture2D(cstring fileName) = 0;
-	virtual std::shared_ptr<Texture> CreateTextureCube(cstring fileName) = 0;
+	virtual std::shared_ptr<Texture> CreateTexture2D(const std::string& fileName) = 0;
+	virtual std::shared_ptr<Texture> CreateTextureCube(const std::string& fileName) = 0;
 
 	// Create an empty texture of a predefined size.
 	virtual std::shared_ptr<Texture> CreateTexture2D(uint16_t width, uint16_t height, uint16_t slices, const Texture::TextureFormat& format = Texture::TextureFormat(), CPUAccess cpuAccess = CPUAccess::None, bool gpuWrite = false) = 0;

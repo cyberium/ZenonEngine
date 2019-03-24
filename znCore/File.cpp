@@ -6,7 +6,7 @@
 // Additional
 #include "BaseManager.h"
 
-CFile::CFile(cstring _root, cstring _fullFileName) :
+CFile::CFile(const std::string& _root, const std::string& _fullFileName) :
 	m_Name(_fullFileName),
 	m_Path(""),
 	m_Root(_root)
@@ -14,7 +14,7 @@ CFile::CFile(cstring _root, cstring _fullFileName) :
 	ParsePathAndExtension();
 }
 
-CFile::CFile(cstring _root, cstring _name, cstring _path) :
+CFile::CFile(const std::string& _root, const std::string& _name, const std::string& _path) :
 	m_Name(_name),
 	m_Path(_path),
 	m_Root(_root)

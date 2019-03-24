@@ -60,8 +60,6 @@ class Color;
 #include <unordered_map>
 #include <mutex>
 
-typedef const std::string& cstring;
-
 // Usefull macros
 #define __PACK_BEGIN  "../shared/pack_begin.h"
 #define __PACK_END  "../shared/pack_end.h"

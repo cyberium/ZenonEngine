@@ -44,7 +44,7 @@ void Utils::ParseKeyPair(std::string& s, std::string& key, std::string& val)
 	val = Trim(val);
 }
 
-bool Utils::TryParse(const type_info& type, cstring value, void* output)
+bool Utils::TryParse(const type_info& type, const std::string& value, void* output)
 {
 	std::stringstream stream(value);
 
@@ -89,22 +89,22 @@ bool Utils::TryParse(const type_info& type, cstring value, void* output)
 
 // String
 
-std::string Utils::Trim(std::string& s, cstring delimiters)
+std::string Utils::Trim(std::string& s, const std::string& delimiters)
 {
 	return TrimLeft(TrimRight(s, delimiters), delimiters);
 }
 
-std::string Utils::TrimLeft(std::string& s, cstring delimiters)
+std::string Utils::TrimLeft(std::string& s, const std::string& delimiters)
 {
 	return s.erase(0, s.find_first_not_of(delimiters));
 }
 
-std::string Utils::TrimRight(std::string& s, cstring delimiters)
+std::string Utils::TrimRight(std::string& s, const std::string& delimiters)
 {
 	return s.erase(s.find_last_not_of(delimiters) + 1);
 }
 
-std::string Utils::ToLower(cstring _string)
+std::string Utils::ToLower(const std::string& _string)
 {
 	std::string str = _string;
 	str = Trim(str);
@@ -112,7 +112,7 @@ std::string Utils::ToLower(cstring _string)
 	return str;
 }
 
-std::string Utils::ToUpper(cstring _string)
+std::string Utils::ToUpper(const std::string& _string)
 {
 	std::string str = _string;
 	str = Trim(str);
@@ -169,7 +169,7 @@ std::string Utils::GetFirstSubString(std::string& s, char separator)
 	return outs;
 }
 
-std::string Utils::getNextToken(cstring s, uint32_t& cursor, char separator)
+std::string Utils::getNextToken(const std::string& s, uint32_t& cursor, char separator)
 {
 	uint32_t seppos = s.find_first_of(separator, cursor);
 	if (seppos == std::string::npos)
@@ -182,7 +182,7 @@ std::string Utils::getNextToken(cstring s, uint32_t& cursor, char separator)
 	return outs;
 }
 
-std::string Utils::stripCarriageReturn(cstring line)
+std::string Utils::stripCarriageReturn(const std::string& line)
 {
 	if (line.length() > 0)
 	{

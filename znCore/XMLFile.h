@@ -3,7 +3,7 @@
 class XMLNode
 {
 public:
-	XMLNode(cstring _name, XMLNode* _parent);
+	XMLNode(const std::string& _name, XMLNode* _parent);
 	void DeleteChilds();
 	void DeleteAll();
 
@@ -13,7 +13,7 @@ public:
 	XMLNode* GetParent() { return parent; };
 	std::vector<XMLNode*>& GetChilds() { return childs; }
 	std::map<std::string, std::string>& GetData() { return data; };
-	bool IsKeyExists(cstring _keyName) const { return data.find(_keyName) != data.end(); }
+	bool IsKeyExists(const std::string& _keyName) const { return data.find(_keyName) != data.end(); }
 	std::string GetKeyValue(std::string _keyName)
 	{
 		if (!IsKeyExists(_keyName))
@@ -23,7 +23,7 @@ public:
 	bool IsDataNode() const { return isDataNode; }
 
 	void AddChild(XMLNode* _node);
-	void AddData(cstring _keyName, cstring _data, bool append = false);
+	void AddData(const std::string& _keyName, const std::string& _data, bool append = false);
 
 private:
 	std::string name;
@@ -37,7 +37,7 @@ private:
 class XMLFile
 {
 public:
-	 bool Open(cstring _filename);
+	 bool Open(const std::string& _filename);
 	 void Destroy();
 
 	 void Print(XMLNode* _startNode, int _level = 0) const;

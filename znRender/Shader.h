@@ -45,7 +45,7 @@ public:
 	 * To use the latest supported profile, specify "latest" here.
 	 * @return True if the shader was loaded correctly, or False otherwise.
 	 */
-	virtual bool LoadShaderFromString(ShaderType type, cstring fileName, cstring source, const ShaderMacros& shaderMacros, cstring entryPoint, cstring profile, std::shared_ptr<IShaderInputLayout> _customLayout) = 0;
+	virtual bool LoadShaderFromString(ShaderType type, const std::string& fileName, const std::string& source, const ShaderMacros& shaderMacros, const std::string& entryPoint, const std::string& profile, std::shared_ptr<IShaderInputLayout> _customLayout) = 0;
 
 	/**
 	 * Load a shader from a file.
@@ -56,7 +56,7 @@ public:
 	 * To use the latest supported profile, specify "latest" here.
 	 * @return True if the shader was loaded correctly, or False otherwise.
 	 */
-	virtual bool LoadShaderFromFile(ShaderType type, cstring fileName, const ShaderMacros& shaderMacros, cstring entryPoint, cstring profile, std::shared_ptr<IShaderInputLayout> _customLayout) = 0;
+	virtual bool LoadShaderFromFile(ShaderType type, const std::string& fileName, const ShaderMacros& shaderMacros, const std::string& entryPoint, const std::string& profile, std::shared_ptr<IShaderInputLayout> _customLayout) = 0;
 
 	/**
 	 * Calculate shader input layout
@@ -76,7 +76,7 @@ public:
 	 * is not found in the shader, then this function will return an invalid shader parameter.
 	 * You can check for validity using the ShaderParameter::IsValid method.
 	 */
-	virtual ShaderParameter& GetShaderParameterByName(cstring name) const = 0;
+	virtual ShaderParameter& GetShaderParameterByName(const std::string& name) const = 0;
 	
 	/**
 	 * Bind this shader for use in the rendering pipeline.

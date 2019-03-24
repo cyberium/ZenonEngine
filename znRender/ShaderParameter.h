@@ -22,7 +22,7 @@ public:
 	};
 
 	ShaderParameter();
-	ShaderParameter(cstring name, UINT slotID, std::shared_ptr<Shader> shader, Type parameterType);
+	ShaderParameter(const std::string& name, UINT slotID, std::shared_ptr<Shader> shader, Type parameterType);
 
 	template <typename T>
 	void Set(std::shared_ptr<T> value);

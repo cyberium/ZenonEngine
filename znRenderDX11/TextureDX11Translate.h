@@ -1,6 +1,6 @@
 #pragma once
 
-static void ReportAndThrowTextureFormatError(const Texture::TextureFormat& format, cstring file, int line, cstring function, cstring message)
+static void ReportAndThrowTextureFormatError(const Texture::TextureFormat& format, const std::string& file, int line, const std::string& function, const std::string& message)
 {
 	std::stringstream ss;
 	ss << message << std::endl;

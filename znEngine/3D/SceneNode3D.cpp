@@ -9,14 +9,19 @@
 // Additional
 #include "Loader.h"
 
-SceneNode3D::SceneNode3D(cmat4 localTransform)
-	: m_LocalTransform(localTransform)
-	, m_Name("SceneNode3D")
+SceneNode3D::SceneNode3D()
+	: m_Name("SceneNode3D")
 	, m_Translate(vec3())
 	, m_Rotate(vec3())
 	, m_RotateQuat(quat())
 	, m_IsRotateQuat(false)
 	, m_Scale(1.0f, 1.0f, 1.0f)
+
+    , m_LocalTransform(1.0f)
+    , m_InverseLocalTransform(1.0f)	// This is the inverse of the local -> world transform.
+    , m_WorldTransform(1.0f)
+    , m_InverseWorldTransform(1.0f)
+
 	, m_IsLoadingBegin(false)
 	, m_IsLoaded(false)
 {
@@ -28,12 +33,12 @@ SceneNode3D::~SceneNode3D()
 	m_Children.clear();
 }
 
-cstring SceneNode3D::GetName() const
+const std::string& SceneNode3D::GetName() const
 {
 	return m_Name;
 }
 
-void SceneNode3D::SetName(cstring name)
+void SceneNode3D::SetName(const std::string& name)
 {
 	m_Name = name;
 }
@@ -142,7 +147,7 @@ mat4 SceneNode3D::GetParentWorldTransform() const
 
 void SceneNode3D::UpdateLocalTransform()
 {
-	m_LocalTransform = mat4();
+	m_LocalTransform = glm::mat4(1.0f);
 
 	m_LocalTransform = glm::translate(m_LocalTransform, m_Translate);
 	if (m_IsRotateQuat)
@@ -151,9 +156,9 @@ void SceneNode3D::UpdateLocalTransform()
 	}
 	else
 	{
-		m_LocalTransform = glm::rotate(m_LocalTransform, m_Rotate.x, vec3(1, 0, 0));
-		m_LocalTransform = glm::rotate(m_LocalTransform, m_Rotate.y, vec3(0, 1, 0));
-		m_LocalTransform = glm::rotate(m_LocalTransform, m_Rotate.z, vec3(0, 0, 1));
+		m_LocalTransform = glm::rotate(m_LocalTransform, m_Rotate.x, glm::vec3(1, 0, 0));
+		m_LocalTransform = glm::rotate(m_LocalTransform, m_Rotate.y, glm::vec3(0, 1, 0));
+		m_LocalTransform = glm::rotate(m_LocalTransform, m_Rotate.z, glm::vec3(0, 0, 1));
 	}
 	m_LocalTransform = glm::scale(m_LocalTransform, m_Scale);
 	m_InverseLocalTransform = glm::inverse(m_LocalTransform);

@@ -10,16 +10,16 @@ public:
 
 	// IFontsManager
 	std::shared_ptr<CFontMesh> GetMainFont() const override;
-	std::shared_ptr<CFontMesh> Add(cstring _fontFileName, uint32 _fontSize);
+	std::shared_ptr<CFontMesh> Add(const std::string& _fontFileName, uint32 _fontSize);
 
 	// CRefManager1Dim
-	std::shared_ptr<CFontMesh> CreateAction(cstring name) override;
-	bool DeleteAction(cstring name) override;
+	std::shared_ptr<CFontMesh> CreateAction(const std::string& name) override;
+	bool DeleteAction(const std::string& name) override;
 
 	// IFontsManager
-	std::shared_ptr<CFontMesh> Add(cstring name) { return CRefManager1Dim::Add(name); }
-	bool Exists(cstring name) const { return CRefManager1Dim::Exists(name); }
-	void Delete(cstring name) { CRefManager1Dim::Delete(name); }
+	std::shared_ptr<CFontMesh> Add(const std::string& name) { return CRefManager1Dim::Add(name); }
+	bool Exists(const std::string& name) const { return CRefManager1Dim::Exists(name); }
+	void Delete(const std::string& name) { CRefManager1Dim::Delete(name); }
 	void Delete(std::shared_ptr<CFontMesh> item) { CRefManager1Dim::Delete(item); }
 
 private:

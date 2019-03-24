@@ -18,7 +18,7 @@ public:
 
 	void SetMousePosition(vec2 _position);
 
-	void SetWindowName(cstring _name);
+	void SetWindowName(const std::string& _name);
 	std::string GetWindowName() const;
 	int GetWindowWidth() const;
 	int GetWindowHeight() const;

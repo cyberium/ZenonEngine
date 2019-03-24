@@ -21,12 +21,12 @@ CUIBaseNode::~CUIBaseNode()
 {
 }
 
-cstring CUIBaseNode::GetName() const
+const std::string& CUIBaseNode::GetName() const
 {
 	return m_Name;
 }
 
-void CUIBaseNode::SetName(cstring name)
+void CUIBaseNode::SetName(const std::string& name)
 {
 	m_Name = name;
 }

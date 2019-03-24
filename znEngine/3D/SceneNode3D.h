@@ -10,14 +10,14 @@ public:
 	typedef std::multimap<std::string, std::shared_ptr<SceneNode3D>> NodeNameMap;
 
 public:
-	explicit SceneNode3D(cmat4 localTransform = mat4(1.0f));
+	explicit SceneNode3D();
 	virtual ~SceneNode3D();
 
 	/**
 	 * Assign a name to this scene node so that it can be searched for later.
 	 */
-	virtual cstring GetName() const;
-	virtual void SetName(cstring name);
+	virtual const std::string& GetName() const;
+	virtual void SetName(const std::string& name);
 
 	// Translate
 	void SetTranslate(cvec3 _translate);

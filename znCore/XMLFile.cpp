@@ -3,7 +3,7 @@
 // General
 #include "XMLFile.h"
 
-XMLNode::XMLNode(cstring _name, XMLNode* _parent)
+XMLNode::XMLNode(const std::string& _name, XMLNode* _parent)
 {
 	name = _name;
 	parent = _parent;
@@ -55,7 +55,7 @@ void XMLNode::AddChild(XMLNode* _node)
 	childs.push_back(_node);
 }
 
-void XMLNode::AddData(cstring _keyName, cstring _value, bool append)
+void XMLNode::AddData(const std::string& _keyName, const std::string& _value, bool append)
 {
 	if (isDataNode)
 	{
@@ -80,7 +80,7 @@ void XMLNode::AddData(cstring _keyName, cstring _value, bool append)
 
 //-----------------------------------------------------------------------------
 
-bool XMLFile::Open(cstring _filename)
+bool XMLFile::Open(const std::string& _filename)
 {
 	filename = _filename;
 	rootNode = nullptr;

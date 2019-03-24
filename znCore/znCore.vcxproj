@@ -37,6 +37,7 @@
     <ClCompile Include="HighResolutionTimer.cpp" />
     <ClCompile Include="INIFile.cpp" />
     <ClCompile Include="Console.cpp" />
+    <ClCompile Include="LibraryResourceFileStotage.cpp" />
     <ClCompile Include="LocalFilesStorage.cpp" />
     <ClCompile Include="Log.cpp" />
     <ClCompile Include="DebugOutput.cpp" />
@@ -68,6 +69,7 @@
     <ClInclude Include="Events.h" />
     <ClInclude Include="HighResolutionTimer.h" />
     <ClInclude Include="KeyCodes.h" />
+    <ClInclude Include="LibraryResourceFileStotage.h" />
     <ClInclude Include="LocalFilesStorage.h" />
     <ClInclude Include="LockedQueue.h" />
     <ClInclude Include="MapAssync.h" />

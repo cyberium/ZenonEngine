@@ -8,6 +8,7 @@
 
 // Files
 #include "../znCore/LocalFilesStorage.h"
+#include "../znCore/LibraryResourceFileStotage.h"
 #include "../znCore/FilesManager.h"
 #include "../znCore/File.h"
 #include "../znCore/INIFile.h"

@@ -18,18 +18,18 @@ public:
 		}
 	}
 
-	inline T* Add(cstring name);
+	inline T* Add(const std::string& name);
 
 	// Delete
 
-	inline void Delete(cstring name);
+	inline void Delete(const std::string& name);
 	inline void Delete(ID_TYPE id);
 	inline void Delete(T* item);
 
 
 	// Exists
 
-	inline bool Exists(cstring name)
+	inline bool Exists(const std::string& name)
 	{
 		return (names.find(name) != names.end());
 	}
@@ -40,19 +40,19 @@ public:
 
 	// Getters
 
-	inline ID_TYPE GetIDByName(cstring name);
+	inline ID_TYPE GetIDByName(const std::string& name);
 	inline T* GetItemByID(ID_TYPE id);
-	inline T* GetItemByName(cstring name);
+	inline T* GetItemByName(const std::string& name);
 
 	// Console
 	inline void PrintAllInfo();
 
 protected:
 	virtual ID_TYPE GenerateID() = 0;
-	virtual T* CreateAction(cstring name, ID_TYPE id) = 0;
-	virtual bool DeleteAction(cstring name, ID_TYPE id) = 0;
+	virtual T* CreateAction(const std::string& name, ID_TYPE id) = 0;
+	virtual bool DeleteAction(const std::string& name, ID_TYPE id) = 0;
 
-	inline void do_add(cstring name, ID_TYPE id, T* item)
+	inline void do_add(const std::string& name, ID_TYPE id, T* item)
 	{
 		item->AddRef();
 
@@ -83,7 +83,7 @@ private:
 		delete item;
 	}
 
-	inline void do_delete(cstring name, ID_TYPE id)
+	inline void do_delete(const std::string& name, ID_TYPE id)
 	{
 		names.erase(names.find(name));
 		items.erase(items.find(id));

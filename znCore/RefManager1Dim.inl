@@ -21,7 +21,7 @@ CRefManager1Dim<T>::~CRefManager1Dim()
 }
 
 template <class T>
-std::shared_ptr<T> CRefManager1Dim<T>::Add(cstring name)
+std::shared_ptr<T> CRefManager1Dim<T>::Add(const std::string& name)
 {
 	std::shared_ptr<T> item = GetItemByName(name);
 	if (item != nullptr)
@@ -39,13 +39,13 @@ std::shared_ptr<T> CRefManager1Dim<T>::Add(cstring name)
 }
 
 template<class T>
-bool CRefManager1Dim<T>::Exists(cstring name) const
+bool CRefManager1Dim<T>::Exists(const std::string& name) const
 {
 	return objects.find(name) != objects.end();
 }
 
 template <class T>
-void CRefManager1Dim<T>::Delete(cstring name)
+void CRefManager1Dim<T>::Delete(const std::string& name)
 {
 	std::shared_ptr<T> item = GetItemByName(name);
 	if (item != nullptr)
@@ -77,7 +77,7 @@ void CRefManager1Dim<T>::Delete(std::shared_ptr<T> item)
 }
 
 template <class T>
-std::shared_ptr<T> CRefManager1Dim<T>::GetItemByName(cstring name) const
+std::shared_ptr<T> CRefManager1Dim<T>::GetItemByName(const std::string& name) const
 {
 	auto name_item = objects.find(name);
 	if (name_item != objects.end())
@@ -118,13 +118,13 @@ void CRefManager1Dim<T>::PrintAllInfo()
 }
 
 template<class T>
-inline std::shared_ptr<T> CRefManager1Dim<T>::CreateAction(cstring name)
+inline std::shared_ptr<T> CRefManager1Dim<T>::CreateAction(const std::string& name)
 {
 	return NULL;
 }
 
 template<class T>
-inline bool CRefManager1Dim<T>::DeleteAction(cstring name)
+inline bool CRefManager1Dim<T>::DeleteAction(const std::string& name)
 {
 	return false;
 }

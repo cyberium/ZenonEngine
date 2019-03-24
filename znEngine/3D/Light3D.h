@@ -5,14 +5,14 @@
 class CLight3D : public Object
 {
 public:
-	CLight3D(const Light& _light);
+	CLight3D(Light _light);
 	virtual ~CLight3D();
 
 	void setLight(const Light& _light);
-	const Light& getLight();
+	Light& getLight();
 
 	bool Accept(IVisitor& visitor);
 
 private:
-	const Light& m_LightProto;
+	Light m_LightProto;
 };

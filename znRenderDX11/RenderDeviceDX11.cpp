@@ -186,7 +186,7 @@ void RenderDeviceDX11::CreateDevice()
 	m_DeviceName = Resources::ConvertString(adapterDescription.Description);
 }
 
-cstring RenderDeviceDX11::GetDeviceName() const
+const std::string& RenderDeviceDX11::GetDeviceName() const
 {
 	return m_DeviceName;
 }
@@ -321,7 +321,7 @@ void RenderDeviceDX11::DestroyMesh(std::shared_ptr<IMesh> mesh)
 	}
 }
 
-std::shared_ptr<Shader> RenderDeviceDX11::CreateShader(Shader::ShaderType type, cstring fileName, const Shader::ShaderMacros& shaderMacros, cstring entryPoint, cstring profile, std::shared_ptr<IShaderInputLayout> _customLayout)
+std::shared_ptr<Shader> RenderDeviceDX11::CreateShader(Shader::ShaderType type, const std::string& fileName, const Shader::ShaderMacros& shaderMacros, const std::string& entryPoint, const std::string& profile, std::shared_ptr<IShaderInputLayout> _customLayout)
 {
 	D3DMultithreadLocker locker(m_pMultiThread);
 
@@ -350,7 +350,7 @@ void RenderDeviceDX11::DestroyShader(std::shared_ptr<Shader> shader)
 }
 
 
-std::shared_ptr<Texture> RenderDeviceDX11::CreateTexture2D(cstring fileName)
+std::shared_ptr<Texture> RenderDeviceDX11::CreateTexture2D(const std::string& fileName)
 {
 	D3DMultithreadLocker locker(m_pMultiThread);
 
@@ -370,7 +370,7 @@ std::shared_ptr<Texture> RenderDeviceDX11::CreateTexture2D(cstring fileName)
 	return texture;
 }
 
-std::shared_ptr<Texture> RenderDeviceDX11::CreateTextureCube(cstring fileName)
+std::shared_ptr<Texture> RenderDeviceDX11::CreateTextureCube(const std::string& fileName)
 {
 	D3DMultithreadLocker locker(m_pMultiThread);
 

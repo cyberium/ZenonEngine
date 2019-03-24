@@ -238,7 +238,7 @@ void CByteBuffer::Append(const uint8* _data, size_t _size)
 	}
 }
 
-void CByteBuffer::Write(cstring _string, uint64 _expectedSize)
+void CByteBuffer::Write(const std::string& _string, uint64 _expectedSize)
 {
 	Append((uint8*)_string.c_str(), static_cast<uint64>(_string.size()));
 

@@ -15,7 +15,7 @@ CFilesManager::~CFilesManager()
 	DelManager<IFilesManager>();
 }
 
-std::shared_ptr<IFile> CFilesManager::Open(cstring _fileName)
+std::shared_ptr<IFile> CFilesManager::Open(const std::string& _fileName)
 {
 	for (const auto& fs : m_Storages)
 	{
@@ -27,7 +27,7 @@ std::shared_ptr<IFile> CFilesManager::Open(cstring _fileName)
 	return nullptr;
 }
 
-size_t CFilesManager::GetFileSize(cstring _fileName)
+size_t CFilesManager::GetFileSize(const std::string& _fileName)
 {
 	for (const auto& fs : m_Storages)
 	{
@@ -39,7 +39,7 @@ size_t CFilesManager::GetFileSize(cstring _fileName)
 	return 0;
 }
 
-bool CFilesManager::IsFileExists(cstring _fileName)
+bool CFilesManager::IsFileExists(const std::string& _fileName)
 {
 	for (const auto& fs : m_Storages)
 	{

@@ -49,7 +49,7 @@ void RenderWindow::SetMousePosition(vec2 _position)
 }
 
 
-void RenderWindow::SetWindowName(cstring _name)
+void RenderWindow::SetWindowName(const std::string& _name)
 {
 	//m_sWindowName = _name;
 

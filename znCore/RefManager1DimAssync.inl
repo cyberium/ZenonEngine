@@ -39,7 +39,7 @@ CRefManager1DimAssync<T>::~CRefManager1DimAssync()
 }
 
 template <class T>
-inline std::shared_ptr<T> CRefManager1DimAssync<T>::Add(cstring name)
+inline std::shared_ptr<T> CRefManager1DimAssync<T>::Add(const std::string& name)
 {
 	std::shared_ptr<Texture> item = GetItemByName(name);
 	if (item != nullptr)
@@ -71,13 +71,13 @@ inline std::shared_ptr<T> CRefManager1DimAssync<T>::Add(cstring name)
 }
 
 template <class T>
-bool CRefManager1DimAssync<T>::Exists(cstring name) const
+bool CRefManager1DimAssync<T>::Exists(const std::string& name) const
 {
 	return objects.find(name) != objects.end();
 }
 
 template <class T>
-inline void CRefManager1DimAssync<T>::Delete(cstring name)
+inline void CRefManager1DimAssync<T>::Delete(const std::string& name)
 {
 	std::shared_ptr<T> item = GetItemByName(name);
 	if (item != nullptr)
@@ -109,7 +109,7 @@ inline void CRefManager1DimAssync<T>::Delete(std::shared_ptr<T> item)
 }
 
 template <class T>
-inline std::shared_ptr<T> CRefManager1DimAssync<T>::GetItemByName(cstring name) const
+inline std::shared_ptr<T> CRefManager1DimAssync<T>::GetItemByName(const std::string& name) const
 {
 	auto name_item = objects.find(name);
 	if (name_item != objects.end())
@@ -150,7 +150,7 @@ inline void CRefManager1DimAssync<T>::PrintAllInfo()
 }
 
 template<class T>
-inline std::shared_ptr<T> CRefManager1DimAssync<T>::CreateAction(cstring name)
+inline std::shared_ptr<T> CRefManager1DimAssync<T>::CreateAction(const std::string& name)
 {
 	return NULL;
 }
@@ -161,7 +161,7 @@ inline void CRefManager1DimAssync<T>::LoadAction(std::string name, std::shared_p
 }
 
 template<class T>
-inline bool CRefManager1DimAssync<T>::DeleteAction(cstring name)
+inline bool CRefManager1DimAssync<T>::DeleteAction(const std::string& name)
 {
 	return false;
 }

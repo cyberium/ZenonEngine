@@ -7,22 +7,22 @@ public:
 	CRefManager1Dim();
 	virtual ~CRefManager1Dim();
 
-	std::shared_ptr<T> Add(cstring name);
+	std::shared_ptr<T> Add(const std::string& name);
 
-	bool Exists(cstring name) const;
+	bool Exists(const std::string& name) const;
 
-	void Delete(cstring name);
+	void Delete(const std::string& name);
 	void Delete(std::shared_ptr<T> item);
 
-	std::shared_ptr<T> GetItemByName(cstring name) const;
+	std::shared_ptr<T> GetItemByName(const std::string& name) const;
 	std::string GetNameByItem(std::shared_ptr<T> item) const;
 
 	// Console
 	void PrintAllInfo();
 
 protected:
-	virtual std::shared_ptr<T> CreateAction(cstring name);
-	virtual bool DeleteAction(cstring name);
+	virtual std::shared_ptr<T> CreateAction(const std::string& name);
+	virtual bool DeleteAction(const std::string& name);
 
 public:
 	std::map<std::string, std::shared_ptr<T>> objects; // name - item

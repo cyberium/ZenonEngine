@@ -36,7 +36,7 @@ uint32 CFontMesh::GetCharWidth(char _char) const
 	return m_WidthArray[_char];
 }
 
-uint32 CFontMesh::GetStringWidth(cstring _string) const
+uint32 CFontMesh::GetStringWidth(const std::string& _string) const
 {
 	uint32 width = 0;
 

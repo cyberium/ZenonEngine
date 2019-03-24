@@ -11,7 +11,7 @@ public:
 	typedef std::vector<std::shared_ptr<CLight3D>> LightList;
 
 public:
-	explicit SceneNodeModel3D(cmat4 localTransform = mat4(1.0f));
+	explicit SceneNodeModel3D();
 	virtual ~SceneNodeModel3D();
 
 	std::shared_ptr<SceneNodeModel3D> shared_from_this()

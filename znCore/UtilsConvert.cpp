@@ -47,7 +47,7 @@ std::string Utils::ToString(const type_info& type, void* value)
 
 
 
-bool Utils::ToBool(cstring _string)
+bool Utils::ToBool(const std::string& _string)
 {
 	std::string _str = _string;
 	Trim(_str);

@@ -5,14 +5,14 @@
 class ConsoleCommand : public IConsoleCommand
 {
 public:
-	ConsoleCommand(cstring _commandName, const std::function<void()>& _function, bool _hasArgs = false);
+	ConsoleCommand(const std::string& _commandName, const std::function<void()>& _function, bool _hasArgs = false);
 	virtual ~ConsoleCommand();
 
 	// IConsoleCommand
 	const std::string GetName() const override;
 	bool HasArgs() const override;
 	void Execute() override;
-	void Execute(cstring _args) override;
+	void Execute(const std::string& _args) override;
 
 protected:
 	std::string     m_Name;
@@ -24,7 +24,7 @@ template <class ArgumentType>
 class ConsoleCommand_WA : public ConsoleCommand
 {
 public:
-	ConsoleCommand_WA(cstring _commandName, const std::function<void(ArgumentType)>& _function) :
+	ConsoleCommand_WA(const std::string& _commandName, const std::function<void(ArgumentType)>& _function) :
 		ConsoleCommand(_commandName, _function, true)
 	{}
 	virtual ~ConsoleCommand_WA()
@@ -34,7 +34,7 @@ public:
 	const std::string GetName() const override { return ConsoleCommand::GetName(); };
 	bool HasArgs() const override { return ConsoleCommand::HasArgs(); };
 	void Execute() override { return ConsoleCommand::Execute(); };
-	void Execute(cstring _args) override
+	void Execute(const std::string& _args) override
 	{
 		ArgumentType value;
 

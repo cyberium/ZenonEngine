@@ -12,7 +12,7 @@ public:
 
 	//IConsole
 	bool AddConsoleCommand(IConsoleCommand* _command) override;
-	IConsoleCommand* GetConsoleCommandByName(cstring _commandName) override;
+	IConsoleCommand* GetConsoleCommandByName(const std::string& _commandName) override;
 	ConsoleCommands GetConsoleCommandHelp(std::string _input) override;
 	bool ProcessConsoleCommand(std::string _line) override;
 
