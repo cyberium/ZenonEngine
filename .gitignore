@@ -10,6 +10,7 @@
 *.tlog
 *.log
 *.idb
+*.res
 
 # Precompiled Headers
 *.gch

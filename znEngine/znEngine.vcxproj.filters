@@ -471,18 +471,8 @@
     <Text Include="Resources\shaders_D3D\Material.hlsl">
       <Filter>Resources\Shaders_D3D</Filter>
     </Text>
-  </ItemGroup>
-  <ItemGroup>
-    <Font Include="Resources\Fonts\consola.ttf">
-      <Filter>Resources\Fonts</Filter>
-    </Font>
-  </ItemGroup>
-  <ItemGroup>
-    <FxCompile Include="Resources\shaders_D3D\3D\Debug.hlsl">
-      <Filter>Resources\Shaders_D3D\3D</Filter>
-    </FxCompile>
-    <FxCompile Include="Resources\shaders_D3D\3D\Textured.hlsl">
-      <Filter>Resources\Shaders_D3D\3D</Filter>
-    </FxCompile>
+    <Text Include="Resources\Fonts\consola.ttf" />
+    <Text Include="Resources\shaders_D3D\3D\Debug.hlsl" />
+    <Text Include="Resources\shaders_D3D\3D\Textured.hlsl" />
   </ItemGroup>
 </Project>
