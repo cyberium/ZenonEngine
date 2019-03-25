@@ -64,6 +64,12 @@
     <Filter Include="Resources\Shaders_D3D\UI">
       <UniqueIdentifier>{56d7d5e3-a89f-4bf7-8536-07f565670fc9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resources\Fonts">
+      <UniqueIdentifier>{ce81b8f6-699d-4309-8b1e-71f75744ff5f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources\Shaders_D3D\3D">
+      <UniqueIdentifier>{5413c097-8bde-4ed5-b5c8-b65a0b3346d5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -155,17 +161,11 @@
     <ClCompile Include="MaterialWrapper.cpp">
       <Filter>Engine</Filter>
     </ClCompile>
-    <ClCompile Include="3D\Passes\GBufferPass.cpp">
-      <Filter>3D\Passes</Filter>
-    </ClCompile>
     <ClCompile Include="3D\Passes\DeferredLightingPass.cpp">
       <Filter>3D\Passes</Filter>
     </ClCompile>
     <ClCompile Include="3D\Light3D.cpp">
       <Filter>3D</Filter>
-    </ClCompile>
-    <ClCompile Include="GBuffer.cpp">
-      <Filter>Engine</Filter>
     </ClCompile>
     <ClCompile Include="3D\SceneNodeModel3D.cpp">
       <Filter>3D</Filter>
@@ -239,6 +239,9 @@
     </ClCompile>
     <ClCompile Include="UI\UIContainerListWithActivation.cpp">
       <Filter>UI\Containers</Filter>
+    </ClCompile>
+    <ClCompile Include="GBuffer.cpp">
+      <Filter>3D\Passes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -340,17 +343,11 @@
     <ClInclude Include="MaterialWrapper.h">
       <Filter>Engine</Filter>
     </ClInclude>
-    <ClInclude Include="3D\Passes\GBufferPass.h">
-      <Filter>3D\Passes</Filter>
-    </ClInclude>
     <ClInclude Include="3D\Passes\DeferredLightingPass.h">
       <Filter>3D\Passes</Filter>
     </ClInclude>
     <ClInclude Include="3D\Light3D.h">
       <Filter>3D</Filter>
-    </ClInclude>
-    <ClInclude Include="GBuffer.h">
-      <Filter>Engine</Filter>
     </ClInclude>
     <ClInclude Include="3D\SceneNodeModel3D.h">
       <Filter>3D</Filter>
@@ -428,44 +425,9 @@
     <ClInclude Include="..\shared\znEngine.h">
       <Filter>Common</Filter>
     </ClInclude>
-    <ClInclude Include="resource.h">
-      <Filter>Resources</Filter>
+    <ClInclude Include="GBuffer.h">
+      <Filter>3D\Passes</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <FxCompile Include="Resources\shaders_D3D\CommonTypes.hlsl">
-      <Filter>Resources\Shaders_D3D</Filter>
-    </FxCompile>
-    <FxCompile Include="Resources\shaders_D3D\DeferredRendering.hlsl">
-      <Filter>Resources\Shaders_D3D</Filter>
-    </FxCompile>
-    <FxCompile Include="Resources\shaders_D3D\ForwardRendering.hlsl">
-      <Filter>Resources\Shaders_D3D</Filter>
-    </FxCompile>
-    <FxCompile Include="Resources\shaders_D3D\Material.hlsl">
-      <Filter>Resources\Shaders_D3D</Filter>
-    </FxCompile>
-    <FxCompile Include="Resources\shaders_D3D\UI\UI_Button.hlsl">
-      <Filter>Resources\Shaders_D3D\UI</Filter>
-    </FxCompile>
-    <FxCompile Include="Resources\shaders_D3D\UI\UI_Color.hlsl">
-      <Filter>Resources\Shaders_D3D\UI</Filter>
-    </FxCompile>
-    <FxCompile Include="Resources\shaders_D3D\UI\UI_Common.hlsl">
-      <Filter>Resources\Shaders_D3D\UI</Filter>
-    </FxCompile>
-    <FxCompile Include="Resources\shaders_D3D\UI\UI_Font.hlsl">
-      <Filter>Resources\Shaders_D3D\UI</Filter>
-    </FxCompile>
-    <FxCompile Include="Resources\shaders_D3D\UI\UI_Line.hlsl">
-      <Filter>Resources\Shaders_D3D\UI</Filter>
-    </FxCompile>
-    <FxCompile Include="Resources\shaders_D3D\UI\UI_Texture.hlsl">
-      <Filter>Resources\Shaders_D3D\UI</Filter>
-    </FxCompile>
-    <FxCompile Include="Resources\shaders_D3D\UI\UI_VertexBase.hlsl">
-      <Filter>Resources\Shaders_D3D\UI</Filter>
-    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="znEngine.rc">
@@ -476,5 +438,51 @@
     <Text Include="Resources\shaders_D3D\CommonInclude.hlsl">
       <Filter>Resources\Shaders_D3D</Filter>
     </Text>
+    <Text Include="Resources\shaders_D3D\UI\UI_VertexBase.hlsl">
+      <Filter>Resources\Shaders_D3D\UI</Filter>
+    </Text>
+    <Text Include="Resources\shaders_D3D\UI\UI_Button.hlsl">
+      <Filter>Resources\Shaders_D3D\UI</Filter>
+    </Text>
+    <Text Include="Resources\shaders_D3D\UI\UI_Color.hlsl">
+      <Filter>Resources\Shaders_D3D\UI</Filter>
+    </Text>
+    <Text Include="Resources\shaders_D3D\UI\UI_Common.hlsl">
+      <Filter>Resources\Shaders_D3D\UI</Filter>
+    </Text>
+    <Text Include="Resources\shaders_D3D\UI\UI_Font.hlsl">
+      <Filter>Resources\Shaders_D3D\UI</Filter>
+    </Text>
+    <Text Include="Resources\shaders_D3D\UI\UI_Line.hlsl">
+      <Filter>Resources\Shaders_D3D\UI</Filter>
+    </Text>
+    <Text Include="Resources\shaders_D3D\UI\UI_Texture.hlsl">
+      <Filter>Resources\Shaders_D3D\UI</Filter>
+    </Text>
+    <Text Include="Resources\shaders_D3D\DeferredRendering.hlsl">
+      <Filter>Resources\Shaders_D3D</Filter>
+    </Text>
+    <Text Include="Resources\shaders_D3D\CommonTypes.hlsl">
+      <Filter>Resources\Shaders_D3D</Filter>
+    </Text>
+    <Text Include="Resources\shaders_D3D\ForwardRendering.hlsl">
+      <Filter>Resources\Shaders_D3D</Filter>
+    </Text>
+    <Text Include="Resources\shaders_D3D\Material.hlsl">
+      <Filter>Resources\Shaders_D3D</Filter>
+    </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="Resources\Fonts\consola.ttf">
+      <Filter>Resources\Fonts</Filter>
+    </Font>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="Resources\shaders_D3D\3D\Debug.hlsl">
+      <Filter>Resources\Shaders_D3D\3D</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\shaders_D3D\3D\Textured.hlsl">
+      <Filter>Resources\Shaders_D3D\3D</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

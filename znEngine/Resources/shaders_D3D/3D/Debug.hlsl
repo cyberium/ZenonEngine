@@ -1,4 +1,4 @@
-#include "..\\_gamedata\\shaders_D3D\\CommonTypes.h"
+#include "IDB_SHADER_COMMON_TYPES"
 
 struct Debug_Material
 {

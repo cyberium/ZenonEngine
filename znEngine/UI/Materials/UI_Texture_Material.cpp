@@ -15,12 +15,12 @@ UI_Texture_Material::UI_Texture_Material() :
 
 	// CreateShaders
 	std::shared_ptr<Shader> g_pVertexShader = _RenderDevice->CreateShader(
-		Shader::VertexShader, "shaders_D3D/UI/UI_VertexBase.hlsl", Shader::ShaderMacros(), "VS_main", "latest"
+		Shader::VertexShader, "IDB_SHADER_UI_TEXTURE", Shader::ShaderMacros(), "VS_main", "latest"
 	);
     g_pVertexShader->LoadInputLayoutFromReflector();
 
 	std::shared_ptr<Shader> g_pPixelShader = _RenderDevice->CreateShader(
-		Shader::PixelShader, "shaders_D3D/UI/UI_Texture.hlsl", Shader::ShaderMacros(), "PS_main", "latest"
+		Shader::PixelShader, "IDB_SHADER_UI_TEXTURE", Shader::ShaderMacros(), "PS_main", "latest"
 	);
 
 	// Create samplers

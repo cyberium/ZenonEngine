@@ -1,4 +1,4 @@
-#include "CommonInclude.hlsl"
+#include "IDB_SHADER_COMMON_INCLUDE"
 
 VertexShaderOutput VS_main( AppData IN )
 {

@@ -1,4 +1,4 @@
-#include "..\\_gamedata\\shaders_D3D\\CommonInclude.hlsl"
+#include "IDB_SHADER_COMMON_INCLUDE"
 
 struct VertexShaderInput
 {

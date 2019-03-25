@@ -15,12 +15,12 @@ UI_Button_Material::UI_Button_Material() :
 
 	// CreateShaders
 	std::shared_ptr<Shader> g_pVertexShader = _RenderDevice->CreateShader(
-		Shader::VertexShader, "IDR_SHADER_UI_Button", Shader::ShaderMacros(), "VS_main", "latest"
+		Shader::VertexShader, "IDB_SHADER_UI_BUTTON", Shader::ShaderMacros(), "VS_main", "latest"
 	);
     g_pVertexShader->LoadInputLayoutFromReflector();
 
 	std::shared_ptr<Shader> g_pPixelShader = _RenderDevice->CreateShader(
-		Shader::PixelShader, "IDR_SHADER_UI_Button", Shader::ShaderMacros(), "PS_main", "latest"
+		Shader::PixelShader, "IDB_SHADER_UI_BUTTON", Shader::ShaderMacros(), "PS_main", "latest"
 	);
 
 	// Create samplers

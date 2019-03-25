@@ -1,4 +1,4 @@
-#include "..\\_gamedata\\shaders_D3D\\UI\UI_Common.h"
+#include "IDB_SHADER_UI_COMMON"
 
 cbuffer PerObject : register(b0)
 {

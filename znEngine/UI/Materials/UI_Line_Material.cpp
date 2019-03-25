@@ -15,16 +15,16 @@ UI_Line_Material::UI_Line_Material() :
 
 	// CreateShaders
 	std::shared_ptr<Shader> g_pVertexShader = _RenderDevice->CreateShader(
-		Shader::VertexShader, "shaders_D3D/UI/UI_VertexBase.hlsl", Shader::ShaderMacros(), "VS_main", "latest"
+		Shader::VertexShader, "IDB_SHADER_UI_LINE", Shader::ShaderMacros(), "VS_main", "latest"
 	);
     g_pVertexShader->LoadInputLayoutFromReflector();
 
     std::shared_ptr<Shader> g_pGeomShader = _RenderDevice->CreateShader(
-        Shader::GeometryShader, "shaders_D3D/UI/UI_Line.hlsl", Shader::ShaderMacros(), "GS_main", "latest"
+        Shader::GeometryShader, "IDB_SHADER_UI_LINE", Shader::ShaderMacros(), "GS_main", "latest"
     );
 
 	std::shared_ptr<Shader> g_pPixelShader = _RenderDevice->CreateShader(
-		Shader::PixelShader, "shaders_D3D/UI/UI_Line.hlsl", Shader::ShaderMacros(), "PS_LineV2", "latest"
+		Shader::PixelShader, "IDB_SHADER_UI_LINE", Shader::ShaderMacros(), "PS_LineV2", "latest"
 	);
 
 	// Material

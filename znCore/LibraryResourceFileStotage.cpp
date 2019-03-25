@@ -18,8 +18,8 @@ CLibraryResourceFileStotage::~CLibraryResourceFileStotage()
 
 std::shared_ptr<IFile> CLibraryResourceFileStotage::CreateFile(const std::string& _name)
 {
-    HRSRC hResource = FindResource(m_HModule, _name.c_str(), "SHADER");
-    if (hResource)
+    HRSRC hResource = FindResource(m_HModule, Resources::ConvertString(_name).c_str(), RT_RCDATA);
+    if (hResource != NULL)
     {
         HGLOBAL hResourceData = LoadResource(m_HModule, hResource);
         DWORD resourceSize = SizeofResource(m_HModule, hResource);
@@ -45,8 +45,8 @@ std::shared_ptr<IFile> CLibraryResourceFileStotage::CreateFile(const std::string
 
 size_t CLibraryResourceFileStotage::GetFileSize(const std::string& _name)
 {
-    HRSRC hResource = FindResource(m_HModule, _name.c_str(), RT_RCDATA);
-    if (hResource)
+    HRSRC hResource = FindResource(m_HModule, Resources::ConvertString(_name).c_str(), RT_RCDATA);
+    if (hResource != NULL)
     {
         return static_cast<size_t>(SizeofResource(m_HModule, hResource));
     }
@@ -56,8 +56,7 @@ size_t CLibraryResourceFileStotage::GetFileSize(const std::string& _name)
 
 bool CLibraryResourceFileStotage::IsFileExists(const std::string& _name)
 {
-    HRSRC hResource = FindResource(m_HModule, MAKEINTRESOURCE(110), RT_RCDATA);
-    return hResource;
+    return FindResource(m_HModule, Resources::ConvertString(_name).c_str(), RT_RCDATA) != NULL;
 }
 
 IFilesStorageEx::Priority CLibraryResourceFileStotage::GetPriority() const

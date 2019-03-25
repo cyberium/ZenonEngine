@@ -32,7 +32,6 @@
     <ClCompile Include="3D\Passes\DispatchPass.cpp" />
     <ClCompile Include="3D\Passes\EndQueryPass.cpp" />
     <ClCompile Include="3D\Passes\FontPass.cpp" />
-    <ClCompile Include="3D\Passes\GBufferPass.cpp" />
     <ClCompile Include="3D\Passes\GenerateMipMapsPass.cpp" />
     <ClCompile Include="3D\Passes\InvokeFunctionPass.cpp" />
     <ClCompile Include="3D\Passes\PostprocessPass.cpp" />
@@ -100,7 +99,6 @@
     <ClInclude Include="3D\Passes\DispatchPass.h" />
     <ClInclude Include="3D\Passes\EndQueryPass.h" />
     <ClInclude Include="3D\Passes\FontPass.h" />
-    <ClInclude Include="3D\Passes\GBufferPass.h" />
     <ClInclude Include="3D\Passes\GenerateMipMapsPass.h" />
     <ClInclude Include="3D\Passes\InvokeFunctionPass.h" />
     <ClInclude Include="3D\Passes\PostprocessPass.h" />
@@ -123,7 +121,6 @@
     <ClInclude Include="Loader.h" />
     <ClInclude Include="MaterialWrapper.h" />
     <ClInclude Include="MeshWrapper.h" />
-    <ClInclude Include="resource.h" />
     <ClInclude Include="RTSCameraController.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="UI\Fonts\Font.h" />
@@ -190,11 +187,23 @@
     <Text Include="Resources\shaders_D3D\UI\UI_Texture.hlsl">
     </Text>
     <Text Include="Resources\shaders_D3D\UI\UI_VertexBase.hlsl">
-
     </Text>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="znEngine.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Resources\Fonts\consola.ttf">
+      <FileType>Document</FileType>
+    </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Resources\shaders_D3D\3D\Debug.hlsl">
+      <FileType>Document</FileType>
+    </Text>
+    <Text Include="Resources\shaders_D3D\3D\Textured.hlsl">
+      <FileType>Document</FileType>
+    </Text>
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{51252F60-B8DC-4090-BBA3-DD05942110F0}</ProjectGuid>
@@ -278,6 +287,12 @@
       <DisableSpecificWarnings>4244;4267</DisableSpecificWarnings>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
+    <ResourceCompile>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <PostBuildEvent>
+      <Command>copy /Y "$(Platform)\$(Configuration)\$(ProjectName).res" "$(SolutionDir)bin_x64\$(Configuration)\$(ProjectName).res" </Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -292,6 +307,12 @@
       <DisableSpecificWarnings>4244;4267</DisableSpecificWarnings>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
+    <ResourceCompile>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <PostBuildEvent>
+      <Command>copy /Y "$(Platform)\$(Configuration)\$(ProjectName).res" "$(SolutionDir)bin_x86\$(Configuration)\$(ProjectName).res" </Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -310,6 +331,12 @@
       <DisableSpecificWarnings>4244;4267</DisableSpecificWarnings>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
     </ClCompile>
+    <ResourceCompile>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <PostBuildEvent>
+      <Command>copy /Y "$(Platform)\$(Configuration)\$(ProjectName).res" "$(SolutionDir)bin_x64\$(Configuration)\$(ProjectName).res" </Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -328,6 +355,12 @@
       <DisableSpecificWarnings>4244;4267</DisableSpecificWarnings>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
     </ClCompile>
+    <ResourceCompile>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <PostBuildEvent>
+      <Command>copy /Y "$(Platform)\$(Configuration)\$(ProjectName).res" "$(SolutionDir)bin_x86\$(Configuration)\$(ProjectName).res" </Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

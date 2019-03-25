@@ -90,8 +90,7 @@ float3 ExpandNormal( float3 n )
     return n * 2.0f - 1.0f;
 }
 
-// This lighting result is returned by the 
-// lighting functions for each light type.
+// This lighting result is returned by the lighting functions for each light type.
 struct LightingResult
 {
 	float4 Ambient;

@@ -3,7 +3,54 @@
 // General
 #include "ShaderDX11.h"
 
+std::string RecursionInclude(std::shared_ptr<IFile> f)
+{
+    if (f == nullptr)
+    {
+        Log::Error("Error open shader [%s].", f->Path_Name().c_str());
+        return "";
+    }
 
+    std::string data = "";
+
+    while (!f->isEof())
+    {
+        std::string line;
+        if (false == f->readLine(&line))
+        {
+            break;
+        }
+
+        // Skip empty lines
+        if (line.length() == 0)
+        {
+            continue;
+        }
+
+        // Find directive
+        if (line[0] == '#' && line[1] == 'i' && line[2] == 'n' && line[3] == 'c' && line[4] == 'l')
+        {
+            size_t firstBracketPosition = line.find('"');
+            assert1(firstBracketPosition != std::string::npos);
+
+            size_t lastBracketPosition = line.find_last_of('"');
+            assert1(firstBracketPosition != lastBracketPosition);
+
+            std::string inludeFileName = line.substr(firstBracketPosition + 1, lastBracketPosition - firstBracketPosition - 1);
+            CFile::FixFilePath(inludeFileName);
+
+            std::shared_ptr<IFile> includeFile = GetManager<IFilesManager>()->Open(inludeFileName);
+
+            data += RecursionInclude(includeFile) + '\n';
+
+            continue;
+        }
+
+        data += line + '\n';
+    }
+
+    return data;
+}
 
 static ShaderParameter gs_InvalidShaderParameter;
 
@@ -79,7 +126,10 @@ bool ShaderDX11::LoadShaderFromString(ShaderType shaderType, const std::string& 
 		flags |= D3DCOMPILE_DEBUG;
 #endif
 
-		hr = D3DCompile((LPCVOID)source.c_str(), source.size(), fileName.c_str(), macros.data(), D3D_COMPILE_STANDARD_FILE_INCLUDE, entryPoint.c_str(), _profile.c_str(), flags, 0, &pShaderBlob, &pErrorBlob);
+        std::shared_ptr<IFile> file = GetManager<IFilesManager>()->Open(fileName);
+        std::string data = RecursionInclude(file);
+
+		hr = D3DCompile(data.c_str(), data.size(), fileName.c_str(), macros.data(), D3D_COMPILE_STANDARD_FILE_INCLUDE, entryPoint.c_str(), _profile.c_str(), flags, 0, &pShaderBlob, &pErrorBlob);
 
 		// We're done compiling.. Delete the macro definitions.
 		for (D3D_SHADER_MACRO macro : macros)

@@ -82,7 +82,7 @@ void CGBuffer::Load2(const Viewport& _viewPort)
 
 
 	// Shaders that unite 4 textures
-	std::shared_ptr<Shader> g_pVertexShader = _RenderDevice->CreateShader(Shader::VertexShader, "shaders_D3D/DeferredRendering.hlsl", Shader::ShaderMacros(), "VS_main", "latest");
+	std::shared_ptr<Shader> g_pVertexShader = _RenderDevice->CreateShader(Shader::VertexShader, "IDB_SHADER_DEFFERED_RENDERING", Shader::ShaderMacros(), "VS_main", "latest");
 	std::vector<D3DVERTEXELEMENT9> elements;
 	elements.push_back({ 0, 0,  D3DDECLTYPE_FLOAT3, 0, D3DDECLUSAGE_POSITION, 0 });
 	elements.push_back({ 0, 12, D3DDECLTYPE_FLOAT2, 0, D3DDECLUSAGE_TEXCOORD, 0 });
@@ -90,7 +90,7 @@ void CGBuffer::Load2(const Viewport& _viewPort)
 	g_pVertexShader->LoadInputLayoutFromD3DElement(elements);
 
 
-	std::shared_ptr<Shader> g_pDeferredLightingPixelShader = _RenderDevice->CreateShader(Shader::PixelShader, "shaders_D3D/DeferredRendering.hlsl", Shader::ShaderMacros(), "PS_DeferredLighting", "latest");
+	std::shared_ptr<Shader> g_pDeferredLightingPixelShader = _RenderDevice->CreateShader(Shader::PixelShader, "IDB_SHADER_DEFFERED_RENDERING", Shader::ShaderMacros(), "PS_DeferredLighting", "latest");
 
 
 	// Pipeline State for result texture
