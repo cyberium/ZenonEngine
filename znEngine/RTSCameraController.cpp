@@ -6,7 +6,8 @@
 CRTSCameraController::CRTSCameraController()
 {
 	m_Camera = std::make_shared<Camera>();
-	m_Camera->SetRotate(vec3(-90.0f, 0.0f, 0.0f));
+	m_Camera->SetYaw(0.0f);
+    m_Camera->SetPitch(-90.0f);
 
 	m_MouseMoveMultiplier = 0.3f;
 	m_MouseWheelMultiplier = 8.7f;

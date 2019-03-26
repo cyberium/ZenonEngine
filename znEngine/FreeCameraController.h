@@ -14,15 +14,12 @@ public:
 	void OnKeyReleased(KeyEventArgs& e) override;
 	void OnMouseMoved(MouseMotionEventArgs& e) override;
 
-protected:
-	vec3 ProjectOntoUnitSphere(glm::ivec2 screenPos);
-
 private:
 	vec3 m_PreviousPoint;
 	float Forward, Back, Left, Right, Up, Down;
 
-	float RollCW, RollCCW;
-	float Pitch, Yaw;
+    float Yaw;
+    float Pitch;
 
 	bool TranslateFaster;
 	bool RotateFaster;

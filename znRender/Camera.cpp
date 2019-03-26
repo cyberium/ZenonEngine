@@ -5,6 +5,8 @@
 
 Camera::Camera()
 	: m_Translate(0)
+    , m_Yaw_X(0.0f)
+    , m_Pitch_Y(0.0f)
 	, m_bViewDirty(true)
 	, m_bViewProjectionInverseDirty(true)
 {}
@@ -52,6 +54,12 @@ void Camera::SetProjectionLH(float fovy, float aspect, float zNear, float zFar)
 	m_bViewProjectionInverseDirty = true;
 }
 
+void Camera::SetOrthographic(float left, float right, float top, float bottom)
+{
+    m_ProjectionMatrix = glm::ortho(left, right, bottom, top);
+    m_bViewProjectionInverseDirty = true;
+}
+
 float Camera::GetNearClipPlane() const
 {
 	return m_fNear;
@@ -62,11 +70,6 @@ float Camera::GetFarClipPlane() const
 	return m_fFar;
 }
 
-void Camera::SetOrthographic(float left, float right, float top, float bottom)
-{
-	m_ProjectionMatrix = glm::ortho(left, right, bottom, top);
-	m_bViewProjectionInverseDirty = true;
-}
 
 
 //
@@ -77,7 +80,7 @@ void Camera::TranslateX(float x, Space space)
 	switch (space)
 	{
 	case Camera::Space::Local:
-		m_Translate += m_Rotate * vec3(x, 0, 0);
+		m_Translate += m_Front * vec3(x, 0, 0);
 		break;
 
 	case Camera::Space::World:
@@ -92,7 +95,7 @@ void Camera::TranslateY(float y, Space space)
 	switch (space)
 	{
 	case Space::Local:
-		m_Translate += m_Rotate * vec3(0, y, 0);
+		m_Translate += m_Front * vec3(0, y, 0);
 		break;
 	case Space::World:
 		m_Translate += vec3(0, y, 0);
@@ -107,7 +110,7 @@ void Camera::TranslateZ(float z, Space space)
 	switch (space)
 	{
 	case Space::Local:
-		m_Translate += m_Rotate * vec3(0, 0, z);
+		m_Translate += m_Front * vec3(0, 0, z);
 		break;
 	case Space::World:
 		m_Translate += vec3(0, 0, z);
@@ -128,90 +131,61 @@ vec3 Camera::GetTranslation() const
 	return m_Translate;
 }
 
-
-//
-// Rotate
-//
-void Camera::SetEulerAngles(cvec3 eulerAngles)
+void Camera::DoMoveFront(float Value)
 {
-	m_Rotate = glm::quat(glm::radians(eulerAngles));
-	m_bViewDirty = true;
+    m_Translate += m_Front * Value;
+    m_bViewDirty = true;
 }
 
-vec3 Camera::GetEulerAngles() const
+void Camera::DoMoveBack(float Value)
 {
-	return glm::degrees(glm::eulerAngles(m_Rotate));
+    m_Translate -= m_Front * Value;
+    m_bViewDirty = true;
 }
 
-void Camera::AddPitch(float fPitch, Space space)
+void Camera::DoMoveLeft(float Value)
 {
-	switch (space)
-	{
-	case Space::Local:
-		m_Rotate = glm::angleAxis(glm::radians(fPitch), m_Rotate * vec3(1, 0, 0)) * m_Rotate;
-		break;
-	case Space::World:
-		m_Rotate = glm::angleAxis(glm::radians(fPitch), vec3(1, 0, 0)) * m_Rotate;
-	}
-
-	m_bViewDirty = true;
+    m_Translate -= m_Right * Value;
+    m_bViewDirty = true;
 }
 
-void Camera::AddYaw(float fYaw, Space space)
+void Camera::DoMoveRight(float Value)
 {
-	switch (space)
-	{
-	case Space::Local:
-		m_Rotate = glm::angleAxis(glm::radians(fYaw), m_Rotate * vec3(0, 1, 0)) * m_Rotate;
-		break;
-	case Space::World:
-		m_Rotate = glm::angleAxis(glm::radians(fYaw), vec3(0, 1, 0)) * m_Rotate;
-		break;
-	}
-
-	m_bViewDirty = true;
+    m_Translate += m_Right * Value;
+    m_bViewDirty = true;
 }
 
-void Camera::AddRoll(float fRoll, Space space)
+
+
+void Camera::SetYaw(float Yaw)
 {
-	switch (space)
-	{
-	case Space::Local:
-		m_Rotate = glm::angleAxis(glm::radians(fRoll), m_Rotate * vec3(0, 0, 1)) * m_Rotate;
-		break;
-	case Space::World:
-		m_Rotate = glm::angleAxis(glm::radians(fRoll), vec3(0, 0, 1)) * m_Rotate;
-		break;
-	}
-	m_bViewDirty = true;
+    m_Yaw_X = Yaw;
+    m_bViewDirty = true;
 }
 
-void Camera::AddRotation(const glm::quat& deltaRot)
+void Camera::AddYaw(float Yaw)
 {
-	m_Rotate = m_Rotate * deltaRot;
-	m_bViewDirty = true;
+    m_Yaw_X += Yaw;
+    m_bViewDirty = true;
 }
 
-void Camera::SetRotate(float pitch, float yaw, float roll)
+void Camera::SetPitch(float Pitch)
 {
-	SetRotate(vec3(pitch, yaw, roll));
+    m_Pitch_Y = Pitch;
+    m_bViewDirty = true;
 }
 
-void Camera::SetRotate(cvec3 rotate)
+void Camera::AddPitch(float Pitch)
 {
-	SetRotate(glm::quat(glm::radians(rotate)));
+    m_Pitch_Y += Pitch;
+    m_bViewDirty = true;
 }
 
-void Camera::SetRotate(const glm::quat& rot)
+glm::vec3 Camera::GetDirection() const
 {
-	m_Rotate = rot;
-	m_bViewDirty = true;
+    return m_Front;
 }
 
-glm::quat Camera::GetRotation() const
-{
-	return m_Rotate;
-}
 
 
 
@@ -221,20 +195,36 @@ bool Camera::IsDirty() const
 }
 
 
+
+//
+// Protected
+//
+void Camera::UpdateDirections()
+{
+    // Calculate the new Front vector
+    m_Front.x = cos(glm::radians(m_Yaw_X)) * cos(glm::radians(m_Pitch_Y)); // y
+    m_Front.y = sin(glm::radians(m_Pitch_Y));                              // z
+    m_Front.z = sin(glm::radians(m_Yaw_X)) * cos(glm::radians(m_Pitch_Y)); // x
+    m_Front = glm::normalize(m_Front);
+
+    // Also re-calculate the Right and Up vector
+    m_Right = glm::normalize(glm::cross(m_Front, vec3(0.0f, 1.0f, 0.0f))); 
+    m_Up    = glm::cross(m_Right, m_Front);
+}
+
 void Camera::UpdateViewMatrix()
 {
 	if (m_bViewDirty)
 	{
-		mat4 translateMatrix = glm::translate(m_Translate);
-		mat4 rotationMatrix = glm::toMat4(m_Rotate);
+        UpdateDirections();
 
-		m_ViewMatrix = glm::inverse(translateMatrix * rotationMatrix);
+        m_ViewMatrix = glm::lookAt(m_Translate, m_Translate + m_Front, m_Up);
 
-		// Update frustum
-		m_Frustum.buildViewFrustum(m_ViewMatrix, m_ProjectionMatrix);
+        // Update frustum
+        m_Frustum.buildViewFrustum(m_ViewMatrix, m_ProjectionMatrix);
 
-		m_bViewProjectionInverseDirty = true;
-		m_bViewDirty = false;
+        m_bViewProjectionInverseDirty = true;
+        m_bViewDirty = false;
 	}
 }
 
@@ -249,44 +239,10 @@ void Camera::UpdateViewProjectionInverse()
 	}
 }
 
-void Camera::SetViewMatrix(cmat4 viewMatrix)
-{
-	// Inverse the view matrix to get the world matrix of the camera
-	mat4 inverseView = glm::inverse(viewMatrix);
-
-	// Extract the translation
-	m_Translate = vec3(inverseView[3]);
-
-	// Extract the top-left 3x3 matrix to decompose the scale and rotation
-	glm::mat3 tmp = glm::mat3(inverseView);
-
-	// TODO: I don't know if any of the scales are negative.
-	// I have to figure out how can I reliably determine if any of the scales are negative?
-	float sx = glm::length(tmp[0]);
-	float sy = glm::length(tmp[1]);
-	float sz = glm::length(tmp[2]);
-
-	glm::mat3 invScale = glm::mat3(glm::scale(vec3(1.0f / sx, 1.0f / sy, 1.0f / sz)));
-	// This will remove the scale factor (if there is one) so we can extract
-	// the unit quaternion.
-	tmp = tmp * invScale;
-	m_Rotate = glm::toQuat(tmp);
-
-	// The view matrix needs to be rebuilt from the rotation and translation components.
-	m_bViewDirty = true;
-}
-
 mat4 Camera::GetViewMatrix() const
 {
 	const_cast<Camera*>(this)->UpdateViewMatrix();
 	return m_ViewMatrix;
-}
-
-void Camera::SetProjectionMatrix(cmat4 projectionMatrix)
-{
-	// TODO: Decompose the projection matrix?
-	m_ProjectionMatrix = projectionMatrix;
-	m_bViewProjectionInverseDirty = true;
 }
 
 mat4 Camera::GetProjectionMatrix() const

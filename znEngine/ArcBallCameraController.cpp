@@ -179,7 +179,7 @@ void CArcBallCameraController::OnMouseMoved(MouseMotionEventArgs& e)
 	{
 		glm::vec3 currentPoint = ProjectOntoUnitSphere(glm::ivec2(e.X, e.Y));
 
-		m_Camera->AddRotation(glm::quat(currentPoint, m_PreviousPoint));
+		//m_Camera->AddRotation(glm::quat(currentPoint, m_PreviousPoint));
 
 
 

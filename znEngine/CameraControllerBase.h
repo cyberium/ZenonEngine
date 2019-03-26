@@ -28,6 +28,4 @@ protected:
 
 	// Events variables
 	vec2                     m_PreviousMousePosition;
-
-
 };

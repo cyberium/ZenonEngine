@@ -27,8 +27,6 @@ bool CGameState_World::Init()
 	// Camera controller
 	//
 	m_CameraController = std::make_shared<CFreeCameraController>();
-	m_CameraController->GetCamera()->SetTranslate(vec3(0, 0, 0));
-	m_CameraController->GetCamera()->SetRotate(vec3(0, 0, 0));
 	m_CameraController->GetCamera()->SetViewport(m_Viewport);
 	m_CameraController->GetCamera()->SetProjectionRH(45.0f, 1280.0f / 1024.0f, 1.0f, 4000.0f);
 	
@@ -83,7 +81,7 @@ void CGameState_World::OnPostRender(Render3DEventArgs& e)
 	vec3 cameraTrans = m_CameraController->GetCamera()->GetTranslation();
 	m_CameraPosText->SetText("Pos: " + std::to_string(cameraTrans.x) + ", " + std::to_string(cameraTrans.y) + ", " + std::to_string(cameraTrans.z));
 
-	vec3 cameraRot = m_CameraController->GetCamera()->GetEulerAngles();
+	vec3 cameraRot = m_CameraController->GetCamera()->GetDirection();
 	m_CameraRotText->SetText("Rot: " + std::to_string(cameraRot.x) + ", " + std::to_string(cameraRot.y) + ", " + std::to_string(cameraRot.z));
 
 	Query::QueryResult frameResult = m_FrameQuery->GetQueryResult(e.FrameCounter - (m_FrameQuery->GetBufferCount() - 1));
