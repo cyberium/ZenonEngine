@@ -166,15 +166,15 @@ void RenderWindowDX11::CreateSwapChain()
 	std::shared_ptr<Texture> colorTexture = m_Device.lock()->CreateTexture2D(windowWidth, windowHeight, 1, colorTextureFormat);
 
 	// Depth/stencil buffer
-	//Texture::TextureFormat depthStencilTextureFormat(
-	//	Texture::Components::DepthStencil,
-	//	Texture::Type::UnsignedNormalized,
-	//	m_SampleDesc.Count,
-	//	0, 0, 0, 0, 24, 8);
-	//std::shared_ptr<Texture> depthStencilTexture = m_Device.lock()->CreateTexture2D(windowWidth, windowHeight, 1, depthStencilTextureFormat);
+	Texture::TextureFormat depthStencilTextureFormat(
+		Texture::Components::DepthStencil,
+		Texture::Type::UnsignedNormalized,
+		m_SampleDesc.Count,
+		0, 0, 0, 0, 24, 8);
+	std::shared_ptr<Texture> depthStencilTexture = m_Device.lock()->CreateTexture2D(windowWidth, windowHeight, 1, depthStencilTextureFormat);
 
 	m_RenderTarget->AttachTexture(IRenderTarget::AttachmentPoint::Color0, colorTexture);
-	//m_RenderTarget->AttachTexture(IRenderTarget::AttachmentPoint::DepthStencil, depthStencilTexture);
+	m_RenderTarget->AttachTexture(IRenderTarget::AttachmentPoint::DepthStencil, depthStencilTexture);
 }
 
 void RenderWindowDX11::ResizeSwapChainBuffers(uint32_t width, uint32_t height)

@@ -10,12 +10,12 @@ struct Viewport
 		, MinDepth(minDepth)
 		, MaxDepth(maxDepth)
 	{
-		OrthoMatrix = glm::ortho(0.0f, Width, Height, 0.0f, -1.0f, 1.0f);
+		OrthoMatrix = glm::ortho(0.0f, Width, Height, 0.0f, MinDepth, MaxDepth);
 	}
 
 	void UpdateOrthoMatrix()
 	{
-		OrthoMatrix = glm::ortho(0.0f, Width, Height, 0.0f, -1.0f, 1.0f);
+		OrthoMatrix = glm::ortho(0.0f, Width, Height, 0.0f, MinDepth, MaxDepth);
 	}
 
 	float X;

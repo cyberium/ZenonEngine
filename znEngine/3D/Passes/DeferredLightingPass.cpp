@@ -240,11 +240,11 @@ bool DeferredLightingPass::Visit(CLight3D& light)
 	{
 	case Light::LightType::Point:
 		RenderSubPass(GetRenderEventArgs(), m_pDirectionalLightScene, m_DirectionalLightPipeline);
-		//RenderSubPass(GetRenderEventArgs(), m_pPointLightScene, m_LightPipeline1);
+		RenderSubPass(GetRenderEventArgs(), m_pPointLightScene, m_LightPipeline1);
 		break;
 	case Light::LightType::Spot:
 		RenderSubPass(GetRenderEventArgs(), m_pDirectionalLightScene, m_DirectionalLightPipeline);
-		//RenderSubPass(GetRenderEventArgs(), m_pSpotLightScene, m_LightPipeline1);
+		RenderSubPass(GetRenderEventArgs(), m_pSpotLightScene, m_LightPipeline1);
 		break;
 	case Light::LightType::Directional:
 		RenderSubPass(GetRenderEventArgs(), m_pDirectionalLightScene, m_DirectionalLightPipeline);

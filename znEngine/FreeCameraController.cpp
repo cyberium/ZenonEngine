@@ -35,7 +35,7 @@ void CFreeCameraController::OnUpdate(UpdateEventArgs& e)
     m_Camera->DoMoveFront(Forward);
     m_Camera->DoMoveBack(Back);
     m_Camera->DoMoveLeft(Left);
-    m_Camera->DoMoveLeft(Right);
+    m_Camera->DoMoveRight(Right);
 }
 
 void CFreeCameraController::OnKeyPressed(KeyEventArgs& e)

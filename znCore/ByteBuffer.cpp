@@ -156,7 +156,7 @@ void CByteBuffer::readString(std::string* _string)
 	while (true)
 	{
 		uint8 byte;
-		readBytes(&byte);
+		readBytes(&byte, sizeof(uint8));
 
 		str.append(1, static_cast<char>(byte));
 
@@ -180,7 +180,7 @@ void CByteBuffer::Allocate(size_t _size)
 	if (_size > 0)
 	{
 		assert1(!m_IsAllocated);
-		m_Data.reserve(_size);
+        m_Data.reserve(_size);
 		m_IsAllocated = true;
 	}
 
@@ -222,13 +222,19 @@ void CByteBuffer::CopyData(const uint8* _data, size_t _size)
 
 //-- WRITE
 
+void CByteBuffer::Resize(size_t NewSize)
+{
+    m_Data.resize(NewSize);
+
+    // TODO!
+}
+
 void CByteBuffer::Append(const uint8* _data, size_t _size)
 {
 	assert1(_data != nullptr);
 
 	for (size_t i = 0; i < _size; i++)
 	{
-		uint64 pos = m_CurrentPosition + i;
 		m_Data.push_back(_data[i]);
 	}
 
@@ -236,6 +242,11 @@ void CByteBuffer::Append(const uint8* _data, size_t _size)
 	{
 		m_IsEOF = false;
 	}
+}
+
+void CByteBuffer::Insert(size_t Position, const uint8 * _data, size_t _size)
+{
+    m_Data.insert(m_Data.begin() + Position, _data, _data + _size);
 }
 
 void CByteBuffer::Write(const std::string& _string, uint64 _expectedSize)
@@ -251,7 +262,5 @@ void CByteBuffer::Write(const std::string& _string, uint64 _expectedSize)
 void CByteBuffer::WriteDummy(uint64 _size)
 {
 	for (uint64 i = 0; i < _size; i++)
-	{
 		m_Data.push_back(0x00);
-	}
 }

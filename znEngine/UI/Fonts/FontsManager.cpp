@@ -12,7 +12,7 @@
 
 FontsManager::FontsManager()
 {
-	m_MainFont = Add("Fonts\\consola.TTF", 14);
+	m_MainFont = Add("IDB_FONT_CONSOLAS", 14);
 }
 
 FontsManager::~FontsManager()

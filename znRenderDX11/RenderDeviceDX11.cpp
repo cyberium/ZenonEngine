@@ -140,17 +140,17 @@ void RenderDeviceDX11::CreateDevice()
 	}
 
 	//m_pMultiThread->SetMultithreadProtected(FALSE);
-
+#if defined(_DEBUG)
 	if (SUCCEEDED(m_pDevice->QueryInterface<ID3D11Debug>(&m_pDebugLayer)))
 	{
 		ATL::CComPtr<ID3D11InfoQueue> d3dInfoQueue;
 		if (SUCCEEDED(m_pDebugLayer->QueryInterface<ID3D11InfoQueue>(&d3dInfoQueue)))
 		{
-#if defined(_DEBUG)
+
 			d3dInfoQueue->SetBreakOnSeverity(D3D11_MESSAGE_SEVERITY_CORRUPTION, TRUE);
 			d3dInfoQueue->SetBreakOnSeverity(D3D11_MESSAGE_SEVERITY_ERROR, TRUE);
 			//d3dInfoQueue->SetBreakOnSeverity(D3D11_MESSAGE_SEVERITY_WARNING, TRUE);
-#endif 
+ 
 			D3D11_MESSAGE_ID hide[] =
 			{
 				D3D11_MESSAGE_ID_SETPRIVATEDATA_CHANGINGPARAMS,
@@ -164,6 +164,7 @@ void RenderDeviceDX11::CreateDevice()
 			d3dInfoQueue->AddStorageFilterEntries(&filter);
 		}
 	}
+#endif
 
 	// Query the adapter information.
 	ATL::CComPtr<IDXGIFactory> factory;
