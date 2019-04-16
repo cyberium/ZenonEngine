@@ -36,7 +36,6 @@
     <ClCompile Include="GroupRenderCaps.cpp" />
     <ClCompile Include="GroupVideo.cpp" />
     <ClCompile Include="HighResolutionTimer.cpp" />
-    <ClCompile Include="INIFile.cpp" />
     <ClCompile Include="Console.cpp" />
     <ClCompile Include="LibraryResourceFileStotage.cpp" />
     <ClCompile Include="LocalFilesStorage.cpp" />
@@ -57,7 +56,6 @@
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="Utils.cpp" />
     <ClCompile Include="UtilsConvert.cpp" />
-    <ClCompile Include="XMLFile.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\shared\znCore.h" />
@@ -85,7 +83,6 @@
     <ClInclude Include="Debug.h" />
     <ClInclude Include="FilesManager.h" />
     <ClInclude Include="Frustrum.h" />
-    <ClInclude Include="INIFile.h" />
     <ClInclude Include="Macros.h" />
     <ClInclude Include="Math.h" />
     <ClInclude Include="MathCommon.h" />
@@ -109,7 +106,6 @@
     <ClInclude Include="Vec2f.h" />
     <ClInclude Include="Vec3f.h" />
     <ClInclude Include="Vec4f.h" />
-    <ClInclude Include="XMLFile.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="RefManager1DimAssync.inl" />

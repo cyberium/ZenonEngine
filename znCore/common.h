@@ -7,6 +7,7 @@
 #include <cmath>
 #include <memory>
 
+// STL threads
 #include <mutex>
 #include <atomic>
 #include <future>

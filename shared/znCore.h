@@ -11,8 +11,6 @@
 #include "../znCore/LibraryResourceFileStotage.h"
 #include "../znCore/FilesManager.h"
 #include "../znCore/File.h"
-#include "../znCore/INIFile.h"
-#include "../znCore/XMLFile.h"
 
 #include "../znCore/DebugOutput.h"
 

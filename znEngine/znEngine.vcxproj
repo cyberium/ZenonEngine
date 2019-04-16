@@ -170,8 +170,6 @@
     </Text>
     <Text Include="Resources\shaders_D3D\DeferredRendering.hlsl">
     </Text>
-    <Text Include="Resources\shaders_D3D\ForwardRendering.hlsl">
-    </Text>
     <Text Include="Resources\shaders_D3D\Material.hlsl">
     </Text>
     <Text Include="Resources\shaders_D3D\UI\UI_Button.hlsl">

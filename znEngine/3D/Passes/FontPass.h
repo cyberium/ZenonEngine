@@ -18,7 +18,7 @@ public:
 
 	// Inherited from Visitor
 	virtual bool Visit(SceneNode3D& node) override;
-	virtual bool Visit(IMesh& mesh, UINT indexStartLocation, UINT indexCnt, UINT vertexStartLocation, UINT vertexCnt) override;
+	virtual bool Visit(IMesh& Mesh, UINT IndexStartLocation, UINT IndexCnt, UINT VertexStartLocation, UINT VertexCnt) override;
 	virtual bool Visit(CLight3D& light) override;
 
 	virtual void UpdateViewport(Viewport _viewport);

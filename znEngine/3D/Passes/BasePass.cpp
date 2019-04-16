@@ -87,11 +87,11 @@ bool BasePass::Visit(SceneNode3D& node)
 	return false;
 }
 
-bool BasePass::Visit(IMesh& mesh, UINT indexStartLocation, UINT indexCnt, UINT vertexStartLocation, UINT vertexCnt)
+bool BasePass::Visit(IMesh& Mesh, UINT IndexStartLocation, UINT IndexCnt, UINT VertexStartLocation, UINT VertexCnt)
 {
 	if (m_pRenderEventArgs)
 	{
-		return mesh.Render(*m_pRenderEventArgs, m_PerObjectConstantBuffer, indexStartLocation, indexCnt, vertexStartLocation, vertexCnt);
+		return Mesh.Render(*m_pRenderEventArgs, m_PerObjectConstantBuffer, IndexStartLocation, IndexCnt, VertexStartLocation, VertexCnt);
 	}
 
 	return false;

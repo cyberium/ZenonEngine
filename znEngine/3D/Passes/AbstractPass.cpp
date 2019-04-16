@@ -51,7 +51,7 @@ bool AbstractPass::Visit(CUIBaseNode & nodeUI)
 	return false;
 }
 
-bool AbstractPass::Visit(IMesh& mesh, UINT indexStartLocation, UINT indexCnt, UINT vertexStartLocation, UINT vertexCnt)
+bool AbstractPass::Visit(IMesh& Mesh, UINT IndexStartLocation, UINT IndexCnt, UINT VertexStartLocation, UINT VertexCnt)
 {
 	return false;
 }

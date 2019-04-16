@@ -16,35 +16,35 @@ public:
 	/**
 	 * Assign a name to this scene node so that it can be searched for later.
 	 */
-	virtual const std::string& GetName() const;
-	virtual void SetName(const std::string& name);
+	virtual const std::string&                      GetName() const;
+	virtual void                                    SetName(const std::string& name);
 
 	// Translate
-	void SetTranslate(cvec3 _translate);
-	cvec3 GetTranslation() const;
+	void                                            SetTranslate(cvec3 _translate);
+	cvec3                                           GetTranslation() const;
 
 	// Rotate
-	void SetRotation(cvec3 _rotate);
-	cvec3 GetRotation() const;
+	void                                            SetRotation(cvec3 _rotate);
+	cvec3                                           GetRotation() const;
 
 	// Rotate Quaternion
-	void SetRotationQuaternion(cquat _rotate);
-	cquat GetRotationQuaternion() const;
+	void                                            SetRotationQuaternion(cquat _rotate);
+	cquat                                           GetRotationQuaternion() const;
 
 	// Scale
-	void SetScale(cvec3 _scale);
-	cvec3 GetScale() const;
+	void                                            SetScale(cvec3 _scale);
+	cvec3                                           GetScale() const;
 
 
 	/**
 	 * Gets the scene node's local transform (relative to it's parent world transform).
 	 */
-	mat4 GetLocalTransform() const;
+	mat4                                            GetLocalTransform() const;
 	/**
 	 * Gets the inverse of the local transform (relative to it's parent world transform).
 	 */
-	mat4 GetInverseLocalTransform() const;
-	void SetLocalTransform(cmat4 localTransform);
+	mat4                                            GetInverseLocalTransform() const;
+	void                                            SetLocalTransform(cmat4 localTransform);
 
 
 
@@ -53,13 +53,13 @@ public:
 	 * This function should be used sparingly as it is computed every time
 	 * it is requested.
 	 */
-	mat4 GetWorldTransfom() const;
+	mat4                                            GetWorldTransfom() const;
 	/**
 	 * Gets the inverse world transform of this scene node.
 	 * Use this function sparingly as it is computed every time it is requested.
 	 */
-	mat4 GetInverseWorldTransform() const;
-	void SetWorldTransform(cmat4 worldTransform);
+	mat4                                            GetInverseWorldTransform() const;
+	void                                            SetWorldTransform(cmat4 worldTransform);
 
 
 	/**
@@ -68,42 +68,42 @@ public:
 	 * A scene node takes ownership of it's children.
 	 * If you delete the parent node, all of its children will also be deleted.
 	 */
-	virtual void AddChild(std::shared_ptr<SceneNode3D> childNode);
-	virtual void RemoveChild(std::shared_ptr<SceneNode3D> childNode);
-	virtual void SetParent(std::weak_ptr<SceneNode3D> parentNode);
-	virtual std::weak_ptr<SceneNode3D> GetParent() const;
-	virtual NodeList GetChilds();
+	virtual void                                    AddChild(std::shared_ptr<SceneNode3D> childNode);
+	virtual void                                    RemoveChild(std::shared_ptr<SceneNode3D> childNode);
+	virtual void                                    SetParent(std::weak_ptr<SceneNode3D> parentNode);
+	virtual std::weak_ptr<SceneNode3D>              GetParent() const;
+	virtual NodeList                                GetChilds();
 
 	/**
 	 * Called before all others calls
 	 */
-	virtual void UpdateCamera(const Camera* camera);
+	virtual void                                    UpdateCamera(const Camera* camera);
 
 	/**
 	 * Allow a visitor to visit this node.
 	 */
-	virtual bool Accept(IVisitor& visitor);
+	virtual bool                                    Accept(IVisitor& visitor);
 
 	/**
 	 * Updatable
 	 */
-	virtual void OnUpdate(UpdateEventArgs& e);
+	virtual void                                    OnUpdate(UpdateEventArgs& e);
 
 	// ILoadableObject
-	virtual bool PreLoad()             override;
-	virtual bool Load()                override;
-	virtual bool Delete()              override;
-	void setLoadingBegin()             override final;
-	bool isLoadingBegin()        const override final;
-	void setLoaded()                   override final;
-	bool isLoaded()              const override final;
-	virtual uint32 getPriority() const override;
+	virtual bool                                    PreLoad()             override;
+	virtual bool                                    Load()                override;
+	virtual bool                                    Delete()              override;
+	void                                            setLoadingBegin()   override final;
+	bool                                            isLoadingBegin()    const override final;
+	void                                            setLoaded()         override final;
+	bool                                            isLoaded()              const override final;
+	virtual uint32                                  getPriority() const override;
 
 protected:
-	virtual mat4 GetParentWorldTransform() const;
+	virtual mat4                                    GetParentWorldTransform() const;
 
-	virtual void UpdateLocalTransform();
-	virtual void UpdateWorldTransform();
+	virtual void                                    UpdateLocalTransform();
+	virtual void                                    UpdateWorldTransform();
 
 private:
 	std::string               m_Name;

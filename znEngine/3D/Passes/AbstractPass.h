@@ -24,7 +24,7 @@ public:
 	// Inherited from Visitor
 	virtual bool Visit(SceneNode3D& node);
 	virtual bool Visit(CUIBaseNode& nodeUI);
-	virtual bool Visit(IMesh& mesh, UINT indexStartLocation = 0, UINT indexCnt = 0, UINT vertexStartLocation = 0, UINT vertexCnt = 0);
+	virtual bool Visit(IMesh& Mesh, UINT IndexStartLocation = 0, UINT IndexCnt = 0, UINT VertexStartLocation = 0, UINT VertexCnt = 0);
 	virtual bool Visit(CLight3D& light);
 
 	// Need for texture resize

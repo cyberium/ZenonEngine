@@ -88,11 +88,11 @@ bool CFontPass::Visit(SceneNode3D& node)
 	return false;
 }
 
-bool CFontPass::Visit(IMesh& mesh, UINT indexStartLocation, UINT indexCnt, UINT vertexStartLocation, UINT vertexCnt)
+bool CFontPass::Visit(IMesh& Mesh, UINT IndexStartLocation, UINT IndexCnt, UINT VertexStartLocation, UINT VertexCnt)
 {
-	if (m_pRenderEventArgs && mesh.GetType() == SN_TYPE_FONT)
+	if (m_pRenderEventArgs && Mesh.GetType() == SN_TYPE_FONT)
 	{
-		return mesh.Render(*m_pRenderEventArgs, m_PerObjectConstantBuffer, indexStartLocation, indexCnt, vertexStartLocation, vertexCnt);
+		return Mesh.Render(*m_pRenderEventArgs, m_PerObjectConstantBuffer, IndexStartLocation, IndexCnt, VertexStartLocation, VertexCnt);
 	}
 
 	return false;

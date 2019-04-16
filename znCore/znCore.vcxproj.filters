@@ -7,12 +7,6 @@
     <Filter Include="Files">
       <UniqueIdentifier>{96b64482-0656-4ab7-b92a-fc7b484b7a9d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Files\INIFile">
-      <UniqueIdentifier>{4ea54957-7046-46cc-ac3f-7e2c3801412a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Files\XMLFile">
-      <UniqueIdentifier>{ed4969e3-9a15-4fd5-af0e-1c5a05639e0e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Common">
       <UniqueIdentifier>{ad29bc23-2620-4c7e-936f-19c0ecea08b4}</UniqueIdentifier>
     </Filter>
@@ -80,12 +74,6 @@
     </ClCompile>
     <ClCompile Include="Log.cpp">
       <Filter>Log</Filter>
-    </ClCompile>
-    <ClCompile Include="XMLFile.cpp">
-      <Filter>Files\XMLFile</Filter>
-    </ClCompile>
-    <ClCompile Include="INIFile.cpp">
-      <Filter>Files\INIFile</Filter>
     </ClCompile>
     <ClCompile Include="Utils.cpp">
       <Filter>Common\Helpers</Filter>
@@ -184,12 +172,6 @@
     </ClInclude>
     <ClInclude Include="Log.h">
       <Filter>Log</Filter>
-    </ClInclude>
-    <ClInclude Include="XMLFile.h">
-      <Filter>Files\XMLFile</Filter>
-    </ClInclude>
-    <ClInclude Include="INIFile.h">
-      <Filter>Files\INIFile</Filter>
     </ClInclude>
     <ClInclude Include="Debug.h">
       <Filter>Common</Filter>

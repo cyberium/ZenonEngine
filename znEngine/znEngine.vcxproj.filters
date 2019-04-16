@@ -465,9 +465,6 @@
     <Text Include="Resources\shaders_D3D\CommonTypes.hlsl">
       <Filter>Resources\Shaders_D3D</Filter>
     </Text>
-    <Text Include="Resources\shaders_D3D\ForwardRendering.hlsl">
-      <Filter>Resources\Shaders_D3D</Filter>
-    </Text>
     <Text Include="Resources\shaders_D3D\Material.hlsl">
       <Filter>Resources\Shaders_D3D</Filter>
     </Text>

@@ -9,7 +9,8 @@ public:
 	Debug_Pass(std::shared_ptr<Scene3D> scene, std::shared_ptr<PipelineState> pipeline);
 	virtual ~Debug_Pass();
 
-	virtual bool Visit(IMesh& mesh);
+    // IVisitor
+	bool Visit(IMesh& mesh, UINT IndexStartLocation = 0, UINT IndexCnt = 0, UINT VertexStartLocation = 0, UINT VertexCnt = 0) override;
 
 protected:
 
