@@ -268,6 +268,7 @@ void SamplerStateDX11::Bind(uint32_t ID, std::weak_ptr<Shader> shader, ShaderPar
 		samplerDesc.MinLOD = m_fMinLOD;
 		samplerDesc.MaxLOD = m_fMaxLOD;
 
+        m_pSamplerState = NULL;
 		m_pDevice->CreateSamplerState(&samplerDesc, &m_pSamplerState);
 
 		m_bIsDirty = false;

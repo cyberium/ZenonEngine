@@ -13,18 +13,6 @@
     <Filter Include="UI\Passes">
       <UniqueIdentifier>{1c9f6a90-170f-43c8-bed7-d0cc1314f6ff}</UniqueIdentifier>
     </Filter>
-    <Filter Include="3D">
-      <UniqueIdentifier>{8c49bf34-6b4c-469d-9001-5b6044462676}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="3D\Passes">
-      <UniqueIdentifier>{9c10106c-3ee3-4d08-8c8c-e89540f79455}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="3D\Passes\Base">
-      <UniqueIdentifier>{d276b478-70d8-4918-a392-4493565fde9f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="3D\Passes\Query">
-      <UniqueIdentifier>{315a420d-5e16-49f7-83c7-a3ccb81dfa2a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="UI\Fonts">
       <UniqueIdentifier>{00c4ea61-0dd2-4232-9832-90fe44d96dda}</UniqueIdentifier>
     </Filter>
@@ -33,9 +21,6 @@
     </Filter>
     <Filter Include="UI\Materials">
       <UniqueIdentifier>{e65e5a5f-806d-4408-9cea-a0307a9b5e84}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="3D\Materials">
-      <UniqueIdentifier>{2bdba825-b205-4fb9-a50e-4418e1419057}</UniqueIdentifier>
     </Filter>
     <Filter Include="Engine\CameraControllers">
       <UniqueIdentifier>{f27e3d17-127e-4168-8467-5e08cd85a502}</UniqueIdentifier>
@@ -70,6 +55,24 @@
     <Filter Include="Resources\Shaders_D3D\3D">
       <UniqueIdentifier>{5413c097-8bde-4ed5-b5c8-b65a0b3346d5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Scene Funcitonal">
+      <UniqueIdentifier>{8c49bf34-6b4c-469d-9001-5b6044462676}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scene Funcitonal\Passes">
+      <UniqueIdentifier>{9c10106c-3ee3-4d08-8c8c-e89540f79455}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scene Funcitonal\Passes\Base">
+      <UniqueIdentifier>{d276b478-70d8-4918-a392-4493565fde9f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scene Funcitonal\Passes\Query">
+      <UniqueIdentifier>{315a420d-5e16-49f7-83c7-a3ccb81dfa2a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scene Funcitonal\Materials">
+      <UniqueIdentifier>{2bdba825-b205-4fb9-a50e-4418e1419057}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scene Funcitonal\Components">
+      <UniqueIdentifier>{3e13492a-ff8d-4140-930f-9de42b627f3e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -95,41 +98,41 @@
     <ClCompile Include="UI\Fonts\FontsManager.cpp">
       <Filter>UI\Fonts</Filter>
     </ClCompile>
-    <ClCompile Include="3D\Passes\BeginQueryPass.cpp">
-      <Filter>3D\Passes\Query</Filter>
+    <ClCompile Include="SceneFunctional\Passes\BeginQueryPass.cpp">
+      <Filter>Scene Funcitonal\Passes\Query</Filter>
     </ClCompile>
-    <ClCompile Include="3D\Passes\EndQueryPass.cpp">
-      <Filter>3D\Passes\Query</Filter>
+    <ClCompile Include="SceneFunctional\Passes\EndQueryPass.cpp">
+      <Filter>Scene Funcitonal\Passes\Query</Filter>
     </ClCompile>
-    <ClCompile Include="3D\Passes\AbstractPass.cpp">
-      <Filter>3D\Passes\Base</Filter>
+    <ClCompile Include="SceneFunctional\Passes\AbstractPass.cpp">
+      <Filter>Scene Funcitonal\Passes\Base</Filter>
     </ClCompile>
-    <ClCompile Include="3D\Passes\BasePass.cpp">
-      <Filter>3D\Passes\Base</Filter>
+    <ClCompile Include="SceneFunctional\Passes\BasePass.cpp">
+      <Filter>Scene Funcitonal\Passes\Base</Filter>
     </ClCompile>
-    <ClCompile Include="3D\Passes\RenderTechnique.cpp">
-      <Filter>3D\Passes\Base</Filter>
+    <ClCompile Include="SceneFunctional\Passes\RenderTechnique.cpp">
+      <Filter>Scene Funcitonal\Passes\Base</Filter>
     </ClCompile>
-    <ClCompile Include="3D\Passes\ClearRenderTargetPass.cpp">
-      <Filter>3D\Passes</Filter>
+    <ClCompile Include="SceneFunctional\Passes\ClearRenderTargetPass.cpp">
+      <Filter>Scene Funcitonal\Passes</Filter>
     </ClCompile>
-    <ClCompile Include="3D\Passes\CopyBufferPass.cpp">
-      <Filter>3D\Passes</Filter>
+    <ClCompile Include="SceneFunctional\Passes\CopyBufferPass.cpp">
+      <Filter>Scene Funcitonal\Passes</Filter>
     </ClCompile>
-    <ClCompile Include="3D\Passes\CopyTexturePass.cpp">
-      <Filter>3D\Passes</Filter>
+    <ClCompile Include="SceneFunctional\Passes\CopyTexturePass.cpp">
+      <Filter>Scene Funcitonal\Passes</Filter>
     </ClCompile>
-    <ClCompile Include="3D\Passes\DispatchPass.cpp">
-      <Filter>3D\Passes</Filter>
+    <ClCompile Include="SceneFunctional\Passes\DispatchPass.cpp">
+      <Filter>Scene Funcitonal\Passes</Filter>
     </ClCompile>
-    <ClCompile Include="3D\Passes\GenerateMipMapsPass.cpp">
-      <Filter>3D\Passes</Filter>
+    <ClCompile Include="SceneFunctional\Passes\GenerateMipMapsPass.cpp">
+      <Filter>Scene Funcitonal\Passes</Filter>
     </ClCompile>
-    <ClCompile Include="3D\Passes\InvokeFunctionPass.cpp">
-      <Filter>3D\Passes</Filter>
+    <ClCompile Include="SceneFunctional\Passes\InvokeFunctionPass.cpp">
+      <Filter>Scene Funcitonal\Passes</Filter>
     </ClCompile>
-    <ClCompile Include="3D\Passes\PostprocessPass.cpp">
-      <Filter>3D\Passes</Filter>
+    <ClCompile Include="SceneFunctional\Passes\PostprocessPass.cpp">
+      <Filter>Scene Funcitonal\Passes</Filter>
     </ClCompile>
     <ClCompile Include="MeshWrapper.cpp">
       <Filter>Engine</Filter>
@@ -140,35 +143,23 @@
     <ClCompile Include="Debug_Pass.cpp">
       <Filter>RenderStuff</Filter>
     </ClCompile>
-    <ClCompile Include="3D\Scene3D.cpp">
-      <Filter>3D</Filter>
-    </ClCompile>
-    <ClCompile Include="3D\SceneNode3D.cpp">
-      <Filter>3D</Filter>
-    </ClCompile>
     <ClCompile Include="UI\Materials\UI_Color_Material.cpp">
       <Filter>UI\Materials</Filter>
     </ClCompile>
     <ClCompile Include="UI\Materials\UI_Texture_Material.cpp">
       <Filter>UI\Materials</Filter>
     </ClCompile>
-    <ClCompile Include="3D\Materials\MaterialDebug.cpp">
-      <Filter>3D\Materials</Filter>
+    <ClCompile Include="SceneFunctional\Materials\MaterialDebug.cpp">
+      <Filter>Scene Funcitonal\Materials</Filter>
     </ClCompile>
-    <ClCompile Include="3D\Materials\MaterialTextured.cpp">
-      <Filter>3D\Materials</Filter>
+    <ClCompile Include="SceneFunctional\Materials\MaterialTextured.cpp">
+      <Filter>Scene Funcitonal\Materials</Filter>
     </ClCompile>
     <ClCompile Include="MaterialWrapper.cpp">
       <Filter>Engine</Filter>
     </ClCompile>
-    <ClCompile Include="3D\Passes\DeferredLightingPass.cpp">
-      <Filter>3D\Passes</Filter>
-    </ClCompile>
-    <ClCompile Include="3D\Light3D.cpp">
-      <Filter>3D</Filter>
-    </ClCompile>
-    <ClCompile Include="3D\SceneNodeModel3D.cpp">
-      <Filter>3D</Filter>
+    <ClCompile Include="SceneFunctional\Passes\DeferredLightingPass.cpp">
+      <Filter>Scene Funcitonal\Passes</Filter>
     </ClCompile>
     <ClCompile Include="FreeCameraController.cpp">
       <Filter>Engine\CameraControllers</Filter>
@@ -182,11 +173,8 @@
     <ClCompile Include="ArcBallCameraController.cpp">
       <Filter>Engine\CameraControllers</Filter>
     </ClCompile>
-    <ClCompile Include="3D\SceneNodeFont3D.cpp">
-      <Filter>3D</Filter>
-    </ClCompile>
-    <ClCompile Include="3D\Passes\FontPass.cpp">
-      <Filter>3D\Passes\Base</Filter>
+    <ClCompile Include="SceneFunctional\Passes\FontPass.cpp">
+      <Filter>Scene Funcitonal\Passes\Base</Filter>
     </ClCompile>
     <ClCompile Include="UI\Materials\UI_Font_Material.cpp">
       <Filter>UI\Materials</Filter>
@@ -241,7 +229,31 @@
       <Filter>UI\Containers</Filter>
     </ClCompile>
     <ClCompile Include="GBuffer.cpp">
-      <Filter>3D\Passes</Filter>
+      <Filter>Scene Funcitonal\Passes</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneFunctional\SceneNode\TransformComponent.cpp">
+      <Filter>Scene Funcitonal\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneFunctional\SceneNode\ComponentBase.cpp">
+      <Filter>Scene Funcitonal\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneFunctional\SceneNode\MeshComponent.cpp">
+      <Filter>Scene Funcitonal\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneFunctional\SceneNode\LightComponent.cpp">
+      <Filter>Scene Funcitonal\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneFunctional\SceneNode\ColliderComponent.cpp">
+      <Filter>Scene Funcitonal\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneFunctional\SceneNode3D.cpp">
+      <Filter>Scene Funcitonal</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneFunctional\Scene3D.cpp">
+      <Filter>Scene Funcitonal</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneFunctional\Light3D.cpp">
+      <Filter>Scene Funcitonal</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -274,44 +286,44 @@
     <ClInclude Include="UI\Fonts\FontsManager.h">
       <Filter>UI\Fonts</Filter>
     </ClInclude>
-    <ClInclude Include="3D\Passes\BeginQueryPass.h">
-      <Filter>3D\Passes\Query</Filter>
+    <ClInclude Include="SceneFunctional\Passes\BeginQueryPass.h">
+      <Filter>Scene Funcitonal\Passes\Query</Filter>
     </ClInclude>
-    <ClInclude Include="3D\Passes\EndQueryPass.h">
-      <Filter>3D\Passes\Query</Filter>
+    <ClInclude Include="SceneFunctional\Passes\EndQueryPass.h">
+      <Filter>Scene Funcitonal\Passes\Query</Filter>
     </ClInclude>
-    <ClInclude Include="3D\Passes\AbstractPass.h">
-      <Filter>3D\Passes\Base</Filter>
+    <ClInclude Include="SceneFunctional\Passes\AbstractPass.h">
+      <Filter>Scene Funcitonal\Passes\Base</Filter>
     </ClInclude>
-    <ClInclude Include="3D\Passes\BasePass.h">
-      <Filter>3D\Passes\Base</Filter>
+    <ClInclude Include="SceneFunctional\Passes\BasePass.h">
+      <Filter>Scene Funcitonal\Passes\Base</Filter>
     </ClInclude>
-    <ClInclude Include="3D\Passes\RenderPass.h">
-      <Filter>3D\Passes\Base</Filter>
+    <ClInclude Include="SceneFunctional\Passes\RenderPass.h">
+      <Filter>Scene Funcitonal\Passes\Base</Filter>
     </ClInclude>
-    <ClInclude Include="3D\Passes\RenderTechnique.h">
-      <Filter>3D\Passes\Base</Filter>
+    <ClInclude Include="SceneFunctional\Passes\RenderTechnique.h">
+      <Filter>Scene Funcitonal\Passes\Base</Filter>
     </ClInclude>
-    <ClInclude Include="3D\Passes\ClearRenderTargetPass.h">
-      <Filter>3D\Passes</Filter>
+    <ClInclude Include="SceneFunctional\Passes\ClearRenderTargetPass.h">
+      <Filter>Scene Funcitonal\Passes</Filter>
     </ClInclude>
-    <ClInclude Include="3D\Passes\CopyBufferPass.h">
-      <Filter>3D\Passes</Filter>
+    <ClInclude Include="SceneFunctional\Passes\CopyBufferPass.h">
+      <Filter>Scene Funcitonal\Passes</Filter>
     </ClInclude>
-    <ClInclude Include="3D\Passes\CopyTexturePass.h">
-      <Filter>3D\Passes</Filter>
+    <ClInclude Include="SceneFunctional\Passes\CopyTexturePass.h">
+      <Filter>Scene Funcitonal\Passes</Filter>
     </ClInclude>
-    <ClInclude Include="3D\Passes\DispatchPass.h">
-      <Filter>3D\Passes</Filter>
+    <ClInclude Include="SceneFunctional\Passes\DispatchPass.h">
+      <Filter>Scene Funcitonal\Passes</Filter>
     </ClInclude>
-    <ClInclude Include="3D\Passes\GenerateMipMapsPass.h">
-      <Filter>3D\Passes</Filter>
+    <ClInclude Include="SceneFunctional\Passes\GenerateMipMapsPass.h">
+      <Filter>Scene Funcitonal\Passes</Filter>
     </ClInclude>
-    <ClInclude Include="3D\Passes\InvokeFunctionPass.h">
-      <Filter>3D\Passes</Filter>
+    <ClInclude Include="SceneFunctional\Passes\InvokeFunctionPass.h">
+      <Filter>Scene Funcitonal\Passes</Filter>
     </ClInclude>
-    <ClInclude Include="3D\Passes\PostprocessPass.h">
-      <Filter>3D\Passes</Filter>
+    <ClInclude Include="SceneFunctional\Passes\PostprocessPass.h">
+      <Filter>Scene Funcitonal\Passes</Filter>
     </ClInclude>
     <ClInclude Include="MeshWrapper.h">
       <Filter>Engine</Filter>
@@ -322,11 +334,11 @@
     <ClInclude Include="Debug_Pass.h">
       <Filter>RenderStuff</Filter>
     </ClInclude>
-    <ClInclude Include="3D\Scene3D.h">
-      <Filter>3D</Filter>
+    <ClInclude Include="SceneFunctional\Scene3D.h">
+      <Filter>Scene Funcitonal</Filter>
     </ClInclude>
-    <ClInclude Include="3D\SceneNode3D.h">
-      <Filter>3D</Filter>
+    <ClInclude Include="SceneFunctional\SceneNode3D.h">
+      <Filter>Scene Funcitonal</Filter>
     </ClInclude>
     <ClInclude Include="UI\Materials\UI_Color_Material.h">
       <Filter>UI\Materials</Filter>
@@ -334,23 +346,17 @@
     <ClInclude Include="UI\Materials\UI_Texture_Material.h">
       <Filter>UI\Materials</Filter>
     </ClInclude>
-    <ClInclude Include="3D\Materials\MaterialDebug.h">
-      <Filter>3D\Materials</Filter>
+    <ClInclude Include="SceneFunctional\Materials\MaterialDebug.h">
+      <Filter>Scene Funcitonal\Materials</Filter>
     </ClInclude>
-    <ClInclude Include="3D\Materials\MaterialTextured.h">
-      <Filter>3D\Materials</Filter>
+    <ClInclude Include="SceneFunctional\Materials\MaterialTextured.h">
+      <Filter>Scene Funcitonal\Materials</Filter>
     </ClInclude>
     <ClInclude Include="MaterialWrapper.h">
       <Filter>Engine</Filter>
     </ClInclude>
-    <ClInclude Include="3D\Passes\DeferredLightingPass.h">
-      <Filter>3D\Passes</Filter>
-    </ClInclude>
-    <ClInclude Include="3D\Light3D.h">
-      <Filter>3D</Filter>
-    </ClInclude>
-    <ClInclude Include="3D\SceneNodeModel3D.h">
-      <Filter>3D</Filter>
+    <ClInclude Include="SceneFunctional\Passes\DeferredLightingPass.h">
+      <Filter>Scene Funcitonal\Passes</Filter>
     </ClInclude>
     <ClInclude Include="FreeCameraController.h">
       <Filter>Engine\CameraControllers</Filter>
@@ -364,11 +370,8 @@
     <ClInclude Include="ArcBallCameraController.h">
       <Filter>Engine\CameraControllers</Filter>
     </ClInclude>
-    <ClInclude Include="3D\SceneNodeFont3D.h">
-      <Filter>3D</Filter>
-    </ClInclude>
-    <ClInclude Include="3D\Passes\FontPass.h">
-      <Filter>3D\Passes\Base</Filter>
+    <ClInclude Include="SceneFunctional\Passes\FontPass.h">
+      <Filter>Scene Funcitonal\Passes\Base</Filter>
     </ClInclude>
     <ClInclude Include="UI\Materials\UI_Font_Material.h">
       <Filter>UI\Materials</Filter>
@@ -426,7 +429,25 @@
       <Filter>Common</Filter>
     </ClInclude>
     <ClInclude Include="GBuffer.h">
-      <Filter>3D\Passes</Filter>
+      <Filter>Scene Funcitonal\Passes</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneFunctional\SceneNode\TransformComponent.h">
+      <Filter>Scene Funcitonal\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneFunctional\SceneNode\ComponentBase.h">
+      <Filter>Scene Funcitonal\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneFunctional\SceneNode\MeshComponent.h">
+      <Filter>Scene Funcitonal\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneFunctional\SceneNode\LightComponent.h">
+      <Filter>Scene Funcitonal\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneFunctional\SceneNode\ColliderComponent.h">
+      <Filter>Scene Funcitonal\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneFunctional\Light3D.h">
+      <Filter>Scene Funcitonal</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -436,37 +457,37 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="Resources\shaders_D3D\CommonInclude.hlsl">
-      <Filter>Resources\Shaders_D3D</Filter>
+      <Filter>Resources\shaders_D3D</Filter>
     </Text>
     <Text Include="Resources\shaders_D3D\UI\UI_VertexBase.hlsl">
-      <Filter>Resources\Shaders_D3D\UI</Filter>
+      <Filter>Resources\shaders_D3D\UI</Filter>
     </Text>
     <Text Include="Resources\shaders_D3D\UI\UI_Button.hlsl">
-      <Filter>Resources\Shaders_D3D\UI</Filter>
+      <Filter>Resources\shaders_D3D\UI</Filter>
     </Text>
     <Text Include="Resources\shaders_D3D\UI\UI_Color.hlsl">
-      <Filter>Resources\Shaders_D3D\UI</Filter>
+      <Filter>Resources\shaders_D3D\UI</Filter>
     </Text>
     <Text Include="Resources\shaders_D3D\UI\UI_Common.hlsl">
-      <Filter>Resources\Shaders_D3D\UI</Filter>
+      <Filter>Resources\shaders_D3D\UI</Filter>
     </Text>
     <Text Include="Resources\shaders_D3D\UI\UI_Font.hlsl">
-      <Filter>Resources\Shaders_D3D\UI</Filter>
+      <Filter>Resources\shaders_D3D\UI</Filter>
     </Text>
     <Text Include="Resources\shaders_D3D\UI\UI_Line.hlsl">
-      <Filter>Resources\Shaders_D3D\UI</Filter>
+      <Filter>Resources\shaders_D3D\UI</Filter>
     </Text>
     <Text Include="Resources\shaders_D3D\UI\UI_Texture.hlsl">
-      <Filter>Resources\Shaders_D3D\UI</Filter>
+      <Filter>Resources\shaders_D3D\UI</Filter>
     </Text>
     <Text Include="Resources\shaders_D3D\DeferredRendering.hlsl">
-      <Filter>Resources\Shaders_D3D</Filter>
+      <Filter>Resources\shaders_D3D</Filter>
     </Text>
     <Text Include="Resources\shaders_D3D\CommonTypes.hlsl">
-      <Filter>Resources\Shaders_D3D</Filter>
+      <Filter>Resources\shaders_D3D</Filter>
     </Text>
     <Text Include="Resources\shaders_D3D\Material.hlsl">
-      <Filter>Resources\Shaders_D3D</Filter>
+      <Filter>Resources\shaders_D3D</Filter>
     </Text>
     <Text Include="Resources\Fonts\consola.ttf">
       <Filter>Resources\Fonts</Filter>
@@ -475,7 +496,12 @@
       <Filter>Resources\Shaders_D3D\3D</Filter>
     </Text>
     <Text Include="Resources\shaders_D3D\3D\Textured.hlsl">
-      <Filter>Resources\Shaders_D3D\3D</Filter>
+      <Filter>Resources\shaders_D3D\3D</Filter>
     </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="SceneFunctional\SceneNode3D.inl">
+      <Filter>Scene Funcitonal</Filter>
+    </None>
   </ItemGroup>
 </Project>

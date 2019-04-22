@@ -13,6 +13,9 @@ public:
 	virtual std::shared_ptr<Texture> GetTexture(uint8 ID) const;
 	virtual void SetTexture(uint8 type, std::shared_ptr<Texture> texture);
 
+    virtual std::shared_ptr<SamplerState> GetSampler(uint8 ID) const;
+    virtual void SetSampler(uint8 ID, std::shared_ptr<SamplerState> samplerState);
+
 	virtual void Bind() const;
 	virtual void Unbind() const;
 

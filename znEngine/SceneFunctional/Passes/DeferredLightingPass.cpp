@@ -1,8 +1,7 @@
 #include <stdafx.h>
 
 #include <Application.h>
-#include "3D//Scene3D.h"
-#include "3D//SceneNodeModel3D.h"
+#include "SceneFunctional//Scene3D.h"
 
 // General
 #include "DeferredLightingPass.h"
@@ -40,20 +39,20 @@ DeferredLightingPass::DeferredLightingPass(
 	// PointLightScene
 	m_pPointLightScene = std::make_shared<Scene3D>();
 
-	std::shared_ptr<SceneNodeModel3D> sphereSceneNode = std::make_shared<SceneNodeModel3D>();
+	std::shared_ptr<SceneNode3D> sphereSceneNode = std::make_shared<SceneNode3D>();
 	sphereSceneNode->SetParent(m_pPointLightScene->GetRootNode());
 
 	std::shared_ptr<IMesh> sphereMesh = _RenderDevice->CreateSphere();
-	sphereSceneNode->AddMesh(sphereMesh);
+	sphereSceneNode->GetComponent<CMeshComponent>()->AddMesh(sphereMesh);
 
 	// Create a full-screen quad that is placed on the far clip plane.
 	m_pDirectionalLightScene = std::make_shared<Scene3D>();
 
-	std::shared_ptr<SceneNodeModel3D> quadSceneNode = std::make_shared<SceneNodeModel3D>();
+	std::shared_ptr<SceneNode3D> quadSceneNode = std::make_shared<SceneNode3D>();
 	quadSceneNode->SetParent(m_pDirectionalLightScene->GetRootNode());
 
 	std::shared_ptr<IMesh> quadMesh = _RenderDevice->CreateScreenQuad(0, 1280, 1024, 0); // _RenderDevice->CreateScreenQuad(-1, 1, -1, 1, -1);
-	quadSceneNode->AddMesh(quadMesh);
+	quadSceneNode->GetComponent<CMeshComponent>()->AddMesh(quadMesh);
 }
 
 DeferredLightingPass::~DeferredLightingPass()
@@ -174,24 +173,24 @@ void DeferredLightingPass::PostRender(Render3DEventArgs& e)
 
 // Inherited from Visitor
 
-bool DeferredLightingPass::Visit(SceneNode3D& node)
+bool DeferredLightingPass::Visit(std::shared_ptr<SceneNode3D> node)
 {
-	m_World = node.GetWorldTransfom();
+	m_World = node->GetComponent<CTransformComponent>()->GetWorldTransfom();
 
 	return true;
 }
 
-bool DeferredLightingPass::Visit(IMesh& Mesh, UINT IndexStartLocation, UINT IndexCnt, UINT VertexStartLocation, UINT VertexCnt)
+bool DeferredLightingPass::Visit(std::shared_ptr<IMesh> Mesh, UINT IndexStartLocation, UINT IndexCnt, UINT VertexStartLocation, UINT VertexCnt)
 {
-	if (m_pRenderEventArgs && Mesh.GetMaterial() == nullptr) // TODO: Fixme
+	if (m_pRenderEventArgs && Mesh->GetMaterial() == nullptr) // TODO: Fixme
 	{
-		return Mesh.Render(*m_pRenderEventArgs, m_PerObjectConstantBuffer);
+		return Mesh->Render(*m_pRenderEventArgs, m_PerObjectConstantBuffer);
 	}
 
 	return false;
 }
 
-bool DeferredLightingPass::Visit(CLight3D& light)
+bool DeferredLightingPass::Visit(std::shared_ptr < CLight3D> light)
 {
 	const Camera* camera = GetRenderEventArgs().Camera;
 	assert1(camera != nullptr);
@@ -229,14 +228,14 @@ bool DeferredLightingPass::Visit(CLight3D& light)
 	SetPerObjectConstantBufferData(perObjectData);
 
 	// Update the constant buffer for the per-light data.
-	m_pLightParams->m_Light = light.getLight();
+	m_pLightParams->m_Light = light->getLight();
 	m_LightParamsCB->Set(*m_pLightParams);
 
 	// Clear the stencil buffer for the next light
 	m_LightPipeline0->GetRenderTarget()->Clear(ClearFlags::Stencil, glm::vec4(0), 1.0f, 1);
 	// The other pipelines should have the same render target.. so no need to clear it 3 times.
 
-	switch (light.getLight().m_Type)
+	switch (light->getLight().m_Type)
 	{
 	case Light::LightType::Point:
 		RenderSubPass(GetRenderEventArgs(), m_pDirectionalLightScene, m_DirectionalLightPipeline);

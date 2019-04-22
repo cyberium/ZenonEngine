@@ -26,7 +26,7 @@ Light& CLight3D::getLight()
 bool CLight3D::Accept(IVisitor& visitor)
 {
 	if (m_LightProto.m_Enabled)
-		return visitor.Visit(*this);
+		return visitor.Visit(shared_from_this());
 
 	return false;
 }

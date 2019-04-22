@@ -2,14 +2,15 @@
 
 #include "Shader.h"
 #include "Texture.h"
-
+#include "SamplerState.h"
 
 // A material class is used to wrap the shaders and to manage the shader parameters.
 class Material : public Object, public std::enable_shared_from_this<Material>
 {
 public:
-	typedef std::map<Shader::ShaderType, std::shared_ptr<Shader> > ShaderMap;
-	typedef std::map<uint8, std::shared_ptr<Texture> > TextureMap;
+	typedef std::map<Shader::ShaderType, std::shared_ptr<Shader>> ShaderMap;
+	typedef std::map<uint8, std::shared_ptr<Texture>> TextureMap;
+    typedef std::map<uint8, std::shared_ptr<SamplerState>> SamplersMap;
 
 public:
 	virtual void SetShader(Shader::ShaderType type, std::shared_ptr<Shader> pShader) = 0;
@@ -17,7 +18,10 @@ public:
 	virtual const ShaderMap& GetShaders() const = 0;
 
 	virtual std::shared_ptr<Texture> GetTexture(uint8 ID) const = 0;
-	virtual void SetTexture(uint8 type, std::shared_ptr<Texture> texture) = 0;
+	virtual void SetTexture(uint8 ID, std::shared_ptr<Texture> texture) = 0;
+
+    virtual std::shared_ptr<SamplerState> GetSampler(uint8 ID) const = 0;
+    virtual void SetSampler(uint8 ID, std::shared_ptr<SamplerState> samplerState) = 0;
 
 	virtual void Bind() const = 0;
 	virtual void Unbind() const = 0;

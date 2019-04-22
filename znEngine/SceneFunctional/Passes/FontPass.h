@@ -17,9 +17,9 @@ public:
 	virtual void PostRender(Render3DEventArgs& e);
 
 	// Inherited from Visitor
-	virtual bool Visit(SceneNode3D& node) override;
-	virtual bool Visit(IMesh& Mesh, UINT IndexStartLocation, UINT IndexCnt, UINT VertexStartLocation, UINT VertexCnt) override;
-	virtual bool Visit(CLight3D& light) override;
+	virtual bool Visit(std::shared_ptr<SceneNode3D> node) override;
+	virtual bool Visit(std::shared_ptr<IMesh> Mesh, UINT IndexStartLocation, UINT IndexCnt, UINT VertexStartLocation, UINT VertexCnt) override;
+	virtual bool Visit(std::shared_ptr<CLight3D> light) override;
 
 	virtual void UpdateViewport(Viewport _viewport);
 

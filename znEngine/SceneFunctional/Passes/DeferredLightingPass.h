@@ -1,7 +1,7 @@
 #pragma once
 
 #include "AbstractPass.h"
-#include "3D/Scene3D.h"
+#include "SceneFunctional/Scene3D.h"
 #include "..//Light.h"
 
 // Use this pass to render the lights as geometry in the scene.
@@ -30,9 +30,9 @@ public:
 	virtual void PostRender(Render3DEventArgs& e) override final;
 
 	// Inherited from Visitor
-	virtual bool Visit(SceneNode3D& node) override final;
-	virtual bool Visit(IMesh& Mesh, UINT IndexStartLocation = 0, UINT IndexCnt = 0, UINT VertexStartLocation = 0, UINT VertexCnt = 0) override final;
-	virtual bool Visit(CLight3D& light) override final;
+	virtual bool Visit(std::shared_ptr<SceneNode3D> node) override final;
+	virtual bool Visit(std::shared_ptr<IMesh> Mesh, UINT IndexStartLocation = 0, UINT IndexCnt = 0, UINT VertexStartLocation = 0, UINT VertexCnt = 0) override final;
+	virtual bool Visit(std::shared_ptr<CLight3D> light) override final;
 
 	virtual void UpdateViewport(Viewport _viewport);
 

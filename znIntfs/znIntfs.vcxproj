@@ -39,6 +39,7 @@
     <ClInclude Include="Loader.h" />
     <ClInclude Include="Log.h" />
     <ClInclude Include="Networking.h" />
+    <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneNodeProvider.h" />
     <ClInclude Include="Settings.h" />
     <ClInclude Include="stdafx.h" />

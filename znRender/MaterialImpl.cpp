@@ -44,21 +44,38 @@ const MaterialImpl::ShaderMap& MaterialImpl::GetShaders() const
 }
 
 
-std::shared_ptr<Texture> MaterialImpl::GetTexture(uint8 type) const
+std::shared_ptr<Texture> MaterialImpl::GetTexture(uint8 ID) const
 {
-	TextureMap::const_iterator itr = m_Textures.find(type);
+	TextureMap::const_iterator itr = m_Textures.find(ID);
 	if (itr != m_Textures.end())
 	{
 		return itr->second;
 	}
 
-	return nullptr;
+	return std::shared_ptr<Texture>();
 }
 
-void MaterialImpl::SetTexture(uint8 type, std::shared_ptr<Texture> texture)
+void MaterialImpl::SetTexture(uint8 ID, std::shared_ptr<Texture> texture)
 {
-	m_Textures[type] = texture;
+	m_Textures[ID] = texture;
 	m_Dirty = true;
+}
+
+std::shared_ptr<SamplerState> MaterialImpl::GetSampler(uint8 ID) const
+{
+    SamplersMap::const_iterator itr = m_Samplers.find(ID);
+    if (itr != m_Samplers.end())
+    {
+        return itr->second;
+    }
+
+    return std::shared_ptr<SamplerState>();
+}
+
+void MaterialImpl::SetSampler(uint8 ID, std::shared_ptr<SamplerState> samplerState)
+{
+    m_Samplers[ID] = samplerState;
+    m_Dirty = true;
 }
 
 
@@ -79,12 +96,18 @@ void MaterialImpl::Bind() const
 		{
 			pShader->Bind();
 
-			for (auto texture : m_Textures)
+			for (auto textureIt : m_Textures)
 			{
-				std::shared_ptr<Texture> pTexture = texture.second;
+				std::shared_ptr<Texture> texture = textureIt.second;
 				//if (pTexture != nullptr)
-				pTexture->Bind((uint32_t)texture.first, pShader, ShaderParameter::Type::Texture);
+                texture->Bind((uint32_t)textureIt.first, pShader, ShaderParameter::Type::Texture);
 			}
+
+            for (auto samplerStateIt : m_Samplers)
+            {
+                std::shared_ptr<SamplerState> samplerState = samplerStateIt.second;
+                samplerState->Bind((uint32_t)samplerStateIt.first, pShader, ShaderParameter::Type::Sampler);
+            }
 
 			ShaderParameter& materialParameter = pShader->GetShaderParameterByName("Material");
 			if (materialParameter.IsValid() && m_pConstantBuffer != nullptr)
@@ -103,12 +126,17 @@ void MaterialImpl::Unbind() const
 		std::shared_ptr<Shader> pShader = shader.second;
 		if (pShader)
 		{
-			for (auto texture : m_Textures)
+			for (auto textureIt : m_Textures)
 			{
-				std::shared_ptr<Texture> pTexture = texture.second;
-				//if (pTexture != nullptr)
-				pTexture->UnBind((uint32_t)texture.first, pShader, ShaderParameter::Type::Texture);
+				std::shared_ptr<Texture> texture = textureIt.second;
+				texture->UnBind((uint32_t)textureIt.first, pShader, ShaderParameter::Type::Texture);
 			}
+
+            for (auto samplerStateIt : m_Samplers)
+            {
+                std::shared_ptr<SamplerState> samplerState = samplerStateIt.second;
+                samplerState->UnBind((uint32_t)samplerStateIt.first, pShader, ShaderParameter::Type::Sampler);
+            }
 
 			ShaderParameter& materialParameter = pShader->GetShaderParameterByName("Material");
 			if (materialParameter.IsValid() && m_pConstantBuffer != nullptr)

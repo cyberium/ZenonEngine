@@ -1,7 +1,7 @@
 #pragma once
 
-#include "3D/Scene3D.h"
-#include "3D/Passes/RenderTechnique.h"
+#include "SceneFunctional/Scene3D.h"
+#include "SceneFunctional/Passes/RenderTechnique.h"
 
 #include "UI/UIScene.h"
 #include "UI/Passes/RenderUITechnique.h"

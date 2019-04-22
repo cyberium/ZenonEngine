@@ -61,7 +61,7 @@ glm::vec2 CUIBaseNode::GetTranslation() const
 glm::vec2 CUIBaseNode::GetTranslationAbs() const
 {
 	glm::vec2 parentTranslate = vec2(0.0f, 0.0f);
-	if (std::shared_ptr<CUIBaseNode> parent = m_pParentNode.lock())
+	if (std::shared_ptr<CUIBaseNode> parent = m_ParentNode.lock())
 		parentTranslate = parent->GetTranslationAbs();
 	return parentTranslate + GetTranslation();
 }
@@ -100,7 +100,7 @@ glm::vec2 CUIBaseNode::GetScale() const
 glm::vec2 CUIBaseNode::GetScaleAbs() const
 {
     glm::vec2 parentScale = vec2(1.0f, 1.0f);
-    if (std::shared_ptr<CUIBaseNode> parent = m_pParentNode.lock())
+    if (std::shared_ptr<CUIBaseNode> parent = m_ParentNode.lock())
         parentScale = parent->GetScaleAbs();
     return parentScale * GetScale();
 }
@@ -165,12 +165,12 @@ void CUIBaseNode::SetParent(std::weak_ptr<CUIBaseNode> parentNode)
 	std::shared_ptr<CUIBaseNode> me = shared_from_this();
 
 	// Delete from current parent
-	if (std::shared_ptr<CUIBaseNode> currentParent = m_pParentNode.lock())
+	if (std::shared_ptr<CUIBaseNode> currentParent = m_ParentNode.lock())
 	{
 		if (std::shared_ptr<CUIWindowNode> currentParentAsWindow = std::dynamic_pointer_cast<CUIWindowNode, CUIBaseNode>(currentParent))
 		{
 			currentParentAsWindow->RemoveChild(me);
-			m_pParentNode.reset();
+			m_ParentNode.reset();
 		}
 	}
 
@@ -190,12 +190,12 @@ void CUIBaseNode::SetParent(std::weak_ptr<CUIBaseNode> parentNode)
 
 void CUIBaseNode::SetParentInternal(std::weak_ptr<CUIBaseNode> parent)
 {
-	m_pParentNode = parent;
+	m_ParentNode = parent;
 }
 
 std::shared_ptr<CUIBaseNode> CUIBaseNode::GetParent() const
 {
-    return m_pParentNode.lock();
+    return m_ParentNode.lock();
 }
 
 std::vector<std::shared_ptr<CUIBaseNode>> CUIBaseNode::GetChilds() const
@@ -206,7 +206,7 @@ std::vector<std::shared_ptr<CUIBaseNode>> CUIBaseNode::GetChilds() const
 
 mat4 CUIBaseNode::GetParentWorldTransform() const
 {
-	if (std::shared_ptr<CUIBaseNode> parent = m_pParentNode.lock())
+	if (std::shared_ptr<CUIBaseNode> parent = m_ParentNode.lock())
 	{
 		return parent->GetWorldTransfom();
 	}
@@ -239,7 +239,7 @@ void CUIBaseNode::UpdateViewport(const Viewport* viewport)
 //
 bool CUIBaseNode::Accept(IVisitor& visitor)
 {
-	bool visitResult = visitor.Visit(*this);
+	bool visitResult = visitor.Visit(shared_from_this());
 	if (!visitResult)
 		return false;
 

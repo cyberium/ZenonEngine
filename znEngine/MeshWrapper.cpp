@@ -6,27 +6,15 @@
 // Additional
 #include "Application.h"
 
-MeshWrapper::MeshWrapper(SceneNodeTypes type, std::shared_ptr<IMesh> _mesh) :
+MeshWrapper::MeshWrapper(std::shared_ptr<IMesh> _mesh) :
 	m_Mesh(_mesh)
 {
 	if (m_Mesh == nullptr)
 		m_Mesh = _RenderDevice->CreateMesh();
-
-	m_Mesh->SetType(type);
 }
 
 MeshWrapper::~MeshWrapper()
 {
-}
-
-SceneNodeTypes MeshWrapper::GetType() const
-{
-	return m_Mesh->GetType();
-}
-
-void MeshWrapper::SetType(SceneNodeTypes type)
-{
-	m_Mesh->SetType(type);
 }
 
 void MeshWrapper::AddVertexBuffer(const BufferBinding & binding, std::shared_ptr<IBuffer> buffer)
@@ -66,5 +54,5 @@ bool MeshWrapper::Render(RenderEventArgs& renderEventArgs, std::shared_ptr<Const
 
 bool MeshWrapper::Accept(IVisitor& visitor, UINT indexStartLocation, UINT indexCnt, UINT vertexStartLocation, UINT vertexCnt)
 {
-	return visitor.Visit(*this, indexStartLocation, indexCnt, vertexStartLocation, vertexCnt);
+	return visitor.Visit(shared_from_this(), indexStartLocation, indexCnt, vertexStartLocation, vertexCnt);
 }

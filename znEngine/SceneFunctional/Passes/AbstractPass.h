@@ -22,10 +22,10 @@ public:
 	virtual void PostRender(Render3DEventArgs& e);
 
 	// Inherited from Visitor
-	virtual bool Visit(SceneNode3D& node);
-	virtual bool Visit(CUIBaseNode& nodeUI);
-	virtual bool Visit(IMesh& Mesh, UINT IndexStartLocation = 0, UINT IndexCnt = 0, UINT VertexStartLocation = 0, UINT VertexCnt = 0);
-	virtual bool Visit(CLight3D& light);
+	virtual bool Visit(std::shared_ptr<SceneNode3D> node) override;
+	virtual bool Visit(std::shared_ptr<CUIBaseNode> nodeUI) override;
+	virtual bool Visit(std::shared_ptr<IMesh> Mesh, UINT IndexStartLocation = 0, UINT IndexCnt = 0, UINT VertexStartLocation = 0, UINT VertexCnt = 0) override;
+	virtual bool Visit(std::shared_ptr<CLight3D> light) override;
 
 	// Need for texture resize
 	virtual void UpdateViewport(Viewport _viewport);

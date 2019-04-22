@@ -1,6 +1,6 @@
 #pragma once
 
-#include "3D/Passes/DeferredLightingPass.h"
+#include "SceneFunctional/Passes/DeferredLightingPass.h"
 
 class CGBuffer
 {

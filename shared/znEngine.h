@@ -58,34 +58,32 @@
 //
 
 // base nodes
-#include "../znEngine/3D/Scene3D.h"
-#include "../znEngine/3D/SceneNode3D.h"
-#include "../znEngine/3D/SceneNodeModel3D.h"
-#include "../znEngine/3D/SceneNodeFont3D.h"
+#include "../znEngine/SceneFunctional/Scene3D.h"
+#include "../znEngine/SceneFunctional/SceneNode3D.h"
 
 // additional nodes
 
 // materials
-#include "../znEngine/3D/Materials/MaterialDebug.h"
-#include "../znEngine/3D/Materials/MaterialTextured.h"
+#include "../znEngine/SceneFunctional/Materials/MaterialDebug.h"
+#include "../znEngine/SceneFunctional/Materials/MaterialTextured.h"
 
 // base passes
-#include "../znEngine/3D/Passes/BasePass.h"
-#include "../znEngine/3D/Passes/RenderTechnique.h"
+#include "../znEngine/SceneFunctional/Passes/BasePass.h"
+#include "../znEngine/SceneFunctional/Passes/RenderTechnique.h"
 
 // other passes
-#include "../znEngine/3D/Passes/ClearRenderTargetPass.h"
-#include "../znEngine/3D/Passes/CopyBufferPass.h"
-#include "../znEngine/3D/Passes/CopyTexturePass.h"
-#include "../znEngine/3D/Passes/GenerateMipMapsPass.h"
-#include "../znEngine/3D/Passes/PostprocessPass.h"
-#include "../znEngine/3D/Passes/BeginQueryPass.h"
-#include "../znEngine/3D/Passes/EndQueryPass.h"
-#include "../znEngine/3D/Passes/DispatchPass.h"
-#include "../znEngine/3D/Passes/InvokeFunctionPass.h"
+#include "../znEngine/SceneFunctional/Passes/ClearRenderTargetPass.h"
+#include "../znEngine/SceneFunctional/Passes/CopyBufferPass.h"
+#include "../znEngine/SceneFunctional/Passes/CopyTexturePass.h"
+#include "../znEngine/SceneFunctional/Passes/GenerateMipMapsPass.h"
+#include "../znEngine/SceneFunctional/Passes/PostprocessPass.h"
+#include "../znEngine/SceneFunctional/Passes/BeginQueryPass.h"
+#include "../znEngine/SceneFunctional/Passes/EndQueryPass.h"
+#include "../znEngine/SceneFunctional/Passes/DispatchPass.h"
+#include "../znEngine/SceneFunctional/Passes/InvokeFunctionPass.h"
 
 // Postprocess
 #include "../znEngine/GBuffer.h"
-#include "../znEngine/3D/Light.h"
-#include "../znEngine/3D/Light3D.h"
-#include "../znEngine/3D/Passes/DeferredLightingPass.h"
+#include "../znEngine/SceneFunctional/Light.h"
+#include "../znEngine/SceneFunctional/Light3D.h"
+#include "../znEngine/SceneFunctional/Passes/DeferredLightingPass.h"

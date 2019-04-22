@@ -462,7 +462,6 @@ bool TextureDX11::LoadTexture2D(const std::string& fileName)
 
 	// Load the texture data into a GPU texture.
 	D3D11_TEXTURE2D_DESC textureDesc = { 0 };
-
 	textureDesc.Width = m_TextureWidth;
 	textureDesc.Height = m_TextureHeight;
 	textureDesc.MipLevels = m_bGenerateMipmaps ? 0 : 1;
@@ -489,7 +488,7 @@ bool TextureDX11::LoadTexture2D(const std::string& fileName)
 	subresourceData.SysMemPitch = m_Pitch;
 	subresourceData.SysMemSlicePitch = 0;
 
-	if (FAILED(m_pDevice->CreateTexture2D(&textureDesc, m_bGenerateMipmaps ? nullptr : &subresourceData, &m_pTexture2D)))
+   	if (FAILED(m_pDevice->CreateTexture2D(&textureDesc, m_bGenerateMipmaps ? nullptr : &subresourceData, &m_pTexture2D)))
 	{
 		fail2("Failed to create texture.");
 		return false;

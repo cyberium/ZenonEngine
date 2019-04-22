@@ -2,11 +2,14 @@
 
 // Include
 #include <Application.h>
-#include <3D//Scene3D.h>
-#include <3D//SceneNode3D.h>
+#include <SceneFunctional\\Scene3D.h>
+#include <SceneFunctional\\SceneNode3D.h>
 
 // General
 #include "FontPass.h"
+
+// Additional
+#include "UI\\Fonts\\Font.h"
 
 CFontPass::CFontPass()
 	: m_pRenderEventArgs(nullptr)
@@ -58,18 +61,17 @@ void CFontPass::PostRender(Render3DEventArgs& e)
 
 // Inherited from Visitor
 
-bool CFontPass::Visit(SceneNode3D& node)
+bool CFontPass::Visit(std::shared_ptr<SceneNode3D> node)
 {
-	Object& nodeAsObject = reinterpret_cast<Object&>(node);
-	m_pRenderEventArgs->Node = &nodeAsObject;
+	m_pRenderEventArgs->Node = node.operator->();
 
 	const Camera* camera = GetRenderEventArgs().Camera;
 	if (camera)
 	{
-		node.UpdateCamera(camera);
+		node->UpdateCamera(camera);
 
 		PerObject perObjectData;
-		perObjectData.Model = node.GetWorldTransfom();
+		perObjectData.Model = node->GetComponent<CTransformComponent>()->GetWorldTransfom();
 		perObjectData.ModelView = camera->GetViewMatrix()       * perObjectData.Model;
 		perObjectData.ModelViewProjection = camera->GetProjectionMatrix() * perObjectData.ModelView;
 		//perObjectData.Model = node.GetWorldTransfom();
@@ -88,17 +90,18 @@ bool CFontPass::Visit(SceneNode3D& node)
 	return false;
 }
 
-bool CFontPass::Visit(IMesh& Mesh, UINT IndexStartLocation, UINT IndexCnt, UINT VertexStartLocation, UINT VertexCnt)
+bool CFontPass::Visit(std::shared_ptr<IMesh> Mesh, UINT IndexStartLocation, UINT IndexCnt, UINT VertexStartLocation, UINT VertexCnt)
 {
-	if (m_pRenderEventArgs && Mesh.GetType() == SN_TYPE_FONT)
-	{
-		return Mesh.Render(*m_pRenderEventArgs, m_PerObjectConstantBuffer, IndexStartLocation, IndexCnt, VertexStartLocation, VertexCnt);
+    std::shared_ptr<CFontMesh> fontMesh = std::dynamic_pointer_cast<CFontMesh, IMesh>(Mesh);
+    if (fontMesh)
+    {
+		return Mesh->Render(*m_pRenderEventArgs, m_PerObjectConstantBuffer, IndexStartLocation, IndexCnt, VertexStartLocation, VertexCnt);
 	}
 
 	return false;
 }
 
-bool CFontPass::Visit(CLight3D& light)
+bool CFontPass::Visit(std::shared_ptr<CLight3D> light)
 {
 	return false;
 }

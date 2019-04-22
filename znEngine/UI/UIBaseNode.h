@@ -100,7 +100,7 @@ public: // Syntetic events // TODO: Make private
 	void DoMouseLeaved();
 
 protected:
-    std::weak_ptr<CUIBaseNode>	m_pParentNode;
+    std::weak_ptr<CUIBaseNode>	m_ParentNode;
 
 private:
 	std::string                 m_Name;

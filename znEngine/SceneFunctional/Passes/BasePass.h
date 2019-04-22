@@ -6,9 +6,8 @@
 // Base pass provides implementations for functions used by most passes.
 class BasePass : public AbstractPass
 {
+    typedef AbstractPass base;
 public:
-	typedef AbstractPass base;
-
 	BasePass();
 	BasePass(std::shared_ptr<Scene3D> scene, std::shared_ptr<PipelineState> pipeline);
 	virtual ~BasePass();
@@ -19,9 +18,9 @@ public:
 	virtual void PostRender(Render3DEventArgs& e);
 
 	// Inherited from Visitor
-	virtual bool Visit(SceneNode3D& node);
-	virtual bool Visit(IMesh& Mesh, UINT IndexStartLocation = 0, UINT IndexCnt = 0, UINT VertexStartLocation = 0, UINT VertexCnt = 0);
-	virtual bool Visit(CLight3D& light);
+	virtual bool Visit(std::shared_ptr<SceneNode3D> node) override;
+	virtual bool Visit(std::shared_ptr<IMesh> Mesh, UINT IndexStartLocation = 0, UINT IndexCnt = 0, UINT VertexStartLocation = 0, UINT VertexCnt = 0) override;
+	virtual bool Visit(std::shared_ptr<CLight3D> light) override;
 
 	// Update viewport (need for texture resizing)
 	virtual void UpdateViewport(Viewport _viewport);

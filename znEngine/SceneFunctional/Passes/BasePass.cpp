@@ -2,8 +2,8 @@
 
 // Include
 #include <Application.h>
-#include <3D//Scene3D.h>
-#include <3D//SceneNode3D.h>
+#include <SceneFunctional//Scene3D.h>
+#include <SceneFunctional//SceneNode3D.h>
 
 // General
 #include "BasePass.h"
@@ -60,18 +60,17 @@ void BasePass::PostRender(Render3DEventArgs& e)
 //
 // Inherited from Visitor
 //
-bool BasePass::Visit(SceneNode3D& node)
+bool BasePass::Visit(std::shared_ptr<SceneNode3D> node)
 {
-	Object& nodeAsObject = reinterpret_cast<Object&>(node);
-	m_pRenderEventArgs->Node = &nodeAsObject;
+	m_pRenderEventArgs->Node = node.operator->();
 
 	const Camera* camera = GetRenderEventArgs().Camera;
 	if (camera)
 	{
-		node.UpdateCamera(camera);
+		node->UpdateCamera(camera);
 
 		PerObject perObjectData;
-		perObjectData.Model               = node.GetWorldTransfom();
+		perObjectData.Model               = node->GetComponent<CTransformComponent>()->GetWorldTransfom();
 		perObjectData.ModelView           = camera->GetViewMatrix()       * perObjectData.Model;
 		perObjectData.ModelViewProjection = camera->GetProjectionMatrix() * perObjectData.ModelView;
 
@@ -87,17 +86,17 @@ bool BasePass::Visit(SceneNode3D& node)
 	return false;
 }
 
-bool BasePass::Visit(IMesh& Mesh, UINT IndexStartLocation, UINT IndexCnt, UINT VertexStartLocation, UINT VertexCnt)
+bool BasePass::Visit(std::shared_ptr<IMesh> Mesh, UINT IndexStartLocation, UINT IndexCnt, UINT VertexStartLocation, UINT VertexCnt)
 {
 	if (m_pRenderEventArgs)
 	{
-		return Mesh.Render(*m_pRenderEventArgs, m_PerObjectConstantBuffer, IndexStartLocation, IndexCnt, VertexStartLocation, VertexCnt);
+		return Mesh->Render(*m_pRenderEventArgs, m_PerObjectConstantBuffer, IndexStartLocation, IndexCnt, VertexStartLocation, VertexCnt);
 	}
 
 	return false;
 }
 
-bool BasePass::Visit(CLight3D& light)
+bool BasePass::Visit(std::shared_ptr<CLight3D> light)
 {
 	return false;
 }

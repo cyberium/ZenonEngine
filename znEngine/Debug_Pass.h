@@ -1,6 +1,6 @@
 #pragma once
 
-#include "3D//Passes/BasePass.h"
+#include "SceneFunctional//Passes/BasePass.h"
 
 // A pass that renders the opaque geometry in the scene.
 class Debug_Pass : public BasePass
@@ -10,7 +10,7 @@ public:
 	virtual ~Debug_Pass();
 
     // IVisitor
-	bool Visit(IMesh& mesh, UINT IndexStartLocation = 0, UINT IndexCnt = 0, UINT VertexStartLocation = 0, UINT VertexCnt = 0) override;
+	bool Visit(std::shared_ptr<IMesh> Mesh, UINT IndexStartLocation = 0, UINT IndexCnt = 0, UINT VertexStartLocation = 0, UINT VertexCnt = 0) override;
 
 protected:
 

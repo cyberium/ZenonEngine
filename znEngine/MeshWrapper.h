@@ -6,11 +6,8 @@ class MeshWrapper : public IMesh
 protected:
 	typedef MeshWrapper base;
 public:
-	MeshWrapper(SceneNodeTypes type, std::shared_ptr<IMesh> _mesh);
+	MeshWrapper(std::shared_ptr<IMesh> _mesh);
 	virtual ~MeshWrapper();
-
-	virtual SceneNodeTypes GetType() const;
-	virtual void SetType(SceneNodeTypes type);
 
 	virtual void AddVertexBuffer(const BufferBinding& binding, std::shared_ptr<IBuffer> buffer);
 	virtual void SetVertexBuffer(std::shared_ptr<IBuffer> buffer);

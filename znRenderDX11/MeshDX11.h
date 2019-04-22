@@ -9,9 +9,6 @@ public:
 	MeshDX11(ID3D11Device2 * pDevice);
 	virtual ~MeshDX11();
 
-	virtual SceneNodeTypes GetType() const override;
-	virtual void SetType(SceneNodeTypes type) override;
-
 	virtual void AddVertexBuffer(const BufferBinding& binding, std::shared_ptr<IBuffer> buffer) override;
 	virtual void SetVertexBuffer(std::shared_ptr<IBuffer> buffer) override;
 	virtual void SetIndexBuffer(std::shared_ptr<IBuffer> buffer) override;
@@ -26,7 +23,6 @@ public:
 	virtual bool Accept(IVisitor& visitor, UINT indexStartLocation = 0, UINT indexCnt = 0, UINT vertexStartLocation = 0, UINT vertexCnt = 0);
 
 private:
-	SceneNodeTypes m_MeshType;
 	BufferMap m_VertexBuffers;
 	std::shared_ptr<IBuffer> m_VertexBuffer;
 	std::shared_ptr<IBuffer> m_pIndexBuffer;

@@ -1,14 +1,14 @@
 #include "stdafx.h"
 
 // Include
-#include "3D//Passes//RenderTechnique.h"
+#include "SceneFunctional//Passes//RenderTechnique.h"
 #include "UI//Passes//RenderUITechnique.h"
 
 // General
 #include "CreatePasses.h"
 
 // Additional
-#include "3D//Passes//FontPass.h"
+#include "SceneFunctional//Passes//FontPass.h"
 #include "Debug_Pass.h"
 #include "UI//Passes//BaseUIPass.h"
 

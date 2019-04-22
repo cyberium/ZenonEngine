@@ -10,12 +10,12 @@ Debug_Pass::Debug_Pass(std::shared_ptr<Scene3D> scene, std::shared_ptr<PipelineS
 Debug_Pass::~Debug_Pass()
 {}
 
-bool Debug_Pass::Visit(IMesh& mesh, UINT IndexStartLocation, UINT IndexCnt, UINT VertexStartLocation, UINT VertexCnt)
+bool Debug_Pass::Visit(std::shared_ptr<IMesh> Mesh, UINT IndexStartLocation, UINT IndexCnt, UINT VertexStartLocation, UINT VertexCnt)
 {
-	if (mesh.GetType() == SN_TYPE_DEBUG)
-	{
-		return mesh.Render(GetRenderEventArgs(), GetPerObjectConstantBuffer(), IndexStartLocation, IndexCnt, VertexStartLocation, VertexCnt);
-	}
+	//if (Mesh->GetType() == SN_TYPE_DEBUG)
+	//{
+	//	return Mesh->Render(GetRenderEventArgs(), GetPerObjectConstantBuffer(), IndexStartLocation, IndexCnt, VertexStartLocation, VertexCnt);
+	//}
 
 	return false;
 }

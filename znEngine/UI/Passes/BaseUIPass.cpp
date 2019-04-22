@@ -73,21 +73,21 @@ void BaseUIPass::RenderUI(RenderUIEventArgs& e)
 //
 // Inherited from Visitor
 //
-bool BaseUIPass::Visit(SceneNode3D & node3D)
+bool BaseUIPass::Visit(std::shared_ptr<SceneNode3D> node3D)
 {
 	fail1();
 	return false;
 }
 
-bool BaseUIPass::Visit(CUIBaseNode & nodeUI)
+bool BaseUIPass::Visit(std::shared_ptr<CUIBaseNode> nodeUI)
 {
 	const Viewport* viewport = GetRenderEventArgs().Viewport;
 	if (viewport)
 	{
-		nodeUI.UpdateViewport(viewport);
+		nodeUI->UpdateViewport(viewport);
 
 		PerObject perObjectData;
-		perObjectData.Model = nodeUI.GetWorldTransfom();
+		perObjectData.Model = nodeUI->GetWorldTransfom();
 		perObjectData.ModelView = mat4(1.0f);
 		perObjectData.ModelViewProjection = viewport->OrthoMatrix * perObjectData.Model;
 
@@ -100,17 +100,17 @@ bool BaseUIPass::Visit(CUIBaseNode & nodeUI)
 	return false;
 }
 
-bool BaseUIPass::Visit(IMesh& Mesh, UINT IndexStartLocation, UINT IndexCnt, UINT VertexStartLocation, UINT VertexCnt)
+bool BaseUIPass::Visit(std::shared_ptr<IMesh> Mesh, UINT IndexStartLocation, UINT IndexCnt, UINT VertexStartLocation, UINT VertexCnt)
 {
 	if (m_pRenderEventArgs)
 	{
-		return Mesh.Render(*m_pRenderEventArgs, m_PerObjectConstantBuffer, IndexStartLocation, IndexCnt, VertexStartLocation, VertexCnt);
+		return Mesh->Render(*m_pRenderEventArgs, m_PerObjectConstantBuffer, IndexStartLocation, IndexCnt, VertexStartLocation, VertexCnt);
 	}
 
 	return false;
 }
 
-bool BaseUIPass::Visit(CLight3D & light)
+bool BaseUIPass::Visit(std::shared_ptr<CLight3D> light)
 {
 	fail1();
 	return false;

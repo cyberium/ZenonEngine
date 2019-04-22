@@ -37,6 +37,16 @@ void MaterialWrapper::SetTexture(uint8 type, std::shared_ptr<Texture> texture)
 	m_Material->SetTexture(type, texture);
 }
 
+std::shared_ptr<SamplerState> MaterialWrapper::GetSampler(uint8 ID) const
+{
+    return m_Material->GetSampler(ID);
+}
+
+void MaterialWrapper::SetSampler(uint8 ID, std::shared_ptr<SamplerState> samplerState)
+{
+    m_Material->SetSampler(ID, samplerState);
+}
+
 void MaterialWrapper::Bind() const
 {
 	m_Material->Bind();

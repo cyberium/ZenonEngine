@@ -86,7 +86,7 @@ std::vector<std::shared_ptr<CUIBaseNode>> CUIContainerGarmoshkaCategoryHeader::G
 
 bool CUIContainerGarmoshkaCategoryHeader::OnMouseButtonPressed(MouseButtonEventArgs & e)
 {
-    std::shared_ptr<CUIBaseNode> parent = m_pParentNode.lock();
+    std::shared_ptr<CUIBaseNode> parent = m_ParentNode.lock();
     _ASSERT(parent != nullptr);
 
     std::shared_ptr<CUIContainerGarmoshkaCategory> parentAsContainerGarmoshka = std::dynamic_pointer_cast<CUIContainerGarmoshkaCategory>(parent);

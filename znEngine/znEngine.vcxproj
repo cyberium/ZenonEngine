@@ -19,27 +19,30 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="3D\Light3D.cpp" />
-    <ClCompile Include="3D\Materials\MaterialDebug.cpp" />
-    <ClCompile Include="3D\Materials\MaterialTextured.cpp" />
-    <ClCompile Include="3D\Passes\AbstractPass.cpp" />
-    <ClCompile Include="3D\Passes\BasePass.cpp" />
-    <ClCompile Include="3D\Passes\BeginQueryPass.cpp" />
-    <ClCompile Include="3D\Passes\ClearRenderTargetPass.cpp" />
-    <ClCompile Include="3D\Passes\CopyBufferPass.cpp" />
-    <ClCompile Include="3D\Passes\CopyTexturePass.cpp" />
-    <ClCompile Include="3D\Passes\DeferredLightingPass.cpp" />
-    <ClCompile Include="3D\Passes\DispatchPass.cpp" />
-    <ClCompile Include="3D\Passes\EndQueryPass.cpp" />
-    <ClCompile Include="3D\Passes\FontPass.cpp" />
-    <ClCompile Include="3D\Passes\GenerateMipMapsPass.cpp" />
-    <ClCompile Include="3D\Passes\InvokeFunctionPass.cpp" />
-    <ClCompile Include="3D\Passes\PostprocessPass.cpp" />
-    <ClCompile Include="3D\Passes\RenderTechnique.cpp" />
-    <ClCompile Include="3D\Scene3D.cpp" />
-    <ClCompile Include="3D\SceneNode3D.cpp" />
-    <ClCompile Include="3D\SceneNodeFont3D.cpp" />
-    <ClCompile Include="3D\SceneNodeModel3D.cpp" />
+    <ClCompile Include="SceneFunctional\Light3D.cpp" />
+    <ClCompile Include="SceneFunctional\Materials\MaterialDebug.cpp" />
+    <ClCompile Include="SceneFunctional\Materials\MaterialTextured.cpp" />
+    <ClCompile Include="SceneFunctional\Passes\AbstractPass.cpp" />
+    <ClCompile Include="SceneFunctional\Passes\BasePass.cpp" />
+    <ClCompile Include="SceneFunctional\Passes\BeginQueryPass.cpp" />
+    <ClCompile Include="SceneFunctional\Passes\ClearRenderTargetPass.cpp" />
+    <ClCompile Include="SceneFunctional\Passes\CopyBufferPass.cpp" />
+    <ClCompile Include="SceneFunctional\Passes\CopyTexturePass.cpp" />
+    <ClCompile Include="SceneFunctional\Passes\DeferredLightingPass.cpp" />
+    <ClCompile Include="SceneFunctional\Passes\DispatchPass.cpp" />
+    <ClCompile Include="SceneFunctional\Passes\EndQueryPass.cpp" />
+    <ClCompile Include="SceneFunctional\Passes\FontPass.cpp" />
+    <ClCompile Include="SceneFunctional\Passes\GenerateMipMapsPass.cpp" />
+    <ClCompile Include="SceneFunctional\Passes\InvokeFunctionPass.cpp" />
+    <ClCompile Include="SceneFunctional\Passes\PostprocessPass.cpp" />
+    <ClCompile Include="SceneFunctional\Passes\RenderTechnique.cpp" />
+    <ClCompile Include="SceneFunctional\Scene3D.cpp" />
+    <ClCompile Include="SceneFunctional\SceneNode3D.cpp" />
+    <ClCompile Include="SceneFunctional\SceneNode\ColliderComponent.cpp" />
+    <ClCompile Include="SceneFunctional\SceneNode\ComponentBase.cpp" />
+    <ClCompile Include="SceneFunctional\SceneNode\LightComponent.cpp" />
+    <ClCompile Include="SceneFunctional\SceneNode\MeshComponent.cpp" />
+    <ClCompile Include="SceneFunctional\SceneNode\TransformComponent.cpp" />
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="ArcBallCameraController.cpp" />
     <ClCompile Include="CameraControllerBase.cpp" />
@@ -86,28 +89,31 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\shared\znEngine.h" />
-    <ClInclude Include="3D\Light3D.h" />
-    <ClInclude Include="3D\Materials\MaterialDebug.h" />
-    <ClInclude Include="3D\Materials\MaterialTextured.h" />
-    <ClInclude Include="3D\Passes\AbstractPass.h" />
-    <ClInclude Include="3D\Passes\BasePass.h" />
-    <ClInclude Include="3D\Passes\BeginQueryPass.h" />
-    <ClInclude Include="3D\Passes\ClearRenderTargetPass.h" />
-    <ClInclude Include="3D\Passes\CopyBufferPass.h" />
-    <ClInclude Include="3D\Passes\CopyTexturePass.h" />
-    <ClInclude Include="3D\Passes\DeferredLightingPass.h" />
-    <ClInclude Include="3D\Passes\DispatchPass.h" />
-    <ClInclude Include="3D\Passes\EndQueryPass.h" />
-    <ClInclude Include="3D\Passes\FontPass.h" />
-    <ClInclude Include="3D\Passes\GenerateMipMapsPass.h" />
-    <ClInclude Include="3D\Passes\InvokeFunctionPass.h" />
-    <ClInclude Include="3D\Passes\PostprocessPass.h" />
-    <ClInclude Include="3D\Passes\RenderPass.h" />
-    <ClInclude Include="3D\Passes\RenderTechnique.h" />
-    <ClInclude Include="3D\Scene3D.h" />
-    <ClInclude Include="3D\SceneNode3D.h" />
-    <ClInclude Include="3D\SceneNodeFont3D.h" />
-    <ClInclude Include="3D\SceneNodeModel3D.h" />
+    <ClInclude Include="SceneFunctional\Light3D.h" />
+    <ClInclude Include="SceneFunctional\Materials\MaterialDebug.h" />
+    <ClInclude Include="SceneFunctional\Materials\MaterialTextured.h" />
+    <ClInclude Include="SceneFunctional\Passes\AbstractPass.h" />
+    <ClInclude Include="SceneFunctional\Passes\BasePass.h" />
+    <ClInclude Include="SceneFunctional\Passes\BeginQueryPass.h" />
+    <ClInclude Include="SceneFunctional\Passes\ClearRenderTargetPass.h" />
+    <ClInclude Include="SceneFunctional\Passes\CopyBufferPass.h" />
+    <ClInclude Include="SceneFunctional\Passes\CopyTexturePass.h" />
+    <ClInclude Include="SceneFunctional\Passes\DeferredLightingPass.h" />
+    <ClInclude Include="SceneFunctional\Passes\DispatchPass.h" />
+    <ClInclude Include="SceneFunctional\Passes\EndQueryPass.h" />
+    <ClInclude Include="SceneFunctional\Passes\FontPass.h" />
+    <ClInclude Include="SceneFunctional\Passes\GenerateMipMapsPass.h" />
+    <ClInclude Include="SceneFunctional\Passes\InvokeFunctionPass.h" />
+    <ClInclude Include="SceneFunctional\Passes\PostprocessPass.h" />
+    <ClInclude Include="SceneFunctional\Passes\RenderPass.h" />
+    <ClInclude Include="SceneFunctional\Passes\RenderTechnique.h" />
+    <ClInclude Include="SceneFunctional\Scene3D.h" />
+    <ClInclude Include="SceneFunctional\SceneNode3D.h" />
+    <ClInclude Include="SceneFunctional\SceneNode\ColliderComponent.h" />
+    <ClInclude Include="SceneFunctional\SceneNode\ComponentBase.h" />
+    <ClInclude Include="SceneFunctional\SceneNode\LightComponent.h" />
+    <ClInclude Include="SceneFunctional\SceneNode\MeshComponent.h" />
+    <ClInclude Include="SceneFunctional\SceneNode\TransformComponent.h" />
     <ClInclude Include="Application.h" />
     <ClInclude Include="ArcBallCameraController.h" />
     <ClInclude Include="CameraControllerBase.h" />
@@ -202,6 +208,9 @@
     <Text Include="Resources\shaders_D3D\3D\Textured.hlsl">
       <FileType>Document</FileType>
     </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="SceneFunctional\SceneNode3D.inl" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{51252F60-B8DC-4090-BBA3-DD05942110F0}</ProjectGuid>
