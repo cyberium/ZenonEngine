@@ -31,3 +31,9 @@ inline std::shared_ptr<CTransformComponent> SceneNode3D::GetComponent<CTransform
 {
     return m_Components_Transform;
 }
+
+template<>
+inline std::shared_ptr<CColliderComponent> SceneNode3D::GetComponent<CColliderComponent>()
+{
+    return m_Components_Collider;
+}

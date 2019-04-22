@@ -6,7 +6,7 @@
 
 CUIScene::CUIScene()
 {
-	m_pRootNode = std::make_shared<CUIWindowNode>();
+	m_RootNode = std::make_shared<CUIWindowNode>();
 }
 
 CUIScene::~CUIScene()
@@ -15,13 +15,13 @@ CUIScene::~CUIScene()
 
 std::shared_ptr<CUIWindowNode> CUIScene::GetRootNode() const
 {
-	return m_pRootNode;
+	return m_RootNode;
 }
 
 void CUIScene::Accept(IVisitor & visitor)
 {
-	if (m_pRootNode)
-		m_pRootNode->Accept(visitor);
+	if (m_RootNode)
+		m_RootNode->Accept(visitor);
 }
 
 
@@ -30,42 +30,42 @@ void CUIScene::Accept(IVisitor & visitor)
 //
 bool CUIScene::OnKeyPressed(KeyEventArgs & e)
 {
-	if (m_pRootNode)
-		return DoKeyPressed_Rec(m_pRootNode, e);
+	if (m_RootNode)
+		return DoKeyPressed_Rec(m_RootNode, e);
 
 	return false;
 }
 
 void CUIScene::OnKeyReleased(KeyEventArgs & e)
 {
-	if (m_pRootNode)
-        DoKeyReleased_Rec(m_pRootNode, e);
+	if (m_RootNode)
+        DoKeyReleased_Rec(m_RootNode, e);
 }
 
 void CUIScene::OnMouseMoved(MouseMotionEventArgs & e)
 {
-	if (m_pRootNode)
-        DoMouseMoved_Rec(m_pRootNode, e);
+	if (m_RootNode)
+        DoMouseMoved_Rec(m_RootNode, e);
 }
 
 bool CUIScene::OnMouseButtonPressed(MouseButtonEventArgs & e)
 {
-	if (m_pRootNode)
-		return DoMouseButtonPressed_Rec(m_pRootNode, e);
+	if (m_RootNode)
+		return DoMouseButtonPressed_Rec(m_RootNode, e);
 
 	return false;
 }
 
 void CUIScene::OnMouseButtonReleased(MouseButtonEventArgs & e)
 {
-	if (m_pRootNode)
-        DoMouseButtonReleased_Rec(m_pRootNode, e);
+	if (m_RootNode)
+        DoMouseButtonReleased_Rec(m_RootNode, e);
 }
 
 bool CUIScene::OnMouseWheel(MouseWheelEventArgs & e)
 {
-	if (m_pRootNode)
-		return DoMouseWheel_Rec(m_pRootNode, e);
+	if (m_RootNode)
+		return DoMouseWheel_Rec(m_RootNode, e);
 
 	return false;
 }

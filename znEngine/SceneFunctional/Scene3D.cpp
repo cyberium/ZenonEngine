@@ -5,7 +5,7 @@
 
 Scene3D::Scene3D()
 {
-	m_pRootNode = std::make_shared<SceneNode3D>();
+	m_RootNode = std::make_shared<SceneNode3D>();
 }
 
 Scene3D::~Scene3D()
@@ -13,17 +13,17 @@ Scene3D::~Scene3D()
 
 std::shared_ptr<SceneNode3D> Scene3D::GetRootNode() const
 {
-	return m_pRootNode;
+	return m_RootNode;
 }
 
 void Scene3D::Accept(IVisitor& visitor)
 {
-	if (m_pRootNode)
-		m_pRootNode->Accept(visitor);
+	if (m_RootNode)
+		m_RootNode->Accept(visitor);
 }
 
 void Scene3D::OnUpdate(UpdateEventArgs & e)
 {
-	if (m_pRootNode)
-		m_pRootNode->OnUpdate(e);
+	if (m_RootNode)
+		m_RootNode->OnUpdate(e);
 }

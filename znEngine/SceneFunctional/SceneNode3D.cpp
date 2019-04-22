@@ -232,13 +232,18 @@ void SceneNode3D::RegisterComponents()
 {
     SetTransformComponent(AddComponent(std::make_shared<CTransformComponent>(shared_from_this())));
     AddComponent(std::make_shared<CMeshComponent>(shared_from_this()));
-    AddComponent(std::make_shared<CColliderComponent>(shared_from_this()));
+    SetColliderComponent(AddComponent(std::make_shared<CColliderComponent>(shared_from_this())));
     AddComponent(std::make_shared<CLightComponent>(shared_from_this()));
 }
 
 void SceneNode3D::SetTransformComponent(std::shared_ptr<CTransformComponent> TransformComponent)
 {
     m_Components_Transform = TransformComponent;
+}
+
+void SceneNode3D::SetColliderComponent(std::shared_ptr<CColliderComponent> ColliderComponent)
+{
+    m_Components_Collider = ColliderComponent;
 }
 
 void SceneNode3D::RaiseOnParentChanged()

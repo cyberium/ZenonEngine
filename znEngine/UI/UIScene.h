@@ -31,5 +31,5 @@ protected:
     bool DoMouseWheel_Rec(const std::shared_ptr<CUIBaseNode>& Node, MouseWheelEventArgs& e);
 
 private:
-	std::shared_ptr<CUIWindowNode> m_pRootNode;
+	std::shared_ptr<CUIWindowNode> m_RootNode;
 };

@@ -13,9 +13,9 @@ class SceneNode3D : public Object, public ILoadable, public virtual std::enable_
 {
 	typedef Object base;
 public:
-    typedef std::map<GUID, std::shared_ptr<ISceneNodeComponent>> ComponentsMap;
-	typedef std::vector<std::shared_ptr<SceneNode3D>> NodeList;
-	typedef std::multimap<std::string, std::shared_ptr<SceneNode3D>> NodeNameMap;
+    typedef std::map<GUID, std::shared_ptr<ISceneNodeComponent>>        ComponentsMap;
+	typedef std::vector<std::shared_ptr<SceneNode3D>>                   NodeList;
+	typedef std::multimap<std::string, std::shared_ptr<SceneNode3D>>    NodeNameMap;
 
 public:
     explicit                                        SceneNode3D();
@@ -71,6 +71,7 @@ public:
 protected:
     virtual void                                    RegisterComponents();
     void                                            SetTransformComponent(std::shared_ptr<CTransformComponent> TransformComponent);
+    void                                            SetColliderComponent(std::shared_ptr<CColliderComponent> ColliderComponent);
 
     // Callbacks caller
     void                                            RaiseOnParentChanged();
@@ -79,6 +80,7 @@ private:
 	std::string                                     m_Name;
     ComponentsMap                                   m_Components;
     std::shared_ptr<CTransformComponent>            m_Components_Transform;
+    std::shared_ptr<CColliderComponent>             m_Components_Collider;
 
     std::weak_ptr<Scene3D>                          m_Scene;
 	std::weak_ptr<SceneNode3D>                      m_ParentNode;

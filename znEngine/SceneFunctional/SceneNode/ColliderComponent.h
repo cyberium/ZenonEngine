@@ -2,8 +2,10 @@
 
 #include "ComponentBase.h"
 
+#define UUID_ColliderComponent uuid("78BD7168-51CB-4760-ADD2-218CF4E88CE2")
+
 class
-    __declspec(uuid("78BD7168-51CB-4760-ADD2-218CF4E88CE2"))
+    __declspec(UUID_ColliderComponent)
     CColliderComponent : public CComponentBase
 {
 public:

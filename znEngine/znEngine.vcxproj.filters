@@ -503,5 +503,8 @@
     <None Include="SceneFunctional\SceneNode3D.inl">
       <Filter>Scene Funcitonal</Filter>
     </None>
+    <None Include="SceneFunctional\Scene3D.inl">
+      <Filter>Scene Funcitonal</Filter>
+    </None>
   </ItemGroup>
 </Project>

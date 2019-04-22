@@ -34,7 +34,6 @@ public:
     virtual mat4    GetParentWorldTransform() const;
     void            SetWorldTransform(cmat4 worldTransform);
 
-
     virtual void    ForceRecalculateLocalTransform();
 
     // ISceneNodeComponent
@@ -56,5 +55,4 @@ private:
     quat            m_RotateQuat;
     bool            m_IsRotateQuat;
     vec3            m_Scale;
-
 };
