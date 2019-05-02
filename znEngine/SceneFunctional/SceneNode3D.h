@@ -12,16 +12,18 @@ class Scene3D;
 class SceneNode3D : public Object, public ILoadable, public virtual std::enable_shared_from_this<SceneNode3D>
 {
 	typedef Object base;
+    friend Scene3D;
 public:
     typedef std::map<GUID, std::shared_ptr<ISceneNodeComponent>>        ComponentsMap;
+    //typedef std::function<void(std::shared_ptr<ISceneNodeComponent>)>   ComponentsMessageType;
+    //typedef std::map<uint32, ComponentsMessageType>                     ComponentsMessagesMap;
 	typedef std::vector<std::shared_ptr<SceneNode3D>>                   NodeList;
 	typedef std::multimap<std::string, std::shared_ptr<SceneNode3D>>    NodeNameMap;
 
 public:
-    explicit                                        SceneNode3D();
+                                                    SceneNode3D();
 	virtual                                         ~SceneNode3D();
 
-	// Assign a name to this scene node so that it can be searched for later.
 	const std::string&                              GetName() const;
 	void                                            SetName(const std::string& name);
 
@@ -29,6 +31,8 @@ public:
     bool                                            IsComponentExists(GUID ComponentID);
     std::shared_ptr<ISceneNodeComponent>            GetComponent(GUID ComponentID);
     std::shared_ptr<ISceneNodeComponent>            AddComponent(GUID ComponentID, std::shared_ptr<ISceneNodeComponent> Component);
+    void                                            RaiseComponentMessage(std::shared_ptr<ISceneNodeComponent> Component, ComponentMessageType Message);
+    virtual void                                    RegisterComponents();
 
     // Components engine template access
     template<typename T>
@@ -42,11 +46,14 @@ public:
     void                                            SetScene(std::shared_ptr<Scene3D> Scene);
     std::shared_ptr<Scene3D>                        GetScene() const;
 
+    template<typename T, typename... Args>
+    std::shared_ptr<T>                              CreateSceneNode(Args &&... _Args);
+
 	// Childs functional
 	virtual void                                    AddChild(std::shared_ptr<SceneNode3D> childNode);
 	virtual void                                    RemoveChild(std::shared_ptr<SceneNode3D> childNode);
 	virtual void                                    SetParent(std::weak_ptr<SceneNode3D> parentNode);
-	virtual std::weak_ptr<SceneNode3D>              GetParent() const;
+	virtual std::shared_ptr<SceneNode3D>            GetParent() const;
 	virtual NodeList                                GetChilds();
 
 	// Called before all others calls
@@ -69,7 +76,6 @@ public:
 	virtual uint32                                  getPriority() const override;
 
 protected:
-    virtual void                                    RegisterComponents();
     void                                            SetTransformComponent(std::shared_ptr<CTransformComponent> TransformComponent);
     void                                            SetColliderComponent(std::shared_ptr<CColliderComponent> ColliderComponent);
 
@@ -79,6 +85,7 @@ protected:
 private:
 	std::string                                     m_Name;
     ComponentsMap                                   m_Components;
+    //ComponentsMessagesMap                           m_ComponentsMessages;
     std::shared_ptr<CTransformComponent>            m_Components_Transform;
     std::shared_ptr<CColliderComponent>             m_Components_Collider;
 

@@ -212,6 +212,7 @@
   <ItemGroup>
     <None Include="SceneFunctional\Scene3D.inl" />
     <None Include="SceneFunctional\SceneNode3D.inl" />
+    <None Include="SceneFunctional\SceneNode\ComponentBase.inl" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{51252F60-B8DC-4090-BBA3-DD05942110F0}</ProjectGuid>

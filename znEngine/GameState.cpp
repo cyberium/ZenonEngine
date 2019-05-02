@@ -14,6 +14,8 @@ CGameState::CGameState(const IApplication * _application)
 	, m_VideoSettings(GetSettingsGroup<CGroupVideo>())
 {
 	m_3DScene = std::make_shared<Scene3D>();
+    m_3DScene->CreateRootNode();
+
 	m_UIScene = std::make_shared<CUIScene>();
 }
 

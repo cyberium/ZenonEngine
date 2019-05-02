@@ -12,13 +12,32 @@ inline std::shared_ptr<T> SceneNode3D::IsComponentExists()
 template<typename T>
 inline std::shared_ptr<T> SceneNode3D::GetComponent()
 {
-    return std::dynamic_pointer_cast<T, ISceneNodeComponent>(GetComponent(__uuidof(T)));
+    std::shared_ptr<ISceneNodeComponent> component = GetComponent(__uuidof(T));
+    if (component == nullptr)
+        return std::shared_ptr<T>();
+
+    return std::dynamic_pointer_cast<T, ISceneNodeComponent>(component);
 }
 
 template<typename T>
 inline std::shared_ptr<T> SceneNode3D::AddComponent(std::shared_ptr<T> Component)
 {
-    return std::dynamic_pointer_cast<T, ISceneNodeComponent>(AddComponent(__uuidof(T), Component));
+    std::shared_ptr<ISceneNodeComponent> component = AddComponent(__uuidof(T), Component);
+    if (component == nullptr)
+        return std::shared_ptr<T>();
+
+    return std::dynamic_pointer_cast<T, ISceneNodeComponent>(component);
+}
+
+
+
+//
+// Scene access
+//
+template<typename T, typename ...Args>
+inline std::shared_ptr<T> SceneNode3D::CreateSceneNode(Args && ..._Args)
+{
+    return GetScene()->CreateSceneNode<T>(shared_from_this(), std::forward<Args>(_Args)...);
 }
 
 

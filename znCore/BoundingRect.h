@@ -42,10 +42,6 @@ public:
 	bool makeUnion(const BoundingRect& b);
 	bool isPointInside(glm::vec2 _point) const;
 
-	// 
-
-	static BoundingRect CreateBBoxInfinity();
-
 private:
 	vec2 m_Min;
 	vec2 m_Max;

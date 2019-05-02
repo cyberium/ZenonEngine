@@ -37,16 +37,10 @@ public:
 	cvec3 getCenter() const { assert1(m_IsCenterCalc); return m_Center; }
 	float getRadius() const { assert1(m_IsCenterCalc); return m_Radius; }
 
-	//
-
 	vec3 getCorner(uint32 index) const;
 	void transform(const mat4& m);
 	bool makeUnion(const BoundingBox& b);
 	bool isPointInside(cvec3 _point) const;
-
-	// 
-
-	static BoundingBox CreateBBoxInfinity();
 
 private:
 	vec3 m_Min;

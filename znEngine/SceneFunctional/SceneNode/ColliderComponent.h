@@ -21,6 +21,9 @@ public:
     bool checkDistance2D(cvec3 _camPos, float _distance) const;
     bool checkDistance(cvec3 _camPos, float _distance) const;
 
+    // CComponentBase
+    void OnMessage(std::shared_ptr<ISceneNodeComponent> Component, ComponentMessageType Message) override;
+
 protected:
     virtual void UpdateBounds();
 

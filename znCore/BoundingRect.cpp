@@ -138,12 +138,3 @@ bool BoundingRect::isPointInside(glm::vec2 _point) const
 
 	return true;
 }
-
-BoundingRect BoundingRect::CreateBBoxInfinity()
-{
-	BoundingRect bbInf;
-	bbInf.setMin(vec2(-100000.0f, -100000.0f));
-	bbInf.setMax(vec2(100000.0f, 100000.0f));
-	bbInf.calculateCenter();
-	return bbInf;
-}

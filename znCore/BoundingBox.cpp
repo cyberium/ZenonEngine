@@ -3,11 +3,10 @@
 // General
 #include "BoundingBox.h"
 
-BoundingBox::BoundingBox() :
-	m_Min(vec3(Math::MaxFloat, Math::MaxFloat, Math::MaxFloat)),
-	m_Max(vec3(Math::MinFloat, Math::MinFloat, Math::MinFloat)),
-	m_IsCenterCalc(false)
-{}
+BoundingBox::BoundingBox()
+{
+    clear();
+}
 
 BoundingBox::BoundingBox(vec3 _min, vec3 _max) :
 	m_Min(_min),
@@ -61,11 +60,11 @@ void BoundingBox::calculateCenter()
 
 void BoundingBox::clear()
 {
-	m_Min = vec3(0, 0, 0);
-	m_Max = vec3(0, 0, 0);
-	m_Center = vec3(0, 0, 0);
-	m_Radius = 0.0f;
-	m_IsCenterCalc = false;
+	m_Min = vec3(Math::MinFloat, Math::MinFloat, Math::MinFloat);
+	m_Max = vec3(Math::MaxFloat, Math::MaxFloat, Math::MaxFloat);
+	m_Center = vec3(0.0f, 0.0f, 0.0f);
+	m_Radius = Math::MaxFloat / 2.0f;
+	m_IsCenterCalc = true;
 }
 
 //
@@ -163,11 +162,3 @@ bool BoundingBox::isPointInside(cvec3 _point) const
 	return true;
 }
 
-BoundingBox BoundingBox::CreateBBoxInfinity()
-{
-	BoundingBox bbInf;
-	bbInf.setMin(vec3(-100000.0f, -100000.0f, -100000.0f));
-	bbInf.setMax(vec3(100000.0f, 100000.0f, 100000.0f));
-	bbInf.calculateCenter();
-	return bbInf;
-}

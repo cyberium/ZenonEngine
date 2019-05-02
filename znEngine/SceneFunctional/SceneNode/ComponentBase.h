@@ -10,13 +10,26 @@ public:
     CComponentBase(std::shared_ptr<SceneNode3D> OwnerNode);
     virtual ~CComponentBase();
 
-    std::shared_ptr<SceneNode3D> GetOwnerNode() const;
+    std::shared_ptr<SceneNode3D>                    GetOwnerNode() const;
+
+    // Components engine template access
+    template<typename T>
+    std::shared_ptr<T>                              IsComponentExists();
+    template<typename T>
+    std::shared_ptr<T>                              GetComponent();
+
+    // Accept from SceneNode
+    virtual bool                                    Accept(IVisitor& visitor) override;
 
     // ISceneNodeComponent
-    virtual void OnParentChanged() override;
+    virtual void                                    OnParentChanged() override;
+    virtual void                                    OnMessage(std::shared_ptr<ISceneNodeComponent> Component, ComponentMessageType Message) override;
 
-    virtual bool Accept(IVisitor& visitor) override;
+protected:
+    void                                            RaiseComponentMessage(ComponentMessageType Message);
 
 private:
     std::weak_ptr<SceneNode3D> m_OwnerNode;
 };
+
+#include "ComponentBase.inl"

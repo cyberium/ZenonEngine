@@ -112,7 +112,7 @@ mat4 CTransformComponent::GetInverseWorldTransform() const
 mat4 CTransformComponent::GetParentWorldTransform() const
 {
     mat4 parentTransform(1.0f);
-    if (std::shared_ptr<SceneNode3D> parent = GetOwnerNode())
+    if (std::shared_ptr<SceneNode3D> parent = GetOwnerNode()->GetParent())
     {
         if (std::shared_ptr<CTransformComponent> transformComponent = parent->GetComponent<CTransformComponent>())
         {
@@ -170,6 +170,8 @@ void CTransformComponent::UpdateLocalTransform()
     m_LocalTransform = glm::scale(m_LocalTransform, m_Scale);
     m_InverseLocalTransform = glm::inverse(m_LocalTransform);
 
+    RaiseComponentMessage(UUID_TransformComponent_OnLocalTransformChanged);
+
     // Don't forget to update world transform
     UpdateWorldTransform();
 }
@@ -178,4 +180,6 @@ void CTransformComponent::UpdateWorldTransform()
 {
     m_WorldTransform = GetParentWorldTransform() * m_LocalTransform;
     m_InverseWorldTransform = glm::inverse(m_WorldTransform);
+
+    RaiseComponentMessage(UUID_TransformComponent_OnWorldTransformChanged);
 }

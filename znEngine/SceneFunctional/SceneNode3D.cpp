@@ -1,8 +1,5 @@
 #include "stdafx.h"
 
-// Include
-#include "Light.h"
-
 // General
 #include "SceneNode3D.h"
 
@@ -55,6 +52,25 @@ std::shared_ptr<ISceneNodeComponent> SceneNode3D::AddComponent(GUID ComponentID,
     m_Components[ComponentID] = Component;
     return Component;
 }
+
+void SceneNode3D::RaiseComponentMessage(std::shared_ptr<ISceneNodeComponent> Component, ComponentMessageType Message)
+{
+    for (auto c : m_Components)
+    {
+        std::shared_ptr<ISceneNodeComponent> component = c.second;
+        if (component)
+            component->OnMessage(Component, Message);
+    }
+}
+
+void SceneNode3D::RegisterComponents()
+{
+    SetTransformComponent(AddComponent(std::make_shared<CTransformComponent>(shared_from_this())));
+    AddComponent(std::make_shared<CMeshComponent>(shared_from_this()));
+    SetColliderComponent(AddComponent(std::make_shared<CColliderComponent>(shared_from_this())));
+    AddComponent(std::make_shared<CLightComponent>(shared_from_this()));
+}
+
 
 
 
@@ -130,9 +146,9 @@ void SceneNode3D::SetParent(std::weak_ptr<SceneNode3D> parentNode)
 		newParent->AddChild(SceneNode3D::shared_from_this());
 }
 
-std::weak_ptr<SceneNode3D> SceneNode3D::GetParent() const
+std::shared_ptr<SceneNode3D> SceneNode3D::GetParent() const
 {
-	return m_ParentNode;
+	return m_ParentNode.lock();
 }
 
 SceneNode3D::NodeList SceneNode3D::GetChilds()
@@ -154,9 +170,12 @@ bool SceneNode3D::Accept(IVisitor& visitor)
 	//if (!visitResult)
 	//	return false;
 
-    for (auto c : m_Components)
+    if (visitResult)
     {
-        c.second->Accept(visitor);
+        for (auto c : m_Components)
+        {
+            c.second->Accept(visitor);
+        }
     }
 
 	// Now visit children
@@ -228,14 +247,6 @@ uint32 SceneNode3D::getPriority() const
 //
 // Protected
 //
-void SceneNode3D::RegisterComponents()
-{
-    SetTransformComponent(AddComponent(std::make_shared<CTransformComponent>(shared_from_this())));
-    AddComponent(std::make_shared<CMeshComponent>(shared_from_this()));
-    SetColliderComponent(AddComponent(std::make_shared<CColliderComponent>(shared_from_this())));
-    AddComponent(std::make_shared<CLightComponent>(shared_from_this()));
-}
-
 void SceneNode3D::SetTransformComponent(std::shared_ptr<CTransformComponent> TransformComponent)
 {
     m_Components_Transform = TransformComponent;

@@ -22,14 +22,34 @@ std::shared_ptr<SceneNode3D> CComponentBase::GetOwnerNode() const
 
 
 
+bool CComponentBase::Accept(IVisitor & visitor)
+{
+    return false;
+}
+
+
 //
 // ISceneNodeComponent
 //
 void CComponentBase::OnParentChanged()
 {
+    // do nothing
 }
 
-bool CComponentBase::Accept(IVisitor & visitor)
+void CComponentBase::OnMessage(std::shared_ptr<ISceneNodeComponent> Component, ComponentMessageType Message)
 {
-    return false;
+    // do nothing
+}
+
+
+
+//
+// Protected
+//
+void CComponentBase::RaiseComponentMessage(ComponentMessageType Message)
+{
+    std::shared_ptr<SceneNode3D> ownerNode = m_OwnerNode.lock();
+    _ASSERT(ownerNode != nullptr);
+
+    ownerNode->RaiseComponentMessage(shared_from_this(), Message);
 }

@@ -4,14 +4,18 @@
 
 #define UUID_TransformComponent uuid("D0E12217-352E-4B51-AE46-EC287CA9A19C")
 
+// Component messages 0x00000010 - 0x00000019
+#define UUID_TransformComponent_OnLocalTransformChanged 0x00000010
+#define UUID_TransformComponent_OnWorldTransformChanged 0x00000011
+
 class 
     __declspec(UUID_TransformComponent)
     CTransformComponent : public CComponentBase
 {
     typedef CComponentBase base;
 public:
-    CTransformComponent(std::shared_ptr<SceneNode3D> OwnerNode);
-    virtual ~CTransformComponent();
+                    CTransformComponent(std::shared_ptr<SceneNode3D> OwnerNode);
+    virtual         ~CTransformComponent();
 
     void            SetTranslate(cvec3 _translate);
     cvec3           GetTranslation() const;
