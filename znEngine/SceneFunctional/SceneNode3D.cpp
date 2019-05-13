@@ -88,8 +88,6 @@ void SceneNode3D::AddChild(std::shared_ptr<SceneNode3D> childNode)
 {
 	if (childNode)
 	{
-		std::lock_guard<std::mutex> lg(m_ChildMutex);
-
 		NodeList::iterator iter = std::find(m_Children.begin(), m_Children.end(), childNode);
 		if (iter == m_Children.end())
 		{
@@ -107,8 +105,6 @@ void SceneNode3D::RemoveChild(std::shared_ptr<SceneNode3D> childNode)
 {
 	if (childNode)
 	{
-		std::lock_guard<std::mutex> lg(m_ChildMutex);
-
 		NodeList::iterator iter = std::find(m_Children.begin(), m_Children.end(), childNode);
 		if (iter != m_Children.end())
 		{
@@ -153,8 +149,6 @@ std::shared_ptr<SceneNode3D> SceneNode3D::GetParent() const
 
 SceneNode3D::NodeList SceneNode3D::GetChilds()
 {
-	std::lock_guard<std::mutex> lg(m_ChildMutex);
-
 	return m_Children;
 }
 

@@ -15,7 +15,7 @@ CUITextureNode::CUITextureNode(vec2 Size)
 	: m_Size(Size)
 {
 	m_Material = std::make_shared<UI_Texture_Material>();
-	m_Material->SetWrapper(m_Material);;
+	m_Material->SetWrapper(m_Material);
 	m_Material->SetColor(cDefaultColor);
 
 	m_Mesh = _RenderDevice->CreateUIQuad(Size.x, Size.y);

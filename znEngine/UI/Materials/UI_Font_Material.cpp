@@ -28,11 +28,7 @@ UI_Font_Material::UI_Font_Material() :
 	g_LinearClampSampler->SetFilter(SamplerState::MinFilter::MinLinear, SamplerState::MagFilter::MagLinear, SamplerState::MipFilter::MipLinear);
 	g_LinearClampSampler->SetWrapMode(SamplerState::WrapMode::Clamp, SamplerState::WrapMode::Clamp, SamplerState::WrapMode::Clamp);
 
-	std::shared_ptr<SamplerState> g_LinearRepeatSampler = _RenderDevice->CreateSamplerState();
-	g_LinearRepeatSampler->SetFilter(SamplerState::MinFilter::MinLinear, SamplerState::MagFilter::MagLinear, SamplerState::MipFilter::MipLinear);
-	g_LinearRepeatSampler->SetWrapMode(SamplerState::WrapMode::Repeat, SamplerState::WrapMode::Repeat, SamplerState::WrapMode::Repeat);
-
-	g_pPixelShader->GetShaderParameterByName("DiffuseTextureSampler").Set(g_LinearClampSampler);
+    SetSampler(0, g_LinearClampSampler);
 
 	// Material
 	SetShader(Shader::VertexShader, g_pVertexShader);

@@ -1,4 +1,4 @@
-#include "IDB_SHADER_UI_COMMON"
+#include "IDB_SHADER_UI_VERTEX_BASE"
 
 cbuffer Material : register(b1)
 {

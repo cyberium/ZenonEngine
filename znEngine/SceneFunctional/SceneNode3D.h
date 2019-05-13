@@ -15,8 +15,6 @@ class SceneNode3D : public Object, public ILoadable, public virtual std::enable_
     friend Scene3D;
 public:
     typedef std::map<GUID, std::shared_ptr<ISceneNodeComponent>>        ComponentsMap;
-    //typedef std::function<void(std::shared_ptr<ISceneNodeComponent>)>   ComponentsMessageType;
-    //typedef std::map<uint32, ComponentsMessageType>                     ComponentsMessagesMap;
 	typedef std::vector<std::shared_ptr<SceneNode3D>>                   NodeList;
 	typedef std::multimap<std::string, std::shared_ptr<SceneNode3D>>    NodeNameMap;
 
@@ -85,7 +83,6 @@ protected:
 private:
 	std::string                                     m_Name;
     ComponentsMap                                   m_Components;
-    //ComponentsMessagesMap                           m_ComponentsMessages;
     std::shared_ptr<CTransformComponent>            m_Components_Transform;
     std::shared_ptr<CColliderComponent>             m_Components_Collider;
 
@@ -93,7 +90,6 @@ private:
 	std::weak_ptr<SceneNode3D>                      m_ParentNode;
 	NodeList                                        m_Children;
 	NodeNameMap                                     m_ChildrenByName;
-	std::mutex                                      m_ChildMutex;
 
 private:
 	std::atomic<bool>                               m_IsLoadingBegin;

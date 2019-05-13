@@ -1,7 +1,7 @@
 struct VertexShaderInput
 {
 	float2 position : POSITION;
-	float2 texCoord : TEXCOORD0;
+    float2 texCoord : TEXCOORD0;
 };
 
 struct VertexShaderOutput

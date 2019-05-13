@@ -99,7 +99,6 @@ void MaterialImpl::Bind() const
 			for (auto textureIt : m_Textures)
 			{
 				std::shared_ptr<Texture> texture = textureIt.second;
-				//if (pTexture != nullptr)
                 texture->Bind((uint32_t)textureIt.first, pShader, ShaderParameter::Type::Texture);
 			}
 

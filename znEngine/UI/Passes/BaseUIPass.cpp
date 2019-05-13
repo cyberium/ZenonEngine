@@ -145,11 +145,3 @@ std::shared_ptr<ConstantBuffer> BaseUIPass::GetPerObjectConstantBuffer() const
 {
 	return m_PerObjectConstantBuffer;
 }
-
-void BaseUIPass::BindPerObjectConstantBuffer(std::shared_ptr<Shader> shader)
-{
-	if (shader)
-	{
-		shader->GetShaderParameterByName("PerObject").Set(m_PerObjectConstantBuffer);
-	}
-}

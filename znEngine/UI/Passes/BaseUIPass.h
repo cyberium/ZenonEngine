@@ -46,8 +46,6 @@ protected:
 	void SetPerObjectConstantBufferData(PerObject& perObjectData);
 	std::shared_ptr<ConstantBuffer> GetPerObjectConstantBuffer() const;
 
-	void BindPerObjectConstantBuffer(std::shared_ptr<Shader> shader);
-
 private:
 	bool m_Enabled;
 	

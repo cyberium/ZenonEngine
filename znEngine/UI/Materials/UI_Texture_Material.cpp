@@ -28,7 +28,7 @@ UI_Texture_Material::UI_Texture_Material() :
 	g_LinearClampSampler->SetFilter(SamplerState::MinFilter::MinLinear, SamplerState::MagFilter::MagLinear, SamplerState::MipFilter::MipLinear);
 	g_LinearClampSampler->SetWrapMode(SamplerState::WrapMode::Clamp, SamplerState::WrapMode::Clamp, SamplerState::WrapMode::Clamp);
 
-	g_pPixelShader->GetShaderParameterByName("DiffuseTextureSampler").Set(g_LinearClampSampler);
+    SetSampler(0, g_LinearClampSampler);
 
 	// Material
 	SetShader(Shader::VertexShader, g_pVertexShader);
