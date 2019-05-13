@@ -25,5 +25,5 @@ VertexShaderOutput VS_main(VertexShaderInput IN)
 
 float4 PS_main(VertexShaderOutput IN) : SV_TARGET
 {
-	return float4(Color.rgb, Color.a * DiffuseTexture.Sample(DiffuseTextureSampler, IN.texCoord).a);
+    return float4(Color.rgb, Color.a * DiffuseTexture.Sample(DiffuseTextureSampler, IN.texCoord).a);
 }

@@ -14,7 +14,8 @@ public:
 	RenderUITechnique();
 	virtual ~RenderUITechnique();
 
-	virtual void SetPass(std::shared_ptr<IRenderUIPass> pass);
+    virtual unsigned int AddPass(std::shared_ptr<IRenderUIPass> pass);
+    virtual std::shared_ptr<IRenderUIPass> GetPass(unsigned int ID) const;
 
 	virtual void RenderUI(RenderUIEventArgs& renderEventArgs);
 
@@ -23,5 +24,6 @@ public:
 protected:
 
 private:
-	std::shared_ptr<IRenderUIPass> m_Pass;
+    typedef std::vector< std::shared_ptr<IRenderUIPass> > RenderPassList;
+    RenderPassList m_Passes;
 };

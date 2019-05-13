@@ -7,7 +7,7 @@ class CUIColorNode : public CUIBaseNode
 {
 	typedef CUIBaseNode base;
 public:
-	CUIColorNode(vec2 Size = vec2(16.0f, 16.0f));
+	CUIColorNode(vec2 Size = vec2(1.0f, 1.0f));
 	virtual ~CUIColorNode();
 
 	// CUIColorNode
