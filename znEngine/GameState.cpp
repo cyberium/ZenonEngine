@@ -16,7 +16,8 @@ CGameState::CGameState(const IApplication * _application)
 	m_3DScene = std::make_shared<Scene3D>();
     m_3DScene->CreateRootNode();
 
-	m_UIScene = std::make_shared<CUIScene>();
+	m_UIScene = std::make_shared<SceneUI>();
+    m_UIScene->CreateRootNode();
 }
 
 CGameState::~CGameState()

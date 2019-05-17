@@ -8,10 +8,10 @@
 
 // Base
 #include "../znEngine/Application.h"
-#include "../znEngine/CameraControllerBase.h"
-#include "../znEngine/ArcBallCameraController.h"
-#include "../znEngine/FreeCameraController.h"
-#include "../znEngine/RTSCameraController.h"
+#include "../znEngine/CameraControllers/CameraControllerBase.h"
+#include "../znEngine/CameraControllers/ArcBallCameraController.h"
+#include "../znEngine/CameraControllers/FreeCameraController.h"
+#include "../znEngine/CameraControllers/RTSCameraController.h"
 #include "../znEngine/CreatePasses.h"
 #include "../znEngine/EngineTime.h"
 #include "../znEngine/Loader.h"

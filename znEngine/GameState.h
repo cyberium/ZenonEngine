@@ -1,10 +1,10 @@
 #pragma once
 
-#include "SceneFunctional/Scene3D.h"
-#include "SceneFunctional/Passes/RenderTechnique.h"
+#include "SceneFunctional/3D/Scene3D.h"
+#include "Passes/RenderTechnique.h"
 
-#include "UI/UIScene.h"
-#include "UI/Passes/RenderUITechnique.h"
+#include "SceneFunctional/UI/SceneUI.h"
+#include "Passes/RenderUITechnique.h"
 
 class CGameState : public IGameState
 {
@@ -67,7 +67,7 @@ protected:
 	RenderTechnique                      m_3DTechnique;
 	RenderUITechnique                    m_UITechnique;
 	std::shared_ptr<Scene3D>             m_3DScene;
-	std::shared_ptr<CUIScene>            m_UIScene;
+	std::shared_ptr<SceneUI>            m_UIScene;
 
 private: // Input events connections
     Delegate<KeyEventArgs>::FunctionDecl OnKeyPressedConnection;
