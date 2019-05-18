@@ -10,7 +10,7 @@ InvokeFunctionPass::InvokeFunctionPass(std::function<void(void)> func)
 InvokeFunctionPass::~InvokeFunctionPass()
 {}
 
-void InvokeFunctionPass::Render(Render3DEventArgs& e)
+void InvokeFunctionPass::Render(RenderEventArgs& e)
 {
 	if (m_Func)
 	{

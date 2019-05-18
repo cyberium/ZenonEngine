@@ -1,7 +1,5 @@
 #include "stdafx.h"
 
-#ifndef ONLY_SIMPLE_UI
-
 // General
 #include "UIBeizerLine.h"
 
@@ -64,7 +62,7 @@ void CUIBeizerLineNode::SetThickness(float Thickness)
 //
 // CUIBaseNode
 //
-glm::vec2 CUIBeizerLineNode::GetSize() const
+glm::vec2 CUIBeizerLineNode::GetSize()
 {
     return glm::vec2(9999.0f, 9999.0f);
 }
@@ -96,5 +94,3 @@ void CUIBeizerLineNode::UpdateBuffer()
     m_PointsBuffer->Copy(pointsBufferNew);
     _RenderDevice->DestroyVertexBuffer(pointsBufferNew);
 }
-
-#endif

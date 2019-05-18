@@ -14,7 +14,7 @@ public:
 	CopyTexturePass(std::shared_ptr<Texture> destinationTexture, std::shared_ptr<Texture> sourceTexture);
 	virtual ~CopyTexturePass();
 
-	virtual void Render(Render3DEventArgs& e);
+	virtual void Render(RenderEventArgs& e);
 
 private:
 	std::shared_ptr<Texture> m_SourceTexture;

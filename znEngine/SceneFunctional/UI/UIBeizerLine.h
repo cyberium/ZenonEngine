@@ -1,27 +1,25 @@
 #pragma once
 
-#ifndef ONLY_SIMPLE_UI
-
-#include "SceneFunctional/UI/SceneNodeUI.h"
-#include "Materials/UI_Line_Material.h"
+#include "../../SceneFunctional/UI/SceneNodeUI.h"
+#include "../../Materials/UI_Line_Material.h"
 
 class CUIBeizerLineNode : public CUIBaseNode
 {
 	typedef CUIBaseNode base;
 public:
-    CUIBeizerLineNode();
-	virtual ~CUIBeizerLineNode();
+                                                    CUIBeizerLineNode();
+	virtual                                         ~CUIBeizerLineNode();
 
 	// CUIBeizerLineNode
-	void SetColor(vec4 Color);
-    void SetPosStart(vec2 PosStart);
-    void SetPosEnd(vec2 PosEnd);
-    void SetThickness(float Thickness);
+	void                                            SetColor(vec4 Color);
+    void                                            SetPosStart(vec2 PosStart);
+    void                                            SetPosEnd(vec2 PosEnd);
+    void                                            SetThickness(float Thickness);
 
 	// CUIBaseNode
-    virtual glm::vec2 GetSize() const override final;
+    virtual glm::vec2                               GetSize() override final;
 
-	virtual bool AcceptMesh(IVisitor& visitor) override;
+	virtual bool                                    AcceptMesh(IVisitor& visitor) override;
 
 protected:
     void UpdateBuffer();
@@ -34,5 +32,3 @@ private:
     vec2                                m_StartPoint;
     vec2                                m_EndPoint;
 };
-
-#endif

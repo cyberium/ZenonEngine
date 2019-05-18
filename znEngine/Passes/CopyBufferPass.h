@@ -15,7 +15,7 @@ public:
 	CopyBufferPass(std::shared_ptr<IBuffer> destinationBuffer, std::shared_ptr<IBuffer> sourceBuffer);
 	virtual ~CopyBufferPass();
 
-	virtual void Render(Render3DEventArgs& e);
+	virtual void Render(RenderEventArgs& e);
 
 private:
 	std::shared_ptr<IBuffer> m_SourceBuffer;

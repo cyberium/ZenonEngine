@@ -1,24 +1,19 @@
 #pragma once
 
-#include "RenderPass.h"
-
 class RenderTechnique : public Object
 {
 public:
-	RenderTechnique();
-	virtual ~RenderTechnique();
+	                                                RenderTechnique();
+	virtual                                         ~RenderTechnique();
 
-	virtual unsigned int AddPass(std::shared_ptr<IRenderPass> pass);
-	virtual std::shared_ptr<IRenderPass> GetPass(unsigned int ID) const;
+	virtual uint32                                  AddPass(std::shared_ptr<IRenderPass> pass);
+	virtual std::shared_ptr<IRenderPass>            GetPass(uint32 ID) const;
 
-	virtual void Render(Render3DEventArgs& renderEventArgs);
+	virtual void                                    Render(RenderEventArgs& renderEventArgs);
 
-	virtual void UpdateViewport(Viewport _viewport);
-
-protected:
+	virtual void                                    UpdateViewport(Viewport _viewport);
 
 private:
-	typedef std::vector< std::shared_ptr<IRenderPass> > RenderPassList;
-	RenderPassList m_Passes;
-
+	typedef std::vector<std::shared_ptr<IRenderPass>> RenderPassList;
+	RenderPassList                                  m_Passes;
 };

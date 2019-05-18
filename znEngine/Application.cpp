@@ -128,17 +128,17 @@ int Application::DoRun()
 	{
 		g_GameDeltaTime = elapsedTime.GetElapsedTime();
 		g_ApplicationTime += g_GameDeltaTime;
-		++g_FrameCounter;
+		g_FrameCounter++;
 
-		UpdateEventArgs updateArgs(*this, g_GameDeltaTime, g_ApplicationTime);
+		UpdateEventArgs updateArgs(*this, g_GameDeltaTime, g_ApplicationTime, g_FrameCounter);
 		OnUpdate(updateArgs);
 
 		m_pRenderDevice->Lock();
 		{
-			Render3DEventArgs renderArgs(*this, g_GameDeltaTime * 166.0f, g_ApplicationTime * 166.0f, g_FrameCounter);
+			RenderEventArgs renderArgs(*this, g_GameDeltaTime * 166.0f, g_ApplicationTime * 166.0f, g_FrameCounter, nullptr, nullptr, nullptr, nullptr);
 			OnRender(renderArgs);
 
-			RenderUIEventArgs renderUIArgs(*this, g_GameDeltaTime, g_ApplicationTime, g_FrameCounter);
+			RenderEventArgs renderUIArgs(*this, g_GameDeltaTime, g_ApplicationTime, g_FrameCounter, nullptr, nullptr, nullptr, nullptr);
 			OnRenderUI(renderUIArgs);
 
 			m_pWindow->Present();
@@ -654,14 +654,14 @@ void Application::OnUserEvent(UserEventArgs& e)
 	UserEvent(e);
 }
 
-void Application::OnRender(Render3DEventArgs& e)
+void Application::OnRender(RenderEventArgs& e)
 {
 	m_pWindow->OnPreRender(e);
 	m_pWindow->OnRender(e);
 	m_pWindow->OnPostRender(e);
 }
 
-void Application::OnRenderUI(RenderUIEventArgs & e)
+void Application::OnRenderUI(RenderEventArgs & e)
 {
 	m_pWindow->OnRenderUI(e);
 }

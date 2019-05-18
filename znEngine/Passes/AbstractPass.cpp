@@ -8,9 +8,22 @@
 
 AbstractPass::AbstractPass()
 	: m_Enabled(true)
+    , m_RenderEventArgs(nullptr)
+    , m_Pipeline(nullptr)
+    , m_RenderDevice(_RenderDevice)
 {
 	m_PerObjectData = (PerObject*)_aligned_malloc(sizeof(PerObject), 16);
 	m_PerObjectConstantBuffer = _RenderDevice->CreateConstantBuffer(PerObject());
+}
+
+AbstractPass::AbstractPass(std::shared_ptr<PipelineState> Pipeline)
+    : m_Enabled(true)
+    , m_RenderEventArgs(nullptr)
+    , m_Pipeline(Pipeline)
+    , m_RenderDevice(_RenderDevice)
+{
+    m_PerObjectData = (PerObject*)_aligned_malloc(sizeof(PerObject), 16);
+    m_PerObjectConstantBuffer = _RenderDevice->CreateConstantBuffer(PerObject());
 }
 
 AbstractPass::~AbstractPass()
@@ -19,7 +32,6 @@ AbstractPass::~AbstractPass()
 	_RenderDevice->DestroyConstantBuffer(m_PerObjectConstantBuffer);
 }
 
-// Enable or disable the pass. If a pass is disabled, the technique will skip it.
 void AbstractPass::SetEnabled(bool enabled)
 {
 	m_Enabled = enabled;
@@ -30,16 +42,22 @@ bool AbstractPass::IsEnabled() const
 	return m_Enabled;
 }
 
-// Render the pass. This should only be called by the RenderTechnique.
-void AbstractPass::PreRender(Render3DEventArgs& e)
-{}
+void AbstractPass::PreRender(RenderEventArgs& e)
+{
+}
 
-void AbstractPass::PostRender(Render3DEventArgs& e)
-{}
+void AbstractPass::PostRender(RenderEventArgs& e)
+{
+}
 
 
-// Inherited from Visitor
+void AbstractPass::UpdateViewport(Viewport _viewport)
+{
+}
 
+//
+// IVisitor
+//
 bool AbstractPass::Visit(std::shared_ptr<SceneNode> Node)
 {
     fail1();
@@ -60,8 +78,12 @@ bool AbstractPass::Visit(std::shared_ptr<CUIBaseNode> nodeUI)
 
 bool AbstractPass::Visit(std::shared_ptr<IMesh> Mesh, UINT IndexStartLocation, UINT IndexCnt, UINT VertexStartLocation, UINT VertexCnt)
 {
-    fail1();
-	return false;
+    if (m_RenderEventArgs)
+    {
+        return Mesh->Render(m_RenderEventArgs, m_PerObjectConstantBuffer, IndexStartLocation, IndexCnt, VertexStartLocation, VertexCnt);
+    }
+
+    return false;
 }
 
 bool AbstractPass::Visit(std::shared_ptr<CLight3D> light)
@@ -70,19 +92,15 @@ bool AbstractPass::Visit(std::shared_ptr<CLight3D> light)
 	return false;
 }
 
-void AbstractPass::UpdateViewport(Viewport _viewport)
+void AbstractPass::SetRenderEventArgs(RenderEventArgs* e)
 {
-	// do nothing
+    m_RenderEventArgs = e;
 }
 
-void AbstractPass::SetRenderEventArgs(Render3DEventArgs& e)
+RenderEventArgs* AbstractPass::GetRenderEventArgs() const
 {
-	fail1();
-}
-
-Render3DEventArgs& AbstractPass::GetRenderEventArgs() const
-{
-	fail1();
+    assert(m_RenderEventArgs);
+    return m_RenderEventArgs;
 }
 
 void AbstractPass::SetPerObjectConstantBufferData(PerObject& perObjectData)
@@ -97,8 +115,16 @@ std::shared_ptr<ConstantBuffer> AbstractPass::GetPerObjectConstantBuffer() const
 
 void AbstractPass::BindPerObjectConstantBuffer(std::shared_ptr<Shader> shader)
 {
-	if (shader)
-	{
-		shader->GetShaderParameterByName("PerObject").Set(m_PerObjectConstantBuffer);
-	}
+    if (shader)
+        shader->GetShaderParameterByName("PerObject").Set(m_PerObjectConstantBuffer);
+}
+
+std::shared_ptr<PipelineState> AbstractPass::GetPipelineState() const
+{
+    return m_Pipeline;
+}
+
+std::shared_ptr<IRenderDevice> AbstractPass::GetRenderDevice() const
+{
+    return m_RenderDevice.lock();
 }

@@ -67,10 +67,10 @@ DeferredLightingPass::~DeferredLightingPass()
 	_RenderDevice->DestroyConstantBuffer(m_FogParamsCB);
 }
 
-void DeferredLightingPass::PreRender(Render3DEventArgs& e)
+void DeferredLightingPass::PreRender(RenderEventArgs& e)
 {
 	e.PipelineState = nullptr;
-	SetRenderEventArgs(e);
+	SetRenderEventArgs(&e);
 
 	// Bind the G-buffer textures to the pixel shader pipeline stage.
 	m_PositionTexture->Bind(0, Shader::PixelShader, ShaderParameter::Type::Texture);
@@ -80,9 +80,9 @@ void DeferredLightingPass::PreRender(Render3DEventArgs& e)
 	m_DepthTexture->Bind(4, Shader::PixelShader, ShaderParameter::Type::Texture);
 }
 
-void DeferredLightingPass::RenderSubPass(Render3DEventArgs& e, std::shared_ptr<Scene3D> scene, std::shared_ptr<PipelineState> pipeline)
+void DeferredLightingPass::RenderSubPass(RenderEventArgs* e, std::shared_ptr<Scene3D> scene, std::shared_ptr<PipelineState> pipeline)
 {
-	e.PipelineState = pipeline.get();
+	e->PipelineState = pipeline.get();
 	SetRenderEventArgs(e);
 
 	pipeline->Bind();
@@ -93,7 +93,7 @@ void DeferredLightingPass::RenderSubPass(Render3DEventArgs& e, std::shared_ptr<S
 }
 
 // Render the pass. This should only be called by the RenderTechnique.
-void DeferredLightingPass::Render(Render3DEventArgs& e)
+void DeferredLightingPass::Render(RenderEventArgs& e)
 {
 	const Camera* pCamera = e.Camera;
 	assert1(pCamera != nullptr);
@@ -161,7 +161,7 @@ void DeferredLightingPass::Render(Render3DEventArgs& e)
 	m_Scene->Accept(*this);
 }
 
-void DeferredLightingPass::PostRender(Render3DEventArgs& e)
+void DeferredLightingPass::PostRender(RenderEventArgs& e)
 {
 	// Explicitly unbind these textures so they can be used as render target textures.
 	m_PositionTexture->UnBind(0, Shader::PixelShader, ShaderParameter::Type::Texture);
@@ -182,9 +182,9 @@ bool DeferredLightingPass::Visit(std::shared_ptr<SceneNode3D> node)
 
 bool DeferredLightingPass::Visit(std::shared_ptr<IMesh> Mesh, UINT IndexStartLocation, UINT IndexCnt, UINT VertexStartLocation, UINT VertexCnt)
 {
-	if (m_pRenderEventArgs && Mesh->GetMaterial() == nullptr) // TODO: Fixme
+	if (GetRenderEventArgs() && Mesh->GetMaterial() == nullptr) // TODO: Fixme
 	{
-		return Mesh->Render(*m_pRenderEventArgs, m_PerObjectConstantBuffer);
+		return Mesh->Render(GetRenderEventArgs(), m_PerObjectConstantBuffer);
 	}
 
 	return false;
@@ -192,7 +192,7 @@ bool DeferredLightingPass::Visit(std::shared_ptr<IMesh> Mesh, UINT IndexStartLoc
 
 bool DeferredLightingPass::Visit(std::shared_ptr < CLight3D> light)
 {
-	const Camera* camera = GetRenderEventArgs().Camera;
+	const Camera* camera = GetRenderEventArgs()->Camera;
 	assert1(camera != nullptr);
 
 	PerObject perObjectData;
@@ -266,15 +266,4 @@ void DeferredLightingPass::UpdateFog(float fogModifier, vec3 fogColor, float fog
 	m_pFogParams->FogColor = fogColor;
 	m_pFogParams->FogDistance = fogDistance;
 	m_FogParamsCB->Set(*m_pFogParams);
-}
-
-void DeferredLightingPass::SetRenderEventArgs(Render3DEventArgs & e)
-{
-	m_pRenderEventArgs = &e;
-}
-
-Render3DEventArgs& DeferredLightingPass::GetRenderEventArgs() const
-{
-	assert1(m_pRenderEventArgs);
-	return *m_pRenderEventArgs;
 }

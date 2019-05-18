@@ -15,9 +15,9 @@ public:
 	virtual ~DispatchPass();
 
 	// Render the pass. This should only be called by the RenderTechnique.
-	virtual void PreRender(Render3DEventArgs& e);
-	virtual void Render(Render3DEventArgs& e);
-	virtual void PostRender(Render3DEventArgs& e);
+	virtual void PreRender(RenderEventArgs& e);
+	virtual void Render(RenderEventArgs& e);
+	virtual void PostRender(RenderEventArgs& e);
 
 	void SetNumGroups(const glm::ivec3& numGroups);
 	glm::ivec3 GetNumGroups() const;

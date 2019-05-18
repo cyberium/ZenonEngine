@@ -183,9 +183,6 @@
     <ClCompile Include="Materials\UI_Texture_Material.cpp">
       <Filter>Materials</Filter>
     </ClCompile>
-    <ClCompile Include="Passes\BasePass.cpp">
-      <Filter>Passes</Filter>
-    </ClCompile>
     <ClCompile Include="Passes\DeferredLightingPass.cpp">
       <Filter>Passes</Filter>
     </ClCompile>
@@ -193,9 +190,6 @@
       <Filter>Passes</Filter>
     </ClCompile>
     <ClCompile Include="Passes\PostprocessPass.cpp">
-      <Filter>Passes</Filter>
-    </ClCompile>
-    <ClCompile Include="Passes\RenderTechnique.cpp">
       <Filter>Passes</Filter>
     </ClCompile>
     <ClCompile Include="SceneFunctional\UI\UIUtils.cpp">
@@ -264,9 +258,6 @@
     <ClCompile Include="Passes\BaseUIPass.cpp">
       <Filter>Passes\UI</Filter>
     </ClCompile>
-    <ClCompile Include="Passes\RenderUITechnique.cpp">
-      <Filter>Passes\UI</Filter>
-    </ClCompile>
     <ClCompile Include="Passes\InvokeFunctionPass.cpp">
       <Filter>Passes\Technical</Filter>
     </ClCompile>
@@ -275,6 +266,12 @@
     </ClCompile>
     <ClCompile Include="SceneFunctional\UI\Fonts\FontsManager.cpp">
       <Filter>Scene Funcitonal\UI\Fonts</Filter>
+    </ClCompile>
+    <ClCompile Include="Passes\BasePass.cpp">
+      <Filter>Passes\3D</Filter>
+    </ClCompile>
+    <ClCompile Include="Passes\RenderTechnique.cpp">
+      <Filter>Passes\Base</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -296,9 +293,6 @@
       <Filter>Engine</Filter>
     </ClInclude>
     <ClInclude Include="CreatePasses.h">
-      <Filter>RenderStuff</Filter>
-    </ClInclude>
-    <ClInclude Include="Debug_Pass.h">
       <Filter>RenderStuff</Filter>
     </ClInclude>
     <ClInclude Include="MaterialWrapper.h">
@@ -386,9 +380,6 @@
     <ClInclude Include="Materials\UI_Texture_Material.h">
       <Filter>Materials</Filter>
     </ClInclude>
-    <ClInclude Include="Passes\BasePass.h">
-      <Filter>Passes</Filter>
-    </ClInclude>
     <ClInclude Include="Passes\DeferredLightingPass.h">
       <Filter>Passes</Filter>
     </ClInclude>
@@ -396,9 +387,6 @@
       <Filter>Passes</Filter>
     </ClInclude>
     <ClInclude Include="Passes\PostprocessPass.h">
-      <Filter>Passes</Filter>
-    </ClInclude>
-    <ClInclude Include="Passes\RenderTechnique.h">
       <Filter>Passes</Filter>
     </ClInclude>
     <ClInclude Include="SceneFunctional\UI\UIUtils.h">
@@ -461,19 +449,10 @@
     <ClInclude Include="Passes\AbstractPass.h">
       <Filter>Passes\Base</Filter>
     </ClInclude>
-    <ClInclude Include="Passes\RenderPass.h">
-      <Filter>Passes\Base</Filter>
-    </ClInclude>
     <ClInclude Include="Passes\Debug_Pass.h">
       <Filter>Passes</Filter>
     </ClInclude>
     <ClInclude Include="Passes\BaseUIPass.h">
-      <Filter>Passes\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="Passes\RenderUIPass.h">
-      <Filter>Passes\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="Passes\RenderUITechnique.h">
       <Filter>Passes\UI</Filter>
     </ClInclude>
     <ClInclude Include="Passes\InvokeFunctionPass.h">
@@ -484,6 +463,12 @@
     </ClInclude>
     <ClInclude Include="SceneFunctional\UI\Fonts\FontsManager.h">
       <Filter>Scene Funcitonal\UI\Fonts</Filter>
+    </ClInclude>
+    <ClInclude Include="Passes\BasePass.h">
+      <Filter>Passes\3D</Filter>
+    </ClInclude>
+    <ClInclude Include="Passes\RenderTechnique.h">
+      <Filter>Passes\Base</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

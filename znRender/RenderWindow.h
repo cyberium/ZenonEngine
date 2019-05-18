@@ -36,14 +36,14 @@ public:
 	virtual      void OnInitialize(EventArgs& e);
 	UpdateEvent			Update;
 	virtual      void OnUpdate(UpdateEventArgs& e);
-	Render3DEvent       PreRender;
-	virtual      void OnPreRender(Render3DEventArgs& e);
-	Render3DEvent       Render;
-	virtual      void OnRender(Render3DEventArgs& e);
-	Render3DEvent       PostRender;
-	virtual      void OnPostRender(Render3DEventArgs& e);
-	RenderUIEvent       RenderUI;
-	virtual      void OnRenderUI(RenderUIEventArgs& e);
+	RenderEvent         PreRender;
+	virtual      void OnPreRender(RenderEventArgs& e);
+	RenderEvent         Render;
+	virtual      void OnRender(RenderEventArgs& e);
+	RenderEvent         PostRender;
+	virtual      void OnPostRender(RenderEventArgs& e);
+	RenderEvent         RenderUI;
+	virtual      void OnRenderUI(RenderEventArgs& e);
 	Event				Terminate;
 	virtual      void OnTerminate(EventArgs& e);
 

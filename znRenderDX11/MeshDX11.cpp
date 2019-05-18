@@ -68,7 +68,7 @@ std::shared_ptr<const Material> MeshDX11::GetMaterial() const
 	return m_pMaterial;
 }
 
-bool MeshDX11::Render(RenderEventArgs& renderArgs, std::shared_ptr<ConstantBuffer> perObject, UINT indexStartLocation, UINT indexCnt, UINT vertexStartLocation, UINT vertexCnt)
+bool MeshDX11::Render(const RenderEventArgs* renderArgs, std::shared_ptr<ConstantBuffer> perObject, UINT indexStartLocation, UINT indexCnt, UINT vertexStartLocation, UINT vertexCnt)
 {
 	std::shared_ptr<ShaderDX11> pVS = nullptr;
 
@@ -80,8 +80,7 @@ bool MeshDX11::Render(RenderEventArgs& renderArgs, std::shared_ptr<ConstantBuffe
 	}
 	else
 	{
-		Render3DEventArgs& args3D = reinterpret_cast<Render3DEventArgs&>(renderArgs);
-		pVS = std::dynamic_pointer_cast<ShaderDX11>(args3D.PipelineState->GetShader(Shader::VertexShader));
+		pVS = std::dynamic_pointer_cast<ShaderDX11>(renderArgs->PipelineState->GetShader(Shader::VertexShader));
 	}
 
 	if (pVS)

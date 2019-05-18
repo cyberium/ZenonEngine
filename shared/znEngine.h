@@ -49,7 +49,6 @@
 
 // base passes
 #include "../znEngine/Passes/BaseUIPass.h"
-#include "../znEngine/Passes/RenderUITechnique.h"
 
 
 

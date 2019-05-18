@@ -46,7 +46,6 @@
     <ClCompile Include="Passes\InvokeFunctionPass.cpp" />
     <ClCompile Include="Passes\PostprocessPass.cpp" />
     <ClCompile Include="Passes\RenderTechnique.cpp" />
-    <ClCompile Include="Passes\RenderUITechnique.cpp" />
     <ClCompile Include="SceneFunctional\3D\ColliderComponent3D.cpp" />
     <ClCompile Include="SceneFunctional\3D\LightComponent3D.cpp" />
     <ClCompile Include="SceneFunctional\3D\MeshComponent3D.cpp" />
@@ -118,10 +117,7 @@
     <ClInclude Include="Passes\GenerateMipMapsPass.h" />
     <ClInclude Include="Passes\InvokeFunctionPass.h" />
     <ClInclude Include="Passes\PostprocessPass.h" />
-    <ClInclude Include="Passes\RenderPass.h" />
     <ClInclude Include="Passes\RenderTechnique.h" />
-    <ClInclude Include="Passes\RenderUIPass.h" />
-    <ClInclude Include="Passes\RenderUITechnique.h" />
     <ClInclude Include="SceneFunctional\3D\ColliderComponent3D.h" />
     <ClInclude Include="SceneFunctional\3D\LightComponent3D.h" />
     <ClInclude Include="SceneFunctional\3D\MeshComponent3D.h" />
@@ -137,7 +133,6 @@
     <ClInclude Include="Application.h" />
     <ClInclude Include="common.h" />
     <ClInclude Include="CreatePasses.h" />
-    <ClInclude Include="Debug_Pass.h" />
     <ClInclude Include="EngineTime.h" />
     <ClInclude Include="GameState.h" />
     <ClInclude Include="Loader.h" />

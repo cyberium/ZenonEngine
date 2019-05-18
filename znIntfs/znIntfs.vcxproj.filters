@@ -37,26 +37,32 @@
     <ClInclude Include="Networking.h">
       <Filter>Networking</Filter>
     </ClInclude>
-    <ClInclude Include="Visitor.h">
-      <Filter>Render</Filter>
-    </ClInclude>
-    <ClInclude Include="SceneNodeProvider.h">
-      <Filter>Render</Filter>
-    </ClInclude>
     <ClInclude Include="Application.h">
       <Filter>Engine</Filter>
     </ClInclude>
     <ClInclude Include="CameraController.h">
       <Filter>Engine</Filter>
     </ClInclude>
-    <ClInclude Include="WindowObject.h">
-      <Filter>Render</Filter>
-    </ClInclude>
     <ClInclude Include="..\shared\znIntfs.h">
       <Filter>Common</Filter>
     </ClInclude>
     <ClInclude Include="Scene.h">
       <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>Render</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneNodeProvider.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Visitor.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="WindowObject.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderPass.h">
+      <Filter>Render</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

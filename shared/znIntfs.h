@@ -25,3 +25,7 @@
 #include "../znIntfs/Settings.h"
 #include "../znIntfs/Visitor.h"
 #include "../znIntfs/WindowObject.h"
+
+// Render
+#include "../znIntfs/Camera.h"
+#include "../znIntfs/RenderPass.h"

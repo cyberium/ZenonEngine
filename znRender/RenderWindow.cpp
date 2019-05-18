@@ -107,27 +107,27 @@ void RenderWindow::OnUpdate(UpdateEventArgs& e)
 	Update(e);
 }
 
-void RenderWindow::OnPreRender(Render3DEventArgs& e)
+void RenderWindow::OnPreRender(RenderEventArgs& e)
 {
-	Render3DEventArgs renderArgs(*this, e.ElapsedTime, e.TotalTime, e.FrameCounter, e.Camera, e.PipelineState);
+	RenderEventArgs renderArgs(*this, e.ElapsedTime, e.TotalTime, e.FrameCounter, e.Camera, e.PipelineState, e.Node, e.Viewport);
 	PreRender(renderArgs);
 }
 
-void RenderWindow::OnRender(Render3DEventArgs& e)
+void RenderWindow::OnRender(RenderEventArgs& e)
 {
-	Render3DEventArgs renderArgs(*this, e.ElapsedTime, e.TotalTime, e.FrameCounter, e.Camera, e.PipelineState);
+	RenderEventArgs renderArgs(*this, e.ElapsedTime, e.TotalTime, e.FrameCounter, e.Camera, e.PipelineState, e.Node, e.Viewport);
 	Render(renderArgs);
 }
 
-void RenderWindow::OnPostRender(Render3DEventArgs& e)
+void RenderWindow::OnPostRender(RenderEventArgs& e)
 {
-	Render3DEventArgs renderArgs(*this, e.ElapsedTime, e.TotalTime, e.FrameCounter, e.Camera, e.PipelineState);
+	RenderEventArgs renderArgs(*this, e.ElapsedTime, e.TotalTime, e.FrameCounter, e.Camera, e.PipelineState, e.Node, e.Viewport);
 	PostRender(renderArgs);
 }
 
-void RenderWindow::OnRenderUI(RenderUIEventArgs& e)
+void RenderWindow::OnRenderUI(RenderEventArgs& e)
 {
-	RenderUIEventArgs renderArgs(*this, e.ElapsedTime, e.TotalTime, e.FrameCounter);
+	RenderEventArgs renderArgs(*this, e.ElapsedTime, e.TotalTime, e.FrameCounter, e.Camera, e.PipelineState, e.Node, e.Viewport);
 	RenderUI(renderArgs);
 }
 

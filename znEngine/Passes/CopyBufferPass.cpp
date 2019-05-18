@@ -11,7 +11,7 @@ CopyBufferPass::CopyBufferPass(std::shared_ptr<IBuffer> destinationBuffer, std::
 CopyBufferPass::~CopyBufferPass()
 {}
 
-void CopyBufferPass::Render(Render3DEventArgs& e)
+void CopyBufferPass::Render(RenderEventArgs& e)
 {
 	if (m_DestinationBuffer)
 	{

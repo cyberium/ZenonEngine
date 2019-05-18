@@ -25,9 +25,9 @@ public:
 	virtual ~DeferredLightingPass();
 
 	// Render the pass. This should only be called by the RenderTechnique.
-	virtual void PreRender(Render3DEventArgs& e) override final;
-	virtual void Render(Render3DEventArgs& e) override final;
-	virtual void PostRender(Render3DEventArgs& e) override final;
+	virtual void PreRender(RenderEventArgs& e) override final;
+	virtual void Render(RenderEventArgs& e) override final;
+	virtual void PostRender(RenderEventArgs& e) override final;
 
 	// Inherited from Visitor
 	virtual bool Visit(std::shared_ptr<SceneNode3D> node) override final;
@@ -38,15 +38,11 @@ public:
 
 	void UpdateFog(float fogModifier, vec3 fogColor, float fogDistance);
 
-	void SetRenderEventArgs(Render3DEventArgs& e) override;
-	Render3DEventArgs& GetRenderEventArgs() const override;
-
 protected:
-	void RenderSubPass(Render3DEventArgs& e, std::shared_ptr<Scene3D> scene, std::shared_ptr<PipelineState> pipeline);
+	void RenderSubPass(RenderEventArgs* e, std::shared_ptr<Scene3D> scene, std::shared_ptr<PipelineState> pipeline);
 
 private:
 	mat4 m_World;
-	Render3DEventArgs* m_pRenderEventArgs;
 
 	__declspec(align(16)) struct ScreenToViewParams
 	{

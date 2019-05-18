@@ -234,7 +234,7 @@ std::shared_ptr<IRenderTarget> RenderWindowDX11::GetRenderTarget()
 
 
 // Engine events
-void RenderWindowDX11::OnPreRender(Render3DEventArgs& e)
+void RenderWindowDX11::OnPreRender(RenderEventArgs& e)
 {
 	if (m_bResizePending)
 	{
@@ -247,7 +247,7 @@ void RenderWindowDX11::OnPreRender(Render3DEventArgs& e)
 	base::OnPreRender(e);
 }
 
-void RenderWindowDX11::OnPostRender(Render3DEventArgs& e)
+void RenderWindowDX11::OnPostRender(RenderEventArgs& e)
 {
 	//m_RenderTarget->UnBind();
 

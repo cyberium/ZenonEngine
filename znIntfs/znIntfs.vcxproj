@@ -29,6 +29,7 @@
   <ItemGroup>
     <ClInclude Include="..\shared\znIntfs.h" />
     <ClInclude Include="Application.h" />
+    <ClInclude Include="Camera.h" />
     <ClInclude Include="CameraController.h" />
     <ClInclude Include="Console.h" />
     <ClInclude Include="DebugOutput.h" />
@@ -39,6 +40,7 @@
     <ClInclude Include="Loader.h" />
     <ClInclude Include="Log.h" />
     <ClInclude Include="Networking.h" />
+    <ClInclude Include="RenderPass.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneNodeProvider.h" />
     <ClInclude Include="Settings.h" />

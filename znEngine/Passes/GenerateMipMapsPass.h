@@ -15,7 +15,7 @@ public:
 	GenerateMipMapPass(std::shared_ptr<Texture> texture);
 	virtual ~GenerateMipMapPass();
 
-	virtual void Render(Render3DEventArgs& e);
+	virtual void Render(RenderEventArgs& e);
 
 private:
 	std::shared_ptr<IRenderTarget> m_RenderTarget;

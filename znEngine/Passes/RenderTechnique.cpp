@@ -9,14 +9,13 @@ RenderTechnique::RenderTechnique()
 RenderTechnique::~RenderTechnique()
 {}
 
-unsigned int RenderTechnique::AddPass(std::shared_ptr<IRenderPass> pass)
+uint32 RenderTechnique::AddPass(std::shared_ptr<IRenderPass> pass)
 {
-	// No check for duplicate passes (it may be intended to render the same pass multiple times?)
 	m_Passes.push_back(pass);
-	return static_cast<unsigned int>(m_Passes.size()) - 1;
+	return static_cast<uint32>(m_Passes.size()) - 1;
 }
 
-std::shared_ptr<IRenderPass> RenderTechnique::GetPass(unsigned int ID) const
+std::shared_ptr<IRenderPass> RenderTechnique::GetPass(uint32 ID) const
 {
 	if (ID < m_Passes.size())
 	{
@@ -26,8 +25,7 @@ std::shared_ptr<IRenderPass> RenderTechnique::GetPass(unsigned int ID) const
 	return std::shared_ptr<IRenderPass>();
 }
 
-// Render the scene using the passes that have been configured.
-void RenderTechnique::Render(Render3DEventArgs& renderEventArgs)
+void RenderTechnique::Render(RenderEventArgs& renderEventArgs)
 {
 	for (auto pass : m_Passes)
 	{
@@ -47,5 +45,3 @@ void RenderTechnique::UpdateViewport(Viewport _viewport)
 		pass->UpdateViewport(_viewport);
 	}
 }
-
-

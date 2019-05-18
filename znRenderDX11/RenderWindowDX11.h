@@ -18,8 +18,8 @@ protected:
 	virtual void CreateSwapChain();
 
 	// Engine events
-	virtual void OnPreRender(Render3DEventArgs& e);
-	virtual void OnPostRender(Render3DEventArgs& e);
+	virtual void OnPreRender(RenderEventArgs& e);
+	virtual void OnPostRender(RenderEventArgs& e);
 
 	// Window events
 	virtual void OnResize(ResizeEventArgs& e);

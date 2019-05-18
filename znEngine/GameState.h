@@ -1,10 +1,8 @@
 #pragma once
 
 #include "SceneFunctional/3D/Scene3D.h"
-#include "Passes/RenderTechnique.h"
-
 #include "SceneFunctional/UI/SceneUI.h"
-#include "Passes/RenderUITechnique.h"
+#include "Passes/RenderTechnique.h"
 
 class CGameState : public IGameState
 {
@@ -41,10 +39,10 @@ public:
 	virtual void OnUpdate(UpdateEventArgs& e);
 
 	// Render events
-	virtual void OnPreRender(Render3DEventArgs& e) = 0;
-	virtual void OnRender(Render3DEventArgs& e) = 0;
-	virtual void OnPostRender(Render3DEventArgs& e) = 0;
-	virtual void OnRenderUI(RenderUIEventArgs& e) = 0;
+	virtual void OnPreRender(RenderEventArgs& e) = 0;
+	virtual void OnRender(RenderEventArgs& e) = 0;
+	virtual void OnPostRender(RenderEventArgs& e) = 0;
+	virtual void OnRenderUI(RenderEventArgs& e) = 0;
 
 protected:
     const IApplication* GetApplication();
@@ -53,21 +51,21 @@ protected:
 	void UnsetCameraController();
 
 protected:
-	const IApplication*         m_Application;
+	const IApplication*                             m_Application;
 
-    std::shared_ptr<Query>               m_FrameQuery;
-    double                               m_FrameTime;
+    std::shared_ptr<Query>                          m_FrameQuery;
+    double                                          m_FrameTime;
 
-	Viewport                    m_Viewport;
-	std::shared_ptr<ICameraController> m_DefaultCameraController;
+	Viewport                                        m_Viewport;
+	std::shared_ptr<ICameraController>              m_DefaultCameraController;
 
-	const CGroupQuality&        m_QualitySettings;
-	const CGroupVideo&          m_VideoSettings;
+	const CGroupQuality&                            m_QualitySettings;
+	const CGroupVideo&                              m_VideoSettings;
 
-	RenderTechnique                      m_3DTechnique;
-	RenderUITechnique                    m_UITechnique;
-	std::shared_ptr<Scene3D>             m_3DScene;
-	std::shared_ptr<SceneUI>            m_UIScene;
+	RenderTechnique                                 m_3DTechnique;
+	RenderTechnique                                 m_UITechnique;
+	std::shared_ptr<Scene3D>                        m_3DScene;
+	std::shared_ptr<SceneUI>                        m_UIScene;
 
 private: // Input events connections
     Delegate<KeyEventArgs>::FunctionDecl OnKeyPressedConnection;
@@ -84,10 +82,10 @@ private: // Update event connection
     Delegate<UpdateEventArgs>::FunctionDecl OnUpdateConnection;
 
 private: // Render events connection
-    Delegate<Render3DEventArgs>::FunctionDecl OnPreRenderConnection;
-    Delegate<Render3DEventArgs>::FunctionDecl OnRenderConnection;
-    Delegate<Render3DEventArgs>::FunctionDecl OnPostRenderConnection;
-    Delegate<RenderUIEventArgs>::FunctionDecl OnRenderUIConnection;
+    Delegate<RenderEventArgs>::FunctionDecl OnPreRenderConnection;
+    Delegate<RenderEventArgs>::FunctionDecl OnRenderConnection;
+    Delegate<RenderEventArgs>::FunctionDecl OnPostRenderConnection;
+    Delegate<RenderEventArgs>::FunctionDecl OnRenderUIConnection;
 
 private:
 	bool                        m_IsInited;

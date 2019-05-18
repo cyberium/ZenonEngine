@@ -30,7 +30,6 @@ public:
 	float GetNearClipPlane() const;
 	float GetFarClipPlane() const;
 
-
 	// Translate
 	void TranslateX(float x, Space space = Space::Local);
 	void TranslateY(float y, Space space = Space::Local);
