@@ -28,6 +28,10 @@ void SceneUI::Accept(IVisitor & visitor)
 		m_RootNode->Accept(visitor);
 }
 
+void SceneUI::OnUpdate(UpdateEventArgs & e)
+{
+}
+
 
 //
 // Input events
@@ -82,7 +86,7 @@ bool SceneUI::OnMouseWheel(MouseWheelEventArgs & e)
 bool SceneUI::DoKeyPressed_Rec(const std::shared_ptr<SceneNode>& Node, KeyEventArgs & e)
 {
     std::shared_ptr<CUIBaseNode> NodeAsUINode = std::dynamic_pointer_cast<CUIBaseNode, SceneNode>(Node);
-    _ASSERT(NodeAsUINode);
+    _ASSERT(NodeAsUINode != nullptr);
 
     for (auto child : NodeAsUINode->GetChilds())
     {
@@ -99,7 +103,7 @@ bool SceneUI::DoKeyPressed_Rec(const std::shared_ptr<SceneNode>& Node, KeyEventA
 void SceneUI::DoKeyReleased_Rec(const std::shared_ptr<SceneNode>& Node, KeyEventArgs & e)
 {
     std::shared_ptr<CUIBaseNode> NodeAsUINode = std::dynamic_pointer_cast<CUIBaseNode, SceneNode>(Node);
-    _ASSERT(NodeAsUINode);
+    _ASSERT(NodeAsUINode != nullptr);
 
     for (auto child : NodeAsUINode->GetChilds())
     {
@@ -112,7 +116,7 @@ void SceneUI::DoKeyReleased_Rec(const std::shared_ptr<SceneNode>& Node, KeyEvent
 void SceneUI::DoMouseMoved_Rec(const std::shared_ptr<SceneNode>& Node, MouseMotionEventArgs & e)
 {
     std::shared_ptr<CUIBaseNode> NodeAsUINode = std::dynamic_pointer_cast<CUIBaseNode, SceneNode>(Node);
-    _ASSERT(NodeAsUINode);
+    _ASSERT(NodeAsUINode != nullptr);
 
     for (auto child : NodeAsUINode->GetChilds())
     {
@@ -143,7 +147,7 @@ void SceneUI::DoMouseMoved_Rec(const std::shared_ptr<SceneNode>& Node, MouseMoti
 bool SceneUI::DoMouseButtonPressed_Rec(const std::shared_ptr<SceneNode>& Node, MouseButtonEventArgs & e)
 {
     std::shared_ptr<CUIBaseNode> NodeAsUINode = std::dynamic_pointer_cast<CUIBaseNode, SceneNode>(Node);
-    _ASSERT(NodeAsUINode);
+    _ASSERT(NodeAsUINode != nullptr);
 
     for (auto child : NodeAsUINode->GetChilds())
     {
@@ -161,7 +165,7 @@ bool SceneUI::DoMouseButtonPressed_Rec(const std::shared_ptr<SceneNode>& Node, M
 void SceneUI::DoMouseButtonReleased_Rec(const std::shared_ptr<SceneNode>& Node, MouseButtonEventArgs & e)
 {
     std::shared_ptr<CUIBaseNode> NodeAsUINode = std::dynamic_pointer_cast<CUIBaseNode, SceneNode>(Node);
-    _ASSERT(NodeAsUINode);
+    _ASSERT(NodeAsUINode != nullptr);
 
     for (auto child : NodeAsUINode->GetChilds())
     {
@@ -174,7 +178,7 @@ void SceneUI::DoMouseButtonReleased_Rec(const std::shared_ptr<SceneNode>& Node, 
 bool SceneUI::DoMouseWheel_Rec(const std::shared_ptr<SceneNode>& Node, MouseWheelEventArgs & e)
 {
     std::shared_ptr<CUIBaseNode> NodeAsUINode = std::dynamic_pointer_cast<CUIBaseNode, SceneNode>(Node);
-    _ASSERT(NodeAsUINode);
+    _ASSERT(NodeAsUINode != nullptr);
 
     for (auto child : NodeAsUINode->GetChilds())
     {

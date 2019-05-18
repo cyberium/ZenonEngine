@@ -1,8 +1,8 @@
 #pragma once
 
 #include "AbstractPass.h"
-#include "SceneFunctional/Scene3D.h"
-#include "..//Light.h"
+#include "../SceneFunctional/3D/Scene3D.h"
+#include "../SceneFunctional/Light.h"
 
 // Use this pass to render the lights as geometry in the scene.
 class DeferredLightingPass : public AbstractPass

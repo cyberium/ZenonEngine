@@ -60,12 +60,13 @@
     <ClCompile Include="SceneFunctional\Light3D.cpp" />
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="CreatePasses.cpp" />
-    <ClCompile Include="Debug_Pass.cpp" />
     <ClCompile Include="EngineTime.cpp" />
     <ClCompile Include="GameState.cpp" />
     <ClCompile Include="Loader.cpp" />
     <ClCompile Include="MaterialWrapper.cpp" />
     <ClCompile Include="MeshWrapper.cpp" />
+    <ClCompile Include="SceneFunctional\UI\Fonts\Font.cpp" />
+    <ClCompile Include="SceneFunctional\UI\Fonts\FontsManager.cpp" />
     <ClCompile Include="SceneFunctional\UI\SceneNodeUI.cpp" />
     <ClCompile Include="SceneFunctional\UI\SceneUI.cpp" />
     <ClCompile Include="SceneFunctional\UI\TransformComponentUI.cpp" />
@@ -142,6 +143,8 @@
     <ClInclude Include="Loader.h" />
     <ClInclude Include="MaterialWrapper.h" />
     <ClInclude Include="MeshWrapper.h" />
+    <ClInclude Include="SceneFunctional\UI\Fonts\Font.h" />
+    <ClInclude Include="SceneFunctional\UI\Fonts\FontsManager.h" />
     <ClInclude Include="SceneFunctional\UI\SceneNodeUI.h" />
     <ClInclude Include="SceneFunctional\UI\SceneUI.h" />
     <ClInclude Include="SceneFunctional\UI\TransformComponentUI.h" />

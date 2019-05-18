@@ -1,8 +1,8 @@
 #pragma once
 
-#include "SceneFunctional/UI/SceneNodeUI.h"
+#include "SceneNodeUI.h"
 #include "UIText.h"
-#include "Materials/UI_Button_Material.h"
+#include "../../Materials/UI_Button_Material.h"
 
 
 class UIButtonClickEventArgs

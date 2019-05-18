@@ -1,8 +1,8 @@
 #pragma once
 
-#include "SceneFunctional/UI/SceneNodeUI.h"
+#include "SceneNodeUI.h"
 #include "Fonts/Font.h"
-#include "Materials/UI_Font_Material.h"
+#include "../../Materials/UI_Font_Material.h"
 
 class CUITextNode : public CUIBaseNode
 {

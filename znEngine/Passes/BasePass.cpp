@@ -2,8 +2,8 @@
 
 // Include
 #include <Application.h>
-#include <SceneFunctional//Scene3D.h>
-#include <SceneFunctional//SceneNode3D.h>
+#include <SceneFunctional/3D/Scene3D.h>
+#include <SceneFunctional/3D/SceneNode3D.h>
 
 // General
 #include "BasePass.h"
@@ -70,7 +70,7 @@ bool BasePass::Visit(std::shared_ptr<SceneNode3D> node)
 		node->UpdateCamera(camera);
 
 		PerObject perObjectData;
-		perObjectData.Model               = node->GetComponent<CTransformComponent>()->GetWorldTransfom();
+		perObjectData.Model               = node->GetComponent<CTransformComponentBase>()->GetWorldTransfom();
 		perObjectData.ModelView           = camera->GetViewMatrix()       * perObjectData.Model;
 		perObjectData.ModelViewProjection = camera->GetProjectionMatrix() * perObjectData.ModelView;
 

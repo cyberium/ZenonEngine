@@ -21,6 +21,11 @@ std::shared_ptr<CUIBaseNode> CUIBaseNode::shared_from_this()
     return std::dynamic_pointer_cast<CUIBaseNode, SceneNode>(base::shared_from_this());
 }
 
+std::weak_ptr<CUIBaseNode> CUIBaseNode::weak_from_this()
+{
+    return std::weak_ptr<CUIBaseNode>(shared_from_this());
+}
+
 void CUIBaseNode::RegisterComponents()
 {
     SetTransformComponent(AddComponent(std::make_shared<CTransformComponentUI>(shared_from_this())));

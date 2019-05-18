@@ -42,10 +42,9 @@ void CUIButtonNode::CreateDefault()
 
 	m_Mesh = _RenderDevice->CreateUIQuad(idleTexture->GetWidth(), idleTexture->GetHeight());
 
-	m_TextNode = std::make_shared<CUITextNode>();
-	m_TextNode->SetParentInternal(weak_from_this());
+    m_TextNode = CreateSceneNode<CUITextNode>();
 	m_TextNode->SetText(cDefaultText);
-	m_TextNode->SetTranslate(vec2(10.0f, 10.0f));
+	m_TextNode->GetComponent<CTransformComponentUI>()->SetTranslate(vec2(10.0f, 10.0f));
 	m_TextNode->SetTextColor(vec4(0.0f, 0.0f, 1.0f, 1.0f));
 }
 

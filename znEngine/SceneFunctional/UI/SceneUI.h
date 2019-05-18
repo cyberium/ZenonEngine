@@ -14,7 +14,9 @@ public:
     void                                            CreateRootNode();
 	std::shared_ptr<CUIWindowNode>                  GetRootNode() const;
 
-	void                                            Accept(IVisitor& visitor);
+    virtual void                                    Accept(IVisitor& visitor) override;
+
+    virtual void                                    OnUpdate(UpdateEventArgs& e) override;
 
 	// Input events
 	bool                                            OnKeyPressed(KeyEventArgs& e);

@@ -17,12 +17,28 @@ SceneNode3D::~SceneNode3D()
 {
 }
 
+
+std::shared_ptr<SceneNode3D> SceneNode3D::shared_from_this()
+{
+    return std::dynamic_pointer_cast<SceneNode3D, SceneNode>(base::shared_from_this());
+}
+
+std::weak_ptr<SceneNode3D> SceneNode3D::weak_from_this()
+{
+    return std::weak_ptr<SceneNode3D>(shared_from_this());
+}
+
+
+
+//
+// Components engine
+//
 void SceneNode3D::RegisterComponents()
 {
-    SetTransformComponent(AddComponent(std::make_shared<CTransformComponent>(shared_from_this())));
-    AddComponent(std::make_shared<CMeshComponent>(shared_from_this()));
-    SetColliderComponent(AddComponent(std::make_shared<CColliderComponent>(shared_from_this())));
-    AddComponent(std::make_shared<CLightComponent>(shared_from_this()));
+    SetTransformComponent(AddComponent(std::make_shared<CTransformComponent3D>(shared_from_this())));
+    AddComponent(std::make_shared<CMeshComponent3D>(shared_from_this()));
+    SetColliderComponent(AddComponent(std::make_shared<CColliderComponent3D>(shared_from_this())));
+    AddComponent(std::make_shared<CLightComponent3D>(shared_from_this()));
 }
 
 

@@ -1,7 +1,7 @@
 #pragma once
 
-#include "SceneFunctional/UI/SceneNodeUI.h"
-#include "Materials/UI_Color_Material.h"
+#include "SceneNodeUI.h"
+#include "../../Materials/UI_Color_Material.h"
 
 class CUIColorNode : public CUIBaseNode
 {

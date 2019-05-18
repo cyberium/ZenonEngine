@@ -40,13 +40,6 @@ glm::vec2 CTransformComponentUI::GetTranslationAbs() const
 }
 
 
-
-glm::vec2 CTransformComponentUI::GetTranslationAbs() const
-{
-    return glm::vec2();
-}
-
-
 void CTransformComponentUI::SetRotation(cvec3 _rotate)
 {
     m_Rotate = _rotate;
@@ -76,11 +69,6 @@ glm::vec2 CTransformComponentUI::GetScaleAbs() const
     if (std::shared_ptr<SceneNode> parent = GetOwnerNode()->GetParent())
         parentScale = parent->GetComponent<CTransformComponentUI>()->GetScaleAbs();
     return parentScale * GetScale();
-}
-
-glm::vec2 CTransformComponentUI::GetScaleAbs() const
-{
-    return glm::vec2();
 }
 
 //

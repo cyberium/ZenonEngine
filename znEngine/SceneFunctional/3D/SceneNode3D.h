@@ -1,6 +1,6 @@
 #pragma once
 
-#include "SceneFunctional/Base/SceneNode.h"
+#include "../../SceneFunctional/Base/SceneNode.h"
 
 #include "TransformComponent3D.h"
 #include "MeshComponent3D.h"
@@ -15,10 +15,12 @@ class SceneNode3D : public SceneNode, public ILoadable
 {
 	typedef SceneNode base;
     friend Scene3D;
-
 public:
-                                                    SceneNode3D();
+    explicit                                        SceneNode3D();
 	virtual                                         ~SceneNode3D();
+
+    std::shared_ptr<SceneNode3D>                    shared_from_this();
+    std::weak_ptr<SceneNode3D>                      weak_from_this();
 
     // Components engine
     virtual void                                    RegisterComponents() override;

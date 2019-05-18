@@ -2,8 +2,8 @@
 
 #include "RenderUIPass.h"
 
-#include "SceneFunctional/UI/SceneUI.h"
-#include "SceneFunctional/UI/SceneNodeUI.h"
+#include "../SceneFunctional/UI/SceneUI.h"
+#include "../SceneFunctional/UI/SceneNodeUI.h"
 
 // Base pass provides implementations for functions used by most passes.
 class BaseUIPass : public IRenderUIPass
@@ -21,6 +21,7 @@ public:
 	virtual void RenderUI(RenderUIEventArgs& e);
 
 	// Inherited from Visitor
+    virtual bool Visit(std::shared_ptr<SceneNode> Node) override;
 	virtual bool Visit(std::shared_ptr<SceneNode3D> node3D) override;
 	virtual bool Visit(std::shared_ptr<CUIBaseNode> nodeUI) override;
 	virtual bool Visit(std::shared_ptr<IMesh> Mesh, UINT IndexStartLocation = 0, UINT IndexCnt = 0, UINT VertexStartLocation = 0, UINT VertexCnt = 0) override;

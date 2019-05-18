@@ -24,14 +24,14 @@ typedef Delegate<UIBaseNodeClickedEventArgs> UIBaseNodeClickedEvent;
 
 class CUIBaseNode : public SceneNode
 {
+    typedef SceneNode base;
 	friend CUIWindowNode;
-
-	typedef SceneNode base;
 public:
 	explicit                                        CUIBaseNode();
 	virtual                                         ~CUIBaseNode();
 
     std::shared_ptr<CUIBaseNode>                    shared_from_this();
+    std::weak_ptr<CUIBaseNode>                      weak_from_this();
 
     // Components engine
     virtual void                                    RegisterComponents() override;

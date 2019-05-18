@@ -40,8 +40,15 @@ void AbstractPass::PostRender(Render3DEventArgs& e)
 
 // Inherited from Visitor
 
+bool AbstractPass::Visit(std::shared_ptr<SceneNode> Node)
+{
+    fail1();
+    return false;
+}
+
 bool AbstractPass::Visit(std::shared_ptr<SceneNode3D> node)
 {
+    fail1();
 	return false;
 }
 
@@ -53,11 +60,13 @@ bool AbstractPass::Visit(std::shared_ptr<CUIBaseNode> nodeUI)
 
 bool AbstractPass::Visit(std::shared_ptr<IMesh> Mesh, UINT IndexStartLocation, UINT IndexCnt, UINT VertexStartLocation, UINT VertexCnt)
 {
+    fail1();
 	return false;
 }
 
 bool AbstractPass::Visit(std::shared_ptr<CLight3D> light)
 {
+    fail1();
 	return false;
 }
 

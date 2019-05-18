@@ -1,7 +1,7 @@
 #pragma once
 
 #include "AbstractPass.h"
-#include "SceneFunctional/3D/Scene3D.h"
+#include "../SceneFunctional/3D/Scene3D.h"
 
 // Base pass provides implementations for functions used by most passes.
 class BasePass : public AbstractPass

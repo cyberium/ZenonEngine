@@ -1,6 +1,6 @@
 #pragma once
 
-#include "MaterialWrapper.h"
+#include "../MaterialWrapper.h"
 
 class UI_Color_Material : public MaterialWrapper
 {

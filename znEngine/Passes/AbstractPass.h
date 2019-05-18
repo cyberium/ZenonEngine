@@ -22,6 +22,7 @@ public:
 	virtual void PostRender(Render3DEventArgs& e);
 
 	// Inherited from Visitor
+    virtual bool Visit(std::shared_ptr<SceneNode> Node) override;
 	virtual bool Visit(std::shared_ptr<SceneNode3D> node) override;
 	virtual bool Visit(std::shared_ptr<CUIBaseNode> nodeUI) override;
 	virtual bool Visit(std::shared_ptr<IMesh> Mesh, UINT IndexStartLocation = 0, UINT IndexCnt = 0, UINT VertexStartLocation = 0, UINT VertexCnt = 0) override;

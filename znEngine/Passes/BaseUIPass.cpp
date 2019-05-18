@@ -73,6 +73,12 @@ void BaseUIPass::RenderUI(RenderUIEventArgs& e)
 //
 // Inherited from Visitor
 //
+bool BaseUIPass::Visit(std::shared_ptr<SceneNode> Node)
+{
+    fail1();
+    return false;
+}
+
 bool BaseUIPass::Visit(std::shared_ptr<SceneNode3D> node3D)
 {
 	fail1();

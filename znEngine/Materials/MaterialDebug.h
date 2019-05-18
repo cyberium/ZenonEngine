@@ -1,6 +1,6 @@
 #pragma once
 
-#include "MaterialWrapper.h"
+#include "../MaterialWrapper.h"
 
 class MaterialDebug : public MaterialWrapper
 {
