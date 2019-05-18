@@ -8,7 +8,7 @@ class RenderWindowOGL : public RenderWindow
 public:
 	typedef RenderWindow base;
 
-	RenderWindowOGL(HWND hWnd, std::shared_ptr<RenderDeviceOGL> device, cstring windowName, int windowWidth, int windowHeight, bool vSync);
+	RenderWindowOGL(HWND hWnd, std::shared_ptr<RenderDeviceOGL> device, const std::string& windowName, int windowWidth, int windowHeight, bool vSync);
 	virtual ~RenderWindowOGL();
 
 	virtual void Present();
@@ -16,8 +16,8 @@ public:
 	virtual std::shared_ptr<IRenderTarget> GetRenderTarget();
 
 protected:
-	virtual void OnPreRender(Render3DEventArgs& e);
-	virtual void OnPostRender(Render3DEventArgs& e);
+	virtual void OnPreRender(RenderEventArgs& e);
+	virtual void OnPostRender(RenderEventArgs& e);
 
 	virtual void OnMouseMoved(MouseMotionEventArgs& e);
 	virtual void OnMouseLeave(EventArgs& e);

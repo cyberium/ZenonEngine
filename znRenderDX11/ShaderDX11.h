@@ -45,8 +45,8 @@ private:
 	std::shared_ptr<ShaderInputLayoutDX11> m_InputLayout;
 	
 	// Parameters necessary to reload the shader at runtime if it is modified on disc.
-	ShaderMacros m_ShaderMacros;
-	std::string m_EntryPoint;
-	std::string m_Profile;
-	std::string m_ShaderFileName;
+	ShaderMacros                        m_ShaderMacros;
+	std::string                         m_EntryPoint;
+	std::string                         m_Profile;
+	std::string                         m_ShaderFileName;
 };

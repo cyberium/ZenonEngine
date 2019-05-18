@@ -14,11 +14,11 @@ public:
 	virtual void SetPrimitiveTopology(PrimitiveTopology _topology);
 
 	virtual void SetMaterial(std::shared_ptr<const Material> material);
-	virtual std::shared_ptr<const Material> GetMaterial() const;
+	virtual std::shared_ptr<const Material> GetMaterial() const ;
 
-	virtual bool Render(RenderEventArgs& renderArgs, std::shared_ptr<ConstantBuffer> perObject, UINT indexStartLocation = 0, UINT indexCnt = 0, UINT vertexStartLocation = 0, UINT vertexCnt = 0);
+	virtual bool Render(const RenderEventArgs* renderArgs, std::shared_ptr<ConstantBuffer> perObject, UINT indexStartLocation = 0, UINT indexCnt = 0, UINT vertexStartLocation = 0, UINT vertexCnt = 0) override;
 
-	virtual bool Accept(IVisitor& visitor);
+	virtual bool Accept(IVisitor& visitor, UINT indexStartLocation = 0, UINT indexCnt = 0, UINT vertexStartLocation = 0, UINT vertexCnt = 0) override;
 
 private:
 	GLuint m_GLObj;

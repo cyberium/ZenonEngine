@@ -7,8 +7,8 @@ Camera::Camera()
 	: m_Translate(0)
     , m_Yaw_X(0.0f)
     , m_Pitch_Y(0.0f)
-	, m_bViewDirty(true)
-	, m_bViewProjectionInverseDirty(true)
+	, m_ViewDirty(true)
+	, m_ViewProjectionInverseDirty(true)
 {}
 
 void Camera::SetViewport(const Viewport& viewport)
@@ -28,12 +28,12 @@ const Frustum& Camera::GetFrustum() const
 
 void Camera::SetProjectionRH(float fovy, float aspect, float zNear, float zFar)
 {
-	m_fVFOV = fovy;
-	m_fAspect = aspect;
-	m_fNear = zNear;
-	m_fFar = zFar;
+	m_VFOV = fovy;
+	m_Aspect = aspect;
+	m_Near = zNear;
+	m_Far = zFar;
 	m_ProjectionMatrix = glm::perspective(glm::radians(fovy), aspect, zNear, zFar);
-	m_bViewProjectionInverseDirty = true;
+	m_ViewProjectionInverseDirty = true;
 }
 
 void Camera::SetProjectionLH(float fovy, float aspect, float zNear, float zFar)
@@ -45,29 +45,29 @@ void Camera::SetProjectionLH(float fovy, float aspect, float zNear, float zFar)
 		0.0f, 0.0f, -1.0f, 1.0f
 	);
 
-	m_fVFOV = fovy;
-	m_fAspect = aspect;
-	m_fNear = zNear;
-	m_fFar = zFar;
+	m_VFOV = fovy;
+	m_Aspect = aspect;
+	m_Near = zNear;
+	m_Far = zFar;
 
 	m_ProjectionMatrix = fix * glm::perspective(glm::radians(fovy), aspect, zNear, zFar);
-	m_bViewProjectionInverseDirty = true;
+	m_ViewProjectionInverseDirty = true;
 }
 
 void Camera::SetOrthographic(float left, float right, float top, float bottom)
 {
     m_ProjectionMatrix = glm::ortho(left, right, bottom, top);
-    m_bViewProjectionInverseDirty = true;
+    m_ViewProjectionInverseDirty = true;
 }
 
 float Camera::GetNearClipPlane() const
 {
-	return m_fNear;
+	return m_Near;
 }
 
 float Camera::GetFarClipPlane() const
 {
-	return m_fFar;
+	return m_Far;
 }
 
 
@@ -87,7 +87,7 @@ void Camera::TranslateX(float x, Space space)
 		m_Translate += vec3(x, 0, 0);
 		break;
 	}
-	m_bViewDirty = true;
+	m_ViewDirty = true;
 }
 
 void Camera::TranslateY(float y, Space space)
@@ -102,7 +102,7 @@ void Camera::TranslateY(float y, Space space)
 		break;
 	}
 
-	m_bViewDirty = true;
+	m_ViewDirty = true;
 }
 
 void Camera::TranslateZ(float z, Space space)
@@ -117,13 +117,13 @@ void Camera::TranslateZ(float z, Space space)
 		break;
 	}
 
-	m_bViewDirty = true;
+	m_ViewDirty = true;
 }
 
 void Camera::SetTranslate(cvec3 translate)
 {
 	m_Translate = translate;
-	m_bViewDirty = true;
+	m_ViewDirty = true;
 }
 
 vec3 Camera::GetTranslation() const
@@ -134,25 +134,25 @@ vec3 Camera::GetTranslation() const
 void Camera::DoMoveFront(float Value)
 {
     m_Translate += m_Front * Value;
-    m_bViewDirty = true;
+    m_ViewDirty = true;
 }
 
 void Camera::DoMoveBack(float Value)
 {
     m_Translate -= m_Front * Value;
-    m_bViewDirty = true;
+    m_ViewDirty = true;
 }
 
 void Camera::DoMoveLeft(float Value)
 {
     m_Translate -= m_Right * Value;
-    m_bViewDirty = true;
+    m_ViewDirty = true;
 }
 
 void Camera::DoMoveRight(float Value)
 {
     m_Translate += m_Right * Value;
-    m_bViewDirty = true;
+    m_ViewDirty = true;
 }
 
 
@@ -160,25 +160,25 @@ void Camera::DoMoveRight(float Value)
 void Camera::SetYaw(float Yaw)
 {
     m_Yaw_X = Yaw;
-    m_bViewDirty = true;
+    m_ViewDirty = true;
 }
 
 void Camera::AddYaw(float Yaw)
 {
     m_Yaw_X += Yaw;
-    m_bViewDirty = true;
+    m_ViewDirty = true;
 }
 
 void Camera::SetPitch(float Pitch)
 {
     m_Pitch_Y = Pitch;
-    m_bViewDirty = true;
+    m_ViewDirty = true;
 }
 
 void Camera::AddPitch(float Pitch)
 {
     m_Pitch_Y += Pitch;
-    m_bViewDirty = true;
+    m_ViewDirty = true;
 }
 
 glm::vec3 Camera::GetDirection() const
@@ -191,7 +191,7 @@ glm::vec3 Camera::GetDirection() const
 
 bool Camera::IsDirty() const
 {
-	return m_bViewDirty;
+	return m_ViewDirty;
 }
 
 
@@ -214,7 +214,7 @@ void Camera::UpdateDirections()
 
 void Camera::UpdateViewMatrix()
 {
-	if (m_bViewDirty)
+	if (m_ViewDirty)
 	{
         UpdateDirections();
 
@@ -223,8 +223,8 @@ void Camera::UpdateViewMatrix()
         // Update frustum
         m_Frustum.buildViewFrustum(m_ViewMatrix, m_ProjectionMatrix);
 
-        m_bViewProjectionInverseDirty = true;
-        m_bViewDirty = false;
+        m_ViewProjectionInverseDirty = true;
+        m_ViewDirty = false;
 	}
 }
 
@@ -232,10 +232,10 @@ void Camera::UpdateViewProjectionInverse()
 {
 	UpdateViewMatrix();
 
-	if (m_bViewProjectionInverseDirty)
+	if (m_ViewProjectionInverseDirty)
 	{
 		m_ViewProjectionInverse = glm::inverse(m_ProjectionMatrix * m_ViewMatrix);
-		m_bViewProjectionInverseDirty = false;
+		m_ViewProjectionInverseDirty = false;
 	}
 }
 

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../Materials/UI_Line_Material.h"
+#include "../MaterialWrapper.h"
 
 class UI_Line_Material : public MaterialWrapper
 {

@@ -66,8 +66,7 @@ void _stdcall glDebugOutput(GLenum source, GLenum type, GLuint id, GLenum severi
 #endif
 
 RenderDeviceOGL::RenderDeviceOGL() :
-	m_DeviceCapsSettings(GetSettingsGroup<CGroupRenderCaps>()),
-	m_OpenGLSettings(GetSettingsGroup<CGroupOpenGL>())
+	m_DeviceCapsSettings(GetSettingsGroup<CGroupRenderCaps>())
 {
 	//CreateDevice();
 }
@@ -193,7 +192,7 @@ void RenderDeviceOGL::CreateDevice(HDC _hdc)
 	m_DeviceName = std::string(vendor) + std::string(renderer) + std::string(version);
 }
 
-cstring RenderDeviceOGL::GetDeviceName() const
+const std::string& RenderDeviceOGL::GetDeviceName() const
 {
 	return m_DeviceName;
 }
@@ -302,7 +301,7 @@ void RenderDeviceOGL::DestroyMesh(std::shared_ptr<IMesh> mesh)
 }
 
 
-std::shared_ptr<Shader> RenderDeviceOGL::CreateShader(Shader::ShaderType type, cstring fileName, const Shader::ShaderMacros& shaderMacros, cstring entryPoint, cstring profile)
+std::shared_ptr<Shader> RenderDeviceOGL::CreateShader(Shader::ShaderType type, const std::string& fileName, const Shader::ShaderMacros& shaderMacros, const std::string& entryPoint, const std::string& profile)
 {
 	std::string fullName = fileName + entryPoint + profile;
 
@@ -329,7 +328,7 @@ void RenderDeviceOGL::DestroyShader(std::shared_ptr<Shader> shader)
 }
 
 
-std::shared_ptr<Texture> RenderDeviceOGL::CreateTexture2D(cstring fileName)
+std::shared_ptr<Texture> RenderDeviceOGL::CreateTexture2D(const std::string& fileName)
 {
 	TextureMap::iterator iter = m_TexturesByName.find(fileName);
 	if (iter != m_TexturesByName.end())
@@ -346,7 +345,7 @@ std::shared_ptr<Texture> RenderDeviceOGL::CreateTexture2D(cstring fileName)
 	return texture;
 }
 
-std::shared_ptr<Texture> RenderDeviceOGL::CreateTextureCube(cstring fileName)
+std::shared_ptr<Texture> RenderDeviceOGL::CreateTextureCube(const std::string& fileName)
 {
 	TextureMap::iterator iter = m_TexturesByName.find(fileName);
 	if (iter != m_TexturesByName.end())

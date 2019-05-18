@@ -7,14 +7,10 @@ public:
 	virtual ~ShaderOGL();
 
 	// Shader loading
-	bool LoadShaderFromString(ShaderType shaderType, cstring fileName, cstring source, const ShaderMacros& shaderMacros, cstring entryPoint, cstring profile);
-	bool LoadShaderFromFile(ShaderType shaderType, cstring fileName, const ShaderMacros& shaderMacros, cstring entryPoint, cstring profile);
+	bool LoadShaderFromString(ShaderType shaderType, const std::string& fileName, const std::string& source, const ShaderMacros& shaderMacros, const std::string& entryPoint, const std::string& profile);
+	bool LoadShaderFromFile(ShaderType shaderType, const std::string& fileName, const ShaderMacros& shaderMacros, const std::string& entryPoint, const std::string& profile);
 
-	ShaderParameter& GetShaderParameterByName(cstring name) const;
-
-	virtual bool                 HasSemantic(const BufferBinding& binding) const;
-	virtual const InputSemantic& GetSemantic(const BufferBinding& binding) const;
-	virtual UINT                 GetSemanticSlot(const BufferBinding& binding) const;
+	ShaderParameter& GetShaderParameterByName(const std::string& name) const;
 
 	void Bind();
 	void UnBind();

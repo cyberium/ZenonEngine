@@ -74,52 +74,7 @@ GLenum GLTranslateShaderType(Shader::ShaderType _type)
 	}
 }
 
-void GLTranslateAttribType(GLenum _type, GLint _size, GLenum * _newType, GLint * _newSize)
-{
-	/*
-		GL_FLOAT,
-		GL_FLOAT_VEC2, GL_FLOAT_VEC3, GL_FLOAT_VEC4,
-		GL_FLOAT_MAT2, GL_FLOAT_MAT3, GL_FLOAT_MAT4,
-		GL_FLOAT_MAT2x3, GL_FLOAT_MAT2x4,
-		GL_FLOAT_MAT3x2, GL_FLOAT_MAT3x4,
-		GL_FLOAT_MAT4x2, GL_FLOAT_MAT4x3,
 
-		GL_INT,
-		GL_INT_VEC2, GL_INT_VEC3, GL_INT_VEC4,
-
-		GL_UNSIGNED_INT,
-		GL_UNSIGNED_INT_VEC2, GL_UNSIGNED_INT_VEC3, GL_UNSIGNED_INT_VEC4,
-
-		GL_DOUBLE,
-		GL_DOUBLE_VEC2, GL_DOUBLE_VEC3, GL_DOUBLE_VEC4,
-		GL_DOUBLE_MAT2, GL_DOUBLE_MAT3, GL_DOUBLE_MAT4,
-		GL_DOUBLE_MAT2x3, GL_DOUBLE_MAT2x4,
-		GL_DOUBLE_MAT3x2, GL_DOUBLE_MAT3x4,
-		GL_DOUBLE_MAT4x2, or GL_DOUBLE_MAT4x3 
-	*/
-
-	switch (_type)
-	{
-	case GL_FLOAT:
-		(*_newType) = GL_FLOAT;
-		(*_newSize) = _size * 1;
-		break;
-	case GL_FLOAT_VEC2:
-		(*_newType) = GL_FLOAT;
-		(*_newSize) = _size * 2;
-		break;
-	case GL_FLOAT_VEC3:
-		(*_newType) = GL_FLOAT;
-		(*_newSize) = _size * 3;
-		break;
-	case GL_FLOAT_VEC4:
-		(*_newType) = GL_FLOAT;
-		(*_newSize) = _size * 4;
-		break;
-	default:
-		assert1(false);
-	}
-}
 
 ShaderOGL::ShaderOGL()
 {
@@ -161,12 +116,11 @@ bool ShaderOGL::GetShaderProgramLog(GLuint _obj, std::string * _errMsg)
 void ShaderOGL::Destroy()
 {
 	m_ShaderParameters.clear();
-	m_InputSemantics.clear();
 }
 
 
 
-bool ShaderOGL::LoadShaderFromString(ShaderType shaderType, cstring fileName, cstring source, const ShaderMacros & shaderMacros, cstring entryPoint, cstring profile)
+bool ShaderOGL::LoadShaderFromString(ShaderType shaderType, const std::string& fileName, const std::string& source, const ShaderMacros & shaderMacros, const std::string& entryPoint, const std::string& profile)
 {
 	m_ShaderType = shaderType;
 	m_ShaderFileName = fileName;
@@ -174,7 +128,7 @@ bool ShaderOGL::LoadShaderFromString(ShaderType shaderType, cstring fileName, cs
 	return false;
 }
 
-bool ShaderOGL::LoadShaderFromFile(ShaderType shaderType, cstring fileName, const ShaderMacros& shaderMacros, cstring entryPoint, cstring profile)
+bool ShaderOGL::LoadShaderFromFile(ShaderType shaderType, const std::string& fileName, const ShaderMacros& shaderMacros, const std::string& entryPoint, const std::string& profile)
 {
 	m_ShaderType = shaderType;
 	m_ShaderFileName = fileName;
@@ -192,31 +146,6 @@ bool ShaderOGL::LoadShaderFromFile(ShaderType shaderType, cstring fileName, cons
 	{
 		fail2(errMsg.c_str());
 		return false;
-	}
-
-	GLint attribCount;
-	glGetProgramiv(m_GLObj, GL_ACTIVE_ATTRIBUTES, &attribCount);
-
-	GLint attribNameMaxLenght;
-	glGetProgramiv(m_GLObj, GL_ACTIVE_ATTRIBUTE_MAX_LENGTH, &attribNameMaxLenght);
-
-	for (GLint j = 0; j < attribCount; ++j)
-	{
-		char name[32];
-		GLsizei length, size;
-		GLenum type;
-		glGetActiveAttrib(m_GLObj, j, attribNameMaxLenght, &length, &size, &type, name);
-		OGLCheckError();
-
-		GLenum newType;
-		GLint newSize;
-		GLTranslateAttribType(type, size, &newType, &newSize);
-		OGLCheckError();
-
-		GLint slot = glGetAttribLocation(m_GLObj, name);
-		OGLCheckError();
-
-		m_InputSemantics.insert(SemanticMap::value_type(InputSemantic(name, slot, newType, newSize), slot));
 	}
 
 	GLint uniformsCount;
@@ -293,7 +222,7 @@ bool ShaderOGL::LoadShaderFromFile(ShaderType shaderType, cstring fileName, cons
 	return true;
 }
 
-ShaderParameter& ShaderOGL::GetShaderParameterByName(cstring name) const
+ShaderParameter& ShaderOGL::GetShaderParameterByName(const std::string& name) const
 {
 	ParameterMap::const_iterator iter = m_ShaderParameters.find(name);
 	if (iter != m_ShaderParameters.end())
@@ -305,55 +234,6 @@ ShaderParameter& ShaderOGL::GetShaderParameterByName(cstring name) const
 	return gs_InvalidShaderParameter;
 }
 
-bool ShaderOGL::HasSemantic(const BufferBinding& binding) const
-{
-	for (auto& it : m_InputSemantics)
-	{
-		std::string newName = binding.Name;
-		if (binding.Name != "POSITION")
-			newName += std::to_string(binding.Index);
-		if (it.first.Name == newName)
-		{
-			return true;
-		}
-	}
-
-	return false;
-}
-
-const InputSemantic& ShaderOGL::GetSemantic(const BufferBinding& binding) const
-{
-	for (auto& it : m_InputSemantics)
-	{
-		std::string newName = binding.Name;
-		if (binding.Name != "POSITION")
-			newName += std::to_string(binding.Index);
-		if (it.first.Name == newName)
-		{
-			return it.first;
-		}
-	}
-
-	assert1(false);
-	return gs_InvalidShaderSemantic;
-}
-
-UINT ShaderOGL::GetSemanticSlot(const BufferBinding& binding) const
-{
-	for (auto& it : m_InputSemantics)
-	{
-		std::string newName = binding.Name;
-		if (binding.Name != "POSITION")
-			newName += std::to_string(binding.Index);
-		if (it.first.Name == newName)
-		{
-			return it.second;
-		}
-	}
-
-	assert1(false);
-	return UINT_MAX;
-}
 
 void ShaderOGL::Bind()
 {

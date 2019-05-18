@@ -16,11 +16,9 @@ public:
 	virtual void SetStencilMode(const StencilMode& stencilMode) override;
 	virtual const StencilMode& GetStencilMode() const override;
 
-	// Can only be called by the pipeline state.
-	void Bind();
+    void Bind();
 
 protected:
-
 	D3D11_DEPTH_WRITE_MASK TranslateDepthWriteMask(DepthWrite depthWrite) const;
 	D3D11_COMPARISON_FUNC TranslateCompareFunc(CompareFunction compareFunc) const;
 	D3D11_STENCIL_OP TranslateStencilOperation(StencilOperation stencilOperation) const;

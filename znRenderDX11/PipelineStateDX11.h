@@ -21,6 +21,7 @@ public:
 	DepthStencilState& GetDepthStencilState() override;
 	void SetRenderTarget(std::shared_ptr<IRenderTarget> renderTarget) override;
 	std::shared_ptr<IRenderTarget> GetRenderTarget() const override;
+
 	void Bind() override;
 	void UnBind() override;
 

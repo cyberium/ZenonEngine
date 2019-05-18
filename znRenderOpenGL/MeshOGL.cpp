@@ -72,7 +72,7 @@ std::shared_ptr<const Material> MeshOGL::GetMaterial() const
 	return m_pMaterial;
 }
 
-bool MeshOGL::Render(RenderEventArgs& renderArgs, std::shared_ptr<ConstantBuffer> perObject, UINT indexStartLocation, UINT indexCnt, UINT vertexStartLocation, UINT vertexCnt)
+bool MeshOGL::Render(const RenderEventArgs* renderArgs, std::shared_ptr<ConstantBuffer> perObject, UINT indexStartLocation, UINT indexCnt, UINT vertexStartLocation, UINT vertexCnt)
 {
 	if (m_pMaterial)
 	{
@@ -133,9 +133,9 @@ bool MeshOGL::Render(RenderEventArgs& renderArgs, std::shared_ptr<ConstantBuffer
 	return true;
 }
 
-bool MeshOGL::Accept(IVisitor& visitor)
+bool MeshOGL::Accept(IVisitor& visitor, UINT indexStartLocation, UINT indexCnt, UINT vertexStartLocation, UINT vertexCnt)
 {
-	return visitor.Visit(*this);
+	return visitor.Visit(shared_from_this(), indexStartLocation, indexCnt, vertexStartLocation, vertexCnt);
 }
 
 void MeshOGL::Commit(std::weak_ptr<ShaderOGL> _shader)
@@ -148,11 +148,11 @@ void MeshOGL::Commit(std::weak_ptr<ShaderOGL> _shader)
 		uint32 i = 0;
 		for (BufferMap::value_type buffer : m_VertexBuffers)
 		{
-			if (!pVS->HasSemantic(buffer.first))
+			if (!pVS->GetInputLayout()->HasSemantic(buffer.first))
 				continue;
 
-			const InputSemantic& semantic = pVS->GetSemantic(buffer.first);
-			UINT             semanticSlot = pVS->GetSemanticSlot(buffer.first);
+			const InputSemantic& semantic = pVS->GetInputLayout()->GetSemantic(buffer.first);
+			UINT             semanticSlot = pVS->GetInputLayout()->GetSemanticSlot(buffer.first);
 
 			// Bind the vertex buffer to a particular slot ID.
 			buffer.second->Bind(semanticSlot, pVS, ShaderParameter::Type::Buffer);
@@ -179,10 +179,10 @@ void MeshOGL::Commit(std::weak_ptr<ShaderOGL> _shader)
 
 		for (BufferMap::value_type buffer : m_VertexBuffers)
 		{
-			if (!pVS->HasSemantic(buffer.first))
+			if (!pVS->GetInputLayout()->HasSemantic(buffer.first))
 				continue;
 
-			UINT semanticSlot = pVS->GetSemanticSlot(buffer.first);
+			UINT semanticSlot = pVS->GetInputLayout()->GetSemanticSlot(buffer.first);
 
 			buffer.second->UnBind(semanticSlot, pVS, ShaderParameter::Type::Buffer);
 		}

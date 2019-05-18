@@ -129,7 +129,7 @@ bool TextureOGL::LoadTextureCustom(uint16_t width, uint16_t height, void * pixel
 	return true;
 }
 
-bool TextureOGL::LoadTexture2D(cstring fileName)
+bool TextureOGL::LoadTexture2D(const std::string& fileName)
 {
 	/*std::shared_ptr<IFile> f = GetManager<IFilesManager>()->Open(fileName);
 
@@ -158,7 +158,7 @@ bool TextureOGL::LoadTexture2D(cstring fileName)
 	return true;
 }
 
-bool TextureOGL::LoadTextureCube(cstring fileName)
+bool TextureOGL::LoadTextureCube(const std::string& fileName)
 {
 	m_TextureType = GL_TEXTURE_CUBE_MAP;
 

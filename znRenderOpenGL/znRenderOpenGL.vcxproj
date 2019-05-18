@@ -168,7 +168,6 @@
     <ClCompile Include="MaterialOGL.cpp" />
     <ClCompile Include="MeshOGL.cpp" />
     <ClCompile Include="OpenGL.cpp" />
-    <ClCompile Include="owRenderOpenGL.cpp" />
     <ClCompile Include="PipelineStateOGL.cpp" />
     <ClCompile Include="QueryOGL.cpp" />
     <ClCompile Include="RasterizerStateOGL.cpp" />
@@ -176,6 +175,7 @@
     <ClCompile Include="RenderTargetOGL.cpp" />
     <ClCompile Include="RenderWindowOGL.cpp" />
     <ClCompile Include="SamplerStateOGL.cpp" />
+    <ClCompile Include="ShaderInputLayoutOGL.cpp" />
     <ClCompile Include="ShaderOGL.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -185,6 +185,7 @@
     </ClCompile>
     <ClCompile Include="StructuredBufferOGL.cpp" />
     <ClCompile Include="TextureOGL.cpp" />
+    <ClCompile Include="znRenderOpenGL.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BlendStateOGL.h" />
@@ -196,6 +197,7 @@
     <ClInclude Include="MeshOGL.h" />
     <ClInclude Include="OpenGL.h" />
     <ClInclude Include="OpenGLTypes.h" />
+    <ClInclude Include="ShaderInputLayoutOGL.h" />
     <ClInclude Include="znRenderOpenGL.h" />
     <ClInclude Include="PipelineStateOGL.h" />
     <ClInclude Include="QueryOGL.h" />
@@ -211,10 +213,10 @@
     <ClInclude Include="TextureOGLTranslate.h" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Externals\FreeImage-3.17.0\Source\FreeImageLib\FreeImageLib.2013.vcxproj">
+    <ProjectReference Include="..\Externals\FreeImage-3.17.0\FreeImageLib.vcxproj">
       <Project>{9e219df2-315d-478e-8a07-8960c377ce1e}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\znRenderBase\znRenderBase.vcxproj">
+    <ProjectReference Include="..\znRender\znRender.vcxproj">
       <Project>{4bfb75a1-ee52-478a-bdac-30ffb977ebb7}</Project>
     </ProjectReference>
   </ItemGroup>

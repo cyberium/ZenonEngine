@@ -191,5 +191,4 @@ public:
 	virtual bool GetConservativeRasterizationEnabled() const = 0;
 
 	virtual void Bind() = 0;
-
 };

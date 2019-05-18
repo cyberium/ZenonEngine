@@ -11,8 +11,8 @@ RenderWindow::RenderWindow(IWindowObject * WindowObject, bool vSync)
 	, m_vSync(vSync)
 
 	, m_PreviousMousePosition(0, 0)
-	, m_bInClientRect(false)
-	, m_bIsMouseTracking(false)
+	, m_InClientRect(false)
+	, m_IsMouseTracking(false)
 
 	, m_bHasKeyboardFocus(false)
 {}
@@ -217,7 +217,7 @@ void RenderWindow::OnKeyboardBlur(EventArgs& e) // Window lost keyboard focus
 
 void RenderWindow::OnMouseMoved(MouseMotionEventArgs& e)
 {
-	if (!m_bIsMouseTracking)
+	if (!m_IsMouseTracking)
 	{
 		TRACKMOUSEEVENT tme;
 		tme.cbSize = sizeof(TRACKMOUSEEVENT);
@@ -225,14 +225,14 @@ void RenderWindow::OnMouseMoved(MouseMotionEventArgs& e)
 		tme.hwndTrack = m_WindowObject->GetHWnd();
 		if (::TrackMouseEvent(&tme))
 		{
-			m_bIsMouseTracking = true;
+			m_IsMouseTracking = true;
 		}
 	}
 
-	if (!m_bInClientRect)
+	if (!m_InClientRect)
 	{
 		m_PreviousMousePosition = glm::ivec2(e.X, e.Y);
-		m_bInClientRect = true;
+		m_InClientRect = true;
 	}
 
 	e.RelX = e.X - m_PreviousMousePosition.x;
@@ -260,8 +260,8 @@ void RenderWindow::OnMouseWheel(MouseWheelEventArgs& e)
 
 void RenderWindow::OnMouseLeave(EventArgs& e)
 {
-	m_bIsMouseTracking = false;
-	m_bInClientRect = false;
+	m_IsMouseTracking = false;
+	m_InClientRect = false;
 
 	MouseLeave(e);
 }

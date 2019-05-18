@@ -69,10 +69,10 @@ protected:
 	Frustum     m_Frustum;
 
 	// Projection parameters
-	float       m_fVFOV;
-	float       m_fAspect;
-	float       m_fNear;
-	float       m_fFar;
+	float       m_VFOV;
+	float       m_Aspect;
+	float       m_Near;
+	float       m_Far;
 
 	// World space parameters
 	vec3        m_Translate;
@@ -88,6 +88,6 @@ protected:
 	mat4        m_ProjectionMatrix;
 	mat4	    m_ViewProjectionInverse;
 
-	bool        m_bViewDirty;
-	bool		m_bViewProjectionInverseDirty;
+	bool        m_ViewDirty;
+	bool		m_ViewProjectionInverseDirty;
 };

@@ -27,6 +27,9 @@
     <ClCompile Include="Primitives\Geometry.cpp">
       <Filter>Primitives</Filter>
     </ClCompile>
+    <ClCompile Include="Viewport.cpp">
+      <Filter>Types</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="common.h">

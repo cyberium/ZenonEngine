@@ -10,7 +10,7 @@
 #include "RenderTargetOGL.h"
 #include "TextureOGL.h"
 
-RenderWindowOGL::RenderWindowOGL(HWND hWnd, std::shared_ptr<RenderDeviceOGL> device, cstring windowName, int windowWidth, int windowHeight, bool vSync)
+RenderWindowOGL::RenderWindowOGL(HWND hWnd, std::shared_ptr<RenderDeviceOGL> device, const std::string& windowName, int windowWidth, int windowHeight, bool vSync)
 	: RenderWindow(windowName, windowWidth, windowHeight, hWnd, vSync)
 	, m_bIsMouseTracking(false)
 	, m_RenderDevice(device)
@@ -120,7 +120,7 @@ std::shared_ptr<IRenderTarget> RenderWindowOGL::GetRenderTarget()
 	return m_RenderTarget;
 }
 
-void RenderWindowOGL::OnPreRender(Render3DEventArgs& e)
+void RenderWindowOGL::OnPreRender(RenderEventArgs& e)
 {
 	// Get the currently bound frame buffer object to avoid reset to invalid FBO
 	GLint defaultRB = 0;
@@ -139,7 +139,7 @@ void RenderWindowOGL::OnPreRender(Render3DEventArgs& e)
 	base::OnPreRender(e);
 }
 
-void RenderWindowOGL::OnPostRender(Render3DEventArgs& e)
+void RenderWindowOGL::OnPostRender(RenderEventArgs& e)
 {
 	base::OnPostRender(e);
 }

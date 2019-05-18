@@ -1,8 +1,10 @@
 #pragma once
 
+// FORWARD BEGIN
 class Camera;
 class PipelineState;
-struct Viewport;
+class Viewport;
+// FORWARD END
 
 class UpdateEventArgs : public EventArgs
 {

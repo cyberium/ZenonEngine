@@ -3,9 +3,6 @@
 // General
 #include "OpenGL.h"
 
-#include <cstdlib>
-#include <cstring>
-
 #pragma region MyRegion
 
 // GL 1.1
@@ -613,7 +610,7 @@ void initWGLExtensions()
 	renderWindowClass.lpfnWndProc = &DefWindowProcA;
 	renderWindowClass.hInstance = GetModuleHandle(0);
 	renderWindowClass.lpszMenuName = NULL;
-	renderWindowClass.lpszClassName = "TestRenderClass";
+	renderWindowClass.lpszClassName = L"TestRenderClass";
 
 	if (!RegisterClassA(&renderWindowClass)) 
 	{

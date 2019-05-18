@@ -4,9 +4,6 @@
     <ClCompile Include="stdafx.cpp">
       <Filter>Common</Filter>
     </ClCompile>
-    <ClCompile Include="owRenderOpenGL.cpp">
-      <Filter>Common</Filter>
-    </ClCompile>
     <ClCompile Include="QueryOGL.cpp" />
     <ClCompile Include="RenderDeviceOGL.cpp" />
     <ClCompile Include="RenderTargetOGL.cpp" />
@@ -40,6 +37,10 @@
     </ClCompile>
     <ClCompile Include="SamplerStateOGL.cpp" />
     <ClCompile Include="MaterialOGL.cpp" />
+    <ClCompile Include="ShaderInputLayoutOGL.cpp" />
+    <ClCompile Include="znRenderOpenGL.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="common.h">
@@ -88,6 +89,7 @@
     <ClInclude Include="znRenderOpenGL.h">
       <Filter>Common</Filter>
     </ClInclude>
+    <ClInclude Include="ShaderInputLayoutOGL.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Common">

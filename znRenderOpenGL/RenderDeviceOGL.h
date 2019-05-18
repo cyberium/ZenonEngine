@@ -10,7 +10,7 @@ public:
 	RenderDeviceOGL();
 	virtual ~RenderDeviceOGL();
 
-	virtual cstring GetDeviceName() const;
+	virtual const std::string& GetDeviceName() const;
 
 	// Inherited from IRenderDevice
 	virtual std::shared_ptr<IBuffer> CreateVoidVertexBuffer(const void* data, uint32 count, uint32 offset, uint32 stride);
@@ -30,14 +30,14 @@ public:
 	virtual void Lock();
 	virtual void Unlock();
 
-	virtual std::shared_ptr<Shader> CreateShader(Shader::ShaderType type, cstring fileName, const Shader::ShaderMacros& shaderMacros, cstring entryPoint, cstring profile);
+	virtual std::shared_ptr<Shader> CreateShader(Shader::ShaderType type, const std::string& fileName, const Shader::ShaderMacros& shaderMacros, const std::string& entryPoint, const std::string& profile);
 	virtual void DestroyShader(std::shared_ptr<Shader> shader);
 	
 	virtual std::shared_ptr<IMesh> CreateMesh();
 	virtual void DestroyMesh(std::shared_ptr<IMesh> mesh);
 
-	virtual std::shared_ptr<Texture> CreateTexture2D(cstring fileName);
-	virtual std::shared_ptr<Texture> CreateTextureCube(cstring fileName);
+	virtual std::shared_ptr<Texture> CreateTexture2D(const std::string& fileName);
+	virtual std::shared_ptr<Texture> CreateTextureCube(const std::string& fileName);
 
 	virtual std::shared_ptr<Texture> CreateTexture2D(uint16_t width, uint16_t height, uint16_t slices = 1, const Texture::TextureFormat& format = Texture::TextureFormat(), CPUAccess cpuAccess = CPUAccess::None, bool gpuWrite = false);
 	virtual std::shared_ptr<Texture> CreateTextureCube(uint16_t size, uint16_t numCubes = 1, const Texture::TextureFormat& format = Texture::TextureFormat(), CPUAccess cpuAccess = CPUAccess::None, bool gpuWrite = false);
@@ -119,5 +119,4 @@ private:
 	//------------------------------------------------------------------------------------
 	// Settings
 	CGroupRenderCaps&			m_DeviceCapsSettings;
-	CGroupOpenGL&				m_OpenGLSettings;
 };

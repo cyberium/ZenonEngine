@@ -3,8 +3,6 @@
 #include "RenderTarget.h"
 #include "RenderEvents.h"
 
-class IRenderTarget;
-
 class RenderWindow : public Object
 {
 	typedef Object base;
@@ -102,8 +100,8 @@ private:
 	
 	// For mouse events
 	glm::ivec2 m_PreviousMousePosition;  // Used to compute relative mouse motion in this window.
-	bool m_bInClientRect;                // This is true when the mouse is inside the window's client rect.
-	bool m_bIsMouseTracking;             // Used to capture mouse enter/leave events.
+	bool m_InClientRect;                // This is true when the mouse is inside the window's client rect.
+	bool m_IsMouseTracking;             // Used to capture mouse enter/leave events.
 
 	// For keyboard events
 	bool m_bHasKeyboardFocus;            // This is set to true when the window receives keyboard focus.

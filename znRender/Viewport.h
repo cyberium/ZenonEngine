@@ -2,21 +2,11 @@
 
 class Viewport
 {
-	Viewport(float x = 0.0f, float y = 0.0f, float width = 0.0f, float height = 0.0f, float minDepth = 0.0f, float maxDepth = 1.0f)
-		: X(x)
-		, Y(y)
-		, Width(width)
-		, Height(height)
-		, MinDepth(minDepth)
-		, MaxDepth(maxDepth)
-	{
-		OrthoMatrix = glm::ortho<float>(0.0f, Width, Height, 0.0f, -1.0f, MaxDepth);
-	}
+public:
+    Viewport(float x = 0.0f, float y = 0.0f, float width = 800.0f, float height = 600.0f, float minDepth = 0.0f, float maxDepth = 1.0f);
+    virtual ~Viewport();
 
-	void UpdateOrthoMatrix()
-	{
-		OrthoMatrix = glm::ortho<float>(0.0f, Width, Height, 0.0f, -1.0f, MaxDepth);
-	}
+    void UpdateOrthoMatrix();
 
 	float X;
 	float Y;
