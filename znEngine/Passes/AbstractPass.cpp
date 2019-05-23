@@ -58,11 +58,6 @@ void AbstractPass::UpdateViewport(Viewport _viewport)
 //
 // IVisitor
 //
-bool AbstractPass::Visit(std::shared_ptr<SceneNode> Node)
-{
-    fail1();
-    return false;
-}
 
 bool AbstractPass::Visit(std::shared_ptr<SceneNode3D> node)
 {

@@ -12,7 +12,7 @@ public:
     template<class T, typename... Args>
     std::shared_ptr<T> CreateSceneNode(std::weak_ptr<SceneNode> Parent, Args &&... _Args);
 
-	virtual void Accept(IVisitor& visitor) = 0;
+	virtual void Accept(std::shared_ptr<IVisitor> visitor) = 0;
 
     virtual void OnUpdate(UpdateEventArgs& e) = 0;
 };

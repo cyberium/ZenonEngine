@@ -68,9 +68,9 @@ void CUIBaseNode::UpdateViewport(const Viewport* viewport)
 //
 // Render functional
 //
-bool CUIBaseNode::Accept(IVisitor& visitor)
+bool CUIBaseNode::Accept(std::shared_ptr<IVisitor> visitor)
 {
-	bool visitResult = visitor.Visit(shared_from_this());
+	bool visitResult = visitor->Visit(shared_from_this());
 	if (!visitResult)
 		return false;
 
@@ -84,7 +84,7 @@ bool CUIBaseNode::Accept(IVisitor& visitor)
 	return visitResult;
 }
 
-bool CUIBaseNode::AcceptMesh(IVisitor & visitor)
+bool CUIBaseNode::AcceptMesh(std::shared_ptr<IVisitor> visitor)
 {
 	return false;
 }

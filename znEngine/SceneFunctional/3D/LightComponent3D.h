@@ -22,7 +22,7 @@ public:
     virtual const LightList& GetLights();
     
     // ISceneNodeComponent
-    virtual bool Accept(IVisitor& visitor) override;
+    virtual bool Accept(std::shared_ptr<IVisitor> visitor) override;
 
 private:
     LightList         m_Lights;

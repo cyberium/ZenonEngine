@@ -87,7 +87,7 @@ void DeferredLightingPass::RenderSubPass(RenderEventArgs* e, std::shared_ptr<Sce
 
 	pipeline->Bind();
 
-	scene->Accept(*this);
+	scene->Accept(shared_from_this());
 
 	pipeline->UnBind();
 }
@@ -158,7 +158,7 @@ void DeferredLightingPass::Render(RenderEventArgs& e)
 		m_pLightParams->m_LightIndex++;
 	}*/
 
-	m_Scene->Accept(*this);
+	m_Scene->Accept(shared_from_this());
 }
 
 void DeferredLightingPass::PostRender(RenderEventArgs& e)

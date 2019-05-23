@@ -17,7 +17,7 @@ public:
 	// CUIBaseNode
     virtual glm::vec2 GetSize() override;
 
-	virtual bool AcceptMesh(IVisitor& visitor) override;
+	virtual bool AcceptMesh(std::shared_ptr<IVisitor> visitor) override;
 
 private:
     glm::vec2                               m_Size;

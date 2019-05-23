@@ -29,23 +29,28 @@ cbbox CColliderComponent3D::GetBounds() const
     return m_Bounds;
 }
 
-bool CColliderComponent3D::checkFrustum(const Camera* _camera) const
+bool CColliderComponent3D::CheckFrustum(const Camera* Camera) const
 {
-    assert1(_camera != nullptr);
-    return !_camera->GetFrustum().cullBox(GetBounds());
+    _ASSERT(Camera != nullptr);
+
+    return !Camera->GetFrustum().cullBox(GetBounds());
 }
 
-bool CColliderComponent3D::checkDistance2D(cvec3 _camPos, float _distance) const
+bool CColliderComponent3D::CheckDistance2D(const Camera* Camera, float _distance) const
 {
-    // Check distance to camera
-    float distToCamera2D = glm::length(Fix_X0Z(_camPos) - Fix_X0Z(GetBounds().getCenter())) - GetBounds().getRadius();
+    _ASSERT(Camera != nullptr);
+
+    glm::vec3 cameraPosition = Camera->GetTranslation();
+    float distToCamera2D = glm::length(Fix_X0Z(cameraPosition) - Fix_X0Z(GetBounds().getCenter())) - GetBounds().getRadius();
     return distToCamera2D < _distance;
 }
 
-bool CColliderComponent3D::checkDistance(cvec3 _camPos, float _distance) const
+bool CColliderComponent3D::CheckDistance(const Camera* Camera, float _distance) const
 {
-    // Check distance to camera
-    float distToCamera = glm::length(_camPos - GetBounds().getCenter()) - GetBounds().getRadius();
+    _ASSERT(Camera != nullptr);
+
+    glm::vec3 cameraPosition = Camera->GetTranslation();
+    float distToCamera = glm::length(cameraPosition - GetBounds().getCenter()) - GetBounds().getRadius();
     return distToCamera < _distance;
 }
 

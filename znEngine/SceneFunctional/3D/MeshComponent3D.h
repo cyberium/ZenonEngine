@@ -24,7 +24,7 @@ public:
     virtual const MeshList&  GetMeshes();
 
     // ISceneNodeComponent
-    virtual bool Accept(IVisitor& visitor) override;
+    virtual bool Accept(std::shared_ptr<IVisitor> visitor) override;
 
 private:
     MeshList          m_Meshes;

@@ -9,24 +9,24 @@ class
     CColliderComponent3D : public CComponentBase
 {
 public:
-    CColliderComponent3D(std::shared_ptr<SceneNode> OwnerNode);
-    virtual ~CColliderComponent3D();
+                                                    CColliderComponent3D(std::shared_ptr<SceneNode> OwnerNode);
+    virtual                                         ~CColliderComponent3D();
 
     // Bounds
-    void SetBounds(BoundingBox _bbox);
-    cbbox GetBounds() const;
+    void                                            SetBounds(BoundingBox _bbox);
+    cbbox                                           GetBounds() const;
 
     // Culling stuff
-    bool checkFrustum(const Camera* _camera) const;
-    bool checkDistance2D(cvec3 _camPos, float _distance) const;
-    bool checkDistance(cvec3 _camPos, float _distance) const;
+    bool                                            CheckFrustum(const Camera* Camera) const;
+    bool                                            CheckDistance2D(const Camera* Camera, float _distance) const;
+    bool                                            CheckDistance(const Camera* Camera, float _distance) const;
 
     // CComponentBase
-    void OnMessage(std::shared_ptr<ISceneNodeComponent> Component, ComponentMessageType Message) override;
+    void                                            OnMessage(std::shared_ptr<ISceneNodeComponent> Component, ComponentMessageType Message) override;
 
 protected:
-    virtual void UpdateBounds();
+    virtual void                                    UpdateBounds();
 
 private:
-    BoundingBox       m_Bounds;
+    BoundingBox                                     m_Bounds;
 };

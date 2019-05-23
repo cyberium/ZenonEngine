@@ -8,10 +8,15 @@
 
 CCameraControllerBase::CCameraControllerBase()
 	: m_Camera(nullptr)
-	, m_CameraPosition(vec3(0.0f))
 	, m_PreviousMousePosition(vec2(0.0f))
 {
 }
+
+CCameraControllerBase::~CCameraControllerBase()
+{
+}
+
+
 
 //
 // ICameraController
@@ -27,14 +32,36 @@ std::shared_ptr<Camera> CCameraControllerBase::GetCamera() const
 // Events
 //
 void CCameraControllerBase::OnUpdate(UpdateEventArgs& e)
-{}
+{
+}
 
+
+
+//
+// Window events
+//
+void CCameraControllerBase::OnResize(ResizeEventArgs& e)
+{
+}
+
+
+
+//
+// Keyboard event
+//
 void CCameraControllerBase::OnKeyPressed(KeyEventArgs& e)
-{}
+{
+}
 
 void CCameraControllerBase::OnKeyReleased(KeyEventArgs& e)
-{}
+{
+}
 
+
+
+//
+// Mouse event
+//
 void CCameraControllerBase::OnMouseButtonPressed(MouseButtonEventArgs& e)
 {
 	m_PreviousMousePosition = glm::vec2(e.X, e.Y);
@@ -47,12 +74,10 @@ void CCameraControllerBase::OnMouseButtonReleased(MouseButtonEventArgs& e)
 
 void CCameraControllerBase::OnMouseMoved(MouseMotionEventArgs& e)
 {
-
 }
 
 void CCameraControllerBase::OnMouseWheel(MouseWheelEventArgs& e)
 {
-
 }
 
 

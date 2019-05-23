@@ -2,7 +2,7 @@
 
 // FORWARD BEGIN
 class RenderEventArgs;
-struct Viewport;
+class Viewport;
 // FORWARD END
 
 class IRenderPass : public IVisitor

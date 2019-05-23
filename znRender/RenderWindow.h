@@ -77,7 +77,7 @@ public:
 	virtual      void OnKeyboardBlur(EventArgs& e);
 
 
-	// The mouse events
+	// Mouse events
 	MouseMotionEvent    MouseMoved;
 	virtual      void OnMouseMoved(MouseMotionEventArgs& e);
 	MouseButtonEvent    MouseButtonPressed;

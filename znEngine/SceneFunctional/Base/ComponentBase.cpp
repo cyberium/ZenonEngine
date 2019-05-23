@@ -22,7 +22,7 @@ std::shared_ptr<SceneNode> CComponentBase::GetOwnerNode() const
 
 
 
-bool CComponentBase::Accept(IVisitor & visitor)
+bool CComponentBase::Accept(std::shared_ptr<IVisitor> visitor)
 {
     return false;
 }

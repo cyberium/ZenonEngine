@@ -50,7 +50,7 @@ glm::vec2 CUITextureNode::GetSize()
     return m_Size;
 }
 
-bool CUITextureNode::AcceptMesh(IVisitor& visitor)
+bool CUITextureNode::AcceptMesh(std::shared_ptr<IVisitor> visitor)
 {
 	m_Mesh->SetMaterial(m_Material);
 

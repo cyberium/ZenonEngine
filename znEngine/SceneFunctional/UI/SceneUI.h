@@ -14,7 +14,7 @@ public:
     void                                            CreateRootNode();
 	std::shared_ptr<CUIWindowNode>                  GetRootNode() const;
 
-    virtual void                                    Accept(IVisitor& visitor) override;
+    virtual void                                    Accept(std::shared_ptr<IVisitor> visitor) override;
 
     virtual void                                    OnUpdate(UpdateEventArgs& e) override;
 

@@ -84,8 +84,32 @@ void CGameState::Unset()
 
 
 
+
 //
-// Input events
+// Engine events
+//
+void CGameState::OnUpdate(UpdateEventArgs & e)
+{
+    if (m_DefaultCameraController)
+        m_DefaultCameraController->OnUpdate(e);
+}
+
+
+
+//
+// Window events
+//
+void CGameState::OnResize(ResizeEventArgs & e)
+{
+    m_Viewport.Width = e.Width;
+    m_Viewport.Height = e.Height;
+    m_Viewport.OrthoMatrix = glm::ortho(0.0f, m_Viewport.Width, m_Viewport.Height, 0.0f, 0.0f, 1.0f);
+}
+
+
+
+//
+// Keyboard events
 //
 void CGameState::OnKeyPressed(KeyEventArgs & e)
 {
@@ -106,6 +130,11 @@ void CGameState::OnKeyReleased(KeyEventArgs & e)
 		m_UIScene->OnKeyReleased(e);
 }
 
+
+
+//
+// Mouse events
+//
 void CGameState::OnMouseButtonPressed(MouseButtonEventArgs & e)
 {
     bool result = false;
@@ -145,30 +174,6 @@ void CGameState::OnMouseWheel(MouseWheelEventArgs & e)
 
 
 
-//
-// Window events
-//
-void CGameState::OnResize(ResizeEventArgs & e)
-{
-	m_Viewport.Width = e.Width;
-	m_Viewport.Height = e.Height;
-	m_Viewport.OrthoMatrix = glm::ortho(0.0f, m_Viewport.Width, m_Viewport.Height, 0.0f, 0.0f, 1.0f);
-}
-
-
-
-//
-// Update event
-//
-void CGameState::OnUpdate(UpdateEventArgs & e)
-{
-	if (m_DefaultCameraController)
-		m_DefaultCameraController->OnUpdate(e);
-}
-
-
-
-
 const IApplication* CGameState::GetApplication()
 {
     return m_Application;
@@ -183,4 +188,9 @@ void CGameState::SetCameraController(std::shared_ptr<ICameraController> CameraCo
 void CGameState::UnsetCameraController()
 {
 	m_DefaultCameraController = nullptr;
+}
+
+std::shared_ptr<ICameraController> CGameState::GetCameraController() const
+{
+    return m_DefaultCameraController;
 }

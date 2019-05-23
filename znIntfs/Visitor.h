@@ -8,9 +8,9 @@ class IMesh;
 class CLight3D;
 // FORWARD END
 
-struct IVisitor
+class IVisitor: public std::enable_shared_from_this<IVisitor>
 {
-    virtual bool Visit(std::shared_ptr<SceneNode> Node) = 0;
+public:
 	virtual bool Visit(std::shared_ptr<SceneNode3D> node) = 0;
 	virtual bool Visit(std::shared_ptr<CUIBaseNode> node) = 0;
 	virtual bool Visit(std::shared_ptr<IMesh> Mesh, UINT IndexStartLocation = 0, UINT IndexCnt = 0, UINT VertexStartLocation = 0, UINT VertexCnt = 0) = 0;

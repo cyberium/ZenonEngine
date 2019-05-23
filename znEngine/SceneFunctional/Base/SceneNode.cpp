@@ -159,27 +159,10 @@ void SceneNode::UpdateCamera(const Camera* camera)
 	// Do nothing...
 }
 
-bool SceneNode::Accept(IVisitor& visitor)
+bool SceneNode::Accept(std::shared_ptr<IVisitor> visitor)
 {
-	bool visitResult = visitor.Visit(shared_from_this());
-	//if (!visitResult)
-	//	return false;
-
-    if (visitResult)
-    {
-        for (auto c : m_Components)
-        {
-            c.second->Accept(visitor);
-        }
-    }
-
-	// Now visit children
-	for (auto child : GetChilds())
-	{
-		child->Accept(visitor);
-	}
-
-	return visitResult;
+    fail1();
+	return false;
 }
 
 void SceneNode::OnUpdate(UpdateEventArgs & e)

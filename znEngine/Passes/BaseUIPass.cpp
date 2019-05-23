@@ -43,7 +43,7 @@ void BaseUIPass::Render(RenderEventArgs & e)
 {
     if (m_UIScene)
     {
-        m_UIScene->Accept(*this);
+        m_UIScene->Accept(shared_from_this());
     }
 }
 

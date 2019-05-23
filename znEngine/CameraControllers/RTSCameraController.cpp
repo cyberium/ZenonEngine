@@ -47,13 +47,18 @@ void CRTSCameraController::SetCameraDistance(float Distance)
 
 
 //
-// Events
+// Engine events
 //
 void CRTSCameraController::OnUpdate(UpdateEventArgs& e)
 {
 	m_Camera->SetTranslate(m_CameraPosition);
 }
 
+
+
+//
+// Mouse events
+//
 void CRTSCameraController::OnMouseMoved(MouseMotionEventArgs& e)
 {
 	if (e.LeftButton)

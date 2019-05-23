@@ -11,6 +11,10 @@ Camera::Camera()
 	, m_ViewProjectionInverseDirty(true)
 {}
 
+Camera::~Camera()
+{
+}
+
 void Camera::SetViewport(const Viewport& viewport)
 {
 	m_Viewport = viewport;
@@ -32,6 +36,7 @@ void Camera::SetProjectionRH(float fovy, float aspect, float zNear, float zFar)
 	m_Aspect = aspect;
 	m_Near = zNear;
 	m_Far = zFar;
+
 	m_ProjectionMatrix = glm::perspective(glm::radians(fovy), aspect, zNear, zFar);
 	m_ViewProjectionInverseDirty = true;
 }
@@ -56,7 +61,7 @@ void Camera::SetProjectionLH(float fovy, float aspect, float zNear, float zFar)
 
 void Camera::SetOrthographic(float left, float right, float top, float bottom)
 {
-    m_ProjectionMatrix = glm::ortho(left, right, bottom, top);
+    m_ProjectionMatrix = glm::ortho<float>(left, right, bottom, top);
     m_ViewProjectionInverseDirty = true;
 }
 

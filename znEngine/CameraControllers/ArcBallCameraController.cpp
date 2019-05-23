@@ -47,7 +47,7 @@ vec3 CArcBallCameraController::GetPivotPoint() const
 
 
 //
-// Events
+// Engine events
 //
 void CArcBallCameraController::OnUpdate(UpdateEventArgs& e)
 {
@@ -62,6 +62,11 @@ void CArcBallCameraController::OnUpdate(UpdateEventArgs& e)
 	//m_Camera->AddYaw(Yaw * 60.0f * e.ElapsedTime * rotateMultiplier, Camera::Space::World);
 }
 
+
+
+//
+// Keyboards events
+//
 void CArcBallCameraController::OnKeyPressed(KeyEventArgs& e)
 {
 	switch (e.Key)
@@ -207,13 +212,6 @@ void CArcBallCameraController::OnMouseMoved(MouseMotionEventArgs& e)
 		m_PreviousPoint = currentPoint;
 	}
 }
-
-/*void CArcBallCameraController::OnMouseWheel(MouseWheelEventArgs& e)
-{
-	//float fPivot = m_Camera->GetPivotDistance();
-	//fPivot -= e.WheelDelta * (TranslateFaster ? 1.0f : 0.1f);
-	//m_Camera->SetPivotDistance(fPivot);
-}*/
 
 vec3 CArcBallCameraController::ProjectOntoUnitSphere(glm::ivec2 screenPos)
 {

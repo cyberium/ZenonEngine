@@ -5,24 +5,28 @@
 class CArcBallCameraController : public CCameraControllerBase
 {
 public:
-	CArcBallCameraController();
-	~CArcBallCameraController();
+	                                                CArcBallCameraController();
+	virtual                                         ~CArcBallCameraController();
 
 	// Pivot
-	void  SetPivotDistance(float pivotDistance);
-	float GetPivotDistance() const;
-	vec3  GetPivotPoint() const;
+	void                                            SetPivotDistance(float pivotDistance);
+	float                                           GetPivotDistance() const;
+	vec3                                            GetPivotPoint() const;
 
-	// Input
-	void OnUpdate(UpdateEventArgs& e);
-	void OnKeyPressed(KeyEventArgs& e);
-	void OnKeyReleased(KeyEventArgs& e);
-	void OnMouseButtonPressed(MouseButtonEventArgs& e);
-	void OnMouseButtonReleased(MouseButtonEventArgs& e);
-	void OnMouseMoved(MouseMotionEventArgs& e);
+	// Engine events
+	void                                            OnUpdate(UpdateEventArgs& e);
+
+    // Keyboard events
+	void                                            OnKeyPressed(KeyEventArgs& e);
+	void                                            OnKeyReleased(KeyEventArgs& e);
+
+    // Mouse events
+	void                                            OnMouseButtonPressed(MouseButtonEventArgs& e);
+	void                                            OnMouseButtonReleased(MouseButtonEventArgs& e);
+	void                                            OnMouseMoved(MouseMotionEventArgs& e);
 
 protected:
-	vec3 ProjectOntoUnitSphere(glm::ivec2 screenPos);
+	vec3                                            ProjectOntoUnitSphere(glm::ivec2 screenPos);
 
 private:
 	// Translation movement

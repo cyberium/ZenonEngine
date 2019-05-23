@@ -161,7 +161,7 @@ bool MeshDX11::Render(const RenderEventArgs* renderArgs, std::shared_ptr<Constan
 	return true;
 }
 
-bool MeshDX11::Accept(IVisitor& visitor, UINT indexStartLocation, UINT indexCnt, UINT vertexStartLocation, UINT vertexCnt)
+bool MeshDX11::Accept(std::shared_ptr<IVisitor> visitor, UINT indexStartLocation, UINT indexCnt, UINT vertexStartLocation, UINT vertexCnt)
 {
-	return visitor.Visit(shared_from_this(), indexStartLocation, indexCnt, vertexStartLocation, vertexCnt);
+	return visitor->Visit(shared_from_this(), indexStartLocation, indexCnt, vertexStartLocation, vertexCnt);
 }

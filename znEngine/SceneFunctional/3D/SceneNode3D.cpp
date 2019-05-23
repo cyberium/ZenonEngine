@@ -47,9 +47,9 @@ void SceneNode3D::UpdateCamera(const Camera* camera)
 	// Do nothing...
 }
 
-bool SceneNode3D::Accept(IVisitor& visitor)
+bool SceneNode3D::Accept(std::shared_ptr<IVisitor> visitor)
 {
-	bool visitResult = visitor.Visit(shared_from_this());
+	bool visitResult = visitor->Visit(shared_from_this());
 	//if (!visitResult)
 	//	return false;
 

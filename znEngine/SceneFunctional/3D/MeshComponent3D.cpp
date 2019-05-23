@@ -44,7 +44,7 @@ const CMeshComponent3D::MeshList& CMeshComponent3D::GetMeshes()
 //
 // ISceneNodeComponent
 //
-bool CMeshComponent3D::Accept(IVisitor& visitor)
+bool CMeshComponent3D::Accept(std::shared_ptr<IVisitor> visitor)
 {
     bool acceptResult = true;
 

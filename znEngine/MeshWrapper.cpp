@@ -52,7 +52,7 @@ bool MeshWrapper::Render(const RenderEventArgs* renderEventArgs, std::shared_ptr
 	return m_Mesh->Render(renderEventArgs, perObject, indexStartLocation, indexCnt, vertexStartLocation, vertexCnt);
 }
 
-bool MeshWrapper::Accept(IVisitor& visitor, UINT indexStartLocation, UINT indexCnt, UINT vertexStartLocation, UINT vertexCnt)
+bool MeshWrapper::Accept(std::shared_ptr<IVisitor> visitor, UINT indexStartLocation, UINT indexCnt, UINT vertexStartLocation, UINT vertexCnt)
 {
-	return visitor.Visit(shared_from_this(), indexStartLocation, indexCnt, vertexStartLocation, vertexCnt);
+	return visitor->Visit(shared_from_this(), indexStartLocation, indexCnt, vertexStartLocation, vertexCnt);
 }

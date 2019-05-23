@@ -36,7 +36,7 @@ void BasePass::Render(RenderEventArgs& e)
 {
 	if (m_Scene)
 	{
-		m_Scene->Accept(*this);
+		m_Scene->Accept(shared_from_this());
 	}
 }
 

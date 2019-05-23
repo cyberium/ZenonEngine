@@ -7,6 +7,7 @@ inline std::shared_ptr<T> Scene::CreateSceneNode(std::weak_ptr<SceneNode> Parent
     newNode->SetScene(shared_from_this());
     newNode->SetParent(Parent);
     newNode->RegisterComponents();
+    newNode->RaiseOnParentChanged();
 
     return newNode;
 }

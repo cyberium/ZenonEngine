@@ -102,7 +102,7 @@ glm::vec2 CUIButtonNode::GetSize()
     return m_Size;
 }
 
-bool CUIButtonNode::Accept(IVisitor & visitor)
+bool CUIButtonNode::Accept(std::shared_ptr<IVisitor> visitor)
 {
 	bool visitResult = base::Accept(visitor);
 	if (!visitResult)
@@ -116,7 +116,7 @@ bool CUIButtonNode::Accept(IVisitor & visitor)
 	return true;
 }
 
-bool CUIButtonNode::AcceptMesh(IVisitor& visitor)
+bool CUIButtonNode::AcceptMesh(std::shared_ptr<IVisitor> visitor)
 {
 	m_Material->SetState(m_State);
 	m_Mesh->SetMaterial(m_Material);

@@ -5,14 +5,18 @@
 class CFreeCameraController : public CCameraControllerBase
 {
 public:
-	CFreeCameraController();
-	~CFreeCameraController();
+	                                                CFreeCameraController();
+	virtual                                         ~CFreeCameraController();
 
-	// Input
-	void OnUpdate(UpdateEventArgs& e) override;
-	void OnKeyPressed(KeyEventArgs& e) override;
-	void OnKeyReleased(KeyEventArgs& e) override;
-	void OnMouseMoved(MouseMotionEventArgs& e) override;
+	// Engine event
+	void                                            OnUpdate(UpdateEventArgs& e) override;
+
+    // Keyboard events
+	void                                            OnKeyPressed(KeyEventArgs& e) override;
+	void                                            OnKeyReleased(KeyEventArgs& e) override;
+
+    // Mouse events
+	void                                            OnMouseMoved(MouseMotionEventArgs& e) override;
 
 private:
 	vec3 m_PreviousPoint;

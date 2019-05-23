@@ -17,7 +17,6 @@ public:
     virtual void                                    UpdateViewport(Viewport _viewport);
 
 	// IVisitor
-    virtual bool                                    Visit(std::shared_ptr<SceneNode> Node) override;
 	virtual bool                                    Visit(std::shared_ptr<SceneNode3D> node) override;
 	virtual bool                                    Visit(std::shared_ptr<CUIBaseNode> nodeUI) override;
 	virtual bool                                    Visit(std::shared_ptr<IMesh> Mesh, UINT IndexStartLocation = 0, UINT IndexCnt = 0, UINT VertexStartLocation = 0, UINT VertexCnt = 0) override;
@@ -39,11 +38,11 @@ protected: // PerObject functional
 	PerObject*                                      m_PerObjectData;
 	std::shared_ptr<ConstantBuffer>                 m_PerObjectConstantBuffer;
 
-protected:
 	void                                            SetPerObjectConstantBufferData(PerObject& perObjectData);
 	std::shared_ptr<ConstantBuffer>                 GetPerObjectConstantBuffer() const;
     void                                            BindPerObjectConstantBuffer(std::shared_ptr<Shader> shader);
 
+protected:
     std::shared_ptr<PipelineState>                  GetPipelineState() const;
     std::shared_ptr<IRenderDevice>                  GetRenderDevice() const;
 

@@ -32,7 +32,7 @@ public:
 	virtual void                                    UpdateCamera(const Camera* camera) override;
 
 	// Allow a visitor to visit this node.
-	virtual bool                                    Accept(IVisitor& visitor) override;
+	virtual bool                                    Accept(std::shared_ptr<IVisitor> visitor) override;
 
 	// Updatable
 	virtual void                                    OnUpdate(UpdateEventArgs& e) override;

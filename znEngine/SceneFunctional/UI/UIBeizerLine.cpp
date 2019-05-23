@@ -67,7 +67,7 @@ glm::vec2 CUIBeizerLineNode::GetSize()
     return glm::vec2(9999.0f, 9999.0f);
 }
 
-bool CUIBeizerLineNode::AcceptMesh(IVisitor& visitor)
+bool CUIBeizerLineNode::AcceptMesh(std::shared_ptr<IVisitor> visitor)
 {
 	m_Mesh->SetMaterial(m_Material);
 
