@@ -2,13 +2,6 @@
 
 #include "AbstractPass.h"
 
-class IBuffer;
-
-/**
- * A render pass that copies a GPU buffer to another.
- * Both buffers must be the same size (in bytes) and their internal
- * formats should be the same.
- */
 class CopyBufferPass : public AbstractPass
 {
 public:

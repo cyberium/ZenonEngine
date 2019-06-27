@@ -11,7 +11,6 @@ public:
 	virtual bool                                    IsEnabled() const;
 
 	virtual void                                    PreRender(RenderEventArgs& e);
-	virtual void                                    Render(RenderEventArgs& e) = 0;
 	virtual void                                    PostRender(RenderEventArgs& e);
 
     virtual void                                    UpdateViewport(Viewport _viewport);

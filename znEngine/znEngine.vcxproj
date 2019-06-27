@@ -37,7 +37,6 @@
     <ClCompile Include="Passes\ClearRenderTargetPass.cpp" />
     <ClCompile Include="Passes\CopyBufferPass.cpp" />
     <ClCompile Include="Passes\CopyTexturePass.cpp" />
-    <ClCompile Include="Passes\Debug_Pass.cpp" />
     <ClCompile Include="Passes\DeferredLightingPass.cpp" />
     <ClCompile Include="Passes\DispatchPass.cpp" />
     <ClCompile Include="Passes\EndQueryPass.cpp" />
@@ -109,7 +108,6 @@
     <ClInclude Include="Passes\ClearRenderTargetPass.h" />
     <ClInclude Include="Passes\CopyBufferPass.h" />
     <ClInclude Include="Passes\CopyTexturePass.h" />
-    <ClInclude Include="Passes\Debug_Pass.h" />
     <ClInclude Include="Passes\DeferredLightingPass.h" />
     <ClInclude Include="Passes\DispatchPass.h" />
     <ClInclude Include="Passes\EndQueryPass.h" />

@@ -252,9 +252,6 @@
     <ClCompile Include="Passes\AbstractPass.cpp">
       <Filter>Passes\Base</Filter>
     </ClCompile>
-    <ClCompile Include="Passes\Debug_Pass.cpp">
-      <Filter>Passes</Filter>
-    </ClCompile>
     <ClCompile Include="Passes\BaseUIPass.cpp">
       <Filter>Passes\UI</Filter>
     </ClCompile>
@@ -448,9 +445,6 @@
     </ClInclude>
     <ClInclude Include="Passes\AbstractPass.h">
       <Filter>Passes\Base</Filter>
-    </ClInclude>
-    <ClInclude Include="Passes\Debug_Pass.h">
-      <Filter>Passes</Filter>
     </ClInclude>
     <ClInclude Include="Passes\BaseUIPass.h">
       <Filter>Passes\UI</Filter>

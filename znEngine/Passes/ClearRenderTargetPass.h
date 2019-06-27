@@ -2,12 +2,6 @@
 
 #include "AbstractPass.h"
 
-class IRenderTarget;
-class Texture;
-
-/**
- * A render pass that simply clears a render target.
- */
 class ClearRenderTargetPass : public AbstractPass
 {
 public:

@@ -11,43 +11,16 @@
 BasePass::BasePass(std::shared_ptr<Scene3D> scene, std::shared_ptr<PipelineState> pipeline)
     : base(pipeline)
     , m_Scene(scene)
-{
-}
+{}
 
 BasePass::~BasePass()
-{
-}
-
-void BasePass::PreRender(RenderEventArgs& e)
-{
-    std::shared_ptr<PipelineState> pipelineState = GetPipelineState();
-    _ASSERT(pipelineState);
-
-	e.PipelineState = pipelineState.get();
-	SetRenderEventArgs(&e);
-
-	if (pipelineState)
-	{
-        pipelineState->Bind();
-	}
-}
+{}
 
 void BasePass::Render(RenderEventArgs& e)
 {
 	if (m_Scene)
 	{
 		m_Scene->Accept(shared_from_this());
-	}
-}
-
-void BasePass::PostRender(RenderEventArgs& e)
-{
-    std::shared_ptr<PipelineState> pipelineState = GetPipelineState();
-    _ASSERT(pipelineState);
-
-	if (pipelineState)
-	{
-        pipelineState->UnBind();
 	}
 }
 
@@ -79,14 +52,4 @@ bool BasePass::Visit(std::shared_ptr<SceneNode3D> node)
 	}
 
 	return false;
-}
-
-
-
-//
-// Update viewport (need for texture resizing)
-//
-void BasePass::UpdateViewport(Viewport _viewport)
-{
-	GetPipelineState()->GetRasterizerState().SetViewport(_viewport);
 }

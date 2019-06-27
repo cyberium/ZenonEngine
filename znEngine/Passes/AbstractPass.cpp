@@ -44,21 +44,40 @@ bool AbstractPass::IsEnabled() const
 
 void AbstractPass::PreRender(RenderEventArgs& e)
 {
+    std::shared_ptr<PipelineState> pipelineState = GetPipelineState();
+    _ASSERT(pipelineState);
+
+    e.PipelineState = pipelineState.get();
+    SetRenderEventArgs(&e);
+
+    if (pipelineState)
+    {
+        pipelineState->Bind();
+    }
 }
 
 void AbstractPass::PostRender(RenderEventArgs& e)
 {
+    std::shared_ptr<PipelineState> pipelineState = GetPipelineState();
+    _ASSERT(pipelineState);
+
+    if (pipelineState)
+    {
+        pipelineState->UnBind();
+    }
 }
 
 
 void AbstractPass::UpdateViewport(Viewport _viewport)
 {
+    GetPipelineState()->GetRasterizerState().SetViewport(_viewport);
 }
+
+
 
 //
 // IVisitor
 //
-
 bool AbstractPass::Visit(std::shared_ptr<SceneNode3D> node)
 {
     fail1();
