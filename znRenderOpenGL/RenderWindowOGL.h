@@ -8,7 +8,7 @@ class RenderWindowOGL : public RenderWindow
 public:
 	typedef RenderWindow base;
 
-	RenderWindowOGL(HWND hWnd, std::shared_ptr<RenderDeviceOGL> device, const std::string& windowName, int windowWidth, int windowHeight, bool vSync);
+	RenderWindowOGL(std::shared_ptr<RenderDeviceOGL> device, IWindowObject * WindowObject, bool vSync);
 	virtual ~RenderWindowOGL();
 
 	virtual void Present();

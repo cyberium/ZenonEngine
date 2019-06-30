@@ -44,14 +44,12 @@ bool AbstractPass::IsEnabled() const
 
 void AbstractPass::PreRender(RenderEventArgs& e)
 {
-    std::shared_ptr<PipelineState> pipelineState = GetPipelineState();
-    _ASSERT(pipelineState);
-
-    e.PipelineState = pipelineState.get();
     SetRenderEventArgs(&e);
 
+    std::shared_ptr<PipelineState> pipelineState = GetPipelineState();
     if (pipelineState)
     {
+        e.PipelineState = pipelineState.get();
         pipelineState->Bind();
     }
 }
@@ -59,8 +57,6 @@ void AbstractPass::PreRender(RenderEventArgs& e)
 void AbstractPass::PostRender(RenderEventArgs& e)
 {
     std::shared_ptr<PipelineState> pipelineState = GetPipelineState();
-    _ASSERT(pipelineState);
-
     if (pipelineState)
     {
         pipelineState->UnBind();
@@ -70,7 +66,11 @@ void AbstractPass::PostRender(RenderEventArgs& e)
 
 void AbstractPass::UpdateViewport(Viewport _viewport)
 {
-    GetPipelineState()->GetRasterizerState().SetViewport(_viewport);
+    std::shared_ptr<PipelineState> pipelineState = GetPipelineState();
+    if (pipelineState)
+    {
+        pipelineState->GetRasterizerState().SetViewport(_viewport);
+    }
 }
 
 

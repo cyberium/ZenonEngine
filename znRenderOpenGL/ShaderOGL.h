@@ -1,5 +1,7 @@
 #pragma once
 
+#include "ShaderInputLayoutOGL.h"
+
 class ShaderOGL : public Shader, public std::enable_shared_from_this<ShaderOGL>
 {
 public:
@@ -7,9 +9,13 @@ public:
 	virtual ~ShaderOGL();
 
 	// Shader loading
-	bool LoadShaderFromString(ShaderType shaderType, const std::string& fileName, const std::string& source, const ShaderMacros& shaderMacros, const std::string& entryPoint, const std::string& profile);
-	bool LoadShaderFromFile(ShaderType shaderType, const std::string& fileName, const ShaderMacros& shaderMacros, const std::string& entryPoint, const std::string& profile);
+	bool LoadShaderFromString(ShaderType shaderType, const std::string& fileName, const std::string& source, const ShaderMacros& shaderMacros, const std::string& entryPoint, const std::string& profile, std::shared_ptr<IShaderInputLayout> _customLayout);
+	bool LoadShaderFromFile(ShaderType shaderType, const std::string& fileName, const ShaderMacros& shaderMacros, const std::string& entryPoint, const std::string& profile, std::shared_ptr<IShaderInputLayout> _customLayout);
 
+    bool LoadInputLayoutFromReflector() override final;
+    bool LoadInputLayoutFromD3DElement(const std::vector<D3DVERTEXELEMENT9>& declIn) override final;
+
+    std::shared_ptr<IShaderInputLayout> GetInputLayout() const override final;
 	ShaderParameter& GetShaderParameterByName(const std::string& name) const;
 
 	void Bind();
@@ -29,12 +35,11 @@ private:
 	bool GetShaderProgramLog(GLuint _obj, std::string * _errMsg);
 
 private:
+    std::shared_ptr<ShaderInputLayoutOGL> m_InputLayout;
+
 	// Parameters necessary to reload the shader at runtime if it is modified on disc.
 	ShaderMacros m_ShaderMacros;
 	std::string m_EntryPoint;
 	std::string m_Profile;
 	std::string m_ShaderFileName;
-
-	typedef std::unique_lock<std::recursive_mutex> MutexLock;
-	std::recursive_mutex m_Mutex;
 };

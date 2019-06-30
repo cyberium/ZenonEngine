@@ -107,36 +107,6 @@ void RenderDeviceOGL::CreateDevice(HDC _hdc)
 
 	Log::Info("OpenGL driver[%s] by[%s] on[%s]", version, vendor, renderer);
 
-	// Check that OpenGL 3.3 is available
-	if (m_OpenGLSettings.majorVersion * 10 + m_OpenGLSettings.minorVersion < 33)
-	{
-		Log::Error("OpenGL 3.3 not available");
-		failed = true;
-	}
-
-	// Check that required extensions are supported
-	if (!m_OpenGLSettings.EXT_texture_filter_anisotropic)
-	{
-		Log::Error("Extension EXT_texture_filter_anisotropic not supported");
-		failed = true;
-	}
-	if (!m_OpenGLSettings.EXT_texture_compression_s3tc)
-	{
-		Log::Error("Extension EXT_texture_compression_s3tc not supported");
-		failed = true;
-	}
-	if (!m_OpenGLSettings.EXT_texture_sRGB)
-	{
-		Log::Error("Extension EXT_texture_sRGB not supported");
-		failed = true;
-	}
-
-	if (failed)
-	{
-		Log::Error("Failed to init renderer backend (OpenGL %d.%d), retrying with legacy OpenGL 2.1 backend", m_OpenGLSettings.majorVersion, m_OpenGLSettings.minorVersion);
-		//return false;
-	}
-
 	// Debug output
 #ifdef _DEBUG
 	glEnable(GL_DEBUG_OUTPUT);
@@ -149,8 +119,8 @@ void RenderDeviceOGL::CreateDevice(HDC _hdc)
 	m_DeviceCapsSettings.texNPOT = true;
 	m_DeviceCapsSettings.rtMultisampling = true;
 	m_DeviceCapsSettings.geometryShaders = true;
-	m_DeviceCapsSettings.tesselation = m_OpenGLSettings.majorVersion >= 4 && m_OpenGLSettings.minorVersion >= 1;
-	m_DeviceCapsSettings.computeShaders = m_OpenGLSettings.majorVersion >= 4 && m_OpenGLSettings.minorVersion >= 3;
+    m_DeviceCapsSettings.tesselation = false;// m_OpenGLSettings.majorVersion >= 4 && m_OpenGLSettings.minorVersion >= 1;
+	m_DeviceCapsSettings.computeShaders = false;//m_OpenGLSettings.majorVersion >= 4 && m_OpenGLSettings.minorVersion >= 3;
 
 	// Find maximum number of storage buffers in compute shader
 	glGetIntegerv(GL_MAX_COMPUTE_SHADER_STORAGE_BLOCKS, (GLint *)&_maxComputeBufferAttachments);
@@ -301,7 +271,7 @@ void RenderDeviceOGL::DestroyMesh(std::shared_ptr<IMesh> mesh)
 }
 
 
-std::shared_ptr<Shader> RenderDeviceOGL::CreateShader(Shader::ShaderType type, const std::string& fileName, const Shader::ShaderMacros& shaderMacros, const std::string& entryPoint, const std::string& profile)
+std::shared_ptr<Shader> RenderDeviceOGL::CreateShader(Shader::ShaderType type, const std::string& fileName, const Shader::ShaderMacros& shaderMacros, const std::string& entryPoint, const std::string& profile, std::shared_ptr<IShaderInputLayout> _customLayout)
 {
 	std::string fullName = fileName + entryPoint + profile;
 
@@ -310,7 +280,7 @@ std::shared_ptr<Shader> RenderDeviceOGL::CreateShader(Shader::ShaderType type, c
 		return iter->second;
 
 	std::shared_ptr<Shader> pShader = std::make_shared<ShaderOGL>();
-	pShader->LoadShaderFromFile(type, fileName, shaderMacros, entryPoint, profile);
+	pShader->LoadShaderFromFile(type, fileName, shaderMacros, entryPoint, profile, _customLayout);
 
 	m_Shaders.push_back(pShader);
 	m_ShadersByName.insert(ShaderMap::value_type(fullName, pShader));

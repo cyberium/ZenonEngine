@@ -120,7 +120,7 @@ void ShaderOGL::Destroy()
 
 
 
-bool ShaderOGL::LoadShaderFromString(ShaderType shaderType, const std::string& fileName, const std::string& source, const ShaderMacros & shaderMacros, const std::string& entryPoint, const std::string& profile)
+bool ShaderOGL::LoadShaderFromString(ShaderType shaderType, const std::string& fileName, const std::string& source, const ShaderMacros & shaderMacros, const std::string& entryPoint, const std::string& profile, std::shared_ptr<IShaderInputLayout> _customLayout)
 {
 	m_ShaderType = shaderType;
 	m_ShaderFileName = fileName;
@@ -128,7 +128,7 @@ bool ShaderOGL::LoadShaderFromString(ShaderType shaderType, const std::string& f
 	return false;
 }
 
-bool ShaderOGL::LoadShaderFromFile(ShaderType shaderType, const std::string& fileName, const ShaderMacros& shaderMacros, const std::string& entryPoint, const std::string& profile)
+bool ShaderOGL::LoadShaderFromFile(ShaderType shaderType, const std::string& fileName, const ShaderMacros& shaderMacros, const std::string& entryPoint, const std::string& profile, std::shared_ptr<IShaderInputLayout> _customLayout)
 {
 	m_ShaderType = shaderType;
 	m_ShaderFileName = fileName;
@@ -220,6 +220,34 @@ bool ShaderOGL::LoadShaderFromFile(ShaderType shaderType, const std::string& fil
 	}
 
 	return true;
+}
+
+bool ShaderOGL::LoadInputLayoutFromReflector()
+{
+    if (m_InputLayout)
+        return true;
+
+    m_InputLayout = std::make_shared<ShaderInputLayoutOGL>();
+    m_InputLayout->LoadFromReflector(m_GLObj);
+
+    return true;
+}
+
+bool ShaderOGL::LoadInputLayoutFromD3DElement(const std::vector<D3DVERTEXELEMENT9>& declIn)
+{
+    if (m_InputLayout)
+        return true;
+
+    m_InputLayout = std::make_shared<ShaderInputLayoutOGL>();
+    //m_InputLayout->LoadFromD3D9(m_pShaderBlob, declIn);
+    assert1(false);
+
+    return true;
+}
+
+std::shared_ptr<IShaderInputLayout> ShaderOGL::GetInputLayout() const
+{
+    return m_InputLayout;
 }
 
 ShaderParameter& ShaderOGL::GetShaderParameterByName(const std::string& name) const

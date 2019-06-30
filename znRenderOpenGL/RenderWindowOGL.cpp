@@ -10,13 +10,13 @@
 #include "RenderTargetOGL.h"
 #include "TextureOGL.h"
 
-RenderWindowOGL::RenderWindowOGL(HWND hWnd, std::shared_ptr<RenderDeviceOGL> device, const std::string& windowName, int windowWidth, int windowHeight, bool vSync)
-	: RenderWindow(windowName, windowWidth, windowHeight, hWnd, vSync)
+RenderWindowOGL::RenderWindowOGL(std::shared_ptr<RenderDeviceOGL> device, IWindowObject * WindowObject, bool vSync)
+	: RenderWindow(WindowObject, vSync)
 	, m_bIsMouseTracking(false)
 	, m_RenderDevice(device)
 	, m_bResizePending(false)
 {
-	m_HDC = GetDC(hWnd);
+	m_HDC = GetDC(GetHWnd());
 
 	m_RenderDevice.lock()->CreateDevice(m_HDC);
 	m_RenderDevice.lock()->LoadDefaultResources();
@@ -151,7 +151,7 @@ void RenderWindowOGL::OnMouseMoved(MouseMotionEventArgs& e)
 		TRACKMOUSEEVENT tme;
 		tme.cbSize = sizeof(TRACKMOUSEEVENT);
 		tme.dwFlags = TME_LEAVE;
-		tme.hwndTrack = GetHWND();
+		tme.hwndTrack = GetHWnd();
 		if (TrackMouseEvent(&tme))
 		{
 			m_bIsMouseTracking = true;

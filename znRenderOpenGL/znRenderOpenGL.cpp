@@ -15,10 +15,10 @@ std::shared_ptr<IRenderDevice> CreateRenderDeviceOGL(std::shared_ptr<CBaseManage
 	return std::make_shared<RenderDeviceOGL>();
 }
 
-std::shared_ptr<RenderWindow> CreateRenderWindowOGL(HWND hWnd, std::shared_ptr<IRenderDevice> device, cstring windowName, int windowWidth, int windowHeight, bool vSync)
+std::shared_ptr<RenderWindow> CreateRenderWindowOGL(std::shared_ptr<IRenderDevice> device, IWindowObject * WindowObject, bool vSync)
 {
 	std::shared_ptr<RenderDeviceOGL> pDevice = std::dynamic_pointer_cast<RenderDeviceOGL, IRenderDevice>(device);
 	assert1(pDevice != NULL);
 
-	return std::make_shared<RenderWindowOGL>(hWnd, pDevice, windowName, windowWidth, windowHeight, vSync);
+	return std::make_shared<RenderWindowOGL>(pDevice, WindowObject, vSync);
 }

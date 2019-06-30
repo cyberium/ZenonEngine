@@ -32,6 +32,10 @@ void MeshOGL::AddVertexBuffer(const BufferBinding& binding, std::shared_ptr<IBuf
 	m_bIsDirty = true;
 }
 
+void MeshOGL::SetVertexBuffer(std::shared_ptr<IBuffer> buffer)
+{
+}
+
 void MeshOGL::SetIndexBuffer(std::shared_ptr<IBuffer> buffer)
 {
 	m_pIndexBuffer = buffer;
@@ -133,9 +137,9 @@ bool MeshOGL::Render(const RenderEventArgs* renderArgs, std::shared_ptr<Constant
 	return true;
 }
 
-bool MeshOGL::Accept(IVisitor& visitor, UINT indexStartLocation, UINT indexCnt, UINT vertexStartLocation, UINT vertexCnt)
+bool MeshOGL::Accept(std::shared_ptr<IVisitor> visitor, UINT indexStartLocation, UINT indexCnt, UINT vertexStartLocation, UINT vertexCnt)
 {
-	return visitor.Visit(shared_from_this(), indexStartLocation, indexCnt, vertexStartLocation, vertexCnt);
+	return visitor->Visit(shared_from_this(), indexStartLocation, indexCnt, vertexStartLocation, vertexCnt);
 }
 
 void MeshOGL::Commit(std::weak_ptr<ShaderOGL> _shader)

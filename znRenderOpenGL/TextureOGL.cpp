@@ -193,6 +193,11 @@ uint16_t TextureOGL::GetHeight() const
 	return m_TextureHeight;
 }
 
+glm::ivec2 TextureOGL::GetSize() const
+{
+    return glm::ivec2(m_TextureWidth, m_TextureHeight);
+}
+
 uint16_t TextureOGL::GetDepth() const
 {
 	return m_TextureDepth;

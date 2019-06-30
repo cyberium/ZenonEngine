@@ -612,15 +612,15 @@ void initWGLExtensions()
 	renderWindowClass.lpszMenuName = NULL;
 	renderWindowClass.lpszClassName = L"TestRenderClass";
 
-	if (!RegisterClassA(&renderWindowClass)) 
+	if (!RegisterClass(&renderWindowClass)) 
 	{
 		fail1();
 	}
 
-	HWND dummy_window = CreateWindowExA(
+	HWND dummy_window = CreateWindowEx(
 		0,
 		renderWindowClass.lpszClassName,
-		"Dummy OpenGL Window",
+		L"Dummy OpenGL Window",
 		0,
 		CW_USEDEFAULT,
 		CW_USEDEFAULT,
@@ -737,9 +737,16 @@ HGLRC initOpenGL(HDC real_dc)
 	return gl33_context;
 }
 
+
+struct CGroupOpenGL
+{
+    long majorVersion = 3;
+    long minorVersion = 33;
+};
+
 bool initOGLExtensions()
 {
-	CGroupOpenGL& openglSettings = GetSettingsGroup<CGroupOpenGL>();
+	CGroupOpenGL openglSettings;
 
     bool r = true;
 
@@ -1263,7 +1270,7 @@ bool initOGLExtensions()
 #endif
 
     // OES image
-    openglSettings.OES_EGL_image = OGLIsExtensionSupported("GL_OES_EGL_image");
+    /*openglSettings.OES_EGL_image = OGLIsExtensionSupported("GL_OES_EGL_image");
     if (openglSettings.OES_EGL_image)
     {
         r &= (glEGLImageTargetTexture2DOES = (PFNGLEGLIMAGETARGETTEXTURE2DOESPROC)OGLGetProcAddress("glEGLImageTargetTexture2DOES")) != nullptr;
@@ -1272,7 +1279,7 @@ bool initOGLExtensions()
     // Default extensions, suitable for any OpenGL version
     openglSettings.EXT_texture_filter_anisotropic = OGLIsExtensionSupported("GL_EXT_texture_filter_anisotropic");
     openglSettings.EXT_texture_compression_s3tc = OGLIsExtensionSupported("GL_EXT_texture_compression_s3tc") || OGLIsExtensionSupported("GL_S3_s3tc");
-    openglSettings.EXT_texture_sRGB = OGLIsExtensionSupported("GL_EXT_texture_sRGB");
+    openglSettings.EXT_texture_sRGB = OGLIsExtensionSupported("GL_EXT_texture_sRGB");*/
 
     return r;
 }

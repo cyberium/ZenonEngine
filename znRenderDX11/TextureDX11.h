@@ -1,9 +1,5 @@
 #pragma once
 
-/**
- * Texture implementation for DX11.
- */
-
 class TextureDX11 : public Texture, public std::enable_shared_from_this<TextureDX11>
 {
 public:

@@ -1,7 +1,5 @@
 #pragma once
 
-class Material;
-
 class RenderDeviceOGL : public IRenderDevice
 {
 public:
@@ -30,7 +28,7 @@ public:
 	virtual void Lock();
 	virtual void Unlock();
 
-	virtual std::shared_ptr<Shader> CreateShader(Shader::ShaderType type, const std::string& fileName, const Shader::ShaderMacros& shaderMacros, const std::string& entryPoint, const std::string& profile);
+	virtual std::shared_ptr<Shader> CreateShader(Shader::ShaderType type, const std::string& fileName, const Shader::ShaderMacros& shaderMacros, const std::string& entryPoint, const std::string& profile, std::shared_ptr<IShaderInputLayout> _customLayout);
 	virtual void DestroyShader(std::shared_ptr<Shader> shader);
 	
 	virtual std::shared_ptr<IMesh> CreateMesh();
