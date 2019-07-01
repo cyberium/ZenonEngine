@@ -2,7 +2,7 @@
 
 class ConstantBuffer;
 
-class MeshDX11 : public IMesh
+class OW_ENGINE_API MeshDX11 : public IMesh
 {
 	typedef std::map<BufferBinding, std::shared_ptr<IBuffer>> BufferMap;
 public:

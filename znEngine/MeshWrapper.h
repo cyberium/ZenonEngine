@@ -1,7 +1,7 @@
 #pragma once
 
 
-class MeshWrapper : public IMesh 
+class OW_ENGINE_API MeshWrapper : public IMesh
 {
 protected:
 	typedef MeshWrapper base;

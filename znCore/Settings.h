@@ -1,7 +1,6 @@
 #pragma once
 
 #include "GroupQuality.h"
-#include "GroupRenderCaps.h"
 #include "GroupVideo.h"
 
 class CSettings : public ISettings

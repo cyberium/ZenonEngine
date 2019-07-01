@@ -30,6 +30,9 @@
     <ClCompile Include="Viewport.cpp">
       <Filter>Types</Filter>
     </ClCompile>
+    <ClCompile Include="BufferBinding.cpp">
+      <Filter>Types</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="common.h">

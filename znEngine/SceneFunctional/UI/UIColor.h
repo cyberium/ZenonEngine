@@ -3,7 +3,7 @@
 #include "SceneNodeUI.h"
 #include "../../Materials/UI_Color_Material.h"
 
-class CUIColorNode : public CUIBaseNode
+class OW_ENGINE_API CUIColorNode : public CUIBaseNode
 {
 	typedef CUIBaseNode base;
 public:

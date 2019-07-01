@@ -1,6 +1,8 @@
 #pragma once
 
-class BlendState : public Object
+#include "common.h"
+
+class OW_ENGINE_API BlendState : public Object
 {
 public:
 
@@ -12,7 +14,7 @@ public:
 	 * The Source and Destination values are first scaled by the source and
 	 * destination blend factors before the blend operation is applied.
 	 */
-	enum class BlendOperation // could also be called BlendOperand
+	enum class OW_ENGINE_API BlendOperation // could also be called BlendOperand
 	{
 		Add,                // Add source and destination ( s + d ).
 		Subtract,           // Subtract source from destination ( d - s )
@@ -25,7 +27,7 @@ public:
 	 * The BlendFactor is used to scale the pixel operand (either Source (s) or
 	 * Destination (d) pixel value) before the blend operation is applied.
 	 */
-	enum class BlendFactor
+	enum class OW_ENGINE_API BlendFactor
 	{
 		Zero,               // Multiply the pixel operand by 0 before applying the blend operation.
 		One,                // Multiply the pixel operand by 1 before applying the blend operation.
@@ -50,7 +52,7 @@ public:
 	 * Specify a logical pixel operation for rendering.
 	 * Supported since DirectX 11.1 and OpenGL 2.0+
 	 */
-	enum class LogicOperator
+	enum class OW_ENGINE_API LogicOperator
 	{
 		None,               // No logical operator is performed.
 		Clear,              // Clears the render target (d = 0) at the current pixel.
@@ -80,7 +82,7 @@ public:
 	 * blending is not enabled, then the BlendMode assigned to index 0 is used for
 	 * all bound render target color buffers.
 	 */
-	struct BlendMode
+	struct OW_ENGINE_API BlendMode
 	{
 		/**
 		 * Set to true to enable blending.

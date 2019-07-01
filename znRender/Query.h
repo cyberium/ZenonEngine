@@ -1,6 +1,8 @@
 #pragma once
 
-class Query : public Object
+#include "common.h"
+
+class OW_ENGINE_API Query : public Object
 {
 public:
 

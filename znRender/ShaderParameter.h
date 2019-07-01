@@ -1,12 +1,14 @@
 #pragma once
 
+#include "common.h"
+
 class Shader;
 class ConstantBuffer;
 class Texture;
 class SamplerState;
 class StructuredBuffer;
 
-class ShaderParameter : public Object
+class OW_ENGINE_API ShaderParameter : public Object
 {
 public:
 	typedef Object base;

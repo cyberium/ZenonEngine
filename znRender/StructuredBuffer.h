@@ -1,8 +1,10 @@
 #pragma once
 
+#include "common.h"
+
 #include "Buffer.h"
 
-class StructuredBuffer : public IBuffer
+class OW_ENGINE_API StructuredBuffer : public IBuffer
 {
 public:
 	virtual bool Bind(uint32 id, std::weak_ptr<Shader> shader, ShaderParameter::Type parameterType) = 0;

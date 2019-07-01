@@ -11,10 +11,10 @@ public:
 	bool Init();
 	void Destroy();
 
-	virtual void OnPreRender(Render3DEventArgs& e);
-	virtual void OnRender(Render3DEventArgs& e);
-	virtual void OnPostRender(Render3DEventArgs& e);
-	virtual void OnRenderUI(RenderUIEventArgs& e);
+	virtual void OnPreRender(RenderEventArgs& e);
+	virtual void OnRender(RenderEventArgs& e);
+	virtual void OnPostRender(RenderEventArgs& e);
+	virtual void OnRenderUI(RenderEventArgs& e);
 
 
 private:
@@ -26,14 +26,14 @@ private:
 
 	RenderTechnique                      m_3DTechnique;
 	RenderTechnique                      m_3DDeferredTechnique;
-	RenderUITechnique                    m_UITechnique;
+	RenderTechnique                    m_UITechnique;
 
 	std::shared_ptr<CFreeCameraController>   m_CameraController;
 
 	std::shared_ptr<Query>               m_FrameQuery;
 	double                               m_FrameTime;
 	std::shared_ptr<Scene3D>             m_3DScene;
-	std::shared_ptr<CUIScene>             m_UIScene;
+	std::shared_ptr<SceneUI>             m_UIScene;
 
 	std::shared_ptr<CLight3D>            m_DirLight;
 

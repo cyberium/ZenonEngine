@@ -2,13 +2,7 @@
 
 #include "AbstractPass.h"
 
-class IRenderTarget;
-class Textre;
-
-/**
-* A render pass that simply clears a render target.
-*/
-class GenerateMipMapPass : public AbstractPass
+class OW_ENGINE_API GenerateMipMapPass : public AbstractPass
 {
 public:
 	GenerateMipMapPass(std::shared_ptr<IRenderTarget> renderTarget);

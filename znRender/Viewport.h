@@ -1,6 +1,8 @@
 #pragma once
 
-class Viewport
+#include "common.h"
+
+class OW_ENGINE_API Viewport
 {
 public:
     Viewport(float x = 0.0f, float y = 0.0f, float width = 800.0f, float height = 600.0f, float minDepth = 0.0f, float maxDepth = 1.0f);

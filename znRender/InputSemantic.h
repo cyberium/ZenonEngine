@@ -1,7 +1,8 @@
 #pragma once
 
-// Defines either a semantic (HLSL) or an input index (GLSL/HLSL) to bind an input buffer.
-struct InputSemantic
+#include "common.h"
+
+struct OW_ENGINE_API InputSemantic
 {
 	InputSemantic()
 		: Index(0)

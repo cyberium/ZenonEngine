@@ -266,6 +266,7 @@ bool TextureDX11::LoadTextureCustom(uint16_t width, uint16_t height, void * pixe
 
 // FreeImage
 #define FREEIMAGE_LIB // Static linking
+#pragma comment(lib, "FreeImageLib.lib")
 #include <FreeImage.h>
 
 void PrintMetaData(FREE_IMAGE_MDMODEL model, FIBITMAP* dib)

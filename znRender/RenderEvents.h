@@ -1,12 +1,14 @@
 #pragma once
 
+#include "common.h"
+
 // FORWARD BEGIN
 class Camera;
 class PipelineState;
 class Viewport;
 // FORWARD END
 
-class UpdateEventArgs : public EventArgs
+class OW_ENGINE_API UpdateEventArgs : public EventArgs
 {
 	typedef EventArgs base;
 public:
@@ -31,7 +33,7 @@ typedef Delegate<UpdateEventArgs> UpdateEvent;
 
 
 
-class RenderEventArgs : public EventArgs
+class OW_ENGINE_API RenderEventArgs : public EventArgs
 {
 	typedef EventArgs base;
 public:

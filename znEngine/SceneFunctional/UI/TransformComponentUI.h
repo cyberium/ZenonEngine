@@ -4,6 +4,7 @@
 
 class 
     __declspec(UUID_TransformComponent)
+    OW_ENGINE_API
     CTransformComponentUI : public CTransformComponentBase
 {
     typedef CTransformComponentBase base;

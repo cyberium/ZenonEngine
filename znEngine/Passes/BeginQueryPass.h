@@ -2,7 +2,7 @@
 
 #include "AbstractPass.h"
 
-class BeginQueryPass : public AbstractPass
+class OW_ENGINE_API BeginQueryPass : public AbstractPass
 {
 public:
     BeginQueryPass( std::shared_ptr<Query> query );

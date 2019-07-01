@@ -1,12 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClInclude Include="Types.h">
-      <Filter>Common</Filter>
-    </ClInclude>
-    <ClInclude Include="stdafx.h">
-      <Filter>Common</Filter>
-    </ClInclude>
     <ClInclude Include="Console.h">
       <Filter>Core\Debug, Console &amp; Log</Filter>
     </ClInclude>
@@ -64,6 +58,9 @@
     <ClInclude Include="RenderPass.h">
       <Filter>Render</Filter>
     </ClInclude>
+    <ClInclude Include="common.h">
+      <Filter>Common</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Common">
@@ -84,10 +81,5 @@
     <Filter Include="Engine">
       <UniqueIdentifier>{09ac166e-fa8f-4f25-b9bb-8f5dac828b55}</UniqueIdentifier>
     </Filter>
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="stdafx.cpp">
-      <Filter>Common</Filter>
-    </ClCompile>
   </ItemGroup>
 </Project>

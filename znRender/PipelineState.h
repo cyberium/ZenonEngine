@@ -1,5 +1,7 @@
 #pragma once
 
+#include "common.h"
+
 #include "Shader.h"
 #include "BlendState.h"
 #include "RasterizerState.h"
@@ -11,7 +13,7 @@
  * This includes, shaders, blend states, rasterizer states,
  * and depth/stencil states among other things....
  */
-class PipelineState : public Object
+class OW_ENGINE_API PipelineState : public Object
 {
 public:
 	virtual void SetShader(Shader::ShaderType type, std::shared_ptr<Shader> pShader) = 0;

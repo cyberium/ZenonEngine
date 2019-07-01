@@ -1,27 +1,15 @@
 #pragma once
 
-struct BufferBinding
-{
-	BufferBinding()
-		: Index(0)
-	{}
+#include "common.h"
 
-	BufferBinding(const std::string& name, uint32 index)
-		: Name(name)
-		, Index(index)
-	{}
+struct OW_ENGINE_API BufferBinding
+{
+    BufferBinding();
+    BufferBinding(const std::string& name, uint32 index);
+    virtual ~BufferBinding();
 
 	// Provide the < operator for STL containers.
-	bool operator<(const BufferBinding& rhs) const
-	{
-		if (Name < rhs.Name) return true;
-		if (Name > rhs.Name) return false;
-
-		if (Index < rhs.Index) return true;
-		if (Index > rhs.Index) return false;
-
-		return false;
-	}
+    bool operator<(const BufferBinding& rhs) const;
 
 	std::string  Name;
 	uint32       Index;

@@ -1,8 +1,10 @@
 #pragma once
 
+#include "common.h"
+
 #include "Viewport.h"
 
-class RasterizerState : public Object
+class OW_ENGINE_API RasterizerState : public Object
 {
 public:
 	/**

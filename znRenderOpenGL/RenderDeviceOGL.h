@@ -113,8 +113,4 @@ private:
 	uint16						_maxComputeBufferAttachments;
 	bool                        m_IsDefaultFBOMultisampled;
 	int							m_RBDefault;
-
-	//------------------------------------------------------------------------------------
-	// Settings
-	CGroupRenderCaps&			m_DeviceCapsSettings;
 };

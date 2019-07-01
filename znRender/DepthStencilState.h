@@ -1,6 +1,8 @@
 #pragma once
 
-class DepthStencilState : public Object
+#include "common.h"
+
+class OW_ENGINE_API DepthStencilState : public Object
 {
 public:
 

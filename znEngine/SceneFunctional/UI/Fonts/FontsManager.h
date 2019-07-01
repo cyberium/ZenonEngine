@@ -2,7 +2,7 @@
 
 #include "Font.h"
 
-class FontsManager : public CRefManager1Dim<CFontMesh>, public IFontsManager
+class OW_ENGINE_API FontsManager : public CRefManager1Dim<CFontMesh>, public IFontsManager
 {
 public:
 	FontsManager();

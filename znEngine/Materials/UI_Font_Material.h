@@ -2,7 +2,7 @@
 
 #include "../MaterialWrapper.h"
 
-class UI_Font_Material : public MaterialWrapper
+class OW_ENGINE_API UI_Font_Material : public MaterialWrapper
 {
 public:
 	UI_Font_Material();

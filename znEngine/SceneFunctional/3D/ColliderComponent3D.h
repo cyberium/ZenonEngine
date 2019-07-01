@@ -6,6 +6,7 @@
 
 class
     __declspec(UUID_ColliderComponent)
+    OW_ENGINE_API
     CColliderComponent3D : public CComponentBase
 {
 public:

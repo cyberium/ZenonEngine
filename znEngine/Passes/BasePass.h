@@ -3,7 +3,7 @@
 #include "AbstractPass.h"
 #include "../SceneFunctional/3D/Scene3D.h"
 
-class BasePass : public AbstractPass
+class OW_ENGINE_API BasePass : public AbstractPass
 {
     typedef AbstractPass base;
 public:

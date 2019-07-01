@@ -1,9 +1,11 @@
 #pragma once
 
+#include "common.h"
+
 #include "BufferBinding.h"
 #include "InputSemantic.h"
 
-class IShaderInputLayout : public Object
+class OW_ENGINE_API IShaderInputLayout : public Object
 {
 public:
 	virtual ~IShaderInputLayout() {};

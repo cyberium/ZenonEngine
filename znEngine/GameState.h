@@ -4,7 +4,7 @@
 #include "SceneFunctional/UI/SceneUI.h"
 #include "Passes/RenderTechnique.h"
 
-class CGameState : public IGameState
+class OW_ENGINE_API CGameState : public IGameState
 {
 public:
                                                     CGameState(const IApplication * Application);

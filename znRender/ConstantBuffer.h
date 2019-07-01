@@ -1,8 +1,10 @@
 #pragma once
 
+#include "common.h"
+
 #include "Buffer.h"
 
-class ConstantBuffer : public IBuffer
+class OW_ENGINE_API ConstantBuffer : public IBuffer
 {
 public:
 	template <typename T>

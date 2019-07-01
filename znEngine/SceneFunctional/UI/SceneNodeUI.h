@@ -10,7 +10,7 @@ class CUIWindowNode;
 // FORWARD END
 
 
-class UIBaseNodeClickedEventArgs
+class OW_ENGINE_API UIBaseNodeClickedEventArgs
 {
 public:
     UIBaseNodeClickedEventArgs(std::shared_ptr<CUIBaseNode> Initiator)
@@ -22,7 +22,7 @@ public:
 typedef Delegate<UIBaseNodeClickedEventArgs> UIBaseNodeClickedEvent;
 
 
-class CUIBaseNode : public SceneNode
+class OW_ENGINE_API CUIBaseNode : public SceneNode
 {
     typedef SceneNode base;
 	friend CUIWindowNode;

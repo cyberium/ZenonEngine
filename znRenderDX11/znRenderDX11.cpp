@@ -9,9 +9,12 @@
 #include "RenderDeviceDX11.h"
 #include "RenderWindowDX11.h"
 
+std::shared_ptr<CBaseManager> _BaseManager = nullptr;
+
 
 std::shared_ptr<IRenderDevice> CreateRenderDeviceDX11(std::shared_ptr<CBaseManager> _baseManager)
 {
+    _BaseManager = _baseManager;
 	return std::make_shared<RenderDeviceDX11>();
 }
 

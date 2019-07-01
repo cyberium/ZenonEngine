@@ -2,7 +2,7 @@
 
 #include "AbstractPass.h"
 
-class ClearRenderTargetPass : public AbstractPass
+class OW_ENGINE_API ClearRenderTargetPass : public AbstractPass
 {
 public:
 	ClearRenderTargetPass(std::shared_ptr<IRenderTarget> renderTarget,

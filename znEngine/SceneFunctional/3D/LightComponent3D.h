@@ -5,6 +5,7 @@
 
 class 
     __declspec(uuid("572F705C-8824-4394-B031-DCC600AA9805"))
+    OW_ENGINE_API
     CLightComponent3D : public CComponentBase
 {
 public:

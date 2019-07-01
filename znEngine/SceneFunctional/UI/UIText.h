@@ -4,7 +4,7 @@
 #include "Fonts/Font.h"
 #include "../../Materials/UI_Font_Material.h"
 
-class CUITextNode : public CUIBaseNode
+class OW_ENGINE_API CUITextNode : public CUIBaseNode
 {
 	typedef CUIBaseNode base;
 public:

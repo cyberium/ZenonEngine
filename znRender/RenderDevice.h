@@ -1,5 +1,7 @@
 #pragma once
 
+#include "common.h"
+
 #include "RenderEvents.h"
 #include "CPUAccess.h"
 
@@ -18,7 +20,7 @@ class PipelineState;
 /**
  * Render device encapsulates functions for creating resources on the GPU.
  */
-class IRenderDevice : public Object
+class OW_ENGINE_API IRenderDevice : public Object
 {
 public:
 	virtual const std::string& GetDeviceName() const = 0;

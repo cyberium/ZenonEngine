@@ -3,7 +3,7 @@
 #include "../../SceneFunctional/UI/SceneNodeUI.h"
 #include "../../Materials/UI_Line_Material.h"
 
-class CUIBeizerLineNode : public CUIBaseNode
+class OW_ENGINE_API CUIBeizerLineNode : public CUIBaseNode
 {
 	typedef CUIBaseNode base;
 public:

@@ -1,6 +1,6 @@
 #pragma once
 
-class TextureDX11 : public Texture, public std::enable_shared_from_this<TextureDX11>
+class OW_ENGINE_API TextureDX11 : public Texture, public std::enable_shared_from_this<TextureDX11>
 {
 public:
 	// Create an empty texture.

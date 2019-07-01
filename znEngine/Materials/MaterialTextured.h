@@ -2,7 +2,7 @@
 
 #include "../MaterialWrapper.h"
 
-class MaterialTextured : public MaterialWrapper
+class OW_ENGINE_API MaterialTextured : public MaterialWrapper
 {
 public:
 	MaterialTextured(std::shared_ptr<Material> _material);

@@ -1,14 +1,8 @@
 #pragma once
 
-/**
- * A pass to dispatch a compute shader.
- */
-
 #include "AbstractPass.h"
 
-class Shader;
-
-class DispatchPass : public AbstractPass
+class OW_ENGINE_API DispatchPass : public AbstractPass
 {
 public:
 	DispatchPass(std::shared_ptr<Shader> computeShader, const glm::uvec3& numGroups);

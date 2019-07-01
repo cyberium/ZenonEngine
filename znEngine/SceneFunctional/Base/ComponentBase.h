@@ -4,7 +4,7 @@
 class SceneNode;
 // FORWARD END
 
-class CComponentBase : public ISceneNodeComponent
+class OW_ENGINE_API CComponentBase : public ISceneNodeComponent
 {
 public:
     CComponentBase(std::shared_ptr<SceneNode> OwnerNode);

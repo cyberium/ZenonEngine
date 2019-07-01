@@ -2,7 +2,7 @@
 
 #include "AbstractPass.h"
 
-class CopyBufferPass : public AbstractPass
+class OW_ENGINE_API CopyBufferPass : public AbstractPass
 {
 public:
 	CopyBufferPass(std::shared_ptr<IBuffer> destinationBuffer, std::shared_ptr<IBuffer> sourceBuffer);

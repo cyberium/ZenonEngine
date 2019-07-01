@@ -5,7 +5,7 @@
 #include "GameState.h"
 #include "Loader.h"
 
-class Application : 
+class OW_ENGINE_API Application :
 	public Object, 
 	public IApplication, 
 	public IGameStateManager

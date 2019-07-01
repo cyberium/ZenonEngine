@@ -1,9 +1,11 @@
 #pragma once
 
+#include "common.h"
+
 #include "RenderTarget.h"
 #include "RenderEvents.h"
 
-class RenderWindow : public Object
+class OW_ENGINE_API RenderWindow : public Object
 {
 	typedef Object base;
 public:

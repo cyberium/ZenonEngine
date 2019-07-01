@@ -1,10 +1,12 @@
 #pragma once
 
+#include "common.h"
+
 #include "ShaderInputLayout.h"
 #include "ShaderParameter.h"
 #include "D3D9_Types.h"
 
-class Shader : public Object
+class OW_ENGINE_API Shader : public Object
 {
 	typedef Object base;
 public:

@@ -1,6 +1,6 @@
 #pragma once
 
-class CCameraControllerBase : public ICameraController
+class OW_ENGINE_API CCameraControllerBase : public ICameraController
 {
 public:
 	                                                CCameraControllerBase();

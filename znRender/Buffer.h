@@ -1,9 +1,11 @@
 #pragma once
 
+#include "common.h"
+
 #include "Shader.h"
 #include "ShaderParameter.h"
 
-class IBuffer : public Object
+class OW_ENGINE_API IBuffer : public Object
 {
 public:
 	enum BufferType

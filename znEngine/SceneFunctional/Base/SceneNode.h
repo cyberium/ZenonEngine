@@ -4,7 +4,7 @@
 class Scene;
 // FORWARD END
 
-class SceneNode : public Object, public virtual std::enable_shared_from_this<SceneNode>
+class OW_ENGINE_API SceneNode : public Object, public virtual std::enable_shared_from_this<SceneNode>
 {
 	typedef Object base;
     friend Scene;

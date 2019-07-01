@@ -3,7 +3,7 @@
 #include "TextureDX11.h"
 #include "RenderTargetDX11.h"
 
-class RenderWindowDX11 : public RenderWindow
+class OW_ENGINE_API RenderWindowDX11 : public RenderWindow
 {
 	typedef RenderWindow base;
 public:

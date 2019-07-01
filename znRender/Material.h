@@ -1,11 +1,12 @@
 #pragma once
 
+#include "common.h"
+
 #include "Shader.h"
 #include "Texture.h"
 #include "SamplerState.h"
 
-// A material class is used to wrap the shaders and to manage the shader parameters.
-class Material : public Object, public std::enable_shared_from_this<Material>
+class OW_ENGINE_API Material : public Object, public std::enable_shared_from_this<Material>
 {
 public:
 	typedef std::map<Shader::ShaderType, std::shared_ptr<Shader>> ShaderMap;

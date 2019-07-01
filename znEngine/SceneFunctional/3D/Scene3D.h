@@ -4,7 +4,7 @@
 
 #include "SceneNode3D.h"
 
-class Scene3D : public Scene
+class OW_ENGINE_API Scene3D : public Scene
 {
 public:
 	explicit                                        Scene3D();

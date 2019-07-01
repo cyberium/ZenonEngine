@@ -1,6 +1,6 @@
 #pragma once
 
-class RasterizerStateDX11 : public RasterizerState
+class OW_ENGINE_API RasterizerStateDX11 : public RasterizerState
 {
 public:
 	RasterizerStateDX11(ID3D11Device2* pDevice);

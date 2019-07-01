@@ -2,7 +2,7 @@
 
 #include "SceneNode.h"
 
-class Scene : public Object, public std::enable_shared_from_this<Scene>
+class OW_ENGINE_API Scene : public Object, public std::enable_shared_from_this<Scene>
 {
 public:
 	Scene();

@@ -1,6 +1,6 @@
 #pragma once
 
-class ShaderInputLayoutDX11 : public IShaderInputLayout
+class OW_ENGINE_API ShaderInputLayoutDX11 : public IShaderInputLayout
 {
 public:
 	ShaderInputLayoutDX11(ID3D11Device2* pDevice);

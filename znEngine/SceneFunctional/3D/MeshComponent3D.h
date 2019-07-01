@@ -4,6 +4,7 @@
 
 class 
     __declspec(uuid("403E886D-7BD7-438B-868D-AC4380830716"))
+    OW_ENGINE_API
     CMeshComponent3D : public CComponentBase
 {
 public:

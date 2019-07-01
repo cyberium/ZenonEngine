@@ -2,7 +2,7 @@
 
 class Material;
 
-class RenderDeviceDX11 : public IRenderDevice
+class OW_ENGINE_API RenderDeviceDX11 : public IRenderDevice
 {
 	typedef IRenderDevice base;
 public:

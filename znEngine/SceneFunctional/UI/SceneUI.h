@@ -5,7 +5,7 @@
 #include "SceneNodeUI.h"
 #include "UIWindow.h"
 
-class SceneUI : public Scene
+class OW_ENGINE_API SceneUI : public Scene
 {
 public:
 	explicit                                        SceneUI();

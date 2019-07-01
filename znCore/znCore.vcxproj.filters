@@ -111,9 +111,6 @@
     <ClCompile Include="Settings.cpp">
       <Filter>Settings</Filter>
     </ClCompile>
-    <ClCompile Include="GroupRenderCaps.cpp">
-      <Filter>Settings\Groups</Filter>
-    </ClCompile>
     <ClCompile Include="GroupQuality.cpp">
       <Filter>Settings\Groups</Filter>
     </ClCompile>
@@ -241,9 +238,6 @@
     </ClInclude>
     <ClInclude Include="Settings.h">
       <Filter>Settings</Filter>
-    </ClInclude>
-    <ClInclude Include="GroupRenderCaps.h">
-      <Filter>Settings\Groups</Filter>
     </ClInclude>
     <ClInclude Include="GroupQuality.h">
       <Filter>Settings\Groups</Filter>

@@ -1,6 +1,6 @@
 #pragma once
 
-class AbstractPass : public IRenderPass
+class OW_ENGINE_API AbstractPass : public IRenderPass
 {
 public:
 	                                                AbstractPass();

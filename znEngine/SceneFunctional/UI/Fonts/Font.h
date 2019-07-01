@@ -4,7 +4,7 @@
 class MeshWrapper;
 // FORWARD END
 
-class CFontMesh : public MeshWrapper
+class OW_ENGINE_API CFontMesh : public MeshWrapper
 {
 public:
 	CFontMesh(std::shared_ptr<Texture> _texture, std::shared_ptr<IMesh> _fontGeometry, std::vector<uint32> _widthArray, uint32 _height);

@@ -1,6 +1,6 @@
 #pragma once
 
-class MaterialWrapper : public Material
+class OW_ENGINE_API MaterialWrapper : public Material
 {
 public:
 	MaterialWrapper(std::shared_ptr<Material> _materal);

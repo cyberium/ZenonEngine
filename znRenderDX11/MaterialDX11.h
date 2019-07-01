@@ -1,6 +1,6 @@
 #pragma once
 
-class MaterialDX11 : public MaterialImpl
+class OW_ENGINE_API MaterialDX11 : public MaterialImpl
 {
 public:
 	MaterialDX11(IRenderDevice* renderDevice);

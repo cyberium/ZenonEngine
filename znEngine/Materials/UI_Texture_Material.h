@@ -2,7 +2,7 @@
 
 #include "../MaterialWrapper.h"
 
-class UI_Texture_Material : public MaterialWrapper
+class OW_ENGINE_API UI_Texture_Material : public MaterialWrapper
 {
 	typedef MaterialWrapper base;
 public:

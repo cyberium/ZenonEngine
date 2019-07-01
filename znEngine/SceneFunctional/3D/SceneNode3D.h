@@ -11,7 +11,7 @@
 class Scene3D;
 // FORWARD END
 
-class SceneNode3D : public SceneNode, public ILoadable
+class OW_ENGINE_API SceneNode3D : public SceneNode, public ILoadable
 {
 	typedef SceneNode base;
     friend Scene3D;

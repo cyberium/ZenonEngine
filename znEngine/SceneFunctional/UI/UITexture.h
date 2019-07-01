@@ -3,7 +3,7 @@
 #include "SceneNodeUI.h"
 #include "../../Materials/UI_Texture_Material.h"
 
-class CUITextureNode : public CUIBaseNode
+class OW_ENGINE_API CUITextureNode : public CUIBaseNode
 {
 	typedef CUIBaseNode base;
 public:

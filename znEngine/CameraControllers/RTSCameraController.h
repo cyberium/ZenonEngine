@@ -2,7 +2,7 @@
 
 #include "CameraControllerBase.h"
 
-class CRTSCameraController : public CCameraControllerBase
+class OW_ENGINE_API CRTSCameraController : public CCameraControllerBase
 {
 public:
 	                                                CRTSCameraController();

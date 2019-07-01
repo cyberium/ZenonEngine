@@ -2,7 +2,7 @@
 
 #include "../MaterialWrapper.h"
 
-class UI_Color_Material : public MaterialWrapper
+class OW_ENGINE_API UI_Color_Material : public MaterialWrapper
 {
 public:
 	UI_Color_Material();

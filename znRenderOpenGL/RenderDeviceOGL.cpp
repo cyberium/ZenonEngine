@@ -65,8 +65,7 @@ void _stdcall glDebugOutput(GLenum source, GLenum type, GLuint id, GLenum severi
 }
 #endif
 
-RenderDeviceOGL::RenderDeviceOGL() :
-	m_DeviceCapsSettings(GetSettingsGroup<CGroupRenderCaps>())
+RenderDeviceOGL::RenderDeviceOGL()
 {
 	//CreateDevice();
 }
@@ -113,14 +112,6 @@ void RenderDeviceOGL::CreateDevice(HDC _hdc)
 	glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
 	glDebugMessageCallback(glDebugOutput, nullptr);
 #endif
-
-	// Set capabilities
-	m_DeviceCapsSettings.texFloat = true;
-	m_DeviceCapsSettings.texNPOT = true;
-	m_DeviceCapsSettings.rtMultisampling = true;
-	m_DeviceCapsSettings.geometryShaders = true;
-    m_DeviceCapsSettings.tesselation = false;// m_OpenGLSettings.majorVersion >= 4 && m_OpenGLSettings.minorVersion >= 1;
-	m_DeviceCapsSettings.computeShaders = false;//m_OpenGLSettings.majorVersion >= 4 && m_OpenGLSettings.minorVersion >= 3;
 
 	// Find maximum number of storage buffers in compute shader
 	glGetIntegerv(GL_MAX_COMPUTE_SHADER_STORAGE_BLOCKS, (GLint *)&_maxComputeBufferAttachments);

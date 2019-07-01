@@ -20,7 +20,6 @@ CSettings::~CSettings()
 void CSettings::AddDefaults()
 {
 	AddSettingsGroup<CGroupQuality>(new CGroupQuality);
-	AddSettingsGroup<CGroupRenderCaps>(new CGroupRenderCaps);
 	AddSettingsGroup<CGroupVideo>(new CGroupVideo);
 }
 

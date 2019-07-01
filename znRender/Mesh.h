@@ -1,5 +1,7 @@
 #pragma once
 
+#include "common.h"
+
 #include "BufferBinding.h"
 #include "Buffer.h"
 #include "PrimitiveTopology.h"
@@ -7,7 +9,7 @@
 #include "RenderEvents.h"
 #include "ConstantBuffer.h"
 
-class IMesh : public Object, public std::enable_shared_from_this<IMesh>
+class OW_ENGINE_API IMesh : public Object, public std::enable_shared_from_this<IMesh>
 {
 public:
 	virtual ~IMesh() {};

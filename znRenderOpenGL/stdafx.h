@@ -1,7 +1,6 @@
 #pragma once
 
 #include <znIntfs.h>
-#pragma comment(lib, "znIntfs.lib")
 
 #include <znCore.h>
 #pragma comment(lib, "znCore.lib")

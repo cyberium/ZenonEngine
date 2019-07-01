@@ -1,14 +1,13 @@
 #pragma once
-/**
- * A texture class for loading and using textures in shaders.
- */
+
+#include "common.h"
 
 #include "Shader.h"
 #include "ShaderParameter.h"
 #include "ClearFlags.h"
 #include "Pixel.h"
 
-class Texture : public Object
+class OW_ENGINE_API Texture : public Object
 {
 public:
 	typedef Object base;

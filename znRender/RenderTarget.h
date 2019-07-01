@@ -1,11 +1,13 @@
 #pragma once
 
+#include "common.h"
+
 #include "ClearFlags.h"
 
 class Texture;
 class StructuredBuffer;
 
-class IRenderTarget : public Object
+class OW_ENGINE_API IRenderTarget : public Object
 {
 public:
 	enum class AttachmentPoint : uint8_t
