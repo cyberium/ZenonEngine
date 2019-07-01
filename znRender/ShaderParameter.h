@@ -10,9 +10,8 @@ class StructuredBuffer;
 
 class OW_ENGINE_API ShaderParameter : public Object
 {
+    typedef Object base;
 public:
-	typedef Object base;
-
 	enum class Type
 	{
 		Invalid,    // Invalid parameter. Doesn't store a type.
@@ -23,8 +22,10 @@ public:
 		RWBuffer,   // Read/write structured buffers.
 	};
 
+public:
 	ShaderParameter();
 	ShaderParameter(const std::string& name, UINT slotID, std::shared_ptr<Shader> shader, Type parameterType);
+    virtual ~ShaderParameter();
 
 	template <typename T>
 	void Set(std::shared_ptr<T> value);

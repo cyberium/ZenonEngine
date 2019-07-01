@@ -12,7 +12,6 @@ PostprocessPass::PostprocessPass(std::shared_ptr<Scene3D> scene, std::shared_ptr
 void PostprocessPass::Render(RenderEventArgs& e)
 {
 	PerObject perObjectData;
-	perObjectData.ModelView = glm::mat4(1.0f); // Identity
 	perObjectData.ModelViewProjection = m_ProjectionMatrix;
 
 	SetPerObjectConstantBufferData(perObjectData);

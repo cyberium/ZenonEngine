@@ -69,7 +69,7 @@ public:
 	/**
 	 * Get a shader input layout description
 	 */
-	virtual std::shared_ptr<IShaderInputLayout> GetInputLayout() const = 0;
+	std::shared_ptr<IShaderInputLayout> GetInputLayout() const;
 
 	/**
 	 * Get a reference to a parameter defined in the shader.
@@ -78,7 +78,7 @@ public:
 	 * is not found in the shader, then this function will return an invalid shader parameter.
 	 * You can check for validity using the ShaderParameter::IsValid method.
 	 */
-	virtual ShaderParameter& GetShaderParameterByName(const std::string& name) const = 0;
+	ShaderParameter& GetShaderParameterByName(const std::string& name) const;
 	
 	/**
 	 * Bind this shader for use in the rendering pipeline.
@@ -98,8 +98,15 @@ public:
 	virtual void Dispatch(const glm::uvec3& numGroups) = 0;
 
 protected:
-	ShaderType	m_ShaderType;
+    // Parameters necessary to reload the shader at runtime if it is modified on disc.
+    ShaderMacros                        m_ShaderMacros;
+    std::string                         m_EntryPoint;
+    std::string                         m_Profile;
+    std::string                         m_ShaderFileName;
+	ShaderType	                        m_ShaderType;
+
+    std::shared_ptr<IShaderInputLayout> m_InputLayout;
 
 	typedef std::map<std::string, std::shared_ptr<ShaderParameter> > ParameterMap;
-	ParameterMap m_ShaderParameters;
+	ParameterMap                        m_ShaderParameters;
 };

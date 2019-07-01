@@ -6,7 +6,7 @@
 // Additional
 #include "D3D9_To_D3D11.h"
 
-static InputSemantic gs_InvalidShaderSemantic;
+
 // FORWARD BEGIN
 DXGI_FORMAT GetDXGIFormat(const D3D11_SIGNATURE_PARAMETER_DESC& paramDesc);
 // FORWARD END
@@ -25,51 +25,8 @@ ShaderInputLayoutDX11::~ShaderInputLayoutDX11()
 
 
 //
-// IShaderInputLayout
+// ShaderInputLayoutDX11
 //
-bool ShaderInputLayoutDX11::HasSemantic(const BufferBinding& binding) const
-{
-	for (auto& it : m_InputSemantics)
-	{
-		if (it.first.Name == binding.Name && it.first.Index == binding.Index)
-		{
-			return true;
-		}
-	}
-
-	return false;
-}
-
-const InputSemantic& ShaderInputLayoutDX11::GetSemantic(const BufferBinding& binding) const
-{
-	for (auto& it : m_InputSemantics)
-	{
-		if (it.first.Name == binding.Name && it.first.Index == binding.Index)
-		{
-			return it.first;
-		}
-	}
-
-	assert1(false);
-	return gs_InvalidShaderSemantic;
-}
-
-UINT ShaderInputLayoutDX11::GetSemanticSlot(const BufferBinding& binding) const
-{
-	for (auto& it : m_InputSemantics)
-	{
-		if (it.first.Name == binding.Name && it.first.Index == binding.Index)
-		{
-			return it.second;
-		}
-	}
-
-	assert1(false);
-	return UINT_MAX;
-}
-
-
-
 bool ShaderInputLayoutDX11::LoadFromReflector(ID3DBlob * pShaderBlob, ID3D11ShaderReflection * pReflector)
 {
 	HRESULT hr = S_OK;
@@ -151,7 +108,7 @@ ID3D11InputLayout* ShaderInputLayoutDX11::GetInputLayout() const
 //
 // HELPERS
 //
-DXGI_FORMAT GetDXGIFormat(const D3D11_SIGNATURE_PARAMETER_DESC& paramDesc) // Determine DXGI format
+DXGI_FORMAT GetDXGIFormat(const D3D11_SIGNATURE_PARAMETER_DESC& paramDesc)
 {
 	DXGI_FORMAT format = DXGI_FORMAT_UNKNOWN;
 	if (paramDesc.Mask == 1) // 1 component

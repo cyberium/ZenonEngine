@@ -3,57 +3,6 @@
 // General
 #include "ShaderDX11.h"
 
-std::string RecursionInclude(std::shared_ptr<IFile> f)
-{
-    if (f == nullptr)
-    {
-        Log::Error("Error open shader [%s].", f->Path_Name().c_str());
-        return "";
-    }
-
-    std::string data = "";
-
-    while (!f->isEof())
-    {
-        std::string line;
-        if (false == f->readLine(&line))
-        {
-            break;
-        }
-
-        // Skip empty lines
-        if (line.length() == 0)
-        {
-            continue;
-        }
-
-        // Find directive
-        if (line[0] == '#' && line[1] == 'i' && line[2] == 'n' && line[3] == 'c' && line[4] == 'l')
-        {
-            size_t firstBracketPosition = line.find('"');
-            assert1(firstBracketPosition != std::string::npos);
-
-            size_t lastBracketPosition = line.find_last_of('"');
-            assert1(firstBracketPosition != lastBracketPosition);
-
-            std::string inludeFileName = line.substr(firstBracketPosition + 1, lastBracketPosition - firstBracketPosition - 1);
-            CFile::FixFilePath(inludeFileName);
-
-            std::shared_ptr<IFile> includeFile = GetManager<IFilesManager>()->Open(inludeFileName);
-
-            data += RecursionInclude(includeFile) + '\n';
-
-            continue;
-        }
-
-        data += line + '\n';
-    }
-
-    return data;
-}
-
-static ShaderParameter gs_InvalidShaderParameter;
-
 // FORWARD BEGIN
 std::string GetLatestProfile(Shader::ShaderType type, const D3D_FEATURE_LEVEL& _featureLevel);
 // FORWARD END
@@ -289,8 +238,9 @@ bool ShaderDX11::LoadInputLayoutFromReflector()
 		return false;
 	}
 
-	m_InputLayout = std::make_shared<ShaderInputLayoutDX11>(m_pDevice);
-	m_InputLayout->LoadFromReflector(m_pShaderBlob, pReflector);
+	std::shared_ptr<ShaderInputLayoutDX11> inputLayout = std::make_shared<ShaderInputLayoutDX11>(m_pDevice);
+    inputLayout->LoadFromReflector(m_pShaderBlob, pReflector);
+    m_InputLayout = inputLayout;
 
 	return true;
 }
@@ -300,27 +250,11 @@ bool ShaderDX11::LoadInputLayoutFromD3DElement(const std::vector<D3DVERTEXELEMEN
 	if (m_InputLayout)
 		return true;
 
-	m_InputLayout = std::make_shared<ShaderInputLayoutDX11>(m_pDevice);
-	m_InputLayout->LoadFromD3D9(m_pShaderBlob, declIn);
+    std::shared_ptr<ShaderInputLayoutDX11> inputLayout = std::make_shared<ShaderInputLayoutDX11>(m_pDevice);
+    inputLayout->LoadFromD3D9(m_pShaderBlob, declIn);
+    m_InputLayout = inputLayout;
 
 	return true;
-}
-
-std::shared_ptr<IShaderInputLayout> ShaderDX11::GetInputLayout() const
-{
-	return m_InputLayout;
-}
-
-ShaderParameter& ShaderDX11::GetShaderParameterByName(const std::string& name) const
-{
-	ParameterMap::const_iterator iter = m_ShaderParameters.find(name);
-	if (iter != m_ShaderParameters.end())
-	{
-		return *(iter->second);
-	}
-
-	//assert1(false);
-	return gs_InvalidShaderParameter;
 }
 
 void ShaderDX11::Bind()
@@ -333,8 +267,8 @@ void ShaderDX11::Bind()
 	if (m_pVertexShader)
 	{
 		assert1(m_InputLayout);
-		assert1(m_InputLayout->GetInputLayout());
-		m_pDeviceContext->IASetInputLayout(m_InputLayout->GetInputLayout());
+		assert1(std::dynamic_pointer_cast<ShaderInputLayoutDX11>(m_InputLayout)->GetInputLayout());
+		m_pDeviceContext->IASetInputLayout(std::dynamic_pointer_cast<ShaderInputLayoutDX11>(m_InputLayout)->GetInputLayout());
 		m_pDeviceContext->VSSetShader(m_pVertexShader, nullptr, 0);
 	}
 	else if (m_pHullShader)

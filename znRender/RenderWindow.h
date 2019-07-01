@@ -9,26 +9,26 @@ class OW_ENGINE_API RenderWindow : public Object
 {
 	typedef Object base;
 public:
-	RenderWindow(IWindowObject * WindowObject, bool vSync = false);
-	virtual ~RenderWindow();
+	                                                RenderWindow(IWindowObject * WindowObject, bool vSync = false);
+	virtual                                         ~RenderWindow();
 
-	void ShowWindow(); // Show this window if it is hidden.
-	void HideWindow(); // Hide the window. The window will not be destroyed and can be  shown again using the ShowWindow() function.
-	void CloseWindow(); // Destroy and close the window.
+	void                                            ShowWindow(); // Show this window if it is hidden.
+	void                                            HideWindow(); // Hide the window. The window will not be destroyed and can be  shown again using the ShowWindow() function.
+	void                                            CloseWindow(); // Destroy and close the window.
 
-	void SetMousePosition(vec2 _position);
+	void                                            SetMousePosition(vec2 _position);
 
-	void SetWindowName(const std::string& _name);
-	std::string GetWindowName() const;
-	int GetWindowWidth() const;
-	int GetWindowHeight() const;
-	glm::ivec2 GetWindowSize() const;
-	bool IsVSync() const;
-	HWND GetHWnd() const;
+	void                                            SetWindowName(const std::string& _name);
+	std::string                                     GetWindowName() const;
+	int                                             GetWindowWidth() const;
+	int                                             GetWindowHeight() const;
+	glm::ivec2                                      GetWindowSize() const;
+	bool                                            IsVSync() const;
+	HWND                                            GetHWnd() const;
 
-	virtual void Present() = 0;
+	virtual void                                    Present() = 0;
 
-	virtual std::shared_ptr<IRenderTarget> GetRenderTarget() = 0;
+	virtual std::shared_ptr<IRenderTarget>          GetRenderTarget() = 0;
 
 public:
 	// Engine events

@@ -1,7 +1,7 @@
 #pragma once
 
-#ifdef OW_RENDER_OPENGL_EXPORTS
-#define OW_RENDER_OPENGL_API __declspec(dllexport) 
+#ifdef OW_ENGINE_EXPORTS
+#define OW_ENGINE_API __declspec(dllexport) 
 #else
-#define OW_RENDER_OPENGL_API __declspec(dllimport) 
+#define OW_ENGINE_API __declspec(dllimport) 
 #endif

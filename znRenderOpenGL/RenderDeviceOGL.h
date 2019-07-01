@@ -8,7 +8,8 @@ public:
 	RenderDeviceOGL();
 	virtual ~RenderDeviceOGL();
 
-	virtual const std::string& GetDeviceName() const;
+	const std::string& GetDeviceName() const;
+    const DeviceType GetDeviceType() const;
 
 	// Inherited from IRenderDevice
 	virtual std::shared_ptr<IBuffer> CreateVoidVertexBuffer(const void* data, uint32 count, uint32 offset, uint32 stride);
@@ -64,48 +65,9 @@ public:
 	uint32 GetDefaultRB();
 	void SetDefaultRB(uint32 _obj);
 
-
 public:
 	void CreateDevice(HDC _hdc);
 	void LoadDefaultResources();
-
-private:
-	// The name of the graphics device used for rendering.
-	std::string m_DeviceName;
-
-	typedef std::vector< std::shared_ptr<IBuffer> > BufferList;
-	BufferList m_Buffers;
-
-	typedef std::vector< std::shared_ptr<IMesh> > MeshList;
-	MeshList m_Meshes;
-
-	typedef std::vector< std::shared_ptr<Shader> > ShaderList;
-	typedef std::map< std::string, std::shared_ptr<Shader> > ShaderMap;
-	ShaderList m_Shaders;
-	ShaderMap m_ShadersByName;
-
-	typedef std::vector< std::shared_ptr<Texture> > TextureList;
-	TextureList m_Textures;
-	typedef std::map< std::string, std::shared_ptr<Texture> > TextureMap;
-	TextureMap m_TexturesByName;
-	std::shared_ptr<Texture> m_pDefaultTexture;
-
-	typedef std::vector< std::shared_ptr<Material> > MaterialList;
-	MaterialList m_Materials;
-
-	typedef std::vector< std::shared_ptr<IRenderTarget> > RenderTargetList;
-	RenderTargetList m_RenderTargets;
-
-	typedef std::vector< std::shared_ptr<SamplerState> > SamplerList;
-	SamplerList m_Samplers;
-
-	typedef std::vector< std::shared_ptr<PipelineState> > PipelineList;
-	PipelineList m_Pipelines;
-
-	typedef std::vector< std::shared_ptr<Query> > QueryList;
-	QueryList m_Queries;
-
-	
 
 private:
 	uint32						m_DepthFormat;

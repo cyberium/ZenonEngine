@@ -1,3 +1,4 @@
+#profile latest
 #include "IDB_SHADER_UI_COMMON"
 
 #define BUTTON_STATE_IDLE 0

@@ -9,9 +9,7 @@
 #include "MeshOGL.h"
 
 MeshOGL::MeshOGL()
-	: m_pIndexBuffer(nullptr)
-	, m_PrimitiveTopology(GL_TRIANGLES)
-	, m_pMaterial(nullptr)
+	: m_PrimitiveTopology(GL_TRIANGLES)
 	, m_bIsDirty(false)
 {
 	glGenVertexArrays(1, &m_GLObj);
@@ -26,20 +24,22 @@ MeshOGL::~MeshOGL()
 	}
 }
 
-void MeshOGL::AddVertexBuffer(const BufferBinding& binding, std::shared_ptr<IBuffer> buffer)
+void MeshOGL::AddVertexBuffer(const BufferBinding & binding, std::shared_ptr<IBuffer> buffer)
 {
-	m_VertexBuffers[binding] = buffer;
-	m_bIsDirty = true;
+    base::AddVertexBuffer(binding, buffer);
+    m_bIsDirty = true;
 }
 
 void MeshOGL::SetVertexBuffer(std::shared_ptr<IBuffer> buffer)
 {
+    base::SetVertexBuffer(buffer);
+    m_bIsDirty = true;
 }
 
 void MeshOGL::SetIndexBuffer(std::shared_ptr<IBuffer> buffer)
 {
-	m_pIndexBuffer = buffer;
-	m_bIsDirty = true;
+    base::SetIndexBuffer(buffer);
+    m_bIsDirty = true;
 }
 
 void MeshOGL::SetPrimitiveTopology(PrimitiveTopology _topology)
@@ -66,85 +66,126 @@ void MeshOGL::SetPrimitiveTopology(PrimitiveTopology _topology)
 	}
 }
 
-void MeshOGL::SetMaterial(std::shared_ptr<const Material> material)
-{
-	m_pMaterial = material;
-}
-
-std::shared_ptr<const Material> MeshOGL::GetMaterial() const
-{
-	return m_pMaterial;
-}
-
 bool MeshOGL::Render(const RenderEventArgs* renderArgs, std::shared_ptr<ConstantBuffer> perObject, UINT indexStartLocation, UINT indexCnt, UINT vertexStartLocation, UINT vertexCnt)
 {
-	if (m_pMaterial)
-	{
-		m_pMaterial->Bind();
+    std::shared_ptr<Shader> pVS = nullptr;
 
-		std::shared_ptr<ShaderOGL> pVS = std::dynamic_pointer_cast<ShaderOGL>(m_pMaterial->GetShader(Shader::VertexShader));
+    if (m_pMaterial)
+    {
+        m_pMaterial->Bind();
 
-		if (pVS)
-			pVS->GetShaderParameterByName("PerObject").Set(perObject);
+        pVS = m_pMaterial->GetShader(Shader::VertexShader);
+    }
+    else
+    {
+        pVS = renderArgs->PipelineState->GetShader(Shader::VertexShader);
+    }
 
-		if (m_bIsDirty)
-		{
-			Commit(pVS);
-			//m_bIsDirty = false;
-		}
-	}
+    if (m_bIsDirty)
+    {
+        Commit(pVS);
+        //m_bIsDirty = false;
+    }
 
-	glBindVertexArray(m_GLObj);
-	{
-		if (m_pIndexBuffer != NULL)
-		{
-			UINT vertexCount = (*m_VertexBuffers.begin()).second->GetElementCount();
-			glDrawRangeElements
-			(
-				m_PrimitiveTopology,
-				0,
-				vertexCount,
-				m_pIndexBuffer->GetElementCount(),
-				GL_UNSIGNED_SHORT,
-				(char*)0
-			);
-		}
-		else
-		{
-			if (vertexCnt == 0)
-			{
-				UINT vertexCount = (*m_VertexBuffers.begin()).second->GetElementCount();
-				glDrawArrays
-				(
-					m_PrimitiveTopology,
-					0,
-					vertexCount
-				);
-			}
-			else
-			{
-				glDrawArrays
-				(
-					m_PrimitiveTopology,
-					vertexStartLocation,
-					vertexCnt
-				);
-			}
-		}
-	}
-	glBindVertexArray(0);
+    if (pVS)
+    {
+        ShaderParameter& perObjectParameter = pVS->GetShaderParameterByName("PerObject");
+        if (perObjectParameter.IsValid() && perObject != nullptr)
+        {
+            perObjectParameter.Set(perObject);
+            perObjectParameter.Bind();
+        }
 
-	return true;
+
+        if (m_VertexBuffer != nullptr)
+        {
+            m_VertexBuffer->Bind(0, pVS, ShaderParameter::Type::Buffer);
+        }
+        else
+        {
+            for (BufferMap::value_type buffer : m_VertexBuffers)
+            {
+                BufferBinding binding = buffer.first;
+                if (pVS->GetInputLayout()->HasSemantic(binding))
+                {
+                    UINT slotID = pVS->GetInputLayout()->GetSemanticSlot(binding);
+                    buffer.second->Bind(slotID, pVS, ShaderParameter::Type::Buffer);
+                }
+            }
+        }
+
+        glBindVertexArray(m_GLObj);
+        {
+            if (m_pIndexBuffer != NULL)
+            {
+                UINT vertexCount = (*m_VertexBuffers.begin()).second->GetElementCount();
+                glDrawRangeElements
+                (
+                    m_PrimitiveTopology,
+                    0,
+                    vertexCount,
+                    m_pIndexBuffer->GetElementCount(),
+                    GL_UNSIGNED_SHORT,
+                    (char*)0
+                );
+            }
+            else
+            {
+                if (vertexCnt == 0)
+                {
+                    UINT vertexCount = (*m_VertexBuffers.begin()).second->GetElementCount();
+                    glDrawArrays
+                    (
+                        m_PrimitiveTopology,
+                        0,
+                        vertexCount
+                    );
+                }
+                else
+                {
+                    glDrawArrays
+                    (
+                        m_PrimitiveTopology,
+                        vertexStartLocation,
+                        vertexCnt
+                    );
+                }
+            }
+        }
+        glBindVertexArray(0);
+
+        OGLCheckError();
+
+
+        if (m_VertexBuffer != nullptr)
+        {
+            m_VertexBuffer->UnBind(0, pVS, ShaderParameter::Type::Buffer);
+        }
+        else
+        {
+            for (BufferMap::value_type buffer : m_VertexBuffers)
+            {
+                BufferBinding binding = buffer.first;
+                if (pVS->GetInputLayout()->HasSemantic(binding))
+                {
+                    UINT slotID = pVS->GetInputLayout()->GetSemanticSlot(binding);
+                    buffer.second->UnBind(slotID, pVS, ShaderParameter::Type::Buffer);
+                }
+            }
+        }
+    }
+
+    if (m_pMaterial)
+    {
+        //m_pMaterial->Unbind();
+    }
+
+    return true;
 }
 
-bool MeshOGL::Accept(std::shared_ptr<IVisitor> visitor, UINT indexStartLocation, UINT indexCnt, UINT vertexStartLocation, UINT vertexCnt)
+void MeshOGL::Commit(std::weak_ptr<Shader> _shader)
 {
-	return visitor->Visit(shared_from_this(), indexStartLocation, indexCnt, vertexStartLocation, vertexCnt);
-}
-
-void MeshOGL::Commit(std::weak_ptr<ShaderOGL> _shader)
-{
-	std::shared_ptr<ShaderOGL> pVS = _shader.lock();
+	std::shared_ptr<Shader> pVS = _shader.lock();
 
 	glBindVertexArray(m_GLObj);
 	{

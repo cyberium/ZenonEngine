@@ -14,14 +14,32 @@ UI_Font_Material::UI_Font_Material() :
 	CreateConstantBuffer(m_pProperties, sizeof(MaterialProperties));
 
 	// CreateShaders
-	std::shared_ptr<Shader> g_pVertexShader = _RenderDevice->CreateShader(
-		Shader::VertexShader, "IDB_SHADER_UI_FONT", Shader::ShaderMacros(), "VS_main", "latest"
-	);
-    g_pVertexShader->LoadInputLayoutFromReflector();
 
-	std::shared_ptr<Shader> g_pPixelShader = _RenderDevice->CreateShader(
-		Shader::PixelShader, "IDB_SHADER_UI_FONT", Shader::ShaderMacros(), "PS_main", "latest"
-	);
+    std::shared_ptr<Shader> g_pVertexShader;
+	std::shared_ptr<Shader> g_pPixelShader;
+
+    if (_RenderDevice->GetDeviceType() == IRenderDevice::DeviceType::DirectX)
+    {
+        g_pVertexShader = _RenderDevice->CreateShader(
+            Shader::VertexShader, "IDB_SHADER_UI_FONT", Shader::ShaderMacros(), "VS_main", "latest"
+        );
+        
+        g_pPixelShader = _RenderDevice->CreateShader(
+            Shader::PixelShader, "IDB_SHADER_UI_FONT", Shader::ShaderMacros(), "PS_main", "latest"
+        );
+    }
+    else if (_RenderDevice->GetDeviceType() == IRenderDevice::DeviceType::OpenGL)
+    {
+        g_pVertexShader = _RenderDevice->CreateShader(
+            Shader::VertexShader, "IDB_SHADER_OGL__UI_FONT_VS", Shader::ShaderMacros(), "VS_main", "latest"
+        );
+
+        g_pPixelShader = _RenderDevice->CreateShader(
+            Shader::PixelShader, "IDB_SHADER_OGL__UI_FONT_PS", Shader::ShaderMacros(), "PS_main", "latest"
+        );
+    }
+
+    g_pVertexShader->LoadInputLayoutFromReflector();
 
 	// Create samplers
 	std::shared_ptr<SamplerState> g_LinearClampSampler = _RenderDevice->CreateSamplerState();

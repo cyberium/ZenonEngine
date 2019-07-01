@@ -33,6 +33,9 @@ int main(int argumentCount, char* arguments[])
 		std::shared_ptr<IFilesStorage> localFilesGamedata = std::make_shared<CLocalFilesStorage>("D:\\_programming\\OpenWoW\\_gamedata\\");
 		filesManager->RegisterFilesStorage(localFilesGamedata);
 
+        HMODULE hModule = GetModuleHandle(NULL);
+        std::shared_ptr<IFilesStorage> libraryFileStorage = std::make_shared<CLibraryResourceFileStotage>(hModule);
+        filesManager->RegisterFilesStorage(libraryFileStorage);
 
         HMODULE m_HINSTANCE = ::GetModuleHandle(NULL);
 
@@ -42,9 +45,9 @@ int main(int argumentCount, char* arguments[])
 
 		//--
 
-		Application app;
+		Application app(_BaseManager);
 
-        std::shared_ptr<IRenderDevice> renderDevice = app.CreateRenderDevice();
+        std::shared_ptr<IRenderDevice> renderDevice = app.CreateRenderDevice(IRenderDevice::DeviceType::OpenGL);
         std::shared_ptr<RenderWindow> renderWindow = app.CreateRenderWindow(windowObject, true);
 
 

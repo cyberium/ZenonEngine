@@ -16,6 +16,10 @@
 // General
 #include "RenderDeviceOGL.h"
 
+// Additional (FreeImage)
+#define FREEIMAGE_LIB // Static linking
+#include <FreeImage.h>
+
 #ifdef _DEBUG
 void _stdcall glDebugOutput(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar* message, const void* userParam)
 {
@@ -67,7 +71,7 @@ void _stdcall glDebugOutput(GLenum source, GLenum type, GLuint id, GLenum severi
 
 RenderDeviceOGL::RenderDeviceOGL()
 {
-	//CreateDevice();
+    FreeImage_Initialise();
 }
 
 RenderDeviceOGL::~RenderDeviceOGL()
@@ -79,6 +83,8 @@ RenderDeviceOGL::~RenderDeviceOGL()
 	m_Samplers.clear();
 	m_Pipelines.clear();
 	m_Queries.clear();
+
+    FreeImage_DeInitialise();
 }
 
 void RenderDeviceOGL::CreateDevice(HDC _hdc)
@@ -149,13 +155,16 @@ void RenderDeviceOGL::CreateDevice(HDC _hdc)
 			}
 		}*/
 	}
-
-	m_DeviceName = std::string(vendor) + std::string(renderer) + std::string(version);
 }
 
 const std::string& RenderDeviceOGL::GetDeviceName() const
 {
-	return m_DeviceName;
+	return "OpenGL device";
+}
+
+const RenderDeviceOGL::DeviceType RenderDeviceOGL::GetDeviceType() const
+{
+    return DeviceType::OpenGL;
 }
 
 std::shared_ptr<IBuffer> RenderDeviceOGL::CreateVoidVertexBuffer(const void * data, uint32 count, uint32 offset, uint32 stride)
@@ -476,7 +485,7 @@ void RenderDeviceOGL::DestoryQuery(std::shared_ptr<Query> query)
 void RenderDeviceOGL::LoadDefaultResources()
 {
 	// Create a magenta texture if a texture defined in the shader is not bound.
-	m_pDefaultTexture = CreateTexture2D("Textures\\ShaneCube.blp");
+	m_pDefaultTexture = CreateTexture2D("Textures\\default.png");
 	//m_pDefaultTexture = CreateTexture2D(1, 1, 1, Texture::TextureFormat());
 	//m_pDefaultTexture->Clear(ClearFlags::Color, vec4(1, 0, 1, 1));
 }

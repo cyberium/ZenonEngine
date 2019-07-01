@@ -6,6 +6,10 @@
 // General
 #include "RenderWindowDX11.h"
 
+// FORWARD BEGIN
+static DXGI_RATIONAL QueryRefreshRate(UINT screenWidth, UINT screenHeight, BOOL vsync);
+// FORWARD END
+
 RenderWindowDX11::RenderWindowDX11(std::shared_ptr<RenderDeviceDX11> device, IWindowObject * WindowObject, bool vSync)
 	: RenderWindow(WindowObject, vSync)
 	, m_Device(device)
@@ -34,10 +38,8 @@ RenderWindowDX11::RenderWindowDX11(std::shared_ptr<RenderDeviceDX11> device, IWi
 		sampleCount = sampleCount * 2;
 	}*/
 
-	// Create a render target for the back buffer and depth/stencil buffers.
 	m_RenderTarget = std::dynamic_pointer_cast<RenderTargetDX11>(m_Device.lock()->CreateRenderTarget());
 
-	// Create the device and swap chain before the window is shown.
 	CreateSwapChain();
 }
 
@@ -48,63 +50,6 @@ RenderWindowDX11::~RenderWindowDX11()
 		// Apparently an exception is thrown when you release the swap chain if you don't do this.
 		m_pSwapChain->SetFullscreenState(false, NULL);
 	}
-}
-
-// This function was inspired by:
-// http://www.rastertek.com/dx11tut03.html
-static DXGI_RATIONAL QueryRefreshRate(UINT screenWidth, UINT screenHeight, BOOL vsync)
-{
-	DXGI_RATIONAL refreshRate = { 0, 1 };
-	if (vsync)
-	{
-		ATL::CComPtr<IDXGIFactory> factory;
-		ATL::CComPtr<IDXGIAdapter> adapter;
-		ATL::CComPtr<IDXGIOutput> adapterOutput;
-		DXGI_MODE_DESC* displayModeList;
-
-		// Create a DirectX graphics interface factory.
-		if (FAILED(CreateDXGIFactory(__uuidof(IDXGIFactory), (void**)&factory)))
-		{
-			Log::Error("Failed to create DXGIFactory");
-		}
-
-		if (FAILED(factory->EnumAdapters(0, &adapter)))
-		{
-			Log::Error("Failed to enumerate adapters.");
-		}
-
-		if (FAILED(adapter->EnumOutputs(0, &adapterOutput)))
-		{
-			Log::Error("Failed to enumerate adapter outputs.");
-		}
-
-		UINT numDisplayModes;
-		if (FAILED(adapterOutput->GetDisplayModeList(DXGI_FORMAT_R8G8B8A8_UNORM, DXGI_ENUM_MODES_INTERLACED, &numDisplayModes, NULL)))
-		{
-			Log::Error("Failed to query display modes.");
-		}
-
-		displayModeList = new DXGI_MODE_DESC[numDisplayModes];
-		assert(displayModeList);
-
-		if (FAILED(adapterOutput->GetDisplayModeList(DXGI_FORMAT_R8G8B8A8_UNORM, DXGI_ENUM_MODES_INTERLACED, &numDisplayModes, displayModeList)))
-		{
-			Log::Error("Failed to query dispaly mode list.");
-		}
-
-		// Now store the refresh rate of the monitor that matches the width and height of the requested screen.
-		for (UINT i = 0; i < numDisplayModes; ++i)
-		{
-			if (displayModeList[i].Width == screenWidth && displayModeList[i].Height == screenHeight)
-			{
-				refreshRate = displayModeList[i].RefreshRate;
-			}
-		}
-
-		delete[] displayModeList;
-	}
-
-	return refreshRate;
 }
 
 void RenderWindowDX11::CreateSwapChain()
@@ -175,6 +120,7 @@ void RenderWindowDX11::CreateSwapChain()
 
 	m_RenderTarget->AttachTexture(IRenderTarget::AttachmentPoint::Color0, colorTexture);
 	m_RenderTarget->AttachTexture(IRenderTarget::AttachmentPoint::DepthStencil, depthStencilTexture);
+    m_RenderTarget->Resize(windowWidth, windowHeight);
 }
 
 void RenderWindowDX11::ResizeSwapChainBuffers(uint32_t width, uint32_t height)
@@ -233,7 +179,9 @@ std::shared_ptr<IRenderTarget> RenderWindowDX11::GetRenderTarget()
 
 
 
+//
 // Engine events
+//
 void RenderWindowDX11::OnPreRender(RenderEventArgs& e)
 {
 	if (m_bResizePending)
@@ -263,5 +211,65 @@ void RenderWindowDX11::OnResize(ResizeEventArgs& e)
 {
 	base::OnResize(e);
 
-	m_bResizePending = true; // The swap chain will be resized the next time OnPreRender is invoked.
+	m_bResizePending = true;
+}
+
+
+
+//
+// This function was inspired by: http://www.rastertek.com/dx11tut03.html
+//
+static DXGI_RATIONAL QueryRefreshRate(UINT screenWidth, UINT screenHeight, BOOL vsync)
+{
+    DXGI_RATIONAL refreshRate = { 0, 1 };
+    if (vsync)
+    {
+        ATL::CComPtr<IDXGIFactory> factory;
+        ATL::CComPtr<IDXGIAdapter> adapter;
+        ATL::CComPtr<IDXGIOutput> adapterOutput;
+        DXGI_MODE_DESC* displayModeList;
+
+        // Create a DirectX graphics interface factory.
+        if (FAILED(CreateDXGIFactory(__uuidof(IDXGIFactory), (void**)&factory)))
+        {
+            Log::Error("Failed to create DXGIFactory");
+        }
+
+        if (FAILED(factory->EnumAdapters(0, &adapter)))
+        {
+            Log::Error("Failed to enumerate adapters.");
+        }
+
+        if (FAILED(adapter->EnumOutputs(0, &adapterOutput)))
+        {
+            Log::Error("Failed to enumerate adapter outputs.");
+        }
+
+        UINT numDisplayModes;
+        if (FAILED(adapterOutput->GetDisplayModeList(DXGI_FORMAT_R8G8B8A8_UNORM, DXGI_ENUM_MODES_INTERLACED, &numDisplayModes, NULL)))
+        {
+            Log::Error("Failed to query display modes.");
+        }
+
+        displayModeList = new DXGI_MODE_DESC[numDisplayModes];
+        assert(displayModeList);
+
+        if (FAILED(adapterOutput->GetDisplayModeList(DXGI_FORMAT_R8G8B8A8_UNORM, DXGI_ENUM_MODES_INTERLACED, &numDisplayModes, displayModeList)))
+        {
+            Log::Error("Failed to query dispaly mode list.");
+        }
+
+        // Now store the refresh rate of the monitor that matches the width and height of the requested screen.
+        for (UINT i = 0; i < numDisplayModes; ++i)
+        {
+            if (displayModeList[i].Width == screenWidth && displayModeList[i].Height == screenHeight)
+            {
+                refreshRate = displayModeList[i].RefreshRate;
+            }
+        }
+
+        delete[] displayModeList;
+    }
+
+    return refreshRate;
 }

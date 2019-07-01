@@ -3,16 +3,11 @@
 class ShaderInputLayoutOGL : public IShaderInputLayout
 {
 public:
-	ShaderInputLayoutOGL();
-	virtual ~ShaderInputLayoutOGL();
-
-	// IShaderInputLayout
-	bool                 HasSemantic(const BufferBinding& binding) const override;
-	const InputSemantic& GetSemantic(const BufferBinding& binding) const override;
-	UINT                 GetSemanticSlot(const BufferBinding& binding) const override;
+	                                                ShaderInputLayoutOGL();
+	virtual                                         ~ShaderInputLayoutOGL();
 
 	// ShaderInputLayoutOGL
-	bool                 LoadFromReflector(GLuint GLObj);
+	bool                                            LoadFromReflector(GLuint GLObj);
 
 private:
 };

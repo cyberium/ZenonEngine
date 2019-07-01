@@ -16,15 +16,14 @@ public:
 	virtual std::shared_ptr<IRenderTarget> GetRenderTarget();
 
 protected:
-	virtual void OnPreRender(RenderEventArgs& e);
-	virtual void OnPostRender(RenderEventArgs& e);
+    virtual void CreateSwapChain();
 
-	virtual void OnMouseMoved(MouseMotionEventArgs& e);
-	virtual void OnMouseLeave(EventArgs& e);
+    // Engine events
+	virtual void OnPreRender(RenderEventArgs& e) override;
+	virtual void OnPostRender(RenderEventArgs& e) override;
 
-	virtual void OnResize(ResizeEventArgs& e);
-
-	virtual void OnTerminate(EventArgs& e);
+    // Window events
+	virtual void OnResize(ResizeEventArgs& e) override;
 
 	virtual void ResizeSwapChainBuffers(uint32_t width, uint32_t height);
 
@@ -32,8 +31,6 @@ private:
 	HDC m_HDC;
 
 private:
-	bool m_bIsMouseTracking; // Used to capture mouse enter/leave events.
-
 	std::shared_ptr<RenderTargetOGL> m_RenderTarget;
 
 	// If the window has to be resized, delay the resizing of the swap chain until the prerender function.

@@ -18,11 +18,11 @@ protected:
 	virtual void CreateSwapChain();
 
 	// Engine events
-	virtual void OnPreRender(RenderEventArgs& e);
-	virtual void OnPostRender(RenderEventArgs& e);
+	virtual void OnPreRender(RenderEventArgs& e) override;
+	virtual void OnPostRender(RenderEventArgs& e) override;
 
 	// Window events
-	virtual void OnResize(ResizeEventArgs& e);
+	virtual void OnResize(ResizeEventArgs& e) override;
 
 protected:
 	virtual void ResizeSwapChainBuffers(uint32_t width, uint32_t height);

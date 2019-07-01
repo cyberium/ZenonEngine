@@ -1,7 +1,5 @@
 #pragma once
 
-#define IS_DX11 1
-
 #include "GameState.h"
 #include "Loader.h"
 
@@ -11,8 +9,8 @@ class OW_ENGINE_API Application :
 	public IGameStateManager
 {
 public:
-	Application();
-	Application(HINSTANCE hInstance);
+	Application(std::shared_ptr<CBaseManager> BaseManager);
+	Application(std::shared_ptr<CBaseManager> BaseManager, HINSTANCE hInstance);
 	virtual ~Application();
 
 	static IApplication& Get();
@@ -22,7 +20,7 @@ public:
 	void                            Stop();
 
 	// Creators
-	std::shared_ptr<IRenderDevice>  CreateRenderDevice();
+	std::shared_ptr<IRenderDevice>  CreateRenderDevice(IRenderDevice::DeviceType DeviceType);
 	std::shared_ptr<RenderWindow>   CreateRenderWindow(IWindowObject * WindowObject, bool vSync);
 
 	

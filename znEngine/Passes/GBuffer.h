@@ -2,7 +2,7 @@
 
 #include "DeferredLightingPass.h"
 
-class CGBuffer
+class OW_ENGINE_API CGBuffer
 {
 public:
 	CGBuffer(std::shared_ptr<Scene3D> _worldScene);

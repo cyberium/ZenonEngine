@@ -10,9 +10,9 @@
 
 MeshDX11::MeshDX11(ID3D11Device2* pDevice)
 	: m_pDevice(pDevice)
-	, m_pIndexBuffer(nullptr)
+	
 	, m_PrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST)
-	, m_pMaterial(nullptr)
+
 	, m_pDeviceContext(nullptr)
 {
 	m_pDevice->GetImmediateContext2(&m_pDeviceContext);
@@ -20,21 +20,6 @@ MeshDX11::MeshDX11(ID3D11Device2* pDevice)
 
 MeshDX11::~MeshDX11()
 {}
-
-void MeshDX11::AddVertexBuffer(const BufferBinding& binding, std::shared_ptr<IBuffer> buffer)
-{
-	m_VertexBuffers[binding] = buffer;
-}
-
-void MeshDX11::SetVertexBuffer(std::shared_ptr<IBuffer> buffer)
-{
-	m_VertexBuffer = buffer;
-}
-
-void MeshDX11::SetIndexBuffer(std::shared_ptr<IBuffer> buffer)
-{
-	m_pIndexBuffer = buffer;
-}
 
 void MeshDX11::SetPrimitiveTopology(PrimitiveTopology _topology)
 {
@@ -58,29 +43,19 @@ void MeshDX11::SetPrimitiveTopology(PrimitiveTopology _topology)
 	}
 }
 
-void MeshDX11::SetMaterial(std::shared_ptr<const Material> material)
-{
-	m_pMaterial = material;
-}
-
-std::shared_ptr<const Material> MeshDX11::GetMaterial() const
-{
-	return m_pMaterial;
-}
-
 bool MeshDX11::Render(const RenderEventArgs* renderArgs, std::shared_ptr<ConstantBuffer> perObject, UINT indexStartLocation, UINT indexCnt, UINT vertexStartLocation, UINT vertexCnt)
 {
-	std::shared_ptr<ShaderDX11> pVS = nullptr;
+	std::shared_ptr<Shader> pVS = nullptr;
 
 	if (m_pMaterial)
 	{
 		m_pMaterial->Bind();
 
-		pVS = std::dynamic_pointer_cast<ShaderDX11>(m_pMaterial->GetShader(Shader::VertexShader));
+		pVS = m_pMaterial->GetShader(Shader::VertexShader);
 	}
 	else
 	{
-		pVS = std::dynamic_pointer_cast<ShaderDX11>(renderArgs->PipelineState->GetShader(Shader::VertexShader));
+		pVS = renderArgs->PipelineState->GetShader(Shader::VertexShader);
 	}
 
 	if (pVS)
@@ -159,9 +134,4 @@ bool MeshDX11::Render(const RenderEventArgs* renderArgs, std::shared_ptr<Constan
 	}
 
 	return true;
-}
-
-bool MeshDX11::Accept(std::shared_ptr<IVisitor> visitor, UINT indexStartLocation, UINT indexCnt, UINT vertexStartLocation, UINT vertexCnt)
-{
-	return visitor->Visit(shared_from_this(), indexStartLocation, indexCnt, vertexStartLocation, vertexCnt);
 }

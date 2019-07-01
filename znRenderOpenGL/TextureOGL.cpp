@@ -129,33 +129,71 @@ bool TextureOGL::LoadTextureCustom(uint16_t width, uint16_t height, void * pixel
 	return true;
 }
 
+// FreeImage
+#define FREEIMAGE_LIB // Static linking
+#pragma comment(lib, "FreeImageLib.lib")
+#include <FreeImage.h>
+
 bool TextureOGL::LoadTexture2D(const std::string& fileName)
 {
-	/*std::shared_ptr<IFile> f = GetManager<IFilesManager>()->Open(fileName);
+    std::shared_ptr<IFile> f = GetManager<IFilesManager>()->Open(fileName);
+    if (f == nullptr)
+        return false;
 
-	LIBBLP_PixelView blpView;
-	LIBBLP_Load(f->getData(), f->getSize(), &blpView);
+    FIMEMORY * hmem = FreeImage_OpenMemory(const_cast<BYTE*>(f->getData()), f->getSize());
 
-	m_TextureType = GL_TEXTURE_2D;
-	m_TextureWidth = blpView.MipWidth[0];
-	m_TextureHeight = blpView.MipHeight[0];
-	m_TextureDepth = 1;
-	m_bGenerateMipmaps = false;
+    FREE_IMAGE_FORMAT fif = FreeImage_GetFileTypeFromMemory(hmem, f->getSize());
+    if (fif == FIF_UNKNOWN || !FreeImage_FIFSupportsReading(fif))
+    {
+        fail2("Unknow file format: ");
+        return false;
+    }
 
-	glActiveTexture(GL_TEXTURE15);
-	glBindTexture(m_TextureType, m_GLObj);
+    FIBITMAP* dib = FreeImage_LoadFromMemory(fif, hmem, f->getSize());
+    if (dib == nullptr || FreeImage_HasPixels(dib) == FALSE)
+    {
+        fail2("Failed to load image: ");
+        return false;
+    }
 
-	for (uint8 i = 0; i < blpView.MipCount; i++)
-	{
-		glTexImage2D(m_TextureType, i, GL_RGBA8, blpView.MipWidth[i], blpView.MipHeight[i], 0, GL_RGBA, GL_UNSIGNED_BYTE, blpView.MipData[i]);
-		OGLCheckError();
-	}
+    m_BPP = FreeImage_GetBPP(dib);
+    FREE_IMAGE_TYPE imageType = FreeImage_GetImageType(dib);
 
-	//glGenerateMipmap(m_TextureType);
+    // Check to see if the texture has an alpha channel.
+    m_bIsTransparent = (FreeImage_IsTransparent(dib) == TRUE);
 
-	glBindTexture(m_TextureType, 0);*/
+    m_TextureDimension = Texture::Dimension::Texture2D;
+    m_TextureWidth = FreeImage_GetWidth(dib);
+    m_TextureHeight = FreeImage_GetHeight(dib);
+    m_Pitch = FreeImage_GetPitch(dib);
 
-	return true;
+
+    BYTE* textureData = FreeImage_GetBits(dib);
+
+
+    m_TextureType = GL_TEXTURE_2D;
+    m_TextureDepth = 1;
+    m_bGenerateMipmaps = false;
+
+    glActiveTexture(GL_TEXTURE15);
+    glBindTexture(m_TextureType, m_GLObj);
+
+    //for (uint8 i = 0; i < blpView.MipCount; i++)
+    //{
+        glTexImage2D(m_TextureType, 0, GL_RGBA8, m_TextureWidth, m_TextureHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, textureData);
+        OGLCheckError();
+    //}
+
+    //glGenerateMipmap(m_TextureType);
+
+    glBindTexture(m_TextureType, 0);
+
+    m_bIsDirty = false;
+
+    // Unload the texture (it should now be on the GPU anyways).
+    FreeImage_Unload(dib);
+
+    return true;
 }
 
 bool TextureOGL::LoadTextureCube(const std::string& fileName)

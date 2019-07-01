@@ -7,6 +7,7 @@
 #include "../znRender/Shader.h"
 #include "../znRender/ShaderInputLayout.h"
 #include "../znRender/ShaderParameter.h"
+#include "../znRender/ShadersUtils.h"
 #include "../znRender/Texture.h"
 #include "../znRender/SamplerState.h"
 

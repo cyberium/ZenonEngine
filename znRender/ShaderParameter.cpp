@@ -22,6 +22,10 @@ ShaderParameter::ShaderParameter(const std::string& name, UINT slotID, std::shar
 	, m_ParameterType(parameterType)
 {}
 
+ShaderParameter::~ShaderParameter()
+{
+}
+
 //--
 
 template<> void ShaderParameter::Set<ConstantBuffer>(std::shared_ptr<ConstantBuffer> value)

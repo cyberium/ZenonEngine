@@ -19,20 +19,23 @@ int64_t g_FrameCounter = 0L;
 
 std::shared_ptr<RenderWindow> gs_WindowHandle = nullptr;
 IApplication * _ApplicationInstance = nullptr;
+std::shared_ptr<CBaseManager> _BaseManager = nullptr;
 
-Application::Application()
+Application::Application(std::shared_ptr<CBaseManager> BaseManager)
 	: m_bIsInitialized(false)
 	, m_bIsRunning(false)
 {
+    _BaseManager = BaseManager;
 	m_HINSTANCE = ::GetModuleHandle(NULL);
 
 	_ApplicationInstance = this;
 }
 
-Application::Application(HINSTANCE hInstance)
+Application::Application(std::shared_ptr<CBaseManager> BaseManager, HINSTANCE hInstance)
 	: m_bIsInitialized(false)
 	, m_bIsRunning(false)
 {
+    _BaseManager = BaseManager;
 	m_HINSTANCE = hInstance;
 
 	_ApplicationInstance = this;
@@ -72,30 +75,44 @@ void Application::Stop()
 }
 
 
-std::shared_ptr<IRenderDevice> Application::CreateRenderDevice()
+std::shared_ptr<IRenderDevice> Application::CreateRenderDevice(IRenderDevice::DeviceType DeviceType)
 {
-#ifdef  IS_DX11
-	std::shared_ptr<IRenderDevice> renderDevice = CreateRenderDeviceDX11(_BaseManager);
-#else
-	std::shared_ptr<IRenderDevice> renderDevice = CreateRenderDeviceOGL(_BaseManager);
-#endif
+    switch (DeviceType)
+    {
+        case IRenderDevice::DeviceType::None:
+            fail1();
+            break;
+        case IRenderDevice::DeviceType::DirectX:
+            SetRenderDevice(CreateRenderDeviceDX11(_BaseManager));
+            break;
+        case IRenderDevice::DeviceType::OpenGL:
+            SetRenderDevice(CreateRenderDeviceOGL(_BaseManager));
+            break;
+        default:
+            break;
+    }
 
-	SetRenderDevice(renderDevice);
-
-	return renderDevice;
+	return GetRenderDevice();
 }
 
 std::shared_ptr<RenderWindow> Application::CreateRenderWindow(IWindowObject * WindowObject, bool vSync)
 {
-#ifdef  IS_DX11
-	std::shared_ptr<RenderWindow> renderWindow = CreateRenderWindowDX11(GetRenderDevice(), WindowObject, vSync);
-#else
-	std::shared_ptr<RenderWindow> renderWindow = CreateRenderWindowOGL(GetRenderDevice(), WindowObject, vSync);
-#endif
+    switch (GetRenderDevice()->GetDeviceType())
+    {
+        case IRenderDevice::DeviceType::None:
+            fail1();
+            break;
+        case IRenderDevice::DeviceType::DirectX:
+            SetRenderWindow(CreateRenderWindowDX11(GetRenderDevice(), WindowObject, vSync));
+            break;
+        case IRenderDevice::DeviceType::OpenGL:
+            SetRenderWindow(CreateRenderWindowOGL(GetRenderDevice(), WindowObject, vSync));
+            break;
+        default:
+            break;
+    }
 
-	SetRenderWindow(renderWindow);
-
-	return renderWindow;
+	return GetRenderWindow();
 }
 
 
