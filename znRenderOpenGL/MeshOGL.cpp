@@ -84,7 +84,7 @@ bool MeshOGL::Render(const RenderEventArgs* renderArgs, std::shared_ptr<Constant
     if (m_bIsDirty)
     {
         Commit(pVS);
-        //m_bIsDirty = false;
+        m_bIsDirty = false;
     }
 
     if (pVS)
@@ -151,12 +151,12 @@ bool MeshOGL::Render(const RenderEventArgs* renderArgs, std::shared_ptr<Constant
                     );
                 }
             }
+
+            OGLCheckError();
         }
         glBindVertexArray(0);
 
-        OGLCheckError();
-
-
+       
         if (m_VertexBuffer != nullptr)
         {
             m_VertexBuffer->UnBind(0, pVS, ShaderParameter::Type::Buffer);

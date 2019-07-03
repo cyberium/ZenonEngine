@@ -184,7 +184,7 @@ void DepthStencilStateOGL::Bind()
 			if (m_DepthMode.DepthEnable)
 			{
 				glEnable(GL_DEPTH_TEST);
-				glDepthFunc(GLTranslateCompareFunc(m_DepthMode.DepthFunction));
+				//glDepthFunc(GLTranslateCompareFunc(m_DepthMode.DepthFunction));
 			}
 			else
 			{

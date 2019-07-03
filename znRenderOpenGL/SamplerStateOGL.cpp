@@ -140,11 +140,7 @@ SamplerStateOGL::SamplerStateOGL()
 
 SamplerStateOGL::~SamplerStateOGL()
 {
-	if (m_GLObj != 0)
-	{
-		glDeleteSamplers(1, &m_GLObj);
-		m_GLObj = 0;
-	}
+	glDeleteSamplers(1, &m_GLObj);
 }
 
 void SamplerStateOGL::SetFilter(MinFilter minFilter, MagFilter magFilter, MipFilter mipFilter)
@@ -259,16 +255,18 @@ void SamplerStateOGL::Bind(uint32_t ID, std::weak_ptr<Shader> shader, ShaderPara
 {
 	//if (m_bIsDirty)
 	{
+        glBindSampler(ID, m_GLObj);
+
 		glSamplerParameteri(m_GLObj, GL_TEXTURE_MIN_FILTER, GLTranslateMinFilter(m_MinFilter));
 		//glSamplerParameteri(m_GLObj, GL_TEXTURE_MIN_FILTER, GLTranslateMinMipFilter(m_MinFilter, m_MipFilter));
 		glSamplerParameteri(m_GLObj, GL_TEXTURE_MAG_FILTER, GLTranslateMagFilter(m_MagFilter));
 
-		glSamplerParameteri(m_GLObj, GL_TEXTURE_MAX_ANISOTROPY_EXT, m_AnisotropicFiltering);
+		//glSamplerParameteri(m_GLObj, GL_TEXTURE_MAX_ANISOTROPY_EXT, m_AnisotropicFiltering);
 
 		// Lod
-		glSamplerParameteri(m_GLObj, GL_TEXTURE_MIN_LOD, m_fMinLOD);
-		glSamplerParameteri(m_GLObj, GL_TEXTURE_MAX_LOD, m_fMaxLOD);
-		//glSamplerParameteri(m_GLObj, GL_TEXTURE_LOD_BIAS, m_fLODBias);
+		//glSamplerParameterf(m_GLObj, GL_TEXTURE_MIN_LOD, m_fMinLOD);
+		//glSamplerParameterf(m_GLObj, GL_TEXTURE_MAX_LOD, m_fMaxLOD);
+		//glSamplerParameterf(m_GLObj, GL_TEXTURE_LOD_BIAS, m_fLODBias);
 		
 		// Wrap
 		glSamplerParameteri(m_GLObj, GL_TEXTURE_WRAP_S, GLTranslateWrapMode(m_WrapModeU));
@@ -284,6 +282,8 @@ void SamplerStateOGL::Bind(uint32_t ID, std::weak_ptr<Shader> shader, ShaderPara
 		{
 			glSamplerParameteri(m_GLObj, GL_TEXTURE_COMPARE_MODE, GL_NONE);
 		}
+
+        glBindSampler(ID, 0);
 
 		m_bIsDirty = false;
 	}

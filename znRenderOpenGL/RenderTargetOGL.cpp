@@ -115,15 +115,14 @@ void RenderTargetOGL::Clear(AttachmentPoint attachment, ClearFlags clearFlags, c
 		// Store state of glDrawBuffers
 		GLint prevBuffers[8] = { 0 };
 		for (uint32 i = 0; i <= (uint8_t)AttachmentPoint::Color7; ++i)
-		{
 			glGetIntegerv(GL_DRAW_BUFFER0 + i, &prevBuffers[i]);
-		}
 
 		if (clearFlags8 & (uint8)ClearFlags::Color)
 		{
 			GLenum buffers[] = { TranslateAttachmentPoint(attachment) };
 			glDrawBuffers(1, buffers);
 
+            glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
 			glClearColor(color.r, color.g, color.b, color.a);
 		}
 
@@ -136,6 +135,7 @@ void RenderTargetOGL::Clear(AttachmentPoint attachment, ClearFlags clearFlags, c
 	{
 		if (clearFlags8 & (uint8)ClearFlags::Depth)
 		{
+            glDepthMask(GL_TRUE);
 			glClearDepth(depth);
 		}
 
@@ -143,9 +143,11 @@ void RenderTargetOGL::Clear(AttachmentPoint attachment, ClearFlags clearFlags, c
 	}
 	else if (attachment == AttachmentPoint::DepthStencil)
 	{
+        
 		GLbitfield oglClearMask = 0;
 		if (clearFlags8 & (uint8)ClearFlags::Depth)
 		{
+            glDepthMask(GL_TRUE);
 			oglClearMask |= GL_DEPTH_BUFFER_BIT;
 			glClearDepth(depth);
 		}

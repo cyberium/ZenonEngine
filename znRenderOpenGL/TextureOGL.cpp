@@ -91,8 +91,8 @@ TextureOGL::TextureOGL(RenderDeviceOGL* _device, uint16_t size, uint16_t count, 
 	glActiveTexture(GL_TEXTURE15);
 	glBindTexture(GL_TEXTURE_CUBE_MAP, m_GLObj);
 
-	float borderColor[] = { 1.0f, 1.0f, 1.0f, 1.0f };
-	glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, borderColor);
+	//float borderColor[] = { 1.0f, 1.0f, 1.0f, 1.0f };
+	//glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, borderColor);
 
 	// Sampler state
 
@@ -167,9 +167,7 @@ bool TextureOGL::LoadTexture2D(const std::string& fileName)
     m_TextureHeight = FreeImage_GetHeight(dib);
     m_Pitch = FreeImage_GetPitch(dib);
 
-
     BYTE* textureData = FreeImage_GetBits(dib);
-
 
     m_TextureType = GL_TEXTURE_2D;
     m_TextureDepth = 1;
@@ -177,20 +175,19 @@ bool TextureOGL::LoadTexture2D(const std::string& fileName)
 
     glActiveTexture(GL_TEXTURE15);
     glBindTexture(m_TextureType, m_GLObj);
+    {
+        //glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+        //glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-    //for (uint8 i = 0; i < blpView.MipCount; i++)
-    //{
         glTexImage2D(m_TextureType, 0, GL_RGBA8, m_TextureWidth, m_TextureHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, textureData);
         OGLCheckError();
-    //}
 
-    //glGenerateMipmap(m_TextureType);
-
+        glGenerateMipmap(m_TextureType);
+    }
     glBindTexture(m_TextureType, 0);
 
     m_bIsDirty = false;
 
-    // Unload the texture (it should now be on the GPU anyways).
     FreeImage_Unload(dib);
 
     return true;

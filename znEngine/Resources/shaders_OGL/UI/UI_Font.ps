@@ -6,7 +6,7 @@ in struct
 {
 	vec4 POSITION;
 	vec2 TEXCOORD;
-} VSInput;
+} VSOutput;
 
 // Uniforms
 layout (std140, binding = 1) uniform Material 
@@ -23,5 +23,5 @@ layout(location = 0) out vec4 color;
 
 void main()
 {
-	color = vec4(Color.rgb, Color.a * texture(DiffuseTexture, VSInput.TEXCOORD).a);
+	color = vec4(Color.rgb, Color.a * texture(DiffuseTexture, VSOutput.TEXCOORD).a);
 };

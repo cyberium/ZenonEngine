@@ -31,11 +31,11 @@ UI_Font_Material::UI_Font_Material() :
     else if (_RenderDevice->GetDeviceType() == IRenderDevice::DeviceType::OpenGL)
     {
         g_pVertexShader = _RenderDevice->CreateShader(
-            Shader::VertexShader, "IDB_SHADER_OGL__UI_FONT_VS", Shader::ShaderMacros(), "VS_main", "latest"
+            Shader::VertexShader, "IDB_SHADER_OGL__UI_FONT_VS", Shader::ShaderMacros(), "", ""
         );
 
         g_pPixelShader = _RenderDevice->CreateShader(
-            Shader::PixelShader, "IDB_SHADER_OGL__UI_FONT_PS", Shader::ShaderMacros(), "PS_main", "latest"
+            Shader::PixelShader, "IDB_SHADER_OGL__UI_FONT_PS", Shader::ShaderMacros(), "", ""
         );
     }
 

@@ -2,8 +2,8 @@
 #extension GL_ARB_explicit_uniform_location : enable
 
 // Vertex attrib
-layout(location = 0) in vec2 POSITION;
-layout(location = 1) in vec2 TEXCOORD;
+layout(location = 0) in vec2 POSITION0;
+layout(location = 1) in vec2 TEXCOORD0;
 
 // Output
 out gl_PerVertex
@@ -14,7 +14,7 @@ out struct
 {
 	vec4 POSITION;
 	vec2 TEXCOORD;
-} VSInput;
+} VSOutput;
 
 layout(std140, binding = 0) uniform PerObject 
 {
@@ -30,10 +30,10 @@ layout(std140, binding = 1) uniform Material
 
 void main(void)
 {
-	vec4 ResultPosition = vec4(POSITION, 0.0, 1.0)+ vec4(Offset, 0.0, 0.0f);
+	vec4 ResultPosition = vec4(POSITION0, 0.0, 1.0)+ vec4(Offset, 0.0, 0.0f);
 
 	gl_Position = ModelViewProjection * ResultPosition;
 
-	VSInput.POSITION  = ResultPosition;
-	VSInput.TEXCOORD = TEXCOORD;
+	VSOutput.POSITION  = ResultPosition;
+	VSOutput.TEXCOORD = TEXCOORD0;
 };

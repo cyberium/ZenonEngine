@@ -22,11 +22,7 @@ BufferOGL::BufferOGL(UINT bindFlags, const void* data, size_t count, UINT offset
 
 BufferOGL::~BufferOGL()
 {
-	if (m_GLObj != 0)
-	{
-		glDeleteBuffers(1, &m_GLObj);
-		m_GLObj = 0;
-	}
+	glDeleteBuffers(1, &m_GLObj);
 }
 
 bool BufferOGL::Bind(uint32 id, std::weak_ptr<Shader> shader, ShaderParameter::Type parameterType)
