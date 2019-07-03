@@ -77,7 +77,7 @@ void CLog::Fatal(const char* _message, ...)
 
 bool CLog::AddDebugOutput(std::shared_ptr<IDebugOutput> _debugOutput)
 {
-	assert1(_debugOutput != nullptr);
+	_ASSERT(_debugOutput != nullptr);
 
 	if (find(m_DebugOutputs.begin(), m_DebugOutputs.end(), _debugOutput) != m_DebugOutputs.end())
 	{
@@ -91,7 +91,7 @@ bool CLog::AddDebugOutput(std::shared_ptr<IDebugOutput> _debugOutput)
 
 bool CLog::DeleteDebugOutput(std::shared_ptr<IDebugOutput> _debugOutput)
 {
-	assert1(_debugOutput != nullptr);
+	_ASSERT(_debugOutput != nullptr);
 
 	auto _debugOutputsIt = find(m_DebugOutputs.begin(), m_DebugOutputs.end(), _debugOutput);
 

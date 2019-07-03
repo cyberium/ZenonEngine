@@ -34,8 +34,8 @@ public:
 	void setMaxY(float value) { m_Max.y = value; m_IsCenterCalc = false; }
 	cvec3 getMax() const { return m_Max; }
 
-	cvec3 getCenter() const { assert1(m_IsCenterCalc); return m_Center; }
-	float getRadius() const { assert1(m_IsCenterCalc); return m_Radius; }
+	cvec3 getCenter() const { _ASSERT(m_IsCenterCalc); return m_Center; }
+	float getRadius() const { _ASSERT(m_IsCenterCalc); return m_Radius; }
 
 	vec3 getCorner(uint32 index) const;
 	void transform(const mat4& m);

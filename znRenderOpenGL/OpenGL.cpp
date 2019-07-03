@@ -595,11 +595,11 @@ bool OGLIsExtensionSupported(const char *extName)
 void OGLCheckError()
 {
 	GLenum error = glGetError();
-	assert1(error != GL_INVALID_ENUM);
-	assert1(error != GL_INVALID_VALUE);
-	assert1(error != GL_INVALID_OPERATION);
-	assert1(error != GL_OUT_OF_MEMORY);
-	assert1(error != GL_STACK_OVERFLOW && error != GL_STACK_UNDERFLOW);
+	_ASSERT(error != GL_INVALID_ENUM);
+	_ASSERT(error != GL_INVALID_VALUE);
+	_ASSERT(error != GL_INVALID_OPERATION);
+	_ASSERT(error != GL_OUT_OF_MEMORY);
+	_ASSERT(error != GL_STACK_OVERFLOW && error != GL_STACK_UNDERFLOW);
 }
 
 void initWGLExtensions()

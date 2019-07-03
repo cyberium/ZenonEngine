@@ -96,7 +96,7 @@ void DeferredLightingPass::RenderSubPass(RenderEventArgs* e, std::shared_ptr<Sce
 void DeferredLightingPass::Render(RenderEventArgs& e)
 {
 	const Camera* pCamera = e.Camera;
-	assert1(pCamera != nullptr);
+	_ASSERT(pCamera != nullptr);
 
 	Viewport viewport = pCamera->GetViewport();
 	// We need the inverse projection matrix to compute the view space position of the fragment
@@ -193,7 +193,7 @@ bool DeferredLightingPass::Visit(std::shared_ptr<IMesh> Mesh, UINT IndexStartLoc
 bool DeferredLightingPass::Visit(std::shared_ptr < CLight3D> light)
 {
 	const Camera* camera = GetRenderEventArgs()->Camera;
-	assert1(camera != nullptr);
+	_ASSERT(camera != nullptr);
 
 	PerObject perObjectData;
 

@@ -32,7 +32,7 @@ std::shared_ptr<IMesh> CFontMesh::GetMesh() const
 
 uint32 CFontMesh::GetCharWidth(char _char) const
 {
-	assert1(_char < m_WidthArray.size());
+	_ASSERT(_char < m_WidthArray.size());
 	return m_WidthArray[_char];
 }
 

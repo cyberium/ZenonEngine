@@ -964,7 +964,7 @@ void TextureDX11::Clear(ClearFlags clearFlags, cvec4 color, float depth, uint8_t
 void TextureDX11::Bind(uint32_t ID, std::weak_ptr<Shader> shader, ShaderParameter::Type parameterType)
 {
 	std::shared_ptr<Shader> pShader = shader.lock();
-	assert1(pShader != NULL);
+	_ASSERT(pShader != NULL);
 
 	Bind(ID, pShader->GetType(), parameterType);
 }
@@ -1038,7 +1038,7 @@ void TextureDX11::Bind(uint32_t ID, Shader::ShaderType _shaderType, ShaderParame
 void TextureDX11::UnBind(uint32_t ID, std::weak_ptr<Shader> shader, ShaderParameter::Type parameterType)
 {
 	std::shared_ptr<Shader> pShader = shader.lock();
-	assert1(pShader != NULL);
+	_ASSERT(pShader != NULL);
 	
 	UnBind(ID, pShader->GetType(), parameterType);
 }

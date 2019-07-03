@@ -73,7 +73,7 @@ void QueryOGL::End(int64_t frame)
 #ifdef _DEBUG
 		GLint activeQueryObj;
 		glGetQueryiv(m_QueryTypeGL, GL_CURRENT_QUERY, &activeQueryObj);
-		assert1(activeQueryObj == m_Queries[buffer]);
+		_ASSERT(activeQueryObj == m_Queries[buffer]);
 #endif
 		glEndQuery(m_QueryTypeGL);
 	}

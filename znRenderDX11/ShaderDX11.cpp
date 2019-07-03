@@ -266,8 +266,8 @@ void ShaderDX11::Bind()
 
 	if (m_pVertexShader)
 	{
-		assert1(m_InputLayout);
-		assert1(std::dynamic_pointer_cast<ShaderInputLayoutDX11>(m_InputLayout)->GetInputLayout());
+		_ASSERT(m_InputLayout);
+		_ASSERT(std::dynamic_pointer_cast<ShaderInputLayoutDX11>(m_InputLayout)->GetInputLayout());
 		m_pDeviceContext->IASetInputLayout(std::dynamic_pointer_cast<ShaderInputLayoutDX11>(m_InputLayout)->GetInputLayout());
 		m_pDeviceContext->VSSetShader(m_pVertexShader, nullptr, 0);
 	}

@@ -58,7 +58,7 @@ bool BufferDX11::Bind(uint32 id, std::weak_ptr<Shader> shader, ShaderParameter::
 		m_bIsBound = true;
 		break;
 	default:
-		assert1(false);
+		_ASSERT(false);
 	}
 
 	return true;
@@ -129,4 +129,9 @@ uint32 BufferDX11::GetElementCount() const
 uint32 BufferDX11::GetElementStride() const
 {
 	return m_uiStride;
+}
+
+uint32 BufferDX11::GetElementOffset() const
+{
+    return m_uiOffset;
 }

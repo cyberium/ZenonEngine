@@ -32,8 +32,8 @@ public:
 	void setMax(glm::vec2 _max) { m_Max = _max; m_IsCenterCalc = false; }
 	glm::vec2 getMax() const { return m_Max; }
 
-	glm::vec2 getCenter() const { assert1(m_IsCenterCalc); return m_Center; }
-	float getRadius() const { assert1(m_IsCenterCalc); return m_Radius; }
+	glm::vec2 getCenter() const { _ASSERT(m_IsCenterCalc); return m_Center; }
+	float getRadius() const { _ASSERT(m_IsCenterCalc); return m_Radius; }
 
 	//
 

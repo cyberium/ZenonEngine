@@ -17,3 +17,8 @@ uint32 ConstantBuffer::GetElementStride() const
 {
 	return 0;
 }
+
+uint32 ConstantBuffer::GetElementOffset() const
+{
+    return 0;
+}

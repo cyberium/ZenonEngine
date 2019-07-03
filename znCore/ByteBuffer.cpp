@@ -79,15 +79,15 @@ CByteBuffer& CByteBuffer::operator=(CByteBuffer&& _other)
 
 void CByteBuffer::seek(size_t _bufferOffsetAbsolute)
 {
-	assert1(_bufferOffsetAbsolute <= getSize());
+	_ASSERT(_bufferOffsetAbsolute <= getSize());
 	m_CurrentPosition = _bufferOffsetAbsolute;
 	m_IsEOF = m_CurrentPosition >= getSize();
 }
 
 void CByteBuffer::seekRelative(intptr_t _bufferOffsetRelative)
 {
-	assert1(m_CurrentPosition + _bufferOffsetRelative >= 0);
-	assert1(m_CurrentPosition + _bufferOffsetRelative <= getSize());
+	_ASSERT(m_CurrentPosition + _bufferOffsetRelative >= 0);
+	_ASSERT(m_CurrentPosition + _bufferOffsetRelative <= getSize());
 	m_CurrentPosition += _bufferOffsetRelative;
 	m_IsEOF = m_CurrentPosition >= getSize();
 }
@@ -96,7 +96,7 @@ void CByteBuffer::seekRelative(intptr_t _bufferOffsetRelative)
 
 bool CByteBuffer::readLine(std::string* _string)
 {
-	assert1(_string != nullptr);
+	_ASSERT(_string != nullptr);
 
 	if (m_IsEOF)
 	{
@@ -142,7 +142,7 @@ void CByteBuffer::readBytes(void* _destination, size_t _size)
 		m_IsEOF = true;
 	}
 
-	assert1(_destination != nullptr);
+	_ASSERT(_destination != nullptr);
 	std::memcpy(_destination, &(m_Data[m_CurrentPosition]), _size);
 
 	m_CurrentPosition = posAfterRead;
@@ -150,7 +150,7 @@ void CByteBuffer::readBytes(void* _destination, size_t _size)
 
 void CByteBuffer::readString(std::string* _string)
 {
-	assert1(_string != nullptr);
+	_ASSERT(_string != nullptr);
 
 	std::string str = "";
 	while (true)
@@ -179,7 +179,7 @@ void CByteBuffer::Allocate(size_t _size)
 
 	if (_size > 0)
 	{
-		assert1(!m_IsAllocated);
+		_ASSERT(!m_IsAllocated);
         m_Data.reserve(_size);
 		m_IsAllocated = true;
 	}
@@ -231,7 +231,7 @@ void CByteBuffer::Resize(size_t NewSize)
 
 void CByteBuffer::Append(const uint8* _data, size_t _size)
 {
-	assert1(_data != nullptr);
+	_ASSERT(_data != nullptr);
 
 	for (size_t i = 0; i < _size; i++)
 	{

@@ -16,7 +16,7 @@ StructuredBufferOGL::StructuredBufferOGL(UINT bindFlags, const void* data, size_
 	size_t numBytes = m_uiCount * m_uiStride;
 
 	glGenBuffers(1, &m_GLObj);
-	assert1(m_GLObj != 0);
+	_ASSERT(m_GLObj != 0);
 
 	glBindBuffer(m_BindFlags, m_GLObj);
 	{
@@ -92,7 +92,7 @@ void StructuredBufferOGL::Commit()
 void StructuredBufferOGL::Copy(std::shared_ptr<StructuredBuffer> other)
 {
 	std::shared_ptr<StructuredBufferOGL> srcBuffer = std::dynamic_pointer_cast<StructuredBufferOGL>(other);
-	assert1(srcBuffer->m_GLObj != 0);
+	_ASSERT(srcBuffer->m_GLObj != 0);
 
 	if (srcBuffer->m_bIsDirty)
 	{
@@ -149,4 +149,9 @@ uint32 StructuredBufferOGL::GetElementCount() const
 uint32 StructuredBufferOGL::GetElementStride() const
 {
 	return m_uiStride;
+}
+
+uint32 StructuredBufferOGL::GetElementOffset() const
+{
+    return 0;
 }

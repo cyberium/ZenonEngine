@@ -12,6 +12,7 @@ public:
 	virtual BufferType GetType() const;
 	virtual uint32 GetElementCount() const;
 	virtual uint32 GetElementStride() const;
+    virtual uint32 GetElementOffset() const;
 
 	virtual void Copy(std::shared_ptr<StructuredBuffer> other);
 

@@ -62,7 +62,7 @@ void MeshOGL::SetPrimitiveTopology(PrimitiveTopology _topology)
 		m_PrimitiveTopology = GL_TRIANGLE_STRIP;
 		break;
 	default:
-		assert1(false);
+		_ASSERT(false);
 	}
 }
 
@@ -193,8 +193,10 @@ void MeshOGL::Commit(std::weak_ptr<Shader> _shader)
 		uint32 i = 0;
 		for (BufferMap::value_type buffer : m_VertexBuffers)
 		{
-			if (!pVS->GetInputLayout()->HasSemantic(buffer.first))
-				continue;
+            if (!pVS->GetInputLayout()->HasSemantic(buffer.first))
+            {
+                throw std::exception("Mesh don't have semantics.");
+            }
 
 			const InputSemantic& semantic = pVS->GetInputLayout()->GetSemantic(buffer.first);
 			UINT             semanticSlot = pVS->GetInputLayout()->GetSemanticSlot(buffer.first);
@@ -203,7 +205,7 @@ void MeshOGL::Commit(std::weak_ptr<Shader> _shader)
 			buffer.second->Bind(semanticSlot, pVS, ShaderParameter::Type::Buffer);
 
 			// (GLuint index, GLint size, GLenum type, GLboolean normalized, GLsizei stride, const GLvoid *pointer);
-			glVertexAttribPointer(semanticSlot, semantic.GLSize, semantic.GLType, false, buffer.second->GetElementStride(), (char*)0);
+			glVertexAttribPointer(semanticSlot, semantic.GLSize, semantic.GLType, false, buffer.second->GetElementStride(), (char*)0 + buffer.second->GetElementOffset());
 			newVertexAttribMask |= (1 << (i++));
 		}
 
@@ -216,7 +218,7 @@ void MeshOGL::Commit(std::weak_ptr<Shader> _shader)
 				glDisableVertexAttribArray(i);
 		}
 
-		if (m_pIndexBuffer != NULL)
+		if (m_pIndexBuffer != nullptr)
 		{
 			m_pIndexBuffer->Bind(0, pVS, ShaderParameter::Type::Buffer);
 		}

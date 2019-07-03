@@ -95,6 +95,6 @@ void GLTranslateAttribType(GLenum _type, GLint _size, GLenum * _newType, GLint *
             (*_newSize) = _size * 4;
             break;
         default:
-            assert1(false);
+            _ASSERT(false);
     }
 }

@@ -107,7 +107,7 @@ bool StructuredBufferDX11::Bind(uint32 ID, std::weak_ptr<Shader> shader, ShaderP
 	assert(m_pDeviceContext);
 
 	std::shared_ptr<Shader> pShader = shader.lock();
-	assert1(pShader != NULL);
+	_ASSERT(pShader != NULL);
 
 	if (m_bIsDirty)
 	{
@@ -158,7 +158,7 @@ bool StructuredBufferDX11::Bind(uint32 ID, std::weak_ptr<Shader> shader, ShaderP
 void StructuredBufferDX11::UnBind(uint32 ID, std::weak_ptr<Shader> shader, ShaderParameter::Type parameterType)
 {
 	std::shared_ptr<Shader> pShader = shader.lock();
-	assert1(pShader != NULL);
+	_ASSERT(pShader != NULL);
 	ID3D11UnorderedAccessView* uav[] = { nullptr };
 	ID3D11ShaderResourceView* srv[] = { nullptr };
 
@@ -291,6 +291,11 @@ uint32 StructuredBufferDX11::GetElementCount() const
 uint32 StructuredBufferDX11::GetElementStride() const
 {
 	return m_uiStride;
+}
+
+uint32 StructuredBufferDX11::GetElementOffset() const
+{
+    return 0;
 }
 
 ID3D11UnorderedAccessView* StructuredBufferDX11::GetUnorderedAccessView() const

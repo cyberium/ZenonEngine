@@ -5,14 +5,16 @@
 
 static const uint32 bufferMappingTypes[3] = { GL_MAP_READ_BIT, GL_MAP_WRITE_BIT, GL_MAP_READ_BIT | GL_MAP_WRITE_BIT };
 
-BufferOGL::BufferOGL(UINT bindFlags, const void* data, size_t count, UINT stride)
+BufferOGL::BufferOGL(UINT bindFlags, const void* data, size_t count, UINT offset, UINT stride)
 	: m_BindFlags(bindFlags)
 	, m_uiCount((UINT)count)
+    , m_uiOffset(offset)
 	, m_uiStride(stride)
 	, m_bIsBound(false)
 {
 	glGenBuffers(1, &m_GLObj);
-	assert1(m_GLObj != 0);
+	_ASSERT(m_GLObj != 0);
+
 	glBindBuffer(m_BindFlags, m_GLObj);
 	glBufferData(m_BindFlags, count * stride, data, /*_isDynamic ? */GL_DYNAMIC_DRAW/* : GL_STATIC_DRAW*/);
 	glBindBuffer(m_BindFlags, 0);
@@ -42,7 +44,7 @@ void BufferOGL::UnBind(uint32 id, std::weak_ptr<Shader> shader, ShaderParameter:
 void BufferOGL::Copy(std::shared_ptr<IBuffer> other)
 {
 	std::shared_ptr<BufferOGL> srcBuffer = std::dynamic_pointer_cast<BufferOGL>(other);
-	assert1(srcBuffer->m_GLObj != 0);
+	_ASSERT(srcBuffer->m_GLObj != 0);
 
 	if (srcBuffer && (srcBuffer.get() != this) && ((m_uiCount * m_uiStride) == (srcBuffer->m_uiCount * srcBuffer->m_uiStride)))
 	{
@@ -62,7 +64,7 @@ void BufferOGL::Copy(std::shared_ptr<IBuffer> other)
 	}
 	else
 	{
-		std::exception("Source buffer is not compatible with this buffer.");
+		throw std::exception("Source buffer is not compatible with this buffer.");
 	}
 }
 
@@ -79,7 +81,7 @@ IBuffer::BufferType BufferOGL::GetType() const
 	case GL_UNIFORM_BUFFER:
 		return IBuffer::ConstantBuffer;
 	default:
-		std::exception("Unknown buffer type");
+		throw std::exception("Unknown buffer type.");
 	}
 
 	return IBuffer::Unknown;
@@ -94,3 +96,9 @@ uint32 BufferOGL::GetElementStride() const
 {
 	return m_uiStride;
 }
+
+uint32 BufferOGL::GetElementOffset() const
+{
+    return m_uiOffset;
+}
+

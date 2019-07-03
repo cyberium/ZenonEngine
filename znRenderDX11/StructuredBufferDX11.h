@@ -15,6 +15,8 @@ public:
 	virtual uint32 GetElementCount() const;
 	// Elements stride
 	virtual uint32 GetElementStride() const;
+    // Elements stride
+    virtual uint32 GetElementOffset() const;
 
 	virtual void Copy(std::shared_ptr<StructuredBuffer> other);
 

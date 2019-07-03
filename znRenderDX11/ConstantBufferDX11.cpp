@@ -30,7 +30,7 @@ ConstantBufferDX11::~ConstantBufferDX11()
 
 void ConstantBufferDX11::Set(const void* data, size_t size)
 {
-	assert1(size == m_BufferSize);
+	_ASSERT(size == m_BufferSize);
 
 	D3D11_MAPPED_SUBRESOURCE mappedResource;
 	if (FAILED(m_pDeviceContext->Map(m_pBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource)))
@@ -69,7 +69,7 @@ bool ConstantBufferDX11::Bind(uint32 id, std::weak_ptr<Shader> shader, ShaderPar
 	bool result = true;
 
 	std::shared_ptr<Shader> pShader = shader.lock();
-	assert1(pShader != NULL);
+	_ASSERT(pShader != NULL);
 	ID3D11Buffer* pBuffers[] = { m_pBuffer };
 
 	switch (pShader->GetType())
@@ -103,7 +103,7 @@ bool ConstantBufferDX11::Bind(uint32 id, std::weak_ptr<Shader> shader, ShaderPar
 void ConstantBufferDX11::UnBind(uint32 id, std::weak_ptr<Shader> shader, ShaderParameter::Type parameterType)
 {
 	std::shared_ptr<Shader> pShader = shader.lock();
-	assert1(pShader != NULL);
+	_ASSERT(pShader != NULL);
 	ID3D11Buffer* pBuffers[] = { nullptr };
 
 	switch (pShader->GetType())

@@ -35,7 +35,7 @@ void ConstantBufferOGL::Set(const void* data, size_t size)
 void ConstantBufferOGL::Copy(std::shared_ptr<ConstantBuffer> other)
 {
 	std::shared_ptr<ConstantBufferOGL> srcBuffer = std::dynamic_pointer_cast<ConstantBufferOGL>(other);
-	assert1(srcBuffer->m_GLObj != 0);
+	_ASSERT(srcBuffer->m_GLObj != 0);
 
 	if (srcBuffer && (srcBuffer.get() != this) &&	(m_BufferSize == srcBuffer->m_BufferSize))
 	{

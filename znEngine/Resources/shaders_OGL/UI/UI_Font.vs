@@ -3,7 +3,7 @@
 
 // Vertex attrib
 layout(location = 0) in vec2 POSITION;
-layout(location = 1) in vec2 TEXCOORD0;
+layout(location = 1) in vec2 TEXCOORD;
 
 // Output
 out gl_PerVertex
@@ -13,28 +13,27 @@ out gl_PerVertex
 out struct
 {
 	vec4 POSITION;
-	vec2 TEXCOORD0;
+	vec2 TEXCOORD;
 } VSInput;
 
-// Uniforms
-uniform PerObject 
+layout(std140, binding = 0) uniform PerObject 
 {
     mat4 ModelViewProjection;
 };
 
-// Uniforms
-uniform Material 
+layout(std140, binding = 1) uniform Material 
 {
     vec4 Color;
 	vec2 Offset;
+	vec2 Unused;
 };
 
 void main(void)
 {
-	vec4 ResultPosition = vec4(POSITION, 0.0, 1.0) + vec4(Offset, 0.0, 0.0f);
+	vec4 ResultPosition = vec4(POSITION, 0.0, 1.0)+ vec4(Offset, 0.0, 0.0f);
 
 	gl_Position = ModelViewProjection * ResultPosition;
 
 	VSInput.POSITION  = ResultPosition;
-	VSInput.TEXCOORD0 = TEXCOORD0;
+	VSInput.TEXCOORD = TEXCOORD;
 };

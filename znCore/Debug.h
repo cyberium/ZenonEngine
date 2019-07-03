@@ -59,7 +59,6 @@ inline void FatalMessageBox(const char* _title, const char* _message, ...)
 
 #ifdef _DEBUG
 
-#define assert1(expr) _ASSERT(expr)
 #define assert2(expr, message) _ASSERT(expr) 
 #define assert3(expr, message, arg0) _ASSERT(expr)
 #define assert4(expr, message, arg0, arg1) _ASSERT(expr)
@@ -68,7 +67,7 @@ inline void FatalMessageBox(const char* _title, const char* _message, ...)
 
 #else
 
-#define assert1(expr) \
+#define _ASSERT(expr) \
 if(!(expr))\
 {\
     FatalMessageBox("Assertion failed!", "File: [%s]\nLine: [%d]\nFunction: [%s]\nExpression: [%s]\n", __FILE__, __LINE__, __FUNCTION__, #expr);\

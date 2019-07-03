@@ -1,9 +1,16 @@
 #include "stdafx.h"
 
+// Include 
+#include "RenderDevice.h"
+
 // General
 #include "ShaderInputLayout.h"
 
 static InputSemantic gs_InvalidShaderSemantic;
+
+IShaderInputLayout::IShaderInputLayout()
+{
+}
 
 IShaderInputLayout::~IShaderInputLayout()
 {
@@ -18,10 +25,13 @@ bool IShaderInputLayout::HasSemantic(const BufferBinding& binding) const
 {
     for (auto& it : m_InputSemantics)
     {
-        if (it.first.Name == binding.Name && it.first.Index == binding.Index)
-        {
+        // DIRECTX
+        if (it.first.Name == binding.Name /*&& it.first.Index == binding.Index*/)
             return true;
-        }
+
+        // OPENGL
+        //if (it.first.Name == std::string(binding.Name + std::to_string(binding.Index)))
+        //    return true;        
     }
 
     return false;
@@ -31,7 +41,7 @@ const InputSemantic& IShaderInputLayout::GetSemantic(const BufferBinding& bindin
 {
     for (auto& it : m_InputSemantics)
     {
-        if (it.first.Name == binding.Name && it.first.Index == binding.Index)
+        if (it.first.Name == binding.Name /*&& it.first.Index == binding.Index*/)
         {
             return it.first;
         }
@@ -45,7 +55,7 @@ UINT IShaderInputLayout::GetSemanticSlot(const BufferBinding& binding) const
 {
     for (auto& it : m_InputSemantics)
     {
-        if (it.first.Name == binding.Name && it.first.Index == binding.Index)
+        if (it.first.Name == binding.Name /*&& it.first.Index == binding.Index*/)
         {
             return it.second;
         }

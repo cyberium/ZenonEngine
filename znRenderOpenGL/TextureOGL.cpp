@@ -399,7 +399,7 @@ void TextureOGL::Bind(uint32_t ID, std::weak_ptr<Shader> shader, ShaderParameter
 	}
 
 	std::shared_ptr<ShaderOGL> pShader = std::dynamic_pointer_cast<ShaderOGL>(shader.lock());
-	assert1(pShader != NULL);
+	_ASSERT(pShader != NULL);
 
 	if (pShader->GetType() != Shader::ShaderType::PixelShader)
 	{
@@ -421,7 +421,7 @@ void TextureOGL::Bind(uint32_t ID, Shader::ShaderType _shaderType, ShaderParamet
 void TextureOGL::UnBind(uint32_t ID, std::weak_ptr<Shader> shader, ShaderParameter::Type parameterType)
 {
 	std::shared_ptr<ShaderOGL> pShader = std::dynamic_pointer_cast<ShaderOGL>(shader.lock());
-	assert1(pShader != NULL);
+	_ASSERT(pShader != NULL);
 
 	glProgramUniform1i(pShader->GetGLObject(), ID, 0);
 

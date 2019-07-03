@@ -99,7 +99,7 @@ void BoundingRect::transform(const mat4& m)
 	m_Min = vec2(minB[0], minB[1]);
 	m_Max = vec2(maxB[0], maxB[1]);
 
-	assert1(m_IsCenterCalc);
+	_ASSERT(m_IsCenterCalc);
 	m_Center = m * vec4(m_Center, 0.0f, 0.0f);
 }
 

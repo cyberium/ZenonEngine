@@ -31,10 +31,10 @@ std::string RecursionInclude(std::shared_ptr<IFile> f)
         if (line[0] == '#' && line[1] == 'i' && line[2] == 'n' && line[3] == 'c' && line[4] == 'l')
         {
             size_t firstBracketPosition = line.find('"');
-            assert1(firstBracketPosition != std::string::npos);
+            _ASSERT(firstBracketPosition != std::string::npos);
 
             size_t lastBracketPosition = line.find_last_of('"');
-            assert1(firstBracketPosition != lastBracketPosition);
+            _ASSERT(firstBracketPosition != lastBracketPosition);
 
             std::string inludeFileName = line.substr(firstBracketPosition + 1, lastBracketPosition - firstBracketPosition - 1);
             CFile::FixFilePath(inludeFileName);

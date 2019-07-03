@@ -54,7 +54,7 @@ bool CFilesManager::IsFileExists(const std::string& _fileName)
 void CFilesManager::RegisterFilesStorage(std::shared_ptr<IFilesStorage> _storage)
 {
 	std::shared_ptr<IFilesStorageEx> storageEx = std::dynamic_pointer_cast<IFilesStorageEx, IFilesStorage>(_storage);
-	assert1(storageEx);
+	_ASSERT(storageEx);
 
 	m_Storages.push_back(_storage);
 

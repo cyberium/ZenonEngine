@@ -15,7 +15,7 @@ std::shared_ptr<IRenderDevice> CreateRenderDeviceOGL(std::shared_ptr<CBaseManage
 std::shared_ptr<RenderWindow> CreateRenderWindowOGL(std::shared_ptr<IRenderDevice> device, IWindowObject * WindowObject, bool vSync)
 {
 	std::shared_ptr<RenderDeviceOGL> pDevice = std::dynamic_pointer_cast<RenderDeviceOGL, IRenderDevice>(device);
-	assert1(pDevice != NULL);
+	_ASSERT(pDevice != NULL);
 
 	return std::make_shared<RenderWindowOGL>(pDevice, WindowObject, vSync);
 }

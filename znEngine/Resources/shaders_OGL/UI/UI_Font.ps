@@ -5,14 +5,15 @@
 in struct
 {
 	vec4 POSITION;
-	vec2 TEXCOORD0;
+	vec2 TEXCOORD;
 } VSInput;
 
 // Uniforms
-uniform Material 
+layout (std140, binding = 1) uniform Material 
 {
     vec4 Color;
 	vec2 Offset;
+	vec2 Unused;
 };
 
 layout(location = 0) uniform sampler2D DiffuseTexture;
@@ -22,5 +23,5 @@ layout(location = 0) out vec4 color;
 
 void main()
 {
-	color = vec4(1.0f, 1.0f, 1.0f, 1.0f);//vec4(texture(DiffuseTexture, VSInput.TEXCOORD0).rgb, 1.0f);
+	color = vec4(Color.rgb, Color.a * texture(DiffuseTexture, VSInput.TEXCOORD).a);
 };

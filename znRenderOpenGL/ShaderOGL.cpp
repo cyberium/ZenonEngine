@@ -69,7 +69,7 @@ bool ShaderOGL::LoadShaderFromFile(ShaderType shaderType, const std::string& fil
     const GLchar *source = (const GLchar *)fileSource.c_str();
 
     m_GLObj = glCreateShaderProgramv(GLTranslateShaderType(shaderType), 1, &source);
-    assert1(m_GLObj != 0);
+    _ASSERT(m_GLObj != 0);
     OGLCheckError();
 
     std::string errMsg;
@@ -79,7 +79,7 @@ bool ShaderOGL::LoadShaderFromFile(ShaderType shaderType, const std::string& fil
         return false;
     }
 
-    GLint uniformsCount;
+    /*GLint uniformsCount;
     glGetProgramiv(m_GLObj, GL_ACTIVE_UNIFORMS, &uniformsCount);
 
     GLint uniformsNameMaxLenght;
@@ -112,11 +112,14 @@ bool ShaderOGL::LoadShaderFromFile(ShaderType shaderType, const std::string& fil
                 break;
         }
 
+        if (parameterType == ShaderParameter::Type::Invalid)
+            continue;
+
         GLint loc = glGetUniformLocation(m_GLObj, name);
 
         std::shared_ptr<ShaderParameter> shaderParameter = std::make_shared<ShaderParameter>(name, loc, shared_from_this(), parameterType);
         m_ShaderParameters.insert(ParameterMap::value_type(name, shaderParameter));
-    }
+    }*/
 
 
 
@@ -131,13 +134,14 @@ bool ShaderOGL::LoadShaderFromFile(ShaderType shaderType, const std::string& fil
         char name[32];
         GLsizei length;
 
-        //GLint param;
+        GLint binding;
         // (GLuint program, GLuint uniformBlockIndex, GLenum pname, GLint *params);
-        //glGetActiveUniformBlockiv(m_GLObj, j, GL_UNIFORM_BLOCK_BINDING, &param);
-        //OGLCheckError();
+        glGetActiveUniformBlockiv(m_GLObj, j, GL_UNIFORM_BLOCK_BINDING, &binding);
+        OGLCheckError();
 
-        //glGetActiveUniformBlockiv(m_GLObj, j, GL_UNIFORM_BLOCK_DATA_SIZE, &param);
-        //OGLCheckError();
+        GLint dataSize;
+        glGetActiveUniformBlockiv(m_GLObj, j, GL_UNIFORM_BLOCK_DATA_SIZE, &dataSize);
+        OGLCheckError();
 
         // (GLuint program, GLuint uniformBlockIndex, GLsizei bufSize, GLsizei *length, GLchar *uniformBlockName);
         glGetActiveUniformBlockName(m_GLObj, j, uniformsBlocksNameMaxLenght, &length, name);
@@ -145,8 +149,9 @@ bool ShaderOGL::LoadShaderFromFile(ShaderType shaderType, const std::string& fil
 
         GLuint index = glGetUniformBlockIndex(m_GLObj, name);
         OGLCheckError();
+        _ASSERT(index != -1);
 
-        std::shared_ptr<ShaderParameter> shaderParameter = std::make_shared<ShaderParameter>(name, index, shared_from_this(), ShaderParameter::Type::Buffer);
+        std::shared_ptr<ShaderParameter> shaderParameter = std::make_shared<ShaderParameter>(name, binding, shared_from_this(), ShaderParameter::Type::Buffer);
         m_ShaderParameters.insert(ParameterMap::value_type(name, shaderParameter));
     }
 
@@ -174,7 +179,7 @@ bool ShaderOGL::LoadInputLayoutFromD3DElement(const std::vector<D3DVERTEXELEMENT
     //m_InputLayout->LoadFromD3D9(m_pShaderBlob, declIn);
     m_InputLayout = inputLayout;
 
-    assert1(false);
+    _ASSERT(false);
 
     return true;
 }
@@ -228,6 +233,6 @@ GLenum GLTranslateShaderType(Shader::ShaderType _type)
         case Shader::ShaderType::ComputeShader:
             return GL_COMPUTE_SHADER;
         default:
-            assert1(false);
+            _ASSERT(false);
     }
 }

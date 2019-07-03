@@ -30,6 +30,6 @@ ShaderParameter& Shader::GetShaderParameterByName(const std::string& name) const
         return *(iter->second);
     }
 
-    _ASSERT(false);
+    //_ASSERT(false);
     return gs_InvalidShaderParameter;
 }

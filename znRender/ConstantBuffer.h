@@ -16,6 +16,8 @@ public:
 	virtual uint32 GetElementCount() const;
 	// Elements stride
 	virtual uint32 GetElementStride() const;
+    // Elements stride
+    virtual uint32 GetElementOffset() const;
 
 	// Copy the contents of a buffer to this one. Buffers must be the same size.
 	virtual void Copy(std::shared_ptr<ConstantBuffer> other) = 0;

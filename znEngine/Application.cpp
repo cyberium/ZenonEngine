@@ -177,7 +177,7 @@ void Application::DoAfterRun()
 
 std::shared_ptr<IRenderDevice> Application::GetRenderDevice() const
 {
-	assert1(m_pRenderDevice);
+	_ASSERT(m_pRenderDevice);
 	return m_pRenderDevice;
 }
 
@@ -188,7 +188,7 @@ void Application::SetRenderDevice(std::shared_ptr<IRenderDevice> _renderDevice)
 
 std::shared_ptr<RenderWindow> Application::GetRenderWindow() const
 {
-	assert1(m_pWindow);
+	_ASSERT(m_pWindow);
 	return m_pWindow;
 }
 
@@ -234,15 +234,15 @@ CLoader* Application::GetLoader()
 
 void Application::AddGameState(GameStatesNames::List _name, std::shared_ptr<IGameState> _gameState)
 {
-	assert1(_gameState != nullptr);
-	assert1(m_GameStatesCollection.find(_name) == m_GameStatesCollection.end());
+	_ASSERT(_gameState != nullptr);
+	_ASSERT(m_GameStatesCollection.find(_name) == m_GameStatesCollection.end());
 
 	m_GameStatesCollection.insert(std::make_pair(_name, _gameState));
 }
 
 bool Application::SetGameState(GameStatesNames::List _name)
 {
-	assert1(m_GameStatesCollection.find(_name) != m_GameStatesCollection.end());
+	_ASSERT(m_GameStatesCollection.find(_name) != m_GameStatesCollection.end());
 
 	std::shared_ptr<IGameState> gameState = m_GameStatesCollection[_name];
 	return SetGameState(gameState);
@@ -250,7 +250,7 @@ bool Application::SetGameState(GameStatesNames::List _name)
 
 bool Application::SetGameState(std::shared_ptr<IGameState> _newGameState)
 {
-	assert1(_newGameState);
+	_ASSERT(_newGameState);
 
 	Log::Print("GameStateManager[]: Setting new CGameState.");
 

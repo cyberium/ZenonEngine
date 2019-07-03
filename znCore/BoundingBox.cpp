@@ -28,7 +28,7 @@ void BoundingBox::set(cvec3 _min, cvec3 _max, bool _needConvert)
 		std::swap(m_Min.z, m_Max.z);
 	}
 
-	//assert1(min.x < max.x && min.y < max.y && min.z < max.z);
+	//_ASSERT(min.x < max.x && min.y < max.y && min.z < max.z);
 
 	calculateCenter();
 }
@@ -120,7 +120,7 @@ void BoundingBox::transform(const mat4& m)
 	m_Min = vec3(minB[0], minB[1], minB[2]);
 	m_Max = vec3(maxB[0], maxB[1], maxB[2]);
 
-	assert1(m_IsCenterCalc);
+	_ASSERT(m_IsCenterCalc);
 	m_Center = m * vec4(m_Center, 0);
 }
 

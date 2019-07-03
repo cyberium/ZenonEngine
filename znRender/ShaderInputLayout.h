@@ -5,9 +5,14 @@
 #include "BufferBinding.h"
 #include "InputSemantic.h"
 
+// FORWARD BEGIN
+class IRenderDevice;
+// FORWARD END
+
 class OW_ENGINE_API IShaderInputLayout : public Object
 {
 public:
+    IShaderInputLayout();
 	virtual ~IShaderInputLayout();
 
     // IShaderInputLayout

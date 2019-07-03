@@ -25,4 +25,5 @@ public:
 	virtual BufferType GetType() const = 0;
 	virtual uint32 GetElementCount() const = 0;
 	virtual uint32 GetElementStride() const = 0;
+    virtual uint32 GetElementOffset() const = 0;
 };

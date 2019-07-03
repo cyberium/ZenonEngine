@@ -75,10 +75,12 @@ void CGameState_World::OnPreRender(RenderEventArgs& e)
 
 void CGameState_World::OnRender(RenderEventArgs& e)
 {
+    e.Viewport = &m_Viewport;
     e.Camera = GetCameraController()->GetCamera().get();
     Application::Get().GetLoader()->SetCamera(GetCameraController()->GetCamera());
 
     m_3DTechnique.Render(e);
+    m_UITechnique.Render(e);
 }
 
 void CGameState_World::OnPostRender(RenderEventArgs& e)
@@ -111,7 +113,7 @@ void CGameState_World::OnRenderUI(RenderEventArgs& e)
 {
     e.Viewport = &m_Viewport;
 
-    m_UITechnique.Render(e);
+    //m_UITechnique.Render(e);
 }
 
 //

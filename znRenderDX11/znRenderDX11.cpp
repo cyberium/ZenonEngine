@@ -17,7 +17,7 @@ std::shared_ptr<IRenderDevice> CreateRenderDeviceDX11(std::shared_ptr<CBaseManag
 std::shared_ptr<RenderWindow> CreateRenderWindowDX11(std::shared_ptr<IRenderDevice> device, IWindowObject * WindowObject, bool vSync)
 {
 	std::shared_ptr<RenderDeviceDX11> pDevice = std::dynamic_pointer_cast<RenderDeviceDX11, IRenderDevice>(device);
-	assert1(pDevice != NULL);
+	_ASSERT(pDevice != NULL);
 
 	return std::make_shared<RenderWindowDX11>(pDevice, WindowObject, vSync);
 }

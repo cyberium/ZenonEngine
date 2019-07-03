@@ -41,7 +41,7 @@ public:
 		if (Utils::TryParse(typeid(ArgumentType), _args, &value))
 		{
 			//Function_WA<ArgumentType>* funcWA = dynamic_cast<Function_WA<ArgumentType>*>(m_Function);
-			//assert1(funcWA != nullptr);
+			//_ASSERT(funcWA != nullptr);
 
             m_Function();
 

@@ -14,6 +14,7 @@ public:
 	virtual BufferType GetType() const;
 	virtual uint32 GetElementCount() const;
 	virtual uint32 GetElementStride() const;
+    virtual uint32 GetElementOffset() const;
 
 private:
 	ATL::CComPtr<ID3D11Device2> m_pDevice;
