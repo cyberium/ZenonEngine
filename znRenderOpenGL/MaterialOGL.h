@@ -6,9 +6,12 @@ public:
 	MaterialOGL(IRenderDevice* renderDevice);
 	virtual ~MaterialOGL();
 
-	virtual void Bind() const;
-	virtual void Unbind() const;
+    void                                            SetShader(Shader::ShaderType type, std::shared_ptr<Shader> pShader) override;
 
-private: // OpenGL
-	uint32 m_GLProgramPipeline;
+    // MaterialImpl
+	void                                            Bind() const override final;
+	void                                            Unbind() const override final;
+
+private:
+	uint32                                          m_GLProgramPipeline;
 };

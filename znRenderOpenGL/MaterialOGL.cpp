@@ -51,6 +51,14 @@ MaterialOGL::~MaterialOGL()
 	}
 }
 
+void MaterialOGL::SetShader(Shader::ShaderType type, std::shared_ptr<Shader> pShader)
+{
+    MaterialImpl::SetShader(type, pShader);
+
+    std::shared_ptr<ShaderOGL> shaderOGL = std::dynamic_pointer_cast<ShaderOGL>(pShader);
+    glUseProgramStages(m_GLProgramPipeline, GLTranslateShaderBitType(type), shaderOGL->GetGLObject());
+}
+
 void MaterialOGL::Bind() const
 {
 	MaterialImpl::Bind();
@@ -61,27 +69,62 @@ void MaterialOGL::Bind() const
 		if (pShader)
 		{
 			pShader->Bind();
-			glUseProgramStages(m_GLProgramPipeline, GLTranslateShaderBitType(shader.first), pShader->GetGLObject());
+
+            for (auto textureIt : m_Textures)
+            {
+                std::shared_ptr<Texture> texture = textureIt.second;
+                texture->Bind((uint32_t)textureIt.first, pShader, ShaderParameter::Type::Texture);
+            }
+
+            for (auto samplerStateIt : m_Samplers)
+            {
+                std::shared_ptr<SamplerState> samplerState = samplerStateIt.second;
+                samplerState->Bind((uint32_t)samplerStateIt.first, pShader, ShaderParameter::Type::Sampler);
+            }
+
+            ShaderParameter& materialParameter = pShader->GetShaderParameterByName("Material");
+            if (materialParameter.IsValid() && m_pConstantBuffer != nullptr)
+            {
+                materialParameter.Set<ConstantBuffer>(m_pConstantBuffer);
+                materialParameter.Bind();
+            }
 		}
 	}
-
 
 	glBindProgramPipeline(m_GLProgramPipeline);
 }
 
 void MaterialOGL::Unbind() const
 {
-	glBindProgramPipeline(0);
-
 	for (auto shader : m_Shaders)
 	{
 		std::shared_ptr<Shader> pShader = std::dynamic_pointer_cast<ShaderOGL>(shader.second);
 		if (pShader)
 		{
+            for (auto textureIt : m_Textures)
+            {
+                std::shared_ptr<Texture> texture = textureIt.second;
+                texture->UnBind((uint32_t)textureIt.first, pShader, ShaderParameter::Type::Texture);
+            }
+
+            for (auto samplerStateIt : m_Samplers)
+            {
+                std::shared_ptr<SamplerState> samplerState = samplerStateIt.second;
+                samplerState->UnBind((uint32_t)samplerStateIt.first, pShader, ShaderParameter::Type::Sampler);
+            }
+
+            ShaderParameter& materialParameter = pShader->GetShaderParameterByName("Material");
+            if (materialParameter.IsValid() && m_pConstantBuffer != nullptr)
+            {
+                materialParameter.UnBind();
+            }
+
 			glUseProgramStages(m_GLProgramPipeline, GLTranslateShaderBitType(shader.first), 0);
 			pShader->UnBind();
 		}
 	}
+
+    glBindProgramPipeline(0);
 
 	MaterialImpl::Unbind();
 }
