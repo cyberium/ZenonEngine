@@ -174,6 +174,11 @@ void Camera::AddYaw(float Yaw)
     m_ViewDirty = true;
 }
 
+float Camera::GetYaw() const
+{
+    return m_Yaw_X;
+}
+
 void Camera::SetPitch(float Pitch)
 {
     m_Pitch_Y = Pitch;
@@ -184,6 +189,11 @@ void Camera::AddPitch(float Pitch)
 {
     m_Pitch_Y += Pitch;
     m_ViewDirty = true;
+}
+
+float Camera::GetPitch() const
+{
+    return m_Pitch_Y;
 }
 
 glm::vec3 Camera::GetDirection() const

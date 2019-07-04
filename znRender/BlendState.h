@@ -5,6 +5,9 @@
 class OW_ENGINE_API BlendState : public Object
 {
 public:
+    BlendState();
+    virtual ~BlendState();
+
 
 	/**
 	 * The BlendOperation defines how the final output pixel will be determined.
@@ -199,16 +202,15 @@ public:
 	 * the minimum required is 8.
 	 * The helper SetBlendMode can be used to set the blend mode at index 0.
 	 */
-	virtual void SetBlendMode(const BlendMode& blendMode) = 0;
-	// Use this method to set all blend modes at once. Only the first 8 are considered.
-	virtual void SetBlendModes(const std::vector<BlendMode>& blendModes) = 0;
-	virtual const std::vector<BlendMode>& GetBlendModes() const = 0;
+	virtual void SetBlendMode(const BlendMode& blendMode);
+	virtual void SetBlendModes(const std::vector<BlendMode>& blendModes);
+	virtual const std::vector<BlendMode>& GetBlendModes() const;
 
 	/**
 	 * Set a constant blend factor that is used when the BlendFactor is set to ConstBlendFactor.
 	 */
-	virtual void SetConstBlendFactor(cvec4 constantBlendFactor) = 0;
-	virtual cvec4 GetConstBlendFactor() const = 0;
+	virtual void SetConstBlendFactor(cvec4 constantBlendFactor);
+	virtual cvec4 GetConstBlendFactor() const;
 
 	/**
 	 * The sample mask determines which samples get updated in all the active render targets.
@@ -224,16 +226,16 @@ public:
 	 * @see https://msdn.microsoft.com/en-us/library/windows/desktop/ff476462%28v=vs.85%29.aspx
 	 * @see https://www.opengl.org/sdk/docs/man/html/glSampleMaski.xhtml
 	 */
-	virtual void SetSampleMask(uint32_t sampleMask) = 0;
-	virtual uint32_t GetSampleMask() const = 0;
+    virtual void SetSampleMask(uint32_t sampleMask);
+	virtual uint32_t GetSampleMask() const;
 
 	/**
 	 * Whether to enable alpha coverage.
 	 * @see https://msdn.microsoft.com/en-us/library/windows/desktop/bb205072(v=vs.85).aspx#Alpha_To_Coverage
 	 * @see https://www.opengl.org/sdk/docs/man4/html/glSampleCoverage.xhtml
 	 */
-	virtual void SetAlphaCoverage(bool enabled) = 0;
-	virtual bool GetAlphaCoverage() const = 0;
+	virtual void SetAlphaCoverage(bool enabled);
+	virtual bool GetAlphaCoverage() const;
 
 	/**
 	 * Enable independent blend modes for render target color buffers.
@@ -244,8 +246,20 @@ public:
 	 * if you have explicitly specified a blend mode for each render target buffer
 	 * that is bound, otherwise the results are undefined.
 	 */
-	virtual void SetIndependentBlend(bool enabled) = 0;
-	virtual bool GetIndependentBlend() const = 0;
+	virtual void SetIndependentBlend(bool enabled);
+	virtual bool GetIndependentBlend() const;
 
 	virtual void Bind() = 0;
+
+protected:
+    typedef std::vector<BlendMode> BlendModeList;
+    BlendModeList                                   m_BlendModes;
+
+    bool                                            m_bAlphaToCoverageEnabled;
+    bool                                            m_bIndependentBlendEnabled;
+    uint32_t                                        m_SampleMask;
+
+    vec4                                            m_ConstBlendFactor;
+
+    bool                                            m_bDirty;
 };

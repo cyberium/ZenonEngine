@@ -12,16 +12,17 @@ class IRenderDevice;
 class OW_ENGINE_API IShaderInputLayout : public Object
 {
 public:
-    IShaderInputLayout();
-	virtual ~IShaderInputLayout();
+    typedef std::map<InputSemantic, UINT> SemanticMap;
+public:
+                                                    IShaderInputLayout();
+	virtual                                         ~IShaderInputLayout();
 
     // IShaderInputLayout
-    bool                                            HasSemantic(const BufferBinding& binding) const;
-    const InputSemantic&                            GetSemantic(const BufferBinding& binding) const;
-    UINT                                            GetSemanticSlot(const BufferBinding& binding) const;
+    virtual bool                                    HasSemantic(const BufferBinding& binding) const = 0;
+    virtual const InputSemantic&                    GetSemantic(const BufferBinding& binding) const = 0;
+    virtual UINT                                    GetSemanticSlot(const BufferBinding& binding) const = 0;
+    virtual const SemanticMap&                      GetSemantics() const;
 
 protected:
-	// A map to convert a vertex attribute semantic to a slot.
-	typedef std::map<InputSemantic, UINT> SemanticMap;
 	SemanticMap                                     m_InputSemantics;
 };

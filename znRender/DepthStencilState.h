@@ -5,11 +5,14 @@
 class OW_ENGINE_API DepthStencilState : public Object
 {
 public:
+    DepthStencilState();
+    virtual ~DepthStencilState();
+
 
 	/**
 	 * Used to enable or disable depth buffer writes.
 	 */
-	enum class DepthWrite
+	enum class OW_ENGINE_API DepthWrite
 	{
 		Enable,
 		Disable
@@ -22,7 +25,7 @@ public:
 	 * @see DepthStencilState::DepthMode::DepthFunction
 	 * @see DepthStencilState::StencilMode::StencilFunction
 	 */
-	enum class CompareFunction
+	enum class OW_ENGINE_API CompareFunction
 	{
 		Never,          // Never pass the comparison operation.
 		Less,           // Pass if the source pixel's depth or stencil reference value is less than the value stored in the depth/stencil buffer ( DSs < DSd ).
@@ -40,7 +43,7 @@ public:
 	 * depending on the result of the comparison function in the StencilMode structure.
 	 * @see DepthStencilState::StencilMode.
 	 */
-	enum class StencilOperation
+	enum class OW_ENGINE_API StencilOperation
 	{
 		Keep,           // Keep the existing value in the stencil buffer unmodified.
 		Zero,           // Set the value in the stencil buffer to 0.
@@ -52,7 +55,7 @@ public:
 		DecrementWrap,  // Decrement the value in the stencil buffer by 1 and wrap the result if it is out of range.
 	};
 
-	struct DepthMode
+	struct OW_ENGINE_API DepthMode
 	{
 		/**
 		 * Set to true to enable depth testing.
@@ -95,7 +98,7 @@ public:
 	 * depending on whether the primitive that is being tested is front-facing
 	 * or back facing (according to the value of RasterizerState::FrontFacing).
 	 */
-	struct FaceOperation
+	struct OW_ENGINE_API FaceOperation
 	{
 		/**
 		 * The operation to perform on the value in the stencil buffer if the
@@ -140,7 +143,7 @@ public:
 		{}
 	};
 
-	struct StencilMode
+	struct OW_ENGINE_API StencilMode
 	{
 		/**
 		 * Set to true to enable stencil testing.
@@ -194,11 +197,17 @@ public:
 		{}
 	};
 
-	virtual void SetDepthMode(const DepthMode& depthMode) = 0;
-	virtual const DepthMode& GetDepthMode() const = 0;
+	virtual void SetDepthMode(const DepthMode& depthMode);
+	virtual const DepthMode& GetDepthMode() const;
 
-	virtual void SetStencilMode(const StencilMode& stencilMode) = 0;
-	virtual const StencilMode& GetStencilMode() const = 0;
+	virtual void SetStencilMode(const StencilMode& stencilMode);
+	virtual const StencilMode& GetStencilMode() const;
 
 	virtual void Bind() = 0;
+
+protected:
+    DepthMode                                       m_DepthMode;
+    StencilMode                                     m_StencilMode;
+
+    bool                                            m_bDirty;
 };

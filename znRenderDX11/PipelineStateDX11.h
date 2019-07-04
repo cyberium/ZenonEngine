@@ -28,12 +28,12 @@ public:
 protected:
 
 private:
-	ATL::CComPtr<ID3D11Device2> m_pDevice;
-	ATL::CComPtr<ID3D11DeviceContext2> m_pDeviceContext;
+	ATL::CComPtr<ID3D11Device2>                     m_pDevice;
+	ATL::CComPtr<ID3D11DeviceContext2>              m_pDeviceContext;
 
-	ShaderMap m_Shaders;
-	BlendStateDX11 m_BlendState;
-	RasterizerStateDX11 m_RasterizerState;
-	DepthStencilStateDX11 m_DepthStencilState;
-	std::shared_ptr<IRenderTarget> m_RenderTarget;
+	ShaderMap                                       m_Shaders;
+	BlendStateDX11                                  m_BlendState;
+	RasterizerStateDX11                             m_RasterizerState;
+	DepthStencilStateDX11                           m_DepthStencilState;
+	std::shared_ptr<IRenderTarget>                  m_RenderTarget;
 };

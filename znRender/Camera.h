@@ -46,8 +46,10 @@ public:
 	// Rotate
     void                                            SetYaw(float Yaw);
     void                                            AddYaw(float Yaw);
+    float                                           GetYaw() const;
     void                                            SetPitch(float Pitch);
     void                                            AddPitch(float Pitch);
+    float                                           GetPitch() const;
     glm::vec3                                       GetDirection() const;
 
 	bool                                            IsDirty() const;

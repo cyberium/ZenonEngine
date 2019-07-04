@@ -96,11 +96,6 @@ void PipelineStateDX11::Bind()
 
 void PipelineStateDX11::UnBind()
 {
-	if (m_RenderTarget)
-	{
-		m_RenderTarget->UnBind();
-	}
-
 	for (auto shader : m_Shaders)
 	{
 		std::shared_ptr<Shader> pShader = shader.second;
@@ -109,4 +104,9 @@ void PipelineStateDX11::UnBind()
 			pShader->UnBind();
 		}
 	}
+
+    if (m_RenderTarget)
+    {
+        m_RenderTarget->UnBind();
+    }
 }

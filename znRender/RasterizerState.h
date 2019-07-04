@@ -7,6 +7,9 @@
 class OW_ENGINE_API RasterizerState : public Object
 {
 public:
+                                                    RasterizerState();
+    virtual                                         ~RasterizerState();
+
 	/**
 	 * FillMode determines how primitives are rendered.
 	 * <ul>
@@ -20,7 +23,7 @@ public:
 	 * @see https://msdn.microsoft.com/en-us/library/windows/desktop/ff476131(v=vs.85).aspx
 	 * @see https://www.opengl.org/sdk/docs/man/html/glPolygonMode.xhtml
 	 */
-	enum class FillMode
+	enum class OW_ENGINE_API FillMode
 	{
 		Wireframe,
 		Solid
@@ -38,7 +41,7 @@ public:
 	 * @see https://msdn.microsoft.com/en-us/library/windows/desktop/ff476108(v=vs.85).aspx
 	 * @see https://www.opengl.org/sdk/docs/man/html/glCullFace.xhtml
 	 */
-	enum class CullMode
+	enum class OW_ENGINE_API CullMode
 	{
 		None,
 		Front,
@@ -59,20 +62,20 @@ public:
 	 * @see https://msdn.microsoft.com/en-us/library/windows/desktop/ff476198(v=vs.85).aspx
 	 * @see https://www.opengl.org/sdk/docs/man/html/glFrontFace.xhtml
 	 */
-	enum class FrontFace
+	enum class OW_ENGINE_API FrontFace
 	{
 		Clockwise,
 		CounterClockwise
 	};
 
-	virtual void SetFillMode(FillMode frontFace = FillMode::Solid, FillMode backFace = FillMode::Solid) = 0;
-	virtual void GetFillMode(FillMode& frontFace, FillMode& backFace) const = 0;
+	virtual void SetFillMode(FillMode frontFace = FillMode::Solid, FillMode backFace = FillMode::Solid);
+	virtual void GetFillMode(FillMode& frontFace, FillMode& backFace) const;
 
-	virtual void SetCullMode(CullMode cullMode = CullMode::Back) = 0;
-	virtual CullMode GetCullMode() const = 0;
+	virtual void SetCullMode(CullMode cullMode = CullMode::Back);
+	virtual CullMode GetCullMode() const;
 
-	virtual void SetFrontFacing(FrontFace frontFace = FrontFace::CounterClockwise) = 0;
-	virtual FrontFace GetFrontFacing() const = 0;
+	virtual void SetFrontFacing(FrontFace frontFace = FrontFace::CounterClockwise);
+	virtual FrontFace GetFrontFacing() const;
 
 	/**
 	 * The depth bias allows you to offset the computed depth value of the current pixel.
@@ -117,30 +120,30 @@ public:
 	 * @see https://www.opengl.org/sdk/docs/man/html/glPolygonOffset.xhtml
 	 * @see https://www.opengl.org/registry/specs/EXT/polygon_offset_clamp.txt
 	 */
-	virtual void SetDepthBias(float depthBias = 0.0f, float slopeBias = 0.0f, float biasClamp = 0.0f) = 0;
-	virtual void GetDepthBias(float& depthBias, float& slopeBias, float& biasClamp) const = 0;
+	virtual void SetDepthBias(float depthBias = 0.0f, float slopeBias = 0.0f, float biasClamp = 0.0f);
+	virtual void GetDepthBias(float& depthBias, float& slopeBias, float& biasClamp) const;
 
 	/**
 	 * Enable clipping based on Z-distance.
 	 * Default value is true.
 	 */
-	virtual void SetDepthClipEnabled(bool depthClipEnabled = true) = 0;
-	virtual bool GetDepthClipEnabled() const = 0;
+	virtual void SetDepthClipEnabled(bool depthClipEnabled = true);
+	virtual bool GetDepthClipEnabled() const;
 
 	/**
 	* Specify an array of viewports to bind to the rasterizer stage.
 	* The helper function SetViewport can be used to set the viewport at index 0.
 	*/
-	virtual void SetViewport(const Viewport& viewport) = 0;
-	virtual void SetViewports(const std::vector<Viewport>& viewports) = 0;
-	virtual const std::vector<Viewport>& GetViewports() = 0;
+	virtual void SetViewport(const Viewport& viewport);
+	virtual void SetViewports(const std::vector<Viewport>& viewports);
+	virtual const std::vector<Viewport>& GetViewports();
 
 	/**
 	* Enable scissor-rectangle culling.
 	* Default value is false.
 	*/
-	virtual void SetScissorEnabled(bool scissorEnable = false) = 0;
-	virtual bool GetScissorEnabled() const = 0;
+	virtual void SetScissorEnabled(bool scissorEnable = false);
+	virtual bool GetScissorEnabled() const;
 
 	/**
 	 * If scissor rectangle culling is enabled, then use the rectangles passed
@@ -150,9 +153,9 @@ public:
 	 * scissor rects then only the first GL_MAX_VIEWPORTS or ?? will be set.
 	 * Rectangle coordinates are in window coordinates.
 	 */
-	virtual void SetScissorRect(const Rect& rect) = 0;
-	virtual void SetScissorRects(const std::vector<Rect>& rects) = 0;
-	virtual const std::vector<Rect>& GetScissorRects() const = 0;
+	virtual void SetScissorRect(const Rect& rect);
+	virtual void SetScissorRects(const std::vector<Rect>& rects);
+	virtual const std::vector<Rect>& GetScissorRects() const;
 
 	/**
 	 * Specifies whether to use the quadrilateral or alpha line anti-aliasing
@@ -162,8 +165,8 @@ public:
 	 * @see https://msdn.microsoft.com/en-us/library/windows/desktop/hh404489(v=vs.85).aspx
 	 * @see https://www.opengl.org/sdk/docs/man/html/glEnable.xhtml at GL_MULTISAMPLE
 	 */
-	virtual void SetMultisampleEnabled(bool multisampleEnabled = false) = 0;
-	virtual bool GetMultisampleEnabled() const = 0;
+	virtual void SetMultisampleEnabled(bool multisampleEnabled = false);
+	virtual bool GetMultisampleEnabled() const;
 
 	/**
 	 * Specifies whether to enable line antialiasing; only applies if doing line
@@ -171,8 +174,8 @@ public:
 	 * @see https://msdn.microsoft.com/en-us/library/windows/desktop/hh404489(v=vs.85).aspx
 	 * @see https://www.opengl.org/sdk/docs/man/html/glEnable.xhtml GL_LINE_SMOOTH
 	 */
-	virtual void SetAntialiasedLineEnable(bool antialiasedLineEnable) = 0;
-	virtual bool GetAntialiasedLineEnable() const = 0;
+	virtual void SetAntialiasedLineEnable(bool antialiasedLineEnable);
+	virtual bool GetAntialiasedLineEnable() const;
 
 	/**
 	 * The sample count that is forced while UAV rendering or rasterizing.
@@ -181,16 +184,48 @@ public:
 	 * At the time of this writing, I could not find an OpenGL equivalent.
 	 * @see https://msdn.microsoft.com/en-us/library/hh404489(v=vs.85).aspx
 	 */
-	virtual void SetForcedSampleCount(uint8_t forcedSampleCount = 0) = 0;
-	virtual uint8_t GetForcedSampleCount() = 0;
+	virtual void SetForcedSampleCount(uint8_t forcedSampleCount = 0);
+	virtual uint8_t GetForcedSampleCount();
 
 	/**
 	 * Enable conservative rasterization mode.
 	 * Currently only supported in DirectX 11.3 and 12.
 	 * @see https://msdn.microsoft.com/en-us/library/windows/desktop/dn903791(v=vs.85).aspx
 	 */
-	virtual void SetConservativeRasterizationEnabled(bool conservativeRasterizationEnabled = false) = 0;
-	virtual bool GetConservativeRasterizationEnabled() const = 0;
+	virtual void SetConservativeRasterizationEnabled(bool conservativeRasterizationEnabled = false);
+	virtual bool GetConservativeRasterizationEnabled() const;
 
 	virtual void Bind() = 0;
+
+protected:
+    FillMode                                        m_FrontFaceFillMode;
+    FillMode                                        m_BackFaceFillMode;
+
+    CullMode                                        m_CullMode;
+
+    FrontFace                                       m_FrontFace;
+
+    float                                           m_DepthBias;
+    float                                           m_SlopeBias;
+    float                                           m_BiasClamp;
+
+    bool                                            m_DepthClipEnabled;
+    bool                                            m_ScissorEnabled;
+
+    bool                                            m_MultisampleEnabled;
+    bool                                            m_AntialiasedLineEnabled;
+
+    bool                                            m_ConservativeRasterization;
+
+    uint8_t                                         m_ForcedSampleCount;
+
+    typedef std::vector<Rect> RectList;
+    RectList                                        m_ScissorRects;
+
+    typedef std::vector<Viewport> ViewportList;
+    ViewportList                                    m_Viewports;
+
+    bool                                            m_StateDirty;
+    bool                                            m_ViewportsDirty;
+    bool                                            m_ScissorRectsDirty;
 };

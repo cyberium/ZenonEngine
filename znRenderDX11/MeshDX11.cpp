@@ -45,8 +45,13 @@ void MeshDX11::SetPrimitiveTopology(PrimitiveTopology _topology)
 
 bool MeshDX11::Render(const RenderEventArgs* renderArgs, std::shared_ptr<ConstantBuffer> perObject, UINT indexStartLocation, UINT indexCnt, UINT vertexStartLocation, UINT vertexCnt)
 {
-	std::shared_ptr<Shader> pVS = nullptr;
+    if (indexCnt == 0 && m_pIndexBuffer != nullptr)
+        indexCnt = m_pIndexBuffer->GetElementCount();
 
+    if (vertexCnt == 0)
+        vertexCnt = (*m_VertexBuffers.begin()).second->GetElementCount();
+
+	std::shared_ptr<Shader> pVS = nullptr;
 	if (m_pMaterial)
 	{
 		m_pMaterial->Bind();
@@ -90,23 +95,12 @@ bool MeshDX11::Render(const RenderEventArgs* renderArgs, std::shared_ptr<Constan
 		if (m_pIndexBuffer != NULL)
 		{
 			m_pIndexBuffer->Bind(0, pVS, ShaderParameter::Type::Buffer);
-			if (indexCnt == 0)
-				m_pDeviceContext->DrawIndexed(m_pIndexBuffer->GetElementCount(), 0, 0);
-			else
-				m_pDeviceContext->DrawIndexed(indexCnt, indexStartLocation, vertexStartLocation);
+			m_pDeviceContext->DrawIndexed(indexCnt, indexStartLocation, vertexStartLocation);
 			m_pIndexBuffer->UnBind(0, pVS, ShaderParameter::Type::Buffer);
 		}
 		else
 		{
-			if (vertexCnt == 0)
-			{
-				UINT vertexCount = (*m_VertexBuffers.begin()).second->GetElementCount();
-				m_pDeviceContext->Draw(vertexCount, 0);
-			}
-			else
-			{
-				m_pDeviceContext->Draw(vertexCnt, vertexStartLocation);
-			}
+			m_pDeviceContext->Draw(vertexCnt, vertexStartLocation);
 		}
 
 

@@ -253,7 +253,7 @@ uint8_t SamplerStateOGL::GetMaxAnisotropy() const
 
 void SamplerStateOGL::Bind(uint32_t ID, std::weak_ptr<Shader> shader, ShaderParameter::Type parameterType)
 {
-	//if (m_bIsDirty)
+	if (m_bIsDirty)
 	{
         glBindSampler(ID, m_GLObj);
 

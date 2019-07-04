@@ -68,8 +68,13 @@ void MeshOGL::SetPrimitiveTopology(PrimitiveTopology _topology)
 
 bool MeshOGL::Render(const RenderEventArgs* renderArgs, std::shared_ptr<ConstantBuffer> perObject, UINT indexStartLocation, UINT indexCnt, UINT vertexStartLocation, UINT vertexCnt)
 {
-    std::shared_ptr<Shader> pVS = nullptr;
+    if (indexCnt == 0 && m_pIndexBuffer != nullptr)
+        indexCnt = m_pIndexBuffer->GetElementCount();
 
+    if (vertexCnt == 0)
+        vertexCnt = (*m_VertexBuffers.begin()).second->GetElementCount();
+
+    std::shared_ptr<Shader> pVS = nullptr;
     if (m_pMaterial)
     {
         m_pMaterial->Bind();
@@ -118,38 +123,26 @@ bool MeshOGL::Render(const RenderEventArgs* renderArgs, std::shared_ptr<Constant
         {
             if (m_pIndexBuffer != NULL)
             {
-                UINT vertexCount = (*m_VertexBuffers.begin()).second->GetElementCount();
+                indexStartLocation *= 2u;
+
                 glDrawRangeElements
                 (
                     m_PrimitiveTopology,
-                    0,
-                    vertexCount,
-                    m_pIndexBuffer->GetElementCount(),
+                    vertexStartLocation,
+                    vertexStartLocation + vertexCnt,
+                    indexCnt,
                     GL_UNSIGNED_SHORT,
-                    (char*)0
+                    (char*)0 + indexStartLocation
                 );
             }
             else
             {
-                if (vertexCnt == 0)
-                {
-                    UINT vertexCount = (*m_VertexBuffers.begin()).second->GetElementCount();
-                    glDrawArrays
-                    (
-                        m_PrimitiveTopology,
-                        0,
-                        vertexCount
-                    );
-                }
-                else
-                {
-                    glDrawArrays
-                    (
-                        m_PrimitiveTopology,
-                        vertexStartLocation,
-                        vertexCnt
-                    );
-                }
+                glDrawArrays
+                (
+                    m_PrimitiveTopology,
+                    vertexStartLocation,
+                    vertexCnt
+                );
             }
 
             OGLCheckError();
@@ -189,6 +182,11 @@ void MeshOGL::Commit(std::weak_ptr<Shader> _shader)
 
 	glBindVertexArray(m_GLObj);
 	{
+        for (uint32 i = 0; i < 16; ++i)
+        {
+            glDisableVertexAttribArray(i);
+        }
+
 		uint32 newVertexAttribMask = 0;
 		uint32 i = 0;
 		for (BufferMap::value_type buffer : m_VertexBuffers)
@@ -214,8 +212,6 @@ void MeshOGL::Commit(std::weak_ptr<Shader> _shader)
 			uint32 curBit = 1 << i;
 			if (newVertexAttribMask & curBit)
 				glEnableVertexAttribArray(i);
-			else
-				glDisableVertexAttribArray(i);
 		}
 
 		if (m_pIndexBuffer != nullptr)

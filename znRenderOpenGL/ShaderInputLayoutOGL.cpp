@@ -3,9 +3,14 @@
 // General
 #include "ShaderInputLayoutOGL.h"
 
+
+static InputSemantic gs_InvalidShaderSemantic;
+
+
 // FORWARD BEGIN
 void GLTranslateAttribType(GLenum _type, GLint _size, GLenum * _newType, GLint * _newSize);
 // FORWARD END
+
 
 ShaderInputLayoutOGL::ShaderInputLayoutOGL()
 {
@@ -13,6 +18,40 @@ ShaderInputLayoutOGL::ShaderInputLayoutOGL()
 
 ShaderInputLayoutOGL::~ShaderInputLayoutOGL()
 {
+}
+
+
+
+//
+// IShaderInputLayout
+//
+bool ShaderInputLayoutOGL::HasSemantic(const BufferBinding& binding) const
+{
+    for (auto& it : m_InputSemantics)
+        if (it.first.Name == std::string(binding.Name + std::to_string(binding.Index)))
+            return true;        
+
+    return false;
+}
+
+const InputSemantic& ShaderInputLayoutOGL::GetSemantic(const BufferBinding& binding) const
+{
+    for (auto& it : m_InputSemantics)
+        if (it.first.Name == std::string(binding.Name + std::to_string(binding.Index)))
+            return it.first;
+
+    _ASSERT(false);
+    return gs_InvalidShaderSemantic;
+}
+
+UINT ShaderInputLayoutOGL::GetSemanticSlot(const BufferBinding& binding) const
+{
+    for (auto& it : m_InputSemantics)
+        if (it.first.Name == std::string(binding.Name + std::to_string(binding.Index)))
+            return it.second;
+
+    _ASSERT(false);
+    return UINT_MAX;
 }
 
 

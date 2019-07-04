@@ -80,14 +80,10 @@ void PipelineStateOGL::Bind()
 	m_BlendState.Bind();
 	m_RasterizerState.Bind();
 	m_DepthStencilState.Bind();
-
-
 }
 
 void PipelineStateOGL::UnBind()
 {
-	glBindProgramPipeline(0);
-
 	if (m_RenderTarget)
 	{
 		m_RenderTarget->UnBind();

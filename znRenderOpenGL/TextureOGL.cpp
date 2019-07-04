@@ -101,11 +101,7 @@ TextureOGL::TextureOGL(RenderDeviceOGL* _device, uint16_t size, uint16_t count, 
 
 TextureOGL::~TextureOGL()
 {
-	if (m_GLObj != 0)
-	{
-		glDeleteTextures(1, &m_GLObj);
-		m_GLObj = 0;
-	}
+	glDeleteTextures(1, &m_GLObj);
 }
 
 bool TextureOGL::LoadTextureCustom(uint16_t width, uint16_t height, void * pixels)
