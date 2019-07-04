@@ -72,6 +72,9 @@ void _stdcall glDebugOutput(GLenum source, GLenum type, GLuint id, GLenum severi
 RenderDeviceOGL::RenderDeviceOGL()
 {
     FreeImage_Initialise();
+
+    CreateDevice();
+    //LoadDefaultResources();
 }
 
 RenderDeviceOGL::~RenderDeviceOGL()
@@ -87,18 +90,13 @@ RenderDeviceOGL::~RenderDeviceOGL()
     FreeImage_DeInitialise();
 }
 
-void RenderDeviceOGL::CreateDevice(HDC _hdc)
+void RenderDeviceOGL::InitDevice(HDC _hdc)
 {
 	bool failed = false;
 
 	HGLRC glrc = initOpenGL(_hdc);
 
-	Log::Info("Initializing GL4 backend.");
-	if (!initOGLExtensions())
-	{
-		Log::Error("Could not find all required OpenGL function entry points");
-		failed = true;
-	}
+
 
 	char* vendor = (char*)glGetString(GL_VENDOR);
 	char* renderer = (char*)glGetString(GL_RENDERER);
@@ -463,7 +461,6 @@ void RenderDeviceOGL::SetDefaultRB(uint32 _obj)
 	m_RBDefault = _obj;
 }
 
-
 std::shared_ptr<Query> RenderDeviceOGL::CreateQuery(Query::QueryType queryType, uint8_t numBuffers)
 {
 	std::shared_ptr<Query> query = std::make_shared<QueryOGL>(queryType, numBuffers);
@@ -482,6 +479,22 @@ void RenderDeviceOGL::DestoryQuery(std::shared_ptr<Query> query)
 }
 
 
+
+//
+// Protected
+//
+void RenderDeviceOGL::CreateDevice()
+{
+    initWGLExtensions();
+
+
+}
+
+
+
+//
+// Private
+//
 void RenderDeviceOGL::LoadDefaultResources()
 {
 	// Create a magenta texture if a texture defined in the shader is not bound.

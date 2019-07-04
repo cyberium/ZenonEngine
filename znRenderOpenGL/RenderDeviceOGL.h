@@ -8,6 +8,8 @@ public:
 	RenderDeviceOGL();
 	virtual ~RenderDeviceOGL();
 
+    void InitDevice(HDC Hdc);
+
 	const std::string& GetDeviceName() const;
     const DeviceType GetDeviceType() const;
 
@@ -61,13 +63,15 @@ public:
 	virtual void DestoryPipelineState(std::shared_ptr<PipelineState> pipeline);
 
 public:
-	bool IsDoubleBuffered();
-	uint32 GetDefaultRB();
-	void SetDefaultRB(uint32 _obj);
+	bool                        IsDoubleBuffered();
+	uint32                      GetDefaultRB();
+	void                        SetDefaultRB(uint32 _obj);
 
-public:
-	void CreateDevice(HDC _hdc);
-	void LoadDefaultResources();
+protected:
+	void                        CreateDevice() override final;
+
+private:
+	void                        LoadDefaultResources();
 
 private:
 	uint32						m_DepthFormat;

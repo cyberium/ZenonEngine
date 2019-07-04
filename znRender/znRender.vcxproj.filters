@@ -46,6 +46,7 @@
     <ClCompile Include="RasterizerState.cpp">
       <Filter>Pipeline</Filter>
     </ClCompile>
+    <ClCompile Include="SamplerState.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="common.h">

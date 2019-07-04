@@ -10,17 +10,13 @@
 #include "RenderTargetOGL.h"
 #include "TextureOGL.h"
 
-RenderWindowOGL::RenderWindowOGL(std::shared_ptr<RenderDeviceOGL> device, IWindowObject * WindowObject, bool vSync)
-	: RenderWindow(WindowObject, vSync)
-	, m_RenderDevice(device)
-	, m_bResizePending(false)
+RenderWindowOGL::RenderWindowOGL(std::shared_ptr<RenderDeviceOGL> RenderDevice, IWindowObject * WindowObject, bool vSync)
+	: RenderWindow(RenderDevice, WindowObject, vSync)
 {
 	m_HDC = GetDC(GetHWnd());
 
-	m_RenderDevice.lock()->CreateDevice(m_HDC);
-	m_RenderDevice.lock()->LoadDefaultResources();
-
-    m_RenderTarget = std::dynamic_pointer_cast<RenderTargetOGL>(m_RenderDevice.lock()->CreateRenderTarget());
+    std::shared_ptr<RenderDeviceOGL> renderDeviceDX11 = std::dynamic_pointer_cast<RenderDeviceOGL>(GetRenderDevice());
+    renderDeviceDX11->InitDevice(m_HDC);
 
     CreateSwapChain();
 }
@@ -29,17 +25,10 @@ RenderWindowOGL::~RenderWindowOGL()
 {
 }
 
-void RenderWindowOGL::ResizeSwapChainBuffers(uint32_t width, uint32_t height)
-{
-	width = glm::max<uint32_t>(width, 1);
-	height = glm::max<uint32_t>(height, 1);
-
-	m_RenderTarget->Resize(width, height);
-}
 
 void RenderWindowOGL::Present()
 {
-	std::shared_ptr<TextureOGL> colorBuffer = std::dynamic_pointer_cast<TextureOGL>(m_RenderTarget->GetTexture(IRenderTarget::AttachmentPoint::Color0));
+	std::shared_ptr<TextureOGL> colorBuffer = std::dynamic_pointer_cast<TextureOGL>(GetRenderTarget()->GetTexture(IRenderTarget::AttachmentPoint::Color0));
 	if (colorBuffer)
 	{
 		//m_pDeviceContext->CopyResource(m_pBackBuffer, colorBuffer->GetTextureResource());
@@ -57,13 +46,32 @@ void RenderWindowOGL::Present()
 	}
 }
 
-std::shared_ptr<IRenderTarget> RenderWindowOGL::GetRenderTarget()
+
+
+//
+// Engine events
+//
+void RenderWindowOGL::OnPreRender(RenderEventArgs& e)
 {
-	return m_RenderTarget;
+	// Get the currently bound frame buffer object to avoid reset to invalid FBO
+	GLint defaultRB = 0;
+	glGetIntegerv(GL_FRAMEBUFFER_BINDING, &defaultRB);
+	OGLCheckError();
+
+	std::dynamic_pointer_cast<RenderDeviceOGL>(GetRenderDevice())->SetDefaultRB(defaultRB);
+
+	base::OnPreRender(e);
 }
 
+
+
+//
+// Protected
+//
 void RenderWindowOGL::CreateSwapChain()
 {
+    base::CreateSwapChain();
+
     // Create the device and swap chain before the window is shown.
     UINT windowWidth2 = GetWindowWidth();
     UINT windowHeight2 = GetWindowHeight();
@@ -77,7 +85,7 @@ void RenderWindowOGL::CreateSwapChain()
         Texture::Type::UnsignedNormalized,
         1, //m_SampleDesc.Count,
         0, 0, 0, 0, 24, 0);
-    std::shared_ptr<Texture> depthStencilTexture = m_RenderDevice.lock()->CreateTexture2D(windowWidth2, windowHeight2, 1, depthStencilTextureFormat);
+    std::shared_ptr<Texture> depthStencilTexture = GetRenderDevice()->CreateTexture2D(windowWidth2, windowHeight2, 1, depthStencilTextureFormat);
 
     // Color buffer (Color0)
     Texture::TextureFormat colorTextureFormat
@@ -87,53 +95,17 @@ void RenderWindowOGL::CreateSwapChain()
         1, //m_SampleDesc.Count,
         8, 8, 8, 8, 0, 0
     );
-    std::shared_ptr<Texture> colorTexture = m_RenderDevice.lock()->CreateTexture2D(windowWidth2, windowHeight2, 1, colorTextureFormat);
+    std::shared_ptr<Texture> colorTexture = GetRenderDevice()->CreateTexture2D(windowWidth2, windowHeight2, 1, colorTextureFormat);
 
-    m_RenderTarget->AttachTexture(IRenderTarget::AttachmentPoint::Color0, colorTexture);
-    m_RenderTarget->AttachTexture(IRenderTarget::AttachmentPoint::Depth, depthStencilTexture);
-    m_RenderTarget->Resize(windowWidth2, windowHeight2);
+    GetRenderTarget()->AttachTexture(IRenderTarget::AttachmentPoint::Color0, colorTexture);
+    GetRenderTarget()->AttachTexture(IRenderTarget::AttachmentPoint::Depth, depthStencilTexture);
+    GetRenderTarget()->Resize(windowWidth2, windowHeight2);
 }
 
-
-
-//
-// Engine events
-//
-void RenderWindowOGL::OnPreRender(RenderEventArgs& e)
+void RenderWindowOGL::ResizeSwapChainBuffers(uint32_t width, uint32_t height)
 {
-	// Get the currently bound frame buffer object to avoid reset to invalid FBO
-	GLint defaultRB = 0;
-	glGetIntegerv(GL_FRAMEBUFFER_BINDING, &defaultRB);
-	OGLCheckError();
+    width = glm::max<uint32_t>(width, 1);
+    height = glm::max<uint32_t>(height, 1);
 
-	m_RenderDevice.lock()->SetDefaultRB(defaultRB);
-
-	if (m_bResizePending)
-	{
-		ResizeSwapChainBuffers(GetWindowWidth(), GetWindowHeight());
-		m_bResizePending = false;
-	}
-
-	m_RenderTarget->Bind();
-
-	base::OnPreRender(e);
-}
-
-void RenderWindowOGL::OnPostRender(RenderEventArgs& e)
-{
-    //m_RenderTarget->UnBind();
-
-	base::OnPostRender(e);
-}
-
-
-
-//
-// Window events
-//
-void RenderWindowOGL::OnResize(ResizeEventArgs& e)
-{
-	base::OnResize(e);
-
-    m_bResizePending = true;
+    GetRenderTarget()->Resize(width, height);
 }

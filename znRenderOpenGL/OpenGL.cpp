@@ -613,11 +613,10 @@ void initWGLExtensions()
 	renderWindowClass.lpszClassName = L"TestRenderClass";
 
 	if (!RegisterClass(&renderWindowClass)) 
-	{
 		fail1();
-	}
 
-	HWND dummy_window = CreateWindowEx(
+	HWND dummy_window = CreateWindowEx
+    (
 		0,
 		renderWindowClass.lpszClassName,
 		L"Dummy OpenGL Window",
@@ -631,61 +630,63 @@ void initWGLExtensions()
 		renderWindowClass.hInstance,
 		0
 	);
-
 	if (!dummy_window) 
-	{
 		fail2("Failed to create dummy OpenGL window.");
-	}
+    {
+        HDC dummy_dc = GetDC(dummy_window);
+        {
+            PIXELFORMATDESCRIPTOR pfd;
+            pfd.nSize = sizeof(PIXELFORMATDESCRIPTOR);
+            pfd.nVersion = 1;
+            pfd.iPixelType = PFD_TYPE_RGBA;
+            pfd.dwFlags = PFD_DRAW_TO_WINDOW | PFD_SUPPORT_OPENGL | PFD_DOUBLEBUFFER;
+            pfd.cColorBits = 32;
+            pfd.cAlphaBits = 8;
+            pfd.iLayerType = PFD_MAIN_PLANE;
+            pfd.cDepthBits = 24;
+            pfd.cStencilBits = 8;
 
-	HDC dummy_dc = GetDC(dummy_window);
+            int pixel_format = ChoosePixelFormat(dummy_dc, &pfd);
+            if (!pixel_format)
+            {
+                fail2("Failed to find a suitable pixel format.");
+            }
 
-	PIXELFORMATDESCRIPTOR pfd;
-	pfd.nSize = sizeof(pfd);
-	pfd.nVersion = 1;
-	pfd.iPixelType = PFD_TYPE_RGBA;
-	pfd.dwFlags = PFD_DRAW_TO_WINDOW | PFD_SUPPORT_OPENGL | PFD_DOUBLEBUFFER;
-	pfd.cColorBits = 32;
-	pfd.cAlphaBits = 8;
-	pfd.iLayerType = PFD_MAIN_PLANE;
-	pfd.cDepthBits = 24;
-	pfd.cStencilBits = 8;
+            if (!SetPixelFormat(dummy_dc, pixel_format, &pfd))
+            {
+                fail2("Failed to set the pixel format.");
+            }
 
-	int pixel_format = ChoosePixelFormat(dummy_dc, &pfd);
-	if (!pixel_format) 
-	{
-		fail2("Failed to find a suitable pixel format.");
-	}
+            HGLRC dummy_context = wglCreateContext(dummy_dc);
+            {
+                if (!dummy_context)
+                {
+                    fail2("Failed to create a dummy OpenGL rendering context.");
+                }
 
-	if (!SetPixelFormat(dummy_dc, pixel_format, &pfd)) 
-	{
-		fail2("Failed to set the pixel format.");
-	}
+                if (!wglMakeCurrent(dummy_dc, dummy_context))
+                    fail2("Failed to activate dummy OpenGL rendering context.");
 
-	HGLRC dummy_context = wglCreateContext(dummy_dc);
-	if (!dummy_context)
-	{
-		fail2("Failed to create a dummy OpenGL rendering context.");
-	}
+                wglCreateContextAttribsARB = (wglCreateContextAttribsARB_type*)wglGetProcAddress("wglCreateContextAttribsARB");
+                wglChoosePixelFormatARB = (wglChoosePixelFormatARB_type*)wglGetProcAddress("wglChoosePixelFormatARB");
 
-	if (!wglMakeCurrent(dummy_dc, dummy_context))
-	{
-		fail2("Failed to activate dummy OpenGL rendering context.");
-	}
+                Log::Info("Initializing GL4 backend.");
+                if (!initOGLExtensions())
+                {
+                    fail2("Could not find all required OpenGL function entry points");
+                }
 
-	wglCreateContextAttribsARB = (wglCreateContextAttribsARB_type*)wglGetProcAddress("wglCreateContextAttribsARB");
-	wglChoosePixelFormatARB = (wglChoosePixelFormatARB_type*)wglGetProcAddress("wglChoosePixelFormatARB");
-
-	wglMakeCurrent(dummy_dc, 0);
-	wglDeleteContext(dummy_context);
-	ReleaseDC(dummy_window, dummy_dc);
+                wglMakeCurrent(dummy_dc, 0);
+            }
+            wglDeleteContext(dummy_context);
+        }
+        ReleaseDC(dummy_window, dummy_dc);
+    }
 	DestroyWindow(dummy_window);
 }
 
 HGLRC initOpenGL(HDC real_dc)
 {
-	initWGLExtensions();
-
-	// Now we can choose a pixel format the modern way, using wglChoosePixelFormatARB.
 	int pixel_format_attribs[] =
 	{
 		WGL_DRAW_TO_WINDOW_ARB,     GL_TRUE,
@@ -703,36 +704,29 @@ HGLRC initOpenGL(HDC real_dc)
 	UINT num_formats;
 	wglChoosePixelFormatARB(real_dc, pixel_format_attribs, 0, 1, &pixel_format, &num_formats);
 	if (!num_formats)
-	{
 		fail1("Failed to set the OpenGL 3.3 pixel format.");
-	}
 
 	PIXELFORMATDESCRIPTOR pfd;
 	DescribePixelFormat(real_dc, pixel_format, sizeof(pfd), &pfd);
 	if (!SetPixelFormat(real_dc, pixel_format, &pfd))
-	{
 		fail1("Failed to set the OpenGL 3.3 pixel format.");
-	}
 
 	// Specify that we want to create an OpenGL 3.3 core profile context
 	int gl33_attribs[] = 
 	{
 		WGL_CONTEXT_MAJOR_VERSION_ARB, 4,
 		WGL_CONTEXT_MINOR_VERSION_ARB, 4,
-		WGL_CONTEXT_PROFILE_MASK_ARB,  WGL_CONTEXT_CORE_PROFILE_BIT_ARB,
+		WGL_CONTEXT_PROFILE_MASK_ARB,  
+        WGL_CONTEXT_CORE_PROFILE_BIT_ARB,
 		0,
 	};
 
 	HGLRC gl33_context = wglCreateContextAttribsARB(real_dc, 0, gl33_attribs);
 	if (!gl33_context)
-	{
 		fail1("Failed to create OpenGL 3.3 context.");
-	}
 
 	if (!wglMakeCurrent(real_dc, gl33_context))
-	{
 		fail1("Failed to activate OpenGL 3.3 rendering context.");
-	}
 
 	return gl33_context;
 }

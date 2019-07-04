@@ -5,37 +5,21 @@ class RenderTargetOGL;
 
 class RenderWindowOGL : public RenderWindow
 {
+    typedef RenderWindow base;
 public:
-	typedef RenderWindow base;
+	                                                RenderWindowOGL(std::shared_ptr<RenderDeviceOGL> RenderDevice, IWindowObject * WindowObject, bool vSync);
+	virtual                                         ~RenderWindowOGL();
 
-	RenderWindowOGL(std::shared_ptr<RenderDeviceOGL> device, IWindowObject * WindowObject, bool vSync);
-	virtual ~RenderWindowOGL();
-
-	virtual void Present();
-
-	virtual std::shared_ptr<IRenderTarget> GetRenderTarget();
+	void                                            Present() override final;
 
 protected:
-    virtual void CreateSwapChain();
-
     // Engine events
-	virtual void OnPreRender(RenderEventArgs& e) override;
-	virtual void OnPostRender(RenderEventArgs& e) override;
+	virtual void                                    OnPreRender(RenderEventArgs& e) override;
 
-    // Window events
-	virtual void OnResize(ResizeEventArgs& e) override;
-
-	virtual void ResizeSwapChainBuffers(uint32_t width, uint32_t height);
+protected:
+    void                                            CreateSwapChain() override final;
+	void                                            ResizeSwapChainBuffers(uint32_t width, uint32_t height) override final;
 
 private:
-	HDC m_HDC;
-
-private:
-	std::shared_ptr<RenderTargetOGL> m_RenderTarget;
-
-	// If the window has to be resized, delay the resizing of the swap chain until the prerender function.
-	bool m_bResizePending;
-
-	//--
-	std::weak_ptr<RenderDeviceOGL> m_RenderDevice;
+	HDC                                             m_HDC;
 };

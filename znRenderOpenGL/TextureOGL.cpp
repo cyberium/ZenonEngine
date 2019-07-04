@@ -179,6 +179,7 @@ bool TextureOGL::LoadTexture2D(const std::string& fileName)
         OGLCheckError();
 
         glGenerateMipmap(m_TextureType);
+        OGLCheckError();
     }
     glBindTexture(m_TextureType, 0);
 

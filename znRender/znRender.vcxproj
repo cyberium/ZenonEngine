@@ -166,6 +166,7 @@
     <ClCompile Include="Ray.cpp" />
     <ClCompile Include="RenderDevice.cpp" />
     <ClCompile Include="RenderWindow.cpp" />
+    <ClCompile Include="SamplerState.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="ShaderInputLayout.cpp" />
     <ClCompile Include="ShaderParameter.cpp" />

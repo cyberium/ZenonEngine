@@ -16,9 +16,10 @@
 #define GLAPIENTRY _stdcall
 #define GLAPIENTRYP _stdcall*
 
-void OGLCheckError();
-HGLRC initOpenGL(HDC real_dc);
-bool initOGLExtensions();
+void    OGLCheckError();
+void    initWGLExtensions();
+HGLRC   initOpenGL(HDC real_dc);
+bool    initOGLExtensions();
 
 // =================================================================================================
 // OpenGL 2.1 functionality that has not been deprecated by GL3

@@ -5,11 +5,15 @@
 #include "RenderTarget.h"
 #include "RenderEvents.h"
 
+// FORWARD BEGIN
+class IRenderDevice;
+// FORWARD END
+
 class OW_ENGINE_API RenderWindow : public Object
 {
 	typedef Object base;
 public:
-	                                                RenderWindow(IWindowObject * WindowObject, bool vSync = false);
+	                                                RenderWindow(std::shared_ptr<IRenderDevice> RenderDevice, IWindowObject * WindowObject, bool vSync = false);
 	virtual                                         ~RenderWindow();
 
 	void                                            ShowWindow(); // Show this window if it is hidden.
@@ -28,7 +32,12 @@ public:
 
 	virtual void                                    Present() = 0;
 
-	virtual std::shared_ptr<IRenderTarget>          GetRenderTarget() = 0;
+    std::shared_ptr<IRenderDevice>                  GetRenderDevice() const;
+	std::shared_ptr<IRenderTarget>                  GetRenderTarget() const;
+
+protected:
+    virtual void                                    CreateSwapChain();
+    virtual void                                    ResizeSwapChainBuffers(uint32_t width, uint32_t height) = 0;
 
 public:
 	// Engine events
@@ -96,15 +105,20 @@ public:
 	virtual      void OnMouseBlur(EventArgs& e);
 
 private:
-	IWindowObject * m_WindowObject;
+	IWindowObject *                                 m_WindowObject;
 
-	bool m_vSync;
+    std::weak_ptr<IRenderDevice>                    m_Device;
+    std::shared_ptr<IRenderTarget>                  m_RenderTarget;
+
+	bool                                            m_vSync;
 	
+    bool                                            m_bResizePending;  
+
 	// For mouse events
-	glm::ivec2 m_PreviousMousePosition;  // Used to compute relative mouse motion in this window.
-	bool m_InClientRect;                // This is true when the mouse is inside the window's client rect.
-	bool m_IsMouseTracking;             // Used to capture mouse enter/leave events.
+	glm::ivec2                                      m_PreviousMousePosition;  // Used to compute relative mouse motion in this window.
+	bool                                            m_InClientRect;                // This is true when the mouse is inside the window's client rect.
+	bool                                            m_IsMouseTracking;             // Used to capture mouse enter/leave events.
 
 	// For keyboard events
-	bool m_bHasKeyboardFocus;            // This is set to true when the window receives keyboard focus.
+	bool                                            m_bHasKeyboardFocus;            // This is set to true when the window receives keyboard focus.
 };

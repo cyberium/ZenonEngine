@@ -1,21 +1,29 @@
 #include "stdafx.h"
 
+// Include
+#include "RenderDevice.h"
+
 // General
 #include "RenderWindow.h"
 
 // Additional
 #include "Camera.h"
 
-RenderWindow::RenderWindow(IWindowObject * WindowObject, bool vSync)
-	: m_WindowObject(WindowObject)
+RenderWindow::RenderWindow(std::shared_ptr<IRenderDevice> RenderDevice, IWindowObject * WindowObject, bool vSync)
+	: m_Device(RenderDevice)
+    , m_WindowObject(WindowObject)
 	, m_vSync(vSync)
+
+    , m_bResizePending(false)
 
 	, m_PreviousMousePosition(0, 0)
 	, m_InClientRect(false)
 	, m_IsMouseTracking(false)
 
 	, m_bHasKeyboardFocus(false)
-{}
+{
+
+}
 
 RenderWindow::~RenderWindow()
 {}
@@ -92,6 +100,21 @@ HWND RenderWindow::GetHWnd() const
 	return m_WindowObject->GetHWnd();
 }
 
+std::shared_ptr<IRenderDevice> RenderWindow::GetRenderDevice() const
+{
+    return m_Device.lock();
+}
+
+std::shared_ptr<IRenderTarget> RenderWindow::GetRenderTarget() const
+{
+    return m_RenderTarget;
+}
+
+void RenderWindow::CreateSwapChain()
+{
+    m_RenderTarget = GetRenderDevice()->CreateRenderTarget();
+}
+
 
 
 //
@@ -109,6 +132,14 @@ void RenderWindow::OnUpdate(UpdateEventArgs& e)
 
 void RenderWindow::OnPreRender(RenderEventArgs& e)
 {
+    if (m_bResizePending)
+    {
+        ResizeSwapChainBuffers(GetWindowWidth(), GetWindowHeight());
+        m_bResizePending = false;
+    }
+
+    m_RenderTarget->Bind();
+
 	RenderEventArgs renderArgs(*this, e.ElapsedTime, e.TotalTime, e.FrameCounter, e.Camera, e.PipelineState, e.Node, e.Viewport);
 	PreRender(renderArgs);
 }
@@ -123,6 +154,8 @@ void RenderWindow::OnPostRender(RenderEventArgs& e)
 {
 	RenderEventArgs renderArgs(*this, e.ElapsedTime, e.TotalTime, e.FrameCounter, e.Camera, e.PipelineState, e.Node, e.Viewport);
 	PostRender(renderArgs);
+
+    //m_RenderTarget->UnBind();
 }
 
 void RenderWindow::OnRenderUI(RenderEventArgs& e)
@@ -163,14 +196,12 @@ void RenderWindow::OnRestore(EventArgs& e) // The RenderWindow window has been r
 
 void RenderWindow::OnResize(ResizeEventArgs& e) // The RenderWindow window has be resized
 {
-	// TODO
-	//m_iWindowWidth = e.Width;
-	//m_iWindowHeight = e.Height;
-
 	Resize(e);
 
 	HideWindow();
 	ShowWindow();
+
+    m_bResizePending = true;
 }
 
 void RenderWindow::OnExpose(EventArgs& e) // The window contents should be repainted

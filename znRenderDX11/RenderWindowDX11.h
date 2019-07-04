@@ -7,37 +7,20 @@ class OW_ENGINE_API RenderWindowDX11 : public RenderWindow
 {
 	typedef RenderWindow base;
 public:
-	RenderWindowDX11(std::shared_ptr<RenderDeviceDX11> device, IWindowObject * WindowObject, bool vSync);
+	RenderWindowDX11(std::shared_ptr<RenderDeviceDX11> RenderDevice, IWindowObject * WindowObject, bool vSync);
 	virtual ~RenderWindowDX11();
 
-	virtual void Present();
-
-	virtual std::shared_ptr<IRenderTarget> GetRenderTarget();
+	void                                            Present() override final;
 
 protected:
-	virtual void CreateSwapChain();
-
-	// Engine events
-	virtual void OnPreRender(RenderEventArgs& e) override;
-	virtual void OnPostRender(RenderEventArgs& e) override;
-
-	// Window events
-	virtual void OnResize(ResizeEventArgs& e) override;
-
-protected:
-	virtual void ResizeSwapChainBuffers(uint32_t width, uint32_t height);
+    void                                            CreateSwapChain() override final;
+	void                                            ResizeSwapChainBuffers(uint32_t width, uint32_t height) override final;
 
 private:
-	std::weak_ptr<RenderDeviceDX11>   m_Device;
-	std::shared_ptr<RenderTargetDX11> m_RenderTarget;
+	ATL::CComPtr<ID3D11Device2>                     m_pDevice;
+	ATL::CComPtr<ID3D11DeviceContext2>              m_pDeviceContext;
+	ATL::CComPtr<IDXGISwapChain2>                   m_pSwapChain;
+	ATL::CComPtr<ID3D11Texture2D>                   m_pBackBuffer;
 
-	bool                               m_bResizePending;  // If the window has to be resized, delay the resizing of the swap chain until the prerender function.
-
-	// DirectX
-	ATL::CComPtr<ID3D11Device2>        m_pDevice;
-	ATL::CComPtr<ID3D11DeviceContext2> m_pDeviceContext;
-	ATL::CComPtr<IDXGISwapChain2>      m_pSwapChain;
-	ATL::CComPtr<ID3D11Texture2D>      m_pBackBuffer;
-
-	DXGI_SAMPLE_DESC                   m_SampleDesc;      // Used to enable multisampling AA
+	DXGI_SAMPLE_DESC                                m_SampleDesc;      // Used to enable multisampling AA
 };

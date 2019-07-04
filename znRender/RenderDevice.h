@@ -26,6 +26,7 @@ public:
         DirectX,
         OpenGL
     };
+
 public:
 	// Create an vertex buffer (with std::vector)
 	template<typename T>
@@ -125,37 +126,40 @@ public:
 	virtual std::shared_ptr<StructuredBuffer> CreateStructuredBuffer(void* data, uint32 count, uint32 stride, CPUAccess cpuAccess = CPUAccess::None, bool gpuWrite = false) = 0;
 
 protected:
+    virtual void                                    CreateDevice() = 0;
+
+protected:
     typedef std::vector< std::shared_ptr<IBuffer> > BufferList;
-    BufferList m_Buffers;
+    BufferList                                      m_Buffers;
 
     typedef std::vector< std::shared_ptr<IMesh> > MeshList;
-    MeshList m_Meshes;
+    MeshList                                        m_Meshes;
 
     typedef std::vector< std::shared_ptr<Shader> > ShaderList;
     typedef std::map< std::string, std::shared_ptr<Shader> > ShaderMap;
-    ShaderList m_Shaders;
-    ShaderMap m_ShadersByName;
+    ShaderList                                      m_Shaders;
+    ShaderMap                                       m_ShadersByName;
 
     typedef std::vector< std::shared_ptr<Texture> > TextureList;
     typedef std::map< std::string, std::shared_ptr<Texture> > TextureMap;
-    TextureList m_Textures;
-    TextureMap m_TexturesByName;
-    std::shared_ptr<Texture> m_pDefaultTexture;
+    TextureList                                     m_Textures;
+    TextureMap                                      m_TexturesByName;
+    std::shared_ptr<Texture>                        m_pDefaultTexture;
 
     typedef std::vector< std::shared_ptr<Material> > MaterialList;
-    MaterialList m_Materials;
+    MaterialList                                    m_Materials;
 
     typedef std::vector< std::shared_ptr<IRenderTarget> > RenderTargetList;
-    RenderTargetList m_RenderTargets;
+    RenderTargetList                                m_RenderTargets;
 
     typedef std::vector< std::shared_ptr<SamplerState> > SamplerList;
-    SamplerList m_Samplers;
+    SamplerList                                     m_Samplers;
 
     typedef std::vector< std::shared_ptr<PipelineState> > PipelineList;
-    PipelineList m_Pipelines;
+    PipelineList                                    m_Pipelines;
 
     typedef std::vector< std::shared_ptr<Query> > QueryList;
-    QueryList m_Queries;
+    QueryList                                       m_Queries;
 };
 
 #include "RenderDevice.inl"

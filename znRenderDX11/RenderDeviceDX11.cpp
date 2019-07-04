@@ -76,122 +76,6 @@ RenderDeviceDX11::~RenderDeviceDX11()
     FreeImage_DeInitialise();
 }
 
-void RenderDeviceDX11::CreateDevice()
-{
-    const D3D_FEATURE_LEVEL featureLevels[] = {
-        D3D_FEATURE_LEVEL_11_1, D3D_FEATURE_LEVEL_11_0, D3D_FEATURE_LEVEL_10_1, D3D_FEATURE_LEVEL_10_0
-    };
-
-    UINT createDeviceFlags = 0;
-#if defined(_DEBUG)
-    createDeviceFlags = D3D11_CREATE_DEVICE_DEBUG;
-#endif
-
-    // This will be the feature level that 
-    // is used to create our device and swap chain.
-    D3D_FEATURE_LEVEL featureLevel;
-
-    ATL::CComPtr<ID3D11Device> pDevice;
-    ATL::CComPtr<ID3D11DeviceContext> pDeviceContext;
-
-    // First create a ID3D11Device and ID3D11DeviceContext
-    HRESULT hr = D3D11CreateDevice
-    (
-        nullptr,
-        D3D_DRIVER_TYPE_HARDWARE,
-        nullptr,
-        createDeviceFlags,
-        featureLevels,
-        _countof(featureLevels),
-        D3D11_SDK_VERSION,
-        &pDevice,
-        &featureLevel,
-        &pDeviceContext
-    );
-
-    if (hr == E_INVALIDARG)
-    {
-        hr = D3D11CreateDevice
-        (
-            nullptr,
-            D3D_DRIVER_TYPE_HARDWARE,
-            nullptr, createDeviceFlags,
-            &featureLevels[1],
-            _countof(featureLevels) - 1,
-            D3D11_SDK_VERSION,
-            &pDevice,
-            &featureLevel,
-            &pDeviceContext
-        );
-    }
-
-    if (FAILED(hr))
-    {
-        Log::Error("Failed to created DirectX 11 Device");
-        return;
-    }
-
-    // Now query for the ID3D11Device2 interface.
-    if (FAILED(pDevice->QueryInterface<ID3D11Device2>(&m_pDevice)))
-    {
-        Log::Error("Failed to create DirectX 11.2 device");
-    }
-
-    // Now get the immediate device context.
-    m_pDevice->GetImmediateContext2(&m_pDeviceContext);
-
-    // Need to explitly set the multithreaded mode for this device
-    if (FAILED(m_pDeviceContext->QueryInterface(__uuidof(ID3D10Multithread), (void**)&m_pMultiThread)))
-    {
-        Log::Error("Failed to create DirectX 11.2 device");
-    }
-
-    //m_pMultiThread->SetMultithreadProtected(FALSE);
-#if defined(_DEBUG)
-    if (SUCCEEDED(m_pDevice->QueryInterface<ID3D11Debug>(&m_pDebugLayer)))
-    {
-        ATL::CComPtr<ID3D11InfoQueue> d3dInfoQueue;
-        if (SUCCEEDED(m_pDebugLayer->QueryInterface<ID3D11InfoQueue>(&d3dInfoQueue)))
-        {
-
-            d3dInfoQueue->SetBreakOnSeverity(D3D11_MESSAGE_SEVERITY_CORRUPTION, TRUE);
-            d3dInfoQueue->SetBreakOnSeverity(D3D11_MESSAGE_SEVERITY_ERROR, TRUE);
-            //d3dInfoQueue->SetBreakOnSeverity(D3D11_MESSAGE_SEVERITY_WARNING, TRUE);
-
-            D3D11_MESSAGE_ID hide[] =
-            {
-                D3D11_MESSAGE_ID_SETPRIVATEDATA_CHANGINGPARAMS,
-                // Add more message IDs here as needed
-            };
-
-            D3D11_INFO_QUEUE_FILTER filter;
-            memset(&filter, 0, sizeof(filter));
-            filter.DenyList.NumIDs = _countof(hide);
-            filter.DenyList.pIDList = hide;
-            d3dInfoQueue->AddStorageFilterEntries(&filter);
-        }
-    }
-#endif
-
-    // Query the adapter information.
-    ATL::CComPtr<IDXGIFactory> factory;
-    ATL::CComPtr<IDXGIAdapter> adapter;
-    DXGI_ADAPTER_DESC adapterDescription = {};
-
-    if (FAILED(CreateDXGIFactory(__uuidof(IDXGIFactory), (void**)&factory)))
-    {
-        Log::Error("Failed to create DXGIFactory.");
-    }
-    if (FAILED(factory->EnumAdapters(0, &adapter)))
-    {
-        Log::Error("Failed to enumerate adapter.");
-    }
-    if (FAILED(adapter->GetDesc(&adapterDescription)))
-    {
-        Log::Error("Failed to qauery adapter description.");
-    }
-}
-
 const std::string& RenderDeviceDX11::GetDeviceName() const
 {
     return "DirectX device";
@@ -549,6 +433,132 @@ void RenderDeviceDX11::DestoryQuery(std::shared_ptr<Query> query)
     }
 }
 
+
+
+//
+// Protected
+//
+void RenderDeviceDX11::CreateDevice()
+{
+    const D3D_FEATURE_LEVEL featureLevels[] = {
+        D3D_FEATURE_LEVEL_11_1, D3D_FEATURE_LEVEL_11_0, D3D_FEATURE_LEVEL_10_1, D3D_FEATURE_LEVEL_10_0
+    };
+
+    UINT createDeviceFlags = 0;
+#if defined(_DEBUG)
+    createDeviceFlags = D3D11_CREATE_DEVICE_DEBUG;
+#endif
+
+    // This will be the feature level that 
+    // is used to create our device and swap chain.
+    D3D_FEATURE_LEVEL featureLevel;
+
+    ATL::CComPtr<ID3D11Device> pDevice;
+    ATL::CComPtr<ID3D11DeviceContext> pDeviceContext;
+
+    // First create a ID3D11Device and ID3D11DeviceContext
+    HRESULT hr = D3D11CreateDevice
+    (
+        nullptr,
+        D3D_DRIVER_TYPE_HARDWARE,
+        nullptr,
+        createDeviceFlags,
+        featureLevels,
+        _countof(featureLevels),
+        D3D11_SDK_VERSION,
+        &pDevice,
+        &featureLevel,
+        &pDeviceContext
+    );
+
+    if (hr == E_INVALIDARG)
+    {
+        hr = D3D11CreateDevice
+        (
+            nullptr,
+            D3D_DRIVER_TYPE_HARDWARE,
+            nullptr, createDeviceFlags,
+            &featureLevels[1],
+            _countof(featureLevels) - 1,
+            D3D11_SDK_VERSION,
+            &pDevice,
+            &featureLevel,
+            &pDeviceContext
+        );
+    }
+
+    if (FAILED(hr))
+    {
+        Log::Error("Failed to created DirectX 11 Device");
+        return;
+    }
+
+    // Now query for the ID3D11Device2 interface.
+    if (FAILED(pDevice->QueryInterface<ID3D11Device2>(&m_pDevice)))
+    {
+        Log::Error("Failed to create DirectX 11.2 device");
+    }
+
+    // Now get the immediate device context.
+    m_pDevice->GetImmediateContext2(&m_pDeviceContext);
+
+    // Need to explitly set the multithreaded mode for this device
+    if (FAILED(m_pDeviceContext->QueryInterface(__uuidof(ID3D10Multithread), (void**)&m_pMultiThread)))
+    {
+        Log::Error("Failed to create DirectX 11.2 device");
+    }
+
+    //m_pMultiThread->SetMultithreadProtected(FALSE);
+#if defined(_DEBUG)
+    if (SUCCEEDED(m_pDevice->QueryInterface<ID3D11Debug>(&m_pDebugLayer)))
+    {
+        ATL::CComPtr<ID3D11InfoQueue> d3dInfoQueue;
+        if (SUCCEEDED(m_pDebugLayer->QueryInterface<ID3D11InfoQueue>(&d3dInfoQueue)))
+        {
+
+            d3dInfoQueue->SetBreakOnSeverity(D3D11_MESSAGE_SEVERITY_CORRUPTION, TRUE);
+            d3dInfoQueue->SetBreakOnSeverity(D3D11_MESSAGE_SEVERITY_ERROR, TRUE);
+            //d3dInfoQueue->SetBreakOnSeverity(D3D11_MESSAGE_SEVERITY_WARNING, TRUE);
+
+            D3D11_MESSAGE_ID hide[] =
+            {
+                D3D11_MESSAGE_ID_SETPRIVATEDATA_CHANGINGPARAMS,
+                // Add more message IDs here as needed
+            };
+
+            D3D11_INFO_QUEUE_FILTER filter;
+            memset(&filter, 0, sizeof(filter));
+            filter.DenyList.NumIDs = _countof(hide);
+            filter.DenyList.pIDList = hide;
+            d3dInfoQueue->AddStorageFilterEntries(&filter);
+        }
+    }
+#endif
+
+    // Query the adapter information.
+    ATL::CComPtr<IDXGIFactory> factory;
+    ATL::CComPtr<IDXGIAdapter> adapter;
+    DXGI_ADAPTER_DESC adapterDescription = {};
+
+    if (FAILED(CreateDXGIFactory(__uuidof(IDXGIFactory), (void**)&factory)))
+    {
+        Log::Error("Failed to create DXGIFactory.");
+    }
+    if (FAILED(factory->EnumAdapters(0, &adapter)))
+    {
+        Log::Error("Failed to enumerate adapter.");
+    }
+    if (FAILED(adapter->GetDesc(&adapterDescription)))
+    {
+        Log::Error("Failed to qauery adapter description.");
+    }
+}
+
+
+
+//
+// Private
+//
 void RenderDeviceDX11::LoadDefaultResources()
 {
     m_pDefaultTexture = CreateTexture2D("Textures\\default.png");

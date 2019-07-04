@@ -61,19 +61,20 @@ public:
 	std::shared_ptr<PipelineState> CreatePipelineState();
 	void DestoryPipelineState(std::shared_ptr<PipelineState> pipeline);
 
-	// Specific to RenderDeviceDX11
-	ATL::CComPtr<ID3D11Device2> GetDevice() const;
-	ATL::CComPtr<ID3D11DeviceContext2> GetDeviceContext() const;
+	// RenderDeviceDX11
+	ATL::CComPtr<ID3D11Device2>                     GetDevice() const;
+	ATL::CComPtr<ID3D11DeviceContext2>              GetDeviceContext() const;
 
 protected:
-	virtual void CreateDevice();
+	void                                            CreateDevice();
 
 private:
-	void LoadDefaultResources();
+	void                                            LoadDefaultResources();
 
+private:
 	// DirectX
-	ATL::CComPtr<ID3D11Device2> m_pDevice;
-	ATL::CComPtr<ID3D11Debug> m_pDebugLayer;
-	ATL::CComPtr<ID3D11DeviceContext2> m_pDeviceContext;
-	ATL::CComPtr<ID3D10Multithread> m_pMultiThread;
+	ATL::CComPtr<ID3D11Device2>                     m_pDevice;
+	ATL::CComPtr<ID3D11Debug>                       m_pDebugLayer;
+	ATL::CComPtr<ID3D11DeviceContext2>              m_pDeviceContext;
+	ATL::CComPtr<ID3D10Multithread>                 m_pMultiThread;
 };
