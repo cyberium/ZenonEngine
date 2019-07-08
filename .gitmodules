@@ -4,3 +4,6 @@
 [submodule "Externals/zlib"]
 	path = Externals/zlib
 	url = https://github.com/bouzi71/zlib.git
+[submodule "Externals/luajit"]
+	path = Externals/luajit
+	url = https://github.com/LuaJIT/LuaJIT.git	
