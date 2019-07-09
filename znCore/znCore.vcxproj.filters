@@ -67,6 +67,33 @@
     <Filter Include="Common\Timers">
       <UniqueIdentifier>{4ed86a83-bc26-44a8-8c60-1dbec01ff0c6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ScriptEngine">
+      <UniqueIdentifier>{f37b94c7-01aa-4b5a-b7b4-a0c69cb8b49d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ScriptEngine\LuaBind">
+      <UniqueIdentifier>{989de73d-8272-4b03-ac82-3e4d9fb91f90}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ScriptEngine\LuaBind\inc">
+      <UniqueIdentifier>{b2725e8c-b7b6-4405-a892-77122fc2d06a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ScriptEngine\LuaBind\inc\detail">
+      <UniqueIdentifier>{dac3d571-ceab-4f37-8967-db3b56393e57}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ScriptEngine\LuaBind\inc\detail\conversion_policies">
+      <UniqueIdentifier>{b5bfa99c-d28c-44ee-b851-25ce5a9c2e09}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ScriptEngine\LuaBind\src">
+      <UniqueIdentifier>{f874d876-f7b5-48ed-96f7-4925be739d44}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ScriptEngine\Lua">
+      <UniqueIdentifier>{6728cf60-0295-4e5b-8a7d-051657b958f4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ScriptEngine\Lua\src">
+      <UniqueIdentifier>{22e1b312-c9b7-42a7-8ba1-d30c95403487}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ScriptEngine\Lua\inc">
+      <UniqueIdentifier>{209ea326-523f-47eb-807a-461ccc25da9b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DebugOutput.cpp">
@@ -162,6 +189,177 @@
     <ClCompile Include="ByteBuffer_Operators.cpp">
       <Filter>Files\Common</Filter>
     </ClCompile>
+    <ClCompile Include="..\Externals\luabind-deboostified\src\class.cpp">
+      <Filter>ScriptEngine\LuaBind\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Externals\luabind-deboostified\src\class_info.cpp">
+      <Filter>ScriptEngine\LuaBind\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Externals\luabind-deboostified\src\class_registry.cpp">
+      <Filter>ScriptEngine\LuaBind\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Externals\luabind-deboostified\src\class_rep.cpp">
+      <Filter>ScriptEngine\LuaBind\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Externals\luabind-deboostified\src\create_class.cpp">
+      <Filter>ScriptEngine\LuaBind\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Externals\luabind-deboostified\src\error.cpp">
+      <Filter>ScriptEngine\LuaBind\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Externals\luabind-deboostified\src\exception_handler.cpp">
+      <Filter>ScriptEngine\LuaBind\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Externals\luabind-deboostified\src\function.cpp">
+      <Filter>ScriptEngine\LuaBind\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Externals\luabind-deboostified\src\function_introspection.cpp">
+      <Filter>ScriptEngine\LuaBind\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Externals\luabind-deboostified\src\headertest.cpp">
+      <Filter>ScriptEngine\LuaBind\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Externals\luabind-deboostified\src\inheritance.cpp">
+      <Filter>ScriptEngine\LuaBind\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Externals\luabind-deboostified\src\link_compatibility.cpp">
+      <Filter>ScriptEngine\LuaBind\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Externals\luabind-deboostified\src\object_rep.cpp">
+      <Filter>ScriptEngine\LuaBind\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Externals\luabind-deboostified\src\open.cpp">
+      <Filter>ScriptEngine\LuaBind\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Externals\luabind-deboostified\src\operator.cpp">
+      <Filter>ScriptEngine\LuaBind\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Externals\luabind-deboostified\src\pcall.cpp">
+      <Filter>ScriptEngine\LuaBind\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Externals\luabind-deboostified\src\scope.cpp">
+      <Filter>ScriptEngine\LuaBind\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Externals\luabind-deboostified\src\set_package_preload.cpp">
+      <Filter>ScriptEngine\LuaBind\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Externals\luabind-deboostified\src\stack_content_by_name.cpp">
+      <Filter>ScriptEngine\LuaBind\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Externals\luabind-deboostified\src\weak_ref.cpp">
+      <Filter>ScriptEngine\LuaBind\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Externals\luabind-deboostified\src\wrapper_base.cpp">
+      <Filter>ScriptEngine\LuaBind\src</Filter>
+    </ClCompile>
+    <ClCompile Include="ScriptEngine\LuaCore.cpp">
+      <Filter>ScriptEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Externals\lua\lapi.c">
+      <Filter>ScriptEngine\Lua\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Externals\lua\lauxlib.c">
+      <Filter>ScriptEngine\Lua\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Externals\lua\lbaselib.c">
+      <Filter>ScriptEngine\Lua\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Externals\lua\lbitlib.c">
+      <Filter>ScriptEngine\Lua\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Externals\lua\lcode.c">
+      <Filter>ScriptEngine\Lua\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Externals\lua\lcorolib.c">
+      <Filter>ScriptEngine\Lua\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Externals\lua\lctype.c">
+      <Filter>ScriptEngine\Lua\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Externals\lua\ldblib.c">
+      <Filter>ScriptEngine\Lua\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Externals\lua\ldebug.c">
+      <Filter>ScriptEngine\Lua\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Externals\lua\ldo.c">
+      <Filter>ScriptEngine\Lua\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Externals\lua\ldump.c">
+      <Filter>ScriptEngine\Lua\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Externals\lua\lfunc.c">
+      <Filter>ScriptEngine\Lua\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Externals\lua\lgc.c">
+      <Filter>ScriptEngine\Lua\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Externals\lua\linit.c">
+      <Filter>ScriptEngine\Lua\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Externals\lua\liolib.c">
+      <Filter>ScriptEngine\Lua\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Externals\lua\llex.c">
+      <Filter>ScriptEngine\Lua\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Externals\lua\lmathlib.c">
+      <Filter>ScriptEngine\Lua\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Externals\lua\lmem.c">
+      <Filter>ScriptEngine\Lua\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Externals\lua\loadlib.c">
+      <Filter>ScriptEngine\Lua\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Externals\lua\lobject.c">
+      <Filter>ScriptEngine\Lua\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Externals\lua\lopcodes.c">
+      <Filter>ScriptEngine\Lua\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Externals\lua\loslib.c">
+      <Filter>ScriptEngine\Lua\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Externals\lua\lparser.c">
+      <Filter>ScriptEngine\Lua\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Externals\lua\lstate.c">
+      <Filter>ScriptEngine\Lua\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Externals\lua\lstring.c">
+      <Filter>ScriptEngine\Lua\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Externals\lua\lstrlib.c">
+      <Filter>ScriptEngine\Lua\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Externals\lua\ltable.c">
+      <Filter>ScriptEngine\Lua\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Externals\lua\ltablib.c">
+      <Filter>ScriptEngine\Lua\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Externals\lua\ltm.c">
+      <Filter>ScriptEngine\Lua\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Externals\lua\lua.c">
+      <Filter>ScriptEngine\Lua\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Externals\lua\luac.c">
+      <Filter>ScriptEngine\Lua\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Externals\lua\lundump.c">
+      <Filter>ScriptEngine\Lua\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Externals\lua\lutf8lib.c">
+      <Filter>ScriptEngine\Lua\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Externals\lua\lvm.c">
+      <Filter>ScriptEngine\Lua\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Externals\lua\lzio.c">
+      <Filter>ScriptEngine\Lua\src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DebugOutput.h">
@@ -202,9 +400,6 @@
     </ClInclude>
     <ClInclude Include="Plane.h">
       <Filter>Common\Primitives</Filter>
-    </ClInclude>
-    <ClInclude Include="Math.h">
-      <Filter>Common</Filter>
     </ClInclude>
     <ClInclude Include="Color.h">
       <Filter>Common</Filter>
@@ -304,6 +499,363 @@
     </ClInclude>
     <ClInclude Include="LibraryResourceFileStotage.h">
       <Filter>Files\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\luabind-deboostified\luabind\adopt_policy.hpp">
+      <Filter>ScriptEngine\LuaBind\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\luabind-deboostified\luabind\back_reference.hpp">
+      <Filter>ScriptEngine\LuaBind\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\luabind-deboostified\luabind\back_reference_fwd.hpp">
+      <Filter>ScriptEngine\LuaBind\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\luabind-deboostified\luabind\class.hpp">
+      <Filter>ScriptEngine\LuaBind\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\luabind-deboostified\luabind\class_info.hpp">
+      <Filter>ScriptEngine\LuaBind\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\luabind-deboostified\luabind\config.hpp">
+      <Filter>ScriptEngine\LuaBind\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\luabind-deboostified\luabind\container_policy.hpp">
+      <Filter>ScriptEngine\LuaBind\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\luabind-deboostified\luabind\copy_policy.hpp">
+      <Filter>ScriptEngine\LuaBind\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\luabind-deboostified\luabind\dependency_policy.hpp">
+      <Filter>ScriptEngine\LuaBind\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\luabind-deboostified\luabind\discard_result_policy.hpp">
+      <Filter>ScriptEngine\LuaBind\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\luabind-deboostified\luabind\error.hpp">
+      <Filter>ScriptEngine\LuaBind\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\luabind-deboostified\luabind\error_callback_fun.hpp">
+      <Filter>ScriptEngine\LuaBind\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\luabind-deboostified\luabind\exception_handler.hpp">
+      <Filter>ScriptEngine\LuaBind\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\luabind-deboostified\luabind\from_stack.hpp">
+      <Filter>ScriptEngine\LuaBind\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\luabind-deboostified\luabind\function.hpp">
+      <Filter>ScriptEngine\LuaBind\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\luabind-deboostified\luabind\function_introspection.hpp">
+      <Filter>ScriptEngine\LuaBind\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\luabind-deboostified\luabind\get_main_thread.hpp">
+      <Filter>ScriptEngine\LuaBind\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\luabind-deboostified\luabind\handle.hpp">
+      <Filter>ScriptEngine\LuaBind\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\luabind-deboostified\luabind\iterator_policy.hpp">
+      <Filter>ScriptEngine\LuaBind\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\luabind-deboostified\luabind\lua_argument_proxy.hpp">
+      <Filter>ScriptEngine\LuaBind\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\luabind-deboostified\luabind\lua_include.hpp">
+      <Filter>ScriptEngine\LuaBind\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\luabind-deboostified\luabind\lua_index_proxy.hpp">
+      <Filter>ScriptEngine\LuaBind\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\luabind-deboostified\luabind\lua_iterator_proxy.hpp">
+      <Filter>ScriptEngine\LuaBind\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\luabind-deboostified\luabind\lua_proxy.hpp">
+      <Filter>ScriptEngine\LuaBind\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\luabind-deboostified\luabind\lua_proxy_interface.hpp">
+      <Filter>ScriptEngine\LuaBind\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\luabind-deboostified\luabind\lua_state_fwd.hpp">
+      <Filter>ScriptEngine\LuaBind\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\luabind-deboostified\luabind\luabind.hpp">
+      <Filter>ScriptEngine\LuaBind\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\luabind-deboostified\luabind\make_function.hpp">
+      <Filter>ScriptEngine\LuaBind\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\luabind-deboostified\luabind\nil.hpp">
+      <Filter>ScriptEngine\LuaBind\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\luabind-deboostified\luabind\no_dependency.hpp">
+      <Filter>ScriptEngine\LuaBind\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\luabind-deboostified\luabind\object.hpp">
+      <Filter>ScriptEngine\LuaBind\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\luabind-deboostified\luabind\open.hpp">
+      <Filter>ScriptEngine\LuaBind\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\luabind-deboostified\luabind\operator.hpp">
+      <Filter>ScriptEngine\LuaBind\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\luabind-deboostified\luabind\out_value_policy.hpp">
+      <Filter>ScriptEngine\LuaBind\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\luabind-deboostified\luabind\pointer_traits.hpp">
+      <Filter>ScriptEngine\LuaBind\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\luabind-deboostified\luabind\prefix.hpp">
+      <Filter>ScriptEngine\LuaBind\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\luabind-deboostified\luabind\raw_policy.hpp">
+      <Filter>ScriptEngine\LuaBind\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\luabind-deboostified\luabind\return_reference_to_policy.hpp">
+      <Filter>ScriptEngine\LuaBind\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\luabind-deboostified\luabind\scope.hpp">
+      <Filter>ScriptEngine\LuaBind\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\luabind-deboostified\luabind\set_package_preload.hpp">
+      <Filter>ScriptEngine\LuaBind\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\luabind-deboostified\luabind\shared_ptr_converter.hpp">
+      <Filter>ScriptEngine\LuaBind\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\luabind-deboostified\luabind\tag_function.hpp">
+      <Filter>ScriptEngine\LuaBind\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\luabind-deboostified\luabind\typeid.hpp">
+      <Filter>ScriptEngine\LuaBind\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\luabind-deboostified\luabind\version.hpp">
+      <Filter>ScriptEngine\LuaBind\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\luabind-deboostified\luabind\weak_ref.hpp">
+      <Filter>ScriptEngine\LuaBind\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\luabind-deboostified\luabind\wrapper_base.hpp">
+      <Filter>ScriptEngine\LuaBind\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\luabind-deboostified\luabind\yield_policy.hpp">
+      <Filter>ScriptEngine\LuaBind\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\luabind-deboostified\luabind\detail\call.hpp">
+      <Filter>ScriptEngine\LuaBind\inc\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\luabind-deboostified\luabind\detail\call_function.hpp">
+      <Filter>ScriptEngine\LuaBind\inc\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\luabind-deboostified\luabind\detail\call_member.hpp">
+      <Filter>ScriptEngine\LuaBind\inc\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\luabind-deboostified\luabind\detail\call_shared.hpp">
+      <Filter>ScriptEngine\LuaBind\inc\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\luabind-deboostified\luabind\detail\call_traits.hpp">
+      <Filter>ScriptEngine\LuaBind\inc\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\luabind-deboostified\luabind\detail\class_registry.hpp">
+      <Filter>ScriptEngine\LuaBind\inc\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\luabind-deboostified\luabind\detail\class_rep.hpp">
+      <Filter>ScriptEngine\LuaBind\inc\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\luabind-deboostified\luabind\detail\constructor.hpp">
+      <Filter>ScriptEngine\LuaBind\inc\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\luabind-deboostified\luabind\detail\conversion_storage.hpp">
+      <Filter>ScriptEngine\LuaBind\inc\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\luabind-deboostified\luabind\detail\crtp_iterator.hpp">
+      <Filter>ScriptEngine\LuaBind\inc\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\luabind-deboostified\luabind\detail\debug.hpp">
+      <Filter>ScriptEngine\LuaBind\inc\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\luabind-deboostified\luabind\detail\decorate_type.hpp">
+      <Filter>ScriptEngine\LuaBind\inc\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\luabind-deboostified\luabind\detail\deduce_signature.hpp">
+      <Filter>ScriptEngine\LuaBind\inc\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\luabind-deboostified\luabind\detail\enum_maker.hpp">
+      <Filter>ScriptEngine\LuaBind\inc\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\luabind-deboostified\luabind\detail\format_signature.hpp">
+      <Filter>ScriptEngine\LuaBind\inc\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\luabind-deboostified\luabind\detail\garbage_collector.hpp">
+      <Filter>ScriptEngine\LuaBind\inc\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\luabind-deboostified\luabind\detail\inheritance.hpp">
+      <Filter>ScriptEngine\LuaBind\inc\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\luabind-deboostified\luabind\detail\instance_holder.hpp">
+      <Filter>ScriptEngine\LuaBind\inc\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\luabind-deboostified\luabind\detail\link_compatibility.hpp">
+      <Filter>ScriptEngine\LuaBind\inc\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\luabind-deboostified\luabind\detail\make_instance.hpp">
+      <Filter>ScriptEngine\LuaBind\inc\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\luabind-deboostified\luabind\detail\meta.hpp">
+      <Filter>ScriptEngine\LuaBind\inc\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\luabind-deboostified\luabind\detail\object.hpp">
+      <Filter>ScriptEngine\LuaBind\inc\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\luabind-deboostified\luabind\detail\object_rep.hpp">
+      <Filter>ScriptEngine\LuaBind\inc\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\luabind-deboostified\luabind\detail\open.hpp">
+      <Filter>ScriptEngine\LuaBind\inc\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\luabind-deboostified\luabind\detail\operator_id.hpp">
+      <Filter>ScriptEngine\LuaBind\inc\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\luabind-deboostified\luabind\detail\other.hpp">
+      <Filter>ScriptEngine\LuaBind\inc\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\luabind-deboostified\luabind\detail\pcall.hpp">
+      <Filter>ScriptEngine\LuaBind\inc\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\luabind-deboostified\luabind\detail\policy.hpp">
+      <Filter>ScriptEngine\LuaBind\inc\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\luabind-deboostified\luabind\detail\primitives.hpp">
+      <Filter>ScriptEngine\LuaBind\inc\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\luabind-deboostified\luabind\detail\property.hpp">
+      <Filter>ScriptEngine\LuaBind\inc\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\luabind-deboostified\luabind\detail\push_to_lua.hpp">
+      <Filter>ScriptEngine\LuaBind\inc\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\luabind-deboostified\luabind\detail\ref.hpp">
+      <Filter>ScriptEngine\LuaBind\inc\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\luabind-deboostified\luabind\detail\signature_match.hpp">
+      <Filter>ScriptEngine\LuaBind\inc\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\luabind-deboostified\luabind\detail\stack_utils.hpp">
+      <Filter>ScriptEngine\LuaBind\inc\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\luabind-deboostified\luabind\detail\type_traits.hpp">
+      <Filter>ScriptEngine\LuaBind\inc\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\luabind-deboostified\luabind\detail\conversion_policies\conversion_base.hpp">
+      <Filter>ScriptEngine\LuaBind\inc\detail\conversion_policies</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\luabind-deboostified\luabind\detail\conversion_policies\conversion_policies.hpp">
+      <Filter>ScriptEngine\LuaBind\inc\detail\conversion_policies</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\luabind-deboostified\luabind\detail\conversion_policies\enum_converter.hpp">
+      <Filter>ScriptEngine\LuaBind\inc\detail\conversion_policies</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\luabind-deboostified\luabind\detail\conversion_policies\function_converter.hpp">
+      <Filter>ScriptEngine\LuaBind\inc\detail\conversion_policies</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\luabind-deboostified\luabind\detail\conversion_policies\lua_proxy_converter.hpp">
+      <Filter>ScriptEngine\LuaBind\inc\detail\conversion_policies</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\luabind-deboostified\luabind\detail\conversion_policies\native_converter.hpp">
+      <Filter>ScriptEngine\LuaBind\inc\detail\conversion_policies</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\luabind-deboostified\luabind\detail\conversion_policies\pointer_converter.hpp">
+      <Filter>ScriptEngine\LuaBind\inc\detail\conversion_policies</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\luabind-deboostified\luabind\detail\conversion_policies\reference_converter.hpp">
+      <Filter>ScriptEngine\LuaBind\inc\detail\conversion_policies</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\luabind-deboostified\luabind\detail\conversion_policies\value_converter.hpp">
+      <Filter>ScriptEngine\LuaBind\inc\detail\conversion_policies</Filter>
+    </ClInclude>
+    <ClInclude Include="MathTypes.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="ScriptEngine\LuaCore.h">
+      <Filter>ScriptEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\lua\lapi.h">
+      <Filter>ScriptEngine\Lua\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\lua\lauxlib.h">
+      <Filter>ScriptEngine\Lua\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\lua\lcode.h">
+      <Filter>ScriptEngine\Lua\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\lua\lctype.h">
+      <Filter>ScriptEngine\Lua\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\lua\ldebug.h">
+      <Filter>ScriptEngine\Lua\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\lua\ldo.h">
+      <Filter>ScriptEngine\Lua\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\lua\lfunc.h">
+      <Filter>ScriptEngine\Lua\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\lua\lgc.h">
+      <Filter>ScriptEngine\Lua\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\lua\llex.h">
+      <Filter>ScriptEngine\Lua\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\lua\llimits.h">
+      <Filter>ScriptEngine\Lua\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\lua\lmem.h">
+      <Filter>ScriptEngine\Lua\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\lua\lobject.h">
+      <Filter>ScriptEngine\Lua\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\lua\lopcodes.h">
+      <Filter>ScriptEngine\Lua\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\lua\lparser.h">
+      <Filter>ScriptEngine\Lua\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\lua\lprefix.h">
+      <Filter>ScriptEngine\Lua\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\lua\lstate.h">
+      <Filter>ScriptEngine\Lua\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\lua\lstring.h">
+      <Filter>ScriptEngine\Lua\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\lua\ltable.h">
+      <Filter>ScriptEngine\Lua\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\lua\ltm.h">
+      <Filter>ScriptEngine\Lua\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\lua\lua.h">
+      <Filter>ScriptEngine\Lua\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\lua\luaconf.h">
+      <Filter>ScriptEngine\Lua\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\lua\lualib.h">
+      <Filter>ScriptEngine\Lua\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\lua\lundump.h">
+      <Filter>ScriptEngine\Lua\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\lua\lvm.h">
+      <Filter>ScriptEngine\Lua\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\lua\lzio.h">
+      <Filter>ScriptEngine\Lua\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\lua\lua.hpp">
+      <Filter>ScriptEngine\Lua\inc</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

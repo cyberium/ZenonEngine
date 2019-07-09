@@ -18,7 +18,7 @@
 #include "Macros.h"
 
 // Primitives
-#include "Math.h"
+#include "MathTypes.h"
 #include "BoundingBox.h"
 #include "BoundingRect.h"
 #include "BoundingSphere.h"

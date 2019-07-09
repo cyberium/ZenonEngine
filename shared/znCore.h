@@ -25,3 +25,6 @@
 
 // Events
 #include "../znCore/Events.h"
+
+// ScriptEngine
+#include "../znCore/ScriptEngine/LuaCore.h"
