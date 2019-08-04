@@ -1,6 +1,6 @@
 #pragma once
 
-class CDebugOutput : public IDebugOutput
+class OW_ENGINE_API CDebugOutput : public IDebugOutput
 {
 public:
 	virtual ~CDebugOutput()	{}

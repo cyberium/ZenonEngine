@@ -1,6 +1,6 @@
 #pragma once
 
-class Object
+class OW_ENGINE_API Object
 {
 public:
 	virtual bool operator==(const Object& rhs) const;

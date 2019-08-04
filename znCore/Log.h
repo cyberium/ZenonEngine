@@ -1,8 +1,10 @@
 #pragma once
 
+#ifndef _MANAGED
 #include <mutex>
+#endif
 
-class CLog : public ILog
+class OW_ENGINE_API CLog : public ILog
 {
 	friend class Log;
 public:
@@ -27,7 +29,9 @@ private:
 	std::shared_ptr<IDebugOutput> m_DebugOutput_ConsoleWindows;
 
 	std::vector<std::shared_ptr<IDebugOutput>> m_DebugOutputs;
+#ifndef _MANAGED
 	std::mutex m_Mutex;
+#endif
 };
 
 // Helper class to fast access

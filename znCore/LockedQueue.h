@@ -1,22 +1,8 @@
-/*
-* Copyright (C) 2008-2018 TrinityCore <https://www.trinitycore.org/>
-* Copyright (C) 2005-2008 MaNGOS <http://getmangos.com/>
-*
-* This program is free software; you can redistribute it and/or modify it
-* under the terms of the GNU General Public License as published by the
-* Free Software Foundation; either version 2 of the License, or (at your
-* option) any later version.
-*
-* This program is distributed in the hope that it will be useful, but WITHOUT
-* ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
-* FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
-* more details.
-*
-* You should have received a copy of the GNU General Public License along
-* with this program. If not, see <http://www.gnu.org/licenses/>.
-*/
-
 #pragma once
+
+#ifndef _MANAGED
+
+#include <mutex>
 
 template <class T>
 class LockedQueue
@@ -93,3 +79,75 @@ private:
 	std::mutex m_Lock;
 	std::list<T> _queue;
 };
+
+
+#else
+
+template <class T>
+class LockedQueue
+{
+public:
+	void add(const T& item)
+	{
+		lock();
+
+		_queue.push_back(item);
+
+		unlock();
+	}
+
+	bool next(T& result)
+	{
+		if (_queue.empty())
+		{
+			return false;
+		}
+
+		result = _queue.front();
+		_queue.pop_front();
+
+		return true;
+	}
+
+	T& peek(bool autoUnlock = true)
+	{
+		lock();
+
+		T& result = _queue.front();
+
+		if (autoUnlock)
+			unlock();
+
+		return result;
+	}
+
+	void lock()
+	{
+
+	}
+
+	void unlock()
+	{
+
+	}
+
+	void pop()
+	{
+		_queue.pop_front();
+	}
+
+	bool empty()
+	{
+		return _queue.empty();
+	}
+
+	std::list<T>& getList()
+	{
+		return _queue;
+	}
+
+private:
+	std::list<T> _queue;
+};
+
+#endif

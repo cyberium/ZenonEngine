@@ -29,6 +29,4 @@ public:
 
 private:
     MeshList          m_Meshes;
-    std::mutex        m_MeshMutex;
-
 };

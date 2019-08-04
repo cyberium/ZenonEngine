@@ -2,7 +2,7 @@
 
 #include "ByteBuffer.h"
 
-class CFile : public IFile
+class OW_ENGINE_API CFile : public IFile
 {
 public:
 	 CFile(const std::string& _root, const std::string& _fullFileName);

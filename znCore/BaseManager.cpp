@@ -4,9 +4,6 @@
 #include "BaseManager.h"
 
 
-std::shared_ptr<CBaseManager> _BaseManager;
-
-
 CBaseManager::CBaseManager()
 {
 	OutputDebugString(L"CBaseManager created.\n");

@@ -2,7 +2,7 @@
 
 #include "DebugOutput.h"
 
-class DebugOutput_Log : public CDebugOutput
+class OW_ENGINE_API DebugOutput_Log : public CDebugOutput
 {
 public:
 	DebugOutput_Log();

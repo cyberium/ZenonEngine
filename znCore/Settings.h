@@ -3,7 +3,7 @@
 #include "GroupQuality.h"
 #include "GroupVideo.h"
 
-class CSettings : public ISettings
+class OW_ENGINE_API CSettings : public ISettings
 {
 public:
 	CSettings();

@@ -28,7 +28,6 @@ public:
 
 	// IWindowObjectEx
 	void SetWindowHandle(HWND HWnd);
-
 	void RegisterWindowClass(HINSTANCE HInstance);
 	void UnregisterWindowClass();
 	HWND CreateWindowInstance(int nWidth, int nHeight) ;
