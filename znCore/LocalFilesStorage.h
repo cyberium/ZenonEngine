@@ -1,6 +1,6 @@
 #pragma once
 
-class OW_ENGINE_API CLocalFilesStorage : public IFilesStorage, public IFilesStorageEx
+class CLocalFilesStorage : public IFilesStorage, public IFilesStorageEx
 {
 public:
 	CLocalFilesStorage(std::string _path, Priority _priority = PRIOR_NORMAL);

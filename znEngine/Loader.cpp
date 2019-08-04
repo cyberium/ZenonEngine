@@ -88,7 +88,6 @@ void CLoader::SetCamera(std::shared_ptr<Camera> _camera)
 	m_Camera = _camera;
 }
 
-#ifndef _MANAGED
 void CLoader::LoaderThread(std::future<void> _promiseExiter)
 {
 	while (_promiseExiter.wait_for(std::chrono::milliseconds(0)) == std::future_status::timeout)
@@ -130,8 +129,6 @@ void CLoader::SorterThread(std::future<void> _promiseExiter)
 		std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 	}
 }
-
-#endif
 
 bool CLoader::sortFunctor::operator()(const std::shared_ptr<ILoadable>& first, const std::shared_ptr<ILoadable>& second)
 {

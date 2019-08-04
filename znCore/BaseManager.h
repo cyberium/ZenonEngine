@@ -5,7 +5,7 @@ inline bool operator<(const GUID& lhs, const GUID& rhs)
 	return memcmp(&lhs, &rhs, sizeof(GUID)) < 0;
 }
 
-class OW_ENGINE_API CBaseManager : public IBaseManager
+class CBaseManager : public IBaseManager
 {
 public:
 	CBaseManager();
@@ -20,7 +20,7 @@ private:
 	std::map<GUID, std::shared_ptr<IManager>> m_Managers;
 };
 
-extern OW_ENGINE_API std::shared_ptr<CBaseManager> _BaseManager;
+extern std::shared_ptr<CBaseManager> _BaseManager;
 
 // Helpers
 

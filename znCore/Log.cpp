@@ -108,9 +108,7 @@ bool CLog::DeleteDebugOutput(std::shared_ptr<IDebugOutput> _debugOutput)
 
 void CLog::PushMessageToAllDebugOutputs(const char* _message, IDebugOutput::DebugMessageType _type, va_list& _vaList)
 {
-#ifndef _MANAGED
 	std::unique_lock<std::mutex> lck(m_Mutex, std::defer_lock);
-#endif
 
 	for (auto it : m_DebugOutputs)
 	{

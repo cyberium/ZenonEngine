@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29123.88
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2027
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "znCore", "znCore\znCore.vcxproj", "{A4E6F769-0036-4128-A409-495D9207F587}"
 EndProject
@@ -30,13 +30,6 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FreeImageLib", "Externals\FreeImage-3.17.0\FreeImageLib.vcxproj", "{9E219DF2-315D-478E-8A07-8960C377CE1E}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LibPNG", "Externals\FreeImage-3.17.0\LibPNG\LibPNG.vcxproj", "{7DB10B50-CE00-4D7A-B322-6824F05D2FCB}"
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "znEditor", "znEditor\znEditor.vcxproj", "{AB305528-736E-4FC9-AFAA-45330B6BD79B}"
-	ProjectSection(ProjectDependencies) = postProject
-		{51252F60-B8DC-4090-BBA3-DD05942110F0} = {51252F60-B8DC-4090-BBA3-DD05942110F0}
-		{590C7C79-AE16-4DB2-B61C-BB7B25B76B42} = {590C7C79-AE16-4DB2-B61C-BB7B25B76B42}
-		{102DC6F1-CB83-4203-BA24-1C9E812FDE4B} = {102DC6F1-CB83-4203-BA24-1C9E812FDE4B}
-	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -142,14 +135,6 @@ Global
 		{7DB10B50-CE00-4D7A-B322-6824F05D2FCB}.Release|x64.Build.0 = Release|x64
 		{7DB10B50-CE00-4D7A-B322-6824F05D2FCB}.Release|x86.ActiveCfg = Release|Win32
 		{7DB10B50-CE00-4D7A-B322-6824F05D2FCB}.Release|x86.Build.0 = Release|Win32
-		{AB305528-736E-4FC9-AFAA-45330B6BD79B}.Debug|x64.ActiveCfg = Debug|x64
-		{AB305528-736E-4FC9-AFAA-45330B6BD79B}.Debug|x64.Build.0 = Debug|x64
-		{AB305528-736E-4FC9-AFAA-45330B6BD79B}.Debug|x86.ActiveCfg = Debug|Win32
-		{AB305528-736E-4FC9-AFAA-45330B6BD79B}.Debug|x86.Build.0 = Debug|Win32
-		{AB305528-736E-4FC9-AFAA-45330B6BD79B}.Release|x64.ActiveCfg = Release|x64
-		{AB305528-736E-4FC9-AFAA-45330B6BD79B}.Release|x64.Build.0 = Release|x64
-		{AB305528-736E-4FC9-AFAA-45330B6BD79B}.Release|x86.ActiveCfg = Release|Win32
-		{AB305528-736E-4FC9-AFAA-45330B6BD79B}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

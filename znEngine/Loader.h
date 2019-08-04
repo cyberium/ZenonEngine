@@ -2,10 +2,6 @@
 
 //#define LOADER_ENABLED
 
-#ifndef _MANAGED
-#include <future>
-#endif
-
 class OW_ENGINE_API CLoader : public ILoader
 {
 public:
@@ -20,10 +16,8 @@ public:
 
 	void SetCamera(std::shared_ptr<Camera> _camera);
 
-#ifndef _MANAGED
 	void LoaderThread(std::future<void> _promiseExiter);
 	void SorterThread(std::future<void> futureObj);
-#endif
 
 	struct sortFunctor 
 	{
@@ -43,13 +37,11 @@ private:
 	LockedQueue<std::shared_ptr<ILoadable>> m_QueueLoad;
 	LockedQueue<std::shared_ptr<ILoadable>> m_QueueDelete;
 
-#ifndef _MANAGED
 	std::promise<void>					   m_Thread_Loader_Promise_Exiter[c_PoolSize];
 	std::thread                            m_Thread_Loader[c_PoolSize];
 
 	std::promise<void>					   m_Thread_Sorter_Promise;
 	std::thread                            m_Thread_Sorter;
-#endif
 
 	std::shared_ptr<Camera>                m_Camera;
 };

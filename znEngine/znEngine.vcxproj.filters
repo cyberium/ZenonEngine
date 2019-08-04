@@ -519,8 +519,6 @@
     <Text Include="Resources\shaders_D3D\3D\Textured.hlsl">
       <Filter>Resources\shaders_D3D\3D</Filter>
     </Text>
-    <Text Include="Resources\shaders_OGL\UI\UI_Font.ps" />
-    <Text Include="Resources\shaders_OGL\UI\UI_Font.vs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="SceneFunctional\3D\SceneNode3D.inl">
@@ -537,6 +535,12 @@
     </None>
     <None Include="SceneFunctional\UI\SceneNodeUI.inl">
       <Filter>Scene Funcitonal\UI</Filter>
+    </None>
+    <None Include="Resources\shaders_OGL\UI\UI_Font.ps">
+      <Filter>Resources\Shaders_OGL\UI</Filter>
+    </None>
+    <None Include="Resources\shaders_OGL\UI\UI_Font.vs">
+      <Filter>Resources\Shaders_OGL\UI</Filter>
     </None>
   </ItemGroup>
 </Project>

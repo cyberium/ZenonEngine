@@ -1,6 +1,7 @@
 #pragma once
 
-class OW_ENGINE_API CFilesManager : public IFilesManager
+
+class CFilesManager : public IFilesManager
 {
 public:
 	CFilesManager();

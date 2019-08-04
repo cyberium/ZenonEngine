@@ -1,11 +1,5 @@
 #pragma once
 
-#ifdef OW_ENGINE_EXPORTS
-#define OW_ENGINE_API __declspec(dllexport) 
-#else
-#define OW_ENGINE_API __declspec(dllimport) 
-#endif
-
 #include <algorithm>
 #include <codecvt>
 #include <functional>
@@ -14,7 +8,9 @@
 #include <memory>
 
 // STL threads
+#include <mutex>
 #include <atomic>
+#include <future>
 #include <chrono>
 
 // Macros
