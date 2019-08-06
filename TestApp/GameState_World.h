@@ -31,5 +31,5 @@ private:
     const uint16 c_WindowsWidth = 1280;
     const uint16 c_WindowsHeight = 1024;
     //const vec4 g_ClearColor = vec4(0.39f, 0.58f, 0.93f, 1.0f);
-    const vec4 g_ClearColor = vec4(0.7f, 0.2f, 0.2f, 0.3f);
+    const vec4 g_ClearColor = vec4(0.2f, 0.2f, 0.2f, 0.3f);
 };
