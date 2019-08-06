@@ -2,7 +2,7 @@
 
 #include <mutex>
 
-class CLog : public ILog
+class OW_ENGINE_API CLog : public ILog
 {
 	friend class Log;
 public:

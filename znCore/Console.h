@@ -2,7 +2,7 @@
 
 #include "ConsoleCommand.h"
 
-class CConsole : public IConsole
+class OW_ENGINE_API CConsole : public IConsole
 {
 public:
 	CConsole();

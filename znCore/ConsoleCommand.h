@@ -2,7 +2,7 @@
 
 #include <functional>
 
-class ConsoleCommand : public IConsoleCommand
+class OW_ENGINE_API ConsoleCommand : public IConsoleCommand
 {
 public:
 	ConsoleCommand(const std::string& _commandName, const std::function<void()>& _function, bool _hasArgs = false);
