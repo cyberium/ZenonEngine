@@ -19,8 +19,8 @@ public:
 	                                                Camera();
 	virtual                                         ~Camera();
 
-	void                                            SetViewport(const Viewport& viewport);
-	const Viewport&                                 GetViewport() const;
+	void                                            SetViewport(const Viewport * viewport);
+	const Viewport *                                GetViewport() const;
 
 	const Frustum&                                  GetFrustum() const;
 
@@ -65,7 +65,7 @@ protected:
 	virtual void                                    UpdateViewMatrix();
 	virtual void                                    UpdateViewProjectionInverse();
 
-	Viewport                                        m_Viewport;
+	const Viewport *                                m_Viewport;
 	Frustum                                         m_Frustum;
 
 	// Projection parameters

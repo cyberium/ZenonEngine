@@ -89,19 +89,19 @@ bool RasterizerState::GetDepthClipEnabled() const
     return m_DepthClipEnabled;
 }
 
-void RasterizerState::SetViewport(const Viewport& viewport)
+void RasterizerState::SetViewport(const Viewport * viewport)
 {
     m_Viewports[0] = viewport;
     m_ViewportsDirty = true;
 }
 
-void RasterizerState::SetViewports(const std::vector<Viewport>& viewports)
+void RasterizerState::SetViewports(const std::vector<const Viewport *>& viewports)
 {
     m_Viewports = viewports;
     m_ViewportsDirty = true;
 }
 
-const std::vector<Viewport>& RasterizerState::GetViewports()
+const std::vector<const Viewport *>& RasterizerState::GetViewports()
 {
     return m_Viewports;
 }

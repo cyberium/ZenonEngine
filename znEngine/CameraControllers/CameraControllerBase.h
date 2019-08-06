@@ -13,7 +13,7 @@ public:
     virtual void                                    OnUpdate(UpdateEventArgs& e) override;
 
     // Window events
-    virtual void                                    OnResize(ResizeEventArgs& e);
+    virtual void                                    OnResize(ResizeEventArgs& e) override;
 
 	// Keyboard event
 	virtual void                                    OnKeyPressed(KeyEventArgs& e) override;

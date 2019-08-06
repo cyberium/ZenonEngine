@@ -77,8 +77,6 @@ void RenderWindowOGL::CreateSwapChain()
     UINT windowHeight2 = GetWindowHeight();
     bool vSync2 = IsVSync();
 
-    std::string windowName2 = GetWindowName();
-
     // Depth/stencil buffer
     Texture::TextureFormat depthStencilTextureFormat(
         Texture::Components::Depth,

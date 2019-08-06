@@ -74,7 +74,7 @@ void CGBuffer::Load(uint32 width, uint32 height)
 	m_RenderTarget->AttachTexture(IRenderTarget::AttachmentPoint::DepthStencil, depthStencilTexture /*renderWindow->GetRenderTarget()->GetTexture(IRenderTarget::AttachmentPoint::DepthStencil)*/);
 }
 
-void CGBuffer::Load2(const Viewport& _viewPort)
+void CGBuffer::Load2(const Viewport * _viewPort)
 {
 	IApplication& app = Application::Get();
 	std::shared_ptr<IRenderDevice> renderDevice = app.GetRenderDevice();

@@ -32,20 +32,6 @@
     </ClCompile>
     <ClCompile Include="main.cpp" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\znRenderDX11\znRenderDX11.vcxproj">
-      <Project>{590c7c79-ae16-4db2-b61c-bb7b25b76b42}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\znEngine\znEngine.vcxproj">
-      <Project>{51252f60-b8dc-4090-bba3-dd05942110f0}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\znRenderDX11\znRenderDX11.vcxproj">
-      <Project>{590c7c79-ae16-4db2-b61c-bb7b25b76b42}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\znRenderOpenGL\znRenderOpenGL.vcxproj">
-      <Project>{102dc6f1-cb83-4203-ba24-1c9e812fde4b}</Project>
-    </ProjectReference>
-  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{552A42EB-9115-4D9D-90CA-0938EFF5F664}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
@@ -161,7 +147,6 @@
       <WarningLevel>Level3</WarningLevel>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <Optimization>MaxSpeed</Optimization>
-      <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>false</SDLCheck>
@@ -186,7 +171,6 @@
       <WarningLevel>Level3</WarningLevel>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <Optimization>MaxSpeed</Optimization>
-      <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>false</SDLCheck>

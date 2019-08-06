@@ -134,9 +134,9 @@ public:
 	* Specify an array of viewports to bind to the rasterizer stage.
 	* The helper function SetViewport can be used to set the viewport at index 0.
 	*/
-	virtual void SetViewport(const Viewport& viewport);
-	virtual void SetViewports(const std::vector<Viewport>& viewports);
-	virtual const std::vector<Viewport>& GetViewports();
+	virtual void SetViewport(const Viewport* viewport);
+	virtual void SetViewports(const std::vector<const Viewport*>& viewports);
+	virtual const std::vector<const Viewport *>& GetViewports();
 
 	/**
 	* Enable scissor-rectangle culling.
@@ -222,7 +222,7 @@ protected:
     typedef std::vector<Rect> RectList;
     RectList                                        m_ScissorRects;
 
-    typedef std::vector<Viewport> ViewportList;
+    typedef std::vector<const Viewport*> ViewportList;
     ViewportList                                    m_Viewports;
 
     bool                                            m_StateDirty;

@@ -32,6 +32,8 @@ void CFreeCameraController::OnUpdate(UpdateEventArgs& e)
 {
 	float moveMultiplier = (TranslateFaster) ? 100 : 50;
 
+	m_Camera->GetViewProjectionInverseMatrix();
+
     m_Camera->DoMoveFront(Forward);
     m_Camera->DoMoveBack(Back);
     m_Camera->DoMoveLeft(Left);

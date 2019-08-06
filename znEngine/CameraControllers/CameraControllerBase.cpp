@@ -3,7 +3,8 @@
 // General
 #include "CameraControllerBase.h"
 
-
+// Additional
+#include "Application.h"
 
 
 CCameraControllerBase::CCameraControllerBase()
@@ -42,6 +43,12 @@ void CCameraControllerBase::OnUpdate(UpdateEventArgs& e)
 //
 void CCameraControllerBase::OnResize(ResizeEventArgs& e)
 {
+	IApplication& app = Application::Get();
+	std::shared_ptr<IRenderDevice> renderDevice = app.GetRenderDevice();
+	std::shared_ptr<RenderWindow> renderWindow = app.GetRenderWindow();
+
+	m_Camera->SetViewport(renderWindow->GetViewport());
+	m_Camera->SetProjectionRH(45.0f, static_cast<float>(e.Width) / static_cast<float>(e.Height), 0.5f, 4000.0f);
 }
 
 
@@ -89,8 +96,8 @@ Ray CCameraControllerBase::ScreenPointToRay(vec2 screenPoint) const
 {
 	mat4 clipToWorld = m_Camera->GetViewProjectionInverseMatrix();
 	vec4 clipPoint = vec4(screenPoint, 1, 1);
-	clipPoint.x = (screenPoint.x - m_Camera->GetViewport().X) / m_Camera->GetViewport().Width;
-	clipPoint.y = 1.0f - (screenPoint.y - m_Camera->GetViewport().Y) / m_Camera->GetViewport().Height;
+	clipPoint.x = (screenPoint.x - m_Camera->GetViewport()->GetX()) / m_Camera->GetViewport()->GetWidth();
+	clipPoint.y = 1.0f - (screenPoint.y - m_Camera->GetViewport()->GetY()) / m_Camera->GetViewport()->GetHeight();
 	clipPoint = clipPoint * 2.0f - 1.0f;
 
 	vec3 p0 = m_Camera->GetTranslation();

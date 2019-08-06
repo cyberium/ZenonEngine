@@ -38,7 +38,7 @@ void RenderTechnique::Render(RenderEventArgs& renderEventArgs)
 	}
 }
 
-void RenderTechnique::UpdateViewport(Viewport _viewport)
+void RenderTechnique::UpdateViewport(const Viewport * _viewport)
 {
 	for (auto pass : m_Passes)
 	{

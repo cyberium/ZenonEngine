@@ -101,9 +101,9 @@ void CGameState::OnUpdate(UpdateEventArgs & e)
 //
 void CGameState::OnResize(ResizeEventArgs & e)
 {
-    m_Viewport.Width = e.Width;
-    m_Viewport.Height = e.Height;
-    m_Viewport.OrthoMatrix = glm::ortho(0.0f, m_Viewport.Width, m_Viewport.Height, 0.0f, 0.0f, 1.0f);
+	m_DefaultCameraController->OnResize(e);
+
+
 }
 
 

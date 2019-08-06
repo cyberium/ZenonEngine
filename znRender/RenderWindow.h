@@ -4,12 +4,13 @@
 
 #include "RenderTarget.h"
 #include "RenderEvents.h"
+#include "Viewport.h"
 
 // FORWARD BEGIN
 class IRenderDevice;
 // FORWARD END
 
-class OW_ENGINE_API RenderWindow : public Object
+class OW_ENGINE_API RenderWindow : public Object, public std::enable_shared_from_this<RenderWindow>
 {
 	typedef Object base;
 public:
@@ -22,8 +23,6 @@ public:
 
 	void                                            SetMousePosition(vec2 _position);
 
-	void                                            SetWindowName(const std::string& _name);
-	std::string                                     GetWindowName() const;
 	int                                             GetWindowWidth() const;
 	int                                             GetWindowHeight() const;
 	glm::ivec2                                      GetWindowSize() const;
@@ -34,6 +33,7 @@ public:
 
     std::shared_ptr<IRenderDevice>                  GetRenderDevice() const;
 	std::shared_ptr<IRenderTarget>                  GetRenderTarget() const;
+	const Viewport *                                GetViewport() const;
 
 protected:
     virtual void                                    CreateSwapChain();
@@ -104,7 +104,10 @@ public:
 	Event               MouseBlur;
 	virtual      void OnMouseBlur(EventArgs& e);
 
+	LRESULT				WndProc(HWND, UINT, WPARAM, LPARAM);
+
 private:
+	Viewport                                        m_Viewport;
 	IWindowObject *                                 m_WindowObject;
 
     std::weak_ptr<IRenderDevice>                    m_Device;

@@ -9,7 +9,7 @@ public:
 	virtual ~CGBuffer();
 
 	void Load(uint32 width, uint32 height);
-	void Load2(const Viewport& _viewPort);
+	void Load2(const Viewport * _viewPort);
 
 	std::shared_ptr<IRenderTarget> GetRenderTarget() const;
 	std::shared_ptr<DeferredLightingPass> GetPass() const;

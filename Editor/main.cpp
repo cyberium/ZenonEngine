@@ -42,9 +42,12 @@ int main(int argc, char *argv[])
 	QApplication a(argc, argv);
 	MainEditor w;
 
+
 	Application app(_BaseManager);
 	std::shared_ptr<IRenderDevice> renderDevice = app.CreateRenderDevice(IRenderDevice::DeviceType::DirectX);
 	std::shared_ptr<RenderWindow> renderWindow = app.CreateRenderWindow(dynamic_cast<IWindowObject*>(w.getUI().frame), true);
+
+	dynamic_cast<Direct3DWidget*>(w.getUI().frame)->SetRenderWindow(renderWindow);
 
 	std::shared_ptr<IFontsManager> fontsManager = std::make_shared<FontsManager>();
 	AddManager<IFontsManager>(fontsManager);

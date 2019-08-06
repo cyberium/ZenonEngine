@@ -33,15 +33,15 @@ bool BaseUIPass::Visit(std::shared_ptr<CUIBaseNode> nodeUI)
 {
     GetRenderEventArgs()->Node = nodeUI.get();
 
-	const Viewport* viewport = GetRenderEventArgs()->Viewport;
-	if (viewport)
+	const Camera* camera = GetRenderEventArgs()->Camera;
+	if (camera)
 	{
-		nodeUI->UpdateViewport(viewport);
+		nodeUI->UpdateViewport(camera->GetViewport());
 
 		PerObject perObjectData;
 		perObjectData.Model = nodeUI->GetComponent<CTransformComponentBase>()->GetWorldTransfom();
 		perObjectData.ModelView = mat4(1.0f);
-		perObjectData.ModelViewProjection = viewport->OrthoMatrix * perObjectData.Model;
+		perObjectData.ModelViewProjection = camera->GetViewport()->GetOrthoMatix() * perObjectData.Model;
 
 		SetPerObjectConstantBufferData(perObjectData);
 

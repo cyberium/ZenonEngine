@@ -8,7 +8,6 @@
 CGameState_World::CGameState_World(const IApplication * _application)
     : base(_application)
 {
-    m_Viewport = Viewport(0, 0, 1280.0f, 1024.0f);
 }
 
 CGameState_World::~CGameState_World()
@@ -23,13 +22,13 @@ bool CGameState_World::Init()
 {
     IApplication& app = Application::Get();
     std::shared_ptr<IRenderDevice> renderDevice = app.GetRenderDevice();
-
+	std::shared_ptr<RenderWindow> renderWindow = app.GetRenderWindow();
 
     //
     // Camera controller
     //
     SetCameraController(std::make_shared<CFreeCameraController>());
-    GetCameraController()->GetCamera()->SetViewport(m_Viewport);
+    GetCameraController()->GetCamera()->SetViewport(renderWindow->GetViewport());
     GetCameraController()->GetCamera()->SetProjectionRH(45.0f, 1280.0f / 1024.0f, 0.5f, 4000.0f);
 
     m_FrameQuery = renderDevice->CreateQuery(Query::QueryType::Timer, 1);
@@ -53,18 +52,16 @@ void CGameState_World::Destroy()
 void CGameState_World::OnResize(ResizeEventArgs & e)
 {
     if (e.Width == 0 || e.Height == 0)
-    {
         return;
-    }
 
-    GetCameraController()->GetCamera()->SetProjectionRH(45.0f, static_cast<float>(e.Width) / static_cast<float>(e.Height), 0.5f, 4000.0f);
+	base::OnResize(e);
 
-    base::OnResize(e);
+	IApplication& app = Application::Get();
+	std::shared_ptr<IRenderDevice> renderDevice = app.GetRenderDevice();
+	std::shared_ptr<RenderWindow> renderWindow = app.GetRenderWindow();
 
-    GetCameraController()->GetCamera()->SetViewport(m_Viewport);
-
-    m_3DTechnique.UpdateViewport(m_Viewport);
-    m_UITechnique.UpdateViewport(m_Viewport);
+    m_3DTechnique.UpdateViewport(renderWindow->GetViewport());
+    m_UITechnique.UpdateViewport(renderWindow->GetViewport());
 }
 
 void CGameState_World::OnPreRender(RenderEventArgs& e)
@@ -75,12 +72,14 @@ void CGameState_World::OnPreRender(RenderEventArgs& e)
 
 void CGameState_World::OnRender(RenderEventArgs& e)
 {
-    e.Viewport = &m_Viewport;
+	IApplication& app = Application::Get();
+	std::shared_ptr<IRenderDevice> renderDevice = app.GetRenderDevice();
+	std::shared_ptr<RenderWindow> renderWindow = app.GetRenderWindow();
+
     e.Camera = GetCameraController()->GetCamera().get();
     Application::Get().GetLoader()->SetCamera(GetCameraController()->GetCamera());
 
     m_3DTechnique.Render(e);
-    m_UITechnique.Render(e);
 }
 
 void CGameState_World::OnPostRender(RenderEventArgs& e)
@@ -105,15 +104,19 @@ void CGameState_World::OnPostRender(RenderEventArgs& e)
 
         std::string title = std::to_string(m_FrameTime);
 
-        Application::Get().GetRenderWindow()->SetWindowName(title);
+        //Application::Get().GetRenderWindow()->SetWindowName(title);
     }
 }
 
 void CGameState_World::OnRenderUI(RenderEventArgs& e)
 {
-    e.Viewport = &m_Viewport;
+	IApplication& app = Application::Get();
+	std::shared_ptr<IRenderDevice> renderDevice = app.GetRenderDevice();
+	std::shared_ptr<RenderWindow> renderWindow = app.GetRenderWindow();
 
-    //m_UITechnique.Render(e);
+	e.Camera = GetCameraController()->GetCamera().get();
+
+    m_UITechnique.Render(e);
 }
 
 //
@@ -126,16 +129,42 @@ void CGameState_World::Load3D()
     std::shared_ptr<IRenderDevice> renderDevice = app.GetRenderDevice();
     std::shared_ptr<RenderWindow> renderWindow = app.GetRenderWindow();
     
+	BlendState::BlendMode alphaBlending(true, false, BlendState::BlendFactor::SrcAlpha, BlendState::BlendFactor::OneMinusSrcAlpha, BlendState::BlendOperation::Add, BlendState::BlendFactor::SrcAlpha, BlendState::BlendFactor::OneMinusSrcAlpha);
+	BlendState::BlendMode disableBlending;
+	DepthStencilState::DepthMode enableDepthWrites(true, DepthStencilState::DepthWrite::Enable);
+	DepthStencilState::DepthMode disableDepthWrites(false, DepthStencilState::DepthWrite::Disable);
+
+	std::shared_ptr<PipelineState> UIPipeline = renderDevice->CreatePipelineState();
+	UIPipeline->GetBlendState().SetBlendMode(disableBlending);
+	UIPipeline->GetDepthStencilState().SetDepthMode(disableDepthWrites);
+	UIPipeline->GetRasterizerState().SetCullMode(RasterizerState::CullMode::None);
+	UIPipeline->GetRasterizerState().SetFillMode(RasterizerState::FillMode::Solid);
+	UIPipeline->SetRenderTarget(renderWindow->GetRenderTarget());
+	UIPipeline->GetRasterizerState().SetViewport(renderWindow->GetViewport());
+
+	
+	std::shared_ptr<SceneNode3D> sceneNode = m_3DScene->CreateSceneNode<SceneNode3D>(m_3DScene->GetRootNode());
+
+	std::shared_ptr<IMesh> mesh = renderDevice->CreateCube();
+
+	std::shared_ptr<MaterialDebug> mat = std::make_shared<MaterialDebug>(_RenderDevice->CreateMaterial());
+	mat->SetDiffuseColor(vec4(1.0f, 1.0f, 0.0f, 1.0f));
+	mesh->SetMaterial(mat);
+
+	sceneNode->GetComponent<CTransformComponent3D>()->SetScale(vec3(15, 15, 15));
+	sceneNode->GetComponent<CMeshComponent3D>()->AddMesh(mesh);
+
+
 
     m_3DTechnique.AddPass(std::make_shared<ClearRenderTargetPass>(renderWindow->GetRenderTarget(), ClearFlags::All, g_ClearColor, 1.0f, 0));
-
+	m_3DTechnique.AddPass(std::make_shared<BasePass>(m_3DScene, UIPipeline));
 }
 
 void CGameState_World::LoadUI()
 {
     IApplication& app = Application::Get();
     std::shared_ptr<IRenderDevice> renderDevice = app.GetRenderDevice();
-
+	std::shared_ptr<RenderWindow> renderWindow = app.GetRenderWindow();
 
     // Font
     m_CameraPosText = m_UIScene->GetRootNode()->CreateSceneNode<CUITextNode>();
@@ -149,5 +178,5 @@ void CGameState_World::LoadUI()
     //
     // UI Passes
     //
-    AddUIPasses(renderDevice, app.GetRenderWindow()->GetRenderTarget(), &m_UITechnique, m_Viewport, m_UIScene);
+    AddUIPasses(renderDevice, app.GetRenderWindow()->GetRenderTarget(), &m_UITechnique, renderWindow->GetViewport(), m_UIScene);
 }

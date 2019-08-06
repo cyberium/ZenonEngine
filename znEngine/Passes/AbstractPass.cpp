@@ -64,7 +64,7 @@ void AbstractPass::PostRender(RenderEventArgs& e)
 }
 
 
-void AbstractPass::UpdateViewport(Viewport _viewport)
+void AbstractPass::UpdateViewport(const Viewport * _viewport)
 {
     std::shared_ptr<PipelineState> pipelineState = GetPipelineState();
     if (pipelineState)

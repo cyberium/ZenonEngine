@@ -17,6 +17,7 @@ float g_GameDeltaTime = 0.0f;
 float g_ApplicationTime = 0.0f;
 int64_t g_FrameCounter = 0L;
 
+
 std::shared_ptr<RenderWindow> gs_WindowHandle = nullptr;
 IApplication * _ApplicationInstance = nullptr;
 std::shared_ptr<CBaseManager> _BaseManager = nullptr;
@@ -155,10 +156,10 @@ int Application::DoRun()
 
 		m_pRenderDevice->Lock();
 		{
-			RenderEventArgs renderArgs(*this, g_GameDeltaTime * 166.0f, g_ApplicationTime * 166.0f, g_FrameCounter, nullptr, nullptr, nullptr, nullptr);
+			RenderEventArgs renderArgs(*this, g_GameDeltaTime * 166.0f, g_ApplicationTime * 166.0f, g_FrameCounter, nullptr, nullptr, nullptr);
 			OnRender(renderArgs);
 
-			RenderEventArgs renderUIArgs(*this, g_GameDeltaTime, g_ApplicationTime, g_FrameCounter, nullptr, nullptr, nullptr, nullptr);
+			RenderEventArgs renderUIArgs(*this, g_GameDeltaTime, g_ApplicationTime, g_FrameCounter, nullptr, nullptr, nullptr);
 			OnRenderUI(renderUIArgs);
 
 			m_pWindow->Present();
@@ -298,328 +299,19 @@ std::shared_ptr<IGameState> Application::GetGameState()
 
 
 
-// Convert the message ID into a MouseButton ID
-static MouseButtonEventArgs::MouseButton DecodeMouseButton(UINT messageID)
-{
-	MouseButtonEventArgs::MouseButton mouseButton = MouseButtonEventArgs::None;
-	switch (messageID)
-	{
-	case WM_LBUTTONDOWN:
-	case WM_LBUTTONUP:
-	case WM_LBUTTONDBLCLK:
-	{
-		mouseButton = MouseButtonEventArgs::Left;
-	}
-	break;
-	case WM_RBUTTONDOWN:
-	case WM_RBUTTONUP:
-	case WM_RBUTTONDBLCLK:
-	{
-		mouseButton = MouseButtonEventArgs::Right;
-	}
-	break;
-	case WM_MBUTTONDOWN:
-	case WM_MBUTTONUP:
-	case WM_MBUTTONDBLCLK:
-	{
-		mouseButton = MouseButtonEventArgs::Middel;
-	}
-	break;
-	}
 
-	return mouseButton;
-}
 
 LRESULT CALLBACK Application::WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	if (gs_WindowHandle == NULL)
 	{
 		if (message == WM_CREATE)
-		{
 			return 0;
-		}
-		else
-		{
-			return DefWindowProc(hwnd, message, wParam, lParam);
-		}
-	}
 
-	switch (message)
-	{
-	case WM_PAINT:
-	{
-		PAINTSTRUCT paintStruct;
-		HDC hDC = ::BeginPaint(hwnd, &paintStruct);
-		::EndPaint(hwnd, &paintStruct);
-	}
-	break;
-
-
-
-	//
-	// Keyboard events
-	//
-	case WM_KEYDOWN:
-	{
-		MSG charMsg;
-
-		// Get the unicode character (UTF-16)
-		unsigned int c = 0;
-
-		// For printable characters, the next message will be WM_CHAR.
-		// This message contains the character code we need to send the KeyPressed event.
-		// Inspired by the SDL 1.2 implementation.
-		if (PeekMessage(&charMsg, hwnd, 0, 0, PM_NOREMOVE) && charMsg.message == WM_CHAR)
-		{
-			GetMessage(&charMsg, hwnd, 0, 0);
-			c = static_cast<unsigned int>(charMsg.wParam);
-		}
-
-		bool shift = (GetAsyncKeyState(VK_SHIFT) & 0x8000) != 0;
-		bool control = (GetAsyncKeyState(VK_CONTROL) & 0x8000) != 0;
-		bool alt = (GetAsyncKeyState(VK_MENU) & 0x8000) != 0;
-
-		KeyCode key = (KeyCode)wParam;
-		unsigned int scanCode = (lParam & 0x00FF0000) >> 16;
-		KeyEventArgs keyEventArgs(*gs_WindowHandle, key, c, KeyEventArgs::Pressed, control, shift, alt);
-		gs_WindowHandle->OnKeyPressed(keyEventArgs);
-	}
-	break;
-	case WM_KEYUP:
-	{
-		bool shift = (::GetAsyncKeyState(VK_SHIFT) & 0x8000) != 0;
-		bool control = (::GetAsyncKeyState(VK_CONTROL) & 0x8000) != 0;
-		bool alt = (::GetAsyncKeyState(VK_MENU) & 0x8000) != 0;
-
-		KeyCode key = (KeyCode)wParam;
-		unsigned int c = 0;
-		unsigned int scanCode = (lParam & 0x00FF0000) >> 16;
-
-		// Determine which key was released by converting the key code and the scan code
-		// to a printable character (if possible).
-		// Inspired by the SDL 1.2 implementation.
-		unsigned char keyboardState[256];
-		::GetKeyboardState(keyboardState);
-		wchar_t translatedCharacters[4];
-		if (int result = ::ToUnicodeEx((UINT)wParam, scanCode, keyboardState, translatedCharacters, 4, 0, NULL) > 0)
-		{
-			c = translatedCharacters[0];
-		}
-
-		KeyEventArgs keyEventArgs(*gs_WindowHandle, key, c, KeyEventArgs::Released, control, shift, alt);
-		gs_WindowHandle->OnKeyReleased(keyEventArgs);
-	}
-	break;
-	case WM_SETFOCUS:
-	{
-		EventArgs eventArgs(*gs_WindowHandle);
-		gs_WindowHandle->OnKeyboardFocus(eventArgs);
-	}
-	break;
-	case WM_KILLFOCUS:
-	{
-		// Window lost keyboard focus.
-		EventArgs eventArgs(*gs_WindowHandle);
-		gs_WindowHandle->OnKeyboardBlur(eventArgs);
-	}
-	break;
-
-
-
-	//
-	// The mouse events
-	//
-	case WM_MOUSEMOVE:
-	{
-		bool lButton = (wParam & MK_LBUTTON) != 0;
-		bool rButton = (wParam & MK_RBUTTON) != 0;
-		bool mButton = (wParam & MK_MBUTTON) != 0;
-		bool shift = (wParam & MK_SHIFT) != 0;
-		bool control = (wParam & MK_CONTROL) != 0;
-
-		int x = ((int)(short)LOWORD(lParam));
-		int y = ((int)(short)HIWORD(lParam));
-
-		MouseMotionEventArgs mouseMotionEventArgs(*gs_WindowHandle, lButton, mButton, rButton, control, shift, x, y);
-		gs_WindowHandle->OnMouseMoved(mouseMotionEventArgs);
-	}
-	break;
-	case WM_LBUTTONDOWN:
-	case WM_RBUTTONDOWN:
-	case WM_MBUTTONDOWN:
-	{
-		bool lButton = (wParam & MK_LBUTTON) != 0;
-		bool rButton = (wParam & MK_RBUTTON) != 0;
-		bool mButton = (wParam & MK_MBUTTON) != 0;
-		bool shift = (wParam & MK_SHIFT) != 0;
-		bool control = (wParam & MK_CONTROL) != 0;
-
-		int x = ((int)(short)LOWORD(lParam));
-		int y = ((int)(short)HIWORD(lParam));
-
-		MouseButtonEventArgs mouseButtonEventArgs(*gs_WindowHandle, DecodeMouseButton(message), MouseButtonEventArgs::Pressed, lButton, mButton, rButton, control, shift, x, y);
-		gs_WindowHandle->OnMouseButtonPressed(mouseButtonEventArgs);
-	}
-	break;
-	case WM_LBUTTONUP:
-	case WM_RBUTTONUP:
-	case WM_MBUTTONUP:
-	{
-		bool lButton = (wParam & MK_LBUTTON) != 0;
-		bool rButton = (wParam & MK_RBUTTON) != 0;
-		bool mButton = (wParam & MK_MBUTTON) != 0;
-		bool shift = (wParam & MK_SHIFT) != 0;
-		bool control = (wParam & MK_CONTROL) != 0;
-
-		int x = ((int)(short)LOWORD(lParam));
-		int y = ((int)(short)HIWORD(lParam));
-
-		MouseButtonEventArgs mouseButtonEventArgs(*gs_WindowHandle, DecodeMouseButton(message), MouseButtonEventArgs::Released, lButton, mButton, rButton, control, shift, x, y);
-		gs_WindowHandle->OnMouseButtonReleased(mouseButtonEventArgs);
-	}
-	break;
-	case WM_MOUSEWHEEL:
-	{
-		// The distance the mouse wheel is rotated.
-		// A positive value indicates the wheel was rotated to the right.
-		// A negative value indicates the wheel was rotated to the left.
-		float zDelta = ((int)(short)HIWORD(wParam)) / (float)WHEEL_DELTA;
-		short keyStates = (short)LOWORD(wParam);
-
-		bool lButton = (keyStates & MK_LBUTTON) != 0;
-		bool rButton = (keyStates & MK_RBUTTON) != 0;
-		bool mButton = (keyStates & MK_MBUTTON) != 0;
-		bool shift = (keyStates & MK_SHIFT) != 0;
-		bool control = (keyStates & MK_CONTROL) != 0;
-
-		int x = ((int)(short)LOWORD(lParam));
-		int y = ((int)(short)HIWORD(lParam));
-
-		// Convert the screen coordinates to client coordinates.
-		POINT clientToScreenPoint;
-		clientToScreenPoint.x = x;
-		clientToScreenPoint.y = y;
-		::ScreenToClient(hwnd, &clientToScreenPoint);
-
-		MouseWheelEventArgs mouseWheelEventArgs(*gs_WindowHandle, zDelta, lButton, mButton, rButton, control, shift, (int)clientToScreenPoint.x, (int)clientToScreenPoint.y);
-		gs_WindowHandle->OnMouseWheel(mouseWheelEventArgs);
-	}
-	break;
-	case WM_MOUSELEAVE:
-	{
-		EventArgs mouseLeaveEventArgs(*gs_WindowHandle);
-		gs_WindowHandle->OnMouseLeave(mouseLeaveEventArgs);
-	}
-	break;
-	case WM_MOUSEACTIVATE:
-	{
-		EventArgs mouseFocusEventArgs(*gs_WindowHandle);
-		gs_WindowHandle->OnMouseFocus(mouseFocusEventArgs);
-	}
-	break;
-	// NOTE: Not really sure if these next set of messages are working correctly.
-	// Not really sure HOW to get them to work correctly.
-	// TODO: Try to fix these if I need them ;)
-	case WM_CAPTURECHANGED:
-	{
-		EventArgs mouseBlurEventArgs(*gs_WindowHandle);
-		gs_WindowHandle->OnMouseBlur(mouseBlurEventArgs);
-	}
-	break;
-
-
-
-
-	//
-	// Window events
-	//
-
-	case WM_ACTIVATE:
-	{
-		switch (wParam)
-		{
-			case WA_ACTIVE:
-			{
-				EventArgs inputFocusEventArgs(*gs_WindowHandle);
-				gs_WindowHandle->OnInputFocus(inputFocusEventArgs);
-			}
-			break;
-
-			case WA_INACTIVE:
-			{
-				EventArgs inputBlueEventArgs(*gs_WindowHandle);
-				gs_WindowHandle->OnInputBlur(inputBlueEventArgs);
-			}
-			break;
-		}
-	}
-	break;
-
-
-	case WM_SIZE:
-	{
-		switch (wParam) 
-		{
-			case SIZE_MINIMIZED:
-			{
-				EventArgs mininizeEventArgs(*gs_WindowHandle);
-				gs_WindowHandle->OnMinimize(mininizeEventArgs);
-			}
-			break;
-
-			case SIZE_MAXIMIZED:
-			{
-				EventArgs restoreEventArgs(*gs_WindowHandle);
-				gs_WindowHandle->OnRestore(restoreEventArgs);
-			}
-			break;
-
-			case SIZE_RESTORED:
-			{
-				int width = ((int)(short)LOWORD(lParam));
-				int height = ((int)(short)HIWORD(lParam));
-
-				ResizeEventArgs resizeEventArgs(*gs_WindowHandle, width, height);
-				gs_WindowHandle->OnResize(resizeEventArgs);
-			}
-			break;
-		}
-
-		::UpdateWindow(hwnd);
-	}
-	break;
-
-
-	case WM_CLOSE:
-	{
-		WindowCloseEventArgs windowCloseEventArgs(*gs_WindowHandle);
-		gs_WindowHandle->OnClose(windowCloseEventArgs);
-
-		if (windowCloseEventArgs.ConfirmClose)
-		{
-			// Just hide the window.
-			// Windows will be destroyed when the application quits.
-			::ShowWindow(hwnd, SW_HIDE);
-		}
-	}
-	break;
-
-
-
-	case WM_DESTROY:
-	{
-		// TODO delete gs_WindowHandle;
-	}
-	break;
-
-
-
-	default:
 		return DefWindowProc(hwnd, message, wParam, lParam);
 	}
-
-
-	return 0;
+	
+	return gs_WindowHandle->WndProc(hwnd, message, wParam, lParam);
 }
 
 

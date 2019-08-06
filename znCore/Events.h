@@ -58,7 +58,7 @@ private:
 
 
 
-class EventArgs
+class OW_ENGINE_API EventArgs
 {
 public:
 	EventArgs(const Object& caller)
@@ -71,7 +71,7 @@ public:
 typedef Delegate<EventArgs> Event;
 typedef Delegate<EventArgs>::FunctionDecl EventConnection;
 
-class WindowCloseEventArgs : EventArgs
+class OW_ENGINE_API WindowCloseEventArgs : EventArgs
 {
 	typedef EventArgs base;
 public:
@@ -90,7 +90,7 @@ public:
 typedef Delegate<WindowCloseEventArgs> WindowCloseEvent;
 typedef Delegate<WindowCloseEventArgs>::FunctionDecl WindowCloseConnection;
 
-class KeyEventArgs : public EventArgs
+class OW_ENGINE_API KeyEventArgs : public EventArgs
 {
 	typedef EventArgs base;
 public:
@@ -121,7 +121,7 @@ typedef Delegate<KeyEventArgs> KeyboardEvent;
 typedef Delegate<KeyEventArgs>::FunctionDecl KeyboardConnection;
 
 
-class MouseMotionEventArgs : public EventArgs
+class OW_ENGINE_API MouseMotionEventArgs : public EventArgs
 {
 	typedef EventArgs base;
 public:
@@ -153,7 +153,7 @@ typedef Delegate<MouseMotionEventArgs> MouseMotionEvent;
 typedef Delegate<MouseMotionEventArgs>::FunctionDecl MouseMotionConnection;
 
 
-class MouseButtonEventArgs : public EventArgs
+class OW_ENGINE_API MouseButtonEventArgs : public EventArgs
 {
 public:
 	enum MouseButton
@@ -200,7 +200,7 @@ typedef Delegate<MouseButtonEventArgs> MouseButtonEvent;
 typedef Delegate<MouseButtonEventArgs>::FunctionDecl MouseButtonConnection;
 
 
-class MouseWheelEventArgs : public EventArgs
+class OW_ENGINE_API MouseWheelEventArgs : public EventArgs
 {
 public:
 	typedef EventArgs base;
@@ -233,7 +233,7 @@ typedef Delegate<MouseWheelEventArgs> MouseWheelEvent;
 typedef Delegate<MouseWheelEventArgs>::FunctionDecl MouseWheelConnection;
 
 
-class ResizeEventArgs : public EventArgs
+class OW_ENGINE_API ResizeEventArgs : public EventArgs
 {
 public:
 	typedef EventArgs base;
@@ -250,7 +250,7 @@ typedef Delegate<ResizeEventArgs> ResizeEvent;
 
 
 
-class UserEventArgs : public EventArgs
+class OW_ENGINE_API UserEventArgs : public EventArgs
 {
 	typedef EventArgs base;
 public:

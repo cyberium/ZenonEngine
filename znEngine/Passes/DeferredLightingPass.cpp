@@ -98,11 +98,11 @@ void DeferredLightingPass::Render(RenderEventArgs& e)
 	const Camera* pCamera = e.Camera;
 	_ASSERT(pCamera != nullptr);
 
-	Viewport viewport = pCamera->GetViewport();
+	const Viewport * viewport = pCamera->GetViewport();
 	// We need the inverse projection matrix to compute the view space position of the fragment
 	// in the deferred lighting shader.
 	m_pScreenToViewParams->m_InverseProjectionMatrix = glm::inverse(pCamera->GetProjectionMatrix());
-	m_pScreenToViewParams->m_ScreenDimensions = glm::vec2(viewport.Width, viewport.Height);
+	m_pScreenToViewParams->m_ScreenDimensions = glm::vec2(viewport->GetWidth(), viewport->GetHeight());
 	m_pScreenToViewParams->m_CameraPos = vec4(pCamera->GetTranslation(), 1.0f);
 	m_ScreenToViewParamsCB->Set(*m_pScreenToViewParams);
 
@@ -253,7 +253,7 @@ bool DeferredLightingPass::Visit(std::shared_ptr < CLight3D> light)
 	return true;
 }
 
-void DeferredLightingPass::UpdateViewport(Viewport _viewport)
+void DeferredLightingPass::UpdateViewport(const Viewport * _viewport)
 {
 	m_LightPipeline0->GetRasterizerState().SetViewport(_viewport);
 	m_LightPipeline1->GetRasterizerState().SetViewport(_viewport);

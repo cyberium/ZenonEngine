@@ -45,8 +45,7 @@ public:
         uint64_t FrameCounter,
         const Camera* Camera,
         const PipelineState* PipelineState,
-        const Object* Node,
-        const Viewport* Viewport
+        const Object* Node
     )
 		: base(Caller)
 		, ElapsedTime(DeltaTime)
@@ -56,7 +55,6 @@ public:
         , Camera(Camera)
         , PipelineState(PipelineState)
         , Node(Node)
-        , Viewport(Viewport)
 	{}
 
 	float                                           ElapsedTime;
@@ -66,6 +64,5 @@ public:
     const Camera*                                   Camera;
     const PipelineState*                            PipelineState;
     const Object*                                   Node;
-    const Viewport*                                 Viewport;
 };
 typedef Delegate<RenderEventArgs> RenderEvent;

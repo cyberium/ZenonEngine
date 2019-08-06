@@ -18,5 +18,5 @@ public:
     virtual void PostRender(RenderEventArgs& e) = 0;
 
     // Update viewport (need for texture resizing)
-    virtual void UpdateViewport(Viewport _viewport) = 0;
+    virtual void UpdateViewport(const Viewport * _viewport) = 0;
 };

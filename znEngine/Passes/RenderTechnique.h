@@ -11,7 +11,7 @@ public:
 
 	virtual void                                    Render(RenderEventArgs& renderEventArgs);
 
-	virtual void                                    UpdateViewport(Viewport _viewport);
+	virtual void                                    UpdateViewport(const Viewport * _viewport);
 
 private:
 	typedef std::vector<std::shared_ptr<IRenderPass>> RenderPassList;

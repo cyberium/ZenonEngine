@@ -84,8 +84,6 @@ void RenderWindowDX11::CreateSwapChain()
     UINT windowHeight = GetWindowHeight();
     bool vSync = IsVSync();
 
-    std::string windowName = GetWindowName();
-
     ATL::CComPtr<IDXGIFactory2> factory;
     if (FAILED(CreateDXGIFactory(__uuidof(IDXGIFactory2), (void**)&factory)))
     {

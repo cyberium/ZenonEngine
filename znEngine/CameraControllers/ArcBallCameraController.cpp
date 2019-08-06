@@ -215,14 +215,14 @@ void CArcBallCameraController::OnMouseMoved(MouseMotionEventArgs& e)
 
 vec3 CArcBallCameraController::ProjectOntoUnitSphere(glm::ivec2 screenPos)
 {
-	const Viewport& viewport = m_Camera->GetViewport();
+	const Viewport * viewport = m_Camera->GetViewport();
 
 	// Map the screen coordinates so that (0, 0) is the center of the viewport.
-	screenPos -= glm::vec2(viewport.Width, viewport.Height) * 0.5f;
+	screenPos -= glm::vec2(viewport->GetWidth(), viewport->GetHeight()) * 0.5f;
 
 	float x, y, z;
 	// The radius of the unit sphere is 1/2 of the shortest dimension of the viewport.
-	float radius = glm::min(viewport.Width, viewport.Height) * 0.5f;
+	float radius = glm::min(viewport->GetWidth(), viewport->GetHeight()) * 0.5f;
 
 	// Now normalize the screen coordinates into the range [-1 .. 1].
 	x = screenPos.x / radius;

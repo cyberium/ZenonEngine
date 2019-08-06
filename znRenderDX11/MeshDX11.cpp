@@ -48,8 +48,13 @@ bool MeshDX11::Render(const RenderEventArgs* renderArgs, std::shared_ptr<Constan
     if (indexCnt == 0 && m_pIndexBuffer != nullptr)
         indexCnt = m_pIndexBuffer->GetElementCount();
 
-    if (vertexCnt == 0)
-        vertexCnt = (*m_VertexBuffers.begin()).second->GetElementCount();
+	if (vertexCnt == 0)
+	{
+		if (m_VertexBuffer != nullptr)
+			vertexCnt = m_VertexBuffer->GetElementCount();
+		else
+			vertexCnt = (*m_VertexBuffers.begin()).second->GetElementCount();
+	}
 
 	std::shared_ptr<Shader> pVS = nullptr;
 	if (m_pMaterial)

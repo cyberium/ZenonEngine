@@ -13,7 +13,7 @@ public:
 	virtual void                                    PreRender(RenderEventArgs& e);
 	virtual void                                    PostRender(RenderEventArgs& e);
 
-    virtual void                                    UpdateViewport(Viewport _viewport);
+    virtual void                                    UpdateViewport(const Viewport * _viewport);
 
 	// IVisitor
 	virtual bool                                    Visit(std::shared_ptr<SceneNode3D> node) override;

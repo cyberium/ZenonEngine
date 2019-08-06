@@ -7,8 +7,10 @@ class Direct3DWidget
 	Q_OBJECT
 
 public:
-	Direct3DWidget(QWidget *parent = 0);
-	~Direct3DWidget();
+	Direct3DWidget(QWidget * parent);
+	virtual ~Direct3DWidget();
+
+	void SetRenderWindow(std::shared_ptr<RenderWindow> RenderWindow);
 
 	QPaintEngine* paintEngine() const override { return nullptr; }
 
@@ -27,9 +29,29 @@ public:
 	BOOL UpdateWindow();
 	BOOL DestroyWindow();
 
-public slots:
-	bool Rendering();
+private:
+	void mousePressEvent(QMouseEvent *event) override;
+	void mouseReleaseEvent(QMouseEvent *event) override;
+	void mouseDoubleClickEvent(QMouseEvent *event) override;
+	void mouseMoveEvent(QMouseEvent *event) override;
+	void wheelEvent(QWheelEvent *event) override;
+	void keyPressEvent(QKeyEvent *event) override;
+	void keyReleaseEvent(QKeyEvent *event) override;
+	void focusInEvent(QFocusEvent *event) override;
+	void focusOutEvent(QFocusEvent *event) override;
+	void enterEvent(QEvent *event) override;
+	void leaveEvent(QEvent *event) override;
+	void paintEvent(QPaintEvent *event) override;
+	void moveEvent(QMoveEvent *event) override;
+	void resizeEvent(QResizeEvent *event) override;
+	void closeEvent(QCloseEvent *event) override;
 
 private:
-	void paintEvent(QPaintEvent *pEvent) override;
+	QAbstractEventDispatcher *dispatcher;
+	QTime lastAwake;
+	QTime lastBlock;
+
+	HWND m_hwnd;
+
+	std::shared_ptr<RenderWindow> m_RenderWindow;
 };

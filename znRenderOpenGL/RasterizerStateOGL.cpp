@@ -11,7 +11,7 @@ GLenum GLTranslateFrontFace(RasterizerState::FrontFace frontFace);
 
 RasterizerStateOGL::RasterizerStateOGL()
 {
-	m_Viewports.resize(8, Viewport());
+	m_Viewports.resize(8, nullptr);
 	m_ScissorRects.resize(8, Rect());
 }
 
@@ -143,8 +143,8 @@ void RasterizerStateOGL::Bind()
 	{
 		for (size_t i = 0; i < m_Viewports.size(); i++)
 		{
-			glViewportIndexedf(i, m_Viewports[i].X, m_Viewports[i].Y, m_Viewports[i].Width, m_Viewports[i].Height);
-			glDepthRangeIndexed(i, m_Viewports[i].MinDepth, m_Viewports[i].MaxDepth);
+			glViewportIndexedf(i, m_Viewports[i]->GetX(), m_Viewports[i]->GetY(), m_Viewports[i]->GetWidth(), m_Viewports[i]->GetHeight());
+			glDepthRangeIndexed(i, m_Viewports[i]->GetMinDepth(), m_Viewports[i]->GetMaxDepth());
 		}
 
 		m_ViewportsDirty = false;

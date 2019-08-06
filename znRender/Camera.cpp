@@ -5,6 +5,9 @@
 
 Camera::Camera()
 	: m_Translate(0)
+	, m_Front(0)
+	, m_Right(0)
+	, m_Up(0)
     , m_Yaw_X(0.0f)
     , m_Pitch_Y(0.0f)
 	, m_ViewDirty(true)
@@ -15,12 +18,12 @@ Camera::~Camera()
 {
 }
 
-void Camera::SetViewport(const Viewport& viewport)
+void Camera::SetViewport(const Viewport * viewport)
 {
 	m_Viewport = viewport;
 }
 
-const Viewport& Camera::GetViewport() const
+const Viewport * Camera::GetViewport() const
 {
 	return m_Viewport;
 }

@@ -8,7 +8,7 @@ D3D11_FILL_MODE TranslateFillMode(RasterizerState::FillMode fillMode);
 D3D11_CULL_MODE TranslateCullMode(RasterizerState::CullMode cullMode);
 bool TranslateFrontFace(RasterizerState::FrontFace frontFace);
 std::vector<D3D11_RECT> TranslateRects(const std::vector<Rect>& rects);
-std::vector<D3D11_VIEWPORT> TranslateViewports(const std::vector<Viewport>& viewports);
+std::vector<D3D11_VIEWPORT> TranslateViewports(const std::vector<const Viewport *>& viewports);
 // FORWARD END
 
 RasterizerStateDX11::RasterizerStateDX11(ID3D11Device2* pDevice)
@@ -16,7 +16,7 @@ RasterizerStateDX11::RasterizerStateDX11(ID3D11Device2* pDevice)
 {
 	m_pDevice->GetImmediateContext2(&m_pDeviceContext);
 
-	m_Viewports.resize(8, Viewport());
+	m_Viewports.resize(8, nullptr);
 	m_ScissorRects.resize(8, Rect());
 }
 
@@ -233,21 +233,27 @@ std::vector<D3D11_RECT> TranslateRects(const std::vector<Rect>& rects)
 	return result;
 }
 
-std::vector<D3D11_VIEWPORT> TranslateViewports(const std::vector<Viewport>& viewports)
+std::vector<D3D11_VIEWPORT> TranslateViewports(const std::vector<const Viewport *>& viewports)
 {
-	std::vector<D3D11_VIEWPORT> result(viewports.size());
+	std::vector<D3D11_VIEWPORT> result;
+
 	for (uint32 i = 0; i < viewports.size(); i++)
 	{
-		D3D11_VIEWPORT& d3dViewport = result[i];
-		const Viewport& viewport = viewports[i];
+		if (viewports[i] == nullptr)
+			break;
+
+		D3D11_VIEWPORT d3dViewport;
+		const Viewport* viewport = viewports[i];
 
 		// I could probably do a reinterpret cast here...
-		d3dViewport.TopLeftX = viewport.X;
-		d3dViewport.TopLeftY = viewport.Y;
-		d3dViewport.Width = viewport.Width;
-		d3dViewport.Height = viewport.Height;
-		d3dViewport.MinDepth = viewport.MinDepth;
-		d3dViewport.MaxDepth = viewport.MaxDepth;
+		d3dViewport.TopLeftX = viewport->GetX();
+		d3dViewport.TopLeftY = viewport->GetY();
+		d3dViewport.Width = viewport->GetWidth();
+		d3dViewport.Height = viewport->GetHeight();
+		d3dViewport.MinDepth = viewport->GetMinDepth();
+		d3dViewport.MaxDepth = viewport->GetMaxDepth();
+
+		result.push_back(d3dViewport);
 	}
 
 	return result;

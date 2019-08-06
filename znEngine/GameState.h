@@ -56,7 +56,6 @@ protected:
     std::shared_ptr<Query>                          m_FrameQuery;
     double                                          m_FrameTime;
 
-	Viewport                                        m_Viewport;
 	std::shared_ptr<ICameraController>              m_DefaultCameraController;
 
 	const CGroupQuality&                            m_QualitySettings;
