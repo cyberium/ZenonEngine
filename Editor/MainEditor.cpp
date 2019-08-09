@@ -1,10 +1,14 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
+
+// General
 #include "MainEditor.h"
 
+// Addtionals
+#include "SceneNodeTreeModel.h"
 #include "RenderWindowWidget.h"
 
-MainEditor::MainEditor(QWidget *parent)
-	: QMainWindow(parent)
+MainEditor::MainEditor(QWidget* Parent)
+	: QMainWindow(Parent)
 {
 	ui.setupUi(this);
 
@@ -12,4 +16,19 @@ MainEditor::MainEditor(QWidget *parent)
 	xScene->setGeometry(ui.frame->geometry());
 
 	ui.frame = xScene;
+}
+
+MainEditor::~MainEditor()
+{
+}
+
+void MainEditor::ApplyScene(std::shared_ptr<Scene3D> Scene)
+{
+	m_Scene = Scene;
+
+	//CSceneNodeTreeModel * model = new CSceneNodeTreeModel(Scene);
+
+	//ui.treeView->setHeaderHidden(true);
+	//ui.treeView->setRootIsDecorated(true);
+	//ui.treeView->setRootIndex(model->index(0, 0));
 }

@@ -12,6 +12,7 @@ Scene3D::~Scene3D()
 void Scene3D::CreateRootNode()
 {
     m_RootNode = CreateSceneNode<SceneNode3D>(std::shared_ptr<SceneNode3D>());
+	m_RootNode->SetName("Root node");
 }
 
 std::shared_ptr<SceneNode3D> Scene3D::GetRootNode() const

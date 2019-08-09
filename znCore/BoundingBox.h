@@ -3,7 +3,7 @@
 // Include
 #include "Math.h"
 
-class BoundingBox
+class OW_ENGINE_API BoundingBox
 {
 public:
 	BoundingBox();

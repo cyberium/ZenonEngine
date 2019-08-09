@@ -1,6 +1,6 @@
 #pragma once
 
-class BoundingSphere
+class OW_ENGINE_API BoundingSphere
 {
 public:
 	BoundingSphere(cvec3 center = vec3(0), float radius = 0);

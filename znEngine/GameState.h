@@ -23,6 +23,8 @@ public:
 	void SetCurrent(bool _value) override { m_IsCurrent = _value; }
     bool IsCurrent() const override { return m_IsCurrent; }
 
+	std::shared_ptr<Scene> GetScene() const override { return m_3DScene; };
+
     // Engine events
 	virtual void                                    OnUpdate(UpdateEventArgs& e);
 	virtual void                                    OnPreRender(RenderEventArgs& e) = 0;

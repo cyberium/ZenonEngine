@@ -130,7 +130,7 @@ void CGameState_World::Load3D()
 	UIPipeline->GetBlendState().SetBlendMode(disableBlending);
 	UIPipeline->GetDepthStencilState().SetDepthMode(disableDepthWrites);
 	UIPipeline->GetRasterizerState().SetCullMode(RasterizerState::CullMode::None);
-	UIPipeline->GetRasterizerState().SetFillMode(RasterizerState::FillMode::Solid);
+	UIPipeline->GetRasterizerState().SetFillMode(RasterizerState::FillMode::Wireframe);
 	UIPipeline->SetRenderTarget(renderWindow->GetRenderTarget());
 	UIPipeline->GetRasterizerState().SetViewport(renderWindow->GetViewport());
 

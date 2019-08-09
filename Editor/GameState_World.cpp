@@ -28,6 +28,7 @@ bool CGameState_World::Init()
     // Camera controller
     //
     SetCameraController(std::make_shared<CFreeCameraController>());
+	GetCameraController()->GetCamera()->SetTranslate(glm::vec3(100, 100, 100));
     GetCameraController()->GetCamera()->SetViewport(renderWindow->GetViewport());
     GetCameraController()->GetCamera()->SetProjectionRH(45.0f, 1280.0f / 1024.0f, 0.5f, 4000.0f);
 
@@ -138,22 +139,26 @@ void CGameState_World::Load3D()
 	UIPipeline->GetBlendState().SetBlendMode(disableBlending);
 	UIPipeline->GetDepthStencilState().SetDepthMode(disableDepthWrites);
 	UIPipeline->GetRasterizerState().SetCullMode(RasterizerState::CullMode::None);
-	UIPipeline->GetRasterizerState().SetFillMode(RasterizerState::FillMode::Solid);
+	UIPipeline->GetRasterizerState().SetFillMode(RasterizerState::FillMode::Wireframe);
 	UIPipeline->SetRenderTarget(renderWindow->GetRenderTarget());
 	UIPipeline->GetRasterizerState().SetViewport(renderWindow->GetViewport());
 
 	
-	std::shared_ptr<SceneNode3D> sceneNode = m_3DScene->CreateSceneNode<SceneNode3D>(m_3DScene->GetRootNode());
-
 	std::shared_ptr<IMesh> mesh = renderDevice->CreateCube();
 
 	std::shared_ptr<MaterialDebug> mat = std::make_shared<MaterialDebug>(_RenderDevice->CreateMaterial());
 	mat->SetDiffuseColor(vec4(1.0f, 1.0f, 0.0f, 1.0f));
 	mesh->SetMaterial(mat);
 
-	sceneNode->GetComponent<CTransformComponent3D>()->SetScale(vec3(15, 15, 15));
+	std::shared_ptr<SceneNode3D> sceneNode = m_3DScene->CreateSceneNode<SceneNode3D>(m_3DScene->GetRootNode());
+	sceneNode->GetComponent<CTransformComponent3D>()->SetScale(vec3(5, 5, 5));
 	sceneNode->GetComponent<CMeshComponent3D>()->AddMesh(mesh);
 
+
+	std::shared_ptr<SceneNode3D> sceneNode2 = m_3DScene->CreateSceneNode<SceneNode3D>(m_3DScene->GetRootNode());
+	sceneNode2->GetComponent<CTransformComponent3D>()->SetTranslate(vec3(10, 0, 10));
+	sceneNode2->GetComponent<CTransformComponent3D>()->SetScale(vec3(5, 5, 5));
+	sceneNode2->GetComponent<CMeshComponent3D>()->AddMesh(mesh);
 
 
     m_3DTechnique.AddPass(std::make_shared<ClearRenderTargetPass>(renderWindow->GetRenderTarget(), ClearFlags::All, g_ClearColor, 1.0f, 0));

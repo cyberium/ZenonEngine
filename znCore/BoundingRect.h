@@ -3,7 +3,7 @@
 // Include
 #include "Math.h"
 
-class BoundingRect
+class OW_ENGINE_API BoundingRect
 {
 public:
 	BoundingRect();

@@ -54,6 +54,8 @@ int main(int argc, char *argv[])
 
 	app.AddGameState(GameStatesNames::GAME_STATE_WORLD, std::make_shared<CGameState_World>(&app));
 	app.SetGameState(GameStatesNames::GAME_STATE_WORLD);
+
+	w.ApplyScene(std::dynamic_pointer_cast<Scene3D, Scene>(app.GetGameState()->GetScene()));
 	
 	w.show();
 

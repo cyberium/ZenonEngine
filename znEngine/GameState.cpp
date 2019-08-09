@@ -101,9 +101,17 @@ void CGameState::OnUpdate(UpdateEventArgs & e)
 //
 void CGameState::OnResize(ResizeEventArgs & e)
 {
+	if (e.Width == 0 || e.Height == 0)
+		return;
+
 	m_DefaultCameraController->OnResize(e);
 
+	IApplication& app = Application::Get();
+	std::shared_ptr<IRenderDevice> renderDevice = app.GetRenderDevice();
+	std::shared_ptr<RenderWindow> renderWindow = app.GetRenderWindow();
 
+	m_3DTechnique.UpdateViewport(renderWindow->GetViewport());
+	m_UITechnique.UpdateViewport(renderWindow->GetViewport());
 }
 
 
