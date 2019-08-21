@@ -194,6 +194,7 @@
     <ClCompile Include="TextureDX11.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\shared\znRenderDX11.h" />
     <ClInclude Include="BlendStateDX11.h" />
     <ClInclude Include="BufferDX11.h" />
     <ClInclude Include="common.h" />
@@ -202,7 +203,6 @@
     <ClInclude Include="DepthStencilStateDX11.h" />
     <ClInclude Include="MaterialDX11.h" />
     <ClInclude Include="MeshDX11.h" />
-    <ClInclude Include="znRenderDX11.h" />
     <ClInclude Include="PipelineStateDX11.h" />
     <ClInclude Include="QueryDX11.h" />
     <ClInclude Include="RasterizerStateDX11.h" />
@@ -216,14 +216,6 @@
     <ClInclude Include="StructuredBufferDX11.h" />
     <ClInclude Include="TextureDX11.h" />
     <ClInclude Include="TextureDX11Translate.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Externals\FreeImage-3.17.0\FreeImageLib.vcxproj">
-      <Project>{9e219df2-315d-478e-8a07-8960c377ce1e}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\znRender\znRender.vcxproj">
-      <Project>{4bfb75a1-ee52-478a-bdac-30ffb977ebb7}</Project>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

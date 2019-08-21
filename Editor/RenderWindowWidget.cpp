@@ -4,7 +4,7 @@
 #include "RenderWindowWidget.h"
 
 
-Direct3DWidget::Direct3DWidget(QWidget *parent)
+RenderWindowWidget::RenderWindowWidget(QWidget *parent)
 	: QFrame(parent)
 {
 	setAttribute(Qt::WA_NativeWindow);
@@ -14,46 +14,46 @@ Direct3DWidget::Direct3DWidget(QWidget *parent)
 	m_hwnd = (HWND)winId();
 }
 
-Direct3DWidget::~Direct3DWidget()
+RenderWindowWidget::~RenderWindowWidget()
 {
 }
 
-void Direct3DWidget::SetRenderWindow(std::shared_ptr<RenderWindow> RenderWindow)
+void RenderWindowWidget::SetRenderWindow(std::shared_ptr<RenderWindow> RenderWindow)
 {
 	m_RenderWindow = RenderWindow;
 }
 
-std::string Direct3DWidget::GetWindowName()
+std::string RenderWindowWidget::GetWindowName()
 {
 	return std::string();
 }
 
-long Direct3DWidget::GetWindowWidth()
+long RenderWindowWidget::GetWindowWidth()
 {
 	return geometry().width();
 }
 
-long Direct3DWidget::GetWindowHeight()
+long RenderWindowWidget::GetWindowHeight()
 {
 	return geometry().height();
 }
 
-HWND Direct3DWidget::GetHWnd()
+HWND RenderWindowWidget::GetHWnd()
 {
 	return m_hwnd;
 }
 
-HDC Direct3DWidget::BeginPaint(LPPAINTSTRUCT PaintStruct)
+HDC RenderWindowWidget::BeginPaint(LPPAINTSTRUCT PaintStruct)
 {
 	return HDC();
 }
 
-BOOL Direct3DWidget::EndPaint(LPPAINTSTRUCT PaintStruct)
+BOOL RenderWindowWidget::EndPaint(LPPAINTSTRUCT PaintStruct)
 {
 	return 0;
 }
 
-BOOL Direct3DWidget::GetClientRect(LPRECT Rect)
+BOOL RenderWindowWidget::GetClientRect(LPRECT Rect)
 {
 	Rect->left = geometry().x();
 	Rect->right = geometry().x() + geometry().width();
@@ -64,32 +64,32 @@ BOOL Direct3DWidget::GetClientRect(LPRECT Rect)
 	return TRUE;
 }
 
-BOOL Direct3DWidget::ClientToScreen(LPPOINT Point)
+BOOL RenderWindowWidget::ClientToScreen(LPPOINT Point)
 {
 	return 0;
 }
 
-BOOL Direct3DWidget::ScreenToClient(LPPOINT Point)
+BOOL RenderWindowWidget::ScreenToClient(LPPOINT Point)
 {
 	return 0;
 }
 
-BOOL Direct3DWidget::BringWindowToTop()
+BOOL RenderWindowWidget::BringWindowToTop()
 {
 	return 0;
 }
 
-BOOL Direct3DWidget::ShowWindow(int nCmdShow)
+BOOL RenderWindowWidget::ShowWindow(int nCmdShow)
 {
 	return 0;
 }
 
-BOOL Direct3DWidget::UpdateWindow()
+BOOL RenderWindowWidget::UpdateWindow()
 {
 	return 0;
 }
 
-BOOL Direct3DWidget::DestroyWindow()
+BOOL RenderWindowWidget::DestroyWindow()
 {
 	return 0;
 }
@@ -117,7 +117,7 @@ MouseButtonEventArgs::MouseButton QtToZenonMouseBotton(Qt::MouseButton qtState)
 	return MouseButtonEventArgs::MouseButton::None;
 }
 
-void Direct3DWidget::mousePressEvent(QMouseEvent * event)
+void RenderWindowWidget::mousePressEvent(QMouseEvent * event)
 {
 	MouseButtonEventArgs args
 	(
@@ -135,7 +135,7 @@ void Direct3DWidget::mousePressEvent(QMouseEvent * event)
 	m_RenderWindow->OnMouseButtonPressed(args);
 }
 
-void Direct3DWidget::mouseReleaseEvent(QMouseEvent * event)
+void RenderWindowWidget::mouseReleaseEvent(QMouseEvent * event)
 {
 	MouseButtonEventArgs args
 	(
@@ -153,11 +153,11 @@ void Direct3DWidget::mouseReleaseEvent(QMouseEvent * event)
 	m_RenderWindow->OnMouseButtonReleased(args);
 }
 
-void Direct3DWidget::mouseDoubleClickEvent(QMouseEvent * event)
+void RenderWindowWidget::mouseDoubleClickEvent(QMouseEvent * event)
 {
 }
 
-void Direct3DWidget::mouseMoveEvent(QMouseEvent * event)
+void RenderWindowWidget::mouseMoveEvent(QMouseEvent * event)
 {
 	MouseMotionEventArgs args
 	(
@@ -173,7 +173,7 @@ void Direct3DWidget::mouseMoveEvent(QMouseEvent * event)
 	m_RenderWindow->OnMouseMoved(args);
 }
 
-void Direct3DWidget::wheelEvent(QWheelEvent * event)
+void RenderWindowWidget::wheelEvent(QWheelEvent * event)
 {
 	MouseWheelEventArgs args
 	(
@@ -191,7 +191,7 @@ void Direct3DWidget::wheelEvent(QWheelEvent * event)
 	m_RenderWindow->OnMouseWheel(args);
 }
 
-void Direct3DWidget::keyPressEvent(QKeyEvent * event)
+void RenderWindowWidget::keyPressEvent(QKeyEvent * event)
 {
 	KeyEventArgs args
 	(
@@ -206,7 +206,7 @@ void Direct3DWidget::keyPressEvent(QKeyEvent * event)
 	m_RenderWindow->OnKeyPressed(args);
 }
 
-void Direct3DWidget::keyReleaseEvent(QKeyEvent * event)
+void RenderWindowWidget::keyReleaseEvent(QKeyEvent * event)
 {
 	KeyEventArgs args
 	(
@@ -221,32 +221,32 @@ void Direct3DWidget::keyReleaseEvent(QKeyEvent * event)
 	m_RenderWindow->OnKeyReleased(args);
 }
 
-void Direct3DWidget::focusInEvent(QFocusEvent * event)
+void RenderWindowWidget::focusInEvent(QFocusEvent * event)
 {
 }
 
-void Direct3DWidget::focusOutEvent(QFocusEvent * event)
+void RenderWindowWidget::focusOutEvent(QFocusEvent * event)
 {
 }
 
-void Direct3DWidget::enterEvent(QEvent * event)
+void RenderWindowWidget::enterEvent(QEvent * event)
 {
 	setFocus();
 }
 
-void Direct3DWidget::leaveEvent(QEvent * event)
+void RenderWindowWidget::leaveEvent(QEvent * event)
 {
 }
 
-void Direct3DWidget::paintEvent(QPaintEvent *pEvent)
+void RenderWindowWidget::paintEvent(QPaintEvent *pEvent)
 {
 }
 
-void Direct3DWidget::moveEvent(QMoveEvent * event)
+void RenderWindowWidget::moveEvent(QMoveEvent * event)
 {
 }
 
-void Direct3DWidget::resizeEvent(QResizeEvent * event)
+void RenderWindowWidget::resizeEvent(QResizeEvent * event)
 {
 	ResizeEventArgs args
 	(
@@ -257,7 +257,7 @@ void Direct3DWidget::resizeEvent(QResizeEvent * event)
 	m_RenderWindow->OnResize(args);
 }
 
-void Direct3DWidget::closeEvent(QCloseEvent * event)
+void RenderWindowWidget::closeEvent(QCloseEvent * event)
 {
 }
 

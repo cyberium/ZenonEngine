@@ -8,7 +8,7 @@ class IMesh;
 class CLight3D;
 // FORWARD END
 
-class IVisitor: public std::enable_shared_from_this<IVisitor>
+class OW_ENGINE_API IVisitor: public std::enable_shared_from_this<IVisitor>
 {
 public:
 	virtual bool Visit(std::shared_ptr<SceneNode3D> node) = 0;

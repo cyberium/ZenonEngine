@@ -188,6 +188,7 @@
     <ClCompile Include="znRenderOpenGL.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\shared\znRenderOpenGL.h" />
     <ClInclude Include="BlendStateOGL.h" />
     <ClInclude Include="BufferOGL.h" />
     <ClInclude Include="common.h" />
@@ -198,7 +199,6 @@
     <ClInclude Include="OpenGL.h" />
     <ClInclude Include="OpenGLTypes.h" />
     <ClInclude Include="ShaderInputLayoutOGL.h" />
-    <ClInclude Include="znRenderOpenGL.h" />
     <ClInclude Include="PipelineStateOGL.h" />
     <ClInclude Include="QueryOGL.h" />
     <ClInclude Include="RasterizerStateOGL.h" />
@@ -211,14 +211,6 @@
     <ClInclude Include="StructuredBufferOGL.h" />
     <ClInclude Include="TextureOGL.h" />
     <ClInclude Include="TextureOGLTranslate.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Externals\FreeImage-3.17.0\FreeImageLib.vcxproj">
-      <Project>{9e219df2-315d-478e-8a07-8960c377ce1e}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\znRender\znRender.vcxproj">
-      <Project>{4bfb75a1-ee52-478a-bdac-30ffb977ebb7}</Project>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

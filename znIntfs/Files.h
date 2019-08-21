@@ -1,6 +1,6 @@
 #pragma once
 
-struct
+struct OW_ENGINE_API
 	__declspec(novtable)
 	IByteBuffer
 {
@@ -21,7 +21,7 @@ struct
 
 //--
 
-struct
+struct OW_ENGINE_API
 	__declspec(novtable)
 	IByteBufferEx
 {
@@ -36,7 +36,7 @@ struct
 
 //--
 
-struct
+struct OW_ENGINE_API
 	__declspec(novtable)
 	IFile : public IByteBuffer
 {
@@ -51,7 +51,7 @@ struct
 
 //--
 
-struct
+struct OW_ENGINE_API
 	__declspec(novtable)
 	IFilesStorage
 {
@@ -64,7 +64,7 @@ struct
 
 //--
 
-struct
+struct OW_ENGINE_API
 	__declspec(novtable)
 	IFilesStorageEx
 {
@@ -84,7 +84,7 @@ struct
 
 //--
 
-struct 
+struct OW_ENGINE_API
 	__declspec(novtable, uuid("5DC32EB8-9A63-4FAD-A4BF-81916B8EF86A"))
 	IFilesManager : public IManager
 {

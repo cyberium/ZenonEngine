@@ -1,6 +1,6 @@
 #pragma once
 
-struct IWindowObject
+struct OW_ENGINE_API IWindowObject
 {
 	virtual ~IWindowObject() {}
 
@@ -23,7 +23,7 @@ struct IWindowObject
 };
 
 
-struct IWindowObjectEx
+struct OW_ENGINE_API IWindowObjectEx
 {
 	virtual ~IWindowObjectEx() {}
 

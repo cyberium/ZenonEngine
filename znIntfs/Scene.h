@@ -4,7 +4,7 @@
 
 typedef uint32 ComponentMessageType;
 
-struct ISceneNodeComponent : public std::enable_shared_from_this<ISceneNodeComponent>
+struct OW_ENGINE_API ISceneNodeComponent : public std::enable_shared_from_this<ISceneNodeComponent>
 {
     // Callbacks
     virtual void OnParentChanged() = 0;

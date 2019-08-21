@@ -86,10 +86,10 @@
     </ClInclude>
     <ClInclude Include="SamplerStateOGL.h" />
     <ClInclude Include="MaterialOGL.h" />
-    <ClInclude Include="znRenderOpenGL.h">
+    <ClInclude Include="ShaderInputLayoutOGL.h" />
+    <ClInclude Include="..\shared\znRenderOpenGL.h">
       <Filter>Common</Filter>
     </ClInclude>
-    <ClInclude Include="ShaderInputLayoutOGL.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Common">

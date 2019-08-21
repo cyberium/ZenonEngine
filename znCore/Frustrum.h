@@ -13,6 +13,8 @@ public:
 		{
 			m_Planes[i] = _other.m_Planes[i];
 		}
+
+		return *this;
 	}
 
 	const Plane* getPlanes() const { return &m_Planes[0]; }

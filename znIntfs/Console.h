@@ -1,6 +1,6 @@
 #pragma once
 
-struct
+struct OW_ENGINE_API
 	__declspec(novtable)
 	IConsoleCommand
 {
@@ -18,7 +18,7 @@ struct IManager;
 
 typedef std::vector<IConsoleCommand*> ConsoleCommands;
 
-struct 
+struct OW_ENGINE_API
 	__declspec(novtable, uuid("1CB48B2B-357E-4B11-8587-3D6A8385A436"))
 	IConsole : public IManager
 {

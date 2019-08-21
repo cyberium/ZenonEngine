@@ -6,13 +6,6 @@
 // Additional
 #include "EngineTime.h"
 
-// Additional renders
-#include "..\\znRenderDX11\\znRenderDX11.h"
-#pragma comment(lib, "znRenderDX11.lib")
-
-#include "..\\znRenderOpenGL\\znRenderOpenGL.h"
-#pragma comment(lib, "znRenderOpenGL.lib")
-
 float g_GameDeltaTime = 0.0f;
 float g_ApplicationTime = 0.0f;
 int64_t g_FrameCounter = 0L;

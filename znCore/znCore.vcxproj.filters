@@ -186,9 +186,6 @@
     <ClCompile Include="LibraryResourceFileStotage.cpp">
       <Filter>Files\Common</Filter>
     </ClCompile>
-    <ClCompile Include="ByteBuffer_Operators.cpp">
-      <Filter>Files\Common</Filter>
-    </ClCompile>
     <ClCompile Include="..\Externals\luabind-deboostified\src\class.cpp">
       <Filter>ScriptEngine\LuaBind\src</Filter>
     </ClCompile>

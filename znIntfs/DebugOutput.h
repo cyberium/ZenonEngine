@@ -1,6 +1,6 @@
 #pragma once
 
-struct 
+struct OW_ENGINE_API
 	__declspec(novtable, uuid("DBB1D38E-CE3F-4C05-8625-313BFC524C5A"))
 	IDebugOutput
 {

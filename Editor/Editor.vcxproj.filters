@@ -15,25 +15,46 @@
       <Extensions>qrc;*</Extensions>
       <ParseFiles>false</ParseFiles>
     </Filter>
+    <Filter Include="Widgets">
+      <UniqueIdentifier>{f13764bb-38a6-4dfc-9274-5cd09cff7fd2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common">
+      <UniqueIdentifier>{5b6178d0-d9d0-48fa-90ca-9cf2da474f6c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Windows">
+      <UniqueIdentifier>{45453c18-2bcd-44be-a5a3-7884a562e631}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameState_World.cpp" />
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="MainEditor.cpp" />
-    <ClCompile Include="RenderWindowWidget.cpp" />
     <ClCompile Include="SceneNodeTreeItem.cpp" />
     <ClCompile Include="SceneNodeTreeModel.cpp" />
-    <ClCompile Include="stdafx.cpp" />
+    <ClCompile Include="RenderWindowWidget.cpp">
+      <Filter>Widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="MainEditor.cpp">
+      <Filter>Windows</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameState_World.h" />
     <ClInclude Include="SceneNodeTreeItem.h" />
-    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="stdafx.h">
+      <Filter>Common</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <QtMoc Include="MainEditor.h" />
-    <QtMoc Include="RenderWindowWidget.h" />
     <QtMoc Include="SceneNodeTreeModel.h" />
+    <QtMoc Include="RenderWindowWidget.h">
+      <Filter>Widgets</Filter>
+    </QtMoc>
+    <QtMoc Include="MainEditor.h">
+      <Filter>Windows</Filter>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="MainEditor.ui">
@@ -46,6 +67,8 @@
     </QtRcc>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="Editor.rc" />
+    <ResourceCompile Include="Editor.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
   </ItemGroup>
 </Project>

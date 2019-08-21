@@ -2,7 +2,7 @@
 
 #include "GameState.h"
 
-struct GameStatesNames
+struct OW_ENGINE_API GameStatesNames
 {
 	enum List
 	{
@@ -16,7 +16,7 @@ struct GameStatesNames
 struct IManager;
 // Forward END
 
-struct 
+struct OW_ENGINE_API
 	__declspec(uuid("03594F17-5474-47F0-9B6A-7842ACDF888A"))
 	IGameStateManager : IManager
 {

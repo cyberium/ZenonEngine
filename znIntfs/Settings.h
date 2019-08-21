@@ -4,12 +4,12 @@
 struct IManager;
 // Forward END
 
-struct ISettingGroup
+struct OW_ENGINE_API ISettingGroup
 {
 	virtual void InitDefault() = 0;
 };
 
-struct 
+struct OW_ENGINE_API
 	__declspec(uuid("9FB1EEC3-16B7-4983-84C5-DDF47B203C6D"))
 	ISettings : public IManager
 {

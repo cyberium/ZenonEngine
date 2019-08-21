@@ -15,6 +15,9 @@ public:
 
 	Ui::MainEditorClass getUI() const { return ui; }
 
+private slots:
+	void onCustomContextMenu(const QPoint &point);
+
 private:
 	std::shared_ptr<Scene3D> m_Scene;
 	Ui::MainEditorClass ui;

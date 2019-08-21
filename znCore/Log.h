@@ -32,7 +32,7 @@ private:
 
 // Helper class to fast access
 
-class Log
+class OW_ENGINE_API Log
 {
 public:
 	static void Info(const char* _message, ...);

@@ -1,14 +1,14 @@
 #pragma once
 
-class Direct3DWidget
+class RenderWindowWidget
 	: public QFrame
 	, public IWindowObject
 {
 	Q_OBJECT
 
 public:
-	Direct3DWidget(QWidget * parent);
-	virtual ~Direct3DWidget();
+	RenderWindowWidget(QWidget * parent);
+	virtual ~RenderWindowWidget();
 
 	void SetRenderWindow(std::shared_ptr<RenderWindow> RenderWindow);
 

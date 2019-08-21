@@ -5,7 +5,7 @@ class RenderEventArgs;
 class Viewport;
 // FORWARD END
 
-class IRenderPass : public IVisitor
+class OW_ENGINE_API IRenderPass : public IVisitor
 {
 public:
     // Enable or disable the pass. If a pass is disabled, the technique will skip it.

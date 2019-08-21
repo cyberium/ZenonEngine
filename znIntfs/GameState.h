@@ -4,7 +4,7 @@
 class Scene;
 // FORWARD END
 
-struct IGameState
+struct OW_ENGINE_API IGameState
 {
 	virtual ~IGameState() = 0 {};
 

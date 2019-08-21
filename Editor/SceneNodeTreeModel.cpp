@@ -6,8 +6,8 @@
 CSceneNodeTreeModel::CSceneNodeTreeModel(std::shared_ptr<Scene3D> Scene3D, QObject * parent)
 	: QAbstractItemModel(parent) 
 {
-	m_RootItem = new CSceneNodeTreeItem(Scene3D->GetRootNode());
-
+	m_RootItem = new CSceneNodeTreeItem();
+	m_RootItem->appendChild(new CSceneNodeTreeItem(Scene3D->GetRootNode(), m_RootItem));
 }
 
 CSceneNodeTreeModel::~CSceneNodeTreeModel() 

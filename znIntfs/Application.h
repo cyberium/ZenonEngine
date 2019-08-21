@@ -6,7 +6,7 @@ class RenderWindow;
 class CLoader;
 // Forward END
 
-struct IApplication
+struct OW_ENGINE_API IApplication
 {
 	virtual ~IApplication() = 0 {};
 

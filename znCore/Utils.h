@@ -1,6 +1,6 @@
 #pragma once
 
-class Utils
+class OW_ENGINE_API Utils
 {
 public:
     // Convert

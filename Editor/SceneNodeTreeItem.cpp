@@ -3,6 +3,12 @@
 // General
 #include "SceneNodeTreeItem.h"
 
+CSceneNodeTreeItem::CSceneNodeTreeItem()
+	: m_SceneNode3D(nullptr)
+	, m_Parent(nullptr)
+{
+}
+
 CSceneNodeTreeItem::CSceneNodeTreeItem(std::shared_ptr<SceneNode> SceneNode3D, CSceneNodeTreeItem* Parent)
 	: m_SceneNode3D(SceneNode3D)
 	, m_Parent(Parent)
@@ -31,13 +37,13 @@ CSceneNodeTreeItem* CSceneNodeTreeItem::child(int row)
 
 int CSceneNodeTreeItem::childCount() const 
 {
-	return m_SceneNode3D->GetChilds().size();
+	return m_Childs.size();
 }
 
 QVariant CSceneNodeTreeItem::data() const
 {
 	if (m_SceneNode3D == nullptr)
-		return QVariant("Header");
+		return QVariant("Real root element");
 
 	return QVariant(m_SceneNode3D->GetName().c_str());
 }

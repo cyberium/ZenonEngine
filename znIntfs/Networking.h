@@ -4,7 +4,7 @@
 struct TcpSocket;
 // FORWARD END
 
-struct ISendable
+struct OW_ENGINE_API ISendable
 {
 	virtual ~ISendable() = 0 {};
 

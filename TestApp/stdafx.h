@@ -1,6 +1,5 @@
 #pragma once
 
-#pragma comment(lib, "freetype.lib")
 
 // ZenonEngine
 

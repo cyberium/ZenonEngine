@@ -1,6 +1,6 @@
 #pragma once
 
-struct
+struct OW_ENGINE_API
 	__declspec(novtable, uuid("BDC2768B-055D-42EA-ABE3-CF17CD21178D"))
 	IManager
 {
@@ -26,7 +26,7 @@ struct IRefManager : public IManager
 class CFontMesh;
 // FORWARD END
 
-struct
+struct OW_ENGINE_API
 	__declspec(novtable, uuid("1427E242-CCB8-4AEC-ABC8-17DE58A96B05"))
 	IFontsManager : public IRefManager<CFontMesh>
 {
@@ -38,7 +38,7 @@ struct
 
 //--
 
-struct 
+struct OW_ENGINE_API
 	__declspec(novtable, uuid("BB9FD479-C7AD-4F57-837B-E299A04AF171"))
 	IBaseManager
 {

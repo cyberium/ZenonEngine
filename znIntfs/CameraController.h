@@ -14,7 +14,7 @@ class ResizeEventArgs;
 class UpdateEventArgs;
 // Forward END
 
-struct ICameraController
+struct OW_ENGINE_API ICameraController
 {
 	virtual std::shared_ptr<Camera> GetCamera() const = 0;
 

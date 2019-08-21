@@ -1,6 +1,6 @@
 #pragma once
 
-class CByteBuffer : public IByteBuffer, public IByteBufferEx
+class OW_ENGINE_API CByteBuffer : public IByteBuffer, public IByteBufferEx
 {
 public:
 	CByteBuffer();
@@ -33,21 +33,6 @@ public:
 	uint8* getDataEx() override { return &m_Data[0]; }
 	uint8* getDataFromCurrentEx() override { return &m_Data[m_CurrentPosition]; }
 
-    //
-    // Read
-    //
-
-    CByteBuffer& operator>>(int8& value);
-    CByteBuffer& operator>>(int16& value);
-    CByteBuffer& operator>>(int32& value);
-    CByteBuffer& operator>>(int64& value);
-    CByteBuffer& operator>>(uint8& value);
-    CByteBuffer& operator>>(uint16& value);
-    CByteBuffer& operator>>(uint32& value);
-    CByteBuffer& operator>>(uint64& value);
-    CByteBuffer& operator>>(float& value);
-    CByteBuffer& operator>>(double& value);
-    CByteBuffer& operator>>(std::string * String);
 
     //
 	// Write
@@ -60,20 +45,6 @@ public:
 	void Write(const std::string& _string, uint64 _expectedSize = UINT32_MAX);
 	void WriteDummy(uint64 _size);
 
-    CByteBuffer& operator<<(int8 value);
-    CByteBuffer& operator<<(int16 value);
-    CByteBuffer& operator<<(int32 value);
-    CByteBuffer& operator<<(int64 value);
-    CByteBuffer& operator<<(uint8 value);
-    CByteBuffer& operator<<(uint16 value);
-    CByteBuffer& operator<<(uint32 value);
-    CByteBuffer& operator<<(uint64 value);
-    CByteBuffer& operator<<(float value);
-    CByteBuffer& operator<<(double value);
-    CByteBuffer& operator<<(CByteBuffer& _other);
-    CByteBuffer& operator<<(const char* _string);
-    CByteBuffer& operator<<(const std::string& _string);
-
 private:
 	bool                m_IsFilled;
 
@@ -82,3 +53,149 @@ private:
 	std::vector<uint8>  m_Data;
 	size_t              m_CurrentPosition;
 };
+
+//
+// Read
+//
+inline CByteBuffer& operator>>(CByteBuffer& bb, int8& value)
+{
+	bb.readBytes(&value, sizeof(value));
+	return bb;
+}
+inline CByteBuffer& operator>>(CByteBuffer& bb, int16& value)
+{
+	bb.readBytes(&value, sizeof(value));
+	return bb;
+}
+inline CByteBuffer& operator>>(CByteBuffer& bb, int32& value)
+{
+	bb.readBytes(&value, sizeof(value));
+	return bb;
+}
+inline CByteBuffer& operator>>(CByteBuffer& bb, int64& value)
+{
+	bb.readBytes(&value, sizeof(value));
+	return bb;
+}
+inline CByteBuffer& operator>>(CByteBuffer& bb, uint8& value)
+{
+	bb.readBytes(&value, sizeof(value));
+	return bb;
+}
+inline CByteBuffer& operator>>(CByteBuffer& bb, uint16& value)
+{
+	bb.readBytes(&value, sizeof(value));
+	return bb;
+}
+inline CByteBuffer& operator>>(CByteBuffer& bb, uint32& value)
+{
+	bb.readBytes(&value, sizeof(value));
+	return bb;
+}
+inline CByteBuffer& operator>>(CByteBuffer& bb, uint64& value)
+{
+	bb.readBytes(&value, sizeof(value));
+	return bb;
+}
+inline CByteBuffer& operator>>(CByteBuffer& bb, float& value)
+{
+	bb.readBytes(&value, sizeof(value));
+	return bb;
+}
+inline CByteBuffer& operator>>(CByteBuffer& bb, double& value)
+{
+	bb.readBytes(&value, sizeof(value));
+	return bb;
+}
+inline CByteBuffer& operator>>(CByteBuffer& bb, std::string * String)
+{
+	_ASSERT(String != nullptr);
+	(*String) = "";
+
+	while (true)
+	{
+		uint8 byte;
+		bb.readBytes(&byte, sizeof(uint8));
+
+		(*String).append(1, static_cast<char>(byte));
+
+		if (byte == '\0')
+			break;
+	}
+
+	return bb;
+}
+
+
+
+//
+// Write
+//
+inline CByteBuffer& operator<<(CByteBuffer& bb, int8 value)
+{
+	bb.Append((uint8*)&value, sizeof(value));
+	return bb;
+}
+inline CByteBuffer& operator<<(CByteBuffer& bb, int16 value)
+{
+	bb.Append((uint8*)&value, sizeof(value));
+	return bb;
+}
+inline CByteBuffer& operator<<(CByteBuffer& bb, int32 value)
+{
+	bb.Append((uint8*)&value, sizeof(value));
+	return bb;
+}
+inline CByteBuffer& operator<<(CByteBuffer& bb, int64 value)
+{
+	bb.Append((uint8*)&value, sizeof(value));
+	return bb;
+}
+inline CByteBuffer& operator<<(CByteBuffer& bb, uint8 value)
+{
+	bb.Append((uint8*)&value, sizeof(value));
+	return bb;
+}
+inline CByteBuffer& operator<<(CByteBuffer& bb, uint16 value)
+{
+	bb.Append((uint8*)&value, sizeof(value));
+	return bb;
+}
+inline CByteBuffer& operator<<(CByteBuffer& bb, uint32 value)
+{
+	bb.Append((uint8*)&value, sizeof(value));
+	return bb;
+}
+inline CByteBuffer& operator<<(CByteBuffer& bb, uint64 value)
+{
+	bb.Append((uint8*)&value, sizeof(value));
+	return bb;
+}
+inline CByteBuffer& operator<<(CByteBuffer& bb, float value)
+{
+	bb.Append((uint8*)&value, sizeof(value));
+	return bb;
+}
+inline CByteBuffer& operator<<(CByteBuffer& bb, double value)
+{
+	bb.Append((uint8*)&value, sizeof(value));
+	return bb;
+}
+inline CByteBuffer& operator<<(CByteBuffer& bb, CByteBuffer& _other)
+{
+	bb.Append(_other.getData(), _other.getSize());
+	return bb;
+}
+inline CByteBuffer& operator<<(CByteBuffer& bb, const char* _string)
+{
+	size_t len = strlen(_string);
+	if (len > 0)
+		bb.Append((const uint8*)_string, len);
+	bb.Append((uint8)0x00, 1);
+	return bb;
+}
+inline CByteBuffer& operator<<(CByteBuffer& bb, const std::string& _string)
+{
+	bb.Append((uint8*)_string.c_str(), _string.size() + 1);
+	return bb;
+}

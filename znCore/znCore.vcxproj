@@ -359,7 +359,6 @@
     <ClCompile Include="BoundingBox.cpp" />
     <ClCompile Include="BoundingRect.cpp" />
     <ClCompile Include="BoundingSphere.cpp" />
-    <ClCompile Include="ByteBuffer_Operators.cpp" />
     <ClCompile Include="DebugOutputConsole.cpp" />
     <ClCompile Include="DebugOutputLog.cpp" />
     <ClCompile Include="ConsoleCommand.cpp" />
