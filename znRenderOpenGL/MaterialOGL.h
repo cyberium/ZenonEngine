@@ -3,7 +3,7 @@
 class MaterialOGL : public MaterialImpl
 {
 public:
-	MaterialOGL(IRenderDevice* renderDevice);
+	MaterialOGL(IRenderDevice* renderDevice, size_t Size);
 	virtual ~MaterialOGL();
 
     void                                            SetShader(Shader::ShaderType type, std::shared_ptr<Shader> pShader) override;

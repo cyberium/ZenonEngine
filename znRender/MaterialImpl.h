@@ -7,10 +7,10 @@ class IRenderDevice;
 
 #include "Material.h"
 
-class MaterialImpl : public Material
+class MaterialImpl : public IMaterial
 {
 public:
-	MaterialImpl(IRenderDevice* renderDevice);
+	MaterialImpl(IRenderDevice* renderDevice, size_t Size);
 	virtual ~MaterialImpl();
 
 	virtual void SetShader(Shader::ShaderType type, std::shared_ptr<Shader> pShader);
@@ -26,8 +26,7 @@ public:
 	virtual void Bind() const;
 	virtual void Unbind() const;
 
-	virtual void SetWrapper(std::weak_ptr<Material> _wrapper) override;
-	virtual void CreateConstantBuffer(const void* data, size_t size) override;
+	virtual void SetWrapper(std::weak_ptr<IMaterial> _wrapper) override;
 	virtual void UpdateConstantBuffer() const override;
 	virtual void UpdateConstantBuffer(const void* _data, size_t size) const override;
 	virtual void MarkConstantBufferDirty() override;
@@ -39,7 +38,7 @@ protected:
     SamplersMap                      m_Samplers;
 	std::shared_ptr<ConstantBuffer>  m_pConstantBuffer;
 
-	std::weak_ptr<Material>          m_Wrapper;
+	std::weak_ptr<IMaterial>          m_Wrapper;
 	IRenderDevice*                   m_RenderDevice;
 	mutable bool                     m_Dirty;
 };

@@ -15,8 +15,8 @@ public:
 
 	virtual void SetPrimitiveTopology(PrimitiveTopology _topology);
 
-	virtual void SetMaterial(std::shared_ptr<const Material> material);
-	virtual std::shared_ptr<const Material> GetMaterial() const;
+	virtual void SetMaterial(std::shared_ptr<const IMaterial> material);
+	virtual std::shared_ptr<const IMaterial> GetMaterial() const;
 
 	virtual bool Render(const RenderEventArgs* renderEventArgs, const ConstantBuffer* perObject, UINT indexStartLocation = 0, UINT indexCnt = 0, UINT vertexStartLocation = 0, UINT vertexCnt = 0) override;
 

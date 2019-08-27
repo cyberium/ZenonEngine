@@ -36,8 +36,8 @@ GLbitfield GLTranslateShaderBitType(Shader::ShaderType _type)
 	return result;
 }
 
-MaterialOGL::MaterialOGL(IRenderDevice* renderDevice)
-	: MaterialImpl(renderDevice)
+MaterialOGL::MaterialOGL(IRenderDevice* renderDevice, size_t Size)
+	: MaterialImpl(renderDevice, Size)
 {
 	glGenProgramPipelines(1, &m_GLProgramPipeline);
 }

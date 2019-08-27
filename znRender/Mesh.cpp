@@ -29,12 +29,12 @@ void IMesh::SetIndexBuffer(std::shared_ptr<IBuffer> buffer)
     m_pIndexBuffer = buffer;
 }
 
-void IMesh::SetMaterial(std::shared_ptr<const Material> material)
+void IMesh::SetMaterial(std::shared_ptr<const IMaterial> material)
 {
     m_pMaterial = material;
 }
 
-std::shared_ptr<const Material> IMesh::GetMaterial() const
+std::shared_ptr<const IMaterial> IMesh::GetMaterial() const
 {
     return m_pMaterial;
 }

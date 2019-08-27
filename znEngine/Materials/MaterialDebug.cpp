@@ -6,13 +6,11 @@
 // Additional
 #include <Application.h>
 
-MaterialDebug::MaterialDebug(std::shared_ptr<Material> _material)
-	: MaterialWrapper(_material)
+MaterialDebug::MaterialDebug()
+	: MaterialWrapper(_RenderDevice->CreateMaterial(sizeof(MaterialProperties)))
 {
 	m_pProperties = (MaterialProperties*)_aligned_malloc(sizeof(MaterialProperties), 16);
 	*m_pProperties = MaterialProperties();
-
-	MaterialWrapper::CreateConstantBuffer(m_pProperties, sizeof(MaterialProperties));
 
 	std::shared_ptr<Shader> g_pVertexShader = _RenderDevice->CreateShader(
 		Shader::VertexShader, "IDB_SHADER_3D_DEBUG", Shader::ShaderMacros(), "VS_main", "latest"

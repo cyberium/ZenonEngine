@@ -100,8 +100,8 @@ public:
 	virtual void DestroyTexture(std::shared_ptr<Texture> texture) = 0;
 
 	// Create an material
-	virtual std::shared_ptr<Material> CreateMaterial() = 0;
-	virtual void DestroyMaterial(std::shared_ptr<Material> material) = 0;
+	virtual std::shared_ptr<IMaterial> CreateMaterial(size_t Size) = 0;
+	virtual void DestroyMaterial(std::shared_ptr<IMaterial> material) = 0;
 
 	// Create a render target
 	virtual std::shared_ptr<IRenderTarget> CreateRenderTarget() = 0;
@@ -146,7 +146,7 @@ protected:
     TextureMap                                      m_TexturesByName;
     std::shared_ptr<Texture>                        m_pDefaultTexture;
 
-    typedef std::vector< std::shared_ptr<Material> > MaterialList;
+    typedef std::vector< std::shared_ptr<IMaterial> > MaterialList;
     MaterialList                                    m_Materials;
 
     typedef std::vector< std::shared_ptr<IRenderTarget> > RenderTargetList;

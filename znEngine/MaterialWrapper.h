@@ -1,9 +1,9 @@
 #pragma once
 
-class OW_ENGINE_API MaterialWrapper : public Material
+class OW_ENGINE_API MaterialWrapper : public IMaterial
 {
 public:
-	MaterialWrapper(std::shared_ptr<Material> _materal);
+	MaterialWrapper(std::shared_ptr<IMaterial> _materal);
 	virtual ~MaterialWrapper();
 
 	virtual void SetShader(Shader::ShaderType type, std::shared_ptr<Shader> pShader);
@@ -19,12 +19,11 @@ public:
 	virtual void Bind() const;
 	virtual void Unbind() const;
 
-	virtual void SetWrapper(std::weak_ptr<Material> _wrapper);
-	virtual void CreateConstantBuffer(const void* data, size_t size);
+	virtual void SetWrapper(std::weak_ptr<IMaterial> _wrapper);
 	virtual void UpdateConstantBuffer() const;
 	virtual void UpdateConstantBuffer(const void* _data, size_t size) const;
 	virtual void MarkConstantBufferDirty();
 
 private:
-	std::shared_ptr<Material> m_Material;
+	std::shared_ptr<IMaterial> m_Material;
 };

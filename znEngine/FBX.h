@@ -9,9 +9,9 @@ public:
 	virtual ~CFBX();
 
 	std::shared_ptr<SceneNode3D> GetSceneNode();
-	std::shared_ptr<Material> GetDefaultMaterial();
+	std::shared_ptr<IMaterial> GetDefaultMaterial();
 
 private:
 	std::shared_ptr<SceneNode3D> m_Node;
-	std::shared_ptr<Material> m_DefaultMaterial;
+	std::shared_ptr<IMaterial> m_DefaultMaterial;
 };

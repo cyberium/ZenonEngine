@@ -1,6 +1,6 @@
 #pragma once;
 
-class Material;
+class IMaterial;
 
 class Ray
 {
@@ -17,5 +17,5 @@ public:
 	vec3 m_Direction;
 
 	// The material that was hit.
-	Material* m_pMaterial;
+	IMaterial* m_pMaterial;
 };

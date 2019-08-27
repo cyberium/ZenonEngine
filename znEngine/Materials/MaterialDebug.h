@@ -5,7 +5,7 @@
 class OW_ENGINE_API MaterialDebug : public MaterialWrapper
 {
 public:
-	MaterialDebug(std::shared_ptr<Material> _material);
+	MaterialDebug();
 	virtual ~MaterialDebug();
 
 	cvec4 GetDiffuseColor() const;

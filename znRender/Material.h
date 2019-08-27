@@ -6,7 +6,7 @@
 #include "Texture.h"
 #include "SamplerState.h"
 
-class OW_ENGINE_API Material : public Object, public std::enable_shared_from_this<Material>
+class OW_ENGINE_API IMaterial : public Object, public std::enable_shared_from_this<IMaterial>
 {
 public:
 	typedef std::map<Shader::ShaderType, std::shared_ptr<Shader>> ShaderMap;
@@ -27,8 +27,7 @@ public:
 	virtual void Bind() const = 0;
 	virtual void Unbind() const = 0;
 
-	virtual void SetWrapper(std::weak_ptr<Material> _wrapper) = 0;
-	virtual void CreateConstantBuffer(const void* data, size_t size) = 0;
+	virtual void SetWrapper(std::weak_ptr<IMaterial> _wrapper) = 0;
 	virtual void UpdateConstantBuffer() const = 0;
 	virtual void UpdateConstantBuffer(const void* _data, size_t size) const = 0;
 	virtual void MarkConstantBufferDirty() = 0;

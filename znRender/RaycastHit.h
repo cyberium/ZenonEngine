@@ -14,5 +14,5 @@ public:
 	float Distance;
 
 	// A pointer to the material that was hit (if one was, NULL otherwise)
-	Material* pMaterial;
+	IMaterial* pMaterial;
 };

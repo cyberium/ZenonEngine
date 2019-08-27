@@ -335,16 +335,16 @@ void RenderDeviceDX11::DestroyTexture(std::shared_ptr<Texture> texture)
     }
 }
 
-std::shared_ptr<Material> RenderDeviceDX11::CreateMaterial()
+std::shared_ptr<IMaterial> RenderDeviceDX11::CreateMaterial(size_t Size)
 {
     D3DMultithreadLocker locker(m_pMultiThread);
 
-    std::shared_ptr<Material> pMaterial = std::make_shared<MaterialDX11>(this);
+    std::shared_ptr<IMaterial> pMaterial = std::make_shared<MaterialDX11>(this, Size);
     m_Materials.push_back(pMaterial);
     return pMaterial;
 }
 
-void RenderDeviceDX11::DestroyMaterial(std::shared_ptr<Material> material)
+void RenderDeviceDX11::DestroyMaterial(std::shared_ptr<IMaterial> material)
 {
     MaterialList::iterator iter = std::find(m_Materials.begin(), m_Materials.end(), material);
     if (iter != m_Materials.end())

@@ -375,14 +375,14 @@ void RenderDeviceOGL::DestroyTexture(std::shared_ptr<Texture> texture)
 	}
 }
 
-std::shared_ptr<Material> RenderDeviceOGL::CreateMaterial()
+std::shared_ptr<IMaterial> RenderDeviceOGL::CreateMaterial(size_t Size)
 {
-	std::shared_ptr<Material> pMaterial = std::make_shared<MaterialOGL>(this);
+	std::shared_ptr<IMaterial> pMaterial = std::make_shared<MaterialOGL>(this, Size);
 	m_Materials.push_back(pMaterial);
 	return pMaterial;
 }
 
-void RenderDeviceOGL::DestroyMaterial(std::shared_ptr<Material> material)
+void RenderDeviceOGL::DestroyMaterial(std::shared_ptr<IMaterial> material)
 {
 	MaterialList::iterator iter = std::find(m_Materials.begin(), m_Materials.end(), material);
 	if (iter != m_Materials.end())

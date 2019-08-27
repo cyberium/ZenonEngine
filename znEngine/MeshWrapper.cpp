@@ -37,12 +37,12 @@ void MeshWrapper::SetPrimitiveTopology(PrimitiveTopology _topology)
 	m_Mesh->SetPrimitiveTopology(_topology);
 }
 
-void MeshWrapper::SetMaterial(std::shared_ptr<const Material> material)
+void MeshWrapper::SetMaterial(std::shared_ptr<const IMaterial> material)
 {
 	m_Mesh->SetMaterial(material);
 }
 
-std::shared_ptr<const Material> MeshWrapper::GetMaterial() const
+std::shared_ptr<const IMaterial> MeshWrapper::GetMaterial() const
 {
 	return m_Mesh->GetMaterial();
 }

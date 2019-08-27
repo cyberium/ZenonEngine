@@ -3,7 +3,7 @@
 // General
 #include "MaterialWrapper.h"
 
-MaterialWrapper::MaterialWrapper(std::shared_ptr<Material> _materal)
+MaterialWrapper::MaterialWrapper(std::shared_ptr<IMaterial> _materal)
 	: m_Material(_materal)
 {
 }
@@ -22,7 +22,7 @@ std::shared_ptr<Shader> MaterialWrapper::GetShader(Shader::ShaderType type) cons
 	return m_Material->GetShader(type);
 }
 
-const Material::ShaderMap & MaterialWrapper::GetShaders() const
+const IMaterial::ShaderMap & MaterialWrapper::GetShaders() const
 {
 	return m_Material->GetShaders();
 }
@@ -57,14 +57,9 @@ void MaterialWrapper::Unbind() const
 	m_Material->Unbind();
 }
 
-void MaterialWrapper::SetWrapper(std::weak_ptr<Material> _wrapper)
+void MaterialWrapper::SetWrapper(std::weak_ptr<IMaterial> _wrapper)
 {
 	m_Material->SetWrapper(weak_from_this());
-}
-
-void MaterialWrapper::CreateConstantBuffer(const void* data, size_t size)
-{
-	m_Material->CreateConstantBuffer(data, size);
 }
 
 void MaterialWrapper::UpdateConstantBuffer() const

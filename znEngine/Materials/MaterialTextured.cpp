@@ -6,13 +6,12 @@
 // Additional
 #include <Application.h>
 
-MaterialTextured::MaterialTextured(std::shared_ptr<Material> _material)
-	: MaterialWrapper(_material)
+MaterialTextured::MaterialTextured()
+	: MaterialWrapper(_RenderDevice->CreateMaterial(sizeof(MaterialProperties)))
 {
 	// Constant buffer
 	m_pProperties = (MaterialProperties*)_aligned_malloc(sizeof(MaterialProperties), 16);
-	CreateConstantBuffer(m_pProperties, sizeof(MaterialProperties));
-
+	*m_pProperties = MaterialProperties();
 
 	std::shared_ptr<Shader> g_pVertexShader = _RenderDevice->CreateShader(
 		Shader::VertexShader, "shaders_D3D/Debug/Textured.hlsl", Shader::ShaderMacros(), "VS_main", "latest"

@@ -108,7 +108,7 @@ CFBX::CFBX(std::shared_ptr<SceneNode3D> ParentNode)
 
 	m_Node = ParentNode->CreateSceneNode<SceneNode3D>();
 
-	std::shared_ptr<MaterialDebug> mat = std::make_shared<MaterialDebug>(_RenderDevice->CreateMaterial());
+	std::shared_ptr<MaterialDebug> mat = std::make_shared<MaterialDebug>();
 	mat->SetDiffuseColor(vec4(1.0f, 0.0f, 1.0f, 1.0f));
 	m_DefaultMaterial = mat;
 
@@ -126,7 +126,7 @@ std::shared_ptr<SceneNode3D> CFBX::GetSceneNode()
 	return m_Node;
 }
 
-std::shared_ptr<Material> CFBX::GetDefaultMaterial()
+std::shared_ptr<IMaterial> CFBX::GetDefaultMaterial()
 {
 	return m_DefaultMaterial;
 }

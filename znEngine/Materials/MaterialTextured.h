@@ -5,7 +5,7 @@
 class OW_ENGINE_API MaterialTextured : public MaterialWrapper
 {
 public:
-	MaterialTextured(std::shared_ptr<Material> _material);
+	MaterialTextured();
 	virtual ~MaterialTextured();
 
 	void SetTexture(std::shared_ptr<Texture> texture);

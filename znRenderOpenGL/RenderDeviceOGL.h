@@ -47,8 +47,8 @@ public:
 
 	virtual void DestroyTexture(std::shared_ptr<Texture> texture);
 
-	virtual std::shared_ptr<Material> CreateMaterial();
-	virtual void DestroyMaterial(std::shared_ptr<Material> material);
+	virtual std::shared_ptr<IMaterial> CreateMaterial(size_t Size);
+	virtual void DestroyMaterial(std::shared_ptr<IMaterial> material);
 
 	virtual std::shared_ptr<Query> CreateQuery(Query::QueryType queryType = Query::QueryType::Timer, uint8_t numBuffers = 3);
 	virtual void DestoryQuery(std::shared_ptr<Query> query);

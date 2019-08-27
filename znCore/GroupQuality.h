@@ -43,7 +43,7 @@ public:
 private:
 	const float C_ADT_MCNK_Distance = 998.0f;
 	const float C_ADT_MCNK_HighRes_Distance = 384.0f * 0.65f;
-	const float C_ADT_MDX_Distance = 384.0f * 3.0f;
+	const float C_ADT_MDX_Distance = 384.0f;
 	const float C_ADT_WMO_Distance = C_ADT_MDX_Distance * 1.5f;
-	const float C_WMO_MODD_Distance = 64.0f * 7.0f;
+	const float C_WMO_MODD_Distance = 64.0f;
 };

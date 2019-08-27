@@ -7,11 +7,10 @@
 #include "Application.h"
 
 UI_Button_Material::UI_Button_Material() :
-	MaterialWrapper(_RenderDevice->CreateMaterial())
+	MaterialWrapper(_RenderDevice->CreateMaterial(sizeof(MaterialProperties)))
 {
 	m_pProperties = (MaterialProperties*)_aligned_malloc(sizeof(MaterialProperties), 16);
 	*m_pProperties = MaterialProperties();
-	CreateConstantBuffer(m_pProperties, sizeof(MaterialProperties));
 
 	// CreateShaders
 	std::shared_ptr<Shader> g_pVertexShader = _RenderDevice->CreateShader(

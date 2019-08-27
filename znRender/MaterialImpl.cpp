@@ -7,10 +7,15 @@
 // General
 #include "MaterialImpl.h"
 
-MaterialImpl::MaterialImpl(IRenderDevice* renderDevice)
+MaterialImpl::MaterialImpl(IRenderDevice* renderDevice, size_t Size)
 	: m_RenderDevice(renderDevice)
 	, m_Dirty(false)
-{}
+{
+	if (Size > 0)
+	{
+		m_pConstantBuffer = m_RenderDevice->CreateConstantBuffer(nullptr, Size);
+	}
+}
 
 MaterialImpl::~MaterialImpl()
 {
@@ -83,7 +88,7 @@ void MaterialImpl::Bind() const
 {
 	if (m_Dirty)
 	{
-		std::shared_ptr<Material> wrapper = m_Wrapper.lock();
+		std::shared_ptr<IMaterial> wrapper = m_Wrapper.lock();
 		if (wrapper)
 			wrapper->UpdateConstantBuffer();
 		m_Dirty = false;
@@ -97,14 +102,9 @@ void MaterialImpl::Unbind() const
 
 //--
 
-void MaterialImpl::SetWrapper(std::weak_ptr<Material> _wrapper)
+void MaterialImpl::SetWrapper(std::weak_ptr<IMaterial> _wrapper)
 {
 	m_Wrapper = _wrapper;
-}
-
-void MaterialImpl::CreateConstantBuffer(const void* data, size_t size)
-{
-	m_pConstantBuffer = m_RenderDevice->CreateConstantBuffer(data, size);
 }
 
 void MaterialImpl::UpdateConstantBuffer() const

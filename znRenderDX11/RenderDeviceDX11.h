@@ -1,6 +1,6 @@
 #pragma once
 
-class Material;
+class IMaterial;
 
 class OW_ENGINE_API RenderDeviceDX11 : public IRenderDevice
 {
@@ -46,8 +46,8 @@ public:
 
 	void DestroyTexture(std::shared_ptr<Texture> texture);
 
-	std::shared_ptr<Material> CreateMaterial();
-	void DestroyMaterial(std::shared_ptr<Material> material);
+	std::shared_ptr<IMaterial> CreateMaterial(size_t Size);
+	void DestroyMaterial(std::shared_ptr<IMaterial> material);
 
 	std::shared_ptr<Query> CreateQuery(Query::QueryType queryType = Query::QueryType::Timer, uint8_t numBuffers = 3);
 	void DestoryQuery(std::shared_ptr<Query> query);
