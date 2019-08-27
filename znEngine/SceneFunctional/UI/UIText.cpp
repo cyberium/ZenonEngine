@@ -87,7 +87,7 @@ glm::vec2 CUITextNode::GetSize()
     return GetTextSize() + 2.0f * m_Offset;
 }
 
-bool CUITextNode::AcceptMesh(std::shared_ptr<IVisitor> visitor)
+bool CUITextNode::AcceptMesh(IVisitor* visitor)
 {
 	m_Font->SetMaterial(m_Material);
 

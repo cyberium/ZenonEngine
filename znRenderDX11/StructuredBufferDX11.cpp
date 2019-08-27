@@ -102,12 +102,9 @@ StructuredBufferDX11::StructuredBufferDX11(ID3D11Device2* pDevice, UINT bindFlag
 StructuredBufferDX11::~StructuredBufferDX11()
 {}
 
-bool StructuredBufferDX11::Bind(uint32 ID, std::weak_ptr<Shader> shader, ShaderParameter::Type parameterType)
+bool StructuredBufferDX11::Bind(uint32 ID, const Shader* shader, ShaderParameter::Type parameterType) const
 {
 	assert(m_pDeviceContext);
-
-	std::shared_ptr<Shader> pShader = shader.lock();
-	_ASSERT(pShader != NULL);
 
 	if (m_bIsDirty)
 	{
@@ -119,7 +116,7 @@ bool StructuredBufferDX11::Bind(uint32 ID, std::weak_ptr<Shader> shader, ShaderP
 	{
 		ID3D11ShaderResourceView* srv[] = { m_pSRV };
 
-		switch (pShader->GetType())
+		switch (shader->GetType())
 		{
 		case Shader::VertexShader:
 			m_pDeviceContext->VSSetShaderResources(ID, 1, srv);
@@ -144,7 +141,7 @@ bool StructuredBufferDX11::Bind(uint32 ID, std::weak_ptr<Shader> shader, ShaderP
 	else if (parameterType == ShaderParameter::Type::RWBuffer && m_pUAV)
 	{
 		ID3D11UnorderedAccessView* uav[] = { m_pUAV };
-		switch (pShader->GetType())
+		switch (shader->GetType())
 		{
 		case Shader::ComputeShader:
 			m_pDeviceContext->CSSetUnorderedAccessViews(ID, 1, uav, nullptr);
@@ -155,16 +152,14 @@ bool StructuredBufferDX11::Bind(uint32 ID, std::weak_ptr<Shader> shader, ShaderP
 	return true;
 }
 
-void StructuredBufferDX11::UnBind(uint32 ID, std::weak_ptr<Shader> shader, ShaderParameter::Type parameterType)
+void StructuredBufferDX11::UnBind(uint32 ID, const Shader* shader, ShaderParameter::Type parameterType) const
 {
-	std::shared_ptr<Shader> pShader = shader.lock();
-	_ASSERT(pShader != NULL);
 	ID3D11UnorderedAccessView* uav[] = { nullptr };
 	ID3D11ShaderResourceView* srv[] = { nullptr };
 
 	if (parameterType == ShaderParameter::Type::Buffer)
 	{
-		switch (pShader->GetType())
+		switch (shader->GetType())
 		{
 		case Shader::VertexShader:
 			m_pDeviceContext->VSSetShaderResources(ID, 1, srv);
@@ -188,7 +183,7 @@ void StructuredBufferDX11::UnBind(uint32 ID, std::weak_ptr<Shader> shader, Shade
 	}
 	else if (parameterType == ShaderParameter::Type::RWBuffer)
 	{
-		switch (pShader->GetType())
+		switch (shader->GetType())
 		{
 		case Shader::ComputeShader:
 			m_pDeviceContext->CSSetUnorderedAccessViews(ID, 1, uav, nullptr);
@@ -207,7 +202,7 @@ void StructuredBufferDX11::SetData(void* data, size_t elementSize, size_t offset
 	m_bIsDirty = true;
 }
 
-void StructuredBufferDX11::Commit()
+void StructuredBufferDX11::Commit() const
 {
 	if (m_bIsDirty && m_bDynamic && m_pBuffer)
 	{

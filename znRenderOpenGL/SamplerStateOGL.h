@@ -7,8 +7,8 @@ public:
 	virtual                                         ~SamplerStateOGL();
 
     // SamplerState
-	void                                            Bind(uint32_t ID, std::weak_ptr<Shader> shader, ShaderParameter::Type parameterType) override final;
-	void                                            UnBind(uint32_t ID, std::weak_ptr<Shader> shader, ShaderParameter::Type parameterType) override final;
+	void                                            Bind(uint32_t ID, const Shader* shader, ShaderParameter::Type parameterType) const override final;
+	void                                            UnBind(uint32_t ID, const Shader* shader, ShaderParameter::Type parameterType) const override final;
 
 private:
 	uint32_t                                        m_GLObj;

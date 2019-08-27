@@ -11,15 +11,27 @@
 #include "ShaderParameter.h"
 
 ShaderParameter::ShaderParameter()
-	: m_uiSlotID(UINT_MAX)
+	: m_Name("<emprty>")
+	, m_uiSlotID(UINT_MAX)
+	, m_Shader(nullptr)
 	, m_ParameterType(Type::Invalid)
+
+	, m_pConstantBuffer(nullptr)
+	, m_pTexture(nullptr)
+	, m_pSamplerState(nullptr)
+	, m_pStructuredBuffer(nullptr)
 {}
 
 ShaderParameter::ShaderParameter(const std::string& name, UINT slotID, std::shared_ptr<Shader> shader, Type parameterType)
 	: m_Name(name)
 	, m_uiSlotID(slotID)
-	, m_Shader(shader)
+	, m_Shader(shader.get())
 	, m_ParameterType(parameterType)
+
+	, m_pConstantBuffer(nullptr)
+	, m_pTexture(nullptr)
+	, m_pSamplerState(nullptr)
+	, m_pStructuredBuffer(nullptr)
 {}
 
 ShaderParameter::~ShaderParameter()
@@ -28,60 +40,60 @@ ShaderParameter::~ShaderParameter()
 
 //--
 
-template<> void ShaderParameter::Set<ConstantBuffer>(std::shared_ptr<ConstantBuffer> value)
+template<> void ShaderParameter::Set<ConstantBuffer>(const ConstantBuffer* value)
 {
 	SetConstantBuffer(value);
 }
-template<> void ShaderParameter::Set<Texture>(std::shared_ptr<Texture> value)
+template<> void ShaderParameter::Set<Texture>(const Texture* value)
 {
 	SetTexture(value);
 }
-template<> void ShaderParameter::Set<SamplerState>(std::shared_ptr<SamplerState> value)
+template<> void ShaderParameter::Set<SamplerState>(const SamplerState* value)
 {
 	SetSampler(value);
 }
-template<> void ShaderParameter::Set<StructuredBuffer>(std::shared_ptr<StructuredBuffer> value)
+template<> void ShaderParameter::Set<StructuredBuffer>(const StructuredBuffer* value)
 {
 	SetStructuredBuffer(value);
 }
 
 //--
 
-template<> std::shared_ptr<ConstantBuffer> ShaderParameter::Get<ConstantBuffer>() const
+template<> const ConstantBuffer* ShaderParameter::Get<ConstantBuffer>() const
 {
-	return m_pConstantBuffer.lock();
+	return m_pConstantBuffer;
 }
-template<> std::shared_ptr<Texture> ShaderParameter::Get<Texture>() const
+template<> const Texture* ShaderParameter::Get<Texture>() const
 {
-	return m_pTexture.lock();
+	return m_pTexture;
 }
-template<> std::shared_ptr<SamplerState> ShaderParameter::Get<SamplerState>() const
+template<> const SamplerState* ShaderParameter::Get<SamplerState>() const
 {
-	return m_pSamplerState.lock();
+	return m_pSamplerState;
 }
-template<> std::shared_ptr <StructuredBuffer> ShaderParameter::Get<StructuredBuffer>() const
+template<> const StructuredBuffer* ShaderParameter::Get<StructuredBuffer>() const
 {
-	return m_pStructuredBuffer.lock();
+	return m_pStructuredBuffer;
 }
 
 //--
 
-void ShaderParameter::SetConstantBuffer(std::shared_ptr<ConstantBuffer> buffer)
+void ShaderParameter::SetConstantBuffer(const ConstantBuffer* buffer)
 {
 	m_pConstantBuffer = buffer;
 }
 
-void ShaderParameter::SetTexture(std::shared_ptr<Texture> texture)
+void ShaderParameter::SetTexture(const Texture* texture)
 {
 	m_pTexture = texture;
 }
 
-void ShaderParameter::SetSampler(std::shared_ptr<SamplerState> sampler)
+void ShaderParameter::SetSampler(const SamplerState* sampler)
 {
 	m_pSamplerState = sampler;
 }
 
-void ShaderParameter::SetStructuredBuffer(std::shared_ptr<StructuredBuffer> rwBuffer)
+void ShaderParameter::SetStructuredBuffer(const StructuredBuffer* rwBuffer)
 {
 	m_pStructuredBuffer = rwBuffer;
 }
@@ -95,41 +107,41 @@ ShaderParameter::Type ShaderParameter::GetType() const
 
 void ShaderParameter::Bind()
 {
-	if (std::shared_ptr<ConstantBuffer> constantBuffer = m_pConstantBuffer.lock())
+	if (m_pConstantBuffer)
 	{
-		constantBuffer->Bind(m_uiSlotID, m_Shader, m_ParameterType);
+		m_pConstantBuffer->Bind(m_uiSlotID, m_Shader, m_ParameterType);
 	}
-	if (std::shared_ptr<Texture> texture = m_pTexture.lock())
+	if (m_pTexture)
 	{
-		texture->Bind(m_uiSlotID, m_Shader, m_ParameterType);
+		m_pTexture->Bind(m_uiSlotID, m_Shader, m_ParameterType);
 	}
-	if (std::shared_ptr<SamplerState> samplerState = m_pSamplerState.lock())
+	if (m_pSamplerState)
 	{
-		samplerState->Bind(m_uiSlotID, m_Shader, m_ParameterType);
+		m_pSamplerState->Bind(m_uiSlotID, m_Shader, m_ParameterType);
 	}
-	if (std::shared_ptr<StructuredBuffer> buffer = m_pStructuredBuffer.lock())
+	if (m_pStructuredBuffer)
 	{
-		buffer->Bind(m_uiSlotID, m_Shader, m_ParameterType);
+		m_pStructuredBuffer->Bind(m_uiSlotID, m_Shader, m_ParameterType);
 	}
 }
 
 void ShaderParameter::UnBind()
 {
-	if (std::shared_ptr<ConstantBuffer> constantBuffer = m_pConstantBuffer.lock())
+	if (m_pConstantBuffer)
 	{
-		constantBuffer->UnBind(m_uiSlotID, m_Shader, m_ParameterType);
+		m_pConstantBuffer->UnBind(m_uiSlotID, m_Shader, m_ParameterType);
 	}
-	if (std::shared_ptr<Texture> texture = m_pTexture.lock())
+	if (m_pTexture)
 	{
-		texture->UnBind(m_uiSlotID, m_Shader, m_ParameterType);
+		m_pTexture->UnBind(m_uiSlotID, m_Shader, m_ParameterType);
 	}
-	if (std::shared_ptr<SamplerState> samplerState = m_pSamplerState.lock())
+	if (m_pSamplerState)
 	{
-		samplerState->UnBind(m_uiSlotID, m_Shader, m_ParameterType);
+		m_pSamplerState->UnBind(m_uiSlotID, m_Shader, m_ParameterType);
 	}
-	if (std::shared_ptr<StructuredBuffer> buffer = m_pStructuredBuffer.lock())
+	if (m_pStructuredBuffer)
 	{
-		buffer->UnBind(m_uiSlotID, m_Shader, m_ParameterType);
+		m_pStructuredBuffer->UnBind(m_uiSlotID, m_Shader, m_ParameterType);
 	}
 }
 

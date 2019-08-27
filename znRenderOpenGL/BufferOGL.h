@@ -6,8 +6,8 @@ public:
 	BufferOGL(UINT bindFlags, const void* data, size_t count, UINT offset, UINT stride);
 	~BufferOGL();
 
-	virtual bool Bind(uint32 id, std::weak_ptr<Shader> shader, ShaderParameter::Type parameterType);
-	virtual void UnBind(uint32 id, std::weak_ptr<Shader> shader, ShaderParameter::Type parameterType);
+	virtual bool Bind(uint32 id, const Shader* shader, ShaderParameter::Type parameterType) const override;
+	virtual void UnBind(uint32 id, const Shader* shader, ShaderParameter::Type parameterType) const override;
 
 	virtual void Copy(std::shared_ptr<IBuffer> other);
 

@@ -95,14 +95,14 @@ public:
 	/**
 	 * Bind this texture for use by the shaders.
 	 */
-	virtual void Bind(uint32_t ID, std::weak_ptr<Shader> shader, ShaderParameter::Type parameterType);
-	virtual void Bind(uint32_t ID, Shader::ShaderType _shaderType, ShaderParameter::Type parameterType);
+	virtual void Bind(uint32_t ID, const Shader* shader, ShaderParameter::Type parameterType) const override;
+	virtual void Bind(uint32_t ID, Shader::ShaderType _shaderType, ShaderParameter::Type parameterType) const override;
 
 	/**
 	 * Unbind the texture.
 	 */
-	virtual void UnBind(uint32_t ID, std::weak_ptr<Shader> shader, ShaderParameter::Type parameterType);
-	virtual void UnBind(uint32_t ID, Shader::ShaderType _shaderType, ShaderParameter::Type parameterType);
+	virtual void UnBind(uint32_t ID, const Shader* shader, ShaderParameter::Type parameterType) const override;
+	virtual void UnBind(uint32_t ID, Shader::ShaderType _shaderType, ShaderParameter::Type parameterType) const override;
 
 	/**
 	 * Get texture data
@@ -200,5 +200,5 @@ private:
 
 	std::string m_TextureFileName;
 
-	bool m_bIsDirty;
+	mutable bool m_bIsDirty;
 };

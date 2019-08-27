@@ -43,7 +43,7 @@ StructuredBufferOGL::~StructuredBufferOGL()
 	}
 }
 
-bool StructuredBufferOGL::Bind(uint32 ID, std::weak_ptr<Shader> shader, ShaderParameter::Type parameterType)
+bool StructuredBufferOGL::Bind(uint32 ID, const Shader* shader, ShaderParameter::Type parameterType) const 
 {
 	if (m_bIsDirty)
 	{
@@ -56,7 +56,7 @@ bool StructuredBufferOGL::Bind(uint32 ID, std::weak_ptr<Shader> shader, ShaderPa
 	return true;
 }
 
-void StructuredBufferOGL::UnBind(uint32 ID, std::weak_ptr<Shader> shader, ShaderParameter::Type parameterType)
+void StructuredBufferOGL::UnBind(uint32 ID, const Shader* shader, ShaderParameter::Type parameterType) const 
 {
 	glBindBufferBase(m_BindFlags, ID, 0);
 }
@@ -70,7 +70,7 @@ void StructuredBufferOGL::SetData(void* data, size_t elementSize, size_t offset,
 	m_bIsDirty = true;
 }
 
-void StructuredBufferOGL::Commit()
+void StructuredBufferOGL::Commit() const
 {
 	if (m_bIsDirty && m_bDynamic && (m_GLObj != 0))
 	{

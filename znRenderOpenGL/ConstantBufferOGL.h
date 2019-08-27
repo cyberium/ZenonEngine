@@ -6,8 +6,8 @@ public:
 	ConstantBufferOGL(size_t size);
 	virtual ~ConstantBufferOGL();
 
-	virtual bool Bind(uint32 id, std::weak_ptr<Shader> shader, ShaderParameter::Type parameterType);
-	virtual void UnBind(uint32 id, std::weak_ptr<Shader> shader, ShaderParameter::Type parameterType);
+	virtual bool Bind(uint32 id, const Shader* shader, ShaderParameter::Type parameterType) const override;
+	virtual void UnBind(uint32 id, const Shader* shader, ShaderParameter::Type parameterType) const override;
 
 	virtual void Copy(std::shared_ptr<ConstantBuffer> other) override;
 

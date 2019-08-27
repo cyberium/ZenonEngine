@@ -91,6 +91,9 @@
     <Filter Include="Resources\Shaders_OGL\UI">
       <UniqueIdentifier>{f4acda98-2887-4580-b2b9-57a1cf6bf95f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="FBX">
+      <UniqueIdentifier>{d9523bc5-6faa-44da-9380-191b2b28f432}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -275,6 +278,36 @@
     </ClCompile>
     <ClCompile Include="Passes\RenderTechnique.cpp">
       <Filter>Passes\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="FBX.cpp">
+      <Filter>FBX</Filter>
+    </ClCompile>
+    <ClCompile Include="FBXHelpers.cpp">
+      <Filter>FBX</Filter>
+    </ClCompile>
+    <ClCompile Include="FBXDisplayHierarchy.cpp">
+      <Filter>FBX</Filter>
+    </ClCompile>
+    <ClCompile Include="FBXDisplayMesh.cpp">
+      <Filter>FBX</Filter>
+    </ClCompile>
+    <ClCompile Include="FBXDisplayMaterial.cpp">
+      <Filter>FBX</Filter>
+    </ClCompile>
+    <ClCompile Include="FBXDisplayShape.cpp">
+      <Filter>FBX</Filter>
+    </ClCompile>
+    <ClCompile Include="FBXDisplayTexture.cpp">
+      <Filter>FBX</Filter>
+    </ClCompile>
+    <ClCompile Include="FBXDisplayCache.cpp">
+      <Filter>FBX</Filter>
+    </ClCompile>
+    <ClCompile Include="FBXDisplayLink.cpp">
+      <Filter>FBX</Filter>
+    </ClCompile>
+    <ClCompile Include="FBXDisplayCommon.cpp">
+      <Filter>FBX</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -470,6 +503,36 @@
     <ClInclude Include="Passes\RenderTechnique.h">
       <Filter>Passes\Base</Filter>
     </ClInclude>
+    <ClInclude Include="FBX.h">
+      <Filter>FBX</Filter>
+    </ClInclude>
+    <ClInclude Include="FBXHelpers.h">
+      <Filter>FBX</Filter>
+    </ClInclude>
+    <ClInclude Include="FBXDisplayHierarchy.h">
+      <Filter>FBX</Filter>
+    </ClInclude>
+    <ClInclude Include="FBXDisplayMesh.h">
+      <Filter>FBX</Filter>
+    </ClInclude>
+    <ClInclude Include="FBXDisplayCache.h">
+      <Filter>FBX</Filter>
+    </ClInclude>
+    <ClInclude Include="FBXDisplayLink.h">
+      <Filter>FBX</Filter>
+    </ClInclude>
+    <ClInclude Include="FBXDisplayMaterial.h">
+      <Filter>FBX</Filter>
+    </ClInclude>
+    <ClInclude Include="FBXDisplayShape.h">
+      <Filter>FBX</Filter>
+    </ClInclude>
+    <ClInclude Include="FBXDisplayTexture.h">
+      <Filter>FBX</Filter>
+    </ClInclude>
+    <ClInclude Include="FBXDisplayCommon.h">
+      <Filter>FBX</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="znEngine.rc">
@@ -520,10 +583,10 @@
       <Filter>Resources\shaders_D3D\3D</Filter>
     </Text>
     <Text Include="Resources\shaders_OGL\UI\UI_Font.vs">
-      <Filter>Resources\Shaders_D3D\UI</Filter>
+      <Filter>Resources\Shaders_OGL\UI</Filter>
     </Text>
     <Text Include="Resources\shaders_OGL\UI\UI_Font.ps">
-      <Filter>Resources\Shaders_D3D\UI</Filter>
+      <Filter>Resources\Shaders_OGL\UI</Filter>
     </Text>
   </ItemGroup>
   <ItemGroup>

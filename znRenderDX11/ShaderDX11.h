@@ -15,8 +15,8 @@ public:
 	bool LoadInputLayoutFromReflector() override final;
 	bool LoadInputLayoutFromD3DElement(const std::vector<D3DVERTEXELEMENT9>& declIn) override final;
 
-	void Bind() override final;
-	void UnBind() override final;
+	void Bind() const override final;
+	void UnBind() const override final;
 
 	void Dispatch(const glm::uvec3& numGroups) override final;
 

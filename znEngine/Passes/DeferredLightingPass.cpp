@@ -87,7 +87,7 @@ void DeferredLightingPass::RenderSubPass(RenderEventArgs* e, std::shared_ptr<Sce
 
 	pipeline->Bind();
 
-	scene->Accept(shared_from_this());
+	scene->Accept(this);
 
 	pipeline->UnBind();
 }
@@ -120,9 +120,9 @@ void DeferredLightingPass::Render(RenderEventArgs& e)
 		if (pixelShader)
 		{
 			// Bind the per-light & deferred lighting properties constant buffers to the pixel shader.
-			pixelShader->GetShaderParameterByName("LightIndexBuffer").Set(m_LightParamsCB);
-			pixelShader->GetShaderParameterByName("ScreenToViewParams").Set(m_ScreenToViewParamsCB);
-			pixelShader->GetShaderParameterByName("FogParams").Set(m_FogParamsCB);
+			pixelShader->GetShaderParameterByName("LightIndexBuffer").Set(m_LightParamsCB.get());
+			pixelShader->GetShaderParameterByName("ScreenToViewParams").Set(m_ScreenToViewParamsCB.get());
+			pixelShader->GetShaderParameterByName("FogParams").Set(m_FogParamsCB.get());
 		}
 	}
 
@@ -158,7 +158,7 @@ void DeferredLightingPass::Render(RenderEventArgs& e)
 		m_pLightParams->m_LightIndex++;
 	}*/
 
-	m_Scene->Accept(shared_from_this());
+	m_Scene->Accept(this);
 }
 
 void DeferredLightingPass::PostRender(RenderEventArgs& e)
@@ -173,18 +173,18 @@ void DeferredLightingPass::PostRender(RenderEventArgs& e)
 
 // Inherited from Visitor
 
-bool DeferredLightingPass::Visit(std::shared_ptr<SceneNode3D> node)
+bool DeferredLightingPass::Visit(SceneNode3D* node)
 {
 	m_World = node->GetComponent<CTransformComponent3D>()->GetWorldTransfom();
 
 	return true;
 }
 
-bool DeferredLightingPass::Visit(std::shared_ptr<IMesh> Mesh, UINT IndexStartLocation, UINT IndexCnt, UINT VertexStartLocation, UINT VertexCnt)
+bool DeferredLightingPass::Visit(IMesh* Mesh, UINT IndexStartLocation, UINT IndexCnt, UINT VertexStartLocation, UINT VertexCnt)
 {
 	if (GetRenderEventArgs() && Mesh->GetMaterial() == nullptr) // TODO: Fixme
 	{
-		return Mesh->Render(GetRenderEventArgs(), m_PerObjectConstantBuffer);
+		return Mesh->Render(GetRenderEventArgs(), m_PerObjectConstantBuffer.get());
 	}
 
 	return false;

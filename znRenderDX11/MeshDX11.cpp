@@ -43,7 +43,7 @@ void MeshDX11::SetPrimitiveTopology(PrimitiveTopology _topology)
 	}
 }
 
-bool MeshDX11::Render(const RenderEventArgs* renderArgs, std::shared_ptr<ConstantBuffer> perObject, UINT indexStartLocation, UINT indexCnt, UINT vertexStartLocation, UINT vertexCnt)
+bool MeshDX11::Render(const RenderEventArgs* renderArgs, const ConstantBuffer* perObject, UINT indexStartLocation, UINT indexCnt, UINT vertexStartLocation, UINT vertexCnt)
 {
     if (indexCnt == 0 && m_pIndexBuffer != nullptr)
         indexCnt = m_pIndexBuffer->GetElementCount();
@@ -80,7 +80,7 @@ bool MeshDX11::Render(const RenderEventArgs* renderArgs, std::shared_ptr<Constan
 
 		if (m_VertexBuffer != nullptr)
 		{
-			m_VertexBuffer->Bind(0, pVS, ShaderParameter::Type::Buffer);
+			m_VertexBuffer->Bind(0, pVS.get(), ShaderParameter::Type::Buffer);
 		}
 		else
 		{
@@ -90,7 +90,7 @@ bool MeshDX11::Render(const RenderEventArgs* renderArgs, std::shared_ptr<Constan
 				if (pVS->GetInputLayout()->HasSemantic(binding))
 				{
 					UINT slotID = pVS->GetInputLayout()->GetSemanticSlot(binding);
-					buffer.second->Bind(slotID, pVS, ShaderParameter::Type::Buffer);
+					buffer.second->Bind(slotID, pVS.get(), ShaderParameter::Type::Buffer);
 				}
 			}
 		}
@@ -99,16 +99,16 @@ bool MeshDX11::Render(const RenderEventArgs* renderArgs, std::shared_ptr<Constan
 
 		if (m_pIndexBuffer != NULL)
 		{
-			m_pIndexBuffer->Bind(0, pVS, ShaderParameter::Type::Buffer);
+			m_pIndexBuffer->Bind(0, pVS.get(), ShaderParameter::Type::Buffer);
 			m_pDeviceContext->DrawIndexed(indexCnt, indexStartLocation, vertexStartLocation);
-			m_pIndexBuffer->UnBind(0, pVS, ShaderParameter::Type::Buffer);
+			m_pIndexBuffer->UnBind(0, pVS.get(), ShaderParameter::Type::Buffer);
 		}
 		else
 		{
 			m_pDeviceContext->Draw(vertexCnt, vertexStartLocation);
 		}
 
-
+		/*
 		if (m_VertexBuffer != nullptr)
 		{
 			m_VertexBuffer->UnBind(0, pVS, ShaderParameter::Type::Buffer);
@@ -125,12 +125,15 @@ bool MeshDX11::Render(const RenderEventArgs* renderArgs, std::shared_ptr<Constan
 				}
 			}
 		}
+		*/
 	}
 
+	/*
 	if (m_pMaterial)
 	{
 		m_pMaterial->Unbind();
 	}
+	*/
 
 	return true;
 }

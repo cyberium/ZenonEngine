@@ -7,11 +7,11 @@ public:
 	virtual                                         ~SamplerStateDX11();
 
     // SamplerState
-	void                                            Bind(uint32_t ID, std::weak_ptr<Shader> shader, ShaderParameter::Type parameterType) override final;
-	void                                            UnBind(uint32_t ID, std::weak_ptr<Shader> shader, ShaderParameter::Type parameterType) override final;
+	void                                            Bind(uint32_t ID, const Shader* shader, ShaderParameter::Type parameterType) const override final;
+	void                                            UnBind(uint32_t ID, const Shader* shader, ShaderParameter::Type parameterType) const override final;
 
 private:
 	ATL::CComPtr<ID3D11Device2>                     m_pDevice;
 	ATL::CComPtr<ID3D11DeviceContext2>              m_pDeviceContext;
-	ATL::CComPtr<ID3D11SamplerState>                m_pSamplerState;
+	mutable ATL::CComPtr<ID3D11SamplerState>        m_pSamplerState;
 };

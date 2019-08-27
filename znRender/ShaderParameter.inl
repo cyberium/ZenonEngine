@@ -1,17 +1,17 @@
 template<>
-void ShaderParameter::Set<ConstantBuffer>(std::shared_ptr<ConstantBuffer> value);
+void ShaderParameter::Set<ConstantBuffer>(const ConstantBuffer* value);
 
 template<>
-void ShaderParameter::Set<Texture>(std::shared_ptr<Texture> value);
+void ShaderParameter::Set<Texture>(const Texture* value);
 
 template<>
-void ShaderParameter::Set<SamplerState>(std::shared_ptr<SamplerState> value);
+void ShaderParameter::Set<SamplerState>(const SamplerState* value);
 
 template<>
-void ShaderParameter::Set<StructuredBuffer>(std::shared_ptr<StructuredBuffer> value);
+void ShaderParameter::Set<StructuredBuffer>(const StructuredBuffer* value);
 
 template<typename T>
-void ShaderParameter::Set(std::shared_ptr<T> value)
+void ShaderParameter::Set(const T* value)
 {
 	static_assert(false, "This function must be specialized.");
 }

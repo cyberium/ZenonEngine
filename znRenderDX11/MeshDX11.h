@@ -8,7 +8,7 @@ public:
 
 	virtual void                                    SetPrimitiveTopology(PrimitiveTopology _topology);
 
-	virtual bool                                    Render(const RenderEventArgs* renderArgs, std::shared_ptr<ConstantBuffer> perObject, UINT indexStartLocation = 0, UINT indexCnt = 0, UINT vertexStartLocation = 0, UINT vertexCnt = 0);
+	virtual bool                                    Render(const RenderEventArgs* renderArgs, const ConstantBuffer* perObject, UINT indexStartLocation = 0, UINT indexCnt = 0, UINT vertexStartLocation = 0, UINT vertexCnt = 0);
 
 private:
 	D3D11_PRIMITIVE_TOPOLOGY                        m_PrimitiveTopology;

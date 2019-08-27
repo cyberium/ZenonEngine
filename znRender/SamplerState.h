@@ -107,8 +107,8 @@ public:
 	virtual void SetMaxAnisotropy(uint8_t maxAnisotropy);
 	virtual uint8_t GetMaxAnisotropy() const;
 
-	virtual void Bind(uint32_t ID, std::weak_ptr<Shader> shader, ShaderParameter::Type parameterType) = 0;
-	virtual void UnBind(uint32_t ID, std::weak_ptr<Shader> shader, ShaderParameter::Type parameterType) = 0;
+	virtual void Bind(uint32_t ID, const Shader* shader, ShaderParameter::Type parameterType) const = 0;
+	virtual void UnBind(uint32_t ID, const Shader* shader, ShaderParameter::Type parameterType) const = 0;
 
 protected:
     MinFilter                                       m_MinFilter;
@@ -127,5 +127,5 @@ protected:
     bool                                            m_bIsAnisotropicFilteringEnabled;
     uint8_t                                         m_AnisotropicFiltering;
 
-    bool                                            m_bIsDirty;
+    mutable bool                                            m_bIsDirty;
 };

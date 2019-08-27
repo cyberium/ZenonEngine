@@ -6,8 +6,8 @@ public:
 	StructuredBufferDX11(ID3D11Device2* pDevice, UINT bindFlags, const void* data, size_t count, UINT stride, CPUAccess cpuAccess = CPUAccess::None, bool bUAV = false);
 	virtual ~StructuredBufferDX11();
 
-	virtual bool Bind(uint32 id, std::weak_ptr<Shader> shader, ShaderParameter::Type parameterType);
-	virtual void UnBind(uint32 id, std::weak_ptr<Shader> shader, ShaderParameter::Type parameterType);
+	virtual bool Bind(uint32 id, const Shader* shader, ShaderParameter::Type parameterType) const override;
+	virtual void UnBind(uint32 id, const Shader* shader, ShaderParameter::Type parameterType) const override;
 
 	// Is this an index buffer or an attribute/vertex buffer?
 	virtual BufferType GetType() const;
@@ -29,8 +29,9 @@ public:
 protected:
 	virtual void Copy(std::shared_ptr<IBuffer> other);
 	virtual void SetData(void* data, size_t elementSize, size_t offset, size_t numElements);
+
 	// Commit the data from system memory to device memory.
-	void Commit();
+	void Commit() const;
 
 private:
 	ATL::CComPtr<ID3D11Device2> m_pDevice;
@@ -57,7 +58,7 @@ private:
 
 	// Marked dirty if the contents of the buffer differ
 	// from what is stored on the GPU.
-	bool m_bIsDirty;
+	mutable bool m_bIsDirty;
 	// Does this buffer require GPU write access 
 	// If so, it must be bound as a UAV instead of an SRV.
 	bool m_bUAV;

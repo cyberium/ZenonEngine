@@ -64,15 +64,13 @@ void ConstantBufferDX11::Copy(std::shared_ptr<IBuffer> other)
 	Copy(std::dynamic_pointer_cast<ConstantBuffer>(other));
 }
 
-bool ConstantBufferDX11::Bind(uint32 id, std::weak_ptr<Shader> shader, ShaderParameter::Type parameterType)
+bool ConstantBufferDX11::Bind(uint32 id, const Shader* shader, ShaderParameter::Type parameterType) const
 {
 	bool result = true;
 
-	std::shared_ptr<Shader> pShader = shader.lock();
-	_ASSERT(pShader != NULL);
 	ID3D11Buffer* pBuffers[] = { m_pBuffer };
 
-	switch (pShader->GetType())
+	switch (shader->GetType())
 	{
 	case Shader::VertexShader:
 		m_pDeviceContext->VSSetConstantBuffers(id, 1, pBuffers);
@@ -100,13 +98,11 @@ bool ConstantBufferDX11::Bind(uint32 id, std::weak_ptr<Shader> shader, ShaderPar
 	return result;
 }
 
-void ConstantBufferDX11::UnBind(uint32 id, std::weak_ptr<Shader> shader, ShaderParameter::Type parameterType)
+void ConstantBufferDX11::UnBind(uint32 id, const Shader* shader, ShaderParameter::Type parameterType) const
 {
-	std::shared_ptr<Shader> pShader = shader.lock();
-	_ASSERT(pShader != NULL);
 	ID3D11Buffer* pBuffers[] = { nullptr };
 
-	switch (pShader->GetType())
+	switch (shader->GetType())
 	{
 	case Shader::VertexShader:
 		m_pDeviceContext->VSSetConstantBuffers(id, 1, pBuffers);

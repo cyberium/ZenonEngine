@@ -20,7 +20,7 @@ void BaseUIPass::Render(RenderEventArgs & e)
 {
     if (m_UIScene)
     {
-        m_UIScene->Accept(shared_from_this());
+        m_UIScene->Accept(this);
     }
 }
 
@@ -29,9 +29,9 @@ void BaseUIPass::Render(RenderEventArgs & e)
 //
 // IVisitor
 //
-bool BaseUIPass::Visit(std::shared_ptr<CUIBaseNode> nodeUI)
+bool BaseUIPass::Visit(CUIBaseNode* nodeUI)
 {
-    GetRenderEventArgs()->Node = nodeUI.get();
+    GetRenderEventArgs()->Node = nodeUI;
 
 	const Camera* camera = GetRenderEventArgs()->Camera;
 	if (camera)

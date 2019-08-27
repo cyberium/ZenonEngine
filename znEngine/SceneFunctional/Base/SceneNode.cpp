@@ -33,15 +33,18 @@ void SceneNode::SetName(const std::string& name)
 //
 bool SceneNode::IsComponentExists(GUID ComponentID)
 {
-    return m_Components.find(ComponentID) != m_Components.end();
+	const auto& components = GetComponents();
+    return components.find(ComponentID) != components.end();
 }
 
 std::shared_ptr<ISceneNodeComponent> SceneNode::GetComponent(GUID ComponentID)
 {
-    if (m_Components.find(ComponentID) == m_Components.end())
+	const auto& components = GetComponents();
+	const auto& component = components.find(ComponentID);
+    if (component == components.end())
         return std::shared_ptr<ISceneNodeComponent>();
 
-    return m_Components[ComponentID];
+    return component->second;
 }
 
 std::shared_ptr<ISceneNodeComponent> SceneNode::AddComponent(GUID ComponentID, std::shared_ptr<ISceneNodeComponent> Component)
@@ -57,12 +60,11 @@ const SceneNode::ComponentsMap& SceneNode::GetComponents() const
 
 void SceneNode::RaiseComponentMessage(std::shared_ptr<ISceneNodeComponent> Component, ComponentMessageType Message)
 {
-    for (auto c : m_Components)
-    {
-        std::shared_ptr<ISceneNodeComponent> component = c.second;
-        if (component)
-            component->OnMessage(Component, Message);
-    }
+	const auto& components = GetComponents();
+	std::for_each(components.begin(), components.end(), [&Component, &Message](const std::pair<GUID, std::shared_ptr<ISceneNodeComponent>>& ComponentMapIter) 
+	{
+		ComponentMapIter.second->OnMessage(Component, Message);
+	});
 }
 
 
@@ -159,7 +161,7 @@ void SceneNode::UpdateCamera(const Camera* camera)
 	// Do nothing...
 }
 
-bool SceneNode::Accept(std::shared_ptr<IVisitor> visitor)
+bool SceneNode::Accept(IVisitor* visitor)
 {
     fail1();
 	return false;

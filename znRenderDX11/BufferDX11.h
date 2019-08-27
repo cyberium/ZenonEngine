@@ -6,8 +6,8 @@ public:
 	BufferDX11(ID3D11Device2* pDevice, UINT bindFlags, const void* data, size_t count, UINT offset, UINT stride);
 	~BufferDX11();
 
-	virtual bool Bind(uint32 id, std::weak_ptr<Shader> shader, ShaderParameter::Type parameterType);
-	virtual void UnBind(uint32 id, std::weak_ptr<Shader> shader, ShaderParameter::Type parameterType);
+	virtual bool Bind(uint32 id, const Shader* shader, ShaderParameter::Type parameterType) const override;
+	virtual void UnBind(uint32 id, const Shader* shader, ShaderParameter::Type parameterType) const override;
 
 	virtual void Copy(std::shared_ptr<IBuffer> other);
 
@@ -34,5 +34,5 @@ private:
 	// The number of elements in this buffer.
 	UINT m_uiCount;
 
-	bool m_bIsBound;
+	mutable bool m_bIsBound;
 };

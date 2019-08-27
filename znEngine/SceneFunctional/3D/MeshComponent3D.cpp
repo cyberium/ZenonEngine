@@ -44,14 +44,15 @@ const CMeshComponent3D::MeshList& CMeshComponent3D::GetMeshes()
 //
 // ISceneNodeComponent
 //
-bool CMeshComponent3D::Accept(std::shared_ptr<IVisitor> visitor)
+bool CMeshComponent3D::Accept(IVisitor* visitor)
 {
     bool acceptResult = true;
 
-    for (auto mesh : GetMeshes())
-    {
-        acceptResult = mesh->Accept(visitor);
-    }
+	const auto& meshes = GetMeshes();
+	std::for_each(meshes.begin(), meshes.end(), [&acceptResult, &visitor](const std::shared_ptr<IMesh>& Mesh)
+	{
+		acceptResult = Mesh->Accept(visitor);
+	});
 
     return acceptResult;
 }

@@ -78,23 +78,23 @@ void AbstractPass::UpdateViewport(const Viewport * _viewport)
 //
 // IVisitor
 //
-bool AbstractPass::Visit(std::shared_ptr<SceneNode3D> node)
+bool AbstractPass::Visit(SceneNode3D* node)
 {
     fail1();
 	return false;
 }
 
-bool AbstractPass::Visit(std::shared_ptr<CUIBaseNode> nodeUI)
+bool AbstractPass::Visit(CUIBaseNode* nodeUI)
 {
 	fail1();
 	return false;
 }
 
-bool AbstractPass::Visit(std::shared_ptr<IMesh> Mesh, UINT IndexStartLocation, UINT IndexCnt, UINT VertexStartLocation, UINT VertexCnt)
+bool AbstractPass::Visit(IMesh* Mesh, UINT IndexStartLocation, UINT IndexCnt, UINT VertexStartLocation, UINT VertexCnt)
 {
     if (m_RenderEventArgs)
     {
-        return Mesh->Render(m_RenderEventArgs, m_PerObjectConstantBuffer, IndexStartLocation, IndexCnt, VertexStartLocation, VertexCnt);
+        return Mesh->Render(m_RenderEventArgs, m_PerObjectConstantBuffer.get(), IndexStartLocation, IndexCnt, VertexStartLocation, VertexCnt);
     }
 
     return false;
@@ -130,7 +130,7 @@ std::shared_ptr<ConstantBuffer> AbstractPass::GetPerObjectConstantBuffer() const
 void AbstractPass::BindPerObjectConstantBuffer(std::shared_ptr<Shader> shader)
 {
     if (shader)
-        shader->GetShaderParameterByName("PerObject").Set(m_PerObjectConstantBuffer);
+        shader->GetShaderParameterByName("PerObject").Set(m_PerObjectConstantBuffer.get());
 }
 
 std::shared_ptr<PipelineState> AbstractPass::GetPipelineState() const

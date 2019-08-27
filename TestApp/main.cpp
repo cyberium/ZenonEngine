@@ -50,7 +50,6 @@ int main(int argumentCount, char* arguments[])
         std::shared_ptr<IRenderDevice> renderDevice = app.CreateRenderDevice(IRenderDevice::DeviceType::DirectX);
         std::shared_ptr<RenderWindow> renderWindow = app.CreateRenderWindow(windowObject, true);
 
-
         std::shared_ptr<IFontsManager> fontsManager = std::make_shared<FontsManager>();
         AddManager<IFontsManager>(fontsManager);
 

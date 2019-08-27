@@ -54,7 +54,7 @@ public:
 	virtual void                                    UpdateCamera(const Camera* camera);
 
 	// Allow a visitor to visit this node.
-	virtual bool                                    Accept(std::shared_ptr<IVisitor> visitor);
+	virtual bool                                    Accept(IVisitor* visitor);
 
 	// Updatable
 	virtual void                                    OnUpdate(UpdateEventArgs& e);

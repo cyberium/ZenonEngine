@@ -30,8 +30,8 @@ public:
 	virtual void PostRender(RenderEventArgs& e) override final;
 
 	// Inherited from Visitor
-	virtual bool Visit(std::shared_ptr<SceneNode3D> node) override final;
-	virtual bool Visit(std::shared_ptr<IMesh> Mesh, UINT IndexStartLocation = 0, UINT IndexCnt = 0, UINT VertexStartLocation = 0, UINT VertexCnt = 0) override final;
+	virtual bool Visit(SceneNode3D* node) override final;
+	virtual bool Visit(IMesh* Mesh, UINT IndexStartLocation = 0, UINT IndexCnt = 0, UINT VertexStartLocation = 0, UINT VertexCnt = 0) override final;
 	virtual bool Visit(std::shared_ptr<CLight3D> light) override final;
 
 	virtual void UpdateViewport(const Viewport * _viewport);

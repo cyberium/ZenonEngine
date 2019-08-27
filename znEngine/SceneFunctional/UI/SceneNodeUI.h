@@ -48,8 +48,8 @@ public:
 	virtual void                                    UpdateViewport(const Viewport* viewport);
 
 	// Allow a visitor to visit this node. 
-	virtual bool                                    Accept(std::shared_ptr<IVisitor> visitor);
-	virtual bool                                    AcceptMesh(std::shared_ptr<IVisitor> visitor);
+	virtual bool                                    Accept(IVisitor* visitor);
+	virtual bool                                    AcceptMesh(IVisitor* visitor);
 
 	// Input events
 	virtual bool                                    OnKeyPressed(KeyEventArgs& e);

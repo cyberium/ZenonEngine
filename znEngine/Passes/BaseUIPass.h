@@ -13,7 +13,7 @@ public:
     virtual void                                    Render(RenderEventArgs& e) override;
 
 	// IVisitor
-	virtual bool                                    Visit(std::shared_ptr<CUIBaseNode> nodeUI) override;
+	virtual bool                                    Visit(CUIBaseNode* nodeUI) override;
 
 private:
 	std::shared_ptr<SceneUI>                        m_UIScene;

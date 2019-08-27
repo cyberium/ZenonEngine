@@ -365,7 +365,7 @@ void TextureOGL::Clear(ClearFlags clearFlags, cvec4 color, float depth, uint8_t 
 	}*/
 }
 
-void TextureOGL::Bind(uint32_t ID, std::weak_ptr<Shader> shader, ShaderParameter::Type parameterType)
+void TextureOGL::Bind(uint32_t ID, const Shader* shader, ShaderParameter::Type parameterType) const
 {
 	if (m_bIsDirty)
 	{
@@ -392,7 +392,7 @@ void TextureOGL::Bind(uint32_t ID, std::weak_ptr<Shader> shader, ShaderParameter
 		m_bIsDirty = false;
 	}
 
-	std::shared_ptr<ShaderOGL> pShader = std::dynamic_pointer_cast<ShaderOGL>(shader.lock());
+	const ShaderOGL* pShader = dynamic_cast<const ShaderOGL*>(shader);
 	_ASSERT(pShader != NULL);
 
 	if (pShader->GetType() != Shader::ShaderType::PixelShader)
@@ -407,14 +407,14 @@ void TextureOGL::Bind(uint32_t ID, std::weak_ptr<Shader> shader, ShaderParameter
 
 }
 
-void TextureOGL::Bind(uint32_t ID, Shader::ShaderType _shaderType, ShaderParameter::Type parameterType)
+void TextureOGL::Bind(uint32_t ID, Shader::ShaderType _shaderType, ShaderParameter::Type parameterType) const
 {
 	fail1();
 }
 
-void TextureOGL::UnBind(uint32_t ID, std::weak_ptr<Shader> shader, ShaderParameter::Type parameterType)
+void TextureOGL::UnBind(uint32_t ID, const Shader* shader, ShaderParameter::Type parameterType) const
 {
-	std::shared_ptr<ShaderOGL> pShader = std::dynamic_pointer_cast<ShaderOGL>(shader.lock());
+	const ShaderOGL* pShader = dynamic_cast<const ShaderOGL*>(shader);
 	_ASSERT(pShader != NULL);
 
 	glProgramUniform1i(pShader->GetGLObject(), ID, 0);
@@ -423,7 +423,7 @@ void TextureOGL::UnBind(uint32_t ID, std::weak_ptr<Shader> shader, ShaderParamet
 	glBindTexture(m_TextureType, 0);
 }
 
-void TextureOGL::UnBind(uint32_t ID, Shader::ShaderType _shaderType, ShaderParameter::Type parameterType)
+void TextureOGL::UnBind(uint32_t ID, Shader::ShaderType _shaderType, ShaderParameter::Type parameterType) const
 {
 	fail1();
 }

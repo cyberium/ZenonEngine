@@ -25,7 +25,7 @@ public:
 	// CUIBaseNode
     virtual glm::vec2           GetSize() override;
 
-    virtual bool                AcceptMesh(std::shared_ptr<IVisitor> visitor) override;
+    virtual bool                AcceptMesh(IVisitor* visitor) override;
 
 private:
 	std::shared_ptr<CFontMesh>         m_Font;

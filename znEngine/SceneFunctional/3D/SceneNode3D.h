@@ -32,7 +32,7 @@ public:
 	virtual void                                    UpdateCamera(const Camera* camera) override;
 
 	// Allow a visitor to visit this node.
-	virtual bool                                    Accept(std::shared_ptr<IVisitor> visitor) override;
+	virtual bool                                    Accept(IVisitor* visitor) override;
 
 	// Updatable
 	virtual void                                    OnUpdate(UpdateEventArgs& e) override;
@@ -49,10 +49,12 @@ public:
 
 protected:
     void                                            SetTransformComponent(std::shared_ptr<CTransformComponent3D> TransformComponent);
+	void                                            SetMeshComponent(std::shared_ptr<CMeshComponent3D> MeshComponent);
     void                                            SetColliderComponent(std::shared_ptr<CColliderComponent3D> ColliderComponent);
 
 private:
     std::shared_ptr<CTransformComponent3D>          m_Components_Transform;
+	std::shared_ptr<CMeshComponent3D>				m_Components_Mesh;
     std::shared_ptr<CColliderComponent3D>           m_Components_Collider;
 
 private:

@@ -11,7 +11,7 @@ public:
 	void setLight(const Light& _light);
 	Light& getLight();
 
-	bool Accept(std::shared_ptr<IVisitor> visitor);
+	bool Accept(IVisitor* visitor);
 
 private:
 	Light m_LightProto;

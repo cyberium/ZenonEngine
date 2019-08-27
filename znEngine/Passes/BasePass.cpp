@@ -20,7 +20,7 @@ void BasePass::Render(RenderEventArgs& e)
 {
 	if (m_Scene)
 	{
-		m_Scene->Accept(shared_from_this());
+		m_Scene->Accept(this);
 	}
 }
 
@@ -29,9 +29,9 @@ void BasePass::Render(RenderEventArgs& e)
 //
 // Inherited from Visitor
 //
-bool BasePass::Visit(std::shared_ptr<SceneNode3D> node)
+bool BasePass::Visit(SceneNode3D* node)
 {
-	GetRenderEventArgs()->Node = node.get();
+	GetRenderEventArgs()->Node = node;
 
 	const Camera* camera = GetRenderEventArgs()->Camera;
 	if (camera)

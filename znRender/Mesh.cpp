@@ -39,7 +39,7 @@ std::shared_ptr<const Material> IMesh::GetMaterial() const
     return m_pMaterial;
 }
 
-bool IMesh::Accept(std::shared_ptr<IVisitor> visitor, UINT indexStartLocation, UINT indexCnt, UINT vertexStartLocation, UINT vertexCnt)
+bool IMesh::Accept(IVisitor* visitor, UINT indexStartLocation, UINT indexCnt, UINT vertexStartLocation, UINT vertexCnt)
 {
-    return visitor->Visit(shared_from_this(), indexStartLocation, indexCnt, vertexStartLocation, vertexCnt);
+    return visitor->Visit(this, indexStartLocation, indexCnt, vertexStartLocation, vertexCnt);
 }

@@ -28,10 +28,10 @@ public:
     virtual ~ShaderParameter();
 
 	template <typename T>
-	void Set(std::shared_ptr<T> value);
+	void Set(const T* value);
 
 	template <typename T>
-	std::shared_ptr<T> Get() const;
+	const T* Get() const;
 
 	// Get the type of the stored parameter.
 	virtual Type GetType() const;
@@ -44,21 +44,21 @@ public:
 	virtual bool IsValid() const;
 
 protected:
-	virtual void SetConstantBuffer(std::shared_ptr<ConstantBuffer> constantBuffer);
-	virtual void SetTexture(std::shared_ptr<Texture> texture);
-	virtual void SetSampler(std::shared_ptr<SamplerState> sampler);
-	virtual void SetStructuredBuffer(std::shared_ptr<StructuredBuffer> rwBuffer);
+	virtual void SetConstantBuffer(const ConstantBuffer* constantBuffer);
+	virtual void SetTexture(const Texture* texture);
+	virtual void SetSampler(const SamplerState* sampler);
+	virtual void SetStructuredBuffer(const StructuredBuffer* rwBuffer);
 
 private:
-	std::string                     m_Name;
-	UINT                            m_uiSlotID;
-	std::weak_ptr<Shader>           m_Shader;
-	Type                            m_ParameterType;
+	std::string             m_Name;
+	UINT                    m_uiSlotID;
+	const Shader*           m_Shader;
+	Type                    m_ParameterType;
 
-	std::weak_ptr<ConstantBuffer>   m_pConstantBuffer;
-	std::weak_ptr<Texture>          m_pTexture;
-	std::weak_ptr<SamplerState>     m_pSamplerState;
-	std::weak_ptr<StructuredBuffer> m_pStructuredBuffer;
+	const ConstantBuffer*   m_pConstantBuffer;
+	const Texture*          m_pTexture;
+	const SamplerState*     m_pSamplerState;
+	const StructuredBuffer* m_pStructuredBuffer;
 };
 
 // Template definitions

@@ -11,5 +11,5 @@ struct OW_ENGINE_API ISceneNodeComponent : public std::enable_shared_from_this<I
     virtual void OnMessage(std::shared_ptr<ISceneNodeComponent> Component, ComponentMessageType Message) = 0;
 
 
-    virtual bool Accept(std::shared_ptr<IVisitor> visitor) = 0;
+    virtual bool Accept(IVisitor* visitor) = 0;
 };

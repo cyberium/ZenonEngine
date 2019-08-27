@@ -43,8 +43,8 @@ public:
 	// CUIBaseNode
     virtual glm::vec2 GetSize() override;
 
-	virtual bool Accept(std::shared_ptr<IVisitor> visitor) override;
-	virtual bool AcceptMesh(std::shared_ptr<IVisitor> visitor) override;
+	virtual bool Accept(IVisitor* visitor) override;
+	virtual bool AcceptMesh(IVisitor* visitor) override;
 
 	UIButtonClickEvent Click;
 

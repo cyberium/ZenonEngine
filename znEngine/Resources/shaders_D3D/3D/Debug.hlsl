@@ -28,8 +28,8 @@ cbuffer Material : register(b2)
 VertexShaderOutput VS_main(VertexShaderInput IN)
 {
 	VertexShaderOutput OUT;
-	OUT.positionVS = mul(ModelViewProjection, float4(IN.position, 1.0f));
-	OUT.positionWS = float4(IN.position, 1.0f);
+	OUT.positionVS = mul(ModelViewProjection, float4(IN.position.xyz, 1.0f));
+	OUT.positionWS = float4(IN.position.xyz, 1.0f);
 	return OUT;
 }
 

@@ -24,3 +24,4 @@ for (auto itr = _name.begin(); itr != _name.end(); itr++)   \
 }                                                           \
 _name.clear();
 
+//#define USE_STL_FOREACH

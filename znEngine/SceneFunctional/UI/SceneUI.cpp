@@ -22,7 +22,7 @@ std::shared_ptr<CUIWindowNode> SceneUI::GetRootNode() const
 	return m_RootNode;
 }
 
-void SceneUI::Accept(std::shared_ptr<IVisitor> visitor)
+void SceneUI::Accept(IVisitor* visitor)
 {
 	if (m_RootNode)
 		m_RootNode->Accept(visitor);

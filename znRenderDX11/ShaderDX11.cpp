@@ -257,9 +257,9 @@ bool ShaderDX11::LoadInputLayoutFromD3DElement(const std::vector<D3DVERTEXELEMEN
 	return true;
 }
 
-void ShaderDX11::Bind()
+void ShaderDX11::Bind() const
 {
-	for (ParameterMap::value_type value : m_ShaderParameters)
+	for (const auto& value : m_ShaderParameters)
 	{
 		value.second->Bind();
 	}
@@ -293,9 +293,9 @@ void ShaderDX11::Bind()
 	}
 }
 
-void ShaderDX11::UnBind()
+void ShaderDX11::UnBind() const
 {
-	for (ParameterMap::value_type value : m_ShaderParameters)
+	for (const auto& value : m_ShaderParameters)
 	{
 		value.second->UnBind();
 	}

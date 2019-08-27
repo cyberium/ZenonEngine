@@ -15,13 +15,13 @@ public:
     bool LoadInputLayoutFromReflector() override final;
     bool LoadInputLayoutFromD3DElement(const std::vector<D3DVERTEXELEMENT9>& declIn) override final;
 
-	void Bind();
-	void UnBind();
+	void Bind() const;
+	void UnBind() const;
 
 	void Dispatch(const glm::uvec3& numGroups);
 
 public:
-	uint32 GetGLObject();
+	uint32 GetGLObject() const;
 
 protected:
 	virtual void Destroy();

@@ -86,3 +86,10 @@
 #include "../znEngine/SceneFunctional/Light.h"
 #include "../znEngine/SceneFunctional/Light3D.h"
 #include "../znEngine/Passes/DeferredLightingPass.h"
+
+
+
+//
+// Node builders
+//
+#include "../znEngine/FBX.h"

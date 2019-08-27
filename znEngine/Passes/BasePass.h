@@ -13,7 +13,7 @@ public:
 	virtual void                                    Render(RenderEventArgs& e) override;
 
 	// IVisitor
-	virtual bool                                    Visit(std::shared_ptr<SceneNode3D> node) override;
+	virtual bool                                    Visit(SceneNode3D* node) override;
 
 private:
 	std::shared_ptr<Scene3D>                        m_Scene;

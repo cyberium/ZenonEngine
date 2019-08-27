@@ -73,19 +73,19 @@ void MaterialOGL::Bind() const
             for (auto textureIt : m_Textures)
             {
                 std::shared_ptr<Texture> texture = textureIt.second;
-                texture->Bind((uint32_t)textureIt.first, pShader, ShaderParameter::Type::Texture);
+                texture->Bind((uint32_t)textureIt.first, pShader.get(), ShaderParameter::Type::Texture);
             }
 
             for (auto samplerStateIt : m_Samplers)
             {
                 std::shared_ptr<SamplerState> samplerState = samplerStateIt.second;
-                samplerState->Bind((uint32_t)samplerStateIt.first, pShader, ShaderParameter::Type::Sampler);
+                samplerState->Bind((uint32_t)samplerStateIt.first, pShader.get(), ShaderParameter::Type::Sampler);
             }
 
             ShaderParameter& materialParameter = pShader->GetShaderParameterByName("Material");
             if (materialParameter.IsValid() && m_pConstantBuffer != nullptr)
             {
-                materialParameter.Set<ConstantBuffer>(m_pConstantBuffer);
+                materialParameter.Set<ConstantBuffer>(m_pConstantBuffer.get());
                 materialParameter.Bind();
             }
 		}
@@ -104,13 +104,13 @@ void MaterialOGL::Unbind() const
             for (auto textureIt : m_Textures)
             {
                 std::shared_ptr<Texture> texture = textureIt.second;
-                texture->UnBind((uint32_t)textureIt.first, pShader, ShaderParameter::Type::Texture);
+                texture->UnBind((uint32_t)textureIt.first, pShader.get(), ShaderParameter::Type::Texture);
             }
 
             for (auto samplerStateIt : m_Samplers)
             {
                 std::shared_ptr<SamplerState> samplerState = samplerStateIt.second;
-                samplerState->UnBind((uint32_t)samplerStateIt.first, pShader, ShaderParameter::Type::Sampler);
+                samplerState->UnBind((uint32_t)samplerStateIt.first, pShader.get(), ShaderParameter::Type::Sampler);
             }
 
             ShaderParameter& materialParameter = pShader->GetShaderParameterByName("Material");

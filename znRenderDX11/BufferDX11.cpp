@@ -39,7 +39,7 @@ BufferDX11::~BufferDX11()
     
 }
 
-bool BufferDX11::Bind(uint32 id, std::weak_ptr<Shader> shader, ShaderParameter::Type parameterType)
+bool BufferDX11::Bind(uint32 id, const Shader* shader, ShaderParameter::Type parameterType) const
 {
 	assert(m_pDeviceContext);
 
@@ -64,7 +64,7 @@ bool BufferDX11::Bind(uint32 id, std::weak_ptr<Shader> shader, ShaderParameter::
 	return true;
 }
 
-void BufferDX11::UnBind(uint32 id, std::weak_ptr<Shader> shader, ShaderParameter::Type parameterType)
+void BufferDX11::UnBind(uint32 id, const Shader* shader, ShaderParameter::Type parameterType) const
 {
 	ID3D11Buffer* buffers[] = { nullptr };
 	UINT offsets[] = { 0 };

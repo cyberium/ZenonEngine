@@ -36,8 +36,9 @@ std::weak_ptr<SceneNode3D> SceneNode3D::weak_from_this()
 void SceneNode3D::RegisterComponents()
 {
     SetTransformComponent(AddComponent(std::make_shared<CTransformComponent3D>(shared_from_this())));
-    AddComponent(std::make_shared<CMeshComponent3D>(shared_from_this()));
+    SetMeshComponent(AddComponent(std::make_shared<CMeshComponent3D>(shared_from_this())));
     SetColliderComponent(AddComponent(std::make_shared<CColliderComponent3D>(shared_from_this())));
+
     AddComponent(std::make_shared<CLightComponent3D>(shared_from_this()));
 }
 
@@ -47,31 +48,33 @@ void SceneNode3D::UpdateCamera(const Camera* camera)
 	// Do nothing...
 }
 
-bool SceneNode3D::Accept(std::shared_ptr<IVisitor> visitor)
+bool SceneNode3D::Accept(IVisitor* visitor)
 {
-	bool visitResult = visitor->Visit(shared_from_this());
+	bool visitResult = visitor->Visit(this);
 	//if (!visitResult)
 	//	return false;
 
     if (visitResult)
     {
-        for (auto c : GetComponents())
-        {
-            c.second->Accept(visitor);
-        }
+		const auto& components = GetComponents();
+		std::for_each(components.begin(), components.end(), [&visitor](const std::pair<GUID, std::shared_ptr<ISceneNodeComponent>>& Component)
+		{
+			Component.second->Accept(visitor);
+		});
     }
 
 	// Now visit children
-	for (auto child : GetChilds())
+	const auto& childs = GetChilds();
+	std::for_each(childs.begin(), childs.end(), [&visitor](const std::shared_ptr<SceneNode>& Child)
 	{
 #ifdef LOADER_ENABLED
 		std::shared_ptr<ILoadable> loadable = std::dynamic_pointer_cast<ILoadable, SceneNode3D>(child);
-		if (loadable != nullptr && ! loadable->isLoaded())
+		if (loadable != nullptr && !loadable->isLoaded())
 			continue;
 #endif
 
-		child->Accept(visitor);
-	}
+		Child->Accept(visitor);
+	});
 
 	return visitResult;
 }
@@ -133,6 +136,11 @@ uint32 SceneNode3D::getPriority() const
 void SceneNode3D::SetTransformComponent(std::shared_ptr<CTransformComponent3D> TransformComponent)
 {
     m_Components_Transform = TransformComponent;
+}
+
+void SceneNode3D::SetMeshComponent(std::shared_ptr<CMeshComponent3D> MeshComponent)
+{
+	m_Components_Mesh = MeshComponent;
 }
 
 void SceneNode3D::SetColliderComponent(std::shared_ptr<CColliderComponent3D> ColliderComponent)

@@ -64,14 +64,14 @@ void ConstantBufferOGL::Copy(std::shared_ptr<IBuffer> other)
 	Copy(std::dynamic_pointer_cast<ConstantBuffer>(other));
 }
 
-bool ConstantBufferOGL::Bind(uint32 id, std::weak_ptr<Shader> shader, ShaderParameter::Type parameterType)
+bool ConstantBufferOGL::Bind(uint32 id, const Shader* shader, ShaderParameter::Type parameterType) const
 {
 	glBindBufferBase(GL_UNIFORM_BUFFER, id, m_GLObj);
 
 	return true;
 }
 
-void ConstantBufferOGL::UnBind(uint32 id, std::weak_ptr<Shader> shader, ShaderParameter::Type parameterType)
+void ConstantBufferOGL::UnBind(uint32 id, const Shader* shader, ShaderParameter::Type parameterType) const
 {
 	glBindBufferBase(GL_UNIFORM_BUFFER, id, 0);
 }

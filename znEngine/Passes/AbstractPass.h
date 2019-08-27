@@ -16,9 +16,9 @@ public:
     virtual void                                    UpdateViewport(const Viewport * _viewport);
 
 	// IVisitor
-	virtual bool                                    Visit(std::shared_ptr<SceneNode3D> node) override;
-	virtual bool                                    Visit(std::shared_ptr<CUIBaseNode> nodeUI) override;
-	virtual bool                                    Visit(std::shared_ptr<IMesh> Mesh, UINT IndexStartLocation = 0, UINT IndexCnt = 0, UINT VertexStartLocation = 0, UINT VertexCnt = 0) override;
+	virtual bool                                    Visit(SceneNode3D* node) override;
+	virtual bool                                    Visit(CUIBaseNode* nodeUI) override;
+	virtual bool                                    Visit(IMesh* Mesh, UINT IndexStartLocation = 0, UINT IndexCnt = 0, UINT VertexStartLocation = 0, UINT VertexCnt = 0) override;
 	virtual bool                                    Visit(std::shared_ptr<CLight3D> light) override;
 
 	virtual void                                    SetRenderEventArgs(RenderEventArgs* e);

@@ -191,14 +191,14 @@ public:
 	/**
 	 * Bind this texture for use by the shaders.
 	 */
-	virtual void Bind(uint32_t ID, std::weak_ptr<Shader> shader, ShaderParameter::Type parameterType) = 0;
-	virtual void Bind(uint32_t ID, Shader::ShaderType _shaderType, ShaderParameter::Type parameterType) = 0;
+	virtual void Bind(uint32_t ID, const Shader* shader, ShaderParameter::Type parameterType) const = 0;
+	virtual void Bind(uint32_t ID, Shader::ShaderType _shaderType, ShaderParameter::Type parameterType) const = 0;
 
 	/**
 	 * Unbind the texture.
 	 */
-	virtual void UnBind(uint32_t ID, std::weak_ptr<Shader> shader, ShaderParameter::Type parameterType) = 0;
-	virtual void UnBind(uint32_t ID, Shader::ShaderType _shaderType, ShaderParameter::Type parameterType) = 0;
+	virtual void UnBind(uint32_t ID, const Shader* shader, ShaderParameter::Type parameterType) const = 0;
+	virtual void UnBind(uint32_t ID, Shader::ShaderType _shaderType, ShaderParameter::Type parameterType) const = 0;
 	/**
 	 * Get texture data
 	 */

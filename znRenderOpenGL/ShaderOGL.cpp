@@ -185,7 +185,7 @@ bool ShaderOGL::LoadInputLayoutFromD3DElement(const std::vector<D3DVERTEXELEMENT
 }
 
 
-void ShaderOGL::Bind()
+void ShaderOGL::Bind() const
 {
     for (ParameterMap::value_type value : m_ShaderParameters)
     {
@@ -193,7 +193,7 @@ void ShaderOGL::Bind()
     }
 }
 
-void ShaderOGL::UnBind()
+void ShaderOGL::UnBind() const
 {
     for (ParameterMap::value_type value : m_ShaderParameters)
     {
@@ -206,7 +206,7 @@ void ShaderOGL::Dispatch(const glm::uvec3& numGroups)
     glDispatchCompute(numGroups.x, numGroups.y, numGroups.z);
 }
 
-uint32 ShaderOGL::GetGLObject()
+uint32 ShaderOGL::GetGLObject() const
 {
     return m_GLObj;
 }

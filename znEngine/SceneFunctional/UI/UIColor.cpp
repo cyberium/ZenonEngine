@@ -38,7 +38,7 @@ glm::vec2 CUIColorNode::GetSize()
     return m_Size;
 }
 
-bool CUIColorNode::AcceptMesh(std::shared_ptr<IVisitor> visitor)
+bool CUIColorNode::AcceptMesh(IVisitor* visitor)
 {
 	m_Mesh->SetMaterial(m_Material);
 

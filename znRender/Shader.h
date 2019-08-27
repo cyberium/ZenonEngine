@@ -83,12 +83,12 @@ public:
 	/**
 	 * Bind this shader for use in the rendering pipeline.
 	 */
-	virtual void Bind() = 0;
+	virtual void Bind() const = 0;
 
 	/**
 	 * Unbind the shader from the rendering pipeline.
 	 */
-	virtual void UnBind() = 0;
+	virtual void UnBind() const = 0;
 
 	/**
 	 * Dispatch a compute shader. If this shader does not refer to a compute

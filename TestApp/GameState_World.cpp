@@ -134,7 +134,7 @@ void CGameState_World::Load3D()
 	UIPipeline->SetRenderTarget(renderWindow->GetRenderTarget());
 	UIPipeline->GetRasterizerState().SetViewport(renderWindow->GetViewport());
 
-	std::shared_ptr<SceneNode3D> sceneNode = m_3DScene->CreateSceneNode<SceneNode3D>(m_3DScene->GetRootNode());
+	/*std::shared_ptr<SceneNode3D> sceneNode = m_3DScene->CreateSceneNode<SceneNode3D>(m_3DScene->GetRootNode());
 
 	std::shared_ptr<IMesh> mesh = renderDevice->CreateCube();
 
@@ -143,7 +143,11 @@ void CGameState_World::Load3D()
 	mesh->SetMaterial(mat);
 
 	sceneNode->GetComponent<CTransformComponent3D>()->SetScale(vec3(15, 15, 15));
-	sceneNode->GetComponent<CMeshComponent3D>()->AddMesh(mesh);
+	sceneNode->GetComponent<CMeshComponent3D>()->AddMesh(mesh);*/
+
+
+	CFBX fbx(m_3DScene->GetRootNode());
+
 
     m_3DTechnique.AddPass(std::make_shared<ClearRenderTargetPass>(renderWindow->GetRenderTarget(), ClearFlags::All, g_ClearColor, 1.0f, 0));
 	m_3DTechnique.AddPass(std::make_shared<BasePass>(m_3DScene, UIPipeline));

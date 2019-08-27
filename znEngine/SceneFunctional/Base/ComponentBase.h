@@ -19,7 +19,7 @@ public:
     std::shared_ptr<T>                              GetComponent();
 
     // Accept from SceneNode
-    virtual bool                                    Accept(std::shared_ptr<IVisitor> visitor) override;
+    virtual bool                                    Accept(IVisitor* visitor) override;
 
     // ISceneNodeComponent
     virtual void                                    OnParentChanged() override;

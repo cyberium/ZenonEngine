@@ -21,6 +21,12 @@ inline std::shared_ptr<CTransformComponent3D> SceneNode3D::GetComponent<CTransfo
 }
 
 template<>
+inline std::shared_ptr<CMeshComponent3D> SceneNode3D::GetComponent<CMeshComponent3D>()
+{
+	return m_Components_Mesh;
+}
+
+template<>
 inline std::shared_ptr<CColliderComponent3D> SceneNode3D::GetComponent<CColliderComponent3D>()
 {
     return m_Components_Collider;

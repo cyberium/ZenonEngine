@@ -46,7 +46,7 @@ void CFreeCameraController::OnKeyPressed(KeyEventArgs& e)
 	{
 	case KeyCode::W:
 	{
-		Forward = 1.0f;
+		Forward = 10.0f;
 	}
 	break;
 	case KeyCode::A:

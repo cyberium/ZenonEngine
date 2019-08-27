@@ -17,8 +17,8 @@ public:
 		ConstantBuffer
 	};
 
-	virtual bool Bind(uint32 id, std::weak_ptr<Shader> shader, ShaderParameter::Type parameterType) = 0;
-	virtual void UnBind(uint32 id, std::weak_ptr<Shader> shader, ShaderParameter::Type parameterType) = 0;
+	virtual bool Bind(uint32 id, const Shader* shader, ShaderParameter::Type parameterType) const = 0;
+	virtual void UnBind(uint32 id, const Shader* shader, ShaderParameter::Type parameterType) const = 0;
 
 	virtual void Copy(std::shared_ptr<IBuffer> other) = 0;
 

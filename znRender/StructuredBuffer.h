@@ -7,9 +7,6 @@
 class OW_ENGINE_API StructuredBuffer : public IBuffer
 {
 public:
-	virtual bool Bind(uint32 id, std::weak_ptr<Shader> shader, ShaderParameter::Type parameterType) = 0;
-	virtual void UnBind(uint32 id, std::weak_ptr<Shader> shader, ShaderParameter::Type parameterType) = 0;
-
 	// Copy the contents of another buffer to this one.
 	// Buffers must be the same size.
 	virtual void Copy(std::shared_ptr<StructuredBuffer> other) = 0;

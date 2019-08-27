@@ -29,7 +29,7 @@ void MaterialImpl::SetShader(Shader::ShaderType type, std::shared_ptr<Shader> pS
 
 std::shared_ptr<Shader> MaterialImpl::GetShader(Shader::ShaderType type) const
 {
-	ShaderMap::const_iterator iter = m_Shaders.find(type);
+	const auto& iter = m_Shaders.find(type);
 	if (iter != m_Shaders.end())
 	{
 		return iter->second;
@@ -46,7 +46,7 @@ const MaterialImpl::ShaderMap& MaterialImpl::GetShaders() const
 
 std::shared_ptr<Texture> MaterialImpl::GetTexture(uint8 ID) const
 {
-	TextureMap::const_iterator itr = m_Textures.find(ID);
+	const auto& itr = m_Textures.find(ID);
 	if (itr != m_Textures.end())
 	{
 		return itr->second;
@@ -63,7 +63,7 @@ void MaterialImpl::SetTexture(uint8 ID, std::shared_ptr<Texture> texture)
 
 std::shared_ptr<SamplerState> MaterialImpl::GetSampler(uint8 ID) const
 {
-    SamplersMap::const_iterator itr = m_Samplers.find(ID);
+    const auto& itr = m_Samplers.find(ID);
     if (itr != m_Samplers.end())
     {
         return itr->second;

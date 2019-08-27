@@ -28,7 +28,7 @@ SamplerStateDX11::~SamplerStateDX11()
 //
 // SamplerState 
 //
-void SamplerStateDX11::Bind(uint32_t ID, std::weak_ptr<Shader> shader, ShaderParameter::Type parameterType)
+void SamplerStateDX11::Bind(uint32_t ID, const Shader* shader, ShaderParameter::Type parameterType) const
 {
     if (m_bIsDirty || m_pSamplerState == nullptr)
     {
@@ -53,11 +53,9 @@ void SamplerStateDX11::Bind(uint32_t ID, std::weak_ptr<Shader> shader, ShaderPar
         m_bIsDirty = false;
     }
 
-    std::shared_ptr<Shader> pShader = shader.lock();
-    _ASSERT(pShader != NULL);
     ID3D11SamplerState* pSamplers[] = { m_pSamplerState };
 
-    switch (pShader->GetType())
+    switch (shader->GetType())
     {
         case Shader::VertexShader:
             m_pDeviceContext->VSSetSamplers(ID, 1, pSamplers);
@@ -80,13 +78,11 @@ void SamplerStateDX11::Bind(uint32_t ID, std::weak_ptr<Shader> shader, ShaderPar
     }
 }
 
-void SamplerStateDX11::UnBind(uint32_t ID, std::weak_ptr<Shader> shader, ShaderParameter::Type parameterType)
+void SamplerStateDX11::UnBind(uint32_t ID, const Shader* shader, ShaderParameter::Type parameterType) const
 {
-    std::shared_ptr<Shader> pShader = shader.lock();
-    _ASSERT(pShader != NULL);
     ID3D11SamplerState* pSamplers[] = { nullptr };
 
-    switch (pShader->GetType())
+    switch (shader->GetType())
     {
         case Shader::VertexShader:
             m_pDeviceContext->VSSetSamplers(ID, 1, pSamplers);

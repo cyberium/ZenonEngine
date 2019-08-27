@@ -32,7 +32,7 @@ MaterialTextured::MaterialTextured(std::shared_ptr<Material> _material)
 	g_Sampler->SetWrapMode(SamplerState::WrapMode::Repeat, SamplerState::WrapMode::Repeat);
 
 	// Assign samplers
-	g_pPixelShader->GetShaderParameterByName("DiffuseTextureSampler").Set(g_Sampler);
+	g_pPixelShader->GetShaderParameterByName("DiffuseTextureSampler").Set(g_Sampler.get());
 
 	SetShader(Shader::ShaderType::VertexShader, g_pVertexShader);
 	SetShader(Shader::ShaderType::PixelShader, g_pPixelShader);

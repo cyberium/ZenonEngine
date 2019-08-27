@@ -39,7 +39,7 @@ const CLightComponent3D::LightList& CLightComponent3D::GetLights()
 //
 // ISceneNodeComponent
 //
-bool CLightComponent3D::Accept(std::shared_ptr<IVisitor> visitor)
+bool CLightComponent3D::Accept(IVisitor* visitor)
 {
     bool acceptResult = true;
 
