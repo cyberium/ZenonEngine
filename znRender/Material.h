@@ -9,8 +9,6 @@
 class OW_ENGINE_API IMaterial : public Object, public std::enable_shared_from_this<IMaterial>
 {
 public:
-	typedef std::map<Shader::ShaderType, std::shared_ptr<Shader>> ShaderMap;
-	typedef std::map<uint8, std::shared_ptr<Texture>> TextureMap;
     typedef std::map<uint8, std::shared_ptr<SamplerState>> SamplersMap;
 
 public:
@@ -24,8 +22,8 @@ public:
     virtual std::shared_ptr<SamplerState> GetSampler(uint8 ID) const = 0;
     virtual void SetSampler(uint8 ID, std::shared_ptr<SamplerState> samplerState) = 0;
 
-	virtual void Bind() const = 0;
-	virtual void Unbind() const = 0;
+	virtual void Bind(const ShaderMap& shaders) const = 0;
+	virtual void Unbind(const ShaderMap& shaders) const = 0;
 
 	virtual void SetWrapper(std::weak_ptr<IMaterial> _wrapper) = 0;
 	virtual void UpdateConstantBuffer() const = 0;

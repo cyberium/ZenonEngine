@@ -222,7 +222,7 @@ std::shared_ptr<Shader> RenderDeviceDX11::CreateShader(Shader::ShaderType type, 
 
     std::string fullName = fileName + ShaderMacrosToString(shaderMacros) + entryPoint + profile;
 
-    ShaderMap::iterator iter = m_ShadersByName.find(fullName);
+	ShaderNameMap::iterator iter = m_ShadersByName.find(fullName);
     if (iter != m_ShadersByName.end())
         return iter->second;
 
@@ -230,7 +230,7 @@ std::shared_ptr<Shader> RenderDeviceDX11::CreateShader(Shader::ShaderType type, 
     pShader->LoadShaderFromFile(type, fileName, shaderMacros, entryPoint, profile, _customLayout);
 
     m_Shaders.push_back(pShader);
-    m_ShadersByName.insert(ShaderMap::value_type(fullName, pShader));
+    m_ShadersByName.insert(ShaderNameMap::value_type(fullName, pShader));
 
     return pShader;
 }

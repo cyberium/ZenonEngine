@@ -7,6 +7,11 @@ public:
 	virtual ~MaterialDX11();
 
     // MaterialImpl
-    void Bind() const override final;
-    void Unbind() const override final;
+    void Bind(const ShaderMap& shaders) const override final;
+    void Unbind(const ShaderMap& shaders) const override final;
+
+
+private:
+	void BindForShader(const Shader* shader) const;
+	void UnbindForShader(const Shader* shader) const;
 };

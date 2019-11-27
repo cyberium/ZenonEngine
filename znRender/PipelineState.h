@@ -18,6 +18,7 @@ class OW_ENGINE_API PipelineState : public Object
 public:
 	virtual void SetShader(Shader::ShaderType type, std::shared_ptr<Shader> pShader) = 0;
 	virtual std::shared_ptr<Shader> GetShader(Shader::ShaderType type) const = 0;
+	virtual const ShaderMap& GetShaders() const = 0;
 
 	virtual void SetBlendState(const BlendState& blendState) = 0;
 	virtual BlendState& GetBlendState() = 0;
@@ -33,7 +34,4 @@ public:
 
 	virtual void Bind() = 0;
 	virtual void UnBind() = 0;
-
-protected:
-	typedef std::map<Shader::ShaderType, std::shared_ptr<Shader>> ShaderMap;
 };

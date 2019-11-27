@@ -13,6 +13,7 @@ public:
 	// PipelineState
 	void SetShader(Shader::ShaderType type, std::shared_ptr<Shader> pShader) override;
 	std::shared_ptr<Shader> GetShader(Shader::ShaderType type) const override;
+	const ShaderMap& GetShaders() const override;
 	void SetBlendState(const BlendState& blendState) override;
 	BlendState& GetBlendState() override;
 	void SetRasterizerState(const RasterizerState& rasterizerState) override;

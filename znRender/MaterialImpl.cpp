@@ -43,7 +43,7 @@ std::shared_ptr<Shader> MaterialImpl::GetShader(Shader::ShaderType type) const
 	return nullptr;
 }
 
-const MaterialImpl::ShaderMap& MaterialImpl::GetShaders() const
+const ShaderMap& MaterialImpl::GetShaders() const
 {
 	return m_Shaders;
 }
@@ -84,7 +84,7 @@ void MaterialImpl::SetSampler(uint8 ID, std::shared_ptr<SamplerState> samplerSta
 }
 
 
-void MaterialImpl::Bind() const
+void MaterialImpl::Bind(const ShaderMap& shaders) const
 {
 	if (m_Dirty)
 	{
@@ -95,7 +95,7 @@ void MaterialImpl::Bind() const
 	}
 }
 
-void MaterialImpl::Unbind() const
+void MaterialImpl::Unbind(const ShaderMap& shaders) const
 {
 
 }

@@ -110,3 +110,5 @@ protected:
 	typedef std::map<std::string, std::shared_ptr<ShaderParameter> > ParameterMap;
 	ParameterMap                        m_ShaderParameters;
 };
+
+typedef std::map<Shader::ShaderType, std::shared_ptr<Shader>> ShaderMap;

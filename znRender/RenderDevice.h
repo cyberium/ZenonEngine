@@ -136,9 +136,9 @@ protected:
     MeshList                                        m_Meshes;
 
     typedef std::vector< std::shared_ptr<Shader> > ShaderList;
-    typedef std::map< std::string, std::shared_ptr<Shader> > ShaderMap;
+    typedef std::map< std::string, std::shared_ptr<Shader> > ShaderNameMap;
     ShaderList                                      m_Shaders;
-    ShaderMap                                       m_ShadersByName;
+    ShaderNameMap                                     m_ShadersByName;
 
     typedef std::vector< std::shared_ptr<Texture> > TextureList;
     typedef std::map< std::string, std::shared_ptr<Texture> > TextureMap;

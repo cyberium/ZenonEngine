@@ -79,9 +79,9 @@ std::shared_ptr<IRenderDevice> Application::CreateRenderDevice(IRenderDevice::De
         case IRenderDevice::DeviceType::DirectX:
             SetRenderDevice(CreateRenderDeviceDX11(_BaseManager));
             break;
-        case IRenderDevice::DeviceType::OpenGL:
-            SetRenderDevice(CreateRenderDeviceOGL(_BaseManager));
-            break;
+        //case IRenderDevice::DeviceType::OpenGL:
+        //    SetRenderDevice(CreateRenderDeviceOGL(_BaseManager));
+        //    break;
         default:
             break;
     }
@@ -99,9 +99,9 @@ std::shared_ptr<RenderWindow> Application::CreateRenderWindow(IWindowObject * Wi
         case IRenderDevice::DeviceType::DirectX:
             SetRenderWindow(CreateRenderWindowDX11(GetRenderDevice(), WindowObject, vSync));
             break;
-        case IRenderDevice::DeviceType::OpenGL:
-            SetRenderWindow(CreateRenderWindowOGL(GetRenderDevice(), WindowObject, vSync));
-            break;
+        //case IRenderDevice::DeviceType::OpenGL:
+        //    SetRenderWindow(CreateRenderWindowOGL(GetRenderDevice(), WindowObject, vSync));
+        //    break;
         default:
             break;
     }

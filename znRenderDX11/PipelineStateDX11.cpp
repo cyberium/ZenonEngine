@@ -33,6 +33,11 @@ std::shared_ptr<Shader> PipelineStateDX11::GetShader(Shader::ShaderType type) co
 	return nullptr;
 }
 
+const ShaderMap& PipelineStateDX11::GetShaders() const
+{
+	return m_Shaders;
+}
+
 void PipelineStateDX11::SetBlendState(const BlendState& blendState)
 {
 	m_BlendState = dynamic_cast<const BlendStateDX11&>(blendState);

@@ -51,9 +51,6 @@ void SceneNode3D::UpdateCamera(const Camera* camera)
 bool SceneNode3D::Accept(IVisitor* visitor)
 {
 	bool visitResult = visitor->Visit(this);
-	//if (!visitResult)
-	//	return false;
-
     if (visitResult)
     {
 		const auto& components = GetComponents();

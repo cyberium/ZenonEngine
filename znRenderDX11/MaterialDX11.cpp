@@ -10,41 +10,23 @@ MaterialDX11::MaterialDX11(IRenderDevice* renderDevice, size_t Size)
 MaterialDX11::~MaterialDX11()
 {}
 
-void MaterialDX11::Bind() const
+void MaterialDX11::Bind(const ShaderMap& shaders) const
 {
-    MaterialImpl::Bind();
+    MaterialImpl::Bind(shaders);
 
-#ifdef USE_STL_FOREACH
-	const auto& shaders = GetShaders();
-	std::for_each(shaders.begin(), shaders.end(), [this] (const std::pair<Shader::ShaderType, std::shared_ptr<Shader>>& shader)
-#else
+	// means shader in Pipeline state
+	if (m_Shaders.empty())
+	{
+		for (auto shader : shaders)
+		{
+			BindForShader(shader.second.get());
+		}
+	}
+
     for (auto shader : m_Shaders)
-#endif
     {
-        std::shared_ptr<Shader> pShader = shader.second;
-        if (pShader)
-        {
-            pShader->Bind();
-
-            for (const auto& textureIt : m_Textures)
-            {
-                std::shared_ptr<Texture> texture = textureIt.second;
-                texture->Bind((uint32_t)textureIt.first, pShader.get(), ShaderParameter::Type::Texture);
-            }
-
-            for (const auto& samplerStateIt : m_Samplers)
-            {
-                std::shared_ptr<SamplerState> samplerState = samplerStateIt.second;
-                samplerState->Bind((uint32_t)samplerStateIt.first, pShader.get(), ShaderParameter::Type::Sampler);
-            }
-
-            ShaderParameter& materialParameter = pShader->GetShaderParameterByName("Material");
-            if (materialParameter.IsValid() && m_pConstantBuffer != nullptr)
-            {
-                materialParameter.Set<ConstantBuffer>(m_pConstantBuffer.get());
-                materialParameter.Bind();
-            }
-        }
+		shader.second->Bind();
+		BindForShader(shader.second.get());
     }
 
 #ifdef USE_STL_FOREACH
@@ -52,43 +34,74 @@ void MaterialDX11::Bind() const
 #endif
 }
 
-void MaterialDX11::Unbind() const
+void MaterialDX11::Unbind(const ShaderMap& shaders) const
 {
-#ifdef USE_STL_FOREACH
-	const auto& shaders = GetShaders();
-	std::for_each(shaders.begin(), shaders.end(), [this](const std::pair<Shader::ShaderType, std::shared_ptr<Shader>>& shader)
-#else
-	for (auto shader : m_Shaders)
-#endif
-    {
-        std::shared_ptr<Shader> pShader = shader.second;
-        if (pShader)
-        {
-            for (const auto& textureIt : m_Textures)
-            {
-                std::shared_ptr<Texture> texture = textureIt.second;
-                texture->UnBind((uint32_t)textureIt.first, pShader.get(), ShaderParameter::Type::Texture);
-            }
+	// means shader in Pipeline state
+	if (m_Shaders.empty())
+	{
+		for (auto shader : shaders)
+		{
+			UnbindForShader(shader.second.get());
+		}
+	}
+	else
+	{
+		for (auto shader : m_Shaders)
+		{
+			UnbindForShader(shader.second.get());
+		}
+	}
 
-            for (const auto& samplerStateIt : m_Samplers)
-            {
-                std::shared_ptr<SamplerState> samplerState = samplerStateIt.second;
-                samplerState->UnBind((uint32_t)samplerStateIt.first, pShader.get(), ShaderParameter::Type::Sampler);
-            }
+    MaterialImpl::Unbind(shaders);
+}
 
-            ShaderParameter& materialParameter = pShader->GetShaderParameterByName("Material");
-            if (materialParameter.IsValid() && m_pConstantBuffer != nullptr)
-            {
-                materialParameter.UnBind();
-            }
+void MaterialDX11::BindForShader(const Shader * shader) const
+{
+	const Shader* pShader = shader;
+	if (pShader)
+	{
+		for (const auto& textureIt : m_Textures)
+		{
+			std::shared_ptr<Texture> texture = textureIt.second;
+			texture->Bind((uint32_t)textureIt.first, pShader, ShaderParameter::Type::Texture);
+		}
 
-            pShader->UnBind();
-        }
-    }
+		for (const auto& samplerStateIt : m_Samplers)
+		{
+			std::shared_ptr<SamplerState> samplerState = samplerStateIt.second;
+			samplerState->Bind((uint32_t)samplerStateIt.first, pShader, ShaderParameter::Type::Sampler);
+		}
 
-#ifdef USE_STL_FOREACH
-	);
-#endif
+		ShaderParameter& materialParameter = pShader->GetShaderParameterByName("Material");
+		if (materialParameter.IsValid() && m_pConstantBuffer != nullptr)
+		{
+			materialParameter.Set<ConstantBuffer>(m_pConstantBuffer.get());
+			materialParameter.Bind();
+		}
+	}
+}
 
-    MaterialImpl::Unbind();
+void MaterialDX11::UnbindForShader(const Shader * shader) const
+{
+	const Shader* pShader = shader;
+	if (pShader)
+	{
+		for (const auto& textureIt : m_Textures)
+		{
+			std::shared_ptr<Texture> texture = textureIt.second;
+			texture->UnBind((uint32_t)textureIt.first, pShader, ShaderParameter::Type::Texture);
+		}
+
+		for (const auto& samplerStateIt : m_Samplers)
+		{
+			std::shared_ptr<SamplerState> samplerState = samplerStateIt.second;
+			samplerState->UnBind((uint32_t)samplerStateIt.first, pShader, ShaderParameter::Type::Sampler);
+		}
+
+		ShaderParameter& materialParameter = pShader->GetShaderParameterByName("Material");
+		if (materialParameter.IsValid() && m_pConstantBuffer != nullptr)
+		{
+			materialParameter.UnBind();
+		}
+	}
 }

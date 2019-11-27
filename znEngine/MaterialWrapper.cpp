@@ -22,7 +22,7 @@ std::shared_ptr<Shader> MaterialWrapper::GetShader(Shader::ShaderType type) cons
 	return m_Material->GetShader(type);
 }
 
-const IMaterial::ShaderMap & MaterialWrapper::GetShaders() const
+const ShaderMap & MaterialWrapper::GetShaders() const
 {
 	return m_Material->GetShaders();
 }
@@ -47,14 +47,14 @@ void MaterialWrapper::SetSampler(uint8 ID, std::shared_ptr<SamplerState> sampler
     m_Material->SetSampler(ID, samplerState);
 }
 
-void MaterialWrapper::Bind() const
+void MaterialWrapper::Bind(const ShaderMap& shaders) const
 {
-	m_Material->Bind();
+	m_Material->Bind(shaders);
 }
 
-void MaterialWrapper::Unbind() const
+void MaterialWrapper::Unbind(const ShaderMap& shaders) const
 {
-	m_Material->Unbind();
+	m_Material->Unbind(shaders);
 }
 
 void MaterialWrapper::SetWrapper(std::weak_ptr<IMaterial> _wrapper)

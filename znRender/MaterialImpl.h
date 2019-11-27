@@ -23,8 +23,8 @@ public:
     virtual std::shared_ptr<SamplerState> GetSampler(uint8 ID) const;
     virtual void SetSampler(uint8 ID, std::shared_ptr<SamplerState> samplerState);
 
-	virtual void Bind() const;
-	virtual void Unbind() const;
+	virtual void Bind(const ShaderMap& shaders) const;
+	virtual void Unbind(const ShaderMap& shaders) const;
 
 	virtual void SetWrapper(std::weak_ptr<IMaterial> _wrapper) override;
 	virtual void UpdateConstantBuffer() const override;

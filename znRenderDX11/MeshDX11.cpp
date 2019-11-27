@@ -57,15 +57,26 @@ bool MeshDX11::Render(const RenderEventArgs* renderArgs, const ConstantBuffer* p
 	}
 
 	std::shared_ptr<Shader> pVS = nullptr;
+	std::shared_ptr<Shader> pPS = nullptr;
+	ShaderMap shadersMap;
+
 	if (m_pMaterial)
 	{
-		m_pMaterial->Bind();
-
 		pVS = m_pMaterial->GetShader(Shader::VertexShader);
+		pPS = m_pMaterial->GetShader(Shader::PixelShader);
+		shadersMap = m_pMaterial->GetShaders();
 	}
-	else
+
+	if (pVS == nullptr && pPS == nullptr)
 	{
 		pVS = renderArgs->PipelineState->GetShader(Shader::VertexShader);
+		pPS = renderArgs->PipelineState->GetShader(Shader::PixelShader);
+		shadersMap = renderArgs->PipelineState->GetShaders();
+	}
+
+	if (m_pMaterial)
+	{
+		m_pMaterial->Bind(shadersMap);
 	}
 
 	if (pVS)
@@ -108,10 +119,9 @@ bool MeshDX11::Render(const RenderEventArgs* renderArgs, const ConstantBuffer* p
 			m_pDeviceContext->Draw(vertexCnt, vertexStartLocation);
 		}
 
-		/*
 		if (m_VertexBuffer != nullptr)
 		{
-			m_VertexBuffer->UnBind(0, pVS, ShaderParameter::Type::Buffer);
+			m_VertexBuffer->UnBind(0, pVS.get(), ShaderParameter::Type::Buffer);
 		}
 		else
 		{
@@ -121,11 +131,10 @@ bool MeshDX11::Render(const RenderEventArgs* renderArgs, const ConstantBuffer* p
 				if (pVS->GetInputLayout()->HasSemantic(binding))
 				{
 					UINT slotID = pVS->GetInputLayout()->GetSemanticSlot(binding);
-					buffer.second->UnBind(slotID, pVS, ShaderParameter::Type::Buffer);
+					buffer.second->UnBind(slotID, pVS.get(), ShaderParameter::Type::Buffer);
 				}
 			}
 		}
-		*/
 	}
 
 	/*

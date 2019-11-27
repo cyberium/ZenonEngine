@@ -13,7 +13,7 @@
 #include <znRenderDX11.h>
 #pragma comment(lib, "znRenderDX11.lib")
 
-#include <znRenderOpenGL.h>
-#pragma comment(lib, "znRenderOpenGL.lib")
+//#include <znRenderOpenGL.h>
+//#pragma comment(lib, "znRenderOpenGL.lib")
 
 #include "common.h"

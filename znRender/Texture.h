@@ -211,4 +211,6 @@ protected:
 private:
 };
 
+typedef std::map<uint8, std::shared_ptr<Texture>> TextureMap;
+
 #include "Texture.inl"
