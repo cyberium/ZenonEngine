@@ -3,7 +3,7 @@
 class OW_ENGINE_API CFilesManager : public IFilesManager
 {
 public:
-	CFilesManager();
+	CFilesManager(std::shared_ptr<IBaseManager> BaseManager);
 	virtual ~CFilesManager();
 
 	// IFilesManager
@@ -15,5 +15,6 @@ public:
 	void UnRegisterFilesStorage(std::shared_ptr<IFilesStorage> _storage) override final;
 
 private:
+	std::shared_ptr<IBaseManager> m_BaseManager;
 	std::vector<std::shared_ptr<IFilesStorage>> m_Storages;
 };

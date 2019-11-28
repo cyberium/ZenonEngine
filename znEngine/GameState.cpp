@@ -10,13 +10,13 @@ CGameState::CGameState(const IApplication * _application)
 	: m_Application(_application)
 	, m_IsInited(false)
 	, m_IsCurrent(false)
-	, m_QualitySettings(GetSettingsGroup<CGroupQuality>())
-	, m_VideoSettings(GetSettingsGroup<CGroupVideo>())
+	, m_QualitySettings(GetSettingsGroup<CGroupQuality>(_application->GetBaseManager()))
+	, m_VideoSettings(GetSettingsGroup<CGroupVideo>(_application->GetBaseManager()))
 {
-	m_3DScene = std::make_shared<Scene3D>();
+	m_3DScene = std::make_shared<Scene3D>(_application->GetBaseManager());
     m_3DScene->CreateRootNode();
 
-	m_UIScene = std::make_shared<SceneUI>();
+	m_UIScene = std::make_shared<SceneUI>(_application->GetBaseManager());
     m_UIScene->CreateRootNode();
 }
 
@@ -182,9 +182,14 @@ void CGameState::OnMouseWheel(MouseWheelEventArgs & e)
 
 
 
-const IApplication* CGameState::GetApplication()
+const IApplication* CGameState::GetApplication() const
 {
     return m_Application;
+}
+
+const std::shared_ptr<IBaseManager> CGameState::GetBaseManager() const
+{
+	return m_Application->GetBaseManager();
 }
 
 void CGameState::SetCameraController(std::shared_ptr<ICameraController> CameraController)

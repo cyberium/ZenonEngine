@@ -4,13 +4,13 @@ class OW_ENGINE_API TextureDX11 : public Texture, public std::enable_shared_from
 {
 public:
 	// Create an empty texture.
-	TextureDX11(ID3D11Device2* pDevice);
+	TextureDX11(std::weak_ptr<IRenderDeviceDX11> RenderDevice);
 
 	// 2D Texture
-	TextureDX11(ID3D11Device2* pDevice, uint16_t width, uint16_t height, uint16_t slices, const TextureFormat& format, CPUAccess cpuAccess, bool bUAV = false);
+	TextureDX11(std::weak_ptr<IRenderDeviceDX11> RenderDevice, uint16_t width, uint16_t height, uint16_t slices, const TextureFormat& format, CPUAccess cpuAccess, bool bUAV = false);
 
 	// Cube Texture
-	TextureDX11(ID3D11Device2* pDevice, uint16_t size, uint16_t count, const TextureFormat& format, CPUAccess cpuAccess, bool bUAV = false);
+	TextureDX11(std::weak_ptr<IRenderDeviceDX11> RenderDevice, uint16_t size, uint16_t count, const TextureFormat& format, CPUAccess cpuAccess, bool bUAV = false);
 
 	virtual ~TextureDX11();
 
@@ -138,6 +138,8 @@ protected:
 	DXGI_SAMPLE_DESC GetSupportedSampleCount(DXGI_FORMAT format, uint8_t numSamples);
 
 private:
+	std::weak_ptr<IRenderDeviceDX11> m_RenderDevice;
+
 	ATL::CComPtr<ID3D11Device2> m_pDevice;
 	ATL::CComPtr<ID3D11DeviceContext2> m_pDeviceContext;
 

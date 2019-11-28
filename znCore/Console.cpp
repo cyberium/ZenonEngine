@@ -28,7 +28,8 @@ void Test2() { Log::Print("TEST2"); }
 
 //
 
-CConsole::CConsole()
+CConsole::CConsole(std::shared_ptr<IBaseManager> BaseManager)
+	: m_BaseManager(BaseManager)
 {
 }
 
@@ -36,7 +37,7 @@ CConsole::~CConsole()
 {
 	ERASE_VECTOR(m_ConsoleCommands);
 
-	DelManager<IConsole>();
+	DelManager<IConsole>(m_BaseManager);
 }
 
 void CConsole::AddCommonCommands()

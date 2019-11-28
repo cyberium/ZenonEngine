@@ -7,10 +7,11 @@
 std::string GetLatestProfile(Shader::ShaderType type, const D3D_FEATURE_LEVEL& _featureLevel);
 // FORWARD END
 
-ShaderDX11::ShaderDX11(ID3D11Device2* pDevice)
-	: m_pDevice(pDevice)
+ShaderDX11::ShaderDX11(std::weak_ptr<IRenderDeviceDX11> RenderDevice)
+	: m_RenderDevice(RenderDevice)
 {
-	m_pDevice->GetImmediateContext2(&m_pDeviceContext);
+	m_pDevice = m_RenderDevice.lock()->GetDevice();
+	m_pDeviceContext = m_RenderDevice.lock()->GetDeviceContext();
 }
 
 ShaderDX11::~ShaderDX11()
@@ -75,8 +76,8 @@ bool ShaderDX11::LoadShaderFromString(ShaderType shaderType, const std::string& 
 		flags |= D3DCOMPILE_DEBUG;
 #endif
 
-        std::shared_ptr<IFile> file = GetManager<IFilesManager>()->Open(fileName);
-        std::string data = RecursionInclude(file);
+        std::shared_ptr<IFile> file = GetManager<IFilesManager>(std::dynamic_pointer_cast<IRenderDevice>(m_RenderDevice.lock())->GetBaseManager())->Open(fileName);
+        std::string data = RecursionInclude(std::dynamic_pointer_cast<IRenderDevice>(m_RenderDevice.lock())->GetBaseManager(), file);
 
 		hr = D3DCompile(data.c_str(), data.size(), fileName.c_str(), macros.data(), D3D_COMPILE_STANDARD_FILE_INCLUDE, entryPoint.c_str(), _profile.c_str(), flags, 0, &pShaderBlob, &pErrorBlob);
 
@@ -208,7 +209,7 @@ bool ShaderDX11::LoadShaderFromString(ShaderType shaderType, const std::string& 
 
 bool ShaderDX11::LoadShaderFromFile(ShaderType shaderType, const std::string& fileName, const ShaderMacros& shaderMacros, const std::string& entryPoint, const std::string& profile, std::shared_ptr<IShaderInputLayout> _customLayout)
 {
-	std::shared_ptr<IFile> file = GetManager<IFilesManager>()->Open(fileName);
+	std::shared_ptr<IFile> file = GetManager<IFilesManager>(std::dynamic_pointer_cast<IRenderDevice>(m_RenderDevice.lock())->GetBaseManager())->Open(fileName);
 
 	std::string data = "";
 	while (!file->isEof())

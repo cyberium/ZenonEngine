@@ -10,7 +10,7 @@ struct OW_ENGINE_API IznPlugin
 {
 	virtual ~IznPlugin() {}
 
-	virtual bool									Initialize(const std::shared_ptr<IBaseManager>& BaseManager) = 0;
+	virtual bool									Initialize(std::shared_ptr<IBaseManager> BaseManager) = 0;
 	virtual void									Finalize() = 0;
 };
 

@@ -5,7 +5,7 @@
 class OW_ENGINE_API ShaderDX11 : public Shader, public std::enable_shared_from_this<ShaderDX11>
 {
 public:
-	ShaderDX11(ID3D11Device2* pDevice);
+	ShaderDX11(std::weak_ptr<IRenderDeviceDX11> RenderDevice);
 	virtual ~ShaderDX11();
 
 	// IShader
@@ -26,6 +26,8 @@ protected:
 	virtual void Destroy();
 
 private:
+	std::weak_ptr<IRenderDeviceDX11>   m_RenderDevice;
+
 	ATL::CComPtr<ID3D11Device2>        m_pDevice;
 	ATL::CComPtr<ID3D11DeviceContext2> m_pDeviceContext;
 

@@ -48,32 +48,43 @@ std::string ShaderMacrosToString(const Shader::ShaderMacros& _shaderMacros)
     return value;
 }
 
-RenderDeviceDX11::RenderDeviceDX11()
+RenderDeviceDX11::RenderDeviceDX11(std::shared_ptr<IBaseManager> BaseManager)
+	: m_BaseManager(BaseManager)
 {
-    FreeImage_Initialise();
-
-    CreateDevice();
-    LoadDefaultResources();
 }
 
 RenderDeviceDX11::~RenderDeviceDX11()
 {
-    m_Meshes.clear();
-    m_Buffers.clear();
-    m_Shaders.clear();
-    m_Textures.clear();
-    m_Samplers.clear();
-    m_Pipelines.clear();
-    m_Queries.clear();
+}
+
+bool RenderDeviceDX11::Initialize()
+{
+	FreeImage_Initialise();
+
+	CreateDevice();
+	LoadDefaultResources();
+
+	return true;
+}
+
+void RenderDeviceDX11::Finalize()
+{
+	m_Meshes.clear();
+	m_Buffers.clear();
+	m_Shaders.clear();
+	m_Textures.clear();
+	m_Samplers.clear();
+	m_Pipelines.clear();
+	m_Queries.clear();
 
 #if defined(_DEBUG)
-    if (m_pDebugLayer)
-    {
-        //        m_pDebugLayer->ReportLiveDeviceObjects( D3D11_RLDO_SUMMARY | D3D11_RLDO_DETAIL );
-    }
+	if (m_pDebugLayer)
+	{
+		//        m_pDebugLayer->ReportLiveDeviceObjects( D3D11_RLDO_SUMMARY | D3D11_RLDO_DETAIL );
+	}
 #endif
 
-    FreeImage_DeInitialise();
+	FreeImage_DeInitialise();
 }
 
 const std::string& RenderDeviceDX11::GetDeviceName() const
@@ -84,6 +95,11 @@ const std::string& RenderDeviceDX11::GetDeviceName() const
 const RenderDeviceDX11::DeviceType RenderDeviceDX11::GetDeviceType() const
 {
     return DeviceType::DirectX;
+}
+
+const std::shared_ptr<IBaseManager>& RenderDeviceDX11::GetBaseManager() const
+{
+	return m_BaseManager;
 }
 
 ATL::CComPtr<ID3D11Device2> RenderDeviceDX11::GetDevice() const
@@ -226,7 +242,7 @@ std::shared_ptr<Shader> RenderDeviceDX11::CreateShader(Shader::ShaderType type, 
     if (iter != m_ShadersByName.end())
         return iter->second;
 
-    std::shared_ptr<Shader> pShader = std::make_shared<ShaderDX11>(m_pDevice);
+    std::shared_ptr<Shader> pShader = std::make_shared<ShaderDX11>(weak_from_this());
     pShader->LoadShaderFromFile(type, fileName, shaderMacros, entryPoint, profile, _customLayout);
 
     m_Shaders.push_back(pShader);
@@ -255,7 +271,7 @@ std::shared_ptr<Texture> RenderDeviceDX11::CreateTexture2D(const std::string& fi
         return iter->second;
     }
 
-    std::shared_ptr<Texture> texture = std::make_shared<TextureDX11>(m_pDevice);
+    std::shared_ptr<Texture> texture = std::make_shared<TextureDX11>(weak_from_this());
     if (!texture->LoadTexture2D(fileName))
         return m_pDefaultTexture;
 
@@ -275,7 +291,7 @@ std::shared_ptr<Texture> RenderDeviceDX11::CreateTextureCube(const std::string& 
         return iter->second;
     }
 
-    std::shared_ptr<Texture> texture = std::make_shared<TextureDX11>(m_pDevice);
+    std::shared_ptr<Texture> texture = std::make_shared<TextureDX11>(weak_from_this());
     texture->LoadTextureCube(fileName);
 
     m_Textures.push_back(texture);
@@ -289,7 +305,7 @@ std::shared_ptr<Texture> RenderDeviceDX11::CreateTexture2D(uint16_t width, uint1
 {
     D3DMultithreadLocker locker(m_pMultiThread);
 
-    std::shared_ptr<Texture> texture = std::make_shared<TextureDX11>(m_pDevice, width, height, slices, format, cpuAccess, gpuWrite);
+    std::shared_ptr<Texture> texture = std::make_shared<TextureDX11>(weak_from_this(), width, height, slices, format, cpuAccess, gpuWrite);
     m_Textures.push_back(texture);
 
     return texture;
@@ -299,7 +315,7 @@ std::shared_ptr<Texture> RenderDeviceDX11::CreateTextureCube(uint16_t size, uint
 {
     D3DMultithreadLocker locker(m_pMultiThread);
 
-    std::shared_ptr<Texture> texture = std::make_shared<TextureDX11>(m_pDevice, size, numCubes, format, cpuAccess, gpuWrite);
+    std::shared_ptr<Texture> texture = std::make_shared<TextureDX11>(weak_from_this(), size, numCubes, format, cpuAccess, gpuWrite);
     m_Textures.push_back(texture);
 
     return texture;
@@ -309,7 +325,7 @@ std::shared_ptr<Texture> RenderDeviceDX11::CreateTexture()
 {
     D3DMultithreadLocker locker(m_pMultiThread);
 
-    std::shared_ptr<Texture> texture = std::make_shared<TextureDX11>(m_pDevice);
+    std::shared_ptr<Texture> texture = std::make_shared<TextureDX11>(weak_from_this());
     m_Textures.push_back(texture);
 
     return texture;

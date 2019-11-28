@@ -11,18 +11,20 @@
 #include "DebugOutputConsole.h"
 #include "DebugOutputLog.h"
 
+std::shared_ptr<CLog> logInstance = nullptr;
+
 CLog::CLog()
 {
 	m_DebugOutput_ConsoleWindows = std::make_shared<DebugOutput_ConsoleWindows>();
 	AddDebugOutput(m_DebugOutput_ConsoleWindows);
 
 	OutputDebugString(L"Log created.\n");
+
+	logInstance = std::shared_ptr<CLog>(this);
 }
 
 CLog::~CLog()
 {
-	DelManager<ILog>();
-
 	OutputDebugString(L"Log destroyed.\n");
 }
 
@@ -120,16 +122,11 @@ void CLog::PushMessageToAllDebugOutputs(const char* _message, IDebugOutput::Debu
 //-- Static Log
 //---------------------------------------------
 
-inline std::shared_ptr<CLog> getLog()
-{
-	return std::dynamic_pointer_cast<CLog, ILog>(GetManager<ILog>());
-}
-
 void Log::Info(const char* _message, ...)
 {
 	va_list args;
 	va_start(args, _message);
-	getLog()->PushMessageToAllDebugOutputs(_message, CDebugOutput::DebugMessageType::TYPE_INFO, args);
+	logInstance->PushMessageToAllDebugOutputs(_message, CDebugOutput::DebugMessageType::TYPE_INFO, args);
 	va_end(args);
 }
 
@@ -137,7 +134,7 @@ void Log::Print(const char* _message, ...)
 {
 	va_list args;
 	va_start(args, _message);
-	getLog()->PushMessageToAllDebugOutputs(_message, CDebugOutput::DebugMessageType::TYPE_PRINT, args);
+	logInstance->PushMessageToAllDebugOutputs(_message, CDebugOutput::DebugMessageType::TYPE_PRINT, args);
 	va_end(args);
 }
 
@@ -145,7 +142,7 @@ void Log::Green(const char* _message, ...)
 {
 	va_list args;
 	va_start(args, _message);
-	getLog()->PushMessageToAllDebugOutputs(_message, CDebugOutput::DebugMessageType::TYPE_GREEN, args);
+	logInstance->PushMessageToAllDebugOutputs(_message, CDebugOutput::DebugMessageType::TYPE_GREEN, args);
 	va_end(args);
 }
 
@@ -153,7 +150,7 @@ void Log::Warn(const char* _message, ...)
 {
 	va_list args;
 	va_start(args, _message);
-	getLog()->PushMessageToAllDebugOutputs(_message, CDebugOutput::DebugMessageType::TYPE_WARNING, args);
+	logInstance->PushMessageToAllDebugOutputs(_message, CDebugOutput::DebugMessageType::TYPE_WARNING, args);
 	va_end(args);
 }
 
@@ -161,7 +158,7 @@ void Log::Error(const char* _message, ...)
 {
 	va_list args;
 	va_start(args, _message);
-	getLog()->PushMessageToAllDebugOutputs(_message, CDebugOutput::DebugMessageType::TYPE_ERROR, args);
+	logInstance->PushMessageToAllDebugOutputs(_message, CDebugOutput::DebugMessageType::TYPE_ERROR, args);
 	va_end(args);
 }
 

@@ -10,7 +10,8 @@
 #include <freetype/config/ftheader.h>
 #include FT_FREETYPE_H
 
-FontsManager::FontsManager()
+FontsManager::FontsManager(std::shared_ptr<IBaseManager> BaseManager)
+	: m_BaseManager(BaseManager)
 {
 	m_MainFont = Add("IDB_FONT_CONSOLAS", 14);
 }
@@ -48,7 +49,7 @@ std::shared_ptr<CFontMesh> FontsManager::CreateAction(const std::string& _nameAn
 	std::string fontFileName = _nameAndSize.substr(0, _delimIndex - 1);
 	uint32 fontSize = Utils::ToType<uint32>(_nameAndSize.substr(_delimIndex + 1));
 
-	std::shared_ptr<IFile> f = GetManager<IFilesManager>()->Open(fontFileName);
+	std::shared_ptr<IFile> f = GetManager<IFilesManager>(m_BaseManager)->Open(fontFileName);
 	if (f == nullptr)
 	{
 		Log::Fatal("FontsManager[%s]: Error while loading font.", _nameAndSize.c_str());

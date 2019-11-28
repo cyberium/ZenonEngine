@@ -9,9 +9,11 @@
 #include "RenderDeviceDX11.h"
 #include "RenderWindowDX11.h"
 
-std::shared_ptr<IRenderDevice> CreateRenderDeviceDX11(std::shared_ptr<IBaseManager> _baseManager)
+std::shared_ptr<IRenderDevice> CreateRenderDeviceDX11(std::shared_ptr<IBaseManager> BaseManager)
 {
-	return std::make_shared<RenderDeviceDX11>();
+	std::shared_ptr<IRenderDevice> renderDevice = std::make_shared<RenderDeviceDX11>(BaseManager);
+	renderDevice->Initialize();
+	return renderDevice;
 }
 
 std::shared_ptr<RenderWindow> CreateRenderWindowDX11(std::shared_ptr<IRenderDevice> device, IWindowObject * WindowObject, bool vSync)

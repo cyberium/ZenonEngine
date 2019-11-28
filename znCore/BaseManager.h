@@ -20,26 +20,24 @@ private:
 	std::map<GUID, std::shared_ptr<IManager>> m_Managers;
 };
 
-extern OW_ENGINE_API std::shared_ptr<IBaseManager> _BaseManager;
-
 // Helpers
 
 template<class T>
-static inline void AddManager(std::shared_ptr<IManager> _manager)
+static inline void AddManager(const std::shared_ptr<IBaseManager>& BaseManager, std::shared_ptr<IManager> _manager)
 {
-	_BaseManager->RegisterManager(__uuidof(T), _manager);
+	BaseManager->RegisterManager(__uuidof(T), _manager);
 }
 
 template<class T>
-static inline void DelManager()
+static inline void DelManager(const std::shared_ptr<IBaseManager>& BaseManager)
 {
-	//_BaseManager->UnregisterManager(__uuidof(T));
+	//BaseManager->UnregisterManager(__uuidof(T));
 }
 
 template<class T>
-static inline std::shared_ptr<T> GetManager()
+static inline std::shared_ptr<T> GetManager(const std::shared_ptr<IBaseManager>& BaseManager)
 {
-	std::shared_ptr<IManager> manager = _BaseManager->GetManager(__uuidof(T));
+	std::shared_ptr<IManager> manager = BaseManager->GetManager(__uuidof(T));
 	if (manager == nullptr)
 	{
 		return nullptr;

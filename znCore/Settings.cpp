@@ -6,7 +6,8 @@
 // Additional
 #include "BaseManager.h"
 
-CSettings::CSettings()
+CSettings::CSettings(std::shared_ptr<IBaseManager> BaseManager)
+	: m_BaseManager(BaseManager)
 {
 }
 
@@ -14,13 +15,13 @@ CSettings::~CSettings()
 {
 	ERASE_MAP(m_Groups);
 
-	DelManager<ISettings>();
+	DelManager<ISettings>(m_BaseManager);
 }
 
 void CSettings::AddDefaults()
 {
-	AddSettingsGroup<CGroupQuality>(new CGroupQuality);
-	AddSettingsGroup<CGroupVideo>(new CGroupVideo);
+	AddSettingsGroup<CGroupQuality>(m_BaseManager, new CGroupQuality);
+	AddSettingsGroup<CGroupVideo>(m_BaseManager, new CGroupVideo);
 }
 
 //--

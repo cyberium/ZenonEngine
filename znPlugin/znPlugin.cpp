@@ -3,7 +3,6 @@
 // General
 #include "znPlugin.h"
 
-std::shared_ptr<IBaseManager> _BaseManager = nullptr;
 IznPlugin* plugin = nullptr;
 
 class CznTestPlugin : public IznPlugin
@@ -23,8 +22,10 @@ public:
 	//
 	// IznPlugin
 	//
-	bool Initialize(const std::shared_ptr<IBaseManager>& BaseManager)
+	bool Initialize(std::shared_ptr<IBaseManager> BaseManager)
 	{
+		m_BaseManager = BaseManager;
+
 		return false;
 	}
 	void Finalize()
@@ -33,13 +34,11 @@ public:
 	}
 
 private:
-
+	std::shared_ptr<IBaseManager> m_BaseManager;
 };
 
 IznPlugin* GetPlugin(std::shared_ptr<IBaseManager> BaseManager)
 {
-	_BaseManager = BaseManager;
-
 	if (plugin == nullptr)
 	{
 		plugin = new CznTestPlugin();

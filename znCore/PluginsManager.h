@@ -3,7 +3,7 @@
 class OW_ENGINE_API CznPluginsManager : public IznPluginsManager
 {
 public:
-	CznPluginsManager();
+	CznPluginsManager(std::shared_ptr<IBaseManager> BaseManager);
 	virtual ~CznPluginsManager();
 
 	// IznPluginsManager
@@ -11,6 +11,7 @@ public:
 	void											UnregisterPlugin();
 
 private:
+	std::shared_ptr<IBaseManager>					m_BaseManager;
 	std::map<std::string, std::shared_ptr<IznPlugin>> m_Plugins;
 };
 

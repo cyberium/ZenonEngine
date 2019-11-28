@@ -6,13 +6,14 @@
 // Additional
 #include "BaseManager.h"
 
-CFilesManager::CFilesManager()
+CFilesManager::CFilesManager(std::shared_ptr<IBaseManager> BaseManager)
+	: m_BaseManager(BaseManager)
 {
 }
 
 CFilesManager::~CFilesManager()
 {
-	DelManager<IFilesManager>();
+	DelManager<IFilesManager>(m_BaseManager);
 }
 
 std::shared_ptr<IFile> CFilesManager::Open(const std::string& _fileName)

@@ -146,7 +146,7 @@ void CGameState_World::Load3D()
 	
 	std::shared_ptr<IMesh> mesh = renderDevice->CreateCube();
 
-	std::shared_ptr<MaterialDebug> mat = std::make_shared<MaterialDebug>(_RenderDevice->CreateMaterial());
+	std::shared_ptr<MaterialDebug> mat = std::make_shared<MaterialDebug>();
 	mat->SetDiffuseColor(vec4(1.0f, 1.0f, 0.0f, 1.0f));
 	mesh->SetMaterial(mat);
 

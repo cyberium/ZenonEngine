@@ -46,7 +46,8 @@ public:
     virtual void                                    OnMouseWheel(MouseWheelEventArgs& e);
 
 protected:
-    const IApplication*                             GetApplication();
+    const IApplication*                             GetApplication() const;
+	const std::shared_ptr<IBaseManager>             GetBaseManager() const;
 
 	void                                            SetCameraController(std::shared_ptr<ICameraController> CameraController);
 	void                                            UnsetCameraController();
@@ -60,8 +61,8 @@ protected:
 
 	std::shared_ptr<ICameraController>              m_DefaultCameraController;
 
-	const CGroupQuality&                            m_QualitySettings;
-	const CGroupVideo&                              m_VideoSettings;
+	const CGroupQuality*                            m_QualitySettings;
+	const CGroupVideo*                              m_VideoSettings;
 
 	RenderTechnique                                 m_3DTechnique;
 	RenderTechnique                                 m_UITechnique;

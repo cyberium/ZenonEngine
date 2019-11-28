@@ -3,7 +3,8 @@
 // General
 #include "SceneUI.h"
 
-SceneUI::SceneUI()
+SceneUI::SceneUI(std::shared_ptr<IBaseManager> BaseManager)
+	: Scene(BaseManager)
 {
 	m_RootNode = std::make_shared<CUIWindowNode>();
 }

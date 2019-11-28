@@ -15,13 +15,14 @@ int Func(lua_State * state)
     return 0;
 }
 
-CScriptCore::CScriptCore()
+CScriptCore::CScriptCore(std::shared_ptr<IBaseManager> BaseManager)
+	: m_BaseManager(BaseManager)
 {
     m_LuaState = luaL_newstate();
     luaL_openlibs(m_LuaState);
     luabind::open(m_LuaState);
 
-    std::shared_ptr<IFile> file = GetManager<IFilesManager>()->Open("test.lua");
+    std::shared_ptr<IFile> file = GetManager<IFilesManager>(m_BaseManager)->Open("test.lua");
     _ASSERT(file != NULL);
 
 

@@ -30,6 +30,8 @@ public:
 	int                             DoRun() override;
 	void                            DoAfterRun() override;
 
+	std::shared_ptr<IBaseManager>   GetBaseManager() const override;
+
 	std::shared_ptr<IRenderDevice>  GetRenderDevice() const override;
 	void                            SetRenderDevice(std::shared_ptr<IRenderDevice> _renderDevice) override;
 	std::shared_ptr<RenderWindow>   GetRenderWindow() const override;
@@ -63,6 +65,7 @@ public:
 	static LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
 
 private:
+	std::shared_ptr<IBaseManager>	m_BaseManager;
 	bool                            m_bIsInitialized;
 	bool                            m_bIsRunning;
 

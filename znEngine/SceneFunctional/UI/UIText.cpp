@@ -11,8 +11,16 @@ namespace
 }
 
 CUITextNode::CUITextNode()
+{}
+
+CUITextNode::~CUITextNode()
+{}
+
+
+
+void CUITextNode::Initialize()
 {
-	m_Font = GetManager<IFontsManager>()->GetMainFont();
+	m_Font = GetManager<IFontsManager>(GetBaseManager())->GetMainFont();
 	m_Text = cDefaultText;
 	m_Offset = cDefaultOffset;
 
@@ -21,9 +29,6 @@ CUITextNode::CUITextNode()
 	m_Material->SetTexture(0, m_Font->GetTexture());
 	m_Material->SetColor(cDefaultColor);
 }
-
-CUITextNode::~CUITextNode()
-{}
 
 
 

@@ -6,9 +6,11 @@
 // Additional
 #include "BaseManager.h"
 
-typedef IznPlugin* (*GetPluginFuncProc)(std::shared_ptr<IBaseManager> BaseManager);
+typedef IznPlugin*(GetPluginFuncProc)(std::shared_ptr<IBaseManager> BaseManager);
 
-CznPluginsManager::CznPluginsManager()
+
+CznPluginsManager::CznPluginsManager(std::shared_ptr<IBaseManager> BaseManager)
+	: m_BaseManager(BaseManager)
 {
 }
 
@@ -31,9 +33,9 @@ bool CznPluginsManager::RegisterPlugin(const std::string& PluginDLLName)
 	if (getPluginProcNative == NULL)
 		throw std::exception(("Plugin proc 'GetPlugin' not found in " + PluginDLLName).c_str());
 
-	GetPluginFuncProc getPluginProc = (GetPluginFuncProc)getPluginProcNative;
+	GetPluginFuncProc* getPluginProc = (GetPluginFuncProc*)getPluginProcNative;
 
-	std::shared_ptr<IznPlugin> pluginObject(getPluginProc(_BaseManager));
+	std::shared_ptr<IznPlugin> pluginObject(getPluginProc(m_BaseManager));
 	if (pluginObject == nullptr)
 		throw std::exception(("Error while creating plugin " + PluginDLLName).c_str());
 

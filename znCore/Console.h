@@ -5,7 +5,7 @@
 class OW_ENGINE_API CConsole : public IConsole
 {
 public:
-	CConsole();
+	CConsole(std::shared_ptr<IBaseManager> BaseManager);
 	virtual ~CConsole();
 
 	void AddCommonCommands();
@@ -17,6 +17,7 @@ public:
 	bool ProcessConsoleCommand(std::string _line) override;
 
 private:
+	std::shared_ptr<IBaseManager> m_BaseManager;
 	ConsoleCommands m_ConsoleCommands;
 
 private: // static/const

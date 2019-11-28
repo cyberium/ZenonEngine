@@ -8,7 +8,7 @@
 class OW_ENGINE_API SceneUI : public Scene
 {
 public:
-	explicit                                        SceneUI();
+	explicit                                        SceneUI(std::shared_ptr<IBaseManager> BaseManager);
 	virtual                                         ~SceneUI();
 
     void                                            CreateRootNode();

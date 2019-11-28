@@ -3,7 +3,7 @@
 // General
 #include "ShadersUtils.h"
 
-std::string RecursionInclude(std::shared_ptr<IFile> f)
+std::string RecursionInclude(std::shared_ptr<IBaseManager> BaseManager, std::shared_ptr<IFile> f)
 {
     if (f == nullptr)
     {
@@ -39,9 +39,9 @@ std::string RecursionInclude(std::shared_ptr<IFile> f)
             std::string inludeFileName = line.substr(firstBracketPosition + 1, lastBracketPosition - firstBracketPosition - 1);
             CFile::FixFilePath(inludeFileName);
 
-            std::shared_ptr<IFile> includeFile = GetManager<IFilesManager>()->Open(inludeFileName);
+            std::shared_ptr<IFile> includeFile = GetManager<IFilesManager>(BaseManager)->Open(inludeFileName);
 
-            data += RecursionInclude(includeFile) + '\n';
+            data += RecursionInclude(BaseManager, includeFile) + '\n';
 
             continue;
         }

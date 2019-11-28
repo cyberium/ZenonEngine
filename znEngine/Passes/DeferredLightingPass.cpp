@@ -37,7 +37,7 @@ DeferredLightingPass::DeferredLightingPass(
 	m_FogParamsCB = _RenderDevice->CreateConstantBuffer(FogParams());
 
 	// PointLightScene
-	m_pPointLightScene = std::make_shared<Scene3D>();
+	m_pPointLightScene = std::make_shared<Scene3D>(scene->GetBaseManager());
 
 	std::shared_ptr<SceneNode3D> sphereSceneNode = std::make_shared<SceneNode3D>();
 	sphereSceneNode->SetParent(m_pPointLightScene->GetRootNode());
@@ -46,7 +46,7 @@ DeferredLightingPass::DeferredLightingPass(
 	sphereSceneNode->GetComponent<CMeshComponent3D>()->AddMesh(sphereMesh);
 
 	// Create a full-screen quad that is placed on the far clip plane.
-	m_pDirectionalLightScene = std::make_shared<Scene3D>();
+	m_pDirectionalLightScene = std::make_shared<Scene3D>(scene->GetBaseManager());
 
 	std::shared_ptr<SceneNode3D> quadSceneNode = std::make_shared<SceneNode3D>();
 	quadSceneNode->SetParent(m_pDirectionalLightScene->GetRootNode());

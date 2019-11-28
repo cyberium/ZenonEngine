@@ -6,7 +6,7 @@
 class OW_ENGINE_API CSettings : public ISettings
 {
 public:
-	CSettings();
+	CSettings(std::shared_ptr<IBaseManager> BaseManager);
 	virtual ~CSettings();
 
 	void AddDefaults();
@@ -23,6 +23,8 @@ public:
 	ISettingGroup* GetGroup(GUID _guid) override;
 
 private:
+	std::shared_ptr<IBaseManager> m_BaseManager;
+
 	std::map<std::string, bool> m_BoolSettings;
 	std::map<std::string, uint32> m_Uint32Settings;
 	std::map<std::string, std::string> m_StringSettings;
@@ -30,13 +32,13 @@ private:
 };
 
 template<class T>
-static inline void AddSettingsGroup(ISettingGroup* _settingsGroup)
+static inline void AddSettingsGroup(std::shared_ptr<IBaseManager> BaseManager, ISettingGroup* _settingsGroup)
 {
-	GetManager<ISettings>()->RegisterGroup(__uuidof(T), _settingsGroup);
+	GetManager<ISettings>(BaseManager)->RegisterGroup(__uuidof(T), _settingsGroup);
 }
 
 template<class T>
-static inline T& GetSettingsGroup()
+static inline const T* GetSettingsGroup(std::shared_ptr<IBaseManager> BaseManager)
 {
-	return *(T*)(GetManager<ISettings>()->GetGroup(__uuidof(T)));
+	return (const T*)(GetManager<ISettings>(BaseManager)->GetGroup(__uuidof(T)));
 }

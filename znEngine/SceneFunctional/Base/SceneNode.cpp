@@ -1,5 +1,8 @@
 #include "stdafx.h"
 
+// Include
+#include "Scene.h"
+
 // General
 #include "SceneNode.h"
 
@@ -14,6 +17,19 @@ SceneNode::SceneNode()
 SceneNode::~SceneNode()
 {
 	m_Children.clear();
+}
+
+void SceneNode::Initialize()
+{
+}
+
+void SceneNode::Finalize()
+{
+}
+
+const std::shared_ptr<IBaseManager> SceneNode::GetBaseManager() const
+{
+	return GetScene()->GetBaseManager();
 }
 
 const std::string& SceneNode::GetName() const

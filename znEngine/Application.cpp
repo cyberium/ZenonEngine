@@ -10,26 +10,24 @@ float g_GameDeltaTime = 0.0f;
 float g_ApplicationTime = 0.0f;
 int64_t g_FrameCounter = 0L;
 
-
 std::shared_ptr<RenderWindow> gs_WindowHandle = nullptr;
 IApplication * _ApplicationInstance = nullptr;
-std::shared_ptr<IBaseManager> _BaseManager = nullptr;
 
 Application::Application(std::shared_ptr<IBaseManager> BaseManager)
-	: m_bIsInitialized(false)
+	: m_BaseManager(BaseManager)
+	, m_bIsInitialized(false)
 	, m_bIsRunning(false)
 {
-    _BaseManager = BaseManager;
 	m_HINSTANCE = ::GetModuleHandle(NULL);
 
 	_ApplicationInstance = this;
 }
 
 Application::Application(std::shared_ptr<IBaseManager> BaseManager, HINSTANCE hInstance)
-	: m_bIsInitialized(false)
+	: m_BaseManager(BaseManager)
+	, m_bIsInitialized(false)
 	, m_bIsRunning(false)
 {
-    _BaseManager = BaseManager;
 	m_HINSTANCE = hInstance;
 
 	_ApplicationInstance = this;
@@ -77,7 +75,7 @@ std::shared_ptr<IRenderDevice> Application::CreateRenderDevice(IRenderDevice::De
             fail1();
             break;
         case IRenderDevice::DeviceType::DirectX:
-            SetRenderDevice(CreateRenderDeviceDX11(_BaseManager));
+            SetRenderDevice(CreateRenderDeviceDX11(m_BaseManager));
             break;
         //case IRenderDevice::DeviceType::OpenGL:
         //    SetRenderDevice(CreateRenderDeviceOGL(_BaseManager));
@@ -167,6 +165,11 @@ void Application::DoAfterRun()
 {
 	OnTerminate(EventArgs(*this));
 	OnTerminated(EventArgs(*this));
+}
+
+std::shared_ptr<IBaseManager> Application::GetBaseManager() const
+{
+	return m_BaseManager;
 }
 
 std::shared_ptr<IRenderDevice> Application::GetRenderDevice() const

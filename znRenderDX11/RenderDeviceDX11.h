@@ -2,15 +2,19 @@
 
 class IMaterial;
 
-class OW_ENGINE_API RenderDeviceDX11 : public IRenderDevice
+class OW_ENGINE_API RenderDeviceDX11 : public IRenderDevice, public IRenderDeviceDX11, public std::enable_shared_from_this<RenderDeviceDX11>
 {
 	typedef IRenderDevice base;
 public:
-	RenderDeviceDX11();
+	RenderDeviceDX11(std::shared_ptr<IBaseManager> BaseManager);
 	virtual ~RenderDeviceDX11();
+
+	bool Initialize() override;
+	void Finalize() override;
 
 	const std::string& GetDeviceName() const;
     const DeviceType GetDeviceType() const;
+	const std::shared_ptr<IBaseManager>& GetBaseManager() const;
 
 	// Inherited from IRenderDevice
 	std::shared_ptr<IBuffer> CreateVoidVertexBuffer(const void* data, uint32 count, uint32 offset, uint32 stride);
@@ -62,8 +66,8 @@ public:
 	void DestoryPipelineState(std::shared_ptr<PipelineState> pipeline);
 
 	// RenderDeviceDX11
-	ATL::CComPtr<ID3D11Device2>                     GetDevice() const;
-	ATL::CComPtr<ID3D11DeviceContext2>              GetDeviceContext() const;
+	ATL::CComPtr<ID3D11Device2>                     GetDevice() const override;
+	ATL::CComPtr<ID3D11DeviceContext2>              GetDeviceContext() const override;
 
 protected:
 	void                                            CreateDevice();
@@ -72,6 +76,8 @@ private:
 	void                                            LoadDefaultResources();
 
 private:
+	std::shared_ptr<IBaseManager>                   m_BaseManager;
+
 	// DirectX
 	ATL::CComPtr<ID3D11Device2>                     m_pDevice;
 	ATL::CComPtr<ID3D11Debug>                       m_pDebugLayer;

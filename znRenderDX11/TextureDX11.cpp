@@ -6,8 +6,8 @@
 // Additional
 #include "TextureDX11Translate.h"
 
-TextureDX11::TextureDX11(ID3D11Device2* pDevice)
-	: m_pDevice(pDevice)
+TextureDX11::TextureDX11(std::weak_ptr<IRenderDeviceDX11> RenderDevice)
+	: m_RenderDevice(RenderDevice)
 	, m_TextureWidth(0)
 	, m_TextureHeight(0)
 	, m_NumSlices(0)
@@ -28,12 +28,13 @@ TextureDX11::TextureDX11(ID3D11Device2* pDevice)
 	, m_bIsTransparent(false)
 	, m_bIsDirty(false)
 {
-	m_pDevice->GetImmediateContext2(&m_pDeviceContext);
+	m_pDevice = m_RenderDevice.lock()->GetDevice();
+	m_pDeviceContext = m_RenderDevice.lock()->GetDeviceContext();
 }
 
 // 2D Texture
-TextureDX11::TextureDX11(ID3D11Device2* pDevice, uint16_t width, uint16_t height, uint16_t slices, const TextureFormat& format, CPUAccess cpuAccess, bool bUAV)
-	: m_pDevice(pDevice)
+TextureDX11::TextureDX11(std::weak_ptr<IRenderDeviceDX11> RenderDevice, uint16_t width, uint16_t height, uint16_t slices, const TextureFormat& format, CPUAccess cpuAccess, bool bUAV)
+	: m_RenderDevice(RenderDevice)
 	, m_pTexture2D(nullptr)
 	, m_pShaderResourceView(nullptr)
 	, m_pRenderTargetView(nullptr)
@@ -46,7 +47,8 @@ TextureDX11::TextureDX11(ID3D11Device2* pDevice, uint16_t width, uint16_t height
 	, m_bIsTransparent(true)
 	, m_bIsDirty(false)
 {
-	m_pDevice->GetImmediateContext2(&m_pDeviceContext);
+	m_pDevice = m_RenderDevice.lock()->GetDevice();
+	m_pDeviceContext = m_RenderDevice.lock()->GetDeviceContext();
 
 	m_NumSlices = glm::max<uint16_t>(slices, 1);
 
@@ -111,8 +113,12 @@ TextureDX11::TextureDX11(ID3D11Device2* pDevice, uint16_t width, uint16_t height
 }
 
 // CUBE Texture
-TextureDX11::TextureDX11(ID3D11Device2* pDevice, uint16_t size, uint16_t count, const TextureFormat& format, CPUAccess cpuAccess, bool bUAV)
+TextureDX11::TextureDX11(std::weak_ptr<IRenderDeviceDX11> RenderDevice, uint16_t size, uint16_t count, const TextureFormat& format, CPUAccess cpuAccess, bool bUAV)
+	: m_RenderDevice(RenderDevice)
 {
+	m_pDevice = m_RenderDevice.lock()->GetDevice();
+	m_pDeviceContext = m_RenderDevice.lock()->GetDeviceContext();
+
 	m_TextureDimension = Texture::Dimension::TextureCube;
 
 	m_TextureWidth = m_TextureHeight = size;
@@ -302,7 +308,7 @@ void PrintMetaData(FREE_IMAGE_MDMODEL model, FIBITMAP* dib)
 
 bool TextureDX11::LoadTexture2D(const std::string& fileName)
 {
-	std::shared_ptr<IFile> f = GetManager<IFilesManager>()->Open(fileName);
+	std::shared_ptr<IFile> f = GetManager<IFilesManager>(std::dynamic_pointer_cast<IRenderDevice>(m_RenderDevice.lock())->GetBaseManager())->Open(fileName);
 	if (f == nullptr)
 		return false;
 

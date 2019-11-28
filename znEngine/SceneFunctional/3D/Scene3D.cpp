@@ -3,7 +3,8 @@
 // General
 #include "Scene3D.h"
 
-Scene3D::Scene3D()
+Scene3D::Scene3D(std::shared_ptr<IBaseManager> BaseManager)
+	: Scene(BaseManager)
 {}
 
 Scene3D::~Scene3D()

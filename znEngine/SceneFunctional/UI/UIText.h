@@ -11,6 +11,8 @@ public:
 	CUITextNode();
 	virtual ~CUITextNode();
 
+	void						Initialize() override;
+
 	// CUITextNode
     void                        SetFont(std::shared_ptr<CFontMesh> _font);
     std::shared_ptr<CFontMesh>  GetFont() const;
