@@ -93,3 +93,5 @@
 // Node builders
 //
 #include "../znEngine/FBX.h"
+
+extern "C" __declspec(dllexport) IznPlugin* WINAPI GetPlugin(std::shared_ptr<IBaseManager> BaseManager);

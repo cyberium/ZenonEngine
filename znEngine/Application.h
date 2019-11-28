@@ -20,10 +20,8 @@ public:
 	void                            Stop();
 
 	// Creators
-	std::shared_ptr<IRenderDevice>  CreateRenderDevice(IRenderDevice::DeviceType DeviceType);
+	std::shared_ptr<IRenderDevice>  CreateRenderDevice(RenderDeviceType DeviceType);
 	std::shared_ptr<RenderWindow>   CreateRenderWindow(IWindowObject * WindowObject, bool vSync);
-
-	
 
 	// IApplication
 	void                            DoBeforeRun() override;

@@ -1,25 +1,87 @@
 #include "stdafx.h"
 
-
 // General
 #include "znRenderDX11.h"
 
-
 // Additional
 #include "RenderDeviceDX11.h"
-#include "RenderWindowDX11.h"
 
-std::shared_ptr<IRenderDevice> CreateRenderDeviceDX11(std::shared_ptr<IBaseManager> BaseManager)
+//
+// CznRenderDX11DeviceCreator
+//
+class CznRenderDX11DeviceCreator : public IznRenderDeviceCreator
 {
-	std::shared_ptr<IRenderDevice> renderDevice = std::make_shared<RenderDeviceDX11>(BaseManager);
-	renderDevice->Initialize();
-	return renderDevice;
-}
+public:
+	CznRenderDX11DeviceCreator(std::shared_ptr<IBaseManager> BaseManager)
+		: m_BaseManager(BaseManager)
+	{}
+	virtual ~CznRenderDX11DeviceCreator()
+	{}
 
-std::shared_ptr<RenderWindow> CreateRenderWindowDX11(std::shared_ptr<IRenderDevice> device, IWindowObject * WindowObject, bool vSync)
+	// IznRenderDeviceCreator
+	RenderDeviceType GetRenderDeviceType() const
+	{
+		return RenderDeviceType::RenderDeviceType_DirectX;
+	}
+	std::shared_ptr<IRenderDevice> CreateRenderDevice()
+	{
+		if (m_CachedRenderDevice == nullptr)
+		{
+			m_CachedRenderDevice = std::make_shared<RenderDeviceDX11>(m_BaseManager);
+			m_CachedRenderDevice->Initialize();
+		}
+
+		return m_CachedRenderDevice;
+	}
+
+private:
+	std::shared_ptr<IBaseManager> m_BaseManager;
+	std::shared_ptr<IRenderDevice> m_CachedRenderDevice;
+};
+
+
+
+//
+// CznRenderDX11Plugin
+//
+class CznRenderDX11Plugin : public IznPlugin
 {
-	std::shared_ptr<RenderDeviceDX11> pDevice = std::dynamic_pointer_cast<RenderDeviceDX11, IRenderDevice>(device);
-	_ASSERT(pDevice != NULL);
+public:
+	CznRenderDX11Plugin()
+	{}
+	virtual ~CznRenderDX11Plugin()
+	{}
 
-	return std::make_shared<RenderWindowDX11>(pDevice, WindowObject, vSync);
+	// IznPlugin
+	bool Initialize(std::shared_ptr<IBaseManager> BaseManager)
+	{
+		m_BaseManager = BaseManager;
+		m_RenderDeviceCreator = std::make_shared<CznRenderDX11DeviceCreator>(m_BaseManager);
+
+		GetManager<IznRenderDeviceCreatorFactory>(m_BaseManager)->RegisterRenderDeviceCreator(m_RenderDeviceCreator);
+
+		return false;
+	}
+	void Finalize()
+	{
+		GetManager<IznRenderDeviceCreatorFactory>(m_BaseManager)->UnregisterRenderDeviceCreator(m_RenderDeviceCreator);
+	}
+
+private:
+	std::shared_ptr<IBaseManager> m_BaseManager;
+	std::shared_ptr<IznRenderDeviceCreator> m_RenderDeviceCreator;
+};
+
+
+
+IznPlugin* plugin = nullptr;
+IznPlugin* GetPlugin(std::shared_ptr<IBaseManager> BaseManager)
+{
+	if (plugin == nullptr)
+	{
+		plugin = new CznRenderDX11Plugin();
+		plugin->Initialize(BaseManager);
+	}
+
+	return plugin;
 }

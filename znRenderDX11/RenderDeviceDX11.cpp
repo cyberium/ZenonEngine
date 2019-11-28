@@ -15,6 +15,9 @@
 // General
 #include "RenderDeviceDX11.h"
 
+// Additional
+#include "RenderWindowDX11.h"
+
 // Additional (FreeImage)
 #define FREEIMAGE_LIB // Static linking
 #include <FreeImage.h>
@@ -92,14 +95,19 @@ const std::string& RenderDeviceDX11::GetDeviceName() const
     return "DirectX device";
 }
 
-const RenderDeviceDX11::DeviceType RenderDeviceDX11::GetDeviceType() const
+const RenderDeviceType RenderDeviceDX11::GetDeviceType() const
 {
-    return DeviceType::DirectX;
+    return RenderDeviceType::RenderDeviceType_DirectX;
 }
 
 const std::shared_ptr<IBaseManager>& RenderDeviceDX11::GetBaseManager() const
 {
 	return m_BaseManager;
+}
+
+std::shared_ptr<RenderWindow> RenderDeviceDX11::CreateRenderWindow(IWindowObject * WindowObject, bool vSync)
+{
+	return std::make_shared<RenderWindowDX11>(shared_from_this(), WindowObject, vSync);
 }
 
 ATL::CComPtr<ID3D11Device2> RenderDeviceDX11::GetDevice() const

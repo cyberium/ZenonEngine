@@ -1,17 +1,19 @@
 #pragma once
 
-class RenderDeviceOGL : public IRenderDevice
+class RenderDeviceOGL : public IRenderDevice, public std::enable_shared_from_this<RenderDeviceOGL>
 {
 public:
 	typedef IRenderDevice base;
 
-	RenderDeviceOGL();
+	RenderDeviceOGL(std::shared_ptr<IBaseManager> BaseManager);
 	virtual ~RenderDeviceOGL();
 
     void InitDevice(HDC Hdc);
 
 	const std::string& GetDeviceName() const;
-    const DeviceType GetDeviceType() const;
+    const RenderDeviceType GetDeviceType() const;
+	const std::shared_ptr<IBaseManager>& GetBaseManager() const;
+	std::shared_ptr<RenderWindow> CreateRenderWindow(IWindowObject * WindowObject, bool vSync);
 
 	// Inherited from IRenderDevice
 	virtual std::shared_ptr<IBuffer> CreateVoidVertexBuffer(const void* data, uint32 count, uint32 offset, uint32 stride);
@@ -74,6 +76,8 @@ private:
 	void                        LoadDefaultResources();
 
 private:
+	std::shared_ptr<IBaseManager>                   m_BaseManager;
+
 	uint32						m_DepthFormat;
 	bool						_doubleBuffered;
 	uint16						_maxComputeBufferAttachments;

@@ -2,8 +2,6 @@
 
 #pragma comment(lib, "freetype.lib")
 
-#include <znIntfs.h>
-
 #include <znCore.h>
 #pragma comment(lib, "znCore.lib")
 

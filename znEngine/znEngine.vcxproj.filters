@@ -94,6 +94,9 @@
     <Filter Include="FBX">
       <UniqueIdentifier>{d9523bc5-6faa-44da-9380-191b2b28f432}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Render">
+      <UniqueIdentifier>{87670a0f-3e21-440e-aed0-88f2dd660dd6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -308,6 +311,12 @@
     </ClCompile>
     <ClCompile Include="FBXDisplayCommon.cpp">
       <Filter>FBX</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderDeviceCreatorFactory.cpp">
+      <Filter>Render</Filter>
+    </ClCompile>
+    <ClCompile Include="znEngine.cpp">
+      <Filter>Common</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -532,6 +541,9 @@
     </ClInclude>
     <ClInclude Include="FBXDisplayCommon.h">
       <Filter>FBX</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderDeviceCreatorFactory.h">
+      <Filter>Render</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

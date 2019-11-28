@@ -16,6 +16,9 @@
 // General
 #include "RenderDeviceOGL.h"
 
+// Additional
+#include "RenderWindowOGL.h"
+
 // Additional (FreeImage)
 #define FREEIMAGE_LIB // Static linking
 #include <FreeImage.h>
@@ -69,7 +72,7 @@ void _stdcall glDebugOutput(GLenum source, GLenum type, GLuint id, GLenum severi
 }
 #endif
 
-RenderDeviceOGL::RenderDeviceOGL()
+RenderDeviceOGL::RenderDeviceOGL(std::shared_ptr<IBaseManager> BaseManager)
 {
     FreeImage_Initialise();
 
@@ -160,9 +163,19 @@ const std::string& RenderDeviceOGL::GetDeviceName() const
 	return "OpenGL device";
 }
 
-const RenderDeviceOGL::DeviceType RenderDeviceOGL::GetDeviceType() const
+const RenderDeviceType RenderDeviceOGL::GetDeviceType() const
 {
-    return DeviceType::OpenGL;
+    return RenderDeviceType::RenderDeviceType_OpenGL;
+}
+
+const std::shared_ptr<IBaseManager>& RenderDeviceOGL::GetBaseManager() const
+{
+	return m_BaseManager;
+}
+
+std::shared_ptr<RenderWindow> RenderDeviceOGL::CreateRenderWindow(IWindowObject * WindowObject, bool vSync)
+{
+	return std::make_shared<RenderWindowOGL>(shared_from_this(), WindowObject, vSync);
 }
 
 std::shared_ptr<IBuffer> RenderDeviceOGL::CreateVoidVertexBuffer(const void * data, uint32 count, uint32 offset, uint32 stride)
@@ -273,7 +286,7 @@ std::shared_ptr<Shader> RenderDeviceOGL::CreateShader(Shader::ShaderType type, c
 {
 	std::string fullName = fileName + entryPoint + profile;
 
-	ShaderMap::iterator iter = m_ShadersByName.find(fullName);
+	ShaderNameMap::iterator iter = m_ShadersByName.find(fullName);
 	if (iter != m_ShadersByName.end())
 		return iter->second;
 
@@ -281,7 +294,7 @@ std::shared_ptr<Shader> RenderDeviceOGL::CreateShader(Shader::ShaderType type, c
 	pShader->LoadShaderFromFile(type, fileName, shaderMacros, entryPoint, profile, _customLayout);
 
 	m_Shaders.push_back(pShader);
-	m_ShadersByName.insert(ShaderMap::value_type(fullName, pShader));
+	m_ShadersByName.insert(ShaderNameMap::value_type(fullName, pShader));
 
 	return pShader;
 }

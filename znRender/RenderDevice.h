@@ -20,14 +20,6 @@ class PipelineState;
 class OW_ENGINE_API IRenderDevice : public Object
 {
 public:
-    enum class OW_ENGINE_API DeviceType // could also be called BlendOperand
-    {
-        None = 0,
-        DirectX,
-        OpenGL
-    };
-
-public:
 	// Create an vertex buffer (with std::vector)
 	template<typename T>
 	std::shared_ptr<IBuffer> CreateVertexBuffer(const T& data);
@@ -78,8 +70,9 @@ public:
 	virtual void Finalize() = 0;
 
     virtual const std::string& GetDeviceName() const = 0;
-    virtual const DeviceType GetDeviceType() const = 0;
+    virtual const RenderDeviceType GetDeviceType() const = 0;
 	virtual const std::shared_ptr<IBaseManager>& GetBaseManager() const = 0;
+	virtual std::shared_ptr<RenderWindow> CreateRenderWindow(IWindowObject * WindowObject, bool vSync) = 0;
 
 	virtual void Lock() = 0;
 	virtual void Unlock() = 0;

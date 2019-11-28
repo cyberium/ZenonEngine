@@ -1,7 +1,5 @@
 #pragma once
 
-#include <znIntfs.h>
-
 #include <znCore.h>
 #pragma comment(lib, "znCore.lib")
 

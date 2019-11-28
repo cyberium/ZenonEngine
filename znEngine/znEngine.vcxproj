@@ -55,6 +55,7 @@
     <ClCompile Include="Passes\InvokeFunctionPass.cpp" />
     <ClCompile Include="Passes\PostprocessPass.cpp" />
     <ClCompile Include="Passes\RenderTechnique.cpp" />
+    <ClCompile Include="RenderDeviceCreatorFactory.cpp" />
     <ClCompile Include="SceneFunctional\3D\ColliderComponent3D.cpp" />
     <ClCompile Include="SceneFunctional\3D\LightComponent3D.cpp" />
     <ClCompile Include="SceneFunctional\3D\MeshComponent3D.cpp" />
@@ -97,6 +98,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="WindowCreator.cpp" />
+    <ClCompile Include="znEngine.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\shared\znEngine.h" />
@@ -136,6 +138,7 @@
     <ClInclude Include="Passes\InvokeFunctionPass.h" />
     <ClInclude Include="Passes\PostprocessPass.h" />
     <ClInclude Include="Passes\RenderTechnique.h" />
+    <ClInclude Include="RenderDeviceCreatorFactory.h" />
     <ClInclude Include="SceneFunctional\3D\ColliderComponent3D.h" />
     <ClInclude Include="SceneFunctional\3D\LightComponent3D.h" />
     <ClInclude Include="SceneFunctional\3D\MeshComponent3D.h" />
