@@ -375,6 +375,7 @@
     <ClCompile Include="LocalFilesStorage.cpp" />
     <ClCompile Include="Log.cpp" />
     <ClCompile Include="DebugOutput.cpp" />
+    <ClCompile Include="PluginsManager.cpp" />
     <ClCompile Include="Random.cpp" />
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="Plane.cpp" />
@@ -541,6 +542,7 @@
     <ClInclude Include="Console.h" />
     <ClInclude Include="Log.h" />
     <ClInclude Include="DebugOutput.h" />
+    <ClInclude Include="PluginsManager.h" />
     <ClInclude Include="Random.h" />
     <ClInclude Include="Object.h" />
     <ClInclude Include="Plane.h" />

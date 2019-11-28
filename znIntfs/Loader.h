@@ -6,19 +6,19 @@ struct IManager;
 
 struct OW_ENGINE_API ILoadable
 {
-	virtual ~ILoadable() {}
+	virtual											~ILoadable() {}
 
-	virtual bool PreLoad() = 0;
+	virtual bool									PreLoad() = 0;
 
-	virtual bool Load() = 0;
-	virtual bool Delete() = 0;
+	virtual bool									Load() = 0;
+	virtual bool									Delete() = 0;
 
-	virtual void setLoadingBegin() = 0;
-	virtual bool isLoadingBegin() const = 0;
-	virtual void setLoaded() = 0;
-	virtual bool isLoaded() const = 0;
+	virtual void									setLoadingBegin() = 0;
+	virtual bool									isLoadingBegin() const = 0;
+	virtual void									setLoaded() = 0;
+	virtual bool									isLoaded() const = 0;
 
-	virtual uint32 getPriority() const = 0;
+	virtual uint32									getPriority() const = 0;
 };
 
 struct OW_ENGINE_API

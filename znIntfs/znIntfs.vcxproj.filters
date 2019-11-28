@@ -61,6 +61,9 @@
     <ClInclude Include="common.h">
       <Filter>Common</Filter>
     </ClInclude>
+    <ClInclude Include="Plugins.h">
+      <Filter>Core\Plugins</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Common">
@@ -80,6 +83,9 @@
     </Filter>
     <Filter Include="Engine">
       <UniqueIdentifier>{09ac166e-fa8f-4f25-b9bb-8f5dac828b55}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Plugins">
+      <UniqueIdentifier>{e99ae56a-9be3-4fb0-861f-093700b42723}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

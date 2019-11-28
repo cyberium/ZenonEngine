@@ -94,6 +94,9 @@
     <Filter Include="ScriptEngine\Lua\inc">
       <UniqueIdentifier>{209ea326-523f-47eb-807a-461ccc25da9b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Plugins">
+      <UniqueIdentifier>{bec436d8-b6f8-422f-bb2f-ab2a103db725}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DebugOutput.cpp">
@@ -356,6 +359,9 @@
     </ClCompile>
     <ClCompile Include="..\Externals\lua\lzio.c">
       <Filter>ScriptEngine\Lua\src</Filter>
+    </ClCompile>
+    <ClCompile Include="PluginsManager.cpp">
+      <Filter>Plugins</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -853,6 +859,9 @@
     </ClInclude>
     <ClInclude Include="..\Externals\lua\lua.hpp">
       <Filter>ScriptEngine\Lua\inc</Filter>
+    </ClInclude>
+    <ClInclude Include="PluginsManager.h">
+      <Filter>Plugins</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

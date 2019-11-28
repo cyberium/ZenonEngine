@@ -1,6 +1,5 @@
 #pragma once
 
-
 class OW_ENGINE_API CFilesManager : public IFilesManager
 {
 public:

@@ -79,7 +79,7 @@ bool CLog::AddDebugOutput(std::shared_ptr<IDebugOutput> _debugOutput)
 {
 	_ASSERT(_debugOutput != nullptr);
 
-	if (find(m_DebugOutputs.begin(), m_DebugOutputs.end(), _debugOutput) != m_DebugOutputs.end())
+	if (std::find(m_DebugOutputs.begin(), m_DebugOutputs.end(), _debugOutput) != m_DebugOutputs.end())
 	{
 		return false;
 	}
@@ -93,7 +93,7 @@ bool CLog::DeleteDebugOutput(std::shared_ptr<IDebugOutput> _debugOutput)
 {
 	_ASSERT(_debugOutput != nullptr);
 
-	auto _debugOutputsIt = find(m_DebugOutputs.begin(), m_DebugOutputs.end(), _debugOutput);
+	auto _debugOutputsIt = std::find(m_DebugOutputs.begin(), m_DebugOutputs.end(), _debugOutput);
 
 	// Not exists
 	if (_debugOutputsIt == m_DebugOutputs.end())
@@ -110,7 +110,7 @@ void CLog::PushMessageToAllDebugOutputs(const char* _message, IDebugOutput::Debu
 {
 	std::unique_lock<std::mutex> lck(m_Mutex, std::defer_lock);
 
-	for (auto it : m_DebugOutputs)
+	for (const auto& it : m_DebugOutputs)
 	{
 		it->PushMessage(_type, _message, _vaList);
 	}

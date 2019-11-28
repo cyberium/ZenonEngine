@@ -13,9 +13,9 @@ int64_t g_FrameCounter = 0L;
 
 std::shared_ptr<RenderWindow> gs_WindowHandle = nullptr;
 IApplication * _ApplicationInstance = nullptr;
-std::shared_ptr<CBaseManager> _BaseManager = nullptr;
+std::shared_ptr<IBaseManager> _BaseManager = nullptr;
 
-Application::Application(std::shared_ptr<CBaseManager> BaseManager)
+Application::Application(std::shared_ptr<IBaseManager> BaseManager)
 	: m_bIsInitialized(false)
 	, m_bIsRunning(false)
 {
@@ -25,7 +25,7 @@ Application::Application(std::shared_ptr<CBaseManager> BaseManager)
 	_ApplicationInstance = this;
 }
 
-Application::Application(std::shared_ptr<CBaseManager> BaseManager, HINSTANCE hInstance)
+Application::Application(std::shared_ptr<IBaseManager> BaseManager, HINSTANCE hInstance)
 	: m_bIsInitialized(false)
 	, m_bIsRunning(false)
 {

@@ -9,8 +9,8 @@ class OW_ENGINE_API Application :
 	public IGameStateManager
 {
 public:
-	Application(std::shared_ptr<CBaseManager> BaseManager);
-	Application(std::shared_ptr<CBaseManager> BaseManager, HINSTANCE hInstance);
+	Application(std::shared_ptr<IBaseManager> BaseManager);
+	Application(std::shared_ptr<IBaseManager> BaseManager, HINSTANCE hInstance);
 	virtual ~Application();
 
 	static IApplication& Get();

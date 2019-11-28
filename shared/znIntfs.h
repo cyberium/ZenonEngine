@@ -20,6 +20,7 @@
 #include "../znIntfs/Loader.h"
 #include "../znIntfs/Log.h"
 #include "../znIntfs/Networking.h"
+#include "../znIntfs/Plugins.h"
 #include "../znIntfs/Scene.h"
 #include "../znIntfs/SceneNodeProvider.h"
 #include "../znIntfs/Settings.h"

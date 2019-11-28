@@ -315,7 +315,7 @@
       <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <PostBuildEvent>
-      <Command>copy /Y "$(Platform)\$(Configuration)\$(ProjectName).res" "$(SolutionDir)bin_x64\$(Configuration)\$(ProjectName).res" </Command>
+      <Command>copy /Y "$(Platform)\$(Configuration)\$(ProjectName).res" "$(SolutionDir)bin_$(PlatformShortName)\$(Configuration)\$(ProjectName).res" </Command>
     </PostBuildEvent>
     <Link>
       <AdditionalLibraryDirectories>$(SolutionDir)\bin_$(PlatformShortName)\$(Configuration)\;..\Externals\FBX\lib\vs2015\$(PlatformShortName)\$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -339,7 +339,7 @@
       <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <PostBuildEvent>
-      <Command>copy /Y "$(Platform)\$(Configuration)\$(ProjectName).res" "$(SolutionDir)bin_x86\$(Configuration)\$(ProjectName).res" </Command>
+      <Command>copy /Y "$(Platform)\$(Configuration)\$(ProjectName).res" "$(SolutionDir)bin_$(PlatformShortName)\$(Configuration)\$(ProjectName).res" </Command>
     </PostBuildEvent>
     <Link>
       <AdditionalLibraryDirectories>$(SolutionDir)\bin_$(PlatformShortName)\$(Configuration)\;..\Externals\FBX\lib\vs2015\$(PlatformShortName)\$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -367,7 +367,7 @@
       <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <PostBuildEvent>
-      <Command>copy /Y "$(Platform)\$(Configuration)\$(ProjectName).res" "$(SolutionDir)bin_x64\$(Configuration)\$(ProjectName).res" </Command>
+      <Command>copy /Y "$(Platform)\$(Configuration)\$(ProjectName).res" "$(SolutionDir)bin_$(PlatformShortName)\$(Configuration)\$(ProjectName).res" </Command>
     </PostBuildEvent>
     <Link>
       <AdditionalLibraryDirectories>$(SolutionDir)\bin_$(PlatformShortName)\$(Configuration)\;..\Externals\FBX\lib\vs2015\$(PlatformShortName)\$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -395,7 +395,7 @@
       <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <PostBuildEvent>
-      <Command>copy /Y "$(Platform)\$(Configuration)\$(ProjectName).res" "$(SolutionDir)bin_x86\$(Configuration)\$(ProjectName).res" </Command>
+      <Command>copy /Y "$(Platform)\$(Configuration)\$(ProjectName).res" "$(SolutionDir)bin_$(PlatformShortName)\$(Configuration)\$(ProjectName).res" </Command>
     </PostBuildEvent>
     <Link>
       <AdditionalLibraryDirectories>$(SolutionDir)\bin_$(PlatformShortName)\$(Configuration)\;..\Externals\FBX\lib\vs2015\$(PlatformShortName)\$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>

@@ -19,56 +19,50 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\shared\znIntfs.h" />
-    <ClInclude Include="Application.h" />
-    <ClInclude Include="Camera.h" />
-    <ClInclude Include="CameraController.h" />
-    <ClInclude Include="Console.h" />
-    <ClInclude Include="DebugOutput.h" />
-    <ClInclude Include="Files.h" />
-    <ClInclude Include="BaseManager.h" />
-    <ClInclude Include="GameState.h" />
-    <ClInclude Include="GameStateManager.h" />
-    <ClInclude Include="Loader.h" />
-    <ClInclude Include="Log.h" />
-    <ClInclude Include="Networking.h" />
-    <ClInclude Include="Plugins.h" />
-    <ClInclude Include="RenderPass.h" />
-    <ClInclude Include="Scene.h" />
-    <ClInclude Include="SceneNodeProvider.h" />
-    <ClInclude Include="Settings.h" />
+    <ClCompile Include="stdafx.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="znPlugin.cpp" />
+  </ItemGroup>
+  <ItemGroup>
     <ClInclude Include="common.h" />
-    <ClInclude Include="Visitor.h" />
-    <ClInclude Include="WindowObject.h" />
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="znPlugin.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="znPlugin.rc" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{69AEC773-3240-4644-A049-ABABD643DBEC}</ProjectGuid>
+    <ProjectGuid>{3C9E8287-1CE4-4638-844C-CE9BA1E48151}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>znIntfs</RootNamespace>
+    <RootNamespace>znPlugin</RootNamespace>
     <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>Utility</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v141</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>Utility</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v141</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>Utility</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v141</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>Utility</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v141</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -112,67 +106,109 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>_DEBUG;_WINDOWS;OW_ENGINE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_WINDOWS;_USRDLL;OW_ENGINE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>false</SDLCheck>
-      <AdditionalIncludeDirectories>..\shared;..\Externals;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\shared;..\Externals;..\znPlugin\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatSpecificWarningsAsErrors>
       </TreatSpecificWarningsAsErrors>
-      <DisableSpecificWarnings>4244;4267</DisableSpecificWarnings>
+      <DisableSpecificWarnings>4244;4267;4251</DisableSpecificWarnings>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
+    <ResourceCompile>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <PostBuildEvent>
+      <Command>copy /Y "$(Platform)\$(Configuration)\$(ProjectName).res" "$(SolutionDir)bin_$(PlatformShortName)\$(Configuration)\$(ProjectName).res" </Command>
+    </PostBuildEvent>
+    <Link>
+      <AdditionalLibraryDirectories>$(SolutionDir)\bin_$(PlatformShortName)\$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>_DEBUG;_WINDOWS;OW_ENGINE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_WINDOWS;_USRDLL;OW_ENGINE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>false</SDLCheck>
-      <AdditionalIncludeDirectories>..\shared;..\Externals;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\shared;..\Externals;..\znPlugin\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatSpecificWarningsAsErrors>
       </TreatSpecificWarningsAsErrors>
-      <DisableSpecificWarnings>4244;4267</DisableSpecificWarnings>
+      <DisableSpecificWarnings>4244;4267;4251</DisableSpecificWarnings>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
+    <ResourceCompile>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <PostBuildEvent>
+      <Command>copy /Y "$(Platform)\$(Configuration)\$(ProjectName).res" "$(SolutionDir)bin_$(PlatformShortName)\$(Configuration)\$(ProjectName).res" </Command>
+    </PostBuildEvent>
+    <Link>
+      <AdditionalLibraryDirectories>$(SolutionDir)\bin_$(PlatformShortName)\$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeader>Use</PrecompiledHeader>
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>NDEBUG;_WINDOWS;OW_ENGINE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;_WINDOWS;_USRDLL;OW_ENGINE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>false</SDLCheck>
-      <AdditionalIncludeDirectories>..\shared;..\Externals;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\shared;..\Externals;..\znPlugin\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <TreatSpecificWarningsAsErrors>
       </TreatSpecificWarningsAsErrors>
-      <DisableSpecificWarnings>4244;4267</DisableSpecificWarnings>
+      <DisableSpecificWarnings>4244;4267;4251</DisableSpecificWarnings>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
     </ClCompile>
+    <ResourceCompile>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <PostBuildEvent>
+      <Command>copy /Y "$(Platform)\$(Configuration)\$(ProjectName).res" "$(SolutionDir)bin_$(PlatformShortName)\$(Configuration)\$(ProjectName).res" </Command>
+    </PostBuildEvent>
+    <Link>
+      <AdditionalLibraryDirectories>$(SolutionDir)\bin_$(PlatformShortName)\$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeader>Use</PrecompiledHeader>
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>NDEBUG;_WINDOWS;OW_ENGINE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;_WINDOWS;_USRDLL;OW_ENGINE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>false</SDLCheck>
-      <AdditionalIncludeDirectories>..\shared;..\Externals;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\shared;..\Externals;..\znPlugin\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <TreatSpecificWarningsAsErrors>
       </TreatSpecificWarningsAsErrors>
-      <DisableSpecificWarnings>4244;4267</DisableSpecificWarnings>
+      <DisableSpecificWarnings>4244;4267;4251</DisableSpecificWarnings>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
     </ClCompile>
+    <ResourceCompile>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <PostBuildEvent>
+      <Command>copy /Y "$(Platform)\$(Configuration)\$(ProjectName).res" "$(SolutionDir)bin_$(PlatformShortName)\$(Configuration)\$(ProjectName).res" </Command>
+    </PostBuildEvent>
+    <Link>
+      <AdditionalLibraryDirectories>$(SolutionDir)\bin_$(PlatformShortName)\$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
 </Project>

@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Common">
+      <UniqueIdentifier>{d0033b79-fd0f-4221-80fa-9a9bedd64d33}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="znPlugin.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="common.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="znPlugin.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="znPlugin.rc" />
+  </ItemGroup>
+</Project>

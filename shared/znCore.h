@@ -6,6 +6,9 @@
 #include "../znCore/RefManager1Dim.h"
 #include "../znCore/RefManager1DimAssync.h"
 
+// Plugins
+#include "../znCore/PluginsManager.h"
+
 // Files
 #include "../znCore/LocalFilesStorage.h"
 #include "../znCore/LibraryResourceFileStotage.h"

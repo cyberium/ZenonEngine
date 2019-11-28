@@ -20,7 +20,7 @@ private:
 	std::map<GUID, std::shared_ptr<IManager>> m_Managers;
 };
 
-extern OW_ENGINE_API std::shared_ptr<CBaseManager> _BaseManager;
+extern OW_ENGINE_API std::shared_ptr<IBaseManager> _BaseManager;
 
 // Helpers
 
