@@ -25,14 +25,14 @@ BufferOGL::~BufferOGL()
 	glDeleteBuffers(1, &m_GLObj);
 }
 
-bool BufferOGL::Bind(uint32 id, const Shader* shader, ShaderParameter::Type parameterType) const
+bool BufferOGL::Bind(uint32 id, const IShader* shader, IShaderParameter::Type parameterType) const
 {
 	glBindBuffer(m_BindFlags, m_GLObj);
 
 	return true;
 }
 
-void BufferOGL::UnBind(uint32 id, const Shader* shader, ShaderParameter::Type parameterType) const
+void BufferOGL::UnBind(uint32 id, const IShader* shader, IShaderParameter::Type parameterType) const
 {
 	glBindBuffer(m_BindFlags, 0);
 }
@@ -69,18 +69,18 @@ IBuffer::BufferType BufferOGL::GetType() const
 	switch (m_BindFlags)
 	{
 	case GL_ARRAY_BUFFER:
-		return IBuffer::VertexBuffer;
+		return IBuffer::BufferType::VertexBuffer;
 	case GL_ELEMENT_ARRAY_BUFFER:
-		return IBuffer::IndexBuffer;
+		return IBuffer::BufferType::IndexBuffer;
 	case GL_SHADER_STORAGE_BUFFER:
-		return IBuffer::StructuredBuffer;
+		return IBuffer::BufferType::StructuredBuffer;
 	case GL_UNIFORM_BUFFER:
-		return IBuffer::ConstantBuffer;
+		return IBuffer::BufferType::ConstantBuffer;
 	default:
 		throw std::exception("Unknown buffer type.");
 	}
 
-	return IBuffer::Unknown;
+	return IBuffer::BufferType::Unknown;
 }
 
 uint32 BufferOGL::GetElementCount() const

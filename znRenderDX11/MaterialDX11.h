@@ -3,7 +3,7 @@
 class OW_ENGINE_API MaterialDX11 : public MaterialBase
 {
 public:
-	MaterialDX11(IRenderDevice* renderDevice, size_t Size);
+	MaterialDX11(std::weak_ptr<IRenderDevice> renderDevice, size_t Size);
 	virtual ~MaterialDX11();
 
     // MaterialBase

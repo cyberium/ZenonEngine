@@ -180,7 +180,7 @@ void RenderTargetOGL::GenerateMipMaps()
 	}
 }
 
-void RenderTargetOGL::AttachStructuredBuffer(uint8_t slot, std::shared_ptr<StructuredBuffer> rwBuffer)
+void RenderTargetOGL::AttachStructuredBuffer(uint8_t slot, std::shared_ptr<IStructuredBuffer> rwBuffer)
 {
 	std::shared_ptr<StructuredBufferOGL> rwbufferOGL = std::dynamic_pointer_cast<StructuredBufferOGL>(rwBuffer);
 	m_StructuredBuffers[slot] = rwbufferOGL;
@@ -189,14 +189,14 @@ void RenderTargetOGL::AttachStructuredBuffer(uint8_t slot, std::shared_ptr<Struc
 	m_bCheckValidity = true;
 }
 
-std::shared_ptr<StructuredBuffer> RenderTargetOGL::GetStructuredBuffer(uint8_t slot)
+std::shared_ptr<IStructuredBuffer> RenderTargetOGL::GetStructuredBuffer(uint8_t slot)
 {
 	if (slot < m_StructuredBuffers.size())
 	{
 		return m_StructuredBuffers[slot];
 	}
 
-	return std::shared_ptr<StructuredBuffer>();
+	return std::shared_ptr<IStructuredBuffer>();
 }
 
 

@@ -9,4 +9,7 @@
 #include "OpenGL.h"
 #pragma comment(lib, "opengl32.lib")
 
-#include "common.h"
+ZN_INTERFACE IRenderDeviceOGL
+{
+
+};

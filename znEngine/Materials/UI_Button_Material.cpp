@@ -14,12 +14,12 @@ UI_Button_Material::UI_Button_Material() :
 
 	// CreateShaders
 	std::shared_ptr<IShader> g_pVertexShader = _RenderDevice->CreateShader(
-		IShader::VertexShader, "IDB_SHADER_UI_BUTTON", IShader::ShaderMacros(), "VS_main", "latest"
+		IShader::ShaderType::VertexShader, "IDB_SHADER_UI_BUTTON", IShader::ShaderMacros(), "VS_main", "latest"
 	);
     g_pVertexShader->LoadInputLayoutFromReflector();
 
 	std::shared_ptr<IShader> g_pPixelShader = _RenderDevice->CreateShader(
-		IShader::PixelShader, "IDB_SHADER_UI_BUTTON", IShader::ShaderMacros(), "PS_main", "latest"
+		IShader::ShaderType::PixelShader, "IDB_SHADER_UI_BUTTON", IShader::ShaderMacros(), "PS_main", "latest"
 	);
 
 	// Create samplers
@@ -30,8 +30,8 @@ UI_Button_Material::UI_Button_Material() :
 	g_pPixelShader->GetShaderParameterByName("DiffuseTextureSampler")->Set(g_LinearClampSampler.get());
 
 	// Material
-	SetShader(IShader::VertexShader, g_pVertexShader);
-	SetShader(IShader::PixelShader, g_pPixelShader);
+	SetShader(IShader::ShaderType::VertexShader, g_pVertexShader);
+	SetShader(IShader::ShaderType::PixelShader, g_pPixelShader);
 }
 
 UI_Button_Material::~UI_Button_Material()

@@ -33,7 +33,7 @@
     <ClCompile Include="ShaderInputLayoutBase.cpp" />
     <ClCompile Include="MaterialBase.cpp" />
     <ClCompile Include="RenderDeviceBase.cpp" />
-    <ClCompile Include="Interfaces\Types\D3D9_Types.cpp">
+    <ClCompile Include="Interfaces\Types\CustomVertexElement.cpp">
       <Filter>Interfaces\Types</Filter>
     </ClCompile>
   </ItemGroup>
@@ -84,21 +84,6 @@
     <ClInclude Include="Interfaces\ITexture.h">
       <Filter>Interfaces</Filter>
     </ClInclude>
-    <ClInclude Include="Interfaces\BufferBinding.h">
-      <Filter>Interfaces\Types</Filter>
-    </ClInclude>
-    <ClInclude Include="Interfaces\ClearFlags.h">
-      <Filter>Interfaces\Types</Filter>
-    </ClInclude>
-    <ClInclude Include="Interfaces\CPUAccess.h">
-      <Filter>Interfaces\Types</Filter>
-    </ClInclude>
-    <ClInclude Include="Interfaces\PrimitiveTopology.h">
-      <Filter>Interfaces\Types</Filter>
-    </ClInclude>
-    <ClInclude Include="Interfaces\InputSemantic.h">
-      <Filter>Interfaces\Types</Filter>
-    </ClInclude>
     <ClInclude Include="Interfaces\IBuffer.h">
       <Filter>Interfaces</Filter>
     </ClInclude>
@@ -130,9 +115,6 @@
     <ClInclude Include="Interfaces\IRasterizerState.h">
       <Filter>Interfaces</Filter>
     </ClInclude>
-    <ClInclude Include="Interfaces\Viewport.h">
-      <Filter>Interfaces\Types</Filter>
-    </ClInclude>
     <ClInclude Include="BlendStateBase.h">
       <Filter>Pipeline</Filter>
     </ClInclude>
@@ -151,7 +133,25 @@
     <ClInclude Include="ShaderInputLayoutBase.h" />
     <ClInclude Include="MaterialBase.h" />
     <ClInclude Include="RenderDeviceBase.h" />
-    <ClInclude Include="Interfaces\Types\D3D9_Types.h">
+    <ClInclude Include="Interfaces\Types\CustomVertexElement.h">
+      <Filter>Interfaces\Types</Filter>
+    </ClInclude>
+    <ClInclude Include="Interfaces\Types\BufferBinding.h">
+      <Filter>Interfaces\Types</Filter>
+    </ClInclude>
+    <ClInclude Include="Interfaces\Types\ClearFlags.h">
+      <Filter>Interfaces\Types</Filter>
+    </ClInclude>
+    <ClInclude Include="Interfaces\Types\CPUAccess.h">
+      <Filter>Interfaces\Types</Filter>
+    </ClInclude>
+    <ClInclude Include="Interfaces\Types\InputSemantic.h">
+      <Filter>Interfaces\Types</Filter>
+    </ClInclude>
+    <ClInclude Include="Interfaces\Types\PrimitiveTopology.h">
+      <Filter>Interfaces\Types</Filter>
+    </ClInclude>
+    <ClInclude Include="Interfaces\Types\Viewport.h">
       <Filter>Interfaces\Types</Filter>
     </ClInclude>
   </ItemGroup>

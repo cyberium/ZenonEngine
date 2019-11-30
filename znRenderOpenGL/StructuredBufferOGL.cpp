@@ -43,7 +43,7 @@ StructuredBufferOGL::~StructuredBufferOGL()
 	}
 }
 
-bool StructuredBufferOGL::Bind(uint32 ID, const Shader* shader, ShaderParameter::Type parameterType) const 
+bool StructuredBufferOGL::Bind(uint32 ID, const IShader* shader, IShaderParameter::Type parameterType) const 
 {
 	if (m_bIsDirty)
 	{
@@ -56,7 +56,7 @@ bool StructuredBufferOGL::Bind(uint32 ID, const Shader* shader, ShaderParameter:
 	return true;
 }
 
-void StructuredBufferOGL::UnBind(uint32 ID, const Shader* shader, ShaderParameter::Type parameterType) const 
+void StructuredBufferOGL::UnBind(uint32 ID, const IShader* shader, IShaderParameter::Type parameterType) const
 {
 	glBindBufferBase(m_BindFlags, ID, 0);
 }
@@ -89,7 +89,7 @@ void StructuredBufferOGL::Commit() const
 	}
 }
 
-void StructuredBufferOGL::Copy(std::shared_ptr<StructuredBuffer> other)
+void StructuredBufferOGL::Copy(std::shared_ptr<IStructuredBuffer> other)
 {
 	std::shared_ptr<StructuredBufferOGL> srcBuffer = std::dynamic_pointer_cast<StructuredBufferOGL>(other);
 	_ASSERT(srcBuffer->m_GLObj != 0);
@@ -124,7 +124,7 @@ void StructuredBufferOGL::Copy(std::shared_ptr<StructuredBuffer> other)
 
 void StructuredBufferOGL::Copy(std::shared_ptr<IBuffer> other)
 {
-	Copy(std::dynamic_pointer_cast<StructuredBuffer>(other));
+	Copy(std::dynamic_pointer_cast<IStructuredBuffer>(other));
 }
 
 void StructuredBufferOGL::Clear()
@@ -138,7 +138,7 @@ void StructuredBufferOGL::Clear()
 
 IBuffer::BufferType StructuredBufferOGL::GetType() const
 {
-	return IBuffer::StructuredBuffer;
+	return IBuffer::BufferType::StructuredBuffer;
 }
 
 uint32 StructuredBufferOGL::GetElementCount() const

@@ -57,8 +57,7 @@ RenderDeviceDX11::RenderDeviceDX11(std::shared_ptr<IBaseManager> BaseManager)
 }
 
 RenderDeviceDX11::~RenderDeviceDX11()
-{
-}
+{}
 
 bool RenderDeviceDX11::Initialize()
 {
@@ -363,7 +362,7 @@ std::shared_ptr<IMaterial> RenderDeviceDX11::CreateMaterial(size_t Size)
 {
     D3DMultithreadLocker locker(m_pMultiThread);
 
-    std::shared_ptr<IMaterial> pMaterial = std::make_shared<MaterialDX11>(this, Size);
+    std::shared_ptr<IMaterial> pMaterial = std::make_shared<MaterialDX11>(shared_from_this(), Size);
     m_Materials.push_back(pMaterial);
     return pMaterial;
 }

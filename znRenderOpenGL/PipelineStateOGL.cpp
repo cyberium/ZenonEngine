@@ -6,20 +6,35 @@
 #include "ShaderOGL.h"
 
 PipelineStateOGL::PipelineStateOGL()
-	: m_BlendState()
-	, m_RasterizerState()
-	, m_DepthStencilState()
-{}
-
-PipelineStateOGL::~PipelineStateOGL()
-{}
-
-void PipelineStateOGL::SetShader(Shader::ShaderType type, std::shared_ptr<Shader> pShader)
 {
-	m_Shaders[type] = pShader;
+	m_BlendState = std::make_shared<BlendStateOGL>();
+	m_RasterizerState = std::make_shared<RasterizerStateOGL>();
+	m_DepthStencilState = std::make_shared<DepthStencilStateOGL>();
+
+	glGenProgramPipelines(1, &m_GLProgramPipeline);
 }
 
-std::shared_ptr<Shader> PipelineStateOGL::GetShader(Shader::ShaderType type) const
+PipelineStateOGL::~PipelineStateOGL()
+{
+	if (m_GLProgramPipeline != 0)
+	{
+		glDeleteProgramPipelines(1, &m_GLProgramPipeline);
+		m_GLProgramPipeline = 0;
+	}
+}
+
+void PipelineStateOGL::SetShader(IShader::ShaderType type, std::shared_ptr<IShader> pShader)
+{
+	m_Shaders[type] = pShader;
+
+	if (pShader)
+	{
+		std::shared_ptr<ShaderOGL> shaderOGL = std::dynamic_pointer_cast<ShaderOGL>(pShader);
+		glUseProgramStages(m_GLProgramPipeline, GLTranslateShaderBitType(type), shaderOGL->GetGLObject());
+	}
+}
+
+std::shared_ptr<IShader> PipelineStateOGL::GetShader(IShader::ShaderType type) const
 {
 	ShaderMap::const_iterator iter = m_Shaders.find(type);
 	if (iter != m_Shaders.end())
@@ -30,32 +45,37 @@ std::shared_ptr<Shader> PipelineStateOGL::GetShader(Shader::ShaderType type) con
 	return nullptr;
 }
 
-void PipelineStateOGL::SetBlendState(const BlendState& blendState)
+const ShaderMap & PipelineStateOGL::GetShaders() const
 {
-	m_BlendState = dynamic_cast<const BlendStateOGL&>(blendState);
+	return m_Shaders;
 }
 
-BlendState& PipelineStateOGL::GetBlendState()
+void PipelineStateOGL::SetBlendState(const std::shared_ptr<IBlendState> blendState)
+{
+	m_BlendState = std::dynamic_pointer_cast<BlendStateOGL>(blendState);
+}
+
+std::shared_ptr<IBlendState> PipelineStateOGL::GetBlendState()
 {
 	return m_BlendState;
 }
 
-void PipelineStateOGL::SetRasterizerState(const RasterizerState& rasterizerState)
+void PipelineStateOGL::SetRasterizerState(const std::shared_ptr<IRasterizerState> rasterizerState)
 {
-	m_RasterizerState = dynamic_cast<const RasterizerStateOGL&>(rasterizerState);
+	m_RasterizerState = std::dynamic_pointer_cast<RasterizerStateOGL>(rasterizerState);
 }
 
-RasterizerState& PipelineStateOGL::GetRasterizerState()
+std::shared_ptr<IRasterizerState> PipelineStateOGL::GetRasterizerState()
 {
 	return m_RasterizerState;
 }
 
-void PipelineStateOGL::SetDepthStencilState(const DepthStencilState& depthStencilState)
+void PipelineStateOGL::SetDepthStencilState(const std::shared_ptr<IDepthStencilState> depthStencilState)
 {
-	m_DepthStencilState = dynamic_cast<const DepthStencilStateOGL&>(depthStencilState);
+	m_DepthStencilState = std::dynamic_pointer_cast<DepthStencilStateOGL>(depthStencilState);
 }
 
-DepthStencilState& PipelineStateOGL::GetDepthStencilState()
+std::shared_ptr<IDepthStencilState> PipelineStateOGL::GetDepthStencilState()
 {
 	return m_DepthStencilState;
 }
@@ -77,13 +97,17 @@ void PipelineStateOGL::Bind()
 		m_RenderTarget->Bind();
 	}
 
-	m_BlendState.Bind();
-	m_RasterizerState.Bind();
-	m_DepthStencilState.Bind();
+	m_BlendState->Bind();
+	m_RasterizerState->Bind();
+	m_DepthStencilState->Bind();
+
+	glBindProgramPipeline(m_GLProgramPipeline);
 }
 
 void PipelineStateOGL::UnBind()
 {
+	glBindProgramPipeline(0);
+
 	if (m_RenderTarget)
 	{
 		m_RenderTarget->UnBind();

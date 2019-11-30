@@ -12,7 +12,7 @@ DebugOutput_Log::DebugOutput_Log()
 	if (fileName.empty())
 	{
 		Log::Error("LogFile[%s]: No such file or directory!", fileName.c_str());
-		fail1();
+		_ASSERT(false);
 	}
 
 	m_LogStream.open(fileName.c_str(), std::ios::out);
@@ -20,7 +20,7 @@ DebugOutput_Log::DebugOutput_Log()
 	{
 		Log::Error("LogFile[%s]: Can not open file!", fileName.c_str());
 		m_LogStream.clear();
-		fail1();
+		_ASSERT(false);
 	}
 }
 

@@ -14,12 +14,12 @@ UI_Texture_Material::UI_Texture_Material() :
 
 	// CreateShaders
 	std::shared_ptr<IShader> g_pVertexShader = _RenderDevice->CreateShader(
-		IShader::VertexShader, "IDB_SHADER_UI_TEXTURE", IShader::ShaderMacros(), "VS_main", "latest"
+		IShader::ShaderType::VertexShader, "IDB_SHADER_UI_TEXTURE", IShader::ShaderMacros(), "VS_main", "latest"
 	);
     g_pVertexShader->LoadInputLayoutFromReflector();
 
 	std::shared_ptr<IShader> g_pPixelShader = _RenderDevice->CreateShader(
-		IShader::PixelShader, "IDB_SHADER_UI_TEXTURE", IShader::ShaderMacros(), "PS_main", "latest"
+		IShader::ShaderType::PixelShader, "IDB_SHADER_UI_TEXTURE", IShader::ShaderMacros(), "PS_main", "latest"
 	);
 
 	// Create samplers
@@ -30,8 +30,8 @@ UI_Texture_Material::UI_Texture_Material() :
     SetSampler(0, g_LinearClampSampler);
 
 	// Material
-	SetShader(IShader::VertexShader, g_pVertexShader);
-	SetShader(IShader::PixelShader, g_pPixelShader);
+	SetShader(IShader::ShaderType::VertexShader, g_pVertexShader);
+	SetShader(IShader::ShaderType::PixelShader, g_pPixelShader);
 }
 
 UI_Texture_Material::~UI_Texture_Material()

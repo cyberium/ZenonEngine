@@ -80,13 +80,13 @@ void AbstractPass::UpdateViewport(const Viewport * _viewport)
 //
 bool AbstractPass::Visit(SceneNode3D* node)
 {
-    fail1();
+    _ASSERT(false);
 	return false;
 }
 
 bool AbstractPass::Visit(CUIBaseNode* nodeUI)
 {
-	fail1();
+	_ASSERT(false);
 	return false;
 }
 
@@ -102,7 +102,7 @@ bool AbstractPass::Visit(IMesh* Mesh, UINT IndexStartLocation, UINT IndexCnt, UI
 
 bool AbstractPass::Visit(std::shared_ptr<CLight3D> light)
 {
-    fail1();
+    _ASSERT(false);
 	return false;
 }
 

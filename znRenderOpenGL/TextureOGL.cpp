@@ -10,8 +10,9 @@
 #include "ShaderOGL.h"
 #include "TextureOGLTranslate.h"
 
-TextureOGL::TextureOGL(RenderDeviceOGL* _device)
-	: m_TextureWidth(0)
+TextureOGL::TextureOGL(std::weak_ptr<IRenderDevice> RenderDevice)
+	: m_RenderDevice(RenderDevice)
+	, m_TextureWidth(0)
 	, m_TextureHeight(0)
 	, m_TextureDepth(0)
 	, m_CPUAccess(CPUAccess::None)
@@ -28,8 +29,9 @@ TextureOGL::TextureOGL(RenderDeviceOGL* _device)
 }
 
 // 2D Texture
-TextureOGL::TextureOGL(RenderDeviceOGL* _device, uint16_t width, uint16_t height, uint16_t slices, const TextureFormat& format, CPUAccess cpuAccess)
-	: m_TextureWidth(width)
+TextureOGL::TextureOGL(std::weak_ptr<IRenderDevice> RenderDevice, uint16_t width, uint16_t height, uint16_t slices, const TextureFormat& format, CPUAccess cpuAccess)
+	: m_RenderDevice(RenderDevice)
+	, m_TextureWidth(width)
 	, m_TextureHeight(height)
 	, m_BPP(0)
 	, m_TextureFormat(format)
@@ -81,7 +83,8 @@ TextureOGL::TextureOGL(RenderDeviceOGL* _device, uint16_t width, uint16_t height
 }
 
 // CUBE Texture
-TextureOGL::TextureOGL(RenderDeviceOGL* _device, uint16_t size, uint16_t count, const TextureFormat& format, CPUAccess cpuAccess)
+TextureOGL::TextureOGL(std::weak_ptr<IRenderDevice> RenderDevice, uint16_t size, uint16_t count, const TextureFormat& format, CPUAccess cpuAccess)
+	: m_RenderDevice(RenderDevice)
 {
 	m_TextureDimension = ITexture::Dimension::TextureCube;
 	m_TextureWidth = m_TextureHeight = size;
@@ -132,7 +135,7 @@ bool TextureOGL::LoadTextureCustom(uint16_t width, uint16_t height, void * pixel
 
 bool TextureOGL::LoadTexture2D(const std::string& fileName)
 {
-    std::shared_ptr<IFile> f = GetManager<IFilesManager>()->Open(fileName);
+    std::shared_ptr<IFile> f = GetManager<IFilesManager>(m_RenderDevice.lock()->GetBaseManager())->Open(fileName);
     if (f == nullptr)
         return false;
 
@@ -207,12 +210,12 @@ void TextureOGL::GenerateMipMaps()
 
 std::shared_ptr<ITexture> TextureOGL::GetFace(CubeFace face) const
 {
-	return std::static_pointer_cast<Texture>(std::const_pointer_cast<TextureOGL>(shared_from_this()));
+	return std::static_pointer_cast<ITexture>(std::const_pointer_cast<TextureOGL>(shared_from_this()));
 }
 
 std::shared_ptr<ITexture> TextureOGL::GetSlice(uint32 slice) const
 {
-	return std::static_pointer_cast<Texture>(std::const_pointer_cast<TextureOGL>(shared_from_this()));
+	return std::static_pointer_cast<ITexture>(std::const_pointer_cast<TextureOGL>(shared_from_this()));
 }
 
 uint16_t TextureOGL::GetWidth() const
@@ -365,7 +368,7 @@ void TextureOGL::Clear(ClearFlags clearFlags, cvec4 color, float depth, uint8_t 
 	}*/
 }
 
-void TextureOGL::Bind(uint32_t ID, const Shader* shader, ShaderParameter::Type parameterType) const
+void TextureOGL::Bind(uint32_t ID, const IShader* shader, IShaderParameter::Type parameterType) const
 {
 	if (m_bIsDirty)
 	{
@@ -395,7 +398,7 @@ void TextureOGL::Bind(uint32_t ID, const Shader* shader, ShaderParameter::Type p
 	const ShaderOGL* pShader = dynamic_cast<const ShaderOGL*>(shader);
 	_ASSERT(pShader != NULL);
 
-	if (pShader->GetType() != Shader::ShaderType::PixelShader)
+	if (pShader->GetType() != IShader::ShaderType::PixelShader)
 	{
 		return;
 	}
@@ -407,12 +410,12 @@ void TextureOGL::Bind(uint32_t ID, const Shader* shader, ShaderParameter::Type p
 
 }
 
-void TextureOGL::Bind(uint32_t ID, Shader::ShaderType _shaderType, ShaderParameter::Type parameterType) const
+void TextureOGL::Bind(uint32_t ID, IShader::ShaderType _shaderType, IShaderParameter::Type parameterType) const
 {
-	fail1();
+	_ASSERT(false);
 }
 
-void TextureOGL::UnBind(uint32_t ID, const Shader* shader, ShaderParameter::Type parameterType) const
+void TextureOGL::UnBind(uint32_t ID, const IShader* shader, IShaderParameter::Type parameterType) const
 {
 	const ShaderOGL* pShader = dynamic_cast<const ShaderOGL*>(shader);
 	_ASSERT(pShader != NULL);
@@ -423,9 +426,9 @@ void TextureOGL::UnBind(uint32_t ID, const Shader* shader, ShaderParameter::Type
 	glBindTexture(m_TextureType, 0);
 }
 
-void TextureOGL::UnBind(uint32_t ID, Shader::ShaderType _shaderType, ShaderParameter::Type parameterType) const
+void TextureOGL::UnBind(uint32_t ID, IShader::ShaderType _shaderType, IShaderParameter::Type parameterType) const
 {
-	fail1();
+	_ASSERT(false);
 }
 
 const std::vector<uint8>& TextureOGL::GetBuffer()

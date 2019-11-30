@@ -613,7 +613,7 @@ void initWGLExtensions()
 	renderWindowClass.lpszClassName = L"TestRenderClass";
 
 	if (!RegisterClass(&renderWindowClass)) 
-		fail1();
+		_ASSERT(false);
 
 	HWND dummy_window = CreateWindowEx
     (
@@ -704,12 +704,12 @@ HGLRC initOpenGL(HDC real_dc)
 	UINT num_formats;
 	wglChoosePixelFormatARB(real_dc, pixel_format_attribs, 0, 1, &pixel_format, &num_formats);
 	if (!num_formats)
-		fail1("Failed to set the OpenGL 3.3 pixel format.");
+		_ASSERT_EXPR(false, "Failed to set the OpenGL 3.3 pixel format.");
 
 	PIXELFORMATDESCRIPTOR pfd;
 	DescribePixelFormat(real_dc, pixel_format, sizeof(pfd), &pfd);
 	if (!SetPixelFormat(real_dc, pixel_format, &pfd))
-		fail1("Failed to set the OpenGL 3.3 pixel format.");
+		_ASSERT_EXPR(false, "Failed to set the OpenGL 3.3 pixel format.");
 
 	// Specify that we want to create an OpenGL 3.3 core profile context
 	int gl33_attribs[] = 
@@ -723,10 +723,10 @@ HGLRC initOpenGL(HDC real_dc)
 
 	HGLRC gl33_context = wglCreateContextAttribsARB(real_dc, 0, gl33_attribs);
 	if (!gl33_context)
-		fail1("Failed to create OpenGL 3.3 context.");
+		_ASSERT_EXPR(false, "Failed to create OpenGL 3.3 context.");
 
 	if (!wglMakeCurrent(real_dc, gl33_context))
-		fail1("Failed to activate OpenGL 3.3 rendering context.");
+		_ASSERT_EXPR(false, "Failed to activate OpenGL 3.3 rendering context.");
 
 	return gl33_context;
 }

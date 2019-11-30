@@ -82,15 +82,15 @@ void CGBuffer::Load2(const Viewport * _viewPort)
 
 
 	// Shaders that unite 4 textures
-	std::shared_ptr<IShader> g_pVertexShader = _RenderDevice->CreateShader(IShader::VertexShader, "IDB_SHADER_DEFFERED_RENDERING", IShader::ShaderMacros(), "VS_main", "latest");
-	std::vector<D3DVERTEXELEMENT9> elements;
-	elements.push_back({ 0, 0,  D3DDECLTYPE_FLOAT3, 0, D3DDECLUSAGE_POSITION, 0 });
-	elements.push_back({ 0, 12, D3DDECLTYPE_FLOAT2, 0, D3DDECLUSAGE_TEXCOORD, 0 });
-	elements.push_back({ 0, 20, D3DDECLTYPE_FLOAT3, 0, D3DDECLUSAGE_NORMAL, 0 });
-	g_pVertexShader->LoadInputLayoutFromD3DElement(elements);
+	std::shared_ptr<IShader> g_pVertexShader = _RenderDevice->CreateShader(IShader::ShaderType::VertexShader, "IDB_SHADER_DEFFERED_RENDERING", IShader::ShaderMacros(), "VS_main", "latest");
+	std::vector<SCustomVertexElement> elements;
+	elements.push_back({ 0, 0,  ECustomVertexElementType::FLOAT3, ECustomVertexElementUsage::POSITION, 0 });
+	elements.push_back({ 0, 12, ECustomVertexElementType::FLOAT2, ECustomVertexElementUsage::TEXCOORD, 0 });
+	elements.push_back({ 0, 20, ECustomVertexElementType::FLOAT3, ECustomVertexElementUsage::NORMAL, 0 });
+	g_pVertexShader->LoadInputLayoutFromCustomElements(elements);
 
 
-	std::shared_ptr<IShader> g_pDeferredLightingPixelShader = _RenderDevice->CreateShader(IShader::PixelShader, "IDB_SHADER_DEFFERED_RENDERING", IShader::ShaderMacros(), "PS_DeferredLighting", "latest");
+	std::shared_ptr<IShader> g_pDeferredLightingPixelShader = _RenderDevice->CreateShader(IShader::ShaderType::PixelShader, "IDB_SHADER_DEFFERED_RENDERING", IShader::ShaderMacros(), "PS_DeferredLighting", "latest");
 
 
 	// Pipeline State for result texture
@@ -109,7 +109,7 @@ void CGBuffer::Load2(const Viewport * _viewPort)
 	std::shared_ptr<IPipelineState> g_pDeferredLightingPipeline1;
 	{
 		g_pDeferredLightingPipeline1 = renderDevice->CreatePipelineState();
-		g_pDeferredLightingPipeline1->SetShader(IShader::VertexShader, g_pVertexShader);
+		g_pDeferredLightingPipeline1->SetShader(IShader::ShaderType::VertexShader, g_pVertexShader);
 		g_pDeferredLightingPipeline1->SetRenderTarget(g_pDepthOnlyRenderTarget);
 
 		// Setup rasterizer state
@@ -139,8 +139,8 @@ void CGBuffer::Load2(const Viewport * _viewPort)
 	std::shared_ptr<IPipelineState> g_pDeferredLightingPipeline2;
 	{
 		g_pDeferredLightingPipeline2 = renderDevice->CreatePipelineState();
-		g_pDeferredLightingPipeline2->SetShader(IShader::VertexShader, g_pVertexShader);
-		g_pDeferredLightingPipeline2->SetShader(IShader::PixelShader, g_pDeferredLightingPixelShader);
+		g_pDeferredLightingPipeline2->SetShader(IShader::ShaderType::VertexShader, g_pVertexShader);
+		g_pDeferredLightingPipeline2->SetShader(IShader::ShaderType::PixelShader, g_pDeferredLightingPixelShader);
 		g_pDeferredLightingPipeline2->SetRenderTarget(renderWindow->GetRenderTarget());
 
 		// Setup rasterizer state.
@@ -174,8 +174,8 @@ void CGBuffer::Load2(const Viewport * _viewPort)
 	std::shared_ptr<IPipelineState> g_pDirectionalLightsPipeline;
 	{
 		g_pDirectionalLightsPipeline = renderDevice->CreatePipelineState();
-		g_pDirectionalLightsPipeline->SetShader(IShader::VertexShader, g_pVertexShader);
-		g_pDirectionalLightsPipeline->SetShader(IShader::PixelShader, g_pDeferredLightingPixelShader);
+		g_pDirectionalLightsPipeline->SetShader(IShader::ShaderType::VertexShader, g_pVertexShader);
+		g_pDirectionalLightsPipeline->SetShader(IShader::ShaderType::PixelShader, g_pDeferredLightingPixelShader);
 		g_pDirectionalLightsPipeline->SetRenderTarget(renderWindow->GetRenderTarget());
 
 		// Setup rasterizer state.

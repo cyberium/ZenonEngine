@@ -1,6 +1,6 @@
 #pragma once
 
-class BlendStateOGL : public BlendState
+class BlendStateOGL : public BlendStateBase
 {
 public:
 	                                                BlendStateOGL();

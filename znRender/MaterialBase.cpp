@@ -3,13 +3,13 @@
 // General
 #include "MaterialBase.h"
 
-MaterialBase::MaterialBase(IRenderDevice* renderDevice, size_t Size)
-	: m_RenderDevice(renderDevice)
+MaterialBase::MaterialBase(std::weak_ptr<IRenderDevice> RenderDevice, size_t Size)
+	: m_RenderDevice(RenderDevice)
 	, m_Dirty(false)
 {
 	if (Size > 0)
 	{
-		m_pConstantBuffer = m_RenderDevice->CreateConstantBuffer(nullptr, Size);
+		m_pConstantBuffer = m_RenderDevice.lock()->CreateConstantBuffer(nullptr, Size);
 	}
 }
 
@@ -17,7 +17,7 @@ MaterialBase::~MaterialBase()
 {
 	if (m_pConstantBuffer)
 	{
-		m_RenderDevice->DestroyConstantBuffer(m_pConstantBuffer);
+		m_RenderDevice.lock()->DestroyConstantBuffer(m_pConstantBuffer);
 		m_pConstantBuffer.reset();
 	}
 }

@@ -4,10 +4,11 @@
 #include "ShaderOGL.h"
 
 // FORWARD BEGIN
-GLenum GLTranslateShaderType(Shader::ShaderType _type);
+GLenum GLTranslateShaderType(IShader::ShaderType _type);
 // FORWARD END
 
-ShaderOGL::ShaderOGL()
+ShaderOGL::ShaderOGL(std::weak_ptr<IRenderDevice> RenderDevice)
+	: m_RenderDevice(RenderDevice)
 {
 }
 
@@ -64,8 +65,8 @@ bool ShaderOGL::LoadShaderFromFile(ShaderType shaderType, const std::string& fil
     m_ShaderType = shaderType;
     m_ShaderFileName = fileName;
 
-    std::shared_ptr<IFile> file = GetManager<IFilesManager>()->Open(fileName);
-    std::string fileSource = RecursionInclude(file);
+    std::shared_ptr<IFile> file = GetManager<IFilesManager>(m_RenderDevice.lock()->GetBaseManager())->Open(fileName);
+    std::string fileSource = RecursionInclude(m_RenderDevice.lock()->GetBaseManager(), file);
     const GLchar *source = (const GLchar *)fileSource.c_str();
 
     m_GLObj = glCreateShaderProgramv(GLTranslateShaderType(shaderType), 1, &source);
@@ -94,25 +95,25 @@ bool ShaderOGL::LoadShaderFromFile(ShaderType shaderType, const std::string& fil
         OGLCheckError();
         // Types https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/glGetActiveUniform.xhtml
 
-        ShaderParameter::Type parameterType = ShaderParameter::Type::Invalid;
+        IShaderParameter::Type parameterType = IShaderParameter::Type::Invalid;
         switch (type)
         {
             case GL_IMAGE_2D:
-                parameterType = ShaderParameter::Type::Texture;
+                parameterType = IShaderParameter::Type::Texture;
                 break;
             case GL_SAMPLER_2D:
-                parameterType = ShaderParameter::Type::Sampler;
+                parameterType = IShaderParameter::Type::Sampler;
                 break;
             case GL_SAMPLER_BUFFER:
             case GL_IMAGE_BUFFER:
-                parameterType = ShaderParameter::Type::Buffer;
+                parameterType = IShaderParameter::Type::Buffer;
                 break;
             default:
                 Log::Warn("Unknown shader parameter type [%s] [%s]", name, fileName.c_str());
                 break;
         }
 
-        if (parameterType == ShaderParameter::Type::Invalid)
+        if (parameterType == IShaderParameter::Type::Invalid)
             continue;
 
         GLint loc = glGetUniformLocation(m_GLObj, name);
@@ -151,7 +152,7 @@ bool ShaderOGL::LoadShaderFromFile(ShaderType shaderType, const std::string& fil
         OGLCheckError();
         _ASSERT(index != -1);
 
-        std::shared_ptr<ShaderParameter> shaderParameter = std::make_shared<ShaderParameter>(name, binding, shared_from_this(), ShaderParameter::Type::Buffer);
+        std::shared_ptr<IShaderParameter> shaderParameter = std::make_shared<ShaderParameterBase>(name, binding, shared_from_this(), IShaderParameter::Type::Buffer);
         m_ShaderParameters.insert(ParameterMap::value_type(name, shaderParameter));
     }
 
@@ -170,7 +171,7 @@ bool ShaderOGL::LoadInputLayoutFromReflector()
     return true;
 }
 
-bool ShaderOGL::LoadInputLayoutFromD3DElement(const std::vector<D3DVERTEXELEMENT9>& declIn)
+bool ShaderOGL::LoadInputLayoutFromCustomElements(const std::vector<SCustomVertexElement>& declIn)
 {
     if (m_InputLayout)
         return true;
@@ -197,7 +198,7 @@ void ShaderOGL::UnBind() const
 {
     for (ParameterMap::value_type value : m_ShaderParameters)
     {
-        value.second->UnBind();
+        value.second->Unbind();
     }
 }
 
@@ -216,23 +217,53 @@ uint32 ShaderOGL::GetGLObject() const
 //
 // HELPERS
 //
-GLenum GLTranslateShaderType(Shader::ShaderType _type)
+GLenum GLTranslateShaderType(IShader::ShaderType _type)
 {
     switch (_type)
     {
-        case Shader::ShaderType::VertexShader:
+        case IShader::ShaderType::VertexShader:
             return GL_VERTEX_SHADER;
-        case Shader::ShaderType::PixelShader:
+        case IShader::ShaderType::PixelShader:
             return GL_FRAGMENT_SHADER;
-        case Shader::ShaderType::GeometryShader:
+        case IShader::ShaderType::GeometryShader:
             return GL_GEOMETRY_SHADER;
-        case Shader::ShaderType::TessellationControlShader:
+        case IShader::ShaderType::TessellationControlShader:
             return GL_TESS_CONTROL_SHADER;
-        case Shader::ShaderType::TessellationEvaluationShader:
+        case IShader::ShaderType::TessellationEvaluationShader:
             return GL_TESS_EVALUATION_SHADER;
-        case Shader::ShaderType::ComputeShader:
+        case IShader::ShaderType::ComputeShader:
             return GL_COMPUTE_SHADER;
         default:
             _ASSERT(false);
     }
+}
+
+GLbitfield GLTranslateShaderBitType(IShader::ShaderType _type)
+{
+	GLbitfield result = GL_VERTEX_SHADER_BIT;
+	switch (_type)
+	{
+	case IShader::ShaderType::VertexShader:
+		result = GL_VERTEX_SHADER_BIT;
+		break;
+	case IShader::ShaderType::PixelShader:
+		result = GL_FRAGMENT_SHADER_BIT;
+		break;
+	case IShader::ShaderType::GeometryShader:
+		result = GL_GEOMETRY_SHADER_BIT;
+		break;
+	case IShader::ShaderType::TessellationControlShader:
+		result = GL_TESS_CONTROL_SHADER_BIT;
+		break;
+	case IShader::ShaderType::TessellationEvaluationShader:
+		result = GL_TESS_EVALUATION_SHADER_BIT;
+		break;
+	case IShader::ShaderType::ComputeShader:
+		result = GL_COMPUTE_SHADER_BIT;
+		break;
+	default:
+		Log::Error("Unknown shader type factor.");
+	}
+
+	return result;
 }

@@ -3,7 +3,7 @@
 class OW_ENGINE_API MaterialBase : public IMaterial
 {
 public:
-	MaterialBase(IRenderDevice* renderDevice, size_t Size);
+	MaterialBase(std::weak_ptr<IRenderDevice> renderDevice, size_t Size);
 	virtual ~MaterialBase();
 
 	virtual void SetShader(IShader::ShaderType type, std::shared_ptr<IShader> pShader);
@@ -25,6 +25,9 @@ public:
 	virtual void MarkConstantBufferDirty() override;
 
 protected:
+
+
+protected:
 	ShaderMap                        m_Shaders;
 
 	TextureMap                       m_Textures;
@@ -32,6 +35,6 @@ protected:
 	std::shared_ptr<IConstantBuffer> m_pConstantBuffer;
 
 	std::weak_ptr<IMaterial>         m_Wrapper;
-	IRenderDevice*                   m_RenderDevice;
+	std::weak_ptr<IRenderDevice>     m_RenderDevice;
 	mutable bool                     m_Dirty;
 };

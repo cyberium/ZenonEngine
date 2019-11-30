@@ -4,34 +4,37 @@
 #include "RasterizerStateOGL.h"
 #include "DepthStencilStateOGL.h"
 
-class PipelineStateOGL : public PipelineState
+class PipelineStateOGL : public IPipelineState
 {
 public:
 	PipelineStateOGL();
 	virtual ~PipelineStateOGL();
 
-	virtual void SetShader(Shader::ShaderType type, std::shared_ptr<Shader> pShader);
-	virtual std::shared_ptr<Shader> GetShader(Shader::ShaderType type) const;
+	void SetShader(IShader::ShaderType type, std::shared_ptr<IShader> pShader);
+	std::shared_ptr<IShader> GetShader(IShader::ShaderType type) const;
+	const ShaderMap& GetShaders() const override;
 
-	virtual void SetBlendState(const BlendState& blendState);
-	virtual BlendState& GetBlendState();
+	void SetBlendState(const std::shared_ptr<IBlendState> blendState);
+	std::shared_ptr<IBlendState> GetBlendState();
 
-	virtual void SetRasterizerState(const RasterizerState& rasterizerState);
-	virtual RasterizerState& GetRasterizerState();
+	void SetRasterizerState(const std::shared_ptr<IRasterizerState> rasterizerState);
+	std::shared_ptr<IRasterizerState> GetRasterizerState();
 
-	virtual void SetDepthStencilState(const DepthStencilState& depthStencilState);
-	virtual DepthStencilState& GetDepthStencilState();
+	void SetDepthStencilState(const std::shared_ptr<IDepthStencilState> depthStencilState);
+	std::shared_ptr<IDepthStencilState> GetDepthStencilState();
 
-	virtual void SetRenderTarget(std::shared_ptr<IRenderTarget> renderTarget);
-	virtual std::shared_ptr<IRenderTarget> GetRenderTarget() const;
+	void SetRenderTarget(std::shared_ptr<IRenderTarget> renderTarget);
+	std::shared_ptr<IRenderTarget> GetRenderTarget() const;
 
-	virtual void Bind();
-	virtual void UnBind();
+	void Bind();
+	void UnBind();
 
 private:
 	ShaderMap m_Shaders;
-	BlendStateOGL m_BlendState;
-	RasterizerStateOGL m_RasterizerState;
-	DepthStencilStateOGL m_DepthStencilState;
+	std::shared_ptr<BlendStateOGL> m_BlendState;
+	std::shared_ptr<RasterizerStateOGL> m_RasterizerState;
+	std::shared_ptr<DepthStencilStateOGL> m_DepthStencilState;
 	std::shared_ptr<IRenderTarget> m_RenderTarget;
+
+	uint32 m_GLProgramPipeline;
 };

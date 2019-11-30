@@ -24,7 +24,7 @@ SamplerStateOGL::~SamplerStateOGL()
 
 
 
-void SamplerStateOGL::Bind(uint32_t ID, const Shader* shader, ShaderParameter::Type parameterType) const 
+void SamplerStateOGL::Bind(uint32_t ID, const IShader* shader, IShaderParameter::Type parameterType) const 
 {
 	if (m_bIsDirty)
 	{
@@ -64,7 +64,7 @@ void SamplerStateOGL::Bind(uint32_t ID, const Shader* shader, ShaderParameter::T
 	glBindSampler(ID, m_GLObj);
 }
 
-void SamplerStateOGL::UnBind(uint32_t ID, const Shader* shader, ShaderParameter::Type parameterType) const
+void SamplerStateOGL::UnBind(uint32_t ID, const IShader* shader, IShaderParameter::Type parameterType) const
 {
 	glBindSampler(ID, 0);
 }

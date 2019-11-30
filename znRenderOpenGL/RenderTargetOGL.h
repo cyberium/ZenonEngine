@@ -18,8 +18,8 @@ public:
 	
 	virtual void GenerateMipMaps();
 
-	virtual void AttachStructuredBuffer(uint8_t slot, std::shared_ptr<StructuredBuffer> rwBuffer);
-	virtual std::shared_ptr<StructuredBuffer> GetStructuredBuffer(uint8_t slot);
+	virtual void AttachStructuredBuffer(uint8_t slot, std::shared_ptr<IStructuredBuffer> rwBuffer);
+	virtual std::shared_ptr<IStructuredBuffer> GetStructuredBuffer(uint8_t slot);
 
 	virtual void Resize(uint16_t width, uint16_t height);
 

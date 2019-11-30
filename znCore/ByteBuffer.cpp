@@ -210,7 +210,7 @@ void CByteBuffer::CopyData(const uint8* _data, size_t _size)
 		Log::Error("ByteBuffer[]: Source m_Data size [%d] bigger than m_IsAllocated memory [%d]!", _size, getSize());
 		Log::Error("ByteBuffer[]: Copy part of source m_Data.");
 		_size = getSize();
-		fail1();
+		_ASSERT(false);
 	}
 
 	if (_data != nullptr)

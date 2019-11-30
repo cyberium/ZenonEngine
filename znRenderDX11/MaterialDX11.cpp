@@ -3,7 +3,7 @@
 // General
 #include "MaterialDX11.h"
 
-MaterialDX11::MaterialDX11(IRenderDevice* renderDevice, size_t Size)
+MaterialDX11::MaterialDX11(std::weak_ptr<IRenderDevice> renderDevice, size_t Size)
 	: MaterialBase(renderDevice, Size)
 {}
 
@@ -22,16 +22,14 @@ void MaterialDX11::Bind(const ShaderMap& shaders) const
 			BindForShader(shader.second.get());
 		}
 	}
-
-    for (auto shader : m_Shaders)
-    {
-		shader.second->Bind();
-		BindForShader(shader.second.get());
-    }
-
-#ifdef USE_STL_FOREACH
-	);
-#endif
+	else
+	{
+		for (auto shader : m_Shaders)
+		{
+			shader.second->Bind();
+			BindForShader(shader.second.get());
+		}
+	}
 }
 
 void MaterialDX11::Unbind(const ShaderMap& shaders) const

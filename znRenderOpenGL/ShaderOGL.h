@@ -2,10 +2,10 @@
 
 #include "ShaderInputLayoutOGL.h"
 
-class ShaderOGL : public Shader, public std::enable_shared_from_this<ShaderOGL>
+class ShaderOGL : public ShaderBase, public std::enable_shared_from_this<ShaderOGL>
 {
 public:
-	ShaderOGL();
+	ShaderOGL(std::weak_ptr<IRenderDevice> RenderDevice);
 	virtual ~ShaderOGL();
 
 	// Shader loading
@@ -13,7 +13,7 @@ public:
 	bool LoadShaderFromFile(ShaderType shaderType, const std::string& fileName, const ShaderMacros& shaderMacros, const std::string& entryPoint, const std::string& profile, std::shared_ptr<IShaderInputLayout> _customLayout);
 
     bool LoadInputLayoutFromReflector() override final;
-    bool LoadInputLayoutFromD3DElement(const std::vector<D3DVERTEXELEMENT9>& declIn) override final;
+    bool LoadInputLayoutFromCustomElements(const std::vector<SCustomVertexElement>& declIn) override final;
 
 	void Bind() const;
 	void UnBind() const;
@@ -29,4 +29,8 @@ protected:
 private:
 	GLuint m_GLObj;
 	bool GetShaderProgramLog(GLuint _obj, std::string * _errMsg);
+
+	std::weak_ptr<IRenderDevice> m_RenderDevice;
 };
+
+GLbitfield GLTranslateShaderBitType(IShader::ShaderType _type);

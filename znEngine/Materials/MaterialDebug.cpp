@@ -13,12 +13,12 @@ MaterialDebug::MaterialDebug()
 	*m_pProperties = MaterialProperties();
 
 	std::shared_ptr<IShader> g_pVertexShader = _RenderDevice->CreateShader(
-		IShader::VertexShader, "IDB_SHADER_3D_DEBUG", IShader::ShaderMacros(), "VS_main", "latest"
+		IShader::ShaderType::VertexShader, "IDB_SHADER_3D_DEBUG", IShader::ShaderMacros(), "VS_main", "latest"
 	);
 	g_pVertexShader->LoadInputLayoutFromReflector();
 
 	std::shared_ptr<IShader> g_pPixelShader = _RenderDevice->CreateShader(
-		IShader::PixelShader, "IDB_SHADER_3D_DEBUG", IShader::ShaderMacros(), "PS_main", "latest"
+		IShader::ShaderType::PixelShader, "IDB_SHADER_3D_DEBUG", IShader::ShaderMacros(), "PS_main", "latest"
 	);
 
 	SetShader(IShader::ShaderType::VertexShader, g_pVertexShader);

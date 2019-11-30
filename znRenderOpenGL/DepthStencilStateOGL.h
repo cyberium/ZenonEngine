@@ -1,6 +1,6 @@
 #pragma once
 
-class DepthStencilStateOGL : public DepthStencilState
+class DepthStencilStateOGL : public DepthStencilStateBase
 {
 public:
 	                                                DepthStencilStateOGL();

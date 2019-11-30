@@ -9,7 +9,7 @@ ZN_INTERFACE OW_ENGINE_API IShader
 {
 	typedef std::map<std::string, std::shared_ptr<IShaderParameter>> ParameterMap;
 
-	enum ShaderType
+	enum class OW_ENGINE_API ShaderType
 	{
 		UnknownShaderType = 0,
 		VertexShader,
@@ -59,7 +59,7 @@ ZN_INTERFACE OW_ENGINE_API IShader
 	 * Calculate shader input layout
 	 */
 	virtual bool LoadInputLayoutFromReflector() = 0;
-	virtual bool LoadInputLayoutFromD3DElement(const std::vector<D3DVERTEXELEMENT9>& declIn) = 0;
+	virtual bool LoadInputLayoutFromCustomElements(const std::vector<SCustomVertexElement>& declIn) = 0;
 
 	/**
 	 * Get a shader input layout description
@@ -71,7 +71,7 @@ ZN_INTERFACE OW_ENGINE_API IShader
 	 * @param name: The name of the parameter as defined in the shader file.
 	 * @return A reference to the ShaderParameter. If the parameter with the specified name
 	 * is not found in the shader, then this function will return an invalid shader parameter.
-	 * You can check for validity using the ShaderParameter::IsValid method.
+	 * You can check for validity using the IShaderParameter::IsValid method.
 	 */
 	virtual std::shared_ptr<IShaderParameter> GetShaderParameterByName(const std::string& name) const = 0;
 
@@ -94,5 +94,5 @@ ZN_INTERFACE OW_ENGINE_API IShader
 };
 
 typedef std::vector<std::shared_ptr<IShader>> ShaderList;
-typedef std::map<uint8_t, std::shared_ptr<IShader>> ShaderMap;
+typedef std::map<IShader::ShaderType, std::shared_ptr<IShader>> ShaderMap;
 typedef std::map<std::string, std::shared_ptr<IShader>> ShaderNameMap;

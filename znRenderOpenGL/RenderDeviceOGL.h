@@ -1,14 +1,15 @@
 #pragma once
 
-class RenderDeviceOGL : public IRenderDevice, public std::enable_shared_from_this<RenderDeviceOGL>
+class RenderDeviceOGL : public RenderDeviceBase, public IRenderDeviceOGL, public std::enable_shared_from_this<IRenderDevice>
 {
 public:
-	typedef IRenderDevice base;
-
 	RenderDeviceOGL(std::shared_ptr<IBaseManager> BaseManager);
 	virtual ~RenderDeviceOGL();
 
     void InitDevice(HDC Hdc);
+
+	bool Initialize() override;
+	void Finalize() override;
 
 	const std::string& GetDeviceName() const;
     const RenderDeviceType GetDeviceType() const;
@@ -21,20 +22,20 @@ public:
 	virtual std::shared_ptr<IBuffer> CreateUInt16IndexBuffer(const uint16* data, uint32 count);
 	virtual std::shared_ptr<IBuffer> CreateUInt32IndexBuffer(const uint32* data, uint32 count);
 
-	virtual std::shared_ptr<ConstantBuffer> CreateConstantBuffer(const void* data, size_t size);
-	virtual std::shared_ptr<StructuredBuffer> CreateStructuredBuffer(void* data, uint32 count, uint32 stride, CPUAccess cpuAccess = CPUAccess::None, bool gpuWrite = false);
+	virtual std::shared_ptr<IConstantBuffer> CreateConstantBuffer(const void* data, size_t size);
+	virtual std::shared_ptr<IStructuredBuffer> CreateStructuredBuffer(void* data, uint32 count, uint32 stride, CPUAccess cpuAccess = CPUAccess::None, bool gpuWrite = false);
 
 	virtual void DestroyBuffer(std::shared_ptr<IBuffer> buffer);
 	virtual void DestroyVertexBuffer(std::shared_ptr<IBuffer> buffer);
 	virtual void DestroyIndexBuffer(std::shared_ptr<IBuffer> buffer);
-	virtual void DestroyConstantBuffer(std::shared_ptr<ConstantBuffer> buffer);
-	virtual void DestroyStructuredBuffer(std::shared_ptr<StructuredBuffer> buffer);
+	virtual void DestroyConstantBuffer(std::shared_ptr<IConstantBuffer> buffer);
+	virtual void DestroyStructuredBuffer(std::shared_ptr<IStructuredBuffer> buffer);
 
 	virtual void Lock();
 	virtual void Unlock();
 
-	virtual std::shared_ptr<Shader> CreateShader(Shader::ShaderType type, const std::string& fileName, const Shader::ShaderMacros& shaderMacros, const std::string& entryPoint, const std::string& profile, std::shared_ptr<IShaderInputLayout> _customLayout);
-	virtual void DestroyShader(std::shared_ptr<Shader> shader);
+	virtual std::shared_ptr<IShader> CreateShader(IShader::ShaderType type, const std::string& fileName, const IShader::ShaderMacros& shaderMacros, const std::string& entryPoint, const std::string& profile, std::shared_ptr<IShaderInputLayout> _customLayout);
+	virtual void DestroyShader(std::shared_ptr<IShader> shader);
 	
 	virtual std::shared_ptr<IMesh> CreateMesh();
 	virtual void DestroyMesh(std::shared_ptr<IMesh> mesh);
@@ -52,8 +53,8 @@ public:
 	virtual std::shared_ptr<IMaterial> CreateMaterial(size_t Size);
 	virtual void DestroyMaterial(std::shared_ptr<IMaterial> material);
 
-	virtual std::shared_ptr<Query> CreateQuery(IQuery::QueryType queryType = IQuery::QueryType::Timer, uint8_t numBuffers = 3);
-	virtual void DestoryQuery(std::shared_ptr<Query> query);
+	virtual std::shared_ptr<IQuery> CreateQuery(IQuery::QueryType queryType = IQuery::QueryType::Timer, uint8_t numBuffers = 3);
+	virtual void DestoryQuery(std::shared_ptr<IQuery> query);
 
 	virtual std::shared_ptr<IRenderTarget> CreateRenderTarget();
 	virtual void DestroyRenderTarget(std::shared_ptr<IRenderTarget> renderTarget);
@@ -61,8 +62,8 @@ public:
 	virtual std::shared_ptr<ISamplerState> CreateSamplerState();
 	virtual void DestroySampler(std::shared_ptr<ISamplerState> sampler);
 
-	virtual std::shared_ptr<PipelineState> CreatePipelineState();
-	virtual void DestoryPipelineState(std::shared_ptr<PipelineState> pipeline);
+	virtual std::shared_ptr<IPipelineState> CreatePipelineState();
+	virtual void DestoryPipelineState(std::shared_ptr<IPipelineState> pipeline);
 
 public:
 	bool                        IsDoubleBuffered();

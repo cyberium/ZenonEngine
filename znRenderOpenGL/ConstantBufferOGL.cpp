@@ -32,7 +32,7 @@ void ConstantBufferOGL::Set(const void* data, size_t size)
 	glBindBuffer(GL_UNIFORM_BUFFER, 0);
 }
 
-void ConstantBufferOGL::Copy(std::shared_ptr<ConstantBuffer> other)
+void ConstantBufferOGL::Copy(std::shared_ptr<IConstantBuffer> other)
 {
 	std::shared_ptr<ConstantBufferOGL> srcBuffer = std::dynamic_pointer_cast<ConstantBufferOGL>(other);
 	_ASSERT(srcBuffer->m_GLObj != 0);
@@ -61,17 +61,17 @@ void ConstantBufferOGL::Copy(std::shared_ptr<ConstantBuffer> other)
 
 void ConstantBufferOGL::Copy(std::shared_ptr<IBuffer> other)
 {
-	Copy(std::dynamic_pointer_cast<ConstantBuffer>(other));
+	Copy(std::dynamic_pointer_cast<IConstantBuffer>(other));
 }
 
-bool ConstantBufferOGL::Bind(uint32 id, const Shader* shader, ShaderParameter::Type parameterType) const
+bool ConstantBufferOGL::Bind(uint32 id, const IShader* shader, IShaderParameter::Type parameterType) const
 {
 	glBindBufferBase(GL_UNIFORM_BUFFER, id, m_GLObj);
 
 	return true;
 }
 
-void ConstantBufferOGL::UnBind(uint32 id, const Shader* shader, ShaderParameter::Type parameterType) const
+void ConstantBufferOGL::UnBind(uint32 id, const IShader* shader, IShaderParameter::Type parameterType) const
 {
 	glBindBufferBase(GL_UNIFORM_BUFFER, id, 0);
 }

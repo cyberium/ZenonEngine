@@ -5,35 +5,35 @@
 
 struct VertexFormatPairs
 {
-	D3DDECLTYPE	m_dx9FMT;
+	ECustomVertexElementType	CustomVertexElementType;
 	DXGI_FORMAT	m_dx10FMT;
 };
 
 VertexFormatPairs	VertexFormatList[] =
 {
-	{ D3DDECLTYPE_FLOAT1,	DXGI_FORMAT_R32_FLOAT },
-	{ D3DDECLTYPE_FLOAT2,	DXGI_FORMAT_R32G32_FLOAT },
-	{ D3DDECLTYPE_FLOAT3,	DXGI_FORMAT_R32G32B32_FLOAT },
-	{ D3DDECLTYPE_FLOAT4,	DXGI_FORMAT_R32G32B32A32_FLOAT },
-	{ D3DDECLTYPE_D3DCOLOR,	DXGI_FORMAT_R8G8B8A8_UNORM },	// Warning. Explicit RGB component swizzling is nesessary	//	Not available 
-	{ D3DDECLTYPE_UBYTE4,	DXGI_FORMAT_R8G8B8A8_UINT },	// Note: Shader gets UINT values, but if Direct3D 9 style integral floats are needed (0.0f, 1.0f... 255.f), UINT can just be converted to float32 in shader. 
-	{ D3DDECLTYPE_SHORT2,	DXGI_FORMAT_R16G16_SINT },		// Note: Shader gets SINT values, but if Direct3D 9 style integral floats are needed, SINT can just be converted to float32 in shader. 
-	{ D3DDECLTYPE_SHORT4,	DXGI_FORMAT_R16G16B16A16_SINT },// Note: Shader gets SINT values, but if Direct3D 9 style integral floats are needed, SINT can just be converted to float32 in shader. 
-	{ D3DDECLTYPE_UBYTE4N,	DXGI_FORMAT_R8G8B8A8_UNORM },
-	{ D3DDECLTYPE_SHORT2N,	DXGI_FORMAT_R16G16_SNORM },
-	{ D3DDECLTYPE_SHORT4N,	DXGI_FORMAT_R16G16B16A16_SNORM },
-	{ D3DDECLTYPE_USHORT2N,	DXGI_FORMAT_R16G16_UNORM },
-	{ D3DDECLTYPE_USHORT4N,	DXGI_FORMAT_R16G16B16A16_UNORM },
-	{ D3DDECLTYPE_FLOAT16_2,DXGI_FORMAT_R16G16_FLOAT },
-	{ D3DDECLTYPE_FLOAT16_4,DXGI_FORMAT_R16G16B16A16_FLOAT }
+	{ ECustomVertexElementType::FLOAT1,	DXGI_FORMAT_R32_FLOAT },
+	{ ECustomVertexElementType::FLOAT2,	DXGI_FORMAT_R32G32_FLOAT },
+	{ ECustomVertexElementType::FLOAT3,	DXGI_FORMAT_R32G32B32_FLOAT },
+	{ ECustomVertexElementType::FLOAT4,	DXGI_FORMAT_R32G32B32A32_FLOAT },
+	{ ECustomVertexElementType::D3DCOLOR,	DXGI_FORMAT_R8G8B8A8_UNORM },	// Warning. Explicit RGB component swizzling is nesessary	//	Not available 
+	{ ECustomVertexElementType::UBYTE4,	DXGI_FORMAT_R8G8B8A8_UINT },	// Note: Shader gets UINT values, but if Direct3D 9 style integral floats are needed (0.0f, 1.0f... 255.f), UINT can just be converted to float32 in shader. 
+	{ ECustomVertexElementType::SHORT2,	DXGI_FORMAT_R16G16_SINT },		// Note: Shader gets SINT values, but if Direct3D 9 style integral floats are needed, SINT can just be converted to float32 in shader. 
+	{ ECustomVertexElementType::SHORT4,		DXGI_FORMAT_R16G16B16A16_SINT },// Note: Shader gets SINT values, but if Direct3D 9 style integral floats are needed, SINT can just be converted to float32 in shader. 
+	{ ECustomVertexElementType::UBYTE4N,  DXGI_FORMAT_R8G8B8A8_UNORM },
+	{ ECustomVertexElementType::SHORT2N,  DXGI_FORMAT_R16G16_SNORM },
+	{ ECustomVertexElementType::SHORT4N,  DXGI_FORMAT_R16G16B16A16_SNORM },
+	{ ECustomVertexElementType::USHORT2N, DXGI_FORMAT_R16G16_UNORM },
+	{ ECustomVertexElementType::USHORT4N, DXGI_FORMAT_R16G16B16A16_UNORM },
+	{ ECustomVertexElementType::FLOAT16_2,DXGI_FORMAT_R16G16_FLOAT },
+	{ ECustomVertexElementType::FLOAT16_4,DXGI_FORMAT_R16G16B16A16_FLOAT }
 };
 
-DXGI_FORMAT	ConvertVertexFormat(D3DDECLTYPE dx9FMT)
+DXGI_FORMAT	ConvertVertexFormat(ECustomVertexElementType CustomVertexElementType)
 {
 	int arrayLength = sizeof(VertexFormatList) / sizeof(VertexFormatList[0]);
 	for (int i = 0; i < arrayLength; ++i)
 	{
-		if (VertexFormatList[i].m_dx9FMT == dx9FMT)
+		if (VertexFormatList[i].CustomVertexElementType == CustomVertexElementType)
 			return VertexFormatList[i].m_dx10FMT;
 	}
 
@@ -43,25 +43,25 @@ DXGI_FORMAT	ConvertVertexFormat(D3DDECLTYPE dx9FMT)
 
 struct VertexSemanticPairs
 {
-	D3DDECLUSAGE	m_dx9Semantic;
+	ECustomVertexElementUsage	m_dx9Semantic;
 	LPCSTR			m_dx10Semantic;
 };
 
 VertexSemanticPairs	VertexSemanticList[] =
 {
-	{ D3DDECLUSAGE_POSITION,		"POSITION" },		// 0
-	{ D3DDECLUSAGE_BLENDWEIGHT,		"BLENDWEIGHT" },	// 1
-	{ D3DDECLUSAGE_BLENDINDICES,	"BLENDINDICES" },	// 2
-	{ D3DDECLUSAGE_NORMAL,			"NORMAL" },			// 3
-	{ D3DDECLUSAGE_PSIZE,			"PSIZE" },			// 4
-	{ D3DDECLUSAGE_TEXCOORD,		"TEXCOORD" },		// 5
-	{ D3DDECLUSAGE_TANGENT,			"TANGENT" },		// 6
-	{ D3DDECLUSAGE_BINORMAL,		"BINORMAL" },		// 7
-	{ D3DDECLUSAGE_POSITIONT,		"POSITIONT" },		// 8
-	{ D3DDECLUSAGE_COLOR,			"COLOR" },			// 9
+	{ ECustomVertexElementUsage::POSITION,		"POSITION" },		// 0
+	{ ECustomVertexElementUsage::BLENDWEIGHT,	"BLENDWEIGHT" },	// 1
+	{ ECustomVertexElementUsage::BLENDINDICES,	"BLENDINDICES" },	// 2
+	{ ECustomVertexElementUsage::NORMAL,		"NORMAL" },			// 3
+	{ ECustomVertexElementUsage::PSIZE,			"PSIZE" },			// 4
+	{ ECustomVertexElementUsage::TEXCOORD,		"TEXCOORD" },		// 5
+	{ ECustomVertexElementUsage::TANGENT,		"TANGENT" },		// 6
+	{ ECustomVertexElementUsage::BINORMAL,		"BINORMAL" },		// 7
+	{ ECustomVertexElementUsage::POSITIONT,		"POSITIONT" },		// 8
+	{ ECustomVertexElementUsage::COLOR,			"COLOR" },			// 9
 };
 
-LPCSTR	ConvertSemantic(D3DDECLUSAGE Semantic)
+LPCSTR ConvertSemantic(ECustomVertexElementUsage Semantic)
 {
 	int arrayLength = sizeof(VertexSemanticList) / sizeof(VertexSemanticList[0]);
 	for (int i = 0; i < arrayLength; ++i)
@@ -71,24 +71,24 @@ LPCSTR	ConvertSemantic(D3DDECLUSAGE Semantic)
 	}
 
 	fail2("ConvertSemantic didn't find appropriate dx10 input semantic!");
-	return 0;
+	return NULL;
 }
 
-void ConvertVertexDeclaration(const std::vector<D3DVERTEXELEMENT9>& declIn, std::vector<D3D11_INPUT_ELEMENT_DESC>& declOut)
+void ConvertVertexDeclaration(const std::vector<SCustomVertexElement>& CustomElements, std::vector<D3D11_INPUT_ELEMENT_DESC>& declOut)
 {
-	int iDeclSize = declIn.size();
-	declOut.resize(iDeclSize + 1);
+	int customElementsSize = CustomElements.size();
+	declOut.resize(customElementsSize + 1);
 
-	for (int i = 0; i < iDeclSize; ++i)
+	for (int i = 0; i < customElementsSize; ++i)
 	{
-		const D3DVERTEXELEMENT9   &descIn = declIn[i];
-		D3D11_INPUT_ELEMENT_DESC  &descOut = declOut[i];
+		const SCustomVertexElement& customElements = CustomElements[i];
+		D3D11_INPUT_ELEMENT_DESC& descOut = declOut[i];
 
-		descOut.SemanticName = ConvertSemantic((D3DDECLUSAGE)descIn.Usage);
-		descOut.SemanticIndex = descIn.UsageIndex;
-		descOut.Format = ConvertVertexFormat((D3DDECLTYPE)descIn.Type);
-		descOut.InputSlot = descIn.Stream;
-		descOut.AlignedByteOffset = descIn.Offset;
+		descOut.SemanticName = ConvertSemantic((ECustomVertexElementUsage)customElements.Usage);
+		descOut.SemanticIndex = customElements.UsageIndex;
+		descOut.Format = ConvertVertexFormat((ECustomVertexElementType)customElements.Type);
+		descOut.InputSlot = customElements.Stream;
+		descOut.AlignedByteOffset = customElements.Offset;
 		descOut.InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
 		descOut.InstanceDataStepRate = 0;
 	}

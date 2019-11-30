@@ -1,8 +1,7 @@
 #pragma once
 
-class OW_ENGINE_API RenderDeviceDX11 : public RenderDeviceBase, public IRenderDeviceDX11, public std::enable_shared_from_this<RenderDeviceDX11>
+class OW_ENGINE_API RenderDeviceDX11 : public RenderDeviceBase, public IRenderDeviceDX11, public std::enable_shared_from_this<IRenderDevice>
 {
-	typedef IRenderDevice base;
 public:
 	RenderDeviceDX11(std::shared_ptr<IBaseManager> BaseManager);
 	virtual ~RenderDeviceDX11();

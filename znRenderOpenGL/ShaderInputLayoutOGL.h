@@ -1,6 +1,6 @@
 #pragma once
 
-class ShaderInputLayoutOGL : public IShaderInputLayout
+class ShaderInputLayoutOGL : public ShaderInputLayoutBase
 {
 public:
 	                                                ShaderInputLayoutOGL();

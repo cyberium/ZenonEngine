@@ -118,22 +118,22 @@ bool StructuredBufferDX11::Bind(uint32 ID, const IShader* shader, IShaderParamet
 
 		switch (shader->GetType())
 		{
-		case IShader::VertexShader:
+		case IShader::ShaderType::VertexShader:
 			m_pDeviceContext->VSSetShaderResources(ID, 1, srv);
 			break;
-		case IShader::TessellationControlShader:
+		case IShader::ShaderType::TessellationControlShader:
 			m_pDeviceContext->HSSetShaderResources(ID, 1, srv);
 			break;
-		case IShader::TessellationEvaluationShader:
+		case IShader::ShaderType::TessellationEvaluationShader:
 			m_pDeviceContext->DSSetShaderResources(ID, 1, srv);
 			break;
-		case IShader::GeometryShader:
+		case IShader::ShaderType::GeometryShader:
 			m_pDeviceContext->GSSetShaderResources(ID, 1, srv);
 			break;
-		case IShader::PixelShader:
+		case IShader::ShaderType::PixelShader:
 			m_pDeviceContext->PSSetShaderResources(ID, 1, srv);
 			break;
-		case IShader::ComputeShader:
+		case IShader::ShaderType::ComputeShader:
 			m_pDeviceContext->CSSetShaderResources(ID, 1, srv);
 			break;
 		}
@@ -143,7 +143,7 @@ bool StructuredBufferDX11::Bind(uint32 ID, const IShader* shader, IShaderParamet
 		ID3D11UnorderedAccessView* uav[] = { m_pUAV };
 		switch (shader->GetType())
 		{
-		case IShader::ComputeShader:
+		case IShader::ShaderType::ComputeShader:
 			m_pDeviceContext->CSSetUnorderedAccessViews(ID, 1, uav, nullptr);
 			break;
 		}
@@ -161,22 +161,22 @@ void StructuredBufferDX11::UnBind(uint32 ID, const IShader* shader, IShaderParam
 	{
 		switch (shader->GetType())
 		{
-		case IShader::VertexShader:
+		case IShader::ShaderType::VertexShader:
 			m_pDeviceContext->VSSetShaderResources(ID, 1, srv);
 			break;
-		case IShader::TessellationControlShader:
+		case IShader::ShaderType::TessellationControlShader:
 			m_pDeviceContext->HSSetShaderResources(ID, 1, srv);
 			break;
-		case IShader::TessellationEvaluationShader:
+		case IShader::ShaderType::TessellationEvaluationShader:
 			m_pDeviceContext->DSSetShaderResources(ID, 1, srv);
 			break;
-		case IShader::GeometryShader:
+		case IShader::ShaderType::GeometryShader:
 			m_pDeviceContext->GSSetShaderResources(ID, 1, srv);
 			break;
-		case IShader::PixelShader:
+		case IShader::ShaderType::PixelShader:
 			m_pDeviceContext->PSSetShaderResources(ID, 1, srv);
 			break;
-		case IShader::ComputeShader:
+		case IShader::ShaderType::ComputeShader:
 			m_pDeviceContext->CSSetShaderResources(ID, 1, srv);
 			break;
 		}
@@ -185,7 +185,7 @@ void StructuredBufferDX11::UnBind(uint32 ID, const IShader* shader, IShaderParam
 	{
 		switch (shader->GetType())
 		{
-		case IShader::ComputeShader:
+		case IShader::ShaderType::ComputeShader:
 			m_pDeviceContext->CSSetUnorderedAccessViews(ID, 1, uav, nullptr);
 			break;
 		}

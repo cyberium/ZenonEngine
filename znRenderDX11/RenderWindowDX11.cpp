@@ -1,8 +1,5 @@
 #include <stdafx.h>
 
-// Include
-#include "RenderDeviceDX11.h"
-
 // General
 #include "RenderWindowDX11.h"
 
@@ -10,7 +7,7 @@
 static DXGI_RATIONAL QueryRefreshRate(UINT screenWidth, UINT screenHeight, BOOL vsync);
 // FORWARD END
 
-RenderWindowDX11::RenderWindowDX11(std::shared_ptr<RenderDeviceDX11> RenderDevice, IWindowObject * WindowObject, bool vSync)
+RenderWindowDX11::RenderWindowDX11(std::shared_ptr<IRenderDevice> RenderDevice, IWindowObject * WindowObject, bool vSync)
 	: RenderWindow(RenderDevice, WindowObject, vSync)
 
     , m_pDevice(nullptr)
@@ -18,7 +15,7 @@ RenderWindowDX11::RenderWindowDX11(std::shared_ptr<RenderDeviceDX11> RenderDevic
 	, m_pSwapChain(nullptr)
 	, m_pBackBuffer(nullptr)
 {
-    std::shared_ptr<RenderDeviceDX11> renderDeviceDX11 = std::dynamic_pointer_cast<RenderDeviceDX11>(GetRenderDevice());
+    std::shared_ptr<IRenderDeviceDX11> renderDeviceDX11 = std::dynamic_pointer_cast<IRenderDeviceDX11>(GetRenderDevice());
 	m_pDevice           = renderDeviceDX11->GetDevice();
 	m_pDeviceContext    = renderDeviceDX11->GetDeviceContext();
 

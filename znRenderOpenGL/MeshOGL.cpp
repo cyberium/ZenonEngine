@@ -26,19 +26,19 @@ MeshOGL::~MeshOGL()
 
 void MeshOGL::AddVertexBuffer(const BufferBinding & binding, std::shared_ptr<IBuffer> buffer)
 {
-    base::AddVertexBuffer(binding, buffer);
+    MeshBase::AddVertexBuffer(binding, buffer);
     m_bIsDirty = true;
 }
 
 void MeshOGL::SetVertexBuffer(std::shared_ptr<IBuffer> buffer)
 {
-    base::SetVertexBuffer(buffer);
+	MeshBase::SetVertexBuffer(buffer);
     m_bIsDirty = true;
 }
 
 void MeshOGL::SetIndexBuffer(std::shared_ptr<IBuffer> buffer)
 {
-    base::SetIndexBuffer(buffer);
+	MeshBase::SetIndexBuffer(buffer);
     m_bIsDirty = true;
 }
 
@@ -74,17 +74,28 @@ bool MeshOGL::Render(const RenderEventArgs* renderArgs, const IConstantBuffer* p
     if (vertexCnt == 0)
         vertexCnt = (*m_VertexBuffers.begin()).second->GetElementCount();
 
-    std::shared_ptr<Shader> pVS = nullptr;
-    if (m_pMaterial)
-    {
-        m_pMaterial->Bind();
+	std::shared_ptr<IShader> pVS = nullptr;
+	std::shared_ptr<IShader> pPS = nullptr;
+	ShaderMap shadersMap;
 
-        pVS = m_pMaterial->GetShader(Shader::VertexShader);
-    }
-    else
-    {
-        pVS = renderArgs->PipelineState->GetShader(Shader::VertexShader);
-    }
+	if (m_pMaterial)
+	{
+		pVS = m_pMaterial->GetShader(IShader::ShaderType::VertexShader);
+		pPS = m_pMaterial->GetShader(IShader::ShaderType::PixelShader);
+		shadersMap = m_pMaterial->GetShaders();
+	}
+
+	if (pVS == nullptr && pPS == nullptr)
+	{
+		pVS = renderArgs->PipelineState->GetShader(IShader::ShaderType::VertexShader);
+		pPS = renderArgs->PipelineState->GetShader(IShader::ShaderType::PixelShader);
+		shadersMap = renderArgs->PipelineState->GetShaders();
+	}
+
+	if (m_pMaterial)
+	{
+		m_pMaterial->Bind(shadersMap);
+	}
 
     if (m_bIsDirty)
     {
@@ -94,17 +105,16 @@ bool MeshOGL::Render(const RenderEventArgs* renderArgs, const IConstantBuffer* p
 
     if (pVS)
     {
-        ShaderParameter& perObjectParameter = pVS->GetShaderParameterByName("PerObject");
-        if (perObjectParameter.IsValid() && perObject != nullptr)
+        std::shared_ptr<IShaderParameter> perObjectParameter = pVS->GetShaderParameterByName("PerObject");
+        if (perObjectParameter->IsValid() && perObject != nullptr)
         {
-            perObjectParameter.Set(perObject);
-            perObjectParameter.Bind();
+            perObjectParameter->Set(perObject);
+            perObjectParameter->Bind();
         }
-
 
         if (m_VertexBuffer != nullptr)
         {
-            m_VertexBuffer->Bind(0, pVS.get(), ShaderParameter::Type::Buffer);
+            m_VertexBuffer->Bind(0, pVS.get(), IShaderParameter::Type::Buffer);
         }
         else
         {
@@ -114,7 +124,7 @@ bool MeshOGL::Render(const RenderEventArgs* renderArgs, const IConstantBuffer* p
                 if (pVS->GetInputLayout()->HasSemantic(binding))
                 {
                     UINT slotID = pVS->GetInputLayout()->GetSemanticSlot(binding);
-                    buffer.second->Bind(slotID, pVS.get(), ShaderParameter::Type::Buffer);
+                    buffer.second->Bind(slotID, pVS.get(), IShaderParameter::Type::Buffer);
                 }
             }
         }
@@ -152,7 +162,7 @@ bool MeshOGL::Render(const RenderEventArgs* renderArgs, const IConstantBuffer* p
        
         if (m_VertexBuffer != nullptr)
         {
-            m_VertexBuffer->UnBind(0, pVS.get(), ShaderParameter::Type::Buffer);
+            m_VertexBuffer->UnBind(0, pVS.get(), IShaderParameter::Type::Buffer);
         }
         else
         {
@@ -162,7 +172,7 @@ bool MeshOGL::Render(const RenderEventArgs* renderArgs, const IConstantBuffer* p
                 if (pVS->GetInputLayout()->HasSemantic(binding))
                 {
                     UINT slotID = pVS->GetInputLayout()->GetSemanticSlot(binding);
-                    buffer.second->UnBind(slotID, pVS.get(), ShaderParameter::Type::Buffer);
+                    buffer.second->UnBind(slotID, pVS.get(), IShaderParameter::Type::Buffer);
                 }
             }
         }
@@ -176,9 +186,9 @@ bool MeshOGL::Render(const RenderEventArgs* renderArgs, const IConstantBuffer* p
     return true;
 }
 
-void MeshOGL::Commit(std::weak_ptr<Shader> _shader)
+void MeshOGL::Commit(std::weak_ptr<IShader> _shader)
 {
-	std::shared_ptr<Shader> pVS = _shader.lock();
+	std::shared_ptr<IShader> pVS = _shader.lock();
 
 	glBindVertexArray(m_GLObj);
 	{
@@ -200,7 +210,7 @@ void MeshOGL::Commit(std::weak_ptr<Shader> _shader)
 			UINT             semanticSlot = pVS->GetInputLayout()->GetSemanticSlot(buffer.first);
 
 			// Bind the vertex buffer to a particular slot ID.
-			buffer.second->Bind(semanticSlot, pVS.get(), ShaderParameter::Type::Buffer);
+			buffer.second->Bind(semanticSlot, pVS.get(), IShaderParameter::Type::Buffer);
 
 			// (GLuint index, GLint size, GLenum type, GLboolean normalized, GLsizei stride, const GLvoid *pointer);
 			glVertexAttribPointer(semanticSlot, semantic.GLSize, semantic.GLType, false, buffer.second->GetElementStride(), (char*)0 + buffer.second->GetElementOffset());
@@ -216,7 +226,7 @@ void MeshOGL::Commit(std::weak_ptr<Shader> _shader)
 
 		if (m_pIndexBuffer != nullptr)
 		{
-			m_pIndexBuffer->Bind(0, pVS.get(), ShaderParameter::Type::Buffer);
+			m_pIndexBuffer->Bind(0, pVS.get(), IShaderParameter::Type::Buffer);
 		}
 
 
@@ -227,7 +237,7 @@ void MeshOGL::Commit(std::weak_ptr<Shader> _shader)
 
 			UINT semanticSlot = pVS->GetInputLayout()->GetSemanticSlot(buffer.first);
 
-			buffer.second->UnBind(semanticSlot, pVS.get(), ShaderParameter::Type::Buffer);
+			buffer.second->UnBind(semanticSlot, pVS.get(), IShaderParameter::Type::Buffer);
 		}
 	}
 	glBindVertexArray(0);

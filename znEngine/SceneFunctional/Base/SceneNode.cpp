@@ -179,7 +179,7 @@ void SceneNode::UpdateCamera(const Camera* camera)
 
 bool SceneNode::Accept(IVisitor* visitor)
 {
-    fail1();
+    _ASSERT(false);
 	return false;
 }
 

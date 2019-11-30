@@ -7,7 +7,7 @@ class OW_ENGINE_API RenderWindowDX11 : public RenderWindow
 {
 	typedef RenderWindow base;
 public:
-	RenderWindowDX11(std::shared_ptr<RenderDeviceDX11> RenderDevice, IWindowObject * WindowObject, bool vSync);
+	RenderWindowDX11(std::shared_ptr<IRenderDevice> RenderDevice, IWindowObject * WindowObject, bool vSync);
 	virtual ~RenderWindowDX11();
 
 	void                                            Present() override final;

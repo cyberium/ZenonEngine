@@ -1,20 +1,20 @@
 #pragma once
 
-class StructuredBufferOGL : public StructuredBuffer
+class StructuredBufferOGL : public IStructuredBuffer
 {
 public:
 	StructuredBufferOGL(UINT bindFlags, const void* data, size_t count, UINT stride, CPUAccess cpuAccess = CPUAccess::None, bool bUAV = false);
 	virtual ~StructuredBufferOGL();
 
-	virtual bool Bind(uint32 id, const Shader* shader, ShaderParameter::Type parameterType) const override;
-	virtual void UnBind(uint32 id, const Shader* shader, ShaderParameter::Type parameterType) const override;
+	virtual bool Bind(uint32 id, const IShader* shader, IShaderParameter::Type parameterType) const override;
+	virtual void UnBind(uint32 id, const IShader* shader, IShaderParameter::Type parameterType) const override;
 
 	virtual BufferType GetType() const;
 	virtual uint32 GetElementCount() const;
 	virtual uint32 GetElementStride() const;
     virtual uint32 GetElementOffset() const;
 
-	virtual void Copy(std::shared_ptr<StructuredBuffer> other);
+	virtual void Copy(std::shared_ptr<IStructuredBuffer> other);
 
 	virtual void Clear(); // Clear the contents of the buffer.
 

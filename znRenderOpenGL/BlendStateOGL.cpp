@@ -4,10 +4,10 @@
 #include "BlendStateOGL.h"
 
 // FORWARD BEGIN
-GLenum TranslateBlendFactor(BlendState::BlendFactor blendFactor);
-GLenum TranslateBlendOp(BlendState::BlendOperation blendOperation);
+GLenum TranslateBlendFactor(IBlendState::BlendFactor blendFactor);
+GLenum TranslateBlendOp(IBlendState::BlendOperation blendOperation);
 UINT8 TranslateWriteMaskOGL(bool red, bool green, bool blue, bool alpha);
-GLenum TranslateLogicOperator(BlendState::LogicOperator logicOp);
+GLenum TranslateLogicOperator(IBlendState::LogicOperator logicOp);
 // FORWARD END
 
 BlendStateOGL::BlendStateOGL()
@@ -107,61 +107,61 @@ void BlendStateOGL::Bind()
 //
 // Translate
 //
-GLenum TranslateBlendFactor(BlendState::BlendFactor blendFactor)
+GLenum TranslateBlendFactor(IBlendState::BlendFactor blendFactor)
 {
     GLenum result = GL_ONE;
 
     switch (blendFactor)
     {
-        case BlendState::BlendFactor::Zero:
+        case IBlendState::BlendFactor::Zero:
             result = GL_ZERO;
             break;
-        case BlendState::BlendFactor::One:
+        case IBlendState::BlendFactor::One:
             result = GL_ONE;
             break;
-        case BlendState::BlendFactor::SrcColor:
+        case IBlendState::BlendFactor::SrcColor:
             result = GL_SRC_COLOR;
             break;
-        case BlendState::BlendFactor::OneMinusSrcColor:
+        case IBlendState::BlendFactor::OneMinusSrcColor:
             result = GL_ONE_MINUS_SRC_COLOR;
             break;
-        case BlendState::BlendFactor::DstColor:
+        case IBlendState::BlendFactor::DstColor:
             result = GL_DST_COLOR;
             break;
-        case BlendState::BlendFactor::OneMinusDstColor:
+        case IBlendState::BlendFactor::OneMinusDstColor:
             result = GL_ONE_MINUS_DST_COLOR;
             break;
-        case BlendState::BlendFactor::SrcAlpha:
+        case IBlendState::BlendFactor::SrcAlpha:
             result = GL_SRC_ALPHA;
             break;
-        case BlendState::BlendFactor::OneMinusSrcAlpha:
+        case IBlendState::BlendFactor::OneMinusSrcAlpha:
             result = GL_ONE_MINUS_SRC_ALPHA;
             break;
-        case BlendState::BlendFactor::DstAlpha:
+        case IBlendState::BlendFactor::DstAlpha:
             result = GL_DST_ALPHA;
             break;
-        case BlendState::BlendFactor::OneMinusDstAlpha:
+        case IBlendState::BlendFactor::OneMinusDstAlpha:
             result = GL_ONE_MINUS_DST_ALPHA;
             break;
-        case BlendState::BlendFactor::SrcAlphaSat:
+        case IBlendState::BlendFactor::SrcAlphaSat:
             result = GL_SRC_ALPHA_SATURATE;
             break;
-        case BlendState::BlendFactor::ConstBlendFactor:
+        case IBlendState::BlendFactor::ConstBlendFactor:
             throw std::exception("Not implemented!");
             break;
-        case BlendState::BlendFactor::OneMinusBlendFactor:
+        case IBlendState::BlendFactor::OneMinusBlendFactor:
             throw std::exception("Not implemented!");
             break;
-        case BlendState::BlendFactor::Src1Color:
+        case IBlendState::BlendFactor::Src1Color:
             result = GL_SRC1_COLOR;
             break;
-        case BlendState::BlendFactor::OneMinusSrc1Color:
+        case IBlendState::BlendFactor::OneMinusSrc1Color:
             result = GL_ONE_MINUS_SRC1_COLOR;
             break;
-        case BlendState::BlendFactor::Src1Alpha:
+        case IBlendState::BlendFactor::Src1Alpha:
             throw std::exception("Not implemented!");
             break;
-        case BlendState::BlendFactor::OneMinusSrc1Alpha:
+        case IBlendState::BlendFactor::OneMinusSrc1Alpha:
             result = GL_ONE_MINUS_SRC1_ALPHA;
             break;
         default:
@@ -172,7 +172,7 @@ GLenum TranslateBlendFactor(BlendState::BlendFactor blendFactor)
     return result;
 }
 
-GLenum TranslateBlendOp(BlendState::BlendOperation blendOperation)
+GLenum TranslateBlendOp(IBlendState::BlendOperation blendOperation)
 {
     /*D3D11_BLEND_OP result = D3D11_BLEND_OP_ADD;
     switch (blendOperation)
@@ -222,7 +222,7 @@ UINT8 TranslateWriteMaskOGL(bool red, bool green, bool blue, bool alpha)
     throw std::exception("Not implemented!");
 }
 
-GLenum TranslateLogicOperator(BlendState::LogicOperator logicOp)
+GLenum TranslateLogicOperator(IBlendState::LogicOperator logicOp)
 {
     /*D3D11_LOGIC_OP result = D3D11_LOGIC_OP_NOOP;
 

@@ -2,7 +2,7 @@
 
 #include "Query.h"
 
-class QueryOGL : public Query
+class QueryOGL : public IQuery
 {
 public:
 

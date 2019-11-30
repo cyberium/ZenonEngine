@@ -3,13 +3,13 @@
 //---------------------------------------------------------//
 //--                      Types                          --//
 //---------------------------------------------------------//
-#include "Interfaces/BufferBinding.h"
-#include "Interfaces/ClearFlags.h"
-#include "Interfaces/CPUAccess.h"
-#include "Interfaces/InputSemantic.h"
-#include "Interfaces/PrimitiveTopology.h"
-#include "Interfaces/Viewport.h"
-#include "Interfaces/Types/D3D9_Types.h"
+#include "Interfaces/Types/BufferBinding.h"
+#include "Interfaces/Types/ClearFlags.h"
+#include "Interfaces/Types/CPUAccess.h"
+#include "Interfaces/Types/InputSemantic.h"
+#include "Interfaces/Types/PrimitiveTopology.h"
+#include "Interfaces/Types/Viewport.h"
+#include "Interfaces/Types/CustomVertexElement.h"
 
 
 //---------------------------------------------------------//

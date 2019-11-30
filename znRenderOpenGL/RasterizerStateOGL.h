@@ -1,6 +1,6 @@
 #pragma once
 
-class RasterizerStateOGL : public RasterizerState
+class RasterizerStateOGL : public RasterizerStateBase
 {
 public:
 	                                                RasterizerStateOGL();

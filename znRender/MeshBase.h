@@ -7,11 +7,11 @@ class OW_ENGINE_API MeshBase : public IMesh, public Object
     typedef std::map<BufferBinding, std::shared_ptr<IBuffer>> BufferMap;
 public:
 	MeshBase();
-	virtual                                         ~MeshBase();
+	virtual ~MeshBase();
 
-	virtual void                                    AddVertexBuffer(const BufferBinding& binding, std::shared_ptr<IBuffer> buffer) override final;
-	virtual void                                    SetVertexBuffer(std::shared_ptr<IBuffer> buffer) override final;
-	virtual void                                    SetIndexBuffer(std::shared_ptr<IBuffer> buffer) override final;
+	virtual void                                    AddVertexBuffer(const BufferBinding& binding, std::shared_ptr<IBuffer> buffer) override;
+	virtual void                                    SetVertexBuffer(std::shared_ptr<IBuffer> buffer) override;
+	virtual void                                    SetIndexBuffer(std::shared_ptr<IBuffer> buffer) override;
 
 	virtual void                                    SetPrimitiveTopology(PrimitiveTopology _topology) = 0;
 

@@ -14,16 +14,16 @@ MaterialTextured::MaterialTextured()
 	*m_pProperties = MaterialProperties();
 
 	std::shared_ptr<IShader> g_pVertexShader = _RenderDevice->CreateShader(
-		IShader::VertexShader, "shaders_D3D/Debug/Textured.hlsl", IShader::ShaderMacros(), "VS_main", "latest"
+		IShader::ShaderType::VertexShader, "shaders_D3D/Debug/Textured.hlsl", IShader::ShaderMacros(), "VS_main", "latest"
 	);
-	std::vector<D3DVERTEXELEMENT9> elements;
-	elements.push_back({ 0, 0,  D3DDECLTYPE_FLOAT3, 0, D3DDECLUSAGE_POSITION, 0 });
-	elements.push_back({ 0, 12, D3DDECLTYPE_FLOAT2, 0, D3DDECLUSAGE_TEXCOORD, 0 });
-	elements.push_back({ 0, 20, D3DDECLTYPE_FLOAT3, 0, D3DDECLUSAGE_NORMAL, 0 });
-	g_pVertexShader->LoadInputLayoutFromD3DElement(elements);
+	std::vector<SCustomVertexElement> elements;
+	elements.push_back({ 0, 0,  ECustomVertexElementType::FLOAT3, ECustomVertexElementUsage::POSITION, 0 });
+	elements.push_back({ 0, 12, ECustomVertexElementType::FLOAT2, ECustomVertexElementUsage::TEXCOORD, 0 });
+	elements.push_back({ 0, 20, ECustomVertexElementType::FLOAT3, ECustomVertexElementUsage::NORMAL, 0 });
+	g_pVertexShader->LoadInputLayoutFromCustomElements(elements);
 
 	std::shared_ptr<IShader> g_pPixelShader = _RenderDevice->CreateShader(
-		IShader::PixelShader, "shaders_D3D/Debug/Textured.hlsl", IShader::ShaderMacros(), "PS_main", "latest"
+		IShader::ShaderType::PixelShader, "shaders_D3D/Debug/Textured.hlsl", IShader::ShaderMacros(), "PS_main", "latest"
 	);
 
 	std::shared_ptr<ISamplerState> g_Sampler = _RenderDevice->CreateSamplerState();

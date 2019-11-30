@@ -10,7 +10,7 @@
 #include "RenderTargetOGL.h"
 #include "TextureOGL.h"
 
-RenderWindowOGL::RenderWindowOGL(std::shared_ptr<RenderDeviceOGL> RenderDevice, IWindowObject * WindowObject, bool vSync)
+RenderWindowOGL::RenderWindowOGL(std::shared_ptr<IRenderDevice> RenderDevice, IWindowObject * WindowObject, bool vSync)
 	: RenderWindow(RenderDevice, WindowObject, vSync)
 {
 	m_HDC = GetDC(GetHWnd());
@@ -37,12 +37,12 @@ void RenderWindowOGL::Present()
 	if (IsVSync())
 	{
         if (!SwapBuffers(m_HDC))
-            fail1();
+            _ASSERT(false);
 	}
 	else
 	{
         if (!SwapBuffers(m_HDC))
-            fail1();
+            _ASSERT(false);
 	}
 }
 

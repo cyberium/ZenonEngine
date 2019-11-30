@@ -6,15 +6,11 @@
 #include <znRender.h>
 #pragma comment(lib, "znRender.lib")
 
-#include "common.h"
-
 // COM
-
 #include <comdef.h>
 #include <atlbase.h>
 
 // DIRECTX
-
 #include <d3d11_2.h>
 #pragma comment(lib, "d3d11.lib")
 
@@ -25,7 +21,7 @@
 #pragma comment(lib, "dxgi.lib")
 #pragma comment(lib, "dxguid.lib")
 
-struct IRenderDeviceDX11
+ZN_INTERFACE IRenderDeviceDX11
 {
 	virtual ATL::CComPtr<ID3D11Device2>                     GetDevice() const = 0;
 	virtual ATL::CComPtr<ID3D11DeviceContext2>              GetDeviceContext() const = 0;

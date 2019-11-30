@@ -35,7 +35,7 @@ void ConstantBufferDX11::Set(const void* data, size_t size)
 	D3D11_MAPPED_SUBRESOURCE mappedResource;
 	if (FAILED(m_pDeviceContext->Map(m_pBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource)))
 	{
-		fail1("Failed to map constant buffer.");
+		fail2("Failed to map constant buffer.");
 		return;
 	}
 
@@ -72,22 +72,22 @@ bool ConstantBufferDX11::Bind(uint32 id, const IShader* shader, IShaderParameter
 
 	switch (shader->GetType())
 	{
-	case IShader::VertexShader:
+	case IShader::ShaderType::VertexShader:
 		m_pDeviceContext->VSSetConstantBuffers(id, 1, pBuffers);
 		break;
-	case IShader::TessellationControlShader:
+	case IShader::ShaderType::TessellationControlShader:
 		m_pDeviceContext->HSSetConstantBuffers(id, 1, pBuffers);
 		break;
-	case IShader::TessellationEvaluationShader:
+	case IShader::ShaderType::TessellationEvaluationShader:
 		m_pDeviceContext->DSSetConstantBuffers(id, 1, pBuffers);
 		break;
-	case IShader::GeometryShader:
+	case IShader::ShaderType::GeometryShader:
 		m_pDeviceContext->GSSetConstantBuffers(id, 1, pBuffers);
 		break;
-	case IShader::PixelShader:
+	case IShader::ShaderType::PixelShader:
 		m_pDeviceContext->PSSetConstantBuffers(id, 1, pBuffers);
 		break;
-	case IShader::ComputeShader:
+	case IShader::ShaderType::ComputeShader:
 		m_pDeviceContext->CSSetConstantBuffers(id, 1, pBuffers);
 		break;
 	default:
@@ -104,22 +104,22 @@ void ConstantBufferDX11::UnBind(uint32 id, const IShader* shader, IShaderParamet
 
 	switch (shader->GetType())
 	{
-	case IShader::VertexShader:
+	case IShader::ShaderType::VertexShader:
 		m_pDeviceContext->VSSetConstantBuffers(id, 1, pBuffers);
 		break;
-	case IShader::TessellationControlShader:
+	case IShader::ShaderType::TessellationControlShader:
 		m_pDeviceContext->HSSetConstantBuffers(id, 1, pBuffers);
 		break;
-	case IShader::TessellationEvaluationShader:
+	case IShader::ShaderType::TessellationEvaluationShader:
 		m_pDeviceContext->DSSetConstantBuffers(id, 1, pBuffers);
 		break;
-	case IShader::GeometryShader:
+	case IShader::ShaderType::GeometryShader:
 		m_pDeviceContext->GSSetConstantBuffers(id, 1, pBuffers);
 		break;
-	case IShader::PixelShader:
+	case IShader::ShaderType::PixelShader:
 		m_pDeviceContext->PSSetConstantBuffers(id, 1, pBuffers);
 		break;
-	case IShader::ComputeShader:
+	case IShader::ShaderType::ComputeShader:
 		m_pDeviceContext->CSSetConstantBuffers(id, 1, pBuffers);
 		break;
 	default:

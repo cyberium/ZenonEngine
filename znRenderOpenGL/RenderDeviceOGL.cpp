@@ -73,33 +73,17 @@ void _stdcall glDebugOutput(GLenum source, GLenum type, GLuint id, GLenum severi
 #endif
 
 RenderDeviceOGL::RenderDeviceOGL(std::shared_ptr<IBaseManager> BaseManager)
-{
-    FreeImage_Initialise();
-
-    CreateDevice();
-    //LoadDefaultResources();
-}
+	: m_BaseManager(BaseManager)
+{}
 
 RenderDeviceOGL::~RenderDeviceOGL()
-{
-	m_Meshes.clear();
-	m_Buffers.clear();
-	m_Shaders.clear();
-	m_Textures.clear();
-	m_Samplers.clear();
-	m_Pipelines.clear();
-	m_Queries.clear();
-
-    FreeImage_DeInitialise();
-}
+{}
 
 void RenderDeviceOGL::InitDevice(HDC _hdc)
 {
 	bool failed = false;
 
 	HGLRC glrc = initOpenGL(_hdc);
-
-
 
 	char* vendor = (char*)glGetString(GL_VENDOR);
 	char* renderer = (char*)glGetString(GL_RENDERER);
@@ -156,6 +140,29 @@ void RenderDeviceOGL::InitDevice(HDC _hdc)
 			}
 		}*/
 	}
+}
+
+bool RenderDeviceOGL::Initialize()
+{
+	FreeImage_Initialise();
+
+	CreateDevice();
+	//LoadDefaultResources();
+
+	return true;
+}
+
+void RenderDeviceOGL::Finalize()
+{
+	m_Meshes.clear();
+	m_Buffers.clear();
+	m_Shaders.clear();
+	m_Textures.clear();
+	m_Samplers.clear();
+	m_Pipelines.clear();
+	m_Queries.clear();
+
+	FreeImage_DeInitialise();
 }
 
 const std::string& RenderDeviceOGL::GetDeviceName() const
@@ -222,9 +229,9 @@ void RenderDeviceOGL::DestroyIndexBuffer(std::shared_ptr<IBuffer> buffer)
 }
 
 
-std::shared_ptr<ConstantBuffer> RenderDeviceOGL::CreateConstantBuffer(const void* data, size_t size)
+std::shared_ptr<IConstantBuffer> RenderDeviceOGL::CreateConstantBuffer(const void* data, size_t size)
 {
-	std::shared_ptr<ConstantBuffer> buffer = std::make_shared<ConstantBufferOGL>(size);
+	std::shared_ptr<IConstantBuffer> buffer = std::make_shared<ConstantBufferOGL>(size);
 
 	if (data)
 	{
@@ -236,21 +243,21 @@ std::shared_ptr<ConstantBuffer> RenderDeviceOGL::CreateConstantBuffer(const void
 	return buffer;
 }
 
-void RenderDeviceOGL::DestroyConstantBuffer(std::shared_ptr<ConstantBuffer> buffer)
+void RenderDeviceOGL::DestroyConstantBuffer(std::shared_ptr<IConstantBuffer> buffer)
 {
 	DestroyBuffer(buffer);
 }
 
 
-std::shared_ptr<StructuredBuffer> RenderDeviceOGL::CreateStructuredBuffer(void* data, uint32 count, uint32 stride, CPUAccess cpuAccess, bool gpuWrite)
+std::shared_ptr<IStructuredBuffer> RenderDeviceOGL::CreateStructuredBuffer(void* data, uint32 count, uint32 stride, CPUAccess cpuAccess, bool gpuWrite)
 {
-	std::shared_ptr<StructuredBuffer> buffer = std::make_shared<StructuredBufferOGL>(GL_SHADER_STORAGE_BUFFER, data, count, stride, cpuAccess, gpuWrite);
+	std::shared_ptr<IStructuredBuffer> buffer = std::make_shared<StructuredBufferOGL>(GL_SHADER_STORAGE_BUFFER, data, count, stride, cpuAccess, gpuWrite);
 	m_Buffers.push_back(buffer);
 
 	return buffer;
 }
 
-void RenderDeviceOGL::DestroyStructuredBuffer(std::shared_ptr<StructuredBuffer> buffer)
+void RenderDeviceOGL::DestroyStructuredBuffer(std::shared_ptr<IStructuredBuffer> buffer)
 {
 	DestroyBuffer(buffer);
 }
@@ -282,7 +289,7 @@ void RenderDeviceOGL::DestroyMesh(std::shared_ptr<IMesh> mesh)
 }
 
 
-std::shared_ptr<Shader> RenderDeviceOGL::CreateShader(Shader::ShaderType type, const std::string& fileName, const Shader::ShaderMacros& shaderMacros, const std::string& entryPoint, const std::string& profile, std::shared_ptr<IShaderInputLayout> _customLayout)
+std::shared_ptr<IShader> RenderDeviceOGL::CreateShader(IShader::ShaderType type, const std::string& fileName, const IShader::ShaderMacros& shaderMacros, const std::string& entryPoint, const std::string& profile, std::shared_ptr<IShaderInputLayout> _customLayout)
 {
 	std::string fullName = fileName + entryPoint + profile;
 
@@ -290,7 +297,7 @@ std::shared_ptr<Shader> RenderDeviceOGL::CreateShader(Shader::ShaderType type, c
 	if (iter != m_ShadersByName.end())
 		return iter->second;
 
-	std::shared_ptr<Shader> pShader = std::make_shared<ShaderOGL>();
+	std::shared_ptr<IShader> pShader = std::make_shared<ShaderOGL>(weak_from_this());
 	pShader->LoadShaderFromFile(type, fileName, shaderMacros, entryPoint, profile, _customLayout);
 
 	m_Shaders.push_back(pShader);
@@ -299,7 +306,7 @@ std::shared_ptr<Shader> RenderDeviceOGL::CreateShader(Shader::ShaderType type, c
 	return pShader;
 }
 
-void RenderDeviceOGL::DestroyShader(std::shared_ptr<Shader> shader)
+void RenderDeviceOGL::DestroyShader(std::shared_ptr<IShader> shader)
 {
 	ShaderList::iterator iter = std::find(m_Shaders.begin(), m_Shaders.end(), shader);
 	if (iter != m_Shaders.end())
@@ -311,34 +318,34 @@ void RenderDeviceOGL::DestroyShader(std::shared_ptr<Shader> shader)
 
 std::shared_ptr<ITexture> RenderDeviceOGL::CreateTexture2D(const std::string& fileName)
 {
-	TextureMap::iterator iter = m_TexturesByName.find(fileName);
+	TextureNameMap::iterator iter = m_TexturesByName.find(fileName);
 	if (iter != m_TexturesByName.end())
 	{
 		return iter->second;
 	}
 
-	std::shared_ptr<ITexture> texture = std::make_shared<TextureOGL>(this);
+	std::shared_ptr<ITexture> texture = std::make_shared<TextureOGL>(weak_from_this());
 	texture->LoadTexture2D(fileName);
 
 	m_Textures.push_back(texture);
-	m_TexturesByName.insert(TextureMap::value_type(fileName, texture));
+	m_TexturesByName.insert(TextureNameMap::value_type(fileName, texture));
 
 	return texture;
 }
 
 std::shared_ptr<ITexture> RenderDeviceOGL::CreateTextureCube(const std::string& fileName)
 {
-	TextureMap::iterator iter = m_TexturesByName.find(fileName);
+	TextureNameMap::iterator iter = m_TexturesByName.find(fileName);
 	if (iter != m_TexturesByName.end())
 	{
 		return iter->second;
 	}
 
-	std::shared_ptr<ITexture> texture = std::make_shared<TextureOGL>(this);
+	std::shared_ptr<ITexture> texture = std::make_shared<TextureOGL>(weak_from_this());
 	texture->LoadTextureCube(fileName);
 
 	m_Textures.push_back(texture);
-	m_TexturesByName.insert(TextureMap::value_type(fileName, texture));
+	m_TexturesByName.insert(TextureNameMap::value_type(fileName, texture));
 
 	return texture;
 
@@ -346,7 +353,7 @@ std::shared_ptr<ITexture> RenderDeviceOGL::CreateTextureCube(const std::string& 
 
 std::shared_ptr<ITexture> RenderDeviceOGL::CreateTexture2D(uint16_t width, uint16_t height, uint16_t slices, const ITexture::TextureFormat& format, CPUAccess cpuAccess, bool gpuWrite)
 {
-	std::shared_ptr<ITexture> texture = std::make_shared<TextureOGL>(this, width, height, slices, format, cpuAccess);
+	std::shared_ptr<ITexture> texture = std::make_shared<TextureOGL>(weak_from_this(), width, height, slices, format, cpuAccess);
 	m_Textures.push_back(texture);
 
 	return texture;
@@ -354,7 +361,7 @@ std::shared_ptr<ITexture> RenderDeviceOGL::CreateTexture2D(uint16_t width, uint1
 
 std::shared_ptr<ITexture> RenderDeviceOGL::CreateTextureCube(uint16_t size, uint16_t numCubes, const ITexture::TextureFormat& format, CPUAccess cpuAccess, bool gpuWrite)
 {
-	std::shared_ptr<ITexture> texture = std::make_shared<TextureOGL>(this, size, numCubes, format, cpuAccess);
+	std::shared_ptr<ITexture> texture = std::make_shared<TextureOGL>(weak_from_this(), size, numCubes, format, cpuAccess);
 	m_Textures.push_back(texture);
 
 	return texture;
@@ -362,7 +369,7 @@ std::shared_ptr<ITexture> RenderDeviceOGL::CreateTextureCube(uint16_t size, uint
 
 std::shared_ptr<ITexture> RenderDeviceOGL::CreateTexture()
 {
-	std::shared_ptr<ITexture> texture = std::make_shared<TextureOGL>(this);
+	std::shared_ptr<ITexture> texture = std::make_shared<TextureOGL>(weak_from_this());
 	m_Textures.push_back(texture);
 
 	return texture;
@@ -381,7 +388,7 @@ void RenderDeviceOGL::DestroyTexture(std::shared_ptr<ITexture> texture)
 		m_Textures.erase(iter);
 	}
 
-	TextureMap::iterator iter2 = std::find_if(m_TexturesByName.begin(), m_TexturesByName.end(), [=](TextureMap::value_type val) { return (val.second == texture); });
+	TextureNameMap::iterator iter2 = std::find_if(m_TexturesByName.begin(), m_TexturesByName.end(), [=](TextureNameMap::value_type val) { return (val.second == texture); });
 	if (iter2 != m_TexturesByName.end())
 	{
 		m_TexturesByName.erase(iter2);
@@ -390,7 +397,7 @@ void RenderDeviceOGL::DestroyTexture(std::shared_ptr<ITexture> texture)
 
 std::shared_ptr<IMaterial> RenderDeviceOGL::CreateMaterial(size_t Size)
 {
-	std::shared_ptr<IMaterial> pMaterial = std::make_shared<MaterialOGL>(this, Size);
+	std::shared_ptr<IMaterial> pMaterial = std::make_shared<MaterialOGL>(weak_from_this(), Size);
 	m_Materials.push_back(pMaterial);
 	return pMaterial;
 }
@@ -441,15 +448,15 @@ void RenderDeviceOGL::DestroySampler(std::shared_ptr<ISamplerState> sampler)
 }
 
 
-std::shared_ptr<PipelineState> RenderDeviceOGL::CreatePipelineState()
+std::shared_ptr<IPipelineState> RenderDeviceOGL::CreatePipelineState()
 {
-	std::shared_ptr<PipelineState> pPipeline = std::make_shared<PipelineStateOGL>();
+	std::shared_ptr<IPipelineState> pPipeline = std::make_shared<PipelineStateOGL>();
 	m_Pipelines.push_back(pPipeline);
 
 	return pPipeline;
 }
 
-void RenderDeviceOGL::DestoryPipelineState(std::shared_ptr<PipelineState> pipeline)
+void RenderDeviceOGL::DestoryPipelineState(std::shared_ptr<IPipelineState> pipeline)
 {
 	PipelineList::iterator iter = std::find(m_Pipelines.begin(), m_Pipelines.end(), pipeline);
 	if (iter != m_Pipelines.end())
@@ -474,15 +481,15 @@ void RenderDeviceOGL::SetDefaultRB(uint32 _obj)
 	m_RBDefault = _obj;
 }
 
-std::shared_ptr<Query> RenderDeviceOGL::CreateQuery(IQuery::QueryType queryType, uint8_t numBuffers)
+std::shared_ptr<IQuery> RenderDeviceOGL::CreateQuery(IQuery::QueryType queryType, uint8_t numBuffers)
 {
-	std::shared_ptr<Query> query = std::make_shared<QueryOGL>(queryType, numBuffers);
+	std::shared_ptr<IQuery> query = std::make_shared<QueryOGL>(queryType, numBuffers);
 	m_Queries.push_back(query);
 
 	return query;
 }
 
-void RenderDeviceOGL::DestoryQuery(std::shared_ptr<Query> query)
+void RenderDeviceOGL::DestoryQuery(std::shared_ptr<IQuery> query)
 {
 	QueryList::iterator iter = std::find(m_Queries.begin(), m_Queries.end(), query);
 	if (iter != m_Queries.end())

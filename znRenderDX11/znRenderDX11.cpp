@@ -6,6 +6,8 @@
 // Additional
 #include "RenderDeviceDX11.h"
 
+extern std::shared_ptr<CLog> gLogInstance;
+
 //
 // CznRenderDX11DeviceCreator
 //
@@ -56,6 +58,8 @@ public:
 	bool Initialize(std::shared_ptr<IBaseManager> BaseManager)
 	{
 		m_BaseManager = BaseManager;
+		
+		gLogInstance = std::dynamic_pointer_cast<CLog>(GetManager<ILog>(m_BaseManager));
 		m_RenderDeviceCreator = std::make_shared<CznRenderDX11DeviceCreator>(m_BaseManager);
 
 		GetManager<IznRenderDeviceCreatorFactory>(m_BaseManager)->RegisterRenderDeviceCreator(m_RenderDeviceCreator);

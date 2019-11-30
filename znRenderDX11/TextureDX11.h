@@ -3,128 +3,52 @@
 class OW_ENGINE_API TextureDX11 : public ITexture, public std::enable_shared_from_this<TextureDX11>
 {
 public:
-	// Create an empty texture.
-	TextureDX11(std::weak_ptr<IRenderDeviceDX11> RenderDevice);
-
-	// 2D Texture
-	TextureDX11(std::weak_ptr<IRenderDeviceDX11> RenderDevice, uint16_t width, uint16_t height, uint16_t slices, const TextureFormat& format, CPUAccess cpuAccess, bool bUAV = false);
-
-	// Cube Texture
-	TextureDX11(std::weak_ptr<IRenderDeviceDX11> RenderDevice, uint16_t size, uint16_t count, const TextureFormat& format, CPUAccess cpuAccess, bool bUAV = false);
+	TextureDX11(std::weak_ptr<IRenderDevice> RenderDevice);
+	TextureDX11(std::weak_ptr<IRenderDevice> RenderDevice, uint16_t width, uint16_t height, uint16_t slices, const TextureFormat& format, CPUAccess cpuAccess, bool bUAV = false);
+	TextureDX11(std::weak_ptr<IRenderDevice> RenderDevice, uint16_t size, uint16_t count, const TextureFormat& format, CPUAccess cpuAccess, bool bUAV = false);
 
 	virtual ~TextureDX11();
 
-	/**
-	 * Load a 2D custom texture
-	 */
 	virtual bool LoadTextureCustom(uint16_t width, uint16_t height, void* pixels);
-
-	/**
-	 * Load a 2D texture from a file path.
-	 */
 	virtual bool LoadTexture2D(const std::string& fileName);
-
-	/**
-	 * Load a cubemap texture from a file path.
-	 */
 	virtual bool LoadTextureCube(const std::string& fileName);
 
-	/**
-	* Generate mip maps for a texture.
-	* For texture formats that don't support mipmapping,
-	* this function does nothing.
-	*/
 	virtual void GenerateMipMaps();
 
-	/**
-	* Get a pointer to a particular face of a cubemap texture.
-	* For 1D, and 2D textures, this function always returns the only
-	* face of the texture (the texture itself).
-	*/
 	virtual std::shared_ptr<ITexture> GetFace(CubeFace face) const;
-
-	/**
-	* 3D textures store several slices of 2D textures.
-	* Use this function to get a single 2D slice of a 3D texture.
-	* For Cubemaps, this function can be used to get a face of the cubemap.
-	* For 1D and 2D textures, this function will always return the texture
-	* itself.
-	*/
 	virtual std::shared_ptr<ITexture> GetSlice(uint32 slice) const;
-
-	// Get the width of the textures in texels.
 	virtual uint16_t GetWidth() const;
-
-	// Get the height of the texture in texles.
 	virtual uint16_t GetHeight() const;
-
-	// Get the 2D size of the texture in texles
 	glm::ivec2 GetSize() const;
-
-	// Get the depth of the texture in texels.
 	virtual uint16_t GetDepth() const;
-
-	// Get the bits-per-pixel of the texture.
 	virtual uint8_t GetBPP() const;
-
-	// Check to see if this texture has an alpha channel.
 	virtual bool IsTransparent() const;
 
-	// Resize the texture to the new dimensions.
-	// Resizing a texture will cause the original texture to be discarded.
-	// Only use on "dynamic" textures (not ones loaded from a texture file).
-	// @param width The width of the texture (for 1D, 2D, and 3D textures or size of a cubemap face for Cubemap textures)
-	// @param height The height of the texture (for 2D, 3D textures)
-	// @param depth The depth of the texture (for 3D textures only)
 	virtual void Resize(uint16_t width, uint16_t height = 0, uint16_t depth = 0);
-
-	/**
-	 * Copy the contents of one texture into another.
-	 * Textures must both be the same size.
-	 */
 	virtual void Copy(std::shared_ptr<ITexture> other);
-
-	/**
-	* Clear the texture.
-	* @param color The color to clear the texture to.
-	* @param depth The depth value to use for depth textures.
-	* @param stencil The stencil value to use for depth/stencil textures.
-	*/
 	virtual void Clear(ClearFlags clearFlags = ClearFlags::All, cvec4 color = vec4(0), float depth = 1.0f, uint8_t stencil = 0);
 
-	/**
-	 * Bind this texture for use by the shaders.
-	 */
 	virtual void Bind(uint32_t ID, const IShader* shader, IShaderParameter::Type parameterType) const override;
 	virtual void Bind(uint32_t ID, IShader::ShaderType _shaderType, IShaderParameter::Type parameterType) const override;
 
-	/**
-	 * Unbind the texture.
-	 */
 	virtual void UnBind(uint32_t ID, const IShader* shader, IShaderParameter::Type parameterType) const override;
 	virtual void UnBind(uint32_t ID, IShader::ShaderType _shaderType, IShaderParameter::Type parameterType) const override;
 
-	/**
-	 * Get texture data
-	 */
 	const std::vector<uint8>& GetBuffer();
 
 	// Gets the texture resource associated to this texture
 	ID3D11Resource* GetTextureResource() const;
 
-	// Gets the shader resource view for this texture so that it can be 
-	// bound to a shader parameter.
+	// Gets the shader resource view for this texture so that it can be bound to a shader parameter.
 	ID3D11ShaderResourceView* GetShaderResourceView() const;
 
-	// Gets the depth stencil view if this is a depth/stencil texture.
-	// Otherwise, this function will return null
+	// Gets the depth stencil view if this is a depth/stencil texture. Otherwise, this function will return null
 	ID3D11DepthStencilView* GetDepthStencilView() const;
 
 	// Get the render target view so the texture can be attached to a render target.
 	ID3D11RenderTargetView* GetRenderTargetView() const;
 
-	// Get the unordered access view so it can be bound to compute shaders and 
-	// pixel shaders as a RWTexture
+	// Get the unordered access view so it can be bound to compute shaders and pixel shaders as a RWTexture
 	ID3D11UnorderedAccessView* GetUnorderedAccessView() const;
 
 protected:
@@ -138,7 +62,7 @@ protected:
 	DXGI_SAMPLE_DESC GetSupportedSampleCount(DXGI_FORMAT format, uint8_t numSamples);
 
 private:
-	std::weak_ptr<IRenderDeviceDX11> m_RenderDevice;
+	std::weak_ptr<IRenderDevice> m_RenderDevice;
 
 	ATL::CComPtr<ID3D11Device2> m_pDevice;
 	ATL::CComPtr<ID3D11DeviceContext2> m_pDeviceContext;

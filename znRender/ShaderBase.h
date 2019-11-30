@@ -12,7 +12,6 @@ public:
 	std::shared_ptr<IShaderParameter> GetShaderParameterByName(const std::string& name) const override final;
 	
 protected:
-    // Parameters necessary to reload the shader at runtime if it is modified on disc.
     ShaderMacros                        m_ShaderMacros;
     std::string                         m_EntryPoint;
     std::string                         m_Profile;

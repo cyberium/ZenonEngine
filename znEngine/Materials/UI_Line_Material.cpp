@@ -14,22 +14,22 @@ UI_Line_Material::UI_Line_Material() :
 
 	// CreateShaders
 	std::shared_ptr<IShader> g_pVertexShader = _RenderDevice->CreateShader(
-		IShader::VertexShader, "IDB_SHADER_UI_LINE", IShader::ShaderMacros(), "VS_main", "latest"
+		IShader::ShaderType::VertexShader, "IDB_SHADER_UI_LINE", IShader::ShaderMacros(), "VS_main", "latest"
 	);
     g_pVertexShader->LoadInputLayoutFromReflector();
 
     std::shared_ptr<IShader> g_pGeomShader = _RenderDevice->CreateShader(
-        IShader::GeometryShader, "IDB_SHADER_UI_LINE", IShader::ShaderMacros(), "GS_main", "latest"
+        IShader::ShaderType::GeometryShader, "IDB_SHADER_UI_LINE", IShader::ShaderMacros(), "GS_main", "latest"
     );
 
 	std::shared_ptr<IShader> g_pPixelShader = _RenderDevice->CreateShader(
-		IShader::PixelShader, "IDB_SHADER_UI_LINE", IShader::ShaderMacros(), "PS_LineV2", "latest"
+		IShader::ShaderType::PixelShader, "IDB_SHADER_UI_LINE", IShader::ShaderMacros(), "PS_LineV2", "latest"
 	);
 
 	// Material
-	SetShader(IShader::VertexShader, g_pVertexShader);
-    SetShader(IShader::GeometryShader, g_pGeomShader);
-	SetShader(IShader::PixelShader, g_pPixelShader);
+	SetShader(IShader::ShaderType::VertexShader, g_pVertexShader);
+    SetShader(IShader::ShaderType::GeometryShader, g_pGeomShader);
+	SetShader(IShader::ShaderType::PixelShader, g_pPixelShader);
 }
 
 UI_Line_Material::~UI_Line_Material()

@@ -110,10 +110,10 @@ bool ShaderInputLayoutDX11::LoadFromReflector(ID3DBlob * pShaderBlob, ID3D11Shad
 	return true;
 }
 
-bool ShaderInputLayoutDX11::LoadFromD3D9(ID3DBlob * pShaderBlob, const std::vector<D3DVERTEXELEMENT9>& declIn)
+bool ShaderInputLayoutDX11::LoadFromCustomElements(ID3DBlob * pShaderBlob, const std::vector<SCustomVertexElement>& CustomElements)
 {
 	std::vector<D3D11_INPUT_ELEMENT_DESC> inputElements;
-	ConvertVertexDeclaration(declIn, inputElements);
+	ConvertVertexDeclaration(CustomElements, inputElements);
 
 	for (uint32 i = 0; i < inputElements.size() - 1; i++)
 	{

@@ -143,8 +143,12 @@ void RasterizerStateOGL::Bind()
 	{
 		for (size_t i = 0; i < m_Viewports.size(); i++)
 		{
-			glViewportIndexedf(i, m_Viewports[i]->GetX(), m_Viewports[i]->GetY(), m_Viewports[i]->GetWidth(), m_Viewports[i]->GetHeight());
-			glDepthRangeIndexed(i, m_Viewports[i]->GetMinDepth(), m_Viewports[i]->GetMaxDepth());
+			const Viewport* viewport = m_Viewports[i];
+			if (viewport == nullptr)
+				break;
+
+			glViewportIndexedf(i, viewport->GetX(), viewport->GetY(), viewport->GetWidth(), viewport->GetHeight());
+			glDepthRangeIndexed(i, viewport->GetMinDepth(), viewport->GetMaxDepth());
 		}
 
 		m_ViewportsDirty = false;
@@ -167,7 +171,7 @@ GLenum GLTranslateFillMode(IRasterizerState::FillMode fillMode)
             return GL_FILL;
     }
 
-    std::exception("Unknown fill mode.");
+	throw std::exception("Unknown fill mode.");
 }
 
 GLenum GLTranslateCullMode(IRasterizerState::CullMode cullMode)
@@ -187,7 +191,7 @@ GLenum GLTranslateCullMode(IRasterizerState::CullMode cullMode)
             return GL_FRONT_AND_BACK;
     }
 
-    std::exception("Unknown cull mode.");
+	throw std::exception("Unknown cull mode.");
 }
 
 GLenum GLTranslateFrontFace(IRasterizerState::FrontFace frontFace)
@@ -201,5 +205,5 @@ GLenum GLTranslateFrontFace(IRasterizerState::FrontFace frontFace)
             return GL_CCW;
     }
 
-    std::exception("Unknown front face winding order.");
+    throw std::exception("Unknown front face winding order.");
 }

@@ -43,12 +43,6 @@ inline void FatalMessageBox(const char* _title, const char* _message, ...)
 	va_end(args);
 }
 
-#define fail1() \
-{ \
-	FatalMessageBox("Assertion failed!", "File: [%s]\nLine: [%d]\nFunction: [%s]\n", __FILE__, __LINE__, __FUNCTION__); \
-    terminate();\
-}
-
 #define fail2(message) \
 { \
 	FatalMessageBox("Assertion failed!", "File: [%s]\nLine: [%d]\nFunction: [%s]\nDescription: [%s]\n", __FILE__, __LINE__, __FUNCTION__, message); \

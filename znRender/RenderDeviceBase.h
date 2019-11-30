@@ -34,7 +34,7 @@ public:
 	RenderDeviceBase();
 	virtual ~RenderDeviceBase();
 
-	std::shared_ptr<IRenderDevicePrimitiveCollection> GetPrimitiveCollection() const override final;
+	virtual std::shared_ptr<IRenderDevicePrimitiveCollection> GetPrimitiveCollection() const override;
 
 protected:
     virtual void									CreateDevice() = 0;

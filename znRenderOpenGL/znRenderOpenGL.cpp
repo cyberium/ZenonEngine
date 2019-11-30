@@ -5,17 +5,87 @@
 
 // Additional
 #include "RenderDeviceOGL.h"
-#include "RenderWindowOGL.h"
 
-std::shared_ptr<IRenderDevice> CreateRenderDeviceOGL(std::shared_ptr<CBaseManager> _baseManager)
+extern std::shared_ptr<CLog> gLogInstance;
+
+//
+// CznRenderOpenGLDeviceCreator
+//
+class CznRenderOpenGLDeviceCreator : public IznRenderDeviceCreator
 {
-	return std::make_shared<RenderDeviceOGL>();
-}
+public:
+	CznRenderOpenGLDeviceCreator(std::shared_ptr<IBaseManager> BaseManager)
+		: m_BaseManager(BaseManager)
+	{}
+	virtual ~CznRenderOpenGLDeviceCreator()
+	{}
 
-std::shared_ptr<RenderWindow> CreateRenderWindowOGL(std::shared_ptr<IRenderDevice> device, IWindowObject * WindowObject, bool vSync)
+	// IznRenderDeviceCreator
+	RenderDeviceType GetRenderDeviceType() const
+	{
+		return RenderDeviceType::RenderDeviceType_OpenGL;
+	}
+	std::shared_ptr<IRenderDevice> CreateRenderDevice()
+	{
+		if (m_CachedRenderDevice == nullptr)
+		{
+			m_CachedRenderDevice = std::make_shared<RenderDeviceOGL>(m_BaseManager);
+			m_CachedRenderDevice->Initialize();
+		}
+
+		return m_CachedRenderDevice;
+	}
+
+private:
+	std::shared_ptr<IBaseManager> m_BaseManager;
+	std::shared_ptr<IRenderDevice> m_CachedRenderDevice;
+};
+
+
+
+//
+// CznRenderOpenGLPlugin
+//
+class CznRenderOpenGLPlugin : public IznPlugin
 {
-	std::shared_ptr<RenderDeviceOGL> pDevice = std::dynamic_pointer_cast<RenderDeviceOGL, IRenderDevice>(device);
-	_ASSERT(pDevice != NULL);
+public:
+	CznRenderOpenGLPlugin()
+	{}
+	virtual ~CznRenderOpenGLPlugin()
+	{}
 
-	return std::make_shared<RenderWindowOGL>(pDevice, WindowObject, vSync);
+	// IznPlugin
+	bool Initialize(std::shared_ptr<IBaseManager> BaseManager)
+	{
+		m_BaseManager = BaseManager;
+		gLogInstance = std::dynamic_pointer_cast<CLog>(GetManager<ILog>(m_BaseManager));
+
+		m_RenderDeviceCreator = std::make_shared<CznRenderOpenGLDeviceCreator>(m_BaseManager);
+
+		GetManager<IznRenderDeviceCreatorFactory>(m_BaseManager)->RegisterRenderDeviceCreator(m_RenderDeviceCreator);
+
+		return false;
+	}
+	void Finalize()
+	{
+		GetManager<IznRenderDeviceCreatorFactory>(m_BaseManager)->UnregisterRenderDeviceCreator(m_RenderDeviceCreator);
+	}
+
+private:
+	std::shared_ptr<IBaseManager> m_BaseManager;
+	std::shared_ptr<IznRenderDeviceCreator> m_RenderDeviceCreator;
+};
+
+
+
+IznPlugin* plugin = nullptr;
+IznPlugin* GetPlugin(std::shared_ptr<IBaseManager> BaseManager)
+{
+	if (plugin == nullptr)
+	{
+		plugin = new CznRenderOpenGLPlugin();
+		plugin->Initialize(BaseManager);
+	}
+
+	return plugin;
 }

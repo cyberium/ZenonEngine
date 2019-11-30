@@ -4,8 +4,8 @@
 #include "DepthStencilStateOGL.h"
 
 // FORWARD BEGIN
-GLboolean GLTranslateDepthWriteMask(DepthStencilState::DepthWrite depthWrite);
-GLenum GLTranslateCompareFunc(DepthStencilState::CompareFunction compareFunc);
+GLboolean GLTranslateDepthWriteMask(IDepthStencilState::DepthWrite depthWrite);
+GLenum GLTranslateCompareFunc(IDepthStencilState::CompareFunction compareFunc);
 // FORWARD END
 
 DepthStencilStateOGL::DepthStencilStateOGL()
@@ -82,16 +82,16 @@ void DepthStencilStateOGL::Bind()
 //
 // Translate
 //
-GLboolean GLTranslateDepthWriteMask(DepthStencilState::DepthWrite depthWrite)
+GLboolean GLTranslateDepthWriteMask(IDepthStencilState::DepthWrite depthWrite)
 {
     GLboolean result = GL_TRUE;
 
     switch (depthWrite)
     {
-        case DepthStencilState::DepthWrite::Enable:
+        case IDepthStencilState::DepthWrite::Enable:
             result = GL_TRUE;
             break;
-        case DepthStencilState::DepthWrite::Disable:
+        case IDepthStencilState::DepthWrite::Disable:
             result = GL_FALSE;
             break;
         default:
@@ -101,34 +101,34 @@ GLboolean GLTranslateDepthWriteMask(DepthStencilState::DepthWrite depthWrite)
     return result;
 }
 
-GLenum GLTranslateCompareFunc(DepthStencilState::CompareFunction compareFunc)
+GLenum GLTranslateCompareFunc(IDepthStencilState::CompareFunction compareFunc)
 {
     GLenum result = GL_LESS;
 
     switch (compareFunc)
     {
-        case DepthStencilState::CompareFunction::Never:
+        case IDepthStencilState::CompareFunction::Never:
             result = GL_NEVER;
             break;
-        case DepthStencilState::CompareFunction::Less:
+        case IDepthStencilState::CompareFunction::Less:
             result = GL_LESS;
             break;
-        case DepthStencilState::CompareFunction::Equal:
+        case IDepthStencilState::CompareFunction::Equal:
             result = GL_EQUAL;
             break;
-        case DepthStencilState::CompareFunction::LessOrEqual:
+        case IDepthStencilState::CompareFunction::LessOrEqual:
             result = GL_LEQUAL;
             break;
-        case DepthStencilState::CompareFunction::Greater:
+        case IDepthStencilState::CompareFunction::Greater:
             result = GL_GREATER;
             break;
-        case DepthStencilState::CompareFunction::NotEqual:
+        case IDepthStencilState::CompareFunction::NotEqual:
             result = GL_NOTEQUAL;
             break;
-        case DepthStencilState::CompareFunction::GreaterOrEqual:
+        case IDepthStencilState::CompareFunction::GreaterOrEqual:
             result = GL_GEQUAL;
             break;
-        case DepthStencilState::CompareFunction::Always:
+        case IDepthStencilState::CompareFunction::Always:
             result = GL_ALWAYS;
             break;
         default:

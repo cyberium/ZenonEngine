@@ -13,7 +13,7 @@ public:
 
 	// ShaderInputLayoutDX11
 	bool                                            LoadFromReflector(ID3DBlob * pShaderBlob, ID3D11ShaderReflection * pReflector);
-	bool                                            LoadFromD3D9(ID3DBlob * pShaderBlob, const std::vector<D3DVERTEXELEMENT9>& declIn);
+	bool                                            LoadFromCustomElements(ID3DBlob * pShaderBlob, const std::vector<SCustomVertexElement>& CustomElements);
 	ID3D11InputLayout*                              GetInputLayout() const;
 
 private:

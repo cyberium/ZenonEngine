@@ -5,7 +5,7 @@
 class OW_ENGINE_API ShaderDX11 : public ShaderBase, public std::enable_shared_from_this<ShaderDX11>
 {
 public:
-	ShaderDX11(std::weak_ptr<IRenderDeviceDX11> RenderDevice);
+	ShaderDX11(std::weak_ptr<IRenderDevice> RenderDevice);
 	virtual ~ShaderDX11();
 
 	// IShader
@@ -13,7 +13,7 @@ public:
 	bool LoadShaderFromFile(ShaderType type, const std::string& fileName, const ShaderMacros& shaderMacros, const std::string& entryPoint, const std::string& profile, std::shared_ptr<IShaderInputLayout> _customLayout) override final;
 	
 	bool LoadInputLayoutFromReflector() override final;
-	bool LoadInputLayoutFromD3DElement(const std::vector<D3DVERTEXELEMENT9>& declIn) override final;
+	bool LoadInputLayoutFromCustomElements(const std::vector<SCustomVertexElement>& declIn) override final;
 
 	void Bind() const override final;
 	void UnBind() const override final;
@@ -26,7 +26,7 @@ protected:
 	virtual void Destroy();
 
 private:
-	std::weak_ptr<IRenderDeviceDX11>   m_RenderDevice;
+	std::weak_ptr<IRenderDevice>	  m_RenderDevice;
 
 	ATL::CComPtr<ID3D11Device2>        m_pDevice;
 	ATL::CComPtr<ID3D11DeviceContext2> m_pDeviceContext;

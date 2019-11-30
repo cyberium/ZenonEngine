@@ -62,15 +62,15 @@ bool MeshDX11::Render(const RenderEventArgs* renderArgs, const IConstantBuffer* 
 
 	if (m_pMaterial)
 	{
-		pVS = m_pMaterial->GetShader(IShader::VertexShader);
-		pPS = m_pMaterial->GetShader(IShader::PixelShader);
+		pVS = m_pMaterial->GetShader(IShader::ShaderType::VertexShader);
+		pPS = m_pMaterial->GetShader(IShader::ShaderType::PixelShader);
 		shadersMap = m_pMaterial->GetShaders();
 	}
 
 	if (pVS == nullptr && pPS == nullptr)
 	{
-		pVS = renderArgs->PipelineState->GetShader(IShader::VertexShader);
-		pPS = renderArgs->PipelineState->GetShader(IShader::PixelShader);
+		pVS = renderArgs->PipelineState->GetShader(IShader::ShaderType::VertexShader);
+		pPS = renderArgs->PipelineState->GetShader(IShader::ShaderType::PixelShader);
 		shadersMap = renderArgs->PipelineState->GetShaders();
 	}
 
