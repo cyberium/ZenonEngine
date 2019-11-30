@@ -6,7 +6,7 @@
 // General
 #include "Font.h"
 
-CFontMesh::CFontMesh(std::shared_ptr<Texture> _texture, std::shared_ptr<IMesh> _fontGeometry, std::vector<uint32> _widthArray, uint32 _height) 
+CFontMesh::CFontMesh(std::shared_ptr<ITexture> _texture, std::shared_ptr<IMesh> _fontGeometry, std::vector<uint32> _widthArray, uint32 _height) 
 	: MeshWrapper(_fontGeometry)
 	, m_Texture(_texture)
 	, m_WidthArray(_widthArray)
@@ -20,7 +20,7 @@ CFontMesh::~CFontMesh()
 }
 
 
-std::shared_ptr<Texture> CFontMesh::GetTexture() const
+std::shared_ptr<ITexture> CFontMesh::GetTexture() const
 {
 	return m_Texture;
 }

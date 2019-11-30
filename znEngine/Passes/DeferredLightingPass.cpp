@@ -8,14 +8,14 @@
 
 DeferredLightingPass::DeferredLightingPass(
 	std::shared_ptr<Scene3D> scene,
-	std::shared_ptr<PipelineState> lightPipeline0,
-	std::shared_ptr<PipelineState> lightPipeline1,
-	std::shared_ptr<PipelineState> directionalLightPipeline,
-	std::shared_ptr<Texture> positionTexture,
-	std::shared_ptr<Texture> diffuseTexture,
-	std::shared_ptr<Texture> specularTexture,
-	std::shared_ptr<Texture> normalTexture,
-	std::shared_ptr<Texture> depthTexture
+	std::shared_ptr<IPipelineState> lightPipeline0,
+	std::shared_ptr<IPipelineState> lightPipeline1,
+	std::shared_ptr<IPipelineState> directionalLightPipeline,
+	std::shared_ptr<ITexture> positionTexture,
+	std::shared_ptr<ITexture> diffuseTexture,
+	std::shared_ptr<ITexture> specularTexture,
+	std::shared_ptr<ITexture> normalTexture,
+	std::shared_ptr<ITexture> depthTexture
 )
 	: m_LightPipeline0(lightPipeline0)
 	, m_LightPipeline1(lightPipeline1)
@@ -42,7 +42,7 @@ DeferredLightingPass::DeferredLightingPass(
 	std::shared_ptr<SceneNode3D> sphereSceneNode = std::make_shared<SceneNode3D>();
 	sphereSceneNode->SetParent(m_pPointLightScene->GetRootNode());
 
-	std::shared_ptr<IMesh> sphereMesh = _RenderDevice->CreateSphere();
+	std::shared_ptr<IMesh> sphereMesh = _RenderDevice->GetPrimitiveCollection()->CreateSphere();
 	sphereSceneNode->GetComponent<CMeshComponent3D>()->AddMesh(sphereMesh);
 
 	// Create a full-screen quad that is placed on the far clip plane.
@@ -51,7 +51,7 @@ DeferredLightingPass::DeferredLightingPass(
 	std::shared_ptr<SceneNode3D> quadSceneNode = std::make_shared<SceneNode3D>();
 	quadSceneNode->SetParent(m_pDirectionalLightScene->GetRootNode());
 
-	std::shared_ptr<IMesh> quadMesh = _RenderDevice->CreateScreenQuad(0, 1280, 1024, 0); // _RenderDevice->CreateScreenQuad(-1, 1, -1, 1, -1);
+	std::shared_ptr<IMesh> quadMesh = _RenderDevice->GetPrimitiveCollection()->CreateScreenQuad(0, 1280, 1024, 0); // _RenderDevice->CreateScreenQuad(-1, 1, -1, 1, -1);
 	quadSceneNode->GetComponent<CMeshComponent3D>()->AddMesh(quadMesh);
 }
 
@@ -73,14 +73,14 @@ void DeferredLightingPass::PreRender(RenderEventArgs& e)
 	SetRenderEventArgs(&e);
 
 	// Bind the G-buffer textures to the pixel shader pipeline stage.
-	m_PositionTexture->Bind(0, Shader::PixelShader, ShaderParameter::Type::Texture);
-	m_DiffuseTexture->Bind(1, Shader::PixelShader, ShaderParameter::Type::Texture);
-	m_SpecularTexture->Bind(2, Shader::PixelShader, ShaderParameter::Type::Texture);
-	m_NormalTexture->Bind(3, Shader::PixelShader, ShaderParameter::Type::Texture);
-	m_DepthTexture->Bind(4, Shader::PixelShader, ShaderParameter::Type::Texture);
+	m_PositionTexture->Bind(0, IShader::PixelShader, IShaderParameter::Type::Texture);
+	m_DiffuseTexture->Bind(1, IShader::PixelShader, IShaderParameter::Type::Texture);
+	m_SpecularTexture->Bind(2, IShader::PixelShader, IShaderParameter::Type::Texture);
+	m_NormalTexture->Bind(3, IShader::PixelShader, IShaderParameter::Type::Texture);
+	m_DepthTexture->Bind(4, IShader::PixelShader, IShaderParameter::Type::Texture);
 }
 
-void DeferredLightingPass::RenderSubPass(RenderEventArgs* e, std::shared_ptr<Scene3D> scene, std::shared_ptr<PipelineState> pipeline)
+void DeferredLightingPass::RenderSubPass(RenderEventArgs* e, std::shared_ptr<Scene3D> scene, std::shared_ptr<IPipelineState> pipeline)
 {
 	e->PipelineState = pipeline.get();
 	SetRenderEventArgs(e);
@@ -104,25 +104,25 @@ void DeferredLightingPass::Render(RenderEventArgs& e)
 	m_pScreenToViewParams->m_InverseProjectionMatrix = glm::inverse(pCamera->GetProjectionMatrix());
 	m_pScreenToViewParams->m_ScreenDimensions = glm::vec2(viewport->GetWidth(), viewport->GetHeight());
 	m_pScreenToViewParams->m_CameraPos = vec4(pCamera->GetTranslation(), 1.0f);
-	m_ScreenToViewParamsCB->Set(*m_pScreenToViewParams);
+	m_ScreenToViewParamsCB->Set(m_pScreenToViewParams, sizeof(ScreenToViewParams));
 
 	// Connect shader parameters to shaders.
 	// This ensures the right parameters are bound to the rendering pipeline when the shader is bound.
 	// (This can probably be done once in the constructor, but if the shaders are recompiled, the parameters
 	// need to be reconnected to the shaders.. soooo better safe than sorry I guess).
-	std::vector< PipelineState* > pipelines = { m_LightPipeline0.get(), m_LightPipeline1.get(), m_DirectionalLightPipeline.get() };
+	std::vector<IPipelineState* > pipelines = { m_LightPipeline0.get(), m_LightPipeline1.get(), m_DirectionalLightPipeline.get() };
 	for (auto pipeline : pipelines)
 	{
-		std::shared_ptr<Shader> vertexShader = pipeline->GetShader(Shader::VertexShader);
+		std::shared_ptr<IShader> vertexShader = pipeline->GetShader(IShader::VertexShader);
 		BindPerObjectConstantBuffer(vertexShader);
 
-		std::shared_ptr<Shader> pixelShader = pipeline->GetShader(Shader::PixelShader);
+		std::shared_ptr<IShader> pixelShader = pipeline->GetShader(IShader::PixelShader);
 		if (pixelShader)
 		{
 			// Bind the per-light & deferred lighting properties constant buffers to the pixel shader.
-			pixelShader->GetShaderParameterByName("LightIndexBuffer").Set(m_LightParamsCB.get());
-			pixelShader->GetShaderParameterByName("ScreenToViewParams").Set(m_ScreenToViewParamsCB.get());
-			pixelShader->GetShaderParameterByName("FogParams").Set(m_FogParamsCB.get());
+			pixelShader->GetShaderParameterByName("LightIndexBuffer")->Set(m_LightParamsCB.get());
+			pixelShader->GetShaderParameterByName("ScreenToViewParams")->Set(m_ScreenToViewParamsCB.get());
+			pixelShader->GetShaderParameterByName("FogParams")->Set(m_FogParamsCB.get());
 		}
 	}
 
@@ -164,11 +164,11 @@ void DeferredLightingPass::Render(RenderEventArgs& e)
 void DeferredLightingPass::PostRender(RenderEventArgs& e)
 {
 	// Explicitly unbind these textures so they can be used as render target textures.
-	m_PositionTexture->UnBind(0, Shader::PixelShader, ShaderParameter::Type::Texture);
-	m_DiffuseTexture->UnBind(1, Shader::PixelShader, ShaderParameter::Type::Texture);
-	m_SpecularTexture->UnBind(2, Shader::PixelShader, ShaderParameter::Type::Texture);
-	m_NormalTexture->UnBind(3, Shader::PixelShader, ShaderParameter::Type::Texture);
-	m_DepthTexture->UnBind(4, Shader::PixelShader, ShaderParameter::Type::Texture);
+	m_PositionTexture->UnBind(0, IShader::PixelShader, IShaderParameter::Type::Texture);
+	m_DiffuseTexture->UnBind(1, IShader::PixelShader, IShaderParameter::Type::Texture);
+	m_SpecularTexture->UnBind(2, IShader::PixelShader, IShaderParameter::Type::Texture);
+	m_NormalTexture->UnBind(3, IShader::PixelShader, IShaderParameter::Type::Texture);
+	m_DepthTexture->UnBind(4, IShader::PixelShader, IShaderParameter::Type::Texture);
 }
 
 // Inherited from Visitor
@@ -229,7 +229,7 @@ bool DeferredLightingPass::Visit(std::shared_ptr < CLight3D> light)
 
 	// Update the constant buffer for the per-light data.
 	m_pLightParams->m_Light = light->getLight();
-	m_LightParamsCB->Set(*m_pLightParams);
+	m_LightParamsCB->Set(m_pLightParams, sizeof(LightParams));
 
 	// Clear the stencil buffer for the next light
 	m_LightPipeline0->GetRenderTarget()->Clear(ClearFlags::Stencil, glm::vec4(0), 1.0f, 1);
@@ -255,9 +255,9 @@ bool DeferredLightingPass::Visit(std::shared_ptr < CLight3D> light)
 
 void DeferredLightingPass::UpdateViewport(const Viewport * _viewport)
 {
-	m_LightPipeline0->GetRasterizerState().SetViewport(_viewport);
-	m_LightPipeline1->GetRasterizerState().SetViewport(_viewport);
-	m_DirectionalLightPipeline->GetRasterizerState().SetViewport(_viewport);
+	m_LightPipeline0->GetRasterizerState()->SetViewport(_viewport);
+	m_LightPipeline1->GetRasterizerState()->SetViewport(_viewport);
+	m_DirectionalLightPipeline->GetRasterizerState()->SetViewport(_viewport);
 }
 
 void DeferredLightingPass::UpdateFog(float fogModifier, vec3 fogColor, float fogDistance)

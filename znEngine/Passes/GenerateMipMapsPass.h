@@ -6,12 +6,12 @@ class OW_ENGINE_API GenerateMipMapPass : public AbstractPass
 {
 public:
 	GenerateMipMapPass(std::shared_ptr<IRenderTarget> renderTarget);
-	GenerateMipMapPass(std::shared_ptr<Texture> texture);
+	GenerateMipMapPass(std::shared_ptr<ITexture> texture);
 	virtual ~GenerateMipMapPass();
 
 	virtual void Render(RenderEventArgs& e);
 
 private:
 	std::shared_ptr<IRenderTarget> m_RenderTarget;
-	std::shared_ptr<Texture> m_Texture;
+	std::shared_ptr<ITexture> m_Texture;
 };

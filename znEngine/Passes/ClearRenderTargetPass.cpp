@@ -11,7 +11,7 @@ ClearRenderTargetPass::ClearRenderTargetPass(std::shared_ptr<IRenderTarget> rend
 	, m_ClearStencil(stencil)
 {}
 
-ClearRenderTargetPass::ClearRenderTargetPass(std::shared_ptr<Texture> texture, ClearFlags clearFlags, const glm::vec4& color, float depth, uint8_t stencil)
+ClearRenderTargetPass::ClearRenderTargetPass(std::shared_ptr<ITexture> texture, ClearFlags clearFlags, const glm::vec4& color, float depth, uint8_t stencil)
 	: m_Texture(texture)
 	, m_ClearFlags(clearFlags)
 	, m_ClearColor(color)

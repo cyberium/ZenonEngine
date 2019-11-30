@@ -39,7 +39,7 @@ BufferDX11::~BufferDX11()
     
 }
 
-bool BufferDX11::Bind(uint32 id, const Shader* shader, ShaderParameter::Type parameterType) const
+bool BufferDX11::Bind(uint32 id, const IShader* shader, IShaderParameter::Type parameterType) const
 {
 	assert(m_pDeviceContext);
 
@@ -64,7 +64,7 @@ bool BufferDX11::Bind(uint32 id, const Shader* shader, ShaderParameter::Type par
 	return true;
 }
 
-void BufferDX11::UnBind(uint32 id, const Shader* shader, ShaderParameter::Type parameterType) const
+void BufferDX11::UnBind(uint32 id, const IShader* shader, IShaderParameter::Type parameterType) const
 {
 	ID3D11Buffer* buffers[] = { nullptr };
 	UINT offsets[] = { 0 };
@@ -107,16 +107,16 @@ IBuffer::BufferType BufferDX11::GetType() const
 	switch (m_BindFlags)
 	{
 	case D3D11_BIND_VERTEX_BUFFER:
-		return IBuffer::VertexBuffer;
+		return IBuffer::BufferType::VertexBuffer;
 		break;
 	case D3D11_BIND_INDEX_BUFFER:
-		return IBuffer::IndexBuffer;
+		return IBuffer::BufferType::IndexBuffer;
 		break;
 	case D3D11_BIND_CONSTANT_BUFFER:
-		return IBuffer::ConstantBuffer;
+		return IBuffer::BufferType::ConstantBuffer;
 		break;
 	default:
-		return IBuffer::Unknown;
+		return IBuffer::BufferType::Unknown;
 		break;
 	}
 }

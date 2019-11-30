@@ -11,7 +11,7 @@ public:
 	virtual ~CUITextureNode();
 
 	// CUITextureNode
-	void SetTexture(std::shared_ptr<Texture> _texture);
+	void SetTexture(std::shared_ptr<ITexture> _texture);
 	void SetColor(vec4 _color);
 
 	// CUIBaseNode

@@ -10,14 +10,7 @@ CGameState::CGameState(const IApplication * _application)
 	: m_Application(_application)
 	, m_IsInited(false)
 	, m_IsCurrent(false)
-	, m_QualitySettings(GetSettingsGroup<CGroupQuality>(_application->GetBaseManager()))
-	, m_VideoSettings(GetSettingsGroup<CGroupVideo>(_application->GetBaseManager()))
 {
-	m_3DScene = std::make_shared<Scene3D>(_application->GetBaseManager());
-    m_3DScene->CreateRootNode();
-
-	m_UIScene = std::make_shared<SceneUI>(_application->GetBaseManager());
-    m_UIScene->CreateRootNode();
 }
 
 CGameState::~CGameState()
@@ -30,6 +23,15 @@ CGameState::~CGameState()
 //
 bool CGameState::Init()
 {
+	m_QualitySettings = GetSettingsGroup<CGroupQuality>(m_Application->GetBaseManager());
+	m_VideoSettings = GetSettingsGroup<CGroupVideo>(m_Application->GetBaseManager());
+
+	m_3DScene = std::make_shared<Scene3D>(m_Application->GetBaseManager());
+	m_3DScene->CreateRootNode();
+
+	m_UIScene = std::make_shared<SceneUI>(m_Application->GetBaseManager());
+	m_UIScene->CreateRootNode();
+
     m_IsInited = true;
 
     return true;
@@ -101,9 +103,6 @@ void CGameState::OnUpdate(UpdateEventArgs & e)
 //
 void CGameState::OnResize(ResizeEventArgs & e)
 {
-	if (e.Width == 0 || e.Height == 0)
-		return;
-
 	m_DefaultCameraController->OnResize(e);
 
 	IApplication& app = Application::Get();

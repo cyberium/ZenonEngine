@@ -7,7 +7,7 @@ class OW_ENGINE_API BasePass : public AbstractPass
 {
     typedef AbstractPass base;
 public:
-	                                                BasePass(std::shared_ptr<Scene3D> scene, std::shared_ptr<PipelineState> pipeline);
+	                                                BasePass(std::shared_ptr<Scene3D> scene, std::shared_ptr<IPipelineState> pipeline);
 	virtual                                         ~BasePass();
 
 	virtual void                                    Render(RenderEventArgs& e) override;

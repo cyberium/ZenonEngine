@@ -153,23 +153,21 @@
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="BlendState.cpp" />
-    <ClCompile Include="BufferBinding.cpp" />
+    <ClCompile Include="BlendStateBase.cpp" />
     <ClCompile Include="Camera.cpp" />
-    <ClCompile Include="ConstantBuffer.cpp" />
-    <ClCompile Include="D3D9_Types.cpp" />
-    <ClCompile Include="DepthStencilState.cpp" />
-    <ClCompile Include="MaterialImpl.cpp" />
-    <ClCompile Include="Mesh.cpp" />
+    <ClCompile Include="DepthStencilStateBase.cpp" />
+    <ClCompile Include="Interfaces\Types\D3D9_Types.cpp" />
+    <ClCompile Include="MaterialBase.cpp" />
+    <ClCompile Include="MeshBase.cpp" />
     <ClCompile Include="Primitives\Geometry.cpp" />
-    <ClCompile Include="RasterizerState.cpp" />
+    <ClCompile Include="RasterizerStateBase.cpp" />
     <ClCompile Include="Ray.cpp" />
-    <ClCompile Include="RenderDevice.cpp" />
+    <ClCompile Include="RenderDeviceBase.cpp" />
     <ClCompile Include="RenderWindow.cpp" />
-    <ClCompile Include="SamplerState.cpp" />
-    <ClCompile Include="Shader.cpp" />
-    <ClCompile Include="ShaderInputLayout.cpp" />
-    <ClCompile Include="ShaderParameter.cpp" />
+    <ClCompile Include="SamplerStateBase.cpp" />
+    <ClCompile Include="ShaderBase.cpp" />
+    <ClCompile Include="ShaderInputLayoutBase.cpp" />
+    <ClCompile Include="ShaderParameterBase.cpp" />
     <ClCompile Include="ShadersUtils.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -177,50 +175,52 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="Viewport.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\shared\znRender.h" />
-    <ClInclude Include="BlendState.h" />
-    <ClInclude Include="Buffer.h" />
-    <ClInclude Include="BufferBinding.h" />
+    <ClInclude Include="BlendStateBase.h" />
     <ClInclude Include="Camera.h" />
-    <ClInclude Include="ClearFlags.h" />
     <ClInclude Include="common.h" />
-    <ClInclude Include="ConstantBuffer.h" />
-    <ClInclude Include="CPUAccess.h" />
-    <ClInclude Include="D3D9_Types.h" />
-    <ClInclude Include="DepthStencilState.h" />
-    <ClInclude Include="MaterialImpl.h" />
+    <ClInclude Include="ConstantBufferBase.h" />
+    <ClInclude Include="DepthStencilStateBase.h" />
+    <ClInclude Include="Interfaces\BufferBinding.h" />
+    <ClInclude Include="Interfaces\ClearFlags.h" />
+    <ClInclude Include="Interfaces\CPUAccess.h" />
+    <ClInclude Include="Interfaces\IBlendState.h" />
+    <ClInclude Include="Interfaces\IBuffer.h" />
+    <ClInclude Include="Interfaces\IDepthStencilState.h" />
+    <ClInclude Include="Interfaces\IMaterial.h" />
+    <ClInclude Include="Interfaces\IMesh.h" />
+    <ClInclude Include="Interfaces\InputSemantic.h" />
+    <ClInclude Include="Interfaces\IPipelineState.h" />
+    <ClInclude Include="Interfaces\IQuery.h" />
+    <ClInclude Include="Interfaces\IRasterizerState.h" />
+    <ClInclude Include="Interfaces\IRenderDevice.h" />
+    <ClInclude Include="Interfaces\IRenderTarget.h" />
+    <ClInclude Include="Interfaces\IRenderWindow.h" />
+    <ClInclude Include="Interfaces\ISamplerState.h" />
+    <ClInclude Include="Interfaces\IShader.h" />
+    <ClInclude Include="Interfaces\IShaderInputLayout.h" />
+    <ClInclude Include="Interfaces\ITexture.h" />
+    <ClInclude Include="Interfaces\PrimitiveTopology.h" />
+    <ClInclude Include="Interfaces\IShaderParameter.h" />
+    <ClInclude Include="Interfaces\Types\D3D9_Types.h" />
+    <ClInclude Include="Interfaces\Viewport.h" />
+    <ClInclude Include="MaterialBase.h" />
     <ClInclude Include="Primitives\Geometry.h" />
-    <ClInclude Include="PrimitiveTopology.h" />
-    <ClInclude Include="InputSemantic.h" />
-    <ClInclude Include="Material.h" />
-    <ClInclude Include="Mesh.h" />
-    <ClInclude Include="PipelineState.h" />
-    <ClInclude Include="Pixel.h" />
-    <ClInclude Include="Query.h" />
-    <ClInclude Include="RasterizerState.h" />
+    <ClInclude Include="MeshBase.h" />
+    <ClInclude Include="RasterizerStateBase.h" />
     <ClInclude Include="Ray.h" />
     <ClInclude Include="RaycastHit.h" />
-    <ClInclude Include="RenderDevice.h" />
-    <ClInclude Include="RenderTarget.h" />
+    <ClInclude Include="RenderDeviceBase.h" />
     <ClInclude Include="RenderWindow.h" />
     <ClInclude Include="RenderEvents.h" />
-    <ClInclude Include="SamplerState.h" />
-    <ClInclude Include="Shader.h" />
-    <ClInclude Include="ShaderInputLayout.h" />
-    <ClInclude Include="ShaderParameter.h" />
+    <ClInclude Include="SamplerStateBase.h" />
+    <ClInclude Include="ShaderBase.h" />
+    <ClInclude Include="ShaderInputLayoutBase.h" />
+    <ClInclude Include="ShaderParameterBase.h" />
     <ClInclude Include="ShadersUtils.h" />
     <ClInclude Include="stdafx.h" />
-    <ClInclude Include="StructuredBuffer.h" />
-    <ClInclude Include="Texture.h" />
-    <ClInclude Include="Viewport.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="RenderDevice.inl" />
-    <None Include="ShaderParameter.inl" />
-    <None Include="Texture.inl" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\znCore\znCore.vcxproj">

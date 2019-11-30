@@ -5,7 +5,7 @@
 class OW_ENGINE_API DispatchPass : public AbstractPass
 {
 public:
-	DispatchPass(std::shared_ptr<Shader> computeShader, const glm::uvec3& numGroups);
+	DispatchPass(std::shared_ptr<IShader> computeShader, const glm::uvec3& numGroups);
 	virtual ~DispatchPass();
 
 	// Render the pass. This should only be called by the RenderTechnique.
@@ -18,7 +18,7 @@ public:
 
 private:
 
-	std::shared_ptr<Shader> m_pComputeShader;
+	std::shared_ptr<IShader> m_pComputeShader;
 
 	// The number of groups to dispatch for the compute shader kernel.
 	glm::uvec3 m_NumGroups;

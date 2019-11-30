@@ -3,7 +3,7 @@
 // General
 #include "EndQueryPass.h"
 
-EndQueryPass::EndQueryPass(std::shared_ptr<Query> query)
+EndQueryPass::EndQueryPass(std::shared_ptr<IQuery> query)
     : m_pQuery(query)
 {}
 

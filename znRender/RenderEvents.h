@@ -4,7 +4,7 @@
 
 // FORWARD BEGIN
 class Camera;
-class PipelineState;
+ZN_INTERFACE IPipelineState;
 class Viewport;
 // FORWARD END
 
@@ -44,7 +44,7 @@ public:
         float TotalTime, 
         uint64_t FrameCounter,
         const Camera* Camera,
-        const PipelineState* PipelineState,
+        const IPipelineState* PipelineState,
         const Object* Node
     )
 		: base(Caller)
@@ -62,7 +62,7 @@ public:
 	int64_t                                         FrameCounter;
 
     const Camera*                                   Camera;
-    const PipelineState*                            PipelineState;
+    const IPipelineState*                            PipelineState;
     const Object*                                   Node;
 };
 typedef Delegate<RenderEventArgs> RenderEvent;

@@ -102,7 +102,7 @@ StructuredBufferDX11::StructuredBufferDX11(ID3D11Device2* pDevice, UINT bindFlag
 StructuredBufferDX11::~StructuredBufferDX11()
 {}
 
-bool StructuredBufferDX11::Bind(uint32 ID, const Shader* shader, ShaderParameter::Type parameterType) const
+bool StructuredBufferDX11::Bind(uint32 ID, const IShader* shader, IShaderParameter::Type parameterType) const
 {
 	assert(m_pDeviceContext);
 
@@ -112,38 +112,38 @@ bool StructuredBufferDX11::Bind(uint32 ID, const Shader* shader, ShaderParameter
 		m_bIsDirty = false;
 	}
 
-	if (parameterType == ShaderParameter::Type::Buffer && m_pSRV)
+	if (parameterType == IShaderParameter::Type::Buffer && m_pSRV)
 	{
 		ID3D11ShaderResourceView* srv[] = { m_pSRV };
 
 		switch (shader->GetType())
 		{
-		case Shader::VertexShader:
+		case IShader::VertexShader:
 			m_pDeviceContext->VSSetShaderResources(ID, 1, srv);
 			break;
-		case Shader::TessellationControlShader:
+		case IShader::TessellationControlShader:
 			m_pDeviceContext->HSSetShaderResources(ID, 1, srv);
 			break;
-		case Shader::TessellationEvaluationShader:
+		case IShader::TessellationEvaluationShader:
 			m_pDeviceContext->DSSetShaderResources(ID, 1, srv);
 			break;
-		case Shader::GeometryShader:
+		case IShader::GeometryShader:
 			m_pDeviceContext->GSSetShaderResources(ID, 1, srv);
 			break;
-		case Shader::PixelShader:
+		case IShader::PixelShader:
 			m_pDeviceContext->PSSetShaderResources(ID, 1, srv);
 			break;
-		case Shader::ComputeShader:
+		case IShader::ComputeShader:
 			m_pDeviceContext->CSSetShaderResources(ID, 1, srv);
 			break;
 		}
 	}
-	else if (parameterType == ShaderParameter::Type::RWBuffer && m_pUAV)
+	else if (parameterType == IShaderParameter::Type::RWBuffer && m_pUAV)
 	{
 		ID3D11UnorderedAccessView* uav[] = { m_pUAV };
 		switch (shader->GetType())
 		{
-		case Shader::ComputeShader:
+		case IShader::ComputeShader:
 			m_pDeviceContext->CSSetUnorderedAccessViews(ID, 1, uav, nullptr);
 			break;
 		}
@@ -152,40 +152,40 @@ bool StructuredBufferDX11::Bind(uint32 ID, const Shader* shader, ShaderParameter
 	return true;
 }
 
-void StructuredBufferDX11::UnBind(uint32 ID, const Shader* shader, ShaderParameter::Type parameterType) const
+void StructuredBufferDX11::UnBind(uint32 ID, const IShader* shader, IShaderParameter::Type parameterType) const
 {
 	ID3D11UnorderedAccessView* uav[] = { nullptr };
 	ID3D11ShaderResourceView* srv[] = { nullptr };
 
-	if (parameterType == ShaderParameter::Type::Buffer)
+	if (parameterType == IShaderParameter::Type::Buffer)
 	{
 		switch (shader->GetType())
 		{
-		case Shader::VertexShader:
+		case IShader::VertexShader:
 			m_pDeviceContext->VSSetShaderResources(ID, 1, srv);
 			break;
-		case Shader::TessellationControlShader:
+		case IShader::TessellationControlShader:
 			m_pDeviceContext->HSSetShaderResources(ID, 1, srv);
 			break;
-		case Shader::TessellationEvaluationShader:
+		case IShader::TessellationEvaluationShader:
 			m_pDeviceContext->DSSetShaderResources(ID, 1, srv);
 			break;
-		case Shader::GeometryShader:
+		case IShader::GeometryShader:
 			m_pDeviceContext->GSSetShaderResources(ID, 1, srv);
 			break;
-		case Shader::PixelShader:
+		case IShader::PixelShader:
 			m_pDeviceContext->PSSetShaderResources(ID, 1, srv);
 			break;
-		case Shader::ComputeShader:
+		case IShader::ComputeShader:
 			m_pDeviceContext->CSSetShaderResources(ID, 1, srv);
 			break;
 		}
 	}
-	else if (parameterType == ShaderParameter::Type::RWBuffer)
+	else if (parameterType == IShaderParameter::Type::RWBuffer)
 	{
 		switch (shader->GetType())
 		{
-		case Shader::ComputeShader:
+		case IShader::ComputeShader:
 			m_pDeviceContext->CSSetUnorderedAccessViews(ID, 1, uav, nullptr);
 			break;
 		}
@@ -223,7 +223,7 @@ void StructuredBufferDX11::Commit() const
 	}
 }
 
-void StructuredBufferDX11::Copy(std::shared_ptr<StructuredBuffer> other)
+void StructuredBufferDX11::Copy(std::shared_ptr<IStructuredBuffer> other)
 {
 	std::shared_ptr<StructuredBufferDX11> srcBuffer = std::dynamic_pointer_cast<StructuredBufferDX11>(other);
 
@@ -261,7 +261,7 @@ void StructuredBufferDX11::Copy(std::shared_ptr<StructuredBuffer> other)
 
 void StructuredBufferDX11::Copy(std::shared_ptr<IBuffer> other)
 {
-	Copy(std::dynamic_pointer_cast<StructuredBuffer>(other));
+	Copy(std::dynamic_pointer_cast<IStructuredBuffer>(other));
 }
 
 void StructuredBufferDX11::Clear()
@@ -275,7 +275,7 @@ void StructuredBufferDX11::Clear()
 
 IBuffer::BufferType StructuredBufferDX11::GetType() const
 {
-	return IBuffer::StructuredBuffer;
+	return IBuffer::BufferType::StructuredBuffer;
 }
 
 uint32 StructuredBufferDX11::GetElementCount() const

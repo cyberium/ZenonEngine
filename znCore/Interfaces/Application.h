@@ -1,7 +1,7 @@
 #pragma once
 
 // Forward BEGIN
-class IRenderDevice;
+ZN_INTERFACE IRenderDevice;
 class RenderWindow;
 class CLoader;
 // Forward END

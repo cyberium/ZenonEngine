@@ -88,29 +88,29 @@ TextureOGLFormat TextureOGLFormatsUnsignedInteger[] =
 	{ GL_RGBA32UI,		GL_RGBA,32,	32,	32,	32 }
 };
 
-static void ReportAndThrowTextureFormatError(const Texture::TextureFormat& format, const std::string& file, int line, const std::string& function, const std::string& message)
+static void ReportAndThrowTextureFormatError(const ITexture::TextureFormat& format, const std::string& file, int line, const std::string& function, const std::string& message)
 {
 	std::stringstream ss;
 	ss << message << std::endl;
 	ss << "Components: ";
 	switch (format.Components)
 	{
-	case Texture::Components::R:
+	case ITexture::Components::R:
 		ss << "R" << std::endl;
 		break;
-	case Texture::Components::RG:
+	case ITexture::Components::RG:
 		ss << "RG" << std::endl;
 		break;
-	case Texture::Components::RGB:
+	case ITexture::Components::RGB:
 		ss << "RGB" << std::endl;
 		break;
-	case Texture::Components::RGBA:
+	case ITexture::Components::RGBA:
 		ss << "RGBA" << std::endl;
 		break;
-	case Texture::Components::Depth:
+	case ITexture::Components::Depth:
 		ss << "Depth" << std::endl;
 		break;
-	case Texture::Components::DepthStencil:
+	case ITexture::Components::DepthStencil:
 		ss << "DepthStencil" << std::endl;
 		break;
 	default:
@@ -121,22 +121,22 @@ static void ReportAndThrowTextureFormatError(const Texture::TextureFormat& forma
 	ss << "Type:";
 	switch (format.Type)
 	{
-	case Texture::Type::Typeless:
+	case ITexture::Type::Typeless:
 		ss << "Typeless" << std::endl;
 		break;
-	case Texture::Type::UnsignedNormalized:
+	case ITexture::Type::UnsignedNormalized:
 		ss << "UnsignedNormalized" << std::endl;
 		break;
-	case Texture::Type::SignedNormalized:
+	case ITexture::Type::SignedNormalized:
 		ss << "SignedNormalized" << std::endl;
 		break;
-	case Texture::Type::Float:
+	case ITexture::Type::Float:
 		ss << "Float" << std::endl;
 		break;
-	case Texture::Type::UnsignedInteger:
+	case ITexture::Type::UnsignedInteger:
 		ss << "UnsignedInteger" << std::endl;
 		break;
-	case Texture::Type::SignedInteger:
+	case ITexture::Type::SignedInteger:
 		ss << "SignedInteger" << std::endl;
 		break;
 	default:
@@ -156,16 +156,16 @@ static void ReportAndThrowTextureFormatError(const Texture::TextureFormat& forma
 }
 #define ReportTextureFormatError( fmt, msg ) ReportAndThrowTextureFormatError( (fmt), __FILE__, __LINE__, __FUNCTION__, (msg) )
 
-GLenum TranslateTextureInternalFormat(const Texture::TextureFormat& format)
+GLenum TranslateTextureInternalFormat(const ITexture::TextureFormat& format)
 {
 	GLenum result = 0;
 
 	switch (format.Components)
 	{
-	case Texture::Components::R:
+	case ITexture::Components::R:
 		switch (format.Type)
 		{
-		case Texture::Type::Typeless:
+		case ITexture::Type::Typeless:
 			if (format.RedBits == 8)
 			{
 				result = GL_R8;
@@ -177,7 +177,7 @@ GLenum TranslateTextureInternalFormat(const Texture::TextureFormat& format)
 			else
 				ReportTextureFormatError(format, "Unsupported texture format.");
 			break;
-		case Texture::Type::UnsignedNormalized:
+		case ITexture::Type::UnsignedNormalized:
 			if (format.RedBits == 8)
 			{
 				result = GL_R8;
@@ -191,7 +191,7 @@ GLenum TranslateTextureInternalFormat(const Texture::TextureFormat& format)
 				ReportTextureFormatError(format, "Unsupported texture format.");
 			}
 			break;
-		case Texture::Type::SignedNormalized:
+		case ITexture::Type::SignedNormalized:
 			if (format.RedBits == 8)
 			{
 				result = GL_R8_SNORM;
@@ -203,7 +203,7 @@ GLenum TranslateTextureInternalFormat(const Texture::TextureFormat& format)
 			else
 				ReportTextureFormatError(format, "Unsupported texture format.");
 			break;
-		case Texture::Type::Float:
+		case ITexture::Type::Float:
 			if (format.RedBits == 16)
 			{
 				result = GL_R16F;
@@ -215,7 +215,7 @@ GLenum TranslateTextureInternalFormat(const Texture::TextureFormat& format)
 			else
 				ReportTextureFormatError(format, "Unsupported texture format.");
 			break;
-		case Texture::Type::UnsignedInteger:
+		case ITexture::Type::UnsignedInteger:
 			if (format.RedBits == 8)
 			{
 				result = GL_R8UI;
@@ -231,7 +231,7 @@ GLenum TranslateTextureInternalFormat(const Texture::TextureFormat& format)
 			else
 				ReportTextureFormatError(format, "Unsupported texture format.");
 			break;
-		case Texture::Type::SignedInteger:
+		case ITexture::Type::SignedInteger:
 			if (format.RedBits == 8)
 			{
 				result = GL_R8I;
@@ -253,10 +253,10 @@ GLenum TranslateTextureInternalFormat(const Texture::TextureFormat& format)
 		}
 		break;
 
-	case Texture::Components::RG:
+	case ITexture::Components::RG:
 		switch (format.Type)
 		{
-		case Texture::Type::Typeless:
+		case ITexture::Type::Typeless:
 			if (format.RedBits == 8 && format.GreenBits == 8)
 			{
 				result = GL_RG8;
@@ -268,7 +268,7 @@ GLenum TranslateTextureInternalFormat(const Texture::TextureFormat& format)
 			else
 				ReportTextureFormatError(format, "Unsupported texture format.");
 			break;
-		case Texture::Type::UnsignedNormalized:
+		case ITexture::Type::UnsignedNormalized:
 			if (format.RedBits == 8 && format.GreenBits == 8)
 			{
 				result = GL_RG8;
@@ -282,7 +282,7 @@ GLenum TranslateTextureInternalFormat(const Texture::TextureFormat& format)
 				ReportTextureFormatError(format, "Unsupported texture format.");
 			}
 			break;
-		case Texture::Type::SignedNormalized:
+		case ITexture::Type::SignedNormalized:
 			if (format.RedBits == 8 && format.GreenBits == 8)
 			{
 				result = GL_RG8_SNORM;
@@ -296,7 +296,7 @@ GLenum TranslateTextureInternalFormat(const Texture::TextureFormat& format)
 				ReportTextureFormatError(format, "Unsupported texture format.");
 			}
 			break;
-		case Texture::Type::Float:
+		case ITexture::Type::Float:
 			if (format.RedBits == 16 && format.GreenBits == 16)
 			{
 				result = GL_RG16F;
@@ -310,7 +310,7 @@ GLenum TranslateTextureInternalFormat(const Texture::TextureFormat& format)
 				ReportTextureFormatError(format, "Unsupported texture format.");
 			}
 			break;
-		case Texture::Type::UnsignedInteger:
+		case ITexture::Type::UnsignedInteger:
 			if (format.RedBits == 8 && format.GreenBits == 8)
 			{
 				result = GL_RG8UI;
@@ -328,7 +328,7 @@ GLenum TranslateTextureInternalFormat(const Texture::TextureFormat& format)
 				ReportTextureFormatError(format, "Unsupported texture format.");
 			}
 			break;
-		case Texture::Type::SignedInteger:
+		case ITexture::Type::SignedInteger:
 			if (format.RedBits == 8 && format.GreenBits == 8)
 			{
 				result = GL_RG8I;
@@ -352,13 +352,13 @@ GLenum TranslateTextureInternalFormat(const Texture::TextureFormat& format)
 		}
 		break;
 
-	case Texture::Components::RGB:
+	case ITexture::Components::RGB:
 		switch (format.Type)
 		{
-		case Texture::Type::Typeless:
+		case ITexture::Type::Typeless:
 				ReportTextureFormatError(format, "Unsupported texture format.");
 			break;
-		case Texture::Type::Float:
+		case ITexture::Type::Float:
 			if (format.RedBits == 11 && format.GreenBits == 11 && format.BlueBits == 10)
 			{
 				result = GL_R11F_G11F_B10F;
@@ -371,7 +371,7 @@ GLenum TranslateTextureInternalFormat(const Texture::TextureFormat& format)
 				ReportTextureFormatError(format, "Unsupported texture format.");
 			break;
 
-		case Texture::Type::UnsignedInteger:
+		case ITexture::Type::UnsignedInteger:
 			if (format.RedBits == 32 && format.GreenBits == 32 && format.BlueBits == 32)
 			{
 				result = GL_RGB32UI;
@@ -380,7 +380,7 @@ GLenum TranslateTextureInternalFormat(const Texture::TextureFormat& format)
 				ReportTextureFormatError(format, "Unsupported texture format.");
 			break;
 
-		case Texture::Type::SignedInteger:
+		case ITexture::Type::SignedInteger:
 			if (format.RedBits == 32 && format.GreenBits == 32 && format.BlueBits == 32)
 			{
 				result = GL_RGB32I;
@@ -393,10 +393,10 @@ GLenum TranslateTextureInternalFormat(const Texture::TextureFormat& format)
 			ReportTextureFormatError(format, "Unsupported texture format.");
 		}
 		break;
-	case Texture::Components::RGBA:
+	case ITexture::Components::RGBA:
 		switch (format.Type)
 		{
-		case Texture::Type::Typeless:
+		case ITexture::Type::Typeless:
 			if (format.RedBits == 8 && format.GreenBits == 8 && format.BlueBits == 8 && format.AlphaBits == 8)
 			{
 				result = GL_RGBA8;
@@ -409,7 +409,7 @@ GLenum TranslateTextureInternalFormat(const Texture::TextureFormat& format)
 				ReportTextureFormatError(format, "Unsupported texture format.");
 			break;
 
-		case Texture::Type::UnsignedNormalized:
+		case ITexture::Type::UnsignedNormalized:
 			if (format.RedBits == 8 && format.GreenBits == 8 && format.BlueBits == 8 && format.AlphaBits == 8)
 			{
 				result = GL_RGBA8;
@@ -422,7 +422,7 @@ GLenum TranslateTextureInternalFormat(const Texture::TextureFormat& format)
 				ReportTextureFormatError(format, "Unsupported texture format.");
 			break;
 
-		case Texture::Type::SignedNormalized:
+		case ITexture::Type::SignedNormalized:
 			if (format.RedBits == 8 && format.GreenBits == 8 && format.BlueBits == 8 && format.AlphaBits == 8)
 			{
 				result = GL_RGBA8_SNORM;
@@ -435,7 +435,7 @@ GLenum TranslateTextureInternalFormat(const Texture::TextureFormat& format)
 				ReportTextureFormatError(format, "Unsupported texture format.");
 			break;
 
-		case Texture::Type::Float:
+		case ITexture::Type::Float:
 			if (format.RedBits == 32 && format.GreenBits == 32 && format.BlueBits && format.AlphaBits == 32)
 			{
 				result = GL_RGBA32F;
@@ -448,7 +448,7 @@ GLenum TranslateTextureInternalFormat(const Texture::TextureFormat& format)
 				ReportTextureFormatError(format, "Unsupported texture format.");
 			break;
 
-		case Texture::Type::UnsignedInteger:
+		case ITexture::Type::UnsignedInteger:
 			if (format.RedBits == 8 && format.GreenBits == 8 && format.BlueBits == 8 && format.AlphaBits == 8)
 			{
 				result = GL_RGBA8UI;
@@ -465,7 +465,7 @@ GLenum TranslateTextureInternalFormat(const Texture::TextureFormat& format)
 				ReportTextureFormatError(format, "Unsupported texture format.");
 			break;
 
-		case Texture::Type::SignedInteger:
+		case ITexture::Type::SignedInteger:
 			if (format.RedBits == 8 && format.GreenBits == 8 && format.BlueBits == 8 && format.AlphaBits == 8)
 			{
 				result = GL_RGBA8I;
@@ -487,10 +487,10 @@ GLenum TranslateTextureInternalFormat(const Texture::TextureFormat& format)
 			break;
 		}
 		break;
-	case Texture::Components::Depth:
+	case ITexture::Components::Depth:
 		switch (format.Type)
 		{
-		case Texture::Type::UnsignedNormalized:
+		case ITexture::Type::UnsignedNormalized:
 			if (format.DepthBits == 32)
 			{
 				result = GL_DEPTH_COMPONENT32;
@@ -507,7 +507,7 @@ GLenum TranslateTextureInternalFormat(const Texture::TextureFormat& format)
 				ReportTextureFormatError(format, "Unsupported texture format.");
 			break;
 
-		case Texture::Type::Float:
+		case ITexture::Type::Float:
 			if (format.DepthBits == 32)
 			{
 				result = GL_DEPTH_COMPONENT32F;
@@ -521,7 +521,7 @@ GLenum TranslateTextureInternalFormat(const Texture::TextureFormat& format)
 			break;
 		}
 		break;
-	case Texture::Components::DepthStencil:
+	case ITexture::Components::DepthStencil:
 		if (format.DepthBits == 24 && format.StencilBits == 8)
 		{
 			result = GL_DEPTH24_STENCIL8;
@@ -541,33 +541,33 @@ GLenum TranslateTextureInternalFormat(const Texture::TextureFormat& format)
 	return result;
 }
 
-GLenum TranslateTextureInputFormat(const Texture::TextureFormat& format)
+GLenum TranslateTextureInputFormat(const ITexture::TextureFormat& format)
 {
 	GLenum result = 0;
 
 	switch (format.Components)
 	{
-	case Texture::Components::R:
+	case ITexture::Components::R:
 		result = GL_RED;
 		break;
 
-	case Texture::Components::RG:
+	case ITexture::Components::RG:
 		result = GL_RG;
 		break;
 
-	case Texture::Components::RGB:
+	case ITexture::Components::RGB:
 		result = GL_RGB;
 		break;
 
-	case Texture::Components::RGBA:
+	case ITexture::Components::RGBA:
 		result = GL_RGBA;
 		break;
 
-	case Texture::Components::Depth:
+	case ITexture::Components::Depth:
 		result = GL_DEPTH_COMPONENT;
 		break;
 
-	case Texture::Components::DepthStencil:
+	case ITexture::Components::DepthStencil:
 		result = GL_DEPTH_STENCIL;
 		break;
 	default:
@@ -578,7 +578,7 @@ GLenum TranslateTextureInputFormat(const Texture::TextureFormat& format)
 	return result;
 }
 
-GLenum TranslateTextureInputType(const Texture::TextureFormat& format)
+GLenum TranslateTextureInputType(const ITexture::TextureFormat& format)
 {
 	/* Type
 	GL_UNSIGNED_BYTE,
@@ -606,19 +606,19 @@ GLenum TranslateTextureInputType(const Texture::TextureFormat& format)
 
 	switch (format.Type)
 	{
-	case Texture::Type::UnsignedNormalized:
+	case ITexture::Type::UnsignedNormalized:
 		result = GL_UNSIGNED_BYTE;
 		break;
-	case Texture::Type::SignedNormalized:
+	case ITexture::Type::SignedNormalized:
 		result = GL_BYTE;
 		break;
-	case Texture::Type::Float:
+	case ITexture::Type::Float:
 		result = GL_FLOAT;
 		break;
-	case Texture::Type::UnsignedInteger:
+	case ITexture::Type::UnsignedInteger:
 		result = GL_UNSIGNED_INT;
 		break;
-	case Texture::Type::SignedInteger:
+	case ITexture::Type::SignedInteger:
 		result = GL_INT;
 		break;
 	default:

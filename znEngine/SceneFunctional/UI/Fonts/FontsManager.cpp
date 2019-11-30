@@ -189,7 +189,7 @@ std::shared_ptr<CFontMesh> FontsManager::CreateAction(const std::string& _nameAn
     __geom->AddVertexBuffer(BufferBinding("TEXCOORD", 0), _RenderDevice->CreateVoidVertexBuffer(vertices.data(), vertices.size(), sizeof(vec3), sizeof(DirectX::VertexPositionTextureNormal)));
 
 	// Font texture
-	std::shared_ptr<Texture> texture = _RenderDevice->CreateTexture();
+	std::shared_ptr<ITexture> texture = _RenderDevice->CreateTexture();
 	texture->LoadTextureCustom(imageWidth, imageHeight, image);
 
 	delete[] image;
@@ -363,7 +363,7 @@ std::shared_ptr<CFontMesh> FontsManager::CreateAction(const std::string& _nameAn
 	__geom->SetVertexBuffer(__vb);
 
 	// Font texture
-	std::shared_ptr<Texture> texture = _RenderDevice->CreateTexture();
+	std::shared_ptr<ITexture> texture = _RenderDevice->CreateTexture();
 	texture->LoadTextureCustom(imageWidth, imageHeight, image);
 
 	delete[] image;

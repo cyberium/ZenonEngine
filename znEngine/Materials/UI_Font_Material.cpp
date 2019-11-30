@@ -13,42 +13,42 @@ UI_Font_Material::UI_Font_Material() :
 	*m_pProperties = MaterialProperties();
 
 	// CreateShaders
-    std::shared_ptr<Shader> g_pVertexShader;
-	std::shared_ptr<Shader> g_pPixelShader;
+    std::shared_ptr<IShader> g_pVertexShader;
+	std::shared_ptr<IShader> g_pPixelShader;
 
     if (_RenderDevice->GetDeviceType() == RenderDeviceType::RenderDeviceType_DirectX)
     {
         g_pVertexShader = _RenderDevice->CreateShader(
-            Shader::VertexShader, "IDB_SHADER_UI_FONT", Shader::ShaderMacros(), "VS_main", "latest"
+            IShader::VertexShader, "IDB_SHADER_UI_FONT", IShader::ShaderMacros(), "VS_main", "latest"
         );
         
         g_pPixelShader = _RenderDevice->CreateShader(
-            Shader::PixelShader, "IDB_SHADER_UI_FONT", Shader::ShaderMacros(), "PS_main", "latest"
+            IShader::PixelShader, "IDB_SHADER_UI_FONT", IShader::ShaderMacros(), "PS_main", "latest"
         );
     }
     else if (_RenderDevice->GetDeviceType() == RenderDeviceType::RenderDeviceType_OpenGL)
     {
         g_pVertexShader = _RenderDevice->CreateShader(
-            Shader::VertexShader, "IDB_SHADER_OGL__UI_FONT_VS", Shader::ShaderMacros(), "", ""
+            IShader::VertexShader, "IDB_SHADER_OGL__UI_FONT_VS", IShader::ShaderMacros(), "", ""
         );
 
         g_pPixelShader = _RenderDevice->CreateShader(
-            Shader::PixelShader, "IDB_SHADER_OGL__UI_FONT_PS", Shader::ShaderMacros(), "", ""
+            IShader::PixelShader, "IDB_SHADER_OGL__UI_FONT_PS", IShader::ShaderMacros(), "", ""
         );
     }
 
     g_pVertexShader->LoadInputLayoutFromReflector();
 
 	// Create samplers
-	std::shared_ptr<SamplerState> g_LinearClampSampler = _RenderDevice->CreateSamplerState();
-	g_LinearClampSampler->SetFilter(SamplerState::MinFilter::MinLinear, SamplerState::MagFilter::MagLinear, SamplerState::MipFilter::MipLinear);
-	g_LinearClampSampler->SetWrapMode(SamplerState::WrapMode::Clamp, SamplerState::WrapMode::Clamp, SamplerState::WrapMode::Clamp);
+	std::shared_ptr<ISamplerState> g_LinearClampSampler = _RenderDevice->CreateSamplerState();
+	g_LinearClampSampler->SetFilter(ISamplerState::MinFilter::MinLinear, ISamplerState::MagFilter::MagLinear, ISamplerState::MipFilter::MipLinear);
+	g_LinearClampSampler->SetWrapMode(ISamplerState::WrapMode::Clamp, ISamplerState::WrapMode::Clamp, ISamplerState::WrapMode::Clamp);
 
     SetSampler(0, g_LinearClampSampler);
 
 	// Material
-	SetShader(Shader::VertexShader, g_pVertexShader);
-	SetShader(Shader::PixelShader, g_pPixelShader);
+	SetShader(IShader::VertexShader, g_pVertexShader);
+	SetShader(IShader::PixelShader, g_pPixelShader);
 }
 
 UI_Font_Material::~UI_Font_Material()

@@ -18,7 +18,7 @@ CUITextureNode::CUITextureNode(vec2 Size)
 	m_Material->SetWrapper(m_Material);
 	m_Material->SetColor(cDefaultColor);
 
-	m_Mesh = _RenderDevice->CreateUIQuad(Size.x, Size.y);
+	m_Mesh = _RenderDevice->GetPrimitiveCollection()->CreateUIQuad(Size.x, Size.y);
 }
 
 CUITextureNode::~CUITextureNode()
@@ -29,7 +29,7 @@ CUITextureNode::~CUITextureNode()
 //
 // CUITextureNode
 //
-void CUITextureNode::SetTexture(std::shared_ptr<Texture> _texture)
+void CUITextureNode::SetTexture(std::shared_ptr<ITexture> _texture)
 {
 	m_Material->SetTexture(_texture);
 }

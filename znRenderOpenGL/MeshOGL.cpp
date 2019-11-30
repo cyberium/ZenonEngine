@@ -66,7 +66,7 @@ void MeshOGL::SetPrimitiveTopology(PrimitiveTopology _topology)
 	}
 }
 
-bool MeshOGL::Render(const RenderEventArgs* renderArgs, const ConstantBuffer* perObject, UINT indexStartLocation, UINT indexCnt, UINT vertexStartLocation, UINT vertexCnt)
+bool MeshOGL::Render(const RenderEventArgs* renderArgs, const IConstantBuffer* perObject, UINT indexStartLocation, UINT indexCnt, UINT vertexStartLocation, UINT vertexCnt)
 {
     if (indexCnt == 0 && m_pIndexBuffer != nullptr)
         indexCnt = m_pIndexBuffer->GetElementCount();

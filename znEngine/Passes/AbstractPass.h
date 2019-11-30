@@ -4,7 +4,7 @@ class OW_ENGINE_API AbstractPass : public IRenderPass
 {
 public:
 	                                                AbstractPass();
-                                                    AbstractPass(std::shared_ptr<PipelineState> Pipeline);
+                                                    AbstractPass(std::shared_ptr<IPipelineState> Pipeline);
 	virtual                                         ~AbstractPass();
 
 	virtual void                                    SetEnabled(bool enabled);
@@ -35,14 +35,14 @@ protected: // PerObject functional
 		glm::mat4 Projection;
 	};
 	PerObject*                                      m_PerObjectData;
-	std::shared_ptr<ConstantBuffer>                 m_PerObjectConstantBuffer;
+	std::shared_ptr<IConstantBuffer>                 m_PerObjectConstantBuffer;
 
 	void                                            SetPerObjectConstantBufferData(PerObject& perObjectData);
-	std::shared_ptr<ConstantBuffer>                 GetPerObjectConstantBuffer() const;
-    void                                            BindPerObjectConstantBuffer(std::shared_ptr<Shader> shader);
+	std::shared_ptr<IConstantBuffer>                 GetPerObjectConstantBuffer() const;
+    void                                            BindPerObjectConstantBuffer(std::shared_ptr<IShader> shader);
 
 protected:
-    std::shared_ptr<PipelineState>                  GetPipelineState() const;
+    std::shared_ptr<IPipelineState>                  GetPipelineState() const;
     std::shared_ptr<IRenderDevice>                  GetRenderDevice() const;
 
 private:
@@ -50,6 +50,6 @@ private:
 
     RenderEventArgs*                                m_RenderEventArgs;
 
-    std::shared_ptr<PipelineState>                  m_Pipeline;
+    std::shared_ptr<IPipelineState>                  m_Pipeline;
     std::weak_ptr<IRenderDevice>                    m_RenderDevice;
 };

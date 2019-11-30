@@ -9,10 +9,10 @@ public:
 	UI_Button_Material();
 	virtual ~UI_Button_Material();
 
-	void SetIdleTexture(std::shared_ptr<Texture> _texture);
-	void SetHoverTexture(std::shared_ptr<Texture> _texture);
-	void SetClickedTexture(std::shared_ptr<Texture> _texture);
-	void SetDisabledTexture(std::shared_ptr<Texture> _texture);
+	void SetIdleTexture(std::shared_ptr<ITexture> _texture);
+	void SetHoverTexture(std::shared_ptr<ITexture> _texture);
+	void SetClickedTexture(std::shared_ptr<ITexture> _texture);
+	void SetDisabledTexture(std::shared_ptr<ITexture> _texture);
 
 	void SetColor(vec4 color);
 	void SetState(uint32 state);

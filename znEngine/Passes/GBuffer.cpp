@@ -24,44 +24,44 @@ void CGBuffer::Load(uint32 width, uint32 height)
 	uint32 numSamples = 1;
 
 	// Position (Color0) 
-	Texture::TextureFormat positionTextureFormat(
-		Texture::Components::RGBA,
-		Texture::Type::Float,
+	ITexture::TextureFormat positionTextureFormat(
+		ITexture::Components::RGBA,
+		ITexture::Type::Float,
 		numSamples,
 		32, 32, 32, 32, 0, 0);
-	std::shared_ptr<Texture> positionTexture = renderDevice->CreateTexture2D(width, height, 1, positionTextureFormat);
+	std::shared_ptr<ITexture> positionTexture = renderDevice->CreateTexture2D(width, height, 1, positionTextureFormat);
 
 	// Diffuse buffer (Color1)
-	Texture::TextureFormat duffuseTextureFormat(
-		Texture::Components::RGBA,
-		Texture::Type::UnsignedNormalized,
+	ITexture::TextureFormat duffuseTextureFormat(
+		ITexture::Components::RGBA,
+		ITexture::Type::UnsignedNormalized,
 		numSamples,
 		8, 8, 8, 8, 0, 0);
-	std::shared_ptr<Texture> duffuseTexture = renderDevice->CreateTexture2D(width, height, 1, duffuseTextureFormat);
+	std::shared_ptr<ITexture> duffuseTexture = renderDevice->CreateTexture2D(width, height, 1, duffuseTextureFormat);
 
 	// Specular buffer (Color2)
-	Texture::TextureFormat specularTextureFormat(
-		Texture::Components::RGBA,
-		Texture::Type::UnsignedNormalized,
+	ITexture::TextureFormat specularTextureFormat(
+		ITexture::Components::RGBA,
+		ITexture::Type::UnsignedNormalized,
 		numSamples,
 		8, 8, 8, 8, 0, 0);
-	std::shared_ptr<Texture> specularTexture = renderDevice->CreateTexture2D(width, height, 1, specularTextureFormat);
+	std::shared_ptr<ITexture> specularTexture = renderDevice->CreateTexture2D(width, height, 1, specularTextureFormat);
 
 	// Normal buffer (Color3)
-	Texture::TextureFormat normalTextureFormat(
-		Texture::Components::RGBA,
-		Texture::Type::UnsignedNormalized,
+	ITexture::TextureFormat normalTextureFormat(
+		ITexture::Components::RGBA,
+		ITexture::Type::UnsignedNormalized,
 		numSamples,
 		8, 8, 8, 8, 0, 0);
-	std::shared_ptr<Texture> normalTexture = renderDevice->CreateTexture2D(width, height, 1, normalTextureFormat);
+	std::shared_ptr<ITexture> normalTexture = renderDevice->CreateTexture2D(width, height, 1, normalTextureFormat);
 
 	// Depth/stencil buffer
-	Texture::TextureFormat depthStencilTextureFormat(
-		Texture::Components::DepthStencil,
-		Texture::Type::UnsignedNormalized,
+	ITexture::TextureFormat depthStencilTextureFormat(
+		ITexture::Components::DepthStencil,
+		ITexture::Type::UnsignedNormalized,
 		numSamples,
 		0, 0, 0, 0, 24, 8);
-	std::shared_ptr<Texture> depthStencilTexture = renderDevice->CreateTexture2D(width, height, 1, depthStencilTextureFormat);
+	std::shared_ptr<ITexture> depthStencilTexture = renderDevice->CreateTexture2D(width, height, 1, depthStencilTextureFormat);
 
 	// Create a render target for the geometry pass.
 	m_RenderTarget = renderDevice->CreateRenderTarget();
@@ -82,7 +82,7 @@ void CGBuffer::Load2(const Viewport * _viewPort)
 
 
 	// Shaders that unite 4 textures
-	std::shared_ptr<Shader> g_pVertexShader = _RenderDevice->CreateShader(Shader::VertexShader, "IDB_SHADER_DEFFERED_RENDERING", Shader::ShaderMacros(), "VS_main", "latest");
+	std::shared_ptr<IShader> g_pVertexShader = _RenderDevice->CreateShader(IShader::VertexShader, "IDB_SHADER_DEFFERED_RENDERING", IShader::ShaderMacros(), "VS_main", "latest");
 	std::vector<D3DVERTEXELEMENT9> elements;
 	elements.push_back({ 0, 0,  D3DDECLTYPE_FLOAT3, 0, D3DDECLUSAGE_POSITION, 0 });
 	elements.push_back({ 0, 12, D3DDECLTYPE_FLOAT2, 0, D3DDECLUSAGE_TEXCOORD, 0 });
@@ -90,15 +90,15 @@ void CGBuffer::Load2(const Viewport * _viewPort)
 	g_pVertexShader->LoadInputLayoutFromD3DElement(elements);
 
 
-	std::shared_ptr<Shader> g_pDeferredLightingPixelShader = _RenderDevice->CreateShader(Shader::PixelShader, "IDB_SHADER_DEFFERED_RENDERING", Shader::ShaderMacros(), "PS_DeferredLighting", "latest");
+	std::shared_ptr<IShader> g_pDeferredLightingPixelShader = _RenderDevice->CreateShader(IShader::PixelShader, "IDB_SHADER_DEFFERED_RENDERING", IShader::ShaderMacros(), "PS_DeferredLighting", "latest");
 
 
 	// Pipeline State for result texture
-	BlendState::BlendMode alphaBlending(true, false, BlendState::BlendFactor::SrcAlpha, BlendState::BlendFactor::OneMinusSrcAlpha, BlendState::BlendOperation::Add, BlendState::BlendFactor::SrcAlpha, BlendState::BlendFactor::OneMinusSrcAlpha);
-	BlendState::BlendMode additiveBlending(true, false, BlendState::BlendFactor::One, BlendState::BlendFactor::One);
-	BlendState::BlendMode disableBlending;
-	DepthStencilState::DepthMode enableDepthWrites(true, DepthStencilState::DepthWrite::Enable);
-	DepthStencilState::DepthMode disableDepthWrites(false, DepthStencilState::DepthWrite::Disable);
+	IBlendState::BlendMode alphaBlending(true, false, IBlendState::BlendFactor::SrcAlpha, IBlendState::BlendFactor::OneMinusSrcAlpha, IBlendState::BlendOperation::Add, IBlendState::BlendFactor::SrcAlpha, IBlendState::BlendFactor::OneMinusSrcAlpha);
+	IBlendState::BlendMode additiveBlending(true, false, IBlendState::BlendFactor::One, IBlendState::BlendFactor::One);
+	IBlendState::BlendMode disableBlending;
+	IDepthStencilState::DepthMode enableDepthWrites(true, IDepthStencilState::DepthWrite::Enable);
+	IDepthStencilState::DepthMode disableDepthWrites(false, IDepthStencilState::DepthWrite::Disable);
 
 
 	std::shared_ptr<IRenderTarget> g_pDepthOnlyRenderTarget = renderDevice->CreateRenderTarget();
@@ -106,91 +106,91 @@ void CGBuffer::Load2(const Viewport * _viewPort)
 
 
 	// Pipeline for deferred lighting (stage 1 to determine lit pixels)
-	std::shared_ptr<PipelineState> g_pDeferredLightingPipeline1;
+	std::shared_ptr<IPipelineState> g_pDeferredLightingPipeline1;
 	{
 		g_pDeferredLightingPipeline1 = renderDevice->CreatePipelineState();
-		g_pDeferredLightingPipeline1->SetShader(Shader::VertexShader, g_pVertexShader);
+		g_pDeferredLightingPipeline1->SetShader(IShader::VertexShader, g_pVertexShader);
 		g_pDeferredLightingPipeline1->SetRenderTarget(g_pDepthOnlyRenderTarget);
 
 		// Setup rasterizer state
-		g_pDeferredLightingPipeline1->GetRasterizerState().SetViewport(_viewPort);
-		g_pDeferredLightingPipeline1->GetRasterizerState().SetCullMode(RasterizerState::CullMode::Back);
-		g_pDeferredLightingPipeline1->GetRasterizerState().SetFillMode(RasterizerState::FillMode::Solid);
-		g_pDeferredLightingPipeline1->GetRasterizerState().SetDepthClipEnabled(true);
+		g_pDeferredLightingPipeline1->GetRasterizerState()->SetViewport(_viewPort);
+		g_pDeferredLightingPipeline1->GetRasterizerState()->SetCullMode(IRasterizerState::CullMode::Back);
+		g_pDeferredLightingPipeline1->GetRasterizerState()->SetFillMode(IRasterizerState::FillMode::Solid);
+		g_pDeferredLightingPipeline1->GetRasterizerState()->SetDepthClipEnabled(true);
 
 		// Setup depth mode
 		// Disable writing to the depth buffer.
-		DepthStencilState::DepthMode depthMode(true, DepthStencilState::DepthWrite::Disable); // Disable depth writes.
+		IDepthStencilState::DepthMode depthMode(true, IDepthStencilState::DepthWrite::Disable); // Disable depth writes.
 		// Pass depth test if the light volume is behind scene geometry.
-		depthMode.DepthFunction = DepthStencilState::CompareFunction::Greater;
+		depthMode.DepthFunction = IDepthStencilState::CompareFunction::Greater;
 		//g_pDeferredLightingPipeline1->GetDepthStencilState().SetDepthMode(depthMode);
 
 		// Setup stencil mode
-		DepthStencilState::StencilMode stencilMode(true); // Enable stencil operations
-		DepthStencilState::FaceOperation faceOperation;
-		faceOperation.StencilDepthPass = DepthStencilState::StencilOperation::DecrementClamp;
+		IDepthStencilState::StencilMode stencilMode(true); // Enable stencil operations
+		IDepthStencilState::FaceOperation faceOperation;
+		faceOperation.StencilDepthPass = IDepthStencilState::StencilOperation::DecrementClamp;
 		stencilMode.StencilReference = 1;
 		stencilMode.FrontFace = faceOperation;
 
-		g_pDeferredLightingPipeline1->GetDepthStencilState().SetStencilMode(stencilMode);
+		g_pDeferredLightingPipeline1->GetDepthStencilState()->SetStencilMode(stencilMode);
 	}
 
 	// Pipeline for deferred lighting (stage 2 to render lit pixels)
-	std::shared_ptr<PipelineState> g_pDeferredLightingPipeline2;
+	std::shared_ptr<IPipelineState> g_pDeferredLightingPipeline2;
 	{
 		g_pDeferredLightingPipeline2 = renderDevice->CreatePipelineState();
-		g_pDeferredLightingPipeline2->SetShader(Shader::VertexShader, g_pVertexShader);
-		g_pDeferredLightingPipeline2->SetShader(Shader::PixelShader, g_pDeferredLightingPixelShader);
+		g_pDeferredLightingPipeline2->SetShader(IShader::VertexShader, g_pVertexShader);
+		g_pDeferredLightingPipeline2->SetShader(IShader::PixelShader, g_pDeferredLightingPixelShader);
 		g_pDeferredLightingPipeline2->SetRenderTarget(renderWindow->GetRenderTarget());
 
 		// Setup rasterizer state.
-		g_pDeferredLightingPipeline2->GetRasterizerState().SetViewport(_viewPort);
-		g_pDeferredLightingPipeline2->GetRasterizerState().SetCullMode(RasterizerState::CullMode::Front);
-		g_pDeferredLightingPipeline2->GetRasterizerState().SetFillMode(RasterizerState::FillMode::Solid);
-		g_pDeferredLightingPipeline2->GetRasterizerState().SetDepthClipEnabled(false);
+		g_pDeferredLightingPipeline2->GetRasterizerState()->SetViewport(_viewPort);
+		g_pDeferredLightingPipeline2->GetRasterizerState()->SetCullMode(IRasterizerState::CullMode::Front);
+		g_pDeferredLightingPipeline2->GetRasterizerState()->SetFillMode(IRasterizerState::FillMode::Solid);
+		g_pDeferredLightingPipeline2->GetRasterizerState()->SetDepthClipEnabled(false);
 
 		// Perform additive blending if a pixel passes the depth/stencil tests.
-		g_pDeferredLightingPipeline2->GetBlendState().SetBlendMode(additiveBlending);
+		g_pDeferredLightingPipeline2->GetBlendState()->SetBlendMode(additiveBlending);
 
 		// Setup depth mode
 		// Disable depth writes
-		DepthStencilState::DepthMode depthMode(true, DepthStencilState::DepthWrite::Disable); // Disable depth writes.
-		depthMode.DepthFunction = DepthStencilState::CompareFunction::GreaterOrEqual;
+		IDepthStencilState::DepthMode depthMode(true, IDepthStencilState::DepthWrite::Disable); // Disable depth writes.
+		depthMode.DepthFunction = IDepthStencilState::CompareFunction::GreaterOrEqual;
 		//g_pDeferredLightingPipeline2->GetDepthStencilState().SetDepthMode(depthMode);
 
 		// Setup stencil mode
-		DepthStencilState::StencilMode stencilMode(true);
-		DepthStencilState::FaceOperation faceOperation;
+		IDepthStencilState::StencilMode stencilMode(true);
+		IDepthStencilState::FaceOperation faceOperation;
 		// Render pixel if the depth function passes and the stencil was not un-marked in the previous pass.
-		faceOperation.StencilFunction = DepthStencilState::CompareFunction::Equal;
+		faceOperation.StencilFunction = IDepthStencilState::CompareFunction::Equal;
 		stencilMode.StencilReference = 1;
 		stencilMode.BackFace = faceOperation;
 
-		g_pDeferredLightingPipeline2->GetDepthStencilState().SetStencilMode(stencilMode);
+		g_pDeferredLightingPipeline2->GetDepthStencilState()->SetStencilMode(stencilMode);
 
 	}
 
 	// Pipeline for directional lights in deferred shader (only requires a single pass)
-	std::shared_ptr<PipelineState> g_pDirectionalLightsPipeline;
+	std::shared_ptr<IPipelineState> g_pDirectionalLightsPipeline;
 	{
 		g_pDirectionalLightsPipeline = renderDevice->CreatePipelineState();
-		g_pDirectionalLightsPipeline->SetShader(Shader::VertexShader, g_pVertexShader);
-		g_pDirectionalLightsPipeline->SetShader(Shader::PixelShader, g_pDeferredLightingPixelShader);
+		g_pDirectionalLightsPipeline->SetShader(IShader::VertexShader, g_pVertexShader);
+		g_pDirectionalLightsPipeline->SetShader(IShader::PixelShader, g_pDeferredLightingPixelShader);
 		g_pDirectionalLightsPipeline->SetRenderTarget(renderWindow->GetRenderTarget());
 
 		// Setup rasterizer state.
-		g_pDirectionalLightsPipeline->GetRasterizerState().SetCullMode(RasterizerState::CullMode::None);
-		g_pDirectionalLightsPipeline->GetRasterizerState().SetFillMode(RasterizerState::FillMode::Solid);
-		g_pDirectionalLightsPipeline->GetRasterizerState().SetViewport(_viewPort);
+		g_pDirectionalLightsPipeline->GetRasterizerState()->SetCullMode(IRasterizerState::CullMode::None);
+		g_pDirectionalLightsPipeline->GetRasterizerState()->SetFillMode(IRasterizerState::FillMode::Solid);
+		g_pDirectionalLightsPipeline->GetRasterizerState()->SetViewport(_viewPort);
 
 		// Perform additive blending if a pixel passes the depth/stencil tests.
-		g_pDirectionalLightsPipeline->GetBlendState().SetBlendMode(additiveBlending);
+		g_pDirectionalLightsPipeline->GetBlendState()->SetBlendMode(additiveBlending);
 
 		// Setup depth mode
-		DepthStencilState::DepthMode depthMode(true, DepthStencilState::DepthWrite::Disable); // Disable depth writes.
+		IDepthStencilState::DepthMode depthMode(true, IDepthStencilState::DepthWrite::Disable); // Disable depth writes.
 		// The full-screen quad that will be used to light pixels will be placed at the far clipping plane.
 		// Only light pixels that are "in front" of the full screen quad (exclude sky box pixels)
-		depthMode.DepthFunction = DepthStencilState::CompareFunction::Greater;
+		depthMode.DepthFunction = IDepthStencilState::CompareFunction::Greater;
 		//g_pDirectionalLightsPipeline->GetDepthStencilState().SetDepthMode(depthMode);
 	}
 

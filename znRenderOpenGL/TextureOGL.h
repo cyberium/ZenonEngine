@@ -41,7 +41,7 @@ public:
 	* For 1D, and 2D textures, this function always returns the only
 	* face of the texture (the texture itself).
 	*/
-	virtual std::shared_ptr<Texture> GetFace(CubeFace face) const override final;
+	virtual std::shared_ptr<ITexture> GetFace(CubeFace face) const override final;
 
 	/**
 	* 3D textures store several slices of 2D textures.
@@ -50,7 +50,7 @@ public:
 	* For 1D and 2D textures, this function will always return the texture
 	* itself.
 	*/
-	virtual std::shared_ptr<Texture> GetSlice(uint32 slice) const override final;
+	virtual std::shared_ptr<ITexture> GetSlice(uint32 slice) const override final;
 
 	virtual uint16_t GetWidth() const override final;
 	virtual uint16_t GetHeight() const override final;
@@ -71,7 +71,7 @@ public:
 	 * Copy the contents of one texture into another.
 	 * Textures must both be the same size.
 	 */
-	virtual void Copy(std::shared_ptr<Texture> other) override final;
+	virtual void Copy(std::shared_ptr<ITexture> other) override final;
 
 	/**
 	* Clear the texture.

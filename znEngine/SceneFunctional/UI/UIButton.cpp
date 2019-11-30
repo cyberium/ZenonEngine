@@ -37,10 +37,10 @@ void CUIButtonNode::CreateDefault()
 	m_Material->SetClickedTexture(_RenderDevice->CreateTexture2D("Textures\\btn_clicked.png")); 
 	m_Material->SetDisabledTexture(_RenderDevice->CreateTexture2D("Textures\\btn_disabled.png"));
 
-	std::shared_ptr<Texture> idleTexture = m_Material->GetTexture(0);
+	std::shared_ptr<ITexture> idleTexture = m_Material->GetTexture(0);
     m_Size = idleTexture->GetSize();
 
-	m_Mesh = _RenderDevice->CreateUIQuad(idleTexture->GetWidth(), idleTexture->GetHeight());
+	m_Mesh = _RenderDevice->GetPrimitiveCollection()->CreateUIQuad(idleTexture->GetWidth(), idleTexture->GetHeight());
 
     m_TextNode = CreateSceneNode<CUITextNode>();
 	m_TextNode->SetText(cDefaultText);

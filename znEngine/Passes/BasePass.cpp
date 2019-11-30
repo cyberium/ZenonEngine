@@ -8,7 +8,7 @@
 // General
 #include "BasePass.h"
 
-BasePass::BasePass(std::shared_ptr<Scene3D> scene, std::shared_ptr<PipelineState> pipeline)
+BasePass::BasePass(std::shared_ptr<Scene3D> scene, std::shared_ptr<IPipelineState> pipeline)
     : base(pipeline)
     , m_Scene(scene)
 {}

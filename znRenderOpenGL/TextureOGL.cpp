@@ -83,7 +83,7 @@ TextureOGL::TextureOGL(RenderDeviceOGL* _device, uint16_t width, uint16_t height
 // CUBE Texture
 TextureOGL::TextureOGL(RenderDeviceOGL* _device, uint16_t size, uint16_t count, const TextureFormat& format, CPUAccess cpuAccess)
 {
-	m_TextureDimension = Texture::Dimension::TextureCube;
+	m_TextureDimension = ITexture::Dimension::TextureCube;
 	m_TextureWidth = m_TextureHeight = size;
 
 	glGenTextures(1, &m_GLObj);
@@ -158,7 +158,7 @@ bool TextureOGL::LoadTexture2D(const std::string& fileName)
     // Check to see if the texture has an alpha channel.
     m_bIsTransparent = (FreeImage_IsTransparent(dib) == TRUE);
 
-    m_TextureDimension = Texture::Dimension::Texture2D;
+    m_TextureDimension = ITexture::Dimension::Texture2D;
     m_TextureWidth = FreeImage_GetWidth(dib);
     m_TextureHeight = FreeImage_GetHeight(dib);
     m_Pitch = FreeImage_GetPitch(dib);
@@ -205,12 +205,12 @@ void TextureOGL::GenerateMipMaps()
 	}
 }
 
-std::shared_ptr<Texture> TextureOGL::GetFace(CubeFace face) const
+std::shared_ptr<ITexture> TextureOGL::GetFace(CubeFace face) const
 {
 	return std::static_pointer_cast<Texture>(std::const_pointer_cast<TextureOGL>(shared_from_this()));
 }
 
-std::shared_ptr<Texture> TextureOGL::GetSlice(uint32 slice) const
+std::shared_ptr<ITexture> TextureOGL::GetSlice(uint32 slice) const
 {
 	return std::static_pointer_cast<Texture>(std::const_pointer_cast<TextureOGL>(shared_from_this()));
 }
@@ -265,7 +265,7 @@ void TextureOGL::Resize(uint16_t width, uint16_t height, uint16_t depth)
 	case Dimension::Texture2DArray:
 		Resize2D(width, height);
 		break;
-	case Texture::Dimension::TextureCube:
+	case ITexture::Dimension::TextureCube:
 		ResizeCube(width);
 		break;
 	default:
@@ -301,7 +301,7 @@ void TextureOGL::FetchPixel(glm::ivec2 coord, uint8_t*& pixel, size_t size)
 	pixel = &m_Buffer[index];
 }
 
-void TextureOGL::Copy(std::shared_ptr<Texture> other)
+void TextureOGL::Copy(std::shared_ptr<ITexture> other)
 {
 	std::shared_ptr<TextureOGL> srcTexture = std::dynamic_pointer_cast<TextureOGL>(other);
 
@@ -314,12 +314,12 @@ void TextureOGL::Copy(std::shared_ptr<Texture> other)
 		{
 			switch (m_TextureDimension)
 			{
-			case Texture::Dimension::Texture2D:
-			case Texture::Dimension::Texture2DArray:
+			case ITexture::Dimension::Texture2D:
+			case ITexture::Dimension::Texture2DArray:
 				throw std::exception("Not implemented!");
 				//m_pDeviceContext->CopyResource(m_pTexture2D, srcTexture->m_pTexture2D);
 				break;
-			case Texture::Dimension::TextureCube:
+			case ITexture::Dimension::TextureCube:
 				throw std::exception("Not implemented!");
 				//m_pDeviceContext->CopyResource(m_pTexture3D, srcTexture->m_pTexture3D);
 				break;

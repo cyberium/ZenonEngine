@@ -43,12 +43,6 @@
     <Filter Include="Log\DebugOutput">
       <UniqueIdentifier>{154efe91-d5a0-4a4d-9b1d-d053b1d5228b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Settings">
-      <UniqueIdentifier>{dc6e8c13-6444-4560-953e-9a380f8fab7b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Settings\Groups">
-      <UniqueIdentifier>{3067e420-7b54-4018-8d50-d4abb91d379a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="RefManager\1 Dim Assync">
       <UniqueIdentifier>{d1c95b6f-a767-47df-bed7-b177d7d1e2eb}</UniqueIdentifier>
     </Filter>
@@ -94,9 +88,6 @@
     <Filter Include="ScriptEngine\Lua\inc">
       <UniqueIdentifier>{209ea326-523f-47eb-807a-461ccc25da9b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Plugins">
-      <UniqueIdentifier>{bec436d8-b6f8-422f-bb2f-ab2a103db725}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Interfaces">
       <UniqueIdentifier>{93caf0bd-6050-4d1e-829f-415f0328ee3d}</UniqueIdentifier>
     </Filter>
@@ -132,9 +123,6 @@
     <ClCompile Include="Frustrum.cpp">
       <Filter>Common\Primitives</Filter>
     </ClCompile>
-    <ClCompile Include="Plane.cpp">
-      <Filter>Common\Primitives</Filter>
-    </ClCompile>
     <ClCompile Include="BaseManager.cpp">
       <Filter>Manager</Filter>
     </ClCompile>
@@ -143,15 +131,6 @@
     </ClCompile>
     <ClCompile Include="Console.cpp">
       <Filter>Log\Console</Filter>
-    </ClCompile>
-    <ClCompile Include="Settings.cpp">
-      <Filter>Settings</Filter>
-    </ClCompile>
-    <ClCompile Include="GroupQuality.cpp">
-      <Filter>Settings\Groups</Filter>
-    </ClCompile>
-    <ClCompile Include="GroupVideo.cpp">
-      <Filter>Settings\Groups</Filter>
     </ClCompile>
     <ClCompile Include="stdafx.cpp">
       <Filter>Common</Filter>
@@ -366,9 +345,6 @@
     <ClCompile Include="..\Externals\lua\lzio.c">
       <Filter>ScriptEngine\Lua\src</Filter>
     </ClCompile>
-    <ClCompile Include="PluginsManager.cpp">
-      <Filter>Plugins</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DebugOutput.h">
@@ -439,15 +415,6 @@
     </ClInclude>
     <ClInclude Include="Console.h">
       <Filter>Log\Console</Filter>
-    </ClInclude>
-    <ClInclude Include="Settings.h">
-      <Filter>Settings</Filter>
-    </ClInclude>
-    <ClInclude Include="GroupQuality.h">
-      <Filter>Settings\Groups</Filter>
-    </ClInclude>
-    <ClInclude Include="GroupVideo.h">
-      <Filter>Settings\Groups</Filter>
     </ClInclude>
     <ClInclude Include="common.h">
       <Filter>Common</Filter>
@@ -865,9 +832,6 @@
     </ClInclude>
     <ClInclude Include="..\Externals\lua\lua.hpp">
       <Filter>ScriptEngine\Lua\inc</Filter>
-    </ClInclude>
-    <ClInclude Include="PluginsManager.h">
-      <Filter>Plugins</Filter>
     </ClInclude>
     <ClInclude Include="Interfaces\Application.h">
       <Filter>Interfaces</Filter>

@@ -7,7 +7,7 @@ GenerateMipMapPass::GenerateMipMapPass(std::shared_ptr<IRenderTarget> renderTarg
 	: m_RenderTarget(renderTarget)
 {}
 
-GenerateMipMapPass::GenerateMipMapPass(std::shared_ptr<Texture> texture)
+GenerateMipMapPass::GenerateMipMapPass(std::shared_ptr<ITexture> texture)
 	: m_Texture(texture)
 {}
 

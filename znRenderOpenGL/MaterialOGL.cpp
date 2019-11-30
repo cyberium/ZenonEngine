@@ -37,7 +37,7 @@ GLbitfield GLTranslateShaderBitType(Shader::ShaderType _type)
 }
 
 MaterialOGL::MaterialOGL(IRenderDevice* renderDevice, size_t Size)
-	: MaterialImpl(renderDevice, Size)
+	: MaterialBase(renderDevice, Size)
 {
 	glGenProgramPipelines(1, &m_GLProgramPipeline);
 }
@@ -53,7 +53,7 @@ MaterialOGL::~MaterialOGL()
 
 void MaterialOGL::SetShader(Shader::ShaderType type, std::shared_ptr<Shader> pShader)
 {
-    MaterialImpl::SetShader(type, pShader);
+    MaterialBase::SetShader(type, pShader);
 
     std::shared_ptr<ShaderOGL> shaderOGL = std::dynamic_pointer_cast<ShaderOGL>(pShader);
     glUseProgramStages(m_GLProgramPipeline, GLTranslateShaderBitType(type), shaderOGL->GetGLObject());
@@ -61,7 +61,7 @@ void MaterialOGL::SetShader(Shader::ShaderType type, std::shared_ptr<Shader> pSh
 
 void MaterialOGL::Bind() const
 {
-	MaterialImpl::Bind();
+	MaterialBase::Bind();
 
 	for (auto shader : m_Shaders)
 	{
@@ -72,13 +72,13 @@ void MaterialOGL::Bind() const
 
             for (auto textureIt : m_Textures)
             {
-                std::shared_ptr<Texture> texture = textureIt.second;
+                std::shared_ptr<ITexture> texture = textureIt.second;
                 texture->Bind((uint32_t)textureIt.first, pShader.get(), ShaderParameter::Type::Texture);
             }
 
             for (auto samplerStateIt : m_Samplers)
             {
-                std::shared_ptr<SamplerState> samplerState = samplerStateIt.second;
+                std::shared_ptr<ISamplerState> samplerState = samplerStateIt.second;
                 samplerState->Bind((uint32_t)samplerStateIt.first, pShader.get(), ShaderParameter::Type::Sampler);
             }
 
@@ -103,13 +103,13 @@ void MaterialOGL::Unbind() const
 		{
             for (auto textureIt : m_Textures)
             {
-                std::shared_ptr<Texture> texture = textureIt.second;
+                std::shared_ptr<ITexture> texture = textureIt.second;
                 texture->UnBind((uint32_t)textureIt.first, pShader.get(), ShaderParameter::Type::Texture);
             }
 
             for (auto samplerStateIt : m_Samplers)
             {
-                std::shared_ptr<SamplerState> samplerState = samplerStateIt.second;
+                std::shared_ptr<ISamplerState> samplerState = samplerStateIt.second;
                 samplerState->UnBind((uint32_t)samplerStateIt.first, pShader.get(), ShaderParameter::Type::Sampler);
             }
 
@@ -126,5 +126,5 @@ void MaterialOGL::Unbind() const
 
     glBindProgramPipeline(0);
 
-	MaterialImpl::Unbind();
+	MaterialBase::Unbind();
 }

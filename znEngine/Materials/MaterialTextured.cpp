@@ -13,8 +13,8 @@ MaterialTextured::MaterialTextured()
 	m_pProperties = (MaterialProperties*)_aligned_malloc(sizeof(MaterialProperties), 16);
 	*m_pProperties = MaterialProperties();
 
-	std::shared_ptr<Shader> g_pVertexShader = _RenderDevice->CreateShader(
-		Shader::VertexShader, "shaders_D3D/Debug/Textured.hlsl", Shader::ShaderMacros(), "VS_main", "latest"
+	std::shared_ptr<IShader> g_pVertexShader = _RenderDevice->CreateShader(
+		IShader::VertexShader, "shaders_D3D/Debug/Textured.hlsl", IShader::ShaderMacros(), "VS_main", "latest"
 	);
 	std::vector<D3DVERTEXELEMENT9> elements;
 	elements.push_back({ 0, 0,  D3DDECLTYPE_FLOAT3, 0, D3DDECLUSAGE_POSITION, 0 });
@@ -22,19 +22,19 @@ MaterialTextured::MaterialTextured()
 	elements.push_back({ 0, 20, D3DDECLTYPE_FLOAT3, 0, D3DDECLUSAGE_NORMAL, 0 });
 	g_pVertexShader->LoadInputLayoutFromD3DElement(elements);
 
-	std::shared_ptr<Shader> g_pPixelShader = _RenderDevice->CreateShader(
-		Shader::PixelShader, "shaders_D3D/Debug/Textured.hlsl", Shader::ShaderMacros(), "PS_main", "latest"
+	std::shared_ptr<IShader> g_pPixelShader = _RenderDevice->CreateShader(
+		IShader::PixelShader, "shaders_D3D/Debug/Textured.hlsl", IShader::ShaderMacros(), "PS_main", "latest"
 	);
 
-	std::shared_ptr<SamplerState> g_Sampler = _RenderDevice->CreateSamplerState();
-	g_Sampler->SetFilter(SamplerState::MinFilter::MinLinear, SamplerState::MagFilter::MagLinear, SamplerState::MipFilter::MipLinear);
-	g_Sampler->SetWrapMode(SamplerState::WrapMode::Repeat, SamplerState::WrapMode::Repeat);
+	std::shared_ptr<ISamplerState> g_Sampler = _RenderDevice->CreateSamplerState();
+	g_Sampler->SetFilter(ISamplerState::MinFilter::MinLinear, ISamplerState::MagFilter::MagLinear, ISamplerState::MipFilter::MipLinear);
+	g_Sampler->SetWrapMode(ISamplerState::WrapMode::Repeat, ISamplerState::WrapMode::Repeat);
 
 	// Assign samplers
-	g_pPixelShader->GetShaderParameterByName("DiffuseTextureSampler").Set(g_Sampler.get());
+	g_pPixelShader->GetShaderParameterByName("DiffuseTextureSampler")->Set(g_Sampler.get());
 
-	SetShader(Shader::ShaderType::VertexShader, g_pVertexShader);
-	SetShader(Shader::ShaderType::PixelShader, g_pPixelShader);
+	SetShader(IShader::ShaderType::VertexShader, g_pVertexShader);
+	SetShader(IShader::ShaderType::PixelShader, g_pPixelShader);
 }
 
 MaterialTextured::~MaterialTextured()
@@ -46,12 +46,12 @@ MaterialTextured::~MaterialTextured()
 	}
 }
 
-void MaterialTextured::SetTexture(std::shared_ptr<Texture> texture)
+void MaterialTextured::SetTexture(std::shared_ptr<ITexture> texture)
 {
 	MaterialWrapper::SetTexture(0, texture);
 }
 
-void MaterialTextured::SetNormalTexture(std::shared_ptr<Texture> texture)
+void MaterialTextured::SetNormalTexture(std::shared_ptr<ITexture> texture)
 {
 	if (texture)
 	{
@@ -61,7 +61,7 @@ void MaterialTextured::SetNormalTexture(std::shared_ptr<Texture> texture)
 	}
 }
 
-void MaterialTextured::SetHeightTexture(std::shared_ptr<Texture> texture)
+void MaterialTextured::SetHeightTexture(std::shared_ptr<ITexture> texture)
 {
 	if (texture)
 	{

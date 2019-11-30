@@ -13,7 +13,7 @@ public:
 
 	virtual void                                    SetPrimitiveTopology(PrimitiveTopology _topology) override final;
 
-	virtual bool                                    Render(const RenderEventArgs* renderArgs, const ConstantBuffer* perObject, UINT indexStartLocation = 0, UINT indexCnt = 0, UINT vertexStartLocation = 0, UINT vertexCnt = 0) override final;
+	virtual bool                                    Render(const RenderEventArgs* renderArgs, const IConstantBuffer* perObject, UINT indexStartLocation = 0, UINT indexCnt = 0, UINT vertexStartLocation = 0, UINT vertexCnt = 0) override final;
 
 private:
 	void                                            Commit(std::weak_ptr<Shader> _shader);

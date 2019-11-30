@@ -4,7 +4,7 @@
 #include "ShaderDX11.h"
 
 // FORWARD BEGIN
-std::string GetLatestProfile(Shader::ShaderType type, const D3D_FEATURE_LEVEL& _featureLevel);
+std::string GetLatestProfile(IShader::ShaderType type, const D3D_FEATURE_LEVEL& _featureLevel);
 // FORWARD END
 
 ShaderDX11::ShaderDX11(std::weak_ptr<IRenderDeviceDX11> RenderDevice)
@@ -167,30 +167,30 @@ bool ShaderDX11::LoadShaderFromString(ShaderType shaderType, const std::string& 
 		pReflector->GetResourceBindingDesc(i, &bindDesc);
 		std::string resourceName = bindDesc.Name;
 
-		ShaderParameter::Type parameterType = ShaderParameter::Type::Invalid;
+		IShaderParameter::Type parameterType = IShaderParameter::Type::Invalid;
 
 		switch (bindDesc.Type)
 		{
 		case D3D_SIT_TEXTURE:
-			parameterType = ShaderParameter::Type::Texture;
+			parameterType = IShaderParameter::Type::Texture;
 			break;
 		case D3D_SIT_SAMPLER:
-			parameterType = ShaderParameter::Type::Sampler;
+			parameterType = IShaderParameter::Type::Sampler;
 			break;
 		case D3D_SIT_CBUFFER:
 		case D3D_SIT_STRUCTURED:
-			parameterType = ShaderParameter::Type::Buffer;
+			parameterType = IShaderParameter::Type::Buffer;
 			break;
 		case D3D_SIT_UAV_RWSTRUCTURED:
-			parameterType = ShaderParameter::Type::RWBuffer;
+			parameterType = IShaderParameter::Type::RWBuffer;
 			break;
 		case D3D_SIT_UAV_RWTYPED:
-			parameterType = ShaderParameter::Type::RWTexture;
+			parameterType = IShaderParameter::Type::RWTexture;
 			break;
 		}
 
 		// Create an empty shader parameter that should be filled-in by the application.
-		std::shared_ptr<ShaderParameter> shaderParameter = std::make_shared<ShaderParameter>(resourceName, bindDesc.BindPoint, shared_from_this(), parameterType);
+		std::shared_ptr<IShaderParameter> shaderParameter = std::make_shared<ShaderParameterBase>(resourceName, bindDesc.BindPoint, shared_from_this(), parameterType);
 		m_ShaderParameters.insert(ParameterMap::value_type(resourceName, shaderParameter));
 	}
 
@@ -298,7 +298,7 @@ void ShaderDX11::UnBind() const
 {
 	for (const auto& value : m_ShaderParameters)
 	{
-		value.second->UnBind();
+		value.second->Unbind();
 	}
 
 	if (m_pVertexShader)
@@ -336,11 +336,11 @@ void ShaderDX11::Dispatch(const glm::uvec3& numGroups)
 	}
 }
 
-std::string GetLatestProfile(Shader::ShaderType type, const D3D_FEATURE_LEVEL& _featureLevel)
+std::string GetLatestProfile(IShader::ShaderType type, const D3D_FEATURE_LEVEL& _featureLevel)
 {
 	switch (type)
 	{
-	case Shader::VertexShader:
+	case IShader::VertexShader:
 		switch (_featureLevel)
 		{
 		case D3D_FEATURE_LEVEL_11_1:
@@ -362,7 +362,7 @@ std::string GetLatestProfile(Shader::ShaderType type, const D3D_FEATURE_LEVEL& _
 			break;
 		}
 		break;
-	case Shader::TessellationControlShader:
+	case IShader::TessellationControlShader:
 		switch (_featureLevel)
 		{
 		case D3D_FEATURE_LEVEL_11_1:
@@ -371,7 +371,7 @@ std::string GetLatestProfile(Shader::ShaderType type, const D3D_FEATURE_LEVEL& _
 			break;
 		}
 		break;
-	case Shader::TessellationEvaluationShader:
+	case IShader::TessellationEvaluationShader:
 		switch (_featureLevel)
 		{
 		case D3D_FEATURE_LEVEL_11_1:
@@ -380,7 +380,7 @@ std::string GetLatestProfile(Shader::ShaderType type, const D3D_FEATURE_LEVEL& _
 			break;
 		}
 		break;
-	case Shader::GeometryShader:
+	case IShader::GeometryShader:
 		switch (_featureLevel)
 		{
 		case D3D_FEATURE_LEVEL_11_1:
@@ -395,7 +395,7 @@ std::string GetLatestProfile(Shader::ShaderType type, const D3D_FEATURE_LEVEL& _
 			break;
 		}
 		break;
-	case Shader::PixelShader:
+	case IShader::PixelShader:
 		switch (_featureLevel)
 		{
 		case D3D_FEATURE_LEVEL_11_1:
@@ -417,7 +417,7 @@ std::string GetLatestProfile(Shader::ShaderType type, const D3D_FEATURE_LEVEL& _
 			break;
 		}
 		break;
-	case Shader::ComputeShader:
+	case IShader::ComputeShader:
 		switch (_featureLevel)
 		{
 		case D3D_FEATURE_LEVEL_11_1:

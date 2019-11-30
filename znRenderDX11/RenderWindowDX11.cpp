@@ -125,22 +125,22 @@ void RenderWindowDX11::CreateSwapChain()
     }
 
     // Color buffer (Color0)
-    Texture::TextureFormat colorTextureFormat
+    ITexture::TextureFormat colorTextureFormat
     (
-        Texture::Components::RGBA,
-        Texture::Type::UnsignedNormalized,
+        ITexture::Components::RGBA,
+        ITexture::Type::UnsignedNormalized,
         m_SampleDesc.Count,
         8, 8, 8, 8, 0, 0
     );
-    std::shared_ptr<Texture> colorTexture = GetRenderDevice()->CreateTexture2D(windowWidth, windowHeight, 1, colorTextureFormat);
+    std::shared_ptr<ITexture> colorTexture = GetRenderDevice()->CreateTexture2D(windowWidth, windowHeight, 1, colorTextureFormat);
 
     // Depth/stencil buffer
-    Texture::TextureFormat depthStencilTextureFormat(
-        Texture::Components::DepthStencil,
-        Texture::Type::UnsignedNormalized,
+    ITexture::TextureFormat depthStencilTextureFormat(
+        ITexture::Components::DepthStencil,
+        ITexture::Type::UnsignedNormalized,
         m_SampleDesc.Count,
         0, 0, 0, 0, 24, 8);
-    std::shared_ptr<Texture> depthStencilTexture = GetRenderDevice()->CreateTexture2D(windowWidth, windowHeight, 1, depthStencilTextureFormat);
+    std::shared_ptr<ITexture> depthStencilTexture = GetRenderDevice()->CreateTexture2D(windowWidth, windowHeight, 1, depthStencilTextureFormat);
 
     GetRenderTarget()->AttachTexture(IRenderTarget::AttachmentPoint::Color0, colorTexture);
     GetRenderTarget()->AttachTexture(IRenderTarget::AttachmentPoint::DepthStencil, depthStencilTexture);

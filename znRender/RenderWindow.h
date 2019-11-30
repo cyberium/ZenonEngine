@@ -1,18 +1,9 @@
 #pragma once
 
-#include "common.h"
-
-#include "RenderTarget.h"
 #include "RenderEvents.h"
-#include "Viewport.h"
-
-// FORWARD BEGIN
-class IRenderDevice;
-// FORWARD END
 
 class OW_ENGINE_API RenderWindow : public Object, public std::enable_shared_from_this<RenderWindow>
 {
-	typedef Object base;
 public:
 	                                                RenderWindow(std::shared_ptr<IRenderDevice> RenderDevice, IWindowObject * WindowObject, bool vSync = false);
 	virtual                                         ~RenderWindow();
@@ -104,6 +95,7 @@ public:
 	Event               MouseBlur;
 	virtual      void OnMouseBlur(EventArgs& e);
 
+public:
 	LRESULT				WndProc(HWND, UINT, WPARAM, LPARAM);
 
 private:

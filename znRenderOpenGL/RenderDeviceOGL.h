@@ -39,27 +39,27 @@ public:
 	virtual std::shared_ptr<IMesh> CreateMesh();
 	virtual void DestroyMesh(std::shared_ptr<IMesh> mesh);
 
-	virtual std::shared_ptr<Texture> CreateTexture2D(const std::string& fileName);
-	virtual std::shared_ptr<Texture> CreateTextureCube(const std::string& fileName);
+	virtual std::shared_ptr<ITexture> CreateTexture2D(const std::string& fileName);
+	virtual std::shared_ptr<ITexture> CreateTextureCube(const std::string& fileName);
 
-	virtual std::shared_ptr<Texture> CreateTexture2D(uint16_t width, uint16_t height, uint16_t slices = 1, const Texture::TextureFormat& format = Texture::TextureFormat(), CPUAccess cpuAccess = CPUAccess::None, bool gpuWrite = false);
-	virtual std::shared_ptr<Texture> CreateTextureCube(uint16_t size, uint16_t numCubes = 1, const Texture::TextureFormat& format = Texture::TextureFormat(), CPUAccess cpuAccess = CPUAccess::None, bool gpuWrite = false);
-	virtual std::shared_ptr<Texture> CreateTexture();
-	virtual std::shared_ptr<Texture> GetDefaultTexture() const;
+	virtual std::shared_ptr<ITexture> CreateTexture2D(uint16_t width, uint16_t height, uint16_t slices = 1, const ITexture::TextureFormat& format = ITexture::TextureFormat(), CPUAccess cpuAccess = CPUAccess::None, bool gpuWrite = false);
+	virtual std::shared_ptr<ITexture> CreateTextureCube(uint16_t size, uint16_t numCubes = 1, const ITexture::TextureFormat& format = ITexture::TextureFormat(), CPUAccess cpuAccess = CPUAccess::None, bool gpuWrite = false);
+	virtual std::shared_ptr<ITexture> CreateTexture();
+	virtual std::shared_ptr<ITexture> GetDefaultTexture() const;
 
-	virtual void DestroyTexture(std::shared_ptr<Texture> texture);
+	virtual void DestroyTexture(std::shared_ptr<ITexture> texture);
 
 	virtual std::shared_ptr<IMaterial> CreateMaterial(size_t Size);
 	virtual void DestroyMaterial(std::shared_ptr<IMaterial> material);
 
-	virtual std::shared_ptr<Query> CreateQuery(Query::QueryType queryType = Query::QueryType::Timer, uint8_t numBuffers = 3);
+	virtual std::shared_ptr<Query> CreateQuery(IQuery::QueryType queryType = IQuery::QueryType::Timer, uint8_t numBuffers = 3);
 	virtual void DestoryQuery(std::shared_ptr<Query> query);
 
 	virtual std::shared_ptr<IRenderTarget> CreateRenderTarget();
 	virtual void DestroyRenderTarget(std::shared_ptr<IRenderTarget> renderTarget);
 
-	virtual std::shared_ptr<SamplerState> CreateSamplerState();
-	virtual void DestroySampler(std::shared_ptr<SamplerState> sampler);
+	virtual std::shared_ptr<ISamplerState> CreateSamplerState();
+	virtual void DestroySampler(std::shared_ptr<ISamplerState> sampler);
 
 	virtual std::shared_ptr<PipelineState> CreatePipelineState();
 	virtual void DestoryPipelineState(std::shared_ptr<PipelineState> pipeline);

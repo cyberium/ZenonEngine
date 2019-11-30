@@ -1,5 +1,8 @@
 #pragma once
 
+#include "Settings/GroupQuality.h"
+#include "Settings/GroupVideo.h"
+
 #include "SceneFunctional/3D/Scene3D.h"
 #include "SceneFunctional/UI/SceneUI.h"
 #include "Passes/RenderTechnique.h"
@@ -56,7 +59,7 @@ protected:
 protected:
 	const IApplication*                             m_Application;
 
-    std::shared_ptr<Query>                          m_FrameQuery;
+    std::shared_ptr<IQuery>                          m_FrameQuery;
     double                                          m_FrameTime;
 
 	std::shared_ptr<ICameraController>              m_DefaultCameraController;

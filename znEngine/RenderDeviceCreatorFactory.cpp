@@ -19,5 +19,5 @@ std::shared_ptr<IznRenderDeviceCreator> CznRenderDeviceCreatorFactory::GetRender
 		if (it->GetRenderDeviceType() == RenderDeviceType)
 			return it;
 
-	throw std::exception(("RenderDeviceCreator [" + std::to_string(RenderDeviceType) + "] not found!").c_str());
+	throw std::exception(("RenderDeviceCreator [" + std::to_string(1377) + "] not found!").c_str());
 }

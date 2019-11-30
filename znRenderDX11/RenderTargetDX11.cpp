@@ -21,7 +21,7 @@ RenderTargetDX11::~RenderTargetDX11()
 
 }
 
-void RenderTargetDX11::AttachTexture(AttachmentPoint attachment, std::shared_ptr<Texture> texture)
+void RenderTargetDX11::AttachTexture(AttachmentPoint attachment, std::shared_ptr<ITexture> texture)
 {
 	std::shared_ptr<TextureDX11> textureDX11 = std::dynamic_pointer_cast<TextureDX11>(texture);
 	m_Textures[(uint8_t)attachment] = textureDX11;
@@ -30,7 +30,7 @@ void RenderTargetDX11::AttachTexture(AttachmentPoint attachment, std::shared_ptr
 	m_bCheckValidity = true;
 }
 
-std::shared_ptr<Texture> RenderTargetDX11::GetTexture(AttachmentPoint attachment)
+std::shared_ptr<ITexture> RenderTargetDX11::GetTexture(AttachmentPoint attachment)
 {
 	return m_Textures[(uint8_t)attachment];
 }
@@ -64,7 +64,7 @@ void RenderTargetDX11::GenerateMipMaps()
 	}
 }
 
-void RenderTargetDX11::AttachStructuredBuffer(uint8_t slot, std::shared_ptr<StructuredBuffer> rwBuffer)
+void RenderTargetDX11::AttachStructuredBuffer(uint8_t slot, std::shared_ptr<IStructuredBuffer> rwBuffer)
 {
 	std::shared_ptr<StructuredBufferDX11> rwbufferDX11 = std::dynamic_pointer_cast<StructuredBufferDX11>(rwBuffer);
 	m_StructuredBuffers[slot] = rwbufferDX11;
@@ -73,13 +73,13 @@ void RenderTargetDX11::AttachStructuredBuffer(uint8_t slot, std::shared_ptr<Stru
 	m_bCheckValidity = true;
 }
 
-std::shared_ptr<StructuredBuffer> RenderTargetDX11::GetStructuredBuffer(uint8_t slot)
+std::shared_ptr<IStructuredBuffer> RenderTargetDX11::GetStructuredBuffer(uint8_t slot)
 {
 	if (slot < m_StructuredBuffers.size())
 	{
 		return m_StructuredBuffers[slot];
 	}
-	return std::shared_ptr<StructuredBuffer>();
+	return std::shared_ptr<IStructuredBuffer>();
 }
 
 

@@ -1,6 +1,6 @@
 #pragma once
 
-class OW_ENGINE_API TextureDX11 : public Texture, public std::enable_shared_from_this<TextureDX11>
+class OW_ENGINE_API TextureDX11 : public ITexture, public std::enable_shared_from_this<TextureDX11>
 {
 public:
 	// Create an empty texture.
@@ -41,7 +41,7 @@ public:
 	* For 1D, and 2D textures, this function always returns the only
 	* face of the texture (the texture itself).
 	*/
-	virtual std::shared_ptr<Texture> GetFace(CubeFace face) const;
+	virtual std::shared_ptr<ITexture> GetFace(CubeFace face) const;
 
 	/**
 	* 3D textures store several slices of 2D textures.
@@ -50,7 +50,7 @@ public:
 	* For 1D and 2D textures, this function will always return the texture
 	* itself.
 	*/
-	virtual std::shared_ptr<Texture> GetSlice(uint32 slice) const;
+	virtual std::shared_ptr<ITexture> GetSlice(uint32 slice) const;
 
 	// Get the width of the textures in texels.
 	virtual uint16_t GetWidth() const;
@@ -82,7 +82,7 @@ public:
 	 * Copy the contents of one texture into another.
 	 * Textures must both be the same size.
 	 */
-	virtual void Copy(std::shared_ptr<Texture> other);
+	virtual void Copy(std::shared_ptr<ITexture> other);
 
 	/**
 	* Clear the texture.
@@ -95,14 +95,14 @@ public:
 	/**
 	 * Bind this texture for use by the shaders.
 	 */
-	virtual void Bind(uint32_t ID, const Shader* shader, ShaderParameter::Type parameterType) const override;
-	virtual void Bind(uint32_t ID, Shader::ShaderType _shaderType, ShaderParameter::Type parameterType) const override;
+	virtual void Bind(uint32_t ID, const IShader* shader, IShaderParameter::Type parameterType) const override;
+	virtual void Bind(uint32_t ID, IShader::ShaderType _shaderType, IShaderParameter::Type parameterType) const override;
 
 	/**
 	 * Unbind the texture.
 	 */
-	virtual void UnBind(uint32_t ID, const Shader* shader, ShaderParameter::Type parameterType) const override;
-	virtual void UnBind(uint32_t ID, Shader::ShaderType _shaderType, ShaderParameter::Type parameterType) const override;
+	virtual void UnBind(uint32_t ID, const IShader* shader, IShaderParameter::Type parameterType) const override;
+	virtual void UnBind(uint32_t ID, IShader::ShaderType _shaderType, IShaderParameter::Type parameterType) const override;
 
 	/**
 	 * Get texture data

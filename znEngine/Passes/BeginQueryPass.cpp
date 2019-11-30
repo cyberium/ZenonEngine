@@ -3,7 +3,7 @@
 // General
 #include "BeginQueryPass.h"
 
-BeginQueryPass::BeginQueryPass(std::shared_ptr<Query> query)
+BeginQueryPass::BeginQueryPass(std::shared_ptr<IQuery> query)
     : m_pQuery(query)
 {}
 

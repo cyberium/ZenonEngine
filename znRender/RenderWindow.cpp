@@ -1,14 +1,10 @@
 #include "stdafx.h"
 
-// Include
-#include "RenderDevice.h"
-
 // General
 #include "RenderWindow.h"
 
 // Additional
 #include "Camera.h"
-
 
 RenderWindow::RenderWindow(std::shared_ptr<IRenderDevice> RenderDevice, IWindowObject * WindowObject, bool vSync)
 	: m_Device(RenderDevice)
@@ -573,8 +569,11 @@ LRESULT CALLBACK RenderWindow::WndProc(HWND hwnd, UINT message, WPARAM wParam, L
 			int width = ((int)(short)LOWORD(lParam));
 			int height = ((int)(short)HIWORD(lParam));
 
-			ResizeEventArgs resizeEventArgs(*this, width, height);
-			OnResize(resizeEventArgs);
+			if (width != 0 && height != 0)
+			{
+				ResizeEventArgs resizeEventArgs(*this, width, height);
+				OnResize(resizeEventArgs);
+			}
 		}
 		break;
 		}

@@ -4,10 +4,10 @@
 #include "BlendStateDX11.h"
 
 // FORWARD BEGIN
-D3D11_BLEND                                     TranslateBlendFactor(BlendState::BlendFactor blendFactor);
-D3D11_BLEND_OP                                  TranslateBlendOp(BlendState::BlendOperation blendOperation);
+D3D11_BLEND                                     TranslateBlendFactor(IBlendState::BlendFactor blendFactor);
+D3D11_BLEND_OP                                  TranslateBlendOp(IBlendState::BlendOperation blendOperation);
 UINT8                                           TranslateWriteMask(bool red, bool green, bool blue, bool alpha);
-D3D11_LOGIC_OP                                  TranslateLogicOperator(BlendState::LogicOperator logicOp);
+D3D11_LOGIC_OP                                  TranslateLogicOperator(IBlendState::LogicOperator logicOp);
 // FORWARD END
 
 BlendStateDX11::BlendStateDX11(ID3D11Device2* pDevice)
@@ -96,61 +96,61 @@ void BlendStateDX11::Bind()
 //
 // Translate
 //
-D3D11_BLEND TranslateBlendFactor(BlendState::BlendFactor blendFactor)
+D3D11_BLEND TranslateBlendFactor(IBlendState::BlendFactor blendFactor)
 {
 	D3D11_BLEND result = D3D11_BLEND_ONE;
 
 	switch (blendFactor)
 	{
-	case BlendState::BlendFactor::Zero:
+	case IBlendState::BlendFactor::Zero:
 		result = D3D11_BLEND_ZERO;
 		break;
-	case BlendState::BlendFactor::One:
+	case IBlendState::BlendFactor::One:
 		result = D3D11_BLEND_ONE;
 		break;
-	case BlendState::BlendFactor::SrcColor:
+	case IBlendState::BlendFactor::SrcColor:
 		result = D3D11_BLEND_SRC_COLOR;
 		break;
-	case BlendState::BlendFactor::OneMinusSrcColor:
+	case IBlendState::BlendFactor::OneMinusSrcColor:
 		result = D3D11_BLEND_INV_SRC_COLOR;
 		break;
-	case BlendState::BlendFactor::DstColor:
+	case IBlendState::BlendFactor::DstColor:
 		result = D3D11_BLEND_DEST_COLOR;
 		break;
-	case BlendState::BlendFactor::OneMinusDstColor:
+	case IBlendState::BlendFactor::OneMinusDstColor:
 		result = D3D11_BLEND_INV_DEST_COLOR;
 		break;
-	case BlendState::BlendFactor::SrcAlpha:
+	case IBlendState::BlendFactor::SrcAlpha:
 		result = D3D11_BLEND_SRC_ALPHA;
 		break;
-	case BlendState::BlendFactor::OneMinusSrcAlpha:
+	case IBlendState::BlendFactor::OneMinusSrcAlpha:
 		result = D3D11_BLEND_INV_SRC_ALPHA;
 		break;
-	case BlendState::BlendFactor::DstAlpha:
+	case IBlendState::BlendFactor::DstAlpha:
 		result = D3D11_BLEND_DEST_ALPHA;
 		break;
-	case BlendState::BlendFactor::OneMinusDstAlpha:
+	case IBlendState::BlendFactor::OneMinusDstAlpha:
 		result = D3D11_BLEND_INV_DEST_ALPHA;
 		break;
-	case BlendState::BlendFactor::SrcAlphaSat:
+	case IBlendState::BlendFactor::SrcAlphaSat:
 		result = D3D11_BLEND_SRC_ALPHA_SAT;
 		break;
-	case BlendState::BlendFactor::ConstBlendFactor:
+	case IBlendState::BlendFactor::ConstBlendFactor:
 		result = D3D11_BLEND_BLEND_FACTOR;
 		break;
-	case BlendState::BlendFactor::OneMinusBlendFactor:
+	case IBlendState::BlendFactor::OneMinusBlendFactor:
 		result = D3D11_BLEND_INV_BLEND_FACTOR;
 		break;
-	case BlendState::BlendFactor::Src1Color:
+	case IBlendState::BlendFactor::Src1Color:
 		result = D3D11_BLEND_SRC1_COLOR;
 		break;
-	case BlendState::BlendFactor::OneMinusSrc1Color:
+	case IBlendState::BlendFactor::OneMinusSrc1Color:
 		result = D3D11_BLEND_INV_SRC1_COLOR;
 		break;
-	case BlendState::BlendFactor::Src1Alpha:
+	case IBlendState::BlendFactor::Src1Alpha:
 		result = D3D11_BLEND_INV_SRC1_ALPHA;
 		break;
-	case BlendState::BlendFactor::OneMinusSrc1Alpha:
+	case IBlendState::BlendFactor::OneMinusSrc1Alpha:
 		result = D3D11_BLEND_INV_SRC1_ALPHA;
 		break;
 	default:
@@ -160,24 +160,24 @@ D3D11_BLEND TranslateBlendFactor(BlendState::BlendFactor blendFactor)
 	return result;
 }
 
-D3D11_BLEND_OP TranslateBlendOp(BlendState::BlendOperation blendOperation)
+D3D11_BLEND_OP TranslateBlendOp(IBlendState::BlendOperation blendOperation)
 {
 	D3D11_BLEND_OP result = D3D11_BLEND_OP_ADD;
 	switch (blendOperation)
 	{
-	case BlendState::BlendOperation::Add:
+	case IBlendState::BlendOperation::Add:
 		result = D3D11_BLEND_OP_ADD;
 		break;
-	case BlendState::BlendOperation::Subtract:
+	case IBlendState::BlendOperation::Subtract:
 		result = D3D11_BLEND_OP_SUBTRACT;
 		break;
-	case BlendState::BlendOperation::ReverseSubtract:
+	case IBlendState::BlendOperation::ReverseSubtract:
 		result = D3D11_BLEND_OP_REV_SUBTRACT;
 		break;
-	case BlendState::BlendOperation::Min:
+	case IBlendState::BlendOperation::Min:
 		result = D3D11_BLEND_OP_MIN;
 		break;
-	case BlendState::BlendOperation::Max:
+	case IBlendState::BlendOperation::Max:
 		result = D3D11_BLEND_OP_MAX;
 		break;
 	default:
@@ -210,58 +210,58 @@ UINT8 TranslateWriteMask(bool red, bool green, bool blue, bool alpha)
 	return writeMask;
 }
 
-D3D11_LOGIC_OP TranslateLogicOperator(BlendState::LogicOperator logicOp)
+D3D11_LOGIC_OP TranslateLogicOperator(IBlendState::LogicOperator logicOp)
 {
 	D3D11_LOGIC_OP result = D3D11_LOGIC_OP_NOOP;
 
 	switch (logicOp)
 	{
-	case BlendState::LogicOperator::None:
+	case IBlendState::LogicOperator::None:
 		result = D3D11_LOGIC_OP_NOOP;
 		break;
-	case BlendState::LogicOperator::Clear:
+	case IBlendState::LogicOperator::Clear:
 		result = D3D11_LOGIC_OP_CLEAR;
 		break;
-	case BlendState::LogicOperator::Set:
+	case IBlendState::LogicOperator::Set:
 		result = D3D11_LOGIC_OP_SET;
 		break;
-	case BlendState::LogicOperator::Copy:
+	case IBlendState::LogicOperator::Copy:
 		result = D3D11_LOGIC_OP_SET;
 		break;
-	case BlendState::LogicOperator::CopyInverted:
+	case IBlendState::LogicOperator::CopyInverted:
 		result = D3D11_LOGIC_OP_COPY_INVERTED;
 		break;
-	case BlendState::LogicOperator::Invert:
+	case IBlendState::LogicOperator::Invert:
 		result = D3D11_LOGIC_OP_INVERT;
 		break;
-	case BlendState::LogicOperator::And:
+	case IBlendState::LogicOperator::And:
 		result = D3D11_LOGIC_OP_AND;
 		break;
-	case BlendState::LogicOperator::Nand:
+	case IBlendState::LogicOperator::Nand:
 		result = D3D11_LOGIC_OP_NAND;
 		break;
-	case BlendState::LogicOperator::Or:
+	case IBlendState::LogicOperator::Or:
 		result = D3D11_LOGIC_OP_OR;
 		break;
-	case BlendState::LogicOperator::Nor:
+	case IBlendState::LogicOperator::Nor:
 		result = D3D11_LOGIC_OP_NOR;
 		break;
-	case BlendState::LogicOperator::Xor:
+	case IBlendState::LogicOperator::Xor:
 		result = D3D11_LOGIC_OP_XOR;
 		break;
-	case BlendState::LogicOperator::Equiv:
+	case IBlendState::LogicOperator::Equiv:
 		result = D3D11_LOGIC_OP_EQUIV;
 		break;
-	case BlendState::LogicOperator::AndReverse:
+	case IBlendState::LogicOperator::AndReverse:
 		result = D3D11_LOGIC_OP_AND_REVERSE;
 		break;
-	case BlendState::LogicOperator::AndInverted:
+	case IBlendState::LogicOperator::AndInverted:
 		result = D3D11_LOGIC_OP_AND_INVERTED;
 		break;
-	case BlendState::LogicOperator::OrReverse:
+	case IBlendState::LogicOperator::OrReverse:
 		result = D3D11_LOGIC_OP_OR_REVERSE;
 		break;
-	case BlendState::LogicOperator::OrInverted:
+	case IBlendState::LogicOperator::OrInverted:
 		result = D3D11_LOGIC_OP_OR_INVERTED;
 		break;
 	default:

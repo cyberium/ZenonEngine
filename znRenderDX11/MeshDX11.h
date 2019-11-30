@@ -1,6 +1,6 @@
 #pragma once
 
-class OW_ENGINE_API MeshDX11 : public IMesh
+class OW_ENGINE_API MeshDX11 : public MeshBase
 {
 public:
 	                                                MeshDX11(ID3D11Device2 * pDevice);
@@ -8,7 +8,7 @@ public:
 
 	virtual void                                    SetPrimitiveTopology(PrimitiveTopology _topology);
 
-	virtual bool                                    Render(const RenderEventArgs* renderArgs, const ConstantBuffer* perObject, UINT indexStartLocation = 0, UINT indexCnt = 0, UINT vertexStartLocation = 0, UINT vertexCnt = 0);
+	virtual bool                                    Render(const RenderEventArgs* renderArgs, const IConstantBuffer* perObject, UINT indexStartLocation = 0, UINT indexCnt = 0, UINT vertexStartLocation = 0, UINT vertexCnt = 0);
 
 private:
 	D3D11_PRIMITIVE_TOPOLOGY                        m_PrimitiveTopology;

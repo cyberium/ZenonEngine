@@ -8,7 +8,7 @@
 // Additional
 #include <Application.h>
 
-BaseUIPass::BaseUIPass(std::shared_ptr<SceneUI> uiScene, std::shared_ptr<PipelineState> pipeline)
+BaseUIPass::BaseUIPass(std::shared_ptr<SceneUI> uiScene, std::shared_ptr<IPipelineState> pipeline)
 	: base(pipeline)
     , m_UIScene(uiScene)
 {}

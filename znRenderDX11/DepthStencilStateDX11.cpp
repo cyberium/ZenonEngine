@@ -3,11 +3,11 @@
 #include "DepthStencilStateDX11.h"
 
 // FORWARD BEGIN
-D3D11_DEPTH_WRITE_MASK TranslateDepthWriteMask(DepthStencilState::DepthWrite depthWrite);
-D3D11_COMPARISON_FUNC TranslateCompareFunc(DepthStencilState::CompareFunction compareFunc);
-D3D11_STENCIL_OP TranslateStencilOperation(DepthStencilState::StencilOperation stencilOperation);
-D3D11_DEPTH_STENCILOP_DESC TranslateFaceOperation(DepthStencilState::FaceOperation faceOperation);
-D3D11_DEPTH_STENCIL_DESC TranslateDepthStencilState(const DepthStencilState::DepthMode& depthMode, const DepthStencilState::StencilMode& stencilMode);
+D3D11_DEPTH_WRITE_MASK TranslateDepthWriteMask(IDepthStencilState::DepthWrite depthWrite);
+D3D11_COMPARISON_FUNC TranslateCompareFunc(IDepthStencilState::CompareFunction compareFunc);
+D3D11_STENCIL_OP TranslateStencilOperation(IDepthStencilState::StencilOperation stencilOperation);
+D3D11_DEPTH_STENCILOP_DESC TranslateFaceOperation(IDepthStencilState::FaceOperation faceOperation);
+D3D11_DEPTH_STENCIL_DESC TranslateDepthStencilState(const IDepthStencilState::DepthMode& depthMode, const IDepthStencilState::StencilMode& stencilMode);
 // FORWARD END
 
 DepthStencilStateDX11::DepthStencilStateDX11(ID3D11Device2* pDevice)
@@ -75,16 +75,16 @@ void DepthStencilStateDX11::Bind()
 //
 // Translate
 //
-D3D11_DEPTH_WRITE_MASK TranslateDepthWriteMask(DepthStencilState::DepthWrite depthWrite)
+D3D11_DEPTH_WRITE_MASK TranslateDepthWriteMask(IDepthStencilState::DepthWrite depthWrite)
 {
 	D3D11_DEPTH_WRITE_MASK result = D3D11_DEPTH_WRITE_MASK_ALL;
 
 	switch (depthWrite)
 	{
-	case DepthStencilState::DepthWrite::Enable:
+	case IDepthStencilState::DepthWrite::Enable:
 		result = D3D11_DEPTH_WRITE_MASK_ALL;
 		break;
-	case DepthStencilState::DepthWrite::Disable:
+	case IDepthStencilState::DepthWrite::Disable:
 		result = D3D11_DEPTH_WRITE_MASK_ZERO;
 		break;
 	default:
@@ -95,34 +95,34 @@ D3D11_DEPTH_WRITE_MASK TranslateDepthWriteMask(DepthStencilState::DepthWrite dep
 	return result;
 }
 
-D3D11_COMPARISON_FUNC TranslateCompareFunc(DepthStencilState::CompareFunction compareFunc)
+D3D11_COMPARISON_FUNC TranslateCompareFunc(IDepthStencilState::CompareFunction compareFunc)
 {
 	D3D11_COMPARISON_FUNC result = D3D11_COMPARISON_LESS;
 
 	switch (compareFunc)
 	{
-	case DepthStencilState::CompareFunction::Never:
+	case IDepthStencilState::CompareFunction::Never:
 		result = D3D11_COMPARISON_NEVER;
 		break;
-	case DepthStencilState::CompareFunction::Less:
+	case IDepthStencilState::CompareFunction::Less:
 		result = D3D11_COMPARISON_LESS;
 		break;
-	case DepthStencilState::CompareFunction::Equal:
+	case IDepthStencilState::CompareFunction::Equal:
 		result = D3D11_COMPARISON_EQUAL;
 		break;
-	case DepthStencilState::CompareFunction::LessOrEqual:
+	case IDepthStencilState::CompareFunction::LessOrEqual:
 		result = D3D11_COMPARISON_LESS_EQUAL;
 		break;
-	case DepthStencilState::CompareFunction::Greater:
+	case IDepthStencilState::CompareFunction::Greater:
 		result = D3D11_COMPARISON_GREATER;
 		break;
-	case DepthStencilState::CompareFunction::NotEqual:
+	case IDepthStencilState::CompareFunction::NotEqual:
 		result = D3D11_COMPARISON_NOT_EQUAL;
 		break;
-	case DepthStencilState::CompareFunction::GreaterOrEqual:
+	case IDepthStencilState::CompareFunction::GreaterOrEqual:
 		result = D3D11_COMPARISON_GREATER_EQUAL;
 		break;
-	case DepthStencilState::CompareFunction::Always:
+	case IDepthStencilState::CompareFunction::Always:
 		result = D3D11_COMPARISON_ALWAYS;
 		break;
 	default:
@@ -133,34 +133,34 @@ D3D11_COMPARISON_FUNC TranslateCompareFunc(DepthStencilState::CompareFunction co
 	return result;
 }
 
-D3D11_STENCIL_OP TranslateStencilOperation(DepthStencilState::StencilOperation stencilOperation)
+D3D11_STENCIL_OP TranslateStencilOperation(IDepthStencilState::StencilOperation stencilOperation)
 {
 	D3D11_STENCIL_OP result = D3D11_STENCIL_OP_KEEP;
 
 	switch (stencilOperation)
 	{
-	case DepthStencilState::StencilOperation::Keep:
+	case IDepthStencilState::StencilOperation::Keep:
 		result = D3D11_STENCIL_OP_KEEP;
 		break;
-	case DepthStencilState::StencilOperation::Zero:
+	case IDepthStencilState::StencilOperation::Zero:
 		result = D3D11_STENCIL_OP_ZERO;
 		break;
-	case DepthStencilState::StencilOperation::Reference:
+	case IDepthStencilState::StencilOperation::Reference:
 		result = D3D11_STENCIL_OP_REPLACE;
 		break;
-	case DepthStencilState::StencilOperation::IncrementClamp:
+	case IDepthStencilState::StencilOperation::IncrementClamp:
 		result = D3D11_STENCIL_OP_INCR_SAT;
 		break;
-	case DepthStencilState::StencilOperation::DecrementClamp:
+	case IDepthStencilState::StencilOperation::DecrementClamp:
 		result = D3D11_STENCIL_OP_DECR_SAT;
 		break;
-	case DepthStencilState::StencilOperation::Invert:
+	case IDepthStencilState::StencilOperation::Invert:
 		result = D3D11_STENCIL_OP_INVERT;
 		break;
-	case DepthStencilState::StencilOperation::IncrementWrap:
+	case IDepthStencilState::StencilOperation::IncrementWrap:
 		result = D3D11_STENCIL_OP_INCR;
 		break;
-	case DepthStencilState::StencilOperation::DecrementWrap:
+	case IDepthStencilState::StencilOperation::DecrementWrap:
 		result = D3D11_STENCIL_OP_DECR;
 		break;
 	default:
@@ -171,7 +171,7 @@ D3D11_STENCIL_OP TranslateStencilOperation(DepthStencilState::StencilOperation s
 	return result;
 }
 
-D3D11_DEPTH_STENCILOP_DESC TranslateFaceOperation(DepthStencilState::FaceOperation faceOperation)
+D3D11_DEPTH_STENCILOP_DESC TranslateFaceOperation(IDepthStencilState::FaceOperation faceOperation)
 {
 	D3D11_DEPTH_STENCILOP_DESC result;
 
@@ -183,7 +183,7 @@ D3D11_DEPTH_STENCILOP_DESC TranslateFaceOperation(DepthStencilState::FaceOperati
 	return result;
 }
 
-D3D11_DEPTH_STENCIL_DESC TranslateDepthStencilState(const DepthStencilState::DepthMode& depthMode, const DepthStencilState::StencilMode& stencilMode)
+D3D11_DEPTH_STENCIL_DESC TranslateDepthStencilState(const IDepthStencilState::DepthMode& depthMode, const IDepthStencilState::StencilMode& stencilMode)
 {
 	D3D11_DEPTH_STENCIL_DESC result;
 

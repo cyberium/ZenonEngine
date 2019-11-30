@@ -57,9 +57,7 @@ public:
 	UserEvent                       UserEvent;
 	void                          OnUserEvent(UserEventArgs& e);
 
-	void                          OnRender(RenderEventArgs& e);
-	void                          OnRenderUI(RenderEventArgs& e);
-
+public:
 	static LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
 
 private:

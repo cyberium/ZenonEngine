@@ -9,7 +9,7 @@ public:
 	UI_Texture_Material();
 	virtual ~UI_Texture_Material();
 
-	void SetTexture(std::shared_ptr<Texture> _texture);
+	void SetTexture(std::shared_ptr<ITexture> _texture);
 	void SetColor(vec4 color);
 	
 protected:

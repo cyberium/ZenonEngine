@@ -94,8 +94,14 @@
     <Filter Include="FBX">
       <UniqueIdentifier>{d9523bc5-6faa-44da-9380-191b2b28f432}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Render">
-      <UniqueIdentifier>{87670a0f-3e21-440e-aed0-88f2dd660dd6}</UniqueIdentifier>
+    <Filter Include="Managers">
+      <UniqueIdentifier>{bea8c7b6-a116-4292-87d0-9e849456ef13}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Managers\Settings">
+      <UniqueIdentifier>{c55d8656-eb02-4071-98e0-ef05ce94f3ba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Managers\Plugins">
+      <UniqueIdentifier>{a4f901a5-b7b6-41b2-8f70-04e6c739b77e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -312,11 +318,23 @@
     <ClCompile Include="FBXDisplayCommon.cpp">
       <Filter>FBX</Filter>
     </ClCompile>
-    <ClCompile Include="RenderDeviceCreatorFactory.cpp">
-      <Filter>Render</Filter>
-    </ClCompile>
     <ClCompile Include="znEngine.cpp">
       <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderDeviceCreatorFactory.cpp">
+      <Filter>Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="Settings\GroupQuality.cpp">
+      <Filter>Managers\Settings</Filter>
+    </ClCompile>
+    <ClCompile Include="Settings\GroupVideo.cpp">
+      <Filter>Managers\Settings</Filter>
+    </ClCompile>
+    <ClCompile Include="Settings\Settings.cpp">
+      <Filter>Managers\Settings</Filter>
+    </ClCompile>
+    <ClCompile Include="Plugins\PluginsManager.cpp">
+      <Filter>Managers\Plugins</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -543,7 +561,19 @@
       <Filter>FBX</Filter>
     </ClInclude>
     <ClInclude Include="RenderDeviceCreatorFactory.h">
-      <Filter>Render</Filter>
+      <Filter>Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="Settings\GroupQuality.h">
+      <Filter>Managers\Settings</Filter>
+    </ClInclude>
+    <ClInclude Include="Settings\GroupVideo.h">
+      <Filter>Managers\Settings</Filter>
+    </ClInclude>
+    <ClInclude Include="Settings\Settings.h">
+      <Filter>Managers\Settings</Filter>
+    </ClInclude>
+    <ClInclude Include="Plugins\PluginsManager.h">
+      <Filter>Managers\Plugins</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

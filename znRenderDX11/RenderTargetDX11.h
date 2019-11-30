@@ -9,16 +9,16 @@ public:
 	RenderTargetDX11(ID3D11Device2* pDevice);
 	virtual ~RenderTargetDX11();
 
-	virtual void AttachTexture(AttachmentPoint attachment, std::shared_ptr<Texture> texture);
-	virtual std::shared_ptr<Texture> GetTexture(AttachmentPoint attachment);
+	virtual void AttachTexture(AttachmentPoint attachment, std::shared_ptr<ITexture> texture);
+	virtual std::shared_ptr<ITexture> GetTexture(AttachmentPoint attachment);
 
 	virtual void Clear(AttachmentPoint attachemnt, ClearFlags clearFlags = ClearFlags::All, cvec4 color = vec4(0), float depth = 1.0f, uint8_t stencil = 0);
 	virtual void Clear(ClearFlags clearFlags = ClearFlags::All, cvec4 color = vec4(0), float depth = 1.0f, uint8_t stencil = 0);
 
 	virtual void GenerateMipMaps();
 
-	virtual void AttachStructuredBuffer(uint8_t slot, std::shared_ptr<StructuredBuffer> rwBuffer);
-	virtual std::shared_ptr<StructuredBuffer> GetStructuredBuffer(uint8_t slot);
+	virtual void AttachStructuredBuffer(uint8_t slot, std::shared_ptr<IStructuredBuffer> rwBuffer);
+	virtual std::shared_ptr<IStructuredBuffer> GetStructuredBuffer(uint8_t slot);
 
 	virtual void Resize(uint16_t width, uint16_t height);
 	virtual void Bind();

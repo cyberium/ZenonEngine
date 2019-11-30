@@ -2,25 +2,25 @@
 
 #include "QueryOGL.h"
 
-GLenum GLTranslateQueryType(Query::QueryType _type)
+GLenum GLTranslateQueryType(IQuery::QueryType _type)
 {
 	GLenum result = 0;
 
 	switch (_type)
 	{
-	case Query::QueryType::Timer:
+	case IQuery::QueryType::Timer:
 		return GL_TIME_ELAPSED;
-	case Query::QueryType::CountSamples:
+	case IQuery::QueryType::CountSamples:
 		return GL_SAMPLES_PASSED;
-	case Query::QueryType::CountSamplesPredicate:
+	case IQuery::QueryType::CountSamplesPredicate:
 #ifdef _DEBUG
 		return GL_ANY_SAMPLES_PASSED;
 #else
 		return GL_ANY_SAMPLES_PASSED_CONSERVATIVE;
 #endif
-	case Query::QueryType::CountPrimitives:
+	case IQuery::QueryType::CountPrimitives:
 		return GL_PRIMITIVES_GENERATED;
-	case Query::QueryType::CountTransformFeedbackPrimitives:
+	case IQuery::QueryType::CountTransformFeedbackPrimitives:
 		return GL_TRANSFORM_FEEDBACK_PRIMITIVES_WRITTEN;
 	default:
 		std::exception("Unknown QueryType");
@@ -94,7 +94,7 @@ bool QueryOGL::QueryResultAvailable(int64_t frame)
 	return result;
 }
 
-Query::QueryResult QueryOGL::GetQueryResult(int64_t frame)
+IQuery::QueryResult QueryOGL::GetQueryResult(int64_t frame)
 {
 	QueryResult result = {};
 	int buffer = (frame - 1LL) % m_NumBuffers;
@@ -114,27 +114,27 @@ Query::QueryResult QueryOGL::GetQueryResult(int64_t frame)
 
 		switch (m_QueryType)
 		{
-		case Query::QueryType::Timer:
+		case IQuery::QueryType::Timer:
 			result.ElapsedTime = static_cast<double>(qResult);
 			result.IsValid = true;
 		break;
 
-		case Query::QueryType::CountSamples:
+		case IQuery::QueryType::CountSamples:
 			result.NumSamples = qResult;
 			result.IsValid = true;
 		break;
 
-		case Query::QueryType::CountSamplesPredicate:
+		case IQuery::QueryType::CountSamplesPredicate:
 			result.AnySamples = (qResult > 0);
 			result.IsValid = true;
 		break;
 
-		case Query::QueryType::CountPrimitives:
+		case IQuery::QueryType::CountPrimitives:
 			result.PrimitivesGenerated = qResult;
 			result.IsValid = true;
 		break;
 
-		case Query::QueryType::CountTransformFeedbackPrimitives:
+		case IQuery::QueryType::CountTransformFeedbackPrimitives:
 			result.TransformFeedbackPrimitives = qResult;
 			result.IsValid = true;
 		break;

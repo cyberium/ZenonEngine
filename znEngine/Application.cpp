@@ -120,10 +120,12 @@ int Application::DoRun()
 		m_pRenderDevice->Lock();
 		{
 			RenderEventArgs renderArgs(*this, g_GameDeltaTime * 166.0f, g_ApplicationTime * 166.0f, g_FrameCounter, nullptr, nullptr, nullptr);
-			OnRender(renderArgs);
+			m_pWindow->OnPreRender(renderArgs);
+			m_pWindow->OnRender(renderArgs);
+			m_pWindow->OnPostRender(renderArgs);
 
 			RenderEventArgs renderUIArgs(*this, g_GameDeltaTime, g_ApplicationTime, g_FrameCounter, nullptr, nullptr, nullptr);
-			OnRenderUI(renderUIArgs);
+			m_pWindow->OnRenderUI(renderUIArgs);
 
 			m_pWindow->Present();
 		}
@@ -332,16 +334,4 @@ void Application::OnExit(EventArgs& e)
 void Application::OnUserEvent(UserEventArgs& e)
 {
 	UserEvent(e);
-}
-
-void Application::OnRender(RenderEventArgs& e)
-{
-	m_pWindow->OnPreRender(e);
-	m_pWindow->OnRender(e);
-	m_pWindow->OnPostRender(e);
-}
-
-void Application::OnRenderUI(RenderEventArgs & e)
-{
-	m_pWindow->OnRenderUI(e);
 }

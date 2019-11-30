@@ -4,22 +4,22 @@
 #include "RasterizerStateDX11.h"
 #include "DepthStencilStateDX11.h"
 
-class OW_ENGINE_API PipelineStateDX11 : public PipelineState
+class OW_ENGINE_API PipelineStateDX11 : public IPipelineState
 {
 public:
 	PipelineStateDX11(ID3D11Device2* pDevice);
 	virtual ~PipelineStateDX11();
 
 	// PipelineState
-	void SetShader(Shader::ShaderType type, std::shared_ptr<Shader> pShader) override;
-	std::shared_ptr<Shader> GetShader(Shader::ShaderType type) const override;
+	void SetShader(IShader::ShaderType type, std::shared_ptr<IShader> pShader) override;
+	std::shared_ptr<IShader> GetShader(IShader::ShaderType type) const override;
 	const ShaderMap& GetShaders() const override;
-	void SetBlendState(const BlendState& blendState) override;
-	BlendState& GetBlendState() override;
-	void SetRasterizerState(const RasterizerState& rasterizerState) override;
-	RasterizerState& GetRasterizerState() override;
-	void SetDepthStencilState(const DepthStencilState& depthStencilState) override;
-	DepthStencilState& GetDepthStencilState() override;
+	void SetBlendState(const std::shared_ptr<IBlendState> blendState) override;
+	std::shared_ptr<IBlendState> GetBlendState() override;
+	void SetRasterizerState(const std::shared_ptr<IRasterizerState> rasterizerState) override;
+	std::shared_ptr<IRasterizerState> GetRasterizerState() override;
+	void SetDepthStencilState(const std::shared_ptr<IDepthStencilState> depthStencilState) override;
+	std::shared_ptr<IDepthStencilState> GetDepthStencilState() override;
 	void SetRenderTarget(std::shared_ptr<IRenderTarget> renderTarget) override;
 	std::shared_ptr<IRenderTarget> GetRenderTarget() const override;
 
@@ -33,8 +33,8 @@ private:
 	ATL::CComPtr<ID3D11DeviceContext2>              m_pDeviceContext;
 
 	ShaderMap                                       m_Shaders;
-	BlendStateDX11                                  m_BlendState;
-	RasterizerStateDX11                             m_RasterizerState;
-	DepthStencilStateDX11                           m_DepthStencilState;
+	std::shared_ptr<BlendStateDX11>                 m_BlendState;
+	std::shared_ptr<RasterizerStateDX11>            m_RasterizerState;
+	std::shared_ptr<DepthStencilStateDX11>          m_DepthStencilState;
 	std::shared_ptr<IRenderTarget>                  m_RenderTarget;
 };

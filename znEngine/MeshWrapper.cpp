@@ -47,7 +47,7 @@ std::shared_ptr<const IMaterial> MeshWrapper::GetMaterial() const
 	return m_Mesh->GetMaterial();
 }
 
-bool MeshWrapper::Render(const RenderEventArgs* renderEventArgs, const ConstantBuffer* perObject, UINT indexStartLocation, UINT indexCnt, UINT vertexStartLocation, UINT vertexCnt)
+bool MeshWrapper::Render(const RenderEventArgs* renderEventArgs, const IConstantBuffer* perObject, UINT indexStartLocation, UINT indexCnt, UINT vertexStartLocation, UINT vertexCnt)
 {
 	return m_Mesh->Render(renderEventArgs, perObject, indexStartLocation, indexCnt, vertexStartLocation, vertexCnt);
 }

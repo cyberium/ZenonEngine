@@ -12,12 +12,12 @@ MaterialWrapper::~MaterialWrapper()
 {
 }
 
-void MaterialWrapper::SetShader(Shader::ShaderType type, std::shared_ptr<Shader> pShader)
+void MaterialWrapper::SetShader(IShader::ShaderType type, std::shared_ptr<IShader> pShader)
 {
 	m_Material->SetShader(type, pShader);
 }
 
-std::shared_ptr<Shader> MaterialWrapper::GetShader(Shader::ShaderType type) const
+std::shared_ptr<IShader> MaterialWrapper::GetShader(IShader::ShaderType type) const
 {
 	return m_Material->GetShader(type);
 }
@@ -27,22 +27,22 @@ const ShaderMap & MaterialWrapper::GetShaders() const
 	return m_Material->GetShaders();
 }
 
-std::shared_ptr<Texture> MaterialWrapper::GetTexture(uint8 ID) const
+std::shared_ptr<ITexture> MaterialWrapper::GetTexture(uint8 ID) const
 {
 	return m_Material->GetTexture(ID);
 }
 
-void MaterialWrapper::SetTexture(uint8 type, std::shared_ptr<Texture> texture)
+void MaterialWrapper::SetTexture(uint8 type, std::shared_ptr<ITexture> texture)
 {
 	m_Material->SetTexture(type, texture);
 }
 
-std::shared_ptr<SamplerState> MaterialWrapper::GetSampler(uint8 ID) const
+std::shared_ptr<ISamplerState> MaterialWrapper::GetSampler(uint8 ID) const
 {
     return m_Material->GetSampler(ID);
 }
 
-void MaterialWrapper::SetSampler(uint8 ID, std::shared_ptr<SamplerState> samplerState)
+void MaterialWrapper::SetSampler(uint8 ID, std::shared_ptr<ISamplerState> samplerState)
 {
     m_Material->SetSampler(ID, samplerState);
 }

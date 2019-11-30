@@ -1,28 +1,28 @@
 #pragma once
 
-static void ReportAndThrowTextureFormatError(const Texture::TextureFormat& format, const std::string& file, int line, const std::string& function, const std::string& message)
+static void ReportAndThrowTextureFormatError(const ITexture::TextureFormat& format, const std::string& file, int line, const std::string& function, const std::string& message)
 {
 	std::stringstream ss;
 	ss << message << std::endl;
 	ss << "Components: ";
 	switch (format.Components)
 	{
-	case Texture::Components::R:
+	case ITexture::Components::R:
 		ss << "R" << std::endl;
 		break;
-	case Texture::Components::RG:
+	case ITexture::Components::RG:
 		ss << "RG" << std::endl;
 		break;
-	case Texture::Components::RGB:
+	case ITexture::Components::RGB:
 		ss << "RGB" << std::endl;
 		break;
-	case Texture::Components::RGBA:
+	case ITexture::Components::RGBA:
 		ss << "RGBA" << std::endl;
 		break;
-	case Texture::Components::Depth:
+	case ITexture::Components::Depth:
 		ss << "Depth" << std::endl;
 		break;
-	case Texture::Components::DepthStencil:
+	case ITexture::Components::DepthStencil:
 		ss << "DepthStencil" << std::endl;
 		break;
 	default:
@@ -33,22 +33,22 @@ static void ReportAndThrowTextureFormatError(const Texture::TextureFormat& forma
 	ss << "Type:";
 	switch (format.Type)
 	{
-	case Texture::Type::Typeless:
+	case ITexture::Type::Typeless:
 		ss << "Typeless" << std::endl;
 		break;
-	case Texture::Type::UnsignedNormalized:
+	case ITexture::Type::UnsignedNormalized:
 		ss << "UnsignedNormalized" << std::endl;
 		break;
-	case Texture::Type::SignedNormalized:
+	case ITexture::Type::SignedNormalized:
 		ss << "SignedNormalized" << std::endl;
 		break;
-	case Texture::Type::Float:
+	case ITexture::Type::Float:
 		ss << "Float" << std::endl;
 		break;
-	case Texture::Type::UnsignedInteger:
+	case ITexture::Type::UnsignedInteger:
 		ss << "UnsignedInteger" << std::endl;
 		break;
-	case Texture::Type::SignedInteger:
+	case ITexture::Type::SignedInteger:
 		ss << "SignedInteger" << std::endl;
 		break;
 	default:
@@ -69,16 +69,16 @@ static void ReportAndThrowTextureFormatError(const Texture::TextureFormat& forma
 #define ReportTextureFormatError( fmt, msg ) ReportAndThrowTextureFormatError( (fmt), __FILE__, __LINE__, __FUNCTION__, (msg) )
 
 
-DXGI_FORMAT DX11TranslateFormat(const Texture::TextureFormat& format)
+DXGI_FORMAT DX11TranslateFormat(const ITexture::TextureFormat& format)
 {
 	DXGI_FORMAT result = DXGI_FORMAT_UNKNOWN;
 
 	switch (format.Components)
 	{
-	case Texture::Components::R:
+	case ITexture::Components::R:
 		switch (format.Type)
 		{
-		case Texture::Type::Typeless:
+		case ITexture::Type::Typeless:
 			if (format.RedBits == 8)
 			{
 				result = DXGI_FORMAT_R8_TYPELESS;
@@ -109,7 +109,7 @@ DXGI_FORMAT DX11TranslateFormat(const Texture::TextureFormat& format)
 				}
 			}
 			break;
-		case Texture::Type::UnsignedNormalized:
+		case ITexture::Type::UnsignedNormalized:
 			if (format.RedBits == 1)
 			{
 				result = DXGI_FORMAT_R1_UNORM;
@@ -140,7 +140,7 @@ DXGI_FORMAT DX11TranslateFormat(const Texture::TextureFormat& format)
 				}
 			}
 			break;
-		case Texture::Type::SignedNormalized:
+		case ITexture::Type::SignedNormalized:
 			if (format.RedBits == 8)
 			{
 				result = DXGI_FORMAT_R8_SNORM;
@@ -163,7 +163,7 @@ DXGI_FORMAT DX11TranslateFormat(const Texture::TextureFormat& format)
 				}
 			}
 			break;
-		case Texture::Type::Float:
+		case ITexture::Type::Float:
 			if (format.RedBits == 16)
 			{
 				result = DXGI_FORMAT_R16_FLOAT;
@@ -186,7 +186,7 @@ DXGI_FORMAT DX11TranslateFormat(const Texture::TextureFormat& format)
 				}
 			}
 			break;
-		case Texture::Type::UnsignedInteger:
+		case ITexture::Type::UnsignedInteger:
 			if (format.RedBits == 8)
 			{
 				result = DXGI_FORMAT_R8_UINT;
@@ -217,7 +217,7 @@ DXGI_FORMAT DX11TranslateFormat(const Texture::TextureFormat& format)
 				}
 			}
 			break;
-		case Texture::Type::SignedInteger:
+		case ITexture::Type::SignedInteger:
 			if (format.RedBits == 8)
 			{
 				result = DXGI_FORMAT_R8_SINT;
@@ -253,10 +253,10 @@ DXGI_FORMAT DX11TranslateFormat(const Texture::TextureFormat& format)
 			break;
 		}
 		break;
-	case Texture::Components::RG:
+	case ITexture::Components::RG:
 		switch (format.Type)
 		{
-		case Texture::Type::Typeless:
+		case ITexture::Type::Typeless:
 			if (format.RedBits == 8 && format.GreenBits == 8)
 			{
 				result = DXGI_FORMAT_R8G8_TYPELESS;
@@ -295,7 +295,7 @@ DXGI_FORMAT DX11TranslateFormat(const Texture::TextureFormat& format)
 				}
 			}
 			break;
-		case Texture::Type::UnsignedNormalized:
+		case ITexture::Type::UnsignedNormalized:
 			if (format.RedBits == 8 && format.GreenBits == 8)
 			{
 				result = DXGI_FORMAT_R8G8_UNORM;
@@ -318,7 +318,7 @@ DXGI_FORMAT DX11TranslateFormat(const Texture::TextureFormat& format)
 				}
 			}
 			break;
-		case Texture::Type::SignedNormalized:
+		case ITexture::Type::SignedNormalized:
 			if (format.RedBits == 8 && format.GreenBits == 8)
 			{
 				result = DXGI_FORMAT_R8G8_SNORM;
@@ -341,7 +341,7 @@ DXGI_FORMAT DX11TranslateFormat(const Texture::TextureFormat& format)
 				}
 			}
 			break;
-		case Texture::Type::Float:
+		case ITexture::Type::Float:
 			if (format.RedBits == 16 && format.GreenBits == 16)
 			{
 				result = DXGI_FORMAT_R16G16_FLOAT;
@@ -364,7 +364,7 @@ DXGI_FORMAT DX11TranslateFormat(const Texture::TextureFormat& format)
 				}
 			}
 			break;
-		case Texture::Type::UnsignedInteger:
+		case ITexture::Type::UnsignedInteger:
 			if (format.RedBits == 8 && format.GreenBits == 8)
 			{
 				result = DXGI_FORMAT_R8G8_UINT;
@@ -395,7 +395,7 @@ DXGI_FORMAT DX11TranslateFormat(const Texture::TextureFormat& format)
 				}
 			}
 			break;
-		case Texture::Type::SignedInteger:
+		case ITexture::Type::SignedInteger:
 			if (format.RedBits == 8 && format.GreenBits == 8)
 			{
 				result = DXGI_FORMAT_R8G8_SINT;
@@ -431,10 +431,10 @@ DXGI_FORMAT DX11TranslateFormat(const Texture::TextureFormat& format)
 			break;
 		}
 		break;
-	case Texture::Components::RGB:
+	case ITexture::Components::RGB:
 		switch (format.Type)
 		{
-		case Texture::Type::Typeless:
+		case ITexture::Type::Typeless:
 			if (format.RedBits == 32 && format.GreenBits == 32 && format.BlueBits == 32)
 			{
 				result = DXGI_FORMAT_R32G32B32_TYPELESS;
@@ -446,7 +446,7 @@ DXGI_FORMAT DX11TranslateFormat(const Texture::TextureFormat& format)
 				result = DXGI_FORMAT_R32G32B32_TYPELESS;
 			}
 			break;
-		case Texture::Type::Float:
+		case ITexture::Type::Float:
 			if (format.RedBits == 11 && format.GreenBits == 11 && format.BlueBits == 10)
 			{
 				result = DXGI_FORMAT_R11G11B10_FLOAT;
@@ -469,7 +469,7 @@ DXGI_FORMAT DX11TranslateFormat(const Texture::TextureFormat& format)
 				}
 			}
 			break;
-		case Texture::Type::UnsignedInteger:
+		case ITexture::Type::UnsignedInteger:
 			if (format.RedBits == 32 && format.GreenBits == 32 && format.BlueBits == 32)
 			{
 				result = DXGI_FORMAT_R32G32B32_UINT;
@@ -481,7 +481,7 @@ DXGI_FORMAT DX11TranslateFormat(const Texture::TextureFormat& format)
 				result = DXGI_FORMAT_R32G32B32_UINT;
 			}
 			break;
-		case Texture::Type::SignedInteger:
+		case ITexture::Type::SignedInteger:
 			if (format.RedBits == 32 && format.GreenBits == 32 && format.BlueBits == 32)
 			{
 				result = DXGI_FORMAT_R32G32B32_SINT;
@@ -498,11 +498,11 @@ DXGI_FORMAT DX11TranslateFormat(const Texture::TextureFormat& format)
 			// Try to choose a reasonable alternative
 			switch (format.Type)
 			{
-			case Texture::Type::UnsignedNormalized:
+			case ITexture::Type::UnsignedNormalized:
 				// This is a non-normalized format. May result in unintended behavior.
 				result = DXGI_FORMAT_R32G32B32_UINT;
 				break;
-			case Texture::Type::SignedNormalized:
+			case ITexture::Type::SignedNormalized:
 				// Non-normalized format. May result in unintended behavior.
 				result = DXGI_FORMAT_R32G32B32_SINT;
 				break;
@@ -513,10 +513,10 @@ DXGI_FORMAT DX11TranslateFormat(const Texture::TextureFormat& format)
 			break;
 		}
 		break;
-	case Texture::Components::RGBA:
+	case ITexture::Components::RGBA:
 		switch (format.Type)
 		{
-		case Texture::Type::Typeless:
+		case ITexture::Type::Typeless:
 			if (format.RedBits == 8 && format.GreenBits == 8 && format.BlueBits == 8 && format.AlphaBits == 8)
 			{
 				result = DXGI_FORMAT_R8G8B8A8_TYPELESS;
@@ -555,7 +555,7 @@ DXGI_FORMAT DX11TranslateFormat(const Texture::TextureFormat& format)
 				}
 			}
 			break;
-		case Texture::Type::UnsignedNormalized:
+		case ITexture::Type::UnsignedNormalized:
 			if (format.RedBits == 8 && format.GreenBits == 8 && format.BlueBits == 8 && format.AlphaBits == 8)
 			{
 				result = DXGI_FORMAT_R8G8B8A8_UNORM;
@@ -586,7 +586,7 @@ DXGI_FORMAT DX11TranslateFormat(const Texture::TextureFormat& format)
 				}
 			}
 			break;
-		case Texture::Type::SignedNormalized:
+		case ITexture::Type::SignedNormalized:
 			if (format.RedBits == 8 && format.GreenBits == 8 && format.BlueBits == 8 && format.AlphaBits == 8)
 			{
 				result = DXGI_FORMAT_R8G8B8A8_SNORM;
@@ -609,7 +609,7 @@ DXGI_FORMAT DX11TranslateFormat(const Texture::TextureFormat& format)
 				}
 			}
 			break;
-		case Texture::Type::Float:
+		case ITexture::Type::Float:
 			if (format.RedBits == 32 && format.GreenBits == 32 && format.BlueBits && format.AlphaBits == 32)
 			{
 				result = DXGI_FORMAT_R32G32B32A32_FLOAT;
@@ -632,7 +632,7 @@ DXGI_FORMAT DX11TranslateFormat(const Texture::TextureFormat& format)
 				}
 			}
 			break;
-		case Texture::Type::UnsignedInteger:
+		case ITexture::Type::UnsignedInteger:
 			if (format.RedBits == 8 && format.GreenBits == 8 && format.BlueBits == 8 && format.AlphaBits == 8)
 			{
 				result = DXGI_FORMAT_R8G8B8A8_UINT;
@@ -663,7 +663,7 @@ DXGI_FORMAT DX11TranslateFormat(const Texture::TextureFormat& format)
 				}
 			}
 			break;
-		case Texture::Type::SignedInteger:
+		case ITexture::Type::SignedInteger:
 			if (format.RedBits == 8 && format.GreenBits == 8 && format.BlueBits == 8 && format.AlphaBits == 8)
 			{
 				result = DXGI_FORMAT_R8G8B8A8_SINT;
@@ -699,10 +699,10 @@ DXGI_FORMAT DX11TranslateFormat(const Texture::TextureFormat& format)
 			break;
 		}
 		break;
-	case Texture::Components::Depth:
+	case ITexture::Components::Depth:
 		switch (format.Type)
 		{
-		case Texture::Type::UnsignedNormalized:
+		case ITexture::Type::UnsignedNormalized:
 			if (format.DepthBits == 16)
 			{
 				result = DXGI_FORMAT_D16_UNORM;
@@ -714,7 +714,7 @@ DXGI_FORMAT DX11TranslateFormat(const Texture::TextureFormat& format)
 				result = DXGI_FORMAT_D16_UNORM;
 			}
 			break;
-		case Texture::Type::Float:
+		case ITexture::Type::Float:
 			if (format.DepthBits == 32)
 			{
 				result = DXGI_FORMAT_D32_FLOAT;
@@ -732,7 +732,7 @@ DXGI_FORMAT DX11TranslateFormat(const Texture::TextureFormat& format)
 			break;
 		}
 		break;
-	case Texture::Components::DepthStencil:
+	case ITexture::Components::DepthStencil:
 		// For Depth/Stencil formats, we'll ignore the type and try to deduce the format
 		// based on the bit-depth values.
 		if (format.DepthBits == 24 && format.StencilBits == 8)
@@ -765,16 +765,16 @@ DXGI_FORMAT DX11TranslateFormat(const Texture::TextureFormat& format)
 	return result;
 }
 
-Texture::TextureFormat DX11TranslateFormat(DXGI_FORMAT format, uint8_t numSamples)
+ITexture::TextureFormat DX11TranslateFormat(DXGI_FORMAT format, uint8_t numSamples)
 {
-	Texture::TextureFormat result;
+	ITexture::TextureFormat result;
 	result.NumSamples = numSamples;
 
 	switch (format)
 	{
 	case DXGI_FORMAT_R32G32B32A32_TYPELESS:
-		result.Components = Texture::Components::RGBA;
-		result.Type = Texture::Type::Typeless;
+		result.Components = ITexture::Components::RGBA;
+		result.Type = ITexture::Type::Typeless;
 		result.RedBits = 32;
 		result.GreenBits = 32;
 		result.BlueBits = 32;
@@ -783,8 +783,8 @@ Texture::TextureFormat DX11TranslateFormat(DXGI_FORMAT format, uint8_t numSample
 		result.StencilBits = 0;
 		break;
 	case DXGI_FORMAT_R32G32B32A32_FLOAT:
-		result.Components = Texture::Components::RGBA;
-		result.Type = Texture::Type::Float;
+		result.Components = ITexture::Components::RGBA;
+		result.Type = ITexture::Type::Float;
 		result.RedBits = 32;
 		result.GreenBits = 32;
 		result.BlueBits = 32;
@@ -793,8 +793,8 @@ Texture::TextureFormat DX11TranslateFormat(DXGI_FORMAT format, uint8_t numSample
 		result.StencilBits = 0;
 		break;
 	case DXGI_FORMAT_R32G32B32A32_UINT:
-		result.Components = Texture::Components::RGBA;
-		result.Type = Texture::Type::UnsignedInteger;
+		result.Components = ITexture::Components::RGBA;
+		result.Type = ITexture::Type::UnsignedInteger;
 		result.RedBits = 32;
 		result.GreenBits = 32;
 		result.BlueBits = 32;
@@ -803,8 +803,8 @@ Texture::TextureFormat DX11TranslateFormat(DXGI_FORMAT format, uint8_t numSample
 		result.StencilBits = 0;
 		break;
 	case DXGI_FORMAT_R32G32B32A32_SINT:
-		result.Components = Texture::Components::RGBA;
-		result.Type = Texture::Type::SignedInteger;
+		result.Components = ITexture::Components::RGBA;
+		result.Type = ITexture::Type::SignedInteger;
 		result.RedBits = 32;
 		result.GreenBits = 32;
 		result.BlueBits = 32;
@@ -813,8 +813,8 @@ Texture::TextureFormat DX11TranslateFormat(DXGI_FORMAT format, uint8_t numSample
 		result.StencilBits = 0;
 		break;
 	case DXGI_FORMAT_R32G32B32_TYPELESS:
-		result.Components = Texture::Components::RGB;
-		result.Type = Texture::Type::Typeless;
+		result.Components = ITexture::Components::RGB;
+		result.Type = ITexture::Type::Typeless;
 		result.RedBits = 32;
 		result.GreenBits = 32;
 		result.BlueBits = 32;
@@ -823,8 +823,8 @@ Texture::TextureFormat DX11TranslateFormat(DXGI_FORMAT format, uint8_t numSample
 		result.StencilBits = 0;
 		break;
 	case DXGI_FORMAT_R32G32B32_FLOAT:
-		result.Components = Texture::Components::RGB;
-		result.Type = Texture::Type::Float;
+		result.Components = ITexture::Components::RGB;
+		result.Type = ITexture::Type::Float;
 		result.RedBits = 32;
 		result.GreenBits = 32;
 		result.BlueBits = 32;
@@ -833,8 +833,8 @@ Texture::TextureFormat DX11TranslateFormat(DXGI_FORMAT format, uint8_t numSample
 		result.StencilBits = 0;
 		break;
 	case DXGI_FORMAT_R32G32B32_UINT:
-		result.Components = Texture::Components::RGB;
-		result.Type = Texture::Type::UnsignedInteger;
+		result.Components = ITexture::Components::RGB;
+		result.Type = ITexture::Type::UnsignedInteger;
 		result.RedBits = 32;
 		result.GreenBits = 32;
 		result.BlueBits = 32;
@@ -843,8 +843,8 @@ Texture::TextureFormat DX11TranslateFormat(DXGI_FORMAT format, uint8_t numSample
 		result.StencilBits = 0;
 		break;
 	case DXGI_FORMAT_R32G32B32_SINT:
-		result.Components = Texture::Components::RGB;
-		result.Type = Texture::Type::SignedInteger;
+		result.Components = ITexture::Components::RGB;
+		result.Type = ITexture::Type::SignedInteger;
 		result.RedBits = 32;
 		result.GreenBits = 32;
 		result.BlueBits = 32;
@@ -853,8 +853,8 @@ Texture::TextureFormat DX11TranslateFormat(DXGI_FORMAT format, uint8_t numSample
 		result.StencilBits = 0;
 		break;
 	case DXGI_FORMAT_R16G16B16A16_TYPELESS:
-		result.Components = Texture::Components::RGBA;
-		result.Type = Texture::Type::Typeless;
+		result.Components = ITexture::Components::RGBA;
+		result.Type = ITexture::Type::Typeless;
 		result.RedBits = 16;
 		result.GreenBits = 16;
 		result.BlueBits = 16;
@@ -863,8 +863,8 @@ Texture::TextureFormat DX11TranslateFormat(DXGI_FORMAT format, uint8_t numSample
 		result.StencilBits = 0;
 		break;
 	case DXGI_FORMAT_R16G16B16A16_FLOAT:
-		result.Components = Texture::Components::RGBA;
-		result.Type = Texture::Type::Float;
+		result.Components = ITexture::Components::RGBA;
+		result.Type = ITexture::Type::Float;
 		result.RedBits = 16;
 		result.GreenBits = 16;
 		result.BlueBits = 16;
@@ -873,8 +873,8 @@ Texture::TextureFormat DX11TranslateFormat(DXGI_FORMAT format, uint8_t numSample
 		result.StencilBits = 0;
 		break;
 	case DXGI_FORMAT_R16G16B16A16_UINT:
-		result.Components = Texture::Components::RGBA;
-		result.Type = Texture::Type::UnsignedInteger;
+		result.Components = ITexture::Components::RGBA;
+		result.Type = ITexture::Type::UnsignedInteger;
 		result.RedBits = 16;
 		result.GreenBits = 16;
 		result.BlueBits = 16;
@@ -883,8 +883,8 @@ Texture::TextureFormat DX11TranslateFormat(DXGI_FORMAT format, uint8_t numSample
 		result.StencilBits = 0;
 		break;
 	case DXGI_FORMAT_R16G16B16A16_SNORM:
-		result.Components = Texture::Components::RGBA;
-		result.Type = Texture::Type::SignedNormalized;
+		result.Components = ITexture::Components::RGBA;
+		result.Type = ITexture::Type::SignedNormalized;
 		result.RedBits = 16;
 		result.GreenBits = 16;
 		result.BlueBits = 16;
@@ -893,8 +893,8 @@ Texture::TextureFormat DX11TranslateFormat(DXGI_FORMAT format, uint8_t numSample
 		result.StencilBits = 0;
 		break;
 	case DXGI_FORMAT_R16G16B16A16_SINT:
-		result.Components = Texture::Components::RGBA;
-		result.Type = Texture::Type::SignedInteger;
+		result.Components = ITexture::Components::RGBA;
+		result.Type = ITexture::Type::SignedInteger;
 		result.RedBits = 16;
 		result.GreenBits = 16;
 		result.BlueBits = 16;
@@ -903,8 +903,8 @@ Texture::TextureFormat DX11TranslateFormat(DXGI_FORMAT format, uint8_t numSample
 		result.StencilBits = 0;
 		break;
 	case DXGI_FORMAT_R32G32_TYPELESS:
-		result.Components = Texture::Components::RG;
-		result.Type = Texture::Type::Typeless;
+		result.Components = ITexture::Components::RG;
+		result.Type = ITexture::Type::Typeless;
 		result.RedBits = 32;
 		result.GreenBits = 32;
 		result.BlueBits = 0;
@@ -913,8 +913,8 @@ Texture::TextureFormat DX11TranslateFormat(DXGI_FORMAT format, uint8_t numSample
 		result.StencilBits = 0;
 		break;
 	case DXGI_FORMAT_R32G32_FLOAT:
-		result.Components = Texture::Components::RG;
-		result.Type = Texture::Type::Float;
+		result.Components = ITexture::Components::RG;
+		result.Type = ITexture::Type::Float;
 		result.RedBits = 32;
 		result.GreenBits = 32;
 		result.BlueBits = 0;
@@ -923,8 +923,8 @@ Texture::TextureFormat DX11TranslateFormat(DXGI_FORMAT format, uint8_t numSample
 		result.StencilBits = 0;
 		break;
 	case DXGI_FORMAT_R32G32_UINT:
-		result.Components = Texture::Components::RG;
-		result.Type = Texture::Type::UnsignedInteger;
+		result.Components = ITexture::Components::RG;
+		result.Type = ITexture::Type::UnsignedInteger;
 		result.RedBits = 32;
 		result.GreenBits = 32;
 		result.BlueBits = 0;
@@ -933,8 +933,8 @@ Texture::TextureFormat DX11TranslateFormat(DXGI_FORMAT format, uint8_t numSample
 		result.StencilBits = 0;
 		break;
 	case DXGI_FORMAT_R32G32_SINT:
-		result.Components = Texture::Components::RG;
-		result.Type = Texture::Type::SignedInteger;
+		result.Components = ITexture::Components::RG;
+		result.Type = ITexture::Type::SignedInteger;
 		result.RedBits = 32;
 		result.GreenBits = 32;
 		result.BlueBits = 0;
@@ -943,8 +943,8 @@ Texture::TextureFormat DX11TranslateFormat(DXGI_FORMAT format, uint8_t numSample
 		result.StencilBits = 0;
 		break;
 	case DXGI_FORMAT_D32_FLOAT_S8X24_UINT:
-		result.Components = Texture::Components::DepthStencil;
-		result.Type = Texture::Type::Float;
+		result.Components = ITexture::Components::DepthStencil;
+		result.Type = ITexture::Type::Float;
 		result.RedBits = 0;
 		result.GreenBits = 0;
 		result.BlueBits = 0;
@@ -953,8 +953,8 @@ Texture::TextureFormat DX11TranslateFormat(DXGI_FORMAT format, uint8_t numSample
 		result.StencilBits = 8;
 		break;
 	case DXGI_FORMAT_R10G10B10A2_TYPELESS:
-		result.Components = Texture::Components::RGBA;
-		result.Type = Texture::Type::Typeless;
+		result.Components = ITexture::Components::RGBA;
+		result.Type = ITexture::Type::Typeless;
 		result.RedBits = 10;
 		result.GreenBits = 10;
 		result.BlueBits = 10;
@@ -963,8 +963,8 @@ Texture::TextureFormat DX11TranslateFormat(DXGI_FORMAT format, uint8_t numSample
 		result.StencilBits = 0;
 		break;
 	case DXGI_FORMAT_R10G10B10A2_UNORM:
-		result.Components = Texture::Components::RGBA;
-		result.Type = Texture::Type::UnsignedNormalized;
+		result.Components = ITexture::Components::RGBA;
+		result.Type = ITexture::Type::UnsignedNormalized;
 		result.RedBits = 10;
 		result.GreenBits = 10;
 		result.BlueBits = 10;
@@ -973,8 +973,8 @@ Texture::TextureFormat DX11TranslateFormat(DXGI_FORMAT format, uint8_t numSample
 		result.StencilBits = 0;
 		break;
 	case DXGI_FORMAT_R10G10B10A2_UINT:
-		result.Components = Texture::Components::RGBA;
-		result.Type = Texture::Type::UnsignedInteger;
+		result.Components = ITexture::Components::RGBA;
+		result.Type = ITexture::Type::UnsignedInteger;
 		result.RedBits = 10;
 		result.GreenBits = 10;
 		result.BlueBits = 10;
@@ -983,8 +983,8 @@ Texture::TextureFormat DX11TranslateFormat(DXGI_FORMAT format, uint8_t numSample
 		result.StencilBits = 0;
 		break;
 	case DXGI_FORMAT_R11G11B10_FLOAT:
-		result.Components = Texture::Components::RGB;
-		result.Type = Texture::Type::Float;
+		result.Components = ITexture::Components::RGB;
+		result.Type = ITexture::Type::Float;
 		result.RedBits = 11;
 		result.GreenBits = 11;
 		result.BlueBits = 10;
@@ -993,8 +993,8 @@ Texture::TextureFormat DX11TranslateFormat(DXGI_FORMAT format, uint8_t numSample
 		result.StencilBits = 0;
 		break;
 	case DXGI_FORMAT_R8G8B8A8_TYPELESS:
-		result.Components = Texture::Components::RGBA;
-		result.Type = Texture::Type::Typeless;
+		result.Components = ITexture::Components::RGBA;
+		result.Type = ITexture::Type::Typeless;
 		result.RedBits = 8;
 		result.GreenBits = 8;
 		result.BlueBits = 8;
@@ -1003,8 +1003,8 @@ Texture::TextureFormat DX11TranslateFormat(DXGI_FORMAT format, uint8_t numSample
 		result.StencilBits = 0;
 		break;
 	case DXGI_FORMAT_R8G8B8A8_UNORM:
-		result.Components = Texture::Components::RGBA;
-		result.Type = Texture::Type::UnsignedNormalized;
+		result.Components = ITexture::Components::RGBA;
+		result.Type = ITexture::Type::UnsignedNormalized;
 		result.RedBits = 8;
 		result.GreenBits = 8;
 		result.BlueBits = 8;
@@ -1013,8 +1013,8 @@ Texture::TextureFormat DX11TranslateFormat(DXGI_FORMAT format, uint8_t numSample
 		result.StencilBits = 0;
 		break;
 	case DXGI_FORMAT_R8G8B8A8_UINT:
-		result.Components = Texture::Components::RGBA;
-		result.Type = Texture::Type::UnsignedInteger;
+		result.Components = ITexture::Components::RGBA;
+		result.Type = ITexture::Type::UnsignedInteger;
 		result.RedBits = 8;
 		result.GreenBits = 8;
 		result.BlueBits = 8;
@@ -1023,8 +1023,8 @@ Texture::TextureFormat DX11TranslateFormat(DXGI_FORMAT format, uint8_t numSample
 		result.StencilBits = 0;
 		break;
 	case DXGI_FORMAT_R8G8B8A8_SNORM:
-		result.Components = Texture::Components::RGBA;
-		result.Type = Texture::Type::SignedNormalized;
+		result.Components = ITexture::Components::RGBA;
+		result.Type = ITexture::Type::SignedNormalized;
 		result.RedBits = 8;
 		result.GreenBits = 8;
 		result.BlueBits = 8;
@@ -1033,8 +1033,8 @@ Texture::TextureFormat DX11TranslateFormat(DXGI_FORMAT format, uint8_t numSample
 		result.StencilBits = 0;
 		break;
 	case DXGI_FORMAT_R8G8B8A8_SINT:
-		result.Components = Texture::Components::RGBA;
-		result.Type = Texture::Type::SignedInteger;
+		result.Components = ITexture::Components::RGBA;
+		result.Type = ITexture::Type::SignedInteger;
 		result.RedBits = 8;
 		result.GreenBits = 8;
 		result.BlueBits = 8;
@@ -1043,8 +1043,8 @@ Texture::TextureFormat DX11TranslateFormat(DXGI_FORMAT format, uint8_t numSample
 		result.StencilBits = 0;
 		break;
 	case DXGI_FORMAT_R16G16_TYPELESS:
-		result.Components = Texture::Components::RG;
-		result.Type = Texture::Type::Typeless;
+		result.Components = ITexture::Components::RG;
+		result.Type = ITexture::Type::Typeless;
 		result.RedBits = 16;
 		result.GreenBits = 16;
 		result.BlueBits = 0;
@@ -1053,8 +1053,8 @@ Texture::TextureFormat DX11TranslateFormat(DXGI_FORMAT format, uint8_t numSample
 		result.StencilBits = 0;
 		break;
 	case DXGI_FORMAT_R16G16_FLOAT:
-		result.Components = Texture::Components::RG;
-		result.Type = Texture::Type::Float;
+		result.Components = ITexture::Components::RG;
+		result.Type = ITexture::Type::Float;
 		result.RedBits = 16;
 		result.GreenBits = 16;
 		result.BlueBits = 0;
@@ -1063,8 +1063,8 @@ Texture::TextureFormat DX11TranslateFormat(DXGI_FORMAT format, uint8_t numSample
 		result.StencilBits = 0;
 		break;
 	case DXGI_FORMAT_R16G16_UNORM:
-		result.Components = Texture::Components::RG;
-		result.Type = Texture::Type::UnsignedNormalized;
+		result.Components = ITexture::Components::RG;
+		result.Type = ITexture::Type::UnsignedNormalized;
 		result.RedBits = 16;
 		result.GreenBits = 16;
 		result.BlueBits = 0;
@@ -1073,8 +1073,8 @@ Texture::TextureFormat DX11TranslateFormat(DXGI_FORMAT format, uint8_t numSample
 		result.StencilBits = 0;
 		break;
 	case DXGI_FORMAT_R16G16_UINT:
-		result.Components = Texture::Components::RG;
-		result.Type = Texture::Type::UnsignedInteger;
+		result.Components = ITexture::Components::RG;
+		result.Type = ITexture::Type::UnsignedInteger;
 		result.RedBits = 16;
 		result.GreenBits = 16;
 		result.BlueBits = 0;
@@ -1083,8 +1083,8 @@ Texture::TextureFormat DX11TranslateFormat(DXGI_FORMAT format, uint8_t numSample
 		result.StencilBits = 0;
 		break;
 	case DXGI_FORMAT_R16G16_SINT:
-		result.Components = Texture::Components::RG;
-		result.Type = Texture::Type::SignedInteger;
+		result.Components = ITexture::Components::RG;
+		result.Type = ITexture::Type::SignedInteger;
 		result.RedBits = 16;
 		result.GreenBits = 16;
 		result.BlueBits = 0;
@@ -1093,8 +1093,8 @@ Texture::TextureFormat DX11TranslateFormat(DXGI_FORMAT format, uint8_t numSample
 		result.StencilBits = 0;
 		break;
 	case DXGI_FORMAT_R32_TYPELESS:
-		result.Components = Texture::Components::R;
-		result.Type = Texture::Type::Typeless;
+		result.Components = ITexture::Components::R;
+		result.Type = ITexture::Type::Typeless;
 		result.RedBits = 32;
 		result.GreenBits = 0;
 		result.BlueBits = 0;
@@ -1103,8 +1103,8 @@ Texture::TextureFormat DX11TranslateFormat(DXGI_FORMAT format, uint8_t numSample
 		result.StencilBits = 0;
 		break;
 	case DXGI_FORMAT_D32_FLOAT:
-		result.Components = Texture::Components::Depth;
-		result.Type = Texture::Type::Float;
+		result.Components = ITexture::Components::Depth;
+		result.Type = ITexture::Type::Float;
 		result.RedBits = 0;
 		result.GreenBits = 0;
 		result.BlueBits = 0;
@@ -1113,8 +1113,8 @@ Texture::TextureFormat DX11TranslateFormat(DXGI_FORMAT format, uint8_t numSample
 		result.StencilBits = 0;
 		break;
 	case DXGI_FORMAT_R32_FLOAT:
-		result.Components = Texture::Components::R;
-		result.Type = Texture::Type::Float;
+		result.Components = ITexture::Components::R;
+		result.Type = ITexture::Type::Float;
 		result.RedBits = 32;
 		result.GreenBits = 0;
 		result.BlueBits = 0;
@@ -1123,8 +1123,8 @@ Texture::TextureFormat DX11TranslateFormat(DXGI_FORMAT format, uint8_t numSample
 		result.StencilBits = 0;
 		break;
 	case DXGI_FORMAT_R32_UINT:
-		result.Components = Texture::Components::R;
-		result.Type = Texture::Type::UnsignedInteger;
+		result.Components = ITexture::Components::R;
+		result.Type = ITexture::Type::UnsignedInteger;
 		result.RedBits = 32;
 		result.GreenBits = 0;
 		result.BlueBits = 0;
@@ -1133,8 +1133,8 @@ Texture::TextureFormat DX11TranslateFormat(DXGI_FORMAT format, uint8_t numSample
 		result.StencilBits = 0;
 		break;
 	case DXGI_FORMAT_R32_SINT:
-		result.Components = Texture::Components::R;
-		result.Type = Texture::Type::SignedInteger;
+		result.Components = ITexture::Components::R;
+		result.Type = ITexture::Type::SignedInteger;
 		result.RedBits = 32;
 		result.GreenBits = 0;
 		result.BlueBits = 0;
@@ -1143,8 +1143,8 @@ Texture::TextureFormat DX11TranslateFormat(DXGI_FORMAT format, uint8_t numSample
 		result.StencilBits = 0;
 		break;
 	case DXGI_FORMAT_R24G8_TYPELESS:
-		result.Components = Texture::Components::RG;
-		result.Type = Texture::Type::Typeless;
+		result.Components = ITexture::Components::RG;
+		result.Type = ITexture::Type::Typeless;
 		result.RedBits = 24;
 		result.GreenBits = 8;
 		result.BlueBits = 0;
@@ -1153,8 +1153,8 @@ Texture::TextureFormat DX11TranslateFormat(DXGI_FORMAT format, uint8_t numSample
 		result.StencilBits = 0;
 		break;
 	case DXGI_FORMAT_D24_UNORM_S8_UINT:
-		result.Components = Texture::Components::DepthStencil;
-		result.Type = Texture::Type::UnsignedNormalized;
+		result.Components = ITexture::Components::DepthStencil;
+		result.Type = ITexture::Type::UnsignedNormalized;
 		result.RedBits = 0;
 		result.GreenBits = 0;
 		result.BlueBits = 0;
@@ -1163,8 +1163,8 @@ Texture::TextureFormat DX11TranslateFormat(DXGI_FORMAT format, uint8_t numSample
 		result.StencilBits = 8;
 		break;
 	case DXGI_FORMAT_R8G8_TYPELESS:
-		result.Components = Texture::Components::RG;
-		result.Type = Texture::Type::Typeless;
+		result.Components = ITexture::Components::RG;
+		result.Type = ITexture::Type::Typeless;
 		result.RedBits = 8;
 		result.GreenBits = 8;
 		result.BlueBits = 0;
@@ -1173,8 +1173,8 @@ Texture::TextureFormat DX11TranslateFormat(DXGI_FORMAT format, uint8_t numSample
 		result.StencilBits = 0;
 		break;
 	case DXGI_FORMAT_R8G8_UNORM:
-		result.Components = Texture::Components::RG;
-		result.Type = Texture::Type::UnsignedNormalized;
+		result.Components = ITexture::Components::RG;
+		result.Type = ITexture::Type::UnsignedNormalized;
 		result.RedBits = 8;
 		result.GreenBits = 8;
 		result.BlueBits = 0;
@@ -1183,8 +1183,8 @@ Texture::TextureFormat DX11TranslateFormat(DXGI_FORMAT format, uint8_t numSample
 		result.StencilBits = 0;
 		break;
 	case DXGI_FORMAT_R8G8_UINT:
-		result.Components = Texture::Components::RG;
-		result.Type = Texture::Type::UnsignedInteger;
+		result.Components = ITexture::Components::RG;
+		result.Type = ITexture::Type::UnsignedInteger;
 		result.RedBits = 8;
 		result.GreenBits = 8;
 		result.BlueBits = 0;
@@ -1193,8 +1193,8 @@ Texture::TextureFormat DX11TranslateFormat(DXGI_FORMAT format, uint8_t numSample
 		result.StencilBits = 0;
 		break;
 	case DXGI_FORMAT_R8G8_SNORM:
-		result.Components = Texture::Components::RG;
-		result.Type = Texture::Type::SignedNormalized;
+		result.Components = ITexture::Components::RG;
+		result.Type = ITexture::Type::SignedNormalized;
 		result.RedBits = 8;
 		result.GreenBits = 8;
 		result.BlueBits = 0;
@@ -1203,8 +1203,8 @@ Texture::TextureFormat DX11TranslateFormat(DXGI_FORMAT format, uint8_t numSample
 		result.StencilBits = 0;
 		break;
 	case DXGI_FORMAT_R8G8_SINT:
-		result.Components = Texture::Components::RG;
-		result.Type = Texture::Type::SignedInteger;
+		result.Components = ITexture::Components::RG;
+		result.Type = ITexture::Type::SignedInteger;
 		result.RedBits = 8;
 		result.GreenBits = 8;
 		result.BlueBits = 0;
@@ -1213,8 +1213,8 @@ Texture::TextureFormat DX11TranslateFormat(DXGI_FORMAT format, uint8_t numSample
 		result.StencilBits = 0;
 		break;
 	case DXGI_FORMAT_R16_TYPELESS:
-		result.Components = Texture::Components::R;
-		result.Type = Texture::Type::Typeless;
+		result.Components = ITexture::Components::R;
+		result.Type = ITexture::Type::Typeless;
 		result.RedBits = 16;
 		result.GreenBits = 0;
 		result.BlueBits = 0;
@@ -1223,8 +1223,8 @@ Texture::TextureFormat DX11TranslateFormat(DXGI_FORMAT format, uint8_t numSample
 		result.StencilBits = 0;
 		break;
 	case DXGI_FORMAT_R16_FLOAT:
-		result.Components = Texture::Components::R;
-		result.Type = Texture::Type::Float;
+		result.Components = ITexture::Components::R;
+		result.Type = ITexture::Type::Float;
 		result.RedBits = 16;
 		result.GreenBits = 0;
 		result.BlueBits = 0;
@@ -1233,8 +1233,8 @@ Texture::TextureFormat DX11TranslateFormat(DXGI_FORMAT format, uint8_t numSample
 		result.StencilBits = 0;
 		break;
 	case DXGI_FORMAT_D16_UNORM:
-		result.Components = Texture::Components::Depth;
-		result.Type = Texture::Type::UnsignedNormalized;
+		result.Components = ITexture::Components::Depth;
+		result.Type = ITexture::Type::UnsignedNormalized;
 		result.RedBits = 0;
 		result.GreenBits = 0;
 		result.BlueBits = 0;
@@ -1243,8 +1243,8 @@ Texture::TextureFormat DX11TranslateFormat(DXGI_FORMAT format, uint8_t numSample
 		result.StencilBits = 0;
 		break;
 	case DXGI_FORMAT_R16_UNORM:
-		result.Components = Texture::Components::R;
-		result.Type = Texture::Type::UnsignedNormalized;
+		result.Components = ITexture::Components::R;
+		result.Type = ITexture::Type::UnsignedNormalized;
 		result.RedBits = 16;
 		result.GreenBits = 0;
 		result.BlueBits = 0;
@@ -1253,8 +1253,8 @@ Texture::TextureFormat DX11TranslateFormat(DXGI_FORMAT format, uint8_t numSample
 		result.StencilBits = 0;
 		break;
 	case DXGI_FORMAT_R16_UINT:
-		result.Components = Texture::Components::R;
-		result.Type = Texture::Type::UnsignedInteger;
+		result.Components = ITexture::Components::R;
+		result.Type = ITexture::Type::UnsignedInteger;
 		result.RedBits = 16;
 		result.GreenBits = 0;
 		result.BlueBits = 0;
@@ -1263,8 +1263,8 @@ Texture::TextureFormat DX11TranslateFormat(DXGI_FORMAT format, uint8_t numSample
 		result.StencilBits = 0;
 		break;
 	case DXGI_FORMAT_R16_SNORM:
-		result.Components = Texture::Components::R;
-		result.Type = Texture::Type::SignedNormalized;
+		result.Components = ITexture::Components::R;
+		result.Type = ITexture::Type::SignedNormalized;
 		result.RedBits = 16;
 		result.GreenBits = 0;
 		result.BlueBits = 0;
@@ -1273,8 +1273,8 @@ Texture::TextureFormat DX11TranslateFormat(DXGI_FORMAT format, uint8_t numSample
 		result.StencilBits = 0;
 		break;
 	case DXGI_FORMAT_R16_SINT:
-		result.Components = Texture::Components::R;
-		result.Type = Texture::Type::SignedInteger;
+		result.Components = ITexture::Components::R;
+		result.Type = ITexture::Type::SignedInteger;
 		result.RedBits = 16;
 		result.GreenBits = 0;
 		result.BlueBits = 0;
@@ -1283,8 +1283,8 @@ Texture::TextureFormat DX11TranslateFormat(DXGI_FORMAT format, uint8_t numSample
 		result.StencilBits = 0;
 		break;
 	case DXGI_FORMAT_R8_TYPELESS:
-		result.Components = Texture::Components::R;
-		result.Type = Texture::Type::Typeless;
+		result.Components = ITexture::Components::R;
+		result.Type = ITexture::Type::Typeless;
 		result.RedBits = 8;
 		result.GreenBits = 0;
 		result.BlueBits = 0;
@@ -1293,8 +1293,8 @@ Texture::TextureFormat DX11TranslateFormat(DXGI_FORMAT format, uint8_t numSample
 		result.StencilBits = 0;
 		break;
 	case DXGI_FORMAT_R8_UNORM:
-		result.Components = Texture::Components::R;
-		result.Type = Texture::Type::UnsignedNormalized;
+		result.Components = ITexture::Components::R;
+		result.Type = ITexture::Type::UnsignedNormalized;
 		result.RedBits = 8;
 		result.GreenBits = 0;
 		result.BlueBits = 0;
@@ -1303,8 +1303,8 @@ Texture::TextureFormat DX11TranslateFormat(DXGI_FORMAT format, uint8_t numSample
 		result.StencilBits = 0;
 		break;
 	case DXGI_FORMAT_R8_UINT:
-		result.Components = Texture::Components::R;
-		result.Type = Texture::Type::UnsignedInteger;
+		result.Components = ITexture::Components::R;
+		result.Type = ITexture::Type::UnsignedInteger;
 		result.RedBits = 8;
 		result.GreenBits = 0;
 		result.BlueBits = 0;
@@ -1313,8 +1313,8 @@ Texture::TextureFormat DX11TranslateFormat(DXGI_FORMAT format, uint8_t numSample
 		result.StencilBits = 0;
 		break;
 	case DXGI_FORMAT_R8_SNORM:
-		result.Components = Texture::Components::R;
-		result.Type = Texture::Type::SignedNormalized;
+		result.Components = ITexture::Components::R;
+		result.Type = ITexture::Type::SignedNormalized;
 		result.RedBits = 8;
 		result.GreenBits = 0;
 		result.BlueBits = 0;
@@ -1323,8 +1323,8 @@ Texture::TextureFormat DX11TranslateFormat(DXGI_FORMAT format, uint8_t numSample
 		result.StencilBits = 0;
 		break;
 	case DXGI_FORMAT_R8_SINT:
-		result.Components = Texture::Components::R;
-		result.Type = Texture::Type::SignedInteger;
+		result.Components = ITexture::Components::R;
+		result.Type = ITexture::Type::SignedInteger;
 		result.RedBits = 8;
 		result.GreenBits = 0;
 		result.BlueBits = 0;
@@ -1333,8 +1333,8 @@ Texture::TextureFormat DX11TranslateFormat(DXGI_FORMAT format, uint8_t numSample
 		result.StencilBits = 0;
 		break;
 	case DXGI_FORMAT_R1_UNORM:
-		result.Components = Texture::Components::R;
-		result.Type = Texture::Type::UnsignedNormalized;
+		result.Components = ITexture::Components::R;
+		result.Type = ITexture::Type::UnsignedNormalized;
 		result.RedBits = 1;
 		result.GreenBits = 0;
 		result.BlueBits = 0;

@@ -41,7 +41,7 @@ QueryDX11::QueryDX11(ID3D11Device2* pDevice, QueryType queryType, uint8_t numBuf
 	}
 
 	// For timer queries, we also need to create the disjoint timer queries.
-	if (m_QueryType == Query::QueryType::Timer)
+	if (m_QueryType == IQuery::QueryType::Timer)
 	{
 		m_DisjointQueries.resize(m_NumBuffers);
 		m_Queries[1].resize(m_NumBuffers);
@@ -118,7 +118,7 @@ bool QueryDX11::QueryResultAvailable(int64_t frame)
 	return result;
 }
 
-Query::QueryResult QueryDX11::GetQueryResult(int64_t frame)
+IQuery::QueryResult QueryDX11::GetQueryResult(int64_t frame)
 {
 	QueryResult result = {};
 	int buffer = (frame - 1L) % m_NumBuffers;
@@ -164,7 +164,7 @@ Query::QueryResult QueryDX11::GetQueryResult(int64_t frame)
 				}
 			}
 			break;
-			case Query::QueryType::CountSamplesPredicate:
+			case IQuery::QueryType::CountSamplesPredicate:
 			{
 				BOOL anySamples = FALSE;
 				if (m_pDeviceContext->GetData(m_Queries[0][buffer], &anySamples, sizeof(UINT64), 0) == S_OK)
@@ -174,8 +174,8 @@ Query::QueryResult QueryDX11::GetQueryResult(int64_t frame)
 				}
 			}
 			break;
-			case Query::QueryType::CountPrimitives:
-			case Query::QueryType::CountTransformFeedbackPrimitives:
+			case IQuery::QueryType::CountPrimitives:
+			case IQuery::QueryType::CountTransformFeedbackPrimitives:
 			{
 				D3D11_QUERY_DATA_SO_STATISTICS streamOutStats = {};
 				if (m_pDeviceContext->GetData(m_Queries[0][buffer], &streamOutStats, sizeof(D3D11_QUERY_DATA_SO_STATISTICS), 0) == S_OK)

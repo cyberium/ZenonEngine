@@ -33,7 +33,7 @@ TextureDX11::TextureDX11(std::weak_ptr<IRenderDeviceDX11> RenderDevice)
 }
 
 // 2D Texture
-TextureDX11::TextureDX11(std::weak_ptr<IRenderDeviceDX11> RenderDevice, uint16_t width, uint16_t height, uint16_t slices, const TextureFormat& format, CPUAccess cpuAccess, bool bUAV)
+TextureDX11::TextureDX11(std::weak_ptr<IRenderDeviceDX11> RenderDevice, uint16_t width, uint16_t height, uint16_t slices, const ITexture::TextureFormat& format, CPUAccess cpuAccess, bool bUAV)
 	: m_RenderDevice(RenderDevice)
 	, m_pTexture2D(nullptr)
 	, m_pShaderResourceView(nullptr)
@@ -52,10 +52,10 @@ TextureDX11::TextureDX11(std::weak_ptr<IRenderDeviceDX11> RenderDevice, uint16_t
 
 	m_NumSlices = glm::max<uint16_t>(slices, 1);
 
-	m_TextureDimension = Dimension::Texture2D;
+	m_TextureDimension = ITexture::Dimension::Texture2D;
 	if (m_NumSlices > 1)
 	{
-		m_TextureDimension = Dimension::Texture2DArray;
+		m_TextureDimension = ITexture::Dimension::Texture2DArray;
 	}
 
 	// Translate to DXGI format.
@@ -119,7 +119,7 @@ TextureDX11::TextureDX11(std::weak_ptr<IRenderDeviceDX11> RenderDevice, uint16_t
 	m_pDevice = m_RenderDevice.lock()->GetDevice();
 	m_pDeviceContext = m_RenderDevice.lock()->GetDeviceContext();
 
-	m_TextureDimension = Texture::Dimension::TextureCube;
+	m_TextureDimension = ITexture::Dimension::TextureCube;
 
 	m_TextureWidth = m_TextureHeight = size;
 
@@ -187,7 +187,7 @@ TextureDX11::~TextureDX11()
 bool TextureDX11::LoadTextureCustom(uint16_t width, uint16_t height, void * pixels)
 {
 	m_TextureResourceFormat = DXGI_FORMAT_R8G8B8A8_UNORM;
-	m_TextureDimension = Texture::Dimension::Texture2D;
+	m_TextureDimension = ITexture::Dimension::Texture2D;
 	m_TextureWidth = width;
 	m_TextureHeight = height;
 	m_BPP = 4;
@@ -443,7 +443,7 @@ bool TextureDX11::LoadTexture2D(const std::string& fileName)
 	break;
 	}
 
-	m_TextureDimension = Texture::Dimension::Texture2D;
+	m_TextureDimension = ITexture::Dimension::Texture2D;
 	m_TextureWidth = FreeImage_GetWidth(dib);
 	m_TextureHeight = FreeImage_GetHeight(dib);
 	m_NumSlices = 1;
@@ -586,14 +586,14 @@ void TextureDX11::GenerateMipMaps()
 	}
 }
 
-std::shared_ptr<Texture> TextureDX11::GetFace(CubeFace face) const
+std::shared_ptr<ITexture> TextureDX11::GetFace(CubeFace face) const
 {
-	return std::static_pointer_cast<Texture>(std::const_pointer_cast<TextureDX11>(shared_from_this()));
+	return std::static_pointer_cast<ITexture>(std::const_pointer_cast<TextureDX11>(shared_from_this()));
 }
 
-std::shared_ptr<Texture> TextureDX11::GetSlice(uint32 slice) const
+std::shared_ptr<ITexture> TextureDX11::GetSlice(uint32 slice) const
 {
-	return std::static_pointer_cast<Texture>(std::const_pointer_cast<TextureDX11>(shared_from_this()));
+	return std::static_pointer_cast<ITexture>(std::const_pointer_cast<TextureDX11>(shared_from_this()));
 }
 
 uint16_t TextureDX11::GetWidth() const
@@ -867,7 +867,7 @@ void TextureDX11::Resize(uint16_t width, uint16_t height, uint16_t depth)
 	case Dimension::Texture2DArray:
 		Resize2D(width, height);
 		break;
-	case Texture::Dimension::TextureCube:
+	case ITexture::Dimension::TextureCube:
 		ResizeCube(width);
 		break;
 	default:
@@ -906,7 +906,7 @@ void TextureDX11::FetchPixel(glm::ivec2 coord, uint8_t*& pixel, size_t size)
 	pixel = &m_Buffer[index];
 }
 
-void TextureDX11::Copy(std::shared_ptr<Texture> other)
+void TextureDX11::Copy(std::shared_ptr<ITexture> other)
 {
 	std::shared_ptr<TextureDX11> srcTexture = std::dynamic_pointer_cast<TextureDX11>(other);
 
@@ -918,11 +918,11 @@ void TextureDX11::Copy(std::shared_ptr<Texture> other)
 		{
 			switch (m_TextureDimension)
 			{
-			case Texture::Dimension::Texture2D:
-			case Texture::Dimension::Texture2DArray:
+			case ITexture::Dimension::Texture2D:
+			case ITexture::Dimension::Texture2DArray:
 				m_pDeviceContext->CopyResource(m_pTexture2D, srcTexture->m_pTexture2D);
 				break;
-			case Texture::Dimension::TextureCube:
+			case ITexture::Dimension::TextureCube:
 				m_pDeviceContext->CopyResource(m_pTexture3D, srcTexture->m_pTexture3D);
 				break;
 			}
@@ -967,12 +967,12 @@ void TextureDX11::Clear(ClearFlags clearFlags, cvec4 color, float depth, uint8_t
 	}
 }
 
-void TextureDX11::Bind(uint32_t ID, const Shader* shader, ShaderParameter::Type parameterType) const 
+void TextureDX11::Bind(uint32_t ID, const IShader* shader, IShaderParameter::Type parameterType) const 
 {
 	Bind(ID, shader->GetType(), parameterType);
 }
 
-void TextureDX11::Bind(uint32_t ID, Shader::ShaderType _shaderType, ShaderParameter::Type parameterType) const
+void TextureDX11::Bind(uint32_t ID, IShader::ShaderType _shaderType, IShaderParameter::Type parameterType) const
 {
 	if (m_bIsDirty)
 	{
@@ -1002,35 +1002,35 @@ void TextureDX11::Bind(uint32_t ID, Shader::ShaderType _shaderType, ShaderParame
 	ID3D11ShaderResourceView* srv[] = { m_pShaderResourceView };
 	ID3D11UnorderedAccessView* uav[] = { m_pUnorderedAccessView };
 
-	if (parameterType == ShaderParameter::Type::Texture && m_pShaderResourceView)
+	if (parameterType == IShaderParameter::Type::Texture && m_pShaderResourceView)
 	{
 		switch (_shaderType)
 		{
-		case Shader::VertexShader:
+		case IShader::VertexShader:
 			m_pDeviceContext->VSSetShaderResources(ID, 1, srv);
 			break;
-		case Shader::TessellationControlShader:
+		case IShader::TessellationControlShader:
 			m_pDeviceContext->HSSetShaderResources(ID, 1, srv);
 			break;
-		case Shader::TessellationEvaluationShader:
+		case IShader::TessellationEvaluationShader:
 			m_pDeviceContext->DSSetShaderResources(ID, 1, srv);
 			break;
-		case Shader::GeometryShader:
+		case IShader::GeometryShader:
 			m_pDeviceContext->GSSetShaderResources(ID, 1, srv);
 			break;
-		case Shader::PixelShader:
+		case IShader::PixelShader:
 			m_pDeviceContext->PSSetShaderResources(ID, 1, srv);
 			break;
-		case Shader::ComputeShader:
+		case IShader::ComputeShader:
 			m_pDeviceContext->CSSetShaderResources(ID, 1, srv);
 			break;
 		}
 	}
-	else if (parameterType == ShaderParameter::Type::RWTexture && m_pUnorderedAccessView)
+	else if (parameterType == IShaderParameter::Type::RWTexture && m_pUnorderedAccessView)
 	{
 		switch (_shaderType)
 		{
-		case Shader::ComputeShader:
+		case IShader::ComputeShader:
 			m_pDeviceContext->CSSetUnorderedAccessViews(ID, 1, uav, nullptr);
 			break;
 		}
@@ -1038,45 +1038,45 @@ void TextureDX11::Bind(uint32_t ID, Shader::ShaderType _shaderType, ShaderParame
 }
 
 
-void TextureDX11::UnBind(uint32_t ID, const Shader* shader, ShaderParameter::Type parameterType) const
+void TextureDX11::UnBind(uint32_t ID, const IShader* shader, IShaderParameter::Type parameterType) const
 {
 	UnBind(ID, shader->GetType(), parameterType);
 }
 
-void TextureDX11::UnBind(uint32_t ID, Shader::ShaderType _shaderType, ShaderParameter::Type parameterType) const
+void TextureDX11::UnBind(uint32_t ID, IShader::ShaderType _shaderType, IShaderParameter::Type parameterType) const
 {
 	ID3D11ShaderResourceView* srv[] = { nullptr };
 	ID3D11UnorderedAccessView* uav[] = { nullptr };
 
-	if (parameterType == ShaderParameter::Type::Texture)
+	if (parameterType == IShaderParameter::Type::Texture)
 	{
 		switch (_shaderType)
 		{
-		case Shader::VertexShader:
+		case IShader::VertexShader:
 			m_pDeviceContext->VSSetShaderResources(ID, 1, srv);
 			break;
-		case Shader::TessellationControlShader:
+		case IShader::TessellationControlShader:
 			m_pDeviceContext->HSSetShaderResources(ID, 1, srv);
 			break;
-		case Shader::TessellationEvaluationShader:
+		case IShader::TessellationEvaluationShader:
 			m_pDeviceContext->DSSetShaderResources(ID, 1, srv);
 			break;
-		case Shader::GeometryShader:
+		case IShader::GeometryShader:
 			m_pDeviceContext->GSSetShaderResources(ID, 1, srv);
 			break;
-		case Shader::PixelShader:
+		case IShader::PixelShader:
 			m_pDeviceContext->PSSetShaderResources(ID, 1, srv);
 			break;
-		case Shader::ComputeShader:
+		case IShader::ComputeShader:
 			m_pDeviceContext->CSSetShaderResources(ID, 1, srv);
 			break;
 		}
 	}
-	else if (parameterType == ShaderParameter::Type::RWTexture)
+	else if (parameterType == IShaderParameter::Type::RWTexture)
 	{
 		switch (_shaderType)
 		{
-		case Shader::ComputeShader:
+		case IShader::ComputeShader:
 			m_pDeviceContext->CSSetUnorderedAccessViews(ID, 1, uav, nullptr);
 			break;
 		}
@@ -1128,11 +1128,11 @@ ID3D11Resource* TextureDX11::GetTextureResource() const
 	ID3D11Resource* resource = nullptr;
 	switch (m_TextureDimension)
 	{
-	case Texture::Dimension::Texture2D:
-	case Texture::Dimension::Texture2DArray:
+	case ITexture::Dimension::Texture2D:
+	case ITexture::Dimension::Texture2DArray:
 		resource = m_pTexture2D;
 		break;
-	case Texture::Dimension::TextureCube:
+	case ITexture::Dimension::TextureCube:
 		resource = m_pTexture3D;
 		break;
 	}

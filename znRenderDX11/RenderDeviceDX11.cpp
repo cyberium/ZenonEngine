@@ -43,7 +43,7 @@ private:
 
 
 
-std::string ShaderMacrosToString(const Shader::ShaderMacros& _shaderMacros)
+std::string ShaderMacrosToString(const IShader::ShaderMacros& _shaderMacros)
 {
     std::string value = "";
     for (const auto& it : _shaderMacros)
@@ -171,11 +171,11 @@ void RenderDeviceDX11::DestroyIndexBuffer(std::shared_ptr<IBuffer> buffer)
 
 //--
 
-std::shared_ptr<ConstantBuffer> RenderDeviceDX11::CreateConstantBuffer(const void* data, size_t size)
+std::shared_ptr<IConstantBuffer> RenderDeviceDX11::CreateConstantBuffer(const void* data, size_t size)
 {
     D3DMultithreadLocker locker(m_pMultiThread);
 
-    std::shared_ptr<ConstantBuffer> buffer = std::make_shared<ConstantBufferDX11>(m_pDevice, size);
+    std::shared_ptr<IConstantBuffer> buffer = std::make_shared<ConstantBufferDX11>(m_pDevice, size);
 
     if (data)
     {
@@ -187,24 +187,24 @@ std::shared_ptr<ConstantBuffer> RenderDeviceDX11::CreateConstantBuffer(const voi
     return buffer;
 }
 
-void RenderDeviceDX11::DestroyConstantBuffer(std::shared_ptr<ConstantBuffer> buffer)
+void RenderDeviceDX11::DestroyConstantBuffer(std::shared_ptr<IConstantBuffer> buffer)
 {
     DestroyBuffer(buffer);
 }
 
 //--
 
-std::shared_ptr<StructuredBuffer> RenderDeviceDX11::CreateStructuredBuffer(void* data, uint32 count, uint32 stride, CPUAccess cpuAccess, bool gpuWrite)
+std::shared_ptr<IStructuredBuffer> RenderDeviceDX11::CreateStructuredBuffer(void* data, uint32 count, uint32 stride, CPUAccess cpuAccess, bool gpuWrite)
 {
     D3DMultithreadLocker locker(m_pMultiThread);
 
-    std::shared_ptr<StructuredBuffer> buffer = std::make_shared<StructuredBufferDX11>(m_pDevice, 0, data, count, stride, cpuAccess, gpuWrite);
+    std::shared_ptr<IStructuredBuffer> buffer = std::make_shared<StructuredBufferDX11>(m_pDevice, 0, data, count, stride, cpuAccess, gpuWrite);
     m_Buffers.push_back(buffer);
 
     return buffer;
 }
 
-void RenderDeviceDX11::DestroyStructuredBuffer(std::shared_ptr<StructuredBuffer> buffer)
+void RenderDeviceDX11::DestroyStructuredBuffer(std::shared_ptr<IStructuredBuffer> buffer)
 {
     DestroyBuffer(buffer);
 }
@@ -240,7 +240,7 @@ void RenderDeviceDX11::DestroyMesh(std::shared_ptr<IMesh> mesh)
     }
 }
 
-std::shared_ptr<Shader> RenderDeviceDX11::CreateShader(Shader::ShaderType type, const std::string& fileName, const Shader::ShaderMacros& shaderMacros, const std::string& entryPoint, const std::string& profile, std::shared_ptr<IShaderInputLayout> _customLayout)
+std::shared_ptr<IShader> RenderDeviceDX11::CreateShader(IShader::ShaderType type, const std::string& fileName, const IShader::ShaderMacros& shaderMacros, const std::string& entryPoint, const std::string& profile, std::shared_ptr<IShaderInputLayout> _customLayout)
 {
     D3DMultithreadLocker locker(m_pMultiThread);
 
@@ -250,7 +250,7 @@ std::shared_ptr<Shader> RenderDeviceDX11::CreateShader(Shader::ShaderType type, 
     if (iter != m_ShadersByName.end())
         return iter->second;
 
-    std::shared_ptr<Shader> pShader = std::make_shared<ShaderDX11>(weak_from_this());
+    std::shared_ptr<IShader> pShader = std::make_shared<ShaderDX11>(weak_from_this());
     pShader->LoadShaderFromFile(type, fileName, shaderMacros, entryPoint, profile, _customLayout);
 
     m_Shaders.push_back(pShader);
@@ -259,7 +259,7 @@ std::shared_ptr<Shader> RenderDeviceDX11::CreateShader(Shader::ShaderType type, 
     return pShader;
 }
 
-void RenderDeviceDX11::DestroyShader(std::shared_ptr<Shader> shader)
+void RenderDeviceDX11::DestroyShader(std::shared_ptr<IShader> shader)
 {
     ShaderList::iterator iter = std::find(m_Shaders.begin(), m_Shaders.end(), shader);
     if (iter != m_Shaders.end())
@@ -269,82 +269,82 @@ void RenderDeviceDX11::DestroyShader(std::shared_ptr<Shader> shader)
 }
 
 
-std::shared_ptr<Texture> RenderDeviceDX11::CreateTexture2D(const std::string& fileName)
+std::shared_ptr<ITexture> RenderDeviceDX11::CreateTexture2D(const std::string& fileName)
 {
     D3DMultithreadLocker locker(m_pMultiThread);
 
-    TextureMap::iterator iter = m_TexturesByName.find(fileName);
+    TextureNameMap::iterator iter = m_TexturesByName.find(fileName);
     if (iter != m_TexturesByName.end())
     {
         return iter->second;
     }
 
-    std::shared_ptr<Texture> texture = std::make_shared<TextureDX11>(weak_from_this());
+    std::shared_ptr<ITexture> texture = std::make_shared<TextureDX11>(weak_from_this());
     if (!texture->LoadTexture2D(fileName))
         return m_pDefaultTexture;
 
     m_Textures.push_back(texture);
-    m_TexturesByName.insert(TextureMap::value_type(fileName, texture));
+    m_TexturesByName.insert(TextureNameMap::value_type(fileName, texture));
 
     return texture;
 }
 
-std::shared_ptr<Texture> RenderDeviceDX11::CreateTextureCube(const std::string& fileName)
+std::shared_ptr<ITexture> RenderDeviceDX11::CreateTextureCube(const std::string& fileName)
 {
     D3DMultithreadLocker locker(m_pMultiThread);
 
-    TextureMap::iterator iter = m_TexturesByName.find(fileName);
+    TextureNameMap::iterator iter = m_TexturesByName.find(fileName);
     if (iter != m_TexturesByName.end())
     {
         return iter->second;
     }
 
-    std::shared_ptr<Texture> texture = std::make_shared<TextureDX11>(weak_from_this());
+    std::shared_ptr<ITexture> texture = std::make_shared<TextureDX11>(weak_from_this());
     texture->LoadTextureCube(fileName);
 
     m_Textures.push_back(texture);
-    m_TexturesByName.insert(TextureMap::value_type(fileName, texture));
+    m_TexturesByName.insert(TextureNameMap::value_type(fileName, texture));
 
     return texture;
 
 }
 
-std::shared_ptr<Texture> RenderDeviceDX11::CreateTexture2D(uint16_t width, uint16_t height, uint16_t slices, const Texture::TextureFormat& format, CPUAccess cpuAccess, bool gpuWrite)
+std::shared_ptr<ITexture> RenderDeviceDX11::CreateTexture2D(uint16_t width, uint16_t height, uint16_t slices, const ITexture::TextureFormat& format, CPUAccess cpuAccess, bool gpuWrite)
 {
     D3DMultithreadLocker locker(m_pMultiThread);
 
-    std::shared_ptr<Texture> texture = std::make_shared<TextureDX11>(weak_from_this(), width, height, slices, format, cpuAccess, gpuWrite);
+    std::shared_ptr<ITexture> texture = std::make_shared<TextureDX11>(weak_from_this(), width, height, slices, format, cpuAccess, gpuWrite);
     m_Textures.push_back(texture);
 
     return texture;
 }
 
-std::shared_ptr<Texture> RenderDeviceDX11::CreateTextureCube(uint16_t size, uint16_t numCubes, const Texture::TextureFormat& format, CPUAccess cpuAccess, bool gpuWrite)
+std::shared_ptr<ITexture> RenderDeviceDX11::CreateTextureCube(uint16_t size, uint16_t numCubes, const ITexture::TextureFormat& format, CPUAccess cpuAccess, bool gpuWrite)
 {
     D3DMultithreadLocker locker(m_pMultiThread);
 
-    std::shared_ptr<Texture> texture = std::make_shared<TextureDX11>(weak_from_this(), size, numCubes, format, cpuAccess, gpuWrite);
+    std::shared_ptr<ITexture> texture = std::make_shared<TextureDX11>(weak_from_this(), size, numCubes, format, cpuAccess, gpuWrite);
     m_Textures.push_back(texture);
 
     return texture;
 }
 
-std::shared_ptr<Texture> RenderDeviceDX11::CreateTexture()
+std::shared_ptr<ITexture> RenderDeviceDX11::CreateTexture()
 {
     D3DMultithreadLocker locker(m_pMultiThread);
 
-    std::shared_ptr<Texture> texture = std::make_shared<TextureDX11>(weak_from_this());
+    std::shared_ptr<ITexture> texture = std::make_shared<TextureDX11>(weak_from_this());
     m_Textures.push_back(texture);
 
     return texture;
 }
 
-std::shared_ptr<Texture> RenderDeviceDX11::GetDefaultTexture() const
+std::shared_ptr<ITexture> RenderDeviceDX11::GetDefaultTexture() const
 {
     return m_pDefaultTexture;
 }
 
-void RenderDeviceDX11::DestroyTexture(std::shared_ptr<Texture> texture)
+void RenderDeviceDX11::DestroyTexture(std::shared_ptr<ITexture> texture)
 {
     TextureList::iterator iter = std::find(m_Textures.begin(), m_Textures.end(), texture);
     if (iter != m_Textures.end())
@@ -352,7 +352,7 @@ void RenderDeviceDX11::DestroyTexture(std::shared_ptr<Texture> texture)
         m_Textures.erase(iter);
     }
 
-    TextureMap::iterator iter2 = std::find_if(m_TexturesByName.begin(), m_TexturesByName.end(), [=](TextureMap::value_type val) { return (val.second == texture); });
+	TextureNameMap::iterator iter2 = std::find_if(m_TexturesByName.begin(), m_TexturesByName.end(), [=](TextureNameMap::value_type val) { return (val.second == texture); });
     if (iter2 != m_TexturesByName.end())
     {
         m_TexturesByName.erase(iter2);
@@ -398,17 +398,17 @@ void RenderDeviceDX11::DestroyRenderTarget(std::shared_ptr<IRenderTarget> render
 }
 
 
-std::shared_ptr<SamplerState> RenderDeviceDX11::CreateSamplerState()
+std::shared_ptr<ISamplerState> RenderDeviceDX11::CreateSamplerState()
 {
     D3DMultithreadLocker locker(m_pMultiThread);
 
-    std::shared_ptr<SamplerState> sampler = std::make_shared<SamplerStateDX11>(m_pDevice);
+    std::shared_ptr<ISamplerState> sampler = std::make_shared<SamplerStateDX11>(m_pDevice);
     m_Samplers.push_back(sampler);
 
     return sampler;
 }
 
-void RenderDeviceDX11::DestroySampler(std::shared_ptr<SamplerState> sampler)
+void RenderDeviceDX11::DestroySampler(std::shared_ptr<ISamplerState> sampler)
 {
     SamplerList::iterator iter = std::find(m_Samplers.begin(), m_Samplers.end(), sampler);
     if (iter != m_Samplers.end())
@@ -418,17 +418,17 @@ void RenderDeviceDX11::DestroySampler(std::shared_ptr<SamplerState> sampler)
 }
 
 
-std::shared_ptr<PipelineState> RenderDeviceDX11::CreatePipelineState()
+std::shared_ptr<IPipelineState> RenderDeviceDX11::CreatePipelineState()
 {
     D3DMultithreadLocker locker(m_pMultiThread);
 
-    std::shared_ptr<PipelineState> pPipeline = std::make_shared<PipelineStateDX11>(m_pDevice);
+    std::shared_ptr<IPipelineState> pPipeline = std::make_shared<PipelineStateDX11>(m_pDevice);
     m_Pipelines.push_back(pPipeline);
 
     return pPipeline;
 }
 
-void RenderDeviceDX11::DestoryPipelineState(std::shared_ptr<PipelineState> pipeline)
+void RenderDeviceDX11::DestoryPipelineState(std::shared_ptr<IPipelineState> pipeline)
 {
     PipelineList::iterator iter = std::find(m_Pipelines.begin(), m_Pipelines.end(), pipeline);
     if (iter != m_Pipelines.end())
@@ -438,17 +438,17 @@ void RenderDeviceDX11::DestoryPipelineState(std::shared_ptr<PipelineState> pipel
 }
 
 
-std::shared_ptr<Query> RenderDeviceDX11::CreateQuery(Query::QueryType queryType, uint8_t numBuffers)
+std::shared_ptr<IQuery> RenderDeviceDX11::CreateQuery(IQuery::QueryType queryType, uint8_t numBuffers)
 {
     D3DMultithreadLocker locker(m_pMultiThread);
 
-    std::shared_ptr<Query> query = std::make_shared<QueryDX11>(m_pDevice, queryType, numBuffers);
+    std::shared_ptr<IQuery> query = std::make_shared<QueryDX11>(m_pDevice, queryType, numBuffers);
     m_Queries.push_back(query);
 
     return query;
 }
 
-void RenderDeviceDX11::DestoryQuery(std::shared_ptr<Query> query)
+void RenderDeviceDX11::DestoryQuery(std::shared_ptr<IQuery> query)
 {
     QueryList::iterator iter = std::find(m_Queries.begin(), m_Queries.end(), query);
     if (iter != m_Queries.end())

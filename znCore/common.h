@@ -10,6 +10,8 @@
 #define OW_ENGINE_API __declspec(dllimport) 
 #endif
 
+#define ZN_INTERFACE struct
+
 // General types
 typedef signed char int8;
 typedef unsigned char uint8;

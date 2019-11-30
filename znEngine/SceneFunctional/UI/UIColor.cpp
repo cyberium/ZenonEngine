@@ -12,7 +12,7 @@ CUIColorNode::CUIColorNode(vec2 Size)
 	m_Material = std::make_shared<UI_Color_Material>();
 	m_Material->SetWrapper(m_Material);;
 
-	m_Mesh = _RenderDevice->CreateUIQuad(Size.x, Size.y);
+	m_Mesh = _RenderDevice->GetPrimitiveCollection()->CreateUIQuad(Size.x, Size.y);
 }
 
 CUIColorNode::~CUIColorNode()

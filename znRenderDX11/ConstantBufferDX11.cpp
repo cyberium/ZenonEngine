@@ -44,7 +44,7 @@ void ConstantBufferDX11::Set(const void* data, size_t size)
 	m_pDeviceContext->Unmap(m_pBuffer, 0);
 }
 
-void ConstantBufferDX11::Copy(std::shared_ptr<ConstantBuffer> other)
+void ConstantBufferDX11::Copy(std::shared_ptr<IConstantBuffer> other)
 {
 	std::shared_ptr<ConstantBufferDX11> srcBuffer = std::dynamic_pointer_cast<ConstantBufferDX11>(other);
 
@@ -61,10 +61,10 @@ void ConstantBufferDX11::Copy(std::shared_ptr<ConstantBuffer> other)
 
 void ConstantBufferDX11::Copy(std::shared_ptr<IBuffer> other)
 {
-	Copy(std::dynamic_pointer_cast<ConstantBuffer>(other));
+	Copy(std::dynamic_pointer_cast<IConstantBuffer>(other));
 }
 
-bool ConstantBufferDX11::Bind(uint32 id, const Shader* shader, ShaderParameter::Type parameterType) const
+bool ConstantBufferDX11::Bind(uint32 id, const IShader* shader, IShaderParameter::Type parameterType) const
 {
 	bool result = true;
 
@@ -72,22 +72,22 @@ bool ConstantBufferDX11::Bind(uint32 id, const Shader* shader, ShaderParameter::
 
 	switch (shader->GetType())
 	{
-	case Shader::VertexShader:
+	case IShader::VertexShader:
 		m_pDeviceContext->VSSetConstantBuffers(id, 1, pBuffers);
 		break;
-	case Shader::TessellationControlShader:
+	case IShader::TessellationControlShader:
 		m_pDeviceContext->HSSetConstantBuffers(id, 1, pBuffers);
 		break;
-	case Shader::TessellationEvaluationShader:
+	case IShader::TessellationEvaluationShader:
 		m_pDeviceContext->DSSetConstantBuffers(id, 1, pBuffers);
 		break;
-	case Shader::GeometryShader:
+	case IShader::GeometryShader:
 		m_pDeviceContext->GSSetConstantBuffers(id, 1, pBuffers);
 		break;
-	case Shader::PixelShader:
+	case IShader::PixelShader:
 		m_pDeviceContext->PSSetConstantBuffers(id, 1, pBuffers);
 		break;
-	case Shader::ComputeShader:
+	case IShader::ComputeShader:
 		m_pDeviceContext->CSSetConstantBuffers(id, 1, pBuffers);
 		break;
 	default:
@@ -98,28 +98,28 @@ bool ConstantBufferDX11::Bind(uint32 id, const Shader* shader, ShaderParameter::
 	return result;
 }
 
-void ConstantBufferDX11::UnBind(uint32 id, const Shader* shader, ShaderParameter::Type parameterType) const
+void ConstantBufferDX11::UnBind(uint32 id, const IShader* shader, IShaderParameter::Type parameterType) const
 {
 	ID3D11Buffer* pBuffers[] = { nullptr };
 
 	switch (shader->GetType())
 	{
-	case Shader::VertexShader:
+	case IShader::VertexShader:
 		m_pDeviceContext->VSSetConstantBuffers(id, 1, pBuffers);
 		break;
-	case Shader::TessellationControlShader:
+	case IShader::TessellationControlShader:
 		m_pDeviceContext->HSSetConstantBuffers(id, 1, pBuffers);
 		break;
-	case Shader::TessellationEvaluationShader:
+	case IShader::TessellationEvaluationShader:
 		m_pDeviceContext->DSSetConstantBuffers(id, 1, pBuffers);
 		break;
-	case Shader::GeometryShader:
+	case IShader::GeometryShader:
 		m_pDeviceContext->GSSetConstantBuffers(id, 1, pBuffers);
 		break;
-	case Shader::PixelShader:
+	case IShader::PixelShader:
 		m_pDeviceContext->PSSetConstantBuffers(id, 1, pBuffers);
 		break;
-	case Shader::ComputeShader:
+	case IShader::ComputeShader:
 		m_pDeviceContext->CSSetConstantBuffers(id, 1, pBuffers);
 		break;
 	default:

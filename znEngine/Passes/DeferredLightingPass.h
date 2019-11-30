@@ -12,14 +12,14 @@ public:
 
 	DeferredLightingPass(
 		std::shared_ptr<Scene3D> scene,
-		std::shared_ptr<PipelineState> lightPipeline0,
-		std::shared_ptr<PipelineState> lightPipeline1,
-		std::shared_ptr<PipelineState> directionalLightPipeline,
-		std::shared_ptr<Texture> positionTexture,
-		std::shared_ptr<Texture> diffuseTexture,
-		std::shared_ptr<Texture> specularTexture,
-		std::shared_ptr<Texture> normalTexture,
-		std::shared_ptr<Texture> depthTexture
+		std::shared_ptr<IPipelineState> lightPipeline0,
+		std::shared_ptr<IPipelineState> lightPipeline1,
+		std::shared_ptr<IPipelineState> directionalLightPipeline,
+		std::shared_ptr<ITexture> positionTexture,
+		std::shared_ptr<ITexture> diffuseTexture,
+		std::shared_ptr<ITexture> specularTexture,
+		std::shared_ptr<ITexture> normalTexture,
+		std::shared_ptr<ITexture> depthTexture
 	);
 
 	virtual ~DeferredLightingPass();
@@ -39,7 +39,7 @@ public:
 	void UpdateFog(float fogModifier, vec3 fogColor, float fogDistance);
 
 protected:
-	void RenderSubPass(RenderEventArgs* e, std::shared_ptr<Scene3D> scene, std::shared_ptr<PipelineState> pipeline);
+	void RenderSubPass(RenderEventArgs* e, std::shared_ptr<Scene3D> scene, std::shared_ptr<IPipelineState> pipeline);
 
 private:
 	mat4 m_World;
@@ -52,14 +52,14 @@ private:
 		glm::vec4 m_CameraPos;
 	};
 	ScreenToViewParams* m_pScreenToViewParams;
-	std::shared_ptr<ConstantBuffer> m_ScreenToViewParamsCB;
+	std::shared_ptr<IConstantBuffer> m_ScreenToViewParamsCB;
 
 	__declspec(align(16)) struct LightParams
 	{
 		Light m_Light;
 	};
 	LightParams* m_pLightParams;
-	std::shared_ptr<ConstantBuffer> m_LightParamsCB;
+	std::shared_ptr<IConstantBuffer> m_LightParamsCB;
 
 	__declspec(align(16)) struct FogParams
 	{
@@ -69,14 +69,14 @@ private:
 		vec3  Padding;
 	};
 	FogParams* m_pFogParams;
-	std::shared_ptr<ConstantBuffer> m_FogParamsCB;
+	std::shared_ptr<IConstantBuffer> m_FogParamsCB;
 
 	// First pipeline to mark lit pixels.
-	std::shared_ptr<PipelineState> m_LightPipeline0;
+	std::shared_ptr<IPipelineState> m_LightPipeline0;
 	// Second pipeline to render lit pixels.
-	std::shared_ptr<PipelineState> m_LightPipeline1;
+	std::shared_ptr<IPipelineState> m_LightPipeline1;
 	// Pipeline for directional lights
-	std::shared_ptr<PipelineState> m_DirectionalLightPipeline;
+	std::shared_ptr<IPipelineState> m_DirectionalLightPipeline;
 	
 	std::shared_ptr<Scene3D> m_Scene;
 	std::shared_ptr<Scene3D> m_pPointLightScene;
@@ -84,9 +84,9 @@ private:
 	std::shared_ptr<Scene3D> m_pDirectionalLightScene;
 
 	// Textures
-	std::shared_ptr<Texture> m_PositionTexture;
-	std::shared_ptr<Texture> m_DiffuseTexture;
-	std::shared_ptr<Texture> m_SpecularTexture;
-	std::shared_ptr<Texture> m_NormalTexture;
-	std::shared_ptr<Texture> m_DepthTexture;
+	std::shared_ptr<ITexture> m_PositionTexture;
+	std::shared_ptr<ITexture> m_DiffuseTexture;
+	std::shared_ptr<ITexture> m_SpecularTexture;
+	std::shared_ptr<ITexture> m_NormalTexture;
+	std::shared_ptr<ITexture> m_DepthTexture;
 };

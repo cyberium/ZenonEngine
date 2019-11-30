@@ -1,6 +1,6 @@
 #pragma once
 
-class MaterialOGL : public MaterialImpl
+class MaterialOGL : public MaterialBase
 {
 public:
 	MaterialOGL(IRenderDevice* renderDevice, size_t Size);
@@ -8,7 +8,7 @@ public:
 
     void                                            SetShader(Shader::ShaderType type, std::shared_ptr<Shader> pShader) override;
 
-    // MaterialImpl
+    // MaterialBase
 	void                                            Bind() const override final;
 	void                                            Unbind() const override final;
 

@@ -8,9 +8,9 @@ public:
 	MaterialTextured();
 	virtual ~MaterialTextured();
 
-	void SetTexture(std::shared_ptr<Texture> texture);
-	void SetNormalTexture(std::shared_ptr<Texture> texture);
-	void SetHeightTexture(std::shared_ptr<Texture> texture);
+	void SetTexture(std::shared_ptr<ITexture> texture);
+	void SetNormalTexture(std::shared_ptr<ITexture> texture);
+	void SetHeightTexture(std::shared_ptr<ITexture> texture);
 
 protected:
 	void UpdateConstantBuffer() const;

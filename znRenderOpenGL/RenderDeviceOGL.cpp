@@ -309,7 +309,7 @@ void RenderDeviceOGL::DestroyShader(std::shared_ptr<Shader> shader)
 }
 
 
-std::shared_ptr<Texture> RenderDeviceOGL::CreateTexture2D(const std::string& fileName)
+std::shared_ptr<ITexture> RenderDeviceOGL::CreateTexture2D(const std::string& fileName)
 {
 	TextureMap::iterator iter = m_TexturesByName.find(fileName);
 	if (iter != m_TexturesByName.end())
@@ -317,7 +317,7 @@ std::shared_ptr<Texture> RenderDeviceOGL::CreateTexture2D(const std::string& fil
 		return iter->second;
 	}
 
-	std::shared_ptr<Texture> texture = std::make_shared<TextureOGL>(this);
+	std::shared_ptr<ITexture> texture = std::make_shared<TextureOGL>(this);
 	texture->LoadTexture2D(fileName);
 
 	m_Textures.push_back(texture);
@@ -326,7 +326,7 @@ std::shared_ptr<Texture> RenderDeviceOGL::CreateTexture2D(const std::string& fil
 	return texture;
 }
 
-std::shared_ptr<Texture> RenderDeviceOGL::CreateTextureCube(const std::string& fileName)
+std::shared_ptr<ITexture> RenderDeviceOGL::CreateTextureCube(const std::string& fileName)
 {
 	TextureMap::iterator iter = m_TexturesByName.find(fileName);
 	if (iter != m_TexturesByName.end())
@@ -334,7 +334,7 @@ std::shared_ptr<Texture> RenderDeviceOGL::CreateTextureCube(const std::string& f
 		return iter->second;
 	}
 
-	std::shared_ptr<Texture> texture = std::make_shared<TextureOGL>(this);
+	std::shared_ptr<ITexture> texture = std::make_shared<TextureOGL>(this);
 	texture->LoadTextureCube(fileName);
 
 	m_Textures.push_back(texture);
@@ -344,36 +344,36 @@ std::shared_ptr<Texture> RenderDeviceOGL::CreateTextureCube(const std::string& f
 
 }
 
-std::shared_ptr<Texture> RenderDeviceOGL::CreateTexture2D(uint16_t width, uint16_t height, uint16_t slices, const Texture::TextureFormat& format, CPUAccess cpuAccess, bool gpuWrite)
+std::shared_ptr<ITexture> RenderDeviceOGL::CreateTexture2D(uint16_t width, uint16_t height, uint16_t slices, const ITexture::TextureFormat& format, CPUAccess cpuAccess, bool gpuWrite)
 {
-	std::shared_ptr<Texture> texture = std::make_shared<TextureOGL>(this, width, height, slices, format, cpuAccess);
+	std::shared_ptr<ITexture> texture = std::make_shared<TextureOGL>(this, width, height, slices, format, cpuAccess);
 	m_Textures.push_back(texture);
 
 	return texture;
 }
 
-std::shared_ptr<Texture> RenderDeviceOGL::CreateTextureCube(uint16_t size, uint16_t numCubes, const Texture::TextureFormat& format, CPUAccess cpuAccess, bool gpuWrite)
+std::shared_ptr<ITexture> RenderDeviceOGL::CreateTextureCube(uint16_t size, uint16_t numCubes, const ITexture::TextureFormat& format, CPUAccess cpuAccess, bool gpuWrite)
 {
-	std::shared_ptr<Texture> texture = std::make_shared<TextureOGL>(this, size, numCubes, format, cpuAccess);
+	std::shared_ptr<ITexture> texture = std::make_shared<TextureOGL>(this, size, numCubes, format, cpuAccess);
 	m_Textures.push_back(texture);
 
 	return texture;
 }
 
-std::shared_ptr<Texture> RenderDeviceOGL::CreateTexture()
+std::shared_ptr<ITexture> RenderDeviceOGL::CreateTexture()
 {
-	std::shared_ptr<Texture> texture = std::make_shared<TextureOGL>(this);
+	std::shared_ptr<ITexture> texture = std::make_shared<TextureOGL>(this);
 	m_Textures.push_back(texture);
 
 	return texture;
 }
 
-std::shared_ptr<Texture> RenderDeviceOGL::GetDefaultTexture() const
+std::shared_ptr<ITexture> RenderDeviceOGL::GetDefaultTexture() const
 {
 	return m_pDefaultTexture;
 }
 
-void RenderDeviceOGL::DestroyTexture(std::shared_ptr<Texture> texture)
+void RenderDeviceOGL::DestroyTexture(std::shared_ptr<ITexture> texture)
 {
 	TextureList::iterator iter = std::find(m_Textures.begin(), m_Textures.end(), texture);
 	if (iter != m_Textures.end())
@@ -423,15 +423,15 @@ void RenderDeviceOGL::DestroyRenderTarget(std::shared_ptr<IRenderTarget> renderT
 }
 
 
-std::shared_ptr<SamplerState> RenderDeviceOGL::CreateSamplerState()
+std::shared_ptr<ISamplerState> RenderDeviceOGL::CreateSamplerState()
 {
-	std::shared_ptr<SamplerState> sampler = std::make_shared<SamplerStateOGL>();
+	std::shared_ptr<ISamplerState> sampler = std::make_shared<SamplerStateOGL>();
 	m_Samplers.push_back(sampler);
 
 	return sampler;
 }
 
-void RenderDeviceOGL::DestroySampler(std::shared_ptr<SamplerState> sampler)
+void RenderDeviceOGL::DestroySampler(std::shared_ptr<ISamplerState> sampler)
 {
 	SamplerList::iterator iter = std::find(m_Samplers.begin(), m_Samplers.end(), sampler);
 	if (iter != m_Samplers.end())
@@ -474,7 +474,7 @@ void RenderDeviceOGL::SetDefaultRB(uint32 _obj)
 	m_RBDefault = _obj;
 }
 
-std::shared_ptr<Query> RenderDeviceOGL::CreateQuery(Query::QueryType queryType, uint8_t numBuffers)
+std::shared_ptr<Query> RenderDeviceOGL::CreateQuery(IQuery::QueryType queryType, uint8_t numBuffers)
 {
 	std::shared_ptr<Query> query = std::make_shared<QueryOGL>(queryType, numBuffers);
 	m_Queries.push_back(query);
@@ -512,6 +512,6 @@ void RenderDeviceOGL::LoadDefaultResources()
 {
 	// Create a magenta texture if a texture defined in the shader is not bound.
 	m_pDefaultTexture = CreateTexture2D("Textures\\default.png");
-	//m_pDefaultTexture = CreateTexture2D(1, 1, 1, Texture::TextureFormat());
+	//m_pDefaultTexture = CreateTexture2D(1, 1, 1, ITexture::TextureFormat());
 	//m_pDefaultTexture->Clear(ClearFlags::Color, vec4(1, 0, 1, 1));
 }

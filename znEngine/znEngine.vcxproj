@@ -55,6 +55,7 @@
     <ClCompile Include="Passes\InvokeFunctionPass.cpp" />
     <ClCompile Include="Passes\PostprocessPass.cpp" />
     <ClCompile Include="Passes\RenderTechnique.cpp" />
+    <ClCompile Include="Plugins\PluginsManager.cpp" />
     <ClCompile Include="RenderDeviceCreatorFactory.cpp" />
     <ClCompile Include="SceneFunctional\3D\ColliderComponent3D.cpp" />
     <ClCompile Include="SceneFunctional\3D\LightComponent3D.cpp" />
@@ -91,6 +92,9 @@
     <ClCompile Include="SceneFunctional\UI\UITexture.cpp" />
     <ClCompile Include="SceneFunctional\UI\UIUtils.cpp" />
     <ClCompile Include="SceneFunctional\UI\UIWindow.cpp" />
+    <ClCompile Include="Settings\GroupQuality.cpp" />
+    <ClCompile Include="Settings\GroupVideo.cpp" />
+    <ClCompile Include="Settings\Settings.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -138,6 +142,7 @@
     <ClInclude Include="Passes\InvokeFunctionPass.h" />
     <ClInclude Include="Passes\PostprocessPass.h" />
     <ClInclude Include="Passes\RenderTechnique.h" />
+    <ClInclude Include="Plugins\PluginsManager.h" />
     <ClInclude Include="RenderDeviceCreatorFactory.h" />
     <ClInclude Include="SceneFunctional\3D\ColliderComponent3D.h" />
     <ClInclude Include="SceneFunctional\3D\LightComponent3D.h" />
@@ -176,6 +181,9 @@
     <ClInclude Include="SceneFunctional\UI\UITexture.h" />
     <ClInclude Include="SceneFunctional\UI\UIUtils.h" />
     <ClInclude Include="SceneFunctional\UI\UIWindow.h" />
+    <ClInclude Include="Settings\GroupQuality.h" />
+    <ClInclude Include="Settings\GroupVideo.h" />
+    <ClInclude Include="Settings\Settings.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="WindowCreator.h" />
   </ItemGroup>

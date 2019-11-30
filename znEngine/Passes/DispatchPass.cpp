@@ -3,7 +3,7 @@
 // General
 #include "DispatchPass.h"
 
-DispatchPass::DispatchPass(std::shared_ptr<Shader> computeShader, const glm::uvec3& numGroups)
+DispatchPass::DispatchPass(std::shared_ptr<IShader> computeShader, const glm::uvec3& numGroups)
 	: m_pComputeShader(computeShader)
 	, m_NumGroups(numGroups)
 {}

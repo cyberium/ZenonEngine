@@ -6,15 +6,15 @@ public:
 	MaterialWrapper(std::shared_ptr<IMaterial> _materal);
 	virtual ~MaterialWrapper();
 
-	virtual void SetShader(Shader::ShaderType type, std::shared_ptr<Shader> pShader);
-	virtual std::shared_ptr<Shader> GetShader(Shader::ShaderType type) const;
+	virtual void SetShader(IShader::ShaderType type, std::shared_ptr<IShader> pShader);
+	virtual std::shared_ptr<IShader> GetShader(IShader::ShaderType type) const;
 	virtual const ShaderMap& GetShaders() const;
 
-	virtual std::shared_ptr<Texture> GetTexture(uint8 ID) const;
-	virtual void SetTexture(uint8 type, std::shared_ptr<Texture> texture);
+	virtual std::shared_ptr<ITexture> GetTexture(uint8 ID) const;
+	virtual void SetTexture(uint8 type, std::shared_ptr<ITexture> texture);
 
-    virtual std::shared_ptr<SamplerState> GetSampler(uint8 ID) const;
-    virtual void SetSampler(uint8 ID, std::shared_ptr<SamplerState> samplerState);
+    virtual std::shared_ptr<ISamplerState> GetSampler(uint8 ID) const;
+    virtual void SetSampler(uint8 ID, std::shared_ptr<ISamplerState> samplerState);
 
 	virtual void Bind(const ShaderMap& shaders) const;
 	virtual void Unbind(const ShaderMap& shaders) const;

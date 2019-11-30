@@ -4,7 +4,6 @@
 
 #include "Ray.h"
 #include "RenderEvents.h"
-#include "Viewport.h"
 
 class OW_ENGINE_API Camera : public IznCamera, public Object
 {

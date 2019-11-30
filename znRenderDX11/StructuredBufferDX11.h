@@ -1,13 +1,13 @@
 #pragma once
 
-class StructuredBufferDX11 : public StructuredBuffer
+class StructuredBufferDX11 : public IStructuredBuffer
 {
 public:
 	StructuredBufferDX11(ID3D11Device2* pDevice, UINT bindFlags, const void* data, size_t count, UINT stride, CPUAccess cpuAccess = CPUAccess::None, bool bUAV = false);
 	virtual ~StructuredBufferDX11();
 
-	virtual bool Bind(uint32 id, const Shader* shader, ShaderParameter::Type parameterType) const override;
-	virtual void UnBind(uint32 id, const Shader* shader, ShaderParameter::Type parameterType) const override;
+	virtual bool Bind(uint32 id, const IShader* shader, IShaderParameter::Type parameterType) const override;
+	virtual void UnBind(uint32 id, const IShader* shader, IShaderParameter::Type parameterType) const override;
 
 	// Is this an index buffer or an attribute/vertex buffer?
 	virtual BufferType GetType() const;
@@ -18,7 +18,7 @@ public:
     // Elements stride
     virtual uint32 GetElementOffset() const;
 
-	virtual void Copy(std::shared_ptr<StructuredBuffer> other);
+	virtual void Copy(std::shared_ptr<IStructuredBuffer> other);
 
 	// Clear the contents of the buffer.
 	virtual void Clear();

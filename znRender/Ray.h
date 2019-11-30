@@ -1,6 +1,6 @@
 #pragma once;
 
-class IMaterial;
+ZN_INTERFACE IMaterial;
 
 class Ray
 {

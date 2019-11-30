@@ -1,13 +1,13 @@
 #pragma once
 
-enum OW_ENGINE_API RenderDeviceType
+enum class OW_ENGINE_API RenderDeviceType 
 {
 	RenderDeviceType_None = 0,
 	RenderDeviceType_DirectX,
 	RenderDeviceType_OpenGL
 };
 
-struct OW_ENGINE_API IznRenderDeviceCreator 
+ZN_INTERFACE OW_ENGINE_API IznRenderDeviceCreator
 {
 	virtual ~IznRenderDeviceCreator() {}
 
@@ -15,7 +15,7 @@ struct OW_ENGINE_API IznRenderDeviceCreator
 	virtual std::shared_ptr<IRenderDevice> CreateRenderDevice() = 0;
 };
 
-struct OW_ENGINE_API 
+ZN_INTERFACE OW_ENGINE_API
 	__declspec(uuid("E0313DD4-A169-4369-BA8C-2F10323832CB"))
 	IznRenderDeviceCreatorFactory : IManager
 {

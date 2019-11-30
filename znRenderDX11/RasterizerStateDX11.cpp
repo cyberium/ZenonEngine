@@ -4,9 +4,9 @@
 #include "RasterizerStateDX11.h"
 
 // FORWARD BEGIN
-D3D11_FILL_MODE TranslateFillMode(RasterizerState::FillMode fillMode);
-D3D11_CULL_MODE TranslateCullMode(RasterizerState::CullMode cullMode);
-bool TranslateFrontFace(RasterizerState::FrontFace frontFace);
+D3D11_FILL_MODE TranslateFillMode(IRasterizerState::FillMode fillMode);
+D3D11_CULL_MODE TranslateCullMode(IRasterizerState::CullMode cullMode);
+bool TranslateFrontFace(IRasterizerState::FrontFace frontFace);
 std::vector<D3D11_RECT> TranslateRects(const std::vector<Rect>& rects);
 std::vector<D3D11_VIEWPORT> TranslateViewports(const std::vector<const Viewport *>& viewports);
 // FORWARD END
@@ -156,15 +156,15 @@ void RasterizerStateDX11::Bind()
 //
 // Translate
 //
-D3D11_FILL_MODE TranslateFillMode(RasterizerState::FillMode fillMode)
+D3D11_FILL_MODE TranslateFillMode(IRasterizerState::FillMode fillMode)
 {
 	D3D11_FILL_MODE result = D3D11_FILL_SOLID;
 	switch (fillMode)
 	{
-	case RasterizerState::FillMode::Wireframe:
+	case IRasterizerState::FillMode::Wireframe:
 		result = D3D11_FILL_WIREFRAME;
 		break;
-	case RasterizerState::FillMode::Solid:
+	case IRasterizerState::FillMode::Solid:
 		result = D3D11_FILL_SOLID;
 		break;
 	default:
@@ -174,21 +174,21 @@ D3D11_FILL_MODE TranslateFillMode(RasterizerState::FillMode fillMode)
 	return result;
 }
 
-D3D11_CULL_MODE TranslateCullMode(RasterizerState::CullMode cullMode)
+D3D11_CULL_MODE TranslateCullMode(IRasterizerState::CullMode cullMode)
 {
 	D3D11_CULL_MODE result = D3D11_CULL_BACK;
 	switch (cullMode)
 	{
-	case RasterizerState::CullMode::None:
+	case IRasterizerState::CullMode::None:
 		result = D3D11_CULL_NONE;
 		break;
-	case RasterizerState::CullMode::Front:
+	case IRasterizerState::CullMode::Front:
 		result = D3D11_CULL_FRONT;
 		break;
-	case RasterizerState::CullMode::Back:
+	case IRasterizerState::CullMode::Back:
 		result = D3D11_CULL_BACK;
 		break;
-	case RasterizerState::CullMode::FrontAndBack:
+	case IRasterizerState::CullMode::FrontAndBack:
 		// This mode is not supported in DX11.
 		break;
 	default:
@@ -198,15 +198,15 @@ D3D11_CULL_MODE TranslateCullMode(RasterizerState::CullMode cullMode)
 	return result;
 }
 
-bool TranslateFrontFace(RasterizerState::FrontFace frontFace)
+bool TranslateFrontFace(IRasterizerState::FrontFace frontFace)
 {
 	bool frontCounterClockwise = true;
 	switch (frontFace)
 	{
-	case RasterizerState::FrontFace::Clockwise:
+	case IRasterizerState::FrontFace::Clockwise:
 		frontCounterClockwise = false;
 		break;
-	case RasterizerState::FrontFace::CounterClockwise:
+	case IRasterizerState::FrontFace::CounterClockwise:
 		frontCounterClockwise = true;
 		break;
 	default:

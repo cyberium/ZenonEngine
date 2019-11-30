@@ -10,8 +10,8 @@ public:
 	RenderTargetOGL(RenderDeviceOGL* _device);
 	virtual ~RenderTargetOGL();
 
-	virtual void AttachTexture(AttachmentPoint attachment, std::shared_ptr<Texture> texture);
-	virtual std::shared_ptr<Texture> GetTexture(AttachmentPoint attachment);
+	virtual void AttachTexture(AttachmentPoint attachment, std::shared_ptr<ITexture> texture);
+	virtual std::shared_ptr<ITexture> GetTexture(AttachmentPoint attachment);
 
 	virtual void Clear(AttachmentPoint attachemnt, ClearFlags clearFlags = ClearFlags::All, cvec4 color = vec4(0.6f), float depth = 1.0f, uint8_t stencil = 0);
 	virtual void Clear(ClearFlags clearFlags = ClearFlags::All, cvec4 color = vec4(0), float depth = 1.0f, uint8_t stencil = 0);

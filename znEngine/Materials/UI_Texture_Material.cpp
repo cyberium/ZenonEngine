@@ -13,25 +13,25 @@ UI_Texture_Material::UI_Texture_Material() :
 	*m_pProperties = MaterialProperties();
 
 	// CreateShaders
-	std::shared_ptr<Shader> g_pVertexShader = _RenderDevice->CreateShader(
-		Shader::VertexShader, "IDB_SHADER_UI_TEXTURE", Shader::ShaderMacros(), "VS_main", "latest"
+	std::shared_ptr<IShader> g_pVertexShader = _RenderDevice->CreateShader(
+		IShader::VertexShader, "IDB_SHADER_UI_TEXTURE", IShader::ShaderMacros(), "VS_main", "latest"
 	);
     g_pVertexShader->LoadInputLayoutFromReflector();
 
-	std::shared_ptr<Shader> g_pPixelShader = _RenderDevice->CreateShader(
-		Shader::PixelShader, "IDB_SHADER_UI_TEXTURE", Shader::ShaderMacros(), "PS_main", "latest"
+	std::shared_ptr<IShader> g_pPixelShader = _RenderDevice->CreateShader(
+		IShader::PixelShader, "IDB_SHADER_UI_TEXTURE", IShader::ShaderMacros(), "PS_main", "latest"
 	);
 
 	// Create samplers
-	std::shared_ptr<SamplerState> g_LinearClampSampler = _RenderDevice->CreateSamplerState();
-	g_LinearClampSampler->SetFilter(SamplerState::MinFilter::MinLinear, SamplerState::MagFilter::MagLinear, SamplerState::MipFilter::MipLinear);
-	g_LinearClampSampler->SetWrapMode(SamplerState::WrapMode::Clamp, SamplerState::WrapMode::Clamp, SamplerState::WrapMode::Clamp);
+	std::shared_ptr<ISamplerState> g_LinearClampSampler = _RenderDevice->CreateSamplerState();
+	g_LinearClampSampler->SetFilter(ISamplerState::MinFilter::MinLinear, ISamplerState::MagFilter::MagLinear, ISamplerState::MipFilter::MipLinear);
+	g_LinearClampSampler->SetWrapMode(ISamplerState::WrapMode::Clamp, ISamplerState::WrapMode::Clamp, ISamplerState::WrapMode::Clamp);
 
     SetSampler(0, g_LinearClampSampler);
 
 	// Material
-	SetShader(Shader::VertexShader, g_pVertexShader);
-	SetShader(Shader::PixelShader, g_pPixelShader);
+	SetShader(IShader::VertexShader, g_pVertexShader);
+	SetShader(IShader::PixelShader, g_pPixelShader);
 }
 
 UI_Texture_Material::~UI_Texture_Material()
@@ -43,7 +43,7 @@ UI_Texture_Material::~UI_Texture_Material()
 	}
 }
 
-void UI_Texture_Material::SetTexture(std::shared_ptr<Texture> _texture)
+void UI_Texture_Material::SetTexture(std::shared_ptr<ITexture> _texture)
 {
 	base::SetTexture(0, _texture);
 	MarkConstantBufferDirty();

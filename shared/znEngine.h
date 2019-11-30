@@ -17,6 +17,8 @@
 #include "../znEngine/Loader.h"
 #include "../znEngine/SceneFunctional/UI/Fonts/FontsManager.h"
 #include "../znEngine/WindowCreator.h"
+#include "../znEngine/Plugins/PluginsManager.h"
+
 
 //
 // Wrappers

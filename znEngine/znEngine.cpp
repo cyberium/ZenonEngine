@@ -5,6 +5,8 @@
 
 // Additional
 #include "RenderDeviceCreatorFactory.h"
+#include "Plugins/PluginsManager.h"
+#include "Settings/Settings.h"
 
 //
 // CznEnginePlugin

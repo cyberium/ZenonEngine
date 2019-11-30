@@ -13,25 +13,25 @@ UI_Button_Material::UI_Button_Material() :
 	*m_pProperties = MaterialProperties();
 
 	// CreateShaders
-	std::shared_ptr<Shader> g_pVertexShader = _RenderDevice->CreateShader(
-		Shader::VertexShader, "IDB_SHADER_UI_BUTTON", Shader::ShaderMacros(), "VS_main", "latest"
+	std::shared_ptr<IShader> g_pVertexShader = _RenderDevice->CreateShader(
+		IShader::VertexShader, "IDB_SHADER_UI_BUTTON", IShader::ShaderMacros(), "VS_main", "latest"
 	);
     g_pVertexShader->LoadInputLayoutFromReflector();
 
-	std::shared_ptr<Shader> g_pPixelShader = _RenderDevice->CreateShader(
-		Shader::PixelShader, "IDB_SHADER_UI_BUTTON", Shader::ShaderMacros(), "PS_main", "latest"
+	std::shared_ptr<IShader> g_pPixelShader = _RenderDevice->CreateShader(
+		IShader::PixelShader, "IDB_SHADER_UI_BUTTON", IShader::ShaderMacros(), "PS_main", "latest"
 	);
 
 	// Create samplers
-	std::shared_ptr<SamplerState> g_LinearClampSampler = _RenderDevice->CreateSamplerState();
-	g_LinearClampSampler->SetFilter(SamplerState::MinFilter::MinLinear, SamplerState::MagFilter::MagLinear, SamplerState::MipFilter::MipLinear);
-	g_LinearClampSampler->SetWrapMode(SamplerState::WrapMode::Clamp, SamplerState::WrapMode::Clamp, SamplerState::WrapMode::Clamp);
+	std::shared_ptr<ISamplerState> g_LinearClampSampler = _RenderDevice->CreateSamplerState();
+	g_LinearClampSampler->SetFilter(ISamplerState::MinFilter::MinLinear, ISamplerState::MagFilter::MagLinear, ISamplerState::MipFilter::MipLinear);
+	g_LinearClampSampler->SetWrapMode(ISamplerState::WrapMode::Clamp, ISamplerState::WrapMode::Clamp, ISamplerState::WrapMode::Clamp);
 
-	g_pPixelShader->GetShaderParameterByName("DiffuseTextureSampler").Set(g_LinearClampSampler.get());
+	g_pPixelShader->GetShaderParameterByName("DiffuseTextureSampler")->Set(g_LinearClampSampler.get());
 
 	// Material
-	SetShader(Shader::VertexShader, g_pVertexShader);
-	SetShader(Shader::PixelShader, g_pPixelShader);
+	SetShader(IShader::VertexShader, g_pVertexShader);
+	SetShader(IShader::PixelShader, g_pPixelShader);
 }
 
 UI_Button_Material::~UI_Button_Material()
@@ -43,25 +43,25 @@ UI_Button_Material::~UI_Button_Material()
 	}
 }
 
-void UI_Button_Material::SetIdleTexture(std::shared_ptr<Texture> _texture)
+void UI_Button_Material::SetIdleTexture(std::shared_ptr<ITexture> _texture)
 {
 	base::SetTexture(0, _texture);
 	MarkConstantBufferDirty();
 }
 
-void UI_Button_Material::SetHoverTexture(std::shared_ptr<Texture> _texture)
+void UI_Button_Material::SetHoverTexture(std::shared_ptr<ITexture> _texture)
 {
 	base::SetTexture(1, _texture);
 	MarkConstantBufferDirty();
 }
 
-void UI_Button_Material::SetClickedTexture(std::shared_ptr<Texture> _texture)
+void UI_Button_Material::SetClickedTexture(std::shared_ptr<ITexture> _texture)
 {
 	base::SetTexture(2, _texture);
 	MarkConstantBufferDirty();
 }
 
-void UI_Button_Material::SetDisabledTexture(std::shared_ptr<Texture> _texture)
+void UI_Button_Material::SetDisabledTexture(std::shared_ptr<ITexture> _texture)
 {
 	base::SetTexture(3, _texture);
 	MarkConstantBufferDirty();

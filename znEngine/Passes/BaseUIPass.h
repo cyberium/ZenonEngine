@@ -7,7 +7,7 @@ class OW_ENGINE_API BaseUIPass : public AbstractPass
 {
     typedef AbstractPass base;
 public:
-	                                                BaseUIPass(std::shared_ptr<SceneUI> uiScene, std::shared_ptr<PipelineState> pipeline);
+	                                                BaseUIPass(std::shared_ptr<SceneUI> uiScene, std::shared_ptr<IPipelineState> pipeline);
 	virtual                                         ~BaseUIPass();
 
     virtual void                                    Render(RenderEventArgs& e) override;

@@ -67,7 +67,7 @@ RenderTargetOGL::~RenderTargetOGL()
 	m_GLObj = 0;
 }
 
-void RenderTargetOGL::AttachTexture(AttachmentPoint attachment, std::shared_ptr<Texture> texture)
+void RenderTargetOGL::AttachTexture(AttachmentPoint attachment, std::shared_ptr<ITexture> texture)
 {
 	std::shared_ptr<TextureOGL> textureOGL = std::dynamic_pointer_cast<TextureOGL>(texture);
 	m_Textures[(uint8_t)attachment] = textureOGL;
@@ -89,7 +89,7 @@ void RenderTargetOGL::AttachTexture(AttachmentPoint attachment, std::shared_ptr<
 	m_bCheckValidity = true;
 }
 
-std::shared_ptr<Texture> RenderTargetOGL::GetTexture(AttachmentPoint attachment)
+std::shared_ptr<ITexture> RenderTargetOGL::GetTexture(AttachmentPoint attachment)
 {
 	return m_Textures[(uint8_t)attachment];
 }

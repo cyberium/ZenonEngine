@@ -9,7 +9,7 @@ class PostprocessPass : public BasePass
 public:
     typedef BasePass base;
 
-    PostprocessPass( std::shared_ptr<Scene3D> scene, std::shared_ptr<PipelineState> pipeline, const glm::mat4& projectionMatrix, std::shared_ptr<Texture> texture );
+    PostprocessPass( std::shared_ptr<Scene3D> scene, std::shared_ptr<IPipelineState> pipeline, const glm::mat4& projectionMatrix, std::shared_ptr<ITexture> texture );
 
     // Render the pass. This should only be called by the RenderTechnique.
     virtual void Render( RenderEventArgs& e );
@@ -20,5 +20,5 @@ protected:
 
 private:
     glm::mat4 m_ProjectionMatrix;
-    std::shared_ptr<Texture> m_Texture;
+    std::shared_ptr<ITexture> m_Texture;
 };

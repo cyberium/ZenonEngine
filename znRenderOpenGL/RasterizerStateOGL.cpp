@@ -4,9 +4,9 @@
 #include "RasterizerStateOGL.h"
 
 // FORWARD BEGIN
-GLenum GLTranslateFillMode(RasterizerState::FillMode fillMode);
-GLenum GLTranslateCullMode(RasterizerState::CullMode cullMode);
-GLenum GLTranslateFrontFace(RasterizerState::FrontFace frontFace);
+GLenum GLTranslateFillMode(IRasterizerState::FillMode fillMode);
+GLenum GLTranslateCullMode(IRasterizerState::CullMode cullMode);
+GLenum GLTranslateFrontFace(IRasterizerState::FrontFace frontFace);
 // FORWARD END
 
 RasterizerStateOGL::RasterizerStateOGL()
@@ -156,48 +156,48 @@ void RasterizerStateOGL::Bind()
 //
 // Translate
 //
-GLenum GLTranslateFillMode(RasterizerState::FillMode fillMode)
+GLenum GLTranslateFillMode(IRasterizerState::FillMode fillMode)
 {
     switch (fillMode)
     {
-        case RasterizerState::FillMode::Wireframe:
+        case IRasterizerState::FillMode::Wireframe:
             return GL_LINE;
 
-        case RasterizerState::FillMode::Solid:
+        case IRasterizerState::FillMode::Solid:
             return GL_FILL;
     }
 
     std::exception("Unknown fill mode.");
 }
 
-GLenum GLTranslateCullMode(RasterizerState::CullMode cullMode)
+GLenum GLTranslateCullMode(IRasterizerState::CullMode cullMode)
 {
     switch (cullMode)
     {
-        case RasterizerState::CullMode::None:
+        case IRasterizerState::CullMode::None:
             return GL_NONE;
 
-        case RasterizerState::CullMode::Front:
+        case IRasterizerState::CullMode::Front:
             return GL_FRONT;
 
-        case RasterizerState::CullMode::Back:
+        case IRasterizerState::CullMode::Back:
             return GL_BACK;
 
-        case RasterizerState::CullMode::FrontAndBack:
+        case IRasterizerState::CullMode::FrontAndBack:
             return GL_FRONT_AND_BACK;
     }
 
     std::exception("Unknown cull mode.");
 }
 
-GLenum GLTranslateFrontFace(RasterizerState::FrontFace frontFace)
+GLenum GLTranslateFrontFace(IRasterizerState::FrontFace frontFace)
 {
     switch (frontFace)
     {
-        case RasterizerState::FrontFace::Clockwise:
+        case IRasterizerState::FrontFace::Clockwise:
             return GL_CW;
 
-        case RasterizerState::FrontFace::CounterClockwise:
+        case IRasterizerState::FrontFace::CounterClockwise:
             return GL_CCW;
     }
 

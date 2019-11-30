@@ -4,9 +4,9 @@
 #include "SamplerStateDX11.h"
 
 // FORWARD BEGIN
-D3D11_FILTER DX11TranslateFilter(bool IsAnisotropicFilteringEnabled, SamplerState::CompareMode CompareMode, SamplerState::MinFilter MinFilter, SamplerState::MagFilter MagFilter, SamplerState::MipFilter MipFilter);
-D3D11_TEXTURE_ADDRESS_MODE DX11TranslateWrapMode(SamplerState::WrapMode wrapMode);
-D3D11_COMPARISON_FUNC DX11TranslateComparisonFunction(SamplerState::CompareFunc compareFunc);
+D3D11_FILTER DX11TranslateFilter(bool IsAnisotropicFilteringEnabled, ISamplerState::CompareMode CompareMode, ISamplerState::MinFilter MinFilter, ISamplerState::MagFilter MagFilter, ISamplerState::MipFilter MipFilter);
+D3D11_TEXTURE_ADDRESS_MODE DX11TranslateWrapMode(ISamplerState::WrapMode wrapMode);
+D3D11_COMPARISON_FUNC DX11TranslateComparisonFunction(ISamplerState::CompareFunc compareFunc);
 // FORWARD END
 
 SamplerStateDX11::SamplerStateDX11(ID3D11Device2* pDevice)
@@ -28,7 +28,7 @@ SamplerStateDX11::~SamplerStateDX11()
 //
 // SamplerState 
 //
-void SamplerStateDX11::Bind(uint32_t ID, const Shader* shader, ShaderParameter::Type parameterType) const
+void SamplerStateDX11::Bind(uint32_t ID, const IShader* shader, IShaderParameter::Type parameterType) const
 {
     if (m_bIsDirty || m_pSamplerState == nullptr)
     {
@@ -57,49 +57,49 @@ void SamplerStateDX11::Bind(uint32_t ID, const Shader* shader, ShaderParameter::
 
     switch (shader->GetType())
     {
-        case Shader::VertexShader:
+        case IShader::VertexShader:
             m_pDeviceContext->VSSetSamplers(ID, 1, pSamplers);
             break;
-        case Shader::TessellationControlShader:
+        case IShader::TessellationControlShader:
             m_pDeviceContext->HSSetSamplers(ID, 1, pSamplers);
             break;
-        case Shader::TessellationEvaluationShader:
+        case IShader::TessellationEvaluationShader:
             m_pDeviceContext->DSSetSamplers(ID, 1, pSamplers);
             break;
-        case Shader::GeometryShader:
+        case IShader::GeometryShader:
             m_pDeviceContext->GSSetSamplers(ID, 1, pSamplers);
             break;
-        case Shader::PixelShader:
+        case IShader::PixelShader:
             m_pDeviceContext->PSSetSamplers(ID, 1, pSamplers);
             break;
-        case Shader::ComputeShader:
+        case IShader::ComputeShader:
             m_pDeviceContext->CSSetSamplers(ID, 1, pSamplers);
             break;
     }
 }
 
-void SamplerStateDX11::UnBind(uint32_t ID, const Shader* shader, ShaderParameter::Type parameterType) const
+void SamplerStateDX11::UnBind(uint32_t ID, const IShader* shader, IShaderParameter::Type parameterType) const
 {
     ID3D11SamplerState* pSamplers[] = { nullptr };
 
     switch (shader->GetType())
     {
-        case Shader::VertexShader:
+        case IShader::VertexShader:
             m_pDeviceContext->VSSetSamplers(ID, 1, pSamplers);
             break;
-        case Shader::TessellationControlShader:
+        case IShader::TessellationControlShader:
             m_pDeviceContext->HSSetSamplers(ID, 1, pSamplers);
             break;
-        case Shader::TessellationEvaluationShader:
+        case IShader::TessellationEvaluationShader:
             m_pDeviceContext->DSSetSamplers(ID, 1, pSamplers);
             break;
-        case Shader::GeometryShader:
+        case IShader::GeometryShader:
             m_pDeviceContext->GSSetSamplers(ID, 1, pSamplers);
             break;
-        case Shader::PixelShader:
+        case IShader::PixelShader:
             m_pDeviceContext->PSSetSamplers(ID, 1, pSamplers);
             break;
-        case Shader::ComputeShader:
+        case IShader::ComputeShader:
             m_pDeviceContext->CSSetSamplers(ID, 1, pSamplers);
             break;
     }
@@ -109,44 +109,44 @@ void SamplerStateDX11::UnBind(uint32_t ID, const Shader* shader, ShaderParameter
 //
 // Translate
 //
-D3D11_FILTER DX11TranslateFilter(bool IsAnisotropicFilteringEnabled, SamplerState::CompareMode CompareMode, SamplerState::MinFilter MinFilter, SamplerState::MagFilter MagFilter, SamplerState::MipFilter MipFilter)
+D3D11_FILTER DX11TranslateFilter(bool IsAnisotropicFilteringEnabled, ISamplerState::CompareMode CompareMode, ISamplerState::MinFilter MinFilter, ISamplerState::MagFilter MagFilter, ISamplerState::MipFilter MipFilter)
 {
 	D3D11_FILTER filter = D3D11_FILTER_MIN_MAG_MIP_POINT;
 	if (IsAnisotropicFilteringEnabled)
 	{
-		filter = (CompareMode == SamplerState::CompareMode::None) ? D3D11_FILTER_ANISOTROPIC : D3D11_FILTER_COMPARISON_ANISOTROPIC;
+		filter = (CompareMode == ISamplerState::CompareMode::None) ? D3D11_FILTER_ANISOTROPIC : D3D11_FILTER_COMPARISON_ANISOTROPIC;
 		return filter;
 	}
 
-	if (MinFilter == SamplerState::MinFilter::MinNearest && MagFilter == SamplerState::MagFilter::MagNearest && MipFilter == SamplerState::MipFilter::MipNearest)
+	if (MinFilter == ISamplerState::MinFilter::MinNearest && MagFilter == ISamplerState::MagFilter::MagNearest && MipFilter == ISamplerState::MipFilter::MipNearest)
 	{
 		filter = D3D11_FILTER_MIN_MAG_MIP_POINT;
 	}
-	else if (MinFilter == SamplerState::MinFilter::MinNearest && MagFilter == SamplerState::MagFilter::MagNearest && MipFilter == SamplerState::MipFilter::MipLinear)
+	else if (MinFilter == ISamplerState::MinFilter::MinNearest && MagFilter == ISamplerState::MagFilter::MagNearest && MipFilter == ISamplerState::MipFilter::MipLinear)
 	{
 		filter = D3D11_FILTER_MIN_MAG_POINT_MIP_LINEAR;
 	}
-	else if (MinFilter == SamplerState::MinFilter::MinNearest && MagFilter == SamplerState::MagFilter::MagLinear && MipFilter == SamplerState::MipFilter::MipNearest)
+	else if (MinFilter == ISamplerState::MinFilter::MinNearest && MagFilter == ISamplerState::MagFilter::MagLinear && MipFilter == ISamplerState::MipFilter::MipNearest)
 	{
 		filter = D3D11_FILTER_MIN_POINT_MAG_LINEAR_MIP_POINT;
 	}
-	else if (MinFilter == SamplerState::MinFilter::MinNearest && MagFilter == SamplerState::MagFilter::MagLinear && MipFilter == SamplerState::MipFilter::MipLinear)
+	else if (MinFilter == ISamplerState::MinFilter::MinNearest && MagFilter == ISamplerState::MagFilter::MagLinear && MipFilter == ISamplerState::MipFilter::MipLinear)
 	{
 		filter = D3D11_FILTER_MIN_POINT_MAG_MIP_LINEAR;
 	}
-	else if (MinFilter == SamplerState::MinFilter::MinLinear && MagFilter == SamplerState::MagFilter::MagNearest && MipFilter == SamplerState::MipFilter::MipNearest)
+	else if (MinFilter == ISamplerState::MinFilter::MinLinear && MagFilter == ISamplerState::MagFilter::MagNearest && MipFilter == ISamplerState::MipFilter::MipNearest)
 	{
 		filter = D3D11_FILTER_MIN_LINEAR_MAG_MIP_POINT;
 	}
-	else if (MinFilter == SamplerState::MinFilter::MinLinear && MagFilter == SamplerState::MagFilter::MagNearest && MipFilter == SamplerState::MipFilter::MipLinear)
+	else if (MinFilter == ISamplerState::MinFilter::MinLinear && MagFilter == ISamplerState::MagFilter::MagNearest && MipFilter == ISamplerState::MipFilter::MipLinear)
 	{
 		filter = D3D11_FILTER_MIN_LINEAR_MAG_POINT_MIP_LINEAR;
 	}
-	else if (MinFilter == SamplerState::MinFilter::MinLinear && MagFilter == SamplerState::MagFilter::MagLinear && MipFilter == SamplerState::MipFilter::MipNearest)
+	else if (MinFilter == ISamplerState::MinFilter::MinLinear && MagFilter == ISamplerState::MagFilter::MagLinear && MipFilter == ISamplerState::MipFilter::MipNearest)
 	{
 		filter = D3D11_FILTER_MIN_MAG_LINEAR_MIP_POINT;
 	}
-	else if (MinFilter == SamplerState::MinFilter::MinLinear && MagFilter == SamplerState::MagFilter::MagLinear && MipFilter == SamplerState::MipFilter::MipLinear)
+	else if (MinFilter == ISamplerState::MinFilter::MinLinear && MagFilter == ISamplerState::MagFilter::MagLinear && MipFilter == ISamplerState::MipFilter::MipLinear)
 	{
 		filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
 	}
@@ -155,7 +155,7 @@ D3D11_FILTER DX11TranslateFilter(bool IsAnisotropicFilteringEnabled, SamplerStat
 		throw std::exception("Invalid texture filter modes.");
 	}
 
-	if (CompareMode != SamplerState::CompareMode::None)
+	if (CompareMode != ISamplerState::CompareMode::None)
 	{
 		*(reinterpret_cast<int*>(&filter)) += static_cast<int>(D3D11_FILTER_COMPARISON_MIN_MAG_MIP_POINT);
 	}
@@ -163,22 +163,22 @@ D3D11_FILTER DX11TranslateFilter(bool IsAnisotropicFilteringEnabled, SamplerStat
 	return filter;
 }
 
-D3D11_TEXTURE_ADDRESS_MODE DX11TranslateWrapMode(SamplerState::WrapMode wrapMode)
+D3D11_TEXTURE_ADDRESS_MODE DX11TranslateWrapMode(ISamplerState::WrapMode wrapMode)
 {
 	D3D11_TEXTURE_ADDRESS_MODE addressMode = D3D11_TEXTURE_ADDRESS_WRAP;
 
 	switch (wrapMode)
 	{
-	case SamplerState::WrapMode::Repeat:
+	case ISamplerState::WrapMode::Repeat:
 		addressMode = D3D11_TEXTURE_ADDRESS_WRAP;
 		break;
-	case SamplerState::WrapMode::Clamp:
+	case ISamplerState::WrapMode::Clamp:
 		addressMode = D3D11_TEXTURE_ADDRESS_CLAMP;
 		break;
-	case SamplerState::WrapMode::Mirror:
+	case ISamplerState::WrapMode::Mirror:
 		addressMode = D3D11_TEXTURE_ADDRESS_MIRROR;
 		break;
-	case SamplerState::WrapMode::Border:
+	case ISamplerState::WrapMode::Border:
 		addressMode = D3D11_TEXTURE_ADDRESS_BORDER;
 		break;
 	}
@@ -186,33 +186,33 @@ D3D11_TEXTURE_ADDRESS_MODE DX11TranslateWrapMode(SamplerState::WrapMode wrapMode
 	return addressMode;
 }
 
-D3D11_COMPARISON_FUNC DX11TranslateComparisonFunction(SamplerState::CompareFunc compareFunc)
+D3D11_COMPARISON_FUNC DX11TranslateComparisonFunction(ISamplerState::CompareFunc compareFunc)
 {
 	D3D11_COMPARISON_FUNC compareFuncD3D11 = D3D11_COMPARISON_ALWAYS;
 	switch (compareFunc)
 	{
-	case SamplerState::CompareFunc::Never:
+	case ISamplerState::CompareFunc::Never:
 		compareFuncD3D11 = D3D11_COMPARISON_NEVER;
 		break;
-	case SamplerState::CompareFunc::Less:
+	case ISamplerState::CompareFunc::Less:
 		compareFuncD3D11 = D3D11_COMPARISON_LESS;
 		break;
-	case SamplerState::CompareFunc::Equal:
+	case ISamplerState::CompareFunc::Equal:
 		compareFuncD3D11 = D3D11_COMPARISON_EQUAL;
 		break;
-	case SamplerState::CompareFunc::LessEqual:
+	case ISamplerState::CompareFunc::LessEqual:
 		compareFuncD3D11 = D3D11_COMPARISON_LESS_EQUAL;
 		break;
-	case SamplerState::CompareFunc::Greater:
+	case ISamplerState::CompareFunc::Greater:
 		compareFuncD3D11 = D3D11_COMPARISON_GREATER;
 		break;
-	case SamplerState::CompareFunc::NotEqual:
+	case ISamplerState::CompareFunc::NotEqual:
 		compareFuncD3D11 = D3D11_COMPARISON_NOT_EQUAL;
 		break;
-	case SamplerState::CompareFunc::GreaterEqual:
+	case ISamplerState::CompareFunc::GreaterEqual:
 		compareFuncD3D11 = D3D11_COMPARISON_GREATER_EQUAL;
 		break;
-	case SamplerState::CompareFunc::Always:
+	case ISamplerState::CompareFunc::Always:
 		compareFuncD3D11 = D3D11_COMPARISON_ALWAYS;
 		break;
 	}

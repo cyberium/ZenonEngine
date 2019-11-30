@@ -6,8 +6,8 @@ public:
 	BufferDX11(ID3D11Device2* pDevice, UINT bindFlags, const void* data, size_t count, UINT offset, UINT stride);
 	~BufferDX11();
 
-	virtual bool Bind(uint32 id, const Shader* shader, ShaderParameter::Type parameterType) const override;
-	virtual void UnBind(uint32 id, const Shader* shader, ShaderParameter::Type parameterType) const override;
+	virtual bool Bind(uint32 id, const IShader* shader, IShaderParameter::Type parameterType) const override;
+	virtual void UnBind(uint32 id, const IShader* shader, IShaderParameter::Type parameterType) const override;
 
 	virtual void Copy(std::shared_ptr<IBuffer> other);
 
