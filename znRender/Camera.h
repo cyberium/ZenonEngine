@@ -1,14 +1,11 @@
 #pragma once
 
-#include "common.h"
-
 #include "Ray.h"
-#include "RenderEvents.h"
 
 class OW_ENGINE_API Camera : public IznCamera, public Object
 {
 public:
-	enum class Space
+	enum class OW_ENGINE_API Space
 	{
 		Local,
 		World

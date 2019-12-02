@@ -6,6 +6,7 @@
 // Additional
 #include "Application.h"
 #include "Materials/MaterialDebug.h"
+#include "Materials/MaterialTextured.h"
 #include "FBXHelpers.h"
 #include "FBXDisplayHierarchy.h"
 #include "FBXDisplayMesh.h"
@@ -108,8 +109,10 @@ CFBX::CFBX(std::shared_ptr<SceneNode3D> ParentNode)
 
 	m_Node = ParentNode->CreateSceneNode<SceneNode3D>();
 
-	std::shared_ptr<MaterialDebug> mat = std::make_shared<MaterialDebug>();
+	std::shared_ptr<MaterialTextured> mat = std::make_shared<MaterialTextured>();
 	mat->SetDiffuseColor(vec4(1.0f, 0.0f, 1.0f, 1.0f));
+	mat->SetTexture(0, _RenderDevice->CreateTexture2D("default.png"));
+	mat->SetWrapper(mat);
 	m_DefaultMaterial = mat;
 
 	DisplayMetaData(lScene);

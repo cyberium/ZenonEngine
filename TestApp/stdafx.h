@@ -2,8 +2,6 @@
 
 
 // ZenonEngine
-
-#include <znIntfs.h>
 #include <znCore.h>
 #include <znRender.h>
 

@@ -30,6 +30,7 @@ std::shared_ptr<IMesh> DisplayMesh(FbxNode* pNode)
 
 	DisplayMetaDataConnections(lMesh);
 	mesh->AddVertexBuffer(BufferBinding("POSITION", 0), DisplayControlsPoints(lMesh));
+	mesh->AddVertexBuffer(BufferBinding("TEXCOORD", 0), DisplayControlsPoints(lMesh));
 	mesh->SetIndexBuffer(DisplayPolygons(lMesh));
 	//DisplayMaterialMapping(lMesh);
 	//DisplayMaterial(lMesh);

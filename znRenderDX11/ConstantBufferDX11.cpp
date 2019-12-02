@@ -18,7 +18,7 @@ ConstantBufferDX11::ConstantBufferDX11(ID3D11Device2* pDevice, size_t size)
 
 	if (FAILED(m_pDevice->CreateBuffer(&bufferDesc, nullptr, &m_pBuffer)))
 	{
-		fail2("Failed to create constant buffer for shader.");
+		_ASSERT_EXPR(false, "Failed to create constant buffer for shader.");
 		return;
 	}
 
@@ -28,21 +28,7 @@ ConstantBufferDX11::ConstantBufferDX11(ID3D11Device2* pDevice, size_t size)
 ConstantBufferDX11::~ConstantBufferDX11()
 {}
 
-void ConstantBufferDX11::Set(const void* data, size_t size)
-{
-	_ASSERT(size == m_BufferSize);
 
-	D3D11_MAPPED_SUBRESOURCE mappedResource;
-	if (FAILED(m_pDeviceContext->Map(m_pBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource)))
-	{
-		fail2("Failed to map constant buffer.");
-		return;
-	}
-
-	memcpy(mappedResource.pData, data, m_BufferSize);
-
-	m_pDeviceContext->Unmap(m_pBuffer, 0);
-}
 
 void ConstantBufferDX11::Copy(std::shared_ptr<IConstantBuffer> other)
 {
@@ -57,11 +43,6 @@ void ConstantBufferDX11::Copy(std::shared_ptr<IConstantBuffer> other)
 	{
 		Log::Error("Source buffer is not compatible with this buffer.");
 	}
-}
-
-void ConstantBufferDX11::Copy(std::shared_ptr<IBuffer> other)
-{
-	Copy(std::dynamic_pointer_cast<IConstantBuffer>(other));
 }
 
 bool ConstantBufferDX11::Bind(uint32 id, const IShader* shader, IShaderParameter::Type parameterType) const
@@ -125,4 +106,49 @@ void ConstantBufferDX11::UnBind(uint32 id, const IShader* shader, IShaderParamet
 	default:
 		break;
 	}
+}
+
+IBuffer::BufferType ConstantBufferDX11::GetType() const
+{
+	return BufferType::ConstantBuffer;
+}
+
+uint32 ConstantBufferDX11::GetElementCount() const
+{
+	return 1;
+}
+
+uint32 ConstantBufferDX11::GetElementStride() const
+{
+	return 0;
+}
+
+uint32 ConstantBufferDX11::GetElementOffset() const
+{
+	return 0;
+}
+
+
+//
+// Protected
+//
+void ConstantBufferDX11::Copy(std::shared_ptr<IBuffer> other)
+{
+	Copy(std::dynamic_pointer_cast<IConstantBuffer>(other));
+}
+
+void ConstantBufferDX11::Set(const void* data, size_t size)
+{
+	_ASSERT(size == m_BufferSize);
+
+	D3D11_MAPPED_SUBRESOURCE mappedResource;
+	if (FAILED(m_pDeviceContext->Map(m_pBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource)))
+	{
+		_ASSERT_EXPR(false, "Failed to map constant buffer.");
+		return;
+	}
+
+	memcpy(mappedResource.pData, data, m_BufferSize);
+
+	m_pDeviceContext->Unmap(m_pBuffer, 0);
 }

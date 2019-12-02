@@ -54,7 +54,7 @@ std::shared_ptr<IFile> CLocalFilesStorage::CreateFile(const std::string& _name)
 	{
 		char buff[256];
 		sprintf_s(buff, "File[%s]: Is empty!", file->Path_Name().c_str());
-		fail2(buff);
+		_ASSERT_EXPR(false, buff);
 		return nullptr;
 	}
 
@@ -71,7 +71,7 @@ std::shared_ptr<IFile> CLocalFilesStorage::CreateFile(const std::string& _name)
 
 		char buff[256];
 		sprintf_s(buff, "File[%s]: Stream reading error. Readed [%d], filesize [%d]", file->Path_Name().c_str(), static_cast<int64>(readedBytes), fileSize);
-		fail2(buff);
+		_ASSERT_EXPR(false, buff);
 		return nullptr;
 	}
 

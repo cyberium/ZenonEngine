@@ -1,16 +1,13 @@
 #pragma once
 
 // Forward BEGIN
-class RenderWindow;
 class Camera;
 
 class KeyEventArgs;
 class MouseButtonEventArgs;
 class MouseMotionEventArgs;
 class MouseWheelEventArgs;
-
 class ResizeEventArgs;
-
 class UpdateEventArgs;
 // Forward END
 

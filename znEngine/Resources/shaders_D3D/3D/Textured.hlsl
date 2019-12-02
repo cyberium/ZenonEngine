@@ -40,7 +40,7 @@ VertexShaderOutput VS_main(VertexShaderInput IN)
 	return OUT;
 }
 
-float4 PS_main(VertexShaderOutput IN) : SV_TARGET
+PixelShaderOutput PS_main(VertexShaderOutput IN) : SV_TARGET
 {
     PixelShaderOutput OUT;
 	OUT.PositionWS = IN.positionWS;

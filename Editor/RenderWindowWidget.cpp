@@ -18,7 +18,7 @@ RenderWindowWidget::~RenderWindowWidget()
 {
 }
 
-void RenderWindowWidget::SetRenderWindow(std::shared_ptr<RenderWindow> RenderWindow)
+void RenderWindowWidget::SetRenderWindow(std::shared_ptr<IRenderWindow> RenderWindow)
 {
 	m_RenderWindow = RenderWindow;
 }

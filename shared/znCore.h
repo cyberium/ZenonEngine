@@ -20,9 +20,3 @@
 // Objects bindings
 #include "../znCore/BaseManager.h"
 #include "../znCore/Object.h"
-
-// Events
-#include "../znCore/Events.h"
-
-// ScriptEngine
-#include "../znCore/ScriptEngine/LuaCore.h"

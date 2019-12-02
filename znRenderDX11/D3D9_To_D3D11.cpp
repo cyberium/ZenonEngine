@@ -37,7 +37,7 @@ DXGI_FORMAT	ConvertVertexFormat(ECustomVertexElementType CustomVertexElementType
 			return VertexFormatList[i].m_dx10FMT;
 	}
 
-	fail2("ConvertVertexFormat didn't find appropriate dx10 vertex format!");
+	_ASSERT_EXPR(false, "ConvertVertexFormat didn't find appropriate dx10 vertex format!");
 	return DXGI_FORMAT_UNKNOWN;
 }
 
@@ -70,7 +70,7 @@ LPCSTR ConvertSemantic(ECustomVertexElementUsage Semantic)
 			return VertexSemanticList[i].m_dx10Semantic;
 	}
 
-	fail2("ConvertSemantic didn't find appropriate dx10 input semantic!");
+	_ASSERT_EXPR(false, "ConvertSemantic didn't find appropriate dx10 input semantic!");
 	return NULL;
 }
 

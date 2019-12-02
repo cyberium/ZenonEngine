@@ -144,14 +144,14 @@ bool TextureOGL::LoadTexture2D(const std::string& fileName)
     FREE_IMAGE_FORMAT fif = FreeImage_GetFileTypeFromMemory(hmem, f->getSize());
     if (fif == FIF_UNKNOWN || !FreeImage_FIFSupportsReading(fif))
     {
-        fail2("Unknow file format: ");
+        _ASSERT_EXPR(false, "Unknow file format: ");
         return false;
     }
 
     FIBITMAP* dib = FreeImage_LoadFromMemory(fif, hmem, f->getSize());
     if (dib == nullptr || FreeImage_HasPixels(dib) == FALSE)
     {
-        fail2("Failed to load image: ");
+        _ASSERT_EXPR(false, "Failed to load image: ");
         return false;
     }
 
@@ -172,17 +172,33 @@ bool TextureOGL::LoadTexture2D(const std::string& fileName)
     m_TextureDepth = 1;
     m_bGenerateMipmaps = false;
 
+
     glActiveTexture(GL_TEXTURE15);
     glBindTexture(m_TextureType, m_GLObj);
     {
         //glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-        //glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		//glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
         glTexImage2D(m_TextureType, 0, GL_RGBA8, m_TextureWidth, m_TextureHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, textureData);
         OGLCheckError();
 
-        glGenerateMipmap(m_TextureType);
-        OGLCheckError();
+		uint32 lastW = m_TextureWidth;
+		uint32 lastH = m_TextureHeight;
+		for (uint32 i = 1; i < 16; i++)
+		{
+			lastW /= 2;
+			lastH /= 2;
+			FIBITMAP* dib2 = FreeImage_Rescale(dib, lastW, lastH, FREE_IMAGE_FILTER::FILTER_BICUBIC);
+
+			BYTE* textureData2 = FreeImage_GetBits(dib2);
+			glTexImage2D(m_TextureType, i, GL_RGBA8, lastW, lastH, 0, GL_RGBA, GL_UNSIGNED_BYTE, textureData2);
+			OGLCheckError();
+
+			FreeImage_Unload(dib2);
+		}
+
+        //glGenerateMipmap(m_TextureType);
+		//OGLCheckError();
     }
     glBindTexture(m_TextureType, 0);
 

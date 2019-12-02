@@ -2,7 +2,7 @@
 
 // Forward BEGIN
 ZN_INTERFACE IRenderDevice;
-class RenderWindow;
+ZN_INTERFACE IRenderWindow;
 class CLoader;
 // Forward END
 
@@ -17,8 +17,8 @@ struct OW_ENGINE_API IApplication
 	virtual std::shared_ptr<IBaseManager>   GetBaseManager() const = 0;
 	virtual std::shared_ptr<IRenderDevice>  GetRenderDevice() const = 0;
 	virtual void                            SetRenderDevice(std::shared_ptr<IRenderDevice> RenderDevice) = 0;
-	virtual std::shared_ptr<RenderWindow>   GetRenderWindow() const = 0;
-	virtual void                            SetRenderWindow(std::shared_ptr<RenderWindow>  RenderDevice) = 0;
+	virtual std::shared_ptr<IRenderWindow>   GetRenderWindow() const = 0;
+	virtual void                            SetRenderWindow(std::shared_ptr<IRenderWindow>  RenderDevice) = 0;
 
     virtual CLoader*                        GetLoader() = 0;
 };

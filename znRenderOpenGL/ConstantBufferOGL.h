@@ -1,6 +1,6 @@
 #pragma once
 
-class ConstantBufferOGL : public ConstantBufferBase
+class ConstantBufferOGL : public IConstantBuffer
 {
 public:
 	ConstantBufferOGL(size_t size);
@@ -8,6 +8,11 @@ public:
 
 	virtual bool Bind(uint32 id, const IShader* shader, IShaderParameter::Type parameterType) const override;
 	virtual void UnBind(uint32 id, const IShader* shader, IShaderParameter::Type parameterType) const override;
+
+	IBuffer::BufferType GetType() const;
+	uint32 GetElementCount() const;
+	uint32 GetElementStride() const;
+	uint32 GetElementOffset() const;
 
 	virtual void Copy(std::shared_ptr<IConstantBuffer> other) override;
 

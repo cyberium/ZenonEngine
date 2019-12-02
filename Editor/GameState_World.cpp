@@ -22,7 +22,7 @@ bool CGameState_World::Init()
 {
     IApplication& app = Application::Get();
     std::shared_ptr<IRenderDevice> renderDevice = app.GetRenderDevice();
-	std::shared_ptr<RenderWindow> renderWindow = app.GetRenderWindow();
+	std::shared_ptr<IRenderWindow> renderWindow = app.GetRenderWindow();
 
     //
     // Camera controller
@@ -59,7 +59,7 @@ void CGameState_World::OnResize(ResizeEventArgs & e)
 
 	IApplication& app = Application::Get();
 	std::shared_ptr<IRenderDevice> renderDevice = app.GetRenderDevice();
-	std::shared_ptr<RenderWindow> renderWindow = app.GetRenderWindow();
+	std::shared_ptr<IRenderWindow> renderWindow = app.GetRenderWindow();
 
     m_3DTechnique.UpdateViewport(renderWindow->GetViewport());
     m_UITechnique.UpdateViewport(renderWindow->GetViewport());
@@ -75,7 +75,7 @@ void CGameState_World::OnRender(RenderEventArgs& e)
 {
 	IApplication& app = Application::Get();
 	std::shared_ptr<IRenderDevice> renderDevice = app.GetRenderDevice();
-	std::shared_ptr<RenderWindow> renderWindow = app.GetRenderWindow();
+	std::shared_ptr<IRenderWindow> renderWindow = app.GetRenderWindow();
 
     e.Camera = GetCameraController()->GetCamera().get();
     Application::Get().GetLoader()->SetCamera(GetCameraController()->GetCamera());
@@ -113,7 +113,7 @@ void CGameState_World::OnRenderUI(RenderEventArgs& e)
 {
 	IApplication& app = Application::Get();
 	std::shared_ptr<IRenderDevice> renderDevice = app.GetRenderDevice();
-	std::shared_ptr<RenderWindow> renderWindow = app.GetRenderWindow();
+	std::shared_ptr<IRenderWindow> renderWindow = app.GetRenderWindow();
 
 	e.Camera = GetCameraController()->GetCamera().get();
 
@@ -128,7 +128,7 @@ void CGameState_World::Load3D()
 {
     IApplication& app = Application::Get();
     std::shared_ptr<IRenderDevice> renderDevice = app.GetRenderDevice();
-    std::shared_ptr<RenderWindow> renderWindow = app.GetRenderWindow();
+    std::shared_ptr<IRenderWindow> renderWindow = app.GetRenderWindow();
     
 	BlendState::BlendMode alphaBlending(true, false, BlendState::BlendFactor::SrcAlpha, BlendState::BlendFactor::OneMinusSrcAlpha, BlendState::BlendOperation::Add, BlendState::BlendFactor::SrcAlpha, BlendState::BlendFactor::OneMinusSrcAlpha);
 	BlendState::BlendMode disableBlending;
@@ -169,7 +169,7 @@ void CGameState_World::LoadUI()
 {
     IApplication& app = Application::Get();
     std::shared_ptr<IRenderDevice> renderDevice = app.GetRenderDevice();
-	std::shared_ptr<RenderWindow> renderWindow = app.GetRenderWindow();
+	std::shared_ptr<IRenderWindow> renderWindow = app.GetRenderWindow();
 
     // Font
     m_CameraPosText = m_UIScene->GetRootNode()->CreateSceneNode<CUITextNode>();

@@ -7,7 +7,6 @@
 #include "LuaCore.h"
 
 // Additional
-#include "BaseManager.h"
 #include <luabind/luabind.hpp>
 
 int Func(lua_State * state)

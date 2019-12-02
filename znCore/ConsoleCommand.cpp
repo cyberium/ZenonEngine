@@ -29,5 +29,5 @@ void ConsoleCommand::Execute()
 
 void ConsoleCommand::Execute(const std::string& _args)
 {
-	fail2("Unable to call ConsoleCommand::Execute(const std::string& _args) in base class!");
+	_ASSERT_EXPR(false, "Unable to call ConsoleCommand::Execute(const std::string& _args) in base class!");
 }

@@ -146,7 +146,7 @@ void CWindowObject::RegisterWindowClass(HINSTANCE HInstance)
 
 	if (RegisterClassEx(&renderWindowClass) == FALSE)
 	{
-		fail2("CWindowObject: Failed to register the render window class.");
+		_ASSERT_EXPR(false, "CWindowObject: Failed to register the render window class.");
 	}
 }
 
@@ -161,7 +161,7 @@ void CWindowObject::UnregisterWindowClass()
 
 	if (UnregisterClass(c_RenderWindow_ClassName, m_HInstance) == FALSE)
 	{
-		fail2("CWindowObject: Failed to unregister render window class");
+		_ASSERT_EXPR(false, "CWindowObject: Failed to unregister render window class");
 	}
 }
 
@@ -197,7 +197,7 @@ HWND CWindowObject::CreateWindowInstance(int nWidth, int nHeight)
 
 	if (m_HWnd == NULL)
 	{
-		fail2("CWindowObject: Failed to create render window.");
+		_ASSERT_EXPR(false, "CWindowObject: Failed to create render window.");
 	}
 
     return m_HWnd;

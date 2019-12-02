@@ -1,4 +1,4 @@
-#include "stdafx.h"
+/*#include "stdafx.h"
 
 // General
 #include "CustomVertexElement.h"
@@ -79,4 +79,4 @@ size_t CustomElementsVertexSize(SCustomVertexElement * elements, size_t Cnt, DWO
 	}
 
 	return size;
-}
+}*/

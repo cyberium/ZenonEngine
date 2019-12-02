@@ -13,29 +13,16 @@ int main(int argumentCount, char* arguments[])
 	//_CrtSetReportMode(_CRT_ERROR, _CRTDBG_MODE_DEBUG);
 #endif
 	{
-		_BaseManager = std::make_shared<CBaseManager>();
+		std::shared_ptr<IBaseManager> BaseManager = std::make_shared<CBaseManager>();
 
-		std::shared_ptr<CSettings> settings = std::make_shared<CSettings>();
-		AddManager<ISettings>(settings);
-		settings->AddDefaults();
-		
+		std::shared_ptr<IznPluginsManager> pluginsManager = std::make_shared<CznPluginsManager>(BaseManager);
+		//pluginsManager->RegisterPlugin("znPlugin.dll");
+		pluginsManager->RegisterPlugin("znEngine.dll");
+		pluginsManager->RegisterPlugin("znRenderDX11.dll");
+		pluginsManager->RegisterPlugin("znRenderOpenGL.dll");
 
-		std::shared_ptr<CLog> log = std::make_shared<CLog>();
-		AddManager<ILog>(log);
-
-		std::shared_ptr<CConsole> console = std::make_shared<CConsole>();
-		AddManager<IConsole>(console);
-		console->AddCommonCommands();
-		
-		std::shared_ptr<IFilesManager> filesManager = std::make_shared<CFilesManager>();
-		AddManager<IFilesManager>(filesManager);
-
-		std::shared_ptr<IFilesStorage> localFilesGamedata = std::make_shared<CLocalFilesStorage>("D:\\_programming\\OpenWoW\\_gamedata\\");
-		filesManager->RegisterFilesStorage(localFilesGamedata);
-
-        HMODULE hModule = GetModuleHandle(NULL);
-        std::shared_ptr<IFilesStorage> libraryFileStorage = std::make_shared<CLibraryResourceFileStotage>(hModule);
-        filesManager->RegisterFilesStorage(libraryFileStorage);
+		GetManager<IFilesManager>(BaseManager)->RegisterFilesStorage(std::make_shared<CLocalFilesStorage>("D:\\_programming\\ZenonEngine\\gamedata\\"));
+		GetManager<IFilesManager>(BaseManager)->RegisterFilesStorage(std::make_shared<CLibraryResourceFileStotage>(GetModuleHandle(NULL)));
 
         HMODULE m_HINSTANCE = ::GetModuleHandle(NULL);
 
@@ -45,13 +32,13 @@ int main(int argumentCount, char* arguments[])
 
 		//--
 
-		Application app(_BaseManager);
+		Application app(BaseManager);
 
-        std::shared_ptr<IRenderDevice> renderDevice = app.CreateRenderDevice(IRenderDevice::DeviceType::DirectX);
-        std::shared_ptr<RenderWindow> renderWindow = app.CreateRenderWindow(windowObject, true);
+        std::shared_ptr<IRenderDevice> renderDevice = app.CreateRenderDevice(RenderDeviceType::RenderDeviceType_DirectX);
+        std::shared_ptr<IRenderWindow> renderWindow = app.CreateRenderWindow(windowObject, true);
 
-        std::shared_ptr<IFontsManager> fontsManager = std::make_shared<FontsManager>();
-        AddManager<IFontsManager>(fontsManager);
+        std::shared_ptr<IFontsManager> fontsManager = std::make_shared<FontsManager>(BaseManager);
+        AddManager<IFontsManager>(BaseManager, fontsManager);
 
 		app.AddGameState(GameStatesNames::GAME_STATE_WORLD, std::make_shared<CGameState_World>(&app));
 		app.SetGameState(GameStatesNames::GAME_STATE_WORLD);

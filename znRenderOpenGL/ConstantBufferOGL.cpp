@@ -75,3 +75,23 @@ void ConstantBufferOGL::UnBind(uint32 id, const IShader* shader, IShaderParamete
 {
 	glBindBufferBase(GL_UNIFORM_BUFFER, id, 0);
 }
+
+IBuffer::BufferType ConstantBufferOGL::GetType() const
+{
+	return BufferType::ConstantBuffer;
+}
+
+uint32 ConstantBufferOGL::GetElementCount() const
+{
+	return 1;
+}
+
+uint32 ConstantBufferOGL::GetElementStride() const
+{
+	return 0;
+}
+
+uint32 ConstantBufferOGL::GetElementOffset() const
+{
+	return 0;
+}

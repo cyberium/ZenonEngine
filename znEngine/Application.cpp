@@ -10,7 +10,7 @@ float g_GameDeltaTime = 0.0f;
 float g_ApplicationTime = 0.0f;
 int64_t g_FrameCounter = 0L;
 
-std::shared_ptr<RenderWindow> gs_WindowHandle = nullptr;
+std::shared_ptr<IRenderWindow> gs_WindowHandle = nullptr;
 IApplication * _ApplicationInstance = nullptr;
 
 Application::Application(std::shared_ptr<IBaseManager> BaseManager)
@@ -73,7 +73,7 @@ std::shared_ptr<IRenderDevice> Application::CreateRenderDevice(RenderDeviceType 
 	return GetRenderDevice();
 }
 
-std::shared_ptr<RenderWindow> Application::CreateRenderWindow(IWindowObject * WindowObject, bool vSync)
+std::shared_ptr<IRenderWindow> Application::CreateRenderWindow(IWindowObject * WindowObject, bool vSync)
 {
 	SetRenderWindow(GetRenderDevice()->CreateRenderWindow(WindowObject, vSync));
 	return GetRenderWindow();
@@ -119,13 +119,15 @@ int Application::DoRun()
 
 		m_pRenderDevice->Lock();
 		{
+			std::shared_ptr<IRenderWindowEvents> renderWindowEvents = std::dynamic_pointer_cast<IRenderWindowEvents>(m_pWindow);
+
 			RenderEventArgs renderArgs(*this, g_GameDeltaTime * 166.0f, g_ApplicationTime * 166.0f, g_FrameCounter, nullptr, nullptr, nullptr);
-			m_pWindow->OnPreRender(renderArgs);
-			m_pWindow->OnRender(renderArgs);
-			m_pWindow->OnPostRender(renderArgs);
+			renderWindowEvents->OnPreRender(renderArgs);
+			renderWindowEvents->OnRender(renderArgs);
+			renderWindowEvents->OnPostRender(renderArgs);
 
 			RenderEventArgs renderUIArgs(*this, g_GameDeltaTime, g_ApplicationTime, g_FrameCounter, nullptr, nullptr, nullptr);
-			m_pWindow->OnRenderUI(renderUIArgs);
+			renderWindowEvents->OnRenderUI(renderUIArgs);
 
 			m_pWindow->Present();
 		}
@@ -157,13 +159,13 @@ void Application::SetRenderDevice(std::shared_ptr<IRenderDevice> _renderDevice)
 	m_pRenderDevice = _renderDevice;
 }
 
-std::shared_ptr<RenderWindow> Application::GetRenderWindow() const
+std::shared_ptr<IRenderWindow> Application::GetRenderWindow() const
 {
 	_ASSERT(m_pWindow);
 	return m_pWindow;
 }
 
-void Application::SetRenderWindow(std::shared_ptr<RenderWindow> _renderWindow)
+void Application::SetRenderWindow(std::shared_ptr<IRenderWindow> _renderWindow)
 {
 	if (m_pWindow != nullptr)
 	{
@@ -179,9 +181,9 @@ void Application::SetRenderWindow(std::shared_ptr<RenderWindow> _renderWindow)
 
 	m_pWindow = _renderWindow;
 
-	InitializeConnection = Initialize.connect(&RenderWindow::OnInitialize, m_pWindow, std::placeholders::_1);
-	UpdateConnection     = Update    .connect(&RenderWindow::OnUpdate,     m_pWindow, std::placeholders::_1);
-	TerminateConnection  = Terminate .connect(&RenderWindow::OnTerminate,  m_pWindow, std::placeholders::_1);
+	InitializeConnection = Initialize.connect(&IRenderWindowEvents::OnInitialize,	std::dynamic_pointer_cast<IRenderWindowEvents>(m_pWindow), std::placeholders::_1);
+	UpdateConnection     = Update    .connect(&IRenderWindowEvents::OnUpdate,		std::dynamic_pointer_cast<IRenderWindowEvents>(m_pWindow), std::placeholders::_1);
+	TerminateConnection  = Terminate .connect(&IRenderWindowEvents::OnTerminate,	std::dynamic_pointer_cast<IRenderWindowEvents>(m_pWindow), std::placeholders::_1);
 	
 	m_pWindow->ShowWindow();
 
@@ -203,7 +205,7 @@ CLoader* Application::GetLoader()
 // IGameStateManager
 //
 
-void Application::AddGameState(GameStatesNames::List _name, std::shared_ptr<IGameState> _gameState)
+void Application::AddGameState(GameStatesNames _name, std::shared_ptr<IGameState> _gameState)
 {
 	_ASSERT(_gameState != nullptr);
 	_ASSERT(m_GameStatesCollection.find(_name) == m_GameStatesCollection.end());
@@ -211,7 +213,7 @@ void Application::AddGameState(GameStatesNames::List _name, std::shared_ptr<IGam
 	m_GameStatesCollection.insert(std::make_pair(_name, _gameState));
 }
 
-bool Application::SetGameState(GameStatesNames::List _name)
+bool Application::SetGameState(GameStatesNames _name)
 {
 	_ASSERT(m_GameStatesCollection.find(_name) != m_GameStatesCollection.end());
 

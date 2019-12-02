@@ -317,14 +317,14 @@ bool TextureDX11::LoadTexture2D(const std::string& fileName)
 	FREE_IMAGE_FORMAT fif = FreeImage_GetFileTypeFromMemory(hmem, f->getSize());
 	if (fif == FIF_UNKNOWN || !FreeImage_FIFSupportsReading(fif))
 	{
-		fail2("Unknow file format: ");
+		_ASSERT_EXPR(false, "Unknow file format: ");
 		return false;
 	}
 
 	FIBITMAP* dib = FreeImage_LoadFromMemory(fif, hmem, f->getSize());
 	if (dib == nullptr || FreeImage_HasPixels(dib) == FALSE)
 	{
-		fail2("Failed to load image: ");
+		_ASSERT_EXPR(false, "Failed to load image: ");
 		return false;
 	}
 
@@ -353,7 +353,7 @@ bool TextureDX11::LoadTexture2D(const std::string& fileName)
 		break;
 		default:
 		{
-			fail2("Unknown image format.");
+			_ASSERT_EXPR(false, "Unknown image format.");
 		}
 		break;
 		}
@@ -380,7 +380,7 @@ bool TextureDX11::LoadTexture2D(const std::string& fileName)
 		break;
 		default:
 		{
-			fail2("Unknown image format.");
+			_ASSERT_EXPR(false, "Unknown image format.");
 		}
 		break;
 		}
@@ -416,7 +416,7 @@ bool TextureDX11::LoadTexture2D(const std::string& fileName)
 		break;
 		default:
 		{
-			fail2("Unknown image format.");
+			_ASSERT_EXPR(false, "Unknown image format.");
 		}
 		break;
 		}
@@ -454,7 +454,7 @@ bool TextureDX11::LoadTexture2D(const std::string& fileName)
 
 	if (FAILED(m_pDevice->CheckFormatSupport(m_TextureResourceFormat, &m_TextureResourceFormatSupport)))
 	{
-		fail2("Failed to query format support.");
+		_ASSERT_EXPR(false, "Failed to query format support.");
 	}
 	if ((m_TextureResourceFormatSupport & D3D11_FORMAT_SUPPORT_TEXTURE2D) == 0)
 	{
@@ -497,7 +497,7 @@ bool TextureDX11::LoadTexture2D(const std::string& fileName)
 
    	if (FAILED(m_pDevice->CreateTexture2D(&textureDesc, m_bGenerateMipmaps ? nullptr : &subresourceData, &m_pTexture2D)))
 	{
-		fail2("Failed to create texture.");
+		_ASSERT_EXPR(false, "Failed to create texture.");
 		return false;
 	}
 
@@ -511,7 +511,7 @@ bool TextureDX11::LoadTexture2D(const std::string& fileName)
 
 	if (FAILED(m_pDevice->CreateShaderResourceView(m_pTexture2D, &resourceViewDesc, &m_pShaderResourceView)))
 	{
-		fail2("Failed to create texture resource view.");
+		_ASSERT_EXPR(false, "Failed to create texture resource view.");
 		return false;
 	}
 

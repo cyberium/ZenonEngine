@@ -631,7 +631,7 @@ void initWGLExtensions()
 		0
 	);
 	if (!dummy_window) 
-		fail2("Failed to create dummy OpenGL window.");
+		_ASSERT_EXPR(false, "Failed to create dummy OpenGL window.");
     {
         HDC dummy_dc = GetDC(dummy_window);
         {
@@ -649,23 +649,23 @@ void initWGLExtensions()
             int pixel_format = ChoosePixelFormat(dummy_dc, &pfd);
             if (!pixel_format)
             {
-                fail2("Failed to find a suitable pixel format.");
+                _ASSERT_EXPR(false, "Failed to find a suitable pixel format.");
             }
 
             if (!SetPixelFormat(dummy_dc, pixel_format, &pfd))
             {
-                fail2("Failed to set the pixel format.");
+                _ASSERT_EXPR(false, "Failed to set the pixel format.");
             }
 
             HGLRC dummy_context = wglCreateContext(dummy_dc);
             {
                 if (!dummy_context)
                 {
-                    fail2("Failed to create a dummy OpenGL rendering context.");
+                    _ASSERT_EXPR(false, "Failed to create a dummy OpenGL rendering context.");
                 }
 
                 if (!wglMakeCurrent(dummy_dc, dummy_context))
-                    fail2("Failed to activate dummy OpenGL rendering context.");
+                    _ASSERT_EXPR(false, "Failed to activate dummy OpenGL rendering context.");
 
                 wglCreateContextAttribsARB = (wglCreateContextAttribsARB_type*)wglGetProcAddress("wglCreateContextAttribsARB");
                 wglChoosePixelFormatARB = (wglChoosePixelFormatARB_type*)wglGetProcAddress("wglChoosePixelFormatARB");
@@ -673,7 +673,7 @@ void initWGLExtensions()
                 Log::Info("Initializing GL4 backend.");
                 if (!initOGLExtensions())
                 {
-                    fail2("Could not find all required OpenGL function entry points");
+                    _ASSERT_EXPR(false, "Could not find all required OpenGL function entry points");
                 }
 
                 wglMakeCurrent(dummy_dc, 0);

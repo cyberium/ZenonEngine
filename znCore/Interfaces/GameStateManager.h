@@ -2,14 +2,11 @@
 
 #include "GameState.h"
 
-struct OW_ENGINE_API GameStatesNames
+enum class OW_ENGINE_API GameStatesNames
 {
-	enum List
-	{
-		GAME_STATE_MENU,
-		GAME_STATE_WORLD,
-		GAME_STATE_CLIENT
-	};
+	GAME_STATE_MENU,
+	GAME_STATE_WORLD,
+	GAME_STATE_CLIENT
 };
 
 // Forward BEGIN
@@ -22,9 +19,9 @@ struct OW_ENGINE_API
 {
 	virtual ~IGameStateManager() = 0 {};
 
-	virtual void AddGameState(GameStatesNames::List _name, std::shared_ptr<IGameState> _gameState) = 0;
+	virtual void AddGameState(GameStatesNames _name, std::shared_ptr<IGameState> _gameState) = 0;
 
-	virtual bool SetGameState(GameStatesNames::List _name) = 0;
+	virtual bool SetGameState(GameStatesNames _name) = 0;
 	virtual bool SetGameState(std::shared_ptr<IGameState> _newGameState) = 0;
 
 	virtual std::shared_ptr<IGameState> GetGameState() = 0;

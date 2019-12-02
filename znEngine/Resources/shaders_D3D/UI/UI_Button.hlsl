@@ -20,7 +20,6 @@ sampler   DiffuseTextureSampler  : register(s0);
 
 float4 PS_main(VertexShaderOutput IN) : SV_TARGET
 {
-	
 	if (State == BUTTON_STATE_IDLE)
 	{
 		return IdleTexture.Sample(DiffuseTextureSampler, IN.texCoord) * Color;

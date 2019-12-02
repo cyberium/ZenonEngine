@@ -28,7 +28,7 @@ void SamplerStateOGL::Bind(uint32_t ID, const IShader* shader, IShaderParameter:
 {
 	if (m_bIsDirty)
 	{
-        glBindSampler(ID, m_GLObj);
+        //glBindSampler(ID, m_GLObj);
 
 		glSamplerParameteri(m_GLObj, GL_TEXTURE_MIN_FILTER, GLTranslateMinFilter(m_MinFilter));
 		//glSamplerParameteri(m_GLObj, GL_TEXTURE_MIN_FILTER, GLTranslateMinMipFilter(m_MinFilter, m_MipFilter));
@@ -46,7 +46,7 @@ void SamplerStateOGL::Bind(uint32_t ID, const IShader* shader, IShaderParameter:
 		glSamplerParameteri(m_GLObj, GL_TEXTURE_WRAP_T, GLTranslateWrapMode(m_WrapModeV));
 		glSamplerParameteri(m_GLObj, GL_TEXTURE_WRAP_R, GLTranslateWrapMode(m_WrapModeW));
 
-		if (m_CompareMode != CompareMode::None)
+		/*if (m_CompareMode != CompareMode::None)
 		{
 			glSamplerParameteri(m_GLObj, GL_TEXTURE_COMPARE_MODE, GLTranslateCompareMode(m_CompareMode));
 			glSamplerParameteri(m_GLObj, GL_TEXTURE_COMPARE_FUNC, GLTranslateCompareFunction(m_CompareFunc));
@@ -54,9 +54,9 @@ void SamplerStateOGL::Bind(uint32_t ID, const IShader* shader, IShaderParameter:
 		else
 		{
 			glSamplerParameteri(m_GLObj, GL_TEXTURE_COMPARE_MODE, GL_NONE);
-		}
+		}*/
 
-        glBindSampler(ID, 0);
+        //glBindSampler(ID, 0);
 
 		m_bIsDirty = false;
 	}
@@ -116,7 +116,7 @@ GLenum GLTranslateMagFilter(SamplerStateOGL::MagFilter _magFilter)
     {
         return GL_LINEAR;
     }
-    else if (_magFilter == SamplerStateOGL::MagFilter::MagLinear)
+    else if (_magFilter == SamplerStateOGL::MagFilter::MagNearest)
     {
         return GL_NEAREST;
     }

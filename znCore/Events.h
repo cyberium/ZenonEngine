@@ -5,6 +5,11 @@
 #include "Object.h"
 #include "KeyCodes.h"
 
+// FORWARD BEGIN
+ZN_INTERFACE IPipelineState;
+class Camera;
+// FORWARD END
+
 template<class ArgumentType>
 class Delegate
 {
@@ -57,7 +62,6 @@ private:
 };
 
 
-
 class OW_ENGINE_API EventArgs
 {
 public:
@@ -69,7 +73,7 @@ public:
 	const Object& Caller;
 };
 typedef Delegate<EventArgs> Event;
-typedef Delegate<EventArgs>::FunctionDecl EventConnection;
+
 
 class OW_ENGINE_API WindowCloseEventArgs : EventArgs
 {
@@ -88,7 +92,7 @@ public:
 	bool ConfirmClose;
 };
 typedef Delegate<WindowCloseEventArgs> WindowCloseEvent;
-typedef Delegate<WindowCloseEventArgs>::FunctionDecl WindowCloseConnection;
+
 
 class OW_ENGINE_API KeyEventArgs : public EventArgs
 {
@@ -118,7 +122,6 @@ public:
 	bool            Alt;    // Is the Alt modifier pressed
 };
 typedef Delegate<KeyEventArgs> KeyboardEvent;
-typedef Delegate<KeyEventArgs>::FunctionDecl KeyboardConnection;
 
 
 class OW_ENGINE_API MouseMotionEventArgs : public EventArgs
@@ -150,7 +153,6 @@ public:
 	glm::vec2 GetPoint() const { return glm::vec2(X, Y); }
 };
 typedef Delegate<MouseMotionEventArgs> MouseMotionEvent;
-typedef Delegate<MouseMotionEventArgs>::FunctionDecl MouseMotionConnection;
 
 
 class OW_ENGINE_API MouseButtonEventArgs : public EventArgs
@@ -197,7 +199,6 @@ public:
 	glm::vec2 GetPoint() const { return glm::vec2(X, Y); }
 };
 typedef Delegate<MouseButtonEventArgs> MouseButtonEvent;
-typedef Delegate<MouseButtonEventArgs>::FunctionDecl MouseButtonConnection;
 
 
 class OW_ENGINE_API MouseWheelEventArgs : public EventArgs
@@ -230,7 +231,6 @@ public:
 
 };
 typedef Delegate<MouseWheelEventArgs> MouseWheelEvent;
-typedef Delegate<MouseWheelEventArgs>::FunctionDecl MouseWheelConnection;
 
 
 class OW_ENGINE_API ResizeEventArgs : public EventArgs
@@ -249,6 +249,64 @@ public:
 typedef Delegate<ResizeEventArgs> ResizeEvent;
 
 
+class OW_ENGINE_API UpdateEventArgs : public EventArgs
+{
+	typedef EventArgs base;
+public:
+	UpdateEventArgs
+	(
+		const Object& caller,
+		float DeltaTime,
+		float TotalTime,
+		uint64_t FrameCounter
+	)
+		: base(caller)
+		, ElapsedTime(DeltaTime)
+		, TotalTime(TotalTime)
+		, FrameCounter(FrameCounter)
+	{}
+
+	float                                           ElapsedTime;
+	float                                           TotalTime;
+	int64_t                                         FrameCounter;
+};
+typedef Delegate<UpdateEventArgs> UpdateEvent;
+
+
+class OW_ENGINE_API RenderEventArgs : public EventArgs
+{
+	typedef EventArgs base;
+public:
+	RenderEventArgs
+	(
+		const Object& Caller,
+		float DeltaTime,
+		float TotalTime,
+		uint64_t FrameCounter,
+		const Camera* Camera,
+		const IPipelineState* PipelineState,
+		const Object* Node
+	)
+		: base(Caller)
+		, ElapsedTime(DeltaTime)
+		, TotalTime(TotalTime)
+		, FrameCounter(FrameCounter)
+
+		, Camera(Camera)
+		, PipelineState(PipelineState)
+		, Node(Node)
+	{}
+
+	float                                           ElapsedTime;
+	float                                           TotalTime;
+	int64_t                                         FrameCounter;
+
+	const Camera*                                   Camera;
+	const IPipelineState*                           PipelineState;
+	const Object*                                   Node;
+};
+typedef Delegate<RenderEventArgs> RenderEvent;
+
 
 class OW_ENGINE_API UserEventArgs : public EventArgs
 {
@@ -266,4 +324,3 @@ public:
 	void*   Data2;
 };
 typedef Delegate<UserEventArgs> UserEvent;
-typedef Delegate<UserEventArgs>::FunctionDecl UserConnection;

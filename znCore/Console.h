@@ -20,6 +20,6 @@ private:
 	std::shared_ptr<IBaseManager> m_BaseManager;
 	ConsoleCommands m_ConsoleCommands;
 
-private: // static/const
+private:
 	const unsigned consoleCommandHelpMaxSize = 7;
 };

@@ -4,6 +4,7 @@
 ZN_INTERFACE IBuffer;
 ZN_INTERFACE IMaterial;
 ZN_INTERFACE IConstantBuffer;
+class RenderEventArgs;
 // FORWARD END
 
 ZN_INTERFACE OW_ENGINE_API IMesh : public std::enable_shared_from_this<IMesh>

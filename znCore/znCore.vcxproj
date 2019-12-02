@@ -19,342 +19,6 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\Externals\luabind-deboostified\src\class.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="..\Externals\luabind-deboostified\src\class_info.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="..\Externals\luabind-deboostified\src\class_registry.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="..\Externals\luabind-deboostified\src\class_rep.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="..\Externals\luabind-deboostified\src\create_class.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="..\Externals\luabind-deboostified\src\error.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="..\Externals\luabind-deboostified\src\exception_handler.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="..\Externals\luabind-deboostified\src\function.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="..\Externals\luabind-deboostified\src\function_introspection.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="..\Externals\luabind-deboostified\src\headertest.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="..\Externals\luabind-deboostified\src\inheritance.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="..\Externals\luabind-deboostified\src\link_compatibility.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="..\Externals\luabind-deboostified\src\object_rep.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="..\Externals\luabind-deboostified\src\open.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="..\Externals\luabind-deboostified\src\operator.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="..\Externals\luabind-deboostified\src\pcall.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="..\Externals\luabind-deboostified\src\scope.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="..\Externals\luabind-deboostified\src\set_package_preload.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="..\Externals\luabind-deboostified\src\stack_content_by_name.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="..\Externals\luabind-deboostified\src\weak_ref.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="..\Externals\luabind-deboostified\src\wrapper_base.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="..\Externals\lua\lapi.c">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="..\Externals\lua\lauxlib.c">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="..\Externals\lua\lbaselib.c">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="..\Externals\lua\lbitlib.c">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="..\Externals\lua\lcode.c">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="..\Externals\lua\lcorolib.c">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="..\Externals\lua\lctype.c">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="..\Externals\lua\ldblib.c">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="..\Externals\lua\ldebug.c">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="..\Externals\lua\ldo.c">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="..\Externals\lua\ldump.c">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="..\Externals\lua\lfunc.c">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="..\Externals\lua\lgc.c">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="..\Externals\lua\linit.c">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="..\Externals\lua\liolib.c">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="..\Externals\lua\llex.c">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="..\Externals\lua\lmathlib.c">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="..\Externals\lua\lmem.c">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="..\Externals\lua\loadlib.c">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="..\Externals\lua\lobject.c">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="..\Externals\lua\lopcodes.c">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="..\Externals\lua\loslib.c">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="..\Externals\lua\lparser.c">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="..\Externals\lua\lstate.c">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="..\Externals\lua\lstring.c">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="..\Externals\lua\lstrlib.c">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="..\Externals\lua\ltable.c">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="..\Externals\lua\ltablib.c">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="..\Externals\lua\ltm.c">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="..\Externals\lua\lua.c">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="..\Externals\lua\luac.c">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="..\Externals\lua\lundump.c">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="..\Externals\lua\lutf8lib.c">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="..\Externals\lua\lvm.c">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="..\Externals\lua\lzio.c">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
     <ClCompile Include="BaseManager.cpp" />
     <ClCompile Include="BoundingBox.cpp" />
     <ClCompile Include="BoundingRect.cpp" />
@@ -377,7 +41,6 @@
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="RefManager1DimAssync.cpp" />
     <ClCompile Include="Resource.cpp" />
-    <ClCompile Include="ScriptEngine\LuaCore.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -389,123 +52,6 @@
     <ClCompile Include="UtilsConvert.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\Externals\luabind-deboostified\luabind\adopt_policy.hpp" />
-    <ClInclude Include="..\Externals\luabind-deboostified\luabind\back_reference.hpp" />
-    <ClInclude Include="..\Externals\luabind-deboostified\luabind\back_reference_fwd.hpp" />
-    <ClInclude Include="..\Externals\luabind-deboostified\luabind\class.hpp" />
-    <ClInclude Include="..\Externals\luabind-deboostified\luabind\class_info.hpp" />
-    <ClInclude Include="..\Externals\luabind-deboostified\luabind\config.hpp" />
-    <ClInclude Include="..\Externals\luabind-deboostified\luabind\container_policy.hpp" />
-    <ClInclude Include="..\Externals\luabind-deboostified\luabind\copy_policy.hpp" />
-    <ClInclude Include="..\Externals\luabind-deboostified\luabind\dependency_policy.hpp" />
-    <ClInclude Include="..\Externals\luabind-deboostified\luabind\detail\call.hpp" />
-    <ClInclude Include="..\Externals\luabind-deboostified\luabind\detail\call_function.hpp" />
-    <ClInclude Include="..\Externals\luabind-deboostified\luabind\detail\call_member.hpp" />
-    <ClInclude Include="..\Externals\luabind-deboostified\luabind\detail\call_shared.hpp" />
-    <ClInclude Include="..\Externals\luabind-deboostified\luabind\detail\call_traits.hpp" />
-    <ClInclude Include="..\Externals\luabind-deboostified\luabind\detail\class_registry.hpp" />
-    <ClInclude Include="..\Externals\luabind-deboostified\luabind\detail\class_rep.hpp" />
-    <ClInclude Include="..\Externals\luabind-deboostified\luabind\detail\constructor.hpp" />
-    <ClInclude Include="..\Externals\luabind-deboostified\luabind\detail\conversion_policies\conversion_base.hpp" />
-    <ClInclude Include="..\Externals\luabind-deboostified\luabind\detail\conversion_policies\conversion_policies.hpp" />
-    <ClInclude Include="..\Externals\luabind-deboostified\luabind\detail\conversion_policies\enum_converter.hpp" />
-    <ClInclude Include="..\Externals\luabind-deboostified\luabind\detail\conversion_policies\function_converter.hpp" />
-    <ClInclude Include="..\Externals\luabind-deboostified\luabind\detail\conversion_policies\lua_proxy_converter.hpp" />
-    <ClInclude Include="..\Externals\luabind-deboostified\luabind\detail\conversion_policies\native_converter.hpp" />
-    <ClInclude Include="..\Externals\luabind-deboostified\luabind\detail\conversion_policies\pointer_converter.hpp" />
-    <ClInclude Include="..\Externals\luabind-deboostified\luabind\detail\conversion_policies\reference_converter.hpp" />
-    <ClInclude Include="..\Externals\luabind-deboostified\luabind\detail\conversion_policies\value_converter.hpp" />
-    <ClInclude Include="..\Externals\luabind-deboostified\luabind\detail\conversion_storage.hpp" />
-    <ClInclude Include="..\Externals\luabind-deboostified\luabind\detail\crtp_iterator.hpp" />
-    <ClInclude Include="..\Externals\luabind-deboostified\luabind\detail\debug.hpp" />
-    <ClInclude Include="..\Externals\luabind-deboostified\luabind\detail\decorate_type.hpp" />
-    <ClInclude Include="..\Externals\luabind-deboostified\luabind\detail\deduce_signature.hpp" />
-    <ClInclude Include="..\Externals\luabind-deboostified\luabind\detail\enum_maker.hpp" />
-    <ClInclude Include="..\Externals\luabind-deboostified\luabind\detail\format_signature.hpp" />
-    <ClInclude Include="..\Externals\luabind-deboostified\luabind\detail\garbage_collector.hpp" />
-    <ClInclude Include="..\Externals\luabind-deboostified\luabind\detail\inheritance.hpp" />
-    <ClInclude Include="..\Externals\luabind-deboostified\luabind\detail\instance_holder.hpp" />
-    <ClInclude Include="..\Externals\luabind-deboostified\luabind\detail\link_compatibility.hpp" />
-    <ClInclude Include="..\Externals\luabind-deboostified\luabind\detail\make_instance.hpp" />
-    <ClInclude Include="..\Externals\luabind-deboostified\luabind\detail\meta.hpp" />
-    <ClInclude Include="..\Externals\luabind-deboostified\luabind\detail\object.hpp" />
-    <ClInclude Include="..\Externals\luabind-deboostified\luabind\detail\object_rep.hpp" />
-    <ClInclude Include="..\Externals\luabind-deboostified\luabind\detail\open.hpp" />
-    <ClInclude Include="..\Externals\luabind-deboostified\luabind\detail\operator_id.hpp" />
-    <ClInclude Include="..\Externals\luabind-deboostified\luabind\detail\other.hpp" />
-    <ClInclude Include="..\Externals\luabind-deboostified\luabind\detail\pcall.hpp" />
-    <ClInclude Include="..\Externals\luabind-deboostified\luabind\detail\policy.hpp" />
-    <ClInclude Include="..\Externals\luabind-deboostified\luabind\detail\primitives.hpp" />
-    <ClInclude Include="..\Externals\luabind-deboostified\luabind\detail\property.hpp" />
-    <ClInclude Include="..\Externals\luabind-deboostified\luabind\detail\push_to_lua.hpp" />
-    <ClInclude Include="..\Externals\luabind-deboostified\luabind\detail\ref.hpp" />
-    <ClInclude Include="..\Externals\luabind-deboostified\luabind\detail\signature_match.hpp" />
-    <ClInclude Include="..\Externals\luabind-deboostified\luabind\detail\stack_utils.hpp" />
-    <ClInclude Include="..\Externals\luabind-deboostified\luabind\detail\type_traits.hpp" />
-    <ClInclude Include="..\Externals\luabind-deboostified\luabind\discard_result_policy.hpp" />
-    <ClInclude Include="..\Externals\luabind-deboostified\luabind\error.hpp" />
-    <ClInclude Include="..\Externals\luabind-deboostified\luabind\error_callback_fun.hpp" />
-    <ClInclude Include="..\Externals\luabind-deboostified\luabind\exception_handler.hpp" />
-    <ClInclude Include="..\Externals\luabind-deboostified\luabind\from_stack.hpp" />
-    <ClInclude Include="..\Externals\luabind-deboostified\luabind\function.hpp" />
-    <ClInclude Include="..\Externals\luabind-deboostified\luabind\function_introspection.hpp" />
-    <ClInclude Include="..\Externals\luabind-deboostified\luabind\get_main_thread.hpp" />
-    <ClInclude Include="..\Externals\luabind-deboostified\luabind\handle.hpp" />
-    <ClInclude Include="..\Externals\luabind-deboostified\luabind\iterator_policy.hpp" />
-    <ClInclude Include="..\Externals\luabind-deboostified\luabind\luabind.hpp" />
-    <ClInclude Include="..\Externals\luabind-deboostified\luabind\lua_argument_proxy.hpp" />
-    <ClInclude Include="..\Externals\luabind-deboostified\luabind\lua_include.hpp" />
-    <ClInclude Include="..\Externals\luabind-deboostified\luabind\lua_index_proxy.hpp" />
-    <ClInclude Include="..\Externals\luabind-deboostified\luabind\lua_iterator_proxy.hpp" />
-    <ClInclude Include="..\Externals\luabind-deboostified\luabind\lua_proxy.hpp" />
-    <ClInclude Include="..\Externals\luabind-deboostified\luabind\lua_proxy_interface.hpp" />
-    <ClInclude Include="..\Externals\luabind-deboostified\luabind\lua_state_fwd.hpp" />
-    <ClInclude Include="..\Externals\luabind-deboostified\luabind\make_function.hpp" />
-    <ClInclude Include="..\Externals\luabind-deboostified\luabind\nil.hpp" />
-    <ClInclude Include="..\Externals\luabind-deboostified\luabind\no_dependency.hpp" />
-    <ClInclude Include="..\Externals\luabind-deboostified\luabind\object.hpp" />
-    <ClInclude Include="..\Externals\luabind-deboostified\luabind\open.hpp" />
-    <ClInclude Include="..\Externals\luabind-deboostified\luabind\operator.hpp" />
-    <ClInclude Include="..\Externals\luabind-deboostified\luabind\out_value_policy.hpp" />
-    <ClInclude Include="..\Externals\luabind-deboostified\luabind\pointer_traits.hpp" />
-    <ClInclude Include="..\Externals\luabind-deboostified\luabind\prefix.hpp" />
-    <ClInclude Include="..\Externals\luabind-deboostified\luabind\raw_policy.hpp" />
-    <ClInclude Include="..\Externals\luabind-deboostified\luabind\return_reference_to_policy.hpp" />
-    <ClInclude Include="..\Externals\luabind-deboostified\luabind\scope.hpp" />
-    <ClInclude Include="..\Externals\luabind-deboostified\luabind\set_package_preload.hpp" />
-    <ClInclude Include="..\Externals\luabind-deboostified\luabind\shared_ptr_converter.hpp" />
-    <ClInclude Include="..\Externals\luabind-deboostified\luabind\tag_function.hpp" />
-    <ClInclude Include="..\Externals\luabind-deboostified\luabind\typeid.hpp" />
-    <ClInclude Include="..\Externals\luabind-deboostified\luabind\version.hpp" />
-    <ClInclude Include="..\Externals\luabind-deboostified\luabind\weak_ref.hpp" />
-    <ClInclude Include="..\Externals\luabind-deboostified\luabind\wrapper_base.hpp" />
-    <ClInclude Include="..\Externals\luabind-deboostified\luabind\yield_policy.hpp" />
-    <ClInclude Include="..\Externals\lua\lapi.h" />
-    <ClInclude Include="..\Externals\lua\lauxlib.h" />
-    <ClInclude Include="..\Externals\lua\lcode.h" />
-    <ClInclude Include="..\Externals\lua\lctype.h" />
-    <ClInclude Include="..\Externals\lua\ldebug.h" />
-    <ClInclude Include="..\Externals\lua\ldo.h" />
-    <ClInclude Include="..\Externals\lua\lfunc.h" />
-    <ClInclude Include="..\Externals\lua\lgc.h" />
-    <ClInclude Include="..\Externals\lua\llex.h" />
-    <ClInclude Include="..\Externals\lua\llimits.h" />
-    <ClInclude Include="..\Externals\lua\lmem.h" />
-    <ClInclude Include="..\Externals\lua\lobject.h" />
-    <ClInclude Include="..\Externals\lua\lopcodes.h" />
-    <ClInclude Include="..\Externals\lua\lparser.h" />
-    <ClInclude Include="..\Externals\lua\lprefix.h" />
-    <ClInclude Include="..\Externals\lua\lstate.h" />
-    <ClInclude Include="..\Externals\lua\lstring.h" />
-    <ClInclude Include="..\Externals\lua\ltable.h" />
-    <ClInclude Include="..\Externals\lua\ltm.h" />
-    <ClInclude Include="..\Externals\lua\lua.h" />
-    <ClInclude Include="..\Externals\lua\lua.hpp" />
-    <ClInclude Include="..\Externals\lua\luaconf.h" />
-    <ClInclude Include="..\Externals\lua\lualib.h" />
-    <ClInclude Include="..\Externals\lua\lundump.h" />
-    <ClInclude Include="..\Externals\lua\lvm.h" />
-    <ClInclude Include="..\Externals\lua\lzio.h" />
     <ClInclude Include="..\shared\znCore.h" />
     <ClInclude Include="BaseManager.h" />
     <ClInclude Include="BoundingBox.h" />
@@ -517,7 +63,6 @@
     <ClInclude Include="HighResolutionTimer.h" />
     <ClInclude Include="Interfaces\Application.h" />
     <ClInclude Include="Interfaces\BaseManager.h" />
-    <ClInclude Include="Interfaces\Camera.h" />
     <ClInclude Include="Interfaces\CameraController.h" />
     <ClInclude Include="Interfaces\common.h" />
     <ClInclude Include="Interfaces\Console.h" />
@@ -529,8 +74,32 @@
     <ClInclude Include="Interfaces\Log.h" />
     <ClInclude Include="Interfaces\Networking.h" />
     <ClInclude Include="Interfaces\Plugins.h" />
-    <ClInclude Include="Interfaces\Render.h" />
-    <ClInclude Include="Interfaces\RenderPass.h" />
+    <ClInclude Include="Interfaces\Render\IBlendState.h" />
+    <ClInclude Include="Interfaces\Render\IBuffer.h" />
+    <ClInclude Include="Interfaces\Render\ICamera.h" />
+    <ClInclude Include="Interfaces\Render\IDepthStencilState.h" />
+    <ClInclude Include="Interfaces\Render\IMaterial.h" />
+    <ClInclude Include="Interfaces\Render\IMesh.h" />
+    <ClInclude Include="Interfaces\Render\IPipelineState.h" />
+    <ClInclude Include="Interfaces\Render\IQuery.h" />
+    <ClInclude Include="Interfaces\Render\IRasterizerState.h" />
+    <ClInclude Include="Interfaces\Render\IRender.h" />
+    <ClInclude Include="Interfaces\Render\IRenderDevice.h" />
+    <ClInclude Include="Interfaces\Render\IRenderPass.h" />
+    <ClInclude Include="Interfaces\Render\IRenderTarget.h" />
+    <ClInclude Include="Interfaces\Render\IRenderWindow.h" />
+    <ClInclude Include="Interfaces\Render\ISamplerState.h" />
+    <ClInclude Include="Interfaces\Render\IShader.h" />
+    <ClInclude Include="Interfaces\Render\IShaderInputLayout.h" />
+    <ClInclude Include="Interfaces\Render\IShaderParameter.h" />
+    <ClInclude Include="Interfaces\Render\ITexture.h" />
+    <ClInclude Include="Interfaces\Render\Types\BufferBinding.h" />
+    <ClInclude Include="Interfaces\Render\Types\ClearFlags.h" />
+    <ClInclude Include="Interfaces\Render\Types\CPUAccess.h" />
+    <ClInclude Include="Interfaces\Render\Types\CustomVertexElement.h" />
+    <ClInclude Include="Interfaces\Render\Types\InputSemantic.h" />
+    <ClInclude Include="Interfaces\Render\Types\PrimitiveTopology.h" />
+    <ClInclude Include="Interfaces\Render\Types\Viewport.h" />
     <ClInclude Include="Interfaces\Scene.h" />
     <ClInclude Include="Interfaces\SceneNodeProvider.h" />
     <ClInclude Include="Interfaces\Settings.h" />
@@ -565,7 +134,6 @@
     <ClInclude Include="RefManager1DimAssync.h" />
     <ClInclude Include="RefManager2Dim.h" />
     <ClInclude Include="Resource.h" />
-    <ClInclude Include="ScriptEngine\LuaCore.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="Utils.h" />
@@ -654,7 +222,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;OW_ENGINE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>false</SDLCheck>
-      <AdditionalIncludeDirectories>..\shared;..\Externals;..\Externals\lua;..\Externals\luabind-deboostified;..\znCore;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\shared;..\Externals;..\znCore;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatSpecificWarningsAsErrors>
       </TreatSpecificWarningsAsErrors>
       <DisableSpecificWarnings>4244;4267;4251</DisableSpecificWarnings>
@@ -668,7 +236,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;OW_ENGINE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>false</SDLCheck>
-      <AdditionalIncludeDirectories>..\shared;..\Externals;..\Externals\lua;..\Externals\luabind-deboostified;..\znCore;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\shared;..\Externals;..\znCore;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatSpecificWarningsAsErrors>
       </TreatSpecificWarningsAsErrors>
       <DisableSpecificWarnings>4244;4267;4251</DisableSpecificWarnings>
@@ -684,7 +252,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;OW_ENGINE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>false</SDLCheck>
-      <AdditionalIncludeDirectories>..\shared;..\Externals;..\Externals\lua;..\Externals\luabind-deboostified;..\znCore;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\shared;..\Externals;..\znCore;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <TreatSpecificWarningsAsErrors>
@@ -702,7 +270,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;OW_ENGINE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>false</SDLCheck>
-      <AdditionalIncludeDirectories>..\shared;..\Externals;..\Externals\lua;..\Externals\luabind-deboostified;..\znCore;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\shared;..\Externals;..\znCore;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <TreatSpecificWarningsAsErrors>

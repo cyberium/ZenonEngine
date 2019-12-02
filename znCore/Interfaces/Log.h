@@ -11,6 +11,6 @@ struct OW_ENGINE_API
 {
 	virtual ~ILog() {}
 
-	virtual bool AddDebugOutput(std::shared_ptr<IDebugOutput> _debugOutput) = 0;
-	virtual bool DeleteDebugOutput(std::shared_ptr<IDebugOutput> _debugOutput) = 0;
+	virtual bool AddDebugOutput(std::shared_ptr<IDebugOutput> DebugOutput) = 0;
+	virtual bool DeleteDebugOutput(std::shared_ptr<IDebugOutput> DebugOutput) = 0;
 };

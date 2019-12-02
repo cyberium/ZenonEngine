@@ -8,7 +8,7 @@ static DXGI_RATIONAL QueryRefreshRate(UINT screenWidth, UINT screenHeight, BOOL 
 // FORWARD END
 
 RenderWindowDX11::RenderWindowDX11(std::shared_ptr<IRenderDevice> RenderDevice, IWindowObject * WindowObject, bool vSync)
-	: RenderWindow(RenderDevice, WindowObject, vSync)
+	: RenderWindowBase(RenderDevice, WindowObject, vSync)
 
     , m_pDevice(nullptr)
 	, m_pDeviceContext(nullptr)
@@ -75,7 +75,7 @@ void RenderWindowDX11::Present()
 //
 void RenderWindowDX11::CreateSwapChain()
 {
-    base::CreateSwapChain();
+    RenderWindowBase::CreateSwapChain();
 
     UINT windowWidth = GetWindowWidth();
     UINT windowHeight = GetWindowHeight();

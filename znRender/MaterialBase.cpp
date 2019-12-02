@@ -5,7 +5,7 @@
 
 MaterialBase::MaterialBase(std::weak_ptr<IRenderDevice> RenderDevice, size_t Size)
 	: m_RenderDevice(RenderDevice)
-	, m_Dirty(false)
+	, m_Dirty(true)
 {
 	if (Size > 0)
 	{

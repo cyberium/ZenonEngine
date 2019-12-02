@@ -41,6 +41,9 @@
     <ClCompile Include="znRenderOpenGL.cpp">
       <Filter>Common</Filter>
     </ClCompile>
+    <ClCompile Include="CustomElement_To_OpenGL.cpp">
+      <Filter>Converters</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -87,6 +90,9 @@
     <ClInclude Include="..\shared\znRenderOpenGL.h">
       <Filter>Common</Filter>
     </ClInclude>
+    <ClInclude Include="CustomElement_To_OpenGL.h">
+      <Filter>Converters</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Common">
@@ -100,6 +106,9 @@
     </Filter>
     <Filter Include="Pipeline">
       <UniqueIdentifier>{13b6b0a2-2c19-4017-9a18-c980bc74db19}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Converters">
+      <UniqueIdentifier>{a9f17ba5-2ed7-4d5c-8691-460ded8c16b2}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

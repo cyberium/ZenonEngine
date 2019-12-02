@@ -103,6 +103,9 @@
     <Filter Include="Managers\Plugins">
       <UniqueIdentifier>{a4f901a5-b7b6-41b2-8f70-04e6c739b77e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resources\Shaders_OGL\3D">
+      <UniqueIdentifier>{490800e0-8036-4348-b1ba-299b0b1a2c23}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -646,6 +649,18 @@
     </None>
     <None Include="SceneFunctional\UI\SceneNodeUI.inl">
       <Filter>Scene Funcitonal\UI</Filter>
+    </None>
+    <None Include="Resources\shaders_OGL\3D\Debug.ps">
+      <Filter>Resources\Shaders_OGL\3D</Filter>
+    </None>
+    <None Include="Resources\shaders_OGL\3D\Debug.vs">
+      <Filter>Resources\Shaders_OGL\3D</Filter>
+    </None>
+    <None Include="Resources\shaders_OGL\3D\Textured.ps">
+      <Filter>Resources\Shaders_OGL\3D</Filter>
+    </None>
+    <None Include="Resources\shaders_OGL\3D\Textured.vs">
+      <Filter>Resources\Shaders_OGL\3D</Filter>
     </None>
   </ItemGroup>
 </Project>

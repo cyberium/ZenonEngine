@@ -71,34 +71,6 @@ inline bool getBitL2H(uint8* data, uint32 bit)
     return ((data[bit / 8]) & mask) == mask;
 }
 
-static inline void SwitchBool(bool& _value)
-{
-	_value = !_value;
-}
-
-
-static vec3 rotateV(cvec3 v, float theta)
-{
-	float cs = cosf(theta);
-	float sn = sinf(theta);
-
-	float X = v.x * cs - v.z * sn;
-	float Z = v.x * sn + v.z * cs;
-
-	vec3 neW = vec3(X, v.y, Z);
-
-	return neW;
-}
-
-
-inline int iFloor(float x)
-{
-	return (int)floor(x);
-}
-
-
-
-
 template<typename T>
 inline void SafeDelete(T& ptr)
 {

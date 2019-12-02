@@ -234,6 +234,18 @@
     <Text Include="Resources\shaders_OGL\UI\UI_Font.vs">
       <FileType>Document</FileType>
     </Text>
+    <Text Include="Resources\shaders_OGL\3D\Debug.ps">
+      <FileType>Document</FileType>
+    </Text>
+    <Text Include="Resources\shaders_OGL\3D\Debug.vs">
+      <FileType>Document</FileType>
+    </Text>
+    <Text Include="Resources\shaders_OGL\3D\Textured.ps">
+      <FileType>Document</FileType>
+    </Text>
+    <Text Include="Resources\shaders_OGL\3D\Textured.vs">
+      <FileType>Document</FileType>
+    </Text>
     <None Include="SceneFunctional\3D\SceneNode3D.inl" />
     <None Include="SceneFunctional\Base\ComponentBase.inl" />
     <None Include="SceneFunctional\Base\Scene.inl" />

@@ -45,7 +45,7 @@ void CCameraControllerBase::OnResize(ResizeEventArgs& e)
 {
 	IApplication& app = Application::Get();
 	std::shared_ptr<IRenderDevice> renderDevice = app.GetRenderDevice();
-	std::shared_ptr<RenderWindow> renderWindow = app.GetRenderWindow();
+	std::shared_ptr<IRenderWindow> renderWindow = app.GetRenderWindow();
 
 	m_Camera->SetViewport(renderWindow->GetViewport());
 	m_Camera->SetProjectionRH(45.0f, static_cast<float>(e.Width) / static_cast<float>(e.Height), 0.5f, 4000.0f);

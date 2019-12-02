@@ -13,6 +13,7 @@ public:
 
 	// ShaderInputLayoutOGL
 	bool                                            LoadFromReflector(GLuint GLObj);
+	bool                                            LoadFromCustomElements(GLuint GLObj, const std::vector<SCustomVertexElement>& CustomElements);
 
 private:
 };

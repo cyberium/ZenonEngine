@@ -9,13 +9,9 @@ public:
 	virtual bool Bind(uint32 id, const IShader* shader, IShaderParameter::Type parameterType) const override;
 	virtual void UnBind(uint32 id, const IShader* shader, IShaderParameter::Type parameterType) const override;
 
-	// Is this an index buffer or an attribute/vertex buffer?
 	virtual BufferType GetType() const;
-	// How many elements does this buffer contain?
 	virtual uint32 GetElementCount() const;
-	// Elements stride
 	virtual uint32 GetElementStride() const;
-    // Elements stride
     virtual uint32 GetElementOffset() const;
 
 	virtual void Copy(std::shared_ptr<IStructuredBuffer> other);

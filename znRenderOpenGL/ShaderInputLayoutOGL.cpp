@@ -3,6 +3,8 @@
 // General
 #include "ShaderInputLayoutOGL.h"
 
+// Additonal
+#include "CustomElement_To_OpenGL.h"
 
 static InputSemantic gs_InvalidShaderSemantic;
 
@@ -85,6 +87,19 @@ bool ShaderInputLayoutOGL::LoadFromReflector(GLuint GLObj)
 
         m_InputSemantics.insert(SemanticMap::value_type(InputSemantic(name, slot, newType, newSize), slot));
     }
+
+	return true;
+}
+
+bool ShaderInputLayoutOGL::LoadFromCustomElements(GLuint GLObj, const std::vector<SCustomVertexElement>& CustomElements)
+{
+	std::vector<SOGLCustomAttribute> inputElements;
+	ConvertVertexDeclaration(CustomElements, inputElements);
+
+	for (uint32 i = 0; i < inputElements.size() - 1; i++)
+	{
+		m_InputSemantics.insert(SemanticMap::value_type(InputSemantic(inputElements[i].name + std::to_string(inputElements[i].slot), i, inputElements[i].attrType, inputElements[i].size), i));
+	}
 
 	return true;
 }

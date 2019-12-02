@@ -19,7 +19,7 @@ void CGBuffer::Load(uint32 width, uint32 height)
 {
 	IApplication& app = Application::Get();
 	std::shared_ptr<IRenderDevice> renderDevice = app.GetRenderDevice();
-	std::shared_ptr<RenderWindow> renderWindow = app.GetRenderWindow();
+	std::shared_ptr<IRenderWindow> renderWindow = app.GetRenderWindow();
 
 	uint32 numSamples = 1;
 
@@ -78,7 +78,7 @@ void CGBuffer::Load2(const Viewport * _viewPort)
 {
 	IApplication& app = Application::Get();
 	std::shared_ptr<IRenderDevice> renderDevice = app.GetRenderDevice();
-	std::shared_ptr<RenderWindow> renderWindow = app.GetRenderWindow();
+	std::shared_ptr<IRenderWindow> renderWindow = app.GetRenderWindow();
 
 
 	// Shaders that unite 4 textures

@@ -1,7 +1,7 @@
 #pragma once
 
-#define MAXD3DDECLUSAGEINDEX    15
-#define MAXD3DDECLLENGTH        64 // does not include "end" marker vertex element
+//#define MAXD3DDECLUSAGEINDEX    15
+//#define MAXD3DDECLLENGTH        64 // does not include "end" marker vertex element
 
 enum class OW_ENGINE_API ECustomVertexElementType
 {
@@ -52,5 +52,5 @@ struct OW_ENGINE_API SCustomVertexElement
 	BYTE                      UsageIndex; // Semantic index
 };
 
-size_t OW_ENGINE_API CustomElementsLength(SCustomVertexElement * elements);
-size_t OW_ENGINE_API CustomElementsVertexSize(SCustomVertexElement * elements, size_t Cnt, DWORD Stream);
+//size_t OW_ENGINE_API CustomElementsLength(SCustomVertexElement * elements);
+//size_t OW_ENGINE_API CustomElementsVertexSize(SCustomVertexElement * elements, size_t Cnt, DWORD Stream);

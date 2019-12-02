@@ -76,7 +76,7 @@ bool ShaderOGL::LoadShaderFromFile(ShaderType shaderType, const std::string& fil
     std::string errMsg;
     if (false == GetShaderProgramLog(m_GLObj, &errMsg))
     {
-        fail2(errMsg.c_str());
+        _ASSERT_EXPR(false, Resources::ConvertString(errMsg).c_str());
         return false;
     }
 
@@ -118,7 +118,7 @@ bool ShaderOGL::LoadShaderFromFile(ShaderType shaderType, const std::string& fil
 
         GLint loc = glGetUniformLocation(m_GLObj, name);
 
-        std::shared_ptr<ShaderParameter> shaderParameter = std::make_shared<ShaderParameter>(name, loc, shared_from_this(), parameterType);
+        std::shared_ptr<IShaderParameter> shaderParameter = std::make_shared<ShaderParameterBase>(name, loc, shared_from_this(), parameterType);
         m_ShaderParameters.insert(ParameterMap::value_type(name, shaderParameter));
     }*/
 
@@ -177,10 +177,8 @@ bool ShaderOGL::LoadInputLayoutFromCustomElements(const std::vector<SCustomVerte
         return true;
 
     std::shared_ptr<ShaderInputLayoutOGL> inputLayout = std::make_shared<ShaderInputLayoutOGL>();
-    //m_InputLayout->LoadFromD3D9(m_pShaderBlob, declIn);
+	inputLayout->LoadFromCustomElements(m_GLObj, declIn);
     m_InputLayout = inputLayout;
-
-    _ASSERT(false);
 
     return true;
 }

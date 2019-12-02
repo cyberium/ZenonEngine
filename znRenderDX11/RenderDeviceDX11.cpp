@@ -104,7 +104,7 @@ const std::shared_ptr<IBaseManager>& RenderDeviceDX11::GetBaseManager() const
 	return m_BaseManager;
 }
 
-std::shared_ptr<RenderWindow> RenderDeviceDX11::CreateRenderWindow(IWindowObject * WindowObject, bool vSync)
+std::shared_ptr<IRenderWindow> RenderDeviceDX11::CreateRenderWindow(IWindowObject * WindowObject, bool vSync)
 {
 	return std::make_shared<RenderWindowDX11>(shared_from_this(), WindowObject, vSync);
 }

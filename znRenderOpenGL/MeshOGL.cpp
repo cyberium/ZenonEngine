@@ -68,11 +68,16 @@ void MeshOGL::SetPrimitiveTopology(PrimitiveTopology _topology)
 
 bool MeshOGL::Render(const RenderEventArgs* renderArgs, const IConstantBuffer* perObject, UINT indexStartLocation, UINT indexCnt, UINT vertexStartLocation, UINT vertexCnt)
 {
-    if (indexCnt == 0 && m_pIndexBuffer != nullptr)
-        indexCnt = m_pIndexBuffer->GetElementCount();
+	if (indexCnt == 0 && m_pIndexBuffer != nullptr)
+		indexCnt = m_pIndexBuffer->GetElementCount();
 
-    if (vertexCnt == 0)
-        vertexCnt = (*m_VertexBuffers.begin()).second->GetElementCount();
+	if (vertexCnt == 0)
+	{
+		if (m_VertexBuffer != nullptr)
+			vertexCnt = m_VertexBuffer->GetElementCount();
+		else
+			vertexCnt = (*m_VertexBuffers.begin()).second->GetElementCount();
+	}
 
 	std::shared_ptr<IShader> pVS = nullptr;
 	std::shared_ptr<IShader> pPS = nullptr;

@@ -71,7 +71,7 @@ void MaterialOGL::Unbind(const ShaderMap& shaders) const
 	{
 		for (auto shader : m_Shaders)
 		{
-			UnbindForShader(shader.second.get());
+			//UnbindForShader(shader.second.get());
 		}
 
 		glBindProgramPipeline(0);

@@ -12,7 +12,7 @@ public:
 	const std::string& GetDeviceName() const;
     const RenderDeviceType GetDeviceType() const;
 	const std::shared_ptr<IBaseManager>& GetBaseManager() const;
-	std::shared_ptr<RenderWindow> CreateRenderWindow(IWindowObject * WindowObject, bool vSync);
+	std::shared_ptr<IRenderWindow> CreateRenderWindow(IWindowObject * WindowObject, bool vSync);
 
 	// Inherited from IRenderDevice
 	std::shared_ptr<IBuffer> CreateVoidVertexBuffer(const void* data, uint32 count, uint32 offset, uint32 stride);

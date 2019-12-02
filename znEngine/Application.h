@@ -21,7 +21,7 @@ public:
 
 	// Creators
 	std::shared_ptr<IRenderDevice>  CreateRenderDevice(RenderDeviceType DeviceType);
-	std::shared_ptr<RenderWindow>   CreateRenderWindow(IWindowObject * WindowObject, bool vSync);
+	std::shared_ptr<IRenderWindow>   CreateRenderWindow(IWindowObject * WindowObject, bool vSync);
 
 	// IApplication
 	void                            DoBeforeRun() override;
@@ -32,14 +32,14 @@ public:
 
 	std::shared_ptr<IRenderDevice>  GetRenderDevice() const override;
 	void                            SetRenderDevice(std::shared_ptr<IRenderDevice> _renderDevice) override;
-	std::shared_ptr<RenderWindow>   GetRenderWindow() const override;
-	void                            SetRenderWindow(std::shared_ptr<RenderWindow> _renderWindow) override;
+	std::shared_ptr<IRenderWindow>   GetRenderWindow() const override;
+	void                            SetRenderWindow(std::shared_ptr<IRenderWindow> _renderWindow) override;
 
     CLoader*						GetLoader();
 
 	// IGameStateManager
-	void                            AddGameState(GameStatesNames::List _name, std::shared_ptr<IGameState> _gameState) override;
-	bool                            SetGameState(GameStatesNames::List _name) override;
+	void                            AddGameState(GameStatesNames _name, std::shared_ptr<IGameState> _gameState) override;
+	bool                            SetGameState(GameStatesNames _name) override;
 	bool                            SetGameState(std::shared_ptr<IGameState> _newGameState) override;
 	std::shared_ptr<IGameState>     GetGameState() override;
 
@@ -70,11 +70,11 @@ private:
 	HINSTANCE                       m_HINSTANCE;
 
 	std::shared_ptr<IRenderDevice>  m_pRenderDevice;
-	std::shared_ptr<RenderWindow>   m_pWindow;
+	std::shared_ptr<IRenderWindow>   m_pWindow;
 
 	// IGameStateManager
 	std::shared_ptr<IGameState>                                     m_CurrentGameState;
-	std::map<GameStatesNames::List, std::shared_ptr<IGameState>>    m_GameStatesCollection;
+	std::map<GameStatesNames, std::shared_ptr<IGameState>>    m_GameStatesCollection;
 
 	// Hold the connections
 	Delegate<EventArgs>::FunctionDecl        InitializeConnection;

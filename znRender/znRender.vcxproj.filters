@@ -4,7 +4,6 @@
     <ClCompile Include="stdafx.cpp">
       <Filter>Common</Filter>
     </ClCompile>
-    <ClCompile Include="RenderWindow.cpp" />
     <ClCompile Include="Ray.cpp">
       <Filter>Types</Filter>
     </ClCompile>
@@ -33,9 +32,8 @@
     <ClCompile Include="ShaderInputLayoutBase.cpp" />
     <ClCompile Include="MaterialBase.cpp" />
     <ClCompile Include="RenderDeviceBase.cpp" />
-    <ClCompile Include="Interfaces\Types\CustomVertexElement.cpp">
-      <Filter>Interfaces\Types</Filter>
-    </ClCompile>
+    <ClCompile Include="RenderWindowBase.cpp" />
+    <ClCompile Include="RenderWindowBase_Events.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="common.h">
@@ -44,7 +42,6 @@
     <ClInclude Include="stdafx.h">
       <Filter>Common</Filter>
     </ClInclude>
-    <ClInclude Include="RenderWindow.h" />
     <ClInclude Include="Ray.h">
       <Filter>Types</Filter>
     </ClInclude>
@@ -52,9 +49,6 @@
       <Filter>Types</Filter>
     </ClInclude>
     <ClInclude Include="Camera.h">
-      <Filter>Types</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderEvents.h">
       <Filter>Types</Filter>
     </ClInclude>
     <ClInclude Include="Primitives\Geometry.h">
@@ -66,55 +60,7 @@
     <ClInclude Include="ShadersUtils.h">
       <Filter>Shaders</Filter>
     </ClInclude>
-    <ClInclude Include="Interfaces\IPipelineState.h">
-      <Filter>Interfaces</Filter>
-    </ClInclude>
-    <ClInclude Include="Interfaces\IRenderDevice.h">
-      <Filter>Interfaces</Filter>
-    </ClInclude>
-    <ClInclude Include="Interfaces\IRenderTarget.h">
-      <Filter>Interfaces</Filter>
-    </ClInclude>
-    <ClInclude Include="Interfaces\IRenderWindow.h">
-      <Filter>Interfaces</Filter>
-    </ClInclude>
-    <ClInclude Include="Interfaces\IShader.h">
-      <Filter>Interfaces</Filter>
-    </ClInclude>
-    <ClInclude Include="Interfaces\ITexture.h">
-      <Filter>Interfaces</Filter>
-    </ClInclude>
-    <ClInclude Include="Interfaces\IBuffer.h">
-      <Filter>Interfaces</Filter>
-    </ClInclude>
-    <ClInclude Include="Interfaces\IQuery.h">
-      <Filter>Interfaces</Filter>
-    </ClInclude>
-    <ClInclude Include="Interfaces\IShaderInputLayout.h">
-      <Filter>Interfaces</Filter>
-    </ClInclude>
-    <ClInclude Include="Interfaces\IShaderParameter.h">
-      <Filter>Interfaces</Filter>
-    </ClInclude>
-    <ClInclude Include="Interfaces\IMaterial.h">
-      <Filter>Interfaces</Filter>
-    </ClInclude>
     <ClInclude Include="ShaderParameterBase.h" />
-    <ClInclude Include="Interfaces\ISamplerState.h">
-      <Filter>Interfaces</Filter>
-    </ClInclude>
-    <ClInclude Include="Interfaces\IMesh.h">
-      <Filter>Interfaces</Filter>
-    </ClInclude>
-    <ClInclude Include="Interfaces\IBlendState.h">
-      <Filter>Interfaces</Filter>
-    </ClInclude>
-    <ClInclude Include="Interfaces\IDepthStencilState.h">
-      <Filter>Interfaces</Filter>
-    </ClInclude>
-    <ClInclude Include="Interfaces\IRasterizerState.h">
-      <Filter>Interfaces</Filter>
-    </ClInclude>
     <ClInclude Include="BlendStateBase.h">
       <Filter>Pipeline</Filter>
     </ClInclude>
@@ -125,42 +71,16 @@
       <Filter>Pipeline</Filter>
     </ClInclude>
     <ClInclude Include="MeshBase.h" />
-    <ClInclude Include="ConstantBufferBase.h">
-      <Filter>Buffers</Filter>
-    </ClInclude>
     <ClInclude Include="SamplerStateBase.h" />
     <ClInclude Include="ShaderBase.h" />
     <ClInclude Include="ShaderInputLayoutBase.h" />
     <ClInclude Include="MaterialBase.h" />
     <ClInclude Include="RenderDeviceBase.h" />
-    <ClInclude Include="Interfaces\Types\CustomVertexElement.h">
-      <Filter>Interfaces\Types</Filter>
-    </ClInclude>
-    <ClInclude Include="Interfaces\Types\BufferBinding.h">
-      <Filter>Interfaces\Types</Filter>
-    </ClInclude>
-    <ClInclude Include="Interfaces\Types\ClearFlags.h">
-      <Filter>Interfaces\Types</Filter>
-    </ClInclude>
-    <ClInclude Include="Interfaces\Types\CPUAccess.h">
-      <Filter>Interfaces\Types</Filter>
-    </ClInclude>
-    <ClInclude Include="Interfaces\Types\InputSemantic.h">
-      <Filter>Interfaces\Types</Filter>
-    </ClInclude>
-    <ClInclude Include="Interfaces\Types\PrimitiveTopology.h">
-      <Filter>Interfaces\Types</Filter>
-    </ClInclude>
-    <ClInclude Include="Interfaces\Types\Viewport.h">
-      <Filter>Interfaces\Types</Filter>
-    </ClInclude>
+    <ClInclude Include="RenderWindowBase.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Common">
       <UniqueIdentifier>{98fc8d94-3730-4821-bb53-d891aea80641}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Buffers">
-      <UniqueIdentifier>{985f9813-a356-44df-b0f3-5d607f624c64}</UniqueIdentifier>
     </Filter>
     <Filter Include="Pipeline">
       <UniqueIdentifier>{123d88e5-6f73-4277-900f-1fac68a5662c}</UniqueIdentifier>
@@ -173,12 +93,6 @@
     </Filter>
     <Filter Include="Shaders">
       <UniqueIdentifier>{09c42574-6da1-44b9-8eeb-49413f7b8dd2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Interfaces">
-      <UniqueIdentifier>{8dd58065-a40f-499f-8ee6-c272aa12260a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Interfaces\Types">
-      <UniqueIdentifier>{8e5d332d-bdc6-46ad-a74e-83e861af2bff}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

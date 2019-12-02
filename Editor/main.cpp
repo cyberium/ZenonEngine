@@ -45,7 +45,7 @@ int main(int argc, char *argv[])
 
 	Application app(_BaseManager);
 	std::shared_ptr<IRenderDevice> renderDevice = app.CreateRenderDevice(IRenderDevice::DeviceType::DirectX);
-	std::shared_ptr<RenderWindow> renderWindow = app.CreateRenderWindow(dynamic_cast<IWindowObject*>(w.getUI().frame), true);
+	std::shared_ptr<IRenderWindow> renderWindow = app.CreateRenderWindow(dynamic_cast<IWindowObject*>(w.getUI().frame), true);
 
 	dynamic_cast<RenderWindowWidget*>(w.getUI().frame)->SetRenderWindow(renderWindow);
 

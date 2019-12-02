@@ -10,7 +10,7 @@ public:
 	RenderWindowWidget(QWidget * parent);
 	virtual ~RenderWindowWidget();
 
-	void SetRenderWindow(std::shared_ptr<RenderWindow> RenderWindow);
+	void SetRenderWindow(std::shared_ptr<IRenderWindow> RenderWindow);
 
 	QPaintEngine* paintEngine() const override { return nullptr; }
 
@@ -53,5 +53,5 @@ private:
 
 	HWND m_hwnd;
 
-	std::shared_ptr<RenderWindow> m_RenderWindow;
+	std::shared_ptr<IRenderWindow> m_RenderWindow;
 };

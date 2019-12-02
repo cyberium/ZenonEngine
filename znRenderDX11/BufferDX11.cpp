@@ -27,7 +27,7 @@ BufferDX11::BufferDX11(ID3D11Device2* pDevice, UINT bindFlags, const void* data,
 
 	if (FAILED(m_pDevice->CreateBuffer(&bufferDesc, &resourceData, &m_pBuffer)))
 	{
-		fail2("Failed to create buffer.");
+		_ASSERT_EXPR(false, "Failed to create buffer.");
 		return;
 	}
 

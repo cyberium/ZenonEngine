@@ -1,5 +1,3 @@
-#pragma once
-
 /*struct PixelShaderOutput
 {
 	float4 PositionWS           : SV_Target0;   // Position in View space (R8G8B8_UNORM) MaterialType (A8_UNORM)            

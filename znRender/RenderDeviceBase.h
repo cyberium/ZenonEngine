@@ -1,7 +1,5 @@
 #pragma once
 
-#include "RenderEvents.h"
-
 class OW_ENGINE_API CRenderDevicePrimitiveCollection : public IRenderDevicePrimitiveCollection
 {
 public:

@@ -77,9 +77,21 @@ class Color;
 #define __PACK_END  "../shared/pack_end.h"
 
 
+//---------------------------------------------------------//
+//--                   Base Types                        --//
+//---------------------------------------------------------//
+#include "MathTypes.h"
+#include "BoundingBox.h"
+#include "BoundingRect.h"
+#include "BoundingSphere.h"
+#include "Frustrum.h"
+#include "Plane.h"
+#include "Rect.h"
+#include "Events.h"
+
 
 //---------------------------------------------------------//
-//--                   Interfaces                        --//
+//--                Base Interfaces                      --//
 //---------------------------------------------------------//
 #include "Interfaces/BaseManager.h"
 
@@ -100,10 +112,42 @@ class Color;
 #include "Interfaces/Visitor.h"
 #include "Interfaces/WindowObject.h"
 
-// Render
-#include "Interfaces/Camera.h"
-#include "Interfaces/Render.h"
-#include "Interfaces/RenderPass.h"
+
+//---------------------------------------------------------//
+//--                   Render Types                      --//
+//---------------------------------------------------------//
+#include "Interfaces/Render/Types/BufferBinding.h"
+#include "Interfaces/Render/Types/ClearFlags.h"
+#include "Interfaces/Render/Types/CPUAccess.h"
+#include "Interfaces/Render/Types/InputSemantic.h"
+#include "Interfaces/Render/Types/PrimitiveTopology.h"
+#include "Interfaces/Render/Types/Viewport.h"
+#include "Interfaces/Render/Types/CustomVertexElement.h"
+
+
+//---------------------------------------------------------//
+//--                Render Interfaces                    --//
+//---------------------------------------------------------//
+#include "Interfaces/Render/IRender.h"
+
+#include "Interfaces/Render/IShader.h"
+#include "Interfaces/Render/IShaderParameter.h"
+#include "Interfaces/Render/IShaderInputLayout.h"
+#include "Interfaces/Render/ITexture.h"
+#include "Interfaces/Render/ISamplerState.h"
+#include "Interfaces/Render/IBuffer.h"
+#include "Interfaces/Render/IQuery.h"
+#include "Interfaces/Render/IMaterial.h"
+#include "Interfaces/Render/IMesh.h"
+#include "Interfaces/Render/IRenderTarget.h"
+#include "Interfaces/Render/IRenderWindow.h"
+#include "Interfaces/Render/IBlendState.h"
+#include "Interfaces/Render/IDepthStencilState.h"
+#include "Interfaces/Render/IRasterizerState.h"
+#include "Interfaces/Render/IPipelineState.h"
+#include "Interfaces/Render/IRenderDevice.h"
+#include "Interfaces/Render/ICamera.h"
+#include "Interfaces/Render/IRenderPass.h"
 
 
 //---------------------------------------------------------//
@@ -125,15 +169,6 @@ class Color;
 // Macros
 #include "Debug.h"
 #include "Macros.h"
-
-// Primitives
-#include "MathTypes.h"
-#include "BoundingBox.h"
-#include "BoundingRect.h"
-#include "BoundingSphere.h"
-#include "Frustrum.h"
-#include "Plane.h"
-#include "Rect.h"
 
 // Additional types
 #include "Color.h"

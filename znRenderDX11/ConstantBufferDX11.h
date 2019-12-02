@@ -1,6 +1,6 @@
 #pragma once
 
-class ConstantBufferDX11 : public ConstantBufferBase
+class ConstantBufferDX11 : public IConstantBuffer
 {
 public:
 	ConstantBufferDX11(ID3D11Device2* pDevice, size_t size);
@@ -8,6 +8,11 @@ public:
 
 	virtual bool Bind(uint32 id, const IShader* shader, IShaderParameter::Type parameterType) const override;
 	virtual void UnBind(uint32 id, const IShader* shader, IShaderParameter::Type parameterType) const override;
+
+	virtual BufferType GetType() const;
+	virtual uint32 GetElementCount() const;
+	virtual uint32 GetElementStride() const;
+	virtual uint32 GetElementOffset() const;
 
 	virtual void Copy(std::shared_ptr<IConstantBuffer> other) override;
 
