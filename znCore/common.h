@@ -87,7 +87,9 @@ class Color;
 #include "Frustrum.h"
 #include "Plane.h"
 #include "Rect.h"
-#include "Events.h"
+#include "Interfaces/Types/KeyCodes.h"
+#include "Interfaces/Types/Object.h"
+#include "Interfaces/Types/Events.h"
 
 
 //---------------------------------------------------------//

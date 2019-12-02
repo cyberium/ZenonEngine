@@ -1,8 +1,7 @@
 #pragma once
 
 class OW_ENGINE_API CWindowObject :
-	public IWindowObject,
-	public IWindowObjectEx
+	public IWindowObject
 {
 public:
 	CWindowObject();
@@ -29,15 +28,10 @@ public:
 	// IWindowObjectEx
 	void SetWindowHandle(HWND HWnd);
 
-	void RegisterWindowClass(HINSTANCE HInstance);
-	void UnregisterWindowClass();
-	HWND CreateWindowInstance(int nWidth, int nHeight) ;
+	HWND CreateWindowInstance(IApplication * Application, IWindowClassRegistrator * WindowClassRegistrator, LPCWSTR WindowName, LONG Width, LONG Height) ;
 	void DestroyWindowInstance();
 
 private:
 	// IWindowObject
 	HWND      m_HWnd;
-
-	// IWindowObjectEx
-	HINSTANCE m_HInstance;
 };

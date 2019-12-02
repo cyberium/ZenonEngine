@@ -6,8 +6,9 @@
 // Additional
 #include "Application.h"
 
-CGameState::CGameState(const IApplication * _application)
+CGameState::CGameState(const IApplication * _application, std::shared_ptr<IRenderWindow> RenderWindow)
 	: m_Application(_application)
+	, m_RenderWindow(RenderWindow)
 	, m_IsInited(false)
 	, m_IsCurrent(false)
 {
@@ -44,7 +45,7 @@ void CGameState::Destroy()
 
 bool CGameState::Set()
 {
-	std::shared_ptr<IRenderWindowEvents> renderWindow = std::dynamic_pointer_cast<IRenderWindowEvents>(m_Application->GetRenderWindow());
+	std::shared_ptr<IRenderWindowEvents> renderWindow = std::dynamic_pointer_cast<IRenderWindowEvents>(m_RenderWindow);
     _ASSERT(renderWindow);
 
 	// Input events connections
@@ -72,7 +73,7 @@ bool CGameState::Set()
 
 void CGameState::Unset()
 {
-    std::shared_ptr<IRenderWindowEvents> renderWindow = std::dynamic_pointer_cast<IRenderWindowEvents>(m_Application->GetRenderWindow());
+    std::shared_ptr<IRenderWindowEvents> renderWindow = std::dynamic_pointer_cast<IRenderWindowEvents>(m_RenderWindow);
     _ASSERT(renderWindow);
 
     renderWindow->Update().disconnect(OnUpdateConnection);
@@ -105,12 +106,8 @@ void CGameState::OnResize(ResizeEventArgs & e)
 {
 	m_DefaultCameraController->OnResize(e);
 
-	IApplication& app = Application::Get();
-	std::shared_ptr<IRenderDevice> renderDevice = app.GetRenderDevice();
-	std::shared_ptr<IRenderWindow> renderWindow = app.GetRenderWindow();
-
-	m_3DTechnique.UpdateViewport(renderWindow->GetViewport());
-	m_UITechnique.UpdateViewport(renderWindow->GetViewport());
+	m_3DTechnique.UpdateViewport(dynamic_cast<const IRenderWindow*>(e.Caller)->GetViewport());
+	m_UITechnique.UpdateViewport(dynamic_cast<const IRenderWindow*>(e.Caller)->GetViewport());
 }
 
 
@@ -184,6 +181,11 @@ void CGameState::OnMouseWheel(MouseWheelEventArgs & e)
 const IApplication* CGameState::GetApplication() const
 {
     return m_Application;
+}
+
+const std::shared_ptr<IRenderWindow> CGameState::GetRenderWindow() const
+{
+	return m_RenderWindow;
 }
 
 const std::shared_ptr<IBaseManager> CGameState::GetBaseManager() const

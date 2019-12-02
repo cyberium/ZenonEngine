@@ -1,6 +1,11 @@
 #pragma once
 
-class OW_ENGINE_API RenderWindowBase : public IRenderWindow, public IRenderWindowEvents, public Object, public std::enable_shared_from_this<IRenderWindow>
+class OW_ENGINE_API RenderWindowBase 
+	: public IRenderWindow
+	, public IRenderWindowEvents
+	, public IApplicationEventsConnection
+	, public Object
+	, public std::enable_shared_from_this<IRenderWindow>
 {
 public:
 	RenderWindowBase(std::shared_ptr<IRenderDevice> RenderDevice, IWindowObject * WindowObject, bool vSync = false);
@@ -25,7 +30,6 @@ public:
 	std::shared_ptr<IRenderTarget>                  GetRenderTarget() const;
 	const Viewport *                                GetViewport() const;
 	LRESULT											WndProc(HWND, UINT, WPARAM, LPARAM);
-
 
 	// IRenderWindowEvents
 	Event&				Initialize();
@@ -83,21 +87,19 @@ public:
 	Event&              MouseBlur();
 	virtual      void OnMouseBlur(EventArgs& e);
 
+	// IApplicationEventsConnection
+	void											Connect(IApplicationEvents* ApplicationEvents) override;
+	void											Disconnect(IApplicationEvents* ApplicationEvents) override;
+
 protected:
     virtual void                                    CreateSwapChain();
     virtual void                                    ResizeSwapChainBuffers(uint32_t width, uint32_t height) = 0;
-
-public:
-	
-
-public:
-	
 
 private:
 	Viewport                                        m_Viewport;
 	IWindowObject *                                 m_WindowObject;
 
-    std::weak_ptr<IRenderDevice>                    m_Device;
+    std::weak_ptr<IRenderDevice>                    m_RenderDevice;
     std::shared_ptr<IRenderTarget>                  m_RenderTarget;
 
 	bool                                            m_vSync;
@@ -111,8 +113,6 @@ private:
 
 	// For keyboard events
 	bool                                            m_bHasKeyboardFocus;            // This is set to true when the window receives keyboard focus.
-
-
 
 private:
 	// IRenderWindowEvents
@@ -149,4 +149,12 @@ private:
 	Event               m_MouseLeave;
 	Event               m_MouseFocus;
 	Event               m_MouseBlur;
+
+private: // IApplicationEventsConnection
+	Delegate<EventArgs>::FunctionDecl        m_InitializeConnection;
+	Delegate<UpdateEventArgs>::FunctionDecl  m_UpdateConnection;
+	Delegate<EventArgs>::FunctionDecl        m_TerminateConnection;
+	//Delegate<EventArgs>::FunctionDecl        m_TerminatedConnection;
+	//Delegate<EventArgs>::FunctionDecl		 m_ExitConnection;
+	//Delegate<UserEventArgs>::FunctionDecl	 m_UserEventConnection;
 };

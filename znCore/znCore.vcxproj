@@ -26,7 +26,6 @@
     <ClCompile Include="DebugOutputConsole.cpp" />
     <ClCompile Include="DebugOutputLog.cpp" />
     <ClCompile Include="ConsoleCommand.cpp" />
-    <ClCompile Include="Events.cpp" />
     <ClCompile Include="File.cpp" />
     <ClCompile Include="ByteBuffer.cpp" />
     <ClCompile Include="FilesManager.cpp" />
@@ -38,7 +37,6 @@
     <ClCompile Include="Log.cpp" />
     <ClCompile Include="DebugOutput.cpp" />
     <ClCompile Include="Random.cpp" />
-    <ClCompile Include="Object.cpp" />
     <ClCompile Include="RefManager1DimAssync.cpp" />
     <ClCompile Include="Resource.cpp" />
     <ClCompile Include="stdafx.cpp">
@@ -59,12 +57,10 @@
     <ClInclude Include="BoundingSphere.h" />
     <ClInclude Include="DebugOutputConsole.h" />
     <ClInclude Include="DebugOutputLog.h" />
-    <ClInclude Include="Events.h" />
     <ClInclude Include="HighResolutionTimer.h" />
     <ClInclude Include="Interfaces\Application.h" />
     <ClInclude Include="Interfaces\BaseManager.h" />
     <ClInclude Include="Interfaces\CameraController.h" />
-    <ClInclude Include="Interfaces\common.h" />
     <ClInclude Include="Interfaces\Console.h" />
     <ClInclude Include="Interfaces\DebugOutput.h" />
     <ClInclude Include="Interfaces\Files.h" />
@@ -103,9 +99,11 @@
     <ClInclude Include="Interfaces\Scene.h" />
     <ClInclude Include="Interfaces\SceneNodeProvider.h" />
     <ClInclude Include="Interfaces\Settings.h" />
+    <ClInclude Include="Interfaces\Types\Events.h" />
+    <ClInclude Include="Interfaces\Types\KeyCodes.h" />
+    <ClInclude Include="Interfaces\Types\Object.h" />
     <ClInclude Include="Interfaces\Visitor.h" />
     <ClInclude Include="Interfaces\WindowObject.h" />
-    <ClInclude Include="KeyCodes.h" />
     <ClInclude Include="LibraryResourceFileStotage.h" />
     <ClInclude Include="LocalFilesStorage.h" />
     <ClInclude Include="LockedQueue.h" />
@@ -126,7 +124,6 @@
     <ClInclude Include="Log.h" />
     <ClInclude Include="DebugOutput.h" />
     <ClInclude Include="Random.h" />
-    <ClInclude Include="Object.h" />
     <ClInclude Include="Plane.h" />
     <ClInclude Include="Quaternion.h" />
     <ClInclude Include="Rect.h" />

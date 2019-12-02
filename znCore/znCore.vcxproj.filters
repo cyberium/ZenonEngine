@@ -1,9 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Objects bindings">
-      <UniqueIdentifier>{680fac37-3ad8-4dee-8e50-970c2b108e10}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Files">
       <UniqueIdentifier>{96b64482-0656-4ab7-b92a-fc7b484b7a9d}</UniqueIdentifier>
     </Filter>
@@ -28,9 +25,6 @@
     <Filter Include="Common\Math">
       <UniqueIdentifier>{65c16df5-8780-49cd-9979-027c9bafdb50}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Input">
-      <UniqueIdentifier>{99cc3793-975f-4c86-9eee-6ca69f13a6d3}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Log">
       <UniqueIdentifier>{ef746966-5439-4659-9eaa-b5406a1f5be7}</UniqueIdentifier>
     </Filter>
@@ -46,9 +40,6 @@
     <Filter Include="RefManager\1 Dim Assync">
       <UniqueIdentifier>{d1c95b6f-a767-47df-bed7-b177d7d1e2eb}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Events">
-      <UniqueIdentifier>{3726dda1-960e-4c4a-bda0-7937a163f686}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Common\Threads">
       <UniqueIdentifier>{94a88278-a0a3-4d93-8432-ca705b1e488d}</UniqueIdentifier>
     </Filter>
@@ -61,14 +52,20 @@
     <Filter Include="Common\Timers">
       <UniqueIdentifier>{4ed86a83-bc26-44a8-8c60-1dbec01ff0c6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Interfaces">
+    <Filter Include="__Interfaces">
       <UniqueIdentifier>{93caf0bd-6050-4d1e-829f-415f0328ee3d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Interfaces\Render">
+    <Filter Include="__Interfaces\Render">
       <UniqueIdentifier>{b7d6366e-b55e-4a64-a2a2-baf23e5c6448}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Interfaces\Render\Types">
+    <Filter Include="__Interfaces\Render\Types">
       <UniqueIdentifier>{b0675618-c8d6-4b6f-a053-573da963c290}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="__Interfaces\Types">
+      <UniqueIdentifier>{3835d518-a373-44e1-ab37-c5a2ce429d42}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="__Interfaces\Scene">
+      <UniqueIdentifier>{d3dd8b4e-50e6-4cd0-97c9-6d16edd23c32}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -123,17 +120,11 @@
     <ClCompile Include="BoundingSphere.cpp">
       <Filter>Common\Primitives</Filter>
     </ClCompile>
-    <ClCompile Include="Object.cpp">
-      <Filter>Objects bindings</Filter>
-    </ClCompile>
     <ClCompile Include="HighResolutionTimer.cpp">
       <Filter>Common\Timers</Filter>
     </ClCompile>
     <ClCompile Include="Timer.cpp">
       <Filter>Common\Timers</Filter>
-    </ClCompile>
-    <ClCompile Include="Events.cpp">
-      <Filter>Events</Filter>
     </ClCompile>
     <ClCompile Include="LocalFilesStorage.cpp">
       <Filter>Files\Common</Filter>
@@ -239,15 +230,6 @@
     <ClInclude Include="BoundingSphere.h">
       <Filter>Common\Primitives</Filter>
     </ClInclude>
-    <ClInclude Include="Object.h">
-      <Filter>Objects bindings</Filter>
-    </ClInclude>
-    <ClInclude Include="Events.h">
-      <Filter>Events</Filter>
-    </ClInclude>
-    <ClInclude Include="KeyCodes.h">
-      <Filter>Input</Filter>
-    </ClInclude>
     <ClInclude Include="Timer.h">
       <Filter>Common\Timers</Filter>
     </ClInclude>
@@ -285,136 +267,142 @@
       <Filter>Common</Filter>
     </ClInclude>
     <ClInclude Include="Interfaces\Application.h">
-      <Filter>Interfaces</Filter>
+      <Filter>__Interfaces</Filter>
     </ClInclude>
     <ClInclude Include="Interfaces\BaseManager.h">
-      <Filter>Interfaces</Filter>
+      <Filter>__Interfaces</Filter>
     </ClInclude>
     <ClInclude Include="Interfaces\CameraController.h">
-      <Filter>Interfaces</Filter>
-    </ClInclude>
-    <ClInclude Include="Interfaces\common.h">
-      <Filter>Interfaces</Filter>
+      <Filter>__Interfaces</Filter>
     </ClInclude>
     <ClInclude Include="Interfaces\Console.h">
-      <Filter>Interfaces</Filter>
+      <Filter>__Interfaces</Filter>
     </ClInclude>
     <ClInclude Include="Interfaces\DebugOutput.h">
-      <Filter>Interfaces</Filter>
+      <Filter>__Interfaces</Filter>
     </ClInclude>
     <ClInclude Include="Interfaces\Files.h">
-      <Filter>Interfaces</Filter>
+      <Filter>__Interfaces</Filter>
     </ClInclude>
     <ClInclude Include="Interfaces\GameState.h">
-      <Filter>Interfaces</Filter>
+      <Filter>__Interfaces</Filter>
     </ClInclude>
     <ClInclude Include="Interfaces\GameStateManager.h">
-      <Filter>Interfaces</Filter>
+      <Filter>__Interfaces</Filter>
     </ClInclude>
     <ClInclude Include="Interfaces\Loader.h">
-      <Filter>Interfaces</Filter>
+      <Filter>__Interfaces</Filter>
     </ClInclude>
     <ClInclude Include="Interfaces\Log.h">
-      <Filter>Interfaces</Filter>
+      <Filter>__Interfaces</Filter>
     </ClInclude>
     <ClInclude Include="Interfaces\Networking.h">
-      <Filter>Interfaces</Filter>
+      <Filter>__Interfaces</Filter>
     </ClInclude>
     <ClInclude Include="Interfaces\Plugins.h">
-      <Filter>Interfaces</Filter>
+      <Filter>__Interfaces</Filter>
     </ClInclude>
     <ClInclude Include="Interfaces\Scene.h">
-      <Filter>Interfaces</Filter>
+      <Filter>__Interfaces</Filter>
     </ClInclude>
     <ClInclude Include="Interfaces\SceneNodeProvider.h">
-      <Filter>Interfaces</Filter>
+      <Filter>__Interfaces</Filter>
     </ClInclude>
     <ClInclude Include="Interfaces\Settings.h">
-      <Filter>Interfaces</Filter>
+      <Filter>__Interfaces</Filter>
     </ClInclude>
     <ClInclude Include="Interfaces\Visitor.h">
-      <Filter>Interfaces</Filter>
+      <Filter>__Interfaces</Filter>
     </ClInclude>
     <ClInclude Include="Interfaces\WindowObject.h">
-      <Filter>Interfaces</Filter>
+      <Filter>__Interfaces</Filter>
     </ClInclude>
     <ClInclude Include="Interfaces\Render\IBlendState.h">
-      <Filter>Interfaces\Render</Filter>
+      <Filter>__Interfaces\Render</Filter>
     </ClInclude>
     <ClInclude Include="Interfaces\Render\IBuffer.h">
-      <Filter>Interfaces\Render</Filter>
+      <Filter>__Interfaces\Render</Filter>
     </ClInclude>
     <ClInclude Include="Interfaces\Render\IDepthStencilState.h">
-      <Filter>Interfaces\Render</Filter>
+      <Filter>__Interfaces\Render</Filter>
     </ClInclude>
     <ClInclude Include="Interfaces\Render\IMaterial.h">
-      <Filter>Interfaces\Render</Filter>
+      <Filter>__Interfaces\Render</Filter>
     </ClInclude>
     <ClInclude Include="Interfaces\Render\IMesh.h">
-      <Filter>Interfaces\Render</Filter>
+      <Filter>__Interfaces\Render</Filter>
     </ClInclude>
     <ClInclude Include="Interfaces\Render\IPipelineState.h">
-      <Filter>Interfaces\Render</Filter>
+      <Filter>__Interfaces\Render</Filter>
     </ClInclude>
     <ClInclude Include="Interfaces\Render\IQuery.h">
-      <Filter>Interfaces\Render</Filter>
+      <Filter>__Interfaces\Render</Filter>
     </ClInclude>
     <ClInclude Include="Interfaces\Render\IRasterizerState.h">
-      <Filter>Interfaces\Render</Filter>
+      <Filter>__Interfaces\Render</Filter>
     </ClInclude>
     <ClInclude Include="Interfaces\Render\IRenderDevice.h">
-      <Filter>Interfaces\Render</Filter>
+      <Filter>__Interfaces\Render</Filter>
     </ClInclude>
     <ClInclude Include="Interfaces\Render\IRenderTarget.h">
-      <Filter>Interfaces\Render</Filter>
+      <Filter>__Interfaces\Render</Filter>
     </ClInclude>
     <ClInclude Include="Interfaces\Render\IRenderWindow.h">
-      <Filter>Interfaces\Render</Filter>
+      <Filter>__Interfaces\Render</Filter>
     </ClInclude>
     <ClInclude Include="Interfaces\Render\ISamplerState.h">
-      <Filter>Interfaces\Render</Filter>
+      <Filter>__Interfaces\Render</Filter>
     </ClInclude>
     <ClInclude Include="Interfaces\Render\IShader.h">
-      <Filter>Interfaces\Render</Filter>
+      <Filter>__Interfaces\Render</Filter>
     </ClInclude>
     <ClInclude Include="Interfaces\Render\IShaderInputLayout.h">
-      <Filter>Interfaces\Render</Filter>
+      <Filter>__Interfaces\Render</Filter>
     </ClInclude>
     <ClInclude Include="Interfaces\Render\IShaderParameter.h">
-      <Filter>Interfaces\Render</Filter>
+      <Filter>__Interfaces\Render</Filter>
     </ClInclude>
     <ClInclude Include="Interfaces\Render\ITexture.h">
-      <Filter>Interfaces\Render</Filter>
+      <Filter>__Interfaces\Render</Filter>
     </ClInclude>
     <ClInclude Include="Interfaces\Render\Types\BufferBinding.h">
-      <Filter>Interfaces\Render\Types</Filter>
+      <Filter>__Interfaces\Render\Types</Filter>
     </ClInclude>
     <ClInclude Include="Interfaces\Render\Types\ClearFlags.h">
-      <Filter>Interfaces\Render\Types</Filter>
+      <Filter>__Interfaces\Render\Types</Filter>
     </ClInclude>
     <ClInclude Include="Interfaces\Render\Types\CPUAccess.h">
-      <Filter>Interfaces\Render\Types</Filter>
+      <Filter>__Interfaces\Render\Types</Filter>
     </ClInclude>
     <ClInclude Include="Interfaces\Render\Types\CustomVertexElement.h">
-      <Filter>Interfaces\Render\Types</Filter>
+      <Filter>__Interfaces\Render\Types</Filter>
     </ClInclude>
     <ClInclude Include="Interfaces\Render\Types\InputSemantic.h">
-      <Filter>Interfaces\Render\Types</Filter>
+      <Filter>__Interfaces\Render\Types</Filter>
     </ClInclude>
     <ClInclude Include="Interfaces\Render\Types\PrimitiveTopology.h">
-      <Filter>Interfaces\Render\Types</Filter>
+      <Filter>__Interfaces\Render\Types</Filter>
     </ClInclude>
     <ClInclude Include="Interfaces\Render\Types\Viewport.h">
-      <Filter>Interfaces\Render\Types</Filter>
+      <Filter>__Interfaces\Render\Types</Filter>
     </ClInclude>
     <ClInclude Include="Interfaces\Render\ICamera.h">
-      <Filter>Interfaces\Render</Filter>
+      <Filter>__Interfaces\Render</Filter>
     </ClInclude>
     <ClInclude Include="Interfaces\Render\IRender.h">
-      <Filter>Interfaces\Render</Filter>
+      <Filter>__Interfaces\Render</Filter>
     </ClInclude>
     <ClInclude Include="Interfaces\Render\IRenderPass.h">
-      <Filter>Interfaces\Render</Filter>
+      <Filter>__Interfaces\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="Interfaces\Types\Events.h">
+      <Filter>__Interfaces\Types</Filter>
+    </ClInclude>
+    <ClInclude Include="Interfaces\Types\KeyCodes.h">
+      <Filter>__Interfaces\Types</Filter>
+    </ClInclude>
+    <ClInclude Include="Interfaces\Types\Object.h">
+      <Filter>__Interfaces\Types</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

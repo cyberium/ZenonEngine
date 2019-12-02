@@ -4,7 +4,7 @@ class CGameState_World : public CGameState
 {
     typedef CGameState base;
 public:
-    CGameState_World(const IApplication * _application);
+    CGameState_World(const IApplication * _application, std::shared_ptr<IRenderWindow> RenderWindow);
     virtual ~CGameState_World();
 
     // IGameState

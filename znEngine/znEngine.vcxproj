@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Application_Events.cpp" />
     <ClCompile Include="CameraControllers\ArcBallCameraController.cpp" />
     <ClCompile Include="CameraControllers\CameraControllerBase.cpp" />
     <ClCompile Include="CameraControllers\FreeCameraController.cpp" />
@@ -101,6 +102,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="WindowClassRegistrator.cpp" />
     <ClCompile Include="WindowCreator.cpp" />
     <ClCompile Include="znEngine.cpp" />
   </ItemGroup>
@@ -185,6 +187,7 @@
     <ClInclude Include="Settings\GroupVideo.h" />
     <ClInclude Include="Settings\Settings.h" />
     <ClInclude Include="stdafx.h" />
+    <ClInclude Include="WindowClassRegistrator.h" />
     <ClInclude Include="WindowCreator.h" />
   </ItemGroup>
   <ItemGroup>

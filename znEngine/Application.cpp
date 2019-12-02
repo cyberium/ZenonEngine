@@ -10,7 +10,6 @@ float g_GameDeltaTime = 0.0f;
 float g_ApplicationTime = 0.0f;
 int64_t g_FrameCounter = 0L;
 
-std::shared_ptr<IRenderWindow> gs_WindowHandle = nullptr;
 IApplication * _ApplicationInstance = nullptr;
 
 Application::Application(std::shared_ptr<IBaseManager> BaseManager)
@@ -73,10 +72,24 @@ std::shared_ptr<IRenderDevice> Application::CreateRenderDevice(RenderDeviceType 
 	return GetRenderDevice();
 }
 
-std::shared_ptr<IRenderWindow> Application::CreateRenderWindow(IWindowObject * WindowObject, bool vSync)
+/*std::shared_ptr<IRenderWindow> Application::CreateRenderWindow(IWindowObject * WindowObject, bool vSync)
 {
 	SetRenderWindow(GetRenderDevice()->CreateRenderWindow(WindowObject, vSync));
 	return GetRenderWindow();
+}*/
+
+void Application::AddRenderWindow(std::shared_ptr<IRenderWindow> RenderWindow)
+{
+	std::dynamic_pointer_cast<IApplicationEventsConnection>(RenderWindow)->Connect(this);
+
+	RenderWindow->ShowWindow();
+
+	if (m_bIsRunning)
+	{
+		DoBeforeRun();
+	}
+
+	m_Windows.insert(std::make_pair(RenderWindow->GetHWnd(), RenderWindow));
 }
 
 
@@ -87,7 +100,7 @@ std::shared_ptr<IRenderWindow> Application::CreateRenderWindow(IWindowObject * W
 
 void Application::DoBeforeRun()
 {
-	OnInitialize(EventArgs(*this));
+	OnInitialize(EventArgs(this));
 
 	m_bIsRunning = true;
 }
@@ -97,50 +110,32 @@ int Application::DoRun()
 	static Timer elapsedTime;
 
 	MSG msg;
-	while (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
+	while (PeekMessageW(&msg, NULL, 0, 0, PM_REMOVE))
 	{
 		if (msg.message == WM_QUIT)
 		{
-			EventArgs eventArgs(*this);
+			EventArgs eventArgs(this);
 			OnExit(eventArgs);
 		}
 
 		TranslateMessage(&msg);
-		DispatchMessage(&msg);
+		DispatchMessageW(&msg);
 	}
 
-	{
-		g_GameDeltaTime = elapsedTime.GetElapsedTime();
-		g_ApplicationTime += g_GameDeltaTime;
-		g_FrameCounter++;
+	g_GameDeltaTime = elapsedTime.GetElapsedTime();
+	g_ApplicationTime += g_GameDeltaTime;
+	g_FrameCounter++;
 
-		UpdateEventArgs updateArgs(*this, g_GameDeltaTime, g_ApplicationTime, g_FrameCounter);
-		OnUpdate(updateArgs);
-
-		m_pRenderDevice->Lock();
-		{
-			std::shared_ptr<IRenderWindowEvents> renderWindowEvents = std::dynamic_pointer_cast<IRenderWindowEvents>(m_pWindow);
-
-			RenderEventArgs renderArgs(*this, g_GameDeltaTime * 166.0f, g_ApplicationTime * 166.0f, g_FrameCounter, nullptr, nullptr, nullptr);
-			renderWindowEvents->OnPreRender(renderArgs);
-			renderWindowEvents->OnRender(renderArgs);
-			renderWindowEvents->OnPostRender(renderArgs);
-
-			RenderEventArgs renderUIArgs(*this, g_GameDeltaTime, g_ApplicationTime, g_FrameCounter, nullptr, nullptr, nullptr);
-			renderWindowEvents->OnRenderUI(renderUIArgs);
-
-			m_pWindow->Present();
-		}
-		m_pRenderDevice->Unlock();
-	}
+	UpdateEventArgs updateArgs(this, g_GameDeltaTime* 166.0f, g_ApplicationTime* 166.0f, g_FrameCounter);
+	OnUpdate(updateArgs);
 
 	return static_cast<int>(msg.wParam);
 }
 
 void Application::DoAfterRun()
 {
-	OnTerminate(EventArgs(*this));
-	OnTerminated(EventArgs(*this));
+	OnTerminate(EventArgs(this));
+	OnTerminated(EventArgs(this));
 }
 
 std::shared_ptr<IBaseManager> Application::GetBaseManager() const
@@ -159,7 +154,7 @@ void Application::SetRenderDevice(std::shared_ptr<IRenderDevice> _renderDevice)
 	m_pRenderDevice = _renderDevice;
 }
 
-std::shared_ptr<IRenderWindow> Application::GetRenderWindow() const
+/*std::shared_ptr<IRenderWindow> Application::GetRenderWindow() const
 {
 	_ASSERT(m_pWindow);
 	return m_pWindow;
@@ -171,9 +166,7 @@ void Application::SetRenderWindow(std::shared_ptr<IRenderWindow> _renderWindow)
 	{
 		m_pWindow->HideWindow();
 
-		Initialize.disconnect(InitializeConnection);
-		Update.disconnect(UpdateConnection);
-		Terminate.disconnect(TerminateConnection);
+		std::dynamic_pointer_cast<IApplicationEventsConnection>(m_pWindow)->Disconnect(this);
 
 		m_pWindow->CloseWindow();
 		m_pWindow.reset();
@@ -181,18 +174,19 @@ void Application::SetRenderWindow(std::shared_ptr<IRenderWindow> _renderWindow)
 
 	m_pWindow = _renderWindow;
 
-	InitializeConnection = Initialize.connect(&IRenderWindowEvents::OnInitialize,	std::dynamic_pointer_cast<IRenderWindowEvents>(m_pWindow), std::placeholders::_1);
-	UpdateConnection     = Update    .connect(&IRenderWindowEvents::OnUpdate,		std::dynamic_pointer_cast<IRenderWindowEvents>(m_pWindow), std::placeholders::_1);
-	TerminateConnection  = Terminate .connect(&IRenderWindowEvents::OnTerminate,	std::dynamic_pointer_cast<IRenderWindowEvents>(m_pWindow), std::placeholders::_1);
+	std::dynamic_pointer_cast<IApplicationEventsConnection>(m_pWindow)->Connect(this);
 	
 	m_pWindow->ShowWindow();
-
-	gs_WindowHandle = m_pWindow;
 
 	if (m_bIsRunning)
 	{
 		DoBeforeRun();
 	}
+}*/
+
+HINSTANCE Application::GetHINSTANCE()
+{
+	return m_HINSTANCE;
 }
 
 CLoader* Application::GetLoader()
@@ -204,7 +198,6 @@ CLoader* Application::GetLoader()
 //
 // IGameStateManager
 //
-
 void Application::AddGameState(GameStatesNames _name, std::shared_ptr<IGameState> _gameState)
 {
 	_ASSERT(_gameState != nullptr);
@@ -228,11 +221,11 @@ bool Application::SetGameState(std::shared_ptr<IGameState> _newGameState)
 	Log::Print("GameStateManager[]: Setting new CGameState.");
 
 	// 1. Unset current GameState
-	if (m_CurrentGameState != nullptr)
-	{
-		m_CurrentGameState->Unset();
-		m_CurrentGameState->SetCurrent(false);
-	}
+	//if (m_CurrentGameState != nullptr)
+	//{
+	//	m_CurrentGameState->Unset();
+	//	m_CurrentGameState->SetCurrent(false);
+	//}
 
 	// 2. If new GameState not inited, init them
 	if (!_newGameState->IsInited())
@@ -267,73 +260,4 @@ bool Application::SetGameState(std::shared_ptr<IGameState> _newGameState)
 std::shared_ptr<IGameState> Application::GetGameState()
 {
 	return m_CurrentGameState;
-}
-
-
-
-
-
-LRESULT CALLBACK Application::WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
-{
-	if (gs_WindowHandle == NULL)
-	{
-		if (message == WM_CREATE)
-			return 0;
-
-		return DefWindowProc(hwnd, message, wParam, lParam);
-	}
-	
-	return gs_WindowHandle->WndProc(hwnd, message, wParam, lParam);
-}
-
-
-
-//---------------------------------------------------------------
-//-- EVENTS
-//---------------------------------------------------------------
-
-void Application::OnInitialize(EventArgs& e)
-{
-	if (m_bIsInitialized)
-		return;
-
-	Initialize(e);
-
-	m_bIsInitialized = true;
-}
-
-void Application::OnUpdate(UpdateEventArgs& e)
-{
-	Update(e);
-}
-
-void Application::OnTerminate(EventArgs& e)
-{
-	Terminate(e);
-
-	m_pWindow.reset();
-}
-
-void Application::OnTerminated(EventArgs& e)
-{
-	m_bIsInitialized = false;
-
-	Terminated(e);
-}
-
-void Application::OnExit(EventArgs& e)
-{
-	Exit(e);
-
-	// Destroy any windows that are still hanging around.
-	if (m_pWindow)
-		m_pWindow->CloseWindow();
-
-	// Setting this to false will cause the main application's message pump to stop.
-	m_bIsRunning = false;
-}
-
-void Application::OnUserEvent(UserEventArgs& e)
-{
-	UserEvent(e);
 }

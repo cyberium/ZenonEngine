@@ -3,7 +3,7 @@
 // General
 #include "RenderWindowBase.h"
 
-static MouseButtonEventArgs::MouseButton DecodeMouseButton(UINT messageID)
+MouseButtonEventArgs::MouseButton DecodeMouseButton(UINT messageID)
 {
 	MouseButtonEventArgs::MouseButton mouseButton = MouseButtonEventArgs::None;
 	switch (messageID)
@@ -34,7 +34,6 @@ static MouseButtonEventArgs::MouseButton DecodeMouseButton(UINT messageID)
 	return mouseButton;
 }
 
-
 LRESULT RenderWindowBase::WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	switch (message)
@@ -46,8 +45,6 @@ LRESULT RenderWindowBase::WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM
 		::EndPaint(hwnd, &paintStruct);
 	}
 	break;
-
-
 
 	//
 	// Keyboard events
@@ -74,7 +71,7 @@ LRESULT RenderWindowBase::WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM
 
 		KeyCode key = (KeyCode)wParam;
 		unsigned int scanCode = (lParam & 0x00FF0000) >> 16;
-		KeyEventArgs keyEventArgs(*this, key, c, KeyEventArgs::Pressed, control, shift, alt);
+		KeyEventArgs keyEventArgs(this, key, c, KeyEventArgs::Pressed, control, shift, alt);
 		OnKeyPressed(keyEventArgs);
 	}
 	break;
@@ -99,20 +96,20 @@ LRESULT RenderWindowBase::WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM
 			c = translatedCharacters[0];
 		}
 
-		KeyEventArgs keyEventArgs(*this, key, c, KeyEventArgs::Released, control, shift, alt);
+		KeyEventArgs keyEventArgs(this, key, c, KeyEventArgs::Released, control, shift, alt);
 		OnKeyReleased(keyEventArgs);
 	}
 	break;
 	case WM_SETFOCUS:
 	{
-		EventArgs eventArgs(*this);
+		EventArgs eventArgs(this);
 		OnKeyboardFocus(eventArgs);
 	}
 	break;
 	case WM_KILLFOCUS:
 	{
 		// Window lost keyboard focus.
-		EventArgs eventArgs(*this);
+		EventArgs eventArgs(this);
 		OnKeyboardBlur(eventArgs);
 	}
 	break;
@@ -133,7 +130,7 @@ LRESULT RenderWindowBase::WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM
 		int x = ((int)(short)LOWORD(lParam));
 		int y = ((int)(short)HIWORD(lParam));
 
-		MouseMotionEventArgs mouseMotionEventArgs(*this, lButton, mButton, rButton, control, shift, x, y);
+		MouseMotionEventArgs mouseMotionEventArgs(this, lButton, mButton, rButton, control, shift, x, y);
 		OnMouseMoved(mouseMotionEventArgs);
 	}
 	break;
@@ -150,7 +147,7 @@ LRESULT RenderWindowBase::WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM
 		int x = ((int)(short)LOWORD(lParam));
 		int y = ((int)(short)HIWORD(lParam));
 
-		MouseButtonEventArgs mouseButtonEventArgs(*this, DecodeMouseButton(message), MouseButtonEventArgs::Pressed, lButton, mButton, rButton, control, shift, x, y);
+		MouseButtonEventArgs mouseButtonEventArgs(this, DecodeMouseButton(message), MouseButtonEventArgs::Pressed, lButton, mButton, rButton, control, shift, x, y);
 		OnMouseButtonPressed(mouseButtonEventArgs);
 	}
 	break;
@@ -167,7 +164,7 @@ LRESULT RenderWindowBase::WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM
 		int x = ((int)(short)LOWORD(lParam));
 		int y = ((int)(short)HIWORD(lParam));
 
-		MouseButtonEventArgs mouseButtonEventArgs(*this, DecodeMouseButton(message), MouseButtonEventArgs::Released, lButton, mButton, rButton, control, shift, x, y);
+		MouseButtonEventArgs mouseButtonEventArgs(this, DecodeMouseButton(message), MouseButtonEventArgs::Released, lButton, mButton, rButton, control, shift, x, y);
 		OnMouseButtonReleased(mouseButtonEventArgs);
 	}
 	break;
@@ -194,19 +191,19 @@ LRESULT RenderWindowBase::WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM
 		clientToScreenPoint.y = y;
 		::ScreenToClient(hwnd, &clientToScreenPoint);
 
-		MouseWheelEventArgs mouseWheelEventArgs(*this, zDelta, lButton, mButton, rButton, control, shift, (int)clientToScreenPoint.x, (int)clientToScreenPoint.y);
+		MouseWheelEventArgs mouseWheelEventArgs(this, zDelta, lButton, mButton, rButton, control, shift, (int)clientToScreenPoint.x, (int)clientToScreenPoint.y);
 		OnMouseWheel(mouseWheelEventArgs);
 	}
 	break;
 	case WM_MOUSELEAVE:
 	{
-		EventArgs mouseLeaveEventArgs(*this);
+		EventArgs mouseLeaveEventArgs(this);
 		OnMouseLeave(mouseLeaveEventArgs);
 	}
 	break;
 	case WM_MOUSEACTIVATE:
 	{
-		EventArgs mouseFocusEventArgs(*this);
+		EventArgs mouseFocusEventArgs(this);
 		OnMouseFocus(mouseFocusEventArgs);
 	}
 	break;
@@ -215,7 +212,7 @@ LRESULT RenderWindowBase::WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM
 	// TODO: Try to fix these if I need them ;)
 	case WM_CAPTURECHANGED:
 	{
-		EventArgs mouseBlurEventArgs(*this);
+		EventArgs mouseBlurEventArgs(this);
 		OnMouseBlur(mouseBlurEventArgs);
 	}
 	break;
@@ -233,14 +230,14 @@ LRESULT RenderWindowBase::WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM
 		{
 		case WA_ACTIVE:
 		{
-			EventArgs inputFocusEventArgs(*this);
+			EventArgs inputFocusEventArgs(this);
 			OnInputFocus(inputFocusEventArgs);
 		}
 		break;
 
 		case WA_INACTIVE:
 		{
-			EventArgs inputBlueEventArgs(*this);
+			EventArgs inputBlueEventArgs(this);
 			OnInputBlur(inputBlueEventArgs);
 		}
 		break;
@@ -255,14 +252,14 @@ LRESULT RenderWindowBase::WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM
 		{
 		case SIZE_MINIMIZED:
 		{
-			EventArgs mininizeEventArgs(*this);
+			EventArgs mininizeEventArgs(this);
 			OnMinimize(mininizeEventArgs);
 		}
 		break;
 
 		case SIZE_MAXIMIZED:
 		{
-			EventArgs restoreEventArgs(*this);
+			EventArgs restoreEventArgs(this);
 			OnRestore(restoreEventArgs);
 		}
 		break;
@@ -274,7 +271,7 @@ LRESULT RenderWindowBase::WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM
 
 			if (width != 0 && height != 0)
 			{
-				ResizeEventArgs resizeEventArgs(*this, width, height);
+				ResizeEventArgs resizeEventArgs(this, width, height);
 				OnResize(resizeEventArgs);
 			}
 		}
@@ -288,13 +285,11 @@ LRESULT RenderWindowBase::WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM
 
 	case WM_CLOSE:
 	{
-		WindowCloseEventArgs windowCloseEventArgs(*this);
+		WindowCloseEventArgs windowCloseEventArgs(this);
 		OnClose(windowCloseEventArgs);
 
 		if (windowCloseEventArgs.ConfirmClose)
 		{
-			// Just hide the window.
-			// Windows will be destroyed when the application quits.
 			::ShowWindow(hwnd, SW_HIDE);
 		}
 	}
@@ -304,11 +299,319 @@ LRESULT RenderWindowBase::WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM
 
 	case WM_DESTROY:
 	{
-		// TODO delete gs_WindowHandle;
+		Log::Warn("WndProc: Window destroyed.");
 	}
 	break;
 	}
 
-
 	return DefWindowProc(hwnd, message, wParam, lParam);
+}
+
+
+
+//
+// IRenderWindowEvents
+//
+Event& RenderWindowBase::Initialize()
+{
+	return m_Initialize;
+}
+void RenderWindowBase::OnInitialize(EventArgs& e)
+{
+	EventArgs initializeEventArgs(this);
+	m_Initialize(initializeEventArgs);
+}
+
+UpdateEvent& RenderWindowBase::Update()
+{
+	return m_Update;
+}
+void RenderWindowBase::OnUpdate(UpdateEventArgs& e)
+{
+	GetRenderDevice()->Lock();
+	{
+		RenderEventArgs renderArgs(this, e.ElapsedTime, e.TotalTime, e.FrameCounter, nullptr, nullptr, nullptr);
+		OnPreRender(renderArgs);
+		OnRender(renderArgs);
+		OnPostRender(renderArgs);
+
+		RenderEventArgs renderUIArgs(this, e.ElapsedTime, e.TotalTime, e.FrameCounter, nullptr, nullptr, nullptr);
+		OnRenderUI(renderUIArgs);
+
+		Present();
+	}
+	GetRenderDevice()->Unlock();
+
+	UpdateEventArgs updateArgs(this, e.ElapsedTime, e.TotalTime, e.FrameCounter);
+	m_Update(updateArgs);
+}
+
+RenderEvent& RenderWindowBase::PreRender()
+{
+	return m_PreRender;
+}
+void RenderWindowBase::OnPreRender(RenderEventArgs& e)
+{
+	if (m_bResizePending)
+	{
+		ResizeSwapChainBuffers(GetWindowWidth(), GetWindowHeight());
+		m_bResizePending = false;
+	}
+
+	m_RenderTarget->Bind();
+
+	RenderEventArgs renderArgs(this, e.ElapsedTime, e.TotalTime, e.FrameCounter, e.Camera, e.PipelineState, e.Node);
+	m_PreRender(renderArgs);
+}
+
+RenderEvent& RenderWindowBase::Render()
+{
+	return m_Render;
+}
+void RenderWindowBase::OnRender(RenderEventArgs& e)
+{
+	RenderEventArgs renderArgs(this, e.ElapsedTime, e.TotalTime, e.FrameCounter, e.Camera, e.PipelineState, e.Node);
+	m_Render(renderArgs);
+}
+
+RenderEvent& RenderWindowBase::PostRender()
+{
+	return m_PostRender;
+}
+void RenderWindowBase::OnPostRender(RenderEventArgs& e)
+{
+	RenderEventArgs renderArgs(this, e.ElapsedTime, e.TotalTime, e.FrameCounter, e.Camera, e.PipelineState, e.Node);
+	m_PostRender(renderArgs);
+
+	//m_RenderTarget->UnBind();
+}
+
+RenderEvent& RenderWindowBase::RenderUI()
+{
+	return m_RenderUI;
+}
+void RenderWindowBase::OnRenderUI(RenderEventArgs& e)
+{
+	RenderEventArgs renderArgs(this, e.ElapsedTime, e.TotalTime, e.FrameCounter, e.Camera, e.PipelineState, e.Node);
+	m_RenderUI(renderArgs);
+}
+
+Event& RenderWindowBase::Terminate()
+{
+	return m_Terminate;
+}
+void RenderWindowBase::OnTerminate(EventArgs& e)
+{
+	m_Terminate(e);
+}
+
+
+//
+// Window events
+//
+Event& RenderWindowBase::InputFocus()
+{
+	return m_InputFocus;
+}
+void RenderWindowBase::OnInputFocus(EventArgs& e) // The window has received focus
+{
+	m_InputFocus(e);
+}
+
+Event& RenderWindowBase::InputBlur()
+{
+	return m_InputBlur;
+}
+void RenderWindowBase::OnInputBlur(EventArgs& e) // The RenderWindowBase window has lost focus
+{
+	m_InputBlur(e);
+}
+
+Event& RenderWindowBase::Minimize()
+{
+	return m_Minimize;
+}
+void RenderWindowBase::OnMinimize(EventArgs& e) // The RenderWindowBase window has been minimized
+{
+	m_Minimize(e);
+}
+
+Event& RenderWindowBase::Restore()
+{
+	return m_Restore;
+}
+void RenderWindowBase::OnRestore(EventArgs& e) // The RenderWindowBase window has been restored
+{
+	m_Restore(e);
+}
+
+ResizeEvent& RenderWindowBase::Resize()
+{
+	return m_Resize;
+}
+void RenderWindowBase::OnResize(ResizeEventArgs& e) // The RenderWindowBase window has be resized
+{
+	m_Viewport.SetWidth(e.Width);
+	m_Viewport.SetHeight(e.Height);
+
+	m_Resize(e);
+
+	//HideWindow();
+	//ShowWindow();
+
+	m_bResizePending = true;
+}
+
+Event& RenderWindowBase::Expose()
+{
+	return m_Expose;
+}
+void RenderWindowBase::OnExpose(EventArgs& e) // The window contents should be repainted
+{
+	m_Expose(e);
+}
+
+WindowCloseEvent& RenderWindowBase::Close()
+{
+	return m_Close;
+}
+void RenderWindowBase::OnClose(WindowCloseEventArgs& e)
+{
+	m_Close(e);
+}
+
+
+
+//
+// Keyboard events
+//
+KeyboardEvent& RenderWindowBase::KeyPressed()
+{
+	return m_KeyPressed;
+}
+void RenderWindowBase::OnKeyPressed(KeyEventArgs& e) // A keyboard key was pressed
+{
+	m_KeyPressed(e);
+}
+
+KeyboardEvent& RenderWindowBase::KeyReleased()
+{
+	return m_KeyReleased;
+}
+void RenderWindowBase::OnKeyReleased(KeyEventArgs& e) // A keyboard key was released
+{
+	m_KeyReleased(e);
+}
+
+Event& RenderWindowBase::KeyboardFocus()
+{
+	return m_KeyboardFocus;
+}
+void RenderWindowBase::OnKeyboardFocus(EventArgs& e) // Window gained keyboard focus
+{
+	m_bHasKeyboardFocus = true;
+	m_KeyboardFocus(e);
+}
+
+Event& RenderWindowBase::KeyboardBlur()
+{
+	return m_KeyboardBlur;
+}
+void RenderWindowBase::OnKeyboardBlur(EventArgs& e) // Window lost keyboard focus
+{
+	m_bHasKeyboardFocus = false;
+	m_KeyboardBlur(e);
+}
+
+
+//
+// The mouse events
+//
+MouseMotionEvent& RenderWindowBase::MouseMoved()
+{
+	return m_MouseMoved;
+}
+void RenderWindowBase::OnMouseMoved(MouseMotionEventArgs& e)
+{
+	if (!m_IsMouseTracking)
+	{
+		TRACKMOUSEEVENT tme;
+		tme.cbSize = sizeof(TRACKMOUSEEVENT);
+		tme.dwFlags = TME_LEAVE;
+		tme.hwndTrack = m_WindowObject->GetHWnd();
+		if (::TrackMouseEvent(&tme))
+		{
+			m_IsMouseTracking = true;
+		}
+	}
+
+	if (!m_InClientRect)
+	{
+		m_PreviousMousePosition = glm::ivec2(e.X, e.Y);
+		m_InClientRect = true;
+	}
+
+	e.RelX = e.X - m_PreviousMousePosition.x;
+	e.RelY = e.Y - m_PreviousMousePosition.y;
+
+	m_PreviousMousePosition = glm::ivec2(e.X, e.Y);
+
+	m_MouseMoved(e);
+}
+
+MouseButtonEvent& RenderWindowBase::MouseButtonPressed()
+{
+	return m_MouseButtonPressed;
+}
+void RenderWindowBase::OnMouseButtonPressed(MouseButtonEventArgs& e)
+{
+	m_MouseButtonPressed(e);
+}
+
+MouseButtonEvent& RenderWindowBase::MouseButtonReleased()
+{
+	return m_MouseButtonReleased;
+}
+void RenderWindowBase::OnMouseButtonReleased(MouseButtonEventArgs& e)
+{
+	m_MouseButtonReleased(e);
+}
+
+MouseWheelEvent& RenderWindowBase::MouseWheel()
+{
+	return m_MouseWheel;
+}
+void RenderWindowBase::OnMouseWheel(MouseWheelEventArgs& e)
+{
+	m_MouseWheel(e);
+}
+
+Event& RenderWindowBase::MouseLeave()
+{
+	return m_MouseLeave;
+}
+void RenderWindowBase::OnMouseLeave(EventArgs& e)
+{
+	m_IsMouseTracking = false;
+	m_InClientRect = false;
+
+	m_MouseLeave(e);
+}
+
+Event& RenderWindowBase::MouseFocus()
+{
+	return m_MouseFocus;
+}
+void RenderWindowBase::OnMouseFocus(EventArgs& e) // The window has received mouse focus
+{
+	m_MouseFocus(e);
+}
+
+Event& RenderWindowBase::MouseBlur()
+{
+	return m_MouseBlur;
+}
+void RenderWindowBase::OnMouseBlur(EventArgs& e) // The window has lost mouse focus
+{
+	m_MouseBlur(e);
 }

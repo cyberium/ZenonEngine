@@ -1,6 +1,6 @@
 #pragma once
 
-struct OW_ENGINE_API IWindowObject
+ZN_INTERFACE OW_ENGINE_API IWindowObject
 {
 	virtual ~IWindowObject() {}
 
@@ -22,14 +22,19 @@ struct OW_ENGINE_API IWindowObject
 	virtual BOOL DestroyWindow() = 0;
 };
 
+ZN_INTERFACE OW_ENGINE_API IWindowClassRegistrator
+{
+	virtual void RegisterWindowClass(LPCWSTR WindowClassName) = 0;
+	virtual void UnregisterWindowClass() = 0;
+	virtual LPCWSTR GetWindowClassName() const = 0;
+};
 
-struct OW_ENGINE_API IWindowObjectEx
+ZN_INTERFACE OW_ENGINE_API IWindowObjectEx
 {
 	virtual ~IWindowObjectEx() {}
 
 	virtual void SetWindowHandle(HWND HWnd) = 0;
-	virtual void RegisterWindowClass(HINSTANCE HInstance) = 0;
-	virtual void UnregisterWindowClass() = 0;
-	virtual HWND CreateWindowInstance(int nWidth, int nHeight) = 0;
+
+	virtual HWND CreateWindowInstance(IApplication * Application, IWindowClassRegistrator * WindowClassRegistrator, LPCWSTR WindowName, LONG Width, LONG Height) = 0;
 	virtual void DestroyWindowInstance() = 0;
 };

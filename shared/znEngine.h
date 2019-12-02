@@ -16,6 +16,7 @@
 #include "../znEngine/EngineTime.h"
 #include "../znEngine/Loader.h"
 #include "../znEngine/SceneFunctional/UI/Fonts/FontsManager.h"
+#include "../znEngine/WindowClassRegistrator.h"
 #include "../znEngine/WindowCreator.h"
 #include "../znEngine/Plugins/PluginsManager.h"
 

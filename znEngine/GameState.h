@@ -10,7 +10,7 @@
 class OW_ENGINE_API CGameState : public IGameState
 {
 public:
-                                                    CGameState(const IApplication * Application);
+                                                    CGameState(const IApplication * Application, std::shared_ptr<IRenderWindow> RenderWindow);
 	virtual                                         ~CGameState();
 
 	// IGameState
@@ -50,6 +50,7 @@ public:
 
 protected:
     const IApplication*                             GetApplication() const;
+	const std::shared_ptr<IRenderWindow>            GetRenderWindow() const;
 	const std::shared_ptr<IBaseManager>             GetBaseManager() const;
 
 	void                                            SetCameraController(std::shared_ptr<ICameraController> CameraController);
@@ -58,6 +59,7 @@ protected:
 
 protected:
 	const IApplication*                             m_Application;
+	std::shared_ptr<IRenderWindow>                  m_RenderWindow;
 
     std::shared_ptr<IQuery>                          m_FrameQuery;
     double                                          m_FrameTime;

@@ -19,7 +19,6 @@ void CGBuffer::Load(uint32 width, uint32 height)
 {
 	IApplication& app = Application::Get();
 	std::shared_ptr<IRenderDevice> renderDevice = app.GetRenderDevice();
-	std::shared_ptr<IRenderWindow> renderWindow = app.GetRenderWindow();
 
 	uint32 numSamples = 1;
 
@@ -78,7 +77,6 @@ void CGBuffer::Load2(const Viewport * _viewPort)
 {
 	IApplication& app = Application::Get();
 	std::shared_ptr<IRenderDevice> renderDevice = app.GetRenderDevice();
-	std::shared_ptr<IRenderWindow> renderWindow = app.GetRenderWindow();
 
 
 	// Shaders that unite 4 textures
@@ -102,7 +100,7 @@ void CGBuffer::Load2(const Viewport * _viewPort)
 
 
 	std::shared_ptr<IRenderTarget> g_pDepthOnlyRenderTarget = renderDevice->CreateRenderTarget();
-	g_pDepthOnlyRenderTarget->AttachTexture(IRenderTarget::AttachmentPoint::DepthStencil, renderWindow->GetRenderTarget()->GetTexture(IRenderTarget::AttachmentPoint::DepthStencil));
+	//TODO:::: --------------- renderWINDOW g_pDepthOnlyRenderTarget->AttachTexture(IRenderTarget::AttachmentPoint::DepthStencil, renderWindow->GetRenderTarget()->GetTexture(IRenderTarget::AttachmentPoint::DepthStencil));
 
 
 	// Pipeline for deferred lighting (stage 1 to determine lit pixels)
@@ -141,7 +139,7 @@ void CGBuffer::Load2(const Viewport * _viewPort)
 		g_pDeferredLightingPipeline2 = renderDevice->CreatePipelineState();
 		g_pDeferredLightingPipeline2->SetShader(IShader::ShaderType::VertexShader, g_pVertexShader);
 		g_pDeferredLightingPipeline2->SetShader(IShader::ShaderType::PixelShader, g_pDeferredLightingPixelShader);
-		g_pDeferredLightingPipeline2->SetRenderTarget(renderWindow->GetRenderTarget());
+		//TODO:::: --------------- renderWINDOW g_pDeferredLightingPipeline2->SetRenderTarget(renderWindow->GetRenderTarget());
 
 		// Setup rasterizer state.
 		g_pDeferredLightingPipeline2->GetRasterizerState()->SetViewport(_viewPort);
@@ -176,7 +174,7 @@ void CGBuffer::Load2(const Viewport * _viewPort)
 		g_pDirectionalLightsPipeline = renderDevice->CreatePipelineState();
 		g_pDirectionalLightsPipeline->SetShader(IShader::ShaderType::VertexShader, g_pVertexShader);
 		g_pDirectionalLightsPipeline->SetShader(IShader::ShaderType::PixelShader, g_pDeferredLightingPixelShader);
-		g_pDirectionalLightsPipeline->SetRenderTarget(renderWindow->GetRenderTarget());
+		//TODO:::: --------------- renderWINDOW g_pDirectionalLightsPipeline->SetRenderTarget(renderWindow->GetRenderTarget());
 
 		// Setup rasterizer state.
 		g_pDirectionalLightsPipeline->GetRasterizerState()->SetCullMode(IRasterizerState::CullMode::None);

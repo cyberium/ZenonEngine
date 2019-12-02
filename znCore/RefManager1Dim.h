@@ -8,9 +8,7 @@ public:
 	virtual ~CRefManager1Dim();
 
 	std::shared_ptr<T> Add(const std::string& name);
-
 	bool Exists(const std::string& name) const;
-
 	void Delete(const std::string& name);
 	void Delete(std::shared_ptr<T> item);
 

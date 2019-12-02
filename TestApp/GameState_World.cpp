@@ -5,8 +5,8 @@
 
 // Additional
 
-CGameState_World::CGameState_World(const IApplication * _application)
-    : base(_application)
+CGameState_World::CGameState_World(const IApplication * _application, std::shared_ptr<IRenderWindow> RenderWindow)
+    : base(_application, RenderWindow)
 {
 }
 
@@ -24,13 +24,12 @@ bool CGameState_World::Init()
 
     IApplication& app = Application::Get();
     std::shared_ptr<IRenderDevice> renderDevice = app.GetRenderDevice();
-	std::shared_ptr<IRenderWindow> renderWindow = app.GetRenderWindow();
 
     //
     // Camera controller
     //
     SetCameraController(std::make_shared<CFreeCameraController>());
-    GetCameraController()->GetCamera()->SetViewport(renderWindow->GetViewport());
+    GetCameraController()->GetCamera()->SetViewport(GetRenderWindow()->GetViewport());
     GetCameraController()->GetCamera()->SetProjectionRH(45.0f, 1280.0f / 1024.0f, 0.5f, 4000.0f);
 
     m_FrameQuery = renderDevice->CreateQuery(IQuery::QueryType::Timer, 1);
@@ -55,19 +54,15 @@ void CGameState_World::Destroy()
 //
 //
 
-void CGameState_World::OnResize(ResizeEventArgs & e)
+void CGameState_World::OnResize(ResizeEventArgs& e)
 {
     if (e.Width == 0 || e.Height == 0)
         return;
 
 	base::OnResize(e);
 
-	IApplication& app = Application::Get();
-	std::shared_ptr<IRenderDevice> renderDevice = app.GetRenderDevice();
-	std::shared_ptr<IRenderWindow> renderWindow = app.GetRenderWindow();
-
-    m_3DTechnique.UpdateViewport(renderWindow->GetViewport());
-    m_UITechnique.UpdateViewport(renderWindow->GetViewport());
+    m_3DTechnique.UpdateViewport(dynamic_cast<const IRenderWindow*>(e.Caller)->GetViewport());
+    m_UITechnique.UpdateViewport(dynamic_cast<const IRenderWindow*>(e.Caller)->GetViewport());
 }
 
 void CGameState_World::OnPreRender(RenderEventArgs& e)
@@ -124,7 +119,6 @@ void CGameState_World::Load3D()
 {
     IApplication& app = Application::Get();
     std::shared_ptr<IRenderDevice> renderDevice = app.GetRenderDevice();
-    std::shared_ptr<IRenderWindow> renderWindow = app.GetRenderWindow();
     
 	IBlendState::BlendMode alphaBlending(true, false, IBlendState::BlendFactor::SrcAlpha, IBlendState::BlendFactor::OneMinusSrcAlpha, IBlendState::BlendOperation::Add, IBlendState::BlendFactor::SrcAlpha, IBlendState::BlendFactor::OneMinusSrcAlpha);
 	IBlendState::BlendMode disableBlending;
@@ -136,8 +130,8 @@ void CGameState_World::Load3D()
 	UIPipeline->GetDepthStencilState()->SetDepthMode(disableDepthWrites);
 	UIPipeline->GetRasterizerState()->SetCullMode(IRasterizerState::CullMode::None);
 	UIPipeline->GetRasterizerState()->SetFillMode(IRasterizerState::FillMode::Solid);
-	UIPipeline->SetRenderTarget(renderWindow->GetRenderTarget());
-	UIPipeline->GetRasterizerState()->SetViewport(renderWindow->GetViewport());
+	UIPipeline->SetRenderTarget(GetRenderWindow()->GetRenderTarget());
+	UIPipeline->GetRasterizerState()->SetViewport(GetRenderWindow()->GetViewport());
 
 	std::shared_ptr<SceneNode3D> sceneNode = m_3DScene->CreateSceneNode<SceneNode3D>(m_3DScene->GetRootNode());
 
@@ -155,7 +149,7 @@ void CGameState_World::Load3D()
 	//CFBX fbx(m_3DScene->GetRootNode());
 
 
-    m_3DTechnique.AddPass(std::make_shared<ClearRenderTargetPass>(renderWindow->GetRenderTarget(), ClearFlags::All, g_ClearColor, 1.0f, 0));
+    m_3DTechnique.AddPass(std::make_shared<ClearRenderTargetPass>(GetRenderWindow()->GetRenderTarget(), ClearFlags::All, g_ClearColor, 1.0f, 0));
 	m_3DTechnique.AddPass(std::make_shared<BasePass>(m_3DScene, UIPipeline));
 }
 
@@ -163,7 +157,6 @@ void CGameState_World::LoadUI()
 {
     IApplication& app = Application::Get();
     std::shared_ptr<IRenderDevice> renderDevice = app.GetRenderDevice();
-	std::shared_ptr<IRenderWindow> renderWindow = app.GetRenderWindow();
 
     // Font
     m_CameraPosText = m_UIScene->GetRootNode()->CreateSceneNode<CUITextNode>();
@@ -177,5 +170,5 @@ void CGameState_World::LoadUI()
     //
     // UI Passes
     //
-    AddUIPasses(renderDevice, app.GetRenderWindow()->GetRenderTarget(), &m_UITechnique, renderWindow->GetViewport(), m_UIScene);
+    AddUIPasses(renderDevice, GetRenderWindow()->GetRenderTarget(), &m_UITechnique, GetRenderWindow()->GetViewport(), m_UIScene);
 }

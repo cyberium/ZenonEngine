@@ -19,4 +19,3 @@
 
 // Objects bindings
 #include "../znCore/BaseManager.h"
-#include "../znCore/Object.h"

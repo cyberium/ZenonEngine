@@ -1,9 +1,5 @@
 #pragma once
 
-// FORWARD BEGIN
-class SceneNode3D;
-// FORWARD END
-
 struct OW_ENGINE_API IznCamera
 {
     virtual glm::mat4 GetViewMatrix() const = 0;

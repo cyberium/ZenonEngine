@@ -3,28 +3,12 @@
 // General
 #include "WindowCreator.h"
 
-// Additional
-#include "Application.h"
-
-const char*    c_RenderWindow_ClassNameA = "RenderWindowClass";
-const wchar_t* c_RenderWindow_ClassNameW = L"RenderWindowClass";
-
-#ifdef UNICODE
-#define c_RenderWindow_ClassName  c_RenderWindow_ClassNameW
-#else
-#define c_RenderWindow_ClassName  c_RenderWindow_ClassNameA
-#endif // !UNICODE
-
 CWindowObject::CWindowObject()
 	: m_HWnd(NULL)
-	, m_HInstance(NULL)
-{
-}
-
+{}
 
 CWindowObject::~CWindowObject()
-{
-}
+{}
 
 
 
@@ -121,59 +105,16 @@ void CWindowObject::SetWindowHandle(HWND HWnd)
 	m_HWnd = HWnd;
 }
 
-void CWindowObject::RegisterWindowClass(HINSTANCE HInstance)
-{
-	_ASSERT(m_HInstance == NULL);
-	m_HInstance = HInstance;
 
-	HINSTANCE hDll;
-	hDll = LoadLibrary(L"SHELL32.dll");
 
-	// Register a window class for creating our render windows with.
-	WNDCLASSEX renderWindowClass;
-	renderWindowClass.cbSize = sizeof(WNDCLASSEX);
-	renderWindowClass.style = CS_HREDRAW | CS_VREDRAW | CS_OWNDC;
-	renderWindowClass.lpfnWndProc = &Application::WndProc;
-	renderWindowClass.cbClsExtra = 0;
-	renderWindowClass.cbWndExtra = 0;
-	renderWindowClass.hInstance = m_HInstance;
-	renderWindowClass.hIcon = LoadIcon(hDll, MAKEINTRESOURCE(2));
-	renderWindowClass.hCursor = LoadCursor(NULL, IDC_ARROW);
-	renderWindowClass.hbrBackground = (HBRUSH)(COLOR_WINDOW + 1);
-	renderWindowClass.lpszMenuName = NULL;
-	renderWindowClass.lpszClassName = c_RenderWindow_ClassName;
-	renderWindowClass.hIconSm = LoadIcon(hDll, MAKEINTRESOURCE(2));
-
-	if (RegisterClassEx(&renderWindowClass) == FALSE)
-	{
-		_ASSERT_EXPR(false, "CWindowObject: Failed to register the render window class.");
-	}
-}
-
-void CWindowObject::UnregisterWindowClass()
-{
-	_ASSERT(m_HInstance != NULL);
-
-	if (m_HWnd != NULL)
-	{
-		DestroyWindowInstance();
-	}
-
-	if (UnregisterClass(c_RenderWindow_ClassName, m_HInstance) == FALSE)
-	{
-		_ASSERT_EXPR(false, "CWindowObject: Failed to unregister render window class");
-	}
-}
-
-HWND CWindowObject::CreateWindowInstance(int nWidth, int nHeight)
+HWND CWindowObject::CreateWindowInstance(IApplication * Application, IWindowClassRegistrator * WindowClassRegistrator, LPCWSTR WindowName, LONG Width, LONG Height)
 {
 	_ASSERT(m_HWnd == NULL);
-	_ASSERT(m_HInstance != NULL);
 
 	int screenWidth = ::GetSystemMetrics(SM_CXSCREEN);
 	int screenHeight = ::GetSystemMetrics(SM_CYSCREEN);
 
-	RECT windowRect = { 0, 0, nWidth, nHeight };
+	RECT windowRect = { 0, 0, Width, Height };
 	::AdjustWindowRect(&windowRect, WS_OVERLAPPEDWINDOW, FALSE);
 
 	int windowWidth = windowRect.right - windowRect.left;
@@ -182,18 +123,20 @@ HWND CWindowObject::CreateWindowInstance(int nWidth, int nHeight)
 	int windowX = (screenWidth - windowWidth) / 2;
 	int windowY = (screenHeight - windowHeight) / 2;
 
-	m_HWnd = CreateWindowEx
+	m_HWnd = CreateWindowExW
 	(
 		NULL,
-		c_RenderWindow_ClassName,
-		c_RenderWindow_ClassName,
+		WindowClassRegistrator->GetWindowClassName(),
+		WindowName,
 		WS_OVERLAPPEDWINDOW,
 		windowX, windowY, windowWidth, windowHeight,
 		NULL,
 		NULL,
-		m_HInstance,
+		Application->GetHINSTANCE(),
 		NULL
 	);
+
+	SetWindowLongPtr(m_HWnd, GWLP_USERDATA, (LONG_PTR)dynamic_cast<IApplicationEvents*>(Application));
 
 	if (m_HWnd == NULL)
 	{
@@ -206,7 +149,6 @@ HWND CWindowObject::CreateWindowInstance(int nWidth, int nHeight)
 void CWindowObject::DestroyWindowInstance()
 {
 	_ASSERT(m_HWnd != NULL);
-	_ASSERT(m_HInstance != NULL);
 
-	DestroyWindow();
+	::DestroyWindow(m_HWnd);
 }

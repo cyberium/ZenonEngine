@@ -2,9 +2,6 @@
 
 #include <functional>
 
-#include "Object.h"
-#include "KeyCodes.h"
-
 // FORWARD BEGIN
 ZN_INTERFACE IPipelineState;
 class Camera;
@@ -47,14 +44,20 @@ public:
 
 	void operator()(typename ArgumentType& argument)
 	{
-		std::for_each(
+		for (const auto& it : m_Functions)
+		{
+			(*it)(argument);
+		}
+
+
+		/*std::for_each(
 			m_Functions.begin(),
 			m_Functions.end(),
 			[&argument](const FunctionDecl& _decl) 
 			{ 
 				(*_decl)(argument); 
 			}
-		);
+		);*/
 	}
 
 private:
@@ -65,12 +68,12 @@ private:
 class OW_ENGINE_API EventArgs
 {
 public:
-	EventArgs(const Object& caller)
+	EventArgs(const Object* caller)
 		: Caller(caller)
 	{}
 
 	// The object that invoked the event
-	const Object& Caller;
+	const Object* Caller;
 };
 typedef Delegate<EventArgs> Event;
 
@@ -79,7 +82,7 @@ class OW_ENGINE_API WindowCloseEventArgs : EventArgs
 {
 	typedef EventArgs base;
 public:
-	WindowCloseEventArgs(const Object& caller)
+	WindowCloseEventArgs(const Object* caller)
 		: base(caller)
 		, ConfirmClose(true)
 	{}
@@ -104,7 +107,7 @@ public:
 		Pressed = 1
 	};
 
-	KeyEventArgs(const Object& caller, KeyCode key, uint32 c, KeyState state, bool control, bool shift, bool alt)
+	KeyEventArgs(const Object* caller, KeyCode key, uint32 c, KeyState state, bool control, bool shift, bool alt)
 		: base(caller)
 		, Key(key)
 		, Char(c)
@@ -128,7 +131,7 @@ class OW_ENGINE_API MouseMotionEventArgs : public EventArgs
 {
 	typedef EventArgs base;
 public:
-	MouseMotionEventArgs(const Object& caller, bool leftButton, bool middleButton, bool rightButton, bool control, bool shift, int x, int y)
+	MouseMotionEventArgs(const Object* caller, bool leftButton, bool middleButton, bool rightButton, bool control, bool shift, int x, int y)
 		: base(caller)
 		, LeftButton(leftButton)
 		, MiddleButton(middleButton)
@@ -172,7 +175,7 @@ public:
 	};
 
 	typedef EventArgs base;
-	MouseButtonEventArgs(const Object& caller, MouseButton buttonID, ButtonState state, bool leftButton, bool middleButton, bool rightButton, bool control, bool shift, int x, int y)
+	MouseButtonEventArgs(const Object* caller, MouseButton buttonID, ButtonState state, bool leftButton, bool middleButton, bool rightButton, bool control, bool shift, int x, int y)
 		: base(caller)
 		, Button(buttonID)
 		, State(state)
@@ -205,7 +208,7 @@ class OW_ENGINE_API MouseWheelEventArgs : public EventArgs
 {
 public:
 	typedef EventArgs base;
-	MouseWheelEventArgs(const Object& caller, float wheelDelta, bool leftButton, bool middleButton, bool rightButton, bool control, bool shift, int x, int y)
+	MouseWheelEventArgs(const Object* caller, float wheelDelta, bool leftButton, bool middleButton, bool rightButton, bool control, bool shift, int x, int y)
 		: base(caller)
 		, WheelDelta(wheelDelta)
 		, LeftButton(leftButton)
@@ -237,7 +240,7 @@ class OW_ENGINE_API ResizeEventArgs : public EventArgs
 {
 public:
 	typedef EventArgs base;
-	ResizeEventArgs(const Object& caller, int width, int height)
+	ResizeEventArgs(const Object* caller, int width, int height)
 		: base(caller)
 		, Width(width)
 		, Height(height)
@@ -255,7 +258,7 @@ class OW_ENGINE_API UpdateEventArgs : public EventArgs
 public:
 	UpdateEventArgs
 	(
-		const Object& caller,
+		const Object* caller,
 		float DeltaTime,
 		float TotalTime,
 		uint64_t FrameCounter
@@ -279,7 +282,7 @@ class OW_ENGINE_API RenderEventArgs : public EventArgs
 public:
 	RenderEventArgs
 	(
-		const Object& Caller,
+		const Object* Caller,
 		float DeltaTime,
 		float TotalTime,
 		uint64_t FrameCounter,
@@ -312,7 +315,7 @@ class OW_ENGINE_API UserEventArgs : public EventArgs
 {
 	typedef EventArgs base;
 public:
-	UserEventArgs(const Object& caller, int code, void* data1, void* data2)
+	UserEventArgs(const Object* caller, int code, void* data1, void* data2)
 		: base(caller)
 		, Code(code)
 		, Data1(data1)

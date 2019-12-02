@@ -38,11 +38,11 @@ protected: // PerObject functional
 	std::shared_ptr<IConstantBuffer>                 m_PerObjectConstantBuffer;
 
 	void                                            SetPerObjectConstantBufferData(PerObject& perObjectData);
-	std::shared_ptr<IConstantBuffer>                 GetPerObjectConstantBuffer() const;
+	std::shared_ptr<IConstantBuffer>                GetPerObjectConstantBuffer() const;
     void                                            BindPerObjectConstantBuffer(std::shared_ptr<IShader> shader);
 
 protected:
-    std::shared_ptr<IPipelineState>                  GetPipelineState() const;
+    std::shared_ptr<IPipelineState>                 GetPipelineState() const;
     std::shared_ptr<IRenderDevice>                  GetRenderDevice() const;
 
 private:
