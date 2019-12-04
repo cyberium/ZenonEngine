@@ -91,9 +91,6 @@
     <Filter Include="Resources\Shaders_OGL\UI">
       <UniqueIdentifier>{f4acda98-2887-4580-b2b9-57a1cf6bf95f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="FBX">
-      <UniqueIdentifier>{d9523bc5-6faa-44da-9380-191b2b28f432}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Managers">
       <UniqueIdentifier>{bea8c7b6-a116-4292-87d0-9e849456ef13}</UniqueIdentifier>
     </Filter>
@@ -240,12 +237,6 @@
     <ClCompile Include="SceneFunctional\Base\TransformComponentBase.cpp">
       <Filter>Scene Funcitonal\Base\Components</Filter>
     </ClCompile>
-    <ClCompile Include="SceneFunctional\Base\Scene.cpp">
-      <Filter>Scene Funcitonal\Base</Filter>
-    </ClCompile>
-    <ClCompile Include="SceneFunctional\Base\SceneNode.cpp">
-      <Filter>Scene Funcitonal\Base</Filter>
-    </ClCompile>
     <ClCompile Include="SceneFunctional\UI\TransformComponentUI.cpp">
       <Filter>Scene Funcitonal\UI\Components</Filter>
     </ClCompile>
@@ -291,36 +282,6 @@
     <ClCompile Include="Passes\RenderTechnique.cpp">
       <Filter>Passes\Base</Filter>
     </ClCompile>
-    <ClCompile Include="FBX.cpp">
-      <Filter>FBX</Filter>
-    </ClCompile>
-    <ClCompile Include="FBXHelpers.cpp">
-      <Filter>FBX</Filter>
-    </ClCompile>
-    <ClCompile Include="FBXDisplayHierarchy.cpp">
-      <Filter>FBX</Filter>
-    </ClCompile>
-    <ClCompile Include="FBXDisplayMesh.cpp">
-      <Filter>FBX</Filter>
-    </ClCompile>
-    <ClCompile Include="FBXDisplayMaterial.cpp">
-      <Filter>FBX</Filter>
-    </ClCompile>
-    <ClCompile Include="FBXDisplayShape.cpp">
-      <Filter>FBX</Filter>
-    </ClCompile>
-    <ClCompile Include="FBXDisplayTexture.cpp">
-      <Filter>FBX</Filter>
-    </ClCompile>
-    <ClCompile Include="FBXDisplayCache.cpp">
-      <Filter>FBX</Filter>
-    </ClCompile>
-    <ClCompile Include="FBXDisplayLink.cpp">
-      <Filter>FBX</Filter>
-    </ClCompile>
-    <ClCompile Include="FBXDisplayCommon.cpp">
-      <Filter>FBX</Filter>
-    </ClCompile>
     <ClCompile Include="znEngine.cpp">
       <Filter>Common</Filter>
     </ClCompile>
@@ -341,6 +302,12 @@
     </ClCompile>
     <ClCompile Include="Application_Events.cpp" />
     <ClCompile Include="WindowClassRegistrator.cpp" />
+    <ClCompile Include="SceneFunctional\Base\SceneNodeBase.cpp">
+      <Filter>Scene Funcitonal\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneFunctional\Base\SceneBase.cpp">
+      <Filter>Scene Funcitonal\Base</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="common.h">
@@ -484,12 +451,6 @@
     <ClInclude Include="SceneFunctional\Base\TransformComponentBase.h">
       <Filter>Scene Funcitonal\Base\Components</Filter>
     </ClInclude>
-    <ClInclude Include="SceneFunctional\Base\Scene.h">
-      <Filter>Scene Funcitonal\Base</Filter>
-    </ClInclude>
-    <ClInclude Include="SceneFunctional\Base\SceneNode.h">
-      <Filter>Scene Funcitonal\Base</Filter>
-    </ClInclude>
     <ClInclude Include="SceneFunctional\UI\TransformComponentUI.h">
       <Filter>Scene Funcitonal\UI\Components</Filter>
     </ClInclude>
@@ -535,36 +496,6 @@
     <ClInclude Include="Passes\RenderTechnique.h">
       <Filter>Passes\Base</Filter>
     </ClInclude>
-    <ClInclude Include="FBX.h">
-      <Filter>FBX</Filter>
-    </ClInclude>
-    <ClInclude Include="FBXHelpers.h">
-      <Filter>FBX</Filter>
-    </ClInclude>
-    <ClInclude Include="FBXDisplayHierarchy.h">
-      <Filter>FBX</Filter>
-    </ClInclude>
-    <ClInclude Include="FBXDisplayMesh.h">
-      <Filter>FBX</Filter>
-    </ClInclude>
-    <ClInclude Include="FBXDisplayCache.h">
-      <Filter>FBX</Filter>
-    </ClInclude>
-    <ClInclude Include="FBXDisplayLink.h">
-      <Filter>FBX</Filter>
-    </ClInclude>
-    <ClInclude Include="FBXDisplayMaterial.h">
-      <Filter>FBX</Filter>
-    </ClInclude>
-    <ClInclude Include="FBXDisplayShape.h">
-      <Filter>FBX</Filter>
-    </ClInclude>
-    <ClInclude Include="FBXDisplayTexture.h">
-      <Filter>FBX</Filter>
-    </ClInclude>
-    <ClInclude Include="FBXDisplayCommon.h">
-      <Filter>FBX</Filter>
-    </ClInclude>
     <ClInclude Include="RenderDeviceCreatorFactory.h">
       <Filter>Managers</Filter>
     </ClInclude>
@@ -581,6 +512,12 @@
       <Filter>Managers\Plugins</Filter>
     </ClInclude>
     <ClInclude Include="WindowClassRegistrator.h" />
+    <ClInclude Include="SceneFunctional\Base\SceneNodeBase.h">
+      <Filter>Scene Funcitonal\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneFunctional\Base\SceneBase.h">
+      <Filter>Scene Funcitonal\Base</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="znEngine.rc">
@@ -636,6 +573,18 @@
     <Text Include="Resources\shaders_OGL\UI\UI_Font.ps">
       <Filter>Resources\Shaders_OGL\UI</Filter>
     </Text>
+    <Text Include="Resources\shaders_OGL\3D\Debug.vs">
+      <Filter>Resources\Shaders_OGL\3D</Filter>
+    </Text>
+    <Text Include="Resources\shaders_OGL\3D\Debug.ps">
+      <Filter>Resources\Shaders_OGL\3D</Filter>
+    </Text>
+    <Text Include="Resources\shaders_OGL\3D\Textured.vs">
+      <Filter>Resources\Shaders_OGL\3D</Filter>
+    </Text>
+    <Text Include="Resources\shaders_OGL\3D\Textured.ps">
+      <Filter>Resources\Shaders_OGL\3D</Filter>
+    </Text>
   </ItemGroup>
   <ItemGroup>
     <None Include="SceneFunctional\3D\SceneNode3D.inl">
@@ -644,26 +593,8 @@
     <None Include="SceneFunctional\Base\ComponentBase.inl">
       <Filter>Scene Funcitonal\Base\Components</Filter>
     </None>
-    <None Include="SceneFunctional\Base\Scene.inl">
-      <Filter>Scene Funcitonal\Base</Filter>
-    </None>
-    <None Include="SceneFunctional\Base\SceneNode.inl">
-      <Filter>Scene Funcitonal\Base</Filter>
-    </None>
     <None Include="SceneFunctional\UI\SceneNodeUI.inl">
       <Filter>Scene Funcitonal\UI</Filter>
-    </None>
-    <None Include="Resources\shaders_OGL\3D\Debug.ps">
-      <Filter>Resources\Shaders_OGL\3D</Filter>
-    </None>
-    <None Include="Resources\shaders_OGL\3D\Debug.vs">
-      <Filter>Resources\Shaders_OGL\3D</Filter>
-    </None>
-    <None Include="Resources\shaders_OGL\3D\Textured.ps">
-      <Filter>Resources\Shaders_OGL\3D</Filter>
-    </None>
-    <None Include="Resources\shaders_OGL\3D\Textured.vs">
-      <Filter>Resources\Shaders_OGL\3D</Filter>
     </None>
   </ItemGroup>
 </Project>

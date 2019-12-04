@@ -1,6 +1,6 @@
 #pragma once
 
-#include "SceneFunctional/Base/ComponentBase.h"
+#include "../../SceneFunctional/Base/ComponentBase.h"
 
 #define UUID_ColliderComponent uuid("78BD7168-51CB-4760-ADD2-218CF4E88CE2")
 
@@ -10,7 +10,7 @@ class
     CColliderComponent3D : public CComponentBase
 {
 public:
-                                                    CColliderComponent3D(std::shared_ptr<SceneNode> OwnerNode);
+                                                    CColliderComponent3D(std::shared_ptr<ISceneNode> OwnerNode);
     virtual                                         ~CColliderComponent3D();
 
     // Bounds

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "SceneFunctional/Base/ComponentBase.h"
+#include "../../SceneFunctional/Base/ComponentBase.h"
 
 class 
     __declspec(uuid("403E886D-7BD7-438B-868D-AC4380830716"))
@@ -11,7 +11,7 @@ public:
     typedef std::vector<std::shared_ptr<IMesh>> MeshList;
 
 public:
-    CMeshComponent3D(std::shared_ptr<SceneNode> OwnerNode);
+    CMeshComponent3D(std::shared_ptr<ISceneNode> OwnerNode);
     virtual ~CMeshComponent3D();
 
     /**

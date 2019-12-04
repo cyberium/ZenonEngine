@@ -1,22 +1,15 @@
 #pragma once
 
-#include "SceneFunctional/Base/Scene.h"
+#include "SceneFunctional/Base/SceneBase.h"
 
-#include "SceneNodeUI.h"
-#include "UIWindow.h"
-
-class OW_ENGINE_API SceneUI : public Scene
+class OW_ENGINE_API SceneUI 
+	: public SceneBase
 {
 public:
 	explicit                                        SceneUI(std::shared_ptr<IBaseManager> BaseManager);
 	virtual                                         ~SceneUI();
 
     void                                            CreateRootNode();
-	std::shared_ptr<CUIWindowNode>                  GetRootNode() const;
-
-    virtual void                                    Accept(IVisitor* visitor) override;
-
-    virtual void                                    OnUpdate(UpdateEventArgs& e) override;
 
 	// Input events
 	bool                                            OnKeyPressed(KeyEventArgs& e);
@@ -28,13 +21,10 @@ public:
 
 protected:
     // Input events process recursive
-    bool                                            DoKeyPressed_Rec(const std::shared_ptr<SceneNode>& Node, KeyEventArgs& e);
-    void                                            DoKeyReleased_Rec(const std::shared_ptr<SceneNode>& Node, KeyEventArgs& e);
-    void                                            DoMouseMoved_Rec(const std::shared_ptr<SceneNode>& Node, MouseMotionEventArgs& e);
-    bool                                            DoMouseButtonPressed_Rec(const std::shared_ptr<SceneNode>& Node, MouseButtonEventArgs& e);
-    void                                            DoMouseButtonReleased_Rec(const std::shared_ptr<SceneNode>& Node, MouseButtonEventArgs& e);
-    bool                                            DoMouseWheel_Rec(const std::shared_ptr<SceneNode>& Node, MouseWheelEventArgs& e);
-
-private:
-	std::shared_ptr<CUIWindowNode>                  m_RootNode;
+    bool                                            DoKeyPressed_Rec(const std::shared_ptr<ISceneNode>& Node, KeyEventArgs& e);
+    void                                            DoKeyReleased_Rec(const std::shared_ptr<ISceneNode>& Node, KeyEventArgs& e);
+    void                                            DoMouseMoved_Rec(const std::shared_ptr<ISceneNode>& Node, MouseMotionEventArgs& e);
+    bool                                            DoMouseButtonPressed_Rec(const std::shared_ptr<ISceneNode>& Node, MouseButtonEventArgs& e);
+    void                                            DoMouseButtonReleased_Rec(const std::shared_ptr<ISceneNode>& Node, MouseButtonEventArgs& e);
+    bool                                            DoMouseWheel_Rec(const std::shared_ptr<ISceneNode>& Node, MouseWheelEventArgs& e);
 };

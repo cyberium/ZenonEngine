@@ -1,6 +1,6 @@
 #pragma once
 
-struct OW_ENGINE_API
+ZN_INTERFACE OW_ENGINE_API
 	__declspec(novtable, uuid("BDC2768B-055D-42EA-ABE3-CF17CD21178D"))
 	IManager
 {
@@ -10,7 +10,7 @@ struct OW_ENGINE_API
 //--
 
 template<class T>
-struct IRefManager : public IManager
+ZN_INTERFACE IRefManager : public IManager
 {	
 	virtual ~IRefManager() {};
 
@@ -26,7 +26,7 @@ struct IRefManager : public IManager
 class CFontMesh;
 // FORWARD END
 
-struct OW_ENGINE_API
+ZN_INTERFACE OW_ENGINE_API
 	__declspec(novtable, uuid("1427E242-CCB8-4AEC-ABC8-17DE58A96B05"))
 	IFontsManager : public IRefManager<CFontMesh>
 {
@@ -38,7 +38,7 @@ struct OW_ENGINE_API
 
 //--
 
-struct OW_ENGINE_API
+ZN_INTERFACE OW_ENGINE_API
 	__declspec(novtable, uuid("BB9FD479-C7AD-4F57-837B-E299A04AF171"))
 	IBaseManager
 {
@@ -48,4 +48,9 @@ struct OW_ENGINE_API
 	virtual void UnregisterManager(GUID _type) = 0;
 
 	virtual std::shared_ptr<IManager> GetManager(GUID _type) = 0;
+};
+
+ZN_INTERFACE OW_ENGINE_API IBaseManagerHolder
+{
+	virtual std::shared_ptr<IBaseManager> GetBaseManager() const = 0;
 };

@@ -1,7 +1,7 @@
 #pragma once
 
 // FORWARD BEGIN
-class Scene;
+ZN_INTERFACE IScene;
 // FORWARD END
 
 struct OW_ENGINE_API IGameState
@@ -19,5 +19,5 @@ struct OW_ENGINE_API IGameState
 	virtual void SetCurrent(bool _value) = 0;
 	virtual bool IsCurrent() const = 0;
 
-	virtual std::shared_ptr<Scene> GetScene() const = 0;
+	virtual std::shared_ptr<IScene> GetScene() const = 0;
 };

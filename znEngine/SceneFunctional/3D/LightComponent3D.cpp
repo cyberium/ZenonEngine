@@ -1,12 +1,9 @@
 #include "stdafx.h"
 
-// Include
-#include "SceneFunctional/Base/SceneNode.h"
-
 // General
 #include "LightComponent3D.h"
 
-CLightComponent3D::CLightComponent3D(std::shared_ptr<SceneNode> OwnerNode)
+CLightComponent3D::CLightComponent3D(std::shared_ptr<ISceneNode> OwnerNode)
     : CComponentBase(OwnerNode)
 {
 }

@@ -20,7 +20,7 @@ SceneNode3D::~SceneNode3D()
 
 std::shared_ptr<SceneNode3D> SceneNode3D::shared_from_this()
 {
-    return std::dynamic_pointer_cast<SceneNode3D, SceneNode>(base::shared_from_this());
+    return std::dynamic_pointer_cast<SceneNode3D>(base::shared_from_this());
 }
 
 std::weak_ptr<SceneNode3D> SceneNode3D::weak_from_this()
@@ -62,7 +62,7 @@ bool SceneNode3D::Accept(IVisitor* visitor)
 
 	// Now visit children
 	const auto& childs = GetChilds();
-	std::for_each(childs.begin(), childs.end(), [&visitor](const std::shared_ptr<SceneNode>& Child)
+	std::for_each(childs.begin(), childs.end(), [&visitor](const std::shared_ptr<ISceneNode>& Child)
 	{
 #ifdef LOADER_ENABLED
 		std::shared_ptr<ILoadable> loadable = std::dynamic_pointer_cast<ILoadable, SceneNode3D>(child);

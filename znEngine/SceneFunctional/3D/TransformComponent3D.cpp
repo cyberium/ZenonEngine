@@ -1,12 +1,9 @@
 #include "stdafx.h"
 
-// Include
-#include "SceneFunctional/Base/SceneNode.h"
-
 // General
 #include "TransformComponent3D.h"
 
-CTransformComponent3D::CTransformComponent3D(std::shared_ptr<SceneNode> OwnerNode)
+CTransformComponent3D::CTransformComponent3D(std::shared_ptr<ISceneNode> OwnerNode)
     : base(OwnerNode)
     , m_Translate(vec3())
     , m_Rotate(vec3())

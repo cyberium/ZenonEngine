@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../SceneFunctional/Base/SceneNode.h"
+#include "../Base/SceneNodeBase.h"
 
 #include "TransformComponent3D.h"
 #include "MeshComponent3D.h"
@@ -11,12 +11,14 @@
 class Scene3D;
 // FORWARD END
 
-class OW_ENGINE_API SceneNode3D : public SceneNode, public ILoadable
+class OW_ENGINE_API SceneNode3D 
+	: public SceneNodeBase
+	, public ILoadable
 {
-	typedef SceneNode base;
-    friend Scene3D;
+	typedef SceneNodeBase base;
+    friend IScene;
 public:
-    explicit                                        SceneNode3D();
+	explicit                                        SceneNode3D();
 	virtual                                         ~SceneNode3D();
 
     std::shared_ptr<SceneNode3D>                    shared_from_this();

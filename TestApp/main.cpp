@@ -37,24 +37,17 @@ int main(int argumentCount, char* arguments[])
         CWindowObject firstWindowObject;
 		firstWindowObject.CreateWindowInstance(&app, &windowRegistrator, L"First window name", 1280, 1024);
 
-		CWindowObject secondWindowObject;
-		secondWindowObject.CreateWindowInstance(&app, &windowRegistrator, L"Second window name", 1280, 1024);
-
         std::shared_ptr<IRenderDevice> renderDevice = app.CreateRenderDevice(RenderDeviceType::RenderDeviceType_DirectX);
 		
 		std::shared_ptr<IRenderWindow> firstRenderWindow = renderDevice->CreateRenderWindow(&firstWindowObject, true);
 		app.AddRenderWindow(firstRenderWindow);
-		std::shared_ptr<IRenderWindow> secondRenderWindow = renderDevice->CreateRenderWindow(&secondWindowObject, true);
-		app.AddRenderWindow(secondRenderWindow);
 
         std::shared_ptr<IFontsManager> fontsManager = std::make_shared<FontsManager>(BaseManager);
         AddManager<IFontsManager>(BaseManager, fontsManager);
 
 		std::shared_ptr<IGameState> gs1 = std::make_shared<CGameState_World>(&app, firstRenderWindow);
-		std::shared_ptr<IGameState> gs2 = std::make_shared<CGameState_World>(&app, secondRenderWindow);
 
 		app.SetGameState(gs1);
-		app.SetGameState(gs2);
 		//app.AddGameState(GameStatesNames::GAME_STATE_WORLD, std::make_shared<CGameState_World>(&app, firstRenderWindow));
 		//app.AddGameState(GameStatesNames::GAME_STATE_WORLD, std::make_shared<CGameState_World>(&app, secondRenderWindow));
 		//app.SetGameState(GameStatesNames::GAME_STATE_WORLD);

@@ -19,3 +19,5 @@ ZN_INTERFACE OW_ENGINE_API IRenderPass : public IVisitor
     // Update viewport (need for texture resizing)
     virtual void UpdateViewport(const Viewport * _viewport) = 0;
 };
+
+typedef std::vector<std::shared_ptr<IRenderPass>> RenderPassList;

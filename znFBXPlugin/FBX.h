@@ -1,7 +1,5 @@
 #pragma once
 
-#include "SceneFunctional/3D/SceneNode3D.h"
-
 class OW_ENGINE_API CFBX
 {
 public:

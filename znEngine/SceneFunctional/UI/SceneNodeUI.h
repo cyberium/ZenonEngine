@@ -1,6 +1,6 @@
 #pragma once
 
-#include "SceneFunctional/Base/SceneNode.h"
+#include "../Base/SceneNodeBase.h"
 
 #include "TransformComponentUI.h"
 
@@ -22,10 +22,10 @@ public:
 typedef Delegate<UIBaseNodeClickedEventArgs> UIBaseNodeClickedEvent;
 
 
-class OW_ENGINE_API CUIBaseNode : public SceneNode
+class OW_ENGINE_API CUIBaseNode : public SceneNodeBase
 {
-    typedef SceneNode base;
-	friend CUIWindowNode;
+    typedef SceneNodeBase base;
+	friend IScene;
 public:
 	explicit                                        CUIBaseNode();
 	virtual                                         ~CUIBaseNode();

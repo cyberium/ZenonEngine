@@ -6,7 +6,7 @@
 template<typename T>
 inline std::shared_ptr<T> SceneNode3D::GetComponent()
 {
-    return base::GetComponent<T>();
+    return ISceneNode::GetComponent<T>();
 }
 
 

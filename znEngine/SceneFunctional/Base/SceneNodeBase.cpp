@@ -1,43 +1,35 @@
 #include "stdafx.h"
 
-// Include
-#include "Scene.h"
-
 // General
-#include "SceneNode.h"
+#include "SceneNodeBase.h"
 
 // Additional
 #include "Loader.h"
 
-SceneNode::SceneNode()
-	: m_Name("SceneNode")
+SceneNodeBase::SceneNodeBase()
+	: m_Name("SceneNodeBase")
 {
 }
 
-SceneNode::~SceneNode()
+SceneNodeBase::~SceneNodeBase()
 {
 	m_Children.clear();
 }
 
-void SceneNode::Initialize()
+void SceneNodeBase::Initialize()
 {
 }
 
-void SceneNode::Finalize()
+void SceneNodeBase::Finalize()
 {
 }
 
-const std::shared_ptr<IBaseManager> SceneNode::GetBaseManager() const
-{
-	return GetScene()->GetBaseManager();
-}
-
-const std::string& SceneNode::GetName() const
+const std::string& SceneNodeBase::GetName() const
 {
 	return m_Name;
 }
 
-void SceneNode::SetName(const std::string& name)
+void SceneNodeBase::SetName(const std::string& name)
 {
 	m_Name = name;
 }
@@ -47,13 +39,13 @@ void SceneNode::SetName(const std::string& name)
 //
 // Components engine
 //
-bool SceneNode::IsComponentExists(GUID ComponentID)
+bool SceneNodeBase::IsComponentExists(GUID ComponentID)
 {
 	const auto& components = GetComponents();
     return components.find(ComponentID) != components.end();
 }
 
-std::shared_ptr<ISceneNodeComponent> SceneNode::GetComponent(GUID ComponentID)
+std::shared_ptr<ISceneNodeComponent> SceneNodeBase::GetComponent(GUID ComponentID)
 {
 	const auto& components = GetComponents();
 	const auto& component = components.find(ComponentID);
@@ -63,18 +55,18 @@ std::shared_ptr<ISceneNodeComponent> SceneNode::GetComponent(GUID ComponentID)
     return component->second;
 }
 
-std::shared_ptr<ISceneNodeComponent> SceneNode::AddComponent(GUID ComponentID, std::shared_ptr<ISceneNodeComponent> Component)
+std::shared_ptr<ISceneNodeComponent> SceneNodeBase::AddComponent(GUID ComponentID, std::shared_ptr<ISceneNodeComponent> Component)
 {
     m_Components[ComponentID] = Component;
     return Component;
 }
 
-const SceneNode::ComponentsMap& SceneNode::GetComponents() const
+const ComponentsMap& SceneNodeBase::GetComponents() const
 {
     return m_Components;
 }
 
-void SceneNode::RaiseComponentMessage(std::shared_ptr<ISceneNodeComponent> Component, ComponentMessageType Message)
+void SceneNodeBase::RaiseComponentMessage(std::shared_ptr<ISceneNodeComponent> Component, ComponentMessageType Message)
 {
 	const auto& components = GetComponents();
 	std::for_each(components.begin(), components.end(), [&Component, &Message](const std::pair<GUID, std::shared_ptr<ISceneNodeComponent>>& ComponentMapIter) 
@@ -88,12 +80,12 @@ void SceneNode::RaiseComponentMessage(std::shared_ptr<ISceneNodeComponent> Compo
 //
 // Scene access
 //
-void SceneNode::SetScene(std::shared_ptr<Scene> Scene)
+void SceneNodeBase::SetScene(std::shared_ptr<IScene> Scene)
 {
     m_Scene = Scene;
 }
 
-std::shared_ptr<Scene> SceneNode::GetScene() const
+std::shared_ptr<IScene> SceneNodeBase::GetScene() const
 {
     return m_Scene.lock();
 }
@@ -103,14 +95,14 @@ std::shared_ptr<Scene> SceneNode::GetScene() const
 //
 // Childs functional
 //
-void SceneNode::AddChild(std::shared_ptr<SceneNode> childNode)
+void SceneNodeBase::AddChild(std::shared_ptr<ISceneNode> childNode)
 {
 	if (childNode)
 	{
 		NodeList::iterator iter = std::find(m_Children.begin(), m_Children.end(), childNode);
 		if (iter == m_Children.end())
 		{
-			childNode->m_ParentNode = shared_from_this();
+			std::dynamic_pointer_cast<ISceneNodeInternal>(childNode)->SetParentInternal(weak_from_this());
             RaiseOnParentChanged();
 
 			m_Children.push_back(childNode);
@@ -120,14 +112,14 @@ void SceneNode::AddChild(std::shared_ptr<SceneNode> childNode)
 	}
 }
 
-void SceneNode::RemoveChild(std::shared_ptr<SceneNode> childNode)
+void SceneNodeBase::RemoveChild(std::shared_ptr<ISceneNode> childNode)
 {
 	if (childNode)
 	{
 		NodeList::iterator iter = std::find(m_Children.begin(), m_Children.end(), childNode);
 		if (iter != m_Children.end())
 		{
-			childNode->m_ParentNode.reset();
+			std::dynamic_pointer_cast<ISceneNodeInternal>(childNode)->SetParentInternal(std::weak_ptr<ISceneNode>());
             RaiseOnParentChanged();
 
 			m_Children.erase(iter);
@@ -146,10 +138,10 @@ void SceneNode::RemoveChild(std::shared_ptr<SceneNode> childNode)
 	}
 }
 
-void SceneNode::SetParent(std::weak_ptr<SceneNode> parentNode)
+void SceneNodeBase::SetParent(std::weak_ptr<ISceneNode> parentNode)
 {
 	// Remove from current parent
-	std::shared_ptr<SceneNode> currentParent = m_ParentNode.lock();
+	std::shared_ptr<ISceneNode> currentParent = m_ParentNode.lock();
 	if (currentParent != nullptr)
 	{
 		currentParent->RemoveChild(shared_from_this());
@@ -157,34 +149,44 @@ void SceneNode::SetParent(std::weak_ptr<SceneNode> parentNode)
 	}
 
 	// Add to new parent
-	if (std::shared_ptr<SceneNode> newParent = parentNode.lock())
-		newParent->AddChild(SceneNode::shared_from_this());
+	if (std::shared_ptr<ISceneNode> newParent = parentNode.lock())
+		newParent->AddChild(SceneNodeBase::shared_from_this());
 }
 
-std::shared_ptr<SceneNode> SceneNode::GetParent() const
+std::shared_ptr<ISceneNode> SceneNodeBase::GetParent() const
 {
 	return m_ParentNode.lock();
 }
 
-SceneNode::NodeList SceneNode::GetChilds()
+NodeList SceneNodeBase::GetChilds()
 {
 	return m_Children;
 }
 
 
-void SceneNode::UpdateCamera(const Camera* camera)
+void SceneNodeBase::UpdateCamera(const Camera* camera)
 {
 	// Do nothing...
 }
 
-bool SceneNode::Accept(IVisitor* visitor)
+bool SceneNodeBase::Accept(IVisitor* visitor)
 {
     _ASSERT(false);
 	return false;
 }
 
-void SceneNode::OnUpdate(UpdateEventArgs & e)
+void SceneNodeBase::OnUpdate(UpdateEventArgs & e)
 {
+}
+
+
+
+//
+// ISceneNodeInternal
+//
+void SceneNodeBase::SetParentInternal(std::weak_ptr<ISceneNode> parentNode)
+{
+	m_ParentNode = parentNode;
 }
 
 
@@ -192,8 +194,12 @@ void SceneNode::OnUpdate(UpdateEventArgs & e)
 //
 // Protected
 //
+const std::shared_ptr<IBaseManager> SceneNodeBase::GetBaseManager() const
+{
+	return std::dynamic_pointer_cast<IBaseManagerHolder>(GetScene())->GetBaseManager();
+}
 
-void SceneNode::RaiseOnParentChanged()
+void SceneNodeBase::RaiseOnParentChanged()
 {
     for (auto c : m_Components)
     {

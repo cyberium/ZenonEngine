@@ -10,7 +10,8 @@ void DisplayMaterial(FbxGeometry* pGeometry)
 {
 	int lMaterialCount = 0;
 	FbxNode* lNode = NULL;
-	if (pGeometry) {
+	if (pGeometry) 
+	{
 		lNode = pGeometry->GetNode();
 		if (lNode)
 			lMaterialCount = lNode->GetMaterialCount();

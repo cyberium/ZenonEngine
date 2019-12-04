@@ -1,6 +1,6 @@
 #pragma once
 
-#include "SceneFunctional/Base/TransformComponentBase.h"
+#include "../../SceneFunctional/Base/TransformComponentBase.h"
 
 class 
     __declspec(UUID_TransformComponent)
@@ -9,7 +9,7 @@ class
 {
     typedef CTransformComponentBase base;
 public:
-                    CTransformComponentUI(std::shared_ptr<SceneNode> OwnerNode);
+                    CTransformComponentUI(std::shared_ptr<ISceneNode> OwnerNode);
     virtual         ~CTransformComponentUI();
 
     void            SetTranslate(cvec2 _translate);

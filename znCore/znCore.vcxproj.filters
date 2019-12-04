@@ -302,12 +302,6 @@
     <ClInclude Include="Interfaces\Plugins.h">
       <Filter>__Interfaces</Filter>
     </ClInclude>
-    <ClInclude Include="Interfaces\Scene.h">
-      <Filter>__Interfaces</Filter>
-    </ClInclude>
-    <ClInclude Include="Interfaces\SceneNodeProvider.h">
-      <Filter>__Interfaces</Filter>
-    </ClInclude>
     <ClInclude Include="Interfaces\Settings.h">
       <Filter>__Interfaces</Filter>
     </ClInclude>
@@ -403,6 +397,21 @@
     </ClInclude>
     <ClInclude Include="Interfaces\Types\Object.h">
       <Filter>__Interfaces\Types</Filter>
+    </ClInclude>
+    <ClInclude Include="Interfaces\Scene\ISceneCreator.h">
+      <Filter>__Interfaces\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Interfaces\Scene\ISceneNodeComponents.h">
+      <Filter>__Interfaces\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Interfaces\Scene\ISceneNodeProvider.h">
+      <Filter>__Interfaces\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Interfaces\Scene\IScene.h">
+      <Filter>__Interfaces\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Interfaces\Scene\ISceneNode.h">
+      <Filter>__Interfaces\Scene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

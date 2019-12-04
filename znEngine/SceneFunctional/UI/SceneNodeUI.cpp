@@ -18,7 +18,7 @@ CUIBaseNode::~CUIBaseNode()
 
 std::shared_ptr<CUIBaseNode> CUIBaseNode::shared_from_this()
 {
-    return std::dynamic_pointer_cast<CUIBaseNode, SceneNode>(base::shared_from_this());
+    return std::dynamic_pointer_cast<CUIBaseNode>(base::shared_from_this());
 }
 
 std::weak_ptr<CUIBaseNode> CUIBaseNode::weak_from_this()
@@ -75,7 +75,7 @@ bool CUIBaseNode::Accept(IVisitor* visitor)
 		return false;
 
     // Visit childs
-    for (auto child : GetChilds())
+    for (const auto& child : GetChilds())
         child->Accept(visitor);
 
 	// Visit meshes

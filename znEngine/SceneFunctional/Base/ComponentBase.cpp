@@ -1,12 +1,9 @@
 #include "stdafx.h"
 
-// Include
-#include "SceneNode.h"
-
 // General
 #include "ComponentBase.h"
 
-CComponentBase::CComponentBase(std::shared_ptr<SceneNode> OwnerNode)
+CComponentBase::CComponentBase(std::shared_ptr<ISceneNode> OwnerNode)
     : m_OwnerNode(OwnerNode)
 {
 }
@@ -15,7 +12,7 @@ CComponentBase::~CComponentBase()
 {
 }
 
-std::shared_ptr<SceneNode> CComponentBase::GetOwnerNode() const
+std::shared_ptr<ISceneNode> CComponentBase::GetOwnerNode() const
 {
     return m_OwnerNode.lock();
 }
@@ -48,7 +45,7 @@ void CComponentBase::OnMessage(std::shared_ptr<ISceneNodeComponent> Component, C
 //
 void CComponentBase::RaiseComponentMessage(ComponentMessageType Message)
 {
-    std::shared_ptr<SceneNode> ownerNode = m_OwnerNode.lock();
+    std::shared_ptr<ISceneNode> ownerNode = m_OwnerNode.lock();
     _ASSERT(ownerNode != nullptr);
 
     ownerNode->RaiseComponentMessage(shared_from_this(), Message);

@@ -1,12 +1,9 @@
 #include "stdafx.h"
 
-// Include
-#include "SceneNode.h"
-
 // General
 #include "TransformComponentBase.h"
 
-CTransformComponentBase::CTransformComponentBase(std::shared_ptr<SceneNode> OwnerNode)
+CTransformComponentBase::CTransformComponentBase(std::shared_ptr<ISceneNode> OwnerNode)
     : CComponentBase(OwnerNode)
 
     , m_LocalTransform(1.0f)
@@ -57,7 +54,7 @@ mat4 CTransformComponentBase::GetInverseWorldTransform() const
 mat4 CTransformComponentBase::GetParentWorldTransform() const
 {
     mat4 parentTransform(1.0f);
-    if (std::shared_ptr<SceneNode> parent = GetOwnerNode()->GetParent())
+    if (std::shared_ptr<ISceneNode> parent = GetOwnerNode()->GetParent())
     {
         if (std::shared_ptr<CTransformComponentBase> transformComponent = parent->GetComponent<CTransformComponentBase>())
         {

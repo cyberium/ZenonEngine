@@ -6,7 +6,7 @@
 template<typename T>
 inline std::shared_ptr<T> CUIBaseNode::GetComponent()
 {
-    return base::GetComponent<T>();
+    return ISceneNode::GetComponent<T>();
 }
 
 

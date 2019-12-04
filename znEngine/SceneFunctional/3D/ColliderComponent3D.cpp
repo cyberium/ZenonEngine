@@ -1,15 +1,12 @@
 #include "stdafx.h"
 
-// Include
-#include "SceneFunctional/Base/SceneNode.h"
-
 // General
 #include "ColliderComponent3D.h"
 
 // Additonal
 #include "TransformComponent3D.h"
 
-CColliderComponent3D::CColliderComponent3D(std::shared_ptr<SceneNode> OwnerNode)
+CColliderComponent3D::CColliderComponent3D(std::shared_ptr<ISceneNode> OwnerNode)
     : CComponentBase(OwnerNode)
 {
 }

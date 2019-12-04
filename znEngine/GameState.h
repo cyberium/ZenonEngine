@@ -5,9 +5,12 @@
 
 #include "SceneFunctional/3D/Scene3D.h"
 #include "SceneFunctional/UI/SceneUI.h"
+
 #include "Passes/RenderTechnique.h"
 
-class OW_ENGINE_API CGameState : public IGameState
+class OW_ENGINE_API CGameState 
+	: public IGameState
+	, public Object
 {
 public:
                                                     CGameState(const IApplication * Application, std::shared_ptr<IRenderWindow> RenderWindow);
@@ -26,7 +29,7 @@ public:
 	void SetCurrent(bool _value) override { m_IsCurrent = _value; }
     bool IsCurrent() const override { return m_IsCurrent; }
 
-	std::shared_ptr<Scene> GetScene() const override { return m_3DScene; };
+	std::shared_ptr<IScene> GetScene() const override { return m_3DScene; };
 
     // Engine events
 	virtual void                                    OnUpdate(UpdateEventArgs& e);

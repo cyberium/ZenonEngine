@@ -1,7 +1,7 @@
 #pragma once
 
-#include "SceneFunctional/Base/ComponentBase.h"
-#include "SceneFunctional/Light3D.h"
+#include "../../SceneFunctional/Base/ComponentBase.h"
+#include "../../SceneFunctional/Light3D.h"
 
 class 
     __declspec(uuid("572F705C-8824-4394-B031-DCC600AA9805"))
@@ -12,7 +12,7 @@ public:
     typedef std::vector<std::shared_ptr<CLight3D>> LightList;
 
 public:
-    CLightComponent3D(std::shared_ptr<SceneNode> OwnerNode);
+    CLightComponent3D(std::shared_ptr<ISceneNode> OwnerNode);
     virtual ~CLightComponent3D();
 
     /**

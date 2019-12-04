@@ -1,16 +1,13 @@
 #pragma once
 
-// FORWARD BEGIN
-class SceneNode;
-// FORWARD END
-
-class OW_ENGINE_API CComponentBase : public ISceneNodeComponent
+class OW_ENGINE_API CComponentBase 
+	: public ISceneNodeComponent
 {
 public:
-    CComponentBase(std::shared_ptr<SceneNode> OwnerNode);
+    CComponentBase(std::shared_ptr<ISceneNode> OwnerNode);
     virtual ~CComponentBase();
 
-    std::shared_ptr<SceneNode>                      GetOwnerNode() const;
+    std::shared_ptr<ISceneNode>                     GetOwnerNode() const;
 
     // Components engine template access
     template<typename T>
@@ -29,7 +26,7 @@ protected:
     void                                            RaiseComponentMessage(ComponentMessageType Message);
 
 private:
-    std::weak_ptr<SceneNode>                        m_OwnerNode;
+    std::weak_ptr<ISceneNode>                       m_OwnerNode;
 };
 
 #include "ComponentBase.inl"

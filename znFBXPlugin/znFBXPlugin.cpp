@@ -1,15 +1,19 @@
 #include "stdafx.h"
 
 // General
-#include "znPlugin.h"
+#include "znFBXPlugin.h"
 
-class CznTestPlugin : public IznPlugin
+class CznFBXPlugin : public IznPlugin
 {
 public:
-	CznTestPlugin()
-	{}
-	virtual ~CznTestPlugin() 
-	{}
+	CznFBXPlugin()
+	{
+
+	}
+	virtual ~CznFBXPlugin()
+	{
+
+	}
 
 
 
@@ -31,13 +35,12 @@ private:
 	std::shared_ptr<IBaseManager> m_BaseManager;
 };
 
-
 IznPlugin* plugin = nullptr;
 IznPlugin* GetPlugin(std::shared_ptr<IBaseManager> BaseManager)
 {
 	if (plugin == nullptr)
 	{
-		plugin = new CznTestPlugin();
+		plugin = new CznFBXPlugin();
 		plugin->Initialize(BaseManager);
 	}
 

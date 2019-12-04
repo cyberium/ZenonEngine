@@ -12,11 +12,12 @@
 class 
     __declspec(UUID_TransformComponent)
     OW_ENGINE_API
-    CTransformComponentBase : public CComponentBase
+    CTransformComponentBase 
+	: public CComponentBase
 {
     typedef CComponentBase base;
 public:
-                    CTransformComponentBase(std::shared_ptr<SceneNode> OwnerNode);
+                    CTransformComponentBase(std::shared_ptr<ISceneNode> OwnerNode);
     virtual         ~CTransformComponentBase();
 
     mat4            GetLocalTransform() const;

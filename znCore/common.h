@@ -108,8 +108,6 @@ class Color;
 #include "Interfaces/Log.h"
 #include "Interfaces/Networking.h"
 #include "Interfaces/Plugins.h"
-#include "Interfaces/Scene.h"
-#include "Interfaces/SceneNodeProvider.h"
 #include "Interfaces/Settings.h"
 #include "Interfaces/Visitor.h"
 #include "Interfaces/WindowObject.h"
@@ -150,6 +148,30 @@ class Color;
 #include "Interfaces/Render/IRenderDevice.h"
 #include "Interfaces/Render/ICamera.h"
 #include "Interfaces/Render/IRenderPass.h"
+
+
+
+
+
+//---------------------------------------------------------//
+//--                    Scene Types                      --//
+//---------------------------------------------------------//
+
+
+//---------------------------------------------------------//
+//--                 Scene Interfaces                    --//
+//---------------------------------------------------------//
+#include "Interfaces/Scene/ISceneNodeComponents.h"
+#include "Interfaces/Scene/ISceneNode.h"
+#include "Interfaces/Scene/IScene.h"
+#include "Interfaces/Scene/ISceneNodeProvider.h"
+#include "Interfaces/Scene/ISceneCreator.h"
+
+
+
+
+
+
 
 
 //---------------------------------------------------------//

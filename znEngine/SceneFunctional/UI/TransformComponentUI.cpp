@@ -1,12 +1,9 @@
 #include "stdafx.h"
 
-// Include
-#include "SceneFunctional/Base/SceneNode.h"
-
 // General
 #include "TransformComponentUI.h"
 
-CTransformComponentUI::CTransformComponentUI(std::shared_ptr<SceneNode> OwnerNode)
+CTransformComponentUI::CTransformComponentUI(std::shared_ptr<ISceneNode> OwnerNode)
     : base(OwnerNode)
     , m_Translate(vec2())
     , m_Rotate(vec3())
@@ -34,7 +31,7 @@ cvec2 CTransformComponentUI::GetTranslation() const
 glm::vec2 CTransformComponentUI::GetTranslationAbs() const
 {
     glm::vec2 parentTranslate = vec2(0.0f, 0.0f);
-    if (std::shared_ptr<SceneNode> parent = GetOwnerNode()->GetParent())
+    if (std::shared_ptr<ISceneNode> parent = GetOwnerNode()->GetParent())
         parentTranslate = parent->GetComponent<CTransformComponentUI>()->GetTranslationAbs();
     return parentTranslate + GetTranslation();
 }
@@ -66,7 +63,7 @@ cvec2 CTransformComponentUI::GetScale() const
 glm::vec2 CTransformComponentUI::GetScaleAbs() const
 {
     glm::vec2 parentScale = vec2(1.0f, 1.0f);
-    if (std::shared_ptr<SceneNode> parent = GetOwnerNode()->GetParent())
+    if (std::shared_ptr<ISceneNode> parent = GetOwnerNode()->GetParent())
         parentScale = parent->GetComponent<CTransformComponentUI>()->GetScaleAbs();
     return parentScale * GetScale();
 }

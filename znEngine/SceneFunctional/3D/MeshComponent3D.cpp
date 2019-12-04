@@ -1,12 +1,9 @@
 #include "stdafx.h"
 
-// Include
-#include "SceneFunctional/Base/SceneNode.h"
-
 // General
 #include "MeshComponent3D.h"
 
-CMeshComponent3D::CMeshComponent3D(std::shared_ptr<SceneNode> OwnerNode)
+CMeshComponent3D::CMeshComponent3D(std::shared_ptr<ISceneNode> OwnerNode)
     : CComponentBase(OwnerNode)
 {
 }

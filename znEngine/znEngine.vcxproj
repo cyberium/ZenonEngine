@@ -24,16 +24,6 @@
     <ClCompile Include="CameraControllers\CameraControllerBase.cpp" />
     <ClCompile Include="CameraControllers\FreeCameraController.cpp" />
     <ClCompile Include="CameraControllers\RTSCameraController.cpp" />
-    <ClCompile Include="FBX.cpp" />
-    <ClCompile Include="FBXDisplayCache.cpp" />
-    <ClCompile Include="FBXDisplayCommon.cpp" />
-    <ClCompile Include="FBXDisplayHierarchy.cpp" />
-    <ClCompile Include="FBXDisplayLink.cpp" />
-    <ClCompile Include="FBXDisplayMaterial.cpp" />
-    <ClCompile Include="FBXDisplayMesh.cpp" />
-    <ClCompile Include="FBXDisplayShape.cpp" />
-    <ClCompile Include="FBXDisplayTexture.cpp" />
-    <ClCompile Include="FBXHelpers.cpp" />
     <ClCompile Include="Materials\MaterialDebug.cpp" />
     <ClCompile Include="Materials\MaterialTextured.cpp" />
     <ClCompile Include="Materials\UI_Button_Material.cpp" />
@@ -65,8 +55,8 @@
     <ClCompile Include="SceneFunctional\3D\SceneNode3D.cpp" />
     <ClCompile Include="SceneFunctional\3D\TransformComponent3D.cpp" />
     <ClCompile Include="SceneFunctional\Base\ComponentBase.cpp" />
-    <ClCompile Include="SceneFunctional\Base\Scene.cpp" />
-    <ClCompile Include="SceneFunctional\Base\SceneNode.cpp" />
+    <ClCompile Include="SceneFunctional\Base\SceneBase.cpp" />
+    <ClCompile Include="SceneFunctional\Base\SceneNodeBase.cpp" />
     <ClCompile Include="SceneFunctional\Base\TransformComponentBase.cpp" />
     <ClCompile Include="SceneFunctional\Light3D.cpp" />
     <ClCompile Include="Application.cpp" />
@@ -112,16 +102,6 @@
     <ClInclude Include="CameraControllers\CameraControllerBase.h" />
     <ClInclude Include="CameraControllers\FreeCameraController.h" />
     <ClInclude Include="CameraControllers\RTSCameraController.h" />
-    <ClInclude Include="FBX.h" />
-    <ClInclude Include="FBXDisplayCache.h" />
-    <ClInclude Include="FBXDisplayCommon.h" />
-    <ClInclude Include="FBXDisplayHierarchy.h" />
-    <ClInclude Include="FBXDisplayLink.h" />
-    <ClInclude Include="FBXDisplayMaterial.h" />
-    <ClInclude Include="FBXDisplayMesh.h" />
-    <ClInclude Include="FBXDisplayShape.h" />
-    <ClInclude Include="FBXDisplayTexture.h" />
-    <ClInclude Include="FBXHelpers.h" />
     <ClInclude Include="Materials\MaterialDebug.h" />
     <ClInclude Include="Materials\MaterialTextured.h" />
     <ClInclude Include="Materials\UI_Button_Material.h" />
@@ -153,8 +133,8 @@
     <ClInclude Include="SceneFunctional\3D\SceneNode3D.h" />
     <ClInclude Include="SceneFunctional\3D\TransformComponent3D.h" />
     <ClInclude Include="SceneFunctional\Base\ComponentBase.h" />
-    <ClInclude Include="SceneFunctional\Base\Scene.h" />
-    <ClInclude Include="SceneFunctional\Base\SceneNode.h" />
+    <ClInclude Include="SceneFunctional\Base\SceneBase.h" />
+    <ClInclude Include="SceneFunctional\Base\SceneNodeBase.h" />
     <ClInclude Include="SceneFunctional\Base\TransformComponentBase.h" />
     <ClInclude Include="SceneFunctional\Light.h" />
     <ClInclude Include="SceneFunctional\Light3D.h" />
@@ -251,8 +231,6 @@
     </Text>
     <None Include="SceneFunctional\3D\SceneNode3D.inl" />
     <None Include="SceneFunctional\Base\ComponentBase.inl" />
-    <None Include="SceneFunctional\Base\Scene.inl" />
-    <None Include="SceneFunctional\Base\SceneNode.inl" />
     <None Include="SceneFunctional\UI\SceneNodeUI.inl" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
@@ -331,7 +309,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;_USRDLL;OW_ENGINE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>false</SDLCheck>
-      <AdditionalIncludeDirectories>..\shared;..\Externals;..\Externals\freetype-2.9.1\include\;..\Externals\FBX\include\;..\znEngine\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\shared;..\Externals;..\Externals\freetype-2.9.1\include\;..\znEngine\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatSpecificWarningsAsErrors>
       </TreatSpecificWarningsAsErrors>
       <DisableSpecificWarnings>4244;4267;4251</DisableSpecificWarnings>
@@ -344,8 +322,8 @@
       <Command>copy /Y "$(Platform)\$(Configuration)\$(ProjectName).res" "$(SolutionDir)bin_$(PlatformShortName)\$(Configuration)\$(ProjectName).res" </Command>
     </PostBuildEvent>
     <Link>
-      <AdditionalLibraryDirectories>$(SolutionDir)\bin_$(PlatformShortName)\$(Configuration)\;..\Externals\FBX\lib\vs2015\$(PlatformShortName)\$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>zlib.lib;libfbxsdk-md.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)\bin_$(PlatformShortName)\$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>zlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -355,7 +333,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;_USRDLL;OW_ENGINE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>false</SDLCheck>
-      <AdditionalIncludeDirectories>..\shared;..\Externals;..\Externals\freetype-2.9.1\include\;..\Externals\FBX\include\;..\znEngine\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\shared;..\Externals;..\Externals\freetype-2.9.1\include\;..\znEngine\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatSpecificWarningsAsErrors>
       </TreatSpecificWarningsAsErrors>
       <DisableSpecificWarnings>4244;4267;4251</DisableSpecificWarnings>
@@ -368,8 +346,8 @@
       <Command>copy /Y "$(Platform)\$(Configuration)\$(ProjectName).res" "$(SolutionDir)bin_$(PlatformShortName)\$(Configuration)\$(ProjectName).res" </Command>
     </PostBuildEvent>
     <Link>
-      <AdditionalLibraryDirectories>$(SolutionDir)\bin_$(PlatformShortName)\$(Configuration)\;..\Externals\FBX\lib\vs2015\$(PlatformShortName)\$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>zlib.lib;libfbxsdk-md.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)\bin_$(PlatformShortName)\$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>zlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -381,7 +359,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;_USRDLL;OW_ENGINE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>false</SDLCheck>
-      <AdditionalIncludeDirectories>..\shared;..\Externals;..\Externals\freetype-2.9.1\include\;..\Externals\FBX\include\;..\znEngine\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\shared;..\Externals;..\Externals\freetype-2.9.1\include\;..\znEngine\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <TreatSpecificWarningsAsErrors>
@@ -396,8 +374,8 @@
       <Command>copy /Y "$(Platform)\$(Configuration)\$(ProjectName).res" "$(SolutionDir)bin_$(PlatformShortName)\$(Configuration)\$(ProjectName).res" </Command>
     </PostBuildEvent>
     <Link>
-      <AdditionalLibraryDirectories>$(SolutionDir)\bin_$(PlatformShortName)\$(Configuration)\;..\Externals\FBX\lib\vs2015\$(PlatformShortName)\$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>zlib.lib;libfbxsdk-md.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)\bin_$(PlatformShortName)\$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>zlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -409,7 +387,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;_USRDLL;OW_ENGINE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>false</SDLCheck>
-      <AdditionalIncludeDirectories>..\shared;..\Externals;..\Externals\freetype-2.9.1\include\;..\Externals\FBX\include\;..\znEngine\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\shared;..\Externals;..\Externals\freetype-2.9.1\include\;..\znEngine\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <TreatSpecificWarningsAsErrors>
@@ -424,8 +402,8 @@
       <Command>copy /Y "$(Platform)\$(Configuration)\$(ProjectName).res" "$(SolutionDir)bin_$(PlatformShortName)\$(Configuration)\$(ProjectName).res" </Command>
     </PostBuildEvent>
     <Link>
-      <AdditionalLibraryDirectories>$(SolutionDir)\bin_$(PlatformShortName)\$(Configuration)\;..\Externals\FBX\lib\vs2015\$(PlatformShortName)\$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>zlib.lib;libfbxsdk-md.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)\bin_$(PlatformShortName)\$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>zlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

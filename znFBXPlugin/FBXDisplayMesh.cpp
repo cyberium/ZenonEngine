@@ -4,7 +4,6 @@
 #include "FBXDisplayMesh.h"
 
 // Additionals
-#include "Application.h"
 #include <fbxsdk.h>
 #include "FBXDisplayMaterial.h"
 #include "FBXDisplayTexture.h"
@@ -26,12 +25,12 @@ std::shared_ptr<IMesh> DisplayMesh(FbxNode* pNode)
 	FbxMesh* lMesh = (FbxMesh*)pNode->GetNodeAttribute();
 	DisplayString("Mesh Name: ", (char *)pNode->GetName());
 
-	std::shared_ptr<IMesh> mesh = _RenderDevice->CreateMesh();
+	//std::shared_ptr<IMesh> mesh = _RenderDevice->CreateMesh();
 
 	DisplayMetaDataConnections(lMesh);
-	mesh->AddVertexBuffer(BufferBinding("POSITION", 0), DisplayControlsPoints(lMesh));
-	mesh->AddVertexBuffer(BufferBinding("TEXCOORD", 0), DisplayControlsPoints(lMesh));
-	mesh->SetIndexBuffer(DisplayPolygons(lMesh));
+	//mesh->AddVertexBuffer(BufferBinding("POSITION", 0), DisplayControlsPoints(lMesh));
+	//mesh->AddVertexBuffer(BufferBinding("TEXCOORD", 0), DisplayControlsPoints(lMesh));
+	//mesh->SetIndexBuffer(DisplayPolygons(lMesh));
 	//DisplayMaterialMapping(lMesh);
 	//DisplayMaterial(lMesh);
 	//DisplayTexture(lMesh);
@@ -41,7 +40,7 @@ std::shared_ptr<IMesh> DisplayMesh(FbxNode* pNode)
 
 	DisplayCache(lMesh);
 
-	return mesh;
+	return nullptr; // mesh;
 }
 
 
@@ -75,7 +74,7 @@ std::shared_ptr<IBuffer> DisplayControlsPoints(FbxMesh* pMesh)
 	}
 
 	DisplayString("");
-	return _RenderDevice->CreateVertexBuffer(vertices);
+	return nullptr; // _RenderDevice->CreateVertexBuffer(vertices);
 }
 
 
@@ -320,7 +319,7 @@ std::shared_ptr<IBuffer> DisplayPolygons(FbxMesh* pMesh)
 		}*/
 	} // for polygonCount
 
-	std::shared_ptr<IBuffer> indexBuffer = _RenderDevice->CreateIndexBuffer(indexes);
+	//std::shared_ptr<IBuffer> indexBuffer = _RenderDevice->CreateIndexBuffer(indexes);
 
 	//check visibility for the edges of the mesh
 	/*for (int l = 0; l < pMesh->GetElementVisibilityCount(); ++l)
@@ -346,7 +345,7 @@ std::shared_ptr<IBuffer> DisplayPolygons(FbxMesh* pMesh)
 	}*/
 	DisplayString("");
 
-	return indexBuffer;
+	return nullptr; // indexBuffer;
 }
 
 void DisplayTextureNames(FbxProperty &pProperty, FbxString& pConnectionString)

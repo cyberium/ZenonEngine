@@ -96,8 +96,11 @@
     <ClInclude Include="Interfaces\Render\Types\InputSemantic.h" />
     <ClInclude Include="Interfaces\Render\Types\PrimitiveTopology.h" />
     <ClInclude Include="Interfaces\Render\Types\Viewport.h" />
-    <ClInclude Include="Interfaces\Scene.h" />
-    <ClInclude Include="Interfaces\SceneNodeProvider.h" />
+    <ClInclude Include="Interfaces\Scene\IScene.h" />
+    <ClInclude Include="Interfaces\Scene\ISceneCreator.h" />
+    <ClInclude Include="Interfaces\Scene\ISceneNode.h" />
+    <ClInclude Include="Interfaces\Scene\ISceneNodeComponents.h" />
+    <ClInclude Include="Interfaces\Scene\ISceneNodeProvider.h" />
     <ClInclude Include="Interfaces\Settings.h" />
     <ClInclude Include="Interfaces\Types\Events.h" />
     <ClInclude Include="Interfaces\Types\KeyCodes.h" />

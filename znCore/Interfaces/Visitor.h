@@ -1,7 +1,7 @@
 #pragma once
 
 // FORWARD BEGIN
-class SceneNode;
+ZN_INTERFACE ISceneNode;
 class SceneNode3D;
 class CUIBaseNode;
 ZN_INTERFACE IMesh;
