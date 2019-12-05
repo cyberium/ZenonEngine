@@ -4,7 +4,7 @@
 
 // FORWARD BEGIN
 ZN_INTERFACE IPipelineState;
-class Camera;
+ZN_INTERFACE ICamera;
 // FORWARD END
 
 template<class ArgumentType>
@@ -286,7 +286,7 @@ public:
 		float DeltaTime,
 		float TotalTime,
 		uint64_t FrameCounter,
-		const Camera* Camera,
+		const ICamera* Camera,
 		const IPipelineState* PipelineState,
 		const Object* Node
 	)
@@ -304,7 +304,7 @@ public:
 	float                                           TotalTime;
 	int64_t                                         FrameCounter;
 
-	const Camera*                                   Camera;
+	const ICamera*                                  Camera;
 	const IPipelineState*                           PipelineState;
 	const Object*                                   Node;
 };

@@ -180,7 +180,7 @@ const std::shared_ptr<IBaseManager>& RenderDeviceOGL::GetBaseManager() const
 	return m_BaseManager;
 }
 
-std::shared_ptr<RenderWindow> RenderDeviceOGL::CreateRenderWindow(IWindowObject * WindowObject, bool vSync)
+std::shared_ptr<IRenderWindow> RenderDeviceOGL::CreateRenderWindow(IWindowObject * WindowObject, bool vSync)
 {
 	return std::make_shared<RenderWindowOGL>(shared_from_this(), WindowObject, vSync);
 }

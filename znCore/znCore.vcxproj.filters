@@ -67,6 +67,9 @@
     <Filter Include="__Interfaces\Scene">
       <UniqueIdentifier>{d3dd8b4e-50e6-4cd0-97c9-6d16edd23c32}</UniqueIdentifier>
     </Filter>
+    <Filter Include="__Proxies">
+      <UniqueIdentifier>{de08cb84-ae35-42fc-87cb-6959d1e26098}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DebugOutput.cpp">
@@ -140,6 +143,15 @@
     </ClCompile>
     <ClCompile Include="LibraryResourceFileStotage.cpp">
       <Filter>Files\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="Proxies\MaterialProxie.cpp">
+      <Filter>__Proxies</Filter>
+    </ClCompile>
+    <ClCompile Include="Proxies\MeshProxie.cpp">
+      <Filter>__Proxies</Filter>
+    </ClCompile>
+    <ClCompile Include="Proxies\SceneNodeProxie.cpp">
+      <Filter>__Proxies</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -412,6 +424,24 @@
     </ClInclude>
     <ClInclude Include="Interfaces\Scene\ISceneNode.h">
       <Filter>__Interfaces\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Proxies\MaterialProxie.h">
+      <Filter>__Proxies</Filter>
+    </ClInclude>
+    <ClInclude Include="Proxies\MeshProxie.h">
+      <Filter>__Proxies</Filter>
+    </ClInclude>
+    <ClInclude Include="Interfaces\__Interfaces.h">
+      <Filter>__Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="Proxies\SceneNodeProxie.h">
+      <Filter>__Proxies</Filter>
+    </ClInclude>
+    <ClInclude Include="Interfaces\Render\Types\Ray.h">
+      <Filter>__Interfaces\Render\Types</Filter>
+    </ClInclude>
+    <ClInclude Include="Interfaces\Render\Types\RaycastHit.h">
+      <Filter>__Interfaces\Render\Types</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -54,9 +54,9 @@ void CArcBallCameraController::OnUpdate(UpdateEventArgs& e)
 	float moveMultiplier = (TranslateFaster) ? 100 : 50;
 	//float rotateMultiplier = (RotateFaster) ? 600 : 300;
 
-	m_Camera->TranslateX((Right - Left) * e.ElapsedTime * moveMultiplier);
-	m_Camera->TranslateY((Up - Down) * e.ElapsedTime * moveMultiplier);
-	m_Camera->TranslateZ((Back - Forward) * e.ElapsedTime * moveMultiplier);
+	GetCameraMovement()->TranslateX((Right - Left) * e.ElapsedTime * moveMultiplier);
+	GetCameraMovement()->TranslateY((Up - Down) * e.ElapsedTime * moveMultiplier);
+	GetCameraMovement()->TranslateZ((Back - Forward) * e.ElapsedTime * moveMultiplier);
 
 	//m_Camera->AddPitch(Pitch * 60.0f * e.ElapsedTime * rotateMultiplier, Camera::Space::Local);
 	//m_Camera->AddYaw(Yaw * 60.0f * e.ElapsedTime * rotateMultiplier, Camera::Space::World);
@@ -215,14 +215,14 @@ void CArcBallCameraController::OnMouseMoved(MouseMotionEventArgs& e)
 
 vec3 CArcBallCameraController::ProjectOntoUnitSphere(glm::ivec2 screenPos)
 {
-	const Viewport * viewport = m_Camera->GetViewport();
+	//TODO: const Viewport * viewport = m_Camera->GetViewport();
 
 	// Map the screen coordinates so that (0, 0) is the center of the viewport.
-	screenPos -= glm::vec2(viewport->GetWidth(), viewport->GetHeight()) * 0.5f;
+	// TODO: screenPos -= glm::vec2(viewport->GetWidth(), viewport->GetHeight()) * 0.5f;
 
 	float x, y, z;
 	// The radius of the unit sphere is 1/2 of the shortest dimension of the viewport.
-	float radius = glm::min(viewport->GetWidth(), viewport->GetHeight()) * 0.5f;
+	/*float radius = glm::min(viewport->GetWidth(), viewport->GetHeight()) * 0.5f;
 
 	// Now normalize the screen coordinates into the range [-1 .. 1].
 	x = screenPos.x / radius;
@@ -256,7 +256,7 @@ vec3 CArcBallCameraController::ProjectOntoUnitSphere(glm::ivec2 screenPos)
 		{
 			z = -z;
 		}
-	}
+	}*/
 
 	return glm::vec3(x, y, z);
 }

@@ -164,7 +164,7 @@ NodeList SceneNodeBase::GetChilds()
 }
 
 
-void SceneNodeBase::UpdateCamera(const Camera* camera)
+void SceneNodeBase::UpdateCamera(const ICamera* camera)
 {
 	// Do nothing...
 }

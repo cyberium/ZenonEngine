@@ -21,9 +21,14 @@ ZN_INTERFACE OW_ENGINE_API IScene : public std::enable_shared_from_this<IScene>
 	template<class T, typename... Args>
 	inline std::shared_ptr<T> CreateSceneNode(std::weak_ptr<ISceneNode> Parent, Args &&... _Args)
 	{
-		//static_assert(std::is_convertible<T, ISceneNode>::value, "T must inherit ISceneNode as public.");
+		static_assert(std::is_convertible<T*, ISceneNode*>::value, "T must inherit ISceneNode as public.");
 
 		std::shared_ptr<T> newNode = std::make_shared<T>(std::forward<Args>(_Args)...);
+
+		std::shared_ptr<ISceneNodeWrapper> newNodeWrapper = std::dynamic_pointer_cast<ISceneNodeWrapper>(newNode);
+		if (newNodeWrapper)
+			newNodeWrapper->SetThisNode(newNode);
+
 		newNode->SetScene(shared_from_this());
 		newNode->SetParent(Parent);
 		newNode->RegisterComponents();

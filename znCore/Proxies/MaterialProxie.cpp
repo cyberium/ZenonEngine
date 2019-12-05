@@ -1,16 +1,16 @@
 #include "stdafx.h"
 
 // General
-#include "MaterialWrapper.h"
+#include "MaterialProxie.h"
 
 MaterialWrapper::MaterialWrapper(std::shared_ptr<IMaterial> _materal)
 	: m_Material(_materal)
 {
+	_ASSERT(m_Material);
 }
 
 MaterialWrapper::~MaterialWrapper()
-{
-}
+{}
 
 void MaterialWrapper::SetShader(IShader::ShaderType type, std::shared_ptr<IShader> pShader)
 {

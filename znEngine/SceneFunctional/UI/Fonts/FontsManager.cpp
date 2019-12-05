@@ -37,6 +37,21 @@ std::shared_ptr<CFontMesh> FontsManager::Add(const std::string& _fontFileName, u
 
 //
 
+
+struct VertexPTN
+{
+	VertexPTN(const glm::vec3& P, const glm::vec2& T, const glm::vec3& N)
+		: p(P)
+		, t(T)
+		, n(N)
+	{}
+
+	glm::vec3 p;
+	glm::vec2 t;
+	glm::vec3 n;
+};
+typedef std::vector<VertexPTN> VertexesPTN;
+
 std::shared_ptr<CFontMesh> FontsManager::CreateAction(const std::string& _nameAndSize)
 {
 	uint32_t _delimIndex = static_cast<uint32>(_nameAndSize.find_last_of("__"));
@@ -135,8 +150,7 @@ std::shared_ptr<CFontMesh> FontsManager::CreateAction(const std::string& _nameAn
 	uint32 y = maxAscent;
 
 
-	DirectX::VertexCollection vertices;
-	DirectX::IndexCollection indices;
+	VertexesPTN vertices;
 
 	for (uint32 ch = 0; ch < CFontMesh::NUM_CHARS; ++ch)
 	{
@@ -160,13 +174,13 @@ std::shared_ptr<CFontMesh> FontsManager::CreateAction(const std::string& _nameAn
 		float texY1 = float(y - maxAscent) / float(imageHeight);
 		float texY2 = texY1 + float(charHeight) / float(imageHeight);
 
-		vertices.push_back(DirectX::VertexPositionTextureNormal(DirectX::XMFLOAT3(charWidth[ch],  charHeight,  0.0f),  DirectX::XMFLOAT3(0.0f, 0.0f, 1.0f), DirectX::XMFLOAT2(texX2, texY2)));
-		vertices.push_back(DirectX::VertexPositionTextureNormal(DirectX::XMFLOAT3(0.0f,           charHeight,  0.0f),  DirectX::XMFLOAT3(0.0f, 0.0f, 1.0f), DirectX::XMFLOAT2(texX1, texY2)));
-		vertices.push_back(DirectX::VertexPositionTextureNormal(DirectX::XMFLOAT3(0.0f,           0.0f,        0.0f),  DirectX::XMFLOAT3(0.0f, 0.0f, 1.0f), DirectX::XMFLOAT2(texX1, texY1)));
+		vertices.push_back(VertexPTN(glm::vec3(charWidth[ch],  charHeight,  0.0f), glm::vec2(texX2, texY2),  glm::vec3(0.0f, 0.0f, 1.0f)));
+		vertices.push_back(VertexPTN(glm::vec3(0.0f,           charHeight,  0.0f), glm::vec2(texX1, texY2),  glm::vec3(0.0f, 0.0f, 1.0f)));
+		vertices.push_back(VertexPTN(glm::vec3(0.0f,           0.0f,        0.0f), glm::vec2(texX1, texY1),  glm::vec3(0.0f, 0.0f, 1.0f)));
 		
-		vertices.push_back(DirectX::VertexPositionTextureNormal(DirectX::XMFLOAT3(0.0f,           0.0f,        0.0f),  DirectX::XMFLOAT3(0.0f, 0.0f, 1.0f), DirectX::XMFLOAT2(texX1, texY1)));
-		vertices.push_back(DirectX::VertexPositionTextureNormal(DirectX::XMFLOAT3(charWidth[ch],  charHeight,  0.0f),  DirectX::XMFLOAT3(0.0f, 0.0f, 1.0f), DirectX::XMFLOAT2(texX2, texY2)));
-		vertices.push_back(DirectX::VertexPositionTextureNormal(DirectX::XMFLOAT3(charWidth[ch],  0.0f,        0.0f),  DirectX::XMFLOAT3(0.0f, 0.0f, 1.0f), DirectX::XMFLOAT2(texX2, texY1)));
+		vertices.push_back(VertexPTN(glm::vec3(0.0f,           0.0f,        0.0f), glm::vec2(texX1, texY1),  glm::vec3(0.0f, 0.0f, 1.0f)));
+		vertices.push_back(VertexPTN(glm::vec3(charWidth[ch],  charHeight,  0.0f), glm::vec2(texX2, texY2),  glm::vec3(0.0f, 0.0f, 1.0f)));
+		vertices.push_back(VertexPTN(glm::vec3(charWidth[ch],  0.0f,        0.0f), glm::vec2(texX2, texY1),  glm::vec3(0.0f, 0.0f, 1.0f)));
 		
 		for (uint32 row = 0; row < glyphSlot->bitmap.rows; ++row)
 		{
@@ -185,8 +199,8 @@ std::shared_ptr<CFontMesh> FontsManager::CreateAction(const std::string& _nameAn
 
 
 	std::shared_ptr<IMesh> __geom = _RenderDevice->CreateMesh();
-	__geom->AddVertexBuffer(BufferBinding("POSITION", 0), _RenderDevice->CreateVoidVertexBuffer(vertices.data(), vertices.size(), 0, sizeof(DirectX::VertexPositionTextureNormal)));
-    __geom->AddVertexBuffer(BufferBinding("TEXCOORD", 0), _RenderDevice->CreateVoidVertexBuffer(vertices.data(), vertices.size(), sizeof(vec3), sizeof(DirectX::VertexPositionTextureNormal)));
+	__geom->AddVertexBuffer(BufferBinding("POSITION", 0), _RenderDevice->CreateVoidVertexBuffer(vertices.data(), vertices.size(), 0,            sizeof(VertexPTN)));
+    __geom->AddVertexBuffer(BufferBinding("TEXCOORD", 0), _RenderDevice->CreateVoidVertexBuffer(vertices.data(), vertices.size(), sizeof(vec3), sizeof(VertexPTN)));
 
 	// Font texture
 	std::shared_ptr<ITexture> texture = _RenderDevice->CreateTexture();
@@ -333,13 +347,13 @@ std::shared_ptr<CFontMesh> FontsManager::CreateAction(const std::string& _nameAn
 		float texY1 = (float)(y - maxAscent) / (float)(imageHeight);
 		float texY2 = texY1 + (float)(charHeight) / (float)(imageHeight);
 
-		vertices.push_back(DirectX::VertexPositionTextureNormal(DirectX::XMFLOAT3(charWidth[ch],  charHeight,  0.0f),  DirectX::XMFLOAT3(0.0f, 0.0f, 1.0f), DirectX::XMFLOAT2(texX2, texY2)));
-		vertices.push_back(DirectX::VertexPositionTextureNormal(DirectX::XMFLOAT3(0.0f,           charHeight,  0.0f),  DirectX::XMFLOAT3(0.0f, 0.0f, 1.0f), DirectX::XMFLOAT2(texX1, texY2)));
-		vertices.push_back(DirectX::VertexPositionTextureNormal(DirectX::XMFLOAT3(0.0f,           0.0f,        0.0f),  DirectX::XMFLOAT3(0.0f, 0.0f, 1.0f), DirectX::XMFLOAT2(texX1, texY1)));
+		vertices.push_back(DirectX::VertexPositionTextureNormal(glm::vec3(charWidth[ch],  charHeight,  0.0f),  glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(texX2, texY2)));
+		vertices.push_back(DirectX::VertexPositionTextureNormal(glm::vec3(0.0f,           charHeight,  0.0f),  glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(texX1, texY2)));
+		vertices.push_back(DirectX::VertexPositionTextureNormal(glm::vec3(0.0f,           0.0f,        0.0f),  glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(texX1, texY1)));
 
-		vertices.push_back(DirectX::VertexPositionTextureNormal(DirectX::XMFLOAT3(0.0f,           0.0f,        0.0f),  DirectX::XMFLOAT3(0.0f, 0.0f, 1.0f), DirectX::XMFLOAT2(texX1, texY1)));
-		vertices.push_back(DirectX::VertexPositionTextureNormal(DirectX::XMFLOAT3(charWidth[ch],  charHeight,  0.0f),  DirectX::XMFLOAT3(0.0f, 0.0f, 1.0f), DirectX::XMFLOAT2(texX2, texY2)));
-		vertices.push_back(DirectX::VertexPositionTextureNormal(DirectX::XMFLOAT3(charWidth[ch],  0.0f,        0.0f),  DirectX::XMFLOAT3(0.0f, 0.0f, 1.0f), DirectX::XMFLOAT2(texX2, texY1)));
+		vertices.push_back(DirectX::VertexPositionTextureNormal(glm::vec3(0.0f,           0.0f,        0.0f),  glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(texX1, texY1)));
+		vertices.push_back(DirectX::VertexPositionTextureNormal(glm::vec3(charWidth[ch],  charHeight,  0.0f),  glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(texX2, texY2)));
+		vertices.push_back(DirectX::VertexPositionTextureNormal(glm::vec3(charWidth[ch],  0.0f,        0.0f),  glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(texX2, texY1)));
 
 		for (uint32 row = 0; row < face->glyph->bitmap.rows; ++row)
 		{

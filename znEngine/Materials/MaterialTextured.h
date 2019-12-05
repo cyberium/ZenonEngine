@@ -1,7 +1,5 @@
 #pragma once
 
-#include "../MaterialWrapper.h"
-
 class OW_ENGINE_API MaterialTextured : public MaterialWrapper
 {
 public:

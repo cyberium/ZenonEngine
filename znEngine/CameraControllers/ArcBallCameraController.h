@@ -2,7 +2,8 @@
 
 #include "CameraControllerBase.h"
 
-class OW_ENGINE_API CArcBallCameraController : public CCameraControllerBase
+class OW_ENGINE_API CArcBallCameraController 
+	: public CCameraControllerBase
 {
 public:
 	                                                CArcBallCameraController();

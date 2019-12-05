@@ -1,9 +1,5 @@
 #pragma once
 
-// FORWARD BEGIN
-class MeshWrapper;
-// FORWARD END
-
 class OW_ENGINE_API CFontMesh : public MeshWrapper
 {
 public:

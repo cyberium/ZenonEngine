@@ -55,7 +55,7 @@ void PipelineStateOGL::SetBlendState(const std::shared_ptr<IBlendState> blendSta
 	m_BlendState = std::dynamic_pointer_cast<BlendStateOGL>(blendState);
 }
 
-std::shared_ptr<IBlendState> PipelineStateOGL::GetBlendState()
+std::shared_ptr<IBlendState> PipelineStateOGL::GetBlendState() const
 {
 	return m_BlendState;
 }
@@ -65,7 +65,7 @@ void PipelineStateOGL::SetRasterizerState(const std::shared_ptr<IRasterizerState
 	m_RasterizerState = std::dynamic_pointer_cast<RasterizerStateOGL>(rasterizerState);
 }
 
-std::shared_ptr<IRasterizerState> PipelineStateOGL::GetRasterizerState()
+std::shared_ptr<IRasterizerState> PipelineStateOGL::GetRasterizerState() const
 {
 	return m_RasterizerState;
 }
@@ -75,7 +75,7 @@ void PipelineStateOGL::SetDepthStencilState(const std::shared_ptr<IDepthStencilS
 	m_DepthStencilState = std::dynamic_pointer_cast<DepthStencilStateOGL>(depthStencilState);
 }
 
-std::shared_ptr<IDepthStencilState> PipelineStateOGL::GetDepthStencilState()
+std::shared_ptr<IDepthStencilState> PipelineStateOGL::GetDepthStencilState() const
 {
 	return m_DepthStencilState;
 }

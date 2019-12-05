@@ -8,6 +8,7 @@
 
 // Base
 #include "../znEngine/Application.h"
+#include "../znEngine/CameraControllers/Camera.h"
 #include "../znEngine/CameraControllers/CameraControllerBase.h"
 #include "../znEngine/CameraControllers/ArcBallCameraController.h"
 #include "../znEngine/CameraControllers/FreeCameraController.h"
@@ -19,13 +20,6 @@
 #include "../znEngine/WindowClassRegistrator.h"
 #include "../znEngine/WindowCreator.h"
 #include "../znEngine/Plugins/PluginsManager.h"
-
-
-//
-// Wrappers
-//
-#include "../znEngine/MaterialWrapper.h"
-#include "../znEngine/MeshWrapper.h"
 
 
 //

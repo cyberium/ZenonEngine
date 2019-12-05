@@ -33,7 +33,7 @@ bool BasePass::Visit(SceneNode3D* node)
 {
 	GetRenderEventArgs()->Node = node;
 
-	const Camera* camera = GetRenderEventArgs()->Camera;
+	const ICamera* camera = GetRenderEventArgs()->Camera;
 	if (camera)
 	{
 		node->UpdateCamera(camera);

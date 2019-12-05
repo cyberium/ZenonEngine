@@ -4,12 +4,6 @@
     <ClCompile Include="stdafx.cpp">
       <Filter>Common</Filter>
     </ClCompile>
-    <ClCompile Include="Ray.cpp">
-      <Filter>Types</Filter>
-    </ClCompile>
-    <ClCompile Include="Camera.cpp">
-      <Filter>Types</Filter>
-    </ClCompile>
     <ClCompile Include="Primitives\Geometry.cpp">
       <Filter>Primitives</Filter>
     </ClCompile>
@@ -41,15 +35,6 @@
     </ClInclude>
     <ClInclude Include="stdafx.h">
       <Filter>Common</Filter>
-    </ClInclude>
-    <ClInclude Include="Ray.h">
-      <Filter>Types</Filter>
-    </ClInclude>
-    <ClInclude Include="RaycastHit.h">
-      <Filter>Types</Filter>
-    </ClInclude>
-    <ClInclude Include="Camera.h">
-      <Filter>Types</Filter>
     </ClInclude>
     <ClInclude Include="Primitives\Geometry.h">
       <Filter>Primitives</Filter>
@@ -84,9 +69,6 @@
     </Filter>
     <Filter Include="Pipeline">
       <UniqueIdentifier>{123d88e5-6f73-4277-900f-1fac68a5662c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Types">
-      <UniqueIdentifier>{e4130516-475b-42b6-940c-b2ad68251d5d}</UniqueIdentifier>
     </Filter>
     <Filter Include="Primitives">
       <UniqueIdentifier>{b1eafa2b-d1c4-458c-b150-51aa539e716f}</UniqueIdentifier>

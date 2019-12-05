@@ -11,7 +11,7 @@
 #include "TextureOGL.h"
 
 RenderWindowOGL::RenderWindowOGL(std::shared_ptr<IRenderDevice> RenderDevice, IWindowObject * WindowObject, bool vSync)
-	: RenderWindow(RenderDevice, WindowObject, vSync)
+	: RenderWindowBase(RenderDevice, WindowObject, vSync)
 {
 	m_HDC = GetDC(GetHWnd());
 

@@ -15,11 +15,11 @@ public:
 	std::shared_ptr<IShader> GetShader(IShader::ShaderType type) const override;
 	const ShaderMap& GetShaders() const override;
 	void SetBlendState(const std::shared_ptr<IBlendState> blendState) override;
-	std::shared_ptr<IBlendState> GetBlendState() override;
+	std::shared_ptr<IBlendState> GetBlendState() const override;
 	void SetRasterizerState(const std::shared_ptr<IRasterizerState> rasterizerState) override;
-	std::shared_ptr<IRasterizerState> GetRasterizerState() override;
+	std::shared_ptr<IRasterizerState> GetRasterizerState() const override;
 	void SetDepthStencilState(const std::shared_ptr<IDepthStencilState> depthStencilState) override;
-	std::shared_ptr<IDepthStencilState> GetDepthStencilState() override;
+	std::shared_ptr<IDepthStencilState> GetDepthStencilState() const override;
 	void SetRenderTarget(std::shared_ptr<IRenderTarget> renderTarget) override;
 	std::shared_ptr<IRenderTarget> GetRenderTarget() const override;
 

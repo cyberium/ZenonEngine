@@ -1,16 +1,12 @@
 #include "stdafx.h"
 
 // General
-#include "MeshWrapper.h"
+#include "MeshProxie.h"
 
-// Additional
-#include "Application.h"
-
-MeshWrapper::MeshWrapper(std::shared_ptr<IMesh> _mesh) :
-	m_Mesh(_mesh)
+MeshWrapper::MeshWrapper(std::shared_ptr<IMesh> _mesh) 
+	: m_Mesh(_mesh)
 {
-	if (m_Mesh == nullptr)
-		m_Mesh = _RenderDevice->CreateMesh();
+	_ASSERT(m_Mesh);
 }
 
 MeshWrapper::~MeshWrapper()

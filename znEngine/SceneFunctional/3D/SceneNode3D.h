@@ -31,7 +31,7 @@ public:
     std::shared_ptr<T>                              GetComponent();
 
 	// Called before all others calls
-	virtual void                                    UpdateCamera(const Camera* camera) override;
+	virtual void                                    UpdateCamera(const ICamera* camera) override;
 
 	// Allow a visitor to visit this node.
 	virtual bool                                    Accept(IVisitor* visitor) override;

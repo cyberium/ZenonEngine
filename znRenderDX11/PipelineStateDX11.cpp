@@ -44,7 +44,7 @@ void PipelineStateDX11::SetBlendState(const std::shared_ptr<IBlendState> blendSt
 	m_BlendState = std::dynamic_pointer_cast<BlendStateDX11>(blendState);
 }
 
-std::shared_ptr<IBlendState > PipelineStateDX11::GetBlendState()
+std::shared_ptr<IBlendState > PipelineStateDX11::GetBlendState() const
 {
 	return m_BlendState;
 }
@@ -54,7 +54,7 @@ void PipelineStateDX11::SetRasterizerState(const std::shared_ptr<IRasterizerStat
 	m_RasterizerState = std::dynamic_pointer_cast<RasterizerStateDX11>(rasterizerState);
 }
 
-std::shared_ptr<IRasterizerState > PipelineStateDX11::GetRasterizerState()
+std::shared_ptr<IRasterizerState > PipelineStateDX11::GetRasterizerState() const
 {
 	return m_RasterizerState;
 }
@@ -64,7 +64,7 @@ void PipelineStateDX11::SetDepthStencilState(const std::shared_ptr<IDepthStencil
 	m_DepthStencilState = std::dynamic_pointer_cast<DepthStencilStateDX11>(depthStencilState);
 }
 
-std::shared_ptr<IDepthStencilState > PipelineStateDX11::GetDepthStencilState()
+std::shared_ptr<IDepthStencilState > PipelineStateDX11::GetDepthStencilState() const
 {
 	return m_DepthStencilState;
 }

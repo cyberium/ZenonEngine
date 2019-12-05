@@ -12,7 +12,6 @@
 
 namespace DirectX
 {
-	// Vertex struct holding position, normal vector, and texture mapping information.
 	struct VertexPositionTextureNormal
 	{
 		VertexPositionTextureNormal() = default;

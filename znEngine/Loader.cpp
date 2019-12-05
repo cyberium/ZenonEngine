@@ -83,7 +83,7 @@ void CLoader::DeleteAll()
 }
 
 
-void CLoader::SetCamera(std::shared_ptr<Camera> _camera)
+void CLoader::SetCamera(std::shared_ptr<ICamera> _camera)
 {
 	m_Camera = _camera;
 }
@@ -137,8 +137,8 @@ bool CLoader::sortFunctor::operator()(const std::shared_ptr<ILoadable>& first, c
 
 	if (camera)
 	{
-		bool cullFirst = !camera->GetFrustum().cullSphere(node3DFirst->GetComponent<CTransformComponent3D>()->GetTranslation(), 15.0f);
-		bool cullSecond = !camera->GetFrustum().cullSphere(node3DSecond->GetComponent<CTransformComponent3D>()->GetTranslation(), 15.0f);
+		bool cullFirst = !camera->GetFrustum()->cullSphere(node3DFirst->GetComponent<CTransformComponent3D>()->GetTranslation(), 15.0f);
+		bool cullSecond = !camera->GetFrustum()->cullSphere(node3DSecond->GetComponent<CTransformComponent3D>()->GetTranslation(), 15.0f);
 
 		if (cullFirst && !cullSecond)
 			return true;

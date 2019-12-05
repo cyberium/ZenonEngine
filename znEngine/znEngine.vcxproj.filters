@@ -116,14 +116,8 @@
     </ClCompile>
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="EngineTime.cpp" />
-    <ClCompile Include="MeshWrapper.cpp">
-      <Filter>Engine</Filter>
-    </ClCompile>
     <ClCompile Include="CreatePasses.cpp">
       <Filter>RenderStuff</Filter>
-    </ClCompile>
-    <ClCompile Include="MaterialWrapper.cpp">
-      <Filter>Engine</Filter>
     </ClCompile>
     <ClCompile Include="WindowCreator.cpp" />
     <ClCompile Include="SceneFunctional\Light3D.cpp">
@@ -308,6 +302,9 @@
     <ClCompile Include="SceneFunctional\Base\SceneBase.cpp">
       <Filter>Scene Funcitonal\Base</Filter>
     </ClCompile>
+    <ClCompile Include="CameraControllers\Camera.cpp">
+      <Filter>CameraControllers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="common.h">
@@ -324,14 +321,8 @@
     </ClInclude>
     <ClInclude Include="Application.h" />
     <ClInclude Include="EngineTime.h" />
-    <ClInclude Include="MeshWrapper.h">
-      <Filter>Engine</Filter>
-    </ClInclude>
     <ClInclude Include="CreatePasses.h">
       <Filter>RenderStuff</Filter>
-    </ClInclude>
-    <ClInclude Include="MaterialWrapper.h">
-      <Filter>Engine</Filter>
     </ClInclude>
     <ClInclude Include="WindowCreator.h" />
     <ClInclude Include="..\shared\znEngine.h">
@@ -517,6 +508,9 @@
     </ClInclude>
     <ClInclude Include="SceneFunctional\Base\SceneBase.h">
       <Filter>Scene Funcitonal\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraControllers\Camera.h">
+      <Filter>CameraControllers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

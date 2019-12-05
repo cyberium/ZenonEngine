@@ -20,13 +20,13 @@ ZN_INTERFACE OW_ENGINE_API IPipelineState
 	virtual const ShaderMap& GetShaders() const = 0;
 
 	virtual void SetBlendState(const std::shared_ptr<IBlendState> blendState) = 0;
-	virtual std::shared_ptr<IBlendState> GetBlendState() = 0;
+	virtual std::shared_ptr<IBlendState> GetBlendState() const = 0;
 
 	virtual void SetRasterizerState(const std::shared_ptr<IRasterizerState> rasterizerState) = 0;
-	virtual std::shared_ptr<IRasterizerState> GetRasterizerState() = 0;
+	virtual std::shared_ptr<IRasterizerState> GetRasterizerState() const = 0;
 
 	virtual void SetDepthStencilState(const std::shared_ptr<IDepthStencilState> depthStencilState) = 0;
-	virtual std::shared_ptr<IDepthStencilState> GetDepthStencilState() = 0;
+	virtual std::shared_ptr<IDepthStencilState> GetDepthStencilState() const  = 0;
 
 	virtual void SetRenderTarget(std::shared_ptr<IRenderTarget> renderTarget) = 0;
 	virtual std::shared_ptr<IRenderTarget> GetRenderTarget() const = 0;

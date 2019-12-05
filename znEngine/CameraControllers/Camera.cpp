@@ -8,43 +8,90 @@ Camera::Camera()
 	, m_Front(0)
 	, m_Right(0)
 	, m_Up(0)
+	, m_Yaw_X(0.0f)
+	, m_Pitch_Y(0.0f)
+	, m_ViewDirty(true)
+	, m_ViewProjectionInverseDirty(true)
+{}
+
+Camera::Camera(float left, float right, float top, float bottom)
+	: m_Translate(0)
+	, m_Front(0)
+	, m_Right(0)
+	, m_Up(0)
+	, m_Yaw_X(0.0f)
+	, m_Pitch_Y(0.0f)
+	, m_ViewDirty(true)
+	, m_ViewProjectionInverseDirty(true)
+{
+	m_ProjectionMatrix = glm::ortho<float>(left, right, bottom, top);
+}
+
+Camera::Camera(ProjectionHand ProjectionHand, float fovy, float aspect, float zNear, float zFar)
+	: m_Translate(0)
+	, m_Front(0)
+	, m_Right(0)
+	, m_Up(0)
     , m_Yaw_X(0.0f)
     , m_Pitch_Y(0.0f)
 	, m_ViewDirty(true)
 	, m_ViewProjectionInverseDirty(true)
-{}
+{
+	
+}
 
 Camera::~Camera()
 {
 }
 
-void Camera::SetViewport(const Viewport * viewport)
+
+
+//
+// IznCamera
+//
+const Frustum* Camera::GetFrustum() const
 {
-	m_Viewport = viewport;
+	return &m_Frustum;
 }
 
-const Viewport * Camera::GetViewport() const
+vec3 Camera::GetTranslation() const
 {
-	return m_Viewport;
+	return m_Translate;
 }
 
-const Frustum& Camera::GetFrustum() const
+float Camera::GetYaw() const
 {
-	return m_Frustum;
+	return m_Yaw_X;
 }
 
-void Camera::SetProjectionRH(float fovy, float aspect, float zNear, float zFar)
+float Camera::GetPitch() const
 {
-	m_VFOV = fovy;
-	m_Aspect = aspect;
-	m_Near = zNear;
-	m_Far = zFar;
-
-	m_ProjectionMatrix = glm::perspective(glm::radians(fovy), aspect, zNear, zFar);
-	m_ViewProjectionInverseDirty = true;
+	return m_Pitch_Y;
 }
 
-void Camera::SetProjectionLH(float fovy, float aspect, float zNear, float zFar)
+glm::vec3 Camera::GetDirection() const
+{
+	return m_Front;
+}
+
+mat4 Camera::GetViewMatrix() const
+{
+	const_cast<Camera*>(this)->UpdateViewMatrix();
+	return m_ViewMatrix;
+}
+
+mat4 Camera::GetProjectionMatrix() const
+{
+	return m_ProjectionMatrix;
+}
+
+mat4 Camera::GetViewProjectionInverseMatrix() const
+{
+	const_cast<Camera*>(this)->UpdateViewProjectionInverse();
+	return m_ViewProjectionInverse;
+}
+
+void Camera::SetProjection(ProjectionHand ProjectionHand, float fovy, float aspect, float zNear, float zFar)
 {
 	mat4 fix(
 		1.0f, 0.0f, 0.0f, 0.0f,
@@ -58,44 +105,42 @@ void Camera::SetProjectionLH(float fovy, float aspect, float zNear, float zFar)
 	m_Near = zNear;
 	m_Far = zFar;
 
-	m_ProjectionMatrix = fix * glm::perspective(glm::radians(fovy), aspect, zNear, zFar);
+	mat4 perspectiveMatrix = glm::perspective(glm::radians(fovy), aspect, zNear, zFar);
+	if (ProjectionHand == ProjectionHand::Right)
+	{
+		m_ProjectionMatrix = perspectiveMatrix;
+	}
+	else
+	{
+		m_ProjectionMatrix = fix * perspectiveMatrix;
+	}
+
 	m_ViewProjectionInverseDirty = true;
 }
 
 void Camera::SetOrthographic(float left, float right, float top, float bottom)
 {
-    m_ProjectionMatrix = glm::ortho<float>(left, right, bottom, top);
-    m_ViewProjectionInverseDirty = true;
-}
-
-float Camera::GetNearClipPlane() const
-{
-	return m_Near;
-}
-
-float Camera::GetFarClipPlane() const
-{
-	return m_Far;
+	m_ProjectionMatrix = glm::ortho<float>(left, right, bottom, top);
+	m_ViewProjectionInverseDirty = true;
 }
 
 
 
 //
-// Translate
+// ICameraMovement
 //
 void Camera::TranslateX(float x, Space space)
 {
 	switch (space)
 	{
 	case Camera::Space::Local:
-		m_Translate += m_Front * vec3(x, 0, 0);
+		AddTranslate(m_Front * vec3(x, 0, 0));
 		break;
 
 	case Camera::Space::World:
-		m_Translate += vec3(x, 0, 0);
+		AddTranslate(vec3(x, 0, 0));
 		break;
 	}
-	m_ViewDirty = true;
 }
 
 void Camera::TranslateY(float y, Space space)
@@ -103,14 +148,12 @@ void Camera::TranslateY(float y, Space space)
 	switch (space)
 	{
 	case Space::Local:
-		m_Translate += m_Front * vec3(0, y, 0);
+		AddTranslate(m_Front * vec3(0, y, 0));
 		break;
 	case Space::World:
-		m_Translate += vec3(0, y, 0);
+		AddTranslate(vec3(0, y, 0));
 		break;
 	}
-
-	m_ViewDirty = true;
 }
 
 void Camera::TranslateZ(float z, Space space)
@@ -118,52 +161,45 @@ void Camera::TranslateZ(float z, Space space)
 	switch (space)
 	{
 	case Space::Local:
-		m_Translate += m_Front * vec3(0, 0, z);
+		AddTranslate(m_Front * vec3(0, 0, z));
 		break;
 	case Space::World:
-		m_Translate += vec3(0, 0, z);
+		AddTranslate(vec3(0, 0, z));
 		break;
 	}
-
-	m_ViewDirty = true;
-}
-
-void Camera::SetTranslate(cvec3 translate)
-{
-	m_Translate = translate;
-	m_ViewDirty = true;
-}
-
-vec3 Camera::GetTranslation() const
-{
-	return m_Translate;
 }
 
 void Camera::DoMoveFront(float Value)
 {
-    m_Translate += m_Front * Value;
-    m_ViewDirty = true;
+	AddTranslate(m_Front * Value);
 }
 
 void Camera::DoMoveBack(float Value)
 {
-    m_Translate -= m_Front * Value;
-    m_ViewDirty = true;
+	AddTranslate(-(m_Front * Value));
 }
 
 void Camera::DoMoveLeft(float Value)
 {
-    m_Translate -= m_Right * Value;
-    m_ViewDirty = true;
+	AddTranslate(-(m_Right * Value));
 }
 
 void Camera::DoMoveRight(float Value)
 {
-    m_Translate += m_Right * Value;
-    m_ViewDirty = true;
+	AddTranslate(m_Right * Value);
 }
 
+void Camera::SetTranslate(vec3 Translate)
+{
+	m_Translate = Translate;
+	m_ViewDirty = true;
+}
 
+void Camera::AddTranslate(vec3 Translate)
+{
+	m_Translate += Translate;
+	m_ViewDirty = true;
+}
 
 void Camera::SetYaw(float Yaw)
 {
@@ -177,11 +213,6 @@ void Camera::AddYaw(float Yaw)
     m_ViewDirty = true;
 }
 
-float Camera::GetYaw() const
-{
-    return m_Yaw_X;
-}
-
 void Camera::SetPitch(float Pitch)
 {
     m_Pitch_Y = Pitch;
@@ -192,24 +223,6 @@ void Camera::AddPitch(float Pitch)
 {
     m_Pitch_Y += Pitch;
     m_ViewDirty = true;
-}
-
-float Camera::GetPitch() const
-{
-    return m_Pitch_Y;
-}
-
-glm::vec3 Camera::GetDirection() const
-{
-    return m_Front;
-}
-
-
-
-
-bool Camera::IsDirty() const
-{
-	return m_ViewDirty;
 }
 
 
@@ -256,22 +269,3 @@ void Camera::UpdateViewProjectionInverse()
 		m_ViewProjectionInverseDirty = false;
 	}
 }
-
-mat4 Camera::GetViewMatrix() const
-{
-	const_cast<Camera*>(this)->UpdateViewMatrix();
-	return m_ViewMatrix;
-}
-
-mat4 Camera::GetProjectionMatrix() const
-{
-	return m_ProjectionMatrix;
-}
-
-mat4 Camera::GetViewProjectionInverseMatrix() const
-{
-	const_cast<Camera*>(this)->UpdateViewProjectionInverse();
-	return m_ViewProjectionInverse;
-}
-
-

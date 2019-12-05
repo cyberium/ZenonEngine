@@ -3,9 +3,6 @@
 // General
 #include "RenderWindowBase.h"
 
-// Additional
-#include "Camera.h"
-
 RenderWindowBase::RenderWindowBase(std::shared_ptr<IRenderDevice> RenderDevice, IWindowObject * WindowObject, bool vSync)
 	: m_RenderDevice(RenderDevice)
     , m_WindowObject(WindowObject)

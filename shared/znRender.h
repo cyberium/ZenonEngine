@@ -5,7 +5,6 @@
 // Common includes
 #include "../znRender/ShadersUtils.h"
 #include "../znRender/Primitives/Geometry.h"
-#include "../znRender/Camera.h"
 
 // Base
 #include "../znRender/BlendStateBase.h"

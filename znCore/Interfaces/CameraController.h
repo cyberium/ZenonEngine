@@ -1,7 +1,8 @@
 #pragma once
 
 // Forward BEGIN
-class Camera;
+ZN_INTERFACE ICamera;
+ZN_INTERFACE ICameraMovement;
 
 class KeyEventArgs;
 class MouseButtonEventArgs;
@@ -11,9 +12,10 @@ class ResizeEventArgs;
 class UpdateEventArgs;
 // Forward END
 
-struct OW_ENGINE_API ICameraController
+ZN_INTERFACE OW_ENGINE_API ICameraController
 {
-	virtual std::shared_ptr<Camera> GetCamera() const = 0;
+	virtual std::shared_ptr<ICamera> GetCamera() const = 0;
+	virtual std::shared_ptr<ICameraMovement> GetCameraMovement() const = 0;
 
 	// Input events
 	virtual void OnKeyPressed(KeyEventArgs& e) = 0;

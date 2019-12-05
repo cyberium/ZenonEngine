@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClCompile Include="Application_Events.cpp" />
     <ClCompile Include="CameraControllers\ArcBallCameraController.cpp" />
+    <ClCompile Include="CameraControllers\Camera.cpp" />
     <ClCompile Include="CameraControllers\CameraControllerBase.cpp" />
     <ClCompile Include="CameraControllers\FreeCameraController.cpp" />
     <ClCompile Include="CameraControllers\RTSCameraController.cpp" />
@@ -64,8 +65,6 @@
     <ClCompile Include="EngineTime.cpp" />
     <ClCompile Include="GameState.cpp" />
     <ClCompile Include="Loader.cpp" />
-    <ClCompile Include="MaterialWrapper.cpp" />
-    <ClCompile Include="MeshWrapper.cpp" />
     <ClCompile Include="SceneFunctional\UI\Fonts\Font.cpp" />
     <ClCompile Include="SceneFunctional\UI\Fonts\FontsManager.cpp" />
     <ClCompile Include="SceneFunctional\UI\SceneNodeUI.cpp" />
@@ -99,6 +98,7 @@
   <ItemGroup>
     <ClInclude Include="..\shared\znEngine.h" />
     <ClInclude Include="CameraControllers\ArcBallCameraController.h" />
+    <ClInclude Include="CameraControllers\Camera.h" />
     <ClInclude Include="CameraControllers\CameraControllerBase.h" />
     <ClInclude Include="CameraControllers\FreeCameraController.h" />
     <ClInclude Include="CameraControllers\RTSCameraController.h" />
@@ -144,8 +144,6 @@
     <ClInclude Include="EngineTime.h" />
     <ClInclude Include="GameState.h" />
     <ClInclude Include="Loader.h" />
-    <ClInclude Include="MaterialWrapper.h" />
-    <ClInclude Include="MeshWrapper.h" />
     <ClInclude Include="SceneFunctional\UI\Fonts\Font.h" />
     <ClInclude Include="SceneFunctional\UI\Fonts\FontsManager.h" />
     <ClInclude Include="SceneFunctional\UI\SceneNodeUI.h" />

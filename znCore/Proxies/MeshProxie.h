@@ -1,10 +1,7 @@
 #pragma once
 
-
 class OW_ENGINE_API MeshWrapper : public IMesh
 {
-protected:
-	typedef MeshWrapper base;
 public:
 	MeshWrapper(std::shared_ptr<IMesh> _mesh);
 	virtual ~MeshWrapper();

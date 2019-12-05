@@ -1,8 +1,5 @@
 #include <stdafx.h>
 
-// Include
-#include "MeshWrapper.h"
-
 // General
 #include "Font.h"
 
@@ -16,7 +13,7 @@ CFontMesh::CFontMesh(std::shared_ptr<ITexture> _texture, std::shared_ptr<IMesh> 
 
 CFontMesh::~CFontMesh()
 {
-	Log::Info("Fonts deleted!!!");
+	Log::Info("Font deleted!!!");
 }
 
 

@@ -1,13 +1,17 @@
 #pragma once
 
-class OW_ENGINE_API CCameraControllerBase : public ICameraController
+#include "Camera.h"
+
+class OW_ENGINE_API CCameraControllerBase 
+	: public ICameraController
 {
 public:
 	                                                CCameraControllerBase();
     virtual                                         ~CCameraControllerBase();
 
 	// ICameraController
-	std::shared_ptr<Camera>                         GetCamera() const override;
+	std::shared_ptr<ICamera>                        GetCamera() const override;
+	std::shared_ptr<ICameraMovement>                GetCameraMovement() const override;
 
     // Engine events
     virtual void                                    OnUpdate(UpdateEventArgs& e) override;
@@ -29,7 +33,7 @@ public:
 	Ray	                                            ScreenPointToRay(vec2 screenPoint) const;
 
 protected:
-	std::shared_ptr<Camera>                         m_Camera;
+	std::shared_ptr<ICamera>                        m_Camera;
 	
 	vec2                                            m_PreviousMousePosition;
 };

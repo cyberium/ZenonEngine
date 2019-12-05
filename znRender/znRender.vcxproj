@@ -154,13 +154,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="BlendStateBase.cpp" />
-    <ClCompile Include="Camera.cpp" />
     <ClCompile Include="DepthStencilStateBase.cpp" />
     <ClCompile Include="MaterialBase.cpp" />
     <ClCompile Include="MeshBase.cpp" />
     <ClCompile Include="Primitives\Geometry.cpp" />
     <ClCompile Include="RasterizerStateBase.cpp" />
-    <ClCompile Include="Ray.cpp" />
     <ClCompile Include="RenderDeviceBase.cpp" />
     <ClCompile Include="RenderWindowBase.cpp" />
     <ClCompile Include="RenderWindowBase_Events.cpp" />
@@ -179,15 +177,12 @@
   <ItemGroup>
     <ClInclude Include="..\shared\znRender.h" />
     <ClInclude Include="BlendStateBase.h" />
-    <ClInclude Include="Camera.h" />
     <ClInclude Include="common.h" />
     <ClInclude Include="DepthStencilStateBase.h" />
     <ClInclude Include="MaterialBase.h" />
     <ClInclude Include="Primitives\Geometry.h" />
     <ClInclude Include="MeshBase.h" />
     <ClInclude Include="RasterizerStateBase.h" />
-    <ClInclude Include="Ray.h" />
-    <ClInclude Include="RaycastHit.h" />
     <ClInclude Include="RenderDeviceBase.h" />
     <ClInclude Include="RenderWindowBase.h" />
     <ClInclude Include="SamplerStateBase.h" />

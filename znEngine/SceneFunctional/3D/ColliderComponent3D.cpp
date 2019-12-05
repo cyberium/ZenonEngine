@@ -26,14 +26,14 @@ cbbox CColliderComponent3D::GetBounds() const
     return m_Bounds;
 }
 
-bool CColliderComponent3D::CheckFrustum(const Camera* Camera) const
+bool CColliderComponent3D::CheckFrustum(const ICamera* Camera) const
 {
     _ASSERT(Camera != nullptr);
 
-    return !Camera->GetFrustum().cullBox(GetBounds());
+    return !Camera->GetFrustum()->cullBox(GetBounds());
 }
 
-bool CColliderComponent3D::CheckDistance2D(const Camera* Camera, float _distance) const
+bool CColliderComponent3D::CheckDistance2D(const ICamera* Camera, float _distance) const
 {
     _ASSERT(Camera != nullptr);
 
@@ -42,7 +42,7 @@ bool CColliderComponent3D::CheckDistance2D(const Camera* Camera, float _distance
     return distToCamera2D < _distance;
 }
 
-bool CColliderComponent3D::CheckDistance(const Camera* Camera, float _distance) const
+bool CColliderComponent3D::CheckDistance(const ICamera* Camera, float _distance) const
 {
     _ASSERT(Camera != nullptr);
 

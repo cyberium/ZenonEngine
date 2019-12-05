@@ -43,7 +43,7 @@ void SceneNode3D::RegisterComponents()
 }
 
 
-void SceneNode3D::UpdateCamera(const Camera* camera)
+void SceneNode3D::UpdateCamera(const ICamera* camera)
 {
 	// Do nothing...
 }

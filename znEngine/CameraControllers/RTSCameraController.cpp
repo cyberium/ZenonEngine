@@ -6,8 +6,8 @@
 CRTSCameraController::CRTSCameraController()
 {
 	m_Camera = std::make_shared<Camera>();
-	m_Camera->SetYaw(0.0f);
-    m_Camera->SetPitch(-90.0f);
+	GetCameraMovement()->SetYaw(0.0f);
+	GetCameraMovement()->SetPitch(-90.0f);
 
 	m_MouseMoveMultiplier = 0.3f;
 	m_MouseWheelMultiplier = 8.7f;
@@ -51,7 +51,7 @@ void CRTSCameraController::SetCameraDistance(float Distance)
 //
 void CRTSCameraController::OnUpdate(UpdateEventArgs& e)
 {
-	m_Camera->SetTranslate(m_CameraPosition);
+	GetCameraMovement()->SetTranslate(m_CameraPosition);
 }
 
 

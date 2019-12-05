@@ -1,7 +1,5 @@
 #pragma once
 
-#include "../MaterialWrapper.h"
-
 class OW_ENGINE_API UI_Texture_Material : public MaterialWrapper
 {
 	typedef MaterialWrapper base;

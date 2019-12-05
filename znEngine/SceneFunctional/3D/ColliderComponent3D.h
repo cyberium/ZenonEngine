@@ -18,9 +18,9 @@ public:
     cbbox                                           GetBounds() const;
 
     // Culling stuff
-    bool                                            CheckFrustum(const Camera* Camera) const;
-    bool                                            CheckDistance2D(const Camera* Camera, float _distance) const;
-    bool                                            CheckDistance(const Camera* Camera, float _distance) const;
+    bool                                            CheckFrustum(const ICamera* Camera) const;
+    bool                                            CheckDistance2D(const ICamera* Camera, float _distance) const;
+    bool                                            CheckDistance(const ICamera* Camera, float _distance) const;
 
     // CComponentBase
     void                                            OnMessage(std::shared_ptr<ISceneNodeComponent> Component, ComponentMessageType Message) override;

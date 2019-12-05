@@ -1,11 +1,9 @@
 #pragma once
 
-class TextureOGL;
-class RenderTargetOGL;
-
-class RenderWindowOGL : public RenderWindow
+class RenderWindowOGL 
+	: public RenderWindowBase
 {
-    typedef RenderWindow base;
+    typedef RenderWindowBase base;
 public:
 	                                                RenderWindowOGL(std::shared_ptr<IRenderDevice> RenderDevice, IWindowObject * WindowObject, bool vSync);
 	virtual                                         ~RenderWindowOGL();

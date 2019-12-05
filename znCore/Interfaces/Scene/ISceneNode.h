@@ -3,13 +3,16 @@
 // FORWARD BEGIN
 ZN_INTERFACE ISceneNodeComponent;
 ZN_INTERFACE IScene;
-class Camera;
+ZN_INTERFACE ICamera;
 ZN_INTERFACE IVisitor;
 class UpdateEventArgs;
 // FORWARD END
 
 ZN_INTERFACE OW_ENGINE_API ISceneNode : public std::enable_shared_from_this<ISceneNode>
 {
+	virtual void									Initialize() = 0;
+	virtual void									Finalize() = 0;
+
 	virtual const std::string&                      GetName() const = 0;
 	virtual void                                    SetName(const std::string& name) = 0;
 
@@ -33,7 +36,7 @@ ZN_INTERFACE OW_ENGINE_API ISceneNode : public std::enable_shared_from_this<ISce
 	virtual std::vector<std::shared_ptr<ISceneNode>>GetChilds() = 0;
 
 	// Called before all others calls
-	virtual void                                    UpdateCamera(const Camera* camera) = 0;
+	virtual void                                    UpdateCamera(const ICamera* camera) = 0;
 
 	virtual bool                                    Accept(IVisitor* visitor) = 0;
 	virtual void                                    OnUpdate(UpdateEventArgs& e) = 0;
@@ -83,5 +86,10 @@ typedef std::multimap<std::string, std::shared_ptr<ISceneNode>> NodeNameMap;
 
 ZN_INTERFACE OW_ENGINE_API ISceneNodeInternal
 {
-	virtual void                                    SetParentInternal(std::weak_ptr<ISceneNode> parentNode) = 0;
+	virtual void SetParentInternal(std::weak_ptr<ISceneNode> parentNode) = 0;
+};
+
+ZN_INTERFACE OW_ENGINE_API ISceneNodeWrapper
+{
+	virtual void SetThisNode(std::shared_ptr<ISceneNode> ThisNode) = 0;
 };

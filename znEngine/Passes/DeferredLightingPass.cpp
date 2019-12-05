@@ -95,10 +95,10 @@ void DeferredLightingPass::RenderSubPass(RenderEventArgs* e, std::shared_ptr<Sce
 // Render the pass. This should only be called by the RenderTechnique.
 void DeferredLightingPass::Render(RenderEventArgs& e)
 {
-	const Camera* pCamera = e.Camera;
+	const ICamera* pCamera = e.Camera;
 	_ASSERT(pCamera != nullptr);
 
-	const Viewport * viewport = pCamera->GetViewport();
+	const Viewport * viewport = e.PipelineState->GetRasterizerState()->GetViewports()[0];
 	// We need the inverse projection matrix to compute the view space position of the fragment
 	// in the deferred lighting shader.
 	m_pScreenToViewParams->m_InverseProjectionMatrix = glm::inverse(pCamera->GetProjectionMatrix());
@@ -192,7 +192,7 @@ bool DeferredLightingPass::Visit(IMesh* Mesh, UINT IndexStartLocation, UINT Inde
 
 bool DeferredLightingPass::Visit(std::shared_ptr < CLight3D> light)
 {
-	const Camera* camera = GetRenderEventArgs()->Camera;
+	const ICamera* camera = GetRenderEventArgs()->Camera;
 	_ASSERT(camera != nullptr);
 
 	PerObject perObjectData;
