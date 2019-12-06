@@ -1,12 +1,10 @@
 #pragma once
 
-#include "Settings/GroupQuality.h"
-#include "Settings/GroupVideo.h"
-
 #include "SceneFunctional/3D/Scene3D.h"
 #include "SceneFunctional/UI/SceneUI.h"
 
 #include "Passes/RenderTechnique.h"
+#include "SceneFunctional/UI/UIText.h"
 
 class OW_ENGINE_API CGameState 
 	: public IGameState
@@ -33,10 +31,10 @@ public:
 
     // Engine events
 	virtual void                                    OnUpdate(UpdateEventArgs& e);
-	virtual void                                    OnPreRender(RenderEventArgs& e) = 0;
-	virtual void                                    OnRender(RenderEventArgs& e) = 0;
-	virtual void                                    OnPostRender(RenderEventArgs& e) = 0;
-	virtual void                                    OnRenderUI(RenderEventArgs& e) = 0;
+	virtual void                                    OnPreRender(RenderEventArgs& e);
+	virtual void                                    OnRender(RenderEventArgs& e);
+	virtual void                                    OnPostRender(RenderEventArgs& e);
+	virtual void                                    OnRenderUI(RenderEventArgs& e);
 
     // Window events
     virtual void                                    OnResize(ResizeEventArgs& e);
@@ -69,8 +67,8 @@ protected:
 
 	std::shared_ptr<ICameraController>              m_DefaultCameraController;
 
-	const CGroupQuality*                            m_QualitySettings;
-	const CGroupVideo*                              m_VideoSettings;
+	std::shared_ptr<ISettingGroup>                  m_QualitySettings;
+	std::shared_ptr<ISettingGroup>                  m_VideoSettings;
 
 	RenderTechnique                                 m_3DTechnique;
 	RenderTechnique                                 m_UITechnique;
@@ -96,6 +94,11 @@ private: // Mouse events connections
     Delegate<MouseButtonEventArgs>::FunctionDecl    OnMouseButtonReleasedConnection;
     Delegate<MouseMotionEventArgs>::FunctionDecl    OnMouseMovedConnection;
     Delegate<MouseWheelEventArgs>::FunctionDecl     OnMouseWheelConnection;
+
+private:
+	std::shared_ptr<CUITextNode>              m_CameraPosText;
+	std::shared_ptr<CUITextNode>              m_CameraRotText;
+	std::shared_ptr<CUITextNode>              m_FPSText;
 
 private:
 	bool                                            m_IsInited;

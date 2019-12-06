@@ -7,7 +7,7 @@
 #include <Application.h>
 
 MaterialDebug::MaterialDebug()
-	: MaterialWrapper(_RenderDevice->CreateMaterial(sizeof(MaterialProperties)))
+	: MaterialProxie(_RenderDevice->CreateMaterial(sizeof(MaterialProperties)))
 {
 	m_pProperties = (MaterialProperties*)_aligned_malloc(sizeof(MaterialProperties), 16);
 	*m_pProperties = MaterialProperties();
@@ -62,5 +62,5 @@ void MaterialDebug::SetDiffuseColor(cvec4 diffuse)
 
 void MaterialDebug::UpdateConstantBuffer() const
 {
-	MaterialWrapper::UpdateConstantBuffer(m_pProperties, sizeof(MaterialProperties));
+	MaterialProxie::UpdateConstantBuffer(m_pProperties, sizeof(MaterialProperties));
 }

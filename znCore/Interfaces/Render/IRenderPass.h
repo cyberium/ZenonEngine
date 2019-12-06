@@ -7,6 +7,8 @@ class Viewport;
 
 ZN_INTERFACE OW_ENGINE_API IRenderPass : public IVisitor
 {
+	virtual ~IRenderPass() {}
+
     // Enable or disable the pass. If a pass is disabled, the technique will skip it.
     virtual void SetEnabled(bool enabled) = 0;
     virtual bool IsEnabled() const = 0;

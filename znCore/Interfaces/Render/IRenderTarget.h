@@ -21,6 +21,8 @@ ZN_INTERFACE OW_ENGINE_API IRenderTarget
 		NumAttachmentPoints
 	};
 
+	virtual ~IRenderTarget() {}
+
 	/**
 	 * Attach a texture to the render target.
 	 * The dimension of all textures attached to a render target

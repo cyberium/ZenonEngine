@@ -25,6 +25,8 @@ ZN_INTERFACE OW_ENGINE_API IQuery
 		bool IsValid; // Are the results of the query valid? You should check this before using the value.
 	};
 
+	virtual ~IQuery() {}
+
 	/**
 	 * Begin a GPU query.
 	 */

@@ -4,7 +4,7 @@
 #include "Font.h"
 
 CFontMesh::CFontMesh(std::shared_ptr<ITexture> _texture, std::shared_ptr<IMesh> _fontGeometry, std::vector<uint32> _widthArray, uint32 _height) 
-	: MeshWrapper(_fontGeometry)
+	: MeshProxie(_fontGeometry)
 	, m_Texture(_texture)
 	, m_WidthArray(_widthArray)
 	, m_Height(_height)

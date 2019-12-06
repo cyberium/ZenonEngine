@@ -1,10 +1,10 @@
 #pragma once
 
-class OW_ENGINE_API MaterialWrapper : public IMaterial
+class OW_ENGINE_API MaterialProxie : public IMaterial
 {
 public:
-	MaterialWrapper(std::shared_ptr<IMaterial> _materal);
-	virtual ~MaterialWrapper();
+	MaterialProxie(std::shared_ptr<IMaterial> _materal);
+	virtual ~MaterialProxie();
 
 	virtual void SetShader(IShader::ShaderType type, std::shared_ptr<IShader> pShader);
 	virtual std::shared_ptr<IShader> GetShader(IShader::ShaderType type) const;

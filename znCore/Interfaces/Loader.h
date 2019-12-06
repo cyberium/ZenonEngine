@@ -25,6 +25,8 @@ struct OW_ENGINE_API
 	__declspec(uuid("18A045EF-D291-45E5-8F61-E223C4AFEF83"))
 	ILoader : public IManager
 {
+	virtual ~ILoader() {}
+
 	virtual void AddToLoadQueue(std::shared_ptr<ILoadable> _item) = 0;
 	virtual void LoadAll() = 0;
 

@@ -1,8 +1,8 @@
 #pragma once
 
-class OW_ENGINE_API UI_Texture_Material : public MaterialWrapper
+class OW_ENGINE_API UI_Texture_Material : public MaterialProxie
 {
-	typedef MaterialWrapper base;
+	typedef MaterialProxie base;
 public:
 	UI_Texture_Material();
 	virtual ~UI_Texture_Material();

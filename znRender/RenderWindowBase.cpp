@@ -16,7 +16,8 @@ RenderWindowBase::RenderWindowBase(std::shared_ptr<IRenderDevice> RenderDevice, 
 
 	, m_bHasKeyboardFocus(false)
 {
-
+	m_Viewport.SetWidth(WindowObject->GetWindowWidth());
+	m_Viewport.SetHeight(WindowObject->GetWindowHeight());
 }
 
 RenderWindowBase::~RenderWindowBase()
@@ -37,6 +38,8 @@ void RenderWindowBase::HideWindow()
 void RenderWindowBase::CloseWindow()
 {
 	m_WindowObject->DestroyWindow();
+
+	PostQuitMessage(0);
 }
 
 void RenderWindowBase::SetMousePosition(vec2 _position)

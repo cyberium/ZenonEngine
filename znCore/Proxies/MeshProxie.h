@@ -1,10 +1,10 @@
 #pragma once
 
-class OW_ENGINE_API MeshWrapper : public IMesh
+class OW_ENGINE_API MeshProxie : public IMesh
 {
 public:
-	MeshWrapper(std::shared_ptr<IMesh> _mesh);
-	virtual ~MeshWrapper();
+	MeshProxie(std::shared_ptr<IMesh> _mesh);
+	virtual ~MeshProxie();
 
 	virtual void AddVertexBuffer(const BufferBinding& binding, std::shared_ptr<IBuffer> buffer);
 	virtual void SetVertexBuffer(std::shared_ptr<IBuffer> buffer);

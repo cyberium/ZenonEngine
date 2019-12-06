@@ -36,12 +36,15 @@
     <ClCompile Include="LocalFilesStorage.cpp" />
     <ClCompile Include="Log.cpp" />
     <ClCompile Include="DebugOutput.cpp" />
+    <ClCompile Include="PluginsManager.cpp" />
     <ClCompile Include="Proxies\MaterialProxie.cpp" />
     <ClCompile Include="Proxies\MeshProxie.cpp" />
     <ClCompile Include="Proxies\SceneNodeProxie.cpp" />
     <ClCompile Include="Random.cpp" />
     <ClCompile Include="RefManager1DimAssync.cpp" />
     <ClCompile Include="Resource.cpp" />
+    <ClCompile Include="Settings.cpp" />
+    <ClCompile Include="SettingsGroupBase.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -132,9 +135,11 @@
     <ClInclude Include="Console.h" />
     <ClInclude Include="Log.h" />
     <ClInclude Include="DebugOutput.h" />
+    <ClInclude Include="PluginsManager.h" />
     <ClInclude Include="Proxies\MaterialProxie.h" />
     <ClInclude Include="Proxies\MeshProxie.h" />
     <ClInclude Include="Proxies\SceneNodeProxie.h" />
+    <ClInclude Include="Proxies\__Proxies.h" />
     <ClInclude Include="Random.h" />
     <ClInclude Include="Plane.h" />
     <ClInclude Include="Quaternion.h" />
@@ -143,6 +148,9 @@
     <ClInclude Include="RefManager1DimAssync.h" />
     <ClInclude Include="RefManager2Dim.h" />
     <ClInclude Include="Resource.h" />
+    <ClInclude Include="SettingBase.h" />
+    <ClInclude Include="Settings.h" />
+    <ClInclude Include="SettingsGroupBase.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="Utils.h" />

@@ -8,6 +8,8 @@ ZN_INTERFACE OW_ENGINE_API ICamera
 		Right
 	};
 
+	virtual ~ICamera() {}
+
 	virtual const Frustum*                          GetFrustum() const = 0;
 
 	virtual vec3                                    GetTranslation() const = 0;
@@ -31,6 +33,8 @@ ZN_INTERFACE OW_ENGINE_API ICameraMovement
 		Local,
 		World
 	};
+
+	virtual ~ICameraMovement() {}
 
 	virtual void                                            TranslateX(float x, Space space = Space::Local) = 0;
 	virtual void                                            TranslateY(float y, Space space = Space::Local) = 0;

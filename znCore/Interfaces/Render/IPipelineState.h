@@ -15,6 +15,8 @@ ZN_INTERFACE IRenderTarget;
  */
 ZN_INTERFACE OW_ENGINE_API IPipelineState
 {
+	virtual ~IPipelineState() {}
+
 	virtual void SetShader(IShader::ShaderType type, std::shared_ptr<IShader> pShader) = 0;
 	virtual std::shared_ptr<IShader> GetShader(IShader::ShaderType type) const = 0;
 	virtual const ShaderMap& GetShaders() const = 0;

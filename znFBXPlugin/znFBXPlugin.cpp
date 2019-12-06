@@ -12,7 +12,7 @@ public:
 	}
 	virtual ~CznFBXPlugin()
 	{
-
+		Log::Warn("Test");
 	}
 
 
@@ -24,7 +24,7 @@ public:
 	{
 		m_BaseManager = BaseManager;
 
-		return false;
+		return true;
 	}
 	void Finalize()
 	{
@@ -41,7 +41,6 @@ IznPlugin* GetPlugin(std::shared_ptr<IBaseManager> BaseManager)
 	if (plugin == nullptr)
 	{
 		plugin = new CznFBXPlugin();
-		plugin->Initialize(BaseManager);
 	}
 
 	return plugin;

@@ -11,6 +11,8 @@ ZN_INTERFACE OW_ENGINE_API IMesh : public std::enable_shared_from_this<IMesh>
 {
 	typedef std::map<BufferBinding, std::shared_ptr<IBuffer>> BufferMap;
 
+	virtual ~IMesh() {}
+
 	virtual void                                    AddVertexBuffer(const BufferBinding& binding, std::shared_ptr<IBuffer> buffer) = 0;
 	virtual void                                    SetVertexBuffer(std::shared_ptr<IBuffer> buffer) = 0;
 	virtual void                                    SetIndexBuffer(std::shared_ptr<IBuffer> buffer) = 0;

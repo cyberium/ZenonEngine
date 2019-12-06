@@ -90,3 +90,5 @@ inline void SafeDeleteArray(T& ptr)
 		ptr = NULL;
 	}
 }
+
+OW_ENGINE_API std::vector<std::string> ArgumentsToVector(int argumentsCount, char* arguments[]);

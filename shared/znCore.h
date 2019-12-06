@@ -19,3 +19,5 @@
 
 // Objects bindings
 #include "../znCore/BaseManager.h"
+
+#include "../znCore/PluginsManager.h"

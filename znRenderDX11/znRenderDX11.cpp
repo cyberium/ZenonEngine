@@ -6,7 +6,7 @@
 // Additional
 #include "RenderDeviceDX11.h"
 
-extern std::shared_ptr<CLog> gLogInstance;
+extern CLog* gLogInstance;
 
 //
 // CznRenderDX11DeviceCreator
@@ -59,12 +59,12 @@ public:
 	{
 		m_BaseManager = BaseManager;
 		
-		gLogInstance = std::dynamic_pointer_cast<CLog>(GetManager<ILog>(m_BaseManager));
+		gLogInstance = std::dynamic_pointer_cast<CLog>(GetManager<ILog>(m_BaseManager)).get();
 		m_RenderDeviceCreator = std::make_shared<CznRenderDX11DeviceCreator>(m_BaseManager);
 
 		GetManager<IznRenderDeviceCreatorFactory>(m_BaseManager)->RegisterRenderDeviceCreator(m_RenderDeviceCreator);
 
-		return false;
+		return true;
 	}
 	void Finalize()
 	{
@@ -84,7 +84,6 @@ IznPlugin* GetPlugin(std::shared_ptr<IBaseManager> BaseManager)
 	if (plugin == nullptr)
 	{
 		plugin = new CznRenderDX11Plugin();
-		plugin->Initialize(BaseManager);
 	}
 
 	return plugin;

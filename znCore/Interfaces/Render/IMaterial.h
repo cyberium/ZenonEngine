@@ -10,6 +10,8 @@ ZN_INTERFACE OW_ENGINE_API IMaterial : public std::enable_shared_from_this<IMate
 {
 	typedef std::map<uint8, std::shared_ptr<ISamplerState>> SamplersMap;
 
+	virtual ~IMaterial() {}
+
 	virtual void SetShader(IShader::ShaderType type, std::shared_ptr<IShader> pShader) = 0;
 	virtual std::shared_ptr<IShader> GetShader(IShader::ShaderType type) const = 0;
 	virtual const ShaderMap& GetShaders() const = 0;

@@ -24,6 +24,8 @@ ZN_INTERFACE OW_ENGINE_API IWindowObject
 
 ZN_INTERFACE OW_ENGINE_API IWindowClassRegistrator
 {
+	virtual ~IWindowClassRegistrator() {}
+
 	virtual void RegisterWindowClass(LPCWSTR WindowClassName) = 0;
 	virtual void UnregisterWindowClass() = 0;
 	virtual LPCWSTR GetWindowClassName() const = 0;

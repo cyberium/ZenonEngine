@@ -7,7 +7,7 @@
 #include "Application.h"
 
 UI_Font_Material::UI_Font_Material() :
-	MaterialWrapper(_RenderDevice->CreateMaterial(sizeof(MaterialProperties)))
+	MaterialProxie(_RenderDevice->CreateMaterial(sizeof(MaterialProperties)))
 {
 	m_pProperties = (MaterialProperties*)_aligned_malloc(sizeof(MaterialProperties), 16);
 	*m_pProperties = MaterialProperties();
@@ -79,5 +79,5 @@ void UI_Font_Material::SetOffset(vec2 offset)
 
 void UI_Font_Material::UpdateConstantBuffer() const
 {
-	MaterialWrapper::UpdateConstantBuffer(m_pProperties, sizeof(MaterialProperties));
+	MaterialProxie::UpdateConstantBuffer(m_pProperties, sizeof(MaterialProperties));
 }

@@ -9,8 +9,8 @@ ZN_INTERFACE OW_ENGINE_API
 
 //--
 
-template<class T>
-ZN_INTERFACE IRefManager : public IManager
+template<typename T>
+ZN_INTERFACE OW_ENGINE_API IRefManager : public IManager
 {	
 	virtual ~IRefManager() {};
 
@@ -52,5 +52,7 @@ ZN_INTERFACE OW_ENGINE_API
 
 ZN_INTERFACE OW_ENGINE_API IBaseManagerHolder
 {
+	virtual ~IBaseManagerHolder() {}
+
 	virtual std::shared_ptr<IBaseManager> GetBaseManager() const = 0;
 };

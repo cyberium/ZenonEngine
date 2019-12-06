@@ -50,8 +50,8 @@ TextureOGL::TextureOGL(std::weak_ptr<IRenderDevice> RenderDevice, uint16_t width
 	}
 
 	glGenTextures(1, &m_GLObj);
-	glActiveTexture(GL_TEXTURE0);
 
+	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, m_GLObj);
 	{
 		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
@@ -268,7 +268,33 @@ bool TextureOGL::IsTransparent() const
 
 void TextureOGL::Resize2D(uint16_t width, uint16_t height)
 {
-	Log::Error("TextureOGL::Resize2D Not implemented!");
+	glActiveTexture(GL_TEXTURE15);
+	glBindTexture(GL_TEXTURE_2D, m_GLObj);
+	{
+		//glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		//glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		//glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+		//glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+		//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_MODE, GL_NONE);
+
+		/*float borderColor[] = { 1.0f, 1.0f, 1.0f, 1.0f };
+		glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, borderColor);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, 1);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_MODE, GL_NONE);*/
+
+		GLenum internalFormat = TranslateTextureInternalFormat(m_TextureFormat);
+		GLenum inputFormat = TranslateTextureInputFormat(m_TextureFormat);
+		GLenum inputType = TranslateTextureInputType(m_TextureFormat);
+
+		glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, width, height, 0, inputFormat, inputType, NULL);
+		OGLCheckError();
+	}
+	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 void TextureOGL::ResizeCube(uint16_t size)

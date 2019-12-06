@@ -22,8 +22,7 @@ RenderWindowOGL::RenderWindowOGL(std::shared_ptr<IRenderDevice> RenderDevice, IW
 }
 
 RenderWindowOGL::~RenderWindowOGL()
-{
-}
+{}
 
 
 void RenderWindowOGL::Present()

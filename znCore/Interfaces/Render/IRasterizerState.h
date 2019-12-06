@@ -60,6 +60,8 @@ ZN_INTERFACE OW_ENGINE_API IRasterizerState
 		CounterClockwise
 	};
 
+	virtual ~IRasterizerState() {}
+
 	virtual void SetFillMode(FillMode frontFace = FillMode::Solid, FillMode backFace = FillMode::Solid) = 0;
 	virtual void GetFillMode(FillMode& frontFace, FillMode& backFace) const = 0;
 

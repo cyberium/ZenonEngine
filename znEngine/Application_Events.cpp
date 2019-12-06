@@ -12,14 +12,16 @@ Event & Application::Initialize()
 	return m_Initialize;
 }
 
-void Application::OnInitialize(EventArgs& e)
+bool Application::OnInitialize(EventArgs& e)
 {
 	if (m_bIsInitialized)
-		return;
+		return true;
 
-	m_Initialize(e);
+	bool result = m_Initialize(e);
 
 	m_bIsInitialized = true;
+
+	return result;
 }
 
 UpdateEvent& Application::Update()
@@ -27,9 +29,9 @@ UpdateEvent& Application::Update()
 	return m_Update;
 }
 
-void Application::OnUpdate(UpdateEventArgs& e)
+bool Application::OnUpdate(UpdateEventArgs& e)
 {
-	m_Update(e);
+	return m_Update(e);
 }
 
 Event & Application::Terminate()
@@ -37,9 +39,9 @@ Event & Application::Terminate()
 	return m_Terminate;
 }
 
-void Application::OnTerminate(EventArgs& e)
+bool Application::OnTerminate(EventArgs& e)
 {
-	m_Terminate(e);
+	return m_Terminate(e);
 }
 
 Event & Application::Terminated()
@@ -47,11 +49,11 @@ Event & Application::Terminated()
 	return m_Terminated;
 }
 
-void Application::OnTerminated(EventArgs& e)
+bool Application::OnTerminated(EventArgs& e)
 {
 	m_bIsInitialized = false;
 
-	m_Terminated(e);
+	return m_Terminated(e);
 }
 
 Event & Application::Exit()
@@ -59,9 +61,9 @@ Event & Application::Exit()
 	return m_Exit;
 }
 
-void Application::OnExit(EventArgs& e)
+bool Application::OnExit(EventArgs& e)
 {
-	m_Exit(e);
+	bool result = m_Exit(e);
 
 	// Destroy any windows that are still hanging around.
 	for (const auto& it : m_Windows)
@@ -70,6 +72,8 @@ void Application::OnExit(EventArgs& e)
 
 	// Setting this to false will cause the main application's message pump to stop.
 	m_bIsRunning = false;
+
+	return result;
 }
 
 UserEvent & Application::UserEvent()
@@ -77,9 +81,9 @@ UserEvent & Application::UserEvent()
 	return m_UserEvent;
 }
 
-void Application::OnUserEvent(UserEventArgs& e)
+bool Application::OnUserEvent(UserEventArgs& e)
 {
-	m_UserEvent(e);
+	return m_UserEvent(e);
 }
 
 

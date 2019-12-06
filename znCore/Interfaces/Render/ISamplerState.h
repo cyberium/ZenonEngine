@@ -50,6 +50,8 @@ ZN_INTERFACE OW_ENGINE_API ISamplerState
 		Always,                 // Always pass the comparison function.
 	};
 
+	virtual ~ISamplerState() {}
+
 	virtual void SetFilter(MinFilter minFilter, MagFilter magFilter, MipFilter mipFilter) = 0;
 	virtual void GetFilter(MinFilter& minFilter, MagFilter& magFilter, MipFilter& mipFilter) const = 0;
 

@@ -7,6 +7,7 @@
 #pragma comment(lib, "znRender.lib")
 
 // COM
+#define _ATL_DISABLE_NOTHROW_NEW
 #include <comdef.h>
 #include <atlbase.h>
 

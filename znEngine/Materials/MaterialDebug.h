@@ -1,6 +1,6 @@
 #pragma once
 
-class OW_ENGINE_API MaterialDebug : public MaterialWrapper
+class OW_ENGINE_API MaterialDebug : public MaterialProxie
 {
 public:
 	MaterialDebug();

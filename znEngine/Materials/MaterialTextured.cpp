@@ -7,7 +7,7 @@
 #include <Application.h>
 
 MaterialTextured::MaterialTextured()
-	: MaterialWrapper(_RenderDevice->CreateMaterial(sizeof(MaterialProperties)))
+	: MaterialProxie(_RenderDevice->CreateMaterial(sizeof(MaterialProperties)))
 {
 	// Constant buffer
 	m_pProperties = (MaterialProperties*)_aligned_malloc(sizeof(MaterialProperties), 16);
@@ -80,5 +80,5 @@ void MaterialTextured::SetDiffuseColor(cvec4 diffuse)
 
 void MaterialTextured::UpdateConstantBuffer() const
 {
-	MaterialWrapper::UpdateConstantBuffer(m_pProperties, sizeof(MaterialProperties));
+	MaterialProxie::UpdateConstantBuffer(m_pProperties, sizeof(MaterialProperties));
 }

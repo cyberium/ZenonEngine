@@ -20,6 +20,8 @@ ZN_INTERFACE OW_ENGINE_API IShader
 		ComputeShader,
 	};
 
+	virtual ~IShader() {}
+
 	/**
 	 * What type of shader is this?
 	 */

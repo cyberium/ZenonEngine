@@ -15,6 +15,8 @@ ZN_INTERFACE IBuffer;
 
 ZN_INTERFACE OW_ENGINE_API IRenderDevicePrimitiveCollection
 {
+	virtual ~IRenderDevicePrimitiveCollection() {}
+
 	virtual std::shared_ptr<IMesh> CreateLine(cvec3 _dest) = 0; // Create a line
 	virtual std::shared_ptr<IMesh> CreatePlane(cvec3 N = vec3(0, 1, 0)) = 0; // Create a plane in 3D.
 	virtual std::shared_ptr<IMesh> CreateScreenQuad(float left = 0.0f, float right = 1.0f, float bottom = 0.0f, float top = 1.0f, float z = 0.0f) = 0; // Create a screen-space quad that can be used to render full-screen post-process effects to the screen.
@@ -33,6 +35,8 @@ ZN_INTERFACE OW_ENGINE_API IRenderDevicePrimitiveCollection
 
 ZN_INTERFACE OW_ENGINE_API IRenderDevice
 {
+	virtual ~IRenderDevice() {}
+
 	virtual bool Initialize() = 0;
 	virtual void Finalize() = 0;
 

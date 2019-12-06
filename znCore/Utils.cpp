@@ -210,3 +210,13 @@ bool Utils::PointInRectangle(const vec2 _point, const vec2 _rectStart, const vec
 		_point.x > _rectStart.x && _point.y > _rectStart.y &&
 		_point.x < _rectEnd.x && _point.y < _rectEnd.y;
 }
+
+std::vector<std::string> ArgumentsToVector(int argumentsCount, char * arguments[])
+{
+	std::vector<std::string> argumnets;
+	for (int i = 0; i < argumentsCount; i++)
+	{
+		argumnets.push_back(std::string(arguments[i]));
+	}
+	return argumnets;
+}

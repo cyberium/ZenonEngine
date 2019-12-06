@@ -4,9 +4,6 @@
     <Filter Include="Common">
       <UniqueIdentifier>{d0033b79-fd0f-4221-80fa-9a9bedd64d33}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Engine">
-      <UniqueIdentifier>{bff6234b-c347-4c9d-a52e-f7020b86d9e1}</UniqueIdentifier>
-    </Filter>
     <Filter Include="RenderStuff">
       <UniqueIdentifier>{61ff063b-287f-4ae6-84e4-ab15b88e3880}</UniqueIdentifier>
     </Filter>
@@ -94,25 +91,16 @@
     <Filter Include="Managers">
       <UniqueIdentifier>{bea8c7b6-a116-4292-87d0-9e849456ef13}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Managers\Settings">
-      <UniqueIdentifier>{c55d8656-eb02-4071-98e0-ef05ce94f3ba}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Managers\Plugins">
-      <UniqueIdentifier>{a4f901a5-b7b6-41b2-8f70-04e6c739b77e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Resources\Shaders_OGL\3D">
       <UniqueIdentifier>{490800e0-8036-4348-b1ba-299b0b1a2c23}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Settings">
+      <UniqueIdentifier>{c55d8656-eb02-4071-98e0-ef05ce94f3ba}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
       <Filter>Common</Filter>
-    </ClCompile>
-    <ClCompile Include="GameState.cpp">
-      <Filter>Engine</Filter>
-    </ClCompile>
-    <ClCompile Include="Loader.cpp">
-      <Filter>Engine</Filter>
     </ClCompile>
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="EngineTime.cpp" />
@@ -282,17 +270,8 @@
     <ClCompile Include="RenderDeviceCreatorFactory.cpp">
       <Filter>Managers</Filter>
     </ClCompile>
-    <ClCompile Include="Settings\GroupQuality.cpp">
-      <Filter>Managers\Settings</Filter>
-    </ClCompile>
     <ClCompile Include="Settings\GroupVideo.cpp">
-      <Filter>Managers\Settings</Filter>
-    </ClCompile>
-    <ClCompile Include="Settings\Settings.cpp">
-      <Filter>Managers\Settings</Filter>
-    </ClCompile>
-    <ClCompile Include="Plugins\PluginsManager.cpp">
-      <Filter>Managers\Plugins</Filter>
+      <Filter>Settings</Filter>
     </ClCompile>
     <ClCompile Include="Application_Events.cpp" />
     <ClCompile Include="WindowClassRegistrator.cpp" />
@@ -305,6 +284,11 @@
     <ClCompile Include="CameraControllers\Camera.cpp">
       <Filter>CameraControllers</Filter>
     </ClCompile>
+    <ClCompile Include="GameState.cpp" />
+    <ClCompile Include="Loader.cpp" />
+    <ClCompile Include="Settings\WoWSettingsGroup.cpp">
+      <Filter>Settings</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="common.h">
@@ -312,12 +296,6 @@
     </ClInclude>
     <ClInclude Include="stdafx.h">
       <Filter>Common</Filter>
-    </ClInclude>
-    <ClInclude Include="GameState.h">
-      <Filter>Engine</Filter>
-    </ClInclude>
-    <ClInclude Include="Loader.h">
-      <Filter>Engine</Filter>
     </ClInclude>
     <ClInclude Include="Application.h" />
     <ClInclude Include="EngineTime.h" />
@@ -490,17 +468,8 @@
     <ClInclude Include="RenderDeviceCreatorFactory.h">
       <Filter>Managers</Filter>
     </ClInclude>
-    <ClInclude Include="Settings\GroupQuality.h">
-      <Filter>Managers\Settings</Filter>
-    </ClInclude>
     <ClInclude Include="Settings\GroupVideo.h">
-      <Filter>Managers\Settings</Filter>
-    </ClInclude>
-    <ClInclude Include="Settings\Settings.h">
-      <Filter>Managers\Settings</Filter>
-    </ClInclude>
-    <ClInclude Include="Plugins\PluginsManager.h">
-      <Filter>Managers\Plugins</Filter>
+      <Filter>Settings</Filter>
     </ClInclude>
     <ClInclude Include="WindowClassRegistrator.h" />
     <ClInclude Include="SceneFunctional\Base\SceneNodeBase.h">
@@ -511,6 +480,11 @@
     </ClInclude>
     <ClInclude Include="CameraControllers\Camera.h">
       <Filter>CameraControllers</Filter>
+    </ClInclude>
+    <ClInclude Include="GameState.h" />
+    <ClInclude Include="Loader.h" />
+    <ClInclude Include="Settings\WoWSettingsGroup.h">
+      <Filter>Settings</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

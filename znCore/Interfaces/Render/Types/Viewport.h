@@ -3,7 +3,17 @@
 class OW_ENGINE_API Viewport
 {
 public:
-    Viewport(float x = 0.0f, float y = 0.0f, float width = 1280.0f, float height = 1024.0f, float minDepth = 0.0f, float maxDepth = 1.0f)
+	Viewport()
+		: X(0.0f)
+		, Y(0.0f)
+		, Width(320.0f)
+		, Height(240.0f)
+		, MinDepth(0.0f)
+		, MaxDepth(1.0f)
+	{
+		UpdateOrthoMatrix();
+	}
+    Viewport(float x, float y, float width, float height, float minDepth, float maxDepth)
 		: X(x)
 		, Y(y)
 		, Width(width)
@@ -22,7 +32,7 @@ public:
 	}
     void UpdateOrthoMatrix()
 	{
-		OrthoMatrix = glm::ortho<float>(0.0f, Width, Height, 0.0f, MinDepth - 1.0f, MaxDepth);
+		OrthoMatrix = glm::ortho<float>(X, Width, Height, Y, MinDepth - 1.0f, MaxDepth);
 	}
 
 	float GetX() const

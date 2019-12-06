@@ -7,7 +7,7 @@
 #include "Application.h"
 
 UI_Color_Material::UI_Color_Material() :
-	MaterialWrapper(_RenderDevice->CreateMaterial(sizeof(MaterialProperties)))
+	MaterialProxie(_RenderDevice->CreateMaterial(sizeof(MaterialProperties)))
 {
 	m_pProperties = (MaterialProperties*)_aligned_malloc(sizeof(MaterialProperties), 16);
 	*m_pProperties = MaterialProperties();
@@ -44,5 +44,5 @@ void UI_Color_Material::SetColor(vec4 color)
 
 void UI_Color_Material::UpdateConstantBuffer() const
 {
-	MaterialWrapper::UpdateConstantBuffer(m_pProperties, sizeof(MaterialProperties));
+	MaterialProxie::UpdateConstantBuffer(m_pProperties, sizeof(MaterialProperties));
 }

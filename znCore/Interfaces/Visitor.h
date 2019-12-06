@@ -10,6 +10,8 @@ class CLight3D;
 
 ZN_INTERFACE OW_ENGINE_API IVisitor : public std::enable_shared_from_this<IVisitor>
 {
+	virtual ~IVisitor() {}
+
 	virtual bool Visit(SceneNode3D* node) = 0;
 	virtual bool Visit(CUIBaseNode* node) = 0;
 	virtual bool Visit(IMesh* Mesh, UINT IndexStartLocation = 0, UINT IndexCnt = 0, UINT VertexStartLocation = 0, UINT VertexCnt = 0) = 0;

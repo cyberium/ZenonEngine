@@ -6,7 +6,7 @@
 // Additional
 #include "RenderDeviceOGL.h"
 
-extern std::shared_ptr<CLog> gLogInstance;
+extern CLog* gLogInstance;
 
 //
 // CznRenderOpenGLDeviceCreator
@@ -58,13 +58,13 @@ public:
 	bool Initialize(std::shared_ptr<IBaseManager> BaseManager)
 	{
 		m_BaseManager = BaseManager;
-		gLogInstance = std::dynamic_pointer_cast<CLog>(GetManager<ILog>(m_BaseManager));
+		gLogInstance = std::dynamic_pointer_cast<CLog>(GetManager<ILog>(m_BaseManager)).get();
 
 		m_RenderDeviceCreator = std::make_shared<CznRenderOpenGLDeviceCreator>(m_BaseManager);
 
 		GetManager<IznRenderDeviceCreatorFactory>(m_BaseManager)->RegisterRenderDeviceCreator(m_RenderDeviceCreator);
 
-		return false;
+		return true;
 	}
 	void Finalize()
 	{
@@ -84,7 +84,6 @@ IznPlugin* GetPlugin(std::shared_ptr<IBaseManager> BaseManager)
 	if (plugin == nullptr)
 	{
 		plugin = new CznRenderOpenGLPlugin();
-		plugin->Initialize(BaseManager);
 	}
 
 	return plugin;

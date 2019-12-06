@@ -93,6 +93,8 @@ ZN_INTERFACE OW_ENGINE_API ITexture
 		Back,   // -Z
 	};
 
+	virtual ~ITexture() {}
+
 	/**
 	 * Load a 2D custom texture
 	 */

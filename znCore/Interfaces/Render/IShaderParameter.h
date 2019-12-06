@@ -19,6 +19,8 @@ ZN_INTERFACE IShaderParameter
 		RWBuffer,   // Read/write structured buffers.
 	};
 
+	virtual ~IShaderParameter() {}
+
 	// Get the type of the stored parameter.
 	virtual Type GetType() const = 0;
 

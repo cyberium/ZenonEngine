@@ -1,6 +1,6 @@
 #pragma once
 
-class OW_ENGINE_API UI_Font_Material : public MaterialWrapper
+class OW_ENGINE_API UI_Font_Material : public MaterialProxie
 {
 public:
 	UI_Font_Material();

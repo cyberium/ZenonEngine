@@ -8,6 +8,8 @@ class UpdateEventArgs;
 
 ZN_INTERFACE OW_ENGINE_API IScene : public std::enable_shared_from_this<IScene>
 {
+	virtual ~IScene() {}
+
 	virtual std::shared_ptr<ISceneNode>				GetRootNode() const = 0;
 
 	virtual void                                    Accept(IVisitor* visitor) = 0;

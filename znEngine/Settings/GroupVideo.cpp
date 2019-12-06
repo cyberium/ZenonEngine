@@ -3,7 +3,14 @@
 // General
 #include "GroupVideo.h"
 
-void CGroupVideo::InitDefault()
+
+CGroupVideo::CGroupVideo()
+{}
+
+CGroupVideo::~CGroupVideo()
+{}
+
+void CGroupVideo::AddDefaultSettings()
 {
-	SetWindowSize(1280, 1024);
+	AddSetting("WindowSize", std::make_shared<CSettingBase<glm::vec2>>(glm::vec2(1280, 1024)));
 }

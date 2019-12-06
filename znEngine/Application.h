@@ -24,6 +24,7 @@ public:
 	std::shared_ptr<IRenderDevice>  CreateRenderDevice(RenderDeviceType DeviceType);
 	//std::shared_ptr<IRenderWindow>  CreateRenderWindow(IWindowObject * WindowObject, bool vSync);
 	void                            AddRenderWindow(std::shared_ptr<IRenderWindow> RenderWindow);
+	void                            DeleleRenderWindow(std::shared_ptr<IRenderWindow> RenderWindow);
 
 	// IApplication
 	void                            DoBeforeRun() override;
@@ -39,17 +40,17 @@ public:
 
 	// IApplicationEvents
 	Event&                          Initialize();
-	void                          OnInitialize(EventArgs& e);
+	bool                          OnInitialize(EventArgs& e);
 	UpdateEvent&                    Update();
-	void                          OnUpdate(UpdateEventArgs& e);
+	bool                          OnUpdate(UpdateEventArgs& e);
 	Event&			                Terminate();
-	void                          OnTerminate(EventArgs& e);
+	bool                          OnTerminate(EventArgs& e);
 	Event&                          Terminated();
-	void                          OnTerminated(EventArgs& e);
+	bool                          OnTerminated(EventArgs& e);
 	Event&                          Exit();
-	void                          OnExit(EventArgs& e);
+	bool                          OnExit(EventArgs& e);
 	Delegate<UserEventArgs>&        UserEvent();
-	void                          OnUserEvent(UserEventArgs& e);
+	bool                          OnUserEvent(UserEventArgs& e);
 	LRESULT CALLBACK				WndProc(HWND, UINT, WPARAM, LPARAM);
 
 	// IGameStateManager

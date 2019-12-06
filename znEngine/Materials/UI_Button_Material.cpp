@@ -7,7 +7,7 @@
 #include "Application.h"
 
 UI_Button_Material::UI_Button_Material() :
-	MaterialWrapper(_RenderDevice->CreateMaterial(sizeof(MaterialProperties)))
+	MaterialProxie(_RenderDevice->CreateMaterial(sizeof(MaterialProperties)))
 {
 	m_pProperties = (MaterialProperties*)_aligned_malloc(sizeof(MaterialProperties), 16);
 	*m_pProperties = MaterialProperties();

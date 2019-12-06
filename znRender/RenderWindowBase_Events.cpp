@@ -402,6 +402,7 @@ Event& RenderWindowBase::Terminate()
 }
 void RenderWindowBase::OnTerminate(EventArgs& e)
 {
+	e.Caller = this;
 	m_Terminate(e);
 }
 
@@ -415,6 +416,7 @@ Event& RenderWindowBase::InputFocus()
 }
 void RenderWindowBase::OnInputFocus(EventArgs& e) // The window has received focus
 {
+	e.Caller = this;
 	m_InputFocus(e);
 }
 
@@ -424,6 +426,7 @@ Event& RenderWindowBase::InputBlur()
 }
 void RenderWindowBase::OnInputBlur(EventArgs& e) // The RenderWindowBase window has lost focus
 {
+	e.Caller = this;
 	m_InputBlur(e);
 }
 
@@ -433,6 +436,7 @@ Event& RenderWindowBase::Minimize()
 }
 void RenderWindowBase::OnMinimize(EventArgs& e) // The RenderWindowBase window has been minimized
 {
+	e.Caller = this;
 	m_Minimize(e);
 }
 
@@ -442,6 +446,9 @@ Event& RenderWindowBase::Restore()
 }
 void RenderWindowBase::OnRestore(EventArgs& e) // The RenderWindowBase window has been restored
 {
+	m_bResizePending = true;
+
+	e.Caller = this;
 	m_Restore(e);
 }
 
@@ -454,12 +461,10 @@ void RenderWindowBase::OnResize(ResizeEventArgs& e) // The RenderWindowBase wind
 	m_Viewport.SetWidth(e.Width);
 	m_Viewport.SetHeight(e.Height);
 
-	m_Resize(e);
-
-	//HideWindow();
-	//ShowWindow();
-
 	m_bResizePending = true;
+
+	e.Caller = this;
+	m_Resize(e);
 }
 
 Event& RenderWindowBase::Expose()
@@ -468,6 +473,7 @@ Event& RenderWindowBase::Expose()
 }
 void RenderWindowBase::OnExpose(EventArgs& e) // The window contents should be repainted
 {
+	e.Caller = this;
 	m_Expose(e);
 }
 
@@ -477,6 +483,7 @@ WindowCloseEvent& RenderWindowBase::Close()
 }
 void RenderWindowBase::OnClose(WindowCloseEventArgs& e)
 {
+	e.Caller = this;
 	m_Close(e);
 }
 
@@ -491,6 +498,7 @@ KeyboardEvent& RenderWindowBase::KeyPressed()
 }
 void RenderWindowBase::OnKeyPressed(KeyEventArgs& e) // A keyboard key was pressed
 {
+	e.Caller = this;
 	m_KeyPressed(e);
 }
 
@@ -500,6 +508,7 @@ KeyboardEvent& RenderWindowBase::KeyReleased()
 }
 void RenderWindowBase::OnKeyReleased(KeyEventArgs& e) // A keyboard key was released
 {
+	e.Caller = this;
 	m_KeyReleased(e);
 }
 
@@ -510,6 +519,8 @@ Event& RenderWindowBase::KeyboardFocus()
 void RenderWindowBase::OnKeyboardFocus(EventArgs& e) // Window gained keyboard focus
 {
 	m_bHasKeyboardFocus = true;
+
+	e.Caller = this;
 	m_KeyboardFocus(e);
 }
 
@@ -520,6 +531,8 @@ Event& RenderWindowBase::KeyboardBlur()
 void RenderWindowBase::OnKeyboardBlur(EventArgs& e) // Window lost keyboard focus
 {
 	m_bHasKeyboardFocus = false;
+
+	e.Caller = this;
 	m_KeyboardBlur(e);
 }
 
@@ -556,6 +569,7 @@ void RenderWindowBase::OnMouseMoved(MouseMotionEventArgs& e)
 
 	m_PreviousMousePosition = glm::ivec2(e.X, e.Y);
 
+	e.Caller = this;
 	m_MouseMoved(e);
 }
 
@@ -565,6 +579,7 @@ MouseButtonEvent& RenderWindowBase::MouseButtonPressed()
 }
 void RenderWindowBase::OnMouseButtonPressed(MouseButtonEventArgs& e)
 {
+	e.Caller = this;
 	m_MouseButtonPressed(e);
 }
 
@@ -574,6 +589,7 @@ MouseButtonEvent& RenderWindowBase::MouseButtonReleased()
 }
 void RenderWindowBase::OnMouseButtonReleased(MouseButtonEventArgs& e)
 {
+	e.Caller = this;
 	m_MouseButtonReleased(e);
 }
 
@@ -583,6 +599,7 @@ MouseWheelEvent& RenderWindowBase::MouseWheel()
 }
 void RenderWindowBase::OnMouseWheel(MouseWheelEventArgs& e)
 {
+	e.Caller = this;
 	m_MouseWheel(e);
 }
 
@@ -595,6 +612,7 @@ void RenderWindowBase::OnMouseLeave(EventArgs& e)
 	m_IsMouseTracking = false;
 	m_InClientRect = false;
 
+	e.Caller = this;
 	m_MouseLeave(e);
 }
 
@@ -604,6 +622,7 @@ Event& RenderWindowBase::MouseFocus()
 }
 void RenderWindowBase::OnMouseFocus(EventArgs& e) // The window has received mouse focus
 {
+	e.Caller = this;
 	m_MouseFocus(e);
 }
 
@@ -613,5 +632,6 @@ Event& RenderWindowBase::MouseBlur()
 }
 void RenderWindowBase::OnMouseBlur(EventArgs& e) // The window has lost mouse focus
 {
+	e.Caller = this;
 	m_MouseBlur(e);
 }

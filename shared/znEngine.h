@@ -19,7 +19,6 @@
 #include "../znEngine/SceneFunctional/UI/Fonts/FontsManager.h"
 #include "../znEngine/WindowClassRegistrator.h"
 #include "../znEngine/WindowCreator.h"
-#include "../znEngine/Plugins/PluginsManager.h"
 
 
 //
@@ -85,4 +84,7 @@
 #include "../znEngine/Passes/DeferredLightingPass.h"
 
 
-extern "C" __declspec(dllexport) IznPlugin* WINAPI GetPlugin(std::shared_ptr<IBaseManager> BaseManager);
+/*
+ * Initialize improtant managers and plugins
+ */
+extern "C" __declspec(dllexport) std::shared_ptr<IBaseManager> WINAPI InitializeEngine(std::vector<std::string> Arguments);

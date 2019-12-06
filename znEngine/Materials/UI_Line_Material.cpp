@@ -7,7 +7,7 @@
 #include "Application.h"
 
 UI_Line_Material::UI_Line_Material() :
-	MaterialWrapper(_RenderDevice->CreateMaterial(sizeof(MaterialProperties)))
+	MaterialProxie(_RenderDevice->CreateMaterial(sizeof(MaterialProperties)))
 {
 	m_pProperties = (MaterialProperties*)_aligned_malloc(sizeof(MaterialProperties), 16);
 	*m_pProperties = MaterialProperties();
@@ -78,5 +78,5 @@ void UI_Line_Material::SetSegmentsCount(uint32 SegmentsCount)
 
 void UI_Line_Material::UpdateConstantBuffer() const
 {
-	MaterialWrapper::UpdateConstantBuffer(m_pProperties, sizeof(MaterialProperties));
+	MaterialProxie::UpdateConstantBuffer(m_pProperties, sizeof(MaterialProperties));
 }

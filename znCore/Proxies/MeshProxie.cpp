@@ -3,52 +3,52 @@
 // General
 #include "MeshProxie.h"
 
-MeshWrapper::MeshWrapper(std::shared_ptr<IMesh> _mesh) 
+MeshProxie::MeshProxie(std::shared_ptr<IMesh> _mesh) 
 	: m_Mesh(_mesh)
 {
 	_ASSERT(m_Mesh);
 }
 
-MeshWrapper::~MeshWrapper()
+MeshProxie::~MeshProxie()
 {
 }
 
-void MeshWrapper::AddVertexBuffer(const BufferBinding & binding, std::shared_ptr<IBuffer> buffer)
+void MeshProxie::AddVertexBuffer(const BufferBinding & binding, std::shared_ptr<IBuffer> buffer)
 {
 	m_Mesh->AddVertexBuffer(binding, buffer);
 }
 
-void MeshWrapper::SetVertexBuffer(std::shared_ptr<IBuffer> buffer)
+void MeshProxie::SetVertexBuffer(std::shared_ptr<IBuffer> buffer)
 {
 	m_Mesh->SetVertexBuffer(buffer);
 }
 
-void MeshWrapper::SetIndexBuffer(std::shared_ptr<IBuffer> buffer)
+void MeshProxie::SetIndexBuffer(std::shared_ptr<IBuffer> buffer)
 {
 	m_Mesh->SetIndexBuffer(buffer);
 }
 
-void MeshWrapper::SetPrimitiveTopology(PrimitiveTopology _topology)
+void MeshProxie::SetPrimitiveTopology(PrimitiveTopology _topology)
 {
 	m_Mesh->SetPrimitiveTopology(_topology);
 }
 
-void MeshWrapper::SetMaterial(std::shared_ptr<const IMaterial> material)
+void MeshProxie::SetMaterial(std::shared_ptr<const IMaterial> material)
 {
 	m_Mesh->SetMaterial(material);
 }
 
-std::shared_ptr<const IMaterial> MeshWrapper::GetMaterial() const
+std::shared_ptr<const IMaterial> MeshProxie::GetMaterial() const
 {
 	return m_Mesh->GetMaterial();
 }
 
-bool MeshWrapper::Render(const RenderEventArgs* renderEventArgs, const IConstantBuffer* perObject, UINT indexStartLocation, UINT indexCnt, UINT vertexStartLocation, UINT vertexCnt)
+bool MeshProxie::Render(const RenderEventArgs* renderEventArgs, const IConstantBuffer* perObject, UINT indexStartLocation, UINT indexCnt, UINT vertexStartLocation, UINT vertexCnt)
 {
 	return m_Mesh->Render(renderEventArgs, perObject, indexStartLocation, indexCnt, vertexStartLocation, vertexCnt);
 }
 
-bool MeshWrapper::Accept(IVisitor* visitor, UINT indexStartLocation, UINT indexCnt, UINT vertexStartLocation, UINT vertexCnt)
+bool MeshProxie::Accept(IVisitor* visitor, UINT indexStartLocation, UINT indexCnt, UINT vertexStartLocation, UINT vertexCnt)
 {
 	return visitor->Visit(this, indexStartLocation, indexCnt, vertexStartLocation, vertexCnt);
 }

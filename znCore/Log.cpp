@@ -11,13 +11,13 @@
 #include "DebugOutputConsole.h"
 #include "DebugOutputLog.h"
 
-std::shared_ptr<CLog> gLogInstance = nullptr;
+CLog* gLogInstance = nullptr;
 
 CLog::CLog()
 {
 	AddDebugOutput(std::make_shared<DebugOutput_ConsoleWindows>());
 
-	gLogInstance = std::shared_ptr<CLog>(this);
+	gLogInstance = this;
 
 	OutputDebugString(L"Log created.\n");
 }

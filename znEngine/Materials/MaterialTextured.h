@@ -1,6 +1,6 @@
 #pragma once
 
-class OW_ENGINE_API MaterialTextured : public MaterialWrapper
+class OW_ENGINE_API MaterialTextured : public MaterialProxie
 {
 public:
 	MaterialTextured();

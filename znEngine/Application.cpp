@@ -34,7 +34,7 @@ Application::Application(std::shared_ptr<IBaseManager> BaseManager, HINSTANCE hI
 
 Application::~Application()
 {
-	_ApplicationInstance = nullptr;
+	//_ApplicationInstance = nullptr;
 }
 
 IApplication& Application::Get()
@@ -92,6 +92,11 @@ void Application::AddRenderWindow(std::shared_ptr<IRenderWindow> RenderWindow)
 	m_Windows.insert(std::make_pair(RenderWindow->GetHWnd(), RenderWindow));
 }
 
+void Application::DeleleRenderWindow(std::shared_ptr<IRenderWindow> RenderWindow)
+{
+	
+}
+
 
 
 //
@@ -114,8 +119,7 @@ int Application::DoRun()
 	{
 		if (msg.message == WM_QUIT)
 		{
-			EventArgs eventArgs(this);
-			OnExit(eventArgs);
+			OnExit(EventArgs(this));
 		}
 
 		TranslateMessage(&msg);
@@ -127,7 +131,10 @@ int Application::DoRun()
 	g_FrameCounter++;
 
 	UpdateEventArgs updateArgs(this, g_GameDeltaTime* 166.0f, g_ApplicationTime* 166.0f, g_FrameCounter);
-	OnUpdate(updateArgs);
+	if (!OnUpdate(updateArgs))
+	{
+		OnExit(EventArgs(this));
+	}
 
 	return static_cast<int>(msg.wParam);
 }

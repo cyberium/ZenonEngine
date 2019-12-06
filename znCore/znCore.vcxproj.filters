@@ -70,6 +70,12 @@
     <Filter Include="__Proxies">
       <UniqueIdentifier>{de08cb84-ae35-42fc-87cb-6959d1e26098}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Plugins functional">
+      <UniqueIdentifier>{147f7532-3842-4130-a3a4-dbd9c02e755a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Settings functional">
+      <UniqueIdentifier>{bc1f0964-30fc-4288-a8ea-cb5bd992e806}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DebugOutput.cpp">
@@ -152,6 +158,15 @@
     </ClCompile>
     <ClCompile Include="Proxies\SceneNodeProxie.cpp">
       <Filter>__Proxies</Filter>
+    </ClCompile>
+    <ClCompile Include="PluginsManager.cpp">
+      <Filter>Plugins functional</Filter>
+    </ClCompile>
+    <ClCompile Include="Settings.cpp">
+      <Filter>Settings functional</Filter>
+    </ClCompile>
+    <ClCompile Include="SettingsGroupBase.cpp">
+      <Filter>Settings functional</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -442,6 +457,21 @@
     </ClInclude>
     <ClInclude Include="Interfaces\Render\Types\RaycastHit.h">
       <Filter>__Interfaces\Render\Types</Filter>
+    </ClInclude>
+    <ClInclude Include="PluginsManager.h">
+      <Filter>Plugins functional</Filter>
+    </ClInclude>
+    <ClInclude Include="Proxies\__Proxies.h">
+      <Filter>__Proxies</Filter>
+    </ClInclude>
+    <ClInclude Include="Settings.h">
+      <Filter>Settings functional</Filter>
+    </ClInclude>
+    <ClInclude Include="SettingsGroupBase.h">
+      <Filter>Settings functional</Filter>
+    </ClInclude>
+    <ClInclude Include="SettingBase.h">
+      <Filter>Settings functional</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

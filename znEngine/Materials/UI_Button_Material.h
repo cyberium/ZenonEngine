@@ -1,8 +1,8 @@
 #pragma once
 
-class OW_ENGINE_API UI_Button_Material : public MaterialWrapper
+class OW_ENGINE_API UI_Button_Material : public MaterialProxie
 {
-	typedef MaterialWrapper base;
+	typedef MaterialProxie base;
 public:
 	UI_Button_Material();
 	virtual ~UI_Button_Material();

@@ -1,0 +1,17 @@
+#pragma once
+
+class OW_ENGINE_API CSettings 
+	: public ISettings
+{
+public:
+	CSettings(std::shared_ptr<IBaseManager> BaseManager);
+	virtual ~CSettings();
+
+	void AddGroup(const std::string& GroupName, std::shared_ptr<ISettingGroup> Group);
+	std::shared_ptr<ISettingGroup> GetGroup(const std::string& GroupName);
+
+private:
+	std::shared_ptr<IBaseManager> m_BaseManager;
+
+	std::unordered_map<std::string, std::shared_ptr<ISettingGroup>> m_Groups;
+};

@@ -72,21 +72,7 @@ void RenderTargetOGL::AttachTexture(AttachmentPoint attachment, std::shared_ptr<
 	std::shared_ptr<TextureOGL> textureOGL = std::dynamic_pointer_cast<TextureOGL>(texture);
 	m_Textures[(uint8_t)attachment] = textureOGL;
 
-	glBindFramebuffer(GL_FRAMEBUFFER, m_GLObj);
-	{
-		glFramebufferTexture2D(GL_FRAMEBUFFER, TranslateAttachmentPoint(attachment), GL_TEXTURE_2D, textureOGL->GetGLObject(), 0);
-		OGLCheckError();
-
-		if (attachment >= AttachmentPoint::Color0 && attachment <= AttachmentPoint::Color7)
-		{
-			GLenum buffers[] = { TranslateAttachmentPoint(attachment) };
-			glDrawBuffers(1, buffers);
-			OGLCheckError();
-		}
-	}
-	glBindFramebuffer(GL_FRAMEBUFFER, m_RenderDevice->GetDefaultRB());
-
-	m_bCheckValidity = true;
+	UpdateBufferAttachment(attachment, texture);
 }
 
 std::shared_ptr<ITexture> RenderTargetOGL::GetTexture(AttachmentPoint attachment)
@@ -206,12 +192,15 @@ void RenderTargetOGL::Resize(uint16_t width, uint16_t height)
 	{
 		m_Width = glm::max<uint16_t>(width, 1);
 		m_Height = glm::max<uint16_t>(height, 1);
-		// Resize the attached textures.
-		for (auto texture : m_Textures)
+
+		for (size_t i = 0; i < m_Textures.size(); i++)
 		{
+			std::shared_ptr<ITexture> texture = m_Textures[i];
 			if (texture)
 			{
 				texture->Resize(m_Width, m_Height);
+
+				UpdateBufferAttachment((AttachmentPoint)i, texture);
 			}
 		}
 	}
@@ -302,6 +291,25 @@ bool RenderTargetOGL::IsValid() const
 	glBindFramebuffer(GL_FRAMEBUFFER, m_RenderDevice->GetDefaultRB());
 
 	return false;
+}
+
+void RenderTargetOGL::UpdateBufferAttachment(AttachmentPoint attachment, std::shared_ptr<ITexture> texture)
+{
+	glBindFramebuffer(GL_FRAMEBUFFER, m_GLObj);
+	{
+		glFramebufferTexture2D(GL_FRAMEBUFFER, TranslateAttachmentPoint(attachment), GL_TEXTURE_2D, std::dynamic_pointer_cast<TextureOGL>(texture)->GetGLObject(), 0);
+		OGLCheckError();
+
+		if (attachment >= AttachmentPoint::Color0 && attachment <= AttachmentPoint::Color7)
+		{
+			GLenum buffers[] = { TranslateAttachmentPoint(attachment) };
+			glDrawBuffers(1, buffers);
+			OGLCheckError();
+		}
+	}
+	glBindFramebuffer(GL_FRAMEBUFFER, m_RenderDevice->GetDefaultRB());
+
+	m_bCheckValidity = true;
 }
 
 

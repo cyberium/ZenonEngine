@@ -190,6 +190,8 @@ ZN_INTERFACE OW_ENGINE_API IDepthStencilState
 		{}
 	};
 
+	virtual ~IDepthStencilState() {}
+
 	virtual void SetDepthMode(const DepthMode& depthMode) = 0;
 	virtual const DepthMode& GetDepthMode() const = 0;
 

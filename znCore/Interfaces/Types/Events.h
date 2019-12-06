@@ -42,7 +42,7 @@ public:
 		}
 	}
 
-	void operator()(typename ArgumentType& argument)
+	bool operator()(typename ArgumentType& argument)
 	{
 		for (const auto& it : m_Functions)
 		{
@@ -58,6 +58,8 @@ public:
 				(*_decl)(argument); 
 			}
 		);*/
+
+		return !m_Functions.empty();
 	}
 
 private:
@@ -78,7 +80,7 @@ public:
 typedef Delegate<EventArgs> Event;
 
 
-class OW_ENGINE_API WindowCloseEventArgs : EventArgs
+class OW_ENGINE_API WindowCloseEventArgs : public EventArgs
 {
 	typedef EventArgs base;
 public:

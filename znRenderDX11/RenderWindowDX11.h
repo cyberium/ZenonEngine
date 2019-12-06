@@ -3,7 +3,8 @@
 #include "TextureDX11.h"
 #include "RenderTargetDX11.h"
 
-class OW_ENGINE_API RenderWindowDX11 : public RenderWindowBase
+class OW_ENGINE_API RenderWindowDX11 
+	: public RenderWindowBase
 {
 public:
 	RenderWindowDX11(std::shared_ptr<IRenderDevice> RenderDevice, IWindowObject * WindowObject, bool vSync);

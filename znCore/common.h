@@ -51,8 +51,6 @@ typedef const mat4& cmat4;
 typedef glm::quat quat;
 typedef const quat& cquat;
 
-class Color;
-
 #ifndef WIN32_LEAN_AND_MEAN
 #   define WIN32_LEAN_AND_MEAN 1
 #endif
@@ -71,6 +69,16 @@ class Color;
 #include <queue>
 #include <unordered_map>
 #include <mutex>
+#include <algorithm>
+#include <codecvt>
+#include <functional>
+#include <fstream>
+#include <cmath>
+#include <memory>
+#include <atomic>
+#include <future>
+#include <chrono>
+#include <variant>
 
 // Usefull macros
 #define __PACK_BEGIN  "../shared/pack_begin.h"
@@ -78,34 +86,16 @@ class Color;
 
 
 #include "Interfaces/__Interfaces.h"
+#include "Proxies/__Proxies.h"
 
-
-
-
-
-//
-// PROXIES
-//
-#include "Proxies/MaterialProxie.h"
-#include "Proxies/MeshProxie.h"
-#include "Proxies/SceneNodeProxie.h"
 
 
 //---------------------------------------------------------//
 //--                     COMMON                          --//
 //---------------------------------------------------------//
-#include <algorithm>
-#include <codecvt>
-#include <functional>
-#include <fstream>
-#include <cmath>
-#include <memory>
-
-// STL threads
-#include <mutex>
-#include <atomic>
-#include <future>
-#include <chrono>
+#include "Settings.h"
+#include "SettingsGroupBase.h"
+#include "SettingBase.h"
 
 // Macros
 #include "Debug.h"

@@ -28,6 +28,9 @@ public:
 	virtual bool IsValid() const;
 
 private:
+	void UpdateBufferAttachment(AttachmentPoint attachment, std::shared_ptr<ITexture> texture);
+
+private:
 	GLuint m_GLObj;
 
 private:

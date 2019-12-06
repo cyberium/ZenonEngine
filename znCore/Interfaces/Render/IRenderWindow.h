@@ -8,6 +8,8 @@ class Viewport;
 
 ZN_INTERFACE OW_ENGINE_API IRenderWindow
 {
+	virtual ~IRenderWindow() {}
+
 	virtual void                                            ShowWindow() = 0; // Show this window if it is hidden.
 	virtual void                                            HideWindow() = 0; // Hide the window. The window will not be destroyed and can be  shown again using the ShowWindow() function.
 	virtual void                                            CloseWindow() = 0; // Destroy and close the window.
@@ -31,6 +33,8 @@ ZN_INTERFACE OW_ENGINE_API IRenderWindow
 
 ZN_INTERFACE OW_ENGINE_API IRenderWindowEvents
 {
+	virtual ~IRenderWindowEvents() {}
+
 	virtual Event&				Initialize() = 0;
 	virtual      void OnInitialize(EventArgs& e) = 0;
 	virtual UpdateEvent&		Update() = 0;

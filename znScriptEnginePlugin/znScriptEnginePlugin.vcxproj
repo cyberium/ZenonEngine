@@ -579,9 +579,7 @@
     <ResourceCompile>
       <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
-    <PostBuildEvent>
-      <Command>copy /Y "$(Platform)\$(Configuration)\$(ProjectName).res" "$(SolutionDir)bin_$(PlatformShortName)\$(Configuration)\$(ProjectName).res" </Command>
-    </PostBuildEvent>
+    <PostBuildEvent />
     <Link>
       <AdditionalLibraryDirectories>$(SolutionDir)\bin_$(PlatformShortName)\$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
@@ -603,9 +601,7 @@
     <ResourceCompile>
       <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
-    <PostBuildEvent>
-      <Command>copy /Y "$(Platform)\$(Configuration)\$(ProjectName).res" "$(SolutionDir)bin_$(PlatformShortName)\$(Configuration)\$(ProjectName).res" </Command>
-    </PostBuildEvent>
+    <PostBuildEvent />
     <Link>
       <AdditionalLibraryDirectories>$(SolutionDir)\bin_$(PlatformShortName)\$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
@@ -631,9 +627,7 @@
     <ResourceCompile>
       <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
-    <PostBuildEvent>
-      <Command>copy /Y "$(Platform)\$(Configuration)\$(ProjectName).res" "$(SolutionDir)bin_$(PlatformShortName)\$(Configuration)\$(ProjectName).res" </Command>
-    </PostBuildEvent>
+    <PostBuildEvent />
     <Link>
       <AdditionalLibraryDirectories>$(SolutionDir)\bin_$(PlatformShortName)\$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
@@ -659,9 +653,7 @@
     <ResourceCompile>
       <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
-    <PostBuildEvent>
-      <Command>copy /Y "$(Platform)\$(Configuration)\$(ProjectName).res" "$(SolutionDir)bin_$(PlatformShortName)\$(Configuration)\$(ProjectName).res" </Command>
-    </PostBuildEvent>
+    <PostBuildEvent />
     <Link>
       <AdditionalLibraryDirectories>$(SolutionDir)\bin_$(PlatformShortName)\$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>

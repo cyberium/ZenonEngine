@@ -14,6 +14,8 @@ class UpdateEventArgs;
 
 ZN_INTERFACE OW_ENGINE_API ICameraController
 {
+	virtual ~ICameraController() {}
+
 	virtual std::shared_ptr<ICamera> GetCamera() const = 0;
 	virtual std::shared_ptr<ICameraMovement> GetCameraMovement() const = 0;
 

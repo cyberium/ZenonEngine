@@ -9,6 +9,7 @@
 // Additional
 #include <freetype/config/ftheader.h>
 #include FT_FREETYPE_H
+#pragma comment(lib, "freetype.lib")
 
 FontsManager::FontsManager(std::shared_ptr<IBaseManager> BaseManager)
 	: m_BaseManager(BaseManager)
