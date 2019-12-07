@@ -6,56 +6,33 @@
 
 #include "RenderWindowWidget.h"
 
-
-#include "GameState_World.h"
-
 int main(int argc, char *argv[])
 {
-	_BaseManager = std::make_shared<CBaseManager>();
+	// 1. Initialize engine and some improtant managers
+	IBaseManager* BaseManager = InitializeEngine(ArgumentsToVector(argc, argv));
 
-	std::shared_ptr<CSettings> settings = std::make_shared<CSettings>();
-	AddManager<ISettings>(settings);
-	settings->AddDefaults();
+	// 2. Set file location
+	GetManager<IFilesManager>(BaseManager)->RegisterFilesStorage(std::make_shared<CLocalFilesStorage>("D:\\_programming\\ZenonEngine\\gamedata\\"));
 
-
-	std::shared_ptr<CLog> log = std::make_shared<CLog>();
-	AddManager<ILog>(log);
-
-	std::shared_ptr<CConsole> console = std::make_shared<CConsole>();
-	AddManager<IConsole>(console);
-	console->AddCommonCommands();
-
-	std::shared_ptr<IFilesManager> filesManager = std::make_shared<CFilesManager>();
-	AddManager<IFilesManager>(filesManager);
-
-	std::shared_ptr<IFilesStorage> localFilesGamedata = std::make_shared<CLocalFilesStorage>("D:\\_programming\\OpenWoW\\_gamedata\\");
-	filesManager->RegisterFilesStorage(localFilesGamedata);
-
-	HMODULE hModule = GetModuleHandle(NULL);
-	std::shared_ptr<IFilesStorage> libraryFileStorage = std::make_shared<CLibraryResourceFileStotage>(hModule);
-	filesManager->RegisterFilesStorage(libraryFileStorage);
-
-
-	//--
-
+	// 3. Create application
+	Application app(BaseManager, ::GetModuleHandle(NULL));
 
 	QApplication a(argc, argv);
 	MainEditor w;
 
-
-	Application app(_BaseManager);
-	std::shared_ptr<IRenderDevice> renderDevice = app.CreateRenderDevice(IRenderDevice::DeviceType::DirectX);
-	std::shared_ptr<IRenderWindow> renderWindow = app.CreateRenderWindow(dynamic_cast<IWindowObject*>(w.getUI().frame), true);
+	std::shared_ptr<IRenderDevice> renderDevice = app.CreateRenderDevice(RenderDeviceType::RenderDeviceType_DirectX);
+	std::shared_ptr<IRenderWindow> renderWindow = renderDevice->CreateRenderWindow(dynamic_cast<IWindowObject*>(w.getUI().frame), false);
+	app.AddRenderWindow(renderWindow);
 
 	dynamic_cast<RenderWindowWidget*>(w.getUI().frame)->SetRenderWindow(renderWindow);
 
-	std::shared_ptr<IFontsManager> fontsManager = std::make_shared<FontsManager>();
-	AddManager<IFontsManager>(fontsManager);
+	std::shared_ptr<IFontsManager> fontsManager = std::make_shared<FontsManager>(BaseManager);
+	AddManager<IFontsManager>(BaseManager, fontsManager);
 
-	app.AddGameState(GameStatesNames::GAME_STATE_WORLD, std::make_shared<CGameState_World>(&app));
+	app.AddGameState(GameStatesNames::GAME_STATE_WORLD, std::make_shared<CGameState_World>(&app, renderWindow));
 	app.SetGameState(GameStatesNames::GAME_STATE_WORLD);
 
-	w.ApplyScene(std::dynamic_pointer_cast<Scene3D, Scene>(app.GetGameState()->GetScene()));
+	w.ApplyScene(std::dynamic_pointer_cast<IScene>(app.GetGameState()->GetScene3D()));
 	
 	w.show();
 

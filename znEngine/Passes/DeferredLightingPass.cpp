@@ -1,14 +1,14 @@
 #include <stdafx.h>
 
-#include <Application.h>
-#include "SceneFunctional//3D/Scene3D.h"
-#include "SceneFunctional//3D/SceneNode3D.h"
-
 // General
 #include "DeferredLightingPass.h"
 
+// Additional
+#include "Application.h"
+#include "SceneFunctional/Base/SceneBase.h"
+
 DeferredLightingPass::DeferredLightingPass(
-	std::shared_ptr<Scene3D> scene,
+	std::shared_ptr<IScene> scene,
 	std::shared_ptr<IPipelineState> lightPipeline0,
 	std::shared_ptr<IPipelineState> lightPipeline1,
 	std::shared_ptr<IPipelineState> directionalLightPipeline,
@@ -28,6 +28,8 @@ DeferredLightingPass::DeferredLightingPass(
 	, m_NormalTexture(normalTexture)
 	, m_DepthTexture(depthTexture)
 {
+	IBaseManager* baseManager = std::dynamic_pointer_cast<IBaseManagerHolder>(scene)->GetBaseManager();
+
 	m_pScreenToViewParams = (ScreenToViewParams*)_aligned_malloc(sizeof(ScreenToViewParams), 16);
 	m_ScreenToViewParamsCB = _RenderDevice->CreateConstantBuffer(ScreenToViewParams());
 
@@ -38,7 +40,7 @@ DeferredLightingPass::DeferredLightingPass(
 	m_FogParamsCB = _RenderDevice->CreateConstantBuffer(FogParams());
 
 	// PointLightScene
-	m_pPointLightScene = std::make_shared<Scene3D>(scene->GetBaseManager());
+	m_pPointLightScene = std::make_shared<SceneBase>(baseManager);
 
 	std::shared_ptr<SceneNode3D> sphereSceneNode = m_pPointLightScene->CreateSceneNode<SceneNode3D>(std::shared_ptr<ISceneNode>());
 
@@ -46,7 +48,7 @@ DeferredLightingPass::DeferredLightingPass(
 	sphereSceneNode->GetComponent<CMeshComponent3D>()->AddMesh(sphereMesh);
 
 	// Create a full-screen quad that is placed on the far clip plane.
-	m_pDirectionalLightScene = std::make_shared<Scene3D>(scene->GetBaseManager());
+	m_pDirectionalLightScene = std::make_shared<SceneBase>(baseManager);
 
 	std::shared_ptr<SceneNode3D> quadSceneNode = m_pDirectionalLightScene->CreateSceneNode<SceneNode3D>(std::shared_ptr<ISceneNode>());
 	quadSceneNode->SetParent(m_pDirectionalLightScene->GetRootNode());
@@ -80,7 +82,7 @@ void DeferredLightingPass::PreRender(RenderEventArgs& e)
 	m_DepthTexture->Bind(4, IShader::ShaderType::PixelShader, IShaderParameter::Type::Texture);
 }
 
-void DeferredLightingPass::RenderSubPass(RenderEventArgs* e, std::shared_ptr<Scene3D> scene, std::shared_ptr<IPipelineState> pipeline)
+void DeferredLightingPass::RenderSubPass(RenderEventArgs* e, std::shared_ptr<IScene> scene, std::shared_ptr<IPipelineState> pipeline)
 {
 	e->PipelineState = pipeline.get();
 	SetRenderEventArgs(e);

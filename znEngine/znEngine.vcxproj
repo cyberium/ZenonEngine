@@ -25,6 +25,7 @@
     <ClCompile Include="CameraControllers\CameraControllerBase.cpp" />
     <ClCompile Include="CameraControllers\FreeCameraController.cpp" />
     <ClCompile Include="CameraControllers\RTSCameraController.cpp" />
+    <ClCompile Include="GameState_Default.cpp" />
     <ClCompile Include="Materials\MaterialDebug.cpp" />
     <ClCompile Include="Materials\MaterialTextured.cpp" />
     <ClCompile Include="Materials\UI_Button_Material.cpp" />
@@ -47,11 +48,11 @@
     <ClCompile Include="Passes\InvokeFunctionPass.cpp" />
     <ClCompile Include="Passes\PostprocessPass.cpp" />
     <ClCompile Include="Passes\RenderTechnique.cpp" />
+    <ClCompile Include="Passes\TextureMaterialPass.cpp" />
     <ClCompile Include="RenderDeviceCreatorFactory.cpp" />
     <ClCompile Include="SceneFunctional\3D\ColliderComponent3D.cpp" />
     <ClCompile Include="SceneFunctional\3D\LightComponent3D.cpp" />
     <ClCompile Include="SceneFunctional\3D\MeshComponent3D.cpp" />
-    <ClCompile Include="SceneFunctional\3D\Scene3D.cpp" />
     <ClCompile Include="SceneFunctional\3D\SceneNode3D.cpp" />
     <ClCompile Include="SceneFunctional\3D\TransformComponent3D.cpp" />
     <ClCompile Include="SceneFunctional\Base\ComponentBase.cpp" />
@@ -67,7 +68,6 @@
     <ClCompile Include="SceneFunctional\UI\Fonts\Font.cpp" />
     <ClCompile Include="SceneFunctional\UI\Fonts\FontsManager.cpp" />
     <ClCompile Include="SceneFunctional\UI\SceneNodeUI.cpp" />
-    <ClCompile Include="SceneFunctional\UI\SceneUI.cpp" />
     <ClCompile Include="SceneFunctional\UI\TransformComponentUI.cpp" />
     <ClCompile Include="SceneFunctional\UI\UIBeizerLine.cpp" />
     <ClCompile Include="SceneFunctional\UI\UIButton.cpp" />
@@ -100,6 +100,7 @@
     <ClInclude Include="CameraControllers\CameraControllerBase.h" />
     <ClInclude Include="CameraControllers\FreeCameraController.h" />
     <ClInclude Include="CameraControllers\RTSCameraController.h" />
+    <ClInclude Include="GameState_Default.h" />
     <ClInclude Include="Materials\MaterialDebug.h" />
     <ClInclude Include="Materials\MaterialTextured.h" />
     <ClInclude Include="Materials\UI_Button_Material.h" />
@@ -122,11 +123,11 @@
     <ClInclude Include="Passes\InvokeFunctionPass.h" />
     <ClInclude Include="Passes\PostprocessPass.h" />
     <ClInclude Include="Passes\RenderTechnique.h" />
+    <ClInclude Include="Passes\TextureMaterialPass.h" />
     <ClInclude Include="RenderDeviceCreatorFactory.h" />
     <ClInclude Include="SceneFunctional\3D\ColliderComponent3D.h" />
     <ClInclude Include="SceneFunctional\3D\LightComponent3D.h" />
     <ClInclude Include="SceneFunctional\3D\MeshComponent3D.h" />
-    <ClInclude Include="SceneFunctional\3D\Scene3D.h" />
     <ClInclude Include="SceneFunctional\3D\SceneNode3D.h" />
     <ClInclude Include="SceneFunctional\3D\TransformComponent3D.h" />
     <ClInclude Include="SceneFunctional\Base\ComponentBase.h" />
@@ -144,7 +145,6 @@
     <ClInclude Include="SceneFunctional\UI\Fonts\Font.h" />
     <ClInclude Include="SceneFunctional\UI\Fonts\FontsManager.h" />
     <ClInclude Include="SceneFunctional\UI\SceneNodeUI.h" />
-    <ClInclude Include="SceneFunctional\UI\SceneUI.h" />
     <ClInclude Include="SceneFunctional\UI\TransformComponentUI.h" />
     <ClInclude Include="SceneFunctional\UI\UIBeizerLine.h" />
     <ClInclude Include="SceneFunctional\UI\UIButton.h" />
@@ -299,15 +299,17 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <PrecompiledHeader>Use</PrecompiledHeader>
-      <WarningLevel>Level3</WarningLevel>
+      <WarningLevel>Level4</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;_USRDLL;OW_ENGINE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <SDLCheck>false</SDLCheck>
+      <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>..\shared;..\Externals;..\Externals\freetype-2.9.1\include\;..\znEngine\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatSpecificWarningsAsErrors>
       </TreatSpecificWarningsAsErrors>
       <DisableSpecificWarnings>4244;4267;4251</DisableSpecificWarnings>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <SupportJustMyCode>false</SupportJustMyCode>
     </ClCompile>
     <ResourceCompile>
       <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -318,20 +320,23 @@
     <Link>
       <AdditionalLibraryDirectories>$(SolutionDir)\bin_$(PlatformShortName)\$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>zlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <GenerateDebugInformation>DebugFull</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <PrecompiledHeader>Use</PrecompiledHeader>
-      <WarningLevel>Level3</WarningLevel>
+      <WarningLevel>Level4</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;_USRDLL;OW_ENGINE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <SDLCheck>false</SDLCheck>
+      <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>..\shared;..\Externals;..\Externals\freetype-2.9.1\include\;..\znEngine\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatSpecificWarningsAsErrors>
       </TreatSpecificWarningsAsErrors>
       <DisableSpecificWarnings>4244;4267;4251</DisableSpecificWarnings>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <SupportJustMyCode>false</SupportJustMyCode>
     </ClCompile>
     <ResourceCompile>
       <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -342,17 +347,18 @@
     <Link>
       <AdditionalLibraryDirectories>$(SolutionDir)\bin_$(PlatformShortName)\$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>zlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <GenerateDebugInformation>DebugFull</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
+      <WarningLevel>Level4</WarningLevel>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;_USRDLL;OW_ENGINE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <SDLCheck>false</SDLCheck>
+      <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>..\shared;..\Externals;..\Externals\freetype-2.9.1\include\;..\znEngine\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
@@ -360,6 +366,7 @@
       </TreatSpecificWarningsAsErrors>
       <DisableSpecificWarnings>4244;4267;4251</DisableSpecificWarnings>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
     </ClCompile>
     <ResourceCompile>
       <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -374,13 +381,13 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
+      <WarningLevel>Level4</WarningLevel>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;_USRDLL;OW_ENGINE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <SDLCheck>false</SDLCheck>
+      <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>..\shared;..\Externals;..\Externals\freetype-2.9.1\include\;..\znEngine\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
@@ -388,6 +395,7 @@
       </TreatSpecificWarningsAsErrors>
       <DisableSpecificWarnings>4244;4267;4251</DisableSpecificWarnings>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
     </ClCompile>
     <ResourceCompile>
       <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>

@@ -97,7 +97,7 @@ void MaterialOGL::BindForShader(const IShader * shader) const
 			samplerState->Bind((uint32_t)samplerStateIt.first, pShader, IShaderParameter::Type::Sampler);
 		}
 
-		std::shared_ptr<IShaderParameter> materialParameter = pShader->GetShaderParameterByName("Material");
+		const std::shared_ptr<IShaderParameter>& materialParameter = pShader->GetShaderParameterByName("Material");
 		if (materialParameter->IsValid() && m_pConstantBuffer != nullptr)
 		{
 			materialParameter->SetConstantBuffer(m_pConstantBuffer.get());
@@ -123,7 +123,7 @@ void MaterialOGL::UnbindForShader(const IShader * shader) const
 			samplerState->UnBind((uint32_t)samplerStateIt.first, pShader, IShaderParameter::Type::Sampler);
 		}
 
-		std::shared_ptr<IShaderParameter> materialParameter = pShader->GetShaderParameterByName("Material");
+		const std::shared_ptr<IShaderParameter>& materialParameter = pShader->GetShaderParameterByName("Material");
 		if (materialParameter->IsValid() && m_pConstantBuffer != nullptr)
 		{
 			materialParameter->Unbind();

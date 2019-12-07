@@ -14,7 +14,7 @@ extern CLog* gLogInstance;
 class CznRenderDX11DeviceCreator : public IznRenderDeviceCreator
 {
 public:
-	CznRenderDX11DeviceCreator(std::shared_ptr<IBaseManager> BaseManager)
+	CznRenderDX11DeviceCreator(IBaseManager* BaseManager)
 		: m_BaseManager(BaseManager)
 	{}
 	virtual ~CznRenderDX11DeviceCreator()
@@ -37,7 +37,7 @@ public:
 	}
 
 private:
-	std::shared_ptr<IBaseManager> m_BaseManager;
+	IBaseManager* m_BaseManager;
 	std::shared_ptr<IRenderDevice> m_CachedRenderDevice;
 };
 
@@ -55,7 +55,7 @@ public:
 	{}
 
 	// IznPlugin
-	bool Initialize(std::shared_ptr<IBaseManager> BaseManager)
+	bool Initialize(IBaseManager* BaseManager)
 	{
 		m_BaseManager = BaseManager;
 		
@@ -72,14 +72,14 @@ public:
 	}
 
 private:
-	std::shared_ptr<IBaseManager> m_BaseManager;
+	IBaseManager* m_BaseManager;
 	std::shared_ptr<IznRenderDeviceCreator> m_RenderDeviceCreator;
 };
 
 
 
 IznPlugin* plugin = nullptr;
-IznPlugin* GetPlugin(std::shared_ptr<IBaseManager> BaseManager)
+IznPlugin* WINAPI GetPlugin(IBaseManager* BaseManager)
 {
 	if (plugin == nullptr)
 	{

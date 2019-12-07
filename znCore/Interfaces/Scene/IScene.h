@@ -10,10 +10,29 @@ ZN_INTERFACE OW_ENGINE_API IScene : public std::enable_shared_from_this<IScene>
 {
 	virtual ~IScene() {}
 
+	virtual void                                    CreateRootNode() = 0;
 	virtual std::shared_ptr<ISceneNode>				GetRootNode() const = 0;
 
+	// Passes will go to this
 	virtual void                                    Accept(IVisitor* visitor) = 0;
+
+	// Events
 	virtual void                                    OnUpdate(UpdateEventArgs& e) = 0;
+
+	// Keyboard events
+	virtual bool OnKeyPressed(KeyEventArgs& e) = 0;
+	virtual void OnKeyReleased(KeyEventArgs& e) = 0;
+	virtual void OnKeyboardFocus(EventArgs& e) = 0;
+	virtual void OnKeyboardBlur(EventArgs& e) = 0;
+
+	// Mouse events
+	virtual void OnMouseMoved(MouseMotionEventArgs& e) = 0;
+	virtual bool OnMouseButtonPressed(MouseButtonEventArgs& e) = 0;
+	virtual void OnMouseButtonReleased(MouseButtonEventArgs& e) = 0;
+	virtual bool OnMouseWheel(MouseWheelEventArgs& e) = 0;
+	virtual void OnMouseLeave(EventArgs& e) = 0;
+	virtual void OnMouseFocus(EventArgs& e) = 0;
+	virtual void OnMouseBlur(EventArgs& e) = 0;
 
 
 	// Templates

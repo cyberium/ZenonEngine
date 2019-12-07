@@ -2,13 +2,12 @@
 
 // Include
 #include <Application.h>
-#include <SceneFunctional/3D/Scene3D.h>
 #include <SceneFunctional/3D/SceneNode3D.h>
 
 // General
 #include "BasePass.h"
 
-BasePass::BasePass(std::shared_ptr<Scene3D> scene, std::shared_ptr<IPipelineState> pipeline)
+BasePass::BasePass(std::shared_ptr<IScene> scene, std::shared_ptr<IPipelineState> pipeline)
     : base(pipeline)
     , m_Scene(scene)
 {}
@@ -52,4 +51,9 @@ bool BasePass::Visit(SceneNode3D* node)
 	}
 
 	return false;
+}
+
+bool BasePass::Visit(IMesh * Mesh, UINT IndexStartLocation, UINT IndexCnt, UINT VertexStartLocation, UINT VertexCnt)
+{
+	return base::Visit(Mesh, IndexStartLocation, IndexCnt, VertexStartLocation, VertexCnt);
 }

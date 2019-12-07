@@ -11,7 +11,7 @@ public:
 	MainEditor(QWidget* Parent = nullptr);
 	virtual ~MainEditor();
 
-	void ApplyScene(std::shared_ptr<Scene3D> Scene);
+	void ApplyScene(std::shared_ptr<IScene> Scene);
 
 	Ui::MainEditorClass getUI() const { return ui; }
 
@@ -19,6 +19,8 @@ private slots:
 	void onCustomContextMenu(const QPoint &point);
 
 private:
-	std::shared_ptr<Scene3D> m_Scene;
+	std::shared_ptr<IScene> m_Scene;
 	Ui::MainEditorClass ui;
+
+	std::shared_ptr<QMenu> contextMenu;
 };

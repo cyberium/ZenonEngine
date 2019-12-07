@@ -10,8 +10,8 @@ class OW_ENGINE_API Application :
 	public IGameStateManager
 {
 public:
-	Application(std::shared_ptr<IBaseManager> BaseManager);
-	Application(std::shared_ptr<IBaseManager> BaseManager, HINSTANCE hInstance);
+	Application(IBaseManager* BaseManager);
+	Application(IBaseManager* BaseManager, HINSTANCE hInstance);
 	virtual ~Application();
 
 	static IApplication&            Get();
@@ -22,7 +22,6 @@ public:
 
 	// Creators
 	std::shared_ptr<IRenderDevice>  CreateRenderDevice(RenderDeviceType DeviceType);
-	//std::shared_ptr<IRenderWindow>  CreateRenderWindow(IWindowObject * WindowObject, bool vSync);
 	void                            AddRenderWindow(std::shared_ptr<IRenderWindow> RenderWindow);
 	void                            DeleleRenderWindow(std::shared_ptr<IRenderWindow> RenderWindow);
 
@@ -30,11 +29,9 @@ public:
 	void                            DoBeforeRun() override;
 	int                             DoRun() override;
 	void                            DoAfterRun() override;
-	std::shared_ptr<IBaseManager>   GetBaseManager() const override;
+	IBaseManager*   GetBaseManager() const override;
 	std::shared_ptr<IRenderDevice>  GetRenderDevice() const override;
 	void                            SetRenderDevice(std::shared_ptr<IRenderDevice> _renderDevice) override;
-	//std::shared_ptr<IRenderWindow>  GetRenderWindow() const override;
-	//void                            SetRenderWindow(std::shared_ptr<IRenderWindow> _renderWindow) override;
 	HINSTANCE                       GetHINSTANCE() override;
     CLoader*						GetLoader() override;
 
@@ -60,7 +57,7 @@ public:
 	std::shared_ptr<IGameState>     GetGameState() override;
 
 private:
-	std::shared_ptr<IBaseManager>	m_BaseManager;
+	IBaseManager*	m_BaseManager;
 	bool                            m_bIsInitialized;
 	bool                            m_bIsRunning;
 

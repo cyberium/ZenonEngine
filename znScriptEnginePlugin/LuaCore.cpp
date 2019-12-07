@@ -14,7 +14,7 @@ int Func(lua_State * state)
     return 0;
 }
 
-CScriptCore::CScriptCore(std::shared_ptr<IBaseManager> BaseManager)
+CScriptCore::CScriptCore(IBaseManager* BaseManager)
 	: m_BaseManager(BaseManager)
 {
     m_LuaState = luaL_newstate();

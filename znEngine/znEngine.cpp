@@ -89,9 +89,9 @@ std::vector<std::string> GetAllFilesInDirectory(const std::string& Directory, co
 
 
 
-std::shared_ptr<IBaseManager> InitializeEngine(std::vector<std::string> Arguments)
+IBaseManager* WINAPI InitializeEngine(std::vector<std::string> Arguments)
 {
-	std::shared_ptr<IBaseManager> baseManager = std::make_shared<CBaseManager>();
+	IBaseManager* baseManager = new CBaseManager();
 
 	// Settings
 	{

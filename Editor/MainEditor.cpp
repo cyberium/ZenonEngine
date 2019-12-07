@@ -17,21 +17,21 @@ MainEditor::MainEditor(QWidget* Parent)
 MainEditor::~MainEditor()
 {
 }
-QMenu* contextMenu;
-void MainEditor::ApplyScene(std::shared_ptr<Scene3D> Scene)
+
+void MainEditor::ApplyScene(std::shared_ptr<IScene> Scene)
 {
 	m_Scene = Scene;
 
 	CSceneNodeTreeModel * model = new CSceneNodeTreeModel(Scene);
 	ui.treeView->setModel(model);
 
-	contextMenu = new QMenu(this);
-	QAction* uninstallAction = new QAction("Uninstall TA", contextMenu);
+	contextMenu = std::make_shared<QMenu>(this);
+	QAction* uninstallAction = new QAction("Uninstall TA", contextMenu.get());
 	contextMenu->addAction(uninstallAction);
 
 	contextMenu->addSeparator();
 	
-	QAction* uninstallAction33 = new QAction("Uninstall TA33", contextMenu);
+	QAction* uninstallAction33 = new QAction("Uninstall TA33", contextMenu.get());
 	contextMenu->addAction(uninstallAction33);
 
 	ui.treeView->setContextMenuPolicy(Qt::CustomContextMenu);
@@ -41,11 +41,9 @@ void MainEditor::ApplyScene(std::shared_ptr<Scene3D> Scene)
 
 void MainEditor::onCustomContextMenu(const QPoint &point)
 {
-	
-
-
 	QModelIndex index = ui.treeView->indexAt(point);
-	if (index.isValid() && index.row() % 2 == 0) {
+	if (index.isValid() && index.row() % 2 == 0) 
+	{
 		contextMenu->exec(ui.treeView->viewport()->mapToGlobal(point));
 	}
 }

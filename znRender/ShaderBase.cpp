@@ -27,7 +27,7 @@ std::shared_ptr<IShaderInputLayout> ShaderBase::GetInputLayout() const
     return m_InputLayout;
 }
 
-std::shared_ptr<IShaderParameter> ShaderBase::GetShaderParameterByName(const std::string& name) const
+const std::shared_ptr<IShaderParameter>& ShaderBase::GetShaderParameterByName(const std::string& name) const
 {
 	const auto& iter = m_ShaderParameters.find(name);
     if (iter != m_ShaderParameters.end())

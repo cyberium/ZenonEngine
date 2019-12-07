@@ -3,7 +3,7 @@
 // General
 #include "PostprocessPass.h"
 
-PostprocessPass::PostprocessPass(std::shared_ptr<Scene3D> scene, std::shared_ptr<IPipelineState> pipeline, const glm::mat4& projectionMatrix, std::shared_ptr<ITexture> texture)
+PostprocessPass::PostprocessPass(std::shared_ptr<IScene> scene, std::shared_ptr<IPipelineState> pipeline, const glm::mat4& projectionMatrix, std::shared_ptr<ITexture> texture)
 	: base(scene, pipeline)
 	, m_ProjectionMatrix(projectionMatrix)
 	, m_Texture(texture)

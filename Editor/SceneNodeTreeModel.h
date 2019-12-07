@@ -10,7 +10,7 @@ class CSceneNodeTreeModel : public QAbstractItemModel
 	Q_OBJECT
 
 public:
-	CSceneNodeTreeModel(std::shared_ptr<Scene3D> Scene3D, QObject *parent = 0);
+	CSceneNodeTreeModel(std::shared_ptr<IScene> Scene3D, QObject *parent = 0);
 	virtual ~CSceneNodeTreeModel();
 
 	QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;

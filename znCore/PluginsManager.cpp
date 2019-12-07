@@ -5,10 +5,10 @@
 
 
 
-typedef IznPlugin*(GetPluginFuncProc)(std::shared_ptr<IBaseManager> BaseManager);
+typedef IznPlugin*(GetPluginFuncProc)(IBaseManager* BaseManager);
 
 
-CznPluginsManager::CznPluginsManager(std::shared_ptr<IBaseManager> BaseManager)
+CznPluginsManager::CznPluginsManager(IBaseManager* BaseManager)
 	: m_BaseManager(BaseManager)
 {}
 

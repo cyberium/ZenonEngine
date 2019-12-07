@@ -7,7 +7,7 @@ ZN_INTERFACE IShaderInputLayout;
 
 ZN_INTERFACE OW_ENGINE_API IShader
 {
-	typedef std::map<std::string, std::shared_ptr<IShaderParameter>> ParameterMap;
+	typedef std::unordered_map<std::string, std::shared_ptr<IShaderParameter>> ParameterMap;
 
 	enum class OW_ENGINE_API ShaderType
 	{
@@ -75,7 +75,7 @@ ZN_INTERFACE OW_ENGINE_API IShader
 	 * is not found in the shader, then this function will return an invalid shader parameter.
 	 * You can check for validity using the IShaderParameter::IsValid method.
 	 */
-	virtual std::shared_ptr<IShaderParameter> GetShaderParameterByName(const std::string& name) const = 0;
+	virtual const std::shared_ptr<IShaderParameter>& GetShaderParameterByName(const std::string& name) const = 0;
 
 	/**
 	 * Bind this shader for use in the rendering pipeline.

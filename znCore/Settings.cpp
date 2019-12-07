@@ -6,7 +6,7 @@
 // Additional
 #include "BaseManager.h"
 
-CSettings::CSettings(std::shared_ptr<IBaseManager> BaseManager)
+CSettings::CSettings(IBaseManager* BaseManager)
 	: m_BaseManager(BaseManager)
 {
 }

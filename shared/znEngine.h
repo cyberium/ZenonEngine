@@ -26,7 +26,6 @@
 //
 
 // base nodes
-#include "../znEngine/SceneFunctional/UI/SceneUI.h"
 #include "../znEngine/SceneFunctional/UI/SceneNodeUI.h"
 
 // common nodes
@@ -53,7 +52,6 @@
 //
 
 // base nodes
-#include "../znEngine/SceneFunctional/3D/Scene3D.h"
 #include "../znEngine/SceneFunctional/3D/SceneNode3D.h"
 
 // additional nodes
@@ -84,7 +82,9 @@
 #include "../znEngine/Passes/DeferredLightingPass.h"
 
 
+#include "../znEngine/GameState_Default.h"
+
 /*
  * Initialize improtant managers and plugins
  */
-extern "C" __declspec(dllexport) std::shared_ptr<IBaseManager> WINAPI InitializeEngine(std::vector<std::string> Arguments);
+OW_ENGINE_API IBaseManager* WINAPI InitializeEngine(std::vector<std::string> Arguments);

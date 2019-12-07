@@ -6,7 +6,7 @@
 // Additional
 #include "BaseManager.h"
 
-CFilesManager::CFilesManager(std::shared_ptr<IBaseManager> BaseManager)
+CFilesManager::CFilesManager(IBaseManager* BaseManager)
 	: m_BaseManager(BaseManager)
 {
 }

@@ -42,7 +42,7 @@ ZN_INTERFACE OW_ENGINE_API IRenderDevice
 
 	virtual const std::string& GetDeviceName() const = 0;
 	virtual const RenderDeviceType GetDeviceType() const = 0;
-	virtual const std::shared_ptr<IBaseManager>& GetBaseManager() const = 0;
+	virtual IBaseManager* GetBaseManager() const = 0;
 	virtual std::shared_ptr<IRenderWindow> CreateRenderWindow(IWindowObject * WindowObject, bool vSync) = 0;
 	virtual std::shared_ptr<IRenderDevicePrimitiveCollection> GetPrimitiveCollection() const = 0;
 

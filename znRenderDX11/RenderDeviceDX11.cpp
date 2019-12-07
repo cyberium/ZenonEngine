@@ -51,7 +51,7 @@ std::string ShaderMacrosToString(const IShader::ShaderMacros& _shaderMacros)
     return value;
 }
 
-RenderDeviceDX11::RenderDeviceDX11(std::shared_ptr<IBaseManager> BaseManager)
+RenderDeviceDX11::RenderDeviceDX11(IBaseManager* BaseManager)
 	: m_BaseManager(BaseManager)
 {
 }
@@ -99,7 +99,7 @@ const RenderDeviceType RenderDeviceDX11::GetDeviceType() const
     return RenderDeviceType::RenderDeviceType_DirectX;
 }
 
-const std::shared_ptr<IBaseManager>& RenderDeviceDX11::GetBaseManager() const
+IBaseManager* RenderDeviceDX11::GetBaseManager() const
 {
 	return m_BaseManager;
 }

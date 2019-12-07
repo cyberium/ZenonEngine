@@ -8,7 +8,9 @@ CWindowObject::CWindowObject()
 {}
 
 CWindowObject::~CWindowObject()
-{}
+{
+	DestroyWindowInstance();
+}
 
 
 

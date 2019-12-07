@@ -4,7 +4,7 @@
 #include "WindowClassRegistrator.h"
 
 // STATIC
-LRESULT WndProcLink(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
+LRESULT CALLBACK WndProcLink(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	IApplicationEvents* me = (IApplicationEvents*)GetWindowLongPtr(hwnd, GWLP_USERDATA);
 	if (me)
@@ -50,7 +50,7 @@ void CWindowClassRegistratorObject::RegisterWindowClass(LPCWSTR WindowClassName)
 
 	if (RegisterClassEx(&renderWindowClass) == FALSE)
 	{
-		_ASSERT_EXPR(false, "CWindowObject: Failed to register the render window class.");
+		_ASSERT_EXPR(false, "CWindowClassRegistratorObject: Failed to register the render window class.");
 	}
 }
 
@@ -60,7 +60,7 @@ void CWindowClassRegistratorObject::UnregisterWindowClass()
 
 	if (UnregisterClass(m_ClassName.c_str(), m_HInstance) == FALSE)
 	{
-		_ASSERT_EXPR(false, "CWindowObject: Failed to unregister render window class");
+		_ASSERT_EXPR(false, "CWindowClassRegistratorObject: Failed to unregister render window class");
 	}
 }
 

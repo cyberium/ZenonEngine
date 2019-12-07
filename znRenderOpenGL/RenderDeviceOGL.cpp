@@ -72,7 +72,7 @@ void _stdcall glDebugOutput(GLenum source, GLenum type, GLuint id, GLenum severi
 }
 #endif
 
-RenderDeviceOGL::RenderDeviceOGL(std::shared_ptr<IBaseManager> BaseManager)
+RenderDeviceOGL::RenderDeviceOGL(IBaseManager* BaseManager)
 	: m_BaseManager(BaseManager)
 {}
 
@@ -175,7 +175,7 @@ const RenderDeviceType RenderDeviceOGL::GetDeviceType() const
     return RenderDeviceType::RenderDeviceType_OpenGL;
 }
 
-const std::shared_ptr<IBaseManager>& RenderDeviceOGL::GetBaseManager() const
+IBaseManager* RenderDeviceOGL::GetBaseManager() const
 {
 	return m_BaseManager;
 }

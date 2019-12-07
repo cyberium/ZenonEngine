@@ -81,7 +81,7 @@ bool MeshDX11::Render(const RenderEventArgs* renderArgs, const IConstantBuffer* 
 
 	if (pVS)
 	{
-		std::shared_ptr<IShaderParameter> perObjectParameter = pVS->GetShaderParameterByName("PerObject");
+		const std::shared_ptr<IShaderParameter>& perObjectParameter = pVS->GetShaderParameterByName("PerObject");
 		if (perObjectParameter->IsValid() && perObject != nullptr)
 		{
 			perObjectParameter->SetConstantBuffer(perObject);

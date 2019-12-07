@@ -1,8 +1,5 @@
 #pragma once
 
-#include "SceneFunctional/3D/Scene3D.h"
-#include "SceneFunctional/UI/SceneUI.h"
-
 #include "Passes/RenderTechnique.h"
 #include "SceneFunctional/UI/UIText.h"
 
@@ -21,13 +18,13 @@ public:
     virtual bool                                    Set() override;
     virtual void                                    Unset() override;
 
-	void SetInited(bool _value) override { m_IsInited = _value; }
-	bool IsInited() const override { return m_IsInited; }
+	void											SetInited(bool _value) override;
+	bool											IsInited() const override;
 
-	void SetCurrent(bool _value) override { m_IsCurrent = _value; }
-    bool IsCurrent() const override { return m_IsCurrent; }
+	void											SetCurrent(bool _value) override;
+	bool											IsCurrent() const override;
 
-	std::shared_ptr<IScene> GetScene() const override { return m_3DScene; };
+	std::shared_ptr<IScene>							GetScene3D() const override { return m_Scene; };
 
     // Engine events
 	virtual void                                    OnUpdate(UpdateEventArgs& e);
@@ -39,24 +36,30 @@ public:
     // Window events
     virtual void                                    OnResize(ResizeEventArgs& e);
 
-    // Keyboard events
-    virtual void                                    OnKeyPressed(KeyEventArgs& e);
-    virtual void                                    OnKeyReleased(KeyEventArgs& e);
+	// Keyboard events
+	virtual void                                    OnKeyPressed(KeyEventArgs& e);
+	virtual void                                    OnKeyReleased(KeyEventArgs& e);
+	virtual void                                    OnKeyboardFocus(EventArgs& e);
+	virtual void                                    OnKeyboardBlur(EventArgs& e);
 
-    // Mouse events
-    virtual void                                    OnMouseButtonPressed(MouseButtonEventArgs& e);
-    virtual void                                    OnMouseButtonReleased(MouseButtonEventArgs& e);
-    virtual void                                    OnMouseMoved(MouseMotionEventArgs& e);
-    virtual void                                    OnMouseWheel(MouseWheelEventArgs& e);
+	// Mouse events
+	virtual void                                    OnMouseMoved(MouseMotionEventArgs& e);
+	virtual void                                    OnMouseButtonPressed(MouseButtonEventArgs& e);
+	virtual void                                    OnMouseButtonReleased(MouseButtonEventArgs& e);
+	virtual void                                    OnMouseWheel(MouseWheelEventArgs& e);
+	virtual void                                    OnMouseLeave(EventArgs& e);
+	virtual void                                    OnMouseFocus(EventArgs& e);
+	virtual void                                    OnMouseBlur(EventArgs& e);
+
 
 protected:
     const IApplication*                             GetApplication() const;
 	const std::shared_ptr<IRenderWindow>            GetRenderWindow() const;
-	const std::shared_ptr<IBaseManager>             GetBaseManager() const;
+	IBaseManager*             GetBaseManager() const;
 
 	void                                            SetCameraController(std::shared_ptr<ICameraController> CameraController);
-	void                                            UnsetCameraController();
     std::shared_ptr<ICameraController>              GetCameraController() const;
+
 
 protected:
 	const IApplication*                             m_Application;
@@ -70,10 +73,9 @@ protected:
 	std::shared_ptr<ISettingGroup>                  m_QualitySettings;
 	std::shared_ptr<ISettingGroup>                  m_VideoSettings;
 
-	RenderTechnique                                 m_3DTechnique;
-	RenderTechnique                                 m_UITechnique;
-	std::shared_ptr<Scene3D>                        m_3DScene;
-	std::shared_ptr<SceneUI>                        m_UIScene;
+	RenderTechnique                                 m_Technique;
+	std::shared_ptr<IScene>                         m_Scene;
+
 
 private: // Update event connection
     Delegate<UpdateEventArgs>::FunctionDecl         OnUpdateConnection;

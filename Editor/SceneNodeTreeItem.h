@@ -8,7 +8,7 @@ class CSceneNodeTreeItem
 {
 public:
 	CSceneNodeTreeItem();
-	CSceneNodeTreeItem(std::shared_ptr<SceneNode> SceneNode3D, CSceneNodeTreeItem * Parent);
+	CSceneNodeTreeItem(std::shared_ptr<ISceneNode> SceneNode3D, CSceneNodeTreeItem * Parent);
 	virtual ~CSceneNodeTreeItem();
 
 	void											appendChild(CSceneNodeTreeItem *child);
@@ -23,5 +23,5 @@ private:
 	CSceneNodeTreeItem*								m_Parent;
 	std::vector<CSceneNodeTreeItem*>				m_Childs;
 
-	std::shared_ptr<SceneNode>						m_SceneNode3D;	
+	std::shared_ptr<ISceneNode>						m_SceneNode3D;
 };

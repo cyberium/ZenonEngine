@@ -54,5 +54,5 @@ ZN_INTERFACE OW_ENGINE_API IBaseManagerHolder
 {
 	virtual ~IBaseManagerHolder() {}
 
-	virtual std::shared_ptr<IBaseManager> GetBaseManager() const = 0;
+	virtual IBaseManager* GetBaseManager() const = 0;
 };

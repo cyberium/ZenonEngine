@@ -6,7 +6,7 @@
 // Additional
 #include "Application.h"
 
-CGBuffer::CGBuffer(std::shared_ptr<Scene3D> _worldScene)
+CGBuffer::CGBuffer(std::shared_ptr<IScene> _worldScene)
 	: m_Scene(_worldScene)
 {
 }

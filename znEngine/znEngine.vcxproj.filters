@@ -97,6 +97,9 @@
     <Filter Include="Settings">
       <UniqueIdentifier>{c55d8656-eb02-4071-98e0-ef05ce94f3ba}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GameStates">
+      <UniqueIdentifier>{e0cfab47-ff66-4a89-bfe3-35fd3eb3a994}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -124,9 +127,6 @@
       <Filter>CameraControllers</Filter>
     </ClCompile>
     <ClCompile Include="SceneFunctional\UI\SceneNodeUI.cpp">
-      <Filter>Scene Funcitonal\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="SceneFunctional\UI\SceneUI.cpp">
       <Filter>Scene Funcitonal\UI</Filter>
     </ClCompile>
     <ClCompile Include="SceneFunctional\UI\UIContainerGarmoshka.cpp">
@@ -194,9 +194,6 @@
     </ClCompile>
     <ClCompile Include="SceneFunctional\UI\UIUtils.cpp">
       <Filter>Scene Funcitonal\UI\Utils</Filter>
-    </ClCompile>
-    <ClCompile Include="SceneFunctional\3D\Scene3D.cpp">
-      <Filter>Scene Funcitonal\3D</Filter>
     </ClCompile>
     <ClCompile Include="SceneFunctional\3D\SceneNode3D.cpp">
       <Filter>Scene Funcitonal\3D</Filter>
@@ -284,10 +281,18 @@
     <ClCompile Include="CameraControllers\Camera.cpp">
       <Filter>CameraControllers</Filter>
     </ClCompile>
-    <ClCompile Include="GameState.cpp" />
     <ClCompile Include="Loader.cpp" />
     <ClCompile Include="Settings\WoWSettingsGroup.cpp">
       <Filter>Settings</Filter>
+    </ClCompile>
+    <ClCompile Include="GameState.cpp">
+      <Filter>GameStates</Filter>
+    </ClCompile>
+    <ClCompile Include="GameState_Default.cpp">
+      <Filter>GameStates</Filter>
+    </ClCompile>
+    <ClCompile Include="Passes\TextureMaterialPass.cpp">
+      <Filter>Passes\3D</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -322,9 +327,6 @@
       <Filter>CameraControllers</Filter>
     </ClInclude>
     <ClInclude Include="SceneFunctional\UI\SceneNodeUI.h">
-      <Filter>Scene Funcitonal\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="SceneFunctional\UI\SceneUI.h">
       <Filter>Scene Funcitonal\UI</Filter>
     </ClInclude>
     <ClInclude Include="SceneFunctional\UI\UIContainerGarmoshka.h">
@@ -395,9 +397,6 @@
     </ClInclude>
     <ClInclude Include="SceneFunctional\UI\UIUtils.h">
       <Filter>Scene Funcitonal\UI\Utils</Filter>
-    </ClInclude>
-    <ClInclude Include="SceneFunctional\3D\Scene3D.h">
-      <Filter>Scene Funcitonal\3D</Filter>
     </ClInclude>
     <ClInclude Include="SceneFunctional\3D\SceneNode3D.h">
       <Filter>Scene Funcitonal\3D</Filter>
@@ -481,10 +480,18 @@
     <ClInclude Include="CameraControllers\Camera.h">
       <Filter>CameraControllers</Filter>
     </ClInclude>
-    <ClInclude Include="GameState.h" />
     <ClInclude Include="Loader.h" />
     <ClInclude Include="Settings\WoWSettingsGroup.h">
       <Filter>Settings</Filter>
+    </ClInclude>
+    <ClInclude Include="GameState.h">
+      <Filter>GameStates</Filter>
+    </ClInclude>
+    <ClInclude Include="GameState_Default.h">
+      <Filter>GameStates</Filter>
+    </ClInclude>
+    <ClInclude Include="Passes\TextureMaterialPass.h">
+      <Filter>Passes\3D</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

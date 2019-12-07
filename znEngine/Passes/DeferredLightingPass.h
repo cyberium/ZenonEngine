@@ -1,8 +1,9 @@
 #pragma once
 
 #include "AbstractPass.h"
-#include "../SceneFunctional/3D/Scene3D.h"
 #include "../SceneFunctional/Light.h"
+
+#include "../SceneFunctional/3D/SceneNode3D.h"
 
 // Use this pass to render the lights as geometry in the scene.
 class DeferredLightingPass : public AbstractPass
@@ -11,7 +12,7 @@ class DeferredLightingPass : public AbstractPass
 public:
 
 	DeferredLightingPass(
-		std::shared_ptr<Scene3D> scene,
+		std::shared_ptr<IScene> scene,
 		std::shared_ptr<IPipelineState> lightPipeline0,
 		std::shared_ptr<IPipelineState> lightPipeline1,
 		std::shared_ptr<IPipelineState> directionalLightPipeline,
@@ -39,7 +40,7 @@ public:
 	void UpdateFog(float fogModifier, vec3 fogColor, float fogDistance);
 
 protected:
-	void RenderSubPass(RenderEventArgs* e, std::shared_ptr<Scene3D> scene, std::shared_ptr<IPipelineState> pipeline);
+	void RenderSubPass(RenderEventArgs* e, std::shared_ptr<IScene> scene, std::shared_ptr<IPipelineState> pipeline);
 
 private:
 	mat4 m_World;
@@ -78,10 +79,10 @@ private:
 	// Pipeline for directional lights
 	std::shared_ptr<IPipelineState> m_DirectionalLightPipeline;
 	
-	std::shared_ptr<Scene3D> m_Scene;
-	std::shared_ptr<Scene3D> m_pPointLightScene;
-	std::shared_ptr<Scene3D> m_pSpotLightScene;
-	std::shared_ptr<Scene3D> m_pDirectionalLightScene;
+	std::shared_ptr<IScene> m_Scene;
+	std::shared_ptr<IScene> m_pPointLightScene;
+	std::shared_ptr<IScene> m_pSpotLightScene;
+	std::shared_ptr<IScene> m_pDirectionalLightScene;
 
 	// Textures
 	std::shared_ptr<ITexture> m_PositionTexture;

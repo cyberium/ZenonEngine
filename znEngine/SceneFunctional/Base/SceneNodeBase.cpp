@@ -75,6 +75,10 @@ void SceneNodeBase::RaiseComponentMessage(std::shared_ptr<ISceneNodeComponent> C
 	});
 }
 
+void SceneNodeBase::RegisterComponents()
+{
+}
+
 
 
 //
@@ -171,8 +175,17 @@ void SceneNodeBase::UpdateCamera(const ICamera* camera)
 
 bool SceneNodeBase::Accept(IVisitor* visitor)
 {
-    _ASSERT(false);
-	return false;
+	bool visitResult = visitor->Visit(this);
+
+	// ROOT NODE DON'T HAVE COMPONENTS!!!
+
+	const auto& childs = GetChilds();
+	std::for_each(childs.begin(), childs.end(), [&visitor](const std::shared_ptr<ISceneNode>& Child)
+	{
+		Child->Accept(visitor);
+	});
+
+	return visitResult;
 }
 
 void SceneNodeBase::OnUpdate(UpdateEventArgs & e)
@@ -194,7 +207,7 @@ void SceneNodeBase::SetParentInternal(std::weak_ptr<ISceneNode> parentNode)
 //
 // Protected
 //
-const std::shared_ptr<IBaseManager> SceneNodeBase::GetBaseManager() const
+IBaseManager* SceneNodeBase::GetBaseManager() const
 {
 	return std::dynamic_pointer_cast<IBaseManagerHolder>(GetScene())->GetBaseManager();
 }

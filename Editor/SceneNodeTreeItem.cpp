@@ -9,7 +9,7 @@ CSceneNodeTreeItem::CSceneNodeTreeItem()
 {
 }
 
-CSceneNodeTreeItem::CSceneNodeTreeItem(std::shared_ptr<SceneNode> SceneNode3D, CSceneNodeTreeItem* Parent)
+CSceneNodeTreeItem::CSceneNodeTreeItem(std::shared_ptr<ISceneNode> SceneNode3D, CSceneNodeTreeItem* Parent)
 	: m_SceneNode3D(SceneNode3D)
 	, m_Parent(Parent)
 {

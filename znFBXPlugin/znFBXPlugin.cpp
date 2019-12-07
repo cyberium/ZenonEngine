@@ -20,7 +20,7 @@ public:
 	//
 	// IznPlugin
 	//
-	bool Initialize(std::shared_ptr<IBaseManager> BaseManager)
+	bool Initialize(IBaseManager* BaseManager)
 	{
 		m_BaseManager = BaseManager;
 
@@ -32,11 +32,11 @@ public:
 	}
 
 private:
-	std::shared_ptr<IBaseManager> m_BaseManager;
+	IBaseManager* m_BaseManager;
 };
 
 IznPlugin* plugin = nullptr;
-IznPlugin* GetPlugin(std::shared_ptr<IBaseManager> BaseManager)
+IznPlugin* GetPlugin(IBaseManager* BaseManager)
 {
 	if (plugin == nullptr)
 	{

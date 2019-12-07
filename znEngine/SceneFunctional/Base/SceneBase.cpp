@@ -3,7 +3,10 @@
 // General
 #include "SceneBase.h"
 
-SceneBase::SceneBase(std::shared_ptr<IBaseManager> BaseManager)
+// Additonal
+#include "SceneFunctional/UI/SceneNodeUI.h"
+
+SceneBase::SceneBase(IBaseManager* BaseManager)
 	: m_BaseManager(BaseManager)
 {}
 
@@ -15,6 +18,12 @@ SceneBase::~SceneBase()
 //
 // IScene
 //
+void SceneBase::CreateRootNode()
+{
+	m_RootNode = CreateSceneNode<SceneNodeBase>(std::shared_ptr<ISceneNode>());
+	m_RootNode->SetName("Root node");
+}
+
 std::shared_ptr<ISceneNode> SceneBase::GetRootNode() const
 {
 	return m_RootNode;
@@ -35,9 +44,198 @@ void SceneBase::OnUpdate(UpdateEventArgs& e)
 
 
 //
+// Keyboard events
+//
+bool SceneBase::OnKeyPressed(KeyEventArgs & e)
+{
+	if (m_RootNode)
+		return DoKeyPressed_Rec(m_RootNode, e);
+
+	return false;
+}
+
+void SceneBase::OnKeyReleased(KeyEventArgs & e)
+{
+	if (m_RootNode)
+		DoKeyReleased_Rec(m_RootNode, e);
+}
+
+void SceneBase::OnKeyboardFocus(EventArgs & e)
+{
+}
+
+void SceneBase::OnKeyboardBlur(EventArgs & e)
+{
+}
+
+
+
+//
+// Mouse events
+//
+void SceneBase::OnMouseMoved(MouseMotionEventArgs & e)
+{
+	if (m_RootNode)
+		DoMouseMoved_Rec(m_RootNode, e);
+}
+
+bool SceneBase::OnMouseButtonPressed(MouseButtonEventArgs & e)
+{
+	if (m_RootNode)
+		return DoMouseButtonPressed_Rec(m_RootNode, e);
+
+	return false;
+}
+
+void SceneBase::OnMouseButtonReleased(MouseButtonEventArgs & e)
+{
+	if (m_RootNode)
+		DoMouseButtonReleased_Rec(m_RootNode, e);
+}
+
+bool SceneBase::OnMouseWheel(MouseWheelEventArgs & e)
+{
+	if (m_RootNode)
+		return DoMouseWheel_Rec(m_RootNode, e);
+
+	return false;
+}
+
+void SceneBase::OnMouseLeave(EventArgs & e)
+{
+}
+
+void SceneBase::OnMouseFocus(EventArgs & e)
+{
+}
+
+void SceneBase::OnMouseBlur(EventArgs & e)
+{
+}
+
+
+
+//
+// Input events process recursive
+//
+bool SceneBase::DoKeyPressed_Rec(const std::shared_ptr<ISceneNode>& Node, KeyEventArgs & e)
+{
+	std::shared_ptr<CUIBaseNode> NodeAsUINode = std::dynamic_pointer_cast<CUIBaseNode>(Node);
+	if (NodeAsUINode != nullptr)
+	{
+		for (auto child : NodeAsUINode->GetChilds())
+			if (DoKeyPressed_Rec(child, e))
+				return true;
+
+		if (NodeAsUINode->OnKeyPressed(e))
+			return true;
+	}
+
+	return false;
+}
+
+void SceneBase::DoKeyReleased_Rec(const std::shared_ptr<ISceneNode>& Node, KeyEventArgs & e)
+{
+	std::shared_ptr<CUIBaseNode> NodeAsUINode = std::dynamic_pointer_cast<CUIBaseNode>(Node);
+	if (NodeAsUINode != nullptr)
+	{
+
+		for (auto child : NodeAsUINode->GetChilds())
+		{
+			DoKeyReleased_Rec(child, e);
+		}
+
+		NodeAsUINode->OnKeyReleased(e);
+	}
+}
+
+void SceneBase::DoMouseMoved_Rec(const std::shared_ptr<ISceneNode>& Node, MouseMotionEventArgs & e)
+{
+	std::shared_ptr<CUIBaseNode> NodeAsUINode = std::dynamic_pointer_cast<CUIBaseNode>(Node);
+	if (NodeAsUINode != nullptr)
+	{
+		for (auto child : NodeAsUINode->GetChilds())
+		{
+			DoMouseMoved_Rec(child, e);
+		}
+
+		NodeAsUINode->OnMouseMoved(e);
+
+		// Synteric events impl
+		if (NodeAsUINode->IsPointInBoundsAbs(e.GetPoint()))
+		{
+			if (!NodeAsUINode->IsMouseOnNode())
+			{
+				NodeAsUINode->OnMouseEntered();
+				NodeAsUINode->DoMouseEntered();
+			}
+		}
+		else
+		{
+			if (NodeAsUINode->IsMouseOnNode())
+			{
+				NodeAsUINode->OnMouseLeaved();
+				NodeAsUINode->DoMouseLeaved();
+			}
+		}
+	}
+}
+
+bool SceneBase::DoMouseButtonPressed_Rec(const std::shared_ptr<ISceneNode>& Node, MouseButtonEventArgs & e)
+{
+	std::shared_ptr<CUIBaseNode> NodeAsUINode = std::dynamic_pointer_cast<CUIBaseNode>(Node);
+	if (NodeAsUINode != nullptr)
+	{
+		for (auto child : NodeAsUINode->GetChilds())
+			if (DoMouseButtonPressed_Rec(child, e))
+				return true;
+
+		if (NodeAsUINode->IsPointInBoundsAbs(e.GetPoint()))
+			if (NodeAsUINode->OnMouseButtonPressed(e))
+				return true;
+	}
+
+	return false;
+}
+
+void SceneBase::DoMouseButtonReleased_Rec(const std::shared_ptr<ISceneNode>& Node, MouseButtonEventArgs & e)
+{
+	std::shared_ptr<CUIBaseNode> NodeAsUINode = std::dynamic_pointer_cast<CUIBaseNode>(Node);
+	if (NodeAsUINode != nullptr)
+	{
+		for (auto child : NodeAsUINode->GetChilds())
+			DoMouseButtonReleased_Rec(child, e);
+
+		NodeAsUINode->OnMouseButtonReleased(e);
+	}
+}
+
+bool SceneBase::DoMouseWheel_Rec(const std::shared_ptr<ISceneNode>& Node, MouseWheelEventArgs & e)
+{
+	std::shared_ptr<CUIBaseNode> NodeAsUINode = std::dynamic_pointer_cast<CUIBaseNode>(Node);
+	if (NodeAsUINode != nullptr)
+	{
+
+		for (auto child : NodeAsUINode->GetChilds())
+		{
+			if (DoMouseWheel_Rec(child, e))
+				return true;
+		}
+
+		if (NodeAsUINode->IsPointInBoundsAbs(e.GetPoint()))
+			if (NodeAsUINode->OnMouseWheel(e))
+				return true;
+	}
+
+	return false;
+}
+
+
+
+//
 // IBaseManagerHolder
 //
-std::shared_ptr<IBaseManager> SceneBase::GetBaseManager() const
+IBaseManager* SceneBase::GetBaseManager() const
 {
 	return m_BaseManager;
 }

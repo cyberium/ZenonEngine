@@ -3,7 +3,7 @@
 class OW_ENGINE_API RenderDeviceDX11 : public RenderDeviceBase, public IRenderDeviceDX11, public std::enable_shared_from_this<IRenderDevice>
 {
 public:
-	RenderDeviceDX11(std::shared_ptr<IBaseManager> BaseManager);
+	RenderDeviceDX11(IBaseManager* BaseManager);
 	virtual ~RenderDeviceDX11();
 
 	bool Initialize() override;
@@ -11,7 +11,7 @@ public:
 
 	const std::string& GetDeviceName() const;
     const RenderDeviceType GetDeviceType() const;
-	const std::shared_ptr<IBaseManager>& GetBaseManager() const;
+	IBaseManager* GetBaseManager() const;
 	std::shared_ptr<IRenderWindow> CreateRenderWindow(IWindowObject * WindowObject, bool vSync);
 
 	// Inherited from IRenderDevice
@@ -74,7 +74,7 @@ private:
 	void                                            LoadDefaultResources();
 
 private:
-	std::shared_ptr<IBaseManager>                   m_BaseManager;
+	IBaseManager*                   m_BaseManager;
 
 	// DirectX
 	ATL::CComPtr<ID3D11Device2>                     m_pDevice;

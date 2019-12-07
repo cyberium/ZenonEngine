@@ -11,7 +11,7 @@
 #include FT_FREETYPE_H
 #pragma comment(lib, "freetype.lib")
 
-FontsManager::FontsManager(std::shared_ptr<IBaseManager> BaseManager)
+FontsManager::FontsManager(IBaseManager* BaseManager)
 	: m_BaseManager(BaseManager)
 {
 	m_MainFont = Add("IDB_FONT_CONSOLAS", 14);

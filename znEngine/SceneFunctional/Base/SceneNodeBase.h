@@ -22,7 +22,7 @@ public:
     std::shared_ptr<ISceneNodeComponent>            AddComponent(GUID ComponentID, std::shared_ptr<ISceneNodeComponent> Component) override;
     const ComponentsMap&                            GetComponents() const override;
     void                                            RaiseComponentMessage(std::shared_ptr<ISceneNodeComponent> Component, ComponentMessageType Message) override;
-    //virtual void                                    RegisterComponents() = 0;
+    virtual void                                    RegisterComponents();
 
     // Scene access
     void                                            SetScene(std::shared_ptr<IScene> Scene) override;
@@ -79,7 +79,7 @@ public:
 	}
 
 protected:
-	const std::shared_ptr<IBaseManager>				GetBaseManager() const;
+	IBaseManager*				GetBaseManager() const;
 
     // Callbacks caller
     void                                            RaiseOnParentChanged();

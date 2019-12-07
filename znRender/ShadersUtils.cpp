@@ -3,7 +3,7 @@
 // General
 #include "ShadersUtils.h"
 
-std::string RecursionInclude(std::shared_ptr<IBaseManager> BaseManager, std::shared_ptr<IFile> f)
+std::string RecursionInclude(IBaseManager* BaseManager, std::shared_ptr<IFile> f)
 {
     if (f == nullptr)
     {

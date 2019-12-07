@@ -28,7 +28,7 @@ void Test2() { Log::Print("TEST2"); }
 
 //
 
-CConsole::CConsole(std::shared_ptr<IBaseManager> BaseManager)
+CConsole::CConsole(IBaseManager* BaseManager)
 	: m_BaseManager(BaseManager)
 {
 }

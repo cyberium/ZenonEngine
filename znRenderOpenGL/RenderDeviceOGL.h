@@ -3,7 +3,7 @@
 class RenderDeviceOGL : public RenderDeviceBase, public IRenderDeviceOGL, public std::enable_shared_from_this<IRenderDevice>
 {
 public:
-	RenderDeviceOGL(std::shared_ptr<IBaseManager> BaseManager);
+	RenderDeviceOGL(IBaseManager* BaseManager);
 	virtual ~RenderDeviceOGL();
 
     void InitDevice(HDC Hdc);
@@ -13,7 +13,7 @@ public:
 
 	const std::string& GetDeviceName() const;
     const RenderDeviceType GetDeviceType() const;
-	const std::shared_ptr<IBaseManager>& GetBaseManager() const;
+	IBaseManager* GetBaseManager() const;
 	std::shared_ptr<IRenderWindow> CreateRenderWindow(IWindowObject * WindowObject, bool vSync);
 
 	// Inherited from IRenderDevice
@@ -77,7 +77,7 @@ private:
 	void                        LoadDefaultResources();
 
 private:
-	std::shared_ptr<IBaseManager>                   m_BaseManager;
+	IBaseManager*                   m_BaseManager;
 
 	uint32						m_DepthFormat;
 	bool						_doubleBuffered;

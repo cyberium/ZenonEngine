@@ -1,6 +1,7 @@
 #pragma once
 
-class OW_ENGINE_API AbstractPass : public IRenderPass
+class OW_ENGINE_API AbstractPass 
+	: public IRenderPass
 {
 public:
 	                                                AbstractPass();
@@ -16,6 +17,7 @@ public:
     virtual void                                    UpdateViewport(const Viewport * _viewport);
 
 	// IVisitor
+	virtual bool                                    Visit(SceneNodeBase* node) override;
 	virtual bool                                    Visit(SceneNode3D* node) override;
 	virtual bool                                    Visit(CUIBaseNode* nodeUI) override;
 	virtual bool                                    Visit(IMesh* Mesh, UINT IndexStartLocation = 0, UINT IndexCnt = 0, UINT VertexStartLocation = 0, UINT VertexCnt = 0) override;

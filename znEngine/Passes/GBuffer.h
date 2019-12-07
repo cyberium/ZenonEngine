@@ -5,7 +5,7 @@
 class OW_ENGINE_API CGBuffer
 {
 public:
-	CGBuffer(std::shared_ptr<Scene3D> _worldScene);
+	CGBuffer(std::shared_ptr<IScene> _worldScene);
 	virtual ~CGBuffer();
 
 	void Load(uint32 width, uint32 height);
@@ -15,7 +15,7 @@ public:
 	std::shared_ptr<DeferredLightingPass> GetPass() const;
 
 private:
-	std::shared_ptr<Scene3D>              m_Scene;
+	std::shared_ptr<IScene>               m_Scene;
 
 	std::shared_ptr<IRenderTarget>        m_RenderTarget;
 	std::shared_ptr<DeferredLightingPass> m_Pass;

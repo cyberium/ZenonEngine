@@ -13,6 +13,7 @@ CUIColorNode::CUIColorNode(vec2 Size)
 	m_Material->SetWrapper(m_Material);;
 
 	m_Mesh = _RenderDevice->GetPrimitiveCollection()->CreateUIQuad(Size.x, Size.y);
+	m_Mesh->SetMaterial(m_Material);
 }
 
 CUIColorNode::~CUIColorNode()
@@ -40,7 +41,5 @@ glm::vec2 CUIColorNode::GetSize()
 
 bool CUIColorNode::AcceptMesh(IVisitor* visitor)
 {
-	m_Mesh->SetMaterial(m_Material);
-
 	return m_Mesh->Accept(visitor);
 }

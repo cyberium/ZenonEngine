@@ -23,19 +23,19 @@ private:
 // Helpers
 
 template<class T>
-static inline void AddManager(const std::shared_ptr<IBaseManager>& BaseManager, std::shared_ptr<IManager> _manager)
+static inline void AddManager(IBaseManager* BaseManager, std::shared_ptr<IManager> _manager)
 {
 	BaseManager->RegisterManager(__uuidof(T), _manager);
 }
 
 template<class T>
-static inline void DelManager(const std::shared_ptr<IBaseManager>& BaseManager)
+static inline void DelManager(IBaseManager* BaseManager)
 {
 	//BaseManager->UnregisterManager(__uuidof(T));
 }
 
 template<class T>
-static inline std::shared_ptr<T> GetManager(const std::shared_ptr<IBaseManager>& BaseManager)
+static inline std::shared_ptr<T> GetManager(IBaseManager* BaseManager)
 {
 	std::shared_ptr<IManager> manager = BaseManager->GetManager(__uuidof(T));
 	if (manager == nullptr)

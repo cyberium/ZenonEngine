@@ -220,7 +220,7 @@ vec3 CArcBallCameraController::ProjectOntoUnitSphere(glm::ivec2 screenPos)
 	// Map the screen coordinates so that (0, 0) is the center of the viewport.
 	// TODO: screenPos -= glm::vec2(viewport->GetWidth(), viewport->GetHeight()) * 0.5f;
 
-	float x, y, z;
+	float x = 0.0f, y = 0.0f, z = 0.0f;
 	// The radius of the unit sphere is 1/2 of the shortest dimension of the viewport.
 	/*float radius = glm::min(viewport->GetWidth(), viewport->GetHeight()) * 0.5f;
 

@@ -3,7 +3,7 @@
 // General
 #include "SceneNodeTreeModel.h"
 
-CSceneNodeTreeModel::CSceneNodeTreeModel(std::shared_ptr<Scene3D> Scene3D, QObject * parent)
+CSceneNodeTreeModel::CSceneNodeTreeModel(std::shared_ptr<IScene> Scene3D, QObject * parent)
 	: QAbstractItemModel(parent) 
 {
 	m_RootItem = new CSceneNodeTreeItem();

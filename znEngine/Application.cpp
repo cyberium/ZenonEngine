@@ -5,6 +5,7 @@
 
 // Additional
 #include "EngineTime.h"
+#include "GameState_Default.h"
 
 float g_GameDeltaTime = 0.0f;
 float g_ApplicationTime = 0.0f;
@@ -12,7 +13,7 @@ int64_t g_FrameCounter = 0L;
 
 IApplication * _ApplicationInstance = nullptr;
 
-Application::Application(std::shared_ptr<IBaseManager> BaseManager)
+Application::Application(IBaseManager* BaseManager)
 	: m_BaseManager(BaseManager)
 	, m_bIsInitialized(false)
 	, m_bIsRunning(false)
@@ -22,7 +23,7 @@ Application::Application(std::shared_ptr<IBaseManager> BaseManager)
 	_ApplicationInstance = this;
 }
 
-Application::Application(std::shared_ptr<IBaseManager> BaseManager, HINSTANCE hInstance)
+Application::Application(IBaseManager* BaseManager, HINSTANCE hInstance)
 	: m_BaseManager(BaseManager)
 	, m_bIsInitialized(false)
 	, m_bIsRunning(false)
@@ -72,12 +73,6 @@ std::shared_ptr<IRenderDevice> Application::CreateRenderDevice(RenderDeviceType 
 	return GetRenderDevice();
 }
 
-/*std::shared_ptr<IRenderWindow> Application::CreateRenderWindow(IWindowObject * WindowObject, bool vSync)
-{
-	SetRenderWindow(GetRenderDevice()->CreateRenderWindow(WindowObject, vSync));
-	return GetRenderWindow();
-}*/
-
 void Application::AddRenderWindow(std::shared_ptr<IRenderWindow> RenderWindow)
 {
 	std::dynamic_pointer_cast<IApplicationEventsConnection>(RenderWindow)->Connect(this);
@@ -106,6 +101,9 @@ void Application::DeleleRenderWindow(std::shared_ptr<IRenderWindow> RenderWindow
 void Application::DoBeforeRun()
 {
 	OnInitialize(EventArgs(this));
+
+	//if (m_GameStatesCollection.empty())
+	//	SetGameState(std::make_shared<CGameState_World>(this, m_Windows.begin()->second));
 
 	m_bIsRunning = true;
 }
@@ -145,7 +143,7 @@ void Application::DoAfterRun()
 	OnTerminated(EventArgs(this));
 }
 
-std::shared_ptr<IBaseManager> Application::GetBaseManager() const
+IBaseManager* Application::GetBaseManager() const
 {
 	return m_BaseManager;
 }
@@ -160,36 +158,6 @@ void Application::SetRenderDevice(std::shared_ptr<IRenderDevice> _renderDevice)
 {
 	m_pRenderDevice = _renderDevice;
 }
-
-/*std::shared_ptr<IRenderWindow> Application::GetRenderWindow() const
-{
-	_ASSERT(m_pWindow);
-	return m_pWindow;
-}
-
-void Application::SetRenderWindow(std::shared_ptr<IRenderWindow> _renderWindow)
-{
-	if (m_pWindow != nullptr)
-	{
-		m_pWindow->HideWindow();
-
-		std::dynamic_pointer_cast<IApplicationEventsConnection>(m_pWindow)->Disconnect(this);
-
-		m_pWindow->CloseWindow();
-		m_pWindow.reset();
-	}
-
-	m_pWindow = _renderWindow;
-
-	std::dynamic_pointer_cast<IApplicationEventsConnection>(m_pWindow)->Connect(this);
-	
-	m_pWindow->ShowWindow();
-
-	if (m_bIsRunning)
-	{
-		DoBeforeRun();
-	}
-}*/
 
 HINSTANCE Application::GetHINSTANCE()
 {
@@ -250,7 +218,7 @@ bool Application::SetGameState(std::shared_ptr<IGameState> _newGameState)
 	}
 
 	// 3. Set new GameState
-	m_CurrentGameState = std::dynamic_pointer_cast<CGameState, IGameState>(_newGameState);
+	m_CurrentGameState = std::dynamic_pointer_cast<CGameState>(_newGameState);
 	if (m_CurrentGameState->Set())
 	{
 		Log::Green("GameStateManager[]: New CGameState is current now.");

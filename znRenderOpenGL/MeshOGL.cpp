@@ -110,7 +110,7 @@ bool MeshOGL::Render(const RenderEventArgs* renderArgs, const IConstantBuffer* p
 
     if (pVS)
     {
-        std::shared_ptr<IShaderParameter> perObjectParameter = pVS->GetShaderParameterByName("PerObject");
+        const std::shared_ptr<IShaderParameter>& perObjectParameter = pVS->GetShaderParameterByName("PerObject");
         if (perObjectParameter->IsValid() && perObject != nullptr)
         {
             perObjectParameter->Set(perObject);

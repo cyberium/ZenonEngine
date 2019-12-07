@@ -5,6 +5,7 @@
 
 // Additional
 #include "Application.h"
+#include "SceneFunctional/Base/SceneBase.h"
 
 CGameState::CGameState(const IApplication * _application, std::shared_ptr<IRenderWindow> RenderWindow)
 	: m_Application(_application)
@@ -29,20 +30,17 @@ bool CGameState::Init()
 
 	m_FrameQuery = GetApplication()->GetRenderDevice()->CreateQuery(IQuery::QueryType::Timer, 1);
 
-	m_3DScene = std::make_shared<Scene3D>(m_Application->GetBaseManager());
-	m_3DScene->CreateRootNode();
-
-	m_UIScene = std::make_shared<SceneUI>(m_Application->GetBaseManager());
-	m_UIScene->CreateRootNode();
+	m_Scene = std::make_shared<SceneBase>(m_Application->GetBaseManager());
+	m_Scene->CreateRootNode();
 
 	{
-		m_CameraPosText = m_UIScene->GetRootNode()->CreateSceneNode<CUITextNode>();
+		m_CameraPosText = m_Scene->GetRootNode()->CreateSceneNode<CUITextNode>();
 		m_CameraPosText->GetComponent<CTransformComponentUI>()->SetTranslate(vec2(0.0f, 0.0f));
 
-		m_CameraRotText = m_UIScene->GetRootNode()->CreateSceneNode<CUITextNode>();
+		m_CameraRotText = m_Scene->GetRootNode()->CreateSceneNode<CUITextNode>();
 		m_CameraRotText->GetComponent<CTransformComponentUI>()->SetTranslate(vec2(0.0f, 20.0f));
 
-		m_FPSText = m_UIScene->GetRootNode()->CreateSceneNode<CUITextNode>();
+		m_FPSText = m_Scene->GetRootNode()->CreateSceneNode<CUITextNode>();
 		m_FPSText->GetComponent<CTransformComponentUI>()->SetTranslate(vec2(0.0f, 40.0f));
 	}
 
@@ -98,6 +96,26 @@ void CGameState::Unset()
     renderWindow->KeyReleased().disconnect(OnKeyReleasedConnection);
 }
 
+void CGameState::SetInited(bool _value)
+{
+	m_IsInited = _value;
+}
+
+bool CGameState::IsInited() const
+{
+	return m_IsInited;
+}
+
+void CGameState::SetCurrent(bool _value)
+{
+	m_IsCurrent = _value;
+}
+
+bool CGameState::IsCurrent() const
+{
+	return m_IsCurrent;
+}
+
 
 
 
@@ -119,7 +137,7 @@ void CGameState::OnRender(RenderEventArgs& e)
 {
 	e.Camera = GetCameraController()->GetCamera().get();
 	
-	m_3DTechnique.Render(e);
+	m_Technique.Render(e);
 }
 
 void CGameState::OnPostRender(RenderEventArgs& e)
@@ -141,11 +159,11 @@ void CGameState::OnRenderUI(RenderEventArgs& e)
 		else
 			m_FrameTime = frameResult.ElapsedTime / 1000000.0;
 
-		m_FPSText->SetText("FPS: " + std::to_string(m_FrameTime));
+		m_FPSText->SetText("FPS: " + std::to_string(1000.0 / m_FrameTime));
 	}
 
 	e.Camera = GetCameraController()->GetCamera().get();
-	m_UITechnique.Render(e);
+	m_Technique.Render(e);
 }
 
 
@@ -157,8 +175,7 @@ void CGameState::OnResize(ResizeEventArgs & e)
 {
 	m_DefaultCameraController->OnResize(e);
 
-	m_3DTechnique.UpdateViewport(dynamic_cast<const IRenderWindow*>(e.Caller)->GetViewport());
-	m_UITechnique.UpdateViewport(dynamic_cast<const IRenderWindow*>(e.Caller)->GetViewport());
+	m_Technique.UpdateViewport(dynamic_cast<const IRenderWindow*>(e.Caller)->GetViewport());
 }
 
 
@@ -169,8 +186,8 @@ void CGameState::OnResize(ResizeEventArgs & e)
 void CGameState::OnKeyPressed(KeyEventArgs & e)
 {
     bool result = false;
-    if (m_UIScene)
-        result = m_UIScene->OnKeyPressed(e);
+    if (m_Scene)
+        result = m_Scene->OnKeyPressed(e);
 
 	if (m_DefaultCameraController && !result)
 		m_DefaultCameraController->OnKeyPressed(e);
@@ -181,8 +198,20 @@ void CGameState::OnKeyReleased(KeyEventArgs & e)
 	if (m_DefaultCameraController)
 		m_DefaultCameraController->OnKeyReleased(e);
 
-	if (m_UIScene)
-		m_UIScene->OnKeyReleased(e);
+	if (m_Scene)
+		m_Scene->OnKeyReleased(e);
+}
+
+void CGameState::OnKeyboardFocus(EventArgs & e)
+{
+	if (m_Scene)
+		m_Scene->OnKeyboardFocus(e);
+}
+
+void CGameState::OnKeyboardBlur(EventArgs & e)
+{
+	if (m_Scene)
+		m_Scene->OnKeyboardBlur(e);
 }
 
 
@@ -193,8 +222,8 @@ void CGameState::OnKeyReleased(KeyEventArgs & e)
 void CGameState::OnMouseButtonPressed(MouseButtonEventArgs & e)
 {
     bool result = false;
-    if (m_UIScene)
-        result = m_UIScene->OnMouseButtonPressed(e);
+    if (m_Scene)
+        result = m_Scene->OnMouseButtonPressed(e);
 
 	if (m_DefaultCameraController && !result)
 		m_DefaultCameraController->OnMouseButtonPressed(e);
@@ -205,8 +234,8 @@ void CGameState::OnMouseButtonReleased(MouseButtonEventArgs & e)
 	if (m_DefaultCameraController)
 		m_DefaultCameraController->OnMouseButtonReleased(e);
 
-	if (m_UIScene)
-		m_UIScene->OnMouseButtonReleased(e);
+	if (m_Scene)
+		m_Scene->OnMouseButtonReleased(e);
 }
 
 void CGameState::OnMouseMoved(MouseMotionEventArgs & e)
@@ -214,8 +243,8 @@ void CGameState::OnMouseMoved(MouseMotionEventArgs & e)
 	if (m_DefaultCameraController)
 		m_DefaultCameraController->OnMouseMoved(e);
 
-	if (m_UIScene)
-		m_UIScene->OnMouseMoved(e);
+	if (m_Scene)
+		m_Scene->OnMouseMoved(e);
 }
 
 void CGameState::OnMouseWheel(MouseWheelEventArgs & e)
@@ -223,12 +252,33 @@ void CGameState::OnMouseWheel(MouseWheelEventArgs & e)
 	if (m_DefaultCameraController)
 		m_DefaultCameraController->OnMouseWheel(e);
 
-	if (m_UIScene)
-		m_UIScene->OnMouseWheel(e);
+	if (m_Scene)
+		m_Scene->OnMouseWheel(e);
+}
+
+void CGameState::OnMouseLeave(EventArgs & e)
+{
+	if (m_Scene)
+		m_Scene->OnMouseLeave(e);
+}
+
+void CGameState::OnMouseFocus(EventArgs & e)
+{
+	if (m_Scene)
+		m_Scene->OnMouseFocus(e);
+}
+
+void CGameState::OnMouseBlur(EventArgs & e)
+{
+	if (m_Scene)
+		m_Scene->OnMouseBlur(e);
 }
 
 
 
+//
+// Protected
+//
 const IApplication* CGameState::GetApplication() const
 {
     return m_Application;
@@ -239,7 +289,7 @@ const std::shared_ptr<IRenderWindow> CGameState::GetRenderWindow() const
 	return m_RenderWindow;
 }
 
-const std::shared_ptr<IBaseManager> CGameState::GetBaseManager() const
+IBaseManager* CGameState::GetBaseManager() const
 {
 	return m_Application->GetBaseManager();
 }
@@ -248,11 +298,6 @@ void CGameState::SetCameraController(std::shared_ptr<ICameraController> CameraCo
 {
 	_ASSERT(CameraController != nullptr);
 	m_DefaultCameraController = CameraController;
-}
-
-void CGameState::UnsetCameraController()
-{
-	m_DefaultCameraController = nullptr;
 }
 
 std::shared_ptr<ICameraController> CGameState::GetCameraController() const

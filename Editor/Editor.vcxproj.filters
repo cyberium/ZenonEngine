@@ -26,7 +26,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="GameState_World.cpp" />
     <ClCompile Include="SceneNodeTreeItem.cpp" />
     <ClCompile Include="SceneNodeTreeModel.cpp" />
     <ClCompile Include="RenderWindowWidget.cpp">
@@ -41,7 +40,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="GameState_World.h" />
     <ClInclude Include="SceneNodeTreeItem.h" />
     <ClInclude Include="stdafx.h">
       <Filter>Common</Filter>

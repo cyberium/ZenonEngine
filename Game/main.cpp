@@ -1,19 +1,16 @@
 #include "stdafx.h"
 
-// Additional (TEST)
-#include "GameState_World.h"
-
-// Additional (Windows)
-#include <ctime>
-
 const wchar_t* c_RenderWindow_ClassNameW = L"RenderWindowClass";
 
 void main_internal(int argumentCount, char* arguments[])
 {
-	std::shared_ptr<IBaseManager> BaseManager = InitializeEngine(ArgumentsToVector(argumentCount, arguments));
+	// 1. Initialize engine and some improtant managers
+	IBaseManager* BaseManager = InitializeEngine(ArgumentsToVector(argumentCount, arguments));
 
+	// 2. Set file location
 	GetManager<IFilesManager>(BaseManager)->RegisterFilesStorage(std::make_shared<CLocalFilesStorage>("D:\\_programming\\ZenonEngine\\gamedata\\"));
 
+	// 3. Create application
 	Application app(BaseManager, ::GetModuleHandle(NULL));
 
 	CWindowClassRegistratorObject windowRegistrator(&app);
@@ -38,11 +35,8 @@ void main_internal(int argumentCount, char* arguments[])
 	AddManager<IFontsManager>(BaseManager, fontsManager);
 
 	std::shared_ptr<IGameState> gs1 = std::make_shared<CGameState_World>(&app, firstRenderWindow);
-
 	app.SetGameState(gs1);
-	//app.AddGameState(GameStatesNames::GAME_STATE_WORLD, std::make_shared<CGameState_World>(&app, firstRenderWindow));
-	//app.AddGameState(GameStatesNames::GAME_STATE_WORLD, std::make_shared<CGameState_World>(&app, secondRenderWindow));
-	//app.SetGameState(GameStatesNames::GAME_STATE_WORLD);
+
 	app.Run();
 
 }

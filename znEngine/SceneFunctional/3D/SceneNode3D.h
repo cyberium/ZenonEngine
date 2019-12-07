@@ -7,10 +7,6 @@
 #include "ColliderComponent3D.h"
 #include "LightComponent3D.h"
 
-// FORWARD BEGIN
-class Scene3D;
-// FORWARD END
-
 class OW_ENGINE_API SceneNode3D 
 	: public SceneNodeBase
 	, public ILoadable
