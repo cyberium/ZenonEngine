@@ -95,9 +95,9 @@ void CGameState_World::OnRenderUI(RenderEventArgs& e)
 
 void CGameState_World::Load3D()
 {
-	for (size_t i = 0; i < 15; i++)
+	for (size_t i = 0; i < 100; i++)
 	{
-		for (size_t j = 0; j < 15; j++)
+		for (size_t j = 0; j < 100; j++)
 		{
 			std::shared_ptr<SceneNode3D> sceneNode = m_Scene->CreateSceneNode<SceneNode3D>(m_Scene->GetRootNode());
 
