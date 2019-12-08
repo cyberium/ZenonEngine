@@ -6,9 +6,9 @@
 // Additional
 #include "SceneNodeDefaultCreator.h"
 
-CSceneNodesFactory::CSceneNodesFactory()
+CSceneNodesFactory::CSceneNodesFactory(IBaseManager* BaseManager)
 {
-	AddSceneNodeCreator(std::make_shared<CSceneNodeDefaultCreator>());
+	AddSceneNodeCreator(std::make_shared<CSceneNodeDefaultCreator>(BaseManager));
 }
 
 CSceneNodesFactory::~CSceneNodesFactory()

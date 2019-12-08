@@ -3,7 +3,7 @@
 class OW_ENGINE_API UI_Color_Material : public MaterialProxie
 {
 public:
-	UI_Color_Material();
+	UI_Color_Material(std::shared_ptr<IRenderDevice> RenderDevice);
 	virtual ~UI_Color_Material();
 
 	void SetColor(vec4 color);

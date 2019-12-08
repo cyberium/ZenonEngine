@@ -78,7 +78,6 @@ typedef const quat& cquat;
 #include <atomic>
 #include <future>
 #include <chrono>
-#include <variant>
 
 // Usefull macros
 #define __PACK_BEGIN  "../shared/pack_begin.h"
@@ -93,7 +92,6 @@ typedef const quat& cquat;
 //---------------------------------------------------------//
 //--                     COMMON                          --//
 //---------------------------------------------------------//
-#include "Settings.h"
 #include "SettingsGroupBase.h"
 #include "SettingBase.h"
 

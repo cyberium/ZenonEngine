@@ -87,4 +87,3 @@
 #include "Interfaces/Scene/ISceneNode.h"
 #include "Interfaces/Scene/IScene.h"
 #include "Interfaces/Scene/ISceneNodeProvider.h"
-#include "Interfaces/Scene/ISceneCreator.h"

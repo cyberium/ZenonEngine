@@ -42,8 +42,10 @@ public:
 	virtual void                                    UpdateViewport(const Viewport* viewport);
 
 	virtual bool                                    Accept(IVisitor* visitor);
+
 	virtual void                                    OnUpdate(UpdateEventArgs& e);
 
+	std::shared_ptr<ISettingGroup>					GetProperties() const;
 
 	//
 	// ISceneNodeWrapper

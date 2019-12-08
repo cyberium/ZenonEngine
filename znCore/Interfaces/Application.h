@@ -3,7 +3,6 @@
 // Forward BEGIN
 ZN_INTERFACE IRenderDevice;
 ZN_INTERFACE IRenderWindow;
-class CLoader;
 // Forward END
 
 ZN_INTERFACE OW_ENGINE_API IApplication
@@ -14,14 +13,11 @@ ZN_INTERFACE OW_ENGINE_API IApplication
 	virtual int                             DoRun() = 0;
 	virtual void                            DoAfterRun() = 0;
 
-	virtual IBaseManager*   GetBaseManager() const = 0;
+	virtual IBaseManager*                   GetBaseManager() const = 0;
 	virtual std::shared_ptr<IRenderDevice>  GetRenderDevice() const = 0;
 	virtual void                            SetRenderDevice(std::shared_ptr<IRenderDevice> RenderDevice) = 0;
-	//virtual std::shared_ptr<IRenderWindow>  GetRenderWindow() const = 0;
-	//virtual void                            SetRenderWindow(std::shared_ptr<IRenderWindow>  RenderDevice) = 0;
 
 	virtual HINSTANCE                       GetHINSTANCE() = 0;
-    virtual CLoader*                        GetLoader() = 0;
 };
 
 ZN_INTERFACE OW_ENGINE_API IApplicationEvents

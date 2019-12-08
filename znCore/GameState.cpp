@@ -3,16 +3,13 @@
 // General
 #include "GameState.h"
 
-// Additional
-#include "Application.h"
-#include "SceneFunctional/Base/SceneBase.h"
-
-CGameState::CGameState(const IApplication * _application, std::shared_ptr<IRenderWindow> RenderWindow)
-	: m_Application(_application)
-	, m_RenderWindow(RenderWindow)
+CGameState::CGameState(IBaseManager * BaseManager, std::shared_ptr<IRenderWindow> RenderWindow)
+	: m_RenderWindow(RenderWindow)
 	, m_IsInited(false)
 	, m_IsCurrent(false)
+	, m_BaseManager(BaseManager)
 {
+	m_RenderDevice = GetManager<IRenderDevice>(m_BaseManager);
 }
 
 CGameState::~CGameState()
@@ -25,21 +22,20 @@ CGameState::~CGameState()
 //
 bool CGameState::Init()
 {
-	m_VideoSettings = GetManager<ISettings>(m_Application->GetBaseManager())->GetGroup("Video");
+	m_VideoSettings = GetManager<ISettings>(m_BaseManager)->GetGroup("Video");
 
-	m_FrameQuery = GetApplication()->GetRenderDevice()->CreateQuery(IQuery::QueryType::Timer, 1);
+	m_FrameQuery = GetRenderDevice()->CreateQuery(IQuery::QueryType::Timer, 1);
 
-	m_Scene = std::make_shared<SceneBase>(m_Application->GetBaseManager());
-	m_Scene->CreateRootNode();
+	m_Scene = GetManager<IScenesFactory>(GetBaseManager())->CreateScene("SceneBase");
 
 	{
-		m_CameraPosText = m_Scene->GetRootNode()->CreateSceneNode<CUITextNode>();
+		m_CameraPosText = GetManager<ISceneNodesFactory>(GetBaseManager())->CreateSceneNode(m_Scene->GetRootNode(), "TextUI");
 		m_CameraPosText->GetComponent<ITransformComponentUI>()->SetTranslate(vec2(0.0f, 0.0f));
 
-		m_CameraRotText = m_Scene->GetRootNode()->CreateSceneNode<CUITextNode>();
+		m_CameraRotText = GetManager<ISceneNodesFactory>(GetBaseManager())->CreateSceneNode(m_Scene->GetRootNode(), "TextUI");
 		m_CameraRotText->GetComponent<ITransformComponentUI>()->SetTranslate(vec2(0.0f, 20.0f));
 
-		m_FPSText = m_Scene->GetRootNode()->CreateSceneNode<CUITextNode>();
+		m_FPSText = GetManager<ISceneNodesFactory>(GetBaseManager())->CreateSceneNode(m_Scene->GetRootNode(), "TextUI");
 		m_FPSText->GetComponent<ITransformComponentUI>()->SetTranslate(vec2(0.0f, 40.0f));
 	}
 
@@ -147,18 +143,18 @@ void CGameState::OnPostRender(RenderEventArgs& e)
 void CGameState::OnRenderUI(RenderEventArgs& e)
 {
 	vec3 cameraTrans = GetCameraController()->GetCamera()->GetTranslation();
-	m_CameraPosText->SetText("Pos: x = " + std::to_string(cameraTrans.x) + ", y = " + std::to_string(cameraTrans.y) + ", z = " + std::to_string(cameraTrans.z));
-	m_CameraRotText->SetText("Rot: yaw = " + std::to_string(GetCameraController()->GetCamera()->GetYaw()) + ", pitch = " + std::to_string(GetCameraController()->GetCamera()->GetPitch()));
+	m_CameraPosText->GetProperties()->GetSettingT<std::string>("Text")->Set("Pos: x = " + std::to_string(cameraTrans.x) + ", y = " + std::to_string(cameraTrans.y) + ", z = " + std::to_string(cameraTrans.z));
+	m_CameraRotText->GetProperties()->GetSettingT<std::string>("Text")->Set("Rot: yaw = " + std::to_string(GetCameraController()->GetCamera()->GetYaw()) + ", pitch = " + std::to_string(GetCameraController()->GetCamera()->GetPitch()));
 
 	IQuery::QueryResult frameResult = m_FrameQuery->GetQueryResult(e.FrameCounter - (m_FrameQuery->GetBufferCount() - 1));
 	if (frameResult.IsValid)
 	{
-		if (_RenderDevice->GetDeviceType() == RenderDeviceType::RenderDeviceType_DirectX)
+		if (GetRenderDevice()->GetDeviceType() == RenderDeviceType::RenderDeviceType_DirectX)
 			m_FrameTime = frameResult.ElapsedTime * 1000.0;
 		else
 			m_FrameTime = frameResult.ElapsedTime / 1000000.0;
 
-		m_FPSText->SetText("FPS: " + std::to_string(1000.0 / m_FrameTime));
+		m_FPSText->GetProperties()->GetSettingT<std::string>("Text")->Set("FPS: " + std::to_string(1000.0 / m_FrameTime));
 	}
 
 	e.Camera = GetCameraController()->GetCamera().get();
@@ -278,19 +274,20 @@ void CGameState::OnMouseBlur(EventArgs & e)
 //
 // Protected
 //
-const IApplication* CGameState::GetApplication() const
+
+std::shared_ptr<IRenderDevice> CGameState::GetRenderDevice() const
 {
-    return m_Application;
+	return m_RenderDevice;
 }
 
-const std::shared_ptr<IRenderWindow> CGameState::GetRenderWindow() const
+std::shared_ptr<IRenderWindow> CGameState::GetRenderWindow() const
 {
 	return m_RenderWindow;
 }
 
 IBaseManager* CGameState::GetBaseManager() const
 {
-	return m_Application->GetBaseManager();
+	return m_BaseManager;
 }
 
 void CGameState::SetCameraController(std::shared_ptr<ICameraController> CameraController)

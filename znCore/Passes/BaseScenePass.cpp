@@ -32,3 +32,8 @@ std::shared_ptr<IScene> CBaseScenePass::GetScene() const
 {
 	return m_Scene;
 }
+
+IBaseManager* CBaseScenePass::GetBaseManager() const
+{
+	return std::dynamic_pointer_cast<IBaseManagerHolder>(m_Scene)->GetBaseManager();
+}

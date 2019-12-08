@@ -45,7 +45,7 @@ public:
 	// Updatable
 	virtual void                                    OnUpdate(UpdateEventArgs& e) override;
 
-
+	std::shared_ptr<ISettingGroup>					GetProperties() const;
 
 	//
 	// ISceneNodeInternal
@@ -93,4 +93,6 @@ private:
 	std::weak_ptr<ISceneNode>                       m_ParentNode;
 	NodeList                                        m_Children;
 	NodeNameMap                                     m_ChildrenByName;
+
+	std::shared_ptr<ISettingGroup>                  m_Properties;
 };

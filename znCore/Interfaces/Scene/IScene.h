@@ -84,3 +84,29 @@ ZN_INTERFACE OW_ENGINE_API IScene : public std::enable_shared_from_this<IScene>
 		return newNode;
 	}
 };
+
+
+//
+// For plugins
+//
+ZN_INTERFACE OW_ENGINE_API ISceneCreator
+{
+	virtual ~ISceneCreator() {}
+
+	virtual size_t                                  GetScenesCount() const = 0;
+	virtual std::string                             GetSceneTypeName(size_t Index) const = 0;
+	virtual std::shared_ptr<IScene>					CreateScene(size_t Index) const = 0;
+};
+
+ZN_INTERFACE OW_ENGINE_API
+__declspec(uuid("CCF47DFF-A18F-46F2-B413-F17ABF991C50"))
+IScenesFactory
+	: public IManager
+{
+	virtual ~IScenesFactory() {}
+
+	virtual void AddSceneCreator(std::shared_ptr<ISceneCreator> Creator) = 0;
+	virtual void RemoveSceneCreator(std::shared_ptr<ISceneCreator> Creator) = 0;
+
+	virtual std::shared_ptr<IScene> CreateScene(std::string SceneTypeName) const = 0;
+};

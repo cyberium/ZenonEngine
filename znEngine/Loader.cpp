@@ -64,8 +64,6 @@ void CLoader::LoadAll()
 
 void CLoader::AddToDeleteQueue(std::shared_ptr<ILoadable> _item)
 {
-
-
 	m_QueueDelete.add(_item);
 }
 

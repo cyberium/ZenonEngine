@@ -3,22 +3,19 @@
 // General
 #include "UITexture.h"
 
-// Additional
-#include "Application.h"
-
 namespace
 {
 	const vec4 cDefaultColor = vec4(1.0f, 1.0f, 1.0f, 1.0f);
 }
 
-CUITextureNode::CUITextureNode(vec2 Size)
+CUITextureNode::CUITextureNode(std::shared_ptr<IRenderDevice> RenderDevice, vec2 Size)
 	: m_Size(Size)
 {
-	m_Material = std::make_shared<UI_Texture_Material>();
+	m_Material = std::make_shared<UI_Texture_Material>(RenderDevice);
 	m_Material->SetWrapper(m_Material);
 	m_Material->SetColor(cDefaultColor);
 
-	m_Mesh = _RenderDevice->GetPrimitiveCollection()->CreateUIQuad(Size.x, Size.y);
+	m_Mesh = RenderDevice->GetPrimitiveCollection()->CreateUIQuad(Size.x, Size.y);
 }
 
 CUITextureNode::~CUITextureNode()

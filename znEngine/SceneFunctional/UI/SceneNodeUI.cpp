@@ -5,7 +5,6 @@
 
 // Additional
 #include "UIWindow.h"
-#include "Application.h"
 
 CUIBaseNode::CUIBaseNode()
 	: m_IsMouseOnNode(false)

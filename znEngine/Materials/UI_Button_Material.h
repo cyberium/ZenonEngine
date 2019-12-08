@@ -4,7 +4,7 @@ class OW_ENGINE_API UI_Button_Material : public MaterialProxie
 {
 	typedef MaterialProxie base;
 public:
-	UI_Button_Material();
+	UI_Button_Material(std::shared_ptr<IRenderDevice> RenderDevice);
 	virtual ~UI_Button_Material();
 
 	void SetIdleTexture(std::shared_ptr<ITexture> _texture);

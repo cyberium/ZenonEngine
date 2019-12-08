@@ -7,7 +7,7 @@ class OW_ENGINE_API CUIColorNode : public CUIBaseNode
 {
 	typedef CUIBaseNode base;
 public:
-	CUIColorNode(vec2 Size = vec2(1.0f, 1.0f));
+	CUIColorNode(std::shared_ptr<IRenderDevice> RenderDevice, vec2 Size = vec2(1.0f, 1.0f));
 	virtual ~CUIColorNode();
 
 	// CUIColorNode

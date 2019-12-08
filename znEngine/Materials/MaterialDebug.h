@@ -3,7 +3,7 @@
 class OW_ENGINE_API MaterialDebug : public MaterialProxie
 {
 public:
-	MaterialDebug();
+	MaterialDebug(std::shared_ptr<IRenderDevice> RenderDevice);
 	virtual ~MaterialDebug();
 
 	cvec4 GetDiffuseColor() const;

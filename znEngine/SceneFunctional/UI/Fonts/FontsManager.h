@@ -5,7 +5,7 @@
 class OW_ENGINE_API FontsManager : public CRefManager1Dim<CFontMesh>, public IFontsManager
 {
 public:
-	FontsManager(IBaseManager* BaseManager);
+	FontsManager(std::shared_ptr<IRenderDevice> RenderDevice, IBaseManager* BaseManager);
 	virtual ~FontsManager();
 
 	// IFontsManager
@@ -23,6 +23,9 @@ public:
 	void Delete(std::shared_ptr<CFontMesh> item) { CRefManager1Dim::Delete(item); }
 
 private:
-	IBaseManager* m_BaseManager;
 	std::shared_ptr<CFontMesh> m_MainFont;
+
+private:
+	std::shared_ptr<IRenderDevice> m_RenderDevice;
+	IBaseManager* m_BaseManager;
 };

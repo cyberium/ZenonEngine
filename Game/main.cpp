@@ -32,10 +32,10 @@ void main_internal(int argumentCount, char* arguments[])
 	std::shared_ptr<IRenderWindow> firstRenderWindow = renderDevice->CreateRenderWindow(&firstWindowObject, true);
 	app.AddRenderWindow(firstRenderWindow);
 
-	std::shared_ptr<IFontsManager> fontsManager = std::make_shared<FontsManager>(BaseManager);
+	std::shared_ptr<IFontsManager> fontsManager = std::make_shared<FontsManager>(renderDevice, BaseManager);
 	AddManager<IFontsManager>(BaseManager, fontsManager);
 
-	std::shared_ptr<IGameState> gs1 = std::make_shared<CGameState_World>(&app, firstRenderWindow);
+	std::shared_ptr<IGameState> gs1 = std::make_shared<CGameState_World>(BaseManager, firstRenderWindow);
 	app.SetGameState(gs1);
 
 	app.Run();

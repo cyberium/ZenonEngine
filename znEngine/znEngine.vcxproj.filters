@@ -227,10 +227,6 @@
     <ClCompile Include="CameraControllers\Camera.cpp">
       <Filter>CameraControllers</Filter>
     </ClCompile>
-    <ClCompile Include="Loader.cpp" />
-    <ClCompile Include="GameState.cpp">
-      <Filter>GameStates</Filter>
-    </ClCompile>
     <ClCompile Include="GameState_Default.cpp">
       <Filter>GameStates</Filter>
     </ClCompile>
@@ -251,6 +247,18 @@
     </ClCompile>
     <ClCompile Include="SceneFunctional\SceneNodeDefaultCreator.cpp">
       <Filter>Scene Funcitonal</Filter>
+    </ClCompile>
+    <ClCompile Include="Loader.cpp">
+      <Filter>Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneFunctional\ScenesFactory.cpp">
+      <Filter>Scene Funcitonal</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneFunctional\SceneDefaultCreator.cpp">
+      <Filter>Scene Funcitonal</Filter>
+    </ClCompile>
+    <ClCompile Include="Settings.cpp">
+      <Filter>Managers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -396,10 +404,6 @@
     <ClInclude Include="CameraControllers\Camera.h">
       <Filter>CameraControllers</Filter>
     </ClInclude>
-    <ClInclude Include="Loader.h" />
-    <ClInclude Include="GameState.h">
-      <Filter>GameStates</Filter>
-    </ClInclude>
     <ClInclude Include="GameState_Default.h">
       <Filter>GameStates</Filter>
     </ClInclude>
@@ -420,6 +424,18 @@
     </ClInclude>
     <ClInclude Include="SceneFunctional\SceneNodeDefaultCreator.h">
       <Filter>Scene Funcitonal</Filter>
+    </ClInclude>
+    <ClInclude Include="Loader.h">
+      <Filter>Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneFunctional\ScenesFactory.h">
+      <Filter>Scene Funcitonal</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneFunctional\SceneDefaultCreator.h">
+      <Filter>Scene Funcitonal</Filter>
+    </ClInclude>
+    <ClInclude Include="Settings.h">
+      <Filter>Managers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

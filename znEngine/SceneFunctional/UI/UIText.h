@@ -17,11 +17,7 @@ public:
     void                        SetFont(std::shared_ptr<CFontMesh> _font);
     std::shared_ptr<CFontMesh>  GetFont() const;
 
-    void                        SetText(const std::string& _text);
     void                        SetTextColor(cvec4 _color);
-    std::string                 GetText() const;
-    void                        SetOffset(glm::vec2 Offset);
-    glm::vec2                   GetOffset() const;
     glm::vec2                   GetTextSize() const;
 
 	// CUIBaseNode
@@ -32,6 +28,7 @@ public:
 private:
 	std::shared_ptr<CFontMesh>         m_Font;
 	std::shared_ptr<UI_Font_Material>  m_Material;
-	std::string                        m_Text;
-	glm::vec2                          m_Offset;
+
+	std::shared_ptr<ISettingT<std::string>> m_TextProperty;
+	std::shared_ptr<ISettingT<glm::vec2>> m_OffsetProperty;
 };

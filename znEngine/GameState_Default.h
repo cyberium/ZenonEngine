@@ -1,12 +1,9 @@
 #pragma once
 
-#include "GameState.h"
-
 class OW_ENGINE_API CGameState_World : public CGameState
 {
-	typedef CGameState base;
 public:
-	CGameState_World(const IApplication * _application, std::shared_ptr<IRenderWindow> RenderWindow);
+	CGameState_World(IBaseManager * BaseManager, std::shared_ptr<IRenderWindow> RenderWindow);
 	virtual ~CGameState_World();
 
 	// IGameState

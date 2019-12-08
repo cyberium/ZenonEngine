@@ -4,7 +4,6 @@
 #include "DeferredLightingPass.h"
 
 // Additional
-#include "Application.h"
 #include "SceneFunctional/Base/SceneBase.h"
 #include "SceneFunctional/3D/SceneNode3D.h"
 
@@ -30,45 +29,43 @@ DeferredLightingPass::DeferredLightingPass(
 	, m_NormalTexture(normalTexture)
 	, m_DepthTexture(depthTexture)
 {
-	IBaseManager* baseManager = std::dynamic_pointer_cast<IBaseManagerHolder>(scene)->GetBaseManager();
-
 	m_pScreenToViewParams = (ScreenToViewParams*)_aligned_malloc(sizeof(ScreenToViewParams), 16);
-	m_ScreenToViewParamsCB = _RenderDevice->CreateConstantBuffer(ScreenToViewParams());
+	m_ScreenToViewParamsCB = GetManager<IRenderDevice>(GetBaseManager())->CreateConstantBuffer(ScreenToViewParams());
 
 	m_pLightParams = (LightParams*)_aligned_malloc(sizeof(LightParams), 16);
-	m_LightParamsCB = _RenderDevice->CreateConstantBuffer(LightParams());
+	m_LightParamsCB = GetManager<IRenderDevice>(GetBaseManager())->CreateConstantBuffer(LightParams());
 
 	m_pFogParams = (FogParams*)_aligned_malloc(sizeof(FogParams), 16);
-	m_FogParamsCB = _RenderDevice->CreateConstantBuffer(FogParams());
+	m_FogParamsCB = GetManager<IRenderDevice>(GetBaseManager())->CreateConstantBuffer(FogParams());
 
 	// PointLightScene
-	m_pPointLightScene = std::make_shared<SceneBase>(baseManager);
+	m_pPointLightScene = std::make_shared<SceneBase>(GetBaseManager());
 
 	std::shared_ptr<SceneNode3D> sphereSceneNode = m_pPointLightScene->CreateSceneNode<SceneNode3D>(std::shared_ptr<ISceneNode>());
 
-	std::shared_ptr<IMesh> sphereMesh = _RenderDevice->GetPrimitiveCollection()->CreateSphere();
+	std::shared_ptr<IMesh> sphereMesh = GetManager<IRenderDevice>(GetBaseManager())->GetPrimitiveCollection()->CreateSphere();
 	sphereSceneNode->GetComponent<IMeshComponent3D>()->AddMesh(sphereMesh);
 
 	// Create a full-screen quad that is placed on the far clip plane.
-	m_pDirectionalLightScene = std::make_shared<SceneBase>(baseManager);
+	m_pDirectionalLightScene = std::make_shared<SceneBase>(GetBaseManager());
 
 	std::shared_ptr<SceneNode3D> quadSceneNode = m_pDirectionalLightScene->CreateSceneNode<SceneNode3D>(std::shared_ptr<ISceneNode>());
 	quadSceneNode->SetParent(m_pDirectionalLightScene->GetRootNode());
 
-	std::shared_ptr<IMesh> quadMesh = _RenderDevice->GetPrimitiveCollection()->CreateScreenQuad(0, 1280, 1024, 0); // _RenderDevice->CreateScreenQuad(-1, 1, -1, 1, -1);
+	std::shared_ptr<IMesh> quadMesh = GetManager<IRenderDevice>(GetBaseManager())->GetPrimitiveCollection()->CreateScreenQuad(0, 1280, 1024, 0); // _RenderDevice->CreateScreenQuad(-1, 1, -1, 1, -1);
 	quadSceneNode->GetComponent<IMeshComponent3D>()->AddMesh(quadMesh);
 }
 
 DeferredLightingPass::~DeferredLightingPass()
 {
 	_aligned_free(m_pScreenToViewParams);
-	_RenderDevice->DestroyConstantBuffer(m_ScreenToViewParamsCB);
+	GetManager<IRenderDevice>(GetBaseManager())->DestroyConstantBuffer(m_ScreenToViewParamsCB);
 
 	_aligned_free(m_pLightParams);
-	_RenderDevice->DestroyConstantBuffer(m_LightParamsCB);
+	GetManager<IRenderDevice>(GetBaseManager())->DestroyConstantBuffer(m_LightParamsCB);
 
 	_aligned_free(m_pFogParams);
-	_RenderDevice->DestroyConstantBuffer(m_FogParamsCB);
+	GetManager<IRenderDevice>(GetBaseManager())->DestroyConstantBuffer(m_FogParamsCB);
 }
 
 void DeferredLightingPass::PreRender(RenderEventArgs& e)

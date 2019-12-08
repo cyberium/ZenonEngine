@@ -3,17 +3,14 @@
 // General
 #include "MaterialTextured.h"
 
-// Additional
-#include <Application.h>
-
-MaterialTextured::MaterialTextured()
-	: MaterialProxie(_RenderDevice->CreateMaterial(sizeof(MaterialProperties)))
+MaterialTextured::MaterialTextured(std::shared_ptr<IRenderDevice> RenderDevice)
+	: MaterialProxie(RenderDevice->CreateMaterial(sizeof(MaterialProperties)))
 {
 	// Constant buffer
 	m_pProperties = (MaterialProperties*)_aligned_malloc(sizeof(MaterialProperties), 16);
 	*m_pProperties = MaterialProperties();
 
-	std::shared_ptr<ISamplerState> g_Sampler = _RenderDevice->CreateSamplerState();
+	std::shared_ptr<ISamplerState> g_Sampler = RenderDevice->CreateSamplerState();
 	g_Sampler->SetFilter(ISamplerState::MinFilter::MinLinear, ISamplerState::MagFilter::MagLinear, ISamplerState::MipFilter::MipLinear);
 	g_Sampler->SetWrapMode(ISamplerState::WrapMode::Repeat, ISamplerState::WrapMode::Repeat);
 

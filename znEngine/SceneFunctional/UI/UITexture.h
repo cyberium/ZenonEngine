@@ -7,7 +7,7 @@ class OW_ENGINE_API CUITextureNode : public CUIBaseNode
 {
 	typedef CUIBaseNode base;
 public:
-	CUITextureNode(vec2 Size = vec2(1.0f, 1.0f));
+	CUITextureNode(std::shared_ptr<IRenderDevice> RenderDevice, vec2 Size = vec2(1.0f, 1.0f));
 	virtual ~CUITextureNode();
 
 	// CUITextureNode

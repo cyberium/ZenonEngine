@@ -3,7 +3,7 @@
 class OW_ENGINE_API UI_Line_Material : public MaterialProxie
 {
 public:
-    UI_Line_Material();
+    UI_Line_Material(std::shared_ptr<IRenderDevice> RenderDevice);
 	virtual ~UI_Line_Material();
 
     // UI_Line_Material

@@ -11,16 +11,12 @@ float g_GameDeltaTime = 0.0f;
 float g_ApplicationTime = 0.0f;
 int64_t g_FrameCounter = 0L;
 
-IApplication * _ApplicationInstance = nullptr;
-
 Application::Application(IBaseManager* BaseManager)
 	: m_BaseManager(BaseManager)
 	, m_bIsInitialized(false)
 	, m_bIsRunning(false)
 {
 	m_HINSTANCE = ::GetModuleHandle(NULL);
-
-	_ApplicationInstance = this;
 }
 
 Application::Application(IBaseManager* BaseManager, HINSTANCE hInstance)
@@ -29,21 +25,11 @@ Application::Application(IBaseManager* BaseManager, HINSTANCE hInstance)
 	, m_bIsRunning(false)
 {
 	m_HINSTANCE = hInstance;
-
-	_ApplicationInstance = this;
 }
 
 Application::~Application()
 {
-	//_ApplicationInstance = nullptr;
 }
-
-IApplication& Application::Get()
-{
-	assert(_ApplicationInstance != nullptr);
-	return *_ApplicationInstance;
-}
-
 
 
 int Application::Run()
@@ -162,11 +148,6 @@ void Application::SetRenderDevice(std::shared_ptr<IRenderDevice> _renderDevice)
 HINSTANCE Application::GetHINSTANCE()
 {
 	return m_HINSTANCE;
-}
-
-CLoader* Application::GetLoader()
-{
-    return &m_Loader;
 }
 
 

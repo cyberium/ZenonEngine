@@ -1,14 +1,14 @@
 #pragma once
 
-#include "SceneFunctional/UI/UIText.h"
+#include "Passes/RenderTechnique.h"
 
 class OW_ENGINE_API CGameState 
 	: public IGameState
 	, public Object
 {
 public:
-                                                    CGameState(const IApplication * Application, std::shared_ptr<IRenderWindow> RenderWindow);
-	virtual                                         ~CGameState();
+	CGameState(IBaseManager * BaseManager, std::shared_ptr<IRenderWindow> RenderWindow);
+	virtual ~CGameState();
 
 	// IGameState
 	virtual bool                                    Init() override;
@@ -52,19 +52,19 @@ public:
 
 
 protected:
-    const IApplication*                             GetApplication() const;
-	const std::shared_ptr<IRenderWindow>            GetRenderWindow() const;
-	IBaseManager*             GetBaseManager() const;
+	std::shared_ptr<IRenderDevice>					GetRenderDevice() const;
+	std::shared_ptr<IRenderWindow>					GetRenderWindow() const;
+	IBaseManager*									GetBaseManager() const;
 
 	void                                            SetCameraController(std::shared_ptr<ICameraController> CameraController);
     std::shared_ptr<ICameraController>              GetCameraController() const;
 
 
 protected:
-	const IApplication*                             m_Application;
+	std::shared_ptr<IRenderDevice>                  m_RenderDevice;
 	std::shared_ptr<IRenderWindow>                  m_RenderWindow;
 
-    std::shared_ptr<IQuery>                          m_FrameQuery;
+    std::shared_ptr<IQuery>                         m_FrameQuery;
     double                                          m_FrameTime;
 
 	std::shared_ptr<ICameraController>              m_DefaultCameraController;
@@ -96,11 +96,12 @@ private: // Mouse events connections
     Delegate<MouseWheelEventArgs>::FunctionDecl     OnMouseWheelConnection;
 
 private:
-	std::shared_ptr<CUITextNode>              m_CameraPosText;
-	std::shared_ptr<CUITextNode>              m_CameraRotText;
-	std::shared_ptr<CUITextNode>              m_FPSText;
+	std::shared_ptr<ISceneNode>						m_CameraPosText;
+	std::shared_ptr<ISceneNode>						m_CameraRotText;
+	std::shared_ptr<ISceneNode>						m_FPSText;
 
 private:
 	bool                                            m_IsInited;
 	bool                                            m_IsCurrent;
+	IBaseManager*                                   m_BaseManager;
 };

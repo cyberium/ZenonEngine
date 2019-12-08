@@ -7,7 +7,7 @@ class OW_ENGINE_API CLoader
 {
 public:
 	CLoader();
-	~CLoader();
+	virtual ~CLoader();
 
 	void AddToLoadQueue(std::shared_ptr<ILoadable> _item) override;
 	void LoadAll() override;

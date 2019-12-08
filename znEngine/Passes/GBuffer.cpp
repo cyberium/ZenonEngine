@@ -1,10 +1,9 @@
 #include "stdafx.h"
 
+#if 0
+
 // General
 #include "GBuffer.h"
-
-// Additional
-#include "Application.h"
 
 CGBuffer::CGBuffer(std::shared_ptr<IScene> _worldScene)
 	: m_Scene(_worldScene)
@@ -17,9 +16,6 @@ CGBuffer::~CGBuffer()
 
 void CGBuffer::Load(uint32 width, uint32 height)
 {
-	IApplication& app = Application::Get();
-	std::shared_ptr<IRenderDevice> renderDevice = app.GetRenderDevice();
-
 	uint32 numSamples = 1;
 
 	// Position (Color0) 
@@ -214,3 +210,5 @@ std::shared_ptr<DeferredLightingPass> CGBuffer::GetPass() const
 {
 	return m_Pass;
 }
+
+#endif

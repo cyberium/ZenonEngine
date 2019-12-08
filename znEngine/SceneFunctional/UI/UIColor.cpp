@@ -3,16 +3,13 @@
 // General
 #include "UIColor.h"
 
-// Additional
-#include "Application.h"
-
-CUIColorNode::CUIColorNode(vec2 Size)
+CUIColorNode::CUIColorNode(std::shared_ptr<IRenderDevice> RenderDevice, vec2 Size)
 	: m_Size(Size)
 {
-	m_Material = std::make_shared<UI_Color_Material>();
+	m_Material = std::make_shared<UI_Color_Material>(RenderDevice);
 	m_Material->SetWrapper(m_Material);;
 
-	m_Mesh = _RenderDevice->GetPrimitiveCollection()->CreateUIQuad(Size.x, Size.y);
+	m_Mesh = RenderDevice->GetPrimitiveCollection()->CreateUIQuad(Size.x, Size.y);
 	m_Mesh->SetMaterial(m_Material);
 }
 

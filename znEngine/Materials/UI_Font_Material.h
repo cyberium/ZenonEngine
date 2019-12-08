@@ -3,7 +3,7 @@
 class OW_ENGINE_API UI_Font_Material : public MaterialProxie
 {
 public:
-	UI_Font_Material();
+	UI_Font_Material(std::shared_ptr<IRenderDevice> RenderDevice);
 	virtual ~UI_Font_Material();
 
 	// UI_Font_Material

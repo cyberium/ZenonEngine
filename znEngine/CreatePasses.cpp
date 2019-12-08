@@ -6,9 +6,7 @@
 // Additional
 #include "Passes/TextureMaterialPass.h"
 
-#include "Application.h"
-
-void OW_ENGINE_API Add3DPasses(std::shared_ptr<IRenderDevice> device, std::shared_ptr<IRenderTarget> _renderTarget, RenderTechnique * technique, const Viewport * viewport, std::shared_ptr<IScene> scene)
+void OW_ENGINE_API Add3DPasses(std::shared_ptr<IRenderDevice> RenderDevice, std::shared_ptr<IRenderTarget> _renderTarget, RenderTechnique * technique, const Viewport * viewport, std::shared_ptr<IScene> scene)
 {
 	IBlendState::BlendMode alphaBlending(true, false, IBlendState::BlendFactor::SrcAlpha, IBlendState::BlendFactor::OneMinusSrcAlpha, IBlendState::BlendOperation::Add, IBlendState::BlendFactor::SrcAlpha, IBlendState::BlendFactor::OneMinusSrcAlpha);
 	IBlendState::BlendMode disableBlending;
@@ -18,21 +16,21 @@ void OW_ENGINE_API Add3DPasses(std::shared_ptr<IRenderDevice> device, std::share
 	std::shared_ptr<IShader> g_pVertexShader;
 	std::shared_ptr<IShader> g_pPixelShader;
 
-	if (_RenderDevice->GetDeviceType() == RenderDeviceType::RenderDeviceType_DirectX)
+	if (RenderDevice->GetDeviceType() == RenderDeviceType::RenderDeviceType_DirectX)
 	{
-		g_pVertexShader = _RenderDevice->CreateShader(
+		g_pVertexShader = RenderDevice->CreateShader(
 			IShader::ShaderType::VertexShader, "IDB_SHADER_3D_TEXTURED", IShader::ShaderMacros(), "VS_main", "latest"
 		);
-		g_pPixelShader = _RenderDevice->CreateShader(
+		g_pPixelShader = RenderDevice->CreateShader(
 			IShader::ShaderType::PixelShader, "IDB_SHADER_3D_TEXTURED", IShader::ShaderMacros(), "PS_main", "latest"
 		);
 	}
 	else
 	{
-		g_pVertexShader = _RenderDevice->CreateShader(
+		g_pVertexShader = RenderDevice->CreateShader(
 			IShader::ShaderType::VertexShader, "IDB_SHADER_OGL_3D_TEXTURED_VS", IShader::ShaderMacros(), "", ""
 		);
-		g_pPixelShader = _RenderDevice->CreateShader(
+		g_pPixelShader = RenderDevice->CreateShader(
 			IShader::ShaderType::PixelShader, "IDB_SHADER_OGL_3D_TEXTURED_PS", IShader::ShaderMacros(), "", ""
 		);
 	}
@@ -45,7 +43,7 @@ void OW_ENGINE_API Add3DPasses(std::shared_ptr<IRenderDevice> device, std::share
 	g_pVertexShader->LoadInputLayoutFromCustomElements(elements);
 
 	// PIPELINES
-	std::shared_ptr<IPipelineState> Pipeline = device->CreatePipelineState();
+	std::shared_ptr<IPipelineState> Pipeline = RenderDevice->CreatePipelineState();
 	Pipeline->GetBlendState()->SetBlendMode(disableBlending);
 	Pipeline->GetDepthStencilState()->SetDepthMode(enableDepthWrites);
 	Pipeline->GetRasterizerState()->SetCullMode(IRasterizerState::CullMode::Back);
@@ -55,17 +53,17 @@ void OW_ENGINE_API Add3DPasses(std::shared_ptr<IRenderDevice> device, std::share
 	Pipeline->SetShader(IShader::ShaderType::VertexShader, g_pVertexShader);
 	Pipeline->SetShader(IShader::ShaderType::PixelShader, g_pPixelShader);
 
-	technique->AddPass(std::make_shared<CTexturedMaterialPass>(device, scene, Pipeline));
+	technique->AddPass(std::make_shared<CTexturedMaterialPass>(RenderDevice, scene, Pipeline));
 }
 
-void AddUIPasses(std::shared_ptr<IRenderDevice> device, std::shared_ptr<IRenderTarget> _renderTarget, RenderTechnique * technique, const Viewport * viewport, std::shared_ptr<IScene> scene)
+void AddUIPasses(std::shared_ptr<IRenderDevice> RenderDevice, std::shared_ptr<IRenderTarget> _renderTarget, RenderTechnique * technique, const Viewport * viewport, std::shared_ptr<IScene> scene)
 {
 	IBlendState::BlendMode alphaBlending(true, false, IBlendState::BlendFactor::SrcAlpha, IBlendState::BlendFactor::OneMinusSrcAlpha, IBlendState::BlendOperation::Add, IBlendState::BlendFactor::SrcAlpha, IBlendState::BlendFactor::OneMinusSrcAlpha);
 	IBlendState::BlendMode disableBlending;
 	IDepthStencilState::DepthMode enableDepthWrites(true, IDepthStencilState::DepthWrite::Enable);
 	IDepthStencilState::DepthMode disableDepthWrites(false, IDepthStencilState::DepthWrite::Disable);
 
-	std::shared_ptr<IPipelineState> UIPipeline = device->CreatePipelineState();
+	std::shared_ptr<IPipelineState> UIPipeline = RenderDevice->CreatePipelineState();
 	UIPipeline->GetBlendState()->SetBlendMode(alphaBlending);
 	UIPipeline->GetDepthStencilState()->SetDepthMode(disableDepthWrites);
 	UIPipeline->GetRasterizerState()->SetCullMode(IRasterizerState::CullMode::None);
@@ -75,5 +73,5 @@ void AddUIPasses(std::shared_ptr<IRenderDevice> device, std::shared_ptr<IRenderT
 	UIPipeline->SetRenderTarget(_renderTarget);
 	UIPipeline->GetRasterizerState()->SetViewport(viewport);
 
-	technique->AddPass(std::make_shared<BaseUIPass>(device, scene, UIPipeline));
+	technique->AddPass(std::make_shared<BaseUIPass>(RenderDevice, scene, UIPipeline));
 }

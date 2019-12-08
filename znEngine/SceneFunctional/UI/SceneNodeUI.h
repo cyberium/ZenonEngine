@@ -27,8 +27,8 @@ class OW_ENGINE_API CUIBaseNode
     typedef SceneNodeBase base;
 	friend IScene;
 public:
-	explicit                                        CUIBaseNode();
-	virtual                                         ~CUIBaseNode();
+	explicit CUIBaseNode();
+	virtual ~CUIBaseNode();
 
     std::shared_ptr<CUIBaseNode>                    shared_from_this();
     std::weak_ptr<CUIBaseNode>                      weak_from_this();

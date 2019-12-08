@@ -4,7 +4,6 @@
 #include "GameState_Default.h"
 
 // Additional
-#include "Application.h"
 #include "CameraControllers/FreeCameraController.h"
 
 #include "Materials/MaterialDebug.h"
@@ -16,8 +15,8 @@
 
 #include "CreatePasses.h"
 
-CGameState_World::CGameState_World(const IApplication * _application, std::shared_ptr<IRenderWindow> RenderWindow)
-	: base(_application, RenderWindow)
+CGameState_World::CGameState_World(IBaseManager * BaseManager, std::shared_ptr<IRenderWindow> RenderWindow)
+	: CGameState(BaseManager, RenderWindow)
 {}
 
 CGameState_World::~CGameState_World()
@@ -29,7 +28,7 @@ CGameState_World::~CGameState_World()
 //
 bool CGameState_World::Init()
 {
-	base::Init();
+	CGameState::Init();
 
 	SetCameraController(std::make_shared<CFreeCameraController>());
 	GetCameraController()->GetCamera()->SetProjection(ICamera::ProjectionHand::Right, 45.0f, GetRenderWindow()->GetWindowWidth() / GetRenderWindow()->GetWindowHeight(), 0.5f, 4000.0f);
@@ -48,7 +47,7 @@ void CGameState_World::Destroy()
 {
 	// Insert code here
 
-	base::Destroy();
+	CGameState::Destroy();
 }
 
 
@@ -58,31 +57,29 @@ void CGameState_World::Destroy()
 
 void CGameState_World::OnResize(ResizeEventArgs& e)
 {
-	base::OnResize(e);
+	CGameState::OnResize(e);
 }
 
 void CGameState_World::OnPreRender(RenderEventArgs& e)
 {
-	base::OnPreRender(e);
+	CGameState::OnPreRender(e);
 }
 
 void CGameState_World::OnRender(RenderEventArgs& e)
 {
-	base::OnRender(e);
-
-	Application::Get().GetLoader()->SetCamera(GetCameraController()->GetCamera());
+	CGameState::OnRender(e);
 }
 
 void CGameState_World::OnPostRender(RenderEventArgs& e)
 {
-	base::OnPostRender(e);
+	CGameState::OnPostRender(e);
 
 
 }
 
 void CGameState_World::OnRenderUI(RenderEventArgs& e)
 {
-	base::OnRenderUI(e);
+	CGameState::OnRenderUI(e);
 }
 
 //
@@ -97,11 +94,11 @@ void CGameState_World::Load3D()
 		{
 			std::shared_ptr<SceneNode3D> sceneNode = m_Scene->CreateSceneNode<SceneNode3D>(m_Scene->GetRootNode());
 
-			std::shared_ptr<IMesh> mesh = _RenderDevice->GetPrimitiveCollection()->CreatePlane();
+			std::shared_ptr<IMesh> mesh = GetRenderDevice()->GetPrimitiveCollection()->CreatePlane();
 
-			std::shared_ptr<MaterialTextured> mat = std::make_shared<MaterialTextured>();
+			std::shared_ptr<MaterialTextured> mat = std::make_shared<MaterialTextured>(GetRenderDevice());
 			mat->SetDiffuseColor(vec4(1.0f, 0.0f, 1.0f, 1.0f));
-			mat->SetTexture(0, _RenderDevice->CreateTexture2D("default.png"));
+			mat->SetTexture(0, GetRenderDevice()->CreateTexture2D("default.png"));
 			mesh->SetMaterial(mat);
 
 			sceneNode->GetComponent<ITransformComponent3D>()->SetTranslate(vec3(40 * i, 0.0f, 40 * j));
@@ -113,11 +110,11 @@ void CGameState_World::Load3D()
 	//CFBX fbx(m_3DScene->GetRootNode());
 
 
-	m_Technique.AddPass(std::make_shared<ClearRenderTargetPass>(_RenderDevice, GetRenderWindow()->GetRenderTarget(), ClearFlags::All, g_ClearColor, 1.0f, 0));
-	Add3DPasses(_RenderDevice, GetRenderWindow()->GetRenderTarget(), &m_Technique, GetRenderWindow()->GetViewport(), m_Scene);
+	m_Technique.AddPass(std::make_shared<ClearRenderTargetPass>(GetRenderDevice(), GetRenderWindow()->GetRenderTarget(), ClearFlags::All, g_ClearColor, 1.0f, 0));
+	Add3DPasses(GetRenderDevice(), GetRenderWindow()->GetRenderTarget(), &m_Technique, GetRenderWindow()->GetViewport(), m_Scene);
 }
 
 void CGameState_World::LoadUI()
 {
-	AddUIPasses(_RenderDevice, GetRenderWindow()->GetRenderTarget(), &m_Technique, GetRenderWindow()->GetViewport(), m_Scene);
+	AddUIPasses(GetRenderDevice(), GetRenderWindow()->GetRenderTarget(), &m_Technique, GetRenderWindow()->GetViewport(), m_Scene);
 }

@@ -3,27 +3,24 @@
 // General
 #include "UI_Button_Material.h"
 
-// Additional
-#include "Application.h"
-
-UI_Button_Material::UI_Button_Material() :
-	MaterialProxie(_RenderDevice->CreateMaterial(sizeof(MaterialProperties)))
+UI_Button_Material::UI_Button_Material(std::shared_ptr<IRenderDevice> RenderDevice) :
+	MaterialProxie(RenderDevice->CreateMaterial(sizeof(MaterialProperties)))
 {
 	m_pProperties = (MaterialProperties*)_aligned_malloc(sizeof(MaterialProperties), 16);
 	*m_pProperties = MaterialProperties();
 
 	// CreateShaders
-	std::shared_ptr<IShader> g_pVertexShader = _RenderDevice->CreateShader(
+	std::shared_ptr<IShader> g_pVertexShader = RenderDevice->CreateShader(
 		IShader::ShaderType::VertexShader, "IDB_SHADER_UI_BUTTON", IShader::ShaderMacros(), "VS_main", "latest"
 	);
     g_pVertexShader->LoadInputLayoutFromReflector();
 
-	std::shared_ptr<IShader> g_pPixelShader = _RenderDevice->CreateShader(
+	std::shared_ptr<IShader> g_pPixelShader = RenderDevice->CreateShader(
 		IShader::ShaderType::PixelShader, "IDB_SHADER_UI_BUTTON", IShader::ShaderMacros(), "PS_main", "latest"
 	);
 
 	// Create samplers
-	std::shared_ptr<ISamplerState> g_LinearClampSampler = _RenderDevice->CreateSamplerState();
+	std::shared_ptr<ISamplerState> g_LinearClampSampler = RenderDevice->CreateSamplerState();
 	g_LinearClampSampler->SetFilter(ISamplerState::MinFilter::MinLinear, ISamplerState::MagFilter::MagLinear, ISamplerState::MipFilter::MipLinear);
 	g_LinearClampSampler->SetWrapMode(ISamplerState::WrapMode::Clamp, ISamplerState::WrapMode::Clamp, ISamplerState::WrapMode::Clamp);
 

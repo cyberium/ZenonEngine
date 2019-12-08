@@ -1,11 +1,11 @@
 #pragma once
 
-class OW_ENGINE_API CSettingsGroup
+class OW_ENGINE_API CSettingsGroupBase
 	: public ISettingGroup
 {
 public:
-	CSettingsGroup();
-	virtual ~CSettingsGroup();
+	CSettingsGroupBase();
+	virtual ~CSettingsGroupBase();
 	
 
 	//

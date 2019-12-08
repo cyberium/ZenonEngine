@@ -29,6 +29,7 @@
     <ClCompile Include="ByteBuffer.cpp" />
     <ClCompile Include="FilesManager.cpp" />
     <ClCompile Include="Frustrum.cpp" />
+    <ClCompile Include="GameState.cpp" />
     <ClCompile Include="HighResolutionTimer.cpp" />
     <ClCompile Include="Console.cpp" />
     <ClCompile Include="LibraryResourceFileStotage.cpp" />
@@ -55,7 +56,6 @@
     <ClCompile Include="Scene\LoadableObject.cpp" />
     <ClCompile Include="Scene\TransformComponentBase.cpp" />
     <ClCompile Include="Scene\UI\TransformComponentUI.cpp" />
-    <ClCompile Include="Settings.cpp" />
     <ClCompile Include="SettingsGroupBase.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -74,6 +74,7 @@
     <ClInclude Include="BoundingSphere.h" />
     <ClInclude Include="DebugOutputConsole.h" />
     <ClInclude Include="DebugOutputLog.h" />
+    <ClInclude Include="GameState.h" />
     <ClInclude Include="HighResolutionTimer.h" />
     <ClInclude Include="Interfaces\Application.h" />
     <ClInclude Include="Interfaces\BaseManager.h" />
@@ -116,7 +117,6 @@
     <ClInclude Include="Interfaces\Render\Types\RaycastHit.h" />
     <ClInclude Include="Interfaces\Render\Types\Viewport.h" />
     <ClInclude Include="Interfaces\Scene\IScene.h" />
-    <ClInclude Include="Interfaces\Scene\ISceneCreator.h" />
     <ClInclude Include="Interfaces\Scene\ISceneNode.h" />
     <ClInclude Include="Interfaces\Scene\ISceneNodeComponents.h" />
     <ClInclude Include="Interfaces\Scene\ISceneNodeProvider.h" />
@@ -174,7 +174,6 @@
     <ClInclude Include="Scene\TransformComponentBase.h" />
     <ClInclude Include="Scene\UI\TransformComponentUI.h" />
     <ClInclude Include="SettingBase.h" />
-    <ClInclude Include="Settings.h" />
     <ClInclude Include="SettingsGroupBase.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Timer.h" />

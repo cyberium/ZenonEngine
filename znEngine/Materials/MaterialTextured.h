@@ -3,7 +3,7 @@
 class OW_ENGINE_API MaterialTextured : public MaterialProxie
 {
 public:
-	MaterialTextured();
+	MaterialTextured(std::shared_ptr<IRenderDevice> RenderDevice);
 	virtual ~MaterialTextured();
 
 	cvec4 GetDiffuseColor() const;

@@ -3,10 +3,6 @@
 // General
 #include "CameraControllerBase.h"
 
-// Additional
-#include "Application.h"
-
-
 CCameraControllerBase::CCameraControllerBase()
 	: m_Camera(nullptr)
 	, m_PreviousMousePosition(vec2(0.0f))

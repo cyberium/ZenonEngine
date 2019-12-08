@@ -82,6 +82,9 @@
     <Filter Include="Scene\UI">
       <UniqueIdentifier>{fcd39ff1-26d9-4089-8521-acf7e4f2a574}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GameState">
+      <UniqueIdentifier>{e458a334-60c8-4b7e-9c68-f4e227fd5768}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DebugOutput.cpp">
@@ -162,9 +165,6 @@
     <ClCompile Include="Proxies\SceneNodeProxie.cpp">
       <Filter>__Proxies</Filter>
     </ClCompile>
-    <ClCompile Include="Settings.cpp">
-      <Filter>Settings functional</Filter>
-    </ClCompile>
     <ClCompile Include="SettingsGroupBase.cpp">
       <Filter>Settings functional</Filter>
     </ClCompile>
@@ -209,6 +209,9 @@
     </ClCompile>
     <ClCompile Include="Scene\LoadableObject.cpp">
       <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="GameState.cpp">
+      <Filter>GameState</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -464,9 +467,6 @@
     <ClInclude Include="Interfaces\Types\Object.h">
       <Filter>__Interfaces\Types</Filter>
     </ClInclude>
-    <ClInclude Include="Interfaces\Scene\ISceneCreator.h">
-      <Filter>__Interfaces\Scene</Filter>
-    </ClInclude>
     <ClInclude Include="Interfaces\Scene\ISceneNodeComponents.h">
       <Filter>__Interfaces\Scene</Filter>
     </ClInclude>
@@ -499,9 +499,6 @@
     </ClInclude>
     <ClInclude Include="Proxies\__Proxies.h">
       <Filter>__Proxies</Filter>
-    </ClInclude>
-    <ClInclude Include="Settings.h">
-      <Filter>Settings functional</Filter>
     </ClInclude>
     <ClInclude Include="SettingsGroupBase.h">
       <Filter>Settings functional</Filter>
@@ -553,6 +550,9 @@
     </ClInclude>
     <ClInclude Include="Scene\LoadableObject.h">
       <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="GameState.h">
+      <Filter>GameState</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

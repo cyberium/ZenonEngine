@@ -7,8 +7,8 @@ class OW_ENGINE_API CUIBeizerLineNode : public CUIBaseNode
 {
 	typedef CUIBaseNode base;
 public:
-                                                    CUIBeizerLineNode();
-	virtual                                         ~CUIBeizerLineNode();
+	CUIBeizerLineNode(std::shared_ptr<IRenderDevice> RenderDevice);
+	virtual	~CUIBeizerLineNode();
 
 	// CUIBeizerLineNode
 	void                                            SetColor(vec4 Color);

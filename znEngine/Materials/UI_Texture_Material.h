@@ -4,7 +4,7 @@ class OW_ENGINE_API UI_Texture_Material : public MaterialProxie
 {
 	typedef MaterialProxie base;
 public:
-	UI_Texture_Material();
+	UI_Texture_Material(std::shared_ptr<IRenderDevice> RenderDevice);
 	virtual ~UI_Texture_Material();
 
 	void SetTexture(std::shared_ptr<ITexture> _texture);

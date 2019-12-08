@@ -1,7 +1,7 @@
 #pragma once
 
 class CGroupVideo 
-	: public CSettingsGroup
+	: public CSettingsGroupBase
 {
 public:
 	CGroupVideo();

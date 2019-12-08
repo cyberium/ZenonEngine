@@ -3,11 +3,8 @@
 // General
 #include "UI_Font_Material.h"
 
-// Additional
-#include "Application.h"
-
-UI_Font_Material::UI_Font_Material() :
-	MaterialProxie(_RenderDevice->CreateMaterial(sizeof(MaterialProperties)))
+UI_Font_Material::UI_Font_Material(std::shared_ptr<IRenderDevice> RenderDevice) :
+	MaterialProxie(RenderDevice->CreateMaterial(sizeof(MaterialProperties)))
 {
 	m_pProperties = (MaterialProperties*)_aligned_malloc(sizeof(MaterialProperties), 16);
 	*m_pProperties = MaterialProperties();
@@ -16,23 +13,23 @@ UI_Font_Material::UI_Font_Material() :
     std::shared_ptr<IShader> g_pVertexShader;
 	std::shared_ptr<IShader> g_pPixelShader;
 
-    if (_RenderDevice->GetDeviceType() == RenderDeviceType::RenderDeviceType_DirectX)
+    if (RenderDevice->GetDeviceType() == RenderDeviceType::RenderDeviceType_DirectX)
     {
-        g_pVertexShader = _RenderDevice->CreateShader(
+        g_pVertexShader = RenderDevice->CreateShader(
             IShader::ShaderType::VertexShader, "IDB_SHADER_UI_FONT", IShader::ShaderMacros(), "VS_main", "latest"
         );
         
-        g_pPixelShader = _RenderDevice->CreateShader(
+        g_pPixelShader = RenderDevice->CreateShader(
             IShader::ShaderType::PixelShader, "IDB_SHADER_UI_FONT", IShader::ShaderMacros(), "PS_main", "latest"
         );
     }
-    else if (_RenderDevice->GetDeviceType() == RenderDeviceType::RenderDeviceType_OpenGL)
+    else if (RenderDevice->GetDeviceType() == RenderDeviceType::RenderDeviceType_OpenGL)
     {
-        g_pVertexShader = _RenderDevice->CreateShader(
+        g_pVertexShader = RenderDevice->CreateShader(
             IShader::ShaderType::VertexShader, "IDB_SHADER_OGL__UI_FONT_VS", IShader::ShaderMacros(), "", ""
         );
 
-        g_pPixelShader = _RenderDevice->CreateShader(
+        g_pPixelShader = RenderDevice->CreateShader(
             IShader::ShaderType::PixelShader, "IDB_SHADER_OGL__UI_FONT_PS", IShader::ShaderMacros(), "", ""
         );
     }
@@ -40,7 +37,7 @@ UI_Font_Material::UI_Font_Material() :
     g_pVertexShader->LoadInputLayoutFromReflector();
 
 	// Create samplers
-	std::shared_ptr<ISamplerState> g_LinearClampSampler = _RenderDevice->CreateSamplerState();
+	std::shared_ptr<ISamplerState> g_LinearClampSampler = RenderDevice->CreateSamplerState();
 	g_LinearClampSampler->SetFilter(ISamplerState::MinFilter::MinLinear, ISamplerState::MagFilter::MagLinear, ISamplerState::MipFilter::MipLinear);
 	g_LinearClampSampler->SetWrapMode(ISamplerState::WrapMode::Clamp, ISamplerState::WrapMode::Clamp, ISamplerState::WrapMode::Clamp);
 

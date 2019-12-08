@@ -14,6 +14,7 @@ public:
 
 protected:
 	std::shared_ptr<IScene>                         GetScene() const;
+	IBaseManager*                                   GetBaseManager() const;
 
 private:
 	std::shared_ptr<IScene>                         m_Scene;

@@ -3,22 +3,19 @@
 // General
 #include "UI_Color_Material.h"
 
-// Additional
-#include "Application.h"
-
-UI_Color_Material::UI_Color_Material() :
-	MaterialProxie(_RenderDevice->CreateMaterial(sizeof(MaterialProperties)))
+UI_Color_Material::UI_Color_Material(std::shared_ptr<IRenderDevice> RenderDevice) :
+	MaterialProxie(RenderDevice->CreateMaterial(sizeof(MaterialProperties)))
 {
 	m_pProperties = (MaterialProperties*)_aligned_malloc(sizeof(MaterialProperties), 16);
 	*m_pProperties = MaterialProperties();
 
 	// CreateShaders
-	std::shared_ptr<IShader> g_pVertexShader = _RenderDevice->CreateShader(
+	std::shared_ptr<IShader> g_pVertexShader = RenderDevice->CreateShader(
 		IShader::ShaderType::VertexShader, "IDB_SHADER_UI_COLOR", IShader::ShaderMacros(), "VS_main", "latest"
 	);
     g_pVertexShader->LoadInputLayoutFromReflector();
 
-	std::shared_ptr<IShader> g_pPixelShader = _RenderDevice->CreateShader(
+	std::shared_ptr<IShader> g_pPixelShader = RenderDevice->CreateShader(
 		IShader::ShaderType::PixelShader, "IDB_SHADER_UI_COLOR", IShader::ShaderMacros(), "PS_main", "latest"
 	);
 

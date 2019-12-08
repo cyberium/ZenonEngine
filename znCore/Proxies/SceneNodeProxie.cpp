@@ -119,6 +119,11 @@ void CSceneNodeProxie::OnUpdate(UpdateEventArgs & e)
 	m_SceneNode->OnUpdate(e);
 }
 
+std::shared_ptr<ISettingGroup> CSceneNodeProxie::GetProperties() const
+{
+	return m_SceneNode->GetProperties();
+}
+
 
 
 //

@@ -1,8 +1,5 @@
 #pragma once
 
-#include "GameState.h"
-#include "Loader.h"
-
 class OW_ENGINE_API Application :
 	public Object, 
 	public IApplication, 
@@ -13,8 +10,6 @@ public:
 	Application(IBaseManager* BaseManager);
 	Application(IBaseManager* BaseManager, HINSTANCE hInstance);
 	virtual ~Application();
-
-	static IApplication&            Get();
 
 	// Default query
 	int                             Run();
@@ -29,11 +24,11 @@ public:
 	void                            DoBeforeRun() override;
 	int                             DoRun() override;
 	void                            DoAfterRun() override;
-	IBaseManager*   GetBaseManager() const override;
+
+	IBaseManager*					GetBaseManager() const override;
 	std::shared_ptr<IRenderDevice>  GetRenderDevice() const override;
 	void                            SetRenderDevice(std::shared_ptr<IRenderDevice> _renderDevice) override;
 	HINSTANCE                       GetHINSTANCE() override;
-    CLoader*						GetLoader() override;
 
 	// IApplicationEvents
 	Event&                          Initialize();
@@ -61,8 +56,6 @@ private:
 	bool                            m_bIsInitialized;
 	bool                            m_bIsRunning;
 
-	// Handle to the module.
-	CLoader                         m_Loader;
 	HINSTANCE                       m_HINSTANCE;
 
 	std::shared_ptr<IRenderDevice>  m_pRenderDevice;
@@ -80,7 +73,3 @@ private: // IApplicationEvents
 	Event									 m_Exit;
 	Delegate<UserEventArgs>					 m_UserEvent;
 };
-
-extern IApplication* _ApplicationInstance;
-
-#define _RenderDevice Application::Get().GetRenderDevice()

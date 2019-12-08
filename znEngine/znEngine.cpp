@@ -6,8 +6,10 @@
 // Additional
 #include "BaseManager.h"
 #include "PluginsManager.h"
+#include "Settings.h"
 #include "RenderDeviceFactory.h"
 #include "SceneFunctional/SceneNodesFactory.h"
+#include "SceneFunctional/ScenesFactory.h"
 
 #include "Settings/GroupVideo.h"
 
@@ -130,9 +132,16 @@ IBaseManager* WINAPI InitializeEngine(std::vector<std::string> Arguments)
 
 	// SceneNodes stuff
 	{
-		std::shared_ptr<ISceneNodesFactory> sceneNodesFactory = std::make_shared<CSceneNodesFactory>();
+		std::shared_ptr<ILoader> laoder = std::make_shared<CLoader>();
+		AddManager<ILoader>(baseManager, laoder);
+
+		std::shared_ptr<ISceneNodesFactory> sceneNodesFactory = std::make_shared<CSceneNodesFactory>(baseManager);
 		AddManager<ISceneNodesFactory>(baseManager, sceneNodesFactory);
 		pluginsManager->AddPluginEventListener(std::dynamic_pointer_cast<IznPluginsEventListener>(sceneNodesFactory));
+
+		std::shared_ptr<IScenesFactory> scenesFactory = std::make_shared<CScenesFactory>(baseManager);
+		AddManager<IScenesFactory>(baseManager, scenesFactory);
+		pluginsManager->AddPluginEventListener(std::dynamic_pointer_cast<IznPluginsEventListener>(scenesFactory));
 	}
 
 	// Plugins

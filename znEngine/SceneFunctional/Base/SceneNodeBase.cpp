@@ -9,6 +9,7 @@
 SceneNodeBase::SceneNodeBase()
 	: m_Name("SceneNodeBase")
 {
+	m_Properties = std::make_shared<CSettingsGroupBase>();
 }
 
 SceneNodeBase::~SceneNodeBase()
@@ -199,6 +200,11 @@ bool SceneNodeBase::Accept(IVisitor* visitor)
 
 void SceneNodeBase::OnUpdate(UpdateEventArgs & e)
 {
+}
+
+std::shared_ptr<ISettingGroup> SceneNodeBase::GetProperties() const
+{
+	return m_Properties;
 }
 
 

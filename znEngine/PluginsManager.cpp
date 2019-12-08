@@ -85,7 +85,7 @@ void CznPluginsManager::InitializeAllPlugins()
 
 		// Notify all listeners about initialize plguin
 		for (const auto& listener : m_PluginsEventsListener)
-			listener->OnPluginAdded(plugin);
+			listener->OnPluginInitialized(plugin);
 	}
 }
 

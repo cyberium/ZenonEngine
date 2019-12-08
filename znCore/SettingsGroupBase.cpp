@@ -3,11 +3,11 @@
 // General
 #include "SettingsGroupBase.h"
 
-CSettingsGroup::CSettingsGroup()
+CSettingsGroupBase::CSettingsGroupBase()
 {
 }
 
-CSettingsGroup::~CSettingsGroup()
+CSettingsGroupBase::~CSettingsGroupBase()
 {
 }
 
@@ -16,12 +16,12 @@ CSettingsGroup::~CSettingsGroup()
 //
 // ISettingGroup
 //
-void CSettingsGroup::AddDefaultSettings()
+void CSettingsGroupBase::AddDefaultSettings()
 {
 	// Do nothing
 }
 
-void CSettingsGroup::AddSetting(const std::string& SettingName, std::shared_ptr<ISetting> Setting)
+void CSettingsGroupBase::AddSetting(const std::string& SettingName, std::shared_ptr<ISetting> Setting)
 {
 	_ASSERT(m_Settings.find(SettingName) == m_Settings.end());
 	std::dynamic_pointer_cast<ISettingInternal>(Setting)->SetName(SettingName);
@@ -29,13 +29,13 @@ void CSettingsGroup::AddSetting(const std::string& SettingName, std::shared_ptr<
 	m_Settings.insert(std::make_pair(SettingName, Setting));
 }
 
-std::shared_ptr<ISetting> CSettingsGroup::GetSetting(const std::string & SettingName)
+std::shared_ptr<ISetting> CSettingsGroupBase::GetSetting(const std::string & SettingName)
 {
 	_ASSERT(m_Settings.find(SettingName) != m_Settings.end());
 	return m_Settings[SettingName];
 }
 
-bool CSettingsGroup::IsGroupDefault() const
+bool CSettingsGroupBase::IsGroupDefault() const
 {
 	for (const auto& it : m_Settings)
 		if (!it.second->IsDefault())
@@ -44,7 +44,7 @@ bool CSettingsGroup::IsGroupDefault() const
 	return true;
 }
 
-void CSettingsGroup::ResetGroup()
+void CSettingsGroupBase::ResetGroup()
 {
 	for (const auto& it : m_Settings)
 		if (!it.second->IsDefault())

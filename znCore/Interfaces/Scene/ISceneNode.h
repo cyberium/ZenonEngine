@@ -8,6 +8,7 @@ class Viewport;
 ZN_INTERFACE IVisitor;
 class UpdateEventArgs;
 ZN_INTERFACE IManager;
+ZN_INTERFACE ISettingGroup;
 // FORWARD END
 
 ZN_INTERFACE OW_ENGINE_API ISceneNode : public std::enable_shared_from_this<ISceneNode>
@@ -44,8 +45,10 @@ ZN_INTERFACE OW_ENGINE_API ISceneNode : public std::enable_shared_from_this<ISce
 	virtual void                                    UpdateViewport(const Viewport* viewport) = 0;
 
 	virtual bool                                    Accept(IVisitor* visitor) = 0;
+
 	virtual void                                    OnUpdate(UpdateEventArgs& e) = 0;
 
+	virtual std::shared_ptr<ISettingGroup>          GetProperties() const = 0;
 
 	//
 	// Templates
@@ -139,6 +142,8 @@ ZN_INTERFACE OW_ENGINE_API
 	ISceneNodesFactory
 	: public IManager
 {
+	virtual ~ISceneNodesFactory() {}
+
 	virtual void AddSceneNodeCreator(std::shared_ptr<ISceneNodeCreator> Creator) = 0;
 	virtual void RemoveSceneNodeCreator(std::shared_ptr<ISceneNodeCreator> Creator) = 0;
 

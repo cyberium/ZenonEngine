@@ -26,7 +26,7 @@ public:
 		Disabled = 3
 	};
 
-	CUIButtonNode();
+	CUIButtonNode(std::shared_ptr<IRenderDevice> RenderDevice);
 	virtual ~CUIButtonNode();
 
 	// CUIButtonNode

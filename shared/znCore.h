@@ -27,6 +27,8 @@
 
 #include "../znCore/Scene/Light3D.h"
 
+#include "../znCore/GameState.h"
+
 #include "../znCore/Scene/ComponentBase.h"
 #include "../znCore/Scene/TransformComponentBase.h"
 

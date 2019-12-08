@@ -3,26 +3,23 @@
 // General
 #include "UI_Line_Material.h"
 
-// Additional
-#include "Application.h"
-
-UI_Line_Material::UI_Line_Material() :
-	MaterialProxie(_RenderDevice->CreateMaterial(sizeof(MaterialProperties)))
+UI_Line_Material::UI_Line_Material(std::shared_ptr<IRenderDevice> RenderDevice) :
+	MaterialProxie(RenderDevice->CreateMaterial(sizeof(MaterialProperties)))
 {
 	m_pProperties = (MaterialProperties*)_aligned_malloc(sizeof(MaterialProperties), 16);
 	*m_pProperties = MaterialProperties();
 
 	// CreateShaders
-	std::shared_ptr<IShader> g_pVertexShader = _RenderDevice->CreateShader(
+	std::shared_ptr<IShader> g_pVertexShader = RenderDevice->CreateShader(
 		IShader::ShaderType::VertexShader, "IDB_SHADER_UI_LINE", IShader::ShaderMacros(), "VS_main", "latest"
 	);
     g_pVertexShader->LoadInputLayoutFromReflector();
 
-    std::shared_ptr<IShader> g_pGeomShader = _RenderDevice->CreateShader(
+    std::shared_ptr<IShader> g_pGeomShader = RenderDevice->CreateShader(
         IShader::ShaderType::GeometryShader, "IDB_SHADER_UI_LINE", IShader::ShaderMacros(), "GS_main", "latest"
     );
 
-	std::shared_ptr<IShader> g_pPixelShader = _RenderDevice->CreateShader(
+	std::shared_ptr<IShader> g_pPixelShader = RenderDevice->CreateShader(
 		IShader::ShaderType::PixelShader, "IDB_SHADER_UI_LINE", IShader::ShaderMacros(), "PS_LineV2", "latest"
 	);
 

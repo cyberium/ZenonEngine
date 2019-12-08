@@ -1,5 +1,7 @@
 #pragma once
 
+#if 0
+
 #include "DeferredLightingPass.h"
 
 class OW_ENGINE_API CGBuffer
@@ -20,3 +22,4 @@ private:
 	std::shared_ptr<IRenderTarget>        m_RenderTarget;
 	std::shared_ptr<DeferredLightingPass> m_Pass;
 };
+#endif 
