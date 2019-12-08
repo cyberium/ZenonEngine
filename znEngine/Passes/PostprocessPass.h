@@ -9,8 +9,6 @@ public:
 	// Render the pass. This should only be called by the RenderTechnique.
 	virtual void Render(RenderEventArgs& e);
 
-	virtual bool Visit(SceneNode3D& node);
-
 protected:
 
 private:

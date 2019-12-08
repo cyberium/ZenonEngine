@@ -10,6 +10,8 @@
 #include "RenderDeviceFactory.h"
 #include "SceneFunctional/SceneNodesFactory.h"
 #include "SceneFunctional/ScenesFactory.h"
+#include "GameStatesFactory.h"
+#include "Passes/RenderPassFactory.h"
 
 #include "Settings/GroupVideo.h"
 
@@ -111,6 +113,8 @@ IBaseManager* WINAPI InitializeEngine(std::vector<std::string> Arguments)
 		std::shared_ptr<IFilesManager> filesManager = std::make_shared<CFilesManager>(baseManager);
 		AddManager<IFilesManager>(baseManager, filesManager);
 		filesManager->RegisterFilesStorage(std::make_shared<CLibraryResourceFileStotage>(GetModuleHandle(L"znEngine.dll")));
+		filesManager->RegisterFilesStorage(std::make_shared<CLocalFilesStorage>("D:\\_programming\\ZenonEngine\\gamedata\\"));
+		filesManager->RegisterFilesStorage(std::make_shared<CLocalFilesStorage>("D:\\_programming\\OpenWoW\\_gamedata\\"));
 	}
 
 	// Log & console
@@ -135,13 +139,30 @@ IBaseManager* WINAPI InitializeEngine(std::vector<std::string> Arguments)
 		std::shared_ptr<ILoader> laoder = std::make_shared<CLoader>();
 		AddManager<ILoader>(baseManager, laoder);
 
-		std::shared_ptr<ISceneNodesFactory> sceneNodesFactory = std::make_shared<CSceneNodesFactory>(baseManager);
-		AddManager<ISceneNodesFactory>(baseManager, sceneNodesFactory);
-		pluginsManager->AddPluginEventListener(std::dynamic_pointer_cast<IznPluginsEventListener>(sceneNodesFactory));
+		std::shared_ptr<ISceneNodesFactory> factory = std::make_shared<CSceneNodesFactory>(baseManager);
+		AddManager<ISceneNodesFactory>(baseManager, factory);
+		pluginsManager->AddPluginEventListener(std::dynamic_pointer_cast<IznPluginsEventListener>(factory));
+	}
 
-		std::shared_ptr<IScenesFactory> scenesFactory = std::make_shared<CScenesFactory>(baseManager);
-		AddManager<IScenesFactory>(baseManager, scenesFactory);
-		pluginsManager->AddPluginEventListener(std::dynamic_pointer_cast<IznPluginsEventListener>(scenesFactory));
+	// Scene
+	{
+		std::shared_ptr<IScenesFactory> factory = std::make_shared<CScenesFactory>(baseManager);
+		AddManager<IScenesFactory>(baseManager, factory);
+		pluginsManager->AddPluginEventListener(std::dynamic_pointer_cast<IznPluginsEventListener>(factory));
+	}
+
+	// GameStates
+	{
+		std::shared_ptr<IGameStatesFactory> factory = std::make_shared<CGameStateFactory>(baseManager);
+		AddManager<IGameStatesFactory>(baseManager, factory);
+		pluginsManager->AddPluginEventListener(std::dynamic_pointer_cast<IznPluginsEventListener>(factory));
+	}
+
+	// Passes
+	{
+		std::shared_ptr<IRenderPassFactory> factory = std::make_shared<CRenderPassFactory>();
+		AddManager<IRenderPassFactory>(baseManager, factory);
+		pluginsManager->AddPluginEventListener(std::dynamic_pointer_cast<IznPluginsEventListener>(factory));
 	}
 
 	// Plugins

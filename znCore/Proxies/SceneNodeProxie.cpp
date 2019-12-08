@@ -24,9 +24,10 @@ void CSceneNodeProxie::Finalize()
 	m_SceneNode->Finalize();
 }
 
-const std::string & CSceneNodeProxie::GetName() const
+std::string CSceneNodeProxie::GetName() const
 {
-	return m_SceneNode->GetName();
+	return "CSceneNodeProxie"; 
+
 }
 
 void CSceneNodeProxie::SetName(const std::string & name)
@@ -111,7 +112,18 @@ void CSceneNodeProxie::UpdateViewport(const Viewport * viewport)
 
 bool CSceneNodeProxie::Accept(IVisitor * visitor)
 {
-	return m_SceneNode->Accept(visitor);
+	bool visitResult = false;
+
+	if (ISceneNode3D* ss_3d = dynamic_cast<ISceneNode3D*>(m_SceneNode.get()))
+	{
+		visitResult = visitor->Visit3D(this);
+	}
+	else if (ISceneNodeUI* ss_ui = dynamic_cast<ISceneNodeUI*>(m_SceneNode.get()))
+	{
+		visitResult = visitor->VisitUI(this);
+	}
+
+	return visitResult;
 }
 
 void CSceneNodeProxie::OnUpdate(UpdateEventArgs & e)
@@ -134,6 +146,16 @@ void CSceneNodeProxie::SetWrappedNode(std::shared_ptr<ISceneNode> ThisNode)
 	_ASSERT(m_SceneNode == nullptr);
 	m_SceneNode = ThisNode;
 	_ASSERT(m_SceneNode != nullptr);
+}
+
+std::shared_ptr<ISceneNode> CSceneNodeProxie::GetWrappedNode() const
+{
+	return m_SceneNode;
+}
+
+void CSceneNodeProxie::RaiseOnParentChanged()
+{
+	m_SceneNode->RaiseOnParentChanged();
 }
 
 

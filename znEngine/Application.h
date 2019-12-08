@@ -59,11 +59,11 @@ private:
 	HINSTANCE                       m_HINSTANCE;
 
 	std::shared_ptr<IRenderDevice>  m_pRenderDevice;
-	std::unordered_map<HWND, std::shared_ptr<IRenderWindow>> m_Windows;
+	std::map<HWND, std::shared_ptr<IRenderWindow>> m_Windows;
 
 	// IGameStateManager
 	std::shared_ptr<IGameState>                                     m_CurrentGameState;
-	std::unordered_map<GameStatesNames, std::shared_ptr<IGameState>>    m_GameStatesCollection;
+	std::map<GameStatesNames, std::shared_ptr<IGameState>>    m_GameStatesCollection;
 
 private: // IApplicationEvents
 	Event									 m_Initialize;

@@ -69,7 +69,12 @@ void CUIBaseNode::UpdateViewport(const Viewport* viewport)
 //
 bool CUIBaseNode::Accept(IVisitor* visitor)
 {
-	bool visitResult = visitor->Visit((ISceneNodeUI*)this);
+	bool visitResult = false;
+	if (GetWrappedNode() != nullptr)
+		visitResult = visitor->VisitUI(GetWrappedNode().get());
+	else
+		visitResult = visitor->VisitUI(this);
+
 	if (!visitResult)
 		return false;
 

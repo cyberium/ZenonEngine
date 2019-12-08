@@ -88,9 +88,6 @@ void Application::DoBeforeRun()
 {
 	OnInitialize(EventArgs(this));
 
-	//if (m_GameStatesCollection.empty())
-	//	SetGameState(std::make_shared<CGameState_World>(this, m_Windows.begin()->second));
-
 	m_bIsRunning = true;
 }
 

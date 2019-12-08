@@ -50,7 +50,7 @@ ZN_INTERFACE OW_ENGINE_API IScene : public std::enable_shared_from_this<IScene>
 		newNode->SetParent(Parent);
 		newNode->RegisterComponents();
 		newNode->Initialize();
-		//newNode->RaiseOnParentChanged();
+		newNode->RaiseOnParentChanged();
 
 		return newNode;
 	}
@@ -68,6 +68,10 @@ ZN_INTERFACE OW_ENGINE_API IScene : public std::enable_shared_from_this<IScene>
 			IBaseManager* baseManager = std::dynamic_pointer_cast<IBaseManagerHolder>(shared_from_this())->GetBaseManager();
 			std::shared_ptr<ISceneNodesFactory> sceneNodeFactory = GetManager<ISceneNodesFactory>(baseManager);
 			std::shared_ptr<ISceneNode> wrappedNode = sceneNodeFactory->CreateSceneNode(Parent, WrapperNodeTypeName);
+
+			//
+			std::dynamic_pointer_cast<ISceneNodeWrapper>(wrappedNode)->SetWrappedNode(newNode);
+
 			newNodeWrapper->SetWrappedNode(wrappedNode);
 		}
 		else
@@ -79,7 +83,7 @@ ZN_INTERFACE OW_ENGINE_API IScene : public std::enable_shared_from_this<IScene>
 		newNode->SetParent(Parent);
 		newNode->RegisterComponents();
 		newNode->Initialize();
-		//newNode->RaiseOnParentChanged();
+		newNode->RaiseOnParentChanged();
 
 		return newNode;
 	}

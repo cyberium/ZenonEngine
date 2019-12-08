@@ -44,6 +44,8 @@ CSceneNodeTreeItem* CSceneNodeTreeModel::getItem(const QModelIndex& index) const
 	_ASSERT(item);
 	if (item)
 		return item;
+
+	return nullptr;
 }
 
 Qt::ItemFlags CSceneNodeTreeModel::flags(const QModelIndex& index) const 

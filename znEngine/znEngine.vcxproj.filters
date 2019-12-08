@@ -4,9 +4,6 @@
     <Filter Include="Common">
       <UniqueIdentifier>{d0033b79-fd0f-4221-80fa-9a9bedd64d33}</UniqueIdentifier>
     </Filter>
-    <Filter Include="RenderStuff">
-      <UniqueIdentifier>{61ff063b-287f-4ae6-84e4-ab15b88e3880}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Resources">
       <UniqueIdentifier>{d2566ee9-32c7-4f1c-80dd-bd0e32ff6663}</UniqueIdentifier>
     </Filter>
@@ -27,9 +24,6 @@
     </Filter>
     <Filter Include="Scene Funcitonal\Base">
       <UniqueIdentifier>{c05b5517-5a4e-490d-92bc-9b036a248df4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="CameraControllers">
-      <UniqueIdentifier>{f27e3d17-127e-4168-8467-5e08cd85a502}</UniqueIdentifier>
     </Filter>
     <Filter Include="Scene Funcitonal\3D">
       <UniqueIdentifier>{63f02678-a9f8-491e-acfe-749ea5dd0719}</UniqueIdentifier>
@@ -92,22 +86,7 @@
     </ClCompile>
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="EngineTime.cpp" />
-    <ClCompile Include="CreatePasses.cpp">
-      <Filter>RenderStuff</Filter>
-    </ClCompile>
     <ClCompile Include="WindowCreator.cpp" />
-    <ClCompile Include="CameraControllers\ArcBallCameraController.cpp">
-      <Filter>CameraControllers</Filter>
-    </ClCompile>
-    <ClCompile Include="CameraControllers\CameraControllerBase.cpp">
-      <Filter>CameraControllers</Filter>
-    </ClCompile>
-    <ClCompile Include="CameraControllers\FreeCameraController.cpp">
-      <Filter>CameraControllers</Filter>
-    </ClCompile>
-    <ClCompile Include="CameraControllers\RTSCameraController.cpp">
-      <Filter>CameraControllers</Filter>
-    </ClCompile>
     <ClCompile Include="SceneFunctional\UI\SceneNodeUI.cpp">
       <Filter>Scene Funcitonal\UI</Filter>
     </ClCompile>
@@ -224,9 +203,6 @@
     <ClCompile Include="SceneFunctional\Base\SceneBase.cpp">
       <Filter>Scene Funcitonal\Base</Filter>
     </ClCompile>
-    <ClCompile Include="CameraControllers\Camera.cpp">
-      <Filter>CameraControllers</Filter>
-    </ClCompile>
     <ClCompile Include="GameState_Default.cpp">
       <Filter>GameStates</Filter>
     </ClCompile>
@@ -260,6 +236,18 @@
     <ClCompile Include="Settings.cpp">
       <Filter>Managers</Filter>
     </ClCompile>
+    <ClCompile Include="GameStateDefaultCreator.cpp">
+      <Filter>GameStates</Filter>
+    </ClCompile>
+    <ClCompile Include="GameStatesFactory.cpp">
+      <Filter>GameStates</Filter>
+    </ClCompile>
+    <ClCompile Include="Passes\RenderPassFactory.cpp">
+      <Filter>Passes</Filter>
+    </ClCompile>
+    <ClCompile Include="Passes\RenderPassDefaultCreator.cpp">
+      <Filter>Passes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="common.h">
@@ -270,24 +258,9 @@
     </ClInclude>
     <ClInclude Include="Application.h" />
     <ClInclude Include="EngineTime.h" />
-    <ClInclude Include="CreatePasses.h">
-      <Filter>RenderStuff</Filter>
-    </ClInclude>
     <ClInclude Include="WindowCreator.h" />
     <ClInclude Include="..\shared\znEngine.h">
       <Filter>Common</Filter>
-    </ClInclude>
-    <ClInclude Include="CameraControllers\ArcBallCameraController.h">
-      <Filter>CameraControllers</Filter>
-    </ClInclude>
-    <ClInclude Include="CameraControllers\CameraControllerBase.h">
-      <Filter>CameraControllers</Filter>
-    </ClInclude>
-    <ClInclude Include="CameraControllers\FreeCameraController.h">
-      <Filter>CameraControllers</Filter>
-    </ClInclude>
-    <ClInclude Include="CameraControllers\RTSCameraController.h">
-      <Filter>CameraControllers</Filter>
     </ClInclude>
     <ClInclude Include="SceneFunctional\UI\SceneNodeUI.h">
       <Filter>Scene Funcitonal\UI</Filter>
@@ -401,9 +374,6 @@
     <ClInclude Include="SceneFunctional\Base\SceneBase.h">
       <Filter>Scene Funcitonal\Base</Filter>
     </ClInclude>
-    <ClInclude Include="CameraControllers\Camera.h">
-      <Filter>CameraControllers</Filter>
-    </ClInclude>
     <ClInclude Include="GameState_Default.h">
       <Filter>GameStates</Filter>
     </ClInclude>
@@ -436,6 +406,18 @@
     </ClInclude>
     <ClInclude Include="Settings.h">
       <Filter>Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="GameStateDefaultCreator.h">
+      <Filter>GameStates</Filter>
+    </ClInclude>
+    <ClInclude Include="GameStatesFactory.h">
+      <Filter>GameStates</Filter>
+    </ClInclude>
+    <ClInclude Include="Passes\RenderPassFactory.h">
+      <Filter>Passes</Filter>
+    </ClInclude>
+    <ClInclude Include="Passes\RenderPassDefaultCreator.h">
+      <Filter>Passes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

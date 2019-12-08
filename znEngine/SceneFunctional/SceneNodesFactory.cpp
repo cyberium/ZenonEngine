@@ -35,7 +35,7 @@ void CSceneNodesFactory::RemoveSceneNodeCreator(std::shared_ptr<ISceneNodeCreato
 //
 // ISceneNodesFactory
 //
-std::shared_ptr<ISceneNode> CSceneNodesFactory::CreateSceneNode(std::shared_ptr<ISceneNode> Parent, std::string SceneNodeTypeName) const
+std::shared_ptr<ISceneNode> CSceneNodesFactory::CreateSceneNode(std::weak_ptr<ISceneNode> Parent, std::string SceneNodeTypeName) const
 {
 	for (const auto& creator : m_Creators)
 	{
@@ -48,7 +48,7 @@ std::shared_ptr<ISceneNode> CSceneNodesFactory::CreateSceneNode(std::shared_ptr<
 		}
 	}
 
-	throw std::exception(("CSceneNodesFactory: Unable to create SceneNode '" + SceneNodeTypeName + "'.").c_str());
+	return nullptr;
 }
 
 

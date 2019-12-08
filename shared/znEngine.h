@@ -8,18 +8,11 @@
 
 // Base
 #include "../znEngine/Application.h"
-#include "../znEngine/CameraControllers/Camera.h"
-#include "../znEngine/CameraControllers/CameraControllerBase.h"
-#include "../znEngine/CameraControllers/ArcBallCameraController.h"
-#include "../znEngine/CameraControllers/FreeCameraController.h"
-#include "../znEngine/CameraControllers/RTSCameraController.h"
-#include "../znEngine/CreatePasses.h"
 #include "../znEngine/EngineTime.h"
 #include "../znEngine/Loader.h"
 #include "../znEngine/SceneFunctional/UI/Fonts/FontsManager.h"
 #include "../znEngine/WindowClassRegistrator.h"
 #include "../znEngine/WindowCreator.h"
-#include "../znEngine/GameState_Default.h"
 
 //
 // UI

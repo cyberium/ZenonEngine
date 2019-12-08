@@ -14,11 +14,8 @@ Base3DPass::~Base3DPass()
 //
 // Inherited from Visitor
 //
-bool Base3DPass::Visit(ISceneNode3D* node)
+bool Base3DPass::Visit3D(ISceneNode* sceneNode)
 {
-	ISceneNode* sceneNode = dynamic_cast<ISceneNode*>(node);
-	_ASSERT(sceneNode);
-
 	GetRenderEventArgs()->Node = sceneNode;
 
 	const ICamera* camera = GetRenderEventArgs()->Camera;

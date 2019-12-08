@@ -15,7 +15,7 @@ public:
 	virtual void									Initialize();
 	virtual void									Finalize();
 
-	virtual const std::string&                      GetName() const;
+	virtual std::string								GetName() const;
 	virtual void                                    SetName(const std::string& name);
 
 	// Components engine
@@ -45,12 +45,15 @@ public:
 
 	virtual void                                    OnUpdate(UpdateEventArgs& e);
 
-	std::shared_ptr<ISettingGroup>					GetProperties() const;
-
+	std::shared_ptr<ISettingGroup>					GetProperties() const override;
+	
 	//
 	// ISceneNodeWrapper
 	//
 	void											SetWrappedNode(std::shared_ptr<ISceneNode> ThisNode) override final;
+	std::shared_ptr<ISceneNode>                     GetWrappedNode() const override final;
+
+	void                                            RaiseOnParentChanged() override;
 
 
 	//

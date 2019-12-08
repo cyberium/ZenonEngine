@@ -35,9 +35,3 @@ void PostprocessPass::Render(RenderEventArgs& e)
 		m_Texture->UnBind(0, pShader, IShaderParameter::Type::Texture);
 	}*/
 }
-
-bool PostprocessPass::Visit(SceneNode3D& node)
-{
-	// Do nothing in this case
-	return false;
-}

@@ -75,17 +75,17 @@ void AbstractPass::UpdateViewport(const Viewport * _viewport)
 //
 // IVisitor
 //
-bool AbstractPass::Visit(SceneNodeBase * node)
+bool AbstractPass::VisitBase(ISceneNode * node)
 {
 	return false;
 }
 
-bool AbstractPass::Visit(ISceneNode3D* node)
+bool AbstractPass::Visit3D(ISceneNode* node)
 {
 	return false;
 }
 
-bool AbstractPass::Visit(ISceneNodeUI* nodeUI)
+bool AbstractPass::VisitUI(ISceneNode* nodeUI)
 {
 	return false;
 }

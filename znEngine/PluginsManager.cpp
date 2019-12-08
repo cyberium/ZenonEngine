@@ -24,10 +24,10 @@ bool CznPluginsManager::AddPlugin(const std::string& PluginDLLName)
 {
 	try
 	{
-		if (m_Plugins.find(PluginDLLName) != m_Plugins.end())
+		/*if (m_Plugins.find(PluginDLLName) != m_Plugins.end())
 		{
 			throw CPluginException("Already registered.");
-		}
+		}*/
 
 		HMODULE pluginDLL = LoadLibraryA(PluginDLLName.c_str());
 		if (pluginDLL == NULL)
@@ -49,7 +49,7 @@ bool CznPluginsManager::AddPlugin(const std::string& PluginDLLName)
 			throw CPluginException("Error while create plugin object.");
 		}
 
-		m_Plugins.insert(std::make_pair(PluginDLLName, pluginObject));
+		m_Plugins.push_back(pluginObject);
 
 		// Notify all listeners about new plguin
 		for (const auto& listener : m_PluginsEventsListener)
@@ -78,7 +78,7 @@ void CznPluginsManager::InitializeAllPlugins()
 {
 	for (const auto& pluginPair : m_Plugins)
 	{
-		const std::shared_ptr<IznPlugin> plugin = pluginPair.second;
+		const std::shared_ptr<IznPlugin> plugin = pluginPair;
 
 		if (!plugin->Initialize())
 			throw CPluginException("Error while initialize.");

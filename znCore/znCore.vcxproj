@@ -22,6 +22,11 @@
     <ClCompile Include="BoundingBox.cpp" />
     <ClCompile Include="BoundingRect.cpp" />
     <ClCompile Include="BoundingSphere.cpp" />
+    <ClCompile Include="CameraControllers\ArcBallCameraController.cpp" />
+    <ClCompile Include="CameraControllers\Camera.cpp" />
+    <ClCompile Include="CameraControllers\CameraControllerBase.cpp" />
+    <ClCompile Include="CameraControllers\FreeCameraController.cpp" />
+    <ClCompile Include="CameraControllers\RTSCameraController.cpp" />
     <ClCompile Include="DebugOutputConsole.cpp" />
     <ClCompile Include="DebugOutputLog.cpp" />
     <ClCompile Include="ConsoleCommand.cpp" />
@@ -72,6 +77,11 @@
     <ClInclude Include="BoundingBox.h" />
     <ClInclude Include="BoundingRect.h" />
     <ClInclude Include="BoundingSphere.h" />
+    <ClInclude Include="CameraControllers\ArcBallCameraController.h" />
+    <ClInclude Include="CameraControllers\Camera.h" />
+    <ClInclude Include="CameraControllers\CameraControllerBase.h" />
+    <ClInclude Include="CameraControllers\FreeCameraController.h" />
+    <ClInclude Include="CameraControllers\RTSCameraController.h" />
     <ClInclude Include="DebugOutputConsole.h" />
     <ClInclude Include="DebugOutputLog.h" />
     <ClInclude Include="GameState.h" />

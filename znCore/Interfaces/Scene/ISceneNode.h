@@ -18,7 +18,7 @@ ZN_INTERFACE OW_ENGINE_API ISceneNode : public std::enable_shared_from_this<ISce
 	virtual void									Initialize() = 0;
 	virtual void									Finalize() = 0;
 
-	virtual const std::string&                      GetName() const = 0;
+	virtual std::string								GetName() const = 0;
 	virtual void                                    SetName(const std::string& name) = 0;
 
 	// Components engine
@@ -49,6 +49,8 @@ ZN_INTERFACE OW_ENGINE_API ISceneNode : public std::enable_shared_from_this<ISce
 	virtual void                                    OnUpdate(UpdateEventArgs& e) = 0;
 
 	virtual std::shared_ptr<ISettingGroup>          GetProperties() const = 0;
+
+	virtual void                                    RaiseOnParentChanged() = 0;
 
 	//
 	// Templates
@@ -122,6 +124,7 @@ ZN_INTERFACE OW_ENGINE_API ISceneNodeWrapper
 	virtual ~ISceneNodeWrapper() {}
 
 	virtual void SetWrappedNode(std::shared_ptr<ISceneNode> ThisNode) = 0;
+	virtual std::shared_ptr<ISceneNode> GetWrappedNode() const = 0;
 };
 
 
@@ -134,7 +137,7 @@ ZN_INTERFACE OW_ENGINE_API ISceneNodeCreator
 
 	virtual size_t                                  GetSceneNodesCount() const = 0;
 	virtual std::string                             GetSceneNodeTypeName(size_t Index) const = 0;
-	virtual std::shared_ptr<ISceneNode>             CreateSceneNode(std::shared_ptr<ISceneNode> Parent, size_t Index) const = 0;
+	virtual std::shared_ptr<ISceneNode>             CreateSceneNode(std::weak_ptr<ISceneNode> Parent, size_t Index) const = 0;
 };
 
 ZN_INTERFACE OW_ENGINE_API
@@ -147,5 +150,5 @@ ZN_INTERFACE OW_ENGINE_API
 	virtual void AddSceneNodeCreator(std::shared_ptr<ISceneNodeCreator> Creator) = 0;
 	virtual void RemoveSceneNodeCreator(std::shared_ptr<ISceneNodeCreator> Creator) = 0;
 
-	virtual std::shared_ptr<ISceneNode> CreateSceneNode(std::shared_ptr<ISceneNode> Parent, std::string SceneNodeTypeName) const = 0;
+	virtual std::shared_ptr<ISceneNode> CreateSceneNode(std::weak_ptr<ISceneNode> Parent, std::string SceneNodeTypeName) const = 0;
 };

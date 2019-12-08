@@ -174,11 +174,9 @@ void DeferredLightingPass::PostRender(RenderEventArgs& e)
 
 // Inherited from Visitor
 
-bool DeferredLightingPass::Visit(ISceneNode3D* node)
+bool DeferredLightingPass::Visit3D(ISceneNode* node)
 {
-	ISceneNode* sceneNode = dynamic_cast<ISceneNode*>(node);
-
-	m_World = sceneNode->GetComponent<ITransformComponent>()->GetWorldTransfom();
+	m_World = node->GetComponent<ITransformComponent>()->GetWorldTransfom();
 
 	return true;
 }

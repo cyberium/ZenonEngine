@@ -13,5 +13,5 @@ public:
 	virtual ~BaseUIPass();
 
 	// IVisitor
-	virtual bool Visit(ISceneNodeUI* node) override;
+	virtual bool VisitUI(ISceneNode* node) override;
 };

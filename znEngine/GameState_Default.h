@@ -21,8 +21,4 @@ public:
 private:
 	void Load3D();
 	void LoadUI();
-
-private:
-	//const vec4 g_ClearColor = vec4(0.39f, 0.58f, 0.93f, 1.0f);
-	const vec4 g_ClearColor = vec4(0.2f, 0.2f, 0.2f, 0.3f);
 };

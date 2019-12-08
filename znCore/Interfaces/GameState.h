@@ -2,6 +2,7 @@
 
 // FORWARD BEGIN
 ZN_INTERFACE IScene;
+ZN_INTERFACE IManager;
 // FORWARD END
 
 
@@ -45,13 +46,33 @@ struct OW_ENGINE_API SGameStateDef
 	GameStatePriority Priority;
 };
 
+
+
+//
 // For plugins
+//
 ZN_INTERFACE OW_ENGINE_API IGameStateCreator
 {
 	virtual ~IGameStateCreator() {}
 
-	virtual size_t                                  GetGameStatesCount() const = 0;
-	virtual std::string                             GetGameStateName(size_t Index) const = 0;
-	virtual GameStatePriority                       GetGameStatePriority(size_t Index) const = 0;
-	virtual std::shared_ptr<IGameState>             CreateGameState(size_t Index) const = 0;
+	virtual size_t GetGameStatesCount() const = 0;
+	virtual std::string GetGameStateName(size_t Index) const = 0;
+	virtual GameStatePriority GetGameStatePriority(size_t Index) const = 0;
+	virtual std::shared_ptr<IGameState> CreateGameState(size_t Index, std::shared_ptr<IRenderWindow> RenderWindow) const = 0;
+};
+
+
+
+ZN_INTERFACE OW_ENGINE_API
+__declspec(uuid("BF3B1BDC-9019-4082-9042-BE3B033CC199"))
+IGameStatesFactory
+	: public IManager
+{
+	virtual ~IGameStatesFactory() {}
+
+	virtual void AddGameStateCreator(std::shared_ptr<IGameStateCreator> Creator) = 0;
+	virtual void RemoveGameStateCreator(std::shared_ptr<IGameStateCreator> Creator) = 0;
+
+	virtual std::shared_ptr<IGameState> CreateGameStateWithHighestPriority(std::shared_ptr<IRenderWindow> RenderWindow) const = 0;
+	virtual std::shared_ptr<IGameState> CreateGameState(std::string GameStateName, std::shared_ptr<IRenderWindow> RenderWindow) const = 0;
 };

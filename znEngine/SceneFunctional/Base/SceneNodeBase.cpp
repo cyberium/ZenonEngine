@@ -27,8 +27,11 @@ void SceneNodeBase::Finalize()
 	
 }
 
-const std::string& SceneNodeBase::GetName() const
+std::string SceneNodeBase::GetName() const
 {
+	if (m_WrappedNode != nullptr)
+		return m_WrappedNode->GetName();
+
 	return m_Name;
 }
 
@@ -185,7 +188,11 @@ void SceneNodeBase::UpdateViewport(const Viewport * viewport)
 
 bool SceneNodeBase::Accept(IVisitor* visitor)
 {
-	bool visitResult = visitor->Visit(this);
+	bool visitResult = false;
+	if (m_WrappedNode != nullptr)
+		visitResult = visitor->VisitBase(m_WrappedNode.get());
+	else
+		visitResult = visitor->VisitBase(this);
 
 	// ROOT NODE DON'T HAVE COMPONENTS!!!
 

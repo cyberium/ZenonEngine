@@ -21,11 +21,8 @@
   <ItemGroup>
     <ClCompile Include="Application_Events.cpp" />
     <ClCompile Include="BaseManager.cpp" />
-    <ClCompile Include="CameraControllers\ArcBallCameraController.cpp" />
-    <ClCompile Include="CameraControllers\Camera.cpp" />
-    <ClCompile Include="CameraControllers\CameraControllerBase.cpp" />
-    <ClCompile Include="CameraControllers\FreeCameraController.cpp" />
-    <ClCompile Include="CameraControllers\RTSCameraController.cpp" />
+    <ClCompile Include="GameStateDefaultCreator.cpp" />
+    <ClCompile Include="GameStatesFactory.cpp" />
     <ClCompile Include="GameState_Default.cpp" />
     <ClCompile Include="Materials\MaterialDebug.cpp" />
     <ClCompile Include="Materials\MaterialTextured.cpp" />
@@ -45,6 +42,8 @@
     <ClCompile Include="Passes\GenerateMipMapsPass.cpp" />
     <ClCompile Include="Passes\InvokeFunctionPass.cpp" />
     <ClCompile Include="Passes\PostprocessPass.cpp" />
+    <ClCompile Include="Passes\RenderPassDefaultCreator.cpp" />
+    <ClCompile Include="Passes\RenderPassFactory.cpp" />
     <ClCompile Include="Passes\TextureMaterialPass.cpp" />
     <ClCompile Include="PluginsManager.cpp" />
     <ClCompile Include="RenderDeviceFactory.cpp" />
@@ -52,7 +51,6 @@
     <ClCompile Include="SceneFunctional\Base\SceneBase.cpp" />
     <ClCompile Include="SceneFunctional\Base\SceneNodeBase.cpp" />
     <ClCompile Include="Application.cpp" />
-    <ClCompile Include="CreatePasses.cpp" />
     <ClCompile Include="EngineTime.cpp" />
     <ClCompile Include="Loader.cpp" />
     <ClCompile Include="SceneFunctional\SceneDefaultCreator.cpp" />
@@ -89,11 +87,8 @@
   <ItemGroup>
     <ClInclude Include="..\shared\znEngine.h" />
     <ClInclude Include="BaseManager.h" />
-    <ClInclude Include="CameraControllers\ArcBallCameraController.h" />
-    <ClInclude Include="CameraControllers\Camera.h" />
-    <ClInclude Include="CameraControllers\CameraControllerBase.h" />
-    <ClInclude Include="CameraControllers\FreeCameraController.h" />
-    <ClInclude Include="CameraControllers\RTSCameraController.h" />
+    <ClInclude Include="GameStateDefaultCreator.h" />
+    <ClInclude Include="GameStatesFactory.h" />
     <ClInclude Include="GameState_Default.h" />
     <ClInclude Include="Materials\MaterialDebug.h" />
     <ClInclude Include="Materials\MaterialTextured.h" />
@@ -113,6 +108,8 @@
     <ClInclude Include="Passes\GenerateMipMapsPass.h" />
     <ClInclude Include="Passes\InvokeFunctionPass.h" />
     <ClInclude Include="Passes\PostprocessPass.h" />
+    <ClInclude Include="Passes\RenderPassDefaultCreator.h" />
+    <ClInclude Include="Passes\RenderPassFactory.h" />
     <ClInclude Include="Passes\TextureMaterialPass.h" />
     <ClInclude Include="PluginsManager.h" />
     <ClInclude Include="RenderDeviceFactory.h" />
@@ -121,7 +118,6 @@
     <ClInclude Include="SceneFunctional\Base\SceneNodeBase.h" />
     <ClInclude Include="Application.h" />
     <ClInclude Include="common.h" />
-    <ClInclude Include="CreatePasses.h" />
     <ClInclude Include="EngineTime.h" />
     <ClInclude Include="Loader.h" />
     <ClInclude Include="SceneFunctional\SceneDefaultCreator.h" />

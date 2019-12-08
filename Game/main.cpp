@@ -7,8 +7,7 @@ void main_internal(int argumentCount, char* arguments[])
 	// 1. Initialize engine and some improtant managers
 	IBaseManager* BaseManager = InitializeEngine(ArgumentsToVector(argumentCount, arguments));
 
-	// 2. Set file location
-	GetManager<IFilesManager>(BaseManager)->RegisterFilesStorage(std::make_shared<CLocalFilesStorage>("D:\\_programming\\ZenonEngine\\gamedata\\"));
+
 
 	// 3. Create application
 	Application app(BaseManager, ::GetModuleHandle(NULL));
@@ -35,8 +34,8 @@ void main_internal(int argumentCount, char* arguments[])
 	std::shared_ptr<IFontsManager> fontsManager = std::make_shared<FontsManager>(renderDevice, BaseManager);
 	AddManager<IFontsManager>(BaseManager, fontsManager);
 
-	std::shared_ptr<IGameState> gs1 = std::make_shared<CGameState_World>(BaseManager, firstRenderWindow);
-	app.SetGameState(gs1);
+	std::shared_ptr<IGameState> gameState = GetManager<IGameStatesFactory>(BaseManager)->CreateGameStateWithHighestPriority(firstRenderWindow);
+	app.SetGameState(gameState);
 
 	app.Run();
 

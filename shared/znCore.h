@@ -17,10 +17,23 @@
 // Log outputs
 #include "../znCore/Console.h"
 
+
+
 #include "../znCore/Passes/RenderTechnique.h"
 #include "../znCore/Passes/AbstractPass.h"
 #include "../znCore/Passes/Base3DPass.h"
 #include "../znCore/Passes/BaseUIPass.h"
+
+
+
+#include "../znCore/CameraControllers/Camera.h"
+#include "../znCore/CameraControllers/CameraControllerBase.h"
+#include "../znCore/CameraControllers/ArcBallCameraController.h"
+#include "../znCore/CameraControllers/FreeCameraController.h"
+#include "../znCore/CameraControllers/RTSCameraController.h"
+
+
+
 
 
 #include "../znCore/Scene/LoadableObject.h"

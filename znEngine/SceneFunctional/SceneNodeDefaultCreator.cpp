@@ -40,23 +40,23 @@ std::string CSceneNodeDefaultCreator::GetSceneNodeTypeName(size_t Index) const
 		return "TextUI";
 	}
 
-	throw std::exception(("CSceneNodeDefaultCreator::GetSceneNodeTypeName: Index '" + std::to_string(Index) + "' out of bounds.").c_str());
+	return nullptr;
 }
 
-std::shared_ptr<ISceneNode> CSceneNodeDefaultCreator::CreateSceneNode(std::shared_ptr<ISceneNode> Parent, size_t Index) const
+std::shared_ptr<ISceneNode> CSceneNodeDefaultCreator::CreateSceneNode(std::weak_ptr<ISceneNode> Parent, size_t Index) const
 {
 	if (Index == 0)
 	{
-		return Parent->CreateSceneNode<SceneNode3D>();
+		return Parent.lock()->CreateSceneNode<SceneNode3D>();
 	}
 	else if (Index == 1)
 	{
-		return Parent->CreateSceneNode<CUIBaseNode>();
+		return Parent.lock()->CreateSceneNode<CUIBaseNode>();
 	}
 	else if(Index == 2)
 	{
-		return Parent->CreateSceneNode<CUITextNode>();
+		return Parent.lock()->CreateSceneNode<CUITextNode>();
 	}
 
-	throw std::exception(("CSceneNodeDefaultCreator::CreateSceneNode: Index '" + std::to_string(Index) + "' out of bounds.").c_str());
+	return nullptr;
 }

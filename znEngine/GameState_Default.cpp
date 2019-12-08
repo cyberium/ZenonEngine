@@ -4,16 +4,8 @@
 #include "GameState_Default.h"
 
 // Additional
-#include "CameraControllers/FreeCameraController.h"
-
 #include "Materials/MaterialDebug.h"
 #include "Materials/MaterialTextured.h"
-
-#include "SceneFunctional/3D/SceneNode3D.h"
-
-#include "Passes/ClearRenderTargetPass.h"
-
-#include "CreatePasses.h"
 
 CGameState_World::CGameState_World(IBaseManager * BaseManager, std::shared_ptr<IRenderWindow> RenderWindow)
 	: CGameState(BaseManager, RenderWindow)
@@ -73,8 +65,6 @@ void CGameState_World::OnRender(RenderEventArgs& e)
 void CGameState_World::OnPostRender(RenderEventArgs& e)
 {
 	CGameState::OnPostRender(e);
-
-
 }
 
 void CGameState_World::OnRenderUI(RenderEventArgs& e)
@@ -85,15 +75,12 @@ void CGameState_World::OnRenderUI(RenderEventArgs& e)
 //
 //
 //
-
 void CGameState_World::Load3D()
 {
 	for (size_t i = 0; i < 10; i++)
 	{
 		for (size_t j = 0; j < 10; j++)
 		{
-			std::shared_ptr<SceneNode3D> sceneNode = m_Scene->CreateSceneNode<SceneNode3D>(m_Scene->GetRootNode());
-
 			std::shared_ptr<IMesh> mesh = GetRenderDevice()->GetPrimitiveCollection()->CreatePlane();
 
 			std::shared_ptr<MaterialTextured> mat = std::make_shared<MaterialTextured>(GetRenderDevice());
@@ -101,20 +88,18 @@ void CGameState_World::Load3D()
 			mat->SetTexture(0, GetRenderDevice()->CreateTexture2D("default.png"));
 			mesh->SetMaterial(mat);
 
+			std::shared_ptr<ISceneNode> sceneNode = m_Scene->CreateWrappedSceneNode<CSceneNodeProxie>("SceneNode3D", m_Scene->GetRootNode());
 			sceneNode->GetComponent<ITransformComponent3D>()->SetTranslate(vec3(40 * i, 0.0f, 40 * j));
 			sceneNode->GetComponent<ITransformComponent3D>()->SetScale(vec3(15, 15, 15));
 			sceneNode->GetComponent<IMeshComponent3D>()->AddMesh(mesh);
 		}
 	}
 
-	//CFBX fbx(m_3DScene->GetRootNode());
-
-
-	m_Technique.AddPass(std::make_shared<ClearRenderTargetPass>(GetRenderDevice(), GetRenderWindow()->GetRenderTarget(), ClearFlags::All, g_ClearColor, 1.0f, 0));
-	Add3DPasses(GetRenderDevice(), GetRenderWindow()->GetRenderTarget(), &m_Technique, GetRenderWindow()->GetViewport(), m_Scene);
+	m_Technique.AddPass(GetManager<IRenderPassFactory>(GetBaseManager())->CreateRenderPass("ClearPass", GetRenderDevice(), GetRenderWindow()->GetRenderTarget(), GetRenderWindow()->GetViewport(), m_Scene));
+	m_Technique.AddPass(GetManager<IRenderPassFactory>(GetBaseManager())->CreateRenderPass("TexturedMaterialPass", GetRenderDevice(), GetRenderWindow()->GetRenderTarget(), GetRenderWindow()->GetViewport(), m_Scene));
 }
 
 void CGameState_World::LoadUI()
 {
-	AddUIPasses(GetRenderDevice(), GetRenderWindow()->GetRenderTarget(), &m_Technique, GetRenderWindow()->GetViewport(), m_Scene);
+	m_Technique.AddPass(GetManager<IRenderPassFactory>(GetBaseManager())->CreateRenderPass("BaseUIPass", GetRenderDevice(), GetRenderWindow()->GetRenderTarget(), GetRenderWindow()->GetViewport(), m_Scene));
 }

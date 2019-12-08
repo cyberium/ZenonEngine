@@ -40,7 +40,12 @@ void SceneNode3D::UpdateCamera(const ICamera* camera)
 
 bool SceneNode3D::Accept(IVisitor* visitor)
 {
-	bool visitResult = visitor->Visit((ISceneNode3D*)this);
+	bool visitResult = false;
+	if (GetWrappedNode() != nullptr)
+		visitResult = visitor->Visit3D(GetWrappedNode().get());
+	else
+		visitResult = visitor->Visit3D(this);
+
     if (visitResult)
     {
 		const auto& components = GetComponents();

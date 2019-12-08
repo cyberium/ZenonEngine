@@ -48,7 +48,7 @@ std::shared_ptr<IScene> CScenesFactory::CreateScene(std::string SceneTypeName) c
 		}
 	}
 
-	throw std::exception(("CScenesFactory: Unable to create Scene '" + SceneTypeName + "'.").c_str());
+	return nullptr;
 }
 
 

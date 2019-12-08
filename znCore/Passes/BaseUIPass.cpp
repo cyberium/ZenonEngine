@@ -13,11 +13,8 @@ BaseUIPass::~BaseUIPass()
 //
 // IVisitor
 //
-bool BaseUIPass::Visit(ISceneNodeUI* node)
+bool BaseUIPass::VisitUI(ISceneNode* sceneNode)
 {
-	ISceneNode* sceneNode = dynamic_cast<ISceneNode*>(node);
-	_ASSERT(sceneNode);
-
     GetRenderEventArgs()->Node = sceneNode;
 
 	const ICamera* camera = GetRenderEventArgs()->Camera;

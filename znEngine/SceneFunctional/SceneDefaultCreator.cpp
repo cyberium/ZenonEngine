@@ -30,7 +30,7 @@ std::string CSceneDefaultCreator::GetSceneTypeName(size_t Index) const
 		return "SceneBase";
 	}
 
-	throw std::exception(("CSceneDefaultCreator::GetSceneTypeName: Index '" + std::to_string(Index) + "' out of bounds.").c_str());
+	return nullptr;
 }
 
 std::shared_ptr<IScene> CSceneDefaultCreator::CreateScene(size_t Index) const
@@ -42,5 +42,5 @@ std::shared_ptr<IScene> CSceneDefaultCreator::CreateScene(size_t Index) const
 		return scene;
 	}
 
-	throw std::exception(("CSceneDefaultCreator::CreateScene: Index '" + std::to_string(Index) + "' out of bounds.").c_str());
+	return nullptr;
 }

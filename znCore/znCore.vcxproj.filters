@@ -85,6 +85,9 @@
     <Filter Include="GameState">
       <UniqueIdentifier>{e458a334-60c8-4b7e-9c68-f4e227fd5768}</UniqueIdentifier>
     </Filter>
+    <Filter Include="CameraControllers">
+      <UniqueIdentifier>{cab15164-19e1-4d0c-b397-adb4def9c9c1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DebugOutput.cpp">
@@ -212,6 +215,21 @@
     </ClCompile>
     <ClCompile Include="GameState.cpp">
       <Filter>GameState</Filter>
+    </ClCompile>
+    <ClCompile Include="CameraControllers\ArcBallCameraController.cpp">
+      <Filter>CameraControllers</Filter>
+    </ClCompile>
+    <ClCompile Include="CameraControllers\Camera.cpp">
+      <Filter>CameraControllers</Filter>
+    </ClCompile>
+    <ClCompile Include="CameraControllers\CameraControllerBase.cpp">
+      <Filter>CameraControllers</Filter>
+    </ClCompile>
+    <ClCompile Include="CameraControllers\FreeCameraController.cpp">
+      <Filter>CameraControllers</Filter>
+    </ClCompile>
+    <ClCompile Include="CameraControllers\RTSCameraController.cpp">
+      <Filter>CameraControllers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -553,6 +571,21 @@
     </ClInclude>
     <ClInclude Include="GameState.h">
       <Filter>GameState</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraControllers\ArcBallCameraController.h">
+      <Filter>CameraControllers</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraControllers\Camera.h">
+      <Filter>CameraControllers</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraControllers\CameraControllerBase.h">
+      <Filter>CameraControllers</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraControllers\FreeCameraController.h">
+      <Filter>CameraControllers</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraControllers\RTSCameraController.h">
+      <Filter>CameraControllers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
