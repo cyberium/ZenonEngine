@@ -8,19 +8,43 @@
 
 extern CLog* gLogInstance;
 
-//
-// CznRenderOpenGLDeviceCreator
-//
-class CznRenderOpenGLDeviceCreator : public IznRenderDeviceCreator
+class CznRenderOpenGLPlugin 
+	: public IznPlugin
+	, public IznRenderDeviceCreator
 {
 public:
-	CznRenderOpenGLDeviceCreator(IBaseManager* BaseManager)
+	CznRenderOpenGLPlugin(IBaseManager* BaseManager)
 		: m_BaseManager(BaseManager)
 	{}
-	virtual ~CznRenderOpenGLDeviceCreator()
+	virtual ~CznRenderOpenGLPlugin()
 	{}
 
+
+
+	//
+	// IznPlugin
+	//
+	bool Initialize()
+	{
+		gLogInstance = std::dynamic_pointer_cast<CLog>(GetManager<ILog>(m_BaseManager)).get();
+
+		return true;
+	}
+	void Finalize()
+	{}
+	std::string GetName() const override
+	{
+		return "OpenGL render support plugin.";
+	}
+	std::string GetDescription() const override
+	{
+		return "Provides OpenGL 4.4 render device support.";
+	}
+
+
+	//
 	// IznRenderDeviceCreator
+	//
 	RenderDeviceType GetRenderDeviceType() const
 	{
 		return RenderDeviceType::RenderDeviceType_OpenGL;
@@ -43,47 +67,12 @@ private:
 
 
 
-//
-// CznRenderOpenGLPlugin
-//
-class CznRenderOpenGLPlugin : public IznPlugin
-{
-public:
-	CznRenderOpenGLPlugin()
-	{}
-	virtual ~CznRenderOpenGLPlugin()
-	{}
-
-	// IznPlugin
-	bool Initialize(IBaseManager* BaseManager)
-	{
-		m_BaseManager = BaseManager;
-		gLogInstance = std::dynamic_pointer_cast<CLog>(GetManager<ILog>(m_BaseManager)).get();
-
-		m_RenderDeviceCreator = std::make_shared<CznRenderOpenGLDeviceCreator>(m_BaseManager);
-
-		GetManager<IznRenderDeviceCreatorFactory>(m_BaseManager)->RegisterRenderDeviceCreator(m_RenderDeviceCreator);
-
-		return true;
-	}
-	void Finalize()
-	{
-		GetManager<IznRenderDeviceCreatorFactory>(m_BaseManager)->UnregisterRenderDeviceCreator(m_RenderDeviceCreator);
-	}
-
-private:
-	IBaseManager* m_BaseManager;
-	std::shared_ptr<IznRenderDeviceCreator> m_RenderDeviceCreator;
-};
-
-
-
 IznPlugin* plugin = nullptr;
 IznPlugin* WINAPI GetPlugin(IBaseManager* BaseManager)
 {
 	if (plugin == nullptr)
 	{
-		plugin = new CznRenderOpenGLPlugin();
+		plugin = new CznRenderOpenGLPlugin(BaseManager);
 	}
 
 	return plugin;

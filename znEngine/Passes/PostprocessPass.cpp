@@ -3,11 +3,15 @@
 // General
 #include "PostprocessPass.h"
 
-PostprocessPass::PostprocessPass(std::shared_ptr<IScene> scene, std::shared_ptr<IPipelineState> pipeline, const glm::mat4& projectionMatrix, std::shared_ptr<ITexture> texture)
-	: base(scene, pipeline)
+PostprocessPass::PostprocessPass(std::shared_ptr<IRenderDevice> RenderDevice, std::shared_ptr<IPipelineState> pipeline, const glm::mat4& projectionMatrix, std::shared_ptr<ITexture> texture)
+	: AbstractPass(RenderDevice, pipeline)
 	, m_ProjectionMatrix(projectionMatrix)
 	, m_Texture(texture)
 {}
+
+PostprocessPass::~PostprocessPass()
+{
+}
 
 void PostprocessPass::Render(RenderEventArgs& e)
 {

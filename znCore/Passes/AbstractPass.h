@@ -4,8 +4,8 @@ class OW_ENGINE_API AbstractPass
 	: public IRenderPass
 {
 public:
-	                                                AbstractPass();
-                                                    AbstractPass(std::shared_ptr<IPipelineState> Pipeline);
+	                                                AbstractPass(std::shared_ptr<IRenderDevice> RenderDevice);
+                                                    AbstractPass(std::shared_ptr<IRenderDevice> RenderDevice, std::shared_ptr<IPipelineState> Pipeline);
 	virtual                                         ~AbstractPass();
 
 	virtual void                                    SetEnabled(bool enabled);
@@ -18,8 +18,8 @@ public:
 
 	// IVisitor
 	virtual bool                                    Visit(SceneNodeBase* node) override;
-	virtual bool                                    Visit(SceneNode3D* node) override;
-	virtual bool                                    Visit(CUIBaseNode* nodeUI) override;
+	virtual bool                                    Visit(ISceneNode3D* node) override;
+	virtual bool                                    Visit(ISceneNodeUI* node) override;
 	virtual bool                                    Visit(IMesh* Mesh, UINT IndexStartLocation = 0, UINT IndexCnt = 0, UINT VertexStartLocation = 0, UINT VertexCnt = 0) override;
 	virtual bool                                    Visit(std::shared_ptr<CLight3D> light) override;
 
@@ -37,7 +37,7 @@ protected: // PerObject functional
 		glm::mat4 Projection;
 	};
 	PerObject*                                      m_PerObjectData;
-	std::shared_ptr<IConstantBuffer>                 m_PerObjectConstantBuffer;
+	std::shared_ptr<IConstantBuffer>                m_PerObjectConstantBuffer;
 
 	void                                            SetPerObjectConstantBufferData(PerObject& perObjectData);
 	std::shared_ptr<IConstantBuffer>                GetPerObjectConstantBuffer() const;
@@ -47,11 +47,12 @@ protected:
     std::shared_ptr<IPipelineState>                 GetPipelineState() const;
     std::shared_ptr<IRenderDevice>                  GetRenderDevice() const;
 
+
 private:
 	bool                                            m_Enabled;
 
     RenderEventArgs*                                m_RenderEventArgs;
 
-    std::shared_ptr<IPipelineState>                  m_Pipeline;
+    std::shared_ptr<IPipelineState>                 m_Pipeline;
     std::weak_ptr<IRenderDevice>                    m_RenderDevice;
 };

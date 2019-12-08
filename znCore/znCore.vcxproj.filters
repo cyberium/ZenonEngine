@@ -28,9 +28,6 @@
     <Filter Include="Log">
       <UniqueIdentifier>{ef746966-5439-4659-9eaa-b5406a1f5be7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Manager">
-      <UniqueIdentifier>{5f3b03a0-2561-4da8-8a90-9a4a70fb319d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Log\Console">
       <UniqueIdentifier>{fe194fc7-63c1-4646-9d6d-142a164c36d0}</UniqueIdentifier>
     </Filter>
@@ -70,11 +67,20 @@
     <Filter Include="__Proxies">
       <UniqueIdentifier>{de08cb84-ae35-42fc-87cb-6959d1e26098}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Plugins functional">
-      <UniqueIdentifier>{147f7532-3842-4130-a3a4-dbd9c02e755a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Settings functional">
       <UniqueIdentifier>{bc1f0964-30fc-4288-a8ea-cb5bd992e806}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Passes">
+      <UniqueIdentifier>{030be646-acd2-408c-97f1-de057391b5a3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scene">
+      <UniqueIdentifier>{8c8be4ea-0256-49e9-87bf-26a6e295f7ef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scene\3D">
+      <UniqueIdentifier>{1ae3c30a-22f6-4504-89c3-f52e29eeb48e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scene\UI">
+      <UniqueIdentifier>{fcd39ff1-26d9-4089-8521-acf7e4f2a574}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -104,9 +110,6 @@
     </ClCompile>
     <ClCompile Include="Frustrum.cpp">
       <Filter>Common\Primitives</Filter>
-    </ClCompile>
-    <ClCompile Include="BaseManager.cpp">
-      <Filter>Manager</Filter>
     </ClCompile>
     <ClCompile Include="ConsoleCommand.cpp">
       <Filter>Log\Console</Filter>
@@ -159,14 +162,53 @@
     <ClCompile Include="Proxies\SceneNodeProxie.cpp">
       <Filter>__Proxies</Filter>
     </ClCompile>
-    <ClCompile Include="PluginsManager.cpp">
-      <Filter>Plugins functional</Filter>
-    </ClCompile>
     <ClCompile Include="Settings.cpp">
       <Filter>Settings functional</Filter>
     </ClCompile>
     <ClCompile Include="SettingsGroupBase.cpp">
       <Filter>Settings functional</Filter>
+    </ClCompile>
+    <ClCompile Include="Passes\AbstractPass.cpp">
+      <Filter>Passes</Filter>
+    </ClCompile>
+    <ClCompile Include="Passes\BaseUIPass.cpp">
+      <Filter>Passes</Filter>
+    </ClCompile>
+    <ClCompile Include="Passes\RenderTechnique.cpp">
+      <Filter>Passes</Filter>
+    </ClCompile>
+    <ClCompile Include="Passes\Base3DPass.cpp">
+      <Filter>Passes</Filter>
+    </ClCompile>
+    <ClCompile Include="Passes\BaseScenePass.cpp">
+      <Filter>Passes</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\ComponentBase.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\TransformComponentBase.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\3D\ColliderComponent3D.cpp">
+      <Filter>Scene\3D</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\3D\LightComponent3D.cpp">
+      <Filter>Scene\3D</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\3D\MeshComponent3D.cpp">
+      <Filter>Scene\3D</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\3D\TransformComponent3D.cpp">
+      <Filter>Scene\3D</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\UI\TransformComponentUI.cpp">
+      <Filter>Scene\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\Light3D.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\LoadableObject.cpp">
+      <Filter>Scene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -229,9 +271,6 @@
     </ClInclude>
     <ClInclude Include="MathCommon.h">
       <Filter>Common\Math</Filter>
-    </ClInclude>
-    <ClInclude Include="BaseManager.h">
-      <Filter>Manager</Filter>
     </ClInclude>
     <ClInclude Include="ConsoleCommand.h">
       <Filter>Log\Console</Filter>
@@ -458,9 +497,6 @@
     <ClInclude Include="Interfaces\Render\Types\RaycastHit.h">
       <Filter>__Interfaces\Render\Types</Filter>
     </ClInclude>
-    <ClInclude Include="PluginsManager.h">
-      <Filter>Plugins functional</Filter>
-    </ClInclude>
     <ClInclude Include="Proxies\__Proxies.h">
       <Filter>__Proxies</Filter>
     </ClInclude>
@@ -473,6 +509,51 @@
     <ClInclude Include="SettingBase.h">
       <Filter>Settings functional</Filter>
     </ClInclude>
+    <ClInclude Include="Passes\AbstractPass.h">
+      <Filter>Passes</Filter>
+    </ClInclude>
+    <ClInclude Include="Passes\BaseUIPass.h">
+      <Filter>Passes</Filter>
+    </ClInclude>
+    <ClInclude Include="Passes\RenderTechnique.h">
+      <Filter>Passes</Filter>
+    </ClInclude>
+    <ClInclude Include="Passes\Base3DPass.h">
+      <Filter>Passes</Filter>
+    </ClInclude>
+    <ClInclude Include="Passes\BaseScenePass.h">
+      <Filter>Passes</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\ComponentBase.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\TransformComponentBase.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\3D\ColliderComponent3D.h">
+      <Filter>Scene\3D</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\3D\LightComponent3D.h">
+      <Filter>Scene\3D</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\3D\MeshComponent3D.h">
+      <Filter>Scene\3D</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\3D\TransformComponent3D.h">
+      <Filter>Scene\3D</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\UI\TransformComponentUI.h">
+      <Filter>Scene\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\Light.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\Light3D.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\LoadableObject.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="RefManager2Dim.inl">
@@ -483,6 +564,9 @@
     </None>
     <None Include="RefManager1DimAssync.inl">
       <Filter>RefManager\1 Dim Assync</Filter>
+    </None>
+    <None Include="Scene\ComponentBase.inl">
+      <Filter>Scene</Filter>
     </None>
   </ItemGroup>
 </Project>

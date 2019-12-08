@@ -3,9 +3,6 @@
 // General
 #include "File.h"
 
-// Additional
-#include "BaseManager.h"
-
 CFile::CFile(const std::string& _root, const std::string& _fullFileName) :
 	m_Name(_fullFileName),
 	m_Path(""),

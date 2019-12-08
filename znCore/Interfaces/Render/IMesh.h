@@ -9,7 +9,7 @@ class RenderEventArgs;
 
 ZN_INTERFACE OW_ENGINE_API IMesh : public std::enable_shared_from_this<IMesh>
 {
-	typedef std::map<BufferBinding, std::shared_ptr<IBuffer>> BufferMap;
+	typedef std::unordered_map<BufferBinding, std::shared_ptr<IBuffer>> BufferMap;
 
 	virtual ~IMesh() {}
 

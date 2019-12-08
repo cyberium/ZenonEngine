@@ -1,25 +1,45 @@
 #pragma once
 
 // Forward BEGIN
-struct IManager;
-struct IBaseManager;
+ZN_INTERFACE IManager;
+ZN_INTERFACE IBaseManager;
 // Forward END
 
 
-struct OW_ENGINE_API IznPlugin
+ZN_INTERFACE OW_ENGINE_API IznPlugin
 {
 	virtual ~IznPlugin() {}
 
-	virtual bool									Initialize(IBaseManager* BaseManager) = 0;
+	virtual bool									Initialize() = 0;
 	virtual void									Finalize() = 0;
+
+	virtual std::string                             GetName() const = 0;
+	virtual std::string                             GetDescription() const = 0;
 };
 
-struct OW_ENGINE_API
+
+
+ZN_INTERFACE OW_ENGINE_API IznPluginsEventListener
+{
+	virtual ~IznPluginsEventListener() {}
+
+	virtual void OnPluginAdded(std::shared_ptr<IznPlugin> Plugin) = 0;
+	virtual void OnPluginInitialized(std::shared_ptr<IznPlugin> Plugin) = 0;
+};
+
+
+
+ZN_INTERFACE OW_ENGINE_API
 	__declspec(uuid("439F9EB6-D1F1-461C-B63B-A0D8CCAE0E58"))
 	IznPluginsManager : public IManager
 {
 	virtual ~IznPluginsManager() {}
 
-	virtual bool									RegisterPlugin(const std::string& PluginDLLName) = 0;
-	virtual void									UnregisterPlugin() = 0;
+	virtual bool									AddPlugin(const std::string& PluginDLLName) = 0;
+	virtual void									RemovePlugin(std::shared_ptr<IznPlugin> Plugin) = 0;
+
+	virtual void                                    InitializeAllPlugins() = 0;
+
+	virtual void                                    AddPluginEventListener(std::shared_ptr<IznPluginsEventListener> PluginEventListener) = 0;
+	virtual void                                    RemovePluginEventListener(std::shared_ptr<IznPluginsEventListener> PluginEventListener) = 0;
 };

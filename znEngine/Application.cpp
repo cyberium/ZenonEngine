@@ -69,7 +69,7 @@ void Application::Stop()
 
 std::shared_ptr<IRenderDevice> Application::CreateRenderDevice(RenderDeviceType DeviceType)
 {
-	SetRenderDevice(GetManager<IznRenderDeviceCreatorFactory>(m_BaseManager)->GetRenderDeviceCreator(DeviceType)->CreateRenderDevice());
+	SetRenderDevice(GetManager<IznRenderDeviceFactory>(m_BaseManager)->GetRenderDeviceCreator(DeviceType)->CreateRenderDevice());
 	return GetRenderDevice();
 }
 

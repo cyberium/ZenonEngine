@@ -17,9 +17,9 @@ ZN_INTERFACE OW_ENGINE_API IznRenderDeviceCreator
 
 ZN_INTERFACE OW_ENGINE_API
 	__declspec(uuid("E0313DD4-A169-4369-BA8C-2F10323832CB"))
-	IznRenderDeviceCreatorFactory : IManager
+	IznRenderDeviceFactory : IManager
 {
-	virtual ~IznRenderDeviceCreatorFactory() {}
+	virtual ~IznRenderDeviceFactory() {}
 
 	virtual void RegisterRenderDeviceCreator(std::shared_ptr<IznRenderDeviceCreator> RenderDeviceCreator) = 0;
 	virtual void UnregisterRenderDeviceCreator(std::shared_ptr<IznRenderDeviceCreator> RenderDeviceCreator) = 0;

@@ -137,8 +137,8 @@ bool CLoader::sortFunctor::operator()(const std::shared_ptr<ILoadable>& first, c
 
 	if (camera)
 	{
-		bool cullFirst = !camera->GetFrustum()->cullSphere(node3DFirst->GetComponent<CTransformComponent3D>()->GetTranslation(), 15.0f);
-		bool cullSecond = !camera->GetFrustum()->cullSphere(node3DSecond->GetComponent<CTransformComponent3D>()->GetTranslation(), 15.0f);
+		bool cullFirst = !camera->GetFrustum()->cullSphere(node3DFirst->GetComponent<ITransformComponent3D>()->GetTranslation(), 15.0f);
+		bool cullSecond = !camera->GetFrustum()->cullSphere(node3DSecond->GetComponent<ITransformComponent3D>()->GetTranslation(), 15.0f);
 
 		if (cullFirst && !cullSecond)
 			return true;
@@ -155,8 +155,8 @@ bool CLoader::sortFunctor::operator()(const std::shared_ptr<ILoadable>& first, c
 	{
 		if (camera)
 		{
-			float distToCamera2DFirst = glm::length(Fix_X0Z(camera->GetTranslation()) - node3DFirst->GetComponent<CTransformComponent3D>()->GetTranslation());
-			float distToCamera2DSecond = glm::length(Fix_X0Z(camera->GetTranslation()) - node3DSecond->GetComponent<CTransformComponent3D>()->GetTranslation());
+			float distToCamera2DFirst = glm::length(Fix_X0Z(camera->GetTranslation()) - node3DFirst->GetComponent<ITransformComponent3D>()->GetTranslation());
+			float distToCamera2DSecond = glm::length(Fix_X0Z(camera->GetTranslation()) - node3DSecond->GetComponent<ITransformComponent3D>()->GetTranslation());
 			return distToCamera2DFirst < distToCamera2DSecond;
 		}
 	}

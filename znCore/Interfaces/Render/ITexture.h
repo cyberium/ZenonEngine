@@ -228,5 +228,5 @@ T ITexture::FetchPixel(glm::ivec2 coord)
 
 
 typedef std::vector<std::shared_ptr<ITexture>> TextureList;
-typedef std::map<uint8_t, std::shared_ptr<ITexture>> TextureMap;
-typedef std::map<std::string, std::shared_ptr<ITexture>> TextureNameMap;
+typedef std::unordered_map<uint8_t, std::shared_ptr<ITexture>> TextureMap;
+typedef std::unordered_map<std::string, std::shared_ptr<ITexture>> TextureNameMap;

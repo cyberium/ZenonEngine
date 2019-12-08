@@ -31,7 +31,7 @@ ZN_INTERFACE OW_ENGINE_API IShader
 	 * A shader macro consists of a macro name and a definition.
 	 * Use this to pass macro definitions to the shader compiler.
 	 */
-	typedef std::map< std::string, std::string > ShaderMacros;
+	typedef std::unordered_map< std::string, std::string > ShaderMacros;
 
 
 	/**
@@ -96,5 +96,5 @@ ZN_INTERFACE OW_ENGINE_API IShader
 };
 
 typedef std::vector<std::shared_ptr<IShader>> ShaderList;
-typedef std::map<IShader::ShaderType, std::shared_ptr<IShader>> ShaderMap;
-typedef std::map<std::string, std::shared_ptr<IShader>> ShaderNameMap;
+typedef std::unordered_map<IShader::ShaderType, std::shared_ptr<IShader>> ShaderMap;
+typedef std::unordered_map<std::string, std::shared_ptr<IShader>> ShaderNameMap;

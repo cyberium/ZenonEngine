@@ -11,12 +11,8 @@
 #include "Materials/MaterialTextured.h"
 
 #include "SceneFunctional/3D/SceneNode3D.h"
-#include "SceneFunctional/3D/TransformComponent3D.h"
-#include "SceneFunctional/3D/MeshComponent3D.h"
-#include "SceneFunctional/3D/ColliderComponent3D.h"
 
 #include "Passes/ClearRenderTargetPass.h"
-#include "Passes/BasePass.h"
 
 #include "CreatePasses.h"
 
@@ -95,9 +91,9 @@ void CGameState_World::OnRenderUI(RenderEventArgs& e)
 
 void CGameState_World::Load3D()
 {
-	for (size_t i = 0; i < 100; i++)
+	for (size_t i = 0; i < 10; i++)
 	{
-		for (size_t j = 0; j < 100; j++)
+		for (size_t j = 0; j < 10; j++)
 		{
 			std::shared_ptr<SceneNode3D> sceneNode = m_Scene->CreateSceneNode<SceneNode3D>(m_Scene->GetRootNode());
 
@@ -108,16 +104,16 @@ void CGameState_World::Load3D()
 			mat->SetTexture(0, _RenderDevice->CreateTexture2D("default.png"));
 			mesh->SetMaterial(mat);
 
-			sceneNode->GetComponent<CTransformComponent3D>()->SetTranslate(vec3(40 * i, 0.0f, 40 * j));
-			sceneNode->GetComponent<CTransformComponent3D>()->SetScale(vec3(15, 15, 15));
-			sceneNode->GetComponent<CMeshComponent3D>()->AddMesh(mesh);
+			sceneNode->GetComponent<ITransformComponent3D>()->SetTranslate(vec3(40 * i, 0.0f, 40 * j));
+			sceneNode->GetComponent<ITransformComponent3D>()->SetScale(vec3(15, 15, 15));
+			sceneNode->GetComponent<IMeshComponent3D>()->AddMesh(mesh);
 		}
 	}
 
 	//CFBX fbx(m_3DScene->GetRootNode());
 
 
-	m_Technique.AddPass(std::make_shared<ClearRenderTargetPass>(GetRenderWindow()->GetRenderTarget(), ClearFlags::All, g_ClearColor, 1.0f, 0));
+	m_Technique.AddPass(std::make_shared<ClearRenderTargetPass>(_RenderDevice, GetRenderWindow()->GetRenderTarget(), ClearFlags::All, g_ClearColor, 1.0f, 0));
 	Add3DPasses(_RenderDevice, GetRenderWindow()->GetRenderTarget(), &m_Technique, GetRenderWindow()->GetViewport(), m_Scene);
 }
 

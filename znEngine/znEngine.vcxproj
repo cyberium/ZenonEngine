@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application_Events.cpp" />
+    <ClCompile Include="BaseManager.cpp" />
     <ClCompile Include="CameraControllers\ArcBallCameraController.cpp" />
     <ClCompile Include="CameraControllers\Camera.cpp" />
     <ClCompile Include="CameraControllers\CameraControllerBase.cpp" />
@@ -33,9 +34,6 @@
     <ClCompile Include="Materials\UI_Font_Material.cpp" />
     <ClCompile Include="Materials\UI_Line_Material.cpp" />
     <ClCompile Include="Materials\UI_Texture_Material.cpp" />
-    <ClCompile Include="Passes\AbstractPass.cpp" />
-    <ClCompile Include="Passes\BasePass.cpp" />
-    <ClCompile Include="Passes\BaseUIPass.cpp" />
     <ClCompile Include="Passes\BeginQueryPass.cpp" />
     <ClCompile Include="Passes\ClearRenderTargetPass.cpp" />
     <ClCompile Include="Passes\CopyBufferPass.cpp" />
@@ -47,28 +45,22 @@
     <ClCompile Include="Passes\GenerateMipMapsPass.cpp" />
     <ClCompile Include="Passes\InvokeFunctionPass.cpp" />
     <ClCompile Include="Passes\PostprocessPass.cpp" />
-    <ClCompile Include="Passes\RenderTechnique.cpp" />
     <ClCompile Include="Passes\TextureMaterialPass.cpp" />
-    <ClCompile Include="RenderDeviceCreatorFactory.cpp" />
-    <ClCompile Include="SceneFunctional\3D\ColliderComponent3D.cpp" />
-    <ClCompile Include="SceneFunctional\3D\LightComponent3D.cpp" />
-    <ClCompile Include="SceneFunctional\3D\MeshComponent3D.cpp" />
+    <ClCompile Include="PluginsManager.cpp" />
+    <ClCompile Include="RenderDeviceFactory.cpp" />
     <ClCompile Include="SceneFunctional\3D\SceneNode3D.cpp" />
-    <ClCompile Include="SceneFunctional\3D\TransformComponent3D.cpp" />
-    <ClCompile Include="SceneFunctional\Base\ComponentBase.cpp" />
     <ClCompile Include="SceneFunctional\Base\SceneBase.cpp" />
     <ClCompile Include="SceneFunctional\Base\SceneNodeBase.cpp" />
-    <ClCompile Include="SceneFunctional\Base\TransformComponentBase.cpp" />
-    <ClCompile Include="SceneFunctional\Light3D.cpp" />
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="CreatePasses.cpp" />
     <ClCompile Include="EngineTime.cpp" />
     <ClCompile Include="GameState.cpp" />
     <ClCompile Include="Loader.cpp" />
+    <ClCompile Include="SceneFunctional\SceneNodeDefaultCreator.cpp" />
+    <ClCompile Include="SceneFunctional\SceneNodesFactory.cpp" />
     <ClCompile Include="SceneFunctional\UI\Fonts\Font.cpp" />
     <ClCompile Include="SceneFunctional\UI\Fonts\FontsManager.cpp" />
     <ClCompile Include="SceneFunctional\UI\SceneNodeUI.cpp" />
-    <ClCompile Include="SceneFunctional\UI\TransformComponentUI.cpp" />
     <ClCompile Include="SceneFunctional\UI\UIBeizerLine.cpp" />
     <ClCompile Include="SceneFunctional\UI\UIButton.cpp" />
     <ClCompile Include="SceneFunctional\UI\UIColor.cpp" />
@@ -81,7 +73,6 @@
     <ClCompile Include="SceneFunctional\UI\UITexture.cpp" />
     <ClCompile Include="SceneFunctional\UI\UIUtils.cpp" />
     <ClCompile Include="SceneFunctional\UI\UIWindow.cpp" />
-    <ClCompile Include="Settings\WoWSettingsGroup.cpp" />
     <ClCompile Include="Settings\GroupVideo.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -95,6 +86,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\shared\znEngine.h" />
+    <ClInclude Include="BaseManager.h" />
     <ClInclude Include="CameraControllers\ArcBallCameraController.h" />
     <ClInclude Include="CameraControllers\Camera.h" />
     <ClInclude Include="CameraControllers\CameraControllerBase.h" />
@@ -108,9 +100,6 @@
     <ClInclude Include="Materials\UI_Font_Material.h" />
     <ClInclude Include="Materials\UI_Line_Material.h" />
     <ClInclude Include="Materials\UI_Texture_Material.h" />
-    <ClInclude Include="Passes\AbstractPass.h" />
-    <ClInclude Include="Passes\BasePass.h" />
-    <ClInclude Include="Passes\BaseUIPass.h" />
     <ClInclude Include="Passes\BeginQueryPass.h" />
     <ClInclude Include="Passes\ClearRenderTargetPass.h" />
     <ClInclude Include="Passes\CopyBufferPass.h" />
@@ -122,30 +111,23 @@
     <ClInclude Include="Passes\GenerateMipMapsPass.h" />
     <ClInclude Include="Passes\InvokeFunctionPass.h" />
     <ClInclude Include="Passes\PostprocessPass.h" />
-    <ClInclude Include="Passes\RenderTechnique.h" />
     <ClInclude Include="Passes\TextureMaterialPass.h" />
-    <ClInclude Include="RenderDeviceCreatorFactory.h" />
-    <ClInclude Include="SceneFunctional\3D\ColliderComponent3D.h" />
-    <ClInclude Include="SceneFunctional\3D\LightComponent3D.h" />
-    <ClInclude Include="SceneFunctional\3D\MeshComponent3D.h" />
+    <ClInclude Include="PluginsManager.h" />
+    <ClInclude Include="RenderDeviceFactory.h" />
     <ClInclude Include="SceneFunctional\3D\SceneNode3D.h" />
-    <ClInclude Include="SceneFunctional\3D\TransformComponent3D.h" />
-    <ClInclude Include="SceneFunctional\Base\ComponentBase.h" />
     <ClInclude Include="SceneFunctional\Base\SceneBase.h" />
     <ClInclude Include="SceneFunctional\Base\SceneNodeBase.h" />
-    <ClInclude Include="SceneFunctional\Base\TransformComponentBase.h" />
-    <ClInclude Include="SceneFunctional\Light.h" />
-    <ClInclude Include="SceneFunctional\Light3D.h" />
     <ClInclude Include="Application.h" />
     <ClInclude Include="common.h" />
     <ClInclude Include="CreatePasses.h" />
     <ClInclude Include="EngineTime.h" />
     <ClInclude Include="GameState.h" />
     <ClInclude Include="Loader.h" />
+    <ClInclude Include="SceneFunctional\SceneNodeDefaultCreator.h" />
+    <ClInclude Include="SceneFunctional\SceneNodesFactory.h" />
     <ClInclude Include="SceneFunctional\UI\Fonts\Font.h" />
     <ClInclude Include="SceneFunctional\UI\Fonts\FontsManager.h" />
     <ClInclude Include="SceneFunctional\UI\SceneNodeUI.h" />
-    <ClInclude Include="SceneFunctional\UI\TransformComponentUI.h" />
     <ClInclude Include="SceneFunctional\UI\UIBeizerLine.h" />
     <ClInclude Include="SceneFunctional\UI\UIButton.h" />
     <ClInclude Include="SceneFunctional\UI\UIColor.h" />
@@ -158,7 +140,6 @@
     <ClInclude Include="SceneFunctional\UI\UITexture.h" />
     <ClInclude Include="SceneFunctional\UI\UIUtils.h" />
     <ClInclude Include="SceneFunctional\UI\UIWindow.h" />
-    <ClInclude Include="Settings\WoWSettingsGroup.h" />
     <ClInclude Include="Settings\GroupVideo.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="WindowClassRegistrator.h" />
@@ -224,7 +205,6 @@
       <FileType>Document</FileType>
     </Text>
     <None Include="SceneFunctional\3D\SceneNode3D.inl" />
-    <None Include="SceneFunctional\Base\ComponentBase.inl" />
     <None Include="SceneFunctional\UI\SceneNodeUI.inl" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
@@ -299,7 +279,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <PrecompiledHeader>Use</PrecompiledHeader>
-      <WarningLevel>Level4</WarningLevel>
+      <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;_USRDLL;OW_ENGINE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
@@ -326,7 +306,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <PrecompiledHeader>Use</PrecompiledHeader>
-      <WarningLevel>Level4</WarningLevel>
+      <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;_USRDLL;OW_ENGINE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
@@ -352,7 +332,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <WarningLevel>Level4</WarningLevel>
+      <WarningLevel>Level3</WarningLevel>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
@@ -381,7 +361,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <WarningLevel>Level4</WarningLevel>
+      <WarningLevel>Level3</WarningLevel>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>

@@ -5,12 +5,10 @@
 
 CMeshComponent3D::CMeshComponent3D(std::shared_ptr<ISceneNode> OwnerNode)
     : CComponentBase(OwnerNode)
-{
-}
+{}
 
 CMeshComponent3D::~CMeshComponent3D()
-{
-}
+{}
 
 
 void CMeshComponent3D::AddMesh(std::shared_ptr<IMesh> mesh)

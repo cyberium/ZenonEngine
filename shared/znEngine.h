@@ -19,7 +19,7 @@
 #include "../znEngine/SceneFunctional/UI/Fonts/FontsManager.h"
 #include "../znEngine/WindowClassRegistrator.h"
 #include "../znEngine/WindowCreator.h"
-
+#include "../znEngine/GameState_Default.h"
 
 //
 // UI
@@ -42,9 +42,6 @@
 #include "../znEngine/Materials/UI_Color_Material.h"
 #include "../znEngine/Materials/UI_Texture_Material.h"
 
-// base passes
-#include "../znEngine/Passes/BaseUIPass.h"
-
 
 
 //
@@ -60,10 +57,6 @@
 #include "../znEngine/Materials/MaterialDebug.h"
 #include "../znEngine/Materials/MaterialTextured.h"
 
-// base passes
-#include "../znEngine/Passes/BasePass.h"
-#include "../znEngine/Passes/RenderTechnique.h"
-
 // other passes
 #include "../znEngine/Passes/ClearRenderTargetPass.h"
 #include "../znEngine/Passes/CopyBufferPass.h"
@@ -77,12 +70,8 @@
 
 // Postprocess
 #include "../znEngine/Passes/GBuffer.h"
-#include "../znEngine/SceneFunctional/Light.h"
-#include "../znEngine/SceneFunctional/Light3D.h"
 #include "../znEngine/Passes/DeferredLightingPass.h"
 
-
-#include "../znEngine/GameState_Default.h"
 
 /*
  * Initialize improtant managers and plugins

@@ -3,8 +3,9 @@
 // General
 #include "DispatchPass.h"
 
-DispatchPass::DispatchPass(std::shared_ptr<IShader> computeShader, const glm::uvec3& numGroups)
-	: m_pComputeShader(computeShader)
+DispatchPass::DispatchPass(std::shared_ptr<IRenderDevice> RenderDevice, std::shared_ptr<IShader> computeShader, const glm::uvec3& numGroups)
+	: AbstractPass(RenderDevice)
+	, m_pComputeShader(computeShader)
 	, m_NumGroups(numGroups)
 {}
 

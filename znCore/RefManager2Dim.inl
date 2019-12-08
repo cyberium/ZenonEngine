@@ -36,7 +36,7 @@ inline T* RefManager2Dim<T, ID_TYPE>::Add(const std::string& name)
 template <class T, class ID_TYPE>
 inline void RefManager2Dim<T, ID_TYPE>::Delete(const std::string& name)
 {
-	std::map<std::string, ID_TYPE>::iterator name_id = names.find(name);
+	std::unordered_map<std::string, ID_TYPE>::iterator name_id = names.find(name);
 	if (name_id != names.end())
 	{
 		Delete(name_id->second);
@@ -77,7 +77,7 @@ inline void RefManager2Dim<T, ID_TYPE>::Delete(T* item)
 template <class T, class ID_TYPE>
 inline ID_TYPE RefManager2Dim<T, ID_TYPE>::GetIDByName(const std::string& name)
 {
-	std::map<std::string, ID_TYPE>::iterator name_id = names.find(name);
+	std::unordered_map<std::string, ID_TYPE>::iterator name_id = names.find(name);
 	if (name_id != names.end())
 	{
 		return name_id->second;
@@ -89,7 +89,7 @@ inline ID_TYPE RefManager2Dim<T, ID_TYPE>::GetIDByName(const std::string& name)
 template <class T, class ID_TYPE>
 inline T* RefManager2Dim<T, ID_TYPE>::GetItemByID(ID_TYPE id)
 {
-	std::map<ID_TYPE, T*>::iterator id_item = items.find(id);
+	std::unordered_map<ID_TYPE, T*>::iterator id_item = items.find(id);
 	if (id_item != items.end())
 	{
 		return id_item->second;

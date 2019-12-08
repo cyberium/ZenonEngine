@@ -4,8 +4,10 @@
 ZN_INTERFACE ISceneNodeComponent;
 ZN_INTERFACE IScene;
 ZN_INTERFACE ICamera;
+class Viewport;
 ZN_INTERFACE IVisitor;
 class UpdateEventArgs;
+ZN_INTERFACE IManager;
 // FORWARD END
 
 ZN_INTERFACE OW_ENGINE_API ISceneNode : public std::enable_shared_from_this<ISceneNode>
@@ -39,6 +41,7 @@ ZN_INTERFACE OW_ENGINE_API ISceneNode : public std::enable_shared_from_this<ISce
 
 	// Called before all others calls
 	virtual void                                    UpdateCamera(const ICamera* camera) = 0;
+	virtual void                                    UpdateViewport(const Viewport* viewport) = 0;
 
 	virtual bool                                    Accept(IVisitor* visitor) = 0;
 	virtual void                                    OnUpdate(UpdateEventArgs& e) = 0;
@@ -80,6 +83,13 @@ ZN_INTERFACE OW_ENGINE_API ISceneNode : public std::enable_shared_from_this<ISce
 	{
 		return GetScene()->CreateSceneNode<T>(shared_from_this(), std::forward<Args>(_Args)...);
 	}
+
+	// Creates new SceneNode and initialize it. You !must! call this method instead of creating nodes in code
+	template<typename T, typename... Args>
+	inline std::shared_ptr<T> CreateWrappedSceneNode(std::string WrapperNodeTypeName, Args &&... _Args)
+	{
+		return GetScene()->CreateWrappedSceneNode<T>(WrapperNodeTypeName, shared_from_this(), std::forward<Args>(_Args)...);
+	}
 };
 typedef std::vector<std::shared_ptr<ISceneNode>>                NodeList;
 typedef std::multimap<std::string, std::shared_ptr<ISceneNode>> NodeNameMap;
@@ -93,9 +103,44 @@ ZN_INTERFACE OW_ENGINE_API ISceneNodeInternal
 	virtual void SetParentInternal(std::weak_ptr<ISceneNode> parentNode) = 0;
 };
 
+
+ZN_INTERFACE OW_ENGINE_API ISceneNode3D
+{
+	virtual ~ISceneNode3D() {}
+};
+
+ZN_INTERFACE OW_ENGINE_API ISceneNodeUI
+{
+	virtual ~ISceneNodeUI() {}
+};
+
 ZN_INTERFACE OW_ENGINE_API ISceneNodeWrapper
 {
 	virtual ~ISceneNodeWrapper() {}
 
-	virtual void SetThisNode(std::shared_ptr<ISceneNode> ThisNode) = 0;
+	virtual void SetWrappedNode(std::shared_ptr<ISceneNode> ThisNode) = 0;
+};
+
+
+//
+// For plugins
+//
+ZN_INTERFACE OW_ENGINE_API ISceneNodeCreator
+{
+	virtual ~ISceneNodeCreator() {}
+
+	virtual size_t                                  GetSceneNodesCount() const = 0;
+	virtual std::string                             GetSceneNodeTypeName(size_t Index) const = 0;
+	virtual std::shared_ptr<ISceneNode>             CreateSceneNode(std::shared_ptr<ISceneNode> Parent, size_t Index) const = 0;
+};
+
+ZN_INTERFACE OW_ENGINE_API
+	__declspec(uuid("9C3ACF8D-F30D-47AE-BBA1-D71DEA6B14D4"))
+	ISceneNodesFactory
+	: public IManager
+{
+	virtual void AddSceneNodeCreator(std::shared_ptr<ISceneNodeCreator> Creator) = 0;
+	virtual void RemoveSceneNodeCreator(std::shared_ptr<ISceneNodeCreator> Creator) = 0;
+
+	virtual std::shared_ptr<ISceneNode> CreateSceneNode(std::shared_ptr<ISceneNode> Parent, std::string SceneNodeTypeName) const = 0;
 };

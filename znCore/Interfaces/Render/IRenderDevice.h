@@ -33,7 +33,9 @@ ZN_INTERFACE OW_ENGINE_API IRenderDevicePrimitiveCollection
 	virtual std::shared_ptr<IMesh> CreateUIBeizerLine(vec2 start = vec2(0.0f, 0.0f), vec2 end = vec2(500.0f, 500.0f)) = 0;
 };
 
-ZN_INTERFACE OW_ENGINE_API IRenderDevice
+ZN_INTERFACE OW_ENGINE_API 
+	__declspec(uuid("19615D02-1592-4420-8D0C-3DB4F7C6186A"))
+	IRenderDevice : public IManager
 {
 	virtual ~IRenderDevice() {}
 

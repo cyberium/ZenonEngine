@@ -1,10 +1,10 @@
 #pragma once
 
 // Forward BEGIN
-struct IManager;
+ZN_INTERFACE IManager;
 // Forward END
 
-struct OW_ENGINE_API ILoadable
+ZN_INTERFACE OW_ENGINE_API ILoadable
 {
 	virtual											~ILoadable() {}
 
@@ -21,7 +21,7 @@ struct OW_ENGINE_API ILoadable
 	virtual uint32									getPriority() const = 0;
 };
 
-struct OW_ENGINE_API
+ZN_INTERFACE OW_ENGINE_API
 	__declspec(uuid("18A045EF-D291-45E5-8F61-E223C4AFEF83"))
 	ILoader : public IManager
 {

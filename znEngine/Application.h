@@ -70,7 +70,7 @@ private:
 
 	// IGameStateManager
 	std::shared_ptr<IGameState>                                     m_CurrentGameState;
-	std::map<GameStatesNames, std::shared_ptr<IGameState>>    m_GameStatesCollection;
+	std::unordered_map<GameStatesNames, std::shared_ptr<IGameState>>    m_GameStatesCollection;
 
 private: // IApplicationEvents
 	Event									 m_Initialize;

@@ -6,10 +6,9 @@
 // Additional
 #include "Materials/MaterialTextured.h"
 
-CTexturedMaterialPass::CTexturedMaterialPass(std::shared_ptr<IScene> scene, std::shared_ptr<IPipelineState> pipeline)
-	: BasePass(scene, pipeline)
-{
-}
+CTexturedMaterialPass::CTexturedMaterialPass(std::shared_ptr<IRenderDevice> RenderDevice, std::shared_ptr<IScene> Scene, std::shared_ptr<IPipelineState> Pipeline)
+	: Base3DPass(RenderDevice, Scene, Pipeline)
+{}
 
 CTexturedMaterialPass::~CTexturedMaterialPass()
 {}
@@ -26,5 +25,5 @@ bool CTexturedMaterialPass::Visit(IMesh * Mesh, UINT IndexStartLocation, UINT In
 	if (materialTextured == nullptr)
 		return false;
 
-	return base::Visit(Mesh, IndexStartLocation, IndexCnt, VertexStartLocation, VertexCnt);
+	return Base3DPass::Visit(Mesh, IndexStartLocation, IndexCnt, VertexStartLocation, VertexCnt);
 }

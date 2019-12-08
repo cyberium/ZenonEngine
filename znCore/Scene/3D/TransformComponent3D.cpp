@@ -10,12 +10,10 @@ CTransformComponent3D::CTransformComponent3D(std::shared_ptr<ISceneNode> OwnerNo
     , m_RotateQuat(quat())
     , m_IsRotateQuat(false)
     , m_Scale(1.0f, 1.0f, 1.0f)
-{
-}
+{}
 
 CTransformComponent3D::~CTransformComponent3D()
-{
-}
+{}
 
 
 void CTransformComponent3D::SetTranslate(cvec3 _translate)

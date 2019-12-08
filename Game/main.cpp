@@ -27,6 +27,7 @@ void main_internal(int argumentCount, char* arguments[])
 	);
 
 	std::shared_ptr<IRenderDevice> renderDevice = app.CreateRenderDevice(RenderDeviceType::RenderDeviceType_DirectX);
+	AddManager<IRenderDevice>(BaseManager, renderDevice);
 
 	std::shared_ptr<IRenderWindow> firstRenderWindow = renderDevice->CreateRenderWindow(&firstWindowObject, true);
 	app.AddRenderWindow(firstRenderWindow);

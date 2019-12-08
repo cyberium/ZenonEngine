@@ -48,5 +48,5 @@ public:
 
 private:
 	std::mutex m_Lock;
-	std::map<T, P> m_Map;
+	std::unordered_map<T, P> m_Map;
 };

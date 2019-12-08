@@ -3,8 +3,9 @@
 // General
 #include "InvokeFunctionPass.h"
 
-InvokeFunctionPass::InvokeFunctionPass(std::function<void(void)> func)
-	: m_Func(func)
+InvokeFunctionPass::InvokeFunctionPass(std::shared_ptr<IRenderDevice> RenderDevice, std::function<void(void)> func)
+	: AbstractPass(RenderDevice)
+	, m_Func(func)
 {}
 
 InvokeFunctionPass::~InvokeFunctionPass()

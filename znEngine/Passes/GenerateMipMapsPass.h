@@ -1,12 +1,10 @@
 #pragma once
 
-#include "AbstractPass.h"
-
 class OW_ENGINE_API GenerateMipMapPass : public AbstractPass
 {
 public:
-	GenerateMipMapPass(std::shared_ptr<IRenderTarget> renderTarget);
-	GenerateMipMapPass(std::shared_ptr<ITexture> texture);
+	GenerateMipMapPass(std::shared_ptr<IRenderDevice> RenderDevice, std::shared_ptr<IRenderTarget> renderTarget);
+	GenerateMipMapPass(std::shared_ptr<IRenderDevice> RenderDevice, std::shared_ptr<ITexture> texture);
 	virtual ~GenerateMipMapPass();
 
 	virtual void Render(RenderEventArgs& e);

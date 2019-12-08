@@ -104,6 +104,11 @@ void CSceneNodeProxie::UpdateCamera(const ICamera * camera)
 	m_SceneNode->UpdateCamera(camera);
 }
 
+void CSceneNodeProxie::UpdateViewport(const Viewport * viewport)
+{
+	m_SceneNode->UpdateViewport(viewport);
+}
+
 bool CSceneNodeProxie::Accept(IVisitor * visitor)
 {
 	return m_SceneNode->Accept(visitor);
@@ -119,9 +124,19 @@ void CSceneNodeProxie::OnUpdate(UpdateEventArgs & e)
 //
 // ISceneNodeWrapper
 //
-void CSceneNodeProxie::SetThisNode(std::shared_ptr<ISceneNode> ThisNode)
+void CSceneNodeProxie::SetWrappedNode(std::shared_ptr<ISceneNode> ThisNode)
 {
 	_ASSERT(m_SceneNode == nullptr);
 	m_SceneNode = ThisNode;
 	_ASSERT(m_SceneNode != nullptr);
+}
+
+
+
+//
+// Protected
+//
+IBaseManager* CSceneNodeProxie::GetBaseManager() const
+{
+	return std::dynamic_pointer_cast<IBaseManagerHolder>(GetScene())->GetBaseManager();
 }

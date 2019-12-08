@@ -6,8 +6,10 @@
 // Additional
 #include "Application.h"
 #include "SceneFunctional/Base/SceneBase.h"
+#include "SceneFunctional/3D/SceneNode3D.h"
 
 DeferredLightingPass::DeferredLightingPass(
+	std::shared_ptr<IRenderDevice> RenderDevice,
 	std::shared_ptr<IScene> scene,
 	std::shared_ptr<IPipelineState> lightPipeline0,
 	std::shared_ptr<IPipelineState> lightPipeline1,
@@ -18,10 +20,10 @@ DeferredLightingPass::DeferredLightingPass(
 	std::shared_ptr<ITexture> normalTexture,
 	std::shared_ptr<ITexture> depthTexture
 )
-	: m_LightPipeline0(lightPipeline0)
+	: CBaseScenePass(RenderDevice, scene, nullptr)
+	, m_LightPipeline0(lightPipeline0)
 	, m_LightPipeline1(lightPipeline1)
 	, m_DirectionalLightPipeline(directionalLightPipeline)
-	, m_Scene(scene)
 	, m_PositionTexture(positionTexture)
 	, m_DiffuseTexture(diffuseTexture)
 	, m_SpecularTexture(specularTexture)
@@ -45,7 +47,7 @@ DeferredLightingPass::DeferredLightingPass(
 	std::shared_ptr<SceneNode3D> sphereSceneNode = m_pPointLightScene->CreateSceneNode<SceneNode3D>(std::shared_ptr<ISceneNode>());
 
 	std::shared_ptr<IMesh> sphereMesh = _RenderDevice->GetPrimitiveCollection()->CreateSphere();
-	sphereSceneNode->GetComponent<CMeshComponent3D>()->AddMesh(sphereMesh);
+	sphereSceneNode->GetComponent<IMeshComponent3D>()->AddMesh(sphereMesh);
 
 	// Create a full-screen quad that is placed on the far clip plane.
 	m_pDirectionalLightScene = std::make_shared<SceneBase>(baseManager);
@@ -54,7 +56,7 @@ DeferredLightingPass::DeferredLightingPass(
 	quadSceneNode->SetParent(m_pDirectionalLightScene->GetRootNode());
 
 	std::shared_ptr<IMesh> quadMesh = _RenderDevice->GetPrimitiveCollection()->CreateScreenQuad(0, 1280, 1024, 0); // _RenderDevice->CreateScreenQuad(-1, 1, -1, 1, -1);
-	quadSceneNode->GetComponent<CMeshComponent3D>()->AddMesh(quadMesh);
+	quadSceneNode->GetComponent<IMeshComponent3D>()->AddMesh(quadMesh);
 }
 
 DeferredLightingPass::~DeferredLightingPass()
@@ -160,7 +162,7 @@ void DeferredLightingPass::Render(RenderEventArgs& e)
 		m_pLightParams->m_LightIndex++;
 	}*/
 
-	m_Scene->Accept(this);
+	GetScene()->Accept(this);
 }
 
 void DeferredLightingPass::PostRender(RenderEventArgs& e)
@@ -175,9 +177,11 @@ void DeferredLightingPass::PostRender(RenderEventArgs& e)
 
 // Inherited from Visitor
 
-bool DeferredLightingPass::Visit(SceneNode3D* node)
+bool DeferredLightingPass::Visit(ISceneNode3D* node)
 {
-	m_World = node->GetComponent<CTransformComponent3D>()->GetWorldTransfom();
+	ISceneNode* sceneNode = dynamic_cast<ISceneNode*>(node);
+
+	m_World = sceneNode->GetComponent<ITransformComponent>()->GetWorldTransfom();
 
 	return true;
 }

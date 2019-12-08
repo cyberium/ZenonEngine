@@ -3,33 +3,30 @@
 // General
 #include "AbstractPass.h"
 
-// Additional
-#include "Application.h"
-
-AbstractPass::AbstractPass()
+AbstractPass::AbstractPass(std::shared_ptr<IRenderDevice> RenderDevice)
 	: m_Enabled(true)
     , m_RenderEventArgs(nullptr)
     , m_Pipeline(nullptr)
-    , m_RenderDevice(_RenderDevice)
+    , m_RenderDevice(RenderDevice)
 {
 	m_PerObjectData = (PerObject*)_aligned_malloc(sizeof(PerObject), 16);
-	m_PerObjectConstantBuffer = _RenderDevice->CreateConstantBuffer(PerObject());
+	m_PerObjectConstantBuffer = GetRenderDevice()->CreateConstantBuffer(PerObject());
 }
 
-AbstractPass::AbstractPass(std::shared_ptr<IPipelineState> Pipeline)
+AbstractPass::AbstractPass(std::shared_ptr<IRenderDevice> RenderDevice, std::shared_ptr<IPipelineState> Pipeline)
     : m_Enabled(true)
     , m_RenderEventArgs(nullptr)
     , m_Pipeline(Pipeline)
-    , m_RenderDevice(_RenderDevice)
+    , m_RenderDevice(RenderDevice)
 {
     m_PerObjectData = (PerObject*)_aligned_malloc(sizeof(PerObject), 16);
-    m_PerObjectConstantBuffer = _RenderDevice->CreateConstantBuffer(PerObject());
+    m_PerObjectConstantBuffer = GetRenderDevice()->CreateConstantBuffer(PerObject());
 }
 
 AbstractPass::~AbstractPass()
 {
 	_aligned_free(m_PerObjectData);
-	_RenderDevice->DestroyConstantBuffer(m_PerObjectConstantBuffer);
+	GetRenderDevice()->DestroyConstantBuffer(m_PerObjectConstantBuffer);
 }
 
 void AbstractPass::SetEnabled(bool enabled)
@@ -83,12 +80,12 @@ bool AbstractPass::Visit(SceneNodeBase * node)
 	return false;
 }
 
-bool AbstractPass::Visit(SceneNode3D* node)
+bool AbstractPass::Visit(ISceneNode3D* node)
 {
 	return false;
 }
 
-bool AbstractPass::Visit(CUIBaseNode* nodeUI)
+bool AbstractPass::Visit(ISceneNodeUI* nodeUI)
 {
 	return false;
 }

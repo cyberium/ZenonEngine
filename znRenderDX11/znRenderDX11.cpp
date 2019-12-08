@@ -8,19 +8,42 @@
 
 extern CLog* gLogInstance;
 
-//
-// CznRenderDX11DeviceCreator
-//
-class CznRenderDX11DeviceCreator : public IznRenderDeviceCreator
+class CznRenderDX11Plugin 
+	: public IznPlugin
+	, public IznRenderDeviceCreator
 {
 public:
-	CznRenderDX11DeviceCreator(IBaseManager* BaseManager)
+	CznRenderDX11Plugin(IBaseManager* BaseManager)
 		: m_BaseManager(BaseManager)
 	{}
-	virtual ~CznRenderDX11DeviceCreator()
+	virtual ~CznRenderDX11Plugin()
 	{}
 
+
+
+	//
+	// IznPlugin
+	//
+	bool Initialize() override
+	{
+		gLogInstance = std::dynamic_pointer_cast<CLog>(GetManager<ILog>(m_BaseManager)).get();
+
+		return true;
+	}
+	void Finalize() override
+	{}
+	std::string GetName() const override
+	{
+		return "DirectX render support plugin.";
+	}
+	std::string GetDescription() const override
+	{
+		return "Provides DirectX 11 render device support.";
+	}
+
+	//
 	// IznRenderDeviceCreator
+	//
 	RenderDeviceType GetRenderDeviceType() const
 	{
 		return RenderDeviceType::RenderDeviceType_DirectX;
@@ -43,47 +66,12 @@ private:
 
 
 
-//
-// CznRenderDX11Plugin
-//
-class CznRenderDX11Plugin : public IznPlugin
-{
-public:
-	CznRenderDX11Plugin()
-	{}
-	virtual ~CznRenderDX11Plugin()
-	{}
-
-	// IznPlugin
-	bool Initialize(IBaseManager* BaseManager)
-	{
-		m_BaseManager = BaseManager;
-		
-		gLogInstance = std::dynamic_pointer_cast<CLog>(GetManager<ILog>(m_BaseManager)).get();
-		m_RenderDeviceCreator = std::make_shared<CznRenderDX11DeviceCreator>(m_BaseManager);
-
-		GetManager<IznRenderDeviceCreatorFactory>(m_BaseManager)->RegisterRenderDeviceCreator(m_RenderDeviceCreator);
-
-		return true;
-	}
-	void Finalize()
-	{
-		GetManager<IznRenderDeviceCreatorFactory>(m_BaseManager)->UnregisterRenderDeviceCreator(m_RenderDeviceCreator);
-	}
-
-private:
-	IBaseManager* m_BaseManager;
-	std::shared_ptr<IznRenderDeviceCreator> m_RenderDeviceCreator;
-};
-
-
-
 IznPlugin* plugin = nullptr;
 IznPlugin* WINAPI GetPlugin(IBaseManager* BaseManager)
 {
 	if (plugin == nullptr)
 	{
-		plugin = new CznRenderDX11Plugin();
+		plugin = new CznRenderDX11Plugin(BaseManager);
 	}
 
 	return plugin;

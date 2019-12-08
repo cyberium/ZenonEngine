@@ -3,8 +3,9 @@
 // General
 #include "CopyTexturePass.h"
 
-CopyTexturePass::CopyTexturePass(std::shared_ptr<ITexture> destinationTexture, std::shared_ptr<ITexture> sourceTexture)
-	: m_DestinationTexture(destinationTexture)
+CopyTexturePass::CopyTexturePass(std::shared_ptr<IRenderDevice> RenderDevice, std::shared_ptr<ITexture> destinationTexture, std::shared_ptr<ITexture> sourceTexture)
+	: AbstractPass(RenderDevice)
+	, m_DestinationTexture(destinationTexture)
 	, m_SourceTexture(sourceTexture)
 {}
 

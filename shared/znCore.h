@@ -17,7 +17,22 @@
 // Log outputs
 #include "../znCore/Console.h"
 
-// Objects bindings
-#include "../znCore/BaseManager.h"
+#include "../znCore/Passes/RenderTechnique.h"
+#include "../znCore/Passes/AbstractPass.h"
+#include "../znCore/Passes/Base3DPass.h"
+#include "../znCore/Passes/BaseUIPass.h"
 
-#include "../znCore/PluginsManager.h"
+
+#include "../znCore/Scene/LoadableObject.h"
+
+#include "../znCore/Scene/Light3D.h"
+
+#include "../znCore/Scene/ComponentBase.h"
+#include "../znCore/Scene/TransformComponentBase.h"
+
+#include "../znCore/Scene/3D/ColliderComponent3D.h"
+#include "../znCore/Scene/3D/LightComponent3D.h"
+#include "../znCore/Scene/3D/MeshComponent3D.h"
+#include "../znCore/Scene/3D/TransformComponent3D.h"
+
+#include "../znCore/Scene/UI/TransformComponentUI.h"

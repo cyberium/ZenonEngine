@@ -25,7 +25,6 @@ CGameState::~CGameState()
 //
 bool CGameState::Init()
 {
-	m_QualitySettings = GetManager<ISettings>(m_Application->GetBaseManager())->GetGroup("WoWSettings");
 	m_VideoSettings = GetManager<ISettings>(m_Application->GetBaseManager())->GetGroup("Video");
 
 	m_FrameQuery = GetApplication()->GetRenderDevice()->CreateQuery(IQuery::QueryType::Timer, 1);
@@ -35,13 +34,13 @@ bool CGameState::Init()
 
 	{
 		m_CameraPosText = m_Scene->GetRootNode()->CreateSceneNode<CUITextNode>();
-		m_CameraPosText->GetComponent<CTransformComponentUI>()->SetTranslate(vec2(0.0f, 0.0f));
+		m_CameraPosText->GetComponent<ITransformComponentUI>()->SetTranslate(vec2(0.0f, 0.0f));
 
 		m_CameraRotText = m_Scene->GetRootNode()->CreateSceneNode<CUITextNode>();
-		m_CameraRotText->GetComponent<CTransformComponentUI>()->SetTranslate(vec2(0.0f, 20.0f));
+		m_CameraRotText->GetComponent<ITransformComponentUI>()->SetTranslate(vec2(0.0f, 20.0f));
 
 		m_FPSText = m_Scene->GetRootNode()->CreateSceneNode<CUITextNode>();
-		m_FPSText->GetComponent<CTransformComponentUI>()->SetTranslate(vec2(0.0f, 40.0f));
+		m_FPSText->GetComponent<ITransformComponentUI>()->SetTranslate(vec2(0.0f, 40.0f));
 	}
 
     m_IsInited = true;

@@ -194,6 +194,7 @@ void CGBuffer::Load2(const Viewport * _viewPort)
 
 
 	m_Pass = std::make_shared<DeferredLightingPass>(
+		_RenderDevice,
 		m_Scene,
 		g_pDeferredLightingPipeline1, g_pDeferredLightingPipeline2, g_pDirectionalLightsPipeline,
 		m_RenderTarget->GetTexture(IRenderTarget::AttachmentPoint::Color0), // position

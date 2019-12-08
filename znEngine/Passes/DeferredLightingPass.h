@@ -1,17 +1,12 @@
 #pragma once
 
-#include "AbstractPass.h"
-#include "../SceneFunctional/Light.h"
-
-#include "../SceneFunctional/3D/SceneNode3D.h"
-
 // Use this pass to render the lights as geometry in the scene.
-class DeferredLightingPass : public AbstractPass
+class DeferredLightingPass : public CBaseScenePass
 {
-	typedef AbstractPass base;
 public:
 
 	DeferredLightingPass(
+		std::shared_ptr<IRenderDevice> RenderDevice,
 		std::shared_ptr<IScene> scene,
 		std::shared_ptr<IPipelineState> lightPipeline0,
 		std::shared_ptr<IPipelineState> lightPipeline1,
@@ -31,7 +26,7 @@ public:
 	virtual void PostRender(RenderEventArgs& e) override final;
 
 	// Inherited from Visitor
-	virtual bool Visit(SceneNode3D* node) override final;
+	virtual bool Visit(ISceneNode3D* node) override final;
 	virtual bool Visit(IMesh* Mesh, UINT IndexStartLocation = 0, UINT IndexCnt = 0, UINT VertexStartLocation = 0, UINT VertexCnt = 0) override final;
 	virtual bool Visit(std::shared_ptr<CLight3D> light) override final;
 
@@ -79,7 +74,6 @@ private:
 	// Pipeline for directional lights
 	std::shared_ptr<IPipelineState> m_DirectionalLightPipeline;
 	
-	std::shared_ptr<IScene> m_Scene;
 	std::shared_ptr<IScene> m_pPointLightScene;
 	std::shared_ptr<IScene> m_pSpotLightScene;
 	std::shared_ptr<IScene> m_pDirectionalLightScene;

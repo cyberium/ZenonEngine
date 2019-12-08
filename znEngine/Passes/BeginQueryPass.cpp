@@ -3,8 +3,9 @@
 // General
 #include "BeginQueryPass.h"
 
-BeginQueryPass::BeginQueryPass(std::shared_ptr<IQuery> query)
-    : m_pQuery(query)
+BeginQueryPass::BeginQueryPass(std::shared_ptr<IRenderDevice> RenderDevice, std::shared_ptr<IQuery> query)
+    : AbstractPass(RenderDevice)
+	, m_pQuery(query)
 {}
 
 BeginQueryPass::~BeginQueryPass()

@@ -22,18 +22,9 @@ struct OW_ENGINE_API InputSemantic
 		, GLSize(GLsize)
 	{}
 
-	// Provide the < operator for STL containers.
-	bool operator<(const InputSemantic& rhs) const
+	inline bool operator==(const InputSemantic& rhs) const
 	{
-		if (Name < rhs.Name) return true;
-		if (Name > rhs.Name) return false;
-		// Names are equal...
-
-		if (Index < rhs.Index) return true;
-		if (Index > rhs.Index) return false;
-		// Indexes are equal...
-
-		return false;
+		return (Name == rhs.Name) && (Index == rhs.Index) && (GLType == rhs.GLType) && (GLSize == rhs.GLSize);
 	}
 
 	std::string Name;
@@ -41,3 +32,17 @@ struct OW_ENGINE_API InputSemantic
 	uint32 GLType;
 	uint32 GLSize;
 };
+
+
+namespace std
+{
+	template<>
+	struct hash<InputSemantic>
+	{
+		size_t operator()(const InputSemantic& buffer) const noexcept
+		{
+			std::hash<std::string> hash;
+			return hash(buffer.Name + std::to_string(buffer.Index));
+		}
+	};
+}

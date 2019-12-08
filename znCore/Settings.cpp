@@ -3,9 +3,6 @@
 // General
 #include "Settings.h"
 
-// Additional
-#include "BaseManager.h"
-
 CSettings::CSettings(IBaseManager* BaseManager)
 	: m_BaseManager(BaseManager)
 {

@@ -56,7 +56,7 @@ mat4 CTransformComponentBase::GetParentWorldTransform() const
     mat4 parentTransform(1.0f);
     if (std::shared_ptr<ISceneNode> parent = GetOwnerNode()->GetParent())
     {
-        if (std::shared_ptr<CTransformComponentBase> transformComponent = parent->GetComponent<CTransformComponentBase>())
+        if (std::shared_ptr<ITransformComponent> transformComponent = parent->GetComponent<ITransformComponent>())
         {
             parentTransform = transformComponent->GetWorldTransfom();
         }
@@ -83,7 +83,7 @@ void CTransformComponentBase::ForceRecalculateLocalTransform()
 //
 void CTransformComponentBase::OnParentChanged()
 {
-    base::OnParentChanged();
+	CComponentBase::OnParentChanged();
 
     UpdateWorldTransform();
 }

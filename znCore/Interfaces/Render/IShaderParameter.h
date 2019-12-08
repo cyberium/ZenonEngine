@@ -7,7 +7,7 @@ ZN_INTERFACE ISamplerState;
 ZN_INTERFACE IStructuredBuffer;
 // FORWARD END
 
-ZN_INTERFACE IShaderParameter
+ZN_INTERFACE OW_ENGINE_API IShaderParameter
 {
 	enum class OW_ENGINE_API Type
 	{

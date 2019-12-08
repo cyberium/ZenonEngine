@@ -42,7 +42,7 @@ glm::vec2 CUIBaseNode::GetSize()
 
 BoundingRect CUIBaseNode::GetBoundsAbs()
 {
-    std::shared_ptr<CTransformComponentUI> transformUI = GetComponent<CTransformComponentUI>();
+    std::shared_ptr<ITransformComponentUI> transformUI = GetComponent<ITransformComponentUI>();
 
     BoundingRect boundRect = BoundingRect(transformUI->GetTranslationAbs(), transformUI->GetTranslationAbs() + GetSize() * transformUI->GetScaleAbs());
 
@@ -70,7 +70,7 @@ void CUIBaseNode::UpdateViewport(const Viewport* viewport)
 //
 bool CUIBaseNode::Accept(IVisitor* visitor)
 {
-	bool visitResult = visitor->Visit(this);
+	bool visitResult = visitor->Visit((ISceneNodeUI*)this);
 	if (!visitResult)
 		return false;
 
@@ -165,7 +165,7 @@ void CUIBaseNode::DoMouseLeaved()
 	m_IsMouseOnNode = false;
 }
 
-void CUIBaseNode::SetTransformComponent(std::shared_ptr<CTransformComponentUI> TransformComponent)
+void CUIBaseNode::SetTransformComponent(std::shared_ptr<ITransformComponentUI> TransformComponent)
 {
     m_Components_Transform = TransformComponent;
 }

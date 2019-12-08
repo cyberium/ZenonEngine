@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../../SceneFunctional/Base/ComponentBase.h"
-#include "../../SceneFunctional/Light3D.h"
+#include "../ComponentBase.h"
+#include "../Light3D.h"
 
 class 
     __declspec(uuid("572F705C-8824-4394-B031-DCC600AA9805"))

@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Passes/RenderTechnique.h"
 #include "SceneFunctional/UI/UIText.h"
 
 class OW_ENGINE_API CGameState 
@@ -70,7 +69,6 @@ protected:
 
 	std::shared_ptr<ICameraController>              m_DefaultCameraController;
 
-	std::shared_ptr<ISettingGroup>                  m_QualitySettings;
 	std::shared_ptr<ISettingGroup>                  m_VideoSettings;
 
 	RenderTechnique                                 m_Technique;

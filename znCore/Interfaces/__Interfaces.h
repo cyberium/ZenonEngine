@@ -49,7 +49,6 @@
 #include "Interfaces/Render/Types/Ray.h"
 #include "Interfaces/Render/Types/RaycastHit.h"
 
-
 //---------------------------------------------------------//
 //--                Render Interfaces                    --//
 //---------------------------------------------------------//

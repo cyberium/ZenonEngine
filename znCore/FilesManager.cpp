@@ -3,8 +3,6 @@
 // General
 #include "FilesManager.h"
 
-// Additional
-#include "BaseManager.h"
 
 CFilesManager::CFilesManager(IBaseManager* BaseManager)
 	: m_BaseManager(BaseManager)

@@ -15,19 +15,19 @@ inline std::shared_ptr<T> SceneNode3D::GetComponent()
 // Components engine template access specialization
 //
 template<>
-inline std::shared_ptr<CTransformComponent3D> SceneNode3D::GetComponent<CTransformComponent3D>()
+inline std::shared_ptr<ITransformComponent3D> SceneNode3D::GetComponent<ITransformComponent3D>()
 {
     return m_Components_Transform;
 }
 
 template<>
-inline std::shared_ptr<CMeshComponent3D> SceneNode3D::GetComponent<CMeshComponent3D>()
+inline std::shared_ptr<IMeshComponent3D> SceneNode3D::GetComponent<IMeshComponent3D>()
 {
 	return m_Components_Mesh;
 }
 
 template<>
-inline std::shared_ptr<CColliderComponent3D> SceneNode3D::GetComponent<CColliderComponent3D>()
+inline std::shared_ptr<IColliderComponent3D> SceneNode3D::GetComponent<IColliderComponent3D>()
 {
     return m_Components_Collider;
 }

@@ -4,9 +4,12 @@
 #include "znEngine.h"
 
 // Additional
-#include "RenderDeviceCreatorFactory.h"
+#include "BaseManager.h"
+#include "PluginsManager.h"
+#include "RenderDeviceFactory.h"
+#include "SceneFunctional/SceneNodesFactory.h"
+
 #include "Settings/GroupVideo.h"
-#include "Settings/WoWSettingsGroup.h"
 
 
 // Additional
@@ -87,17 +90,17 @@ std::vector<std::string> GetAllFilesInDirectory(const std::string& Directory, co
 	return listOfFiles;
 }
 
-
-
 IBaseManager* WINAPI InitializeEngine(std::vector<std::string> Arguments)
 {
 	IBaseManager* baseManager = new CBaseManager();
+
+	std::shared_ptr<IznPluginsManager> pluginsManager = std::make_shared<CznPluginsManager>(baseManager);
+	AddManager<IznPluginsManager>(baseManager, pluginsManager);
 
 	// Settings
 	{
 		std::shared_ptr<ISettings> settings = std::make_shared<CSettings>(baseManager);
 		AddManager<ISettings>(baseManager, settings);
-		settings->AddGroup("WoWSettings", std::make_shared<CWoWSettingsGroup>());
 		settings->AddGroup("Video", std::make_shared<CGroupVideo>());
 	}
 
@@ -120,27 +123,34 @@ IBaseManager* WINAPI InitializeEngine(std::vector<std::string> Arguments)
 
 	// Render stuff
 	{
-		std::shared_ptr<IznRenderDeviceCreatorFactory> renderDeviceCreatorFactory = std::make_shared<CznRenderDeviceCreatorFactory>();
-		AddManager<IznRenderDeviceCreatorFactory>(baseManager, renderDeviceCreatorFactory);
+		std::shared_ptr<IznRenderDeviceFactory> renderDeviceFactory = std::make_shared<CznRenderDeviceFactory>(baseManager);
+		AddManager<IznRenderDeviceFactory>(baseManager, renderDeviceFactory);
+		pluginsManager->AddPluginEventListener(std::dynamic_pointer_cast<IznPluginsEventListener>(renderDeviceFactory));
+	}
+
+	// SceneNodes stuff
+	{
+		std::shared_ptr<ISceneNodesFactory> sceneNodesFactory = std::make_shared<CSceneNodesFactory>();
+		AddManager<ISceneNodesFactory>(baseManager, sceneNodesFactory);
+		pluginsManager->AddPluginEventListener(std::dynamic_pointer_cast<IznPluginsEventListener>(sceneNodesFactory));
 	}
 
 	// Plugins
 	{
-		std::shared_ptr<IznPluginsManager> pluginsManager = std::make_shared<CznPluginsManager>(baseManager);
-		AddManager<IznPluginsManager>(baseManager, pluginsManager);
-
 		try
 		{
 			std::vector<std::string> fileNamesInWorkDirectory = GetAllFilesInDirectory(GetExePath(), {}, ".dll");
 			for (const auto& it : fileNamesInWorkDirectory)
 			{
-				pluginsManager->RegisterPlugin(it);
+				pluginsManager->AddPlugin(it);
 			}
 		}
 		catch (const std::exception& e)
 		{
 			Log::Error("Error while initialize plugin: %s", e.what());
 		}
+
+		pluginsManager->InitializeAllPlugins();
 	}
 
 	return baseManager;

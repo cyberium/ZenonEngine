@@ -1,11 +1,9 @@
 #pragma once
 
-#include "AbstractPass.h"
-
 class OW_ENGINE_API EndQueryPass : public AbstractPass
 {
 public:
-    EndQueryPass(std::shared_ptr<IQuery> query);
+    EndQueryPass(std::shared_ptr<IRenderDevice> RenderDevice, std::shared_ptr<IQuery> query);
     virtual ~EndQueryPass();
 
     virtual void Render(RenderEventArgs& e);

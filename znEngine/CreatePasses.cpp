@@ -1,14 +1,11 @@
 #include "stdafx.h"
 
-// Include
-#include "Passes/RenderTechnique.h"
-
 // General
 #include "CreatePasses.h"
 
 // Additional
 #include "Passes/TextureMaterialPass.h"
-#include "Passes/BaseUIPass.h"
+
 #include "Application.h"
 
 void OW_ENGINE_API Add3DPasses(std::shared_ptr<IRenderDevice> device, std::shared_ptr<IRenderTarget> _renderTarget, RenderTechnique * technique, const Viewport * viewport, std::shared_ptr<IScene> scene)
@@ -58,7 +55,7 @@ void OW_ENGINE_API Add3DPasses(std::shared_ptr<IRenderDevice> device, std::share
 	Pipeline->SetShader(IShader::ShaderType::VertexShader, g_pVertexShader);
 	Pipeline->SetShader(IShader::ShaderType::PixelShader, g_pPixelShader);
 
-	technique->AddPass(std::make_shared<CTexturedMaterialPass>(scene, Pipeline));
+	technique->AddPass(std::make_shared<CTexturedMaterialPass>(device, scene, Pipeline));
 }
 
 void AddUIPasses(std::shared_ptr<IRenderDevice> device, std::shared_ptr<IRenderTarget> _renderTarget, RenderTechnique * technique, const Viewport * viewport, std::shared_ptr<IScene> scene)
@@ -78,5 +75,5 @@ void AddUIPasses(std::shared_ptr<IRenderDevice> device, std::shared_ptr<IRenderT
 	UIPipeline->SetRenderTarget(_renderTarget);
 	UIPipeline->GetRasterizerState()->SetViewport(viewport);
 
-	technique->AddPass(std::make_shared<BaseUIPass>(scene, UIPipeline));
+	technique->AddPass(std::make_shared<BaseUIPass>(device, scene, UIPipeline));
 }

@@ -55,29 +55,14 @@
     <Filter Include="Scene Funcitonal\UI\Utils">
       <UniqueIdentifier>{58530eb5-a58f-4c13-94b2-0d6730fa84eb}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Scene Funcitonal\3D\Components">
-      <UniqueIdentifier>{3f3decd9-a413-4056-909a-5030084fde08}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Scene Funcitonal\Base\Components">
-      <UniqueIdentifier>{2478da7f-6ebf-44cd-94b3-25e34b77109e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Scene Funcitonal\UI\Components">
-      <UniqueIdentifier>{1baba02f-1958-48a8-8cdc-4ad81791406c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Passes\Queries">
       <UniqueIdentifier>{af4d1485-44b2-4e3b-9e17-9843a3353af4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Passes\Base">
-      <UniqueIdentifier>{31c83955-cc9d-4a1b-8837-012d508c5104}</UniqueIdentifier>
     </Filter>
     <Filter Include="Passes\Technical">
       <UniqueIdentifier>{b2333625-3b00-4c4f-be21-29225a140fe6}</UniqueIdentifier>
     </Filter>
     <Filter Include="Passes\3D">
       <UniqueIdentifier>{ce8acf99-2f08-4e83-bc28-d859c1558a54}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Passes\UI">
-      <UniqueIdentifier>{d0ddb089-95eb-4b2b-aeb6-21411dfe03bf}</UniqueIdentifier>
     </Filter>
     <Filter Include="Scene Funcitonal\UI\Fonts">
       <UniqueIdentifier>{a14d68cf-974d-4fe9-8bb3-b39b310eae0b}</UniqueIdentifier>
@@ -111,9 +96,6 @@
       <Filter>RenderStuff</Filter>
     </ClCompile>
     <ClCompile Include="WindowCreator.cpp" />
-    <ClCompile Include="SceneFunctional\Light3D.cpp">
-      <Filter>Scene Funcitonal</Filter>
-    </ClCompile>
     <ClCompile Include="CameraControllers\ArcBallCameraController.cpp">
       <Filter>CameraControllers</Filter>
     </ClCompile>
@@ -198,27 +180,6 @@
     <ClCompile Include="SceneFunctional\3D\SceneNode3D.cpp">
       <Filter>Scene Funcitonal\3D</Filter>
     </ClCompile>
-    <ClCompile Include="SceneFunctional\3D\ColliderComponent3D.cpp">
-      <Filter>Scene Funcitonal\3D\Components</Filter>
-    </ClCompile>
-    <ClCompile Include="SceneFunctional\3D\LightComponent3D.cpp">
-      <Filter>Scene Funcitonal\3D\Components</Filter>
-    </ClCompile>
-    <ClCompile Include="SceneFunctional\3D\MeshComponent3D.cpp">
-      <Filter>Scene Funcitonal\3D\Components</Filter>
-    </ClCompile>
-    <ClCompile Include="SceneFunctional\3D\TransformComponent3D.cpp">
-      <Filter>Scene Funcitonal\3D\Components</Filter>
-    </ClCompile>
-    <ClCompile Include="SceneFunctional\Base\ComponentBase.cpp">
-      <Filter>Scene Funcitonal\Base\Components</Filter>
-    </ClCompile>
-    <ClCompile Include="SceneFunctional\Base\TransformComponentBase.cpp">
-      <Filter>Scene Funcitonal\Base\Components</Filter>
-    </ClCompile>
-    <ClCompile Include="SceneFunctional\UI\TransformComponentUI.cpp">
-      <Filter>Scene Funcitonal\UI\Components</Filter>
-    </ClCompile>
     <ClCompile Include="Passes\BeginQueryPass.cpp">
       <Filter>Passes\Queries</Filter>
     </ClCompile>
@@ -240,12 +201,6 @@
     <ClCompile Include="Passes\GenerateMipMapsPass.cpp">
       <Filter>Passes\Technical</Filter>
     </ClCompile>
-    <ClCompile Include="Passes\AbstractPass.cpp">
-      <Filter>Passes\Base</Filter>
-    </ClCompile>
-    <ClCompile Include="Passes\BaseUIPass.cpp">
-      <Filter>Passes\UI</Filter>
-    </ClCompile>
     <ClCompile Include="Passes\InvokeFunctionPass.cpp">
       <Filter>Passes\Technical</Filter>
     </ClCompile>
@@ -255,17 +210,8 @@
     <ClCompile Include="SceneFunctional\UI\Fonts\FontsManager.cpp">
       <Filter>Scene Funcitonal\UI\Fonts</Filter>
     </ClCompile>
-    <ClCompile Include="Passes\BasePass.cpp">
-      <Filter>Passes\3D</Filter>
-    </ClCompile>
-    <ClCompile Include="Passes\RenderTechnique.cpp">
-      <Filter>Passes\Base</Filter>
-    </ClCompile>
     <ClCompile Include="znEngine.cpp">
       <Filter>Common</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderDeviceCreatorFactory.cpp">
-      <Filter>Managers</Filter>
     </ClCompile>
     <ClCompile Include="Settings\GroupVideo.cpp">
       <Filter>Settings</Filter>
@@ -282,9 +228,6 @@
       <Filter>CameraControllers</Filter>
     </ClCompile>
     <ClCompile Include="Loader.cpp" />
-    <ClCompile Include="Settings\WoWSettingsGroup.cpp">
-      <Filter>Settings</Filter>
-    </ClCompile>
     <ClCompile Include="GameState.cpp">
       <Filter>GameStates</Filter>
     </ClCompile>
@@ -293,6 +236,21 @@
     </ClCompile>
     <ClCompile Include="Passes\TextureMaterialPass.cpp">
       <Filter>Passes\3D</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneFunctional\SceneNodesFactory.cpp">
+      <Filter>Scene Funcitonal</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderDeviceFactory.cpp">
+      <Filter>Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="PluginsManager.cpp">
+      <Filter>Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="BaseManager.cpp">
+      <Filter>Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneFunctional\SceneNodeDefaultCreator.cpp">
+      <Filter>Scene Funcitonal</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -310,9 +268,6 @@
     <ClInclude Include="WindowCreator.h" />
     <ClInclude Include="..\shared\znEngine.h">
       <Filter>Common</Filter>
-    </ClInclude>
-    <ClInclude Include="SceneFunctional\Light3D.h">
-      <Filter>Scene Funcitonal</Filter>
     </ClInclude>
     <ClInclude Include="CameraControllers\ArcBallCameraController.h">
       <Filter>CameraControllers</Filter>
@@ -362,9 +317,6 @@
     <ClInclude Include="SceneFunctional\UI\UIContainerListWithActivation.h">
       <Filter>Scene Funcitonal\UI\UIContainerList</Filter>
     </ClInclude>
-    <ClInclude Include="SceneFunctional\Light.h">
-      <Filter>Scene Funcitonal</Filter>
-    </ClInclude>
     <ClInclude Include="Materials\MaterialDebug.h">
       <Filter>Materials</Filter>
     </ClInclude>
@@ -401,27 +353,6 @@
     <ClInclude Include="SceneFunctional\3D\SceneNode3D.h">
       <Filter>Scene Funcitonal\3D</Filter>
     </ClInclude>
-    <ClInclude Include="SceneFunctional\3D\ColliderComponent3D.h">
-      <Filter>Scene Funcitonal\3D\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="SceneFunctional\3D\LightComponent3D.h">
-      <Filter>Scene Funcitonal\3D\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="SceneFunctional\3D\MeshComponent3D.h">
-      <Filter>Scene Funcitonal\3D\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="SceneFunctional\3D\TransformComponent3D.h">
-      <Filter>Scene Funcitonal\3D\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="SceneFunctional\Base\ComponentBase.h">
-      <Filter>Scene Funcitonal\Base\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="SceneFunctional\Base\TransformComponentBase.h">
-      <Filter>Scene Funcitonal\Base\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="SceneFunctional\UI\TransformComponentUI.h">
-      <Filter>Scene Funcitonal\UI\Components</Filter>
-    </ClInclude>
     <ClInclude Include="Passes\BeginQueryPass.h">
       <Filter>Passes\Queries</Filter>
     </ClInclude>
@@ -443,12 +374,6 @@
     <ClInclude Include="Passes\GenerateMipMapsPass.h">
       <Filter>Passes\Technical</Filter>
     </ClInclude>
-    <ClInclude Include="Passes\AbstractPass.h">
-      <Filter>Passes\Base</Filter>
-    </ClInclude>
-    <ClInclude Include="Passes\BaseUIPass.h">
-      <Filter>Passes\UI</Filter>
-    </ClInclude>
     <ClInclude Include="Passes\InvokeFunctionPass.h">
       <Filter>Passes\Technical</Filter>
     </ClInclude>
@@ -457,15 +382,6 @@
     </ClInclude>
     <ClInclude Include="SceneFunctional\UI\Fonts\FontsManager.h">
       <Filter>Scene Funcitonal\UI\Fonts</Filter>
-    </ClInclude>
-    <ClInclude Include="Passes\BasePass.h">
-      <Filter>Passes\3D</Filter>
-    </ClInclude>
-    <ClInclude Include="Passes\RenderTechnique.h">
-      <Filter>Passes\Base</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderDeviceCreatorFactory.h">
-      <Filter>Managers</Filter>
     </ClInclude>
     <ClInclude Include="Settings\GroupVideo.h">
       <Filter>Settings</Filter>
@@ -481,9 +397,6 @@
       <Filter>CameraControllers</Filter>
     </ClInclude>
     <ClInclude Include="Loader.h" />
-    <ClInclude Include="Settings\WoWSettingsGroup.h">
-      <Filter>Settings</Filter>
-    </ClInclude>
     <ClInclude Include="GameState.h">
       <Filter>GameStates</Filter>
     </ClInclude>
@@ -492,6 +405,21 @@
     </ClInclude>
     <ClInclude Include="Passes\TextureMaterialPass.h">
       <Filter>Passes\3D</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneFunctional\SceneNodesFactory.h">
+      <Filter>Scene Funcitonal</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderDeviceFactory.h">
+      <Filter>Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="PluginsManager.h">
+      <Filter>Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseManager.h">
+      <Filter>Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneFunctional\SceneNodeDefaultCreator.h">
+      <Filter>Scene Funcitonal</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -564,9 +492,6 @@
   <ItemGroup>
     <None Include="SceneFunctional\3D\SceneNode3D.inl">
       <Filter>Scene Funcitonal\3D</Filter>
-    </None>
-    <None Include="SceneFunctional\Base\ComponentBase.inl">
-      <Filter>Scene Funcitonal\Base\Components</Filter>
     </None>
     <None Include="SceneFunctional\UI\SceneNodeUI.inl">
       <Filter>Scene Funcitonal\UI</Filter>

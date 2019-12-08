@@ -4,6 +4,7 @@
 ZN_INTERFACE ISceneNode;
 ZN_INTERFACE IVisitor;
 class UpdateEventArgs;
+ZN_INTERFACE ISceneNodesFactory;
 // FORWARD END
 
 ZN_INTERFACE OW_ENGINE_API IScene : public std::enable_shared_from_this<IScene>
@@ -45,16 +46,40 @@ ZN_INTERFACE OW_ENGINE_API IScene : public std::enable_shared_from_this<IScene>
 		static_assert(std::is_convertible<T*, ISceneNode*>::value, "T must inherit ISceneNode as public.");
 
 		std::shared_ptr<T> newNode = std::make_shared<T>(std::forward<Args>(_Args)...);
+		newNode->SetScene(shared_from_this());
+		newNode->SetParent(Parent);
+		newNode->RegisterComponents();
+		newNode->Initialize();
+		//newNode->RaiseOnParentChanged();
 
-		std::shared_ptr<ISceneNodeWrapper> newNodeWrapper = std::dynamic_pointer_cast<ISceneNodeWrapper>(newNode);
-		if (newNodeWrapper)
-			newNodeWrapper->SetThisNode(newNode);
+		return newNode;
+	}
+
+	// Creates new SceneNode and initialize it. You !must! call this method instead of creating nodes in code
+	template<class T, typename... Args>
+	inline std::shared_ptr<T> CreateWrappedSceneNode(std::string WrapperNodeTypeName, std::weak_ptr<ISceneNode> Parent, Args &&... _Args)
+	{
+		static_assert(std::is_convertible<T*, ISceneNode*>::value, "T must inherit ISceneNode as public.");
+
+		std::shared_ptr<T> newNode = std::make_shared<T>(std::forward<Args>(_Args)...);
+
+		if (std::shared_ptr<ISceneNodeWrapper> newNodeWrapper = std::dynamic_pointer_cast<ISceneNodeWrapper>(newNode))
+		{
+			IBaseManager* baseManager = std::dynamic_pointer_cast<IBaseManagerHolder>(shared_from_this())->GetBaseManager();
+			std::shared_ptr<ISceneNodesFactory> sceneNodeFactory = GetManager<ISceneNodesFactory>(baseManager);
+			std::shared_ptr<ISceneNode> wrappedNode = sceneNodeFactory->CreateSceneNode(Parent, WrapperNodeTypeName);
+			newNodeWrapper->SetWrappedNode(wrappedNode);
+		}
+		else
+		{
+			throw std::exception(("Unable to create wrapped node '" + WrapperNodeTypeName + "'. T isn't supports 'ISceneNodeWrapper'.").c_str());
+		}
 
 		newNode->SetScene(shared_from_this());
 		newNode->SetParent(Parent);
 		newNode->RegisterComponents();
 		newNode->Initialize();
-		newNode->RaiseOnParentChanged();
+		//newNode->RaiseOnParentChanged();
 
 		return newNode;
 	}

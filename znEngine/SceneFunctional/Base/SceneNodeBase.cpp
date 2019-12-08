@@ -18,10 +18,12 @@ SceneNodeBase::~SceneNodeBase()
 
 void SceneNodeBase::Initialize()
 {
+	
 }
 
 void SceneNodeBase::Finalize()
 {
+	
 }
 
 const std::string& SceneNodeBase::GetName() const
@@ -155,6 +157,8 @@ void SceneNodeBase::SetParent(std::weak_ptr<ISceneNode> parentNode)
 	// Add to new parent
 	if (std::shared_ptr<ISceneNode> newParent = parentNode.lock())
 		newParent->AddChild(SceneNodeBase::shared_from_this());
+
+	RaiseOnParentChanged();
 }
 
 std::shared_ptr<ISceneNode> SceneNodeBase::GetParent() const
@@ -169,6 +173,11 @@ NodeList SceneNodeBase::GetChilds()
 
 
 void SceneNodeBase::UpdateCamera(const ICamera* camera)
+{
+	// Do nothing...
+}
+
+void SceneNodeBase::UpdateViewport(const Viewport * viewport)
 {
 	// Do nothing...
 }

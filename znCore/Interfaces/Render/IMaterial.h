@@ -8,7 +8,7 @@ ZN_INTERFACE ISamplerState;
 
 ZN_INTERFACE OW_ENGINE_API IMaterial : public std::enable_shared_from_this<IMaterial>
 {
-	typedef std::map<uint8, std::shared_ptr<ISamplerState>> SamplersMap;
+	typedef std::unordered_map<uint8, std::shared_ptr<ISamplerState>> SamplersMap;
 
 	virtual ~IMaterial() {}
 

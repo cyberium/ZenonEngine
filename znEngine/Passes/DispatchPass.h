@@ -1,11 +1,9 @@
 #pragma once
 
-#include "AbstractPass.h"
-
 class OW_ENGINE_API DispatchPass : public AbstractPass
 {
 public:
-	DispatchPass(std::shared_ptr<IShader> computeShader, const glm::uvec3& numGroups);
+	DispatchPass(std::shared_ptr<IRenderDevice> RenderDevice, std::shared_ptr<IShader> computeShader, const glm::uvec3& numGroups);
 	virtual ~DispatchPass();
 
 	// Render the pass. This should only be called by the RenderTechnique.

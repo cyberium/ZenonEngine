@@ -1,12 +1,9 @@
 #pragma once
 
-#include "BasePass.h"
-
-class CTexturedMaterialPass : public BasePass
+class CTexturedMaterialPass : public Base3DPass
 {
-	typedef BasePass base;
 public:
-	CTexturedMaterialPass(std::shared_ptr<IScene> scene, std::shared_ptr<IPipelineState> pipeline);
+	CTexturedMaterialPass(std::shared_ptr<IRenderDevice> RenderDevice, std::shared_ptr<IScene> Scene, std::shared_ptr<IPipelineState> Pipeline);
 	virtual ~CTexturedMaterialPass();
 
 	// IVisitor

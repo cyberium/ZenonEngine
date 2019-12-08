@@ -39,6 +39,7 @@ public:
 
 	// Called before all others calls
 	virtual void                                    UpdateCamera(const ICamera* camera);
+	virtual void                                    UpdateViewport(const Viewport* viewport);
 
 	virtual bool                                    Accept(IVisitor* visitor);
 	virtual void                                    OnUpdate(UpdateEventArgs& e);
@@ -47,7 +48,7 @@ public:
 	//
 	// ISceneNodeWrapper
 	//
-	void											SetThisNode(std::shared_ptr<ISceneNode> ThisNode) override final;
+	void											SetWrappedNode(std::shared_ptr<ISceneNode> ThisNode) override final;
 
 
 	//
@@ -74,6 +75,9 @@ public:
 	{
 		return ISceneNode::CreateSceneNode<T>(std::forward<Args>(_Args)...);
 	}
+
+protected:
+	IBaseManager* GetBaseManager() const;
 
 private:
 	std::shared_ptr<ISceneNode> m_SceneNode;

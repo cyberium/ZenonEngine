@@ -7,7 +7,6 @@
 #include "Log.h"
 
 // Additional
-#include "BaseManager.h"
 #include "DebugOutputConsole.h"
 #include "DebugOutputLog.h"
 

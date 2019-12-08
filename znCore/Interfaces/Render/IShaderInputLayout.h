@@ -2,7 +2,7 @@
 
 ZN_INTERFACE OW_ENGINE_API IShaderInputLayout
 {
-	typedef std::map<InputSemantic, UINT> SemanticMap;
+	typedef std::unordered_map<InputSemantic, UINT> SemanticMap;
 
 	virtual ~IShaderInputLayout() {}
 

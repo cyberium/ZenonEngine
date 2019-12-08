@@ -35,7 +35,7 @@ public:
 	virtual void                                    OnMouseBlur(EventArgs& e);
 
 	// IBaseManagerHolder
-	IBaseManager*                   GetBaseManager() const override final;
+	IBaseManager*                                   GetBaseManager() const override final;
 
 protected:
 	// Input events process recursive
@@ -50,5 +50,5 @@ protected:
 	std::shared_ptr<ISceneNode>                     m_RootNode;
 
 private:
-	IBaseManager*                   m_BaseManager;
+	IBaseManager*                                   m_BaseManager;
 };

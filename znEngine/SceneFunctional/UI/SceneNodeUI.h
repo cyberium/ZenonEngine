@@ -2,8 +2,6 @@
 
 #include "../Base/SceneNodeBase.h"
 
-#include "TransformComponentUI.h"
-
 // FORWARD BEGIN
 class CUIBaseNode;
 class CUIWindowNode;
@@ -22,7 +20,9 @@ public:
 typedef Delegate<UIBaseNodeClickedEventArgs> UIBaseNodeClickedEvent;
 
 
-class OW_ENGINE_API CUIBaseNode : public SceneNodeBase
+class OW_ENGINE_API CUIBaseNode 
+	: public SceneNodeBase
+	, public ISceneNodeUI
 {
     typedef SceneNodeBase base;
 	friend IScene;
@@ -71,10 +71,10 @@ public: // Syntetic events // TODO: Make private
 	void                                            DoMouseLeaved();
 
 protected:
-    void                                            SetTransformComponent(std::shared_ptr<CTransformComponentUI> TransformComponent);
+    void                                            SetTransformComponent(std::shared_ptr<ITransformComponentUI> TransformComponent);
 
 private:
-    std::shared_ptr<CTransformComponentUI>          m_Components_Transform;
+    std::shared_ptr<ITransformComponentUI>          m_Components_Transform;
 
 private: // Syntetic events
 	bool                                            m_IsMouseOnNode;

@@ -23,7 +23,7 @@ protected:
 	virtual bool DeleteAction(const std::string& name);
 
 public:
-	std::map<std::string, std::shared_ptr<T>> objects; // name - item
+	std::unordered_map<std::string, std::shared_ptr<T>> objects; // name - item
 };
 
 #include "RefManager1Dim.inl"

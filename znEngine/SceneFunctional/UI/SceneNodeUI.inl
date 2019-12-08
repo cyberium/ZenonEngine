@@ -15,7 +15,7 @@ inline std::shared_ptr<T> CUIBaseNode::GetComponent()
 // Components engine template access specialization
 //
 template<>
-inline std::shared_ptr<CTransformComponentUI> CUIBaseNode::GetComponent<CTransformComponentUI>()
+inline std::shared_ptr<ITransformComponentUI> CUIBaseNode::GetComponent<ITransformComponentUI>()
 {
     return m_Components_Transform;
 }

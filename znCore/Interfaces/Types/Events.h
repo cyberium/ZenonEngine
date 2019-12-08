@@ -5,6 +5,7 @@
 // FORWARD BEGIN
 ZN_INTERFACE IPipelineState;
 ZN_INTERFACE ICamera;
+ZN_INTERFACE ISceneNode;
 // FORWARD END
 
 template<class ArgumentType>
@@ -290,7 +291,7 @@ public:
 		uint64_t FrameCounter,
 		const ICamera* Camera,
 		const IPipelineState* PipelineState,
-		const Object* Node
+		const ISceneNode* Node
 	)
 		: base(Caller)
 		, ElapsedTime(DeltaTime)
@@ -308,7 +309,7 @@ public:
 
 	const ICamera*                                  Camera;
 	const IPipelineState*                           PipelineState;
-	const Object*                                   Node;
+	const ISceneNode*                               Node;
 };
 typedef Delegate<RenderEventArgs> RenderEvent;
 

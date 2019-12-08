@@ -37,6 +37,7 @@ public:
 
 	// Called before all others calls
 	virtual void                                    UpdateCamera(const ICamera* camera) override;
+	virtual void                                    UpdateViewport(const Viewport* viewport) override;
 
 	// Allow a visitor to visit this node.
 	virtual bool                                    Accept(IVisitor* visitor) override;
@@ -79,7 +80,7 @@ public:
 	}
 
 protected:
-	IBaseManager*				GetBaseManager() const;
+	IBaseManager*                                   GetBaseManager() const;
 
     // Callbacks caller
     void                                            RaiseOnParentChanged();

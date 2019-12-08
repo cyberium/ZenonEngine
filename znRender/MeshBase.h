@@ -2,7 +2,6 @@
 
 class OW_ENGINE_API MeshBase : public IMesh, public Object
 {
-    typedef std::map<BufferBinding, std::shared_ptr<IBuffer>> BufferMap;
 public:
 	MeshBase();
 	virtual ~MeshBase();

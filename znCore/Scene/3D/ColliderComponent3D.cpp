@@ -4,7 +4,7 @@
 #include "ColliderComponent3D.h"
 
 // Additonal
-#include "TransformComponent3D.h"
+#include "Scene/TransformComponentBase.h"
 
 CColliderComponent3D::CColliderComponent3D(std::shared_ptr<ISceneNode> OwnerNode)
     : CComponentBase(OwnerNode)
@@ -16,7 +16,9 @@ CColliderComponent3D::~CColliderComponent3D()
 }
 
 
-// Bounds
+//
+// IColliderComponent3D
+//
 void CColliderComponent3D::SetBounds(BoundingBox _bbox)
 {
     m_Bounds = _bbox;

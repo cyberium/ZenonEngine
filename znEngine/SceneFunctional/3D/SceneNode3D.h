@@ -2,14 +2,9 @@
 
 #include "../Base/SceneNodeBase.h"
 
-#include "TransformComponent3D.h"
-#include "MeshComponent3D.h"
-#include "ColliderComponent3D.h"
-#include "LightComponent3D.h"
-
 class OW_ENGINE_API SceneNode3D 
 	: public SceneNodeBase
-	, public ILoadable
+	, public ISceneNode3D
 {
 	typedef SceneNodeBase base;
     friend IScene;
@@ -35,29 +30,15 @@ public:
 	// Updatable
 	virtual void                                    OnUpdate(UpdateEventArgs& e) override;
 
-	// ILoadableObject
-	virtual bool                                    PreLoad()             override;
-	virtual bool                                    Load()                override;
-	virtual bool                                    Delete()              override;
-	void                                            setLoadingBegin()   override final;
-	bool                                            isLoadingBegin()    const override final;
-	void                                            setLoaded()         override final;
-	bool                                            isLoaded()              const override final;
-	virtual uint32                                  getPriority() const override;
-
 protected:
-    void                                            SetTransformComponent(std::shared_ptr<CTransformComponent3D> TransformComponent);
-	void                                            SetMeshComponent(std::shared_ptr<CMeshComponent3D> MeshComponent);
-    void                                            SetColliderComponent(std::shared_ptr<CColliderComponent3D> ColliderComponent);
+    void                                            SetTransformComponent(std::shared_ptr<ITransformComponent3D> TransformComponent);
+	void                                            SetMeshComponent(std::shared_ptr<IMeshComponent3D> MeshComponent);
+    void                                            SetColliderComponent(std::shared_ptr<IColliderComponent3D> ColliderComponent);
 
 private:
-    std::shared_ptr<CTransformComponent3D>          m_Components_Transform;
-	std::shared_ptr<CMeshComponent3D>				m_Components_Mesh;
-    std::shared_ptr<CColliderComponent3D>           m_Components_Collider;
-
-private:
-	std::atomic<bool>                               m_IsLoadingBegin;
-	std::atomic<bool>                               m_IsLoaded;
+    std::shared_ptr<ITransformComponent3D>          m_Components_Transform;
+	std::shared_ptr<IMeshComponent3D>				m_Components_Mesh;
+    std::shared_ptr<IColliderComponent3D>           m_Components_Collider;
 };
 
 #include "SceneNode3D.inl"

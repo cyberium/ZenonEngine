@@ -2,7 +2,8 @@
 
 //#define LOADER_ENABLED
 
-class OW_ENGINE_API CLoader : public ILoader
+class OW_ENGINE_API CLoader 
+	: public ILoader
 {
 public:
 	CLoader();

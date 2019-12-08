@@ -12,17 +12,24 @@ struct OW_ENGINE_API BufferBinding
     virtual ~BufferBinding()
 	{}
 
-	inline bool operator<(const BufferBinding& rhs) const
+	inline bool operator==(const BufferBinding& rhs) const
 	{
-		if (Name < rhs.Name) return true;
-		if (Name > rhs.Name) return false;
-
-		if (Index < rhs.Index) return true;
-		if (Index > rhs.Index) return false;
-
-		return false;
+		return (Name == rhs.Name) && (Index == rhs.Index);
 	}
 
 	std::string  Name;
 	uint32       Index;
 };
+
+namespace std
+{
+	template<>
+	struct hash<BufferBinding>
+	{
+		size_t operator()(const BufferBinding& buffer) const noexcept
+		{
+			std::hash<std::string> hash;
+			return hash(buffer.Name + std::to_string(buffer.Index));
+		}
+	};
+}
