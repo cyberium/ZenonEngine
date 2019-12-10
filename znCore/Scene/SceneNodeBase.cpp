@@ -3,9 +3,6 @@
 // General
 #include "SceneNodeBase.h"
 
-// Additional
-#include "Loader.h"
-
 SceneNodeBase::SceneNodeBase()
 	: m_Name("SceneNodeBase")
 {
@@ -29,9 +26,6 @@ void SceneNodeBase::Finalize()
 
 std::string SceneNodeBase::GetName() const
 {
-	if (m_WrappedNode != nullptr)
-		return m_WrappedNode->GetName();
-
 	return m_Name;
 }
 
@@ -188,11 +182,7 @@ void SceneNodeBase::UpdateViewport(const Viewport * viewport)
 
 bool SceneNodeBase::Accept(IVisitor* visitor)
 {
-	bool visitResult = false;
-	if (m_WrappedNode != nullptr)
-		visitResult = visitor->VisitBase(m_WrappedNode.get());
-	else
-		visitResult = visitor->VisitBase(this);
+	bool visitResult = visitor->VisitBase(this);
 
 	// ROOT NODE DON'T HAVE COMPONENTS!!!
 
@@ -207,6 +197,11 @@ bool SceneNodeBase::Accept(IVisitor* visitor)
 
 void SceneNodeBase::OnUpdate(UpdateEventArgs & e)
 {
+	const auto& childs = GetChilds();
+	std::for_each(childs.begin(), childs.end(), [&e](const std::shared_ptr<ISceneNode>& Child)
+	{
+		Child->OnUpdate(e);
+	});
 }
 
 std::shared_ptr<ISettingGroup> SceneNodeBase::GetProperties() const

@@ -1,6 +1,5 @@
 #pragma once
 
-#include "SceneNodeUI.h"
 #include "../../Materials/UI_Texture_Material.h"
 
 class OW_ENGINE_API CUITextureNode : public CUIBaseNode

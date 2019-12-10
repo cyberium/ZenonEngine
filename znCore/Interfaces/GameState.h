@@ -36,6 +36,7 @@ ZN_INTERFACE OW_ENGINE_API IGameState
 	virtual void OnMouseBlur(EventArgs& e) = 0;
 
 	virtual std::shared_ptr<IScene> GetScene3D() const = 0;
+	virtual std::shared_ptr<IScene> GetSceneUI() const = 0;
 };
 
 typedef uint32 OW_ENGINE_API GameStatePriority;

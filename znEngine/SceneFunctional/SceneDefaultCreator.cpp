@@ -3,9 +3,6 @@
 // General
 #include "SceneDefaultCreator.h"
 
-// Additional
-#include "SceneFunctional/Base/SceneBase.h"
-
 CSceneDefaultCreator::CSceneDefaultCreator(IBaseManager* BaseManager)
 	: m_BaseManager(BaseManager)
 {}

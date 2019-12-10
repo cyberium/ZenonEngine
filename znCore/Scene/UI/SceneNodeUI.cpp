@@ -4,7 +4,7 @@
 #include "SceneNodeUI.h"
 
 // Additional
-#include "UIWindow.h"
+#include "TransformComponentUI.h"
 
 CUIBaseNode::CUIBaseNode()
 	: m_IsMouseOnNode(false)
@@ -17,7 +17,7 @@ CUIBaseNode::~CUIBaseNode()
 
 std::shared_ptr<CUIBaseNode> CUIBaseNode::shared_from_this()
 {
-    return std::dynamic_pointer_cast<CUIBaseNode>(base::shared_from_this());
+    return std::dynamic_pointer_cast<CUIBaseNode>(SceneNodeBase::shared_from_this());
 }
 
 std::weak_ptr<CUIBaseNode> CUIBaseNode::weak_from_this()
@@ -57,23 +57,13 @@ bool CUIBaseNode::IsPointInBoundsAbs(glm::vec2 Point)
 }
 
 
-void CUIBaseNode::UpdateViewport(const Viewport* viewport)
-{
-	// Do nothing
-}
-
-
 
 //
 // Render functional
 //
 bool CUIBaseNode::Accept(IVisitor* visitor)
 {
-	bool visitResult = false;
-	if (GetWrappedNode() != nullptr)
-		visitResult = visitor->VisitUI(GetWrappedNode().get());
-	else
-		visitResult = visitor->VisitUI(this);
+	bool visitResult = visitor->VisitUI(this);
 
 	if (!visitResult)
 		return false;

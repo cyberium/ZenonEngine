@@ -1,7 +1,7 @@
 #include "stdafx.h"
 
 // General
-#include "GameState.h"
+#include "GameStateBase.h"
 
 CGameState::CGameState(IBaseManager * BaseManager, std::shared_ptr<IRenderWindow> RenderWindow)
 	: m_RenderWindow(RenderWindow)
@@ -26,16 +26,17 @@ bool CGameState::Init()
 
 	m_FrameQuery = GetRenderDevice()->CreateQuery(IQuery::QueryType::Timer, 1);
 
-	m_Scene = GetManager<IScenesFactory>(GetBaseManager())->CreateScene("SceneBase");
+	m_Scene3D = GetManager<IScenesFactory>(GetBaseManager())->CreateScene("SceneBase");
+	m_SceneUI = GetManager<IScenesFactory>(GetBaseManager())->CreateScene("SceneBase");
 
 	{
-		m_CameraPosText = GetManager<ISceneNodesFactory>(GetBaseManager())->CreateSceneNode(m_Scene->GetRootNode(), "TextUI");
+		m_CameraPosText = GetManager<ISceneNodesFactory>(GetBaseManager())->CreateSceneNode(m_SceneUI->GetRootNode(), "TextUI");
 		m_CameraPosText->GetComponent<ITransformComponentUI>()->SetTranslate(vec2(0.0f, 0.0f));
 
-		m_CameraRotText = GetManager<ISceneNodesFactory>(GetBaseManager())->CreateSceneNode(m_Scene->GetRootNode(), "TextUI");
+		m_CameraRotText = GetManager<ISceneNodesFactory>(GetBaseManager())->CreateSceneNode(m_SceneUI->GetRootNode(), "TextUI");
 		m_CameraRotText->GetComponent<ITransformComponentUI>()->SetTranslate(vec2(0.0f, 20.0f));
 
-		m_FPSText = GetManager<ISceneNodesFactory>(GetBaseManager())->CreateSceneNode(m_Scene->GetRootNode(), "TextUI");
+		m_FPSText = GetManager<ISceneNodesFactory>(GetBaseManager())->CreateSceneNode(m_SceneUI->GetRootNode(), "TextUI");
 		m_FPSText->GetComponent<ITransformComponentUI>()->SetTranslate(vec2(0.0f, 40.0f));
 	}
 
@@ -117,8 +118,14 @@ bool CGameState::IsCurrent() const
 //
 // Engine events
 //
-void CGameState::OnUpdate(UpdateEventArgs & e)
+void CGameState::OnUpdate(UpdateEventArgs& e)
 {
+	if (m_Scene3D)
+		m_Scene3D->OnUpdate(e);
+
+	if (m_SceneUI)
+		m_SceneUI->OnUpdate(e);
+
     if (m_DefaultCameraController)
         m_DefaultCameraController->OnUpdate(e);
 }
@@ -132,16 +139,13 @@ void CGameState::OnRender(RenderEventArgs& e)
 {
 	e.Camera = GetCameraController()->GetCamera().get();
 	
-	m_Technique.Render(e);
+	m_Technique3D.Render(e);
 }
 
 void CGameState::OnPostRender(RenderEventArgs& e)
 {
 	m_FrameQuery->End(e.FrameCounter);
-}
 
-void CGameState::OnRenderUI(RenderEventArgs& e)
-{
 	vec3 cameraTrans = GetCameraController()->GetCamera()->GetTranslation();
 	m_CameraPosText->GetProperties()->GetSettingT<std::string>("Text")->Set("Pos: x = " + std::to_string(cameraTrans.x) + ", y = " + std::to_string(cameraTrans.y) + ", z = " + std::to_string(cameraTrans.z));
 	m_CameraRotText->GetProperties()->GetSettingT<std::string>("Text")->Set("Rot: yaw = " + std::to_string(GetCameraController()->GetCamera()->GetYaw()) + ", pitch = " + std::to_string(GetCameraController()->GetCamera()->GetPitch()));
@@ -156,9 +160,13 @@ void CGameState::OnRenderUI(RenderEventArgs& e)
 
 		m_FPSText->GetProperties()->GetSettingT<std::string>("Text")->Set("FPS: " + std::to_string(1000.0 / m_FrameTime));
 	}
+}
 
+void CGameState::OnRenderUI(RenderEventArgs& e)
+{
 	e.Camera = GetCameraController()->GetCamera().get();
-	m_Technique.Render(e);
+
+	m_TechniqueUI.Render(e);
 }
 
 
@@ -170,7 +178,8 @@ void CGameState::OnResize(ResizeEventArgs & e)
 {
 	m_DefaultCameraController->OnResize(e);
 
-	m_Technique.UpdateViewport(dynamic_cast<const IRenderWindow*>(e.Caller)->GetViewport());
+	m_Technique3D.UpdateViewport(dynamic_cast<const IRenderWindow*>(e.Caller)->GetViewport());
+	m_TechniqueUI.UpdateViewport(dynamic_cast<const IRenderWindow*>(e.Caller)->GetViewport());
 }
 
 
@@ -181,8 +190,8 @@ void CGameState::OnResize(ResizeEventArgs & e)
 void CGameState::OnKeyPressed(KeyEventArgs & e)
 {
     bool result = false;
-    if (m_Scene)
-        result = m_Scene->OnKeyPressed(e);
+    if (m_SceneUI)
+        result = m_SceneUI->OnKeyPressed(e);
 
 	if (m_DefaultCameraController && !result)
 		m_DefaultCameraController->OnKeyPressed(e);
@@ -193,20 +202,20 @@ void CGameState::OnKeyReleased(KeyEventArgs & e)
 	if (m_DefaultCameraController)
 		m_DefaultCameraController->OnKeyReleased(e);
 
-	if (m_Scene)
-		m_Scene->OnKeyReleased(e);
+	if (m_SceneUI)
+		m_SceneUI->OnKeyReleased(e);
 }
 
 void CGameState::OnKeyboardFocus(EventArgs & e)
 {
-	if (m_Scene)
-		m_Scene->OnKeyboardFocus(e);
+	if (m_SceneUI)
+		m_SceneUI->OnKeyboardFocus(e);
 }
 
 void CGameState::OnKeyboardBlur(EventArgs & e)
 {
-	if (m_Scene)
-		m_Scene->OnKeyboardBlur(e);
+	if (m_SceneUI)
+		m_SceneUI->OnKeyboardBlur(e);
 }
 
 
@@ -217,8 +226,8 @@ void CGameState::OnKeyboardBlur(EventArgs & e)
 void CGameState::OnMouseButtonPressed(MouseButtonEventArgs & e)
 {
     bool result = false;
-    if (m_Scene)
-        result = m_Scene->OnMouseButtonPressed(e);
+    if (m_SceneUI)
+        result = m_SceneUI->OnMouseButtonPressed(e);
 
 	if (m_DefaultCameraController && !result)
 		m_DefaultCameraController->OnMouseButtonPressed(e);
@@ -229,8 +238,8 @@ void CGameState::OnMouseButtonReleased(MouseButtonEventArgs & e)
 	if (m_DefaultCameraController)
 		m_DefaultCameraController->OnMouseButtonReleased(e);
 
-	if (m_Scene)
-		m_Scene->OnMouseButtonReleased(e);
+	if (m_SceneUI)
+		m_SceneUI->OnMouseButtonReleased(e);
 }
 
 void CGameState::OnMouseMoved(MouseMotionEventArgs & e)
@@ -238,8 +247,8 @@ void CGameState::OnMouseMoved(MouseMotionEventArgs & e)
 	if (m_DefaultCameraController)
 		m_DefaultCameraController->OnMouseMoved(e);
 
-	if (m_Scene)
-		m_Scene->OnMouseMoved(e);
+	if (m_SceneUI)
+		m_SceneUI->OnMouseMoved(e);
 }
 
 void CGameState::OnMouseWheel(MouseWheelEventArgs & e)
@@ -247,26 +256,26 @@ void CGameState::OnMouseWheel(MouseWheelEventArgs & e)
 	if (m_DefaultCameraController)
 		m_DefaultCameraController->OnMouseWheel(e);
 
-	if (m_Scene)
-		m_Scene->OnMouseWheel(e);
+	if (m_SceneUI)
+		m_SceneUI->OnMouseWheel(e);
 }
 
 void CGameState::OnMouseLeave(EventArgs & e)
 {
-	if (m_Scene)
-		m_Scene->OnMouseLeave(e);
+	if (m_SceneUI)
+		m_SceneUI->OnMouseLeave(e);
 }
 
 void CGameState::OnMouseFocus(EventArgs & e)
 {
-	if (m_Scene)
-		m_Scene->OnMouseFocus(e);
+	if (m_SceneUI)
+		m_SceneUI->OnMouseFocus(e);
 }
 
 void CGameState::OnMouseBlur(EventArgs & e)
 {
-	if (m_Scene)
-		m_Scene->OnMouseBlur(e);
+	if (m_SceneUI)
+		m_SceneUI->OnMouseBlur(e);
 }
 
 

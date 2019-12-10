@@ -119,13 +119,13 @@ ZN_INTERFACE OW_ENGINE_API ISceneNodeUI
 	virtual ~ISceneNodeUI() {}
 };
 
-ZN_INTERFACE OW_ENGINE_API ISceneNodeWrapper
+/*ZN_INTERFACE OW_ENGINE_API ISceneNodeWrapper
 {
 	virtual ~ISceneNodeWrapper() {}
 
 	virtual void SetWrappedNode(std::shared_ptr<ISceneNode> ThisNode) = 0;
 	virtual std::shared_ptr<ISceneNode> GetWrappedNode() const = 0;
-};
+};*/
 
 
 //

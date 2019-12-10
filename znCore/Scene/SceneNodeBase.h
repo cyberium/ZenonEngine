@@ -3,13 +3,12 @@
 class OW_ENGINE_API SceneNodeBase 
 	: public ISceneNode
 	, public ISceneNodeInternal
-	, public ISceneNodeWrapper
 	, public Object
 {
     friend IScene;
 public:
 	explicit SceneNodeBase();
-	virtual                                         ~SceneNodeBase();
+	virtual ~SceneNodeBase();
 
 	virtual void									Initialize();
 	virtual void									Finalize();
@@ -54,18 +53,6 @@ public:
 	virtual void                                    SetParentInternal(std::weak_ptr<ISceneNode> parentNode);
 
 
-
-	//
-	// ISceneNodeWrapper
-	//
-	inline void SetWrappedNode(std::shared_ptr<ISceneNode> ThisNode) override
-	{
-		m_WrappedNode = ThisNode;
-	}
-	inline std::shared_ptr<ISceneNode> GetWrappedNode() const override
-	{
-		return m_WrappedNode;
-	}
 
 	// Callbacks caller
 	void                                            RaiseOnParentChanged();
@@ -114,6 +101,4 @@ private:
 	NodeNameMap                                     m_ChildrenByName;
 
 	std::shared_ptr<ISettingGroup>                  m_Properties;
-
-	std::shared_ptr<ISceneNode>                     m_WrappedNode;
 };

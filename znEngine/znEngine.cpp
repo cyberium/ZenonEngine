@@ -8,6 +8,7 @@
 #include "PluginsManager.h"
 #include "Settings.h"
 #include "RenderDeviceFactory.h"
+#include "Loader.h"
 #include "SceneFunctional/SceneNodesFactory.h"
 #include "SceneFunctional/ScenesFactory.h"
 #include "GameStatesFactory.h"

@@ -4,7 +4,7 @@
 #include "SceneBase.h"
 
 // Additonal
-#include "SceneFunctional/UI/SceneNodeUI.h"
+#include "UI/SceneNodeUI.h"
 
 SceneBase::SceneBase(IBaseManager* BaseManager)
 	: m_BaseManager(BaseManager)

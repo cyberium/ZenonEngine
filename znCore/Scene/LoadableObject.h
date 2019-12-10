@@ -1,6 +1,6 @@
 #pragma once
 
-class CLoadableObject
+class OW_ENGINE_API CLoadableObject
 	: public ILoadable
 {
 public:

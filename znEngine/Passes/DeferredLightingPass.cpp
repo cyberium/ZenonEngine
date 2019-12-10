@@ -3,10 +3,6 @@
 // General
 #include "DeferredLightingPass.h"
 
-// Additional
-#include "SceneFunctional/Base/SceneBase.h"
-#include "SceneFunctional/3D/SceneNode3D.h"
-
 DeferredLightingPass::DeferredLightingPass(
 	std::shared_ptr<IRenderDevice> RenderDevice,
 	std::shared_ptr<IScene> scene,

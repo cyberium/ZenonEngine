@@ -47,9 +47,6 @@
     <ClCompile Include="Passes\TextureMaterialPass.cpp" />
     <ClCompile Include="PluginsManager.cpp" />
     <ClCompile Include="RenderDeviceFactory.cpp" />
-    <ClCompile Include="SceneFunctional\3D\SceneNode3D.cpp" />
-    <ClCompile Include="SceneFunctional\Base\SceneBase.cpp" />
-    <ClCompile Include="SceneFunctional\Base\SceneNodeBase.cpp" />
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="EngineTime.cpp" />
     <ClCompile Include="Loader.cpp" />
@@ -59,7 +56,6 @@
     <ClCompile Include="SceneFunctional\ScenesFactory.cpp" />
     <ClCompile Include="SceneFunctional\UI\Fonts\Font.cpp" />
     <ClCompile Include="SceneFunctional\UI\Fonts\FontsManager.cpp" />
-    <ClCompile Include="SceneFunctional\UI\SceneNodeUI.cpp" />
     <ClCompile Include="SceneFunctional\UI\UIBeizerLine.cpp" />
     <ClCompile Include="SceneFunctional\UI\UIButton.cpp" />
     <ClCompile Include="SceneFunctional\UI\UIColor.cpp" />
@@ -113,9 +109,6 @@
     <ClInclude Include="Passes\TextureMaterialPass.h" />
     <ClInclude Include="PluginsManager.h" />
     <ClInclude Include="RenderDeviceFactory.h" />
-    <ClInclude Include="SceneFunctional\3D\SceneNode3D.h" />
-    <ClInclude Include="SceneFunctional\Base\SceneBase.h" />
-    <ClInclude Include="SceneFunctional\Base\SceneNodeBase.h" />
     <ClInclude Include="Application.h" />
     <ClInclude Include="common.h" />
     <ClInclude Include="EngineTime.h" />
@@ -126,7 +119,6 @@
     <ClInclude Include="SceneFunctional\ScenesFactory.h" />
     <ClInclude Include="SceneFunctional\UI\Fonts\Font.h" />
     <ClInclude Include="SceneFunctional\UI\Fonts\FontsManager.h" />
-    <ClInclude Include="SceneFunctional\UI\SceneNodeUI.h" />
     <ClInclude Include="SceneFunctional\UI\UIBeizerLine.h" />
     <ClInclude Include="SceneFunctional\UI\UIButton.h" />
     <ClInclude Include="SceneFunctional\UI\UIColor.h" />
@@ -204,8 +196,6 @@
     <Text Include="Resources\shaders_OGL\3D\Textured.vs">
       <FileType>Document</FileType>
     </Text>
-    <None Include="SceneFunctional\3D\SceneNode3D.inl" />
-    <None Include="SceneFunctional\UI\SceneNodeUI.inl" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{51252F60-B8DC-4090-BBA3-DD05942110F0}</ProjectGuid>

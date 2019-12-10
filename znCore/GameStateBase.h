@@ -23,7 +23,8 @@ public:
 	void											SetCurrent(bool _value) override;
 	bool											IsCurrent() const override;
 
-	std::shared_ptr<IScene>							GetScene3D() const override { return m_Scene; };
+	std::shared_ptr<IScene>							GetScene3D() const override { return m_Scene3D; };
+	std::shared_ptr<IScene>							GetSceneUI() const override { return m_SceneUI; };
 
     // Engine events
 	virtual void                                    OnUpdate(UpdateEventArgs& e);
@@ -71,9 +72,10 @@ protected:
 
 	std::shared_ptr<ISettingGroup>                  m_VideoSettings;
 
-	RenderTechnique                                 m_Technique;
-	std::shared_ptr<IScene>                         m_Scene;
-
+	RenderTechnique                                 m_Technique3D;
+	RenderTechnique                                 m_TechniqueUI;
+	std::shared_ptr<IScene>                         m_Scene3D;
+	std::shared_ptr<IScene>                         m_SceneUI;
 
 private: // Update event connection
     Delegate<UpdateEventArgs>::FunctionDecl         OnUpdateConnection;

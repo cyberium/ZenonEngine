@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../Base/SceneNodeBase.h"
+#include "../SceneNodeBase.h"
 
 // FORWARD BEGIN
 class CUIBaseNode;
@@ -24,7 +24,6 @@ class OW_ENGINE_API CUIBaseNode
 	: public SceneNodeBase
 	, public ISceneNodeUI
 {
-    typedef SceneNodeBase base;
 	friend IScene;
 public:
 	explicit CUIBaseNode();
@@ -43,9 +42,6 @@ public:
     virtual glm::vec2                               GetSize();
     virtual BoundingRect                            GetBoundsAbs();
     virtual bool                                    IsPointInBoundsAbs(glm::vec2 Point) ;
-
-	// Called before all others calls
-	virtual void                                    UpdateViewport(const Viewport* viewport);
 
 	// Allow a visitor to visit this node. 
 	virtual bool                                    Accept(IVisitor* visitor) override;

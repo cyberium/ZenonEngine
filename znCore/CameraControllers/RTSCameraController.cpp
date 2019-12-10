@@ -5,7 +5,7 @@
 
 CRTSCameraController::CRTSCameraController()
 {
-	m_Camera = std::make_shared<Camera>();
+	m_Camera = std::make_shared<CCamera>();
 	GetCameraMovement()->SetYaw(0.0f);
 	GetCameraMovement()->SetPitch(-90.0f);
 

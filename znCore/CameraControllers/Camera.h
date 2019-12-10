@@ -1,15 +1,15 @@
 #pragma once
 
-class OW_ENGINE_API Camera 
+class OW_ENGINE_API CCamera 
 	: public ICamera
 	, public ICameraMovement
 	, public Object
 {
 public:
-	Camera();
-	Camera(float left, float right, float top, float bottom);
-    Camera(ProjectionHand ProjectionHand, float fovy, float aspect, float zNear, float zFar);
-	virtual ~Camera();
+	CCamera();
+	CCamera(float left, float right, float top, float bottom);
+    CCamera(ProjectionHand ProjectionHand, float fovy, float aspect, float zNear, float zFar);
+	virtual ~CCamera();
 
 
 	//

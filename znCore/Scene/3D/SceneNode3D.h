@@ -1,12 +1,12 @@
 #pragma once
 
-#include "../Base/SceneNodeBase.h"
+#include "../SceneNodeBase.h"
 
 class OW_ENGINE_API SceneNode3D 
 	: public SceneNodeBase
 	, public ISceneNode3D
 {
-	typedef SceneNodeBase base;
+
     friend IScene;
 public:
 	explicit                                        SceneNode3D();
@@ -21,14 +21,8 @@ public:
     template<typename T>
     std::shared_ptr<T>                              GetComponent();
 
-	// Called before all others calls
-	virtual void                                    UpdateCamera(const ICamera* camera) override;
-
 	// Allow a visitor to visit this node.
 	virtual bool                                    Accept(IVisitor* visitor) override;
-
-	// Updatable
-	virtual void                                    OnUpdate(UpdateEventArgs& e) override;
 
 protected:
     void                                            SetTransformComponent(std::shared_ptr<ITransformComponent3D> TransformComponent);

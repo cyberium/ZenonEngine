@@ -63,7 +63,7 @@ ZN_INTERFACE OW_ENGINE_API IScene : public std::enable_shared_from_this<IScene>
 
 		std::shared_ptr<T> newNode = std::make_shared<T>(std::forward<Args>(_Args)...);
 
-		if (std::shared_ptr<ISceneNodeWrapper> newNodeWrapper = std::dynamic_pointer_cast<ISceneNodeWrapper>(newNode))
+		/*if (std::shared_ptr<ISceneNodeWrapper> newNodeWrapper = std::dynamic_pointer_cast<ISceneNodeWrapper>(newNode))
 		{
 			IBaseManager* baseManager = std::dynamic_pointer_cast<IBaseManagerHolder>(shared_from_this())->GetBaseManager();
 			std::shared_ptr<ISceneNodesFactory> sceneNodeFactory = GetManager<ISceneNodesFactory>(baseManager);
@@ -77,7 +77,7 @@ ZN_INTERFACE OW_ENGINE_API IScene : public std::enable_shared_from_this<IScene>
 		else
 		{
 			throw std::exception(("Unable to create wrapped node '" + WrapperNodeTypeName + "'. T isn't supports 'ISceneNodeWrapper'.").c_str());
-		}
+		}*/
 
 		newNode->SetScene(shared_from_this());
 		newNode->SetParent(Parent);

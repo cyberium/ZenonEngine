@@ -85,7 +85,7 @@ std::shared_ptr<IRenderPass> CRenderPassDefaultCreator::CreateRenderPass(size_t 
 		std::shared_ptr<IPipelineState> Pipeline = RenderDevice->CreatePipelineState();
 		Pipeline->GetBlendState()->SetBlendMode(disableBlending);
 		Pipeline->GetDepthStencilState()->SetDepthMode(enableDepthWrites);
-		Pipeline->GetRasterizerState()->SetCullMode(IRasterizerState::CullMode::Back);
+		Pipeline->GetRasterizerState()->SetCullMode(IRasterizerState::CullMode::None);
 		Pipeline->GetRasterizerState()->SetFillMode(IRasterizerState::FillMode::Solid);
 		Pipeline->SetRenderTarget(RenderTarget);
 		Pipeline->GetRasterizerState()->SetViewport(Viewport);

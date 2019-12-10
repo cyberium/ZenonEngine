@@ -28,9 +28,9 @@ bool CGameState_World::Init()
 	Load3D();
 	LoadUI();
 
-	GetCameraController()->GetCameraMovement()->SetTranslate(vec3(-104, 105, 105));
-	GetCameraController()->GetCameraMovement()->SetYaw(-45);
-	GetCameraController()->GetCameraMovement()->SetPitch(-45);
+	GetCameraController()->GetCameraMovement()->SetTranslate(vec3(-500, 1600, 1700));
+	GetCameraController()->GetCameraMovement()->SetYaw(-51);
+	GetCameraController()->GetCameraMovement()->SetPitch(-38);
 
 	return true;
 }
@@ -77,29 +77,39 @@ void CGameState_World::OnRenderUI(RenderEventArgs& e)
 //
 void CGameState_World::Load3D()
 {
-	for (size_t i = 0; i < 10; i++)
+	const size_t iterCnt = 20;
+	const float offset = 45.0f;
+
+	std::shared_ptr<MaterialTextured> mat = std::make_shared<MaterialTextured>(GetRenderDevice());
+	mat->SetDiffuseColor(vec4(1.0f, 0.0f, 1.0f, 1.0f));
+	mat->SetTexture(0, GetRenderDevice()->CreateTexture2D("default.png"));
+
+	std::shared_ptr<IMesh> mesh = GetRenderDevice()->GetPrimitiveCollection()->CreateSphere();
+	mesh->SetMaterial(mat);
+
+	for (size_t i = 0; i < iterCnt; i++)
 	{
-		for (size_t j = 0; j < 10; j++)
+		for (size_t j = 0; j < iterCnt; j++)
 		{
-			std::shared_ptr<IMesh> mesh = GetRenderDevice()->GetPrimitiveCollection()->CreatePlane();
+			for (size_t k = 0; k < iterCnt; k++)
+			{
+				std::shared_ptr<ISceneNode> sceneNode = m_Scene3D->CreateWrappedSceneNode<SceneNode3D>("SceneNode3D", m_Scene3D->GetRootNode());
+				sceneNode->GetComponent<ITransformComponent3D>()->SetTranslate(vec3(offset * i, offset * k, offset * j));
+				sceneNode->GetComponent<ITransformComponent3D>()->SetScale(vec3(15, 15, 15));
+				sceneNode->GetComponent<IMeshComponent3D>()->AddMesh(mesh);
 
-			std::shared_ptr<MaterialTextured> mat = std::make_shared<MaterialTextured>(GetRenderDevice());
-			mat->SetDiffuseColor(vec4(1.0f, 0.0f, 1.0f, 1.0f));
-			mat->SetTexture(0, GetRenderDevice()->CreateTexture2D("default.png"));
-			mesh->SetMaterial(mat);
-
-			std::shared_ptr<ISceneNode> sceneNode = m_Scene->CreateWrappedSceneNode<CSceneNodeProxie>("SceneNode3D", m_Scene->GetRootNode());
-			sceneNode->GetComponent<ITransformComponent3D>()->SetTranslate(vec3(40 * i, 0.0f, 40 * j));
-			sceneNode->GetComponent<ITransformComponent3D>()->SetScale(vec3(15, 15, 15));
-			sceneNode->GetComponent<IMeshComponent3D>()->AddMesh(mesh);
+				BoundingBox bbox = BoundingBox(glm::vec3(-1.0f, -1.0f, -1.0f), glm::vec3(1.0f, 1.0f, 1.0f));
+				bbox.transform(sceneNode->GetComponent<CTransformComponent3D>()->GetWorldTransfom());
+				sceneNode->GetComponent<CColliderComponent3D>()->SetBounds(bbox);
+			}
 		}
 	}
 
-	m_Technique.AddPass(GetManager<IRenderPassFactory>(GetBaseManager())->CreateRenderPass("ClearPass", GetRenderDevice(), GetRenderWindow()->GetRenderTarget(), GetRenderWindow()->GetViewport(), m_Scene));
-	m_Technique.AddPass(GetManager<IRenderPassFactory>(GetBaseManager())->CreateRenderPass("TexturedMaterialPass", GetRenderDevice(), GetRenderWindow()->GetRenderTarget(), GetRenderWindow()->GetViewport(), m_Scene));
+	m_Technique3D.AddPass(GetManager<IRenderPassFactory>(GetBaseManager())->CreateRenderPass("ClearPass", GetRenderDevice(), GetRenderWindow()->GetRenderTarget(), GetRenderWindow()->GetViewport(), m_Scene3D));
+	m_Technique3D.AddPass(GetManager<IRenderPassFactory>(GetBaseManager())->CreateRenderPass("TexturedMaterialPass", GetRenderDevice(), GetRenderWindow()->GetRenderTarget(), GetRenderWindow()->GetViewport(), m_Scene3D));
 }
 
 void CGameState_World::LoadUI()
 {
-	m_Technique.AddPass(GetManager<IRenderPassFactory>(GetBaseManager())->CreateRenderPass("BaseUIPass", GetRenderDevice(), GetRenderWindow()->GetRenderTarget(), GetRenderWindow()->GetViewport(), m_Scene));
+	m_TechniqueUI.AddPass(GetManager<IRenderPassFactory>(GetBaseManager())->CreateRenderPass("BaseUIPass", GetRenderDevice(), GetRenderWindow()->GetRenderTarget(), GetRenderWindow()->GetViewport(), m_SceneUI));
 }

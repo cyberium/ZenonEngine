@@ -1,7 +1,5 @@
 #pragma once
 
-#include "SceneFunctional/UI/SceneNodeUI.h"
-
 class OW_ENGINE_API CUIWindowNode : public CUIBaseNode
 {
 	typedef CUIBaseNode base;

@@ -3,6 +3,11 @@
 // General
 #include "SceneNode3D.h"
 
+// Additional
+#include "TransformComponent3D.h"
+#include "MeshComponent3D.h"
+#include "ColliderComponent3D.h"
+
 SceneNode3D::SceneNode3D()
 {}
 
@@ -12,7 +17,7 @@ SceneNode3D::~SceneNode3D()
 
 std::shared_ptr<SceneNode3D> SceneNode3D::shared_from_this()
 {
-    return std::dynamic_pointer_cast<SceneNode3D>(base::shared_from_this());
+    return std::dynamic_pointer_cast<SceneNode3D>(SceneNodeBase::shared_from_this());
 }
 
 std::weak_ptr<SceneNode3D> SceneNode3D::weak_from_this()
@@ -32,19 +37,9 @@ void SceneNode3D::RegisterComponents()
     SetColliderComponent(AddComponent(std::make_shared<CColliderComponent3D>(shared_from_this())));
 }
 
-
-void SceneNode3D::UpdateCamera(const ICamera* camera)
-{
-	// Do nothing...
-}
-
 bool SceneNode3D::Accept(IVisitor* visitor)
 {
-	bool visitResult = false;
-	if (GetWrappedNode() != nullptr)
-		visitResult = visitor->Visit3D(GetWrappedNode().get());
-	else
-		visitResult = visitor->Visit3D(this);
+	bool visitResult = visitor->Visit3D(this);
 
     if (visitResult)
     {
@@ -71,9 +66,6 @@ bool SceneNode3D::Accept(IVisitor* visitor)
 	return visitResult;
 }
 
-void SceneNode3D::OnUpdate(UpdateEventArgs & e)
-{
-}
 
 
 //

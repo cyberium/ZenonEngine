@@ -1,5 +1,7 @@
 #include "stdafx.h"
 
+#if 0
+
 // General
 #include "SceneNodeProxie.h"
 
@@ -167,3 +169,6 @@ IBaseManager* CSceneNodeProxie::GetBaseManager() const
 {
 	return std::dynamic_pointer_cast<IBaseManagerHolder>(GetScene())->GetBaseManager();
 }
+
+
+#endif

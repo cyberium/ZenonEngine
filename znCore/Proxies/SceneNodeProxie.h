@@ -1,5 +1,7 @@
 #pragma once
 
+#if 0
+
 class OW_ENGINE_API CSceneNodeProxie
 	: public ISceneNode
 	, public ISceneNodeWrapper
@@ -87,3 +89,5 @@ protected:
 private:
 	std::shared_ptr<ISceneNode> m_SceneNode;
 };
+
+#endif

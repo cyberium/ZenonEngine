@@ -213,9 +213,6 @@
     <ClCompile Include="Scene\LoadableObject.cpp">
       <Filter>Scene</Filter>
     </ClCompile>
-    <ClCompile Include="GameState.cpp">
-      <Filter>GameState</Filter>
-    </ClCompile>
     <ClCompile Include="CameraControllers\ArcBallCameraController.cpp">
       <Filter>CameraControllers</Filter>
     </ClCompile>
@@ -230,6 +227,21 @@
     </ClCompile>
     <ClCompile Include="CameraControllers\RTSCameraController.cpp">
       <Filter>CameraControllers</Filter>
+    </ClCompile>
+    <ClCompile Include="GameStateBase.cpp">
+      <Filter>GameState</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\3D\SceneNode3D.cpp">
+      <Filter>Scene\3D</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\SceneBase.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\SceneNodeBase.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\UI\SceneNodeUI.cpp">
+      <Filter>Scene\UI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -569,9 +581,6 @@
     <ClInclude Include="Scene\LoadableObject.h">
       <Filter>Scene</Filter>
     </ClInclude>
-    <ClInclude Include="GameState.h">
-      <Filter>GameState</Filter>
-    </ClInclude>
     <ClInclude Include="CameraControllers\ArcBallCameraController.h">
       <Filter>CameraControllers</Filter>
     </ClInclude>
@@ -587,6 +596,21 @@
     <ClInclude Include="CameraControllers\RTSCameraController.h">
       <Filter>CameraControllers</Filter>
     </ClInclude>
+    <ClInclude Include="GameStateBase.h">
+      <Filter>GameState</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\3D\SceneNode3D.h">
+      <Filter>Scene\3D</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\SceneBase.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\SceneNodeBase.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\UI\SceneNodeUI.h">
+      <Filter>Scene\UI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="RefManager2Dim.inl">
@@ -600,6 +624,12 @@
     </None>
     <None Include="Scene\ComponentBase.inl">
       <Filter>Scene</Filter>
+    </None>
+    <None Include="Scene\3D\SceneNode3D.inl">
+      <Filter>Scene\3D</Filter>
+    </None>
+    <None Include="Scene\UI\SceneNodeUI.inl">
+      <Filter>Scene\UI</Filter>
     </None>
   </ItemGroup>
 </Project>

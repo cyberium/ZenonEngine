@@ -40,14 +40,21 @@
 
 #include "../znCore/Scene/Light3D.h"
 
-#include "../znCore/GameState.h"
+#include "../znCore/GameStateBase.h"
 
+// Base
+#include "../znCore/Scene/SceneBase.h"
+#include "../znCore/Scene/SceneNodeBase.h"
 #include "../znCore/Scene/ComponentBase.h"
 #include "../znCore/Scene/TransformComponentBase.h"
 
+// 3D
+#include "../znCore/Scene/3D/SceneNode3D.h"
 #include "../znCore/Scene/3D/ColliderComponent3D.h"
 #include "../znCore/Scene/3D/LightComponent3D.h"
 #include "../znCore/Scene/3D/MeshComponent3D.h"
 #include "../znCore/Scene/3D/TransformComponent3D.h"
 
+// UI
+#include "../znCore/Scene/UI/SceneNodeUI.h"
 #include "../znCore/Scene/UI/TransformComponentUI.h"

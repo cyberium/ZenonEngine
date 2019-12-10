@@ -18,7 +18,7 @@ CArcBallCameraController::CArcBallCameraController()
 	, TranslateFaster(false)
 	, RotateFaster(false)
 {
-	m_Camera = std::make_shared<Camera>();
+	m_Camera = std::make_shared<CCamera>();
 }
 
 CArcBallCameraController::~CArcBallCameraController()

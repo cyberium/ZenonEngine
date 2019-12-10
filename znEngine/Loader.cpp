@@ -3,9 +3,6 @@
 // General
 #include "Loader.h"
 
-// Additional
-#include "SceneFunctional//3D/SceneNode3D.h"
-
 CLoader::CLoader()
 {
 #ifdef LOADER_ENABLED

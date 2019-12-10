@@ -4,8 +4,6 @@
 #include "SceneNodeDefaultCreator.h"
 
 // Additional
-#include "3D/SceneNode3D.h"
-#include "UI/SceneNodeUI.h"
 #include "UI/UIText.h"
 
 CSceneNodeDefaultCreator::CSceneNodeDefaultCreator(IBaseManager* BaseManager)

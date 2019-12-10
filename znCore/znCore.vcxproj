@@ -34,7 +34,7 @@
     <ClCompile Include="ByteBuffer.cpp" />
     <ClCompile Include="FilesManager.cpp" />
     <ClCompile Include="Frustrum.cpp" />
-    <ClCompile Include="GameState.cpp" />
+    <ClCompile Include="GameStateBase.cpp" />
     <ClCompile Include="HighResolutionTimer.cpp" />
     <ClCompile Include="Console.cpp" />
     <ClCompile Include="LibraryResourceFileStotage.cpp" />
@@ -55,11 +55,15 @@
     <ClCompile Include="Scene\3D\ColliderComponent3D.cpp" />
     <ClCompile Include="Scene\3D\LightComponent3D.cpp" />
     <ClCompile Include="Scene\3D\MeshComponent3D.cpp" />
+    <ClCompile Include="Scene\3D\SceneNode3D.cpp" />
     <ClCompile Include="Scene\3D\TransformComponent3D.cpp" />
     <ClCompile Include="Scene\ComponentBase.cpp" />
     <ClCompile Include="Scene\Light3D.cpp" />
     <ClCompile Include="Scene\LoadableObject.cpp" />
+    <ClCompile Include="Scene\SceneBase.cpp" />
+    <ClCompile Include="Scene\SceneNodeBase.cpp" />
     <ClCompile Include="Scene\TransformComponentBase.cpp" />
+    <ClCompile Include="Scene\UI\SceneNodeUI.cpp" />
     <ClCompile Include="Scene\UI\TransformComponentUI.cpp" />
     <ClCompile Include="SettingsGroupBase.cpp" />
     <ClCompile Include="stdafx.cpp">
@@ -84,7 +88,7 @@
     <ClInclude Include="CameraControllers\RTSCameraController.h" />
     <ClInclude Include="DebugOutputConsole.h" />
     <ClInclude Include="DebugOutputLog.h" />
-    <ClInclude Include="GameState.h" />
+    <ClInclude Include="GameStateBase.h" />
     <ClInclude Include="HighResolutionTimer.h" />
     <ClInclude Include="Interfaces\Application.h" />
     <ClInclude Include="Interfaces\BaseManager.h" />
@@ -176,12 +180,16 @@
     <ClInclude Include="Scene\3D\ColliderComponent3D.h" />
     <ClInclude Include="Scene\3D\LightComponent3D.h" />
     <ClInclude Include="Scene\3D\MeshComponent3D.h" />
+    <ClInclude Include="Scene\3D\SceneNode3D.h" />
     <ClInclude Include="Scene\3D\TransformComponent3D.h" />
     <ClInclude Include="Scene\ComponentBase.h" />
     <ClInclude Include="Scene\Light.h" />
     <ClInclude Include="Scene\Light3D.h" />
     <ClInclude Include="Scene\LoadableObject.h" />
+    <ClInclude Include="Scene\SceneBase.h" />
+    <ClInclude Include="Scene\SceneNodeBase.h" />
     <ClInclude Include="Scene\TransformComponentBase.h" />
+    <ClInclude Include="Scene\UI\SceneNodeUI.h" />
     <ClInclude Include="Scene\UI\TransformComponentUI.h" />
     <ClInclude Include="SettingBase.h" />
     <ClInclude Include="SettingsGroupBase.h" />
@@ -196,7 +204,9 @@
     <None Include="RefManager1DimAssync.inl" />
     <None Include="RefManager1Dim.inl" />
     <None Include="RefManager2Dim.inl" />
+    <None Include="Scene\3D\SceneNode3D.inl" />
     <None Include="Scene\ComponentBase.inl" />
+    <None Include="Scene\UI\SceneNodeUI.inl" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{A4E6F769-0036-4128-A409-495D9207F587}</ProjectGuid>

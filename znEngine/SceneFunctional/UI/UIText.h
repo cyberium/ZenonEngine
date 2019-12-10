@@ -1,6 +1,5 @@
 #pragma once
 
-#include "SceneNodeUI.h"
 #include "Fonts/Font.h"
 #include "../../Materials/UI_Font_Material.h"
 
