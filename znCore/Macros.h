@@ -53,7 +53,7 @@ static inline void DelManager(IBaseManager* BaseManager)
 }
 
 template<class T>
-static inline std::shared_ptr<T> GetManager(IBaseManager* BaseManager)
+static inline std::shared_ptr<T> GetManager(const IBaseManager* BaseManager)
 {
 	std::shared_ptr<IManager> manager = BaseManager->GetManager(__uuidof(T));
 	if (manager == nullptr)

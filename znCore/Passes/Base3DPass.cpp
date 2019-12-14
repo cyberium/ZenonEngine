@@ -16,16 +16,13 @@ Base3DPass::~Base3DPass()
 //
 bool Base3DPass::Visit3D(ISceneNode* sceneNode)
 {
-	GetRenderEventArgs()->Node = sceneNode;
+	CBaseScenePass::VisitBase(sceneNode);
 
 	const ICamera* camera = GetRenderEventArgs()->Camera;
-	const Viewport* viewport = GetRenderEventArgs()->PipelineState->GetRasterizerState()->GetViewports()[0];
+	//const Viewport* viewport = GetRenderEventArgs()->PipelineState->GetRasterizerState()->GetViewports()[0];
 
 	if (camera)
 	{
-		sceneNode->UpdateCamera(camera);
-		sceneNode->UpdateViewport(viewport);
-
 		PerObject perObjectData;
 		perObjectData.Model               = sceneNode->GetComponent<ITransformComponent>()->GetWorldTransfom();
 		perObjectData.ModelView           = camera->GetViewMatrix()       * perObjectData.Model;

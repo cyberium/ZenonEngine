@@ -2,4 +2,6 @@
 
 #include "FBXDisplayCommon.h"
 
-std::shared_ptr<IMesh> DisplayMesh(FbxNode* pNode);
+class CFBX;
+
+std::shared_ptr<IMesh> DisplayMesh(CFBX * FBX, FbxManager* Manager, FbxNode* pNode);

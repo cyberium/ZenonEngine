@@ -22,6 +22,7 @@
     <ClCompile Include="BoundingBox.cpp" />
     <ClCompile Include="BoundingRect.cpp" />
     <ClCompile Include="BoundingSphere.cpp" />
+    <ClCompile Include="ByteBufferOnlyPointer.cpp" />
     <ClCompile Include="CameraControllers\ArcBallCameraController.cpp" />
     <ClCompile Include="CameraControllers\Camera.cpp" />
     <ClCompile Include="CameraControllers\CameraControllerBase.cpp" />
@@ -81,6 +82,7 @@
     <ClInclude Include="BoundingBox.h" />
     <ClInclude Include="BoundingRect.h" />
     <ClInclude Include="BoundingSphere.h" />
+    <ClInclude Include="ByteBufferOnlyPointer.h" />
     <ClInclude Include="CameraControllers\ArcBallCameraController.h" />
     <ClInclude Include="CameraControllers\Camera.h" />
     <ClInclude Include="CameraControllers\CameraControllerBase.h" />
@@ -175,7 +177,6 @@
     <ClInclude Include="Rect.h" />
     <ClInclude Include="RefManager1Dim.h" />
     <ClInclude Include="RefManager1DimAssync.h" />
-    <ClInclude Include="RefManager2Dim.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="Scene\3D\ColliderComponent3D.h" />
     <ClInclude Include="Scene\3D\LightComponent3D.h" />
@@ -203,7 +204,6 @@
   <ItemGroup>
     <None Include="RefManager1DimAssync.inl" />
     <None Include="RefManager1Dim.inl" />
-    <None Include="RefManager2Dim.inl" />
     <None Include="Scene\3D\SceneNode3D.inl" />
     <None Include="Scene\ComponentBase.inl" />
     <None Include="Scene\UI\SceneNodeUI.inl" />

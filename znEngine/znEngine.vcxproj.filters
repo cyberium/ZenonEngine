@@ -19,26 +19,11 @@
     <Filter Include="Resources\Shaders_D3D\3D">
       <UniqueIdentifier>{5413c097-8bde-4ed5-b5c8-b65a0b3346d5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Scene Funcitonal">
-      <UniqueIdentifier>{8c49bf34-6b4c-469d-9001-5b6044462676}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Materials">
       <UniqueIdentifier>{2542c214-c76f-4d2a-8c8e-78d755511f14}</UniqueIdentifier>
     </Filter>
     <Filter Include="Passes">
       <UniqueIdentifier>{14ca4580-6528-4597-9243-e173cc9a12f1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Scene Funcitonal\UI">
-      <UniqueIdentifier>{aeead1cf-e045-48e6-b75c-499dd6f7476a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Scene Funcitonal\UI\UIContainerGarmoshka">
-      <UniqueIdentifier>{2c5b150c-4814-4a73-bda8-ac6cdf2f7f38}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Scene Funcitonal\UI\UIContainerList">
-      <UniqueIdentifier>{b93002ef-9ad2-41b9-b244-84fd234dc24e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Scene Funcitonal\UI\Utils">
-      <UniqueIdentifier>{58530eb5-a58f-4c13-94b2-0d6730fa84eb}</UniqueIdentifier>
     </Filter>
     <Filter Include="Passes\Queries">
       <UniqueIdentifier>{af4d1485-44b2-4e3b-9e17-9843a3353af4}</UniqueIdentifier>
@@ -48,9 +33,6 @@
     </Filter>
     <Filter Include="Passes\3D">
       <UniqueIdentifier>{ce8acf99-2f08-4e83-bc28-d859c1558a54}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Scene Funcitonal\UI\Fonts">
-      <UniqueIdentifier>{a14d68cf-974d-4fe9-8bb3-b39b310eae0b}</UniqueIdentifier>
     </Filter>
     <Filter Include="Resources\Shaders_OGL">
       <UniqueIdentifier>{c03fdd3f-3bd9-46ee-abb7-91fb10c738f9}</UniqueIdentifier>
@@ -69,6 +51,24 @@
     </Filter>
     <Filter Include="GameStates">
       <UniqueIdentifier>{e0cfab47-ff66-4a89-bfe3-35fd3eb3a994}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scene Funcitonal">
+      <UniqueIdentifier>{8c49bf34-6b4c-469d-9001-5b6044462676}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scene Funcitonal\UI">
+      <UniqueIdentifier>{aeead1cf-e045-48e6-b75c-499dd6f7476a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scene Funcitonal\UI\UIContainerGarmoshka">
+      <UniqueIdentifier>{2c5b150c-4814-4a73-bda8-ac6cdf2f7f38}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scene Funcitonal\UI\UIContainerList">
+      <UniqueIdentifier>{b93002ef-9ad2-41b9-b244-84fd234dc24e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scene Funcitonal\UI\Utils">
+      <UniqueIdentifier>{58530eb5-a58f-4c13-94b2-0d6730fa84eb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scene Funcitonal\UI\Fonts">
+      <UniqueIdentifier>{a14d68cf-974d-4fe9-8bb3-b39b310eae0b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -226,6 +226,9 @@
     </ClCompile>
     <ClCompile Include="SceneFunctional\UI\UIWindow.cpp">
       <Filter>Scene Funcitonal\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Passes\TextureDebugPass.cpp">
+      <Filter>Passes\3D</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -385,6 +388,9 @@
     </ClInclude>
     <ClInclude Include="SceneFunctional\UI\UIWindow.h">
       <Filter>Scene Funcitonal\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Passes\TextureDebugPass.h">
+      <Filter>Passes\3D</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

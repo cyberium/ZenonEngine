@@ -3,6 +3,9 @@
 // General
 #include "SceneNodeBase.h"
 
+// Additional
+#include "Passes/AbstractPass.h"
+
 SceneNodeBase::SceneNodeBase()
 	: m_Name("SceneNodeBase")
 {
@@ -189,6 +192,7 @@ bool SceneNodeBase::Accept(IVisitor* visitor)
 	const auto& childs = GetChilds();
 	std::for_each(childs.begin(), childs.end(), [&visitor](const std::shared_ptr<ISceneNode>& Child)
 	{
+		((AbstractPass*)visitor)->GetRenderEventArgs()->Node = Child.get();
 		Child->Accept(visitor);
 	});
 

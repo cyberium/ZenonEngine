@@ -193,17 +193,9 @@ std::shared_ptr<IBuffer> RenderDeviceOGL::CreateVoidVertexBuffer(const void * da
 	return buffer;
 }
 
-std::shared_ptr<IBuffer> RenderDeviceOGL::CreateUInt16IndexBuffer(const uint16* data, uint32 count)
+std::shared_ptr<IBuffer> RenderDeviceOGL::CreateVoidIndexBuffer(const void * data, uint32 count, uint32 offset, uint32 stride)
 {
-	std::shared_ptr <IBuffer> buffer = std::make_shared<BufferOGL>(GL_ELEMENT_ARRAY_BUFFER, data, count, 0, (UINT)sizeof(uint16));
-	m_Buffers.push_back(buffer);
-
-	return buffer;
-}
-
-std::shared_ptr<IBuffer> RenderDeviceOGL::CreateUInt32IndexBuffer(const uint32* data, uint32 count)
-{
-	std::shared_ptr <IBuffer> buffer = std::make_shared<BufferOGL>(GL_ELEMENT_ARRAY_BUFFER, data, count, 0, (UINT)sizeof(uint32));
+	std::shared_ptr <IBuffer> buffer = std::make_shared<BufferOGL>(GL_ELEMENT_ARRAY_BUFFER, data, count, offset, stride);
 	m_Buffers.push_back(buffer);
 
 	return buffer;

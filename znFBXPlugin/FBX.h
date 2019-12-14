@@ -3,13 +3,16 @@
 class OW_ENGINE_API CFBX
 {
 public:
-	CFBX(std::shared_ptr<SceneNode3D> ParentNode);
+	CFBX(const std::string& SceneName,  std::shared_ptr<ISceneNode> ParentNode, std::shared_ptr<IMaterial> DefaultMaterial);
 	virtual ~CFBX();
 
-	std::shared_ptr<SceneNode3D> GetSceneNode();
+	const IBaseManager* GetBaseManager() const;
+
+	std::shared_ptr<ISceneNode> GetSceneNode();
 	std::shared_ptr<IMaterial> GetDefaultMaterial();
 
 private:
-	std::shared_ptr<SceneNode3D> m_Node;
+	std::shared_ptr<ISceneNode> m_Node;
+	const IBaseManager* m_BaseManager;
 	std::shared_ptr<IMaterial> m_DefaultMaterial;
 };

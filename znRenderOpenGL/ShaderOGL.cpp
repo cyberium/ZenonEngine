@@ -76,7 +76,7 @@ bool ShaderOGL::LoadShaderFromFile(ShaderType shaderType, const std::string& fil
     std::string errMsg;
     if (false == GetShaderProgramLog(m_GLObj, &errMsg))
     {
-        _ASSERT_EXPR(false, Resources::ConvertString(errMsg).c_str());
+        _ASSERT_EXPR(false, errMsg);
         return false;
     }
 

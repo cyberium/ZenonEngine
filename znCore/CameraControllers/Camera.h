@@ -47,9 +47,6 @@ public:
     void                                            SetPitch(float Pitch) override;
     void                                            AddPitch(float Pitch) override;
 	
-
-
-
 protected:
     virtual void                                    UpdateDirections();
 

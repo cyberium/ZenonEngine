@@ -4,9 +4,9 @@ class OW_ENGINE_API AbstractPass
 	: public IRenderPass
 {
 public:
-	                                                AbstractPass(std::shared_ptr<IRenderDevice> RenderDevice);
-                                                    AbstractPass(std::shared_ptr<IRenderDevice> RenderDevice, std::shared_ptr<IPipelineState> Pipeline);
-	virtual                                         ~AbstractPass();
+	AbstractPass(std::shared_ptr<IRenderDevice> RenderDevice);
+	AbstractPass(std::shared_ptr<IRenderDevice> RenderDevice, std::shared_ptr<IPipelineState> Pipeline);
+	virtual ~AbstractPass();
 
 	virtual void                                    SetEnabled(bool enabled);
 	virtual bool                                    IsEnabled() const;

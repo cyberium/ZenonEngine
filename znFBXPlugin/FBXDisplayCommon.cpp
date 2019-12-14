@@ -24,7 +24,7 @@ void DisplayString(const char* pHeader, const char* pValue /* = "" */, const cha
 	lString += pValue;
 	lString += pSuffix;
 	lString += "\n";
-	FBXSDK_printf(lString);
+	//FBXSDK_printf(lString);
 }
 
 
@@ -36,7 +36,7 @@ void DisplayBool(const char* pHeader, bool pValue, const char* pSuffix /* = "" *
 	lString += pValue ? "true" : "false";
 	lString += pSuffix;
 	lString += "\n";
-	FBXSDK_printf(lString);
+	//FBXSDK_printf(lString);
 }
 
 
@@ -48,7 +48,7 @@ void DisplayInt(const char* pHeader, int pValue, const char* pSuffix /* = "" */)
 	lString += pValue;
 	lString += pSuffix;
 	lString += "\n";
-	FBXSDK_printf(lString);
+	//FBXSDK_printf(lString);
 }
 
 
@@ -85,7 +85,7 @@ void Display2DVector(const char* pHeader, FbxVector2 pValue, const char* pSuffix
 	lString += lFloatValue2;
 	lString += pSuffix;
 	lString += "\n";
-	FBXSDK_printf(lString);
+	//FBXSDK_printf(lString);
 }
 
 
@@ -111,7 +111,7 @@ void Display3DVector(const char* pHeader, FbxVector4 pValue, const char* pSuffix
 	lString += lFloatValue3;
 	lString += pSuffix;
 	lString += "\n";
-	FBXSDK_printf(lString);
+	//FBXSDK_printf(lString);
 }
 
 void Display4DVector(const char* pHeader, FbxVector4 pValue, const char* pSuffix /* = "" */)

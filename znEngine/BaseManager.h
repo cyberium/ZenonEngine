@@ -9,7 +9,7 @@ public:
 	// IBaseManager
 	void RegisterManager(GUID _type, std::shared_ptr<IManager> _manager) override;
 	void UnregisterManager(GUID _type) override;
-	std::shared_ptr<IManager> GetManager(GUID _type) override;
+	std::shared_ptr<IManager> GetManager(GUID _type) const override;
 
 private:
 	std::unordered_map<GUID, std::shared_ptr<IManager>> m_Managers;

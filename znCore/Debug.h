@@ -45,3 +45,27 @@ inline void FatalMessageBox(const char* _title, const char* _message, ...)
 
 	va_end(args);
 }
+
+class CException : public std::exception
+{
+public:
+	CException()
+		: std::exception("Assertion failed!")
+	{}
+	CException(std::string Message)
+		: std::exception(Message.c_str())
+	{}
+};
+
+
+#define _ASSERT(expr)   \
+if ((!(expr)))          \
+{                       \
+	throw CException(); \
+}
+
+#define _ASSERT_EXPR(expr, msg)   \
+if ((!(expr)))                    \
+{                                 \
+	throw CException(msg);        \
+} 

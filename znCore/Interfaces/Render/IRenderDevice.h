@@ -91,8 +91,7 @@ ZN_INTERFACE OW_ENGINE_API
 	virtual std::shared_ptr<IBuffer> CreateVoidVertexBuffer(const void* data, uint32 count, uint32 offset, uint32 stride) = 0;
 	virtual void DestroyVertexBuffer(std::shared_ptr<IBuffer> buffer) = 0;
 
-	virtual std::shared_ptr<IBuffer> CreateUInt16IndexBuffer(const uint16* data, uint32 sizeInBytes) = 0;
-	virtual std::shared_ptr<IBuffer> CreateUInt32IndexBuffer(const uint32* data, uint32 sizeInBytes) = 0;
+	virtual std::shared_ptr<IBuffer> CreateVoidIndexBuffer(const void* data, uint32 count, uint32 offset, uint32 stride) = 0;
 	virtual void DestroyIndexBuffer(std::shared_ptr<IBuffer> buffer) = 0;
 
 	virtual std::shared_ptr<IConstantBuffer> CreateConstantBuffer(const void* data, size_t size) = 0;
@@ -105,15 +104,27 @@ ZN_INTERFACE OW_ENGINE_API
 
 	// Create an vertex buffer (with std::vector)
 	template<typename T>
-	std::shared_ptr<IBuffer> CreateVertexBuffer(const T& data);
+	inline std::shared_ptr<IBuffer> CreateVertexBuffer(const std::vector<T>& data)
+	{
+		return CreateVoidVertexBuffer(&(data[0]), (uint32)data.size(), 0, sizeof(T));
+	}
 	template<typename T>
-	std::shared_ptr<IBuffer> CreateVertexBuffer(const T* data, uint32 count);
+	inline std::shared_ptr<IBuffer> CreateVertexBuffer(const T* data, uint32 count)
+	{
+		return CreateVoidVertexBuffer(data, count, 0, sizeof(float));
+	}
 
 	// Create an index buffer.
 	template<typename T>
-	std::shared_ptr<IBuffer> CreateIndexBuffer(const T& data);
+	inline std::shared_ptr<IBuffer> CreateIndexBuffer(const std::vector<T>& data)
+	{
+		return CreateVoidIndexBuffer(&(data[0]), (uint32)data.size(), 0, sizeof(T));
+	}
 	template<typename T>
-	std::shared_ptr<IBuffer> CreateIndexBuffer(const T* data, uint32 count);
+	inline std::shared_ptr<IBuffer> CreateIndexBuffer(const T* data, uint32 count)
+	{
+		return CreateVoidIndexBuffer(data, count, 0, sizeof(T));
+	}
 
 	// Create a constant buffer (or Uniform buffer)
 	template<typename T>
@@ -124,106 +135,6 @@ ZN_INTERFACE OW_ENGINE_API
 	std::shared_ptr<IStructuredBuffer> CreateStructuredBuffer(const std::vector<T>& data, CPUAccess cpuAccess = CPUAccess::None, bool gpuWrite = false);
 };
 
-
-// Template specializations for vertex buffers (with std::vector)
-template<>
-inline std::shared_ptr<IBuffer> IRenderDevice::CreateVertexBuffer< std::vector<float> >(const std::vector<float>& data)
-{
-	return CreateVoidVertexBuffer(&(data[0]), (uint32)data.size(), 0, sizeof(float));
-}
-template<>
-inline std::shared_ptr<IBuffer> IRenderDevice::CreateVertexBuffer< std::vector<vec2> >(const std::vector<vec2>& data)
-{
-	return CreateVoidVertexBuffer(glm::value_ptr(data[0]), (uint32)data.size(), 0, sizeof(vec2));
-}
-template<>
-inline std::shared_ptr<IBuffer> IRenderDevice::CreateVertexBuffer< std::vector<vec3> >(const std::vector<vec3>& data)
-{
-	return CreateVoidVertexBuffer(glm::value_ptr(data[0]), (uint32)data.size(), 0, sizeof(vec3));
-}
-template<>
-inline std::shared_ptr<IBuffer> IRenderDevice::CreateVertexBuffer< std::vector<vec4> >(const std::vector<vec4>& data)
-{
-	return CreateVoidVertexBuffer(glm::value_ptr(data[0]), (uint32)data.size(), 0, sizeof(vec4));
-}
-
-// Template specializations for vertex buffers (with common types)
-template<>
-inline std::shared_ptr<IBuffer> IRenderDevice::CreateVertexBuffer<float>(const float* data, uint32 count)
-{
-	return CreateVoidVertexBuffer(data, count, 0, sizeof(float));
-}
-template<>
-inline std::shared_ptr<IBuffer> IRenderDevice::CreateVertexBuffer<vec2>(const vec2* data, uint32 count)
-{
-	return CreateVoidVertexBuffer((const float*)data, count, 0, sizeof(vec2));
-}
-template<>
-inline std::shared_ptr<IBuffer> IRenderDevice::CreateVertexBuffer<vec3>(const vec3* data, uint32 count)
-{
-	return CreateVoidVertexBuffer((const float*)data, count, 0, sizeof(vec3));
-}
-template<>
-inline std::shared_ptr<IBuffer> IRenderDevice::CreateVertexBuffer<vec4>(const vec4* data, uint32 count)
-{
-	return CreateVoidVertexBuffer((const float*)data, count, 0, sizeof(vec4));
-}
-
-// Template specializations for index buffers (with std::vector)
-template<>
-inline std::shared_ptr<IBuffer> IRenderDevice::CreateIndexBuffer< std::vector<uint16> >(const std::vector<uint16>& data)
-{
-	return CreateUInt16IndexBuffer(&(data[0]), (uint16)data.size());
-}
-
-template<>
-inline std::shared_ptr<IBuffer> IRenderDevice::CreateIndexBuffer< std::vector<uint32> >(const std::vector<uint32>& data)
-{
-	return CreateUInt32IndexBuffer(&(data[0]), (uint32)data.size());
-}
-
-// Template specializations for index buffers (with common types)
-template<>
-inline std::shared_ptr<IBuffer> IRenderDevice::CreateIndexBuffer<uint16>(const uint16* data, uint32 count)
-{
-	return CreateUInt16IndexBuffer(data, count);
-}
-
-template<>
-inline std::shared_ptr<IBuffer> IRenderDevice::CreateIndexBuffer<uint32>(const uint32* data, uint32 count)
-{
-	return CreateUInt32IndexBuffer(data, count);
-}
-
-
-// Non-specialized template methods.
-template< typename T >
-std::shared_ptr<IBuffer> IRenderDevice::CreateVertexBuffer(const T& data)
-{
-	static_assert(false, "This function must be specialized.");
-	return NULL;
-}
-
-template< typename T >
-std::shared_ptr<IBuffer> IRenderDevice::CreateVertexBuffer(const T* data, uint32 count)
-{
-	static_assert(false, "This function must be specialized.");
-	return NULL;
-}
-
-template<typename T>
-std::shared_ptr<IBuffer> IRenderDevice::CreateIndexBuffer(const T& data)
-{
-	static_assert(false, "This function must be specialized.");
-	return NULL;
-}
-
-template<typename T>
-std::shared_ptr<IBuffer> IRenderDevice::CreateIndexBuffer(const T* data, uint32 count)
-{
-	static_assert(false, "This function must be specialized.");
-	return NULL;
-}
 
 template< typename T >
 std::shared_ptr<IConstantBuffer> IRenderDevice::CreateConstantBuffer(const T& data)

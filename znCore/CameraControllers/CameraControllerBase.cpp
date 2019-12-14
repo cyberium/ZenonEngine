@@ -35,6 +35,8 @@ std::shared_ptr<ICameraMovement> CCameraControllerBase::GetCameraMovement() cons
 //
 void CCameraControllerBase::OnUpdate(UpdateEventArgs& e)
 {
+	// TODO: Refactor me!!!
+	GetCamera()->GetViewMatrix();
 }
 
 

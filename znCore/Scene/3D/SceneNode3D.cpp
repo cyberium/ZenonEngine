@@ -8,6 +8,8 @@
 #include "MeshComponent3D.h"
 #include "ColliderComponent3D.h"
 
+#include "Passes/AbstractPass.h"
+
 SceneNode3D::SceneNode3D()
 {}
 
@@ -41,14 +43,19 @@ bool SceneNode3D::Accept(IVisitor* visitor)
 {
 	bool visitResult = visitor->Visit3D(this);
 
-    if (visitResult)
-    {
+	//if (visitResult && !GetComponent<IColliderComponent3D>()->CheckFrustum(((AbstractPass*)visitor)->GetRenderEventArgs()->Camera))
+	//{
+	//	return false;
+	//}
+
+	if (visitResult)
+	{
 		const auto& components = GetComponents();
 		std::for_each(components.begin(), components.end(), [&visitor](const std::pair<GUID, std::shared_ptr<ISceneNodeComponent>>& Component)
 		{
 			Component.second->Accept(visitor);
 		});
-    }
+	}
 
 	// Now visit children
 	const auto& childs = GetChilds();
@@ -59,7 +66,7 @@ bool SceneNode3D::Accept(IVisitor* visitor)
 		if (loadable != nullptr && !loadable->isLoaded())
 			continue;
 #endif
-
+		((AbstractPass*)visitor)->GetRenderEventArgs()->Node = Child.get();
 		Child->Accept(visitor);
 	});
 

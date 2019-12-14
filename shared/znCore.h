@@ -11,6 +11,7 @@
 #include "../znCore/LibraryResourceFileStotage.h"
 #include "../znCore/FilesManager.h"
 #include "../znCore/File.h"
+#include "../znCore/ByteBufferOnlyPointer.h"
 
 #include "../znCore/DebugOutput.h"
 

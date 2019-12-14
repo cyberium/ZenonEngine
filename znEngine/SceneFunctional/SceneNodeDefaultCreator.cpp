@@ -20,20 +20,24 @@ CSceneNodeDefaultCreator::~CSceneNodeDefaultCreator()
 //
 size_t CSceneNodeDefaultCreator::GetSceneNodesCount() const
 {
-	return 3;
+	return 4;
 }
 
 std::string CSceneNodeDefaultCreator::GetSceneNodeTypeName(size_t Index) const
 {
 	if (Index == 0)
 	{
-		return "SceneNode3D";
+		return "SceneNodeBase";
 	}
 	else if (Index == 1)
 	{
-		return "SceneNodeUI";
+		return "SceneNode3D";
 	}
 	else if (Index == 2)
+	{
+		return "SceneNodeUI";
+	}
+	else if (Index == 3)
 	{
 		return "TextUI";
 	}
@@ -45,13 +49,17 @@ std::shared_ptr<ISceneNode> CSceneNodeDefaultCreator::CreateSceneNode(std::weak_
 {
 	if (Index == 0)
 	{
-		return Parent.lock()->CreateSceneNode<SceneNode3D>();
+		return Parent.lock()->CreateSceneNode<SceneNodeBase>();
 	}
 	else if (Index == 1)
 	{
+		return Parent.lock()->CreateSceneNode<SceneNode3D>();
+	}
+	else if (Index == 2)
+	{
 		return Parent.lock()->CreateSceneNode<CUIBaseNode>();
 	}
-	else if(Index == 2)
+	else if(Index == 3)
 	{
 		return Parent.lock()->CreateSceneNode<CUITextNode>();
 	}

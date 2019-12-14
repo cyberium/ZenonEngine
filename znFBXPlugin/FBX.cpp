@@ -8,23 +8,24 @@
 #include "FBXDisplayHierarchy.h"
 #include "FBXDisplayMesh.h"
 
-void DisplayContent(CFBX * FBX, FbxNode* pNode);
+bool DisplayContentNode(CFBX * FBX, FbxManager* FBXManager, FbxNode* pNode);
 
-void DisplayContent(CFBX * FBX, FbxScene* pScene)
+void DisplayContentScene(CFBX * FBX, FbxManager* FBXManager, FbxScene* pScene)
 {
 	int i;
 	FbxNode* lNode = pScene->GetRootNode();
 
 	if (lNode)
 	{
-		for (i = 0; i < 1/*lNode->GetChildCount()*/; i++)
+		for (i = 0; i < lNode->GetChildCount(); i++)
 		{
-			DisplayContent(FBX, lNode->GetChild(i));
+			if (DisplayContentNode(FBX, FBXManager, lNode->GetChild(i)))
+				return;
 		}
 	}
 }
 
-void DisplayContent(CFBX * FBX, FbxNode* pNode)
+bool DisplayContentNode(CFBX * FBX, FbxManager* FBXManager, FbxNode* pNode)
 {
 	FbxNodeAttribute::EType lAttributeType;
 	int i;
@@ -51,10 +52,12 @@ void DisplayContent(CFBX * FBX, FbxNode* pNode)
 
 		case FbxNodeAttribute::eMesh:
 		{
-			std::shared_ptr<IMesh> m = DisplayMesh(pNode);
+			std::shared_ptr<IMesh> m = DisplayMesh(FBX, FBXManager, pNode);
 			m->SetMaterial(FBX->GetDefaultMaterial());
 
-			//FBX->GetSceneNode()->GetComponent<CMeshComponent3D>()->AddMesh(m);
+			FBX->GetSceneNode()->GetComponent<IMeshComponent3D>()->AddMesh(m);
+
+			return false;
 		}
 		break;
 
@@ -88,12 +91,18 @@ void DisplayContent(CFBX * FBX, FbxNode* pNode)
 
 	for (i = 0; i < pNode->GetChildCount(); i++)
 	{
-		DisplayContent(FBX, pNode->GetChild(i));
+		DisplayContentNode(FBX, FBXManager, pNode->GetChild(i));
 	}
+
+	return false;
 }
 
-CFBX::CFBX(std::shared_ptr<SceneNode3D> ParentNode)
+CFBX::CFBX(const std::string& SceneName, std::shared_ptr<ISceneNode> ParentNode, std::shared_ptr<IMaterial> DefaultMaterial)
+	: m_Node(ParentNode)
+	, m_DefaultMaterial(DefaultMaterial)
 {
+	m_BaseManager = std::dynamic_pointer_cast<IBaseManagerHolder>(m_Node->GetScene())->GetBaseManager();
+
 	FbxManager* lSdkManager = NULL;
 	FbxScene* lScene = NULL;
 	bool lResult;
@@ -102,26 +111,31 @@ CFBX::CFBX(std::shared_ptr<SceneNode3D> ParentNode)
 	InitializeSdkObjects(lSdkManager, lScene);
 	// Load the scene.
 
-	lResult = LoadScene(lSdkManager, lScene, "D:\\L_FG_Assets_Pack1.0\\Meshes\\Tomb05_c.FBX");
+	lResult = LoadScene(lSdkManager, lScene, SceneName.c_str());
 
-	/*m_Node = ParentNode->CreateSceneNode<SceneNode3D>();
+	FbxGeometryConverter converter(lSdkManager);
+	if (!converter.Triangulate(lScene, true))
+	{
+		Log::Error("Error while triangulate!");
+	}
 
-	std::shared_ptr<MaterialTextured> mat = std::make_shared<MaterialTextured>();
-	mat->SetDiffuseColor(vec4(1.0f, 0.0f, 1.0f, 1.0f));
-	mat->SetTexture(0, _RenderDevice->CreateTexture2D("default.png"));
-	mat->SetWrapper(mat);
-	m_DefaultMaterial = mat;*/
+	m_DefaultMaterial = DefaultMaterial;
 
 	DisplayMetaData(lScene);
 	DisplayHierarchy(lScene);
-	DisplayContent(this, lScene);
+	DisplayContentScene(this, lSdkManager, lScene);
 }
 
 CFBX::~CFBX()
 {
 }
 
-std::shared_ptr<SceneNode3D> CFBX::GetSceneNode()
+const IBaseManager * CFBX::GetBaseManager() const
+{
+	return m_BaseManager;
+}
+
+std::shared_ptr<ISceneNode> CFBX::GetSceneNode()
 {
 	return m_Node;
 }

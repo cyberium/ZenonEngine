@@ -81,9 +81,6 @@
     <ClInclude Include="D3D9_To_D3D11.h">
       <Filter>Converters</Filter>
     </ClInclude>
-    <ClInclude Include="..\shared\znRenderDX11.h">
-      <Filter>Common</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Common">

@@ -67,7 +67,7 @@ private:
 
 
 IznPlugin* plugin = nullptr;
-IznPlugin* WINAPI GetPlugin(IBaseManager* BaseManager)
+extern "C" __declspec(dllexport) IznPlugin* WINAPI GetPlugin(IBaseManager* BaseManager)
 {
 	if (plugin == nullptr)
 	{

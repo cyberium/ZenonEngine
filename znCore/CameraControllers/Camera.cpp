@@ -24,6 +24,7 @@ CCamera::CCamera(float left, float right, float top, float bottom)
 	, m_ViewDirty(true)
 	, m_ViewProjectionInverseDirty(true)
 {
+	UpdateViewMatrix();
 	m_ProjectionMatrix = glm::ortho<float>(left, right, bottom, top);
 }
 
@@ -37,7 +38,7 @@ CCamera::CCamera(ProjectionHand ProjectionHand, float fovy, float aspect, float 
 	, m_ViewDirty(true)
 	, m_ViewProjectionInverseDirty(true)
 {
-	
+	UpdateViewMatrix();
 }
 
 CCamera::~CCamera()

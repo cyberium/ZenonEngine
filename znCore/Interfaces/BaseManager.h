@@ -47,7 +47,7 @@ ZN_INTERFACE OW_ENGINE_API
 	virtual void RegisterManager(GUID _type, std::shared_ptr<IManager> _manager) = 0;
 	virtual void UnregisterManager(GUID _type) = 0;
 
-	virtual std::shared_ptr<IManager> GetManager(GUID _type) = 0;
+	virtual std::shared_ptr<IManager> GetManager(GUID _type) const = 0;
 };
 
 ZN_INTERFACE OW_ENGINE_API IBaseManagerHolder

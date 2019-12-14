@@ -13,9 +13,6 @@
     <Filter Include="RefManager\1 Dim">
       <UniqueIdentifier>{2d2bf5e2-b8bf-4ce5-8ac0-2e7f796bc4ab}</UniqueIdentifier>
     </Filter>
-    <Filter Include="RefManager\2 Dim">
-      <UniqueIdentifier>{e6840d2f-52fd-4393-8f8e-ca1baa389a53}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Files\Common">
       <UniqueIdentifier>{71df8466-a98b-4ab6-bb46-76fcc364a41b}</UniqueIdentifier>
     </Filter>
@@ -243,6 +240,9 @@
     <ClCompile Include="Scene\UI\SceneNodeUI.cpp">
       <Filter>Scene\UI</Filter>
     </ClCompile>
+    <ClCompile Include="ByteBufferOnlyPointer.cpp">
+      <Filter>Files\Common</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DebugOutput.h">
@@ -256,9 +256,6 @@
     </ClInclude>
     <ClInclude Include="Macros.h">
       <Filter>Common</Filter>
-    </ClInclude>
-    <ClInclude Include="RefManager2Dim.h">
-      <Filter>RefManager\2 Dim</Filter>
     </ClInclude>
     <ClInclude Include="RefManager1Dim.h">
       <Filter>RefManager\1 Dim</Filter>
@@ -611,11 +608,11 @@
     <ClInclude Include="Scene\UI\SceneNodeUI.h">
       <Filter>Scene\UI</Filter>
     </ClInclude>
+    <ClInclude Include="ByteBufferOnlyPointer.h">
+      <Filter>Files\Common</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="RefManager2Dim.inl">
-      <Filter>RefManager\2 Dim</Filter>
-    </None>
     <None Include="RefManager1Dim.inl">
       <Filter>RefManager\1 Dim</Filter>
     </None>

@@ -77,16 +77,30 @@ void AbstractPass::UpdateViewport(const Viewport * _viewport)
 //
 bool AbstractPass::VisitBase(ISceneNode * node)
 {
-	return false;
+	GetRenderEventArgs()->Node = node;
+
+	const ICamera* camera = GetRenderEventArgs()->Camera;
+	if (camera)
+		node->UpdateCamera(camera);
+	
+	const Viewport* viewport = GetRenderEventArgs()->PipelineState->GetRasterizerState()->GetViewports()[0];
+	if (viewport)
+		node->UpdateViewport(viewport);
+
+	return true;
 }
 
 bool AbstractPass::Visit3D(ISceneNode* node)
 {
+	GetRenderEventArgs()->Node = node;
+
 	return false;
 }
 
-bool AbstractPass::VisitUI(ISceneNode* nodeUI)
+bool AbstractPass::VisitUI(ISceneNode* node)
 {
+	GetRenderEventArgs()->Node = node;
+
 	return false;
 }
 

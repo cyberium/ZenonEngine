@@ -77,12 +77,17 @@ void CGameState_World::OnRenderUI(RenderEventArgs& e)
 //
 void CGameState_World::Load3D()
 {
-	const size_t iterCnt = 20;
+	const size_t iterCnt = 5;
 	const float offset = 45.0f;
+
+	std::shared_ptr<MaterialDebug> matDebug = std::make_shared<MaterialDebug>(GetRenderDevice());
+	matDebug->SetDiffuseColor(vec4(0.0f, 1.0f, 1.0f, 1.0f));
+	matDebug->SetWrapper(matDebug);
 
 	std::shared_ptr<MaterialTextured> mat = std::make_shared<MaterialTextured>(GetRenderDevice());
 	mat->SetDiffuseColor(vec4(1.0f, 0.0f, 1.0f, 1.0f));
 	mat->SetTexture(0, GetRenderDevice()->CreateTexture2D("default.png"));
+	mat->SetWrapper(mat);
 
 	std::shared_ptr<IMesh> mesh = GetRenderDevice()->GetPrimitiveCollection()->CreateSphere();
 	mesh->SetMaterial(mat);
@@ -105,7 +110,15 @@ void CGameState_World::Load3D()
 		}
 	}
 
+	std::shared_ptr<ISceneNode> fbxSceneNode = GetManager<ISceneNodesFactory>(GetBaseManager())->CreateSceneNode(m_Scene3D->GetRootNode(), "FBXSceneNode");
+
+	for (auto& m : fbxSceneNode->GetComponent<IMeshComponent3D>()->GetMeshes())
+	{
+		m->SetMaterial(mat);
+	}
+
 	m_Technique3D.AddPass(GetManager<IRenderPassFactory>(GetBaseManager())->CreateRenderPass("ClearPass", GetRenderDevice(), GetRenderWindow()->GetRenderTarget(), GetRenderWindow()->GetViewport(), m_Scene3D));
+	m_Technique3D.AddPass(GetManager<IRenderPassFactory>(GetBaseManager())->CreateRenderPass("DebugPass", GetRenderDevice(), GetRenderWindow()->GetRenderTarget(), GetRenderWindow()->GetViewport(), m_Scene3D));
 	m_Technique3D.AddPass(GetManager<IRenderPassFactory>(GetBaseManager())->CreateRenderPass("TexturedMaterialPass", GetRenderDevice(), GetRenderWindow()->GetRenderTarget(), GetRenderWindow()->GetViewport(), m_Scene3D));
 }
 

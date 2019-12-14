@@ -44,6 +44,7 @@
     <ClCompile Include="Passes\PostprocessPass.cpp" />
     <ClCompile Include="Passes\RenderPassDefaultCreator.cpp" />
     <ClCompile Include="Passes\RenderPassFactory.cpp" />
+    <ClCompile Include="Passes\TextureDebugPass.cpp" />
     <ClCompile Include="Passes\TextureMaterialPass.cpp" />
     <ClCompile Include="PluginsManager.cpp" />
     <ClCompile Include="RenderDeviceFactory.cpp" />
@@ -106,6 +107,7 @@
     <ClInclude Include="Passes\PostprocessPass.h" />
     <ClInclude Include="Passes\RenderPassDefaultCreator.h" />
     <ClInclude Include="Passes\RenderPassFactory.h" />
+    <ClInclude Include="Passes\TextureDebugPass.h" />
     <ClInclude Include="Passes\TextureMaterialPass.h" />
     <ClInclude Include="PluginsManager.h" />
     <ClInclude Include="RenderDeviceFactory.h" />

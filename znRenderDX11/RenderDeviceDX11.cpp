@@ -129,24 +129,14 @@ std::shared_ptr<IBuffer> RenderDeviceDX11::CreateVoidVertexBuffer(const void * d
     return buffer;
 }
 
-std::shared_ptr<IBuffer> RenderDeviceDX11::CreateUInt16IndexBuffer(const uint16* data, uint32 count)
+std::shared_ptr<IBuffer> RenderDeviceDX11::CreateVoidIndexBuffer(const void * data, uint32 count, uint32 offset, uint32 stride)
 {
-    D3DMultithreadLocker locker(m_pMultiThread);
+	D3DMultithreadLocker locker(m_pMultiThread);
 
-    std::shared_ptr <IBuffer> buffer = std::make_shared<BufferDX11>(m_pDevice, D3D11_BIND_INDEX_BUFFER, data, count, 0, (UINT)sizeof(uint16));
-    m_Buffers.push_back(buffer);
+	std::shared_ptr <IBuffer> buffer = std::make_shared<BufferDX11>(m_pDevice, D3D11_BIND_INDEX_BUFFER, data, count, offset, stride);
+	m_Buffers.push_back(buffer);
 
-    return buffer;
-}
-
-std::shared_ptr<IBuffer> RenderDeviceDX11::CreateUInt32IndexBuffer(const uint32* data, uint32 count)
-{
-    D3DMultithreadLocker locker(m_pMultiThread);
-
-    std::shared_ptr <IBuffer> buffer = std::make_shared<BufferDX11>(m_pDevice, D3D11_BIND_INDEX_BUFFER, data, count, 0, (UINT)sizeof(uint32));
-    m_Buffers.push_back(buffer);
-
-    return buffer;
+	return buffer;
 }
 
 void RenderDeviceDX11::DestroyBuffer(std::shared_ptr<IBuffer> buffer)

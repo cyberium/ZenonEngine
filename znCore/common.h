@@ -51,13 +51,17 @@ typedef const mat4& cmat4;
 typedef glm::quat quat;
 typedef const quat& cquat;
 
+
 #ifndef WIN32_LEAN_AND_MEAN
 #   define WIN32_LEAN_AND_MEAN 1
 #endif
+
 #ifndef NOMINMAX
 #   define NOMINMAX
 #endif
-#include <windows.h>
+
+//#include <windows.h>
+
 
 // STL Types
 #include <map>

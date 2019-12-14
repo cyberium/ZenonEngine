@@ -31,7 +31,7 @@ CArcBallCameraController::~CArcBallCameraController()
 //
 void CArcBallCameraController::SetPivotDistance(float pivotDistance)
 {
-	m_PivotDistance = glm::max(pivotDistance, 0.0f);
+	m_PivotDistance = std::max(pivotDistance, 0.0f);
 }
 
 float CArcBallCameraController::GetPivotDistance() const

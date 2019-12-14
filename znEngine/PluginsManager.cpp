@@ -22,24 +22,24 @@ CznPluginsManager::~CznPluginsManager()
 //
 bool CznPluginsManager::AddPlugin(const std::string& PluginDLLName)
 {
-	//try
-	//{
-		/*if (m_Plugins.find(PluginDLLName) != m_Plugins.end())
-		{
-			throw CPluginException("Already registered.");
-		}*/
+	try
+	{
+		//if (m_Plugins.find(PluginDLLName) != m_Plugins.end())
+		//{
+		//	throw CPluginException("Already registered.");
+		//}
 
 		HMODULE pluginDLL = LoadLibraryA(PluginDLLName.c_str());
 		if (pluginDLL == NULL)
 		{
-			//throw CPluginException_NotAPlguin("File not found.");
+			throw CPluginException_NotAPlguin("File not found.");
 		}
 
 		void* getPluginProcNative = GetProcAddress(pluginDLL, "GetPlugin");
 		if (getPluginProcNative == NULL)
 		{
 			return false;
-			//throw CPluginException_NotAPlguin("Is not a ZenonEngine plguin.");
+			throw CPluginException_NotAPlguin("Is not a ZenonEngine plguin.");
 		}
 
 		GetPluginFuncProc* getPluginProc = (GetPluginFuncProc*)getPluginProcNative;
@@ -47,7 +47,7 @@ bool CznPluginsManager::AddPlugin(const std::string& PluginDLLName)
 		std::shared_ptr<IznPlugin> pluginObject(getPluginProc(m_BaseManager));
 		if (pluginObject == nullptr)
 		{
-			//throw CPluginException("Error while create plugin object.");
+			throw CPluginException("Error while create plugin object.");
 		}
 
 		m_Plugins.push_back(pluginObject);
@@ -55,7 +55,7 @@ bool CznPluginsManager::AddPlugin(const std::string& PluginDLLName)
 		// Notify all listeners about new plguin
 		for (const auto& listener : m_PluginsEventsListener)
 			listener->OnPluginAdded(pluginObject);
-	/*}
+	}
 	catch (const CPluginException_NotAPlguin& e)
 	{
 		Log::Warn(("Plugin[" + PluginDLLName + "]: " + e.what()).c_str());
@@ -64,7 +64,7 @@ bool CznPluginsManager::AddPlugin(const std::string& PluginDLLName)
 	catch (const CPluginException& e)
 	{
 		throw std::exception(("Plugin[" + PluginDLLName + "]: " + e.what()).c_str());
-	}*/
+	}
 
 	Log::Green("Plugin[%s]: Successfully added.", PluginDLLName.c_str());
 

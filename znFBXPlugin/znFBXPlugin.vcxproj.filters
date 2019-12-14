@@ -1,7 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="znFBXPlugin.cpp" />
     <ClCompile Include="stdafx.cpp">
       <Filter>Common</Filter>
     </ClCompile>
@@ -15,9 +14,14 @@
     <ClCompile Include="FBXDisplayShape.cpp" />
     <ClCompile Include="FBXDisplayTexture.cpp" />
     <ClCompile Include="FBXHelpers.cpp" />
+    <ClCompile Include="znFBXPlugin.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="FBXSceneNode.cpp">
+      <Filter>Nodes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="znFBXPlugin.h" />
     <ClInclude Include="stdafx.h">
       <Filter>Common</Filter>
     </ClInclude>
@@ -34,13 +38,21 @@
     <ClInclude Include="FBXDisplayShape.h" />
     <ClInclude Include="FBXDisplayTexture.h" />
     <ClInclude Include="FBXHelpers.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="znFBXPlugin.rc" />
+    <ClInclude Include="FBXSceneNode.h">
+      <Filter>Nodes</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Common">
       <UniqueIdentifier>{531acf1f-2425-4a01-8a82-ef8eb65f442c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Nodes">
+      <UniqueIdentifier>{5bb30fab-eec9-48fc-b7fc-5d04e877858a}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="znFBXPlugin.rc">
+      <Filter>Common</Filter>
+    </ResourceCompile>
   </ItemGroup>
 </Project>

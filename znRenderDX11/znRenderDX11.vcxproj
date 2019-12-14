@@ -202,7 +202,6 @@
     <ClCompile Include="TextureDX11.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\shared\znRenderDX11.h" />
     <ClInclude Include="BlendStateDX11.h" />
     <ClInclude Include="BufferDX11.h" />
     <ClInclude Include="ConstantBufferDX11.h" />
