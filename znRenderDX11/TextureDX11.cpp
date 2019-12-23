@@ -317,14 +317,14 @@ bool TextureDX11::LoadTexture2D(const std::string& fileName)
 	FREE_IMAGE_FORMAT fif = FreeImage_GetFileTypeFromMemory(hmem, f->getSize());
 	if (fif == FIF_UNKNOWN || !FreeImage_FIFSupportsReading(fif))
 	{
-		_ASSERT_EXPR(false, "Unknow file format: ");
+		_ASSERT_EXPR(false, "Unknow file format.");
 		return false;
 	}
 
 	FIBITMAP* dib = FreeImage_LoadFromMemory(fif, hmem, f->getSize());
 	if (dib == nullptr || FreeImage_HasPixels(dib) == FALSE)
 	{
-		_ASSERT_EXPR(false, "Failed to load image: ");
+		//_ASSERT_EXPR(false, "Failed to load image.");
 		return false;
 	}
 

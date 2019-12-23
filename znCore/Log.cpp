@@ -15,7 +15,7 @@ CLog* gLogInstance = nullptr;
 CLog::CLog()
 {
 	AddDebugOutput(std::make_shared<DebugOutput_ConsoleWindows>());
-
+	AddDebugOutput(std::make_shared<DebugOutput_Log>());
 	gLogInstance = this;
 
 	OutputDebugString(L"Log created.\n");

@@ -20,7 +20,7 @@ using namespace fbxsdk;
 
 #define MAT_HEADER_LENGTH 200
 
-void DisplayMaterialMapping(FbxMesh* pMesh);
+std::shared_ptr<IMaterial> DisplayMaterialMapping(FbxMesh* pMesh);
 void DisplayTextureNames(FbxProperty &pProperty, FbxString& pConnectionString);
 void DisplayMaterialConnections(FbxMesh* pMesh);
 void DisplayMaterialTextureConnections(FbxSurfaceMaterial* pMaterial, char * header, int pMatId, int l);
@@ -37,18 +37,92 @@ std::shared_ptr<IMesh> DisplayMesh(CFBX * FBX, FbxManager* Manager, FbxNode* pNo
 	DisplayMetaDataConnections(lMesh);
 
 
+	std::vector<glm::vec3> vertices;
+	std::vector<glm::vec2> uvs;
+
+	FbxVector4* lControlPoints = lMesh->GetControlPoints();
+	for (int i = 0; i < lMesh->GetPolygonCount(); i++)
+	{
+		int lPolygonSize = lMesh->GetPolygonSize(i);
+
+		for (int j = 0; j < lPolygonSize; j++)
+		{
+			int lControlPointIndex = lMesh->GetPolygonVertex(i, j);
+			vertices.push_back(glm::vec3(lControlPoints[lControlPointIndex][0], lControlPoints[lControlPointIndex][1], lControlPoints[lControlPointIndex][2]));
+
+
+			//
+			// Textures
+			//
+			for (int l = 0; l < lMesh->GetElementUVCount(); ++l)
+			{
+				fbxsdk::FbxGeometryElementUV* leUV = lMesh->GetElementUV(l);
+
+				switch (leUV->GetMappingMode())
+				{
+				default:
+					break;
+				case FbxGeometryElement::eByControlPoint:
+					switch (leUV->GetReferenceMode())
+					{
+					case FbxGeometryElement::eDirect:
+						uvs.push_back(glm::vec2(leUV->GetDirectArray().GetAt(lControlPointIndex)[0], leUV->GetDirectArray().GetAt(lControlPointIndex)[1]));
+						break;
+					case FbxGeometryElement::eIndexToDirect:
+					{
+						int id = leUV->GetIndexArray().GetAt(lControlPointIndex);
+						uvs.push_back(glm::vec2(leUV->GetDirectArray().GetAt(id)[0], leUV->GetDirectArray().GetAt(id)[1]));
+					}
+					break;
+					default:
+						break; // other reference modes not shown here!
+					}
+					break;
+
+				case FbxGeometryElement::eByPolygonVertex:
+				{
+					int lTextureUVIndex = lMesh->GetTextureUVIndex(i, j);
+					switch (leUV->GetReferenceMode())
+					{
+					case FbxGeometryElement::eDirect:
+					case FbxGeometryElement::eIndexToDirect:
+					{
+						uvs.push_back(glm::vec2(leUV->GetDirectArray().GetAt(lTextureUVIndex)[0], leUV->GetDirectArray().GetAt(lTextureUVIndex)[1]));
+					}
+					break;
+					default:
+						break; // other reference modes not shown here!
+					}
+				}
+				break;
+
+				case FbxGeometryElement::eByPolygon: // doesn't make much sense for UVs
+				case FbxGeometryElement::eAllSame:   // doesn't make much sense for UVs
+				case FbxGeometryElement::eNone:       // doesn't make much sense for UVs
+					break;
+				}
+
+				break;
+			}
+		}
+	}
+
+	mesh->AddVertexBuffer(BufferBinding("POSITION", 0), renderDevice->CreateVertexBuffer(vertices));
+	mesh->AddVertexBuffer(BufferBinding("TEXCOORD", 0), renderDevice->CreateVertexBuffer(uvs));
+
+#if 0
 
 	//
 	// Vertices (aka Control points)
 	//
 	{
-		FbxVector4* arr = lMesh->GetControlPoints();
+		FbxVector4* elem = lMesh->GetControlPoints();
 		int arrSize = lMesh->GetControlPointsCount();
 
 		std::vector<glm::vec3> vertices;
 		vertices.resize(arrSize);
 		for (int i = 0; i < arrSize; i++)
-			vertices[i] = vec3(arr[i][0], arr[i][1], arr[i][2]);
+			vertices[i] = vec3(elem[i][0], elem[i][1], elem[i][2]);
 
 		mesh->AddVertexBuffer(BufferBinding("POSITION", 0), renderDevice->CreateVertexBuffer(vertices));
 	}
@@ -60,13 +134,13 @@ std::shared_ptr<IMesh> DisplayMesh(CFBX * FBX, FbxManager* Manager, FbxNode* pNo
 	//
 	for (int l = 0; l < lMesh->GetElementNormalCount(); l++)
 	{
-		fbxsdk::FbxGeometryElementNormal* arr = lMesh->GetElementNormal(l);
-		int arrSize = arr->GetDirectArray().GetCount();
+		fbxsdk::FbxGeometryElementNormal* elem = lMesh->GetElementNormal(l);
+		int arrSize = elem->GetDirectArray().GetCount();
 
 		std::vector<glm::vec3> normals;
 		normals.resize(arrSize);
 		for (int uvIter = 0; uvIter < arrSize; uvIter++)
-			normals[uvIter] = glm::vec3(arr->GetDirectArray().GetAt(uvIter)[0], arr->GetDirectArray().GetAt(uvIter)[1], arr->GetDirectArray().GetAt(uvIter)[2]);
+			normals[uvIter] = glm::vec3(elem->GetDirectArray().GetAt(uvIter)[0], elem->GetDirectArray().GetAt(uvIter)[1], elem->GetDirectArray().GetAt(uvIter)[2]);
 
 		mesh->AddVertexBuffer(BufferBinding("NORMAL", l), renderDevice->CreateVertexBuffer(normals));
 	}
@@ -77,13 +151,13 @@ std::shared_ptr<IMesh> DisplayMesh(CFBX * FBX, FbxManager* Manager, FbxNode* pNo
 	//
 	for (int l = 0; l < lMesh->GetElementBinormalCount(); l++)
 	{
-		fbxsdk::FbxGeometryElementBinormal* arr = lMesh->GetElementBinormal(l);
-		int arrSize = arr->GetDirectArray().GetCount();
+		fbxsdk::FbxGeometryElementBinormal* elem = lMesh->GetElementBinormal(l);
+		int arrSize = elem->GetDirectArray().GetCount();
 
 		std::vector<glm::vec3> binormals;
 		binormals.resize(arrSize);
 		for (int uvIter = 0; uvIter < arrSize; uvIter++)
-			binormals[uvIter] = glm::vec3(arr->GetDirectArray().GetAt(uvIter)[0], arr->GetDirectArray().GetAt(uvIter)[1], arr->GetDirectArray().GetAt(uvIter)[2]);
+			binormals[uvIter] = glm::vec3(elem->GetDirectArray().GetAt(uvIter)[0], elem->GetDirectArray().GetAt(uvIter)[1], elem->GetDirectArray().GetAt(uvIter)[2]);
 
 		mesh->AddVertexBuffer(BufferBinding("BINORMAL", l), renderDevice->CreateVertexBuffer(binormals));
 	}
@@ -95,13 +169,13 @@ std::shared_ptr<IMesh> DisplayMesh(CFBX * FBX, FbxManager* Manager, FbxNode* pNo
 	//
 	for (int l = 0; l < lMesh->GetElementTangentCount(); l++)
 	{
-		fbxsdk::FbxGeometryElementTangent* arr = lMesh->GetElementTangent(l);
-		int arrSize = arr->GetDirectArray().GetCount();
+		fbxsdk::FbxGeometryElementTangent* elem = lMesh->GetElementTangent(l);
+		int arrSize = elem->GetDirectArray().GetCount();
 
 		std::vector<glm::vec3> tangents;
 		tangents.resize(arrSize);
 		for (int uvIter = 0; uvIter < arrSize; uvIter++)
-			tangents[uvIter] = glm::vec3(arr->GetDirectArray().GetAt(uvIter)[0], arr->GetDirectArray().GetAt(uvIter)[1], arr->GetDirectArray().GetAt(uvIter)[2]);
+			tangents[uvIter] = glm::vec3(elem->GetDirectArray().GetAt(uvIter)[0], elem->GetDirectArray().GetAt(uvIter)[1], elem->GetDirectArray().GetAt(uvIter)[2]);
 
 		mesh->AddVertexBuffer(BufferBinding("TANGENT", l), renderDevice->CreateVertexBuffer(tangents));
 	}
@@ -113,13 +187,13 @@ std::shared_ptr<IMesh> DisplayMesh(CFBX * FBX, FbxManager* Manager, FbxNode* pNo
 	//
 	for (int l = 0; l < lMesh->GetElementVertexColorCount(); l++)
 	{
-		fbxsdk::FbxGeometryElementVertexColor* arr = lMesh->GetElementVertexColor(l);
-		int arrSize = arr->GetDirectArray().GetCount();
+		fbxsdk::FbxGeometryElementVertexColor* elem = lMesh->GetElementVertexColor(l);
+		int arrSize = elem->GetDirectArray().GetCount();
 
 		std::vector<glm::vec4> colors;
 		colors.resize(arrSize);
 		for (int uvIter = 0; uvIter < arrSize; uvIter++)
-			colors[uvIter] = glm::vec4(arr->GetDirectArray().GetAt(uvIter)[0], arr->GetDirectArray().GetAt(uvIter)[1], arr->GetDirectArray().GetAt(uvIter)[2], arr->GetDirectArray().GetAt(uvIter)[3]);
+			colors[uvIter] = glm::vec4(elem->GetDirectArray().GetAt(uvIter)[0], elem->GetDirectArray().GetAt(uvIter)[1], elem->GetDirectArray().GetAt(uvIter)[2], elem->GetDirectArray().GetAt(uvIter)[3]);
 
 		mesh->AddVertexBuffer(BufferBinding("COLOR", l), renderDevice->CreateVertexBuffer(colors));
 	}
@@ -131,14 +205,33 @@ std::shared_ptr<IMesh> DisplayMesh(CFBX * FBX, FbxManager* Manager, FbxNode* pNo
 	//
 	for (int l = 0; l < lMesh->GetElementUVCount(); ++l)
 	{
-		fbxsdk::FbxGeometryElementUV* arr = lMesh->GetElementUV(l);
-		int arrSize = arr->GetDirectArray().GetCount();
+		fbxsdk::FbxGeometryElementUV* elem = lMesh->GetElementUV(l);
+		_ASSERT(elem->GetMappingMode() == FbxGeometryElement::eByPolygonVertex);
 
-		std::vector<glm::vec2> uvs;
-		uvs.resize(arrSize);
-		for (int uvIter = 0; uvIter < arrSize; uvIter++)
-			uvs[uvIter] = glm::vec2(arr->GetDirectArray().GetAt(uvIter)[0], arr->GetDirectArray().GetAt(uvIter)[1]);
-		mesh->AddVertexBuffer(BufferBinding("TEXCOORD", l), renderDevice->CreateVertexBuffer(uvs));
+		if (elem->GetReferenceMode() == FbxGeometryElement::eDirect)
+		{
+			int arrSize = elem->GetDirectArray().GetCount();
+
+			std::vector<glm::vec2> uvs;
+			uvs.resize(arrSize);
+			for (int uvIter = 0; uvIter < arrSize; uvIter++)
+				uvs[uvIter] = glm::vec2(elem->GetDirectArray().GetAt(uvIter)[0], elem->GetDirectArray().GetAt(uvIter)[1]);
+			mesh->AddVertexBuffer(BufferBinding("TEXCOORD", l), renderDevice->CreateVertexBuffer(uvs));
+		}
+		else if (elem->GetReferenceMode() == FbxGeometryElement::eIndexToDirect)
+		{
+			int arrSize = elem->GetIndexArray().GetCount();
+
+			std::vector<glm::vec2> uvs;
+			uvs.resize(arrSize);
+			for (int uvIter = 0; uvIter < arrSize; uvIter++)
+				uvs[uvIter] = glm::vec2(elem->GetDirectArray().GetAt(elem->GetIndexArray().GetAt(uvIter))[0], elem->GetDirectArray().GetAt(elem->GetIndexArray().GetAt(uvIter))[1]);
+			mesh->AddVertexBuffer(BufferBinding("TEXCOORD", l), renderDevice->CreateVertexBuffer(uvs));
+		}
+		else
+		{
+			_ASSERT(false);
+		}
 	
 		/*leUV->GetDirectArray().ReadLock();
 		mesh->AddVertexBuffer
@@ -150,27 +243,41 @@ std::shared_ptr<IMesh> DisplayMesh(CFBX * FBX, FbxManager* Manager, FbxNode* pNo
 	}
 
 
-
+#endif
 
 	//
 	// Incides
 	//
 	{
-		mesh->SetIndexBuffer(renderDevice->CreateIndexBuffer(lMesh->GetPolygonVertices(), lMesh->GetPolygonVertexCount()));
+		//mesh->SetIndexBuffer(renderDevice->CreateIndexBuffer(lMesh->GetPolygonVertices(), lMesh->GetPolygonVertexCount()));
 	}
 	
 
 
+	//
+	// Materials
+	//
+	for (int l = 0; l < lMesh->GetElementMaterialCount(); l++)
+	{
+		fbxsdk::FbxGeometryElementMaterial* elem = lMesh->GetElementMaterial(l);
+		//_ASSERT(elem->GetMappingMode() == FbxGeometryElement::eAllSame);
+
+		elem->GetName();
+	}
 
 
 	DisplayMaterialMapping(lMesh);
-	DisplayMaterial(lMesh);
-	DisplayTexture(lMesh);
+	Log::Print("--------------------------------------------------------------------------------------\n");
+	mesh->SetMaterial(DisplayMaterial(renderDevice, lMesh));
+	Log::Print("--------------------------------------------------------------------------------------\n");
 	DisplayMaterialConnections(lMesh);
+	Log::Print("--------------------------------------------------------------------------------------\n");
 	DisplayLink(lMesh);
+	Log::Print("--------------------------------------------------------------------------------------\n");
 	DisplayShape(lMesh);
-
+	Log::Print("--------------------------------------------------------------------------------------\n");
 	DisplayCache(lMesh);
+	Log::Print("--------------------------------------------------------------------------------------\n");
 
 	return mesh;
 }
@@ -360,7 +467,15 @@ void DisplayMaterialConnections(FbxMesh* pMesh)
 	//For eByPolygon mapping type, just out the material and texture mapping info once
 	else
 	{
-		for (i = 0; i < lPolygonCount; i++)
+		int lPolyGroupCnt = pMesh->GetElementPolygonGroupCount();
+		Log::Warn("FBX: Group cnt = %d", lPolygonCount);
+
+		for (int i = 0; i < lPolyGroupCnt; i++)
+		{
+			fbxsdk::FbxGeometryElementPolygonGroup* group = pMesh->GetElementPolygonGroup(i);
+		}
+
+		/*for (i = 0; i < lPolygonCount; i++)
 		{
 			DisplayInt("        Polygon ", i);
 
@@ -378,11 +493,11 @@ void DisplayMaterialConnections(FbxMesh* pMesh)
 					DisplayMaterialTextureConnections(lMaterial, header, lMatId, l);
 				}
 			}
-		}
+		}*/
 	}
 }
 
-void DisplayMaterialMapping(FbxMesh* pMesh)
+std::shared_ptr<IMaterial> DisplayMaterialMapping(FbxMesh* pMesh)
 {
 	const char* lMappingTypes[] = { "None", "By Control Point", "By Polygon Vertex", "By Polygon", "By Edge", "All Same" };
 	const char* lReferenceMode[] = { "Direct", "Index", "Index to Direct" };
@@ -407,6 +522,9 @@ void DisplayMaterialMapping(FbxMesh* pMesh)
 
 			DisplayString("           Mapping: ", lMappingTypes[leMat->GetMappingMode()]);
 			DisplayString("           ReferenceMode: ", lReferenceMode[leMat->GetReferenceMode()]);
+
+
+			int lIndexArrayCount = leMat->GetIndexArray().GetCount();
 
 			int lMaterialCount = 0;
 			FbxString lString;
@@ -433,10 +551,12 @@ void DisplayMaterialMapping(FbxMesh* pMesh)
 
 				lString += "\n";
 
-				FBXSDK_printf(lString);
+				Log::Print(lString);
 			}
 		}
 	}
 
 	DisplayString("");
+
+	return nullptr;
 }

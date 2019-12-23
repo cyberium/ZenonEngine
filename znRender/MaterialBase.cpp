@@ -4,7 +4,8 @@
 #include "MaterialBase.h"
 
 MaterialBase::MaterialBase(std::weak_ptr<IRenderDevice> RenderDevice, size_t Size)
-	: m_RenderDevice(RenderDevice)
+	: m_Name("MaterialBase")
+	, m_RenderDevice(RenderDevice)
 	, m_Dirty(true)
 {
 	if (Size > 0)
@@ -20,6 +21,16 @@ MaterialBase::~MaterialBase()
 		m_RenderDevice.lock()->DestroyConstantBuffer(m_pConstantBuffer);
 		m_pConstantBuffer.reset();
 	}
+}
+
+void MaterialBase::SetName(const std::string & Name)
+{
+	m_Name = Name;
+}
+
+std::string MaterialBase::GetName() const
+{
+	return m_Name;
 }
 
 

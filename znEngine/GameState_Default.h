@@ -21,4 +21,5 @@ public:
 private:
 	void Load3D();
 	void LoadUI();
+	void LoadObj(const std::string& ObjFilename);
 };

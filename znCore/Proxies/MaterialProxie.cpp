@@ -12,6 +12,16 @@ MaterialProxie::MaterialProxie(std::shared_ptr<IMaterial> _materal)
 MaterialProxie::~MaterialProxie()
 {}
 
+void MaterialProxie::SetName(const std::string & Name)
+{
+	m_Material->SetName(Name);
+}
+
+std::string MaterialProxie::GetName() const
+{
+	return m_Material->GetName();
+}
+
 void MaterialProxie::SetShader(IShader::ShaderType type, std::shared_ptr<IShader> pShader)
 {
 	m_Material->SetShader(type, pShader);

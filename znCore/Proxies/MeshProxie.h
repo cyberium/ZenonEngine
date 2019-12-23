@@ -6,6 +6,12 @@ public:
 	MeshProxie(std::shared_ptr<IMesh> _mesh);
 	virtual ~MeshProxie();
 
+	virtual void SetName(const std::string& Name);
+	virtual std::string GetName() const;
+
+	virtual void SetBounds(const BoundingBox& Bounds);
+	virtual const BoundingBox& GetBounds() const;
+
 	virtual void AddVertexBuffer(const BufferBinding& binding, std::shared_ptr<IBuffer> buffer);
 	virtual void SetVertexBuffer(std::shared_ptr<IBuffer> buffer);
 	virtual void SetIndexBuffer(std::shared_ptr<IBuffer> buffer);

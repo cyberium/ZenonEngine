@@ -4,7 +4,8 @@
 #include "MeshBase.h"
 
 MeshBase::MeshBase()
-    : m_VertexBuffer(nullptr)
+    : m_Name("MeshBase")
+	, m_VertexBuffer(nullptr)
     , m_pIndexBuffer(nullptr)
     , m_pMaterial(nullptr)
 {
@@ -12,6 +13,26 @@ MeshBase::MeshBase()
 
 MeshBase::~MeshBase()
 {
+}
+
+void MeshBase::SetName(const std::string& Name)
+{
+	m_Name = Name;
+}
+
+std::string MeshBase::GetName() const
+{
+	return m_Name;
+}
+
+void MeshBase::SetBounds(const BoundingBox& Bounds)
+{
+	m_Bounds = Bounds;
+}
+
+const BoundingBox& MeshBase::GetBounds() const
+{
+	return m_Bounds;
 }
 
 void MeshBase::AddVertexBuffer(const BufferBinding& binding, std::shared_ptr<IBuffer> buffer)

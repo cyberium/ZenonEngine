@@ -66,6 +66,7 @@ protected:
 	std::shared_ptr<IRenderWindow>                  m_RenderWindow;
 
     std::shared_ptr<IQuery>                         m_FrameQuery;
+	std::shared_ptr<IQuery>                         m_TestQuery;
     double                                          m_FrameTime;
 
 	std::shared_ptr<ICameraController>              m_DefaultCameraController;

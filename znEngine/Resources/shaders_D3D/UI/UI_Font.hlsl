@@ -2,7 +2,8 @@
 
 cbuffer PerObject : register(b0)
 {
-	float4x4 ModelViewProjection;
+	float4x4 Model;
+	float4x4 Projection;
 }
 cbuffer Material : register(b1)
 {
@@ -15,10 +16,12 @@ sampler DiffuseTextureSampler : register(s0);
 
 VertexShaderOutput VS_main(VertexShaderInput IN)
 {
-	float4 resultPos = float4(IN.position, 0.0f, 1.0f) + float4(Offset, 0.0f, 0.0f);
+	const float4 resultPos = float4(IN.position, 0.0f, 1.0f) + float4(Offset, 0.0f, 0.0f);
 	
+	const float4x4 mp = mul(Projection, Model);
+
 	VertexShaderOutput OUT;
-	OUT.position = mul(ModelViewProjection, resultPos);
+	OUT.position = mul(mp, resultPos);
 	OUT.texCoord = IN.texCoord;
 	return OUT;
 }

@@ -17,12 +17,12 @@ void InitializeSdkObjects(FbxManager*& pManager, FbxScene*& pScene)
 	pManager = FbxManager::Create();
 	if (!pManager)
 	{
-		FBXSDK_printf("Error: Unable to create FBX Manager!\n");
+		Log::Print("Error: Unable to create FBX Manager!\n");
 		exit(1);
 	}
 	else
 	{
-		FBXSDK_printf("Autodesk FBX SDK version %s\n", pManager->GetVersion());
+		Log::Print("Autodesk FBX SDK version %s\n", pManager->GetVersion());
 	}
 
 	//Create an IOSettings object. This object holds all import/export settings.
@@ -37,7 +37,7 @@ void InitializeSdkObjects(FbxManager*& pManager, FbxScene*& pScene)
 	pScene = FbxScene::Create(pManager, "My Scene");
 	if (!pScene)
 	{
-		FBXSDK_printf("Error: Unable to create FBX scene!\n");
+		Log::Print("Error: Unable to create FBX scene!\n");
 		exit(1);
 	}
 }
@@ -49,7 +49,7 @@ void DestroySdkObjects(FbxManager* pManager, bool pExitStatus)
 		pManager->Destroy();
 
 	if (pExitStatus) 
-		FBXSDK_printf("Program Success!\n");
+		Log::Print("Program Success!\n");
 }
 
 bool SaveScene(FbxManager* pManager, FbxDocument* pScene, const char* pFilename, int pFileFormat, bool pEmbedMedia)
@@ -97,13 +97,13 @@ bool SaveScene(FbxManager* pManager, FbxDocument* pScene, const char* pFilename,
 	// Initialize the exporter by providing a filename.
 	if (lExporter->Initialize(pFilename, pFileFormat, pManager->GetIOSettings()) == false)
 	{
-		FBXSDK_printf("Call to FbxExporter::Initialize() failed.\n");
-		FBXSDK_printf("Error returned: %s\n\n", lExporter->GetStatus().GetErrorString());
+		Log::Print("Call to FbxExporter::Initialize() failed.\n");
+		Log::Print("Error returned: %s\n\n", lExporter->GetStatus().GetErrorString());
 		return false;
 	}
 
 	FbxManager::GetFileFormatVersion(lMajor, lMinor, lRevision);
-	FBXSDK_printf("FBX file format version %d.%d.%d\n\n", lMajor, lMinor, lRevision);
+	Log::Print("FBX file format version %d.%d.%d\n\n", lMajor, lMinor, lRevision);
 
 	// Export the scene.
 	lStatus = lExporter->Export(pScene);
@@ -135,51 +135,51 @@ bool LoadScene(FbxManager* pManager, FbxDocument* pScene, const char* pFilename)
 	if (!lImportStatus)
 	{
 		FbxString error = lImporter->GetStatus().GetErrorString();
-		FBXSDK_printf("Call to FbxImporter::Initialize() failed.\n");
-		FBXSDK_printf("Error returned: %s\n\n", error.Buffer());
+		Log::Print("Call to FbxImporter::Initialize() failed.\n");
+		Log::Print("Error returned: %s\n\n", error.Buffer());
 
 		if (lImporter->GetStatus().GetCode() == FbxStatus::eInvalidFileVersion)
 		{
-			FBXSDK_printf("FBX file format version for this FBX SDK is %d.%d.%d\n", lSDKMajor, lSDKMinor, lSDKRevision);
-			FBXSDK_printf("FBX file format version for file '%s' is %d.%d.%d\n\n", pFilename, lFileMajor, lFileMinor, lFileRevision);
+			Log::Print("FBX file format version for this FBX SDK is %d.%d.%d\n", lSDKMajor, lSDKMinor, lSDKRevision);
+			Log::Print("FBX file format version for file '%s' is %d.%d.%d\n\n", pFilename, lFileMajor, lFileMinor, lFileRevision);
 		}
 
 		return false;
 	}
 
-	FBXSDK_printf("FBX file format version for this FBX SDK is %d.%d.%d\n", lSDKMajor, lSDKMinor, lSDKRevision);
+	Log::Print("FBX file format version for this FBX SDK is %d.%d.%d\n", lSDKMajor, lSDKMinor, lSDKRevision);
 
 	if (lImporter->IsFBX())
 	{
-		FBXSDK_printf("FBX file format version for file '%s' is %d.%d.%d\n\n", pFilename, lFileMajor, lFileMinor, lFileRevision);
+		Log::Print("FBX file format version for file '%s' is %d.%d.%d\n\n", pFilename, lFileMajor, lFileMinor, lFileRevision);
 
 		// From this point, it is possible to access animation stack information without
 		// the expense of loading the entire file.
 
-		FBXSDK_printf("Animation Stack Information\n");
+		Log::Print("Animation Stack Information\n");
 
 		lAnimStackCount = lImporter->GetAnimStackCount();
 
-		FBXSDK_printf("    Number of Animation Stacks: %d\n", lAnimStackCount);
-		FBXSDK_printf("    Current Animation Stack: \"%s\"\n", lImporter->GetActiveAnimStackName().Buffer());
-		FBXSDK_printf("\n");
+		Log::Print("    Number of Animation Stacks: %d\n", lAnimStackCount);
+		Log::Print("    Current Animation Stack: \"%s\"\n", lImporter->GetActiveAnimStackName().Buffer());
+		Log::Print("\n");
 
 		for (i = 0; i < lAnimStackCount; i++)
 		{
 			FbxTakeInfo* lTakeInfo = lImporter->GetTakeInfo(i);
 
-			FBXSDK_printf("    Animation Stack %d\n", i);
-			FBXSDK_printf("         Name: \"%s\"\n", lTakeInfo->mName.Buffer());
-			FBXSDK_printf("         Description: \"%s\"\n", lTakeInfo->mDescription.Buffer());
+			Log::Print("    Animation Stack %d\n", i);
+			Log::Print("         Name: \"%s\"\n", lTakeInfo->mName.Buffer());
+			Log::Print("         Description: \"%s\"\n", lTakeInfo->mDescription.Buffer());
 
 			// Change the value of the import name if the animation stack should be imported 
 			// under a different name.
-			FBXSDK_printf("         Import Name: \"%s\"\n", lTakeInfo->mImportName.Buffer());
+			Log::Print("         Import Name: \"%s\"\n", lTakeInfo->mImportName.Buffer());
 
 			// Set the value of the import state to false if the animation stack should be not
 			// be imported. 
-			FBXSDK_printf("         Import State: %s\n", lTakeInfo->mSelect ? "true" : "false");
-			FBXSDK_printf("\n");
+			Log::Print("         Import State: %s\n", lTakeInfo->mSelect ? "true" : "false");
+			Log::Print("\n");
 		}
 
 		// Set the import states. By default, the import states are always set to 
@@ -198,7 +198,7 @@ bool LoadScene(FbxManager* pManager, FbxDocument* pScene, const char* pFilename)
 
 	if (lStatus == false && lImporter->GetStatus().GetCode() == FbxStatus::ePasswordError)
 	{
-		FBXSDK_printf("Please enter password: ");
+		Log::Print("Please enter password: ");
 
 		lPassword[0] = '\0';
 
@@ -215,7 +215,7 @@ bool LoadScene(FbxManager* pManager, FbxDocument* pScene, const char* pFilename)
 
 		if (lStatus == false && lImporter->GetStatus().GetCode() == FbxStatus::ePasswordError)
 		{
-			FBXSDK_printf("\nPassword is wrong, import aborted.\n");
+			Log::Print("\nPassword is wrong, import aborted.\n");
 		}
 	}
 
@@ -230,26 +230,26 @@ void DisplayMetaData(FbxScene* pScene)
 	FbxDocumentInfo* sceneInfo = pScene->GetSceneInfo();
 	if (sceneInfo)
 	{
-		FBXSDK_printf("\n\n--------------------\nMeta-Data\n--------------------\n\n");
-		FBXSDK_printf("    Title: %s\n", sceneInfo->mTitle.Buffer());
-		FBXSDK_printf("    Subject: %s\n", sceneInfo->mSubject.Buffer());
-		FBXSDK_printf("    Author: %s\n", sceneInfo->mAuthor.Buffer());
-		FBXSDK_printf("    Keywords: %s\n", sceneInfo->mKeywords.Buffer());
-		FBXSDK_printf("    Revision: %s\n", sceneInfo->mRevision.Buffer());
-		FBXSDK_printf("    Comment: %s\n", sceneInfo->mComment.Buffer());
+		Log::Print("\n\n--------------------\nMeta-Data\n--------------------\n\n");
+		Log::Print("    Title: %s\n", sceneInfo->mTitle.Buffer());
+		Log::Print("    Subject: %s\n", sceneInfo->mSubject.Buffer());
+		Log::Print("    Author: %s\n", sceneInfo->mAuthor.Buffer());
+		Log::Print("    Keywords: %s\n", sceneInfo->mKeywords.Buffer());
+		Log::Print("    Revision: %s\n", sceneInfo->mRevision.Buffer());
+		Log::Print("    Comment: %s\n", sceneInfo->mComment.Buffer());
 
 		FbxThumbnail* thumbnail = sceneInfo->GetSceneThumbnail();
 		if (thumbnail)
 		{
-			FBXSDK_printf("    Thumbnail:\n");
+			Log::Print("    Thumbnail:\n");
 
 			switch (thumbnail->GetDataFormat())
 			{
 			case FbxThumbnail::eRGB_24:
-				FBXSDK_printf("        Format: RGB\n");
+				Log::Print("        Format: RGB\n");
 				break;
 			case FbxThumbnail::eRGBA_32:
-				FBXSDK_printf("        Format: RGBA\n");
+				Log::Print("        Format: RGBA\n");
 				break;
 			}
 
@@ -258,13 +258,13 @@ void DisplayMetaData(FbxScene* pScene)
 			default:
 				break;
 			case FbxThumbnail::eNotSet:
-				FBXSDK_printf("        Size: no dimensions specified (%ld bytes)\n", thumbnail->GetSizeInBytes());
+				Log::Print("        Size: no dimensions specified (%ld bytes)\n", thumbnail->GetSizeInBytes());
 				break;
 			case FbxThumbnail::e64x64:
-				FBXSDK_printf("        Size: 64 x 64 pixels (%ld bytes)\n", thumbnail->GetSizeInBytes());
+				Log::Print("        Size: 64 x 64 pixels (%ld bytes)\n", thumbnail->GetSizeInBytes());
 				break;
 			case FbxThumbnail::e128x128:
-				FBXSDK_printf("        Size: 128 x 128 pixels (%ld bytes)\n", thumbnail->GetSizeInBytes());
+				Log::Print("        Size: 128 x 128 pixels (%ld bytes)\n", thumbnail->GetSizeInBytes());
 			}
 		}
 	}

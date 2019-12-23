@@ -18,9 +18,9 @@ RenderWindowWidget::~RenderWindowWidget()
 {
 }
 
-void RenderWindowWidget::SetRenderWindow(std::shared_ptr<IRenderWindow> RenderWindow)
+void RenderWindowWidget::SetRenderWindow(std::shared_ptr<IRenderWindowEvents> RenderWindowEvents)
 {
-	m_RenderWindow = RenderWindow;
+	m_RenderWindowEvents = RenderWindowEvents;
 }
 
 std::string RenderWindowWidget::GetWindowName()
@@ -132,7 +132,7 @@ void RenderWindowWidget::mousePressEvent(QMouseEvent * event)
 		event->x(),
 		event->y()
 	);
-	std::dynamic_pointer_cast<IRenderWindowEvents>(m_RenderWindow)->OnMouseButtonPressed(args);
+	m_RenderWindowEvents->OnMouseButtonPressed(args);
 }
 
 void RenderWindowWidget::mouseReleaseEvent(QMouseEvent * event)
@@ -150,7 +150,7 @@ void RenderWindowWidget::mouseReleaseEvent(QMouseEvent * event)
 		event->x(),
 		event->y()
 	);
-	std::dynamic_pointer_cast<IRenderWindowEvents>(m_RenderWindow)->OnMouseButtonReleased(args);
+	m_RenderWindowEvents->OnMouseButtonReleased(args);
 }
 
 void RenderWindowWidget::mouseDoubleClickEvent(QMouseEvent * event)
@@ -170,7 +170,7 @@ void RenderWindowWidget::mouseMoveEvent(QMouseEvent * event)
 		event->x(), 
 		event->y()
 	);
-	std::dynamic_pointer_cast<IRenderWindowEvents>(m_RenderWindow)->OnMouseMoved(args);
+	m_RenderWindowEvents->OnMouseMoved(args);
 }
 
 void RenderWindowWidget::wheelEvent(QWheelEvent * event)
@@ -188,7 +188,7 @@ void RenderWindowWidget::wheelEvent(QWheelEvent * event)
 		event->y()
 
 	);
-	std::dynamic_pointer_cast<IRenderWindowEvents>(m_RenderWindow)->OnMouseWheel(args);
+	m_RenderWindowEvents->OnMouseWheel(args);
 }
 
 void RenderWindowWidget::keyPressEvent(QKeyEvent * event)
@@ -203,7 +203,7 @@ void RenderWindowWidget::keyPressEvent(QKeyEvent * event)
 		event->modifiers() == Qt::KeyboardModifier::ShiftModifier,
 		event->modifiers() == Qt::KeyboardModifier::AltModifier
 	);
-	std::dynamic_pointer_cast<IRenderWindowEvents>(m_RenderWindow)->OnKeyPressed(args);
+	m_RenderWindowEvents->OnKeyPressed(args);
 }
 
 void RenderWindowWidget::keyReleaseEvent(QKeyEvent * event)
@@ -218,7 +218,7 @@ void RenderWindowWidget::keyReleaseEvent(QKeyEvent * event)
 		event->modifiers() == Qt::KeyboardModifier::ShiftModifier,
 		event->modifiers() == Qt::KeyboardModifier::AltModifier
 	);
-	std::dynamic_pointer_cast<IRenderWindowEvents>(m_RenderWindow)->OnKeyReleased(args);
+	m_RenderWindowEvents->OnKeyReleased(args);
 }
 
 void RenderWindowWidget::focusInEvent(QFocusEvent * event)
@@ -254,7 +254,7 @@ void RenderWindowWidget::resizeEvent(QResizeEvent * event)
 		event->size().width(),
 		event->size().height()
 	);
-	std::dynamic_pointer_cast<IRenderWindowEvents>(m_RenderWindow)->OnResize(args);
+	m_RenderWindowEvents->OnResize(args);
 }
 
 void RenderWindowWidget::closeEvent(QCloseEvent * event)

@@ -70,6 +70,12 @@
     <Filter Include="Scene Funcitonal\UI\Fonts">
       <UniqueIdentifier>{a14d68cf-974d-4fe9-8bb3-b39b310eae0b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resources\Textures">
+      <UniqueIdentifier>{f841afa5-fa24-4948-a5bb-cc5e7cd3ea2a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Models">
+      <UniqueIdentifier>{6df4feff-bf00-48ce-a361-e73bc7f7ca61}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -113,15 +119,6 @@
     </ClCompile>
     <ClCompile Include="Materials\UI_Texture_Material.cpp">
       <Filter>Materials</Filter>
-    </ClCompile>
-    <ClCompile Include="Passes\DeferredLightingPass.cpp">
-      <Filter>Passes</Filter>
-    </ClCompile>
-    <ClCompile Include="Passes\GBuffer.cpp">
-      <Filter>Passes</Filter>
-    </ClCompile>
-    <ClCompile Include="Passes\PostprocessPass.cpp">
-      <Filter>Passes</Filter>
     </ClCompile>
     <ClCompile Include="SceneFunctional\UI\UIUtils.cpp">
       <Filter>Scene Funcitonal\UI\Utils</Filter>
@@ -230,6 +227,15 @@
     <ClCompile Include="Passes\TextureDebugPass.cpp">
       <Filter>Passes\3D</Filter>
     </ClCompile>
+    <ClCompile Include="Models\OBJLoader.cpp">
+      <Filter>Models</Filter>
+    </ClCompile>
+    <ClCompile Include="Materials\OBJMaterial.cpp">
+      <Filter>Materials</Filter>
+    </ClCompile>
+    <ClCompile Include="Passes\OBJMaterialPass.cpp">
+      <Filter>Passes\3D</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="common.h">
@@ -279,15 +285,6 @@
     </ClInclude>
     <ClInclude Include="Materials\UI_Texture_Material.h">
       <Filter>Materials</Filter>
-    </ClInclude>
-    <ClInclude Include="Passes\DeferredLightingPass.h">
-      <Filter>Passes</Filter>
-    </ClInclude>
-    <ClInclude Include="Passes\GBuffer.h">
-      <Filter>Passes</Filter>
-    </ClInclude>
-    <ClInclude Include="Passes\PostprocessPass.h">
-      <Filter>Passes</Filter>
     </ClInclude>
     <ClInclude Include="SceneFunctional\UI\UIUtils.h">
       <Filter>Scene Funcitonal\UI\Utils</Filter>
@@ -392,6 +389,15 @@
     <ClInclude Include="Passes\TextureDebugPass.h">
       <Filter>Passes\3D</Filter>
     </ClInclude>
+    <ClInclude Include="Models\OBJLoader.h">
+      <Filter>Models</Filter>
+    </ClInclude>
+    <ClInclude Include="Materials\OBJMaterial.h">
+      <Filter>Materials</Filter>
+    </ClInclude>
+    <ClInclude Include="Passes\OBJMaterialPass.h">
+      <Filter>Passes\3D</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="znEngine.rc">
@@ -459,5 +465,15 @@
     <Text Include="Resources\shaders_OGL\3D\Textured.ps">
       <Filter>Resources\Shaders_OGL\3D</Filter>
     </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Resources\Textures\default.png">
+      <Filter>Resources\Textures</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="Resources\shaders_D3D\3D\OBJModels.hlsl">
+      <Filter>Resources\Shaders_D3D\3D</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

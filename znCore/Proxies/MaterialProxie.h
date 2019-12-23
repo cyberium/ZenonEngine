@@ -6,6 +6,9 @@ public:
 	MaterialProxie(std::shared_ptr<IMaterial> _materal);
 	virtual ~MaterialProxie();
 
+	virtual void SetName(const std::string& Name);
+	virtual std::string GetName() const;
+
 	virtual void SetShader(IShader::ShaderType type, std::shared_ptr<IShader> pShader);
 	virtual std::shared_ptr<IShader> GetShader(IShader::ShaderType type) const;
 	virtual const ShaderMap& GetShaders() const;

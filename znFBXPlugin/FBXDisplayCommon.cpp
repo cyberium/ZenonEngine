@@ -24,7 +24,7 @@ void DisplayString(const char* pHeader, const char* pValue /* = "" */, const cha
 	lString += pValue;
 	lString += pSuffix;
 	lString += "\n";
-	//FBXSDK_printf(lString);
+	Log::Print(lString);
 }
 
 
@@ -36,7 +36,7 @@ void DisplayBool(const char* pHeader, bool pValue, const char* pSuffix /* = "" *
 	lString += pValue ? "true" : "false";
 	lString += pSuffix;
 	lString += "\n";
-	//FBXSDK_printf(lString);
+	Log::Print(lString);
 }
 
 
@@ -48,7 +48,7 @@ void DisplayInt(const char* pHeader, int pValue, const char* pSuffix /* = "" */)
 	lString += pValue;
 	lString += pSuffix;
 	lString += "\n";
-	//FBXSDK_printf(lString);
+	Log::Print(lString);
 }
 
 
@@ -64,7 +64,7 @@ void DisplayDouble(const char* pHeader, double pValue, const char* pSuffix /* = 
 	lString += lFloatValue;
 	lString += pSuffix;
 	lString += "\n";
-	FBXSDK_printf(lString);
+	Log::Print(lString);
 }
 
 
@@ -85,7 +85,7 @@ void Display2DVector(const char* pHeader, FbxVector2 pValue, const char* pSuffix
 	lString += lFloatValue2;
 	lString += pSuffix;
 	lString += "\n";
-	//FBXSDK_printf(lString);
+	Log::Print(lString);
 }
 
 
@@ -111,7 +111,7 @@ void Display3DVector(const char* pHeader, FbxVector4 pValue, const char* pSuffix
 	lString += lFloatValue3;
 	lString += pSuffix;
 	lString += "\n";
-	//FBXSDK_printf(lString);
+	Log::Print(lString);
 }
 
 void Display4DVector(const char* pHeader, FbxVector4 pValue, const char* pSuffix /* = "" */)
@@ -141,28 +141,7 @@ void Display4DVector(const char* pHeader, FbxVector4 pValue, const char* pSuffix
 	lString += lFloatValue4;
 	lString += pSuffix;
 	lString += "\n";
-	FBXSDK_printf(lString);
-}
-
-
-void DisplayColor(const char* pHeader, FbxPropertyT<FbxDouble3> pValue, const char* pSuffix /* = "" */)
-
-{
-	FbxString lString;
-
-	lString = pHeader;
-	//lString += (float) pValue.mRed;
-	//lString += (double)pValue.GetArrayItem(0);
-	lString += " (red), ";
-	//lString += (float) pValue.mGreen;
-	//lString += (double)pValue.GetArrayItem(1);
-	lString += " (green), ";
-	//lString += (float) pValue.mBlue;
-	//lString += (double)pValue.GetArrayItem(2);
-	lString += " (blue)";
-	lString += pSuffix;
-	lString += "\n";
-	FBXSDK_printf(lString);
+	Log::Print(lString);
 }
 
 
@@ -182,6 +161,6 @@ void DisplayColor(const char* pHeader, FbxColor pValue, const char* pSuffix /* =
 	lString += " (blue)";
 	lString += pSuffix;
 	lString += "\n";
-	FBXSDK_printf(lString);
+	Log::Print(lString);
 }
 

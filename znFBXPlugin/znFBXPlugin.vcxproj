@@ -29,6 +29,8 @@
     <ClCompile Include="FBXDisplayShape.cpp" />
     <ClCompile Include="FBXDisplayTexture.cpp" />
     <ClCompile Include="FBXHelpers.cpp" />
+    <ClCompile Include="FBXMaterial.cpp" />
+    <ClCompile Include="FBXMaterialPass.cpp" />
     <ClCompile Include="FBXSceneNode.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -50,11 +52,26 @@
     <ClInclude Include="FBXDisplayShape.h" />
     <ClInclude Include="FBXDisplayTexture.h" />
     <ClInclude Include="FBXHelpers.h" />
+    <ClInclude Include="FBXMaterial.h" />
+    <ClInclude Include="FBXMaterialPass.h" />
     <ClInclude Include="FBXSceneNode.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="znFBXPlugin.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Resources\shaders_D3D\3D\FBX.hlsl">
+      <FileType>Document</FileType>
+    </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Resources\shaders_OGL\3D\FBX.ps">
+      <FileType>Document</FileType>
+    </Text>
+    <Text Include="Resources\shaders_OGL\3D\FBX.vs">
+      <FileType>Document</FileType>
+    </Text>
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{3C9E8287-1CE4-4638-844C-CE9BA1E48151}</ProjectGuid>

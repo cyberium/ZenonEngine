@@ -2,4 +2,4 @@
 
 #include "FBXDisplayCommon.h"
 
-void DisplayMaterial(FbxGeometry* pGeometry);
+std::shared_ptr<IMaterial> DisplayMaterial(std::shared_ptr<IRenderDevice> RenderDevice, FbxGeometry* pGeometry);

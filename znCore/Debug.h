@@ -57,6 +57,7 @@ public:
 	{}
 };
 
+#ifndef _DEBUG
 
 #define _ASSERT(expr)   \
 if ((!(expr)))          \
@@ -69,3 +70,5 @@ if ((!(expr)))                    \
 {                                 \
 	throw CException(msg);        \
 } 
+
+#endif

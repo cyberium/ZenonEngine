@@ -13,6 +13,26 @@ MeshProxie::~MeshProxie()
 {
 }
 
+void MeshProxie::SetName(const std::string & Name)
+{
+	m_Mesh->SetName(Name);
+}
+
+std::string MeshProxie::GetName() const
+{
+	return m_Mesh->GetName();
+}
+
+void MeshProxie::SetBounds(const BoundingBox & Bounds)
+{
+	m_Mesh->SetBounds(Bounds);
+}
+
+const BoundingBox & MeshProxie::GetBounds() const
+{
+	return m_Mesh->GetBounds();
+}
+
 void MeshProxie::AddVertexBuffer(const BufferBinding & binding, std::shared_ptr<IBuffer> buffer)
 {
 	m_Mesh->AddVertexBuffer(binding, buffer);

@@ -10,7 +10,7 @@ public:
 	RenderWindowWidget(QWidget * parent);
 	virtual ~RenderWindowWidget();
 
-	void SetRenderWindow(std::shared_ptr<IRenderWindow> RenderWindow);
+	void SetRenderWindow(std::shared_ptr<IRenderWindowEvents> RenderWindowEvents);
 
 	QPaintEngine* paintEngine() const override { return nullptr; }
 
@@ -47,11 +47,7 @@ private:
 	void closeEvent(QCloseEvent *event) override;
 
 private:
-	QAbstractEventDispatcher *dispatcher;
-	QTime lastAwake;
-	QTime lastBlock;
-
 	HWND m_hwnd;
 
-	std::shared_ptr<IRenderWindow> m_RenderWindow;
+	std::shared_ptr<IRenderWindowEvents> m_RenderWindowEvents;
 };

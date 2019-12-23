@@ -6,6 +6,9 @@ public:
 	MaterialBase(std::weak_ptr<IRenderDevice> renderDevice, size_t Size);
 	virtual ~MaterialBase();
 
+	virtual void SetName(const std::string& Name);
+	virtual std::string GetName() const;
+
 	virtual void SetShader(IShader::ShaderType type, std::shared_ptr<IShader> pShader);
 	virtual std::shared_ptr<IShader> GetShader(IShader::ShaderType type) const;
 	virtual const ShaderMap& GetShaders() const;
@@ -28,6 +31,8 @@ protected:
 
 
 protected:
+	std::string                      m_Name;
+
 	ShaderMap                        m_Shaders;
 
 	TextureMap                       m_Textures;

@@ -32,7 +32,7 @@ bool DisplayContentNode(CFBX * FBX, FbxManager* FBXManager, FbxNode* pNode)
 
 	if (pNode->GetNodeAttribute() == NULL)
 	{
-		FBXSDK_printf("NULL Node Attribute\n\n");
+		Log::Print("NULL Node Attribute\n\n");
 	}
 	else
 	{
@@ -53,7 +53,6 @@ bool DisplayContentNode(CFBX * FBX, FbxManager* FBXManager, FbxNode* pNode)
 		case FbxNodeAttribute::eMesh:
 		{
 			std::shared_ptr<IMesh> m = DisplayMesh(FBX, FBXManager, pNode);
-			m->SetMaterial(FBX->GetDefaultMaterial());
 
 			FBX->GetSceneNode()->GetComponent<IMeshComponent3D>()->AddMesh(m);
 
@@ -97,9 +96,8 @@ bool DisplayContentNode(CFBX * FBX, FbxManager* FBXManager, FbxNode* pNode)
 	return false;
 }
 
-CFBX::CFBX(const std::string& SceneName, std::shared_ptr<ISceneNode> ParentNode, std::shared_ptr<IMaterial> DefaultMaterial)
+CFBX::CFBX(const std::string& SceneName, std::shared_ptr<ISceneNode> ParentNode)
 	: m_Node(ParentNode)
-	, m_DefaultMaterial(DefaultMaterial)
 {
 	m_BaseManager = std::dynamic_pointer_cast<IBaseManagerHolder>(m_Node->GetScene())->GetBaseManager();
 
@@ -119,8 +117,6 @@ CFBX::CFBX(const std::string& SceneName, std::shared_ptr<ISceneNode> ParentNode,
 		Log::Error("Error while triangulate!");
 	}
 
-	m_DefaultMaterial = DefaultMaterial;
-
 	DisplayMetaData(lScene);
 	DisplayHierarchy(lScene);
 	DisplayContentScene(this, lSdkManager, lScene);
@@ -138,11 +134,6 @@ const IBaseManager * CFBX::GetBaseManager() const
 std::shared_ptr<ISceneNode> CFBX::GetSceneNode()
 {
 	return m_Node;
-}
-
-std::shared_ptr<IMaterial> CFBX::GetDefaultMaterial()
-{
-	return m_DefaultMaterial;
 }
 
 

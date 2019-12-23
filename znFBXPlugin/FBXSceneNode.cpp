@@ -23,5 +23,5 @@ CFBXSceneNode::~CFBXSceneNode()
 //
 void CFBXSceneNode::Initialize()
 {
-	CFBX fbx(m_SceneFilename, shared_from_this(), nullptr);
+	CFBX fbx(m_SceneFilename, shared_from_this());
 }

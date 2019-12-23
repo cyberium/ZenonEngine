@@ -13,6 +13,12 @@ ZN_INTERFACE OW_ENGINE_API IMesh : public std::enable_shared_from_this<IMesh>
 
 	virtual ~IMesh() {}
 
+	virtual void                                    SetName(const std::string& Name) = 0;
+	virtual std::string                             GetName() const = 0;
+
+	virtual void                                    SetBounds(const BoundingBox& Bounds) = 0;
+	virtual const BoundingBox&                      GetBounds() const = 0;
+
 	virtual void                                    AddVertexBuffer(const BufferBinding& binding, std::shared_ptr<IBuffer> buffer) = 0;
 	virtual void                                    SetVertexBuffer(std::shared_ptr<IBuffer> buffer) = 0;
 	virtual void                                    SetIndexBuffer(std::shared_ptr<IBuffer> buffer) = 0;

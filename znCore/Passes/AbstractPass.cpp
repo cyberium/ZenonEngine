@@ -8,26 +8,17 @@ AbstractPass::AbstractPass(std::shared_ptr<IRenderDevice> RenderDevice)
     , m_RenderEventArgs(nullptr)
     , m_Pipeline(nullptr)
     , m_RenderDevice(RenderDevice)
-{
-	m_PerObjectData = (PerObject*)_aligned_malloc(sizeof(PerObject), 16);
-	m_PerObjectConstantBuffer = GetRenderDevice()->CreateConstantBuffer(PerObject());
-}
+{}
 
 AbstractPass::AbstractPass(std::shared_ptr<IRenderDevice> RenderDevice, std::shared_ptr<IPipelineState> Pipeline)
     : m_Enabled(true)
     , m_RenderEventArgs(nullptr)
     , m_Pipeline(Pipeline)
     , m_RenderDevice(RenderDevice)
-{
-    m_PerObjectData = (PerObject*)_aligned_malloc(sizeof(PerObject), 16);
-    m_PerObjectConstantBuffer = GetRenderDevice()->CreateConstantBuffer(PerObject());
-}
+{}
 
 AbstractPass::~AbstractPass()
-{
-	_aligned_free(m_PerObjectData);
-	GetRenderDevice()->DestroyConstantBuffer(m_PerObjectConstantBuffer);
-}
+{}
 
 void AbstractPass::SetEnabled(bool enabled)
 {
@@ -106,11 +97,7 @@ bool AbstractPass::VisitUI(ISceneNode* node)
 
 bool AbstractPass::Visit(IMesh* Mesh, UINT IndexStartLocation, UINT IndexCnt, UINT VertexStartLocation, UINT VertexCnt)
 {
-    if (m_RenderEventArgs)
-    {
-        return Mesh->Render(m_RenderEventArgs, m_PerObjectConstantBuffer.get(), IndexStartLocation, IndexCnt, VertexStartLocation, VertexCnt);
-    }
-
+	_ASSERT(false, "This function must be specialized.");
     return false;
 }
 
@@ -129,22 +116,6 @@ RenderEventArgs* AbstractPass::GetRenderEventArgs() const
 {
     assert(m_RenderEventArgs);
     return m_RenderEventArgs;
-}
-
-void AbstractPass::SetPerObjectConstantBufferData(PerObject& perObjectData)
-{
-	m_PerObjectConstantBuffer->Set(perObjectData);
-}
-
-std::shared_ptr<IConstantBuffer> AbstractPass::GetPerObjectConstantBuffer() const
-{
-	return m_PerObjectConstantBuffer;
-}
-
-void AbstractPass::BindPerObjectConstantBuffer(std::shared_ptr<IShader> shader)
-{
-    if (shader)
-        shader->GetShaderParameterByName("PerObject")->Set(m_PerObjectConstantBuffer.get());
 }
 
 std::shared_ptr<IPipelineState> AbstractPass::GetPipelineState() const

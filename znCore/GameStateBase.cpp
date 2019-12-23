@@ -25,6 +25,7 @@ bool CGameState::Init()
 	m_VideoSettings = GetManager<ISettings>(m_BaseManager)->GetGroup("Video");
 
 	m_FrameQuery = GetRenderDevice()->CreateQuery(IQuery::QueryType::Timer, 1);
+	m_TestQuery = GetRenderDevice()->CreateQuery(IQuery::QueryType::CountSamples, 1);
 
 	m_Scene3D = GetManager<IScenesFactory>(GetBaseManager())->CreateScene("SceneBase");
 	m_SceneUI = GetManager<IScenesFactory>(GetBaseManager())->CreateScene("SceneBase");
@@ -133,6 +134,7 @@ void CGameState::OnUpdate(UpdateEventArgs& e)
 void CGameState::OnPreRender(RenderEventArgs& e)
 {
 	m_FrameQuery->Begin(e.FrameCounter);
+	m_TestQuery->Begin(e.FrameCounter);
 }
 
 void CGameState::OnRender(RenderEventArgs& e)
@@ -144,20 +146,20 @@ void CGameState::OnRender(RenderEventArgs& e)
 
 void CGameState::OnPostRender(RenderEventArgs& e)
 {
+	m_TestQuery->End(e.FrameCounter);
 	m_FrameQuery->End(e.FrameCounter);
 
 	vec3 cameraTrans = GetCameraController()->GetCamera()->GetTranslation();
 	m_CameraPosText->GetProperties()->GetSettingT<std::string>("Text")->Set("Pos: x = " + std::to_string(cameraTrans.x) + ", y = " + std::to_string(cameraTrans.y) + ", z = " + std::to_string(cameraTrans.z));
 	m_CameraRotText->GetProperties()->GetSettingT<std::string>("Text")->Set("Rot: yaw = " + std::to_string(GetCameraController()->GetCamera()->GetYaw()) + ", pitch = " + std::to_string(GetCameraController()->GetCamera()->GetPitch()));
 
-	IQuery::QueryResult frameResult = m_FrameQuery->GetQueryResult(e.FrameCounter - (m_FrameQuery->GetBufferCount() - 1));
+	IQuery::QueryResult frameResult = m_FrameQuery->GetQueryResult(e.FrameCounter);
 	if (frameResult.IsValid)
 	{
 		if (GetRenderDevice()->GetDeviceType() == RenderDeviceType::RenderDeviceType_DirectX)
 			m_FrameTime = frameResult.ElapsedTime * 1000.0;
 		else
 			m_FrameTime = frameResult.ElapsedTime / 1000000.0;
-
 		m_FPSText->GetProperties()->GetSettingT<std::string>("Text")->Set("FPS: " + std::to_string(1000.0 / m_FrameTime));
 	}
 }

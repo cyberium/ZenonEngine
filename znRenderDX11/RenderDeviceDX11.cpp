@@ -574,5 +574,5 @@ void RenderDeviceDX11::CreateDevice()
 //
 void RenderDeviceDX11::LoadDefaultResources()
 {
-    m_pDefaultTexture = CreateTexture2D("Textures\\default.png");
+    m_pDefaultTexture = CreateTexture2D("IDB_DEFAULT_TEXTURE");
 }

@@ -20,10 +20,10 @@ int main(int argc, char *argv[])
 	std::shared_ptr<IRenderDevice> renderDevice = app.CreateRenderDevice(RenderDeviceType::RenderDeviceType_DirectX);
 	AddManager<IRenderDevice>(BaseManager, renderDevice);
 
-	std::shared_ptr<IRenderWindow> renderWindow = renderDevice->CreateRenderWindow(dynamic_cast<IWindowObject*>(w.getUI().frame), false);
+	std::shared_ptr<IRenderWindow> renderWindow = renderDevice->CreateRenderWindow(dynamic_cast<IWindowObject*>(w.getUI().EditorWindow), false);
 	app.AddRenderWindow(renderWindow);
 
-	dynamic_cast<RenderWindowWidget*>(w.getUI().frame)->SetRenderWindow(renderWindow);
+	w.getUI().EditorWindow->SetRenderWindow(std::dynamic_pointer_cast<IRenderWindowEvents>(renderWindow));
 
 	std::shared_ptr<IFontsManager> fontsManager = std::make_shared<FontsManager>(renderDevice, BaseManager);
 	AddManager<IFontsManager>(BaseManager, fontsManager);

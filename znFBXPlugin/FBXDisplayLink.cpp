@@ -61,8 +61,8 @@ void DisplayLink(FbxGeometry* pGeometry)
 			lString1 += "\n";
 			lString2 += "\n";
 
-			FBXSDK_printf(lString1);
-			FBXSDK_printf(lString2);
+			Log::Print(lString1);
+			Log::Print(lString2);
 
 			DisplayString("");
 

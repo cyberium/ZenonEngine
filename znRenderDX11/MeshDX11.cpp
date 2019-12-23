@@ -88,16 +88,15 @@ bool MeshDX11::Render(const RenderEventArgs* renderArgs, const IConstantBuffer* 
 			perObjectParameter->Bind();
 		}
 
-
 		if (m_VertexBuffer != nullptr)
 		{
 			m_VertexBuffer->Bind(0, pVS.get(), IShaderParameter::Type::Buffer);
 		}
 		else
 		{
-			for (BufferMap::value_type buffer : m_VertexBuffers)
+			for (const BufferMap::value_type& buffer : m_VertexBuffers)
 			{
-				BufferBinding binding = buffer.first;
+				const BufferBinding& binding = buffer.first;
 				if (pVS->GetInputLayout()->HasSemantic(binding))
 				{
 					UINT slotID = pVS->GetInputLayout()->GetSemanticSlot(binding);
@@ -125,9 +124,9 @@ bool MeshDX11::Render(const RenderEventArgs* renderArgs, const IConstantBuffer* 
 		}
 		else
 		{
-			for (BufferMap::value_type buffer : m_VertexBuffers)
+			for (const BufferMap::value_type& buffer : m_VertexBuffers)
 			{
-				BufferBinding binding = buffer.first;
+				const BufferBinding& binding = buffer.first;
 				if (pVS->GetInputLayout()->HasSemantic(binding))
 				{
 					UINT slotID = pVS->GetInputLayout()->GetSemanticSlot(binding);
@@ -137,12 +136,10 @@ bool MeshDX11::Render(const RenderEventArgs* renderArgs, const IConstantBuffer* 
 		}
 	}
 
-	/*
 	if (m_pMaterial)
 	{
-		m_pMaterial->Unbind();
+		m_pMaterial->Unbind(shadersMap);
 	}
-	*/
 
 	return true;
 }

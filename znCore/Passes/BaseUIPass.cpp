@@ -5,10 +5,16 @@
 
 BaseUIPass::BaseUIPass(std::shared_ptr<IRenderDevice> RenderDevice, std::shared_ptr<IScene> Scene, std::shared_ptr<IPipelineState> pipeline)
 	: CBaseScenePass(RenderDevice, Scene, pipeline)
-{}
+{
+	m_PerObjectData = (PerObjectUI*)_aligned_malloc(sizeof(PerObjectUI), 16);
+	m_PerObjectConstantBuffer = GetRenderDevice()->CreateConstantBuffer(PerObjectUI());
+}
 
 BaseUIPass::~BaseUIPass()
-{}
+{
+	_aligned_free(m_PerObjectData);
+	GetRenderDevice()->DestroyConstantBuffer(m_PerObjectConstantBuffer);
+}
 
 //
 // IVisitor
@@ -25,15 +31,42 @@ bool BaseUIPass::VisitUI(ISceneNode* sceneNode)
 		sceneNode->UpdateCamera(camera);
 		sceneNode->UpdateViewport(viewport);
 
-		PerObject perObjectData;
-		perObjectData.Model = sceneNode->GetComponent<ITransformComponent>()->GetWorldTransfom();
-		perObjectData.ModelView = mat4(1.0f);
-		perObjectData.ModelViewProjection = viewport->GetOrthoMatix() * perObjectData.Model;
+		m_PerObjectData->Model = sceneNode->GetComponent<ITransformComponent>()->GetWorldTransfom();
+		m_PerObjectData->Projection = viewport->GetOrthoMatix();
 
-		SetPerObjectConstantBufferData(perObjectData);
+		SetPerObjectConstantBufferData();
 
 		return true;
 	}
 
 	return false;
+}
+
+bool BaseUIPass::Visit(IMesh * Mesh, UINT IndexStartLocation, UINT IndexCnt, UINT VertexStartLocation, UINT VertexCnt)
+{
+	GetRenderEventArgs()->Caller = this;
+
+	return Mesh->Render(GetRenderEventArgs(), m_PerObjectConstantBuffer.get(), IndexStartLocation, IndexCnt, VertexStartLocation, VertexCnt);
+}
+
+
+
+//
+// PerObject functional
+//
+void BaseUIPass::SetPerObjectConstantBufferData()
+{
+	m_PerObjectConstantBuffer->Set(m_PerObjectData, sizeof(PerObjectUI));
+}
+
+std::shared_ptr<IConstantBuffer> BaseUIPass::GetPerObjectConstantBuffer() const
+{
+	return m_PerObjectConstantBuffer;
+}
+
+void BaseUIPass::BindPerObjectConstantBuffer(std::shared_ptr<IShader> shader)
+{
+	_ASSERT_EXPR(shader != nullptr, "BaseUIPass::BindPerObjectConstantBuffer: Shader parameter must not be null!");
+
+	shader->GetShaderParameterByName("PerObject")->Set(m_PerObjectConstantBuffer.get());
 }

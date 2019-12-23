@@ -32,7 +32,7 @@ void DisplayHierarchy(FbxNode* pNode, int pDepth)
 	lString += pNode->GetName();
 	lString += "\n";
 
-	FBXSDK_printf(lString.Buffer());
+	Log::Print(lString.Buffer());
 
 	for (i = 0; i < pNode->GetChildCount(); i++)
 	{

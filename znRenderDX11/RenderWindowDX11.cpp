@@ -19,21 +19,6 @@ RenderWindowDX11::RenderWindowDX11(std::shared_ptr<IRenderDevice> RenderDevice, 
 	m_pDevice           = renderDeviceDX11->GetDevice();
 	m_pDeviceContext    = renderDeviceDX11->GetDeviceContext();
 
-	m_SampleDesc = { 1, 0 };
-
-	// Try to choose the best multi-sampling quality level that is supported.
-	/*UINT sampleCount = 1;
-	UINT qualityLevels = 0;
-	while (SUCCEEDED(m_pDevice->CheckMultisampleQualityLevels(DXGI_FORMAT_R8G8B8A8_UNORM, sampleCount, &qualityLevels)) && qualityLevels > 0)
-	{
-		// That works...
-		m_SampleDesc.Count = sampleCount;
-		m_SampleDesc.Quality = qualityLevels - 1;
-
-		// But can we do better?
-		sampleCount = sampleCount * 2;
-	}*/
-
 	CreateSwapChain();
 }
 
@@ -85,7 +70,22 @@ void RenderWindowDX11::CreateSwapChain()
     if (FAILED(CreateDXGIFactory(__uuidof(IDXGIFactory2), (void**)&factory)))
     {
         Log::Error("Failed to create DXGI factory.");
+		return;
     }
+
+	m_SampleDesc = { 1, 0 };
+
+	/*UINT sampleCount = 1;
+	UINT qualityLevels = 0;
+	while (SUCCEEDED(m_pDevice->CheckMultisampleQualityLevels(DXGI_FORMAT_R8G8B8A8_UNORM, sampleCount, &qualityLevels)) && qualityLevels > 0)
+	{
+		// That works...
+		m_SampleDesc.Count = sampleCount;
+		m_SampleDesc.Quality = qualityLevels - 1;
+
+		// But can we do better?
+		sampleCount = sampleCount * 2;
+	}*/
 
     DXGI_SWAP_CHAIN_DESC1 swapChainDesc = {};
     swapChainDesc.Width = windowWidth;

@@ -6,21 +6,14 @@
 // Additional
 #include <fbxsdk.h>
 
-void DisplayTextureInfo(FbxTexture* pTexture, int pBlendMode)
+std::shared_ptr<ITexture> DisplayTextureInfo(std::shared_ptr<IRenderDevice> RenderDevice, FbxTexture* pTexture)
 {
 	FbxFileTexture *lFileTexture = FbxCast<FbxFileTexture>(pTexture);
-	FbxProceduralTexture *lProceduralTexture = FbxCast<FbxProceduralTexture>(pTexture);
-
+	_ASSERT_EXPR(lFileTexture, "FBX texture must be file texture.");
+		
 	DisplayString("            Name: \"", (char *)pTexture->GetName(), "\"");
-	if (lFileTexture)
-	{
-		DisplayString("            Type: File Texture");
-		DisplayString("            File Name: \"", (char *)lFileTexture->GetFileName(), "\"");
-	}
-	else if (lProceduralTexture)
-	{
-		DisplayString("            Type: Procedural Texture");
-	}
+	DisplayString("            File Name: \"", (char *)lFileTexture->GetFileName(), "\"");
+
 	DisplayDouble("            Scale U: ", pTexture->GetScaleU());
 	DisplayDouble("            Scale V: ", pTexture->GetScaleV());
 	DisplayDouble("            Translation U: ", pTexture->GetTranslationU());
@@ -50,13 +43,6 @@ void DisplayTextureInfo(FbxTexture* pTexture, int pBlendMode)
 		DisplayString("            Planar Mapping Normal: ", lPlanarMappingNormals[pTexture->GetPlanarMappingNormal()]);
 	}
 
-	const char* lBlendModes[] = { "Translucent", "Additive", "Modulate", "Modulate2", "Over", "Normal", "Dissolve", "Darken", "ColorBurn", "LinearBurn",
-									"DarkerColor", "Lighten", "Screen", "ColorDodge", "LinearDodge", "LighterColor", "SoftLight", "HardLight", "VividLight",
-									"LinearLight", "PinLight", "HardMix", "Difference", "Exclusion", "Substract", "Divide", "Hue", "Saturation", "Color",
-									"Luminosity", "Overlay" };
-
-	if (pBlendMode >= 0)
-		DisplayString("            Blend Mode: ", lBlendModes[pBlendMode]);
 	DisplayDouble("            Alpha: ", pTexture->GetDefaultAlpha());
 
 	if (lFileTexture)
@@ -70,90 +56,57 @@ void DisplayTextureInfo(FbxTexture* pTexture, int pBlendMode)
 
 	DisplayString("            Texture Use: ", pTextureUses[pTexture->GetTextureUse()]);
 	DisplayString("");
-
+	
+	return RenderDevice->CreateTexture2D(lFileTexture->GetFileName());
 }
 
-void FindAndDisplayTextureInfoByProperty(FbxProperty pProperty, bool& pDisplayHeader, int pMaterialIndex) {
-
-	if (pProperty.IsValid())
-	{
-		int lTextureCount = pProperty.GetSrcObjectCount<FbxTexture>();
-
-		for (int j = 0; j < lTextureCount; ++j)
-		{
-			//Here we have to check if it's layeredtextures, or just textures:
-			FbxLayeredTexture *lLayeredTexture = pProperty.GetSrcObject<FbxLayeredTexture>(j);
-			if (lLayeredTexture)
-			{
-				DisplayInt("    Layered Texture: ", j);
-				int lNbTextures = lLayeredTexture->GetSrcObjectCount<FbxTexture>();
-				for (int k = 0; k < lNbTextures; ++k)
-				{
-					FbxTexture* lTexture = lLayeredTexture->GetSrcObject<FbxTexture>(k);
-					if (lTexture)
-					{
-
-						if (pDisplayHeader) {
-							DisplayInt("    Textures connected to Material ", pMaterialIndex);
-							pDisplayHeader = false;
-						}
-
-						//NOTE the blend mode is ALWAYS on the LayeredTexture and NOT the one on the texture.
-						//Why is that?  because one texture can be shared on different layered textures and might
-						//have different blend modes.
-
-						FbxLayeredTexture::EBlendMode lBlendMode;
-						lLayeredTexture->GetTextureBlendMode(k, lBlendMode);
-						DisplayString("    Textures for ", pProperty.GetName());
-						DisplayInt("        Texture ", k);
-						DisplayTextureInfo(lTexture, (int)lBlendMode);
-					}
-
-				}
-			}
-			else
-			{
-				//no layered texture simply get on the property
-				FbxTexture* lTexture = pProperty.GetSrcObject<FbxTexture>(j);
-				if (lTexture)
-				{
-					//display connected Material header only at the first time
-					if (pDisplayHeader) {
-						DisplayInt("    Textures connected to Material ", pMaterialIndex);
-						pDisplayHeader = false;
-					}
-
-					DisplayString("    Textures for ", pProperty.GetName());
-					DisplayInt("        Texture ", j);
-					DisplayTextureInfo(lTexture, -1);
-				}
-			}
-		}
-	}//end if pProperty
-}
-
-void DisplayTexture(FbxGeometry* pGeometry)
+std::shared_ptr<ITexture> FindAndDisplayTextureInfoByProperty(std::shared_ptr<IRenderDevice> RenderDevice, FbxProperty pProperty)
 {
-	int lMaterialIndex;
-	FbxProperty lProperty;
-	if (pGeometry->GetNode() == NULL)
-		return;
-	int lNbMat = pGeometry->GetNode()->GetSrcObjectCount<FbxSurfaceMaterial>();
-	for (lMaterialIndex = 0; lMaterialIndex < lNbMat; lMaterialIndex++) {
-		FbxSurfaceMaterial *lMaterial = pGeometry->GetNode()->GetSrcObject<FbxSurfaceMaterial>(lMaterialIndex);
-		bool lDisplayHeader = true;
+	int lTextureCount = pProperty.GetSrcObjectCount<FbxTexture>();
+	_ASSERT_EXPR(lTextureCount == 1, "FBX: Textures count must be 1.");
 
-		//go through all the possible textures
-		if (lMaterial) {
-
-			int lTextureIndex;
-			FBXSDK_FOR_EACH_TEXTURE(lTextureIndex)
+	/*FbxLayeredTexture *lLayeredTexture = pProperty.GetSrcObject<FbxLayeredTexture>(j);
+	if (lLayeredTexture)
+	{
+		DisplayInt("    Layered Texture: ", j);
+		int lNbTextures = lLayeredTexture->GetSrcObjectCount<FbxTexture>();
+		for (int k = 0; k < lNbTextures; ++k)
+		{
+			FbxTexture* lTexture = lLayeredTexture->GetSrcObject<FbxTexture>(k);
+			if (lTexture)
 			{
-				lProperty = lMaterial->FindProperty(FbxLayerElement::sTextureChannelNames[lTextureIndex]);
-				FindAndDisplayTextureInfoByProperty(lProperty, lDisplayHeader, lMaterialIndex);
+
+				//NOTE the blend mode is ALWAYS on the LayeredTexture and NOT the one on the texture.
+				//Why is that?  because one texture can be shared on different layered textures and might
+				//have different blend modes.
+
+				FbxLayeredTexture::EBlendMode lBlendMode;
+				lLayeredTexture->GetTextureBlendMode(k, lBlendMode);
+				DisplayString("    Textures for ", pProperty.GetName());
+				DisplayInt("        Texture ", k);
+
+
+
+				const char* lBlendModes[] = { "Translucent", "Additive", "Modulate", "Modulate2", "Over", "Normal", "Dissolve", "Darken", "ColorBurn", "LinearBurn",
+												"DarkerColor", "Lighten", "Screen", "ColorDodge", "LinearDodge", "LighterColor", "SoftLight", "HardLight", "VividLight",
+												"LinearLight", "PinLight", "HardMix", "Difference", "Exclusion", "Substract", "Divide", "Hue", "Saturation", "Color",
+												"Luminosity", "Overlay" };
+				DisplayString("			Blend Mode: ", lBlendModes[lBlendMode]);
+
+				return DisplayTextureInfo(lTexture);
 			}
 
-		}//end if(lMaterial)
-
-	}// end for lMaterialIndex     
+		}
+	}
+	else*/
+	{
+		//no layered texture simply get on the property
+		FbxTexture* lTexture = pProperty.GetSrcObject<FbxTexture>(0);
+		if (lTexture)
+		{
+			DisplayString("    Textures for ", pProperty.GetName());
+			DisplayInt("        Texture ", 0);
+			return DisplayTextureInfo(RenderDevice, lTexture);
+		}
+	}
 }

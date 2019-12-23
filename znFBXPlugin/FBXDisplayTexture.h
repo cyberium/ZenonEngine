@@ -2,6 +2,5 @@
 
 #include "FBXDisplayCommon.h"
 
-void FindAndDisplayTextureInfoByProperty(FbxProperty pProperty, bool& pDisplayHeader, int pMaterialIndex);
-void DisplayTexture(FbxGeometry* pGeometry);
-void DisplayTextureInfo(FbxTexture* pTexture, int pBlendMode);
+std::shared_ptr<ITexture> FindAndDisplayTextureInfoByProperty(std::shared_ptr<IRenderDevice> RenderDevice, FbxProperty pProperty);
+std::shared_ptr<ITexture> DisplayTextureInfo(std::shared_ptr<IRenderDevice> RenderDevice, FbxTexture* pTexture);

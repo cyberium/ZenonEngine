@@ -7,8 +7,6 @@ void main_internal(int argumentCount, char* arguments[])
 	// 1. Initialize engine and some improtant managers
 	IBaseManager* BaseManager = InitializeEngine(ArgumentsToVector(argumentCount, arguments));
 
-
-
 	// 3. Create application
 	Application app(BaseManager, ::GetModuleHandle(NULL));
 
@@ -45,8 +43,6 @@ int main(int argumentCount, char* arguments[])
 {
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 	_CrtSetReportMode(_CRT_ERROR, _CRTDBG_MODE_DEBUG);
-
-	int * ttt = new int[250];
 
 	main_internal(argumentCount, arguments);		
 

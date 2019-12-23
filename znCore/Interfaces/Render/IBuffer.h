@@ -36,19 +36,11 @@ ZN_INTERFACE OW_ENGINE_API IConstantBuffer : public IBuffer
 	// Templates
 
 	template <typename T>
-	void Set(const T& data);
+	inline void Set(const T& data)
+	{
+		Set(&data, sizeof(T));
+	}
 };
-
-
-
-//
-// Template specizalizations
-//
-template<typename T>
-void IConstantBuffer::Set(const T& data)
-{
-	Set(&data, sizeof(T));
-}
 
 
 
@@ -63,18 +55,12 @@ ZN_INTERFACE OW_ENGINE_API IStructuredBuffer : public IBuffer
 	// Templates
 
 	template<typename T>
-	void Set(const std::vector<T>& value);
+	inline void Set(const std::vector<T>& value)
+	{
+		SetData((void*)values.data(), sizeof(T), 0, values.size());
+	}
 };
 
 
-
-//
-// Template specizalizations
-//
-template<typename T>
-void IStructuredBuffer::Set(const std::vector<T>& values)
-{
-	SetData((void*)values.data(), sizeof(T), 0, values.size());
-}
 
 typedef std::vector<std::shared_ptr<IBuffer>> BufferList;

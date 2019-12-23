@@ -106,19 +106,19 @@ ZN_INTERFACE OW_ENGINE_API
 	template<typename T>
 	inline std::shared_ptr<IBuffer> CreateVertexBuffer(const std::vector<T>& data)
 	{
-		return CreateVoidVertexBuffer(&(data[0]), (uint32)data.size(), 0, sizeof(T));
+		return CreateVoidVertexBuffer(data.data(), (uint32)data.size(), 0, sizeof(T));
 	}
 	template<typename T>
 	inline std::shared_ptr<IBuffer> CreateVertexBuffer(const T* data, uint32 count)
 	{
-		return CreateVoidVertexBuffer(data, count, 0, sizeof(float));
+		return CreateVoidVertexBuffer(data, count, 0, sizeof(T));
 	}
 
 	// Create an index buffer.
 	template<typename T>
 	inline std::shared_ptr<IBuffer> CreateIndexBuffer(const std::vector<T>& data)
 	{
-		return CreateVoidIndexBuffer(&(data[0]), (uint32)data.size(), 0, sizeof(T));
+		return CreateVoidIndexBuffer(data.data(), (uint32)data.size(), 0, sizeof(T));
 	}
 	template<typename T>
 	inline std::shared_ptr<IBuffer> CreateIndexBuffer(const T* data, uint32 count)
