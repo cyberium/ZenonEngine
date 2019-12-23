@@ -308,12 +308,18 @@
    <addaction name="menuFile"/>
    <addaction name="menuAbout"/>
   </widget>
-  <widget class="QDockWidget" name="Docker_Top">
+  <widget class="QDockWidget" name="DockerTop">
    <property name="sizePolicy">
     <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
      <horstretch>0</horstretch>
      <verstretch>0</verstretch>
     </sizepolicy>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>120</width>
+     <height>100</height>
+    </size>
    </property>
    <property name="styleSheet">
     <string notr="true">background-color: rgb(255, 0, 255);</string>
@@ -330,7 +336,7 @@
    <attribute name="dockWidgetArea">
     <number>4</number>
    </attribute>
-   <widget class="QWidget" name="Docker_Top_Content">
+   <widget class="QWidget" name="DockerTopContent">
     <layout class="QHBoxLayout" name="horizontalLayout_3">
      <property name="spacing">
       <number>5</number>
@@ -410,7 +416,7 @@
     </layout>
    </widget>
   </widget>
-  <widget class="QDockWidget" name="Docker_Right">
+  <widget class="QDockWidget" name="DockerRight">
    <property name="sizePolicy">
     <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
      <horstretch>0</horstretch>
@@ -438,11 +444,30 @@
    <attribute name="dockWidgetArea">
     <number>2</number>
    </attribute>
-   <widget class="QWidget" name="Docker_Right_Content">
-    <layout class="QHBoxLayout" name="horizontalLayout_2"/>
+   <widget class="QWidget" name="DockerRightContent">
+    <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <property name="spacing">
+      <number>0</number>
+     </property>
+     <property name="leftMargin">
+      <number>0</number>
+     </property>
+     <property name="topMargin">
+      <number>0</number>
+     </property>
+     <property name="rightMargin">
+      <number>0</number>
+     </property>
+     <property name="bottomMargin">
+      <number>0</number>
+     </property>
+     <item>
+      <widget class="QtnPropertyWidget" name="PropertyEditor" native="true"/>
+     </item>
+    </layout>
    </widget>
   </widget>
-  <widget class="QDockWidget" name="Docker_Left">
+  <widget class="QDockWidget" name="DockerLeft">
    <property name="sizePolicy">
     <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
      <horstretch>0</horstretch>
@@ -470,7 +495,7 @@
    <attribute name="dockWidgetArea">
     <number>1</number>
    </attribute>
-   <widget class="QWidget" name="Docker_Left_Content">
+   <widget class="QWidget" name="DockerLeftContent">
     <property name="sizePolicy">
      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
       <horstretch>0</horstretch>
@@ -497,7 +522,7 @@
       <number>0</number>
      </property>
      <item>
-      <widget class="QTreeView" name="treeView">
+      <widget class="QTreeView" name="SceneTreeViewer">
        <property name="enabled">
         <bool>true</bool>
        </property>
@@ -507,7 +532,7 @@
          <verstretch>0</verstretch>
         </sizepolicy>
        </property>
-       <property name="rootIsDecorated">
+       <property name="animated">
         <bool>true</bool>
        </property>
        <attribute name="headerVisible">
@@ -518,7 +543,7 @@
     </layout>
    </widget>
   </widget>
-  <widget class="QDockWidget" name="Docker_Bottom">
+  <widget class="QDockWidget" name="DockerBottom">
    <property name="sizePolicy">
     <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
      <horstretch>0</horstretch>
@@ -527,8 +552,8 @@
    </property>
    <property name="minimumSize">
     <size>
-     <width>109</width>
-     <height>135</height>
+     <width>203</width>
+     <height>152</height>
     </size>
    </property>
    <property name="styleSheet">
@@ -543,7 +568,7 @@
    <attribute name="dockWidgetArea">
     <number>8</number>
    </attribute>
-   <widget class="QWidget" name="Docker_Bottom_Content">
+   <widget class="QWidget" name="DockerBottomContent">
     <layout class="QHBoxLayout" name="horizontalLayout_5">
      <item>
       <widget class="QTextBrowser" name="textBrowser">
@@ -557,6 +582,9 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:12pt; font-weight:600;&quot;&gt;Hello world!&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
       </widget>
+     </item>
+     <item>
+      <widget class="QTreeView" name="FSTreeViewer"/>
      </item>
     </layout>
    </widget>
@@ -598,6 +626,12 @@ p, li { white-space: pre-wrap; }
    <class>RenderWindowWidget</class>
    <extends>QFrame</extends>
    <header>Renderwindowwidget.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>QtnPropertyWidget</class>
+   <extends>QWidget</extends>
+   <header>qtnpropertywidget.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

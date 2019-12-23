@@ -47,7 +47,5 @@ private:
 	void closeEvent(QCloseEvent *event) override;
 
 private:
-	HWND m_hwnd;
-
 	std::shared_ptr<IRenderWindowEvents> m_RenderWindowEvents;
 };

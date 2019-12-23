@@ -12,6 +12,7 @@ public:
 	virtual ~MainEditor();
 
 	void ApplyScene(std::shared_ptr<IScene> Scene);
+	void ApplyTest();
 
 	Ui::MainEditorClass getUI() const { return ui; }
 

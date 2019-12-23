@@ -10,8 +10,6 @@ RenderWindowWidget::RenderWindowWidget(QWidget *parent)
 	setAttribute(Qt::WA_NativeWindow);
 	setAttribute(Qt::WA_PaintOnScreen);
 	setAttribute(Qt::WA_NoSystemBackground);
-
-	m_hwnd = (HWND)winId();
 }
 
 RenderWindowWidget::~RenderWindowWidget()
@@ -40,7 +38,7 @@ long RenderWindowWidget::GetWindowHeight()
 
 HWND RenderWindowWidget::GetHWnd()
 {
-	return m_hwnd;
+	return (HWND)winId();
 }
 
 HDC RenderWindowWidget::BeginPaint(LPPAINTSTRUCT PaintStruct)

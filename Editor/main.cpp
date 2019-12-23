@@ -32,7 +32,8 @@ int main(int argc, char *argv[])
 	app.SetGameState(gameState);
 
 	w.ApplyScene(std::dynamic_pointer_cast<IScene>(app.GetGameState()->GetScene3D()));
-	
+	w.ApplyTest();
+
 	w.show();
 
 	app.Run();

@@ -24,10 +24,44 @@
     <Filter Include="Windows">
       <UniqueIdentifier>{45453c18-2bcd-44be-a5a3-7884a562e631}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SceneTreeViewer">
+      <UniqueIdentifier>{a190ea41-3fa7-493c-9d96-6899b76d32ee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Property editor">
+      <UniqueIdentifier>{f77936a4-99bb-4512-9f80-79d0bac640e2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Property editor\Core">
+      <UniqueIdentifier>{bd0ad106-c7b1-413c-b6ad-e966005a2ab9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Property editor\Core\GUI">
+      <UniqueIdentifier>{68879008-f7e3-480a-9312-4dedf008b0e2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Property editor\Core\Core">
+      <UniqueIdentifier>{5fa78a10-79e1-45f7-80f7-cca460c5e9ac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Property editor\Core\Auxiliary">
+      <UniqueIdentifier>{b8cdc93a-746a-40d3-9a09-fb0e21ef8c24}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Property editor\Widget">
+      <UniqueIdentifier>{585a9afd-c96d-409c-8ea6-5c4fba011165}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Property editor\Widget\Delegates">
+      <UniqueIdentifier>{1ac0b311-9a79-4262-9241-1d51eead57a1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Property editor\Widget\Utils">
+      <UniqueIdentifier>{b3a70016-f26c-4bb6-818d-3b5bfd1fe4d4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Property editor\Widget\Delegates\Core">
+      <UniqueIdentifier>{cd32bed0-25ee-4b35-b9ea-d15126cfbfbf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Property editor\Widget\Delegates\GUI">
+      <UniqueIdentifier>{9a8be9e5-45ee-4c2d-aeeb-d8d0d21e43f4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Property editor\Widget\Delegates\Utils">
+      <UniqueIdentifier>{0f6f97d0-49b2-49cc-b430-b735220f9d9d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="SceneNodeTreeItem.cpp" />
-    <ClCompile Include="SceneNodeTreeModel.cpp" />
     <ClCompile Include="RenderWindowWidget.cpp">
       <Filter>Widgets</Filter>
     </ClCompile>
@@ -38,20 +72,396 @@
     <ClCompile Include="MainEditor.cpp">
       <Filter>Windows</Filter>
     </ClCompile>
+    <ClCompile Include="SceneNodeTreeItem.cpp">
+      <Filter>SceneTreeViewer</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneNodeTreeModel.cpp">
+      <Filter>SceneTreeViewer</Filter>
+    </ClCompile>
+    <ClCompile Include="PropertyEditor\Core\Enum.cpp">
+      <Filter>Property editor\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="PropertyEditor\Core\Property.cpp">
+      <Filter>Property editor\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="PropertyEditor\Core\PropertyBase.cpp">
+      <Filter>Property editor\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="PropertyEditor\Core\PropertySet.cpp">
+      <Filter>Property editor\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="PropertyEditor\Core\QObjectPropertySet.cpp">
+      <Filter>Property editor\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="PropertyEditor\Core\Core\PropertyBool.cpp">
+      <Filter>Property editor\Core\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="PropertyEditor\Core\Core\PropertyDouble.cpp">
+      <Filter>Property editor\Core\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="PropertyEditor\Core\Core\PropertyEnum.cpp">
+      <Filter>Property editor\Core\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="PropertyEditor\Core\Core\PropertyEnumFlags.cpp">
+      <Filter>Property editor\Core\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="PropertyEditor\Core\Core\PropertyFloat.cpp">
+      <Filter>Property editor\Core\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="PropertyEditor\Core\Core\PropertyInt.cpp">
+      <Filter>Property editor\Core\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="PropertyEditor\Core\Core\PropertyQPoint.cpp">
+      <Filter>Property editor\Core\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="PropertyEditor\Core\Core\PropertyQPointF.cpp">
+      <Filter>Property editor\Core\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="PropertyEditor\Core\Core\PropertyQRect.cpp">
+      <Filter>Property editor\Core\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="PropertyEditor\Core\Core\PropertyQRectF.cpp">
+      <Filter>Property editor\Core\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="PropertyEditor\Core\Core\PropertyQSize.cpp">
+      <Filter>Property editor\Core\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="PropertyEditor\Core\Core\PropertyQSizeF.cpp">
+      <Filter>Property editor\Core\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="PropertyEditor\Core\Core\PropertyQString.cpp">
+      <Filter>Property editor\Core\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="PropertyEditor\Core\Core\PropertyUInt.cpp">
+      <Filter>Property editor\Core\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="PropertyEditor\Core\GUI\PropertyButton.cpp">
+      <Filter>Property editor\Core\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="PropertyEditor\Core\GUI\PropertyQBrush.cpp">
+      <Filter>Property editor\Core\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="PropertyEditor\Core\GUI\PropertyQColor.cpp">
+      <Filter>Property editor\Core\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="PropertyEditor\Core\GUI\PropertyQFont.cpp">
+      <Filter>Property editor\Core\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="PropertyEditor\Core\GUI\PropertyQPen.cpp">
+      <Filter>Property editor\Core\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="PropertyEditor\PropertyWidget\PropertyView.cpp">
+      <Filter>Property editor\Widget</Filter>
+    </ClCompile>
+    <ClCompile Include="PropertyEditor\PropertyWidget\PropertyWidget.cpp">
+      <Filter>Property editor\Widget</Filter>
+    </ClCompile>
+    <ClCompile Include="PropertyEditor\PropertyWidget\Delegates\PropertyDelegate.cpp">
+      <Filter>Property editor\Widget\Delegates</Filter>
+    </ClCompile>
+    <ClCompile Include="PropertyEditor\PropertyWidget\Delegates\PropertyDelegateAux.cpp">
+      <Filter>Property editor\Widget\Delegates</Filter>
+    </ClCompile>
+    <ClCompile Include="PropertyEditor\PropertyWidget\Delegates\PropertyDelegateFactory.cpp">
+      <Filter>Property editor\Widget\Delegates</Filter>
+    </ClCompile>
+    <ClCompile Include="PropertyEditor\PropertyWidget\Delegates\Core\PropertyDelegateBool.cpp">
+      <Filter>Property editor\Widget\Delegates\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="PropertyEditor\PropertyWidget\Delegates\Core\PropertyDelegateDouble.cpp">
+      <Filter>Property editor\Widget\Delegates\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="PropertyEditor\PropertyWidget\Delegates\Core\PropertyDelegateEnum.cpp">
+      <Filter>Property editor\Widget\Delegates\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="PropertyEditor\PropertyWidget\Delegates\Core\PropertyDelegateEnumFlags.cpp">
+      <Filter>Property editor\Widget\Delegates\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="PropertyEditor\PropertyWidget\Delegates\Core\PropertyDelegateFloat.cpp">
+      <Filter>Property editor\Widget\Delegates\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="PropertyEditor\PropertyWidget\Delegates\Core\PropertyDelegateInt.cpp">
+      <Filter>Property editor\Widget\Delegates\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="PropertyEditor\PropertyWidget\Delegates\Core\PropertyDelegateQPoint.cpp">
+      <Filter>Property editor\Widget\Delegates\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="PropertyEditor\PropertyWidget\Delegates\Core\PropertyDelegateQPointF.cpp">
+      <Filter>Property editor\Widget\Delegates\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="PropertyEditor\PropertyWidget\Delegates\Core\PropertyDelegateQRect.cpp">
+      <Filter>Property editor\Widget\Delegates\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="PropertyEditor\PropertyWidget\Delegates\Core\PropertyDelegateQRectF.cpp">
+      <Filter>Property editor\Widget\Delegates\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="PropertyEditor\PropertyWidget\Delegates\Core\PropertyDelegateQSize.cpp">
+      <Filter>Property editor\Widget\Delegates\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="PropertyEditor\PropertyWidget\Delegates\Core\PropertyDelegateQSizeF.cpp">
+      <Filter>Property editor\Widget\Delegates\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="PropertyEditor\PropertyWidget\Delegates\Core\PropertyDelegateQString.cpp">
+      <Filter>Property editor\Widget\Delegates\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="PropertyEditor\PropertyWidget\Delegates\Core\PropertyDelegateUInt.cpp">
+      <Filter>Property editor\Widget\Delegates\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="PropertyEditor\PropertyWidget\Delegates\GUI\PropertyDelegateButton.cpp">
+      <Filter>Property editor\Widget\Delegates\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="PropertyEditor\PropertyWidget\Delegates\GUI\PropertyDelegateQBrush.cpp">
+      <Filter>Property editor\Widget\Delegates\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="PropertyEditor\PropertyWidget\Delegates\GUI\PropertyDelegateQColor.cpp">
+      <Filter>Property editor\Widget\Delegates\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="PropertyEditor\PropertyWidget\Delegates\GUI\PropertyDelegateQFont.cpp">
+      <Filter>Property editor\Widget\Delegates\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="PropertyEditor\PropertyWidget\Delegates\GUI\PropertyDelegateQPen.cpp">
+      <Filter>Property editor\Widget\Delegates\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="PropertyEditor\PropertyWidget\Delegates\Utils\PropertyDelegateGeoCoord.cpp">
+      <Filter>Property editor\Widget\Delegates\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="PropertyEditor\PropertyWidget\Delegates\Utils\PropertyDelegateGeoPoint.cpp">
+      <Filter>Property editor\Widget\Delegates\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="PropertyEditor\PropertyWidget\Delegates\Utils\PropertyDelegateMisc.cpp">
+      <Filter>Property editor\Widget\Delegates\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="PropertyEditor\PropertyWidget\Delegates\Utils\PropertyDelegatePropertySet.cpp">
+      <Filter>Property editor\Widget\Delegates\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="PropertyEditor\PropertyWidget\Delegates\Utils\PropertyDelegateSliderBox.cpp">
+      <Filter>Property editor\Widget\Delegates\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="PropertyEditor\PropertyWidget\Delegates\Utils\PropertyEditorAux.cpp">
+      <Filter>Property editor\Widget\Delegates\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="PropertyEditor\PropertyWidget\Delegates\Utils\PropertyEditorHandler.cpp">
+      <Filter>Property editor\Widget\Delegates\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="PropertyEditor\PropertyWidget\Utils\AccessibilityProxy.cpp">
+      <Filter>Property editor\Widget\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="PropertyEditor\PropertyWidget\Utils\InplaceEditing.cpp">
+      <Filter>Property editor\Widget\Utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="SceneNodeTreeItem.h" />
     <ClInclude Include="stdafx.h">
       <Filter>Common</Filter>
     </ClInclude>
+    <ClInclude Include="SceneNodeTreeItem.h">
+      <Filter>SceneTreeViewer</Filter>
+    </ClInclude>
+    <ClInclude Include="PropertyEditor\Core\CoreAPI.h">
+      <Filter>Property editor\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="PropertyEditor\Core\Enum.h">
+      <Filter>Property editor\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="PropertyEditor\Core\PropertyCore.h">
+      <Filter>Property editor\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="PropertyEditor\Core\PropertyGUI.h">
+      <Filter>Property editor\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="PropertyEditor\Core\QObjectPropertySet.h">
+      <Filter>Property editor\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="PropertyEditor\Core\Auxiliary\PropertyAux.h">
+      <Filter>Property editor\Core\Auxiliary</Filter>
+    </ClInclude>
+    <ClInclude Include="PropertyEditor\Core\Auxiliary\PropertyDelegateInfo.h">
+      <Filter>Property editor\Core\Auxiliary</Filter>
+    </ClInclude>
+    <ClInclude Include="PropertyEditor\Core\Auxiliary\PropertyMacro.h">
+      <Filter>Property editor\Core\Auxiliary</Filter>
+    </ClInclude>
+    <ClInclude Include="PropertyEditor\Core\Auxiliary\PropertyTemplates.h">
+      <Filter>Property editor\Core\Auxiliary</Filter>
+    </ClInclude>
+    <ClInclude Include="PropertyEditor\PropertyWidget\PropertyWidgetAPI.h">
+      <Filter>Property editor\Widget</Filter>
+    </ClInclude>
+    <ClInclude Include="PropertyEditor\PropertyWidget\Delegates\PropertyDelegate.h">
+      <Filter>Property editor\Widget\Delegates</Filter>
+    </ClInclude>
+    <ClInclude Include="PropertyEditor\PropertyWidget\Delegates\PropertyDelegateAux.h">
+      <Filter>Property editor\Widget\Delegates</Filter>
+    </ClInclude>
+    <ClInclude Include="PropertyEditor\PropertyWidget\Delegates\PropertyDelegateFactory.h">
+      <Filter>Property editor\Widget\Delegates</Filter>
+    </ClInclude>
+    <ClInclude Include="PropertyEditor\PropertyWidget\Delegates\Core\PropertyDelegateBool.h">
+      <Filter>Property editor\Widget\Delegates\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="PropertyEditor\PropertyWidget\Delegates\Core\PropertyDelegateDouble.h">
+      <Filter>Property editor\Widget\Delegates\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="PropertyEditor\PropertyWidget\Delegates\Core\PropertyDelegateEnum.h">
+      <Filter>Property editor\Widget\Delegates\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="PropertyEditor\PropertyWidget\Delegates\Core\PropertyDelegateEnumFlags.h">
+      <Filter>Property editor\Widget\Delegates\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="PropertyEditor\PropertyWidget\Delegates\Core\PropertyDelegateFloat.h">
+      <Filter>Property editor\Widget\Delegates\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="PropertyEditor\PropertyWidget\Delegates\Core\PropertyDelegateInt.h">
+      <Filter>Property editor\Widget\Delegates\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="PropertyEditor\PropertyWidget\Delegates\Core\PropertyDelegateQPoint.h">
+      <Filter>Property editor\Widget\Delegates\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="PropertyEditor\PropertyWidget\Delegates\Core\PropertyDelegateQPointF.h">
+      <Filter>Property editor\Widget\Delegates\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="PropertyEditor\PropertyWidget\Delegates\Core\PropertyDelegateQRect.h">
+      <Filter>Property editor\Widget\Delegates\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="PropertyEditor\PropertyWidget\Delegates\Core\PropertyDelegateQRectF.h">
+      <Filter>Property editor\Widget\Delegates\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="PropertyEditor\PropertyWidget\Delegates\Core\PropertyDelegateQSize.h">
+      <Filter>Property editor\Widget\Delegates\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="PropertyEditor\PropertyWidget\Delegates\Core\PropertyDelegateQSizeF.h">
+      <Filter>Property editor\Widget\Delegates\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="PropertyEditor\PropertyWidget\Delegates\Core\PropertyDelegateQString.h">
+      <Filter>Property editor\Widget\Delegates\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="PropertyEditor\PropertyWidget\Delegates\Core\PropertyDelegateUInt.h">
+      <Filter>Property editor\Widget\Delegates\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="PropertyEditor\PropertyWidget\Delegates\GUI\PropertyDelegateButton.h">
+      <Filter>Property editor\Widget\Delegates\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="PropertyEditor\PropertyWidget\Delegates\GUI\PropertyDelegateQBrush.h">
+      <Filter>Property editor\Widget\Delegates\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="PropertyEditor\PropertyWidget\Delegates\GUI\PropertyDelegateQColor.h">
+      <Filter>Property editor\Widget\Delegates\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="PropertyEditor\PropertyWidget\Delegates\GUI\PropertyDelegateQFont.h">
+      <Filter>Property editor\Widget\Delegates\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="PropertyEditor\PropertyWidget\Delegates\GUI\PropertyDelegateQPen.h">
+      <Filter>Property editor\Widget\Delegates\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="PropertyEditor\PropertyWidget\Delegates\Utils\PropertyDelegateGeoCoord.h">
+      <Filter>Property editor\Widget\Delegates\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="PropertyEditor\PropertyWidget\Delegates\Utils\PropertyDelegateGeoPoint.h">
+      <Filter>Property editor\Widget\Delegates\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="PropertyEditor\PropertyWidget\Delegates\Utils\PropertyDelegatePropertySet.h">
+      <Filter>Property editor\Widget\Delegates\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="PropertyEditor\PropertyWidget\Delegates\Utils\PropertyDelegateSliderBox.h">
+      <Filter>Property editor\Widget\Delegates\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="PropertyEditor\PropertyWidget\Delegates\Utils\PropertyEditorAux.h">
+      <Filter>Property editor\Widget\Delegates\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="PropertyEditor\PropertyWidget\Delegates\Utils\PropertyEditorHandler.h">
+      <Filter>Property editor\Widget\Delegates\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="PropertyEditor\PropertyWidget\Utils\InplaceEditing.h">
+      <Filter>Property editor\Widget\Utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <QtMoc Include="SceneNodeTreeModel.h" />
     <QtMoc Include="RenderWindowWidget.h">
       <Filter>Widgets</Filter>
     </QtMoc>
     <QtMoc Include="MainEditor.h">
       <Filter>Windows</Filter>
+    </QtMoc>
+    <QtMoc Include="SceneNodeTreeModel.h">
+      <Filter>SceneTreeViewer</Filter>
+    </QtMoc>
+    <QtMoc Include="PropertyEditor\Core\Property.h">
+      <Filter>Property editor\Core</Filter>
+    </QtMoc>
+    <QtMoc Include="PropertyEditor\Core\PropertySet.h">
+      <Filter>Property editor\Core</Filter>
+    </QtMoc>
+    <QtMoc Include="PropertyEditor\Core\Core\PropertyBool.h">
+      <Filter>Property editor\Core\Core</Filter>
+    </QtMoc>
+    <QtMoc Include="PropertyEditor\Core\Core\PropertyDouble.h">
+      <Filter>Property editor\Core\Core</Filter>
+    </QtMoc>
+    <QtMoc Include="PropertyEditor\Core\Core\PropertyEnum.h">
+      <Filter>Property editor\Core\Core</Filter>
+    </QtMoc>
+    <QtMoc Include="PropertyEditor\Core\Core\PropertyEnumFlags.h">
+      <Filter>Property editor\Core\Core</Filter>
+    </QtMoc>
+    <QtMoc Include="PropertyEditor\Core\Core\PropertyFloat.h">
+      <Filter>Property editor\Core\Core</Filter>
+    </QtMoc>
+    <QtMoc Include="PropertyEditor\Core\Core\PropertyInt.h">
+      <Filter>Property editor\Core\Core</Filter>
+    </QtMoc>
+    <QtMoc Include="PropertyEditor\Core\Core\PropertyQPoint.h">
+      <Filter>Property editor\Core\Core</Filter>
+    </QtMoc>
+    <QtMoc Include="PropertyEditor\Core\Core\PropertyQPointF.h">
+      <Filter>Property editor\Core\Core</Filter>
+    </QtMoc>
+    <QtMoc Include="PropertyEditor\Core\Core\PropertyQRect.h">
+      <Filter>Property editor\Core\Core</Filter>
+    </QtMoc>
+    <QtMoc Include="PropertyEditor\Core\Core\PropertyQRectF.h">
+      <Filter>Property editor\Core\Core</Filter>
+    </QtMoc>
+    <QtMoc Include="PropertyEditor\Core\Core\PropertyQSize.h">
+      <Filter>Property editor\Core\Core</Filter>
+    </QtMoc>
+    <QtMoc Include="PropertyEditor\Core\Core\PropertyQSizeF.h">
+      <Filter>Property editor\Core\Core</Filter>
+    </QtMoc>
+    <QtMoc Include="PropertyEditor\Core\Core\PropertyQString.h">
+      <Filter>Property editor\Core\Core</Filter>
+    </QtMoc>
+    <QtMoc Include="PropertyEditor\Core\Core\PropertyUInt.h">
+      <Filter>Property editor\Core\Core</Filter>
+    </QtMoc>
+    <QtMoc Include="PropertyEditor\Core\GUI\PropertyButton.h">
+      <Filter>Property editor\Core\GUI</Filter>
+    </QtMoc>
+    <QtMoc Include="PropertyEditor\Core\GUI\PropertyQBrush.h">
+      <Filter>Property editor\Core\GUI</Filter>
+    </QtMoc>
+    <QtMoc Include="PropertyEditor\Core\GUI\PropertyQColor.h">
+      <Filter>Property editor\Core\GUI</Filter>
+    </QtMoc>
+    <QtMoc Include="PropertyEditor\Core\GUI\PropertyQFont.h">
+      <Filter>Property editor\Core\GUI</Filter>
+    </QtMoc>
+    <QtMoc Include="PropertyEditor\Core\GUI\PropertyQPen.h">
+      <Filter>Property editor\Core\GUI</Filter>
+    </QtMoc>
+    <QtMoc Include="PropertyEditor\PropertyWidget\PropertyView.h">
+      <Filter>Property editor\Widget</Filter>
+    </QtMoc>
+    <QtMoc Include="PropertyEditor\PropertyWidget\PropertyWidget.h">
+      <Filter>Property editor\Widget</Filter>
+    </QtMoc>
+    <QtMoc Include="PropertyEditor\PropertyWidget\Delegates\Utils\PropertyDelegateMisc.h">
+      <Filter>Property editor\Widget\Delegates\Utils</Filter>
+    </QtMoc>
+    <QtMoc Include="PropertyEditor\PropertyWidget\Utils\AccessibilityProxy.h">
+      <Filter>Property editor\Widget\Utils</Filter>
+    </QtMoc>
+    <QtMoc Include="PropertyEditor\Core\PropertyBase.h">
+      <Filter>Property editor\Core</Filter>
     </QtMoc>
   </ItemGroup>
   <ItemGroup>

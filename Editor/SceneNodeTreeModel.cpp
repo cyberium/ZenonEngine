@@ -20,6 +20,7 @@ QVariant CSceneNodeTreeModel::headerData(int section, Qt::Orientation orientatio
 {
 	if (orientation == Qt::Horizontal && role == Qt::DisplayRole)
 		return m_RootItem->data();
+
 	return QVariant();
 }
 
