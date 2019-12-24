@@ -26,6 +26,9 @@ public:
 	std::shared_ptr<IScene>							GetScene3D() const override { return m_Scene3D; };
 	std::shared_ptr<IScene>							GetSceneUI() const override { return m_SceneUI; };
 
+	// GameState events
+	virtual void                                    OnRayIntersected(const glm::vec3& Point);
+
     // Engine events
 	virtual void                                    OnUpdate(UpdateEventArgs& e);
 	virtual void                                    OnPreRender(RenderEventArgs& e);

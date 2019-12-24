@@ -116,6 +116,10 @@ bool CGameState::IsCurrent() const
 
 
 
+void CGameState::OnRayIntersected(const glm::vec3& Point)
+{
+}
+
 //
 // Engine events
 //
@@ -232,7 +236,40 @@ void CGameState::OnMouseButtonPressed(MouseButtonEventArgs & e)
         result = m_SceneUI->OnMouseButtonPressed(e);
 
 	if (m_DefaultCameraController && !result)
+	{
 		m_DefaultCameraController->OnMouseButtonPressed(e);
+
+		if (e.LeftButton)
+		{
+			Ray cameraDownRay = Ray(m_DefaultCameraController->GetCamera()->GetTranslation(), glm::vec3(0.0f, -1.0f, 0.0f));
+			Ray resultRay = m_DefaultCameraController->ScreenPointToRay(GetRenderWindow()->GetViewport(), glm::vec2(e.X, e.Y));
+
+			float cosAlpha = (resultRay.GetDirection().x * cameraDownRay.GetDirection().x) + (resultRay.GetDirection().y * cameraDownRay.GetDirection().y) + (resultRay.GetDirection().z * cameraDownRay.GetDirection().z);
+			cosAlpha /=
+				(
+					sqrt
+					(
+						(resultRay.GetDirection().x * resultRay.GetDirection().x) +
+						(resultRay.GetDirection().y * resultRay.GetDirection().y) +
+						(resultRay.GetDirection().z * resultRay.GetDirection().z)
+					)
+					*
+					sqrt
+					(
+						(cameraDownRay.GetDirection().x * cameraDownRay.GetDirection().x) +
+						(cameraDownRay.GetDirection().y * cameraDownRay.GetDirection().y) +
+						(cameraDownRay.GetDirection().z * cameraDownRay.GetDirection().z)
+					)
+				);
+
+			float d = m_DefaultCameraController->GetCamera()->GetTranslation().y / cosAlpha;
+			if (d < 10000.0f)
+			{
+				glm::vec3 point = resultRay.GetPointOnRay(d);
+				OnRayIntersected(point);
+			}
+		}
+	}
 }
 
 void CGameState::OnMouseButtonReleased(MouseButtonEventArgs & e)

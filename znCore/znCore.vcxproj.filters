@@ -87,9 +87,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="DebugOutput.cpp">
-      <Filter>Log\DebugOutput</Filter>
-    </ClCompile>
     <ClCompile Include="Log.cpp">
       <Filter>Log</Filter>
     </ClCompile>
@@ -245,9 +242,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="DebugOutput.h">
-      <Filter>Log\DebugOutput</Filter>
-    </ClInclude>
     <ClInclude Include="Log.h">
       <Filter>Log</Filter>
     </ClInclude>

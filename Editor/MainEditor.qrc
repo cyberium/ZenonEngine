@@ -1,4 +1,9 @@
 <RCC>
-    <qresource prefix="MainEditor">
-    </qresource>
+  <qresource prefix="MainEditor">
+    <file>Resources/Icons/add.png</file>
+    <file>Resources/Icons/delete.png</file>
+    <file>Resources/Icons/rotate.png</file>
+    <file>Resources/Icons/scale.png</file>
+    <file>Resources/Icons/translate.png</file>
+  </qresource>
 </RCC>

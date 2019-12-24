@@ -1,8 +1,5 @@
 #include "stdafx.h"
 
-// Include
-#include "DebugOutput.h"
-
 // General
 #include "Log.h"
 
@@ -40,6 +37,11 @@ bool CLog::AddDebugOutput(std::shared_ptr<IDebugOutput> _debugOutput)
 	if (std::find(m_DebugOutputs.begin(), m_DebugOutputs.end(), _debugOutput) != m_DebugOutputs.end())
 		return false;
 
+	for (const auto& messagePair : m_Messages)
+	{
+		PushMessageToDebugOutput(_debugOutput, messagePair.first, messagePair.second);
+	}
+
 	m_DebugOutputs.push_back(_debugOutput);
 
 	return true;
@@ -62,14 +64,55 @@ bool CLog::DeleteDebugOutput(std::shared_ptr<IDebugOutput> _debugOutput)
 //
 // Private
 //
-void CLog::PushMessageToAllDebugOutputs(const char* _message, IDebugOutput::DebugMessageType _type, va_list& _vaList)
+void CLog::PushMessageToAllDebugOutputs(IDebugOutput::DebugMessageType _type, const char* _message, va_list& _vaList)
 {
 	std::unique_lock<std::mutex> lck(m_Mutex, std::defer_lock);
 
-	for (const auto& it : m_DebugOutputs)
+	int len = vsnprintf(NULL, 0, _message, _vaList);
+	if (len > 0)
 	{
-		it->PushMessage(_type, _message, _vaList);
+		std::string buff;
+		buff.resize(len + 1);
+		vsnprintf(&buff[0], len + 1, _message, _vaList);
+
+		// Add to log history
+		m_Messages.push_back(std::make_pair(_type, buff));
+
+		for (const auto& it : m_DebugOutputs)
+		{
+			PushMessageToDebugOutput(it, _type, buff);
+		}
 	}
+}
+
+void CLog::PushMessageToDebugOutput(const std::shared_ptr<IDebugOutput>& DebugOutput, IDebugOutput::DebugMessageType Type, const std::string& Message)
+{
+	std::string formattedMessage;
+
+	// Set Prefix
+	switch (Type)
+	{
+	case IDebugOutput::DebugMessageType::TYPE_INFO:
+		formattedMessage = "~" + std::string(Message);
+		break;
+	case IDebugOutput::DebugMessageType::TYPE_PRINT:
+		formattedMessage = " " + std::string(Message);
+		break;
+	case IDebugOutput::DebugMessageType::TYPE_GREEN:
+		formattedMessage = "^" + std::string(Message);
+		break;
+	case IDebugOutput::DebugMessageType::TYPE_WARNING:
+		formattedMessage = "@" + std::string(Message);
+		break;
+	case IDebugOutput::DebugMessageType::TYPE_ERROR:
+		formattedMessage = "!" + std::string(Message);
+		break;
+	case IDebugOutput::DebugMessageType::TYPE_FATAL:
+		formattedMessage = "FATAL ERROR: " + std::string(Message);
+		break;
+	}
+
+	DebugOutput->Print(Type, formattedMessage);
 }
 
 
@@ -82,7 +125,7 @@ void Log::Info(const char* _message, ...)
 {
 	va_list args;
 	va_start(args, _message);
-	gLogInstance->PushMessageToAllDebugOutputs(_message, CDebugOutput::DebugMessageType::TYPE_INFO, args);
+	gLogInstance->PushMessageToAllDebugOutputs(IDebugOutput::DebugMessageType::TYPE_INFO, _message, args);
 	va_end(args);
 }
 
@@ -90,7 +133,7 @@ void Log::Print(const char* _message, ...)
 {
 	va_list args;
 	va_start(args, _message);
-	gLogInstance->PushMessageToAllDebugOutputs(_message, CDebugOutput::DebugMessageType::TYPE_PRINT, args);
+	gLogInstance->PushMessageToAllDebugOutputs(IDebugOutput::DebugMessageType::TYPE_PRINT, _message,  args);
 	va_end(args);
 }
 
@@ -98,7 +141,7 @@ void Log::Green(const char* _message, ...)
 {
 	va_list args;
 	va_start(args, _message);
-	gLogInstance->PushMessageToAllDebugOutputs(_message, CDebugOutput::DebugMessageType::TYPE_GREEN, args);
+	gLogInstance->PushMessageToAllDebugOutputs(IDebugOutput::DebugMessageType::TYPE_GREEN, _message,  args);
 	va_end(args);
 }
 
@@ -106,7 +149,7 @@ void Log::Warn(const char* _message, ...)
 {
 	va_list args;
 	va_start(args, _message);
-	gLogInstance->PushMessageToAllDebugOutputs(_message, CDebugOutput::DebugMessageType::TYPE_WARNING, args);
+	gLogInstance->PushMessageToAllDebugOutputs(IDebugOutput::DebugMessageType::TYPE_WARNING, _message,  args);
 	va_end(args);
 }
 
@@ -114,7 +157,7 @@ void Log::Error(const char* _message, ...)
 {
 	va_list args;
 	va_start(args, _message);
-	gLogInstance->PushMessageToAllDebugOutputs(_message, CDebugOutput::DebugMessageType::TYPE_ERROR, args);
+	gLogInstance->PushMessageToAllDebugOutputs(IDebugOutput::DebugMessageType::TYPE_ERROR, _message,  args);
 	va_end(args);
 }
 

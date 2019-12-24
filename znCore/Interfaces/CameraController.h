@@ -4,6 +4,9 @@
 ZN_INTERFACE ICamera;
 ZN_INTERFACE ICameraMovement;
 
+struct Ray;
+class Viewport;
+
 class KeyEventArgs;
 class MouseButtonEventArgs;
 class MouseMotionEventArgs;
@@ -18,6 +21,7 @@ ZN_INTERFACE OW_ENGINE_API ICameraController
 
 	virtual std::shared_ptr<ICamera> GetCamera() const = 0;
 	virtual std::shared_ptr<ICameraMovement> GetCameraMovement() const = 0;
+	virtual Ray ScreenPointToRay(const Viewport* Viewport, glm::vec2 screenPoint) const = 0;
 
 	// Input events
 	virtual void OnKeyPressed(KeyEventArgs& e) = 0;

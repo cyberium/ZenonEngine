@@ -33,8 +33,8 @@ DebugOutput_Log::~DebugOutput_Log()
 
 //
 
-void DebugOutput_Log::Print(std::string _messageFmt, CDebugOutput::DebugMessageType _type)
+void DebugOutput_Log::Print(IDebugOutput::DebugMessageType Type, const std::string& FormattedMessage)
 {
-	m_LogStream << _messageFmt << std::endl;
+	m_LogStream << FormattedMessage << std::endl;
 	m_LogStream.flush();
 }

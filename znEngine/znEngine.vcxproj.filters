@@ -160,7 +160,6 @@
       <Filter>Settings</Filter>
     </ClCompile>
     <ClCompile Include="Application_Events.cpp" />
-    <ClCompile Include="WindowClassRegistrator.cpp" />
     <ClCompile Include="GameState_Default.cpp">
       <Filter>GameStates</Filter>
     </ClCompile>
@@ -322,7 +321,6 @@
     <ClInclude Include="Settings\GroupVideo.h">
       <Filter>Settings</Filter>
     </ClInclude>
-    <ClInclude Include="WindowClassRegistrator.h" />
     <ClInclude Include="GameState_Default.h">
       <Filter>GameStates</Filter>
     </ClInclude>
@@ -465,15 +463,11 @@
     <Text Include="Resources\shaders_OGL\3D\Textured.ps">
       <Filter>Resources\Shaders_OGL\3D</Filter>
     </Text>
+    <Text Include="Resources\shaders_D3D\3D\OBJModels.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Resources\Textures\default.png">
       <Filter>Resources\Textures</Filter>
     </Image>
-  </ItemGroup>
-  <ItemGroup>
-    <FxCompile Include="Resources\shaders_D3D\3D\OBJModels.hlsl">
-      <Filter>Resources\Shaders_D3D\3D</Filter>
-    </FxCompile>
   </ItemGroup>
 </Project>

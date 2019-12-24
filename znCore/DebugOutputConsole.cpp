@@ -18,11 +18,11 @@ DebugOutput_ConsoleWindows::~DebugOutput_ConsoleWindows()
 
 //
 
-void DebugOutput_ConsoleWindows::Print(std::string _messageFmt, CDebugOutput::DebugMessageType _type)
+void DebugOutput_ConsoleWindows::Print(IDebugOutput::DebugMessageType Type, const std::string& FormattedMessage)
 {
 	// Set color
 	unsigned short color;
-	switch (_type)
+	switch (Type)
 	{
 		case TYPE_INFO:
 		color = ConsoleWindowsColor::GRAY;
@@ -43,11 +43,11 @@ void DebugOutput_ConsoleWindows::Print(std::string _messageFmt, CDebugOutput::De
 	}
 
 	// To VisualStudio debug
-	OutputDebugStringA(_messageFmt.c_str());
+	OutputDebugStringA(FormattedMessage.c_str());
 	OutputDebugStringA("\n");
 
 	// To console
 	SetConsoleTextAttribute(m_ConsoleHandle, color);
-	std::cout << _messageFmt << std::endl;
+	std::cout << FormattedMessage << std::endl;
 	SetConsoleTextAttribute(m_ConsoleHandle, m_DefaultConsoleColor);
 }

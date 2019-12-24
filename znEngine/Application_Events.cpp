@@ -31,6 +31,13 @@ UpdateEvent& Application::Update()
 
 bool Application::OnUpdate(UpdateEventArgs& e)
 {
+	if (m_Windows.empty())
+	{
+		Log::Error("There is no any RenderWindow attached to this Application. Exiting...");
+		OnExit(EventArgs(this));
+		return false;
+	}
+
 	return m_Update(e);
 }
 
@@ -56,7 +63,7 @@ bool Application::OnTerminated(EventArgs& e)
 	return m_Terminated(e);
 }
 
-Event & Application::Exit()
+Event& Application::Exit()
 {
 	return m_Exit;
 }

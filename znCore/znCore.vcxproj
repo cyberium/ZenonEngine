@@ -41,7 +41,6 @@
     <ClCompile Include="LibraryResourceFileStotage.cpp" />
     <ClCompile Include="LocalFilesStorage.cpp" />
     <ClCompile Include="Log.cpp" />
-    <ClCompile Include="DebugOutput.cpp" />
     <ClCompile Include="Passes\AbstractPass.cpp" />
     <ClCompile Include="Passes\Base3DPass.cpp" />
     <ClCompile Include="Passes\BaseScenePass.cpp" />
@@ -161,7 +160,6 @@
     <ClInclude Include="Matrix.h" />
     <ClInclude Include="Console.h" />
     <ClInclude Include="Log.h" />
-    <ClInclude Include="DebugOutput.h" />
     <ClInclude Include="Passes\AbstractPass.h" />
     <ClInclude Include="Passes\Base3DPass.h" />
     <ClInclude Include="Passes\BaseScenePass.h" />

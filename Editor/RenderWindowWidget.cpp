@@ -16,7 +16,7 @@ RenderWindowWidget::~RenderWindowWidget()
 {
 }
 
-void RenderWindowWidget::SetRenderWindow(std::shared_ptr<IRenderWindowEvents> RenderWindowEvents)
+void RenderWindowWidget::SetRenderWindowEvents(std::shared_ptr<IRenderWindowEvents> RenderWindowEvents)
 {
 	m_RenderWindowEvents = RenderWindowEvents;
 }
@@ -97,7 +97,6 @@ BOOL RenderWindowWidget::DestroyWindow()
 //
 // Events
 //
-
 MouseButtonEventArgs::MouseButton QtToZenonMouseBotton(Qt::MouseButton qtState)
 {
 	switch (qtState)
@@ -119,7 +118,7 @@ void RenderWindowWidget::mousePressEvent(QMouseEvent * event)
 {
 	MouseButtonEventArgs args
 	(
-		nullptr,
+		this,
 		QtToZenonMouseBotton(event->button()),
 		MouseButtonEventArgs::ButtonState::Pressed,
 		event->buttons() == Qt::MouseButton::LeftButton,
@@ -137,7 +136,7 @@ void RenderWindowWidget::mouseReleaseEvent(QMouseEvent * event)
 {
 	MouseButtonEventArgs args
 	(
-		nullptr,
+		this,
 		QtToZenonMouseBotton(event->button()),
 		MouseButtonEventArgs::ButtonState::Released,
 		event->buttons() == Qt::MouseButton::LeftButton,
@@ -159,7 +158,7 @@ void RenderWindowWidget::mouseMoveEvent(QMouseEvent * event)
 {
 	MouseMotionEventArgs args
 	(
-		nullptr, 
+		this,
 		event->buttons() == Qt::MouseButton::LeftButton, 
 		event->buttons() == Qt::MouseButton::MiddleButton, 
 		event->buttons() == Qt::MouseButton::RightButton, 
@@ -175,7 +174,7 @@ void RenderWindowWidget::wheelEvent(QWheelEvent * event)
 {
 	MouseWheelEventArgs args
 	(
-		nullptr,
+		this,
 		event->delta(),
 		event->buttons() == Qt::MouseButton::LeftButton,
 		event->buttons() == Qt::MouseButton::MiddleButton,
@@ -193,7 +192,7 @@ void RenderWindowWidget::keyPressEvent(QKeyEvent * event)
 {
 	KeyEventArgs args
 	(
-		nullptr,
+		this,
 		(KeyCode)event->key(),
 		event->key(),
 		KeyEventArgs::KeyState::Pressed,
@@ -208,7 +207,7 @@ void RenderWindowWidget::keyReleaseEvent(QKeyEvent * event)
 {
 	KeyEventArgs args
 	(
-		nullptr,
+		this,
 		(KeyCode)event->key(),
 		event->key(),
 		KeyEventArgs::KeyState::Released,
@@ -221,10 +220,12 @@ void RenderWindowWidget::keyReleaseEvent(QKeyEvent * event)
 
 void RenderWindowWidget::focusInEvent(QFocusEvent * event)
 {
+	m_RenderWindowEvents->OnInputFocus(EventArgs(this));
 }
 
 void RenderWindowWidget::focusOutEvent(QFocusEvent * event)
 {
+	m_RenderWindowEvents->OnInputBlur(EventArgs(this));
 }
 
 void RenderWindowWidget::enterEvent(QEvent * event)
@@ -248,7 +249,7 @@ void RenderWindowWidget::resizeEvent(QResizeEvent * event)
 {
 	ResizeEventArgs args
 	(
-		nullptr,
+		this,
 		event->size().width(),
 		event->size().height()
 	);
@@ -257,6 +258,7 @@ void RenderWindowWidget::resizeEvent(QResizeEvent * event)
 
 void RenderWindowWidget::closeEvent(QCloseEvent * event)
 {
+	m_RenderWindowEvents->OnClose(WindowCloseEventArgs(nullptr));
 }
 
 /*bool Direct3DWidget::nativeEvent(const QByteArray & eventType, void * message, long * result)

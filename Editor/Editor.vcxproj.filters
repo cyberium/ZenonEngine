@@ -6,10 +6,6 @@
       <Extensions>qrc;*</Extensions>
       <ParseFiles>false</ParseFiles>
     </Filter>
-    <Filter Include="Form Files">
-      <UniqueIdentifier>{99349809-55BA-4b9d-BF79-8FDBB0286EB3}</UniqueIdentifier>
-      <Extensions>ui</Extensions>
-    </Filter>
     <Filter Include="Resource Files">
       <UniqueIdentifier>{D9D6E242-F8AF-46E4-B9FD-80ECBC20BA3E}</UniqueIdentifier>
       <Extensions>qrc;*</Extensions>
@@ -20,9 +16,6 @@
     </Filter>
     <Filter Include="Common">
       <UniqueIdentifier>{5b6178d0-d9d0-48fa-90ca-9cf2da474f6c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Windows">
-      <UniqueIdentifier>{45453c18-2bcd-44be-a5a3-7884a562e631}</UniqueIdentifier>
     </Filter>
     <Filter Include="SceneTreeViewer">
       <UniqueIdentifier>{a190ea41-3fa7-493c-9d96-6899b76d32ee}</UniqueIdentifier>
@@ -69,9 +62,6 @@
       <Filter>Common</Filter>
     </ClCompile>
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="MainEditor.cpp">
-      <Filter>Windows</Filter>
-    </ClCompile>
     <ClCompile Include="SceneNodeTreeItem.cpp">
       <Filter>SceneTreeViewer</Filter>
     </ClCompile>
@@ -249,6 +239,8 @@
     <ClCompile Include="PropertyEditor\PropertyWidget\Utils\InplaceEditing.cpp">
       <Filter>Property editor\Widget\Utils</Filter>
     </ClCompile>
+    <ClCompile Include="MainEditor.cpp" />
+    <ClCompile Include="DebugOutputEditorLog.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -374,13 +366,11 @@
     <ClInclude Include="PropertyEditor\PropertyWidget\Utils\InplaceEditing.h">
       <Filter>Property editor\Widget\Utils</Filter>
     </ClInclude>
+    <ClInclude Include="DebugOutputEditorLog.h" />
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="RenderWindowWidget.h">
       <Filter>Widgets</Filter>
-    </QtMoc>
-    <QtMoc Include="MainEditor.h">
-      <Filter>Windows</Filter>
     </QtMoc>
     <QtMoc Include="SceneNodeTreeModel.h">
       <Filter>SceneTreeViewer</Filter>
@@ -463,11 +453,7 @@
     <QtMoc Include="PropertyEditor\Core\PropertyBase.h">
       <Filter>Property editor\Core</Filter>
     </QtMoc>
-  </ItemGroup>
-  <ItemGroup>
-    <QtUic Include="MainEditor.ui">
-      <Filter>Form Files</Filter>
-    </QtUic>
+    <QtMoc Include="MainEditor.h" />
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="MainEditor.qrc">
@@ -478,5 +464,8 @@
     <ResourceCompile Include="Editor.rc">
       <Filter>Resource Files</Filter>
     </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <QtUic Include="MainEditor.ui" />
   </ItemGroup>
 </Project>

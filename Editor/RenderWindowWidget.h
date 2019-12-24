@@ -3,6 +3,7 @@
 class RenderWindowWidget
 	: public QFrame
 	, public IWindowObject
+	, public Object
 {
 	Q_OBJECT
 
@@ -10,7 +11,7 @@ public:
 	RenderWindowWidget(QWidget * parent);
 	virtual ~RenderWindowWidget();
 
-	void SetRenderWindow(std::shared_ptr<IRenderWindowEvents> RenderWindowEvents);
+	void SetRenderWindowEvents(std::shared_ptr<IRenderWindowEvents> RenderWindowEvents);
 
 	QPaintEngine* paintEngine() const override { return nullptr; }
 

@@ -29,6 +29,7 @@ public:
     std::shared_ptr<IRenderDevice>                  GetRenderDevice() const;
 	std::shared_ptr<IRenderTarget>                  GetRenderTarget() const;
 	const Viewport *                                GetViewport() const;
+
 	LRESULT											WndProc(HWND, UINT, WPARAM, LPARAM);
 
 	// IRenderWindowEvents

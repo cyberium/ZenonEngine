@@ -127,7 +127,7 @@ void CFreeCameraController::OnKeyReleased(KeyEventArgs& e)
 
 void CFreeCameraController::OnMouseMoved(MouseMotionEventArgs& e)
 {
-	if (e.LeftButton)
+	if (e.RightButton)
 	{
         glm::vec2 newPoint = m_PreviousMousePosition - e.GetPoint();
 

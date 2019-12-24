@@ -10,13 +10,14 @@ public:
 	bool Init();
 	void Destroy();
 
+	virtual void OnRayIntersected(const glm::vec3& Point) override;
+
 	virtual void OnResize(ResizeEventArgs& e) override;
 
 	virtual void OnPreRender(RenderEventArgs& e) override;
 	virtual void OnRender(RenderEventArgs& e) override;
 	virtual void OnPostRender(RenderEventArgs& e) override;
 	virtual void OnRenderUI(RenderEventArgs& e) override;
-
 
 private:
 	void Load3D();

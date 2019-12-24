@@ -1,7 +1,5 @@
 #include "stdafx.h"
 
-const wchar_t* c_RenderWindow_ClassNameW = L"RenderWindowClass";
-
 void main_internal(int argumentCount, char* arguments[])
 {
 	// 1. Initialize engine and some improtant managers
@@ -10,14 +8,10 @@ void main_internal(int argumentCount, char* arguments[])
 	// 3. Create application
 	Application app(BaseManager, ::GetModuleHandle(NULL));
 
-	CWindowClassRegistratorObject windowRegistrator(&app);
-	windowRegistrator.RegisterWindowClass(c_RenderWindow_ClassNameW);
-
 	CWindowObject firstWindowObject;
 	firstWindowObject.CreateWindowInstance
 	(
 		&app,
-		&windowRegistrator,
 		L"First window name",
 		GetManager<ISettings>(BaseManager)->GetGroup("Video")->GetSettingT<glm::vec2>("WindowSize")->Get().x,
 		GetManager<ISettings>(BaseManager)->GetGroup("Video")->GetSettingT<glm::vec2>("WindowSize")->Get().y
@@ -26,11 +20,11 @@ void main_internal(int argumentCount, char* arguments[])
 	std::shared_ptr<IRenderDevice> renderDevice = app.CreateRenderDevice(RenderDeviceType::RenderDeviceType_DirectX);
 	AddManager<IRenderDevice>(BaseManager, renderDevice);
 
-	std::shared_ptr<IRenderWindow> firstRenderWindow = renderDevice->CreateRenderWindow(&firstWindowObject, true);
-	app.AddRenderWindow(firstRenderWindow);
-
 	std::shared_ptr<IFontsManager> fontsManager = std::make_shared<FontsManager>(renderDevice, BaseManager);
 	AddManager<IFontsManager>(BaseManager, fontsManager);
+
+	std::shared_ptr<IRenderWindow> firstRenderWindow = renderDevice->CreateRenderWindow(&firstWindowObject, true);
+	app.AddRenderWindow(firstRenderWindow);
 
 	std::shared_ptr<IGameState> gameState = GetManager<IGameStatesFactory>(BaseManager)->CreateGameStateWithHighestPriority(firstRenderWindow);
 	app.SetGameState(gameState);

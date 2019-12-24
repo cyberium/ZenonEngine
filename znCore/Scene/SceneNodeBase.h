@@ -89,6 +89,7 @@ public:
 protected:
 	IBaseManager*                                   GetBaseManager() const;
 
+private:
 
 
 private:

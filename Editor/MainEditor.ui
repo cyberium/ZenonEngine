@@ -97,83 +97,65 @@
            <number>0</number>
           </property>
           <property name="leftMargin">
-           <number>5</number>
+           <number>1</number>
           </property>
           <property name="topMargin">
-           <number>5</number>
+           <number>1</number>
           </property>
           <property name="rightMargin">
-           <number>5</number>
+           <number>1</number>
           </property>
           <property name="bottomMargin">
-           <number>5</number>
+           <number>1</number>
           </property>
-          <item>
-           <spacer name="horizontalSpacer_5">
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-            <property name="sizeType">
-             <enum>QSizePolicy::Fixed</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>10</width>
-              <height>20</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
           <item>
            <widget class="QPushButton" name="pushButton_2">
             <property name="text">
-             <string>Translate</string>
+             <string/>
             </property>
-           </widget>
-          </item>
-          <item>
-           <spacer name="horizontalSpacer_3">
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
+            <property name="icon">
+             <iconset resource="MainEditor.qrc">
+              <normaloff>:/MainEditor/Resources/Icons/translate.png</normaloff>:/MainEditor/Resources/Icons/translate.png</iconset>
             </property>
-            <property name="sizeType">
-             <enum>QSizePolicy::Fixed</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
+            <property name="iconSize">
              <size>
-              <width>10</width>
-              <height>20</height>
+              <width>32</width>
+              <height>32</height>
              </size>
             </property>
-           </spacer>
+           </widget>
           </item>
           <item>
            <widget class="QPushButton" name="pushButton_3">
             <property name="text">
-             <string>Rotate</string>
+             <string/>
+            </property>
+            <property name="icon">
+             <iconset resource="MainEditor.qrc">
+              <normaloff>:/MainEditor/Resources/Icons/rotate.png</normaloff>:/MainEditor/Resources/Icons/rotate.png</iconset>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>32</width>
+              <height>32</height>
+             </size>
             </property>
            </widget>
           </item>
           <item>
-           <spacer name="horizontalSpacer_4">
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-            <property name="sizeType">
-             <enum>QSizePolicy::Fixed</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>10</width>
-              <height>20</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-          <item>
            <widget class="QPushButton" name="pushButton_4">
             <property name="text">
-             <string>Scale</string>
+             <string/>
+            </property>
+            <property name="icon">
+             <iconset resource="MainEditor.qrc">
+              <normaloff>:/MainEditor/Resources/Icons/scale.png</normaloff>:/MainEditor/Resources/Icons/scale.png</iconset>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>32</width>
+              <height>32</height>
+             </size>
             </property>
            </widget>
           </item>
@@ -183,7 +165,7 @@
              <enum>Qt::Horizontal</enum>
             </property>
             <property name="sizeType">
-             <enum>QSizePolicy::Fixed</enum>
+             <enum>QSizePolicy::Expanding</enum>
             </property>
             <property name="sizeHint" stdset="0">
              <size>
@@ -205,9 +187,12 @@
             <property name="orientation">
              <enum>Qt::Horizontal</enum>
             </property>
+            <property name="sizeType">
+             <enum>QSizePolicy::Fixed</enum>
+            </property>
             <property name="sizeHint" stdset="0">
              <size>
-              <width>40</width>
+              <width>10</width>
               <height>20</height>
              </size>
             </property>
@@ -238,19 +223,19 @@
          </property>
          <layout class="QVBoxLayout" name="verticalLayout" stretch="0">
           <property name="spacing">
-           <number>2</number>
+           <number>0</number>
           </property>
           <property name="leftMargin">
-           <number>2</number>
+           <number>1</number>
           </property>
           <property name="topMargin">
-           <number>2</number>
+           <number>1</number>
           </property>
           <property name="rightMargin">
-           <number>2</number>
+           <number>1</number>
           </property>
           <property name="bottomMargin">
-           <number>2</number>
+           <number>1</number>
           </property>
           <item>
            <widget class="RenderWindowWidget" name="EditorWindow">
@@ -317,8 +302,8 @@
    </property>
    <property name="minimumSize">
     <size>
-     <width>120</width>
-     <height>100</height>
+     <width>137</width>
+     <height>75</height>
     </size>
    </property>
    <property name="styleSheet">
@@ -330,8 +315,11 @@
    <property name="features">
     <set>QDockWidget::DockWidgetMovable</set>
    </property>
+   <property name="allowedAreas">
+    <set>Qt::TopDockWidgetArea</set>
+   </property>
    <property name="windowTitle">
-    <string>Top docker</string>
+    <string>Menu</string>
    </property>
    <attribute name="dockWidgetArea">
     <number>4</number>
@@ -339,19 +327,19 @@
    <widget class="QWidget" name="DockerTopContent">
     <layout class="QHBoxLayout" name="horizontalLayout_3">
      <property name="spacing">
-      <number>5</number>
+      <number>0</number>
      </property>
      <property name="leftMargin">
-      <number>5</number>
+      <number>0</number>
      </property>
      <property name="topMargin">
-      <number>5</number>
+      <number>0</number>
      </property>
      <property name="rightMargin">
-      <number>5</number>
+      <number>0</number>
      </property>
      <property name="bottomMargin">
-      <number>5</number>
+      <number>0</number>
      </property>
      <item>
       <widget class="QFrame" name="frame_2">
@@ -363,28 +351,21 @@
        </property>
        <layout class="QGridLayout" name="gridLayout">
         <property name="leftMargin">
-         <number>5</number>
+         <number>0</number>
         </property>
         <property name="topMargin">
-         <number>5</number>
+         <number>0</number>
         </property>
         <property name="rightMargin">
-         <number>5</number>
+         <number>0</number>
         </property>
         <property name="bottomMargin">
-         <number>5</number>
+         <number>0</number>
         </property>
         <property name="spacing">
-         <number>5</number>
+         <number>0</number>
         </property>
-        <item row="0" column="0">
-         <widget class="QPushButton" name="pushButton">
-          <property name="text">
-           <string>PushButton</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="1">
+        <item row="0" column="3">
          <spacer name="horizontalSpacer">
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
@@ -397,15 +378,52 @@
           </property>
          </spacer>
         </item>
-        <item row="1" column="0">
-         <spacer name="verticalSpacer">
+        <item row="0" column="0">
+         <widget class="QPushButton" name="pushButton_6">
+          <property name="text">
+           <string/>
+          </property>
+          <property name="icon">
+           <iconset resource="MainEditor.qrc">
+            <normaloff>:/MainEditor/Resources/Icons/add.png</normaloff>:/MainEditor/Resources/Icons/add.png</iconset>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>32</width>
+            <height>32</height>
+           </size>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="2">
+         <widget class="QPushButton" name="pushButton">
+          <property name="text">
+           <string/>
+          </property>
+          <property name="icon">
+           <iconset resource="MainEditor.qrc">
+            <normaloff>:/MainEditor/Resources/Icons/delete.png</normaloff>:/MainEditor/Resources/Icons/delete.png</iconset>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>32</width>
+            <height>32</height>
+           </size>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <spacer name="horizontalSpacer_7">
           <property name="orientation">
-           <enum>Qt::Vertical</enum>
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeType">
+           <enum>QSizePolicy::Fixed</enum>
           </property>
           <property name="sizeHint" stdset="0">
            <size>
-            <width>20</width>
-            <height>40</height>
+            <width>10</width>
+            <height>20</height>
            </size>
           </property>
          </spacer>
@@ -416,7 +434,7 @@
     </layout>
    </widget>
   </widget>
-  <widget class="QDockWidget" name="DockerRight">
+  <widget class="QDockWidget" name="DockerProperties">
    <property name="sizePolicy">
     <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
      <horstretch>0</horstretch>
@@ -432,19 +450,16 @@
    <property name="autoFillBackground">
     <bool>false</bool>
    </property>
-   <property name="styleSheet">
-    <string notr="true">background-color: rgb(0, 255, 0);</string>
-   </property>
    <property name="features">
     <set>QDockWidget::DockWidgetMovable</set>
    </property>
    <property name="windowTitle">
-    <string>Right docker</string>
+    <string>Properties</string>
    </property>
    <attribute name="dockWidgetArea">
     <number>2</number>
    </attribute>
-   <widget class="QWidget" name="DockerRightContent">
+   <widget class="QWidget" name="DockerPropertiesContent">
     <layout class="QHBoxLayout" name="horizontalLayout_2">
      <property name="spacing">
       <number>0</number>
@@ -467,7 +482,7 @@
     </layout>
    </widget>
   </widget>
-  <widget class="QDockWidget" name="DockerLeft">
+  <widget class="QDockWidget" name="DockerSceneTreeViewer">
    <property name="sizePolicy">
     <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
      <horstretch>0</horstretch>
@@ -490,12 +505,12 @@
     <set>QDockWidget::DockWidgetMovable</set>
    </property>
    <property name="windowTitle">
-    <string>Left docker</string>
+    <string>Scene viewer</string>
    </property>
    <attribute name="dockWidgetArea">
     <number>1</number>
    </attribute>
-   <widget class="QWidget" name="DockerLeftContent">
+   <widget class="QWidget" name="DockerSceneTreeViewerContent">
     <property name="sizePolicy">
      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
       <horstretch>0</horstretch>
@@ -532,6 +547,9 @@
          <verstretch>0</verstretch>
         </sizepolicy>
        </property>
+       <property name="indentation">
+        <number>15</number>
+       </property>
        <property name="animated">
         <bool>true</bool>
        </property>
@@ -543,7 +561,7 @@
     </layout>
    </widget>
   </widget>
-  <widget class="QDockWidget" name="DockerBottom">
+  <widget class="QDockWidget" name="DockerFileBrowser">
    <property name="sizePolicy">
     <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
      <horstretch>0</horstretch>
@@ -552,39 +570,96 @@
    </property>
    <property name="minimumSize">
     <size>
-     <width>203</width>
-     <height>152</height>
+     <width>250</width>
+     <height>113</height>
     </size>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">background-color: rgb(0, 128, 255);</string>
    </property>
    <property name="features">
     <set>QDockWidget::DockWidgetMovable</set>
    </property>
    <property name="windowTitle">
-    <string>Bottom docker</string>
+    <string>File browser</string>
    </property>
    <attribute name="dockWidgetArea">
     <number>8</number>
    </attribute>
-   <widget class="QWidget" name="DockerBottomContent">
+   <widget class="QWidget" name="DockerFileBrowserContent">
     <layout class="QHBoxLayout" name="horizontalLayout_5">
-     <item>
-      <widget class="QTextBrowser" name="textBrowser">
-       <property name="html">
-        <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:7.8pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Log: &lt;span style=&quot; font-size:10pt; font-style:italic;&quot;&gt;File porno.jpg was loaded!&lt;/span&gt;&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Test &lt;span style=&quot; font-size:18pt; color:#ff557f;&quot;&gt;text&lt;/span&gt;.&lt;/p&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:12pt; font-weight:600;&quot;&gt;Hello world!&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-      </widget>
-     </item>
+     <property name="spacing">
+      <number>0</number>
+     </property>
+     <property name="leftMargin">
+      <number>0</number>
+     </property>
+     <property name="topMargin">
+      <number>0</number>
+     </property>
+     <property name="rightMargin">
+      <number>0</number>
+     </property>
+     <property name="bottomMargin">
+      <number>0</number>
+     </property>
      <item>
       <widget class="QTreeView" name="FSTreeViewer"/>
+     </item>
+    </layout>
+   </widget>
+  </widget>
+  <widget class="QDockWidget" name="DockerLog">
+   <property name="minimumSize">
+    <size>
+     <width>250</width>
+     <height>113</height>
+    </size>
+   </property>
+   <property name="features">
+    <set>QDockWidget::DockWidgetMovable</set>
+   </property>
+   <property name="allowedAreas">
+    <set>Qt::BottomDockWidgetArea</set>
+   </property>
+   <property name="windowTitle">
+    <string>Log</string>
+   </property>
+   <attribute name="dockWidgetArea">
+    <number>8</number>
+   </attribute>
+   <widget class="QWidget" name="DockerLogContent">
+    <layout class="QHBoxLayout" name="horizontalLayout_7">
+     <property name="spacing">
+      <number>0</number>
+     </property>
+     <property name="leftMargin">
+      <number>0</number>
+     </property>
+     <property name="topMargin">
+      <number>0</number>
+     </property>
+     <property name="rightMargin">
+      <number>0</number>
+     </property>
+     <property name="bottomMargin">
+      <number>0</number>
+     </property>
+     <item>
+      <widget class="QPlainTextEdit" name="LogTextEdit">
+       <property name="font">
+        <font>
+         <family>Courier New</family>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="undoRedoEnabled">
+        <bool>false</bool>
+       </property>
+       <property name="readOnly">
+        <bool>true</bool>
+       </property>
+       <property name="plainText">
+        <string/>
+       </property>
+      </widget>
      </item>
     </layout>
    </widget>

@@ -43,6 +43,7 @@ public:
 	bool                          OnExit(EventArgs& e);
 	Delegate<UserEventArgs>&        UserEvent();
 	bool                          OnUserEvent(UserEventArgs& e);
+
 	LRESULT CALLBACK				WndProc(HWND, UINT, WPARAM, LPARAM);
 
 	// IGameStateManager

@@ -1,8 +1,6 @@
 #pragma once
 
 #include "../znEngine/Application.h"
-
-#include "../znEngine/WindowClassRegistrator.h"
 #include "../znEngine/WindowCreator.h"
 
 #include "../znEngine/SceneFunctional/UI/Fonts/FontsManager.h"

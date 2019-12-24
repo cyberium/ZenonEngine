@@ -1,15 +1,13 @@
 #pragma once
 
-#include "DebugOutput.h"
-
-class DebugOutput_Log : public CDebugOutput
+class DebugOutput_Log : public IDebugOutput
 {
 public:
 	DebugOutput_Log();
 	virtual ~DebugOutput_Log();
 
-protected:
-	void Print(std::string _messageFmt, CDebugOutput::DebugMessageType _type);
+	// IDebugOutput
+	void Print(IDebugOutput::DebugMessageType Type, const std::string& FormattedMessage);
 
 private:
 	std::ofstream m_LogStream;

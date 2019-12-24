@@ -35,8 +35,6 @@ public:
 
 	void calcAABB(vec3 &mins, vec3 &maxs) const;
 
-
-
 private:
 	Plane  m_Planes[20];  // Planes of frustum
 	uint8  m_PlanesCount;

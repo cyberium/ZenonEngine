@@ -27,11 +27,11 @@ public:
 
 	// IWindowObjectEx
 	void SetWindowHandle(HWND HWnd);
-
-	HWND CreateWindowInstance(IApplication * Application, IWindowClassRegistrator * WindowClassRegistrator, LPCWSTR WindowName, LONG Width, LONG Height) ;
+	HWND CreateWindowInstance(IApplication * Application, LPCWSTR WindowName, LONG Width, LONG Height) ;
 	void DestroyWindowInstance();
 
 private:
-	// IWindowObject
-	HWND      m_HWnd;
+	HINSTANCE m_HInstance;
+	std::wstring m_WindowClassName;
+	HWND m_HWnd;
 };

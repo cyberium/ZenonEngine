@@ -3,7 +3,8 @@
 #include <QtWidgets/QMainWindow>
 #include "ui_MainEditor.h"
 
-class MainEditor : public QMainWindow
+class MainEditor 
+	: public QMainWindow
 {
 	Q_OBJECT
 
@@ -17,7 +18,7 @@ public:
 	Ui::MainEditorClass getUI() const { return ui; }
 
 private slots:
-	void onCustomContextMenu(const QPoint &point);
+	void onCustomContextMenu(const QPoint& point);
 
 private:
 	std::shared_ptr<IScene> m_Scene;

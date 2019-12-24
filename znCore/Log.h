@@ -14,9 +14,11 @@ public:
 	bool DeleteDebugOutput(std::shared_ptr<IDebugOutput> _debugOutput) override;
 
 private:
-    void PushMessageToAllDebugOutputs(const char* _message, IDebugOutput::DebugMessageType _type, va_list& _vaList);
+    void PushMessageToAllDebugOutputs(IDebugOutput::DebugMessageType Type, const char* Message, va_list& _vaList);
+	void PushMessageToDebugOutput(const std::shared_ptr<IDebugOutput>& DebugOutput, IDebugOutput::DebugMessageType Type, const std::string& Message);
 
 private:
+	std::vector<std::pair<IDebugOutput::DebugMessageType, std::string>> m_Messages;
 	std::vector<std::shared_ptr<IDebugOutput>> m_DebugOutputs;
 	std::mutex m_Mutex;
 };

@@ -14,8 +14,7 @@ struct OW_ENGINE_API
 		TYPE_FATAL
 	};
 
-	virtual ~IDebugOutput() = 0 {};
+	virtual ~IDebugOutput() {};
 
-	virtual void PushMessage(const std::string& _message, IDebugOutput::DebugMessageType _type) = 0;
-	virtual void PushMessage(IDebugOutput::DebugMessageType _type, const char* _message, va_list& _vaList) = 0;
+	virtual void Print(IDebugOutput::DebugMessageType Type, const std::string& FormattedMessage) = 0;
 };

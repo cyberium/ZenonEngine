@@ -112,10 +112,7 @@ int Application::DoRun()
 	g_FrameCounter++;
 
 	UpdateEventArgs updateArgs(this, g_GameDeltaTime* 166.0f, g_ApplicationTime* 166.0f, g_FrameCounter);
-	if (!OnUpdate(updateArgs))
-	{
-		OnExit(EventArgs(this));
-	}
+	OnUpdate(updateArgs);
 
 	return static_cast<int>(msg.wParam);
 }

@@ -3,6 +3,23 @@
 // General
 #include "WindowCreator.h"
 
+
+
+// STATIC
+LRESULT CALLBACK WndProcLink(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
+{
+	IApplicationEvents* me = (IApplicationEvents*)GetWindowLongPtr(hwnd, GWLP_USERDATA);
+	if (me)
+	{
+		return me->WndProc(hwnd, message, wParam, lParam);
+	}
+
+	return DefWindowProc(hwnd, message, wParam, lParam);
+}
+// STATIC
+
+
+
 CWindowObject::CWindowObject()
 	: m_HWnd(NULL)
 {}
@@ -107,11 +124,42 @@ void CWindowObject::SetWindowHandle(HWND HWnd)
 	m_HWnd = HWnd;
 }
 
-
-
-HWND CWindowObject::CreateWindowInstance(IApplication * Application, IWindowClassRegistrator * WindowClassRegistrator, LPCWSTR WindowName, LONG Width, LONG Height)
+HWND CWindowObject::CreateWindowInstance(IApplication * Application, LPCWSTR WindowName, LONG Width, LONG Height)
 {
-	_ASSERT(m_HWnd == NULL);
+	_ASSERT_EXPR(m_HWnd == NULL, "Window already created.");
+
+	//
+	// Register window class
+	//
+
+	m_HInstance = Application->GetHINSTANCE();
+	m_WindowClassName = std::wstring(WindowName) + std::wstring(L"Ñlass");
+
+	HINSTANCE hDll;
+	hDll = LoadLibrary(L"SHELL32.dll");
+
+	WNDCLASSEX renderWindowClass = { 0 };
+	renderWindowClass.cbSize = sizeof(WNDCLASSEX);
+	renderWindowClass.style = CS_HREDRAW | CS_VREDRAW | CS_OWNDC;
+	renderWindowClass.lpfnWndProc = &WndProcLink;
+	renderWindowClass.cbClsExtra = 0;
+	renderWindowClass.cbWndExtra = 0;
+	renderWindowClass.hInstance = m_HInstance;
+	renderWindowClass.hIcon = LoadIcon(hDll, MAKEINTRESOURCE(2));
+	renderWindowClass.hCursor = LoadCursor(NULL, IDC_ARROW);
+	renderWindowClass.hbrBackground = (HBRUSH)(COLOR_WINDOW + 1);
+	renderWindowClass.lpszMenuName = NULL;
+	renderWindowClass.lpszClassName = m_WindowClassName.c_str();
+	renderWindowClass.hIconSm = LoadIcon(hDll, MAKEINTRESOURCE(2));
+
+	if (RegisterClassEx(&renderWindowClass) == FALSE)
+	{
+		_ASSERT_EXPR(false, "CWindowObject: Failed to register the render window class.");
+	}
+
+	//
+	// Create window
+	//
 
 	int screenWidth = ::GetSystemMetrics(SM_CXSCREEN);
 	int screenHeight = ::GetSystemMetrics(SM_CYSCREEN);
@@ -128,7 +176,7 @@ HWND CWindowObject::CreateWindowInstance(IApplication * Application, IWindowClas
 	m_HWnd = CreateWindowExW
 	(
 		NULL,
-		WindowClassRegistrator->GetWindowClassName(),
+		m_WindowClassName.c_str(),
 		WindowName,
 		WS_OVERLAPPEDWINDOW,
 		windowX, windowY, windowWidth, windowHeight,
@@ -138,12 +186,12 @@ HWND CWindowObject::CreateWindowInstance(IApplication * Application, IWindowClas
 		NULL
 	);
 
-	SetWindowLongPtr(m_HWnd, GWLP_USERDATA, (LONG_PTR)dynamic_cast<IApplicationEvents*>(Application));
-
 	if (m_HWnd == NULL)
 	{
 		_ASSERT_EXPR(false, "CWindowObject: Failed to create render window.");
 	}
+
+	SetWindowLongPtr(m_HWnd, GWLP_USERDATA, (LONG_PTR)dynamic_cast<IApplicationEvents*>(Application));
 
     return m_HWnd;
 }
@@ -152,5 +200,13 @@ void CWindowObject::DestroyWindowInstance()
 {
 	_ASSERT(m_HWnd != NULL);
 
-	::DestroyWindow(m_HWnd);
+	if (::DestroyWindow(m_HWnd) == FALSE)
+	{
+		_ASSERT_EXPR(false, "CWindowObject: Failed to destroy window object.");
+	}
+
+	if (::UnregisterClass(m_WindowClassName.c_str(), m_HInstance) == FALSE)
+	{
+		_ASSERT_EXPR(false, "CWindowObject: Failed to unregister render window class.");
+	}
 }

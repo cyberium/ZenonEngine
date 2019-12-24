@@ -328,6 +328,9 @@ UpdateEvent& RenderWindowBase::Update()
 }
 void RenderWindowBase::OnUpdate(UpdateEventArgs& e)
 {
+	UpdateEventArgs updateArgs(this, e.ElapsedTime, e.TotalTime, e.FrameCounter);
+	m_Update(updateArgs);
+
 	GetRenderDevice()->Lock();
 	{
 		RenderEventArgs renderArgs(this, e.ElapsedTime, e.TotalTime, e.FrameCounter, nullptr, nullptr, nullptr);
@@ -341,9 +344,6 @@ void RenderWindowBase::OnUpdate(UpdateEventArgs& e)
 		Present();
 	}
 	GetRenderDevice()->Unlock();
-
-	UpdateEventArgs updateArgs(this, e.ElapsedTime, e.TotalTime, e.FrameCounter);
-	m_Update(updateArgs);
 }
 
 RenderEvent& RenderWindowBase::PreRender()

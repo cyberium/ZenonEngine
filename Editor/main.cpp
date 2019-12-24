@@ -4,6 +4,7 @@
 #include "MainEditor.h"
 #include <QtWidgets/QApplication>
 
+#include "DebugOutputEditorLog.h"
 #include "RenderWindowWidget.h"
 
 int main(int argc, char *argv[])
@@ -20,13 +21,13 @@ int main(int argc, char *argv[])
 	std::shared_ptr<IRenderDevice> renderDevice = app.CreateRenderDevice(RenderDeviceType::RenderDeviceType_DirectX);
 	AddManager<IRenderDevice>(BaseManager, renderDevice);
 
-	std::shared_ptr<IRenderWindow> renderWindow = renderDevice->CreateRenderWindow(dynamic_cast<IWindowObject*>(w.getUI().EditorWindow), false);
-	app.AddRenderWindow(renderWindow);
-
-	w.getUI().EditorWindow->SetRenderWindow(std::dynamic_pointer_cast<IRenderWindowEvents>(renderWindow));
-
 	std::shared_ptr<IFontsManager> fontsManager = std::make_shared<FontsManager>(renderDevice, BaseManager);
 	AddManager<IFontsManager>(BaseManager, fontsManager);
+
+	// Render window for main editor
+	std::shared_ptr<IRenderWindow> renderWindow = renderDevice->CreateRenderWindow(w.getUI().EditorWindow, false);
+	app.AddRenderWindow(renderWindow);
+	w.getUI().EditorWindow->SetRenderWindowEvents(std::dynamic_pointer_cast<IRenderWindowEvents>(renderWindow));
 
 	std::shared_ptr<IGameState> gameState = GetManager<IGameStatesFactory>(BaseManager)->CreateGameStateWithHighestPriority(renderWindow);
 	app.SetGameState(gameState);
@@ -35,6 +36,8 @@ int main(int argc, char *argv[])
 	w.ApplyTest();
 
 	w.show();
+
+	GetManager<ILog>(BaseManager)->AddDebugOutput(std::make_shared<DebugOutput_EditorLog>(w.getUI().LogTextEdit));
 
 	app.Run();
 

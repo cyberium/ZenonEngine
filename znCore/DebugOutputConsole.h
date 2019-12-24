@@ -1,16 +1,13 @@
 #pragma once
 
-#include "DebugOutput.h"
-
-class DebugOutput_ConsoleWindows : public CDebugOutput
+class DebugOutput_ConsoleWindows : public IDebugOutput
 {
 public:
 	DebugOutput_ConsoleWindows();
 	virtual ~DebugOutput_ConsoleWindows();
 
-protected:
-	// CDebugOutput
-	void Print(std::string _messageFmt, CDebugOutput::DebugMessageType _type);
+	// IDebugOutput
+	void Print(IDebugOutput::DebugMessageType Type, const std::string& FormattedMessage) override;
 
 private:
 	enum ConsoleWindowsColor

@@ -12,6 +12,7 @@ public:
 	// ICameraController
 	std::shared_ptr<ICamera>                        GetCamera() const override;
 	std::shared_ptr<ICameraMovement>                GetCameraMovement() const override;
+	Ray	                                            ScreenPointToRay(const Viewport* Viewport, glm::vec2 screenPoint) const override;
 
     // Engine events
     virtual void                                    OnUpdate(UpdateEventArgs& e) override;
@@ -29,8 +30,7 @@ public:
 	virtual void                                    OnMouseMoved(MouseMotionEventArgs& e) override;
 	virtual void                                    OnMouseWheel(MouseWheelEventArgs& e) override;
 	
-	// Helpers
-	Ray	                                            ScreenPointToRay(vec2 screenPoint) const;
+
 
 protected:
 	std::shared_ptr<ICamera>                        m_Camera;
