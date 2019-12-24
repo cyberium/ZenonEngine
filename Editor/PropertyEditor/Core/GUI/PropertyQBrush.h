@@ -42,9 +42,6 @@ protected:
 };
 
 P_PROPERTY_DECL_EQ_OPERATORS(QtnPropertyQBrushStyleBase, Qt::BrushStyle)
-QTN_PE_CORE_EXPORT QDataStream& operator<< (QDataStream& stream, Qt::BrushStyle brushStyle);
-QTN_PE_CORE_EXPORT QDataStream& operator>> (QDataStream& stream, Qt::BrushStyle& brushStyle);
-
 
 class QTN_PE_CORE_EXPORT QtnPropertyQBrushStyleCallback: public QtnSinglePropertyCallback<QtnPropertyQBrushStyleBase>
 {

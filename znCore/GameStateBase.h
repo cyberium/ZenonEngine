@@ -81,6 +81,7 @@ protected:
 	std::shared_ptr<IScene>                         m_Scene3D;
 	std::shared_ptr<IScene>                         m_SceneUI;
 
+
 private: // Update event connection
     Delegate<UpdateEventArgs>::FunctionDecl         OnUpdateConnection;
     Delegate<RenderEventArgs>::FunctionDecl         OnPreRenderConnection;

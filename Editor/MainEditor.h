@@ -3,6 +3,8 @@
 #include <QtWidgets/QMainWindow>
 #include "ui_MainEditor.h"
 
+#include "PropertyEditor/PropertiesController.h"
+
 class MainEditor 
 	: public QMainWindow
 {
@@ -11,6 +13,8 @@ class MainEditor
 public:
 	MainEditor(QWidget* Parent = nullptr);
 	virtual ~MainEditor();
+
+	void OnSceneNodeSelected(std::shared_ptr<ISceneNode> SceneNode);
 
 	void ApplyScene(std::shared_ptr<IScene> Scene);
 	void ApplyTest();
@@ -25,4 +29,6 @@ private:
 	Ui::MainEditorClass ui;
 
 	std::shared_ptr<QMenu> contextMenu;
+
+	std::shared_ptr<CPropertiesController> m_PropertiesController;
 };

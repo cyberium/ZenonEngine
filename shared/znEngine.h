@@ -3,6 +3,9 @@
 #include "../znEngine/Application.h"
 #include "../znEngine/WindowCreator.h"
 
+#include "../znEngine/Materials/MaterialDebug.h"
+#include "../znEngine/Materials/MaterialTextured.h"
+
 #include "../znEngine/SceneFunctional/UI/Fonts/FontsManager.h"
 
 /*

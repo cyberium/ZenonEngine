@@ -69,10 +69,6 @@ protected:
     bool fromStrImpl(const QString& str) override;
     bool toStrImpl(QString& str) const override;
 
-    // serialization implementation
-    bool loadImpl(QDataStream& stream) override;
-    bool saveImpl(QDataStream& stream) const override;
-
 private:
     void findChildPropertiesRecursive(const QString& name, QList<QtnPropertyBase*>& result);
     void findChildPropertiesRecursive(const QRegularExpression& re, QList<QtnPropertyBase*>& result);

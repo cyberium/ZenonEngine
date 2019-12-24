@@ -92,19 +92,3 @@ bool QtnPropertyQBrushStyleBase::toStrImpl(QString& str) const
         str = res;
     return ok;
 }
-
-QDataStream& operator<< (QDataStream& stream, Qt::BrushStyle brushStyle)
-{
-    stream << (qint32)brushStyle;
-    return stream;
-}
-
-QDataStream& operator>> (QDataStream& stream, Qt::BrushStyle& brushStyle)
-{
-    qint32 value = 0;
-    stream >> value;
-    brushStyle = (Qt::BrushStyle)value;
-    return stream;
-}
-
-

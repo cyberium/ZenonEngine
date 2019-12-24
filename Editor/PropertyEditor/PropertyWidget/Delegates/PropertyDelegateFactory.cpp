@@ -140,6 +140,10 @@ void regQPenStyleDelegates(QtnPropertyDelegateFactory& factory);
 void regQPenDelegates(QtnPropertyDelegateFactory& factory);
 void regQBrushStyleDelegates(QtnPropertyDelegateFactory& factory);
 
+// Custom BEGIN
+void regVec3Delegates(QtnPropertyDelegateFactory& factory);
+// Custom END
+
 class QtnPropertyDelegateFactoryDefault : public QtnPropertyDelegateFactory
 {
 public:
@@ -167,6 +171,8 @@ public:
         regQPenStyleDelegates(*this);
         regQPenDelegates(*this);
         regQBrushStyleDelegates(*this);
+
+		regVec3Delegates(*this);
     }
 };
 

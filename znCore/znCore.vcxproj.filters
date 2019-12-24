@@ -85,6 +85,9 @@
     <Filter Include="CameraControllers">
       <UniqueIdentifier>{cab15164-19e1-4d0c-b397-adb4def9c9c1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Scene\Properties">
+      <UniqueIdentifier>{4bf4e6dc-9ab3-48d8-a7d6-b36ce4087f3a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Log.cpp">
@@ -239,6 +242,9 @@
     </ClCompile>
     <ClCompile Include="ByteBufferOnlyPointer.cpp">
       <Filter>Files\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\SceneNodeProperties.cpp">
+      <Filter>Scene\Properties</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -604,6 +610,12 @@
     </ClInclude>
     <ClInclude Include="ByteBufferOnlyPointer.h">
       <Filter>Files\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Interfaces\Scene\IProperties.h">
+      <Filter>__Interfaces\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\SceneNodeProperties.h">
+      <Filter>Scene\Properties</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

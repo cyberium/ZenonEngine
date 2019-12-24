@@ -28,6 +28,6 @@ private:
 	std::shared_ptr<CFontMesh>         m_Font;
 	std::shared_ptr<UI_Font_Material>  m_Material;
 
-	std::shared_ptr<ISettingT<std::string>> m_TextProperty;
-	std::shared_ptr<ISettingT<glm::vec2>> m_OffsetProperty;
+	std::shared_ptr<IPropertyT<std::string>> m_TextProperty;
+	std::shared_ptr<IPropertyT<glm::vec2>>   m_OffsetProperty;
 };

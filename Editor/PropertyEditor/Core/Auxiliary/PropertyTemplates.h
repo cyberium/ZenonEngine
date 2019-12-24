@@ -76,36 +76,6 @@ protected:
     virtual bool isValueAcceptedImpl(ValueType valueToAccept) { Q_UNUSED(valueToAccept); return true; }
     virtual bool isValueEqualImpl(ValueType valueToCompare) { return EqPred()(valueToCompare, value()); }
 
-    // serialization implementation
-    bool loadImpl(QDataStream& stream) override
-    {
-        if (!QtnProperty::loadImpl(stream))
-            return false;
-
-        ValueType newValue = ValueType();
-        stream >> newValue;
-
-        if (stream.status() != QDataStream::Ok)
-            return false;
-
-        Q_EMIT propertyWillChange(this, this, QtnPropertyChangeReasonLoadedValue, QtnPropertyValuePtr(&newValue));
-        setValueImpl(newValue);
-        Q_EMIT propertyDidChange(this, this, QtnPropertyChangeReasonLoadedValue);
-
-        return stream.status() == QDataStream::Ok;
-    }
-
-    bool saveImpl(QDataStream& stream) const override
-    {
-        if (!QtnProperty::saveImpl(stream))
-            return false;
-
-        ValueType valueToSave = value();
-        stream << valueToSave;
-
-        return stream.status() == QDataStream::Ok;
-    }
-
     // variant conversion implementation
     bool fromVariantImpl(const QVariant& var) override
     {

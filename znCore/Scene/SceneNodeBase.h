@@ -24,6 +24,9 @@ public:
     void                                            RaiseComponentMessage(std::shared_ptr<ISceneNodeComponent> Component, ComponentMessageType Message) override;
     virtual void                                    RegisterComponents();
 
+	// Properties
+	std::shared_ptr<IPropertiesGroup>				GetProperties() const;
+
     // Scene access
     void                                            SetScene(std::shared_ptr<IScene> Scene) override;
     std::shared_ptr<IScene>                         GetScene() const override;
@@ -45,7 +48,7 @@ public:
 	// Updatable
 	virtual void                                    OnUpdate(UpdateEventArgs& e) override;
 
-	std::shared_ptr<ISettingGroup>					GetProperties() const;
+	
 
 	//
 	// ISceneNodeInternal
@@ -95,11 +98,10 @@ private:
 private:
 	std::string                                     m_Name;
     ComponentsMap                                   m_Components;
+	std::shared_ptr<IPropertiesGroup>               m_PropertiesGroup;
 
     std::weak_ptr<IScene>                           m_Scene;
 	std::weak_ptr<ISceneNode>                       m_ParentNode;
 	NodeList                                        m_Children;
 	NodeNameMap                                     m_ChildrenByName;
-
-	std::shared_ptr<ISettingGroup>                  m_Properties;
 };

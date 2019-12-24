@@ -16,7 +16,7 @@
 
 #include "PropertyDelegateQFont.h"
 #include "../../../Core/GUI/PropertyQFont.h"
-#include "../../../Core/Core/PropertyQString.h"
+#include "../../../Core/Core/PropertyString.h"
 #include "../../../Core/Core/PropertyUInt.h"
 #include "../../../Core/Core/PropertyBool.h"
 #include "../../../Core/Core/PropertyEnum.h"
@@ -91,16 +91,16 @@ static QtnEnumInfo* styleStrategyEnum()
 QtnPropertyDelegateQFont::QtnPropertyDelegateQFont(QtnPropertyQFontBase& owner)
     : QtnPropertyDelegateTypedEx<QtnPropertyQFontBase>(owner)
 {
-    QtnPropertyQStringCallback* propertyFamily = new QtnPropertyQStringCallback(0);
+    QtnPropertyStringCallback* propertyFamily = new QtnPropertyStringCallback(0);
     addSubProperty(propertyFamily);
     propertyFamily->setName(owner.tr("Family"));
     propertyFamily->setDescription(owner.tr("Font Family for %1.").arg(owner.name()));
-    propertyFamily->setCallbackValueGet([&owner]()->QString {
-        return owner.value().family();
+    propertyFamily->setCallbackValueGet([&owner]()->std::string {
+        return owner.value().family().toStdString();
     });
-    propertyFamily->setCallbackValueSet([&owner](QString value) {
+    propertyFamily->setCallbackValueSet([&owner](std::string value) {
         QFont font = owner.value();
-        font.setFamily(value);
+        font.setFamily(value.c_str());
         owner.setValue(font);
     });
     QtnPropertyDelegateInfo delegate;

@@ -2,13 +2,13 @@
 
 // FORWARD BEGIN
 ZN_INTERFACE ISceneNodeComponent;
+ZN_INTERFACE IPropertiesG;
 ZN_INTERFACE IScene;
 ZN_INTERFACE ICamera;
 class Viewport;
 ZN_INTERFACE IVisitor;
 class UpdateEventArgs;
 ZN_INTERFACE IManager;
-ZN_INTERFACE ISettingGroup;
 // FORWARD END
 
 ZN_INTERFACE OW_ENGINE_API ISceneNode : public std::enable_shared_from_this<ISceneNode>
@@ -29,6 +29,9 @@ ZN_INTERFACE OW_ENGINE_API ISceneNode : public std::enable_shared_from_this<ISce
 	virtual void                                    RaiseComponentMessage(std::shared_ptr<ISceneNodeComponent> Component, ComponentMessageType Message) = 0;
 	virtual void                                    RegisterComponents() = 0;
 
+	// Properties
+	virtual std::shared_ptr<IPropertiesGroup>       GetProperties() const = 0;
+
 	// Scene access
 	virtual void                                    SetScene(std::shared_ptr<IScene> Scene) = 0;
 	virtual std::shared_ptr<IScene>                 GetScene() const = 0;
@@ -47,8 +50,6 @@ ZN_INTERFACE OW_ENGINE_API ISceneNode : public std::enable_shared_from_this<ISce
 	virtual bool                                    Accept(IVisitor* visitor) = 0;
 
 	virtual void                                    OnUpdate(UpdateEventArgs& e) = 0;
-
-	virtual std::shared_ptr<ISettingGroup>          GetProperties() const = 0;
 
 	virtual void                                    RaiseOnParentChanged() = 0;
 

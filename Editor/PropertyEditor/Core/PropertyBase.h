@@ -19,7 +19,6 @@
 
 #include "Auxiliary/PropertyAux.h"
 #include "Auxiliary/PropertyDelegateInfo.h"
-#include <QDataStream>
 #include <QVariant>
 #include <functional>
 
@@ -64,18 +63,9 @@ public:
     bool isVisible() const;
     bool isSimple() const { return !m_stateLocal.testFlag(QtnPropertyStateNonSimple); }
 
-    // serialization
-    bool load(QDataStream& stream);
-    bool save(QDataStream& stream) const;
-    static bool skipLoad(QDataStream& stream);
-
     // string conversion
     bool fromStr(const QString& str);
     bool toStr(QString& str) const;
-
-    // variant conversion
-    bool fromVariant(const QVariant& var);
-    bool toVariant(QVariant& var) const;
 
     // casts
     virtual QtnProperty* asProperty() { return nullptr; }
@@ -105,10 +95,6 @@ Q_SIGNALS:
 protected:
     QtnPropertyBase(QObject* parent);
 
-    // serialization implementation
-    virtual bool loadImpl(QDataStream& stream);
-    virtual bool saveImpl(QDataStream& stream) const;
-
     // string conversion implementation
     virtual bool fromStrImpl(const QString& str) { Q_UNUSED(str); return false; }
     virtual bool toStrImpl(QString& str) const { Q_UNUSED(str); return false; }
@@ -125,10 +111,6 @@ private:
     void masterPropertyWillChange(const QtnPropertyBase* changedProperty, const QtnPropertyBase* firedProperty, QtnPropertyChangeReason reason, QtnPropertyValuePtr newValue);
     void masterPropertyDidChange(const QtnPropertyBase* changedProperty, const QtnPropertyBase* firedProperty, QtnPropertyChangeReason reason);
 
-    // getter/setter for "value" property
-    QVariant valueAsVariant() const;
-    void setValueAsVariant(const QVariant& value);
-
     QString m_displayName;
     QString m_description;
     QtnPropertyID m_id;
@@ -142,9 +124,6 @@ private:
 
     friend class QtnPropertySet;
 };
-
-QTN_PE_CORE_EXPORT QDataStream& operator<< (QDataStream& stream, const QtnPropertyBase& property);
-QTN_PE_CORE_EXPORT QDataStream& operator>> (QDataStream& stream, QtnPropertyBase& property);
 
 Q_DECLARE_METATYPE(const QtnPropertyBase*)
 Q_DECLARE_METATYPE(QtnPropertyBase*)

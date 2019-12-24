@@ -21,12 +21,14 @@ public:
     // ISceneNodeComponent
     virtual void                                    OnParentChanged() override;
     virtual void                                    OnMessage(std::shared_ptr<ISceneNodeComponent> Component, ComponentMessageType Message) override;
+	virtual std::shared_ptr<IPropertiesGroup>         GetPropertiesGroup() const override;
 
 protected:
     void                                            RaiseComponentMessage(ComponentMessageType Message);
 
 private:
     std::weak_ptr<ISceneNode>                       m_OwnerNode;
+	std::shared_ptr<IPropertiesGroup>                 m_PropertyGroup;
 };
 
 #include "ComponentBase.inl"

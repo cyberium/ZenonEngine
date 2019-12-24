@@ -74,20 +74,6 @@ bool QtnPropertyQPenStyleBase::toStrImpl(QString& str) const
     return false;
 }
 
-QDataStream& operator<< (QDataStream& stream, Qt::PenStyle penStyle)
-{
-    stream << (qint32)penStyle;
-    return stream;
-}
-
-QDataStream& operator>> (QDataStream& stream, Qt::PenStyle& penStyle)
-{
-    qint32 value = 0;
-    stream >> value;
-    penStyle = (Qt::PenStyle)value;
-    return stream;
-}
-
 QtnPropertyQPenBase::QtnPropertyQPenBase(QObject *parent)
     : QtnSinglePropertyBase<QPen>(parent)
 {

@@ -45,6 +45,7 @@
 #include "../znCore/Scene/SceneBase.h"
 #include "../znCore/Scene/SceneNodeBase.h"
 #include "../znCore/Scene/ComponentBase.h"
+#include "../znCore/Scene/SceneNodeProperties.h"
 #include "../znCore/Scene/TransformComponentBase.h"
 
 // 3D

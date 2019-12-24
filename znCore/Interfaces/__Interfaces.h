@@ -83,6 +83,7 @@
 //---------------------------------------------------------//
 //--                 Scene Interfaces                    --//
 //---------------------------------------------------------//
+#include "Interfaces/Scene/IProperties.h"
 #include "Interfaces/Scene/ISceneNodeComponents.h"
 #include "Interfaces/Scene/ISceneNode.h"
 #include "Interfaces/Scene/IScene.h"

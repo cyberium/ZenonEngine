@@ -20,11 +20,15 @@ CUITextNode::~CUITextNode()
 
 void CUITextNode::Initialize()
 {
-	m_TextProperty = std::make_shared<CSettingBase<std::string>>(cDefaultText);
-	GetProperties()->AddSetting("Text", m_TextProperty);
+	m_TextProperty = std::make_shared<CProperty<std::string>>();
+	m_TextProperty->SetName("Text");
+	m_TextProperty->Set(cDefaultText);
+	GetProperties()->AddProperty(m_TextProperty);
 
-	m_OffsetProperty = std::make_shared<CSettingBase<glm::vec2>>(cDefaultOffset);
-	GetProperties()->AddSetting("Offset", m_OffsetProperty);
+	m_OffsetProperty = std::make_shared<CProperty<glm::vec2>>();
+	m_OffsetProperty->SetName("Offset");
+	m_OffsetProperty->Set(cDefaultOffset);
+	GetProperties()->AddProperty(m_OffsetProperty);
 
 	m_Font = GetManager<IFontsManager>(GetBaseManager())->GetMainFont();
 

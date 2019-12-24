@@ -62,6 +62,7 @@
     <ClCompile Include="Scene\LoadableObject.cpp" />
     <ClCompile Include="Scene\SceneBase.cpp" />
     <ClCompile Include="Scene\SceneNodeBase.cpp" />
+    <ClCompile Include="Scene\SceneNodeProperties.cpp" />
     <ClCompile Include="Scene\TransformComponentBase.cpp" />
     <ClCompile Include="Scene\UI\SceneNodeUI.cpp" />
     <ClCompile Include="Scene\UI\TransformComponentUI.cpp" />
@@ -131,6 +132,7 @@
     <ClInclude Include="Interfaces\Render\Types\Ray.h" />
     <ClInclude Include="Interfaces\Render\Types\RaycastHit.h" />
     <ClInclude Include="Interfaces\Render\Types\Viewport.h" />
+    <ClInclude Include="Interfaces\Scene\IProperties.h" />
     <ClInclude Include="Interfaces\Scene\IScene.h" />
     <ClInclude Include="Interfaces\Scene\ISceneNode.h" />
     <ClInclude Include="Interfaces\Scene\ISceneNodeComponents.h" />
@@ -187,6 +189,7 @@
     <ClInclude Include="Scene\LoadableObject.h" />
     <ClInclude Include="Scene\SceneBase.h" />
     <ClInclude Include="Scene\SceneNodeBase.h" />
+    <ClInclude Include="Scene\SceneNodeProperties.h" />
     <ClInclude Include="Scene\TransformComponentBase.h" />
     <ClInclude Include="Scene\UI\SceneNodeUI.h" />
     <ClInclude Include="Scene\UI\TransformComponentUI.h" />

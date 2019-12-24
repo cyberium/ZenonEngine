@@ -7,6 +7,8 @@
 #include "DebugOutputEditorLog.h"
 #include "RenderWindowWidget.h"
 
+#include "GameState_Editor.h"
+
 int main(int argc, char *argv[])
 {
 	// 1. Initialize engine and some improtant managers
@@ -29,7 +31,8 @@ int main(int argc, char *argv[])
 	app.AddRenderWindow(renderWindow);
 	w.getUI().EditorWindow->SetRenderWindowEvents(std::dynamic_pointer_cast<IRenderWindowEvents>(renderWindow));
 
-	std::shared_ptr<IGameState> gameState = GetManager<IGameStatesFactory>(BaseManager)->CreateGameStateWithHighestPriority(renderWindow);
+	//std::shared_ptr<IGameState> gameState = GetManager<IGameStatesFactory>(BaseManager)->CreateGameStateWithHighestPriority(renderWindow);
+	std::shared_ptr<CGameState_Editor> gameState = std::make_shared<CGameState_Editor>(BaseManager, renderWindow, &w);
 	app.SetGameState(gameState);
 
 	w.ApplyScene(std::dynamic_pointer_cast<IScene>(app.GetGameState()->GetScene3D()));

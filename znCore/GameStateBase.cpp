@@ -154,8 +154,8 @@ void CGameState::OnPostRender(RenderEventArgs& e)
 	m_FrameQuery->End(e.FrameCounter);
 
 	vec3 cameraTrans = GetCameraController()->GetCamera()->GetTranslation();
-	m_CameraPosText->GetProperties()->GetSettingT<std::string>("Text")->Set("Pos: x = " + std::to_string(cameraTrans.x) + ", y = " + std::to_string(cameraTrans.y) + ", z = " + std::to_string(cameraTrans.z));
-	m_CameraRotText->GetProperties()->GetSettingT<std::string>("Text")->Set("Rot: yaw = " + std::to_string(GetCameraController()->GetCamera()->GetYaw()) + ", pitch = " + std::to_string(GetCameraController()->GetCamera()->GetPitch()));
+	m_CameraPosText->GetProperties()->GetPropertyT<std::string>("Text")->Set("Pos: x = " + std::to_string(cameraTrans.x) + ", y = " + std::to_string(cameraTrans.y) + ", z = " + std::to_string(cameraTrans.z));
+	m_CameraRotText->GetProperties()->GetPropertyT<std::string>("Text")->Set("Rot: yaw = " + std::to_string(GetCameraController()->GetCamera()->GetYaw()) + ", pitch = " + std::to_string(GetCameraController()->GetCamera()->GetPitch()));
 
 	IQuery::QueryResult frameResult = m_FrameQuery->GetQueryResult(e.FrameCounter);
 	if (frameResult.IsValid)
@@ -164,7 +164,7 @@ void CGameState::OnPostRender(RenderEventArgs& e)
 			m_FrameTime = frameResult.ElapsedTime * 1000.0;
 		else
 			m_FrameTime = frameResult.ElapsedTime / 1000000.0;
-		m_FPSText->GetProperties()->GetSettingT<std::string>("Text")->Set("FPS: " + std::to_string(1000.0 / m_FrameTime));
+		m_FPSText->GetProperties()->GetPropertyT<std::string>("Text")->Set("FPS: " + std::to_string(1000.0 / m_FrameTime));
 	}
 }
 

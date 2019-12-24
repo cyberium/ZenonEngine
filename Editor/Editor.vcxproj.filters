@@ -119,9 +119,6 @@
     <ClCompile Include="PropertyEditor\Core\Core\PropertyQSizeF.cpp">
       <Filter>Property editor\Core\Core</Filter>
     </ClCompile>
-    <ClCompile Include="PropertyEditor\Core\Core\PropertyQString.cpp">
-      <Filter>Property editor\Core\Core</Filter>
-    </ClCompile>
     <ClCompile Include="PropertyEditor\Core\Core\PropertyUInt.cpp">
       <Filter>Property editor\Core\Core</Filter>
     </ClCompile>
@@ -191,9 +188,6 @@
     <ClCompile Include="PropertyEditor\PropertyWidget\Delegates\Core\PropertyDelegateQSizeF.cpp">
       <Filter>Property editor\Widget\Delegates\Core</Filter>
     </ClCompile>
-    <ClCompile Include="PropertyEditor\PropertyWidget\Delegates\Core\PropertyDelegateQString.cpp">
-      <Filter>Property editor\Widget\Delegates\Core</Filter>
-    </ClCompile>
     <ClCompile Include="PropertyEditor\PropertyWidget\Delegates\Core\PropertyDelegateUInt.cpp">
       <Filter>Property editor\Widget\Delegates\Core</Filter>
     </ClCompile>
@@ -240,7 +234,23 @@
       <Filter>Property editor\Widget\Utils</Filter>
     </ClCompile>
     <ClCompile Include="MainEditor.cpp" />
+    <ClCompile Include="PropertyEditor\PropertiesController.cpp">
+      <Filter>Property editor</Filter>
+    </ClCompile>
+    <ClCompile Include="PropertyEditor\Core\Core\PropertyVec3.cpp">
+      <Filter>Property editor\Core\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="PropertyEditor\PropertyWidget\Delegates\Core\PropertyDelegateVec3.cpp">
+      <Filter>Property editor\Widget\Delegates\Core</Filter>
+    </ClCompile>
     <ClCompile Include="DebugOutputEditorLog.cpp" />
+    <ClCompile Include="GameState_Editor.cpp" />
+    <ClCompile Include="PropertyEditor\Core\Core\PropertyString.cpp">
+      <Filter>Property editor\Core\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="PropertyEditor\PropertyWidget\Delegates\Core\PropertyDelegateString.cpp">
+      <Filter>Property editor\Widget\Delegates\Core</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -324,9 +334,6 @@
     <ClInclude Include="PropertyEditor\PropertyWidget\Delegates\Core\PropertyDelegateQSizeF.h">
       <Filter>Property editor\Widget\Delegates\Core</Filter>
     </ClInclude>
-    <ClInclude Include="PropertyEditor\PropertyWidget\Delegates\Core\PropertyDelegateQString.h">
-      <Filter>Property editor\Widget\Delegates\Core</Filter>
-    </ClInclude>
     <ClInclude Include="PropertyEditor\PropertyWidget\Delegates\Core\PropertyDelegateUInt.h">
       <Filter>Property editor\Widget\Delegates\Core</Filter>
     </ClInclude>
@@ -366,7 +373,14 @@
     <ClInclude Include="PropertyEditor\PropertyWidget\Utils\InplaceEditing.h">
       <Filter>Property editor\Widget\Utils</Filter>
     </ClInclude>
+    <ClInclude Include="PropertyEditor\PropertyWidget\Delegates\Core\PropertyDelegateVec3.h">
+      <Filter>Property editor\Widget\Delegates\Core</Filter>
+    </ClInclude>
     <ClInclude Include="DebugOutputEditorLog.h" />
+    <ClInclude Include="GameState_Editor.h" />
+    <ClInclude Include="PropertyEditor\PropertyWidget\Delegates\Core\PropertyDelegateString.h">
+      <Filter>Property editor\Widget\Delegates\Core</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="RenderWindowWidget.h">
@@ -417,9 +431,6 @@
     <QtMoc Include="PropertyEditor\Core\Core\PropertyQSizeF.h">
       <Filter>Property editor\Core\Core</Filter>
     </QtMoc>
-    <QtMoc Include="PropertyEditor\Core\Core\PropertyQString.h">
-      <Filter>Property editor\Core\Core</Filter>
-    </QtMoc>
     <QtMoc Include="PropertyEditor\Core\Core\PropertyUInt.h">
       <Filter>Property editor\Core\Core</Filter>
     </QtMoc>
@@ -454,6 +465,15 @@
       <Filter>Property editor\Core</Filter>
     </QtMoc>
     <QtMoc Include="MainEditor.h" />
+    <QtMoc Include="PropertyEditor\Core\Core\PropertyVec3.h">
+      <Filter>Property editor\Core\Core</Filter>
+    </QtMoc>
+    <QtMoc Include="PropertyEditor\PropertiesController.h">
+      <Filter>Property editor</Filter>
+    </QtMoc>
+    <QtMoc Include="PropertyEditor\Core\Core\PropertyString.h">
+      <Filter>Property editor\Core\Core</Filter>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="MainEditor.qrc">

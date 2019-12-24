@@ -5,11 +5,20 @@
 
 // Additional
 #include "Passes/AbstractPass.h"
+#include "Scene/SceneNodeProperties.h"
 
 SceneNodeBase::SceneNodeBase()
 	: m_Name("SceneNodeBase")
 {
-	m_Properties = std::make_shared<CSettingsGroupBase>();
+	m_PropertiesGroup = std::make_shared<CPropertiesGroup>();
+	m_PropertiesGroup->SetName("General");
+	m_PropertiesGroup->SetDescription("Some important scene node properties.");
+
+	std::shared_ptr<CPropertyWrapped<std::string>> nameProperty = std::make_shared<CPropertyWrapped<std::string>>();
+	nameProperty->SetName("Name");
+	nameProperty->SetValueSetter(std::bind(&SceneNodeBase::SetName, this, std::placeholders::_1));
+	nameProperty->SetValueGetter(std::bind(&SceneNodeBase::GetName, this));
+	GetProperties()->AddProperty(nameProperty);
 }
 
 SceneNodeBase::~SceneNodeBase()
@@ -208,9 +217,9 @@ void SceneNodeBase::OnUpdate(UpdateEventArgs & e)
 	});
 }
 
-std::shared_ptr<ISettingGroup> SceneNodeBase::GetProperties() const
+std::shared_ptr<IPropertiesGroup> SceneNodeBase::GetProperties() const
 {
-	return m_Properties;
+	return m_PropertiesGroup;
 }
 
 

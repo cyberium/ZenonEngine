@@ -3,6 +3,9 @@
 // General
 #include "TransformComponent3D.h"
 
+// Additional
+#include "Scene/SceneNodeProperties.h"
+
 CTransformComponent3D::CTransformComponent3D(std::shared_ptr<ISceneNode> OwnerNode)
     : base(OwnerNode)
     , m_Translate(vec3())
@@ -10,7 +13,30 @@ CTransformComponent3D::CTransformComponent3D(std::shared_ptr<ISceneNode> OwnerNo
     , m_RotateQuat(quat())
     , m_IsRotateQuat(false)
     , m_Scale(1.0f, 1.0f, 1.0f)
-{}
+{
+	GetPropertiesGroup()->SetName("Transform");
+	GetPropertiesGroup()->SetDescription("Transorm of this node. Like translation, rotation and scale.");
+
+	std::shared_ptr<CPropertyWrapped<glm::vec3>> translateProperty = std::make_shared<CPropertyWrapped<glm::vec3>>();
+	translateProperty->SetName("Translate");
+	translateProperty->SetValueSetter(std::bind(&CTransformComponent3D::SetTranslate, this, std::placeholders::_1));
+	translateProperty->SetValueGetter(std::bind(&CTransformComponent3D::GetTranslation, this));
+	GetPropertiesGroup()->AddProperty(translateProperty);
+
+
+	std::shared_ptr<CPropertyWrapped<glm::vec3>> rotationProperty = std::make_shared<CPropertyWrapped<glm::vec3>>();
+	rotationProperty->SetName("Rotate");
+	rotationProperty->SetValueSetter(std::bind(&CTransformComponent3D::SetRotation, this, std::placeholders::_1));
+	rotationProperty->SetValueGetter(std::bind(&CTransformComponent3D::GetRotation, this));
+	GetPropertiesGroup()->AddProperty(rotationProperty);
+
+
+	std::shared_ptr<CPropertyWrapped<glm::vec3>> scaleProperty = std::make_shared<CPropertyWrapped<glm::vec3>>();
+	scaleProperty->SetName("Scale");
+	scaleProperty->SetValueSetter(std::bind(&CTransformComponent3D::SetScale, this, std::placeholders::_1));
+	scaleProperty->SetValueGetter(std::bind(&CTransformComponent3D::GetScale, this));
+	GetPropertiesGroup()->AddProperty(scaleProperty);
+}
 
 CTransformComponent3D::~CTransformComponent3D()
 {}

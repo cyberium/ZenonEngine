@@ -3,9 +3,14 @@
 // General
 #include "ComponentBase.h"
 
+// Additional
+#include "SceneNodeProperties.h"
+
 CComponentBase::CComponentBase(std::shared_ptr<ISceneNode> OwnerNode)
     : m_OwnerNode(OwnerNode)
 {
+	m_PropertyGroup = std::make_shared<CPropertiesGroup>();
+	OwnerNode->GetProperties()->AddProperty(m_PropertyGroup);
 }
 
 CComponentBase::~CComponentBase()
@@ -36,6 +41,11 @@ void CComponentBase::OnParentChanged()
 void CComponentBase::OnMessage(std::shared_ptr<ISceneNodeComponent> Component, ComponentMessageType Message)
 {
     // do nothing
+}
+
+std::shared_ptr<IPropertiesGroup> CComponentBase::GetPropertiesGroup() const
+{
+	return m_PropertyGroup;
 }
 
 

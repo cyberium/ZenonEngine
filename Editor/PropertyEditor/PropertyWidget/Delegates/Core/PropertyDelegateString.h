@@ -1,32 +1,15 @@
-/*
-   Copyright (c) 2012-2016 Alex Zhondin <lexxmark.dev@gmail.com>
-
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
-
-       http://www.apache.org/licenses/LICENSE-2.0
-
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
-*/
-
-#ifndef PROPERTY_DELEGATE_QSTRING_H
-#define PROPERTY_DELEGATE_QSTRING_H
+#pragma once
 
 #include "../Utils/PropertyDelegateMisc.h"
 
-class QtnPropertyQStringBase;
+class QtnPropertyStringBase;
 
-class QTN_PW_EXPORT QtnPropertyDelegateQString: public QtnPropertyDelegateTyped<QtnPropertyQStringBase>
+class QTN_PW_EXPORT QtnPropertyDelegateQString: public QtnPropertyDelegateTyped<QtnPropertyStringBase>
 {
     Q_DISABLE_COPY(QtnPropertyDelegateQString)
 
 public:
-    QtnPropertyDelegateQString(QtnPropertyQStringBase& owner);
+    QtnPropertyDelegateQString(QtnPropertyStringBase& owner);
 
 protected:
     bool acceptKeyPressedForInplaceEditImpl(QKeyEvent* keyEvent) const override;
@@ -39,7 +22,7 @@ class QTN_PW_EXPORT QtnPropertyDelegateQStringInvalidBase: public QtnPropertyDel
     Q_DISABLE_COPY(QtnPropertyDelegateQStringInvalidBase)
 
 protected:
-    QtnPropertyDelegateQStringInvalidBase(QtnPropertyQStringBase& owner);
+    QtnPropertyDelegateQStringInvalidBase(QtnPropertyStringBase& owner);
 
     void applyAttributesImpl(const QtnPropertyDelegateAttributes& attributes) override;
     void drawValueImpl(QStylePainter& painter, const QRect& rect, const QStyle::State& state, bool* needTooltip = nullptr) const override;
@@ -55,7 +38,7 @@ class QTN_PW_EXPORT QtnPropertyDelegateQStringFile: public QtnPropertyDelegateQS
     Q_DISABLE_COPY(QtnPropertyDelegateQStringFile)
 
 public:
-    QtnPropertyDelegateQStringFile(QtnPropertyQStringBase& owner);
+    QtnPropertyDelegateQStringFile(QtnPropertyStringBase& owner);
 
 protected:
     void applyAttributesImpl(const QtnPropertyDelegateAttributes& attributes) override;
@@ -72,7 +55,7 @@ class QTN_PW_EXPORT QtnPropertyDelegateQStringList: public QtnPropertyDelegateQS
     Q_DISABLE_COPY(QtnPropertyDelegateQStringList)
 
 public:
-    QtnPropertyDelegateQStringList(QtnPropertyQStringBase& owner);
+    QtnPropertyDelegateQStringList(QtnPropertyStringBase& owner);
 
 protected:
     void applyAttributesImpl(const QtnPropertyDelegateAttributes& attributes) override;
@@ -82,17 +65,21 @@ private:
     QStringList m_items;
 };
 
+
 using QtnGetCandidatesFn = std::function<QStringList()>;
 using QtnCreateCandidateFn = std::function<QString(QWidget*, QString)>;
+
+
 Q_DECLARE_METATYPE(QtnGetCandidatesFn);
 Q_DECLARE_METATYPE(QtnCreateCandidateFn);
+
 
 class QTN_PW_EXPORT QtnPropertyDelegateQStringCallback: public QtnPropertyDelegateQString
 {
     Q_DISABLE_COPY(QtnPropertyDelegateQStringCallback)
 
 public:
-    QtnPropertyDelegateQStringCallback(QtnPropertyQStringBase& owner);
+    QtnPropertyDelegateQStringCallback(QtnPropertyStringBase& owner);
 
 protected:
     void applyAttributesImpl(const QtnPropertyDelegateAttributes& attributes) override;
@@ -101,5 +88,3 @@ protected:
 private:
     QtnPropertyDelegateAttributes m_editorAttributes;
 };
-
-#endif // PROPERTY_DELEGATE_QSTRING_H

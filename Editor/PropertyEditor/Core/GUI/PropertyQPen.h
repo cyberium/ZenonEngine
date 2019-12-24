@@ -40,9 +40,6 @@ protected:
 };
 
 P_PROPERTY_DECL_EQ_OPERATORS(QtnPropertyQPenStyleBase, Qt::PenStyle)
-QTN_PE_CORE_EXPORT QDataStream& operator<< (QDataStream& stream, Qt::PenStyle penStyle);
-QTN_PE_CORE_EXPORT QDataStream& operator>> (QDataStream& stream, Qt::PenStyle& penStyle);
-
 
 class QTN_PE_CORE_EXPORT QtnPropertyQPenStyleCallback: public QtnSinglePropertyCallback<QtnPropertyQPenStyleBase>
 {
