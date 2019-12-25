@@ -1,6 +1,6 @@
 #pragma once
 
-class OW_ENGINE_API CFilesManager : public IFilesManager
+class ZN_API CFilesManager : public IFilesManager
 {
 public:
 	CFilesManager(IBaseManager* BaseManager);

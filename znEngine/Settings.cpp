@@ -10,7 +10,7 @@ CSettings::CSettings(IBaseManager* BaseManager)
 
 CSettings::~CSettings()
 {
-	DelManager<ISettings>(m_BaseManager);
+	m_BaseManager->RemoveManager<ISettings>();
 }
 
 void CSettings::AddGroup(const std::string& GroupName, std::shared_ptr<ISettingGroup> Group)

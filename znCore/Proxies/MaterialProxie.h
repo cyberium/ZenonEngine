@@ -1,6 +1,6 @@
 #pragma once
 
-class OW_ENGINE_API MaterialProxie : public IMaterial
+class ZN_API MaterialProxie : public IMaterial
 {
 public:
 	MaterialProxie(std::shared_ptr<IMaterial> _materal);

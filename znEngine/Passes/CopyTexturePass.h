@@ -1,6 +1,6 @@
 #pragma once
 
-class OW_ENGINE_API CopyTexturePass : public AbstractPass
+class ZN_API CopyTexturePass : public AbstractPass
 {
 public:
 	CopyTexturePass(std::shared_ptr<IRenderDevice> RenderDevice, std::shared_ptr<ITexture> destinationTexture, std::shared_ptr<ITexture> sourceTexture);

@@ -35,7 +35,7 @@ CConsole::~CConsole()
 {
 	ERASE_VECTOR(m_ConsoleCommands);
 
-	DelManager<IConsole>(m_BaseManager);
+	m_BaseManager->RemoveManager<IConsole>();
 }
 
 void CConsole::AddCommonCommands()

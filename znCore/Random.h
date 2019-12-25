@@ -7,7 +7,7 @@
 
 #include <random>
 
-class OW_ENGINE_API Random
+class ZN_API Random
 {
 public:
     // Initialize the random generator with

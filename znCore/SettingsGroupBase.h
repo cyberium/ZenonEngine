@@ -1,6 +1,6 @@
 #pragma once
 
-class OW_ENGINE_API CSettingsGroupBase
+class ZN_API CSettingsGroupBase
 	: public ISettingGroup
 {
 public:

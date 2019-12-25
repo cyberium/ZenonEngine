@@ -2,7 +2,7 @@
 
 #include "ShaderInputLayoutDX11.h"
 
-class OW_ENGINE_API ShaderDX11 : public ShaderBase, public std::enable_shared_from_this<ShaderDX11>
+class ZN_API ShaderDX11 : public ShaderBase, public std::enable_shared_from_this<ShaderDX11>
 {
 public:
 	ShaderDX11(std::weak_ptr<IRenderDevice> RenderDevice);

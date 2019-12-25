@@ -30,7 +30,7 @@ std::shared_ptr<IMesh> DisplayMesh(CFBX * FBX, FbxManager* Manager, FbxNode* pNo
 	FbxMesh* lMesh = (FbxMesh*)pNode->GetNodeAttribute();
 	Log::Info("FBX: Mesh name is '%s'", pNode->GetName());
 
-	std::shared_ptr<IRenderDevice> renderDevice = GetManager<IRenderDevice>(FBX->GetBaseManager());
+	std::shared_ptr<IRenderDevice> renderDevice = FBX->GetBaseManager()->GetManager<IRenderDevice>();
 
 	std::shared_ptr<IMesh> mesh = renderDevice->CreateMesh();
 

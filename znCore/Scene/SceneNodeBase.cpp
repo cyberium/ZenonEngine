@@ -4,18 +4,16 @@
 #include "SceneNodeBase.h"
 
 // Additional
-#include "Passes/AbstractPass.h"
-#include "Scene/SceneNodeProperties.h"
+#include "Scene/Actions.h"
+#include "Scene/Properties.h"
 
 SceneNodeBase::SceneNodeBase()
 	: m_Name("SceneNodeBase")
 {
-	m_PropertiesGroup = std::make_shared<CPropertiesGroup>();
-	m_PropertiesGroup->SetName("General");
-	m_PropertiesGroup->SetDescription("Some important scene node properties.");
+	m_ActionsGroup = std::make_shared<CActionsGroup>("General");
+	m_PropertiesGroup = std::make_shared<CPropertiesGroup>("General", "Some important scene node properties.");
 
-	std::shared_ptr<CPropertyWrapped<std::string>> nameProperty = std::make_shared<CPropertyWrapped<std::string>>();
-	nameProperty->SetName("Name");
+	std::shared_ptr<CPropertyWrapped<std::string>> nameProperty = std::make_shared<CPropertyWrapped<std::string>>("Name", "Scene node name.");
 	nameProperty->SetValueSetter(std::bind(&SceneNodeBase::SetName, this, std::placeholders::_1));
 	nameProperty->SetValueGetter(std::bind(&SceneNodeBase::GetName, this));
 	GetProperties()->AddProperty(nameProperty);
@@ -28,12 +26,12 @@ SceneNodeBase::~SceneNodeBase()
 
 void SceneNodeBase::Initialize()
 {
-	
+	// Do nothing
 }
 
 void SceneNodeBase::Finalize()
 {
-	
+	// Do nothing
 }
 
 std::string SceneNodeBase::GetName() const
@@ -209,7 +207,6 @@ bool SceneNodeBase::Accept(IVisitor* visitor)
 	const auto& childs = GetChilds();
 	std::for_each(childs.begin(), childs.end(), [&visitor](const std::shared_ptr<ISceneNode>& Child)
 	{
-		((AbstractPass*)visitor)->GetRenderEventArgs()->Node = Child.get();
 		Child->Accept(visitor);
 	});
 
@@ -223,6 +220,11 @@ void SceneNodeBase::OnUpdate(UpdateEventArgs & e)
 	{
 		Child->OnUpdate(e);
 	});
+}
+
+std::shared_ptr<IActionsGroup> SceneNodeBase::GetActions() const
+{
+	return std::shared_ptr<IActionsGroup>();
 }
 
 std::shared_ptr<IPropertiesGroup> SceneNodeBase::GetProperties() const

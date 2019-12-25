@@ -3,7 +3,7 @@
 // Include
 #include "Math.h"
 
-class OW_ENGINE_API BoundingRect
+class ZN_API BoundingRect
 {
 public:
 	BoundingRect();
@@ -50,6 +50,5 @@ private:
 	bool m_IsCenterCalc;
 };
 
-typedef const BoundingRect& cbrect;
 
 

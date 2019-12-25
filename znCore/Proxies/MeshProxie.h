@@ -1,6 +1,6 @@
 #pragma once
 
-class OW_ENGINE_API MeshProxie : public IMesh
+class ZN_API MeshProxie : public IMesh
 {
 public:
 	MeshProxie(std::shared_ptr<IMesh> _mesh);

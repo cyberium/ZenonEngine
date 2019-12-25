@@ -87,7 +87,7 @@ void CUIBeizerLineNode::UpdateBuffer()
     p[2] = P2;
     p[3] = m_EndPoint;
 
-    std::shared_ptr<IBuffer> pointsBufferNew = GetManager<IRenderDevice>(GetBaseManager())->CreateVertexBuffer(p, 4);
+    std::shared_ptr<IBuffer> pointsBufferNew = GetBaseManager()->GetManager<IRenderDevice>()->CreateVertexBuffer(p, 4);
     m_PointsBuffer->Copy(pointsBufferNew);
-	GetManager<IRenderDevice>(GetBaseManager())->DestroyVertexBuffer(pointsBufferNew);
+	GetBaseManager()->GetManager<IRenderDevice>()->DestroyVertexBuffer(pointsBufferNew);
 }

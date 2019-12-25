@@ -10,7 +10,7 @@ CGameState::CGameState(IBaseManager * BaseManager, std::shared_ptr<IRenderWindow
 	, m_IsInited(false)
 	, m_IsCurrent(false)
 {
-	m_RenderDevice = GetManager<IRenderDevice>(m_BaseManager);
+	m_RenderDevice = m_BaseManager->GetManager<IRenderDevice>();
 }
 
 CGameState::~CGameState()
@@ -23,22 +23,22 @@ CGameState::~CGameState()
 //
 bool CGameState::Init()
 {
-	m_VideoSettings = GetManager<ISettings>(m_BaseManager)->GetGroup("Video");
+	m_VideoSettings = GetBaseManager()->GetManager<ISettings>()->GetGroup("Video");
 
 	m_FrameQuery = GetRenderDevice()->CreateQuery(IQuery::QueryType::Timer, 1);
 	m_TestQuery = GetRenderDevice()->CreateQuery(IQuery::QueryType::CountSamples, 1);
 
-	m_Scene3D = GetManager<IScenesFactory>(GetBaseManager())->CreateScene("SceneBase");
-	m_SceneUI = GetManager<IScenesFactory>(GetBaseManager())->CreateScene("SceneBase");
+	m_Scene3D = GetBaseManager()->GetManager<IScenesFactory>()->CreateScene("SceneBase");
+	m_SceneUI = GetBaseManager()->GetManager<IScenesFactory>()->CreateScene("SceneBase");
 
 	{
-		m_CameraPosText = GetManager<ISceneNodesFactory>(GetBaseManager())->CreateSceneNode(m_SceneUI->GetRootNode(), "TextUI");
+		m_CameraPosText = GetBaseManager()->GetManager<ISceneNodesFactory>()->CreateSceneNode(m_SceneUI->GetRootNode(), "TextUI");
 		m_CameraPosText->GetComponent<ITransformComponentUI>()->SetTranslate(vec2(0.0f, 0.0f));
 
-		m_CameraRotText = GetManager<ISceneNodesFactory>(GetBaseManager())->CreateSceneNode(m_SceneUI->GetRootNode(), "TextUI");
+		m_CameraRotText = GetBaseManager()->GetManager<ISceneNodesFactory>()->CreateSceneNode(m_SceneUI->GetRootNode(), "TextUI");
 		m_CameraRotText->GetComponent<ITransformComponentUI>()->SetTranslate(vec2(0.0f, 20.0f));
 
-		m_FPSText = GetManager<ISceneNodesFactory>(GetBaseManager())->CreateSceneNode(m_SceneUI->GetRootNode(), "TextUI");
+		m_FPSText = GetBaseManager()->GetManager<ISceneNodesFactory>()->CreateSceneNode(m_SceneUI->GetRootNode(), "TextUI");
 		m_FPSText->GetComponent<ITransformComponentUI>()->SetTranslate(vec2(0.0f, 40.0f));
 	}
 

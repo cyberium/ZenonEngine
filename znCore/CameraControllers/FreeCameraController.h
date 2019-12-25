@@ -2,7 +2,7 @@
 
 #include "CameraControllerBase.h"
 
-class OW_ENGINE_API CFreeCameraController 
+class ZN_API CFreeCameraController 
 	: public CCameraControllerBase
 {
 public:

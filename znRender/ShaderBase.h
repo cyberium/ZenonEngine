@@ -1,6 +1,6 @@
 #pragma once
 
-class OW_ENGINE_API ShaderBase : public IShader, public Object
+class ZN_API ShaderBase : public IShader, public Object
 {
 public:
 	ShaderBase();

@@ -4,7 +4,7 @@
 #include "RasterizerStateDX11.h"
 #include "DepthStencilStateDX11.h"
 
-class OW_ENGINE_API PipelineStateDX11 : public IPipelineState
+class ZN_API PipelineStateDX11 : public IPipelineState
 {
 public:
 	PipelineStateDX11(ID3D11Device2* pDevice);

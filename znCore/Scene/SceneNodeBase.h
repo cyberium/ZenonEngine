@@ -1,6 +1,6 @@
 #pragma once
 
-class OW_ENGINE_API SceneNodeBase 
+class ZN_API SceneNodeBase 
 	: public ISceneNode
 	, public ISceneNodeInternal
 	, public Object
@@ -24,8 +24,9 @@ public:
     void                                            RaiseComponentMessage(std::shared_ptr<ISceneNodeComponent> Component, ComponentMessageType Message) override;
     virtual void                                    RegisterComponents();
 
-	// Properties
-	std::shared_ptr<IPropertiesGroup>				GetProperties() const;
+	// Actions & Properties
+	std::shared_ptr<IActionsGroup>                  GetActions() const override;
+	std::shared_ptr<IPropertiesGroup>				GetProperties() const override;
 
     // Scene access
     void                                            SetScene(std::shared_ptr<IScene> Scene) override;
@@ -93,11 +94,10 @@ protected:
 	IBaseManager*                                   GetBaseManager() const;
 
 private:
-
-
-private:
 	std::string                                     m_Name;
     ComponentsMap                                   m_Components;
+
+	std::shared_ptr<IActionsGroup>                  m_ActionsGroup;
 	std::shared_ptr<IPropertiesGroup>               m_PropertiesGroup;
 
     std::weak_ptr<IScene>                           m_Scene;

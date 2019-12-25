@@ -18,15 +18,15 @@ MainEditor::MainEditor(QWidget* Parent)
 	m_PropertiesController = std::make_shared<CPropertiesController>(ui.PropertyEditor);
 
 	// Add context menu for scene node viewer
-	contextMenu = std::make_shared<QMenu>(this);
+	m_SceneTreeViewerContextMenu = std::make_shared<QMenu>(this);
 
-	QAction* uninstallAction = new QAction("Uninstall TA", contextMenu.get());
-	contextMenu->addAction(uninstallAction);
+	QAction* uninstallAction = new QAction("Uninstall TA", m_SceneTreeViewerContextMenu.get());
+	m_SceneTreeViewerContextMenu->addAction(uninstallAction);
 
-	contextMenu->addSeparator();
+	m_SceneTreeViewerContextMenu->addSeparator();
 
-	QAction* uninstallAction33 = new QAction("Uninstall TA33", contextMenu.get());
-	contextMenu->addAction(uninstallAction33);
+	QAction* uninstallAction33 = new QAction("Uninstall TA33", m_SceneTreeViewerContextMenu.get());
+	m_SceneTreeViewerContextMenu->addAction(uninstallAction33);
 
 	ui.SceneTreeViewer->setContextMenuPolicy(Qt::CustomContextMenu);
 
@@ -71,6 +71,6 @@ void MainEditor::onCustomContextMenu(const QPoint &point)
 	QModelIndex index = ui.SceneTreeViewer->indexAt(point);
 	if (index.isValid() && index.row() % 2 == 0) 
 	{
-		contextMenu->exec(ui.SceneTreeViewer->viewport()->mapToGlobal(point));
+		m_SceneTreeViewerContextMenu->exec(ui.SceneTreeViewer->viewport()->mapToGlobal(point));
 	}
 }

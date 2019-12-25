@@ -2,7 +2,7 @@
 
 #include "AbstractPass.h"
 
-class OW_ENGINE_API CBaseScenePass
+class ZN_API CBaseScenePass
 	: public AbstractPass
 {
 public:

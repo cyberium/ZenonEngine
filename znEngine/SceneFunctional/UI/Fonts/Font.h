@@ -1,6 +1,6 @@
 #pragma once
 
-class OW_ENGINE_API CFontMesh : public MeshProxie
+class ZN_API CFontMesh : public MeshProxie
 {
 public:
 	CFontMesh(std::shared_ptr<ITexture> _texture, std::shared_ptr<IMesh> _fontGeometry, std::vector<uint32> _widthArray, uint32 _height);

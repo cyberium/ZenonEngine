@@ -7,7 +7,7 @@
 #define UUID_TransformComponent_OnLocalTransformChanged 0x00000011
 #define UUID_TransformComponent_OnWorldTransformChanged 0x00000012
 
-class __declspec(UUID_TransformComponent) OW_ENGINE_API CTransformComponentBase
+class __declspec(UUID_TransformComponent) ZN_API CTransformComponentBase
 	: public ITransformComponent
 	, public CComponentBase
 {

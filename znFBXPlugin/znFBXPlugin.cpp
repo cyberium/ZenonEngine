@@ -28,9 +28,9 @@ public:
 	//
 	bool Initialize()
 	{
-		gLogInstance = std::dynamic_pointer_cast<CLog>(GetManager<ILog>(m_BaseManager)).get();
+		gLogInstance = std::dynamic_pointer_cast<CLog>(m_BaseManager->GetManager<ILog>()).get();
 
-		GetManager<IFilesManager>(m_BaseManager)->RegisterFilesStorage(std::make_shared<CLibraryResourceFileStotage>(GetModuleHandle(L"znFBXPlugin.dll")));
+		m_BaseManager->GetManager<IFilesManager>()->RegisterFilesStorage(std::make_shared<CLibraryResourceFileStotage>(GetModuleHandle(L"znFBXPlugin.dll")));
 
 		return true;
 	}

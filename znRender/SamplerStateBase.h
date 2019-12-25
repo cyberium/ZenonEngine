@@ -1,6 +1,6 @@
 #pragma once
 
-class OW_ENGINE_API SamplerStateBase : public ISamplerState, public Object
+class ZN_API SamplerStateBase : public ISamplerState, public Object
 {	
 public:
 	SamplerStateBase();

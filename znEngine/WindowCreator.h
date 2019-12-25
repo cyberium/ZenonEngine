@@ -1,6 +1,6 @@
 #pragma once
 
-class OW_ENGINE_API CWindowObject 
+class ZN_API CWindowObject 
 	: public IWindowObject
 	, public IWindowEvents
 	, public IWindowObjectEx

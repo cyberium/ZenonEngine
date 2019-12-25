@@ -1,6 +1,6 @@
 #pragma once
 
-class OW_ENGINE_API CFBX
+class ZN_API CFBX
 {
 public:
 	CFBX(const std::string& SceneName,  std::shared_ptr<ISceneNode> ParentNode);

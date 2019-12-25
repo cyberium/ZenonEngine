@@ -1,6 +1,6 @@
 #pragma once
 
-class OW_ENGINE_API ShaderInputLayoutBase : public IShaderInputLayout, public Object
+class ZN_API ShaderInputLayoutBase : public IShaderInputLayout, public Object
 {
 public:
     ShaderInputLayoutBase();

@@ -4,7 +4,7 @@
 #include "TransformComponent3D.h"
 
 // Additional
-#include "Scene/SceneNodeProperties.h"
+#include "Scene/Properties.h"
 
 CTransformComponent3D::CTransformComponent3D(std::shared_ptr<ISceneNode> OwnerNode)
     : base(OwnerNode)
@@ -17,22 +17,19 @@ CTransformComponent3D::CTransformComponent3D(std::shared_ptr<ISceneNode> OwnerNo
 	GetPropertiesGroup()->SetName("Transform");
 	GetPropertiesGroup()->SetDescription("Transorm of this node. Like translation, rotation and scale.");
 
-	std::shared_ptr<CPropertyWrapped<glm::vec3>> translateProperty = std::make_shared<CPropertyWrapped<glm::vec3>>();
-	translateProperty->SetName("Translate");
+	std::shared_ptr<CPropertyWrapped<glm::vec3>> translateProperty = std::make_shared<CPropertyWrapped<glm::vec3>>("Translate", "Position of this node in world. Relative to parent.");
 	translateProperty->SetValueSetter(std::bind(&CTransformComponent3D::SetTranslate, this, std::placeholders::_1));
 	translateProperty->SetValueGetter(std::bind(&CTransformComponent3D::GetTranslation, this));
 	GetPropertiesGroup()->AddProperty(translateProperty);
 
 
-	std::shared_ptr<CPropertyWrapped<glm::vec3>> rotationProperty = std::make_shared<CPropertyWrapped<glm::vec3>>();
-	rotationProperty->SetName("Rotate");
+	std::shared_ptr<CPropertyWrapped<glm::vec3>> rotationProperty = std::make_shared<CPropertyWrapped<glm::vec3>>("Rotate", "Rotation of this node. Relative to parent.");
 	rotationProperty->SetValueSetter(std::bind(&CTransformComponent3D::SetRotation, this, std::placeholders::_1));
 	rotationProperty->SetValueGetter(std::bind(&CTransformComponent3D::GetRotation, this));
 	GetPropertiesGroup()->AddProperty(rotationProperty);
 
 
-	std::shared_ptr<CPropertyWrapped<glm::vec3>> scaleProperty = std::make_shared<CPropertyWrapped<glm::vec3>>();
-	scaleProperty->SetName("Scale");
+	std::shared_ptr<CPropertyWrapped<glm::vec3>> scaleProperty = std::make_shared<CPropertyWrapped<glm::vec3>>("Scale", "Scale of this node. Relative to parent.");
 	scaleProperty->SetValueSetter(std::bind(&CTransformComponent3D::SetScale, this, std::placeholders::_1));
 	scaleProperty->SetValueGetter(std::bind(&CTransformComponent3D::GetScale, this));
 	GetPropertiesGroup()->AddProperty(scaleProperty);

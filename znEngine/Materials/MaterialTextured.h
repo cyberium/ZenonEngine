@@ -1,6 +1,6 @@
 #pragma once
 
-class OW_ENGINE_API MaterialTextured : public MaterialProxie
+class ZN_API MaterialTextured : public MaterialProxie
 {
 public:
 	MaterialTextured(std::shared_ptr<IRenderDevice> RenderDevice);

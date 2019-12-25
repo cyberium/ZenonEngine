@@ -1,6 +1,6 @@
 #pragma once
 
-class OW_ENGINE_API UI_Font_Material : public MaterialProxie
+class ZN_API UI_Font_Material : public MaterialProxie
 {
 public:
 	UI_Font_Material(std::shared_ptr<IRenderDevice> RenderDevice);

@@ -6,7 +6,7 @@
 class SceneNode3D;
 // FORWARD END
 
-class OW_ENGINE_API Base3DPass : public CBaseScenePass
+class ZN_API Base3DPass : public CBaseScenePass
 {
 public:
 	Base3DPass(std::shared_ptr<IRenderDevice> RenderDevice, std::shared_ptr<IScene> scene, std::shared_ptr<IPipelineState> pipeline);

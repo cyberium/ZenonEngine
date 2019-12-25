@@ -1,6 +1,6 @@
 #pragma once
 
-class OW_ENGINE_API CFBXSceneNode
+class ZN_API CFBXSceneNode
 	: public SceneNode3D
 {
 public:

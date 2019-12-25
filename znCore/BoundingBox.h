@@ -3,7 +3,7 @@
 // Include
 #include "Math.h"
 
-class OW_ENGINE_API BoundingBox
+class ZN_API BoundingBox
 {
 public:
 	BoundingBox();
@@ -49,7 +49,3 @@ private:
 	float m_Radius;
 	bool m_IsCenterCalc;
 };
-
-typedef const BoundingBox& cbbox;
-
-

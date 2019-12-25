@@ -1,6 +1,6 @@
 #pragma once
 
-class OW_ENGINE_API ClearRenderTargetPass : public AbstractPass
+class ZN_API ClearRenderTargetPass : public AbstractPass
 {
 public:
 	ClearRenderTargetPass

@@ -26,7 +26,7 @@ public:
 	//
 	bool Initialize() override
 	{
-		gLogInstance = std::dynamic_pointer_cast<CLog>(GetManager<ILog>(m_BaseManager)).get();
+		gLogInstance = std::dynamic_pointer_cast<CLog>(m_BaseManager->GetManager<ILog>()).get();
 
 		return true;
 	}

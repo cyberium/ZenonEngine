@@ -2,7 +2,7 @@
 
 //#define LOADER_ENABLED
 
-class OW_ENGINE_API CLoader 
+class ZN_API CLoader 
 	: public ILoader
 {
 public:

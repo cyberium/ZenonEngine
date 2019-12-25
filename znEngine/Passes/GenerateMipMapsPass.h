@@ -1,6 +1,6 @@
 #pragma once
 
-class OW_ENGINE_API GenerateMipMapPass : public AbstractPass
+class ZN_API GenerateMipMapPass : public AbstractPass
 {
 public:
 	GenerateMipMapPass(std::shared_ptr<IRenderDevice> RenderDevice, std::shared_ptr<IRenderTarget> renderTarget);

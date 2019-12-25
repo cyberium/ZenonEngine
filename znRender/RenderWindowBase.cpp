@@ -110,17 +110,36 @@ void RenderWindowBase::OnUpdate(UpdateEventArgs& e)
 
 		m_RenderTarget->Bind();
 		{
-
-			m_PreRender(renderArgs);
-			m_Render(renderArgs);
-			m_PostRender(renderArgs);
-			m_RenderUI(renderArgs);
+			OnPreRender(renderArgs);
+			OnRender(renderArgs);
+			OnPostRender(renderArgs);
+			OnRenderUI(renderArgs);
 		}
 		//m_RenderTarget->UnBind(); ???
 
 		Present();
 	}
 	GetRenderDevice()->Unlock();
+}
+
+void RenderWindowBase::OnPreRender(RenderEventArgs & e)
+{
+	m_PreRender(e);
+}
+
+void RenderWindowBase::OnRender(RenderEventArgs & e)
+{
+	m_Render(e);
+}
+
+void RenderWindowBase::OnPostRender(RenderEventArgs & e)
+{
+	m_PostRender(e);
+}
+
+void RenderWindowBase::OnRenderUI(RenderEventArgs & e)
+{
+	m_RenderUI(e);
 }
 
 void RenderWindowBase::OnResize(ResizeEventArgs& e) // The RenderWindowBase window has be resized

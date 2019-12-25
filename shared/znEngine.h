@@ -11,4 +11,4 @@
 /*
  * Initialize improtant managers and plugins
  */
-OW_ENGINE_API IBaseManager* WINAPI InitializeEngine(std::vector<std::string> Arguments);
+ZN_API IBaseManager* WINAPI InitializeEngine(std::vector<std::string> Arguments);

@@ -1,6 +1,6 @@
 #pragma once
 
-class OW_ENGINE_API BlendStateDX11 : public BlendStateBase
+class ZN_API BlendStateDX11 : public BlendStateBase
 {
 public:
 	                                                BlendStateDX11(ID3D11Device2* pDevice);

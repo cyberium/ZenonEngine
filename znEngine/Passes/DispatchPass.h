@@ -1,6 +1,6 @@
 #pragma once
 
-class OW_ENGINE_API DispatchPass : public AbstractPass
+class ZN_API DispatchPass : public AbstractPass
 {
 public:
 	DispatchPass(std::shared_ptr<IRenderDevice> RenderDevice, std::shared_ptr<IShader> computeShader, const glm::uvec3& numGroups);

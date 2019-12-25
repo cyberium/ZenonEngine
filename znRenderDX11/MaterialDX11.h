@@ -1,6 +1,6 @@
 #pragma once
 
-class OW_ENGINE_API MaterialDX11 : public MaterialBase
+class ZN_API MaterialDX11 : public MaterialBase
 {
 public:
 	MaterialDX11(std::weak_ptr<IRenderDevice> renderDevice, size_t Size);

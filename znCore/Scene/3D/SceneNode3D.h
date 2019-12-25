@@ -2,7 +2,7 @@
 
 #include "../SceneNodeBase.h"
 
-class OW_ENGINE_API SceneNode3D 
+class ZN_API SceneNode3D 
 	: public SceneNodeBase
 	, public ISceneNode3D
 {

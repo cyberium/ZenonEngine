@@ -1,6 +1,6 @@
 #pragma once
 
-class OW_ENGINE_API Utils
+class ZN_API Utils
 {
 public:
     // Convert
@@ -91,4 +91,4 @@ inline void SafeDeleteArray(T& ptr)
 	}
 }
 
-OW_ENGINE_API std::vector<std::string> ArgumentsToVector(int argumentsCount, char* arguments[]);
+ZN_API std::vector<std::string> ArgumentsToVector(int argumentsCount, char* arguments[]);

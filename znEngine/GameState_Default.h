@@ -1,6 +1,6 @@
 #pragma once
 
-class OW_ENGINE_API CGameState_World : public CGameState
+class ZN_API CGameState_World : public CGameState
 {
 public:
 	CGameState_World(IBaseManager * BaseManager, std::shared_ptr<IRenderWindow> RenderWindow, IWindowEvents* WindowEvents);

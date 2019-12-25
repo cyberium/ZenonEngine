@@ -1,6 +1,6 @@
 #pragma once
 
-class OW_ENGINE_API RasterizerStateBase : public IRasterizerState, public Object
+class ZN_API RasterizerStateBase : public IRasterizerState, public Object
 {
 public:
 	RasterizerStateBase();

@@ -1,8 +1,6 @@
 #pragma once
 
-#include "../Interfaces/Types/Events.h"
-
-class OW_ENGINE_API SceneBase 
+class ZN_API SceneBase 
 	: public IScene
 	, public IBaseManagerHolder
 	, public Object

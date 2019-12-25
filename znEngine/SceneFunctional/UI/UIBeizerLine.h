@@ -2,7 +2,7 @@
 
 #include "../../Materials/UI_Line_Material.h"
 
-class OW_ENGINE_API CUIBeizerLineNode : public CUIBaseNode
+class ZN_API CUIBeizerLineNode : public CUIBaseNode
 {
 	typedef CUIBaseNode base;
 public:

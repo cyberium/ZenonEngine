@@ -21,10 +21,10 @@ int main(int argc, char *argv[])
 	MainEditor w;
 
 	std::shared_ptr<IRenderDevice> renderDevice = app.CreateRenderDevice(RenderDeviceType::RenderDeviceType_DirectX);
-	AddManager<IRenderDevice>(BaseManager, renderDevice);
+	BaseManager->AddManager<IRenderDevice>(renderDevice);
 
 	std::shared_ptr<IFontsManager> fontsManager = std::make_shared<FontsManager>(renderDevice, BaseManager);
-	AddManager<IFontsManager>(BaseManager, fontsManager);
+	BaseManager->AddManager<IFontsManager>(fontsManager);
 
 	// Render window for main editor
 	std::shared_ptr<IRenderWindow> renderWindow = renderDevice->CreateRenderWindow(w.getUI().EditorWindow, false);
@@ -39,7 +39,7 @@ int main(int argc, char *argv[])
 
 	w.show();
 
-	GetManager<ILog>(BaseManager)->AddDebugOutput(std::make_shared<DebugOutput_EditorLog>(w.getUI().LogTextEdit));
+	BaseManager->GetManager<ILog>()->AddDebugOutput(std::make_shared<DebugOutput_EditorLog>(w.getUI().LogTextEdit));
 
 	app.Run();
 

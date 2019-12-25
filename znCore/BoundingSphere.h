@@ -1,6 +1,6 @@
 #pragma once
 
-class OW_ENGINE_API BoundingSphere
+class ZN_API BoundingSphere
 {
 public:
 	BoundingSphere(cvec3 center = vec3(0), float radius = 0);
@@ -21,5 +21,4 @@ private:
 	vec3	m_Center;
 	float	m_Radius;
 	float	m_InvRadiusSqr;    // 1 / ( radius^2)
-
 };

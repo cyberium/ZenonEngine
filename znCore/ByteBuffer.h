@@ -1,6 +1,6 @@
 #pragma once
 
-class OW_ENGINE_API CByteBuffer : public IByteBuffer, public IByteBufferEx
+class ZN_API CByteBuffer : public IByteBuffer, public IByteBufferEx
 {
 public:
 	CByteBuffer();

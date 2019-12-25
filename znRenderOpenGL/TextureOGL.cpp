@@ -135,7 +135,7 @@ bool TextureOGL::LoadTextureCustom(uint16_t width, uint16_t height, void * pixel
 
 bool TextureOGL::LoadTexture2D(const std::string& fileName)
 {
-    std::shared_ptr<IFile> f = GetManager<IFilesManager>(m_RenderDevice.lock()->GetBaseManager())->Open(fileName);
+    std::shared_ptr<IFile> f = m_RenderDevice.lock()->GetBaseManager()->GetManager<IFilesManager>()->Open(fileName);
     if (f == nullptr)
         return false;
 

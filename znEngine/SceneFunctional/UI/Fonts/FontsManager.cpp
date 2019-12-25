@@ -66,7 +66,7 @@ std::shared_ptr<CFontMesh> FontsManager::CreateAction(const std::string& _nameAn
 	std::string fontFileName = _nameAndSize.substr(0, _delimIndex - 1);
 	uint32 fontSize = Utils::ToType<uint32>(_nameAndSize.substr(_delimIndex + 1));
 
-	std::shared_ptr<IFile> f = GetManager<IFilesManager>(m_BaseManager)->Open(fontFileName);
+	std::shared_ptr<IFile> f = m_BaseManager->GetManager<IFilesManager>()->Open(fontFileName);
 	if (f == nullptr)
 	{
 		Log::Fatal("FontsManager[%s]: Error while loading font.", _nameAndSize.c_str());

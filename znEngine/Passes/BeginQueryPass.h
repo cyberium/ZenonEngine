@@ -1,6 +1,6 @@
 #pragma once
 
-class OW_ENGINE_API BeginQueryPass : public AbstractPass
+class ZN_API BeginQueryPass : public AbstractPass
 {
 public:
 	BeginQueryPass(std::shared_ptr<IRenderDevice> RenderDevice, std::shared_ptr<IQuery> query);

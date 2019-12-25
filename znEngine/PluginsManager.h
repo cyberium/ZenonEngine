@@ -20,7 +20,7 @@ public:
 	{}
 };
 
-class OW_ENGINE_API CznPluginsManager 
+class ZN_API CznPluginsManager 
 	: public IznPluginsManager
 {
 public:

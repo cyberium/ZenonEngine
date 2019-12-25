@@ -11,7 +11,7 @@ CFilesManager::CFilesManager(IBaseManager* BaseManager)
 
 CFilesManager::~CFilesManager()
 {
-	DelManager<IFilesManager>(m_BaseManager);
+	m_BaseManager->RemoveManager<IFilesManager>();
 }
 
 std::shared_ptr<IFile> CFilesManager::Open(const std::string& _fileName)

@@ -3,7 +3,6 @@
 class RenderWindowOGL 
 	: public RenderWindowBase
 {
-    typedef RenderWindowBase base;
 public:
 	                                                RenderWindowOGL(std::shared_ptr<IRenderDevice> RenderDevice, IWindowObject * WindowObject, bool vSync);
 	virtual                                         ~RenderWindowOGL();

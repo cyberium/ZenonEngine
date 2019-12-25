@@ -2,7 +2,7 @@
 
 #include "../ComponentBase.h"
 
-class __declspec(UUID_ColliderComponent) OW_ENGINE_API CColliderComponent3D
+class __declspec(UUID_ColliderComponent) ZN_API CColliderComponent3D
 	: public IColliderComponent3D
 	, public CComponentBase
 {

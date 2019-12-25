@@ -1,6 +1,6 @@
 #pragma once
 
-class OW_ENGINE_API CLibraryResourceFileStotage : public IFilesStorage, public IFilesStorageEx
+class ZN_API CLibraryResourceFileStotage : public IFilesStorage, public IFilesStorageEx
 {
 public:
     CLibraryResourceFileStotage(HMODULE HModule, Priority Priority = PRIOR_HIGHEST);

@@ -65,7 +65,7 @@ bool ShaderOGL::LoadShaderFromFile(ShaderType shaderType, const std::string& fil
     m_ShaderType = shaderType;
     m_ShaderFileName = fileName;
 
-    std::shared_ptr<IFile> file = GetManager<IFilesManager>(m_RenderDevice.lock()->GetBaseManager())->Open(fileName);
+    std::shared_ptr<IFile> file = m_RenderDevice.lock()->GetBaseManager()->GetManager<IFilesManager>()->Open(fileName);
     std::string fileSource = RecursionInclude(m_RenderDevice.lock()->GetBaseManager(), file);
     const GLchar *source = (const GLchar *)fileSource.c_str();
 

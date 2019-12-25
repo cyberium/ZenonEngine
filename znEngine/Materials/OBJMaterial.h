@@ -1,6 +1,6 @@
 #pragma once
 
-class OW_ENGINE_API COBJMaterial : public MaterialProxie
+class ZN_API COBJMaterial : public MaterialProxie
 {
 public:
 	COBJMaterial(std::shared_ptr<IRenderDevice> RenderDevice);

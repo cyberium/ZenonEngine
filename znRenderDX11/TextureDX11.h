@@ -1,6 +1,6 @@
 #pragma once
 
-class OW_ENGINE_API TextureDX11 : public ITexture, public std::enable_shared_from_this<TextureDX11>
+class ZN_API TextureDX11 : public ITexture, public std::enable_shared_from_this<TextureDX11>
 {
 public:
 	TextureDX11(std::weak_ptr<IRenderDevice> RenderDevice);

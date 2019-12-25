@@ -1,6 +1,6 @@
 #pragma once
 
-class OW_ENGINE_API DepthStencilStateBase : public IDepthStencilState, public Object
+class ZN_API DepthStencilStateBase : public IDepthStencilState, public Object
 {
 public:
 	DepthStencilStateBase();

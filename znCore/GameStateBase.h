@@ -2,7 +2,7 @@
 
 #include "Passes/RenderTechnique.h"
 
-class OW_ENGINE_API CGameState 
+class ZN_API CGameState 
 	: public IGameState
 	, public Object
 {

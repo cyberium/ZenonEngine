@@ -39,7 +39,7 @@ std::string RecursionInclude(IBaseManager* BaseManager, std::shared_ptr<IFile> f
             std::string inludeFileName = line.substr(firstBracketPosition + 1, lastBracketPosition - firstBracketPosition - 1);
             CFile::FixFilePath(inludeFileName);
 
-            std::shared_ptr<IFile> includeFile = GetManager<IFilesManager>(BaseManager)->Open(inludeFileName);
+            std::shared_ptr<IFile> includeFile = BaseManager->GetManager<IFilesManager>()->Open(inludeFileName);
 
             data += RecursionInclude(BaseManager, includeFile) + '\n';
 

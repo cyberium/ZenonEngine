@@ -28,7 +28,7 @@ private:
 	std::shared_ptr<IScene> m_Scene;
 	Ui::MainEditorClass ui;
 
-	std::shared_ptr<QMenu> contextMenu;
+	std::shared_ptr<QMenu>                          m_SceneTreeViewerContextMenu;
 
-	std::shared_ptr<CPropertiesController> m_PropertiesController;
+	std::shared_ptr<CPropertiesController>          m_PropertiesController;
 };

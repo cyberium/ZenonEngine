@@ -4,7 +4,7 @@
 #include "../../Materials/UI_Button_Material.h"
 
 
-class OW_ENGINE_API UIButtonClickEventArgs
+class ZN_API UIButtonClickEventArgs
 {
 public:
 	UIButtonClickEventArgs()
@@ -13,7 +13,7 @@ public:
 typedef Delegate<UIButtonClickEventArgs> UIButtonClickEvent;
 
 
-class OW_ENGINE_API CUIButtonNode : public CUIBaseNode
+class ZN_API CUIButtonNode : public CUIBaseNode
 {
 	typedef CUIBaseNode base;
 public:

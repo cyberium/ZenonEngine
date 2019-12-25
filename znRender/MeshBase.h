@@ -1,6 +1,6 @@
 #pragma once
 
-class OW_ENGINE_API MeshBase : public IMesh, public Object
+class ZN_API MeshBase : public IMesh, public Object
 {
 public:
 	MeshBase();

@@ -2,7 +2,7 @@
 
 #include "Plane.h"
 
-class OW_ENGINE_API Frustum
+class ZN_API Frustum
 {
 public:
 

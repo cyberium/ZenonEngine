@@ -4,7 +4,7 @@
 #include "ComponentBase.h"
 
 // Additional
-#include "SceneNodeProperties.h"
+#include "Properties.h"
 
 CComponentBase::CComponentBase(std::shared_ptr<ISceneNode> OwnerNode)
     : m_OwnerNode(OwnerNode)

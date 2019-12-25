@@ -1,6 +1,6 @@
 #pragma once
 
-class OW_ENGINE_API RenderTechnique : public Object
+class ZN_API RenderTechnique : public Object
 {
 public:
 	                                                RenderTechnique();

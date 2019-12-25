@@ -1,6 +1,6 @@
 #pragma once
 
-class OW_ENGINE_API Plane
+class ZN_API Plane
 {
 public:
 	Plane()

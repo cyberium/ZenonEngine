@@ -1,6 +1,6 @@
 #pragma once
 
-class OW_ENGINE_API CRenderDevicePrimitiveCollection : public IRenderDevicePrimitiveCollection
+class ZN_API CRenderDevicePrimitiveCollection : public IRenderDevicePrimitiveCollection
 {
 public:
 	CRenderDevicePrimitiveCollection(IRenderDevice* RenderDevice);
@@ -26,7 +26,7 @@ private:
 };
 
 
-class OW_ENGINE_API RenderDeviceBase : public IRenderDevice, public Object
+class ZN_API RenderDeviceBase : public IRenderDevice, public Object
 {
 public:
 	RenderDeviceBase();

@@ -13,7 +13,7 @@
 RenderWindowOGL::RenderWindowOGL(std::shared_ptr<IRenderDevice> RenderDevice, IWindowObject * WindowObject, bool vSync)
 	: RenderWindowBase(RenderDevice, WindowObject, vSync)
 {
-	m_HDC = GetDC(GetHWnd());
+	m_HDC = GetDC(GetWindowObject()->GetHWnd());
 
     std::shared_ptr<RenderDeviceOGL> renderDeviceDX11 = std::dynamic_pointer_cast<RenderDeviceOGL>(GetRenderDevice());
     renderDeviceDX11->InitDevice(m_HDC);
@@ -59,7 +59,7 @@ void RenderWindowOGL::OnPreRender(RenderEventArgs& e)
 
 	std::dynamic_pointer_cast<RenderDeviceOGL>(GetRenderDevice())->SetDefaultRB(defaultRB);
 
-	base::OnPreRender(e);
+	RenderWindowBase::OnPreRender(e);
 }
 
 
@@ -69,7 +69,7 @@ void RenderWindowOGL::OnPreRender(RenderEventArgs& e)
 //
 void RenderWindowOGL::CreateSwapChain()
 {
-    base::CreateSwapChain();
+	RenderWindowBase::CreateSwapChain();
 
     // Create the device and swap chain before the window is shown.
     UINT windowWidth2 = GetWindowWidth();

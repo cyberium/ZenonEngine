@@ -86,7 +86,7 @@ void CPropertiesController::CreateProperty(QtnPropertySet * PropertiesSet, std::
 {
 	if (std::shared_ptr<IPropertiesGroup> propGroup = std::dynamic_pointer_cast<IPropertiesGroup>(Property))
 	{
-		auto propertySet = new QtnPropertySet(this);
+		QtnPropertySet* propertySet = new QtnPropertySet(this);
 		propertySet->setName(propGroup->GetName().c_str());
 		propertySet->setDescription(propGroup->GetDescription().c_str());
 		PropertiesSet->addChildProperty(propertySet);
@@ -98,7 +98,7 @@ void CPropertiesController::CreateProperty(QtnPropertySet * PropertiesSet, std::
 	}
 	else if (std::shared_ptr<IPropertyT<std::string>> propT = std::dynamic_pointer_cast<IPropertyT<std::string>>(Property))
 	{
-		auto stringProperty = qtnCreateProperty<QtnPropertyString>(PropertiesSet);
+		QtnPropertyString* stringProperty = qtnCreateProperty<QtnPropertyString>(PropertiesSet);
 		stringProperty->setName(propT->GetName().c_str());
 		stringProperty->setDescription(propT->GetDescription().c_str());
 		stringProperty->setValue(propT->Get());
@@ -106,15 +106,13 @@ void CPropertiesController::CreateProperty(QtnPropertySet * PropertiesSet, std::
 		auto lambda = [stringProperty, propT](const QtnPropertyBase* changedProperty, const QtnPropertyBase* firedProperty, QtnPropertyChangeReason reason)
 		{
 			if (reason & QtnPropertyChangeReasonValue)
-			{
 				propT->Set(stringProperty->value());
-			}
 		};
 		QObject::connect(stringProperty, &QtnProperty::propertyDidChange, lambda);
 	}
 	else if (std::shared_ptr<IPropertyT<glm::vec3>> propT = std::dynamic_pointer_cast<IPropertyT<glm::vec3>>(Property))
 	{
-		auto vec3Property = qtnCreateProperty<QtnPropertyVec3>(PropertiesSet);
+		QtnPropertyVec3* vec3Property = qtnCreateProperty<QtnPropertyVec3>(PropertiesSet);
 		vec3Property->setName(propT->GetName().c_str());
 		vec3Property->setDescription(propT->GetDescription().c_str());
 		vec3Property->setValue(propT->Get());
@@ -122,9 +120,7 @@ void CPropertiesController::CreateProperty(QtnPropertySet * PropertiesSet, std::
 		auto lambda = [vec3Property, propT](const QtnPropertyBase* changedProperty, const QtnPropertyBase* firedProperty, QtnPropertyChangeReason reason)
 		{
 			if (reason & QtnPropertyChangeReasonValue)
-			{
 				propT->Set(vec3Property->value());
-			}
 		};
 		QObject::connect(vec3Property, &QtnProperty::propertyDidChange, lambda);
 	}

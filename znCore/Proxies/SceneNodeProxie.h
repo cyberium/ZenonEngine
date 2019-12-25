@@ -2,7 +2,7 @@
 
 #if 0
 
-class OW_ENGINE_API CSceneNodeProxie
+class ZN_API CSceneNodeProxie
 	: public ISceneNode
 	, public ISceneNodeWrapper
 {

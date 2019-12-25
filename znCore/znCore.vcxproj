@@ -19,6 +19,30 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\Externals\tinyxml-2.6.2\tinystr.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\Externals\tinyxml-2.6.2\tinyxml.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\Externals\tinyxml-2.6.2\tinyxmlerror.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\Externals\tinyxml-2.6.2\tinyxmlparser.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="BoundingBox.cpp" />
     <ClCompile Include="BoundingRect.cpp" />
     <ClCompile Include="BoundingSphere.cpp" />
@@ -57,12 +81,13 @@
     <ClCompile Include="Scene\3D\MeshComponent3D.cpp" />
     <ClCompile Include="Scene\3D\SceneNode3D.cpp" />
     <ClCompile Include="Scene\3D\TransformComponent3D.cpp" />
+    <ClCompile Include="Scene\Actions.cpp" />
     <ClCompile Include="Scene\ComponentBase.cpp" />
     <ClCompile Include="Scene\Light3D.cpp" />
     <ClCompile Include="Scene\LoadableObject.cpp" />
     <ClCompile Include="Scene\SceneBase.cpp" />
     <ClCompile Include="Scene\SceneNodeBase.cpp" />
-    <ClCompile Include="Scene\SceneNodeProperties.cpp" />
+    <ClCompile Include="Scene\Properties.cpp" />
     <ClCompile Include="Scene\TransformComponentBase.cpp" />
     <ClCompile Include="Scene\UI\SceneNodeUI.cpp" />
     <ClCompile Include="Scene\UI\TransformComponentUI.cpp" />
@@ -78,6 +103,8 @@
     <ClCompile Include="UtilsConvert.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\Externals\tinyxml-2.6.2\tinystr.h" />
+    <ClInclude Include="..\Externals\tinyxml-2.6.2\tinyxml.h" />
     <ClInclude Include="..\shared\znCore.h" />
     <ClInclude Include="BoundingBox.h" />
     <ClInclude Include="BoundingRect.h" />
@@ -92,58 +119,59 @@
     <ClInclude Include="DebugOutputLog.h" />
     <ClInclude Include="GameStateBase.h" />
     <ClInclude Include="HighResolutionTimer.h" />
-    <ClInclude Include="Interfaces\Application.h" />
-    <ClInclude Include="Interfaces\BaseManager.h" />
-    <ClInclude Include="Interfaces\CameraController.h" />
-    <ClInclude Include="Interfaces\Console.h" />
-    <ClInclude Include="Interfaces\DebugOutput.h" />
-    <ClInclude Include="Interfaces\Files.h" />
-    <ClInclude Include="Interfaces\GameState.h" />
-    <ClInclude Include="Interfaces\GameStateManager.h" />
-    <ClInclude Include="Interfaces\Loader.h" />
-    <ClInclude Include="Interfaces\Log.h" />
-    <ClInclude Include="Interfaces\Networking.h" />
-    <ClInclude Include="Interfaces\Plugins.h" />
-    <ClInclude Include="Interfaces\Render\IBlendState.h" />
-    <ClInclude Include="Interfaces\Render\IBuffer.h" />
-    <ClInclude Include="Interfaces\Render\ICamera.h" />
-    <ClInclude Include="Interfaces\Render\IDepthStencilState.h" />
-    <ClInclude Include="Interfaces\Render\IMaterial.h" />
-    <ClInclude Include="Interfaces\Render\IMesh.h" />
-    <ClInclude Include="Interfaces\Render\IPipelineState.h" />
-    <ClInclude Include="Interfaces\Render\IQuery.h" />
-    <ClInclude Include="Interfaces\Render\IRasterizerState.h" />
-    <ClInclude Include="Interfaces\Render\IRender.h" />
-    <ClInclude Include="Interfaces\Render\IRenderDevice.h" />
-    <ClInclude Include="Interfaces\Render\IRenderPass.h" />
-    <ClInclude Include="Interfaces\Render\IRenderTarget.h" />
-    <ClInclude Include="Interfaces\Render\IRenderWindow.h" />
-    <ClInclude Include="Interfaces\Render\ISamplerState.h" />
-    <ClInclude Include="Interfaces\Render\IShader.h" />
-    <ClInclude Include="Interfaces\Render\IShaderInputLayout.h" />
-    <ClInclude Include="Interfaces\Render\IShaderParameter.h" />
-    <ClInclude Include="Interfaces\Render\ITexture.h" />
-    <ClInclude Include="Interfaces\Render\Types\BufferBinding.h" />
-    <ClInclude Include="Interfaces\Render\Types\ClearFlags.h" />
-    <ClInclude Include="Interfaces\Render\Types\CPUAccess.h" />
-    <ClInclude Include="Interfaces\Render\Types\CustomVertexElement.h" />
-    <ClInclude Include="Interfaces\Render\Types\InputSemantic.h" />
-    <ClInclude Include="Interfaces\Render\Types\PrimitiveTopology.h" />
-    <ClInclude Include="Interfaces\Render\Types\Ray.h" />
-    <ClInclude Include="Interfaces\Render\Types\RaycastHit.h" />
-    <ClInclude Include="Interfaces\Render\Types\Viewport.h" />
-    <ClInclude Include="Interfaces\Scene\IProperties.h" />
-    <ClInclude Include="Interfaces\Scene\IScene.h" />
-    <ClInclude Include="Interfaces\Scene\ISceneNode.h" />
-    <ClInclude Include="Interfaces\Scene\ISceneNodeComponents.h" />
-    <ClInclude Include="Interfaces\Scene\ISceneNodeProvider.h" />
-    <ClInclude Include="Interfaces\Settings.h" />
-    <ClInclude Include="Interfaces\Types\Events.h" />
-    <ClInclude Include="Interfaces\Types\KeyCodes.h" />
-    <ClInclude Include="Interfaces\Types\Object.h" />
-    <ClInclude Include="Interfaces\Visitor.h" />
-    <ClInclude Include="Interfaces\WindowObject.h" />
-    <ClInclude Include="Interfaces\__Interfaces.h" />
+    <ClInclude Include="..\shared\Interfaces\Application.h" />
+    <ClInclude Include="..\shared\Interfaces\BaseManager.h" />
+    <ClInclude Include="..\shared\Interfaces\CameraController.h" />
+    <ClInclude Include="..\shared\Interfaces\Console.h" />
+    <ClInclude Include="..\shared\Interfaces\DebugOutput.h" />
+    <ClInclude Include="..\shared\Interfaces\Files.h" />
+    <ClInclude Include="..\shared\Interfaces\GameState.h" />
+    <ClInclude Include="..\shared\Interfaces\GameStateManager.h" />
+    <ClInclude Include="..\shared\Interfaces\Loader.h" />
+    <ClInclude Include="..\shared\Interfaces\Log.h" />
+    <ClInclude Include="..\shared\Interfaces\Networking.h" />
+    <ClInclude Include="..\shared\Interfaces\Plugins.h" />
+    <ClInclude Include="..\shared\Interfaces\Render\IBlendState.h" />
+    <ClInclude Include="..\shared\Interfaces\Render\IBuffer.h" />
+    <ClInclude Include="..\shared\Interfaces\Render\ICamera.h" />
+    <ClInclude Include="..\shared\Interfaces\Render\IDepthStencilState.h" />
+    <ClInclude Include="..\shared\Interfaces\Render\IMaterial.h" />
+    <ClInclude Include="..\shared\Interfaces\Render\IMesh.h" />
+    <ClInclude Include="..\shared\Interfaces\Render\IPipelineState.h" />
+    <ClInclude Include="..\shared\Interfaces\Render\IQuery.h" />
+    <ClInclude Include="..\shared\Interfaces\Render\IRasterizerState.h" />
+    <ClInclude Include="..\shared\Interfaces\Render\IRender.h" />
+    <ClInclude Include="..\shared\Interfaces\Render\IRenderDevice.h" />
+    <ClInclude Include="..\shared\Interfaces\Render\IRenderPass.h" />
+    <ClInclude Include="..\shared\Interfaces\Render\IRenderTarget.h" />
+    <ClInclude Include="..\shared\Interfaces\Render\IRenderWindow.h" />
+    <ClInclude Include="..\shared\Interfaces\Render\ISamplerState.h" />
+    <ClInclude Include="..\shared\Interfaces\Render\IShader.h" />
+    <ClInclude Include="..\shared\Interfaces\Render\IShaderInputLayout.h" />
+    <ClInclude Include="..\shared\Interfaces\Render\IShaderParameter.h" />
+    <ClInclude Include="..\shared\Interfaces\Render\ITexture.h" />
+    <ClInclude Include="..\shared\Interfaces\Render\Types\BufferBinding.h" />
+    <ClInclude Include="..\shared\Interfaces\Render\Types\ClearFlags.h" />
+    <ClInclude Include="..\shared\Interfaces\Render\Types\CPUAccess.h" />
+    <ClInclude Include="..\shared\Interfaces\Render\Types\CustomVertexElement.h" />
+    <ClInclude Include="..\shared\Interfaces\Render\Types\InputSemantic.h" />
+    <ClInclude Include="..\shared\Interfaces\Render\Types\PrimitiveTopology.h" />
+    <ClInclude Include="..\shared\Interfaces\Render\Types\Ray.h" />
+    <ClInclude Include="..\shared\Interfaces\Render\Types\RaycastHit.h" />
+    <ClInclude Include="..\shared\Interfaces\Render\Types\Viewport.h" />
+    <ClInclude Include="..\shared\Interfaces\Scene\IActions.h" />
+    <ClInclude Include="..\shared\Interfaces\Scene\IProperties.h" />
+    <ClInclude Include="..\shared\Interfaces\Scene\IScene.h" />
+    <ClInclude Include="..\shared\Interfaces\Scene\ISceneNode.h" />
+    <ClInclude Include="..\shared\Interfaces\Scene\ISceneNodeComponents.h" />
+    <ClInclude Include="..\shared\Interfaces\Scene\ISceneNodeProvider.h" />
+    <ClInclude Include="..\shared\Interfaces\Settings.h" />
+    <ClInclude Include="..\shared\Interfaces\Types\Events.h" />
+    <ClInclude Include="..\shared\Interfaces\Types\KeyCodes.h" />
+    <ClInclude Include="..\shared\Interfaces\Types\Object.h" />
+    <ClInclude Include="..\shared\Interfaces\Visitor.h" />
+    <ClInclude Include="..\shared\Interfaces\WindowObject.h" />
+    <ClInclude Include="..\shared\Interfaces\__Interfaces.h" />
     <ClInclude Include="LibraryResourceFileStotage.h" />
     <ClInclude Include="LocalFilesStorage.h" />
     <ClInclude Include="LockedQueue.h" />
@@ -183,13 +211,14 @@
     <ClInclude Include="Scene\3D\MeshComponent3D.h" />
     <ClInclude Include="Scene\3D\SceneNode3D.h" />
     <ClInclude Include="Scene\3D\TransformComponent3D.h" />
+    <ClInclude Include="Scene\Actions.h" />
     <ClInclude Include="Scene\ComponentBase.h" />
     <ClInclude Include="Scene\Light.h" />
     <ClInclude Include="Scene\Light3D.h" />
     <ClInclude Include="Scene\LoadableObject.h" />
     <ClInclude Include="Scene\SceneBase.h" />
     <ClInclude Include="Scene\SceneNodeBase.h" />
-    <ClInclude Include="Scene\SceneNodeProperties.h" />
+    <ClInclude Include="Scene\Properties.h" />
     <ClInclude Include="Scene\TransformComponentBase.h" />
     <ClInclude Include="Scene\UI\SceneNodeUI.h" />
     <ClInclude Include="Scene\UI\TransformComponentUI.h" />

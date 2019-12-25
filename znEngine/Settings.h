@@ -1,6 +1,6 @@
 #pragma once
 
-class OW_ENGINE_API CSettings 
+class ZN_API CSettings 
 	: public ISettings
 {
 public:

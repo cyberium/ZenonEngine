@@ -1,6 +1,6 @@
 #pragma once
 
-class OW_ENGINE_API DepthStencilStateDX11 : public DepthStencilStateBase
+class ZN_API DepthStencilStateDX11 : public DepthStencilStateBase
 {
 public:
 	DepthStencilStateDX11(ID3D11Device2* pDevice);

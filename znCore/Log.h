@@ -2,7 +2,7 @@
 
 #include <mutex>
 
-class OW_ENGINE_API CLog : public ILog
+class ZN_API CLog : public ILog
 {
 	friend class Log;
 public:
@@ -25,7 +25,7 @@ private:
 
 // Helper class to fast access
 
-class OW_ENGINE_API Log
+class ZN_API Log
 {
 public:
 	static void Info(const char* _message, ...);

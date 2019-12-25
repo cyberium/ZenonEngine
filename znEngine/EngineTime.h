@@ -1,6 +1,6 @@
 #pragma once
 
-class OW_ENGINE_API EngineTime
+class ZN_API EngineTime
 {
 public:
 	static float GetDeltaTime();

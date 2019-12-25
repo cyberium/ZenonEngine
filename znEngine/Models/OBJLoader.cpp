@@ -211,7 +211,7 @@ bool Loader::LoadFile(std::shared_ptr<IFile> File)
 		// Load Materials
 		if (algorithm::firstToken(curline) == "mtllib")
 		{
-			std::shared_ptr<IFile> materialsFile = GetManager<IFilesManager>(m_RenderDevice->GetBaseManager())->Open(File->Path() + "\\" + algorithm::tail(curline));
+			std::shared_ptr<IFile> materialsFile = m_RenderDevice->GetBaseManager()->GetManager<IFilesManager>()->Open(File->Path() + "\\" + algorithm::tail(curline));
 
 			// Load Materials
 			LoadMaterials(materialsFile);

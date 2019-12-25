@@ -3,7 +3,7 @@
 class TextureDX11;
 class StructuredBufferDX11;
 
-class OW_ENGINE_API RenderTargetDX11 : public IRenderTarget
+class ZN_API RenderTargetDX11 : public IRenderTarget
 {
 public:
 	RenderTargetDX11(ID3D11Device2* pDevice);

@@ -2,7 +2,7 @@
 
 #include "../TransformComponentBase.h"
 
-class __declspec(UUID_TransformComponent) OW_ENGINE_API CTransformComponent3D
+class __declspec(UUID_TransformComponent) ZN_API CTransformComponent3D
 	: public ITransformComponent3D
 	, public CTransformComponentBase
 {

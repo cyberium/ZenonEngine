@@ -1,6 +1,6 @@
 #pragma once
 
-class OW_ENGINE_API AbstractPass 
+class ZN_API AbstractPass 
 	: public IRenderPass
 	, public Object
 {

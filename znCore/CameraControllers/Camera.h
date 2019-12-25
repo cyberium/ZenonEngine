@@ -1,6 +1,6 @@
 #pragma once
 
-class OW_ENGINE_API CCamera 
+class ZN_API CCamera 
 	: public ICamera
 	, public ICameraMovement
 	, public Object

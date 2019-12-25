@@ -1,6 +1,6 @@
 #pragma once
 
-class OW_ENGINE_API RenderWindowBase 
+class ZN_API RenderWindowBase 
 	: public IRenderWindow
 	, public IRenderWindowEvents
 	, public IApplicationEventsConnection
@@ -32,6 +32,10 @@ public:
 	RenderEvent& RenderUI() override;
 
 	virtual void OnUpdate(UpdateEventArgs& e);
+	virtual void OnPreRender(RenderEventArgs& e);
+	virtual void OnRender(RenderEventArgs& e);
+	virtual void OnPostRender(RenderEventArgs& e);
+	virtual void OnRenderUI(RenderEventArgs& e);
 
 	// Window events
 	virtual void OnResize(ResizeEventArgs& e);

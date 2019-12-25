@@ -1,6 +1,6 @@
 #pragma once
 
-class OW_ENGINE_API Application :
+class ZN_API Application :
 	public Object, 
 	public IApplication, 
 	public IApplicationEvents,

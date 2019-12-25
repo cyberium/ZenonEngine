@@ -1,6 +1,6 @@
 #pragma once
 
-class OW_ENGINE_API SamplerStateDX11 : public SamplerStateBase
+class ZN_API SamplerStateDX11 : public SamplerStateBase
 {
 public:
 	                                                SamplerStateDX11(ID3D11Device2* pDevice);

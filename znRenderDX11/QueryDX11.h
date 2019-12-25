@@ -2,7 +2,7 @@
 
 #include "Query.h"
 
-class OW_ENGINE_API QueryDX11 : public IQuery
+class ZN_API QueryDX11 : public IQuery
 {
 public:
 

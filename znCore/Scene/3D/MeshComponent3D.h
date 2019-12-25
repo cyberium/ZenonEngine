@@ -2,7 +2,7 @@
 
 #include "../ComponentBase.h"
 
-class __declspec(UUID_MeshComponent) OW_ENGINE_API CMeshComponent3D
+class __declspec(UUID_MeshComponent) ZN_API CMeshComponent3D
 	: public IMeshComponent3D
 	, public CComponentBase
 {

@@ -70,23 +70,26 @@
     <Filter Include="Passes">
       <UniqueIdentifier>{030be646-acd2-408c-97f1-de057391b5a3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Scene">
-      <UniqueIdentifier>{8c8be4ea-0256-49e9-87bf-26a6e295f7ef}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Scene\3D">
-      <UniqueIdentifier>{1ae3c30a-22f6-4504-89c3-f52e29eeb48e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Scene\UI">
-      <UniqueIdentifier>{fcd39ff1-26d9-4089-8521-acf7e4f2a574}</UniqueIdentifier>
-    </Filter>
     <Filter Include="GameState">
       <UniqueIdentifier>{e458a334-60c8-4b7e-9c68-f4e227fd5768}</UniqueIdentifier>
     </Filter>
     <Filter Include="CameraControllers">
       <UniqueIdentifier>{cab15164-19e1-4d0c-b397-adb4def9c9c1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Scene\Properties">
+    <Filter Include="Scene functional">
+      <UniqueIdentifier>{8c8be4ea-0256-49e9-87bf-26a6e295f7ef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scene functional\3D">
+      <UniqueIdentifier>{1ae3c30a-22f6-4504-89c3-f52e29eeb48e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scene functional\UI">
+      <UniqueIdentifier>{fcd39ff1-26d9-4089-8521-acf7e4f2a574}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scene functional\Properties">
       <UniqueIdentifier>{4bf4e6dc-9ab3-48d8-a7d6-b36ce4087f3a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="XML">
+      <UniqueIdentifier>{51d660eb-9fa6-4618-a563-39c01b7efc32}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -184,31 +187,31 @@
       <Filter>Passes</Filter>
     </ClCompile>
     <ClCompile Include="Scene\ComponentBase.cpp">
-      <Filter>Scene</Filter>
+      <Filter>Scene functional</Filter>
     </ClCompile>
     <ClCompile Include="Scene\TransformComponentBase.cpp">
-      <Filter>Scene</Filter>
+      <Filter>Scene functional</Filter>
     </ClCompile>
     <ClCompile Include="Scene\3D\ColliderComponent3D.cpp">
-      <Filter>Scene\3D</Filter>
+      <Filter>Scene functional\3D</Filter>
     </ClCompile>
     <ClCompile Include="Scene\3D\LightComponent3D.cpp">
-      <Filter>Scene\3D</Filter>
+      <Filter>Scene functional\3D</Filter>
     </ClCompile>
     <ClCompile Include="Scene\3D\MeshComponent3D.cpp">
-      <Filter>Scene\3D</Filter>
+      <Filter>Scene functional\3D</Filter>
     </ClCompile>
     <ClCompile Include="Scene\3D\TransformComponent3D.cpp">
-      <Filter>Scene\3D</Filter>
+      <Filter>Scene functional\3D</Filter>
     </ClCompile>
     <ClCompile Include="Scene\UI\TransformComponentUI.cpp">
-      <Filter>Scene\UI</Filter>
+      <Filter>Scene functional\UI</Filter>
     </ClCompile>
     <ClCompile Include="Scene\Light3D.cpp">
-      <Filter>Scene</Filter>
+      <Filter>Scene functional</Filter>
     </ClCompile>
     <ClCompile Include="Scene\LoadableObject.cpp">
-      <Filter>Scene</Filter>
+      <Filter>Scene functional</Filter>
     </ClCompile>
     <ClCompile Include="CameraControllers\ArcBallCameraController.cpp">
       <Filter>CameraControllers</Filter>
@@ -229,22 +232,37 @@
       <Filter>GameState</Filter>
     </ClCompile>
     <ClCompile Include="Scene\3D\SceneNode3D.cpp">
-      <Filter>Scene\3D</Filter>
+      <Filter>Scene functional\3D</Filter>
     </ClCompile>
     <ClCompile Include="Scene\SceneBase.cpp">
-      <Filter>Scene</Filter>
+      <Filter>Scene functional</Filter>
     </ClCompile>
     <ClCompile Include="Scene\SceneNodeBase.cpp">
-      <Filter>Scene</Filter>
+      <Filter>Scene functional</Filter>
     </ClCompile>
     <ClCompile Include="Scene\UI\SceneNodeUI.cpp">
-      <Filter>Scene\UI</Filter>
+      <Filter>Scene functional\UI</Filter>
     </ClCompile>
     <ClCompile Include="ByteBufferOnlyPointer.cpp">
       <Filter>Files\Common</Filter>
     </ClCompile>
-    <ClCompile Include="Scene\SceneNodeProperties.cpp">
-      <Filter>Scene\Properties</Filter>
+    <ClCompile Include="Scene\Properties.cpp">
+      <Filter>Scene functional\Properties</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\Actions.cpp">
+      <Filter>Scene functional\Properties</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Externals\tinyxml-2.6.2\tinystr.cpp">
+      <Filter>XML</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Externals\tinyxml-2.6.2\tinyxml.cpp">
+      <Filter>XML</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Externals\tinyxml-2.6.2\tinyxmlerror.cpp">
+      <Filter>XML</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Externals\tinyxml-2.6.2\tinyxmlparser.cpp">
+      <Filter>XML</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -362,148 +380,148 @@
     <ClInclude Include="MathTypes.h">
       <Filter>Common</Filter>
     </ClInclude>
-    <ClInclude Include="Interfaces\Application.h">
+    <ClInclude Include="..\shared\Interfaces\Application.h">
       <Filter>__Interfaces</Filter>
     </ClInclude>
-    <ClInclude Include="Interfaces\BaseManager.h">
+    <ClInclude Include="..\shared\Interfaces\BaseManager.h">
       <Filter>__Interfaces</Filter>
     </ClInclude>
-    <ClInclude Include="Interfaces\CameraController.h">
+    <ClInclude Include="..\shared\Interfaces\CameraController.h">
       <Filter>__Interfaces</Filter>
     </ClInclude>
-    <ClInclude Include="Interfaces\Console.h">
+    <ClInclude Include="..\shared\Interfaces\Console.h">
       <Filter>__Interfaces</Filter>
     </ClInclude>
-    <ClInclude Include="Interfaces\DebugOutput.h">
+    <ClInclude Include="..\shared\Interfaces\DebugOutput.h">
       <Filter>__Interfaces</Filter>
     </ClInclude>
-    <ClInclude Include="Interfaces\Files.h">
+    <ClInclude Include="..\shared\Interfaces\Files.h">
       <Filter>__Interfaces</Filter>
     </ClInclude>
-    <ClInclude Include="Interfaces\GameState.h">
+    <ClInclude Include="..\shared\Interfaces\GameState.h">
       <Filter>__Interfaces</Filter>
     </ClInclude>
-    <ClInclude Include="Interfaces\GameStateManager.h">
+    <ClInclude Include="..\shared\Interfaces\GameStateManager.h">
       <Filter>__Interfaces</Filter>
     </ClInclude>
-    <ClInclude Include="Interfaces\Loader.h">
+    <ClInclude Include="..\shared\Interfaces\Loader.h">
       <Filter>__Interfaces</Filter>
     </ClInclude>
-    <ClInclude Include="Interfaces\Log.h">
+    <ClInclude Include="..\shared\Interfaces\Log.h">
       <Filter>__Interfaces</Filter>
     </ClInclude>
-    <ClInclude Include="Interfaces\Networking.h">
+    <ClInclude Include="..\shared\Interfaces\Networking.h">
       <Filter>__Interfaces</Filter>
     </ClInclude>
-    <ClInclude Include="Interfaces\Plugins.h">
+    <ClInclude Include="..\shared\Interfaces\Plugins.h">
       <Filter>__Interfaces</Filter>
     </ClInclude>
-    <ClInclude Include="Interfaces\Settings.h">
+    <ClInclude Include="..\shared\Interfaces\Settings.h">
       <Filter>__Interfaces</Filter>
     </ClInclude>
-    <ClInclude Include="Interfaces\Visitor.h">
+    <ClInclude Include="..\shared\Interfaces\Visitor.h">
       <Filter>__Interfaces</Filter>
     </ClInclude>
-    <ClInclude Include="Interfaces\WindowObject.h">
+    <ClInclude Include="..\shared\Interfaces\WindowObject.h">
       <Filter>__Interfaces</Filter>
     </ClInclude>
-    <ClInclude Include="Interfaces\Render\IBlendState.h">
+    <ClInclude Include="..\shared\Interfaces\Render\IBlendState.h">
       <Filter>__Interfaces\Render</Filter>
     </ClInclude>
-    <ClInclude Include="Interfaces\Render\IBuffer.h">
+    <ClInclude Include="..\shared\Interfaces\Render\IBuffer.h">
       <Filter>__Interfaces\Render</Filter>
     </ClInclude>
-    <ClInclude Include="Interfaces\Render\IDepthStencilState.h">
+    <ClInclude Include="..\shared\Interfaces\Render\IDepthStencilState.h">
       <Filter>__Interfaces\Render</Filter>
     </ClInclude>
-    <ClInclude Include="Interfaces\Render\IMaterial.h">
+    <ClInclude Include="..\shared\Interfaces\Render\IMaterial.h">
       <Filter>__Interfaces\Render</Filter>
     </ClInclude>
-    <ClInclude Include="Interfaces\Render\IMesh.h">
+    <ClInclude Include="..\shared\Interfaces\Render\IMesh.h">
       <Filter>__Interfaces\Render</Filter>
     </ClInclude>
-    <ClInclude Include="Interfaces\Render\IPipelineState.h">
+    <ClInclude Include="..\shared\Interfaces\Render\IPipelineState.h">
       <Filter>__Interfaces\Render</Filter>
     </ClInclude>
-    <ClInclude Include="Interfaces\Render\IQuery.h">
+    <ClInclude Include="..\shared\Interfaces\Render\IQuery.h">
       <Filter>__Interfaces\Render</Filter>
     </ClInclude>
-    <ClInclude Include="Interfaces\Render\IRasterizerState.h">
+    <ClInclude Include="..\shared\Interfaces\Render\IRasterizerState.h">
       <Filter>__Interfaces\Render</Filter>
     </ClInclude>
-    <ClInclude Include="Interfaces\Render\IRenderDevice.h">
+    <ClInclude Include="..\shared\Interfaces\Render\IRenderDevice.h">
       <Filter>__Interfaces\Render</Filter>
     </ClInclude>
-    <ClInclude Include="Interfaces\Render\IRenderTarget.h">
+    <ClInclude Include="..\shared\Interfaces\Render\IRenderTarget.h">
       <Filter>__Interfaces\Render</Filter>
     </ClInclude>
-    <ClInclude Include="Interfaces\Render\IRenderWindow.h">
+    <ClInclude Include="..\shared\Interfaces\Render\IRenderWindow.h">
       <Filter>__Interfaces\Render</Filter>
     </ClInclude>
-    <ClInclude Include="Interfaces\Render\ISamplerState.h">
+    <ClInclude Include="..\shared\Interfaces\Render\ISamplerState.h">
       <Filter>__Interfaces\Render</Filter>
     </ClInclude>
-    <ClInclude Include="Interfaces\Render\IShader.h">
+    <ClInclude Include="..\shared\Interfaces\Render\IShader.h">
       <Filter>__Interfaces\Render</Filter>
     </ClInclude>
-    <ClInclude Include="Interfaces\Render\IShaderInputLayout.h">
+    <ClInclude Include="..\shared\Interfaces\Render\IShaderInputLayout.h">
       <Filter>__Interfaces\Render</Filter>
     </ClInclude>
-    <ClInclude Include="Interfaces\Render\IShaderParameter.h">
+    <ClInclude Include="..\shared\Interfaces\Render\IShaderParameter.h">
       <Filter>__Interfaces\Render</Filter>
     </ClInclude>
-    <ClInclude Include="Interfaces\Render\ITexture.h">
+    <ClInclude Include="..\shared\Interfaces\Render\ITexture.h">
       <Filter>__Interfaces\Render</Filter>
     </ClInclude>
-    <ClInclude Include="Interfaces\Render\Types\BufferBinding.h">
+    <ClInclude Include="..\shared\Interfaces\Render\Types\BufferBinding.h">
       <Filter>__Interfaces\Render\Types</Filter>
     </ClInclude>
-    <ClInclude Include="Interfaces\Render\Types\ClearFlags.h">
+    <ClInclude Include="..\shared\Interfaces\Render\Types\ClearFlags.h">
       <Filter>__Interfaces\Render\Types</Filter>
     </ClInclude>
-    <ClInclude Include="Interfaces\Render\Types\CPUAccess.h">
+    <ClInclude Include="..\shared\Interfaces\Render\Types\CPUAccess.h">
       <Filter>__Interfaces\Render\Types</Filter>
     </ClInclude>
-    <ClInclude Include="Interfaces\Render\Types\CustomVertexElement.h">
+    <ClInclude Include="..\shared\Interfaces\Render\Types\CustomVertexElement.h">
       <Filter>__Interfaces\Render\Types</Filter>
     </ClInclude>
-    <ClInclude Include="Interfaces\Render\Types\InputSemantic.h">
+    <ClInclude Include="..\shared\Interfaces\Render\Types\InputSemantic.h">
       <Filter>__Interfaces\Render\Types</Filter>
     </ClInclude>
-    <ClInclude Include="Interfaces\Render\Types\PrimitiveTopology.h">
+    <ClInclude Include="..\shared\Interfaces\Render\Types\PrimitiveTopology.h">
       <Filter>__Interfaces\Render\Types</Filter>
     </ClInclude>
-    <ClInclude Include="Interfaces\Render\Types\Viewport.h">
+    <ClInclude Include="..\shared\Interfaces\Render\Types\Viewport.h">
       <Filter>__Interfaces\Render\Types</Filter>
     </ClInclude>
-    <ClInclude Include="Interfaces\Render\ICamera.h">
+    <ClInclude Include="..\shared\Interfaces\Render\ICamera.h">
       <Filter>__Interfaces\Render</Filter>
     </ClInclude>
-    <ClInclude Include="Interfaces\Render\IRender.h">
+    <ClInclude Include="..\shared\Interfaces\Render\IRender.h">
       <Filter>__Interfaces\Render</Filter>
     </ClInclude>
-    <ClInclude Include="Interfaces\Render\IRenderPass.h">
+    <ClInclude Include="..\shared\Interfaces\Render\IRenderPass.h">
       <Filter>__Interfaces\Render</Filter>
     </ClInclude>
-    <ClInclude Include="Interfaces\Types\Events.h">
+    <ClInclude Include="..\shared\Interfaces\Types\Events.h">
       <Filter>__Interfaces\Types</Filter>
     </ClInclude>
-    <ClInclude Include="Interfaces\Types\KeyCodes.h">
+    <ClInclude Include="..\shared\Interfaces\Types\KeyCodes.h">
       <Filter>__Interfaces\Types</Filter>
     </ClInclude>
-    <ClInclude Include="Interfaces\Types\Object.h">
+    <ClInclude Include="..\shared\Interfaces\Types\Object.h">
       <Filter>__Interfaces\Types</Filter>
     </ClInclude>
-    <ClInclude Include="Interfaces\Scene\ISceneNodeComponents.h">
+    <ClInclude Include="..\shared\Interfaces\Scene\ISceneNodeComponents.h">
       <Filter>__Interfaces\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="Interfaces\Scene\ISceneNodeProvider.h">
+    <ClInclude Include="..\shared\Interfaces\Scene\ISceneNodeProvider.h">
       <Filter>__Interfaces\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="Interfaces\Scene\IScene.h">
+    <ClInclude Include="..\shared\Interfaces\Scene\IScene.h">
       <Filter>__Interfaces\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="Interfaces\Scene\ISceneNode.h">
+    <ClInclude Include="..\shared\Interfaces\Scene\ISceneNode.h">
       <Filter>__Interfaces\Scene</Filter>
     </ClInclude>
     <ClInclude Include="Proxies\MaterialProxie.h">
@@ -512,16 +530,16 @@
     <ClInclude Include="Proxies\MeshProxie.h">
       <Filter>__Proxies</Filter>
     </ClInclude>
-    <ClInclude Include="Interfaces\__Interfaces.h">
+    <ClInclude Include="..\shared\Interfaces\__Interfaces.h">
       <Filter>__Interfaces</Filter>
     </ClInclude>
     <ClInclude Include="Proxies\SceneNodeProxie.h">
       <Filter>__Proxies</Filter>
     </ClInclude>
-    <ClInclude Include="Interfaces\Render\Types\Ray.h">
+    <ClInclude Include="..\shared\Interfaces\Render\Types\Ray.h">
       <Filter>__Interfaces\Render\Types</Filter>
     </ClInclude>
-    <ClInclude Include="Interfaces\Render\Types\RaycastHit.h">
+    <ClInclude Include="..\shared\Interfaces\Render\Types\RaycastHit.h">
       <Filter>__Interfaces\Render\Types</Filter>
     </ClInclude>
     <ClInclude Include="Proxies\__Proxies.h">
@@ -549,34 +567,34 @@
       <Filter>Passes</Filter>
     </ClInclude>
     <ClInclude Include="Scene\ComponentBase.h">
-      <Filter>Scene</Filter>
+      <Filter>Scene functional</Filter>
     </ClInclude>
     <ClInclude Include="Scene\TransformComponentBase.h">
-      <Filter>Scene</Filter>
+      <Filter>Scene functional</Filter>
     </ClInclude>
     <ClInclude Include="Scene\3D\ColliderComponent3D.h">
-      <Filter>Scene\3D</Filter>
+      <Filter>Scene functional\3D</Filter>
     </ClInclude>
     <ClInclude Include="Scene\3D\LightComponent3D.h">
-      <Filter>Scene\3D</Filter>
+      <Filter>Scene functional\3D</Filter>
     </ClInclude>
     <ClInclude Include="Scene\3D\MeshComponent3D.h">
-      <Filter>Scene\3D</Filter>
+      <Filter>Scene functional\3D</Filter>
     </ClInclude>
     <ClInclude Include="Scene\3D\TransformComponent3D.h">
-      <Filter>Scene\3D</Filter>
+      <Filter>Scene functional\3D</Filter>
     </ClInclude>
     <ClInclude Include="Scene\UI\TransformComponentUI.h">
-      <Filter>Scene\UI</Filter>
+      <Filter>Scene functional\UI</Filter>
     </ClInclude>
     <ClInclude Include="Scene\Light.h">
-      <Filter>Scene</Filter>
+      <Filter>Scene functional</Filter>
     </ClInclude>
     <ClInclude Include="Scene\Light3D.h">
-      <Filter>Scene</Filter>
+      <Filter>Scene functional</Filter>
     </ClInclude>
     <ClInclude Include="Scene\LoadableObject.h">
-      <Filter>Scene</Filter>
+      <Filter>Scene functional</Filter>
     </ClInclude>
     <ClInclude Include="CameraControllers\ArcBallCameraController.h">
       <Filter>CameraControllers</Filter>
@@ -597,25 +615,37 @@
       <Filter>GameState</Filter>
     </ClInclude>
     <ClInclude Include="Scene\3D\SceneNode3D.h">
-      <Filter>Scene\3D</Filter>
+      <Filter>Scene functional\3D</Filter>
     </ClInclude>
     <ClInclude Include="Scene\SceneBase.h">
-      <Filter>Scene</Filter>
+      <Filter>Scene functional</Filter>
     </ClInclude>
     <ClInclude Include="Scene\SceneNodeBase.h">
-      <Filter>Scene</Filter>
+      <Filter>Scene functional</Filter>
     </ClInclude>
     <ClInclude Include="Scene\UI\SceneNodeUI.h">
-      <Filter>Scene\UI</Filter>
+      <Filter>Scene functional\UI</Filter>
     </ClInclude>
     <ClInclude Include="ByteBufferOnlyPointer.h">
       <Filter>Files\Common</Filter>
     </ClInclude>
-    <ClInclude Include="Interfaces\Scene\IProperties.h">
+    <ClInclude Include="..\shared\Interfaces\Scene\IProperties.h">
       <Filter>__Interfaces\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="Scene\SceneNodeProperties.h">
-      <Filter>Scene\Properties</Filter>
+    <ClInclude Include="..\shared\Interfaces\Scene\IActions.h">
+      <Filter>__Interfaces\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\Properties.h">
+      <Filter>Scene functional\Properties</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\Actions.h">
+      <Filter>Scene functional\Properties</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\tinyxml-2.6.2\tinystr.h">
+      <Filter>XML</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\tinyxml-2.6.2\tinyxml.h">
+      <Filter>XML</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -626,13 +656,13 @@
       <Filter>RefManager\1 Dim Assync</Filter>
     </None>
     <None Include="Scene\ComponentBase.inl">
-      <Filter>Scene</Filter>
+      <Filter>Scene functional</Filter>
     </None>
     <None Include="Scene\3D\SceneNode3D.inl">
-      <Filter>Scene\3D</Filter>
+      <Filter>Scene functional\3D</Filter>
     </None>
     <None Include="Scene\UI\SceneNodeUI.inl">
-      <Filter>Scene\UI</Filter>
+      <Filter>Scene functional\UI</Filter>
     </None>
   </ItemGroup>
 </Project>

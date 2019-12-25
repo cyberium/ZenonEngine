@@ -1,6 +1,6 @@
 #pragma once
 
-class OW_ENGINE_API CComponentBase 
+class ZN_API CComponentBase 
 	: public ISceneNodeComponent
 {
 public:

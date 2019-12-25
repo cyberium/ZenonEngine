@@ -14,27 +14,23 @@ CBaseManager::~CBaseManager()
 	OutputDebugString(L"CBaseManager destroyed.\n");
 }
 
-void CBaseManager::RegisterManager(GUID _type, std::shared_ptr<IManager> _manager)
+void CBaseManager::AddManager(GUID Type, std::shared_ptr<IManager> _manager)
 {
-	if (m_Managers.find(_type) != m_Managers.end())
-	{
-		throw std::exception("Manager already exists.");
-	}
+	if (m_Managers.find(Type) != m_Managers.end())
+		_ASSERT_EXPR(false, L"Manager already exists.");
 
-	m_Managers.insert(std::make_pair(_type, _manager));
+	m_Managers.insert(std::make_pair(Type, _manager));
 }
 
-void CBaseManager::UnregisterManager(GUID _type)
+void CBaseManager::RemoveManager(GUID Type)
 {
-	//m_Managers.erase(std::remove(m_Managers.begin(), m_Managers.end(), _type), m_Managers.end());
+	//m_Managers.erase(std::remove(m_Managers.begin(), m_Managers.end(), Type), m_Managers.end());
 }
 
-std::shared_ptr<IManager> CBaseManager::GetManager(GUID _type) const
+std::shared_ptr<IManager> CBaseManager::GetManager(GUID Type) const
 {
-	if (m_Managers.find(_type) == m_Managers.end())
-	{
+	if (m_Managers.find(Type) == m_Managers.end())
 		return nullptr;
-	}
 
-	return m_Managers.at(_type);
+	return m_Managers.at(Type);
 }

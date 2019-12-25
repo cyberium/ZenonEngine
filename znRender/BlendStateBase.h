@@ -1,6 +1,6 @@
 #pragma once
 
-class OW_ENGINE_API BlendStateBase : public IBlendState, public Object
+class ZN_API BlendStateBase : public IBlendState, public Object
 {
 public:
 	BlendStateBase();
