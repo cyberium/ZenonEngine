@@ -10,9 +10,14 @@ class CSceneNodeTreeModel : public QAbstractItemModel
 	Q_OBJECT
 
 public:
-	CSceneNodeTreeModel(std::shared_ptr<IScene> Scene3D, QObject *parent = 0);
+	CSceneNodeTreeModel(QObject *parent = 0);
 	virtual ~CSceneNodeTreeModel();
 
+	void SetModelData(std::shared_ptr<IScene> Scene3D);
+
+	//
+	// QAbstractItemModel
+	//
 	QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
 	QVariant data(const QModelIndex& index, int role) const override;
 
@@ -24,9 +29,10 @@ public:
 	int rowCount(const QModelIndex& parent = QModelIndex()) const override;
 	int columnCount(const QModelIndex& parent = QModelIndex()) const override;
 
+
 private:
-	//void setupModelData(const QStringList& lines, CSceneNodeTreeItem *parent);
 	CSceneNodeTreeItem* getItem(const QModelIndex& index) const;
+
 
 private:
 	CSceneNodeTreeItem* m_RootItem;

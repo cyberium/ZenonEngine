@@ -113,18 +113,22 @@ std::shared_ptr<IScene> SceneNodeBase::GetScene() const
 //
 void SceneNodeBase::AddChild(std::shared_ptr<ISceneNode> childNode)
 {
-	if (childNode)
+	if (childNode == nullptr)
 	{
-		NodeList::iterator iter = std::find(m_Children.begin(), m_Children.end(), childNode);
-		if (iter == m_Children.end())
-		{
-			std::dynamic_pointer_cast<ISceneNodeInternal>(childNode)->SetParentInternal(weak_from_this());
-            RaiseOnParentChanged();
+		_ASSERT_EXPR(false, L"Child node must not be NULL.");
+	}
 
-			m_Children.push_back(childNode);
-			if (!childNode->GetName().empty())
-				m_ChildrenByName.insert(NodeNameMap::value_type(childNode->GetName(), childNode));
-		}
+	NodeList::iterator iter = std::find(m_Children.begin(), m_Children.end(), childNode);
+	if (iter == m_Children.end())
+	{
+		std::dynamic_pointer_cast<ISceneNodeInternal>(childNode)->SetParentInternal(weak_from_this());
+        RaiseOnParentChanged();
+
+		m_Children.push_back(childNode);
+		if (!childNode->GetName().empty())
+			m_ChildrenByName.insert(NodeNameMap::value_type(childNode->GetName(), childNode));
+
+		GetScene()->RaiseSceneChangeEvent(ESceneChangeType::NodeAdded, shared_from_this(), childNode);
 	}
 }
 
@@ -132,24 +136,28 @@ void SceneNodeBase::RemoveChild(std::shared_ptr<ISceneNode> childNode)
 {
 	if (childNode)
 	{
-		NodeList::iterator iter = std::find(m_Children.begin(), m_Children.end(), childNode);
-		if (iter != m_Children.end())
-		{
-			std::dynamic_pointer_cast<ISceneNodeInternal>(childNode)->SetParentInternal(std::weak_ptr<ISceneNode>());
-            RaiseOnParentChanged();
+		_ASSERT_EXPR(false, L"Child node must not be NULL.");
+	}
 
-			m_Children.erase(iter);
-			NodeNameMap::iterator iter2 = m_ChildrenByName.find(childNode->GetName());
-			if (iter2 != m_ChildrenByName.end())
-				m_ChildrenByName.erase(iter2);
-		}
-		else
+	NodeList::iterator iter = std::find(m_Children.begin(), m_Children.end(), childNode);
+	if (iter != m_Children.end())
+	{
+		std::dynamic_pointer_cast<ISceneNodeInternal>(childNode)->SetParentInternal(std::weak_ptr<ISceneNode>());
+        RaiseOnParentChanged();
+
+		m_Children.erase(iter);
+		NodeNameMap::iterator iter2 = m_ChildrenByName.find(childNode->GetName());
+		if (iter2 != m_ChildrenByName.end())
+			m_ChildrenByName.erase(iter2);
+
+		GetScene()->RaiseSceneChangeEvent(ESceneChangeType::NodeRemoved, shared_from_this(), childNode);
+	}
+	else
+	{
+		// Maybe this node appears lower in the hierarchy...
+		for (auto child : m_Children)
 		{
-			// Maybe this node appears lower in the hierarchy...
-			for (auto child : m_Children)
-			{
-				child->RemoveChild(childNode);
-			}
+			child->RemoveChild(childNode);
 		}
 	}
 }

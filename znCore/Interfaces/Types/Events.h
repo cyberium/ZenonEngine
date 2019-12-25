@@ -5,6 +5,7 @@
 // FORWARD BEGIN
 ZN_INTERFACE IPipelineState;
 ZN_INTERFACE ICamera;
+ZN_INTERFACE IScene;
 ZN_INTERFACE ISceneNode;
 // FORWARD END
 
@@ -83,10 +84,9 @@ typedef Delegate<EventArgs> Event;
 
 class OW_ENGINE_API WindowCloseEventArgs : public EventArgs
 {
-	typedef EventArgs base;
 public:
 	WindowCloseEventArgs(const Object* caller)
-		: base(caller)
+		: EventArgs(caller)
 		, ConfirmClose(true)
 	{}
 
@@ -102,7 +102,6 @@ typedef Delegate<WindowCloseEventArgs> WindowCloseEvent;
 
 class OW_ENGINE_API KeyEventArgs : public EventArgs
 {
-	typedef EventArgs base;
 public:
 	enum KeyState
 	{
@@ -111,7 +110,7 @@ public:
 	};
 
 	KeyEventArgs(const Object* caller, KeyCode key, uint32 c, KeyState state, bool control, bool shift, bool alt)
-		: base(caller)
+		: EventArgs(caller)
 		, Key(key)
 		, Char(c)
 		, State(state)
@@ -132,10 +131,9 @@ typedef Delegate<KeyEventArgs> KeyboardEvent;
 
 class OW_ENGINE_API MouseMotionEventArgs : public EventArgs
 {
-	typedef EventArgs base;
 public:
 	MouseMotionEventArgs(const Object* caller, bool leftButton, bool middleButton, bool rightButton, bool control, bool shift, int x, int y)
-		: base(caller)
+		: EventArgs(caller)
 		, LeftButton(leftButton)
 		, MiddleButton(middleButton)
 		, RightButton(rightButton)
@@ -164,22 +162,21 @@ typedef Delegate<MouseMotionEventArgs> MouseMotionEvent;
 class OW_ENGINE_API MouseButtonEventArgs : public EventArgs
 {
 public:
-	enum MouseButton
+	enum class OW_ENGINE_API MouseButton
 	{
 		None = 0,
 		Left = 1,
 		Right = 2,
 		Middel = 3
 	};
-	enum ButtonState
+	enum class OW_ENGINE_API ButtonState
 	{
 		Released = 0,
 		Pressed = 1
 	};
 
-	typedef EventArgs base;
 	MouseButtonEventArgs(const Object* caller, MouseButton buttonID, ButtonState state, bool leftButton, bool middleButton, bool rightButton, bool control, bool shift, int x, int y)
-		: base(caller)
+		: EventArgs(caller)
 		, Button(buttonID)
 		, State(state)
 		, LeftButton(leftButton)
@@ -210,9 +207,8 @@ typedef Delegate<MouseButtonEventArgs> MouseButtonEvent;
 class OW_ENGINE_API MouseWheelEventArgs : public EventArgs
 {
 public:
-	typedef EventArgs base;
 	MouseWheelEventArgs(const Object* caller, float wheelDelta, bool leftButton, bool middleButton, bool rightButton, bool control, bool shift, int x, int y)
-		: base(caller)
+		: EventArgs(caller)
 		, WheelDelta(wheelDelta)
 		, LeftButton(leftButton)
 		, MiddleButton(middleButton)
@@ -242,9 +238,8 @@ typedef Delegate<MouseWheelEventArgs> MouseWheelEvent;
 class OW_ENGINE_API ResizeEventArgs : public EventArgs
 {
 public:
-	typedef EventArgs base;
 	ResizeEventArgs(const Object* caller, int width, int height)
-		: base(caller)
+		: EventArgs(caller)
 		, Width(width)
 		, Height(height)
 	{}
@@ -257,7 +252,6 @@ typedef Delegate<ResizeEventArgs> ResizeEvent;
 
 class OW_ENGINE_API UpdateEventArgs : public EventArgs
 {
-	typedef EventArgs base;
 public:
 	UpdateEventArgs
 	(
@@ -266,7 +260,7 @@ public:
 		float TotalTime,
 		uint64_t FrameCounter
 	)
-		: base(caller)
+		: EventArgs(caller)
 		, ElapsedTime(DeltaTime)
 		, TotalTime(TotalTime)
 		, FrameCounter(FrameCounter)
@@ -281,7 +275,6 @@ typedef Delegate<UpdateEventArgs> UpdateEvent;
 
 class OW_ENGINE_API RenderEventArgs : public EventArgs
 {
-	typedef EventArgs base;
 public:
 	RenderEventArgs
 	(
@@ -293,7 +286,7 @@ public:
 		const IPipelineState* PipelineState,
 		const ISceneNode* Node
 	)
-		: base(Caller)
+		: EventArgs(Caller)
 		, ElapsedTime(DeltaTime)
 		, TotalTime(TotalTime)
 		, FrameCounter(FrameCounter)
@@ -316,10 +309,9 @@ typedef Delegate<RenderEventArgs> RenderEvent;
 
 class OW_ENGINE_API UserEventArgs : public EventArgs
 {
-	typedef EventArgs base;
 public:
 	UserEventArgs(const Object* caller, int code, void* data1, void* data2)
-		: base(caller)
+		: EventArgs(caller)
 		, Code(code)
 		, Data1(data1)
 		, Data2(data2)
@@ -330,3 +322,43 @@ public:
 	void*   Data2;
 };
 typedef Delegate<UserEventArgs> UserEvent;
+
+
+
+
+
+class OW_ENGINE_API SceneEventArgs : public EventArgs
+{
+public:
+	SceneEventArgs(const Object* caller, const std::shared_ptr<IScene>& Scene)
+		: EventArgs(caller)
+		, Scene(Scene)
+	{}
+
+	const std::shared_ptr<IScene>& Scene;
+};
+typedef Delegate<SceneEventArgs> SceneEvent;
+
+
+
+enum class OW_ENGINE_API ESceneChangeType
+{
+	NodeAdded = 0,
+	NodeRemoved
+};
+
+class OW_ENGINE_API SceneChangeEventArgs : public SceneEventArgs
+{
+public:
+	SceneChangeEventArgs(const Object* caller, const std::shared_ptr<IScene>& Scene, ESceneChangeType SceneChangeType, const std::shared_ptr<ISceneNode>& OwnerNode, const std::shared_ptr<ISceneNode>& ChildNode)
+		: SceneEventArgs(caller, Scene)
+		, SceneChangeType(SceneChangeType)
+		, OwnerNode(OwnerNode)
+		, ChildNode(ChildNode)
+	{}
+
+	const ESceneChangeType SceneChangeType;
+	const std::shared_ptr<ISceneNode>& OwnerNode;
+	const std::shared_ptr<ISceneNode>& ChildNode;
+};
+typedef Delegate<SceneChangeEventArgs> SceneChangeEvent;

@@ -26,7 +26,7 @@ void main_internal(int argumentCount, char* arguments[])
 	std::shared_ptr<IRenderWindow> firstRenderWindow = renderDevice->CreateRenderWindow(&firstWindowObject, true);
 	app.AddRenderWindow(firstRenderWindow);
 
-	std::shared_ptr<IGameState> gameState = GetManager<IGameStatesFactory>(BaseManager)->CreateGameStateWithHighestPriority(firstRenderWindow);
+	std::shared_ptr<IGameState> gameState = GetManager<IGameStatesFactory>(BaseManager)->CreateGameStateWithHighestPriority(firstRenderWindow, &firstWindowObject);
 	app.SetGameState(gameState);
 
 	app.Run();

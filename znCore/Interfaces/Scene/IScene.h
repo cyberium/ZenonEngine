@@ -7,18 +7,26 @@ class UpdateEventArgs;
 ZN_INTERFACE ISceneNodesFactory;
 // FORWARD END
 
+
+
+
+
 ZN_INTERFACE OW_ENGINE_API IScene : public std::enable_shared_from_this<IScene>
 {
 	virtual ~IScene() {}
 
-	virtual void                                    CreateRootNode() = 0;
-	virtual std::shared_ptr<ISceneNode>				GetRootNode() const = 0;
+	virtual void CreateRootNode() = 0;
+	virtual std::shared_ptr<ISceneNode> GetRootNode() const = 0;
 
 	// Passes will go to this
-	virtual void                                    Accept(IVisitor* visitor) = 0;
+	virtual void Accept(IVisitor* visitor) = 0;
 
 	// Events
-	virtual void                                    OnUpdate(UpdateEventArgs& e) = 0;
+	virtual SceneChangeEvent& SceneChangeEvent() = 0;
+	virtual void RaiseSceneChangeEvent(ESceneChangeType SceneChangeType, std::shared_ptr<ISceneNode> OwnerNode, std::shared_ptr<ISceneNode> ChildNode) = 0;
+
+	// Events
+	virtual void OnUpdate(UpdateEventArgs& e) = 0;
 
 	// Keyboard events
 	virtual bool OnKeyPressed(KeyEventArgs& e) = 0;
@@ -103,8 +111,8 @@ ZN_INTERFACE OW_ENGINE_API ISceneCreator
 };
 
 ZN_INTERFACE OW_ENGINE_API
-__declspec(uuid("CCF47DFF-A18F-46F2-B413-F17ABF991C50"))
-IScenesFactory
+	__declspec(uuid("CCF47DFF-A18F-46F2-B413-F17ABF991C50"))
+	IScenesFactory
 	: public IManager
 {
 	virtual ~IScenesFactory() {}
@@ -114,3 +122,4 @@ IScenesFactory
 
 	virtual std::shared_ptr<IScene> CreateScene(std::string SceneTypeName) const = 0;
 };
+

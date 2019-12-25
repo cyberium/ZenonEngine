@@ -243,7 +243,6 @@
     <ClCompile Include="PropertyEditor\PropertyWidget\Delegates\Core\PropertyDelegateVec3.cpp">
       <Filter>Property editor\Widget\Delegates\Core</Filter>
     </ClCompile>
-    <ClCompile Include="DebugOutputEditorLog.cpp" />
     <ClCompile Include="GameState_Editor.cpp" />
     <ClCompile Include="PropertyEditor\Core\Core\PropertyString.cpp">
       <Filter>Property editor\Core\Core</Filter>
@@ -251,6 +250,7 @@
     <ClCompile Include="PropertyEditor\PropertyWidget\Delegates\Core\PropertyDelegateString.cpp">
       <Filter>Property editor\Widget\Delegates\Core</Filter>
     </ClCompile>
+    <ClCompile Include="DebugOutputEditorLog.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">

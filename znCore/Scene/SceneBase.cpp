@@ -35,6 +35,21 @@ void SceneBase::Accept(IVisitor * visitor)
 		m_RootNode->Accept(visitor);
 }
 
+Delegate<SceneChangeEventArgs>& SceneBase::SceneChangeEvent()
+{
+	return m_SceneChangeEvent;
+}
+
+void SceneBase::RaiseSceneChangeEvent(ESceneChangeType SceneChangeType, std::shared_ptr<ISceneNode> OwnerNode, std::shared_ptr<ISceneNode> ChildNode)
+{
+	m_SceneChangeEvent(SceneChangeEventArgs(this, shared_from_this(), SceneChangeType, OwnerNode, ChildNode));
+}
+
+
+
+//
+// RenderWindow events
+//
 void SceneBase::OnUpdate(UpdateEventArgs& e)
 {
 	if (m_RootNode)

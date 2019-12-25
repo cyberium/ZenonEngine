@@ -17,6 +17,21 @@ MainEditor::MainEditor(QWidget* Parent)
 
 	m_PropertiesController = std::make_shared<CPropertiesController>(ui.PropertyEditor);
 
+	// Add context menu for scene node viewer
+	contextMenu = std::make_shared<QMenu>(this);
+
+	QAction* uninstallAction = new QAction("Uninstall TA", contextMenu.get());
+	contextMenu->addAction(uninstallAction);
+
+	contextMenu->addSeparator();
+
+	QAction* uninstallAction33 = new QAction("Uninstall TA33", contextMenu.get());
+	contextMenu->addAction(uninstallAction33);
+
+	ui.SceneTreeViewer->setContextMenuPolicy(Qt::CustomContextMenu);
+
+	connect(ui.SceneTreeViewer, SIGNAL(customContextMenuRequested(const QPoint &)), this, SLOT(onCustomContextMenu(const QPoint &)));
+
 	// Unite file browser and log docker
 	QMainWindow::tabifyDockWidget(ui.DockerFileBrowser, ui.DockerLog);
 }
@@ -34,22 +49,11 @@ void MainEditor::ApplyScene(std::shared_ptr<IScene> Scene)
 {
 	m_Scene = Scene;
 
-	CSceneNodeTreeModel * model = new CSceneNodeTreeModel(Scene);
+	CSceneNodeTreeModel * model = new CSceneNodeTreeModel(this);
+	model->SetModelData(Scene);
 	ui.SceneTreeViewer->setModel(model);
 
-	contextMenu = std::make_shared<QMenu>(this);
-	QAction* uninstallAction = new QAction("Uninstall TA", contextMenu.get());
-	contextMenu->addAction(uninstallAction);
-
-	contextMenu->addSeparator();
-	
-	QAction* uninstallAction33 = new QAction("Uninstall TA33", contextMenu.get());
-	contextMenu->addAction(uninstallAction33);
-
-	ui.SceneTreeViewer->setContextMenuPolicy(Qt::CustomContextMenu);
-
-
-	connect(ui.SceneTreeViewer, SIGNAL(customContextMenuRequested(const QPoint &)), this, SLOT(onCustomContextMenu(const QPoint &)));
+	ui.SceneTreeViewer->expandAll();
 }
 
 void MainEditor::ApplyTest()

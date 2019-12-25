@@ -6,7 +6,7 @@ class CGameState_Editor
 	: public CGameState
 {
 public:
-	CGameState_Editor(IBaseManager * BaseManager, std::shared_ptr<IRenderWindow> RenderWindow, MainEditor * Editor);
+	CGameState_Editor(IBaseManager * BaseManager, std::shared_ptr<IRenderWindow> RenderWindow, IWindowEvents* WindowEvents, MainEditor * Editor);
 	virtual ~CGameState_Editor();
 
 	// IGameState
@@ -14,6 +14,7 @@ public:
 	void Destroy();
 
 	virtual void OnRayIntersected(const glm::vec3& Point) override;
+	void OnSceneChangeEvent(SceneChangeEventArgs& e);
 
 	virtual void OnResize(ResizeEventArgs& e) override;
 
@@ -28,4 +29,6 @@ private:
 
 private:
 	MainEditor * m_Editor;
+
+	Delegate<SceneChangeEventArgs>::FunctionDecl  m_SceneChangeConnection;
 };

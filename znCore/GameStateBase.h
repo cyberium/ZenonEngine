@@ -7,7 +7,7 @@ class OW_ENGINE_API CGameState
 	, public Object
 {
 public:
-	CGameState(IBaseManager * BaseManager, std::shared_ptr<IRenderWindow> RenderWindow);
+	CGameState(IBaseManager * BaseManager, std::shared_ptr<IRenderWindow> RenderWindow, IWindowEvents* WindowEvents);
 	virtual ~CGameState();
 
 	// IGameState
@@ -67,6 +67,7 @@ protected:
 protected:
 	std::shared_ptr<IRenderDevice>                  m_RenderDevice;
 	std::shared_ptr<IRenderWindow>                  m_RenderWindow;
+	IWindowEvents*                                  m_WindowEvents;
 
     std::shared_ptr<IQuery>                         m_FrameQuery;
 	std::shared_ptr<IQuery>                         m_TestQuery;

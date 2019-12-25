@@ -167,7 +167,6 @@
     <ClCompile Include="RasterizerStateBase.cpp" />
     <ClCompile Include="RenderDeviceBase.cpp" />
     <ClCompile Include="RenderWindowBase.cpp" />
-    <ClCompile Include="RenderWindowBase_Events.cpp" />
     <ClCompile Include="SamplerStateBase.cpp" />
     <ClCompile Include="ShaderBase.cpp" />
     <ClCompile Include="ShaderInputLayoutBase.cpp" />

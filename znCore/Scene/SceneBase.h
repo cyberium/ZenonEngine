@@ -1,5 +1,7 @@
 #pragma once
 
+#include "../Interfaces/Types/Events.h"
+
 class OW_ENGINE_API SceneBase 
 	: public IScene
 	, public IBaseManagerHolder
@@ -15,6 +17,10 @@ public:
 
 	// Passes
 	void                                            Accept(IVisitor* visitor);
+
+	// Events
+	Delegate<SceneChangeEventArgs>&					SceneChangeEvent() override;
+	void                                            RaiseSceneChangeEvent(ESceneChangeType SceneChangeType, std::shared_ptr<ISceneNode> OwnerNode, std::shared_ptr<ISceneNode> ChildNode);
 
 	// Events
     void                                            OnUpdate(UpdateEventArgs& e);
@@ -48,6 +54,9 @@ protected:
 
 protected:
 	std::shared_ptr<ISceneNode>                     m_RootNode;
+
+private:
+	Delegate<SceneChangeEventArgs>					m_SceneChangeEvent;
 
 private:
 	IBaseManager*                                   m_BaseManager;

@@ -27,7 +27,6 @@
     <ClCompile Include="MaterialBase.cpp" />
     <ClCompile Include="RenderDeviceBase.cpp" />
     <ClCompile Include="RenderWindowBase.cpp" />
-    <ClCompile Include="RenderWindowBase_Events.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="common.h">

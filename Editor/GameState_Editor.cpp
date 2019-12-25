@@ -4,8 +4,8 @@
 #include "GameState_Editor.h"
 
 
-CGameState_Editor::CGameState_Editor(IBaseManager * BaseManager, std::shared_ptr<IRenderWindow> RenderWindow, MainEditor * Editor)
-	: CGameState(BaseManager, RenderWindow)
+CGameState_Editor::CGameState_Editor(IBaseManager * BaseManager, std::shared_ptr<IRenderWindow> RenderWindow, IWindowEvents* WindowEvents, MainEditor * Editor)
+	: CGameState(BaseManager, RenderWindow, WindowEvents)
 	, m_Editor(Editor)
 {}
 
@@ -26,6 +26,8 @@ bool CGameState_Editor::Init()
 	Load3D();
 	LoadUI();
 
+	m_SceneChangeConnection = GetScene3D()->SceneChangeEvent().connect(&CGameState_Editor::OnSceneChangeEvent, this, std::placeholders::_1);
+
 	GetCameraController()->GetCameraMovement()->SetTranslate(vec3(-500, 1600, 1700));
 	GetCameraController()->GetCameraMovement()->SetYaw(-51);
 	GetCameraController()->GetCameraMovement()->SetPitch(-38);
@@ -35,7 +37,7 @@ bool CGameState_Editor::Init()
 
 void CGameState_Editor::Destroy()
 {
-	// Insert code here
+	GetScene3D()->SceneChangeEvent().disconnect(m_SceneChangeConnection);
 
 	CGameState::Destroy();
 }
@@ -58,6 +60,11 @@ void CGameState_Editor::OnRayIntersected(const glm::vec3& Point)
 	Log::Green("Sphere created at %f %f %f", Point.x, Point.y, Point.z);
 
 	m_Editor->OnSceneNodeSelected(sceneNodePlane);
+}
+
+void CGameState_Editor::OnSceneChangeEvent(SceneChangeEventArgs& e)
+{
+	m_Editor->ApplyScene(e.Scene);
 }
 
 

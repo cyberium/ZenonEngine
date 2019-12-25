@@ -29,10 +29,9 @@ int main(int argc, char *argv[])
 	// Render window for main editor
 	std::shared_ptr<IRenderWindow> renderWindow = renderDevice->CreateRenderWindow(w.getUI().EditorWindow, false);
 	app.AddRenderWindow(renderWindow);
-	w.getUI().EditorWindow->SetRenderWindowEvents(std::dynamic_pointer_cast<IRenderWindowEvents>(renderWindow));
 
 	//std::shared_ptr<IGameState> gameState = GetManager<IGameStatesFactory>(BaseManager)->CreateGameStateWithHighestPriority(renderWindow);
-	std::shared_ptr<CGameState_Editor> gameState = std::make_shared<CGameState_Editor>(BaseManager, renderWindow, &w);
+	std::shared_ptr<CGameState_Editor> gameState = std::make_shared<CGameState_Editor>(BaseManager, renderWindow, w.getUI().EditorWindow, &w);
 	app.SetGameState(gameState);
 
 	w.ApplyScene(std::dynamic_pointer_cast<IScene>(app.GetGameState()->GetScene3D()));

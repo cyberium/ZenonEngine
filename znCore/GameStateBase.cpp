@@ -3,11 +3,12 @@
 // General
 #include "GameStateBase.h"
 
-CGameState::CGameState(IBaseManager * BaseManager, std::shared_ptr<IRenderWindow> RenderWindow)
-	: m_RenderWindow(RenderWindow)
+CGameState::CGameState(IBaseManager * BaseManager, std::shared_ptr<IRenderWindow> RenderWindow, IWindowEvents* WindowEvents)
+	: m_BaseManager(BaseManager)
+	, m_RenderWindow(RenderWindow)
+	, m_WindowEvents(WindowEvents)
 	, m_IsInited(false)
 	, m_IsCurrent(false)
-	, m_BaseManager(BaseManager)
 {
 	m_RenderDevice = GetManager<IRenderDevice>(m_BaseManager);
 }
@@ -56,25 +57,26 @@ bool CGameState::Set()
 	std::shared_ptr<IRenderWindowEvents> renderWindow = std::dynamic_pointer_cast<IRenderWindowEvents>(m_RenderWindow);
     _ASSERT(renderWindow);
 
-	// Input events connections
-    OnKeyPressedConnection          = renderWindow->KeyPressed().connect(&CGameState::OnKeyPressed, this, std::placeholders::_1);
-    OnKeyReleasedConnection         = renderWindow->KeyReleased().connect(&CGameState::OnKeyReleased, this, std::placeholders::_1);
-    OnMouseButtonPressedConnection  = renderWindow->MouseButtonPressed().connect(&CGameState::OnMouseButtonPressed, this, std::placeholders::_1);
-    OnMouseButtonReleasedConnection = renderWindow->MouseButtonReleased().connect(&CGameState::OnMouseButtonReleased, this, std::placeholders::_1);
-    OnMouseMovedConnection          = renderWindow->MouseMoved().connect(&CGameState::OnMouseMoved, this, std::placeholders::_1);
-    OnMouseWheelConnection          = renderWindow->MouseWheel().connect(&CGameState::OnMouseWheel, this, std::placeholders::_1);
-
-	// Window events connections
-    OnResizeConnection              = renderWindow->Resize().connect(&CGameState::OnResize, this, std::placeholders::_1);
-
-	// Update events connection
+	// RenderWindowEvents
     OnUpdateConnection              = renderWindow->Update().connect(&CGameState::OnUpdate, this, std::placeholders::_1);
-
-	// Render events connections
     OnPreRenderConnection           = renderWindow->PreRender().connect(&CGameState::OnPreRender, this, std::placeholders::_1);
     OnRenderConnection              = renderWindow->Render().connect(&CGameState::OnRender, this, std::placeholders::_1);
     OnPostRenderConnection          = renderWindow->PostRender().connect(&CGameState::OnPostRender, this, std::placeholders::_1);
     OnRenderUIConnection            = renderWindow->RenderUI().connect(&CGameState::OnRenderUI, this, std::placeholders::_1);
+
+
+	// Window events connections
+	OnResizeConnection = m_WindowEvents->Resize().connect(&CGameState::OnResize, this, std::placeholders::_1);
+
+	// Keyboard
+	OnKeyPressedConnection = m_WindowEvents->KeyPressed().connect(&CGameState::OnKeyPressed, this, std::placeholders::_1);
+	OnKeyReleasedConnection = m_WindowEvents->KeyReleased().connect(&CGameState::OnKeyReleased, this, std::placeholders::_1);
+
+	// Mouse
+	OnMouseButtonPressedConnection = m_WindowEvents->MouseButtonPressed().connect(&CGameState::OnMouseButtonPressed, this, std::placeholders::_1);
+	OnMouseButtonReleasedConnection = m_WindowEvents->MouseButtonReleased().connect(&CGameState::OnMouseButtonReleased, this, std::placeholders::_1);
+	OnMouseMovedConnection = m_WindowEvents->MouseMoved().connect(&CGameState::OnMouseMoved, this, std::placeholders::_1);
+	OnMouseWheelConnection = m_WindowEvents->MouseWheel().connect(&CGameState::OnMouseWheel, this, std::placeholders::_1);
 
     return true;
 }
@@ -85,12 +87,19 @@ void CGameState::Unset()
     _ASSERT(renderWindow);
 
     renderWindow->Update().disconnect(OnUpdateConnection);
-    renderWindow->MouseButtonPressed().disconnect(OnMouseButtonPressedConnection);
-    renderWindow->MouseButtonReleased().disconnect(OnMouseButtonReleasedConnection);
-    renderWindow->MouseMoved().disconnect(OnMouseMovedConnection);
-    renderWindow->MouseWheel().disconnect(OnMouseWheelConnection);
-    renderWindow->KeyPressed().disconnect(OnKeyPressedConnection);
-    renderWindow->KeyReleased().disconnect(OnKeyReleasedConnection);
+	renderWindow->PreRender().disconnect(OnPreRenderConnection);
+	renderWindow->Render().disconnect(OnRenderConnection);
+	renderWindow->PostRender().disconnect(OnPostRenderConnection);
+	renderWindow->RenderUI().disconnect(OnRenderUIConnection);
+
+	m_WindowEvents->KeyPressed().disconnect(OnKeyPressedConnection);
+	m_WindowEvents->KeyReleased().disconnect(OnKeyReleasedConnection);
+
+	m_WindowEvents->MouseButtonPressed().disconnect(OnMouseButtonPressedConnection);
+	m_WindowEvents->MouseButtonReleased().disconnect(OnMouseButtonReleasedConnection);
+	m_WindowEvents->MouseMoved().disconnect(OnMouseMovedConnection);
+	m_WindowEvents->MouseWheel().disconnect(OnMouseWheelConnection);
+	
 }
 
 void CGameState::SetInited(bool _value)
@@ -138,7 +147,7 @@ void CGameState::OnUpdate(UpdateEventArgs& e)
 void CGameState::OnPreRender(RenderEventArgs& e)
 {
 	m_FrameQuery->Begin(e.FrameCounter);
-	m_TestQuery->Begin(e.FrameCounter);
+	//m_TestQuery->Begin(e.FrameCounter);
 }
 
 void CGameState::OnRender(RenderEventArgs& e)
@@ -150,7 +159,7 @@ void CGameState::OnRender(RenderEventArgs& e)
 
 void CGameState::OnPostRender(RenderEventArgs& e)
 {
-	m_TestQuery->End(e.FrameCounter);
+	//m_TestQuery->End(e.FrameCounter);
 	m_FrameQuery->End(e.FrameCounter);
 
 	vec3 cameraTrans = GetCameraController()->GetCamera()->GetTranslation();
@@ -184,8 +193,8 @@ void CGameState::OnResize(ResizeEventArgs & e)
 {
 	m_DefaultCameraController->OnResize(e);
 
-	m_Technique3D.UpdateViewport(dynamic_cast<const IRenderWindow*>(e.Caller)->GetViewport());
-	m_TechniqueUI.UpdateViewport(dynamic_cast<const IRenderWindow*>(e.Caller)->GetViewport());
+	m_Technique3D.UpdateViewport(m_RenderWindow->GetViewport());
+	m_TechniqueUI.UpdateViewport(m_RenderWindow->GetViewport());
 }
 
 

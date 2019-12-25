@@ -63,14 +63,7 @@ void Application::AddRenderWindow(std::shared_ptr<IRenderWindow> RenderWindow)
 {
 	std::dynamic_pointer_cast<IApplicationEventsConnection>(RenderWindow)->Connect(this);
 
-	RenderWindow->ShowWindow();
-
-	if (m_bIsRunning)
-	{
-		DoBeforeRun();
-	}
-
-	m_Windows.insert(std::make_pair(RenderWindow->GetHWnd(), RenderWindow));
+	m_Windows.push_back(RenderWindow);
 }
 
 void Application::DeleleRenderWindow(std::shared_ptr<IRenderWindow> RenderWindow)
@@ -86,8 +79,12 @@ void Application::DeleleRenderWindow(std::shared_ptr<IRenderWindow> RenderWindow
 
 void Application::DoBeforeRun()
 {
-	OnInitialize(EventArgs(this));
+	if (m_bIsInitialized)
+		return;
 
+	m_Initialize(EventArgs(this));
+
+	m_bIsInitialized = true;
 	m_bIsRunning = true;
 }
 
@@ -98,9 +95,17 @@ int Application::DoRun()
 	MSG msg;
 	while (PeekMessageW(&msg, NULL, 0, 0, PM_REMOVE))
 	{
-		if (msg.message == WM_QUIT)
+		if (msg.message == WM_DESTROY)
 		{
-			OnExit(EventArgs(this));
+			m_Exit(EventArgs(this));
+
+			// Destroy any windows that are still hanging around.
+			for (const auto& it : m_Windows)
+				if (it != nullptr)
+					SendMessage(it->GetWindowObject()->GetHWnd(), WM_CLOSE, NULL, NULL); // TODO: Investigate me!
+
+			// Setting this to false will cause the main application's message pump to stop.
+			m_bIsRunning = false;
 		}
 
 		TranslateMessage(&msg);
@@ -111,16 +116,16 @@ int Application::DoRun()
 	g_ApplicationTime += g_GameDeltaTime;
 	g_FrameCounter++;
 
-	UpdateEventArgs updateArgs(this, g_GameDeltaTime* 166.0f, g_ApplicationTime* 166.0f, g_FrameCounter);
-	OnUpdate(updateArgs);
+	UpdateEventArgs updateArgs(this, g_GameDeltaTime * 166.0f, g_ApplicationTime * 166.0f, g_FrameCounter);
+	m_Update(updateArgs);
 
 	return static_cast<int>(msg.wParam);
 }
 
 void Application::DoAfterRun()
 {
-	OnTerminate(EventArgs(this));
-	OnTerminated(EventArgs(this));
+	m_Terminate(EventArgs(this));
+	m_Terminated(EventArgs(this));
 }
 
 IBaseManager* Application::GetBaseManager() const
@@ -143,6 +148,42 @@ HINSTANCE Application::GetHINSTANCE()
 {
 	return m_HINSTANCE;
 }
+
+
+
+//
+// IApplicationEvents
+//
+Event& Application::Initialize()
+{
+	return m_Initialize;
+}
+
+UpdateEvent& Application::Update()
+{
+	return m_Update;
+}
+
+Event& Application::Terminate()
+{
+	return m_Terminate;
+}
+
+Event& Application::Terminated()
+{
+	return m_Terminated;
+}
+
+Event& Application::Exit()
+{
+	return m_Exit;
+}
+
+UserEvent& Application::UserEvent()
+{
+	return m_UserEvent;
+}
+
 
 
 //

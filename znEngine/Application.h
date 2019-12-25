@@ -32,19 +32,11 @@ public:
 
 	// IApplicationEvents
 	Event&                          Initialize();
-	bool                          OnInitialize(EventArgs& e);
 	UpdateEvent&                    Update();
-	bool                          OnUpdate(UpdateEventArgs& e);
 	Event&			                Terminate();
-	bool                          OnTerminate(EventArgs& e);
 	Event&                          Terminated();
-	bool                          OnTerminated(EventArgs& e);
 	Event&                          Exit();
-	bool                          OnExit(EventArgs& e);
 	Delegate<UserEventArgs>&        UserEvent();
-	bool                          OnUserEvent(UserEventArgs& e);
-
-	LRESULT CALLBACK				WndProc(HWND, UINT, WPARAM, LPARAM);
 
 	// IGameStateManager
 	void                            AddGameState(GameStatesNames _name, std::shared_ptr<IGameState> _gameState) override;
@@ -60,7 +52,7 @@ private:
 	HINSTANCE                       m_HINSTANCE;
 
 	std::shared_ptr<IRenderDevice>  m_pRenderDevice;
-	std::map<HWND, std::shared_ptr<IRenderWindow>> m_Windows;
+	std::vector<std::shared_ptr<IRenderWindow>> m_Windows;
 
 	// IGameStateManager
 	std::shared_ptr<IGameState>                                     m_CurrentGameState;

@@ -33,7 +33,7 @@ void CGameStateFactory::RemoveGameStateCreator(std::shared_ptr<IGameStateCreator
 {
 }
 
-std::shared_ptr<IGameState> CGameStateFactory::CreateGameStateWithHighestPriority(std::shared_ptr<IRenderWindow> RenderWindow) const
+std::shared_ptr<IGameState> CGameStateFactory::CreateGameStateWithHighestPriority(std::shared_ptr<IRenderWindow> RenderWindow, IWindowEvents* WindowEvents) const
 {
 	GameStatePriority maxPriority = 0;
 	std::shared_ptr<IGameStateCreator> gameStateCreator;
@@ -54,13 +54,13 @@ std::shared_ptr<IGameState> CGameStateFactory::CreateGameStateWithHighestPriorit
 
 	if (gameStateCreator != nullptr)
 	{
-		return gameStateCreator->CreateGameState(gameStateIndex, RenderWindow);
+		return gameStateCreator->CreateGameState(gameStateIndex, RenderWindow, WindowEvents);
 	}
 
 	throw std::exception("CGameStateFactory::CreateGameStateWithHighestPriority: Unable to create highest priority GameState.");
 }
 
-std::shared_ptr<IGameState> CGameStateFactory::CreateGameState(std::string GameStateName, std::shared_ptr<IRenderWindow> RenderWindow) const
+std::shared_ptr<IGameState> CGameStateFactory::CreateGameState(std::string GameStateName, std::shared_ptr<IRenderWindow> RenderWindow, IWindowEvents* WindowEvents) const
 {
 	for (const auto& creator : m_Creators)
 	{
@@ -68,7 +68,7 @@ std::shared_ptr<IGameState> CGameStateFactory::CreateGameState(std::string GameS
 		{
 			if (creator->GetGameStateName(i) == GameStateName)
 			{
-				return creator->CreateGameState(i, RenderWindow);
+				return creator->CreateGameState(i, RenderWindow, WindowEvents);
 			}
 		}
 	}

@@ -9,8 +9,8 @@
 
 #include "Models/OBJLoader.h"
 
-CGameState_World::CGameState_World(IBaseManager * BaseManager, std::shared_ptr<IRenderWindow> RenderWindow)
-	: CGameState(BaseManager, RenderWindow)
+CGameState_World::CGameState_World(IBaseManager * BaseManager, std::shared_ptr<IRenderWindow> RenderWindow, IWindowEvents* WindowEvents)
+	: CGameState(BaseManager, RenderWindow, WindowEvents)
 {}
 
 CGameState_World::~CGameState_World()

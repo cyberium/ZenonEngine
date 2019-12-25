@@ -159,7 +159,6 @@
     <ClCompile Include="Settings\GroupVideo.cpp">
       <Filter>Settings</Filter>
     </ClCompile>
-    <ClCompile Include="Application_Events.cpp" />
     <ClCompile Include="GameState_Default.cpp">
       <Filter>GameStates</Filter>
     </ClCompile>

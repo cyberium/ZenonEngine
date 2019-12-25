@@ -19,7 +19,6 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Application_Events.cpp" />
     <ClCompile Include="BaseManager.cpp" />
     <ClCompile Include="GameStateDefaultCreator.cpp" />
     <ClCompile Include="GameStatesFactory.cpp" />

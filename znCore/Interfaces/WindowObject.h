@@ -8,27 +8,45 @@ ZN_INTERFACE OW_ENGINE_API IWindowObject
 	virtual long GetWindowWidth() = 0;         // include borders
 	virtual long GetWindowHeight() = 0;        // include borders
 	virtual HWND GetHWnd() = 0;
-
-	virtual HDC BeginPaint(LPPAINTSTRUCT PaintStruct) = 0;
-	virtual BOOL EndPaint(LPPAINTSTRUCT PaintStruct) = 0;
-
-	virtual BOOL GetClientRect(LPRECT Rect) = 0;
-	virtual BOOL ClientToScreen(LPPOINT Point) = 0;
-	virtual BOOL ScreenToClient(LPPOINT Point) = 0;
-
-	virtual BOOL BringWindowToTop() = 0;
-	virtual BOOL ShowWindow(int nCmdShow) = 0;
-	virtual BOOL UpdateWindow() = 0;
-	virtual BOOL DestroyWindow() = 0;
+	virtual void SetCursorPosition(const glm::ivec2& CursorPosition) = 0;
+	virtual glm::ivec2 GetCursorPosition() const = 0;
+	virtual void ShowCursor() = 0;
+	virtual void HideCursor() = 0;
 };
 
-ZN_INTERFACE OW_ENGINE_API IWindowClassRegistrator
+ZN_INTERFACE OW_ENGINE_API IWindowEvents
 {
-	virtual ~IWindowClassRegistrator() {}
+	virtual ~IWindowEvents() {}
 
-	virtual void RegisterWindowClass(LPCWSTR WindowClassName) = 0;
-	virtual void UnregisterWindowClass() = 0;
-	virtual LPCWSTR GetWindowClassName() const = 0;
+	// Window events
+	virtual Event&				InputFocus() = 0; // Window gets input focus
+	virtual Event&				InputBlur() = 0;  // Window loses input focus
+	virtual Event&				Minimize() = 0;   // Window is minimized.
+	virtual Event&				Restore() = 0;    // Window is restored.
+	virtual ResizeEvent&		Resize() = 0;
+	// Window is closing
+	virtual WindowCloseEvent&	Close() = 0;
+	// Keyboard events
+	virtual KeyboardEvent&		KeyPressed() = 0;
+	virtual KeyboardEvent&		KeyReleased() = 0;
+	virtual Event&				KeyboardFocus() = 0;
+	virtual Event&				KeyboardBlur() = 0;
+	// Mouse events
+	virtual MouseMotionEvent&   MouseMoved() = 0;
+	virtual MouseButtonEvent&   MouseButtonPressed() = 0;
+	virtual MouseButtonEvent&   MouseButtonReleased() = 0;
+	virtual MouseWheelEvent&    MouseWheel() = 0;
+	virtual Event&              MouseLeave() = 0;
+	virtual Event&              MouseFocus() = 0;
+	virtual Event&              MouseBlur() = 0;
+};
+
+ZN_INTERFACE OW_ENGINE_API IWindowEventsConnection
+{
+	virtual ~IWindowEventsConnection() {}
+
+	virtual void Connect(IWindowEvents* WindowEvents) = 0;
+	virtual void Disconnect(IWindowEvents* WindowEvents) = 0;
 };
 
 ZN_INTERFACE OW_ENGINE_API IWindowObjectEx
@@ -36,7 +54,6 @@ ZN_INTERFACE OW_ENGINE_API IWindowObjectEx
 	virtual ~IWindowObjectEx() {}
 
 	virtual void SetWindowHandle(HWND HWnd) = 0;
-
-	virtual HWND CreateWindowInstance(IApplication * Application, IWindowClassRegistrator * WindowClassRegistrator, LPCWSTR WindowName, LONG Width, LONG Height) = 0;
+	virtual HWND CreateWindowInstance(IApplication * Application, LPCWSTR WindowName, LONG Width, LONG Height) = 0;
 	virtual void DestroyWindowInstance() = 0;
 };

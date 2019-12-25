@@ -3,11 +3,10 @@
 // General
 #include "SceneNodeTreeModel.h"
 
-CSceneNodeTreeModel::CSceneNodeTreeModel(std::shared_ptr<IScene> Scene3D, QObject * parent)
+CSceneNodeTreeModel::CSceneNodeTreeModel(QObject * parent)
 	: QAbstractItemModel(parent) 
 {
 	m_RootItem = new CSceneNodeTreeItem();
-	m_RootItem->appendChild(new CSceneNodeTreeItem(Scene3D->GetRootNode(), m_RootItem));
 }
 
 CSceneNodeTreeModel::~CSceneNodeTreeModel() 
@@ -16,6 +15,26 @@ CSceneNodeTreeModel::~CSceneNodeTreeModel()
 }
 
 
+
+//
+// CSceneNodeTreeModel
+//
+void CSceneNodeTreeModel::SetModelData(std::shared_ptr<IScene> Scene3D)
+{
+	if (m_RootItem)
+	{
+		delete m_RootItem;
+	}
+
+	m_RootItem = new CSceneNodeTreeItem();
+	m_RootItem->appendChild(new CSceneNodeTreeItem(Scene3D->GetRootNode(), m_RootItem));
+}
+
+
+
+//
+// QAbstractItemModel
+//
 QVariant CSceneNodeTreeModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
 	if (orientation == Qt::Horizontal && role == Qt::DisplayRole)
@@ -36,19 +55,6 @@ QVariant CSceneNodeTreeModel::data(const QModelIndex& index, int role) const
 	return item->data();
 }
 
-CSceneNodeTreeItem* CSceneNodeTreeModel::getItem(const QModelIndex& index) const 
-{
-	if (!index.isValid()) 
-		return m_RootItem;
-
-	CSceneNodeTreeItem* item = static_cast<CSceneNodeTreeItem*>(index.internalPointer());
-	_ASSERT(item);
-	if (item)
-		return item;
-
-	return nullptr;
-}
-
 Qt::ItemFlags CSceneNodeTreeModel::flags(const QModelIndex& index) const 
 {
 	if (!index.isValid()) 
@@ -56,8 +62,6 @@ Qt::ItemFlags CSceneNodeTreeModel::flags(const QModelIndex& index) const
 
 	return QAbstractItemModel::flags(index);
 }
-
-
 
 QModelIndex CSceneNodeTreeModel::index(int row, int column, const QModelIndex& parent) const 
 {
@@ -95,4 +99,22 @@ int CSceneNodeTreeModel::rowCount(const QModelIndex& parent) const
 int CSceneNodeTreeModel::columnCount(const QModelIndex& parent) const
 {
 	return 1;
+}
+
+
+
+//
+// Private
+//
+CSceneNodeTreeItem* CSceneNodeTreeModel::getItem(const QModelIndex& index) const
+{
+	if (!index.isValid())
+		return m_RootItem;
+
+	CSceneNodeTreeItem* item = static_cast<CSceneNodeTreeItem*>(index.internalPointer());
+	_ASSERT(item);
+	if (item)
+		return item;
+
+	return nullptr;
 }

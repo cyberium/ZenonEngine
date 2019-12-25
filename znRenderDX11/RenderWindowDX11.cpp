@@ -105,7 +105,7 @@ void RenderWindowDX11::CreateSwapChain()
 
     // First create a DXGISwapChain1
     ATL::CComPtr<IDXGISwapChain1> pSwapChain;
-    if (FAILED(factory->CreateSwapChainForHwnd(m_pDevice, GetHWnd(), &swapChainDesc, &swapChainFullScreenDesc, nullptr, &pSwapChain)))
+    if (FAILED(factory->CreateSwapChainForHwnd(m_pDevice, GetWindowObject()->GetHWnd(), &swapChainDesc, &swapChainFullScreenDesc, nullptr, &pSwapChain)))
     {
         Log::Error("Failed to create swap chain.");
     }

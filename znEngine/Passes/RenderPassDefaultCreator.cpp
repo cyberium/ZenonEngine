@@ -90,7 +90,7 @@ std::shared_ptr<IRenderPass> CRenderPassDefaultCreator::CreateRenderPass(size_t 
 		Pipeline->GetBlendState()->SetBlendMode(disableBlending);
 		Pipeline->GetDepthStencilState()->SetDepthMode(enableDepthWrites);
 		Pipeline->GetRasterizerState()->SetCullMode(IRasterizerState::CullMode::None);
-		Pipeline->GetRasterizerState()->SetFillMode(IRasterizerState::FillMode::Wireframe);
+		Pipeline->GetRasterizerState()->SetFillMode(IRasterizerState::FillMode::Solid);
 		Pipeline->SetRenderTarget(RenderTarget);
 		Pipeline->GetRasterizerState()->SetViewport(Viewport);
 		Pipeline->SetShader(IShader::ShaderType::VertexShader, g_pVertexShader);

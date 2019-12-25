@@ -9,65 +9,26 @@ RenderWindowBase::RenderWindowBase(std::shared_ptr<IRenderDevice> RenderDevice, 
 	, m_vSync(vSync)
 
     , m_bResizePending(false)
-
-	, m_PreviousMousePosition(0, 0)
-	, m_InClientRect(false)
-	, m_IsMouseTracking(false)
-
-	, m_bHasKeyboardFocus(false)
 {
 	m_Viewport.SetWidth(WindowObject->GetWindowWidth());
 	m_Viewport.SetHeight(WindowObject->GetWindowHeight());
+
+	m_ResizeConnection = dynamic_cast<IWindowEvents*>(WindowObject)->Resize().connect(&RenderWindowBase::OnResize, this, std::placeholders::_1);
+	m_WindowCloseConnection = dynamic_cast<IWindowEvents*>(WindowObject)->Close().connect(&RenderWindowBase::OnClose, this, std::placeholders::_1);
 }
 
 RenderWindowBase::~RenderWindowBase()
 {}
 
 
-void RenderWindowBase::ShowWindow()
-{
-	m_WindowObject->ShowWindow(SW_SHOWDEFAULT);
-	m_WindowObject->BringWindowToTop();
-}
-
-void RenderWindowBase::HideWindow()
-{
-	m_WindowObject->ShowWindow(SW_HIDE);
-}
-
-void RenderWindowBase::CloseWindow()
-{
-	m_WindowObject->DestroyWindow();
-
-	PostQuitMessage(0);
-}
-
-void RenderWindowBase::SetMousePosition(vec2 _position)
-{
-	RECT rc;
-	m_WindowObject->GetClientRect(&rc);
-
-	m_WindowObject->ClientToScreen(reinterpret_cast<POINT*>(&rc.left));
-	m_WindowObject->ClientToScreen(reinterpret_cast<POINT*>(&rc.right));
-
-	::SetCursorPos(rc.left + _position.x, rc.top + _position.y);
-}
-
-
 int RenderWindowBase::GetWindowWidth() const
 {
-    RECT clientRect;
-    m_WindowObject->GetClientRect(&clientRect);
-
-	return clientRect.right - clientRect.left;
+	return m_WindowObject->GetWindowWidth();
 }
 
 int RenderWindowBase::GetWindowHeight() const
 {
-    RECT clientRect;
-    m_WindowObject->GetClientRect(&clientRect);
-
-    return clientRect.bottom - clientRect.top;
+    return m_WindowObject->GetWindowHeight();
 }
 
 glm::ivec2 RenderWindowBase::GetWindowSize() const
@@ -80,11 +41,6 @@ bool RenderWindowBase::IsVSync() const
 	return m_vSync;
 }
 
-HWND RenderWindowBase::GetHWnd() const
-{
-	return m_WindowObject->GetHWnd();
-}
-
 std::shared_ptr<IRenderDevice> RenderWindowBase::GetRenderDevice() const
 {
     return m_RenderDevice.lock();
@@ -95,11 +51,89 @@ std::shared_ptr<IRenderTarget> RenderWindowBase::GetRenderTarget() const
     return m_RenderTarget;
 }
 
-const Viewport * RenderWindowBase::GetViewport() const
+IWindowObject* RenderWindowBase::GetWindowObject() const
+{
+	return m_WindowObject;
+}
+
+const Viewport* RenderWindowBase::GetViewport() const
 {
 	return &m_Viewport;
 }
 
+
+
+//
+// IRenderWindowEvents
+//
+UpdateEvent& RenderWindowBase::Update()
+{
+	return m_Update;
+}
+
+RenderEvent& RenderWindowBase::PreRender()
+{
+	return m_PreRender;
+}
+
+RenderEvent& RenderWindowBase::Render()
+{
+	return m_Render;
+}
+
+RenderEvent& RenderWindowBase::PostRender()
+{
+	return m_PostRender;
+}
+
+RenderEvent& RenderWindowBase::RenderUI()
+{
+	return m_RenderUI;
+}
+
+
+
+void RenderWindowBase::OnUpdate(UpdateEventArgs& e)
+{
+	UpdateEventArgs updateArgs(this, e.ElapsedTime, e.TotalTime, e.FrameCounter);
+	m_Update(updateArgs);
+
+	GetRenderDevice()->Lock();
+	{
+		if (m_bResizePending)
+		{
+			ResizeSwapChainBuffers(GetWindowWidth(), GetWindowHeight());
+			m_bResizePending = false;
+		}
+
+		RenderEventArgs renderArgs(this, e.ElapsedTime, e.TotalTime, e.FrameCounter, nullptr, nullptr, nullptr);
+
+		m_RenderTarget->Bind();
+		{
+
+			m_PreRender(renderArgs);
+			m_Render(renderArgs);
+			m_PostRender(renderArgs);
+			m_RenderUI(renderArgs);
+		}
+		//m_RenderTarget->UnBind(); ???
+
+		Present();
+	}
+	GetRenderDevice()->Unlock();
+}
+
+void RenderWindowBase::OnResize(ResizeEventArgs& e) // The RenderWindowBase window has be resized
+{
+	m_Viewport.SetWidth(e.Width);
+	m_Viewport.SetHeight(e.Height);
+
+	m_bResizePending = true;
+}
+
+void RenderWindowBase::OnClose(WindowCloseEventArgs& e)
+{
+}
 
 
 
@@ -108,22 +142,12 @@ const Viewport * RenderWindowBase::GetViewport() const
 //
 void RenderWindowBase::Connect(IApplicationEvents * ApplicationEvents)
 {
-	m_InitializeConnection = ApplicationEvents->Initialize().connect(&RenderWindowBase::OnInitialize, this, std::placeholders::_1);
-	m_UpdateConnection     = ApplicationEvents->Update().connect(&RenderWindowBase::OnUpdate, this, std::placeholders::_1);
-	m_TerminateConnection  = ApplicationEvents->Terminate().connect(&RenderWindowBase::OnTerminate, this, std::placeholders::_1);
-	//m_TerminatedConnection = ApplicationEvents->Terminated().connect(&OnTerminated, this, std::placeholders::_1);
-	//m_ExitConnection       = ApplicationEvents->Exit().connect(&OnExit, this, std::placeholders::_1);
-	//m_UserEventConnection  = ApplicationEvents->UserEvent().connect(&OnUserEvent, this, std::placeholders::_1);
+	m_UpdateConnection = ApplicationEvents->Update().connect(&RenderWindowBase::OnUpdate, this, std::placeholders::_1);
 }
 
 void RenderWindowBase::Disconnect(IApplicationEvents * ApplicationEvents)
 {
-	ApplicationEvents->Initialize().disconnect(m_InitializeConnection);
 	ApplicationEvents->Update().disconnect(m_UpdateConnection);
-	ApplicationEvents->Terminate().disconnect(m_TerminateConnection);
-	//ApplicationEvents->Terminated().disconnect(m_TerminatedConnection);
-	//ApplicationEvents->Exit().disconnect(m_ExitConnection);
-	//ApplicationEvents->UserEvent().disconnect(m_UserEventConnection);
 }
 
 
@@ -132,5 +156,3 @@ void RenderWindowBase::CreateSwapChain()
 {
 	m_RenderTarget = GetRenderDevice()->CreateRenderTarget();
 }
-
-
