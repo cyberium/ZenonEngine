@@ -14,23 +14,23 @@ CFilesManager::~CFilesManager()
 	m_BaseManager->RemoveManager<IFilesManager>();
 }
 
-std::shared_ptr<IFile> CFilesManager::Open(const std::string& _fileName)
+std::shared_ptr<IFile> CFilesManager::Open(std::string FileName, EFileAccessType FileAccessType)
 {
 	for (const auto& fs : m_Storages)
 	{
-		if (fs->IsFileExists(_fileName))
-			return fs->CreateFile(_fileName);
+		if (fs.second->IsFileExists(FileName))
+			return fs.second->OpenFile(FileName);
 	}
 
-	Log::Error("[CFilesManager]: File '%s' not found.", _fileName.c_str());
+	Log::Error("[CFilesManager]: File '%s' not found.", FileName.c_str());
 	return nullptr;
 }
 
-size_t CFilesManager::GetFileSize(const std::string& _fileName)
+size_t CFilesManager::GetFileSize(std::string FileName)
 {
 	for (const auto& fs : m_Storages)
 	{
-		size_t fileSize = fs->GetFileSize(_fileName);
+		size_t fileSize = fs.second->GetFileSize(FileName);
 		if (fileSize != 0)
 			return fileSize;
 	}
@@ -38,36 +38,37 @@ size_t CFilesManager::GetFileSize(const std::string& _fileName)
 	return 0;
 }
 
-bool CFilesManager::IsFileExists(const std::string& _fileName)
+bool CFilesManager::IsFileExists(std::string FileName)
 {
 	for (const auto& fs : m_Storages)
-	{
-		bool isFileExists = fs->IsFileExists(_fileName);
-		if (isFileExists)
+		if (fs.second->IsFileExists(FileName))
 			return true;
-	}
 
 	return false;
 }
 
-void CFilesManager::RegisterFilesStorage(std::shared_ptr<IFilesStorage> _storage)
+void CFilesManager::AddFilesStorage(std::string StorageName, std::shared_ptr<IFilesStorage> Storage)
 {
-	std::shared_ptr<IFilesStorageEx> storageEx = std::dynamic_pointer_cast<IFilesStorageEx, IFilesStorage>(_storage);
-	_ASSERT(storageEx);
+	_ASSERT(std::dynamic_pointer_cast<IFilesStorageEx>(Storage));
 
-	m_Storages.push_back(_storage);
+	m_Storages.insert(std::make_pair(StorageName, Storage));
 
-	std::sort(m_Storages.begin(), m_Storages.end(),
-		[](const std::shared_ptr<IFilesStorage>& a, const std::shared_ptr<IFilesStorage>& b)
+	/*std::sort(m_Storages.begin(), m_Storages.end(),
+		[](const std::pair<std::string, std::shared_ptr<IFilesStorage>>& a, const std::pair<std::string, std::shared_ptr<IFilesStorage>>& b)
 		{
-			std::shared_ptr<const IFilesStorageEx> aEx = std::dynamic_pointer_cast<const IFilesStorageEx, const IFilesStorage>(a);
-			std::shared_ptr<const IFilesStorageEx> bEx = std::dynamic_pointer_cast<const IFilesStorageEx, const IFilesStorage>(b);
+			std::shared_ptr<const IFilesStorageEx> aEx = std::dynamic_pointer_cast<const IFilesStorageEx>(a.second);
+			std::shared_ptr<const IFilesStorageEx> bEx = std::dynamic_pointer_cast<const IFilesStorageEx>(b.second);
 			return aEx->GetPriority() > bEx->GetPriority();
 		}
-	);
+	);*/
 }
 
-void CFilesManager::UnRegisterFilesStorage(std::shared_ptr<IFilesStorage> _storage)
+void CFilesManager::RemoveFilesStorage(std::shared_ptr<IFilesStorage> Storage)
 {
-	// Do nothing
+	_ASSERT(false);
+}
+
+std::shared_ptr<IFilesStorage> CFilesManager::GetFilesStorage(std::string StorageName) const
+{
+	return m_Storages.at(StorageName);
 }

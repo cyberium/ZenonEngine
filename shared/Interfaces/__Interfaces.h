@@ -120,7 +120,7 @@ class Rect;
 #include "Interfaces/Settings.h"
 #include "Interfaces/Visitor.h"
 #include "Interfaces/WindowObject.h"
-
+#include "Interfaces/XML.h"
 
 //---------------------------------------------------------//
 //--                   Render Types                      --//

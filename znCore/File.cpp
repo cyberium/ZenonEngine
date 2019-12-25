@@ -3,18 +3,9 @@
 // General
 #include "File.h"
 
-CFile::CFile(const std::string& _root, const std::string& _fullFileName) :
-	m_Name(_fullFileName),
-	m_Path(""),
-	m_Root(_root)
-{
-	ParsePathAndExtension();
-}
-
-CFile::CFile(const std::string& _root, const std::string& _name, const std::string& _path) :
-	m_Name(_name),
-	m_Path(_path),
-	m_Root(_root)
+CFile::CFile( const std::string& _fullFileName) 
+	: m_Name(_fullFileName)
+	, m_Path("")
 {
 	ParsePathAndExtension();
 }
@@ -31,9 +22,8 @@ void CFile::FixFilePath(std::string& _string)
 	{
 		index = _string.find('/', index);
 		if (index == std::string::npos)
-		{
 			break;
-		}
+
 		_string.replace(index, 1, "\\");
 		index += 3;
 	}

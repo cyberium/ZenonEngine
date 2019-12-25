@@ -1,6 +1,8 @@
 #pragma once
 
-class ZN_API CByteBuffer : public IByteBuffer, public IByteBufferEx
+class ZN_API CByteBuffer 
+	: public IByteBuffer
+	, public IByteBufferEx
 {
 public:
 	CByteBuffer();
@@ -17,14 +19,18 @@ public:
 	size_t getPos() const override { return m_CurrentPosition; }
 	const uint8* getData() const override { return m_Data.data(); }
 	const uint8* getDataFromCurrent() const override { return &m_Data[m_CurrentPosition]; }
-	bool isEof() const override { return m_IsEOF; }
+	bool isEof() const override { return m_CurrentPosition >= m_Data.size(); }
 
     void seek(size_t _bufferOffsetAbsolute) override;
     void seekRelative(intptr_t _bufferOffsetRelative) override;
 
     bool readLine(std::string* _string) override;
-    void readBytes(void* _destination, size_t _size) override;
+    bool readBytes(void* _destination, size_t _size) override;
     void readString(std::string* _string) override;
+
+	void writeLine(std::string String) override;
+	void writeBytes(const void * Source, size_t BytesCount) override;
+	void writeString(std::string String) override;
 
 	// IByteBufferEx
 	void Allocate(size_t _size) override;
@@ -37,8 +43,6 @@ public:
     //
 	// Write
     //
-    void Resize(size_t NewSize);
-
 	void Append(const uint8* _data, size_t _size);
     void Insert(size_t Position, const uint8* _data, size_t _size);
 
@@ -48,7 +52,6 @@ public:
 private:
 	bool                m_IsFilled;
 
-	bool                m_IsEOF;
 	bool                m_IsAllocated;
 	std::vector<uint8>  m_Data;
 	size_t              m_CurrentPosition;

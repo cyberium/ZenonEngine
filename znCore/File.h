@@ -2,11 +2,11 @@
 
 #include "ByteBuffer.h"
 
-class ZN_API CFile : public IFile
+class ZN_API CFile 
+	: public IFile
 {
 public:
-	 CFile(const std::string& _root, const std::string& _fullFileName);
-	 CFile(const std::string& _root, const std::string& _name, const std::string& _path);
+	 CFile(const std::string& _fullFileName);
 	 virtual ~CFile();
 
 	 CByteBuffer& GetByteBuffer() { return m_ByteBuffer; }
@@ -16,7 +16,6 @@ public:
 	 std::string Path() const override { return m_Path; }
 	 std::string Extension() const override { return m_Extension; }
 	 std::string Path_Name() const override { return std::string(m_Path + m_Name); }
-	 std::string Full_Path_Name() const override { return std::string(m_Root + m_Path + m_Name); }
 
 	 // IByteBuffer
 	 size_t getSize() const override
@@ -51,13 +50,26 @@ public:
 	 { 
 		 return m_ByteBuffer.readLine(_string);
 	 }
-	 void readBytes(void* _destination, size_t _size) override
+	 bool readBytes(void* _destination, size_t _size) override
 	 { 
-		 m_ByteBuffer.readBytes(_destination, _size); 
+		 return m_ByteBuffer.readBytes(_destination, _size); 
 	 }
 	 void readString(std::string* _string) override
 	 {
 		 m_ByteBuffer.readString(_string);
+	 }
+
+	 void writeLine(std::string String) override
+	 {
+		 m_ByteBuffer.writeLine(String);
+	 }
+	 void writeBytes(const void * Source, size_t BytesCount) override
+	 {
+		 m_ByteBuffer.writeBytes(Source, BytesCount);
+	 }
+	 void writeString(std::string String) override
+	 {
+		 m_ByteBuffer.writeString(String);
 	 }
 
 public:
@@ -73,5 +85,4 @@ private: // IFile
 	std::string m_Name;
 	std::string m_Path;
 	std::string m_Extension;
-	std::string m_Root;
 };

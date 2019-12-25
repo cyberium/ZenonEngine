@@ -5,7 +5,6 @@
 
 CByteBuffer::CByteBuffer() :
 	m_IsFilled(false),
-	m_IsEOF(true),
 	m_IsAllocated(false),
 	m_CurrentPosition(0)
 {}
@@ -13,21 +12,18 @@ CByteBuffer::CByteBuffer() :
 CByteBuffer::CByteBuffer(const CByteBuffer& _other)
 {
 	m_IsFilled = false;
-	m_IsEOF = true;
 	m_IsAllocated = false;
 	m_Data.clear();
 	m_CurrentPosition = 0;
 
 	CopyData(_other.getData(), _other.getSize());
 
-	m_IsEOF = _other.m_IsEOF;
 	m_CurrentPosition = _other.m_CurrentPosition;
 }
 
 CByteBuffer::CByteBuffer(CByteBuffer&& _other)
 {
 	m_IsFilled = _other.m_IsFilled;
-	m_IsEOF = _other.m_IsEOF;
 	m_IsAllocated = _other.m_IsAllocated;
 	m_Data = std::move(_other.m_Data);
 	m_CurrentPosition = _other.m_CurrentPosition;
@@ -35,7 +31,6 @@ CByteBuffer::CByteBuffer(CByteBuffer&& _other)
 
 CByteBuffer::CByteBuffer(size_t _size) :
 	m_IsFilled(false),
-	m_IsEOF(true),
 	m_IsAllocated(false),
 	m_CurrentPosition(0)
 {
@@ -52,14 +47,12 @@ CByteBuffer::~CByteBuffer()
 CByteBuffer& CByteBuffer::operator=(const CByteBuffer& _other)
 {
 	m_IsFilled = false;
-	m_IsEOF = true;
 	m_IsAllocated = false;
 	m_Data.clear();
 	m_CurrentPosition = 0;
 
 	CopyData(_other.getData(), _other.getSize());
 
-	m_IsEOF = _other.m_IsEOF;
 	m_CurrentPosition = _other.m_CurrentPosition;
 
 	return *this;
@@ -68,7 +61,6 @@ CByteBuffer& CByteBuffer::operator=(const CByteBuffer& _other)
 CByteBuffer& CByteBuffer::operator=(CByteBuffer&& _other)
 {
 	m_IsFilled = _other.m_IsFilled;
-	m_IsEOF = _other.m_IsEOF;
 	m_IsAllocated = _other.m_IsAllocated;
 	m_Data = std::move(_other.m_Data);
 	m_CurrentPosition = _other.m_CurrentPosition;
@@ -81,7 +73,6 @@ void CByteBuffer::seek(size_t _bufferOffsetAbsolute)
 {
 	_ASSERT(_bufferOffsetAbsolute <= getSize());
 	m_CurrentPosition = _bufferOffsetAbsolute;
-	m_IsEOF = m_CurrentPosition >= getSize();
 }
 
 void CByteBuffer::seekRelative(intptr_t _bufferOffsetRelative)
@@ -89,7 +80,6 @@ void CByteBuffer::seekRelative(intptr_t _bufferOffsetRelative)
 	_ASSERT(m_CurrentPosition + _bufferOffsetRelative >= 0);
 	_ASSERT(m_CurrentPosition + _bufferOffsetRelative <= getSize());
 	m_CurrentPosition += _bufferOffsetRelative;
-	m_IsEOF = m_CurrentPosition >= getSize();
 }
 
 //-- READ
@@ -98,10 +88,8 @@ bool CByteBuffer::readLine(std::string* _string)
 {
 	_ASSERT(_string != nullptr);
 
-	if (m_IsEOF)
-	{
+	if (isEof())
 		return false;
-	}
 
 	// Find first incorrect symbol
 	uint64 lineEndPos;
@@ -128,24 +116,23 @@ bool CByteBuffer::readLine(std::string* _string)
 	return true;
 }
 
-void CByteBuffer::readBytes(void* _destination, size_t _size)
+bool CByteBuffer::readBytes(void* _destination, size_t _size)
 {
-	if (m_IsEOF)
-	{
-		return;
-	}
+	if (isEof())
+		return false;
 
 	uint64 posAfterRead = m_CurrentPosition + _size;
 	if (posAfterRead >= getSize())
 	{
 		_size = getSize() - m_CurrentPosition;
-		m_IsEOF = true;
 	}
 
 	_ASSERT(_destination != nullptr);
 	std::memcpy(_destination, &(m_Data[m_CurrentPosition]), _size);
 
 	m_CurrentPosition = posAfterRead;
+
+	return true;
 }
 
 void CByteBuffer::readString(std::string* _string)
@@ -156,7 +143,8 @@ void CByteBuffer::readString(std::string* _string)
 	while (true)
 	{
 		uint8 byte;
-		readBytes(&byte, sizeof(uint8));
+		if (!readBytes(&byte, sizeof(uint8)))
+			break;
 
 		str.append(1, static_cast<char>(byte));
 
@@ -169,24 +157,44 @@ void CByteBuffer::readString(std::string* _string)
 	(*_string) = str;
 }
 
+void CByteBuffer::writeLine(std::string String)
+{
+}
+
+void CByteBuffer::writeBytes(const void * Source, size_t BytesCount)
+{
+	for (size_t i = 0; i < BytesCount; i++)
+	{
+		uint8_t byte = ((const uint8_t*)Source)[i];
+
+		if (isEof())
+		{
+			m_Data.push_back(byte);
+		}
+		else
+		{
+			m_Data[m_CurrentPosition] = byte;
+		}
+
+		m_CurrentPosition += 1;
+	}
+}
+
+void CByteBuffer::writeString(std::string String)
+{
+}
+
 //
 // IByteBufferEx
 //
 
 void CByteBuffer::Allocate(size_t _size)
 {
-	m_IsEOF = true;
-
 	if (_size > 0)
 	{
-		_ASSERT(!m_IsAllocated);
-        m_Data.reserve(_size);
+		_ASSERT(m_IsAllocated == false, L"ByteBuffer already allocated.");
+        m_Data.resize(_size);
 		m_IsAllocated = true;
-	}
-
-	if (m_Data.size() < _size)
-	{
-		m_Data.resize(_size);
 	}
 
 	m_CurrentPosition = 0;
@@ -194,7 +202,6 @@ void CByteBuffer::Allocate(size_t _size)
 
 void CByteBuffer::SetFilled()
 {
-	m_IsEOF = (getSize() == 0);
 	m_IsFilled = true;
 }
 
@@ -222,13 +229,6 @@ void CByteBuffer::CopyData(const uint8* _data, size_t _size)
 
 //-- WRITE
 
-void CByteBuffer::Resize(size_t NewSize)
-{
-    m_Data.resize(NewSize);
-
-    // TODO!
-}
-
 void CByteBuffer::Append(const uint8* _data, size_t _size)
 {
 	_ASSERT(_data != nullptr);
@@ -236,11 +236,6 @@ void CByteBuffer::Append(const uint8* _data, size_t _size)
 	for (size_t i = 0; i < _size; i++)
 	{
 		m_Data.push_back(_data[i]);
-	}
-
-	if (_size != 0)
-	{
-		m_IsEOF = false;
 	}
 }
 

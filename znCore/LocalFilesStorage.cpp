@@ -20,59 +20,49 @@ CLocalFilesStorage::~CLocalFilesStorage()
 //
 // IFilesStorage
 //
-std::shared_ptr<IFile> CLocalFilesStorage::CreateFile(const std::string& _name)
+std::shared_ptr<IFile> CLocalFilesStorage::OpenFile(std::string FileName, EFileAccessType FileAccessType)
 {
-	std::shared_ptr<CFile> file = std::make_shared<CFile>(m_Path, _name);
+	std::shared_ptr<CFile> file = std::make_shared<CFile>(FileName);
 	CByteBuffer& byteBuffer = file->GetByteBuffer();
 
-	// Open stream
 	std::ifstream stream;
 	stream.open(std::string(m_Path + file->Path_Name()), std::ios::binary);
 
-	// Check stream
-	if (!stream.is_open())
+	if (stream.is_open())
 	{
-		stream.clear();
-		stream.close();
+		// Filesize
+		stream.seekg(0, stream.end);
+		uint32_t fileSize = uint32_t(stream.tellg());
+		stream.seekg(0, stream.beg);
 
-		stream.open(std::string(file->Path_Name()), std::ios::binary);
-
-		if (!stream.is_open())
+		// Check filesize
+		if (fileSize == 0)
 		{
-			//Log::Error("File[%s]: Can not open file!", Path_Name().c_str());
+			char buff[256];
+			sprintf_s(buff, "File[%s]: Is empty!", file->Path_Name().c_str());
+			_ASSERT_EXPR(false, buff);
 			return nullptr;
 		}
+
+		// Read data
+		byteBuffer.Allocate(fileSize + 1);
+		stream.read((char*)&byteBuffer.getDataEx()[0], fileSize);
+		byteBuffer.getDataEx()[fileSize] = '\0';
+		byteBuffer.SetFilled();
+		
+		std::streamsize readedBytes = stream.gcount();
+		if (readedBytes < fileSize)
+		{
+			char buff[256];
+			sprintf_s(buff, "File[%s]: Stream reading error. Readed [%d], filesize [%d]", file->Path_Name().c_str(), static_cast<int64>(readedBytes), fileSize);
+			_ASSERT_EXPR(false, buff);
+			return nullptr;
+		}
+
 	}
-
-	// Filesize
-	stream.seekg(0, stream.end);
-	uint32_t fileSize = uint32_t(stream.tellg());
-	stream.seekg(0, stream.beg);
-
-	// Check filesize
-	if (fileSize == 0)
+	else
 	{
-		char buff[256];
-		sprintf_s(buff, "File[%s]: Is empty!", file->Path_Name().c_str());
-		_ASSERT_EXPR(false, buff);
-		return nullptr;
-	}
-
-	// Read data
-	byteBuffer.Allocate(fileSize + 1);
-	stream.read((char*)&byteBuffer.getDataEx()[0], fileSize);
-	byteBuffer.SetFilled();
-	byteBuffer.getDataEx()[fileSize] = '\0';
-
-	std::streamsize readedBytes = stream.gcount();
-	if (readedBytes < fileSize)
-	{
-		//memset(&data[0] + readedBytes, 0, fileSize - static_cast<uint32_t>(readedBytes));
-
-		char buff[256];
-		sprintf_s(buff, "File[%s]: Stream reading error. Readed [%d], filesize [%d]", file->Path_Name().c_str(), static_cast<int64>(readedBytes), fileSize);
-		_ASSERT_EXPR(false, buff);
-		return nullptr;
+		_ASSERT_EXPR(false, L"Unable to open file.");
 	}
 
 	// Close stream
@@ -82,20 +72,43 @@ std::shared_ptr<IFile> CLocalFilesStorage::CreateFile(const std::string& _name)
 	return file;
 }
 
-size_t CLocalFilesStorage::GetFileSize(const std::string& _name)
+bool CLocalFilesStorage::SaveFile(std::shared_ptr<IFile> File)
 {
-	// Open stream
+	std::ofstream stream;
+	stream.open(std::string(m_Path + File->Path_Name()), std::ios::binary);
+
+	if (stream.is_open())
+	{
+		stream.write((const char*)File->getData(), File->getSize());
+		stream.flush();
+	}
+	else
+	{
+		_ASSERT_EXPR(false, L"Unable to open file.");
+		return false;
+	}
+
+	stream.close();
+
+	return true;
+}
+
+size_t CLocalFilesStorage::GetFileSize(std::string FileName)
+{
 	std::ifstream stream;
-	stream.open(std::string(m_Path + _name), std::ios::binary);
+	stream.open(std::string(m_Path + FileName), std::ios::binary);
 
-	// Check stream
-	if (!stream.is_open())
-		return 0;
-
-	// Filesize
-	stream.seekg(0, stream.end);
-	size_t fileSize = static_cast<size_t>(stream.tellg());
-	stream.seekg(0, stream.beg);
+	size_t fileSize = 0;
+	if (stream.is_open())
+	{
+		stream.seekg(0, stream.end);
+		fileSize = static_cast<size_t>(stream.tellg());
+		stream.seekg(0, stream.beg);
+	}
+	else
+	{
+		_ASSERT_EXPR(false, L"Unable to open file.");
+	}
 
 	stream.clear();
 	stream.close();
@@ -103,28 +116,17 @@ size_t CLocalFilesStorage::GetFileSize(const std::string& _name)
 	return fileSize;
 }
 
-bool CLocalFilesStorage::IsFileExists(const std::string& _name)
+bool CLocalFilesStorage::IsFileExists(std::string FileName)
 {
-	// Open stream
 	std::ifstream stream;
-	stream.open(std::string(m_Path + _name), std::ios::binary);
+	stream.open(std::string(m_Path + FileName), std::ios::binary);
 
-	// Check stream
-	if (!stream.is_open())
-	{
-		stream.clear();
-		stream.close();
-
-		// 2nd try to open
-		stream.open(_name, std::ios::binary);
-		if (!stream.is_open())
-			return false;
-	}
+	bool isOpen = stream.is_open();
 
 	stream.clear();
 	stream.close();
 
-	return true;
+	return isOpen;
 }
 
 

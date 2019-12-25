@@ -113,10 +113,10 @@ IBaseManager* WINAPI InitializeEngine(std::vector<std::string> Arguments)
 	{
 		std::shared_ptr<IFilesManager> filesManager = std::make_shared<CFilesManager>(baseManager);
 		baseManager->AddManager<IFilesManager>(filesManager);
-		filesManager->RegisterFilesStorage(std::make_shared<CLibraryResourceFileStotage>(GetModuleHandle(L"znEngine.dll")));
-		filesManager->RegisterFilesStorage(std::make_shared<CLocalFilesStorage>(""));
-		filesManager->RegisterFilesStorage(std::make_shared<CLocalFilesStorage>("D:\\_programming\\ZenonEngine\\gamedata\\"));
-		filesManager->RegisterFilesStorage(std::make_shared<CLocalFilesStorage>("D:\\_programming\\OpenWoW\\_gamedata\\"));
+		filesManager->AddFilesStorage("ModuleFS", std::make_shared<CLibraryResourceFileStotage>(GetModuleHandle(L"znEngine.dll")));
+		filesManager->AddFilesStorage("PCEveryFileAccess", std::make_shared<CLocalFilesStorage>(""));
+		filesManager->AddFilesStorage("ZenonGamedata", std::make_shared<CLocalFilesStorage>("D:\\_programming\\ZenonEngine\\gamedata\\"));
+		filesManager->AddFilesStorage("OpenWOWGamedata", std::make_shared<CLocalFilesStorage>("D:\\_programming\\OpenWoW\\_gamedata\\"));
 	}
 
 	// Log & console

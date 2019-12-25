@@ -19,30 +19,6 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\Externals\tinyxml-2.6.2\tinystr.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="..\Externals\tinyxml-2.6.2\tinyxml.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="..\Externals\tinyxml-2.6.2\tinyxmlerror.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="..\Externals\tinyxml-2.6.2\tinyxmlparser.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
     <ClCompile Include="BoundingBox.cpp" />
     <ClCompile Include="BoundingRect.cpp" />
     <ClCompile Include="BoundingSphere.cpp" />
@@ -52,6 +28,7 @@
     <ClCompile Include="CameraControllers\CameraControllerBase.cpp" />
     <ClCompile Include="CameraControllers\FreeCameraController.cpp" />
     <ClCompile Include="CameraControllers\RTSCameraController.cpp" />
+    <ClCompile Include="Debug.cpp" />
     <ClCompile Include="DebugOutputConsole.cpp" />
     <ClCompile Include="DebugOutputLog.cpp" />
     <ClCompile Include="ConsoleCommand.cpp" />
@@ -101,10 +78,13 @@
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="Utils.cpp" />
     <ClCompile Include="UtilsConvert.cpp" />
+    <ClCompile Include="XML\tinyxml.cpp" />
+    <ClCompile Include="XML\tinyxmlerror.cpp" />
+    <ClCompile Include="XML\tinyxmlparser.cpp" />
+    <ClCompile Include="XML\XMLManager.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\Externals\tinyxml-2.6.2\tinystr.h" />
-    <ClInclude Include="..\Externals\tinyxml-2.6.2\tinyxml.h" />
+    <ClInclude Include="..\shared\Interfaces\XML.h" />
     <ClInclude Include="..\shared\znCore.h" />
     <ClInclude Include="BoundingBox.h" />
     <ClInclude Include="BoundingRect.h" />
@@ -230,6 +210,8 @@
     <ClInclude Include="Vec2f.h" />
     <ClInclude Include="Vec3f.h" />
     <ClInclude Include="Vec4f.h" />
+    <ClInclude Include="XML\tinyxml.h" />
+    <ClInclude Include="XML\XMLManager.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="RefManager1DimAssync.inl" />

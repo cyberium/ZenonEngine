@@ -24,7 +24,7 @@
 #include "../znCore/Passes/BaseUIPass.h"
 
 
-
+// Camera
 #include "../znCore/CameraControllers/Camera.h"
 #include "../znCore/CameraControllers/CameraControllerBase.h"
 #include "../znCore/CameraControllers/ArcBallCameraController.h"
@@ -59,3 +59,5 @@
 // UI
 #include "../znCore/Scene/UI/SceneNodeUI.h"
 #include "../znCore/Scene/UI/TransformComponentUI.h"
+
+#include "../znCore/XML/XMLManager.h"

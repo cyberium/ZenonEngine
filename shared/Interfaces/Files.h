@@ -1,8 +1,13 @@
 #pragma once
 
-struct ZN_API
-	__declspec(novtable)
-	IByteBuffer
+enum class ZN_API EFileAccessType
+{
+	Read = 0,
+	Write,
+	Any
+};
+
+ZN_INTERFACE ZN_API IByteBuffer
 {
 	virtual ~IByteBuffer() {}
 
@@ -14,18 +19,21 @@ struct ZN_API
 
 	virtual void          seek(size_t _bufferOffsetAbsolute) = 0;
 	virtual void          seekRelative(intptr_t _bufferOffsetRelative) = 0;
+
 	virtual bool          readLine(std::string* _string) = 0;
-	virtual void          readBytes(void* _destination, size_t _size = 1) = 0;
+	virtual bool          readBytes(void* _destination, size_t _size = 1) = 0;
 	virtual void          readString(std::string* _string) = 0;
+
+	virtual void          writeLine(std::string String) = 0;
+	virtual void          writeBytes(const void* Source, size_t BytesCount) = 0;
+	virtual void          writeString(std::string String) = 0;
 };
 
 //--
 
-struct ZN_API
-	__declspec(novtable)
-	IByteBufferEx
+ZN_INTERFACE ZN_API IByteBufferEx
 {
-	virtual         ~IByteBufferEx() {}
+	virtual ~IByteBufferEx() {}
 
 	virtual void    Allocate(size_t _size) = 0;
 	virtual void    SetFilled() = 0;
@@ -36,39 +44,33 @@ struct ZN_API
 
 //--
 
-struct ZN_API
-	__declspec(novtable)
-	IFile : public IByteBuffer
+ZN_INTERFACE ZN_API IFile : public IByteBuffer
 {
-	virtual              ~IFile() {}
+	virtual ~IFile() {}
 
 	virtual std::string  Name() const = 0;
 	virtual std::string  Path() const = 0;
 	virtual std::string  Extension() const = 0;
 	virtual std::string  Path_Name() const = 0;
-	virtual std::string  Full_Path_Name() const = 0;
 };
 
 //--
 
-struct ZN_API
-	__declspec(novtable)
-	IFilesStorage
+ZN_INTERFACE ZN_API IFilesStorage
 {
 	virtual ~IFilesStorage() {};
 
-	virtual std::shared_ptr<IFile>  CreateFile(const std::string& _name) = 0;
-	virtual size_t                  GetFileSize(const std::string& _name) = 0;
-	virtual bool                    IsFileExists(const std::string& _name) = 0;
+	virtual std::shared_ptr<IFile>  OpenFile(std::string FileName, EFileAccessType FileAccessType = EFileAccessType::Read) = 0;
+	virtual bool                    SaveFile(std::shared_ptr<IFile> File) = 0;
+	virtual size_t                  GetFileSize(std::string FileName) = 0;
+	virtual bool                    IsFileExists(std::string FileName) = 0;
 };
 
 //--
 
-struct ZN_API
-	__declspec(novtable)
-	IFilesStorageEx
+ZN_INTERFACE ZN_API	IFilesStorageEx
 {
-	enum Priority : uint8
+	enum class ZN_API Priority
 	{
 		PRIOR_LOWEST = 0,
 		PRIOR_LOW,
@@ -90,10 +92,11 @@ struct ZN_API
 {
 	virtual ~IFilesManager() {}
 
-	virtual std::shared_ptr<IFile> Open(const std::string& _fileName) = 0;
-	virtual size_t                 GetFileSize(const std::string& _fileName) = 0;
-	virtual bool                   IsFileExists(const std::string& _fileName) = 0;
+	virtual std::shared_ptr<IFile> Open(std::string FileName, EFileAccessType FileAccessType = EFileAccessType::Read) = 0;
+	virtual size_t GetFileSize(std::string FileName) = 0;
+	virtual bool IsFileExists(std::string FileName) = 0;
 
-	virtual void RegisterFilesStorage(std::shared_ptr<IFilesStorage> _storage) = 0;
-	virtual void UnRegisterFilesStorage(std::shared_ptr<IFilesStorage> _storage) = 0;
+	virtual void AddFilesStorage(std::string StorageName, std::shared_ptr<IFilesStorage> Storage) = 0;
+	virtual void RemoveFilesStorage(std::shared_ptr<IFilesStorage> Storage) = 0;
+	virtual std::shared_ptr<IFilesStorage> GetFilesStorage(std::string StorageName) const = 0;
 };

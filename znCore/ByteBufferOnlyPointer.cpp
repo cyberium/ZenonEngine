@@ -60,9 +60,7 @@ bool CByteBufferOnlyPointer::readLine(std::string* _string)
 	_ASSERT(_string != nullptr);
 
 	if (m_IsEOF)
-	{
 		return false;
-	}
 
 	// Find first incorrect symbol
 	uint64 lineEndPos;
@@ -89,11 +87,11 @@ bool CByteBufferOnlyPointer::readLine(std::string* _string)
 	return true;
 }
 
-void CByteBufferOnlyPointer::readBytes(void* _destination, size_t _size)
+bool CByteBufferOnlyPointer::readBytes(void* _destination, size_t _size)
 {
 	if (m_IsEOF)
 	{
-		return;
+		return false;
 	}
 
 	uint64 posAfterRead = m_CurrentPosition + _size;
@@ -107,6 +105,8 @@ void CByteBufferOnlyPointer::readBytes(void* _destination, size_t _size)
 	std::memcpy(_destination, &(m_Data[m_CurrentPosition]), _size);
 
 	m_CurrentPosition = posAfterRead;
+
+	return true;
 }
 
 void CByteBufferOnlyPointer::readString(std::string* _string)
@@ -128,4 +128,19 @@ void CByteBufferOnlyPointer::readString(std::string* _string)
 	}
 
 	(*_string) = str;
+}
+
+void CByteBufferOnlyPointer::writeLine(std::string String)
+{
+	_ASSERT(false, L"Unsupported write operation.");
+}
+
+void CByteBufferOnlyPointer::writeBytes(const void * Source, size_t BytesCount)
+{
+	_ASSERT(false, L"Unsupported write operation.");
+}
+
+void CByteBufferOnlyPointer::writeString(std::string String)
+{
+	_ASSERT(false, L"Unsupported write operation.");
 }

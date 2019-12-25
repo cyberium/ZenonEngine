@@ -21,8 +21,12 @@ public:
 	void seekRelative(intptr_t _bufferOffsetRelative) override;
 
 	bool readLine(std::string* _string) override;
-	void readBytes(void* _destination, size_t _size) override;
+	bool readBytes(void* _destination, size_t _size) override;
 	void readString(std::string* _string) override;
+
+	void writeLine(std::string String) override;
+	void writeBytes(const void * Source, size_t BytesCount) override;
+	void writeString(std::string String) override;
 
 private:
 	bool                m_IsEOF;

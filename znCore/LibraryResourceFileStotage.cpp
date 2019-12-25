@@ -16,9 +16,9 @@ CLibraryResourceFileStotage::~CLibraryResourceFileStotage()
 {
 }
 
-std::shared_ptr<IFile> CLibraryResourceFileStotage::CreateFile(const std::string& _name)
+std::shared_ptr<IFile> CLibraryResourceFileStotage::OpenFile(std::string Filename, EFileAccessType FileAccessType)
 {
-    HRSRC hResource = FindResource(m_HModule, Resources::ConvertString(_name).c_str(), RT_RCDATA);
+    HRSRC hResource = FindResource(m_HModule, Resources::ConvertString(Filename).c_str(), RT_RCDATA);
     if (hResource != NULL)
     {
         HGLOBAL hResourceData = LoadResource(m_HModule, hResource);
@@ -28,14 +28,14 @@ std::shared_ptr<IFile> CLibraryResourceFileStotage::CreateFile(const std::string
         {
             LPVOID resourceData = LockResource(hResourceData);
 
-            std::shared_ptr<CFile> file = std::make_shared<CFile>("<empty>", _name);
+            std::shared_ptr<CFile> file = std::make_shared<CFile>(Filename);
             CByteBuffer& byteBuffer = file->GetByteBuffer();
 
             byteBuffer.Allocate(resourceSize + 1);
             memcpy_s(&byteBuffer.getDataEx()[0], resourceSize, resourceData, resourceSize);
-            byteBuffer.SetFilled();
-            byteBuffer.getDataEx()[resourceSize] = '\0';
-
+			byteBuffer.getDataEx()[resourceSize] = '\0';
+			byteBuffer.SetFilled();
+            
             return file;
         }
     }
@@ -43,9 +43,15 @@ std::shared_ptr<IFile> CLibraryResourceFileStotage::CreateFile(const std::string
     return nullptr;
 }
 
-size_t CLibraryResourceFileStotage::GetFileSize(const std::string& _name)
+bool CLibraryResourceFileStotage::SaveFile(std::shared_ptr<IFile> File)
 {
-    HRSRC hResource = FindResource(m_HModule, Resources::ConvertString(_name).c_str(), RT_RCDATA);
+	_ASSERT_EXPR(false, L"CLibraryResourceFileStotage: Unable to save file to this file storage.");
+	return false;
+}
+
+size_t CLibraryResourceFileStotage::GetFileSize(std::string Filename)
+{
+    HRSRC hResource = FindResource(m_HModule, Resources::ConvertString(Filename).c_str(), RT_RCDATA);
     if (hResource != NULL)
     {
         return static_cast<size_t>(SizeofResource(m_HModule, hResource));
@@ -54,9 +60,9 @@ size_t CLibraryResourceFileStotage::GetFileSize(const std::string& _name)
     return 0;
 }
 
-bool CLibraryResourceFileStotage::IsFileExists(const std::string& _name)
+bool CLibraryResourceFileStotage::IsFileExists(std::string Filename)
 {
-    return FindResource(m_HModule, Resources::ConvertString(_name).c_str(), RT_RCDATA) != NULL;
+    return FindResource(m_HModule, Resources::ConvertString(Filename).c_str(), RT_RCDATA) != NULL;
 }
 
 IFilesStorageEx::Priority CLibraryResourceFileStotage::GetPriority() const

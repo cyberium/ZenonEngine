@@ -91,6 +91,9 @@
     <Filter Include="XML">
       <UniqueIdentifier>{51d660eb-9fa6-4618-a563-39c01b7efc32}</UniqueIdentifier>
     </Filter>
+    <Filter Include="XML\tinyxml">
+      <UniqueIdentifier>{a25b0727-bf27-4aad-9f00-d3181f17a00a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Log.cpp">
@@ -252,17 +255,20 @@
     <ClCompile Include="Scene\Actions.cpp">
       <Filter>Scene functional\Properties</Filter>
     </ClCompile>
-    <ClCompile Include="..\Externals\tinyxml-2.6.2\tinystr.cpp">
+    <ClCompile Include="XML\XMLManager.cpp">
       <Filter>XML</Filter>
     </ClCompile>
-    <ClCompile Include="..\Externals\tinyxml-2.6.2\tinyxml.cpp">
-      <Filter>XML</Filter>
+    <ClCompile Include="XML\tinyxml.cpp">
+      <Filter>XML\tinyxml</Filter>
     </ClCompile>
-    <ClCompile Include="..\Externals\tinyxml-2.6.2\tinyxmlerror.cpp">
-      <Filter>XML</Filter>
+    <ClCompile Include="XML\tinyxmlerror.cpp">
+      <Filter>XML\tinyxml</Filter>
     </ClCompile>
-    <ClCompile Include="..\Externals\tinyxml-2.6.2\tinyxmlparser.cpp">
-      <Filter>XML</Filter>
+    <ClCompile Include="XML\tinyxmlparser.cpp">
+      <Filter>XML\tinyxml</Filter>
+    </ClCompile>
+    <ClCompile Include="Debug.cpp">
+      <Filter>Common</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -641,11 +647,14 @@
     <ClInclude Include="Scene\Actions.h">
       <Filter>Scene functional\Properties</Filter>
     </ClInclude>
-    <ClInclude Include="..\Externals\tinyxml-2.6.2\tinystr.h">
+    <ClInclude Include="XML\XMLManager.h">
       <Filter>XML</Filter>
     </ClInclude>
-    <ClInclude Include="..\Externals\tinyxml-2.6.2\tinyxml.h">
-      <Filter>XML</Filter>
+    <ClInclude Include="..\shared\Interfaces\XML.h">
+      <Filter>__Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="XML\tinyxml.h">
+      <Filter>XML\tinyxml</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

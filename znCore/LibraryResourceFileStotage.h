@@ -3,13 +3,14 @@
 class ZN_API CLibraryResourceFileStotage : public IFilesStorage, public IFilesStorageEx
 {
 public:
-    CLibraryResourceFileStotage(HMODULE HModule, Priority Priority = PRIOR_HIGHEST);
+    CLibraryResourceFileStotage(HMODULE HModule, Priority Priority = Priority::PRIOR_HIGH);
     virtual ~CLibraryResourceFileStotage();
 
     // IFilesStorage
-    std::shared_ptr<IFile>  CreateFile(const std::string& _name) override;
-    size_t                  GetFileSize(const std::string& _name) override;
-    bool                    IsFileExists(const std::string& _name) override;
+    std::shared_ptr<IFile>  OpenFile(std::string FileName, EFileAccessType FileAccessType = EFileAccessType::Read) override;
+	bool                    SaveFile(std::shared_ptr<IFile> File) override;
+    size_t                  GetFileSize(std::string FileName) override;
+    bool                    IsFileExists(std::string FileName) override;
 
     // IFilesStorageEx
     Priority                GetPriority() const;
