@@ -192,9 +192,6 @@
     <ClCompile Include="Scene\ComponentBase.cpp">
       <Filter>Scene functional</Filter>
     </ClCompile>
-    <ClCompile Include="Scene\TransformComponentBase.cpp">
-      <Filter>Scene functional</Filter>
-    </ClCompile>
     <ClCompile Include="Scene\3D\ColliderComponent3D.cpp">
       <Filter>Scene functional\3D</Filter>
     </ClCompile>
@@ -203,12 +200,6 @@
     </ClCompile>
     <ClCompile Include="Scene\3D\MeshComponent3D.cpp">
       <Filter>Scene functional\3D</Filter>
-    </ClCompile>
-    <ClCompile Include="Scene\3D\TransformComponent3D.cpp">
-      <Filter>Scene functional\3D</Filter>
-    </ClCompile>
-    <ClCompile Include="Scene\UI\TransformComponentUI.cpp">
-      <Filter>Scene functional\UI</Filter>
     </ClCompile>
     <ClCompile Include="Scene\Light3D.cpp">
       <Filter>Scene functional</Filter>
@@ -575,9 +566,6 @@
     <ClInclude Include="Scene\ComponentBase.h">
       <Filter>Scene functional</Filter>
     </ClInclude>
-    <ClInclude Include="Scene\TransformComponentBase.h">
-      <Filter>Scene functional</Filter>
-    </ClInclude>
     <ClInclude Include="Scene\3D\ColliderComponent3D.h">
       <Filter>Scene functional\3D</Filter>
     </ClInclude>
@@ -586,12 +574,6 @@
     </ClInclude>
     <ClInclude Include="Scene\3D\MeshComponent3D.h">
       <Filter>Scene functional\3D</Filter>
-    </ClInclude>
-    <ClInclude Include="Scene\3D\TransformComponent3D.h">
-      <Filter>Scene functional\3D</Filter>
-    </ClInclude>
-    <ClInclude Include="Scene\UI\TransformComponentUI.h">
-      <Filter>Scene functional\UI</Filter>
     </ClInclude>
     <ClInclude Include="Scene\Light.h">
       <Filter>Scene functional</Filter>

@@ -18,6 +18,10 @@ ZN_INTERFACE ZN_API IScene : public std::enable_shared_from_this<IScene>
 	virtual void CreateRootNode() = 0;
 	virtual std::shared_ptr<ISceneNode> GetRootNode() const = 0;
 
+	// Load & Save
+	virtual bool Load(std::shared_ptr<IXMLReader> Reader) = 0;
+	virtual bool Save(std::shared_ptr<IXMLWriter> Writer) = 0;
+
 	// Passes will go to this
 	virtual void Accept(IVisitor* visitor) = 0;
 

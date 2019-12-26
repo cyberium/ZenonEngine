@@ -29,6 +29,22 @@ std::shared_ptr<ISceneNode> SceneBase::GetRootNode() const
 	return m_RootNode;
 }
 
+bool SceneBase::Load(std::shared_ptr<IXMLReader> Reader)
+{
+	return false;
+}
+
+bool SceneBase::Save(std::shared_ptr<IXMLWriter> Writer)
+{
+	std::shared_ptr<IXMLWriter> writer = Writer->CreateChild("Scene");
+	writer->AddAttribute("IsScene", "true");
+
+	for (const auto& rootChild : GetRootNode()->GetChilds())
+		rootChild->Save(writer);
+
+	return false;
+}
+
 void SceneBase::Accept(IVisitor * visitor)
 {
 	if (m_RootNode)

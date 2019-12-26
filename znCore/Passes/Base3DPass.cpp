@@ -29,7 +29,7 @@ bool Base3DPass::Visit3D(ISceneNode* sceneNode)
 
 	if (camera)
 	{
-		m_PerObjectData->Model               = sceneNode->GetComponent<ITransformComponent>()->GetWorldTransfom();
+		m_PerObjectData->Model               = sceneNode->GetWorldTransfom();
 		m_PerObjectData->View                = camera->GetViewMatrix();
 		m_PerObjectData->Projection          = camera->GetProjectionMatrix();
 

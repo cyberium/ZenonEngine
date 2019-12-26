@@ -1028,12 +1028,6 @@ bool TiXmlDocument::LoadFile(std::shared_ptr<IFile> File, TiXmlEncoding encoding
 	return !Error();
 }
 
-bool TiXmlDocument::SaveFile(std::shared_ptr<IFile> File) const
-{
-	_ASSERT(false);
-	return false;
-}
-
 
 void TiXmlDocument::CopyTo(TiXmlDocument* target) const
 {

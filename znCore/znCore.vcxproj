@@ -57,7 +57,6 @@
     <ClCompile Include="Scene\3D\LightComponent3D.cpp" />
     <ClCompile Include="Scene\3D\MeshComponent3D.cpp" />
     <ClCompile Include="Scene\3D\SceneNode3D.cpp" />
-    <ClCompile Include="Scene\3D\TransformComponent3D.cpp" />
     <ClCompile Include="Scene\Actions.cpp" />
     <ClCompile Include="Scene\ComponentBase.cpp" />
     <ClCompile Include="Scene\Light3D.cpp" />
@@ -65,9 +64,7 @@
     <ClCompile Include="Scene\SceneBase.cpp" />
     <ClCompile Include="Scene\SceneNodeBase.cpp" />
     <ClCompile Include="Scene\Properties.cpp" />
-    <ClCompile Include="Scene\TransformComponentBase.cpp" />
     <ClCompile Include="Scene\UI\SceneNodeUI.cpp" />
-    <ClCompile Include="Scene\UI\TransformComponentUI.cpp" />
     <ClCompile Include="SettingsGroupBase.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -190,7 +187,6 @@
     <ClInclude Include="Scene\3D\LightComponent3D.h" />
     <ClInclude Include="Scene\3D\MeshComponent3D.h" />
     <ClInclude Include="Scene\3D\SceneNode3D.h" />
-    <ClInclude Include="Scene\3D\TransformComponent3D.h" />
     <ClInclude Include="Scene\Actions.h" />
     <ClInclude Include="Scene\ComponentBase.h" />
     <ClInclude Include="Scene\Light.h" />
@@ -199,9 +195,7 @@
     <ClInclude Include="Scene\SceneBase.h" />
     <ClInclude Include="Scene\SceneNodeBase.h" />
     <ClInclude Include="Scene\Properties.h" />
-    <ClInclude Include="Scene\TransformComponentBase.h" />
     <ClInclude Include="Scene\UI\SceneNodeUI.h" />
-    <ClInclude Include="Scene\UI\TransformComponentUI.h" />
     <ClInclude Include="SettingBase.h" />
     <ClInclude Include="SettingsGroupBase.h" />
     <ClInclude Include="stdafx.h" />

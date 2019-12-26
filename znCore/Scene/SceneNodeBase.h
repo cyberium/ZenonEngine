@@ -13,8 +13,25 @@ public:
 	virtual void									Initialize();
 	virtual void									Finalize();
 	
+	// Name & Type
+	std::string										GetType() const override;
+	void                                            SetType(std::string Type) override;
 	std::string										GetName() const override;
-	void                                            SetName(const std::string& name) override;
+	void                                            SetName(std::string Name) override;
+
+
+	// Transform functional
+	virtual mat4									GetLocalTransform() const;
+	virtual mat4									GetInverseLocalTransform() const;
+	virtual void									SetLocalTransform(cmat4 localTransform);
+
+	virtual mat4									GetWorldTransfom() const;
+	virtual mat4									GetInverseWorldTransform() const;
+	virtual mat4									GetParentWorldTransform() const;
+	virtual void									SetWorldTransform(cmat4 worldTransform);
+
+	virtual void									ForceRecalculateLocalTransform();
+
 
     // Components engine
     bool                                            IsComponentExists(GUID ComponentID) override;
@@ -24,13 +41,15 @@ public:
     void                                            RaiseComponentMessage(std::shared_ptr<ISceneNodeComponent> Component, ComponentMessageType Message) override;
     virtual void                                    RegisterComponents();
 
+
 	// Actions & Properties
 	std::shared_ptr<IActionsGroup>                  GetActions() const override;
 	std::shared_ptr<IPropertiesGroup>				GetProperties() const override;
 
+
     // Scene access
-    void                                            SetScene(std::shared_ptr<IScene> Scene) override;
     std::shared_ptr<IScene>                         GetScene() const override;
+
 
 	// Childs functional
 	virtual void                                    AddChild(std::shared_ptr<ISceneNode> childNode) override;
@@ -39,12 +58,20 @@ public:
 	virtual std::shared_ptr<ISceneNode>             GetParent() const override;
 	virtual NodeList                                GetChilds() override;
 
+
 	// Called before all others calls
 	virtual void                                    UpdateCamera(const ICamera* camera) override;
 	virtual void                                    UpdateViewport(const Viewport* viewport) override;
 
+
+	// Load & Save
+	bool                                            Load(std::shared_ptr<IXMLReader> Reader);
+	bool                                            Save(std::shared_ptr<IXMLWriter> Writer);
+
+
 	// Allow a visitor to visit this node.
 	virtual bool                                    Accept(IVisitor* visitor) override;
+
 
 	// Updatable
 	virtual void                                    OnUpdate(UpdateEventArgs& e) override;
@@ -54,7 +81,8 @@ public:
 	//
 	// ISceneNodeInternal
 	//
-	virtual void                                    SetParentInternal(std::weak_ptr<ISceneNode> parentNode);
+	void                                            SetScene(std::shared_ptr<IScene> Scene) override;
+	void                                            SetParentInternal(std::weak_ptr<ISceneNode> parentNode) override;
 
 
 
@@ -90,11 +118,24 @@ public:
 		return ISceneNode::CreateSceneNode<T>(std::forward<Args>(_Args)...);
 	}
 
+
 protected:
+	virtual void									UpdateLocalTransform();
+	virtual void									UpdateWorldTransform();
 	IBaseManager*                                   GetBaseManager() const;
 
+
+protected:
+	glm::mat4										m_LocalTransform;
+	glm::mat4										m_InverseLocalTransform;
+	glm::mat4										m_WorldTransform;
+	glm::mat4										m_InverseWorldTransform;
+
+
 private:
+	std::string                                     m_Type;
 	std::string                                     m_Name;
+
     ComponentsMap                                   m_Components;
 
 	std::shared_ptr<IActionsGroup>                  m_ActionsGroup;

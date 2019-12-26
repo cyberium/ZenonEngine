@@ -43,6 +43,8 @@ public:
     //
 	// Write
     //
+	void Resize(size_t NewSize);
+
 	void Append(const uint8* _data, size_t _size);
     void Insert(size_t Position, const uint8* _data, size_t _size);
 

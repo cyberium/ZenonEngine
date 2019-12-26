@@ -229,6 +229,13 @@ void CByteBuffer::CopyData(const uint8* _data, size_t _size)
 
 //-- WRITE
 
+void CByteBuffer::Resize(size_t NewSize)
+{
+	m_Data.resize(NewSize);
+
+	// TODO!
+}
+
 void CByteBuffer::Append(const uint8* _data, size_t _size)
 {
 	_ASSERT(_data != nullptr);

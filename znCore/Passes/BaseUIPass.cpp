@@ -31,7 +31,7 @@ bool BaseUIPass::VisitUI(ISceneNode* sceneNode)
 		sceneNode->UpdateCamera(camera);
 		sceneNode->UpdateViewport(viewport);
 
-		m_PerObjectData->Model = sceneNode->GetComponent<ITransformComponent>()->GetWorldTransfom();
+		m_PerObjectData->Model = sceneNode->GetWorldTransfom();
 		m_PerObjectData->Projection = viewport->GetOrthoMatix();
 
 		SetPerObjectConstantBufferData();

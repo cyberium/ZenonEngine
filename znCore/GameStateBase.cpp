@@ -3,6 +3,9 @@
 // General
 #include "GameStateBase.h"
 
+// Additional
+#include "XML/XMLManager.h"
+
 CGameState::CGameState(IBaseManager * BaseManager, std::shared_ptr<IRenderWindow> RenderWindow, IWindowEvents* WindowEvents)
 	: m_BaseManager(BaseManager)
 	, m_RenderWindow(RenderWindow)
@@ -33,13 +36,13 @@ bool CGameState::Init()
 
 	{
 		m_CameraPosText = GetBaseManager()->GetManager<ISceneNodesFactory>()->CreateSceneNode(m_SceneUI->GetRootNode(), "TextUI");
-		m_CameraPosText->GetComponent<ITransformComponentUI>()->SetTranslate(vec2(0.0f, 0.0f));
+		std::dynamic_pointer_cast<ISceneNodeUI>(m_CameraPosText)->SetTranslate(vec2(0.0f, 0.0f));
 
 		m_CameraRotText = GetBaseManager()->GetManager<ISceneNodesFactory>()->CreateSceneNode(m_SceneUI->GetRootNode(), "TextUI");
-		m_CameraRotText->GetComponent<ITransformComponentUI>()->SetTranslate(vec2(0.0f, 20.0f));
+		std::dynamic_pointer_cast<ISceneNodeUI>(m_CameraRotText)->SetTranslate(vec2(0.0f, 20.0f));
 
 		m_FPSText = GetBaseManager()->GetManager<ISceneNodesFactory>()->CreateSceneNode(m_SceneUI->GetRootNode(), "TextUI");
-		m_FPSText->GetComponent<ITransformComponentUI>()->SetTranslate(vec2(0.0f, 40.0f));
+		std::dynamic_pointer_cast<ISceneNodeUI>(m_FPSText)->SetTranslate(vec2(0.0f, 40.0f));
 	}
 
     m_IsInited = true;
@@ -210,6 +213,19 @@ void CGameState::OnKeyPressed(KeyEventArgs & e)
 
 	if (m_DefaultCameraController && !result)
 		m_DefaultCameraController->OnKeyPressed(e);
+
+	if (e.Key == KeyCode::J)
+	{
+		CXMLManager xmlM;
+
+		// Writer
+		std::shared_ptr<IXMLWriter> writer = xmlM.CreateWriter();
+
+		m_Scene3D->Save(writer);
+
+		std::shared_ptr<IFile> xmlFile = writer->SaveToFile("Scene.xml");
+		GetBaseManager()->GetManager<IFilesManager>()->GetFilesStorage("ZenonGamedata")->SaveFile(xmlFile);
+	}
 }
 
 void CGameState::OnKeyReleased(KeyEventArgs & e)

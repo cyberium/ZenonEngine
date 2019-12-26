@@ -3,9 +3,6 @@
 // General
 #include "ColliderComponent3D.h"
 
-// Additonal
-#include "Scene/TransformComponentBase.h"
-
 CColliderComponent3D::CColliderComponent3D(std::shared_ptr<ISceneNode> OwnerNode)
     : CComponentBase(OwnerNode)
 {
@@ -57,11 +54,11 @@ void CColliderComponent3D::OnMessage(std::shared_ptr<ISceneNodeComponent> Compon
 {
     switch (Message)
     {
-        case UUID_TransformComponent_OnWorldTransformChanged:
-        {
-            UpdateBounds();
-        }
-        break;
+        //case UUID_TransformComponent_OnWorldTransformChanged:
+        //{
+        //    UpdateBounds();
+        //}
+        //break;
 
         default:
         {

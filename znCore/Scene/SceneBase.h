@@ -10,11 +10,15 @@ public:
 	virtual ~SceneBase();
 
 	// IScene
-	void											CreateRootNode();
-	std::shared_ptr<ISceneNode>                     GetRootNode() const;
+	void											CreateRootNode() override;
+	std::shared_ptr<ISceneNode>                     GetRootNode() const override;
 
-	// Passes
-	void                                            Accept(IVisitor* visitor);
+	// Load & Save
+	bool                                            Load(std::shared_ptr<IXMLReader> Reader) override;
+	bool                                            Save(std::shared_ptr<IXMLWriter> Writer) override;
+
+	// Visit funcitonal
+	void                                            Accept(IVisitor* visitor) override;
 
 	// Events
 	Delegate<SceneChangeEventArgs>&					SceneChangeEvent() override;

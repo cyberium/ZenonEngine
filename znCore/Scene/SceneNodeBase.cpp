@@ -9,7 +9,15 @@
 
 SceneNodeBase::SceneNodeBase()
 	: m_Name("SceneNodeBase")
+
+	// Transform functinal
+	, m_LocalTransform(1.0f)
+	, m_InverseLocalTransform(1.0f)	// This is the inverse of the local -> world transform.
+	, m_WorldTransform(1.0f)
+	, m_InverseWorldTransform(1.0f)
 {
+	m_InverseLocalTransform = glm::inverse(m_LocalTransform);
+
 	m_ActionsGroup = std::make_shared<CActionsGroup>("General");
 	m_PropertiesGroup = std::make_shared<CPropertiesGroup>("General", "Some important scene node properties.");
 
@@ -34,14 +42,82 @@ void SceneNodeBase::Finalize()
 	// Do nothing
 }
 
+std::string SceneNodeBase::GetType() const
+{
+	return m_Type;
+}
+
+void SceneNodeBase::SetType(std::string Type)
+{
+	m_Type = Type;
+}
+
 std::string SceneNodeBase::GetName() const
 {
 	return m_Name;
 }
 
-void SceneNodeBase::SetName(const std::string& name)
+void SceneNodeBase::SetName(std::string Name)
 {
-	m_Name = name;
+	m_Name = Name;
+}
+
+
+
+//
+// Transform functional
+//
+mat4 SceneNodeBase::GetLocalTransform() const
+{
+	return m_LocalTransform;
+}
+
+mat4 SceneNodeBase::GetInverseLocalTransform() const
+{
+	return m_InverseLocalTransform;
+}
+
+void SceneNodeBase::SetLocalTransform(cmat4 localTransform)
+{
+	m_LocalTransform = localTransform;
+	m_InverseLocalTransform = glm::inverse(localTransform);
+
+	UpdateWorldTransform();
+}
+
+
+
+// World transform
+mat4 SceneNodeBase::GetWorldTransfom() const
+{
+	return m_WorldTransform;
+}
+
+mat4 SceneNodeBase::GetInverseWorldTransform() const
+{
+	return m_InverseWorldTransform;
+}
+
+mat4 SceneNodeBase::GetParentWorldTransform() const
+{
+	mat4 parentTransform(1.0f);
+	if (std::shared_ptr<ISceneNode> parent = GetParent())
+	{
+		parentTransform = parent->GetWorldTransfom();
+	}
+
+	return parentTransform;
+}
+
+void SceneNodeBase::SetWorldTransform(cmat4 worldTransform)
+{
+	mat4 inverseParentTransform = glm::inverse(GetParentWorldTransform());
+	SetLocalTransform(inverseParentTransform * worldTransform);
+}
+
+void SceneNodeBase::ForceRecalculateLocalTransform()
+{
+	UpdateLocalTransform();
 }
 
 
@@ -91,14 +167,10 @@ void SceneNodeBase::RegisterComponents()
 
 
 
+
 //
 // Scene access
 //
-void SceneNodeBase::SetScene(std::shared_ptr<IScene> Scene)
-{
-    m_Scene = Scene;
-}
-
 std::shared_ptr<IScene> SceneNodeBase::GetScene() const
 {
     return m_Scene.lock();
@@ -112,15 +184,12 @@ std::shared_ptr<IScene> SceneNodeBase::GetScene() const
 void SceneNodeBase::AddChild(std::shared_ptr<ISceneNode> childNode)
 {
 	if (childNode == nullptr)
-	{
 		_ASSERT_EXPR(false, L"Child node must not be NULL.");
-	}
 
 	NodeList::iterator iter = std::find(m_Children.begin(), m_Children.end(), childNode);
 	if (iter == m_Children.end())
 	{
 		std::dynamic_pointer_cast<ISceneNodeInternal>(childNode)->SetParentInternal(weak_from_this());
-        RaiseOnParentChanged();
 
 		m_Children.push_back(childNode);
 		if (!childNode->GetName().empty())
@@ -141,7 +210,6 @@ void SceneNodeBase::RemoveChild(std::shared_ptr<ISceneNode> childNode)
 	if (iter != m_Children.end())
 	{
 		std::dynamic_pointer_cast<ISceneNodeInternal>(childNode)->SetParentInternal(std::weak_ptr<ISceneNode>());
-        RaiseOnParentChanged();
 
 		m_Children.erase(iter);
 		NodeNameMap::iterator iter2 = m_ChildrenByName.find(childNode->GetName());
@@ -173,8 +241,6 @@ void SceneNodeBase::SetParent(std::weak_ptr<ISceneNode> parentNode)
 	// Add to new parent
 	if (std::shared_ptr<ISceneNode> newParent = parentNode.lock())
 		newParent->AddChild(SceneNodeBase::shared_from_this());
-
-	RaiseOnParentChanged();
 }
 
 std::shared_ptr<ISceneNode> SceneNodeBase::GetParent() const
@@ -196,6 +262,33 @@ void SceneNodeBase::UpdateCamera(const ICamera* camera)
 void SceneNodeBase::UpdateViewport(const Viewport * viewport)
 {
 	// Do nothing...
+}
+
+bool SceneNodeBase::Load(std::shared_ptr<IXMLReader> Reader)
+{
+	return false;
+}
+
+bool SceneNodeBase::Save(std::shared_ptr<IXMLWriter> Writer)
+{
+	std::shared_ptr<IXMLWriter> thisSceneNodeWriter = Writer->CreateChild("SceneNode");
+	thisSceneNodeWriter->AddAttribute("Name", GetName());
+
+	if (GetComponents().size() > 0)
+	{
+		std::shared_ptr<IXMLWriter> componentsWriter = thisSceneNodeWriter->CreateChild("Components");
+		for (const auto& component : GetComponents())
+			component.second->Save(componentsWriter);
+	}
+
+	if (GetChilds().size() > 0)
+	{
+		std::shared_ptr<IXMLWriter> childsWriter = thisSceneNodeWriter->CreateChild("Childs");
+		for (const auto& child : GetChilds())
+			child->Save(childsWriter);
+	}
+
+	return true;
 }
 
 bool SceneNodeBase::Accept(IVisitor* visitor)
@@ -237,12 +330,26 @@ std::shared_ptr<IPropertiesGroup> SceneNodeBase::GetProperties() const
 //
 // ISceneNodeInternal
 //
+void SceneNodeBase::SetScene(std::shared_ptr<IScene> Scene)
+{
+	m_Scene = Scene;
+}
+
 void SceneNodeBase::SetParentInternal(std::weak_ptr<ISceneNode> parentNode)
 {
 	m_ParentNode = parentNode;
+	RaiseOnParentChanged();
 }
 
 
+
+void SceneNodeBase::UpdateLocalTransform()
+{
+}
+
+void SceneNodeBase::UpdateWorldTransform()
+{
+}
 
 //
 // Protected
@@ -254,6 +361,9 @@ IBaseManager* SceneNodeBase::GetBaseManager() const
 
 void SceneNodeBase::RaiseOnParentChanged()
 {
+	// Don't forget about update world transform
+	UpdateWorldTransform();
+
     for (auto c : m_Components)
     {
         c.second->OnParentChanged();

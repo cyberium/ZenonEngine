@@ -234,9 +234,9 @@ void CCamera::AddPitch(float Pitch)
 void CCamera::UpdateDirections()
 {
     // Calculate the new Front vector
-    m_Front.x = cos(glm::radians(m_Yaw_X)) * cos(glm::radians(m_Pitch_Y)); // y
-    m_Front.y = sin(glm::radians(m_Pitch_Y));                              // z
-    m_Front.z = sin(glm::radians(m_Yaw_X)) * cos(glm::radians(m_Pitch_Y)); // x
+    m_Front.x = glm::cos(glm::radians(m_Yaw_X)) * glm::cos(glm::radians(m_Pitch_Y)); // y
+    m_Front.y = glm::sin(glm::radians(m_Pitch_Y));                              // z
+    m_Front.z = glm::sin(glm::radians(m_Yaw_X)) * glm::cos(glm::radians(m_Pitch_Y)); // x
     m_Front = glm::normalize(m_Front);
 
     // Also re-calculate the Right and Up vector

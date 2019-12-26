@@ -29,7 +29,7 @@ void RenderTechnique::Render(RenderEventArgs& renderEventArgs)
 {
 	for (auto pass : m_Passes)
 	{
-		if (pass->IsEnabled())
+		if (pass && pass->IsEnabled())
 		{
 			pass->PreRender(renderEventArgs);
 			pass->Render(renderEventArgs);
@@ -42,6 +42,7 @@ void RenderTechnique::UpdateViewport(const Viewport * _viewport)
 {
 	for (auto pass : m_Passes)
 	{
-		pass->UpdateViewport(_viewport);
+		if (pass)
+			pass->UpdateViewport(_viewport);
 	}
 }

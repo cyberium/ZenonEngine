@@ -18,8 +18,23 @@ ZN_INTERFACE ZN_API ISceneNode : public std::enable_shared_from_this<ISceneNode>
 	virtual void									Initialize() = 0;
 	virtual void									Finalize() = 0;
 
+	virtual std::string								GetType() const = 0;
+	virtual void                                    SetType(std::string Type) = 0;
 	virtual std::string								GetName() const = 0;
-	virtual void                                    SetName(const std::string& name) = 0;
+	virtual void                                    SetName(std::string Name) = 0;
+
+	// Transform functional
+	virtual mat4									GetLocalTransform() const = 0;
+	virtual mat4									GetInverseLocalTransform() const = 0;
+	virtual void									SetLocalTransform(cmat4 localTransform) = 0;
+
+	virtual mat4									GetWorldTransfom() const = 0;
+	virtual mat4									GetInverseWorldTransform() const = 0;
+	virtual mat4									GetParentWorldTransform() const = 0;
+	virtual void									SetWorldTransform(cmat4 worldTransform) = 0;
+
+	virtual void									ForceRecalculateLocalTransform() = 0;
+
 
 	// Components engine
 	virtual bool                                    IsComponentExists(GUID ComponentID) = 0;
@@ -29,13 +44,15 @@ ZN_INTERFACE ZN_API ISceneNode : public std::enable_shared_from_this<ISceneNode>
 	virtual void                                    RaiseComponentMessage(std::shared_ptr<ISceneNodeComponent> Component, ComponentMessageType Message) = 0;
 	virtual void                                    RegisterComponents() = 0;
 
+
 	// Actions & Properties
 	virtual std::shared_ptr<IActionsGroup>          GetActions() const = 0;
 	virtual std::shared_ptr<IPropertiesGroup>       GetProperties() const = 0;
 
+
 	// Scene access
-	virtual void                                    SetScene(std::shared_ptr<IScene> Scene) = 0;
 	virtual std::shared_ptr<IScene>                 GetScene() const = 0;
+
 
 	// Childs functional
 	virtual void                                    AddChild(std::shared_ptr<ISceneNode> childNode) = 0;
@@ -44,10 +61,18 @@ ZN_INTERFACE ZN_API ISceneNode : public std::enable_shared_from_this<ISceneNode>
 	virtual std::shared_ptr<ISceneNode>             GetParent() const = 0;
 	virtual std::vector<std::shared_ptr<ISceneNode>>GetChilds() = 0;
 
+
 	// Called before all others calls
 	virtual void                                    UpdateCamera(const ICamera* camera) = 0;
 	virtual void                                    UpdateViewport(const Viewport* viewport) = 0;
 
+
+	// Load & Save
+	virtual bool                                    Load(std::shared_ptr<IXMLReader> Reader) = 0;
+	virtual bool                                    Save(std::shared_ptr<IXMLWriter> Writer) = 0;
+
+
+	// Visitor functionality
 	virtual bool                                    Accept(IVisitor* visitor) = 0;
 
 	virtual void                                    OnUpdate(UpdateEventArgs& e) = 0;
@@ -107,6 +132,7 @@ ZN_INTERFACE ZN_API ISceneNodeInternal
 {
 	virtual ~ISceneNodeInternal() {}
 
+	virtual void SetScene(std::shared_ptr<IScene> Scene) = 0;
 	virtual void SetParentInternal(std::weak_ptr<ISceneNode> parentNode) = 0;
 };
 
@@ -114,11 +140,34 @@ ZN_INTERFACE ZN_API ISceneNodeInternal
 ZN_INTERFACE ZN_API ISceneNode3D
 {
 	virtual ~ISceneNode3D() {}
+
+	virtual void SetTranslate(cvec3 _translate) = 0;
+	virtual cvec3 GetTranslation() const = 0;
+
+	virtual void SetRotation(cvec3 _rotate) = 0;
+	virtual cvec3 GetRotation() const = 0;
+
+	virtual void SetRotationQuaternion(cquat _rotate) = 0;
+	virtual cquat GetRotationQuaternion() const = 0;
+
+	virtual void SetScale(cvec3 _scale) = 0;
+	virtual cvec3 GetScale() const = 0;
 };
 
 ZN_INTERFACE ZN_API ISceneNodeUI
 {
 	virtual ~ISceneNodeUI() {}
+
+	virtual void SetTranslate(cvec2 _translate) = 0;
+	virtual cvec2 GetTranslation() const = 0;
+	virtual glm::vec2 GetTranslationAbs() const = 0;
+
+	virtual void SetRotation(cvec3 _rotate) = 0;
+	virtual cvec3 GetRotation() const = 0;
+
+	virtual void SetScale(cvec2 _scale) = 0;
+	virtual cvec2 GetScale() const = 0;
+	virtual glm::vec2 GetScaleAbs() const = 0;
 };
 
 /*ZN_INTERFACE ZN_API ISceneNodeWrapper

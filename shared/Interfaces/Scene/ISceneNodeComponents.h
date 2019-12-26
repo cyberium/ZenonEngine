@@ -2,6 +2,8 @@
 
 // FORWARD BEGIN
 ZN_INTERFACE IPropertiesGroup;
+ZN_INTERFACE IXMLReader;
+ZN_INTERFACE IXMLWriter;
 // FORWARD END
 
 typedef uint32 ComponentMessageType;
@@ -15,100 +17,19 @@ ZN_INTERFACE ZN_API ISceneNodeComponent : public std::enable_shared_from_this<IS
     virtual void OnMessage(std::shared_ptr<ISceneNodeComponent> Component, ComponentMessageType Message) = 0;
 	virtual std::shared_ptr<IPropertiesGroup> GetPropertiesGroup() const = 0;
 
+	// Load & Save
+	virtual bool Load(std::shared_ptr<IXMLReader> Reader) = 0;
+	virtual bool Save(std::shared_ptr<IXMLWriter> Writer) = 0;
+
+	// Visit functional
     virtual bool Accept(IVisitor* visitor) = 0;
 };
 typedef std::unordered_map<GUID, std::shared_ptr<ISceneNodeComponent>> ComponentsMap;
 
 
 
-
-
-
-#define UUID_TransformComponent uuid("D0E12217-352E-4B51-AE46-EC287CA9A19C")
 #define UUID_ColliderComponent uuid("78BD7168-51CB-4760-ADD2-218CF4E88CE2")
 #define UUID_MeshComponent uuid("403E886D-7BD7-438B-868D-AC4380830716")
-
-
-
-
-
-
-
-
-
-
-
-ZN_INTERFACE __declspec(UUID_TransformComponent) ZN_API ITransformComponent
-{
-	virtual ~ITransformComponent() {}
-
-	virtual mat4 GetLocalTransform() const = 0;
-	virtual mat4 GetInverseLocalTransform() const = 0;
-	virtual void SetLocalTransform(cmat4 localTransform) = 0;
-
-	virtual mat4 GetWorldTransfom() const = 0;
-	virtual mat4 GetInverseWorldTransform() const = 0;
-	virtual mat4 GetParentWorldTransform() const = 0;
-	virtual void SetWorldTransform(cmat4 worldTransform) = 0;
-
-	virtual void ForceRecalculateLocalTransform() = 0;
-};
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// TRANSFORM COMPONENT 3D
-ZN_INTERFACE __declspec(UUID_TransformComponent) ZN_API ITransformComponent3D
-{
-	virtual ~ITransformComponent3D() {}
-
-	virtual void SetTranslate(cvec3 _translate) = 0;
-	virtual cvec3 GetTranslation() const = 0;
-
-	virtual void SetRotation(cvec3 _rotate) = 0;
-	virtual cvec3 GetRotation() const = 0;
-
-	virtual void SetRotationQuaternion(cquat _rotate) = 0;
-	virtual cquat GetRotationQuaternion() const = 0;
-
-	virtual void SetScale(cvec3 _scale) = 0;
-	virtual cvec3 GetScale() const = 0;
-};
-
-
-
-
-
-
-// TRANSFORM COMPONENT UI
-ZN_INTERFACE __declspec(UUID_TransformComponent) ZN_API ITransformComponentUI
-{
-	virtual ~ITransformComponentUI() {}
-
-	virtual void SetTranslate(cvec2 _translate) = 0;
-	virtual cvec2 GetTranslation() const = 0;
-	virtual glm::vec2 GetTranslationAbs() const = 0;
-
-	virtual void SetRotation(cvec3 _rotate) = 0;
-	virtual cvec3 GetRotation() const = 0;
-
-	virtual void SetScale(cvec2 _scale) = 0;
-	virtual cvec2 GetScale() const = 0;
-	virtual glm::vec2 GetScaleAbs() const = 0;
-};
-
-
-
 
 
 

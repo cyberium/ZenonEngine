@@ -55,8 +55,8 @@ void CGameState_World::OnRayIntersected(const glm::vec3& Point)
 
 	std::shared_ptr<ISceneNode> sceneNodePlane = m_Scene3D->CreateWrappedSceneNode<SceneNode3D>("SceneNode3D", m_Scene3D->GetRootNode());
 	sceneNodePlane->SetName("Sphere.");
-	sceneNodePlane->GetComponent<ITransformComponent3D>()->SetTranslate(Point);
-	sceneNodePlane->GetComponent<ITransformComponent3D>()->SetScale(vec3(50.0f, 50.0f, 50.0f));
+	std::dynamic_pointer_cast<ISceneNode3D>(sceneNodePlane)->SetTranslate(Point);
+	std::dynamic_pointer_cast<ISceneNode3D>(sceneNodePlane)->SetScale(vec3(50.0f, 50.0f, 50.0f));
 	sceneNodePlane->GetComponent<IMeshComponent3D>()->AddMesh(meshPlane);
 
 	Log::Green("Sphere created at %f %f %f", Point.x, Point.y, Point.z);
@@ -106,7 +106,7 @@ void CGameState_World::Load3D()
 
 	std::shared_ptr<ISceneNode> sceneNodePlane = m_Scene3D->CreateWrappedSceneNode<SceneNode3D>("SceneNode3D", m_Scene3D->GetRootNode());
 	sceneNodePlane->SetName("Ground.");
-	sceneNodePlane->GetComponent<ITransformComponent3D>()->SetScale(vec3(1000.0f, 1.0f, 1000.0f));
+	std::dynamic_pointer_cast<ISceneNode3D>(sceneNodePlane)->SetScale(vec3(1000.0f, 1.0f, 1000.0f));
 	sceneNodePlane->GetComponent<IMeshComponent3D>()->AddMesh(meshPlane);
 
 	//---------------------------
@@ -130,12 +130,12 @@ void CGameState_World::Load3D()
 			{
 				std::shared_ptr<ISceneNode> sceneNode = m_Scene3D->CreateWrappedSceneNode<SceneNode3D>("SceneNode3D", m_Scene3D->GetRootNode());
 				sceneNode->SetName("Ball [" + std::to_string(i) + ", " + std::to_string(j) + ", " + std::to_string(k) + "]");
-				sceneNode->GetComponent<ITransformComponent3D>()->SetTranslate(vec3(offset * i, offset * k, offset * j));
-				sceneNode->GetComponent<ITransformComponent3D>()->SetScale(vec3(15, 15, 15));
+				std::dynamic_pointer_cast<ISceneNode3D>(sceneNode)->SetTranslate(vec3(offset * i, offset * k, offset * j));
+				std::dynamic_pointer_cast<ISceneNode3D>(sceneNode)->SetScale(vec3(15, 15, 15));
 				sceneNode->GetComponent<IMeshComponent3D>()->AddMesh(mesh);
 
 				BoundingBox bbox = BoundingBox(glm::vec3(-1.0f, -1.0f, -1.0f), glm::vec3(1.0f, 1.0f, 1.0f));
-				bbox.transform(sceneNode->GetComponent<CTransformComponent3D>()->GetWorldTransfom());
+				bbox.transform(sceneNode->GetWorldTransfom());
 				sceneNode->GetComponent<CColliderComponent3D>()->SetBounds(bbox);
 			}
 		}
@@ -150,7 +150,7 @@ void CGameState_World::Load3D()
 
 	
 
-	std::shared_ptr<ISceneNode> fbxSceneNode = GetBaseManager()->GetManager<ISceneNodesFactory>()->CreateSceneNode(m_Scene3D->GetRootNode(), "FBXSceneNode");
+	/*std::shared_ptr<ISceneNode> fbxSceneNode = GetBaseManager()->GetManager<ISceneNodesFactory>()->CreateSceneNode(m_Scene3D->GetRootNode(), "FBXSceneNode");
 	//fbxSceneNode->GetComponent<ITransformComponent3D>()->SetScale(vec3(15.0f, 15.0f, 15.0f));
 
 	for (auto& m : fbxSceneNode->GetComponent<IMeshComponent3D>()->GetMeshes())
@@ -163,7 +163,7 @@ void CGameState_World::Load3D()
 		{
 			(void*)m->GetMaterial().get();
 		}
-	}
+	}*/
 
 	m_Technique3D.AddPass(GetBaseManager()->GetManager<IRenderPassFactory>()->CreateRenderPass("ClearPass", GetRenderDevice(), GetRenderWindow()->GetRenderTarget(), GetRenderWindow()->GetViewport(), m_Scene3D));
 	m_Technique3D.AddPass(GetBaseManager()->GetManager<IRenderPassFactory>()->CreateRenderPass("DebugPass", GetRenderDevice(), GetRenderWindow()->GetRenderTarget(), GetRenderWindow()->GetViewport(), m_Scene3D));

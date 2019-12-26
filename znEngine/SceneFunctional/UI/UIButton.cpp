@@ -41,7 +41,7 @@ void CUIButtonNode::CreateDefault()
 
     m_TextNode = CreateSceneNode<CUITextNode>();
 	m_TextNode->GetProperties()->GetPropertyT<std::string>("Text")->Set(cDefaultText);
-	m_TextNode->GetComponent<ITransformComponentUI>()->SetTranslate(vec2(10.0f, 10.0f));
+	m_TextNode->SetTranslate(vec2(10.0f, 10.0f));
 	m_TextNode->SetTextColor(vec4(0.0f, 0.0f, 1.0f, 1.0f));
 }
 

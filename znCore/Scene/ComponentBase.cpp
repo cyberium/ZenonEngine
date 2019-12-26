@@ -24,6 +24,18 @@ std::shared_ptr<ISceneNode> CComponentBase::GetOwnerNode() const
 
 
 
+bool CComponentBase::Load(std::shared_ptr<IXMLReader> Reader)
+{
+	_ASSERT_EXPR(false, L"Not implemented.");
+	return false;
+}
+
+bool CComponentBase::Save(std::shared_ptr<IXMLWriter> Writer)
+{
+	//_ASSERT_EXPR(false, L"Not implemented.");
+	return false;
+}
+
 bool CComponentBase::Accept(IVisitor* visitor)
 {
     return false;
