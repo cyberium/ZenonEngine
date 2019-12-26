@@ -16,7 +16,6 @@ CFreeCameraController::CFreeCameraController()
 	, TranslateFaster(false)
 	, RotateFaster(false)
 {
-	m_Camera = std::make_shared<CCamera>();
 }
 
 CFreeCameraController::~CFreeCameraController()
@@ -30,12 +29,12 @@ CFreeCameraController::~CFreeCameraController()
 //
 void CFreeCameraController::OnUpdate(UpdateEventArgs& e)
 {
-	float moveMultiplier = (TranslateFaster) ? 100 : 50;
+	float moveMultiplier = (TranslateFaster) ? 50 : 1;
 
-	GetCameraMovement()->DoMoveFront(Forward);
-	GetCameraMovement()->DoMoveBack(Back);
-	GetCameraMovement()->DoMoveLeft(Left);
-	GetCameraMovement()->DoMoveRight(Right);
+	GetCameraMovement()->DoMoveFront(Forward * moveMultiplier);
+	GetCameraMovement()->DoMoveBack(Back * moveMultiplier);
+	GetCameraMovement()->DoMoveLeft(Left * moveMultiplier);
+	GetCameraMovement()->DoMoveRight(Right * moveMultiplier);
 }
 
 void CFreeCameraController::OnKeyPressed(KeyEventArgs& e)
@@ -44,7 +43,7 @@ void CFreeCameraController::OnKeyPressed(KeyEventArgs& e)
 	{
 	case KeyCode::W:
 	{
-		Forward = 10.0f;
+		Forward = 1.0f;
 	}
 	break;
 	case KeyCode::A:

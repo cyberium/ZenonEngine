@@ -3,6 +3,8 @@
 #include <QtWidgets/QMainWindow>
 #include "ui_MainEditor.h"
 
+#include "SceneNodeTreeModel.h"
+
 #include "PropertyEditor/PropertiesController.h"
 
 class MainEditor 
@@ -23,12 +25,17 @@ public:
 
 private slots:
 	void onCustomContextMenu(const QPoint& point);
+	void onCurrentChanged(const QModelIndex& current, const QModelIndex& previous);
 
 private:
+	CSceneNodeTreeModel * m_SceneTreeViewerModel;
 	std::shared_ptr<IScene> m_Scene;
-	Ui::MainEditorClass ui;
+	
 
 	std::shared_ptr<QMenu>                          m_SceneTreeViewerContextMenu;
 
 	std::shared_ptr<CPropertiesController>          m_PropertiesController;
+
+private:
+	Ui::MainEditorClass ui;
 };

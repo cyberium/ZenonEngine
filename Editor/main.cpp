@@ -9,6 +9,11 @@
 
 #include "GameState_Editor.h"
 
+void RenderThread(Application* app)
+{
+	app->Run();
+}
+
 int main(int argc, char *argv[])
 {
 	// 1. Initialize engine and some improtant managers
@@ -41,7 +46,8 @@ int main(int argc, char *argv[])
 
 	BaseManager->GetManager<ILog>()->AddDebugOutput(std::make_shared<DebugOutput_EditorLog>(w.getUI().LogTextEdit));
 
-	app.Run();
+	std::thread renderThread(RenderThread, &app);
+	renderThread.detach();
 
 	return a.exec();
 }

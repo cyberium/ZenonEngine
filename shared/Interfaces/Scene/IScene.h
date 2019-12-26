@@ -59,10 +59,9 @@ ZN_INTERFACE ZN_API IScene : public std::enable_shared_from_this<IScene>
 
 		std::shared_ptr<T> newNode = std::make_shared<T>(std::forward<Args>(_Args)...);
 		newNode->SetScene(shared_from_this());
-		newNode->SetParent(Parent);
 		newNode->RegisterComponents();
 		newNode->Initialize();
-		newNode->RaiseOnParentChanged();
+		newNode->SetParent(Parent);
 
 		return newNode;
 	}
@@ -92,10 +91,9 @@ ZN_INTERFACE ZN_API IScene : public std::enable_shared_from_this<IScene>
 		}*/
 
 		newNode->SetScene(shared_from_this());
-		newNode->SetParent(Parent);
 		newNode->RegisterComponents();
 		newNode->Initialize();
-		newNode->RaiseOnParentChanged();
+		newNode->SetParent(Parent);
 
 		return newNode;
 	}

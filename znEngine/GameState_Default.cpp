@@ -24,8 +24,11 @@ bool CGameState_World::Init()
 {
 	CGameState::Init();
 
+	std::shared_ptr<CSceneNodeCamera> cameraNode = m_Scene3D->CreateSceneNode<CSceneNodeCamera>(m_Scene3D->GetRootNode());
+
 	SetCameraController(std::make_shared<CFreeCameraController>());
-	GetCameraController()->GetCamera()->SetProjection(ICamera::ProjectionHand::Right, 45.0f, GetRenderWindow()->GetWindowWidth() / GetRenderWindow()->GetWindowHeight(), 0.5f, 10000.0f);
+	GetCameraController()->SetCamera(cameraNode);
+	GetCameraController()->GetCamera()->SetPerspectiveProjection(ICamera::EPerspectiveProjectionHand::Right, 45.0f, GetRenderWindow()->GetWindowWidth() / GetRenderWindow()->GetWindowHeight(), 0.5f, 10000.0f);
 
 	Load3D();
 	LoadUI();
@@ -111,7 +114,7 @@ void CGameState_World::Load3D()
 
 	//---------------------------
 
-	const size_t iterCnt = 1;
+	const size_t iterCnt = 15;
 	const float offset = 45.0f;
 
 	std::shared_ptr<MaterialTextured> mat = std::make_shared<MaterialTextured>(GetRenderDevice());

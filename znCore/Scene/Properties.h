@@ -14,7 +14,8 @@ public:
 		, m_Description(Description)
 	{}
 	CProperty(std::string Name, std::string Description, T Value)
-		: CProperty(Name, Description)
+		: m_Name(Name)
+		, m_Description(Description)
 		, m_Value(Value)
 	{}
 	virtual ~CProperty()
@@ -22,38 +23,50 @@ public:
 
 
 	// IProperty
-	std::string GetName() const
+	std::string GetName() const override
 	{
 		return m_Name;
 	}
-	void SetName(const std::string& Name)
+	void SetName(const std::string& Name) override
 	{
 		m_Name = Name;
 	}
-	std::string GetDescription() const
+	std::string GetDescription() const override
 	{
 		return m_Description;
 	}
-	void SetDescription(const std::string& Description)
+	void SetDescription(const std::string& Description) override
 	{
 		m_Description = Description;
 	}
 
 
 	// IPropertyT
-	void Set(T Value)
+	void Set(T Value, bool BlockCallback = false) override
 	{
 		m_Value = Value;
+
+		if (BlockCallback)
+			return;
+
+		if (m_ValueChangedCallback)
+			m_ValueChangedCallback(Value);
 	}
-	T Get() const
+	T Get() const override
 	{
 		return m_Value;
+	}
+	void SetValueChangedCallback(std::function<void(const T&)> ValueChangedCallback) override
+	{
+		m_ValueChangedCallback = ValueChangedCallback;
 	}
 
 private:
 	std::string m_Name;
 	std::string m_Description;
 	T           m_Value;
+
+	std::function<void(const T&)> m_ValueChangedCallback;
 };
 
 
@@ -78,35 +91,47 @@ public:
 
 
 	// IProperty
-	std::string GetName() const
+	std::string GetName() const override
 	{
 		return m_Name;
 	}
-	void SetName(const std::string& Name)
+	void SetName(const std::string& Name) override
 	{
 		m_Name = Name;
 	}
-	std::string GetDescription() const
+	std::string GetDescription() const override
 	{
 		return m_Description;
 	}
-	void SetDescription(const std::string& Description)
+	void SetDescription(const std::string& Description) override
 	{
 		m_Description = Description;
 	}
 
 
 	// IPropertyT
-	void Set(T Value)
+	void Set(T Value, bool BlockCallback = false) override
 	{
 		_ASSERT(m_FuncSetter);
 		m_FuncSetter(Value);
+
+		if (BlockCallback)
+			return;
+
+		if (m_ValueChangedCallback)
+			m_ValueChangedCallback(Value);
 	}
-	T Get() const
+	T Get() const override
 	{
 		_ASSERT(m_FuncGetter);
 		return m_FuncGetter();
 	}
+	void SetValueChangedCallback(std::function<void(const T&)> ValueChangedCallback) override
+	{
+		m_ValueChangedCallback = ValueChangedCallback;
+	}
+
+public:
 	void SetValueSetter(std::function<void(const T&)> Function)
 	{
 		m_FuncSetter = Function;
@@ -115,10 +140,18 @@ public:
 	{
 		m_FuncGetter = Function;
 	}
+	void RaiseSetValueChangedCallback()
+	{
+		if (m_ValueChangedCallback)
+			m_ValueChangedCallback(Get());
+	}
+
 
 private:
 	std::string m_Name;
 	std::string m_Description;
+	std::function<void(const T&)> m_ValueChangedCallback;
+
 	std::function<void(const T&)> m_FuncSetter;
 	std::function<T(void)> m_FuncGetter;
 };

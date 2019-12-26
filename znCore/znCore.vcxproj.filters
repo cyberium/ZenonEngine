@@ -13,9 +13,6 @@
     <Filter Include="RefManager\1 Dim">
       <UniqueIdentifier>{2d2bf5e2-b8bf-4ce5-8ac0-2e7f796bc4ab}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Files\Common">
-      <UniqueIdentifier>{71df8466-a98b-4ab6-bb46-76fcc364a41b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Common\Primitives">
       <UniqueIdentifier>{93169e20-4b0c-45b2-82e2-49aad2886db8}</UniqueIdentifier>
     </Filter>
@@ -94,6 +91,9 @@
     <Filter Include="XML\tinyxml">
       <UniqueIdentifier>{a25b0727-bf27-4aad-9f00-d3181f17a00a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Scene functional\Camera">
+      <UniqueIdentifier>{926b8de5-b7e3-476b-91fb-d957ec421637}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Log.cpp">
@@ -104,15 +104,6 @@
     </ClCompile>
     <ClCompile Include="UtilsConvert.cpp">
       <Filter>Common\Helpers</Filter>
-    </ClCompile>
-    <ClCompile Include="FilesManager.cpp">
-      <Filter>Files</Filter>
-    </ClCompile>
-    <ClCompile Include="File.cpp">
-      <Filter>Files\Common</Filter>
-    </ClCompile>
-    <ClCompile Include="ByteBuffer.cpp">
-      <Filter>Files\Common</Filter>
     </ClCompile>
     <ClCompile Include="BoundingBox.cpp">
       <Filter>Common\Primitives</Filter>
@@ -147,9 +138,6 @@
     <ClCompile Include="Timer.cpp">
       <Filter>Common\Timers</Filter>
     </ClCompile>
-    <ClCompile Include="LocalFilesStorage.cpp">
-      <Filter>Files\Common</Filter>
-    </ClCompile>
     <ClCompile Include="BoundingRect.cpp">
       <Filter>Common\Primitives</Filter>
     </ClCompile>
@@ -158,9 +146,6 @@
     </ClCompile>
     <ClCompile Include="Resource.cpp">
       <Filter>Resources</Filter>
-    </ClCompile>
-    <ClCompile Include="LibraryResourceFileStotage.cpp">
-      <Filter>Files\Common</Filter>
     </ClCompile>
     <ClCompile Include="Proxies\MaterialProxie.cpp">
       <Filter>__Proxies</Filter>
@@ -210,9 +195,6 @@
     <ClCompile Include="CameraControllers\ArcBallCameraController.cpp">
       <Filter>CameraControllers</Filter>
     </ClCompile>
-    <ClCompile Include="CameraControllers\Camera.cpp">
-      <Filter>CameraControllers</Filter>
-    </ClCompile>
     <ClCompile Include="CameraControllers\CameraControllerBase.cpp">
       <Filter>CameraControllers</Filter>
     </ClCompile>
@@ -237,9 +219,6 @@
     <ClCompile Include="Scene\UI\SceneNodeUI.cpp">
       <Filter>Scene functional\UI</Filter>
     </ClCompile>
-    <ClCompile Include="ByteBufferOnlyPointer.cpp">
-      <Filter>Files\Common</Filter>
-    </ClCompile>
     <ClCompile Include="Scene\Properties.cpp">
       <Filter>Scene functional\Properties</Filter>
     </ClCompile>
@@ -261,6 +240,27 @@
     <ClCompile Include="Debug.cpp">
       <Filter>Common</Filter>
     </ClCompile>
+    <ClCompile Include="Files\ByteBuffer.cpp">
+      <Filter>Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Files\ByteBufferOnlyPointer.cpp">
+      <Filter>Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Files\File.cpp">
+      <Filter>Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Files\FilesManager.cpp">
+      <Filter>Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Files\LibraryResourceFileStotage.cpp">
+      <Filter>Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Files\LocalFilesStorage.cpp">
+      <Filter>Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\CameraNode.cpp">
+      <Filter>Scene functional\Camera</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Log.h">
@@ -277,15 +277,6 @@
     </ClInclude>
     <ClInclude Include="Utils.h">
       <Filter>Common\Helpers</Filter>
-    </ClInclude>
-    <ClInclude Include="FilesManager.h">
-      <Filter>Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ByteBuffer.h">
-      <Filter>Files\Common</Filter>
-    </ClInclude>
-    <ClInclude Include="File.h">
-      <Filter>Files\Common</Filter>
     </ClInclude>
     <ClInclude Include="BoundingBox.h">
       <Filter>Common\Primitives</Filter>
@@ -353,9 +344,6 @@
     <ClInclude Include="LockedQueue.h">
       <Filter>Common\Threads</Filter>
     </ClInclude>
-    <ClInclude Include="LocalFilesStorage.h">
-      <Filter>Files\Common</Filter>
-    </ClInclude>
     <ClInclude Include="Rect.h">
       <Filter>Common\Primitives</Filter>
     </ClInclude>
@@ -370,9 +358,6 @@
     </ClInclude>
     <ClInclude Include="Resource.h">
       <Filter>Resources</Filter>
-    </ClInclude>
-    <ClInclude Include="LibraryResourceFileStotage.h">
-      <Filter>Files\Common</Filter>
     </ClInclude>
     <ClInclude Include="MathTypes.h">
       <Filter>Common</Filter>
@@ -587,9 +572,6 @@
     <ClInclude Include="CameraControllers\ArcBallCameraController.h">
       <Filter>CameraControllers</Filter>
     </ClInclude>
-    <ClInclude Include="CameraControllers\Camera.h">
-      <Filter>CameraControllers</Filter>
-    </ClInclude>
     <ClInclude Include="CameraControllers\CameraControllerBase.h">
       <Filter>CameraControllers</Filter>
     </ClInclude>
@@ -614,9 +596,6 @@
     <ClInclude Include="Scene\UI\SceneNodeUI.h">
       <Filter>Scene functional\UI</Filter>
     </ClInclude>
-    <ClInclude Include="ByteBufferOnlyPointer.h">
-      <Filter>Files\Common</Filter>
-    </ClInclude>
     <ClInclude Include="..\shared\Interfaces\Scene\IProperties.h">
       <Filter>__Interfaces\Scene</Filter>
     </ClInclude>
@@ -637,6 +616,27 @@
     </ClInclude>
     <ClInclude Include="XML\tinyxml.h">
       <Filter>XML\tinyxml</Filter>
+    </ClInclude>
+    <ClInclude Include="Files\ByteBuffer.h">
+      <Filter>Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Files\ByteBufferOnlyPointer.h">
+      <Filter>Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Files\File.h">
+      <Filter>Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Files\FilesManager.h">
+      <Filter>Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Files\LibraryResourceFileStotage.h">
+      <Filter>Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Files\LocalFilesStorage.h">
+      <Filter>Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\CameraNode.h">
+      <Filter>Scene functional\Camera</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

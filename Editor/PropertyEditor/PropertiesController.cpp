@@ -103,12 +103,54 @@ void CPropertiesController::CreateProperty(QtnPropertySet * PropertiesSet, std::
 		stringProperty->setDescription(propT->GetDescription().c_str());
 		stringProperty->setValue(propT->Get());
 
-		auto lambda = [stringProperty, propT](const QtnPropertyBase* changedProperty, const QtnPropertyBase* firedProperty, QtnPropertyChangeReason reason)
-		{
-			if (reason & QtnPropertyChangeReasonValue)
-				propT->Set(stringProperty->value());
-		};
-		QObject::connect(stringProperty, &QtnProperty::propertyDidChange, lambda);
+		// From engine to editor
+		propT->SetValueChangedCallback
+		(
+			[stringProperty](const std::string& value) 
+			{  
+				stringProperty->setValue(value); 
+			}
+		);
+
+		// From editor to engine
+		QObject::connect
+		(
+			stringProperty, 
+			&QtnProperty::propertyDidChange, 
+			[stringProperty, propT](const QtnPropertyBase* changedProperty, const QtnPropertyBase* firedProperty, QtnPropertyChangeReason reason)
+			{
+				if (reason & QtnPropertyChangeReasonValue)
+					propT->Set(stringProperty->value(), true);
+			}
+		);
+	}
+	else if (std::shared_ptr<IPropertyT<float>> propT = std::dynamic_pointer_cast<IPropertyT<float>>(Property))
+	{
+		QtnPropertyFloat* floatProperty = qtnCreateProperty<QtnPropertyFloat>(PropertiesSet);
+		floatProperty->setName(propT->GetName().c_str());
+		floatProperty->setDescription(propT->GetDescription().c_str());
+		floatProperty->setValue(propT->Get());
+
+		// From engine to editor
+		propT->SetValueChangedCallback
+		(
+			[floatProperty](const float& value) 
+			{  
+				floatProperty->setValue(value); 
+			}
+		);
+
+		// From editor to engine
+		QObject::connect
+		(
+			floatProperty, 
+			&QtnProperty::propertyDidChange, 
+			[floatProperty, propT](const QtnPropertyBase* changedProperty, const QtnPropertyBase* firedProperty, QtnPropertyChangeReason reason)
+			{
+				if (reason & QtnPropertyChangeReasonValue)
+					propT->Set(floatProperty->value(), true);
+			}
+		);
 	}
 	else if (std::shared_ptr<IPropertyT<glm::vec3>> propT = std::dynamic_pointer_cast<IPropertyT<glm::vec3>>(Property))
 	{
@@ -117,12 +159,26 @@ void CPropertiesController::CreateProperty(QtnPropertySet * PropertiesSet, std::
 		vec3Property->setDescription(propT->GetDescription().c_str());
 		vec3Property->setValue(propT->Get());
 
-		auto lambda = [vec3Property, propT](const QtnPropertyBase* changedProperty, const QtnPropertyBase* firedProperty, QtnPropertyChangeReason reason)
-		{
-			if (reason & QtnPropertyChangeReasonValue)
-				propT->Set(vec3Property->value());
-		};
-		QObject::connect(vec3Property, &QtnProperty::propertyDidChange, lambda);
+		// From engine to editor
+		propT->SetValueChangedCallback
+		(
+			[vec3Property](const glm::vec3& value) 
+			{
+				vec3Property->setValue(value); 
+			}
+		);
+
+		// From editor to engine
+		QObject::connect
+		(
+			vec3Property, 
+			&QtnProperty::propertyDidChange, 
+			[vec3Property, propT](const QtnPropertyBase* changedProperty, const QtnPropertyBase* firedProperty, QtnPropertyChangeReason reason)
+			{
+				if (reason & QtnPropertyChangeReasonValue)
+					propT->Set(vec3Property->value(), true);
+			}
+		);
 	}
 	else
 	{

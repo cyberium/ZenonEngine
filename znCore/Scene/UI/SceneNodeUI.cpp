@@ -10,6 +10,7 @@ CUIBaseNode::CUIBaseNode()
 	, m_Rotate(vec3())
 	, m_Scale(1.0f, 1.0f)
 {
+	SetName("CUIBaseNode");
 }
 
 CUIBaseNode::~CUIBaseNode()

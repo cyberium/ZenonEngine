@@ -7,25 +7,26 @@
 #include "../znCore/RefManager1DimAssync.h"
 
 // Files
-#include "../znCore/LocalFilesStorage.h"
-#include "../znCore/LibraryResourceFileStotage.h"
-#include "../znCore/FilesManager.h"
-#include "../znCore/File.h"
-#include "../znCore/ByteBufferOnlyPointer.h"
+#include "../znCore/Files/ByteBuffer.h"
+#include "../znCore/Files/ByteBufferOnlyPointer.h"
+#include "../znCore/Files/File.h"
+#include "../znCore/Files/LocalFilesStorage.h"
+#include "../znCore/Files/LibraryResourceFileStotage.h"
+#include "../znCore/Files/FilesManager.h"
+
 
 // Log outputs
 #include "../znCore/Console.h"
 
 
-
+// Passes
 #include "../znCore/Passes/RenderTechnique.h"
 #include "../znCore/Passes/AbstractPass.h"
 #include "../znCore/Passes/Base3DPass.h"
 #include "../znCore/Passes/BaseUIPass.h"
 
 
-// Camera
-#include "../znCore/CameraControllers/Camera.h"
+// Camera controllers
 #include "../znCore/CameraControllers/CameraControllerBase.h"
 #include "../znCore/CameraControllers/ArcBallCameraController.h"
 #include "../znCore/CameraControllers/FreeCameraController.h"
@@ -56,5 +57,9 @@
 
 // UI
 #include "../znCore/Scene/UI/SceneNodeUI.h"
+
+// Camera
+#include "../znCore/Scene/CameraNode.h"
+
 
 #include "../znCore/XML/XMLManager.h"

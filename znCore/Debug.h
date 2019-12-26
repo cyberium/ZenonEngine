@@ -46,7 +46,7 @@ inline void FatalMessageBox(const char* _title, const char* _message, ...)
 	va_end(args);
 }
 
-class CException 
+class ZN_API CException 
 	: public std::exception
 {
 public:

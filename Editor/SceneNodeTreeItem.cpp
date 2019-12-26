@@ -9,13 +9,14 @@ CSceneNodeTreeItem::CSceneNodeTreeItem()
 {
 }
 
-CSceneNodeTreeItem::CSceneNodeTreeItem(std::shared_ptr<ISceneNode> SceneNode3D, CSceneNodeTreeItem* Parent)
+CSceneNodeTreeItem::CSceneNodeTreeItem(std::shared_ptr<ISceneNode> SceneNode3D, CSceneNodeTreeItem * Parent)
 	: m_SceneNode3D(SceneNode3D)
 	, m_Parent(Parent)
 {
 	for (const auto& ch : SceneNode3D->GetChilds())
 	{
-		appendChild(new CSceneNodeTreeItem(ch, this));
+		CSceneNodeTreeItem* treeItem = new CSceneNodeTreeItem(ch, this);
+		addChild(treeItem);
 	}
 }
 
@@ -25,13 +26,16 @@ CSceneNodeTreeItem::~CSceneNodeTreeItem()
 }
 
 
-void CSceneNodeTreeItem::appendChild(CSceneNodeTreeItem* item) 
+void CSceneNodeTreeItem::addChild(CSceneNodeTreeItem * item) 
 {
 	m_Childs.push_back(item);
 }
 
 CSceneNodeTreeItem* CSceneNodeTreeItem::child(int row) 
 {
+	if (row >= m_Childs.size())
+		return nullptr;
+
 	return m_Childs.at(row);
 }
 
@@ -39,6 +43,13 @@ int CSceneNodeTreeItem::childCount() const
 {
 	return m_Childs.size();
 }
+
+CSceneNodeTreeItem* CSceneNodeTreeItem::parentItem()
+{
+	return m_Parent;
+}
+
+
 
 QVariant CSceneNodeTreeItem::data() const
 {
@@ -48,12 +59,9 @@ QVariant CSceneNodeTreeItem::data() const
 	return QVariant(m_SceneNode3D->GetName().c_str());
 }
 
-CSceneNodeTreeItem* CSceneNodeTreeItem::parentItem() 
-{
-	return m_Parent;
-}
 
-int CSceneNodeTreeItem::childNumber() const 
+
+int CSceneNodeTreeItem::childNumberInParent() const
 {
 	if (m_Parent)
 	{
@@ -63,4 +71,9 @@ int CSceneNodeTreeItem::childNumber() const
 	}
 
 	return 0;
+}
+
+std::shared_ptr<ISceneNode> CSceneNodeTreeItem::GetSceneNode() const
+{
+	return m_SceneNode3D;
 }

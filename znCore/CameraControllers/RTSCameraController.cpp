@@ -5,12 +5,12 @@
 
 CRTSCameraController::CRTSCameraController()
 {
-	m_Camera = std::make_shared<CCamera>();
-	GetCameraMovement()->SetYaw(0.0f);
-	GetCameraMovement()->SetPitch(-90.0f);
+	//m_Camera = std::make_shared<CCamera>();
+	//GetCameraMovement()->SetYaw(0.0f);
+	//GetCameraMovement()->SetPitch(-90.0f);
 
-	m_MouseMoveMultiplier = 0.3f;
-	m_MouseWheelMultiplier = 8.7f;
+	//m_MouseMoveMultiplier = 0.3f;
+	//m_MouseWheelMultiplier = 8.7f;
 }
 
 CRTSCameraController::~CRTSCameraController()

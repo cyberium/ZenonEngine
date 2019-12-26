@@ -1,7 +1,5 @@
 #pragma once
 
-#include "Camera.h"
-
 class ZN_API CCameraControllerBase 
 	: public ICameraController
 {
@@ -10,6 +8,8 @@ public:
     virtual                                         ~CCameraControllerBase();
 
 	// ICameraController
+	void											SetCamera(std::shared_ptr<ICamera> Camera) override;
+
 	std::shared_ptr<ICamera>                        GetCamera() const override;
 	std::shared_ptr<ICameraMovement>                GetCameraMovement() const override;
 	Ray	                                            ScreenPointToRay(const Viewport* Viewport, glm::vec2 screenPoint) const override;
@@ -30,7 +30,6 @@ public:
 	virtual void                                    OnMouseMoved(MouseMotionEventArgs& e) override;
 	virtual void                                    OnMouseWheel(MouseWheelEventArgs& e) override;
 	
-
 
 protected:
 	std::shared_ptr<ICamera>                        m_Camera;

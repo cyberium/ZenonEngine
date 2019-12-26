@@ -11,13 +11,15 @@ public:
 	CSceneNodeTreeItem(std::shared_ptr<ISceneNode> SceneNode3D, CSceneNodeTreeItem * Parent);
 	virtual ~CSceneNodeTreeItem();
 
-	void											appendChild(CSceneNodeTreeItem *child);
+	void											addChild(CSceneNodeTreeItem * child);
 	CSceneNodeTreeItem*								child(int row); 
 	int												childCount() const; 
-	QVariant										data() const;
-	int												childNumber() const; 
-
 	CSceneNodeTreeItem*								parentItem();
+
+	QVariant										data() const;
+	int												childNumberInParent() const; 
+
+	std::shared_ptr<ISceneNode>                     GetSceneNode() const;
 
 private:
 	CSceneNodeTreeItem*								m_Parent;

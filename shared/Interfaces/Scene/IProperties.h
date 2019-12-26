@@ -15,8 +15,10 @@ ZN_INTERFACE ZN_API IPropertyT : public IProperty
 {
 	virtual ~IPropertyT() {}
 
-	virtual void Set(T Value) = 0;
+	virtual void Set(T Value, bool BlockCallback = false) = 0;
 	virtual T Get() const = 0;
+
+	virtual void SetValueChangedCallback(std::function<void(const T&)> ValueChangedCallback) = 0;
 };
 
 ZN_INTERFACE ZN_API IPropertiesGroup : public IProperty

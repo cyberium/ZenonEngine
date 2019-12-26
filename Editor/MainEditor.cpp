@@ -19,18 +19,18 @@ MainEditor::MainEditor(QWidget* Parent)
 
 	// Add context menu for scene node viewer
 	m_SceneTreeViewerContextMenu = std::make_shared<QMenu>(this);
-
-	QAction* uninstallAction = new QAction("Uninstall TA", m_SceneTreeViewerContextMenu.get());
-	m_SceneTreeViewerContextMenu->addAction(uninstallAction);
-
-	m_SceneTreeViewerContextMenu->addSeparator();
-
-	QAction* uninstallAction33 = new QAction("Uninstall TA33", m_SceneTreeViewerContextMenu.get());
-	m_SceneTreeViewerContextMenu->addAction(uninstallAction33);
-
+	m_SceneTreeViewerContextMenu->setTitle("Somec context menu title.");
 	ui.SceneTreeViewer->setContextMenuPolicy(Qt::CustomContextMenu);
-
 	connect(ui.SceneTreeViewer, SIGNAL(customContextMenuRequested(const QPoint &)), this, SLOT(onCustomContextMenu(const QPoint &)));
+	
+	// SceneNodeTreeView: Main settings
+	m_SceneTreeViewerModel = new CSceneNodeTreeModel(this);
+	ui.SceneTreeViewer->setModel(m_SceneTreeViewerModel);
+
+	// SceneNodeTreeView: Selection settings
+	ui.SceneTreeViewer->setSelectionMode(QAbstractItemView::SingleSelection);
+	QItemSelectionModel* selectionModel = ui.SceneTreeViewer->selectionModel();
+	connect(selectionModel, SIGNAL(currentChanged(const QModelIndex&, const QModelIndex&)), this, SLOT(onCurrentChanged(const QModelIndex&, const QModelIndex&)));
 
 	// Unite file browser and log docker
 	QMainWindow::tabifyDockWidget(ui.DockerFileBrowser, ui.DockerLog);
@@ -49,9 +49,7 @@ void MainEditor::ApplyScene(std::shared_ptr<IScene> Scene)
 {
 	m_Scene = Scene;
 
-	CSceneNodeTreeModel * model = new CSceneNodeTreeModel(this);
-	model->SetModelData(Scene);
-	ui.SceneTreeViewer->setModel(model);
+	m_SceneTreeViewerModel->SetModelData(Scene);
 
 	ui.SceneTreeViewer->expandAll();
 }
@@ -66,11 +64,45 @@ void MainEditor::ApplyTest()
 }
 
 
-void MainEditor::onCustomContextMenu(const QPoint &point)
+//
+// Slots
+//
+void MainEditor::onCustomContextMenu(const QPoint& point)
 {
 	QModelIndex index = ui.SceneTreeViewer->indexAt(point);
-	if (index.isValid() && index.row() % 2 == 0) 
+	if (!index.isValid())
 	{
-		m_SceneTreeViewerContextMenu->exec(ui.SceneTreeViewer->viewport()->mapToGlobal(point));
+		return;
 	}
+
+	CSceneNodeTreeItem* item = static_cast<CSceneNodeTreeItem*>(index.internalPointer());
+	_ASSERT_EXPR(item != nullptr, L"Item is null.");
+
+	m_SceneTreeViewerContextMenu->clear();
+
+	{
+		QAction* nameAction = new QAction(item->GetSceneNode()->GetName().c_str(), m_SceneTreeViewerContextMenu.get());
+		nameAction->setEnabled(false);
+		m_SceneTreeViewerContextMenu->addAction(nameAction);
+
+		m_SceneTreeViewerContextMenu->addSeparator();
+
+		QAction* uninstallAction33 = new QAction("Uninstall TA33", m_SceneTreeViewerContextMenu.get());
+		m_SceneTreeViewerContextMenu->addAction(uninstallAction33);
+	}
+
+	m_SceneTreeViewerContextMenu->exec(ui.SceneTreeViewer->viewport()->mapToGlobal(point));
+}
+
+void MainEditor::onCurrentChanged(const QModelIndex& current, const QModelIndex& previous)
+{
+	if (!current.isValid())
+	{
+		return;
+	}
+
+	CSceneNodeTreeItem* item = static_cast<CSceneNodeTreeItem*>(current.internalPointer());
+	_ASSERT_EXPR(item != nullptr, L"Item is null.");
+
+	OnSceneNodeSelected(item->GetSceneNode());
 }

@@ -255,7 +255,7 @@ void RenderWindowWidget::keyPressEvent(QKeyEvent * event)
 	KeyEventArgs args
 	(
 		this,
-		(KeyCode)event->key(),
+		(KeyCode)event->nativeVirtualKey(),
 		event->key(),
 		KeyEventArgs::KeyState::Pressed,
 		event->modifiers() == Qt::KeyboardModifier::ControlModifier,
@@ -270,7 +270,7 @@ void RenderWindowWidget::keyReleaseEvent(QKeyEvent * event)
 	KeyEventArgs args
 	(
 		this,
-		(KeyCode)event->key(),
+		(KeyCode)event->nativeVirtualKey(),
 		event->key(),
 		KeyEventArgs::KeyState::Released,
 		event->modifiers() == Qt::KeyboardModifier::ControlModifier,

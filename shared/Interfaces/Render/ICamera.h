@@ -2,7 +2,7 @@
 
 ZN_INTERFACE ZN_API ICamera
 {
-	enum class ZN_API ProjectionHand
+	enum class ZN_API EPerspectiveProjectionHand
 	{
 		Left,
 		Right
@@ -10,20 +10,20 @@ ZN_INTERFACE ZN_API ICamera
 
 	virtual ~ICamera() {}
 
-	virtual const Frustum*                          GetFrustum() const = 0;
-
-	virtual vec3                                    GetTranslation() const = 0;
+	virtual glm::vec3                               GetTranslation() const = 0;
+	virtual glm::vec3                               GetDirection() const = 0;
 
 	virtual float                                   GetYaw() const = 0;
 	virtual float                                   GetPitch() const = 0;
-	virtual glm::vec3                               GetDirection() const = 0;
+	
+	virtual const Frustum*                          GetFrustum() const = 0;
 
     virtual glm::mat4                               GetViewMatrix() const = 0;
     virtual glm::mat4                               GetProjectionMatrix() const = 0;
     virtual glm::mat4                               GetViewProjectionInverseMatrix() const = 0;
 
-	virtual void                                    SetProjection(ProjectionHand ProjectionHand, float fovy, float aspect, float zNear, float zFar) = 0;
-	virtual void                                    SetOrthographic(float left, float right, float top, float bottom) = 0;
+	virtual void                                    SetPerspectiveProjection(EPerspectiveProjectionHand ProjectionHand, float fovy, float aspect, float zNear, float zFar) = 0;
+	virtual void                                    SetOrthographicProjection(float left, float right, float top, float bottom) = 0;
 };
 
 ZN_INTERFACE ZN_API ICameraMovement

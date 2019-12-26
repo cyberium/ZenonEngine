@@ -19,6 +19,8 @@ ZN_INTERFACE ZN_API ICameraController
 {
 	virtual ~ICameraController() {}
 
+	virtual void SetCamera(std::shared_ptr<ICamera> Camera) = 0;
+
 	virtual std::shared_ptr<ICamera> GetCamera() const = 0;
 	virtual std::shared_ptr<ICameraMovement> GetCameraMovement() const = 0;
 	virtual Ray ScreenPointToRay(const Viewport* Viewport, glm::vec2 screenPoint) const = 0;
