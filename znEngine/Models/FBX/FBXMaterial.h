@@ -1,6 +1,6 @@
 #pragma once
 
-class CFBXMaterial
+class ZN_API CFBXMaterial
 	: public MaterialProxie
 {
 public:

@@ -8,8 +8,6 @@
 #include <fbxsdk/scene/geometry/fbxlayer.h>
 #include <fbxsdk/utils/fbxgeometryconverter.h>
 
-#include "FBXDisplayMaterial.h"
-#include "FBXDisplayTexture.h"
 #include "FBXDisplayLink.h"
 #include "FBXDisplayShape.h"
 #include "FBXDisplayCache.h"
@@ -21,9 +19,7 @@ using namespace fbxsdk;
 #define MAT_HEADER_LENGTH 200
 
 std::shared_ptr<IMaterial> DisplayMaterialMapping(FbxMesh* pMesh);
-void DisplayTextureNames(FbxProperty &pProperty, FbxString& pConnectionString);
 void DisplayMaterialConnections(FbxMesh* pMesh);
-void DisplayMaterialTextureConnections(FbxSurfaceMaterial* pMaterial, char * header, int pMatId, int l);
 
 std::shared_ptr<IMesh> DisplayMesh(CFBX * FBX, FbxNode* pNode)
 {
@@ -261,18 +257,20 @@ std::shared_ptr<IMesh> DisplayMesh(CFBX * FBX, FbxNode* pNode)
 	//
 	// Materials
 	//
+	_ASSERT_EXPR(lMesh->GetElementMaterialCount() == 1, L"Only one material must supported for mesh.");
 	for (int l = 0; l < lMesh->GetElementMaterialCount(); l++)
 	{
 		fbxsdk::FbxGeometryElementMaterial* elem = lMesh->GetElementMaterial(l);
-		//_ASSERT(elem->GetMappingMode() == FbxGeometryElement::eAllSame);
+		_ASSERT_EXPR(elem->GetMappingMode() == FbxGeometryElement::eAllSame, L"Material mapping must be all same.");
 
-		elem->GetName();
+		Log::Print("Material name is '%s'.", elem->GetName());
+
 	}
 
 
 	DisplayMaterialMapping(lMesh);
 	Log::Print("--------------------------------------------------------------------------------------\n");
-	mesh->SetMaterial(DisplayMaterial(renderDevice, lMesh));
+	//mesh->SetMaterial(DisplayMaterial(renderDevice, lMesh));
 	Log::Print("--------------------------------------------------------------------------------------\n");
 	DisplayMaterialConnections(lMesh);
 	Log::Print("--------------------------------------------------------------------------------------\n");
@@ -287,7 +285,7 @@ std::shared_ptr<IMesh> DisplayMesh(CFBX * FBX, FbxNode* pNode)
 }
 
 
-void DisplayTextureNames(fbxsdk::FbxProperty &pProperty, FbxString& pConnectionString)
+/*void DisplayTextureNames(fbxsdk::FbxProperty &pProperty, FbxString& pConnectionString)
 {
 	int lLayeredTextureCount = pProperty.GetSrcObjectCount<FbxLayeredTexture>();
 	if (lLayeredTextureCount > 0)
@@ -339,89 +337,7 @@ void DisplayTextureNames(fbxsdk::FbxProperty &pProperty, FbxString& pConnectionS
 			pConnectionString += " |";
 		}
 	}
-}
-
-void DisplayMaterialTextureConnections(FbxSurfaceMaterial* pMaterial, char * header, int pMatId, int l)
-{
-	if (!pMaterial)
-		return;
-
-	FbxString lConnectionString = "            Material %d -- ";
-	//Show all the textures
-
-	FbxProperty lProperty;
-	//Diffuse Textures
-	lProperty = pMaterial->FindProperty(FbxSurfaceMaterial::sDiffuse);
-	DisplayTextureNames(lProperty, lConnectionString);
-
-	//DiffuseFactor Textures
-	lProperty = pMaterial->FindProperty(FbxSurfaceMaterial::sDiffuseFactor);
-	DisplayTextureNames(lProperty, lConnectionString);
-
-	//Emissive Textures
-	lProperty = pMaterial->FindProperty(FbxSurfaceMaterial::sEmissive);
-	DisplayTextureNames(lProperty, lConnectionString);
-
-	//EmissiveFactor Textures
-	lProperty = pMaterial->FindProperty(FbxSurfaceMaterial::sEmissiveFactor);
-	DisplayTextureNames(lProperty, lConnectionString);
-
-
-	//Ambient Textures
-	lProperty = pMaterial->FindProperty(FbxSurfaceMaterial::sAmbient);
-	DisplayTextureNames(lProperty, lConnectionString);
-
-	//AmbientFactor Textures
-	lProperty = pMaterial->FindProperty(FbxSurfaceMaterial::sAmbientFactor);
-	DisplayTextureNames(lProperty, lConnectionString);
-
-	//Specular Textures
-	lProperty = pMaterial->FindProperty(FbxSurfaceMaterial::sSpecular);
-	DisplayTextureNames(lProperty, lConnectionString);
-
-	//SpecularFactor Textures
-	lProperty = pMaterial->FindProperty(FbxSurfaceMaterial::sSpecularFactor);
-	DisplayTextureNames(lProperty, lConnectionString);
-
-	//Shininess Textures
-	lProperty = pMaterial->FindProperty(FbxSurfaceMaterial::sShininess);
-	DisplayTextureNames(lProperty, lConnectionString);
-
-	//Bump Textures
-	lProperty = pMaterial->FindProperty(FbxSurfaceMaterial::sBump);
-	DisplayTextureNames(lProperty, lConnectionString);
-
-	//Normal Map Textures
-	lProperty = pMaterial->FindProperty(FbxSurfaceMaterial::sNormalMap);
-	DisplayTextureNames(lProperty, lConnectionString);
-
-	//Transparent Textures
-	lProperty = pMaterial->FindProperty(FbxSurfaceMaterial::sTransparentColor);
-	DisplayTextureNames(lProperty, lConnectionString);
-
-	//TransparencyFactor Textures
-	lProperty = pMaterial->FindProperty(FbxSurfaceMaterial::sTransparencyFactor);
-	DisplayTextureNames(lProperty, lConnectionString);
-
-	//Reflection Textures
-	lProperty = pMaterial->FindProperty(FbxSurfaceMaterial::sReflection);
-	DisplayTextureNames(lProperty, lConnectionString);
-
-	//ReflectionFactor Textures
-	lProperty = pMaterial->FindProperty(FbxSurfaceMaterial::sReflectionFactor);
-	DisplayTextureNames(lProperty, lConnectionString);
-
-	//Update header with material info
-	bool lStringOverflow = (lConnectionString.GetLen() + 10 >= MAT_HEADER_LENGTH); // allow for string length and some padding for "%d"
-	if (lStringOverflow)
-	{
-		// Truncate string!
-		lConnectionString = lConnectionString.Left(MAT_HEADER_LENGTH - 10);
-		lConnectionString = lConnectionString + "...";
-	}
-	FBXSDK_sprintf(header, MAT_HEADER_LENGTH, lConnectionString.Buffer(), pMatId, l);
-	DisplayString(header);
-}
+}*/
 
 void DisplayMaterialConnections(FbxMesh* pMesh)
 {
@@ -451,14 +367,17 @@ void DisplayMaterialConnections(FbxMesh* pMesh)
 		{
 
 			FbxGeometryElementMaterial* lMaterialElement = pMesh->GetElementMaterial(l);
+
 			if (lMaterialElement->GetMappingMode() == FbxGeometryElement::eAllSame)
 			{
-				FbxSurfaceMaterial* lMaterial = pMesh->GetNode()->GetMaterial(lMaterialElement->GetIndexArray().GetAt(0));
 				int lMatId = lMaterialElement->GetIndexArray().GetAt(0);
+
+				FbxSurfaceMaterial* lMaterial = pMesh->GetNode()->GetMaterial(lMatId);
+				
 				if (lMatId >= 0)
 				{
 					DisplayInt("        All polygons share the same material in mesh ", l);
-					DisplayMaterialTextureConnections(lMaterial, header, lMatId, l);
+					//DisplayMaterialTextureConnections(lMaterial, header, lMatId, l);
 				}
 			}
 		}
@@ -471,14 +390,6 @@ void DisplayMaterialConnections(FbxMesh* pMesh)
 	//For eByPolygon mapping type, just out the material and texture mapping info once
 	else
 	{
-		int lPolyGroupCnt = pMesh->GetElementPolygonGroupCount();
-		Log::Warn("FBX: Group cnt = %d", lPolygonCount);
-
-		for (int i = 0; i < lPolyGroupCnt; i++)
-		{
-			fbxsdk::FbxGeometryElementPolygonGroup* group = pMesh->GetElementPolygonGroup(i);
-		}
-
 		/*for (i = 0; i < lPolygonCount; i++)
 		{
 			DisplayInt("        Polygon ", i);
@@ -508,7 +419,8 @@ std::shared_ptr<IMaterial> DisplayMaterialMapping(FbxMesh* pMesh)
 
 	int lMtrlCount = 0;
 	FbxNode* lNode = NULL;
-	if (pMesh) {
+	if (pMesh) 
+	{
 		lNode = pMesh->GetNode();
 		if (lNode)
 			lMtrlCount = lNode->GetMaterialCount();

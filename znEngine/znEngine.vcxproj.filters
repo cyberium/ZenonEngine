@@ -82,6 +82,12 @@
     <Filter Include="Models\FBX\Nodes">
       <UniqueIdentifier>{39983375-6bcc-4192-b34b-71d2755d4e9a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Models\FBX\Helper classes">
+      <UniqueIdentifier>{0472624f-3f9e-441e-a2c0-9ec808927899}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Models\FBX\Wrapped">
+      <UniqueIdentifier>{015b3eca-37c5-401b-b436-b19e03624e14}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -255,13 +261,7 @@
     <ClCompile Include="Models\FBX\FBXDisplayCommon.cpp">
       <Filter>Models\FBX</Filter>
     </ClCompile>
-    <ClCompile Include="Models\FBX\FBXDisplayHierarchy.cpp">
-      <Filter>Models\FBX</Filter>
-    </ClCompile>
     <ClCompile Include="Models\FBX\FBXDisplayLink.cpp">
-      <Filter>Models\FBX</Filter>
-    </ClCompile>
-    <ClCompile Include="Models\FBX\FBXDisplayMaterial.cpp">
       <Filter>Models\FBX</Filter>
     </ClCompile>
     <ClCompile Include="Models\FBX\FBXDisplayMesh.cpp">
@@ -270,23 +270,26 @@
     <ClCompile Include="Models\FBX\FBXDisplayShape.cpp">
       <Filter>Models\FBX</Filter>
     </ClCompile>
-    <ClCompile Include="Models\FBX\FBXDisplayTexture.cpp">
-      <Filter>Models\FBX</Filter>
-    </ClCompile>
-    <ClCompile Include="Models\FBX\FBXHelpers.cpp">
-      <Filter>Models\FBX</Filter>
-    </ClCompile>
-    <ClCompile Include="Models\FBX\FBXMaterial.cpp">
-      <Filter>Models\FBX\Nodes</Filter>
-    </ClCompile>
     <ClCompile Include="Models\FBX\FBXMaterialPass.cpp">
       <Filter>Models\FBX\Nodes</Filter>
     </ClCompile>
-    <ClCompile Include="Models\FBX\FBXSceneNode.cpp">
-      <Filter>Models\FBX\Nodes</Filter>
+    <ClCompile Include="Models\FBX\FBXStream.cpp">
+      <Filter>Models\FBX\Helper classes</Filter>
     </ClCompile>
     <ClCompile Include="Models\FBX\FBXManager.cpp">
-      <Filter>Models\FBX</Filter>
+      <Filter>Models\FBX\Wrapped</Filter>
+    </ClCompile>
+    <ClCompile Include="Models\FBX\FBXScene.cpp">
+      <Filter>Models\FBX\Wrapped</Filter>
+    </ClCompile>
+    <ClCompile Include="Models\FBX\FBXMesh.cpp">
+      <Filter>Models\FBX\Wrapped</Filter>
+    </ClCompile>
+    <ClCompile Include="Models\FBX\FBXSceneNode.cpp">
+      <Filter>Models\FBX\Wrapped</Filter>
+    </ClCompile>
+    <ClCompile Include="Models\FBX\FBXMaterial.cpp">
+      <Filter>Models\FBX\Wrapped</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -464,13 +467,7 @@
     <ClInclude Include="Models\FBX\FBXDisplayCommon.h">
       <Filter>Models\FBX</Filter>
     </ClInclude>
-    <ClInclude Include="Models\FBX\FBXDisplayHierarchy.h">
-      <Filter>Models\FBX</Filter>
-    </ClInclude>
     <ClInclude Include="Models\FBX\FBXDisplayLink.h">
-      <Filter>Models\FBX</Filter>
-    </ClInclude>
-    <ClInclude Include="Models\FBX\FBXDisplayMaterial.h">
       <Filter>Models\FBX</Filter>
     </ClInclude>
     <ClInclude Include="Models\FBX\FBXDisplayMesh.h">
@@ -479,23 +476,26 @@
     <ClInclude Include="Models\FBX\FBXDisplayShape.h">
       <Filter>Models\FBX</Filter>
     </ClInclude>
-    <ClInclude Include="Models\FBX\FBXDisplayTexture.h">
-      <Filter>Models\FBX</Filter>
-    </ClInclude>
-    <ClInclude Include="Models\FBX\FBXHelpers.h">
-      <Filter>Models\FBX</Filter>
-    </ClInclude>
-    <ClInclude Include="Models\FBX\FBXMaterial.h">
-      <Filter>Models\FBX\Nodes</Filter>
-    </ClInclude>
     <ClInclude Include="Models\FBX\FBXMaterialPass.h">
       <Filter>Models\FBX\Nodes</Filter>
     </ClInclude>
-    <ClInclude Include="Models\FBX\FBXSceneNode.h">
-      <Filter>Models\FBX\Nodes</Filter>
+    <ClInclude Include="Models\FBX\FBXStream.h">
+      <Filter>Models\FBX\Helper classes</Filter>
     </ClInclude>
     <ClInclude Include="Models\FBX\FBXManager.h">
-      <Filter>Models\FBX</Filter>
+      <Filter>Models\FBX\Wrapped</Filter>
+    </ClInclude>
+    <ClInclude Include="Models\FBX\FBXScene.h">
+      <Filter>Models\FBX\Wrapped</Filter>
+    </ClInclude>
+    <ClInclude Include="Models\FBX\FBXMesh.h">
+      <Filter>Models\FBX\Wrapped</Filter>
+    </ClInclude>
+    <ClInclude Include="Models\FBX\FBXSceneNode.h">
+      <Filter>Models\FBX\Wrapped</Filter>
+    </ClInclude>
+    <ClInclude Include="Models\FBX\FBXMaterial.h">
+      <Filter>Models\FBX\Wrapped</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

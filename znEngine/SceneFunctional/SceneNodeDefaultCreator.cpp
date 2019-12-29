@@ -62,7 +62,8 @@ std::shared_ptr<ISceneNode> CSceneNodeDefaultCreator::CreateSceneNode(std::weak_
 	}
 	else if (Index == 3)
 	{
-		return Parent.lock()->CreateSceneNode<CFBXSceneNode>("D:\\_programming\\ZenonEngine\\gamedata\\crytek-sponza\\sponza_nobanner.obj");
+		return Parent.lock()->CreateSceneNode<CFBXSceneNode>("Sponza\\Sponza.fbx");
+		//return Parent.lock()->CreateSceneNode<CFBXSceneNode>("crytek-sponza\\sponza_nobanner.obj");
 	}
 
 	throw CException("CSceneNodeDefaultCreator: CreateSceneNode(%d) is out of bounds. Count = %d", Index, GetSceneNodesCount());

@@ -5,8 +5,8 @@
 
 // Additional
 #include "FBXManager.h"
-#include "FBXHelpers.h"
-#include "FBXDisplayHierarchy.h"
+#include "FBXScene.h"
+
 #include "FBXDisplayMesh.h"
 
 bool DisplayContentNode(CFBX * FBX, FbxNode* pNode);
@@ -102,15 +102,21 @@ CFBX::CFBX(const std::string& SceneName, std::shared_ptr<ISceneNode> ParentNode)
 {
 	m_BaseManager = std::dynamic_pointer_cast<IBaseManagerHolder>(m_Node->GetScene())->GetBaseManager();
 	
-	CFBXManager fbxManager;
+	CFBXManager fbxManager(m_BaseManager);
 
-	// Prepare the FBX SDK.
-	FbxScene* lScene = nullptr;
-	bool lResult = fbxManager.LoadScene(lScene, SceneName.c_str());
+	std::shared_ptr<CFBXScene> fbxScene = fbxManager.CreateScene("SomeSceneName");
+	fbxScene->LoadFromFile(m_BaseManager->GetManager<IFilesManager>()->Open(SceneName));
+	fbxScene->Load();
 
-	DisplayMetaData(lScene);
-	DisplayHierarchy(lScene);
-	DisplayContentScene(this, lScene);
+
+	for (const auto& it : fbxScene->GetMeshes())
+		m_Node->GetComponent<IMeshComponent3D>()->AddMesh(it);
+
+	//std::shared_ptr<IFile> savedFile = std::make_shared<CFile>("Sponza\\SponzaConv.fbx");
+	//fbxScene->SaveToFile(savedFile);
+	//m_BaseManager->GetManager<IFilesManager>()->GetFilesStorage("ZenonGamedata")->SaveFile(savedFile);
+
+	//DisplayContentScene(this, fbxScene->GetNativeScene());
 }
 
 CFBX::~CFBX()

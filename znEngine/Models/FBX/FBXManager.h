@@ -2,17 +2,17 @@
 
 #include <fbxsdk.h>
 
+#include "FBXScene.h"
+
 class CFBXManager
 {
 public:
-	CFBXManager();
+	CFBXManager(const IBaseManager* BaseManager);
 	virtual ~CFBXManager();
 
-	fbxsdk::FbxScene* CreateScene(std::string SceneName);
-	bool LoadScene(fbxsdk::FbxScene*& pScene, const char* pFilename);
-	bool SaveScene(fbxsdk::FbxScene*& pScene, const char* pFilename, int pFileFormat = -1, bool pEmbedMedia = false);
-	
+	std::shared_ptr<CFBXScene> CreateScene(std::string SceneName);
 
 private:
 	fbxsdk::FbxManager* m_SdkManager;
+	const IBaseManager* m_BaseManager;
 };

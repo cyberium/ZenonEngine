@@ -325,6 +325,7 @@ bool TextureDX11::LoadTexture2D(const std::string& fileName)
 	if (dib == nullptr || FreeImage_HasPixels(dib) == FALSE)
 	{
 		//_ASSERT_EXPR(false, "Failed to load image.");
+		Log::Error("TextureDX11: Error while loading '%s': Unknown format.", fileName.c_str());
 		return false;
 	}
 
