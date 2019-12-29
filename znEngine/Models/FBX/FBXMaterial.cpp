@@ -14,7 +14,6 @@ CFBXMaterial::CFBXMaterial(std::shared_ptr<IRenderDevice> RenderDevice)
 	std::shared_ptr<ISamplerState> g_Sampler = RenderDevice->CreateSamplerState();
 	g_Sampler->SetFilter(ISamplerState::MinFilter::MinLinear, ISamplerState::MagFilter::MagLinear, ISamplerState::MipFilter::MipLinear);
 	g_Sampler->SetWrapMode(ISamplerState::WrapMode::Repeat, ISamplerState::WrapMode::Repeat);
-
 	SetSampler(0, g_Sampler);
 }
 

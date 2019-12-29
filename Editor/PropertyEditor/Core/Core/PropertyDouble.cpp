@@ -32,13 +32,3 @@ bool QtnPropertyDoubleBase::toStrImpl(QString& str) const
     str = QString::number(value(), 'g', 10);
     return true;
 }
-
-bool QtnPropertyDoubleBase::fromVariantImpl(const QVariant& var)
-{
-    bool ok = false;
-    ValueType value = var.toDouble(&ok);
-    if (!ok)
-        return false;
-
-    return setValue(value);
-}

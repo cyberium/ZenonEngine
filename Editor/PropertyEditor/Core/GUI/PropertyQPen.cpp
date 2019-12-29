@@ -199,19 +199,3 @@ bool QtnPropertyQPenBase::toStrImpl(QString& str) const
 {
     return strFromPen(value(), str);
 }
-
-bool QtnPropertyQPenBase::fromVariantImpl(const QVariant& var)
-{
-    if (!var.canConvert<QPen>())
-        return false;
-
-    setValue(var.value<QPen>());
-    return true;
-}
-
-bool QtnPropertyQPenBase::toVariantImpl(QVariant& var) const
-{
-    QPen pen = value();
-    var = pen;
-    return true;
-}

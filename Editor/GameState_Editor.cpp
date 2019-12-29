@@ -117,6 +117,7 @@ void CGameState_Editor::Load3D()
 	sceneNodePlane->SetScale(vec3(1000.0f, 1.0f, 1000.0f));
 	sceneNodePlane->GetComponent<IMeshComponent3D>()->AddMesh(meshPlane);
 
+
 	//---------------------------
 
 	const size_t iterCnt = 5;

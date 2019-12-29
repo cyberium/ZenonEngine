@@ -5,6 +5,7 @@
 
 // Additional
 #include "UI/UIText.h"
+#include "Models/FBX/FBXSceneNode.h"
 
 CSceneNodeDefaultCreator::CSceneNodeDefaultCreator(IBaseManager* BaseManager)
 	: m_BaseManager(BaseManager)
@@ -20,7 +21,7 @@ CSceneNodeDefaultCreator::~CSceneNodeDefaultCreator()
 //
 size_t CSceneNodeDefaultCreator::GetSceneNodesCount() const
 {
-	return 3;
+	return 4;
 }
 
 std::string CSceneNodeDefaultCreator::GetSceneNodeTypeName(size_t Index) const
@@ -37,8 +38,12 @@ std::string CSceneNodeDefaultCreator::GetSceneNodeTypeName(size_t Index) const
 	{
 		return "TextUI";
 	}
+	else if (Index == 3)
+	{
+		return "FBXSceneNode";
+	}
 
-	return nullptr;
+	throw CException("CSceneNodeDefaultCreator: GetSceneNodeTypeName(%d) is out of bounds. Count = %d", Index, GetSceneNodesCount());
 }
 
 std::shared_ptr<ISceneNode> CSceneNodeDefaultCreator::CreateSceneNode(std::weak_ptr<ISceneNode> Parent, size_t Index) const
@@ -51,10 +56,14 @@ std::shared_ptr<ISceneNode> CSceneNodeDefaultCreator::CreateSceneNode(std::weak_
 	{
 		return Parent.lock()->CreateSceneNode<CUIBaseNode>();
 	}
-	else if(Index == 2)
+	else if (Index == 2)
 	{
 		return Parent.lock()->CreateSceneNode<CUITextNode>();
 	}
+	else if (Index == 3)
+	{
+		return Parent.lock()->CreateSceneNode<CFBXSceneNode>("D:\\_programming\\ZenonEngine\\gamedata\\crytek-sponza\\sponza_nobanner.obj");
+	}
 
-	return nullptr;
+	throw CException("CSceneNodeDefaultCreator: CreateSceneNode(%d) is out of bounds. Count = %d", Index, GetSceneNodesCount());
 }

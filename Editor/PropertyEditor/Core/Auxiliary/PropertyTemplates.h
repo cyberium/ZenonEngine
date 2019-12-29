@@ -76,22 +76,6 @@ protected:
     virtual bool isValueAcceptedImpl(ValueType valueToAccept) { Q_UNUSED(valueToAccept); return true; }
     virtual bool isValueEqualImpl(ValueType valueToCompare) { return EqPred()(valueToCompare, value()); }
 
-    // variant conversion implementation
-    bool fromVariantImpl(const QVariant& var) override
-    {
-        if (var.canConvert<ValueType>())
-            return setValue(var.value<ValueType>());
-        else
-            return false;
-    }
-
-    bool toVariantImpl(QVariant& var) const override
-    {
-        var.setValue<ValueType>(value());
-        return var.isValid();
-    }
-
-
 private:
     QtnSinglePropertyBase(const QtnSinglePropertyBase&) Q_DECL_EQ_DELETE;
 };

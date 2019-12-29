@@ -35,9 +35,6 @@ protected:
     bool fromStrImpl(const QString& str) override;
     bool toStrImpl(QString& str) const override;
 
-    // variant conversion implementation
-    bool fromVariantImpl(const QVariant& var) override;
-
     P_PROPERTY_DECL_MEMBER_OPERATORS(QtnPropertyDoubleBase)
 };
 

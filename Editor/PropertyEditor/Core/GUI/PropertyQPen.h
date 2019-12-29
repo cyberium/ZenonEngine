@@ -88,10 +88,6 @@ protected:
     bool fromStrImpl(const QString& str) override;
     bool toStrImpl(QString& str) const override;
 
-    // variant conversion implementation
-    bool fromVariantImpl(const QVariant& var) override;
-    bool toVariantImpl(QVariant& var) const override;
-
     P_PROPERTY_DECL_MEMBER_OPERATORS(QtnPropertyQPenBase)
 };
 

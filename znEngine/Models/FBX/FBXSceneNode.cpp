@@ -6,9 +6,8 @@
 // Additional
 #include "FBX.h"
 
-CFBXSceneNode::CFBXSceneNode(const std::string& SceneFile, std::shared_ptr<IMaterial> DefaultMaterial)
+CFBXSceneNode::CFBXSceneNode(const std::string& SceneFile)
 	: m_SceneFilename(SceneFile)
-	, m_DefaultMaterial(DefaultMaterial)
 {
 }
 

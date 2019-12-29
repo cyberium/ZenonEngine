@@ -4,13 +4,14 @@
 #include "FBX.h"
 
 // Additional
+#include "FBXManager.h"
 #include "FBXHelpers.h"
 #include "FBXDisplayHierarchy.h"
 #include "FBXDisplayMesh.h"
 
-bool DisplayContentNode(CFBX * FBX, FbxManager* FBXManager, FbxNode* pNode);
+bool DisplayContentNode(CFBX * FBX, FbxNode* pNode);
 
-void DisplayContentScene(CFBX * FBX, FbxManager* FBXManager, FbxScene* pScene)
+void DisplayContentScene(CFBX * FBX, FbxScene* pScene)
 {
 	int i;
 	FbxNode* lNode = pScene->GetRootNode();
@@ -19,13 +20,13 @@ void DisplayContentScene(CFBX * FBX, FbxManager* FBXManager, FbxScene* pScene)
 	{
 		for (i = 0; i < lNode->GetChildCount(); i++)
 		{
-			if (DisplayContentNode(FBX, FBXManager, lNode->GetChild(i)))
+			if (DisplayContentNode(FBX, lNode->GetChild(i)))
 				return;
 		}
 	}
 }
 
-bool DisplayContentNode(CFBX * FBX, FbxManager* FBXManager, FbxNode* pNode)
+bool DisplayContentNode(CFBX * FBX, FbxNode* pNode)
 {
 	FbxNodeAttribute::EType lAttributeType;
 	int i;
@@ -52,7 +53,7 @@ bool DisplayContentNode(CFBX * FBX, FbxManager* FBXManager, FbxNode* pNode)
 
 		case FbxNodeAttribute::eMesh:
 		{
-			std::shared_ptr<IMesh> m = DisplayMesh(FBX, FBXManager, pNode);
+			std::shared_ptr<IMesh> m = DisplayMesh(FBX, pNode);
 
 			FBX->GetSceneNode()->GetComponent<IMeshComponent3D>()->AddMesh(m);
 
@@ -90,7 +91,7 @@ bool DisplayContentNode(CFBX * FBX, FbxManager* FBXManager, FbxNode* pNode)
 
 	for (i = 0; i < pNode->GetChildCount(); i++)
 	{
-		DisplayContentNode(FBX, FBXManager, pNode->GetChild(i));
+		DisplayContentNode(FBX, pNode->GetChild(i));
 	}
 
 	return false;
@@ -100,26 +101,16 @@ CFBX::CFBX(const std::string& SceneName, std::shared_ptr<ISceneNode> ParentNode)
 	: m_Node(ParentNode)
 {
 	m_BaseManager = std::dynamic_pointer_cast<IBaseManagerHolder>(m_Node->GetScene())->GetBaseManager();
-
-	FbxManager* lSdkManager = NULL;
-	FbxScene* lScene = NULL;
-	bool lResult;
+	
+	CFBXManager fbxManager;
 
 	// Prepare the FBX SDK.
-	InitializeSdkObjects(lSdkManager, lScene);
-	// Load the scene.
-
-	lResult = LoadScene(lSdkManager, lScene, SceneName.c_str());
-
-	FbxGeometryConverter converter(lSdkManager);
-	if (!converter.Triangulate(lScene, true))
-	{
-		Log::Error("Error while triangulate!");
-	}
+	FbxScene* lScene = nullptr;
+	bool lResult = fbxManager.LoadScene(lScene, SceneName.c_str());
 
 	DisplayMetaData(lScene);
 	DisplayHierarchy(lScene);
-	DisplayContentScene(this, lSdkManager, lScene);
+	DisplayContentScene(this, lScene);
 }
 
 CFBX::~CFBX()

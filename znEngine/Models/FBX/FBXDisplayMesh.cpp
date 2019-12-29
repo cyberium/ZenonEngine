@@ -25,7 +25,7 @@ void DisplayTextureNames(FbxProperty &pProperty, FbxString& pConnectionString);
 void DisplayMaterialConnections(FbxMesh* pMesh);
 void DisplayMaterialTextureConnections(FbxSurfaceMaterial* pMaterial, char * header, int pMatId, int l);
 
-std::shared_ptr<IMesh> DisplayMesh(CFBX * FBX, FbxManager* Manager, FbxNode* pNode)
+std::shared_ptr<IMesh> DisplayMesh(CFBX * FBX, FbxNode* pNode)
 {
 	FbxMesh* lMesh = (FbxMesh*)pNode->GetNodeAttribute();
 	Log::Info("FBX: Mesh name is '%s'", pNode->GetName());
@@ -65,17 +65,21 @@ std::shared_ptr<IMesh> DisplayMesh(CFBX * FBX, FbxManager* Manager, FbxNode* pNo
 				case FbxGeometryElement::eByControlPoint:
 					switch (leUV->GetReferenceMode())
 					{
-					case FbxGeometryElement::eDirect:
-						uvs.push_back(glm::vec2(leUV->GetDirectArray().GetAt(lControlPointIndex)[0], leUV->GetDirectArray().GetAt(lControlPointIndex)[1]));
+						case FbxGeometryElement::eDirect:
+						{
+							glm::vec2 uv = glm::vec2(leUV->GetDirectArray().GetAt(lControlPointIndex)[0], leUV->GetDirectArray().GetAt(lControlPointIndex)[1]);
+							uvs.push_back(uv);
+						}
 						break;
-					case FbxGeometryElement::eIndexToDirect:
-					{
-						int id = leUV->GetIndexArray().GetAt(lControlPointIndex);
-						uvs.push_back(glm::vec2(leUV->GetDirectArray().GetAt(id)[0], leUV->GetDirectArray().GetAt(id)[1]));
-					}
-					break;
-					default:
-						break; // other reference modes not shown here!
+						case FbxGeometryElement::eIndexToDirect:
+						{
+							int id = leUV->GetIndexArray().GetAt(lControlPointIndex);
+							glm::vec2 uv = glm::vec2(leUV->GetDirectArray().GetAt(id)[0], leUV->GetDirectArray().GetAt(id)[1]);
+							uvs.push_back(uv);
+						}
+						break;
+						default:
+							break; // other reference modes not shown here!
 					}
 					break;
 
@@ -84,14 +88,14 @@ std::shared_ptr<IMesh> DisplayMesh(CFBX * FBX, FbxManager* Manager, FbxNode* pNo
 					int lTextureUVIndex = lMesh->GetTextureUVIndex(i, j);
 					switch (leUV->GetReferenceMode())
 					{
-					case FbxGeometryElement::eDirect:
-					case FbxGeometryElement::eIndexToDirect:
-					{
-						uvs.push_back(glm::vec2(leUV->GetDirectArray().GetAt(lTextureUVIndex)[0], leUV->GetDirectArray().GetAt(lTextureUVIndex)[1]));
-					}
-					break;
-					default:
-						break; // other reference modes not shown here!
+						case FbxGeometryElement::eDirect:
+						case FbxGeometryElement::eIndexToDirect:
+						{
+							uvs.push_back(glm::vec2(leUV->GetDirectArray().GetAt(lTextureUVIndex)[0], leUV->GetDirectArray().GetAt(lTextureUVIndex)[1]));
+						}
+						break;
+						default:
+							break; // other reference modes not shown here!
 					}
 				}
 				break;

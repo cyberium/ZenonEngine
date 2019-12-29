@@ -195,7 +195,7 @@ void CSceneNodeCamera::DoMoveRight(float Value)
 void CSceneNodeCamera::SetTranslate(vec3 Translate)
 {
 	m_Translate = Translate;
-	m_TranslateProperty->RaiseSetValueChangedCallback();
+	m_TranslateProperty->RaiseValueChangedCallback();
 
 	m_ViewDirty = true;
 }
@@ -213,7 +213,7 @@ void CSceneNodeCamera::SetYaw(float Yaw)
 	if (m_Yaw_X < 0.0f)
 		m_Yaw_X += 360.0f;
 
-	m_Yaw_XProperty->RaiseSetValueChangedCallback();
+	m_Yaw_XProperty->RaiseValueChangedCallback();
 
 	EulerAnglesToDirectionVector();
 
@@ -233,7 +233,7 @@ void CSceneNodeCamera::SetPitch(float Pitch)
 	if (m_Pitch_Y < cPitchBottomBorder)
 		m_Pitch_Y = cPitchBottomBorder;
 
-	m_Pitch_YProperty->RaiseSetValueChangedCallback();
+	m_Pitch_YProperty->RaiseValueChangedCallback();
 
 	EulerAnglesToDirectionVector();
 

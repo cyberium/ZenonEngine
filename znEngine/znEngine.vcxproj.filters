@@ -76,6 +76,12 @@
     <Filter Include="Models">
       <UniqueIdentifier>{6df4feff-bf00-48ce-a361-e73bc7f7ca61}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Models\FBX">
+      <UniqueIdentifier>{58e4a1aa-f1f6-4806-9b25-b60c20a1fa5c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Models\FBX\Nodes">
+      <UniqueIdentifier>{39983375-6bcc-4192-b34b-71d2755d4e9a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -233,6 +239,54 @@
     </ClCompile>
     <ClCompile Include="Passes\OBJMaterialPass.cpp">
       <Filter>Passes\3D</Filter>
+    </ClCompile>
+    <ClCompile Include="Models\AssimpLoader.cpp">
+      <Filter>Models</Filter>
+    </ClCompile>
+    <ClCompile Include="Materials\AssimpMaterial.cpp">
+      <Filter>Materials</Filter>
+    </ClCompile>
+    <ClCompile Include="Models\FBX\FBX.cpp">
+      <Filter>Models\FBX</Filter>
+    </ClCompile>
+    <ClCompile Include="Models\FBX\FBXDisplayCache.cpp">
+      <Filter>Models\FBX</Filter>
+    </ClCompile>
+    <ClCompile Include="Models\FBX\FBXDisplayCommon.cpp">
+      <Filter>Models\FBX</Filter>
+    </ClCompile>
+    <ClCompile Include="Models\FBX\FBXDisplayHierarchy.cpp">
+      <Filter>Models\FBX</Filter>
+    </ClCompile>
+    <ClCompile Include="Models\FBX\FBXDisplayLink.cpp">
+      <Filter>Models\FBX</Filter>
+    </ClCompile>
+    <ClCompile Include="Models\FBX\FBXDisplayMaterial.cpp">
+      <Filter>Models\FBX</Filter>
+    </ClCompile>
+    <ClCompile Include="Models\FBX\FBXDisplayMesh.cpp">
+      <Filter>Models\FBX</Filter>
+    </ClCompile>
+    <ClCompile Include="Models\FBX\FBXDisplayShape.cpp">
+      <Filter>Models\FBX</Filter>
+    </ClCompile>
+    <ClCompile Include="Models\FBX\FBXDisplayTexture.cpp">
+      <Filter>Models\FBX</Filter>
+    </ClCompile>
+    <ClCompile Include="Models\FBX\FBXHelpers.cpp">
+      <Filter>Models\FBX</Filter>
+    </ClCompile>
+    <ClCompile Include="Models\FBX\FBXMaterial.cpp">
+      <Filter>Models\FBX\Nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="Models\FBX\FBXMaterialPass.cpp">
+      <Filter>Models\FBX\Nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="Models\FBX\FBXSceneNode.cpp">
+      <Filter>Models\FBX\Nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="Models\FBX\FBXManager.cpp">
+      <Filter>Models\FBX</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -395,6 +449,54 @@
     <ClInclude Include="Passes\OBJMaterialPass.h">
       <Filter>Passes\3D</Filter>
     </ClInclude>
+    <ClInclude Include="Models\AssimpLoader.h">
+      <Filter>Models</Filter>
+    </ClInclude>
+    <ClInclude Include="Materials\AssimpMaterial.h">
+      <Filter>Materials</Filter>
+    </ClInclude>
+    <ClInclude Include="Models\FBX\FBX.h">
+      <Filter>Models\FBX</Filter>
+    </ClInclude>
+    <ClInclude Include="Models\FBX\FBXDisplayCache.h">
+      <Filter>Models\FBX</Filter>
+    </ClInclude>
+    <ClInclude Include="Models\FBX\FBXDisplayCommon.h">
+      <Filter>Models\FBX</Filter>
+    </ClInclude>
+    <ClInclude Include="Models\FBX\FBXDisplayHierarchy.h">
+      <Filter>Models\FBX</Filter>
+    </ClInclude>
+    <ClInclude Include="Models\FBX\FBXDisplayLink.h">
+      <Filter>Models\FBX</Filter>
+    </ClInclude>
+    <ClInclude Include="Models\FBX\FBXDisplayMaterial.h">
+      <Filter>Models\FBX</Filter>
+    </ClInclude>
+    <ClInclude Include="Models\FBX\FBXDisplayMesh.h">
+      <Filter>Models\FBX</Filter>
+    </ClInclude>
+    <ClInclude Include="Models\FBX\FBXDisplayShape.h">
+      <Filter>Models\FBX</Filter>
+    </ClInclude>
+    <ClInclude Include="Models\FBX\FBXDisplayTexture.h">
+      <Filter>Models\FBX</Filter>
+    </ClInclude>
+    <ClInclude Include="Models\FBX\FBXHelpers.h">
+      <Filter>Models\FBX</Filter>
+    </ClInclude>
+    <ClInclude Include="Models\FBX\FBXMaterial.h">
+      <Filter>Models\FBX\Nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="Models\FBX\FBXMaterialPass.h">
+      <Filter>Models\FBX\Nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="Models\FBX\FBXSceneNode.h">
+      <Filter>Models\FBX\Nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="Models\FBX\FBXManager.h">
+      <Filter>Models\FBX</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="znEngine.rc">
@@ -462,7 +564,11 @@
     <Text Include="Resources\shaders_OGL\3D\Textured.ps">
       <Filter>Resources\Shaders_OGL\3D</Filter>
     </Text>
-    <Text Include="Resources\shaders_D3D\3D\OBJModels.hlsl" />
+    <Text Include="Resources\shaders_D3D\3D\OBJModels.hlsl">
+      <Filter>Resources\Shaders_D3D\3D</Filter>
+    </Text>
+    <Text Include="Resources\shaders_D3D\3D\AssimpModel.hlsl" />
+    <Text Include="Resources\shaders_D3D\Light.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Resources\Textures\default.png">

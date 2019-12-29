@@ -1,109 +1,12 @@
 #ifndef NUM_LIGHTS
 #pragma message( "NUM_LIGHTS undefined. Default to 8.")
-#define NUM_LIGHTS 8 // should be defined by the application.
+#define NUM_LIGHTS 8
 #endif
 
-#define POINT_LIGHT 0
-#define SPOT_LIGHT 1
-#define DIRECTIONAL_LIGHT 2
 
-struct Material
-{
-	float4  GlobalAmbient;
-	//-------------------------- ( 16 bytes )
-	float4  AmbientColor;
-	//-------------------------- ( 16 bytes )
-	float4  EmissiveColor;
-	//-------------------------- ( 16 bytes )
-	float4  DiffuseColor;
-	//-------------------------- ( 16 bytes )
-	float4  SpecularColor;
-	//-------------------------- ( 16 bytes )
-	// Reflective value.
-	float4  Reflectance;
-	//-------------------------- ( 16 bytes )
-	float   Opacity;
-	float   SpecularPower;
-	// For transparent materials, IOR > 0.
-	float   IndexOfRefraction;
-	bool    HasAmbientTexture;
-	//-------------------------- ( 16 bytes )
-	bool    HasEmissiveTexture;
-	bool    HasDiffuseTexture;
-	bool    HasSpecularTexture;
-	bool    HasSpecularPowerTexture;
-	//-------------------------- ( 16 bytes )
-	bool    HasNormalTexture;
-	bool    HasBumpTexture;
-	bool    HasOpacityTexture;
-	float   BumpIntensity;
-	//-------------------------- ( 16 bytes )
-	float   SpecularScale;
-	float   AlphaThreshold;
-	float2  Padding;
-	//--------------------------- ( 16 bytes )
-};  //--------------------------- ( 16 * 10 = 160 bytes )
+#include "IDB_SHADER_MATERIAL"
+#include "IDB_SHADER_LIGHT"
 
-struct Light
-{
-	/**
-	* Position for point and spot lights (World space).
-	*/
-	float4   PositionWS;
-	//--------------------------------------------------------------( 16 bytes )
-	/**
-	* Direction for spot and directional lights (World space).
-	*/
-	float4   DirectionWS;
-	//--------------------------------------------------------------( 16 bytes )
-	/**
-	* Position for point and spot lights (View space).
-	*/
-	float4   PositionVS;
-	//--------------------------------------------------------------( 16 bytes )
-	/**
-	* Direction for spot and directional lights (View space).
-	*/
-	float4   DirectionVS;
-	//--------------------------------------------------------------( 16 bytes )
-	/**
-	* Color of the light. Diffuse and specular colors are not seperated.
-	*/
-	float4   Color;
-	//--------------------------------------------------------------( 16 bytes )
-	/**
-	* The half angle of the spotlight cone.
-	*/
-	float    SpotlightAngle;
-	/**
-	* The range of the light.
-	*/
-	float    Range;
-
-	/**
-	 * The intensity of the light.
-	 */
-	float    Intensity;
-
-	/**
-	* Disable or enable the light.
-	*/
-	bool    Enabled;
-	//--------------------------------------------------------------( 16 bytes )
-
-	/**
-	 * Is the light selected in the editor?
-	 */
-	bool    Selected;
-
-	/**
-	* The type of the light.
-	*/
-	uint    Type;
-	float2  Padding;
-	//--------------------------------------------------------------( 16 bytes )
-	//--------------------------------------------------------------( 16 * 7 = 112 bytes )
-};
 
 struct Plane
 {
@@ -138,57 +41,16 @@ struct Frustum
 	Plane planes[4];   // left, right, top, bottom frustum planes.
 };
 
-/*
-struct AppData
-{
-	float3 position : POSITION;
-	float3 tangent  : TANGENT;
-	float3 binormal : BINORMAL;
-	float3 normal   : NORMAL;
-	float2 texCoord : TEXCOORD0;
-};
 
-cbuffer PerObject : register(b0)
-{
-	float4x4 ModelViewProjection;
-	float4x4 ModelView;
-}
-
-cbuffer Material : register(b2)
-{
-	Material Mat;
-};*/
 
 // Parameters required to convert screen space coordinates to view space params.
-/*cbuffer ScreenToViewParams : register(b3)
+cbuffer ScreenToViewParams : register(b3)
 {
 	float4x4 InverseProjection;
 	float2 ScreenDimensions;
-}*/
+}
 
-/*Texture2D AmbientTexture        : register(t0);
-Texture2D EmissiveTexture       : register(t1);
-Texture2D DiffuseTexture        : register(t2);
-Texture2D SpecularTexture       : register(t3);
-Texture2D SpecularPowerTexture  : register(t4);
-Texture2D NormalTexture         : register(t5);
-Texture2D BumpTexture           : register(t6);
-Texture2D OpacityTexture        : register(t7);*/
 
-StructuredBuffer<Light> Lights : register(t8);
-
-/*sampler LinearRepeatSampler     : register(s0);
-sampler LinearClampSampler      : register(s1);*/
-
-/*struct VertexShaderOutput
-{
-	float3 positionVS   : TEXCOORD0;    // View space position.
-	float2 texCoord     : TEXCOORD1;    // Texture coordinate
-	float3 tangentVS    : TANGENT;      // View space tangent.
-	float3 binormalVS   : BINORMAL;     // View space binormal.
-	float3 normalVS     : NORMAL;       // View space normal.
-	float4 position     : SV_POSITION;  // Clip space position.
-};*/
 
 // Convert clip space coordinates to view space
 float4 ClipToView(float4 clip)
@@ -314,8 +176,7 @@ float3 ExpandNormal(float3 n)
 	return n * 2.0f - 1.0f;
 }
 
-// This lighting result is returned by the 
-// lighting functions for each light type.
+// This lighting result is returned by the lighting functions for each light type.
 struct LightingResult
 {
 	float4 Diffuse;
@@ -445,27 +306,34 @@ LightingResult DoLighting(StructuredBuffer<Light> lights, Material mat, float4 e
 		LightingResult result = (LightingResult)0;
 
 		// Skip lights that are not enabled.
-		if (!lights[i].Enabled) continue;
+		if (!lights[i].Enabled)
+		{
+			continue;
+		}
+
 		// Skip point and spot lights that are out of range of the point being shaded.
-		if (lights[i].Type != DIRECTIONAL_LIGHT && length(lights[i].PositionVS - P) > lights[i].Range) continue;
+		if (lights[i].Type != DIRECTIONAL_LIGHT && length(lights[i].PositionVS - P) > lights[i].Range)
+		{
+			continue;
+		}
 
 		switch (lights[i].Type)
 		{
-		case DIRECTIONAL_LIGHT:
-		{
-			result = DoDirectionalLight(lights[i], mat, V, P, N);
-		}
-		break;
-		case POINT_LIGHT:
-		{
-			result = DoPointLight(lights[i], mat, V, P, N);
-		}
-		break;
-		case SPOT_LIGHT:
-		{
-			result = DoSpotLight(lights[i], mat, V, P, N);
-		}
-		break;
+			case DIRECTIONAL_LIGHT:
+			{
+				result = DoDirectionalLight(lights[i], mat, V, P, N);
+			}
+			break;
+			case POINT_LIGHT:
+			{
+				result = DoPointLight(lights[i], mat, V, P, N);
+			}
+			break;
+			case SPOT_LIGHT:
+			{
+				result = DoSpotLight(lights[i], mat, V, P, N);
+			}
+			break;
 		}
 		totalResult.Diffuse += result.Diffuse;
 		totalResult.Specular += result.Specular;

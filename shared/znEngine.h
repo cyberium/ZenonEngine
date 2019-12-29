@@ -6,6 +6,8 @@
 #include "../znEngine/Materials/MaterialDebug.h"
 #include "../znEngine/Materials/MaterialTextured.h"
 
+#include "../znEngine/Models/AssimpLoader.h"
+
 #include "../znEngine/SceneFunctional/UI/Fonts/FontsManager.h"
 
 /*

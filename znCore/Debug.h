@@ -47,12 +47,13 @@ inline void FatalMessageBox(const char* _title, const char* _message, ...)
 }
 
 class ZN_API CException 
-	: public std::exception
 {
 public:
-	CException();
+	CException(const char* Message, ...);
 	CException(std::string Message);
-	CException(std::wstring Message);
+
+	CException(const wchar_t* WMessage, ...);
+	CException(std::wstring WMessage);
 };
 
 #ifndef _DEBUG
@@ -60,7 +61,7 @@ public:
 	#define _ASSERT(expr)   \
 	if ((!(expr)))          \
 	{                       \
-		throw CException(); \
+		throw CException("Assertion failed."); \
 	}
 
 	#define _ASSERT_EXPR(expr, msg)   \

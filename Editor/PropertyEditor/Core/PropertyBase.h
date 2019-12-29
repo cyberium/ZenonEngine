@@ -99,10 +99,6 @@ protected:
     virtual bool fromStrImpl(const QString& str) { Q_UNUSED(str); return false; }
     virtual bool toStrImpl(QString& str) const { Q_UNUSED(str); return false; }
 
-    // variant conversion implementation
-    virtual bool fromVariantImpl(const QVariant& var);
-    virtual bool toVariantImpl(QVariant& var) const;
-
     // inherited states support
     virtual void updateStateInherited(bool force) { Q_UNUSED(force); /* does nothing by default */ }
     void setStateInherited(QtnPropertyState stateToSet, bool force = false);

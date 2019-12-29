@@ -1,6 +1,7 @@
 #pragma once
 
-class ZN_API CBaseManager : public IBaseManager
+class ZN_API CBaseManager 
+	: public IBaseManager
 {
 public:
 	CBaseManager();

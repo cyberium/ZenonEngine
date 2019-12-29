@@ -64,6 +64,7 @@ bool RenderDeviceDX11::Initialize()
 	FreeImage_Initialise();
 
 	CreateDevice();
+
 	LoadDefaultResources();
 
 	return true;

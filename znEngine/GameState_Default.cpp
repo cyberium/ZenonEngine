@@ -7,6 +7,7 @@
 #include "Materials/MaterialDebug.h"
 #include "Materials/MaterialTextured.h"
 
+#include "Models/AssimpLoader.h"
 #include "Models/OBJLoader.h"
 
 CGameState_World::CGameState_World(IBaseManager * BaseManager, std::shared_ptr<IRenderWindow> RenderWindow, IWindowEvents* WindowEvents)
@@ -112,9 +113,15 @@ void CGameState_World::Load3D()
 	std::dynamic_pointer_cast<ISceneNode3D>(sceneNodePlane)->SetScale(vec3(1000.0f, 1.0f, 1000.0f));
 	sceneNodePlane->GetComponent<IMeshComponent3D>()->AddMesh(meshPlane);
 
+
+	//-- Assimp -----------------
+
+	//CAssimpLoader assLoader(m_Scene3D->GetRootNode(), GetRenderDevice());
+	//assLoader.LoadFromFile(GetBaseManager()->GetManager<IFilesManager>()->Open("AmazonScene\\interior.obj"));
+
 	//---------------------------
 
-	const size_t iterCnt = 15;
+	const size_t iterCnt = 1;
 	const float offset = 45.0f;
 
 	std::shared_ptr<MaterialTextured> mat = std::make_shared<MaterialTextured>(GetRenderDevice());
@@ -153,7 +160,7 @@ void CGameState_World::Load3D()
 
 	
 
-	/*std::shared_ptr<ISceneNode> fbxSceneNode = GetBaseManager()->GetManager<ISceneNodesFactory>()->CreateSceneNode(m_Scene3D->GetRootNode(), "FBXSceneNode");
+	std::shared_ptr<ISceneNode> fbxSceneNode = GetBaseManager()->GetManager<ISceneNodesFactory>()->CreateSceneNode(m_Scene3D->GetRootNode(), "FBXSceneNode");
 	//fbxSceneNode->GetComponent<ITransformComponent3D>()->SetScale(vec3(15.0f, 15.0f, 15.0f));
 
 	for (auto& m : fbxSceneNode->GetComponent<IMeshComponent3D>()->GetMeshes())
@@ -166,7 +173,7 @@ void CGameState_World::Load3D()
 		{
 			(void*)m->GetMaterial().get();
 		}
-	}*/
+	}
 
 	m_Technique3D.AddPass(GetBaseManager()->GetManager<IRenderPassFactory>()->CreateRenderPass("ClearPass", GetRenderDevice(), GetRenderWindow()->GetRenderTarget(), GetRenderWindow()->GetViewport(), m_Scene3D));
 	m_Technique3D.AddPass(GetBaseManager()->GetManager<IRenderPassFactory>()->CreateRenderPass("DebugPass", GetRenderDevice(), GetRenderWindow()->GetRenderTarget(), GetRenderWindow()->GetViewport(), m_Scene3D));

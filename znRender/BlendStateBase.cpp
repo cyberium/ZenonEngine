@@ -25,7 +25,7 @@ void BlendStateBase::SetBlendMode(const BlendStateBase::BlendMode& blendMode)
 void BlendStateBase::SetBlendModes(const std::vector<BlendMode>& blendModes)
 {
     m_BlendModes = blendModes;
-    m_bDirty;
+    m_bDirty = true;
 }
 
 const std::vector<BlendStateBase::BlendMode>& BlendStateBase::GetBlendModes() const

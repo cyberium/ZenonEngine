@@ -32,13 +32,3 @@ bool QtnPropertyIntBase::toStrImpl(QString& str) const
     str = QString::number(value());
     return true;
 }
-
-bool QtnPropertyIntBase::fromVariantImpl(const QVariant& var)
-{
-    bool ok = false;
-    ValueType value = var.toInt(&ok);
-    if (!ok)
-        return false;
-
-    return setValue(value);
-}

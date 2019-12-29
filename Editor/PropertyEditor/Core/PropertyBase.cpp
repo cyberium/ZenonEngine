@@ -230,24 +230,6 @@ bool QtnPropertyBase::toStr(QString& str) const
     return toStrImpl(str);
 }
 
-bool QtnPropertyBase::fromVariantImpl(const QVariant& var)
-{
-    if (var.canConvert<QString>())
-        return fromStr(var.value<QString>());
-    else
-        return false;
-}
-
-bool QtnPropertyBase::toVariantImpl(QVariant& var) const
-{
-    QString str;
-    if (!toStr(str))
-        return false;
-
-    var.setValue<QString>(str);
-    return true;
-}
-
 const QtnPropertyDelegateInfo* QtnPropertyBase::delegate() const
 {
     if (m_delegateInfoGetter.isNull())

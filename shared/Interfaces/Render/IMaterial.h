@@ -34,4 +34,5 @@ ZN_INTERFACE ZN_API IMaterial : public std::enable_shared_from_this<IMaterial>
 	virtual void MarkConstantBufferDirty() = 0;
 };
 
+typedef std::map<std::string, std::shared_ptr<IMaterial> > MaterialNameMap;
 typedef std::vector<std::shared_ptr<IMaterial>> MaterialList;

@@ -32,13 +32,3 @@ bool QtnPropertyFloatBase::toStrImpl(QString& str) const
     str = QString::number(value());
     return true;
 }
-
-bool QtnPropertyFloatBase::fromVariantImpl(const QVariant& var)
-{
-    bool ok = false;
-    ValueType value = var.toFloat(&ok);
-    if (!ok)
-        return false;
-
-    return setValue(value);
-}

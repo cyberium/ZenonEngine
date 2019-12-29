@@ -113,13 +113,19 @@ public:
 	void Set(T Value, bool BlockCallback = false) override
 	{
 		_ASSERT(m_FuncSetter);
-		m_FuncSetter(Value);
 
 		if (BlockCallback)
-			return;
-
-		if (m_ValueChangedCallback)
-			m_ValueChangedCallback(Value);
+		{
+			auto oldCallback = m_ValueChangedCallback;
+			m_ValueChangedCallback = nullptr;
+			m_FuncSetter(Value);
+			_ASSERT_EXPR(m_ValueChangedCallback == nullptr, L"Don't change value changed callback in setter.");
+			m_ValueChangedCallback = oldCallback;
+		}
+		else
+		{
+			m_FuncSetter(Value);
+		}
 	}
 	T Get() const override
 	{
@@ -140,7 +146,7 @@ public:
 	{
 		m_FuncGetter = Function;
 	}
-	void RaiseSetValueChangedCallback()
+	void RaiseValueChangedCallback()
 	{
 		if (m_ValueChangedCallback)
 			m_ValueChangedCallback(Get());

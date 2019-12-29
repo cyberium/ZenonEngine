@@ -4,7 +4,7 @@ class ZN_API CFBXSceneNode
 	: public SceneNode3D
 {
 public:
-	CFBXSceneNode(const std::string& SceneFile, std::shared_ptr<IMaterial> DefaultMaterial);
+	CFBXSceneNode(const std::string& SceneFile);
 	virtual ~CFBXSceneNode();
 
 	// ISceneNode
@@ -12,5 +12,4 @@ public:
 
 private:
 	std::string m_SceneFilename;
-	std::shared_ptr<IMaterial> m_DefaultMaterial;
 };
