@@ -5,9 +5,9 @@
 
 // Additional
 #include "UI/UIText.h"
-#include "Models/FBX/FBXSceneNode.h"
+#include "Models/FBX/FBX.h"
 
-CSceneNodeDefaultCreator::CSceneNodeDefaultCreator(IBaseManager* BaseManager)
+CSceneNodeDefaultCreator::CSceneNodeDefaultCreator(const IBaseManager* BaseManager)
 	: m_BaseManager(BaseManager)
 {}
 
@@ -62,8 +62,8 @@ std::shared_ptr<ISceneNode> CSceneNodeDefaultCreator::CreateSceneNode(std::weak_
 	}
 	else if (Index == 3)
 	{
-		return Parent.lock()->CreateSceneNode<CFBXSceneNode>("Sponza\\Sponza.fbx");
-		//return Parent.lock()->CreateSceneNode<CFBXSceneNode>("crytek-sponza\\sponza_nobanner.obj");
+		CFBX fbx("Sponza\\Sponza.fbx", Parent.lock());
+		return fbx.GetSceneNode();
 	}
 
 	throw CException("CSceneNodeDefaultCreator: CreateSceneNode(%d) is out of bounds. Count = %d", Index, GetSceneNodesCount());

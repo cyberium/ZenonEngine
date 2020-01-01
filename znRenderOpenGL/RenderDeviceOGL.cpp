@@ -1,4 +1,4 @@
-#include <stdafx.h>
+#include "stdafx.h"
 
 // Include
 #include "BufferOGL.h"

@@ -217,241 +217,22 @@ bool CFBXScene::SaveToFile(std::shared_ptr<IFile> File, int pFileFormat, bool pE
 	return lStatus;
 }
 
-bool CFBXScene::Load()
+//------------------------------------------------------------------------------------------------------
+
+bool CFBXScene::LoadNodes(std::shared_ptr<ISceneNode> ParentNode)
 {
 	DisplayMetaData(GetNativeScene());
 	DisplayHierarchy(GetNativeScene());
 
-	LoadNodes();
+	m_RootNode = ParentNode->CreateSceneNode<CFBXSceneNode>(m_BaseManager, weak_from_this(), m_NativeScene->GetRootNode());
+	m_RootNode->LoadNode();
 
 	return true;
 }
 
-//------------------------------------------------------------------------------------------------------
-
-bool CFBXScene::LoadNodes()
-{
-	m_RootNode = std::make_shared<CFBXSceneNode>(shared_from_this(), m_NativeScene->GetRootNode());
-
-	return true;
-}
 
 //------------------------------------------------------------------------------------------------------
 
-bool CFBXScene::LoadTextures()
-{
-	Log::Print("CFBXScene: Textures count '%d'.", m_NativeScene->GetTextureCount());
-	for (int i = 0; i < m_NativeScene->GetTextureCount(); i++)
-	{
-		fbxsdk::FbxTexture* texture = m_NativeScene->GetTexture(i);
-		Log::Print("CFBXScene: Loading texture '%s'.", texture->GetName());
-
-		_ASSERT_EXPR(texture->Is<fbxsdk::FbxFileTexture>(), "FBX texture must be 'FbxFileTexture'.");
-		fbxsdk::FbxFileTexture* fileTexture = fbxsdk::FbxCast<fbxsdk::FbxFileTexture>(texture);
-
-		// For exporter
-		fileTexture->SetFileName(fileTexture->GetRelativeFileName());
-
-		m_TexturesArray.push_back(m_BaseManager->GetManager<IRenderDevice>()->CreateTexture2D(m_Path + fileTexture->GetRelativeFileName()));
-	}
-
-	return true;
-}
-
-const std::vector<std::shared_ptr<ITexture>>& CFBXScene::GetTextures() const
-{
-	return m_TexturesArray;
-}
-
-std::shared_ptr<ITexture> CFBXScene::GetTexture(int Index) const
-{
-	return m_TexturesArray.at(Index);
-}
-
-//------------------------------------------------------------------------------------------------------
-
-bool CFBXScene::LoadMaterials()
-{
-	Log::Print("CFBXScene: Materials count '%d'.", m_NativeScene->GetMaterialCount());
-	for (int i = 0; i < m_NativeScene->GetMaterialCount(); i++)
-	{
-		fbxsdk::FbxSurfaceMaterial* surfaceMaterial = m_NativeScene->GetMaterial(i);
-		Log::Print("CFBXScene: Loading material '%s'.", surfaceMaterial->GetName());
-
-		_ASSERT_EXPR(surfaceMaterial->Is<fbxsdk::FbxSurfacePhong>(), "FBX material must be 'FbxSurfacePhong'.");
-		fbxsdk::FbxSurfacePhong* surfacePhong = fbxsdk::FbxCast<fbxsdk::FbxSurfacePhong>(surfaceMaterial);
-
-		std::shared_ptr<CFBXMaterial> material = std::make_shared<CFBXMaterial>(m_BaseManager->GetManager<IRenderDevice>());
-		material->SetAmbient(vec3(surfacePhong->Ambient.Get()[0], surfacePhong->Ambient.Get()[1], surfacePhong->Ambient.Get()[2]));
-		material->SetDiffuse(vec3(surfacePhong->Diffuse.Get()[0], surfacePhong->Diffuse.Get()[1], surfacePhong->Diffuse.Get()[2]));
-		material->SetSpecular(vec3(surfacePhong->Specular.Get()[0], surfacePhong->Specular.Get()[1], surfacePhong->Specular.Get()[2]));
-		material->SetEmissive(vec3(surfacePhong->Emissive.Get()[0], surfacePhong->Emissive.Get()[1], surfacePhong->Emissive.Get()[2]));
-		material->SetTransparencyFactor(surfacePhong->TransparencyFactor.Get());
-		material->SetShininess(surfacePhong->Shininess.Get());
-		material->SetReflectionFactor(surfacePhong->ReflectionFactor.Get());
-
-		for (int j = 0; j < fbxsdk::FbxLayerElement::sTypeTextureCount; j++)
-		{
-			fbxsdk::FbxProperty lProperty = surfacePhong->FindProperty(fbxsdk::FbxLayerElement::sTextureChannelNames[j]);
-			if (!lProperty.IsValid())
-			{
-				continue;
-			}
-
-
-			/*
-			FbxLayeredTexture *lLayeredTexture = pProperty.GetSrcObject<FbxLayeredTexture>(j);
-			if (lLayeredTexture)
-			{
-				DisplayInt("    Layered Texture: ", j);
-				int lNbTextures = lLayeredTexture->GetSrcObjectCount<FbxTexture>();
-				for (int k = 0; k < lNbTextures; ++k)
-				{
-					FbxTexture* lTexture = lLayeredTexture->GetSrcObject<FbxTexture>(k);
-					if (lTexture)
-					{
-
-						//NOTE the blend mode is ALWAYS on the LayeredTexture and NOT the one on the texture.
-						//Why is that?  because one texture can be shared on different layered textures and might
-						//have different blend modes.
-
-						FbxLayeredTexture::EBlendMode lBlendMode;
-						lLayeredTexture->GetTextureBlendMode(k, lBlendMode);
-						DisplayString("    Textures for ", pProperty.GetName());
-						DisplayInt("        Texture ", k);
-
-
-
-						const char* lBlendModes[] = { "Translucent", "Additive", "Modulate", "Modulate2", "Over", "Normal", "Dissolve", "Darken", "ColorBurn", "LinearBurn",
-														"DarkerColor", "Lighten", "Screen", "ColorDodge", "LinearDodge", "LighterColor", "SoftLight", "HardLight", "VividLight",
-														"LinearLight", "PinLight", "HardMix", "Difference", "Exclusion", "Substract", "Divide", "Hue", "Saturation", "Color",
-														"Luminosity", "Overlay" };
-						DisplayString("			Blend Mode: ", lBlendModes[lBlendMode]);
-
-						return DisplayTextureInfo(lTexture);
-					}
-
-				}
-			}
-			*/
-
-
-			if (lProperty.GetSrcObjectCount<fbxsdk::FbxTexture>() == 0)
-			{
-				continue;
-			}
-			else if (lProperty.GetSrcObjectCount<fbxsdk::FbxTexture>() == 1)
-			{
-				fbxsdk::FbxTexture* lTexture = lProperty.GetSrcObject<fbxsdk::FbxTexture>(0);
-
-				std::shared_ptr<ITexture> texture = m_Textures[std::string(lTexture->GetName())];
-				fbxsdk::FbxLayerElement::EType texureType = FBXSDK_TEXTURE_TYPE(j);
-
-				switch (texureType)
-				{
-				case fbxsdk::FbxLayerElement::EType::eTextureDiffuse:
-					material->SetTexture(0, texture);
-					break;
-
-				case fbxsdk::FbxLayerElement::EType::eTextureEmissive:
-					material->SetTexture(1, texture);
-					break;
-
-
-				case fbxsdk::FbxLayerElement::EType::eTextureAmbient:
-					material->SetTexture(2, texture);
-					break;
-
-
-				case fbxsdk::FbxLayerElement::EType::eTextureSpecular:
-					material->SetTexture(3, texture);
-					break;
-
-
-				case fbxsdk::FbxLayerElement::EType::eTextureShininess:
-					break;
-
-
-				case fbxsdk::FbxLayerElement::EType::eTextureNormalMap:
-					break;
-
-
-				case fbxsdk::FbxLayerElement::EType::eTextureBump:
-					break;
-
-
-				case fbxsdk::FbxLayerElement::EType::eTextureTransparency:
-					break;
-
-				case fbxsdk::FbxLayerElement::EType::eTextureReflection:
-					break;
-
-
-				case fbxsdk::FbxLayerElement::EType::eTextureReflectionFactor:
-					break;
-
-
-				case fbxsdk::FbxLayerElement::EType::eTextureDisplacement:
-					break;
-
-
-				case fbxsdk::FbxLayerElement::EType::eTextureDisplacementVector:
-					break;
-				}
-			}
-			else
-			{
-				_ASSERT_EXPR(false, L"CFBXScene: Material '%s' texture '%s' (%s) has more than one texture object.", surfaceMaterial->GetName(), lProperty.GetName().Buffer(), fbxsdk::FbxLayerElement::sTextureChannelNames[j]);
-			}
-		}
-
-		m_Materials.insert(std::make_pair(surfacePhong->GetName(), material));
-		m_MaterialsArray.push_back(material);
-	}
-
-	return true;
-}
-
-const std::vector<std::shared_ptr<CFBXMaterial>>& CFBXScene::GetMaterials() const
-{
-	return m_MaterialsArray;
-}
-
-std::shared_ptr<CFBXMaterial> CFBXScene::GetMaterial(int Index) const
-{
-	return m_MaterialsArray.at(Index);
-}
-
-//------------------------------------------------------------------------------------------------------
-
-bool CFBXScene::LoadMeshes()
-{
-	Log::Print("CFBXScene: Geometry count '%d'.", m_NativeScene->GetGeometryCount());
-	for (int i = 0; i < m_NativeScene->GetGeometryCount(); i++)
-	{
-		fbxsdk::FbxGeometry* geometry = m_NativeScene->GetGeometry(i);
-		_ASSERT_EXPR(geometry->Is<fbxsdk::FbxMesh>(), L"FBX geometry must be 'FbxMesh'.");
-		fbxsdk::FbxMesh* fbxMesh = fbxsdk::FbxCast<fbxsdk::FbxMesh>(geometry);
-		Log::Print("CFBXScene: Loading mesh '%s'.", fbxMesh->GetName());
-
-		std::shared_ptr<CFBXMesh> mesh = std::make_shared<CFBXMesh>(m_BaseManager, shared_from_this(), fbxMesh);
-		mesh->Load();
-		m_MeshesArray.push_back(mesh);
-	}
-	return true;
-}
-
-const std::vector<std::shared_ptr<CFBXMesh>>& CFBXScene::GetMeshes() const
-{
-	return m_MeshesArray;
-}
-
-std::shared_ptr<CFBXMesh> CFBXScene::GetMesh(int Index) const
-{
-	return m_MeshesArray.at(Index);
-}
-
-//------------------------------------------------------------------------------------------------------
 
 fbxsdk::FbxScene * CFBXScene::GetNativeScene() const
 {
@@ -461,4 +242,14 @@ fbxsdk::FbxScene * CFBXScene::GetNativeScene() const
 fbxsdk::FbxManager * CFBXScene::GetNativeManager() const
 {
 	return m_NativeScene->GetFbxManager();
+}
+
+std::string CFBXScene::GetPath() const
+{
+	return m_Path;
+}
+
+std::shared_ptr<CFBXSceneNode> CFBXScene::GetRootNode() const
+{
+	return m_RootNode;
 }

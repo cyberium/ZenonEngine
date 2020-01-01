@@ -6,7 +6,7 @@ ZN_INTERFACE IShader;
 
 ZN_INTERFACE ZN_API ITexture
 {
-	enum class Dimension
+	enum class ZN_API Dimension
 	{
 		Texture2D,
 		Texture2DArray,
@@ -14,7 +14,7 @@ ZN_INTERFACE ZN_API ITexture
 	};
 
 	// The number of components used to create the texture.
-	enum class Components
+	enum class ZN_API Components
 	{
 		R,              // One red component.
 		RG,             // Red, and green components.
@@ -25,7 +25,7 @@ ZN_INTERFACE ZN_API ITexture
 	};
 
 	// The type of components in the texture.
-	enum class Type
+	enum class ZN_API Type
 	{
 		Typeless,           // Typeless formats.
 		UnsignedNormalized, // Unsigned normalized (8, 10, or 16-bit unsigned integer values mapped to the range [0..1])
@@ -35,7 +35,7 @@ ZN_INTERFACE ZN_API ITexture
 		SignedInteger,      // Signed integer format (8, 16, or 32-bit signed integer formats).
 	};
 
-	struct TextureFormat
+	struct ZN_API TextureFormat
 	{
 		ITexture::Components Components;
 		ITexture::Type Type;
@@ -83,7 +83,7 @@ ZN_INTERFACE ZN_API ITexture
 	};
 
 	// For cube maps, we may need to access a particular face of the cube map.
-	enum class CubeFace
+	enum class ZN_API CubeFace
 	{
 		Right,  // +X
 		Left,   // -X
@@ -200,32 +200,20 @@ ZN_INTERFACE ZN_API ITexture
 	// Template specizalizations
 
 	template< typename T >
-	void Plot(glm::ivec2 coord, const T& color);
+	inline void Plot(glm::ivec2 coord, const T& color)
+	{
+		Plot(coord, reinterpret_cast<const uint8_t*>(&color), sizeof(T));
+	}
 
 	template< typename T >
-	T FetchPixel(glm::ivec2 coord);
+	inline T FetchPixel(glm::ivec2 coord)
+	{
+		uint8_t* pixel = nullptr;
+		FetchPixel(coord, pixel, sizeof(T));
+
+		return *reinterpret_cast<T*>(pixel);
+	}
 };
-
-
-
-//
-// Template specizalizations
-//
-template< typename T >
-void ITexture::Plot(glm::ivec2 coord, const T& color)
-{
-	Plot(coord, reinterpret_cast<const uint8_t*>(&color), sizeof(T));
-}
-
-template< typename T >
-T ITexture::FetchPixel(glm::ivec2 coord)
-{
-	uint8_t* pixel = nullptr;
-	FetchPixel(coord, pixel, sizeof(T));
-
-	return *reinterpret_cast<T*>(pixel);
-}
-
 
 typedef std::vector<std::shared_ptr<ITexture>> TextureList;
 typedef std::unordered_map<uint8_t, std::shared_ptr<ITexture>> TextureMap;

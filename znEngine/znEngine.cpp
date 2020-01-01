@@ -13,6 +13,8 @@
 #include "SceneFunctional/ScenesFactory.h"
 #include "GameStatesFactory.h"
 #include "Passes/RenderPassFactory.h"
+#include "Images/ImagesFactory.h"
+#include "Images/ImageLoaderPNG.h"
 
 #include "Settings/GroupVideo.h"
 
@@ -131,6 +133,9 @@ IBaseManager* WINAPI InitializeEngine(std::vector<std::string> Arguments)
 
 	// Render stuff
 	{
+		baseManager->AddManager<IImagesFactory>(std::make_shared<CImagesFactory>(baseManager));
+		baseManager->GetManager<IImagesFactory>()->AddImageLoader(std::make_shared<CImageLoaderPNG>());
+
 		std::shared_ptr<IznRenderDeviceFactory> renderDeviceFactory = std::make_shared<CznRenderDeviceFactory>(baseManager);
 		baseManager->AddManager<IznRenderDeviceFactory>(renderDeviceFactory);
 		pluginsManager->AddPluginEventListener(std::dynamic_pointer_cast<IznPluginsEventListener>(renderDeviceFactory));

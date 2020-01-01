@@ -69,7 +69,7 @@ static void ReportAndThrowTextureFormatError(const ITexture::TextureFormat& form
 #define ReportTextureFormatError( fmt, msg ) ReportAndThrowTextureFormatError( (fmt), __FILE__, __LINE__, __FUNCTION__, (msg) )
 
 
-DXGI_FORMAT DX11TranslateFormat(const ITexture::TextureFormat& format)
+static DXGI_FORMAT DX11TranslateFormat(const ITexture::TextureFormat& format)
 {
 	DXGI_FORMAT result = DXGI_FORMAT_UNKNOWN;
 
@@ -733,8 +733,7 @@ DXGI_FORMAT DX11TranslateFormat(const ITexture::TextureFormat& format)
 		}
 		break;
 	case ITexture::Components::DepthStencil:
-		// For Depth/Stencil formats, we'll ignore the type and try to deduce the format
-		// based on the bit-depth values.
+		// For Depth/Stencil formats, we'll ignore the type and try to deduce the format based on the bit-depth values.
 		if (format.DepthBits == 24 && format.StencilBits == 8)
 		{
 			result = DXGI_FORMAT_D24_UNORM_S8_UINT;
@@ -765,7 +764,7 @@ DXGI_FORMAT DX11TranslateFormat(const ITexture::TextureFormat& format)
 	return result;
 }
 
-ITexture::TextureFormat DX11TranslateFormat(DXGI_FORMAT format, uint8_t numSamples)
+static ITexture::TextureFormat DX11TranslateFormat(DXGI_FORMAT format, uint8_t numSamples)
 {
 	ITexture::TextureFormat result;
 	result.NumSamples = numSamples;
@@ -1352,7 +1351,7 @@ ITexture::TextureFormat DX11TranslateFormat(DXGI_FORMAT format, uint8_t numSampl
 
 //--
 
-DXGI_FORMAT DX11GetTextureFormat(DXGI_FORMAT format)
+static DXGI_FORMAT DX11GetTextureFormat(DXGI_FORMAT format)
 {
 	DXGI_FORMAT result = format;
 
@@ -1375,7 +1374,7 @@ DXGI_FORMAT DX11GetTextureFormat(DXGI_FORMAT format)
 	return result;
 }
 
-DXGI_FORMAT DX11GetDSVFormat(DXGI_FORMAT format)
+static DXGI_FORMAT DX11GetDSVFormat(DXGI_FORMAT format)
 {
 	DXGI_FORMAT result = format;
 
@@ -1400,7 +1399,7 @@ DXGI_FORMAT DX11GetDSVFormat(DXGI_FORMAT format)
 	return result;
 }
 
-DXGI_FORMAT DX11GetSRVFormat(DXGI_FORMAT format)
+static DXGI_FORMAT DX11GetSRVFormat(DXGI_FORMAT format)
 {
 	DXGI_FORMAT result = format;
 	switch (format)
@@ -1453,7 +1452,7 @@ DXGI_FORMAT DX11GetSRVFormat(DXGI_FORMAT format)
 	return result;
 }
 
-DXGI_FORMAT DX11GetRTVFormat(DXGI_FORMAT format)
+static DXGI_FORMAT DX11GetRTVFormat(DXGI_FORMAT format)
 {
 	DXGI_FORMAT result = format;
 
@@ -1494,12 +1493,12 @@ DXGI_FORMAT DX11GetRTVFormat(DXGI_FORMAT format)
 	return result;
 }
 
-DXGI_FORMAT DX11GetUAVFormat(DXGI_FORMAT format)
+static DXGI_FORMAT DX11GetUAVFormat(DXGI_FORMAT format)
 {
 	return DX11GetRTVFormat(format);
 }
 
-uint8_t DX11GetBPP(DXGI_FORMAT format)
+static uint8_t DX11GetBPP(DXGI_FORMAT format)
 {
 	uint8_t bpp = 0;
 

@@ -23,6 +23,8 @@
     <ClCompile Include="GameStateDefaultCreator.cpp" />
     <ClCompile Include="GameStatesFactory.cpp" />
     <ClCompile Include="GameState_Default.cpp" />
+    <ClCompile Include="Images\ImageLoaderPNG.cpp" />
+    <ClCompile Include="Images\ImagesFactory.cpp" />
     <ClCompile Include="Materials\AssimpMaterial.cpp" />
     <ClCompile Include="Materials\MaterialDebug.cpp" />
     <ClCompile Include="Materials\MaterialTextured.cpp" />
@@ -100,6 +102,8 @@
     <ClInclude Include="GameStateDefaultCreator.h" />
     <ClInclude Include="GameStatesFactory.h" />
     <ClInclude Include="GameState_Default.h" />
+    <ClInclude Include="Images\ImageLoaderPNG.h" />
+    <ClInclude Include="Images\ImagesFactory.h" />
     <ClInclude Include="Materials\AssimpMaterial.h" />
     <ClInclude Include="Materials\MaterialDebug.h" />
     <ClInclude Include="Materials\MaterialTextured.h" />
@@ -320,7 +324,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;_USRDLL;OW_ENGINE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>..\shared\;..\Externals\;..\Externals\FBX\include\;..\Externals\freetype-2.9.1\include\;..\znEngine\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\shared\;..\Externals\;..\Externals\FBX\include\;..\Externals\FreeImage-3.17.0\LibPNG\;..\Externals\freetype-2.9.1\include\;..\znEngine\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatSpecificWarningsAsErrors>
       </TreatSpecificWarningsAsErrors>
       <DisableSpecificWarnings>4244;4267;4251</DisableSpecificWarnings>
@@ -347,7 +351,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;_USRDLL;OW_ENGINE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>..\shared\;..\Externals\;..\Externals\FBX\include\;..\Externals\freetype-2.9.1\include\;..\znEngine\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\shared\;..\Externals\;..\Externals\FBX\include\;..\Externals\FreeImage-3.17.0\LibPNG\;..\Externals\freetype-2.9.1\include\;..\znEngine\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatSpecificWarningsAsErrors>
       </TreatSpecificWarningsAsErrors>
       <DisableSpecificWarnings>4244;4267;4251</DisableSpecificWarnings>
@@ -376,7 +380,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;_USRDLL;OW_ENGINE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>..\shared\;..\Externals\;..\Externals\FBX\include\;..\Externals\freetype-2.9.1\include\;..\znEngine\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\shared\;..\Externals\;..\Externals\FBX\include\;..\Externals\FreeImage-3.17.0\LibPNG\;..\Externals\freetype-2.9.1\include\;..\znEngine\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <TreatSpecificWarningsAsErrors>
@@ -405,7 +409,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;_USRDLL;OW_ENGINE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>..\shared\;..\Externals\;..\Externals\FBX\include\;..\Externals\freetype-2.9.1\include\;..\znEngine\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\shared\;..\Externals\;..\Externals\FBX\include\;..\Externals\FreeImage-3.17.0\LibPNG\;..\Externals\freetype-2.9.1\include\;..\znEngine\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <TreatSpecificWarningsAsErrors>

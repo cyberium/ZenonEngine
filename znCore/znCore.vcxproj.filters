@@ -638,6 +638,9 @@
     <ClInclude Include="Scene\CameraNode.h">
       <Filter>Scene functional\Camera</Filter>
     </ClInclude>
+    <ClInclude Include="..\shared\Interfaces\Render\IImageLoader.h">
+      <Filter>__Interfaces\Render</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="RefManager1Dim.inl">

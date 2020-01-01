@@ -88,6 +88,9 @@
     <Filter Include="Models\FBX\Wrapped">
       <UniqueIdentifier>{015b3eca-37c5-401b-b436-b19e03624e14}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Images">
+      <UniqueIdentifier>{e6bb9cbb-303a-4b03-bd60-ddcae714b9be}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -290,6 +293,12 @@
     </ClCompile>
     <ClCompile Include="Models\FBX\FBXMaterial.cpp">
       <Filter>Models\FBX\Wrapped</Filter>
+    </ClCompile>
+    <ClCompile Include="Images\ImagesFactory.cpp">
+      <Filter>Images</Filter>
+    </ClCompile>
+    <ClCompile Include="Images\ImageLoaderPNG.cpp">
+      <Filter>Images</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -497,6 +506,12 @@
     <ClInclude Include="Models\FBX\FBXMaterial.h">
       <Filter>Models\FBX\Wrapped</Filter>
     </ClInclude>
+    <ClInclude Include="Images\ImagesFactory.h">
+      <Filter>Images</Filter>
+    </ClInclude>
+    <ClInclude Include="Images\ImageLoaderPNG.h">
+      <Filter>Images</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="znEngine.rc">
@@ -567,8 +582,10 @@
     <Text Include="Resources\shaders_D3D\3D\OBJModels.hlsl">
       <Filter>Resources\Shaders_D3D\3D</Filter>
     </Text>
-    <Text Include="Resources\shaders_D3D\3D\AssimpModel.hlsl" />
     <Text Include="Resources\shaders_D3D\Light.hlsl" />
+    <Text Include="Resources\shaders_D3D\3D\AssimpModel.hlsl">
+      <Filter>Resources\Shaders_D3D\3D</Filter>
+    </Text>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Resources\Textures\default.png">

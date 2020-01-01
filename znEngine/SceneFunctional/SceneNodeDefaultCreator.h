@@ -4,7 +4,7 @@ class CSceneNodeDefaultCreator
 	: public ISceneNodeCreator
 {
 public:
-	CSceneNodeDefaultCreator(IBaseManager* BaseManager);
+	CSceneNodeDefaultCreator(const IBaseManager* BaseManager);
 	virtual ~CSceneNodeDefaultCreator();
 
 	// ISceneNodeCreator
@@ -13,5 +13,5 @@ public:
 	std::shared_ptr<ISceneNode> CreateSceneNode(std::weak_ptr<ISceneNode> Parent, size_t Index) const override;
 
 private:
-	IBaseManager* m_BaseManager;
+	const IBaseManager* m_BaseManager;
 };

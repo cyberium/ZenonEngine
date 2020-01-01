@@ -1,11 +1,19 @@
 #pragma once
 
+#include <fbxsdk.h>
+
+// FORWARD BEGIN
+class CFBXSceneNode;
+// FORWARD END
+
 class ZN_API CFBXMaterial
 	: public MaterialProxie
 {
 public:
-	CFBXMaterial(std::shared_ptr<IRenderDevice> RenderDevice);
+	CFBXMaterial(const IBaseManager* BaseManager, std::weak_ptr<CFBXSceneNode> OwnerFBXNode, fbxsdk::FbxSurfaceMaterial* NativeMaterial);
 	virtual ~CFBXMaterial();
+
+	void Load();
 
 	inline void SetAmbient(vec3 Value) 
 	{ 
@@ -36,6 +44,10 @@ public:
 	{ 
 		m_pProperties->ReflectionFactor = Value; 
 	}
+
+protected:
+	std::shared_ptr<ITexture> LoadTexture(fbxsdk::FbxTexture* Texture);
+
 private:
 	__declspec(align(16)) struct MaterialProperties
 	{
@@ -49,7 +61,13 @@ private:
 		float  Shininess;
 		float  ReflectionFactor;
 	};
-	MaterialProperties*            m_pProperties;
+	MaterialProperties* m_pProperties;
+
 private:
+	std::weak_ptr<CFBXSceneNode> m_OwnerFBXNode;
+	fbxsdk::FbxSurfaceMaterial* m_NativeMaterial;
+
+private:
+	const IBaseManager* m_BaseManager;
 	std::shared_ptr<IRenderDevice> m_RenderDevice;
 };

@@ -105,13 +105,13 @@ void CGameState_World::Load3D()
 	matDebug->SetDiffuseColor(vec4(0.0f, 1.0f, 1.0f, 1.0f));
 	matDebug->SetWrapper(matDebug);
 
-	std::shared_ptr<IMesh> meshPlane = GetRenderDevice()->GetPrimitiveCollection()->CreatePlane();
+	/*std::shared_ptr<IMesh> meshPlane = GetRenderDevice()->GetPrimitiveCollection()->CreatePlane();
 	meshPlane->SetMaterial(matDebug);
 
 	std::shared_ptr<ISceneNode> sceneNodePlane = m_Scene3D->CreateWrappedSceneNode<SceneNode3D>("SceneNode3D", m_Scene3D->GetRootNode());
 	sceneNodePlane->SetName("Ground.");
 	std::dynamic_pointer_cast<ISceneNode3D>(sceneNodePlane)->SetScale(vec3(1000.0f, 1.0f, 1000.0f));
-	sceneNodePlane->GetComponent<IMeshComponent3D>()->AddMesh(meshPlane);
+	sceneNodePlane->GetComponent<IMeshComponent3D>()->AddMesh(meshPlane);*/
 
 
 	//-- Assimp -----------------

@@ -2,6 +2,8 @@
 
 #include <fbxsdk.h>
 
+#include "FBXMaterial.h"
+
 // FORWARD BEGIN
 class CFBXScene;
 // FORWARD END
@@ -10,18 +12,24 @@ class ZN_API CFBXSceneNode
 	: public SceneNode3D
 {
 public:
-	CFBXSceneNode(std::shared_ptr<CFBXScene> OwnerScene, fbxsdk::FbxNode * NativeNode);
+	CFBXSceneNode(const IBaseManager* BaseManager, std::weak_ptr<CFBXScene> OwnerScene, fbxsdk::FbxNode * NativeNode);
 	virtual ~CFBXSceneNode();
 
-	void LoadNode(fbxsdk::FbxNode * NativeNode);
+	void LoadNode();
 
-	// ISceneNode
-	void Initialize() override;
+	bool LoadMaterials();
+	const std::vector<std::shared_ptr<CFBXMaterial>>& GetMaterials() const;
+	std::shared_ptr<CFBXMaterial> GetMaterial(int Index) const;
+
+	std::weak_ptr<CFBXScene> GetOwnerScene() const;
 
 private:
-	std::shared_ptr<CFBXScene> m_OwnerScene;
+	std::vector<std::shared_ptr<CFBXMaterial>> m_MaterialsArray;
+
+private:
+	std::weak_ptr<CFBXScene> m_OwnerScene;
 	fbxsdk::FbxNode* m_NativeNode;
 
 private:
-	std::string m_SceneFilename;
+	const IBaseManager* m_BaseManager;
 };

@@ -1,5 +1,7 @@
 #pragma once
 
+#include "FBXScene.h"
+
 class ZN_API CFBX
 {
 public:
@@ -7,10 +9,11 @@ public:
 	virtual ~CFBX();
 
 	const IBaseManager* GetBaseManager() const;
-
 	std::shared_ptr<ISceneNode> GetSceneNode();
 
 private:
-	std::shared_ptr<ISceneNode> m_Node;
+	std::shared_ptr<CFBXScene> m_FBXScene;
+
+private:
 	const IBaseManager* m_BaseManager;
 };

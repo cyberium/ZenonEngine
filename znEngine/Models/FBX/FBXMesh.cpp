@@ -1,7 +1,7 @@
 #include "stdafx.h"
 
 // Include
-#include "FBXScene.h"
+#include "FBXSceneNode.h"
 
 // General
 #include "FBXMesh.h"
@@ -9,10 +9,10 @@
 // Additional
 #include "FBXDisplayCommon.h"
 
-CFBXMesh::CFBXMesh(const IBaseManager * BaseManager, std::shared_ptr<CFBXScene> OwnerScene, fbxsdk::FbxMesh * NativeMesh)
+CFBXMesh::CFBXMesh(const IBaseManager * BaseManager, std::weak_ptr<CFBXSceneNode> OwnerFBXNode, fbxsdk::FbxMesh * NativeMesh)
 	: MeshProxie(BaseManager->GetManager<IRenderDevice>()->CreateMesh())
 	, m_BaseManager(BaseManager)
-	, m_OwnerScene(OwnerScene)
+	, m_OwnerFBXNode(OwnerFBXNode)
 	, m_NativeMesh(NativeMesh)
 {
 }
@@ -264,7 +264,8 @@ void CFBXMesh::Load()
 
 		int materialID = materialElement->GetIndexArray().GetAt(0);
 		Log::Print("Mesh refer to material '%d'. Index size '%d'.", materialID, materialElement->GetIndexArray().GetCount());
-		SetMaterial(m_OwnerScene->GetMaterial(materialID));
+		SetMaterial(m_OwnerFBXNode.lock()->GetMaterial(materialID));
+
 	}
 
 	/*

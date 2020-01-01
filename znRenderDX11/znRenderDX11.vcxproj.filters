@@ -41,6 +41,7 @@
     <ClCompile Include="znRenderDX11.cpp">
       <Filter>Common</Filter>
     </ClCompile>
+    <ClCompile Include="TextureDX11Loader.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">

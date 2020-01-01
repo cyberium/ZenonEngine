@@ -158,7 +158,7 @@ class Rect;
 #include "Interfaces/Render/IRenderDevice.h"
 #include "Interfaces/Render/ICamera.h"
 #include "Interfaces/Render/IRenderPass.h"
-
+#include "Interfaces/Render/IImageLoader.h"
 
 
 //---------------------------------------------------------//
