@@ -17,22 +17,12 @@ ZN_INTERFACE ZN_API IImage
 	virtual const uint8* GetData() const = 0;
 };
 
-ZN_INTERFACE ZN_API IImageInternal
-{
-	virtual ~IImageInternal() {}
-
-	virtual bool LoadImageData(std::shared_ptr<IFile> File) = 0;
-};
-
 ZN_INTERFACE ZN_API IImageLoader
 {
 	virtual ~IImageLoader() {}
 
-	virtual std::string GetName() const = 0;
-	virtual std::string GetSupportedExtention() const = 0;
-
 	virtual bool IsFileSupported(std::shared_ptr<IFile> File) const = 0;
-	virtual std::shared_ptr<IImage> LoadImage(std::shared_ptr<IFile> File) const = 0;
+	virtual std::shared_ptr<IImage> CreateImage(std::shared_ptr<IFile> File) const = 0;
 };
 
 ZN_INTERFACE ZN_API 
@@ -43,6 +33,5 @@ ZN_INTERFACE ZN_API
 
 	virtual void AddImageLoader(std::shared_ptr<IImageLoader> ImageLoader) = 0;
 	virtual void RemoveImageLoader(std::shared_ptr<IImageLoader> ImageLoader) = 0;
-
-	virtual std::shared_ptr<IImage> LoadImage(std::shared_ptr<IFile> File) const = 0;
+	virtual std::shared_ptr<IImage> CreateImage(std::shared_ptr<IFile> File) const = 0;
 };

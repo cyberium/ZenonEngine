@@ -2,11 +2,11 @@
 
 #include <fbxsdk.h>
 
-void DisplayMetaData(FbxScene* pScene);
-void DisplayMetaDataConnections(FbxObject* pNode);
+void DisplayMetaData(fbxsdk::FbxScene* pScene);
+void DisplayMetaDataConnections(fbxsdk::FbxObject* pNode);
 
-void DisplayHierarchy(FbxScene* pScene);
-void DisplayHierarchy(FbxNode* pNode, int pDepth);
+void DisplayHierarchy(fbxsdk::FbxScene* pScene);
+void DisplayHierarchy(fbxsdk::FbxNode* pNode, int pDepth);
 
 void DisplayString(const char* pHeader, const char* pValue = "", const char* pSuffix = "");
 void DisplayBool(const char* pHeader, bool pValue, const char* pSuffix = "");

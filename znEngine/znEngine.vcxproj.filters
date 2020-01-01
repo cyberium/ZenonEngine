@@ -255,9 +255,6 @@
     <ClCompile Include="Materials\AssimpMaterial.cpp">
       <Filter>Materials</Filter>
     </ClCompile>
-    <ClCompile Include="Models\FBX\FBX.cpp">
-      <Filter>Models\FBX</Filter>
-    </ClCompile>
     <ClCompile Include="Models\FBX\FBXDisplayCache.cpp">
       <Filter>Models\FBX</Filter>
     </ClCompile>
@@ -297,7 +294,13 @@
     <ClCompile Include="Images\ImagesFactory.cpp">
       <Filter>Images</Filter>
     </ClCompile>
-    <ClCompile Include="Images\ImageLoaderPNG.cpp">
+    <ClCompile Include="Images\ImageLoaderTemplate.cpp">
+      <Filter>Images</Filter>
+    </ClCompile>
+    <ClCompile Include="Images\ImageDDS.cpp">
+      <Filter>Images</Filter>
+    </ClCompile>
+    <ClCompile Include="Images\ImagePNG.cpp">
       <Filter>Images</Filter>
     </ClCompile>
   </ItemGroup>
@@ -467,9 +470,6 @@
     <ClInclude Include="Materials\AssimpMaterial.h">
       <Filter>Materials</Filter>
     </ClInclude>
-    <ClInclude Include="Models\FBX\FBX.h">
-      <Filter>Models\FBX</Filter>
-    </ClInclude>
     <ClInclude Include="Models\FBX\FBXDisplayCache.h">
       <Filter>Models\FBX</Filter>
     </ClInclude>
@@ -509,7 +509,13 @@
     <ClInclude Include="Images\ImagesFactory.h">
       <Filter>Images</Filter>
     </ClInclude>
-    <ClInclude Include="Images\ImageLoaderPNG.h">
+    <ClInclude Include="Images\ImageLoaderTemplate.h">
+      <Filter>Images</Filter>
+    </ClInclude>
+    <ClInclude Include="Images\ImageDDS.h">
+      <Filter>Images</Filter>
+    </ClInclude>
+    <ClInclude Include="Images\ImagePNG.h">
       <Filter>Images</Filter>
     </ClInclude>
   </ItemGroup>

@@ -121,7 +121,7 @@ void CGameState_World::Load3D()
 
 	//---------------------------
 
-	const size_t iterCnt = 1;
+	const size_t iterCnt = 0;
 	const float offset = 45.0f;
 
 	std::shared_ptr<MaterialTextured> mat = std::make_shared<MaterialTextured>(GetRenderDevice());

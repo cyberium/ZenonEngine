@@ -8,6 +8,7 @@
 
 // Additional
 #include "FBXDisplayCommon.h"
+#include "FBXDisplayMesh.h"
 
 CFBXMesh::CFBXMesh(const IBaseManager * BaseManager, std::weak_ptr<CFBXSceneNode> OwnerFBXNode, fbxsdk::FbxMesh * NativeMesh)
 	: MeshProxie(BaseManager->GetManager<IRenderDevice>()->CreateMesh())
@@ -260,7 +261,7 @@ void CFBXMesh::Load()
 	for (int l = 0; l < m_NativeMesh->GetElementMaterialCount(); l++)
 	{
 		fbxsdk::FbxGeometryElementMaterial* materialElement = m_NativeMesh->GetElementMaterial(l);
-		_ASSERT_EXPR(materialElement->GetMappingMode() == FbxGeometryElement::eAllSame, L"Material mapping must be all same.");
+		//_ASSERT_EXPR(materialElement->GetMappingMode() == FbxGeometryElement::eAllSame, L"Material mapping must be all same.");
 
 		int materialID = materialElement->GetIndexArray().GetAt(0);
 		Log::Print("Mesh refer to material '%d'. Index size '%d'.", materialID, materialElement->GetIndexArray().GetCount());
@@ -268,18 +269,112 @@ void CFBXMesh::Load()
 
 	}
 
-	/*
-	DisplayMaterialMapping(m_NativeMesh);
-	Log::Print("--------------------------------------------------------------------------------------\n");
-	//mesh->SetMaterial(DisplayMaterial(renderDevice, m_NativeMesh));
-	Log::Print("--------------------------------------------------------------------------------------\n");
-	DisplayMaterialConnections(m_NativeMesh);
-	Log::Print("--------------------------------------------------------------------------------------\n");
-	DisplayLink(m_NativeMesh);
-	Log::Print("--------------------------------------------------------------------------------------\n");
-	DisplayShape(m_NativeMesh);
-	Log::Print("--------------------------------------------------------------------------------------\n");
-	DisplayCache(m_NativeMesh);
-	Log::Print("--------------------------------------------------------------------------------------\n");
-	*/
+
+	DisplayMaterialConnections();
+}
+
+void CFBXMesh::DisplayMaterialConnections()
+{
+	DisplayString("    Polygons Material Connections");
+
+	struct SPolygonConnectionInfo
+	{
+		int PolygonBegin;
+		int PolygonEnd;
+	};
+	std::unordered_map<int, SPolygonConnectionInfo> polygonConnectionInfos;
+
+
+
+	bool lIsAllSame = true;
+	for (int l = 0; l < m_NativeMesh->GetElementMaterialCount(); l++)
+	{
+		FbxGeometryElementMaterial* lMaterialElement = m_NativeMesh->GetElementMaterial(l);
+		if (lMaterialElement->GetMappingMode() == FbxGeometryElement::eByPolygon)
+		{
+			lIsAllSame = false;
+			break;
+		}
+	}
+
+	if (lIsAllSame)
+	{
+		for (int l = 0; l < m_NativeMesh->GetElementMaterialCount(); l++)
+		{
+			FbxGeometryElementMaterial* lMaterialElement = m_NativeMesh->GetElementMaterial(l);
+			if (lMaterialElement->GetMappingMode() == FbxGeometryElement::eAllSame)
+			{
+				FbxSurfaceMaterial* lMaterial = m_NativeMesh->GetNode()->GetMaterial(lMaterialElement->GetIndexArray().GetAt(0));
+				int lMatId = lMaterialElement->GetIndexArray().GetAt(0);
+				_ASSERT(lMatId >= 0);
+
+				DisplayInt("        All polygons share the same material in mesh ", l);
+			}
+			else
+			{
+				_ASSERT(false);
+			}
+		}
+
+		//no material
+		if (m_NativeMesh->GetElementMaterialCount() == 0)
+			DisplayString("        no material applied");
+	}
+	else
+	{
+		for (int polygonIndex = 0; polygonIndex < m_NativeMesh->GetPolygonCount(); polygonIndex++)
+		{
+			for (int l = 0; l < m_NativeMesh->GetElementMaterialCount(); l++)
+			{
+				FbxGeometryElementMaterial* lMaterialElement = m_NativeMesh->GetElementMaterial(l);
+				int lMatId = lMaterialElement->GetIndexArray().GetAt(polygonIndex);
+				_ASSERT(lMatId >= 0);
+
+				std::unordered_map<int, SPolygonConnectionInfo>::iterator it = polygonConnectionInfos.find(lMatId);
+				if (it == polygonConnectionInfos.end())
+				{
+					polygonConnectionInfos.insert(std::make_pair(lMatId, SPolygonConnectionInfo{ polygonIndex, polygonIndex }));
+				}
+				else
+				{
+					(*it).second.PolygonEnd = polygonIndex;
+				}
+			}
+		}
+	}
+
+	if (!lIsAllSame)
+	{
+		_ASSERT(true);
+		Log::Error("Test '%d'", polygonConnectionInfos.size());
+	}
+}
+
+void CFBXMesh::DisplayMaterialMapping(fbxsdk::FbxGeometryElementMaterial* materialElement)
+{
+	const char* lMappingTypes[] = { "None", "By Control Point", "By Polygon Vertex", "By Polygon", "By Edge", "All Same" };
+	const char* lReferenceMode[] = { "Direct", "Index", "Index to Direct" };
+
+
+	DisplayString("           Mapping: ", lMappingTypes[materialElement->GetMappingMode()]);
+	DisplayString("           ReferenceMode: ", lReferenceMode[materialElement->GetReferenceMode()]);
+
+	if (materialElement->GetReferenceMode() == FbxGeometryElement::eDirect)
+	{
+
+	}
+	else if (materialElement->GetReferenceMode() == FbxGeometryElement::eIndexToDirect)
+	{
+		FbxString lString;
+
+		lString = "           Indices: ";
+
+		for (int i = 0; i < materialElement->GetIndexArray().GetCount(); i++)
+		{
+			lString += materialElement->GetIndexArray().GetAt(i);
+			lString += ", ";
+		}
+
+		Log::Print(lString);
+	}
 }

@@ -46,9 +46,13 @@ VertexShaderOutput VS_main(VertexShaderInput IN)
 
 PixelShaderOutput PS_main(VertexShaderOutput IN) : SV_TARGET
 {
+	float4 diffuseColor = DiffuseTexture.Sample(DiffuseTextureSampler, IN.texCoord);
+	if (diffuseColor.a < 0.05f)
+		discard;
+
     PixelShaderOutput OUT;
 	OUT.PositionWS = IN.positionWS;
-	OUT.Diffuse = DiffuseTexture.Sample(DiffuseTextureSampler, IN.texCoord);
+	OUT.Diffuse = diffuseColor;
 	OUT.Specular = float4(1.0, 1.0, 1.0, 1.0);
 	OUT.NormalWS = float4(1.0, 1.0, 1.0, 0.0);
 	return OUT;

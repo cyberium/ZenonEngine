@@ -12,21 +12,20 @@
 #include "FBXDisplayShape.h"
 #include "FBXDisplayCache.h"
 
-#include "FBX.h"
 
 using namespace fbxsdk;
 
 #define MAT_HEADER_LENGTH 200
 
-std::shared_ptr<IMaterial> DisplayMaterialMapping(FbxMesh* pMesh);
-void DisplayMaterialConnections(FbxMesh* pMesh);
 
-std::shared_ptr<IMesh> DisplayMesh(CFBX * FBX, FbxNode* pNode)
+
+std::shared_ptr<IMesh> DisplayMesh(FbxNode* pNode)
 {
 	FbxMesh* lMesh = (FbxMesh*)pNode->GetNodeAttribute();
 	Log::Info("FBX: Mesh name is '%s'", pNode->GetName());
 
-	std::shared_ptr<IRenderDevice> renderDevice = FBX->GetBaseManager()->GetManager<IRenderDevice>();
+	const IBaseManager* null;
+	std::shared_ptr<IRenderDevice> renderDevice = null->GetManager<IRenderDevice>();
 
 	std::shared_ptr<IMesh> mesh = renderDevice->CreateMesh();
 

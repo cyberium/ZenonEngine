@@ -6,6 +6,8 @@
 // General
 #include "FBXSceneNode.h"
 
+// Additional
+#include "FBXDisplayCommon.h"
 
 CFBXSceneNode::CFBXSceneNode(const IBaseManager* BaseManager, std::weak_ptr<CFBXScene> OwnerScene, fbxsdk::FbxNode * NativeNode)
 	: m_BaseManager(BaseManager)
@@ -20,6 +22,30 @@ CFBXSceneNode::~CFBXSceneNode()
 
 void CFBXSceneNode::LoadNode()
 {
+	fbxsdk::FbxAMatrix& lGlobalTransform = m_NativeNode->EvaluateLocalTransform();
+	glm::mat4 globalTransform;
+	for (uint32 i = 0; i < 4; i++)
+	{
+		for (uint32 j = 0; j < 4; j++)
+		{
+			globalTransform[i][j] = lGlobalTransform[i][j];
+		}
+	}
+
+	// Get the node’s default TRS properties
+	fbxsdk::FbxDouble3 lTranslation = m_NativeNode->LclTranslation.Get();
+	Display4DVector("Translation: ", lTranslation, "");
+
+	fbxsdk::FbxDouble3 lRotation = m_NativeNode->EvaluateLocalRotation();
+	Display4DVector("Rotation: ", lRotation, "");
+
+	fbxsdk::FbxDouble3 lScaling = m_NativeNode->LclScaling.Get();
+	Display4DVector("Scaling: ", lScaling, "");
+
+	//SetRotation(glm::vec3(lRotation[0], lRotation[1], lRotation[2]));
+
+	SetLocalTransform(globalTransform);
+
 	//
 	// Load childs
 	//
@@ -34,7 +60,9 @@ void CFBXSceneNode::LoadNode()
 	LoadMaterials();
 
 	if (m_NativeNode->GetNodeAttribute() == nullptr)
+	{
 		return;
+	}
 
 	switch (m_NativeNode->GetNodeAttribute()->GetAttributeType())
 	{

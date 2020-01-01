@@ -32,7 +32,7 @@ void CImagesFactory::RemoveImageLoader(std::shared_ptr<IImageLoader> ImageLoader
 	m_ImageLoaders.erase(it);
 }
 
-std::shared_ptr<IImage> CImagesFactory::LoadImage(std::shared_ptr<IFile> File) const
+std::shared_ptr<IImage> CImagesFactory::CreateImage(std::shared_ptr<IFile> File) const
 {
 	if (File == nullptr)
 	{
@@ -40,22 +40,11 @@ std::shared_ptr<IImage> CImagesFactory::LoadImage(std::shared_ptr<IFile> File) c
 		return nullptr;
 	}
 
-	std::string fileExtention = File->Extension();
 	for (const auto& loader : m_ImageLoaders)
 	{
-		if (fileExtention.empty())
+		if (loader->IsFileSupported(File))
 		{
-			if (loader->IsFileSupported(File))
-			{
-				return loader->LoadImage(File);
-			}
-		}
-		else
-		{
-			if (Utils::ToLower(fileExtention) == Utils::ToLower(loader->GetSupportedExtention()))
-			{
-				return loader->LoadImage(File);
-			}
+			return loader->CreateImage(File);
 		}
 	}
 

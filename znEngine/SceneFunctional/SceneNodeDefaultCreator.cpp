@@ -5,7 +5,7 @@
 
 // Additional
 #include "UI/UIText.h"
-#include "Models/FBX/FBX.h"
+#include "Models/FBX/FBXManager.h"
 
 CSceneNodeDefaultCreator::CSceneNodeDefaultCreator(const IBaseManager* BaseManager)
 	: m_BaseManager(BaseManager)
@@ -62,8 +62,13 @@ std::shared_ptr<ISceneNode> CSceneNodeDefaultCreator::CreateSceneNode(std::weak_
 	}
 	else if (Index == 3)
 	{
-		CFBX fbx("Sponza\\Sponza.fbx", Parent.lock());
-		return fbx.GetSceneNode();
+		CFBXManager fbxManager(m_BaseManager);
+
+		std::shared_ptr<CFBXScene> m_FBXScene = fbxManager.CreateScene("SomeSceneName");
+		m_FBXScene->LoadFromFile(m_BaseManager->GetManager<IFilesManager>()->Open("C:\\Users\\bouzi71\\Downloads\\Bistro_v4\\Bistro v4 Update\\Bistro_v4\\Bistro_Exterior.fbx"));
+		m_FBXScene->LoadNodes(Parent.lock());
+
+		return m_FBXScene->GetRootNode();
 	}
 
 	throw CException("CSceneNodeDefaultCreator: CreateSceneNode(%d) is out of bounds. Count = %d", Index, GetSceneNodesCount());

@@ -4,7 +4,7 @@ class ZN_API CFontMesh : public MeshProxie
 {
 public:
 	CFontMesh(std::shared_ptr<ITexture> _texture, std::shared_ptr<IMesh> _fontGeometry, std::vector<uint32> _widthArray, uint32 _height);
-	~CFontMesh();
+	virtual ~CFontMesh();
 
 	// Getters
 	std::shared_ptr<ITexture>  GetTexture() const;

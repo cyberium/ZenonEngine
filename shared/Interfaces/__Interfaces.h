@@ -148,6 +148,7 @@ class Rect;
 #include "Interfaces/Render/IBuffer.h"
 #include "Interfaces/Render/IQuery.h"
 #include "Interfaces/Render/IMaterial.h"
+#include "Interfaces/Render/IGeometry.h"
 #include "Interfaces/Render/IMesh.h"
 #include "Interfaces/Render/IRenderTarget.h"
 #include "Interfaces/Render/IRenderWindow.h"

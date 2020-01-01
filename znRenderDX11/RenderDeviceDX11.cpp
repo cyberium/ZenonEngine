@@ -18,10 +18,6 @@
 // Additional
 #include "RenderWindowDX11.h"
 
-// Additional (FreeImage)
-#define FREEIMAGE_LIB // Static linking
-#include <FreeImage.h>
-
 
 class D3DMultithreadLocker
 {
@@ -61,8 +57,6 @@ RenderDeviceDX11::~RenderDeviceDX11()
 
 bool RenderDeviceDX11::Initialize()
 {
-	FreeImage_Initialise();
-
 	CreateDevice();
 
 	LoadDefaultResources();
@@ -86,8 +80,6 @@ void RenderDeviceDX11::Finalize()
 		//        m_pDebugLayer->ReportLiveDeviceObjects( D3D11_RLDO_SUMMARY | D3D11_RLDO_DETAIL );
 	}
 #endif
-
-	FreeImage_DeInitialise();
 }
 
 const std::string& RenderDeviceDX11::GetDeviceName() const

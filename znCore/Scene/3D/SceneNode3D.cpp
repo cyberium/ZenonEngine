@@ -210,6 +210,9 @@ void SceneNode3D::UpdateLocalTransform()
 
 	// Don't forget to update world transform
 	UpdateWorldTransform();
+
+	for (auto it : GetChilds())
+		std::dynamic_pointer_cast<SceneNode3D>(it)->UpdateWorldTransform();
 }
 
 void SceneNode3D::UpdateWorldTransform()

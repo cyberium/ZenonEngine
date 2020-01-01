@@ -27,6 +27,7 @@
     <ClCompile Include="MaterialBase.cpp" />
     <ClCompile Include="RenderDeviceBase.cpp" />
     <ClCompile Include="RenderWindowBase.cpp" />
+    <ClCompile Include="GeometryBase.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="common.h">
@@ -61,6 +62,7 @@
     <ClInclude Include="MaterialBase.h" />
     <ClInclude Include="RenderDeviceBase.h" />
     <ClInclude Include="RenderWindowBase.h" />
+    <ClInclude Include="GeometryBase.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Common">

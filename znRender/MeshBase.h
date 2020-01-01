@@ -16,8 +16,6 @@ public:
 	virtual void                                    SetVertexBuffer(std::shared_ptr<IBuffer> buffer) override;
 	virtual void                                    SetIndexBuffer(std::shared_ptr<IBuffer> buffer) override;
 
-	virtual void                                    SetPrimitiveTopology(PrimitiveTopology _topology) = 0;
-
 	virtual void                                    SetMaterial(std::shared_ptr<const IMaterial> material) override final;
 	virtual std::shared_ptr<const IMaterial>        GetMaterial() const override final;
 
@@ -26,7 +24,7 @@ public:
 protected:
 	std::string                                     m_Name;
 	BoundingBox                                     m_Bounds;
-    BufferMap                                       m_VertexBuffers;
+	std::unordered_map<BufferBinding, std::shared_ptr<IBuffer>> m_VertexBuffers;
     std::shared_ptr<IBuffer>                        m_VertexBuffer;
     std::shared_ptr<IBuffer>                        m_pIndexBuffer;
     std::shared_ptr<const IMaterial>                m_pMaterial;

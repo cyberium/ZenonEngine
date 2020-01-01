@@ -1,58 +1,16 @@
 #include "stdafx.h"
 
 // General
-#include "ImageLoaderPNG.h"
+#include "ImagePNG.h"
 
 // Additional
 #pragma comment(lib, "LibPNG.lib")
 
 CImagePNG::CImagePNG()
-	: m_Width(0)
-	, m_Height(0)
-	, m_BitsPerPixel(0)
-	, m_Stride(0)
-	, m_IsTransperent(false)
-	, m_Data(nullptr)
-{
-}
+{}
 
 CImagePNG::~CImagePNG()
-{
-	if (m_Data != nullptr)
-	{
-		delete[] m_Data;
-	}
-}
-
-uint32 CImagePNG::GetWidth() const
-{
-	return m_Width;
-}
-
-uint32 CImagePNG::GetHeight() const
-{
-	return m_Height;
-}
-
-uint32 CImagePNG::GetBitsPerPixel() const
-{
-	return m_BitsPerPixel;
-}
-
-uint32 CImagePNG::GetStride() const
-{
-	return m_Stride;
-}
-
-bool CImagePNG::IsTransperent() const
-{
-	return m_IsTransperent;
-}
-
-const uint8* CImagePNG::GetData() const
-{
-	return m_Data;
-}
+{}
 
 void userReadData(png_structp pngPtr, png_bytep data, png_size_t length)
 {
@@ -136,37 +94,25 @@ bool CImagePNG::LoadImageData(std::shared_ptr<IFile> File)
 
 	m_BitsPerPixel = channels * bitdepth;
 
-	//Here's one of the pointers we've defined in the error handler section:
-	//Array of row pointers. One for every row.
-	png_bytep* rowPtrs = new png_bytep[m_Height];
 
-	//Alocate a buffer with enough space.
-	//(Don't use the stack, these blocks get big easilly)
-	//This pointer was also defined in the error handling section, so we can clean it up on error.
-	m_Data = new png_byte[m_Width * m_Height * bitdepth * channels / 8];
 
 	// This is the length in bytes, of one row.
 	m_Stride = m_Width * bitdepth * channels / 8;
 
-	// A little for-loop here to set all the row pointers to the starting
-	// Adresses for every row in the buffer
 
+	//Alocate a buffer with enough space.
+	//(Don't use the stack, these blocks get big easilly)
+	//This pointer was also defined in the error handling section, so we can clean it up on error.
+	m_Data = new png_byte[m_Height * m_Stride];
+
+	png_bytep* rowPtrs = new png_bytep[m_Height];
 	for (uint32 i = 0; i < m_Height; i++)
-	{
-#if 0 // DirectX
-		png_uint_32 q = (i) * m_Stride;
-#else // OpenGL
-		png_uint_32 q = (m_Height - i - 1) * m_Stride;
-#endif
-		rowPtrs[i] = (png_bytep)m_Data + q;
-	}
+		rowPtrs[i] = GetLine(i);
 
 	png_read_image(m_PngPtr, rowPtrs);
 
 	if (rowPtrs != nullptr)
-	{
 		delete[] rowPtrs;
-	}
 
 	png_destroy_read_struct(&m_PngPtr, &m_InfoPtr, NULL);
 
@@ -174,46 +120,35 @@ bool CImagePNG::LoadImageData(std::shared_ptr<IFile> File)
 }
 
 
-// -------------------------------------------
 
-
-CImageLoaderPNG::CImageLoaderPNG()
-{}
-
-CImageLoaderPNG::~CImageLoaderPNG()
-{}
-
-std::string CImageLoaderPNG::GetName() const
-{
-	return "PNG Loader";
-}
-
-std::string CImageLoaderPNG::GetSupportedExtention() const
-{
-	return "png";
-}
-
-#define PNGSIGSIZE 8
-bool CImageLoaderPNG::IsFileSupported(std::shared_ptr<IFile> File) const
+//
+// Static
+//
+bool CImagePNG::IsFileSupported(std::shared_ptr<IFile> File)
 {
 	_ASSERT(File != nullptr);
 
-	png_byte pngsig[PNGSIGSIZE];
+	if (!File->Extension().empty())
+	{
+		return Utils::ToLower(File->Extension()) == "png";
+	}
+
+	const size_t cPNGSigSize = 8;
+	png_byte pngsig[cPNGSigSize];
 	File->seek(0);
-	File->readBytes(pngsig, PNGSIGSIZE);
+	File->readBytes(pngsig, cPNGSigSize);
 	File->seek(0);
-	return png_sig_cmp(pngsig, 0, PNGSIGSIZE) == 0;
+	return png_sig_cmp(pngsig, 0, cPNGSigSize) == 0;
 }
 
-std::shared_ptr<IImage> CImageLoaderPNG::LoadImage(std::shared_ptr<IFile> File) const
+std::shared_ptr<IImage> CImagePNG::CreateImage(std::shared_ptr<IFile> File)
 {
-	_ASSERT(File != nullptr);
 	_ASSERT(IsFileSupported(File));
 
 	std::shared_ptr<CImagePNG> imagePNG = std::make_shared<CImagePNG>();
 	if (!imagePNG->LoadImageData(File))
 	{
-		Log::Error("CImageLoaderPNG: Unable to load PNG file '%s'.", File->Name().c_str());
+		Log::Error("CImagePNG: Unable to load PNG file '%s'.", File->Name().c_str());
 		return nullptr;
 	}
 

@@ -95,7 +95,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;_USRDLL;OW_ENGINE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>..\shared\;..\Externals\;..\Externals\FreeImage-3.17.0\;..\Externals\FreeImage-3.17.0\LibPNG\;..\znRenderDX11\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\shared\;..\Externals\;..\znRenderDX11\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatSpecificWarningsAsErrors>
       </TreatSpecificWarningsAsErrors>
       <DisableSpecificWarnings>4244;4267;4251</DisableSpecificWarnings>
@@ -115,7 +115,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;_USRDLL;OW_ENGINE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>..\shared\;..\Externals\;..\Externals\FreeImage-3.17.0\;..\Externals\FreeImage-3.17.0\LibPNG\;..\znRenderDX11\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\shared\;..\Externals\;..\znRenderDX11\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatSpecificWarningsAsErrors>
       </TreatSpecificWarningsAsErrors>
       <DisableSpecificWarnings>4244;4267;4251</DisableSpecificWarnings>
@@ -137,7 +137,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;_USRDLL;OW_ENGINE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>..\shared\;..\Externals\;..\Externals\FreeImage-3.17.0\;..\Externals\FreeImage-3.17.0\LibPNG\;..\znRenderDX11\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\shared\;..\Externals\;..\znRenderDX11\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <TreatSpecificWarningsAsErrors>
@@ -160,7 +160,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;_USRDLL;OW_ENGINE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>..\shared\;..\Externals\;..\Externals\FreeImage-3.17.0\;..\Externals\FreeImage-3.17.0\LibPNG\;..\znRenderDX11\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\shared\;..\Externals\;..\znRenderDX11\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <TreatSpecificWarningsAsErrors>
@@ -180,6 +180,7 @@
     <ClCompile Include="ConstantBufferDX11.cpp" />
     <ClCompile Include="D3D9_To_D3D11.cpp" />
     <ClCompile Include="DepthStencilStateDX11.cpp" />
+    <ClCompile Include="GeometryDX11.cpp" />
     <ClCompile Include="MaterialDX11.cpp" />
     <ClCompile Include="MeshDX11.cpp" />
     <ClCompile Include="TextureDX11Loader.cpp" />
@@ -208,6 +209,7 @@
     <ClInclude Include="ConstantBufferDX11.h" />
     <ClInclude Include="D3D9_To_D3D11.h" />
     <ClInclude Include="DepthStencilStateDX11.h" />
+    <ClInclude Include="GeometryDX11.h" />
     <ClInclude Include="MaterialDX11.h" />
     <ClInclude Include="MeshDX11.h" />
     <ClInclude Include="PipelineStateDX11.h" />

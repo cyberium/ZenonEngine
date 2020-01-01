@@ -15,6 +15,10 @@ public:
 
 	void Load();
 
+protected:
+	void DisplayMaterialMapping(fbxsdk::FbxGeometryElementMaterial* materialElement);
+	void DisplayMaterialConnections();
+
 private:
 	std::weak_ptr<CFBXSceneNode> m_OwnerFBXNode;
 	fbxsdk::FbxMesh* m_NativeMesh;

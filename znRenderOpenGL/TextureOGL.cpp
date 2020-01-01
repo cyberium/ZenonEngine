@@ -128,45 +128,24 @@ bool TextureOGL::LoadTextureCustom(uint16_t width, uint16_t height, void * pixel
 	return true;
 }
 
-// FreeImage
-#define FREEIMAGE_LIB // Static linking
-#pragma comment(lib, "FreeImageLib.lib")
-#include <FreeImage.h>
-
 bool TextureOGL::LoadTexture2D(const std::string& fileName)
 {
     std::shared_ptr<IFile> f = m_RenderDevice.lock()->GetBaseManager()->GetManager<IFilesManager>()->Open(fileName);
     if (f == nullptr)
         return false;
 
-    FIMEMORY * hmem = FreeImage_OpenMemory(const_cast<BYTE*>(f->getData()), f->getSize());
+	std::shared_ptr<IImage> image = m_RenderDevice.lock()->GetBaseManager()->GetManager<IImagesFactory>()->CreateImage(f);
+	if (image == nullptr)
+	{
+		return false;
+	}
 
-    FREE_IMAGE_FORMAT fif = FreeImage_GetFileTypeFromMemory(hmem, f->getSize());
-    if (fif == FIF_UNKNOWN || !FreeImage_FIFSupportsReading(fif))
-    {
-        _ASSERT_EXPR(false, "Unknow file format: ");
-        return false;
-    }
-
-    FIBITMAP* dib = FreeImage_LoadFromMemory(fif, hmem, f->getSize());
-    if (dib == nullptr || FreeImage_HasPixels(dib) == FALSE)
-    {
-        _ASSERT_EXPR(false, "Failed to load image: ");
-        return false;
-    }
-
-    m_BPP = FreeImage_GetBPP(dib);
-    FREE_IMAGE_TYPE imageType = FreeImage_GetImageType(dib);
-
-    // Check to see if the texture has an alpha channel.
-    m_bIsTransparent = (FreeImage_IsTransparent(dib) == TRUE);
-
+    m_BPP = image->GetBitsPerPixel();
+    m_bIsTransparent = image->IsTransperent();
     m_TextureDimension = ITexture::Dimension::Texture2D;
-    m_TextureWidth = FreeImage_GetWidth(dib);
-    m_TextureHeight = FreeImage_GetHeight(dib);
-    m_Pitch = FreeImage_GetPitch(dib);
-
-    BYTE* textureData = FreeImage_GetBits(dib);
+    m_TextureWidth = image->GetWidth();
+    m_TextureHeight = image->GetHeight();
+    m_Pitch = image->GetStride();
 
     m_TextureType = GL_TEXTURE_2D;
     m_TextureDepth = 1;
@@ -179,10 +158,10 @@ bool TextureOGL::LoadTexture2D(const std::string& fileName)
         //glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 		//glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-        glTexImage2D(m_TextureType, 0, GL_RGBA8, m_TextureWidth, m_TextureHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, textureData);
+        glTexImage2D(m_TextureType, 0, GL_RGBA8, m_TextureWidth, m_TextureHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, image->GetData());
         OGLCheckError();
 
-		uint32 lastW = m_TextureWidth;
+		/*uint32 lastW = m_TextureWidth;
 		uint32 lastH = m_TextureHeight;
 		for (uint32 i = 1; i < 16; i++)
 		{
@@ -195,16 +174,14 @@ bool TextureOGL::LoadTexture2D(const std::string& fileName)
 			OGLCheckError();
 
 			FreeImage_Unload(dib2);
-		}
+		}*/
 
-        //glGenerateMipmap(m_TextureType);
-		//OGLCheckError();
+        glGenerateMipmap(m_TextureType);
+		OGLCheckError();
     }
     glBindTexture(m_TextureType, 0);
 
     m_bIsDirty = false;
-
-    FreeImage_Unload(dib);
 
     return true;
 }

@@ -19,10 +19,6 @@
 // Additional
 #include "RenderWindowOGL.h"
 
-// Additional (FreeImage)
-#define FREEIMAGE_LIB // Static linking
-#include <FreeImage.h>
-
 #ifdef _DEBUG
 void _stdcall glDebugOutput(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar* message, const void* userParam)
 {
@@ -144,8 +140,6 @@ void RenderDeviceOGL::InitDevice(HDC _hdc)
 
 bool RenderDeviceOGL::Initialize()
 {
-	FreeImage_Initialise();
-
 	CreateDevice();
 	//LoadDefaultResources();
 
@@ -161,8 +155,6 @@ void RenderDeviceOGL::Finalize()
 	m_Samplers.clear();
 	m_Pipelines.clear();
 	m_Queries.clear();
-
-	FreeImage_DeInitialise();
 }
 
 const std::string& RenderDeviceOGL::GetDeviceName() const

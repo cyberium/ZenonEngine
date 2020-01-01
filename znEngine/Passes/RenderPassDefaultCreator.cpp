@@ -56,17 +56,17 @@ std::string CRenderPassDefaultCreator::GetRenderPassName(size_t Index) const
 
 std::shared_ptr<IRenderPass> CRenderPassDefaultCreator::CreateRenderPass(size_t Index, std::shared_ptr<IRenderDevice> RenderDevice, std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport, std::shared_ptr<IScene> Scene) const
 {
+	IBlendState::BlendMode alphaBlending(true, false, IBlendState::BlendFactor::SrcAlpha, IBlendState::BlendFactor::OneMinusSrcAlpha, IBlendState::BlendOperation::Add, IBlendState::BlendFactor::SrcAlpha, IBlendState::BlendFactor::OneMinusSrcAlpha);
+	IBlendState::BlendMode disableBlending;
+	IDepthStencilState::DepthMode enableDepthWrites(true, IDepthStencilState::DepthWrite::Enable);
+	IDepthStencilState::DepthMode disableDepthWrites(false, IDepthStencilState::DepthWrite::Disable);
+
 	if (Index == 0)
 	{
 		return std::make_shared<ClearRenderTargetPass>(RenderDevice, RenderTarget, ClearFlags::All, glm::vec4(0.2f, 0.2f, 0.2f, 0.3f), 1.0f, 0);
 	}
 	else if (Index == 1)
 	{
-		IBlendState::BlendMode alphaBlending(true, false, IBlendState::BlendFactor::SrcAlpha, IBlendState::BlendFactor::OneMinusSrcAlpha, IBlendState::BlendOperation::Add, IBlendState::BlendFactor::SrcAlpha, IBlendState::BlendFactor::OneMinusSrcAlpha);
-		IBlendState::BlendMode disableBlending;
-		IDepthStencilState::DepthMode enableDepthWrites(true, IDepthStencilState::DepthWrite::Enable);
-		IDepthStencilState::DepthMode disableDepthWrites(false, IDepthStencilState::DepthWrite::Disable);
-
 		std::shared_ptr<IShader> g_pVertexShader;
 		std::shared_ptr<IShader> g_pPixelShader;
 
@@ -97,11 +97,6 @@ std::shared_ptr<IRenderPass> CRenderPassDefaultCreator::CreateRenderPass(size_t 
 	}
 	else if (Index == 2)
 	{
-		IBlendState::BlendMode alphaBlending(true, false, IBlendState::BlendFactor::SrcAlpha, IBlendState::BlendFactor::OneMinusSrcAlpha, IBlendState::BlendOperation::Add, IBlendState::BlendFactor::SrcAlpha, IBlendState::BlendFactor::OneMinusSrcAlpha);
-		IBlendState::BlendMode disableBlending;
-		IDepthStencilState::DepthMode enableDepthWrites(true, IDepthStencilState::DepthWrite::Enable);
-		IDepthStencilState::DepthMode disableDepthWrites(false, IDepthStencilState::DepthWrite::Disable);
-
 		std::shared_ptr<IShader> g_pVertexShader;
 		std::shared_ptr<IShader> g_pPixelShader;
 
@@ -138,11 +133,6 @@ std::shared_ptr<IRenderPass> CRenderPassDefaultCreator::CreateRenderPass(size_t 
 	}
 	else if (Index == 3)
 	{
-		IBlendState::BlendMode alphaBlending(true, false, IBlendState::BlendFactor::SrcAlpha, IBlendState::BlendFactor::OneMinusSrcAlpha, IBlendState::BlendOperation::Add, IBlendState::BlendFactor::SrcAlpha, IBlendState::BlendFactor::OneMinusSrcAlpha);
-		IBlendState::BlendMode disableBlending;
-		IDepthStencilState::DepthMode enableDepthWrites(true, IDepthStencilState::DepthWrite::Enable);
-		IDepthStencilState::DepthMode disableDepthWrites(false, IDepthStencilState::DepthWrite::Disable);
-
 		std::shared_ptr<IPipelineState> UIPipeline = RenderDevice->CreatePipelineState();
 		UIPipeline->GetBlendState()->SetBlendMode(alphaBlending);
 		UIPipeline->GetDepthStencilState()->SetDepthMode(disableDepthWrites);
@@ -157,11 +147,6 @@ std::shared_ptr<IRenderPass> CRenderPassDefaultCreator::CreateRenderPass(size_t 
 	}
 	else if (Index == 4)
 	{
-		IBlendState::BlendMode alphaBlending(true, false, IBlendState::BlendFactor::SrcAlpha, IBlendState::BlendFactor::OneMinusSrcAlpha, IBlendState::BlendOperation::Add, IBlendState::BlendFactor::SrcAlpha, IBlendState::BlendFactor::OneMinusSrcAlpha);
-		IBlendState::BlendMode disableBlending;
-		IDepthStencilState::DepthMode enableDepthWrites(true, IDepthStencilState::DepthWrite::Enable);
-		IDepthStencilState::DepthMode disableDepthWrites(false, IDepthStencilState::DepthWrite::Disable);
-
 		std::shared_ptr<IShader> g_pVertexShader;
 		std::shared_ptr<IShader> g_pPixelShader;
 
@@ -187,11 +172,6 @@ std::shared_ptr<IRenderPass> CRenderPassDefaultCreator::CreateRenderPass(size_t 
 	}
 	else if (Index == 5)
 	{
-		IBlendState::BlendMode alphaBlending(true, false, IBlendState::BlendFactor::SrcAlpha, IBlendState::BlendFactor::OneMinusSrcAlpha, IBlendState::BlendOperation::Add, IBlendState::BlendFactor::SrcAlpha, IBlendState::BlendFactor::OneMinusSrcAlpha);
-		IBlendState::BlendMode disableBlending;
-		IDepthStencilState::DepthMode enableDepthWrites(true, IDepthStencilState::DepthWrite::Enable);
-		IDepthStencilState::DepthMode disableDepthWrites(false, IDepthStencilState::DepthWrite::Disable);
-
 		std::shared_ptr<IShader> g_pVertexShader;
 		std::shared_ptr<IShader> g_pPixelShader;
 
@@ -204,7 +184,7 @@ std::shared_ptr<IRenderPass> CRenderPassDefaultCreator::CreateRenderPass(size_t 
 
 		// PIPELINES
 		std::shared_ptr<IPipelineState> Pipeline = RenderDevice->CreatePipelineState();
-		Pipeline->GetBlendState()->SetBlendMode(disableBlending);
+		Pipeline->GetBlendState()->SetBlendMode(alphaBlending);
 		Pipeline->GetDepthStencilState()->SetDepthMode(enableDepthWrites);
 		Pipeline->GetRasterizerState()->SetCullMode(IRasterizerState::CullMode::None);
 		Pipeline->GetRasterizerState()->SetFillMode(IRasterizerState::FillMode::Solid);

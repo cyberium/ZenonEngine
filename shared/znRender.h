@@ -12,6 +12,7 @@
 #include "../znRender/RasterizerStateBase.h"
 
 #include "../znRender/MaterialBase.h"
+#include "../znRender/GeometryBase.h"
 #include "../znRender/MeshBase.h"
 #include "../znRender/RenderDeviceBase.h"
 #include "../znRender/RenderWindowBase.h"

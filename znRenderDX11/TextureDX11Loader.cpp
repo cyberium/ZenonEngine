@@ -92,46 +92,6 @@ bool TextureDX11::LoadTextureCustom(uint16_t width, uint16_t height, void * pixe
 	return true;
 }
 
-// FreeImage
-#define FREEIMAGE_LIB // Static linking
-#include <FreeImage.h>
-#pragma comment(lib, "FreeImageLib.lib")
-
-// LibPNG
-#include <png.h>
-#pragma comment(lib, "LibPNG.lib")
-
-void PrintMetaData(FREE_IMAGE_MDMODEL model, FIBITMAP* dib)
-{
-	FITAG* metadataTag;
-	FIMETADATA* metadata = FreeImage_FindFirstMetadata(model, dib, &metadataTag);
-	if (metadata)
-	{
-		std::stringstream ss;
-		do
-		{
-			const char* key = FreeImage_GetTagKey(metadataTag);
-			const char* value = FreeImage_TagToString(model, metadataTag);
-			const char* description = FreeImage_GetTagDescription(metadataTag);
-
-			ss << "key[" << key << "] = " << value << "; Description: ";
-
-			if (description)
-			{
-				ss << description << std::endl;
-			}
-			else
-			{
-				ss << "(none)" << std::endl;
-			}
-
-		} while (FreeImage_FindNextMetadata(metadata, &metadataTag));
-		FreeImage_FindCloseMetadata(metadata);
-
-		OutputDebugStringA(ss.str().c_str());
-	}
-}
-
 #if 0
 
 bool TextureDX11::LoadTexture2D(const std::string& fileName)
@@ -362,15 +322,6 @@ bool TextureDX11::LoadTexture2D(const std::string& fileName)
 
 #else
 
-void userReadData(png_structp pngPtr, png_bytep data, png_size_t length) 
-{
-	png_voidp a = png_get_io_ptr(pngPtr);
-	std::shared_ptr<IFile>* file = ((std::shared_ptr<IFile>*)a);
-
-	if (!(*file)->readBytes(data, length))
-		_ASSERT_EXPR(false, L"Error while reading PNG file.");
-}
-
 bool TextureDX11::LoadTexture2D(const std::string& fileName)
 {
 	std::shared_ptr<IFile> f = m_RenderDevice.lock()->GetBaseManager()->GetManager<IFilesManager>()->Open(fileName);
@@ -379,7 +330,7 @@ bool TextureDX11::LoadTexture2D(const std::string& fileName)
 		return false;
 	}
 
-	std::shared_ptr<IImage> image = m_RenderDevice.lock()->GetBaseManager()->GetManager<IImagesFactory>()->LoadImage(f);
+	std::shared_ptr<IImage> image = m_RenderDevice.lock()->GetBaseManager()->GetManager<IImagesFactory>()->CreateImage(f);
 	if (image == nullptr)
 	{
 		return false;

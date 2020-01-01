@@ -6,46 +6,50 @@
 void DisplayMetaData(FbxScene* pScene)
 {
 	FbxDocumentInfo* sceneInfo = pScene->GetSceneInfo();
-	if (sceneInfo)
+	if (!sceneInfo)
 	{
-		Log::Print("-------------------- Meta-Data --------------------");
-		Log::Print("    Title: %s", sceneInfo->mTitle.Buffer());
-		Log::Print("    Subject: %s", sceneInfo->mSubject.Buffer());
-		Log::Print("    Author: %s", sceneInfo->mAuthor.Buffer());
-		Log::Print("    Keywords: %s", sceneInfo->mKeywords.Buffer());
-		Log::Print("    Revision: %s", sceneInfo->mRevision.Buffer());
-		Log::Print("    Comment: %s", sceneInfo->mComment.Buffer());
+		return;
+	}
 
-		FbxThumbnail* thumbnail = sceneInfo->GetSceneThumbnail();
-		if (thumbnail)
+	Log::Print("-------------------- Meta-Data --------------------");
+	Log::Print("    Title: %s", sceneInfo->mTitle.Buffer());
+	Log::Print("    Subject: %s", sceneInfo->mSubject.Buffer());
+	Log::Print("    Author: %s", sceneInfo->mAuthor.Buffer());
+	Log::Print("    Keywords: %s", sceneInfo->mKeywords.Buffer());
+	Log::Print("    Revision: %s", sceneInfo->mRevision.Buffer());
+	Log::Print("    Comment: %s", sceneInfo->mComment.Buffer());
+
+	FbxThumbnail* thumbnail = sceneInfo->GetSceneThumbnail();
+	if (thumbnail)
+	{
+		Log::Print("    Thumbnail:");
+
+		switch (thumbnail->GetDataFormat())
 		{
-			Log::Print("    Thumbnail:");
+			case FbxThumbnail::eRGB_24:
+				Log::Print("        Format: RGB");
+				break;
+			case FbxThumbnail::eRGBA_32:
+				Log::Print("        Format: RGBA");
+				break;
+		}
 
-			switch (thumbnail->GetDataFormat())
-			{
-				case FbxThumbnail::eRGB_24:
-					Log::Print("        Format: RGB");
-					break;
-				case FbxThumbnail::eRGBA_32:
-					Log::Print("        Format: RGBA");
-					break;
-			}
-
-			switch (thumbnail->GetSize())
-			{
-				case FbxThumbnail::eNotSet:
-					Log::Print("        Size: no dimensions specified (%ld bytes)", thumbnail->GetSizeInBytes());
-					break;
-				case FbxThumbnail::e64x64:
-					Log::Print("        Size: 64 x 64 pixels (%ld bytes)", thumbnail->GetSizeInBytes());
-					break;
-				case FbxThumbnail::e128x128:
-					Log::Print("        Size: 128 x 128 pixels (%ld bytes)", thumbnail->GetSizeInBytes());
-				default:
-					break;
-			}
+		switch (thumbnail->GetSize())
+		{
+			case FbxThumbnail::eNotSet:
+				Log::Print("        Size: no dimensions specified (%ld bytes)", thumbnail->GetSizeInBytes());
+				break;
+			case FbxThumbnail::e64x64:
+				Log::Print("        Size: 64 x 64 pixels (%ld bytes)", thumbnail->GetSizeInBytes());
+				break;
+			case FbxThumbnail::e128x128:
+				Log::Print("        Size: 128 x 128 pixels (%ld bytes)", thumbnail->GetSizeInBytes());
+			default:
+				break;
 		}
 	}
+
+	Log::Print("---------------------------------------------------");
 }
 
 void DisplayMetaDataConnections(FbxObject* pObject)
@@ -65,7 +69,8 @@ void DisplayMetaDataConnections(FbxObject* pObject)
 
 void DisplayHierarchy(FbxScene* pScene)
 {
-	FbxNode* lRootNode = pScene->GetRootNode();
+	Log::Info("Nodes hierarchy:");
+	fbxsdk::FbxNode* lRootNode = pScene->GetRootNode();
 
 	for (int i = 0; i < lRootNode->GetChildCount(); i++)
 	{
@@ -73,7 +78,7 @@ void DisplayHierarchy(FbxScene* pScene)
 	}
 }
 
-void DisplayHierarchy(FbxNode* pNode, int pDepth)
+void DisplayHierarchy(fbxsdk::FbxNode* pNode, int pDepth)
 {
 	FbxString lString;
 
