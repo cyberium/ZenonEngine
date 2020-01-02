@@ -38,3 +38,8 @@ void GeometryBase::SetIndexBuffer(std::shared_ptr<IBuffer> buffer)
 {
     m_pIndexBuffer = buffer;
 }
+
+bool GeometryBase::Accept(IVisitor * visitor, const IShader* VertexShader, SRenderGeometryArgs RenderGeometryArgs)
+{
+	return visitor->Visit(this, VertexShader, RenderGeometryArgs);
+}

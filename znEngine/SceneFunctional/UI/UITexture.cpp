@@ -16,6 +16,7 @@ CUITextureNode::CUITextureNode(std::shared_ptr<IRenderDevice> RenderDevice, vec2
 	m_Material->SetColor(cDefaultColor);
 
 	m_Mesh = RenderDevice->GetPrimitiveCollection()->CreateUIQuad(Size.x, Size.y);
+	m_Mesh->SetMaterial(m_Material);
 }
 
 CUITextureNode::~CUITextureNode()
@@ -49,7 +50,7 @@ glm::vec2 CUITextureNode::GetSize()
 
 bool CUITextureNode::AcceptMesh(IVisitor* visitor)
 {
-	m_Mesh->SetMaterial(m_Material);
+
 
 	return m_Mesh->Accept(visitor);
 }

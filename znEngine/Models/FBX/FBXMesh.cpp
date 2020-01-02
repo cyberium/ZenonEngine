@@ -257,6 +257,7 @@ void CFBXMesh::Load()
 	//
 	// Materials
 	//
+#if 0
 	_ASSERT_EXPR(m_NativeMesh->GetElementMaterialCount() == 1, L"Only one material must supported for mesh.");
 	for (int l = 0; l < m_NativeMesh->GetElementMaterialCount(); l++)
 	{
@@ -265,9 +266,9 @@ void CFBXMesh::Load()
 
 		int materialID = materialElement->GetIndexArray().GetAt(0);
 		Log::Print("Mesh refer to material '%d'. Index size '%d'.", materialID, materialElement->GetIndexArray().GetCount());
-		SetMaterial(m_OwnerFBXNode.lock()->GetMaterial(materialID));
-
+		AddMaterial(m_OwnerFBXNode.lock()->GetMaterial(materialID));
 	}
+#endif
 
 
 	DisplayMaterialConnections();
@@ -275,15 +276,12 @@ void CFBXMesh::Load()
 
 void CFBXMesh::DisplayMaterialConnections()
 {
-	DisplayString("    Polygons Material Connections");
-
 	struct SPolygonConnectionInfo
 	{
 		int PolygonBegin;
 		int PolygonEnd;
 	};
 	std::unordered_map<int, SPolygonConnectionInfo> polygonConnectionInfos;
-
 
 
 	bool lIsAllSame = true;
@@ -299,6 +297,7 @@ void CFBXMesh::DisplayMaterialConnections()
 
 	if (lIsAllSame)
 	{
+		_ASSERT(m_NativeMesh->GetElementMaterialCount() == 1);
 		for (int l = 0; l < m_NativeMesh->GetElementMaterialCount(); l++)
 		{
 			FbxGeometryElementMaterial* lMaterialElement = m_NativeMesh->GetElementMaterial(l);
@@ -308,7 +307,7 @@ void CFBXMesh::DisplayMaterialConnections()
 				int lMatId = lMaterialElement->GetIndexArray().GetAt(0);
 				_ASSERT(lMatId >= 0);
 
-				DisplayInt("        All polygons share the same material in mesh ", l);
+				SetMaterial(m_OwnerFBXNode.lock()->GetMaterial(lMatId));
 			}
 			else
 			{
@@ -324,6 +323,7 @@ void CFBXMesh::DisplayMaterialConnections()
 	{
 		for (int polygonIndex = 0; polygonIndex < m_NativeMesh->GetPolygonCount(); polygonIndex++)
 		{
+			_ASSERT(m_NativeMesh->GetElementMaterialCount() == 1);
 			for (int l = 0; l < m_NativeMesh->GetElementMaterialCount(); l++)
 			{
 				FbxGeometryElementMaterial* lMaterialElement = m_NativeMesh->GetElementMaterial(l);
@@ -341,12 +341,17 @@ void CFBXMesh::DisplayMaterialConnections()
 				}
 			}
 		}
-	}
 
-	if (!lIsAllSame)
-	{
-		_ASSERT(true);
-		Log::Error("Test '%d'", polygonConnectionInfos.size());
+		for (const auto& it : polygonConnectionInfos)
+		{
+			SGeometryPartParams geometryPartParams;
+			geometryPartParams.VertexStartLocation = it.second.PolygonBegin * 3;
+			geometryPartParams.VertexCnt = it.second.PolygonEnd * 3 - geometryPartParams.VertexStartLocation + 3;
+
+			AddMaterial(m_OwnerFBXNode.lock()->GetMaterial(it.first), geometryPartParams);
+
+			//Log::Info("Material with id '%d' added for (%d to %d)", it.first, geometryPartParams.VertexStartLocation, geometryPartParams.VertexCnt);
+		}
 	}
 }
 

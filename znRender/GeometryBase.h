@@ -15,6 +15,8 @@ public:
 	virtual void                                    SetVertexBuffer(std::shared_ptr<IBuffer> buffer) override;
 	virtual void                                    SetIndexBuffer(std::shared_ptr<IBuffer> buffer) override;
 
+	virtual bool                                    Accept(IVisitor* visitor, const IShader* VertexShader, SRenderGeometryArgs RenderGeometryArgs) override;
+
 protected:
 	BoundingBox                                     m_Bounds;
 	std::unordered_map<BufferBinding, std::shared_ptr<IBuffer>> m_VertexBuffers;

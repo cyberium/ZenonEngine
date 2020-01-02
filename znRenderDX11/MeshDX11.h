@@ -1,6 +1,9 @@
 #pragma once
 
-class ZN_API MeshDX11 : public MeshBase
+#include "GeometryDX11.h"
+
+class ZN_API MeshDX11 
+	: public MeshBase
 {
 public:
 	                                                MeshDX11(ID3D11Device2 * pDevice);
@@ -8,12 +11,9 @@ public:
 
 	virtual void                                    SetPrimitiveTopology(PrimitiveTopology _topology);
 
-	virtual bool                                    Render(const RenderEventArgs* renderArgs, const IConstantBuffer* perObject, UINT indexStartLocation = 0, UINT indexCnt = 0, UINT vertexStartLocation = 0, UINT vertexCnt = 0);
+	virtual bool                                    Render(const RenderEventArgs* renderArgs, const IConstantBuffer* perObject, SGeometryPartParams GeometryPartParams);
 
-private:
-	D3D11_PRIMITIVE_TOPOLOGY                        m_PrimitiveTopology;
-
-	// DirectX
+private: // DirectX
 	ATL::CComPtr<ID3D11Device2>                     m_pDevice;
 	ATL::CComPtr<ID3D11DeviceContext2>              m_pDeviceContext;
 };

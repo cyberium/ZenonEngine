@@ -15,7 +15,7 @@ protected:
 
 public: // Static
 	static bool IsFileSupported(std::shared_ptr<IFile> File);
-	static std::shared_ptr<IImage> CreateImage(std::shared_ptr<IFile> File);
+	static std::shared_ptr<CImagePNG> CreateImage(std::shared_ptr<IFile> File);
 
 private:
 	png_structp m_PngPtr;

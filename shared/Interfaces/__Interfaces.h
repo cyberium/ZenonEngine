@@ -128,12 +128,13 @@ class Rect;
 #include "Interfaces/Render/Types/BufferBinding.h"
 #include "Interfaces/Render/Types/ClearFlags.h"
 #include "Interfaces/Render/Types/CPUAccess.h"
+#include "Interfaces/Render/Types/CustomVertexElement.h"
 #include "Interfaces/Render/Types/InputSemantic.h"
 #include "Interfaces/Render/Types/PrimitiveTopology.h"
-#include "Interfaces/Render/Types/Viewport.h"
-#include "Interfaces/Render/Types/CustomVertexElement.h"
 #include "Interfaces/Render/Types/Ray.h"
 #include "Interfaces/Render/Types/RaycastHit.h"
+#include "Interfaces/Render/Types/RenderGeometryParams.h"
+#include "Interfaces/Render/Types/Viewport.h"
 
 //---------------------------------------------------------//
 //--                Render Interfaces                    --//

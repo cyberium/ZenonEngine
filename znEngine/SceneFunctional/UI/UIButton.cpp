@@ -38,6 +38,7 @@ void CUIButtonNode::CreateDefault()
     m_Size = idleTexture->GetSize();
 
 	m_Mesh = GetBaseManager()->GetManager<IRenderDevice>()->GetPrimitiveCollection()->CreateUIQuad(idleTexture->GetWidth(), idleTexture->GetHeight());
+	m_Mesh->SetMaterial(m_Material);
 
     m_TextNode = CreateSceneNode<CUITextNode>();
 	m_TextNode->GetProperties()->GetPropertyT<std::string>("Text")->Set(cDefaultText);
@@ -116,7 +117,6 @@ bool CUIButtonNode::Accept(IVisitor* visitor)
 bool CUIButtonNode::AcceptMesh(IVisitor* visitor)
 {
 	m_Material->SetState(m_State);
-	m_Mesh->SetMaterial(m_Material);
-
+	
 	return m_Mesh->Accept(visitor);
 }

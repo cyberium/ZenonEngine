@@ -644,6 +644,9 @@
     <ClInclude Include="..\shared\Interfaces\Render\IGeometry.h">
       <Filter>__Interfaces\Render</Filter>
     </ClInclude>
+    <ClInclude Include="..\shared\Interfaces\Render\Types\RenderGeometryParams.h">
+      <Filter>__Interfaces\Render\Types</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="RefManager1Dim.inl">

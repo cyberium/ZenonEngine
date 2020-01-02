@@ -141,7 +141,7 @@ bool CImagePNG::IsFileSupported(std::shared_ptr<IFile> File)
 	return png_sig_cmp(pngsig, 0, cPNGSigSize) == 0;
 }
 
-std::shared_ptr<IImage> CImagePNG::CreateImage(std::shared_ptr<IFile> File)
+std::shared_ptr<CImagePNG> CImagePNG::CreateImage(std::shared_ptr<IFile> File)
 {
 	_ASSERT(IsFileSupported(File));
 

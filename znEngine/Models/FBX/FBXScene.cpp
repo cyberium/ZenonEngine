@@ -141,7 +141,6 @@ bool CFBXScene::LoadFromFile(std::shared_ptr<IFile> File)
 
 	FbxGeometryConverter converter(GetNativeManager());
 
-#if 0
 	Log::Info("CFBXScene: Triangulation started.");
 	Timer t;
 	if (!converter.Triangulate(fbxsdk::FbxCast<fbxsdk::FbxScene>(m_NativeScene), true))
@@ -150,7 +149,6 @@ bool CFBXScene::LoadFromFile(std::shared_ptr<IFile> File)
 		return false;
 	}
 	Log::Info("CFBXScene: Triangulation finished in '%f' ms.", t.GetElapsedTime());
-#endif
 
 	//if (!converter.SplitMeshesPerMaterial(fbxsdk::FbxCast<fbxsdk::FbxScene>(m_NativeScene), true))
 	//{
@@ -231,7 +229,7 @@ bool CFBXScene::LoadNodes(std::shared_ptr<ISceneNode> ParentNode)
 
 	m_RootNode = ParentNode->CreateSceneNode<CFBXSceneNode>(m_BaseManager, weak_from_this(), m_NativeScene->GetRootNode());
 	m_RootNode->LoadNode();
-	m_RootNode->SetScale(glm::vec3(10));
+	m_RootNode->SetScale(glm::vec3(50));
 
 	return true;
 }

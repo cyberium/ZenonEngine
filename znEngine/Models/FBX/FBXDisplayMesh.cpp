@@ -22,9 +22,9 @@ using namespace fbxsdk;
 std::shared_ptr<IMesh> DisplayMesh(FbxNode* pNode)
 {
 	FbxMesh* lMesh = (FbxMesh*)pNode->GetNodeAttribute();
-	Log::Info("FBX: Mesh name is '%s'", pNode->GetName());
+	//Log::Info("FBX: Mesh name is '%s'", pNode->GetName());
 
-	const IBaseManager* null;
+	const IBaseManager* null = nullptr;
 	std::shared_ptr<IRenderDevice> renderDevice = null->GetManager<IRenderDevice>();
 
 	std::shared_ptr<IMesh> mesh = renderDevice->CreateMesh();
@@ -262,7 +262,7 @@ std::shared_ptr<IMesh> DisplayMesh(FbxNode* pNode)
 		fbxsdk::FbxGeometryElementMaterial* elem = lMesh->GetElementMaterial(l);
 		_ASSERT_EXPR(elem->GetMappingMode() == FbxGeometryElement::eAllSame, L"Material mapping must be all same.");
 
-		Log::Print("Material name is '%s'.", elem->GetName());
+		//Log::Print("Material name is '%s'.", elem->GetName());
 
 	}
 

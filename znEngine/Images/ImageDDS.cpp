@@ -152,7 +152,8 @@ struct DXT_INFO_5
 	};
 };
 
-template <class INFO> class DXT_BLOCKDECODER_BASE {
+template <class INFO> class DXT_BLOCKDECODER_BASE 
+{
 protected:
 	Color8888 m_colors[4];
 	const typename INFO::Block *m_pBlock;
@@ -319,7 +320,7 @@ bool CImageDDS::IsFileSupported(std::shared_ptr<IFile> File)
 	return true;
 }
 
-std::shared_ptr<IImage> CImageDDS::CreateImage(std::shared_ptr<IFile> File)
+std::shared_ptr<CImageDDS> CImageDDS::CreateImage(std::shared_ptr<IFile> File)
 {
 	_ASSERT(IsFileSupported(File));
 
@@ -380,7 +381,7 @@ bool CImageDDS::LoadRGB(const DDSURFACEDESC2& desc, std::shared_ptr<IFile> io)
 	m_Height = (uint32)desc.dwHeight & ~3;
 	m_BitsPerPixel = (uint32)desc.ddpfPixelFormat.dwRGBBitCount;
 	m_Stride = m_Width * (m_BitsPerPixel / 8);
-	m_IsTransperent = (desc.ddpfPixelFormat.dwFlags & DDPF_ALPHAPIXELS);
+	m_IsTransperent = (desc.ddpfPixelFormat.dwFlags & DDPF_ALPHAPIXELS) == 1;
 	m_Data = new uint8[m_Height * m_Stride];
 
 	// read the file
@@ -401,8 +402,12 @@ bool CImageDDS::LoadDXT(int type, const DDSURFACEDESC2& desc, std::shared_ptr<IF
 	m_Height = (uint32)desc.dwHeight & ~3;
 	m_BitsPerPixel = 32;
 	m_Stride = m_Width * (m_BitsPerPixel / 8);
-	m_IsTransperent = (desc.ddpfPixelFormat.dwFlags & DDPF_ALPHAPIXELS);
+	m_IsTransperent = (desc.ddpfPixelFormat.dwFlags & DDPF_ALPHAPIXELS) == 1;
 	m_Data = new uint8[m_Height * m_Stride];
+
+	//if (m_IsTransperent)
+
+	Log::Warn("'%d' IS TRANSPERENT!!!", desc.ddpfPixelFormat.dwFlags);
 
 	switch (type)
 	{
@@ -488,6 +493,15 @@ bool CImageDDS::LoadDXT_Helper(std::shared_ptr<IFile> io)
 	}
 
 	delete[] input_buffer;
+
+	for (size_t pixelIndex = 0; pixelIndex < m_Height * m_Width * 4; pixelIndex += 4)
+	{
+		if (m_Data[pixelIndex + 3] < 0xFF)
+		{
+			m_IsTransperent = true;
+			break;
+		}
+	}
 
 	return true;
 }

@@ -105,13 +105,13 @@ void CGameState_World::Load3D()
 	matDebug->SetDiffuseColor(vec4(0.0f, 1.0f, 1.0f, 1.0f));
 	matDebug->SetWrapper(matDebug);
 
-	/*std::shared_ptr<IMesh> meshPlane = GetRenderDevice()->GetPrimitiveCollection()->CreatePlane();
+	std::shared_ptr<IMesh> meshPlane = GetRenderDevice()->GetPrimitiveCollection()->CreatePlane();
 	meshPlane->SetMaterial(matDebug);
 
-	std::shared_ptr<ISceneNode> sceneNodePlane = m_Scene3D->CreateWrappedSceneNode<SceneNode3D>("SceneNode3D", m_Scene3D->GetRootNode());
-	sceneNodePlane->SetName("Ground.");
-	std::dynamic_pointer_cast<ISceneNode3D>(sceneNodePlane)->SetScale(vec3(1000.0f, 1.0f, 1000.0f));
-	sceneNodePlane->GetComponent<IMeshComponent3D>()->AddMesh(meshPlane);*/
+	//std::shared_ptr<ISceneNode> sceneNodePlane = m_Scene3D->CreateWrappedSceneNode<SceneNode3D>("SceneNode3D", m_Scene3D->GetRootNode());
+	//sceneNodePlane->SetName("Ground.");
+	//std::dynamic_pointer_cast<ISceneNode3D>(sceneNodePlane)->SetScale(vec3(1000.0f, 1.0f, 1000.0f));
+	//sceneNodePlane->GetComponent<IMeshComponent3D>()->AddMesh(meshPlane);
 
 
 	//-- Assimp -----------------
@@ -163,23 +163,12 @@ void CGameState_World::Load3D()
 	std::shared_ptr<ISceneNode> fbxSceneNode = GetBaseManager()->GetManager<ISceneNodesFactory>()->CreateSceneNode(m_Scene3D->GetRootNode(), "FBXSceneNode");
 	//fbxSceneNode->GetComponent<ITransformComponent3D>()->SetScale(vec3(15.0f, 15.0f, 15.0f));
 
-	for (auto& m : fbxSceneNode->GetComponent<IMeshComponent3D>()->GetMeshes())
-	{
-		if (m->GetMaterial() == nullptr)
-		{
-			m->SetMaterial(mat);
-		}
-		else
-		{
-			(void*)m->GetMaterial().get();
-		}
-	}
-
 	m_Technique3D.AddPass(GetBaseManager()->GetManager<IRenderPassFactory>()->CreateRenderPass("ClearPass", GetRenderDevice(), GetRenderWindow()->GetRenderTarget(), GetRenderWindow()->GetViewport(), m_Scene3D));
 	m_Technique3D.AddPass(GetBaseManager()->GetManager<IRenderPassFactory>()->CreateRenderPass("DebugPass", GetRenderDevice(), GetRenderWindow()->GetRenderTarget(), GetRenderWindow()->GetViewport(), m_Scene3D));
 	m_Technique3D.AddPass(GetBaseManager()->GetManager<IRenderPassFactory>()->CreateRenderPass("TexturedMaterialPass", GetRenderDevice(), GetRenderWindow()->GetRenderTarget(), GetRenderWindow()->GetViewport(), m_Scene3D));
-	m_Technique3D.AddPass(GetBaseManager()->GetManager<IRenderPassFactory>()->CreateRenderPass("OBJPass", GetRenderDevice(), GetRenderWindow()->GetRenderTarget(), GetRenderWindow()->GetViewport(), m_Scene3D));
+	//m_Technique3D.AddPass(GetBaseManager()->GetManager<IRenderPassFactory>()->CreateRenderPass("OBJPass", GetRenderDevice(), GetRenderWindow()->GetRenderTarget(), GetRenderWindow()->GetViewport(), m_Scene3D));
 	m_Technique3D.AddPass(GetBaseManager()->GetManager<IRenderPassFactory>()->CreateRenderPass("FBXPass", GetRenderDevice(), GetRenderWindow()->GetRenderTarget(), GetRenderWindow()->GetViewport(), m_Scene3D));
+
 }
 
 void CGameState_World::LoadUI()

@@ -81,10 +81,10 @@ glm::vec2 CUITextNode::GetSize()
 
 bool CUITextNode::AcceptMesh(IVisitor* visitor)
 {
-	m_Font->SetMaterial(m_Material);
-
 	const std::string& _text = m_TextProperty->Get();
 	vec2 _offset = m_OffsetProperty->Get();
+
+	m_Font->SetMaterial(m_Material);
 
 	for (uint32 i = 0; i < _text.length(); i++)
 	{
@@ -92,7 +92,10 @@ bool CUITextNode::AcceptMesh(IVisitor* visitor)
 		m_Material->SetOffset(_offset);
 		_offset.x += static_cast<float>(m_Font->GetCharWidth(ch)) + 0.01f;
 
-		m_Font->Accept(visitor, 0, 0, (ch) * 6, 6);
+		SGeometryPartParams geometryPartParams;
+		geometryPartParams.VertexStartLocation = (ch) * 6;
+		geometryPartParams.VertexCnt = 6;
+		m_Font->Accept(visitor, geometryPartParams);
 	}
 
 	return true;

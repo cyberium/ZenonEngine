@@ -1,6 +1,10 @@
 #pragma once
 
-class ZN_API MeshBase : public IMesh, public Object
+#include "GeometryBase.h"
+
+class ZN_API MeshBase 
+	: public IMesh
+	, public Object
 {
 public:
 	MeshBase();
@@ -16,16 +20,15 @@ public:
 	virtual void                                    SetVertexBuffer(std::shared_ptr<IBuffer> buffer) override;
 	virtual void                                    SetIndexBuffer(std::shared_ptr<IBuffer> buffer) override;
 
-	virtual void                                    SetMaterial(std::shared_ptr<const IMaterial> material) override final;
-	virtual std::shared_ptr<const IMaterial>        GetMaterial() const override final;
+	void                                            SetMaterial(std::shared_ptr<const IMaterial> Material);
+	void											AddMaterial(std::shared_ptr<const IMaterial> Material, SGeometryPartParams GeometryPartParams = SGeometryPartParams()) override final;
+	std::vector<SRenderGeometryArgs>				GetMaterials() const override final;
 
-	virtual bool                                    Accept(IVisitor* visitor, UINT indexStartLocation = 0, UINT indexCnt = 0, UINT vertexStartLocation = 0, UINT vertexCnt = 0);
+	virtual bool                                    Accept(IVisitor* visitor, SGeometryPartParams GeometryPartParams);
 
 protected:
+	std::shared_ptr<GeometryBase>					m_Geometry;
+
 	std::string                                     m_Name;
-	BoundingBox                                     m_Bounds;
-	std::unordered_map<BufferBinding, std::shared_ptr<IBuffer>> m_VertexBuffers;
-    std::shared_ptr<IBuffer>                        m_VertexBuffer;
-    std::shared_ptr<IBuffer>                        m_pIndexBuffer;
-    std::shared_ptr<const IMaterial>                m_pMaterial;
+	std::vector<SRenderGeometryArgs>				m_MaterialForGeometryParts;
 };

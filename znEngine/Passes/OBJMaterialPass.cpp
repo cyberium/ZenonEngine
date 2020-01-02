@@ -19,13 +19,24 @@ COBJMaterialPass::~COBJMaterialPass()
 //
 // IVisitor
 //
-bool COBJMaterialPass::Visit(IMesh * Mesh, UINT IndexStartLocation, UINT IndexCnt, UINT VertexStartLocation, UINT VertexCnt)
+bool COBJMaterialPass::Visit(IMesh * Mesh, SGeometryPartParams GeometryPartParams)
 {
-	std::shared_ptr<const IMaterial> material = Mesh->GetMaterial();
+	std::shared_ptr<const IMaterial> material = Mesh->GetMaterials()[0].Material;
 
 	const CAssimpMaterial* objMaterial = dynamic_cast<const CAssimpMaterial*>(material.get());
 	if (objMaterial == nullptr)
 		return false;
 
-	return Base3DPass::Visit(Mesh, IndexStartLocation, IndexCnt, VertexStartLocation, VertexCnt);
+	return Base3DPass::Visit(Mesh, GeometryPartParams);
+}
+
+bool COBJMaterialPass::Visit(IGeometry * Geometry, const IShader * VertexShader, const SRenderGeometryArgs& RenderGeometryArgs)
+{
+	std::shared_ptr<const IMaterial> material = RenderGeometryArgs.Material;
+
+	const CAssimpMaterial* objMaterial = dynamic_cast<const CAssimpMaterial*>(material.get());
+	if (objMaterial == nullptr)
+		return false;
+
+	return Base3DPass::Visit(Geometry, VertexShader, RenderGeometryArgs);
 }

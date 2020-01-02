@@ -18,12 +18,24 @@ CDebugMaterialPass::~CDebugMaterialPass()
 //
 // IVisitor
 //
-bool CDebugMaterialPass::Visit(IMesh * Mesh, UINT IndexStartLocation, UINT IndexCnt, UINT VertexStartLocation, UINT VertexCnt)
+bool CDebugMaterialPass::Visit(IMesh * Mesh, SGeometryPartParams GeometryPartParams)
 {
-	std::shared_ptr<const IMaterial> material = Mesh->GetMaterial();
-	const MaterialDebug* materialDebug = dynamic_cast<const MaterialDebug*>(material.get());
-	if (materialDebug == nullptr)
+	std::shared_ptr<const IMaterial> material = Mesh->GetMaterials()[0].Material;
+
+	const MaterialDebug* objMaterial = dynamic_cast<const MaterialDebug*>(material.get());
+	if (objMaterial == nullptr)
 		return false;
 
-	return Base3DPass::Visit(Mesh, IndexStartLocation, IndexCnt, VertexStartLocation, VertexCnt);
+	return Base3DPass::Visit(Mesh, GeometryPartParams);
+}
+
+bool CDebugMaterialPass::Visit(IGeometry * Geometry, const IShader * VertexShader, const SRenderGeometryArgs& RenderGeometryArgs)
+{
+	std::shared_ptr<const IMaterial> material = RenderGeometryArgs.Material;
+
+	const MaterialDebug* objMaterial = dynamic_cast<const MaterialDebug*>(material.get());
+	if (objMaterial == nullptr)
+		return false;
+
+	return Base3DPass::Visit(Geometry, VertexShader, RenderGeometryArgs);
 }

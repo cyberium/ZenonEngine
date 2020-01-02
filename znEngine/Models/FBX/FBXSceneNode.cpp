@@ -32,6 +32,8 @@ void CFBXSceneNode::LoadNode()
 		}
 	}
 
+#if 0
+
 	// Get the node’s default TRS properties
 	fbxsdk::FbxDouble3 lTranslation = m_NativeNode->LclTranslation.Get();
 	Display4DVector("Translation: ", lTranslation, "");
@@ -41,6 +43,7 @@ void CFBXSceneNode::LoadNode()
 
 	fbxsdk::FbxDouble3 lScaling = m_NativeNode->LclScaling.Get();
 	Display4DVector("Scaling: ", lScaling, "");
+#endif
 
 	//SetRotation(glm::vec3(lRotation[0], lRotation[1], lRotation[2]));
 
@@ -115,7 +118,7 @@ void CFBXSceneNode::LoadNode()
 
 bool CFBXSceneNode::LoadMaterials()
 {
-	Log::Print("CFBXSceneNode: Materials count '%d'.", m_NativeNode->GetMaterialCount());
+	//Log::Print("CFBXSceneNode: Materials count '%d'.", m_NativeNode->GetMaterialCount());
 	for (int i = 0; i < m_NativeNode->GetMaterialCount(); i++)
 	{
 		std::shared_ptr<CFBXMaterial> znMaterial = std::make_shared<CFBXMaterial>(m_BaseManager, std::dynamic_pointer_cast<CFBXSceneNode>(shared_from_this()), m_NativeNode->GetMaterial(i));

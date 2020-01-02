@@ -22,6 +22,7 @@ CUIBeizerLineNode::CUIBeizerLineNode(std::shared_ptr<IRenderDevice> RenderDevice
 
     m_PointsBuffer = RenderDevice->CreateVertexBuffer(p, 4);
     m_Mesh->AddVertexBuffer(BufferBinding("POSITION", 0), m_PointsBuffer);
+	m_Mesh->SetMaterial(m_Material);
 }
 
 CUIBeizerLineNode::~CUIBeizerLineNode()
@@ -66,8 +67,6 @@ glm::vec2 CUIBeizerLineNode::GetSize()
 
 bool CUIBeizerLineNode::AcceptMesh(IVisitor* visitor)
 {
-	m_Mesh->SetMaterial(m_Material);
-
 	return m_Mesh->Accept(visitor);
 }
 

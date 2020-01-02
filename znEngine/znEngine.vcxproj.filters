@@ -79,9 +79,6 @@
     <Filter Include="Models\FBX">
       <UniqueIdentifier>{58e4a1aa-f1f6-4806-9b25-b60c20a1fa5c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Models\FBX\Nodes">
-      <UniqueIdentifier>{39983375-6bcc-4192-b34b-71d2755d4e9a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Models\FBX\Helper classes">
       <UniqueIdentifier>{0472624f-3f9e-441e-a2c0-9ec808927899}</UniqueIdentifier>
     </Filter>
@@ -270,9 +267,6 @@
     <ClCompile Include="Models\FBX\FBXDisplayShape.cpp">
       <Filter>Models\FBX</Filter>
     </ClCompile>
-    <ClCompile Include="Models\FBX\FBXMaterialPass.cpp">
-      <Filter>Models\FBX\Nodes</Filter>
-    </ClCompile>
     <ClCompile Include="Models\FBX\FBXStream.cpp">
       <Filter>Models\FBX\Helper classes</Filter>
     </ClCompile>
@@ -302,6 +296,9 @@
     </ClCompile>
     <ClCompile Include="Images\ImagePNG.cpp">
       <Filter>Images</Filter>
+    </ClCompile>
+    <ClCompile Include="Models\FBX\FBXMaterialPass.cpp">
+      <Filter>Models\FBX\Wrapped</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -485,9 +482,6 @@
     <ClInclude Include="Models\FBX\FBXDisplayShape.h">
       <Filter>Models\FBX</Filter>
     </ClInclude>
-    <ClInclude Include="Models\FBX\FBXMaterialPass.h">
-      <Filter>Models\FBX\Nodes</Filter>
-    </ClInclude>
     <ClInclude Include="Models\FBX\FBXStream.h">
       <Filter>Models\FBX\Helper classes</Filter>
     </ClInclude>
@@ -517,6 +511,9 @@
     </ClInclude>
     <ClInclude Include="Images\ImagePNG.h">
       <Filter>Images</Filter>
+    </ClInclude>
+    <ClInclude Include="Models\FBX\FBXMaterialPass.h">
+      <Filter>Models\FBX\Wrapped</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

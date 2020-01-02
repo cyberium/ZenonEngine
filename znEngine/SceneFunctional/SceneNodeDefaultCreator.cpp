@@ -66,6 +66,7 @@ std::shared_ptr<ISceneNode> CSceneNodeDefaultCreator::CreateSceneNode(std::weak_
 
 		std::shared_ptr<CFBXScene> m_FBXScene = fbxManager.CreateScene("SomeSceneName");
 		m_FBXScene->LoadFromFile(m_BaseManager->GetManager<IFilesManager>()->Open("C:\\Users\\bouzi71\\Downloads\\Bistro_v4\\Bistro v4 Update\\Bistro_v4\\Bistro_Exterior.fbx"));
+		//m_FBXScene->LoadFromFile(m_BaseManager->GetManager<IFilesManager>()->Open("Sponza\\sponza.fbx"));
 		m_FBXScene->LoadNodes(Parent.lock());
 
 		return m_FBXScene->GetRootNode();

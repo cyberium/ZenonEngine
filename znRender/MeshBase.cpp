@@ -5,15 +5,10 @@
 
 MeshBase::MeshBase()
     : m_Name("MeshBase")
-	, m_VertexBuffer(nullptr)
-    , m_pIndexBuffer(nullptr)
-    , m_pMaterial(nullptr)
-{
-}
+{}
 
 MeshBase::~MeshBase()
-{
-}
+{}
 
 void MeshBase::SetName(const std::string& Name)
 {
@@ -27,40 +22,59 @@ std::string MeshBase::GetName() const
 
 void MeshBase::SetBounds(const BoundingBox& Bounds)
 {
-	m_Bounds = Bounds;
+	m_Geometry->SetBounds(Bounds);
 }
 
 const BoundingBox& MeshBase::GetBounds() const
 {
-	return m_Bounds;
+	return m_Geometry->GetBounds();
 }
 
 void MeshBase::AddVertexBuffer(const BufferBinding& binding, std::shared_ptr<IBuffer> buffer)
 {
-    m_VertexBuffers[binding] = buffer;
+	m_Geometry->AddVertexBuffer(binding, buffer);
 }
 
 void MeshBase::SetVertexBuffer(std::shared_ptr<IBuffer> buffer)
 {
-    m_VertexBuffer = buffer;
+	m_Geometry->SetVertexBuffer(buffer);
 }
 
 void MeshBase::SetIndexBuffer(std::shared_ptr<IBuffer> buffer)
 {
-    m_pIndexBuffer = buffer;
+	m_Geometry->SetIndexBuffer(buffer);
 }
 
-void MeshBase::SetMaterial(std::shared_ptr<const IMaterial> material)
+void MeshBase::SetMaterial(std::shared_ptr<const IMaterial> Material)
 {
-    m_pMaterial = material;
+	if (m_MaterialForGeometryParts.empty())
+	{
+		SRenderGeometryArgs renderGeometryArgs;
+		renderGeometryArgs.Material = Material;
+		m_MaterialForGeometryParts.push_back(renderGeometryArgs);
+	}
+	else
+	{
+		SRenderGeometryArgs renderGeometryArgs;
+		renderGeometryArgs.Material = Material;
+		m_MaterialForGeometryParts[0] = renderGeometryArgs;
+	}
 }
 
-std::shared_ptr<const IMaterial> MeshBase::GetMaterial() const
+void MeshBase::AddMaterial(std::shared_ptr<const IMaterial> Material, SGeometryPartParams GeometryPartParams)
 {
-    return m_pMaterial;
+	SRenderGeometryArgs renderGeometryArgs;
+	renderGeometryArgs.Material = Material;
+	renderGeometryArgs.GeometryPartParams = GeometryPartParams;
+	m_MaterialForGeometryParts.push_back(renderGeometryArgs);
 }
 
-bool MeshBase::Accept(IVisitor* visitor, UINT indexStartLocation, UINT indexCnt, UINT vertexStartLocation, UINT vertexCnt)
+std::vector<SRenderGeometryArgs> MeshBase::GetMaterials() const
 {
-    return visitor->Visit(this, indexStartLocation, indexCnt, vertexStartLocation, vertexCnt);
+	return m_MaterialForGeometryParts;
+}
+
+bool MeshBase::Accept(IVisitor* visitor, SGeometryPartParams GeometryPartParams = SGeometryPartParams())
+{
+    return visitor->Visit(this, GeometryPartParams);
 }

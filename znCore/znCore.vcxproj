@@ -83,6 +83,7 @@
   <ItemGroup>
     <ClInclude Include="..\shared\Interfaces\Render\IGeometry.h" />
     <ClInclude Include="..\shared\Interfaces\Render\IImageLoader.h" />
+    <ClInclude Include="..\shared\Interfaces\Render\Types\RenderGeometryParams.h" />
     <ClInclude Include="..\shared\Interfaces\XML.h" />
     <ClInclude Include="..\shared\znCore.h" />
     <ClInclude Include="BoundingBox.h" />

@@ -95,10 +95,16 @@ bool AbstractPass::VisitUI(ISceneNode* node)
 	return false;
 }
 
-bool AbstractPass::Visit(IMesh* Mesh, UINT IndexStartLocation, UINT IndexCnt, UINT VertexStartLocation, UINT VertexCnt)
+bool AbstractPass::Visit(IMesh* Mesh, SGeometryPartParams GeometryPartParams)
 {
 	_ASSERT(false, "This function must be specialized.");
     return false;
+}
+
+bool AbstractPass::Visit(IGeometry * Geometry, const IShader* VertexShader, const SRenderGeometryArgs& RenderGeometryArgs)
+{
+	_ASSERT(false, "This function must be specialized.");
+	return false;
 }
 
 bool AbstractPass::Visit(std::shared_ptr<CLight3D> light)

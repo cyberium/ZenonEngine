@@ -7,6 +7,8 @@ public:
 	CImageBase();
 	virtual ~CImageBase();
 
+	std::shared_ptr<IImage> Convert24To32Bit();
+
 	// IImage
 	uint32 GetWidth() const override;
 	uint32 GetHeight() const override;
@@ -44,6 +46,10 @@ public:
 	}
 	inline std::shared_ptr<IImage> CreateImage(std::shared_ptr<IFile> File) const override
 	{
-		return TIMAGE::CreateImage(File);
+		std::shared_ptr<TIMAGE> image = TIMAGE::CreateImage(File);
+		if (image != nullptr && image->GetBitsPerPixel() == 24)
+			return image->Convert24To32Bit();
+
+		return image;
 	}
 };

@@ -9,27 +9,28 @@ public:
 	AbstractPass(std::shared_ptr<IRenderDevice> RenderDevice, std::shared_ptr<IPipelineState> Pipeline);
 	virtual ~AbstractPass();
 
-	virtual void                                    SetEnabled(bool enabled);
-	virtual bool                                    IsEnabled() const;
+	virtual void SetEnabled(bool enabled);
+	virtual bool IsEnabled() const;
 
-	virtual void                                    PreRender(RenderEventArgs& e);
-	virtual void                                    PostRender(RenderEventArgs& e);
+	virtual void PreRender(RenderEventArgs& e);
+	virtual void PostRender(RenderEventArgs& e);
 
-    virtual void                                    UpdateViewport(const Viewport * _viewport);
+    virtual void UpdateViewport(const Viewport * _viewport);
 
 	// IVisitor
-	virtual bool                                    VisitBase(ISceneNode* node) override;
-	virtual bool                                    Visit3D(ISceneNode* node) override;
-	virtual bool                                    VisitUI(ISceneNode* node) override;
-	virtual bool                                    Visit(IMesh* Mesh, UINT IndexStartLocation = 0, UINT IndexCnt = 0, UINT VertexStartLocation = 0, UINT VertexCnt = 0) override;
-	virtual bool                                    Visit(std::shared_ptr<CLight3D> light) override;
+	virtual bool VisitBase(ISceneNode* node) override;
+	virtual bool Visit3D(ISceneNode* node) override;
+	virtual bool VisitUI(ISceneNode* node) override;
+	virtual bool Visit(IMesh* Mesh, SGeometryPartParams GeometryPartParams = SGeometryPartParams()) override;
+	virtual bool Visit(IGeometry* Geometry, const IShader* VertexShader, const SRenderGeometryArgs& RenderGeometryArgs) override;
+	virtual bool Visit(std::shared_ptr<CLight3D> light) override;
 
-	virtual void                                    SetRenderEventArgs(RenderEventArgs* e);
-	virtual RenderEventArgs*                        GetRenderEventArgs() const;
+	virtual void SetRenderEventArgs(RenderEventArgs* e);
+	virtual RenderEventArgs* GetRenderEventArgs() const;
 
 protected:
-    std::shared_ptr<IPipelineState>                 GetPipelineState() const;
-    std::shared_ptr<IRenderDevice>                  GetRenderDevice() const;
+    std::shared_ptr<IPipelineState> GetPipelineState() const;
+    std::shared_ptr<IRenderDevice> GetRenderDevice() const;
 
 private:
 	bool                                            m_Enabled;

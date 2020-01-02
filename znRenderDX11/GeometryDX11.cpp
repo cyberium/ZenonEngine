@@ -9,8 +9,8 @@
 #include "GeometryDX11.h"
 
 GeometryDX11::GeometryDX11(ID3D11Device2* pDevice)
-	: m_pDevice(pDevice)
-	, m_PrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST)
+	: m_PrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST)
+	, m_pDevice(pDevice)
 	, m_pDeviceContext(nullptr)
 {
 	m_pDevice->GetImmediateContext2(&m_pDeviceContext);
@@ -41,16 +41,15 @@ void GeometryDX11::SetPrimitiveTopology(PrimitiveTopology _topology)
 	}
 }
 
-bool GeometryDX11::Render(const RenderEventArgs* renderArgs, const IShader* VertexShader, const IConstantBuffer* perObject, const SRenderGeometryParams& RenderGeometryParams)
+bool GeometryDX11::Render(const RenderEventArgs* renderArgs, const IShader* VertexShader, const SGeometryPartParams& GeometryPartParams)
 {
-	UINT indexCnt = RenderGeometryParams.IndexCnt;
+	UINT indexStartLocation = GeometryPartParams.IndexStartLocation;
+	UINT indexCnt = GeometryPartParams.IndexCnt;
     if (indexCnt == UINT_MAX && m_pIndexBuffer != nullptr)
         indexCnt = m_pIndexBuffer->GetElementCount();
 
-	UINT indexStartLocation = RenderGeometryParams.IndexStartLocation;
-	_ASSERT(indexStartLocation < indexCnt);
-
-	UINT vertexCnt = RenderGeometryParams.VertexCnt;
+	UINT vertexStartLocation = GeometryPartParams.VertexStartLocation;
+	UINT vertexCnt = GeometryPartParams.VertexCnt;
 	if (vertexCnt == UINT_MAX)
 	{
 		if (m_VertexBuffer != nullptr)
@@ -67,18 +66,8 @@ bool GeometryDX11::Render(const RenderEventArgs* renderArgs, const IShader* Vert
 		}
 	}
 
-	UINT vertexStartLocation = RenderGeometryParams.VertexStartLocation;
-	_ASSERT(vertexStartLocation < vertexCnt);
-
 	if (VertexShader)
 	{
-		const std::shared_ptr<IShaderParameter>& perObjectParameter = VertexShader->GetShaderParameterByName("PerObject");
-		if (perObjectParameter->IsValid() && perObject != nullptr)
-		{
-			perObjectParameter->SetConstantBuffer(perObject);
-			perObjectParameter->Bind();
-		}
-
 		if (m_VertexBuffer != nullptr)
 		{
 			m_VertexBuffer->Bind(0, VertexShader, IShaderParameter::Type::Buffer);

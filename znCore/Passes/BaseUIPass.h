@@ -14,7 +14,8 @@ public:
 
 	// IVisitor
 	virtual bool VisitUI(ISceneNode* node) override;
-	virtual bool Visit(IMesh* Mesh, UINT IndexStartLocation = 0, UINT IndexCnt = 0, UINT VertexStartLocation = 0, UINT VertexCnt = 0) override;
+	virtual bool Visit(IMesh* Mesh, SGeometryPartParams GeometryPartParams = SGeometryPartParams()) override;
+	virtual bool Visit(IGeometry* Geometry, const IShader* VertexShader, const SRenderGeometryArgs& RenderGeometryArgs) override;
 
 protected: // PerObject functional
 	__declspec(align(16)) struct PerObjectUI

@@ -53,22 +53,27 @@ void MeshProxie::SetPrimitiveTopology(PrimitiveTopology _topology)
 	m_Mesh->SetPrimitiveTopology(_topology);
 }
 
-void MeshProxie::SetMaterial(std::shared_ptr<const IMaterial> material)
+void MeshProxie::SetMaterial(std::shared_ptr<const IMaterial> Material)
 {
-	m_Mesh->SetMaterial(material);
+	m_Mesh->SetMaterial(Material);
 }
 
-std::shared_ptr<const IMaterial> MeshProxie::GetMaterial() const
+void MeshProxie::AddMaterial(std::shared_ptr<const IMaterial> Material, SGeometryPartParams GeometryPartParams)
 {
-	return m_Mesh->GetMaterial();
+	m_Mesh->AddMaterial(Material, GeometryPartParams);
 }
 
-bool MeshProxie::Render(const RenderEventArgs* renderEventArgs, const IConstantBuffer* perObject, UINT indexStartLocation, UINT indexCnt, UINT vertexStartLocation, UINT vertexCnt)
+std::vector<SRenderGeometryArgs> MeshProxie::GetMaterials() const
 {
-	return m_Mesh->Render(renderEventArgs, perObject, indexStartLocation, indexCnt, vertexStartLocation, vertexCnt);
+	return m_Mesh->GetMaterials();
 }
 
-bool MeshProxie::Accept(IVisitor* visitor, UINT indexStartLocation, UINT indexCnt, UINT vertexStartLocation, UINT vertexCnt)
+bool MeshProxie::Render(const RenderEventArgs* renderEventArgs, const IConstantBuffer* perObject, SGeometryPartParams GeometryPartParams)
 {
-	return visitor->Visit(this, indexStartLocation, indexCnt, vertexStartLocation, vertexCnt);
+	return m_Mesh->Render(renderEventArgs, perObject, GeometryPartParams);
+}
+
+bool MeshProxie::Accept(IVisitor* visitor, SGeometryPartParams GeometryPartParams)
+{
+	return visitor->Visit(this, GeometryPartParams);
 }

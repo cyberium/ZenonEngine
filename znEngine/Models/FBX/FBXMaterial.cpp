@@ -35,7 +35,7 @@ CFBXMaterial::~CFBXMaterial()
 
 void CFBXMaterial::Load()
 {
-	Log::Print("CFBXSceneNode: Loading material '%s'.", m_NativeMaterial->GetName());
+	//Log::Print("CFBXSceneNode: Loading material '%s'.", m_NativeMaterial->GetName());
 
 	_ASSERT_EXPR(m_NativeMaterial->Is<fbxsdk::FbxSurfacePhong>(), "FBX material must be 'FbxSurfacePhong'.");
 	fbxsdk::FbxSurfacePhong* surfacePhong = fbxsdk::FbxCast<fbxsdk::FbxSurfacePhong>(m_NativeMaterial);
@@ -102,6 +102,9 @@ void CFBXMaterial::Load()
 		{
 			fbxsdk::FbxTexture* lTexture = lProperty.GetSrcObject<fbxsdk::FbxTexture>(0);
 
+			if (FBXSDK_TEXTURE_TYPE(j) == fbxsdk::FbxLayerElement::EType::eTextureNormalMap)
+				continue;
+
 			std::shared_ptr<ITexture> texture = LoadTexture(lTexture);
 
 			fbxsdk::FbxLayerElement::EType texureType = FBXSDK_TEXTURE_TYPE(j);
@@ -148,7 +151,7 @@ void CFBXMaterial::Load()
 
 std::shared_ptr<ITexture> CFBXMaterial::LoadTexture(fbxsdk::FbxTexture * Texture)
 {
-	Log::Print("CFBXMaterial: Loading texture '%s'.", Texture->GetName());
+	//Log::Print("CFBXMaterial: Loading texture '%s'.", Texture->GetName());
 
 	_ASSERT_EXPR(Texture->Is<fbxsdk::FbxFileTexture>(), "FBX texture must be 'FbxFileTexture'.");
 	fbxsdk::FbxFileTexture* fileTexture = fbxsdk::FbxCast<fbxsdk::FbxFileTexture>(Texture);

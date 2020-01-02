@@ -42,11 +42,18 @@ bool BaseUIPass::VisitUI(ISceneNode* sceneNode)
 	return false;
 }
 
-bool BaseUIPass::Visit(IMesh * Mesh, UINT IndexStartLocation, UINT IndexCnt, UINT VertexStartLocation, UINT VertexCnt)
+bool BaseUIPass::Visit(IMesh * Mesh, SGeometryPartParams GeometryPartParams)
 {
 	GetRenderEventArgs()->Caller = this;
 
-	return Mesh->Render(GetRenderEventArgs(), m_PerObjectConstantBuffer.get(), IndexStartLocation, IndexCnt, VertexStartLocation, VertexCnt);
+	return Mesh->Render(GetRenderEventArgs(), m_PerObjectConstantBuffer.get(), GeometryPartParams);
+}
+
+bool BaseUIPass::Visit(IGeometry * Geometry, const IShader * VertexShader, const SRenderGeometryArgs& RenderGeometryArgs)
+{
+	GetRenderEventArgs()->Caller = this;
+
+	return Geometry->Render(GetRenderEventArgs(), VertexShader, RenderGeometryArgs.GeometryPartParams);
 }
 
 

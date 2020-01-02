@@ -9,7 +9,7 @@ public:
 
 	virtual void                                    SetPrimitiveTopology(PrimitiveTopology Topology) override;
 
-	virtual bool                                    Render(const RenderEventArgs* renderArgs, const IShader* VertexShader, const IConstantBuffer* perObject, const SRenderGeometryParams& RenderGeometryParams) override;
+	virtual bool                                    Render(const RenderEventArgs* renderArgs, const IShader* VertexShader, const SGeometryPartParams& GeometryPartParams) override;
 
 private:
 	D3D11_PRIMITIVE_TOPOLOGY                        m_PrimitiveTopology;
