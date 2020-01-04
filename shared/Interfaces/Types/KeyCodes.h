@@ -1,7 +1,7 @@
 #pragma once
 
 // Key code values for Windows
-enum class KeyCode
+enum class ZN_API KeyCode
 {
     None = 0x00, // No key was pressed
     LButton = 0x01, // Left mouse button

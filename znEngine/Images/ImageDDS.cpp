@@ -13,6 +13,9 @@
 #define FOURCC_DXT4	MAKEFOURCC('D','X','T','4')
 #define FOURCC_DXT5	MAKEFOURCC('D','X','T','5')
 
+#define FOURCC_BC4	MAKEFOURCC('A','T','I','1')
+#define FOURCC_BC5	MAKEFOURCC('A','T','I','2')
+
 // ----------------------------------------------------------
 //   Structures used by DXT textures
 // ----------------------------------------------------------
@@ -78,12 +81,11 @@ typedef struct tagDXT5Block
 
 // Get the 4 possible colors for a block
 //
-static void
-GetBlockColors(const DXTColBlock &block, Color8888 colors[4], bool isDXT1)
+static void GetBlockColors(const DXTColBlock &block, Color8888 colors[4], bool isDXT1)
 {
-	int i;
 	// expand from 565 to 888
-	for (i = 0; i < 2; i++) {
+	for (int i = 0; i < 2; i++)
+	{
 		colors[i].a = 0xff;
 		/*
 		colors[i].r = (BYTE)(block.colors[i].r * 0xff / 0x1f);
@@ -99,7 +101,7 @@ GetBlockColors(const DXTColBlock &block, Color8888 colors[4], bool isDXT1)
 	if (wCol[0] > wCol[1] || !isDXT1)
 	{
 		// 4 color block
-		for (i = 0; i < 2; i++)
+		for (int i = 0; i < 2; i++)
 		{
 			colors[i + 2].a = 0xff;
 			colors[i + 2].r = (BYTE)((WORD(colors[0].r) * (2 - i) + WORD(colors[1].r) * (1 + i)) / 3);
@@ -122,7 +124,7 @@ GetBlockColors(const DXTColBlock &block, Color8888 colors[4], bool isDXT1)
 	}
 }
 
-struct DXT_INFO_1
+struct DXT1_INFO
 {
 	typedef DXT1Block Block;
 	enum
@@ -132,7 +134,7 @@ struct DXT_INFO_1
 	};
 };
 
-struct DXT_INFO_3
+struct DXT3_INFO
 {
 	typedef DXT3Block Block;
 	enum
@@ -142,7 +144,7 @@ struct DXT_INFO_3
 	};
 };
 
-struct DXT_INFO_5
+struct DXT5_INFO
 {
 	typedef DXT5Block Block;
 	enum
@@ -152,7 +154,11 @@ struct DXT_INFO_5
 	};
 };
 
-template <class INFO> class DXT_BLOCKDECODER_BASE 
+
+
+
+template <class INFO> 
+class DXT_BLOCKDECODER_BASE 
 {
 protected:
 	Color8888 m_colors[4];
@@ -178,17 +184,17 @@ public:
 	}
 };
 
-class DXT_BLOCKDECODER_1 : public DXT_BLOCKDECODER_BASE <DXT_INFO_1>
+class DXT_BLOCKDECODER_1 : public DXT_BLOCKDECODER_BASE <DXT1_INFO>
 {
 public:
-	typedef DXT_INFO_1 INFO;
+	typedef DXT1_INFO INFO;
 };
 
-class DXT_BLOCKDECODER_3 : public DXT_BLOCKDECODER_BASE <DXT_INFO_3>
+class DXT_BLOCKDECODER_3 : public DXT_BLOCKDECODER_BASE <DXT3_INFO>
 {
 public:
-	typedef DXT_BLOCKDECODER_BASE <DXT_INFO_3> base;
-	typedef DXT_INFO_3 INFO;
+	typedef DXT_BLOCKDECODER_BASE <DXT3_INFO> base;
+	typedef DXT3_INFO INFO;
 
 protected:
 	unsigned m_alphaRow;
@@ -208,11 +214,12 @@ public:
 	}
 };
 
-class DXT_BLOCKDECODER_5 : public DXT_BLOCKDECODER_BASE <DXT_INFO_5>
+class DXT_BLOCKDECODER_5 : public DXT_BLOCKDECODER_BASE <DXT5_INFO>
 {
 public:
-	typedef DXT_BLOCKDECODER_BASE <DXT_INFO_5> base;
-	typedef DXT_INFO_5 INFO;
+	typedef DXT5_INFO INFO;
+	typedef DXT_BLOCKDECODER_BASE <INFO> base;
+	
 
 protected:
 	unsigned m_alphas[8];
@@ -264,6 +271,7 @@ public:
 		color.a = (BYTE)m_alphas[bits];
 	}
 };
+
 
 template <class DECODER>
 void DecodeDXTBlock(BYTE *dstData, const BYTE *srcBlock, long dstPitch, int bw, int bh)
@@ -377,8 +385,8 @@ bool CImageDDS::LoadImageData(std::shared_ptr<IFile> File)
 
 bool CImageDDS::LoadRGB(const DDSURFACEDESC2& desc, std::shared_ptr<IFile> io)
 {
-	m_Width = (uint32)desc.dwWidth & ~3;
-	m_Height = (uint32)desc.dwHeight & ~3;
+	m_Width = (uint32)desc.dwWidth;
+	m_Height = (uint32)desc.dwHeight;
 	m_BitsPerPixel = (uint32)desc.ddpfPixelFormat.dwRGBBitCount;
 	m_Stride = m_Width * (m_BitsPerPixel / 8);
 	m_IsTransperent = (desc.ddpfPixelFormat.dwFlags & DDPF_ALPHAPIXELS) == 1;
@@ -404,10 +412,6 @@ bool CImageDDS::LoadDXT(int type, const DDSURFACEDESC2& desc, std::shared_ptr<IF
 	m_Stride = m_Width * (m_BitsPerPixel / 8);
 	m_IsTransperent = (desc.ddpfPixelFormat.dwFlags & DDPF_ALPHAPIXELS) == 1;
 	m_Data = new uint8[m_Height * m_Stride];
-
-	//if (m_IsTransperent)
-
-	Log::Warn("'%d' IS TRANSPERENT!!!", desc.ddpfPixelFormat.dwFlags);
 
 	switch (type)
 	{

@@ -43,6 +43,7 @@
     </ClCompile>
     <ClCompile Include="TextureDX11Loader.cpp" />
     <ClCompile Include="GeometryDX11.cpp" />
+    <ClCompile Include="DDSTextureLoader.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -84,6 +85,7 @@
       <Filter>Converters</Filter>
     </ClInclude>
     <ClInclude Include="GeometryDX11.h" />
+    <ClInclude Include="DDSTextureLoader.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Common">

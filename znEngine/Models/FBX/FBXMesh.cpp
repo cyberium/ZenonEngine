@@ -270,6 +270,8 @@ void CFBXMesh::Load()
 	}
 #endif
 
+	Log::Info("CFBXMesh: Mesh '%s' loaded. Polygons count = '%d'.", m_NativeMesh->GetName(), m_NativeMesh->GetPolygonCount());
+
 
 	DisplayMaterialConnections();
 }

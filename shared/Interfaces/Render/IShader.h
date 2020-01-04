@@ -9,23 +9,12 @@ ZN_INTERFACE ZN_API IShader
 {
 	typedef std::unordered_map<std::string, std::shared_ptr<IShaderParameter>> ParameterMap;
 
-	enum class ZN_API ShaderType
-	{
-		UnknownShaderType = 0,
-		VertexShader,
-		TessellationControlShader,      // Hull Shader in DirectX
-		TessellationEvaluationShader,   // Domain Shader in DirectX
-		GeometryShader,
-		PixelShader,
-		ComputeShader,
-	};
-
 	virtual ~IShader() {}
 
 	/**
 	 * What type of shader is this?
 	 */
-	virtual ShaderType GetType() const = 0;
+	virtual SShaderType GetType() const = 0;
 
 	/**
 	 * A shader macro consists of a macro name and a definition.
@@ -44,7 +33,7 @@ ZN_INTERFACE ZN_API IShader
 	 * To use the latest supported profile, specify "latest" here.
 	 * @return True if the shader was loaded correctly, or False otherwise.
 	 */
-	virtual bool LoadShaderFromString(ShaderType type, const std::string& fileName, const std::string& source, const ShaderMacros& shaderMacros, const std::string& entryPoint, const std::string& profile, std::shared_ptr<IShaderInputLayout> _customLayout) = 0;
+	virtual bool LoadShaderFromString(SShaderType type, const std::string& fileName, const std::string& source, const ShaderMacros& shaderMacros, const std::string& entryPoint, const std::string& profile, std::shared_ptr<IShaderInputLayout> _customLayout) = 0;
 
 	/**
 	 * Load a shader from a file.
@@ -55,7 +44,7 @@ ZN_INTERFACE ZN_API IShader
 	 * To use the latest supported profile, specify "latest" here.
 	 * @return True if the shader was loaded correctly, or False otherwise.
 	 */
-	virtual bool LoadShaderFromFile(ShaderType type, const std::string& fileName, const ShaderMacros& shaderMacros, const std::string& entryPoint, const std::string& profile, std::shared_ptr<IShaderInputLayout> _customLayout) = 0;
+	virtual bool LoadShaderFromFile(SShaderType type, const std::string& fileName, const ShaderMacros& shaderMacros, const std::string& entryPoint, const std::string& profile, std::shared_ptr<IShaderInputLayout> _customLayout) = 0;
 
 	/**
 	 * Calculate shader input layout
@@ -96,5 +85,5 @@ ZN_INTERFACE ZN_API IShader
 };
 
 typedef std::vector<std::shared_ptr<IShader>> ShaderList;
-typedef std::unordered_map<IShader::ShaderType, std::shared_ptr<IShader>> ShaderMap;
+typedef std::unordered_map<SShaderType, std::shared_ptr<IShader>> ShaderMap;
 typedef std::unordered_map<std::string, std::shared_ptr<IShader>> ShaderNameMap;

@@ -9,7 +9,7 @@
 static std::shared_ptr<IShaderParameter> gs_InvalidShaderParameter;
 
 ShaderBase::ShaderBase() :
-	m_ShaderType(ShaderType::UnknownShaderType)
+	m_ShaderType(SShaderType::UnknownShaderType)
 {
 	gs_InvalidShaderParameter = std::make_shared<ShaderParameterBase>();
 }
@@ -17,7 +17,7 @@ ShaderBase::ShaderBase() :
 ShaderBase::~ShaderBase()
 {}
 
-ShaderBase::ShaderType ShaderBase::GetType() const
+SShaderType ShaderBase::GetType() const
 {
 	return m_ShaderType;
 }

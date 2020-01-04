@@ -41,7 +41,7 @@ void GeometryDX11::SetPrimitiveTopology(PrimitiveTopology _topology)
 	}
 }
 
-bool GeometryDX11::Render(const RenderEventArgs* renderArgs, const IShader* VertexShader, const SGeometryPartParams& GeometryPartParams)
+bool GeometryDX11::Render(const RenderEventArgs* renderArgs, const IConstantBuffer* PerObject, const std::unordered_map<SShaderType, std::shared_ptr<IShader>>& ShadersMap, const IMaterial* Material, const SGeometryPartParams& GeometryPartParams)
 {
 	UINT indexStartLocation = GeometryPartParams.IndexStartLocation;
 	UINT indexCnt = GeometryPartParams.IndexCnt;
@@ -66,55 +66,66 @@ bool GeometryDX11::Render(const RenderEventArgs* renderArgs, const IShader* Vert
 		}
 	}
 
-	if (VertexShader)
+	const IShader* vertexShader = ShadersMap.at(SShaderType::VertexShader).get();
+	_ASSERT(vertexShader != nullptr);
+
+	Material->Bind(ShadersMap);
+
+	const std::shared_ptr<IShaderParameter>& perObjectParameter = vertexShader->GetShaderParameterByName("PerObject");
+	if (perObjectParameter->IsValid() && PerObject != nullptr)
 	{
-		if (m_VertexBuffer != nullptr)
+		perObjectParameter->SetConstantBuffer(PerObject);
+		perObjectParameter->Bind();
+	}
+
+	if (m_VertexBuffer != nullptr)
+	{
+		m_VertexBuffer->Bind(0, vertexShader, IShaderParameter::Type::Buffer);
+	}
+	else
+	{
+		for (const BufferMap::value_type& buffer : m_VertexBuffers)
 		{
-			m_VertexBuffer->Bind(0, VertexShader, IShaderParameter::Type::Buffer);
-		}
-		else
-		{
-			for (const BufferMap::value_type& buffer : m_VertexBuffers)
+			const BufferBinding& binding = buffer.first;
+			if (vertexShader->GetInputLayout()->HasSemantic(binding))
 			{
-				const BufferBinding& binding = buffer.first;
-				if (VertexShader->GetInputLayout()->HasSemantic(binding))
-				{
-					UINT slotID = VertexShader->GetInputLayout()->GetSemanticSlot(binding);
-					buffer.second->Bind(slotID, VertexShader, IShaderParameter::Type::Buffer);
-				}
-			}
-		}
-
-		m_pDeviceContext->IASetPrimitiveTopology(m_PrimitiveTopology);
-
-		if (m_pIndexBuffer != NULL)
-		{
-			m_pIndexBuffer->Bind(0, VertexShader, IShaderParameter::Type::Buffer);
-			m_pDeviceContext->DrawIndexed(indexCnt, indexStartLocation, vertexStartLocation);
-			m_pIndexBuffer->UnBind(0, VertexShader, IShaderParameter::Type::Buffer);
-		}
-		else
-		{
-			m_pDeviceContext->Draw(vertexCnt, vertexStartLocation);
-		}
-
-		if (m_VertexBuffer != nullptr)
-		{
-			m_VertexBuffer->UnBind(0, VertexShader, IShaderParameter::Type::Buffer);
-		}
-		else
-		{
-			for (const BufferMap::value_type& buffer : m_VertexBuffers)
-			{
-				const BufferBinding& binding = buffer.first;
-				if (VertexShader->GetInputLayout()->HasSemantic(binding))
-				{
-					UINT slotID = VertexShader->GetInputLayout()->GetSemanticSlot(binding);
-					buffer.second->UnBind(slotID, VertexShader, IShaderParameter::Type::Buffer);
-				}
+				UINT slotID = vertexShader->GetInputLayout()->GetSemanticSlot(binding);
+				buffer.second->Bind(slotID, vertexShader, IShaderParameter::Type::Buffer);
 			}
 		}
 	}
+
+	m_pDeviceContext->IASetPrimitiveTopology(m_PrimitiveTopology);
+
+	if (m_pIndexBuffer != NULL)
+	{
+		m_pIndexBuffer->Bind(0, vertexShader, IShaderParameter::Type::Buffer);
+		m_pDeviceContext->DrawIndexed(indexCnt, indexStartLocation, vertexStartLocation);
+		m_pIndexBuffer->UnBind(0, vertexShader, IShaderParameter::Type::Buffer);
+	}
+	else
+	{
+		m_pDeviceContext->Draw(vertexCnt, vertexStartLocation);
+	}
+
+	if (m_VertexBuffer != nullptr)
+	{
+		m_VertexBuffer->UnBind(0, vertexShader, IShaderParameter::Type::Buffer);
+	}
+	else
+	{
+		for (const BufferMap::value_type& buffer : m_VertexBuffers)
+		{
+			const BufferBinding& binding = buffer.first;
+			if (vertexShader->GetInputLayout()->HasSemantic(binding))
+			{
+				UINT slotID = vertexShader->GetInputLayout()->GetSemanticSlot(binding);
+				buffer.second->UnBind(slotID, vertexShader, IShaderParameter::Type::Buffer);
+			}
+		}
+	}
+
+	Material->Unbind(ShadersMap);
 
 	return true;
 }

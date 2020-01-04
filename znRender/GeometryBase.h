@@ -15,7 +15,7 @@ public:
 	virtual void                                    SetVertexBuffer(std::shared_ptr<IBuffer> buffer) override;
 	virtual void                                    SetIndexBuffer(std::shared_ptr<IBuffer> buffer) override;
 
-	virtual bool                                    Accept(IVisitor* visitor, const IShader* VertexShader, SRenderGeometryArgs RenderGeometryArgs) override;
+	virtual bool                                    Accept(IVisitor* visitor, const IConstantBuffer* PerObject, const std::unordered_map<SShaderType, std::shared_ptr<IShader>>& ShadersMap, const IMaterial* Material, const SGeometryPartParams& GeometryPartParams) override;
 
 protected:
 	BoundingBox                                     m_Bounds;

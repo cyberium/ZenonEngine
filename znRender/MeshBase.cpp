@@ -69,11 +69,6 @@ void MeshBase::AddMaterial(std::shared_ptr<const IMaterial> Material, SGeometryP
 	m_MaterialForGeometryParts.push_back(renderGeometryArgs);
 }
 
-std::vector<SRenderGeometryArgs> MeshBase::GetMaterials() const
-{
-	return m_MaterialForGeometryParts;
-}
-
 bool MeshBase::Accept(IVisitor* visitor, SGeometryPartParams GeometryPartParams = SGeometryPartParams())
 {
     return visitor->Visit(this, GeometryPartParams);

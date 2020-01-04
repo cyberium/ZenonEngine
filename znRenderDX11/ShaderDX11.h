@@ -9,8 +9,8 @@ public:
 	virtual ~ShaderDX11();
 
 	// IShader
-	bool LoadShaderFromString(ShaderType type, const std::string& fileName, const std::string& source, const ShaderMacros& shaderMacros, const std::string& entryPoint, const std::string& profile, std::shared_ptr<IShaderInputLayout> _customLayout) override final;
-	bool LoadShaderFromFile(ShaderType type, const std::string& fileName, const ShaderMacros& shaderMacros, const std::string& entryPoint, const std::string& profile, std::shared_ptr<IShaderInputLayout> _customLayout) override final;
+	bool LoadShaderFromString(SShaderType type, const std::string& fileName, const std::string& source, const ShaderMacros& shaderMacros, const std::string& entryPoint, const std::string& profile, std::shared_ptr<IShaderInputLayout> _customLayout) override final;
+	bool LoadShaderFromFile(SShaderType type, const std::string& fileName, const ShaderMacros& shaderMacros, const std::string& entryPoint, const std::string& profile, std::shared_ptr<IShaderInputLayout> _customLayout) override final;
 	
 	bool LoadInputLayoutFromReflector() override final;
 	bool LoadInputLayoutFromCustomElements(const std::vector<SCustomVertexElement>& declIn) override final;

@@ -7,7 +7,7 @@ public:
 	virtual ~ShaderBase();
 
 	// IShader
-	ShaderType GetType() const override final;
+	SShaderType GetType() const override final;
 	std::shared_ptr<IShaderInputLayout> GetInputLayout() const override final;
 	const std::shared_ptr<IShaderParameter>& GetShaderParameterByName(const std::string& name) const override final;
 	
@@ -16,7 +16,7 @@ protected:
     std::string                         m_EntryPoint;
     std::string                         m_Profile;
     std::string                         m_ShaderFileName;
-	ShaderType	                        m_ShaderType;
+	SShaderType	                        m_ShaderType;
 
     std::shared_ptr<IShaderInputLayout> m_InputLayout;
 

@@ -647,6 +647,9 @@
     <ClInclude Include="..\shared\Interfaces\Render\Types\RenderGeometryParams.h">
       <Filter>__Interfaces\Render\Types</Filter>
     </ClInclude>
+    <ClInclude Include="..\shared\Interfaces\Render\Types\ShaderType.h">
+      <Filter>__Interfaces\Render\Types</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="RefManager1Dim.inl">

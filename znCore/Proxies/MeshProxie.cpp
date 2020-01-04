@@ -63,11 +63,6 @@ void MeshProxie::AddMaterial(std::shared_ptr<const IMaterial> Material, SGeometr
 	m_Mesh->AddMaterial(Material, GeometryPartParams);
 }
 
-std::vector<SRenderGeometryArgs> MeshProxie::GetMaterials() const
-{
-	return m_Mesh->GetMaterials();
-}
-
 bool MeshProxie::Render(const RenderEventArgs* renderEventArgs, const IConstantBuffer* perObject, SGeometryPartParams GeometryPartParams)
 {
 	return m_Mesh->Render(renderEventArgs, perObject, GeometryPartParams);

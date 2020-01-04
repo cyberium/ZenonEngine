@@ -122,6 +122,7 @@ bool CFBXSceneNode::LoadMaterials()
 	for (int i = 0; i < m_NativeNode->GetMaterialCount(); i++)
 	{
 		std::shared_ptr<CFBXMaterial> znMaterial = std::make_shared<CFBXMaterial>(m_BaseManager, std::dynamic_pointer_cast<CFBXSceneNode>(shared_from_this()), m_NativeNode->GetMaterial(i));
+		znMaterial->SetWrapper(znMaterial);
 		znMaterial->Load();
 		m_MaterialsArray.push_back(znMaterial);
 	}

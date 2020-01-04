@@ -7,9 +7,6 @@
 #include "Materials/MaterialDebug.h"
 #include "Materials/MaterialTextured.h"
 
-#include "Models/AssimpLoader.h"
-#include "Models/OBJLoader.h"
-
 CGameState_World::CGameState_World(IBaseManager * BaseManager, std::shared_ptr<IRenderWindow> RenderWindow, IWindowEvents* WindowEvents)
 	: CGameState(BaseManager, RenderWindow, WindowEvents)
 {}
@@ -96,6 +93,29 @@ void CGameState_World::OnRenderUI(RenderEventArgs& e)
 	CGameState::OnRenderUI(e);
 }
 
+
+
+//
+// Keyboard events
+//
+void CGameState_World::OnKeyPressed(KeyEventArgs & e)
+{
+	if (e.Key == KeyCode::F4)
+		m_FBX_Opaque_Pass->SetEnabled(! m_FBX_Opaque_Pass->IsEnabled());
+
+	if (e.Key == KeyCode::F5)
+		m_FBX_Transperent_Pass->SetEnabled(! m_FBX_Transperent_Pass->IsEnabled());
+
+	CGameState::OnKeyPressed(e);
+}
+
+void CGameState_World::OnKeyReleased(KeyEventArgs & e)
+{
+	CGameState::OnKeyReleased(e);
+}
+
+
+
 //
 //
 //
@@ -167,8 +187,12 @@ void CGameState_World::Load3D()
 	m_Technique3D.AddPass(GetBaseManager()->GetManager<IRenderPassFactory>()->CreateRenderPass("DebugPass", GetRenderDevice(), GetRenderWindow()->GetRenderTarget(), GetRenderWindow()->GetViewport(), m_Scene3D));
 	m_Technique3D.AddPass(GetBaseManager()->GetManager<IRenderPassFactory>()->CreateRenderPass("TexturedMaterialPass", GetRenderDevice(), GetRenderWindow()->GetRenderTarget(), GetRenderWindow()->GetViewport(), m_Scene3D));
 	//m_Technique3D.AddPass(GetBaseManager()->GetManager<IRenderPassFactory>()->CreateRenderPass("OBJPass", GetRenderDevice(), GetRenderWindow()->GetRenderTarget(), GetRenderWindow()->GetViewport(), m_Scene3D));
-	m_Technique3D.AddPass(GetBaseManager()->GetManager<IRenderPassFactory>()->CreateRenderPass("FBXPass", GetRenderDevice(), GetRenderWindow()->GetRenderTarget(), GetRenderWindow()->GetViewport(), m_Scene3D));
-
+	
+	m_FBX_Opaque_Pass = GetBaseManager()->GetManager<IRenderPassFactory>()->CreateRenderPass("FBXPassOpaque", GetRenderDevice(), GetRenderWindow()->GetRenderTarget(), GetRenderWindow()->GetViewport(), m_Scene3D);
+	m_Technique3D.AddPass(m_FBX_Opaque_Pass);
+	
+	m_FBX_Transperent_Pass = GetBaseManager()->GetManager<IRenderPassFactory>()->CreateRenderPass("FBXPassTransperent", GetRenderDevice(), GetRenderWindow()->GetRenderTarget(), GetRenderWindow()->GetViewport(), m_Scene3D);
+	m_Technique3D.AddPass(m_FBX_Transperent_Pass);
 }
 
 void CGameState_World::LoadUI()
@@ -176,7 +200,8 @@ void CGameState_World::LoadUI()
 	m_TechniqueUI.AddPass(GetBaseManager()->GetManager<IRenderPassFactory>()->CreateRenderPass("BaseUIPass", GetRenderDevice(), GetRenderWindow()->GetRenderTarget(), GetRenderWindow()->GetViewport(), m_SceneUI));
 }
 
-void CGameState_World::LoadObj(const std::string& ObjFilename)
+
+/*void CGameState_World::LoadObj(const std::string& ObjFilename)
 {
 	objl::Loader l(GetRenderDevice());
 	l.LoadFile(GetBaseManager()->GetManager<IFilesManager>()->Open(ObjFilename));
@@ -196,4 +221,4 @@ void CGameState_World::LoadObj(const std::string& ObjFilename)
 		//sceneNode->GetComponent<ITransformComponent3D>()->SetScale(vec3(15, 15, 15));
 		sceneNode->GetComponent<IMeshComponent3D>()->AddMesh(mesh2);
 	}
-}
+}*/

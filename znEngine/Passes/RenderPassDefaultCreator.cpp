@@ -8,8 +8,8 @@
 
 #include "Passes/TextureDebugPass.h"
 #include "Passes/TextureMaterialPass.h"
-#include "Passes/OBJMaterialPass.h"
-#include "Models/FBX/FBXMaterialPass.h"
+#include "Models/FBX/FBXMaterialPassOpaque.h"
+#include "Models/FBX/FBXMaterialPassTransperent.h"
 
 CRenderPassDefaultCreator::CRenderPassDefaultCreator()
 {
@@ -44,11 +44,11 @@ std::string CRenderPassDefaultCreator::GetRenderPassName(size_t Index) const
 	}
 	else if (Index == 4)
 	{
-		return "OBJPass";
+		return "FBXPassOpaque";
 	}
 	else if (Index == 5)
 	{
-		return "FBXPass";
+		return "FBXPassTransperent";
 	}
 
 	throw CException("CRenderPassDefaultCreator: GetRenderPassName(%d) is out of bounds. Count = %d", Index, GetRenderPassCount());
@@ -72,13 +72,13 @@ std::shared_ptr<IRenderPass> CRenderPassDefaultCreator::CreateRenderPass(size_t 
 
 		if (RenderDevice->GetDeviceType() == RenderDeviceType::RenderDeviceType_DirectX)
 		{
-			g_pVertexShader = RenderDevice->CreateShader(IShader::ShaderType::VertexShader, "IDB_SHADER_3D_DEBUG", IShader::ShaderMacros(), "VS_main", "latest");
-			g_pPixelShader = RenderDevice->CreateShader(IShader::ShaderType::PixelShader, "IDB_SHADER_3D_DEBUG", IShader::ShaderMacros(), "PS_main", "latest");
+			g_pVertexShader = RenderDevice->CreateShader(SShaderType::VertexShader, "IDB_SHADER_3D_DEBUG", IShader::ShaderMacros(), "VS_main", "latest");
+			g_pPixelShader = RenderDevice->CreateShader(SShaderType::PixelShader, "IDB_SHADER_3D_DEBUG", IShader::ShaderMacros(), "PS_main", "latest");
 		}
 		else
 		{
-			g_pVertexShader = RenderDevice->CreateShader(IShader::ShaderType::VertexShader, "IDB_SHADER_OGL_3D_DEBUG_VS", IShader::ShaderMacros(), "", "");
-			g_pPixelShader = RenderDevice->CreateShader(IShader::ShaderType::PixelShader, "IDB_SHADER_OGL_3D_DEBUG_PS", IShader::ShaderMacros(), "", "");
+			g_pVertexShader = RenderDevice->CreateShader(SShaderType::VertexShader, "IDB_SHADER_OGL_3D_DEBUG_VS", IShader::ShaderMacros(), "", "");
+			g_pPixelShader = RenderDevice->CreateShader(SShaderType::PixelShader, "IDB_SHADER_OGL_3D_DEBUG_PS", IShader::ShaderMacros(), "", "");
 		}
 		g_pVertexShader->LoadInputLayoutFromReflector();
 
@@ -90,8 +90,8 @@ std::shared_ptr<IRenderPass> CRenderPassDefaultCreator::CreateRenderPass(size_t 
 		Pipeline->GetRasterizerState()->SetFillMode(IRasterizerState::FillMode::Solid);
 		Pipeline->SetRenderTarget(RenderTarget);
 		Pipeline->GetRasterizerState()->SetViewport(Viewport);
-		Pipeline->SetShader(IShader::ShaderType::VertexShader, g_pVertexShader);
-		Pipeline->SetShader(IShader::ShaderType::PixelShader, g_pPixelShader);
+		Pipeline->SetShader(SShaderType::VertexShader, g_pVertexShader);
+		Pipeline->SetShader(SShaderType::PixelShader, g_pPixelShader);
 
 		return std::make_shared<CDebugMaterialPass>(RenderDevice, Scene, Pipeline);
 	}
@@ -102,13 +102,13 @@ std::shared_ptr<IRenderPass> CRenderPassDefaultCreator::CreateRenderPass(size_t 
 
 		if (RenderDevice->GetDeviceType() == RenderDeviceType::RenderDeviceType_DirectX)
 		{
-			g_pVertexShader = RenderDevice->CreateShader(IShader::ShaderType::VertexShader, "IDB_SHADER_3D_TEXTURED", IShader::ShaderMacros(), "VS_main", "latest");
-			g_pPixelShader = RenderDevice->CreateShader(IShader::ShaderType::PixelShader, "IDB_SHADER_3D_TEXTURED", IShader::ShaderMacros(), "PS_main", "latest");
+			g_pVertexShader = RenderDevice->CreateShader(SShaderType::VertexShader, "IDB_SHADER_3D_TEXTURED", IShader::ShaderMacros(), "VS_main", "latest");
+			g_pPixelShader = RenderDevice->CreateShader(SShaderType::PixelShader, "IDB_SHADER_3D_TEXTURED", IShader::ShaderMacros(), "PS_main", "latest");
 		}
 		else
 		{
-			g_pVertexShader = RenderDevice->CreateShader(IShader::ShaderType::VertexShader, "IDB_SHADER_OGL_3D_TEXTURED_VS", IShader::ShaderMacros(), "", "");
-			g_pPixelShader = RenderDevice->CreateShader(IShader::ShaderType::PixelShader, "IDB_SHADER_OGL_3D_TEXTURED_PS", IShader::ShaderMacros(), "", "");
+			g_pVertexShader = RenderDevice->CreateShader(SShaderType::VertexShader, "IDB_SHADER_OGL_3D_TEXTURED_VS", IShader::ShaderMacros(), "", "");
+			g_pPixelShader = RenderDevice->CreateShader(SShaderType::PixelShader, "IDB_SHADER_OGL_3D_TEXTURED_PS", IShader::ShaderMacros(), "", "");
 		}
 		g_pVertexShader->LoadInputLayoutFromReflector();
 
@@ -126,8 +126,8 @@ std::shared_ptr<IRenderPass> CRenderPassDefaultCreator::CreateRenderPass(size_t 
 		Pipeline->GetRasterizerState()->SetFillMode(IRasterizerState::FillMode::Solid);
 		Pipeline->SetRenderTarget(RenderTarget);
 		Pipeline->GetRasterizerState()->SetViewport(Viewport);
-		Pipeline->SetShader(IShader::ShaderType::VertexShader, g_pVertexShader);
-		Pipeline->SetShader(IShader::ShaderType::PixelShader, g_pPixelShader);
+		Pipeline->SetShader(SShaderType::VertexShader, g_pVertexShader);
+		Pipeline->SetShader(SShaderType::PixelShader, g_pPixelShader);
 
 		return std::make_shared<CTexturedMaterialPass>(RenderDevice, Scene, Pipeline);
 	}
@@ -152,8 +152,8 @@ std::shared_ptr<IRenderPass> CRenderPassDefaultCreator::CreateRenderPass(size_t 
 
 		if (RenderDevice->GetDeviceType() == RenderDeviceType::RenderDeviceType_DirectX)
 		{
-			g_pVertexShader = RenderDevice->CreateShader(IShader::ShaderType::VertexShader, "IDB_SHADER_3D_ASSIMP_MODEL", IShader::ShaderMacros(), "VS_main", "latest");
-			g_pPixelShader = RenderDevice->CreateShader(IShader::ShaderType::PixelShader, "IDB_SHADER_3D_ASSIMP_MODEL", IShader::ShaderMacros(), "PS_main", "latest");
+			g_pVertexShader = RenderDevice->CreateShader(SShaderType::VertexShader, "IDB_SHADER_3D_FBX_MODEL", IShader::ShaderMacros(), "VS_main", "latest");
+			g_pPixelShader = RenderDevice->CreateShader(SShaderType::PixelShader, "IDB_SHADER_3D_FBX_MODEL", IShader::ShaderMacros(), "PS_main", "latest");
 		}
 		g_pVertexShader->LoadInputLayoutFromReflector();
 
@@ -165,10 +165,10 @@ std::shared_ptr<IRenderPass> CRenderPassDefaultCreator::CreateRenderPass(size_t 
 		Pipeline->GetRasterizerState()->SetFillMode(IRasterizerState::FillMode::Solid);
 		Pipeline->SetRenderTarget(RenderTarget);
 		Pipeline->GetRasterizerState()->SetViewport(Viewport);
-		Pipeline->SetShader(IShader::ShaderType::VertexShader, g_pVertexShader);
-		Pipeline->SetShader(IShader::ShaderType::PixelShader, g_pPixelShader);
+		Pipeline->SetShader(SShaderType::VertexShader, g_pVertexShader);
+		Pipeline->SetShader(SShaderType::PixelShader, g_pPixelShader);
 
-		return std::make_shared<COBJMaterialPass>(RenderDevice, Scene, Pipeline);
+		return std::make_shared<CFBXMaterialPassOpaque>(RenderDevice, Scene, Pipeline);
 	}
 	else if (Index == 5)
 	{
@@ -177,8 +177,8 @@ std::shared_ptr<IRenderPass> CRenderPassDefaultCreator::CreateRenderPass(size_t 
 
 		if (RenderDevice->GetDeviceType() == RenderDeviceType::RenderDeviceType_DirectX)
 		{
-			g_pVertexShader = RenderDevice->CreateShader(IShader::ShaderType::VertexShader, "IDB_SHADER_3D_TEXTURED", IShader::ShaderMacros(), "VS_main", "latest");
-			g_pPixelShader = RenderDevice->CreateShader(IShader::ShaderType::PixelShader, "IDB_SHADER_3D_TEXTURED", IShader::ShaderMacros(), "PS_main", "latest");
+			g_pVertexShader = RenderDevice->CreateShader(SShaderType::VertexShader, "IDB_SHADER_3D_FBX_MODEL", IShader::ShaderMacros(), "VS_main", "latest");
+			g_pPixelShader = RenderDevice->CreateShader(SShaderType::PixelShader, "IDB_SHADER_3D_FBX_MODEL", IShader::ShaderMacros(), "PS_main", "latest");
 		}
 		g_pVertexShader->LoadInputLayoutFromReflector();
 
@@ -190,10 +190,10 @@ std::shared_ptr<IRenderPass> CRenderPassDefaultCreator::CreateRenderPass(size_t 
 		Pipeline->GetRasterizerState()->SetFillMode(IRasterizerState::FillMode::Solid);
 		Pipeline->SetRenderTarget(RenderTarget);
 		Pipeline->GetRasterizerState()->SetViewport(Viewport);
-		Pipeline->SetShader(IShader::ShaderType::VertexShader, g_pVertexShader);
-		Pipeline->SetShader(IShader::ShaderType::PixelShader, g_pPixelShader);
+		Pipeline->SetShader(SShaderType::VertexShader, g_pVertexShader);
+		Pipeline->SetShader(SShaderType::PixelShader, g_pPixelShader);
 
-		return std::make_shared<CFBXMaterialPass>(RenderDevice, Scene, Pipeline);
+		return std::make_shared<CFBXMaterialPassTransperent>(RenderDevice, Scene, Pipeline);
 	}
 
 	throw CException("CRenderPassDefaultCreator: CreateRenderPass(%d) is out of bounds. Count = %d", Index, GetRenderPassCount());

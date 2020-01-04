@@ -20,12 +20,12 @@ PipelineStateDX11::~PipelineStateDX11()
 // PipelineState
 //
 
-void PipelineStateDX11::SetShader(IShader::ShaderType type, std::shared_ptr<IShader> pShader)
+void PipelineStateDX11::SetShader(SShaderType type, std::shared_ptr<IShader> pShader)
 {
 	m_Shaders[type] = pShader;
 }
 
-std::shared_ptr<IShader> PipelineStateDX11::GetShader(IShader::ShaderType type) const
+std::shared_ptr<IShader> PipelineStateDX11::GetShader(SShaderType type) const
 {
 	ShaderMap::const_iterator iter = m_Shaders.find(type);
 	if (iter != m_Shaders.end())

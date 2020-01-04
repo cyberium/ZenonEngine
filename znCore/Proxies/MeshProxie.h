@@ -20,7 +20,6 @@ public:
 
 	virtual void SetMaterial(std::shared_ptr<const IMaterial> Material);
 	virtual void AddMaterial(std::shared_ptr<const IMaterial> Material, SGeometryPartParams GeometryPartParams = SGeometryPartParams()) override;
-	virtual std::vector<SRenderGeometryArgs> GetMaterials() const override;
 
 	virtual bool Render(const RenderEventArgs* renderEventArgs, const IConstantBuffer* perObject, SGeometryPartParams GeometryPartParams = SGeometryPartParams()) override;
 

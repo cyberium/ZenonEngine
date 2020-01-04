@@ -27,7 +27,6 @@
     <ClCompile Include="Images\ImagePNG.cpp" />
     <ClCompile Include="Images\ImageLoaderTemplate.cpp" />
     <ClCompile Include="Images\ImagesFactory.cpp" />
-    <ClCompile Include="Materials\AssimpMaterial.cpp" />
     <ClCompile Include="Materials\MaterialDebug.cpp" />
     <ClCompile Include="Materials\MaterialTextured.cpp" />
     <ClCompile Include="Materials\OBJMaterial.cpp" />
@@ -36,7 +35,6 @@
     <ClCompile Include="Materials\UI_Font_Material.cpp" />
     <ClCompile Include="Materials\UI_Line_Material.cpp" />
     <ClCompile Include="Materials\UI_Texture_Material.cpp" />
-    <ClCompile Include="Models\AssimpLoader.cpp" />
     <ClCompile Include="Models\FBX\FBXDisplayCache.cpp" />
     <ClCompile Include="Models\FBX\FBXDisplayCommon.cpp" />
     <ClCompile Include="Models\FBX\FBXDisplayLink.cpp" />
@@ -44,12 +42,12 @@
     <ClCompile Include="Models\FBX\FBXDisplayShape.cpp" />
     <ClCompile Include="Models\FBX\FBXManager.cpp" />
     <ClCompile Include="Models\FBX\FBXMaterial.cpp" />
-    <ClCompile Include="Models\FBX\FBXMaterialPass.cpp" />
+    <ClCompile Include="Models\FBX\FBXMaterialPassOpaque.cpp" />
+    <ClCompile Include="Models\FBX\FBXMaterialPassTransperent.cpp" />
     <ClCompile Include="Models\FBX\FBXMesh.cpp" />
     <ClCompile Include="Models\FBX\FBXScene.cpp" />
     <ClCompile Include="Models\FBX\FBXSceneNode.cpp" />
     <ClCompile Include="Models\FBX\FBXStream.cpp" />
-    <ClCompile Include="Models\OBJLoader.cpp" />
     <ClCompile Include="Passes\BeginQueryPass.cpp" />
     <ClCompile Include="Passes\ClearRenderTargetPass.cpp" />
     <ClCompile Include="Passes\CopyBufferPass.cpp" />
@@ -58,7 +56,6 @@
     <ClCompile Include="Passes\EndQueryPass.cpp" />
     <ClCompile Include="Passes\GenerateMipMapsPass.cpp" />
     <ClCompile Include="Passes\InvokeFunctionPass.cpp" />
-    <ClCompile Include="Passes\OBJMaterialPass.cpp" />
     <ClCompile Include="Passes\RenderPassDefaultCreator.cpp" />
     <ClCompile Include="Passes\RenderPassFactory.cpp" />
     <ClCompile Include="Passes\TextureDebugPass.cpp" />
@@ -107,7 +104,6 @@
     <ClInclude Include="Images\ImagePNG.h" />
     <ClInclude Include="Images\ImageLoaderTemplate.h" />
     <ClInclude Include="Images\ImagesFactory.h" />
-    <ClInclude Include="Materials\AssimpMaterial.h" />
     <ClInclude Include="Materials\MaterialDebug.h" />
     <ClInclude Include="Materials\MaterialTextured.h" />
     <ClInclude Include="Materials\OBJMaterial.h" />
@@ -116,7 +112,6 @@
     <ClInclude Include="Materials\UI_Font_Material.h" />
     <ClInclude Include="Materials\UI_Line_Material.h" />
     <ClInclude Include="Materials\UI_Texture_Material.h" />
-    <ClInclude Include="Models\AssimpLoader.h" />
     <ClInclude Include="Models\FBX\FBXDisplayCache.h" />
     <ClInclude Include="Models\FBX\FBXDisplayCommon.h" />
     <ClInclude Include="Models\FBX\FBXDisplayLink.h" />
@@ -124,12 +119,12 @@
     <ClInclude Include="Models\FBX\FBXDisplayShape.h" />
     <ClInclude Include="Models\FBX\FBXManager.h" />
     <ClInclude Include="Models\FBX\FBXMaterial.h" />
-    <ClInclude Include="Models\FBX\FBXMaterialPass.h" />
+    <ClInclude Include="Models\FBX\FBXMaterialPassOpaque.h" />
+    <ClInclude Include="Models\FBX\FBXMaterialPassTransperent.h" />
     <ClInclude Include="Models\FBX\FBXMesh.h" />
     <ClInclude Include="Models\FBX\FBXScene.h" />
     <ClInclude Include="Models\FBX\FBXSceneNode.h" />
     <ClInclude Include="Models\FBX\FBXStream.h" />
-    <ClInclude Include="Models\OBJLoader.h" />
     <ClInclude Include="Passes\BeginQueryPass.h" />
     <ClInclude Include="Passes\ClearRenderTargetPass.h" />
     <ClInclude Include="Passes\CopyBufferPass.h" />
@@ -138,7 +133,6 @@
     <ClInclude Include="Passes\EndQueryPass.h" />
     <ClInclude Include="Passes\GenerateMipMapsPass.h" />
     <ClInclude Include="Passes\InvokeFunctionPass.h" />
-    <ClInclude Include="Passes\OBJMaterialPass.h" />
     <ClInclude Include="Passes\RenderPassDefaultCreator.h" />
     <ClInclude Include="Passes\RenderPassFactory.h" />
     <ClInclude Include="Passes\TextureDebugPass.h" />
@@ -236,12 +230,7 @@
     <Image Include="Resources\Textures\default.png" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="Resources\shaders_D3D\3D\OBJModels.hlsl">
-      <FileType>Document</FileType>
-    </Text>
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="Resources\shaders_D3D\3D\AssimpModel.hlsl">
+    <Text Include="Resources\shaders_D3D\3D\FBXModel.hlsl">
       <FileType>Document</FileType>
     </Text>
   </ItemGroup>

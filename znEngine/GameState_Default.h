@@ -19,8 +19,16 @@ public:
 	virtual void OnPostRender(RenderEventArgs& e) override;
 	virtual void OnRenderUI(RenderEventArgs& e) override;
 
+	// Keyboard events
+	virtual void OnKeyPressed(KeyEventArgs& e);
+	virtual void OnKeyReleased(KeyEventArgs& e);
+
 private:
 	void Load3D();
 	void LoadUI();
 	void LoadObj(const std::string& ObjFilename);
+
+private:
+	std::shared_ptr<IRenderPass> m_FBX_Opaque_Pass;
+	std::shared_ptr<IRenderPass> m_FBX_Transperent_Pass;
 };

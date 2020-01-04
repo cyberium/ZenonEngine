@@ -31,16 +31,19 @@ cbuffer Material : register(b2)
 	Material Mat;
 };
 
-Texture2D AmbientTexture        : register(t0);
-Texture2D EmissiveTexture       : register(t1);
-Texture2D DiffuseTexture        : register(t2);
-Texture2D SpecularTexture       : register(t3);
-Texture2D SpecularPowerTexture  : register(t4);
-Texture2D NormalTexture         : register(t5);
-Texture2D BumpTexture           : register(t6);
-Texture2D OpacityTexture        : register(t7);
 
-StructuredBuffer<Light> Lights : register(t8);
+Texture2D TextureDiffuse                  : register(t0);
+Texture2D TextureEmissive                 : register(t1);
+Texture2D TextureAmbient                  : register(t2);
+Texture2D TextureSpecular                 : register(t3);
+Texture2D TextureShininess                : register(t4);
+Texture2D TextureNormalMap                : register(t5);
+Texture2D TextureBump                     : register(t6);
+Texture2D TextureTransparency             : register(t7);
+Texture2D TextureReflection               : register(t8);
+Texture2D TextureDisplacement             : register(t9);
+
+StructuredBuffer<Light> Lights  : register(t10);
 
 sampler LinearRepeatSampler     : register(s0);
 sampler LinearClampSampler      : register(s1);
@@ -66,10 +69,10 @@ PixelShaderOutput PS_main(VertexShaderOutput IN) : SV_TARGET
 	float4 eyePos = { 0, 0, 0, 1 };
 	Material mat = Mat;
 
-	float4 diffuse = mat.DiffuseColor;
-	if (mat.HasDiffuseTexture)
+	float4 diffuse = float4(mat.Diffuse * mat.DiffuseFactor, 1.0f);
+	if (mat.HasTextureDiffuse)
 	{
-		float4 diffuseTex = DiffuseTexture.Sample(LinearRepeatSampler, IN.texCoord);
+		float4 diffuseTex = TextureDiffuse.Sample(LinearRepeatSampler, IN.texCoord);
 		if (any(diffuse.rgb))
 		{
 			diffuse *= diffuseTex;
@@ -82,16 +85,21 @@ PixelShaderOutput PS_main(VertexShaderOutput IN) : SV_TARGET
 
 	// By default, use the alpha from the diffuse component.
 	float alpha = diffuse.a;
-	if (mat.HasOpacityTexture)
+	if (mat.HasTextureTransparency)
 	{
 		// If the material has an opacity texture, use that to override the diffuse alpha.
-		alpha = OpacityTexture.Sample(LinearRepeatSampler, IN.texCoord).r;
+		alpha = TextureTransparency.Sample(LinearRepeatSampler, IN.texCoord).r;
 	}
 
-	float4 ambient = mat.AmbientColor;
-	if (mat.HasAmbientTexture)
+	if (alpha < 0.05)
 	{
-		float4 ambientTex = AmbientTexture.Sample(LinearRepeatSampler, IN.texCoord);
+		discard;
+	}
+
+	float4 ambient = float4(mat.Ambient, mat.AmbientFactor);
+	if (mat.HasTextureAmbient)
+	{
+		float4 ambientTex = TextureAmbient.Sample(LinearRepeatSampler, IN.texCoord);
 		if (any(ambient.rgb))
 		{
 			ambient *= ambientTex;
@@ -101,14 +109,13 @@ PixelShaderOutput PS_main(VertexShaderOutput IN) : SV_TARGET
 			ambient = ambientTex;
 		}
 	}
-
 	// Combine the global ambient term.
 	//ambient *= mat.GlobalAmbient;
 
-	float4 emissive = mat.EmissiveColor;
-	if (mat.HasEmissiveTexture)
+	float4 emissive = float4(mat.Emissive * mat.EmissiveFactor, 1.0f);
+	if (mat.HasTextureEmissive)
 	{
-		float4 emissiveTex = EmissiveTexture.Sample(LinearRepeatSampler, IN.texCoord);
+		float4 emissiveTex = TextureEmissive.Sample(LinearRepeatSampler, IN.texCoord);
 		if (any(emissive.rgb))
 		{
 			emissive *= emissiveTex;
@@ -119,33 +126,33 @@ PixelShaderOutput PS_main(VertexShaderOutput IN) : SV_TARGET
 		}
 	}
 
-	if (mat.HasSpecularPowerTexture)
-	{
-		mat.SpecularPower = SpecularPowerTexture.Sample(LinearRepeatSampler, IN.texCoord).r * mat.SpecularScale;
-	}
+	//if (mat.HasSpecularPowerTexture)
+	//{
+	//	mat.SpecularPower = SpecularPowerTexture.Sample(LinearRepeatSampler, IN.texCoord).r * mat.SpecularScale;
+	//}
 
 	float4 P = float4(IN.positionVS, 1);
 	float4 N;
 
 	// Normal mapping
-	if (mat.HasNormalTexture)
+	if (mat.HasTextureNormalMap)
 	{
 		// For scense with normal mapping, I don't have to invert the binormal.
 		float3x3 TBN = float3x3(normalize(IN.tangentVS),
-									normalize(IN.binormalVS),
-									normalize(IN.normalVS));
+								normalize(IN.binormalVS),
+								normalize(IN.normalVS));
 
-		N = DoNormalMapping(TBN, NormalTexture, LinearRepeatSampler, IN.texCoord);
+		N = DoNormalMapping(TBN, TextureNormalMap, LinearRepeatSampler, IN.texCoord);
 	}
 	// Bump mapping
-	else if (mat.HasBumpTexture)
+	else if (mat.HasTextureBump)
 	{
 		// For most scenes using bump mapping, I have to invert the binormal.
 		float3x3 TBN = float3x3(normalize(IN.tangentVS),
-									normalize(-IN.binormalVS),
-									normalize(IN.normalVS));
+								normalize(-IN.binormalVS),
+								normalize(IN.normalVS));
 
-		N = DoBumpMapping(TBN, BumpTexture, LinearRepeatSampler, IN.texCoord, mat.BumpIntensity);
+		N = DoBumpMapping(TBN, TextureBump, LinearRepeatSampler, IN.texCoord, mat.BumpFactor);
 	}
 	// Just use the normal from the model.
 	else
@@ -160,12 +167,12 @@ PixelShaderOutput PS_main(VertexShaderOutput IN) : SV_TARGET
 	//diffuse *= float4(lit.Diffuse.rgb, 1.0f); // Discard the alpha value from the lighting calculations.
 
 	float4 specular = 0;
-	if (mat.SpecularPower > 1.0f) // If specular power is too low, don't use it.
+	if (mat.SpecularFactor > 1.0f) // If specular power is too low, don't use it.
 	{
-		specular = mat.SpecularColor;
-		if (mat.HasSpecularTexture)
+		specular = float4(mat.Specular * Mat.SpecularFactor, 1.0);
+		if (mat.HasTextureSpecular)
 		{
-			float4 specularTex = SpecularTexture.Sample(LinearRepeatSampler, IN.texCoord);
+			float4 specularTex = TextureSpecular.Sample(LinearRepeatSampler, IN.texCoord);
 			if (any(specular.rgb))
 			{
 				specular *= specularTex;

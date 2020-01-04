@@ -53,22 +53,22 @@ bool ConstantBufferDX11::Bind(uint32 id, const IShader* shader, IShaderParameter
 
 	switch (shader->GetType())
 	{
-	case IShader::ShaderType::VertexShader:
+	case SShaderType::VertexShader:
 		m_pDeviceContext->VSSetConstantBuffers(id, 1, pBuffers);
 		break;
-	case IShader::ShaderType::TessellationControlShader:
+	case SShaderType::TessellationControlShader:
 		m_pDeviceContext->HSSetConstantBuffers(id, 1, pBuffers);
 		break;
-	case IShader::ShaderType::TessellationEvaluationShader:
+	case SShaderType::TessellationEvaluationShader:
 		m_pDeviceContext->DSSetConstantBuffers(id, 1, pBuffers);
 		break;
-	case IShader::ShaderType::GeometryShader:
+	case SShaderType::GeometryShader:
 		m_pDeviceContext->GSSetConstantBuffers(id, 1, pBuffers);
 		break;
-	case IShader::ShaderType::PixelShader:
+	case SShaderType::PixelShader:
 		m_pDeviceContext->PSSetConstantBuffers(id, 1, pBuffers);
 		break;
-	case IShader::ShaderType::ComputeShader:
+	case SShaderType::ComputeShader:
 		m_pDeviceContext->CSSetConstantBuffers(id, 1, pBuffers);
 		break;
 	default:
@@ -85,22 +85,22 @@ void ConstantBufferDX11::UnBind(uint32 id, const IShader* shader, IShaderParamet
 
 	switch (shader->GetType())
 	{
-	case IShader::ShaderType::VertexShader:
+	case SShaderType::VertexShader:
 		m_pDeviceContext->VSSetConstantBuffers(id, 1, pBuffers);
 		break;
-	case IShader::ShaderType::TessellationControlShader:
+	case SShaderType::TessellationControlShader:
 		m_pDeviceContext->HSSetConstantBuffers(id, 1, pBuffers);
 		break;
-	case IShader::ShaderType::TessellationEvaluationShader:
+	case SShaderType::TessellationEvaluationShader:
 		m_pDeviceContext->DSSetConstantBuffers(id, 1, pBuffers);
 		break;
-	case IShader::ShaderType::GeometryShader:
+	case SShaderType::GeometryShader:
 		m_pDeviceContext->GSSetConstantBuffers(id, 1, pBuffers);
 		break;
-	case IShader::ShaderType::PixelShader:
+	case SShaderType::PixelShader:
 		m_pDeviceContext->PSSetConstantBuffers(id, 1, pBuffers);
 		break;
-	case IShader::ShaderType::ComputeShader:
+	case SShaderType::ComputeShader:
 		m_pDeviceContext->CSSetConstantBuffers(id, 1, pBuffers);
 		break;
 	default:

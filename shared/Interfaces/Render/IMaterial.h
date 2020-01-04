@@ -15,8 +15,8 @@ ZN_INTERFACE ZN_API IMaterial : public std::enable_shared_from_this<IMaterial>
 	virtual void SetName(const std::string& Name) = 0;
 	virtual std::string GetName() const = 0;
 
-	virtual void SetShader(IShader::ShaderType type, std::shared_ptr<IShader> pShader) = 0;
-	virtual std::shared_ptr<IShader> GetShader(IShader::ShaderType type) const = 0;
+	virtual void SetShader(SShaderType type, std::shared_ptr<IShader> pShader) = 0;
+	virtual std::shared_ptr<IShader> GetShader(SShaderType type) const = 0;
 	virtual const ShaderMap& GetShaders() const = 0;
 
 	virtual std::shared_ptr<ITexture> GetTexture(uint8 ID) const = 0;

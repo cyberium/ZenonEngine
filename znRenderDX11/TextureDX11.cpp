@@ -580,7 +580,7 @@ void TextureDX11::Bind(uint32_t ID, const IShader* shader, IShaderParameter::Typ
 	Bind(ID, shader->GetType(), parameterType);
 }
 
-void TextureDX11::Bind(uint32_t ID, IShader::ShaderType _shaderType, IShaderParameter::Type parameterType) const
+void TextureDX11::Bind(uint32_t ID, SShaderType _shaderType, IShaderParameter::Type parameterType) const
 {
 	if (m_bIsDirty)
 	{
@@ -614,22 +614,22 @@ void TextureDX11::Bind(uint32_t ID, IShader::ShaderType _shaderType, IShaderPara
 	{
 		switch (_shaderType)
 		{
-		case IShader::ShaderType::VertexShader:
+		case SShaderType::VertexShader:
 			m_pDeviceContext->VSSetShaderResources(ID, 1, srv);
 			break;
-		case IShader::ShaderType::TessellationControlShader:
+		case SShaderType::TessellationControlShader:
 			m_pDeviceContext->HSSetShaderResources(ID, 1, srv);
 			break;
-		case IShader::ShaderType::TessellationEvaluationShader:
+		case SShaderType::TessellationEvaluationShader:
 			m_pDeviceContext->DSSetShaderResources(ID, 1, srv);
 			break;
-		case IShader::ShaderType::GeometryShader:
+		case SShaderType::GeometryShader:
 			m_pDeviceContext->GSSetShaderResources(ID, 1, srv);
 			break;
-		case IShader::ShaderType::PixelShader:
+		case SShaderType::PixelShader:
 			m_pDeviceContext->PSSetShaderResources(ID, 1, srv);
 			break;
-		case IShader::ShaderType::ComputeShader:
+		case SShaderType::ComputeShader:
 			m_pDeviceContext->CSSetShaderResources(ID, 1, srv);
 			break;
 		}
@@ -638,7 +638,7 @@ void TextureDX11::Bind(uint32_t ID, IShader::ShaderType _shaderType, IShaderPara
 	{
 		switch (_shaderType)
 		{
-		case IShader::ShaderType::ComputeShader:
+		case SShaderType::ComputeShader:
 			m_pDeviceContext->CSSetUnorderedAccessViews(ID, 1, uav, nullptr);
 			break;
 		}
@@ -651,7 +651,7 @@ void TextureDX11::UnBind(uint32_t ID, const IShader* shader, IShaderParameter::T
 	UnBind(ID, shader->GetType(), parameterType);
 }
 
-void TextureDX11::UnBind(uint32_t ID, IShader::ShaderType _shaderType, IShaderParameter::Type parameterType) const
+void TextureDX11::UnBind(uint32_t ID, SShaderType _shaderType, IShaderParameter::Type parameterType) const
 {
 	ID3D11ShaderResourceView* srv[] = { nullptr };
 	ID3D11UnorderedAccessView* uav[] = { nullptr };
@@ -660,22 +660,22 @@ void TextureDX11::UnBind(uint32_t ID, IShader::ShaderType _shaderType, IShaderPa
 	{
 		switch (_shaderType)
 		{
-		case IShader::ShaderType::VertexShader:
+		case SShaderType::VertexShader:
 			m_pDeviceContext->VSSetShaderResources(ID, 1, srv);
 			break;
-		case IShader::ShaderType::TessellationControlShader:
+		case SShaderType::TessellationControlShader:
 			m_pDeviceContext->HSSetShaderResources(ID, 1, srv);
 			break;
-		case IShader::ShaderType::TessellationEvaluationShader:
+		case SShaderType::TessellationEvaluationShader:
 			m_pDeviceContext->DSSetShaderResources(ID, 1, srv);
 			break;
-		case IShader::ShaderType::GeometryShader:
+		case SShaderType::GeometryShader:
 			m_pDeviceContext->GSSetShaderResources(ID, 1, srv);
 			break;
-		case IShader::ShaderType::PixelShader:
+		case SShaderType::PixelShader:
 			m_pDeviceContext->PSSetShaderResources(ID, 1, srv);
 			break;
-		case IShader::ShaderType::ComputeShader:
+		case SShaderType::ComputeShader:
 			m_pDeviceContext->CSSetShaderResources(ID, 1, srv);
 			break;
 		}
@@ -684,7 +684,7 @@ void TextureDX11::UnBind(uint32_t ID, IShader::ShaderType _shaderType, IShaderPa
 	{
 		switch (_shaderType)
 		{
-		case IShader::ShaderType::ComputeShader:
+		case SShaderType::ComputeShader:
 			m_pDeviceContext->CSSetUnorderedAccessViews(ID, 1, uav, nullptr);
 			break;
 		}

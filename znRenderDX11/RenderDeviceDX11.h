@@ -31,7 +31,7 @@ public:
 	void Lock();
 	void Unlock();
 
-	std::shared_ptr<IShader> CreateShader(IShader::ShaderType type, const std::string& fileName, const IShader::ShaderMacros& shaderMacros, const std::string& entryPoint, const std::string& profile, std::shared_ptr<IShaderInputLayout> _customLayout = nullptr);
+	std::shared_ptr<IShader> CreateShader(SShaderType type, const std::string& fileName, const IShader::ShaderMacros& shaderMacros, const std::string& entryPoint, const std::string& profile, std::shared_ptr<IShaderInputLayout> _customLayout = nullptr);
 	void DestroyShader(std::shared_ptr<IShader> shader);
 	
 	std::shared_ptr<IMesh> CreateMesh();

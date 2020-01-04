@@ -37,46 +37,21 @@ bool MeshDX11::Render(const RenderEventArgs* renderArgs, const IConstantBuffer* 
 
 		if (material)
 		{
-			pVS = material->GetShader(IShader::ShaderType::VertexShader);
-			pPS = material->GetShader(IShader::ShaderType::PixelShader);
+			pVS = material->GetShader(SShaderType::VertexShader);
+			pPS = material->GetShader(SShaderType::PixelShader);
 			shadersMap = material->GetShaders();
 		}
 
 		if (pVS == nullptr && pPS == nullptr)
 		{
-			pVS = renderArgs->PipelineState->GetShader(IShader::ShaderType::VertexShader);
-			pPS = renderArgs->PipelineState->GetShader(IShader::ShaderType::PixelShader);
+			pVS = renderArgs->PipelineState->GetShader(SShaderType::VertexShader);
+			pPS = renderArgs->PipelineState->GetShader(SShaderType::PixelShader);
 			shadersMap = renderArgs->PipelineState->GetShaders();
 		}
 
-		if (material)
-		{
-			material->Bind(shadersMap);
-		}
-
-		if (pVS)
-		{
-			const std::shared_ptr<IShaderParameter>& perObjectParameter = pVS->GetShaderParameterByName("PerObject");
-			if (perObjectParameter->IsValid() && perObject != nullptr)
-			{
-				perObjectParameter->SetConstantBuffer(perObject);
-				perObjectParameter->Bind();
-			}
-
-			SRenderGeometryArgs renderGeometryArgs;
-			renderGeometryArgs.Material = material;
-			renderGeometryArgs.GeometryPartParams = ((GeometryPartParams.IsDefault() == false) ? GeometryPartParams : materialForGeometryPart.GeometryPartParams);
-
-			const IRenderPass* constRenderPass = dynamic_cast<const IRenderPass*>(renderArgs->Caller);
-			IRenderPass* renderPass = const_cast<IRenderPass*>(constRenderPass);
-
-			m_Geometry->Accept(renderPass, pVS.get(), renderGeometryArgs);
-		}
-
-		if (material)
-		{
-			material->Unbind(shadersMap);
-		}
+		const IRenderPass* constRenderPass = dynamic_cast<const IRenderPass*>(renderArgs->Caller);
+		IRenderPass* renderPass = const_cast<IRenderPass*>(constRenderPass);
+		m_Geometry->Accept(renderPass, perObject, shadersMap, material.get(), ((GeometryPartParams.IsDefault() == false) ? GeometryPartParams : materialForGeometryPart.GeometryPartParams));
 	}
 
 	return true;

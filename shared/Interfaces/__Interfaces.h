@@ -134,6 +134,7 @@ class Rect;
 #include "Interfaces/Render/Types/Ray.h"
 #include "Interfaces/Render/Types/RaycastHit.h"
 #include "Interfaces/Render/Types/RenderGeometryParams.h"
+#include "Interfaces/Render/Types/ShaderType.h"
 #include "Interfaces/Render/Types/Viewport.h"
 
 //---------------------------------------------------------//

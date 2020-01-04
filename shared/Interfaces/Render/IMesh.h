@@ -26,7 +26,6 @@ ZN_INTERFACE ZN_API IMesh : public std::enable_shared_from_this<IMesh>
 
 	virtual void                                    SetMaterial(std::shared_ptr<const IMaterial> Material) = 0;
 	virtual void                                    AddMaterial(std::shared_ptr<const IMaterial> Material, SGeometryPartParams GeometryPartParams = SGeometryPartParams()) = 0;
-	virtual std::vector<SRenderGeometryArgs>		GetMaterials() const = 0;
 
 	virtual bool                                    Render(const RenderEventArgs* renderEventArgs, const IConstantBuffer* perObject, SGeometryPartParams GeometryPartParams = SGeometryPartParams()) = 0;
 

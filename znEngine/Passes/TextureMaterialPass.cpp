@@ -20,22 +20,14 @@ CTexturedMaterialPass::~CTexturedMaterialPass()
 //
 bool CTexturedMaterialPass::Visit(IMesh * Mesh, SGeometryPartParams GeometryPartParams)
 {
-	std::shared_ptr<const IMaterial> material = Mesh->GetMaterials()[0].Material;
-
-	const MaterialTextured* objMaterial = dynamic_cast<const MaterialTextured*>(material.get());
-	if (objMaterial == nullptr)
-		return false;
-
 	return Base3DPass::Visit(Mesh, GeometryPartParams);
 }
 
-bool CTexturedMaterialPass::Visit(IGeometry * Geometry, const IShader * VertexShader, const SRenderGeometryArgs& RenderGeometryArgs)
+bool CTexturedMaterialPass::Visit(IGeometry * Geometry, const IConstantBuffer* PerObject, const std::unordered_map<SShaderType, std::shared_ptr<IShader>>& ShadersMap, const IMaterial* Material, const SGeometryPartParams& GeometryPartParams)
 {
-	std::shared_ptr<const IMaterial> material = RenderGeometryArgs.Material;
-
-	const MaterialTextured* objMaterial = dynamic_cast<const MaterialTextured*>(material.get());
+	const MaterialTextured* objMaterial = dynamic_cast<const MaterialTextured*>(Material);
 	if (objMaterial == nullptr)
 		return false;
 
-	return Base3DPass::Visit(Geometry, VertexShader, RenderGeometryArgs);
+	return Base3DPass::Visit(Geometry, PerObject, ShadersMap, Material, GeometryPartParams);
 }

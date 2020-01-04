@@ -9,8 +9,8 @@ public:
 	virtual void SetName(const std::string& Name);
 	virtual std::string GetName() const;
 
-	virtual void SetShader(IShader::ShaderType type, std::shared_ptr<IShader> pShader);
-	virtual std::shared_ptr<IShader> GetShader(IShader::ShaderType type) const;
+	virtual void SetShader(SShaderType type, std::shared_ptr<IShader> pShader);
+	virtual std::shared_ptr<IShader> GetShader(SShaderType type) const;
 	virtual const ShaderMap& GetShaders() const;
 
 	virtual std::shared_ptr<ITexture> GetTexture(uint8 ID) const;

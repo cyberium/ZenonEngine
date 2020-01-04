@@ -11,8 +11,8 @@ public:
 	virtual ~PipelineStateDX11();
 
 	// PipelineState
-	void SetShader(IShader::ShaderType type, std::shared_ptr<IShader> pShader) override;
-	std::shared_ptr<IShader> GetShader(IShader::ShaderType type) const override;
+	void SetShader(SShaderType type, std::shared_ptr<IShader> pShader) override;
+	std::shared_ptr<IShader> GetShader(SShaderType type) const override;
 	const ShaderMap& GetShaders() const override;
 	void SetBlendState(const std::shared_ptr<IBlendState> blendState) override;
 	std::shared_ptr<IBlendState> GetBlendState() const override;

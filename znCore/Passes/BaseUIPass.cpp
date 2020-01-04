@@ -49,11 +49,11 @@ bool BaseUIPass::Visit(IMesh * Mesh, SGeometryPartParams GeometryPartParams)
 	return Mesh->Render(GetRenderEventArgs(), m_PerObjectConstantBuffer.get(), GeometryPartParams);
 }
 
-bool BaseUIPass::Visit(IGeometry * Geometry, const IShader * VertexShader, const SRenderGeometryArgs& RenderGeometryArgs)
+bool BaseUIPass::Visit(IGeometry * Geometry, const IConstantBuffer* PerObject, const std::unordered_map<SShaderType, std::shared_ptr<IShader>>& ShadersMap, const IMaterial* Material, const SGeometryPartParams& GeometryPartParams)
 {
 	GetRenderEventArgs()->Caller = this;
 
-	return Geometry->Render(GetRenderEventArgs(), VertexShader, RenderGeometryArgs.GeometryPartParams);
+	return Geometry->Render(GetRenderEventArgs(), PerObject, ShadersMap, Material, GeometryPartParams);
 }
 
 

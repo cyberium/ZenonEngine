@@ -16,7 +16,7 @@ public:
 	// IVisitor
 	virtual bool Visit3D(ISceneNode* node) override;
 	virtual bool Visit(IMesh* Mesh, SGeometryPartParams GeometryPartParams = SGeometryPartParams()) override;
-	virtual bool Visit(IGeometry* Geometry, const IShader* VertexShader, const SRenderGeometryArgs& RenderGeometryArgs) override;
+	virtual bool Visit(IGeometry* Geometry, const IConstantBuffer* PerObject, const std::unordered_map<SShaderType, std::shared_ptr<IShader>>& ShadersMap, const IMaterial* Material, const SGeometryPartParams& GeometryPartParams) override;
 
 protected: // PerObject functional
 	__declspec(align(16)) struct PerObject3D

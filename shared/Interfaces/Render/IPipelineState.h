@@ -17,8 +17,8 @@ ZN_INTERFACE ZN_API IPipelineState
 {
 	virtual ~IPipelineState() {}
 
-	virtual void SetShader(IShader::ShaderType type, std::shared_ptr<IShader> pShader) = 0;
-	virtual std::shared_ptr<IShader> GetShader(IShader::ShaderType type) const = 0;
+	virtual void SetShader(SShaderType type, std::shared_ptr<IShader> pShader) = 0;
+	virtual std::shared_ptr<IShader> GetShader(SShaderType type) const = 0;
 	virtual const ShaderMap& GetShaders() const = 0;
 
 	virtual void SetBlendState(const std::shared_ptr<IBlendState> blendState) = 0;
