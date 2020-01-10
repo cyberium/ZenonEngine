@@ -49,11 +49,19 @@ bool BaseUIPass::Visit(IMesh * Mesh, SGeometryPartParams GeometryPartParams)
 	return Mesh->Render(GetRenderEventArgs(), m_PerObjectConstantBuffer.get(), GeometryPartParams);
 }
 
-bool BaseUIPass::Visit(IGeometry * Geometry, const IConstantBuffer* PerObject, const std::unordered_map<SShaderType, std::shared_ptr<IShader>>& ShadersMap, const IMaterial* Material, const SGeometryPartParams& GeometryPartParams)
+bool BaseUIPass::Visit(IGeometry* Geometry, const IMaterial* Material, SGeometryPartParams GeometryPartParams)
 {
 	GetRenderEventArgs()->Caller = this;
 
-	return Geometry->Render(GetRenderEventArgs(), PerObject, ShadersMap, Material, GeometryPartParams);
+	ShaderMap shadersMap;
+
+	if (Material)
+		shadersMap = Material->GetShaders();
+
+	if (shadersMap.empty())
+		shadersMap = GetRenderEventArgs()->PipelineState->GetShaders();
+
+	return Geometry->Render(GetRenderEventArgs(), GetPerObjectConstantBuffer().get(), shadersMap, Material, GeometryPartParams);
 }
 
 
@@ -69,11 +77,4 @@ void BaseUIPass::SetPerObjectConstantBufferData()
 std::shared_ptr<IConstantBuffer> BaseUIPass::GetPerObjectConstantBuffer() const
 {
 	return m_PerObjectConstantBuffer;
-}
-
-void BaseUIPass::BindPerObjectConstantBuffer(std::shared_ptr<IShader> shader)
-{
-	_ASSERT_EXPR(shader != nullptr, "BaseUIPass::BindPerObjectConstantBuffer: Shader parameter must not be null!");
-
-	shader->GetShaderParameterByName("PerObject")->Set(m_PerObjectConstantBuffer.get());
 }

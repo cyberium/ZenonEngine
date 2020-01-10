@@ -23,11 +23,11 @@ bool CDebugMaterialPass::Visit(IMesh * Mesh, SGeometryPartParams GeometryPartPar
 	return Base3DPass::Visit(Mesh, GeometryPartParams);
 }
 
-bool CDebugMaterialPass::Visit(IGeometry * Geometry, const IConstantBuffer* PerObject, const std::unordered_map<SShaderType, std::shared_ptr<IShader>>& ShadersMap, const IMaterial* Material, const SGeometryPartParams& GeometryPartParams)
+bool CDebugMaterialPass::Visit(IGeometry * Geometry, const IMaterial* Material, SGeometryPartParams GeometryPartParams)
 {
 	//const MaterialDebug* objMaterial = dynamic_cast<const MaterialDebug*>(Material);
 	//if (objMaterial == nullptr)
 	//	return false;
 
-	return Base3DPass::Visit(Geometry, PerObject, ShadersMap, Material, GeometryPartParams);
+	return Base3DPass::Visit(Geometry, Material, GeometryPartParams);
 }

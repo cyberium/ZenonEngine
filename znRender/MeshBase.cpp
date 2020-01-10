@@ -71,5 +71,14 @@ void MeshBase::AddMaterial(std::shared_ptr<const IMaterial> Material, SGeometryP
 
 bool MeshBase::Accept(IVisitor* visitor, SGeometryPartParams GeometryPartParams = SGeometryPartParams())
 {
-    return visitor->Visit(this, GeometryPartParams);
+	bool visitResult = visitor->Visit(this, GeometryPartParams);
+
+	for (const auto& materialForGeometryPart : m_MaterialForGeometryParts)
+	{
+		const std::shared_ptr<const IMaterial>& material = materialForGeometryPart.Material;
+
+		visitResult = m_Geometry->Accept(visitor, material.get(), ((! GeometryPartParams.IsDefault()) ? GeometryPartParams : materialForGeometryPart.GeometryPartParams));
+	}
+
+    return visitResult;
 }

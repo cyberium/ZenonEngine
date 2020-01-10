@@ -452,7 +452,7 @@ void RenderDeviceDX11::CreateDevice()
 
     UINT createDeviceFlags = 0;
 //#if defined(_DEBUG) 
-    createDeviceFlags = D3D11_CREATE_DEVICE_DEBUG;
+    //createDeviceFlags = D3D11_CREATE_DEVICE_DEBUG;
 	//#endif
 
     // This will be the feature level that 

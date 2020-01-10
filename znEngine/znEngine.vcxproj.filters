@@ -279,12 +279,6 @@
     <ClCompile Include="Images\ImagePNG.cpp">
       <Filter>Images</Filter>
     </ClCompile>
-    <ClCompile Include="Models\FBX\FBXMaterialPassOpaque.cpp">
-      <Filter>Models\FBX\Wrapped</Filter>
-    </ClCompile>
-    <ClCompile Include="Models\FBX\FBXMaterialPassTransperent.cpp">
-      <Filter>Models\FBX\Wrapped</Filter>
-    </ClCompile>
     <ClCompile Include="Models\FBX\FBXLight.cpp">
       <Filter>Models\FBX\Wrapped</Filter>
     </ClCompile>
@@ -296,6 +290,12 @@
     </ClCompile>
     <ClCompile Include="Materials\MaterialModel.cpp">
       <Filter>Materials</Filter>
+    </ClCompile>
+    <ClCompile Include="Passes\MaterialPassOpaque.cpp">
+      <Filter>Passes\3D</Filter>
+    </ClCompile>
+    <ClCompile Include="Passes\MaterialPassTransperent.cpp">
+      <Filter>Passes\3D</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -491,12 +491,6 @@
     <ClInclude Include="Images\ImagePNG.h">
       <Filter>Images</Filter>
     </ClInclude>
-    <ClInclude Include="Models\FBX\FBXMaterialPassOpaque.h">
-      <Filter>Models\FBX\Wrapped</Filter>
-    </ClInclude>
-    <ClInclude Include="Models\FBX\FBXMaterialPassTransperent.h">
-      <Filter>Models\FBX\Wrapped</Filter>
-    </ClInclude>
     <ClInclude Include="Models\FBX\FBXLight.h">
       <Filter>Models\FBX\Wrapped</Filter>
     </ClInclude>
@@ -508,6 +502,12 @@
     </ClInclude>
     <ClInclude Include="Materials\MaterialModel.h">
       <Filter>Materials</Filter>
+    </ClInclude>
+    <ClInclude Include="Passes\MaterialPassOpaque.h">
+      <Filter>Passes\3D</Filter>
+    </ClInclude>
+    <ClInclude Include="Passes\MaterialPassTransperent.h">
+      <Filter>Passes\3D</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

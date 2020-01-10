@@ -55,6 +55,11 @@ void CCollectLightPass::PostRender(RenderEventArgs & e)
 	CBaseScenePass::PostRender(e);
 }
 
+
+
+//
+// IVisitor
+//
 bool CCollectLightPass::Visit(CLight3D * light)
 {
 	m_CollectedLights.push_back(light);

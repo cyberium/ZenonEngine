@@ -33,8 +33,8 @@ private:
 	void CGameState_World::UpdateLights();
 
 private:
-	std::shared_ptr<IRenderPass> m_FBX_Opaque_Pass;
-	std::shared_ptr<IRenderPass> m_FBX_Transperent_Pass;
+	std::shared_ptr<IRenderPass> m_Model_Pass_Opaque;
+	std::shared_ptr<IRenderPass> m_Model_Pass_Transperent;
 	std::shared_ptr<CCollectLightPass> m_CollectLightPass;
 	std::shared_ptr<CSetShaderParameterPass> m_SetShaderParameterPass;
 	std::shared_ptr<IStructuredBuffer> m_LightsStructuredBuffer;

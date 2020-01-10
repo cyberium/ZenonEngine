@@ -11,7 +11,7 @@ public:
 	virtual ~CBaseScenePass();
 
 	// IRenderPass
-	virtual void Render(RenderEventArgs& e);
+	void Render(RenderEventArgs& e) override final;
 
 protected:
 	std::shared_ptr<IScene>                         GetScene() const;

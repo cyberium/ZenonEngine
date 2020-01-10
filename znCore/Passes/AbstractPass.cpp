@@ -101,7 +101,7 @@ bool AbstractPass::Visit(IMesh* Mesh, SGeometryPartParams GeometryPartParams)
     return true;
 }
 
-bool AbstractPass::Visit(IGeometry * Geometry, const IConstantBuffer* PerObject, const std::unordered_map<SShaderType, std::shared_ptr<IShader>>& ShadersMap, const IMaterial* Material, const SGeometryPartParams& GeometryPartParams)
+bool AbstractPass::Visit(IGeometry * Geometry, const IMaterial* Material, SGeometryPartParams GeometryPartParams)
 {
 	//_ASSERT(false, "This function must be specialized.");
 	return true;

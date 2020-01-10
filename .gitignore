@@ -38,6 +38,8 @@
 # zip
 *.zip
 
+*.txt
+
 
 bin_x86/
 bin_x64/

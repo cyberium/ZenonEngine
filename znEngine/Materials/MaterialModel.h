@@ -132,7 +132,7 @@ protected:
 
 		uint32 HasTextureReflection;
 		uint32 HasTextureDisplacement;
-		glm::vec2 Padding;
+		uint32 Padding[2];
 	};
 	MaterialProperties* m_pProperties;
 

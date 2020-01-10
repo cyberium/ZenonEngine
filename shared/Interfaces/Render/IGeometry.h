@@ -24,7 +24,7 @@ ZN_INTERFACE ZN_API IGeometry : public std::enable_shared_from_this<IGeometry>
 
 	virtual void SetPrimitiveTopology(PrimitiveTopology Topology) = 0;
 
-	virtual bool Render(const RenderEventArgs* RenderEventArgs, const IConstantBuffer* PerObject, const ShaderMap& ShadersMap, const IMaterial* Material, const SGeometryPartParams& GeometryPartParams) = 0;
+	virtual bool Render(const RenderEventArgs* RenderEventArgs, const IConstantBuffer* PerObject, const ShaderMap& ShadersMap, const IMaterial* Material, const SGeometryPartParams& GeometryPartParams) const = 0;
 
-	virtual bool Accept(IVisitor* visitor, const IConstantBuffer* PerObject, const ShaderMap& ShadersMap, const IMaterial* Material, const SGeometryPartParams& GeometryPartParams) = 0;
+	virtual bool Accept(IVisitor* visitor, const IMaterial* Material, SGeometryPartParams GeometryPartParams = SGeometryPartParams()) = 0;
 };

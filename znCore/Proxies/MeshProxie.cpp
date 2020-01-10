@@ -70,5 +70,5 @@ bool MeshProxie::Render(const RenderEventArgs* renderEventArgs, const IConstantB
 
 bool MeshProxie::Accept(IVisitor* visitor, SGeometryPartParams GeometryPartParams)
 {
-	return visitor->Visit(this, GeometryPartParams);
+	return m_Mesh->Accept(visitor, GeometryPartParams);
 }

@@ -8,5 +8,5 @@ public:
 
 	// IVisitor
 	bool Visit(IMesh* Mesh, SGeometryPartParams GeometryPartParams) override;
-	bool Visit(IGeometry* Geometry, const IConstantBuffer* PerObject, const std::unordered_map<SShaderType, std::shared_ptr<IShader>>& ShadersMap, const IMaterial* Material, const SGeometryPartParams& GeometryPartParams) override;
+	bool Visit(IGeometry* Geometry, const IMaterial* Material, SGeometryPartParams GeometryPartParams = SGeometryPartParams()) override;
 };

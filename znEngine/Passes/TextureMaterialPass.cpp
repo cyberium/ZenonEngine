@@ -23,11 +23,11 @@ bool CTexturedMaterialPass::Visit(IMesh * Mesh, SGeometryPartParams GeometryPart
 	return Base3DPass::Visit(Mesh, GeometryPartParams);
 }
 
-bool CTexturedMaterialPass::Visit(IGeometry * Geometry, const IConstantBuffer* PerObject, const std::unordered_map<SShaderType, std::shared_ptr<IShader>>& ShadersMap, const IMaterial* Material, const SGeometryPartParams& GeometryPartParams)
+bool CTexturedMaterialPass::Visit(IGeometry * Geometry, const IMaterial* Material, SGeometryPartParams GeometryPartParams)
 {
 	const MaterialTextured* objMaterial = dynamic_cast<const MaterialTextured*>(Material);
 	if (objMaterial == nullptr)
 		return false;
 
-	return Base3DPass::Visit(Geometry, PerObject, ShadersMap, Material, GeometryPartParams);
+	return Base3DPass::Visit(Geometry, Material, GeometryPartParams);
 }

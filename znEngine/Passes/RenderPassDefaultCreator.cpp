@@ -8,8 +8,8 @@
 
 #include "Passes/TextureDebugPass.h"
 #include "Passes/TextureMaterialPass.h"
-#include "Models/FBX/FBXMaterialPassOpaque.h"
-#include "Models/FBX/FBXMaterialPassTransperent.h"
+#include "Passes/MaterialPassOpaque.h"
+#include "Passes/MaterialPassTransperent.h"
 
 CRenderPassDefaultCreator::CRenderPassDefaultCreator()
 {
@@ -44,11 +44,11 @@ std::string CRenderPassDefaultCreator::GetRenderPassName(size_t Index) const
 	}
 	else if (Index == 4)
 	{
-		return "FBXPassOpaque";
+		return "ModelPassOpaque";
 	}
 	else if (Index == 5)
 	{
-		return "FBXPassTransperent";
+		return "ModelPassTransperent";
 	}
 
 	throw CException("CRenderPassDefaultCreator: GetRenderPassName(%d) is out of bounds. Count = %d", Index, GetRenderPassCount());
@@ -171,7 +171,7 @@ std::shared_ptr<IRenderPass> CRenderPassDefaultCreator::CreateRenderPass(size_t 
 		Pipeline->SetShader(SShaderType::VertexShader, g_pVertexShader);
 		Pipeline->SetShader(SShaderType::PixelShader, g_pPixelShader);
 
-		return std::make_shared<CFBXMaterialPassOpaque>(RenderDevice, Scene, Pipeline);
+		return std::make_shared<CMaterialPassOpaque>(RenderDevice, Scene, Pipeline);
 	}
 	else if (Index == 5)
 	{
@@ -196,7 +196,7 @@ std::shared_ptr<IRenderPass> CRenderPassDefaultCreator::CreateRenderPass(size_t 
 		Pipeline->SetShader(SShaderType::VertexShader, g_pVertexShader);
 		Pipeline->SetShader(SShaderType::PixelShader, g_pPixelShader);
 
-		return std::make_shared<CFBXMaterialPassTransperent>(RenderDevice, Scene, Pipeline);
+		return std::make_shared<CMaterialPassTransperent>(RenderDevice, Scene, Pipeline);
 	}
 
 	throw CException("CRenderPassDefaultCreator: CreateRenderPass(%d) is out of bounds. Count = %d", Index, GetRenderPassCount());

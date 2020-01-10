@@ -159,8 +159,6 @@ void MaterialModel::SetTexture(ETextureType TextureType, std::shared_ptr<ITextur
 			_ASSERT(false);
 	};
 
-	PrintInfo();
-
 	MaterialProxie::SetTexture((uint32)TextureType, texture);
 }
 

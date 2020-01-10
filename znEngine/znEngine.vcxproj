@@ -42,8 +42,6 @@
     <ClCompile Include="Models\FBX\FBXLight.cpp" />
     <ClCompile Include="Models\FBX\FBXManager.cpp" />
     <ClCompile Include="Models\FBX\FBXMaterial.cpp" />
-    <ClCompile Include="Models\FBX\FBXMaterialPassOpaque.cpp" />
-    <ClCompile Include="Models\FBX\FBXMaterialPassTransperent.cpp" />
     <ClCompile Include="Models\FBX\FBXMesh.cpp" />
     <ClCompile Include="Models\FBX\FBXScene.cpp" />
     <ClCompile Include="Models\FBX\FBXSceneNode.cpp" />
@@ -57,6 +55,8 @@
     <ClCompile Include="Passes\EndQueryPass.cpp" />
     <ClCompile Include="Passes\GenerateMipMapsPass.cpp" />
     <ClCompile Include="Passes\InvokeFunctionPass.cpp" />
+    <ClCompile Include="Passes\MaterialPassOpaque.cpp" />
+    <ClCompile Include="Passes\MaterialPassTransperent.cpp" />
     <ClCompile Include="Passes\RenderPassDefaultCreator.cpp" />
     <ClCompile Include="Passes\RenderPassFactory.cpp" />
     <ClCompile Include="Passes\SetShaderParameterPass.cpp" />
@@ -121,8 +121,6 @@
     <ClInclude Include="Models\FBX\FBXLight.h" />
     <ClInclude Include="Models\FBX\FBXManager.h" />
     <ClInclude Include="Models\FBX\FBXMaterial.h" />
-    <ClInclude Include="Models\FBX\FBXMaterialPassOpaque.h" />
-    <ClInclude Include="Models\FBX\FBXMaterialPassTransperent.h" />
     <ClInclude Include="Models\FBX\FBXMesh.h" />
     <ClInclude Include="Models\FBX\FBXScene.h" />
     <ClInclude Include="Models\FBX\FBXSceneNode.h" />
@@ -136,6 +134,8 @@
     <ClInclude Include="Passes\EndQueryPass.h" />
     <ClInclude Include="Passes\GenerateMipMapsPass.h" />
     <ClInclude Include="Passes\InvokeFunctionPass.h" />
+    <ClInclude Include="Passes\MaterialPassOpaque.h" />
+    <ClInclude Include="Passes\MaterialPassTransperent.h" />
     <ClInclude Include="Passes\RenderPassDefaultCreator.h" />
     <ClInclude Include="Passes\RenderPassFactory.h" />
     <ClInclude Include="Passes\SetShaderParameterPass.h" />

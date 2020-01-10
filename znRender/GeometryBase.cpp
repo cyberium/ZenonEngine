@@ -39,7 +39,7 @@ void GeometryBase::SetIndexBuffer(std::shared_ptr<IBuffer> buffer)
     m_pIndexBuffer = buffer;
 }
 
-bool GeometryBase::Accept(IVisitor * visitor, const IConstantBuffer* PerObject, const std::unordered_map<SShaderType, std::shared_ptr<IShader>>& ShadersMap, const IMaterial* Material, const SGeometryPartParams& GeometryPartParams)
+bool GeometryBase::Accept(IVisitor * visitor, const IMaterial* Material, SGeometryPartParams GeometryPartParams)
 {
-	return visitor->Visit(this, PerObject, ShadersMap, Material, GeometryPartParams);
+	return visitor->Visit(this, Material, GeometryPartParams);
 }

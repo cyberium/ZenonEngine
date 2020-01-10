@@ -15,7 +15,7 @@ public:
 	// IVisitor
 	virtual bool VisitUI(ISceneNode* node) override;
 	virtual bool Visit(IMesh* Mesh, SGeometryPartParams GeometryPartParams = SGeometryPartParams()) override;
-	virtual bool Visit(IGeometry* Geometry, const IConstantBuffer* PerObject, const std::unordered_map<SShaderType, std::shared_ptr<IShader>>& ShadersMap, const IMaterial* Material, const SGeometryPartParams& GeometryPartParams) override;
+	virtual bool Visit(IGeometry* Geometry, const IMaterial* Material, SGeometryPartParams GeometryPartParams = SGeometryPartParams()) override;
 
 protected: // PerObject functional
 	__declspec(align(16)) struct PerObjectUI
@@ -28,5 +28,4 @@ protected: // PerObject functional
 
 	void                                            SetPerObjectConstantBufferData();
 	std::shared_ptr<IConstantBuffer>                GetPerObjectConstantBuffer() const;
-	void                                            BindPerObjectConstantBuffer(std::shared_ptr<IShader> shader);
 };

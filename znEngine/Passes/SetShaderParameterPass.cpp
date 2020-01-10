@@ -31,7 +31,7 @@ void CSetShaderParameterPass::Render(RenderEventArgs& e)
 	if (m_FuncGetSource != nullptr)
 	{
 		std::shared_ptr<IShaderParameterSource> sps = m_FuncGetSource();
-		_ASSERT(sps != nullptr);
-		m_Destination->SetSource(sps.get());
+		if (sps)
+			m_Destination->SetSource(sps.get());
 	}
 }

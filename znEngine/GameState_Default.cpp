@@ -102,10 +102,10 @@ void CGameState_World::OnRenderUI(RenderEventArgs& e)
 void CGameState_World::OnKeyPressed(KeyEventArgs & e)
 {
 	if (e.Key == KeyCode::F4)
-		m_FBX_Opaque_Pass->SetEnabled(! m_FBX_Opaque_Pass->IsEnabled());
+		m_Model_Pass_Opaque->SetEnabled(!m_Model_Pass_Opaque->IsEnabled());
 
 	if (e.Key == KeyCode::F5)
-		m_FBX_Transperent_Pass->SetEnabled(! m_FBX_Transperent_Pass->IsEnabled());
+		m_Model_Pass_Transperent->SetEnabled(!m_Model_Pass_Transperent->IsEnabled());
 
 	CGameState::OnKeyPressed(e);
 }
@@ -200,15 +200,14 @@ void CGameState_World::Load3D()
 	m_Technique3D.AddPass(GetBaseManager()->GetManager<IRenderPassFactory>()->CreateRenderPass("TexturedMaterialPass", GetRenderDevice(), GetRenderWindow()->GetRenderTarget(), GetRenderWindow()->GetViewport(), m_Scene3D));
 	
 	m_CollectLightPass = std::make_shared<CCollectLightPass>(GetRenderDevice(), m_Scene3D);
-	m_FBX_Opaque_Pass = GetBaseManager()->GetManager<IRenderPassFactory>()->CreateRenderPass("FBXPassOpaque", GetRenderDevice(), GetRenderWindow()->GetRenderTarget(), GetRenderWindow()->GetViewport(), m_Scene3D);
-	m_SetShaderParameterPass = std::make_shared<CSetShaderParameterPass>(GetRenderDevice(), std::dynamic_pointer_cast<AbstractPass>(m_FBX_Opaque_Pass)->GetPipelineState()->GetShader(SShaderType::PixelShader)->GetShaderParameterByName("Lights"), std::bind(&CCollectLightPass::GetLightBuffer, m_CollectLightPass));
+	m_Model_Pass_Opaque = GetBaseManager()->GetManager<IRenderPassFactory>()->CreateRenderPass("ModelPassOpaque", GetRenderDevice(), GetRenderWindow()->GetRenderTarget(), GetRenderWindow()->GetViewport(), m_Scene3D);
+	m_Model_Pass_Transperent = GetBaseManager()->GetManager<IRenderPassFactory>()->CreateRenderPass("ModelPassTransperent", GetRenderDevice(), GetRenderWindow()->GetRenderTarget(), GetRenderWindow()->GetViewport(), m_Scene3D);
+	m_SetShaderParameterPass = std::make_shared<CSetShaderParameterPass>(GetRenderDevice(), std::dynamic_pointer_cast<AbstractPass>(m_Model_Pass_Opaque)->GetPipelineState()->GetShader(SShaderType::PixelShader)->GetShaderParameterByName("Lights"), std::bind(&CCollectLightPass::GetLightBuffer, m_CollectLightPass));
 
 	m_Technique3D.AddPass(m_CollectLightPass);
 	m_Technique3D.AddPass(m_SetShaderParameterPass);
-	m_Technique3D.AddPass(m_FBX_Opaque_Pass);
-
-	//m_FBX_Transperent_Pass = GetBaseManager()->GetManager<IRenderPassFactory>()->CreateRenderPass("FBXPassTransperent", GetRenderDevice(), GetRenderWindow()->GetRenderTarget(), GetRenderWindow()->GetViewport(), m_Scene3D);
-	//m_Technique3D.AddPass(m_FBX_Transperent_Pass);
+	m_Technique3D.AddPass(m_Model_Pass_Opaque);
+	//m_Technique3D.AddPass(m_Model_Pass_Transperent);
 }
 
 void CGameState_World::LoadUI()
