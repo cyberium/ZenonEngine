@@ -25,9 +25,7 @@ public:
 	virtual bool Visit(IGeometry* Geometry, const IMaterial* Material, SGeometryPartParams GeometryPartParams = SGeometryPartParams()) override;
 	virtual bool Visit(CLight3D* light) override;
 
-	virtual void SetRenderEventArgs(RenderEventArgs* e);
 	virtual RenderEventArgs* GetRenderEventArgs() const;
-
     std::shared_ptr<IPipelineState> GetPipelineState() const;
 
 protected:

@@ -73,6 +73,9 @@ protected:
 	std::shared_ptr<IQuery>                         m_TestQuery;
     double                                          m_FrameTime;
 
+	double                                          m_FrameTimeSumma;
+	uint64                                          m_FramesCnt;
+
 	std::shared_ptr<ICameraController>              m_DefaultCameraController;
 
 	std::shared_ptr<ISettingGroup>                  m_VideoSettings;

@@ -227,9 +227,18 @@ bool CFBXScene::LoadNodes(std::shared_ptr<ISceneNode> ParentNode)
 	DisplayMetaData(GetNativeScene());
 	DisplayHierarchy(GetNativeScene());
 
+	Log::Print("GEOMETRIES CNT = '%d'", m_NativeScene->GetGeometryCount());
+	for (int i = 0; i < m_NativeScene->GetGeometryCount(); i++)
+	{
+		fbxsdk::FbxGeometry* geom = m_NativeScene->GetGeometry(i);
+		Log::Print("%d GEOM NAME = '%s'", i, geom->GetNameOnly().Buffer());
+	}
+
 	m_RootNode = ParentNode->CreateSceneNode<CFBXSceneNode>(m_BaseManager, weak_from_this(), m_NativeScene->GetRootNode());
 	m_RootNode->LoadNode();
-	//m_RootNode->SetScale(glm::vec3(10));
+	m_RootNode->SetScale(glm::vec3(10));
+
+
 
 	return true;
 }

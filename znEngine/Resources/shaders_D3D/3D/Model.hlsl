@@ -1,6 +1,13 @@
 #include "IDB_SHADER_COMMON_TYPES"
 #include "IDB_SHADER_COMMON_INCLUDE"
 
+struct PerObject
+{
+	float4x4 Model;
+	float4x4 View;
+	float4x4 Projection;
+};
+
 struct VertexShaderInput
 {
 	float3 position : POSITION;
@@ -17,6 +24,16 @@ struct VertexShaderInput_PTN
 	float2 texCoord : TEXCOORD0;
 };
 
+struct VertexShaderInput_PTN_Instanced
+{
+	float3 position : POSITION;
+	float3 normal   : NORMAL;
+	float2 texCoord : TEXCOORD0;
+	uint Instance: SV_InstanceID;
+};
+
+
+
 struct VertexShaderOutput
 {
 	float4 position     : SV_POSITION;  // Clip space position.
@@ -29,9 +46,7 @@ struct VertexShaderOutput
 
 cbuffer PerObject : register(b0)
 {
-	float4x4 Model;
-	float4x4 View;
-	float4x4 Projection;
+	PerObject PO;
 }
 cbuffer Material : register(b2)
 {
@@ -51,14 +66,15 @@ Texture2D TextureReflection               : register(t8);
 Texture2D TextureDisplacement             : register(t9);
 
 StructuredBuffer<Light> Lights  : register(t10);
+StructuredBuffer<PerObject> Instances  : register(t11);
 
 sampler LinearRepeatSampler     : register(s0);
 sampler LinearClampSampler      : register(s1);
 
 VertexShaderOutput VS_main(VertexShaderInput IN)
 {
-	const float4x4 mv = mul(View, Model);
-	const float4x4 mvp = mul(Projection, mul(View, Model));
+	const float4x4 mv = mul(PO.View, PO.Model);
+	const float4x4 mvp = mul(PO.Projection, mul(PO.View, PO.Model));
 	
 	VertexShaderOutput OUT;
 	OUT.position = mul(mvp, float4(IN.position, 1.0f));
@@ -101,8 +117,48 @@ VertexShaderOutput VS_PTN(VertexShaderInput_PTN IN)
 		binormal = normalize(binormal);
 	}
 
-	const float4x4 mv = mul(View, Model);
-	const float4x4 mvp = mul(Projection, mul(View, Model));
+	const float4x4 mv = mul(PO.View, PO.Model);
+	const float4x4 mvp = mul(PO.Projection, mul(PO.View, PO.Model));
+
+	VertexShaderOutput OUT;
+	OUT.position = mul(mvp, float4(IN.position, 1.0f));
+	OUT.positionVS = mul(mv, float4(IN.position, 1.0f)).xyz;
+	OUT.tangentVS = mul(mv, float4(tangent, 0.0f)).xyz;
+	OUT.binormalVS = mul(mv, float4(binormal, 0.0f)).xyz;
+	OUT.normalVS = mul(mv, float4(IN.normal, 0.0f)).xyz;
+	OUT.texCoord = IN.texCoord;
+	return OUT;
+}
+
+
+VertexShaderOutput VS_PTN_Instanced(VertexShaderInput_PTN_Instanced IN)
+{
+	float3 tangent = (float3)0;
+	float3 binormal = (float3)0;
+
+	{
+		float3 c1 = cross(IN.normal, float3(0.0f, 0.0f, 1.0f));
+		float3 c2 = cross(IN.normal, float3(0.0f, 1.0f, 0.0f));
+
+		if (length(c1) > length(c2))
+		{
+			tangent = c1;
+		}
+		else
+		{
+			tangent = c2;
+		}
+
+		tangent = normalize(tangent);
+
+		binormal = cross(IN.normal, tangent);
+		binormal = normalize(binormal);
+	}
+
+	PerObject po = Instances[IN.Instance];
+
+	const float4x4 mv = mul(po.View, po.Model);
+	const float4x4 mvp = mul(po.Projection, mul(po.View, po.Model));
 
 	VertexShaderOutput OUT;
 	OUT.position = mul(mvp, float4(IN.position, 1.0f));
@@ -214,7 +270,7 @@ PixelShaderOutput PS_main(VertexShaderOutput IN) : SV_TARGET
 	
 
 	LightingResult lit = DoLighting(Lights, mat, eyePos, P, N);
-	diffuse *= float4(lit.Diffuse.rgb, 1.0f); // Discard the alpha value from the lighting calculations.
+	//diffuse *= float4(lit.Diffuse.rgb, 1.0f); // Discard the alpha value from the lighting calculations.
 
 	float4 specular = 0;
 	if (mat.SpecularFactor > 1.0f) // If specular power is too low, don't use it.
@@ -238,8 +294,8 @@ PixelShaderOutput PS_main(VertexShaderOutput IN) : SV_TARGET
     PixelShaderOutput OUT;
 	OUT.PositionWS = IN.position;
 	//OUT.Diffuse = float4(N.xyz, 1.0f);
-	//OUT.Diffuse = diffuse;
-	OUT.Diffuse = float4((/*ambient + */emissive + diffuse + specular).rgb, 1.0f/*alpha * (1.0 - mat.TransparencyFactor)*/);
+	OUT.Diffuse = diffuse;
+	//OUT.Diffuse = float4((/*ambient + */emissive + diffuse + specular).rgb, 1.0f/*alpha * (1.0 - mat.TransparencyFactor)*/);
 	OUT.Specular = float4(1.0, 1.0, 1.0, 1.0);
 	OUT.NormalWS = float4(1.0, 1.0, 1.0, 0.0);
 	return OUT;

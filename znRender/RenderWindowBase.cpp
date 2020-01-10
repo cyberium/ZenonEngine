@@ -98,7 +98,7 @@ void RenderWindowBase::OnUpdate(UpdateEventArgs& e)
 	UpdateEventArgs updateArgs(this, e.ElapsedTime, e.TotalTime, e.FrameCounter);
 	m_Update(updateArgs);
 
-	GetRenderDevice()->Lock();
+	//GetRenderDevice()->Lock();
 	{
 		if (m_bResizePending)
 		{
@@ -119,7 +119,7 @@ void RenderWindowBase::OnUpdate(UpdateEventArgs& e)
 
 		Present();
 	}
-	GetRenderDevice()->Unlock();
+	//GetRenderDevice()->Unlock();
 }
 
 void RenderWindowBase::OnPreRender(RenderEventArgs & e)

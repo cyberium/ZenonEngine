@@ -137,7 +137,7 @@ void CGameState_World::Load3D()
 	light.m_PositionWS = glm::vec4(glm::vec3(-50.0f, 150.0f, 0.0f), 1.0f);
 	light.m_Range = 1000.0f;
 	light.m_Intensity = 1.5f;
-	//sceneNodeLight->GetComponent<ILightComponent3D>()->AddLight(std::make_shared<CLight3D>(light));
+	sceneNodeLight->GetComponent<ILightComponent3D>()->AddLight(std::make_shared<CLight3D>(light));
 
 
 
@@ -155,7 +155,7 @@ void CGameState_World::Load3D()
 
 	//---------------------------
 
-	const size_t iterCnt = 0;
+	const size_t iterCnt = 5;
 	const float offset = 145.0f;
 
 	std::shared_ptr<MaterialModel> mat = std::make_shared<MaterialModel>(GetBaseManager());
@@ -192,7 +192,7 @@ void CGameState_World::Load3D()
 		}
 	}
 
-	std::shared_ptr<ISceneNode> fbxSceneNode = GetBaseManager()->GetManager<ISceneNodesFactory>()->CreateSceneNode(m_Scene3D->GetRootNode(), "FBXSceneNode");
+	//std::shared_ptr<ISceneNode> fbxSceneNode = GetBaseManager()->GetManager<ISceneNodesFactory>()->CreateSceneNode(m_Scene3D->GetRootNode(), "FBXSceneNode");
 	//fbxSceneNode->GetComponent<ITransformComponent3D>()->SetScale(vec3(15.0f, 15.0f, 15.0f));
 
 	m_Technique3D.AddPass(GetBaseManager()->GetManager<IRenderPassFactory>()->CreateRenderPass("ClearPass", GetRenderDevice(), GetRenderWindow()->GetRenderTarget(), GetRenderWindow()->GetViewport(), m_Scene3D));

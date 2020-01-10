@@ -12,6 +12,9 @@ CGameState::CGameState(IBaseManager * BaseManager, std::shared_ptr<IRenderWindow
 	, m_WindowEvents(WindowEvents)
 	, m_IsInited(false)
 	, m_IsCurrent(false)
+
+	, m_FramesCnt(0)
+	, m_FrameTimeSumma(0.0)
 {
 	m_RenderDevice = m_BaseManager->GetManager<IRenderDevice>();
 }
@@ -176,7 +179,11 @@ void CGameState::OnPostRender(RenderEventArgs& e)
 			m_FrameTime = frameResult.ElapsedTime * 1000.0;
 		else
 			m_FrameTime = frameResult.ElapsedTime / 1000000.0;
-		m_FPSText->GetProperties()->GetPropertyT<std::string>("Text")->Set("FPS: " + std::to_string(1000.0 / m_FrameTime));
+
+		m_FrameTimeSumma += (1000.0 / m_FrameTime);
+		m_FramesCnt += 1;
+
+		m_FPSText->GetProperties()->GetPropertyT<std::string>("Text")->Set("FPS: " + std::to_string(uint64(m_FrameTimeSumma) / m_FramesCnt));
 	}
 }
 

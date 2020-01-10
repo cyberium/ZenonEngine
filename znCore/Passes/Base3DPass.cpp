@@ -60,7 +60,11 @@ bool Base3DPass::Visit(IGeometry* Geometry, const IMaterial* Material, SGeometry
 	if (shadersMap.empty())
 		shadersMap = GetRenderEventArgs()->PipelineState->GetShaders();
 
-	return Geometry->Render(GetRenderEventArgs(), GetPerObjectConstantBuffer().get(), shadersMap, Material, GeometryPartParams);
+	Material->Bind(shadersMap);
+	bool result = Geometry->Render(GetRenderEventArgs(), GetPerObjectConstantBuffer().get(), shadersMap, Material, GeometryPartParams);
+	Material->Unbind(shadersMap);
+
+	return result;
 }
 
 

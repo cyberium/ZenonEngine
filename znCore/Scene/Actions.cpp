@@ -51,6 +51,7 @@ void CAction::SetAction(std::function<bool(const std::shared_ptr<ISceneNode>&)> 
 
 void CAction::ExecuteAction(const std::shared_ptr<ISceneNode>& ProcessedNode)
 {
+	_ASSERT(m_Action != nullptr);
 	m_Action(ProcessedNode);
 }
 
@@ -85,6 +86,8 @@ void CActionsGroup::SetName(const std::string & Name)
 
 void CActionsGroup::AddAction(std::shared_ptr<IAction> Action)
 {
+	_ASSERT(Action != nullptr);
+	_ASSERT(m_Actions.find(Action->GetName()) == m_Actions.end());
 	m_Actions.insert(std::make_pair(Action->GetName(), Action));
 }
 

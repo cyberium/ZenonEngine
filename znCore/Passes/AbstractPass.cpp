@@ -32,7 +32,7 @@ bool AbstractPass::IsEnabled() const
 
 void AbstractPass::PreRender(RenderEventArgs& e)
 {
-    SetRenderEventArgs(&e);
+	m_RenderEventArgs = &e;
 
     std::shared_ptr<IPipelineState> pipelineState = GetPipelineState();
     if (pipelineState)
@@ -111,11 +111,6 @@ bool AbstractPass::Visit(CLight3D* light)
 {
 	//_ASSERT(false, "This function must be specialized.");
 	return true;
-}
-
-void AbstractPass::SetRenderEventArgs(RenderEventArgs* e)
-{
-    m_RenderEventArgs = e;
 }
 
 RenderEventArgs* AbstractPass::GetRenderEventArgs() const

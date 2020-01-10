@@ -75,8 +75,6 @@ bool GeometryDX11::Render(const RenderEventArgs* renderArgs, const IConstantBuff
 	{
 		geomShader = geomShaderIt->second.get();
 	}
-	
-	Material->Bind(ShadersMap);
 
 	const std::shared_ptr<IShaderParameter>& perObjectParameter = vertexShader->GetShaderParameterByName("PerObject");
 	if (perObjectParameter->IsValid() && PerObject != nullptr)
@@ -142,7 +140,103 @@ bool GeometryDX11::Render(const RenderEventArgs* renderArgs, const IConstantBuff
 		}
 	}
 
-	Material->Unbind(ShadersMap);
+	return true;
+}
+
+bool GeometryDX11::RenderInstanced(const RenderEventArgs * renderArgs, const IStructuredBuffer * InstancesBuffer, const std::unordered_map<SShaderType, std::shared_ptr<IShader>>& ShadersMap, const IMaterial* Material, SGeometryPartParams GeometryPartParams) const
+{
+	UINT indexStartLocation = GeometryPartParams.IndexStartLocation;
+	UINT indexCnt = GeometryPartParams.IndexCnt;
+	if (indexCnt == UINT_MAX && m_pIndexBuffer != nullptr)
+		indexCnt = m_pIndexBuffer->GetElementCount();
+
+	UINT vertexStartLocation = GeometryPartParams.VertexStartLocation;
+	UINT vertexCnt = GeometryPartParams.VertexCnt;
+	if (vertexCnt == UINT_MAX)
+	{
+		if (m_VertexBuffer != nullptr)
+		{
+			vertexCnt = m_VertexBuffer->GetElementCount();
+		}
+		else if (!m_VertexBuffers.empty())
+		{
+			vertexCnt = (*m_VertexBuffers.begin()).second->GetElementCount();
+		}
+		else
+		{
+			_ASSERT(false);
+		}
+	}
+
+	const IShader* vertexShader = ShadersMap.at(SShaderType::VertexShader).get();
+	_ASSERT(vertexShader != nullptr);
+
+	const auto& geomShaderIt = ShadersMap.find(SShaderType::GeometryShader);
+	const IShader* geomShader = nullptr;
+	if (geomShaderIt != ShadersMap.end())
+	{
+		geomShader = geomShaderIt->second.get();
+	}
+
+	std::shared_ptr<IShaderParameter> instancesBufferParameter = vertexShader->GetShaderParameterByName("Instances");
+	if (instancesBufferParameter->IsValid() && InstancesBuffer != nullptr)
+	{
+		instancesBufferParameter->SetStructuredBuffer(InstancesBuffer);
+		instancesBufferParameter->Bind();
+	}
+
+	if (m_VertexBuffer != nullptr)
+	{
+		m_VertexBuffer->Bind(0, vertexShader, IShaderParameter::Type::Buffer);
+	}
+	else
+	{
+		for (const BufferMap::value_type& buffer : m_VertexBuffers)
+		{
+			const BufferBinding& binding = buffer.first;
+			if (vertexShader->GetInputLayout()->HasSemantic(binding))
+			{
+				UINT slotID = vertexShader->GetInputLayout()->GetSemanticSlot(binding);
+				buffer.second->Bind(slotID, vertexShader, IShaderParameter::Type::Buffer);
+			}
+		}
+	}
+
+	m_pDeviceContext->IASetPrimitiveTopology(m_PrimitiveTopology);
+
+	if (m_pIndexBuffer != NULL)
+	{
+		m_pIndexBuffer->Bind(0, vertexShader, IShaderParameter::Type::Buffer);
+		m_pDeviceContext->DrawIndexedInstanced(indexCnt, InstancesBuffer->GetElementCount(), indexStartLocation, vertexStartLocation, 2);
+		m_pIndexBuffer->UnBind(0, vertexShader, IShaderParameter::Type::Buffer);
+	}
+	else
+	{
+		m_pDeviceContext->DrawInstanced(vertexCnt, InstancesBuffer->GetElementCount(), vertexStartLocation, 0);
+	}
+
+	if (m_VertexBuffer != nullptr)
+	{
+		m_VertexBuffer->UnBind(0, vertexShader, IShaderParameter::Type::Buffer);
+	}
+	else
+	{
+		for (const BufferMap::value_type& buffer : m_VertexBuffers)
+		{
+			const BufferBinding& binding = buffer.first;
+			if (vertexShader->GetInputLayout()->HasSemantic(binding))
+			{
+				UINT slotID = vertexShader->GetInputLayout()->GetSemanticSlot(binding);
+				buffer.second->UnBind(slotID, vertexShader, IShaderParameter::Type::Buffer);
+			}
+		}
+	}
+
+	instancesBufferParameter = vertexShader->GetShaderParameterByName("Instances");
+	if (instancesBufferParameter->IsValid())
+	{
+		instancesBufferParameter->Unbind();
+	}
 
 	return true;
 }

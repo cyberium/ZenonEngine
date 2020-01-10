@@ -171,5 +171,6 @@ void ShaderParameterBase::Unbind()
 	if (m_pStructuredBuffer)
 	{
 		m_pStructuredBuffer->UnBind(m_uiSlotID, m_Shader, m_ParameterType);
+		m_pStructuredBuffer = nullptr;
 	}
 }
