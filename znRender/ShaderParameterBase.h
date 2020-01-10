@@ -1,6 +1,8 @@
 #pragma once
 
-class ZN_API ShaderParameterBase : public IShaderParameter, public Object
+class ZN_API ShaderParameterBase 
+	: public IShaderParameter
+	, public Object
 {
 public:
 	ShaderParameterBase();
@@ -10,7 +12,8 @@ public:
 	// IShaderParameter
 	Type GetType() const;
 	bool IsValid() const;
-
+	void SetSource(const IShaderParameterSource* ShaderParameterSource) override final;
+	const IShaderParameterSource* GetSource()  override final;
 	void SetConstantBuffer(const IConstantBuffer* constantBuffer) override final;
 	const IConstantBuffer* GetConstantBuffer() const override final;
 	void SetTexture(const ITexture* texture) override final;

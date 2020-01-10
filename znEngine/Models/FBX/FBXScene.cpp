@@ -229,7 +229,7 @@ bool CFBXScene::LoadNodes(std::shared_ptr<ISceneNode> ParentNode)
 
 	m_RootNode = ParentNode->CreateSceneNode<CFBXSceneNode>(m_BaseManager, weak_from_this(), m_NativeScene->GetRootNode());
 	m_RootNode->LoadNode();
-	m_RootNode->SetScale(glm::vec3(50));
+	//m_RootNode->SetScale(glm::vec3(10));
 
 	return true;
 }

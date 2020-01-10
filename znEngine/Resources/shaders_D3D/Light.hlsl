@@ -25,6 +25,10 @@ struct Light
 	float4   DirectionVS;
 	//--------------------------------------------------------------( 16 bytes )
 	/**
+	 * Ambient color of the light.
+	 */
+	float4   AmbientColor;
+	/**
 	* Color of the light. Diffuse and specular colors are not seperated.
 	*/
 	float4   Color;
@@ -58,6 +62,7 @@ struct Light
 	* The type of the light.
 	*/
 	uint    Type;
+
 	float2  Padding;
 	//--------------------------------------------------------------( 16 bytes )
 	//--------------------------------------------------------------( 16 * 7 = 112 bytes )

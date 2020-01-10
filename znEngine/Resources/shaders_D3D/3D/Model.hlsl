@@ -10,14 +10,21 @@ struct VertexShaderInput
 	float2 texCoord : TEXCOORD0;
 };
 
+struct VertexShaderInput_PTN
+{
+	float3 position : POSITION;
+	float3 normal   : NORMAL;
+	float2 texCoord : TEXCOORD0;
+};
+
 struct VertexShaderOutput
 {
-	float3 positionVS   : TEXCOORD0;    // View space position.
-	float2 texCoord     : TEXCOORD1;    // Texture coordinate
+	float4 position     : SV_POSITION;  // Clip space position.
+	float3 positionVS   : POSITION;    // View space position.
+	float2 texCoord     : TEXCOORD0;    // Texture coordinate
 	float3 tangentVS    : TANGENT;      // View space tangent.
 	float3 binormalVS   : BINORMAL;     // View space binormal.
 	float3 normalVS     : NORMAL;       // View space normal.
-	float4 position     : SV_POSITION;  // Clip space position.
 };
 
 cbuffer PerObject : register(b0)
@@ -50,15 +57,59 @@ sampler LinearClampSampler      : register(s1);
 
 VertexShaderOutput VS_main(VertexShaderInput IN)
 {
-	const float4x4 mvp = mul(Projection, mul(View, Model));
 	const float4x4 mv = mul(View, Model);
+	const float4x4 mvp = mul(Projection, mul(View, Model));
+	
+	VertexShaderOutput OUT;
+	OUT.position = mul(mvp, float4(IN.position, 1.0f));
+	OUT.positionVS = mul(mv, float4(IN.position, 1.0f)).xyz;
+
+	//OUT.tangentVS = mul((float3x3)mv, IN.tangent);
+	//OUT.binormalVS = mul((float3x3)mv, IN.binormal);
+	//OUT.normalVS = mul((float3x3)mv, IN.normal);
+
+	OUT.tangentVS = mul(mv, float4(IN.tangent, 0.0f)).xyz;
+	OUT.binormalVS = mul(mv, float4(IN.binormal, 0.0f)).xyz;
+	OUT.normalVS = mul(mv, float4(IN.normal, 0.0f)).xyz;
+	OUT.texCoord = IN.texCoord;
+
+	return OUT;
+}
+
+
+VertexShaderOutput VS_PTN(VertexShaderInput_PTN IN)
+{
+	float3 tangent = (float3)0;
+	float3 binormal = (float3)0;
+
+	{
+		float3 c1 = cross(IN.normal, float3(0.0f, 0.0f, 1.0f));
+		float3 c2 = cross(IN.normal, float3(0.0f, 1.0f, 0.0f));
+
+		if (length(c1) > length(c2))
+		{
+			tangent = c1;
+		}
+		else
+		{
+			tangent = c2;
+		}
+
+		tangent = normalize(tangent);
+
+		binormal = cross(IN.normal, tangent);
+		binormal = normalize(binormal);
+	}
+
+	const float4x4 mv = mul(View, Model);
+	const float4x4 mvp = mul(Projection, mul(View, Model));
 
 	VertexShaderOutput OUT;
 	OUT.position = mul(mvp, float4(IN.position, 1.0f));
 	OUT.positionVS = mul(mv, float4(IN.position, 1.0f)).xyz;
-	OUT.tangentVS = mul((float3x3)mv, IN.tangent);
-	OUT.binormalVS = mul((float3x3)mv, IN.binormal);
-	OUT.normalVS = mul((float3x3)mv, IN.normal);
+	OUT.tangentVS = mul(mv, float4(tangent, 0.0f)).xyz;
+	OUT.binormalVS = mul(mv, float4(binormal, 0.0f)).xyz;
+	OUT.normalVS = mul(mv, float4(IN.normal, 0.0f)).xyz;
 	OUT.texCoord = IN.texCoord;
 	return OUT;
 }
@@ -132,7 +183,7 @@ PixelShaderOutput PS_main(VertexShaderOutput IN) : SV_TARGET
 	//}
 
 	float4 P = float4(IN.positionVS, 1);
-	float4 N;
+	float4 N = float4(0.0f, 0.0f, 0.0f, 1.0f);
 
 	// Normal mapping
 	if (mat.HasTextureNormalMap)
@@ -163,13 +214,12 @@ PixelShaderOutput PS_main(VertexShaderOutput IN) : SV_TARGET
 	
 
 	LightingResult lit = DoLighting(Lights, mat, eyePos, P, N);
-
-	//diffuse *= float4(lit.Diffuse.rgb, 1.0f); // Discard the alpha value from the lighting calculations.
+	diffuse *= float4(lit.Diffuse.rgb, 1.0f); // Discard the alpha value from the lighting calculations.
 
 	float4 specular = 0;
 	if (mat.SpecularFactor > 1.0f) // If specular power is too low, don't use it.
 	{
-		specular = float4(mat.Specular * Mat.SpecularFactor, 1.0);
+		specular = float4(mat.Specular, 1.0);
 		if (mat.HasTextureSpecular)
 		{
 			float4 specularTex = TextureSpecular.Sample(LinearRepeatSampler, IN.texCoord);
@@ -187,8 +237,9 @@ PixelShaderOutput PS_main(VertexShaderOutput IN) : SV_TARGET
 
     PixelShaderOutput OUT;
 	OUT.PositionWS = IN.position;
-	OUT.Diffuse = diffuse;
-	//OUT.Diffuse = float4((ambient + emissive + diffuse + specular).rgb, alpha * mat.Opacity);
+	//OUT.Diffuse = float4(N.xyz, 1.0f);
+	//OUT.Diffuse = diffuse;
+	OUT.Diffuse = float4((/*ambient + */emissive + diffuse + specular).rgb, 1.0f/*alpha * (1.0 - mat.TransparencyFactor)*/);
 	OUT.Specular = float4(1.0, 1.0, 1.0, 1.0);
 	OUT.NormalWS = float4(1.0, 1.0, 1.0, 0.0);
 	return OUT;

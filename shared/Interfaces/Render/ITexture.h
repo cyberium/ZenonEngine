@@ -2,9 +2,11 @@
 
 // FORWARD BEGIN
 ZN_INTERFACE IShader;
+ZN_INTERFACE IShaderParameterSource;
 // FORWARD END
 
 ZN_INTERFACE ZN_API ITexture
+	: public IShaderParameterSource
 {
 	enum class ZN_API Dimension
 	{

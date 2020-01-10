@@ -451,9 +451,9 @@ void RenderDeviceDX11::CreateDevice()
     };
 
     UINT createDeviceFlags = 0;
-#if defined(_DEBUG)
+//#if defined(_DEBUG) 
     createDeviceFlags = D3D11_CREATE_DEVICE_DEBUG;
-#endif
+	//#endif
 
     // This will be the feature level that 
     // is used to create our device and swap chain.

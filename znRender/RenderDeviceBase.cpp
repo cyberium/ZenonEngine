@@ -48,8 +48,12 @@ std::shared_ptr<IMesh> CRenderDevicePrimitiveCollection::CreatePlane(cvec3 N)
 
 	std::shared_ptr<IMesh> mesh = m_RenderDevice->CreateMesh();
 
-	std::shared_ptr<IBuffer> __vb = m_RenderDevice->CreateVoidVertexBuffer(vertices.data(), vertices.size(), 0, sizeof(DirectX::VertexPositionTextureNormal));
-	mesh->SetVertexBuffer(__vb);
+	std::shared_ptr<IBuffer> __vbPos = m_RenderDevice->CreateVoidVertexBuffer(vertices.data(), vertices.size(), 0, sizeof(DirectX::VertexPositionTextureNormal));
+	std::shared_ptr<IBuffer> __vbTex = m_RenderDevice->CreateVoidVertexBuffer(vertices.data(), vertices.size(), 12, sizeof(DirectX::VertexPositionTextureNormal));
+	std::shared_ptr<IBuffer> __vbNor = m_RenderDevice->CreateVoidVertexBuffer(vertices.data(), vertices.size(), 20, sizeof(DirectX::VertexPositionTextureNormal));
+	mesh->AddVertexBuffer(BufferBinding("POSITION", 0), __vbPos);
+	mesh->AddVertexBuffer(BufferBinding("NORMAL", 0), __vbNor);
+	mesh->AddVertexBuffer(BufferBinding("TEXCOORD", 0), __vbTex);
 
 	std::shared_ptr<IBuffer> __ib = m_RenderDevice->CreateIndexBuffer(indices);
 	mesh->SetIndexBuffer(__ib);
@@ -92,8 +96,12 @@ std::shared_ptr<IMesh> CRenderDevicePrimitiveCollection::CreateSphere()
 
 	std::shared_ptr<IMesh> mesh = m_RenderDevice->CreateMesh();
 
-	std::shared_ptr<IBuffer> __vb = m_RenderDevice->CreateVoidVertexBuffer(vertices.data(), vertices.size(), 0, sizeof(DirectX::VertexPositionTextureNormal));
-	mesh->SetVertexBuffer(__vb);
+	std::shared_ptr<IBuffer> __vbPos = m_RenderDevice->CreateVoidVertexBuffer(vertices.data(), vertices.size(), 0, sizeof(DirectX::VertexPositionTextureNormal));
+	std::shared_ptr<IBuffer> __vbTex = m_RenderDevice->CreateVoidVertexBuffer(vertices.data(), vertices.size(), 12, sizeof(DirectX::VertexPositionTextureNormal));
+	std::shared_ptr<IBuffer> __vbNor = m_RenderDevice->CreateVoidVertexBuffer(vertices.data(), vertices.size(), 20, sizeof(DirectX::VertexPositionTextureNormal));
+	mesh->AddVertexBuffer(BufferBinding("POSITION", 0), __vbPos);
+	mesh->AddVertexBuffer(BufferBinding("NORMAL", 0), __vbNor);
+	mesh->AddVertexBuffer(BufferBinding("TEXCOORD", 0), __vbTex);
 
 	std::shared_ptr<IBuffer> __ib = m_RenderDevice->CreateIndexBuffer(indices);
 	mesh->SetIndexBuffer(__ib);
@@ -110,8 +118,12 @@ std::shared_ptr<IMesh> CRenderDevicePrimitiveCollection::CreateCube()
 	std::shared_ptr<IMesh> mesh = m_RenderDevice->CreateMesh();
 	mesh->SetPrimitiveTopology(PrimitiveTopology::TriangleList);
 
-	std::shared_ptr<IBuffer> __vb = m_RenderDevice->CreateVoidVertexBuffer(vertices.data(), vertices.size(), 0, sizeof(DirectX::VertexPositionTextureNormal));
-	mesh->SetVertexBuffer(__vb);
+	std::shared_ptr<IBuffer> __vbPos = m_RenderDevice->CreateVoidVertexBuffer(vertices.data(), vertices.size(), 0, sizeof(DirectX::VertexPositionTextureNormal));
+	std::shared_ptr<IBuffer> __vbTex = m_RenderDevice->CreateVoidVertexBuffer(vertices.data(), vertices.size(), 12, sizeof(DirectX::VertexPositionTextureNormal));
+	std::shared_ptr<IBuffer> __vbNor = m_RenderDevice->CreateVoidVertexBuffer(vertices.data(), vertices.size(), 20, sizeof(DirectX::VertexPositionTextureNormal));
+	mesh->AddVertexBuffer(BufferBinding("POSITION", 0), __vbPos);
+	mesh->AddVertexBuffer(BufferBinding("NORMAL", 0), __vbNor);
+	mesh->AddVertexBuffer(BufferBinding("TEXCOORD", 0), __vbTex);
 
 	std::shared_ptr<IBuffer> __ib = m_RenderDevice->CreateIndexBuffer(indices);
 	mesh->SetIndexBuffer(__ib);
@@ -129,8 +141,12 @@ std::shared_ptr<IMesh> CRenderDevicePrimitiveCollection::CreateCone()
 	std::shared_ptr<IMesh> mesh = m_RenderDevice->CreateMesh();
 	mesh->SetPrimitiveTopology(PrimitiveTopology::TriangleList);
 
-	std::shared_ptr<IBuffer> __vb = m_RenderDevice->CreateVoidVertexBuffer(vertices.data(), vertices.size(), 0, sizeof(DirectX::VertexPositionTextureNormal));
-	mesh->SetVertexBuffer(__vb);
+	std::shared_ptr<IBuffer> __vbPos = m_RenderDevice->CreateVoidVertexBuffer(vertices.data(), vertices.size(), 0, sizeof(DirectX::VertexPositionTextureNormal));
+	std::shared_ptr<IBuffer> __vbTex = m_RenderDevice->CreateVoidVertexBuffer(vertices.data(), vertices.size(), 12, sizeof(DirectX::VertexPositionTextureNormal));
+	std::shared_ptr<IBuffer> __vbNor = m_RenderDevice->CreateVoidVertexBuffer(vertices.data(), vertices.size(), 20, sizeof(DirectX::VertexPositionTextureNormal));
+	mesh->AddVertexBuffer(BufferBinding("POSITION", 0), __vbPos);
+	mesh->AddVertexBuffer(BufferBinding("NORMAL", 0), __vbNor);
+	mesh->AddVertexBuffer(BufferBinding("TEXCOORD", 0), __vbTex);
 
 	std::shared_ptr<IBuffer> __ib = m_RenderDevice->CreateIndexBuffer(indices);
 	mesh->SetIndexBuffer(__ib);

@@ -69,6 +69,13 @@ bool GeometryDX11::Render(const RenderEventArgs* renderArgs, const IConstantBuff
 	const IShader* vertexShader = ShadersMap.at(SShaderType::VertexShader).get();
 	_ASSERT(vertexShader != nullptr);
 
+	const auto& geomShaderIt = ShadersMap.find(SShaderType::GeometryShader);
+	const IShader* geomShader = nullptr;
+	if (geomShaderIt != ShadersMap.end())
+	{
+		geomShader = geomShaderIt->second.get();
+	}
+	
 	Material->Bind(ShadersMap);
 
 	const std::shared_ptr<IShaderParameter>& perObjectParameter = vertexShader->GetShaderParameterByName("PerObject");
@@ -76,6 +83,16 @@ bool GeometryDX11::Render(const RenderEventArgs* renderArgs, const IConstantBuff
 	{
 		perObjectParameter->SetConstantBuffer(PerObject);
 		perObjectParameter->Bind();
+	}
+
+	if (geomShader)
+	{
+		const std::shared_ptr<IShaderParameter>& perObjectParameterGS = geomShader->GetShaderParameterByName("PerObject");
+		if (perObjectParameterGS->IsValid() && PerObject != nullptr)
+		{
+			perObjectParameterGS->SetConstantBuffer(PerObject);
+			perObjectParameterGS->Bind();
+		}
 	}
 
 	if (m_VertexBuffer != nullptr)

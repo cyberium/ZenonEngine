@@ -22,6 +22,7 @@ public:
 	std::shared_ptr<CFBXMaterial> GetMaterial(int Index) const;
 
 	std::weak_ptr<CFBXScene> GetOwnerScene() const;
+	fbxsdk::FbxNode* GetNativeNode() const;
 
 private:
 	std::vector<std::shared_ptr<CFBXMaterial>> m_MaterialsArray;

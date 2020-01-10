@@ -260,11 +260,6 @@ bool ShaderDX11::LoadInputLayoutFromCustomElements(const std::vector<SCustomVert
 
 void ShaderDX11::Bind() const
 {
-	for (const auto& value : m_ShaderParameters)
-	{
-		value.second->Bind();
-	}
-
 	if (m_pVertexShader)
 	{
 		_ASSERT(m_InputLayout);
@@ -291,6 +286,11 @@ void ShaderDX11::Bind() const
 	else if (m_pComputeShader)
 	{
 		m_pDeviceContext->CSSetShader(m_pComputeShader, nullptr, 0);
+	}
+
+	for (const auto& value : m_ShaderParameters)
+	{
+		value.second->Bind();
 	}
 }
 

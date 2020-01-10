@@ -29,7 +29,7 @@
     <ClCompile Include="Images\ImagesFactory.cpp" />
     <ClCompile Include="Materials\MaterialDebug.cpp" />
     <ClCompile Include="Materials\MaterialTextured.cpp" />
-    <ClCompile Include="Materials\OBJMaterial.cpp" />
+    <ClCompile Include="Materials\MaterialModel.cpp" />
     <ClCompile Include="Materials\UI_Button_Material.cpp" />
     <ClCompile Include="Materials\UI_Color_Material.cpp" />
     <ClCompile Include="Materials\UI_Font_Material.cpp" />
@@ -38,8 +38,8 @@
     <ClCompile Include="Models\FBX\FBXDisplayCache.cpp" />
     <ClCompile Include="Models\FBX\FBXDisplayCommon.cpp" />
     <ClCompile Include="Models\FBX\FBXDisplayLink.cpp" />
-    <ClCompile Include="Models\FBX\FBXDisplayMesh.cpp" />
     <ClCompile Include="Models\FBX\FBXDisplayShape.cpp" />
+    <ClCompile Include="Models\FBX\FBXLight.cpp" />
     <ClCompile Include="Models\FBX\FBXManager.cpp" />
     <ClCompile Include="Models\FBX\FBXMaterial.cpp" />
     <ClCompile Include="Models\FBX\FBXMaterialPassOpaque.cpp" />
@@ -50,6 +50,7 @@
     <ClCompile Include="Models\FBX\FBXStream.cpp" />
     <ClCompile Include="Passes\BeginQueryPass.cpp" />
     <ClCompile Include="Passes\ClearRenderTargetPass.cpp" />
+    <ClCompile Include="Passes\CollectLightPass.cpp" />
     <ClCompile Include="Passes\CopyBufferPass.cpp" />
     <ClCompile Include="Passes\CopyTexturePass.cpp" />
     <ClCompile Include="Passes\DispatchPass.cpp" />
@@ -58,6 +59,7 @@
     <ClCompile Include="Passes\InvokeFunctionPass.cpp" />
     <ClCompile Include="Passes\RenderPassDefaultCreator.cpp" />
     <ClCompile Include="Passes\RenderPassFactory.cpp" />
+    <ClCompile Include="Passes\SetShaderParameterPass.cpp" />
     <ClCompile Include="Passes\TextureDebugPass.cpp" />
     <ClCompile Include="Passes\TextureMaterialPass.cpp" />
     <ClCompile Include="PluginsManager.cpp" />
@@ -106,7 +108,7 @@
     <ClInclude Include="Images\ImagesFactory.h" />
     <ClInclude Include="Materials\MaterialDebug.h" />
     <ClInclude Include="Materials\MaterialTextured.h" />
-    <ClInclude Include="Materials\OBJMaterial.h" />
+    <ClInclude Include="Materials\MaterialModel.h" />
     <ClInclude Include="Materials\UI_Button_Material.h" />
     <ClInclude Include="Materials\UI_Color_Material.h" />
     <ClInclude Include="Materials\UI_Font_Material.h" />
@@ -115,8 +117,8 @@
     <ClInclude Include="Models\FBX\FBXDisplayCache.h" />
     <ClInclude Include="Models\FBX\FBXDisplayCommon.h" />
     <ClInclude Include="Models\FBX\FBXDisplayLink.h" />
-    <ClInclude Include="Models\FBX\FBXDisplayMesh.h" />
     <ClInclude Include="Models\FBX\FBXDisplayShape.h" />
+    <ClInclude Include="Models\FBX\FBXLight.h" />
     <ClInclude Include="Models\FBX\FBXManager.h" />
     <ClInclude Include="Models\FBX\FBXMaterial.h" />
     <ClInclude Include="Models\FBX\FBXMaterialPassOpaque.h" />
@@ -127,6 +129,7 @@
     <ClInclude Include="Models\FBX\FBXStream.h" />
     <ClInclude Include="Passes\BeginQueryPass.h" />
     <ClInclude Include="Passes\ClearRenderTargetPass.h" />
+    <ClInclude Include="Passes\CollectLightPass.h" />
     <ClInclude Include="Passes\CopyBufferPass.h" />
     <ClInclude Include="Passes\CopyTexturePass.h" />
     <ClInclude Include="Passes\DispatchPass.h" />
@@ -135,6 +138,7 @@
     <ClInclude Include="Passes\InvokeFunctionPass.h" />
     <ClInclude Include="Passes\RenderPassDefaultCreator.h" />
     <ClInclude Include="Passes\RenderPassFactory.h" />
+    <ClInclude Include="Passes\SetShaderParameterPass.h" />
     <ClInclude Include="Passes\TextureDebugPass.h" />
     <ClInclude Include="Passes\TextureMaterialPass.h" />
     <ClInclude Include="PluginsManager.h" />
@@ -230,7 +234,7 @@
     <Image Include="Resources\Textures\default.png" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="Resources\shaders_D3D\3D\FBXModel.hlsl">
+    <Text Include="Resources\shaders_D3D\3D\Model.hlsl">
       <FileType>Document</FileType>
     </Text>
   </ItemGroup>

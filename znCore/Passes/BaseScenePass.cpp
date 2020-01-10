@@ -3,6 +3,12 @@
 // General
 #include "BaseScenePass.h"
 
+CBaseScenePass::CBaseScenePass(std::shared_ptr<IRenderDevice> RenderDevice, std::shared_ptr<IScene> Scene)
+	: AbstractPass(RenderDevice)
+	, m_Scene(Scene)
+{
+}
+
 CBaseScenePass::CBaseScenePass(std::shared_ptr<IRenderDevice> RenderDevice, std::shared_ptr<IScene> Scene, std::shared_ptr<IPipelineState> Pipeline)
 	: AbstractPass(RenderDevice, Pipeline)
 	, m_Scene(Scene)

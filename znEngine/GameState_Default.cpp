@@ -6,6 +6,7 @@
 // Additional
 #include "Materials/MaterialDebug.h"
 #include "Materials/MaterialTextured.h"
+#include "Materials/MaterialModel.h"
 
 CGameState_World::CGameState_World(IBaseManager * BaseManager, std::shared_ptr<IRenderWindow> RenderWindow, IWindowEvents* WindowEvents)
 	: CGameState(BaseManager, RenderWindow, WindowEvents)
@@ -122,11 +123,25 @@ void CGameState_World::OnKeyReleased(KeyEventArgs & e)
 void CGameState_World::Load3D()
 {
 	std::shared_ptr<MaterialDebug> matDebug = std::make_shared<MaterialDebug>(GetRenderDevice());
-	matDebug->SetDiffuseColor(vec4(0.0f, 1.0f, 1.0f, 1.0f));
+	matDebug->SetDiffuseColor(vec4(0.8f, 0.8f, 0.8f, 1.0f));
 	matDebug->SetWrapper(matDebug);
 
 	std::shared_ptr<IMesh> meshPlane = GetRenderDevice()->GetPrimitiveCollection()->CreatePlane();
 	meshPlane->SetMaterial(matDebug);
+
+	std::shared_ptr<ISceneNode> sceneNodeLight = m_Scene3D->CreateWrappedSceneNode<SceneNode3D>("SceneNode3D", m_Scene3D->GetRootNode());
+	sceneNodeLight->SetName("Light node");
+
+	Light light;
+	light.m_Color.rgb = glm::vec3(1.0f, 1.0f, 1.0f);
+	light.m_PositionWS = glm::vec4(glm::vec3(-50.0f, 150.0f, 0.0f), 1.0f);
+	light.m_Range = 1000.0f;
+	light.m_Intensity = 1.5f;
+	//sceneNodeLight->GetComponent<ILightComponent3D>()->AddLight(std::make_shared<CLight3D>(light));
+
+
+
+	//GenerateLights(sceneNodeLight, 8);
 
 	//std::shared_ptr<ISceneNode> sceneNodePlane = m_Scene3D->CreateWrappedSceneNode<SceneNode3D>("SceneNode3D", m_Scene3D->GetRootNode());
 	//sceneNodePlane->SetName("Ground.");
@@ -136,18 +151,24 @@ void CGameState_World::Load3D()
 
 	//-- Assimp -----------------
 
-	//CAssimpLoader assLoader(m_Scene3D->GetRootNode(), GetRenderDevice());
-	//assLoader.LoadFromFile(GetBaseManager()->GetManager<IFilesManager>()->Open("AmazonScene\\interior.obj"));
+	//m_LightsStructuredBuffer = GetRenderDevice()->CreateStructuredBuffer();
 
 	//---------------------------
 
 	const size_t iterCnt = 0;
-	const float offset = 45.0f;
+	const float offset = 145.0f;
 
-	std::shared_ptr<MaterialTextured> mat = std::make_shared<MaterialTextured>(GetRenderDevice());
-	mat->SetDiffuseColor(vec4(1.0f, 0.0f, 1.0f, 1.0f));
-	mat->SetTexture(0, GetRenderDevice()->CreateTexture2D("default.png"));
+	std::shared_ptr<MaterialModel> mat = std::make_shared<MaterialModel>(GetBaseManager());
+	mat->SetDiffuseColor(vec3(1.0f, 1.0f, 1.0f));
+	mat->SetSpecularColor(vec3(1.0f, 1.0f, 1.0f));
+	mat->SetSpecularFactor(4.0f);
+	mat->SetBumpFactor(8.0f);
+	mat->SetTexture(MaterialModel::ETextureType::TextureDiffuse, GetRenderDevice()->CreateTexture2D("Sponza_Floor_diffuse.png"));
+	//mat->SetTexture(MaterialModel::ETextureType::TextureNormalMap, GetRenderDevice()->CreateTexture2D("Sponza_Floor_normal.png"));
+	mat->SetTexture(MaterialModel::ETextureType::TextureSpecular, GetRenderDevice()->CreateTexture2D("Sponza_Floor_roughness.png"));
+	mat->SetTexture(MaterialModel::ETextureType::TextureBump, GetRenderDevice()->CreateTexture2D("Sponza_Floor_roughness.png"));
 	mat->SetWrapper(mat);
+
 
 	std::shared_ptr<IMesh> mesh = GetRenderDevice()->GetPrimitiveCollection()->CreateSphere();
 	mesh->SetMaterial(mat);
@@ -161,7 +182,7 @@ void CGameState_World::Load3D()
 				std::shared_ptr<ISceneNode> sceneNode = m_Scene3D->CreateWrappedSceneNode<SceneNode3D>("SceneNode3D", m_Scene3D->GetRootNode());
 				sceneNode->SetName("Ball [" + std::to_string(i) + ", " + std::to_string(j) + ", " + std::to_string(k) + "]");
 				std::dynamic_pointer_cast<ISceneNode3D>(sceneNode)->SetTranslate(vec3(offset * i, offset * k, offset * j));
-				std::dynamic_pointer_cast<ISceneNode3D>(sceneNode)->SetScale(vec3(15, 15, 15));
+				std::dynamic_pointer_cast<ISceneNode3D>(sceneNode)->SetScale(vec3(100, 100, 100));
 				sceneNode->GetComponent<IMeshComponent3D>()->AddMesh(mesh);
 
 				BoundingBox bbox = BoundingBox(glm::vec3(-1.0f, -1.0f, -1.0f), glm::vec3(1.0f, 1.0f, 1.0f));
@@ -171,28 +192,23 @@ void CGameState_World::Load3D()
 		}
 	}
 
-	GetRenderDevice()->CreateTexture2D("D:\\_programming\\ZenonEngine\\gamedata\\BuildingTextures\\Pavement_Cobblestone_01_b_Diff.png");
-
-	
-
-	//LoadObj("D:\\_programming\\ZenonEngine\\gamedata\\interior.obj");
-	//LoadObj("D:\\_programming\\ZenonEngine\\gamedata\\exterior.obj");
-
-	
-
 	std::shared_ptr<ISceneNode> fbxSceneNode = GetBaseManager()->GetManager<ISceneNodesFactory>()->CreateSceneNode(m_Scene3D->GetRootNode(), "FBXSceneNode");
 	//fbxSceneNode->GetComponent<ITransformComponent3D>()->SetScale(vec3(15.0f, 15.0f, 15.0f));
 
 	m_Technique3D.AddPass(GetBaseManager()->GetManager<IRenderPassFactory>()->CreateRenderPass("ClearPass", GetRenderDevice(), GetRenderWindow()->GetRenderTarget(), GetRenderWindow()->GetViewport(), m_Scene3D));
-	m_Technique3D.AddPass(GetBaseManager()->GetManager<IRenderPassFactory>()->CreateRenderPass("DebugPass", GetRenderDevice(), GetRenderWindow()->GetRenderTarget(), GetRenderWindow()->GetViewport(), m_Scene3D));
+	//m_Technique3D.AddPass(GetBaseManager()->GetManager<IRenderPassFactory>()->CreateRenderPass("DebugPass", GetRenderDevice(), GetRenderWindow()->GetRenderTarget(), GetRenderWindow()->GetViewport(), m_Scene3D));
 	m_Technique3D.AddPass(GetBaseManager()->GetManager<IRenderPassFactory>()->CreateRenderPass("TexturedMaterialPass", GetRenderDevice(), GetRenderWindow()->GetRenderTarget(), GetRenderWindow()->GetViewport(), m_Scene3D));
-	//m_Technique3D.AddPass(GetBaseManager()->GetManager<IRenderPassFactory>()->CreateRenderPass("OBJPass", GetRenderDevice(), GetRenderWindow()->GetRenderTarget(), GetRenderWindow()->GetViewport(), m_Scene3D));
 	
+	m_CollectLightPass = std::make_shared<CCollectLightPass>(GetRenderDevice(), m_Scene3D);
 	m_FBX_Opaque_Pass = GetBaseManager()->GetManager<IRenderPassFactory>()->CreateRenderPass("FBXPassOpaque", GetRenderDevice(), GetRenderWindow()->GetRenderTarget(), GetRenderWindow()->GetViewport(), m_Scene3D);
+	m_SetShaderParameterPass = std::make_shared<CSetShaderParameterPass>(GetRenderDevice(), std::dynamic_pointer_cast<AbstractPass>(m_FBX_Opaque_Pass)->GetPipelineState()->GetShader(SShaderType::PixelShader)->GetShaderParameterByName("Lights"), std::bind(&CCollectLightPass::GetLightBuffer, m_CollectLightPass));
+
+	m_Technique3D.AddPass(m_CollectLightPass);
+	m_Technique3D.AddPass(m_SetShaderParameterPass);
 	m_Technique3D.AddPass(m_FBX_Opaque_Pass);
-	
-	m_FBX_Transperent_Pass = GetBaseManager()->GetManager<IRenderPassFactory>()->CreateRenderPass("FBXPassTransperent", GetRenderDevice(), GetRenderWindow()->GetRenderTarget(), GetRenderWindow()->GetViewport(), m_Scene3D);
-	m_Technique3D.AddPass(m_FBX_Transperent_Pass);
+
+	//m_FBX_Transperent_Pass = GetBaseManager()->GetManager<IRenderPassFactory>()->CreateRenderPass("FBXPassTransperent", GetRenderDevice(), GetRenderWindow()->GetRenderTarget(), GetRenderWindow()->GetViewport(), m_Scene3D);
+	//m_Technique3D.AddPass(m_FBX_Transperent_Pass);
 }
 
 void CGameState_World::LoadUI()
@@ -201,24 +217,85 @@ void CGameState_World::LoadUI()
 }
 
 
-/*void CGameState_World::LoadObj(const std::string& ObjFilename)
+void CGameState_World::GenerateLights(std::shared_ptr<ISceneNode> Node, uint32_t numLights)
 {
-	objl::Loader l(GetRenderDevice());
-	l.LoadFile(GetBaseManager()->GetManager<IFilesManager>()->Open(ObjFilename));
+	float MinRange = 100.1f;
+	float MaxRange = 2000.0f;
 
-	for (const auto& mesh : l.LoadedMeshes)
+	float MinSpotAngle = 1.0f;
+	float MaxSpotAngle = 60.0f;
+
+	vec3 BoundsMin = vec3(-500, -200, -500);
+	vec3 BoundsMax = vec3(500, 200, 500);
+	bool GeneratePointLights = true;
+	bool GenerateSpotLights = false;
+	bool GenerateDirectionalLights = false;
+
+	for (uint32_t i = 0; i < numLights; i++)
 	{
-		std::shared_ptr<IMesh> mesh2 = GetRenderDevice()->CreateMesh();
-		mesh2->AddVertexBuffer(BufferBinding("POSITION", 0), GetRenderDevice()->CreateVoidVertexBuffer(mesh.Vertices.data(), mesh.Vertices.size(), 0, sizeof(objl::Vertex)));
-		mesh2->AddVertexBuffer(BufferBinding("NORMAL", 0), GetRenderDevice()->CreateVoidVertexBuffer(mesh.Vertices.data(), mesh.Vertices.size(), 12, sizeof(objl::Vertex)));
-		mesh2->AddVertexBuffer(BufferBinding("TEXCOORD", 0), GetRenderDevice()->CreateVoidVertexBuffer(mesh.Vertices.data(), mesh.Vertices.size(), 24, sizeof(objl::Vertex)));
+		Light light;
 
-		mesh2->SetIndexBuffer(GetRenderDevice()->CreateVoidIndexBuffer(mesh.Indices.data(), mesh.Indices.size(), 0, sizeof(uint32)));
-		mesh2->SetMaterial(mesh.MeshMaterial);
-		
-		std::shared_ptr<ISceneNode> sceneNode = m_Scene3D->CreateWrappedSceneNode<SceneNode3D>("SceneNode3D", m_Scene3D->GetRootNode());
-		//sceneNode->GetComponent<ITransformComponent3D>()->SetTranslate(vec3(offset * i, offset * k, offset * j));
-		//sceneNode->GetComponent<ITransformComponent3D>()->SetScale(vec3(15, 15, 15));
-		sceneNode->GetComponent<IMeshComponent3D>()->AddMesh(mesh2);
+		light.m_PositionWS = glm::vec4(glm::linearRand(BoundsMin, BoundsMax), 1.0f);
+
+		// Choose a color that will never be black.
+		glm::vec2 colorWheel = glm::diskRand(1.0f);
+		float radius = glm::length(colorWheel);
+		light.m_Color.rgb = glm::lerp(
+			glm::lerp(
+				glm::lerp(glm::vec3(1), glm::vec3(0, 1, 0), radius),
+				glm::lerp(glm::vec3(1), glm::vec3(1, 0, 0), radius),
+				colorWheel.x * 0.5f + 0.5f),
+			glm::lerp(
+				glm::lerp(glm::vec3(1), glm::vec3(0, 0, 1), radius),
+				glm::lerp(glm::vec3(1), glm::vec3(1, 1, 0), radius),
+				colorWheel.y * 0.5f + 0.5f),
+			glm::abs(colorWheel.y));
+
+		light.m_DirectionWS = glm::vec4(glm::sphericalRand(1.0f), 0.0f);
+		light.m_Range = glm::linearRand(MinRange, MaxRange);
+		light.m_Intensity = 50;
+		light.m_SpotlightAngle = glm::linearRand(MinSpotAngle, MaxSpotAngle);
+
+		float fLightPropability = glm::linearRand(0.0f, 1.0f);
+
+		if (GeneratePointLights && GenerateSpotLights && GenerateDirectionalLights)
+		{
+			light.m_Type = (fLightPropability < 0.33f ? Light::LightType::Point : fLightPropability < 0.66f ? Light::LightType::Spot : Light::LightType::Directional);
+		}
+		else if (GeneratePointLights && GenerateSpotLights && !GenerateDirectionalLights)
+		{
+			light.m_Type = (fLightPropability < 0.5f ? Light::LightType::Point : Light::LightType::Spot);
+		}
+		else if (GeneratePointLights && !GenerateSpotLights && GenerateDirectionalLights)
+		{
+			light.m_Type = (fLightPropability < 0.5f ? Light::LightType::Point : Light::LightType::Directional);
+		}
+		else if (GeneratePointLights && !GenerateSpotLights && !GenerateDirectionalLights)
+		{
+			light.m_Type = Light::LightType::Point;
+		}
+		else if (!GeneratePointLights && GenerateSpotLights && GenerateDirectionalLights)
+		{
+			light.m_Type = (fLightPropability < 0.5f ? Light::LightType::Spot : Light::LightType::Directional);
+		}
+		else if (!GeneratePointLights && GenerateSpotLights && !GenerateDirectionalLights)
+		{
+			light.m_Type = Light::LightType::Spot;
+		}
+		else if (!GeneratePointLights && !GenerateSpotLights && GenerateDirectionalLights)
+		{
+			light.m_Type = Light::LightType::Directional;
+		}
+		else if (!GeneratePointLights && !GenerateSpotLights && !GenerateDirectionalLights)
+		{
+			light.m_Type = (fLightPropability < 0.33f ? Light::LightType::Point : fLightPropability < 0.66f ? Light::LightType::Spot : Light::LightType::Directional);
+		}
+
+		Node->GetComponent<ILightComponent3D>()->AddLight(std::make_shared<CLight3D>(light));
 	}
-}*/
+}
+
+void CGameState_World::UpdateLights()
+{
+
+}

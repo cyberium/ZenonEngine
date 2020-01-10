@@ -30,7 +30,7 @@ typedef std::unordered_map<GUID, std::shared_ptr<ISceneNodeComponent>> Component
 
 #define UUID_ColliderComponent uuid("78BD7168-51CB-4760-ADD2-218CF4E88CE2")
 #define UUID_MeshComponent uuid("403E886D-7BD7-438B-868D-AC4380830716")
-
+#define UUID_LightComponent uuid("2198326E-A00F-43C8-9EF5-4F60A8ABBBAE")
 
 
 // COLLIDER COMPONENT 3D
@@ -59,4 +59,17 @@ public:
 	virtual void AddMesh(std::shared_ptr<IMesh> mesh) = 0;
 	virtual void RemoveMesh(std::shared_ptr<IMesh> mesh) = 0;
 	virtual const MeshList& GetMeshes() = 0;
+};
+
+
+// LIGHT COMPONENT 3D
+ZN_INTERFACE __declspec(UUID_LightComponent) ZN_API ILightComponent3D
+{
+	typedef std::vector<std::shared_ptr<CLight3D>> LightList;
+
+	virtual ~ILightComponent3D() {}
+
+	virtual void AddLight(std::shared_ptr<CLight3D> Light) = 0;
+	virtual void RemoveLight(std::shared_ptr<CLight3D> Light) = 0;
+	virtual const LightList& GetLights() = 0;
 };

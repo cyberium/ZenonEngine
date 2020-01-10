@@ -7,6 +7,11 @@ ZN_INTERFACE ISamplerState;
 ZN_INTERFACE IStructuredBuffer;
 // FORWARD END
 
+ZN_INTERFACE ZN_API IShaderParameterSource
+{
+	virtual ~IShaderParameterSource() {}
+};
+
 ZN_INTERFACE ZN_API IShaderParameter
 {
 	enum class ZN_API Type
@@ -27,6 +32,8 @@ ZN_INTERFACE ZN_API IShaderParameter
 	// Test to see if this is a valid shader parameter.
 	virtual bool IsValid() const = 0;
 
+	virtual void SetSource(const IShaderParameterSource* ShaderParameterSource) = 0;
+	virtual const IShaderParameterSource* GetSource() = 0;
 	virtual void SetConstantBuffer(const IConstantBuffer* constantBuffer) = 0;
 	virtual const IConstantBuffer* GetConstantBuffer() const = 0;
 	virtual void SetTexture(const ITexture* texture) = 0;

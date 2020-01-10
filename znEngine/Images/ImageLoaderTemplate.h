@@ -7,6 +7,7 @@ public:
 	CImageBase();
 	virtual ~CImageBase();
 
+	std::shared_ptr<IImage> Convert8To32Bit();
 	std::shared_ptr<IImage> Convert24To32Bit();
 
 	// IImage
@@ -47,6 +48,10 @@ public:
 	inline std::shared_ptr<IImage> CreateImage(std::shared_ptr<IFile> File) const override
 	{
 		std::shared_ptr<TIMAGE> image = TIMAGE::CreateImage(File);
+
+		if (image != nullptr && image->GetBitsPerPixel() == 8)
+			return image->Convert8To32Bit();
+
 		if (image != nullptr && image->GetBitsPerPixel() == 24)
 			return image->Convert24To32Bit();
 

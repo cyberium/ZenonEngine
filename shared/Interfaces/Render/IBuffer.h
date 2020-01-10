@@ -1,5 +1,9 @@
 #pragma once 
 
+// FORWARD BEGIN
+ZN_INTERFACE IShaderParameterSource;
+// FORWARD END
+
 ZN_INTERFACE ZN_API IBuffer
 {
 	enum class ZN_API BufferType
@@ -26,7 +30,9 @@ ZN_INTERFACE ZN_API IBuffer
 
 
 
-ZN_INTERFACE ZN_API IConstantBuffer : public IBuffer
+ZN_INTERFACE ZN_API IConstantBuffer 
+	: public IBuffer
+	, public IShaderParameterSource
 {
 	virtual ~IConstantBuffer() {}
 
@@ -44,7 +50,9 @@ ZN_INTERFACE ZN_API IConstantBuffer : public IBuffer
 
 
 
-ZN_INTERFACE ZN_API IStructuredBuffer : public IBuffer
+ZN_INTERFACE ZN_API IStructuredBuffer 
+	: public IBuffer
+	, public IShaderParameterSource
 {
 	virtual ~IStructuredBuffer() {}
 
@@ -60,7 +68,6 @@ ZN_INTERFACE ZN_API IStructuredBuffer : public IBuffer
 		SetData((void*)values.data(), sizeof(T), 0, values.size());
 	}
 };
-
 
 
 typedef std::vector<std::shared_ptr<IBuffer>> BufferList;

@@ -1,6 +1,6 @@
 #ifndef NUM_LIGHTS
 #pragma message( "NUM_LIGHTS undefined. Default to 8.")
-#define NUM_LIGHTS 8
+#define NUM_LIGHTS 20
 #endif
 
 
@@ -312,10 +312,10 @@ LightingResult DoLighting(StructuredBuffer<Light> lights, Material mat, float4 e
 		}
 
 		// Skip point and spot lights that are out of range of the point being shaded.
-		if (lights[i].Type != DIRECTIONAL_LIGHT && length(lights[i].PositionVS - P) > lights[i].Range)
-		{
-			continue;
-		}
+		//if (lights[i].Type != DIRECTIONAL_LIGHT && length(lights[i].PositionVS - P) > lights[i].Range)
+		//{
+		//	continue;
+		//}
 
 		switch (lights[i].Type)
 		{

@@ -63,16 +63,18 @@ std::shared_ptr<IRenderPass> CRenderPassDefaultCreator::CreateRenderPass(size_t 
 
 	if (Index == 0)
 	{
-		return std::make_shared<ClearRenderTargetPass>(RenderDevice, RenderTarget, ClearFlags::All, glm::vec4(0.2f, 0.2f, 0.2f, 0.3f), 1.0f, 0);
+		return std::make_shared<ClearRenderTargetPass>(RenderDevice, RenderTarget, ClearFlags::All, glm::vec4(0.2f, 0.2f, 0.2f, 0.2f), 1.0f, 0);
 	}
 	else if (Index == 1)
 	{
 		std::shared_ptr<IShader> g_pVertexShader;
+		std::shared_ptr<IShader> g_pGeometryShader;
 		std::shared_ptr<IShader> g_pPixelShader;
 
 		if (RenderDevice->GetDeviceType() == RenderDeviceType::RenderDeviceType_DirectX)
 		{
 			g_pVertexShader = RenderDevice->CreateShader(SShaderType::VertexShader, "IDB_SHADER_3D_DEBUG", IShader::ShaderMacros(), "VS_main", "latest");
+			g_pGeometryShader = RenderDevice->CreateShader(SShaderType::GeometryShader, "IDB_SHADER_3D_DEBUG", IShader::ShaderMacros(), "GS_main", "latest");
 			g_pPixelShader = RenderDevice->CreateShader(SShaderType::PixelShader, "IDB_SHADER_3D_DEBUG", IShader::ShaderMacros(), "PS_main", "latest");
 		}
 		else
@@ -91,6 +93,7 @@ std::shared_ptr<IRenderPass> CRenderPassDefaultCreator::CreateRenderPass(size_t 
 		Pipeline->SetRenderTarget(RenderTarget);
 		Pipeline->GetRasterizerState()->SetViewport(Viewport);
 		Pipeline->SetShader(SShaderType::VertexShader, g_pVertexShader);
+		Pipeline->SetShader(SShaderType::GeometryShader, g_pGeometryShader);
 		Pipeline->SetShader(SShaderType::PixelShader, g_pPixelShader);
 
 		return std::make_shared<CDebugMaterialPass>(RenderDevice, Scene, Pipeline);
@@ -152,8 +155,8 @@ std::shared_ptr<IRenderPass> CRenderPassDefaultCreator::CreateRenderPass(size_t 
 
 		if (RenderDevice->GetDeviceType() == RenderDeviceType::RenderDeviceType_DirectX)
 		{
-			g_pVertexShader = RenderDevice->CreateShader(SShaderType::VertexShader, "IDB_SHADER_3D_FBX_MODEL", IShader::ShaderMacros(), "VS_main", "latest");
-			g_pPixelShader = RenderDevice->CreateShader(SShaderType::PixelShader, "IDB_SHADER_3D_FBX_MODEL", IShader::ShaderMacros(), "PS_main", "latest");
+			g_pVertexShader = RenderDevice->CreateShader(SShaderType::VertexShader, "IDB_SHADER_3D_MODEL", IShader::ShaderMacros(), "VS_PTN", "latest");
+			g_pPixelShader = RenderDevice->CreateShader(SShaderType::PixelShader, "IDB_SHADER_3D_MODEL", IShader::ShaderMacros(), "PS_main", "latest");
 		}
 		g_pVertexShader->LoadInputLayoutFromReflector();
 
@@ -177,8 +180,8 @@ std::shared_ptr<IRenderPass> CRenderPassDefaultCreator::CreateRenderPass(size_t 
 
 		if (RenderDevice->GetDeviceType() == RenderDeviceType::RenderDeviceType_DirectX)
 		{
-			g_pVertexShader = RenderDevice->CreateShader(SShaderType::VertexShader, "IDB_SHADER_3D_FBX_MODEL", IShader::ShaderMacros(), "VS_main", "latest");
-			g_pPixelShader = RenderDevice->CreateShader(SShaderType::PixelShader, "IDB_SHADER_3D_FBX_MODEL", IShader::ShaderMacros(), "PS_main", "latest");
+			g_pVertexShader = RenderDevice->CreateShader(SShaderType::VertexShader, "IDB_SHADER_3D_MODEL", IShader::ShaderMacros(), "VS_main", "latest");
+			g_pPixelShader = RenderDevice->CreateShader(SShaderType::PixelShader, "IDB_SHADER_3D_MODEL", IShader::ShaderMacros(), "PS_main", "latest");
 		}
 		g_pVertexShader->LoadInputLayoutFromReflector();
 

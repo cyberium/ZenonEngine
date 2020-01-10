@@ -25,7 +25,7 @@ bool CFBXMaterialPassOpaque::Visit(IMesh * Mesh, SGeometryPartParams GeometryPar
 
 bool CFBXMaterialPassOpaque::Visit(IGeometry * Geometry, const IConstantBuffer* PerObject, const std::unordered_map<SShaderType, std::shared_ptr<IShader>>& ShadersMap, const IMaterial* Material, const SGeometryPartParams& GeometryPartParams)
 {
-	const CFBXMaterial* objMaterial = dynamic_cast<const CFBXMaterial*>(Material);
+	const MaterialModel* objMaterial = dynamic_cast<const MaterialModel*>(Material);
 	if (objMaterial == nullptr)
 		return false;
 

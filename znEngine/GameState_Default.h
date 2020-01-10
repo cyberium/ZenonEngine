@@ -1,5 +1,8 @@
 #pragma once
 
+#include "Passes/CollectLightPass.h"
+#include "Passes/SetShaderParameterPass.h"
+
 class ZN_API CGameState_World : public CGameState
 {
 public:
@@ -26,9 +29,13 @@ public:
 private:
 	void Load3D();
 	void LoadUI();
-	void LoadObj(const std::string& ObjFilename);
+	void GenerateLights(std::shared_ptr<ISceneNode> Node, uint32_t numLights);
+	void CGameState_World::UpdateLights();
 
 private:
 	std::shared_ptr<IRenderPass> m_FBX_Opaque_Pass;
 	std::shared_ptr<IRenderPass> m_FBX_Transperent_Pass;
+	std::shared_ptr<CCollectLightPass> m_CollectLightPass;
+	std::shared_ptr<CSetShaderParameterPass> m_SetShaderParameterPass;
+	std::shared_ptr<IStructuredBuffer> m_LightsStructuredBuffer;
 };

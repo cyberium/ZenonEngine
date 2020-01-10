@@ -10,18 +10,17 @@ class CFBXMesh
 	: public MeshProxie
 {
 public:
-	CFBXMesh(const IBaseManager* BaseManager, std::weak_ptr<CFBXSceneNode> OwnerFBXNode, fbxsdk::FbxMesh* NativeMesh);
+	CFBXMesh(const IBaseManager* BaseManager, std::weak_ptr<CFBXSceneNode> OwnerFBXNode);
 	virtual ~CFBXMesh();
 
-	void Load();
+	void Load(fbxsdk::FbxMesh* NativeMesh);
 
 protected:
+	void DisplayMaterialConnections(fbxsdk::FbxMesh* NativeMesh);
 	void DisplayMaterialMapping(fbxsdk::FbxGeometryElementMaterial* materialElement);
-	void DisplayMaterialConnections();
 
 private:
 	std::weak_ptr<CFBXSceneNode> m_OwnerFBXNode;
-	fbxsdk::FbxMesh* m_NativeMesh;
 
 private:
 	const IBaseManager* m_BaseManager;

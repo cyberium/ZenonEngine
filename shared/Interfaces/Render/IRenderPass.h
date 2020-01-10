@@ -23,6 +23,14 @@ ZN_INTERFACE ZN_API IRenderPass : public IVisitor
 };
 
 
+ZN_INTERFACE ZN_API IRenderScenePass : public IRenderPass
+{
+	virtual ~IRenderScenePass() {}
+
+	
+};
+
+
 
 //
 // For plugins

@@ -237,9 +237,6 @@
     <ClCompile Include="Passes\TextureDebugPass.cpp">
       <Filter>Passes\3D</Filter>
     </ClCompile>
-    <ClCompile Include="Materials\OBJMaterial.cpp">
-      <Filter>Materials</Filter>
-    </ClCompile>
     <ClCompile Include="Models\FBX\FBXDisplayCache.cpp">
       <Filter>Models\FBX</Filter>
     </ClCompile>
@@ -247,9 +244,6 @@
       <Filter>Models\FBX</Filter>
     </ClCompile>
     <ClCompile Include="Models\FBX\FBXDisplayLink.cpp">
-      <Filter>Models\FBX</Filter>
-    </ClCompile>
-    <ClCompile Include="Models\FBX\FBXDisplayMesh.cpp">
       <Filter>Models\FBX</Filter>
     </ClCompile>
     <ClCompile Include="Models\FBX\FBXDisplayShape.cpp">
@@ -290,6 +284,18 @@
     </ClCompile>
     <ClCompile Include="Models\FBX\FBXMaterialPassTransperent.cpp">
       <Filter>Models\FBX\Wrapped</Filter>
+    </ClCompile>
+    <ClCompile Include="Models\FBX\FBXLight.cpp">
+      <Filter>Models\FBX\Wrapped</Filter>
+    </ClCompile>
+    <ClCompile Include="Passes\CollectLightPass.cpp">
+      <Filter>Passes\3D</Filter>
+    </ClCompile>
+    <ClCompile Include="Passes\SetShaderParameterPass.cpp">
+      <Filter>Passes\Technical</Filter>
+    </ClCompile>
+    <ClCompile Include="Materials\MaterialModel.cpp">
+      <Filter>Materials</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -443,9 +449,6 @@
     <ClInclude Include="Passes\TextureDebugPass.h">
       <Filter>Passes\3D</Filter>
     </ClInclude>
-    <ClInclude Include="Materials\OBJMaterial.h">
-      <Filter>Materials</Filter>
-    </ClInclude>
     <ClInclude Include="Models\FBX\FBXDisplayCache.h">
       <Filter>Models\FBX</Filter>
     </ClInclude>
@@ -453,9 +456,6 @@
       <Filter>Models\FBX</Filter>
     </ClInclude>
     <ClInclude Include="Models\FBX\FBXDisplayLink.h">
-      <Filter>Models\FBX</Filter>
-    </ClInclude>
-    <ClInclude Include="Models\FBX\FBXDisplayMesh.h">
       <Filter>Models\FBX</Filter>
     </ClInclude>
     <ClInclude Include="Models\FBX\FBXDisplayShape.h">
@@ -496,6 +496,18 @@
     </ClInclude>
     <ClInclude Include="Models\FBX\FBXMaterialPassTransperent.h">
       <Filter>Models\FBX\Wrapped</Filter>
+    </ClInclude>
+    <ClInclude Include="Models\FBX\FBXLight.h">
+      <Filter>Models\FBX\Wrapped</Filter>
+    </ClInclude>
+    <ClInclude Include="Passes\CollectLightPass.h">
+      <Filter>Passes\3D</Filter>
+    </ClInclude>
+    <ClInclude Include="Passes\SetShaderParameterPass.h">
+      <Filter>Passes\Technical</Filter>
+    </ClInclude>
+    <ClInclude Include="Materials\MaterialModel.h">
+      <Filter>Materials</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -564,11 +576,11 @@
     <Text Include="Resources\shaders_OGL\3D\Textured.ps">
       <Filter>Resources\Shaders_OGL\3D</Filter>
     </Text>
-    <Text Include="Resources\shaders_D3D\3D\FBXModel.hlsl">
-      <Filter>Resources\Shaders_D3D\3D</Filter>
-    </Text>
     <Text Include="Resources\shaders_D3D\Light.hlsl">
       <Filter>Resources\Shaders_D3D</Filter>
+    </Text>
+    <Text Include="Resources\shaders_D3D\3D\Model.hlsl">
+      <Filter>Resources\Shaders_D3D\3D</Filter>
     </Text>
   </ItemGroup>
   <ItemGroup>

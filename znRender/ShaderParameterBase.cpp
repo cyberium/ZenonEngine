@@ -30,7 +30,11 @@ ShaderParameterBase::ShaderParameterBase(const std::string& name, UINT slotID, s
 ShaderParameterBase::~ShaderParameterBase()
 {}
 
+
+
+//
 // IShaderParameter
+//
 ShaderParameterBase::Type ShaderParameterBase::GetType() const
 {
 	return m_ParameterType;
@@ -39,6 +43,55 @@ ShaderParameterBase::Type ShaderParameterBase::GetType() const
 bool ShaderParameterBase::IsValid() const
 {
 	return m_ParameterType != ShaderParameterBase::Type::Invalid;
+}
+
+void ShaderParameterBase::SetSource(const IShaderParameterSource * ShaderParameterSource)
+{
+	if (const IConstantBuffer* value = dynamic_cast<const IConstantBuffer*>(ShaderParameterSource))
+	{
+		m_pConstantBuffer = value;
+		return;
+	}
+
+	if (const ITexture* value = dynamic_cast<const ITexture*>(ShaderParameterSource))
+	{
+		m_pTexture = value;
+		return;
+	}
+
+	if (const ISamplerState* value = dynamic_cast<const ISamplerState*>(ShaderParameterSource))
+	{
+		m_pSamplerState = value;
+		return;
+	}
+
+	if (const IStructuredBuffer* value = dynamic_cast<const IStructuredBuffer*>(ShaderParameterSource))
+	{
+		m_pStructuredBuffer = value;
+		return;
+	}
+}
+
+const IShaderParameterSource * ShaderParameterBase::GetSource()
+{
+	if (m_pConstantBuffer)
+	{
+		return m_pConstantBuffer;
+	}
+	if (m_pTexture)
+	{
+		return m_pTexture;
+	}
+	if (m_pSamplerState)
+	{
+		return m_pSamplerState;
+	}
+	if (m_pStructuredBuffer)
+	{
+		return m_pStructuredBuffer;
+	}
+
+	return nullptr;
 }
 
 void ShaderParameterBase::SetConstantBuffer(const IConstantBuffer* buffer)

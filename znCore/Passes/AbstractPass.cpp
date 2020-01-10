@@ -85,32 +85,32 @@ bool AbstractPass::Visit3D(ISceneNode* node)
 {
 	GetRenderEventArgs()->Node = node;
 
-	return false;
+	return true;
 }
 
 bool AbstractPass::VisitUI(ISceneNode* node)
 {
 	GetRenderEventArgs()->Node = node;
 
-	return false;
+	return true;
 }
 
 bool AbstractPass::Visit(IMesh* Mesh, SGeometryPartParams GeometryPartParams)
 {
-	_ASSERT(false, "This function must be specialized.");
-    return false;
+	//_ASSERT(false, "This function must be specialized.");
+    return true;
 }
 
 bool AbstractPass::Visit(IGeometry * Geometry, const IConstantBuffer* PerObject, const std::unordered_map<SShaderType, std::shared_ptr<IShader>>& ShadersMap, const IMaterial* Material, const SGeometryPartParams& GeometryPartParams)
 {
-	_ASSERT(false, "This function must be specialized.");
-	return false;
+	//_ASSERT(false, "This function must be specialized.");
+	return true;
 }
 
-bool AbstractPass::Visit(std::shared_ptr<CLight3D> light)
+bool AbstractPass::Visit(CLight3D* light)
 {
-    _ASSERT(false);
-	return false;
+	//_ASSERT(false, "This function must be specialized.");
+	return true;
 }
 
 void AbstractPass::SetRenderEventArgs(RenderEventArgs* e)

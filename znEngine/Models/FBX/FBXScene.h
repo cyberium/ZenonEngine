@@ -4,7 +4,7 @@
 
 #include "FBXSceneNode.h"
 
-#include "FBXMesh.h"
+
 
 class CFBXScene : public std::enable_shared_from_this<CFBXScene>
 {

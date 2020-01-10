@@ -23,13 +23,14 @@ public:
 	virtual bool VisitUI(ISceneNode* node) override;
 	virtual bool Visit(IMesh* Mesh, SGeometryPartParams GeometryPartParams = SGeometryPartParams()) override;
 	virtual bool Visit(IGeometry* Geometry, const IConstantBuffer* PerObject, const std::unordered_map<SShaderType, std::shared_ptr<IShader>>& ShadersMap, const IMaterial* Material, const SGeometryPartParams& GeometryPartParams) override;
-	virtual bool Visit(std::shared_ptr<CLight3D> light) override;
+	virtual bool Visit(CLight3D* light) override;
 
 	virtual void SetRenderEventArgs(RenderEventArgs* e);
 	virtual RenderEventArgs* GetRenderEventArgs() const;
 
-protected:
     std::shared_ptr<IPipelineState> GetPipelineState() const;
+
+protected:
     std::shared_ptr<IRenderDevice> GetRenderDevice() const;
 
 private:

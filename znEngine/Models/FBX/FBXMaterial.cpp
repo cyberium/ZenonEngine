@@ -7,38 +7,32 @@
 // General
 #include "FBXMaterial.h"
 
-CFBXMaterial::CFBXMaterial(const IBaseManager* BaseManager, std::weak_ptr<CFBXSceneNode> OwnerFBXNode, fbxsdk::FbxSurfaceMaterial* NativeMaterial)
-	: MaterialProxie(BaseManager->GetManager<IRenderDevice>()->CreateMaterial(sizeof(MaterialProperties)))
-	, m_BaseManager(BaseManager)
-	, m_RenderDevice(BaseManager->GetManager<IRenderDevice>())
-	, m_OwnerFBXNode(OwnerFBXNode)
-	, m_NativeMaterial(NativeMaterial)
+inline float ToFloat(const FbxPropertyT<FbxDouble>& FBXDouble)
 {
-	// Constant buffer
-	m_pProperties = (MaterialProperties*)_aligned_malloc(sizeof(MaterialProperties), 16);
-	*m_pProperties = MaterialProperties();
+	return FBXDouble.Get();
+}
 
-	std::shared_ptr<ISamplerState> g_Sampler = m_RenderDevice->CreateSamplerState();
-	g_Sampler->SetFilter(ISamplerState::MinFilter::MinLinear, ISamplerState::MagFilter::MagLinear, ISamplerState::MipFilter::MipLinear);
-	g_Sampler->SetWrapMode(ISamplerState::WrapMode::Repeat, ISamplerState::WrapMode::Repeat);
-	SetSampler(0, g_Sampler);
+inline glm::vec3 ToGLMVec3(const FbxPropertyT<FbxDouble3>& FBXVec3)
+{
+	return glm::vec3(FBXVec3.Get()[0], FBXVec3.Get()[1], FBXVec3.Get()[2]);
+}
+
+CFBXMaterial::CFBXMaterial(const IBaseManager* BaseManager, std::weak_ptr<CFBXSceneNode> OwnerFBXNode)
+	: MaterialModel(BaseManager)
+	, m_OwnerFBXNode(OwnerFBXNode)
+{
 }
 
 CFBXMaterial::~CFBXMaterial()
 {
-	if (m_pProperties)
-	{
-		_aligned_free(m_pProperties);
-		m_pProperties = nullptr;
-	}
 }
 
-void CFBXMaterial::Load()
+void CFBXMaterial::Load(fbxsdk::FbxSurfaceMaterial* NativeMaterial)
 {
-	//Log::Print("CFBXSceneNode: Loading material '%s'.", m_NativeMaterial->GetName());
+	Log::Print("CFBXSceneNode: Loading material '%s'.", NativeMaterial->GetName());
 
-	_ASSERT_EXPR(m_NativeMaterial->Is<fbxsdk::FbxSurfacePhong>(), "FBX material must be 'FbxSurfacePhong'.");
-	fbxsdk::FbxSurfacePhong* surfacePhong = fbxsdk::FbxCast<fbxsdk::FbxSurfacePhong>(m_NativeMaterial);
+	_ASSERT_EXPR(NativeMaterial->Is<fbxsdk::FbxSurfacePhong>(), "FBX material must be 'FbxSurfacePhong'.");
+	fbxsdk::FbxSurfacePhong* surfacePhong = fbxsdk::FbxCast<fbxsdk::FbxSurfacePhong>(NativeMaterial);
 
 	m_pProperties->Emissive = ToGLMVec3(surfacePhong->Emissive);
 	m_pProperties->EmissiveFactor = ToFloat(surfacePhong->EmissiveFactor);
@@ -71,6 +65,8 @@ void CFBXMaterial::Load()
 	m_pProperties->ReflectionFactor = ToFloat(surfacePhong->ReflectionFactor);
 
 	MarkConstantBufferDirty();
+
+	//PrintInfo();
 
 	for (int j = 0; j < fbxsdk::FbxLayerElement::sTypeTextureCount; j++)
 	{
@@ -132,58 +128,47 @@ void CFBXMaterial::Load()
 			switch (texureType)
 			{
 			case fbxsdk::FbxLayerElement::EType::eTextureDiffuse:
-				SetTexture(0, texture);
-				m_pProperties->HasTextureDiffuse = true;
+				SetTexture(MaterialModel::ETextureType::TextureDiffuse, texture);
 				break;
 
 			case fbxsdk::FbxLayerElement::EType::eTextureEmissive:
-				SetTexture(1, texture);
-				m_pProperties->HasTextureEmissive = true;
+				SetTexture(MaterialModel::ETextureType::TextureEmissive, texture);
 				break;
 
 			case fbxsdk::FbxLayerElement::EType::eTextureAmbient:
-				SetTexture(2, texture);
-				m_pProperties->HasTextureAmbient = true;
+				SetTexture(MaterialModel::ETextureType::TextureAmbient, texture);
 				break;
 
 			case fbxsdk::FbxLayerElement::EType::eTextureSpecular:
-				SetTexture(3, texture);
-				m_pProperties->HasTextureSpecular = true;
+				SetTexture(MaterialModel::ETextureType::TextureSpecular, texture);
 				break;
 
 			case fbxsdk::FbxLayerElement::EType::eTextureShininess:
-				SetTexture(4, texture);
-				m_pProperties->HasTextureShininess = true;
+				SetTexture(MaterialModel::ETextureType::TextureShininess, texture);
 				break;
 
 			case fbxsdk::FbxLayerElement::EType::eTextureNormalMap:
-				SetTexture(5, texture);
-				m_pProperties->HasTextureNormalMap = true;
+				SetTexture(MaterialModel::ETextureType::TextureNormalMap, texture);
 				break;
 
 			case fbxsdk::FbxLayerElement::EType::eTextureBump:
-				SetTexture(6, texture);
-				m_pProperties->HasTextureBump = true;
+				SetTexture(MaterialModel::ETextureType::TextureBump, texture);
 				break;
 
 			case fbxsdk::FbxLayerElement::EType::eTextureTransparency:
-				SetTexture(7, texture);
-				m_pProperties->HasTextureTransparency = true;
+				SetTexture(MaterialModel::ETextureType::TextureTransparency, texture);
 				break;
 
 			case fbxsdk::FbxLayerElement::EType::eTextureReflection:
-				SetTexture(8, texture);
-				m_pProperties->HasTextureReflection = true;
+				SetTexture(MaterialModel::ETextureType::TextureReflection, texture);
 				break;
 
 			case fbxsdk::FbxLayerElement::EType::eTextureDisplacement:
-				SetTexture(9, texture);
-				m_pProperties->HasTextureDisplacement = true;
+				SetTexture(MaterialModel::ETextureType::TextureDisplacement, texture);
 				break;
 
 			default:
 				Log::Error("CFBXMaterial: Unsupported texture type '%d'.", texureType);
-				break;
 			}
 		}
 		else
@@ -191,19 +176,8 @@ void CFBXMaterial::Load()
 			_ASSERT_EXPR(false, L"CFBXMaterial: Material '%s' texture '%s' (%s) has more than one texture object.", surfaceMaterial->GetName(), lProperty.GetName().Buffer(), fbxsdk::FbxLayerElement::sTextureChannelNames[j]);
 		}
 	}
-}
 
-std::shared_ptr<ITexture> CFBXMaterial::LoadTexture(fbxsdk::FbxTexture * Texture)
-{
-	//Log::Print("CFBXMaterial: Loading texture '%s'.", Texture->GetName());
-
-	_ASSERT_EXPR(Texture->Is<fbxsdk::FbxFileTexture>(), "FBX texture must be 'FbxFileTexture'.");
-	fbxsdk::FbxFileTexture* fileTexture = fbxsdk::FbxCast<fbxsdk::FbxFileTexture>(Texture);
-
-	// For exporter
-	fileTexture->SetFileName(fileTexture->GetRelativeFileName());
-
-	return m_BaseManager->GetManager<IRenderDevice>()->CreateTexture2D(m_OwnerFBXNode.lock()->GetOwnerScene().lock()->GetPath() + fileTexture->GetRelativeFileName());
+	MarkConstantBufferDirty();
 }
 
 
@@ -211,7 +185,15 @@ std::shared_ptr<ITexture> CFBXMaterial::LoadTexture(fbxsdk::FbxTexture * Texture
 //
 // Protected
 //
-void CFBXMaterial::UpdateConstantBuffer() const
+std::shared_ptr<ITexture> CFBXMaterial::LoadTexture(fbxsdk::FbxTexture * Texture)
 {
-	MaterialProxie::UpdateConstantBuffer(m_pProperties, sizeof(MaterialProperties));
+	Log::Print("CFBXMaterial: Loading texture '%s'.", Texture->GetName());
+
+	_ASSERT_EXPR(Texture->Is<fbxsdk::FbxFileTexture>(), "FBX texture must be 'FbxFileTexture'.");
+	fbxsdk::FbxFileTexture* fileTexture = fbxsdk::FbxCast<fbxsdk::FbxFileTexture>(Texture);
+
+	// For exporter
+	//fileTexture->SetFileName(fileTexture->GetRelativeFileName());
+
+	return m_BaseManager->GetManager<IRenderDevice>()->CreateTexture2D(m_OwnerFBXNode.lock()->GetOwnerScene().lock()->GetPath() + fileTexture->GetRelativeFileName());
 }
