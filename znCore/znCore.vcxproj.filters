@@ -261,9 +261,6 @@
     <ClCompile Include="Scene\CameraNode.cpp">
       <Filter>Scene functional\Camera</Filter>
     </ClCompile>
-    <ClCompile Include="Passes\BuildRenderListPass.cpp">
-      <Filter>Passes</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Log.h">
@@ -652,9 +649,6 @@
     </ClInclude>
     <ClInclude Include="..\shared\Interfaces\Render\Types\ShaderType.h">
       <Filter>__Interfaces\Render\Types</Filter>
-    </ClInclude>
-    <ClInclude Include="Passes\BuildRenderListPass.h">
-      <Filter>Passes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -159,6 +159,7 @@ void ShaderParameterBase::Unbind()
 	if (m_pConstantBuffer)
 	{
 		m_pConstantBuffer->UnBind(m_uiSlotID, m_Shader, m_ParameterType);
+		m_pConstantBuffer = nullptr;
 	}
 	if (m_pTexture)
 	{

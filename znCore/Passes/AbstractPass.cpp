@@ -128,3 +128,9 @@ std::shared_ptr<IRenderDevice> AbstractPass::GetRenderDevice() const
 {
     return m_RenderDevice.lock();
 }
+
+void AbstractPass::SetPipeline(std::shared_ptr<IPipelineState> Pipeline)
+{
+	_ASSERT(Pipeline);
+	m_Pipeline = Pipeline;
+}

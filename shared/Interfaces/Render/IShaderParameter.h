@@ -7,12 +7,12 @@ ZN_INTERFACE ISamplerState;
 ZN_INTERFACE IStructuredBuffer;
 // FORWARD END
 
-ZN_INTERFACE ZN_API IShaderParameterSource
+ZN_INTERFACE ZN_API __declspec(novtable) IShaderParameterSource
 {
 	virtual ~IShaderParameterSource() {}
 };
 
-ZN_INTERFACE ZN_API IShaderParameter
+ZN_INTERFACE ZN_API __declspec(novtable) IShaderParameter
 {
 	enum class ZN_API Type
 	{

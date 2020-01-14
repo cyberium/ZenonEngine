@@ -15,6 +15,8 @@ ZN_INTERFACE ZN_API IGeometry : public std::enable_shared_from_this<IGeometry>
 
 	virtual ~IGeometry() {}
 
+	virtual size_t GetHash() const = 0;
+
 	virtual void SetBounds(const BoundingBox& Bounds) = 0;
 	virtual const BoundingBox& GetBounds() const = 0;
 

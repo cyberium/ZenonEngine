@@ -2,6 +2,9 @@
 
 #include "Passes/CollectLightPass.h"
 #include "Passes/SetShaderParameterPass.h"
+#include "Passes/ShadowPass.h"
+
+#include "SceneFunctional/UI/UITexture.h"
 
 class ZN_API CGameState_World : public CGameState
 {
@@ -33,9 +36,15 @@ private:
 	void CGameState_World::UpdateLights();
 
 private:
+	std::shared_ptr<CUITextureNode> m_TextureUI;
+
+private:
 	std::shared_ptr<IRenderPass> m_Model_Pass_Opaque;
 	std::shared_ptr<IRenderPass> m_Model_Pass_Transperent;
+
 	std::shared_ptr<CCollectLightPass> m_CollectLightPass;
-	std::shared_ptr<CSetShaderParameterPass> m_SetShaderParameterPass;
+
 	std::shared_ptr<IStructuredBuffer> m_LightsStructuredBuffer;
+
+	std::shared_ptr<CShadowPass> m_ShadowPass;
 };

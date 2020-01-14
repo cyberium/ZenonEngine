@@ -11,7 +11,7 @@ class UpdateEventArgs;
 ZN_INTERFACE IManager;
 // FORWARD END
 
-ZN_INTERFACE ZN_API ISceneNode : public std::enable_shared_from_this<ISceneNode>
+ZN_INTERFACE ZN_API __declspec(novtable) ISceneNode : public std::enable_shared_from_this<ISceneNode>
 {
 	virtual ~ISceneNode() {}
 
@@ -128,7 +128,7 @@ typedef std::multimap<std::string, std::shared_ptr<ISceneNode>> NodeNameMap;
 
 
 
-ZN_INTERFACE ZN_API ISceneNodeInternal
+ZN_INTERFACE ZN_API __declspec(novtable) ISceneNodeInternal
 {
 	virtual ~ISceneNodeInternal() {}
 
@@ -137,7 +137,7 @@ ZN_INTERFACE ZN_API ISceneNodeInternal
 };
 
 
-ZN_INTERFACE ZN_API ISceneNode3D
+ZN_INTERFACE ZN_API __declspec(novtable) ISceneNode3D
 {
 	virtual ~ISceneNode3D() {}
 
@@ -154,7 +154,7 @@ ZN_INTERFACE ZN_API ISceneNode3D
 	virtual cvec3 GetScale() const = 0;
 };
 
-ZN_INTERFACE ZN_API ISceneNodeUI
+ZN_INTERFACE ZN_API __declspec(novtable) ISceneNodeUI
 {
 	virtual ~ISceneNodeUI() {}
 
@@ -182,7 +182,7 @@ ZN_INTERFACE ZN_API ISceneNodeUI
 //
 // For plugins
 //
-ZN_INTERFACE ZN_API ISceneNodeCreator
+ZN_INTERFACE ZN_API __declspec(novtable) ISceneNodeCreator
 {
 	virtual ~ISceneNodeCreator() {}
 
@@ -192,7 +192,7 @@ ZN_INTERFACE ZN_API ISceneNodeCreator
 };
 
 ZN_INTERFACE ZN_API
-	__declspec(uuid("9C3ACF8D-F30D-47AE-BBA1-D71DEA6B14D4"))
+	__declspec(novtable, uuid("9C3ACF8D-F30D-47AE-BBA1-D71DEA6B14D4"))
 	ISceneNodesFactory
 	: public IManager
 {

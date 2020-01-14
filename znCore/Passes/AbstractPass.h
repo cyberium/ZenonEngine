@@ -30,6 +30,7 @@ public:
 
 protected:
     std::shared_ptr<IRenderDevice> GetRenderDevice() const;
+	void SetPipeline(std::shared_ptr<IPipelineState> Pipeline);
 
 private:
 	bool                                            m_Enabled;

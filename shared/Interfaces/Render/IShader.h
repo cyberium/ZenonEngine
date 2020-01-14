@@ -5,7 +5,7 @@ ZN_INTERFACE IShaderParameter;
 ZN_INTERFACE IShaderInputLayout;
 // FORWARD END
 
-ZN_INTERFACE ZN_API IShader
+ZN_INTERFACE ZN_API __declspec(novtable) IShader
 {
 	typedef std::unordered_map<std::string, std::shared_ptr<IShaderParameter>> ParameterMap;
 

@@ -12,9 +12,6 @@ CGameState::CGameState(IBaseManager * BaseManager, std::shared_ptr<IRenderWindow
 	, m_WindowEvents(WindowEvents)
 	, m_IsInited(false)
 	, m_IsCurrent(false)
-
-	, m_FramesCnt(0)
-	, m_FrameTimeSumma(0.0)
 {
 	m_RenderDevice = m_BaseManager->GetManager<IRenderDevice>();
 }
@@ -44,8 +41,11 @@ bool CGameState::Init()
 		m_CameraRotText = GetBaseManager()->GetManager<ISceneNodesFactory>()->CreateSceneNode(m_SceneUI->GetRootNode(), "TextUI");
 		std::dynamic_pointer_cast<ISceneNodeUI>(m_CameraRotText)->SetTranslate(vec2(0.0f, 20.0f));
 
+		m_CameraRot2Text = GetBaseManager()->GetManager<ISceneNodesFactory>()->CreateSceneNode(m_SceneUI->GetRootNode(), "TextUI");
+		std::dynamic_pointer_cast<ISceneNodeUI>(m_CameraRot2Text)->SetTranslate(vec2(0.0f, 40.0f));
+
 		m_FPSText = GetBaseManager()->GetManager<ISceneNodesFactory>()->CreateSceneNode(m_SceneUI->GetRootNode(), "TextUI");
-		std::dynamic_pointer_cast<ISceneNodeUI>(m_FPSText)->SetTranslate(vec2(0.0f, 40.0f));
+		std::dynamic_pointer_cast<ISceneNodeUI>(m_FPSText)->SetTranslate(vec2(0.0f, 60.0f));
 	}
 
     m_IsInited = true;
@@ -171,7 +171,8 @@ void CGameState::OnPostRender(RenderEventArgs& e)
 	vec3 cameraTrans = GetCameraController()->GetCamera()->GetTranslation();
 	m_CameraPosText->GetProperties()->GetPropertyT<std::string>("Text")->Set("Pos: x = " + std::to_string(cameraTrans.x) + ", y = " + std::to_string(cameraTrans.y) + ", z = " + std::to_string(cameraTrans.z));
 	m_CameraRotText->GetProperties()->GetPropertyT<std::string>("Text")->Set("Rot: yaw = " + std::to_string(GetCameraController()->GetCamera()->GetYaw()) + ", pitch = " + std::to_string(GetCameraController()->GetCamera()->GetPitch()));
-
+	m_CameraRot2Text->GetProperties()->GetPropertyT<std::string>("Text")->Set("Rot: [" + std::to_string(GetCameraController()->GetCamera()->GetDirection().x) + ", " + std::to_string(GetCameraController()->GetCamera()->GetDirection().y) + ", " + std::to_string(GetCameraController()->GetCamera()->GetDirection().z) + "].");
+	
 	IQuery::QueryResult frameResult = m_FrameQuery->GetQueryResult(e.FrameCounter);
 	if (frameResult.IsValid)
 	{
@@ -180,10 +181,9 @@ void CGameState::OnPostRender(RenderEventArgs& e)
 		else
 			m_FrameTime = frameResult.ElapsedTime / 1000000.0;
 
-		m_FrameTimeSumma += (1000.0 / m_FrameTime);
-		m_FramesCnt += 1;
-
-		m_FPSText->GetProperties()->GetPropertyT<std::string>("Text")->Set("FPS: " + std::to_string(uint64(m_FrameTimeSumma) / m_FramesCnt));
+		if (m_FrameTime < 1.0f)
+			m_FrameTime = 1.0f;
+		m_FPSText->GetProperties()->GetPropertyT<std::string>("Text")->Set("FPS: " + std::to_string((1000 / uint64(m_FrameTime))));
 	}
 }
 

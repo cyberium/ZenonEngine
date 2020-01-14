@@ -34,7 +34,7 @@ ZN_INTERFACE ZN_API IRenderDevicePrimitiveCollection
 };
 
 ZN_INTERFACE ZN_API 
-	__declspec(uuid("19615D02-1592-4420-8D0C-3DB4F7C6186A"))
+	__declspec(novtable, uuid("19615D02-1592-4420-8D0C-3DB4F7C6186A"))
 	IRenderDevice : public IManager
 {
 	virtual ~IRenderDevice() {}

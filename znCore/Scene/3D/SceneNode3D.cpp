@@ -116,9 +116,9 @@ cvec3 SceneNode3D::GetScale() const
 //
 void SceneNode3D::RegisterComponents()
 {
+	AddComponent<CLightComponent3D>(std::make_shared<CLightComponent3D>(shared_from_this()));
     SetMeshComponent(AddComponent(std::make_shared<CMeshComponent3D>(shared_from_this())));
     SetColliderComponent(AddComponent(std::make_shared<CColliderComponent3D>(shared_from_this())));
-	AddComponent<CLightComponent3D>(std::make_shared<CLightComponent3D>(shared_from_this()));
 }
 
 bool SceneNode3D::Load(std::shared_ptr<IXMLReader> Reader)

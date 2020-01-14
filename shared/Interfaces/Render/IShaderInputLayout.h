@@ -1,6 +1,6 @@
 #pragma once
 
-ZN_INTERFACE ZN_API IShaderInputLayout
+ZN_INTERFACE ZN_API __declspec(novtable) IShaderInputLayout
 {
 	typedef std::unordered_map<InputSemantic, UINT> SemanticMap;
 

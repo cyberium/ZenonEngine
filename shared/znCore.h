@@ -24,7 +24,6 @@
 #include "../znCore/Passes/AbstractPass.h"
 #include "../znCore/Passes/Base3DPass.h"
 #include "../znCore/Passes/BaseUIPass.h"
-#include "../znCore/Passes/BuildRenderListPass.h"
 
 // Camera controllers
 #include "../znCore/CameraControllers/CameraControllerBase.h"

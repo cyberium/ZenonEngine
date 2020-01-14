@@ -8,7 +8,7 @@ ZN_INTERFACE IConstantBuffer;
 class RenderEventArgs;
 // FORWARD END
 
-ZN_INTERFACE ZN_API IMesh : public std::enable_shared_from_this<IMesh>
+ZN_INTERFACE ZN_API __declspec(novtable) IMesh : public std::enable_shared_from_this<IMesh>
 {
 	virtual ~IMesh() {}
 

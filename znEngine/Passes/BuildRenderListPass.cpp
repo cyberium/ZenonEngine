@@ -73,7 +73,7 @@ void BuildRenderListPass::Render(RenderEventArgs & e)
 #pragma omp parallel for
 	for (int i = 0; i < static_cast<int>(m_RenderList.size()); i++)
 	{
-		const auto& it = m_RenderList.at(i);
+		const auto& it = m_RenderList[i];
 		int threadNum = omp_get_thread_num();
 
 		m_PerObjectData[threadNum]->Model = it.Node->GetWorldTransfom();
@@ -86,15 +86,20 @@ void BuildRenderListPass::Render(RenderEventArgs & e)
 		if (shadersMap.empty())
 			shadersMap = GetRenderEventArgs()->PipelineState->GetShaders();
 
-		CRenderDeviceLocker locker(GetRenderDevice());
-		SetPerObjectConstantBufferData(threadNum);
+		{
+			CRenderDeviceLocker locker(GetRenderDevice());
+			SetPerObjectConstantBufferData(threadNum);
+		}
 
-		it.Material->Bind(shadersMap);
-		it.Geometry->Render(GetRenderEventArgs(), GetPerObjectConstantBuffer(threadNum).get(), shadersMap, it.Material, it.GeometryPartParams);
-		it.Material->Unbind(shadersMap);
+		{
+			CRenderDeviceLocker locker(GetRenderDevice());
+			it.Material->Bind(shadersMap);
+			it.Geometry->Render(GetRenderEventArgs(), GetPerObjectConstantBuffer(threadNum).get(), shadersMap, it.Material, it.GeometryPartParams);
+			it.Material->Unbind(shadersMap);
+		}
 	}
 	*/
-
+	
 	
 	for (const auto& it : m_RenderList)
 	{
@@ -114,6 +119,7 @@ void BuildRenderListPass::Render(RenderEventArgs & e)
 		it.Geometry->Render(GetRenderEventArgs(), GetPerObjectConstantBuffer(0).get(), shadersMap, it.Material, it.GeometryPartParams);
 		it.Material->Unbind(shadersMap);
 	}
+	
 
 
 	

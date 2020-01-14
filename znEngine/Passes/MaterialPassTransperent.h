@@ -1,5 +1,7 @@
 #pragma once
 
+#include "BuildRenderListPass.h"
+
 class CMaterialPassTransperent
 	: public BuildRenderListPass
 {

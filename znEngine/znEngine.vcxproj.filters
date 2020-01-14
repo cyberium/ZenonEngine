@@ -297,6 +297,12 @@
     <ClCompile Include="Passes\MaterialPassTransperent.cpp">
       <Filter>Passes\3D</Filter>
     </ClCompile>
+    <ClCompile Include="Passes\BuildRenderListPass.cpp">
+      <Filter>Passes\3D</Filter>
+    </ClCompile>
+    <ClCompile Include="Passes\ShadowPass.cpp">
+      <Filter>Passes\3D</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="common.h">
@@ -509,6 +515,12 @@
     <ClInclude Include="Passes\MaterialPassTransperent.h">
       <Filter>Passes\3D</Filter>
     </ClInclude>
+    <ClInclude Include="Passes\BuildRenderListPass.h">
+      <Filter>Passes\3D</Filter>
+    </ClInclude>
+    <ClInclude Include="Passes\ShadowPass.h">
+      <Filter>Passes\3D</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="znEngine.rc">
@@ -587,5 +599,10 @@
     <Image Include="Resources\Textures\default.png">
       <Filter>Resources\Textures</Filter>
     </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="Resources\shaders_D3D\3D\Shadow.hlsl">
+      <Filter>Resources\Shaders_D3D\3D</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

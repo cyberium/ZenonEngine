@@ -45,7 +45,6 @@
     <ClCompile Include="Passes\Base3DPass.cpp" />
     <ClCompile Include="Passes\BaseScenePass.cpp" />
     <ClCompile Include="Passes\BaseUIPass.cpp" />
-    <ClCompile Include="Passes\BuildRenderListPass.cpp" />
     <ClCompile Include="Passes\RenderTechnique.cpp" />
     <ClCompile Include="Proxies\MaterialProxie.cpp" />
     <ClCompile Include="Proxies\MeshProxie.cpp" />
@@ -175,7 +174,6 @@
     <ClInclude Include="Passes\Base3DPass.h" />
     <ClInclude Include="Passes\BaseScenePass.h" />
     <ClInclude Include="Passes\BaseUIPass.h" />
-    <ClInclude Include="Passes\BuildRenderListPass.h" />
     <ClInclude Include="Passes\RenderTechnique.h" />
     <ClInclude Include="Proxies\MaterialProxie.h" />
     <ClInclude Include="Proxies\MeshProxie.h" />

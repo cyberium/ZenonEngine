@@ -36,6 +36,16 @@ Light& CLight3D::getLight()
 	return *m_LightProto;
 }
 
+glm::mat4 CLight3D::GetViewMatrix() const
+{
+	return glm::lookAt(m_LightProto->m_PositionWS.xyz(), m_LightProto->m_PositionWS.xyz() + m_LightProto->m_DirectionWS.xyz(), glm::vec3(0.0f, 1.0f, 0.0f));
+}
+
+glm::mat4 CLight3D::GetProjectionMatrix() const
+{
+	return glm::perspective(glm::radians(m_LightProto->m_SpotlightAngle * 2.0f), 1.0f, 0.5f, 10000.0f);
+}
+
 
 bool CLight3D::Accept(IVisitor* visitor)
 {

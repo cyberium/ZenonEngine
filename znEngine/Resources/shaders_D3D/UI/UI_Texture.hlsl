@@ -10,5 +10,5 @@ sampler DiffuseTextureSampler : register(s0);
 
 float4 PS_main(VertexShaderOutput IN) : SV_TARGET
 {
-    return DiffuseTexture.Sample(DiffuseTextureSampler, IN.texCoord) * Color;
+    return float4(DiffuseTexture.Sample(DiffuseTextureSampler, IN.texCoord).rgb, 1.0f);
 }

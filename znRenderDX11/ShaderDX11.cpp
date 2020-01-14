@@ -29,7 +29,6 @@ void ShaderDX11::Destroy()
 	m_pComputeShader.Release();
 
 	m_ShaderParameters.clear();
-
 }
 
 bool ShaderDX11::LoadShaderFromString(SShaderType shaderType, const std::string& fileName, const std::string& source, const ShaderMacros& shaderMacros, const std::string& entryPoint, const std::string& profile, std::shared_ptr<IShaderInputLayout> _customLayout)
@@ -74,6 +73,8 @@ bool ShaderDX11::LoadShaderFromString(SShaderType shaderType, const std::string&
 		UINT flags = D3DCOMPILE_ENABLE_STRICTNESS;
 #if defined( _DEBUG )
 		flags |= D3DCOMPILE_DEBUG;
+#else
+		flags |= D3DCOMPILE_OPTIMIZATION_LEVEL3;
 #endif
 
         std::shared_ptr<IFile> file = m_RenderDevice.lock()->GetBaseManager()->GetManager<IFilesManager>()->Open(fileName);

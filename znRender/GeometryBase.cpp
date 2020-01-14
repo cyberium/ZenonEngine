@@ -13,6 +13,11 @@ GeometryBase::~GeometryBase()
 {
 }
 
+size_t GeometryBase::GetHash() const
+{
+	return 0;
+}
+
 
 void GeometryBase::SetBounds(const BoundingBox& Bounds)
 {
@@ -42,4 +47,26 @@ void GeometryBase::SetIndexBuffer(std::shared_ptr<IBuffer> buffer)
 bool GeometryBase::Accept(IVisitor * visitor, const IMaterial* Material, SGeometryPartParams GeometryPartParams)
 {
 	return visitor->Visit(this, Material, GeometryPartParams);
+}
+
+void GeometryBase::UpdateHash()
+{
+	std::string hash = "";
+	if (m_pIndexBuffer)
+		hash += std::to_string(m_pIndexBuffer->GetElementCount());
+
+	if (m_VertexBuffer)
+		hash += std::to_string(m_VertexBuffer->GetElementCount());
+
+	for (const auto& it : m_VertexBuffers)
+	{
+		hash += it.first.Name;
+		hash += std::to_string(it.first.Index);
+
+		if (it.second)
+			hash += std::to_string(it.second->GetElementCount());
+	}
+
+	std::hash<std::string> hashFunc;
+	m_Hash = hashFunc(hash);
 }

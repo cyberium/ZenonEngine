@@ -76,7 +76,7 @@ bool GeometryDX11::Render(const RenderEventArgs* renderArgs, const IConstantBuff
 		geomShader = geomShaderIt->second.get();
 	}
 
-	const std::shared_ptr<IShaderParameter>& perObjectParameter = vertexShader->GetShaderParameterByName("PerObject");
+	IShaderParameter* perObjectParameter = vertexShader->GetShaderParameterByName("PerObject").get();
 	if (perObjectParameter->IsValid() && PerObject != nullptr)
 	{
 		perObjectParameter->SetConstantBuffer(PerObject);
@@ -138,6 +138,12 @@ bool GeometryDX11::Render(const RenderEventArgs* renderArgs, const IConstantBuff
 				buffer.second->UnBind(slotID, vertexShader, IShaderParameter::Type::Buffer);
 			}
 		}
+	}
+
+	perObjectParameter = vertexShader->GetShaderParameterByName("PerObject").get();
+	if (perObjectParameter->IsValid())
+	{
+		perObjectParameter->Unbind();
 	}
 
 	return true;

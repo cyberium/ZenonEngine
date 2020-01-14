@@ -73,9 +73,6 @@ protected:
 	std::shared_ptr<IQuery>                         m_TestQuery;
     double                                          m_FrameTime;
 
-	double                                          m_FrameTimeSumma;
-	uint64                                          m_FramesCnt;
-
 	std::shared_ptr<ICameraController>              m_DefaultCameraController;
 
 	std::shared_ptr<ISettingGroup>                  m_VideoSettings;
@@ -109,6 +106,7 @@ private: // Mouse events connections
 private:
 	std::shared_ptr<ISceneNode>						m_CameraPosText;
 	std::shared_ptr<ISceneNode>						m_CameraRotText;
+	std::shared_ptr<ISceneNode>						m_CameraRot2Text;
 	std::shared_ptr<ISceneNode>						m_FPSText;
 
 private:

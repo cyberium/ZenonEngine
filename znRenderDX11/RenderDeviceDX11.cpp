@@ -77,7 +77,7 @@ void RenderDeviceDX11::Finalize()
 #if defined(_DEBUG)
 	if (m_pDebugLayer)
 	{
-		//        m_pDebugLayer->ReportLiveDeviceObjects( D3D11_RLDO_SUMMARY | D3D11_RLDO_DETAIL );
+		m_pDebugLayer->ReportLiveDeviceObjects( D3D11_RLDO_SUMMARY | D3D11_RLDO_DETAIL );
 	}
 #endif
 }
@@ -451,9 +451,9 @@ void RenderDeviceDX11::CreateDevice()
     };
 
     UINT createDeviceFlags = 0;
-//#if defined(_DEBUG) 
+#if defined(_DEBUG) 
     createDeviceFlags = D3D11_CREATE_DEVICE_DEBUG;
-	//#endif
+#endif
 
     // This will be the feature level that 
     // is used to create our device and swap chain.

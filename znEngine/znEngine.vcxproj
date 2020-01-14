@@ -47,6 +47,7 @@
     <ClCompile Include="Models\FBX\FBXSceneNode.cpp" />
     <ClCompile Include="Models\FBX\FBXStream.cpp" />
     <ClCompile Include="Passes\BeginQueryPass.cpp" />
+    <ClCompile Include="Passes\BuildRenderListPass.cpp" />
     <ClCompile Include="Passes\ClearRenderTargetPass.cpp" />
     <ClCompile Include="Passes\CollectLightPass.cpp" />
     <ClCompile Include="Passes\CopyBufferPass.cpp" />
@@ -60,6 +61,7 @@
     <ClCompile Include="Passes\RenderPassDefaultCreator.cpp" />
     <ClCompile Include="Passes\RenderPassFactory.cpp" />
     <ClCompile Include="Passes\SetShaderParameterPass.cpp" />
+    <ClCompile Include="Passes\ShadowPass.cpp" />
     <ClCompile Include="Passes\TextureDebugPass.cpp" />
     <ClCompile Include="Passes\TextureMaterialPass.cpp" />
     <ClCompile Include="PluginsManager.cpp" />
@@ -126,6 +128,7 @@
     <ClInclude Include="Models\FBX\FBXSceneNode.h" />
     <ClInclude Include="Models\FBX\FBXStream.h" />
     <ClInclude Include="Passes\BeginQueryPass.h" />
+    <ClInclude Include="Passes\BuildRenderListPass.h" />
     <ClInclude Include="Passes\ClearRenderTargetPass.h" />
     <ClInclude Include="Passes\CollectLightPass.h" />
     <ClInclude Include="Passes\CopyBufferPass.h" />
@@ -139,6 +142,7 @@
     <ClInclude Include="Passes\RenderPassDefaultCreator.h" />
     <ClInclude Include="Passes\RenderPassFactory.h" />
     <ClInclude Include="Passes\SetShaderParameterPass.h" />
+    <ClInclude Include="Passes\ShadowPass.h" />
     <ClInclude Include="Passes\TextureDebugPass.h" />
     <ClInclude Include="Passes\TextureMaterialPass.h" />
     <ClInclude Include="PluginsManager.h" />
@@ -240,6 +244,11 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="Resources\shaders_D3D\Light.hlsl">
+      <FileType>Document</FileType>
+    </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Resources\shaders_D3D\3D\Shadow.hlsl">
       <FileType>Document</FileType>
     </Text>
   </ItemGroup>
