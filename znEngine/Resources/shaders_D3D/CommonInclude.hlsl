@@ -221,12 +221,12 @@ float4 DoDiffuse(Light light, float4 L, float4 N)
 	return light.Color * NdotL;
 }
 
-float4 DoSpecular(Light light, Material material, float4 V, float4 L, float4 N)
+float4 DoSpecular(Light light, Material mat, float4 V, float4 L, float4 N)
 {
 	float4 R = normalize(reflect(-L, N));
 	float RdotV = max(dot(R, V), 0);
 
-	return light.Color * pow(RdotV, material.SpecularFactor);
+	return light.Color * pow(RdotV, mat.SpecularFactor);
 }
 
 // Compute the attenuation based on the range of the light.

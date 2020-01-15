@@ -4,6 +4,7 @@
 #include "SceneBase.h"
 
 // Additonal
+#include "3D/SceneNode3D.h"
 #include "UI/SceneNodeUI.h"
 
 SceneBase::SceneBase(IBaseManager* BaseManager)
@@ -20,7 +21,7 @@ SceneBase::~SceneBase()
 //
 void SceneBase::CreateRootNode()
 {
-	m_RootNode = CreateSceneNode<SceneNodeBase>(std::shared_ptr<ISceneNode>());
+	m_RootNode = CreateSceneNode<SceneNode3D>(std::shared_ptr<ISceneNode>());
 	m_RootNode->SetName("Root node");
 }
 

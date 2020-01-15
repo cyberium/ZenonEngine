@@ -52,6 +52,7 @@
     <ClCompile Include="Passes\CollectLightPass.cpp" />
     <ClCompile Include="Passes\CopyBufferPass.cpp" />
     <ClCompile Include="Passes\CopyTexturePass.cpp" />
+    <ClCompile Include="Passes\DefferedRender.cpp" />
     <ClCompile Include="Passes\DispatchPass.cpp" />
     <ClCompile Include="Passes\EndQueryPass.cpp" />
     <ClCompile Include="Passes\GenerateMipMapsPass.cpp" />
@@ -133,6 +134,7 @@
     <ClInclude Include="Passes\CollectLightPass.h" />
     <ClInclude Include="Passes\CopyBufferPass.h" />
     <ClInclude Include="Passes\CopyTexturePass.h" />
+    <ClInclude Include="Passes\DefferedRender.h" />
     <ClInclude Include="Passes\DispatchPass.h" />
     <ClInclude Include="Passes\EndQueryPass.h" />
     <ClInclude Include="Passes\GenerateMipMapsPass.h" />
@@ -249,6 +251,11 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="Resources\shaders_D3D\3D\Shadow.hlsl">
+      <FileType>Document</FileType>
+    </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Resources\shaders_D3D\3D\Model_Deffered.hlsl">
       <FileType>Document</FileType>
     </Text>
   </ItemGroup>

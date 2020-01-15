@@ -3,6 +3,7 @@
 #include "Passes/CollectLightPass.h"
 #include "Passes/SetShaderParameterPass.h"
 #include "Passes/ShadowPass.h"
+#include "Passes/DefferedRender.h"
 
 #include "SceneFunctional/UI/UITexture.h"
 
@@ -47,4 +48,8 @@ private:
 	std::shared_ptr<IStructuredBuffer> m_LightsStructuredBuffer;
 
 	std::shared_ptr<CShadowPass> m_ShadowPass;
+
+
+	std::shared_ptr<SceneNode3D> m_RootForBoxes;
+	std::shared_ptr<CDefferedRender> m_DefferedRenderPass;
 };

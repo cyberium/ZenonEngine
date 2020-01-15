@@ -65,10 +65,10 @@ void CGameState_World::OnRayIntersected(const glm::vec3& Point)
 }
 
 
-//
-//
-//
 
+//
+//
+//
 void CGameState_World::OnResize(ResizeEventArgs& e)
 {
 	CGameState::OnResize(e);
@@ -76,6 +76,8 @@ void CGameState_World::OnResize(ResizeEventArgs& e)
 
 void CGameState_World::OnPreRender(RenderEventArgs& e)
 {
+	m_RootForBoxes->SetRotation(glm::vec3(m_RootForBoxes->GetRotation().x, m_RootForBoxes->GetRotation().y + 0.01, 0.0f));
+
 	CGameState::OnPreRender(e);
 }
 
@@ -124,8 +126,8 @@ void CGameState_World::Load3D()
 {
 	std::shared_ptr<SceneNode3D> sceneNodeLight = m_Scene3D->CreateWrappedSceneNode<SceneNode3D>("SceneNode3D", m_Scene3D->GetRootNode());
 	sceneNodeLight->SetName("Light node");
-	sceneNodeLight->SetTranslate(glm::vec3(1032.0f, 1150.0f, 1085.0f));
-	sceneNodeLight->SetRotation(glm::vec3(-0.5f, -0.7f, -0.5f));
+	sceneNodeLight->SetTranslate(glm::vec3(700.0f, 700.0f, 700.0f));
+	sceneNodeLight->SetRotation(glm::vec3(-0.5f, -0.9f, -0.5f));
 
 	sceneNodeLight->GetComponent<ILightComponent3D>()->SetEnabled(true);
 	sceneNodeLight->GetComponent<ILightComponent3D>()->SetType(ELightType::Spot);
@@ -147,8 +149,9 @@ void CGameState_World::Load3D()
 
 	//---------------------------
 
-	const size_t iterCnt = 3;
-	const float offset = 145.0f;
+	const int iterCnt = 25;
+	const float offset = 50.0f;
+	const float scale = 20.0f;
 
 	std::shared_ptr<MaterialModel> mat = std::make_shared<MaterialModel>(GetBaseManager());
 	mat->SetDiffuseColor(vec3(1.0f, 1.0f, 1.0f));
@@ -180,16 +183,18 @@ void CGameState_World::Load3D()
 	std::shared_ptr<IMesh> mesh2 = GetRenderDevice()->GetPrimitiveCollection()->CreateSphere();
 	mesh2->SetMaterial(mat);
 
-	for (size_t i = 0; i < iterCnt; i++)
+	m_RootForBoxes = m_Scene3D->CreateWrappedSceneNode<SceneNode3D>("SceneNode3D", m_Scene3D->GetRootNode());
+
+	for (int i = -(iterCnt / 2); i < iterCnt / 2; i++)
 	{
-		for (size_t j = 0; j < iterCnt; j++)
+		for (int j = -(iterCnt / 2); j < iterCnt / 2; j++)
 		{
-			for (size_t k = 0; k < iterCnt; k++)
+			for (int k = 0; k < iterCnt; k++)
 			{
-				std::shared_ptr<ISceneNode> sceneNode = m_Scene3D->CreateWrappedSceneNode<SceneNode3D>("SceneNode3D", m_Scene3D->GetRootNode());
+				std::shared_ptr<ISceneNode> sceneNode = m_Scene3D->CreateWrappedSceneNode<SceneNode3D>("SceneNode3D", m_RootForBoxes);
 				sceneNode->SetName("Ball [" + std::to_string(i) + ", " + std::to_string(j) + ", " + std::to_string(k) + "]");
 				std::dynamic_pointer_cast<ISceneNode3D>(sceneNode)->SetTranslate(vec3(offset * i, offset * k, offset * j));
-				std::dynamic_pointer_cast<ISceneNode3D>(sceneNode)->SetScale(vec3(100, 100, 100));
+				std::dynamic_pointer_cast<ISceneNode3D>(sceneNode)->SetScale(vec3(scale));
 				sceneNode->GetComponent<IMeshComponent3D>()->AddMesh(((i % 2 == 0) && (j % 2 == 0) && (k % 2 == 0)) ? mesh : mesh2);
 
 				BoundingBox bbox = BoundingBox(glm::vec3(-1.0f, -1.0f, -1.0f), glm::vec3(1.0f, 1.0f, 1.0f));
@@ -210,6 +215,13 @@ void CGameState_World::Load3D()
 
 	//std::shared_ptr<ISceneNode> fbxSceneNode = GetBaseManager()->GetManager<ISceneNodesFactory>()->CreateSceneNode(m_Scene3D->GetRootNode(), "FBXSceneNode");
 	//fbxSceneNode->GetComponent<ITransformComponent3D>()->SetScale(vec3(15.0f, 15.0f, 15.0f));
+
+	m_Technique3D.AddPass(GetBaseManager()->GetManager<IRenderPassFactory>()->CreateRenderPass("ClearPass", GetRenderDevice(), GetRenderWindow()->GetRenderTarget(), GetRenderWindow()->GetViewport(), m_Scene3D));
+	m_DefferedRenderPass = std::make_shared<CDefferedRender>(GetRenderDevice(), m_Scene3D);
+
+
+	m_Technique3D.AddPass(m_DefferedRenderPass);
+#if 0
 
 	m_Technique3D.AddPass(GetBaseManager()->GetManager<IRenderPassFactory>()->CreateRenderPass("ClearPass", GetRenderDevice(), GetRenderWindow()->GetRenderTarget(), GetRenderWindow()->GetViewport(), m_Scene3D));
 	//m_Technique3D.AddPass(GetBaseManager()->GetManager<IRenderPassFactory>()->CreateRenderPass("DebugPass", GetRenderDevice(), GetRenderWindow()->GetRenderTarget(), GetRenderWindow()->GetViewport(), m_Scene3D));
@@ -266,14 +278,30 @@ void CGameState_World::Load3D()
 
 	m_Technique3D.AddPass(m_Model_Pass_Opaque);
 	//m_Technique3D.AddPass(m_Model_Pass_Transperent);
+#endif
 }
 
 void CGameState_World::LoadUI()
 {
-	/*m_TextureUI = m_SceneUI->GetRootNode()->CreateWrappedSceneNode<CUITextureNode>("Test", GetRenderDevice());
-	m_TextureUI->SetTranslate(vec2(100.0f, 100.0f));
-	m_TextureUI->SetScale(vec2(300, 300));
-	m_TextureUI->SetTexture(m_ShadowPass->GetColorTexture());*/
+	std::shared_ptr<CUITextureNode> TextureUI0 = m_SceneUI->GetRootNode()->CreateWrappedSceneNode<CUITextureNode>("Test", GetRenderDevice());
+	TextureUI0->SetTranslate(vec2(000.0f, 000.0f));
+	TextureUI0->SetScale(vec2(600, 600));
+	TextureUI0->SetTexture(m_DefferedRenderPass->GetTexture0());
+
+	std::shared_ptr<CUITextureNode> TextureUI1 = m_SceneUI->GetRootNode()->CreateWrappedSceneNode<CUITextureNode>("Test", GetRenderDevice());
+	TextureUI1->SetTranslate(vec2(600.0f, 000.0f));
+	TextureUI1->SetScale(vec2(600, 600));
+	TextureUI1->SetTexture(m_DefferedRenderPass->GetTexture1());
+
+	std::shared_ptr<CUITextureNode> TextureUI2 = m_SceneUI->GetRootNode()->CreateWrappedSceneNode<CUITextureNode>("Test", GetRenderDevice());
+	TextureUI2->SetTranslate(vec2(000.0f, 600.0f));
+	TextureUI2->SetScale(vec2(600, 600));
+	TextureUI2->SetTexture(m_DefferedRenderPass->GetTexture2());
+
+	std::shared_ptr<CUITextureNode> TextureUI3 = m_SceneUI->GetRootNode()->CreateWrappedSceneNode<CUITextureNode>("Test", GetRenderDevice());
+	TextureUI3->SetTranslate(vec2(600.0f, 600.0f));
+	TextureUI3->SetScale(vec2(600, 600));
+	TextureUI3->SetTexture(m_DefferedRenderPass->GetTexture3());
 
 	m_TechniqueUI.AddPass(GetBaseManager()->GetManager<IRenderPassFactory>()->CreateRenderPass("BaseUIPass", GetRenderDevice(), GetRenderWindow()->GetRenderTarget(), GetRenderWindow()->GetViewport(), m_SceneUI));
 }

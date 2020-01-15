@@ -303,6 +303,9 @@
     <ClCompile Include="Passes\ShadowPass.cpp">
       <Filter>Passes\3D</Filter>
     </ClCompile>
+    <ClCompile Include="Passes\DefferedRender.cpp">
+      <Filter>Passes\3D</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="common.h">
@@ -521,6 +524,9 @@
     <ClInclude Include="Passes\ShadowPass.h">
       <Filter>Passes\3D</Filter>
     </ClInclude>
+    <ClInclude Include="Passes\DefferedRender.h">
+      <Filter>Passes\3D</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="znEngine.rc">
@@ -594,6 +600,7 @@
     <Text Include="Resources\shaders_D3D\3D\Model.hlsl">
       <Filter>Resources\Shaders_D3D\3D</Filter>
     </Text>
+    <Text Include="Resources\shaders_D3D\3D\Shadow.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Resources\Textures\default.png">
@@ -601,7 +608,7 @@
     </Image>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="Resources\shaders_D3D\3D\Shadow.hlsl">
+    <FxCompile Include="Resources\shaders_D3D\3D\Model_Deffered.hlsl">
       <Filter>Resources\Shaders_D3D\3D</Filter>
     </FxCompile>
   </ItemGroup>
