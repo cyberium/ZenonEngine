@@ -192,7 +192,7 @@ void CByteBuffer::Allocate(size_t _size)
 {
 	if (_size > 0)
 	{
-		_ASSERT(m_IsAllocated == false, L"ByteBuffer already allocated.");
+		_ASSERT_EXPR(m_IsAllocated == false, L"ByteBuffer already allocated.");
         m_Data.resize(_size);
 		m_IsAllocated = true;
 	}

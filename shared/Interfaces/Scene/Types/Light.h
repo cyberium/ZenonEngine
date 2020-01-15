@@ -1,27 +1,50 @@
-#define POINT_LIGHT 0
-#define SPOT_LIGHT 1
-#define DIRECTIONAL_LIGHT 2
-#define UNKNOWN 3
+#pragma once
 
-struct Light
+// DON'T FORGET ABOUT PADDINGS!
+// DON'T USE 'bool'!
+
+enum class ZN_API ELightType : uint32_t //Don't delete uint32_t becouse mapped to render
 {
+	Point = 0,
+	Spot,
+	Directional,
+	Unknown
+};
+
+struct __declspec(novtable, align(16)) ZN_API SLight
+{
+	SLight::SLight()
+		: PositionWS(0, 0, 0, 1)
+		, DirectionWS(0, 0, -1, 0)
+		, PositionVS(0, 0, 0, 1)
+		, DirectionVS(0, 0, 1, 0)
+		, Color(1, 1, 1, 1)
+
+		, Enabled(false)
+		, Range(99999.0f)
+		, Intensity(1.0f)
+		, SpotlightAngle(45.0f)
+
+		, Type(ELightType::Unknown)
+	{}
+
 	// Position for point and spot lights (World space).
-	float4 PositionWS;
+	glm::vec4 PositionWS;
 	//--------------------------------------------------------------( 16 bytes )
 	// Direction for spot and directional lights (World space).
-	float4 DirectionWS;
+	glm::vec4 DirectionWS;
 	//--------------------------------------------------------------( 16 bytes )
 	// Position for point and spot lights (View space).
-	float4 PositionVS;
+	glm::vec4 PositionVS;
 	//--------------------------------------------------------------( 16 bytes )
 	// Direction for spot and directional lights (View space).
-	float4 DirectionVS;
+	glm::vec4 DirectionVS;
 	//--------------------------------------------------------------( 16 bytes )
 	// Color of the light. Diffuse and specular colors are not separated.
-	float4 Color;
+	glm::vec4 Color;
 	//--------------------------------------------------------------( 16 bytes )
 	// Disable or enable the light.
-	uint Enabled;
+	uint32 Enabled;
 	// The range of the light.
 	float Range;
 	// The intensity of the light.
@@ -30,8 +53,8 @@ struct Light
 	float SpotlightAngle;
 	//--------------------------------------------------------------(16 bytes )
 	// The type of the light.
-	uint Type;
-	float3 __Padding;
+	ELightType Type;
+	glm::vec3 __Padding;
 	//--------------------------------------------------------------(16 bytes )
 	//--------------------------------------------------------------( 16 * 7 = 112 bytes )
 };

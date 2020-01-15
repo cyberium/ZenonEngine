@@ -122,33 +122,24 @@ void CGameState_World::OnKeyReleased(KeyEventArgs & e)
 //
 void CGameState_World::Load3D()
 {
-	std::shared_ptr<ISceneNode> sceneNodeLight = m_Scene3D->CreateWrappedSceneNode<SceneNode3D>("SceneNode3D", m_Scene3D->GetRootNode());
+	std::shared_ptr<SceneNode3D> sceneNodeLight = m_Scene3D->CreateWrappedSceneNode<SceneNode3D>("SceneNode3D", m_Scene3D->GetRootNode());
 	sceneNodeLight->SetName("Light node");
+	sceneNodeLight->SetTranslate(glm::vec3(1032.0f, 1150.0f, 1085.0f));
+	sceneNodeLight->SetRotation(glm::vec3(-0.5f, -0.7f, -0.5f));
 
-	Light light;
-	light.m_Type = Light::LightType::Spot;
-	light.m_Color.rgb = glm::vec3(1.0f, 1.0f, 1.0f);
-	light.m_PositionWS = glm::vec4(glm::vec3(1032.0f, 1250.0f, 1085.0f), 1.0f);
-	light.m_DirectionWS = glm::vec4(glm::vec3(-0.5f, -0.6f, -0.5f), 0.0f);
-	light.m_Range = 6000.0f;
-	light.m_Intensity = 1.5f;
-	light.m_SpotlightAngle = 35.0f;
-	sceneNodeLight->GetComponent<ILightComponent3D>()->AddLight(std::make_shared<CLight3D>(light));
-
-
+	sceneNodeLight->GetComponent<ILightComponent3D>()->SetEnabled(true);
+	sceneNodeLight->GetComponent<ILightComponent3D>()->SetType(ELightType::Spot);
+	sceneNodeLight->GetComponent<ILightComponent3D>()->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
+	sceneNodeLight->GetComponent<ILightComponent3D>()->SetRange(6000.0f);
+	sceneNodeLight->GetComponent<ILightComponent3D>()->SetIntensity(1.5f);
+	sceneNodeLight->GetComponent<ILightComponent3D>()->SetSpotlightAngle(35.0f);
 
 	//GenerateLights(sceneNodeLight, 8);
-
-
 
 	std::shared_ptr<MaterialTextured> materialTextured = std::make_shared<MaterialTextured>(GetRenderDevice());
 	materialTextured->SetDiffuseColor(vec4(1.0f, 1.0f, 1.0f, 1.0f));
 	materialTextured->SetTexture(0, GetRenderDevice()->CreateTexture2D("Sponza_Floor_diffuse.png"));
 	materialTextured->SetWrapper(materialTextured);
-
-
-
-
 
 	//-- Assimp -----------------
 
@@ -260,7 +251,7 @@ void CGameState_World::Load3D()
 		(
 			GetRenderDevice(),
 			std::dynamic_pointer_cast<AbstractPass>(m_Model_Pass_Opaque)->GetPipelineState()->GetShader(SShaderType::VertexShader)->GetShaderParameterByName("PerLight"),
-			std::bind(&CShadowPass::GetPerLightBuffer, m_ShadowPass)
+			m_ShadowPass->GetPerLightBuffer()
 		)
 	);
 	m_Technique3D.AddPass
@@ -269,8 +260,8 @@ void CGameState_World::Load3D()
 		(
 			GetRenderDevice(),
 			std::dynamic_pointer_cast<AbstractPass>(m_Model_Pass_Opaque)->GetPipelineState()->GetShader(SShaderType::PixelShader)->GetShaderParameterByName("TextureShadow"),
-			std::bind(&CShadowPass::GetColorTexture, m_ShadowPass)
-			)
+			m_ShadowPass->GetColorTexture()
+		)
 	);
 
 	m_Technique3D.AddPass(m_Model_Pass_Opaque);
@@ -279,10 +270,10 @@ void CGameState_World::Load3D()
 
 void CGameState_World::LoadUI()
 {
-	m_TextureUI = m_SceneUI->GetRootNode()->CreateWrappedSceneNode<CUITextureNode>("Test", GetRenderDevice());
+	/*m_TextureUI = m_SceneUI->GetRootNode()->CreateWrappedSceneNode<CUITextureNode>("Test", GetRenderDevice());
 	m_TextureUI->SetTranslate(vec2(100.0f, 100.0f));
 	m_TextureUI->SetScale(vec2(300, 300));
-	m_TextureUI->SetTexture(m_ShadowPass->GetColorTexture());
+	m_TextureUI->SetTexture(m_ShadowPass->GetColorTexture());*/
 
 	m_TechniqueUI.AddPass(GetBaseManager()->GetManager<IRenderPassFactory>()->CreateRenderPass("BaseUIPass", GetRenderDevice(), GetRenderWindow()->GetRenderTarget(), GetRenderWindow()->GetViewport(), m_SceneUI));
 }
@@ -304,14 +295,14 @@ void CGameState_World::GenerateLights(std::shared_ptr<ISceneNode> Node, uint32_t
 
 	for (uint32_t i = 0; i < numLights; i++)
 	{
-		Light light;
+		SLight light;
 
-		light.m_PositionWS = glm::vec4(glm::linearRand(BoundsMin, BoundsMax), 1.0f);
+		light.PositionWS = glm::vec4(glm::linearRand(BoundsMin, BoundsMax), 1.0f);
 
 		// Choose a color that will never be black.
 		glm::vec2 colorWheel = glm::diskRand(1.0f);
 		float radius = glm::length(colorWheel);
-		light.m_Color.rgb = glm::lerp(
+		light.Color.rgb = glm::lerp(
 			glm::lerp(
 				glm::lerp(glm::vec3(1), glm::vec3(0, 1, 0), radius),
 				glm::lerp(glm::vec3(1), glm::vec3(1, 0, 0), radius),
@@ -322,47 +313,47 @@ void CGameState_World::GenerateLights(std::shared_ptr<ISceneNode> Node, uint32_t
 				colorWheel.y * 0.5f + 0.5f),
 			glm::abs(colorWheel.y));
 
-		light.m_DirectionWS = glm::vec4(glm::sphericalRand(1.0f), 0.0f);
-		light.m_Range = glm::linearRand(MinRange, MaxRange);
-		light.m_Intensity = 50;
-		light.m_SpotlightAngle = glm::linearRand(MinSpotAngle, MaxSpotAngle);
+		light.DirectionWS = glm::vec4(glm::sphericalRand(1.0f), 0.0f);
+		light.Range = glm::linearRand(MinRange, MaxRange);
+		light.Intensity = 50;
+		light.SpotlightAngle = glm::linearRand(MinSpotAngle, MaxSpotAngle);
 
 		float fLightPropability = glm::linearRand(0.0f, 1.0f);
 
 		if (GeneratePointLights && GenerateSpotLights && GenerateDirectionalLights)
 		{
-			light.m_Type = (fLightPropability < 0.33f ? Light::LightType::Point : fLightPropability < 0.66f ? Light::LightType::Spot : Light::LightType::Directional);
+			light.Type = (fLightPropability < 0.33f ? ELightType::Point : fLightPropability < 0.66f ? ELightType::Spot : ELightType::Directional);
 		}
 		else if (GeneratePointLights && GenerateSpotLights && !GenerateDirectionalLights)
 		{
-			light.m_Type = (fLightPropability < 0.5f ? Light::LightType::Point : Light::LightType::Spot);
+			light.Type = (fLightPropability < 0.5f ? ELightType::Point : ELightType::Spot);
 		}
 		else if (GeneratePointLights && !GenerateSpotLights && GenerateDirectionalLights)
 		{
-			light.m_Type = (fLightPropability < 0.5f ? Light::LightType::Point : Light::LightType::Directional);
+			light.Type = (fLightPropability < 0.5f ? ELightType::Point : ELightType::Directional);
 		}
 		else if (GeneratePointLights && !GenerateSpotLights && !GenerateDirectionalLights)
 		{
-			light.m_Type = Light::LightType::Point;
+			light.Type = ELightType::Point;
 		}
 		else if (!GeneratePointLights && GenerateSpotLights && GenerateDirectionalLights)
 		{
-			light.m_Type = (fLightPropability < 0.5f ? Light::LightType::Spot : Light::LightType::Directional);
+			light.Type = (fLightPropability < 0.5f ? ELightType::Spot : ELightType::Directional);
 		}
 		else if (!GeneratePointLights && GenerateSpotLights && !GenerateDirectionalLights)
 		{
-			light.m_Type = Light::LightType::Spot;
+			light.Type = ELightType::Spot;
 		}
 		else if (!GeneratePointLights && !GenerateSpotLights && GenerateDirectionalLights)
 		{
-			light.m_Type = Light::LightType::Directional;
+			light.Type = ELightType::Directional;
 		}
 		else if (!GeneratePointLights && !GenerateSpotLights && !GenerateDirectionalLights)
 		{
-			light.m_Type = (fLightPropability < 0.33f ? Light::LightType::Point : fLightPropability < 0.66f ? Light::LightType::Spot : Light::LightType::Directional);
+			light.Type = (fLightPropability < 0.33f ? ELightType::Point : fLightPropability < 0.66f ? ELightType::Spot : ELightType::Directional);
 		}
 
-		Node->GetComponent<ILightComponent3D>()->AddLight(std::make_shared<CLight3D>(light));
+		//Node->GetComponent<ILightComponent3D>()->AddLight(std::make_shared<CLight3D>(light));
 	}
 }
 

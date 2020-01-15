@@ -132,15 +132,15 @@ void CByteBufferOnlyPointer::readString(std::string* _string)
 
 void CByteBufferOnlyPointer::writeLine(std::string String)
 {
-	_ASSERT(false, L"Unsupported write operation.");
+	_ASSERT_EXPR(false, L"Unsupported write operation.");
 }
 
 void CByteBufferOnlyPointer::writeBytes(const void * Source, size_t BytesCount)
 {
-	_ASSERT(false, L"Unsupported write operation.");
+	_ASSERT_EXPR(false, L"Unsupported write operation.");
 }
 
 void CByteBufferOnlyPointer::writeString(std::string String)
 {
-	_ASSERT(false, L"Unsupported write operation.");
+	_ASSERT_EXPR(false, L"Unsupported write operation.");
 }

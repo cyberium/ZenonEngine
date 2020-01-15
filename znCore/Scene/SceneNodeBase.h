@@ -60,6 +60,8 @@ public:
 
 
 	// Called before all others calls
+	virtual void                                    OnUpdate(UpdateEventArgs& e) override final;
+	virtual void                                    DoUpdate(UpdateEventArgs& e) override;
 	virtual void                                    UpdateCamera(const ICamera* camera) override;
 	virtual void                                    UpdateViewport(const Viewport* viewport) override;
 
@@ -73,17 +75,12 @@ public:
 	virtual bool                                    Accept(IVisitor* visitor) override;
 
 
-	// Updatable
-	virtual void                                    OnUpdate(UpdateEventArgs& e) override;
-
-	
 
 	//
 	// ISceneNodeInternal
 	//
 	void                                            SetScene(std::shared_ptr<IScene> Scene) override;
 	void                                            SetParentInternal(std::weak_ptr<ISceneNode> parentNode) override;
-
 
 
 	// Callbacks caller

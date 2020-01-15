@@ -55,7 +55,7 @@ bool CShadowPass::Visit(IGeometry * Geometry, const IMaterial * Material, SGeome
 	return Base3DPass::Visit(Geometry, Material, GeometryPartParams);
 }
 
-bool CShadowPass::Visit(CLight3D * light)
+bool CShadowPass::Visit(ILightComponent3D * light)
 {
 	m_PerLightData->LightView = light->GetViewMatrix();
 	m_PerLightData->LightProjection = light->GetProjectionMatrix();
@@ -89,10 +89,10 @@ void CShadowPass::CreatePipeline()
 	const float size = 2048.0f;
 	ITexture::TextureFormat colorTextureFormat
 	(
-		ITexture::Components::RGBA,
+		ITexture::Components::R,
 		ITexture::Type::Float,
 		1,
-		32, 32, 32, 32, 0, 0
+		32, 0, 0, 0, 0, 0
 	);
 	m_ColorTexture = GetRenderDevice()->CreateTexture2D(size, size, 1, colorTextureFormat);
 

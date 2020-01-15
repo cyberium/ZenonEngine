@@ -14,7 +14,7 @@ public:
 	// IVisitor
 	virtual bool Visit3D(ISceneNode* node) override;
 	virtual bool Visit(IGeometry* Geometry, const IMaterial* Material, SGeometryPartParams GeometryPartParams = SGeometryPartParams()) override;
-	virtual bool Visit(CLight3D* light) override;
+	virtual bool Visit(ILightComponent3D* light) override;
 
 	std::shared_ptr<ITexture> GetColorTexture() const;
 	std::shared_ptr<ITexture> GetShadowTexture() const;

@@ -63,6 +63,8 @@ ZN_INTERFACE ZN_API __declspec(novtable) ISceneNode : public std::enable_shared_
 
 
 	// Called before all others calls
+	virtual void                                    OnUpdate(UpdateEventArgs& e) = 0;
+	virtual void                                    DoUpdate(UpdateEventArgs& e) = 0;
 	virtual void                                    UpdateCamera(const ICamera* camera) = 0;
 	virtual void                                    UpdateViewport(const Viewport* viewport) = 0;
 
@@ -75,9 +77,10 @@ ZN_INTERFACE ZN_API __declspec(novtable) ISceneNode : public std::enable_shared_
 	// Visitor functionality
 	virtual bool                                    Accept(IVisitor* visitor) = 0;
 
-	virtual void                                    OnUpdate(UpdateEventArgs& e) = 0;
 
 	virtual void                                    RaiseOnParentChanged() = 0;
+
+
 
 	//
 	// Templates
@@ -125,7 +128,6 @@ ZN_INTERFACE ZN_API __declspec(novtable) ISceneNode : public std::enable_shared_
 };
 typedef std::vector<std::shared_ptr<ISceneNode>>                NodeList;
 typedef std::multimap<std::string, std::shared_ptr<ISceneNode>> NodeNameMap;
-
 
 
 ZN_INTERFACE ZN_API __declspec(novtable) ISceneNodeInternal
@@ -191,9 +193,7 @@ ZN_INTERFACE ZN_API __declspec(novtable) ISceneNodeCreator
 	virtual std::shared_ptr<ISceneNode>             CreateSceneNode(std::weak_ptr<ISceneNode> Parent, size_t Index) const = 0;
 };
 
-ZN_INTERFACE ZN_API
-	__declspec(novtable, uuid("9C3ACF8D-F30D-47AE-BBA1-D71DEA6B14D4"))
-	ISceneNodesFactory
+ZN_INTERFACE ZN_API __declspec(novtable, uuid("9C3ACF8D-F30D-47AE-BBA1-D71DEA6B14D4")) ISceneNodesFactory
 	: public IManager
 {
 	virtual ~ISceneNodesFactory() {}

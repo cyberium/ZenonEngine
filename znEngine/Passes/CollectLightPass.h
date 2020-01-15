@@ -15,9 +15,9 @@ public:
 	virtual void PostRender(RenderEventArgs& e) override;
 
 	// IVisitor
-	virtual bool Visit(CLight3D* light) override;
+	virtual bool Visit(ILightComponent3D* light) override;
 
 private:
-	std::vector<CLight3D*> m_CollectedLights;
+	std::vector<SLight> m_CollectedLights;
 	std::shared_ptr<IStructuredBuffer> m_LightsBuffer;
 };

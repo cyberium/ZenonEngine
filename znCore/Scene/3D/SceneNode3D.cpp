@@ -12,11 +12,11 @@
 
 SceneNode3D::SceneNode3D()
 	: SceneNodeBase()
-	, m_Translate(vec3())
-	, m_Rotate(vec3())
+	, m_Translate(0.0f)
+	, m_Rotate(vec3(0.0f))
 	, m_RotateQuat(quat())
 	, m_IsRotateQuat(false)
-	, m_Scale(1.0f, 1.0f, 1.0f)
+	, m_Scale(1.0f)
 {
 	SetName("SceneNode3D");
 
@@ -62,21 +62,16 @@ std::weak_ptr<SceneNode3D> SceneNode3D::weak_from_this()
 void SceneNode3D::SetTranslate(cvec3 _translate)
 {
 	m_Translate = _translate;
-
 	UpdateLocalTransform();
-
-	//RaiseComponentMessage(UUID_TransformComponent_OnTranslateChanged);
 }
 cvec3 SceneNode3D::GetTranslation() const
 {
 	return m_Translate;
 }
 
-
 void SceneNode3D::SetRotation(cvec3 _rotate)
 {
 	m_Rotate = _rotate;
-
 	UpdateLocalTransform();
 }
 cvec3 SceneNode3D::GetRotation() const
@@ -84,12 +79,10 @@ cvec3 SceneNode3D::GetRotation() const
 	return m_Rotate;
 }
 
-
 void SceneNode3D::SetRotationQuaternion(cquat _rotate)
 {
 	m_RotateQuat = _rotate;
 	m_IsRotateQuat = true;
-
 	UpdateLocalTransform();
 }
 cquat SceneNode3D::GetRotationQuaternion() const
@@ -97,11 +90,9 @@ cquat SceneNode3D::GetRotationQuaternion() const
 	return m_RotateQuat;
 }
 
-
 void SceneNode3D::SetScale(cvec3 _scale)
 {
 	m_Scale = _scale;
-
 	UpdateLocalTransform();
 }
 cvec3 SceneNode3D::GetScale() const
@@ -193,37 +184,32 @@ bool SceneNode3D::Accept(IVisitor* visitor)
 //
 void SceneNode3D::UpdateLocalTransform()
 {
-	m_LocalTransform = glm::mat4(1.0f);
+	glm::mat4 localTransform = glm::mat4(1.0f);
 
-	m_LocalTransform = glm::translate(m_LocalTransform, m_Translate);
+	localTransform = glm::translate(localTransform, m_Translate);
 	if (m_IsRotateQuat)
 	{
-		m_LocalTransform *= glm::toMat4(m_RotateQuat);
+		localTransform *= glm::toMat4(m_RotateQuat);
 	}
 	else
 	{
-		m_LocalTransform = glm::rotate(m_LocalTransform, m_Rotate.x, glm::vec3(1, 0, 0));
-		m_LocalTransform = glm::rotate(m_LocalTransform, m_Rotate.y, glm::vec3(0, 1, 0));
-		m_LocalTransform = glm::rotate(m_LocalTransform, m_Rotate.z, glm::vec3(0, 0, 1));
+		localTransform = glm::rotate(localTransform, m_Rotate.x, glm::vec3(1, 0, 0));
+		localTransform = glm::rotate(localTransform, m_Rotate.y, glm::vec3(0, 1, 0));
+		localTransform = glm::rotate(localTransform, m_Rotate.z, glm::vec3(0, 0, 1));
 	}
-	m_LocalTransform = glm::scale(m_LocalTransform, m_Scale);
-	m_InverseLocalTransform = glm::inverse(m_LocalTransform);
+	localTransform = glm::scale(localTransform, m_Scale);
 
-	//RaiseComponentMessage(UUID_TransformComponent_OnLocalTransformChanged);
+	SetLocalTransform(localTransform);
 
-	// Don't forget to update world transform
-	UpdateWorldTransform();
-
-	for (auto it : GetChilds())
-		std::dynamic_pointer_cast<SceneNode3D>(it)->UpdateWorldTransform();
+	RaiseComponentMessage(nullptr, UUID_OnTransformChanged);
 }
 
 void SceneNode3D::UpdateWorldTransform()
 {
 	m_WorldTransform = GetParentWorldTransform() * m_LocalTransform;
 	m_InverseWorldTransform = glm::inverse(m_WorldTransform);
-
-	//RaiseComponentMessage(UUID_TransformComponent_OnWorldTransformChanged);
+	
+	RaiseComponentMessage(nullptr, UUID_OnTransformChanged);
 }
 
 void SceneNode3D::SetMeshComponent(std::shared_ptr<IMeshComponent3D> MeshComponent)

@@ -36,6 +36,11 @@ bool CComponentBase::Save(std::shared_ptr<IXMLWriter> Writer)
 	return false;
 }
 
+void CComponentBase::DoUpdate(UpdateEventArgs & e)
+{
+	// Do nothing...
+}
+
 bool CComponentBase::Accept(IVisitor* visitor)
 {
     return false;

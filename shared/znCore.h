@@ -32,12 +32,7 @@
 #include "../znCore/CameraControllers/RTSCameraController.h"
 
 
-
-
-
 #include "../znCore/Scene/LoadableObject.h"
-
-#include "../znCore/Scene/Light3D.h"
 
 #include "../znCore/GameStateBase.h"
 

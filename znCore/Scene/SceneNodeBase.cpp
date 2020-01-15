@@ -82,7 +82,18 @@ void SceneNodeBase::SetLocalTransform(cmat4 localTransform)
 	m_LocalTransform = localTransform;
 	m_InverseLocalTransform = glm::inverse(localTransform);
 
+	/*glm::vec3 scale;
+	glm::quat rotation;
+	glm::vec3 translation;
+	glm::vec3 skew;
+	glm::vec4 perspective;
+	glm::decompose(m_LocalTransform, scale, rotation, translation, skew, perspective);*/
+
 	UpdateWorldTransform();
+
+	// After world updated, we can update all childs
+	for (auto it : GetChilds())
+		std::dynamic_pointer_cast<SceneNodeBase>(it)->UpdateWorldTransform();
 }
 
 
@@ -112,6 +123,7 @@ mat4 SceneNodeBase::GetParentWorldTransform() const
 void SceneNodeBase::SetWorldTransform(cmat4 worldTransform)
 {
 	mat4 inverseParentTransform = glm::inverse(GetParentWorldTransform());
+
 	SetLocalTransform(inverseParentTransform * worldTransform);
 }
 
@@ -253,6 +265,28 @@ NodeList SceneNodeBase::GetChilds()
 	return m_Children;
 }
 
+void SceneNodeBase::OnUpdate(UpdateEventArgs & e)
+{
+	DoUpdate(e);
+
+	const auto& components = GetComponents();
+	std::for_each(components.begin(), components.end(), [&e](const std::pair<GUID, std::shared_ptr<ISceneNodeComponent>>& Component)
+	{
+		_ASSERT(Component.second);
+		Component.second->DoUpdate(e);
+	});
+
+	const auto& childs = GetChilds();
+	std::for_each(childs.begin(), childs.end(), [&e](const std::shared_ptr<ISceneNode>& Child)
+	{
+		Child->OnUpdate(e);
+	});
+}
+
+void SceneNodeBase::DoUpdate(UpdateEventArgs & e)
+{
+	// Do nothing...
+}
 
 void SceneNodeBase::UpdateCamera(const ICamera* camera)
 {
@@ -306,14 +340,6 @@ bool SceneNodeBase::Accept(IVisitor* visitor)
 	return visitResult;
 }
 
-void SceneNodeBase::OnUpdate(UpdateEventArgs & e)
-{
-	const auto& childs = GetChilds();
-	std::for_each(childs.begin(), childs.end(), [&e](const std::shared_ptr<ISceneNode>& Child)
-	{
-		Child->OnUpdate(e);
-	});
-}
 
 std::shared_ptr<IActionsGroup> SceneNodeBase::GetActions() const
 {

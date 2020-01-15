@@ -26,17 +26,10 @@ void CFBXLight::Load(fbxsdk::FbxLight * NativeLight)
 	DisplayMetaDataConnections(NativeLight);
 
 	const char* lLightTypes[] = { "Point", "Directional", "Spot", "Area", "Volume" };
-	Light::LightType lightTypes[] = { Light::LightType::Point, Light::LightType::Directional, Light::LightType::Spot, Light::LightType::Unknown, Light::LightType::Unknown };
+	ELightType lightTypes[] = { ELightType::Point, ELightType::Directional, ELightType::Spot, ELightType::Unknown, ELightType::Unknown };
 
 	DisplayString("    Type: ", lLightTypes[NativeLight->LightType.Get()]);
 	DisplayBool("    Cast Light: ", NativeLight->CastLight.Get());
-
-	fbxsdk::FbxDouble3 lTranslation = m_OwnerFBXNode.lock()->GetNativeNode()->LclTranslation.Get();
-	Display4DVector("Translation: ", lTranslation, "");
-
-	fbxsdk::FbxDouble3 lRotation = m_OwnerFBXNode.lock()->GetNativeNode()->LclRotation.Get();
-	Display4DVector("Rotation: ", lRotation, "");
-
 
 	DisplayString("        File Name: \"", NativeLight->FileName.Get().Buffer(), "\"");
 	DisplayBool("        Ground Projection: ", NativeLight->DrawGroundProjection.Get());
@@ -59,13 +52,9 @@ void CFBXLight::Load(fbxsdk::FbxLight * NativeLight)
 	DisplayDouble("        FarAttenuationEnd: ", NativeLight->FarAttenuationEnd.Get());
 	DisplayString("----------------------------------------------------------------------");
 
-	Light light;
-	light.m_PositionWS = glm::vec4(lTranslation[0], lTranslation[1], lTranslation[2], 1.0f);
-	light.m_DirectionWS = glm::normalize(glm::vec4(lRotation[0], lRotation[1], lRotation[2], 0.0f));
-	light.m_Type = lightTypes[NativeLight->LightType.Get()];
-	light.m_Color = glm::vec4(NativeLight->Color.Get()[0], NativeLight->Color.Get()[1], NativeLight->Color.Get()[2], 1.0f);
-	light.m_SpotlightAngle = NativeLight->OuterAngle.Get() ;
-	light.m_Range = NativeLight->Intensity.Get() / 50.0f;
 
-	setLight(light);
+	m_OwnerFBXNode.lock()->GetComponent<ILightComponent3D>()->SetType(lightTypes[NativeLight->LightType.Get()]);
+	m_OwnerFBXNode.lock()->GetComponent<ILightComponent3D>()->SetColor(glm::vec3(NativeLight->Color.Get()[0], NativeLight->Color.Get()[1], NativeLight->Color.Get()[2]));
+	m_OwnerFBXNode.lock()->GetComponent<ILightComponent3D>()->SetSpotlightAngle(NativeLight->OuterAngle.Get());
+	m_OwnerFBXNode.lock()->GetComponent<ILightComponent3D>()->SetRange(NativeLight->Intensity.Get() / 50.0f);
 }

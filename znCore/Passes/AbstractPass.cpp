@@ -107,7 +107,7 @@ bool AbstractPass::Visit(IGeometry * Geometry, const IMaterial* Material, SGeome
 	return true;
 }
 
-bool AbstractPass::Visit(CLight3D* light)
+bool AbstractPass::Visit(ILightComponent3D* light)
 {
 	//_ASSERT(false, "This function must be specialized.");
 	return true;

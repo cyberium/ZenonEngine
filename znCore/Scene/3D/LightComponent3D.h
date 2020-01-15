@@ -1,7 +1,6 @@
 #pragma once
 
 #include "../ComponentBase.h"
-#include "../Light3D.h"
 
 class __declspec(UUID_LightComponent) ZN_API CLightComponent3D
 	: public ILightComponent3D
@@ -11,16 +10,34 @@ public:
     CLightComponent3D(std::shared_ptr<ISceneNode> OwnerNode);
     virtual ~CLightComponent3D();
 
-    /**
-     * Add a light to this scene node.
-     */
-    virtual void AddLight(std::shared_ptr<CLight3D> Light) override;
-    virtual void RemoveLight(std::shared_ptr<CLight3D> Light) override;
-    virtual const LightList& GetLights() override;
-    
+	// ILightComponent3D
+	void SetColor(glm::vec3 Value) override;
+	glm::vec3 GetColor() const override;
+
+	void SetEnabled(bool Value) override;
+	bool GetEnabled() const override;
+
+	void SetRange(float Value) override;
+	float GetRange() const override;
+
+	void SetIntensity(float Value) override;
+	float GetIntensity() const override;
+
+	void SetSpotlightAngle(float Value) override;
+	float GetSpotlightAngle() const override;
+
+	void SetType(ELightType Value) override;
+	ELightType GetType() const override;
+
+	glm::mat4 GetViewMatrix() const override;
+	glm::mat4 GetProjectionMatrix() const override;
+
+	const SLight& GetLightStruct() const override;
+
     // ISceneNodeComponent
+	virtual void DoUpdate(UpdateEventArgs& e) override;
     virtual bool Accept(IVisitor* visitor) override;
 
 private:
-    LightList m_Lights;
+	SLight* m_LightStruct;
 };

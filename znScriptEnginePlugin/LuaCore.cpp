@@ -21,7 +21,7 @@ CScriptCore::CScriptCore(IBaseManager* BaseManager)
     luaL_openlibs(m_LuaState);
     luabind::open(m_LuaState);
 
-    std::shared_ptr<IFile> file = GetManager<IFilesManager>(m_BaseManager)->Open("test.lua");
+    std::shared_ptr<IFile> file = m_BaseManager->GetManager<IFilesManager>()->Open("test.lua");
     _ASSERT(file != NULL);
 
 

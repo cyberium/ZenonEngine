@@ -59,7 +59,6 @@
     <ClCompile Include="Scene\Actions.cpp" />
     <ClCompile Include="Scene\CameraNode.cpp" />
     <ClCompile Include="Scene\ComponentBase.cpp" />
-    <ClCompile Include="Scene\Light3D.cpp" />
     <ClCompile Include="Scene\LoadableObject.cpp" />
     <ClCompile Include="Scene\SceneBase.cpp" />
     <ClCompile Include="Scene\SceneNodeBase.cpp" />
@@ -85,6 +84,7 @@
     <ClInclude Include="..\shared\Interfaces\Render\IImageLoader.h" />
     <ClInclude Include="..\shared\Interfaces\Render\Types\RenderGeometryParams.h" />
     <ClInclude Include="..\shared\Interfaces\Render\Types\ShaderType.h" />
+    <ClInclude Include="..\shared\Interfaces\Scene\Types\Light.h" />
     <ClInclude Include="..\shared\Interfaces\XML.h" />
     <ClInclude Include="..\shared\znCore.h" />
     <ClInclude Include="BoundingBox.h" />
@@ -193,8 +193,6 @@
     <ClInclude Include="Scene\Actions.h" />
     <ClInclude Include="Scene\CameraNode.h" />
     <ClInclude Include="Scene\ComponentBase.h" />
-    <ClInclude Include="Scene\Light.h" />
-    <ClInclude Include="Scene\Light3D.h" />
     <ClInclude Include="Scene\LoadableObject.h" />
     <ClInclude Include="Scene\SceneBase.h" />
     <ClInclude Include="Scene\SceneNodeBase.h" />

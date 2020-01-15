@@ -86,7 +86,6 @@ void CFBXSceneNode::LoadNode()
 		{
 			std::shared_ptr<CFBXLight> fbxLight = std::make_shared<CFBXLight>(m_BaseManager, std::dynamic_pointer_cast<CFBXSceneNode>(shared_from_this()));
 			fbxLight->Load(m_NativeNode->GetLight());
-			GetComponent<ILightComponent3D>()->AddLight(fbxLight);
 
 			std::shared_ptr<MaterialTextured> matDebug = std::make_shared<MaterialTextured>(m_BaseManager->GetManager<IRenderDevice>());
 			matDebug->SetTexture(0, m_BaseManager->GetManager<IRenderDevice>()->GetDefaultTexture());

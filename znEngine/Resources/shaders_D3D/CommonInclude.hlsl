@@ -341,3 +341,22 @@ LightingResult DoLighting(StructuredBuffer<Light> lights, Material mat, float4 e
 
 	return totalResult;
 }
+
+float Blur(Texture2D Texture, sampler Sampler, float2 Coords)
+{
+	float2 shadowBlurStep = float2(1.0f / 2048.0f, 1.0f / 2048.0f);
+
+	float sum = 0.0;
+	const int FILTER_SIZE = 3;
+	const float HALF_FILTER_SIZE = 0.5 * float(FILTER_SIZE);
+
+	for (int i = 0; i < FILTER_SIZE; i++)
+	{
+		for (int j = 0; j < FILTER_SIZE; j++)
+		{
+			float2 offset = float2(shadowBlurStep * (float2(i, j) - HALF_FILTER_SIZE) / HALF_FILTER_SIZE);
+			sum += Texture.Sample(Sampler, Coords + offset).r;
+		}
+	}
+	return sum / (FILTER_SIZE * FILTER_SIZE);
+}

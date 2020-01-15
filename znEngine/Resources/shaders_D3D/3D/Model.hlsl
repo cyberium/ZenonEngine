@@ -281,10 +281,10 @@ PixelShaderOutput PS_main(VertexShaderOutput IN) : SV_TARGET
 
 	if ((saturate(projectTexCoord.x) == projectTexCoord.x) && (saturate(projectTexCoord.y) == projectTexCoord.y))
 	{
-		float depthValue = TextureShadow.Sample(LinearClampSampler, projectTexCoord).r;
+		float depthValue = Blur(TextureShadow, LinearClampSampler, projectTexCoord);
 
 		float lightDepthValue = (IN.lightViewPosition.z / IN.lightViewPosition.w) ;
-		lightDepthValue = lightDepthValue - bias;
+		lightDepthValue -= bias;
 
 		if (lightDepthValue < depthValue)
 		{
@@ -292,7 +292,7 @@ PixelShaderOutput PS_main(VertexShaderOutput IN) : SV_TARGET
 		}
 		else
 		{
-			colorResult = float4(0.0f, 0.0f, 0.0f, 1.0f);
+			colorResult *= 0.1f;
 		}
 	}
 
@@ -307,3 +307,5 @@ PixelShaderOutput PS_main(VertexShaderOutput IN) : SV_TARGET
 	OUT.NormalWS = float4(1.0, 1.0, 1.0, 0.0);
 	return OUT;
 }
+
+

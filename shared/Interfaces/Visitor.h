@@ -12,7 +12,7 @@ ZN_INTERFACE IGeometry;
 ZN_INTERFACE IConstantBuffer;
 ZN_INTERFACE IShader;
 ZN_INTERFACE IMaterial;
-class CLight3D;
+ZN_INTERFACE ILightComponent3D;
 // FORWARD END
 
 ZN_INTERFACE ZN_API IVisitor : public std::enable_shared_from_this<IVisitor>
@@ -24,5 +24,5 @@ ZN_INTERFACE ZN_API IVisitor : public std::enable_shared_from_this<IVisitor>
 	virtual bool VisitUI(ISceneNode* node) = 0;
 	virtual bool Visit(IMesh* Mesh, SGeometryPartParams GeometryPartParams = SGeometryPartParams()) = 0;
 	virtual bool Visit(IGeometry* Geometry, const IMaterial* Material, SGeometryPartParams GeometryPartParams = SGeometryPartParams()) = 0;
-	virtual bool Visit(CLight3D* Light) = 0;
+	virtual bool Visit(ILightComponent3D* Light) = 0;
 };

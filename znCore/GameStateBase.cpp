@@ -183,6 +183,7 @@ void CGameState::OnPostRender(RenderEventArgs& e)
 
 		if (m_FrameTime < 1.0f)
 			m_FrameTime = 1.0f;
+
 		m_FPSText->GetProperties()->GetPropertyT<std::string>("Text")->Set("FPS: " + std::to_string((1000 / uint64(m_FrameTime))));
 	}
 }

@@ -94,6 +94,9 @@
     <Filter Include="Scene functional\Camera">
       <UniqueIdentifier>{926b8de5-b7e3-476b-91fb-d957ec421637}</UniqueIdentifier>
     </Filter>
+    <Filter Include="__Interfaces\Scene\Types">
+      <UniqueIdentifier>{1e2fe722-e211-4ea0-a5c6-04867d657526}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Log.cpp">
@@ -185,9 +188,6 @@
     </ClCompile>
     <ClCompile Include="Scene\3D\MeshComponent3D.cpp">
       <Filter>Scene functional\3D</Filter>
-    </ClCompile>
-    <ClCompile Include="Scene\Light3D.cpp">
-      <Filter>Scene functional</Filter>
     </ClCompile>
     <ClCompile Include="Scene\LoadableObject.cpp">
       <Filter>Scene functional</Filter>
@@ -560,12 +560,6 @@
     <ClInclude Include="Scene\3D\MeshComponent3D.h">
       <Filter>Scene functional\3D</Filter>
     </ClInclude>
-    <ClInclude Include="Scene\Light.h">
-      <Filter>Scene functional</Filter>
-    </ClInclude>
-    <ClInclude Include="Scene\Light3D.h">
-      <Filter>Scene functional</Filter>
-    </ClInclude>
     <ClInclude Include="Scene\LoadableObject.h">
       <Filter>Scene functional</Filter>
     </ClInclude>
@@ -649,6 +643,9 @@
     </ClInclude>
     <ClInclude Include="..\shared\Interfaces\Render\Types\ShaderType.h">
       <Filter>__Interfaces\Render\Types</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\Interfaces\Scene\Types\Light.h">
+      <Filter>__Interfaces\Scene\Types</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

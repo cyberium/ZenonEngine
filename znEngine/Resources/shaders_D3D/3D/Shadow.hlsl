@@ -26,5 +26,5 @@ PixelInputType VS_Shadow(VSInputP IN)
 float4 PS_Shadow(PixelInputType VSOutput) : SV_TARGET
 {
 	float depthValue = (VSOutput.depthPosition.z / VSOutput.depthPosition.w);
-	return float4(depthValue, depthValue, depthValue, 1.0f);
+	return float4(depthValue, 1.0f, 1.0f, 1.0f);
 }

@@ -7,7 +7,6 @@ class CFBXSceneNode;
 // FORWARD END
 
 class CFBXLight
-	: public CLight3D
 {
 public:
 	CFBXLight(const IBaseManager* BaseManager, std::weak_ptr<CFBXSceneNode> OwnerFBXNode);

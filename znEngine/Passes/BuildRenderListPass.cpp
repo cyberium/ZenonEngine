@@ -68,8 +68,8 @@ void BuildRenderListPass::Render(RenderEventArgs & e)
 	const ICamera* camera = GetRenderEventArgs()->Camera;
 	_ASSERT(camera);
 
-
 	/*
+	
 #pragma omp parallel for
 	for (int i = 0; i < static_cast<int>(m_RenderList.size()); i++)
 	{
@@ -98,8 +98,8 @@ void BuildRenderListPass::Render(RenderEventArgs & e)
 			it.Material->Unbind(shadersMap);
 		}
 	}
-	*/
 	
+	*/
 	
 	for (const auto& it : m_RenderList)
 	{

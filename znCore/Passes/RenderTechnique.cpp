@@ -11,6 +11,7 @@ RenderTechnique::~RenderTechnique()
 
 uint32 RenderTechnique::AddPass(std::shared_ptr<IRenderPass> pass)
 {
+	_ASSERT_EXPR(pass, L"Pass must not be nullptr.");
 	m_Passes.push_back(pass);
 	return static_cast<uint32>(m_Passes.size()) - 1;
 }

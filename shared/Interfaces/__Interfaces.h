@@ -34,6 +34,7 @@ typedef unsigned long long uint64;
 #include <glm/glm/gtx/vector_angle.hpp>
 #include <glm/glm/gtx/compatibility.hpp>
 #include <glm/glm/gtx/matrix_operation.hpp>
+#include <glm/glm/gtx/matrix_decompose.hpp>
 #include <glm/glm/gtx/transform.hpp>
 #include <glm/glm/gtx/quaternion.hpp>
 #include <glm/glm/gtx/euler_angles.hpp>
