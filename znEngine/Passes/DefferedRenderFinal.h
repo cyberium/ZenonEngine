@@ -22,5 +22,4 @@ private:
 	std::shared_ptr<IPipelineState> m_DefferedFinalPipeline;
 
 	std::shared_ptr<IMesh> m_QuadMesh;
-	std::shared_ptr<ISamplerState> m_Sampler;
 };

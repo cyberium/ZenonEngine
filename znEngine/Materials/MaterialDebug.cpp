@@ -14,25 +14,25 @@ MaterialDebug::MaterialDebug(std::shared_ptr<IRenderDevice> RenderDevice)
 	if (RenderDevice->GetDeviceType() == RenderDeviceType::RenderDeviceType_DirectX)
 	{
 		g_pVertexShader = RenderDevice->CreateShader(
-			SShaderType::VertexShader, "IDB_SHADER_3D_DEBUG", IShader::ShaderMacros(), "VS_main", "latest"
+			EShaderType::VertexShader, "IDB_SHADER_3D_DEBUG", IShader::ShaderMacros(), "VS_main", "latest"
 		);
 		g_pPixelShader = RenderDevice->CreateShader(
-			SShaderType::PixelShader, "IDB_SHADER_3D_DEBUG", IShader::ShaderMacros(), "PS_main", "latest"
+			EShaderType::PixelShader, "IDB_SHADER_3D_DEBUG", IShader::ShaderMacros(), "PS_main", "latest"
 		);
 	}
 	else
 	{
 		g_pVertexShader = RenderDevice->CreateShader(
-			SShaderType::VertexShader, "IDB_SHADER_OGL_3D_DEBUG_VS", IShader::ShaderMacros(), "", ""
+			EShaderType::VertexShader, "IDB_SHADER_OGL_3D_DEBUG_VS", IShader::ShaderMacros(), "", ""
 		);
 		g_pPixelShader = RenderDevice->CreateShader(
-			SShaderType::PixelShader, "IDB_SHADER_OGL_3D_DEBUG_PS", IShader::ShaderMacros(), "", ""
+			EShaderType::PixelShader, "IDB_SHADER_OGL_3D_DEBUG_PS", IShader::ShaderMacros(), "", ""
 		);
 	}
 	g_pVertexShader->LoadInputLayoutFromReflector();
 
-	SetShader(SShaderType::VertexShader, g_pVertexShader);
-	SetShader(SShaderType::PixelShader, g_pPixelShader);
+	SetShader(EShaderType::VertexShader, g_pVertexShader);
+	SetShader(EShaderType::PixelShader, g_pPixelShader);
 }
 
 MaterialDebug::~MaterialDebug()

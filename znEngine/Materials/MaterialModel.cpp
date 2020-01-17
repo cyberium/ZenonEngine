@@ -11,16 +11,6 @@ MaterialModel::MaterialModel(const IBaseManager* BaseManager)
 	// Constant buffer
 	m_pProperties = (MaterialProperties*)_aligned_malloc(sizeof(MaterialProperties), 16);
 	*m_pProperties = MaterialProperties();
-
-	std::shared_ptr<ISamplerState> g_Sampler = m_RenderDevice->CreateSamplerState();
-	g_Sampler->SetFilter(ISamplerState::MinFilter::MinLinear, ISamplerState::MagFilter::MagLinear, ISamplerState::MipFilter::MipLinear);
-	g_Sampler->SetWrapMode(ISamplerState::WrapMode::Repeat, ISamplerState::WrapMode::Repeat);
-	SetSampler(0, g_Sampler);
-
-	std::shared_ptr<ISamplerState> g_Sampler2 = m_RenderDevice->CreateSamplerState();
-	g_Sampler2->SetFilter(ISamplerState::MinFilter::MinLinear, ISamplerState::MagFilter::MagLinear, ISamplerState::MipFilter::MipLinear);
-	g_Sampler2->SetWrapMode(ISamplerState::WrapMode::Clamp, ISamplerState::WrapMode::Clamp);
-	SetSampler(1, g_Sampler2);
 }
 
 MaterialModel::~MaterialModel()

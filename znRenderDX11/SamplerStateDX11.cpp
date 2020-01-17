@@ -57,22 +57,22 @@ void SamplerStateDX11::Bind(uint32_t ID, const IShader* shader, IShaderParameter
 
     switch (shader->GetType())
     {
-        case SShaderType::VertexShader:
+        case EShaderType::VertexShader:
             m_pDeviceContext->VSSetSamplers(ID, 1, pSamplers);
             break;
-        case SShaderType::TessellationControlShader:
+        case EShaderType::TessellationControlShader:
             m_pDeviceContext->HSSetSamplers(ID, 1, pSamplers);
             break;
-        case SShaderType::TessellationEvaluationShader:
+        case EShaderType::TessellationEvaluationShader:
             m_pDeviceContext->DSSetSamplers(ID, 1, pSamplers);
             break;
-        case SShaderType::GeometryShader:
+        case EShaderType::GeometryShader:
             m_pDeviceContext->GSSetSamplers(ID, 1, pSamplers);
             break;
-        case SShaderType::PixelShader:
+        case EShaderType::PixelShader:
             m_pDeviceContext->PSSetSamplers(ID, 1, pSamplers);
             break;
-        case SShaderType::ComputeShader:
+        case EShaderType::ComputeShader:
             m_pDeviceContext->CSSetSamplers(ID, 1, pSamplers);
             break;
     }
@@ -84,22 +84,22 @@ void SamplerStateDX11::UnBind(uint32_t ID, const IShader* shader, IShaderParamet
 
     switch (shader->GetType())
     {
-        case SShaderType::VertexShader:
+        case EShaderType::VertexShader:
             m_pDeviceContext->VSSetSamplers(ID, 1, pSamplers);
             break;
-        case SShaderType::TessellationControlShader:
+        case EShaderType::TessellationControlShader:
             m_pDeviceContext->HSSetSamplers(ID, 1, pSamplers);
             break;
-        case SShaderType::TessellationEvaluationShader:
+        case EShaderType::TessellationEvaluationShader:
             m_pDeviceContext->DSSetSamplers(ID, 1, pSamplers);
             break;
-        case SShaderType::GeometryShader:
+        case EShaderType::GeometryShader:
             m_pDeviceContext->GSSetSamplers(ID, 1, pSamplers);
             break;
-        case SShaderType::PixelShader:
+        case EShaderType::PixelShader:
             m_pDeviceContext->PSSetSamplers(ID, 1, pSamplers);
             break;
-        case SShaderType::ComputeShader:
+        case EShaderType::ComputeShader:
             m_pDeviceContext->CSSetSamplers(ID, 1, pSamplers);
             break;
     }

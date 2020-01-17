@@ -4,7 +4,7 @@
 #include "ShaderDX11.h"
 
 // FORWARD BEGIN
-std::string GetLatestProfile(SShaderType type, const D3D_FEATURE_LEVEL& _featureLevel);
+std::string GetLatestProfile(EShaderType type, const D3D_FEATURE_LEVEL& _featureLevel);
 // FORWARD END
 
 ShaderDX11::ShaderDX11(std::weak_ptr<IRenderDevice> RenderDevice)
@@ -31,7 +31,7 @@ void ShaderDX11::Destroy()
 	m_ShaderParameters.clear();
 }
 
-bool ShaderDX11::LoadShaderFromString(SShaderType shaderType, const std::string& fileName, const std::string& source, const ShaderMacros& shaderMacros, const std::string& entryPoint, const std::string& profile, std::shared_ptr<IShaderInputLayout> _customLayout)
+bool ShaderDX11::LoadShaderFromString(EShaderType shaderType, const std::string& fileName, const std::string& source, const ShaderMacros& shaderMacros, const std::string& entryPoint, const std::string& profile, std::shared_ptr<IShaderInputLayout> _customLayout)
 {
 	HRESULT hr;
 	{
@@ -113,22 +113,22 @@ bool ShaderDX11::LoadShaderFromString(SShaderType shaderType, const std::string&
 
 	switch (m_ShaderType)
 	{
-	case SShaderType::VertexShader:
+	case EShaderType::VertexShader:
 		hr = m_pDevice->CreateVertexShader(m_pShaderBlob->GetBufferPointer(), m_pShaderBlob->GetBufferSize(), nullptr, &m_pVertexShader);
 		break;
-	case SShaderType::TessellationControlShader:
+	case EShaderType::TessellationControlShader:
 		hr = m_pDevice->CreateHullShader(m_pShaderBlob->GetBufferPointer(), m_pShaderBlob->GetBufferSize(), nullptr, &m_pHullShader);
 		break;
-	case SShaderType::TessellationEvaluationShader:
+	case EShaderType::TessellationEvaluationShader:
 		hr = m_pDevice->CreateDomainShader(m_pShaderBlob->GetBufferPointer(), m_pShaderBlob->GetBufferSize(), nullptr, &m_pDomainShader);
 		break;
-	case SShaderType::GeometryShader:
+	case EShaderType::GeometryShader:
 		hr = m_pDevice->CreateGeometryShader(m_pShaderBlob->GetBufferPointer(), m_pShaderBlob->GetBufferSize(), nullptr, &m_pGeometryShader);
 		break;
-	case SShaderType::PixelShader:
+	case EShaderType::PixelShader:
 		hr = m_pDevice->CreatePixelShader(m_pShaderBlob->GetBufferPointer(), m_pShaderBlob->GetBufferSize(), nullptr, &m_pPixelShader);
 		break;
-	case SShaderType::ComputeShader:
+	case EShaderType::ComputeShader:
 		hr = m_pDevice->CreateComputeShader(m_pShaderBlob->GetBufferPointer(), m_pShaderBlob->GetBufferSize(), nullptr, &m_pComputeShader);
 		break;
 	default:
@@ -208,7 +208,7 @@ bool ShaderDX11::LoadShaderFromString(SShaderType shaderType, const std::string&
 	return true;
 }
 
-bool ShaderDX11::LoadShaderFromFile(SShaderType shaderType, const std::string& fileName, const ShaderMacros& shaderMacros, const std::string& entryPoint, const std::string& profile, std::shared_ptr<IShaderInputLayout> _customLayout)
+bool ShaderDX11::LoadShaderFromFile(EShaderType shaderType, const std::string& fileName, const ShaderMacros& shaderMacros, const std::string& entryPoint, const std::string& profile, std::shared_ptr<IShaderInputLayout> _customLayout)
 {
 	std::shared_ptr<IFile> file = std::dynamic_pointer_cast<IRenderDevice>(m_RenderDevice.lock())->GetBaseManager()->GetManager<IFilesManager>()->Open(fileName);
 
@@ -337,11 +337,11 @@ void ShaderDX11::Dispatch(const glm::uvec3& numGroups)
 	}
 }
 
-std::string GetLatestProfile(SShaderType type, const D3D_FEATURE_LEVEL& _featureLevel)
+std::string GetLatestProfile(EShaderType type, const D3D_FEATURE_LEVEL& _featureLevel)
 {
 	switch (type)
 	{
-	case SShaderType::VertexShader:
+	case EShaderType::VertexShader:
 		switch (_featureLevel)
 		{
 		case D3D_FEATURE_LEVEL_11_1:
@@ -363,7 +363,7 @@ std::string GetLatestProfile(SShaderType type, const D3D_FEATURE_LEVEL& _feature
 			break;
 		}
 		break;
-	case SShaderType::TessellationControlShader:
+	case EShaderType::TessellationControlShader:
 		switch (_featureLevel)
 		{
 		case D3D_FEATURE_LEVEL_11_1:
@@ -372,7 +372,7 @@ std::string GetLatestProfile(SShaderType type, const D3D_FEATURE_LEVEL& _feature
 			break;
 		}
 		break;
-	case SShaderType::TessellationEvaluationShader:
+	case EShaderType::TessellationEvaluationShader:
 		switch (_featureLevel)
 		{
 		case D3D_FEATURE_LEVEL_11_1:
@@ -381,7 +381,7 @@ std::string GetLatestProfile(SShaderType type, const D3D_FEATURE_LEVEL& _feature
 			break;
 		}
 		break;
-	case SShaderType::GeometryShader:
+	case EShaderType::GeometryShader:
 		switch (_featureLevel)
 		{
 		case D3D_FEATURE_LEVEL_11_1:
@@ -396,7 +396,7 @@ std::string GetLatestProfile(SShaderType type, const D3D_FEATURE_LEVEL& _feature
 			break;
 		}
 		break;
-	case SShaderType::PixelShader:
+	case EShaderType::PixelShader:
 		switch (_featureLevel)
 		{
 		case D3D_FEATURE_LEVEL_11_1:
@@ -418,7 +418,7 @@ std::string GetLatestProfile(SShaderType type, const D3D_FEATURE_LEVEL& _feature
 			break;
 		}
 		break;
-	case SShaderType::ComputeShader:
+	case EShaderType::ComputeShader:
 		switch (_featureLevel)
 		{
 		case D3D_FEATURE_LEVEL_11_1:

@@ -14,7 +14,7 @@ ZN_INTERFACE ZN_API __declspec(novtable) IShader
 	/**
 	 * What type of shader is this?
 	 */
-	virtual SShaderType GetType() const = 0;
+	virtual EShaderType GetType() const = 0;
 
 	/**
 	 * A shader macro consists of a macro name and a definition.
@@ -33,7 +33,7 @@ ZN_INTERFACE ZN_API __declspec(novtable) IShader
 	 * To use the latest supported profile, specify "latest" here.
 	 * @return True if the shader was loaded correctly, or False otherwise.
 	 */
-	virtual bool LoadShaderFromString(SShaderType type, const std::string& fileName, const std::string& source, const ShaderMacros& shaderMacros, const std::string& entryPoint, const std::string& profile, std::shared_ptr<IShaderInputLayout> _customLayout) = 0;
+	virtual bool LoadShaderFromString(EShaderType type, const std::string& fileName, const std::string& source, const ShaderMacros& shaderMacros, const std::string& entryPoint, const std::string& profile, std::shared_ptr<IShaderInputLayout> _customLayout) = 0;
 
 	/**
 	 * Load a shader from a file.
@@ -44,7 +44,7 @@ ZN_INTERFACE ZN_API __declspec(novtable) IShader
 	 * To use the latest supported profile, specify "latest" here.
 	 * @return True if the shader was loaded correctly, or False otherwise.
 	 */
-	virtual bool LoadShaderFromFile(SShaderType type, const std::string& fileName, const ShaderMacros& shaderMacros, const std::string& entryPoint, const std::string& profile, std::shared_ptr<IShaderInputLayout> _customLayout) = 0;
+	virtual bool LoadShaderFromFile(EShaderType type, const std::string& fileName, const ShaderMacros& shaderMacros, const std::string& entryPoint, const std::string& profile, std::shared_ptr<IShaderInputLayout> _customLayout) = 0;
 
 	/**
 	 * Calculate shader input layout
@@ -85,5 +85,5 @@ ZN_INTERFACE ZN_API __declspec(novtable) IShader
 };
 
 typedef std::vector<std::shared_ptr<IShader>> ShaderList;
-typedef std::unordered_map<SShaderType, std::shared_ptr<IShader>> ShaderMap;
+typedef std::unordered_map<EShaderType, std::shared_ptr<IShader>> ShaderMap;
 typedef std::unordered_map<std::string, std::shared_ptr<IShader>> ShaderNameMap;

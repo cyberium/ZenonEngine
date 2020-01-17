@@ -11,17 +11,17 @@ UI_Color_Material::UI_Color_Material(std::shared_ptr<IRenderDevice> RenderDevice
 
 	// CreateShaders
 	std::shared_ptr<IShader> g_pVertexShader = RenderDevice->CreateShader(
-		SShaderType::VertexShader, "IDB_SHADER_UI_COLOR", IShader::ShaderMacros(), "VS_main", "latest"
+		EShaderType::VertexShader, "IDB_SHADER_UI_COLOR", IShader::ShaderMacros(), "VS_main", "latest"
 	);
     g_pVertexShader->LoadInputLayoutFromReflector();
 
 	std::shared_ptr<IShader> g_pPixelShader = RenderDevice->CreateShader(
-		SShaderType::PixelShader, "IDB_SHADER_UI_COLOR", IShader::ShaderMacros(), "PS_main", "latest"
+		EShaderType::PixelShader, "IDB_SHADER_UI_COLOR", IShader::ShaderMacros(), "PS_main", "latest"
 	);
 
 	// Material
-	SetShader(SShaderType::VertexShader, g_pVertexShader);
-	SetShader(SShaderType::PixelShader, g_pPixelShader);
+	SetShader(EShaderType::VertexShader, g_pVertexShader);
+	SetShader(EShaderType::PixelShader, g_pPixelShader);
 }
 
 UI_Color_Material::~UI_Color_Material()

@@ -1,6 +1,6 @@
 #pragma once
 
-enum class ZN_API SShaderType
+enum class ZN_API EShaderType
 {
 	UnknownShaderType = 0,
 	VertexShader,

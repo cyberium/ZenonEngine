@@ -187,13 +187,13 @@ ZN_INTERFACE ZN_API __declspec(novtable) ITexture
 	 * Bind this texture for use by the shaders.
 	 */
 	virtual void Bind(uint32_t ID, const IShader* shader, IShaderParameter::Type parameterType) const = 0;
-	virtual void Bind(uint32_t ID, SShaderType _shaderType, IShaderParameter::Type parameterType) const = 0;
+	virtual void Bind(uint32_t ID, EShaderType _shaderType, IShaderParameter::Type parameterType) const = 0;
 
 	/**
 	 * Unbind the texture.
 	 */
 	virtual void UnBind(uint32_t ID, const IShader* shader, IShaderParameter::Type parameterType) const = 0;
-	virtual void UnBind(uint32_t ID, SShaderType _shaderType, IShaderParameter::Type parameterType) const = 0;
+	virtual void UnBind(uint32_t ID, EShaderType _shaderType, IShaderParameter::Type parameterType) const = 0;
 	/**
 	 * Get texture data
 	 */

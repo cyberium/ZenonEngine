@@ -16,16 +16,17 @@ PipelineStateDX11::~PipelineStateDX11()
 {
 }
 
+
+
 //
 // PipelineState
 //
-
-void PipelineStateDX11::SetShader(SShaderType type, std::shared_ptr<IShader> pShader)
+void PipelineStateDX11::SetShader(EShaderType type, std::shared_ptr<IShader> pShader)
 {
 	m_Shaders[type] = pShader;
 }
 
-std::shared_ptr<IShader> PipelineStateDX11::GetShader(SShaderType type) const
+std::shared_ptr<IShader> PipelineStateDX11::GetShader(EShaderType type) const
 {
 	ShaderMap::const_iterator iter = m_Shaders.find(type);
 	if (iter != m_Shaders.end())
@@ -38,6 +39,52 @@ const ShaderMap& PipelineStateDX11::GetShaders() const
 {
 	return m_Shaders;
 }
+
+void PipelineStateDX11::SetTexture(uint8 ID, std::shared_ptr<ITexture> texture)
+{
+	m_Textures[ID] = texture;
+}
+
+std::shared_ptr<ITexture> PipelineStateDX11::GetTexture(uint8 ID) const
+{
+	const auto& itr = m_Textures.find(ID);
+	if (itr == m_Textures.end())
+	{
+		_ASSERT_EXPR(false, L"Sampler not found.");
+		return nullptr;
+	}
+
+	return itr->second;
+}
+
+const TextureMap& PipelineStateDX11::GetTextures() const
+{
+	return m_Textures;
+}
+
+void PipelineStateDX11::SetSampler(uint8 ID, std::shared_ptr<ISamplerState> samplerState)
+{
+	m_Samplers[ID] = samplerState;
+}
+
+std::shared_ptr<ISamplerState> PipelineStateDX11::GetSampler(uint8 ID) const
+{
+	const auto& itr = m_Samplers.find(ID);
+	if (itr == m_Samplers.end())
+	{
+		_ASSERT_EXPR(false, L"Sampler not found.");
+		return nullptr;
+	}
+
+	return itr->second;
+}
+
+const SamplersMap& PipelineStateDX11::GetSamplers() const
+{
+	return m_Samplers;
+}
+
+
 
 void PipelineStateDX11::SetBlendState(const std::shared_ptr<IBlendState> blendState)
 {
@@ -90,25 +137,42 @@ void PipelineStateDX11::Bind()
 	m_RasterizerState->Bind();
 	m_DepthStencilState->Bind();
 
-	for (auto shader : m_Shaders)
+	for (const auto& it : m_Shaders)
 	{
-		std::shared_ptr<IShader> pShader = shader.second;
-		if (pShader)
+		const IShader* shader = it.second.get();
+		_ASSERT(shader != nullptr);
+
+		shader->Bind();
+
+		if (it.second->GetType() == EShaderType::PixelShader)
 		{
-			pShader->Bind();
+			for (const auto& textureIt : m_Textures)
+			{
+				const ITexture* texture = textureIt.second.get();
+				_ASSERT(texture != nullptr);
+
+				texture->Bind((uint32_t)textureIt.first, shader, IShaderParameter::Type::Texture);
+			}
+
+			for (const auto& samplerStateIt : m_Samplers)
+			{
+				const ISamplerState* samplerState = samplerStateIt.second.get();
+				_ASSERT(samplerState != nullptr);
+
+				samplerState->Bind((uint32_t)samplerStateIt.first, shader, IShaderParameter::Type::Sampler);
+			}
 		}
 	}
 }
 
 void PipelineStateDX11::UnBind()
 {
-	for (auto shader : m_Shaders)
+	for (const auto& it : m_Shaders)
 	{
-		std::shared_ptr<IShader> pShader = shader.second;
-		if (pShader)
-		{
-			pShader->UnBind();
-		}
+		const IShader* shader = it.second.get();
+		_ASSERT(shader != nullptr);
+
+		shader->UnBind();
 	}
 
     if (m_RenderTarget)

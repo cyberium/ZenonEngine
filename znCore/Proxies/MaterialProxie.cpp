@@ -22,12 +22,12 @@ std::string MaterialProxie::GetName() const
 	return m_Material->GetName();
 }
 
-void MaterialProxie::SetShader(SShaderType type, std::shared_ptr<IShader> pShader)
+void MaterialProxie::SetShader(EShaderType type, std::shared_ptr<IShader> pShader)
 {
 	m_Material->SetShader(type, pShader);
 }
 
-std::shared_ptr<IShader> MaterialProxie::GetShader(SShaderType type) const
+std::shared_ptr<IShader> MaterialProxie::GetShader(EShaderType type) const
 {
 	return m_Material->GetShader(type);
 }

@@ -153,10 +153,10 @@ void CDefferedRender::CreatePipeline()
 	IDepthStencilState::DepthMode enableDepthWrites(true, IDepthStencilState::DepthWrite::Enable);
 	IDepthStencilState::DepthMode disableDepthWrites(false, IDepthStencilState::DepthWrite::Disable);
 
-	std::shared_ptr<IShader> vertexShader = GetRenderDevice()->CreateShader(SShaderType::VertexShader, "IDB_SHADER_3D_MODEL_DEFFERED", IShader::ShaderMacros(), "VS_PTN", "latest");
+	std::shared_ptr<IShader> vertexShader = GetRenderDevice()->CreateShader(EShaderType::VertexShader, "IDB_SHADER_3D_MODEL_DEFFERED", IShader::ShaderMacros(), "VS_PTN", "latest");
 	vertexShader->LoadInputLayoutFromReflector();
 
-	std::shared_ptr<IShader> pixelShader = GetRenderDevice()->CreateShader(SShaderType::PixelShader, "IDB_SHADER_3D_MODEL_DEFFERED", IShader::ShaderMacros(), "PS_main", "latest");
+	std::shared_ptr<IShader> pixelShader = GetRenderDevice()->CreateShader(EShaderType::PixelShader, "IDB_SHADER_3D_MODEL_DEFFERED", IShader::ShaderMacros(), "PS_main", "latest");
 
 	// PIPELINES
 	m_DefferedPipeline = GetRenderDevice()->CreatePipelineState();
@@ -166,6 +166,6 @@ void CDefferedRender::CreatePipeline()
 	m_DefferedPipeline->GetRasterizerState()->SetFillMode(IRasterizerState::FillMode::Solid);
 	m_DefferedPipeline->SetRenderTarget(rt);
 	m_DefferedPipeline->GetRasterizerState()->SetViewport(&v);
-	m_DefferedPipeline->SetShader(SShaderType::VertexShader, vertexShader);
-	m_DefferedPipeline->SetShader(SShaderType::PixelShader, pixelShader);
+	m_DefferedPipeline->SetShader(EShaderType::VertexShader, vertexShader);
+	m_DefferedPipeline->SetShader(EShaderType::PixelShader, pixelShader);
 }

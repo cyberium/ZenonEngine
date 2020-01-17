@@ -118,10 +118,10 @@ void CShadowPass::CreatePipeline()
 	IDepthStencilState::DepthMode enableDepthWrites(true, IDepthStencilState::DepthWrite::Enable);
 	IDepthStencilState::DepthMode disableDepthWrites(false, IDepthStencilState::DepthWrite::Disable);
 
-	std::shared_ptr<IShader> vertexShader = GetRenderDevice()->CreateShader(SShaderType::VertexShader, "IDB_SHADER_3D_SHADOW", IShader::ShaderMacros(), "VS_Shadow", "latest");
+	std::shared_ptr<IShader> vertexShader = GetRenderDevice()->CreateShader(EShaderType::VertexShader, "IDB_SHADER_3D_SHADOW", IShader::ShaderMacros(), "VS_Shadow", "latest");
 	vertexShader->LoadInputLayoutFromReflector();
 
-	std::shared_ptr<IShader> pixelShader = GetRenderDevice()->CreateShader(SShaderType::PixelShader, "IDB_SHADER_3D_SHADOW", IShader::ShaderMacros(), "PS_Shadow", "latest");
+	std::shared_ptr<IShader> pixelShader = GetRenderDevice()->CreateShader(EShaderType::PixelShader, "IDB_SHADER_3D_SHADOW", IShader::ShaderMacros(), "PS_Shadow", "latest");
 
 	// PIPELINES
 	m_ShadowPipeline = GetRenderDevice()->CreatePipelineState();
@@ -131,6 +131,6 @@ void CShadowPass::CreatePipeline()
 	m_ShadowPipeline->GetRasterizerState()->SetFillMode(IRasterizerState::FillMode::Solid);
 	m_ShadowPipeline->SetRenderTarget(rt);
 	m_ShadowPipeline->GetRasterizerState()->SetViewport(&v);
-	m_ShadowPipeline->SetShader(SShaderType::VertexShader, vertexShader);
-	m_ShadowPipeline->SetShader(SShaderType::PixelShader, pixelShader);
+	m_ShadowPipeline->SetShader(EShaderType::VertexShader, vertexShader);
+	m_ShadowPipeline->SetShader(EShaderType::PixelShader, pixelShader);
 }

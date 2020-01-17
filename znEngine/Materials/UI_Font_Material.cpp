@@ -16,21 +16,21 @@ UI_Font_Material::UI_Font_Material(std::shared_ptr<IRenderDevice> RenderDevice) 
     if (RenderDevice->GetDeviceType() == RenderDeviceType::RenderDeviceType_DirectX)
     {
         g_pVertexShader = RenderDevice->CreateShader(
-            SShaderType::VertexShader, "IDB_SHADER_UI_FONT", IShader::ShaderMacros(), "VS_main", "latest"
+            EShaderType::VertexShader, "IDB_SHADER_UI_FONT", IShader::ShaderMacros(), "VS_main", "latest"
         );
         
         g_pPixelShader = RenderDevice->CreateShader(
-            SShaderType::PixelShader, "IDB_SHADER_UI_FONT", IShader::ShaderMacros(), "PS_main", "latest"
+            EShaderType::PixelShader, "IDB_SHADER_UI_FONT", IShader::ShaderMacros(), "PS_main", "latest"
         );
     }
     else if (RenderDevice->GetDeviceType() == RenderDeviceType::RenderDeviceType_OpenGL)
     {
         g_pVertexShader = RenderDevice->CreateShader(
-            SShaderType::VertexShader, "IDB_SHADER_OGL__UI_FONT_VS", IShader::ShaderMacros(), "", ""
+            EShaderType::VertexShader, "IDB_SHADER_OGL__UI_FONT_VS", IShader::ShaderMacros(), "", ""
         );
 
         g_pPixelShader = RenderDevice->CreateShader(
-            SShaderType::PixelShader, "IDB_SHADER_OGL__UI_FONT_PS", IShader::ShaderMacros(), "", ""
+            EShaderType::PixelShader, "IDB_SHADER_OGL__UI_FONT_PS", IShader::ShaderMacros(), "", ""
         );
     }
 
@@ -44,8 +44,8 @@ UI_Font_Material::UI_Font_Material(std::shared_ptr<IRenderDevice> RenderDevice) 
     SetSampler(0, g_LinearClampSampler);
 
 	// Material
-	SetShader(SShaderType::VertexShader, g_pVertexShader);
-	SetShader(SShaderType::PixelShader, g_pPixelShader);
+	SetShader(EShaderType::VertexShader, g_pVertexShader);
+	SetShader(EShaderType::PixelShader, g_pPixelShader);
 }
 
 UI_Font_Material::~UI_Font_Material()

@@ -240,7 +240,7 @@ void CGameState_World::Load3D()
 		std::make_shared<CSetShaderParameterPass>
 		(
 			GetRenderDevice(),
-			std::dynamic_pointer_cast<AbstractPass>(m_Model_Pass_Opaque)->GetPipelineState()->GetShader(SShaderType::VertexShader)->GetShaderParameterByName("Lights"),
+			std::dynamic_pointer_cast<AbstractPass>(m_Model_Pass_Opaque)->GetPipelineState()->GetShader(EShaderType::VertexShader)->GetShaderParameterByName("Lights"),
 			std::bind(&CCollectLightPass::GetLightBuffer, m_CollectLightPass)
 			)
 	);
@@ -249,7 +249,7 @@ void CGameState_World::Load3D()
 		std::make_shared<CSetShaderParameterPass>
 		(
 			GetRenderDevice(), 
-			std::dynamic_pointer_cast<AbstractPass>(m_Model_Pass_Opaque)->GetPipelineState()->GetShader(SShaderType::PixelShader)->GetShaderParameterByName("Lights"), 
+			std::dynamic_pointer_cast<AbstractPass>(m_Model_Pass_Opaque)->GetPipelineState()->GetShader(EShaderType::PixelShader)->GetShaderParameterByName("Lights"), 
 			std::bind(&CCollectLightPass::GetLightBuffer, m_CollectLightPass)
 		)
 	);
@@ -263,7 +263,7 @@ void CGameState_World::Load3D()
 		std::make_shared<CSetShaderParameterPass>
 		(
 			GetRenderDevice(),
-			std::dynamic_pointer_cast<AbstractPass>(m_Model_Pass_Opaque)->GetPipelineState()->GetShader(SShaderType::VertexShader)->GetShaderParameterByName("PerLight"),
+			std::dynamic_pointer_cast<AbstractPass>(m_Model_Pass_Opaque)->GetPipelineState()->GetShader(EShaderType::VertexShader)->GetShaderParameterByName("PerLight"),
 			m_ShadowPass->GetPerLightBuffer()
 		)
 	);
@@ -272,7 +272,7 @@ void CGameState_World::Load3D()
 		std::make_shared<CSetShaderParameterPass>
 		(
 			GetRenderDevice(),
-			std::dynamic_pointer_cast<AbstractPass>(m_Model_Pass_Opaque)->GetPipelineState()->GetShader(SShaderType::PixelShader)->GetShaderParameterByName("TextureShadow"),
+			std::dynamic_pointer_cast<AbstractPass>(m_Model_Pass_Opaque)->GetPipelineState()->GetShader(EShaderType::PixelShader)->GetShaderParameterByName("TextureShadow"),
 			m_ShadowPass->GetColorTexture()
 		)
 	);

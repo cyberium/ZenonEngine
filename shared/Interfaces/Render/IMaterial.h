@@ -8,15 +8,13 @@ ZN_INTERFACE ISamplerState;
 
 ZN_INTERFACE ZN_API IMaterial : public std::enable_shared_from_this<IMaterial>
 {
-	typedef std::unordered_map<uint8, std::shared_ptr<ISamplerState>> SamplersMap;
-
 	virtual ~IMaterial() {}
 
 	virtual void SetName(const std::string& Name) = 0;
 	virtual std::string GetName() const = 0;
 
-	virtual void SetShader(SShaderType type, std::shared_ptr<IShader> pShader) = 0;
-	virtual std::shared_ptr<IShader> GetShader(SShaderType type) const = 0;
+	virtual void SetShader(EShaderType type, std::shared_ptr<IShader> pShader) = 0;
+	virtual std::shared_ptr<IShader> GetShader(EShaderType type) const = 0;
 	virtual const ShaderMap& GetShaders() const = 0;
 
 	virtual std::shared_ptr<ITexture> GetTexture(uint8 ID) const = 0;

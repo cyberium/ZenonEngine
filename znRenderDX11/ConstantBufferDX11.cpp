@@ -53,22 +53,22 @@ bool ConstantBufferDX11::Bind(uint32 id, const IShader* shader, IShaderParameter
 
 	switch (shader->GetType())
 	{
-	case SShaderType::VertexShader:
+	case EShaderType::VertexShader:
 		m_pDeviceContext->VSSetConstantBuffers(id, 1, pBuffers);
 		break;
-	case SShaderType::TessellationControlShader:
+	case EShaderType::TessellationControlShader:
 		m_pDeviceContext->HSSetConstantBuffers(id, 1, pBuffers);
 		break;
-	case SShaderType::TessellationEvaluationShader:
+	case EShaderType::TessellationEvaluationShader:
 		m_pDeviceContext->DSSetConstantBuffers(id, 1, pBuffers);
 		break;
-	case SShaderType::GeometryShader:
+	case EShaderType::GeometryShader:
 		m_pDeviceContext->GSSetConstantBuffers(id, 1, pBuffers);
 		break;
-	case SShaderType::PixelShader:
+	case EShaderType::PixelShader:
 		m_pDeviceContext->PSSetConstantBuffers(id, 1, pBuffers);
 		break;
-	case SShaderType::ComputeShader:
+	case EShaderType::ComputeShader:
 		m_pDeviceContext->CSSetConstantBuffers(id, 1, pBuffers);
 		break;
 	default:
@@ -85,22 +85,22 @@ void ConstantBufferDX11::UnBind(uint32 id, const IShader* shader, IShaderParamet
 
 	switch (shader->GetType())
 	{
-	case SShaderType::VertexShader:
+	case EShaderType::VertexShader:
 		m_pDeviceContext->VSSetConstantBuffers(id, 1, pBuffers);
 		break;
-	case SShaderType::TessellationControlShader:
+	case EShaderType::TessellationControlShader:
 		m_pDeviceContext->HSSetConstantBuffers(id, 1, pBuffers);
 		break;
-	case SShaderType::TessellationEvaluationShader:
+	case EShaderType::TessellationEvaluationShader:
 		m_pDeviceContext->DSSetConstantBuffers(id, 1, pBuffers);
 		break;
-	case SShaderType::GeometryShader:
+	case EShaderType::GeometryShader:
 		m_pDeviceContext->GSSetConstantBuffers(id, 1, pBuffers);
 		break;
-	case SShaderType::PixelShader:
+	case EShaderType::PixelShader:
 		m_pDeviceContext->PSSetConstantBuffers(id, 1, pBuffers);
 		break;
-	case SShaderType::ComputeShader:
+	case EShaderType::ComputeShader:
 		m_pDeviceContext->CSSetConstantBuffers(id, 1, pBuffers);
 		break;
 	default:

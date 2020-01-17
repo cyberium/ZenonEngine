@@ -34,12 +34,12 @@ std::string MaterialBase::GetName() const
 }
 
 
-void MaterialBase::SetShader(SShaderType type, std::shared_ptr<IShader> pShader)
+void MaterialBase::SetShader(EShaderType type, std::shared_ptr<IShader> pShader)
 {
 	m_Shaders[type] = pShader;
 }
 
-std::shared_ptr<IShader> MaterialBase::GetShader(SShaderType type) const
+std::shared_ptr<IShader> MaterialBase::GetShader(EShaderType type) const
 {
 	const auto& iter = m_Shaders.find(type);
 	if (iter != m_Shaders.end())

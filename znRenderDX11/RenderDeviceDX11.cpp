@@ -222,7 +222,7 @@ void RenderDeviceDX11::DestroyMesh(std::shared_ptr<IMesh> mesh)
     }
 }
 
-std::shared_ptr<IShader> RenderDeviceDX11::CreateShader(SShaderType type, const std::string& fileName, const IShader::ShaderMacros& shaderMacros, const std::string& entryPoint, const std::string& profile, std::shared_ptr<IShaderInputLayout> _customLayout)
+std::shared_ptr<IShader> RenderDeviceDX11::CreateShader(EShaderType type, const std::string& fileName, const IShader::ShaderMacros& shaderMacros, const std::string& entryPoint, const std::string& profile, std::shared_ptr<IShaderInputLayout> _customLayout)
 {
     D3DMultithreadLocker locker(m_pMultiThread);
 

@@ -41,7 +41,7 @@ void GeometryDX11::SetPrimitiveTopology(PrimitiveTopology _topology)
 	}
 }
 
-bool GeometryDX11::Render(const RenderEventArgs* renderArgs, const IConstantBuffer* PerObject, const std::unordered_map<SShaderType, std::shared_ptr<IShader>>& ShadersMap, const IMaterial* Material, const SGeometryPartParams& GeometryPartParams) const
+bool GeometryDX11::Render(const RenderEventArgs* renderArgs, const IConstantBuffer* PerObject, const std::unordered_map<EShaderType, std::shared_ptr<IShader>>& ShadersMap, const IMaterial* Material, const SGeometryPartParams& GeometryPartParams) const
 {
 	UINT indexStartLocation = GeometryPartParams.IndexStartLocation;
 	UINT indexCnt = GeometryPartParams.IndexCnt;
@@ -66,10 +66,10 @@ bool GeometryDX11::Render(const RenderEventArgs* renderArgs, const IConstantBuff
 		}
 	}
 
-	const IShader* vertexShader = ShadersMap.at(SShaderType::VertexShader).get();
+	const IShader* vertexShader = ShadersMap.at(EShaderType::VertexShader).get();
 	_ASSERT(vertexShader != nullptr);
 
-	const auto& geomShaderIt = ShadersMap.find(SShaderType::GeometryShader);
+	const auto& geomShaderIt = ShadersMap.find(EShaderType::GeometryShader);
 	const IShader* geomShader = nullptr;
 	if (geomShaderIt != ShadersMap.end())
 	{
@@ -149,7 +149,7 @@ bool GeometryDX11::Render(const RenderEventArgs* renderArgs, const IConstantBuff
 	return true;
 }
 
-bool GeometryDX11::RenderInstanced(const RenderEventArgs * renderArgs, const IStructuredBuffer * InstancesBuffer, const std::unordered_map<SShaderType, std::shared_ptr<IShader>>& ShadersMap, const IMaterial* Material, SGeometryPartParams GeometryPartParams) const
+bool GeometryDX11::RenderInstanced(const RenderEventArgs * renderArgs, const IStructuredBuffer * InstancesBuffer, const std::unordered_map<EShaderType, std::shared_ptr<IShader>>& ShadersMap, const IMaterial* Material, SGeometryPartParams GeometryPartParams) const
 {
 	UINT indexStartLocation = GeometryPartParams.IndexStartLocation;
 	UINT indexCnt = GeometryPartParams.IndexCnt;
@@ -174,10 +174,10 @@ bool GeometryDX11::RenderInstanced(const RenderEventArgs * renderArgs, const ISt
 		}
 	}
 
-	const IShader* vertexShader = ShadersMap.at(SShaderType::VertexShader).get();
+	const IShader* vertexShader = ShadersMap.at(EShaderType::VertexShader).get();
 	_ASSERT(vertexShader != nullptr);
 
-	const auto& geomShaderIt = ShadersMap.find(SShaderType::GeometryShader);
+	const auto& geomShaderIt = ShadersMap.find(EShaderType::GeometryShader);
 	const IShader* geomShader = nullptr;
 	if (geomShaderIt != ShadersMap.end())
 	{

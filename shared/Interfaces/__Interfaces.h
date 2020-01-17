@@ -106,7 +106,6 @@ class Rect;
 //--                Base Interfaces                      --//
 //---------------------------------------------------------//
 #include "Interfaces/BaseManager.h"
-
 #include "Interfaces/Application.h"
 #include "Interfaces/CameraController.h"
 #include "Interfaces/Console.h"
@@ -123,6 +122,7 @@ class Rect;
 #include "Interfaces/WindowObject.h"
 #include "Interfaces/XML.h"
 
+
 //---------------------------------------------------------//
 //--                   Render Types                      --//
 //---------------------------------------------------------//
@@ -138,11 +138,11 @@ class Rect;
 #include "Interfaces/Render/Types/ShaderType.h"
 #include "Interfaces/Render/Types/Viewport.h"
 
+
 //---------------------------------------------------------//
 //--                Render Interfaces                    --//
 //---------------------------------------------------------//
 #include "Interfaces/Render/IRender.h"
-
 #include "Interfaces/Render/IShader.h"
 #include "Interfaces/Render/IShaderParameter.h"
 #include "Interfaces/Render/IShaderInputLayout.h"
@@ -168,6 +168,7 @@ class Rect;
 //---------------------------------------------------------//
 //--                    Scene Types                      --//
 //---------------------------------------------------------//
+#include "Interfaces/Scene/Types/Light.h"
 
 
 //---------------------------------------------------------//

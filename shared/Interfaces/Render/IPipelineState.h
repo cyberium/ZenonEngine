@@ -8,18 +8,21 @@ ZN_INTERFACE IDepthStencilState;
 ZN_INTERFACE IRenderTarget;
 // FORWARD END
 
-/**
- * The PipelineState class encompasses pipeline configuration.
- * This includes, shaders, blend states, rasterizer states,
- * and depth/stencil states among other things....
- */
 ZN_INTERFACE ZN_API IPipelineState
 {
 	virtual ~IPipelineState() {}
 
-	virtual void SetShader(SShaderType type, std::shared_ptr<IShader> pShader) = 0;
-	virtual std::shared_ptr<IShader> GetShader(SShaderType type) const = 0;
+	virtual void SetShader(EShaderType type, std::shared_ptr<IShader> pShader) = 0;
+	virtual std::shared_ptr<IShader> GetShader(EShaderType type) const = 0;
 	virtual const ShaderMap& GetShaders() const = 0;
+
+	virtual void SetTexture(uint8 ID, std::shared_ptr<ITexture> texture) = 0;
+	virtual std::shared_ptr<ITexture> GetTexture(uint8 ID) const = 0;
+	virtual const TextureMap& GetTextures() const = 0;
+
+	virtual void SetSampler(uint8 ID, std::shared_ptr<ISamplerState> samplerState) = 0;
+	virtual std::shared_ptr<ISamplerState> GetSampler(uint8 ID) const = 0;
+	virtual const SamplersMap& GetSamplers() const = 0;
 
 	virtual void SetBlendState(const std::shared_ptr<IBlendState> blendState) = 0;
 	virtual std::shared_ptr<IBlendState> GetBlendState() const = 0;
