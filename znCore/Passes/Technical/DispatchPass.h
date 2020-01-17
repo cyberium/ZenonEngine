@@ -1,6 +1,9 @@
 #pragma once
 
-class ZN_API DispatchPass : public AbstractPass
+#include "../RenderPass.h"
+
+class ZN_API DispatchPass 
+	: public RenderPass
 {
 public:
 	DispatchPass(std::shared_ptr<IRenderDevice> RenderDevice, std::shared_ptr<IShader> computeShader, const glm::uvec3& numGroups);

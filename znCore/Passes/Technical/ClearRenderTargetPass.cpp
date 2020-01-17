@@ -4,7 +4,7 @@
 #include "ClearRenderTargetPass.h"
 
 ClearRenderTargetPass::ClearRenderTargetPass(std::shared_ptr<IRenderDevice> RenderDevice, std::shared_ptr<IRenderTarget> renderTarget, ClearFlags clearFlags, const glm::vec4& color, float depth, uint8_t stencil)
-	: AbstractPass(RenderDevice)
+	: RenderPass(RenderDevice)
 	, m_RenderTarget(renderTarget)
 	, m_ClearFlags(clearFlags)
 	, m_ClearColor(color)
@@ -13,7 +13,7 @@ ClearRenderTargetPass::ClearRenderTargetPass(std::shared_ptr<IRenderDevice> Rend
 {}
 
 ClearRenderTargetPass::ClearRenderTargetPass(std::shared_ptr<IRenderDevice> RenderDevice, std::shared_ptr<ITexture> texture, ClearFlags clearFlags, const glm::vec4& color, float depth, uint8_t stencil)
-	: AbstractPass(RenderDevice)
+	: RenderPass(RenderDevice)
 	, m_Texture(texture)
 	, m_ClearFlags(clearFlags)
 	, m_ClearColor(color)

@@ -4,7 +4,7 @@
 #include "DispatchPass.h"
 
 DispatchPass::DispatchPass(std::shared_ptr<IRenderDevice> RenderDevice, std::shared_ptr<IShader> computeShader, const glm::uvec3& numGroups)
-	: AbstractPass(RenderDevice)
+	: RenderPass(RenderDevice)
 	, m_pComputeShader(computeShader)
 	, m_NumGroups(numGroups)
 {}
@@ -12,7 +12,6 @@ DispatchPass::DispatchPass(std::shared_ptr<IRenderDevice> RenderDevice, std::sha
 DispatchPass::~DispatchPass()
 {}
 
-// Render the pass. This should only be called by the RenderTechnique.
 void DispatchPass::PreRender(RenderEventArgs& e)
 {
 	m_pComputeShader->Bind();

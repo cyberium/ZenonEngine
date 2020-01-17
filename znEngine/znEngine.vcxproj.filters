@@ -25,12 +25,6 @@
     <Filter Include="Passes">
       <UniqueIdentifier>{14ca4580-6528-4597-9243-e173cc9a12f1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Passes\Queries">
-      <UniqueIdentifier>{af4d1485-44b2-4e3b-9e17-9843a3353af4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Passes\Technical">
-      <UniqueIdentifier>{b2333625-3b00-4c4f-be21-29225a140fe6}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Passes\3D">
       <UniqueIdentifier>{ce8acf99-2f08-4e83-bc28-d859c1558a54}</UniqueIdentifier>
     </Filter>
@@ -134,30 +128,6 @@
     </ClCompile>
     <ClCompile Include="SceneFunctional\UI\UIUtils.cpp">
       <Filter>Scene Funcitonal\UI\Utils</Filter>
-    </ClCompile>
-    <ClCompile Include="Passes\BeginQueryPass.cpp">
-      <Filter>Passes\Queries</Filter>
-    </ClCompile>
-    <ClCompile Include="Passes\EndQueryPass.cpp">
-      <Filter>Passes\Queries</Filter>
-    </ClCompile>
-    <ClCompile Include="Passes\ClearRenderTargetPass.cpp">
-      <Filter>Passes\Technical</Filter>
-    </ClCompile>
-    <ClCompile Include="Passes\CopyBufferPass.cpp">
-      <Filter>Passes\Technical</Filter>
-    </ClCompile>
-    <ClCompile Include="Passes\CopyTexturePass.cpp">
-      <Filter>Passes\Technical</Filter>
-    </ClCompile>
-    <ClCompile Include="Passes\DispatchPass.cpp">
-      <Filter>Passes\Technical</Filter>
-    </ClCompile>
-    <ClCompile Include="Passes\GenerateMipMapsPass.cpp">
-      <Filter>Passes\Technical</Filter>
-    </ClCompile>
-    <ClCompile Include="Passes\InvokeFunctionPass.cpp">
-      <Filter>Passes\Technical</Filter>
     </ClCompile>
     <ClCompile Include="SceneFunctional\UI\Fonts\Font.cpp">
       <Filter>Scene Funcitonal\UI\Fonts</Filter>
@@ -285,9 +255,6 @@
     <ClCompile Include="Passes\CollectLightPass.cpp">
       <Filter>Passes\3D</Filter>
     </ClCompile>
-    <ClCompile Include="Passes\SetShaderParameterPass.cpp">
-      <Filter>Passes\Technical</Filter>
-    </ClCompile>
     <ClCompile Include="Materials\MaterialModel.cpp">
       <Filter>Materials</Filter>
     </ClCompile>
@@ -361,30 +328,6 @@
     </ClInclude>
     <ClInclude Include="SceneFunctional\UI\UIUtils.h">
       <Filter>Scene Funcitonal\UI\Utils</Filter>
-    </ClInclude>
-    <ClInclude Include="Passes\BeginQueryPass.h">
-      <Filter>Passes\Queries</Filter>
-    </ClInclude>
-    <ClInclude Include="Passes\EndQueryPass.h">
-      <Filter>Passes\Queries</Filter>
-    </ClInclude>
-    <ClInclude Include="Passes\ClearRenderTargetPass.h">
-      <Filter>Passes\Technical</Filter>
-    </ClInclude>
-    <ClInclude Include="Passes\CopyBufferPass.h">
-      <Filter>Passes\Technical</Filter>
-    </ClInclude>
-    <ClInclude Include="Passes\CopyTexturePass.h">
-      <Filter>Passes\Technical</Filter>
-    </ClInclude>
-    <ClInclude Include="Passes\DispatchPass.h">
-      <Filter>Passes\Technical</Filter>
-    </ClInclude>
-    <ClInclude Include="Passes\GenerateMipMapsPass.h">
-      <Filter>Passes\Technical</Filter>
-    </ClInclude>
-    <ClInclude Include="Passes\InvokeFunctionPass.h">
-      <Filter>Passes\Technical</Filter>
     </ClInclude>
     <ClInclude Include="SceneFunctional\UI\Fonts\Font.h">
       <Filter>Scene Funcitonal\UI\Fonts</Filter>
@@ -508,9 +451,6 @@
     </ClInclude>
     <ClInclude Include="Passes\CollectLightPass.h">
       <Filter>Passes\3D</Filter>
-    </ClInclude>
-    <ClInclude Include="Passes\SetShaderParameterPass.h">
-      <Filter>Passes\Technical</Filter>
     </ClInclude>
     <ClInclude Include="Materials\MaterialModel.h">
       <Filter>Materials</Filter>

@@ -1,23 +1,27 @@
 #pragma once
 
-#include "BaseScenePass.h"
+#include "ScenePassPipelined.h"
 
 // FORWARD BEGIN
 class CUIBaseNode;
 // FORWARD END
 
-class ZN_API BaseUIPass : public CBaseScenePass
+class ZN_API BaseUIPass 
+	: public ScenePassPipelined
 {
 public:
-	BaseUIPass(std::shared_ptr<IRenderDevice> RenderDevice, std::shared_ptr<IScene> Scene, std::shared_ptr<IPipelineState> pipeline);
+	BaseUIPass(std::shared_ptr<IRenderDevice> RenderDevice, std::shared_ptr<IScene> Scene);
 	virtual ~BaseUIPass();
+
+	// IRenderPassPipelined
+	virtual void CreatePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport* Viewport) override;
 
 	// IVisitor
 	virtual bool VisitUI(ISceneNode* node) override;
 	virtual bool Visit(IMesh* Mesh, SGeometryPartParams GeometryPartParams = SGeometryPartParams()) override;
 	virtual bool Visit(IGeometry* Geometry, const IMaterial* Material, SGeometryPartParams GeometryPartParams = SGeometryPartParams()) override;
 
-protected: // PerObject functional
+protected:
 	__declspec(align(16)) struct PerObjectUI
 	{
 		glm::mat4 Model;
@@ -25,7 +29,4 @@ protected: // PerObject functional
 	};
 	PerObjectUI*                                    m_PerObjectData;
 	std::shared_ptr<IConstantBuffer>                m_PerObjectConstantBuffer;
-
-	void                                            SetPerObjectConstantBufferData();
-	std::shared_ptr<IConstantBuffer>                GetPerObjectConstantBuffer() const;
 };

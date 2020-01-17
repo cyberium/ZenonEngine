@@ -1,6 +1,9 @@
 #pragma once
 
-class ZN_API ClearRenderTargetPass : public AbstractPass
+#include "../RenderPass.h"
+
+class ZN_API ClearRenderTargetPass 
+	: public RenderPass
 {
 public:
 	ClearRenderTargetPass

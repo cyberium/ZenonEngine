@@ -1,16 +1,16 @@
 #pragma once
 
-#include "BaseScenePass.h"
+#include "ScenePassPipelined.h"
 
 // FORWARD BEGIN
 class SceneNode3D;
 // FORWARD END
 
 class ZN_API Base3DPass 
-	: public CBaseScenePass
+	: public ScenePassPipelined
 {
 public:
-	Base3DPass(std::shared_ptr<IRenderDevice> RenderDevice, std::shared_ptr<IScene> scene, std::shared_ptr<IPipelineState> pipeline);
+	Base3DPass(std::shared_ptr<IRenderDevice> RenderDevice, std::shared_ptr<IScene> scene);
 	virtual ~Base3DPass();
 
 	// IVisitor
@@ -27,7 +27,4 @@ protected: // PerObject functional
 	};
 	PerObject3D*                                    m_PerObjectData;
 	std::shared_ptr<IConstantBuffer>                m_PerObjectConstantBuffer;
-
-	void                                            SetPerObjectConstantBufferData();
-	std::shared_ptr<IConstantBuffer>                GetPerObjectConstantBuffer() const;
 };

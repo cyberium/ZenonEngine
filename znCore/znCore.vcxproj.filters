@@ -97,6 +97,12 @@
     <Filter Include="__Interfaces\Scene\Types">
       <UniqueIdentifier>{1e2fe722-e211-4ea0-a5c6-04867d657526}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Passes\Pipelined">
+      <UniqueIdentifier>{acd44d22-594d-492d-88a3-2882f5723b17}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Passes\Technical">
+      <UniqueIdentifier>{aaaebf5e-d1ff-4156-8c87-5e16f7cc457b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Log.cpp">
@@ -162,19 +168,7 @@
     <ClCompile Include="SettingsGroupBase.cpp">
       <Filter>Settings functional</Filter>
     </ClCompile>
-    <ClCompile Include="Passes\AbstractPass.cpp">
-      <Filter>Passes</Filter>
-    </ClCompile>
-    <ClCompile Include="Passes\BaseUIPass.cpp">
-      <Filter>Passes</Filter>
-    </ClCompile>
     <ClCompile Include="Passes\RenderTechnique.cpp">
-      <Filter>Passes</Filter>
-    </ClCompile>
-    <ClCompile Include="Passes\Base3DPass.cpp">
-      <Filter>Passes</Filter>
-    </ClCompile>
-    <ClCompile Include="Passes\BaseScenePass.cpp">
       <Filter>Passes</Filter>
     </ClCompile>
     <ClCompile Include="Scene\ComponentBase.cpp">
@@ -260,6 +254,51 @@
     </ClCompile>
     <ClCompile Include="Scene\CameraNode.cpp">
       <Filter>Scene functional\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="Passes\RenderPass.cpp">
+      <Filter>Passes</Filter>
+    </ClCompile>
+    <ClCompile Include="Passes\ScenePass.cpp">
+      <Filter>Passes</Filter>
+    </ClCompile>
+    <ClCompile Include="Passes\RenderPassPipelined.cpp">
+      <Filter>Passes\Pipelined</Filter>
+    </ClCompile>
+    <ClCompile Include="Passes\ScenePassPipelined.cpp">
+      <Filter>Passes\Pipelined</Filter>
+    </ClCompile>
+    <ClCompile Include="Passes\Base3DPass.cpp">
+      <Filter>Passes\Pipelined</Filter>
+    </ClCompile>
+    <ClCompile Include="Passes\BaseUIPass.cpp">
+      <Filter>Passes\Pipelined</Filter>
+    </ClCompile>
+    <ClCompile Include="Passes\Technical\BeginQueryPass.cpp">
+      <Filter>Passes\Technical</Filter>
+    </ClCompile>
+    <ClCompile Include="Passes\Technical\ClearRenderTargetPass.cpp">
+      <Filter>Passes\Technical</Filter>
+    </ClCompile>
+    <ClCompile Include="Passes\Technical\CopyBufferPass.cpp">
+      <Filter>Passes\Technical</Filter>
+    </ClCompile>
+    <ClCompile Include="Passes\Technical\CopyTexturePass.cpp">
+      <Filter>Passes\Technical</Filter>
+    </ClCompile>
+    <ClCompile Include="Passes\Technical\DispatchPass.cpp">
+      <Filter>Passes\Technical</Filter>
+    </ClCompile>
+    <ClCompile Include="Passes\Technical\EndQueryPass.cpp">
+      <Filter>Passes\Technical</Filter>
+    </ClCompile>
+    <ClCompile Include="Passes\Technical\GenerateMipMapsPass.cpp">
+      <Filter>Passes\Technical</Filter>
+    </ClCompile>
+    <ClCompile Include="Passes\Technical\InvokeFunctionPass.cpp">
+      <Filter>Passes\Technical</Filter>
+    </ClCompile>
+    <ClCompile Include="Passes\Technical\SetShaderParameterPass.cpp">
+      <Filter>Passes\Technical</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -533,19 +572,7 @@
     <ClInclude Include="SettingBase.h">
       <Filter>Settings functional</Filter>
     </ClInclude>
-    <ClInclude Include="Passes\AbstractPass.h">
-      <Filter>Passes</Filter>
-    </ClInclude>
-    <ClInclude Include="Passes\BaseUIPass.h">
-      <Filter>Passes</Filter>
-    </ClInclude>
     <ClInclude Include="Passes\RenderTechnique.h">
-      <Filter>Passes</Filter>
-    </ClInclude>
-    <ClInclude Include="Passes\Base3DPass.h">
-      <Filter>Passes</Filter>
-    </ClInclude>
-    <ClInclude Include="Passes\BaseScenePass.h">
       <Filter>Passes</Filter>
     </ClInclude>
     <ClInclude Include="Scene\ComponentBase.h">
@@ -646,6 +673,51 @@
     </ClInclude>
     <ClInclude Include="..\shared\Interfaces\Scene\Types\Light.h">
       <Filter>__Interfaces\Scene\Types</Filter>
+    </ClInclude>
+    <ClInclude Include="Passes\RenderPass.h">
+      <Filter>Passes</Filter>
+    </ClInclude>
+    <ClInclude Include="Passes\ScenePass.h">
+      <Filter>Passes</Filter>
+    </ClInclude>
+    <ClInclude Include="Passes\RenderPassPipelined.h">
+      <Filter>Passes\Pipelined</Filter>
+    </ClInclude>
+    <ClInclude Include="Passes\ScenePassPipelined.h">
+      <Filter>Passes\Pipelined</Filter>
+    </ClInclude>
+    <ClInclude Include="Passes\Base3DPass.h">
+      <Filter>Passes\Pipelined</Filter>
+    </ClInclude>
+    <ClInclude Include="Passes\BaseUIPass.h">
+      <Filter>Passes\Pipelined</Filter>
+    </ClInclude>
+    <ClInclude Include="Passes\Technical\BeginQueryPass.h">
+      <Filter>Passes\Technical</Filter>
+    </ClInclude>
+    <ClInclude Include="Passes\Technical\ClearRenderTargetPass.h">
+      <Filter>Passes\Technical</Filter>
+    </ClInclude>
+    <ClInclude Include="Passes\Technical\CopyBufferPass.h">
+      <Filter>Passes\Technical</Filter>
+    </ClInclude>
+    <ClInclude Include="Passes\Technical\CopyTexturePass.h">
+      <Filter>Passes\Technical</Filter>
+    </ClInclude>
+    <ClInclude Include="Passes\Technical\DispatchPass.h">
+      <Filter>Passes\Technical</Filter>
+    </ClInclude>
+    <ClInclude Include="Passes\Technical\EndQueryPass.h">
+      <Filter>Passes\Technical</Filter>
+    </ClInclude>
+    <ClInclude Include="Passes\Technical\GenerateMipMapsPass.h">
+      <Filter>Passes\Technical</Filter>
+    </ClInclude>
+    <ClInclude Include="Passes\Technical\InvokeFunctionPass.h">
+      <Filter>Passes\Technical</Filter>
+    </ClInclude>
+    <ClInclude Include="Passes\Technical\SetShaderParameterPass.h">
+      <Filter>Passes\Technical</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

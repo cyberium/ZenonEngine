@@ -4,12 +4,12 @@
 #include "GenerateMipMapsPass.h"
 
 GenerateMipMapPass::GenerateMipMapPass(std::shared_ptr<IRenderDevice> RenderDevice, std::shared_ptr<IRenderTarget> renderTarget)
-	: AbstractPass(RenderDevice)
+	: RenderPass(RenderDevice)
 	, m_RenderTarget(renderTarget)
 {}
 
 GenerateMipMapPass::GenerateMipMapPass(std::shared_ptr<IRenderDevice> RenderDevice, std::shared_ptr<ITexture> texture)
-	: AbstractPass(RenderDevice)
+	: RenderPass(RenderDevice)
 	, m_Texture(texture)
 {}
 

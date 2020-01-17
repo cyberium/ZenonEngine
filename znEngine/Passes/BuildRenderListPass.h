@@ -1,7 +1,9 @@
 #pragma once
 
+#if 0
+
 class BuildRenderListPass
-	: public CBaseScenePass
+	: public ScenePassPipelined
 {
 public:
 	struct SRenderListElement
@@ -42,10 +44,9 @@ protected:
 	std::vector<PerObject3D*>                       m_PerObjectData;
 	std::vector <std::shared_ptr<IConstantBuffer>>  m_PerObjectConstantBuffer;
 
-	void                                            SetPerObjectConstantBufferData(int Index);
-	std::shared_ptr<IConstantBuffer>                GetPerObjectConstantBuffer(int Index) const;
-
 private:
 	const ISceneNode* m_CurrentSceneNode;
 	std::vector<SRenderListElement> m_RenderList;
 };
+
+#endif

@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Passes/CollectLightPass.h"
-#include "Passes/SetShaderParameterPass.h"
 #include "Passes/ShadowPass.h"
 #include "Passes/DefferedRender.h"
 #include "Passes/DefferedRenderFinal.h"

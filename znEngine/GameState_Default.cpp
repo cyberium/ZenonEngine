@@ -149,7 +149,7 @@ void CGameState_World::Load3D()
 
 	//---------------------------
 
-	const int iterCnt = 5;
+	const int iterCnt = 10;
 	const float offset = 50.0f;
 	const float scale = 20.0f;
 
@@ -217,8 +217,12 @@ void CGameState_World::Load3D()
 	//fbxSceneNode->GetComponent<ITransformComponent3D>()->SetScale(vec3(15.0f, 15.0f, 15.0f));
 
 	m_Technique3D.AddPass(GetBaseManager()->GetManager<IRenderPassFactory>()->CreateRenderPass("ClearPass", GetRenderDevice(), GetRenderWindow()->GetRenderTarget(), GetRenderWindow()->GetViewport(), m_Scene3D));
+	
 	m_DefferedRenderPass = std::make_shared<CDefferedRender>(GetRenderDevice(), m_Scene3D);
-	m_DefferedFinalRenderPass = std::make_shared<CDefferedRenderFinal>(GetRenderDevice(), m_DefferedRenderPass, GetRenderWindow());
+	m_DefferedRenderPass->CreatePipeline(GetRenderWindow()->GetRenderTarget(), GetRenderWindow()->GetViewport());
+
+	m_DefferedFinalRenderPass = std::make_shared<CDefferedRenderFinal>(GetRenderDevice(), m_DefferedRenderPass);
+	m_DefferedFinalRenderPass->CreatePipeline(GetRenderWindow()->GetRenderTarget(), GetRenderWindow()->GetViewport());
 
 	m_Technique3D.AddPass(m_DefferedRenderPass);
 	m_Technique3D.AddPass(m_DefferedFinalRenderPass);

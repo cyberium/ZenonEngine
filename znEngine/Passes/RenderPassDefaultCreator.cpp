@@ -4,8 +4,6 @@
 #include "RenderPassDefaultCreator.h"
 
 // Additional
-#include "Passes/ClearRenderTargetPass.h"
-
 #include "Passes/TextureDebugPass.h"
 #include "Passes/TextureMaterialPass.h"
 #include "Passes/MaterialPassOpaque.h"
@@ -56,11 +54,6 @@ std::string CRenderPassDefaultCreator::GetRenderPassName(size_t Index) const
 
 std::shared_ptr<IRenderPass> CRenderPassDefaultCreator::CreateRenderPass(size_t Index, std::shared_ptr<IRenderDevice> RenderDevice, std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport, std::shared_ptr<IScene> Scene) const
 {
-	IBlendState::BlendMode alphaBlending(true, false, IBlendState::BlendFactor::SrcAlpha, IBlendState::BlendFactor::OneMinusSrcAlpha, IBlendState::BlendOperation::Add, IBlendState::BlendFactor::SrcAlpha, IBlendState::BlendFactor::OneMinusSrcAlpha);
-	IBlendState::BlendMode disableBlending;
-	IDepthStencilState::DepthMode enableDepthWrites(true, IDepthStencilState::DepthWrite::Enable);
-	IDepthStencilState::DepthMode disableDepthWrites(false, IDepthStencilState::DepthWrite::Disable);
-
 	if (Index == 0)
 	{
 		vec4 color = vec4(0.0, 0.0f, 0.0f, 1.0f);
@@ -68,161 +61,33 @@ std::shared_ptr<IRenderPass> CRenderPassDefaultCreator::CreateRenderPass(size_t 
 	}
 	else if (Index == 1)
 	{
-		std::shared_ptr<IShader> g_pVertexShader;
-		std::shared_ptr<IShader> g_pGeometryShader;
-		std::shared_ptr<IShader> g_pPixelShader;
-
-		if (RenderDevice->GetDeviceType() == RenderDeviceType::RenderDeviceType_DirectX)
-		{
-			g_pVertexShader = RenderDevice->CreateShader(EShaderType::VertexShader, "IDB_SHADER_3D_DEBUG", IShader::ShaderMacros(), "VS_main", "latest");
-			g_pGeometryShader = RenderDevice->CreateShader(EShaderType::GeometryShader, "IDB_SHADER_3D_DEBUG", IShader::ShaderMacros(), "GS_main", "latest");
-			g_pPixelShader = RenderDevice->CreateShader(EShaderType::PixelShader, "IDB_SHADER_3D_DEBUG", IShader::ShaderMacros(), "PS_main", "latest");
-		}
-		else
-		{
-			g_pVertexShader = RenderDevice->CreateShader(EShaderType::VertexShader, "IDB_SHADER_OGL_3D_DEBUG_VS", IShader::ShaderMacros(), "", "");
-			g_pPixelShader = RenderDevice->CreateShader(EShaderType::PixelShader, "IDB_SHADER_OGL_3D_DEBUG_PS", IShader::ShaderMacros(), "", "");
-		}
-		g_pVertexShader->LoadInputLayoutFromReflector();
-
-		// PIPELINES
-		std::shared_ptr<IPipelineState> Pipeline = RenderDevice->CreatePipelineState();
-		Pipeline->GetBlendState()->SetBlendMode(disableBlending);
-		Pipeline->GetDepthStencilState()->SetDepthMode(enableDepthWrites);
-		Pipeline->GetRasterizerState()->SetCullMode(IRasterizerState::CullMode::None);
-		Pipeline->GetRasterizerState()->SetFillMode(IRasterizerState::FillMode::Solid);
-		Pipeline->SetRenderTarget(RenderTarget);
-		Pipeline->GetRasterizerState()->SetViewport(Viewport);
-		Pipeline->SetShader(EShaderType::VertexShader, g_pVertexShader);
-		Pipeline->SetShader(EShaderType::GeometryShader, g_pGeometryShader);
-		Pipeline->SetShader(EShaderType::PixelShader, g_pPixelShader);
-
-		return std::make_shared<CDebugMaterialPass>(RenderDevice, Scene, Pipeline);
+		std::shared_ptr<IRenderPassPipelined> passPipelined = std::make_shared<CDebugMaterialPass>(RenderDevice, Scene);
+		passPipelined->CreatePipeline(RenderTarget, Viewport);
+		return passPipelined;
 	}
 	else if (Index == 2)
 	{
-		std::shared_ptr<IShader> g_pVertexShader;
-		std::shared_ptr<IShader> g_pPixelShader;
-
-		if (RenderDevice->GetDeviceType() == RenderDeviceType::RenderDeviceType_DirectX)
-		{
-			g_pVertexShader = RenderDevice->CreateShader(EShaderType::VertexShader, "IDB_SHADER_3D_TEXTURED", IShader::ShaderMacros(), "VS_main", "latest");
-			g_pPixelShader = RenderDevice->CreateShader(EShaderType::PixelShader, "IDB_SHADER_3D_TEXTURED", IShader::ShaderMacros(), "PS_main", "latest");
-		}
-		else
-		{
-			g_pVertexShader = RenderDevice->CreateShader(EShaderType::VertexShader, "IDB_SHADER_OGL_3D_TEXTURED_VS", IShader::ShaderMacros(), "", "");
-			g_pPixelShader = RenderDevice->CreateShader(EShaderType::PixelShader, "IDB_SHADER_OGL_3D_TEXTURED_PS", IShader::ShaderMacros(), "", "");
-		}
-		g_pVertexShader->LoadInputLayoutFromReflector();
-
-		//std::vector<SCustomVertexElement> elements;
-		//elements.push_back({ 0, 0,  ECustomVertexElementType::FLOAT3, ECustomVertexElementUsage::POSITION, 0 });
-		//elements.push_back({ 0, 12, ECustomVertexElementType::FLOAT2, ECustomVertexElementUsage::TEXCOORD, 0 });
-		//elements.push_back({ 0, 20, ECustomVertexElementType::FLOAT3, ECustomVertexElementUsage::NORMAL, 0 });
-		//g_pVertexShader->LoadInputLayoutFromCustomElements(elements);
-
-		// PIPELINES
-		std::shared_ptr<IPipelineState> Pipeline = RenderDevice->CreatePipelineState();
-		Pipeline->GetBlendState()->SetBlendMode(disableBlending);
-		Pipeline->GetDepthStencilState()->SetDepthMode(enableDepthWrites);
-		Pipeline->GetRasterizerState()->SetCullMode(IRasterizerState::CullMode::None);
-		Pipeline->GetRasterizerState()->SetFillMode(IRasterizerState::FillMode::Solid);
-		Pipeline->SetRenderTarget(RenderTarget);
-		Pipeline->GetRasterizerState()->SetViewport(Viewport);
-		Pipeline->SetShader(EShaderType::VertexShader, g_pVertexShader);
-		Pipeline->SetShader(EShaderType::PixelShader, g_pPixelShader);
-
-		std::shared_ptr<ISamplerState> sampler = RenderDevice->CreateSamplerState();
-		sampler->SetFilter(ISamplerState::MinFilter::MinLinear, ISamplerState::MagFilter::MagLinear, ISamplerState::MipFilter::MipLinear);
-		sampler->SetWrapMode(ISamplerState::WrapMode::Repeat, ISamplerState::WrapMode::Repeat);
-		Pipeline->SetSampler(0, sampler);
-
-		return std::make_shared<CTexturedMaterialPass>(RenderDevice, Scene, Pipeline);
+		std::shared_ptr<IRenderPassPipelined> passPipelined = std::make_shared<CTexturedMaterialPass>(RenderDevice, Scene);
+		passPipelined->CreatePipeline(RenderTarget, Viewport);
+		return passPipelined;
 	}
 	else if (Index == 3)
 	{
-		std::shared_ptr<IPipelineState> UIPipeline = RenderDevice->CreatePipelineState();
-		UIPipeline->GetBlendState()->SetBlendMode(alphaBlending);
-		UIPipeline->GetDepthStencilState()->SetDepthMode(disableDepthWrites);
-		UIPipeline->GetRasterizerState()->SetCullMode(IRasterizerState::CullMode::None);
-		UIPipeline->GetRasterizerState()->SetFillMode(IRasterizerState::FillMode::Solid);
-		UIPipeline->GetRasterizerState()->SetAntialiasedLineEnable(true);
-		UIPipeline->GetRasterizerState()->SetMultisampleEnabled(true);
-		UIPipeline->SetRenderTarget(RenderTarget);
-		UIPipeline->GetRasterizerState()->SetViewport(Viewport);
-
-		return std::make_shared<BaseUIPass>(RenderDevice, Scene, UIPipeline);
+		std::shared_ptr<IRenderPassPipelined> passPipelined = std::make_shared<BaseUIPass>(RenderDevice, Scene);
+		passPipelined->CreatePipeline(RenderTarget, Viewport);
+		return passPipelined;
 	}
 	else if (Index == 4)
 	{
-		std::shared_ptr<IShader> g_pVertexShader;
-		std::shared_ptr<IShader> g_pPixelShader;
-
-		if (RenderDevice->GetDeviceType() == RenderDeviceType::RenderDeviceType_DirectX)
-		{
-			g_pVertexShader = RenderDevice->CreateShader(EShaderType::VertexShader, "IDB_SHADER_3D_MODEL", IShader::ShaderMacros(), "VS_PTN", "latest");
-			g_pPixelShader = RenderDevice->CreateShader(EShaderType::PixelShader, "IDB_SHADER_3D_MODEL", IShader::ShaderMacros(), "PS_main", "latest");
-		}
-		g_pVertexShader->LoadInputLayoutFromReflector();
-
-		// PIPELINES
-		std::shared_ptr<IPipelineState> Pipeline = RenderDevice->CreatePipelineState();
-		Pipeline->GetBlendState()->SetBlendMode(disableBlending);
-		Pipeline->GetDepthStencilState()->SetDepthMode(enableDepthWrites);
-		Pipeline->GetRasterizerState()->SetCullMode(IRasterizerState::CullMode::None);
-		Pipeline->GetRasterizerState()->SetFillMode(IRasterizerState::FillMode::Solid);
-		Pipeline->SetRenderTarget(RenderTarget);
-		Pipeline->GetRasterizerState()->SetViewport(Viewport);
-		Pipeline->SetShader(EShaderType::VertexShader, g_pVertexShader);
-		Pipeline->SetShader(EShaderType::PixelShader, g_pPixelShader);
-		
-		std::shared_ptr<ISamplerState> sampler = RenderDevice->CreateSamplerState();
-		sampler->SetFilter(ISamplerState::MinFilter::MinLinear, ISamplerState::MagFilter::MagLinear, ISamplerState::MipFilter::MipLinear);
-		sampler->SetWrapMode(ISamplerState::WrapMode::Repeat, ISamplerState::WrapMode::Repeat);
-		Pipeline->SetSampler(0, sampler);
-
-		std::shared_ptr<ISamplerState> samplerClamp = RenderDevice->CreateSamplerState();
-		samplerClamp->SetFilter(ISamplerState::MinFilter::MinLinear, ISamplerState::MagFilter::MagLinear, ISamplerState::MipFilter::MipLinear);
-		samplerClamp->SetWrapMode(ISamplerState::WrapMode::Clamp, ISamplerState::WrapMode::Clamp);
-		Pipeline->SetSampler(1, samplerClamp);
-
-		return std::make_shared<CMaterialPassOpaque>(RenderDevice, Scene, Pipeline);
+		std::shared_ptr<IRenderPassPipelined> passPipelined = std::make_shared<CMaterialPassOpaque>(RenderDevice, Scene);
+		passPipelined->CreatePipeline(RenderTarget, Viewport);
+		return passPipelined;
 	}
 	else if (Index == 5)
 	{
-		std::shared_ptr<IShader> g_pVertexShader;
-		std::shared_ptr<IShader> g_pPixelShader;
-
-		if (RenderDevice->GetDeviceType() == RenderDeviceType::RenderDeviceType_DirectX)
-		{
-			g_pVertexShader = RenderDevice->CreateShader(EShaderType::VertexShader, "IDB_SHADER_3D_MODEL", IShader::ShaderMacros(), "VS_main", "latest");
-			g_pPixelShader = RenderDevice->CreateShader(EShaderType::PixelShader, "IDB_SHADER_3D_MODEL", IShader::ShaderMacros(), "PS_main", "latest");
-		}
-		g_pVertexShader->LoadInputLayoutFromReflector();
-
-		// PIPELINES
-		std::shared_ptr<IPipelineState> Pipeline = RenderDevice->CreatePipelineState();
-		Pipeline->GetBlendState()->SetBlendMode(alphaBlending);
-		Pipeline->GetDepthStencilState()->SetDepthMode(enableDepthWrites);
-		Pipeline->GetRasterizerState()->SetCullMode(IRasterizerState::CullMode::None);
-		Pipeline->GetRasterizerState()->SetFillMode(IRasterizerState::FillMode::Solid);
-		Pipeline->SetRenderTarget(RenderTarget);
-		Pipeline->GetRasterizerState()->SetViewport(Viewport);
-		Pipeline->SetShader(EShaderType::VertexShader, g_pVertexShader);
-		Pipeline->SetShader(EShaderType::PixelShader, g_pPixelShader);
-
-		std::shared_ptr<ISamplerState> sampler = RenderDevice->CreateSamplerState();
-		sampler->SetFilter(ISamplerState::MinFilter::MinLinear, ISamplerState::MagFilter::MagLinear, ISamplerState::MipFilter::MipLinear);
-		sampler->SetWrapMode(ISamplerState::WrapMode::Repeat, ISamplerState::WrapMode::Repeat);
-		Pipeline->SetSampler(0, sampler);
-
-		std::shared_ptr<ISamplerState> samplerClamp = RenderDevice->CreateSamplerState();
-		samplerClamp->SetFilter(ISamplerState::MinFilter::MinLinear, ISamplerState::MagFilter::MagLinear, ISamplerState::MipFilter::MipLinear);
-		samplerClamp->SetWrapMode(ISamplerState::WrapMode::Clamp, ISamplerState::WrapMode::Clamp);
-		Pipeline->SetSampler(1, samplerClamp);
-
-		return std::make_shared<CMaterialPassTransperent>(RenderDevice, Scene, Pipeline);
+		std::shared_ptr<IRenderPassPipelined> passPipelined = std::make_shared<CMaterialPassTransperent>(RenderDevice, Scene);
+		passPipelined->CreatePipeline(RenderTarget, Viewport);
+		return passPipelined;
 	}
 
 	throw CException("CRenderPassDefaultCreator: CreateRenderPass(%d) is out of bounds. Count = %d", Index, GetRenderPassCount());

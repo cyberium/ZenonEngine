@@ -1,10 +1,13 @@
 #include "stdafx.h"
 
+#if 0
+
 // General
 #include "BuildRenderListPass.h"
 
 // Additional
 #include <omp.h>
+
 
 class CRenderDeviceLocker
 {
@@ -25,7 +28,7 @@ private:
 
 
 BuildRenderListPass::BuildRenderListPass(std::shared_ptr<IRenderDevice> RenderDevice, std::shared_ptr<IScene> Scene, std::shared_ptr<IPipelineState> Pipeline)
-	: CBaseScenePass(RenderDevice, Scene, Pipeline)
+	: ScenePassPipelined(RenderDevice, Scene, Pipeline)
 {
 	int threadCnt = omp_get_max_threads();
 	Log::Print("BuildRenderListPass: Threads cnt = '%d'", threadCnt);
@@ -62,7 +65,7 @@ void BuildRenderListPass::Render(RenderEventArgs & e)
 	m_RenderList.clear();
 
 	// Accept scene here!
-	CBaseScenePass::Render(e);
+	ScenePassPipelined::Render(e);
 
 	// Render list
 	const ICamera* camera = GetRenderEventArgs()->Camera;
@@ -113,10 +116,10 @@ void BuildRenderListPass::Render(RenderEventArgs & e)
 		if (shadersMap.empty())
 			shadersMap = GetRenderEventArgs()->PipelineState->GetShaders();
 
-		SetPerObjectConstantBufferData(0);
+		m_PerObjectConstantBuffer[0]->Set(m_PerObjectData[0], sizeof(PerObject3D));
 
 		it.Material->Bind(shadersMap);
-		it.Geometry->Render(GetRenderEventArgs(), GetPerObjectConstantBuffer(0).get(), shadersMap, it.Material, it.GeometryPartParams);
+		it.Geometry->Render(GetRenderEventArgs(), m_PerObjectConstantBuffer[0].get(), shadersMap, it.Material, it.GeometryPartParams);
 		it.Material->Unbind(shadersMap);
 	}
 	
@@ -177,12 +180,4 @@ bool BuildRenderListPass::Visit(IGeometry * Geometry, const IMaterial * Material
 	return false;
 }
 
-void BuildRenderListPass::SetPerObjectConstantBufferData(int Index)
-{
-	m_PerObjectConstantBuffer[Index]->Set(m_PerObjectData[Index], sizeof(PerObject3D));
-}
-
-std::shared_ptr<IConstantBuffer> BuildRenderListPass::GetPerObjectConstantBuffer(int Index) const
-{
-	return m_PerObjectConstantBuffer[Index];
-}
+#endif

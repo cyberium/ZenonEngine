@@ -4,34 +4,37 @@
 #include "SetShaderParameterPass.h"
 
 CSetShaderParameterPass::CSetShaderParameterPass(std::shared_ptr<IRenderDevice> RenderDevice, std::shared_ptr<IShaderParameter> Destination, std::function<std::shared_ptr<IShaderParameterSource>(void)> FuncGetSource)
-	: AbstractPass(RenderDevice)
+	: RenderPass(RenderDevice)
 	, m_Destination(Destination)
 	, m_FuncGetSource(FuncGetSource)
 {
+	_ASSERT(Destination != nullptr);
+	_ASSERT(FuncGetSource != nullptr);
 }
 
 CSetShaderParameterPass::CSetShaderParameterPass(std::shared_ptr<IRenderDevice> RenderDevice, std::shared_ptr<IShaderParameter> Destination, std::shared_ptr<IShaderParameterSource> Source)
-	: AbstractPass(RenderDevice)
+	: RenderPass(RenderDevice)
 	, m_Destination(Destination)
 	, m_Source(Source)
 {
+	_ASSERT(Destination != nullptr);
+	_ASSERT(Source != nullptr);
 }
 
 CSetShaderParameterPass::~CSetShaderParameterPass()
-{
-}
+{}
 
 void CSetShaderParameterPass::Render(RenderEventArgs& e)
 {
-	_ASSERT(m_Destination != nullptr);
-
 	if (m_Source != nullptr)
 		m_Destination->SetSource(m_Source.get());
 
 	if (m_FuncGetSource != nullptr)
 	{
 		std::shared_ptr<IShaderParameterSource> sps = m_FuncGetSource();
-		if (sps)
+		if (sps != nullptr)
+		{
 			m_Destination->SetSource(sps.get());
+		}
 	}
 }

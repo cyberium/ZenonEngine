@@ -2,6 +2,8 @@
 
 // FORWARD BEGIN
 class RenderEventArgs;
+ZN_INTERFACE IRenderTarget;
+ZN_INTERFACE IPipelineState;
 class Viewport;
 // FORWARD END
 
@@ -15,18 +17,19 @@ ZN_INTERFACE ZN_API IRenderPass : public IVisitor
     virtual void PreRender(RenderEventArgs& e) = 0;
     virtual void Render(RenderEventArgs& e) = 0;
     virtual void PostRender(RenderEventArgs& e) = 0;
-
-    virtual void UpdateViewport(const Viewport * _viewport) = 0;
 };
 
 
-ZN_INTERFACE ZN_API IRenderScenePass : public IRenderPass
+ZN_INTERFACE ZN_API IRenderPassPipelined : public IRenderPass
 {
-	virtual ~IRenderScenePass() {}
+	virtual ~IRenderPassPipelined() {}
 
-	
+	virtual void CreatePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport* Viewport) = 0;
+	virtual void SetPipeline(std::shared_ptr<IPipelineState> Pipeline) = 0;
+	virtual std::shared_ptr<IPipelineState> GetPipeline() const = 0;
+
+	virtual void UpdateViewport(const Viewport * _viewport) = 0;
 };
-
 
 
 //

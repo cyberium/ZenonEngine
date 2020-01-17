@@ -1,6 +1,9 @@
 #pragma once
 
-class ZN_API GenerateMipMapPass : public AbstractPass
+#include "../RenderPass.h"
+
+class ZN_API GenerateMipMapPass 
+	: public RenderPass
 {
 public:
 	GenerateMipMapPass(std::shared_ptr<IRenderDevice> RenderDevice, std::shared_ptr<IRenderTarget> renderTarget);

@@ -4,7 +4,7 @@
 #include "CopyBufferPass.h"
 
 CopyBufferPass::CopyBufferPass(std::shared_ptr<IRenderDevice> RenderDevice, std::shared_ptr<IBuffer> destinationBuffer, std::shared_ptr<IBuffer> sourceBuffer)
-	: AbstractPass(RenderDevice)
+	: RenderPass(RenderDevice)
 	, m_DestinationBuffer(destinationBuffer)
 	, m_SourceBuffer(sourceBuffer)
 {}

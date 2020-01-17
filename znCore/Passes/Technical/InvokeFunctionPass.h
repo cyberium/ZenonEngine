@@ -1,7 +1,9 @@
 #pragma once
 
+#include "../RenderPass.h"
+
 class ZN_API InvokeFunctionPass 
-	: public AbstractPass
+	: public RenderPass
 {
 public:
 	InvokeFunctionPass(std::shared_ptr<IRenderDevice> RenderDevice, std::function<void(void)> func);

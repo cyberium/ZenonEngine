@@ -1,7 +1,7 @@
 #pragma once
 
 class CCollectLightPass
-	: public CBaseScenePass
+	: public ScenePass
 {
 public:
 	CCollectLightPass(std::shared_ptr<IRenderDevice> RenderDevice, std::shared_ptr<IScene> Scene);

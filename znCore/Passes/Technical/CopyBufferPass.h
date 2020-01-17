@@ -1,6 +1,9 @@
 #pragma once
 
-class ZN_API CopyBufferPass : public AbstractPass
+#include "../RenderPass.h"
+
+class ZN_API CopyBufferPass 
+	: public RenderPass
 {
 public:
 	CopyBufferPass(std::shared_ptr<IRenderDevice> RenderDevice, std::shared_ptr<IBuffer> destinationBuffer, std::shared_ptr<IBuffer> sourceBuffer);

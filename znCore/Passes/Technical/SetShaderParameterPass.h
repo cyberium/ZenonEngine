@@ -1,7 +1,9 @@
 #pragma once
 
+#include "../RenderPass.h"
+
 class CSetShaderParameterPass
-	: public AbstractPass
+	: public RenderPass
 {
 public:
 	CSetShaderParameterPass(std::shared_ptr<IRenderDevice> RenderDevice, std::shared_ptr<IShaderParameter> Destination, std::function<std::shared_ptr<IShaderParameterSource>(void)> FuncGetSource);

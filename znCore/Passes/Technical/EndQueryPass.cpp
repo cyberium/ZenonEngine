@@ -4,7 +4,7 @@
 #include "EndQueryPass.h"
 
 EndQueryPass::EndQueryPass(std::shared_ptr<IRenderDevice> RenderDevice, std::shared_ptr<IQuery> query)
-    : AbstractPass(RenderDevice)
+    : RenderPass(RenderDevice)
 	, m_pQuery(query)
 {}
 

@@ -4,7 +4,7 @@
 #include "CollectLightPass.h"
 
 CCollectLightPass::CCollectLightPass(std::shared_ptr<IRenderDevice> RenderDevice, std::shared_ptr<IScene> Scene)
-	: CBaseScenePass(RenderDevice, Scene)
+	: ScenePass(RenderDevice, Scene)
 {
 }
 
@@ -21,7 +21,7 @@ std::shared_ptr<IStructuredBuffer> CCollectLightPass::GetLightBuffer() const
 
 void CCollectLightPass::PreRender(RenderEventArgs& e)
 {
-	CBaseScenePass::PreRender(e);
+	ScenePass::PreRender(e);
 	
 	m_CollectedLights.clear();
 }
@@ -47,7 +47,7 @@ void CCollectLightPass::PostRender(RenderEventArgs& e)
 		m_LightsBuffer = GetRenderDevice()->CreateStructuredBuffer(m_CollectedLights, CPUAccess::Write, false);
 	}
 
-	CBaseScenePass::PostRender(e);
+	ScenePass::PostRender(e);
 }
 
 

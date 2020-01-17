@@ -1,21 +1,19 @@
 #pragma once
 
-class ZN_API AbstractPass 
+class ZN_API RenderPass 
 	: public IRenderPass
 	, public Object
 {
 public:
-	AbstractPass(std::shared_ptr<IRenderDevice> RenderDevice);
-	AbstractPass(std::shared_ptr<IRenderDevice> RenderDevice, std::shared_ptr<IPipelineState> Pipeline);
-	virtual ~AbstractPass();
+	RenderPass(std::shared_ptr<IRenderDevice> RenderDevice);
+	virtual ~RenderPass();
 
-	virtual void SetEnabled(bool enabled);
-	virtual bool IsEnabled() const;
-
-	virtual void PreRender(RenderEventArgs& e);
-	virtual void PostRender(RenderEventArgs& e);
-
-    virtual void UpdateViewport(const Viewport * _viewport);
+	// IRenderPass
+	virtual void SetEnabled(bool Value) override final;
+	virtual bool IsEnabled() const override final;
+	virtual void PreRender(RenderEventArgs& e) override;
+	virtual void Render(RenderEventArgs& e) = 0;
+	virtual void PostRender(RenderEventArgs& e) override;
 
 	// IVisitor
 	virtual bool VisitBase(ISceneNode* node) override;
@@ -25,18 +23,14 @@ public:
 	virtual bool Visit(IGeometry* Geometry, const IMaterial* Material, SGeometryPartParams GeometryPartParams = SGeometryPartParams()) override;
 	virtual bool Visit(ILightComponent3D* light) override;
 
-	virtual RenderEventArgs* GetRenderEventArgs() const;
-    std::shared_ptr<IPipelineState> GetPipelineState() const;
-
 protected:
+	const RenderEventArgs* GetRenderEventArgs() const;
     std::shared_ptr<IRenderDevice> GetRenderDevice() const;
-	void SetPipeline(std::shared_ptr<IPipelineState> Pipeline);
+	const IBaseManager* GetBaseManager() const;
 
 private:
 	bool                                            m_Enabled;
-
     RenderEventArgs*                                m_RenderEventArgs;
-
-    std::shared_ptr<IPipelineState>                 m_Pipeline;
     std::weak_ptr<IRenderDevice>                    m_RenderDevice;
+	const IBaseManager*                             m_BaseManager;
 };

@@ -1,6 +1,9 @@
 #pragma once
 
-class ZN_API CopyTexturePass : public AbstractPass
+#include "../RenderPass.h"
+
+class ZN_API CopyTexturePass 
+	: public RenderPass
 {
 public:
 	CopyTexturePass(std::shared_ptr<IRenderDevice> RenderDevice, std::shared_ptr<ITexture> destinationTexture, std::shared_ptr<ITexture> sourceTexture);

@@ -21,9 +21,22 @@
 
 // Passes
 #include "../znCore/Passes/RenderTechnique.h"
-#include "../znCore/Passes/AbstractPass.h"
+#include "../znCore/Passes/RenderPass.h"
+#include "../znCore/Passes/RenderPassPipelined.h"
+#include "../znCore/Passes/ScenePass.h"
+#include "../znCore/Passes/ScenePassPipelined.h"
 #include "../znCore/Passes/Base3DPass.h"
 #include "../znCore/Passes/BaseUIPass.h"
+
+#include "../znCore/Passes/Technical/BeginQueryPass.h"
+#include "../znCore/Passes/Technical/ClearRenderTargetPass.h"
+#include "../znCore/Passes/Technical/CopyBufferPass.h"
+#include "../znCore/Passes/Technical/CopyTexturePass.h"
+#include "../znCore/Passes/Technical/DispatchPass.h"
+#include "../znCore/Passes/Technical/EndQueryPass.h"
+#include "../znCore/Passes/Technical/GenerateMipMapsPass.h"
+#include "../znCore/Passes/Technical/InvokeFunctionPass.h"
+#include "../znCore/Passes/Technical/SetShaderParameterPass.h"
 
 // Camera controllers
 #include "../znCore/CameraControllers/CameraControllerBase.h"

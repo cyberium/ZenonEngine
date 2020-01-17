@@ -3,8 +3,8 @@
 // General
 #include "BaseUIPass.h"
 
-BaseUIPass::BaseUIPass(std::shared_ptr<IRenderDevice> RenderDevice, std::shared_ptr<IScene> Scene, std::shared_ptr<IPipelineState> pipeline)
-	: CBaseScenePass(RenderDevice, Scene, pipeline)
+BaseUIPass::BaseUIPass(std::shared_ptr<IRenderDevice> RenderDevice, std::shared_ptr<IScene> Scene)
+	: ScenePassPipelined(RenderDevice, Scene)
 {
 	m_PerObjectData = (PerObjectUI*)_aligned_malloc(sizeof(PerObjectUI), 16);
 	m_PerObjectConstantBuffer = GetRenderDevice()->CreateConstantBuffer(PerObjectUI());
@@ -15,6 +15,28 @@ BaseUIPass::~BaseUIPass()
 	_aligned_free(m_PerObjectData);
 	GetRenderDevice()->DestroyConstantBuffer(m_PerObjectConstantBuffer);
 }
+
+
+
+//
+// IRenderPassPipelined
+//
+void BaseUIPass::CreatePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport)
+{
+	std::shared_ptr<IPipelineState> UIPipeline = GetRenderDevice()->CreatePipelineState();
+	UIPipeline->GetBlendState()->SetBlendMode(alphaBlending);
+	UIPipeline->GetDepthStencilState()->SetDepthMode(disableDepthWrites);
+	UIPipeline->GetRasterizerState()->SetCullMode(IRasterizerState::CullMode::None);
+	UIPipeline->GetRasterizerState()->SetFillMode(IRasterizerState::FillMode::Solid);
+	UIPipeline->GetRasterizerState()->SetAntialiasedLineEnable(true);
+	UIPipeline->GetRasterizerState()->SetMultisampleEnabled(true);
+	UIPipeline->SetRenderTarget(RenderTarget);
+	UIPipeline->GetRasterizerState()->SetViewport(Viewport);
+
+	SetPipeline(UIPipeline);
+}
+
+
 
 //
 // IVisitor
@@ -33,8 +55,7 @@ bool BaseUIPass::VisitUI(ISceneNode* sceneNode)
 
 		m_PerObjectData->Model = sceneNode->GetWorldTransfom();
 		m_PerObjectData->Projection = viewport->GetOrthoMatix();
-
-		SetPerObjectConstantBufferData();
+		m_PerObjectConstantBuffer->Set(m_PerObjectData, sizeof(PerObjectUI));
 
 		return true;
 	}
@@ -62,22 +83,7 @@ bool BaseUIPass::Visit(IGeometry* Geometry, const IMaterial* Material, SGeometry
 		shadersMap = GetRenderEventArgs()->PipelineState->GetShaders();
 
 	Material->Bind(shadersMap);
-	bool result = Geometry->Render(GetRenderEventArgs(), GetPerObjectConstantBuffer().get(), shadersMap, Material, GeometryPartParams);
+	bool result = Geometry->Render(GetRenderEventArgs(), m_PerObjectConstantBuffer.get(), shadersMap, Material, GeometryPartParams);
 	Material->Unbind(shadersMap);
 	return result;
-}
-
-
-
-//
-// PerObject functional
-//
-void BaseUIPass::SetPerObjectConstantBufferData()
-{
-	m_PerObjectConstantBuffer->Set(m_PerObjectData, sizeof(PerObjectUI));
-}
-
-std::shared_ptr<IConstantBuffer> BaseUIPass::GetPerObjectConstantBuffer() const
-{
-	return m_PerObjectConstantBuffer;
 }

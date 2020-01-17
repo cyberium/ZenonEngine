@@ -4,7 +4,7 @@
 #include "InvokeFunctionPass.h"
 
 InvokeFunctionPass::InvokeFunctionPass(std::shared_ptr<IRenderDevice> RenderDevice, std::function<void(void)> func)
-	: AbstractPass(RenderDevice)
+	: RenderPass(RenderDevice)
 	, m_Func(func)
 {}
 
