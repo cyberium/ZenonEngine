@@ -32,8 +32,8 @@ private:
 		glm::mat4 View;
 		glm::mat4 Projection;
 	};
-	PerObject3D*                                    m_PerObjectData;
-	std::shared_ptr<IConstantBuffer>                m_PerObjectConstantBuffer;
+	PerObject3D* m_PerObjectData;
+	std::shared_ptr<IConstantBuffer> m_PerObjectConstantBuffer;
 
 private:
 	std::shared_ptr<IPipelineState> m_DefferedPipeline;

@@ -23,6 +23,7 @@ ZN_INTERFACE ZN_API IRenderDevicePrimitiveCollection
 	virtual std::shared_ptr<IMesh> CreateSphere() = 0; // Create a sphere in 3D
 	virtual std::shared_ptr<IMesh> CreateCube() = 0; // Create a cube in 3D.
 	virtual std::shared_ptr<IMesh> CreateCone() = 0; // Create a cone.
+	virtual std::shared_ptr<IMesh> CreateQuad() = 0;
 
 	// 3D meshes
 	virtual std::shared_ptr<IMesh> Create3DQuad(float width = 10.0f, float height = 10.0f) = 0;

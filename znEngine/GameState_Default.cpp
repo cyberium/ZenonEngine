@@ -149,7 +149,7 @@ void CGameState_World::Load3D()
 
 	//---------------------------
 
-	const int iterCnt = 25;
+	const int iterCnt = 5;
 	const float offset = 50.0f;
 	const float scale = 20.0f;
 
@@ -218,9 +218,10 @@ void CGameState_World::Load3D()
 
 	m_Technique3D.AddPass(GetBaseManager()->GetManager<IRenderPassFactory>()->CreateRenderPass("ClearPass", GetRenderDevice(), GetRenderWindow()->GetRenderTarget(), GetRenderWindow()->GetViewport(), m_Scene3D));
 	m_DefferedRenderPass = std::make_shared<CDefferedRender>(GetRenderDevice(), m_Scene3D);
-
+	m_DefferedFinalRenderPass = std::make_shared<CDefferedRenderFinal>(GetRenderDevice(), m_DefferedRenderPass, GetRenderWindow());
 
 	m_Technique3D.AddPass(m_DefferedRenderPass);
+	m_Technique3D.AddPass(m_DefferedFinalRenderPass);
 #if 0
 
 	m_Technique3D.AddPass(GetBaseManager()->GetManager<IRenderPassFactory>()->CreateRenderPass("ClearPass", GetRenderDevice(), GetRenderWindow()->GetRenderTarget(), GetRenderWindow()->GetViewport(), m_Scene3D));
@@ -283,7 +284,7 @@ void CGameState_World::Load3D()
 
 void CGameState_World::LoadUI()
 {
-	std::shared_ptr<CUITextureNode> TextureUI0 = m_SceneUI->GetRootNode()->CreateWrappedSceneNode<CUITextureNode>("Test", GetRenderDevice());
+	/*std::shared_ptr<CUITextureNode> TextureUI0 = m_SceneUI->GetRootNode()->CreateWrappedSceneNode<CUITextureNode>("Test", GetRenderDevice());
 	TextureUI0->SetTranslate(vec2(000.0f, 000.0f));
 	TextureUI0->SetScale(vec2(600, 600));
 	TextureUI0->SetTexture(m_DefferedRenderPass->GetTexture0());
@@ -301,7 +302,7 @@ void CGameState_World::LoadUI()
 	std::shared_ptr<CUITextureNode> TextureUI3 = m_SceneUI->GetRootNode()->CreateWrappedSceneNode<CUITextureNode>("Test", GetRenderDevice());
 	TextureUI3->SetTranslate(vec2(600.0f, 600.0f));
 	TextureUI3->SetScale(vec2(600, 600));
-	TextureUI3->SetTexture(m_DefferedRenderPass->GetTexture3());
+	TextureUI3->SetTexture(m_DefferedRenderPass->GetTexture3());*/
 
 	m_TechniqueUI.AddPass(GetBaseManager()->GetManager<IRenderPassFactory>()->CreateRenderPass("BaseUIPass", GetRenderDevice(), GetRenderWindow()->GetRenderTarget(), GetRenderWindow()->GetViewport(), m_SceneUI));
 }

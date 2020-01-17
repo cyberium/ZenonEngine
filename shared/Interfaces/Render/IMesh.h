@@ -4,6 +4,7 @@
 
 // FORWARD BEGIN
 ZN_INTERFACE IBuffer;
+ZN_INTERFACE IGeometry;
 ZN_INTERFACE IConstantBuffer;
 class RenderEventArgs;
 // FORWARD END
@@ -26,6 +27,8 @@ ZN_INTERFACE ZN_API __declspec(novtable) IMesh : public std::enable_shared_from_
 
 	virtual void                                    SetMaterial(std::shared_ptr<const IMaterial> Material) = 0;
 	virtual void                                    AddMaterial(std::shared_ptr<const IMaterial> Material, SGeometryPartParams GeometryPartParams = SGeometryPartParams()) = 0;
+
+	virtual std::shared_ptr<IGeometry>              GetGeometry() const = 0;
 
 	virtual bool                                    Render(const RenderEventArgs* renderEventArgs, const IConstantBuffer* perObject, SGeometryPartParams GeometryPartParams = SGeometryPartParams()) = 0;
 

@@ -306,6 +306,9 @@
     <ClCompile Include="Passes\DefferedRender.cpp">
       <Filter>Passes\3D</Filter>
     </ClCompile>
+    <ClCompile Include="Passes\DefferedRenderFinal.cpp">
+      <Filter>Passes\3D</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="common.h">
@@ -527,6 +530,9 @@
     <ClInclude Include="Passes\DefferedRender.h">
       <Filter>Passes\3D</Filter>
     </ClInclude>
+    <ClInclude Include="Passes\DefferedRenderFinal.h">
+      <Filter>Passes\3D</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="znEngine.rc">
@@ -601,6 +607,7 @@
       <Filter>Resources\Shaders_D3D\3D</Filter>
     </Text>
     <Text Include="Resources\shaders_D3D\3D\Shadow.hlsl" />
+    <Text Include="Resources\shaders_D3D\3D\Model_Deffered.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Resources\Textures\default.png">
@@ -608,7 +615,7 @@
     </Image>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="Resources\shaders_D3D\3D\Model_Deffered.hlsl">
+    <FxCompile Include="Resources\shaders_D3D\3D\Deffered.hlsl">
       <Filter>Resources\Shaders_D3D\3D</Filter>
     </FxCompile>
   </ItemGroup>

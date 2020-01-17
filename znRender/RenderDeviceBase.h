@@ -12,6 +12,7 @@ public:
 	std::shared_ptr<IMesh> CreateSphere(); // Create a sphere in 3D
 	std::shared_ptr<IMesh> CreateCube(); // Create a cube in 3D.
 	std::shared_ptr<IMesh> CreateCone(); // Create a cone.
+	std::shared_ptr<IMesh> CreateQuad() override;
 
 	// 3D meshes
 	std::shared_ptr<IMesh> Create3DQuad(float width = 10.0f, float height = 10.0f);

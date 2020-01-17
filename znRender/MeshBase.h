@@ -23,6 +23,8 @@ public:
 	void                                            SetMaterial(std::shared_ptr<const IMaterial> Material);
 	void											AddMaterial(std::shared_ptr<const IMaterial> Material, SGeometryPartParams GeometryPartParams = SGeometryPartParams()) override final;
 
+	virtual std::shared_ptr<IGeometry>              GetGeometry() const override;
+
 	virtual bool                                    Accept(IVisitor* visitor, SGeometryPartParams GeometryPartParams);
 
 protected:

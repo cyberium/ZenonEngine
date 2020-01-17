@@ -154,6 +154,42 @@ std::shared_ptr<IMesh> CRenderDevicePrimitiveCollection::CreateCone()
 	return mesh;
 }
 
+std::shared_ptr<IMesh> CRenderDevicePrimitiveCollection::CreateQuad()
+{
+	vec2 vertices[4];
+	vertices[0] = vec2( 1.0f, 1.0f);
+	vertices[1] = vec2(-1.0f, 1.0f);
+	vertices[2] = vec2(-1.0f, -1.0f);
+	vertices[3] = vec2( 1.0f, -1.0f);
+
+	vec2 texCoords[4];
+	texCoords[0] = vec2(1.0f, 0.0f);
+	texCoords[1] = vec2(0.0f, 0.0f);
+	texCoords[2] = vec2(0.0f, 1.0f);
+	texCoords[3] = vec2(1.0f, 1.0f);
+
+	uint16 indices[6];
+	indices[0] = 1;
+	indices[1] = 0;
+	indices[2] = 2;
+	indices[3] = 2;
+	indices[4] = 0;
+	indices[5] = 3;
+
+	std::shared_ptr<IMesh> mesh = m_RenderDevice->CreateMesh();
+
+	std::shared_ptr<IBuffer> __vbPosition = m_RenderDevice->CreateVertexBuffer(vertices, 4);
+	mesh->AddVertexBuffer(BufferBinding("POSITION", 0), __vbPosition);
+
+	std::shared_ptr<IBuffer> __vbTexCoord = m_RenderDevice->CreateVertexBuffer(texCoords, 4);
+	mesh->AddVertexBuffer(BufferBinding("TEXCOORD", 0), __vbTexCoord);
+
+	std::shared_ptr<IBuffer> __ib = m_RenderDevice->CreateIndexBuffer(indices, 6);
+	mesh->SetIndexBuffer(__ib);
+
+	return mesh;
+}
+
 
 
 //
