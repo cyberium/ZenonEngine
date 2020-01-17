@@ -30,6 +30,8 @@ public:
 	virtual bool Visit(ILightComponent3D* light) override;
 
 protected:
+	virtual void FillPerFrameData();
+
 	RenderEventArgs* GetRenderEventArgs() const;
     std::shared_ptr<IRenderDevice> GetRenderDevice() const;
 	const IBaseManager* GetBaseManager() const;
@@ -39,6 +41,15 @@ protected:
 	static IBlendState::BlendMode disableBlending;
 	static IDepthStencilState::DepthMode enableDepthWrites;
 	static IDepthStencilState::DepthMode disableDepthWrites;
+
+protected:
+	__declspec(align(16)) struct PerFrame
+	{
+		glm::mat4 View;
+		glm::mat4 Projection;
+	};
+	PerFrame*                                       m_PerFrameData;
+	std::shared_ptr<IConstantBuffer>                m_PerFrameConstantBuffer;
 
 private:
 	bool                                            m_Enabled;

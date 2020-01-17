@@ -51,6 +51,8 @@ private:
 
 
 	std::shared_ptr<SceneNode3D> m_RootForBoxes;
+
+	std::shared_ptr<BuildRenderListPass> m_BuildRenderListPass;
 	std::shared_ptr<CDefferedRender> m_DefferedRenderPass;
 	std::shared_ptr<CDefferedRenderFinal> m_DefferedFinalRenderPass;
 };

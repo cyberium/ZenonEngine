@@ -22,8 +22,6 @@ protected: // PerObject functional
 	__declspec(align(16)) struct PerObject3D
 	{
 		glm::mat4 Model;
-		glm::mat4 View;
-		glm::mat4 Projection;
 	};
 	PerObject3D*                                    m_PerObjectData;
 	std::shared_ptr<IConstantBuffer>                m_PerObjectConstantBuffer;

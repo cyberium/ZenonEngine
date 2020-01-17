@@ -24,20 +24,11 @@ bool Base3DPass::Visit3D(ISceneNode* sceneNode)
 {
 	ScenePassPipelined::VisitBase(sceneNode);
 
-	const ICamera* camera = GetRenderEventArgs()->Camera;
-	//const Viewport* viewport = GetRenderEventArgs()->PipelineState->GetRasterizerState()->GetViewports()[0];
 
-	if (camera)
-	{
-		m_PerObjectData->Model               = sceneNode->GetWorldTransfom();
-		m_PerObjectData->View                = camera->GetViewMatrix();
-		m_PerObjectData->Projection          = camera->GetProjectionMatrix();
-		m_PerObjectConstantBuffer->Set(m_PerObjectData, sizeof(PerObject3D));
+	m_PerObjectData->Model               = sceneNode->GetWorldTransfom();
+	m_PerObjectConstantBuffer->Set(m_PerObjectData, sizeof(PerObject3D));
 
-		return true;
-	}
-
-	return false;
+	return true;
 }
 
 bool Base3DPass::Visit(IMesh * Mesh, SGeometryPartParams GeometryPartParams)

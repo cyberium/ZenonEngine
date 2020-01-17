@@ -11,15 +11,21 @@ cbuffer PerObject : register(b0)
 {
 	PerObject PO;
 }
+cbuffer PerFrame : register(b1)
+{
+	PerFrame PF;
+}
 cbuffer Material : register(b2)
-{};
+{
+
+};
 
 Texture2D DiffuseTexture : register(t0);
 sampler DiffuseTextureSampler : register(s0);
 
 VertexShaderOutput VS_main(VSInputPT IN)
 {
-	const float4x4 mvp = mul(PO.Projection, mul(PO.View, PO.Model));
+	const float4x4 mvp = mul(PF.Projection, mul(PF.View, PO.Model));
 
 	VertexShaderOutput OUT;
 	OUT.positionVS = mul(mvp, float4(IN.position, 1.0f));

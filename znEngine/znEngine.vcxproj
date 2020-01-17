@@ -46,7 +46,6 @@
     <ClCompile Include="Models\FBX\FBXScene.cpp" />
     <ClCompile Include="Models\FBX\FBXSceneNode.cpp" />
     <ClCompile Include="Models\FBX\FBXStream.cpp" />
-    <ClCompile Include="Passes\BuildRenderListPass.cpp" />
     <ClCompile Include="Passes\CollectLightPass.cpp" />
     <ClCompile Include="Passes\DefferedRender.cpp" />
     <ClCompile Include="Passes\DefferedRenderFinal.cpp" />
@@ -120,7 +119,6 @@
     <ClInclude Include="Models\FBX\FBXScene.h" />
     <ClInclude Include="Models\FBX\FBXSceneNode.h" />
     <ClInclude Include="Models\FBX\FBXStream.h" />
-    <ClInclude Include="Passes\BuildRenderListPass.h" />
     <ClInclude Include="Passes\CollectLightPass.h" />
     <ClInclude Include="Passes\DefferedRender.h" />
     <ClInclude Include="Passes\DefferedRenderFinal.h" />

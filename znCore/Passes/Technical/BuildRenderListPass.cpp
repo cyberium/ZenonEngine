@@ -1,13 +1,32 @@
 #include "stdafx.h"
 
-#if 0
-
 // General
 #include "BuildRenderListPass.h"
+
+#if 0
 
 // Additional
 #include <omp.h>
 
+int threadCnt = omp_get_max_threads();
+Log::Print("BuildRenderListPass: Threads cnt = '%d'", threadCnt);
+m_PerObjectData.resize(threadCnt);
+m_PerObjectConstantBuffer.resize(threadCnt);
+
+for (int i = 0; i < threadCnt; i++)
+{
+	m_PerObjectData[i] = (PerObject3D*)_aligned_malloc(sizeof(PerObject3D), 16);
+	*(m_PerObjectData[i]) = PerObject3D();
+
+	m_PerObjectConstantBuffer[i] = GetRenderDevice()->CreateConstantBuffer(PerObject3D());
+}
+
+
+for (int i = 0; i < m_PerObjectConstantBuffer.size(); i++)
+{
+	_aligned_free(m_PerObjectData[i]);
+	GetRenderDevice()->DestroyConstantBuffer(m_PerObjectConstantBuffer[i]);
+}
 
 class CRenderDeviceLocker
 {
@@ -27,52 +46,8 @@ private:
 };
 
 
-BuildRenderListPass::BuildRenderListPass(std::shared_ptr<IRenderDevice> RenderDevice, std::shared_ptr<IScene> Scene, std::shared_ptr<IPipelineState> Pipeline)
-	: ScenePassPipelined(RenderDevice, Scene, Pipeline)
-{
-	int threadCnt = omp_get_max_threads();
-	Log::Print("BuildRenderListPass: Threads cnt = '%d'", threadCnt);
-	m_PerObjectData.resize(threadCnt);
-	m_PerObjectConstantBuffer.resize(threadCnt);
+/*
 
-	for (int i = 0; i < threadCnt; i++)
-	{
-		m_PerObjectData[i] = (PerObject3D*)_aligned_malloc(sizeof(PerObject3D), 16);
-		*(m_PerObjectData[i]) = PerObject3D();
-
-		m_PerObjectConstantBuffer[i] = GetRenderDevice()->CreateConstantBuffer(PerObject3D());
-	}
-
-
-}
-
-BuildRenderListPass::~BuildRenderListPass()
-{
-	for (int i = 0; i < m_PerObjectConstantBuffer.size(); i++)
-	{
-		_aligned_free(m_PerObjectData[i]);
-		GetRenderDevice()->DestroyConstantBuffer(m_PerObjectConstantBuffer[i]);
-	}
-}
-
-
-
-//
-// IRenderPass
-//
-void BuildRenderListPass::Render(RenderEventArgs & e)
-{
-	m_RenderList.clear();
-
-	// Accept scene here!
-	ScenePassPipelined::Render(e);
-
-	// Render list
-	const ICamera* camera = GetRenderEventArgs()->Camera;
-	_ASSERT(camera);
-
-	/*
-	
 #pragma omp parallel for
 	for (int i = 0; i < static_cast<int>(m_RenderList.size()); i++)
 	{
@@ -101,31 +76,11 @@ void BuildRenderListPass::Render(RenderEventArgs & e)
 			it.Material->Unbind(shadersMap);
 		}
 	}
-	
+
 	*/
-	
-	for (const auto& it : m_RenderList)
-	{
-		m_PerObjectData[0]->Model = it.Node->GetWorldTransfom();
-		m_PerObjectData[0]->View = camera->GetViewMatrix();
-		m_PerObjectData[0]->Projection = camera->GetProjectionMatrix();
-
-		ShaderMap shadersMap;
-		if (it.Material)
-			shadersMap = it.Material->GetShaders();
-		if (shadersMap.empty())
-			shadersMap = GetRenderEventArgs()->PipelineState->GetShaders();
-
-		m_PerObjectConstantBuffer[0]->Set(m_PerObjectData[0], sizeof(PerObject3D));
-
-		it.Material->Bind(shadersMap);
-		it.Geometry->Render(GetRenderEventArgs(), m_PerObjectConstantBuffer[0].get(), shadersMap, it.Material, it.GeometryPartParams);
-		it.Material->Unbind(shadersMap);
-	}
-	
 
 
-	
+
 	/*
 	std::vector<PerObject3D> perObject;
 	for (const auto& it : m_RenderList)
@@ -155,6 +110,52 @@ void BuildRenderListPass::Render(RenderEventArgs & e)
 		GetRenderDevice()->DestroyStructuredBuffer(buffer);
 	}
 	*/
+
+#endif
+
+
+
+
+BuildRenderListPass::BuildRenderListPass(std::shared_ptr<IRenderDevice> RenderDevice, std::shared_ptr<IScene> Scene)
+	: ScenePass(RenderDevice, Scene)
+{
+}
+
+BuildRenderListPass::~BuildRenderListPass()
+{
+}
+
+
+
+//
+// BuildRenderListPass
+//
+const std::vector<BuildRenderListPass::SGeometryElement>& BuildRenderListPass::GetGeometryList() const
+{
+	return m_GeometryList;
+}
+
+const std::vector<BuildRenderListPass::SLightElement>& BuildRenderListPass::GetLightList() const
+{
+	return m_LightList;
+}
+
+
+
+//
+// IRenderPass
+//
+void BuildRenderListPass::PreRender(RenderEventArgs & e)
+{
+	ScenePass::PreRender(e);
+
+	m_GeometryList.clear();
+	m_LightList.clear();
+}
+
+void BuildRenderListPass::Render(RenderEventArgs & e)
+{
+	ScenePass::Render(e);
 }
 
 
@@ -176,8 +177,12 @@ bool BuildRenderListPass::Visit(IMesh * Mesh, SGeometryPartParams GeometryPartPa
 
 bool BuildRenderListPass::Visit(IGeometry * Geometry, const IMaterial * Material, SGeometryPartParams GeometryPartParams)
 {
-	m_RenderList.push_back(SRenderListElement(m_CurrentSceneNode, Geometry, Material, GeometryPartParams));
+	m_GeometryList.push_back(SGeometryElement(m_CurrentSceneNode, Geometry, Material, GeometryPartParams));
 	return false;
 }
 
-#endif
+bool BuildRenderListPass::Visit(ILightComponent3D * light)
+{
+	m_LightList.push_back(SLightElement(m_CurrentSceneNode, light));
+	return false;
+}

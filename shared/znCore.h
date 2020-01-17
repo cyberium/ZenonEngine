@@ -29,6 +29,7 @@
 #include "../znCore/Passes/BaseUIPass.h"
 
 #include "../znCore/Passes/Technical/BeginQueryPass.h"
+#include "../znCore/Passes/Technical/BuildRenderListPass.h"
 #include "../znCore/Passes/Technical/ClearRenderTargetPass.h"
 #include "../znCore/Passes/Technical/CopyBufferPass.h"
 #include "../znCore/Passes/Technical/CopyTexturePass.h"

@@ -264,9 +264,6 @@
     <ClCompile Include="Passes\MaterialPassTransperent.cpp">
       <Filter>Passes\3D</Filter>
     </ClCompile>
-    <ClCompile Include="Passes\BuildRenderListPass.cpp">
-      <Filter>Passes\3D</Filter>
-    </ClCompile>
     <ClCompile Include="Passes\ShadowPass.cpp">
       <Filter>Passes\3D</Filter>
     </ClCompile>
@@ -461,9 +458,6 @@
     <ClInclude Include="Passes\MaterialPassTransperent.h">
       <Filter>Passes\3D</Filter>
     </ClInclude>
-    <ClInclude Include="Passes\BuildRenderListPass.h">
-      <Filter>Passes\3D</Filter>
-    </ClInclude>
     <ClInclude Include="Passes\ShadowPass.h">
       <Filter>Passes\3D</Filter>
     </ClInclude>
@@ -546,8 +540,10 @@
     <Text Include="Resources\shaders_D3D\3D\Model.hlsl">
       <Filter>Resources\Shaders_D3D\3D</Filter>
     </Text>
-    <Text Include="Resources\shaders_D3D\3D\Shadow.hlsl" />
     <Text Include="Resources\shaders_D3D\3D\Model_Deffered.hlsl" />
+    <Text Include="Resources\shaders_D3D\3D\Shadow.hlsl">
+      <Filter>Resources\Shaders_D3D\3D</Filter>
+    </Text>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Resources\Textures\default.png">

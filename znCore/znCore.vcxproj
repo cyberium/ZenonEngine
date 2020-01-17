@@ -49,6 +49,7 @@
     <ClCompile Include="Passes\RenderTechnique.cpp" />
     <ClCompile Include="Passes\ScenePassPipelined.cpp" />
     <ClCompile Include="Passes\Technical\BeginQueryPass.cpp" />
+    <ClCompile Include="Passes\Technical\BuildRenderListPass.cpp" />
     <ClCompile Include="Passes\Technical\ClearRenderTargetPass.cpp" />
     <ClCompile Include="Passes\Technical\CopyBufferPass.cpp" />
     <ClCompile Include="Passes\Technical\CopyTexturePass.cpp" />
@@ -189,6 +190,7 @@
     <ClInclude Include="Passes\RenderTechnique.h" />
     <ClInclude Include="Passes\ScenePassPipelined.h" />
     <ClInclude Include="Passes\Technical\BeginQueryPass.h" />
+    <ClInclude Include="Passes\Technical\BuildRenderListPass.h" />
     <ClInclude Include="Passes\Technical\ClearRenderTargetPass.h" />
     <ClInclude Include="Passes\Technical\CopyBufferPass.h" />
     <ClInclude Include="Passes\Technical\CopyTexturePass.h" />

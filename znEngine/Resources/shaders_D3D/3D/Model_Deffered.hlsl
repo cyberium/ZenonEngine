@@ -15,6 +15,10 @@ cbuffer PerObject : register(b0)
 {
 	PerObject PO;
 }
+cbuffer PerFrame : register(b1)
+{
+	PerFrame PF;
+}
 cbuffer Material : register(b2)
 {
 	Material Mat;
@@ -37,8 +41,8 @@ sampler LinearClampSampler                : register(s1);
 
 VertexShaderOutput VS_main(VSInputPTNTB IN)
 {
-	const float4x4 mv = mul(PO.View, PO.Model);
-	const float4x4 mvp = mul(PO.Projection, mv);
+	const float4x4 mv = mul(PF.View, PO.Model);
+	const float4x4 mvp = mul(PF.Projection, mv);
 
 	VertexShaderOutput OUT;
 	OUT.position = mul(mvp, float4(IN.position, 1.0f));
@@ -80,8 +84,8 @@ VertexShaderOutput VS_PTN(VSInputPTN IN)
 		binormal = normalize(binormal);
 	}
 
-	const float4x4 mv = mul(PO.View, PO.Model);
-	const float4x4 mvp = mul(PO.Projection, mv);
+	const float4x4 mv = mul(PF.View, PO.Model);
+	const float4x4 mvp = mul(PF.Projection, mv);
 
 	VertexShaderOutput OUT;
 	OUT.position = mul(mvp, float4(IN.position, 1.0f));

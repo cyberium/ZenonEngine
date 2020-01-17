@@ -181,10 +181,9 @@ void CGameState::OnPostRender(RenderEventArgs& e)
 		else
 			m_FrameTime = frameResult.ElapsedTime / 1000000.0;
 
-		if (m_FrameTime < 1.0f)
-			m_FrameTime = 1.0f;
+		double fpsValue = 1000.0f / m_FrameTime;
 
-		m_FPSText->GetProperties()->GetPropertyT<std::string>("Text")->Set("FPS: " + std::to_string((1000 / uint64(m_FrameTime))));
+		m_FPSText->GetProperties()->GetPropertyT<std::string>("Text")->Set("FPS: " + std::to_string(uint64(fpsValue)));
 	}
 }
 

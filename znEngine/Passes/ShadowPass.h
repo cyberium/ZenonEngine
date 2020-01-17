@@ -16,20 +16,15 @@ public:
 
 	// IRenderPassPipelined
 	void CreatePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport* Viewport) override;
+	void UpdateViewport(const Viewport * _viewport) override;
 
 	// IVisitor
 	virtual bool Visit3D(ISceneNode* node) override;
 	virtual bool Visit(IGeometry* Geometry, const IMaterial* Material, SGeometryPartParams GeometryPartParams = SGeometryPartParams()) override;
 	virtual bool Visit(ILightComponent3D* light) override;
 
-private:
-	__declspec(align(16)) struct PerLight
-	{
-		glm::mat4 LightView;
-		glm::mat4 LightProjection;
-	};
-	PerLight*										m_PerLightData;
-	std::shared_ptr<IConstantBuffer>                m_PerLightConstantBuffer;
+protected:
+	void FillPerFrameData() override;
 
 private:
 	std::shared_ptr<IRenderTarget> m_RenderTarget;

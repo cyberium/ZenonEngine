@@ -6,14 +6,10 @@
 CShadowPass::CShadowPass(std::shared_ptr<IRenderDevice> RenderDevice, std::shared_ptr<IScene> Scene)
 	: Base3DPass(RenderDevice, Scene)
 {
-	m_PerLightData = (PerLight*)_aligned_malloc(sizeof(PerLight), 16);
-	m_PerLightConstantBuffer = GetRenderDevice()->CreateConstantBuffer(PerLight());
 }
 
 CShadowPass::~CShadowPass()
 {
-	_aligned_free(m_PerObjectData);
-	GetRenderDevice()->DestroyConstantBuffer(m_PerObjectConstantBuffer);
 }
 
 
@@ -33,7 +29,7 @@ std::shared_ptr<ITexture> CShadowPass::GetShadowTexture() const
 
 std::shared_ptr<IConstantBuffer> CShadowPass::GetPerLightBuffer() const
 {
-	return m_PerLightConstantBuffer;
+	return m_PerFrameConstantBuffer;
 }
 
 
@@ -56,6 +52,7 @@ void CShadowPass::PreRender(RenderEventArgs & e)
 void CShadowPass::CreatePipeline(std::shared_ptr<IRenderTarget> /*RenderTarget*/, const Viewport * /*Viewport*/)
 {
 	const float size = 2048.0f;
+
 	ITexture::TextureFormat colorTextureFormat
 	(
 		ITexture::Components::R,
@@ -78,7 +75,6 @@ void CShadowPass::CreatePipeline(std::shared_ptr<IRenderTarget> /*RenderTarget*/
 	m_RenderTarget->AttachTexture(IRenderTarget::AttachmentPoint::Color0, m_ColorTexture);
 	m_RenderTarget->AttachTexture(IRenderTarget::AttachmentPoint::DepthStencil, m_ShadowTexture);
 
-
 	v.SetWidth(size);
 	v.SetHeight(size);
 
@@ -99,6 +95,11 @@ void CShadowPass::CreatePipeline(std::shared_ptr<IRenderTarget> /*RenderTarget*/
 	shadowPipeline->SetShader(EShaderType::PixelShader, pixelShader);
 
 	SetPipeline(shadowPipeline);
+}
+
+void CShadowPass::UpdateViewport(const Viewport * _viewport)
+{
+	// Do nothing...
 }
 
 
@@ -125,13 +126,16 @@ bool CShadowPass::Visit(IGeometry * Geometry, const IMaterial * Material, SGeome
 
 bool CShadowPass::Visit(ILightComponent3D * light)
 {
-	m_PerLightData->LightView = light->GetViewMatrix();
-	m_PerLightData->LightProjection = light->GetProjectionMatrix();
-	m_PerLightConstantBuffer->Set(*m_PerLightData);
-
-	m_PerObjectData->View = light->GetViewMatrix();
-	m_PerObjectData->Projection = light->GetProjectionMatrix();
+	//m_PerObjectData->View = light->GetViewMatrix();
+	//m_PerObjectData->Projection = light->GetProjectionMatrix();
 	m_PerObjectConstantBuffer->Set(*m_PerObjectData);
 
 	return true;
+}
+
+void CShadowPass::FillPerFrameData()
+{
+	//m_PerFrameData->View = m_RenderEventArgs->Camera->GetViewMatrix();
+	//m_PerFrameData->Projection = m_RenderEventArgs->Camera->GetProjectionMatrix();
+	m_PerFrameConstantBuffer->Set(*m_PerFrameData);
 }

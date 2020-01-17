@@ -16,11 +16,15 @@ RenderPassPipelined::RenderPassPipelined(std::shared_ptr<IRenderDevice> RenderDe
     , m_RenderDevice(RenderDevice)
 	, m_BaseManager(RenderDevice->GetBaseManager())
 {
-
+	m_PerFrameData = (PerFrame*)_aligned_malloc(sizeof(PerFrame), 16);
+	m_PerFrameConstantBuffer = GetRenderDevice()->CreateConstantBuffer(PerFrame());
 }
 
 RenderPassPipelined::~RenderPassPipelined()
-{}
+{
+	_aligned_free(m_PerFrameData);
+	GetRenderDevice()->DestroyConstantBuffer(m_PerFrameConstantBuffer);
+}
 
 
 
@@ -44,6 +48,24 @@ void RenderPassPipelined::PreRender(RenderEventArgs& e)
 	_ASSERT(m_Pipeline != nullptr, L"RenderPassPipelined: Pipeline is null. Don't use this class without pipeline.");
     e.PipelineState = m_Pipeline.get();
 	m_Pipeline->Bind();
+
+	FillPerFrameData();
+
+	for (const auto& shaderIt : m_Pipeline->GetShaders())
+	{
+		const IShader* shader = shaderIt.second.get();
+		_ASSERT(shader != nullptr);
+
+		if (shader->GetType() == EShaderType::VertexShader)
+		{
+			IShaderParameter* perObjectParameter = shader->GetShaderParameterByName("PerFrame").get();
+			if (perObjectParameter->IsValid() && m_PerFrameConstantBuffer != nullptr)
+			{
+				perObjectParameter->SetConstantBuffer(m_PerFrameConstantBuffer.get());
+				perObjectParameter->Bind();
+			}
+		}
+	}
 }
 
 void RenderPassPipelined::PostRender(RenderEventArgs& e)
@@ -140,6 +162,14 @@ bool RenderPassPipelined::Visit(ILightComponent3D* light)
 //
 // Protected
 //
+void RenderPassPipelined::FillPerFrameData()
+{
+	_ASSERT(m_RenderEventArgs->Camera != nullptr);
+	m_PerFrameData->View = m_RenderEventArgs->Camera->GetViewMatrix();
+	m_PerFrameData->Projection = m_RenderEventArgs->Camera->GetProjectionMatrix();
+	m_PerFrameConstantBuffer->Set(*m_PerFrameData);
+}
+
 RenderEventArgs* RenderPassPipelined::GetRenderEventArgs() const
 {
 	_ASSERT(m_RenderEventArgs != nullptr);

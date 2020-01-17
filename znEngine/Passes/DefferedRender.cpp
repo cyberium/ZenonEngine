@@ -99,6 +99,16 @@ void CDefferedRender::CreatePipeline(std::shared_ptr<IRenderTarget> /*RenderTarg
 	defferedPipeline->SetShader(EShaderType::VertexShader, vertexShader);
 	defferedPipeline->SetShader(EShaderType::PixelShader, pixelShader);
 
+	std::shared_ptr<ISamplerState> sampler = GetRenderDevice()->CreateSamplerState();
+	sampler->SetFilter(ISamplerState::MinFilter::MinLinear, ISamplerState::MagFilter::MagLinear, ISamplerState::MipFilter::MipLinear);
+	sampler->SetWrapMode(ISamplerState::WrapMode::Repeat, ISamplerState::WrapMode::Repeat);
+	defferedPipeline->SetSampler(0, sampler);
+
+	std::shared_ptr<ISamplerState> samplerClamp = GetRenderDevice()->CreateSamplerState();
+	samplerClamp->SetFilter(ISamplerState::MinFilter::MinLinear, ISamplerState::MagFilter::MagLinear, ISamplerState::MipFilter::MipLinear);
+	samplerClamp->SetWrapMode(ISamplerState::WrapMode::Clamp, ISamplerState::WrapMode::Clamp);
+	defferedPipeline->SetSampler(1, samplerClamp);
+
 	SetPipeline(defferedPipeline);
 }
 

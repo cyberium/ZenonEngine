@@ -49,9 +49,9 @@ bool RenderPass::VisitBase(ISceneNode * node)
 	if (camera)
 		node->UpdateCamera(camera);
 	
-	const Viewport* viewport = m_RenderEventArgs->PipelineState->GetRasterizerState()->GetViewports()[0];
-	if (viewport)
-		node->UpdateViewport(viewport);
+	if (const IPipelineState* pipeline = m_RenderEventArgs->PipelineState)
+		if (const Viewport* viewport = pipeline->GetRasterizerState()->GetViewports()[0])
+			node->UpdateViewport(viewport);
 
 	return true;
 }

@@ -300,6 +300,9 @@
     <ClCompile Include="Passes\Technical\SetShaderParameterPass.cpp">
       <Filter>Passes\Technical</Filter>
     </ClCompile>
+    <ClCompile Include="Passes\Technical\BuildRenderListPass.cpp">
+      <Filter>Passes\Technical</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Log.h">
@@ -717,6 +720,9 @@
       <Filter>Passes\Technical</Filter>
     </ClInclude>
     <ClInclude Include="Passes\Technical\SetShaderParameterPass.h">
+      <Filter>Passes\Technical</Filter>
+    </ClInclude>
+    <ClInclude Include="Passes\Technical\BuildRenderListPass.h">
       <Filter>Passes\Technical</Filter>
     </ClInclude>
   </ItemGroup>

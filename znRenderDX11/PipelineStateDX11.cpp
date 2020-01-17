@@ -144,7 +144,7 @@ void PipelineStateDX11::Bind()
 
 		shader->Bind();
 
-		if (it.second->GetType() == EShaderType::PixelShader)
+		if (shader->GetType() == EShaderType::PixelShader)
 		{
 			for (const auto& textureIt : m_Textures)
 			{
@@ -171,6 +171,25 @@ void PipelineStateDX11::UnBind()
 	{
 		const IShader* shader = it.second.get();
 		_ASSERT(shader != nullptr);
+
+		if (shader->GetType() == EShaderType::PixelShader)
+		{
+			for (const auto& textureIt : m_Textures)
+			{
+				const ITexture* texture = textureIt.second.get();
+				_ASSERT(texture != nullptr);
+
+				texture->UnBind((uint32_t)textureIt.first, shader, IShaderParameter::Type::Texture);
+			}
+
+			for (const auto& samplerStateIt : m_Samplers)
+			{
+				const ISamplerState* samplerState = samplerStateIt.second.get();
+				_ASSERT(samplerState != nullptr);
+
+				samplerState->UnBind((uint32_t)samplerStateIt.first, shader, IShaderParameter::Type::Sampler);
+			}
+		}
 
 		shader->UnBind();
 	}

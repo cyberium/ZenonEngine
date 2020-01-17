@@ -12,18 +12,18 @@ struct PerFrame
 	float4x4 Projection;
 };
 
-struct PerObject
-{
-	float4x4 Model;
-	float4x4 View;
-	float4x4 Projection;
-};
-
 struct PerLight
 {
 	float4x4 LightView;
 	float4x4 LightProjection;
 };
+
+
+struct PerObject
+{
+	float4x4 Model;
+};
+
 
 
 

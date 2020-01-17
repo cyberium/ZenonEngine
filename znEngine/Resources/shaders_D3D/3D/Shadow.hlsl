@@ -11,11 +11,15 @@ cbuffer PerObject : register(b0)
 {
 	PerObject PO;
 }
+cbuffer PerFrame : register(b1)
+{
+	PerFrame PF;
+}
 
 PixelInputType VS_Shadow(VSInputP IN)
 {
 	// Projection and View - from light
-	const float4x4 mvp = mul(PO.Projection, mul(PO.View, PO.Model));
+	const float4x4 mvp = mul(PF.Projection, mul(PF.View, PO.Model));
 
 	PixelInputType PIT;
 	PIT.position = mul(mvp, float4(IN.position.xyz, 1.0f));

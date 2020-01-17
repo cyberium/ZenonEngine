@@ -30,5 +30,5 @@ PixelInputType VS_ScreenQuad(VS_Input IN)
 
 float4 PS_ScreenQuad(PixelInputType PIT) : SV_TARGET
 {
-	return Texture0.Sample(TextureSampler, PIT.texCoord) * Texture1.Sample(TextureSampler, PIT.texCoord) /** Texture2.Sample(TextureSampler, PIT.texCoord)*/ * Texture3.Sample(TextureSampler, PIT.texCoord);
+	return Texture0.Sample(TextureSampler, PIT.texCoord) /** Texture1.Sample(TextureSampler, PIT.texCoord) * Texture2.Sample(TextureSampler, PIT.texCoord) * Texture3.Sample(TextureSampler, PIT.texCoord)*/;
 }
