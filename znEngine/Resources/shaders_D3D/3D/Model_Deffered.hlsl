@@ -4,7 +4,7 @@
 struct VertexShaderOutput
 {
 	float4 position     : SV_POSITION;  // Clip space position.
-	float3 positionVS   : POSITION;    // View space position.
+	float4 positionVS   : POSITION;    // View space position.
 	float2 texCoord     : TEXCOORD0;    // Texture coordinate
 	float3 normalVS     : NORMAL;       // View space normal.
 	float3 tangentVS    : TANGENT;      // View space tangent.
@@ -36,9 +36,6 @@ Texture2D TextureTransparency             : register(t7);
 Texture2D TextureReflection               : register(t8);
 Texture2D TextureDisplacement             : register(t9);
 
-sampler LinearRepeatSampler               : register(s0);
-sampler LinearClampSampler                : register(s1);
-
 VertexShaderOutput VS_main(VSInputPTNTB IN)
 {
 	const float4x4 mv = mul(PF.View, PO.Model);
@@ -46,7 +43,7 @@ VertexShaderOutput VS_main(VSInputPTNTB IN)
 
 	VertexShaderOutput OUT;
 	OUT.position = mul(mvp, float4(IN.position, 1.0f));
-	OUT.positionVS = mul(mv, float4(IN.position, 1.0f)).xyz;
+	OUT.positionVS = mul(mv, float4(IN.position, 1.0f));
 
 	//OUT.tangentVS = mul((float3x3)mv, IN.tangent);
 	//OUT.binormalVS = mul((float3x3)mv, IN.binormal);
@@ -89,8 +86,10 @@ VertexShaderOutput VS_PTN(VSInputPTN IN)
 
 	VertexShaderOutput OUT;
 	OUT.position = mul(mvp, float4(IN.position, 1.0f));
-	OUT.positionVS = mul(mv, float4(IN.position, 1.0f)).xyz;
-	//OUT.positionVS = IN.position;
+
+	//OUT.positionVS = mul(mv, float4(IN.position, 1.0f)).xyz;
+	OUT.positionVS = mul(PO.Model, float4(IN.position, 1.0f));
+
 	OUT.tangentVS = mul(mv, float4(tangent, 0.0f)).xyz;
 	OUT.binormalVS = mul(mv, float4(binormal, 0.0f)).xyz;
 	OUT.normalVS = mul(mv, float4(IN.normal, 0.0f)).xyz;
@@ -214,7 +213,7 @@ PixelShaderOutput PS_main(VertexShaderOutput IN) : SV_TARGET
 	PixelShaderOutput OUT;
 	OUT.Diffuse = float4(diffuse.rgb, alpha);
 	OUT.Specular = float4(specular.rgb, mat.SpecularFactor);
-	OUT.PositionWS = float4(IN.positionVS, 1.0);
+	OUT.PositionWS = IN.positionVS;
 	OUT.NormalWS = float4(N.xyz, 0.0);
 	return OUT;
 }

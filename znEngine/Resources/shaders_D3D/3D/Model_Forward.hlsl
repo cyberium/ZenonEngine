@@ -43,9 +43,6 @@ StructuredBuffer<PerObject> Instances  : register(t11);
 
 Texture2D TextureShadow : register(t12);
 
-sampler LinearRepeatSampler     : register(s0);
-sampler LinearClampSampler      : register(s1);
-
 VertexShaderOutput VS_main(VSInputPTNTB IN)
 {
 	const float4x4 mv = mul(PF.View, PO.Model);

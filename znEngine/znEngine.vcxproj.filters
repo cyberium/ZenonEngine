@@ -273,6 +273,9 @@
     <ClCompile Include="Passes\DefferedRenderFinal.cpp">
       <Filter>Passes\3D</Filter>
     </ClCompile>
+    <ClCompile Include="Passes\DefferedRenderPrepareLights.cpp">
+      <Filter>Passes\3D</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="common.h">
@@ -465,6 +468,9 @@
       <Filter>Passes\3D</Filter>
     </ClInclude>
     <ClInclude Include="Passes\DefferedRenderFinal.h">
+      <Filter>Passes\3D</Filter>
+    </ClInclude>
+    <ClInclude Include="Passes\DefferedRenderPrepareLights.h">
       <Filter>Passes\3D</Filter>
     </ClInclude>
   </ItemGroup>

@@ -46,8 +46,9 @@ void RenderPassPipelined::PreRender(RenderEventArgs& e)
 {
 	m_RenderEventArgs = &e;
 
-	_ASSERT(m_Pipeline != nullptr, L"RenderPassPipelined: Pipeline is null. Don't use this class without pipeline.");
+	_ASSERT_EXPR(m_Pipeline != nullptr, L"RenderPassPipelined: Pipeline is null. Don't use this class without pipeline.");
     e.PipelineState = m_Pipeline.get();
+
 	m_Pipeline->Bind();
 
 	FillPerFrameData();
@@ -71,7 +72,7 @@ void RenderPassPipelined::PreRender(RenderEventArgs& e)
 
 void RenderPassPipelined::PostRender(RenderEventArgs& e)
 {
-	_ASSERT(m_Pipeline != nullptr, L"RenderPassPipelined: Pipeline is null. Don't use this class without pipeline.");
+	_ASSERT_EXPR(m_Pipeline != nullptr, L"RenderPassPipelined: Pipeline is null. Don't use this class without pipeline.");
 	m_Pipeline->UnBind();
 }
 
@@ -98,14 +99,14 @@ void RenderPassPipelined::SetPipeline(std::shared_ptr<IPipelineState> Pipeline)
 
 std::shared_ptr<IPipelineState> RenderPassPipelined::GetPipeline() const
 {
-	_ASSERT(m_Pipeline != nullptr, L"RenderPassPipelined: Pipeline is null. Don't use this class without pipeline.");
+	_ASSERT_EXPR(m_Pipeline != nullptr, L"RenderPassPipelined: Pipeline is null. Don't use this class without pipeline.");
 	return m_Pipeline;
 }
 
 
 void RenderPassPipelined::UpdateViewport(const Viewport * _viewport)
 {
-	_ASSERT(m_Pipeline != nullptr, L"RenderPassPipelined: Pipeline is null. Don't use this class without pipeline.");
+	_ASSERT_EXPR(m_Pipeline != nullptr, L"RenderPassPipelined: Pipeline is null. Don't use this class without pipeline.");
 	m_Pipeline->GetRasterizerState()->SetViewport(_viewport);
 }
 

@@ -68,10 +68,17 @@ void CDefferedRender::CreatePipeline(std::shared_ptr<IRenderTarget> /*RenderTarg
 		1,
 		8, 8, 8, 8, 0, 0
 	);
+	ITexture::TextureFormat positionTextureFormat
+	(
+		ITexture::Components::RGBA,
+		ITexture::Type::Float,
+		1,
+		32, 32, 32, 32, 0, 0
+	);
 	m_Texture0 = GetRenderDevice()->CreateTexture2D(Viewport->GetWidth(), Viewport->GetHeight(), 1, colorTextureFormat);
 	m_Texture1 = GetRenderDevice()->CreateTexture2D(Viewport->GetWidth(), Viewport->GetHeight(), 1, colorTextureFormat);
-	m_Texture2 = GetRenderDevice()->CreateTexture2D(Viewport->GetWidth(), Viewport->GetHeight(), 1, colorTextureFormat);
-	m_Texture3 = GetRenderDevice()->CreateTexture2D(Viewport->GetWidth(), Viewport->GetHeight(), 1, colorTextureFormat);
+	m_Texture2 = GetRenderDevice()->CreateTexture2D(Viewport->GetWidth(), Viewport->GetHeight(), 1, positionTextureFormat);
+	m_Texture3 = GetRenderDevice()->CreateTexture2D(Viewport->GetWidth(), Viewport->GetHeight(), 1, positionTextureFormat);
 
 	// Depth/stencil buffer
 	ITexture::TextureFormat depthStencilTextureFormat(

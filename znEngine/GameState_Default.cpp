@@ -78,7 +78,7 @@ void CGameState_World::OnResize(ResizeEventArgs& e)
 
 void CGameState_World::OnPreRender(RenderEventArgs& e)
 {
-	//m_RootForBoxes->SetRotation(glm::vec3(m_RootForBoxes->GetRotation().x, m_RootForBoxes->GetRotation().y + 0.01, 0.0f));
+	m_RootForBoxes->SetRotation(glm::vec3(m_RootForBoxes->GetRotation().x, m_RootForBoxes->GetRotation().y + 0.01, 0.0f));
 
 	CGameState::OnPreRender(e);
 }
@@ -138,7 +138,7 @@ void CGameState_World::Load3D()
 
 		sceneNodeLight->GetComponent<ILightComponent3D>()->SetEnabled(true);
 		sceneNodeLight->GetComponent<ILightComponent3D>()->SetType(ELightType::Spot);
-		sceneNodeLight->GetComponent<ILightComponent3D>()->SetColor(glm::vec3(1.0f, 0.0f, 0.0f));
+		sceneNodeLight->GetComponent<ILightComponent3D>()->SetColor(glm::vec3(1.0f, 1.0f, 0.0f));
 		sceneNodeLight->GetComponent<ILightComponent3D>()->SetRange(5000.0f);
 		sceneNodeLight->GetComponent<ILightComponent3D>()->SetIntensity(1.5f);
 		sceneNodeLight->GetComponent<ILightComponent3D>()->SetSpotlightAngle(20.0f);
@@ -150,10 +150,22 @@ void CGameState_World::Load3D()
 
 		sceneNodeLight2->GetComponent<ILightComponent3D>()->SetEnabled(true);
 		sceneNodeLight2->GetComponent<ILightComponent3D>()->SetType(ELightType::Spot);
-		sceneNodeLight2->GetComponent<ILightComponent3D>()->SetColor(glm::vec3(0.0f, 1.0f, 0.0f));
+		sceneNodeLight2->GetComponent<ILightComponent3D>()->SetColor(glm::vec3(0.0f, 0.0f, 1.0f));
 		sceneNodeLight2->GetComponent<ILightComponent3D>()->SetRange(5000.0f);
 		sceneNodeLight2->GetComponent<ILightComponent3D>()->SetIntensity(1.5f);
 		sceneNodeLight2->GetComponent<ILightComponent3D>()->SetSpotlightAngle(20.0f);
+
+		std::shared_ptr<SceneNode3D> sceneNodeLightCenter = m_Scene3D->CreateWrappedSceneNode<SceneNode3D>("SceneNode3D", m_Scene3D->GetRootNode());
+		sceneNodeLightCenter->SetName("Light node2");
+		sceneNodeLightCenter->SetTranslate(glm::vec3(0.0f, 700.0f, 700.0f));
+		sceneNodeLightCenter->SetRotation(glm::vec3(0.0f, -0.5f, -0.5f));
+
+		sceneNodeLightCenter->GetComponent<ILightComponent3D>()->SetEnabled(true);
+		sceneNodeLightCenter->GetComponent<ILightComponent3D>()->SetType(ELightType::Spot);
+		sceneNodeLightCenter->GetComponent<ILightComponent3D>()->SetColor(glm::vec3(1.0f, 0.0f, 1.0f));
+		sceneNodeLightCenter->GetComponent<ILightComponent3D>()->SetRange(5000.0f);
+		sceneNodeLightCenter->GetComponent<ILightComponent3D>()->SetIntensity(1.5f);
+		sceneNodeLightCenter->GetComponent<ILightComponent3D>()->SetSpotlightAngle(20.0f);
 	}
 
 	//std::shared_ptr<MaterialTextured> materialTextured = std::make_shared<MaterialTextured>(GetRenderDevice());
@@ -251,11 +263,15 @@ void CGameState_World::Load3D()
 	m_DefferedRenderPass = std::make_shared<CDefferedRender>(GetRenderDevice(), m_BuildRenderListPass);
 	m_DefferedRenderPass->CreatePipeline(GetRenderWindow()->GetRenderTarget(), GetRenderWindow()->GetViewport());
 
-	m_DefferedFinalRenderPass = std::make_shared<CDefferedRenderFinal>(GetRenderDevice(), m_DefferedRenderPass, m_BuildRenderListPass);
+	m_DefferedRenderPrepareLights = std::make_shared<CDefferedRenderPrepareLights>(GetRenderDevice(), m_BuildRenderListPass);
+	m_DefferedRenderPrepareLights->CreatePipeline(nullptr, nullptr);
+
+	m_DefferedFinalRenderPass = std::make_shared<CDefferedRenderFinal>(GetRenderDevice(), m_DefferedRenderPass, m_DefferedRenderPrepareLights);
 	m_DefferedFinalRenderPass->CreatePipeline(GetRenderWindow()->GetRenderTarget(), GetRenderWindow()->GetViewport());
 
 	m_Technique3D.AddPass(m_BuildRenderListPass);
 	m_Technique3D.AddPass(m_DefferedRenderPass);
+	m_Technique3D.AddPass(m_DefferedRenderPrepareLights);
 	m_Technique3D.AddPass(m_DefferedFinalRenderPass);
 
 #if 0

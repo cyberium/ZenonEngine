@@ -2,8 +2,12 @@
 
 #include "Passes/CollectLightPass.h"
 #include "Passes/ShadowPass.h"
+
+
 #include "Passes/DefferedRender.h"
+#include "Passes/DefferedRenderPrepareLights.h"
 #include "Passes/DefferedRenderFinal.h"
+
 
 #include "SceneFunctional/UI/UITexture.h"
 
@@ -53,6 +57,8 @@ private:
 	std::shared_ptr<SceneNode3D> m_RootForBoxes;
 
 	std::shared_ptr<BuildRenderListPass> m_BuildRenderListPass;
+
 	std::shared_ptr<CDefferedRender> m_DefferedRenderPass;
+	std::shared_ptr<CDefferedRenderPrepareLights> m_DefferedRenderPrepareLights;
 	std::shared_ptr<CDefferedRenderFinal> m_DefferedFinalRenderPass;
 };

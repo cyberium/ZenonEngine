@@ -164,10 +164,12 @@ void ShaderParameterBase::Unbind()
 	if (m_pTexture)
 	{
 		m_pTexture->UnBind(m_uiSlotID, m_Shader, m_ParameterType);
+		m_pTexture = nullptr;
 	}
 	if (m_pSamplerState)
 	{
 		m_pSamplerState->UnBind(m_uiSlotID, m_Shader, m_ParameterType);
+		m_pSamplerState = nullptr;
 	}
 	if (m_pStructuredBuffer)
 	{
