@@ -57,6 +57,7 @@
     <ClCompile Include="Passes\Technical\EndQueryPass.cpp" />
     <ClCompile Include="Passes\Technical\GenerateMipMapsPass.cpp" />
     <ClCompile Include="Passes\Technical\InvokeFunctionPass.cpp" />
+    <ClCompile Include="Passes\Technical\RenderListProcessorPass.cpp" />
     <ClCompile Include="Passes\Technical\SetShaderParameterPass.cpp" />
     <ClCompile Include="Proxies\MaterialProxie.cpp" />
     <ClCompile Include="Proxies\MeshProxie.cpp" />
@@ -94,6 +95,7 @@
   <ItemGroup>
     <ClInclude Include="..\shared\Interfaces\Render\IGeometry.h" />
     <ClInclude Include="..\shared\Interfaces\Render\IImageLoader.h" />
+    <ClInclude Include="..\shared\Interfaces\Render\IRenderTechnique.h" />
     <ClInclude Include="..\shared\Interfaces\Render\Types\RenderGeometryParams.h" />
     <ClInclude Include="..\shared\Interfaces\Render\Types\ShaderType.h" />
     <ClInclude Include="..\shared\Interfaces\Scene\Types\Light.h" />
@@ -198,6 +200,7 @@
     <ClInclude Include="Passes\Technical\EndQueryPass.h" />
     <ClInclude Include="Passes\Technical\GenerateMipMapsPass.h" />
     <ClInclude Include="Passes\Technical\InvokeFunctionPass.h" />
+    <ClInclude Include="Passes\Technical\RenderListProcessorPass.h" />
     <ClInclude Include="Passes\Technical\SetShaderParameterPass.h" />
     <ClInclude Include="Proxies\MaterialProxie.h" />
     <ClInclude Include="Proxies\MeshProxie.h" />

@@ -220,7 +220,7 @@ void CGameState_World::Load3D()
 	
 	m_BuildRenderListPass = std::make_shared<BuildRenderListPass>(GetRenderDevice(), m_Scene3D);
 
-	m_DefferedRenderPass = std::make_shared<CDefferedRender>(GetRenderDevice(), m_Scene3D);
+	m_DefferedRenderPass = std::make_shared<CDefferedRender>(GetRenderDevice(), m_BuildRenderListPass);
 	m_DefferedRenderPass->CreatePipeline(GetRenderWindow()->GetRenderTarget(), GetRenderWindow()->GetViewport());
 
 	m_DefferedFinalRenderPass = std::make_shared<CDefferedRenderFinal>(GetRenderDevice(), m_DefferedRenderPass);

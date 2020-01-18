@@ -2,11 +2,11 @@
 
 #include "../ScenePass.h"
 
-class BuildRenderListPass
+class ZN_API BuildRenderListPass
 	: public ScenePass
 {
 public:
-	struct SGeometryElement
+	struct ZN_API SGeometryElement
 	{
 		SGeometryElement(const ISceneNode* Node, const IGeometry* Geometry, const IMaterial* Material, const SGeometryPartParams GeometryPartParams)
 			: Node(Node)
@@ -21,7 +21,7 @@ public:
 		const SGeometryPartParams GeometryPartParams;
 	};
 
-	struct SLightElement
+	struct ZN_API SLightElement
 	{
 		SLightElement(const ISceneNode* Node, const ILightComponent3D* Light)
 			: Node(Node)

@@ -37,6 +37,7 @@
 #include "../znCore/Passes/Technical/EndQueryPass.h"
 #include "../znCore/Passes/Technical/GenerateMipMapsPass.h"
 #include "../znCore/Passes/Technical/InvokeFunctionPass.h"
+#include "../znCore/Passes/Technical/RenderListProcessorPass.h"
 #include "../znCore/Passes/Technical/SetShaderParameterPass.h"
 
 // Camera controllers

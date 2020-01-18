@@ -9,6 +9,11 @@ RenderTechnique::RenderTechnique()
 RenderTechnique::~RenderTechnique()
 {}
 
+
+
+//
+// IRenderTechnique
+//
 uint32 RenderTechnique::AddPass(std::shared_ptr<IRenderPass> pass)
 {
 	_ASSERT_EXPR(pass, L"Pass must not be nullptr.");
@@ -41,7 +46,7 @@ void RenderTechnique::Render(RenderEventArgs& renderEventArgs)
 
 void RenderTechnique::UpdateViewport(const Viewport * _viewport)
 {
-	for (auto pass : m_Passes)
+	for (const auto& pass : m_Passes)
 	{
 		if (std::shared_ptr<IRenderPassPipelined> pipelinedPass = std::dynamic_pointer_cast<IRenderPassPipelined>(pass))
 			pipelinedPass->UpdateViewport(_viewport);

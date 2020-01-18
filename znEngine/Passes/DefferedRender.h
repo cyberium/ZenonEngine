@@ -1,10 +1,10 @@
 #pragma once
 
 class CDefferedRender
-	: public ScenePassPipelined
+	: public RenderListProcessorPass
 {
 public:
-	CDefferedRender(std::shared_ptr<IRenderDevice> RenderDevice, std::shared_ptr<IScene> Scene);
+	CDefferedRender(std::shared_ptr<IRenderDevice> RenderDevice, std::shared_ptr<BuildRenderListPass> BuildRenderListPass);
 	virtual ~CDefferedRender();
 
 	// CDefferedRender

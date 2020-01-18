@@ -3,8 +3,8 @@
 // General
 #include "DefferedRender.h"
 
-CDefferedRender::CDefferedRender(std::shared_ptr<IRenderDevice> RenderDevice, std::shared_ptr<IScene> Scene)
-	: ScenePassPipelined(RenderDevice, Scene)
+CDefferedRender::CDefferedRender(std::shared_ptr<IRenderDevice> RenderDevice, std::shared_ptr<BuildRenderListPass> BuildRenderListPass)
+	: RenderListProcessorPass(RenderDevice, BuildRenderListPass)
 {
 	m_PerObjectData = (PerObject3D*)_aligned_malloc(sizeof(PerObject3D), 16);
 	m_PerObjectConstantBuffer = GetRenderDevice()->CreateConstantBuffer(PerObject3D());
@@ -43,7 +43,7 @@ std::shared_ptr<ITexture> CDefferedRender::GetTexture3() const
 
 void CDefferedRender::PreRender(RenderEventArgs & e)
 {
-	ScenePassPipelined::PreRender(e);
+	RenderListProcessorPass::PreRender(e);
 
 	GetPipeline()->GetRenderTarget()->Clear(ClearFlags::All, glm::vec4(0.0f, 0.0f, 0.0f, 0.0f));
 }
@@ -114,7 +114,7 @@ void CDefferedRender::CreatePipeline(std::shared_ptr<IRenderTarget> /*RenderTarg
 
 void CDefferedRender::UpdateViewport(const Viewport * _viewport)
 {
-	ScenePassPipelined::UpdateViewport(_viewport);
+	RenderListProcessorPass::UpdateViewport(_viewport);
 
 	GetPipeline()->GetRenderTarget()->Resize(_viewport->GetWidth(), _viewport->GetHeight());
 }
@@ -126,7 +126,7 @@ void CDefferedRender::UpdateViewport(const Viewport * _viewport)
 //
 bool CDefferedRender::Visit3D(ISceneNode * node)
 {
-	ScenePassPipelined::VisitBase(node);
+	RenderListProcessorPass::VisitBase(node);
 
 	const ICamera* camera = GetRenderEventArgs()->Camera;
 	//const Viewport* viewport = GetRenderEventArgs()->PipelineState->GetRasterizerState()->GetViewports()[0];
