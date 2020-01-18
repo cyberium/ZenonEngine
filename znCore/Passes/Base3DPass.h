@@ -2,9 +2,11 @@
 
 #include "ScenePassPipelined.h"
 
-// FORWARD BEGIN
-class SceneNode3D;
-// FORWARD END
+__declspec(align(16)) struct ZN_API PerObject3D
+{
+	glm::mat4 Model;
+};
+
 
 class ZN_API Base3DPass 
 	: public ScenePassPipelined
@@ -18,11 +20,7 @@ public:
 	virtual bool Visit(IMesh* Mesh, SGeometryPartParams GeometryPartParams = SGeometryPartParams()) override;
 	virtual bool Visit(IGeometry* Geometry, const IMaterial* Material, SGeometryPartParams GeometryPartParams = SGeometryPartParams()) override;
 
-protected: // PerObject functional
-	__declspec(align(16)) struct PerObject3D
-	{
-		glm::mat4 Model;
-	};
+protected:
 	PerObject3D*                                    m_PerObjectData;
 	std::shared_ptr<IConstantBuffer>                m_PerObjectConstantBuffer;
 };

@@ -25,8 +25,8 @@ void CMaterialPassTransperent::CreatePipeline(std::shared_ptr<IRenderTarget> Ren
 
 	if (GetRenderDevice()->GetDeviceType() == RenderDeviceType::RenderDeviceType_DirectX)
 	{
-		g_pVertexShader = GetRenderDevice()->CreateShader(EShaderType::VertexShader, "IDB_SHADER_3D_MODEL", IShader::ShaderMacros(), "VS_main", "latest");
-		g_pPixelShader = GetRenderDevice()->CreateShader(EShaderType::PixelShader, "IDB_SHADER_3D_MODEL", IShader::ShaderMacros(), "PS_main", "latest");
+		g_pVertexShader = GetRenderDevice()->CreateShader(EShaderType::VertexShader, "IDB_SHADER_3D_MODEL_FORWARD", IShader::ShaderMacros(), "VS_main", "latest");
+		g_pPixelShader = GetRenderDevice()->CreateShader(EShaderType::PixelShader, "IDB_SHADER_3D_MODEL_FORWARD", IShader::ShaderMacros(), "PS_main", "latest");
 	}
 	g_pVertexShader->LoadInputLayoutFromReflector();
 

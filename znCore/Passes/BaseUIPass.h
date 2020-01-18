@@ -2,9 +2,11 @@
 
 #include "ScenePassPipelined.h"
 
-// FORWARD BEGIN
-class CUIBaseNode;
-// FORWARD END
+__declspec(align(16)) struct PerObjectUI
+{
+	glm::mat4 Model;
+	glm::mat4 Projection;
+};
 
 class ZN_API BaseUIPass 
 	: public ScenePassPipelined
@@ -22,11 +24,6 @@ public:
 	virtual bool Visit(IGeometry* Geometry, const IMaterial* Material, SGeometryPartParams GeometryPartParams = SGeometryPartParams()) override;
 
 protected:
-	__declspec(align(16)) struct PerObjectUI
-	{
-		glm::mat4 Model;
-		glm::mat4 Projection;
-	};
-	PerObjectUI*                                    m_PerObjectData;
-	std::shared_ptr<IConstantBuffer>                m_PerObjectConstantBuffer;
+	PerObjectUI* m_PerObjectData;
+	std::shared_ptr<IConstantBuffer> m_PerObjectConstantBuffer;
 };

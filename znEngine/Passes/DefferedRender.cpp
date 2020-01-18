@@ -40,6 +40,11 @@ std::shared_ptr<ITexture> CDefferedRender::GetTexture3() const
 	return m_Texture3;
 }
 
+std::shared_ptr<ITexture> CDefferedRender::GetTextureDepthStencil() const
+{
+	return m_DepthStencilTexture;
+}
+
 
 void CDefferedRender::PreRender(RenderEventArgs & e)
 {
@@ -92,7 +97,7 @@ void CDefferedRender::CreatePipeline(std::shared_ptr<IRenderTarget> /*RenderTarg
 	std::shared_ptr<IPipelineState> defferedPipeline = GetRenderDevice()->CreatePipelineState();
 	defferedPipeline->GetBlendState()->SetBlendMode(disableBlending);
 	defferedPipeline->GetDepthStencilState()->SetDepthMode(enableDepthWrites);
-	defferedPipeline->GetRasterizerState()->SetCullMode(IRasterizerState::CullMode::None);
+	defferedPipeline->GetRasterizerState()->SetCullMode(IRasterizerState::CullMode::Back);
 	defferedPipeline->GetRasterizerState()->SetFillMode(IRasterizerState::FillMode::Solid);
 	defferedPipeline->SetRenderTarget(rt);
 	defferedPipeline->GetRasterizerState()->SetViewport(Viewport);
@@ -134,8 +139,6 @@ bool CDefferedRender::Visit3D(ISceneNode * node)
 	if (camera)
 	{
 		m_PerObjectData->Model = node->GetWorldTransfom();
-		m_PerObjectData->View = camera->GetViewMatrix();
-		m_PerObjectData->Projection = camera->GetProjectionMatrix();
 		m_PerObjectConstantBuffer->Set(m_PerObjectData, sizeof(PerObject3D));
 
 		return true;

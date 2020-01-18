@@ -537,11 +537,14 @@
     <Text Include="Resources\shaders_D3D\Light.hlsl">
       <Filter>Resources\Shaders_D3D</Filter>
     </Text>
-    <Text Include="Resources\shaders_D3D\3D\Model.hlsl">
+    <Text Include="Resources\shaders_D3D\3D\Shadow.hlsl">
       <Filter>Resources\Shaders_D3D\3D</Filter>
     </Text>
-    <Text Include="Resources\shaders_D3D\3D\Model_Deffered.hlsl" />
-    <Text Include="Resources\shaders_D3D\3D\Shadow.hlsl">
+    <Text Include="Resources\shaders_D3D\3D\Deffered.hlsl" />
+    <Text Include="Resources\shaders_D3D\3D\Model_Deffered.hlsl">
+      <Filter>Resources\Shaders_D3D\3D</Filter>
+    </Text>
+    <Text Include="Resources\shaders_D3D\3D\Model_Forward.hlsl">
       <Filter>Resources\Shaders_D3D\3D</Filter>
     </Text>
   </ItemGroup>
@@ -549,10 +552,5 @@
     <Image Include="Resources\Textures\default.png">
       <Filter>Resources\Textures</Filter>
     </Image>
-  </ItemGroup>
-  <ItemGroup>
-    <FxCompile Include="Resources\shaders_D3D\3D\Deffered.hlsl">
-      <Filter>Resources\Shaders_D3D\3D</Filter>
-    </FxCompile>
   </ItemGroup>
 </Project>

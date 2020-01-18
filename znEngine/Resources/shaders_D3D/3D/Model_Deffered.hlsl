@@ -207,6 +207,9 @@ PixelShaderOutput PS_main(VertexShaderOutput IN) : SV_TARGET
 		}
 	}
 
+	// Method of packing specular power from "Deferred Rendering in Killzone 2" presentation from Michiel van der Leeuw, Guerrilla (2007)
+	mat.SpecularFactor = log2(mat.SpecularFactor) / 10.5f;
+
 
 	PixelShaderOutput OUT;
 	OUT.Diffuse = float4(diffuse.rgb, alpha);

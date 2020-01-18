@@ -222,7 +222,7 @@
     <Image Include="Resources\Textures\default.png" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="Resources\shaders_D3D\3D\Model.hlsl">
+    <Text Include="Resources\shaders_D3D\3D\Model_Forward.hlsl">
       <FileType>Document</FileType>
     </Text>
   </ItemGroup>

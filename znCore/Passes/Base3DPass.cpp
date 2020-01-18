@@ -18,7 +18,7 @@ Base3DPass::~Base3DPass()
 
 
 //
-// Inherited from Visitor
+// IVisitor
 //
 bool Base3DPass::Visit3D(ISceneNode* sceneNode)
 {

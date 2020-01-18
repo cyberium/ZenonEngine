@@ -12,6 +12,7 @@ public:
 	std::shared_ptr<ITexture> GetTexture1() const;
 	std::shared_ptr<ITexture> GetTexture2() const;
 	std::shared_ptr<ITexture> GetTexture3() const;
+	std::shared_ptr<ITexture> GetTextureDepthStencil() const;
 
 	// IRenderPass
 	void PreRender(RenderEventArgs& e) override;
@@ -27,12 +28,6 @@ public:
 	bool Visit(ILightComponent3D* light) override;
 
 private:
-	__declspec(align(16)) struct PerObject3D
-	{
-		glm::mat4 Model;
-		glm::mat4 View;
-		glm::mat4 Projection;
-	};
 	PerObject3D* m_PerObjectData;
 	std::shared_ptr<IConstantBuffer> m_PerObjectConstantBuffer;
 

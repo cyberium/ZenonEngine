@@ -18,6 +18,10 @@ cbuffer PerObject : register(b0)
 {
 	PerObject PO;
 }
+cbuffer PerFrame : register(b1)
+{
+	PerFrame PF;
+}
 cbuffer Material : register(b2)
 {
     Debug_Material Material;
@@ -25,8 +29,8 @@ cbuffer Material : register(b2)
 
 VertexShaderOutput VS_main(VSInputPN IN)
 {
-	const float4x4 mv = mul(PO.View, PO.Model);
-	const float4x4 mvp = mul(PO.Projection, mv);
+	const float4x4 mv = mul(PF.View, PO.Model);
+	const float4x4 mvp = mul(PF.Projection, mv);
 
 	VertexShaderOutput OUT;
 	OUT.position = mul(mvp, float4(IN.position.xyz, 1.0f));
@@ -46,7 +50,7 @@ void GS_main(point VertexShaderOutput vertices[1], inout LineStream<VertexShader
 	lineStream.Append(v0);
 
 	VertexShaderOutput v1;
-	v1.position = vertices[0].position + mul(PO.Projection, float4(vertices[0].normalVS * 5.05f, 0.0f));
+	v1.position = vertices[0].position + mul(PF.Projection, float4(vertices[0].normalVS * 5.05f, 0.0f));
 	v1.positionVS = vertices[0].positionVS;
 	v1.normalVS = vertices[0].normalVS;
 	v1.color = float3(1.0f, 0.0, 0.0);
