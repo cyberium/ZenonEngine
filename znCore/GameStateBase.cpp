@@ -168,22 +168,24 @@ void CGameState::OnPostRender(RenderEventArgs& e)
 	//m_TestQuery->End(e.FrameCounter);
 	m_FrameQuery->End(e.FrameCounter);
 
-	vec3 cameraTrans = GetCameraController()->GetCamera()->GetTranslation();
-	m_CameraPosText->GetProperties()->GetPropertyT<std::string>("Text")->Set("Pos: x = " + std::to_string(cameraTrans.x) + ", y = " + std::to_string(cameraTrans.y) + ", z = " + std::to_string(cameraTrans.z));
-	m_CameraRotText->GetProperties()->GetPropertyT<std::string>("Text")->Set("Rot: yaw = " + std::to_string(GetCameraController()->GetCamera()->GetYaw()) + ", pitch = " + std::to_string(GetCameraController()->GetCamera()->GetPitch()));
-	m_CameraRot2Text->GetProperties()->GetPropertyT<std::string>("Text")->Set("Rot: [" + std::to_string(GetCameraController()->GetCamera()->GetDirection().x) + ", " + std::to_string(GetCameraController()->GetCamera()->GetDirection().y) + ", " + std::to_string(GetCameraController()->GetCamera()->GetDirection().z) + "].");
-	
-	IQuery::QueryResult frameResult = m_FrameQuery->GetQueryResult(e.FrameCounter);
-	if (frameResult.IsValid)
 	{
-		if (GetRenderDevice()->GetDeviceType() == RenderDeviceType::RenderDeviceType_DirectX)
-			m_FrameTime = frameResult.ElapsedTime * 1000.0;
-		else
-			m_FrameTime = frameResult.ElapsedTime / 1000000.0;
+		vec3 cameraTrans = GetCameraController()->GetCamera()->GetTranslation();
+		m_CameraPosText->GetProperties()->GetPropertyT<std::string>("Text")->Set("Pos: x = " + std::to_string(cameraTrans.x) + ", y = " + std::to_string(cameraTrans.y) + ", z = " + std::to_string(cameraTrans.z));
+		m_CameraRotText->GetProperties()->GetPropertyT<std::string>("Text")->Set("Rot: yaw = " + std::to_string(GetCameraController()->GetCamera()->GetYaw()) + ", pitch = " + std::to_string(GetCameraController()->GetCamera()->GetPitch()));
+		m_CameraRot2Text->GetProperties()->GetPropertyT<std::string>("Text")->Set("Rot: [" + std::to_string(GetCameraController()->GetCamera()->GetDirection().x) + ", " + std::to_string(GetCameraController()->GetCamera()->GetDirection().y) + ", " + std::to_string(GetCameraController()->GetCamera()->GetDirection().z) + "].");
 
-		double fpsValue = 1000.0f / m_FrameTime;
+		IQuery::QueryResult frameResult = m_FrameQuery->GetQueryResult(e.FrameCounter);
+		if (frameResult.IsValid)
+		{
+			if (GetRenderDevice()->GetDeviceType() == RenderDeviceType::RenderDeviceType_DirectX)
+				m_FrameTime = frameResult.ElapsedTime * 1000.0;
+			else
+				m_FrameTime = frameResult.ElapsedTime / 1000000.0;
 
-		m_FPSText->GetProperties()->GetPropertyT<std::string>("Text")->Set("FPS: " + std::to_string(uint64(fpsValue)));
+			double fpsValue = 1000.0f / m_FrameTime;
+
+			m_FPSText->GetProperties()->GetPropertyT<std::string>("Text")->Set("FPS: " + std::to_string(uint64(fpsValue)));
+		}
 	}
 }
 

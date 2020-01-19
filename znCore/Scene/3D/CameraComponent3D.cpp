@@ -61,11 +61,25 @@ void CCameraComponent3D::DoMoveRight(float Value)
 	sceneNode3D->AddTranslate(m_RightDirection * Value);
 }
 
+void CCameraComponent3D::SetTranslation(glm::vec3 Translation) const
+{
+	std::shared_ptr<ISceneNode3D> sceneNode3D = std::dynamic_pointer_cast<ISceneNode3D>(GetOwnerNode());
+	_ASSERT(sceneNode3D != nullptr);
+	sceneNode3D->SetTranslate(Translation);
+}
+
 glm::vec3 CCameraComponent3D::GetTranslation() const
 {
 	std::shared_ptr<ISceneNode3D> sceneNode3D = std::dynamic_pointer_cast<ISceneNode3D>(GetOwnerNode());
 	_ASSERT(sceneNode3D != nullptr);
 	return sceneNode3D->GetTranslation();
+}
+
+void CCameraComponent3D::SetDirection(glm::vec3 Direction) const
+{
+	std::shared_ptr<ISceneNode3D> sceneNode3D = std::dynamic_pointer_cast<ISceneNode3D>(GetOwnerNode());
+	_ASSERT(sceneNode3D != nullptr);
+	sceneNode3D->SetRotation(Direction);
 }
 
 glm::vec3 CCameraComponent3D::GetDirection() const
@@ -85,7 +99,9 @@ void CCameraComponent3D::SetYaw(float Yaw)
 
 	m_Yaw_XProperty->RaiseValueChangedCallback();
 
-	EulerAnglesToDirectionVector();
+	std::shared_ptr<ISceneNode3D> sceneNode3D = std::dynamic_pointer_cast<ISceneNode3D>(GetOwnerNode());
+	_ASSERT(sceneNode3D != nullptr);
+	sceneNode3D->SetRotation(EulerAnglesToDirectionVector(m_Yaw_X, m_Pitch_Y));
 
 	m_View_Dirty = true;
 }
@@ -110,7 +126,9 @@ void CCameraComponent3D::SetPitch(float Pitch)
 
 	m_Pitch_YProperty->RaiseValueChangedCallback();
 
-	EulerAnglesToDirectionVector();
+	std::shared_ptr<ISceneNode3D> sceneNode3D = std::dynamic_pointer_cast<ISceneNode3D>(GetOwnerNode());
+	_ASSERT(sceneNode3D != nullptr);
+	sceneNode3D->SetRotation(EulerAnglesToDirectionVector(m_Yaw_X, m_Pitch_Y));
 
 	m_View_Dirty = true;
 }
@@ -127,26 +145,18 @@ float CCameraComponent3D::GetPitch() const
 
 void CCameraComponent3D::SetPerspectiveProjection(EPerspectiveProjectionHand PerspectiveProjectionHand, float fovy, float aspect, float zNear, float zFar)
 {
-	mat4 fix(
-		1.0f, 0.0f, 0.0f, 0.0f,
-		0.0f, 1.0f, 0.0f, 0.0f,
-		0.0f, 0.0f, 2.0f, 0.0f,
-		0.0f, 0.0f, -1.0f, 1.0f
-	);
-
 	m_Perspective_FOV = fovy;
 	m_Perspective_Aspect = aspect;
 	m_Near = zNear;
 	m_Far = zFar;
 
-	mat4 perspectiveMatrix = glm::perspective(glm::radians(fovy), aspect, zNear, zFar);
 	if (PerspectiveProjectionHand == EPerspectiveProjectionHand::Right)
 	{
-		m_Projection = perspectiveMatrix;
+		m_Projection = glm::perspectiveRH_NO(glm::radians(fovy), aspect, zNear, zFar);
 	}
 	else
 	{
-		m_Projection = fix * perspectiveMatrix;
+		m_Projection = glm::perspectiveLH_NO(glm::radians(fovy), aspect, zNear, zFar);
 	}
 
 	m_Inverse_Projection = glm::inverse(m_Projection);
@@ -214,27 +224,25 @@ void CCameraComponent3D::OnMessage(std::shared_ptr<ISceneNodeComponent> Componen
 
 
 
+
+
 //
 // Protected
 //
-void CCameraComponent3D::EulerAnglesToDirectionVector()
+glm::vec3 CCameraComponent3D::EulerAnglesToDirectionVector(float Yaw, float Pitch)
 {
 	// Calculate the new Front vector
 	glm::vec3 direction = { 0.0f, 0.0f, 0.0f };
-	direction.x = glm::cos(glm::radians(m_Yaw_X)) * glm::cos(glm::radians(m_Pitch_Y)); // y
-	direction.y = glm::sin(glm::radians(m_Pitch_Y));                              // z
-	direction.z = glm::sin(glm::radians(m_Yaw_X)) * glm::cos(glm::radians(m_Pitch_Y)); // x
+	direction.x = glm::cos(glm::radians(Yaw)) * glm::cos(glm::radians(Pitch)); // y
+	direction.y = glm::sin(glm::radians(Pitch));                               // z
+	direction.z = glm::sin(glm::radians(Yaw)) * glm::cos(glm::radians(Pitch)); // x
 	direction = glm::normalize(direction);
 
 	// Also re-calculate the Right and Up vector
 	m_RightDirection = glm::normalize(glm::cross(direction, vec3(0.0f, 1.0f, 0.0f)));
 	m_UpDirection = glm::cross(m_RightDirection, direction);
 
-	std::shared_ptr<ISceneNode3D> sceneNode3D = std::dynamic_pointer_cast<ISceneNode3D>(GetOwnerNode());
-	_ASSERT(sceneNode3D != nullptr);
-	sceneNode3D->SetRotation(direction);
-
-	DirectionVectorToEulerAngles();
+	return direction;
 }
 
 namespace
@@ -246,7 +254,7 @@ namespace
 	}
 }
 
-void CCameraComponent3D::DirectionVectorToEulerAngles()
+void CCameraComponent3D::DirectionVectorToEulerAngles(const glm::vec3& Direction)
 {
 	std::shared_ptr<ISceneNode3D> sceneNode3D = std::dynamic_pointer_cast<ISceneNode3D>(GetOwnerNode());
 	_ASSERT(sceneNode3D != nullptr);

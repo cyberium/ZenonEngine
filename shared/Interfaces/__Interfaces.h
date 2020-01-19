@@ -12,6 +12,8 @@
 
 #define ZN_INTERFACE struct
 
+#define _CRT_SECURE_NO_WARNINGS
+
 // General types
 typedef signed char int8;
 typedef unsigned char uint8;

@@ -18,7 +18,7 @@ CTexturedMaterialPass::~CTexturedMaterialPass()
 //
 // IRenderPassPipelined
 //
-void CTexturedMaterialPass::CreatePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport)
+std::shared_ptr<IRenderPassPipelined> CTexturedMaterialPass::CreatePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport)
 {
 	std::shared_ptr<IShader> g_pVertexShader;
 	std::shared_ptr<IShader> g_pPixelShader;
@@ -57,7 +57,7 @@ void CTexturedMaterialPass::CreatePipeline(std::shared_ptr<IRenderTarget> Render
 	sampler->SetWrapMode(ISamplerState::WrapMode::Repeat, ISamplerState::WrapMode::Repeat);
 	Pipeline->SetSampler(0, sampler);
 
-	SetPipeline(Pipeline);
+	return SetPipeline(Pipeline);
 }
 
 

@@ -21,7 +21,7 @@ BaseUIPass::~BaseUIPass()
 //
 // IRenderPassPipelined
 //
-void BaseUIPass::CreatePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport)
+std::shared_ptr<IRenderPassPipelined> BaseUIPass::CreatePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport)
 {
 	std::shared_ptr<IPipelineState> UIPipeline = GetRenderDevice()->CreatePipelineState();
 	UIPipeline->GetBlendState()->SetBlendMode(alphaBlending);
@@ -33,7 +33,7 @@ void BaseUIPass::CreatePipeline(std::shared_ptr<IRenderTarget> RenderTarget, con
 	UIPipeline->SetRenderTarget(RenderTarget);
 	UIPipeline->GetRasterizerState()->SetViewport(Viewport);
 
-	SetPipeline(UIPipeline);
+	return SetPipeline(UIPipeline);
 }
 
 

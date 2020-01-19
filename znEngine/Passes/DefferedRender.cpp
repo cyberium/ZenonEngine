@@ -58,7 +58,7 @@ void CDefferedRender::PreRender(RenderEventArgs & e)
 //
 // IRenderPassPipelined
 //
-void CDefferedRender::CreatePipeline(std::shared_ptr<IRenderTarget> /*RenderTarget*/, const Viewport * Viewport)
+std::shared_ptr<IRenderPassPipelined> CDefferedRender::CreatePipeline(std::shared_ptr<IRenderTarget> /*RenderTarget*/, const Viewport * Viewport)
 {
 	ITexture::TextureFormat colorTextureFormat
 	(
@@ -120,7 +120,7 @@ void CDefferedRender::CreatePipeline(std::shared_ptr<IRenderTarget> /*RenderTarg
 	samplerClamp->SetWrapMode(ISamplerState::WrapMode::Clamp, ISamplerState::WrapMode::Clamp);
 	defferedPipeline->SetSampler(1, samplerClamp);
 
-	SetPipeline(defferedPipeline);
+	return SetPipeline(defferedPipeline);
 }
 
 void CDefferedRender::UpdateViewport(const Viewport * _viewport)

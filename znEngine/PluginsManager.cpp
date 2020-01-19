@@ -29,9 +29,16 @@ bool CznPluginsManager::AddPlugin(const std::string& PluginDLLName)
 		//	throw CPluginException("Already registered.");
 		//}
 
+		char modulePath[MAX_PATH];
+		::GetModuleFileNameA(NULL, modulePath, MAX_PATH);
+
+		std::string modulePathStr(modulePath);
+		modulePathStr = modulePathStr.substr(0, modulePathStr.find_last_of("\\") + 1);
+
 		HMODULE pluginDLL = LoadLibraryA(PluginDLLName.c_str());
 		if (pluginDLL == NULL)
 		{
+			DWORD lastError = ::GetLastError();
 			throw CPluginException_NotAPlguin("File not found.");
 		}
 

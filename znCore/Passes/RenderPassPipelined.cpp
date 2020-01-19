@@ -29,6 +29,18 @@ RenderPassPipelined::~RenderPassPipelined()
 
 
 
+std::shared_ptr<IRenderPassPipelined> RenderPassPipelined::shared_from_this()
+{
+	return std::dynamic_pointer_cast<IRenderPassPipelined>(IVisitor::shared_from_this());
+}
+
+std::weak_ptr<IRenderPassPipelined> RenderPassPipelined::weak_from_this()
+{
+	return std::weak_ptr<IRenderPassPipelined>(shared_from_this());
+}
+
+
+
 //
 // IRenderPass
 //
@@ -81,11 +93,12 @@ void RenderPassPipelined::PostRender(RenderEventArgs& e)
 //
 // IRenderPassPipelined
 //
-void RenderPassPipelined::CreatePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport)
+std::shared_ptr<IRenderPassPipelined> RenderPassPipelined::CreatePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport)
 {
+	return shared_from_this();
 }
 
-void RenderPassPipelined::SetPipeline(std::shared_ptr<IPipelineState> Pipeline)
+std::shared_ptr<IRenderPassPipelined> RenderPassPipelined::SetPipeline(std::shared_ptr<IPipelineState> Pipeline)
 {
 	_ASSERT(Pipeline);
 
@@ -95,6 +108,8 @@ void RenderPassPipelined::SetPipeline(std::shared_ptr<IPipelineState> Pipeline)
 	}
 
 	m_Pipeline = Pipeline;
+
+	return shared_from_this();
 }
 
 std::shared_ptr<IPipelineState> RenderPassPipelined::GetPipeline() const

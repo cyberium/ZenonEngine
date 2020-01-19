@@ -18,7 +18,7 @@ CDebugMaterialPass::~CDebugMaterialPass()
 //
 // IRenderPassPipelined
 //
-void CDebugMaterialPass::CreatePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport)
+std::shared_ptr<IRenderPassPipelined> CDebugMaterialPass::CreatePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport)
 {
 	std::shared_ptr<IShader> g_pVertexShader;
 	std::shared_ptr<IShader> g_pGeometryShader;
@@ -48,7 +48,8 @@ void CDebugMaterialPass::CreatePipeline(std::shared_ptr<IRenderTarget> RenderTar
 	Pipeline->SetShader(EShaderType::VertexShader, g_pVertexShader);
 	Pipeline->SetShader(EShaderType::GeometryShader, g_pGeometryShader);
 	Pipeline->SetShader(EShaderType::PixelShader, g_pPixelShader);
-	SetPipeline(Pipeline);
+
+	return SetPipeline(Pipeline);
 }
 
 

@@ -122,7 +122,9 @@ ZN_INTERFACE __declspec(novtable, UUID_CameraComponent) ZN_API ICameraComponent3
 	virtual void DoMoveLeft(float Value = 1.0f) = 0;
 	virtual void DoMoveRight(float Value = 1.0f) = 0;
 
+	virtual void SetTranslation(glm::vec3 Translation) const = 0;
 	virtual glm::vec3 GetTranslation() const = 0;
+	virtual void SetDirection(glm::vec3 Direction) const = 0;
 	virtual glm::vec3 GetDirection() const = 0;
 
 	virtual void SetYaw(float Yaw) = 0;

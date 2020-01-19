@@ -8,6 +8,9 @@ public:
 	RenderPassPipelined(std::shared_ptr<IRenderDevice> RenderDevice);
 	virtual ~RenderPassPipelined();
 
+	std::shared_ptr<IRenderPassPipelined> shared_from_this();
+	std::weak_ptr<IRenderPassPipelined> weak_from_this();
+
 	// IRenderPass
 	void SetEnabled(bool Value) override final;
 	bool IsEnabled() const override final;
@@ -16,8 +19,8 @@ public:
 	virtual void PostRender(RenderEventArgs& e);
     
 	// IRenderPassPipelined
-	virtual void CreatePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport* Viewport) override;
-	virtual void SetPipeline(std::shared_ptr<IPipelineState> Pipeline) override;
+	virtual std::shared_ptr<IRenderPassPipelined> CreatePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport* Viewport) override;
+	virtual std::shared_ptr<IRenderPassPipelined> SetPipeline(std::shared_ptr<IPipelineState> Pipeline) override;
 	virtual std::shared_ptr<IPipelineState> GetPipeline() const override;
 	virtual void UpdateViewport(const Viewport * _viewport) override;
 

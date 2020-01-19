@@ -8,7 +8,7 @@ public:
 	virtual ~CTexturedMaterialPass();
 
 	// IRenderPassPipelined
-	void CreatePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport* Viewport) override final;
+	std::shared_ptr<IRenderPassPipelined> CreatePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport* Viewport) override final;
 
 	// IVisitor
 	bool Visit(IMesh* Mesh, SGeometryPartParams GeometryPartParams) override;

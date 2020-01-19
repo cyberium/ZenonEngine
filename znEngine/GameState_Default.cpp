@@ -28,7 +28,7 @@ bool CGameState_World::Init()
 
 	SetCameraController(std::make_shared<CFreeCameraController>());
 	GetCameraController()->SetCamera(cameraNode->GetComponent<ICameraComponent3D>());
-	GetCameraController()->GetCamera()->SetPerspectiveProjection(ICameraComponent3D::EPerspectiveProjectionHand::Right, 45.0f, GetRenderWindow()->GetWindowWidth() / GetRenderWindow()->GetWindowHeight(), 0.5f, 10000.0f);
+	GetCameraController()->GetCamera()->SetPerspectiveProjection(ICameraComponent3D::EPerspectiveProjectionHand::Right, 45.0f, GetRenderWindow()->GetWindowWidth() / GetRenderWindow()->GetWindowHeight(), 0.5f, 1000.0f);
 
 	Load3D();
 	LoadUI();
@@ -183,7 +183,7 @@ void CGameState_World::Load3D()
 
 
 	{
-		const int iterCnt = 0;
+		const int iterCnt = 5;
 		const float offset = 8.0f;
 		const float scale = 5.0f;
 
@@ -255,7 +255,7 @@ void CGameState_World::Load3D()
 		sceneNodePlane->GetComponent<IMeshComponent3D>()->AddMesh(meshPlane);
 	}
 
-	std::shared_ptr<ISceneNode> fbxSceneNode = GetBaseManager()->GetManager<ISceneNodesFactory>()->CreateSceneNode(m_Scene3D->GetRootNode(), "FBXSceneNode");
+	//std::shared_ptr<ISceneNode> fbxSceneNode = GetBaseManager()->GetManager<ISceneNodesFactory>()->CreateSceneNode(m_Scene3D->GetRootNode(), "FBXSceneNode");
 	//fbxSceneNode->GetComponent<ITransformComponent3D>()->SetScale(vec3(15.0f, 15.0f, 15.0f));
 
 

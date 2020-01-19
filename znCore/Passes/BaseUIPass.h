@@ -16,7 +16,7 @@ public:
 	virtual ~BaseUIPass();
 
 	// IRenderPassPipelined
-	virtual void CreatePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport* Viewport) override;
+	virtual std::shared_ptr<IRenderPassPipelined> CreatePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport* Viewport) override;
 
 	// IVisitor
 	virtual bool VisitUI(ISceneNode* node) override;

@@ -18,7 +18,7 @@ CMaterialPassOpaque::~CMaterialPassOpaque()
 //
 // IRenderPassPipelined
 //
-void CMaterialPassOpaque::CreatePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport)
+std::shared_ptr<IRenderPassPipelined> CMaterialPassOpaque::CreatePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport)
 {
 	std::shared_ptr<IShader> g_pVertexShader;
 	std::shared_ptr<IShader> g_pPixelShader;
@@ -51,7 +51,7 @@ void CMaterialPassOpaque::CreatePipeline(std::shared_ptr<IRenderTarget> RenderTa
 	samplerClamp->SetWrapMode(ISamplerState::WrapMode::Clamp, ISamplerState::WrapMode::Clamp);
 	Pipeline->SetSampler(1, samplerClamp);
 
-	SetPipeline(Pipeline);
+	return SetPipeline(Pipeline);
 }
 
 

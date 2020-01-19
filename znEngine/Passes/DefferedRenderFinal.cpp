@@ -71,8 +71,10 @@ void CDefferedRenderFinal::PostRender(RenderEventArgs& e)
 //
 // IRenderPassPipelined
 //
-void CDefferedRenderFinal::CreatePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport)
+std::shared_ptr<IRenderPassPipelined> CDefferedRenderFinal::CreatePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport)
 {
+	m_QuadMesh = GetRenderDevice()->GetPrimitiveCollection()->CreateQuad();
+
 	std::shared_ptr<IShader> vertexShader = GetRenderDevice()->CreateShader(EShaderType::VertexShader, "IDB_SHADER_3D_DEFFERED", IShader::ShaderMacros(), "VS_ScreenQuad", "latest");
 	vertexShader->LoadInputLayoutFromReflector();
 
@@ -105,9 +107,7 @@ void CDefferedRenderFinal::CreatePipeline(std::shared_ptr<IRenderTarget> RenderT
 	defferedFinalPipeline->SetTexture(3, m_DefferedRender->GetTexture3());
 	defferedFinalPipeline->SetTexture(4, m_DefferedRender->GetTextureDepthStencil());
 
-	SetPipeline(defferedFinalPipeline);
-
-	m_QuadMesh = GetRenderDevice()->GetPrimitiveCollection()->CreateQuad();
+	return SetPipeline(defferedFinalPipeline);
 }
 
 

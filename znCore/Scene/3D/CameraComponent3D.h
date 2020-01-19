@@ -17,8 +17,10 @@ public:
 	void DoMoveLeft(float Value = 1.0f);
 	void DoMoveRight(float Value = 1.0f);
 
-	virtual glm::vec3 GetTranslation() const;
-	virtual glm::vec3 GetDirection() const;
+	virtual void SetTranslation(glm::vec3 Translation) const override;
+	virtual glm::vec3 GetTranslation() const override;
+	virtual void SetDirection(glm::vec3 Direction) const override;
+	virtual glm::vec3 GetDirection() const override;
 
 	void SetYaw(float Yaw) override;
 	void AddYaw(float Yaw) override;
@@ -44,8 +46,8 @@ public:
 	virtual void OnMessage(std::shared_ptr<ISceneNodeComponent> Component, ComponentMessageType Message) override;
 
 protected:
-	void EulerAnglesToDirectionVector();
-	void DirectionVectorToEulerAngles();
+	glm::vec3 EulerAnglesToDirectionVector(float Yaw, float Pitch);
+	void DirectionVectorToEulerAngles(const glm::vec3& Direction);
 
 	void UpdateView();
 	void UpdateProjectionView();

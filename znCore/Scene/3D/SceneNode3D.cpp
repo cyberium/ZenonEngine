@@ -207,7 +207,6 @@ bool SceneNode3D::Accept(IVisitor* visitor)
 		if (loadable != nullptr && !loadable->isLoaded())
 			continue;
 #endif
-		//((AbstractPass*)visitor)->GetRenderEventArgs()->Node = Child.get();
 		Child->Accept(visitor);
 	});
 

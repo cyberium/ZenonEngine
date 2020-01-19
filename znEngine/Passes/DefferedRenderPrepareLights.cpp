@@ -86,7 +86,7 @@ void CDefferedRenderPrepareLights::PostRender(RenderEventArgs& e)
 //
 // IRenderPassPipelined
 //
-void CDefferedRenderPrepareLights::CreatePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport)
+std::shared_ptr<IRenderPassPipelined> CDefferedRenderPrepareLights::CreatePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport)
 {
 	m_ShadowRenderTarget = GetRenderDevice()->CreateRenderTarget();
 	//m_ShadowRenderTarget->AttachTexture(IRenderTarget::AttachmentPoint::Color0, CreateShadowTexture0());
@@ -111,7 +111,7 @@ void CDefferedRenderPrepareLights::CreatePipeline(std::shared_ptr<IRenderTarget>
 	shadowPipeline->SetShader(EShaderType::VertexShader, vertexShader);
 	//shadowPipeline->SetShader(EShaderType::PixelShader, pixelShader);
 
-	SetPipeline(shadowPipeline);
+	return SetPipeline(shadowPipeline);
 }
 
 void CDefferedRenderPrepareLights::UpdateViewport(const Viewport * _viewport)
