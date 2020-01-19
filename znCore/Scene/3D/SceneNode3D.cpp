@@ -57,12 +57,49 @@ std::weak_ptr<SceneNode3D> SceneNode3D::weak_from_this()
 
 
 //
+// SceneNodeBase
+//
+void SceneNode3D::SetLocalTransform(cmat4 localTransform)
+{
+	SceneNodeBase::SetLocalTransform(localTransform);
+
+	/*
+
+	glm::vec3 scale;
+	glm::quat rotation;
+	glm::vec3 translation;
+	glm::vec3 skew;
+	glm::vec4 perspective;
+	glm::decompose(m_LocalTransform, scale, rotation, translation, skew, perspective);
+
+	m_Translate = translation;
+	m_Scale = scale;
+
+	glm::vec3 eulerAngles = glm::degrees(glm::eulerAngles(rotation));
+
+	glm::vec3 direction = glm::vec3();
+	direction.x = glm::cos(glm::radians(eulerAngles.x)) * glm::cos(glm::radians(direction.y)); // y
+	direction.y = glm::sin(glm::radians(direction.y));                              // z
+	direction.z = glm::sin(glm::radians(eulerAngles.x)) * glm::cos(glm::radians(direction.y)); // x
+
+	*/
+
+	//printf("Converted: %f %f %f\n", eulerAngles.x, eulerAngles.y, eulerAngles.z);
+}
+
+
+
+//
 // ISceneNode3D
 //
 void SceneNode3D::SetTranslate(cvec3 _translate)
 {
 	m_Translate = _translate;
 	UpdateLocalTransform();
+}
+void SceneNode3D::AddTranslate(vec3 Translate)
+{
+	SetTranslate(GetTranslation() + Translate);
 }
 cvec3 SceneNode3D::GetTranslation() const
 {

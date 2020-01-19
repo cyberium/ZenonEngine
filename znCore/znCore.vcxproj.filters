@@ -91,9 +91,6 @@
     <Filter Include="XML\tinyxml">
       <UniqueIdentifier>{a25b0727-bf27-4aad-9f00-d3181f17a00a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Scene functional\Camera">
-      <UniqueIdentifier>{926b8de5-b7e3-476b-91fb-d957ec421637}</UniqueIdentifier>
-    </Filter>
     <Filter Include="__Interfaces\Scene\Types">
       <UniqueIdentifier>{1e2fe722-e211-4ea0-a5c6-04867d657526}</UniqueIdentifier>
     </Filter>
@@ -252,9 +249,6 @@
     <ClCompile Include="Files\LocalFilesStorage.cpp">
       <Filter>Files</Filter>
     </ClCompile>
-    <ClCompile Include="Scene\CameraNode.cpp">
-      <Filter>Scene functional\Camera</Filter>
-    </ClCompile>
     <ClCompile Include="Passes\RenderPass.cpp">
       <Filter>Passes</Filter>
     </ClCompile>
@@ -305,6 +299,9 @@
     </ClCompile>
     <ClCompile Include="Passes\Technical\RenderListProcessorPass.cpp">
       <Filter>Passes\Technical</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\3D\CameraComponent3D.cpp">
+      <Filter>Scene functional\3D</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -662,9 +659,6 @@
     <ClInclude Include="Files\LocalFilesStorage.h">
       <Filter>Files</Filter>
     </ClInclude>
-    <ClInclude Include="Scene\CameraNode.h">
-      <Filter>Scene functional\Camera</Filter>
-    </ClInclude>
     <ClInclude Include="..\shared\Interfaces\Render\IImageLoader.h">
       <Filter>__Interfaces\Render</Filter>
     </ClInclude>
@@ -733,6 +727,9 @@
     </ClInclude>
     <ClInclude Include="Passes\Technical\RenderListProcessorPass.h">
       <Filter>Passes\Technical</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\3D\CameraComponent3D.h">
+      <Filter>Scene functional\3D</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

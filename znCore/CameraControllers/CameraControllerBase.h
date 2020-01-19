@@ -8,10 +8,9 @@ public:
     virtual                                         ~CCameraControllerBase();
 
 	// ICameraController
-	void											SetCamera(std::shared_ptr<ICamera> Camera) override;
+	void											SetCamera(std::shared_ptr<ICameraComponent3D> Camera) override;
 
-	std::shared_ptr<ICamera>                        GetCamera() const override;
-	std::shared_ptr<ICameraMovement>                GetCameraMovement() const override;
+	std::shared_ptr<ICameraComponent3D>             GetCamera() const override;
 	Ray	                                            ScreenPointToRay(const Viewport* Viewport, glm::vec2 screenPoint) const override;
 
     // Engine events
@@ -32,7 +31,7 @@ public:
 	
 
 protected:
-	std::shared_ptr<ICamera>                        m_Camera;
+	std::shared_ptr<ICameraComponent3D>             m_Camera;
 	
 	vec2                                            m_PreviousMousePosition;
 };

@@ -18,19 +18,14 @@ CCameraControllerBase::~CCameraControllerBase()
 //
 // ICameraController
 //
-void CCameraControllerBase::SetCamera(std::shared_ptr<ICamera> Camera)
+void CCameraControllerBase::SetCamera(std::shared_ptr<ICameraComponent3D> Camera)
 {
 	m_Camera = Camera;
 }
 
-std::shared_ptr<ICamera> CCameraControllerBase::GetCamera() const
+std::shared_ptr<ICameraComponent3D> CCameraControllerBase::GetCamera() const
 {
 	return m_Camera;
-}
-
-std::shared_ptr<ICameraMovement> CCameraControllerBase::GetCameraMovement() const
-{
-	return std::dynamic_pointer_cast<ICameraMovement>(GetCamera());
 }
 
 Ray CCameraControllerBase::ScreenPointToRay(const Viewport* Viewport, glm::vec2 screenPoint) const
@@ -41,7 +36,7 @@ Ray CCameraControllerBase::ScreenPointToRay(const Viewport* Viewport, glm::vec2 
 	clipPoint = clipPoint * 2.0f - 1.0f;
 
 	glm::vec3 p0 = m_Camera->GetTranslation();
-	glm::vec4 worldSpace = m_Camera->GetViewProjectionInverseMatrix() * clipPoint;
+	glm::vec4 worldSpace = m_Camera->GetInverseProjectionMatrix() * clipPoint;
 	glm::vec3 p1 = glm::vec3(worldSpace / worldSpace.w);
 
 	return Ray(p0, glm::normalize(p1 - p0));
@@ -65,7 +60,7 @@ void CCameraControllerBase::OnUpdate(UpdateEventArgs& e)
 //
 void CCameraControllerBase::OnResize(ResizeEventArgs& e)
 {
-	m_Camera->SetPerspectiveProjection(ICamera::EPerspectiveProjectionHand::Right, 45.0f, static_cast<float>(e.Width) / static_cast<float>(e.Height), 0.5f, 10000.0f);
+	m_Camera->SetPerspectiveProjection(ICameraComponent3D::EPerspectiveProjectionHand::Right, 45.0f, static_cast<float>(e.Width) / static_cast<float>(e.Height), 0.5f, 10000.0f);
 }
 
 

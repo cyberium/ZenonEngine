@@ -4,7 +4,7 @@
 
 // FORWARD BEGIN
 ZN_INTERFACE IPipelineState;
-ZN_INTERFACE ICamera;
+ZN_INTERFACE ICameraComponent3D;
 ZN_INTERFACE IScene;
 ZN_INTERFACE ISceneNode;
 // FORWARD END
@@ -282,7 +282,7 @@ public:
 		float DeltaTime,
 		float TotalTime,
 		uint64_t FrameCounter,
-		const ICamera* Camera,
+		const ICameraComponent3D* Camera,
 		const IPipelineState* PipelineState,
 		const ISceneNode* Node
 	)
@@ -300,7 +300,7 @@ public:
 	float                                           TotalTime;
 	int64_t                                         FrameCounter;
 
-	const ICamera*                                  Camera;
+	const ICameraComponent3D*                       Camera;
 	const IPipelineState*                           PipelineState;
 	const ISceneNode*                               Node;
 };

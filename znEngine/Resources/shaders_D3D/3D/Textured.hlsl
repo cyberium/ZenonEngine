@@ -1,4 +1,4 @@
-#include "IDB_SHADER_COMMON_TYPES"
+#include "IDB_SHADER_COMMON_INCLUDE"
 
 struct VertexShaderOutput
 {
@@ -7,14 +7,6 @@ struct VertexShaderOutput
 	float2 texCoord   : TEXCOORD0;
 };
 
-cbuffer PerObject : register(b0)
-{
-	PerObject PO;
-}
-cbuffer PerFrame : register(b1)
-{
-	PerFrame PF;
-}
 cbuffer Material : register(b2)
 {
 
@@ -35,14 +27,13 @@ VertexShaderOutput VS_main(VSInputPT IN)
 	return OUT;
 }
 
-PixelShaderOutput PS_main(VertexShaderOutput IN) : SV_TARGET
+DefferedRenderPSOut PS_main(VertexShaderOutput IN) : SV_TARGET
 {
 	float4 diffuseColor = DiffuseTexture.Sample(DiffuseTextureSampler, IN.texCoord);
 	if (diffuseColor.a < 0.05f)
 		discard;
 
-    PixelShaderOutput OUT;
-	OUT.PositionWS = IN.positionWS;
+	DefferedRenderPSOut OUT;
 	OUT.Diffuse = diffuseColor;
 	OUT.Specular = float4(1.0, 1.0, 1.0, 1.0);
 	OUT.NormalWS = float4(1.0, 1.0, 1.0, 0.0);

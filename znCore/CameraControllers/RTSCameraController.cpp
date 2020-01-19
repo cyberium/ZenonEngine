@@ -51,7 +51,7 @@ void CRTSCameraController::SetCameraDistance(float Distance)
 //
 void CRTSCameraController::OnUpdate(UpdateEventArgs& e)
 {
-	GetCameraMovement()->SetTranslate(m_CameraPosition);
+	//GetCamera()->SetTranslate(m_CameraPosition);
 }
 
 

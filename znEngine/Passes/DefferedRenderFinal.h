@@ -25,6 +25,8 @@ private: // some every frame data
 	__declspec(align(16)) struct SScreenToViewParams
 	{
 		glm::mat4 InverseProjection;
+		glm::mat4 InverseView;
+		glm::mat4 InverseProjectionView;
 		glm::vec2 ScreenDimensions;
 	};
 	SScreenToViewParams* m_ScreenToViewData;

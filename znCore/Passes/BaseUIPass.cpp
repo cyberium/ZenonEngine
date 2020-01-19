@@ -45,7 +45,7 @@ bool BaseUIPass::VisitUI(ISceneNode* sceneNode)
 {
     GetRenderEventArgs()->Node = sceneNode;
 
-	const ICamera* camera = GetRenderEventArgs()->Camera;
+	const ICameraComponent3D* camera = GetRenderEventArgs()->Camera;
 	const Viewport* viewport = GetRenderEventArgs()->PipelineState->GetRasterizerState()->GetViewports()[0];
 	
 	if (viewport)

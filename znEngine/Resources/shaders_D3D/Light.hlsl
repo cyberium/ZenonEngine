@@ -14,35 +14,28 @@
 
 struct Light
 {
-	// Position for point and spot lights (World space).
-	float4 PositionWS;
+	float4 PositionWS;    // Position for point and spot lights (World space).
 	//--------------------------------------------------------------( 16 bytes )
-	// Direction for spot and directional lights (World space).
-	float4 DirectionWS;
+	
+	float4 DirectionWS;   // Direction for spot and directional lights (World space).
 	//--------------------------------------------------------------( 16 bytes )
-	// Position for point and spot lights (View space).
-	float4 PositionVS;
+	
+	float4 PositionVS;    // Position for point and spot lights (View space).
 	//--------------------------------------------------------------( 16 bytes )
-	// Direction for spot and directional lights (View space).
-	float4 DirectionVS;
+	
+	float4 DirectionVS;   // Direction for spot and directional lights (View space).
 	//--------------------------------------------------------------( 16 bytes )
-	// Color of the light. Diffuse and specular colors are not separated.
-	float4 Color;
+	
+	float4 Color;         // Color of the light. Diffuse and specular colors are not separated.
 	//--------------------------------------------------------------( 16 bytes )
-	// Disable or enable the light.
-	uint Enabled;
-	// The range of the light.
-	float Range;
-	// The intensity of the light.
-	float Intensity;
-	// The half angle of the spotlight cone.
-	float SpotlightAngle;
+	
+	uint Type;            // Disable or enable the light.
+	float Range;          // The range of the light.
+	float Intensity;      // The intensity of the light.
+	float SpotlightAngle; // The half angle of the spotlight cone.
 	//--------------------------------------------------------------(16 bytes )
-	// The type of the light.
-	uint Type;
-	float3 __Padding;
-	//--------------------------------------------------------------(16 bytes )
-	//--------------------------------------------------------------( 16 * 7 = 112 bytes )
+
+	//--------------------------------------------------------------( 16 * 6 = 112 bytes )
 };
 
 // This lighting result is returned by the lighting functions for each light type.
@@ -179,8 +172,7 @@ LightingResult DoLighting(StructuredBuffer<Light> lights, Material mat, float4 e
 	{
 		LightingResult result = (LightingResult)0;
 
-		// Skip lights that are not enabled.
-		if (!lights[i].Enabled)
+		if (lights[i].Type == UNKNOWN)
 		{
 			continue;
 		}

@@ -67,20 +67,20 @@
     <Filter Include="Resources\Textures">
       <UniqueIdentifier>{f841afa5-fa24-4948-a5bb-cc5e7cd3ea2a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Models">
-      <UniqueIdentifier>{6df4feff-bf00-48ce-a361-e73bc7f7ca61}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Models\FBX">
-      <UniqueIdentifier>{58e4a1aa-f1f6-4806-9b25-b60c20a1fa5c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Models\FBX\Helper classes">
-      <UniqueIdentifier>{0472624f-3f9e-441e-a2c0-9ec808927899}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Models\FBX\Wrapped">
-      <UniqueIdentifier>{015b3eca-37c5-401b-b436-b19e03624e14}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Images">
       <UniqueIdentifier>{e6bb9cbb-303a-4b03-bd60-ddcae714b9be}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Passes\3D\DefferedLighting">
+      <UniqueIdentifier>{10098261-ebbf-4465-8c32-402b36a51158}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FBX">
+      <UniqueIdentifier>{e7ba6856-f133-4afb-afe5-2b1fd89762b0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FBX\Helpers">
+      <UniqueIdentifier>{820fdffa-02ef-44ad-96bc-2579ee0988fc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FBX\Parts">
+      <UniqueIdentifier>{d92e52e1-0d78-44d9-ba88-a6990c61358e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -207,36 +207,6 @@
     <ClCompile Include="Passes\TextureDebugPass.cpp">
       <Filter>Passes\3D</Filter>
     </ClCompile>
-    <ClCompile Include="Models\FBX\FBXDisplayCache.cpp">
-      <Filter>Models\FBX</Filter>
-    </ClCompile>
-    <ClCompile Include="Models\FBX\FBXDisplayCommon.cpp">
-      <Filter>Models\FBX</Filter>
-    </ClCompile>
-    <ClCompile Include="Models\FBX\FBXDisplayLink.cpp">
-      <Filter>Models\FBX</Filter>
-    </ClCompile>
-    <ClCompile Include="Models\FBX\FBXDisplayShape.cpp">
-      <Filter>Models\FBX</Filter>
-    </ClCompile>
-    <ClCompile Include="Models\FBX\FBXStream.cpp">
-      <Filter>Models\FBX\Helper classes</Filter>
-    </ClCompile>
-    <ClCompile Include="Models\FBX\FBXManager.cpp">
-      <Filter>Models\FBX\Wrapped</Filter>
-    </ClCompile>
-    <ClCompile Include="Models\FBX\FBXScene.cpp">
-      <Filter>Models\FBX\Wrapped</Filter>
-    </ClCompile>
-    <ClCompile Include="Models\FBX\FBXMesh.cpp">
-      <Filter>Models\FBX\Wrapped</Filter>
-    </ClCompile>
-    <ClCompile Include="Models\FBX\FBXSceneNode.cpp">
-      <Filter>Models\FBX\Wrapped</Filter>
-    </ClCompile>
-    <ClCompile Include="Models\FBX\FBXMaterial.cpp">
-      <Filter>Models\FBX\Wrapped</Filter>
-    </ClCompile>
     <ClCompile Include="Images\ImagesFactory.cpp">
       <Filter>Images</Filter>
     </ClCompile>
@@ -249,12 +219,6 @@
     <ClCompile Include="Images\ImagePNG.cpp">
       <Filter>Images</Filter>
     </ClCompile>
-    <ClCompile Include="Models\FBX\FBXLight.cpp">
-      <Filter>Models\FBX\Wrapped</Filter>
-    </ClCompile>
-    <ClCompile Include="Passes\CollectLightPass.cpp">
-      <Filter>Passes\3D</Filter>
-    </ClCompile>
     <ClCompile Include="Materials\MaterialModel.cpp">
       <Filter>Materials</Filter>
     </ClCompile>
@@ -264,17 +228,47 @@
     <ClCompile Include="Passes\MaterialPassTransperent.cpp">
       <Filter>Passes\3D</Filter>
     </ClCompile>
-    <ClCompile Include="Passes\ShadowPass.cpp">
-      <Filter>Passes\3D</Filter>
-    </ClCompile>
     <ClCompile Include="Passes\DefferedRender.cpp">
-      <Filter>Passes\3D</Filter>
+      <Filter>Passes\3D\DefferedLighting</Filter>
     </ClCompile>
     <ClCompile Include="Passes\DefferedRenderFinal.cpp">
-      <Filter>Passes\3D</Filter>
+      <Filter>Passes\3D\DefferedLighting</Filter>
     </ClCompile>
     <ClCompile Include="Passes\DefferedRenderPrepareLights.cpp">
-      <Filter>Passes\3D</Filter>
+      <Filter>Passes\3D\DefferedLighting</Filter>
+    </ClCompile>
+    <ClCompile Include="FBX\FBXDisplayCache.cpp">
+      <Filter>FBX</Filter>
+    </ClCompile>
+    <ClCompile Include="FBX\FBXDisplayCommon.cpp">
+      <Filter>FBX</Filter>
+    </ClCompile>
+    <ClCompile Include="FBX\FBXDisplayLink.cpp">
+      <Filter>FBX</Filter>
+    </ClCompile>
+    <ClCompile Include="FBX\FBXDisplayShape.cpp">
+      <Filter>FBX</Filter>
+    </ClCompile>
+    <ClCompile Include="FBX\FBXManager.cpp">
+      <Filter>FBX</Filter>
+    </ClCompile>
+    <ClCompile Include="FBX\FBXScene.cpp">
+      <Filter>FBX</Filter>
+    </ClCompile>
+    <ClCompile Include="FBX\FBXSceneNode.cpp">
+      <Filter>FBX</Filter>
+    </ClCompile>
+    <ClCompile Include="FBX\FBXStream.cpp">
+      <Filter>FBX\Helpers</Filter>
+    </ClCompile>
+    <ClCompile Include="FBX\FBXLight.cpp">
+      <Filter>FBX\Parts</Filter>
+    </ClCompile>
+    <ClCompile Include="FBX\FBXMesh.cpp">
+      <Filter>FBX\Parts</Filter>
+    </ClCompile>
+    <ClCompile Include="FBX\FBXMaterial.cpp">
+      <Filter>FBX\Parts</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -404,36 +398,6 @@
     <ClInclude Include="Passes\TextureDebugPass.h">
       <Filter>Passes\3D</Filter>
     </ClInclude>
-    <ClInclude Include="Models\FBX\FBXDisplayCache.h">
-      <Filter>Models\FBX</Filter>
-    </ClInclude>
-    <ClInclude Include="Models\FBX\FBXDisplayCommon.h">
-      <Filter>Models\FBX</Filter>
-    </ClInclude>
-    <ClInclude Include="Models\FBX\FBXDisplayLink.h">
-      <Filter>Models\FBX</Filter>
-    </ClInclude>
-    <ClInclude Include="Models\FBX\FBXDisplayShape.h">
-      <Filter>Models\FBX</Filter>
-    </ClInclude>
-    <ClInclude Include="Models\FBX\FBXStream.h">
-      <Filter>Models\FBX\Helper classes</Filter>
-    </ClInclude>
-    <ClInclude Include="Models\FBX\FBXManager.h">
-      <Filter>Models\FBX\Wrapped</Filter>
-    </ClInclude>
-    <ClInclude Include="Models\FBX\FBXScene.h">
-      <Filter>Models\FBX\Wrapped</Filter>
-    </ClInclude>
-    <ClInclude Include="Models\FBX\FBXMesh.h">
-      <Filter>Models\FBX\Wrapped</Filter>
-    </ClInclude>
-    <ClInclude Include="Models\FBX\FBXSceneNode.h">
-      <Filter>Models\FBX\Wrapped</Filter>
-    </ClInclude>
-    <ClInclude Include="Models\FBX\FBXMaterial.h">
-      <Filter>Models\FBX\Wrapped</Filter>
-    </ClInclude>
     <ClInclude Include="Images\ImagesFactory.h">
       <Filter>Images</Filter>
     </ClInclude>
@@ -446,12 +410,6 @@
     <ClInclude Include="Images\ImagePNG.h">
       <Filter>Images</Filter>
     </ClInclude>
-    <ClInclude Include="Models\FBX\FBXLight.h">
-      <Filter>Models\FBX\Wrapped</Filter>
-    </ClInclude>
-    <ClInclude Include="Passes\CollectLightPass.h">
-      <Filter>Passes\3D</Filter>
-    </ClInclude>
     <ClInclude Include="Materials\MaterialModel.h">
       <Filter>Materials</Filter>
     </ClInclude>
@@ -461,17 +419,47 @@
     <ClInclude Include="Passes\MaterialPassTransperent.h">
       <Filter>Passes\3D</Filter>
     </ClInclude>
-    <ClInclude Include="Passes\ShadowPass.h">
-      <Filter>Passes\3D</Filter>
-    </ClInclude>
     <ClInclude Include="Passes\DefferedRender.h">
-      <Filter>Passes\3D</Filter>
+      <Filter>Passes\3D\DefferedLighting</Filter>
     </ClInclude>
     <ClInclude Include="Passes\DefferedRenderFinal.h">
-      <Filter>Passes\3D</Filter>
+      <Filter>Passes\3D\DefferedLighting</Filter>
     </ClInclude>
     <ClInclude Include="Passes\DefferedRenderPrepareLights.h">
-      <Filter>Passes\3D</Filter>
+      <Filter>Passes\3D\DefferedLighting</Filter>
+    </ClInclude>
+    <ClInclude Include="FBX\FBXDisplayCache.h">
+      <Filter>FBX</Filter>
+    </ClInclude>
+    <ClInclude Include="FBX\FBXDisplayCommon.h">
+      <Filter>FBX</Filter>
+    </ClInclude>
+    <ClInclude Include="FBX\FBXDisplayLink.h">
+      <Filter>FBX</Filter>
+    </ClInclude>
+    <ClInclude Include="FBX\FBXDisplayShape.h">
+      <Filter>FBX</Filter>
+    </ClInclude>
+    <ClInclude Include="FBX\FBXManager.h">
+      <Filter>FBX</Filter>
+    </ClInclude>
+    <ClInclude Include="FBX\FBXScene.h">
+      <Filter>FBX</Filter>
+    </ClInclude>
+    <ClInclude Include="FBX\FBXSceneNode.h">
+      <Filter>FBX</Filter>
+    </ClInclude>
+    <ClInclude Include="FBX\FBXStream.h">
+      <Filter>FBX\Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="FBX\FBXLight.h">
+      <Filter>FBX\Parts</Filter>
+    </ClInclude>
+    <ClInclude Include="FBX\FBXMesh.h">
+      <Filter>FBX\Parts</Filter>
+    </ClInclude>
+    <ClInclude Include="FBX\FBXMaterial.h">
+      <Filter>FBX\Parts</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -480,9 +468,6 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="Resources\shaders_D3D\CommonInclude.hlsl">
-      <Filter>Resources\shaders_D3D</Filter>
-    </Text>
     <Text Include="Resources\shaders_D3D\UI\UI_VertexBase.hlsl">
       <Filter>Resources\shaders_D3D\UI</Filter>
     </Text>
@@ -505,9 +490,6 @@
       <Filter>Resources\shaders_D3D\UI</Filter>
     </Text>
     <Text Include="Resources\shaders_D3D\DeferredRendering.hlsl">
-      <Filter>Resources\shaders_D3D</Filter>
-    </Text>
-    <Text Include="Resources\shaders_D3D\CommonTypes.hlsl">
       <Filter>Resources\shaders_D3D</Filter>
     </Text>
     <Text Include="Resources\shaders_D3D\Material.hlsl">
@@ -546,11 +528,19 @@
     <Text Include="Resources\shaders_D3D\3D\Shadow.hlsl">
       <Filter>Resources\Shaders_D3D\3D</Filter>
     </Text>
-    <Text Include="Resources\shaders_D3D\3D\Deffered.hlsl" />
     <Text Include="Resources\shaders_D3D\3D\Model_Deffered.hlsl">
       <Filter>Resources\Shaders_D3D\3D</Filter>
     </Text>
     <Text Include="Resources\shaders_D3D\3D\Model_Forward.hlsl">
+      <Filter>Resources\Shaders_D3D\3D</Filter>
+    </Text>
+    <Text Include="Resources\shaders_D3D\CommonInclude.hlsl">
+      <Filter>Resources\shaders_D3D</Filter>
+    </Text>
+    <Text Include="Resources\shaders_D3D\Types.hlsl">
+      <Filter>Resources\shaders_D3D</Filter>
+    </Text>
+    <Text Include="Resources\shaders_D3D\3D\Deffered.hlsl">
       <Filter>Resources\Shaders_D3D\3D</Filter>
     </Text>
   </ItemGroup>

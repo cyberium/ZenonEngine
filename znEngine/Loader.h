@@ -15,16 +15,16 @@ public:
 	void AddToDeleteQueue(std::shared_ptr<ILoadable> _item) override;
 	void DeleteAll() override;
 
-	void SetCamera(std::shared_ptr<ICamera> _camera);
+	void SetCamera(std::shared_ptr<ICameraComponent3D> _camera);
 
 	void LoaderThread(std::future<void> _promiseExiter);
 	void SorterThread(std::future<void> futureObj);
 
 	struct sortFunctor 
 	{
-		const std::shared_ptr<ICamera>& camera;
+		const std::shared_ptr<ICameraComponent3D>& camera;
 
-		sortFunctor(const std::shared_ptr<ICamera>& _camera)
+		sortFunctor(const std::shared_ptr<ICameraComponent3D>& _camera)
 			: camera(_camera)
 		{ }
 
@@ -44,5 +44,5 @@ private:
 	std::promise<void>					   m_Thread_Sorter_Promise;
 	std::thread                            m_Thread_Sorter;
 
-	std::shared_ptr<ICamera>               m_Camera;
+	std::shared_ptr<ICameraComponent3D>    m_Camera;
 };

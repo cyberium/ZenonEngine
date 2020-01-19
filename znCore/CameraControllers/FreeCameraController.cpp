@@ -29,12 +29,12 @@ CFreeCameraController::~CFreeCameraController()
 //
 void CFreeCameraController::OnUpdate(UpdateEventArgs& e)
 {
-	float moveMultiplier = (TranslateFaster) ? 50 : 1;
+	float moveMultiplier = (TranslateFaster) ? 5 : 1;
 
-	GetCameraMovement()->DoMoveFront(Forward * moveMultiplier);
-	GetCameraMovement()->DoMoveBack(Back * moveMultiplier);
-	GetCameraMovement()->DoMoveLeft(Left * moveMultiplier);
-	GetCameraMovement()->DoMoveRight(Right * moveMultiplier);
+	GetCamera()->DoMoveFront(Forward * moveMultiplier);
+	GetCamera()->DoMoveBack(Back * moveMultiplier);
+	GetCamera()->DoMoveLeft(Left * moveMultiplier);
+	GetCamera()->DoMoveRight(Right * moveMultiplier);
 }
 
 void CFreeCameraController::OnKeyPressed(KeyEventArgs& e)
@@ -132,8 +132,8 @@ void CFreeCameraController::OnMouseMoved(MouseMotionEventArgs& e)
 
         newPoint *= 0.33f;
 
-        GetCameraMovement()->AddYaw(-newPoint.x);
-		GetCameraMovement()->AddPitch(newPoint.y);
+        GetCamera()->AddYaw(-newPoint.x);
+		GetCamera()->AddPitch(newPoint.y);
 
         m_PreviousMousePosition = e.GetPoint();
 	}

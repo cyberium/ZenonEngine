@@ -119,7 +119,7 @@ bool RenderPassPipelined::VisitBase(ISceneNode * node)
 {
 	GetRenderEventArgs()->Node = node;
 
-	const ICamera* camera = GetRenderEventArgs()->Camera;
+	const ICameraComponent3D* camera = GetRenderEventArgs()->Camera;
 	if (camera)
 		node->UpdateCamera(camera);
 	

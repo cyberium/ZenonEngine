@@ -45,7 +45,7 @@ bool RenderPass::VisitBase(ISceneNode * node)
 {
 	m_RenderEventArgs->Node = node;
 
-	const ICamera* camera = m_RenderEventArgs->Camera;
+	const ICameraComponent3D* camera = m_RenderEventArgs->Camera;
 	if (camera)
 		node->UpdateCamera(camera);
 	

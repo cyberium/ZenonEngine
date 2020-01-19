@@ -30,14 +30,14 @@ glm::vec3 CLightComponent3D::GetColor() const
 	return m_LightStruct->Color.rgb();
 }
 
-void CLightComponent3D::SetEnabled(bool Value)
+void CLightComponent3D::SetType(ELightType Value)
 {
-	m_LightStruct->Enabled = Value;
+	m_LightStruct->Type = Value;
 }
 
-bool CLightComponent3D::GetEnabled() const
+ELightType CLightComponent3D::GetType() const
 {
-	return m_LightStruct->Enabled;
+	return m_LightStruct->Type;
 }
 
 void CLightComponent3D::SetRange(float Value)
@@ -70,25 +70,39 @@ float CLightComponent3D::GetSpotlightAngle() const
 	return m_LightStruct->SpotlightAngle;
 }
 
-void CLightComponent3D::SetType(ELightType Value)
-{
-	m_LightStruct->Type = Value;
-}
-
-ELightType CLightComponent3D::GetType() const
-{
-	return m_LightStruct->Type;
-}
-
 glm::mat4 CLightComponent3D::GetViewMatrix() const
 {
-	return glm::lookAt(m_LightStruct->PositionWS.xyz(), m_LightStruct->PositionWS.xyz() + m_LightStruct->DirectionWS.xyz(), glm::vec3(0.0f, 1.0f, 0.0f));
+	if (m_LightStruct->Type != ELightType::Unknown)
+	{
+		if (m_LightStruct->Type == ELightType::Directional)
+		{
+			return glm::lookAt(glm::vec3(0.0f, 0.0f, 0.0f), m_LightStruct->DirectionWS.xyz(), glm::vec3(0.0f, 1.0f, 0.0f));
+		}
+		else if (m_LightStruct->Type == ELightType::Spot)
+		{
+			return glm::lookAt(m_LightStruct->PositionWS.xyz(), m_LightStruct->PositionWS.xyz() + m_LightStruct->DirectionWS.xyz(), glm::vec3(0.0f, 1.0f, 0.0f));
+		}
+	}
+
+	return glm::mat4(1.0f);
 }
 
 glm::mat4 CLightComponent3D::GetProjectionMatrix() const
 {
-	// TODO: Is't valid only for SpotLight
-	return glm::perspective(glm::radians(m_LightStruct->SpotlightAngle * 2.0f), 1.0f, 0.5f, 10000.0f);
+	if (m_LightStruct->Type != ELightType::Unknown)
+	{
+		if (m_LightStruct->Type == ELightType::Directional)
+		{
+			const float t = 100.0f;
+			return glm::ortho<float>(-t, t, -t, t, -t, t);
+		}
+		else if (m_LightStruct->Type == ELightType::Spot)
+		{
+			return glm::perspective(glm::radians(m_LightStruct->SpotlightAngle * 2.0f), 1.0f, 0.5f, 10000.0f);
+		}
+	}
+	
+	return glm::mat4(1.0f);
 }
 
 const SLight& CLightComponent3D::GetLightStruct() const
@@ -109,7 +123,7 @@ void CLightComponent3D::DoUpdate(UpdateEventArgs & e)
 
 bool CLightComponent3D::Accept(IVisitor* visitor)
 {
-	if (GetEnabled() && GetType() != ELightType::Unknown)
+	if (GetType() != ELightType::Unknown)
 		return visitor->Visit(this);
 
 	return false;

@@ -20,6 +20,17 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BaseManager.cpp" />
+    <ClCompile Include="FBX\FBXDisplayCache.cpp" />
+    <ClCompile Include="FBX\FBXDisplayCommon.cpp" />
+    <ClCompile Include="FBX\FBXDisplayLink.cpp" />
+    <ClCompile Include="FBX\FBXDisplayShape.cpp" />
+    <ClCompile Include="FBX\FBXLight.cpp" />
+    <ClCompile Include="FBX\FBXManager.cpp" />
+    <ClCompile Include="FBX\FBXMaterial.cpp" />
+    <ClCompile Include="FBX\FBXMesh.cpp" />
+    <ClCompile Include="FBX\FBXScene.cpp" />
+    <ClCompile Include="FBX\FBXSceneNode.cpp" />
+    <ClCompile Include="FBX\FBXStream.cpp" />
     <ClCompile Include="GameStateDefaultCreator.cpp" />
     <ClCompile Include="GameStatesFactory.cpp" />
     <ClCompile Include="GameState_Default.cpp" />
@@ -35,18 +46,6 @@
     <ClCompile Include="Materials\UI_Font_Material.cpp" />
     <ClCompile Include="Materials\UI_Line_Material.cpp" />
     <ClCompile Include="Materials\UI_Texture_Material.cpp" />
-    <ClCompile Include="Models\FBX\FBXDisplayCache.cpp" />
-    <ClCompile Include="Models\FBX\FBXDisplayCommon.cpp" />
-    <ClCompile Include="Models\FBX\FBXDisplayLink.cpp" />
-    <ClCompile Include="Models\FBX\FBXDisplayShape.cpp" />
-    <ClCompile Include="Models\FBX\FBXLight.cpp" />
-    <ClCompile Include="Models\FBX\FBXManager.cpp" />
-    <ClCompile Include="Models\FBX\FBXMaterial.cpp" />
-    <ClCompile Include="Models\FBX\FBXMesh.cpp" />
-    <ClCompile Include="Models\FBX\FBXScene.cpp" />
-    <ClCompile Include="Models\FBX\FBXSceneNode.cpp" />
-    <ClCompile Include="Models\FBX\FBXStream.cpp" />
-    <ClCompile Include="Passes\CollectLightPass.cpp" />
     <ClCompile Include="Passes\DefferedRender.cpp" />
     <ClCompile Include="Passes\DefferedRenderFinal.cpp" />
     <ClCompile Include="Passes\DefferedRenderPrepareLights.cpp" />
@@ -54,7 +53,6 @@
     <ClCompile Include="Passes\MaterialPassTransperent.cpp" />
     <ClCompile Include="Passes\RenderPassDefaultCreator.cpp" />
     <ClCompile Include="Passes\RenderPassFactory.cpp" />
-    <ClCompile Include="Passes\ShadowPass.cpp" />
     <ClCompile Include="Passes\TextureDebugPass.cpp" />
     <ClCompile Include="Passes\TextureMaterialPass.cpp" />
     <ClCompile Include="PluginsManager.cpp" />
@@ -94,6 +92,17 @@
   <ItemGroup>
     <ClInclude Include="..\shared\znEngine.h" />
     <ClInclude Include="BaseManager.h" />
+    <ClInclude Include="FBX\FBXDisplayCache.h" />
+    <ClInclude Include="FBX\FBXDisplayCommon.h" />
+    <ClInclude Include="FBX\FBXDisplayLink.h" />
+    <ClInclude Include="FBX\FBXDisplayShape.h" />
+    <ClInclude Include="FBX\FBXLight.h" />
+    <ClInclude Include="FBX\FBXManager.h" />
+    <ClInclude Include="FBX\FBXMaterial.h" />
+    <ClInclude Include="FBX\FBXMesh.h" />
+    <ClInclude Include="FBX\FBXScene.h" />
+    <ClInclude Include="FBX\FBXSceneNode.h" />
+    <ClInclude Include="FBX\FBXStream.h" />
     <ClInclude Include="GameStateDefaultCreator.h" />
     <ClInclude Include="GameStatesFactory.h" />
     <ClInclude Include="GameState_Default.h" />
@@ -109,18 +118,6 @@
     <ClInclude Include="Materials\UI_Font_Material.h" />
     <ClInclude Include="Materials\UI_Line_Material.h" />
     <ClInclude Include="Materials\UI_Texture_Material.h" />
-    <ClInclude Include="Models\FBX\FBXDisplayCache.h" />
-    <ClInclude Include="Models\FBX\FBXDisplayCommon.h" />
-    <ClInclude Include="Models\FBX\FBXDisplayLink.h" />
-    <ClInclude Include="Models\FBX\FBXDisplayShape.h" />
-    <ClInclude Include="Models\FBX\FBXLight.h" />
-    <ClInclude Include="Models\FBX\FBXManager.h" />
-    <ClInclude Include="Models\FBX\FBXMaterial.h" />
-    <ClInclude Include="Models\FBX\FBXMesh.h" />
-    <ClInclude Include="Models\FBX\FBXScene.h" />
-    <ClInclude Include="Models\FBX\FBXSceneNode.h" />
-    <ClInclude Include="Models\FBX\FBXStream.h" />
-    <ClInclude Include="Passes\CollectLightPass.h" />
     <ClInclude Include="Passes\DefferedRender.h" />
     <ClInclude Include="Passes\DefferedRenderFinal.h" />
     <ClInclude Include="Passes\DefferedRenderPrepareLights.h" />
@@ -128,7 +125,6 @@
     <ClInclude Include="Passes\MaterialPassTransperent.h" />
     <ClInclude Include="Passes\RenderPassDefaultCreator.h" />
     <ClInclude Include="Passes\RenderPassFactory.h" />
-    <ClInclude Include="Passes\ShadowPass.h" />
     <ClInclude Include="Passes\TextureDebugPass.h" />
     <ClInclude Include="Passes\TextureMaterialPass.h" />
     <ClInclude Include="PluginsManager.h" />
@@ -163,7 +159,7 @@
   <ItemGroup>
     <Text Include="Resources\shaders_D3D\CommonInclude.hlsl">
     </Text>
-    <Text Include="Resources\shaders_D3D\CommonTypes.hlsl">
+    <Text Include="Resources\shaders_D3D\Types.hlsl">
     </Text>
     <Text Include="Resources\shaders_D3D\DeferredRendering.hlsl">
     </Text>

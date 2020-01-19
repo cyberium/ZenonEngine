@@ -5,7 +5,7 @@
 
 // Additional
 #include "UI/UIText.h"
-#include "Models/FBX/FBXManager.h"
+#include "FBX/FBXManager.h"
 
 CSceneNodeDefaultCreator::CSceneNodeDefaultCreator(const IBaseManager* BaseManager)
 	: m_BaseManager(BaseManager)
@@ -65,8 +65,9 @@ std::shared_ptr<ISceneNode> CSceneNodeDefaultCreator::CreateSceneNode(std::weak_
 		CFBXManager fbxManager(m_BaseManager);
 
 		std::shared_ptr<CFBXScene> m_FBXScene = fbxManager.CreateScene("SomeSceneName");
-		m_FBXScene->LoadFromFile(m_BaseManager->GetManager<IFilesManager>()->Open("Bistro_v4\\Bistro v4 Update\\Bistro_v4\\Bistro_Exterior.fbx"));
-		//m_FBXScene->LoadFromFile(m_BaseManager->GetManager<IFilesManager>()->Open("Sponza\\sponza.fbx"));
+		//m_FBXScene->LoadFromFile(m_BaseManager->GetManager<IFilesManager>()->Open("Bistro_v4\\Bistro v4 Update\\Bistro_v4\\Bistro_Exterior.fbx"));
+		m_FBXScene->LoadFromFile(m_BaseManager->GetManager<IFilesManager>()->Open("Sponza\\sponza.fbx"));
+		//m_FBXScene->LoadFromFile(m_BaseManager->GetManager<IFilesManager>()->Open("tower\\tower.fbx"));
 		m_FBXScene->LoadNodes(Parent.lock());
 
 		return m_FBXScene->GetRootNode();

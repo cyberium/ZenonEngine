@@ -13,21 +13,14 @@ public:
 	// ILightComponent3D
 	void SetColor(glm::vec3 Value) override;
 	glm::vec3 GetColor() const override;
-
-	void SetEnabled(bool Value) override;
-	bool GetEnabled() const override;
-
-	void SetRange(float Value) override;
-	float GetRange() const override;
-
-	void SetIntensity(float Value) override;
-	float GetIntensity() const override;
-
-	void SetSpotlightAngle(float Value) override;
-	float GetSpotlightAngle() const override;
-
 	void SetType(ELightType Value) override;
 	ELightType GetType() const override;
+	void SetRange(float Value) override;
+	float GetRange() const override;
+	void SetIntensity(float Value) override;
+	float GetIntensity() const override;
+	void SetSpotlightAngle(float Value) override;
+	float GetSpotlightAngle() const override;
 
 	glm::mat4 GetViewMatrix() const override;
 	glm::mat4 GetProjectionMatrix() const override;

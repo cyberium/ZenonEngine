@@ -33,19 +33,16 @@ void CDefferedRenderPrepareLights::PreRender(RenderEventArgs& e)
 
 	for (auto& it : m_LightResult)
 	{
-		if (it.IsShadowEnable)
-		{
-			GetRenderDevice()->DestroyTexture(it.ShadowTexture);
-			it.ShadowTexture = nullptr;
-		}
+		it.IsEnabled = false;
 	}
-	m_LightResult.clear();
 }
 
 void CDefferedRenderPrepareLights::Render(RenderEventArgs& e)
 {
-	for (const auto& lightIt : m_BuildRenderListPass->GetLightList())
+	for (size_t i = 0; i < m_BuildRenderListPass->GetLightList().size(); i++)
 	{
+		const auto& lightIt = m_BuildRenderListPass->GetLightList().at(i);
+
 		m_ShadowRenderTarget->Clear(ClearFlags::All, glm::vec4(0.0f, 0.0f, 0.0f, 0.0f));
 
 		BindPerFrameParamsForCurrentIteration(lightIt.Light);
@@ -56,16 +53,26 @@ void CDefferedRenderPrepareLights::Render(RenderEventArgs& e)
 			geometryIt.Geometry->Render(&e, nullptr, GetPipeline()->GetShaders(), nullptr, geometryIt.GeometryPartParams);
 		}
 
-		SLightResult lightResult;
-		lightResult.LightSceneNode = lightIt.Node;
-		lightResult.LightComponent = lightIt.Light;
-		lightResult.IsShadowEnable = true;
-		lightResult.ShadowTexture = CreateShadowTexture();
-
-		lightResult.ShadowTexture->Copy(m_ShadowRenderTarget->GetTexture(IRenderTarget::AttachmentPoint::Color0));
-		//m_ShadowRenderTarget->GetTexture(IRenderTarget::AttachmentPoint::Color0)->Copy(lightResult.ShadowTexture);
-
-		m_LightResult.push_back(lightResult);
+		if (i < m_LightResult.size())
+		{
+			SLightResult& lightResult = m_LightResult.at(i);
+			lightResult.IsEnabled = true;
+			lightResult.LightSceneNode = lightIt.Node;
+			lightResult.LightComponent = lightIt.Light;
+			lightResult.IsShadowEnable = true;
+			lightResult.ShadowTexture->Copy(m_ShadowRenderTarget->GetTexture(IRenderTarget::AttachmentPoint::DepthStencil));
+		}
+		else
+		{
+			SLightResult lightResult;
+			lightResult.IsEnabled = true;
+			lightResult.LightSceneNode = lightIt.Node;
+			lightResult.LightComponent = lightIt.Light;
+			lightResult.IsShadowEnable = true;
+			lightResult.ShadowTexture = CreateShadowTextureDepthStencil();
+			lightResult.ShadowTexture->Copy(m_ShadowRenderTarget->GetTexture(IRenderTarget::AttachmentPoint::DepthStencil));
+			m_LightResult.push_back(lightResult);
+		}	
 	}
 }
 
@@ -81,24 +88,17 @@ void CDefferedRenderPrepareLights::PostRender(RenderEventArgs& e)
 //
 void CDefferedRenderPrepareLights::CreatePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport)
 {
-	// Depth/stencil buffer
-	ITexture::TextureFormat depthStencilTextureFormat(
-		ITexture::Components::DepthStencil,
-		ITexture::Type::UnsignedNormalized,
-		1,
-		0, 0, 0, 0, 24, 8);
-
 	m_ShadowRenderTarget = GetRenderDevice()->CreateRenderTarget();
-	m_ShadowRenderTarget->AttachTexture(IRenderTarget::AttachmentPoint::Color0, CreateShadowTexture());
-	m_ShadowRenderTarget->AttachTexture(IRenderTarget::AttachmentPoint::DepthStencil, GetRenderDevice()->CreateTexture2D(cShadowTextureSize, cShadowTextureSize, 1, depthStencilTextureFormat));
+	//m_ShadowRenderTarget->AttachTexture(IRenderTarget::AttachmentPoint::Color0, CreateShadowTexture0());
+	m_ShadowRenderTarget->AttachTexture(IRenderTarget::AttachmentPoint::DepthStencil, CreateShadowTextureDepthStencil());
 
-	v.SetWidth(cShadowTextureSize);
-	v.SetHeight(cShadowTextureSize);
+	m_ShadowViewport.SetWidth(cShadowTextureSize);
+	m_ShadowViewport.SetHeight(cShadowTextureSize);
 
 	std::shared_ptr<IShader> vertexShader = GetRenderDevice()->CreateShader(EShaderType::VertexShader, "IDB_SHADER_3D_SHADOW", IShader::ShaderMacros(), "VS_Shadow", "latest");
 	vertexShader->LoadInputLayoutFromReflector();
 
-	std::shared_ptr<IShader> pixelShader = GetRenderDevice()->CreateShader(EShaderType::PixelShader, "IDB_SHADER_3D_SHADOW", IShader::ShaderMacros(), "PS_Shadow", "latest");
+	//std::shared_ptr<IShader> pixelShader = GetRenderDevice()->CreateShader(EShaderType::PixelShader, "IDB_SHADER_3D_SHADOW", IShader::ShaderMacros(), "PS_Shadow", "latest");
 
 	// PIPELINES
 	std::shared_ptr<IPipelineState> shadowPipeline = GetRenderDevice()->CreatePipelineState();
@@ -107,9 +107,9 @@ void CDefferedRenderPrepareLights::CreatePipeline(std::shared_ptr<IRenderTarget>
 	shadowPipeline->GetRasterizerState()->SetCullMode(IRasterizerState::CullMode::Back);
 	shadowPipeline->GetRasterizerState()->SetFillMode(IRasterizerState::FillMode::Solid);
 	shadowPipeline->SetRenderTarget(m_ShadowRenderTarget);
-	shadowPipeline->GetRasterizerState()->SetViewport(&v);
+	shadowPipeline->GetRasterizerState()->SetViewport(&m_ShadowViewport);
 	shadowPipeline->SetShader(EShaderType::VertexShader, vertexShader);
-	shadowPipeline->SetShader(EShaderType::PixelShader, pixelShader);
+	//shadowPipeline->SetShader(EShaderType::PixelShader, pixelShader);
 
 	SetPipeline(shadowPipeline);
 }
@@ -123,7 +123,7 @@ void CDefferedRenderPrepareLights::UpdateViewport(const Viewport * _viewport)
 //
 // Protected
 //
-std::shared_ptr<ITexture> CDefferedRenderPrepareLights::CreateShadowTexture() const
+std::shared_ptr<ITexture> CDefferedRenderPrepareLights::CreateShadowTexture0() const
 {
 	ITexture::TextureFormat colorTextureFormat
 	(
@@ -133,6 +133,18 @@ std::shared_ptr<ITexture> CDefferedRenderPrepareLights::CreateShadowTexture() co
 		32, 0, 0, 0, 0, 0
 	);
 	return GetRenderDevice()->CreateTexture2D(cShadowTextureSize, cShadowTextureSize, 1, colorTextureFormat);
+}
+
+std::shared_ptr<ITexture> CDefferedRenderPrepareLights::CreateShadowTextureDepthStencil() const
+{
+	// Depth/stencil buffer
+	ITexture::TextureFormat depthStencilTextureFormat(
+		ITexture::Components::DepthStencil,
+		ITexture::Type::UnsignedNormalized,
+		1,
+		0, 0, 0, 0, 24, 8
+	);
+	return GetRenderDevice()->CreateTexture2D(cShadowTextureSize, cShadowTextureSize, 1, depthStencilTextureFormat);
 }
 
 void CDefferedRenderPrepareLights::BindPerFrameParamsForCurrentIteration(const ILightComponent3D * LightComponent)

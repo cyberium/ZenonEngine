@@ -15,6 +15,12 @@ public:
     template<typename T>
     std::shared_ptr<T>                              GetComponent();
 
+
+	// ISceneNodeComponent
+	virtual void                                    OnParentChanged() override;
+	virtual void                                    OnMessage(std::shared_ptr<ISceneNodeComponent> Component, ComponentMessageType Message) override;
+	virtual std::shared_ptr<IPropertiesGroup>       GetPropertiesGroup() const override;
+
 	// Load & Save
 	virtual bool                                    Load(std::shared_ptr<IXMLReader> Reader) override;
 	virtual bool                                    Save(std::shared_ptr<IXMLWriter> Writer) override;
@@ -24,11 +30,6 @@ public:
 
     // Accept from SceneNode
     virtual bool                                    Accept(IVisitor* visitor) override;
-
-    // ISceneNodeComponent
-    virtual void                                    OnParentChanged() override;
-    virtual void                                    OnMessage(std::shared_ptr<ISceneNodeComponent> Component, ComponentMessageType Message) override;
-	virtual std::shared_ptr<IPropertiesGroup>       GetPropertiesGroup() const override;
 
 protected:
     void                                            RaiseComponentMessage(ComponentMessageType Message);

@@ -55,7 +55,6 @@ void CDefferedRender::PreRender(RenderEventArgs & e)
 
 
 
-
 //
 // IRenderPassPipelined
 //
@@ -77,7 +76,7 @@ void CDefferedRender::CreatePipeline(std::shared_ptr<IRenderTarget> /*RenderTarg
 	);
 	m_Texture0 = GetRenderDevice()->CreateTexture2D(Viewport->GetWidth(), Viewport->GetHeight(), 1, colorTextureFormat);
 	m_Texture1 = GetRenderDevice()->CreateTexture2D(Viewport->GetWidth(), Viewport->GetHeight(), 1, colorTextureFormat);
-	m_Texture2 = GetRenderDevice()->CreateTexture2D(Viewport->GetWidth(), Viewport->GetHeight(), 1, positionTextureFormat);
+	//m_Texture2 = GetRenderDevice()->CreateTexture2D(Viewport->GetWidth(), Viewport->GetHeight(), 1, positionTextureFormat);
 	m_Texture3 = GetRenderDevice()->CreateTexture2D(Viewport->GetWidth(), Viewport->GetHeight(), 1, positionTextureFormat);
 
 	// Depth/stencil buffer
@@ -91,7 +90,7 @@ void CDefferedRender::CreatePipeline(std::shared_ptr<IRenderTarget> /*RenderTarg
 	std::shared_ptr<IRenderTarget> rt = GetRenderDevice()->CreateRenderTarget();
 	rt->AttachTexture(IRenderTarget::AttachmentPoint::Color0, m_Texture0);
 	rt->AttachTexture(IRenderTarget::AttachmentPoint::Color1, m_Texture1);
-	rt->AttachTexture(IRenderTarget::AttachmentPoint::Color2, m_Texture2);
+	//rt->AttachTexture(IRenderTarget::AttachmentPoint::Color2, m_Texture2);
 	rt->AttachTexture(IRenderTarget::AttachmentPoint::Color3, m_Texture3);
 	rt->AttachTexture(IRenderTarget::AttachmentPoint::DepthStencil, m_DepthStencilTexture);
 
@@ -140,18 +139,10 @@ bool CDefferedRender::Visit3D(ISceneNode * node)
 {
 	RenderListProcessorPass::VisitBase(node);
 
-	const ICamera* camera = GetRenderEventArgs()->Camera;
-	//const Viewport* viewport = GetRenderEventArgs()->PipelineState->GetRasterizerState()->GetViewports()[0];
+	m_PerObjectData->Model = node->GetWorldTransfom();
+	m_PerObjectConstantBuffer->Set(*m_PerObjectData);
 
-	if (camera)
-	{
-		m_PerObjectData->Model = node->GetWorldTransfom();
-		m_PerObjectConstantBuffer->Set(m_PerObjectData, sizeof(PerObject3D));
-
-		return true;
-	}
-
-	return false;
+	return true;
 }
 
 bool CDefferedRender::Visit(IGeometry * Geometry, const IMaterial * Material, SGeometryPartParams GeometryPartParams)

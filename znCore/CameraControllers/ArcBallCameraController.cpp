@@ -53,9 +53,11 @@ void CArcBallCameraController::OnUpdate(UpdateEventArgs& e)
 	float moveMultiplier = (TranslateFaster) ? 100 : 50;
 	//float rotateMultiplier = (RotateFaster) ? 600 : 300;
 
-	GetCameraMovement()->TranslateX((Right - Left) * e.ElapsedTime * moveMultiplier);
-	GetCameraMovement()->TranslateY((Up - Down) * e.ElapsedTime * moveMultiplier);
-	GetCameraMovement()->TranslateZ((Back - Forward) * e.ElapsedTime * moveMultiplier);
+#if 0
+	GetCamera()->TranslateX((Right - Left) * e.ElapsedTime * moveMultiplier);
+	GetCamera()->TranslateY((Up - Down) * e.ElapsedTime * moveMultiplier);
+	GetCamera()->TranslateZ((Back - Forward) * e.ElapsedTime * moveMultiplier);
+#endif
 
 	//m_Camera->AddPitch(Pitch * 60.0f * e.ElapsedTime * rotateMultiplier, Camera::Space::Local);
 	//m_Camera->AddYaw(Yaw * 60.0f * e.ElapsedTime * rotateMultiplier, Camera::Space::World);

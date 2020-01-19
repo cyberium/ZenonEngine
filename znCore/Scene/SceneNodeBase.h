@@ -13,6 +13,7 @@ public:
 	virtual void									Initialize();
 	virtual void									Finalize();
 	
+
 	// Name & Type
 	std::string										GetType() const override;
 	void                                            SetType(std::string Type) override;
@@ -62,7 +63,7 @@ public:
 	// Called before all others calls
 	virtual void                                    OnUpdate(UpdateEventArgs& e) override final;
 	virtual void                                    DoUpdate(UpdateEventArgs& e) override;
-	virtual void                                    UpdateCamera(const ICamera* camera) override;
+	virtual void                                    UpdateCamera(const ICameraComponent3D* camera) override;
 	virtual void                                    UpdateViewport(const Viewport* viewport) override;
 
 

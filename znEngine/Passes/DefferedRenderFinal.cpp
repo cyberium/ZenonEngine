@@ -35,6 +35,8 @@ void CDefferedRenderFinal::PreRender(RenderEventArgs& e)
 
 	// Once per frame
 	m_ScreenToViewData->InverseProjection = glm::inverse(e.Camera->GetProjectionMatrix());
+	m_ScreenToViewData->InverseView = glm::inverse(e.Camera->GetViewMatrix());
+	m_ScreenToViewData->InverseProjectionView = e.Camera->GetInverseProjectionViewMatrix();
 	m_ScreenToViewData->ScreenDimensions = glm::vec2(e.PipelineState->GetRasterizerState()->GetViewports()[0]->GetWidth(), e.PipelineState->GetRasterizerState()->GetViewports()[0]->GetHeight());
 	m_ScreenToViewConstantBuffer->Set(*m_ScreenToViewData);
 	
@@ -99,7 +101,7 @@ void CDefferedRenderFinal::CreatePipeline(std::shared_ptr<IRenderTarget> RenderT
 
 	defferedFinalPipeline->SetTexture(0, m_DefferedRender->GetTexture0());
 	defferedFinalPipeline->SetTexture(1, m_DefferedRender->GetTexture1());
-	defferedFinalPipeline->SetTexture(2, m_DefferedRender->GetTexture2());
+	//defferedFinalPipeline->SetTexture(2, m_DefferedRender->GetTexture2());
 	defferedFinalPipeline->SetTexture(3, m_DefferedRender->GetTexture3());
 	defferedFinalPipeline->SetTexture(4, m_DefferedRender->GetTextureDepthStencil());
 
@@ -115,7 +117,7 @@ void CDefferedRenderFinal::CreatePipeline(std::shared_ptr<IRenderTarget> RenderT
 //
 void CDefferedRenderFinal::BindLightParamsForCurrentIteration(const RenderEventArgs& e, const CDefferedRenderPrepareLights::SLightResult& LightResult)
 {
-	const ICamera* camera = e.Camera;
+	const ICameraComponent3D* camera = e.Camera;
 	_ASSERT(camera != nullptr);
 
 	SLightResult lightResult;

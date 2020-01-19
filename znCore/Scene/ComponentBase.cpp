@@ -24,6 +24,24 @@ std::shared_ptr<ISceneNode> CComponentBase::GetOwnerNode() const
 
 
 
+//
+// ISceneNodeComponent
+//
+void CComponentBase::OnParentChanged()
+{
+	// do nothing
+}
+
+void CComponentBase::OnMessage(std::shared_ptr<ISceneNodeComponent> Component, ComponentMessageType Message)
+{
+	// do nothing
+}
+
+std::shared_ptr<IPropertiesGroup> CComponentBase::GetPropertiesGroup() const
+{
+	return m_PropertyGroup;
+}
+
 bool CComponentBase::Load(std::shared_ptr<IXMLReader> Reader)
 {
 	_ASSERT_EXPR(false, L"Not implemented.");
@@ -44,25 +62,6 @@ void CComponentBase::DoUpdate(UpdateEventArgs & e)
 bool CComponentBase::Accept(IVisitor* visitor)
 {
     return false;
-}
-
-
-//
-// ISceneNodeComponent
-//
-void CComponentBase::OnParentChanged()
-{
-    // do nothing
-}
-
-void CComponentBase::OnMessage(std::shared_ptr<ISceneNodeComponent> Component, ComponentMessageType Message)
-{
-    // do nothing
-}
-
-std::shared_ptr<IPropertiesGroup> CComponentBase::GetPropertiesGroup() const
-{
-	return m_PropertyGroup;
 }
 
 

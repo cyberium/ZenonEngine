@@ -25,29 +25,29 @@ cbbox CColliderComponent3D::GetBounds() const
     return m_Bounds;
 }
 
-bool CColliderComponent3D::CheckFrustum(const ICamera* Camera) const
+bool CColliderComponent3D::CheckFrustum(const ICameraComponent3D* Camera) const
 {
     _ASSERT(Camera != nullptr);
 
-    return !Camera->GetFrustum()->cullBox(GetBounds());
+	return true;// !Camera->GetFrustum()->cullBox(GetBounds());
 }
 
-bool CColliderComponent3D::CheckDistance2D(const ICamera* Camera, float _distance) const
+bool CColliderComponent3D::CheckDistance2D(const ICameraComponent3D* Camera, float _distance) const
 {
     _ASSERT(Camera != nullptr);
 
-    glm::vec3 cameraPosition = Camera->GetTranslation();
-    float distToCamera2D = glm::length(Fix_X0Z(cameraPosition) - Fix_X0Z(GetBounds().getCenter())) - GetBounds().getRadius();
-    return distToCamera2D < _distance;
+    //glm::vec3 cameraPosition = Camera->GetTranslation();
+    //float distToCamera2D = glm::length(Fix_X0Z(cameraPosition) - Fix_X0Z(GetBounds().getCenter())) - GetBounds().getRadius();
+    return true;//distToCamera2D < _distance;
 }
 
-bool CColliderComponent3D::CheckDistance(const ICamera* Camera, float _distance) const
+bool CColliderComponent3D::CheckDistance(const ICameraComponent3D* Camera, float _distance) const
 {
     _ASSERT(Camera != nullptr);
 
-    glm::vec3 cameraPosition = Camera->GetTranslation();
-    float distToCamera = glm::length(cameraPosition - GetBounds().getCenter()) - GetBounds().getRadius();
-    return distToCamera < _distance;
+    //glm::vec3 cameraPosition = Camera->GetTranslation();
+    //float distToCamera = glm::length(cameraPosition - GetBounds().getCenter()) - GetBounds().getRadius();
+    return true;//distToCamera < _distance;
 }
 
 void CColliderComponent3D::OnMessage(std::shared_ptr<ISceneNodeComponent> Component, ComponentMessageType Message)

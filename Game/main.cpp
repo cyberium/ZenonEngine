@@ -9,10 +9,10 @@ void main_internal(int argumentCount, char* arguments[])
 	Application app(BaseManager, ::GetModuleHandle(NULL));
 
 
-	CXMLManager xmlM;
+	//CXMLManager xmlM;
 
 	// Reader
-	std::shared_ptr<IXMLReader> reader = xmlM.CreateReader(BaseManager->GetManager<IFilesManager>()->Open("Scene.xml"));
+	//std::shared_ptr<IXMLReader> reader = xmlM.CreateReader(BaseManager->GetManager<IFilesManager>()->Open("Scene.xml"));
 
 
 
@@ -20,7 +20,7 @@ void main_internal(int argumentCount, char* arguments[])
 	firstWindowObject.CreateWindowInstance
 	(
 		&app,
-		L"First window name",
+		L"Zenon Engine",
 		BaseManager->GetManager<ISettings>()->GetGroup("Video")->GetSettingT<glm::vec2>("WindowSize")->Get().x,
 		BaseManager->GetManager<ISettings>()->GetGroup("Video")->GetSettingT<glm::vec2>("WindowSize")->Get().y
 	);

@@ -52,7 +52,7 @@ void CFBXSceneNode::LoadNode()
 
 	//SetRotation(glm::vec3(lRotation[0], lRotation[1], lRotation[2]));
 
-	SetLocalTransform(globalTransform);
+	//SetLocalTransform(globalTransform);
 
 	//
 	// Load childs

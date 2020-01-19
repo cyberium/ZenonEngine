@@ -1,4 +1,3 @@
-#include "IDB_SHADER_COMMON_TYPES"
 #include "IDB_SHADER_COMMON_INCLUDE"
 
 struct VertexShaderOutput
@@ -11,14 +10,6 @@ struct VertexShaderOutput
 	float3 binormalVS   : BINORMAL;     // View space binormal.
 };
 
-cbuffer PerObject : register(b0)
-{
-	PerObject PO;
-}
-cbuffer PerFrame : register(b1)
-{
-	PerFrame PF;
-}
 cbuffer Material : register(b2)
 {
 	Material Mat;
@@ -98,7 +89,7 @@ VertexShaderOutput VS_PTN(VSInputPTN IN)
 	return OUT;
 }
 
-PixelShaderOutput PS_main(VertexShaderOutput IN) : SV_TARGET
+DefferedRenderPSOut PS_main(VertexShaderOutput IN) : SV_TARGET
 {
 	// Everything is in view space.
 	float4 eyePos = { 0, 0, 0, 1 };
@@ -210,10 +201,10 @@ PixelShaderOutput PS_main(VertexShaderOutput IN) : SV_TARGET
 	mat.SpecularFactor = log2(mat.SpecularFactor) / 10.5f;
 
 
-	PixelShaderOutput OUT;
+	DefferedRenderPSOut OUT;
 	OUT.Diffuse = float4(diffuse.rgb, alpha);
 	OUT.Specular = float4(specular.rgb, mat.SpecularFactor);
-	OUT.PositionWS = IN.positionVS;
+	//OUT.PositionWS = IN.positionVS;
 	OUT.NormalWS = float4(N.xyz, 0.0);
 	return OUT;
 }

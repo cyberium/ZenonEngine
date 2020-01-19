@@ -4,7 +4,7 @@
 ZN_INTERFACE ISceneNodeComponent;
 ZN_INTERFACE IPropertiesG;
 ZN_INTERFACE IScene;
-ZN_INTERFACE ICamera;
+ZN_INTERFACE ICameraComponent3D;
 class Viewport;
 ZN_INTERFACE IVisitor;
 class UpdateEventArgs;
@@ -65,7 +65,7 @@ ZN_INTERFACE ZN_API __declspec(novtable) ISceneNode : public std::enable_shared_
 	// Called before all others calls
 	virtual void                                    OnUpdate(UpdateEventArgs& e) = 0;
 	virtual void                                    DoUpdate(UpdateEventArgs& e) = 0;
-	virtual void                                    UpdateCamera(const ICamera* camera) = 0;
+	virtual void                                    UpdateCamera(const ICameraComponent3D* camera) = 0;
 	virtual void                                    UpdateViewport(const Viewport* viewport) = 0;
 
 
@@ -143,7 +143,8 @@ ZN_INTERFACE ZN_API __declspec(novtable) ISceneNode3D
 {
 	virtual ~ISceneNode3D() {}
 
-	virtual void SetTranslate(cvec3 _translate) = 0;
+	virtual void SetTranslate(cvec3 Translate) = 0;
+	virtual void AddTranslate(vec3 Translate) = 0;
 	virtual cvec3 GetTranslation() const = 0;
 
 	virtual void SetRotation(cvec3 _rotate) = 0;

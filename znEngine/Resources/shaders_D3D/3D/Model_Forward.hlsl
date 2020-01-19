@@ -1,4 +1,3 @@
-#include "IDB_SHADER_COMMON_TYPES"
 #include "IDB_SHADER_COMMON_INCLUDE"
 
 struct VertexShaderOutput
@@ -13,14 +12,7 @@ struct VertexShaderOutput
 	float4 lightViewPosition : TEXCOORD1;
 };
 
-cbuffer PerObject : register(b0)
-{
-	PerObject PO;
-}
-cbuffer PerFrame : register(b1)
-{
-	PerFrame PF;
-}
+
 cbuffer Material : register(b2)
 {
 	Material Mat;
@@ -107,7 +99,7 @@ VertexShaderOutput VS_PTN(VSInputPTN IN)
 	return OUT;
 }
 
-VertexShaderOutput VS_PTN_Instanced(VSInputPTN_Instanced IN)
+VertexShaderOutput VS_PTN_Instanced(VSInputPTN_Instanced IN, uint InstanceID : SV_InstanceID)
 {
 	float3 tangent = (float3)0;
 	float3 binormal = (float3)0;
@@ -131,7 +123,7 @@ VertexShaderOutput VS_PTN_Instanced(VSInputPTN_Instanced IN)
 		binormal = normalize(binormal);
 	}
 
-	PerObject po = Instances[IN.instance];
+	PerObject po = Instances[InstanceID];
 
 	const float4x4 mv = mul(po.View, po.Model);
 	const float4x4 mvp = mul(po.Projection, mv);
@@ -147,7 +139,7 @@ VertexShaderOutput VS_PTN_Instanced(VSInputPTN_Instanced IN)
 }
 
 
-PixelShaderOutput PS_main(VertexShaderOutput IN) : SV_TARGET
+DefferedRenderPSOut PS_main(VertexShaderOutput IN) : SV_TARGET
 {
 	// Everything is in view space.
 	float4 eyePos = { 0, 0, 0, 1 };
@@ -288,7 +280,7 @@ PixelShaderOutput PS_main(VertexShaderOutput IN) : SV_TARGET
 	}
 
 
-	PixelShaderOutput OUT;
+	DefferedRenderPSOut OUT;
 	OUT.PositionWS = IN.position;
 	//OUT.Diffuse = float4(N.xyz, 1.0f);
 	//OUT.Diffuse = diffuse;

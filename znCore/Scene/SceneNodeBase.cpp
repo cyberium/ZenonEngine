@@ -82,13 +82,6 @@ void SceneNodeBase::SetLocalTransform(cmat4 localTransform)
 	m_LocalTransform = localTransform;
 	m_InverseLocalTransform = glm::inverse(localTransform);
 
-	/*glm::vec3 scale;
-	glm::quat rotation;
-	glm::vec3 translation;
-	glm::vec3 skew;
-	glm::vec4 perspective;
-	glm::decompose(m_LocalTransform, scale, rotation, translation, skew, perspective);*/
-
 	UpdateWorldTransform();
 
 	// After world updated, we can update all childs
@@ -288,7 +281,7 @@ void SceneNodeBase::DoUpdate(UpdateEventArgs & e)
 	// Do nothing...
 }
 
-void SceneNodeBase::UpdateCamera(const ICamera* camera)
+void SceneNodeBase::UpdateCamera(const ICameraComponent3D* camera)
 {
 	// Do nothing...
 }

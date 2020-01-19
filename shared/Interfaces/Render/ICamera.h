@@ -1,5 +1,7 @@
 #pragma once
 
+#if 0
+
 ZN_INTERFACE ZN_API ICamera
 {
 	enum class ZN_API EPerspectiveProjectionHand
@@ -39,12 +41,9 @@ ZN_INTERFACE ZN_API ICameraMovement
 	virtual void                                            TranslateX(float x, Space space = Space::Local) = 0;
 	virtual void                                            TranslateY(float y, Space space = Space::Local) = 0;
 	virtual void                                            TranslateZ(float z, Space space = Space::Local) = 0;
-	virtual void                                            DoMoveFront(float Value = 1.0f) = 0;
-	virtual void                                            DoMoveBack(float Value = 1.0f) = 0;
-	virtual void                                            DoMoveLeft(float Value = 1.0f) = 0;
-	virtual void                                            DoMoveRight(float Value = 1.0f) = 0;
+
 	virtual void                                            SetTranslate(vec3 Translate) = 0;
-	virtual void                                            AddTranslate(vec3 Translate) = 0;
+	
 
 	// Rotate
 	virtual void                                            SetYaw(float Yaw) = 0;
@@ -52,3 +51,5 @@ ZN_INTERFACE ZN_API ICameraMovement
 	virtual void                                            SetPitch(float Pitch) = 0;
 	virtual void                                            AddPitch(float Pitch) = 0;
 };
+
+#endif

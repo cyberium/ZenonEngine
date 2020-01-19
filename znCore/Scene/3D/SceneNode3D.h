@@ -15,16 +15,19 @@ public:
     std::shared_ptr<SceneNode3D>                    shared_from_this();
     std::weak_ptr<SceneNode3D>                      weak_from_this();
 
+	
+	virtual void									SetLocalTransform(cmat4 localTransform) override;
 
 	// ISceneNode3D
-	void											SetTranslate(cvec3 _translate);
-	cvec3											GetTranslation() const;
-	void											SetRotation(cvec3 _rotate);
-	cvec3											GetRotation() const;
-	void											SetRotationQuaternion(cquat _rotate);
-	cquat											GetRotationQuaternion() const;
-	void											SetScale(cvec3 _scale);
-	cvec3											GetScale() const;
+	void											SetTranslate(cvec3 Translate) override;
+	void                                            AddTranslate(vec3 Translate) override;
+	cvec3											GetTranslation() const override;
+	void											SetRotation(cvec3 _rotate) override;
+	cvec3											GetRotation() const override;
+	void											SetRotationQuaternion(cquat _rotate) override;
+	cquat											GetRotationQuaternion() const override;
+	void											SetScale(cvec3 _scale) override;
+	cvec3											GetScale() const override;
 
 
     // Components engine

@@ -78,7 +78,7 @@ void CLoader::DeleteAll()
 }
 
 
-void CLoader::SetCamera(std::shared_ptr<ICamera> _camera)
+void CLoader::SetCamera(std::shared_ptr<ICameraComponent3D> _camera)
 {
 	m_Camera = _camera;
 }
@@ -130,6 +130,7 @@ bool CLoader::sortFunctor::operator()(const std::shared_ptr<ILoadable>& first, c
 	std::shared_ptr<SceneNode3D> node3DFirst = std::dynamic_pointer_cast<SceneNode3D, ILoadable>(first);
 	std::shared_ptr<SceneNode3D> node3DSecond = std::dynamic_pointer_cast<SceneNode3D, ILoadable>(second);
 
+#if 0
 	if (camera)
 	{
 		bool cullFirst = !camera->GetFrustum()->cullSphere(std::dynamic_pointer_cast<ISceneNode3D>(node3DFirst)->GetTranslation(), 15.0f);
@@ -144,6 +145,7 @@ bool CLoader::sortFunctor::operator()(const std::shared_ptr<ILoadable>& first, c
 		if (!cullFirst && !cullSecond)
 			return false;
 	}
+#endif
 
 
 	if (first->getPriority() == second->getPriority())

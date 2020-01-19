@@ -65,12 +65,12 @@
     <ClCompile Include="Random.cpp" />
     <ClCompile Include="RefManager1DimAssync.cpp" />
     <ClCompile Include="Resource.cpp" />
+    <ClCompile Include="Scene\3D\CameraComponent3D.cpp" />
     <ClCompile Include="Scene\3D\ColliderComponent3D.cpp" />
     <ClCompile Include="Scene\3D\LightComponent3D.cpp" />
     <ClCompile Include="Scene\3D\MeshComponent3D.cpp" />
     <ClCompile Include="Scene\3D\SceneNode3D.cpp" />
     <ClCompile Include="Scene\Actions.cpp" />
-    <ClCompile Include="Scene\CameraNode.cpp" />
     <ClCompile Include="Scene\ComponentBase.cpp" />
     <ClCompile Include="Scene\LoadableObject.cpp" />
     <ClCompile Include="Scene\SceneBase.cpp" />
@@ -213,12 +213,12 @@
     <ClInclude Include="RefManager1Dim.h" />
     <ClInclude Include="RefManager1DimAssync.h" />
     <ClInclude Include="Resource.h" />
+    <ClInclude Include="Scene\3D\CameraComponent3D.h" />
     <ClInclude Include="Scene\3D\ColliderComponent3D.h" />
     <ClInclude Include="Scene\3D\LightComponent3D.h" />
     <ClInclude Include="Scene\3D\MeshComponent3D.h" />
     <ClInclude Include="Scene\3D\SceneNode3D.h" />
     <ClInclude Include="Scene\Actions.h" />
-    <ClInclude Include="Scene\CameraNode.h" />
     <ClInclude Include="Scene\ComponentBase.h" />
     <ClInclude Include="Scene\LoadableObject.h" />
     <ClInclude Include="Scene\SceneBase.h" />

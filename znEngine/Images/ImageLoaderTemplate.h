@@ -30,6 +30,7 @@ protected:
 	uint8* m_Data;
 };
 
+
 template <typename TIMAGE>
 class CImageLoaderT
 	: public IImageLoader

@@ -13,9 +13,9 @@ public:
     // IColliderComponent3D
     void SetBounds(BoundingBox _bbox) override;
     cbbox GetBounds() const override;
-    bool CheckFrustum(const ICamera* Camera) const override;
-    bool CheckDistance2D(const ICamera* Camera, float _distance) const override;
-    bool CheckDistance(const ICamera* Camera, float _distance) const override;
+    bool CheckFrustum(const ICameraComponent3D* Camera) const override;
+    bool CheckDistance2D(const ICameraComponent3D* Camera, float _distance) const override;
+    bool CheckDistance(const ICameraComponent3D* Camera, float _distance) const override;
 
     // CComponentBase
     void OnMessage(std::shared_ptr<ISceneNodeComponent> Component, ComponentMessageType Message) override;

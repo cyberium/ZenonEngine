@@ -2,50 +2,37 @@
 // Common functions
 //
 
+#include "IDB_SHADER_TYPES"
 #include "IDB_SHADER_MATERIAL"
 #include "IDB_SHADER_LIGHT"
 
-struct Plane
+
+
+
+
+// Uniforms
+cbuffer PerObject : register(b0)
 {
-	float3 N;   // Plane normal.
-	float  d;   // Distance to origin.
-};
+	PerObject PO;
+}
 
-struct Sphere
+cbuffer PerFrame : register(b1)
 {
-	float3 c;   // Center point.
-	float  r;   // Radius.
-};
+	PerFrame PF;
+}
 
-struct Cone
-{
-	float3 T;   // Cone tip.
-	float  h;   // Height of the cone.
-	float3 d;   // Direction of the cone.
-	float  r;   // bottom radius of the cone.
-};
-
-// Four planes of a view frustum (in view space).
-// The planes are:
-//  * Left,
-//  * Right,
-//  * Top,
-//  * Bottom.
-// The back and/or front planes can be computed from depth values in the 
-// light culling compute shader.
-struct Frustum
-{
-	Plane planes[4];   // left, right, top, bottom frustum planes.
-};
-
-
+// b2 is material
 
 cbuffer ScreenToViewParams : register(b3)
 {
 	float4x4 InverseProjection;
+	float4x4 InverseView;
+	float4x4 InverseViewProjection;
 	float2 ScreenDimensions;
 }
 
+sampler LinearRepeatSampler     : register(s0);
+sampler LinearClampSampler      : register(s1);
 
 
 // Convert clip space coordinates to view space
@@ -53,6 +40,7 @@ float4 ClipToView(float4 clip)
 {
 	// View space position.
 	float4 view = mul(InverseProjection, clip);
+
 	// Perspecitive projection.
 	view = view / view.w;
 
@@ -70,6 +58,27 @@ float4 ScreenToView(float4 screen)
 
 	return ClipToView(clip);
 }
+
+
+// Convert screen space coordinates to view space.
+float4 ScreenToViewOtrho(float4 screen)
+{
+	// Convert to normalized texture coordinates
+	float2 texCoord = screen.xy / ScreenDimensions;
+
+	// Convert to clip space
+	float4 clip = float4(float2(texCoord.x, 1.0f - texCoord.y) * 2.0f - 1.0f, screen.z, screen.w);
+
+	return mul(InverseProjection, clip);
+}
+
+
+
+
+
+
+
+
 
 // Compute a plane from 3 noncollinear points that form a triangle.
 // This equation assumes a right-handed (counter-clockwise winding order) 

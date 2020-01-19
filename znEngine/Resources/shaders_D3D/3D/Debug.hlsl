@@ -1,9 +1,4 @@
-#include "IDB_SHADER_COMMON_TYPES"
-
-struct Debug_Material
-{
-    float4 DiffuseColor;
-};
+#include "IDB_SHADER_COMMON_INCLUDE"
 
 struct VertexShaderOutput
 {
@@ -14,17 +9,9 @@ struct VertexShaderOutput
 };
 
 // Uniforms
-cbuffer PerObject : register(b0)
-{
-	PerObject PO;
-}
-cbuffer PerFrame : register(b1)
-{
-	PerFrame PF;
-}
 cbuffer Material : register(b2)
 {
-    Debug_Material Material;
+	float4 DiffuseColor;
 };
 
 VertexShaderOutput VS_main(VSInputPN IN)
@@ -57,9 +44,9 @@ void GS_main(point VertexShaderOutput vertices[1], inout LineStream<VertexShader
 	lineStream.Append(v1);
 }
 
-PixelShaderOutput PS_main(VertexShaderOutput IN) : SV_TARGET
+DefferedRenderPSOut PS_main(VertexShaderOutput IN) : SV_TARGET
 {
-	PixelShaderOutput OUT;
+	DefferedRenderPSOut OUT;
 	OUT.PositionWS = float4(IN.positionVS, 1.0f);
 	OUT.Diffuse = float4(IN.color, 1.0f); // Material.DiffuseColor;
 	OUT.Specular = float4(1.0, 1.0, 1.0, 1.0);

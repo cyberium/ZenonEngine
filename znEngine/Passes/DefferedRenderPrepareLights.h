@@ -8,6 +8,7 @@ class CDefferedRenderPrepareLights
 public:
 	struct SLightResult
 	{
+		bool IsEnabled;
 		const ISceneNode* LightSceneNode;
 		const ILightComponent3D* LightComponent;
 		bool IsShadowEnable;
@@ -30,7 +31,8 @@ public:
 	void UpdateViewport(const Viewport * _viewport) override;
 
 protected:
-	std::shared_ptr<ITexture> CreateShadowTexture() const;
+	std::shared_ptr<ITexture> CreateShadowTexture0() const;
+	std::shared_ptr<ITexture> CreateShadowTextureDepthStencil() const;
 	void BindPerFrameParamsForCurrentIteration(const ILightComponent3D* LightComponent);
 	void BindPerObjectParamsForCurrentIteration(const ISceneNode* SceneNode);
 
@@ -40,7 +42,8 @@ private: // Pass light params
 
 private: // For shadow rendering
 	std::shared_ptr<IRenderTarget> m_ShadowRenderTarget;
-	Viewport v;
+	Viewport m_ShadowViewport;
+
 
 	std::vector<SLightResult> m_LightResult;
 
@@ -48,5 +51,5 @@ private:
 	std::shared_ptr<BuildRenderListPass> m_BuildRenderListPass;
 
 private: // consts
-	const float cShadowTextureSize = 2048.0f;
+	const float cShadowTextureSize = 4096.0f;
 };

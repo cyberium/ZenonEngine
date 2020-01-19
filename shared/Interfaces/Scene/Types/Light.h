@@ -15,46 +15,34 @@ struct __declspec(novtable, align(16)) ZN_API SLight
 {
 	SLight::SLight()
 		: PositionWS(0, 0, 0, 1)
-		, DirectionWS(0, 0, -1, 0)
+		, DirectionWS(0, -1, 0, 0)
 		, PositionVS(0, 0, 0, 1)
 		, DirectionVS(0, 0, 1, 0)
 		, Color(1, 1, 1, 1)
 
-		, Enabled(false)
+		, Type(ELightType::Unknown)
 		, Range(99999.0f)
 		, Intensity(1.0f)
 		, SpotlightAngle(45.0f)
-
-		, Type(ELightType::Unknown)
 	{}
 
-	// Position for point and spot lights (World space).
-	glm::vec4 PositionWS;
+	
+	glm::vec4 PositionWS;  // Position for point and spot lights (World space).
 	//--------------------------------------------------------------( 16 bytes )
-	// Direction for spot and directional lights (World space).
-	glm::vec4 DirectionWS;
+	glm::vec4 DirectionWS; // Direction for spot and directional lights (World space).
 	//--------------------------------------------------------------( 16 bytes )
-	// Position for point and spot lights (View space).
-	glm::vec4 PositionVS;
+	glm::vec4 PositionVS;  // Position for point and spot lights (View space).
 	//--------------------------------------------------------------( 16 bytes )
-	// Direction for spot and directional lights (View space).
-	glm::vec4 DirectionVS;
+	glm::vec4 DirectionVS; // Direction for spot and directional lights (View space).
 	//--------------------------------------------------------------( 16 bytes )
-	// Color of the light. Diffuse and specular colors are not separated.
-	glm::vec4 Color;
+	glm::vec4 Color;       // Color of the light. Diffuse and specular colors are not separated.
 	//--------------------------------------------------------------( 16 bytes )
-	// Disable or enable the light.
-	uint32 Enabled;
-	// The range of the light.
-	float Range;
-	// The intensity of the light.
-	float Intensity;
-	// The half angle of the spotlight cone.
-	float SpotlightAngle;
+	
+	ELightType Type; // The type of the light.
+	float Range; // The range of the light.
+	float Intensity; // The intensity of the light.
+	float SpotlightAngle; // The half angle of the spotlight cone.
 	//--------------------------------------------------------------(16 bytes )
-	// The type of the light.
-	ELightType Type;
-	glm::vec3 __Padding;
-	//--------------------------------------------------------------(16 bytes )
+
 	//--------------------------------------------------------------( 16 * 7 = 112 bytes )
 };

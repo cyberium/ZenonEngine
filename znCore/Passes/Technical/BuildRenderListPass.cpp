@@ -179,11 +179,11 @@ bool BuildRenderListPass::Visit(IMesh * Mesh, SGeometryPartParams GeometryPartPa
 bool BuildRenderListPass::Visit(IGeometry * Geometry, const IMaterial * Material, SGeometryPartParams GeometryPartParams)
 {
 	m_GeometryList.push_back(SGeometryElement(m_CurrentSceneNode, Geometry, Material, GeometryPartParams));
-	return false;
+	return true;
 }
 
 bool BuildRenderListPass::Visit(ILightComponent3D * light)
 {
 	m_LightList.push_back(SLightElement(m_CurrentSceneNode, light));
-	return false;
+	return true;
 }
