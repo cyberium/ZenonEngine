@@ -2,8 +2,8 @@
 
 #include "ConstantBufferDX11.h"
 
-ConstantBufferDX11::ConstantBufferDX11(ID3D11Device2* pDevice, size_t size)
-	: m_pDevice(pDevice)
+ConstantBufferDX11::ConstantBufferDX11(IRenderDeviceDX11* RenderDeviceD3D11, size_t size)
+	: m_RenderDeviceD3D11(RenderDeviceD3D11)
 	, m_BufferSize(size)
 {
 	D3D11_BUFFER_DESC bufferDesc;
@@ -16,13 +16,11 @@ ConstantBufferDX11::ConstantBufferDX11(ID3D11Device2* pDevice, size_t size)
 	bufferDesc.MiscFlags = 0;
 	bufferDesc.StructureByteStride = 0;
 
-	if (FAILED(m_pDevice->CreateBuffer(&bufferDesc, nullptr, &m_pBuffer)))
+	if (FAILED(m_RenderDeviceD3D11->GetDeviceD3D11()->CreateBuffer(&bufferDesc, nullptr, &m_pBuffer)))
 	{
 		_ASSERT_EXPR(false, "Failed to create constant buffer for shader.");
 		return;
 	}
-
-	m_pDevice->GetImmediateContext2(&m_pDeviceContext);
 }
 
 ConstantBufferDX11::~ConstantBufferDX11()
@@ -37,7 +35,7 @@ void ConstantBufferDX11::Copy(std::shared_ptr<IConstantBuffer> other)
 	if (srcBuffer && srcBuffer.get() != this &&
 		m_BufferSize == srcBuffer->m_BufferSize)
 	{
-		m_pDeviceContext->CopyResource(m_pBuffer, srcBuffer->m_pBuffer);
+		m_RenderDeviceD3D11->GetDeviceContextD3D11()->CopyResource(m_pBuffer, srcBuffer->m_pBuffer);
 	}
 	else
 	{
@@ -54,22 +52,22 @@ bool ConstantBufferDX11::Bind(uint32 id, const IShader* shader, IShaderParameter
 	switch (shader->GetType())
 	{
 	case EShaderType::VertexShader:
-		m_pDeviceContext->VSSetConstantBuffers(id, 1, pBuffers);
+		m_RenderDeviceD3D11->GetDeviceContextD3D11()->VSSetConstantBuffers(id, 1, pBuffers);
 		break;
 	case EShaderType::TessellationControlShader:
-		m_pDeviceContext->HSSetConstantBuffers(id, 1, pBuffers);
+		m_RenderDeviceD3D11->GetDeviceContextD3D11()->HSSetConstantBuffers(id, 1, pBuffers);
 		break;
 	case EShaderType::TessellationEvaluationShader:
-		m_pDeviceContext->DSSetConstantBuffers(id, 1, pBuffers);
+		m_RenderDeviceD3D11->GetDeviceContextD3D11()->DSSetConstantBuffers(id, 1, pBuffers);
 		break;
 	case EShaderType::GeometryShader:
-		m_pDeviceContext->GSSetConstantBuffers(id, 1, pBuffers);
+		m_RenderDeviceD3D11->GetDeviceContextD3D11()->GSSetConstantBuffers(id, 1, pBuffers);
 		break;
 	case EShaderType::PixelShader:
-		m_pDeviceContext->PSSetConstantBuffers(id, 1, pBuffers);
+		m_RenderDeviceD3D11->GetDeviceContextD3D11()->PSSetConstantBuffers(id, 1, pBuffers);
 		break;
 	case EShaderType::ComputeShader:
-		m_pDeviceContext->CSSetConstantBuffers(id, 1, pBuffers);
+		m_RenderDeviceD3D11->GetDeviceContextD3D11()->CSSetConstantBuffers(id, 1, pBuffers);
 		break;
 	default:
 		result = false;
@@ -86,22 +84,22 @@ void ConstantBufferDX11::UnBind(uint32 id, const IShader* shader, IShaderParamet
 	switch (shader->GetType())
 	{
 	case EShaderType::VertexShader:
-		m_pDeviceContext->VSSetConstantBuffers(id, 1, pBuffers);
+		m_RenderDeviceD3D11->GetDeviceContextD3D11()->VSSetConstantBuffers(id, 1, pBuffers);
 		break;
 	case EShaderType::TessellationControlShader:
-		m_pDeviceContext->HSSetConstantBuffers(id, 1, pBuffers);
+		m_RenderDeviceD3D11->GetDeviceContextD3D11()->HSSetConstantBuffers(id, 1, pBuffers);
 		break;
 	case EShaderType::TessellationEvaluationShader:
-		m_pDeviceContext->DSSetConstantBuffers(id, 1, pBuffers);
+		m_RenderDeviceD3D11->GetDeviceContextD3D11()->DSSetConstantBuffers(id, 1, pBuffers);
 		break;
 	case EShaderType::GeometryShader:
-		m_pDeviceContext->GSSetConstantBuffers(id, 1, pBuffers);
+		m_RenderDeviceD3D11->GetDeviceContextD3D11()->GSSetConstantBuffers(id, 1, pBuffers);
 		break;
 	case EShaderType::PixelShader:
-		m_pDeviceContext->PSSetConstantBuffers(id, 1, pBuffers);
+		m_RenderDeviceD3D11->GetDeviceContextD3D11()->PSSetConstantBuffers(id, 1, pBuffers);
 		break;
 	case EShaderType::ComputeShader:
-		m_pDeviceContext->CSSetConstantBuffers(id, 1, pBuffers);
+		m_RenderDeviceD3D11->GetDeviceContextD3D11()->CSSetConstantBuffers(id, 1, pBuffers);
 		break;
 	default:
 		break;
@@ -142,7 +140,7 @@ void ConstantBufferDX11::Set(const void* data, size_t size)
 	_ASSERT(size == m_BufferSize);
 
 	D3D11_MAPPED_SUBRESOURCE mappedResource;
-	if (FAILED(m_pDeviceContext->Map(m_pBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource)))
+	if (FAILED(m_RenderDeviceD3D11->GetDeviceContextD3D11()->Map(m_pBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource)))
 	{
 		_ASSERT_EXPR(false, "Failed to map constant buffer.");
 		return;
@@ -150,5 +148,5 @@ void ConstantBufferDX11::Set(const void* data, size_t size)
 
 	memcpy(mappedResource.pData, data, m_BufferSize);
 
-	m_pDeviceContext->Unmap(m_pBuffer, 0);
+	m_RenderDeviceD3D11->GetDeviceContextD3D11()->Unmap(m_pBuffer, 0);
 }

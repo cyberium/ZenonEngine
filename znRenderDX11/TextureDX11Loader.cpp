@@ -20,7 +20,7 @@ bool TextureDX11::LoadTextureCustom(uint16_t width, uint16_t height, void * pixe
 	m_ShaderResourceViewFormat = m_RenderTargetViewFormat = m_TextureResourceFormat;
 	m_SampleDesc = GetSupportedSampleCount(m_TextureResourceFormat, 1);
 
-	if (FAILED(m_pDevice->CheckFormatSupport(m_TextureResourceFormat, &m_TextureResourceFormatSupport)))
+	if (FAILED(m_RenderDeviceD3D11->GetDeviceD3D11()->CheckFormatSupport(m_TextureResourceFormat, &m_TextureResourceFormatSupport)))
 	{
 		Log::Error("Failed to query format support.");
 	}
@@ -62,7 +62,7 @@ bool TextureDX11::LoadTextureCustom(uint16_t width, uint16_t height, void * pixe
 	subresourceData.pSysMem = pixels;
 	subresourceData.SysMemPitch = m_Pitch;
 	subresourceData.SysMemSlicePitch = 0;
-	if (FAILED(m_pDevice->CreateTexture2D(&textureDesc, m_bGenerateMipmaps ? nullptr : &subresourceData, &m_pTexture2D)))
+	if (FAILED(m_RenderDeviceD3D11->GetDeviceD3D11()->CreateTexture2D(&textureDesc, m_bGenerateMipmaps ? nullptr : &subresourceData, &m_pTexture2D)))
 	{
 		Log::Error("Failed to create texture.");
 		return false;
@@ -74,7 +74,7 @@ bool TextureDX11::LoadTextureCustom(uint16_t width, uint16_t height, void * pixe
 	resourceViewDesc.ViewDimension = D3D_SRV_DIMENSION_TEXTURE2D;
 	resourceViewDesc.Texture2D.MipLevels = m_bGenerateMipmaps ? -1 : 1;
 	resourceViewDesc.Texture2D.MostDetailedMip = 0;
-	if (FAILED(m_pDevice->CreateShaderResourceView(m_pTexture2D, &resourceViewDesc, &m_pShaderResourceView)))
+	if (FAILED(m_RenderDeviceD3D11->GetDeviceD3D11()->CreateShaderResourceView(m_pTexture2D, &resourceViewDesc, &m_pShaderResourceView)))
 	{
 		Log::Error("Failed to create texture resource view.");
 		return false;
@@ -83,8 +83,8 @@ bool TextureDX11::LoadTextureCustom(uint16_t width, uint16_t height, void * pixe
 	// From DirectXTK (28/05/2015) @see https://directxtk.codeplex.com/
 	if (m_bGenerateMipmaps)
 	{
-		m_pDeviceContext->UpdateSubresource(m_pTexture2D, 0, nullptr, pixels, m_Pitch, 0);
-		m_pDeviceContext->GenerateMips(m_pShaderResourceView);
+		m_RenderDeviceD3D11->GetDeviceContextD3D11()->UpdateSubresource(m_pTexture2D, 0, nullptr, pixels, m_Pitch, 0);
+		m_RenderDeviceD3D11->GetDeviceContextD3D11()->GenerateMips(m_pShaderResourceView);
 	}
 
 	m_bIsDirty = false;
@@ -241,7 +241,7 @@ bool TextureDX11::LoadTexture2D(const std::string& fileName)
 	m_ShaderResourceViewFormat = m_RenderTargetViewFormat = m_TextureResourceFormat;
 	m_SampleDesc = GetSupportedSampleCount(m_TextureResourceFormat, 1);
 
-	if (FAILED(m_pDevice->CheckFormatSupport(m_TextureResourceFormat, &m_TextureResourceFormatSupport)))
+	if (FAILED(m_RenderDeviceD3D11->GetDeviceD3D11()->CheckFormatSupport(m_TextureResourceFormat, &m_TextureResourceFormatSupport)))
 	{
 		_ASSERT_EXPR(false, "Failed to query format support.");
 	}
@@ -285,7 +285,7 @@ bool TextureDX11::LoadTexture2D(const std::string& fileName)
 	subresourceData.SysMemPitch = m_Pitch;
 	subresourceData.SysMemSlicePitch = 0;
 
-	if (FAILED(m_pDevice->CreateTexture2D(&textureDesc, m_bGenerateMipmaps ? nullptr : &subresourceData, &m_pTexture2D)))
+	if (FAILED(m_RenderDeviceD3D11->GetDeviceD3D11()->CreateTexture2D(&textureDesc, m_bGenerateMipmaps ? nullptr : &subresourceData, &m_pTexture2D)))
 	{
 		_ASSERT_EXPR(false, "Failed to create texture.");
 		return false;
@@ -299,7 +299,7 @@ bool TextureDX11::LoadTexture2D(const std::string& fileName)
 	resourceViewDesc.Texture2D.MipLevels = m_bGenerateMipmaps ? -1 : 1;
 	resourceViewDesc.Texture2D.MostDetailedMip = 0;
 
-	if (FAILED(m_pDevice->CreateShaderResourceView(m_pTexture2D, &resourceViewDesc, &m_pShaderResourceView)))
+	if (FAILED(m_RenderDeviceD3D11->GetDeviceD3D11()->CreateShaderResourceView(m_pTexture2D, &resourceViewDesc, &m_pShaderResourceView)))
 	{
 		_ASSERT_EXPR(false, "Failed to create texture resource view.");
 		return false;
@@ -308,8 +308,8 @@ bool TextureDX11::LoadTexture2D(const std::string& fileName)
 	// From DirectXTK (28/05/2015) @see https://directxtk.codeplex.com/
 	if (m_bGenerateMipmaps)
 	{
-		m_pDeviceContext->UpdateSubresource(m_pTexture2D, 0, nullptr, textureData, m_Pitch, 0);
-		m_pDeviceContext->GenerateMips(m_pShaderResourceView);
+		m_RenderDeviceD3D11->GetDeviceContextD3D11()->UpdateSubresource(m_pTexture2D, 0, nullptr, textureData, m_Pitch, 0);
+		m_RenderDeviceD3D11->GetDeviceContextD3D11()->GenerateMips(m_pShaderResourceView);
 	}
 
 	m_bIsDirty = false;
@@ -324,13 +324,13 @@ bool TextureDX11::LoadTexture2D(const std::string& fileName)
 
 bool TextureDX11::LoadTexture2D(const std::string& fileName)
 {
-	std::shared_ptr<IFile> f = m_RenderDevice.lock()->GetBaseManager()->GetManager<IFilesManager>()->Open(fileName);
+	std::shared_ptr<IFile> f = m_RenderDeviceD3D11->GetDevice()->GetBaseManager()->GetManager<IFilesManager>()->Open(fileName);
 	if (f == nullptr)
 	{
 		return false;
 	}
 
-	std::shared_ptr<IImage> image = m_RenderDevice.lock()->GetBaseManager()->GetManager<IImagesFactory>()->CreateImage(f);
+	std::shared_ptr<IImage> image = m_RenderDeviceD3D11->GetDevice()->GetBaseManager()->GetManager<IImagesFactory>()->CreateImage(f);
 	if (image == nullptr)
 	{
 		return false;
@@ -352,7 +352,7 @@ bool TextureDX11::LoadTexture2D(const std::string& fileName)
 	m_ShaderResourceViewFormat = m_RenderTargetViewFormat = m_TextureResourceFormat;
 	m_SampleDesc = GetSupportedSampleCount(m_TextureResourceFormat, 1);
 
-	if (FAILED(m_pDevice->CheckFormatSupport(m_TextureResourceFormat, &m_TextureResourceFormatSupport)))
+	if (FAILED(m_RenderDeviceD3D11->GetDeviceD3D11()->CheckFormatSupport(m_TextureResourceFormat, &m_TextureResourceFormatSupport)))
 	{
 		_ASSERT_EXPR(false, "Failed to query format support.");
 	}
@@ -395,7 +395,7 @@ bool TextureDX11::LoadTexture2D(const std::string& fileName)
 	subresourceData.SysMemPitch = image->GetStride();
 	subresourceData.SysMemSlicePitch = 0;
 
-	if (FAILED(m_pDevice->CreateTexture2D(&textureDesc, m_bGenerateMipmaps ? nullptr : &subresourceData, &m_pTexture2D)))
+	if (FAILED(m_RenderDeviceD3D11->GetDeviceD3D11()->CreateTexture2D(&textureDesc, m_bGenerateMipmaps ? nullptr : &subresourceData, &m_pTexture2D)))
 	{
 		_ASSERT_EXPR(false, "Failed to create texture.");
 		return false;
@@ -409,7 +409,7 @@ bool TextureDX11::LoadTexture2D(const std::string& fileName)
 	resourceViewDesc.Texture2D.MipLevels = m_bGenerateMipmaps ? -1 : 1;
 	resourceViewDesc.Texture2D.MostDetailedMip = 0;
 
-	if (FAILED(m_pDevice->CreateShaderResourceView(m_pTexture2D, &resourceViewDesc, &m_pShaderResourceView)))
+	if (FAILED(m_RenderDeviceD3D11->GetDeviceD3D11()->CreateShaderResourceView(m_pTexture2D, &resourceViewDesc, &m_pShaderResourceView)))
 	{
 		_ASSERT_EXPR(false, "Failed to create texture resource view.");
 		return false;
@@ -418,8 +418,8 @@ bool TextureDX11::LoadTexture2D(const std::string& fileName)
 	// From DirectXTK (28/05/2015) @see https://directxtk.codeplex.com/
 	if (m_bGenerateMipmaps)
 	{
-		m_pDeviceContext->UpdateSubresource(m_pTexture2D, 0, nullptr, image->GetData(), image->GetStride(), 0);
-		m_pDeviceContext->GenerateMips(m_pShaderResourceView);
+		m_RenderDeviceD3D11->GetDeviceContextD3D11()->UpdateSubresource(m_pTexture2D, 0, nullptr, image->GetData(), image->GetStride(), 0);
+		m_RenderDeviceD3D11->GetDeviceContextD3D11()->GenerateMips(m_pShaderResourceView);
 	}
 
 	m_bIsDirty = false;

@@ -3,7 +3,7 @@
 class StructuredBufferDX11 : public IStructuredBuffer
 {
 public:
-	StructuredBufferDX11(ID3D11Device2* pDevice, UINT bindFlags, const void* data, size_t count, UINT stride, CPUAccess cpuAccess = CPUAccess::None, bool bUAV = false);
+	StructuredBufferDX11(IRenderDeviceDX11* RenderDeviceD3D11, UINT bindFlags, const void* data, size_t count, UINT stride, CPUAccess cpuAccess = CPUAccess::None, bool bUAV = false);
 	virtual ~StructuredBufferDX11();
 
 	virtual bool Bind(uint32 id, const IShader* shader, IShaderParameter::Type parameterType) const override;
@@ -15,23 +15,17 @@ public:
     virtual uint32 GetElementOffset() const;
 
 	virtual void Copy(std::shared_ptr<IStructuredBuffer> other);
-
-	// Clear the contents of the buffer.
 	virtual void Clear();
 
-	// Used by the RenderTargetDX11 only.
 	ID3D11UnorderedAccessView* GetUnorderedAccessView() const;
 
 protected:
 	virtual void Copy(std::shared_ptr<IBuffer> other);
 	virtual void SetData(void* data, size_t elementSize, size_t offset, size_t numElements);
 
-	// Commit the data from system memory to device memory.
 	void Commit() const;
 
 private:
-	ATL::CComPtr<ID3D11Device2> m_pDevice;
-	ATL::CComPtr<ID3D11DeviceContext2> m_pDeviceContext;
 	ATL::CComPtr<ID3D11Buffer> m_pBuffer;
 	ATL::CComPtr<ID3D11ShaderResourceView> m_pSRV;
 	ATL::CComPtr<ID3D11UnorderedAccessView> m_pUAV;
@@ -52,14 +46,14 @@ private:
 	// The last slot the UAV was bound to.
 	UINT m_uiSlot;
 
-	// Marked dirty if the contents of the buffer differ
-	// from what is stored on the GPU.
+	// Marked dirty if the contents of the buffer differ from what is stored on the GPU.
 	mutable bool m_bIsDirty;
-	// Does this buffer require GPU write access 
-	// If so, it must be bound as a UAV instead of an SRV.
+	// Does this buffer require GPU write access If so, it must be bound as a UAV instead of an SRV.
 	bool m_bUAV;
 
-	// Requires CPU read/write access.
-	bool m_bDynamic;
+	bool m_bDynamic; // Requires CPU read/write access.
 	CPUAccess m_CPUAccess;
+
+private: // Link to parent d3d11 device
+	IRenderDeviceDX11* m_RenderDeviceD3D11;
 };

@@ -4,8 +4,8 @@ class ZN_API GeometryDX11
 	: public GeometryBase
 {
 public:
-	                                                GeometryDX11(ID3D11Device2 * pDevice);
-	virtual                                         ~GeometryDX11();
+	GeometryDX11(IRenderDeviceDX11* RenderDeviceD3D11);
+	virtual	~GeometryDX11();
 
 	virtual void                                    SetPrimitiveTopology(PrimitiveTopology Topology) override;
 
@@ -15,7 +15,6 @@ public:
 private:
 	D3D11_PRIMITIVE_TOPOLOGY                        m_PrimitiveTopology;
 
-	// DirectX
-	ATL::CComPtr<ID3D11Device2>                     m_pDevice;
-	ATL::CComPtr<ID3D11DeviceContext2>              m_pDeviceContext;
+private: // Link to parent d3d11 device
+	IRenderDeviceDX11* m_RenderDeviceD3D11;
 };

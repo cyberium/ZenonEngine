@@ -23,6 +23,8 @@
 #include "Settings/GroupVideo.h"
 
 
+#include "ThreadPool.h"
+
 // Additional
 #include <filesystem>
 
@@ -100,6 +102,8 @@ std::vector<std::string> GetAllFilesInDirectory(const std::string& Directory, co
 
 	return listOfFiles;
 }
+
+#include <iostream>
 
 IBaseManager* WINAPI InitializeEngine(std::vector<std::string> Arguments)
 {

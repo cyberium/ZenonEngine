@@ -1,6 +1,8 @@
 #pragma once
 
-class ZN_API DepthStencilStateBase : public IDepthStencilState, public Object
+class ZN_API DepthStencilStateBase 
+	: public IDepthStencilState
+	, public Object
 {
 public:
 	DepthStencilStateBase();

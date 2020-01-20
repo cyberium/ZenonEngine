@@ -9,6 +9,7 @@
 // Base
 #include "../znRender/BlendStateBase.h"
 #include "../znRender/DepthStencilStateBase.h"
+#include "../znRender/PipelineStateBase.h"
 #include "../znRender/RasterizerStateBase.h"
 
 #include "../znRender/MaterialBase.h"

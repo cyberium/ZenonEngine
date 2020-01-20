@@ -9,16 +9,10 @@ D3D11_TEXTURE_ADDRESS_MODE DX11TranslateWrapMode(ISamplerState::WrapMode wrapMod
 D3D11_COMPARISON_FUNC DX11TranslateComparisonFunction(ISamplerState::CompareFunc compareFunc);
 // FORWARD END
 
-SamplerStateDX11::SamplerStateDX11(ID3D11Device2* pDevice)
-	: m_pDevice(pDevice)
-	, m_pDeviceContext(nullptr)
+SamplerStateDX11::SamplerStateDX11(IRenderDeviceDX11* RenderDeviceD3D11)
+	: m_RenderDeviceD3D11(RenderDeviceD3D11)
 	, m_pSamplerState(nullptr)
-{
-	if (m_pDevice)
-	{
-		m_pDevice->GetImmediateContext2(&m_pDeviceContext);
-	}
-}
+{}
 
 SamplerStateDX11::~SamplerStateDX11()
 {}
@@ -48,7 +42,7 @@ void SamplerStateDX11::Bind(uint32_t ID, const IShader* shader, IShaderParameter
         samplerDesc.MaxLOD = m_fMaxLOD;
 
         m_pSamplerState = NULL;
-        m_pDevice->CreateSamplerState(&samplerDesc, &m_pSamplerState);
+        m_RenderDeviceD3D11->GetDeviceD3D11()->CreateSamplerState(&samplerDesc, &m_pSamplerState);
 
         m_bIsDirty = false;
     }
@@ -58,22 +52,22 @@ void SamplerStateDX11::Bind(uint32_t ID, const IShader* shader, IShaderParameter
     switch (shader->GetType())
     {
         case EShaderType::VertexShader:
-            m_pDeviceContext->VSSetSamplers(ID, 1, pSamplers);
+            m_RenderDeviceD3D11->GetDeviceContextD3D11()->VSSetSamplers(ID, 1, pSamplers);
             break;
         case EShaderType::TessellationControlShader:
-            m_pDeviceContext->HSSetSamplers(ID, 1, pSamplers);
+            m_RenderDeviceD3D11->GetDeviceContextD3D11()->HSSetSamplers(ID, 1, pSamplers);
             break;
         case EShaderType::TessellationEvaluationShader:
-            m_pDeviceContext->DSSetSamplers(ID, 1, pSamplers);
+            m_RenderDeviceD3D11->GetDeviceContextD3D11()->DSSetSamplers(ID, 1, pSamplers);
             break;
         case EShaderType::GeometryShader:
-            m_pDeviceContext->GSSetSamplers(ID, 1, pSamplers);
+            m_RenderDeviceD3D11->GetDeviceContextD3D11()->GSSetSamplers(ID, 1, pSamplers);
             break;
         case EShaderType::PixelShader:
-            m_pDeviceContext->PSSetSamplers(ID, 1, pSamplers);
+            m_RenderDeviceD3D11->GetDeviceContextD3D11()->PSSetSamplers(ID, 1, pSamplers);
             break;
         case EShaderType::ComputeShader:
-            m_pDeviceContext->CSSetSamplers(ID, 1, pSamplers);
+            m_RenderDeviceD3D11->GetDeviceContextD3D11()->CSSetSamplers(ID, 1, pSamplers);
             break;
     }
 }
@@ -85,22 +79,22 @@ void SamplerStateDX11::UnBind(uint32_t ID, const IShader* shader, IShaderParamet
     switch (shader->GetType())
     {
         case EShaderType::VertexShader:
-            m_pDeviceContext->VSSetSamplers(ID, 1, pSamplers);
+            m_RenderDeviceD3D11->GetDeviceContextD3D11()->VSSetSamplers(ID, 1, pSamplers);
             break;
         case EShaderType::TessellationControlShader:
-            m_pDeviceContext->HSSetSamplers(ID, 1, pSamplers);
+            m_RenderDeviceD3D11->GetDeviceContextD3D11()->HSSetSamplers(ID, 1, pSamplers);
             break;
         case EShaderType::TessellationEvaluationShader:
-            m_pDeviceContext->DSSetSamplers(ID, 1, pSamplers);
+            m_RenderDeviceD3D11->GetDeviceContextD3D11()->DSSetSamplers(ID, 1, pSamplers);
             break;
         case EShaderType::GeometryShader:
-            m_pDeviceContext->GSSetSamplers(ID, 1, pSamplers);
+            m_RenderDeviceD3D11->GetDeviceContextD3D11()->GSSetSamplers(ID, 1, pSamplers);
             break;
         case EShaderType::PixelShader:
-            m_pDeviceContext->PSSetSamplers(ID, 1, pSamplers);
+            m_RenderDeviceD3D11->GetDeviceContextD3D11()->PSSetSamplers(ID, 1, pSamplers);
             break;
         case EShaderType::ComputeShader:
-            m_pDeviceContext->CSSetSamplers(ID, 1, pSamplers);
+            m_RenderDeviceD3D11->GetDeviceContextD3D11()->CSSetSamplers(ID, 1, pSamplers);
             break;
     }
 }

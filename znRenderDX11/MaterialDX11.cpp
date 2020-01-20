@@ -3,8 +3,8 @@
 // General
 #include "MaterialDX11.h"
 
-MaterialDX11::MaterialDX11(std::weak_ptr<IRenderDevice> renderDevice, size_t Size)
-	: MaterialBase(renderDevice, Size)
+MaterialDX11::MaterialDX11(IRenderDeviceDX11* RenderDeviceD3D11, size_t Size)
+	: MaterialBase(RenderDeviceD3D11->GetDevice(), Size)
 {}
 
 MaterialDX11::~MaterialDX11()

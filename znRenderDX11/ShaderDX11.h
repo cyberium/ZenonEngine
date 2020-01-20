@@ -5,7 +5,7 @@
 class ZN_API ShaderDX11 : public ShaderBase, public std::enable_shared_from_this<ShaderDX11>
 {
 public:
-	ShaderDX11(std::weak_ptr<IRenderDevice> RenderDevice);
+	ShaderDX11(IRenderDeviceDX11* RenderDeviceD3D11);
 	virtual ~ShaderDX11();
 
 	// IShader
@@ -26,11 +26,6 @@ protected:
 	virtual void Destroy();
 
 private:
-	std::weak_ptr<IRenderDevice>	  m_RenderDevice;
-
-	ATL::CComPtr<ID3D11Device2>        m_pDevice;
-	ATL::CComPtr<ID3D11DeviceContext2> m_pDeviceContext;
-
 	ATL::CComPtr<ID3D11VertexShader>   m_pVertexShader;
 	ATL::CComPtr<ID3D11HullShader>     m_pHullShader;
 	ATL::CComPtr<ID3D11DomainShader>   m_pDomainShader;
@@ -39,4 +34,7 @@ private:
 	ATL::CComPtr<ID3D11ComputeShader>  m_pComputeShader;
 
 	ATL::CComPtr<ID3DBlob>             m_pShaderBlob;
+
+private: // Link to parent d3d11 device
+	IRenderDeviceDX11* m_RenderDeviceD3D11;
 };

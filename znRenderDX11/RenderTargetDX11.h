@@ -6,7 +6,7 @@ class StructuredBufferDX11;
 class ZN_API RenderTargetDX11 : public IRenderTarget
 {
 public:
-	RenderTargetDX11(ID3D11Device2* pDevice);
+	RenderTargetDX11(IRenderDeviceDX11* RenderDeviceD3D11);
 	virtual ~RenderTargetDX11();
 
 	virtual void AttachTexture(AttachmentPoint attachment, std::shared_ptr<ITexture> texture);
@@ -25,7 +25,6 @@ public:
 	virtual void UnBind();
 	virtual bool IsValid() const;
 
-
 private:
 	typedef std::vector< std::shared_ptr<TextureDX11> > TextureList;
 	TextureList m_Textures;
@@ -39,7 +38,6 @@ private:
 	// Check to see if the render target is valid.
 	bool m_bCheckValidity;
 
-	// DirectX
-	ATL::CComPtr<ID3D11Device2> m_pDevice;
-	ATL::CComPtr<ID3D11DeviceContext2> m_pDeviceContext;
+private: // Link to parent d3d11 device
+	IRenderDeviceDX11* m_RenderDeviceD3D11;
 };

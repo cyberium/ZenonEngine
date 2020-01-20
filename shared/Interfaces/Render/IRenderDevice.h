@@ -43,14 +43,11 @@ ZN_INTERFACE ZN_API
 	virtual bool Initialize() = 0;
 	virtual void Finalize() = 0;
 
-	virtual const std::string& GetDeviceName() const = 0;
+	virtual std::string GetDeviceName() const = 0;
 	virtual const RenderDeviceType GetDeviceType() const = 0;
 	virtual IBaseManager* GetBaseManager() const = 0;
 	virtual std::shared_ptr<IRenderWindow> CreateRenderWindow(IWindowObject * WindowObject, bool vSync) = 0;
 	virtual std::shared_ptr<IRenderDevicePrimitiveCollection> GetPrimitiveCollection() const = 0;
-
-	virtual void Lock() = 0;
-	virtual void Unlock() = 0;
 
 	virtual std::shared_ptr<IMesh> CreateMesh() = 0;
 	virtual void DestroyMesh(std::shared_ptr<IMesh> mesh) = 0;
@@ -129,24 +126,17 @@ ZN_INTERFACE ZN_API
 
 	// Create a constant buffer (or Uniform buffer)
 	template<typename T>
-	std::shared_ptr<IConstantBuffer> CreateConstantBuffer(const T& data);
+	inline std::shared_ptr<IConstantBuffer> CreateConstantBuffer(const T& data)
+	{
+		return CreateConstantBuffer(&data, sizeof(T));
+	}
 
 	// Create a StructuredBuffer
 	template<typename T>
-	std::shared_ptr<IStructuredBuffer> CreateStructuredBuffer(const std::vector<T>& data, CPUAccess cpuAccess = CPUAccess::None, bool gpuWrite = false);
+	inline std::shared_ptr<IStructuredBuffer> CreateStructuredBuffer(const std::vector<T>& data, CPUAccess cpuAccess = CPUAccess::None, bool gpuWrite = false)
+	{
+		size_t stride = sizeof(T);
+		size_t numElements = data.size();
+		return CreateStructuredBuffer((void*)data.data(), (uint32)numElements, (uint32)stride, cpuAccess, gpuWrite);
+	}
 };
-
-
-template< typename T >
-std::shared_ptr<IConstantBuffer> IRenderDevice::CreateConstantBuffer(const T& data)
-{
-	return CreateConstantBuffer(&data, sizeof(T));
-}
-
-template<typename T>
-std::shared_ptr<IStructuredBuffer> IRenderDevice::CreateStructuredBuffer(const std::vector<T>& data, CPUAccess cpuAccess, bool gpuWrite)
-{
-	size_t stride = sizeof(T);
-	size_t numElements = data.size();
-	return CreateStructuredBuffer((void*)data.data(), (uint32)numElements, (uint32)stride, cpuAccess, gpuWrite);
-}

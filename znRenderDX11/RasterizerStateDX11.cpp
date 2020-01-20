@@ -11,18 +11,15 @@ std::vector<D3D11_RECT> TranslateRects(const std::vector<Rect>& rects);
 std::vector<D3D11_VIEWPORT> TranslateViewports(const std::vector<const Viewport *>& viewports);
 // FORWARD END
 
-RasterizerStateDX11::RasterizerStateDX11(ID3D11Device2* pDevice)
-	: m_pDevice(pDevice)
+RasterizerStateDX11::RasterizerStateDX11(IRenderDeviceDX11* RenderDeviceD3D11)
+	: m_RenderDeviceD3D11(RenderDeviceD3D11)
 {
-	m_pDevice->GetImmediateContext2(&m_pDeviceContext);
-
 	m_Viewports.resize(8, nullptr);
 	m_ScissorRects.resize(8, Rect());
 }
 
 RasterizerStateDX11::RasterizerStateDX11(const RasterizerStateDX11& copy)
-	: m_pDevice(copy.m_pDevice)
-	, m_pDeviceContext(copy.m_pDeviceContext)
+	: m_RenderDeviceD3D11(copy.m_RenderDeviceD3D11)
 	, m_d3dRects(copy.m_d3dRects)
 	, m_d3dViewports(copy.m_d3dViewports)
 {
@@ -98,6 +95,8 @@ const RasterizerStateDX11& RasterizerStateDX11::operator=(const RasterizerStateD
 		m_StateDirty = true;
 		m_ViewportsDirty = false;
 		m_ScissorRectsDirty = false;
+
+		m_RenderDeviceD3D11 = other.m_RenderDeviceD3D11;
 	}
 
 	return *this;
@@ -126,7 +125,7 @@ void RasterizerStateDX11::Bind()
         rasterizerDesc.ForcedSampleCount = m_ForcedSampleCount;
 
         m_pRasterizerState = NULL;
-        if (FAILED(m_pDevice->CreateRasterizerState1(&rasterizerDesc, &m_pRasterizerState)))
+        if (FAILED(m_RenderDeviceD3D11->GetDeviceD3D11()->CreateRasterizerState1(&rasterizerDesc, &m_pRasterizerState)))
         {
             Log::Error("Failed to create rasterizer state.");
         }
@@ -146,9 +145,9 @@ void RasterizerStateDX11::Bind()
         m_ViewportsDirty = false;
     }
 
-    m_pDeviceContext->RSSetViewports((UINT)m_d3dViewports.size(), m_d3dViewports.data());
-    m_pDeviceContext->RSSetScissorRects((UINT)m_d3dRects.size(), m_d3dRects.data());
-    m_pDeviceContext->RSSetState(m_pRasterizerState);
+    m_RenderDeviceD3D11->GetDeviceContextD3D11()->RSSetViewports((UINT)m_d3dViewports.size(), m_d3dViewports.data());
+    m_RenderDeviceD3D11->GetDeviceContextD3D11()->RSSetScissorRects((UINT)m_d3dRects.size(), m_d3dRects.data());
+    m_RenderDeviceD3D11->GetDeviceContextD3D11()->RSSetState(m_pRasterizerState);
 }
 
 

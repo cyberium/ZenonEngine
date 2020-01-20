@@ -28,6 +28,9 @@
     <ClCompile Include="RenderDeviceBase.cpp" />
     <ClCompile Include="RenderWindowBase.cpp" />
     <ClCompile Include="GeometryBase.cpp" />
+    <ClCompile Include="PipelineStateBase.cpp">
+      <Filter>Pipeline</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="common.h">
@@ -63,6 +66,9 @@
     <ClInclude Include="RenderDeviceBase.h" />
     <ClInclude Include="RenderWindowBase.h" />
     <ClInclude Include="GeometryBase.h" />
+    <ClInclude Include="PipelineStateBase.h">
+      <Filter>Pipeline</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Common">

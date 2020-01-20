@@ -7,7 +7,7 @@ class ZN_API RenderWindowDX11
 	: public RenderWindowBase
 {
 public:
-	RenderWindowDX11(std::shared_ptr<IRenderDevice> RenderDevice, IWindowObject * WindowObject, bool vSync);
+	RenderWindowDX11(IRenderDeviceDX11* RenderDeviceD3D11, IWindowObject * WindowObject, bool vSync);
 	virtual ~RenderWindowDX11();
 
 	void                                            Present() override final;
@@ -17,10 +17,11 @@ protected:
 	void                                            ResizeSwapChainBuffers(uint32_t width, uint32_t height) override final;
 
 private:
-	ATL::CComPtr<ID3D11Device2>                     m_pDevice;
-	ATL::CComPtr<ID3D11DeviceContext2>              m_pDeviceContext;
 	ATL::CComPtr<IDXGISwapChain2>                   m_pSwapChain;
 	ATL::CComPtr<ID3D11Texture2D>                   m_pBackBuffer;
 
 	DXGI_SAMPLE_DESC                                m_SampleDesc;      // Used to enable multisampling AA
+
+private: // Link to parent d3d11 device
+	IRenderDeviceDX11* m_RenderDeviceD3D11;
 };

@@ -4,24 +4,20 @@
 #include "BlendStateDX11.h"
 
 // FORWARD BEGIN
-D3D11_BLEND                                     TranslateBlendFactor(IBlendState::BlendFactor blendFactor);
-D3D11_BLEND_OP                                  TranslateBlendOp(IBlendState::BlendOperation blendOperation);
-UINT8                                           TranslateWriteMask(bool red, bool green, bool blue, bool alpha);
-D3D11_LOGIC_OP                                  TranslateLogicOperator(IBlendState::LogicOperator logicOp);
+D3D11_BLEND TranslateBlendFactor(IBlendState::BlendFactor blendFactor);
+D3D11_BLEND_OP TranslateBlendOp(IBlendState::BlendOperation blendOperation);
+UINT8 TranslateWriteMask(bool red, bool green, bool blue, bool alpha);
+D3D11_LOGIC_OP TranslateLogicOperator(IBlendState::LogicOperator logicOp);
 // FORWARD END
 
-BlendStateDX11::BlendStateDX11(ID3D11Device2* pDevice)
-	: m_pDevice(pDevice)
+BlendStateDX11::BlendStateDX11(IRenderDeviceDX11* RenderDeviceD3D11)
+	: m_RenderDeviceD3D11(RenderDeviceD3D11)
 {
-	if (m_pDevice)
-		m_pDevice->GetImmediateContext2(&m_pDeviceContext);
-
 	m_BlendModes.resize(8, BlendMode());
 }
 
 BlendStateDX11::BlendStateDX11(const BlendStateDX11& copy)
-	: m_pDevice(copy.m_pDevice)
-	, m_pDeviceContext(copy.m_pDeviceContext)
+	: m_RenderDeviceD3D11(copy.m_RenderDeviceD3D11)
 {
     m_BlendModes = copy.m_BlendModes;
     m_bAlphaToCoverageEnabled = copy.m_bAlphaToCoverageEnabled;
@@ -37,7 +33,6 @@ BlendStateDX11::~BlendStateDX11()
 
 const BlendStateDX11& BlendStateDX11::operator=(const BlendStateDX11& other)
 {
-	// Avoid copy to self..
 	if (this != &other)
 	{
 		m_BlendModes = other.m_BlendModes;
@@ -45,6 +40,7 @@ const BlendStateDX11& BlendStateDX11::operator=(const BlendStateDX11& other)
 		m_bIndependentBlendEnabled = other.m_bIndependentBlendEnabled;
 		m_SampleMask = other.m_SampleMask;
 		m_ConstBlendFactor = other.m_ConstBlendFactor;
+		m_RenderDeviceD3D11 = other.m_RenderDeviceD3D11;
 
 		m_bDirty = true;
 	}
@@ -83,12 +79,12 @@ void BlendStateDX11::Bind()
         }
 
         m_pBlendState = NULL;
-        m_pDevice->CreateBlendState1(&blendDesc, &m_pBlendState);
+		m_RenderDeviceD3D11->GetDeviceD3D11()->CreateBlendState1(&blendDesc, &m_pBlendState);
 
         m_bDirty = false;
     }
 
-    m_pDeviceContext->OMSetBlendState(m_pBlendState, glm::value_ptr(m_ConstBlendFactor), m_SampleMask);
+    m_RenderDeviceD3D11->GetDeviceContextD3D11()->OMSetBlendState(m_pBlendState, glm::value_ptr(m_ConstBlendFactor), m_SampleMask);
 }
 
 

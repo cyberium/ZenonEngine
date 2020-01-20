@@ -3,7 +3,7 @@
 class BufferDX11 : public IBuffer
 {
 public:
-	BufferDX11(ID3D11Device2* pDevice, UINT bindFlags, const void* data, size_t count, UINT offset, UINT stride);
+	BufferDX11(IRenderDeviceDX11* RenderDeviceD3D11, UINT bindFlags, const void* data, size_t count, UINT offset, UINT stride);
 	~BufferDX11();
 
 	virtual bool Bind(uint32 id, const IShader* shader, IShaderParameter::Type parameterType) const override;
@@ -17,22 +17,13 @@ public:
     virtual uint32 GetElementOffset() const;
 
 private:
-	ATL::CComPtr<ID3D11Device2> m_pDevice;
-	ATL::CComPtr<ID3D11DeviceContext2> m_pDeviceContext;
-
 	ATL::CComPtr<ID3D11Buffer> m_pBuffer;
 
-	// The offset of the vertex buffer in bytes.
-	UINT m_uiOffset;
+	UINT m_uiOffset; // The offset of the vertex buffer in bytes.
+	UINT m_uiStride; // The stride of the vertex buffer in bytes.
+	UINT m_BindFlags; // How this buffer should be bound.
+	UINT m_uiCount; // The number of elements in this buffer.
 
-	// The stride of the vertex buffer in bytes.
-	UINT m_uiStride;
-
-	// How this buffer should be bound.
-	UINT m_BindFlags;
-
-	// The number of elements in this buffer.
-	UINT m_uiCount;
-
-	mutable bool m_bIsBound;
+private: // Link to parent
+	IRenderDeviceDX11* m_RenderDeviceD3D11;
 };

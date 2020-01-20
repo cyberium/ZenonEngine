@@ -1,6 +1,7 @@
 #pragma once
 
-class ZN_API CRenderDevicePrimitiveCollection : public IRenderDevicePrimitiveCollection
+class ZN_API CRenderDevicePrimitiveCollection 
+	: public IRenderDevicePrimitiveCollection
 {
 public:
 	CRenderDevicePrimitiveCollection(IRenderDevice* RenderDevice);
@@ -27,16 +28,16 @@ private:
 };
 
 
-class ZN_API RenderDeviceBase : public IRenderDevice, public Object
+class ZN_API RenderDeviceBase 
+	: public IRenderDevice
+	, public Object
+	, public std::enable_shared_from_this<IRenderDevice>
 {
 public:
 	RenderDeviceBase();
 	virtual ~RenderDeviceBase();
 
 	virtual std::shared_ptr<IRenderDevicePrimitiveCollection> GetPrimitiveCollection() const override;
-
-protected:
-    virtual void									CreateDevice() = 0;
 
 protected:
 	BufferList                                      m_Buffers;

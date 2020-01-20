@@ -3,7 +3,7 @@
 class ZN_API DepthStencilStateDX11 : public DepthStencilStateBase
 {
 public:
-	DepthStencilStateDX11(ID3D11Device2* pDevice);
+	DepthStencilStateDX11(IRenderDeviceDX11* RenderDeviceD3D11);
 	DepthStencilStateDX11(const DepthStencilStateDX11& copy);
 
 	virtual ~DepthStencilStateDX11();
@@ -14,7 +14,8 @@ public:
     void                                            Bind() override final;
 
 private:
-	ATL::CComPtr<ID3D11Device2>                     m_pDevice;
-	ATL::CComPtr<ID3D11DeviceContext2>              m_pDeviceContext;
-	ATL::CComPtr<ID3D11DepthStencilState>           m_pDepthStencilState;
+	ATL::CComPtr<ID3D11DepthStencilState> m_pDepthStencilState;
+
+private: // Link to parent d3d11 device
+	IRenderDeviceDX11* m_RenderDeviceD3D11;
 };

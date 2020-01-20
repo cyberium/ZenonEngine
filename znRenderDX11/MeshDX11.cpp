@@ -8,13 +8,9 @@
 // General
 #include "MeshDX11.h"
 
-MeshDX11::MeshDX11(ID3D11Device2* pDevice)
-	: m_pDevice(pDevice)
-	, m_pDeviceContext(nullptr)
+MeshDX11::MeshDX11(IRenderDeviceDX11* RenderDeviceD3D11)
 {
-	m_pDevice->GetImmediateContext2(&m_pDeviceContext);
-
-	m_Geometry = std::make_shared<GeometryDX11>(m_pDevice);
+	m_Geometry = std::make_shared<GeometryDX11>(RenderDeviceD3D11);
 }
 
 MeshDX11::~MeshDX11()

@@ -339,11 +339,11 @@ void TextureOGL::Copy(std::shared_ptr<ITexture> other)
 			case ITexture::Dimension::Texture2D:
 			case ITexture::Dimension::Texture2DArray:
 				throw std::exception("Not implemented!");
-				//m_pDeviceContext->CopyResource(m_pTexture2D, srcTexture->m_pTexture2D);
+				//m_DeviceImmediateContext->CopyResource(m_pTexture2D, srcTexture->m_pTexture2D);
 				break;
 			case ITexture::Dimension::TextureCube:
 				throw std::exception("Not implemented!");
-				//m_pDeviceContext->CopyResource(m_pTexture3D, srcTexture->m_pTexture3D);
+				//m_DeviceImmediateContext->CopyResource(m_pTexture3D, srcTexture->m_pTexture3D);
 				break;
 			}
 		}
@@ -358,14 +358,14 @@ void TextureOGL::Copy(std::shared_ptr<ITexture> other)
 		D3D11_MAPPED_SUBRESOURCE mappedResource;
 
 		// Copy the texture data from the texture resource
-		if (FAILED(m_pDeviceContext->Map(m_pTexture2D, 0, D3D11_MAP_READ, 0, &mappedResource)))
+		if (FAILED(m_DeviceImmediateContext->Map(m_pTexture2D, 0, D3D11_MAP_READ, 0, &mappedResource)))
 		{
 			Log::Error("Failed to map texture resource for reading.");
 		}
 
 		memcpy_s(m_Buffer.data(), m_Buffer.size(), mappedResource.pData, m_Buffer.size());
 
-		m_pDeviceContext->Unmap(m_pTexture2D, 0);
+		m_DeviceImmediateContext->Unmap(m_pTexture2D, 0);
 	}*/
 }
 
@@ -373,7 +373,7 @@ void TextureOGL::Clear(ClearFlags clearFlags, cvec4 color, float depth, uint8_t 
 {
 	/*if (m_pRenderTargetView && ((int)clearFlags & (int)ClearFlags::Color) != 0)
 	{
-		m_pDeviceContext->ClearRenderTargetView(m_pRenderTargetView, glm::value_ptr(color));
+		m_DeviceImmediateContext->ClearRenderTargetView(m_pRenderTargetView, glm::value_ptr(color));
 	}
 
 	{
@@ -382,7 +382,7 @@ void TextureOGL::Clear(ClearFlags clearFlags, cvec4 color, float depth, uint8_t 
 		flags |= ((int)clearFlags & (int)ClearFlags::Stencil) != 0 ? D3D11_CLEAR_STENCIL : 0;
 		if (m_pDepthStencilView && flags > 0)
 		{
-			m_pDeviceContext->ClearDepthStencilView(m_pDepthStencilView, flags, depth, stencil);
+			m_DeviceImmediateContext->ClearDepthStencilView(m_pDepthStencilView, flags, depth, stencil);
 		}
 	}*/
 }
@@ -396,7 +396,7 @@ void TextureOGL::Bind(uint32_t ID, const IShader* shader, IShaderParameter::Type
 			D3D11_MAPPED_SUBRESOURCE mappedResource;
 
 			// Copy the texture data to the texture resource
-			HRESULT hr = m_pDeviceContext->Map(m_pTexture2D, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
+			HRESULT hr = m_DeviceImmediateContext->Map(m_pTexture2D, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
 			if (FAILED(hr))
 			{
 				Log::Error("Failed to map texture resource for writing.");
@@ -404,11 +404,11 @@ void TextureOGL::Bind(uint32_t ID, const IShader* shader, IShaderParameter::Type
 
 			memcpy_s(mappedResource.pData, m_Buffer.size(), m_Buffer.data(), m_Buffer.size());
 
-			m_pDeviceContext->Unmap(m_pTexture2D, 0);
+			m_DeviceImmediateContext->Unmap(m_pTexture2D, 0);
 
 			if (m_bGenerateMipmaps)
 			{
-				m_pDeviceContext->GenerateMips(m_pShaderResourceView);
+				m_DeviceImmediateContext->GenerateMips(m_pShaderResourceView);
 			}
 		}*/
 		m_bIsDirty = false;

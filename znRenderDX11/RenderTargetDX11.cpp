@@ -5,13 +5,12 @@
 
 #include "RenderTargetDX11.h"
 
-RenderTargetDX11::RenderTargetDX11(ID3D11Device2* pDevice)
-	: m_pDevice(pDevice)
+RenderTargetDX11::RenderTargetDX11(IRenderDeviceDX11* RenderDeviceD3D11)
+	: m_RenderDeviceD3D11(RenderDeviceD3D11)
 	, m_Width(0)
 	, m_Height(0)
 	, m_bCheckValidity(false)
 {
-	m_pDevice->GetImmediateContext2(&m_pDeviceContext);
 	m_Textures.resize((size_t)IRenderTarget::AttachmentPoint::NumAttachmentPoints + 1);
 	m_StructuredBuffers.resize(8);
 }
@@ -150,12 +149,12 @@ void RenderTargetDX11::Bind()
 		depthStencilView = depthStencilTexture->GetDepthStencilView();
 	}
 
-	m_pDeviceContext->OMSetRenderTargetsAndUnorderedAccessViews(numRTVs, renderTargetViews, depthStencilView, uavStartSlot, numUAVs, uavViews, nullptr);
+	m_RenderDeviceD3D11->GetDeviceContextD3D11()->OMSetRenderTargetsAndUnorderedAccessViews(numRTVs, renderTargetViews, depthStencilView, uavStartSlot, numUAVs, uavViews, nullptr);
 }
 
 void RenderTargetDX11::UnBind()
 {
-	m_pDeviceContext->OMSetRenderTargetsAndUnorderedAccessViews(0, nullptr, nullptr, 0, 0, nullptr, nullptr);
+	m_RenderDeviceD3D11->GetDeviceContextD3D11()->OMSetRenderTargetsAndUnorderedAccessViews(0, nullptr, nullptr, 0, 0, nullptr, nullptr);
 }
 
 bool RenderTargetDX11::IsValid() const

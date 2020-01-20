@@ -8,13 +8,10 @@
 // General
 #include "GeometryDX11.h"
 
-GeometryDX11::GeometryDX11(ID3D11Device2* pDevice)
-	: m_PrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST)
-	, m_pDevice(pDevice)
-	, m_pDeviceContext(nullptr)
-{
-	m_pDevice->GetImmediateContext2(&m_pDeviceContext);
-}
+GeometryDX11::GeometryDX11(IRenderDeviceDX11* RenderDeviceD3D11)
+	: m_RenderDeviceD3D11(RenderDeviceD3D11)
+	, m_PrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST)
+{}
 
 GeometryDX11::~GeometryDX11()
 {}
@@ -110,17 +107,17 @@ bool GeometryDX11::Render(const RenderEventArgs* renderArgs, const IConstantBuff
 		}
 	}
 
-	m_pDeviceContext->IASetPrimitiveTopology(m_PrimitiveTopology);
+	m_RenderDeviceD3D11->GetDeviceContextD3D11()->IASetPrimitiveTopology(m_PrimitiveTopology);
 
 	if (m_pIndexBuffer != NULL)
 	{
 		m_pIndexBuffer->Bind(0, vertexShader, IShaderParameter::Type::Buffer);
-		m_pDeviceContext->DrawIndexed(indexCnt, indexStartLocation, vertexStartLocation);
+		m_RenderDeviceD3D11->GetDeviceContextD3D11()->DrawIndexed(indexCnt, indexStartLocation, vertexStartLocation);
 		m_pIndexBuffer->UnBind(0, vertexShader, IShaderParameter::Type::Buffer);
 	}
 	else
 	{
-		m_pDeviceContext->Draw(vertexCnt, vertexStartLocation);
+		m_RenderDeviceD3D11->GetDeviceContextD3D11()->Draw(vertexCnt, vertexStartLocation);
 	}
 
 	if (m_VertexBuffer != nullptr)
@@ -208,17 +205,17 @@ bool GeometryDX11::RenderInstanced(const RenderEventArgs * renderArgs, const ISt
 		}
 	}
 
-	m_pDeviceContext->IASetPrimitiveTopology(m_PrimitiveTopology);
+	m_RenderDeviceD3D11->GetDeviceContextD3D11()->IASetPrimitiveTopology(m_PrimitiveTopology);
 
 	if (m_pIndexBuffer != NULL)
 	{
 		m_pIndexBuffer->Bind(0, vertexShader, IShaderParameter::Type::Buffer);
-		m_pDeviceContext->DrawIndexedInstanced(indexCnt, InstancesBuffer->GetElementCount(), indexStartLocation, vertexStartLocation, 2);
+		m_RenderDeviceD3D11->GetDeviceContextD3D11()->DrawIndexedInstanced(indexCnt, InstancesBuffer->GetElementCount(), indexStartLocation, vertexStartLocation, 2);
 		m_pIndexBuffer->UnBind(0, vertexShader, IShaderParameter::Type::Buffer);
 	}
 	else
 	{
-		m_pDeviceContext->DrawInstanced(vertexCnt, InstancesBuffer->GetElementCount(), vertexStartLocation, 0);
+		m_RenderDeviceD3D11->GetDeviceContextD3D11()->DrawInstanced(vertexCnt, InstancesBuffer->GetElementCount(), vertexStartLocation, 0);
 	}
 
 	if (m_VertexBuffer != nullptr)

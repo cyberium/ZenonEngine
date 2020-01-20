@@ -7,18 +7,12 @@
 static DXGI_RATIONAL QueryRefreshRate(UINT screenWidth, UINT screenHeight, BOOL vsync);
 // FORWARD END
 
-RenderWindowDX11::RenderWindowDX11(std::shared_ptr<IRenderDevice> RenderDevice, IWindowObject * WindowObject, bool vSync)
-	: RenderWindowBase(RenderDevice, WindowObject, vSync)
-
-    , m_pDevice(nullptr)
-	, m_pDeviceContext(nullptr)
+RenderWindowDX11::RenderWindowDX11(IRenderDeviceDX11* RenderDeviceD3D11, IWindowObject * WindowObject, bool vSync)
+	: RenderWindowBase(RenderDeviceD3D11->GetDevice(), WindowObject, vSync)
+    , m_RenderDeviceD3D11(RenderDeviceD3D11)
 	, m_pSwapChain(nullptr)
 	, m_pBackBuffer(nullptr)
 {
-    std::shared_ptr<IRenderDeviceDX11> renderDeviceDX11 = std::dynamic_pointer_cast<IRenderDeviceDX11>(GetRenderDevice());
-	m_pDevice           = renderDeviceDX11->GetDevice();
-	m_pDeviceContext    = renderDeviceDX11->GetDeviceContext();
-
 	CreateSwapChain();
 }
 
@@ -40,7 +34,7 @@ void RenderWindowDX11::Present()
 	std::shared_ptr<TextureDX11> colorBuffer = std::dynamic_pointer_cast<TextureDX11>(GetRenderTarget()->GetTexture(IRenderTarget::AttachmentPoint::Color0));
 	if (colorBuffer)
 	{
-		m_pDeviceContext->CopyResource(m_pBackBuffer, colorBuffer->GetTextureResource());
+		m_RenderDeviceD3D11->GetDeviceContextD3D11()->CopyResource(m_pBackBuffer, colorBuffer->GetTextureResource());
 	}
 
 	if (IsVSync())
@@ -78,7 +72,7 @@ void RenderWindowDX11::CreateSwapChain()
 	/*
 	UINT sampleCount = 1;
 	UINT qualityLevels = 0;
-	while (SUCCEEDED(m_pDevice->CheckMultisampleQualityLevels(DXGI_FORMAT_R8G8B8A8_UNORM, sampleCount, &qualityLevels)) && qualityLevels > 0)
+	while (SUCCEEDED(m_DeviceD3D11->CheckMultisampleQualityLevels(DXGI_FORMAT_R8G8B8A8_UNORM, sampleCount, &qualityLevels)) && qualityLevels > 0)
 	{
 		// That works...
 		m_SampleDesc.Count = sampleCount;
@@ -107,7 +101,7 @@ void RenderWindowDX11::CreateSwapChain()
 
     // First create a DXGISwapChain1
     ATL::CComPtr<IDXGISwapChain1> pSwapChain;
-    if (FAILED(factory->CreateSwapChainForHwnd(m_pDevice, GetWindowObject()->GetHWnd(), &swapChainDesc, &swapChainFullScreenDesc, nullptr, &pSwapChain)))
+    if (FAILED(factory->CreateSwapChainForHwnd(m_RenderDeviceD3D11->GetDeviceD3D11(), GetWindowObject()->GetHWnd(), &swapChainDesc, &swapChainFullScreenDesc, nullptr, &pSwapChain)))
     {
         Log::Error("Failed to create swap chain.");
     }
@@ -153,7 +147,7 @@ void RenderWindowDX11::ResizeSwapChainBuffers(uint32_t width, uint32_t height)
     height = glm::max<uint32_t>(height, 1);
 
     //// Make sure we're not referencing the render targets when the window is resized.
-    m_pDeviceContext->OMSetRenderTargets(0, nullptr, nullptr);
+    m_RenderDeviceD3D11->GetDeviceContextD3D11()->OMSetRenderTargets(0, nullptr, nullptr);
 
     // Release the current render target views and texture resources.
     m_pBackBuffer.Release();

@@ -3,10 +3,9 @@
 class ZN_API TextureDX11 : public ITexture, public std::enable_shared_from_this<TextureDX11>
 {
 public:
-	TextureDX11(std::weak_ptr<IRenderDevice> RenderDevice);
-	TextureDX11(std::weak_ptr<IRenderDevice> RenderDevice, uint16_t width, uint16_t height, uint16_t slices, const TextureFormat& format, CPUAccess cpuAccess, bool bUAV = false);
-	TextureDX11(std::weak_ptr<IRenderDevice> RenderDevice, uint16_t size, uint16_t count, const TextureFormat& format, CPUAccess cpuAccess, bool bUAV = false);
-
+	TextureDX11(IRenderDeviceDX11* RenderDeviceD3D11);
+	TextureDX11(IRenderDeviceDX11* RenderDeviceD3D11, uint16_t width, uint16_t height, uint16_t slices, const TextureFormat& format, CPUAccess cpuAccess, bool bUAV = false);
+	TextureDX11(IRenderDeviceDX11* RenderDeviceD3D11, uint16_t size, uint16_t count, const TextureFormat& format, CPUAccess cpuAccess, bool bUAV = false);
 	virtual ~TextureDX11();
 
 	virtual bool LoadTextureCustom(uint16_t width, uint16_t height, void* pixels);
@@ -62,11 +61,6 @@ protected:
 	DXGI_SAMPLE_DESC GetSupportedSampleCount(DXGI_FORMAT format, uint8_t numSamples);
 
 private:
-	std::weak_ptr<IRenderDevice> m_RenderDevice;
-
-	ATL::CComPtr<ID3D11Device2> m_pDevice;
-	ATL::CComPtr<ID3D11DeviceContext2> m_pDeviceContext;
-
 	ATL::CComPtr<ID3D11Texture2D> m_pTexture2D;
 	ATL::CComPtr<ID3D11Texture3D> m_pTexture3D;
 
@@ -127,4 +121,7 @@ private:
 	std::string m_TextureFileName;
 
 	mutable bool m_bIsDirty;
+
+private: // Link to parent d3d11 device
+	IRenderDeviceDX11* m_RenderDeviceD3D11;
 };

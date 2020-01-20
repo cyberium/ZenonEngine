@@ -10,16 +10,13 @@ D3D11_DEPTH_STENCILOP_DESC TranslateFaceOperation(IDepthStencilState::FaceOperat
 D3D11_DEPTH_STENCIL_DESC TranslateDepthStencilState(const IDepthStencilState::DepthMode& depthMode, const IDepthStencilState::StencilMode& stencilMode);
 // FORWARD END
 
-DepthStencilStateDX11::DepthStencilStateDX11(ID3D11Device2* pDevice)
-	: m_pDevice(pDevice)
+DepthStencilStateDX11::DepthStencilStateDX11(IRenderDeviceDX11* RenderDeviceD3D11)
+	: m_RenderDeviceD3D11(RenderDeviceD3D11)
 {
-	assert(pDevice);
-	m_pDevice->GetImmediateContext2(&m_pDeviceContext);
 }
 
 DepthStencilStateDX11::DepthStencilStateDX11(const DepthStencilStateDX11& copy)
-	: m_pDevice(copy.m_pDevice)
-	, m_pDeviceContext(copy.m_pDeviceContext)
+	: m_RenderDeviceD3D11(copy.m_RenderDeviceD3D11)
 {
     m_DepthMode = copy.m_DepthMode;
     m_StencilMode = copy.m_StencilMode;
@@ -35,10 +32,9 @@ const DepthStencilStateDX11& DepthStencilStateDX11::operator=(const DepthStencil
 {
 	if (this != &other)
 	{
-		m_pDevice = other.m_pDevice;
-		m_pDeviceContext = other.m_pDeviceContext;
 		m_DepthMode = other.m_DepthMode;
 		m_StencilMode = other.m_StencilMode;
+		m_RenderDeviceD3D11 = other.m_RenderDeviceD3D11;
 		m_bDirty = true;
 	}
 
@@ -59,7 +55,7 @@ void DepthStencilStateDX11::Bind()
 		D3D11_DEPTH_STENCIL_DESC depthStencilDesc = TranslateDepthStencilState(m_DepthMode, m_StencilMode);
 
 		m_pDepthStencilState = NULL;
-		if (FAILED(m_pDevice->CreateDepthStencilState(&depthStencilDesc, &m_pDepthStencilState)))
+		if (FAILED(m_RenderDeviceD3D11->GetDeviceD3D11()->CreateDepthStencilState(&depthStencilDesc, &m_pDepthStencilState)))
 		{
 			Log::Error("Failed to create depth stencil state.");
 		}
@@ -67,7 +63,7 @@ void DepthStencilStateDX11::Bind()
 		m_bDirty = false;
 	}
 
-	m_pDeviceContext->OMSetDepthStencilState(m_pDepthStencilState, m_StencilMode.StencilReference);
+	m_RenderDeviceD3D11->GetDeviceContextD3D11()->OMSetDepthStencilState(m_pDepthStencilState, m_StencilMode.StencilReference);
 }
 
 

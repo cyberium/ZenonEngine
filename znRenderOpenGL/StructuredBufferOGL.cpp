@@ -132,7 +132,7 @@ void StructuredBufferOGL::Clear()
 	/*if (m_pUAV)
 	{
 		FLOAT clearColor[4] = { 0, 0, 0, 0 };
-		m_pDeviceContext->ClearUnorderedAccessViewFloat(m_pUAV, clearColor);
+		m_DeviceImmediateContext->ClearUnorderedAccessViewFloat(m_pUAV, clearColor);
 	}*/
 }
 

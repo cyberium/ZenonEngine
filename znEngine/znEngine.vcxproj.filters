@@ -461,6 +461,7 @@
     <ClInclude Include="FBX\FBXMaterial.h">
       <Filter>FBX\Parts</Filter>
     </ClInclude>
+    <ClInclude Include="ThreadPool.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="znEngine.rc">

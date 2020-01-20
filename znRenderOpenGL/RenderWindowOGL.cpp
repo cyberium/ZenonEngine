@@ -30,7 +30,7 @@ void RenderWindowOGL::Present()
 	std::shared_ptr<TextureOGL> colorBuffer = std::dynamic_pointer_cast<TextureOGL>(GetRenderTarget()->GetTexture(IRenderTarget::AttachmentPoint::Color0));
 	if (colorBuffer)
 	{
-		//m_pDeviceContext->CopyResource(m_pBackBuffer, colorBuffer->GetTextureResource());
+		//m_DeviceImmediateContext->CopyResource(m_pBackBuffer, colorBuffer->GetTextureResource());
 	}
 
 	if (IsVSync())

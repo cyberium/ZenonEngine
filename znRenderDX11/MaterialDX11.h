@@ -3,7 +3,7 @@
 class ZN_API MaterialDX11 : public MaterialBase
 {
 public:
-	MaterialDX11(std::weak_ptr<IRenderDevice> renderDevice, size_t Size);
+	MaterialDX11(IRenderDeviceDX11* RenderDeviceD3D11, size_t Size);
 	virtual ~MaterialDX11();
 
     // MaterialBase

@@ -20,10 +20,14 @@ RasterizerStateBase::RasterizerStateBase()
     , m_StateDirty(true)
     , m_ViewportsDirty(true)
     , m_ScissorRectsDirty(true)
-{}
+{
+
+}
 
 RasterizerStateBase::~RasterizerStateBase()
-{}
+{
+
+}
 
 void RasterizerStateBase::SetFillMode(FillMode frontFace, FillMode backFace)
 {
@@ -171,7 +175,6 @@ void RasterizerStateBase::SetConservativeRasterizationEnabled(bool conservativeR
 
 bool RasterizerStateBase::GetConservativeRasterizationEnabled() const
 {
-    // Currently, this implementation always returns false
-    // because conservative rasterization is supported since DirectX 11.3 and 12.
+    // Currently, this implementation always returns false because conservative rasterization is supported since DirectX 11.3 and 12.
     return false;
 }

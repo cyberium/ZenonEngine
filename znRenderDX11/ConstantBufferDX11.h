@@ -3,7 +3,7 @@
 class ConstantBufferDX11 : public IConstantBuffer
 {
 public:
-	ConstantBufferDX11(ID3D11Device2* pDevice, size_t size);
+	ConstantBufferDX11(IRenderDeviceDX11* RenderDeviceD3D11, size_t size);
 	virtual ~ConstantBufferDX11();
 
 	virtual bool Bind(uint32 id, const IShader* shader, IShaderParameter::Type parameterType) const override;
@@ -21,9 +21,9 @@ protected:
 	void Set(const void* data, size_t size) override;
 
 private:
-	ATL::CComPtr<ID3D11Device2> m_pDevice;
-	ATL::CComPtr<ID3D11DeviceContext2> m_pDeviceContext;
 	ATL::CComPtr<ID3D11Buffer> m_pBuffer;
+	size_t m_BufferSize;
 
-	size_t  m_BufferSize;
+private: // Link to parent
+	IRenderDeviceDX11* m_RenderDeviceD3D11;
 };
