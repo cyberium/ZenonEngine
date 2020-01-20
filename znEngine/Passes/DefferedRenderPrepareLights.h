@@ -51,5 +51,5 @@ private:
 	std::shared_ptr<BuildRenderListPass> m_BuildRenderListPass;
 
 private: // consts
-	const float cShadowTextureSize = 4096.0f;
+	const float cShadowTextureSize = 4096.0f; //16384.0f;
 };

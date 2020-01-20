@@ -76,7 +76,9 @@ glm::mat4 CLightComponent3D::GetViewMatrix() const
 	{
 		if (m_LightStruct->Type == ELightType::Directional)
 		{
-			return glm::lookAt(glm::vec3(0.0f, 0.0f, 0.0f), m_LightStruct->DirectionWS.xyz(), glm::vec3(0.0f, 1.0f, 0.0f));
+			glm::vec3 position = -m_LightStruct->DirectionWS.xyz();
+			position *= 100.0f;
+			return glm::lookAt(position, position + m_LightStruct->DirectionWS.xyz(), glm::vec3(0.0f, 1.0f, 0.0f));
 		}
 		else if (m_LightStruct->Type == ELightType::Spot)
 		{
@@ -93,7 +95,7 @@ glm::mat4 CLightComponent3D::GetProjectionMatrix() const
 	{
 		if (m_LightStruct->Type == ELightType::Directional)
 		{
-			const float t = 100.0f;
+			const float t = 300.0f;
 			return glm::ortho<float>(-t, t, -t, t, -t, t);
 		}
 		else if (m_LightStruct->Type == ELightType::Spot)

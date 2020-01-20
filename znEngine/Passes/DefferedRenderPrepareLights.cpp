@@ -104,7 +104,7 @@ std::shared_ptr<IRenderPassPipelined> CDefferedRenderPrepareLights::CreatePipeli
 	std::shared_ptr<IPipelineState> shadowPipeline = GetRenderDevice()->CreatePipelineState();
 	shadowPipeline->GetBlendState()->SetBlendMode(disableBlending);
 	shadowPipeline->GetDepthStencilState()->SetDepthMode(enableDepthWrites);
-	shadowPipeline->GetRasterizerState()->SetCullMode(IRasterizerState::CullMode::Back);
+	shadowPipeline->GetRasterizerState()->SetCullMode(IRasterizerState::CullMode::None);
 	shadowPipeline->GetRasterizerState()->SetFillMode(IRasterizerState::FillMode::Solid);
 	shadowPipeline->SetRenderTarget(m_ShadowRenderTarget);
 	shadowPipeline->GetRasterizerState()->SetViewport(&m_ShadowViewport);

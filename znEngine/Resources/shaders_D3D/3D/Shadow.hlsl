@@ -1,21 +1,24 @@
 #include "IDB_SHADER_COMMON_INCLUDE"
 
-/*struct VS_Output
+struct VS_Output
 {
 	float4 position : SV_POSITION;
 	float4 depthPosition : TEXTURE0;
-};*/
+};
 
-float4 VS_Shadow(VSInputP IN) : SV_Position
+VS_Output VS_Shadow(VSInputP IN)
 {
 	const float4x4 mvl = mul(PF.View, PO.Model);
 	const float4x4 mvpl = mul(PF.Projection, mvl);
 
-	return mul(mvpl, float4(IN.position.xyz, 1.0f));
+	VS_Output VSOut;
+	VSOut.position = mul(mvpl, float4(IN.position.xyz, 1.0f));
+	VSOut.depthPosition = VSOut.position;
+	return VSOut;
 }
 
-/*float4 PS_Shadow(VS_Output VSOutput) : SV_TARGET
+float4 PS_Shadow(VS_Output VSOut) : SV_TARGET
 {
-	float depthValue = (VSOutput.depthPosition.z / VSOutput.depthPosition.w);
+	float depthValue = (VSOut.depthPosition.z / VSOut.depthPosition.w);
 	return float4(depthValue, 1.0f, 1.0f, 1.0f);
-}*/
+}

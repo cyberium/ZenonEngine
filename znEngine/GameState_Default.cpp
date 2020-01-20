@@ -28,7 +28,7 @@ bool CGameState_World::Init()
 
 	SetCameraController(std::make_shared<CFreeCameraController>());
 	GetCameraController()->SetCamera(cameraNode->GetComponent<ICameraComponent3D>());
-	GetCameraController()->GetCamera()->SetPerspectiveProjection(ICameraComponent3D::EPerspectiveProjectionHand::Right, 45.0f, GetRenderWindow()->GetWindowWidth() / GetRenderWindow()->GetWindowHeight(), 0.5f, 1000.0f);
+	GetCameraController()->GetCamera()->SetPerspectiveProjection(ICameraComponent3D::EPerspectiveProjectionHand::Right, 45.0f, GetRenderWindow()->GetWindowWidth() / GetRenderWindow()->GetWindowHeight(), 0.5f, 10000.0f);
 
 	Load3D();
 	LoadUI();
@@ -79,7 +79,7 @@ void CGameState_World::OnResize(ResizeEventArgs& e)
 
 void CGameState_World::OnPreRender(RenderEventArgs& e)
 {
-	m_RootForBoxes->SetRotation(glm::vec3(m_RootForBoxes->GetRotation().x, m_RootForBoxes->GetRotation().y + 0.01, 0.0f));
+	//m_RootForBoxes->SetRotation(glm::vec3(m_RootForBoxes->GetRotation().x, m_RootForBoxes->GetRotation().y + 0.01, 0.0f));
 
 	CGameState::OnPreRender(e);
 }
@@ -132,8 +132,7 @@ void CGameState_World::Load3D()
 	//--------------------------------------------------------------------------
 
 	{
-
-
+#if 0
 		std::shared_ptr<SceneNode3D> sceneNodeLight = m_Scene3D->CreateWrappedSceneNode<SceneNode3D>("SceneNode3D", m_Scene3D->GetRootNode());
 		sceneNodeLight->SetName("Light node");
 		sceneNodeLight->SetTranslate(glm::vec3(170.0f, 170.0f, 170.0f));
@@ -144,30 +143,31 @@ void CGameState_World::Load3D()
 		sceneNodeLight->GetComponent<ILightComponent3D>()->SetRange(10000.0f);
 		sceneNodeLight->GetComponent<ILightComponent3D>()->SetIntensity(1.5f);
 		sceneNodeLight->GetComponent<ILightComponent3D>()->SetSpotlightAngle(20.0f);
+#endif
 
 		std::shared_ptr<SceneNode3D> sceneNodeLight2 = m_Scene3D->CreateWrappedSceneNode<SceneNode3D>("SceneNode3D", m_Scene3D->GetRootNode());
 		sceneNodeLight2->SetName("Light node2");
-		sceneNodeLight2->SetTranslate(glm::vec3(-170.0f, 170.0f, 170.0f));
+		sceneNodeLight2->SetTranslate(glm::vec3(-300.0f, 300.0f, 300.0f));
 		sceneNodeLight2->SetRotation(glm::vec3(0.5f, -0.5f, -0.5f));
 
 		sceneNodeLight2->GetComponent<ILightComponent3D>()->SetType(ELightType::Spot);
 		sceneNodeLight2->GetComponent<ILightComponent3D>()->SetColor(glm::vec3(0.0f, 0.0f, 1.0f));
-		sceneNodeLight2->GetComponent<ILightComponent3D>()->SetRange(10000.0f);
-		sceneNodeLight2->GetComponent<ILightComponent3D>()->SetIntensity(1.5f);
+		sceneNodeLight2->GetComponent<ILightComponent3D>()->SetRange(4000.0f);
+		sceneNodeLight2->GetComponent<ILightComponent3D>()->SetIntensity(1.0f);
 		sceneNodeLight2->GetComponent<ILightComponent3D>()->SetSpotlightAngle(20.0f);
-
 
 
 #if 0
 		std::shared_ptr<SceneNode3D> sceneNodeLightCenter = m_Scene3D->CreateWrappedSceneNode<SceneNode3D>("SceneNode3D", m_Scene3D->GetRootNode());
 		sceneNodeLightCenter->SetName("Directional light");
 		sceneNodeLightCenter->SetTranslate(glm::vec3(0.0f, 0.0f, 0.0f));
-		sceneNodeLightCenter->SetRotation(glm::vec3(-0.5f, 0.0f, -0.5f));
+		sceneNodeLightCenter->SetRotation(glm::normalize(glm::vec3(-0.5f, -0.5f, -0.5f)));
 
-		sceneNodeLightCenter->GetComponent<ILightComponent3D>()->SetEnabled(true);
 		sceneNodeLightCenter->GetComponent<ILightComponent3D>()->SetType(ELightType::Directional);
 		sceneNodeLightCenter->GetComponent<ILightComponent3D>()->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
+		sceneNodeLightCenter->GetComponent<ILightComponent3D>()->SetRange(10000.0f);
 		sceneNodeLightCenter->GetComponent<ILightComponent3D>()->SetIntensity(1.0f);
+		sceneNodeLightCenter->GetComponent<ILightComponent3D>()->SetSpotlightAngle(20.0f);
 #endif
 	}
 
@@ -183,8 +183,8 @@ void CGameState_World::Load3D()
 
 
 	{
-		const int iterCnt = 5;
-		const float offset = 8.0f;
+		const int iterCnt = 4;
+		const float offset = 13.0f;
 		const float scale = 5.0f;
 
 		std::shared_ptr<MaterialModel> mat = std::make_shared<MaterialModel>(GetBaseManager());
@@ -205,6 +205,8 @@ void CGameState_World::Load3D()
 		mesh2->SetMaterial(mat);
 
 		m_RootForBoxes = m_Scene3D->CreateWrappedSceneNode<SceneNode3D>("SceneNode3D", m_Scene3D->GetRootNode());
+		//m_RootForBoxes->SetTranslate(glm::vec3(150, 0, 150));
+
 
 		for (int i = -(iterCnt / 2); i < iterCnt / 2; i++)
 		{
@@ -216,7 +218,7 @@ void CGameState_World::Load3D()
 					sceneNode->SetName("Ball [" + std::to_string(i) + ", " + std::to_string(j) + ", " + std::to_string(k) + "]");
 					std::dynamic_pointer_cast<ISceneNode3D>(sceneNode)->SetTranslate(vec3(offset * i, offset * k, offset * j));
 					std::dynamic_pointer_cast<ISceneNode3D>(sceneNode)->SetScale(vec3(scale));
-					sceneNode->GetComponent<IMeshComponent3D>()->AddMesh(((i % 2 == 0) && (j % 2 == 0) && (k % 2 == 0)) ? mesh : mesh2);
+					sceneNode->GetComponent<IMeshComponent3D>()->AddMesh(((i % 2 == 0) || (j % 2 == 0) && (k % 2 == 0)) ? mesh : mesh2);
 
 					BoundingBox bbox = BoundingBox(glm::vec3(-1.0f, -1.0f, -1.0f), glm::vec3(1.0f, 1.0f, 1.0f));
 					bbox.transform(sceneNode->GetWorldTransfom());
@@ -231,13 +233,13 @@ void CGameState_World::Load3D()
 	//--------------------------------------------------------------------------
 
 	{
-		const float cPlaneSize = 1000.0f;
-		const float cPlaneY = -15.0f;
+		const float cPlaneSize = 500.0f;
+		const float cPlaneY = -10.0f;
 
 		std::shared_ptr<MaterialModel> mat2 = std::make_shared<MaterialModel>(GetBaseManager());
 		mat2->SetDiffuseColor(vec3(1.0f, 1.0f, 1.0f));
 		mat2->SetSpecularColor(vec3(1.0f, 1.0f, 1.0f));
-		mat2->SetSpecularFactor(4.0f);
+		mat2->SetSpecularFactor(0.0f);
 		mat2->SetBumpFactor(4.0f);
 		//mat2->SetTexture(MaterialModel::ETextureType::TextureDiffuse, GetRenderDevice()->CreateTexture2D("Sponza_Ceiling_diffuse.png"));
 		//mat2->SetTexture(MaterialModel::ETextureType::TextureNormalMap, GetRenderDevice()->CreateTexture2D("Sponza_Ceiling_normal.png"));

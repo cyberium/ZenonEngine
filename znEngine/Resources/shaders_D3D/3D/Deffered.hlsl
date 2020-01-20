@@ -46,7 +46,7 @@ float4 PS_ScreenQuad(VS_Output VSOut) : SV_TARGET
 
 bool IsShadowed(float4 PModel)
 {
-	const float bias = 0.00001f;
+	const float bias = 0.000001f;
 
 	const float4x4 mvpl = mul(LightProjectionMatrix, LightViewMatrix);
 	const float4 lightViewPosition = mul(mvpl, PModel);
@@ -58,8 +58,8 @@ bool IsShadowed(float4 PModel)
 	if ((saturate(projectTexCoord.x) == projectTexCoord.x) && (saturate(projectTexCoord.y) == projectTexCoord.y))
 	{
 		//float depthValue = TextureShadow.Load(int3(projectTexCoord, 0)).r;
-		float depthValue = Blur(TextureShadow, LinearClampSampler, projectTexCoord);
-		//float depthValue = TextureShadow.Sample(LinearClampSampler, projectTexCoord).r;
+		//float depthValue = Blur(TextureShadow, LinearClampSampler, projectTexCoord);
+		float depthValue = TextureShadow.Sample(LinearClampSampler, projectTexCoord).r;
 
 		float lightDepthValue = (lightViewPosition.z / lightViewPosition.w);
 		lightDepthValue -= bias;
@@ -132,34 +132,35 @@ float4 PS_DeferredLighting(VS_Output VSOut) : SV_Target
 	if (IsShadowed(PModel))
 		return colorResult * 0.3f;
 
-	/* DIRECTIONAL
-	const float bias = 0.00001f;
+
+	
+	/*
+	const float bias = 0.005;
 
 	const float4x4 mvpl = mul(LightProjectionMatrix, LightViewMatrix);
 	const float4 lightViewPosition = mul(mvpl, PModel);
 
-
 	float2 projectTexCoord = (float2)0;
-	projectTexCoord.x = (lightViewPosition.x) * 0.5f + 0.5f; // From (-1; 1) to (0-1)
-	projectTexCoord.y = (lightViewPosition.y) * 0.5f + 0.5f;
+	projectTexCoord.x = (lightViewPosition.x / lightViewPosition.w) * 0.5f + 0.5f; // From (-1; 1) to (0-1)
+	projectTexCoord.y = (-lightViewPosition.y / lightViewPosition.w) * 0.5f + 0.5f;
 
 	if ((saturate(projectTexCoord.x) == projectTexCoord.x) && (saturate(projectTexCoord.y) == projectTexCoord.y))
 	{
 		//float depthValue = TextureShadow.Load(int3(projectTexCoord, 0)).r;
-		//float depthValue = Blur(TextureShadow, LinearClampSampler, projectTexCoord);
-		float depthValue = TextureShadow.Sample(LinearClampSampler, projectTexCoord).r;
+		float depthValue = Blur(TextureShadow, LinearClampSampler, projectTexCoord);
+		//float depthValue = TextureShadow.Sample(LinearClampSampler, projectTexCoord).r;
 
-		float lightDepthValue = (lightViewPosition.z) - bias;
+		float lightDepthValue = (lightViewPosition.z / lightViewPosition.w);
+		lightDepthValue -= bias;
 
-		if (lightDepthValue < depthValue)
-		{
-			colorResult = float4(depthValue, depthValue, depthValue, 1.0f);
-		}
-		else
+		if (depthValue < lightDepthValue)
 		{
 			colorResult *= 0.1f;
 		}
+
+		//colorResult = float4(lightDepthValue, lightDepthValue, lightDepthValue, 1.0f);
 	}*/
+	
 
 	return colorResult;
 }
