@@ -5,7 +5,7 @@ class ZN_API RenderPass
 	, public Object
 {
 public:
-	RenderPass(std::shared_ptr<IRenderDevice> RenderDevice);
+	RenderPass(IRenderDevice* RenderDevice);
 	virtual ~RenderPass();
 
 	// IRenderPass
@@ -25,12 +25,12 @@ public:
 
 protected:
 	const RenderEventArgs* GetRenderEventArgs() const;
-    std::shared_ptr<IRenderDevice> GetRenderDevice() const;
+    IRenderDevice* GetRenderDevice() const;
 	const IBaseManager* GetBaseManager() const;
 
 private:
 	bool                                            m_Enabled;
     RenderEventArgs*                                m_RenderEventArgs;
-    std::weak_ptr<IRenderDevice>                    m_RenderDevice;
+    IRenderDevice*                    m_RenderDevice;
 	const IBaseManager*                             m_BaseManager;
 };

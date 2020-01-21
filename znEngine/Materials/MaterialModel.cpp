@@ -76,12 +76,12 @@ void MaterialModel::SetReflectionFactor(float Factor)
 	MarkConstantBufferDirty();
 }
 
-std::shared_ptr<ITexture> MaterialModel::GetTexture(ETextureType TextureType) const
+ITexture* MaterialModel::GetTexture(ETextureType TextureType) const
 {
 	return MaterialProxie::GetTexture((uint32)TextureType);
 }
 
-void MaterialModel::SetTexture(ETextureType TextureType, std::shared_ptr<ITexture> texture)
+void MaterialModel::SetTexture(ETextureType TextureType, ITexture* texture)
 {
 	switch (TextureType)
 	{

@@ -124,7 +124,7 @@ ZN_INTERFACE ZN_API __declspec(novtable) ITexture
 	 * For 1D, and 2D textures, this function always returns the only
 	 * face of the texture (the texture itself).
 	 */
-	virtual std::shared_ptr<ITexture> GetFace(CubeFace face) const = 0;
+	virtual ITexture* GetFace(CubeFace face) const = 0;
 
 	/**
 	 * 3D textures store several slices of 2D textures.
@@ -133,7 +133,7 @@ ZN_INTERFACE ZN_API __declspec(novtable) ITexture
 	 * For 1D and 2D textures, this function will always return the texture
 	 * itself.
 	 */
-	virtual std::shared_ptr<ITexture> GetSlice(uint32 slice) const = 0;
+	virtual ITexture* GetSlice(uint32 slice) const = 0;
 
 	virtual uint16_t GetWidth() const = 0;  // Get the width of the textures in texels.
 	virtual uint16_t GetHeight() const = 0; // Get the height of the texture in texles.
@@ -173,7 +173,7 @@ ZN_INTERFACE ZN_API __declspec(novtable) ITexture
 	 * @see https://msdn.microsoft.com/en-us/library/windows/desktop/ff476392(v=vs.85).aspx
 	 * @see https://www.opengl.org/sdk/docs/man/html/glCopyTexSubImage2D.xhtml
 	 */
-	virtual void Copy(std::shared_ptr<ITexture> other) = 0;
+	virtual void Copy(ITexture* other) = 0;
 
 	/**
 	 * Clear the texture.
@@ -217,6 +217,6 @@ ZN_INTERFACE ZN_API __declspec(novtable) ITexture
 	}
 };
 
-typedef std::vector<std::shared_ptr<ITexture>> TextureList;
-typedef std::unordered_map<uint8_t, std::shared_ptr<ITexture>> TextureMap;
-typedef std::unordered_map<std::string, std::shared_ptr<ITexture>> TextureNameMap;
+typedef std::vector<ITexture*> TextureList;
+typedef std::unordered_map<uint8_t, ITexture*> TextureMap;
+typedef std::unordered_map<std::string, ITexture*> TextureNameMap;

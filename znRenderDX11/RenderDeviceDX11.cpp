@@ -3,8 +3,7 @@
 // General
 #include "RenderDeviceDX11.h"
 
-// Additional
-#include "RenderWindowDX11.h"
+
 
 
 class D3DMultithreadLocker
@@ -78,14 +77,11 @@ IBaseManager* RenderDeviceDX11::GetBaseManager() const
 	return m_BaseManager;
 }
 
-std::shared_ptr<IRenderWindow> RenderDeviceDX11::CreateRenderWindow(IWindowObject * WindowObject, bool vSync)
-{
-	return std::make_shared<RenderWindowDX11>(this, WindowObject, vSync);
-}
 
-std::shared_ptr<IRenderDevice> RenderDeviceDX11::GetRenderDevice()
+
+IRenderDevice* RenderDeviceDX11::GetRenderDevice()
 {
-	return shared_from_this();
+	return this;
 }
 
 ID3D11Device4* RenderDeviceDX11::GetDeviceD3D11()
@@ -225,13 +221,13 @@ void RenderDeviceDX11::InitializeD3D11()
     }
 }
 
-void RenderDeviceDX11::DestroyBufferD3D11(std::shared_ptr<IBuffer> buffer)
+void RenderDeviceDX11::DestroyBufferD3D11(IBuffer* buffer)
 {
-	BufferList::iterator iter = std::find(m_Buffers.begin(), m_Buffers.end(), buffer);
-	if (iter != m_Buffers.end())
-	{
-		m_Buffers.erase(iter);
-	}
+	//auto& iter = std::find(m_Buffers.begin(), m_Buffers.end(), buffer);
+	//if (iter != m_Buffers.end())
+	//{
+	//	m_Buffers.erase(iter);
+	//}
 }
 
 

@@ -11,7 +11,7 @@ CMeshComponent3D::~CMeshComponent3D()
 {}
 
 
-void CMeshComponent3D::AddMesh(std::shared_ptr<IMesh> mesh)
+void CMeshComponent3D::AddMesh(IMesh* mesh)
 {
     assert(mesh);
 
@@ -20,7 +20,7 @@ void CMeshComponent3D::AddMesh(std::shared_ptr<IMesh> mesh)
         m_Meshes.push_back(mesh);
 }
 
-void CMeshComponent3D::RemoveMesh(std::shared_ptr<IMesh> mesh)
+void CMeshComponent3D::RemoveMesh(IMesh* mesh)
 {
     assert(mesh);
 
@@ -44,7 +44,7 @@ bool CMeshComponent3D::Accept(IVisitor* visitor)
     bool acceptResult = true;
 
 	const auto& meshes = GetMeshes();
-	std::for_each(meshes.begin(), meshes.end(), [&acceptResult, &visitor](const std::shared_ptr<IMesh>& Mesh)
+	std::for_each(meshes.begin(), meshes.end(), [&acceptResult, &visitor](IMesh* Mesh)
 	{
 		acceptResult = Mesh->Accept(visitor);
 	});

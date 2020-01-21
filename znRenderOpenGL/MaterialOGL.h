@@ -3,10 +3,10 @@
 class MaterialOGL : public MaterialBase
 {
 public:
-	MaterialOGL(std::weak_ptr<IRenderDevice> RenderDeviceOGL, size_t Size);
+	MaterialOGL(IRenderDevice* RenderDeviceOGL, size_t Size);
 	virtual ~MaterialOGL();
 
-    void                                            SetShader(EShaderType type, std::shared_ptr<IShader> pShader) override;
+    void                                            SetShader(EShaderType type, IShader* pShader) override;
 
     // MaterialBase
 	void                                            Bind(const ShaderMap& shaders) const override final;

@@ -7,7 +7,7 @@ class CDefferedRenderFinal
 	: public RenderPassPipelined
 {
 public:
-	CDefferedRenderFinal(std::shared_ptr<IRenderDevice> RenderDevice, std::shared_ptr<CDefferedRender> DefferedRender, std::shared_ptr<CDefferedRenderPrepareLights> DefferedRenderPrepareLights);
+	CDefferedRenderFinal(IRenderDevice* RenderDevice, std::shared_ptr<CDefferedRender> DefferedRender, std::shared_ptr<CDefferedRenderPrepareLights> DefferedRenderPrepareLights);
 	virtual ~CDefferedRenderFinal();
 
 	// IRenderPass
@@ -16,7 +16,7 @@ public:
 	void PostRender(RenderEventArgs& e) override;
 
 	// IRenderPassPipelined
-	std::shared_ptr<IRenderPassPipelined> CreatePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport* Viewport) override;
+	std::shared_ptr<IRenderPassPipelined> CreatePipeline(IRenderTarget* RenderTarget, const Viewport* Viewport) override;
 
 protected:
 	void BindLightParamsForCurrentIteration(const RenderEventArgs& e, const CDefferedRenderPrepareLights::SLightResult& LightResult);
@@ -30,7 +30,7 @@ private: // some every frame data
 		glm::vec2 ScreenDimensions;
 	};
 	SScreenToViewParams* m_ScreenToViewData;
-	std::shared_ptr<IConstantBuffer> m_ScreenToViewConstantBuffer;
+	IConstantBuffer* m_ScreenToViewConstantBuffer;
 
 private: // Pass light params
 	struct __declspec(novtable, align(16)) SLightResult
@@ -45,11 +45,11 @@ private: // Pass light params
 		glm::vec3 __Padding;
 	};
 	SLightResult* m_LightResultData;
-	std::shared_ptr<IConstantBuffer> m_LightResultConstantBuffer;
+	IConstantBuffer* m_LightResultConstantBuffer;
 
 private:
 	std::shared_ptr<CDefferedRender> m_DefferedRender;
 	std::shared_ptr<CDefferedRenderPrepareLights> m_DefferedRenderPrepareLights;
 
-	std::shared_ptr<IMesh> m_QuadMesh;
+	IMesh* m_QuadMesh;
 };

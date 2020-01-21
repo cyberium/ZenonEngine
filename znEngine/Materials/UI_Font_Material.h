@@ -3,7 +3,7 @@
 class ZN_API UI_Font_Material : public MaterialProxie
 {
 public:
-	UI_Font_Material(std::shared_ptr<IRenderDevice> RenderDevice);
+	UI_Font_Material(IRenderDevice* RenderDevice);
 	virtual ~UI_Font_Material();
 
 	// UI_Font_Material

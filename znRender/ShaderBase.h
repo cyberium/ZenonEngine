@@ -8,8 +8,8 @@ public:
 
 	// IShader
 	EShaderType GetType() const override final;
-	std::shared_ptr<IShaderInputLayout> GetInputLayout() const override final;
-	const std::shared_ptr<IShaderParameter>& GetShaderParameterByName(const std::string& name) const override final;
+	IShaderInputLayout* GetInputLayout() const override final;
+	IShaderParameter* GetShaderParameterByName(const std::string& name) const override final;
 	
 protected:
     ShaderMacros                        m_ShaderMacros;

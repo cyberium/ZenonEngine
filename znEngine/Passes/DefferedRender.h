@@ -4,22 +4,22 @@ class CDefferedRender
 	: public RenderListProcessorPass
 {
 public:
-	CDefferedRender(std::shared_ptr<IRenderDevice> RenderDevice, std::shared_ptr<BuildRenderListPass> BuildRenderListPass);
+	CDefferedRender(IRenderDevice* RenderDevice, std::shared_ptr<BuildRenderListPass> BuildRenderListPass);
 	virtual ~CDefferedRender();
 
 	// CDefferedRender
-	std::shared_ptr<ITexture> GetTexture0() const;
-	std::shared_ptr<ITexture> GetTexture1() const;
-	std::shared_ptr<ITexture> GetTexture2() const;
-	std::shared_ptr<ITexture> GetTexture3() const;
-	std::shared_ptr<ITexture> GetTextureDepthStencil() const;
+	ITexture* GetTexture0() const;
+	ITexture* GetTexture1() const;
+	ITexture* GetTexture2() const;
+	ITexture* GetTexture3() const;
+	ITexture* GetTextureDepthStencil() const;
 
 	// IRenderPass
 	void PreRender(RenderEventArgs& e) override;
 
 
 	// IRenderPassPipelined
-	std::shared_ptr<IRenderPassPipelined> CreatePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport* Viewport) override;
+	std::shared_ptr<IRenderPassPipelined> CreatePipeline(IRenderTarget* RenderTarget, const Viewport* Viewport) override;
 	void UpdateViewport(const Viewport * _viewport) override;
 
 	// IVisitor
@@ -29,12 +29,12 @@ public:
 
 private:
 	PerObject3D* m_PerObjectData;
-	std::shared_ptr<IConstantBuffer> m_PerObjectConstantBuffer;
+	IConstantBuffer* m_PerObjectConstantBuffer;
 
 private:
-	std::shared_ptr<ITexture> m_Texture0;
-	std::shared_ptr<ITexture> m_Texture1;
-	std::shared_ptr<ITexture> m_Texture2;
-	std::shared_ptr<ITexture> m_Texture3;
-	std::shared_ptr<ITexture> m_DepthStencilTexture;
+	ITexture* m_Texture0;
+	ITexture* m_Texture1;
+	ITexture* m_Texture2;
+	ITexture* m_Texture3;
+	ITexture* m_DepthStencilTexture;
 };

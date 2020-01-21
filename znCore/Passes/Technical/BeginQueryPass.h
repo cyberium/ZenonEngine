@@ -6,11 +6,11 @@ class ZN_API BeginQueryPass
 	: public RenderPass
 {
 public:
-	BeginQueryPass(std::shared_ptr<IRenderDevice> RenderDevice, std::shared_ptr<IQuery> query);
+	BeginQueryPass(IRenderDevice* RenderDevice, IQuery* query);
 	virtual ~BeginQueryPass();
 
 	virtual void Render(RenderEventArgs& e);
 
 private:
-	std::shared_ptr<IQuery> m_pQuery;
+	IQuery* m_pQuery;
 };

@@ -9,7 +9,7 @@ public:
 	virtual bool Bind(uint32 id, const IShader* shader, IShaderParameter::Type parameterType) const override;
 	virtual void UnBind(uint32 id, const IShader* shader, IShaderParameter::Type parameterType) const override;
 
-	virtual void Copy(std::shared_ptr<IBuffer> other);
+	virtual void Copy(IBuffer* other);
 
 	virtual BufferType GetType() const;
 	virtual uint32 GetElementCount() const;

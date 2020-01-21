@@ -4,13 +4,13 @@ class ZN_API UI_Button_Material : public MaterialProxie
 {
 	typedef MaterialProxie base;
 public:
-	UI_Button_Material(std::shared_ptr<IRenderDevice> RenderDevice);
+	UI_Button_Material(IRenderDevice* RenderDevice);
 	virtual ~UI_Button_Material();
 
-	void SetIdleTexture(std::shared_ptr<ITexture> _texture);
-	void SetHoverTexture(std::shared_ptr<ITexture> _texture);
-	void SetClickedTexture(std::shared_ptr<ITexture> _texture);
-	void SetDisabledTexture(std::shared_ptr<ITexture> _texture);
+	void SetIdleTexture(ITexture* _texture);
+	void SetHoverTexture(ITexture* _texture);
+	void SetClickedTexture(ITexture* _texture);
+	void SetDisabledTexture(ITexture* _texture);
 
 	void SetColor(vec4 color);
 	void SetState(uint32 state);

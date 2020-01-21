@@ -10,7 +10,7 @@
 #include "RenderTargetOGL.h"
 #include "TextureOGL.h"
 
-RenderWindowOGL::RenderWindowOGL(std::shared_ptr<IRenderDevice> RenderDevice, IWindowObject * WindowObject, bool vSync)
+RenderWindowOGL::RenderWindowOGL(IRenderDevice* RenderDevice, IWindowObject * WindowObject, bool vSync)
 	: RenderWindowBase(RenderDevice, WindowObject, vSync)
 {
 	m_HDC = GetDC(GetWindowObject()->GetHWnd());
@@ -82,7 +82,7 @@ void RenderWindowOGL::CreateSwapChain()
         ITexture::Type::UnsignedNormalized,
         1, //m_SampleDesc.Count,
         0, 0, 0, 0, 24, 0);
-    std::shared_ptr<ITexture> depthStencilTexture = GetRenderDevice()->CreateTexture2D(windowWidth2, windowHeight2, 1, depthStencilTextureFormat);
+    ITexture* depthStencilTexture = GetRenderDevice()->CreateTexture2D(windowWidth2, windowHeight2, 1, depthStencilTextureFormat);
 
     // Color buffer (Color0)
     ITexture::TextureFormat colorTextureFormat
@@ -92,7 +92,7 @@ void RenderWindowOGL::CreateSwapChain()
         1, //m_SampleDesc.Count,
         8, 8, 8, 8, 0, 0
     );
-    std::shared_ptr<ITexture> colorTexture = GetRenderDevice()->CreateTexture2D(windowWidth2, windowHeight2, 1, colorTextureFormat);
+    ITexture* colorTexture = GetRenderDevice()->CreateTexture2D(windowWidth2, windowHeight2, 1, colorTextureFormat);
 
     GetRenderTarget()->AttachTexture(IRenderTarget::AttachmentPoint::Color0, colorTexture);
     GetRenderTarget()->AttachTexture(IRenderTarget::AttachmentPoint::Depth, depthStencilTexture);

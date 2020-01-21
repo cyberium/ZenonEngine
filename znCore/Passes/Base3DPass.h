@@ -12,7 +12,7 @@ class ZN_API Base3DPass
 	: public ScenePassPipelined
 {
 public:
-	Base3DPass(std::shared_ptr<IRenderDevice> RenderDevice, std::shared_ptr<IScene> scene);
+	Base3DPass(IRenderDevice* RenderDevice, std::shared_ptr<IScene> scene);
 	virtual ~Base3DPass();
 
 	// IVisitor
@@ -22,5 +22,5 @@ public:
 
 protected:
 	PerObject3D*                                    m_PerObjectData;
-	std::shared_ptr<IConstantBuffer>                m_PerObjectConstantBuffer;
+	IConstantBuffer*                m_PerObjectConstantBuffer;
 };

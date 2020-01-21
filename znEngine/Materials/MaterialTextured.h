@@ -3,7 +3,7 @@
 class ZN_API MaterialTextured : public MaterialProxie
 {
 public:
-	MaterialTextured(std::shared_ptr<IRenderDevice> RenderDevice);
+	MaterialTextured(IRenderDevice* RenderDevice);
 	virtual ~MaterialTextured();
 
 	cvec4 GetDiffuseColor() const;

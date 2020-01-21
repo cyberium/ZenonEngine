@@ -6,7 +6,7 @@
 // Additional
 #include "Materials/MaterialTextured.h"
 
-CTexturedMaterialPass::CTexturedMaterialPass(std::shared_ptr<IRenderDevice> RenderDevice, std::shared_ptr<IScene> Scene)
+CTexturedMaterialPass::CTexturedMaterialPass(IRenderDevice* RenderDevice, std::shared_ptr<IScene> Scene)
 	: Base3DPass(RenderDevice, Scene)
 {}
 
@@ -18,10 +18,10 @@ CTexturedMaterialPass::~CTexturedMaterialPass()
 //
 // IRenderPassPipelined
 //
-std::shared_ptr<IRenderPassPipelined> CTexturedMaterialPass::CreatePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport)
+std::shared_ptr<IRenderPassPipelined> CTexturedMaterialPass::CreatePipeline(IRenderTarget* RenderTarget, const Viewport * Viewport)
 {
-	std::shared_ptr<IShader> g_pVertexShader;
-	std::shared_ptr<IShader> g_pPixelShader;
+	IShader* g_pVertexShader;
+	IShader* g_pPixelShader;
 
 	if (GetRenderDevice()->GetDeviceType() == RenderDeviceType::RenderDeviceType_DirectX)
 	{
@@ -42,7 +42,7 @@ std::shared_ptr<IRenderPassPipelined> CTexturedMaterialPass::CreatePipeline(std:
 	//g_pVertexShader->LoadInputLayoutFromCustomElements(elements);
 
 	// PIPELINES
-	std::shared_ptr<IPipelineState> Pipeline = GetRenderDevice()->CreatePipelineState();
+	IPipelineState* Pipeline = GetRenderDevice()->CreatePipelineState();
 	Pipeline->GetBlendState()->SetBlendMode(disableBlending);
 	Pipeline->GetDepthStencilState()->SetDepthMode(enableDepthWrites);
 	Pipeline->GetRasterizerState()->SetCullMode(IRasterizerState::CullMode::None);
@@ -52,7 +52,7 @@ std::shared_ptr<IRenderPassPipelined> CTexturedMaterialPass::CreatePipeline(std:
 	Pipeline->SetShader(EShaderType::VertexShader, g_pVertexShader);
 	Pipeline->SetShader(EShaderType::PixelShader, g_pPixelShader);
 
-	std::shared_ptr<ISamplerState> sampler = GetRenderDevice()->CreateSamplerState();
+	ISamplerState* sampler = GetRenderDevice()->CreateSamplerState();
 	sampler->SetFilter(ISamplerState::MinFilter::MinLinear, ISamplerState::MagFilter::MagLinear, ISamplerState::MipFilter::MipLinear);
 	sampler->SetWrapMode(ISamplerState::WrapMode::Repeat, ISamplerState::WrapMode::Repeat);
 	Pipeline->SetSampler(0, sampler);

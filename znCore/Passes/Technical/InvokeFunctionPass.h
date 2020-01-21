@@ -6,7 +6,7 @@ class ZN_API InvokeFunctionPass
 	: public RenderPass
 {
 public:
-	InvokeFunctionPass(std::shared_ptr<IRenderDevice> RenderDevice, std::function<void(void)> func);
+	InvokeFunctionPass(IRenderDevice* RenderDevice, std::function<void(void)> func);
 	virtual ~InvokeFunctionPass();
 
 	virtual void Render(RenderEventArgs& e);

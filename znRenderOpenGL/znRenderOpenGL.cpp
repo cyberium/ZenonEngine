@@ -26,7 +26,7 @@ public:
 	//
 	bool Initialize()
 	{
-		gLogInstance = std::dynamic_pointer_cast<CLog>(m_BaseManager->GetManager<ILog>()).get();
+		gLogInstance = std::dynamic_pointer_cast<CLog>(m_BaseManager->GetManager<ILog>());
 
 		return true;
 	}
@@ -49,7 +49,7 @@ public:
 	{
 		return RenderDeviceType::RenderDeviceType_OpenGL;
 	}
-	std::shared_ptr<IRenderDevice> CreateRenderDevice()
+	IRenderDevice* CreateRenderDevice()
 	{
 		if (m_CachedRenderDevice == nullptr)
 		{
@@ -62,7 +62,7 @@ public:
 
 private:
 	IBaseManager* m_BaseManager;
-	std::shared_ptr<IRenderDevice> m_CachedRenderDevice;
+	IRenderDevice* m_CachedRenderDevice;
 };
 
 

@@ -24,9 +24,9 @@ ZN_INTERFACE ZN_API IRenderPassPipelined : public IRenderPass
 {
 	virtual ~IRenderPassPipelined() {}
 
-	virtual std::shared_ptr<IRenderPassPipelined> CreatePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport* Viewport) = 0;
-	virtual std::shared_ptr<IRenderPassPipelined> SetPipeline(std::shared_ptr<IPipelineState> Pipeline) = 0;
-	virtual std::shared_ptr<IPipelineState> GetPipeline() const = 0;
+	virtual std::shared_ptr<IRenderPassPipelined> CreatePipeline(IRenderTarget* RenderTarget, const Viewport* Viewport) = 0;
+	virtual std::shared_ptr<IRenderPassPipelined> SetPipeline(IPipelineState* Pipeline) = 0;
+	virtual IPipelineState* GetPipeline() const = 0;
 
 	virtual void UpdateViewport(const Viewport * _viewport) = 0;
 };
@@ -41,7 +41,7 @@ ZN_INTERFACE ZN_API IRenderPassCreator
 
 	virtual size_t                       GetRenderPassCount() const = 0;
 	virtual std::string                  GetRenderPassName(size_t Index) const = 0;
-	virtual std::shared_ptr<IRenderPass> CreateRenderPass(size_t Index, std::shared_ptr<IRenderDevice> RenderDevice, std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport, std::shared_ptr<IScene> Scene) const = 0;
+	virtual std::shared_ptr<IRenderPass> CreateRenderPass(size_t Index, IRenderDevice* RenderDevice, IRenderTarget* RenderTarget, const Viewport * Viewport, std::shared_ptr<IScene> Scene) const = 0;
 };
 
 
@@ -56,5 +56,5 @@ IRenderPassFactory
 	virtual void AddRenderPassCreator(std::shared_ptr<IRenderPassCreator> Creator) = 0;
 	virtual void RemoveRenderPassCreator(std::shared_ptr<IRenderPassCreator> Creator) = 0;
 
-	virtual std::shared_ptr<IRenderPass> CreateRenderPass(std::string RenderPassName, std::shared_ptr<IRenderDevice> RenderDevice, std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport, std::shared_ptr<IScene> Scene) const = 0;
+	virtual std::shared_ptr<IRenderPass> CreateRenderPass(std::string RenderPassName, IRenderDevice* RenderDevice, IRenderTarget* RenderTarget, const Viewport * Viewport, std::shared_ptr<IScene> Scene) const = 0;
 };

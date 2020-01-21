@@ -33,7 +33,7 @@ void CUITextNode::Initialize()
 	m_Font = GetBaseManager()->GetManager<IFontsManager>()->GetMainFont();
 
 	m_Material = std::make_shared<UI_Font_Material>(GetBaseManager()->GetManager<IRenderDevice>());
-	m_Material->SetWrapper(m_Material);
+	m_Material->SetWrapper(m_Material.get());
 	m_Material->SetTexture(0, m_Font->GetTexture());
 	m_Material->SetColor(cDefaultColor);
 }
@@ -84,7 +84,7 @@ bool CUITextNode::AcceptMesh(IVisitor* visitor)
 	const std::string& _text = m_TextProperty->Get();
 	vec2 _offset = m_OffsetProperty->Get();
 
-	m_Font->SetMaterial(m_Material);
+	m_Font->SetMaterial(m_Material.get());
 
 	for (uint32 i = 0; i < _text.length(); i++)
 	{

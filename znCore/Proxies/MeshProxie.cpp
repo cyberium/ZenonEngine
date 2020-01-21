@@ -3,7 +3,7 @@
 // General
 #include "MeshProxie.h"
 
-MeshProxie::MeshProxie(std::shared_ptr<IMesh> _mesh) 
+MeshProxie::MeshProxie(IMesh* _mesh) 
 	: m_Mesh(_mesh)
 {
 	_ASSERT(m_Mesh);
@@ -33,17 +33,17 @@ const BoundingBox & MeshProxie::GetBounds() const
 	return m_Mesh->GetBounds();
 }
 
-void MeshProxie::AddVertexBuffer(const BufferBinding & binding, std::shared_ptr<IBuffer> buffer)
+void MeshProxie::AddVertexBuffer(const BufferBinding & binding, IBuffer* buffer)
 {
 	m_Mesh->AddVertexBuffer(binding, buffer);
 }
 
-void MeshProxie::SetVertexBuffer(std::shared_ptr<IBuffer> buffer)
+void MeshProxie::SetVertexBuffer(IBuffer* buffer)
 {
 	m_Mesh->SetVertexBuffer(buffer);
 }
 
-void MeshProxie::SetIndexBuffer(std::shared_ptr<IBuffer> buffer)
+void MeshProxie::SetIndexBuffer(IBuffer* buffer)
 {
 	m_Mesh->SetIndexBuffer(buffer);
 }
@@ -53,17 +53,17 @@ void MeshProxie::SetPrimitiveTopology(PrimitiveTopology _topology)
 	m_Mesh->SetPrimitiveTopology(_topology);
 }
 
-void MeshProxie::SetMaterial(std::shared_ptr<const IMaterial> Material)
+void MeshProxie::SetMaterial(const IMaterial* Material)
 {
 	m_Mesh->SetMaterial(Material);
 }
 
-void MeshProxie::AddMaterial(std::shared_ptr<const IMaterial> Material, SGeometryPartParams GeometryPartParams)
+void MeshProxie::AddMaterial(const IMaterial* Material, SGeometryPartParams GeometryPartParams)
 {
 	m_Mesh->AddMaterial(Material, GeometryPartParams);
 }
 
-std::shared_ptr<IGeometry> MeshProxie::GetGeometry() const
+IGeometry* MeshProxie::GetGeometry() const
 {
 	return m_Mesh->GetGeometry();
 }

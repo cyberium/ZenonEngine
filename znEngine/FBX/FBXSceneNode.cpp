@@ -78,7 +78,7 @@ void CFBXSceneNode::LoadNode()
 		{
 			std::shared_ptr<CFBXMesh> fbxMesh = std::make_shared<CFBXMesh>(m_BaseManager, std::dynamic_pointer_cast<CFBXSceneNode>(shared_from_this()));
 			fbxMesh->Load(m_NativeNode->GetMesh());
-			GetComponent<IMeshComponent3D>()->AddMesh(fbxMesh);
+			GetComponent<IMeshComponent3D>()->AddMesh(fbxMesh.get());
 		}
 		break;
 
@@ -89,10 +89,10 @@ void CFBXSceneNode::LoadNode()
 
 			std::shared_ptr<MaterialTextured> matDebug = std::make_shared<MaterialTextured>(m_BaseManager->GetManager<IRenderDevice>());
 			matDebug->SetTexture(0, m_BaseManager->GetManager<IRenderDevice>()->GetDefaultTexture());
-			matDebug->SetWrapper(matDebug);
+			matDebug->SetWrapper(matDebug.get());
 
-			std::shared_ptr<IMesh> mesh = m_BaseManager->GetManager<IRenderDevice>()->GetPrimitiveCollection()->CreateCone();
-			mesh->SetMaterial(matDebug);
+			IMesh* mesh = m_BaseManager->GetManager<IRenderDevice>()->GetPrimitiveCollection()->CreateCone();
+			mesh->SetMaterial(matDebug.get());
 			GetComponent<IMeshComponent3D>()->AddMesh(mesh);
 
 		}
@@ -142,7 +142,7 @@ bool CFBXSceneNode::LoadMaterials()
 	for (int i = 0; i < m_NativeNode->GetMaterialCount(); i++)
 	{
 		std::shared_ptr<CFBXMaterial> znMaterial = std::make_shared<CFBXMaterial>(m_BaseManager, std::dynamic_pointer_cast<CFBXSceneNode>(shared_from_this()));
-		znMaterial->SetWrapper(znMaterial);
+		znMaterial->SetWrapper(znMaterial.get());
 		znMaterial->Load(m_NativeNode->GetMaterial(i));
 		m_MaterialsArray.push_back(znMaterial);
 	}

@@ -33,7 +33,7 @@ ZN_INTERFACE ZN_API __declspec(novtable) IShader
 	 * To use the latest supported profile, specify "latest" here.
 	 * @return True if the shader was loaded correctly, or False otherwise.
 	 */
-	virtual bool LoadShaderFromString(EShaderType type, const std::string& fileName, const std::string& source, const ShaderMacros& shaderMacros, const std::string& entryPoint, const std::string& profile, std::shared_ptr<IShaderInputLayout> _customLayout) = 0;
+	virtual bool LoadShaderFromString(EShaderType type, const std::string& fileName, const std::string& source, const ShaderMacros& shaderMacros, const std::string& entryPoint, const std::string& profile, IShaderInputLayout* _customLayout) = 0;
 
 	/**
 	 * Load a shader from a file.
@@ -44,7 +44,7 @@ ZN_INTERFACE ZN_API __declspec(novtable) IShader
 	 * To use the latest supported profile, specify "latest" here.
 	 * @return True if the shader was loaded correctly, or False otherwise.
 	 */
-	virtual bool LoadShaderFromFile(EShaderType type, const std::string& fileName, const ShaderMacros& shaderMacros, const std::string& entryPoint, const std::string& profile, std::shared_ptr<IShaderInputLayout> _customLayout) = 0;
+	virtual bool LoadShaderFromFile(EShaderType type, const std::string& fileName, const ShaderMacros& shaderMacros, const std::string& entryPoint, const std::string& profile, IShaderInputLayout* _customLayout) = 0;
 
 	/**
 	 * Calculate shader input layout
@@ -55,7 +55,7 @@ ZN_INTERFACE ZN_API __declspec(novtable) IShader
 	/**
 	 * Get a shader input layout description
 	 */
-	virtual std::shared_ptr<IShaderInputLayout> GetInputLayout() const = 0;
+	virtual IShaderInputLayout* GetInputLayout() const = 0;
 
 	/**
 	 * Get a reference to a parameter defined in the shader.
@@ -64,7 +64,7 @@ ZN_INTERFACE ZN_API __declspec(novtable) IShader
 	 * is not found in the shader, then this function will return an invalid shader parameter.
 	 * You can check for validity using the IShaderParameter::IsValid method.
 	 */
-	virtual const std::shared_ptr<IShaderParameter>& GetShaderParameterByName(const std::string& name) const = 0;
+	virtual IShaderParameter* GetShaderParameterByName(const std::string& name) const = 0;
 
 	/**
 	 * Bind this shader for use in the rendering pipeline.
@@ -84,6 +84,6 @@ ZN_INTERFACE ZN_API __declspec(novtable) IShader
 	virtual void Dispatch(const glm::uvec3& numGroups) = 0;
 };
 
-typedef std::vector<std::shared_ptr<IShader>> ShaderList;
-typedef std::unordered_map<EShaderType, std::shared_ptr<IShader>> ShaderMap;
-typedef std::unordered_map<std::string, std::shared_ptr<IShader>> ShaderNameMap;
+typedef std::vector<IShader*> ShaderList;
+typedef std::unordered_map<EShaderType, IShader*> ShaderMap;
+typedef std::unordered_map<std::string, IShader*> ShaderNameMap;

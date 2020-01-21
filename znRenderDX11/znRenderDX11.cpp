@@ -26,7 +26,7 @@ public:
 	//
 	bool Initialize() override
 	{
-		gLogInstance = std::dynamic_pointer_cast<CLog>(m_BaseManager->GetManager<ILog>()).get();
+		gLogInstance = dynamic_cast<CLog*>(m_BaseManager->GetManager<ILog>());
 
 		return true;
 	}
@@ -48,7 +48,7 @@ public:
 	{
 		return RenderDeviceType::RenderDeviceType_DirectX;
 	}
-	std::shared_ptr<IRenderDevice> CreateRenderDevice()
+	IRenderDevice* CreateRenderDevice()
 	{
 		if (m_CachedRenderDevice == nullptr)
 		{
@@ -56,7 +56,7 @@ public:
 			m_CachedRenderDevice->Initialize();
 		}
 
-		return m_CachedRenderDevice;
+		return m_CachedRenderDevice.get();
 	}
 
 private:

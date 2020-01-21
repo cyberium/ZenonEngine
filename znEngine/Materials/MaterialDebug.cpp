@@ -3,14 +3,14 @@
 // General
 #include "MaterialDebug.h"
 
-MaterialDebug::MaterialDebug(std::shared_ptr<IRenderDevice> RenderDevice)
+MaterialDebug::MaterialDebug(IRenderDevice* RenderDevice)
 	: MaterialProxie(RenderDevice->CreateMaterial(sizeof(MaterialProperties)))
 {
 	m_pProperties = (MaterialProperties*)_aligned_malloc(sizeof(MaterialProperties), 16);
 	*m_pProperties = MaterialProperties();
 
-	std::shared_ptr<IShader> g_pVertexShader;
-	std::shared_ptr<IShader> g_pPixelShader;
+	IShader* g_pVertexShader;
+	IShader* g_pPixelShader;
 	if (RenderDevice->GetDeviceType() == RenderDeviceType::RenderDeviceType_DirectX)
 	{
 		g_pVertexShader = RenderDevice->CreateShader(

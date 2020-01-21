@@ -219,9 +219,9 @@ void StructuredBufferDX11::Commit() const
 	}
 }
 
-void StructuredBufferDX11::Copy(std::shared_ptr<IStructuredBuffer> other)
+void StructuredBufferDX11::Copy(IStructuredBuffer* other)
 {
-	std::shared_ptr<StructuredBufferDX11> srcBuffer = std::dynamic_pointer_cast<StructuredBufferDX11>(other);
+	StructuredBufferDX11* srcBuffer = dynamic_cast<StructuredBufferDX11*>(other);
 
 	if (srcBuffer->m_bIsDirty)
 	{
@@ -229,7 +229,7 @@ void StructuredBufferDX11::Copy(std::shared_ptr<IStructuredBuffer> other)
 		srcBuffer->Commit();
 	}
 
-	if (srcBuffer && srcBuffer.get() != this &&
+	if (srcBuffer && srcBuffer != this &&
 		m_uiCount * m_uiStride == srcBuffer->m_uiCount * srcBuffer->m_uiStride)
 	{
 		m_RenderDeviceD3D11->GetDeviceContextD3D11()->CopyResource(m_pBuffer, srcBuffer->m_pBuffer);
@@ -255,9 +255,9 @@ void StructuredBufferDX11::Copy(std::shared_ptr<IStructuredBuffer> other)
 	}
 }
 
-void StructuredBufferDX11::Copy(std::shared_ptr<IBuffer> other)
+void StructuredBufferDX11::Copy(IBuffer* other) const
 {
-	Copy(std::dynamic_pointer_cast<IStructuredBuffer>(other));
+	Copy(dynamic_cast<IStructuredBuffer*>(other));
 }
 
 void StructuredBufferDX11::Clear()

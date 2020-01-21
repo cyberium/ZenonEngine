@@ -14,12 +14,12 @@ public:
 	virtual uint32 GetElementStride() const;
     virtual uint32 GetElementOffset() const;
 
-	virtual void Copy(std::shared_ptr<IStructuredBuffer> other);
+	virtual void Copy(IStructuredBuffer* other);
 
 	virtual void Clear(); // Clear the contents of the buffer.
 
 protected:
-	virtual void Copy(std::shared_ptr<IBuffer> other);
+	virtual void Copy(IBuffer* other);
 	virtual void SetData(void* data, size_t elementSize, size_t offset, size_t numElements);
 
 	void Commit() const; // Commit the data from system memory to device memory.

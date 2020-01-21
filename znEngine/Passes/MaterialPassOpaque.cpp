@@ -6,7 +6,7 @@
 // Additional
 #include "Materials/MaterialModel.h"
 
-CMaterialPassOpaque::CMaterialPassOpaque(std::shared_ptr<IRenderDevice> RenderDevice, std::shared_ptr<IScene> Scene)
+CMaterialPassOpaque::CMaterialPassOpaque(IRenderDevice* RenderDevice, std::shared_ptr<IScene> Scene)
 	: Base3DPass(RenderDevice, Scene)
 {}
 
@@ -18,10 +18,10 @@ CMaterialPassOpaque::~CMaterialPassOpaque()
 //
 // IRenderPassPipelined
 //
-std::shared_ptr<IRenderPassPipelined> CMaterialPassOpaque::CreatePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport)
+std::shared_ptr<IRenderPassPipelined> CMaterialPassOpaque::CreatePipeline(IRenderTarget* RenderTarget, const Viewport * Viewport)
 {
-	std::shared_ptr<IShader> g_pVertexShader;
-	std::shared_ptr<IShader> g_pPixelShader;
+	IShader* g_pVertexShader;
+	IShader* g_pPixelShader;
 
 	if (GetRenderDevice()->GetDeviceType() == RenderDeviceType::RenderDeviceType_DirectX)
 	{
@@ -31,7 +31,7 @@ std::shared_ptr<IRenderPassPipelined> CMaterialPassOpaque::CreatePipeline(std::s
 	g_pVertexShader->LoadInputLayoutFromReflector();
 
 	// PIPELINES
-	std::shared_ptr<IPipelineState> Pipeline = GetRenderDevice()->CreatePipelineState();
+	IPipelineState* Pipeline = GetRenderDevice()->CreatePipelineState();
 	Pipeline->GetBlendState()->SetBlendMode(disableBlending);
 	Pipeline->GetDepthStencilState()->SetDepthMode(enableDepthWrites);
 	Pipeline->GetRasterizerState()->SetCullMode(IRasterizerState::CullMode::None);
@@ -41,12 +41,12 @@ std::shared_ptr<IRenderPassPipelined> CMaterialPassOpaque::CreatePipeline(std::s
 	Pipeline->SetShader(EShaderType::VertexShader, g_pVertexShader);
 	Pipeline->SetShader(EShaderType::PixelShader, g_pPixelShader);
 
-	std::shared_ptr<ISamplerState> sampler = GetRenderDevice()->CreateSamplerState();
+	ISamplerState* sampler = GetRenderDevice()->CreateSamplerState();
 	sampler->SetFilter(ISamplerState::MinFilter::MinLinear, ISamplerState::MagFilter::MagLinear, ISamplerState::MipFilter::MipLinear);
 	sampler->SetWrapMode(ISamplerState::WrapMode::Repeat, ISamplerState::WrapMode::Repeat);
 	Pipeline->SetSampler(0, sampler);
 
-	std::shared_ptr<ISamplerState> samplerClamp = GetRenderDevice()->CreateSamplerState();
+	ISamplerState* samplerClamp = GetRenderDevice()->CreateSamplerState();
 	samplerClamp->SetFilter(ISamplerState::MinFilter::MinLinear, ISamplerState::MagFilter::MagLinear, ISamplerState::MipFilter::MipLinear);
 	samplerClamp->SetWrapMode(ISamplerState::WrapMode::Clamp, ISamplerState::WrapMode::Clamp);
 	Pipeline->SetSampler(1, samplerClamp);

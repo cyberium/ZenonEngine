@@ -25,14 +25,14 @@ int main(int argc, char *argv[])
 	QApplication a(argc, argv);
 	MainEditor w;
 
-	std::shared_ptr<IRenderDevice> renderDevice = app.CreateRenderDevice(RenderDeviceType::RenderDeviceType_DirectX);
+	IRenderDevice* renderDevice = app.CreateRenderDevice(RenderDeviceType::RenderDeviceType_DirectX);
 	BaseManager->AddManager<IRenderDevice>(renderDevice);
 
 	std::shared_ptr<IFontsManager> fontsManager = std::make_shared<FontsManager>(renderDevice, BaseManager);
 	BaseManager->AddManager<IFontsManager>(fontsManager);
 
 	// Render window for main editor
-	std::shared_ptr<IRenderWindow> renderWindow = renderDevice->CreateRenderWindow(w.getUI().EditorWindow, false);
+	IRenderWindow* renderWindow = renderDevice->CreateRenderWindow(w.getUI().EditorWindow, false);
 	app.AddRenderWindow(renderWindow);
 
 	//std::shared_ptr<IGameState> gameState = GetManager<IGameStatesFactory>(BaseManager)->CreateGameStateWithHighestPriority(renderWindow);

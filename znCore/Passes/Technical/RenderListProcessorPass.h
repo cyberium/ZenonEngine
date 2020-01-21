@@ -7,7 +7,7 @@ class ZN_API RenderListProcessorPass
 	: public RenderPassPipelined
 {
 public:
-	RenderListProcessorPass(std::shared_ptr<IRenderDevice> RenderDevice, std::shared_ptr<BuildRenderListPass> BuildRenderListPass);
+	RenderListProcessorPass(IRenderDevice* RenderDevice, std::shared_ptr<BuildRenderListPass> BuildRenderListPass);
 	virtual ~RenderListProcessorPass();
 
 	// IRenderPass

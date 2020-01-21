@@ -18,8 +18,8 @@ ZN_INTERFACE ZN_API IRenderWindow
 
 	virtual void Present() = 0;
 
-	virtual std::shared_ptr<IRenderDevice> GetRenderDevice() const = 0;
-	virtual std::shared_ptr<IRenderTarget> GetRenderTarget() const = 0;
+	virtual IRenderDevice* GetRenderDevice() const = 0;
+	virtual IRenderTarget* GetRenderTarget() const = 0;
 	virtual IWindowObject* GetWindowObject() const = 0;
 	virtual const Viewport* GetViewport() const = 0;
 };

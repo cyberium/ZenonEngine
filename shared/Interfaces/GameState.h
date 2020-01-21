@@ -61,7 +61,7 @@ ZN_INTERFACE ZN_API IGameStateCreator
 	virtual size_t GetGameStatesCount() const = 0;
 	virtual std::string GetGameStateName(size_t Index) const = 0;
 	virtual GameStatePriority GetGameStatePriority(size_t Index) const = 0;
-	virtual std::shared_ptr<IGameState> CreateGameState(size_t Index, std::shared_ptr<IRenderWindow> RenderWindow, IWindowEvents* WindowEvents) const = 0;
+	virtual std::shared_ptr<IGameState> CreateGameState(size_t Index, IRenderWindow* RenderWindow, IWindowEvents* WindowEvents) const = 0;
 };
 
 
@@ -76,6 +76,6 @@ IGameStatesFactory
 	virtual void AddGameStateCreator(std::shared_ptr<IGameStateCreator> Creator) = 0;
 	virtual void RemoveGameStateCreator(std::shared_ptr<IGameStateCreator> Creator) = 0;
 
-	virtual std::shared_ptr<IGameState> CreateGameStateWithHighestPriority(std::shared_ptr<IRenderWindow> RenderWindow, IWindowEvents* WindowEvents) const = 0;
-	virtual std::shared_ptr<IGameState> CreateGameState(std::string GameStateName, std::shared_ptr<IRenderWindow> RenderWindow, IWindowEvents* WindowEvents) const = 0;
+	virtual std::shared_ptr<IGameState> CreateGameStateWithHighestPriority(IRenderWindow* RenderWindow, IWindowEvents* WindowEvents) const = 0;
+	virtual std::shared_ptr<IGameState> CreateGameState(std::string GameStateName, IRenderWindow* RenderWindow, IWindowEvents* WindowEvents) const = 0;
 };

@@ -6,7 +6,7 @@
 // Additional
 #include "Materials/MaterialDebug.h"
 
-CDebugMaterialPass::CDebugMaterialPass(std::shared_ptr<IRenderDevice> RenderDevice, std::shared_ptr<IScene> Scene)
+CDebugMaterialPass::CDebugMaterialPass(IRenderDevice* RenderDevice, std::shared_ptr<IScene> Scene)
 	: Base3DPass(RenderDevice, Scene)
 {}
 
@@ -18,11 +18,11 @@ CDebugMaterialPass::~CDebugMaterialPass()
 //
 // IRenderPassPipelined
 //
-std::shared_ptr<IRenderPassPipelined> CDebugMaterialPass::CreatePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport)
+std::shared_ptr<IRenderPassPipelined> CDebugMaterialPass::CreatePipeline(IRenderTarget* RenderTarget, const Viewport * Viewport)
 {
-	std::shared_ptr<IShader> g_pVertexShader;
-	std::shared_ptr<IShader> g_pGeometryShader;
-	std::shared_ptr<IShader> g_pPixelShader;
+	IShader* g_pVertexShader;
+	IShader* g_pGeometryShader;
+	IShader* g_pPixelShader;
 
 	if (GetRenderDevice()->GetDeviceType() == RenderDeviceType::RenderDeviceType_DirectX)
 	{
@@ -38,7 +38,7 @@ std::shared_ptr<IRenderPassPipelined> CDebugMaterialPass::CreatePipeline(std::sh
 	g_pVertexShader->LoadInputLayoutFromReflector();
 
 	// PIPELINES
-	std::shared_ptr<IPipelineState> Pipeline = GetRenderDevice()->CreatePipelineState();
+	IPipelineState* Pipeline = GetRenderDevice()->CreatePipelineState();
 	Pipeline->GetBlendState()->SetBlendMode(disableBlending);
 	Pipeline->GetDepthStencilState()->SetDepthMode(enableDepthWrites);
 	Pipeline->GetRasterizerState()->SetCullMode(IRasterizerState::CullMode::None);

@@ -15,10 +15,10 @@ ShaderParameterBase::ShaderParameterBase()
 	, m_pStructuredBuffer(nullptr)
 {}
 
-ShaderParameterBase::ShaderParameterBase(const std::string& name, UINT slotID, std::shared_ptr<IShader> shader, Type parameterType)
+ShaderParameterBase::ShaderParameterBase(const std::string& name, UINT slotID, IShader* shader, Type parameterType)
 	: m_Name(name)
 	, m_uiSlotID(slotID)
-	, m_Shader(shader.get())
+	, m_Shader(shader)
 	, m_ParameterType(parameterType)
 
 	, m_pConstantBuffer(nullptr)

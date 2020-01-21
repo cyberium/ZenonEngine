@@ -3,7 +3,7 @@
 // General
 #include "DefferedRenderFinal.h"
 
-CDefferedRenderFinal::CDefferedRenderFinal(std::shared_ptr<IRenderDevice> RenderDevice, std::shared_ptr<CDefferedRender> DefferedRender, std::shared_ptr<CDefferedRenderPrepareLights> DefferedRenderPrepareLights)
+CDefferedRenderFinal::CDefferedRenderFinal(IRenderDevice* RenderDevice, std::shared_ptr<CDefferedRender> DefferedRender, std::shared_ptr<CDefferedRenderPrepareLights> DefferedRenderPrepareLights)
 	: RenderPassPipelined(RenderDevice)
 	, m_DefferedRender(DefferedRender)
 	, m_DefferedRenderPrepareLights(DefferedRenderPrepareLights)
@@ -40,10 +40,10 @@ void CDefferedRenderFinal::PreRender(RenderEventArgs& e)
 	m_ScreenToViewData->ScreenDimensions = glm::vec2(e.PipelineState->GetRasterizerState()->GetViewports()[0]->GetWidth(), e.PipelineState->GetRasterizerState()->GetViewports()[0]->GetHeight());
 	m_ScreenToViewConstantBuffer->Set(*m_ScreenToViewData);
 	
-	const std::shared_ptr<IShaderParameter>& screenToViewParams = GetPipeline()->GetShader(EShaderType::PixelShader)->GetShaderParameterByName("ScreenToViewParams");
+	IShaderParameter* screenToViewParams = GetPipeline()->GetShader(EShaderType::PixelShader)->GetShaderParameterByName("ScreenToViewParams");
 	if (screenToViewParams->IsValid() && m_ScreenToViewConstantBuffer != nullptr)
 	{
-		screenToViewParams->SetConstantBuffer(m_ScreenToViewConstantBuffer.get());
+		screenToViewParams->SetConstantBuffer(m_ScreenToViewConstantBuffer);
 		screenToViewParams->Bind();
 	}
 	// Once per frame
@@ -71,17 +71,17 @@ void CDefferedRenderFinal::PostRender(RenderEventArgs& e)
 //
 // IRenderPassPipelined
 //
-std::shared_ptr<IRenderPassPipelined> CDefferedRenderFinal::CreatePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport)
+std::shared_ptr<IRenderPassPipelined> CDefferedRenderFinal::CreatePipeline(IRenderTarget* RenderTarget, const Viewport * Viewport)
 {
 	m_QuadMesh = GetRenderDevice()->GetPrimitiveCollection()->CreateQuad();
 
-	std::shared_ptr<IShader> vertexShader = GetRenderDevice()->CreateShader(EShaderType::VertexShader, "IDB_SHADER_3D_DEFFERED", IShader::ShaderMacros(), "VS_ScreenQuad", "latest");
+	IShader* vertexShader = GetRenderDevice()->CreateShader(EShaderType::VertexShader, "IDB_SHADER_3D_DEFFERED", IShader::ShaderMacros(), "VS_ScreenQuad", "latest");
 	vertexShader->LoadInputLayoutFromReflector();
 
-	std::shared_ptr<IShader> pixelShader = GetRenderDevice()->CreateShader(EShaderType::PixelShader, "IDB_SHADER_3D_DEFFERED", IShader::ShaderMacros(), "PS_DeferredLighting", "latest");
+	IShader* pixelShader = GetRenderDevice()->CreateShader(EShaderType::PixelShader, "IDB_SHADER_3D_DEFFERED", IShader::ShaderMacros(), "PS_DeferredLighting", "latest");
 
 	// PIPELINES
-	std::shared_ptr<IPipelineState> defferedFinalPipeline = GetRenderDevice()->CreatePipelineState();
+	IPipelineState* defferedFinalPipeline = GetRenderDevice()->CreatePipelineState();
 	defferedFinalPipeline->GetBlendState()->SetBlendMode(additiveBlending);
 	defferedFinalPipeline->GetDepthStencilState()->SetDepthMode(disableDepthWrites);
 	defferedFinalPipeline->GetRasterizerState()->SetCullMode(IRasterizerState::CullMode::None);
@@ -91,12 +91,12 @@ std::shared_ptr<IRenderPassPipelined> CDefferedRenderFinal::CreatePipeline(std::
 	defferedFinalPipeline->SetShader(EShaderType::VertexShader, vertexShader);
 	defferedFinalPipeline->SetShader(EShaderType::PixelShader, pixelShader);
 
-	std::shared_ptr<ISamplerState> sampler = GetRenderDevice()->CreateSamplerState();
+	ISamplerState* sampler = GetRenderDevice()->CreateSamplerState();
 	sampler->SetFilter(ISamplerState::MinFilter::MinLinear, ISamplerState::MagFilter::MagLinear, ISamplerState::MipFilter::MipLinear);
 	sampler->SetWrapMode(ISamplerState::WrapMode::Repeat, ISamplerState::WrapMode::Repeat);
 	defferedFinalPipeline->SetSampler(0, sampler);
 
-	std::shared_ptr<ISamplerState> samplerClamp = GetRenderDevice()->CreateSamplerState();
+	ISamplerState* samplerClamp = GetRenderDevice()->CreateSamplerState();
 	samplerClamp->SetFilter(ISamplerState::MinFilter::MinLinear, ISamplerState::MagFilter::MagLinear, ISamplerState::MipFilter::MipLinear);
 	samplerClamp->SetWrapMode(ISamplerState::WrapMode::Clamp, ISamplerState::WrapMode::Clamp);
 	defferedFinalPipeline->SetSampler(1, samplerClamp);
@@ -136,10 +136,10 @@ void CDefferedRenderFinal::BindLightParamsForCurrentIteration(const RenderEventA
 	    *m_LightResultData = lightResult;
 		m_LightResultConstantBuffer->Set(*m_LightResultData);
 
-		const std::shared_ptr<IShaderParameter>& lightParam = GetPipeline()->GetShader(EShaderType::PixelShader)->GetShaderParameterByName("LightResult");
+		IShaderParameter* lightParam = GetPipeline()->GetShader(EShaderType::PixelShader)->GetShaderParameterByName("LightResult");
 		if (lightParam->IsValid() && m_LightResultConstantBuffer != nullptr)
 		{
-			lightParam->SetConstantBuffer(m_LightResultConstantBuffer.get());
+			lightParam->SetConstantBuffer(m_LightResultConstantBuffer);
 			lightParam->Bind();
 		}
 		else
@@ -149,10 +149,10 @@ void CDefferedRenderFinal::BindLightParamsForCurrentIteration(const RenderEventA
 	}
 
 	{
-		const std::shared_ptr<IShaderParameter>& shadowTexture = GetPipeline()->GetShader(EShaderType::PixelShader)->GetShaderParameterByName("TextureShadow");
+		IShaderParameter* shadowTexture = GetPipeline()->GetShader(EShaderType::PixelShader)->GetShaderParameterByName("TextureShadow");
 		if (shadowTexture->IsValid() && LightResult.IsShadowEnable && LightResult.ShadowTexture != nullptr)
 		{
-			shadowTexture->SetTexture(LightResult.ShadowTexture.get());
+			shadowTexture->SetTexture(LightResult.ShadowTexture);
 			shadowTexture->Bind();
 		}
 		else

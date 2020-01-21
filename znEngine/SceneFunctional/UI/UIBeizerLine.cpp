@@ -3,10 +3,10 @@
 // General
 #include "UIBeizerLine.h"
 
-CUIBeizerLineNode::CUIBeizerLineNode(std::shared_ptr<IRenderDevice> RenderDevice)
+CUIBeizerLineNode::CUIBeizerLineNode(IRenderDevice* RenderDevice)
 {
 	m_Material = std::make_shared<UI_Line_Material>(RenderDevice);
-	m_Material->SetWrapper(m_Material);;
+	m_Material->SetWrapper(m_Material.get());;
 
     m_StartPoint = vec2(0.0f, 0.0f);
     m_EndPoint = vec2(100.0f, 100.0f);
@@ -22,7 +22,7 @@ CUIBeizerLineNode::CUIBeizerLineNode(std::shared_ptr<IRenderDevice> RenderDevice
 
     m_PointsBuffer = RenderDevice->CreateVertexBuffer(p, 4);
     m_Mesh->AddVertexBuffer(BufferBinding("POSITION", 0), m_PointsBuffer);
-	m_Mesh->SetMaterial(m_Material);
+	m_Mesh->SetMaterial(m_Material.get());
 }
 
 CUIBeizerLineNode::~CUIBeizerLineNode()
@@ -86,7 +86,7 @@ void CUIBeizerLineNode::UpdateBuffer()
     p[2] = P2;
     p[3] = m_EndPoint;
 
-    std::shared_ptr<IBuffer> pointsBufferNew = GetBaseManager()->GetManager<IRenderDevice>()->CreateVertexBuffer(p, 4);
+    IBuffer* pointsBufferNew = GetBaseManager()->GetManager<IRenderDevice>()->CreateVertexBuffer(p, 4);
     m_PointsBuffer->Copy(pointsBufferNew);
 	GetBaseManager()->GetManager<IRenderDevice>()->DestroyVertexBuffer(pointsBufferNew);
 }

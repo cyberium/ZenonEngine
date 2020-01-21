@@ -5,7 +5,7 @@
 class ZN_API FontsManager : public CRefManager1Dim<CFontMesh>, public IFontsManager
 {
 public:
-	FontsManager(std::shared_ptr<IRenderDevice> RenderDevice, IBaseManager* BaseManager);
+	FontsManager(IRenderDevice* RenderDevice, IBaseManager* BaseManager);
 	virtual ~FontsManager();
 
 	// IFontsManager
@@ -26,6 +26,6 @@ private:
 	std::shared_ptr<CFontMesh> m_MainFont;
 
 private:
-	std::shared_ptr<IRenderDevice> m_RenderDevice;
+	IRenderDevice* m_RenderDevice;
 	IBaseManager* m_BaseManager;
 };

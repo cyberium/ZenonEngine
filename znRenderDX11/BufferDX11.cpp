@@ -75,11 +75,11 @@ void BufferDX11::UnBind(uint32 id, const IShader* shader, IShaderParameter::Type
 	}
 }
 
-void BufferDX11::Copy(std::shared_ptr<IBuffer> other)
+void BufferDX11::Copy(IBuffer* other) const
 {
-	std::shared_ptr<BufferDX11> srcBuffer = std::dynamic_pointer_cast<BufferDX11>(other);
+	BufferDX11* srcBuffer = dynamic_cast<BufferDX11*>(other);
 
-	if (srcBuffer && srcBuffer.get() != this && m_uiCount * m_uiStride == srcBuffer->m_uiCount * srcBuffer->m_uiStride)
+	if (srcBuffer && srcBuffer != this && m_uiCount * m_uiStride == srcBuffer->m_uiCount * srcBuffer->m_uiStride)
 	{
 		m_RenderDeviceD3D11->GetDeviceContextD3D11()->CopyResource(m_pBuffer, srcBuffer->m_pBuffer);
 	}

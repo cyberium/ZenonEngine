@@ -11,7 +11,7 @@
 class ZN_API CGameState_World : public CGameState
 {
 public:
-	CGameState_World(IBaseManager * BaseManager, std::shared_ptr<IRenderWindow> RenderWindow, IWindowEvents* WindowEvents);
+	CGameState_World(IBaseManager * BaseManager, IRenderWindow* RenderWindow, IWindowEvents* WindowEvents);
 	virtual ~CGameState_World();
 
 	// IGameState

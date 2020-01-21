@@ -13,9 +13,9 @@ public:
 	virtual void                                    SetBounds(const BoundingBox& Bounds) override;
 	virtual const BoundingBox&                      GetBounds() const override;
 
-	virtual void                                    AddVertexBuffer(const BufferBinding& binding, std::shared_ptr<IBuffer> buffer) override;
-	virtual void                                    SetVertexBuffer(std::shared_ptr<IBuffer> buffer) override;
-	virtual void                                    SetIndexBuffer(std::shared_ptr<IBuffer> buffer) override;
+	virtual void                                    AddVertexBuffer(const BufferBinding& binding, IBuffer* buffer) override;
+	virtual void                                    SetVertexBuffer(IBuffer* buffer) override;
+	virtual void                                    SetIndexBuffer(IBuffer* buffer) override;
 
 	virtual bool                                    Accept(IVisitor* visitor, const IMaterial* Material, SGeometryPartParams GeometryPartParams = SGeometryPartParams()) override;
 
@@ -24,9 +24,9 @@ protected:
 
 protected:
 	BoundingBox                                     m_Bounds;
-	std::unordered_map<BufferBinding, std::shared_ptr<IBuffer>> m_VertexBuffers;
-    std::shared_ptr<IBuffer>                        m_VertexBuffer;
-    std::shared_ptr<IBuffer>                        m_pIndexBuffer;
+	std::unordered_map<BufferBinding, IBuffer*> m_VertexBuffers;
+    IBuffer*                        m_VertexBuffer;
+    IBuffer*                        m_pIndexBuffer;
 
 private:
 	size_t                                          m_Hash;

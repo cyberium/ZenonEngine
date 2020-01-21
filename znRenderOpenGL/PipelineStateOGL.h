@@ -12,7 +12,7 @@ public:
 	virtual ~PipelineStateOGL();
 
 	// IPipelineState
-	void SetShader(EShaderType type, std::shared_ptr<IShader> pShader) override;
+	void SetShader(EShaderType type, IShader* pShader) override;
 
 	void Bind() override;
 	void UnBind() override;

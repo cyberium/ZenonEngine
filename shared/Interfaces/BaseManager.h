@@ -44,14 +44,14 @@ ZN_INTERFACE ZN_API
 {
 	virtual ~IBaseManager() {};
 
-	virtual void AddManager(GUID Type, std::shared_ptr<IManager> Manager) = 0;
+	virtual void AddManager(GUID Type, const std::shared_ptr<IManager>& Manager) = 0;
 	virtual void RemoveManager(GUID Type) = 0;
-	virtual std::shared_ptr<IManager> GetManager(GUID Type) const = 0;
+	virtual IManager* GetManager(GUID Type) const = 0;
 
 	// Templates
 
 	template<typename T>
-	inline void AddManager(std::shared_ptr<IManager> _manager)
+	inline void AddManager(const std::shared_ptr<IManager>& _manager)
 	{
 		AddManager(__uuidof(T), _manager);
 	}
@@ -63,13 +63,13 @@ ZN_INTERFACE ZN_API
 	}
 
 	template<typename T>
-	inline std::shared_ptr<T> GetManager() const
+	inline T* GetManager() const
 	{
-		std::shared_ptr<IManager> manager = GetManager(__uuidof(T));
+		IManager* manager = GetManager(__uuidof(T));
 		if (manager == nullptr)
 			_ASSERT_EXPR(false, L"Manager not found.");
 
-		return std::dynamic_pointer_cast<T, IManager>(manager);
+		return dynamic_cast<T*>(manager);
 	}
 };
 

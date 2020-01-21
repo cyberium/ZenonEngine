@@ -81,13 +81,13 @@ void MainEditor::onCustomContextMenu(const QPoint& point)
 	m_SceneTreeViewerContextMenu->clear();
 
 	{
-		QAction* nameAction = new QAction(item->GetSceneNode()->GetName().c_str(), m_SceneTreeViewerContextMenu.get());
+		QAction* nameAction = new QAction(item->GetSceneNode()->GetName().c_str(), m_SceneTreeViewerContextMenu);
 		nameAction->setEnabled(false);
 		m_SceneTreeViewerContextMenu->addAction(nameAction);
 
 		m_SceneTreeViewerContextMenu->addSeparator();
 
-		QAction* uninstallAction33 = new QAction("Uninstall TA33", m_SceneTreeViewerContextMenu.get());
+		QAction* uninstallAction33 = new QAction("Uninstall TA33", m_SceneTreeViewerContextMenu);
 		m_SceneTreeViewerContextMenu->addAction(uninstallAction33);
 	}
 

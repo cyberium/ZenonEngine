@@ -3,14 +3,14 @@
 // General
 #include "MaterialBase.h"
 
-MaterialBase::MaterialBase(std::weak_ptr<IRenderDevice> RenderDevice, size_t Size)
+MaterialBase::MaterialBase(IRenderDevice* RenderDevice, size_t Size)
 	: m_Name("MaterialBase")
 	, m_RenderDevice(RenderDevice)
 	, m_Dirty(true)
 {
 	if (Size > 0)
 	{
-		m_pConstantBuffer = m_RenderDevice.lock()->CreateConstantBuffer(nullptr, Size);
+		m_pConstantBuffer = m_RenderDevice->CreateConstantBuffer(nullptr, Size);
 	}
 }
 
@@ -18,8 +18,7 @@ MaterialBase::~MaterialBase()
 {
 	if (m_pConstantBuffer)
 	{
-		m_RenderDevice.lock()->DestroyConstantBuffer(m_pConstantBuffer);
-		m_pConstantBuffer.reset();
+		m_RenderDevice->DestroyConstantBuffer(m_pConstantBuffer);
 	}
 }
 
@@ -34,12 +33,12 @@ std::string MaterialBase::GetName() const
 }
 
 
-void MaterialBase::SetShader(EShaderType type, std::shared_ptr<IShader> pShader)
+void MaterialBase::SetShader(EShaderType type, IShader* pShader)
 {
 	m_Shaders[type] = pShader;
 }
 
-std::shared_ptr<IShader> MaterialBase::GetShader(EShaderType type) const
+IShader* MaterialBase::GetShader(EShaderType type) const
 {
 	const auto& iter = m_Shaders.find(type);
 	if (iter != m_Shaders.end())
@@ -56,7 +55,7 @@ const ShaderMap& MaterialBase::GetShaders() const
 }
 
 
-std::shared_ptr<ITexture> MaterialBase::GetTexture(uint8 ID) const
+ITexture* MaterialBase::GetTexture(uint8 ID) const
 {
 	const auto& itr = m_Textures.find(ID);
 	if (itr != m_Textures.end())
@@ -64,16 +63,16 @@ std::shared_ptr<ITexture> MaterialBase::GetTexture(uint8 ID) const
 		return itr->second;
 	}
 
-	return std::shared_ptr<ITexture>();
+	return nullptr;
 }
 
-void MaterialBase::SetTexture(uint8 ID, std::shared_ptr<ITexture> texture)
+void MaterialBase::SetTexture(uint8 ID, ITexture* texture)
 {
 	m_Textures[ID] = texture;
 	m_Dirty = true;
 }
 
-std::shared_ptr<ISamplerState> MaterialBase::GetSampler(uint8 ID) const
+ISamplerState* MaterialBase::GetSampler(uint8 ID) const
 {
     const auto& itr = m_Samplers.find(ID);
     if (itr != m_Samplers.end())
@@ -81,10 +80,10 @@ std::shared_ptr<ISamplerState> MaterialBase::GetSampler(uint8 ID) const
         return itr->second;
     }
 
-    return std::shared_ptr<ISamplerState>();
+    return nullptr;
 }
 
-void MaterialBase::SetSampler(uint8 ID, std::shared_ptr<ISamplerState> samplerState)
+void MaterialBase::SetSampler(uint8 ID, ISamplerState* samplerState)
 {
     m_Samplers[ID] = samplerState;
     m_Dirty = true;
@@ -95,7 +94,7 @@ void MaterialBase::Bind(const ShaderMap& shaders) const
 {
 	if (m_Dirty)
 	{
-		std::shared_ptr<IMaterial> wrapper = m_Wrapper.lock();
+		IMaterial* wrapper = m_Wrapper;
 		if (wrapper)
 			wrapper->UpdateConstantBuffer();
 		m_Dirty = false;
@@ -109,7 +108,7 @@ void MaterialBase::Unbind(const ShaderMap& shaders) const
 
 //--
 
-void MaterialBase::SetWrapper(std::weak_ptr<IMaterial> _wrapper)
+void MaterialBase::SetWrapper(IMaterial* _wrapper)
 {
 	m_Wrapper = _wrapper;
 }

@@ -3,7 +3,7 @@
 // General
 #include "RenderWindowBase.h"
 
-RenderWindowBase::RenderWindowBase(std::shared_ptr<IRenderDevice> RenderDevice, IWindowObject * WindowObject, bool vSync)
+RenderWindowBase::RenderWindowBase(IRenderDevice* RenderDevice, IWindowObject * WindowObject, bool vSync)
 	: m_RenderDevice(RenderDevice)
     , m_WindowObject(WindowObject)
 	, m_vSync(vSync)
@@ -41,12 +41,12 @@ bool RenderWindowBase::IsVSync() const
 	return m_vSync;
 }
 
-std::shared_ptr<IRenderDevice> RenderWindowBase::GetRenderDevice() const
+IRenderDevice* RenderWindowBase::GetRenderDevice() const
 {
-    return m_RenderDevice.lock();
+    return m_RenderDevice;
 }
 
-std::shared_ptr<IRenderTarget> RenderWindowBase::GetRenderTarget() const
+IRenderTarget* RenderWindowBase::GetRenderTarget() const
 {
     return m_RenderTarget;
 }

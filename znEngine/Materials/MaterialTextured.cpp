@@ -3,7 +3,7 @@
 // General
 #include "MaterialTextured.h"
 
-MaterialTextured::MaterialTextured(std::shared_ptr<IRenderDevice> RenderDevice)
+MaterialTextured::MaterialTextured(IRenderDevice* RenderDevice)
 	: MaterialProxie(RenderDevice->CreateMaterial(sizeof(MaterialProperties)))
 {
 	// Constant buffer

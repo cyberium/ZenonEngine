@@ -14,10 +14,10 @@ public:
 	uint32 GetElementStride() const;
 	uint32 GetElementOffset() const;
 
-	virtual void Copy(std::shared_ptr<IConstantBuffer> other) override;
+	virtual void Copy(IConstantBuffer* other) override;
 
 protected:
-	virtual void Copy(std::shared_ptr<IBuffer> other) override;
+	virtual void Copy(IBuffer* other) override;
 	void Set(const void* data, size_t size) override;
 
 private:

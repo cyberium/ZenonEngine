@@ -7,7 +7,7 @@ class ZN_API CGameState
 	, public Object
 {
 public:
-	CGameState(IBaseManager * BaseManager, std::shared_ptr<IRenderWindow> RenderWindow, IWindowEvents* WindowEvents);
+	CGameState(IBaseManager * BaseManager, IRenderWindow* RenderWindow, IWindowEvents* WindowEvents);
 	virtual ~CGameState();
 
 	// IGameState
@@ -56,8 +56,8 @@ public:
 
 
 protected:
-	std::shared_ptr<IRenderDevice>					GetRenderDevice() const;
-	std::shared_ptr<IRenderWindow>					GetRenderWindow() const;
+	IRenderDevice*					GetRenderDevice() const;
+	IRenderWindow*					GetRenderWindow() const;
 	IBaseManager*									GetBaseManager() const;
 
 	void                                            SetCameraController(std::shared_ptr<ICameraController> CameraController);
@@ -65,12 +65,12 @@ protected:
 
 
 protected:
-	std::shared_ptr<IRenderDevice>                  m_RenderDevice;
-	std::shared_ptr<IRenderWindow>                  m_RenderWindow;
+	IRenderDevice*                  m_RenderDevice;
+	IRenderWindow*                  m_RenderWindow;
 	IWindowEvents*                                  m_WindowEvents;
 
-    std::shared_ptr<IQuery>                         m_FrameQuery;
-	std::shared_ptr<IQuery>                         m_TestQuery;
+    IQuery*                         m_FrameQuery;
+	IQuery*                         m_TestQuery;
     double                                          m_FrameTime;
 
 	std::shared_ptr<ICameraController>              m_DefaultCameraController;

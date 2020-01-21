@@ -11,8 +11,8 @@ public:
 	// IGameStatesFactory
 	void AddGameStateCreator(std::shared_ptr<IGameStateCreator> Creator) override;
 	void RemoveGameStateCreator(std::shared_ptr<IGameStateCreator> Creator) override;
-	std::shared_ptr<IGameState> CreateGameStateWithHighestPriority(std::shared_ptr<IRenderWindow> RenderWindow, IWindowEvents* WindowEvents) const override;
-	std::shared_ptr<IGameState> CreateGameState(std::string GameStateName, std::shared_ptr<IRenderWindow> RenderWindow, IWindowEvents* WindowEvents) const override;
+	std::shared_ptr<IGameState> CreateGameStateWithHighestPriority(IRenderWindow* RenderWindow, IWindowEvents* WindowEvents) const override;
+	std::shared_ptr<IGameState> CreateGameState(std::string GameStateName, IRenderWindow* RenderWindow, IWindowEvents* WindowEvents) const override;
 
 	// IznPluginsEventListener
 	void OnPluginAdded(std::shared_ptr<IznPlugin> Plugin) override;

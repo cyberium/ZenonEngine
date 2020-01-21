@@ -3,7 +3,7 @@
 // General
 #include "RenderListProcessorPass.h"
 
-RenderListProcessorPass::RenderListProcessorPass(std::shared_ptr<IRenderDevice> RenderDevice, std::shared_ptr<BuildRenderListPass> BuildRenderListPass)
+RenderListProcessorPass::RenderListProcessorPass(IRenderDevice* RenderDevice, std::shared_ptr<BuildRenderListPass> BuildRenderListPass)
 	: RenderPassPipelined(RenderDevice)
 	, m_BuildRenderListPass(BuildRenderListPass)
 {

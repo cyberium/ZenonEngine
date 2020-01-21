@@ -3,15 +3,15 @@
 // General
 #include "UI_Font_Material.h"
 
-UI_Font_Material::UI_Font_Material(std::shared_ptr<IRenderDevice> RenderDevice) :
+UI_Font_Material::UI_Font_Material(IRenderDevice* RenderDevice) :
 	MaterialProxie(RenderDevice->CreateMaterial(sizeof(MaterialProperties)))
 {
 	m_pProperties = (MaterialProperties*)_aligned_malloc(sizeof(MaterialProperties), 16);
 	*m_pProperties = MaterialProperties();
 
 	// CreateShaders
-    std::shared_ptr<IShader> g_pVertexShader;
-	std::shared_ptr<IShader> g_pPixelShader;
+    IShader* g_pVertexShader;
+	IShader* g_pPixelShader;
 
     if (RenderDevice->GetDeviceType() == RenderDeviceType::RenderDeviceType_DirectX)
     {
@@ -37,7 +37,7 @@ UI_Font_Material::UI_Font_Material(std::shared_ptr<IRenderDevice> RenderDevice) 
     g_pVertexShader->LoadInputLayoutFromReflector();
 
 	// Create samplers
-	std::shared_ptr<ISamplerState> g_LinearClampSampler = RenderDevice->CreateSamplerState();
+	ISamplerState* g_LinearClampSampler = RenderDevice->CreateSamplerState();
 	g_LinearClampSampler->SetFilter(ISamplerState::MinFilter::MinLinear, ISamplerState::MagFilter::MagLinear, ISamplerState::MipFilter::MipLinear);
 	g_LinearClampSampler->SetWrapMode(ISamplerState::WrapMode::Clamp, ISamplerState::WrapMode::Clamp, ISamplerState::WrapMode::Clamp);
 

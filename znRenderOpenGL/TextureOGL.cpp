@@ -10,7 +10,7 @@
 #include "ShaderOGL.h"
 #include "TextureOGLTranslate.h"
 
-TextureOGL::TextureOGL(std::weak_ptr<IRenderDevice> RenderDevice)
+TextureOGL::TextureOGL(IRenderDevice* RenderDevice)
 	: m_RenderDevice(RenderDevice)
 	, m_TextureWidth(0)
 	, m_TextureHeight(0)
@@ -29,7 +29,7 @@ TextureOGL::TextureOGL(std::weak_ptr<IRenderDevice> RenderDevice)
 }
 
 // 2D Texture
-TextureOGL::TextureOGL(std::weak_ptr<IRenderDevice> RenderDevice, uint16_t width, uint16_t height, uint16_t slices, const TextureFormat& format, CPUAccess cpuAccess)
+TextureOGL::TextureOGL(IRenderDevice* RenderDevice, uint16_t width, uint16_t height, uint16_t slices, const TextureFormat& format, CPUAccess cpuAccess)
 	: m_RenderDevice(RenderDevice)
 	, m_TextureWidth(width)
 	, m_TextureHeight(height)
@@ -83,7 +83,7 @@ TextureOGL::TextureOGL(std::weak_ptr<IRenderDevice> RenderDevice, uint16_t width
 }
 
 // CUBE Texture
-TextureOGL::TextureOGL(std::weak_ptr<IRenderDevice> RenderDevice, uint16_t size, uint16_t count, const TextureFormat& format, CPUAccess cpuAccess)
+TextureOGL::TextureOGL(IRenderDevice* RenderDevice, uint16_t size, uint16_t count, const TextureFormat& format, CPUAccess cpuAccess)
 	: m_RenderDevice(RenderDevice)
 {
 	m_TextureDimension = ITexture::Dimension::TextureCube;
@@ -201,12 +201,12 @@ void TextureOGL::GenerateMipMaps()
 	}
 }
 
-std::shared_ptr<ITexture> TextureOGL::GetFace(CubeFace face) const
+ITexture* TextureOGL::GetFace(CubeFace face) const
 {
 	return std::static_pointer_cast<ITexture>(std::const_pointer_cast<TextureOGL>(shared_from_this()));
 }
 
-std::shared_ptr<ITexture> TextureOGL::GetSlice(uint32 slice) const
+ITexture* TextureOGL::GetSlice(uint32 slice) const
 {
 	return std::static_pointer_cast<ITexture>(std::const_pointer_cast<TextureOGL>(shared_from_this()));
 }
@@ -323,11 +323,11 @@ void TextureOGL::FetchPixel(glm::ivec2 coord, uint8_t*& pixel, size_t size)
 	pixel = &m_Buffer[index];
 }
 
-void TextureOGL::Copy(std::shared_ptr<ITexture> other)
+void TextureOGL::Copy(ITexture* other)
 {
 	std::shared_ptr<TextureOGL> srcTexture = std::dynamic_pointer_cast<TextureOGL>(other);
 
-	if (srcTexture && srcTexture.get() != this)
+	if (srcTexture && srcTexture != this)
 	{
 		if (m_TextureDimension == srcTexture->m_TextureDimension &&
 			m_TextureWidth == srcTexture->m_TextureWidth &&

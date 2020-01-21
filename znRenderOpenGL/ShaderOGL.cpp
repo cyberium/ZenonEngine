@@ -7,7 +7,7 @@
 GLenum GLTranslateShaderType(EShaderType _type);
 // FORWARD END
 
-ShaderOGL::ShaderOGL(std::weak_ptr<IRenderDevice> RenderDevice)
+ShaderOGL::ShaderOGL(IRenderDevice* RenderDevice)
 	: m_RenderDevice(RenderDevice)
 {
 }
@@ -52,7 +52,7 @@ void ShaderOGL::Destroy()
 
 
 
-bool ShaderOGL::LoadShaderFromString(EShaderType shaderType, const std::string& fileName, const std::string& source, const ShaderMacros & shaderMacros, const std::string& entryPoint, const std::string& profile, std::shared_ptr<IShaderInputLayout> _customLayout)
+bool ShaderOGL::LoadShaderFromString(EShaderType shaderType, const std::string& fileName, const std::string& source, const ShaderMacros & shaderMacros, const std::string& entryPoint, const std::string& profile, IShaderInputLayout* _customLayout)
 {
     m_ShaderType = shaderType;
     m_ShaderFileName = fileName;
@@ -60,7 +60,7 @@ bool ShaderOGL::LoadShaderFromString(EShaderType shaderType, const std::string& 
     return false;
 }
 
-bool ShaderOGL::LoadShaderFromFile(EShaderType shaderType, const std::string& fileName, const ShaderMacros& shaderMacros, const std::string& entryPoint, const std::string& profile, std::shared_ptr<IShaderInputLayout> _customLayout)
+bool ShaderOGL::LoadShaderFromFile(EShaderType shaderType, const std::string& fileName, const ShaderMacros& shaderMacros, const std::string& entryPoint, const std::string& profile, IShaderInputLayout* _customLayout)
 {
     m_ShaderType = shaderType;
     m_ShaderFileName = fileName;
@@ -118,7 +118,7 @@ bool ShaderOGL::LoadShaderFromFile(EShaderType shaderType, const std::string& fi
 
         GLint loc = glGetUniformLocation(m_GLObj, name);
 
-        std::shared_ptr<IShaderParameter> shaderParameter = std::make_shared<ShaderParameterBase>(name, loc, shared_from_this(), parameterType);
+        IShaderParameter* shaderParameter = std::make_shared<ShaderParameterBase>(name, loc, shared_from_this(), parameterType);
         m_ShaderParameters.insert(ParameterMap::value_type(name, shaderParameter));
     }*/
 
@@ -152,7 +152,7 @@ bool ShaderOGL::LoadShaderFromFile(EShaderType shaderType, const std::string& fi
         OGLCheckError();
         _ASSERT(index != -1);
 
-        std::shared_ptr<IShaderParameter> shaderParameter = std::make_shared<ShaderParameterBase>(name, binding, shared_from_this(), IShaderParameter::Type::Buffer);
+        IShaderParameter* shaderParameter = std::make_shared<ShaderParameterBase>(name, binding, shared_from_this(), IShaderParameter::Type::Buffer);
         m_ShaderParameters.insert(ParameterMap::value_type(name, shaderParameter));
     }
 

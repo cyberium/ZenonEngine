@@ -116,11 +116,11 @@ bool CSceneNodeProxie::Accept(IVisitor * visitor)
 {
 	bool visitResult = false;
 
-	if (ISceneNode3D* ss_3d = dynamic_cast<ISceneNode3D*>(m_SceneNode.get()))
+	if (ISceneNode3D* ss_3d = dynamic_cast<ISceneNode3D*>(m_SceneNode))
 	{
 		visitResult = visitor->Visit3D(this);
 	}
-	else if (ISceneNodeUI* ss_ui = dynamic_cast<ISceneNodeUI*>(m_SceneNode.get()))
+	else if (ISceneNodeUI* ss_ui = dynamic_cast<ISceneNodeUI*>(m_SceneNode))
 	{
 		visitResult = visitor->VisitUI(this);
 	}

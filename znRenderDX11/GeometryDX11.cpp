@@ -38,7 +38,7 @@ void GeometryDX11::SetPrimitiveTopology(PrimitiveTopology _topology)
 	}
 }
 
-bool GeometryDX11::Render(const RenderEventArgs* renderArgs, const IConstantBuffer* PerObject, const std::unordered_map<EShaderType, std::shared_ptr<IShader>>& ShadersMap, const IMaterial* Material, const SGeometryPartParams& GeometryPartParams) const
+bool GeometryDX11::Render(const RenderEventArgs* renderArgs, const IConstantBuffer* PerObject, const std::unordered_map<EShaderType, IShader*>& ShadersMap, const IMaterial* Material, const SGeometryPartParams& GeometryPartParams) const
 {
 	UINT indexStartLocation = GeometryPartParams.IndexStartLocation;
 	UINT indexCnt = GeometryPartParams.IndexCnt;
@@ -63,17 +63,17 @@ bool GeometryDX11::Render(const RenderEventArgs* renderArgs, const IConstantBuff
 		}
 	}
 
-	const IShader* vertexShader = ShadersMap.at(EShaderType::VertexShader).get();
+	const IShader* vertexShader = ShadersMap.at(EShaderType::VertexShader);
 	_ASSERT(vertexShader != nullptr);
 
 	const auto& geomShaderIt = ShadersMap.find(EShaderType::GeometryShader);
 	const IShader* geomShader = nullptr;
 	if (geomShaderIt != ShadersMap.end())
 	{
-		geomShader = geomShaderIt->second.get();
+		geomShader = geomShaderIt->second;
 	}
 
-	IShaderParameter* perObjectParameter = vertexShader->GetShaderParameterByName("PerObject").get();
+	IShaderParameter* perObjectParameter = vertexShader->GetShaderParameterByName("PerObject");
 	if (perObjectParameter->IsValid() && PerObject != nullptr)
 	{
 		perObjectParameter->SetConstantBuffer(PerObject);
@@ -82,7 +82,7 @@ bool GeometryDX11::Render(const RenderEventArgs* renderArgs, const IConstantBuff
 
 	if (geomShader)
 	{
-		const std::shared_ptr<IShaderParameter>& perObjectParameterGS = geomShader->GetShaderParameterByName("PerObject");
+		IShaderParameter* perObjectParameterGS = geomShader->GetShaderParameterByName("PerObject");
 		if (perObjectParameterGS->IsValid() && PerObject != nullptr)
 		{
 			perObjectParameterGS->SetConstantBuffer(PerObject);
@@ -137,7 +137,7 @@ bool GeometryDX11::Render(const RenderEventArgs* renderArgs, const IConstantBuff
 		}
 	}
 
-	perObjectParameter = vertexShader->GetShaderParameterByName("PerObject").get();
+	perObjectParameter = vertexShader->GetShaderParameterByName("PerObject");
 	if (perObjectParameter->IsValid())
 	{
 		perObjectParameter->Unbind();
@@ -146,7 +146,7 @@ bool GeometryDX11::Render(const RenderEventArgs* renderArgs, const IConstantBuff
 	return true;
 }
 
-bool GeometryDX11::RenderInstanced(const RenderEventArgs * renderArgs, const IStructuredBuffer * InstancesBuffer, const std::unordered_map<EShaderType, std::shared_ptr<IShader>>& ShadersMap, const IMaterial* Material, SGeometryPartParams GeometryPartParams) const
+bool GeometryDX11::RenderInstanced(const RenderEventArgs * renderArgs, const IStructuredBuffer * InstancesBuffer, const std::unordered_map<EShaderType, IShader*>& ShadersMap, const IMaterial* Material, SGeometryPartParams GeometryPartParams) const
 {
 	UINT indexStartLocation = GeometryPartParams.IndexStartLocation;
 	UINT indexCnt = GeometryPartParams.IndexCnt;
@@ -171,17 +171,17 @@ bool GeometryDX11::RenderInstanced(const RenderEventArgs * renderArgs, const ISt
 		}
 	}
 
-	const IShader* vertexShader = ShadersMap.at(EShaderType::VertexShader).get();
+	const IShader* vertexShader = ShadersMap.at(EShaderType::VertexShader);
 	_ASSERT(vertexShader != nullptr);
 
 	const auto& geomShaderIt = ShadersMap.find(EShaderType::GeometryShader);
 	const IShader* geomShader = nullptr;
 	if (geomShaderIt != ShadersMap.end())
 	{
-		geomShader = geomShaderIt->second.get();
+		geomShader = geomShaderIt->second;
 	}
 
-	std::shared_ptr<IShaderParameter> instancesBufferParameter = vertexShader->GetShaderParameterByName("Instances");
+	IShaderParameter* instancesBufferParameter = vertexShader->GetShaderParameterByName("Instances");
 	if (instancesBufferParameter->IsValid() && InstancesBuffer != nullptr)
 	{
 		instancesBufferParameter->SetStructuredBuffer(InstancesBuffer);

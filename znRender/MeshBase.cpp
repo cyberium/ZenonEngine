@@ -30,22 +30,22 @@ const BoundingBox& MeshBase::GetBounds() const
 	return m_Geometry->GetBounds();
 }
 
-void MeshBase::AddVertexBuffer(const BufferBinding& binding, std::shared_ptr<IBuffer> buffer)
+void MeshBase::AddVertexBuffer(const BufferBinding& binding, IBuffer* buffer)
 {
 	m_Geometry->AddVertexBuffer(binding, buffer);
 }
 
-void MeshBase::SetVertexBuffer(std::shared_ptr<IBuffer> buffer)
+void MeshBase::SetVertexBuffer(IBuffer* buffer)
 {
 	m_Geometry->SetVertexBuffer(buffer);
 }
 
-void MeshBase::SetIndexBuffer(std::shared_ptr<IBuffer> buffer)
+void MeshBase::SetIndexBuffer(IBuffer* buffer)
 {
 	m_Geometry->SetIndexBuffer(buffer);
 }
 
-void MeshBase::SetMaterial(std::shared_ptr<const IMaterial> Material)
+void MeshBase::SetMaterial(const IMaterial* Material)
 {
 	if (m_MaterialForGeometryParts.empty())
 	{
@@ -61,7 +61,7 @@ void MeshBase::SetMaterial(std::shared_ptr<const IMaterial> Material)
 	}
 }
 
-void MeshBase::AddMaterial(std::shared_ptr<const IMaterial> Material, SGeometryPartParams GeometryPartParams)
+void MeshBase::AddMaterial(const IMaterial* Material, SGeometryPartParams GeometryPartParams)
 {
 	SRenderGeometryArgs renderGeometryArgs;
 	renderGeometryArgs.Material = Material;
@@ -69,9 +69,9 @@ void MeshBase::AddMaterial(std::shared_ptr<const IMaterial> Material, SGeometryP
 	m_MaterialForGeometryParts.push_back(renderGeometryArgs);
 }
 
-std::shared_ptr<IGeometry> MeshBase::GetGeometry() const
+IGeometry* MeshBase::GetGeometry() const
 {
-	return m_Geometry;
+	return m_Geometry.get();
 }
 
 bool MeshBase::Accept(IVisitor* visitor, SGeometryPartParams GeometryPartParams = SGeometryPartParams())
@@ -80,9 +80,9 @@ bool MeshBase::Accept(IVisitor* visitor, SGeometryPartParams GeometryPartParams 
 
 	for (const auto& materialForGeometryPart : m_MaterialForGeometryParts)
 	{
-		const std::shared_ptr<const IMaterial>& material = materialForGeometryPart.Material;
+		const IMaterial* material = materialForGeometryPart.Material;
 
-		visitResult = m_Geometry->Accept(visitor, material.get(), ((! GeometryPartParams.IsDefault()) ? GeometryPartParams : materialForGeometryPart.GeometryPartParams));
+		visitResult = m_Geometry->Accept(visitor, material, ((! GeometryPartParams.IsDefault()) ? GeometryPartParams : materialForGeometryPart.GeometryPartParams));
 	}
 
     return visitResult;

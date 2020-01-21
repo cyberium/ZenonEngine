@@ -10,7 +10,7 @@ IDepthStencilState::DepthMode RenderPassPipelined::enableDepthWrites = IDepthSte
 IDepthStencilState::DepthMode RenderPassPipelined::disableDepthWrites = IDepthStencilState::DepthMode(false, IDepthStencilState::DepthWrite::Disable);
 
 
-RenderPassPipelined::RenderPassPipelined(std::shared_ptr<IRenderDevice> RenderDevice)
+RenderPassPipelined::RenderPassPipelined(IRenderDevice* RenderDevice)
     : m_Enabled(true)
     , m_RenderEventArgs(nullptr)
     , m_Pipeline(nullptr)
@@ -57,7 +57,7 @@ void RenderPassPipelined::PreRender(RenderEventArgs& e)
 	m_RenderEventArgs = &e;
 
 	_ASSERT_EXPR(m_Pipeline != nullptr, L"RenderPassPipelined: Pipeline is null. Don't use this class without pipeline.");
-    e.PipelineState = m_Pipeline.get();
+    e.PipelineState = m_Pipeline;
 
 	m_Pipeline->Bind();
 
@@ -65,7 +65,7 @@ void RenderPassPipelined::PreRender(RenderEventArgs& e)
 
 	for (const auto& shaderIt : m_Pipeline->GetShaders())
 	{
-		const IShader* shader = shaderIt.second.get();
+		const IShader* shader = shaderIt.second;
 		_ASSERT(shader != nullptr);
 
 		if (shader->GetType() == EShaderType::VertexShader)
@@ -86,12 +86,12 @@ void RenderPassPipelined::PostRender(RenderEventArgs& e)
 //
 // IRenderPassPipelined
 //
-std::shared_ptr<IRenderPassPipelined> RenderPassPipelined::CreatePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport)
+std::shared_ptr<IRenderPassPipelined> RenderPassPipelined::CreatePipeline(IRenderTarget* RenderTarget, const Viewport * Viewport)
 {
 	return shared_from_this();
 }
 
-std::shared_ptr<IRenderPassPipelined> RenderPassPipelined::SetPipeline(std::shared_ptr<IPipelineState> Pipeline)
+std::shared_ptr<IRenderPassPipelined> RenderPassPipelined::SetPipeline(IPipelineState* Pipeline)
 {
 	_ASSERT(Pipeline);
 
@@ -105,7 +105,7 @@ std::shared_ptr<IRenderPassPipelined> RenderPassPipelined::SetPipeline(std::shar
 	return shared_from_this();
 }
 
-std::shared_ptr<IPipelineState> RenderPassPipelined::GetPipeline() const
+IPipelineState* RenderPassPipelined::GetPipeline() const
 {
 	_ASSERT_EXPR(m_Pipeline != nullptr, L"RenderPassPipelined: Pipeline is null. Don't use this class without pipeline.");
 	return m_Pipeline;
@@ -188,9 +188,9 @@ RenderEventArgs* RenderPassPipelined::GetRenderEventArgs() const
 	return m_RenderEventArgs;
 }
 
-std::shared_ptr<IRenderDevice> RenderPassPipelined::GetRenderDevice() const
+IRenderDevice* RenderPassPipelined::GetRenderDevice() const
 {
-    return m_RenderDevice.lock();
+    return m_RenderDevice;
 }
 
 const IBaseManager* RenderPassPipelined::GetBaseManager() const
@@ -211,10 +211,10 @@ void RenderPassPipelined::SetPerFrameData(const PerFrame& PerFrame)
 
 void RenderPassPipelined::BindPerFrameDataToVertexShader(const IShader * VertexShader) const
 {
-	const std::shared_ptr<IShaderParameter>& perFrameParam = VertexShader->GetShaderParameterByName("PerFrame");
+	IShaderParameter* perFrameParam = VertexShader->GetShaderParameterByName("PerFrame");
 	if (perFrameParam->IsValid() && m_PerFrameConstantBuffer != nullptr)
 	{
-		perFrameParam->SetConstantBuffer(m_PerFrameConstantBuffer.get());
+		perFrameParam->SetConstantBuffer(m_PerFrameConstantBuffer);
 		perFrameParam->Bind();
 	}
 }

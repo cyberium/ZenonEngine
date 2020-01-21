@@ -67,7 +67,7 @@ RenderTargetOGL::~RenderTargetOGL()
 	m_GLObj = 0;
 }
 
-void RenderTargetOGL::AttachTexture(AttachmentPoint attachment, std::shared_ptr<ITexture> texture)
+void RenderTargetOGL::AttachTexture(AttachmentPoint attachment, ITexture* texture)
 {
 	std::shared_ptr<TextureOGL> textureOGL = std::dynamic_pointer_cast<TextureOGL>(texture);
 	m_Textures[(uint8_t)attachment] = textureOGL;
@@ -75,7 +75,7 @@ void RenderTargetOGL::AttachTexture(AttachmentPoint attachment, std::shared_ptr<
 	UpdateBufferAttachment(attachment, texture);
 }
 
-std::shared_ptr<ITexture> RenderTargetOGL::GetTexture(AttachmentPoint attachment)
+ITexture* RenderTargetOGL::GetTexture(AttachmentPoint attachment)
 {
 	return m_Textures[(uint8_t)attachment];
 }
@@ -166,7 +166,7 @@ void RenderTargetOGL::GenerateMipMaps()
 	}
 }
 
-void RenderTargetOGL::AttachStructuredBuffer(uint8_t slot, std::shared_ptr<IStructuredBuffer> rwBuffer)
+void RenderTargetOGL::AttachStructuredBuffer(uint8_t slot, IStructuredBuffer* rwBuffer)
 {
 	std::shared_ptr<StructuredBufferOGL> rwbufferOGL = std::dynamic_pointer_cast<StructuredBufferOGL>(rwBuffer);
 	m_StructuredBuffers[slot] = rwbufferOGL;
@@ -175,14 +175,14 @@ void RenderTargetOGL::AttachStructuredBuffer(uint8_t slot, std::shared_ptr<IStru
 	m_bCheckValidity = true;
 }
 
-std::shared_ptr<IStructuredBuffer> RenderTargetOGL::GetStructuredBuffer(uint8_t slot)
+IStructuredBuffer* RenderTargetOGL::GetStructuredBuffer(uint8_t slot)
 {
 	if (slot < m_StructuredBuffers.size())
 	{
 		return m_StructuredBuffers[slot];
 	}
 
-	return std::shared_ptr<IStructuredBuffer>();
+	return IStructuredBuffer*();
 }
 
 
@@ -195,7 +195,7 @@ void RenderTargetOGL::Resize(uint16_t width, uint16_t height)
 
 		for (size_t i = 0; i < m_Textures.size(); i++)
 		{
-			std::shared_ptr<ITexture> texture = m_Textures[i];
+			ITexture* texture = m_Textures[i];
 			if (texture)
 			{
 				texture->Resize(m_Width, m_Height);
@@ -293,7 +293,7 @@ bool RenderTargetOGL::IsValid() const
 	return false;
 }
 
-void RenderTargetOGL::UpdateBufferAttachment(AttachmentPoint attachment, std::shared_ptr<ITexture> texture)
+void RenderTargetOGL::UpdateBufferAttachment(AttachmentPoint attachment, ITexture* texture)
 {
 	glBindFramebuffer(GL_FRAMEBUFFER, m_GLObj);
 	{

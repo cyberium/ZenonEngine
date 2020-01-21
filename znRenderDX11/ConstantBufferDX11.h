@@ -9,15 +9,15 @@ public:
 	virtual bool Bind(uint32 id, const IShader* shader, IShaderParameter::Type parameterType) const override;
 	virtual void UnBind(uint32 id, const IShader* shader, IShaderParameter::Type parameterType) const override;
 
-	virtual BufferType GetType() const;
-	virtual uint32 GetElementCount() const;
-	virtual uint32 GetElementStride() const;
-	virtual uint32 GetElementOffset() const;
+	virtual BufferType GetType() const override;
+	virtual uint32 GetElementCount() const override;
+	virtual uint32 GetElementStride() const override;
+	virtual uint32 GetElementOffset() const override;
 
-	virtual void Copy(std::shared_ptr<IConstantBuffer> other) override;
+	virtual void Copy(IConstantBuffer* other) const override;
 
 protected:
-	virtual void Copy(std::shared_ptr<IBuffer> other) override;
+	virtual void Copy(IBuffer* other) const override;
 	void Set(const void* data, size_t size) override;
 
 private:

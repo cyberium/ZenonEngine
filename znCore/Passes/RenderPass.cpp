@@ -3,7 +3,7 @@
 // General
 #include "RenderPass.h"
 
-RenderPass::RenderPass(std::shared_ptr<IRenderDevice> RenderDevice)
+RenderPass::RenderPass(IRenderDevice* RenderDevice)
 	: m_Enabled(true)
     , m_RenderEventArgs(nullptr)
     , m_RenderDevice(RenderDevice)
@@ -96,9 +96,9 @@ const RenderEventArgs* RenderPass::GetRenderEventArgs() const
     return m_RenderEventArgs;
 }
 
-std::shared_ptr<IRenderDevice> RenderPass::GetRenderDevice() const
+IRenderDevice* RenderPass::GetRenderDevice() const
 {
-    return m_RenderDevice.lock();
+    return m_RenderDevice;
 }
 
 const IBaseManager* RenderPass::GetBaseManager() const

@@ -3,9 +3,9 @@
 class TextureOGL : public ITexture, public std::enable_shared_from_this<TextureOGL>
 {
 public:
-	TextureOGL(std::weak_ptr<IRenderDevice> RenderDevice);
-	TextureOGL(std::weak_ptr<IRenderDevice> RenderDevice, uint16_t width, uint16_t height, uint16_t slices, const TextureFormat& format, CPUAccess cpuAccess);
-	TextureOGL(std::weak_ptr<IRenderDevice> RenderDevice, uint16_t size, uint16_t count,                    const TextureFormat& format, CPUAccess cpuAccess);
+	TextureOGL(IRenderDevice* RenderDevice);
+	TextureOGL(IRenderDevice* RenderDevice, uint16_t width, uint16_t height, uint16_t slices, const TextureFormat& format, CPUAccess cpuAccess);
+	TextureOGL(IRenderDevice* RenderDevice, uint16_t size, uint16_t count,                    const TextureFormat& format, CPUAccess cpuAccess);
 	virtual ~TextureOGL();
 
 	virtual bool LoadTextureCustom(uint16_t width, uint16_t height, void* pixels) override final;
@@ -14,8 +14,8 @@ public:
 
 	virtual void GenerateMipMaps() override final;
 
-	virtual std::shared_ptr<ITexture> GetFace(CubeFace face) const override final;
-	virtual std::shared_ptr<ITexture> GetSlice(uint32 slice) const override final;
+	virtual ITexture* GetFace(CubeFace face) const override final;
+	virtual ITexture* GetSlice(uint32 slice) const override final;
 
 	virtual uint16_t GetWidth() const override final;
 	virtual uint16_t GetHeight() const override final;
@@ -25,7 +25,7 @@ public:
 	virtual bool IsTransparent() const override final;
 
 	virtual void Resize(uint16_t width, uint16_t height = 0, uint16_t depth = 0) override final;
-	virtual void Copy(std::shared_ptr<ITexture> other) override final;
+	virtual void Copy(ITexture* other) override final;
 	virtual void Clear(ClearFlags clearFlags = ClearFlags::All, cvec4 color = vec4(0), float depth = 1.0f, uint8_t stencil = 0) override final;
 
 	virtual void Bind(uint32_t ID, const IShader* shader, IShaderParameter::Type parameterType) const override final;
@@ -50,7 +50,7 @@ private:
 	GLuint m_GLObj;
 
 private:
-	std::weak_ptr<IRenderDevice> m_RenderDevice;
+	IRenderDevice* m_RenderDevice;
 
 	// 2D or Cube
 	Dimension m_TextureDimension;

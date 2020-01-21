@@ -6,7 +6,7 @@ class ZN_API CUIBeizerLineNode : public CUIBaseNode
 {
 	typedef CUIBaseNode base;
 public:
-	CUIBeizerLineNode(std::shared_ptr<IRenderDevice> RenderDevice);
+	CUIBeizerLineNode(IRenderDevice* RenderDevice);
 	virtual	~CUIBeizerLineNode();
 
 	// CUIBeizerLineNode
@@ -24,8 +24,8 @@ protected:
     void UpdateBuffer();
 
 private:
-	std::shared_ptr<IMesh>              m_Mesh;
-    std::shared_ptr<IBuffer>            m_PointsBuffer;
+	IMesh*              m_Mesh;
+    IBuffer*            m_PointsBuffer;
 	std::shared_ptr<UI_Line_Material>   m_Material;
 
     vec2                                m_StartPoint;

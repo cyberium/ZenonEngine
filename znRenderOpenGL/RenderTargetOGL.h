@@ -10,16 +10,16 @@ public:
 	RenderTargetOGL(RenderDeviceOGL* _device);
 	virtual ~RenderTargetOGL();
 
-	virtual void AttachTexture(AttachmentPoint attachment, std::shared_ptr<ITexture> texture);
-	virtual std::shared_ptr<ITexture> GetTexture(AttachmentPoint attachment);
+	virtual void AttachTexture(AttachmentPoint attachment, ITexture* texture);
+	virtual ITexture* GetTexture(AttachmentPoint attachment);
 
 	virtual void Clear(AttachmentPoint attachemnt, ClearFlags clearFlags = ClearFlags::All, cvec4 color = vec4(0.6f), float depth = 1.0f, uint8_t stencil = 0);
 	virtual void Clear(ClearFlags clearFlags = ClearFlags::All, cvec4 color = vec4(0), float depth = 1.0f, uint8_t stencil = 0);
 	
 	virtual void GenerateMipMaps();
 
-	virtual void AttachStructuredBuffer(uint8_t slot, std::shared_ptr<IStructuredBuffer> rwBuffer);
-	virtual std::shared_ptr<IStructuredBuffer> GetStructuredBuffer(uint8_t slot);
+	virtual void AttachStructuredBuffer(uint8_t slot, IStructuredBuffer* rwBuffer);
+	virtual IStructuredBuffer* GetStructuredBuffer(uint8_t slot);
 
 	virtual void Resize(uint16_t width, uint16_t height);
 
@@ -28,7 +28,7 @@ public:
 	virtual bool IsValid() const;
 
 private:
-	void UpdateBufferAttachment(AttachmentPoint attachment, std::shared_ptr<ITexture> texture);
+	void UpdateBufferAttachment(AttachmentPoint attachment, ITexture* texture);
 
 private:
 	GLuint m_GLObj;

@@ -9,19 +9,19 @@ public:
 	virtual bool Bind(uint32 id, const IShader* shader, IShaderParameter::Type parameterType) const override;
 	virtual void UnBind(uint32 id, const IShader* shader, IShaderParameter::Type parameterType) const override;
 
-	virtual BufferType GetType() const;
-	virtual uint32 GetElementCount() const;
-	virtual uint32 GetElementStride() const;
-    virtual uint32 GetElementOffset() const;
+	virtual BufferType GetType() const override;
+	virtual uint32 GetElementCount() const override;
+	virtual uint32 GetElementStride() const override;
+    virtual uint32 GetElementOffset() const override;
 
-	virtual void Copy(std::shared_ptr<IStructuredBuffer> other);
-	virtual void Clear();
+	virtual void Copy(IStructuredBuffer* other) override;
+	virtual void Clear() override;
 
 	ID3D11UnorderedAccessView* GetUnorderedAccessView() const;
 
 protected:
-	virtual void Copy(std::shared_ptr<IBuffer> other);
-	virtual void SetData(void* data, size_t elementSize, size_t offset, size_t numElements);
+	virtual void Copy(IBuffer* other) const override;
+	virtual void SetData(void* data, size_t elementSize, size_t offset, size_t numElements) override;
 
 	void Commit() const;
 

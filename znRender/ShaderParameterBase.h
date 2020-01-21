@@ -6,7 +6,7 @@ class ZN_API ShaderParameterBase
 {
 public:
 	ShaderParameterBase();
-	ShaderParameterBase(const std::string& name, UINT slotID, std::shared_ptr<IShader> shader, Type parameterType);
+	ShaderParameterBase(const std::string& name, UINT slotID, IShader* shader, Type parameterType);
     virtual ~ShaderParameterBase();
 
 	// IShaderParameter

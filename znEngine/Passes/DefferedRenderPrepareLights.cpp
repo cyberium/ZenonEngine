@@ -3,7 +3,7 @@
 // General
 #include "DefferedRenderPrepareLights.h"
 
-CDefferedRenderPrepareLights::CDefferedRenderPrepareLights(std::shared_ptr<IRenderDevice> RenderDevice, std::shared_ptr<BuildRenderListPass> BuildRenderListPass)
+CDefferedRenderPrepareLights::CDefferedRenderPrepareLights(IRenderDevice* RenderDevice, std::shared_ptr<BuildRenderListPass> BuildRenderListPass)
 	: RenderPass(RenderDevice)
 	, m_BuildRenderListPass(BuildRenderListPass)
 {
@@ -95,7 +95,7 @@ void CDefferedRenderPrepareLights::PostRender(RenderEventArgs& e)
 //
 // IRenderPassPipelined
 //
-std::shared_ptr<IRenderPassPipelined> CDefferedRenderPrepareLights::CreatePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport)
+std::shared_ptr<IRenderPassPipelined> CDefferedRenderPrepareLights::CreatePipeline(IRenderTarget* RenderTarget, const Viewport * Viewport)
 {
 	m_ShadowRenderTarget = GetRenderDevice()->CreateRenderTarget();
 	//m_ShadowRenderTarget->AttachTexture(IRenderTarget::AttachmentPoint::Color0, CreateShadowTexture0());
@@ -104,16 +104,16 @@ std::shared_ptr<IRenderPassPipelined> CDefferedRenderPrepareLights::CreatePipeli
 	m_ShadowViewport.SetWidth(cShadowTextureSize);
 	m_ShadowViewport.SetHeight(cShadowTextureSize);
 
-	std::shared_ptr<IShader> vertexShader = GetRenderDevice()->CreateShader(EShaderType::VertexShader, "IDB_SHADER_3D_SHADOW", IShader::ShaderMacros(), "VS_Shadow", "latest");
+	IShader* vertexShader = GetRenderDevice()->CreateShader(EShaderType::VertexShader, "IDB_SHADER_3D_SHADOW", IShader::ShaderMacros(), "VS_Shadow", "latest");
 	vertexShader->LoadInputLayoutFromReflector();
 
-	//std::shared_ptr<IShader> pixelShader = GetRenderDevice()->CreateShader(EShaderType::PixelShader, "IDB_SHADER_3D_SHADOW", IShader::ShaderMacros(), "PS_Shadow", "latest");
+	//IShader* pixelShader = GetRenderDevice()->CreateShader(EShaderType::PixelShader, "IDB_SHADER_3D_SHADOW", IShader::ShaderMacros(), "PS_Shadow", "latest");
 
 	IBlendState::BlendMode disableBlending = IBlendState::BlendMode(false);
 	IDepthStencilState::DepthMode enableDepthWrites = IDepthStencilState::DepthMode(true, IDepthStencilState::DepthWrite::Enable);
 
 	// PIPELINES
-	std::shared_ptr<IPipelineState> shadowPipeline = GetRenderDevice()->CreatePipelineState();
+	IPipelineState* shadowPipeline = GetRenderDevice()->CreatePipelineState();
 	shadowPipeline->GetBlendState()->SetBlendMode(disableBlending);
 	shadowPipeline->GetDepthStencilState()->SetDepthMode(enableDepthWrites);
 	shadowPipeline->GetRasterizerState()->SetCullMode(IRasterizerState::CullMode::None);
@@ -137,7 +137,7 @@ void CDefferedRenderPrepareLights::UpdateViewport(const Viewport * _viewport)
 //
 // Protected
 //
-std::shared_ptr<ITexture> CDefferedRenderPrepareLights::CreateShadowTexture0() const
+ITexture* CDefferedRenderPrepareLights::CreateShadowTexture0() const
 {
 	ITexture::TextureFormat colorTextureFormat
 	(
@@ -149,7 +149,7 @@ std::shared_ptr<ITexture> CDefferedRenderPrepareLights::CreateShadowTexture0() c
 	return GetRenderDevice()->CreateTexture2D(cShadowTextureSize, cShadowTextureSize, 1, colorTextureFormat);
 }
 
-std::shared_ptr<ITexture> CDefferedRenderPrepareLights::CreateShadowTextureDepthStencil() const
+ITexture* CDefferedRenderPrepareLights::CreateShadowTextureDepthStencil() const
 {
 	// Depth/stencil buffer
 	ITexture::TextureFormat depthStencilTextureFormat(
@@ -172,7 +172,7 @@ void CDefferedRenderPrepareLights::BindPerFrameParamsForCurrentIteration(const I
 	perFrame.Projection = LightComponent->GetProjectionMatrix();
 	SetPerFrameData(perFrame);
 
-	BindPerFrameDataToVertexShader(m_ShadowPipeline->GetShader(EShaderType::VertexShader).get());
+	BindPerFrameDataToVertexShader(m_ShadowPipeline->GetShader(EShaderType::VertexShader));
 }
 
 void CDefferedRenderPrepareLights::BindPerObjectParamsForCurrentIteration(const ISceneNode * SceneNode)
@@ -180,10 +180,10 @@ void CDefferedRenderPrepareLights::BindPerObjectParamsForCurrentIteration(const 
 	m_PerObjectData->Model = SceneNode->GetWorldTransfom();
 	m_PerObjectConstantBuffer->Set(*m_PerObjectData);
 
-	const std::shared_ptr<IShaderParameter>& perObjectParam = m_ShadowPipeline->GetShader(EShaderType::VertexShader)->GetShaderParameterByName("PerObject");
+	IShaderParameter* perObjectParam = m_ShadowPipeline->GetShader(EShaderType::VertexShader)->GetShaderParameterByName("PerObject");
 	if (perObjectParam->IsValid() && m_PerObjectConstantBuffer != nullptr)
 	{
-		perObjectParam->SetConstantBuffer(m_PerObjectConstantBuffer.get());
+		perObjectParam->SetConstantBuffer(m_PerObjectConstantBuffer);
 		perObjectParam->Bind();
 	}
 	else
@@ -204,10 +204,10 @@ void CDefferedRenderPrepareLights::SetPerFrameData(const PerFrame& PerFrame)
 
 void CDefferedRenderPrepareLights::BindPerFrameDataToVertexShader(const IShader * VertexShader) const
 {
-	const std::shared_ptr<IShaderParameter>& perFrameParam = VertexShader->GetShaderParameterByName("PerFrame");
+	IShaderParameter* perFrameParam = VertexShader->GetShaderParameterByName("PerFrame");
 	if (perFrameParam->IsValid() && m_PerFrameConstantBuffer != nullptr)
 	{
-		perFrameParam->SetConstantBuffer(m_PerFrameConstantBuffer.get());
+		perFrameParam->SetConstantBuffer(m_PerFrameConstantBuffer);
 		perFrameParam->Bind();
 	}
 }

@@ -20,16 +20,16 @@ RenderTargetDX11::~RenderTargetDX11()
 
 }
 
-void RenderTargetDX11::AttachTexture(AttachmentPoint attachment, std::shared_ptr<ITexture> texture)
+void RenderTargetDX11::AttachTexture(AttachmentPoint attachment, ITexture* texture)
 {
-	std::shared_ptr<TextureDX11> textureDX11 = std::dynamic_pointer_cast<TextureDX11>(texture);
+	TextureDX11* textureDX11 = dynamic_cast<TextureDX11*>(texture);
 	m_Textures[(uint8_t)attachment] = textureDX11;
 
 	// Next time the render target is "bound", check that it is valid.
 	m_bCheckValidity = true;
 }
 
-std::shared_ptr<ITexture> RenderTargetDX11::GetTexture(AttachmentPoint attachment)
+ITexture* RenderTargetDX11::GetTexture(AttachmentPoint attachment)
 {
 	return m_Textures[(uint8_t)attachment];
 }
@@ -37,7 +37,7 @@ std::shared_ptr<ITexture> RenderTargetDX11::GetTexture(AttachmentPoint attachmen
 
 void RenderTargetDX11::Clear(AttachmentPoint attachment, ClearFlags clearFlags, cvec4 color, float depth, uint8_t stencil)
 {
-	std::shared_ptr<TextureDX11> texture = m_Textures[(uint8_t)attachment];
+	TextureDX11* texture = m_Textures[(uint8_t)attachment];
 	if (texture)
 	{
 		texture->Clear(clearFlags, color, depth, stencil);
@@ -63,22 +63,22 @@ void RenderTargetDX11::GenerateMipMaps()
 	}
 }
 
-void RenderTargetDX11::AttachStructuredBuffer(uint8_t slot, std::shared_ptr<IStructuredBuffer> rwBuffer)
+void RenderTargetDX11::AttachStructuredBuffer(uint8_t slot, IStructuredBuffer* rwBuffer)
 {
-	std::shared_ptr<StructuredBufferDX11> rwbufferDX11 = std::dynamic_pointer_cast<StructuredBufferDX11>(rwBuffer);
+	StructuredBufferDX11* rwbufferDX11 = dynamic_cast<StructuredBufferDX11*>(rwBuffer);
 	m_StructuredBuffers[slot] = rwbufferDX11;
 
 	// Next time the render target is "bound", check that it is valid.
 	m_bCheckValidity = true;
 }
 
-std::shared_ptr<IStructuredBuffer> RenderTargetDX11::GetStructuredBuffer(uint8_t slot)
+IStructuredBuffer* RenderTargetDX11::GetStructuredBuffer(uint8_t slot)
 {
 	if (slot < m_StructuredBuffers.size())
 	{
 		return m_StructuredBuffers[slot];
 	}
-	return std::shared_ptr<IStructuredBuffer>();
+	return nullptr;
 }
 
 
@@ -114,22 +114,22 @@ void RenderTargetDX11::Bind()
 	ID3D11RenderTargetView* renderTargetViews[8];
 	UINT numRTVs = 0;
 	for (uint8_t i = 0; i < 8; i++)
-		if (std::shared_ptr<TextureDX11> texture = m_Textures[i])
+		if (TextureDX11* texture = m_Textures[i])
 			renderTargetViews[numRTVs++] = texture->GetRenderTargetView();
 
 	ID3D11UnorderedAccessView* uavViews[8];
 	UINT uavStartSlot = numRTVs;
 	UINT numUAVs = 0;
 	for (uint8_t i = 0; i < 8; i++)
-		if (std::shared_ptr<StructuredBufferDX11> rwbuffer = m_StructuredBuffers[i])
+		if (StructuredBufferDX11* rwbuffer = m_StructuredBuffers[i])
 			uavViews[numUAVs++] = rwbuffer->GetUnorderedAccessView();
 
 	ID3D11DepthStencilView* depthStencilView = nullptr;
-	if (std::shared_ptr<TextureDX11> depthTexture = m_Textures[(uint8_t)AttachmentPoint::Depth])
+	if (TextureDX11* depthTexture = m_Textures[(uint8_t)AttachmentPoint::Depth])
 	{
 		depthStencilView = depthTexture->GetDepthStencilView();
 	}
-	else if (std::shared_ptr<TextureDX11> depthStencilTexture = m_Textures[(uint8_t)AttachmentPoint::DepthStencil])
+	else if (TextureDX11* depthStencilTexture = m_Textures[(uint8_t)AttachmentPoint::DepthStencil])
 	{
 		depthStencilView = depthStencilTexture->GetDepthStencilView();
 	}

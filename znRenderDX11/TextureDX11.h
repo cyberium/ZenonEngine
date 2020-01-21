@@ -14,8 +14,8 @@ public:
 
 	virtual void GenerateMipMaps();
 
-	virtual std::shared_ptr<ITexture> GetFace(CubeFace face) const;
-	virtual std::shared_ptr<ITexture> GetSlice(uint32 slice) const;
+	virtual ITexture* GetFace(CubeFace face) const;
+	virtual ITexture* GetSlice(uint32 slice) const;
 	virtual uint16_t GetWidth() const;
 	virtual uint16_t GetHeight() const;
 	glm::ivec2 GetSize() const;
@@ -24,7 +24,7 @@ public:
 	virtual bool IsTransparent() const;
 
 	virtual void Resize(uint16_t width, uint16_t height = 0, uint16_t depth = 0);
-	virtual void Copy(std::shared_ptr<ITexture> other);
+	virtual void Copy(ITexture* other);
 	virtual void Clear(ClearFlags clearFlags = ClearFlags::All, cvec4 color = vec4(0), float depth = 1.0f, uint8_t stencil = 0);
 
 	virtual void Bind(uint32_t ID, const IShader* shader, IShaderParameter::Type parameterType) const override;

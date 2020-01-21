@@ -6,7 +6,7 @@
 // Additional
 #include "XML/XMLManager.h"
 
-CGameState::CGameState(IBaseManager * BaseManager, std::shared_ptr<IRenderWindow> RenderWindow, IWindowEvents* WindowEvents)
+CGameState::CGameState(IBaseManager * BaseManager, IRenderWindow* RenderWindow, IWindowEvents* WindowEvents)
 	: m_BaseManager(BaseManager)
 	, m_RenderWindow(RenderWindow)
 	, m_WindowEvents(WindowEvents)
@@ -60,7 +60,7 @@ void CGameState::Destroy()
 
 bool CGameState::Set()
 {
-	std::shared_ptr<IRenderWindowEvents> renderWindow = std::dynamic_pointer_cast<IRenderWindowEvents>(m_RenderWindow);
+	IRenderWindowEvents* renderWindow = dynamic_cast<IRenderWindowEvents*>(m_RenderWindow);
     _ASSERT(renderWindow);
 
 	// RenderWindowEvents
@@ -89,7 +89,7 @@ bool CGameState::Set()
 
 void CGameState::Unset()
 {
-    std::shared_ptr<IRenderWindowEvents> renderWindow = std::dynamic_pointer_cast<IRenderWindowEvents>(m_RenderWindow);
+	IRenderWindowEvents* renderWindow = dynamic_cast<IRenderWindowEvents*>(m_RenderWindow);
     _ASSERT(renderWindow);
 
     renderWindow->Update().disconnect(OnUpdateConnection);
@@ -357,12 +357,12 @@ void CGameState::OnMouseBlur(EventArgs & e)
 // Protected
 //
 
-std::shared_ptr<IRenderDevice> CGameState::GetRenderDevice() const
+IRenderDevice* CGameState::GetRenderDevice() const
 {
 	return m_RenderDevice;
 }
 
-std::shared_ptr<IRenderWindow> CGameState::GetRenderWindow() const
+IRenderWindow* CGameState::GetRenderWindow() const
 {
 	return m_RenderWindow;
 }

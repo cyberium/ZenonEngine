@@ -11,7 +11,7 @@
 #include FT_FREETYPE_H
 #pragma comment(lib, "freetype.lib")
 
-FontsManager::FontsManager(std::shared_ptr<IRenderDevice> RenderDevice, IBaseManager* BaseManager)
+FontsManager::FontsManager(IRenderDevice* RenderDevice, IBaseManager* BaseManager)
 	: m_RenderDevice(RenderDevice)
 	, m_BaseManager(BaseManager)
 {
@@ -200,12 +200,12 @@ std::shared_ptr<CFontMesh> FontsManager::CreateAction(const std::string& _nameAn
 	}
 
 
-	std::shared_ptr<IMesh> __geom = m_RenderDevice->CreateMesh();
+	IMesh* __geom = m_RenderDevice->CreateMesh();
 	__geom->AddVertexBuffer(BufferBinding("POSITION", 0), m_RenderDevice->CreateVoidVertexBuffer(vertices.data(), vertices.size(), 0,            sizeof(VertexPTN)));
     __geom->AddVertexBuffer(BufferBinding("TEXCOORD", 0), m_RenderDevice->CreateVoidVertexBuffer(vertices.data(), vertices.size(), sizeof(vec3), sizeof(VertexPTN)));
 
 	// Font texture
-	std::shared_ptr<ITexture> texture = m_RenderDevice->CreateTexture();
+	ITexture* texture = m_RenderDevice->CreateTexture();
 	texture->LoadTextureCustom(imageWidth, imageHeight, image);
 
 	delete[] image;

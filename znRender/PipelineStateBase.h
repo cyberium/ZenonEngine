@@ -9,16 +9,16 @@ public:
 	virtual ~PipelineStateBase();
 
 	// IPipelineState
-	void SetShader(EShaderType type, std::shared_ptr<IShader> pShader) override;
-	std::shared_ptr<IShader> GetShader(EShaderType type) const override;
+	void SetShader(EShaderType type, IShader* pShader) override;
+	IShader* GetShader(EShaderType type) const override;
 	const ShaderMap& GetShaders() const override;
 
-	void SetTexture(uint8 ID, std::shared_ptr<ITexture> texture) override;
-	std::shared_ptr<ITexture> GetTexture(uint8 ID) const override;
+	void SetTexture(uint8 ID, ITexture* texture) override;
+	ITexture* GetTexture(uint8 ID) const override;
 	const TextureMap& GetTextures() const override;
 
-	void SetSampler(uint8 ID, std::shared_ptr<ISamplerState> samplerState) override;
-	std::shared_ptr<ISamplerState> GetSampler(uint8 ID) const override;
+	void SetSampler(uint8 ID, ISamplerState* samplerState) override;
+	ISamplerState* GetSampler(uint8 ID) const override;
 	const SamplersMap& GetSamplers() const override;
 
 	void SetBlendState(const std::shared_ptr<IBlendState> blendState) override;
@@ -30,8 +30,8 @@ public:
 	void SetDepthStencilState(const std::shared_ptr<IDepthStencilState> depthStencilState) override;
 	std::shared_ptr<IDepthStencilState> GetDepthStencilState() const override;
 
-	void SetRenderTarget(std::shared_ptr<IRenderTarget> renderTarget) override;
-	std::shared_ptr<IRenderTarget> GetRenderTarget() const override;
+	void SetRenderTarget(IRenderTarget* renderTarget) override;
+	IRenderTarget* GetRenderTarget() const override;
 
 protected:
 	ShaderMap                                       m_Shaders;
@@ -41,5 +41,5 @@ protected:
 	std::shared_ptr<IBlendState>                    m_BlendState;
 	std::shared_ptr<IRasterizerState>				m_RasterizerState;
 	std::shared_ptr<IDepthStencilState>				m_DepthStencilState;
-	std::shared_ptr<IRenderTarget>                  m_RenderTarget;
+	IRenderTarget*                  m_RenderTarget;
 };

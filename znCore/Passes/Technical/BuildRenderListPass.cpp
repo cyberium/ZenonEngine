@@ -31,7 +31,7 @@ for (int i = 0; i < m_PerObjectConstantBuffer.size(); i++)
 class CRenderDeviceLocker
 {
 public:
-	CRenderDeviceLocker(const std::shared_ptr<IRenderDevice>& RenderDevice)
+	CRenderDeviceLocker(const IRenderDevice*& RenderDevice)
 		: m_RenderDevice(RenderDevice)
 	{
 		m_RenderDevice->Lock();
@@ -42,7 +42,7 @@ public:
 	}
 
 private:
-	const std::shared_ptr<IRenderDevice>& m_RenderDevice;
+	const IRenderDevice*& m_RenderDevice;
 };
 
 
@@ -72,7 +72,7 @@ private:
 		{
 			CRenderDeviceLocker locker(GetRenderDevice());
 			it.Material->Bind(shadersMap);
-			it.Geometry->Render(GetRenderEventArgs(), GetPerObjectConstantBuffer(threadNum).get(), shadersMap, it.Material, it.GeometryPartParams);
+			it.Geometry->Render(GetRenderEventArgs(), GetPerObjectConstantBuffer(threadNum), shadersMap, it.Material, it.GeometryPartParams);
 			it.Material->Unbind(shadersMap);
 		}
 	}
@@ -93,7 +93,7 @@ private:
 
 	if (m_RenderList.size() > 0)
 	{
-		std::shared_ptr<IStructuredBuffer> buffer = GetRenderDevice()->CreateStructuredBuffer(perObject);
+		IStructuredBuffer* buffer = GetRenderDevice()->CreateStructuredBuffer(perObject);
 
 		const auto& geom = m_RenderList[0];
 
@@ -104,7 +104,7 @@ private:
 			shadersMap = GetRenderEventArgs()->PipelineState->GetShaders();
 
 		geom.Material->Bind(shadersMap);
-		geom.Geometry->RenderInstanced(GetRenderEventArgs(), buffer.get(), shadersMap, geom.Material, geom.GeometryPartParams);
+		geom.Geometry->RenderInstanced(GetRenderEventArgs(), buffer, shadersMap, geom.Material, geom.GeometryPartParams);
 		geom.Material->Unbind(shadersMap);
 
 		GetRenderDevice()->DestroyStructuredBuffer(buffer);
@@ -116,7 +116,7 @@ private:
 
 
 
-BuildRenderListPass::BuildRenderListPass(std::shared_ptr<IRenderDevice> RenderDevice, std::shared_ptr<IScene> Scene)
+BuildRenderListPass::BuildRenderListPass(IRenderDevice* RenderDevice, std::shared_ptr<IScene> Scene)
 	: ScenePass(RenderDevice, Scene)
 	, m_CurrentSceneNode(nullptr)
 {

@@ -19,20 +19,20 @@ ZN_INTERFACE ZN_API __declspec(novtable) IMesh : public std::enable_shared_from_
 	virtual void                                    SetBounds(const BoundingBox& Bounds) = 0;
 	virtual const BoundingBox&                      GetBounds() const = 0;
 
-	virtual void                                    AddVertexBuffer(const BufferBinding& binding, std::shared_ptr<IBuffer> buffer) = 0;
-	virtual void                                    SetVertexBuffer(std::shared_ptr<IBuffer> buffer) = 0;
-	virtual void                                    SetIndexBuffer(std::shared_ptr<IBuffer> buffer) = 0;
+	virtual void                                    AddVertexBuffer(const BufferBinding& binding, IBuffer* buffer) = 0;
+	virtual void                                    SetVertexBuffer(IBuffer* buffer) = 0;
+	virtual void                                    SetIndexBuffer(IBuffer* buffer) = 0;
 
 	virtual void                                    SetPrimitiveTopology(PrimitiveTopology _topology) = 0;
 
-	virtual void                                    SetMaterial(std::shared_ptr<const IMaterial> Material) = 0;
-	virtual void                                    AddMaterial(std::shared_ptr<const IMaterial> Material, SGeometryPartParams GeometryPartParams = SGeometryPartParams()) = 0;
+	virtual void                                    SetMaterial(const IMaterial* Material) = 0;
+	virtual void                                    AddMaterial(const IMaterial* Material, SGeometryPartParams GeometryPartParams = SGeometryPartParams()) = 0;
 
-	virtual std::shared_ptr<IGeometry>              GetGeometry() const = 0;
+	virtual IGeometry*                              GetGeometry() const = 0;
 
 	virtual bool                                    Render(const RenderEventArgs* renderEventArgs, const IConstantBuffer* perObject, SGeometryPartParams GeometryPartParams = SGeometryPartParams()) = 0;
 
 	virtual bool                                    Accept(IVisitor* visitor, SGeometryPartParams GeometryPartParams = SGeometryPartParams()) = 0;
 };
 
-typedef std::vector<std::shared_ptr<IMesh>> MeshList;
+typedef std::vector<IMesh*> MeshList;

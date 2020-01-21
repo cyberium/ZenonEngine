@@ -3,7 +3,7 @@
 // General
 #include "Font.h"
 
-CFontMesh::CFontMesh(std::shared_ptr<ITexture> _texture, std::shared_ptr<IMesh> _fontGeometry, std::vector<uint32> _widthArray, uint32 _height) 
+CFontMesh::CFontMesh(ITexture* _texture, IMesh* _fontGeometry, std::vector<uint32> _widthArray, uint32 _height) 
 	: MeshProxie(_fontGeometry)
 	, m_Texture(_texture)
 	, m_WidthArray(_widthArray)
@@ -17,12 +17,12 @@ CFontMesh::~CFontMesh()
 }
 
 
-std::shared_ptr<ITexture> CFontMesh::GetTexture() const
+ITexture* CFontMesh::GetTexture() const
 {
 	return m_Texture;
 }
 
-std::shared_ptr<IMesh> CFontMesh::GetMesh() const
+IMesh* CFontMesh::GetMesh() const
 {
 	return m_Geometry;
 }

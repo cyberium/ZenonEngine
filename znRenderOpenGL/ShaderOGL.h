@@ -5,12 +5,12 @@
 class ShaderOGL : public ShaderBase, public std::enable_shared_from_this<ShaderOGL>
 {
 public:
-	ShaderOGL(std::weak_ptr<IRenderDevice> RenderDevice);
+	ShaderOGL(IRenderDevice* RenderDevice);
 	virtual ~ShaderOGL();
 
 	// Shader loading
-	bool LoadShaderFromString(EShaderType shaderType, const std::string& fileName, const std::string& source, const ShaderMacros& shaderMacros, const std::string& entryPoint, const std::string& profile, std::shared_ptr<IShaderInputLayout> _customLayout);
-	bool LoadShaderFromFile(EShaderType shaderType, const std::string& fileName, const ShaderMacros& shaderMacros, const std::string& entryPoint, const std::string& profile, std::shared_ptr<IShaderInputLayout> _customLayout);
+	bool LoadShaderFromString(EShaderType shaderType, const std::string& fileName, const std::string& source, const ShaderMacros& shaderMacros, const std::string& entryPoint, const std::string& profile, IShaderInputLayout* _customLayout);
+	bool LoadShaderFromFile(EShaderType shaderType, const std::string& fileName, const ShaderMacros& shaderMacros, const std::string& entryPoint, const std::string& profile, IShaderInputLayout* _customLayout);
 
     bool LoadInputLayoutFromReflector() override final;
     bool LoadInputLayoutFromCustomElements(const std::vector<SCustomVertexElement>& declIn) override final;
@@ -30,7 +30,7 @@ private:
 	GLuint m_GLObj;
 	bool GetShaderProgramLog(GLuint _obj, std::string * _errMsg);
 
-	std::weak_ptr<IRenderDevice> m_RenderDevice;
+	IRenderDevice* m_RenderDevice;
 };
 
 GLbitfield GLTranslateShaderBitType(EShaderType _type);

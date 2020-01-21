@@ -64,4 +64,4 @@ ZN_INTERFACE ZN_API IQuery
 	virtual uint8_t GetBufferCount() const = 0;
 };
 
-typedef std::vector<std::shared_ptr<IQuery>> QueryList;
+typedef std::vector<IQuery*> QueryList;

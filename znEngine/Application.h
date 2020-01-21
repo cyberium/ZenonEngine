@@ -16,9 +16,9 @@ public:
 	void                            Stop();
 
 	// Creators
-	std::shared_ptr<IRenderDevice>  CreateRenderDevice(RenderDeviceType DeviceType);
-	void                            AddRenderWindow(std::shared_ptr<IRenderWindow> RenderWindow);
-	void                            DeleleRenderWindow(std::shared_ptr<IRenderWindow> RenderWindow);
+	IRenderDevice*  CreateRenderDevice(RenderDeviceType DeviceType);
+	void                            AddRenderWindow(IRenderWindow* RenderWindow);
+	void                            DeleleRenderWindow(IRenderWindow* RenderWindow);
 
 	// IApplication
 	void                            DoBeforeRun() override;
@@ -26,8 +26,8 @@ public:
 	void                            DoAfterRun() override;
 
 	IBaseManager*					GetBaseManager() const override;
-	std::shared_ptr<IRenderDevice>  GetRenderDevice() const override;
-	void                            SetRenderDevice(std::shared_ptr<IRenderDevice> _renderDevice) override;
+	IRenderDevice*  GetRenderDevice() const override;
+	void                            SetRenderDevice(IRenderDevice* _renderDevice) override;
 	HINSTANCE                       GetHINSTANCE() override;
 
 	// IApplicationEvents
@@ -51,8 +51,8 @@ private:
 
 	HINSTANCE                       m_HINSTANCE;
 
-	std::shared_ptr<IRenderDevice>  m_pRenderDevice;
-	std::vector<std::shared_ptr<IRenderWindow>> m_Windows;
+	IRenderDevice*  m_pRenderDevice;
+	std::vector<IRenderWindow*> m_Windows;
 
 	// IGameStateManager
 	std::shared_ptr<IGameState>                                     m_CurrentGameState;

@@ -28,7 +28,7 @@ void ShaderDX11::Destroy()
 	m_ShaderParameters.clear();
 }
 
-bool ShaderDX11::LoadShaderFromString(EShaderType shaderType, const std::string& fileName, const std::string& source, const ShaderMacros& shaderMacros, const std::string& entryPoint, const std::string& profile, std::shared_ptr<IShaderInputLayout> _customLayout)
+bool ShaderDX11::LoadShaderFromString(EShaderType shaderType, const std::string& fileName, const std::string& source, const ShaderMacros& shaderMacros, const std::string& entryPoint, const std::string& profile, IShaderInputLayout* _customLayout)
 {
 	HRESULT hr;
 	{
@@ -188,7 +188,7 @@ bool ShaderDX11::LoadShaderFromString(EShaderType shaderType, const std::string&
 		}
 
 		// Create an empty shader parameter that should be filled-in by the application.
-		std::shared_ptr<IShaderParameter> shaderParameter = std::make_shared<ShaderParameterBase>(resourceName, bindDesc.BindPoint, shared_from_this(), parameterType);
+		std::shared_ptr<IShaderParameter> shaderParameter = std::make_shared<ShaderParameterBase>(resourceName, bindDesc.BindPoint, this, parameterType);
 		m_ShaderParameters.insert(ParameterMap::value_type(resourceName, shaderParameter));
 	}
 
@@ -205,9 +205,9 @@ bool ShaderDX11::LoadShaderFromString(EShaderType shaderType, const std::string&
 	return true;
 }
 
-bool ShaderDX11::LoadShaderFromFile(EShaderType shaderType, const std::string& fileName, const ShaderMacros& shaderMacros, const std::string& entryPoint, const std::string& profile, std::shared_ptr<IShaderInputLayout> _customLayout)
+bool ShaderDX11::LoadShaderFromFile(EShaderType shaderType, const std::string& fileName, const ShaderMacros& shaderMacros, const std::string& entryPoint, const std::string& profile, IShaderInputLayout* _customLayout)
 {
-	std::shared_ptr<IFile> file = std::dynamic_pointer_cast<IRenderDevice>(m_RenderDeviceD3D11->GetRenderDevice())->GetBaseManager()->GetManager<IFilesManager>()->Open(fileName);
+	std::shared_ptr<IFile> file = m_RenderDeviceD3D11->GetRenderDevice()->GetBaseManager()->GetManager<IFilesManager>()->Open(fileName);
 
 	std::string data = "";
 	while (!file->isEof())

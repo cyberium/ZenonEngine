@@ -9,11 +9,11 @@ namespace
 	const vec4  cDefaultColor = vec4(1.0f, 1.0f, 1.0f, 1.0f);
 }
 
-CUIButtonNode::CUIButtonNode(std::shared_ptr<IRenderDevice> RenderDevice)
+CUIButtonNode::CUIButtonNode(IRenderDevice* RenderDevice)
 	: m_State(Idle)
 {
 	m_Material = std::make_shared<UI_Button_Material>(RenderDevice);
-	m_Material->SetWrapper(m_Material);
+	m_Material->SetWrapper(m_Material.get());
 
 
 }
@@ -34,11 +34,11 @@ void CUIButtonNode::CreateDefault()
 	m_Material->SetClickedTexture(GetBaseManager()->GetManager<IRenderDevice>()->CreateTexture2D("Textures\\btn_clicked.png"));
 	m_Material->SetDisabledTexture(GetBaseManager()->GetManager<IRenderDevice>()->CreateTexture2D("Textures\\btn_disabled.png"));
 
-	std::shared_ptr<ITexture> idleTexture = m_Material->GetTexture(0);
+	ITexture* idleTexture = m_Material->GetTexture(0);
     m_Size = idleTexture->GetSize();
 
 	m_Mesh = GetBaseManager()->GetManager<IRenderDevice>()->GetPrimitiveCollection()->CreateUIQuad(idleTexture->GetWidth(), idleTexture->GetHeight());
-	m_Mesh->SetMaterial(m_Material);
+	m_Mesh->SetMaterial(m_Material.get());
 
     m_TextNode = CreateSceneNode<CUITextNode>();
 	m_TextNode->GetProperties()->GetPropertyT<std::string>("Text")->Set(cDefaultText);

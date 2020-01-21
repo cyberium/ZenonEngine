@@ -6,13 +6,13 @@ class ZN_API GenerateMipMapPass
 	: public RenderPass
 {
 public:
-	GenerateMipMapPass(std::shared_ptr<IRenderDevice> RenderDevice, std::shared_ptr<IRenderTarget> renderTarget);
-	GenerateMipMapPass(std::shared_ptr<IRenderDevice> RenderDevice, std::shared_ptr<ITexture> texture);
+	GenerateMipMapPass(IRenderDevice* RenderDevice, IRenderTarget* renderTarget);
+	GenerateMipMapPass(IRenderDevice* RenderDevice, ITexture* texture);
 	virtual ~GenerateMipMapPass();
 
 	virtual void Render(RenderEventArgs& e);
 
 private:
-	std::shared_ptr<IRenderTarget> m_RenderTarget;
-	std::shared_ptr<ITexture> m_Texture;
+	IRenderTarget* m_RenderTarget;
+	ITexture* m_Texture;
 };

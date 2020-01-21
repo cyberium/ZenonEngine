@@ -33,7 +33,7 @@ public:
 	};
 
 public:
-	BuildRenderListPass(std::shared_ptr<IRenderDevice> RenderDevice, std::shared_ptr<IScene> Scene);
+	BuildRenderListPass(IRenderDevice* RenderDevice, std::shared_ptr<IScene> Scene);
 	virtual ~BuildRenderListPass();
 
 	const std::vector<SGeometryElement>& GetGeometryList() const;

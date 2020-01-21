@@ -6,7 +6,7 @@ class ZN_API ScenePass
 	: public RenderPass
 {
 public:
-	ScenePass(std::shared_ptr<IRenderDevice> RenderDevice, std::shared_ptr<IScene> Scene);
+	ScenePass(IRenderDevice* RenderDevice, std::shared_ptr<IScene> Scene);
 	virtual ~ScenePass();
 
 	// IRenderPass

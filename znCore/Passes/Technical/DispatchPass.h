@@ -6,7 +6,7 @@ class ZN_API DispatchPass
 	: public RenderPass
 {
 public:
-	DispatchPass(std::shared_ptr<IRenderDevice> RenderDevice, std::shared_ptr<IShader> computeShader, const glm::uvec3& numGroups);
+	DispatchPass(IRenderDevice* RenderDevice, IShader* computeShader, const glm::uvec3& numGroups);
 	virtual ~DispatchPass();
 
 	// Render the pass. This should only be called by the RenderTechnique.
@@ -19,7 +19,7 @@ public:
 
 private:
 
-	std::shared_ptr<IShader> m_pComputeShader;
+	IShader* m_pComputeShader;
 
 	// The number of groups to dispatch for the compute shader kernel.
 	glm::uvec3 m_NumGroups;

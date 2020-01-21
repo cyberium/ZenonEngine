@@ -31,7 +31,7 @@ void RenderWindowDX11::Present()
     GetRenderTarget()->Bind();
 
 	// Copy the render target's color buffer to the swap chain's back buffer.
-	std::shared_ptr<TextureDX11> colorBuffer = std::dynamic_pointer_cast<TextureDX11>(GetRenderTarget()->GetTexture(IRenderTarget::AttachmentPoint::Color0));
+	TextureDX11* colorBuffer = dynamic_cast<TextureDX11*>(GetRenderTarget()->GetTexture(IRenderTarget::AttachmentPoint::Color0));
 	if (colorBuffer)
 	{
 		m_RenderDeviceD3D11->GetDeviceContextD3D11()->CopyResource(m_pBackBuffer, colorBuffer->GetTextureResource());
@@ -125,7 +125,7 @@ void RenderWindowDX11::CreateSwapChain()
         m_SampleDesc.Count,
         8, 8, 8, 8, 0, 0
     );
-    std::shared_ptr<ITexture> colorTexture = GetRenderDevice()->CreateTexture2D(windowWidth, windowHeight, 1, colorTextureFormat);
+    ITexture* colorTexture = GetRenderDevice()->CreateTexture2D(windowWidth, windowHeight, 1, colorTextureFormat);
 
     // Depth/stencil buffer
     ITexture::TextureFormat depthStencilTextureFormat(
@@ -133,7 +133,7 @@ void RenderWindowDX11::CreateSwapChain()
         ITexture::Type::UnsignedNormalized,
         m_SampleDesc.Count,
         0, 0, 0, 0, 24, 8);
-    std::shared_ptr<ITexture> depthStencilTexture = GetRenderDevice()->CreateTexture2D(windowWidth, windowHeight, 1, depthStencilTextureFormat);
+    ITexture* depthStencilTexture = GetRenderDevice()->CreateTexture2D(windowWidth, windowHeight, 1, depthStencilTextureFormat);
 
     GetRenderTarget()->AttachTexture(IRenderTarget::AttachmentPoint::Color0, colorTexture);
     GetRenderTarget()->AttachTexture(IRenderTarget::AttachmentPoint::DepthStencil, depthStencilTexture);

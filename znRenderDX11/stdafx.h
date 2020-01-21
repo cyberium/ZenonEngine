@@ -26,7 +26,7 @@
 
 ZN_INTERFACE IRenderDeviceDX11
 {
-	virtual std::shared_ptr<IRenderDevice> GetRenderDevice() = 0;
+	virtual IRenderDevice* GetRenderDevice() = 0;
 	virtual ID3D11Device4* GetDeviceD3D11() = 0;
 	virtual ID3D11DeviceContext3* GetDeviceContextD3D11() = 0;
 };

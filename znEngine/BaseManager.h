@@ -8,9 +8,9 @@ public:
 	virtual ~CBaseManager();
 
 	// IBaseManager
-	void AddManager(GUID Type, std::shared_ptr<IManager> Manager) override;
+	void AddManager(GUID Type, const std::shared_ptr<IManager>& Manager) override;
 	void RemoveManager(GUID Type) override;
-	std::shared_ptr<IManager> GetManager(GUID Type) const override;
+	IManager* GetManager(GUID Type) const override;
 
 private:
 	std::unordered_map<GUID, std::shared_ptr<IManager>> m_Managers;

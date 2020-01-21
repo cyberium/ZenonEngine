@@ -3,7 +3,7 @@
 // General
 #include "Base3DPass.h"
 
-Base3DPass::Base3DPass(std::shared_ptr<IRenderDevice> RenderDevice, std::shared_ptr<IScene> scene)
+Base3DPass::Base3DPass(IRenderDevice* RenderDevice, std::shared_ptr<IScene> scene)
     : ScenePassPipelined(RenderDevice, scene)
 {
 	m_PerObjectData = (PerObject3D*)_aligned_malloc(sizeof(PerObject3D), 16);
@@ -35,7 +35,7 @@ bool Base3DPass::Visit(IMesh * Mesh, SGeometryPartParams GeometryPartParams)
 {
 	GetRenderEventArgs()->Caller = this;
 
-	return Mesh->Render(GetRenderEventArgs(), m_PerObjectConstantBuffer.get(), GeometryPartParams);
+	return Mesh->Render(GetRenderEventArgs(), m_PerObjectConstantBuffer, GeometryPartParams);
 }
 
 bool Base3DPass::Visit(IGeometry* Geometry, const IMaterial* Material, SGeometryPartParams GeometryPartParams)
@@ -51,7 +51,7 @@ bool Base3DPass::Visit(IGeometry* Geometry, const IMaterial* Material, SGeometry
 		shadersMap = GetRenderEventArgs()->PipelineState->GetShaders();
 
 	Material->Bind(shadersMap);
-	bool result = Geometry->Render(GetRenderEventArgs(), m_PerObjectConstantBuffer.get(), shadersMap, Material, GeometryPartParams);
+	bool result = Geometry->Render(GetRenderEventArgs(), m_PerObjectConstantBuffer, shadersMap, Material, GeometryPartParams);
 	Material->Unbind(shadersMap);
 
 	return result;

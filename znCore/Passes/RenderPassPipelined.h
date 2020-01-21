@@ -5,7 +5,7 @@ class ZN_API RenderPassPipelined
 	, public Object
 {
 public:
-	RenderPassPipelined(std::shared_ptr<IRenderDevice> RenderDevice);
+	RenderPassPipelined(IRenderDevice* RenderDevice);
 	virtual ~RenderPassPipelined();
 
 	std::shared_ptr<IRenderPassPipelined> shared_from_this();
@@ -19,9 +19,9 @@ public:
 	virtual void PostRender(RenderEventArgs& e);
     
 	// IRenderPassPipelined
-	virtual std::shared_ptr<IRenderPassPipelined> CreatePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport* Viewport) override;
-	virtual std::shared_ptr<IRenderPassPipelined> SetPipeline(std::shared_ptr<IPipelineState> Pipeline) override;
-	virtual std::shared_ptr<IPipelineState> GetPipeline() const override;
+	virtual std::shared_ptr<IRenderPassPipelined> CreatePipeline(IRenderTarget* RenderTarget, const Viewport* Viewport) override;
+	virtual std::shared_ptr<IRenderPassPipelined> SetPipeline(IPipelineState* Pipeline) override;
+	virtual IPipelineState* GetPipeline() const override;
 	virtual void UpdateViewport(const Viewport * _viewport) override;
 
 	// IVisitor
@@ -36,7 +36,7 @@ protected:
 	virtual void FillPerFrameData();
 
 	RenderEventArgs* GetRenderEventArgs() const;
-    std::shared_ptr<IRenderDevice> GetRenderDevice() const;
+    IRenderDevice* GetRenderDevice() const;
 	const IBaseManager* GetBaseManager() const;
 
 protected:
@@ -56,12 +56,12 @@ protected:
 	void BindPerFrameDataToVertexShader(const IShader* VertexShader) const;
 
 private:
-	std::shared_ptr<IConstantBuffer> m_PerFrameConstantBuffer;
+	IConstantBuffer* m_PerFrameConstantBuffer;
 
 private:
 	bool                                            m_Enabled;
-	std::shared_ptr<IPipelineState>                 m_Pipeline;
+	IPipelineState*                 m_Pipeline;
     RenderEventArgs*                                m_RenderEventArgs;
-    std::weak_ptr<IRenderDevice>                    m_RenderDevice;
+    IRenderDevice*                    m_RenderDevice;
 	const IBaseManager*                             m_BaseManager;
 };

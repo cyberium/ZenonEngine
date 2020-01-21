@@ -12,7 +12,7 @@ ZN_INTERFACE ZN_API IznRenderDeviceCreator
 	virtual ~IznRenderDeviceCreator() {}
 
 	virtual RenderDeviceType GetRenderDeviceType() const = 0;
-	virtual std::shared_ptr<IRenderDevice> CreateRenderDevice() = 0;
+	virtual IRenderDevice* CreateRenderDevice() = 0;
 };
 
 ZN_INTERFACE ZN_API

@@ -53,20 +53,20 @@ void Application::Stop()
 }
 
 
-std::shared_ptr<IRenderDevice> Application::CreateRenderDevice(RenderDeviceType DeviceType)
+IRenderDevice* Application::CreateRenderDevice(RenderDeviceType DeviceType)
 {
 	SetRenderDevice(m_BaseManager->GetManager<IznRenderDeviceFactory>()->GetRenderDeviceCreator(DeviceType)->CreateRenderDevice());
 	return GetRenderDevice();
 }
 
-void Application::AddRenderWindow(std::shared_ptr<IRenderWindow> RenderWindow)
+void Application::AddRenderWindow(IRenderWindow* RenderWindow)
 {
-	std::dynamic_pointer_cast<IApplicationEventsConnection>(RenderWindow)->Connect(this);
+	dynamic_cast<IApplicationEventsConnection*>(RenderWindow)->Connect(this);
 
 	m_Windows.push_back(RenderWindow);
 }
 
-void Application::DeleleRenderWindow(std::shared_ptr<IRenderWindow> RenderWindow)
+void Application::DeleleRenderWindow(IRenderWindow* RenderWindow)
 {
 	
 }
@@ -133,13 +133,13 @@ IBaseManager* Application::GetBaseManager() const
 	return m_BaseManager;
 }
 
-std::shared_ptr<IRenderDevice> Application::GetRenderDevice() const
+IRenderDevice* Application::GetRenderDevice() const
 {
 	_ASSERT(m_pRenderDevice);
 	return m_pRenderDevice;
 }
 
-void Application::SetRenderDevice(std::shared_ptr<IRenderDevice> _renderDevice)
+void Application::SetRenderDevice(IRenderDevice* _renderDevice)
 {
 	m_pRenderDevice = _renderDevice;
 }

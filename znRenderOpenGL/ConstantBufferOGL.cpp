@@ -32,12 +32,12 @@ void ConstantBufferOGL::Set(const void* data, size_t size)
 	glBindBuffer(GL_UNIFORM_BUFFER, 0);
 }
 
-void ConstantBufferOGL::Copy(std::shared_ptr<IConstantBuffer> other)
+void ConstantBufferOGL::Copy(IConstantBuffer* other)
 {
 	std::shared_ptr<ConstantBufferOGL> srcBuffer = std::dynamic_pointer_cast<ConstantBufferOGL>(other);
 	_ASSERT(srcBuffer->m_GLObj != 0);
 
-	if (srcBuffer && (srcBuffer.get() != this) &&	(m_BufferSize == srcBuffer->m_BufferSize))
+	if (srcBuffer && (srcBuffer != this) &&	(m_BufferSize == srcBuffer->m_BufferSize))
 	{
 		glBindBuffer(GL_COPY_READ_BUFFER, srcBuffer->m_GLObj);
 		{
@@ -59,7 +59,7 @@ void ConstantBufferOGL::Copy(std::shared_ptr<IConstantBuffer> other)
 	}
 }
 
-void ConstantBufferOGL::Copy(std::shared_ptr<IBuffer> other)
+void ConstantBufferOGL::Copy(IBuffer* other)
 {
 	Copy(std::dynamic_pointer_cast<IConstantBuffer>(other));
 }

@@ -37,12 +37,12 @@ void BufferOGL::UnBind(uint32 id, const IShader* shader, IShaderParameter::Type 
 	glBindBuffer(m_BindFlags, 0);
 }
 
-void BufferOGL::Copy(std::shared_ptr<IBuffer> other)
+void BufferOGL::Copy(IBuffer* other)
 {
 	std::shared_ptr<BufferOGL> srcBuffer = std::dynamic_pointer_cast<BufferOGL>(other);
 	_ASSERT(srcBuffer->m_GLObj != 0);
 
-	if (srcBuffer && (srcBuffer.get() != this) && ((m_uiCount * m_uiStride) == (srcBuffer->m_uiCount * srcBuffer->m_uiStride)))
+	if (srcBuffer && (srcBuffer != this) && ((m_uiCount * m_uiStride) == (srcBuffer->m_uiCount * srcBuffer->m_uiStride)))
 	{
 		glBindBuffer(GL_COPY_READ_BUFFER, srcBuffer->m_GLObj);
 		{

@@ -89,7 +89,7 @@ void StructuredBufferOGL::Commit() const
 	}
 }
 
-void StructuredBufferOGL::Copy(std::shared_ptr<IStructuredBuffer> other)
+void StructuredBufferOGL::Copy(IStructuredBuffer* other)
 {
 	std::shared_ptr<StructuredBufferOGL> srcBuffer = std::dynamic_pointer_cast<StructuredBufferOGL>(other);
 	_ASSERT(srcBuffer->m_GLObj != 0);
@@ -99,7 +99,7 @@ void StructuredBufferOGL::Copy(std::shared_ptr<IStructuredBuffer> other)
 		srcBuffer->Commit(); // Make sure the contents of the source buffer are up-to-date
 	}
 
-	if (srcBuffer && srcBuffer.get() != this &&	m_uiCount * m_uiStride == srcBuffer->m_uiCount * srcBuffer->m_uiStride
+	if (srcBuffer && srcBuffer != this &&	m_uiCount * m_uiStride == srcBuffer->m_uiCount * srcBuffer->m_uiStride
 		)
 	{
 		glBindBuffer(GL_COPY_READ_BUFFER, srcBuffer->m_GLObj);
@@ -122,7 +122,7 @@ void StructuredBufferOGL::Copy(std::shared_ptr<IStructuredBuffer> other)
 	}
 }
 
-void StructuredBufferOGL::Copy(std::shared_ptr<IBuffer> other)
+void StructuredBufferOGL::Copy(IBuffer* other)
 {
 	Copy(std::dynamic_pointer_cast<IStructuredBuffer>(other));
 }

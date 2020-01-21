@@ -7,14 +7,14 @@ public:
 	GeometryOGL();
 	virtual ~GeometryOGL();
 
-	void											AddVertexBuffer(const BufferBinding& binding, std::shared_ptr<IBuffer> buffer) override;
-	void											SetVertexBuffer(std::shared_ptr<IBuffer> buffer) override;
-	void											SetIndexBuffer(std::shared_ptr<IBuffer> buffer) override;
+	void											AddVertexBuffer(const BufferBinding& binding, IBuffer* buffer) override;
+	void											SetVertexBuffer(IBuffer* buffer) override;
+	void											SetIndexBuffer(IBuffer* buffer) override;
 
 	void											SetPrimitiveTopology(PrimitiveTopology _topology) override final;
 
-	virtual bool                                    Render(const RenderEventArgs* renderArgs, const IConstantBuffer* PerObject, const std::unordered_map<EShaderType, std::shared_ptr<IShader>>& ShadersMap, const IMaterial* Material, const SGeometryPartParams& GeometryPartParams) const override;
-	virtual bool                                    RenderInstanced(const RenderEventArgs* renderArgs, const IStructuredBuffer* InstancesBuffer, const std::unordered_map<EShaderType, std::shared_ptr<IShader>>& ShadersMap, const IMaterial* Material, SGeometryPartParams GeometryPartParams) const override;
+	virtual bool                                    Render(const RenderEventArgs* renderArgs, const IConstantBuffer* PerObject, const std::unordered_map<EShaderType, IShader*>& ShadersMap, const IMaterial* Material, const SGeometryPartParams& GeometryPartParams) const override;
+	virtual bool                                    RenderInstanced(const RenderEventArgs* renderArgs, const IStructuredBuffer* InstancesBuffer, const std::unordered_map<EShaderType, IShader*>& ShadersMap, const IMaterial* Material, SGeometryPartParams GeometryPartParams) const override;
 
 
 private:

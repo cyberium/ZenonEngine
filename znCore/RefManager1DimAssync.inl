@@ -20,7 +20,7 @@ CRefManager1DimAssync<T>::~CRefManager1DimAssync()
 {
 	for (auto it = objects.begin(); it != objects.end(); )
 	{
-		std::shared_ptr<ITexture> item = it->second;
+		ITexture* item = it->second;
 		std::string name = GetNameByItem(item);
 
 		this->DeleteAction(name);
@@ -41,7 +41,7 @@ CRefManager1DimAssync<T>::~CRefManager1DimAssync()
 template <class T>
 inline std::shared_ptr<T> CRefManager1DimAssync<T>::Add(const std::string& name)
 {
-	std::shared_ptr<ITexture> item = GetItemByName(name);
+	ITexture* item = GetItemByName(name);
 	if (item != nullptr)
 	{
 		return item;

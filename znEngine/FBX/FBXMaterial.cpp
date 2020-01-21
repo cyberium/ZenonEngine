@@ -122,7 +122,7 @@ void CFBXMaterial::Load(fbxsdk::FbxSurfaceMaterial* NativeMaterial)
 		{
 			fbxsdk::FbxTexture* lTexture = lProperty.GetSrcObject<fbxsdk::FbxTexture>(0);
 
-			std::shared_ptr<ITexture> texture = LoadTexture(lTexture);
+			ITexture* texture = LoadTexture(lTexture);
 
 			fbxsdk::FbxLayerElement::EType texureType = FBXSDK_TEXTURE_TYPE(j);
 			switch (texureType)
@@ -185,7 +185,7 @@ void CFBXMaterial::Load(fbxsdk::FbxSurfaceMaterial* NativeMaterial)
 //
 // Protected
 //
-std::shared_ptr<ITexture> CFBXMaterial::LoadTexture(fbxsdk::FbxTexture * Texture)
+ITexture* CFBXMaterial::LoadTexture(fbxsdk::FbxTexture * Texture)
 {
 	Log::Print("CFBXMaterial: Loading texture '%s'.", Texture->GetName());
 

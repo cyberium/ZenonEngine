@@ -8,7 +8,7 @@ class ZN_API RenderWindowBase
 	, public std::enable_shared_from_this<IRenderWindow>
 {
 public:
-	RenderWindowBase(std::shared_ptr<IRenderDevice> RenderDevice, IWindowObject * WindowObject, bool vSync = false);
+	RenderWindowBase(IRenderDevice* RenderDevice, IWindowObject * WindowObject, bool vSync = false);
 	virtual ~RenderWindowBase();
 
 	// IRenderWindow
@@ -19,8 +19,8 @@ public:
 
 	virtual void                                    Present() = 0;
 
-    std::shared_ptr<IRenderDevice>                  GetRenderDevice() const;
-	std::shared_ptr<IRenderTarget>                  GetRenderTarget() const;
+    IRenderDevice*                  GetRenderDevice() const;
+	IRenderTarget*                  GetRenderTarget() const;
 	IWindowObject*                                  GetWindowObject() const;
 	const Viewport*									GetViewport() const;
 
@@ -55,8 +55,8 @@ private:
 	Viewport                                        m_Viewport;
 	IWindowObject *                                 m_WindowObject;
 
-    std::weak_ptr<IRenderDevice>                    m_RenderDevice;
-    std::shared_ptr<IRenderTarget>                  m_RenderTarget;
+    IRenderDevice*                    m_RenderDevice;
+    IRenderTarget*                  m_RenderTarget;
 
 	bool                                            m_vSync;
 	

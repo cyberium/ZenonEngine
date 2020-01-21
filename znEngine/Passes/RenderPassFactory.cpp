@@ -33,7 +33,7 @@ void CRenderPassFactory::RemoveRenderPassCreator(std::shared_ptr<IRenderPassCrea
 {
 }
 
-std::shared_ptr<IRenderPass> CRenderPassFactory::CreateRenderPass(std::string RenderPassName, std::shared_ptr<IRenderDevice> RenderDevice, std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport, std::shared_ptr<IScene> Scene) const
+std::shared_ptr<IRenderPass> CRenderPassFactory::CreateRenderPass(std::string RenderPassName, IRenderDevice* RenderDevice, IRenderTarget* RenderTarget, const Viewport * Viewport, std::shared_ptr<IScene> Scene) const
 {
 	for (const auto& creator : m_Creators)
 	{

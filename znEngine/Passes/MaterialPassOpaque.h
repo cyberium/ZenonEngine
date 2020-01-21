@@ -4,11 +4,11 @@ class CMaterialPassOpaque
 	: public Base3DPass
 {
 public:
-	CMaterialPassOpaque(std::shared_ptr<IRenderDevice> RenderDevice, std::shared_ptr<IScene> Scene);
+	CMaterialPassOpaque(IRenderDevice* RenderDevice, std::shared_ptr<IScene> Scene);
 	virtual ~CMaterialPassOpaque();
 
 	// IRenderPassPipelined
-	std::shared_ptr<IRenderPassPipelined> CreatePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport* Viewport) override;
+	std::shared_ptr<IRenderPassPipelined> CreatePipeline(IRenderTarget* RenderTarget, const Viewport* Viewport) override;
 
 	// IVisitor
 	bool Visit(IMesh* Mesh, SGeometryPartParams GeometryPartParams = SGeometryPartParams()) override;

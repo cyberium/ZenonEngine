@@ -16,14 +16,14 @@ public:
 	virtual void                                    SetBounds(const BoundingBox& Bounds);
 	virtual const BoundingBox&                      GetBounds() const;
 
-	virtual void                                    AddVertexBuffer(const BufferBinding& binding, std::shared_ptr<IBuffer> buffer) override;
-	virtual void                                    SetVertexBuffer(std::shared_ptr<IBuffer> buffer) override;
-	virtual void                                    SetIndexBuffer(std::shared_ptr<IBuffer> buffer) override;
+	virtual void                                    AddVertexBuffer(const BufferBinding& binding, IBuffer* buffer) override;
+	virtual void                                    SetVertexBuffer(IBuffer* buffer) override;
+	virtual void                                    SetIndexBuffer(IBuffer* buffer) override;
 
-	void                                            SetMaterial(std::shared_ptr<const IMaterial> Material);
-	void											AddMaterial(std::shared_ptr<const IMaterial> Material, SGeometryPartParams GeometryPartParams = SGeometryPartParams()) override final;
+	void                                            SetMaterial(const IMaterial* Material);
+	void											AddMaterial(const IMaterial* Material, SGeometryPartParams GeometryPartParams = SGeometryPartParams()) override final;
 
-	virtual std::shared_ptr<IGeometry>              GetGeometry() const override;
+	virtual IGeometry*                              GetGeometry() const override;
 
 	virtual bool                                    Accept(IVisitor* visitor, SGeometryPartParams GeometryPartParams);
 

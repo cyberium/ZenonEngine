@@ -185,14 +185,14 @@ void TextureDX11::GenerateMipMaps()
 	}
 }
 
-std::shared_ptr<ITexture> TextureDX11::GetFace(CubeFace face) const
+ITexture* TextureDX11::GetFace(CubeFace face) const
 {
-	return std::static_pointer_cast<ITexture>(std::const_pointer_cast<TextureDX11>(shared_from_this()));
+	return nullptr;
 }
 
-std::shared_ptr<ITexture> TextureDX11::GetSlice(uint32 slice) const
+ITexture* TextureDX11::GetSlice(uint32 slice) const
 {
-	return std::static_pointer_cast<ITexture>(std::const_pointer_cast<TextureDX11>(shared_from_this()));
+	return nullptr;
 }
 
 uint16_t TextureDX11::GetWidth() const
@@ -505,11 +505,11 @@ void TextureDX11::FetchPixel(glm::ivec2 coord, uint8_t*& pixel, size_t size)
 	pixel = &m_Buffer[index];
 }
 
-void TextureDX11::Copy(std::shared_ptr<ITexture> other)
+void TextureDX11::Copy(ITexture* other)
 {
-	std::shared_ptr<TextureDX11> srcTexture = std::dynamic_pointer_cast<TextureDX11>(other);
+	TextureDX11* srcTexture = dynamic_cast<TextureDX11*>(other);
 
-	if (srcTexture && srcTexture.get() != this)
+	if (srcTexture && srcTexture != this)
 	{
 		if (m_TextureDimension == srcTexture->m_TextureDimension &&
 			m_TextureWidth == srcTexture->m_TextureWidth &&

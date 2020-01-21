@@ -28,11 +28,11 @@ ConstantBufferDX11::~ConstantBufferDX11()
 
 
 
-void ConstantBufferDX11::Copy(std::shared_ptr<IConstantBuffer> other)
+void ConstantBufferDX11::Copy(IConstantBuffer* other) const
 {
-	std::shared_ptr<ConstantBufferDX11> srcBuffer = std::dynamic_pointer_cast<ConstantBufferDX11>(other);
+	ConstantBufferDX11* srcBuffer = dynamic_cast<ConstantBufferDX11*>(other);
 
-	if (srcBuffer && srcBuffer.get() != this &&
+	if (srcBuffer && srcBuffer != this &&
 		m_BufferSize == srcBuffer->m_BufferSize)
 	{
 		m_RenderDeviceD3D11->GetDeviceContextD3D11()->CopyResource(m_pBuffer, srcBuffer->m_pBuffer);
@@ -130,9 +130,9 @@ uint32 ConstantBufferDX11::GetElementOffset() const
 //
 // Protected
 //
-void ConstantBufferDX11::Copy(std::shared_ptr<IBuffer> other)
+void ConstantBufferDX11::Copy(IBuffer* other) const
 {
-	Copy(std::dynamic_pointer_cast<IConstantBuffer>(other));
+	Copy(dynamic_cast<IConstantBuffer*>(other));
 }
 
 void ConstantBufferDX11::Set(const void* data, size_t size)

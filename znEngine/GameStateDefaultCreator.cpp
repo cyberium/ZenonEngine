@@ -35,7 +35,7 @@ GameStatePriority CGameStateDefaultCreator::GetGameStatePriority(size_t Index) c
 	return 1;
 }
 
-std::shared_ptr<IGameState> CGameStateDefaultCreator::CreateGameState(size_t Index, std::shared_ptr<IRenderWindow> RenderWindow, IWindowEvents* WindowEvents) const
+std::shared_ptr<IGameState> CGameStateDefaultCreator::CreateGameState(size_t Index, IRenderWindow* RenderWindow, IWindowEvents* WindowEvents) const
 {
 	return std::make_shared<CGameState_World>(m_BaseManager, RenderWindow, WindowEvents);
 }
