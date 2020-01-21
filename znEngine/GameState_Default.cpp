@@ -183,7 +183,7 @@ void CGameState_World::Load3D()
 
 
 	{
-		const int iterCnt = 4;
+		const int iterCnt = 6;
 		const float offset = 13.0f;
 		const float scale = 5.0f;
 

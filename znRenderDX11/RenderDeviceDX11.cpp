@@ -31,8 +31,7 @@ private:
 
 RenderDeviceDX11::RenderDeviceDX11(IBaseManager* BaseManager)
 	: m_BaseManager(BaseManager)
-{
-}
+{}
 
 RenderDeviceDX11::~RenderDeviceDX11()
 {}
@@ -94,8 +93,11 @@ ID3D11Device4* RenderDeviceDX11::GetDeviceD3D11()
     return m_DeviceD3D11;
 }
 
-ID3D11DeviceContext3 * RenderDeviceDX11::GetDeviceContextD3D11()
+ID3D11DeviceContext3* RenderDeviceDX11::GetDeviceContextD3D11()
 {
+	//std::thread::id thrId = std::this_thread::get_id();
+	//printf("ThreadID is %d\n", thrId);
+
 	return m_DeviceImmediateContext;
 }
 

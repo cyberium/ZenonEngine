@@ -52,8 +52,11 @@ protected:
 		glm::mat4 View;
 		glm::mat4 Projection;
 	};
-	PerFrame*                                       m_PerFrameData;
-	std::shared_ptr<IConstantBuffer>                m_PerFrameConstantBuffer;
+	void SetPerFrameData(const PerFrame& PerFrame);
+	void BindPerFrameDataToVertexShader(const IShader* VertexShader) const;
+
+private:
+	std::shared_ptr<IConstantBuffer> m_PerFrameConstantBuffer;
 
 private:
 	bool                                            m_Enabled;

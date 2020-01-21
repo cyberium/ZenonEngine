@@ -17,13 +17,11 @@ RenderPassPipelined::RenderPassPipelined(std::shared_ptr<IRenderDevice> RenderDe
     , m_RenderDevice(RenderDevice)
 	, m_BaseManager(RenderDevice->GetBaseManager())
 {
-	m_PerFrameData = (PerFrame*)_aligned_malloc(sizeof(PerFrame), 16);
 	m_PerFrameConstantBuffer = GetRenderDevice()->CreateConstantBuffer(PerFrame());
 }
 
 RenderPassPipelined::~RenderPassPipelined()
 {
-	_aligned_free(m_PerFrameData);
 	GetRenderDevice()->DestroyConstantBuffer(m_PerFrameConstantBuffer);
 }
 
@@ -72,12 +70,7 @@ void RenderPassPipelined::PreRender(RenderEventArgs& e)
 
 		if (shader->GetType() == EShaderType::VertexShader)
 		{
-			IShaderParameter* perObjectParameter = shader->GetShaderParameterByName("PerFrame").get();
-			if (perObjectParameter->IsValid() && m_PerFrameConstantBuffer != nullptr)
-			{
-				perObjectParameter->SetConstantBuffer(m_PerFrameConstantBuffer.get());
-				perObjectParameter->Bind();
-			}
+			BindPerFrameDataToVertexShader(shader);
 		}
 	}
 }
@@ -182,9 +175,11 @@ bool RenderPassPipelined::Visit(ILightComponent3D* light)
 void RenderPassPipelined::FillPerFrameData()
 {
 	_ASSERT(m_RenderEventArgs->Camera != nullptr);
-	m_PerFrameData->View = m_RenderEventArgs->Camera->GetViewMatrix();
-	m_PerFrameData->Projection = m_RenderEventArgs->Camera->GetProjectionMatrix();
-	m_PerFrameConstantBuffer->Set(*m_PerFrameData);
+
+	PerFrame perFrame;
+	perFrame.View = m_RenderEventArgs->Camera->GetViewMatrix();
+	perFrame.Projection = m_RenderEventArgs->Camera->GetProjectionMatrix();
+	m_PerFrameConstantBuffer->Set(perFrame);
 }
 
 RenderEventArgs* RenderPassPipelined::GetRenderEventArgs() const
@@ -202,4 +197,24 @@ const IBaseManager* RenderPassPipelined::GetBaseManager() const
 {
 	_ASSERT(m_BaseManager != nullptr);
 	return m_BaseManager;
+}
+
+
+
+//
+// Protected
+//
+void RenderPassPipelined::SetPerFrameData(const PerFrame& PerFrame)
+{
+	m_PerFrameConstantBuffer->Set(PerFrame);
+}
+
+void RenderPassPipelined::BindPerFrameDataToVertexShader(const IShader * VertexShader) const
+{
+	const std::shared_ptr<IShaderParameter>& perFrameParam = VertexShader->GetShaderParameterByName("PerFrame");
+	if (perFrameParam->IsValid() && m_PerFrameConstantBuffer != nullptr)
+	{
+		perFrameParam->SetConstantBuffer(m_PerFrameConstantBuffer.get());
+		perFrameParam->Bind();
+	}
 }

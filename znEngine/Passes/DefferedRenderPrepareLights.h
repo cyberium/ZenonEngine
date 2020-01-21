@@ -3,7 +3,7 @@
 #include "DefferedRender.h"
 
 class CDefferedRenderPrepareLights
-	: public RenderPassPipelined
+	: public RenderPass
 {
 public:
 	struct SLightResult
@@ -27,12 +27,14 @@ public:
 	void PostRender(RenderEventArgs& e) override;
 
 	// IRenderPassPipelined
-	std::shared_ptr<IRenderPassPipelined> CreatePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport* Viewport) override;
-	void UpdateViewport(const Viewport * _viewport) override;
+	std::shared_ptr<IRenderPassPipelined> CreatePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport* Viewport);
+	void UpdateViewport(const Viewport * _viewport);
 
 protected:
 	std::shared_ptr<ITexture> CreateShadowTexture0() const;
 	std::shared_ptr<ITexture> CreateShadowTextureDepthStencil() const;
+	
+	void DoRenderToOneContext();
 	void BindPerFrameParamsForCurrentIteration(const ILightComponent3D* LightComponent);
 	void BindPerObjectParamsForCurrentIteration(const ISceneNode* SceneNode);
 
@@ -40,11 +42,20 @@ private: // Pass light params
 	PerObject3D* m_PerObjectData;
 	std::shared_ptr<IConstantBuffer> m_PerObjectConstantBuffer;
 
+protected:
+	__declspec(align(16)) struct PerFrame
+	{
+		glm::mat4 View;
+		glm::mat4 Projection;
+	};
+	void SetPerFrameData(const PerFrame& PerFrame);
+	void BindPerFrameDataToVertexShader(const IShader* VertexShader) const;
+	std::shared_ptr<IConstantBuffer> m_PerFrameConstantBuffer;
+
 private: // For shadow rendering
+	std::shared_ptr<IPipelineState> m_ShadowPipeline;
 	std::shared_ptr<IRenderTarget> m_ShadowRenderTarget;
 	Viewport m_ShadowViewport;
-
-
 	std::vector<SLightResult> m_LightResult;
 
 private:

@@ -4,11 +4,13 @@
 #include "DefferedRenderPrepareLights.h"
 
 CDefferedRenderPrepareLights::CDefferedRenderPrepareLights(std::shared_ptr<IRenderDevice> RenderDevice, std::shared_ptr<BuildRenderListPass> BuildRenderListPass)
-	: RenderPassPipelined(RenderDevice)
+	: RenderPass(RenderDevice)
 	, m_BuildRenderListPass(BuildRenderListPass)
 {
 	m_PerObjectData = (PerObject3D*)_aligned_malloc(sizeof(PerObject3D), 16);
 	m_PerObjectConstantBuffer = GetRenderDevice()->CreateConstantBuffer(PerObject3D());
+
+	m_PerFrameConstantBuffer = GetRenderDevice()->CreateConstantBuffer(PerFrame());
 }
 
 CDefferedRenderPrepareLights::~CDefferedRenderPrepareLights()
@@ -29,7 +31,7 @@ const std::vector<CDefferedRenderPrepareLights::SLightResult>& CDefferedRenderPr
 //
 void CDefferedRenderPrepareLights::PreRender(RenderEventArgs& e)
 {
-	RenderPassPipelined::PreRender(e);
+	RenderPass::PreRender(e);
 
 	for (auto& it : m_LightResult)
 	{
@@ -41,44 +43,51 @@ void CDefferedRenderPrepareLights::Render(RenderEventArgs& e)
 {
 	for (size_t i = 0; i < m_BuildRenderListPass->GetLightList().size(); i++)
 	{
+
+
 		const auto& lightIt = m_BuildRenderListPass->GetLightList().at(i);
 
-		m_ShadowRenderTarget->Clear(ClearFlags::All, glm::vec4(0.0f, 0.0f, 0.0f, 0.0f));
-
-		BindPerFrameParamsForCurrentIteration(lightIt.Light);
-
-		for (const auto& geometryIt : m_BuildRenderListPass->GetGeometryList())
+		m_ShadowPipeline->Bind();
 		{
-			BindPerObjectParamsForCurrentIteration(geometryIt.Node);
-			geometryIt.Geometry->Render(&e, nullptr, GetPipeline()->GetShaders(), nullptr, geometryIt.GeometryPartParams);
+			m_ShadowRenderTarget->Clear(ClearFlags::All, glm::vec4(0.0f, 0.0f, 0.0f, 0.0f));
+
+			BindPerFrameParamsForCurrentIteration(lightIt.Light);
+
+			for (const auto& geometryIt : m_BuildRenderListPass->GetGeometryList())
+			{
+				BindPerObjectParamsForCurrentIteration(geometryIt.Node);
+
+				geometryIt.Geometry->Render(&e, nullptr, m_ShadowPipeline->GetShaders(), nullptr, geometryIt.GeometryPartParams);
+			}
+
+			if (i < m_LightResult.size())
+			{
+				SLightResult& lightResult = m_LightResult.at(i);
+				lightResult.IsEnabled = true;
+				lightResult.LightSceneNode = lightIt.Node;
+				lightResult.LightComponent = lightIt.Light;
+				lightResult.IsShadowEnable = true;
+				lightResult.ShadowTexture->Copy(m_ShadowRenderTarget->GetTexture(IRenderTarget::AttachmentPoint::DepthStencil));
+			}
+			else
+			{
+				SLightResult lightResult;
+				lightResult.IsEnabled = true;
+				lightResult.LightSceneNode = lightIt.Node;
+				lightResult.LightComponent = lightIt.Light;
+				lightResult.IsShadowEnable = true;
+				lightResult.ShadowTexture = CreateShadowTextureDepthStencil();
+				lightResult.ShadowTexture->Copy(m_ShadowRenderTarget->GetTexture(IRenderTarget::AttachmentPoint::DepthStencil));
+				m_LightResult.push_back(lightResult);
+			}
 		}
-
-		if (i < m_LightResult.size())
-		{
-			SLightResult& lightResult = m_LightResult.at(i);
-			lightResult.IsEnabled = true;
-			lightResult.LightSceneNode = lightIt.Node;
-			lightResult.LightComponent = lightIt.Light;
-			lightResult.IsShadowEnable = true;
-			lightResult.ShadowTexture->Copy(m_ShadowRenderTarget->GetTexture(IRenderTarget::AttachmentPoint::DepthStencil));
-		}
-		else
-		{
-			SLightResult lightResult;
-			lightResult.IsEnabled = true;
-			lightResult.LightSceneNode = lightIt.Node;
-			lightResult.LightComponent = lightIt.Light;
-			lightResult.IsShadowEnable = true;
-			lightResult.ShadowTexture = CreateShadowTextureDepthStencil();
-			lightResult.ShadowTexture->Copy(m_ShadowRenderTarget->GetTexture(IRenderTarget::AttachmentPoint::DepthStencil));
-			m_LightResult.push_back(lightResult);
-		}	
+		m_ShadowPipeline->UnBind();
 	}
 }
 
 void CDefferedRenderPrepareLights::PostRender(RenderEventArgs& e)
 {
-	RenderPassPipelined::PostRender(e);
+	RenderPass::PostRender(e);
 }
 
 
@@ -100,6 +109,9 @@ std::shared_ptr<IRenderPassPipelined> CDefferedRenderPrepareLights::CreatePipeli
 
 	//std::shared_ptr<IShader> pixelShader = GetRenderDevice()->CreateShader(EShaderType::PixelShader, "IDB_SHADER_3D_SHADOW", IShader::ShaderMacros(), "PS_Shadow", "latest");
 
+	IBlendState::BlendMode disableBlending = IBlendState::BlendMode(false);
+	IDepthStencilState::DepthMode enableDepthWrites = IDepthStencilState::DepthMode(true, IDepthStencilState::DepthWrite::Enable);
+
 	// PIPELINES
 	std::shared_ptr<IPipelineState> shadowPipeline = GetRenderDevice()->CreatePipelineState();
 	shadowPipeline->GetBlendState()->SetBlendMode(disableBlending);
@@ -111,7 +123,9 @@ std::shared_ptr<IRenderPassPipelined> CDefferedRenderPrepareLights::CreatePipeli
 	shadowPipeline->SetShader(EShaderType::VertexShader, vertexShader);
 	//shadowPipeline->SetShader(EShaderType::PixelShader, pixelShader);
 
-	return SetPipeline(shadowPipeline);
+	m_ShadowPipeline = shadowPipeline;
+	return nullptr;
+	//return SetPipeline(shadowPipeline);
 }
 
 void CDefferedRenderPrepareLights::UpdateViewport(const Viewport * _viewport)
@@ -147,22 +161,18 @@ std::shared_ptr<ITexture> CDefferedRenderPrepareLights::CreateShadowTextureDepth
 	return GetRenderDevice()->CreateTexture2D(cShadowTextureSize, cShadowTextureSize, 1, depthStencilTextureFormat);
 }
 
+void CDefferedRenderPrepareLights::DoRenderToOneContext()
+{
+}
+
 void CDefferedRenderPrepareLights::BindPerFrameParamsForCurrentIteration(const ILightComponent3D * LightComponent)
 {
-	m_PerFrameData->View = LightComponent->GetViewMatrix();
-	m_PerFrameData->Projection = LightComponent->GetProjectionMatrix();
-	m_PerFrameConstantBuffer->Set(*m_PerFrameData);
+	PerFrame perFrame;
+	perFrame.View = LightComponent->GetViewMatrix();
+	perFrame.Projection = LightComponent->GetProjectionMatrix();
+	SetPerFrameData(perFrame);
 
-	const std::shared_ptr<IShaderParameter>& perFrameParam = GetPipeline()->GetShader(EShaderType::VertexShader)->GetShaderParameterByName("PerFrame");
-	if (perFrameParam->IsValid() && m_PerFrameConstantBuffer != nullptr)
-	{
-		perFrameParam->SetConstantBuffer(m_PerFrameConstantBuffer.get());
-		perFrameParam->Bind();
-	}
-	else
-	{
-		_ASSERT(false);
-	}
+	BindPerFrameDataToVertexShader(m_ShadowPipeline->GetShader(EShaderType::VertexShader).get());
 }
 
 void CDefferedRenderPrepareLights::BindPerObjectParamsForCurrentIteration(const ISceneNode * SceneNode)
@@ -170,7 +180,7 @@ void CDefferedRenderPrepareLights::BindPerObjectParamsForCurrentIteration(const 
 	m_PerObjectData->Model = SceneNode->GetWorldTransfom();
 	m_PerObjectConstantBuffer->Set(*m_PerObjectData);
 
-	const std::shared_ptr<IShaderParameter>& perObjectParam = GetPipeline()->GetShader(EShaderType::VertexShader)->GetShaderParameterByName("PerObject");
+	const std::shared_ptr<IShaderParameter>& perObjectParam = m_ShadowPipeline->GetShader(EShaderType::VertexShader)->GetShaderParameterByName("PerObject");
 	if (perObjectParam->IsValid() && m_PerObjectConstantBuffer != nullptr)
 	{
 		perObjectParam->SetConstantBuffer(m_PerObjectConstantBuffer.get());
@@ -179,5 +189,25 @@ void CDefferedRenderPrepareLights::BindPerObjectParamsForCurrentIteration(const 
 	else
 	{
 		_ASSERT(false);
+	}
+}
+
+
+
+//
+// Protected
+//
+void CDefferedRenderPrepareLights::SetPerFrameData(const PerFrame& PerFrame)
+{
+	m_PerFrameConstantBuffer->Set(PerFrame);
+}
+
+void CDefferedRenderPrepareLights::BindPerFrameDataToVertexShader(const IShader * VertexShader) const
+{
+	const std::shared_ptr<IShaderParameter>& perFrameParam = VertexShader->GetShaderParameterByName("PerFrame");
+	if (perFrameParam->IsValid() && m_PerFrameConstantBuffer != nullptr)
+	{
+		perFrameParam->SetConstantBuffer(m_PerFrameConstantBuffer.get());
+		perFrameParam->Bind();
 	}
 }

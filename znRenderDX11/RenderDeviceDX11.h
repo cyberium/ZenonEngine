@@ -62,9 +62,9 @@ public:
 	void DestroyStructuredBuffer(std::shared_ptr<IStructuredBuffer> buffer);
 
 	// RenderDeviceDX11
-	std::shared_ptr<IRenderDevice> GetRenderDevice() override final;
-	ID3D11Device4* GetDeviceD3D11() override final;
-	ID3D11DeviceContext3* GetDeviceContextD3D11() override final;
+	std::shared_ptr<IRenderDevice>                  GetRenderDevice() override final;
+	ID3D11Device4*                                  GetDeviceD3D11() override final;
+	ID3D11DeviceContext3*                           GetDeviceContextD3D11() override final;
 
 protected:
 	void                                            InitializeD3D11();
