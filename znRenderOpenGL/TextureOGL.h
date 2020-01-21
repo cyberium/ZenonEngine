@@ -29,10 +29,10 @@ public:
 	virtual void Clear(ClearFlags clearFlags = ClearFlags::All, cvec4 color = vec4(0), float depth = 1.0f, uint8_t stencil = 0) override final;
 
 	virtual void Bind(uint32_t ID, const IShader* shader, IShaderParameter::Type parameterType) const override final;
-	virtual void Bind(uint32_t ID, IShader::ShaderType _shaderType, IShaderParameter::Type parameterType) const override final;
+	virtual void Bind(uint32_t ID, EShaderType _shaderType, IShaderParameter::Type parameterType) const override final;
 
 	virtual void UnBind(uint32_t ID, const IShader* shader, IShaderParameter::Type parameterType) const override final;
-	virtual void UnBind(uint32_t ID, IShader::ShaderType _shaderType, IShaderParameter::Type parameterType) const override final;
+	virtual void UnBind(uint32_t ID, EShaderType _shaderType, IShaderParameter::Type parameterType) const override final;
 
 	virtual const std::vector<uint8>& GetBuffer() override final;
 

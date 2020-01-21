@@ -6,7 +6,7 @@ public:
 	MaterialOGL(std::weak_ptr<IRenderDevice> RenderDeviceOGL, size_t Size);
 	virtual ~MaterialOGL();
 
-    void                                            SetShader(IShader::ShaderType type, std::shared_ptr<IShader> pShader) override;
+    void                                            SetShader(EShaderType type, std::shared_ptr<IShader> pShader) override;
 
     // MaterialBase
 	void                                            Bind(const ShaderMap& shaders) const override final;

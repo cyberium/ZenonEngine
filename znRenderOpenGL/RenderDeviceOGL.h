@@ -1,6 +1,8 @@
 #pragma once
 
-class RenderDeviceOGL : public RenderDeviceBase, public IRenderDeviceOGL, public std::enable_shared_from_this<IRenderDevice>
+class RenderDeviceOGL 
+	: public RenderDeviceBase
+	, public IRenderDeviceOGL
 {
 public:
 	RenderDeviceOGL(IBaseManager* BaseManager);
@@ -11,7 +13,7 @@ public:
 	bool Initialize() override;
 	void Finalize() override;
 
-	const std::string& GetDeviceName() const;
+	std::string GetDeviceName() const;
     const RenderDeviceType GetDeviceType() const;
 	IBaseManager* GetBaseManager() const;
 	std::shared_ptr<IRenderWindow> CreateRenderWindow(IWindowObject * WindowObject, bool vSync);
@@ -32,7 +34,7 @@ public:
 	virtual void Lock();
 	virtual void Unlock();
 
-	virtual std::shared_ptr<IShader> CreateShader(IShader::ShaderType type, const std::string& fileName, const IShader::ShaderMacros& shaderMacros, const std::string& entryPoint, const std::string& profile, std::shared_ptr<IShaderInputLayout> _customLayout);
+	virtual std::shared_ptr<IShader> CreateShader(EShaderType type, const std::string& fileName, const IShader::ShaderMacros& shaderMacros, const std::string& entryPoint, const std::string& profile, std::shared_ptr<IShaderInputLayout> _customLayout);
 	virtual void DestroyShader(std::shared_ptr<IShader> shader);
 	
 	virtual std::shared_ptr<IMesh> CreateMesh();
@@ -69,13 +71,13 @@ public:
 	void                        SetDefaultRB(uint32 _obj);
 
 protected:
-	void                        CreateDevice() override final;
+	void                        CreateDevice();
 
 private:
 	void                        LoadDefaultResources();
 
 private:
-	IBaseManager*                   m_BaseManager;
+	IBaseManager*               m_BaseManager;
 
 	uint32						m_DepthFormat;
 	bool						_doubleBuffered;

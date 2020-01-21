@@ -1,7 +1,5 @@
 #pragma once
 
-#include "GeometryDX11.h"
-
 class ZN_API MeshDX11 
 	: public MeshBase
 {

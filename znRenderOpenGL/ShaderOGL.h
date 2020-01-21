@@ -9,8 +9,8 @@ public:
 	virtual ~ShaderOGL();
 
 	// Shader loading
-	bool LoadShaderFromString(ShaderType shaderType, const std::string& fileName, const std::string& source, const ShaderMacros& shaderMacros, const std::string& entryPoint, const std::string& profile, std::shared_ptr<IShaderInputLayout> _customLayout);
-	bool LoadShaderFromFile(ShaderType shaderType, const std::string& fileName, const ShaderMacros& shaderMacros, const std::string& entryPoint, const std::string& profile, std::shared_ptr<IShaderInputLayout> _customLayout);
+	bool LoadShaderFromString(EShaderType shaderType, const std::string& fileName, const std::string& source, const ShaderMacros& shaderMacros, const std::string& entryPoint, const std::string& profile, std::shared_ptr<IShaderInputLayout> _customLayout);
+	bool LoadShaderFromFile(EShaderType shaderType, const std::string& fileName, const ShaderMacros& shaderMacros, const std::string& entryPoint, const std::string& profile, std::shared_ptr<IShaderInputLayout> _customLayout);
 
     bool LoadInputLayoutFromReflector() override final;
     bool LoadInputLayoutFromCustomElements(const std::vector<SCustomVertexElement>& declIn) override final;
@@ -33,4 +33,4 @@ private:
 	std::weak_ptr<IRenderDevice> m_RenderDevice;
 };
 
-GLbitfield GLTranslateShaderBitType(IShader::ShaderType _type);
+GLbitfield GLTranslateShaderBitType(EShaderType _type);

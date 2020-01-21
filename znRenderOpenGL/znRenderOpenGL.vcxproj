@@ -91,6 +91,7 @@
     <ClCompile Include="ConstantBufferOGL.cpp" />
     <ClCompile Include="CustomElement_To_OpenGL.cpp" />
     <ClCompile Include="DepthStencilStateOGL.cpp" />
+    <ClCompile Include="GeometryOGL.cpp" />
     <ClCompile Include="MaterialOGL.cpp" />
     <ClCompile Include="MeshOGL.cpp" />
     <ClCompile Include="OpenGL.cpp" />
@@ -118,6 +119,7 @@
     <ClInclude Include="ConstantBufferOGL.h" />
     <ClInclude Include="CustomElement_To_OpenGL.h" />
     <ClInclude Include="DepthStencilStateOGL.h" />
+    <ClInclude Include="GeometryOGL.h" />
     <ClInclude Include="MaterialOGL.h" />
     <ClInclude Include="MeshOGL.h" />
     <ClInclude Include="OpenGL.h" />

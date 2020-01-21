@@ -417,7 +417,7 @@ void TextureOGL::Bind(uint32_t ID, const IShader* shader, IShaderParameter::Type
 	const ShaderOGL* pShader = dynamic_cast<const ShaderOGL*>(shader);
 	_ASSERT(pShader != NULL);
 
-	if (pShader->GetType() != IShader::ShaderType::PixelShader)
+	if (pShader->GetType() != EShaderType::PixelShader)
 	{
 		return;
 	}
@@ -429,7 +429,7 @@ void TextureOGL::Bind(uint32_t ID, const IShader* shader, IShaderParameter::Type
 
 }
 
-void TextureOGL::Bind(uint32_t ID, IShader::ShaderType _shaderType, IShaderParameter::Type parameterType) const
+void TextureOGL::Bind(uint32_t ID, EShaderType _shaderType, IShaderParameter::Type parameterType) const
 {
 	_ASSERT(false);
 }
@@ -445,7 +445,7 @@ void TextureOGL::UnBind(uint32_t ID, const IShader* shader, IShaderParameter::Ty
 	glBindTexture(m_TextureType, 0);
 }
 
-void TextureOGL::UnBind(uint32_t ID, IShader::ShaderType _shaderType, IShaderParameter::Type parameterType) const
+void TextureOGL::UnBind(uint32_t ID, EShaderType _shaderType, IShaderParameter::Type parameterType) const
 {
 	_ASSERT(false);
 }

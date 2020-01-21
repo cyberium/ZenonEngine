@@ -21,7 +21,7 @@ MaterialOGL::~MaterialOGL()
 	}
 }
 
-void MaterialOGL::SetShader(IShader::ShaderType type, std::shared_ptr<IShader> pShader)
+void MaterialOGL::SetShader(EShaderType type, std::shared_ptr<IShader> pShader)
 {
     MaterialBase::SetShader(type, pShader);
 

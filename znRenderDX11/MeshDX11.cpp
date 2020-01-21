@@ -1,12 +1,10 @@
 #include "stdafx.h"
 
-// Include render
-#include "BufferDX11.h"
-#include "ShaderDX11.h"
-#include "PipelineStateDX11.h"
-
 // General
 #include "MeshDX11.h"
+
+// Additional
+#include "GeometryDX11.h"
 
 MeshDX11::MeshDX11(IRenderDeviceDX11* RenderDeviceD3D11)
 {

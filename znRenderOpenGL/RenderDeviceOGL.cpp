@@ -157,7 +157,7 @@ void RenderDeviceOGL::Finalize()
 	m_Queries.clear();
 }
 
-const std::string& RenderDeviceOGL::GetDeviceName() const
+std::string RenderDeviceOGL::GetDeviceName() const
 {
 	return "OpenGL device";
 }
@@ -273,7 +273,7 @@ void RenderDeviceOGL::DestroyMesh(std::shared_ptr<IMesh> mesh)
 }
 
 
-std::shared_ptr<IShader> RenderDeviceOGL::CreateShader(IShader::ShaderType type, const std::string& fileName, const IShader::ShaderMacros& shaderMacros, const std::string& entryPoint, const std::string& profile, std::shared_ptr<IShaderInputLayout> _customLayout)
+std::shared_ptr<IShader> RenderDeviceOGL::CreateShader(EShaderType type, const std::string& fileName, const IShader::ShaderMacros& shaderMacros, const std::string& entryPoint, const std::string& profile, std::shared_ptr<IShaderInputLayout> _customLayout)
 {
 	std::string fullName = fileName + entryPoint + profile;
 
@@ -501,8 +501,5 @@ void RenderDeviceOGL::CreateDevice()
 //
 void RenderDeviceOGL::LoadDefaultResources()
 {
-	// Create a magenta texture if a texture defined in the shader is not bound.
-	m_pDefaultTexture = CreateTexture2D("Textures\\default.png");
-	//m_pDefaultTexture = CreateTexture2D(1, 1, 1, ITexture::TextureFormat());
-	//m_pDefaultTexture->Clear(ClearFlags::Color, vec4(1, 0, 1, 1));
+	m_pDefaultTexture = CreateTexture2D("IDB_DEFAULT_TEXTURE");
 }

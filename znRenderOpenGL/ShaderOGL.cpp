@@ -4,7 +4,7 @@
 #include "ShaderOGL.h"
 
 // FORWARD BEGIN
-GLenum GLTranslateShaderType(IShader::ShaderType _type);
+GLenum GLTranslateShaderType(EShaderType _type);
 // FORWARD END
 
 ShaderOGL::ShaderOGL(std::weak_ptr<IRenderDevice> RenderDevice)
@@ -52,7 +52,7 @@ void ShaderOGL::Destroy()
 
 
 
-bool ShaderOGL::LoadShaderFromString(ShaderType shaderType, const std::string& fileName, const std::string& source, const ShaderMacros & shaderMacros, const std::string& entryPoint, const std::string& profile, std::shared_ptr<IShaderInputLayout> _customLayout)
+bool ShaderOGL::LoadShaderFromString(EShaderType shaderType, const std::string& fileName, const std::string& source, const ShaderMacros & shaderMacros, const std::string& entryPoint, const std::string& profile, std::shared_ptr<IShaderInputLayout> _customLayout)
 {
     m_ShaderType = shaderType;
     m_ShaderFileName = fileName;
@@ -60,7 +60,7 @@ bool ShaderOGL::LoadShaderFromString(ShaderType shaderType, const std::string& f
     return false;
 }
 
-bool ShaderOGL::LoadShaderFromFile(ShaderType shaderType, const std::string& fileName, const ShaderMacros& shaderMacros, const std::string& entryPoint, const std::string& profile, std::shared_ptr<IShaderInputLayout> _customLayout)
+bool ShaderOGL::LoadShaderFromFile(EShaderType shaderType, const std::string& fileName, const ShaderMacros& shaderMacros, const std::string& entryPoint, const std::string& profile, std::shared_ptr<IShaderInputLayout> _customLayout)
 {
     m_ShaderType = shaderType;
     m_ShaderFileName = fileName;
@@ -215,48 +215,48 @@ uint32 ShaderOGL::GetGLObject() const
 //
 // HELPERS
 //
-GLenum GLTranslateShaderType(IShader::ShaderType _type)
+GLenum GLTranslateShaderType(EShaderType _type)
 {
     switch (_type)
     {
-        case IShader::ShaderType::VertexShader:
+        case EShaderType::VertexShader:
             return GL_VERTEX_SHADER;
-        case IShader::ShaderType::PixelShader:
+        case EShaderType::PixelShader:
             return GL_FRAGMENT_SHADER;
-        case IShader::ShaderType::GeometryShader:
+        case EShaderType::GeometryShader:
             return GL_GEOMETRY_SHADER;
-        case IShader::ShaderType::TessellationControlShader:
+        case EShaderType::TessellationControlShader:
             return GL_TESS_CONTROL_SHADER;
-        case IShader::ShaderType::TessellationEvaluationShader:
+        case EShaderType::TessellationEvaluationShader:
             return GL_TESS_EVALUATION_SHADER;
-        case IShader::ShaderType::ComputeShader:
+        case EShaderType::ComputeShader:
             return GL_COMPUTE_SHADER;
         default:
             _ASSERT(false);
     }
 }
 
-GLbitfield GLTranslateShaderBitType(IShader::ShaderType _type)
+GLbitfield GLTranslateShaderBitType(EShaderType _type)
 {
 	GLbitfield result = GL_VERTEX_SHADER_BIT;
 	switch (_type)
 	{
-	case IShader::ShaderType::VertexShader:
+	case EShaderType::VertexShader:
 		result = GL_VERTEX_SHADER_BIT;
 		break;
-	case IShader::ShaderType::PixelShader:
+	case EShaderType::PixelShader:
 		result = GL_FRAGMENT_SHADER_BIT;
 		break;
-	case IShader::ShaderType::GeometryShader:
+	case EShaderType::GeometryShader:
 		result = GL_GEOMETRY_SHADER_BIT;
 		break;
-	case IShader::ShaderType::TessellationControlShader:
+	case EShaderType::TessellationControlShader:
 		result = GL_TESS_CONTROL_SHADER_BIT;
 		break;
-	case IShader::ShaderType::TessellationEvaluationShader:
+	case EShaderType::TessellationEvaluationShader:
 		result = GL_TESS_EVALUATION_SHADER_BIT;
 		break;
-	case IShader::ShaderType::ComputeShader:
+	case EShaderType::ComputeShader:
 		result = GL_COMPUTE_SHADER_BIT;
 		break;
 	default:
