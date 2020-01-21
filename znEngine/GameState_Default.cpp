@@ -199,10 +199,10 @@ void CGameState_World::Load3D()
 		mat->SetWrapper(mat.get());
 
 		IMesh* mesh = GetRenderDevice()->GetPrimitiveCollection()->CreateCube();
-		mesh->SetMaterial(mat.get());
+		mesh->SetMaterial(mat);
 
 		IMesh* mesh2 = GetRenderDevice()->GetPrimitiveCollection()->CreateSphere();
-		mesh2->SetMaterial(mat.get());
+		mesh2->SetMaterial(mat);
 
 		m_RootForBoxes = m_Scene3D->CreateWrappedSceneNode<SceneNode3D>("SceneNode3D", m_Scene3D->GetRootNode());
 		//m_RootForBoxes->SetTranslate(glm::vec3(150, 0, 150));
@@ -248,7 +248,7 @@ void CGameState_World::Load3D()
 		mat2->SetWrapper(mat2.get());
 
 		IMesh* meshPlane = GetRenderDevice()->GetPrimitiveCollection()->CreatePlane();
-		meshPlane->SetMaterial(mat2.get());
+		meshPlane->SetMaterial(mat2);
 
 		std::shared_ptr<ISceneNode> sceneNodePlane = m_Scene3D->CreateWrappedSceneNode<SceneNode3D>("SceneNode3D", m_Scene3D->GetRootNode());
 		sceneNodePlane->SetName("Ground");

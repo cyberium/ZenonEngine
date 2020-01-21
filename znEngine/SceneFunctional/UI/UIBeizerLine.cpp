@@ -22,7 +22,7 @@ CUIBeizerLineNode::CUIBeizerLineNode(IRenderDevice* RenderDevice)
 
     m_PointsBuffer = RenderDevice->CreateVertexBuffer(p, 4);
     m_Mesh->AddVertexBuffer(BufferBinding("POSITION", 0), m_PointsBuffer);
-	m_Mesh->SetMaterial(m_Material.get());
+	m_Mesh->SetMaterial(m_Material);
 }
 
 CUIBeizerLineNode::~CUIBeizerLineNode()

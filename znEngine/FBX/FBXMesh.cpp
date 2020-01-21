@@ -505,7 +505,7 @@ void CFBXMesh::DisplayMaterialConnections(fbxsdk::FbxMesh* NativeMesh)
 				int lMatId = lMaterialElement->GetIndexArray().GetAt(0);
 				_ASSERT(lMatId >= 0);
 
-				SetMaterial(m_OwnerFBXNode.lock()->GetMaterial(lMatId).get());
+				SetMaterial(m_OwnerFBXNode.lock()->GetMaterial(lMatId));
 			}
 			else
 			{
@@ -546,7 +546,7 @@ void CFBXMesh::DisplayMaterialConnections(fbxsdk::FbxMesh* NativeMesh)
 			geometryPartParams.VertexStartLocation = it.second.PolygonBegin * 3;
 			geometryPartParams.VertexCnt = it.second.PolygonEnd * 3 - geometryPartParams.VertexStartLocation + 3;
 
-			AddMaterial(m_OwnerFBXNode.lock()->GetMaterial(it.first).get(), geometryPartParams);
+			AddMaterial(m_OwnerFBXNode.lock()->GetMaterial(it.first), geometryPartParams);
 
 			//Log::Info("Material with id '%d' added for (%d to %d)", it.first, geometryPartParams.VertexStartLocation, geometryPartParams.VertexCnt);
 		}

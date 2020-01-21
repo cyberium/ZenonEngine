@@ -53,12 +53,12 @@ void MeshProxie::SetPrimitiveTopology(PrimitiveTopology _topology)
 	m_Mesh->SetPrimitiveTopology(_topology);
 }
 
-void MeshProxie::SetMaterial(const IMaterial* Material)
+void MeshProxie::SetMaterial(const std::shared_ptr<IMaterial> Material)
 {
 	m_Mesh->SetMaterial(Material);
 }
 
-void MeshProxie::AddMaterial(const IMaterial* Material, SGeometryPartParams GeometryPartParams)
+void MeshProxie::AddMaterial(const std::shared_ptr<IMaterial> Material, SGeometryPartParams GeometryPartParams)
 {
 	m_Mesh->AddMaterial(Material, GeometryPartParams);
 }

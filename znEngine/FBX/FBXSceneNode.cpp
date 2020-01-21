@@ -92,7 +92,7 @@ void CFBXSceneNode::LoadNode()
 			matDebug->SetWrapper(matDebug.get());
 
 			IMesh* mesh = m_BaseManager->GetManager<IRenderDevice>()->GetPrimitiveCollection()->CreateCone();
-			mesh->SetMaterial(matDebug.get());
+			mesh->SetMaterial(matDebug);
 			GetComponent<IMeshComponent3D>()->AddMesh(mesh);
 
 		}

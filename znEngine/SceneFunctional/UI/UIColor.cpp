@@ -10,7 +10,7 @@ CUIColorNode::CUIColorNode(IRenderDevice* RenderDevice, vec2 Size)
 	m_Material->SetWrapper(m_Material.get());;
 
 	m_Mesh = RenderDevice->GetPrimitiveCollection()->CreateUIQuad(Size.x, Size.y);
-	m_Mesh->SetMaterial(m_Material.get());
+	m_Mesh->SetMaterial(m_Material);
 }
 
 CUIColorNode::~CUIColorNode()

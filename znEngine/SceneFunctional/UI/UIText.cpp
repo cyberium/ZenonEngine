@@ -84,7 +84,7 @@ bool CUITextNode::AcceptMesh(IVisitor* visitor)
 	const std::string& _text = m_TextProperty->Get();
 	vec2 _offset = m_OffsetProperty->Get();
 
-	m_Font->SetMaterial(m_Material.get());
+	m_Font->SetMaterial(m_Material);
 
 	for (uint32 i = 0; i < _text.length(); i++)
 	{

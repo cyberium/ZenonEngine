@@ -45,7 +45,7 @@ void MeshBase::SetIndexBuffer(IBuffer* buffer)
 	m_Geometry->SetIndexBuffer(buffer);
 }
 
-void MeshBase::SetMaterial(const IMaterial* Material)
+void MeshBase::SetMaterial(const std::shared_ptr<IMaterial> Material)
 {
 	if (m_MaterialForGeometryParts.empty())
 	{
@@ -61,7 +61,7 @@ void MeshBase::SetMaterial(const IMaterial* Material)
 	}
 }
 
-void MeshBase::AddMaterial(const IMaterial* Material, SGeometryPartParams GeometryPartParams)
+void MeshBase::AddMaterial(const std::shared_ptr<IMaterial> Material, SGeometryPartParams GeometryPartParams)
 {
 	SRenderGeometryArgs renderGeometryArgs;
 	renderGeometryArgs.Material = Material;
@@ -80,7 +80,7 @@ bool MeshBase::Accept(IVisitor* visitor, SGeometryPartParams GeometryPartParams 
 
 	for (const auto& materialForGeometryPart : m_MaterialForGeometryParts)
 	{
-		const IMaterial* material = materialForGeometryPart.Material;
+		const IMaterial* material = materialForGeometryPart.Material.get();
 
 		visitResult = m_Geometry->Accept(visitor, material, ((! GeometryPartParams.IsDefault()) ? GeometryPartParams : materialForGeometryPart.GeometryPartParams));
 	}

@@ -94,9 +94,8 @@ void MaterialBase::Bind(const ShaderMap& shaders) const
 {
 	if (m_Dirty)
 	{
-		IMaterial* wrapper = m_Wrapper;
-		if (wrapper)
-			wrapper->UpdateConstantBuffer();
+		if (m_Wrapper)
+			m_Wrapper->UpdateConstantBuffer();
 		m_Dirty = false;
 	}
 }

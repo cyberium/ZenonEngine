@@ -18,8 +18,8 @@ public:
 
 	virtual void SetPrimitiveTopology(PrimitiveTopology _topology);
 
-	virtual void SetMaterial(const IMaterial* Material);
-	virtual void AddMaterial(const IMaterial* Material, SGeometryPartParams GeometryPartParams = SGeometryPartParams()) override;
+	virtual void SetMaterial(const std::shared_ptr<IMaterial> Material);
+	virtual void AddMaterial(const std::shared_ptr<IMaterial> Material, SGeometryPartParams GeometryPartParams = SGeometryPartParams()) override;
 
 	virtual IGeometry* GetGeometry() const override;
 

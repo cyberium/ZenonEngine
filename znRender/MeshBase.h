@@ -20,8 +20,8 @@ public:
 	virtual void                                    SetVertexBuffer(IBuffer* buffer) override;
 	virtual void                                    SetIndexBuffer(IBuffer* buffer) override;
 
-	void                                            SetMaterial(const IMaterial* Material);
-	void											AddMaterial(const IMaterial* Material, SGeometryPartParams GeometryPartParams = SGeometryPartParams()) override final;
+	void                                            SetMaterial(const std::shared_ptr<IMaterial> Material);
+	void											AddMaterial(const std::shared_ptr<IMaterial> Material, SGeometryPartParams GeometryPartParams = SGeometryPartParams()) override final;
 
 	virtual IGeometry*                              GetGeometry() const override;
 

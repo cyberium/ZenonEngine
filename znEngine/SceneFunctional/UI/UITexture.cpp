@@ -16,7 +16,7 @@ CUITextureNode::CUITextureNode(IRenderDevice* RenderDevice, vec2 Size)
 	m_Material->SetColor(cDefaultColor);
 
 	m_Mesh = RenderDevice->GetPrimitiveCollection()->CreateUIQuad(Size.x, Size.y);
-	m_Mesh->SetMaterial(m_Material.get());
+	m_Mesh->SetMaterial(m_Material);
 }
 
 CUITextureNode::~CUITextureNode()

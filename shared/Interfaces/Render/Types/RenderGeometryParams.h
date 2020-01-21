@@ -26,7 +26,7 @@ struct ZN_API SGeometryPartParams
 
 struct ZN_API SRenderGeometryArgs
 {
-	const IMaterial* Material;
+	std::shared_ptr<const IMaterial> Material;
 	SGeometryPartParams GeometryPartParams;
 
 	inline SRenderGeometryArgs& operator=(const SRenderGeometryArgs& Other)

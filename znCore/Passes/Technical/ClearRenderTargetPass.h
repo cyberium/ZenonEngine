@@ -29,8 +29,8 @@ public:
 	virtual void Render(RenderEventArgs& e) override;
 
 private:
-	IRenderTarget* m_RenderTarget;
-	ITexture* m_Texture;
+	IRenderTarget* m_RenderTarget = nullptr;
+	ITexture* m_Texture = nullptr;
 	ClearFlags m_ClearFlags;
 	glm::vec4 m_ClearColor;
 	float m_ClearDepth;

@@ -25,8 +25,8 @@ ZN_INTERFACE ZN_API __declspec(novtable) IMesh : public std::enable_shared_from_
 
 	virtual void                                    SetPrimitiveTopology(PrimitiveTopology _topology) = 0;
 
-	virtual void                                    SetMaterial(const IMaterial* Material) = 0;
-	virtual void                                    AddMaterial(const IMaterial* Material, SGeometryPartParams GeometryPartParams = SGeometryPartParams()) = 0;
+	virtual void                                    SetMaterial(const std::shared_ptr<IMaterial> Material) = 0;
+	virtual void                                    AddMaterial(const std::shared_ptr<IMaterial> Material, SGeometryPartParams GeometryPartParams = SGeometryPartParams()) = 0;
 
 	virtual IGeometry*                              GetGeometry() const = 0;
 
