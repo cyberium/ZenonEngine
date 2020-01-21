@@ -62,9 +62,9 @@ public:
 	void DestroyStructuredBuffer(std::shared_ptr<IStructuredBuffer> buffer);
 
 	// RenderDeviceDX11
-	std::shared_ptr<IRenderDevice> GetDevice() override final;
-	ID3D11Device2* GetDeviceD3D11() override final;
-	ID3D11DeviceContext2* GetDeviceContextD3D11() override final;
+	std::shared_ptr<IRenderDevice> GetRenderDevice() override final;
+	ID3D11Device4* GetDeviceD3D11() override final;
+	ID3D11DeviceContext3* GetDeviceContextD3D11() override final;
 
 protected:
 	void                                            InitializeD3D11();
@@ -77,9 +77,9 @@ private:
 	IBaseManager*                                   m_BaseManager;
 
 	// DirectX
-	ATL::CComPtr<ID3D11Device2>                     m_DeviceD3D11;
+	ATL::CComPtr<ID3D11Device4>                     m_DeviceD3D11;
 	ATL::CComPtr<ID3D11Debug>                       m_DebugD3D11;
-	ATL::CComPtr<ID3D11DeviceContext2>              m_DeviceImmediateContext;
-	ATL::CComPtr<ID3D11DeviceContext2>              m_DeviceDefferedContext;
+	ATL::CComPtr<ID3D11DeviceContext3>              m_DeviceImmediateContext;
+	ATL::CComPtr<ID3D11DeviceContext3>              m_DeviceDefferedContext;
 	ATL::CComPtr<ID3D11Multithread>                 m_pMultiThread;
 };

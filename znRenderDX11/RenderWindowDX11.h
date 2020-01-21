@@ -20,7 +20,7 @@ private:
 	ATL::CComPtr<IDXGISwapChain2>                   m_pSwapChain;
 	ATL::CComPtr<ID3D11Texture2D>                   m_pBackBuffer;
 
-	DXGI_SAMPLE_DESC                                m_SampleDesc;      // Used to enable multisampling AA
+	DXGI_SAMPLE_DESC m_SampleDesc;      // Used to enable multisampling AA
 
 private: // Link to parent d3d11 device
 	IRenderDeviceDX11* m_RenderDeviceD3D11;

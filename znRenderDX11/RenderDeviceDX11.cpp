@@ -84,17 +84,17 @@ std::shared_ptr<IRenderWindow> RenderDeviceDX11::CreateRenderWindow(IWindowObjec
 	return std::make_shared<RenderWindowDX11>(this, WindowObject, vSync);
 }
 
-std::shared_ptr<IRenderDevice> RenderDeviceDX11::GetDevice()
+std::shared_ptr<IRenderDevice> RenderDeviceDX11::GetRenderDevice()
 {
 	return shared_from_this();
 }
 
-ID3D11Device2* RenderDeviceDX11::GetDeviceD3D11()
+ID3D11Device4* RenderDeviceDX11::GetDeviceD3D11()
 {
     return m_DeviceD3D11;
 }
 
-ID3D11DeviceContext2 * RenderDeviceDX11::GetDeviceContextD3D11()
+ID3D11DeviceContext3 * RenderDeviceDX11::GetDeviceContextD3D11()
 {
 	return m_DeviceImmediateContext;
 }
@@ -119,8 +119,7 @@ void RenderDeviceDX11::InitializeD3D11()
     createDeviceFlags |= D3D11_CREATE_DEVICE_DEBUG;
 #endif
 
-    // This will be the feature level that 
-    // is used to create our device and swap chain.
+    // This will be the feature level that is used to create our device and swap chain.
     D3D_FEATURE_LEVEL featureLevel;
 
     ATL::CComPtr<ID3D11Device> pDevice;
@@ -163,19 +162,18 @@ void RenderDeviceDX11::InitializeD3D11()
         return;
     }
 
-    // Now query for the ID3D11Device2 interface.
-    if (FAILED(pDevice->QueryInterface<ID3D11Device2>(&m_DeviceD3D11)))
+    if (FAILED(pDevice->QueryInterface<ID3D11Device4>(&m_DeviceD3D11)))
     {
         Log::Error("Failed to create DirectX 11.2 device");
     }
 
     // Now get the immediate device context.
-    m_DeviceD3D11->GetImmediateContext2(&m_DeviceImmediateContext);
+    m_DeviceD3D11->GetImmediateContext3(&m_DeviceImmediateContext);
 
 	//hr = m_DeviceD3D11->CreateDeferredContext2(0, &m_DeviceDefferedContext);
 
     // Need to explitly set the multithreaded mode for this device
-    if (FAILED(m_DeviceImmediateContext->QueryInterface(__uuidof(ID3D10Multithread), (void**)&m_pMultiThread)))
+    if (FAILED(m_DeviceImmediateContext->QueryInterface(__uuidof(ID3D11Multithread), (void**)&m_pMultiThread)))
     {
         Log::Error("Failed to create DirectX 11.2 device");
     }
@@ -198,8 +196,7 @@ void RenderDeviceDX11::InitializeD3D11()
                 // Add more message IDs here as needed
             };
 
-            D3D11_INFO_QUEUE_FILTER filter;
-            memset(&filter, 0, sizeof(filter));
+			D3D11_INFO_QUEUE_FILTER filter = { 0 };
             filter.DenyList.NumIDs = _countof(hide);
             filter.DenyList.pIDList = hide;
             d3dInfoQueue->AddStorageFilterEntries(&filter);

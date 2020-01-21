@@ -324,13 +324,13 @@ bool TextureDX11::LoadTexture2D(const std::string& fileName)
 
 bool TextureDX11::LoadTexture2D(const std::string& fileName)
 {
-	std::shared_ptr<IFile> f = m_RenderDeviceD3D11->GetDevice()->GetBaseManager()->GetManager<IFilesManager>()->Open(fileName);
+	std::shared_ptr<IFile> f = m_RenderDeviceD3D11->GetRenderDevice()->GetBaseManager()->GetManager<IFilesManager>()->Open(fileName);
 	if (f == nullptr)
 	{
 		return false;
 	}
 
-	std::shared_ptr<IImage> image = m_RenderDeviceD3D11->GetDevice()->GetBaseManager()->GetManager<IImagesFactory>()->CreateImage(f);
+	std::shared_ptr<IImage> image = m_RenderDeviceD3D11->GetRenderDevice()->GetBaseManager()->GetManager<IImagesFactory>()->CreateImage(f);
 	if (image == nullptr)
 	{
 		return false;

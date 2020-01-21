@@ -8,7 +8,7 @@ static DXGI_RATIONAL QueryRefreshRate(UINT screenWidth, UINT screenHeight, BOOL 
 // FORWARD END
 
 RenderWindowDX11::RenderWindowDX11(IRenderDeviceDX11* RenderDeviceD3D11, IWindowObject * WindowObject, bool vSync)
-	: RenderWindowBase(RenderDeviceD3D11->GetDevice(), WindowObject, vSync)
+	: RenderWindowBase(RenderDeviceD3D11->GetRenderDevice(), WindowObject, vSync)
     , m_RenderDeviceD3D11(RenderDeviceD3D11)
 	, m_pSwapChain(nullptr)
 	, m_pBackBuffer(nullptr)

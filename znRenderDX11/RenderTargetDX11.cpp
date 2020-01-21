@@ -113,38 +113,23 @@ void RenderTargetDX11::Bind()
 
 	ID3D11RenderTargetView* renderTargetViews[8];
 	UINT numRTVs = 0;
-
 	for (uint8_t i = 0; i < 8; i++)
-	{
-		std::shared_ptr<TextureDX11> texture = m_Textures[i];
-		if (texture)
-		{
+		if (std::shared_ptr<TextureDX11> texture = m_Textures[i])
 			renderTargetViews[numRTVs++] = texture->GetRenderTargetView();
-		}
-	}
 
 	ID3D11UnorderedAccessView* uavViews[8];
 	UINT uavStartSlot = numRTVs;
 	UINT numUAVs = 0;
-
 	for (uint8_t i = 0; i < 8; i++)
-	{
-		std::shared_ptr<StructuredBufferDX11> rwbuffer = m_StructuredBuffers[i];
-		if (rwbuffer)
-		{
+		if (std::shared_ptr<StructuredBufferDX11> rwbuffer = m_StructuredBuffers[i])
 			uavViews[numUAVs++] = rwbuffer->GetUnorderedAccessView();
-		}
-	}
 
 	ID3D11DepthStencilView* depthStencilView = nullptr;
-	std::shared_ptr<TextureDX11> depthTexture = m_Textures[(uint8_t)AttachmentPoint::Depth];
-	std::shared_ptr<TextureDX11> depthStencilTexture = m_Textures[(uint8_t)AttachmentPoint::DepthStencil];
-
-	if (depthTexture)
+	if (std::shared_ptr<TextureDX11> depthTexture = m_Textures[(uint8_t)AttachmentPoint::Depth])
 	{
 		depthStencilView = depthTexture->GetDepthStencilView();
 	}
-	else if (depthStencilTexture)
+	else if (std::shared_ptr<TextureDX11> depthStencilTexture = m_Textures[(uint8_t)AttachmentPoint::DepthStencil])
 	{
 		depthStencilView = depthStencilTexture->GetDepthStencilView();
 	}
@@ -167,7 +152,8 @@ bool RenderTargetDX11::IsValid() const
 	{
 		if (texture)
 		{
-			if (texture->GetRenderTargetView()) ++numRTV;
+			if (texture->GetRenderTargetView()) 
+				++numRTV;
 
 			if (width == -1 || height == -1)
 			{
