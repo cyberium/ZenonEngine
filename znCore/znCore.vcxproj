@@ -231,7 +231,6 @@
     <None Include="RefManager1Dim.inl" />
     <None Include="Scene\3D\SceneNode3D.inl" />
     <None Include="Scene\ComponentBase.inl" />
-    <None Include="Scene\UI\SceneNodeUI.inl" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{A4E6F769-0036-4128-A409-495D9207F587}</ProjectGuid>

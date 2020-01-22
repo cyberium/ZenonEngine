@@ -745,8 +745,5 @@
     <None Include="Scene\3D\SceneNode3D.inl">
       <Filter>Scene functional\3D</Filter>
     </None>
-    <None Include="Scene\UI\SceneNodeUI.inl">
-      <Filter>Scene functional\UI</Filter>
-    </None>
   </ItemGroup>
 </Project>

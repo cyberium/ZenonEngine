@@ -45,9 +45,6 @@ public:
 
     // Components engine
     virtual void                                    RegisterComponents() override;
-    // Components engine template access
-    template<typename T>
-    std::shared_ptr<T>                              GetComponent();
 
 
 	// Size & bounds functional
@@ -96,4 +93,3 @@ private: // Syntetic events
 	bool                                            m_IsMouseOnNode;
 };
 
-#include "SceneNodeUI.inl"
