@@ -6,7 +6,7 @@
 // Additional
 #include "Properties.h"
 
-CComponentBase::CComponentBase(std::shared_ptr<ISceneNode> OwnerNode)
+CComponentBase::CComponentBase(std::shared_ptr<ISceneNode3D> OwnerNode)
     : m_OwnerNode(OwnerNode)
 {
 	m_PropertyGroup = std::make_shared<CPropertiesGroup>();
@@ -17,7 +17,7 @@ CComponentBase::~CComponentBase()
 {
 }
 
-std::shared_ptr<ISceneNode> CComponentBase::GetOwnerNode() const
+std::shared_ptr<ISceneNode3D> CComponentBase::GetOwnerNode() const
 {
     return m_OwnerNode.lock();
 }
@@ -32,14 +32,14 @@ void CComponentBase::OnParentChanged()
 	// do nothing
 }
 
-void CComponentBase::OnMessage(std::shared_ptr<ISceneNodeComponent> Component, ComponentMessageType Message)
+void CComponentBase::OnMessage(ISceneNodeComponent* Component, ComponentMessageType Message)
 {
 	// do nothing
 }
 
-std::shared_ptr<IPropertiesGroup> CComponentBase::GetPropertiesGroup() const
+IPropertiesGroup* CComponentBase::GetPropertiesGroup() const
 {
-	return m_PropertyGroup;
+	return m_PropertyGroup.get();
 }
 
 bool CComponentBase::Load(std::shared_ptr<IXMLReader> Reader)
@@ -71,8 +71,8 @@ bool CComponentBase::Accept(IVisitor* visitor)
 //
 void CComponentBase::RaiseComponentMessage(ComponentMessageType Message)
 {
-    std::shared_ptr<ISceneNode> ownerNode = m_OwnerNode.lock();
+    std::shared_ptr<ISceneNode3D> ownerNode = m_OwnerNode.lock();
     _ASSERT(ownerNode != nullptr);
 
-    ownerNode->RaiseComponentMessage(shared_from_this(), Message);
+    ownerNode->RaiseComponentMessage(this, Message);
 }

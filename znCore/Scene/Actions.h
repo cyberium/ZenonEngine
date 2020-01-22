@@ -14,13 +14,13 @@ public:
 	std::string GetDescription() const;
 	void SetDescription(const std::string& Description);
 
-	void SetAction(std::function<bool(const std::shared_ptr<ISceneNode>&) > Action);
-	void ExecuteAction(const std::shared_ptr<ISceneNode>& ProcessedNode);
+	void SetAction(std::function<bool(const std::shared_ptr<ISceneNode3D>&) > Action);
+	void ExecuteAction(const std::shared_ptr<ISceneNode3D>& ProcessedNode);
 
 private:
 	std::string m_Name;
 	std::string m_Description;
-	std::function<bool(const std::shared_ptr<ISceneNode>&)> m_Action;
+	std::function<bool(const std::shared_ptr<ISceneNode3D>&)> m_Action;
 };
 
 class ZN_API CActionsGroup

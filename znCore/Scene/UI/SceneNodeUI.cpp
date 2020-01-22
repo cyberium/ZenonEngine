@@ -17,28 +17,150 @@ CUIBaseNode::~CUIBaseNode()
 {
 }
 
-std::shared_ptr<CUIBaseNode> CUIBaseNode::shared_from_this()
-{
-    return std::dynamic_pointer_cast<CUIBaseNode>(SceneNodeBase::shared_from_this());
-}
 
-std::weak_ptr<CUIBaseNode> CUIBaseNode::weak_from_this()
-{
-    return std::weak_ptr<CUIBaseNode>(shared_from_this());
-}
 
 
 
 //
 // ISceneNodeUI
 //
+void CUIBaseNode::Initialize()
+{
+
+}
+
+void CUIBaseNode::Finalize()
+{
+
+}
+
+
+
+//
+// Name & Type
+//
+std::string CUIBaseNode::GetType() const
+{
+	return m_Type;
+}
+
+void CUIBaseNode::SetType(std::string Type)
+{
+	m_Type = Type;
+}
+
+std::string CUIBaseNode::GetName() const
+{
+	return m_Name;
+}
+
+void CUIBaseNode::SetName(std::string Name)
+{
+	m_Name = Name;
+}
+
+
+
+//
+// Childs functional
+//
+void CUIBaseNode::AddChild(std::shared_ptr<ISceneNodeUI> childNode)
+{
+	if (childNode == nullptr)
+		_ASSERT_EXPR(false, L"Child node must not be NULL.");
+
+	NodeUIList::iterator iter = std::find(m_Children.begin(), m_Children.end(), childNode);
+	if (iter == m_Children.end())
+	{
+		m_ParentNode = weak_from_this();
+
+		m_Children.push_back(childNode);
+		if (!childNode->GetName().empty())
+			m_ChildrenByName.insert(NodeUINameMap::value_type(childNode->GetName(), childNode));
+
+		//GetScene()->RaiseSceneChangeEvent(ESceneChangeType::NodeAdded, shared_from_this(), childNode);
+	}
+}
+
+void CUIBaseNode::RemoveChild(std::shared_ptr<ISceneNodeUI> childNode)
+{
+	if (childNode)
+	{
+		_ASSERT_EXPR(false, L"Child node must not be NULL.");
+	}
+
+	NodeUIList::iterator iter = std::find(m_Children.begin(), m_Children.end(), childNode);
+	if (iter != m_Children.end())
+	{
+		m_ParentNode = std::weak_ptr<ISceneNodeUI>();
+
+		m_Children.erase(iter);
+		NodeUINameMap::iterator iter2 = m_ChildrenByName.find(childNode->GetName());
+		if (iter2 != m_ChildrenByName.end())
+			m_ChildrenByName.erase(iter2);
+
+		//GetScene()->RaiseSceneChangeEvent(ESceneChangeType::NodeRemoved, shared_from_this(), childNode);
+	}
+	else
+	{
+		// Maybe this node appears lower in the hierarchy...
+		for (auto child : m_Children)
+		{
+			child->RemoveChild(childNode);
+		}
+	}
+}
+
+void CUIBaseNode::SetParent(ISceneNodeUI* parentNode)
+{
+	// Remove from current parent
+	std::shared_ptr<ISceneNodeUI> currentParent = m_ParentNode.lock();
+	if (currentParent != nullptr)
+	{
+		currentParent->RemoveChild(shared_from_this());
+		m_ParentNode.reset();
+	}
+
+	// Add to new parent
+	if (ISceneNodeUI* newParent = parentNode)
+		newParent->AddChild(shared_from_this());
+}
+
+ISceneNodeUI* CUIBaseNode::GetParent() const
+{
+	return m_ParentNode.lock().get();
+}
+
+const CUIBaseNode::NodeUIList& CUIBaseNode::GetChilds()
+{
+	return m_Children;
+}
+
+
+
+//
+// Actions & Properties
+//
+IActionsGroup * CUIBaseNode::GetActions() const
+{
+	return m_ActionsGroup.get();
+}
+
+IPropertiesGroup * CUIBaseNode::GetProperties() const
+{
+	return m_PropertiesGroup.get();
+}
+
+IScene * CUIBaseNode::GetScene() const
+{
+	return m_Scene.lock().get();
+}
+
 void CUIBaseNode::SetTranslate(cvec2 _translate)
 {
 	m_Translate = _translate;
 
 	UpdateLocalTransform();
-
-	//RaiseComponentMessage(UUID_TransformComponent_OnTranslateChanged);
 }
 cvec2 CUIBaseNode::GetTranslation() const
 {
@@ -47,7 +169,7 @@ cvec2 CUIBaseNode::GetTranslation() const
 glm::vec2 CUIBaseNode::GetTranslationAbs() const
 {
 	glm::vec2 parentTranslate = glm::vec2(0.0f, 0.0f);
-	if (std::shared_ptr<ISceneNodeUI> parent = std::dynamic_pointer_cast<ISceneNodeUI>(GetParent()))
+	if (ISceneNodeUI* parent = GetParent())
 		parentTranslate = parent->GetTranslationAbs();
 	return parentTranslate + GetTranslation();
 }
@@ -76,16 +198,12 @@ cvec2 CUIBaseNode::GetScale() const
 glm::vec2 CUIBaseNode::GetScaleAbs() const
 {
 	glm::vec2 parentScale = vec2(1.0f, 1.0f);
-	if (std::shared_ptr<ISceneNodeUI> parent = std::dynamic_pointer_cast<ISceneNodeUI>(GetParent()))
+	if (ISceneNodeUI* parent = GetParent())
 		parentScale = parent->GetScaleAbs();
 	return parentScale * GetScale();
 }
 
 
-void CUIBaseNode::RegisterComponents()
-{
-
-}
 
 //
 // Size & bounds
@@ -118,7 +236,7 @@ bool CUIBaseNode::IsPointInBoundsAbs(glm::vec2 Point)
 //
 bool CUIBaseNode::Accept(IVisitor* visitor)
 {
-	bool visitResult = visitor->VisitUI(this);
+	/*bool visitResult = visitor->VisitUI(this);
 
 	if (!visitResult)
 		return false;
@@ -130,7 +248,9 @@ bool CUIBaseNode::Accept(IVisitor* visitor)
 	// Visit meshes
 	AcceptMesh(visitor);
 
-	return visitResult;
+	return visitResult;*/
+
+	return false;
 }
 
 bool CUIBaseNode::AcceptMesh(IVisitor* visitor)
@@ -197,6 +317,21 @@ void CUIBaseNode::OnMouseLeaved()
 
 
 //
+// Public
+//
+void CUIBaseNode::SetScene(std::weak_ptr<IScene> Scene)
+{
+	m_Scene = Scene;
+}
+
+void CUIBaseNode::SetParentInternal(std::weak_ptr<ISceneNodeUI> parentNode)
+{
+	m_ParentNode = parentNode;
+}
+
+
+
+//
 // Protected
 //
 void CUIBaseNode::UpdateLocalTransform()
@@ -210,18 +345,20 @@ void CUIBaseNode::UpdateLocalTransform()
 	m_LocalTransform = glm::scale(m_LocalTransform, glm::vec3(m_Scale, 1.0f));
 	m_InverseLocalTransform = glm::inverse(m_LocalTransform);
 
-	//RaiseComponentMessage(UUID_TransformComponent_OnLocalTransformChanged);
-
 	// Don't forget to update world transform
 	UpdateWorldTransform();
 }
 
 void CUIBaseNode::UpdateWorldTransform()
 {
-	m_WorldTransform = GetParentWorldTransform() * m_LocalTransform;
-	m_InverseWorldTransform = glm::inverse(m_WorldTransform);
+	glm::mat4 parentTransform(1.0f);
+	if (CUIBaseNode* parent = dynamic_cast<CUIBaseNode*>(GetParent()))
+	{
+		parentTransform = parent->m_WorldTransform;
+	}
 
-	//RaiseComponentMessage(UUID_TransformComponent_OnWorldTransformChanged);
+	m_WorldTransform = parentTransform * m_LocalTransform;
+	m_InverseWorldTransform = glm::inverse(m_WorldTransform);
 }
 
 

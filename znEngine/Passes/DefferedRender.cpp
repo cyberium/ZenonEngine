@@ -135,7 +135,7 @@ void CDefferedRender::UpdateViewport(const Viewport * _viewport)
 //
 // IVisitor
 //
-bool CDefferedRender::Visit3D(ISceneNode * node)
+bool CDefferedRender::Visit3D(ISceneNode3D * node)
 {
 	RenderListProcessorPass::VisitBase(node);
 

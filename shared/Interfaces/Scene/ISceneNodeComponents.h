@@ -10,14 +10,15 @@ ZN_INTERFACE IXMLWriter;
 
 typedef uint32 ComponentMessageType;
 
-ZN_INTERFACE ZN_API ISceneNodeComponent : public std::enable_shared_from_this<ISceneNodeComponent>
+ZN_INTERFACE ZN_API ISceneNodeComponent 
+	: public std::enable_shared_from_this<ISceneNodeComponent>
 {
 	virtual ~ISceneNodeComponent() {}
 
     // Callbacks
     virtual void OnParentChanged() = 0;
-    virtual void OnMessage(std::shared_ptr<ISceneNodeComponent> Component, ComponentMessageType Message) = 0;
-	virtual std::shared_ptr<IPropertiesGroup> GetPropertiesGroup() const = 0;
+    virtual void OnMessage(ISceneNodeComponent* Component, ComponentMessageType Message) = 0;
+	virtual IPropertiesGroup* GetPropertiesGroup() const = 0;
 
 	// Load & Save
 	virtual bool Load(std::shared_ptr<IXMLReader> Reader) = 0;

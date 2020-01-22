@@ -40,7 +40,7 @@ MainEditor::~MainEditor()
 {
 }
 
-void MainEditor::OnSceneNodeSelected(std::shared_ptr<ISceneNode> SceneNode)
+void MainEditor::OnSceneNodeSelected(std::shared_ptr<ISceneNode3D> SceneNode)
 {
 	m_PropertiesController->SceneNodeSelected(SceneNode);
 }

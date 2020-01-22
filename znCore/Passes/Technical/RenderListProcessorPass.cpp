@@ -17,13 +17,13 @@ void RenderListProcessorPass::Render(RenderEventArgs & e)
 {
 	for (const auto& it : m_BuildRenderListPass->GetGeometryList())
 	{
-		Visit3D(const_cast<ISceneNode*>(it.Node)); // TODO!!!
+		Visit3D(const_cast<ISceneNode3D*>(it.Node)); // TODO!!!
 		Visit(const_cast<IGeometry*>(it.Geometry), it.Material, it.GeometryPartParams);
 	}
 
 	for (const auto& it : m_BuildRenderListPass->GetLightList())
 	{
-		Visit3D(const_cast<ISceneNode*>(it.Node)); // TODO!!!
+		Visit3D(const_cast<ISceneNode3D*>(it.Node)); // TODO!!!
 		Visit(const_cast<ILightComponent3D*>(it.Light));
 	}
 }

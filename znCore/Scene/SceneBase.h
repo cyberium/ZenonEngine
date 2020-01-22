@@ -1,5 +1,8 @@
 #pragma once
 
+#include "3D//SceneNode3D.h"
+#include "UI//SceneNodeUI.h"
+
 class ZN_API SceneBase 
 	: public IScene
 	, public IBaseManagerHolder
@@ -10,8 +13,9 @@ public:
 	virtual ~SceneBase();
 
 	// IScene
-	void											CreateRootNode() override;
-	std::shared_ptr<ISceneNode>                     GetRootNode() const override;
+	void											CreateRootNodes() override;
+	ISceneNode3D*									GetRootNode3D() const override;
+	ISceneNodeUI*									GetRootNodeUI() const override;
 
 	// Load & Save
 	bool                                            Load(std::shared_ptr<IXMLReader> Reader) override;
@@ -22,7 +26,7 @@ public:
 
 	// Events
 	Delegate<SceneChangeEventArgs>&					SceneChangeEvent() override;
-	void                                            RaiseSceneChangeEvent(ESceneChangeType SceneChangeType, std::shared_ptr<ISceneNode> OwnerNode, std::shared_ptr<ISceneNode> ChildNode);
+	void                                            RaiseSceneChangeEvent(ESceneChangeType SceneChangeType, std::shared_ptr<ISceneNode3D> OwnerNode, std::shared_ptr<ISceneNode3D> ChildNode);
 
 	// Events
     void                                            OnUpdate(UpdateEventArgs& e);
@@ -47,15 +51,16 @@ public:
 
 protected:
 	// Input events process recursive
-	bool                                            DoKeyPressed_Rec(const std::shared_ptr<ISceneNode>& Node, KeyEventArgs& e);
-	void                                            DoKeyReleased_Rec(const std::shared_ptr<ISceneNode>& Node, KeyEventArgs& e);
-	void                                            DoMouseMoved_Rec(const std::shared_ptr<ISceneNode>& Node, MouseMotionEventArgs& e);
-	bool                                            DoMouseButtonPressed_Rec(const std::shared_ptr<ISceneNode>& Node, MouseButtonEventArgs& e);
-	void                                            DoMouseButtonReleased_Rec(const std::shared_ptr<ISceneNode>& Node, MouseButtonEventArgs& e);
-	bool                                            DoMouseWheel_Rec(const std::shared_ptr<ISceneNode>& Node, MouseWheelEventArgs& e);
+	bool                                            DoKeyPressed_Rec(const std::shared_ptr<ISceneNodeUI>& Node, KeyEventArgs& e);
+	void                                            DoKeyReleased_Rec(const std::shared_ptr<ISceneNodeUI>& Node, KeyEventArgs& e);
+	void                                            DoMouseMoved_Rec(const std::shared_ptr<ISceneNodeUI>& Node, MouseMotionEventArgs& e);
+	bool                                            DoMouseButtonPressed_Rec(const std::shared_ptr<ISceneNodeUI>& Node, MouseButtonEventArgs& e);
+	void                                            DoMouseButtonReleased_Rec(const std::shared_ptr<ISceneNodeUI>& Node, MouseButtonEventArgs& e);
+	bool                                            DoMouseWheel_Rec(const std::shared_ptr<ISceneNodeUI>& Node, MouseWheelEventArgs& e);
 
 protected:
-	std::shared_ptr<ISceneNode>                     m_RootNode;
+	std::shared_ptr<SceneNode3D>                    m_RootNode3D;
+	std::shared_ptr<CUIBaseNode>                    m_RootNodeUI;
 
 private:
 	Delegate<SceneChangeEventArgs>					m_SceneChangeEvent;

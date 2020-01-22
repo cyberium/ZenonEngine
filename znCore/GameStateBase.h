@@ -103,10 +103,10 @@ private: // Mouse events connections
     Delegate<MouseWheelEventArgs>::FunctionDecl     OnMouseWheelConnection;
 
 private:
-	std::shared_ptr<ISceneNode>						m_CameraPosText;
-	std::shared_ptr<ISceneNode>						m_CameraRotText;
-	std::shared_ptr<ISceneNode>						m_CameraRot2Text;
-	std::shared_ptr<ISceneNode>						m_FPSText;
+	ISceneNodeUI*                                   m_CameraPosText;
+	ISceneNodeUI*                                   m_CameraRotText;
+	ISceneNodeUI*                                   m_CameraRot2Text;
+	ISceneNodeUI*                                   m_FPSText;
 
 private:
 	bool                                            m_IsInited;

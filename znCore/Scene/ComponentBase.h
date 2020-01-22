@@ -4,10 +4,10 @@ class ZN_API CComponentBase
 	: public ISceneNodeComponent
 {
 public:
-    CComponentBase(std::shared_ptr<ISceneNode> OwnerNode);
+    CComponentBase(std::shared_ptr<ISceneNode3D> OwnerNode);
     virtual ~CComponentBase();
 
-    std::shared_ptr<ISceneNode>                     GetOwnerNode() const;
+    std::shared_ptr<ISceneNode3D>                     GetOwnerNode() const;
 
     // Components engine template access
     template<typename T>
@@ -18,8 +18,8 @@ public:
 
 	// ISceneNodeComponent
 	virtual void                                    OnParentChanged() override;
-	virtual void                                    OnMessage(std::shared_ptr<ISceneNodeComponent> Component, ComponentMessageType Message) override;
-	virtual std::shared_ptr<IPropertiesGroup>       GetPropertiesGroup() const override;
+	virtual void                                    OnMessage(ISceneNodeComponent* Component, ComponentMessageType Message) override;
+	virtual IPropertiesGroup*                       GetPropertiesGroup() const override;
 
 	// Load & Save
 	virtual bool                                    Load(std::shared_ptr<IXMLReader> Reader) override;
@@ -35,7 +35,7 @@ protected:
     void                                            RaiseComponentMessage(ComponentMessageType Message);
 
 private:
-    std::weak_ptr<ISceneNode>                       m_OwnerNode;
+    std::weak_ptr<ISceneNode3D>                     m_OwnerNode;
 	std::shared_ptr<IPropertiesGroup>               m_PropertyGroup;
 };
 

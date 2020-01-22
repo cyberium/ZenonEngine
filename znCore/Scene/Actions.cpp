@@ -44,12 +44,12 @@ void CAction::SetDescription(const std::string & Description)
 	m_Description = Description;
 }
 
-void CAction::SetAction(std::function<bool(const std::shared_ptr<ISceneNode>&)> Action)
+void CAction::SetAction(std::function<bool(const std::shared_ptr<ISceneNode3D>&)> Action)
 {
 	m_Action = Action;
 }
 
-void CAction::ExecuteAction(const std::shared_ptr<ISceneNode>& ProcessedNode)
+void CAction::ExecuteAction(const std::shared_ptr<ISceneNode3D>& ProcessedNode)
 {
 	_ASSERT(m_Action != nullptr);
 	m_Action(ProcessedNode);

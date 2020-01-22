@@ -123,7 +123,7 @@ void RenderPassPipelined::UpdateViewport(const Viewport * _viewport)
 //
 // IVisitor
 //
-bool RenderPassPipelined::VisitBase(ISceneNode * node)
+bool RenderPassPipelined::VisitBase(ISceneNode3D * node)
 {
 	GetRenderEventArgs()->Node = node;
 
@@ -138,14 +138,14 @@ bool RenderPassPipelined::VisitBase(ISceneNode * node)
 	return true;
 }
 
-bool RenderPassPipelined::Visit3D(ISceneNode* node)
+bool RenderPassPipelined::Visit3D(ISceneNode3D* node)
 {
 	GetRenderEventArgs()->Node = node;
 
 	return true;
 }
 
-bool RenderPassPipelined::VisitUI(ISceneNode* node)
+bool RenderPassPipelined::VisitUI(ISceneNode3D* node)
 {
 	GetRenderEventArgs()->Node = node;
 

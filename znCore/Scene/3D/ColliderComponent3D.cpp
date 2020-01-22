@@ -3,7 +3,7 @@
 // General
 #include "ColliderComponent3D.h"
 
-CColliderComponent3D::CColliderComponent3D(std::shared_ptr<ISceneNode> OwnerNode)
+CColliderComponent3D::CColliderComponent3D(std::shared_ptr<ISceneNode3D> OwnerNode)
     : CComponentBase(OwnerNode)
 {
 }
@@ -50,7 +50,7 @@ bool CColliderComponent3D::CheckDistance(const ICameraComponent3D* Camera, float
     return true;//distToCamera < _distance;
 }
 
-void CColliderComponent3D::OnMessage(std::shared_ptr<ISceneNodeComponent> Component, ComponentMessageType Message)
+void CColliderComponent3D::OnMessage(ISceneNodeComponent* Component, ComponentMessageType Message)
 {
     switch (Message)
     {

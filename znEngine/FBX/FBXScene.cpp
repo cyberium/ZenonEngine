@@ -222,7 +222,7 @@ bool CFBXScene::SaveToFile(std::shared_ptr<IFile> File, int pFileFormat, bool pE
 
 //------------------------------------------------------------------------------------------------------
 
-bool CFBXScene::LoadNodes(std::shared_ptr<ISceneNode> ParentNode)
+bool CFBXScene::LoadNodes(std::shared_ptr<ISceneNode3D> ParentNode)
 {
 	DisplayMetaData(GetNativeScene());
 	DisplayHierarchy(GetNativeScene());

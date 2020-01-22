@@ -3,7 +3,7 @@
 // General
 #include "MeshComponent3D.h"
 
-CMeshComponent3D::CMeshComponent3D(std::shared_ptr<ISceneNode> OwnerNode)
+CMeshComponent3D::CMeshComponent3D(std::shared_ptr<ISceneNode3D> OwnerNode)
     : CComponentBase(OwnerNode)
 {}
 

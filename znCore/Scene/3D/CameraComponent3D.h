@@ -8,7 +8,7 @@ class __declspec(UUID_CameraComponent) ZN_API CCameraComponent3D
 	, public CComponentBase
 {
 public:
-	CCameraComponent3D(std::shared_ptr<ISceneNode> OwnerNode);
+	CCameraComponent3D(std::shared_ptr<ISceneNode3D> OwnerNode);
     virtual ~CCameraComponent3D();
 
 	// ICameraComponent3D
@@ -43,7 +43,7 @@ public:
 	const glm::mat4& GetInverseProjectionViewMatrix() const override;
 
     // ISceneNodeComponent
-	virtual void OnMessage(std::shared_ptr<ISceneNodeComponent> Component, ComponentMessageType Message) override;
+	virtual void OnMessage(ISceneNodeComponent* Component, ComponentMessageType Message) override;
 
 protected:
 	glm::vec3 EulerAnglesToDirectionVector(float Yaw, float Pitch);

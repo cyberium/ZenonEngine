@@ -20,7 +20,7 @@ CPropertiesController::~CPropertiesController()
 {
 }
 
-void CPropertiesController::SceneNodeSelected(std::shared_ptr<ISceneNode> SceneNode)
+void CPropertiesController::SceneNodeSelected(std::shared_ptr<ISceneNode3D> SceneNode)
 {
 	auto m_propertySetRoot = new QtnPropertySet(this);
 

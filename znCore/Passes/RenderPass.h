@@ -16,9 +16,9 @@ public:
 	virtual void PostRender(RenderEventArgs& e) override;
 
 	// IVisitor
-	virtual bool VisitBase(ISceneNode* node) override;
-	virtual bool Visit3D(ISceneNode* node) override;
-	virtual bool VisitUI(ISceneNode* node) override;
+	virtual bool VisitBase(ISceneNode3D* node) override;
+	virtual bool Visit3D(ISceneNode3D* node) override;
+	virtual bool VisitUI(ISceneNode3D* node) override;
 	virtual bool Visit(IMesh* Mesh, SGeometryPartParams GeometryPartParams = SGeometryPartParams()) override;
 	virtual bool Visit(IGeometry* Geometry, const IMaterial* Material, SGeometryPartParams GeometryPartParams = SGeometryPartParams()) override;
 	virtual bool Visit(ILightComponent3D* light) override;

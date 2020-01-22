@@ -3,7 +3,7 @@
 #if 0
 
 class ZN_API CSceneNodeProxie
-	: public ISceneNode
+	: public ISceneNode3D
 	, public ISceneNodeWrapper
 {
 public:
@@ -12,7 +12,7 @@ public:
 
 
 	//
-	// ISceneNode
+	// ISceneNode3D
 	//
 	virtual void									Initialize();
 	virtual void									Finalize();
@@ -33,11 +33,11 @@ public:
 	virtual std::shared_ptr<IScene>                 GetScene() const;
 
 	// Childs functional
-	virtual void                                    AddChild(std::shared_ptr<ISceneNode> childNode);
-	virtual void                                    RemoveChild(std::shared_ptr<ISceneNode> childNode);
-	virtual void                                    SetParent(std::weak_ptr<ISceneNode> parentNode);
-	virtual std::shared_ptr<ISceneNode>             GetParent() const;
-	virtual std::vector<std::shared_ptr<ISceneNode>>GetChilds();
+	virtual void                                    AddChild(std::shared_ptr<ISceneNode3D> childNode);
+	virtual void                                    RemoveChild(std::shared_ptr<ISceneNode3D> childNode);
+	virtual void                                    SetParent(std::weak_ptr<ISceneNode3D> parentNode);
+	virtual std::shared_ptr<ISceneNode3D>             GetParent() const;
+	virtual std::vector<std::shared_ptr<ISceneNode3D>>GetChilds();
 
 	// Called before all others calls
 	virtual void                                    UpdateCamera(const ICamera* camera);
@@ -52,8 +52,8 @@ public:
 	//
 	// ISceneNodeWrapper
 	//
-	void											SetWrappedNode(std::shared_ptr<ISceneNode> ThisNode) override final;
-	std::shared_ptr<ISceneNode>                     GetWrappedNode() const override final;
+	void											SetWrappedNode(std::shared_ptr<ISceneNode3D> ThisNode) override final;
+	std::shared_ptr<ISceneNode3D>                     GetWrappedNode() const override final;
 
 	void                                            RaiseOnParentChanged() override;
 
@@ -64,30 +64,30 @@ public:
 	template<typename T>
 	inline std::shared_ptr<T> IsComponentExists()
 	{
-		return ISceneNode::IsComponentExists<T>();
+		return ISceneNode3D::IsComponentExists<T>();
 	}
 	template<typename T>
 	inline std::shared_ptr<T> GetComponent()
 	{
-		return ISceneNode::GetComponent<T>();
+		return ISceneNode3D::GetComponent<T>();
 	}
 	template<typename T>
 	inline std::shared_ptr<T> AddComponent(std::shared_ptr<T> Component)
 	{
-		return ISceneNode::AddComponent<T>(Component);
+		return ISceneNode3D::AddComponent<T>(Component);
 	}
 
 	template<typename T, typename... Args>
 	inline std::shared_ptr<T> CreateSceneNode(Args &&... _Args)
 	{
-		return ISceneNode::CreateSceneNode<T>(std::forward<Args>(_Args)...);
+		return ISceneNode3D::CreateSceneNode<T>(std::forward<Args>(_Args)...);
 	}
 
 protected:
 	IBaseManager* GetBaseManager() const;
 
 private:
-	std::shared_ptr<ISceneNode> m_SceneNode;
+	std::shared_ptr<ISceneNode3D> m_SceneNode;
 };
 
 #endif

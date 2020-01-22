@@ -10,7 +10,7 @@ public:
 	CPropertiesController(QtnPropertyWidget * PropertyWidget);
 	virtual ~CPropertiesController();
 
-	void SceneNodeSelected(std::shared_ptr<ISceneNode> SceneNode);
+	void SceneNodeSelected(std::shared_ptr<ISceneNode3D> SceneNode);
 
 public:
 	void CreateProperty(QtnPropertySet* PropertiesSet, std::shared_ptr<IProperty> Property);

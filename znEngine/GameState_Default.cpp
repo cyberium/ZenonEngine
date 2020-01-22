@@ -57,7 +57,7 @@ void CGameState_World::OnRayIntersected(const glm::vec3& Point)
 	IMesh* meshPlane = GetRenderDevice()->GetPrimitiveCollection()->CreateSphere();
 	meshPlane->SetMaterial(matDebug);
 
-	std::shared_ptr<ISceneNode> sceneNodePlane = m_Scene3D->CreateWrappedSceneNode<SceneNode3D>("SceneNode3D", m_Scene3D->GetRootNode());
+	std::shared_ptr<ISceneNode3D> sceneNodePlane = m_Scene3D->CreateWrappedSceneNode<SceneNode3D>("SceneNode3D", m_Scene3D->GetRootNode());
 	sceneNodePlane->SetName("Sphere.");
 	std::dynamic_pointer_cast<ISceneNode3D>(sceneNodePlane)->SetTranslate(Point);
 	std::dynamic_pointer_cast<ISceneNode3D>(sceneNodePlane)->SetScale(vec3(50.0f, 50.0f, 50.0f));
@@ -214,7 +214,7 @@ void CGameState_World::Load3D()
 			{
 				for (int k = 0; k < iterCnt; k++)
 				{
-					std::shared_ptr<ISceneNode> sceneNode = m_Scene3D->CreateWrappedSceneNode<SceneNode3D>("SceneNode3D", m_RootForBoxes);
+					std::shared_ptr<ISceneNode3D> sceneNode = m_Scene3D->CreateWrappedSceneNode<SceneNode3D>("SceneNode3D", m_RootForBoxes);
 					sceneNode->SetName("Ball [" + std::to_string(i) + ", " + std::to_string(j) + ", " + std::to_string(k) + "]");
 					std::dynamic_pointer_cast<ISceneNode3D>(sceneNode)->SetTranslate(vec3(offset * i, offset * k, offset * j));
 					std::dynamic_pointer_cast<ISceneNode3D>(sceneNode)->SetScale(vec3(scale));
@@ -250,14 +250,14 @@ void CGameState_World::Load3D()
 		IMesh* meshPlane = GetRenderDevice()->GetPrimitiveCollection()->CreatePlane();
 		meshPlane->SetMaterial(mat2);
 
-		std::shared_ptr<ISceneNode> sceneNodePlane = m_Scene3D->CreateWrappedSceneNode<SceneNode3D>("SceneNode3D", m_Scene3D->GetRootNode());
+		std::shared_ptr<ISceneNode3D> sceneNodePlane = m_Scene3D->CreateWrappedSceneNode<SceneNode3D>("SceneNode3D", m_Scene3D->GetRootNode());
 		sceneNodePlane->SetName("Ground");
 		std::dynamic_pointer_cast<ISceneNode3D>(sceneNodePlane)->SetTranslate(vec3(0, cPlaneY, 0));
 		std::dynamic_pointer_cast<ISceneNode3D>(sceneNodePlane)->SetScale(vec3(cPlaneSize));
 		sceneNodePlane->GetComponent<IMeshComponent3D>()->AddMesh(meshPlane);
 	}
 
-	//std::shared_ptr<ISceneNode> fbxSceneNode = GetBaseManager()->GetManager<ISceneNodesFactory>()->CreateSceneNode(m_Scene3D->GetRootNode(), "FBXSceneNode");
+	//std::shared_ptr<ISceneNode3D> fbxSceneNode = GetBaseManager()->GetManager<ISceneNodesFactory>()->CreateSceneNode(m_Scene3D->GetRootNode(), "FBXSceneNode");
 	//fbxSceneNode->GetComponent<ITransformComponent3D>()->SetScale(vec3(15.0f, 15.0f, 15.0f));
 
 
@@ -309,7 +309,7 @@ void CGameState_World::LoadUI()
 }
 
 
-void CGameState_World::GenerateLights(std::shared_ptr<ISceneNode> Node, uint32_t numLights)
+void CGameState_World::GenerateLights(std::shared_ptr<ISceneNode3D> Node, uint32_t numLights)
 {
 	float MinRange = 100.1f;
 	float MaxRange = 2000.0f;

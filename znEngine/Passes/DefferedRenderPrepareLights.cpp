@@ -175,7 +175,7 @@ void CDefferedRenderPrepareLights::BindPerFrameParamsForCurrentIteration(const I
 	BindPerFrameDataToVertexShader(m_ShadowPipeline->GetShader(EShaderType::VertexShader));
 }
 
-void CDefferedRenderPrepareLights::BindPerObjectParamsForCurrentIteration(const ISceneNode * SceneNode)
+void CDefferedRenderPrepareLights::BindPerObjectParamsForCurrentIteration(const ISceneNode3D * SceneNode)
 {
 	m_PerObjectData->Model = SceneNode->GetWorldTransfom();
 	m_PerObjectConstantBuffer->Set(*m_PerObjectData);

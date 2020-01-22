@@ -23,7 +23,7 @@ public:
 	void UpdateViewport(const Viewport * _viewport) override;
 
 	// IVisitor
-	bool Visit3D(ISceneNode* node) override;
+	bool Visit3D(ISceneNode3D* node) override;
 	bool Visit(IGeometry* Geometry, const IMaterial* Material, SGeometryPartParams GeometryPartParams = SGeometryPartParams()) override;
 	bool Visit(ILightComponent3D* light) override;
 

@@ -1,7 +1,7 @@
 #pragma once
 
 // FORWARD BEGIN
-ZN_INTERFACE ISceneNode;
+ZN_INTERFACE ISceneNode3D;
 // FORWARD END
 
 ZN_INTERFACE ZN_API IAction
@@ -13,8 +13,8 @@ ZN_INTERFACE ZN_API IAction
 	virtual std::string GetDescription() const = 0;
 	virtual void        SetDescription(const std::string& Description) = 0;
 
-	virtual void        SetAction(std::function<bool(const std::shared_ptr<ISceneNode>&)> Action) = 0;
-	virtual void        ExecuteAction(const std::shared_ptr<ISceneNode>& ProcessedNode) = 0;
+	virtual void        SetAction(std::function<bool(const std::shared_ptr<ISceneNode3D>&)> Action) = 0;
+	virtual void        ExecuteAction(const std::shared_ptr<ISceneNode3D>& ProcessedNode) = 0;
 };
 
 ZN_INTERFACE ZN_API IActionsGroup

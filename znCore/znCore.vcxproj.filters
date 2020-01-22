@@ -198,17 +198,8 @@
     <ClCompile Include="GameStateBase.cpp">
       <Filter>GameState</Filter>
     </ClCompile>
-    <ClCompile Include="Scene\3D\SceneNode3D.cpp">
-      <Filter>Scene functional\3D</Filter>
-    </ClCompile>
     <ClCompile Include="Scene\SceneBase.cpp">
       <Filter>Scene functional</Filter>
-    </ClCompile>
-    <ClCompile Include="Scene\SceneNodeBase.cpp">
-      <Filter>Scene functional</Filter>
-    </ClCompile>
-    <ClCompile Include="Scene\UI\SceneNodeUI.cpp">
-      <Filter>Scene functional\UI</Filter>
     </ClCompile>
     <ClCompile Include="Scene\Properties.cpp">
       <Filter>Scene functional\Properties</Filter>
@@ -302,6 +293,12 @@
     </ClCompile>
     <ClCompile Include="Scene\3D\CameraComponent3D.cpp">
       <Filter>Scene functional\3D</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\3D\SceneNode3D.cpp">
+      <Filter>Scene functional</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\UI\SceneNodeUI.cpp">
+      <Filter>Scene functional</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -608,17 +605,8 @@
     <ClInclude Include="GameStateBase.h">
       <Filter>GameState</Filter>
     </ClInclude>
-    <ClInclude Include="Scene\3D\SceneNode3D.h">
-      <Filter>Scene functional\3D</Filter>
-    </ClInclude>
     <ClInclude Include="Scene\SceneBase.h">
       <Filter>Scene functional</Filter>
-    </ClInclude>
-    <ClInclude Include="Scene\SceneNodeBase.h">
-      <Filter>Scene functional</Filter>
-    </ClInclude>
-    <ClInclude Include="Scene\UI\SceneNodeUI.h">
-      <Filter>Scene functional\UI</Filter>
     </ClInclude>
     <ClInclude Include="..\shared\Interfaces\Scene\IProperties.h">
       <Filter>__Interfaces\Scene</Filter>
@@ -731,6 +719,12 @@
     <ClInclude Include="Scene\3D\CameraComponent3D.h">
       <Filter>Scene functional\3D</Filter>
     </ClInclude>
+    <ClInclude Include="Scene\3D\SceneNode3D.h">
+      <Filter>Scene functional</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\UI\SceneNodeUI.h">
+      <Filter>Scene functional</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="RefManager1Dim.inl">
@@ -741,9 +735,6 @@
     </None>
     <None Include="Scene\ComponentBase.inl">
       <Filter>Scene functional</Filter>
-    </None>
-    <None Include="Scene\3D\SceneNode3D.inl">
-      <Filter>Scene functional\3D</Filter>
     </None>
   </ItemGroup>
 </Project>

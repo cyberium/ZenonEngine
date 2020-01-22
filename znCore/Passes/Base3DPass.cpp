@@ -20,7 +20,7 @@ Base3DPass::~Base3DPass()
 //
 // IVisitor
 //
-bool Base3DPass::Visit3D(ISceneNode* sceneNode)
+bool Base3DPass::Visit3D(ISceneNode3D* sceneNode)
 {
 	ScenePassPipelined::VisitBase(sceneNode);
 

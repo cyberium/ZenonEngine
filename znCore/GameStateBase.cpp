@@ -35,16 +35,16 @@ bool CGameState::Init()
 	m_SceneUI = GetBaseManager()->GetManager<IScenesFactory>()->CreateScene("SceneBase");
 
 	{
-		m_CameraPosText = GetBaseManager()->GetManager<ISceneNodesFactory>()->CreateSceneNode(m_SceneUI->GetRootNode(), "TextUI");
+		m_CameraPosText = GetBaseManager()->GetManager<ISceneNodesFactory>()->CreateSceneNodeUI(m_SceneUI->GetRootNodeUI(), "TextUI");
 		std::dynamic_pointer_cast<ISceneNodeUI>(m_CameraPosText)->SetTranslate(vec2(0.0f, 0.0f));
 
-		m_CameraRotText = GetBaseManager()->GetManager<ISceneNodesFactory>()->CreateSceneNode(m_SceneUI->GetRootNode(), "TextUI");
+		m_CameraRotText = GetBaseManager()->GetManager<ISceneNodesFactory>()->CreateSceneNode(m_SceneUI->GetRootNodeUI(), "TextUI");
 		std::dynamic_pointer_cast<ISceneNodeUI>(m_CameraRotText)->SetTranslate(vec2(0.0f, 20.0f));
 
-		m_CameraRot2Text = GetBaseManager()->GetManager<ISceneNodesFactory>()->CreateSceneNode(m_SceneUI->GetRootNode(), "TextUI");
+		m_CameraRot2Text = GetBaseManager()->GetManager<ISceneNodesFactory>()->CreateSceneNode(m_SceneUI->GetRootNodeUI(), "TextUI");
 		std::dynamic_pointer_cast<ISceneNodeUI>(m_CameraRot2Text)->SetTranslate(vec2(0.0f, 40.0f));
 
-		m_FPSText = GetBaseManager()->GetManager<ISceneNodesFactory>()->CreateSceneNode(m_SceneUI->GetRootNode(), "TextUI");
+		m_FPSText = GetBaseManager()->GetManager<ISceneNodesFactory>()->CreateSceneNode(m_SceneUI->GetRootNodeUI(), "TextUI");
 		std::dynamic_pointer_cast<ISceneNodeUI>(m_FPSText)->SetTranslate(vec2(0.0f, 60.0f));
 	}
 

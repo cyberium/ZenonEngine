@@ -9,7 +9,7 @@ CSceneNodeTreeItem::CSceneNodeTreeItem()
 {
 }
 
-CSceneNodeTreeItem::CSceneNodeTreeItem(std::shared_ptr<ISceneNode> SceneNode3D, CSceneNodeTreeItem * Parent)
+CSceneNodeTreeItem::CSceneNodeTreeItem(std::shared_ptr<ISceneNode3D> SceneNode3D, CSceneNodeTreeItem * Parent)
 	: m_SceneNode3D(SceneNode3D)
 	, m_Parent(Parent)
 {
@@ -73,7 +73,7 @@ int CSceneNodeTreeItem::childNumberInParent() const
 	return 0;
 }
 
-std::shared_ptr<ISceneNode> CSceneNodeTreeItem::GetSceneNode() const
+std::shared_ptr<ISceneNode3D> CSceneNodeTreeItem::GetSceneNode() const
 {
 	return m_SceneNode3D;
 }

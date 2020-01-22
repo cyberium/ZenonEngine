@@ -3,7 +3,7 @@
 // General
 #include "CameraComponent3D.h"
 
-CCameraComponent3D::CCameraComponent3D(std::shared_ptr<ISceneNode> OwnerNode)
+CCameraComponent3D::CCameraComponent3D(std::shared_ptr<ISceneNode3D> OwnerNode)
     : CComponentBase(OwnerNode)
 	, m_RightDirection(0)
 	, m_UpDirection(0)
@@ -214,7 +214,7 @@ const glm::mat4 & CCameraComponent3D::GetInverseProjectionViewMatrix() const
 //
 // ISceneNodeComponent
 //
-void CCameraComponent3D::OnMessage(std::shared_ptr<ISceneNodeComponent> Component, ComponentMessageType Message)
+void CCameraComponent3D::OnMessage(ISceneNodeComponent* Component, ComponentMessageType Message)
 {
 	if (Component == nullptr && Message == UUID_OnTransformChanged)
 	{

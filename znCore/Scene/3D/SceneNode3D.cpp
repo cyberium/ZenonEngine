@@ -11,8 +11,7 @@
 #include "LightComponent3D.h"
 
 SceneNode3D::SceneNode3D()
-	: SceneNodeBase()
-	, m_Translate(0.0f)
+	: m_Translate(0.0f)
 	, m_Rotate(vec3(0.0f))
 	, m_RotateQuat(quat())
 	, m_IsRotateQuat(false)
@@ -44,63 +43,156 @@ SceneNode3D::~SceneNode3D()
 {}
 
 
-std::shared_ptr<SceneNode3D> SceneNode3D::shared_from_this()
-{
-    return std::dynamic_pointer_cast<SceneNode3D>(SceneNodeBase::shared_from_this());
-}
-
-std::weak_ptr<SceneNode3D> SceneNode3D::weak_from_this()
-{
-    return std::weak_ptr<SceneNode3D>(shared_from_this());
-}
-
-
-
-//
-// SceneNodeBase
-//
-void SceneNode3D::SetLocalTransform(cmat4 localTransform)
-{
-	SceneNodeBase::SetLocalTransform(localTransform);
-
-	/*
-
-	glm::vec3 scale;
-	glm::quat rotation;
-	glm::vec3 translation;
-	glm::vec3 skew;
-	glm::vec4 perspective;
-	glm::decompose(m_LocalTransform, scale, rotation, translation, skew, perspective);
-
-	m_Translate = translation;
-	m_Scale = scale;
-
-	glm::vec3 eulerAngles = glm::degrees(glm::eulerAngles(rotation));
-
-	glm::vec3 direction = glm::vec3();
-	direction.x = glm::cos(glm::radians(eulerAngles.x)) * glm::cos(glm::radians(direction.y)); // y
-	direction.y = glm::sin(glm::radians(direction.y));                              // z
-	direction.z = glm::sin(glm::radians(eulerAngles.x)) * glm::cos(glm::radians(direction.y)); // x
-
-	*/
-
-	//printf("Converted: %f %f %f\n", eulerAngles.x, eulerAngles.y, eulerAngles.z);
-}
-
-
 
 //
 // ISceneNode3D
+//
+void SceneNode3D::Initialize()
+{
+}
+
+void SceneNode3D::Finalize()
+{
+}
+
+void SceneNode3D::SetType(std::string Type)
+{
+	m_Type = Type;
+}
+
+std::string SceneNode3D::GetType() const
+{
+	return m_Type;
+}
+
+void SceneNode3D::SetName(std::string Name)
+{
+	m_Name = Name;
+}
+
+std::string SceneNode3D::GetName() const
+{
+	return m_Name;
+}
+
+//
+// Childs functional
+//
+void SceneNode3D::AddChild(std::shared_ptr<ISceneNode3D> childNode)
+{
+	if (childNode == nullptr)
+		_ASSERT_EXPR(false, L"Child node must not be NULL.");
+
+	Node3DList::iterator iter = std::find(m_Children.begin(), m_Children.end(), childNode);
+	if (iter == m_Children.end())
+	{
+		std::dynamic_pointer_cast<SceneNode3D>(childNode)->SetParentInternal(weak_from_this());
+
+		m_Children.push_back(childNode);
+		if (!childNode->GetName().empty())
+			m_ChildrenByName.insert(Node3DNameMap::value_type(childNode->GetName(), childNode));
+
+		GetScene()->RaiseSceneChangeEvent(ESceneChangeType::NodeAdded, shared_from_this(), childNode);
+	}
+}
+
+void SceneNode3D::RemoveChild(std::shared_ptr<ISceneNode3D> childNode)
+{
+	if (childNode)
+	{
+		_ASSERT_EXPR(false, L"Child node must not be NULL.");
+	}
+
+	Node3DList::iterator iter = std::find(m_Children.begin(), m_Children.end(), childNode);
+	if (iter != m_Children.end())
+	{
+		std::dynamic_pointer_cast<SceneNode3D>(childNode)->SetParentInternal(std::weak_ptr<ISceneNode3D>());
+
+		m_Children.erase(iter);
+		Node3DNameMap::iterator iter2 = m_ChildrenByName.find(childNode->GetName());
+		if (iter2 != m_ChildrenByName.end())
+			m_ChildrenByName.erase(iter2);
+
+		GetScene()->RaiseSceneChangeEvent(ESceneChangeType::NodeRemoved, shared_from_this(), childNode);
+	}
+	else
+	{
+		// Maybe this node appears lower in the hierarchy...
+		for (auto child : m_Children)
+		{
+			child->RemoveChild(childNode);
+		}
+	}
+}
+
+void SceneNode3D::SetParent(ISceneNode3D* parentNode)
+{
+	// Remove from current parent
+	std::shared_ptr<ISceneNode3D> currentParent = m_ParentNode.lock();
+	if (currentParent != nullptr)
+	{
+		currentParent->RemoveChild(shared_from_this());
+		m_ParentNode.reset();
+	}
+
+	// Add to new parent
+	if (parentNode != nullptr)
+		parentNode->AddChild(shared_from_this());
+}
+
+ISceneNode3D* SceneNode3D::GetParent() const
+{
+	return m_ParentNode.lock().get();
+}
+
+const SceneNode3D::Node3DList& SceneNode3D::GetChilds()
+{
+	return m_Children;
+}
+
+void SceneNode3D::RaiseOnParentChanged()
+{
+	// Don't forget about update world transform
+	UpdateWorldTransform();
+
+	for (auto c : m_Components)
+	{
+		c.second->OnParentChanged();
+	}
+}
+
+IActionsGroup * SceneNode3D::GetActions() const
+{
+	return m_ActionsGroup.get();
+}
+
+IPropertiesGroup * SceneNode3D::GetProperties() const
+{
+	return m_PropertiesGroup.get();
+}
+
+IScene * SceneNode3D::GetScene() const
+{
+	return m_Scene.lock().get();
+}
+
+
+
+
+//
+// Transform functional
 //
 void SceneNode3D::SetTranslate(cvec3 _translate)
 {
 	m_Translate = _translate;
 	UpdateLocalTransform();
 }
+
 void SceneNode3D::AddTranslate(vec3 Translate)
 {
 	SetTranslate(GetTranslation() + Translate);
 }
+
 cvec3 SceneNode3D::GetTranslation() const
 {
 	return m_Translate;
@@ -111,6 +203,7 @@ void SceneNode3D::SetRotation(cvec3 _rotate)
 	m_Rotate = _rotate;
 	UpdateLocalTransform();
 }
+
 cvec3 SceneNode3D::GetRotation() const
 {
 	return m_Rotate;
@@ -122,6 +215,7 @@ void SceneNode3D::SetRotationQuaternion(cquat _rotate)
 	m_IsRotateQuat = true;
 	UpdateLocalTransform();
 }
+
 cquat SceneNode3D::GetRotationQuaternion() const
 {
 	return m_RotateQuat;
@@ -132,21 +226,152 @@ void SceneNode3D::SetScale(cvec3 _scale)
 	m_Scale = _scale;
 	UpdateLocalTransform();
 }
+
 cvec3 SceneNode3D::GetScale() const
 {
 	return m_Scale;
 }
 
+mat4 SceneNode3D::GetLocalTransform() const
+{
+	return m_LocalTransform;
+}
+
+mat4 SceneNode3D::GetInverseLocalTransform() const
+{
+	return m_InverseLocalTransform;
+}
+
+void SceneNode3D::SetLocalTransform(cmat4 localTransform)
+{
+	m_LocalTransform = localTransform;
+	m_InverseLocalTransform = glm::inverse(localTransform);
+
+	UpdateWorldTransform();
+
+	// After world updated, we can update all childs
+	for (auto it : GetChilds())
+		std::dynamic_pointer_cast<SceneNode3D>(it)->UpdateWorldTransform();
+}
+
+mat4 SceneNode3D::GetWorldTransfom() const
+{
+	return m_WorldTransform;
+}
+
+mat4 SceneNode3D::GetInverseWorldTransform() const
+{
+	return m_InverseWorldTransform;
+}
+
+glm::mat4 SceneNode3D::GetParentWorldTransform() const
+{
+	glm::mat4 parentTransform(1.0f);
+	if (ISceneNode3D* parent = GetParent())
+	{
+		parentTransform = parent->GetWorldTransfom();
+	}
+
+	return parentTransform;
+}
+
+void SceneNode3D::SetWorldTransform(cmat4 worldTransform)
+{
+	mat4 inverseParentTransform = glm::inverse(GetParentWorldTransform());
+
+	SetLocalTransform(inverseParentTransform * worldTransform);
+}
+
+void SceneNode3D::ForceRecalculateLocalTransform()
+{
+	UpdateLocalTransform();
+}
 
 
 //
 // Components engine
 //
+bool SceneNode3D::IsComponentExists(GUID ComponentID)
+{
+	const auto& components = GetComponents();
+	return components.find(ComponentID) != components.end();
+}
+
+ISceneNodeComponent* SceneNode3D::GetComponent(GUID ComponentID)
+{
+	const auto& components = GetComponents();
+	const auto& component = components.find(ComponentID);
+	if (component == components.end())
+		return nullptr;
+
+	return component->second.get();
+}
+
+ISceneNodeComponent* SceneNode3D::AddComponent(GUID ComponentID, std::shared_ptr<ISceneNodeComponent> Component)
+{
+	m_Components[ComponentID] = Component;
+	return Component.get();
+}
+
+const ComponentsMap& SceneNode3D::GetComponents() const
+{
+	return m_Components;
+}
+
+void SceneNode3D::RaiseComponentMessage(ISceneNodeComponent* Component, ComponentMessageType Message)
+{
+	const auto& components = GetComponents();
+	std::for_each(components.begin(), components.end(), [&Component, &Message](const std::pair<GUID, std::shared_ptr<ISceneNodeComponent>>& ComponentMapIter)
+	{
+		ComponentMapIter.second->OnMessage(Component, Message);
+	});
+}
 void SceneNode3D::RegisterComponents()
 {
-	AddComponent<CLightComponent3D>(std::make_shared<CLightComponent3D>(shared_from_this()));
-    SetMeshComponent(AddComponent(std::make_shared<CMeshComponent3D>(shared_from_this())));
-    SetColliderComponent(AddComponent(std::make_shared<CColliderComponent3D>(shared_from_this())));
+	ISceneNode3D::AddComponent<CLightComponent3D>(std::make_shared<CLightComponent3D>(shared_from_this()));
+    SetMeshComponent(ISceneNode3D::AddComponent(std::make_shared<CMeshComponent3D>(shared_from_this())));
+    SetColliderComponent(ISceneNode3D::AddComponent(std::make_shared<CColliderComponent3D>(shared_from_this())));
+}
+
+
+
+//
+// Others
+//
+
+
+
+void SceneNode3D::OnUpdate(UpdateEventArgs & e)
+{
+	DoUpdate(e);
+
+	const auto& components = GetComponents();
+	std::for_each(components.begin(), components.end(), [&e](const std::pair<GUID, std::shared_ptr<ISceneNodeComponent>>& Component)
+	{
+		_ASSERT(Component.second);
+		Component.second->DoUpdate(e);
+	});
+
+	const auto& childs = GetChilds();
+	std::for_each(childs.begin(), childs.end(), [&e](const std::shared_ptr<ISceneNode3D>& Child)
+	{
+		Child->OnUpdate(e);
+	});
+}
+
+void SceneNode3D::DoUpdate(UpdateEventArgs & e)
+{
+	// Do nothing...
+}
+
+void SceneNode3D::UpdateCamera(const ICameraComponent3D* camera)
+{
+	// Do nothing...
+}
+
+void SceneNode3D::UpdateViewport(const Viewport * viewport)
+{
+	// Do nothing...
 }
 
 bool SceneNode3D::Load(std::shared_ptr<IXMLReader> Reader)
@@ -177,7 +402,24 @@ bool SceneNode3D::Save(std::shared_ptr<IXMLWriter> Writer)
 	
 	*/
 
-	return SceneNodeBase::Save(Writer);
+	std::shared_ptr<IXMLWriter> thisSceneNodeWriter = Writer->CreateChild("SceneNode");
+	thisSceneNodeWriter->AddAttribute("Name", GetName());
+
+	if (GetComponents().size() > 0)
+	{
+		std::shared_ptr<IXMLWriter> componentsWriter = thisSceneNodeWriter->CreateChild("Components");
+		for (const auto& component : GetComponents())
+			component.second->Save(componentsWriter);
+	}
+
+	if (GetChilds().size() > 0)
+	{
+		std::shared_ptr<IXMLWriter> childsWriter = thisSceneNodeWriter->CreateChild("Childs");
+		for (const auto& child : GetChilds())
+			child->Save(childsWriter);
+	}
+
+	return true;
 }
 
 bool SceneNode3D::Accept(IVisitor* visitor)
@@ -200,7 +442,7 @@ bool SceneNode3D::Accept(IVisitor* visitor)
 
 	// Now visit children
 	const auto& childs = GetChilds();
-	std::for_each(childs.begin(), childs.end(), [&visitor](const std::shared_ptr<ISceneNode>& Child)
+	std::for_each(childs.begin(), childs.end(), [&visitor](const std::shared_ptr<ISceneNode3D>& Child)
 	{
 #ifdef LOADER_ENABLED
 		std::shared_ptr<ILoadable> loadable = std::dynamic_pointer_cast<ILoadable>(child);
@@ -211,6 +453,22 @@ bool SceneNode3D::Accept(IVisitor* visitor)
 	});
 
 	return visitResult;
+}
+
+
+
+//
+// Public
+//
+void SceneNode3D::SetScene(std::weak_ptr<IScene> Scene)
+{
+	m_Scene = Scene;
+}
+
+void SceneNode3D::SetParentInternal(std::weak_ptr<ISceneNode3D> parentNode)
+{
+	m_ParentNode = parentNode;
+	RaiseOnParentChanged();
 }
 
 
@@ -248,12 +506,17 @@ void SceneNode3D::UpdateWorldTransform()
 	RaiseComponentMessage(nullptr, UUID_OnTransformChanged);
 }
 
-void SceneNode3D::SetMeshComponent(std::shared_ptr<IMeshComponent3D> MeshComponent)
+IBaseManager* SceneNode3D::GetBaseManager() const
+{
+	return dynamic_cast<IBaseManagerHolder*>(GetScene())->GetBaseManager();
+}
+
+void SceneNode3D::SetMeshComponent(IMeshComponent3D* MeshComponent)
 {
 	m_Components_Mesh = MeshComponent;
 }
 
-void SceneNode3D::SetColliderComponent(std::shared_ptr<IColliderComponent3D> ColliderComponent)
+void SceneNode3D::SetColliderComponent(IColliderComponent3D* ColliderComponent)
 {
     m_Components_Collider = ColliderComponent;
 }

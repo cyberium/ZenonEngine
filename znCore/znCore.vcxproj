@@ -66,7 +66,6 @@
     <ClCompile Include="Scene\ComponentBase.cpp" />
     <ClCompile Include="Scene\LoadableObject.cpp" />
     <ClCompile Include="Scene\SceneBase.cpp" />
-    <ClCompile Include="Scene\SceneNodeBase.cpp" />
     <ClCompile Include="Scene\Properties.cpp" />
     <ClCompile Include="Scene\UI\SceneNodeUI.cpp" />
     <ClCompile Include="SettingsGroupBase.cpp" />
@@ -212,7 +211,6 @@
     <ClInclude Include="Scene\ComponentBase.h" />
     <ClInclude Include="Scene\LoadableObject.h" />
     <ClInclude Include="Scene\SceneBase.h" />
-    <ClInclude Include="Scene\SceneNodeBase.h" />
     <ClInclude Include="Scene\Properties.h" />
     <ClInclude Include="Scene\UI\SceneNodeUI.h" />
     <ClInclude Include="SettingBase.h" />
@@ -229,7 +227,6 @@
   <ItemGroup>
     <None Include="RefManager1DimAssync.inl" />
     <None Include="RefManager1Dim.inl" />
-    <None Include="Scene\3D\SceneNode3D.inl" />
     <None Include="Scene\ComponentBase.inl" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

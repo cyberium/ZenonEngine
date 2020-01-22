@@ -6,7 +6,7 @@
 ZN_INTERFACE IPipelineState;
 ZN_INTERFACE ICameraComponent3D;
 ZN_INTERFACE IScene;
-ZN_INTERFACE ISceneNode;
+ZN_INTERFACE ISceneNode3D;
 // FORWARD END
 
 template<class ArgumentType>
@@ -284,7 +284,7 @@ public:
 		uint64_t FrameCounter,
 		const ICameraComponent3D* Camera,
 		const IPipelineState* PipelineState,
-		const ISceneNode* Node
+		const ISceneNode3D* Node
 	)
 		: EventArgs(Caller)
 		, ElapsedTime(DeltaTime)
@@ -302,7 +302,7 @@ public:
 
 	const ICameraComponent3D*                       Camera;
 	const IPipelineState*                           PipelineState;
-	const ISceneNode*                               Node;
+	const ISceneNode3D*                               Node;
 };
 typedef Delegate<RenderEventArgs> RenderEvent;
 
@@ -350,7 +350,7 @@ enum class ZN_API ESceneChangeType
 class ZN_API SceneChangeEventArgs : public SceneEventArgs
 {
 public:
-	SceneChangeEventArgs(const Object* caller, const std::shared_ptr<IScene>& Scene, ESceneChangeType SceneChangeType, const std::shared_ptr<ISceneNode>& OwnerNode, const std::shared_ptr<ISceneNode>& ChildNode)
+	SceneChangeEventArgs(const Object* caller, const std::shared_ptr<IScene>& Scene, ESceneChangeType SceneChangeType, const std::shared_ptr<ISceneNode3D>& OwnerNode, const std::shared_ptr<ISceneNode3D>& ChildNode)
 		: SceneEventArgs(caller, Scene)
 		, SceneChangeType(SceneChangeType)
 		, OwnerNode(OwnerNode)
@@ -358,7 +358,7 @@ public:
 	{}
 
 	const ESceneChangeType SceneChangeType;
-	const std::shared_ptr<ISceneNode>& OwnerNode;
-	const std::shared_ptr<ISceneNode>& ChildNode;
+	const std::shared_ptr<ISceneNode3D>& OwnerNode;
+	const std::shared_ptr<ISceneNode3D>& ChildNode;
 };
 typedef Delegate<SceneChangeEventArgs> SceneChangeEvent;

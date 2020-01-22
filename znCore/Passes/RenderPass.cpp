@@ -41,7 +41,7 @@ void RenderPass::PostRender(RenderEventArgs& e)
 //
 // IVisitor
 //
-bool RenderPass::VisitBase(ISceneNode * node)
+bool RenderPass::VisitBase(ISceneNode3D * node)
 {
 	m_RenderEventArgs->Node = node;
 
@@ -56,14 +56,14 @@ bool RenderPass::VisitBase(ISceneNode * node)
 	return true;
 }
 
-bool RenderPass::Visit3D(ISceneNode* node)
+bool RenderPass::Visit3D(ISceneNode3D* node)
 {
 	m_RenderEventArgs->Node = node;
 
 	return true;
 }
 
-bool RenderPass::VisitUI(ISceneNode* node)
+bool RenderPass::VisitUI(ISceneNode3D* node)
 {
 	m_RenderEventArgs->Node = node;
 

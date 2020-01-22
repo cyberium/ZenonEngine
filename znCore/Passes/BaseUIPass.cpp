@@ -41,7 +41,7 @@ std::shared_ptr<IRenderPassPipelined> BaseUIPass::CreatePipeline(IRenderTarget* 
 //
 // IVisitor
 //
-bool BaseUIPass::VisitUI(ISceneNode* sceneNode)
+bool BaseUIPass::VisitUI(ISceneNode3D* sceneNode)
 {
     GetRenderEventArgs()->Node = sceneNode;
 

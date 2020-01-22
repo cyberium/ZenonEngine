@@ -164,7 +164,7 @@ void BuildRenderListPass::Render(RenderEventArgs & e)
 //
 // IVisitor
 //
-bool BuildRenderListPass::Visit3D(ISceneNode * node)
+bool BuildRenderListPass::Visit3D(ISceneNode3D * node)
 {
 	m_CurrentSceneNode = node;
 

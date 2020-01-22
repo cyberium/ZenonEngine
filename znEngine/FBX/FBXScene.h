@@ -15,7 +15,7 @@ public:
 	bool LoadFromFile(std::shared_ptr<IFile> File);
 	bool SaveToFile(std::shared_ptr<IFile> File, int pFileFormat = -1, bool pEmbedMedia = false);
 
-	bool LoadNodes(std::shared_ptr<ISceneNode> ParentNode);
+	bool LoadNodes(std::shared_ptr<ISceneNode3D> ParentNode);
 
 public:
 	fbxsdk::FbxScene*   GetNativeScene() const;

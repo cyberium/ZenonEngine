@@ -3,7 +3,7 @@
 // General
 #include "LightComponent3D.h"
 
-CLightComponent3D::CLightComponent3D(std::shared_ptr<ISceneNode> OwnerNode)
+CLightComponent3D::CLightComponent3D(std::shared_ptr<ISceneNode3D> OwnerNode)
     : CComponentBase(OwnerNode)
 {
 	m_LightStruct = (SLight*)_aligned_malloc(sizeof(SLight), 16);

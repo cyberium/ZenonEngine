@@ -46,7 +46,7 @@ std::string CSceneNodeDefaultCreator::GetSceneNodeTypeName(size_t Index) const
 	throw CException("CSceneNodeDefaultCreator: GetSceneNodeTypeName(%d) is out of bounds. Count = %d", Index, GetSceneNodesCount());
 }
 
-std::shared_ptr<ISceneNode> CSceneNodeDefaultCreator::CreateSceneNode(std::weak_ptr<ISceneNode> Parent, size_t Index) const
+std::shared_ptr<ISceneNode3D> CSceneNodeDefaultCreator::CreateSceneNode(std::weak_ptr<ISceneNode3D> Parent, size_t Index) const
 {
 	if (Index == 0)
 	{

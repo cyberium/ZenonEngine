@@ -9,7 +9,7 @@ public:
 	struct SLightResult
 	{
 		bool IsEnabled;
-		const ISceneNode* LightSceneNode;
+		const ISceneNode3D* LightSceneNode;
 		const ILightComponent3D* LightComponent;
 		bool IsShadowEnable;
 		ITexture* ShadowTexture;
@@ -36,7 +36,7 @@ protected:
 	
 	void DoRenderToOneContext();
 	void BindPerFrameParamsForCurrentIteration(const ILightComponent3D* LightComponent);
-	void BindPerObjectParamsForCurrentIteration(const ISceneNode* SceneNode);
+	void BindPerObjectParamsForCurrentIteration(const ISceneNode3D* SceneNode);
 
 private: // Pass light params
 	PerObject3D* m_PerObjectData;
