@@ -41,48 +41,29 @@ void RenderPass::PostRender(RenderEventArgs& e)
 //
 // IVisitor
 //
-bool RenderPass::VisitBase(ISceneNode3D * node)
+bool RenderPass::Visit(ISceneNode3D* node)
 {
-	m_RenderEventArgs->Node = node;
-
-	const ICameraComponent3D* camera = m_RenderEventArgs->Camera;
-	if (camera)
-		node->UpdateCamera(camera);
-	
-	if (const IPipelineState* pipeline = m_RenderEventArgs->PipelineState)
-		if (const Viewport* viewport = pipeline->GetRasterizerState()->GetViewports()[0])
-			node->UpdateViewport(viewport);
-
-	return true;
+	return false;
 }
 
-bool RenderPass::Visit3D(ISceneNode3D* node)
+bool RenderPass::Visit(ISceneNodeUI* node)
 {
-	m_RenderEventArgs->Node = node;
-
-	return true;
-}
-
-bool RenderPass::VisitUI(ISceneNode3D* node)
-{
-	m_RenderEventArgs->Node = node;
-
-	return true;
+	return false;
 }
 
 bool RenderPass::Visit(IMesh* Mesh, SGeometryPartParams GeometryPartParams)
 {
-    return true;
+    return false;
 }
 
 bool RenderPass::Visit(IGeometry * Geometry, const IMaterial* Material, SGeometryPartParams GeometryPartParams)
 {
-	return true;
+	return false;
 }
 
 bool RenderPass::Visit(ILightComponent3D* light)
 {
-	return true;
+	return false;
 }
 
 

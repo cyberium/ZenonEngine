@@ -6,7 +6,7 @@
 // Additional
 #include "Properties.h"
 
-CComponentBase::CComponentBase(std::shared_ptr<ISceneNode3D> OwnerNode)
+CComponentBase::CComponentBase(const ISceneNode3D* OwnerNode)
     : m_OwnerNode(OwnerNode)
 {
 	m_PropertyGroup = std::make_shared<CPropertiesGroup>();
@@ -17,9 +17,9 @@ CComponentBase::~CComponentBase()
 {
 }
 
-std::shared_ptr<ISceneNode3D> CComponentBase::GetOwnerNode() const
+const ISceneNode3D* CComponentBase::GetOwnerNode() const
 {
-    return m_OwnerNode.lock();
+    return m_OwnerNode;
 }
 
 
@@ -71,8 +71,5 @@ bool CComponentBase::Accept(IVisitor* visitor)
 //
 void CComponentBase::RaiseComponentMessage(ComponentMessageType Message)
 {
-    std::shared_ptr<ISceneNode3D> ownerNode = m_OwnerNode.lock();
-    _ASSERT(ownerNode != nullptr);
-
-    ownerNode->RaiseComponentMessage(this, Message);
+	m_OwnerNode->RaiseComponentMessage(this, Message);
 }

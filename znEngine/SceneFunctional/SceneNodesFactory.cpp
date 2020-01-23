@@ -35,7 +35,7 @@ void CSceneNodesFactory::RemoveSceneNodeCreator(std::shared_ptr<ISceneNodeCreato
 //
 // ISceneNodesFactory
 //
-std::shared_ptr<ISceneNode3D> CSceneNodesFactory::CreateSceneNode(std::weak_ptr<ISceneNode3D> Parent, std::string SceneNodeTypeName) const
+ISceneNode3D* CSceneNodesFactory::CreateSceneNode3D(ISceneNode3D* Parent, std::string SceneNodeTypeName) const
 {
 	for (const auto& creator : m_Creators)
 	{
@@ -43,7 +43,23 @@ std::shared_ptr<ISceneNode3D> CSceneNodesFactory::CreateSceneNode(std::weak_ptr<
 		{
 			if (creator->GetSceneNodeTypeName(i) == SceneNodeTypeName)
 			{
-				return creator->CreateSceneNode(Parent, i);
+				return creator->CreateSceneNode3D(Parent, i);
+			}
+		}
+	}
+
+	return nullptr;
+}
+
+ISceneNodeUI* CSceneNodesFactory::CreateSceneNodeUI(ISceneNodeUI* Parent, std::string SceneNodeTypeName) const
+{
+	for (const auto& creator : m_Creators)
+	{
+		for (size_t i = 0; i < creator->GetSceneNodesCount(); i++)
+		{
+			if (creator->GetSceneNodeTypeName(i) == SceneNodeTypeName)
+			{
+				return creator->CreateSceneNodeUI(Parent, i);
 			}
 		}
 	}

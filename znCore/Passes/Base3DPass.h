@@ -16,7 +16,7 @@ public:
 	virtual ~Base3DPass();
 
 	// IVisitor
-	virtual bool Visit3D(ISceneNode3D* node) override;
+	virtual bool Visit(ISceneNode3D* node) override;
 	virtual bool Visit(IMesh* Mesh, SGeometryPartParams GeometryPartParams = SGeometryPartParams()) override;
 	virtual bool Visit(IGeometry* Geometry, const IMaterial* Material, SGeometryPartParams GeometryPartParams = SGeometryPartParams()) override;
 

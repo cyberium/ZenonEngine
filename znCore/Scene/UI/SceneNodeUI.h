@@ -57,6 +57,9 @@ public:
 	cvec2											GetScale() const;
 	glm::vec2										GetScaleAbs() const;
 
+	virtual mat4									GetLocalTransform() const;
+	virtual mat4									GetWorldTransfom() const;
+
 	// Size & bounds functional
     virtual glm::vec2                               GetSize();
     virtual BoundingRect                            GetBoundsAbs();
@@ -80,7 +83,6 @@ public:
 	virtual void                                    OnMouseEntered();
 	virtual void                                    OnMouseLeaved();
 
-
 public:
 	void                                            SetScene(std::weak_ptr<IScene> Scene);
 	void                                            SetParentInternal(std::weak_ptr<ISceneNodeUI> parentNode);
@@ -89,7 +91,7 @@ public:
 protected:
 	virtual void									UpdateLocalTransform();
 	virtual void									UpdateWorldTransform();
-
+	IBaseManager*                                   GetBaseManager() const;
 
 public: // Syntetic events // TODO: Make private
 	bool                                            IsMouseOnNode() const;

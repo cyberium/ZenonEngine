@@ -7,7 +7,7 @@ class __declspec(UUID_ColliderComponent) ZN_API CColliderComponent3D
 	, public CComponentBase
 {
 public:
-	CColliderComponent3D(std::shared_ptr<ISceneNode3D> OwnerNode);
+	CColliderComponent3D(const ISceneNode3D* OwnerNode);
     virtual ~CColliderComponent3D();
 
     // IColliderComponent3D

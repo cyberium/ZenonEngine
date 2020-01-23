@@ -3,7 +3,7 @@
 // General
 #include "ColliderComponent3D.h"
 
-CColliderComponent3D::CColliderComponent3D(std::shared_ptr<ISceneNode3D> OwnerNode)
+CColliderComponent3D::CColliderComponent3D(const ISceneNode3D* OwnerNode)
     : CComponentBase(OwnerNode)
 {
 }

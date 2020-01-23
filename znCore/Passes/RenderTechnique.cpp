@@ -21,14 +21,14 @@ uint32 RenderTechnique::AddPass(std::shared_ptr<IRenderPass> pass)
 	return static_cast<uint32>(m_Passes.size()) - 1;
 }
 
-std::shared_ptr<IRenderPass> RenderTechnique::GetPass(uint32 ID) const
+IRenderPass* RenderTechnique::GetPass(uint32 ID) const
 {
 	if (ID < m_Passes.size())
 	{
-		return m_Passes[ID];
+		return m_Passes[ID].get();
 	}
 
-	return std::shared_ptr<IRenderPass>();
+	return nullptr;
 }
 
 void RenderTechnique::Render(RenderEventArgs& renderEventArgs)

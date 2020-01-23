@@ -23,8 +23,7 @@ public:
 	void											SetCurrent(bool _value) override;
 	bool											IsCurrent() const override;
 
-	std::shared_ptr<IScene>							GetScene3D() const override { return m_Scene3D; };
-	std::shared_ptr<IScene>							GetSceneUI() const override { return m_SceneUI; };
+	std::shared_ptr<IScene>							GetScene() const override { return m_Scene; };
 
 	// GameState events
 	virtual void                                    OnRayIntersected(const glm::vec3& Point);
@@ -72,14 +71,15 @@ protected:
 	IQuery*                                         m_TestQuery;
     double                                          m_FrameTime;
 
+	std::chrono::time_point<std::chrono::high_resolution_clock> m_Start, m_End;
+
 	std::shared_ptr<ICameraController>              m_DefaultCameraController;
 
 	std::shared_ptr<ISettingGroup>                  m_VideoSettings;
 
 	RenderTechnique                                 m_Technique3D;
 	RenderTechnique                                 m_TechniqueUI;
-	std::shared_ptr<IScene>                         m_Scene3D;
-	std::shared_ptr<IScene>                         m_SceneUI;
+	std::shared_ptr<IScene>                         m_Scene;
 
 
 private: // Update event connection

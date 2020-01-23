@@ -4,6 +4,7 @@
 #include "SceneNode3D.h"
 
 // Additional
+#include "Scene/Actions.h"
 #include "Scene/Properties.h"
 
 #include "MeshComponent3D.h"
@@ -16,27 +17,51 @@ SceneNode3D::SceneNode3D()
 	, m_RotateQuat(quat())
 	, m_IsRotateQuat(false)
 	, m_Scale(1.0f)
+
+	// Transform functinal
+	, m_LocalTransform(1.0f)
+	, m_InverseLocalTransform(1.0f)	// This is the inverse of the local -> world transform.
+	, m_WorldTransform(1.0f)
+	, m_InverseWorldTransform(1.0f)
 {
 	SetName("SceneNode3D");
 
-	std::shared_ptr<IPropertiesGroup> propertiesGroup = std::make_shared<CPropertiesGroup>("Transform", "Transorm of this 3D node. Like translation, rotation and scale.");
+	m_InverseLocalTransform = glm::inverse(m_LocalTransform);
 
-	std::shared_ptr<CPropertyWrapped<glm::vec3>> translateProperty = std::make_shared<CPropertyWrapped<glm::vec3>>("Translate", "Position of this node in world. Relative to parent.");
-	translateProperty->SetValueSetter(std::bind(&SceneNode3D::SetTranslate, this, std::placeholders::_1));
-	translateProperty->SetValueGetter(std::bind(&SceneNode3D::GetTranslation, this));
-	propertiesGroup->AddProperty(translateProperty);
+	m_ActionsGroup = std::make_shared<CActionsGroup>("General");
+	m_PropertiesGroup = std::make_shared<CPropertiesGroup>("General", "Some important scene node properties.");
 
-	std::shared_ptr<CPropertyWrapped<glm::vec3>> rotationProperty = std::make_shared<CPropertyWrapped<glm::vec3>>("Rotate", "Rotation of this node. Relative to parent.");
-	rotationProperty->SetValueSetter(std::bind(&SceneNode3D::SetRotation, this, std::placeholders::_1));
-	rotationProperty->SetValueGetter(std::bind(&SceneNode3D::GetRotation, this));
-	propertiesGroup->AddProperty(rotationProperty);
+	// Name properties
+	{
+		std::shared_ptr<CPropertyWrapped<std::string>> nameProperty = std::make_shared<CPropertyWrapped<std::string>>("Name", "Scene node name.");
+		nameProperty->SetValueSetter(std::bind(&SceneNode3D::SetName, this, std::placeholders::_1));
+		nameProperty->SetValueGetter(std::bind(&SceneNode3D::GetName, this));
+		GetProperties()->AddProperty(nameProperty);
+	}
 
-	std::shared_ptr<CPropertyWrapped<glm::vec3>> scaleProperty = std::make_shared<CPropertyWrapped<glm::vec3>>("Scale", "Scale of this node. Relative to parent.");
-	scaleProperty->SetValueSetter(std::bind(&SceneNode3D::SetScale, this, std::placeholders::_1));
-	scaleProperty->SetValueGetter(std::bind(&SceneNode3D::GetScale, this));
-	propertiesGroup->AddProperty(scaleProperty);
+	// Transform properties
+	{
+		std::shared_ptr<IPropertiesGroup> propertiesGroup = std::make_shared<CPropertiesGroup>("Transform", "Transorm of this 3D node. Like translation, rotation and scale.");
 
-	GetProperties()->AddProperty(propertiesGroup);
+		std::shared_ptr<CPropertyWrapped<glm::vec3>> translateProperty = std::make_shared<CPropertyWrapped<glm::vec3>>("Translate", "Position of this node in world. Relative to parent.");
+		translateProperty->SetValueSetter(std::bind(&SceneNode3D::SetTranslate, this, std::placeholders::_1));
+		translateProperty->SetValueGetter(std::bind(&SceneNode3D::GetTranslation, this));
+		propertiesGroup->AddProperty(translateProperty);
+
+		std::shared_ptr<CPropertyWrapped<glm::vec3>> rotationProperty = std::make_shared<CPropertyWrapped<glm::vec3>>("Rotate", "Rotation of this node. Relative to parent.");
+		rotationProperty->SetValueSetter(std::bind(&SceneNode3D::SetRotation, this, std::placeholders::_1));
+		rotationProperty->SetValueGetter(std::bind(&SceneNode3D::GetRotation, this));
+		propertiesGroup->AddProperty(rotationProperty);
+
+		std::shared_ptr<CPropertyWrapped<glm::vec3>> scaleProperty = std::make_shared<CPropertyWrapped<glm::vec3>>("Scale", "Scale of this node. Relative to parent.");
+		scaleProperty->SetValueSetter(std::bind(&SceneNode3D::SetScale, this, std::placeholders::_1));
+		scaleProperty->SetValueGetter(std::bind(&SceneNode3D::GetScale, this));
+		propertiesGroup->AddProperty(scaleProperty);
+
+		GetProperties()->AddProperty(propertiesGroup);
+	}
+
+	
 }
 
 SceneNode3D::~SceneNode3D()
@@ -291,13 +316,13 @@ void SceneNode3D::ForceRecalculateLocalTransform()
 //
 // Components engine
 //
-bool SceneNode3D::IsComponentExists(GUID ComponentID)
+bool SceneNode3D::IsComponentExists(GUID ComponentID) const
 {
 	const auto& components = GetComponents();
 	return components.find(ComponentID) != components.end();
 }
 
-ISceneNodeComponent* SceneNode3D::GetComponent(GUID ComponentID)
+ISceneNodeComponent* SceneNode3D::GetComponent(GUID ComponentID) const
 {
 	const auto& components = GetComponents();
 	const auto& component = components.find(ComponentID);
@@ -318,7 +343,7 @@ const ComponentsMap& SceneNode3D::GetComponents() const
 	return m_Components;
 }
 
-void SceneNode3D::RaiseComponentMessage(ISceneNodeComponent* Component, ComponentMessageType Message)
+void SceneNode3D::RaiseComponentMessage(ISceneNodeComponent* Component, ComponentMessageType Message) const
 {
 	const auto& components = GetComponents();
 	std::for_each(components.begin(), components.end(), [&Component, &Message](const std::pair<GUID, std::shared_ptr<ISceneNodeComponent>>& ComponentMapIter)
@@ -328,9 +353,9 @@ void SceneNode3D::RaiseComponentMessage(ISceneNodeComponent* Component, Componen
 }
 void SceneNode3D::RegisterComponents()
 {
-	ISceneNode3D::AddComponent<CLightComponent3D>(std::make_shared<CLightComponent3D>(shared_from_this()));
-    SetMeshComponent(ISceneNode3D::AddComponent(std::make_shared<CMeshComponent3D>(shared_from_this())));
-    SetColliderComponent(ISceneNode3D::AddComponent(std::make_shared<CColliderComponent3D>(shared_from_this())));
+	ISceneNode3D::AddComponent<CLightComponent3D>(std::make_shared<CLightComponent3D>(this));
+    SetMeshComponent(ISceneNode3D::AddComponent(std::make_shared<CMeshComponent3D>(this)));
+    SetColliderComponent(ISceneNode3D::AddComponent(std::make_shared<CColliderComponent3D>(this)));
 }
 
 
@@ -424,7 +449,7 @@ bool SceneNode3D::Save(std::shared_ptr<IXMLWriter> Writer)
 
 bool SceneNode3D::Accept(IVisitor* visitor)
 {
-	bool visitResult = visitor->Visit3D(this);
+	bool visitResult = visitor->Visit(this);
 
 	//if (visitResult && !GetComponent<IColliderComponent3D>()->CheckFrustum(((AbstractPass*)visitor)->GetRenderEventArgs()->Camera))
 	//{

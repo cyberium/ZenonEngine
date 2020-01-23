@@ -2,7 +2,7 @@
 
 #include "ScenePassPipelined.h"
 
-__declspec(align(16)) struct PerObjectUI
+__declspec(align(16)) struct ZN_API PerObjectUI
 {
 	glm::mat4 Model;
 	glm::mat4 Projection;
@@ -19,7 +19,7 @@ public:
 	virtual std::shared_ptr<IRenderPassPipelined> CreatePipeline(IRenderTarget* RenderTarget, const Viewport* Viewport) override;
 
 	// IVisitor
-	virtual bool VisitUI(ISceneNode3D* node) override;
+	virtual bool Visit(ISceneNodeUI* node) override;
 	virtual bool Visit(IMesh* Mesh, SGeometryPartParams GeometryPartParams = SGeometryPartParams()) override;
 	virtual bool Visit(IGeometry* Geometry, const IMaterial* Material, SGeometryPartParams GeometryPartParams = SGeometryPartParams()) override;
 

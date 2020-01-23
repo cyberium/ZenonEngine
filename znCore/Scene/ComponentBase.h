@@ -4,10 +4,10 @@ class ZN_API CComponentBase
 	: public ISceneNodeComponent
 {
 public:
-    CComponentBase(std::shared_ptr<ISceneNode3D> OwnerNode);
+    CComponentBase(const ISceneNode3D* OwnerNode);
     virtual ~CComponentBase();
 
-    std::shared_ptr<ISceneNode3D>                     GetOwnerNode() const;
+	const ISceneNode3D*                     GetOwnerNode() const;
 
     // Components engine template access
     template<typename T>
@@ -35,7 +35,7 @@ protected:
     void                                            RaiseComponentMessage(ComponentMessageType Message);
 
 private:
-    std::weak_ptr<ISceneNode3D>                     m_OwnerNode;
+    const ISceneNode3D*                     m_OwnerNode;
 	std::shared_ptr<IPropertiesGroup>               m_PropertyGroup;
 };
 

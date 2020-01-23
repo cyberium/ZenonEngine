@@ -11,7 +11,9 @@ public:
 	// ISceneNodesFactory
 	void AddSceneNodeCreator(std::shared_ptr<ISceneNodeCreator> Creator) override;
 	void RemoveSceneNodeCreator(std::shared_ptr<ISceneNodeCreator> Creator) override;
-	std::shared_ptr<ISceneNode3D> CreateSceneNode(std::weak_ptr<ISceneNode3D> Parent, std::string SceneNodeTypeName) const override;
+
+	ISceneNode3D* CreateSceneNode3D(ISceneNode3D* Parent, std::string SceneNodeTypeName) const override;
+	ISceneNodeUI* CreateSceneNodeUI(ISceneNodeUI* Parent, std::string SceneNodeTypeName) const override;
 
 	// IznPluginsEventListener
 	void OnPluginAdded(std::shared_ptr<IznPlugin> Plugin) override;

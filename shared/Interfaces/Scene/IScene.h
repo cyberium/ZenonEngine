@@ -84,6 +84,7 @@ ZN_INTERFACE ZN_API __declspec(novtable) IScene
 	}
 };
 
+#if 0
 
 //
 // For plugins
@@ -109,4 +110,6 @@ ZN_INTERFACE ZN_API
 
 	virtual std::shared_ptr<IScene> CreateScene(std::string SceneTypeName) const = 0;
 };
+
+#endif
 

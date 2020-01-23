@@ -2,7 +2,6 @@
 
 // FORWARD BEGIN
 ZN_INTERFACE ISceneNodeComponent;
-ZN_INTERFACE IPropertiesG;
 ZN_INTERFACE IScene;
 ZN_INTERFACE ICameraComponent3D;
 class Viewport;
@@ -79,18 +78,18 @@ ZN_INTERFACE ZN_API __declspec(novtable) ISceneNode3D
 	//
 	// Components engine
 	//
-	virtual bool IsComponentExists(GUID ComponentID) = 0;
-	virtual ISceneNodeComponent* GetComponent(GUID ComponentID) = 0;
+	virtual bool IsComponentExists(GUID ComponentID) const = 0;
+	virtual ISceneNodeComponent* GetComponent(GUID ComponentID) const = 0;
 	virtual ISceneNodeComponent* AddComponent(GUID ComponentID, std::shared_ptr<ISceneNodeComponent> Component) = 0;
 	virtual const ComponentsMap& GetComponents() const = 0;
-	virtual void RaiseComponentMessage(ISceneNodeComponent* Component, ComponentMessageType Message) = 0;
+	virtual void RaiseComponentMessage(ISceneNodeComponent* Component, ComponentMessageType Message) const = 0;
 	virtual void RegisterComponents() = 0;
 
 	template<typename T> inline bool IsComponentExists()
 	{
 		return IsComponentExists(__uuidof(T));
 	}
-	template<typename T> inline T* GetComponent()
+	template<typename T> inline T* GetComponent() const
 	{
 		if (ISceneNodeComponent* component = GetComponent(__uuidof(T)))
 			return dynamic_cast<T*>(component);
@@ -167,6 +166,12 @@ ZN_INTERFACE ZN_API __declspec(novtable) ISceneNodeUI
 	virtual void SetScale(cvec2 _scale) = 0;
 	virtual cvec2 GetScale() const = 0;
 	virtual glm::vec2 GetScaleAbs() const = 0;
+
+	virtual mat4 GetLocalTransform() const = 0;
+	virtual mat4 GetWorldTransfom() const = 0;
+
+	// Allow a visitor to visit this node.
+	virtual bool Accept(IVisitor* visitor) = 0;
 };
 
 
@@ -178,9 +183,10 @@ ZN_INTERFACE ZN_API __declspec(novtable) ISceneNodeCreator
 {
 	virtual ~ISceneNodeCreator() {}
 
-	virtual size_t                                  GetSceneNodesCount() const = 0;
-	virtual std::string                             GetSceneNodeTypeName(size_t Index) const = 0;
-	virtual std::shared_ptr<ISceneNode3D>             CreateSceneNode(std::weak_ptr<ISceneNode3D> Parent, size_t Index) const = 0;
+	virtual size_t GetSceneNodesCount() const = 0;
+	virtual std::string GetSceneNodeTypeName(size_t Index) const = 0;
+	virtual ISceneNode3D* CreateSceneNode3D(ISceneNode3D* Parent, size_t Index) const = 0;
+	virtual ISceneNodeUI* CreateSceneNodeUI(ISceneNodeUI* Parent, size_t Index) const = 0;
 };
 
 ZN_INTERFACE ZN_API __declspec(novtable, uuid("9C3ACF8D-F30D-47AE-BBA1-D71DEA6B14D4")) ISceneNodesFactory
@@ -191,5 +197,6 @@ ZN_INTERFACE ZN_API __declspec(novtable, uuid("9C3ACF8D-F30D-47AE-BBA1-D71DEA6B1
 	virtual void AddSceneNodeCreator(std::shared_ptr<ISceneNodeCreator> Creator) = 0;
 	virtual void RemoveSceneNodeCreator(std::shared_ptr<ISceneNodeCreator> Creator) = 0;
 
-	virtual std::shared_ptr<ISceneNode3D> CreateSceneNode(std::weak_ptr<ISceneNode3D> Parent, std::string SceneNodeTypeName) const = 0;
+	virtual ISceneNode3D* CreateSceneNode3D(ISceneNode3D* Parent, std::string SceneNodeTypeName) const = 0;
+	virtual ISceneNodeUI* CreateSceneNodeUI(ISceneNodeUI* Parent, std::string SceneNodeTypeName) const = 0;
 };

@@ -41,17 +41,15 @@ std::shared_ptr<IRenderPassPipelined> BaseUIPass::CreatePipeline(IRenderTarget* 
 //
 // IVisitor
 //
-bool BaseUIPass::VisitUI(ISceneNode3D* sceneNode)
+bool BaseUIPass::Visit(ISceneNodeUI* sceneNode)
 {
-    GetRenderEventArgs()->Node = sceneNode;
-
 	const ICameraComponent3D* camera = GetRenderEventArgs()->Camera;
 	const Viewport* viewport = GetRenderEventArgs()->PipelineState->GetRasterizerState()->GetViewports()[0];
 	
 	if (viewport)
 	{
-		sceneNode->UpdateCamera(camera);
-		sceneNode->UpdateViewport(viewport);
+		//sceneNode->UpdateCamera(camera);
+		//sceneNode->UpdateViewport(viewport);
 
 		m_PerObjectData->Model = sceneNode->GetWorldTransfom();
 		m_PerObjectData->Projection = viewport->GetOrthoMatix();
@@ -65,15 +63,11 @@ bool BaseUIPass::VisitUI(ISceneNode3D* sceneNode)
 
 bool BaseUIPass::Visit(IMesh * Mesh, SGeometryPartParams GeometryPartParams)
 {
-	GetRenderEventArgs()->Caller = this;
-
 	return Mesh->Render(GetRenderEventArgs(), m_PerObjectConstantBuffer, GeometryPartParams);
 }
 
 bool BaseUIPass::Visit(IGeometry* Geometry, const IMaterial* Material, SGeometryPartParams GeometryPartParams)
 {
-	GetRenderEventArgs()->Caller = this;
-
 	ShaderMap shadersMap;
 
 	if (Material)

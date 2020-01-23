@@ -4,6 +4,7 @@
 #include "GameStateBase.h"
 
 // Additional
+#include "Scene/SceneBase.h"
 #include "XML/XMLManager.h"
 
 CGameState::CGameState(IBaseManager * BaseManager, IRenderWindow* RenderWindow, IWindowEvents* WindowEvents)
@@ -31,21 +32,21 @@ bool CGameState::Init()
 	m_FrameQuery = GetRenderDevice()->CreateQuery(IQuery::QueryType::Timer, 1);
 	m_TestQuery = GetRenderDevice()->CreateQuery(IQuery::QueryType::CountSamples, 1);
 
-	m_Scene3D = GetBaseManager()->GetManager<IScenesFactory>()->CreateScene("SceneBase");
-	m_SceneUI = GetBaseManager()->GetManager<IScenesFactory>()->CreateScene("SceneBase");
+	m_Scene = std::make_shared<SceneBase>(GetBaseManager());
+	m_Scene->CreateRootNodes();
 
 	{
-		m_CameraPosText = GetBaseManager()->GetManager<ISceneNodesFactory>()->CreateSceneNodeUI(m_SceneUI->GetRootNodeUI(), "TextUI");
-		std::dynamic_pointer_cast<ISceneNodeUI>(m_CameraPosText)->SetTranslate(vec2(0.0f, 0.0f));
+		m_CameraPosText = GetBaseManager()->GetManager<ISceneNodesFactory>()->CreateSceneNodeUI(m_Scene->GetRootNodeUI(), "TextUI");
+		m_CameraPosText->SetTranslate(vec2(0.0f, 0.0f));
 
-		m_CameraRotText = GetBaseManager()->GetManager<ISceneNodesFactory>()->CreateSceneNode(m_SceneUI->GetRootNodeUI(), "TextUI");
-		std::dynamic_pointer_cast<ISceneNodeUI>(m_CameraRotText)->SetTranslate(vec2(0.0f, 20.0f));
+		m_CameraRotText = GetBaseManager()->GetManager<ISceneNodesFactory>()->CreateSceneNodeUI(m_Scene->GetRootNodeUI(), "TextUI");
+		m_CameraRotText->SetTranslate(vec2(0.0f, 20.0f));
 
-		m_CameraRot2Text = GetBaseManager()->GetManager<ISceneNodesFactory>()->CreateSceneNode(m_SceneUI->GetRootNodeUI(), "TextUI");
-		std::dynamic_pointer_cast<ISceneNodeUI>(m_CameraRot2Text)->SetTranslate(vec2(0.0f, 40.0f));
+		m_CameraRot2Text = GetBaseManager()->GetManager<ISceneNodesFactory>()->CreateSceneNodeUI(m_Scene->GetRootNodeUI(), "TextUI");
+		m_CameraRot2Text->SetTranslate(vec2(0.0f, 40.0f));
 
-		m_FPSText = GetBaseManager()->GetManager<ISceneNodesFactory>()->CreateSceneNode(m_SceneUI->GetRootNodeUI(), "TextUI");
-		std::dynamic_pointer_cast<ISceneNodeUI>(m_FPSText)->SetTranslate(vec2(0.0f, 60.0f));
+		m_FPSText = GetBaseManager()->GetManager<ISceneNodesFactory>()->CreateSceneNodeUI(m_Scene->GetRootNodeUI(), "TextUI");
+		m_FPSText->SetTranslate(vec2(0.0f, 60.0f));
 	}
 
     m_IsInited = true;
@@ -140,11 +141,8 @@ void CGameState::OnRayIntersected(const glm::vec3& Point)
 //
 void CGameState::OnUpdate(UpdateEventArgs& e)
 {
-	if (m_Scene3D)
-		m_Scene3D->OnUpdate(e);
-
-	if (m_SceneUI)
-		m_SceneUI->OnUpdate(e);
+	if (m_Scene)
+		m_Scene->OnUpdate(e);
 
     if (m_DefaultCameraController)
         m_DefaultCameraController->OnUpdate(e);
@@ -152,8 +150,9 @@ void CGameState::OnUpdate(UpdateEventArgs& e)
 
 void CGameState::OnPreRender(RenderEventArgs& e)
 {
-	m_FrameQuery->Begin(e.FrameCounter);
+	//m_FrameQuery->Begin(e.FrameCounter);
 	//m_TestQuery->Begin(e.FrameCounter);
+	m_Start = std::chrono::high_resolution_clock::now();
 }
 
 void CGameState::OnRender(RenderEventArgs& e)
@@ -166,7 +165,10 @@ void CGameState::OnRender(RenderEventArgs& e)
 void CGameState::OnPostRender(RenderEventArgs& e)
 {
 	//m_TestQuery->End(e.FrameCounter);
-	m_FrameQuery->End(e.FrameCounter);
+	//m_FrameQuery->End(e.FrameCounter);
+
+
+	m_End = std::chrono::high_resolution_clock::now();
 
 	{
 		vec3 cameraTrans = GetCameraController()->GetCamera()->GetTranslation();
@@ -174,7 +176,7 @@ void CGameState::OnPostRender(RenderEventArgs& e)
 		m_CameraRotText->GetProperties()->GetPropertyT<std::string>("Text")->Set("Rot: yaw = " + std::to_string(GetCameraController()->GetCamera()->GetYaw()) + ", pitch = " + std::to_string(GetCameraController()->GetCamera()->GetPitch()));
 		m_CameraRot2Text->GetProperties()->GetPropertyT<std::string>("Text")->Set("Rot: [" + std::to_string(GetCameraController()->GetCamera()->GetDirection().x) + ", " + std::to_string(GetCameraController()->GetCamera()->GetDirection().y) + ", " + std::to_string(GetCameraController()->GetCamera()->GetDirection().z) + "].");
 
-		IQuery::QueryResult frameResult = m_FrameQuery->GetQueryResult(e.FrameCounter);
+		/*IQuery::QueryResult frameResult = m_FrameQuery->GetQueryResult(e.FrameCounter);
 		if (frameResult.IsValid)
 		{
 			if (GetRenderDevice()->GetDeviceType() == RenderDeviceType::RenderDeviceType_DirectX)
@@ -185,7 +187,11 @@ void CGameState::OnPostRender(RenderEventArgs& e)
 			double fpsValue = 1000.0f / m_FrameTime;
 
 			m_FPSText->GetProperties()->GetPropertyT<std::string>("Text")->Set("FPS: " + std::to_string(uint64(fpsValue)));
-		}
+		}*/
+
+		int elapsed_microseconds = std::chrono::duration_cast<std::chrono::microseconds>(m_End - m_Start).count();
+		double fpsValue = 1000000.0 / double(elapsed_microseconds);
+		m_FPSText->GetProperties()->GetPropertyT<std::string>("Text")->Set("FPS: " + std::to_string(uint64(fpsValue)));
 	}
 }
 
@@ -217,8 +223,8 @@ void CGameState::OnResize(ResizeEventArgs & e)
 void CGameState::OnKeyPressed(KeyEventArgs & e)
 {
     bool result = false;
-    if (m_SceneUI)
-        result = m_SceneUI->OnKeyPressed(e);
+    if (m_Scene)
+        result = m_Scene->OnKeyPressed(e);
 
 	if (m_DefaultCameraController && !result)
 		m_DefaultCameraController->OnKeyPressed(e);
@@ -230,7 +236,7 @@ void CGameState::OnKeyPressed(KeyEventArgs & e)
 		// Writer
 		std::shared_ptr<IXMLWriter> writer = xmlM.CreateWriter();
 
-		m_Scene3D->Save(writer);
+		m_Scene->Save(writer);
 
 		std::shared_ptr<IFile> xmlFile = writer->SaveToFile("Scene.xml");
 		GetBaseManager()->GetManager<IFilesManager>()->GetFilesStorage("ZenonGamedata")->SaveFile(xmlFile);
@@ -242,20 +248,20 @@ void CGameState::OnKeyReleased(KeyEventArgs & e)
 	if (m_DefaultCameraController)
 		m_DefaultCameraController->OnKeyReleased(e);
 
-	if (m_SceneUI)
-		m_SceneUI->OnKeyReleased(e);
+	if (m_Scene)
+		m_Scene->OnKeyReleased(e);
 }
 
 void CGameState::OnKeyboardFocus(EventArgs & e)
 {
-	if (m_SceneUI)
-		m_SceneUI->OnKeyboardFocus(e);
+	if (m_Scene)
+		m_Scene->OnKeyboardFocus(e);
 }
 
 void CGameState::OnKeyboardBlur(EventArgs & e)
 {
-	if (m_SceneUI)
-		m_SceneUI->OnKeyboardBlur(e);
+	if (m_Scene)
+		m_Scene->OnKeyboardBlur(e);
 }
 
 
@@ -266,8 +272,8 @@ void CGameState::OnKeyboardBlur(EventArgs & e)
 void CGameState::OnMouseButtonPressed(MouseButtonEventArgs & e)
 {
     bool result = false;
-    if (m_SceneUI)
-        result = m_SceneUI->OnMouseButtonPressed(e);
+    if (m_Scene)
+        result = m_Scene->OnMouseButtonPressed(e);
 
 	if (m_DefaultCameraController && !result)
 	{
@@ -311,8 +317,8 @@ void CGameState::OnMouseButtonReleased(MouseButtonEventArgs & e)
 	if (m_DefaultCameraController)
 		m_DefaultCameraController->OnMouseButtonReleased(e);
 
-	if (m_SceneUI)
-		m_SceneUI->OnMouseButtonReleased(e);
+	if (m_Scene)
+		m_Scene->OnMouseButtonReleased(e);
 }
 
 void CGameState::OnMouseMoved(MouseMotionEventArgs & e)
@@ -320,8 +326,8 @@ void CGameState::OnMouseMoved(MouseMotionEventArgs & e)
 	if (m_DefaultCameraController)
 		m_DefaultCameraController->OnMouseMoved(e);
 
-	if (m_SceneUI)
-		m_SceneUI->OnMouseMoved(e);
+	if (m_Scene)
+		m_Scene->OnMouseMoved(e);
 }
 
 void CGameState::OnMouseWheel(MouseWheelEventArgs & e)
@@ -329,26 +335,26 @@ void CGameState::OnMouseWheel(MouseWheelEventArgs & e)
 	if (m_DefaultCameraController)
 		m_DefaultCameraController->OnMouseWheel(e);
 
-	if (m_SceneUI)
-		m_SceneUI->OnMouseWheel(e);
+	if (m_Scene)
+		m_Scene->OnMouseWheel(e);
 }
 
 void CGameState::OnMouseLeave(EventArgs & e)
 {
-	if (m_SceneUI)
-		m_SceneUI->OnMouseLeave(e);
+	if (m_Scene)
+		m_Scene->OnMouseLeave(e);
 }
 
 void CGameState::OnMouseFocus(EventArgs & e)
 {
-	if (m_SceneUI)
-		m_SceneUI->OnMouseFocus(e);
+	if (m_Scene)
+		m_Scene->OnMouseFocus(e);
 }
 
 void CGameState::OnMouseBlur(EventArgs & e)
 {
-	if (m_SceneUI)
-		m_SceneUI->OnMouseBlur(e);
+	if (m_Scene)
+		m_Scene->OnMouseBlur(e);
 }
 
 

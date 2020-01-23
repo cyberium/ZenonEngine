@@ -135,9 +135,9 @@ void CDefferedRender::UpdateViewport(const Viewport * _viewport)
 //
 // IVisitor
 //
-bool CDefferedRender::Visit3D(ISceneNode3D * node)
+bool CDefferedRender::Visit(ISceneNode3D * node)
 {
-	RenderListProcessorPass::VisitBase(node);
+	RenderListProcessorPass::Visit(node);
 
 	m_PerObjectData->Model = node->GetWorldTransfom();
 	m_PerObjectConstantBuffer->Set(*m_PerObjectData);
@@ -147,8 +147,6 @@ bool CDefferedRender::Visit3D(ISceneNode3D * node)
 
 bool CDefferedRender::Visit(IGeometry * Geometry, const IMaterial * Material, SGeometryPartParams GeometryPartParams)
 {
-	GetRenderEventArgs()->Caller = this;
-
 	ShaderMap shadersMap;
 
 	if (Material)

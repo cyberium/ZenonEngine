@@ -2,7 +2,6 @@
 
 class ZN_API SceneNode3D 
 	: public ISceneNode3D
-	, public ISceneNode3DInternal
 {
     friend IScene;
 public:
@@ -64,11 +63,11 @@ public:
 	//
 
 
-	bool                                            IsComponentExists(GUID ComponentID) override;
-	ISceneNodeComponent*                            GetComponent(GUID ComponentID) override;
+	bool                                            IsComponentExists(GUID ComponentID) const override;
+	ISceneNodeComponent*                            GetComponent(GUID ComponentID) const override;
 	ISceneNodeComponent*                            AddComponent(GUID ComponentID, std::shared_ptr<ISceneNodeComponent> Component) override;
 	const ComponentsMap&                            GetComponents() const override;
-	void                                            RaiseComponentMessage(ISceneNodeComponent* Component, ComponentMessageType Message) override;
+	void                                            RaiseComponentMessage(ISceneNodeComponent* Component, ComponentMessageType Message) const override;
 	virtual void                                    RegisterComponents() override;
     
 	template<typename T> inline T* GetComponent()

@@ -1,5 +1,7 @@
 #include "stdafx.h"
 
+#if 0
+
 // General
 #include "SceneDefaultCreator.h"
 
@@ -35,9 +37,11 @@ std::shared_ptr<IScene> CSceneDefaultCreator::CreateScene(size_t Index) const
 	if (Index == 0)
 	{
 		std::shared_ptr<IScene> scene = std::make_shared<SceneBase>(m_BaseManager);
-		scene->CreateRootNode();
+		scene->CreateRootNode3D();
 		return scene;
 	}
 
 	return nullptr;
 }
+
+#endif

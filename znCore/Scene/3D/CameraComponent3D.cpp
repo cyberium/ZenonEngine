@@ -3,7 +3,7 @@
 // General
 #include "CameraComponent3D.h"
 
-CCameraComponent3D::CCameraComponent3D(std::shared_ptr<ISceneNode3D> OwnerNode)
+CCameraComponent3D::CCameraComponent3D(const ISceneNode3D* OwnerNode)
     : CComponentBase(OwnerNode)
 	, m_RightDirection(0)
 	, m_UpDirection(0)
@@ -35,58 +35,54 @@ CCameraComponent3D::~CCameraComponent3D()
 //
 void CCameraComponent3D::DoMoveFront(float Value)
 {
-	std::shared_ptr<ISceneNode3D> sceneNode3D = std::dynamic_pointer_cast<ISceneNode3D>(GetOwnerNode());
+	ISceneNode3D* sceneNode3D = const_cast<ISceneNode3D*>(GetOwnerNode());
 	_ASSERT(sceneNode3D != nullptr);
 	sceneNode3D->AddTranslate(sceneNode3D->GetRotation() * Value);
 }
 
 void CCameraComponent3D::DoMoveBack(float Value)
 {
-	std::shared_ptr<ISceneNode3D> sceneNode3D = std::dynamic_pointer_cast<ISceneNode3D>(GetOwnerNode());
+	ISceneNode3D* sceneNode3D = const_cast<ISceneNode3D*>(GetOwnerNode());
 	_ASSERT(sceneNode3D != nullptr);
 	sceneNode3D->AddTranslate(-(sceneNode3D->GetRotation() * Value));
 }
 
 void CCameraComponent3D::DoMoveLeft(float Value)
 {
-	std::shared_ptr<ISceneNode3D> sceneNode3D = std::dynamic_pointer_cast<ISceneNode3D>(GetOwnerNode());
+	ISceneNode3D* sceneNode3D = const_cast<ISceneNode3D*>(GetOwnerNode());
 	_ASSERT(sceneNode3D != nullptr);
 	sceneNode3D->AddTranslate(-(m_RightDirection * Value));
 }
 
 void CCameraComponent3D::DoMoveRight(float Value)
 {
-	std::shared_ptr<ISceneNode3D> sceneNode3D = std::dynamic_pointer_cast<ISceneNode3D>(GetOwnerNode());
+	ISceneNode3D* sceneNode3D = const_cast<ISceneNode3D*>(GetOwnerNode());
 	_ASSERT(sceneNode3D != nullptr);
 	sceneNode3D->AddTranslate(m_RightDirection * Value);
 }
 
 void CCameraComponent3D::SetTranslation(glm::vec3 Translation) const
 {
-	std::shared_ptr<ISceneNode3D> sceneNode3D = std::dynamic_pointer_cast<ISceneNode3D>(GetOwnerNode());
+	ISceneNode3D* sceneNode3D = const_cast<ISceneNode3D*>(GetOwnerNode());
 	_ASSERT(sceneNode3D != nullptr);
 	sceneNode3D->SetTranslate(Translation);
 }
 
 glm::vec3 CCameraComponent3D::GetTranslation() const
 {
-	std::shared_ptr<ISceneNode3D> sceneNode3D = std::dynamic_pointer_cast<ISceneNode3D>(GetOwnerNode());
-	_ASSERT(sceneNode3D != nullptr);
-	return sceneNode3D->GetTranslation();
+	return GetOwnerNode()->GetTranslation();
 }
 
 void CCameraComponent3D::SetDirection(glm::vec3 Direction) const
 {
-	std::shared_ptr<ISceneNode3D> sceneNode3D = std::dynamic_pointer_cast<ISceneNode3D>(GetOwnerNode());
+	ISceneNode3D* sceneNode3D = const_cast<ISceneNode3D*>(GetOwnerNode());
 	_ASSERT(sceneNode3D != nullptr);
 	sceneNode3D->SetRotation(Direction);
 }
 
 glm::vec3 CCameraComponent3D::GetDirection() const
 {
-	std::shared_ptr<ISceneNode3D> sceneNode3D = std::dynamic_pointer_cast<ISceneNode3D>(GetOwnerNode());
-	_ASSERT(sceneNode3D != nullptr);
-	return sceneNode3D->GetRotation();
+	return GetOwnerNode()->GetRotation();
 }
 
 void CCameraComponent3D::SetYaw(float Yaw)
@@ -99,7 +95,7 @@ void CCameraComponent3D::SetYaw(float Yaw)
 
 	m_Yaw_XProperty->RaiseValueChangedCallback();
 
-	std::shared_ptr<ISceneNode3D> sceneNode3D = std::dynamic_pointer_cast<ISceneNode3D>(GetOwnerNode());
+	ISceneNode3D* sceneNode3D = const_cast<ISceneNode3D*>(GetOwnerNode());
 	_ASSERT(sceneNode3D != nullptr);
 	sceneNode3D->SetRotation(EulerAnglesToDirectionVector(m_Yaw_X, m_Pitch_Y));
 
@@ -126,7 +122,7 @@ void CCameraComponent3D::SetPitch(float Pitch)
 
 	m_Pitch_YProperty->RaiseValueChangedCallback();
 
-	std::shared_ptr<ISceneNode3D> sceneNode3D = std::dynamic_pointer_cast<ISceneNode3D>(GetOwnerNode());
+	ISceneNode3D* sceneNode3D = const_cast<ISceneNode3D*>(GetOwnerNode());
 	_ASSERT(sceneNode3D != nullptr);
 	sceneNode3D->SetRotation(EulerAnglesToDirectionVector(m_Yaw_X, m_Pitch_Y));
 
@@ -256,7 +252,7 @@ namespace
 
 void CCameraComponent3D::DirectionVectorToEulerAngles(const glm::vec3& Direction)
 {
-	std::shared_ptr<ISceneNode3D> sceneNode3D = std::dynamic_pointer_cast<ISceneNode3D>(GetOwnerNode());
+	const ISceneNode3D* sceneNode3D = GetOwnerNode();
 	_ASSERT(sceneNode3D != nullptr);
 
 	// https://gamedev.stackexchange.com/questions/172147/convert-3d-direction-vectors-to-yaw-pitch-roll-angles
@@ -306,7 +302,7 @@ void CCameraComponent3D::UpdateView()
 	if (!m_View_Dirty)
 		return;
 
-	std::shared_ptr<ISceneNode3D> sceneNode3D = std::dynamic_pointer_cast<ISceneNode3D>(GetOwnerNode());
+	const ISceneNode3D* sceneNode3D = GetOwnerNode();
 	_ASSERT(sceneNode3D != nullptr);
 
 	m_View = glm::lookAt(sceneNode3D->GetTranslation(), sceneNode3D->GetTranslation() + sceneNode3D->GetRotation(), m_UpDirection);

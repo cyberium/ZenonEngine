@@ -3,14 +3,36 @@
 // General
 #include "SceneNodeUI.h"
 
+// Additional
+#include "Scene/Actions.h"
+#include "Scene/Properties.h"
 
 CUIBaseNode::CUIBaseNode()
 	: m_IsMouseOnNode(false)
 	, m_Translate(vec2())
 	, m_Rotate(vec3())
 	, m_Scale(1.0f, 1.0f)
+
+	// Transform functinal
+	, m_LocalTransform(1.0f)
+	, m_InverseLocalTransform(1.0f)	// This is the inverse of the local -> world transform.
+	, m_WorldTransform(1.0f)
+	, m_InverseWorldTransform(1.0f)
 {
 	SetName("CUIBaseNode");
+
+	m_InverseLocalTransform = glm::inverse(m_LocalTransform);
+
+	m_ActionsGroup = std::make_shared<CActionsGroup>("General");
+	m_PropertiesGroup = std::make_shared<CPropertiesGroup>("General", "Some important scene node properties.");
+
+	// Name properties
+	{
+		std::shared_ptr<CPropertyWrapped<std::string>> nameProperty = std::make_shared<CPropertyWrapped<std::string>>("Name", "Scene node name.");
+		nameProperty->SetValueSetter(std::bind(&CUIBaseNode::SetName, this, std::placeholders::_1));
+		nameProperty->SetValueGetter(std::bind(&CUIBaseNode::GetName, this));
+		GetProperties()->AddProperty(nameProperty);
+	}
 }
 
 CUIBaseNode::~CUIBaseNode()
@@ -72,7 +94,7 @@ void CUIBaseNode::AddChild(std::shared_ptr<ISceneNodeUI> childNode)
 	NodeUIList::iterator iter = std::find(m_Children.begin(), m_Children.end(), childNode);
 	if (iter == m_Children.end())
 	{
-		m_ParentNode = weak_from_this();
+		std::dynamic_pointer_cast<CUIBaseNode>(childNode)->m_ParentNode = weak_from_this();
 
 		m_Children.push_back(childNode);
 		if (!childNode->GetName().empty())
@@ -92,7 +114,7 @@ void CUIBaseNode::RemoveChild(std::shared_ptr<ISceneNodeUI> childNode)
 	NodeUIList::iterator iter = std::find(m_Children.begin(), m_Children.end(), childNode);
 	if (iter != m_Children.end())
 	{
-		m_ParentNode = std::weak_ptr<ISceneNodeUI>();
+		std::dynamic_pointer_cast<CUIBaseNode>(childNode)->m_ParentNode = std::weak_ptr<ISceneNodeUI>();
 
 		m_Children.erase(iter);
 		NodeUINameMap::iterator iter2 = m_ChildrenByName.find(childNode->GetName());
@@ -203,6 +225,16 @@ glm::vec2 CUIBaseNode::GetScaleAbs() const
 	return parentScale * GetScale();
 }
 
+mat4 CUIBaseNode::GetLocalTransform() const
+{
+	return m_LocalTransform;
+}
+
+mat4 CUIBaseNode::GetWorldTransfom() const
+{
+	return m_WorldTransform;
+}
+
 
 
 //
@@ -236,7 +268,7 @@ bool CUIBaseNode::IsPointInBoundsAbs(glm::vec2 Point)
 //
 bool CUIBaseNode::Accept(IVisitor* visitor)
 {
-	/*bool visitResult = visitor->VisitUI(this);
+	bool visitResult = visitor->Visit(this);
 
 	if (!visitResult)
 		return false;
@@ -248,7 +280,7 @@ bool CUIBaseNode::Accept(IVisitor* visitor)
 	// Visit meshes
 	AcceptMesh(visitor);
 
-	return visitResult;*/
+	return visitResult;
 
 	return false;
 }
@@ -359,6 +391,11 @@ void CUIBaseNode::UpdateWorldTransform()
 
 	m_WorldTransform = parentTransform * m_LocalTransform;
 	m_InverseWorldTransform = glm::inverse(m_WorldTransform);
+}
+
+IBaseManager * CUIBaseNode::GetBaseManager() const
+{
+	return dynamic_cast<IBaseManagerHolder*>(GetScene())->GetBaseManager();
 }
 
 

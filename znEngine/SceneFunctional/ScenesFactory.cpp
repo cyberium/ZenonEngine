@@ -1,5 +1,7 @@
 #include "stdafx.h"
 
+#if 0
+
 // General
 #include "ScenesFactory.h"
 
@@ -68,3 +70,5 @@ void CScenesFactory::OnPluginInitialized(std::shared_ptr<IznPlugin> Plugin)
 {
 
 }
+
+#endif

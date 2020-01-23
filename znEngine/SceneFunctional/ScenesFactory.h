@@ -1,5 +1,7 @@
 #pragma once
 
+#if 0
+
 class CScenesFactory
 	: public IScenesFactory
 	, public IznPluginsEventListener
@@ -20,3 +22,5 @@ public:
 private:
 	std::vector<std::shared_ptr<ISceneCreator>> m_Creators;
 };
+
+#endif

@@ -53,7 +53,6 @@
 
 // Base
 #include "../znCore/Scene/SceneBase.h"
-#include "../znCore/Scene/SceneNodeBase.h"
 #include "../znCore/Scene/ComponentBase.h"
 #include "../znCore/Scene/Actions.h"
 #include "../znCore/Scene/Properties.h"

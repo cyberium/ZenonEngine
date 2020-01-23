@@ -61,7 +61,7 @@ void CFBXSceneNode::LoadNode()
 	{
 		fbxsdk::FbxNode* fbxNode = m_NativeNode->GetChild(i);
 
-		std::shared_ptr<CFBXSceneNode> childFbxNode = CreateSceneNode<CFBXSceneNode>(m_BaseManager, m_OwnerScene, fbxNode);
+		CFBXSceneNode* childFbxNode = CreateSceneNode<CFBXSceneNode>(m_BaseManager, m_OwnerScene, fbxNode);
 		childFbxNode->LoadNode();
 	}
 

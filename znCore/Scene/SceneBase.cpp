@@ -21,18 +21,18 @@ SceneBase::~SceneBase()
 //
 void SceneBase::CreateRootNodes()
 {
-	m_RootNode3D = std::shared_ptr<SceneNode3D>();
+	m_RootNode3D = std::make_shared<SceneNode3D>();
 	m_RootNode3D->SetScene(weak_from_this());
 	m_RootNode3D->RegisterComponents();
 	m_RootNode3D->Initialize();
 	m_RootNode3D->SetParent(nullptr);
 	m_RootNode3D->SetName("Root node 3D");
 
-	m_RootNodeUI = std::shared_ptr<CUIBaseNode>();
+	m_RootNodeUI = std::make_shared<CUIBaseNode>();
 	m_RootNodeUI->SetScene(weak_from_this());
 	m_RootNodeUI->Initialize();
 	m_RootNodeUI->SetParent(nullptr);
-	m_RootNodeUI->SetName("Root node 3D");
+	m_RootNodeUI->SetName("Root node UI");
 }
 
 ISceneNode3D* SceneBase::GetRootNode3D() const
@@ -65,6 +65,9 @@ void SceneBase::Accept(IVisitor * visitor)
 {
 	if (m_RootNode3D)
 		m_RootNode3D->Accept(visitor);
+
+	if (m_RootNodeUI)
+		m_RootNodeUI->Accept(visitor);
 }
 
 Delegate<SceneChangeEventArgs>& SceneBase::SceneChangeEvent()

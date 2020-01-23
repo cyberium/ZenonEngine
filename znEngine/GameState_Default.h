@@ -45,7 +45,7 @@ private:
 	std::shared_ptr<IRenderPass> m_Model_Pass_Transperent;
 
 
-	std::shared_ptr<SceneNode3D> m_RootForBoxes;
+	SceneNode3D* m_RootForBoxes;
 
 	std::shared_ptr<BuildRenderListPass> m_BuildRenderListPass;
 	std::shared_ptr<CDefferedRender> m_DefferedRenderPass;

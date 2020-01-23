@@ -37,8 +37,7 @@ ZN_INTERFACE ZN_API IGameState
 	virtual void OnMouseFocus(EventArgs& e) = 0;
 	virtual void OnMouseBlur(EventArgs& e) = 0;
 
-	virtual std::shared_ptr<IScene> GetScene3D() const = 0;
-	virtual std::shared_ptr<IScene> GetSceneUI() const = 0;
+	virtual std::shared_ptr<IScene> GetScene() const = 0;
 };
 
 typedef uint32 ZN_API GameStatePriority;

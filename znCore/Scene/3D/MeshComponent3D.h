@@ -10,7 +10,7 @@ public:
     typedef std::vector<IMesh*> MeshList;
 
 public:
-    CMeshComponent3D(std::shared_ptr<ISceneNode3D> OwnerNode);
+    CMeshComponent3D(const ISceneNode3D* OwnerNode);
     virtual ~CMeshComponent3D();
 
 	// IMeshComponent3D

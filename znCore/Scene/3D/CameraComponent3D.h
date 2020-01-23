@@ -8,7 +8,7 @@ class __declspec(UUID_CameraComponent) ZN_API CCameraComponent3D
 	, public CComponentBase
 {
 public:
-	CCameraComponent3D(std::shared_ptr<ISceneNode3D> OwnerNode);
+	CCameraComponent3D(const ISceneNode3D* OwnerNode);
     virtual ~CCameraComponent3D();
 
 	// ICameraComponent3D

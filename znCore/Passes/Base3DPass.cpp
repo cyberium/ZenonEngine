@@ -20,10 +20,15 @@ Base3DPass::~Base3DPass()
 //
 // IVisitor
 //
-bool Base3DPass::Visit3D(ISceneNode3D* sceneNode)
+bool Base3DPass::Visit(ISceneNode3D* sceneNode)
 {
-	ScenePassPipelined::VisitBase(sceneNode);
+	const ICameraComponent3D* camera = GetRenderEventArgs()->Camera;
+	if (camera)
+		sceneNode->UpdateCamera(camera);
 
+	const Viewport* viewport = GetRenderEventArgs()->PipelineState->GetRasterizerState()->GetViewports()[0];
+	if (viewport)
+		sceneNode->UpdateViewport(viewport);
 
 	m_PerObjectData->Model               = sceneNode->GetWorldTransfom();
 	m_PerObjectConstantBuffer->Set(m_PerObjectData, sizeof(PerObject3D));
@@ -33,15 +38,11 @@ bool Base3DPass::Visit3D(ISceneNode3D* sceneNode)
 
 bool Base3DPass::Visit(IMesh * Mesh, SGeometryPartParams GeometryPartParams)
 {
-	GetRenderEventArgs()->Caller = this;
-
 	return Mesh->Render(GetRenderEventArgs(), m_PerObjectConstantBuffer, GeometryPartParams);
 }
 
 bool Base3DPass::Visit(IGeometry* Geometry, const IMaterial* Material, SGeometryPartParams GeometryPartParams)
 {
-	GetRenderEventArgs()->Caller = this;
-
 	ShaderMap shadersMap;
 
 	if (Material)

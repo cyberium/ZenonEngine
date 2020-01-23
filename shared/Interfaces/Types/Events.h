@@ -5,8 +5,9 @@
 // FORWARD BEGIN
 ZN_INTERFACE IPipelineState;
 ZN_INTERFACE ICameraComponent3D;
-ZN_INTERFACE IScene;
+
 ZN_INTERFACE ISceneNode3D;
+ZN_INTERFACE ISceneNodeUI;
 // FORWARD END
 
 template<class ArgumentType>
@@ -284,7 +285,8 @@ public:
 		uint64_t FrameCounter,
 		const ICameraComponent3D* Camera,
 		const IPipelineState* PipelineState,
-		const ISceneNode3D* Node
+		const ISceneNode3D* Node,
+		const ISceneNodeUI* NodeUI = nullptr
 	)
 		: EventArgs(Caller)
 		, ElapsedTime(DeltaTime)
@@ -293,7 +295,8 @@ public:
 
 		, Camera(Camera)
 		, PipelineState(PipelineState)
-		, Node(Node)
+		, Node2(Node)
+		, NodeUI2(NodeUI)
 	{}
 
 	float                                           ElapsedTime;
@@ -302,7 +305,8 @@ public:
 
 	const ICameraComponent3D*                       Camera;
 	const IPipelineState*                           PipelineState;
-	const ISceneNode3D*                               Node;
+	const ISceneNode3D*                             Node2;
+	const ISceneNodeUI*                             NodeUI2;
 };
 typedef Delegate<RenderEventArgs> RenderEvent;
 
@@ -325,7 +329,7 @@ typedef Delegate<UserEventArgs> UserEvent;
 
 
 
-
+ZN_INTERFACE IScene;
 
 class ZN_API SceneEventArgs : public EventArgs
 {

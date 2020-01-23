@@ -25,9 +25,8 @@ public:
 	virtual void UpdateViewport(const Viewport * _viewport) override;
 
 	// IVisitor
-	virtual bool VisitBase(ISceneNode3D* node) override;
-	virtual bool Visit3D(ISceneNode3D* node) override;
-	virtual bool VisitUI(ISceneNode3D* node) override;
+	virtual bool Visit(ISceneNode3D* node) override;
+	virtual bool Visit(ISceneNodeUI* node) override;
 	virtual bool Visit(IMesh* Mesh, SGeometryPartParams GeometryPartParams = SGeometryPartParams()) override;
 	virtual bool Visit(IGeometry* Geometry, const IMaterial* Material, SGeometryPartParams GeometryPartParams = SGeometryPartParams()) override;
 	virtual bool Visit(ILightComponent3D* light) override;
@@ -35,7 +34,7 @@ public:
 protected:
 	virtual void FillPerFrameData();
 
-	RenderEventArgs* GetRenderEventArgs() const;
+	const RenderEventArgs* GetRenderEventArgs() const;
     IRenderDevice* GetRenderDevice() const;
 	const IBaseManager* GetBaseManager() const;
 
@@ -59,9 +58,9 @@ private:
 	IConstantBuffer* m_PerFrameConstantBuffer;
 
 private:
-	bool                                            m_Enabled;
-	IPipelineState*                 m_Pipeline;
-    RenderEventArgs*                                m_RenderEventArgs;
-    IRenderDevice*                    m_RenderDevice;
+	bool											m_Enabled;
+	IPipelineState*									m_Pipeline;
+    const RenderEventArgs*							m_RenderEventArgs;
+    IRenderDevice*									m_RenderDevice;
 	const IBaseManager*                             m_BaseManager;
 };

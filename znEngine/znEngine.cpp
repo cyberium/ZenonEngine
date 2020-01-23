@@ -162,9 +162,9 @@ IBaseManager* WINAPI InitializeEngine(std::vector<std::string> Arguments)
 
 	// Scene
 	{
-		std::shared_ptr<IScenesFactory> factory = std::make_shared<CScenesFactory>(baseManager);
-		baseManager->AddManager<IScenesFactory>(factory);
-		pluginsManager->AddPluginEventListener(std::dynamic_pointer_cast<IznPluginsEventListener>(factory));
+		//std::shared_ptr<IScenesFactory> factory = std::make_shared<CScenesFactory>(baseManager);
+		//baseManager->AddManager<IScenesFactory>(factory);
+		//pluginsManager->AddPluginEventListener(std::dynamic_pointer_cast<IznPluginsEventListener>(factory));
 	}
 
 	// GameStates

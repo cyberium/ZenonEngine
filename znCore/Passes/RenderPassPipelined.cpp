@@ -123,48 +123,29 @@ void RenderPassPipelined::UpdateViewport(const Viewport * _viewport)
 //
 // IVisitor
 //
-bool RenderPassPipelined::VisitBase(ISceneNode3D * node)
+bool RenderPassPipelined::Visit(ISceneNode3D* node)
 {
-	GetRenderEventArgs()->Node = node;
-
-	const ICameraComponent3D* camera = GetRenderEventArgs()->Camera;
-	if (camera)
-		node->UpdateCamera(camera);
-	
-	const Viewport* viewport = GetRenderEventArgs()->PipelineState->GetRasterizerState()->GetViewports()[0];
-	if (viewport)
-		node->UpdateViewport(viewport);
-
-	return true;
+	return false;
 }
 
-bool RenderPassPipelined::Visit3D(ISceneNode3D* node)
+bool RenderPassPipelined::Visit(ISceneNodeUI* node)
 {
-	GetRenderEventArgs()->Node = node;
-
-	return true;
-}
-
-bool RenderPassPipelined::VisitUI(ISceneNode3D* node)
-{
-	GetRenderEventArgs()->Node = node;
-
-	return true;
+	return false;
 }
 
 bool RenderPassPipelined::Visit(IMesh* Mesh, SGeometryPartParams GeometryPartParams)
 {
-    return true;
+    return false;
 }
 
 bool RenderPassPipelined::Visit(IGeometry * Geometry, const IMaterial* Material, SGeometryPartParams GeometryPartParams)
 {
-	return true;
+	return false;
 }
 
 bool RenderPassPipelined::Visit(ILightComponent3D* light)
 {
-	return true;
+	return false;
 }
 
 
@@ -182,7 +163,7 @@ void RenderPassPipelined::FillPerFrameData()
 	m_PerFrameConstantBuffer->Set(perFrame);
 }
 
-RenderEventArgs* RenderPassPipelined::GetRenderEventArgs() const
+const RenderEventArgs* RenderPassPipelined::GetRenderEventArgs() const
 {
 	_ASSERT(m_RenderEventArgs != nullptr);
 	return m_RenderEventArgs;

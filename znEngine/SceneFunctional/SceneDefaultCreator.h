@@ -1,5 +1,7 @@
 #pragma once
 
+#ifdef 0
+
 class CSceneDefaultCreator
 	: public ISceneCreator
 {
@@ -15,3 +17,5 @@ public:
 private:
 	IBaseManager* m_BaseManager;
 };
+
+#endif

@@ -15,19 +15,19 @@ public:
 	bool LoadFromFile(std::shared_ptr<IFile> File);
 	bool SaveToFile(std::shared_ptr<IFile> File, int pFileFormat = -1, bool pEmbedMedia = false);
 
-	bool LoadNodes(std::shared_ptr<ISceneNode3D> ParentNode);
+	bool LoadNodes(ISceneNode3D* ParentNode);
 
 public:
 	fbxsdk::FbxScene*   GetNativeScene() const;
 	fbxsdk::FbxManager* GetNativeManager() const;
 	std::string         GetPath() const;
-	std::shared_ptr<CFBXSceneNode> GetRootNode() const;
+	CFBXSceneNode* GetRootNode() const;
 
 private:
 	std::string m_Path;
 	fbxsdk::FbxScene* m_NativeScene;
 
-	std::shared_ptr<CFBXSceneNode> m_RootNode;
+	CFBXSceneNode* m_RootNode;
 
 private:
 	const IBaseManager* m_BaseManager;

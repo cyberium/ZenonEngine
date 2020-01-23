@@ -82,6 +82,9 @@
     <Filter Include="FBX\Parts">
       <UniqueIdentifier>{d92e52e1-0d78-44d9-ba88-a6990c61358e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Scene Funcitonal\Scene DEPRECATED">
+      <UniqueIdentifier>{e7bd6e4b-8d9d-488f-be74-e4a0d64ed894}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -164,12 +167,6 @@
     </ClCompile>
     <ClCompile Include="Loader.cpp">
       <Filter>Managers</Filter>
-    </ClCompile>
-    <ClCompile Include="SceneFunctional\ScenesFactory.cpp">
-      <Filter>Scene Funcitonal</Filter>
-    </ClCompile>
-    <ClCompile Include="SceneFunctional\SceneDefaultCreator.cpp">
-      <Filter>Scene Funcitonal</Filter>
     </ClCompile>
     <ClCompile Include="Settings.cpp">
       <Filter>Managers</Filter>
@@ -270,6 +267,12 @@
     <ClCompile Include="FBX\FBXMaterial.cpp">
       <Filter>FBX\Parts</Filter>
     </ClCompile>
+    <ClCompile Include="SceneFunctional\SceneDefaultCreator.cpp">
+      <Filter>Scene Funcitonal\Scene DEPRECATED</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneFunctional\ScenesFactory.cpp">
+      <Filter>Scene Funcitonal\Scene DEPRECATED</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="common.h">
@@ -355,12 +358,6 @@
     </ClInclude>
     <ClInclude Include="Loader.h">
       <Filter>Managers</Filter>
-    </ClInclude>
-    <ClInclude Include="SceneFunctional\ScenesFactory.h">
-      <Filter>Scene Funcitonal</Filter>
-    </ClInclude>
-    <ClInclude Include="SceneFunctional\SceneDefaultCreator.h">
-      <Filter>Scene Funcitonal</Filter>
     </ClInclude>
     <ClInclude Include="Settings.h">
       <Filter>Managers</Filter>
@@ -462,6 +459,12 @@
       <Filter>FBX\Parts</Filter>
     </ClInclude>
     <ClInclude Include="ThreadPool.h" />
+    <ClInclude Include="SceneFunctional\SceneDefaultCreator.h">
+      <Filter>Scene Funcitonal\Scene DEPRECATED</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneFunctional\ScenesFactory.h">
+      <Filter>Scene Funcitonal\Scene DEPRECATED</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="znEngine.rc">
