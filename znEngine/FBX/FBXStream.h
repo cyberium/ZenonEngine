@@ -1,5 +1,7 @@
 #pragma once
 
+#ifdef ZN_FBX_SDK_ENABLE
+
 #include <fbxsdk.h>
 
 class ZN_API CFBXStream
@@ -75,3 +77,5 @@ private:
 	std::shared_ptr<IFile> m_File;
 	FbxIOPluginRegistry* m_PluginRegistry;
 };
+
+#endif
