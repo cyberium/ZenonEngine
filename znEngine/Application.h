@@ -16,7 +16,7 @@ public:
 	void                            Stop();
 
 	// Creators
-	IRenderDevice*  CreateRenderDevice(RenderDeviceType DeviceType);
+	IRenderDevice*                  CreateRenderDevice(RenderDeviceType DeviceType);
 	void                            AddRenderWindow(IRenderWindow* RenderWindow);
 	void                            DeleleRenderWindow(IRenderWindow* RenderWindow);
 
@@ -26,7 +26,7 @@ public:
 	void                            DoAfterRun() override;
 
 	IBaseManager*					GetBaseManager() const override;
-	IRenderDevice*  GetRenderDevice() const override;
+	IRenderDevice*                  GetRenderDevice() const override;
 	void                            SetRenderDevice(IRenderDevice* _renderDevice) override;
 	HINSTANCE                       GetHINSTANCE() override;
 

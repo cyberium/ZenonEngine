@@ -68,7 +68,7 @@ void Application::AddRenderWindow(IRenderWindow* RenderWindow)
 
 void Application::DeleleRenderWindow(IRenderWindow* RenderWindow)
 {
-	
+	m_Windows.clear();
 }
 
 
@@ -92,10 +92,12 @@ int Application::DoRun()
 {
 	static Timer elapsedTime;
 
-	MSG msg;
+	
+
+	MSG msg = { 0 };
 	while (PeekMessageW(&msg, NULL, 0, 0, PM_REMOVE))
 	{
-		if (msg.message == WM_DESTROY)
+		if (msg.message == WM_QUIT)
 		{
 			m_Exit(EventArgs(this));
 
@@ -117,7 +119,10 @@ int Application::DoRun()
 	g_FrameCounter++;
 
 	UpdateEventArgs updateArgs(this, g_GameDeltaTime * 166.0f, g_ApplicationTime * 166.0f, g_FrameCounter);
-	m_Update(updateArgs);
+	if (! m_Update(updateArgs))
+	{
+		m_bIsRunning = false;
+	}
 
 	return static_cast<int>(msg.wParam);
 }

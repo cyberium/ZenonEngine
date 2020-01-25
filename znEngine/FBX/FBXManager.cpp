@@ -1,5 +1,7 @@
 #include "stdafx.h"
 
+#ifdef ZN_FBX_SDK_ENABLE
+
 // General
 #include "FBXManager.h"
 
@@ -39,3 +41,5 @@ std::shared_ptr<CFBXScene> CFBXManager::CreateScene(std::string SceneName)
 
 	return std::make_shared<CFBXScene>(m_BaseManager, fbxScene);
 }
+
+#endif

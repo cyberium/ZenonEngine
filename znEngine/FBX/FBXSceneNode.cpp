@@ -1,5 +1,7 @@
 #include "stdafx.h"
 
+#ifdef ZN_FBX_SDK_ENABLE
+
 // Include
 #include "FBXScene.h"
 
@@ -169,3 +171,5 @@ fbxsdk::FbxNode * CFBXSceneNode::GetNativeNode() const
 {
 	return m_NativeNode;
 }
+
+#endif

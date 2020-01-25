@@ -273,6 +273,7 @@
     <ClCompile Include="SceneFunctional\ScenesFactory.cpp">
       <Filter>Scene Funcitonal\Scene DEPRECATED</Filter>
     </ClCompile>
+    <ClCompile Include="WindowHandleWrapper.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="common.h">
@@ -465,6 +466,7 @@
     <ClInclude Include="SceneFunctional\ScenesFactory.h">
       <Filter>Scene Funcitonal\Scene DEPRECATED</Filter>
     </ClInclude>
+    <ClInclude Include="WindowHandleWrapper.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="znEngine.rc">

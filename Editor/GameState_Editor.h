@@ -1,5 +1,7 @@
 #pragma once
 
+#if 0
+
 #include "MainEditor.h"
 
 class CGameState_Editor 
@@ -32,3 +34,5 @@ private:
 
 	Delegate<SceneChangeEventArgs>::FunctionDecl  m_SceneChangeConnection;
 };
+
+#endif

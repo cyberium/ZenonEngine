@@ -1,5 +1,7 @@
 #pragma once
 
+#ifdef ZN_FBX_SDK_ENABLE
+
 #include <fbxsdk.h>
 
 // FORWARD BEGIN
@@ -25,3 +27,5 @@ private:
 private:
 	const IBaseManager* m_BaseManager;
 };
+
+#endif

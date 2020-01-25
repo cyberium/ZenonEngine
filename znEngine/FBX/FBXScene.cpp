@@ -1,5 +1,7 @@
 #include "stdafx.h"
 
+#ifdef ZN_FBX_SDK_ENABLE
+
 // General
 #include "FBXScene.h"
 
@@ -266,3 +268,5 @@ CFBXSceneNode* CFBXScene::GetRootNode() const
 {
 	return m_RootNode;
 }
+
+#endif

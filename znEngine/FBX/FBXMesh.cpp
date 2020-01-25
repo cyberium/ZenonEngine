@@ -1,5 +1,7 @@
 #include "stdafx.h"
 
+#ifdef ZN_FBX_SDK_ENABLE
+
 // Include
 #include "FBXSceneNode.h"
 
@@ -581,3 +583,5 @@ void CFBXMesh::DisplayMaterialMapping(fbxsdk::FbxGeometryElementMaterial* materi
 		Log::Print(lString);
 	}
 }
+
+#endif

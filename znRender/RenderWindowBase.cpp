@@ -14,19 +14,19 @@ RenderWindowBase::RenderWindowBase(IRenderDevice* RenderDevice, IWindowObject * 
 	m_Viewport.SetHeight(WindowObject->GetWindowHeight());
 
 	m_ResizeConnection = dynamic_cast<IWindowEvents*>(WindowObject)->Resize().connect(&RenderWindowBase::OnResize, this, std::placeholders::_1);
-	m_WindowCloseConnection = dynamic_cast<IWindowEvents*>(WindowObject)->Close().connect(&RenderWindowBase::OnClose, this, std::placeholders::_1);
+	m_WindowCloseConnection = dynamic_cast<IWindowEvents*>(WindowObject)->WindowClose().connect(&RenderWindowBase::OnClose, this, std::placeholders::_1);
 }
 
 RenderWindowBase::~RenderWindowBase()
 {}
 
 
-int RenderWindowBase::GetWindowWidth() const
+size_t RenderWindowBase::GetWindowWidth() const
 {
 	return m_WindowObject->GetWindowWidth();
 }
 
-int RenderWindowBase::GetWindowHeight() const
+size_t RenderWindowBase::GetWindowHeight() const
 {
     return m_WindowObject->GetWindowHeight();
 }

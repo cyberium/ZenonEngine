@@ -45,8 +45,8 @@ bool CznPluginsManager::AddPlugin(const std::string& PluginDLLName)
 		void* getPluginProcNative = GetProcAddress(pluginDLL, "GetPlugin");
 		if (getPluginProcNative == NULL)
 		{
+			FreeLibrary(pluginDLL);
 			return false;
-			throw CPluginException_NotAPlguin("Is not a ZenonEngine plguin.");
 		}
 
 		GetPluginFuncProc* getPluginProc = (GetPluginFuncProc*)getPluginProcNative;
@@ -54,6 +54,7 @@ bool CznPluginsManager::AddPlugin(const std::string& PluginDLLName)
 		std::shared_ptr<IznPlugin> pluginObject(getPluginProc(m_BaseManager));
 		if (pluginObject == nullptr)
 		{
+			FreeLibrary(pluginDLL);
 			throw CPluginException("Error while create plugin object.");
 		}
 

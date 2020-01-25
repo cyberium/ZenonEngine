@@ -1,31 +1,29 @@
 #pragma once
 
-class RenderWindowWidget
-	: public QFrame
-	, public IWindowObject
+class ZN_API CWindowHandleWrapper
+	: public IWindowObject
 	, public IWindowEvents
 	, public Object
 {
-	Q_OBJECT
 public:
-	RenderWindowWidget(QWidget * parent);
-	virtual ~RenderWindowWidget();
+	CWindowHandleWrapper(HWND HWnd);
+	virtual ~CWindowHandleWrapper();
 
-
+	LRESULT WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam) override;
 
 	//
 	// IWindowObject
 	//
-	std::string GetWindowName();
-	long GetWindowWidth();   
-	long GetWindowHeight();   
-	HWND GetHWnd();
-	void SetCursorPosition(const glm::ivec2& CursorPosition);
-	glm::ivec2 GetCursorPosition() const;
-	void ShowCursor();
-	void HideCursor();
-	LRESULT WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam);
 
+	std::string GetWindowName() override;
+	long GetWindowWidth() override;
+	long GetWindowHeight() override;
+	HWND GetHWnd() override;
+	void SetCursorPosition(const glm::ivec2& CursorPosition) override;
+	glm::ivec2 GetCursorPosition() const override;
+	void ShowCursor() override;
+	void HideCursor() override;
+	
 
 	//
 	// IWindowEvents
@@ -56,27 +54,6 @@ public:
 	Event&              MouseFocus();
 	Event&              MouseBlur();
 
-
-private:
-	QPaintEngine* paintEngine() const override { return nullptr; } // don't touch this magic!!!
-
-	void mousePressEvent(QMouseEvent *event) override;
-	void mouseReleaseEvent(QMouseEvent *event) override;
-	void mouseDoubleClickEvent(QMouseEvent *event) override;
-	void mouseMoveEvent(QMouseEvent *event) override;
-	void wheelEvent(QWheelEvent *event) override;
-	void keyPressEvent(QKeyEvent *event) override;
-	void keyReleaseEvent(QKeyEvent *event) override;
-	void focusInEvent(QFocusEvent *event) override;
-	void focusOutEvent(QFocusEvent *event) override;
-	void enterEvent(QEvent *event) override;
-	void leaveEvent(QEvent *event) override;
-	void paintEvent(QPaintEvent *event) override;
-	void moveEvent(QMoveEvent *event) override;
-	void resizeEvent(QResizeEvent *event) override;
-	void closeEvent(QCloseEvent *event) override;
-
-
 private:
 	// Window events
 	Event				m_InputFocus; // Window gets input focus
@@ -103,4 +80,16 @@ private:
 	Event               m_MouseLeave;
 	Event               m_MouseFocus;
 	Event               m_MouseBlur;
+
+private:
+	// For mouse events
+	glm::ivec2          m_PreviousMousePosition;  // Used to compute relative mouse motion in this window.
+	bool                m_InClientRect;           // This is true when the mouse is inside the window's client rect.
+	bool                m_IsMouseTracking;        // Used to capture mouse enter/leave events.
+
+	// For keyboard events
+	bool                m_bHasKeyboardFocus;      // This is set to true when the window receives keyboard focus.
+
+private:
+	HWND m_HWnd;
 };

@@ -1,9 +1,11 @@
 #include "stdafx.h"
 
+IBaseManager* BaseManager = nullptr;
+
 void main_internal(int argumentCount, char* arguments[])
 {
 	// 1. Initialize engine and some improtant managers
-	IBaseManager* BaseManager = InitializeEngine(ArgumentsToVector(argumentCount, arguments));
+	BaseManager = InitializeEngine(ArgumentsToVector(argumentCount, arguments), "");
 
 	// 3. Create application
 	Application app(BaseManager, ::GetModuleHandle(NULL));
@@ -31,13 +33,15 @@ void main_internal(int argumentCount, char* arguments[])
 	std::shared_ptr<IFontsManager> fontsManager = std::make_shared<FontsManager>(renderDevice, BaseManager);
 	BaseManager->AddManager<IFontsManager>(fontsManager);
 
-	IRenderWindow* firstRenderWindow = renderDevice->CreateRenderWindow(&firstWindowObject, false);
+	IRenderWindow* firstRenderWindow = renderDevice->CreateRenderWindow(const_cast<CWindowHandleWrapper*>(firstWindowObject.GetHandleWrapper()), false);
 	app.AddRenderWindow(firstRenderWindow);
 
-	std::shared_ptr<IGameState> gameState = BaseManager->GetManager<IGameStatesFactory>()->CreateGameStateWithHighestPriority(firstRenderWindow, &firstWindowObject);
+	std::shared_ptr<IGameState> gameState = BaseManager->GetManager<IGameStatesFactory>()->CreateGameStateWithHighestPriority(firstRenderWindow, const_cast<CWindowHandleWrapper*>(firstWindowObject.GetHandleWrapper()));
 	app.SetGameState(gameState);
 
 	app.Run();
+
+	
 
 }
 
@@ -47,6 +51,8 @@ int main(int argumentCount, char* arguments[])
 	_CrtSetReportMode(_CRT_ERROR, _CRTDBG_MODE_DEBUG);
 
 	main_internal(argumentCount, arguments);		
+
+	delete BaseManager;
 
 	_CrtMemDumpAllObjectsSince(NULL);
 

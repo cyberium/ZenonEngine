@@ -1,5 +1,7 @@
 #include "stdafx.h"
 
+#ifdef ZN_FBX_SDK_ENABLE
+
 // General
 #include "FBXDisplayLink.h"
 
@@ -92,4 +94,4 @@ void DisplayLink(FbxGeometry* pGeometry)
 	}
 }
 
-
+#endif

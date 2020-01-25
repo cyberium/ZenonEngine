@@ -1,5 +1,7 @@
 #pragma once
 
+#ifdef ZN_FBX_SDK_ENABLE
+
 #include <fbxsdk.h>
 #include "Materials/MaterialModel.h"
 
@@ -22,3 +24,5 @@ protected:
 private:
 	std::weak_ptr<CFBXSceneNode> m_OwnerFBXNode;
 };
+
+#endif

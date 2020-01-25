@@ -12,6 +12,7 @@ ZN_INTERFACE ZN_API IWindowObject
 	virtual glm::ivec2 GetCursorPosition() const = 0;
 	virtual void ShowCursor() = 0;
 	virtual void HideCursor() = 0;
+	virtual LRESULT WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam) = 0;
 };
 
 ZN_INTERFACE ZN_API IWindowEvents
@@ -25,7 +26,7 @@ ZN_INTERFACE ZN_API IWindowEvents
 	virtual Event&				Restore() = 0;    // Window is restored.
 	virtual ResizeEvent&		Resize() = 0;
 	// Window is closing
-	virtual WindowCloseEvent&	Close() = 0;
+	virtual WindowCloseEvent&	WindowClose() = 0;
 	// Keyboard events
 	virtual KeyboardEvent&		KeyPressed() = 0;
 	virtual KeyboardEvent&		KeyReleased() = 0;
@@ -49,11 +50,10 @@ ZN_INTERFACE ZN_API IWindowEventsConnection
 	virtual void Disconnect(IWindowEvents* WindowEvents) = 0;
 };
 
-ZN_INTERFACE ZN_API IWindowObjectEx
+ZN_INTERFACE ZN_API IWindowCreator
 {
-	virtual ~IWindowObjectEx() {}
+	virtual ~IWindowCreator() {}
 
-	virtual void SetWindowHandle(HWND HWnd) = 0;
 	virtual HWND CreateWindowInstance(IApplication * Application, LPCWSTR WindowName, LONG Width, LONG Height) = 0;
 	virtual void DestroyWindowInstance() = 0;
 };

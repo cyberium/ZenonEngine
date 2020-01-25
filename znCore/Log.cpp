@@ -125,7 +125,8 @@ void Log::Info(const char* _message, ...)
 {
 	va_list args;
 	va_start(args, _message);
-	gLogInstance->PushMessageToAllDebugOutputs(IDebugOutput::DebugMessageType::TYPE_INFO, _message, args);
+	if (gLogInstance)
+		gLogInstance->PushMessageToAllDebugOutputs(IDebugOutput::DebugMessageType::TYPE_INFO, _message, args);
 	va_end(args);
 }
 
@@ -133,7 +134,8 @@ void Log::Print(const char* _message, ...)
 {
 	va_list args;
 	va_start(args, _message);
-	gLogInstance->PushMessageToAllDebugOutputs(IDebugOutput::DebugMessageType::TYPE_PRINT, _message,  args);
+	if (gLogInstance)
+		gLogInstance->PushMessageToAllDebugOutputs(IDebugOutput::DebugMessageType::TYPE_PRINT, _message,  args);
 	va_end(args);
 }
 
@@ -141,7 +143,8 @@ void Log::Green(const char* _message, ...)
 {
 	va_list args;
 	va_start(args, _message);
-	gLogInstance->PushMessageToAllDebugOutputs(IDebugOutput::DebugMessageType::TYPE_GREEN, _message,  args);
+	if (gLogInstance)
+		gLogInstance->PushMessageToAllDebugOutputs(IDebugOutput::DebugMessageType::TYPE_GREEN, _message,  args);
 	va_end(args);
 }
 
@@ -149,7 +152,8 @@ void Log::Warn(const char* _message, ...)
 {
 	va_list args;
 	va_start(args, _message);
-	gLogInstance->PushMessageToAllDebugOutputs(IDebugOutput::DebugMessageType::TYPE_WARNING, _message,  args);
+	if (gLogInstance)
+		gLogInstance->PushMessageToAllDebugOutputs(IDebugOutput::DebugMessageType::TYPE_WARNING, _message,  args);
 	va_end(args);
 }
 
@@ -157,7 +161,8 @@ void Log::Error(const char* _message, ...)
 {
 	va_list args;
 	va_start(args, _message);
-	gLogInstance->PushMessageToAllDebugOutputs(IDebugOutput::DebugMessageType::TYPE_ERROR, _message,  args);
+	if (gLogInstance)
+		gLogInstance->PushMessageToAllDebugOutputs(IDebugOutput::DebugMessageType::TYPE_ERROR, _message,  args);
 	va_end(args);
 }
 

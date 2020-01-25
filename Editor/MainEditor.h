@@ -16,7 +16,7 @@ public:
 	MainEditor(QWidget* Parent = nullptr);
 	virtual ~MainEditor();
 
-	void OnSceneNodeSelected(std::shared_ptr<ISceneNode3D> SceneNode);
+	void OnSceneNodeSelected(ISceneNode3D* SceneNode);
 
 	void ApplyScene(std::shared_ptr<IScene> Scene);
 	void ApplyTest();

@@ -7,6 +7,7 @@ MaterialBase::MaterialBase(IRenderDevice* RenderDevice, size_t Size)
 	: m_Name("MaterialBase")
 	, m_RenderDevice(RenderDevice)
 	, m_Dirty(true)
+	, m_pConstantBuffer(nullptr)
 {
 	if (Size > 0)
 	{
@@ -16,10 +17,6 @@ MaterialBase::MaterialBase(IRenderDevice* RenderDevice, size_t Size)
 
 MaterialBase::~MaterialBase()
 {
-	if (m_pConstantBuffer)
-	{
-		m_RenderDevice->DestroyConstantBuffer(m_pConstantBuffer);
-	}
 }
 
 void MaterialBase::SetName(const std::string & Name)

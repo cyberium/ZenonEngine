@@ -57,6 +57,11 @@ void RenderWindowWidget::HideCursor()
 	_ASSERT(false);
 }
 
+LRESULT RenderWindowWidget::WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
+{
+	return 0;
+}
+
 
 
 //
@@ -89,7 +94,7 @@ ResizeEvent& RenderWindowWidget::Resize()
 	return m_Resize;
 }
 
-WindowCloseEvent& RenderWindowWidget::Close()
+WindowCloseEvent& RenderWindowWidget::WindowClose()
 {
 	return m_Close;
 }

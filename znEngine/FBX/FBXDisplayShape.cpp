@@ -1,5 +1,7 @@
 #include "stdafx.h"
 
+#ifdef ZN_FBX_SDK_ENABLE
+
 // General
 #include "FBXDisplayShape.h"
 
@@ -55,4 +57,4 @@ void DisplayShape(FbxGeometry* pGeometry)
 	}
 }
 
-
+#endif

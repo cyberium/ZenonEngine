@@ -40,7 +40,7 @@ MainEditor::~MainEditor()
 {
 }
 
-void MainEditor::OnSceneNodeSelected(std::shared_ptr<ISceneNode3D> SceneNode)
+void MainEditor::OnSceneNodeSelected(ISceneNode3D* SceneNode)
 {
 	m_PropertiesController->SceneNodeSelected(SceneNode);
 }
@@ -81,13 +81,13 @@ void MainEditor::onCustomContextMenu(const QPoint& point)
 	m_SceneTreeViewerContextMenu->clear();
 
 	{
-		QAction* nameAction = new QAction(item->GetSceneNode()->GetName().c_str(), m_SceneTreeViewerContextMenu);
+		QAction* nameAction = new QAction(item->GetSceneNode()->GetName().c_str(), m_SceneTreeViewerContextMenu.get());
 		nameAction->setEnabled(false);
 		m_SceneTreeViewerContextMenu->addAction(nameAction);
 
 		m_SceneTreeViewerContextMenu->addSeparator();
 
-		QAction* uninstallAction33 = new QAction("Uninstall TA33", m_SceneTreeViewerContextMenu);
+		QAction* uninstallAction33 = new QAction("Uninstall TA33", m_SceneTreeViewerContextMenu.get());
 		m_SceneTreeViewerContextMenu->addAction(uninstallAction33);
 	}
 

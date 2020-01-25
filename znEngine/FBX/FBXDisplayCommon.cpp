@@ -1,5 +1,7 @@
 #include "stdafx.h"
 
+#ifdef ZN_FBX_SDK_ENABLE
+
 // General
 #include "FBXDisplayCommon.h"
 
@@ -235,3 +237,4 @@ void DisplayColor(const char* pHeader, FbxColor pValue, const char* pSuffix /* =
 	Log::Print(lString);
 }
 
+#endif

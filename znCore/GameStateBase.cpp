@@ -157,7 +157,7 @@ void CGameState::OnPreRender(RenderEventArgs& e)
 
 void CGameState::OnRender(RenderEventArgs& e)
 {
-	e.Camera = GetCameraController()->GetCamera().get();
+	e.Camera = GetCameraController()->GetCamera();
 	
 	m_Technique3D.Render(e);
 }
@@ -197,7 +197,7 @@ void CGameState::OnPostRender(RenderEventArgs& e)
 
 void CGameState::OnRenderUI(RenderEventArgs& e)
 {
-	e.Camera = GetCameraController()->GetCamera().get();
+	e.Camera = GetCameraController()->GetCamera();
 
 	m_TechniqueUI.Render(e);
 }

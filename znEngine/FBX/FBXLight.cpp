@@ -1,5 +1,7 @@
 #include "stdafx.h"
 
+#ifdef ZN_FBX_SDK_ENABLE
+
 // Include
 #include "FBXScene.h"
 #include "FBXSceneNode.h"
@@ -74,3 +76,5 @@ void CFBXLight::Load(fbxsdk::FbxLight * NativeLight)
 	m_OwnerFBXNode.lock()->GetComponent<ILightComponent3D>()->SetSpotlightAngle(NativeLight->OuterAngle.Get() / 2.0f);
 	m_OwnerFBXNode.lock()->GetComponent<ILightComponent3D>()->SetRange(NativeLight->Intensity.Get() / 40.0f);
 }
+
+#endif

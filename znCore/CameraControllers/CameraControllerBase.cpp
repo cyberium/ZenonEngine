@@ -11,6 +11,7 @@ CCameraControllerBase::CCameraControllerBase()
 
 CCameraControllerBase::~CCameraControllerBase()
 {
+	printf("");
 }
 
 
@@ -18,12 +19,12 @@ CCameraControllerBase::~CCameraControllerBase()
 //
 // ICameraController
 //
-void CCameraControllerBase::SetCamera(std::shared_ptr<ICameraComponent3D> Camera)
+void CCameraControllerBase::SetCamera(ICameraComponent3D* Camera)
 {
 	m_Camera = Camera;
 }
 
-std::shared_ptr<ICameraComponent3D> CCameraControllerBase::GetCamera() const
+ICameraComponent3D* CCameraControllerBase::GetCamera() const
 {
 	return m_Camera;
 }

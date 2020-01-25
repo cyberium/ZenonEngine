@@ -4,13 +4,13 @@ class ZN_API CCameraControllerBase
 	: public ICameraController
 {
 public:
-	                                                CCameraControllerBase();
-    virtual                                         ~CCameraControllerBase();
+	CCameraControllerBase();
+    virtual	~CCameraControllerBase();
 
 	// ICameraController
-	void											SetCamera(std::shared_ptr<ICameraComponent3D> Camera) override;
+	void											SetCamera(ICameraComponent3D* Camera) override;
 
-	std::shared_ptr<ICameraComponent3D>             GetCamera() const override;
+	ICameraComponent3D*                             GetCamera() const override;
 	Ray	                                            ScreenPointToRay(const Viewport* Viewport, glm::vec2 screenPoint) const override;
 
     // Engine events
@@ -31,7 +31,7 @@ public:
 	
 
 protected:
-	std::shared_ptr<ICameraComponent3D>             m_Camera;
+	ICameraComponent3D*								m_Camera;
 	
 	vec2                                            m_PreviousMousePosition;
 };

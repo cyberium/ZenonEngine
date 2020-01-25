@@ -14,7 +14,7 @@ ZN_INTERFACE ZN_API IApplication
 	virtual void                            DoAfterRun() = 0;
 
 	virtual IBaseManager*                   GetBaseManager() const = 0;
-	virtual IRenderDevice*  GetRenderDevice() const = 0;
+	virtual IRenderDevice*                  GetRenderDevice() const = 0;
 	virtual void                            SetRenderDevice(IRenderDevice* RenderDevice) = 0;
 
 	virtual HINSTANCE                       GetHINSTANCE() = 0;

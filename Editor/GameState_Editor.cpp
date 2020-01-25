@@ -1,5 +1,7 @@
 #include "stdafx.h"
 
+#if 0
+
 // Gerenal
 #include "GameState_Editor.h"
 
@@ -161,3 +163,5 @@ void CGameState_Editor::LoadUI()
 {
 	m_TechniqueUI.AddPass(GetBaseManager()->GetManager<IRenderPassFactory>()->CreateRenderPass("BaseUIPass", GetRenderDevice(), GetRenderWindow()->GetRenderTarget(), GetRenderWindow()->GetViewport(), m_SceneUI));
 }
+
+#endif

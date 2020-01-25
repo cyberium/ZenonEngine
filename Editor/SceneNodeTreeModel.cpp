@@ -27,7 +27,7 @@ void CSceneNodeTreeModel::SetModelData(std::shared_ptr<IScene> Scene3D)
 	}
 
 	m_RootItem = new CSceneNodeTreeItem();
-	m_RootItem->addChild(new CSceneNodeTreeItem(Scene3D->GetRootNode(), m_RootItem));
+	m_RootItem->addChild(new CSceneNodeTreeItem(Scene3D->GetRootNode3D(), m_RootItem));
 }
 
 

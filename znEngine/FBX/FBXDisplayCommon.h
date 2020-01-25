@@ -1,5 +1,7 @@
 #pragma once
 
+#ifdef ZN_FBX_SDK_ENABLE
+
 #include <fbxsdk.h>
 
 void DisplayMetaData(fbxsdk::FbxScene* pScene);
@@ -16,3 +18,5 @@ void Display2DVector(const char* pHeader, FbxVector2 pValue, const char* pSuffix
 void Display3DVector(const char* pHeader, FbxVector4 pValue, const char* pSuffix = "");
 void DisplayColor(const char* pHeader, FbxColor pValue, const char* pSuffix = "");
 void Display4DVector(const char* pHeader, FbxVector4 pValue, const char* pSuffix = "");
+
+#endif

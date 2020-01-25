@@ -44,6 +44,11 @@ std::string GetExePath()
 	return f.substr(0, f.find_last_of("\\/"));
 }
 
+std::string GetDLLPath()
+{
+	return GetExePath() + "\\Extensions\\";
+}
+
 std::string str_tolower(std::string s) 
 {
 	std::transform(s.begin(), s.end(), s.begin(), [] (char c) 
@@ -105,9 +110,10 @@ std::vector<std::string> GetAllFilesInDirectory(const std::string& Directory, co
 
 #include <iostream>
 
-IBaseManager* WINAPI InitializeEngine(std::vector<std::string> Arguments)
+IBaseManager* WINAPI InitializeEngine(std::vector<std::string> Arguments, std::string PathToPlugins)
 {
 	IBaseManager* baseManager = new CBaseManager();
+
 
 	std::shared_ptr<IznPluginsManager> pluginsManager = std::make_shared<CznPluginsManager>(baseManager);
 	baseManager->AddManager<IznPluginsManager>(pluginsManager);
@@ -185,10 +191,14 @@ IBaseManager* WINAPI InitializeEngine(std::vector<std::string> Arguments)
 	{
 		try
 		{
-			std::vector<std::string> fileNamesInWorkDirectory = GetAllFilesInDirectory(GetExePath(), {}, ".dll");
+			if (PathToPlugins.empty())
+				PathToPlugins = GetExePath();
+
+			std::vector<std::string> fileNamesInWorkDirectory = GetAllFilesInDirectory(PathToPlugins, {}, ".dll");
 			for (const auto& it : fileNamesInWorkDirectory)
 			{
-				pluginsManager->AddPlugin(it);
+				if (it.find("znRender") != std::string::npos)
+					pluginsManager->AddPlugin(it);
 			}
 		}
 		catch (const std::exception& e)

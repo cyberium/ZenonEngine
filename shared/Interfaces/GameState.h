@@ -10,7 +10,7 @@ ZN_INTERFACE IWindowEvents;
 
 ZN_INTERFACE ZN_API IGameState
 {
-	virtual ~IGameState() = 0 {};
+	virtual ~IGameState() {};
 
 	virtual bool Init() = 0;
 	virtual void Destroy() = 0;

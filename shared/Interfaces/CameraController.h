@@ -3,7 +3,7 @@
 // Forward BEGIN
 ZN_INTERFACE ICameraComponent3D;
 
-struct Ray;
+class Ray;
 class Viewport;
 
 class KeyEventArgs;
@@ -18,9 +18,9 @@ ZN_INTERFACE ZN_API ICameraController
 {
 	virtual ~ICameraController() {}
 
-	virtual void SetCamera(std::shared_ptr<ICameraComponent3D> Camera) = 0;
+	virtual void SetCamera(ICameraComponent3D* Camera) = 0;
 
-	virtual std::shared_ptr<ICameraComponent3D> GetCamera() const = 0;
+	virtual ICameraComponent3D* GetCamera() const = 0;
 	virtual Ray ScreenPointToRay(const Viewport* Viewport, glm::vec2 screenPoint) const = 0;
 
 	// Input events

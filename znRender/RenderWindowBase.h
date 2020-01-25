@@ -12,15 +12,15 @@ public:
 	virtual ~RenderWindowBase();
 
 	// IRenderWindow
-	int                                             GetWindowWidth() const;
-	int                                             GetWindowHeight() const;
+	size_t                                          GetWindowWidth() const;
+	size_t                                          GetWindowHeight() const;
 	glm::ivec2                                      GetWindowSize() const;
 	bool                                            IsVSync() const;
 
 	virtual void                                    Present() = 0;
 
-    IRenderDevice*                  GetRenderDevice() const;
-	IRenderTarget*                  GetRenderTarget() const;
+    IRenderDevice*                                  GetRenderDevice() const;
+	IRenderTarget*                                  GetRenderTarget() const;
 	IWindowObject*                                  GetWindowObject() const;
 	const Viewport*									GetViewport() const;
 
@@ -55,8 +55,8 @@ private:
 	Viewport                                        m_Viewport;
 	IWindowObject *                                 m_WindowObject;
 
-    IRenderDevice*                    m_RenderDevice;
-    IRenderTarget*                  m_RenderTarget;
+    IRenderDevice*                                  m_RenderDevice;
+    IRenderTarget*                                  m_RenderTarget;
 
 	bool                                            m_vSync;
 	

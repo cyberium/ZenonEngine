@@ -15,6 +15,7 @@ class CznRenderDX11Plugin
 public:
 	CznRenderDX11Plugin(IBaseManager* BaseManager)
 		: m_BaseManager(BaseManager)
+		, m_CachedRenderDevice(nullptr)
 	{}
 	virtual ~CznRenderDX11Plugin()
 	{}
@@ -52,16 +53,16 @@ public:
 	{
 		if (m_CachedRenderDevice == nullptr)
 		{
-			m_CachedRenderDevice = std::make_shared<RenderDeviceDX11>(m_BaseManager);
+			m_CachedRenderDevice = new RenderDeviceDX11(m_BaseManager);
 			m_CachedRenderDevice->Initialize();
 		}
 
-		return m_CachedRenderDevice.get();
+		return m_CachedRenderDevice;
 	}
 
 private:
 	IBaseManager* m_BaseManager;
-	std::shared_ptr<IRenderDevice> m_CachedRenderDevice;
+	IRenderDevice* m_CachedRenderDevice;
 };
 
 

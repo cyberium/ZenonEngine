@@ -27,8 +27,9 @@ bool CGameState_World::Init()
 	cameraNode->AddComponent(std::make_shared<CCameraComponent3D>(cameraNode));
 
 	SetCameraController(std::make_shared<CFreeCameraController>());
-	GetCameraController()->SetCamera(std::shared_ptr<ICameraComponent3D>(cameraNode->GetComponent<ICameraComponent3D>()));
-	GetCameraController()->GetCamera()->SetPerspectiveProjection(ICameraComponent3D::EPerspectiveProjectionHand::Right, 45.0f, GetRenderWindow()->GetWindowWidth() / GetRenderWindow()->GetWindowHeight(), 0.5f, 10000.0f);
+	GetCameraController()->SetCamera(cameraNode->GetComponent<ICameraComponent3D>());
+	GetCameraController()->GetCamera()->SetPerspectiveProjection(ICameraComponent3D::EPerspectiveProjectionHand::Right, 45.0f, 1.0f/*GetRenderWindow()->GetWindowWidth() / GetRenderWindow()->GetWindowHeight()*/, 0.5f, 10000.0f);
+
 
 	Load3D();
 	LoadUI();
@@ -132,10 +133,9 @@ void CGameState_World::Load3D()
 	//--------------------------------------------------------------------------
 
 	{
-#if 0
-		std::shared_ptr<SceneNode3D> sceneNodeLight = m_Scene->CreateWrappedSceneNode<SceneNode3D>("SceneNode3D", m_Scene->GetRootNode());
+		SceneNode3D* sceneNodeLight = m_Scene->GetRootNode3D()->CreateSceneNode<SceneNode3D>();
 		sceneNodeLight->SetName("Light node");
-		sceneNodeLight->SetTranslate(glm::vec3(170.0f, 170.0f, 170.0f));
+		sceneNodeLight->SetTranslate(glm::vec3(300.0f, 300.0f, 300.0f));
 		sceneNodeLight->SetRotation(glm::vec3(-0.5f, -0.5f, -0.5f));
 
 		sceneNodeLight->GetComponent<ILightComponent3D>()->SetType(ELightType::Spot);
@@ -143,7 +143,6 @@ void CGameState_World::Load3D()
 		sceneNodeLight->GetComponent<ILightComponent3D>()->SetRange(10000.0f);
 		sceneNodeLight->GetComponent<ILightComponent3D>()->SetIntensity(1.5f);
 		sceneNodeLight->GetComponent<ILightComponent3D>()->SetSpotlightAngle(20.0f);
-#endif
 
 		SceneNode3D* sceneNodeLight2 = m_Scene->GetRootNode3D()->CreateSceneNode<SceneNode3D>();
 		sceneNodeLight2->SetName("Light node2");

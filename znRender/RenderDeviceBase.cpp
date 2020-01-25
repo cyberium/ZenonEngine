@@ -13,6 +13,8 @@ CRenderDevicePrimitiveCollection::CRenderDevicePrimitiveCollection(IRenderDevice
 
 CRenderDevicePrimitiveCollection::~CRenderDevicePrimitiveCollection()
 {
+	printf("");
+
 }
 
 IMesh* CRenderDevicePrimitiveCollection::CreateLine(cvec3 _dest)

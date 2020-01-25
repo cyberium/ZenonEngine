@@ -20,7 +20,7 @@ CPropertiesController::~CPropertiesController()
 {
 }
 
-void CPropertiesController::SceneNodeSelected(std::shared_ptr<ISceneNode3D> SceneNode)
+void CPropertiesController::SceneNodeSelected(ISceneNode3D* SceneNode)
 {
 	auto m_propertySetRoot = new QtnPropertySet(this);
 
@@ -82,9 +82,9 @@ void CPropertiesController::SceneNodeSelected(std::shared_ptr<ISceneNode3D> Scen
 	m_PropertyWidget->setPropertySet(m_propertySetRoot);
 }
 
-void CPropertiesController::CreateProperty(QtnPropertySet * PropertiesSet, std::shared_ptr<IProperty> Property)
+void CPropertiesController::CreateProperty(QtnPropertySet * PropertiesSet, IProperty* Property)
 {
-	if (std::shared_ptr<IPropertiesGroup> propGroup = std::dynamic_pointer_cast<IPropertiesGroup>(Property))
+	if (IPropertiesGroup* propGroup = dynamic_cast<IPropertiesGroup*>(Property))
 	{
 		QtnPropertySet* propertySet = new QtnPropertySet(this);
 		propertySet->setName(propGroup->GetName().c_str());
@@ -93,10 +93,10 @@ void CPropertiesController::CreateProperty(QtnPropertySet * PropertiesSet, std::
 
 		for (const auto& prop : propGroup->GetProperties())
 		{
-			CreateProperty(propertySet, prop.second);
+			CreateProperty(propertySet, prop.second.get());
 		}
 	}
-	else if (std::shared_ptr<IPropertyT<std::string>> propT = std::dynamic_pointer_cast<IPropertyT<std::string>>(Property))
+	else if (IPropertyT<std::string>* propT = dynamic_cast<IPropertyT<std::string>*>(Property))
 	{
 		QtnPropertyString* stringProperty = qtnCreateProperty<QtnPropertyString>(PropertiesSet);
 		stringProperty->setName(propT->GetName().c_str());
@@ -124,7 +124,7 @@ void CPropertiesController::CreateProperty(QtnPropertySet * PropertiesSet, std::
 			}
 		);
 	}
-	else if (std::shared_ptr<IPropertyT<float>> propT = std::dynamic_pointer_cast<IPropertyT<float>>(Property))
+	else if (IPropertyT<float>* propT = dynamic_cast<IPropertyT<float>*>(Property))
 	{
 		QtnPropertyFloat* floatProperty = qtnCreateProperty<QtnPropertyFloat>(PropertiesSet);
 		floatProperty->setName(propT->GetName().c_str());
@@ -152,7 +152,7 @@ void CPropertiesController::CreateProperty(QtnPropertySet * PropertiesSet, std::
 			}
 		);
 	}
-	else if (std::shared_ptr<IPropertyT<glm::vec3>> propT = std::dynamic_pointer_cast<IPropertyT<glm::vec3>>(Property))
+	else if (IPropertyT<glm::vec3>* propT = dynamic_cast<IPropertyT<glm::vec3>*>(Property))
 	{
 		QtnPropertyVec3* vec3Property = qtnCreateProperty<QtnPropertyVec3>(PropertiesSet);
 		vec3Property->setName(propT->GetName().c_str());

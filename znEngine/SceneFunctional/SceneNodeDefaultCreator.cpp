@@ -5,7 +5,11 @@
 
 // Additional
 #include "UI/UIText.h"
+
+#ifdef ZN_FBX_SDK_ENABLE
 #include "FBX/FBXManager.h"
+#pragma comment(lib, "libfbxsdk-md.lib")
+#endif
 
 CSceneNodeDefaultCreator::CSceneNodeDefaultCreator(const IBaseManager* BaseManager)
 	: m_BaseManager(BaseManager)
@@ -21,7 +25,11 @@ CSceneNodeDefaultCreator::~CSceneNodeDefaultCreator()
 //
 size_t CSceneNodeDefaultCreator::GetSceneNodesCount() const
 {
-	return 4;
+	size_t cnt = 3;
+#ifdef ZN_FBX_SDK_ENABLE
+	cnt += 1;
+#endif
+	return cnt;
 }
 
 std::string CSceneNodeDefaultCreator::GetSceneNodeTypeName(size_t Index) const
@@ -38,10 +46,13 @@ std::string CSceneNodeDefaultCreator::GetSceneNodeTypeName(size_t Index) const
 	{
 		return "TextUI";
 	}
+
+#ifdef ZN_FBX_SDK_ENABLE
 	else if (Index == 3)
 	{
 		return "FBXSceneNode";
 	}
+#endif
 
 	throw CException("CSceneNodeDefaultCreator: GetSceneNodeTypeName(%d) is out of bounds. Count = %d", Index, GetSceneNodesCount());
 }
@@ -53,6 +64,7 @@ ISceneNode3D* CSceneNodeDefaultCreator::CreateSceneNode3D(ISceneNode3D* Parent, 
 		return Parent->CreateSceneNode<SceneNode3D>();
 	}
 
+#ifdef ZN_FBX_SDK_ENABLE
 	else if (Index == 3)
 	{
 		CFBXManager fbxManager(m_BaseManager);
@@ -65,6 +77,7 @@ ISceneNode3D* CSceneNodeDefaultCreator::CreateSceneNode3D(ISceneNode3D* Parent, 
 
 		return m_FBXScene->GetRootNode();
 	}
+#endif
 
 	throw CException("CSceneNodeDefaultCreator: CreateSceneNode(%d) is out of bounds. Count = %d", Index, GetSceneNodesCount());
 }

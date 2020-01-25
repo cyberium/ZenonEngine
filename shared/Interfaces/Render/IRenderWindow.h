@@ -11,8 +11,8 @@ ZN_INTERFACE ZN_API IRenderWindow
 {
 	virtual ~IRenderWindow() {}
 
-	virtual int GetWindowWidth() const = 0;
-	virtual int GetWindowHeight() const = 0;
+	virtual size_t GetWindowWidth() const = 0;
+	virtual size_t GetWindowHeight() const = 0;
 	virtual glm::ivec2 GetWindowSize() const = 0;
 	virtual bool IsVSync() const = 0;
 

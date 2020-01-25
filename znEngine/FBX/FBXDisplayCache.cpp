@@ -1,5 +1,7 @@
 #include "stdafx.h"
 
+#ifdef ZN_FBX_SDK_ENABLE
+
 // General
 #include "FBXDisplayCache.h"
 
@@ -144,3 +146,5 @@ void DisplayCache(FbxGeometry* pGeometry)
 		}
 	}
 }
+
+#endif

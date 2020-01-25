@@ -30,8 +30,8 @@ namespace
 
 IRenderWindow* RenderDeviceDX11::CreateRenderWindow(IWindowObject * WindowObject, bool vSync)
 {
-	std::shared_ptr<IRenderWindow> renderWindow = std::make_shared<RenderWindowDX11>(this, WindowObject, vSync);
-	m_RenderWindows.push_back(renderWindow);
+	std::unique_ptr<IRenderWindow> renderWindow(new RenderWindowDX11(this, WindowObject, vSync));
+	m_RenderWindows.push_back(std::move(renderWindow));
 	return renderWindow.get();
 }
 

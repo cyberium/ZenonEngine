@@ -1,5 +1,7 @@
 #include "stdafx.h"
 
+#ifdef ZN_FBX_SDK_ENABLE
+
 // General
 #include "FBXStream.h"
 
@@ -111,3 +113,5 @@ int CFBXStream::GetError() const
 void CFBXStream::ClearError()
 {
 }
+
+#endif

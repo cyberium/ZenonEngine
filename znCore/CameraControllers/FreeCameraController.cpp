@@ -20,6 +20,7 @@ CFreeCameraController::CFreeCameraController()
 
 CFreeCameraController::~CFreeCameraController()
 {
+	printf("");
 }
 
 

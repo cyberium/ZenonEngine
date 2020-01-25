@@ -40,7 +40,7 @@ public:
 	virtual IRenderDevicePrimitiveCollection* GetPrimitiveCollection() const override;
 
 protected:
-	std::vector<std::shared_ptr<IRenderWindow>>     m_RenderWindows;
+	std::vector<std::unique_ptr<IRenderWindow>>     m_RenderWindows;
 
 	std::vector<std::shared_ptr<IShader>>           m_Shaders;
 	std::unordered_map<std::string, std::shared_ptr<IShader>> m_ShadersByName;

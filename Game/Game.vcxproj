@@ -21,7 +21,7 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{552A42EB-9115-4D9D-90CA-0938EFF5F664}</ProjectGuid>
+    <ProjectGuid>{24037B59-E2A0-4432-9A22-888691117321}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>Game</RootNamespace>
     <ProjectName>Game</ProjectName>

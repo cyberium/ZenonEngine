@@ -17,7 +17,7 @@ void RenderThread(Application* app)
 int main(int argc, char *argv[])
 {
 	// 1. Initialize engine and some improtant managers
-	IBaseManager* BaseManager = InitializeEngine(ArgumentsToVector(argc, argv));
+	IBaseManager* BaseManager = InitializeEngine(ArgumentsToVector(argc, argv), "");
 
 	// 3. Create application
 	Application app(BaseManager, ::GetModuleHandle(NULL));
@@ -26,7 +26,7 @@ int main(int argc, char *argv[])
 	MainEditor w;
 
 	IRenderDevice* renderDevice = app.CreateRenderDevice(RenderDeviceType::RenderDeviceType_DirectX);
-	BaseManager->AddManager<IRenderDevice>(renderDevice);
+	BaseManager->AddManager<IRenderDevice>(std::shared_ptr<IRenderDevice>(renderDevice));
 
 	std::shared_ptr<IFontsManager> fontsManager = std::make_shared<FontsManager>(renderDevice, BaseManager);
 	BaseManager->AddManager<IFontsManager>(fontsManager);
@@ -35,11 +35,11 @@ int main(int argc, char *argv[])
 	IRenderWindow* renderWindow = renderDevice->CreateRenderWindow(w.getUI().EditorWindow, false);
 	app.AddRenderWindow(renderWindow);
 
-	//std::shared_ptr<IGameState> gameState = GetManager<IGameStatesFactory>(BaseManager)->CreateGameStateWithHighestPriority(renderWindow);
-	std::shared_ptr<CGameState_Editor> gameState = std::make_shared<CGameState_Editor>(BaseManager, renderWindow, w.getUI().EditorWindow, &w);
+	std::shared_ptr<IGameState> gameState = BaseManager->GetManager<IGameStatesFactory>()->CreateGameStateWithHighestPriority(renderWindow, w.getUI().EditorWindow);
+	//std::shared_ptr<CGameState_Editor> gameState = std::make_shared<CGameState_Editor>(BaseManager, renderWindow, w.getUI().EditorWindow, &w);
 	app.SetGameState(gameState);
 
-	w.ApplyScene(std::dynamic_pointer_cast<IScene>(app.GetGameState()->GetScene3D()));
+	w.ApplyScene(std::dynamic_pointer_cast<IScene>(app.GetGameState()->GetScene()));
 	w.ApplyTest();
 
 	w.show();

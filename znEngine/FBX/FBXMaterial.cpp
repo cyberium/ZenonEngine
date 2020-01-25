@@ -1,5 +1,7 @@
 #include "stdafx.h"
 
+#ifdef ZN_FBX_SDK_ENABLE
+
 // Include
 #include "FBXScene.h"
 #include "FBXSceneNode.h"
@@ -197,3 +199,5 @@ ITexture* CFBXMaterial::LoadTexture(fbxsdk::FbxTexture * Texture)
 
 	return m_BaseManager->GetManager<IRenderDevice>()->CreateTexture2D(m_OwnerFBXNode.lock()->GetOwnerScene().lock()->GetPath() + fileTexture->GetRelativeFileName());
 }
+
+#endif

@@ -9,7 +9,7 @@ CznRenderDeviceFactory::CznRenderDeviceFactory(IBaseManager* BaseManager)
 
 CznRenderDeviceFactory::~CznRenderDeviceFactory()
 {
-	m_BaseManager->GetManager<IznPluginsManager>()->RemovePluginEventListener(std::shared_ptr<IznPluginsEventListener>(this));
+	//m_BaseManager->GetManager<IznPluginsManager>()->RemovePluginEventListener(std::shared_ptr<IznPluginsEventListener>(this));
 }
 
 //
