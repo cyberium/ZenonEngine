@@ -12,4 +12,4 @@
 /*
  * Initialize improtant managers and plugins
  */
-ZN_API IBaseManager* WINAPI InitializeEngine(std::vector<std::string> Arguments, std::string PathToPlugins = "");
+ZN_API IBaseManager* WINAPI InitializeEngine(std::vector<std::string> Arguments, std::string PathToPlugins);

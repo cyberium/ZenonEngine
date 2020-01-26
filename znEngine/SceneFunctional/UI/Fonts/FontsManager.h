@@ -2,7 +2,9 @@
 
 #include "Font.h"
 
-class ZN_API FontsManager : public CRefManager1Dim<CFontMesh>, public IFontsManager
+class ZN_API FontsManager 
+	: public CRefManager1Dim<CFontMesh>
+	, public IFontsManager
 {
 public:
 	FontsManager(IRenderDevice* RenderDevice, IBaseManager* BaseManager);

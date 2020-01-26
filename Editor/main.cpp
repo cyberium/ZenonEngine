@@ -16,8 +16,9 @@ void RenderThread(Application* app)
 
 int main(int argc, char *argv[])
 {
+	std::string Test = "Hello";
 	// 1. Initialize engine and some improtant managers
-	IBaseManager* BaseManager = InitializeEngine(ArgumentsToVector(argc, argv), "");
+	IBaseManager* BaseManager = InitializeEngine(ArgumentsToVector(argc, argv), Test);
 
 	// 3. Create application
 	Application app(BaseManager, ::GetModuleHandle(NULL));
