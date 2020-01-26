@@ -29,7 +29,6 @@
     <ClCompile Include="Files\LibraryResourceFileStotage.cpp" />
     <ClCompile Include="Files\LocalFilesStorage.cpp" />
     <ClCompile Include="Frustrum.cpp" />
-    <ClCompile Include="GameStateBase.cpp" />
     <ClCompile Include="HighResolutionTimer.cpp" />
     <ClCompile Include="Console.cpp" />
     <ClCompile Include="Log.cpp" />
@@ -105,7 +104,6 @@
     <ClInclude Include="Files\FilesManager.h" />
     <ClInclude Include="Files\LibraryResourceFileStotage.h" />
     <ClInclude Include="Files\LocalFilesStorage.h" />
-    <ClInclude Include="GameStateBase.h" />
     <ClInclude Include="HighResolutionTimer.h" />
     <ClInclude Include="..\shared\Interfaces\Application.h" />
     <ClInclude Include="..\shared\Interfaces\BaseManager.h" />
@@ -113,8 +111,6 @@
     <ClInclude Include="..\shared\Interfaces\Console.h" />
     <ClInclude Include="..\shared\Interfaces\DebugOutput.h" />
     <ClInclude Include="..\shared\Interfaces\Files.h" />
-    <ClInclude Include="..\shared\Interfaces\GameState.h" />
-    <ClInclude Include="..\shared\Interfaces\GameStateManager.h" />
     <ClInclude Include="..\shared\Interfaces\Loader.h" />
     <ClInclude Include="..\shared\Interfaces\Log.h" />
     <ClInclude Include="..\shared\Interfaces\Networking.h" />

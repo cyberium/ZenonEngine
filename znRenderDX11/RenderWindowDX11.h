@@ -7,7 +7,7 @@ class ZN_API RenderWindowDX11
 	: public RenderWindowBase
 {
 public:
-	RenderWindowDX11(IRenderDeviceDX11* RenderDeviceD3D11, IWindowObject * WindowObject, bool vSync);
+	RenderWindowDX11(IRenderDeviceDX11* RenderDeviceD3D11, INativeWindow * WindowObject, bool vSync);
 	virtual ~RenderWindowDX11();
 
 	void                                            Present() override final;

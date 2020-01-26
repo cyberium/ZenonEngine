@@ -1,9 +1,10 @@
 #include "stdafx.h"
 
-#if 0
-
 // General
 #include "SceneDefaultCreator.h"
+
+// Additional
+#include "GameState_Default.h"
 
 CSceneDefaultCreator::CSceneDefaultCreator(IBaseManager* BaseManager)
 	: m_BaseManager(BaseManager)
@@ -19,7 +20,7 @@ CSceneDefaultCreator::~CSceneDefaultCreator()
 //
 size_t CSceneDefaultCreator::GetScenesCount() const
 {
-	return 1;
+	return 2;
 }
 
 std::string CSceneDefaultCreator::GetSceneTypeName(size_t Index) const
@@ -27,6 +28,10 @@ std::string CSceneDefaultCreator::GetSceneTypeName(size_t Index) const
 	if (Index == 0)
 	{
 		return "SceneBase";
+	}
+	else if (Index == 1)
+	{
+		return "SceneDefault";
 	}
 
 	return nullptr;
@@ -37,11 +42,12 @@ std::shared_ptr<IScene> CSceneDefaultCreator::CreateScene(size_t Index) const
 	if (Index == 0)
 	{
 		std::shared_ptr<IScene> scene = std::make_shared<SceneBase>(m_BaseManager);
-		scene->CreateRootNode3D();
 		return scene;
+	}
+	else if (Index == 1)
+	{
+		return std::make_shared<CGameState_World>(m_BaseManager);
 	}
 
 	return nullptr;
 }
-
-#endif

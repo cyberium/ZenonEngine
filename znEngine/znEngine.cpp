@@ -11,7 +11,6 @@
 #include "Loader.h"
 #include "SceneFunctional/SceneNodesFactory.h"
 #include "SceneFunctional/ScenesFactory.h"
-#include "GameStatesFactory.h"
 #include "Passes/RenderPassFactory.h"
 
 // Additional (Images)
@@ -168,15 +167,8 @@ IBaseManager* WINAPI InitializeEngine(std::vector<std::string> Arguments, std::s
 
 	// Scene
 	{
-		//std::shared_ptr<IScenesFactory> factory = std::make_shared<CScenesFactory>(baseManager);
-		//baseManager->AddManager<IScenesFactory>(factory);
-		//pluginsManager->AddPluginEventListener(std::dynamic_pointer_cast<IznPluginsEventListener>(factory));
-	}
-
-	// GameStates
-	{
-		std::shared_ptr<IGameStatesFactory> factory = std::make_shared<CGameStateFactory>(baseManager);
-		baseManager->AddManager<IGameStatesFactory>(factory);
+		std::shared_ptr<IScenesFactory> factory = std::make_shared<CScenesFactory>(baseManager);
+		baseManager->AddManager<IScenesFactory>(factory);
 		pluginsManager->AddPluginEventListener(std::dynamic_pointer_cast<IznPluginsEventListener>(factory));
 	}
 

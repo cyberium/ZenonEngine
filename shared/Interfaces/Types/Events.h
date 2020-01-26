@@ -334,12 +334,12 @@ ZN_INTERFACE IScene;
 class ZN_API SceneEventArgs : public EventArgs
 {
 public:
-	SceneEventArgs(const Object* caller, const std::shared_ptr<IScene>& Scene)
+	SceneEventArgs(const Object* caller, const std::weak_ptr<IScene> Scene)
 		: EventArgs(caller)
 		, Scene(Scene)
 	{}
 
-	const std::shared_ptr<IScene>& Scene;
+	const std::weak_ptr<IScene> Scene;
 };
 typedef Delegate<SceneEventArgs> SceneEvent;
 
@@ -354,7 +354,7 @@ enum class ZN_API ESceneChangeType
 class ZN_API SceneChangeEventArgs : public SceneEventArgs
 {
 public:
-	SceneChangeEventArgs(const Object* caller, const std::shared_ptr<IScene>& Scene, ESceneChangeType SceneChangeType, const std::shared_ptr<ISceneNode3D>& OwnerNode, const std::shared_ptr<ISceneNode3D>& ChildNode)
+	SceneChangeEventArgs(const Object* caller, const std::weak_ptr<IScene> Scene, ESceneChangeType SceneChangeType, const std::weak_ptr<ISceneNode3D> OwnerNode, const std::weak_ptr<ISceneNode3D> ChildNode)
 		: SceneEventArgs(caller, Scene)
 		, SceneChangeType(SceneChangeType)
 		, OwnerNode(OwnerNode)
@@ -362,7 +362,7 @@ public:
 	{}
 
 	const ESceneChangeType SceneChangeType;
-	const std::shared_ptr<ISceneNode3D>& OwnerNode;
-	const std::shared_ptr<ISceneNode3D>& ChildNode;
+	const std::weak_ptr<ISceneNode3D> OwnerNode;
+	const std::weak_ptr<ISceneNode3D> ChildNode;
 };
 typedef Delegate<SceneChangeEventArgs> SceneChangeEvent;

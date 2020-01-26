@@ -1,47 +1,154 @@
 #include "stdafx.h"
 
 // General
-#include "WindowHandleWrapper.h"
+#include "NativeWindow_WindowsSpecific.h"
 
-MouseButtonEventArgs::MouseButton DecodeMouseButton(UINT messageID)
+namespace
 {
-	switch (messageID)
+	MouseButtonEventArgs::MouseButton DecodeMouseButton(UINT messageID)
 	{
-	case WM_LBUTTONDOWN:
-	case WM_LBUTTONUP:
-	case WM_LBUTTONDBLCLK:
-		return MouseButtonEventArgs::MouseButton::Left;
+		switch (messageID)
+		{
+		case WM_LBUTTONDOWN:
+		case WM_LBUTTONUP:
+		case WM_LBUTTONDBLCLK:
+			return MouseButtonEventArgs::MouseButton::Left;
 
-	case WM_RBUTTONDOWN:
-	case WM_RBUTTONUP:
-	case WM_RBUTTONDBLCLK:
-		return MouseButtonEventArgs::MouseButton::Right;
+		case WM_RBUTTONDOWN:
+		case WM_RBUTTONUP:
+		case WM_RBUTTONDBLCLK:
+			return MouseButtonEventArgs::MouseButton::Right;
 
-	case WM_MBUTTONDOWN:
-	case WM_MBUTTONUP:
-	case WM_MBUTTONDBLCLK:
-		return MouseButtonEventArgs::MouseButton::Middel;
+		case WM_MBUTTONDOWN:
+		case WM_MBUTTONUP:
+		case WM_MBUTTONDBLCLK:
+			return MouseButtonEventArgs::MouseButton::Middel;
+		}
+
+		return MouseButtonEventArgs::MouseButton::None;
 	}
-
-	return MouseButtonEventArgs::MouseButton::None;
 }
 
 
-CWindowHandleWrapper::CWindowHandleWrapper(HWND HWnd)
+
+CNativeWindow_WindowsSpecific::CNativeWindow_WindowsSpecific(HWND HWnd)
 	: m_PreviousMousePosition(0, 0)
 	, m_InClientRect(false)
 	, m_IsMouseTracking(false)
 	, m_bHasKeyboardFocus(false)
 
 	, m_HWnd(HWnd)
+	, m_EventListener(nullptr)
+{}
+
+CNativeWindow_WindowsSpecific::~CNativeWindow_WindowsSpecific()
 {
+	if (::IsWindow(m_HWnd))
+	{
+		if (::DestroyWindow(m_HWnd) == FALSE)
+			_ASSERT_EXPR(false, "CNativeWindow_WindowsSpecific: Failed to destroy window object.");
+	}
 }
 
-CWindowHandleWrapper::~CWindowHandleWrapper()
+
+
+//
+// INativeWindow
+//
+void CNativeWindow_WindowsSpecific::SetWindowTitle(std::string WindowName)
 {
+	SetWindowTextW(m_HWnd, Resources::ConvertString(WindowName).c_str());
 }
 
-LRESULT CWindowHandleWrapper::WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
+std::string CNativeWindow_WindowsSpecific::GetWindowTitle() const
+{
+	return "Test";
+	std::wstring title(GetWindowTextLength(m_HWnd) + 1, L'\0');
+	GetWindowTextW(m_HWnd, &title[0], title.size());
+	return Resources::ConvertString(title);
+}
+
+long CNativeWindow_WindowsSpecific::GetWindowWidth() const
+{
+	RECT clientRect = { 0 };
+
+	if (::GetClientRect(m_HWnd, &clientRect) == FALSE)
+		_ASSERT_EXPR(false, "CNativeWindow_WindowsSpecific: Failed to '::GetClientRect'.");
+
+	return clientRect.right - clientRect.left;
+}
+
+long CNativeWindow_WindowsSpecific::GetWindowHeight() const
+{
+	RECT clientRect = { 0 };
+
+	if (::GetClientRect(m_HWnd, &clientRect) == FALSE)
+		_ASSERT_EXPR(false, "CNativeWindow_WindowsSpecific: Failed to '::GetClientRect'.");
+
+	return clientRect.bottom - clientRect.top;
+}
+
+void CNativeWindow_WindowsSpecific::SetCursorPosition(const glm::ivec2& CursorPosition)
+{
+	RECT rect = { 0 };
+
+	if (::GetClientRect(m_HWnd, &rect) == FALSE)
+		_ASSERT_EXPR(false, "CNativeWindow_WindowsSpecific: Failed to '::GetClientRect'.");
+
+	if (::ClientToScreen(m_HWnd, reinterpret_cast<POINT*>(&rect.left)) == FALSE)
+		_ASSERT_EXPR(false, "CNativeWindow_WindowsSpecific: Failed to '::ClientToScreen'.");
+
+	if (::ClientToScreen(m_HWnd, reinterpret_cast<POINT*>(&rect.right)) == FALSE)
+		_ASSERT_EXPR(false, "CNativeWindow_WindowsSpecific: Failed to '::ClientToScreen'.");
+
+	if (::SetCursorPos(rect.left + CursorPosition.x, rect.top + CursorPosition.y) == FALSE)
+		_ASSERT_EXPR(false, "CNativeWindow_WindowsSpecific: Failed to '::SetCursorPos'.");
+}
+
+glm::ivec2 CNativeWindow_WindowsSpecific::GetCursorPosition() const
+{
+	POINT point = { 0 };
+
+	if (::GetCursorPos(&point) == FALSE)
+		_ASSERT_EXPR(false, "CNativeWindow_WindowsSpecific: Failed to '::GetCursorPos'.");
+
+	if (::ScreenToClient(m_HWnd, &point) == FALSE)
+		_ASSERT_EXPR(false, "CNativeWindow_WindowsSpecific: Failed to '::ScreenToClient'.");
+
+	return glm::ivec2(point.x, point.y);
+}
+
+void CNativeWindow_WindowsSpecific::ShowCursor()
+{
+	::ShowCursor(TRUE);
+}
+
+void CNativeWindow_WindowsSpecific::HideCursor()
+{
+	::ShowCursor(FALSE);
+}
+
+void CNativeWindow_WindowsSpecific::SetEventsListener(INativeWindowEventListener * WindowEventsListener)
+{
+	m_EventListener = WindowEventsListener;
+}
+
+void CNativeWindow_WindowsSpecific::ResetEventsListener()
+{
+	m_EventListener = nullptr;
+}
+
+
+
+//
+// INativeWindow_WindowsSpecific
+//
+HWND CNativeWindow_WindowsSpecific::GetHWnd()
+{
+	return m_HWnd;
+}
+
+LRESULT CNativeWindow_WindowsSpecific::Windows_ProcessMessage(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	switch (message)
 	{
@@ -80,7 +187,8 @@ LRESULT CWindowHandleWrapper::WndProc(HWND hwnd, UINT message, WPARAM wParam, LP
 		KeyCode key = (KeyCode)wParam;
 		unsigned int scanCode = (lParam & 0x00FF0000) >> 16;
 
-		m_KeyPressed(KeyEventArgs(this, key, c, KeyEventArgs::Pressed, control, shift, alt));
+		if (m_EventListener)
+			m_EventListener->OnWindowKeyPressed(KeyEventArgs(this, key, c, KeyEventArgs::Pressed, control, shift, alt));
 	}
 	break;
 	case WM_KEYUP:
@@ -97,7 +205,7 @@ LRESULT CWindowHandleWrapper::WndProc(HWND hwnd, UINT message, WPARAM wParam, LP
 		// Inspired by the SDL 1.2 implementation.
 		unsigned char keyboardState[256];
 		if (::GetKeyboardState(keyboardState) == FALSE)
-			_ASSERT_EXPR(false, "CWindowHandleWrapper: Failed to '::GetKeyboardState'.");
+			_ASSERT_EXPR(false, "CNativeWindow_WindowsSpecific: Failed to '::GetKeyboardState'.");
 
 		wchar_t translatedCharacters[4];
 		if (int result = ::ToUnicodeEx((UINT)wParam, scanCode, keyboardState, translatedCharacters, 4, 0, NULL) > 0)
@@ -105,21 +213,24 @@ LRESULT CWindowHandleWrapper::WndProc(HWND hwnd, UINT message, WPARAM wParam, LP
 			c = translatedCharacters[0];
 		}
 
-		m_KeyReleased(KeyEventArgs(this, key, c, KeyEventArgs::Released, control, shift, alt));
+		if (m_EventListener)
+			m_EventListener->OnWindowKeyReleased(KeyEventArgs(this, key, c, KeyEventArgs::Released, control, shift, alt));
 	}
 	break;
 	case WM_SETFOCUS:
 	{
 		m_bHasKeyboardFocus = true;
 
-		m_KeyboardFocus(EventArgs(this));
+		if (m_EventListener)
+			m_EventListener->OnWindowKeyboardFocus(EventArgs(this));
 	}
 	break;
 	case WM_KILLFOCUS:
 	{
 		m_bHasKeyboardFocus = false;
 
-		m_KeyboardBlur(EventArgs(this));
+		if (m_EventListener)
+			m_EventListener->OnWindowKeyboardBlur(EventArgs(this));
 	}
 	break;
 
@@ -165,7 +276,8 @@ LRESULT CWindowHandleWrapper::WndProc(HWND hwnd, UINT message, WPARAM wParam, LP
 
 		m_PreviousMousePosition = glm::ivec2(mouseMotionEventArgs.X, mouseMotionEventArgs.Y);
 
-		m_MouseMoved(mouseMotionEventArgs);
+		if (m_EventListener)
+			m_EventListener->OnWindowMouseMoved(mouseMotionEventArgs);
 	}
 	break;
 	case WM_LBUTTONDOWN:
@@ -181,7 +293,8 @@ LRESULT CWindowHandleWrapper::WndProc(HWND hwnd, UINT message, WPARAM wParam, LP
 		int x = ((int)(short)LOWORD(lParam));
 		int y = ((int)(short)HIWORD(lParam));
 
-		m_MouseButtonPressed(MouseButtonEventArgs(this, DecodeMouseButton(message), MouseButtonEventArgs::ButtonState::Pressed, lButton, mButton, rButton, control, shift, x, y));
+		if (m_EventListener)
+			m_EventListener->OnWindowMouseButtonPressed(MouseButtonEventArgs(this, DecodeMouseButton(message), MouseButtonEventArgs::ButtonState::Pressed, lButton, mButton, rButton, control, shift, x, y));
 	}
 	break;
 	case WM_LBUTTONUP:
@@ -197,7 +310,8 @@ LRESULT CWindowHandleWrapper::WndProc(HWND hwnd, UINT message, WPARAM wParam, LP
 		int x = ((int)(short)LOWORD(lParam));
 		int y = ((int)(short)HIWORD(lParam));
 
-		m_MouseButtonReleased(MouseButtonEventArgs(this, DecodeMouseButton(message), MouseButtonEventArgs::ButtonState::Released, lButton, mButton, rButton, control, shift, x, y));
+		if (m_EventListener)
+			m_EventListener->OnWindowMouseButtonReleased(MouseButtonEventArgs(this, DecodeMouseButton(message), MouseButtonEventArgs::ButtonState::Released, lButton, mButton, rButton, control, shift, x, y));
 	}
 	break;
 	case WM_MOUSEWHEEL:
@@ -223,9 +337,10 @@ LRESULT CWindowHandleWrapper::WndProc(HWND hwnd, UINT message, WPARAM wParam, LP
 		clientToScreenPoint.y = y;
 
 		if (::ScreenToClient(hwnd, &clientToScreenPoint) == FALSE)
-			_ASSERT_EXPR(false, "CWindowHandleWrapper: Failed to '::ScreenToClient'.");
+			_ASSERT_EXPR(false, "CNativeWindow_WindowsSpecific: Failed to '::ScreenToClient'.");
 
-		m_MouseWheel(MouseWheelEventArgs(this, zDelta, lButton, mButton, rButton, control, shift, (int)clientToScreenPoint.x, (int)clientToScreenPoint.y));
+		if (m_EventListener)
+			m_EventListener->OnWindowMouseWheel(MouseWheelEventArgs(this, zDelta, lButton, mButton, rButton, control, shift, (int)clientToScreenPoint.x, (int)clientToScreenPoint.y));
 	}
 	break;
 	case WM_MOUSELEAVE: // Сообщение WM_MOUSELEAVE посылается в окно тогда, когда курсор оставляет рабочую область окна, заданную при предшествующем вызове функции TrackMouseEvent.
@@ -233,17 +348,20 @@ LRESULT CWindowHandleWrapper::WndProc(HWND hwnd, UINT message, WPARAM wParam, LP
 		m_IsMouseTracking = false;
 		m_InClientRect = false;
 
-		m_MouseLeave(EventArgs(this));
+		if (m_EventListener)
+			m_EventListener->OnWindowMouseLeave(EventArgs(this));
 	}
 	break;
 	case WM_MOUSEACTIVATE: // Сообщение WM_MOUSEACTIVATE отправляется тогда, когда курсор находится в неактивном окне, а пользователь нажимает кнопку мыши.
 	{
-		m_MouseFocus(EventArgs(this));
+		if (m_EventListener)
+			m_EventListener->OnWindowMouseFocus(EventArgs(this));
 	}
 	break;
 	case WM_CAPTURECHANGED: // Sent to the window that is losing the mouse capture.
 	{
-		m_MouseBlur(EventArgs(this));
+		if (m_EventListener)
+			m_EventListener->OnWindowMouseBlur(EventArgs(this));
 	}
 	break;
 
@@ -261,13 +379,15 @@ LRESULT CWindowHandleWrapper::WndProc(HWND hwnd, UINT message, WPARAM wParam, LP
 		case WA_ACTIVE: // Activated by some method other than a mouse click (for example, by a call to the SetActiveWindow function or by use of the keyboard interface to select the window).
 		case WA_CLICKACTIVE: // Activated by a mouse click.
 		{
-			m_InputFocus(EventArgs(this));
+			if (m_EventListener)
+				m_EventListener->OnWindowInputFocus(EventArgs(this));
 		}
 		break;
 
 		case WA_INACTIVE:
 		{
-			m_InputBlur(EventArgs(this));
+			if (m_EventListener)
+				m_EventListener->OnWindowInputBlur(EventArgs(this));
 		}
 		break;
 		}
@@ -296,13 +416,15 @@ LRESULT CWindowHandleWrapper::WndProc(HWND hwnd, UINT message, WPARAM wParam, LP
 		{
 		case SIZE_MINIMIZED: // The window has been minimized.
 		{
-			m_Minimize(EventArgs(this));
+			if (m_EventListener)
+				m_EventListener->OnWindowMinimize(EventArgs(this));
 		}
 		break;
 
 		case SIZE_MAXIMIZED: // The window has been maximized.
 		{
-			m_Restore(EventArgs(this));
+			if (m_EventListener)
+				m_EventListener->OnWindowRestore(EventArgs(this));
 		}
 		break;
 
@@ -313,190 +435,18 @@ LRESULT CWindowHandleWrapper::WndProc(HWND hwnd, UINT message, WPARAM wParam, LP
 
 			if (width != 0 && height != 0)
 			{
-				m_Resize(ResizeEventArgs(this, width, height));
+				if (m_EventListener)
+					m_EventListener->OnWindowResize(ResizeEventArgs(this, width, height));
 			}
 		}
 		break;
 		}
 
 		if (::UpdateWindow(hwnd) == FALSE)
-			_ASSERT_EXPR(false, L"CWindowHandleWrapper: Failed to '::UpdateWindow'.");
+			_ASSERT_EXPR(false, L"CNativeWindow_WindowsSpecific: Failed to '::UpdateWindow'.");
 	}
 	break;
 	}
 
 	return DefWindowProc(hwnd, message, wParam, lParam);
-}
-
-
-
-//
-// IWindowObject
-//
-std::string CWindowHandleWrapper::GetWindowName()
-{
-	std::wstring title(GetWindowTextLength(m_HWnd) + 1, L'\0');
-	GetWindowText(m_HWnd, &title[0], title.size());
-	return Resources::ConvertString(title);
-}
-
-long CWindowHandleWrapper::GetWindowWidth()
-{
-	RECT clientRect = { 0 };
-
-	if (::GetClientRect(m_HWnd, &clientRect) == FALSE)
-		_ASSERT_EXPR(false, "CWindowHandleWrapper: Failed to '::GetClientRect'.");
-
-	return clientRect.right - clientRect.left;
-}
-
-long CWindowHandleWrapper::GetWindowHeight()
-{
-	RECT clientRect = { 0 };
-
-	if (::GetClientRect(m_HWnd, &clientRect) == FALSE)
-		_ASSERT_EXPR(false, "CWindowHandleWrapper: Failed to '::GetClientRect'.");
-
-	return clientRect.bottom - clientRect.top;
-}
-
-HWND CWindowHandleWrapper::GetHWnd()
-{
-	return m_HWnd;
-}
-
-void CWindowHandleWrapper::SetCursorPosition(const glm::ivec2& CursorPosition)
-{
-	RECT rect = { 0 };
-
-	if (::GetClientRect(m_HWnd, &rect) == FALSE)
-		_ASSERT_EXPR(false, "CWindowHandleWrapper: Failed to '::GetClientRect'.");
-
-	if (::ClientToScreen(m_HWnd, reinterpret_cast<POINT*>(&rect.left)) == FALSE)
-		_ASSERT_EXPR(false, "CWindowHandleWrapper: Failed to '::ClientToScreen'.");
-
-	if (::ClientToScreen(m_HWnd, reinterpret_cast<POINT*>(&rect.right)) == FALSE)
-		_ASSERT_EXPR(false, "CWindowHandleWrapper: Failed to '::ClientToScreen'.");
-
-	if (::SetCursorPos(rect.left + CursorPosition.x, rect.top + CursorPosition.y) == FALSE)
-		_ASSERT_EXPR(false, "CWindowHandleWrapper: Failed to '::SetCursorPos'.");
-}
-
-glm::ivec2 CWindowHandleWrapper::GetCursorPosition() const
-{
-	POINT point = { 0 };
-
-	if (::GetCursorPos(&point) == FALSE)
-		_ASSERT_EXPR(false, "CWindowHandleWrapper: Failed to '::GetCursorPos'.");
-
-	if (::ScreenToClient(m_HWnd, &point) == FALSE)
-		_ASSERT_EXPR(false, "CWindowHandleWrapper: Failed to '::ScreenToClient'.");
-
-	return glm::ivec2(point.x, point.y);
-}
-
-void CWindowHandleWrapper::ShowCursor()
-{
-	::ShowCursor(TRUE);
-}
-
-void CWindowHandleWrapper::HideCursor()
-{
-	::ShowCursor(FALSE);
-}
-
-
-//
-// IWindowEvents
-//
-
-// Window events
-Event& CWindowHandleWrapper::InputFocus()
-{
-	return m_InputFocus;
-}
-
-Event& CWindowHandleWrapper::InputBlur()
-{
-	return m_InputBlur;
-}
-
-Event& CWindowHandleWrapper::Minimize()
-{
-	return m_Minimize;
-}
-
-Event& CWindowHandleWrapper::Restore()
-{
-	return m_Restore;
-}
-
-ResizeEvent& CWindowHandleWrapper::Resize()
-{
-	return m_Resize;
-}
-
-WindowCloseEvent& CWindowHandleWrapper::WindowClose()
-{
-	return m_Close;
-}
-
-
-
-// Keyboard events
-KeyboardEvent& CWindowHandleWrapper::KeyPressed()
-{
-	return m_KeyPressed;
-}
-
-KeyboardEvent& CWindowHandleWrapper::KeyReleased()
-{
-	return m_KeyReleased;
-}
-
-Event& CWindowHandleWrapper::KeyboardFocus()
-{
-	return m_KeyboardFocus;
-}
-
-Event& CWindowHandleWrapper::KeyboardBlur()
-{
-	return m_KeyboardBlur;
-}
-
-
-// Mouse events
-MouseMotionEvent& CWindowHandleWrapper::MouseMoved()
-{
-	return m_MouseMoved;
-}
-
-MouseButtonEvent& CWindowHandleWrapper::MouseButtonPressed()
-{
-	return m_MouseButtonPressed;
-}
-
-MouseButtonEvent& CWindowHandleWrapper::MouseButtonReleased()
-{
-	return m_MouseButtonReleased;
-}
-
-MouseWheelEvent& CWindowHandleWrapper::MouseWheel()
-{
-	return m_MouseWheel;
-}
-
-Event& CWindowHandleWrapper::MouseLeave()
-{
-	return m_MouseLeave;
-}
-
-Event& CWindowHandleWrapper::MouseFocus()
-{
-	return m_MouseFocus;
-}
-
-Event& CWindowHandleWrapper::MouseBlur()
-{
-	return m_MouseBlur;
 }

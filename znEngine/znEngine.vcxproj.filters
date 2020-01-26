@@ -82,7 +82,7 @@
     <Filter Include="FBX\Parts">
       <UniqueIdentifier>{d92e52e1-0d78-44d9-ba88-a6990c61358e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Scene Funcitonal\Scene DEPRECATED">
+    <Filter Include="Scene Funcitonal\Scene">
       <UniqueIdentifier>{e7bd6e4b-8d9d-488f-be74-e4a0d64ed894}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -91,7 +91,6 @@
       <Filter>Common</Filter>
     </ClCompile>
     <ClCompile Include="Application.cpp" />
-    <ClCompile Include="WindowCreator.cpp" />
     <ClCompile Include="SceneFunctional\UI\UIContainerGarmoshka.cpp">
       <Filter>Scene Funcitonal\UI\UIContainerGarmoshka</Filter>
     </ClCompile>
@@ -169,12 +168,6 @@
     </ClCompile>
     <ClCompile Include="Settings.cpp">
       <Filter>Managers</Filter>
-    </ClCompile>
-    <ClCompile Include="GameStateDefaultCreator.cpp">
-      <Filter>GameStates</Filter>
-    </ClCompile>
-    <ClCompile Include="GameStatesFactory.cpp">
-      <Filter>GameStates</Filter>
     </ClCompile>
     <ClCompile Include="Passes\RenderPassFactory.cpp">
       <Filter>Passes</Filter>
@@ -267,12 +260,13 @@
       <Filter>FBX\Parts</Filter>
     </ClCompile>
     <ClCompile Include="SceneFunctional\SceneDefaultCreator.cpp">
-      <Filter>Scene Funcitonal\Scene DEPRECATED</Filter>
+      <Filter>Scene Funcitonal\Scene</Filter>
     </ClCompile>
     <ClCompile Include="SceneFunctional\ScenesFactory.cpp">
-      <Filter>Scene Funcitonal\Scene DEPRECATED</Filter>
+      <Filter>Scene Funcitonal\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="WindowHandleWrapper.cpp" />
+    <ClCompile Include="NativeWindowFactory.cpp" />
+    <ClCompile Include="NativeWindow_WindowsSpecific.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="common.h">
@@ -282,7 +276,6 @@
       <Filter>Common</Filter>
     </ClInclude>
     <ClInclude Include="Application.h" />
-    <ClInclude Include="WindowCreator.h" />
     <ClInclude Include="..\shared\znEngine.h">
       <Filter>Common</Filter>
     </ClInclude>
@@ -360,12 +353,6 @@
     </ClInclude>
     <ClInclude Include="Settings.h">
       <Filter>Managers</Filter>
-    </ClInclude>
-    <ClInclude Include="GameStateDefaultCreator.h">
-      <Filter>GameStates</Filter>
-    </ClInclude>
-    <ClInclude Include="GameStatesFactory.h">
-      <Filter>GameStates</Filter>
     </ClInclude>
     <ClInclude Include="Passes\RenderPassFactory.h">
       <Filter>Passes</Filter>
@@ -459,12 +446,13 @@
     </ClInclude>
     <ClInclude Include="ThreadPool.h" />
     <ClInclude Include="SceneFunctional\SceneDefaultCreator.h">
-      <Filter>Scene Funcitonal\Scene DEPRECATED</Filter>
+      <Filter>Scene Funcitonal\Scene</Filter>
     </ClInclude>
     <ClInclude Include="SceneFunctional\ScenesFactory.h">
-      <Filter>Scene Funcitonal\Scene DEPRECATED</Filter>
+      <Filter>Scene Funcitonal\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="WindowHandleWrapper.h" />
+    <ClInclude Include="NativeWindowFactory.h" />
+    <ClInclude Include="NativeWindow_WindowsSpecific.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="znEngine.rc">

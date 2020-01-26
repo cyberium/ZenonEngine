@@ -23,8 +23,6 @@
     <ClCompile Include="FBX\FBXScene.cpp" />
     <ClCompile Include="FBX\FBXSceneNode.cpp" />
     <ClCompile Include="FBX\FBXStream.cpp" />
-    <ClCompile Include="GameStateDefaultCreator.cpp" />
-    <ClCompile Include="GameStatesFactory.cpp" />
     <ClCompile Include="GameState_Default.cpp" />
     <ClCompile Include="Images\ImageDDS.cpp" />
     <ClCompile Include="Images\ImagePNG.cpp" />
@@ -75,8 +73,8 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="WindowCreator.cpp" />
-    <ClCompile Include="WindowHandleWrapper.cpp" />
+    <ClCompile Include="NativeWindowFactory.cpp" />
+    <ClCompile Include="NativeWindow_WindowsSpecific.cpp" />
     <ClCompile Include="znEngine.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -93,8 +91,6 @@
     <ClInclude Include="FBX\FBXScene.h" />
     <ClInclude Include="FBX\FBXSceneNode.h" />
     <ClInclude Include="FBX\FBXStream.h" />
-    <ClInclude Include="GameStateDefaultCreator.h" />
-    <ClInclude Include="GameStatesFactory.h" />
     <ClInclude Include="GameState_Default.h" />
     <ClInclude Include="Images\ImageDDS.h" />
     <ClInclude Include="Images\ImagePNG.h" />
@@ -144,8 +140,8 @@
     <ClInclude Include="Settings\GroupVideo.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="ThreadPool.h" />
-    <ClInclude Include="WindowCreator.h" />
-    <ClInclude Include="WindowHandleWrapper.h" />
+    <ClInclude Include="NativeWindowFactory.h" />
+    <ClInclude Include="NativeWindow_WindowsSpecific.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="Resources\shaders_D3D\CommonInclude.hlsl">

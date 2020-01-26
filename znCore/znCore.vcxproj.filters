@@ -67,9 +67,6 @@
     <Filter Include="Passes">
       <UniqueIdentifier>{030be646-acd2-408c-97f1-de057391b5a3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="GameState">
-      <UniqueIdentifier>{e458a334-60c8-4b7e-9c68-f4e227fd5768}</UniqueIdentifier>
-    </Filter>
     <Filter Include="CameraControllers">
       <UniqueIdentifier>{cab15164-19e1-4d0c-b397-adb4def9c9c1}</UniqueIdentifier>
     </Filter>
@@ -99,6 +96,15 @@
     </Filter>
     <Filter Include="Passes\Technical">
       <UniqueIdentifier>{aaaebf5e-d1ff-4156-8c87-5e16f7cc457b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Externals">
+      <UniqueIdentifier>{635427f0-f1b7-41b1-a148-d6d9d2b4c7fe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Externals\zlib">
+      <UniqueIdentifier>{791a8f47-959f-48d2-9f13-954f942cf78e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Externals\lua">
+      <UniqueIdentifier>{b25aeee7-42cc-4c8f-a169-d2862e2b6dc1}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -194,9 +200,6 @@
     </ClCompile>
     <ClCompile Include="CameraControllers\RTSCameraController.cpp">
       <Filter>CameraControllers</Filter>
-    </ClCompile>
-    <ClCompile Include="GameStateBase.cpp">
-      <Filter>GameState</Filter>
     </ClCompile>
     <ClCompile Include="Scene\SceneBase.cpp">
       <Filter>Scene functional</Filter>
@@ -419,12 +422,6 @@
     <ClInclude Include="..\shared\Interfaces\Files.h">
       <Filter>__Interfaces</Filter>
     </ClInclude>
-    <ClInclude Include="..\shared\Interfaces\GameState.h">
-      <Filter>__Interfaces</Filter>
-    </ClInclude>
-    <ClInclude Include="..\shared\Interfaces\GameStateManager.h">
-      <Filter>__Interfaces</Filter>
-    </ClInclude>
     <ClInclude Include="..\shared\Interfaces\Loader.h">
       <Filter>__Interfaces</Filter>
     </ClInclude>
@@ -601,9 +598,6 @@
     </ClInclude>
     <ClInclude Include="CameraControllers\RTSCameraController.h">
       <Filter>CameraControllers</Filter>
-    </ClInclude>
-    <ClInclude Include="GameStateBase.h">
-      <Filter>GameState</Filter>
     </ClInclude>
     <ClInclude Include="Scene\SceneBase.h">
       <Filter>Scene functional</Filter>

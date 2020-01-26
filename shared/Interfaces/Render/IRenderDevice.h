@@ -49,7 +49,7 @@ ZN_INTERFACE ZN_API
 	
 	virtual IRenderDevicePrimitiveCollection* GetPrimitiveCollection() const = 0;
 
-	virtual IRenderWindow* CreateRenderWindow(IWindowObject * WindowObject, bool vSync) = 0;
+	virtual IRenderWindow* CreateRenderWindow(INativeWindow * WindowObject, bool vSync) = 0;
 	virtual void DestroyRenderWindow(IRenderWindow* RenderWindow) = 0;
 
 	virtual IMesh* CreateMesh() = 0;

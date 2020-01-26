@@ -18,9 +18,9 @@ void main_internal(int argumentCount, char* arguments[])
 
 
 
-	CWindowCreator firstWindowObject
-	(
-		&app,
+	CNativeWindowFactory nativeWindowFactory(&app);
+
+	std::shared_ptr<INativeWindow> nativeWindow = nativeWindowFactory.CreateWindowInstance(
 		L"Zenon Engine",
 		BaseManager->GetManager<ISettings>()->GetGroup("Video")->GetSettingT<glm::vec2>("WindowSize")->Get().x,
 		BaseManager->GetManager<ISettings>()->GetGroup("Video")->GetSettingT<glm::vec2>("WindowSize")->Get().y
@@ -32,11 +32,12 @@ void main_internal(int argumentCount, char* arguments[])
 	std::shared_ptr<IFontsManager> fontsManager = std::make_shared<FontsManager>(renderDevice, BaseManager);
 	BaseManager->AddManager<IFontsManager>(fontsManager);
 
-	IRenderWindow* firstRenderWindow = renderDevice->CreateRenderWindow(const_cast<CWindowHandleWrapper*>(firstWindowObject.GetHandleWrapper()), false);
+	IRenderWindow* firstRenderWindow = renderDevice->CreateRenderWindow(nativeWindow.get(), false);
 	app.AddRenderWindow(firstRenderWindow);
 
-	std::shared_ptr<IGameState> gameState = BaseManager->GetManager<IGameStatesFactory>()->CreateGameStateWithHighestPriority(firstRenderWindow, const_cast<CWindowHandleWrapper*>(firstWindowObject.GetHandleWrapper()));
-	app.SetGameState(gameState);
+	std::shared_ptr<IScene> scene = BaseManager->GetManager<IScenesFactory>()->CreateScene("SceneDefault");
+	scene->ConnectEvents(dynamic_cast<IRenderWindowEvents*>(firstRenderWindow));
+	scene->Initialize();
 
 	app.Run();
 }

@@ -102,8 +102,13 @@ int Application::DoRun()
 
 			// Destroy any windows that are still hanging around.
 			for (const auto& it : m_Windows)
+			{
 				if (it != nullptr)
-					SendMessage(it->GetWindowObject()->GetHWnd(), WM_CLOSE, NULL, NULL); // TODO: Investigate me!
+				{
+					INativeWindow_WindowsSpecific* nativeWindow = dynamic_cast<INativeWindow_WindowsSpecific*>(it->GetWindowObject());
+					SendMessageW(nativeWindow->GetHWnd(), WM_CLOSE, NULL, NULL); // TODO: Investigate me!
+				}
+			}
 
 			// Setting this to false will cause the main application's message pump to stop.
 			m_bIsRunning = false;
@@ -155,101 +160,32 @@ HINSTANCE Application::GetHINSTANCE()
 //
 // IApplicationEvents
 //
-Event& Application::Initialize()
+Event& Application::ApplicationInitialize()
 {
 	return m_Initialize;
 }
 
-UpdateEvent& Application::Update()
+UpdateEvent& Application::ApplicationUpdate()
 {
 	return m_Update;
 }
 
-Event& Application::Terminate()
+Event& Application::ApplicationTerminate()
 {
 	return m_Terminate;
 }
 
-Event& Application::Terminated()
+Event& Application::ApplicationTerminated()
 {
 	return m_Terminated;
 }
 
-Event& Application::Exit()
+Event& Application::ApplicationExit()
 {
 	return m_Exit;
 }
 
-UserEvent& Application::UserEvent()
+UserEvent& Application::ApplicationUserEvent()
 {
 	return m_UserEvent;
-}
-
-
-
-//
-// IGameStateManager
-//
-void Application::AddGameState(GameStatesNames _name, std::shared_ptr<IGameState> _gameState)
-{
-	_ASSERT(_gameState != nullptr);
-	_ASSERT(m_GameStatesCollection.find(_name) == m_GameStatesCollection.end());
-
-	m_GameStatesCollection.insert(std::make_pair(_name, _gameState));
-}
-
-bool Application::SetGameState(GameStatesNames _name)
-{
-	_ASSERT(m_GameStatesCollection.find(_name) != m_GameStatesCollection.end());
-
-	std::shared_ptr<IGameState> gameState = m_GameStatesCollection[_name];
-	return SetGameState(gameState);
-}
-
-bool Application::SetGameState(std::shared_ptr<IGameState> _newGameState)
-{
-	_ASSERT(_newGameState);
-
-	Log::Print("GameStateManager[]: Setting new CGameState.");
-
-	// 1. Unset current GameState
-	//if (m_CurrentGameState != nullptr)
-	//{
-	//	m_CurrentGameState->Unset();
-	//	m_CurrentGameState->SetCurrent(false);
-	//}
-
-	// 2. If new GameState not inited, init them
-	if (!_newGameState->IsInited())
-	{
-		Log::Warn("GameStateManager[]: New CGameState in not inited. Initializating.");
-		if (_newGameState->Init())
-		{
-			Log::Green("GameStateManager[]: New CGameState is inited successfully.");
-			_newGameState->SetInited(true);
-		}
-		else
-		{
-			Log::Error("GameStateManager[]: Error initing new CGameState.");
-		}
-	}
-
-	// 3. Set new GameState
-	m_CurrentGameState = std::dynamic_pointer_cast<CGameState>(_newGameState);
-	if (m_CurrentGameState->Set())
-	{
-		Log::Green("GameStateManager[]: New CGameState is current now.");
-		m_CurrentGameState->SetCurrent(true);
-	}
-	else
-	{
-		Log::Error("GameStateManager[]: Error setting current new CGameState.");
-	}
-
-	return true;
-}
-
-std::shared_ptr<IGameState> Application::GetGameState()
-{
-	return m_CurrentGameState;
 }

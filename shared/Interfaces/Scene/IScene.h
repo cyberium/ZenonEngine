@@ -9,15 +9,17 @@ ZN_INTERFACE ISceneNodesFactory;
 // FORWARD END
 
 
-
-
-
 ZN_INTERFACE ZN_API __declspec(novtable) IScene 
 	: public std::enable_shared_from_this<IScene>
 {
 	virtual ~IScene() {}
 
-	virtual void CreateRootNodes() = 0;
+	virtual void ConnectEvents(IRenderWindowEvents* WindowEvents) = 0;
+	virtual void DisconnectEvents(IRenderWindowEvents* WindowEvents) = 0;
+
+	virtual void Initialize() = 0;
+	virtual void Finalize() = 0;
+
 	virtual ISceneNode3D* GetRootNode3D() const = 0;
 	virtual ISceneNodeUI* GetRootNodeUI() const = 0;
 
@@ -31,24 +33,6 @@ ZN_INTERFACE ZN_API __declspec(novtable) IScene
 	// Events
 	virtual SceneChangeEvent& SceneChangeEvent() = 0;
 	virtual void RaiseSceneChangeEvent(ESceneChangeType SceneChangeType, std::shared_ptr<ISceneNode3D> OwnerNode, std::shared_ptr<ISceneNode3D> ChildNode) = 0;
-
-	// Events
-	virtual void OnUpdate(UpdateEventArgs& e) = 0;
-
-	// Keyboard events
-	virtual bool OnKeyPressed(KeyEventArgs& e) = 0;
-	virtual void OnKeyReleased(KeyEventArgs& e) = 0;
-	virtual void OnKeyboardFocus(EventArgs& e) = 0;
-	virtual void OnKeyboardBlur(EventArgs& e) = 0;
-
-	// Mouse events
-	virtual void OnMouseMoved(MouseMotionEventArgs& e) = 0;
-	virtual bool OnMouseButtonPressed(MouseButtonEventArgs& e) = 0;
-	virtual void OnMouseButtonReleased(MouseButtonEventArgs& e) = 0;
-	virtual bool OnMouseWheel(MouseWheelEventArgs& e) = 0;
-	virtual void OnMouseLeave(EventArgs& e) = 0;
-	virtual void OnMouseFocus(EventArgs& e) = 0;
-	virtual void OnMouseBlur(EventArgs& e) = 0;
 
 
 	// Templates
@@ -84,8 +68,6 @@ ZN_INTERFACE ZN_API __declspec(novtable) IScene
 	}
 };
 
-#if 0
-
 //
 // For plugins
 //
@@ -110,6 +92,3 @@ ZN_INTERFACE ZN_API
 
 	virtual std::shared_ptr<IScene> CreateScene(std::string SceneTypeName) const = 0;
 };
-
-#endif
-

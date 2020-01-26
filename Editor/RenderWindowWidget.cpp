@@ -57,107 +57,25 @@ void RenderWindowWidget::HideCursor()
 	_ASSERT(false);
 }
 
+void RenderWindowWidget::SetEventsListener(INativeWindowEventListener * WindowEventsListener)
+{
+	m_EventListener = WindowEventsListener;
+}
+
+void RenderWindowWidget::ResetEventsListener()
+{
+	m_EventListener = nullptr;
+}
+
 LRESULT RenderWindowWidget::WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
+	_ASSERT(FALSE);
 	return 0;
 }
 
 
 
-//
-// IWindowEvents
-//
 
-// Window events
-Event& RenderWindowWidget::InputFocus()
-{
-	return m_InputFocus;
-}
-
-Event& RenderWindowWidget::InputBlur()
-{
-	return m_InputBlur;
-}
-
-Event& RenderWindowWidget::Minimize()
-{
-	return m_Minimize;
-}
-
-Event& RenderWindowWidget::Restore()
-{
-	return m_Restore;
-}
-
-ResizeEvent& RenderWindowWidget::Resize()
-{
-	return m_Resize;
-}
-
-WindowCloseEvent& RenderWindowWidget::WindowClose()
-{
-	return m_Close;
-}
-
-
-
-// Keyboard events
-KeyboardEvent& RenderWindowWidget::KeyPressed()
-{
-	return m_KeyPressed;
-}
-
-KeyboardEvent& RenderWindowWidget::KeyReleased()
-{
-	return m_KeyReleased;
-}
-
-Event& RenderWindowWidget::KeyboardFocus()
-{
-	return m_KeyboardFocus;
-}
-
-Event& RenderWindowWidget::KeyboardBlur()
-{
-	return m_KeyboardBlur;
-}
-
-
-// Mouse events
-MouseMotionEvent& RenderWindowWidget::MouseMoved()
-{
-	return m_MouseMoved;
-}
-
-MouseButtonEvent& RenderWindowWidget::MouseButtonPressed()
-{
-	return m_MouseButtonPressed;
-}
-
-MouseButtonEvent& RenderWindowWidget::MouseButtonReleased()
-{
-	return m_MouseButtonReleased;
-}
-
-MouseWheelEvent& RenderWindowWidget::MouseWheel()
-{
-	return m_MouseWheel;
-}
-
-Event& RenderWindowWidget::MouseLeave()
-{
-	return m_MouseLeave;
-}
-
-Event& RenderWindowWidget::MouseFocus()
-{
-	return m_MouseFocus;
-}
-
-Event& RenderWindowWidget::MouseBlur()
-{
-	return m_MouseBlur;
-}
 
 
 
@@ -196,7 +114,7 @@ void RenderWindowWidget::mousePressEvent(QMouseEvent * event)
 		event->x(),
 		event->y()
 	);
-	m_MouseButtonPressed(args);
+	m_EventListener->OnWindowMouseButtonPressed(args);
 }
 
 void RenderWindowWidget::mouseReleaseEvent(QMouseEvent * event)
@@ -214,7 +132,7 @@ void RenderWindowWidget::mouseReleaseEvent(QMouseEvent * event)
 		event->x(),
 		event->y()
 	);
-	m_MouseButtonReleased(args);
+	m_EventListener->OnWindowMouseButtonReleased(args);
 }
 
 void RenderWindowWidget::mouseDoubleClickEvent(QMouseEvent * event)
@@ -234,7 +152,7 @@ void RenderWindowWidget::mouseMoveEvent(QMouseEvent * event)
 		event->x(), 
 		event->y()
 	);
-	m_MouseMoved(args);
+	m_EventListener->OnWindowMouseMoved(args);
 }
 
 void RenderWindowWidget::wheelEvent(QWheelEvent * event)
@@ -252,7 +170,7 @@ void RenderWindowWidget::wheelEvent(QWheelEvent * event)
 		event->y()
 
 	);
-	m_MouseWheel(args);
+	m_EventListener->OnWindowMouseWheel(args);
 }
 
 void RenderWindowWidget::keyPressEvent(QKeyEvent * event)
@@ -267,7 +185,7 @@ void RenderWindowWidget::keyPressEvent(QKeyEvent * event)
 		event->modifiers() == Qt::KeyboardModifier::ShiftModifier,
 		event->modifiers() == Qt::KeyboardModifier::AltModifier
 	);
-	m_KeyPressed(args);
+	m_EventListener->OnWindowKeyPressed(args);
 }
 
 void RenderWindowWidget::keyReleaseEvent(QKeyEvent * event)
@@ -282,29 +200,29 @@ void RenderWindowWidget::keyReleaseEvent(QKeyEvent * event)
 		event->modifiers() == Qt::KeyboardModifier::ShiftModifier,
 		event->modifiers() == Qt::KeyboardModifier::AltModifier
 	);
-	m_KeyReleased(args);
+	m_EventListener->OnWindowKeyReleased(args);
 }
 
 void RenderWindowWidget::focusInEvent(QFocusEvent * event)
 {
-	m_InputFocus(EventArgs(this));
+	m_EventListener->OnWindowInputFocus(EventArgs(this));
 }
 
 void RenderWindowWidget::focusOutEvent(QFocusEvent * event)
 {
-	m_InputBlur(EventArgs(this));
+	m_EventListener->OnWindowInputBlur(EventArgs(this));
 }
 
 void RenderWindowWidget::enterEvent(QEvent * event)
 {
 	setFocus();
 
-	m_MouseFocus(EventArgs(this));
+	m_EventListener->OnWindowMouseFocus(EventArgs(this));
 }
 
 void RenderWindowWidget::leaveEvent(QEvent * event)
 {
-	m_MouseLeave(EventArgs(this));
+	m_EventListener->OnWindowMouseLeave(EventArgs(this));
 }
 
 void RenderWindowWidget::paintEvent(QPaintEvent *pEvent)
@@ -319,10 +237,10 @@ void RenderWindowWidget::moveEvent(QMoveEvent * event)
 
 void RenderWindowWidget::resizeEvent(QResizeEvent * event)
 {
-	m_Resize(ResizeEventArgs(this, event->size().width(), event->size().height()));
+	m_EventListener->OnWindowResize(ResizeEventArgs(this, event->size().width(), event->size().height()));
 }
 
 void RenderWindowWidget::closeEvent(QCloseEvent * event)
 {
-	m_Close(WindowCloseEventArgs(this));
+	m_EventListener->OnWindowClose(WindowCloseEventArgs(this));
 }

@@ -17,7 +17,7 @@ public:
 	
 
 	// IRenderDevice
-	IRenderWindow* CreateRenderWindow(IWindowObject * WindowObject, bool vSync) override;
+	IRenderWindow* CreateRenderWindow(INativeWindow * WindowObject, bool vSync) override;
 	void DestroyRenderWindow(IRenderWindow* RenderWindow) override;
 
 	IShader* CreateShader(EShaderType type, const std::string& fileName, const IShader::ShaderMacros& shaderMacros, const std::string& entryPoint, const std::string& profile, IShaderInputLayout* _customLayout = nullptr);

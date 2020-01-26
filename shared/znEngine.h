@@ -1,8 +1,8 @@
 #pragma once
 
 #include "../znEngine/Application.h"
-#include "../znEngine/WindowCreator.h"
-#include "../znEngine/WindowHandleWrapper.h"
+#include "../znEngine/NativeWindowFactory.h"
+#include "../znEngine/NativeWindow_WindowsSpecific.h"
 
 #include "../znEngine/Materials/MaterialDebug.h"
 #include "../znEngine/Materials/MaterialTextured.h"

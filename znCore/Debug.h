@@ -1,5 +1,6 @@
 #pragma once
 
+#if 0
 #ifdef _DEBUG
 
 	#define _CRTDBG_MAP_ALLOC
@@ -12,6 +13,7 @@
 
 	#define new MYDEBUG_NEW
 
+#endif
 #endif
 
 namespace StaticAssert

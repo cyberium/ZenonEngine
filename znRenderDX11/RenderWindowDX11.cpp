@@ -7,12 +7,14 @@
 static DXGI_RATIONAL QueryRefreshRate(UINT screenWidth, UINT screenHeight, BOOL vsync);
 // FORWARD END
 
-RenderWindowDX11::RenderWindowDX11(IRenderDeviceDX11* RenderDeviceD3D11, IWindowObject * WindowObject, bool vSync)
+RenderWindowDX11::RenderWindowDX11(IRenderDeviceDX11* RenderDeviceD3D11, INativeWindow * WindowObject, bool vSync)
 	: RenderWindowBase(RenderDeviceD3D11->GetRenderDevice(), WindowObject, vSync)
     , m_RenderDeviceD3D11(RenderDeviceD3D11)
 	, m_pSwapChain(nullptr)
 	, m_pBackBuffer(nullptr)
 {
+	WindowObject->SetEventsListener(this);
+
 	CreateSwapChain();
 }
 
@@ -23,6 +25,8 @@ RenderWindowDX11::~RenderWindowDX11()
 		// Apparently an exception is thrown when you release the swap chain if you don't do this.
 		m_pSwapChain->SetFullscreenState(false, NULL);
 	}
+
+	GetWindowObject()->ResetEventsListener();
 }
 
 
@@ -99,9 +103,11 @@ void RenderWindowDX11::CreateSwapChain()
     swapChainFullScreenDesc.RefreshRate = QueryRefreshRate(windowWidth, windowHeight, vSync);
     swapChainFullScreenDesc.Windowed = true;
 
+	INativeWindow_WindowsSpecific* nativeWindow_WindowsSpecific = dynamic_cast<INativeWindow_WindowsSpecific*>(GetWindowObject());
+
     // First create a DXGISwapChain1
     ATL::CComPtr<IDXGISwapChain1> pSwapChain;
-    if (FAILED(factory->CreateSwapChainForHwnd(m_RenderDeviceD3D11->GetDeviceD3D11(), GetWindowObject()->GetHWnd(), &swapChainDesc, &swapChainFullScreenDesc, nullptr, &pSwapChain)))
+    if (FAILED(factory->CreateSwapChainForHwnd(m_RenderDeviceD3D11->GetDeviceD3D11(), nativeWindow_WindowsSpecific->GetHWnd(), &swapChainDesc, &swapChainFullScreenDesc, nullptr, &pSwapChain)))
     {
         Log::Error("Failed to create swap chain.");
     }

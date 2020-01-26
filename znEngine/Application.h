@@ -3,8 +3,7 @@
 class ZN_API Application :
 	public Object, 
 	public IApplication, 
-	public IApplicationEvents,
-	public IGameStateManager
+	public IApplicationEvents
 {
 public:
 	Application(IBaseManager* BaseManager);
@@ -31,32 +30,22 @@ public:
 	HINSTANCE                       GetHINSTANCE() override;
 
 	// IApplicationEvents
-	Event&                          Initialize();
-	UpdateEvent&                    Update();
-	Event&			                Terminate();
-	Event&                          Terminated();
-	Event&                          Exit();
-	Delegate<UserEventArgs>&        UserEvent();
-
-	// IGameStateManager
-	void                            AddGameState(GameStatesNames _name, std::shared_ptr<IGameState> _gameState) override;
-	bool                            SetGameState(GameStatesNames _name) override;
-	bool                            SetGameState(std::shared_ptr<IGameState> _newGameState) override;
-	std::shared_ptr<IGameState>     GetGameState() override;
+	Event&                          ApplicationInitialize();
+	UpdateEvent&                    ApplicationUpdate();
+	Event&			                ApplicationTerminate();
+	Event&                          ApplicationTerminated();
+	Event&                          ApplicationExit();
+	Delegate<UserEventArgs>&        ApplicationUserEvent();
 
 private:
-	IBaseManager*	m_BaseManager;
+	IBaseManager*					m_BaseManager;
 	bool                            m_bIsInitialized;
 	bool                            m_bIsRunning;
 
 	HINSTANCE                       m_HINSTANCE;
 
-	IRenderDevice*  m_pRenderDevice;
-	std::vector<IRenderWindow*> m_Windows;
-
-	// IGameStateManager
-	std::shared_ptr<IGameState>                                     m_CurrentGameState;
-	std::map<GameStatesNames, std::shared_ptr<IGameState>>    m_GameStatesCollection;
+	IRenderDevice*					m_pRenderDevice;
+	std::vector<IRenderWindow*>		m_Windows;
 
 private: // IApplicationEvents
 	Event									 m_Initialize;

@@ -49,7 +49,6 @@
 
 #include "../znCore/Scene/LoadableObject.h"
 
-#include "../znCore/GameStateBase.h"
 
 // Base
 #include "../znCore/Scene/SceneBase.h"

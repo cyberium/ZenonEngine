@@ -28,7 +28,7 @@ namespace
 	}
 }
 
-IRenderWindow* RenderDeviceDX11::CreateRenderWindow(IWindowObject * WindowObject, bool vSync)
+IRenderWindow* RenderDeviceDX11::CreateRenderWindow(INativeWindow * WindowObject, bool vSync)
 {
 	IRenderWindow* renderWindow = new RenderWindowDX11(this, WindowObject, vSync);
 	m_RenderWindows.push_back(std::unique_ptr<IRenderWindow>(renderWindow));

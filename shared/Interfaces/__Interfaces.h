@@ -113,8 +113,6 @@ class Rect;
 #include "Interfaces/Console.h"
 #include "Interfaces/DebugOutput.h"
 #include "Interfaces/Files.h"
-#include "Interfaces/GameState.h"
-#include "Interfaces/GameStateManager.h"
 #include "Interfaces/Loader.h"
 #include "Interfaces/Log.h"
 #include "Interfaces/Networking.h"

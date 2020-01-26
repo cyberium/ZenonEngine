@@ -24,12 +24,12 @@ ZN_INTERFACE ZN_API IApplicationEvents
 {
 	virtual ~IApplicationEvents() {}
 
-	virtual Event&                          Initialize() = 0;
-	virtual UpdateEvent&                    Update() = 0;
-	virtual Event&			                Terminate() = 0;
-	virtual Event&                          Terminated() = 0;
-	virtual Event&                          Exit() = 0;
-	virtual UserEvent&                      UserEvent() = 0;
+	virtual Event&                          ApplicationInitialize() = 0;
+	virtual UpdateEvent&                    ApplicationUpdate() = 0;
+	virtual Event&			                ApplicationTerminate() = 0;
+	virtual Event&                          ApplicationTerminated() = 0;
+	virtual Event&                          ApplicationExit() = 0;
+	virtual UserEvent&                      ApplicationUserEvent() = 0;
 };
 
 ZN_INTERFACE ZN_API IApplicationEventsConnection
