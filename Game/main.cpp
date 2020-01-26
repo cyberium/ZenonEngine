@@ -18,8 +18,7 @@ void main_internal(int argumentCount, char* arguments[])
 
 
 
-	CWindowObject firstWindowObject;
-	firstWindowObject.CreateWindowInstance
+	CWindowCreator firstWindowObject
 	(
 		&app,
 		L"Zenon Engine",
@@ -40,9 +39,6 @@ void main_internal(int argumentCount, char* arguments[])
 	app.SetGameState(gameState);
 
 	app.Run();
-
-	
-
 }
 
 int main(int argumentCount, char* arguments[])

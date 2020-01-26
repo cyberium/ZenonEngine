@@ -2,12 +2,12 @@
 
 #include "WindowHandleWrapper.h"
 
-class ZN_API CWindowObject 
+class ZN_API CWindowCreator 
 	: public IWindowCreator
 {
 public:
-	CWindowObject();
-	virtual ~CWindowObject();
+	CWindowCreator(IApplication * Application, LPCWSTR WindowName, LONG Width, LONG Height);
+	virtual ~CWindowCreator();
 
 	const CWindowHandleWrapper* GetHandleWrapper() const;
 	
@@ -22,5 +22,5 @@ private:
 	HINSTANCE m_HInstance;
 	std::wstring m_WindowClassName;
 	HWND m_HWnd;
-	CWindowHandleWrapper* m_WindowHandleWrapper;
+	std::unique_ptr<CWindowHandleWrapper> m_WindowHandleWrapper;
 };

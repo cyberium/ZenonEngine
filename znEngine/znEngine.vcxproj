@@ -50,7 +50,6 @@
     <ClCompile Include="PluginsManager.cpp" />
     <ClCompile Include="RenderDeviceFactory.cpp" />
     <ClCompile Include="Application.cpp" />
-    <ClCompile Include="EngineTime.cpp" />
     <ClCompile Include="Loader.cpp" />
     <ClCompile Include="SceneFunctional\SceneDefaultCreator.cpp" />
     <ClCompile Include="SceneFunctional\SceneNodeDefaultCreator.cpp" />
@@ -122,7 +121,6 @@
     <ClInclude Include="RenderDeviceFactory.h" />
     <ClInclude Include="Application.h" />
     <ClInclude Include="common.h" />
-    <ClInclude Include="EngineTime.h" />
     <ClInclude Include="Loader.h" />
     <ClInclude Include="SceneFunctional\SceneDefaultCreator.h" />
     <ClInclude Include="SceneFunctional\SceneNodeDefaultCreator.h" />

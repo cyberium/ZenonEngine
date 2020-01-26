@@ -80,7 +80,7 @@ void CGameState_World::OnResize(ResizeEventArgs& e)
 
 void CGameState_World::OnPreRender(RenderEventArgs& e)
 {
-	//m_RootForBoxes->SetRotation(glm::vec3(m_RootForBoxes->GetRotation().x, m_RootForBoxes->GetRotation().y + 0.01, 0.0f));
+	m_RootForBoxes->SetRotation(glm::vec3(m_RootForBoxes->GetRotation().x, m_RootForBoxes->GetRotation().y + 0.01, 0.0f));
 
 	CGameState::OnPreRender(e);
 }

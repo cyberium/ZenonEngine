@@ -4,7 +4,6 @@
 #include "Application.h"
 
 // Additional
-#include "EngineTime.h"
 #include "GameState_Default.h"
 
 float g_GameDeltaTime = 0.0f;
@@ -119,10 +118,7 @@ int Application::DoRun()
 	g_FrameCounter++;
 
 	UpdateEventArgs updateArgs(this, g_GameDeltaTime * 166.0f, g_ApplicationTime * 166.0f, g_FrameCounter);
-	if (! m_Update(updateArgs))
-	{
-		m_bIsRunning = false;
-	}
+	m_Update(updateArgs);
 
 	return static_cast<int>(msg.wParam);
 }

@@ -45,24 +45,23 @@ LRESULT CALLBACK WndProcLink(HWND hwnd, UINT message, WPARAM wParam, LPARAM lPar
 
 
 
-CWindowObject::CWindowObject()
+CWindowCreator::CWindowCreator(IApplication * Application, LPCWSTR WindowName, LONG Width, LONG Height)
 	: m_HInstance(NULL)
 	, m_HWnd(NULL)
 	, m_WindowHandleWrapper(nullptr)
 
-{}
-
-CWindowObject::~CWindowObject()
 {
-	DestroyWindowInstance();
-
-	if (m_WindowHandleWrapper)
-		delete m_WindowHandleWrapper;
+	CreateWindowInstance(Application, WindowName, Width, Height);
 }
 
-const CWindowHandleWrapper* CWindowObject::GetHandleWrapper() const
+CWindowCreator::~CWindowCreator()
 {
-	return m_WindowHandleWrapper;
+	DestroyWindowInstance();
+}
+
+const CWindowHandleWrapper* CWindowCreator::GetHandleWrapper() const
+{
+	return m_WindowHandleWrapper.get();
 }
 
 
@@ -70,10 +69,8 @@ const CWindowHandleWrapper* CWindowObject::GetHandleWrapper() const
 //
 // IWindowCreator
 //
-HWND CWindowObject::CreateWindowInstance(IApplication * Application, LPCWSTR WindowName, LONG Width, LONG Height)
+HWND CWindowCreator::CreateWindowInstance(IApplication * Application, LPCWSTR WindowName, LONG Width, LONG Height)
 {
-	_ASSERT_EXPR(m_HWnd == NULL, "Window already created.");
-
 	//
 	// Register window class
 	//
@@ -99,7 +96,7 @@ HWND CWindowObject::CreateWindowInstance(IApplication * Application, LPCWSTR Win
 	renderWindowClass.hIconSm = LoadIcon(hDll, MAKEINTRESOURCE(2));
 
 	if (::RegisterClassEx(&renderWindowClass) == FALSE)
-		_ASSERT_EXPR(false, "CWindowObject: Failed to register the render window class.");
+		_ASSERT_EXPR(false, "CWindowCreator: Failed to register the render window class.");
 
 	//
 	// Create window
@@ -110,7 +107,7 @@ HWND CWindowObject::CreateWindowInstance(IApplication * Application, LPCWSTR Win
 
 	RECT windowRect = { 0, 0, Width, Height };
 	if (::AdjustWindowRect(&windowRect, WS_OVERLAPPEDWINDOW, FALSE) == FALSE)
-		_ASSERT_EXPR(false, "CWindowObject: Failed to AdjustWindowRect.");
+		_ASSERT_EXPR(false, "CWindowCreator: Failed to AdjustWindowRect.");
 
 	int windowWidth = windowRect.right - windowRect.left;
 	int windowHeight = windowRect.bottom - windowRect.top;
@@ -132,35 +129,35 @@ HWND CWindowObject::CreateWindowInstance(IApplication * Application, LPCWSTR Win
 	);
 
 	if (m_HWnd == NULL)
-		_ASSERT_EXPR(false, L"CWindowObject: Failed to create render window.");
+		_ASSERT_EXPR(false, L"CWindowCreator: Failed to create render window.");
 
 
-	m_WindowHandleWrapper = new CWindowHandleWrapper(m_HWnd);
-	SetWindowLongPtrW(m_HWnd, GWLP_USERDATA, (LONG_PTR)(m_WindowHandleWrapper));
+	m_WindowHandleWrapper = std::make_unique<CWindowHandleWrapper>(m_HWnd);
+	SetWindowLongPtrW(m_HWnd, GWLP_USERDATA, (LONG_PTR)(m_WindowHandleWrapper.get()));
 
 	if (::ShowWindow(m_HWnd, SW_SHOWDEFAULT) == FALSE)
 	{
-	//	_ASSERT_EXPR(false, L"CWindowObject: Failed to show window.");
+	//	_ASSERT_EXPR(false, L"CWindowCreator: Failed to show window.");
 	}
 
 	if (::BringWindowToTop(m_HWnd))
 	{
-	//	_ASSERT_EXPR(false, "CWindowObject: Failed to bring window to top.");
+	//	_ASSERT_EXPR(false, "CWindowCreator: Failed to bring window to top.");
 	}
 
     return m_HWnd;
 }
 
-void CWindowObject::DestroyWindowInstance()
+void CWindowCreator::DestroyWindowInstance()
 {
 	_ASSERT(m_HWnd != NULL);
 
 	if (::IsWindow(m_HWnd))
 	{
 		if (::DestroyWindow(m_HWnd) == FALSE)
-			_ASSERT_EXPR(false, "CWindowObject: Failed to destroy window object.");
+			_ASSERT_EXPR(false, "CWindowCreator: Failed to destroy window object.");
 	}
 
 	if (::UnregisterClass(m_WindowClassName.c_str(), m_HInstance) == FALSE)
-		_ASSERT_EXPR(false, "CWindowObject: Failed to unregister render window class.");
+		_ASSERT_EXPR(false, "CWindowCreator: Failed to unregister render window class.");
 }

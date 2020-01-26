@@ -91,7 +91,6 @@
       <Filter>Common</Filter>
     </ClCompile>
     <ClCompile Include="Application.cpp" />
-    <ClCompile Include="EngineTime.cpp" />
     <ClCompile Include="WindowCreator.cpp" />
     <ClCompile Include="SceneFunctional\UI\UIContainerGarmoshka.cpp">
       <Filter>Scene Funcitonal\UI\UIContainerGarmoshka</Filter>
@@ -283,7 +282,6 @@
       <Filter>Common</Filter>
     </ClInclude>
     <ClInclude Include="Application.h" />
-    <ClInclude Include="EngineTime.h" />
     <ClInclude Include="WindowCreator.h" />
     <ClInclude Include="..\shared\znEngine.h">
       <Filter>Common</Filter>
