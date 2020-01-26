@@ -48,7 +48,7 @@ void RenderTechnique::UpdateViewport(const Viewport * _viewport)
 {
 	for (const auto& pass : m_Passes)
 	{
-		if (std::shared_ptr<IRenderPassPipelined> pipelinedPass = std::dynamic_pointer_cast<IRenderPassPipelined>(pass))
+		if (IRenderPassPipelined* pipelinedPass = dynamic_cast<IRenderPassPipelined*>(pass.get()))
 			pipelinedPass->UpdateViewport(_viewport);
 	}
 }

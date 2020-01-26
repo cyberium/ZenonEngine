@@ -275,7 +275,7 @@ LRESULT CWindowHandleWrapper::WndProc(HWND hwnd, UINT message, WPARAM wParam, LP
 	break;
 
 
-	case WM_SIZING:
+	/*case WM_SIZING:
 	{
 		RECT * rect = (RECT*)lParam;
 
@@ -287,7 +287,7 @@ LRESULT CWindowHandleWrapper::WndProc(HWND hwnd, UINT message, WPARAM wParam, LP
 			m_Resize(ResizeEventArgs(this, width, height));
 		}
 	}
-	break;
+	break;*/
 
 
 	case WM_SIZE:

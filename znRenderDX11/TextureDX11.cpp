@@ -329,6 +329,7 @@ void TextureDX11::Resize2D(uint16_t width, uint16_t height)
 			{
 				Log::Error("Failed to create depth/stencil view.");
 			}
+			Log::Error("Texture created!");
 		}
 
 		if ((textureDesc.BindFlags & D3D11_BIND_SHADER_RESOURCE) != 0)
@@ -448,8 +449,8 @@ void TextureDX11::Resize2D(uint16_t width, uint16_t height)
 			}
 		}
 
-		assert(m_BPP > 0 && m_BPP % 8 == 0);
-		m_Buffer.resize(width * height * (m_BPP / 8));
+		//assert(m_BPP > 0 && m_BPP % 8 == 0);
+		//m_Buffer.resize(width * height * (m_BPP / 8));
 	}
 }
 

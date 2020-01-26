@@ -30,9 +30,9 @@ namespace
 
 IRenderWindow* RenderDeviceDX11::CreateRenderWindow(IWindowObject * WindowObject, bool vSync)
 {
-	std::unique_ptr<IRenderWindow> renderWindow(new RenderWindowDX11(this, WindowObject, vSync));
-	m_RenderWindows.push_back(std::move(renderWindow));
-	return renderWindow.get();
+	IRenderWindow* renderWindow = new RenderWindowDX11(this, WindowObject, vSync);
+	m_RenderWindows.push_back(std::unique_ptr<IRenderWindow>(renderWindow));
+	return renderWindow;
 }
 
 void RenderDeviceDX11::DestroyRenderWindow(IRenderWindow * RenderWindow)
