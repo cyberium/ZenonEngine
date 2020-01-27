@@ -39,16 +39,16 @@ void SceneBase::Initialize()
 
 	{
 		m_CameraPosText = GetBaseManager()->GetManager<ISceneNodesFactory>()->CreateSceneNodeUI(GetRootNodeUI(), "TextUI");
-		m_CameraPosText->SetTranslate(vec2(0.0f, 0.0f));
+		m_CameraPosText->SetTranslate(vec2(700.0f, 0.0f));
 
 		m_CameraRotText = GetBaseManager()->GetManager<ISceneNodesFactory>()->CreateSceneNodeUI(GetRootNodeUI(), "TextUI");
-		m_CameraRotText->SetTranslate(vec2(0.0f, 20.0f));
+		m_CameraRotText->SetTranslate(vec2(700.0f, 20.0f));
 
 		m_CameraRot2Text = GetBaseManager()->GetManager<ISceneNodesFactory>()->CreateSceneNodeUI(GetRootNodeUI(), "TextUI");
-		m_CameraRot2Text->SetTranslate(vec2(0.0f, 40.0f));
+		m_CameraRot2Text->SetTranslate(vec2(700.0f, 40.0f));
 
 		m_FPSText = GetBaseManager()->GetManager<ISceneNodesFactory>()->CreateSceneNodeUI(GetRootNodeUI(), "TextUI");
-		m_FPSText->SetTranslate(vec2(0.0f, 60.0f));
+		m_FPSText->SetTranslate(vec2(700.0f, 60.0f));
 	}
 }
 
@@ -194,8 +194,6 @@ void SceneBase::OnPostRender(RenderEventArgs & e)
 	//m_FrameQuery->End(e.FrameCounter);
 
 
-	m_End = std::chrono::high_resolution_clock::now();
-
 	if (GetCameraController())
 	{
 		vec3 cameraTrans = GetCameraController()->GetCamera()->GetTranslation();
@@ -203,6 +201,20 @@ void SceneBase::OnPostRender(RenderEventArgs & e)
 		m_CameraRotText->GetProperties()->GetPropertyT<std::string>("Text")->Set("Rot: yaw = " + std::to_string(GetCameraController()->GetCamera()->GetYaw()) + ", pitch = " + std::to_string(GetCameraController()->GetCamera()->GetPitch()));
 		m_CameraRot2Text->GetProperties()->GetPropertyT<std::string>("Text")->Set("Rot: [" + std::to_string(GetCameraController()->GetCamera()->GetDirection().x) + ", " + std::to_string(GetCameraController()->GetCamera()->GetDirection().y) + ", " + std::to_string(GetCameraController()->GetCamera()->GetDirection().z) + "].");
 	}
+
+
+}
+
+void SceneBase::OnRenderUI(RenderEventArgs & e)
+{
+	if (GetCameraController())
+		e.Camera = GetCameraController()->GetCamera();
+
+
+
+	m_TechniqueUI.Render(e);
+
+	m_End = std::chrono::high_resolution_clock::now();
 
 	{
 		/*IQuery::QueryResult frameResult = m_FrameQuery->GetQueryResult(e.FrameCounter);
@@ -222,14 +234,6 @@ void SceneBase::OnPostRender(RenderEventArgs & e)
 		double fpsValue = 1000000.0 / double(elapsed_microseconds);
 		m_FPSText->GetProperties()->GetPropertyT<std::string>("Text")->Set("FPS: " + std::to_string(uint64(fpsValue)));
 	}
-}
-
-void SceneBase::OnRenderUI(RenderEventArgs & e)
-{
-	if (GetCameraController())
-		e.Camera = GetCameraController()->GetCamera();
-
-	m_TechniqueUI.Render(e);
 }
 
 

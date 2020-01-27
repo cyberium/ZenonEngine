@@ -106,7 +106,7 @@ std::shared_ptr<CFontMesh> FontsManager::CreateAction(const std::string& _nameAn
 
 	// Step 2: Find maxAscent/Descent to calculate imageHeight //
 	uint32_t imageHeight = fontSize;
-	uint32_t imageWidth = 2048;
+	uint32_t imageWidth = 512;
 	int maxDescent = 0;
 	int maxAscent = 0;
 

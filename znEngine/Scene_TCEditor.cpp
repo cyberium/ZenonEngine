@@ -4,8 +4,7 @@
 #include "Scene_TCEditor.h"
 
 // Additional
-#include "Materials/MaterialDebug.h"
-#include "Materials/MaterialTextured.h"
+#include "Passes/UIFontPass.h"
 
 CScene_TCEditor::CScene_TCEditor(IBaseManager * BaseManager)
 	: SceneBase(BaseManager)
@@ -72,6 +71,8 @@ void CScene_TCEditor::Load3D()
 
 void CScene_TCEditor::LoadUI()
 {
+	m_TextEditor = GetRootNodeUI()->CreateSceneNode<CRichTextEditorForTC>();
+
 	/*std::shared_ptr<CUITextureNode> TextureUI0 = m_SceneUI->GetRootNode()->CreateWrappedSceneNode<CUITextureNode>("Test", GetRenderDevice());
 	TextureUI0->SetTranslate(vec2(000.0f, 000.0f));
 	TextureUI0->SetScale(vec2(600, 600));
@@ -93,5 +94,6 @@ void CScene_TCEditor::LoadUI()
 	TextureUI3->SetTexture(m_DefferedRenderPass->GetTexture3());*/
 
 	m_TechniqueUI.AddPass(GetBaseManager()->GetManager<IRenderPassFactory>()->CreateRenderPass("ClearPass", GetRenderDevice(), GetRenderWindow()->GetRenderTarget(), GetRenderWindow()->GetViewport(), shared_from_this()));
-	m_TechniqueUI.AddPass(GetBaseManager()->GetManager<IRenderPassFactory>()->CreateRenderPass("BaseUIPass", GetRenderDevice(), GetRenderWindow()->GetRenderTarget(), GetRenderWindow()->GetViewport(), shared_from_this()));
+	m_TechniqueUI.AddPass(std::make_shared<CUIFontPass>(GetRenderDevice(), shared_from_this())->CreatePipeline(GetRenderWindow()->GetRenderTarget(), GetRenderWindow()->GetViewport()));
+	//m_TechniqueUI.AddPass(GetBaseManager()->GetManager<IRenderPassFactory>()->CreateRenderPass("BaseUIPass", GetRenderDevice(), GetRenderWindow()->GetRenderTarget(), GetRenderWindow()->GetViewport(), shared_from_this()));
 }

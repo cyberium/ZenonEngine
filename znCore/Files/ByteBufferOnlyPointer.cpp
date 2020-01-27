@@ -81,7 +81,7 @@ bool CByteBufferOnlyPointer::readLine(std::string* _string)
 
 	std::string line(buff);
 	delete[] buff;
-	line = Utils::Trim(line);
+	//line = Utils::Trim(line);
 
 	(*_string) = line;
 	return true;

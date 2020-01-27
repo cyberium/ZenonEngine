@@ -1,6 +1,7 @@
 #pragma once
 
 #include "SceneFunctional/UI/UITexture.h"
+#include "SceneFunctional/UI/RichTextEditorForTC.h"
 
 class ZN_API CScene_TCEditor
 	: public SceneBase
@@ -23,4 +24,5 @@ private:
 
 private:
 	std::shared_ptr<CUITextureNode> m_TextureUI;
+	CRichTextEditorForTC* m_TextEditor;
 };

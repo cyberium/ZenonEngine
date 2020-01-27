@@ -3,7 +3,9 @@
 cbuffer Material : register(b2)
 {
     float4 Color;
-    float2 Offset;
+	float2 Offset;
+	bool IsSelected;
+	uint __padding;
 };
 
 Texture2D DiffuseTexture : register(t0);
@@ -23,5 +25,11 @@ VertexShaderOutput VS_main(VertexShaderInput IN)
 
 float4 PS_main(VertexShaderOutput IN) : SV_TARGET
 {
-    return float4(Color.rgb, Color.a * DiffuseTexture.Sample(DiffuseTextureSampler, IN.texCoord).a);
+	const float fontAlpha = DiffuseTexture.Sample(DiffuseTextureSampler, IN.texCoord).a;
+
+	float4 diffuseColor = float4(Color.rgb, Color.a * fontAlpha);
+	if (IsSelected)
+		diffuseColor = float4(/*float3(1.0f, 1.0f, 1.0f) - diffuseColor.rgb*/0, 0, 0 , (1.0f - fontAlpha));
+
+    return diffuseColor;
 }

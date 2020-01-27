@@ -85,6 +85,21 @@
     <Filter Include="Scenes\Creator">
       <UniqueIdentifier>{7127743b-0661-40a8-8c95-3cfb10c518e4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resources\Shaders_D3D\UI\Base">
+      <UniqueIdentifier>{71930268-138d-475c-8c78-cbedd7440462}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources\Shaders_D3D\3D\Base">
+      <UniqueIdentifier>{f305d0f6-cefa-493d-8527-35571ff021e1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources\Scripts">
+      <UniqueIdentifier>{0f67c8ef-60be-472e-98e4-315af5eac75f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scene Funcitonal\UI\Custom nodes">
+      <UniqueIdentifier>{61af9f68-e3f7-4429-a1ef-2e1c9e057132}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Passes\UI">
+      <UniqueIdentifier>{46e412dd-bb55-422f-9cf7-d860c116b3c4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -269,6 +284,12 @@
     </ClCompile>
     <ClCompile Include="SceneFunctional\ScenesFactory.cpp">
       <Filter>Scenes\Creator</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneFunctional\UI\RichTextEditorForTC.cpp">
+      <Filter>Scene Funcitonal\UI\Custom nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="Passes\UIFontPass.cpp">
+      <Filter>Passes\UI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -459,6 +480,12 @@
     <ClInclude Include="SceneFunctional\ScenesFactory.h">
       <Filter>Scenes\Creator</Filter>
     </ClInclude>
+    <ClInclude Include="SceneFunctional\UI\RichTextEditorForTC.h">
+      <Filter>Scene Funcitonal\UI\Custom nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="Passes\UIFontPass.h">
+      <Filter>Passes\UI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="znEngine.rc">
@@ -466,16 +493,10 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="Resources\shaders_D3D\UI\UI_VertexBase.hlsl">
-      <Filter>Resources\shaders_D3D\UI</Filter>
-    </Text>
     <Text Include="Resources\shaders_D3D\UI\UI_Button.hlsl">
       <Filter>Resources\shaders_D3D\UI</Filter>
     </Text>
     <Text Include="Resources\shaders_D3D\UI\UI_Color.hlsl">
-      <Filter>Resources\shaders_D3D\UI</Filter>
-    </Text>
-    <Text Include="Resources\shaders_D3D\UI\UI_Common.hlsl">
       <Filter>Resources\shaders_D3D\UI</Filter>
     </Text>
     <Text Include="Resources\shaders_D3D\UI\UI_Font.hlsl">
@@ -541,10 +562,21 @@
     <Text Include="Resources\shaders_D3D\3D\Deffered.hlsl">
       <Filter>Resources\Shaders_D3D\3D</Filter>
     </Text>
+    <Text Include="Resources\shaders_D3D\UI\UI_Common.hlsl">
+      <Filter>Resources\Shaders_D3D\UI\Base</Filter>
+    </Text>
+    <Text Include="Resources\shaders_D3D\UI\UI_VertexBase.hlsl">
+      <Filter>Resources\Shaders_D3D\UI\Base</Filter>
+    </Text>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Resources\Textures\default.png">
       <Filter>Resources\Textures</Filter>
     </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Scripts\TestScript.lua">
+      <Filter>Resources\Scripts</Filter>
+    </None>
   </ItemGroup>
 </Project>

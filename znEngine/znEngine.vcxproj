@@ -23,6 +23,8 @@
     <ClCompile Include="FBX\FBXScene.cpp" />
     <ClCompile Include="FBX\FBXSceneNode.cpp" />
     <ClCompile Include="FBX\FBXStream.cpp" />
+    <ClCompile Include="Passes\UIFontPass.cpp" />
+    <ClCompile Include="SceneFunctional\UI\RichTextEditorForTC.cpp" />
     <ClCompile Include="Scene_Default.cpp" />
     <ClCompile Include="Images\ImageDDS.cpp" />
     <ClCompile Include="Images\ImagePNG.cpp" />
@@ -92,6 +94,8 @@
     <ClInclude Include="FBX\FBXScene.h" />
     <ClInclude Include="FBX\FBXSceneNode.h" />
     <ClInclude Include="FBX\FBXStream.h" />
+    <ClInclude Include="Passes\UIFontPass.h" />
+    <ClInclude Include="SceneFunctional\UI\RichTextEditorForTC.h" />
     <ClInclude Include="Scene_Default.h" />
     <ClInclude Include="Images\ImageDDS.h" />
     <ClInclude Include="Images\ImagePNG.h" />
@@ -178,12 +182,12 @@
     </Text>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="Resources\shaders_D3D\3D\Debug.hlsl">
+    <None Include="Resources\shaders_D3D\3D\Debug.hlsl">
       <FileType>Document</FileType>
-    </Text>
-    <Text Include="Resources\shaders_D3D\3D\Textured.hlsl">
+    </None>
+    <None Include="Resources\shaders_D3D\3D\Textured.hlsl">
       <FileType>Document</FileType>
-    </Text>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Text Include="Resources\shaders_OGL\UI\UI_Font.ps">
@@ -224,14 +228,17 @@
     </Text>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="Resources\shaders_D3D\3D\Model_Deffered.hlsl">
+    <None Include="Resources\shaders_D3D\3D\Model_Deffered.hlsl">
       <FileType>Document</FileType>
-    </Text>
+    </None>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="Resources\shaders_D3D\3D\Deffered.hlsl">
+    <None Include="Resources\shaders_D3D\3D\Deffered.hlsl">
       <FileType>Document</FileType>
-    </Text>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Scripts\TestScript.lua" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{51252F60-B8DC-4090-BBA3-DD05942110F0}</ProjectGuid>
@@ -309,7 +316,7 @@
       <TreatSpecificWarningsAsErrors>
       </TreatSpecificWarningsAsErrors>
       <DisableSpecificWarnings>4244;4267;4251</DisableSpecificWarnings>
-      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <MinimalRebuild>true</MinimalRebuild>
     </ClCompile>
     <ResourceCompile>

@@ -15,7 +15,6 @@ public:
 	// CUITextNode
     void                        SetFont(std::shared_ptr<CFontMesh> _font);
     std::shared_ptr<CFontMesh>  GetFont() const;
-
     void                        SetTextColor(cvec4 _color);
     glm::vec2                   GetTextSize() const;
 

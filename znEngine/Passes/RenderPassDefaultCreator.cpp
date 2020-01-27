@@ -56,7 +56,7 @@ std::shared_ptr<IRenderPass> CRenderPassDefaultCreator::CreateRenderPass(size_t 
 {
 	if (Index == 0)
 	{
-		vec4 color = vec4(0.0, 0.0f, 0.0f, 1.0f);
+		vec4 color = vec4(1.0, 1.0f, 1.0f, 1.0f);
 		return std::make_shared<ClearRenderTargetPass>(RenderDevice, RenderTarget, ClearFlags::All, color /*glm::vec4(0.2f, 0.2f, 0.2f, 0.2f)*/, 1.0f, 0);
 	}
 	else if (Index == 1)

@@ -28,8 +28,8 @@ std::shared_ptr<IRenderPassPipelined> BaseUIPass::CreatePipeline(IRenderTarget* 
 	UIPipeline->GetDepthStencilState()->SetDepthMode(disableDepthWrites);
 	UIPipeline->GetRasterizerState()->SetCullMode(IRasterizerState::CullMode::None);
 	UIPipeline->GetRasterizerState()->SetFillMode(IRasterizerState::FillMode::Solid);
-	UIPipeline->GetRasterizerState()->SetAntialiasedLineEnable(true);
-	UIPipeline->GetRasterizerState()->SetMultisampleEnabled(true);
+	UIPipeline->GetRasterizerState()->SetAntialiasedLineEnable(false);
+	UIPipeline->GetRasterizerState()->SetMultisampleEnabled(false);
 	UIPipeline->SetRenderTarget(RenderTarget);
 	UIPipeline->GetRasterizerState()->SetViewport(Viewport);
 
@@ -65,19 +65,6 @@ bool BaseUIPass::Visit(IGeometry* Geometry, const IMaterial* Material, SGeometry
 		shadersMap = GetRenderEventArgs()->PipelineState->GetShaders();
 
 	Material->Bind(shadersMap);
-
-	// TODO: Delete me
-	for (const auto& shaderIt : shadersMap)
-	{
-		const IShader* shader = shaderIt.second;
-		_ASSERT(shader != nullptr);
-
-		if (shader->GetType() == EShaderType::VertexShader)
-		{
-			BindPerFrameDataToVertexShader(shader);
-		}
-	}
-
 	bool result = Geometry->Render(GetRenderEventArgs(), m_PerObjectConstantBuffer, shadersMap, Material, GeometryPartParams);
 	Material->Unbind(shadersMap);
 	return result;

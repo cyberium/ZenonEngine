@@ -8,44 +8,6 @@ UI_Font_Material::UI_Font_Material(IRenderDevice* RenderDevice) :
 {
 	m_pProperties = (MaterialProperties*)_aligned_malloc(sizeof(MaterialProperties), 16);
 	*m_pProperties = MaterialProperties();
-
-	// CreateShaders
-    IShader* g_pVertexShader;
-	IShader* g_pPixelShader;
-
-    if (RenderDevice->GetDeviceType() == RenderDeviceType::RenderDeviceType_DirectX)
-    {
-        g_pVertexShader = RenderDevice->CreateShader(
-            EShaderType::VertexShader, "IDB_SHADER_UI_FONT", IShader::ShaderMacros(), "VS_main", "latest"
-        );
-        
-        g_pPixelShader = RenderDevice->CreateShader(
-            EShaderType::PixelShader, "IDB_SHADER_UI_FONT", IShader::ShaderMacros(), "PS_main", "latest"
-        );
-    }
-    else if (RenderDevice->GetDeviceType() == RenderDeviceType::RenderDeviceType_OpenGL)
-    {
-        g_pVertexShader = RenderDevice->CreateShader(
-            EShaderType::VertexShader, "IDB_SHADER_OGL__UI_FONT_VS", IShader::ShaderMacros(), "", ""
-        );
-
-        g_pPixelShader = RenderDevice->CreateShader(
-            EShaderType::PixelShader, "IDB_SHADER_OGL__UI_FONT_PS", IShader::ShaderMacros(), "", ""
-        );
-    }
-
-    g_pVertexShader->LoadInputLayoutFromReflector();
-
-	// Create samplers
-	ISamplerState* g_LinearClampSampler = RenderDevice->CreateSamplerState();
-	g_LinearClampSampler->SetFilter(ISamplerState::MinFilter::MinLinear, ISamplerState::MagFilter::MagLinear, ISamplerState::MipFilter::MipLinear);
-	g_LinearClampSampler->SetWrapMode(ISamplerState::WrapMode::Clamp, ISamplerState::WrapMode::Clamp, ISamplerState::WrapMode::Clamp);
-
-    SetSampler(0, g_LinearClampSampler);
-
-	// Material
-	SetShader(EShaderType::VertexShader, g_pVertexShader);
-	SetShader(EShaderType::PixelShader, g_pPixelShader);
 }
 
 UI_Font_Material::~UI_Font_Material()
@@ -68,6 +30,7 @@ void UI_Font_Material::SetColor(vec4 color)
 	MarkConstantBufferDirty();
 }
 
+
 void UI_Font_Material::SetOffset(vec2 offset)
 {
 	m_pProperties->Offset = offset;
@@ -77,4 +40,10 @@ void UI_Font_Material::SetOffset(vec2 offset)
 void UI_Font_Material::UpdateConstantBuffer() const
 {
 	MaterialProxie::UpdateConstantBuffer(m_pProperties, sizeof(MaterialProperties));
+}
+
+void UI_Font_Material::SetSelected(bool color)
+{
+	m_pProperties->IsSelected = color;
+	MarkConstantBufferDirty();
 }
