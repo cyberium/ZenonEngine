@@ -143,7 +143,7 @@ void CNativeWindow_WindowsSpecific::ResetEventsListener()
 //
 // INativeWindow_WindowsSpecific
 //
-HWND CNativeWindow_WindowsSpecific::GetHWnd()
+HWND CNativeWindow_WindowsSpecific::GetHWnd() const
 {
 	return m_HWnd;
 }

@@ -30,7 +30,7 @@ ZN_INTERFACE ZN_API INativeWindow_WindowsSpecific // WINDOWS only (but in my eng
 {
 	virtual ~INativeWindow_WindowsSpecific() {}
 
-	virtual HWND GetHWnd() = 0;
+	virtual HWND GetHWnd() const = 0;
 	virtual LRESULT Windows_ProcessMessage(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam) = 0;
 };
 

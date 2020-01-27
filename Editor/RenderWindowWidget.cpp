@@ -16,24 +16,28 @@ RenderWindowWidget::~RenderWindowWidget()
 {
 }
 
-std::string RenderWindowWidget::GetWindowName()
+
+
+//
+// INativeWindow
+//
+void RenderWindowWidget::SetWindowTitle(std::string WindowName)
+{
+}
+
+std::string RenderWindowWidget::GetWindowTitle() const
 {
 	return std::string();
 }
 
-long RenderWindowWidget::GetWindowWidth()
+long RenderWindowWidget::GetWindowWidth() const
 {
 	return geometry().width();
 }
 
-long RenderWindowWidget::GetWindowHeight()
+long RenderWindowWidget::GetWindowHeight() const
 {
 	return geometry().height();
-}
-
-HWND RenderWindowWidget::GetHWnd()
-{
-	return (HWND)winId();
 }
 
 void RenderWindowWidget::SetCursorPosition(const glm::ivec2 & CursorPosition)
@@ -67,15 +71,21 @@ void RenderWindowWidget::ResetEventsListener()
 	m_EventListener = nullptr;
 }
 
-LRESULT RenderWindowWidget::WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
+
+
+//
+// INativeWindow_WindowsSpecific
+//
+HWND RenderWindowWidget::GetHWnd() const
+{
+	return (HWND)winId();
+}
+
+LRESULT RenderWindowWidget::Windows_ProcessMessage(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	_ASSERT(FALSE);
 	return 0;
 }
-
-
-
-
 
 
 

@@ -5,6 +5,7 @@
 class RenderWindowWidget
 	: public QFrame
 	, public INativeWindow
+	, public INativeWindow_WindowsSpecific
 	, public Object
 {
 	Q_OBJECT
@@ -12,22 +13,21 @@ public:
 	RenderWindowWidget(QWidget * parent);
 	virtual ~RenderWindowWidget();
 
-
-
-	//
 	// INativeWindow
-	//
-	std::string GetWindowName();
-	long GetWindowWidth();   
-	long GetWindowHeight();   
-	HWND GetHWnd();
+	void SetWindowTitle(std::string WindowName) override;
+	std::string GetWindowTitle() const override;
+	long GetWindowWidth() const override;
+	long GetWindowHeight() const override;
 	void SetCursorPosition(const glm::ivec2& CursorPosition);
-	glm::ivec2 GetCursorPosition() const;
+	glm::ivec2 GetCursorPosition() const override;
 	void ShowCursor();
 	void HideCursor();
 	void SetEventsListener(INativeWindowEventListener* WindowEventsListener);
 	void ResetEventsListener();
-	LRESULT WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam);
+
+	// INativeWindow_WindowsSpecific
+	HWND GetHWnd() const override;
+	LRESULT Windows_ProcessMessage(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam) override;
 
 
 private:

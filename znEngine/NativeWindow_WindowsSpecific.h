@@ -22,7 +22,7 @@ public:
 	void ResetEventsListener() override;
 
 	// INativeWindow_WindowsSpecific
-	HWND GetHWnd() override;
+	HWND GetHWnd() const override;
 	LRESULT Windows_ProcessMessage(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam) override;
 
 private:
