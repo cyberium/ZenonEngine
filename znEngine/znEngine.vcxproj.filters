@@ -43,9 +43,6 @@
     <Filter Include="Settings">
       <UniqueIdentifier>{c55d8656-eb02-4071-98e0-ef05ce94f3ba}</UniqueIdentifier>
     </Filter>
-    <Filter Include="GameStates">
-      <UniqueIdentifier>{e0cfab47-ff66-4a89-bfe3-35fd3eb3a994}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Scene Funcitonal">
       <UniqueIdentifier>{8c49bf34-6b4c-469d-9001-5b6044462676}</UniqueIdentifier>
     </Filter>
@@ -82,8 +79,11 @@
     <Filter Include="FBX\Parts">
       <UniqueIdentifier>{d92e52e1-0d78-44d9-ba88-a6990c61358e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Scene Funcitonal\Scene">
-      <UniqueIdentifier>{e7bd6e4b-8d9d-488f-be74-e4a0d64ed894}</UniqueIdentifier>
+    <Filter Include="Scenes">
+      <UniqueIdentifier>{e0cfab47-ff66-4a89-bfe3-35fd3eb3a994}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scenes\Creator">
+      <UniqueIdentifier>{7127743b-0661-40a8-8c95-3cfb10c518e4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -141,9 +141,6 @@
     </ClCompile>
     <ClCompile Include="Settings\GroupVideo.cpp">
       <Filter>Settings</Filter>
-    </ClCompile>
-    <ClCompile Include="GameState_Default.cpp">
-      <Filter>GameStates</Filter>
     </ClCompile>
     <ClCompile Include="Passes\TextureMaterialPass.cpp">
       <Filter>Passes\3D</Filter>
@@ -259,14 +256,20 @@
     <ClCompile Include="FBX\FBXMaterial.cpp">
       <Filter>FBX\Parts</Filter>
     </ClCompile>
-    <ClCompile Include="SceneFunctional\SceneDefaultCreator.cpp">
-      <Filter>Scene Funcitonal\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="SceneFunctional\ScenesFactory.cpp">
-      <Filter>Scene Funcitonal\Scene</Filter>
-    </ClCompile>
     <ClCompile Include="NativeWindowFactory.cpp" />
     <ClCompile Include="NativeWindow_WindowsSpecific.cpp" />
+    <ClCompile Include="Scene_TCEditor.cpp">
+      <Filter>Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene_Default.cpp">
+      <Filter>Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneFunctional\SceneDefaultCreator.cpp">
+      <Filter>Scenes\Creator</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneFunctional\ScenesFactory.cpp">
+      <Filter>Scenes\Creator</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="common.h">
@@ -326,9 +329,6 @@
     </ClInclude>
     <ClInclude Include="Settings\GroupVideo.h">
       <Filter>Settings</Filter>
-    </ClInclude>
-    <ClInclude Include="GameState_Default.h">
-      <Filter>GameStates</Filter>
     </ClInclude>
     <ClInclude Include="Passes\TextureMaterialPass.h">
       <Filter>Passes\3D</Filter>
@@ -445,14 +445,20 @@
       <Filter>FBX\Parts</Filter>
     </ClInclude>
     <ClInclude Include="ThreadPool.h" />
-    <ClInclude Include="SceneFunctional\SceneDefaultCreator.h">
-      <Filter>Scene Funcitonal\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="SceneFunctional\ScenesFactory.h">
-      <Filter>Scene Funcitonal\Scene</Filter>
-    </ClInclude>
     <ClInclude Include="NativeWindowFactory.h" />
     <ClInclude Include="NativeWindow_WindowsSpecific.h" />
+    <ClInclude Include="Scene_TCEditor.h">
+      <Filter>Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene_Default.h">
+      <Filter>Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneFunctional\SceneDefaultCreator.h">
+      <Filter>Scenes\Creator</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneFunctional\ScenesFactory.h">
+      <Filter>Scenes\Creator</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="znEngine.rc">

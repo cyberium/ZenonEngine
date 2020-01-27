@@ -43,22 +43,10 @@ std::shared_ptr<IRenderPassPipelined> BaseUIPass::CreatePipeline(IRenderTarget* 
 //
 bool BaseUIPass::Visit(ISceneNodeUI* sceneNode)
 {
-	const ICameraComponent3D* camera = GetRenderEventArgs()->Camera;
-	const Viewport* viewport = GetRenderEventArgs()->PipelineState->GetRasterizerState()->GetViewports()[0];
-	
-	if (viewport)
-	{
-		//sceneNode->UpdateCamera(camera);
-		//sceneNode->UpdateViewport(viewport);
+	m_PerObjectData->Model = sceneNode->GetWorldTransfom();
+	m_PerObjectConstantBuffer->Set(m_PerObjectData, sizeof(PerObjectUI));
 
-		m_PerObjectData->Model = sceneNode->GetWorldTransfom();
-		m_PerObjectData->Projection = viewport->GetOrthoMatix();
-		m_PerObjectConstantBuffer->Set(m_PerObjectData, sizeof(PerObjectUI));
-
-		return true;
-	}
-
-	return false;
+	return true;
 }
 
 bool BaseUIPass::Visit(IMesh * Mesh, SGeometryPartParams GeometryPartParams)
@@ -77,7 +65,36 @@ bool BaseUIPass::Visit(IGeometry* Geometry, const IMaterial* Material, SGeometry
 		shadersMap = GetRenderEventArgs()->PipelineState->GetShaders();
 
 	Material->Bind(shadersMap);
+
+	// TODO: Delete me
+	for (const auto& shaderIt : shadersMap)
+	{
+		const IShader* shader = shaderIt.second;
+		_ASSERT(shader != nullptr);
+
+		if (shader->GetType() == EShaderType::VertexShader)
+		{
+			BindPerFrameDataToVertexShader(shader);
+		}
+	}
+
 	bool result = Geometry->Render(GetRenderEventArgs(), m_PerObjectConstantBuffer, shadersMap, Material, GeometryPartParams);
 	Material->Unbind(shadersMap);
 	return result;
+}
+
+
+
+//
+// Protected
+//
+void BaseUIPass::FillPerFrameData()
+{
+	const Viewport* viewport = GetRenderEventArgs()->PipelineState->GetRasterizerState()->GetViewports()[0];
+	_ASSERT(viewport);
+
+	PerFrame perFrame;
+	perFrame.View = mat4(1.0f);
+	perFrame.Projection = viewport->GetOrthoMatix();
+	SetPerFrameData(perFrame);
 }

@@ -3,7 +3,11 @@
 cbuffer PerObject : register(b0)
 {
 	float4x4 Model;
-	float4x4 Projection;
+}
+
+cbuffer PerFrame : register(b1)
+{
+	PerFrame PF;
 }
 
 VertexShaderOutput VS_main(VertexShaderInput IN)

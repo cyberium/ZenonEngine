@@ -13,7 +13,12 @@ CznPluginsManager::CznPluginsManager(IBaseManager* BaseManager)
 {}
 
 CznPluginsManager::~CznPluginsManager()
-{}
+{
+	for (const auto& pluginPair : m_Plugins)
+	{
+		FreeLibrary(pluginPair.first);
+	}
+}
 
 
 
@@ -58,7 +63,7 @@ bool CznPluginsManager::AddPlugin(const std::string& PluginDLLName)
 			throw CPluginException("Error while create plugin object.");
 		}
 
-		m_Plugins.push_back(pluginObject);
+		m_Plugins.push_back(std::make_pair(pluginDLL, pluginObject));
 
 		// Notify all listeners about new plguin
 		for (const auto& listener : m_PluginsEventsListener)
@@ -87,7 +92,7 @@ void CznPluginsManager::InitializeAllPlugins()
 {
 	for (const auto& pluginPair : m_Plugins)
 	{
-		const std::shared_ptr<IznPlugin> plugin = pluginPair;
+		const std::shared_ptr<IznPlugin>& plugin = pluginPair.second;
 
 		if (!plugin->Initialize())
 			throw CPluginException("Error while initialize.");

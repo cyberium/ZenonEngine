@@ -21,6 +21,6 @@ public:
 	virtual bool Visit(IGeometry* Geometry, const IMaterial* Material, SGeometryPartParams GeometryPartParams = SGeometryPartParams()) override;
 
 protected:
-	PerObject3D*                                    m_PerObjectData;
-	IConstantBuffer*                m_PerObjectConstantBuffer;
+	PerObject3D* m_PerObjectData;
+	IConstantBuffer* m_PerObjectConstantBuffer;
 };

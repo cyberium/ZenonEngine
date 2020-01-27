@@ -1,11 +1,6 @@
 #include "IDB_SHADER_UI_COMMON"
 
-cbuffer PerObject : register(b0)
-{
-	float4x4 Model;
-	float4x4 Projection;
-}
-cbuffer Material : register(b1)
+cbuffer Material : register(b2)
 {
     float4 Color;
     float2 Offset;
@@ -18,7 +13,7 @@ VertexShaderOutput VS_main(VertexShaderInput IN)
 {
 	const float4 resultPos = float4(IN.position, 0.0f, 1.0f) + float4(Offset, 0.0f, 0.0f);
 	
-	const float4x4 mp = mul(Projection, Model);
+	const float4x4 mp = mul(PF.Projection, PO.Model);
 
 	VertexShaderOutput OUT;
 	OUT.position = mul(mp, resultPos);

@@ -1,7 +1,7 @@
 #include "stdafx.h"
 
 // Gerenal
-#include "GameState_Default.h"
+#include "Scene_Default.h"
 
 // Additional
 #include "Materials/MaterialDebug.h"

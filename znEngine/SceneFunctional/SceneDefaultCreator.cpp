@@ -4,7 +4,8 @@
 #include "SceneDefaultCreator.h"
 
 // Additional
-#include "GameState_Default.h"
+#include "Scene_Default.h"
+#include "Scene_TCEditor.h"
 
 CSceneDefaultCreator::CSceneDefaultCreator(IBaseManager* BaseManager)
 	: m_BaseManager(BaseManager)
@@ -20,7 +21,7 @@ CSceneDefaultCreator::~CSceneDefaultCreator()
 //
 size_t CSceneDefaultCreator::GetScenesCount() const
 {
-	return 2;
+	return 3;
 }
 
 std::string CSceneDefaultCreator::GetSceneTypeName(size_t Index) const
@@ -32,6 +33,10 @@ std::string CSceneDefaultCreator::GetSceneTypeName(size_t Index) const
 	else if (Index == 1)
 	{
 		return "SceneDefault";
+	}
+	else if (Index == 2)
+	{
+		return "SceneTCEditor";
 	}
 
 	return nullptr;
@@ -47,6 +52,10 @@ std::shared_ptr<IScene> CSceneDefaultCreator::CreateScene(size_t Index) const
 	else if (Index == 1)
 	{
 		return std::make_shared<CGameState_World>(m_BaseManager);
+	}
+	else if (Index == 2)
+	{
+		return std::make_shared<CScene_TCEditor>(m_BaseManager);
 	}
 
 	return nullptr;

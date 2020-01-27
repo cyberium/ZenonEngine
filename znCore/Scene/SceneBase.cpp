@@ -166,8 +166,8 @@ void SceneBase::RaiseRayIntersected(const glm::vec3 & Point)
 //
 void SceneBase::OnUpdate(UpdateEventArgs& e)
 {
-	if (m_DefaultCameraController)
-		m_DefaultCameraController->OnUpdate(e);
+	if (GetCameraController())
+		GetCameraController()->OnUpdate(e);
 
 	if (m_RootNode3D)
 		m_RootNode3D->OnUpdate(e);
@@ -182,7 +182,8 @@ void SceneBase::OnPreRender(RenderEventArgs & e)
 
 void SceneBase::OnRender(RenderEventArgs & e)
 {
-	e.Camera = GetCameraController()->GetCamera();
+	if (GetCameraController())
+		e.Camera = GetCameraController()->GetCamera();
 
 	m_Technique3D.Render(e);
 }
@@ -195,12 +196,15 @@ void SceneBase::OnPostRender(RenderEventArgs & e)
 
 	m_End = std::chrono::high_resolution_clock::now();
 
+	if (GetCameraController())
 	{
 		vec3 cameraTrans = GetCameraController()->GetCamera()->GetTranslation();
 		m_CameraPosText->GetProperties()->GetPropertyT<std::string>("Text")->Set("Pos: x = " + std::to_string(cameraTrans.x) + ", y = " + std::to_string(cameraTrans.y) + ", z = " + std::to_string(cameraTrans.z));
 		m_CameraRotText->GetProperties()->GetPropertyT<std::string>("Text")->Set("Rot: yaw = " + std::to_string(GetCameraController()->GetCamera()->GetYaw()) + ", pitch = " + std::to_string(GetCameraController()->GetCamera()->GetPitch()));
 		m_CameraRot2Text->GetProperties()->GetPropertyT<std::string>("Text")->Set("Rot: [" + std::to_string(GetCameraController()->GetCamera()->GetDirection().x) + ", " + std::to_string(GetCameraController()->GetCamera()->GetDirection().y) + ", " + std::to_string(GetCameraController()->GetCamera()->GetDirection().z) + "].");
+	}
 
+	{
 		/*IQuery::QueryResult frameResult = m_FrameQuery->GetQueryResult(e.FrameCounter);
 		if (frameResult.IsValid)
 		{
@@ -222,7 +226,8 @@ void SceneBase::OnPostRender(RenderEventArgs & e)
 
 void SceneBase::OnRenderUI(RenderEventArgs & e)
 {
-	e.Camera = GetCameraController()->GetCamera();
+	if (GetCameraController())
+		e.Camera = GetCameraController()->GetCamera();
 
 	m_TechniqueUI.Render(e);
 }
@@ -234,7 +239,8 @@ void SceneBase::OnRenderUI(RenderEventArgs & e)
 //
 void SceneBase::OnWindowResize(ResizeEventArgs & e)
 {
-	m_DefaultCameraController->OnResize(e);
+	if (GetCameraController())
+		GetCameraController()->OnResize(e);
 
 	m_Technique3D.UpdateViewport(m_RenderWindow->GetViewport());
 	m_TechniqueUI.UpdateViewport(m_RenderWindow->GetViewport());
@@ -247,10 +253,8 @@ void SceneBase::OnWindowResize(ResizeEventArgs & e)
 //
 bool SceneBase::OnWindowKeyPressed(KeyEventArgs & e)
 {
-	bool result = false;
-
-	if (m_DefaultCameraController && !result)
-		m_DefaultCameraController->OnKeyPressed(e);
+	if (GetCameraController())
+		GetCameraController()->OnKeyPressed(e);
 
 	if (e.Key == KeyCode::J)
 	{
@@ -273,7 +277,8 @@ bool SceneBase::OnWindowKeyPressed(KeyEventArgs & e)
 
 void SceneBase::OnWindowKeyReleased(KeyEventArgs & e)
 {
-	m_DefaultCameraController->OnKeyReleased(e);
+	if (GetCameraController())
+		GetCameraController()->OnKeyReleased(e);
 
 	if (m_RootNodeUI)
 		DoKeyReleased_Rec(m_RootNodeUI, e);
@@ -286,7 +291,8 @@ void SceneBase::OnWindowKeyReleased(KeyEventArgs & e)
 //
 void SceneBase::OnWindowMouseMoved(MouseMotionEventArgs & e)
 {
-	m_DefaultCameraController->OnMouseMoved(e);
+	if (GetCameraController())
+		GetCameraController()->OnMouseMoved(e);
 
 	if (m_RootNodeUI)
 		DoMouseMoved_Rec(m_RootNodeUI, e);
@@ -294,14 +300,14 @@ void SceneBase::OnWindowMouseMoved(MouseMotionEventArgs & e)
 
 bool SceneBase::OnWindowMouseButtonPressed(MouseButtonEventArgs & e)
 {	
-	if (m_DefaultCameraController)
+	if (GetCameraController())
 	{
-		m_DefaultCameraController->OnMouseButtonPressed(e);
+		GetCameraController()->OnMouseButtonPressed(e);
 
 		if (e.LeftButton)
 		{
-			Ray cameraDownRay = Ray(m_DefaultCameraController->GetCamera()->GetTranslation(), glm::vec3(0.0f, -1.0f, 0.0f));
-			Ray resultRay = m_DefaultCameraController->ScreenPointToRay(GetRenderWindow()->GetViewport(), glm::vec2(e.X, e.Y));
+			Ray cameraDownRay = Ray(GetCameraController()->GetCamera()->GetTranslation(), glm::vec3(0.0f, -1.0f, 0.0f));
+			Ray resultRay = GetCameraController()->ScreenPointToRay(GetRenderWindow()->GetViewport(), glm::vec2(e.X, e.Y));
 
 			float cosAlpha = (resultRay.GetDirection().x * cameraDownRay.GetDirection().x) + (resultRay.GetDirection().y * cameraDownRay.GetDirection().y) + (resultRay.GetDirection().z * cameraDownRay.GetDirection().z);
 			cosAlpha /=
@@ -321,7 +327,7 @@ bool SceneBase::OnWindowMouseButtonPressed(MouseButtonEventArgs & e)
 					)
 					);
 
-			float d = m_DefaultCameraController->GetCamera()->GetTranslation().y / cosAlpha;
+			float d = GetCameraController()->GetCamera()->GetTranslation().y / cosAlpha;
 			if (d < 10000.0f)
 			{
 				glm::vec3 point = resultRay.GetPointOnRay(d);
@@ -338,7 +344,8 @@ bool SceneBase::OnWindowMouseButtonPressed(MouseButtonEventArgs & e)
 
 void SceneBase::OnWindowMouseButtonReleased(MouseButtonEventArgs & e)
 {
-	m_DefaultCameraController->OnMouseButtonReleased(e);
+	if (GetCameraController())
+		GetCameraController()->OnMouseButtonReleased(e);
 
 	if (m_RootNodeUI)
 		DoMouseButtonReleased_Rec(m_RootNodeUI, e);
@@ -346,7 +353,8 @@ void SceneBase::OnWindowMouseButtonReleased(MouseButtonEventArgs & e)
 
 bool SceneBase::OnWindowMouseWheel(MouseWheelEventArgs & e)
 {
-	m_DefaultCameraController->OnMouseWheel(e);
+	if (GetCameraController())
+		GetCameraController()->OnMouseWheel(e);
 
 	if (m_RootNodeUI)
 		return DoMouseWheel_Rec(m_RootNodeUI, e);

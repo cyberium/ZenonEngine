@@ -36,7 +36,7 @@ public:
 
 private:
 	IBaseManager*                                   m_BaseManager;
-	std::vector<std::shared_ptr<IznPlugin>> m_Plugins;
+	std::vector<std::pair<HMODULE, std::shared_ptr<IznPlugin>>> m_Plugins;
 	std::vector<std::shared_ptr<IznPluginsEventListener>> m_PluginsEventsListener;
 };
 

@@ -30,7 +30,7 @@ bool Base3DPass::Visit(ISceneNode3D* sceneNode)
 	if (viewport)
 		sceneNode->UpdateViewport(viewport);
 
-	m_PerObjectData->Model               = sceneNode->GetWorldTransfom();
+	m_PerObjectData->Model = sceneNode->GetWorldTransfom();
 	m_PerObjectConstantBuffer->Set(m_PerObjectData, sizeof(PerObject3D));
 
 	return true;

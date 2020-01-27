@@ -3,9 +3,6 @@
 // Genreal
 #include "Application.h"
 
-// Additional
-#include "GameState_Default.h"
-
 float g_GameDeltaTime = 0.0f;
 float g_ApplicationTime = 0.0f;
 int64_t g_FrameCounter = 0L;
