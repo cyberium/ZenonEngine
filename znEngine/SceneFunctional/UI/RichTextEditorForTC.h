@@ -22,6 +22,8 @@ public:
 	virtual bool                OnKeyPressed(KeyEventArgs& e);
 	virtual bool                OnMouseButtonPressed(MouseButtonEventArgs& e);
 
+private:
+	void FixSelectedChar();
 
 private:
 	std::shared_ptr<CFontMesh>         m_FontMesh;

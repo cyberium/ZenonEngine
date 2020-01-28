@@ -44,6 +44,8 @@ void CRichTextEditorForTC::Initialize()
 		if (fs->isEof())
 			break;
 	}
+
+	Log::Warn("CREATED!!!");
 }
 
 glm::vec2 CRichTextEditorForTC::GetTextSize() const
@@ -113,18 +115,9 @@ bool CRichTextEditorForTC::OnKeyPressed(KeyEventArgs & e)
 	if (e.Key == KeyCode::Down)
 		SelectedChar.y += 1;
 
-	if (SelectedChar.y < 0)
-		SelectedChar.y = 0;
+	FixSelectedChar();
 
-	if (SelectedChar.y >= m_Lines.size())
-		SelectedChar.y = m_Lines.size() - 1;
-
-
-	if (SelectedChar.x < 0)
-		SelectedChar.x = 0;
-
-	if (SelectedChar.x >= m_Lines[SelectedChar.y].length())
-		SelectedChar.x = m_Lines[SelectedChar.y].length() - 1;
+	Log::Warn("Char = '%c'", e.Char);
 
 	return true;
 }
@@ -134,5 +127,22 @@ bool CRichTextEditorForTC::OnMouseButtonPressed(MouseButtonEventArgs & e)
 	glm::ivec2 charSizeMono = glm::ivec2(m_FontMesh->GetCharWidth('A'), m_FontMesh->GetHeight());
 	SelectedChar = glm::ivec2(e.X / charSizeMono.x, e.Y / charSizeMono.y);
 
+	FixSelectedChar();
+
 	return true;
+}
+
+void CRichTextEditorForTC::FixSelectedChar()
+{
+
+	if (SelectedChar.y < 0)
+		SelectedChar.y = 0;
+	if (SelectedChar.y >= m_Lines.size())
+		SelectedChar.y = m_Lines.size() - 1;
+
+
+	if (SelectedChar.x < 0)
+		SelectedChar.x = 0;
+	if (SelectedChar.x >= m_Lines[SelectedChar.y].length())
+		SelectedChar.x = m_Lines[SelectedChar.y].length() - 1;
 }
