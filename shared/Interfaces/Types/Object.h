@@ -15,13 +15,6 @@ protected:
 	{
 		::CoCreateGuid(&m_UUID);
 	}
-
-	enum class ZN_API ConstructorType
-	{
-		NoUUID,
-	};
-	Object(ConstructorType type)
-	{}
 	virtual ~Object()
 	{}
 
@@ -36,5 +29,6 @@ private:
 	Object& operator=(const Object&) = delete;
 	Object& operator=(Object&&) = delete;
 
+private:
 	GUID m_UUID;
 };

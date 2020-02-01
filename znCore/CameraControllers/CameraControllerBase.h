@@ -11,7 +11,7 @@ public:
 	void											SetCamera(ICameraComponent3D* Camera) override;
 
 	ICameraComponent3D*                             GetCamera() const override;
-	Ray	                                            ScreenPointToRay(const Viewport* Viewport, glm::vec2 screenPoint) const override;
+	Ray	                                            ScreenPointToRay(const Viewport& Viewport, glm::vec2 screenPoint) const override;
 
     // Engine events
     virtual void                                    OnUpdate(UpdateEventArgs& e) override;

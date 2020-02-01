@@ -3,24 +3,24 @@
 // General
 #include "UI_Line_Material.h"
 
-UI_Line_Material::UI_Line_Material(IRenderDevice* RenderDevice) :
-	MaterialProxie(RenderDevice->CreateMaterial(sizeof(MaterialProperties)))
+UI_Line_Material::UI_Line_Material(IRenderDevice& RenderDevice) :
+	MaterialProxie(RenderDevice.GetObjectsFactory().CreateMaterial(sizeof(MaterialProperties)))
 {
 	m_pProperties = (MaterialProperties*)_aligned_malloc(sizeof(MaterialProperties), 16);
 	*m_pProperties = MaterialProperties();
 
 	// CreateShaders
-	IShader* g_pVertexShader = RenderDevice->CreateShader(
-		EShaderType::VertexShader, "IDB_SHADER_UI_LINE", IShader::ShaderMacros(), "VS_main", "latest"
+	const auto& g_pVertexShader = RenderDevice.GetObjectsFactory().CreateShader(
+		EShaderType::VertexShader, "IDB_SHADER_UI_LINE", "VS_main", IShader::ShaderMacros(), "latest"
 	);
     g_pVertexShader->LoadInputLayoutFromReflector();
 
-    IShader* g_pGeomShader = RenderDevice->CreateShader(
-        EShaderType::GeometryShader, "IDB_SHADER_UI_LINE", IShader::ShaderMacros(), "GS_main", "latest"
+	const auto& g_pGeomShader = RenderDevice.GetObjectsFactory().CreateShader(
+        EShaderType::GeometryShader, "IDB_SHADER_UI_LINE", "GS_main", IShader::ShaderMacros(), "latest"
     );
 
-	IShader* g_pPixelShader = RenderDevice->CreateShader(
-		EShaderType::PixelShader, "IDB_SHADER_UI_LINE", IShader::ShaderMacros(), "PS_LineV2", "latest"
+	const auto& g_pPixelShader = RenderDevice.GetObjectsFactory().CreateShader(
+		EShaderType::PixelShader, "IDB_SHADER_UI_LINE", "PS_LineV2", IShader::ShaderMacros(), "latest"
 	);
 
 	// Material

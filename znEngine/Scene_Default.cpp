@@ -8,6 +8,8 @@
 #include "Materials/MaterialTextured.h"
 #include "Materials/MaterialModel.h"
 
+#include "Passes/UIFontPass.h"
+
 CGameState_World::CGameState_World(IBaseManager * BaseManager)
 	: SceneBase(BaseManager)
 {}
@@ -250,8 +252,8 @@ void CGameState_World::Load3D()
 	m_DefferedFinalRenderPass->CreatePipeline(GetRenderWindow()->GetRenderTarget(), GetRenderWindow()->GetViewport());
 
 
-
-	m_Technique3D.AddPass(GetBaseManager()->GetManager<IRenderPassFactory>()->CreateRenderPass("ClearPass", GetRenderDevice(), GetRenderWindow()->GetRenderTarget(), GetRenderWindow()->GetViewport(), shared_from_this()));
+	vec4 color = vec4(0.0, 0.0f, 0.0f, 1.0f);
+	m_Technique3D.AddPass(std::make_shared<ClearRenderTargetPass>(GetRenderDevice(), GetRenderWindow()->GetRenderTarget(), ClearFlags::All, color /*glm::vec4(0.2f, 0.2f, 0.2f, 0.2f)*/, 1.0f, 0));
 	m_Technique3D.AddPass(m_BuildRenderListPass);
 	m_Technique3D.AddPass(m_DefferedRenderPass);
 	m_Technique3D.AddPass(m_DefferedRenderPrepareLights);
@@ -281,7 +283,7 @@ void CGameState_World::LoadUI()
 	TextureUI3->SetScale(vec2(600, 600));
 	TextureUI3->SetTexture(m_DefferedRenderPass->GetTexture3());*/
 
-	m_TechniqueUI.AddPass(GetBaseManager()->GetManager<IRenderPassFactory>()->CreateRenderPass("BaseUIPass", GetRenderDevice(), GetRenderWindow()->GetRenderTarget(), GetRenderWindow()->GetViewport(), shared_from_this()));
+	m_TechniqueUI.AddPass(std::make_shared<CUIFontPass>(GetRenderDevice(), shared_from_this())->CreatePipeline(GetRenderWindow()->GetRenderTarget(), GetRenderWindow()->GetViewport()));
 }
 
 

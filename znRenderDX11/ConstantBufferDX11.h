@@ -1,23 +1,23 @@
 #pragma once
 
-class ConstantBufferDX11 : public IConstantBuffer
+class ConstantBufferDX11 
+	: public IConstantBuffer
 {
 public:
-	ConstantBufferDX11(IRenderDeviceDX11* RenderDeviceD3D11, size_t size);
+	ConstantBufferDX11(IRenderDeviceDX11& RenderDeviceDX11, size_t size);
 	virtual ~ConstantBufferDX11();
 
-	virtual bool Bind(uint32 id, const IShader* shader, IShaderParameter::Type parameterType) const override;
-	virtual void UnBind(uint32 id, const IShader* shader, IShaderParameter::Type parameterType) const override;
+	// IBuffer
+	bool Bind(uint32 id, const IShader* shader, IShaderParameter::Type parameterType) const override;
+	void UnBind(uint32 id, const IShader* shader, IShaderParameter::Type parameterType) const override;
+	void Copy(IBuffer* other) const override;
+	BufferType GetType() const override;
+	uint32 GetElementCount() const override;
+	uint32 GetElementStride() const override;
+	uint32 GetElementOffset() const override;
 
-	virtual BufferType GetType() const override;
-	virtual uint32 GetElementCount() const override;
-	virtual uint32 GetElementStride() const override;
-	virtual uint32 GetElementOffset() const override;
-
-	virtual void Copy(IConstantBuffer* other) const override;
-
-protected:
-	virtual void Copy(IBuffer* other) const override;
+	// IConstantBuffer
+	void Copy(IConstantBuffer* other) const override;
 	void Set(const void* data, size_t size) override;
 
 private:
@@ -25,5 +25,5 @@ private:
 	size_t m_BufferSize;
 
 private: // Link to parent
-	IRenderDeviceDX11* m_RenderDeviceD3D11;
+	IRenderDeviceDX11& m_RenderDeviceDX11;
 };

@@ -9,8 +9,8 @@ D3D11_TEXTURE_ADDRESS_MODE DX11TranslateWrapMode(ISamplerState::WrapMode wrapMod
 D3D11_COMPARISON_FUNC DX11TranslateComparisonFunction(ISamplerState::CompareFunc compareFunc);
 // FORWARD END
 
-SamplerStateDX11::SamplerStateDX11(IRenderDeviceDX11* RenderDeviceD3D11)
-	: m_RenderDeviceD3D11(RenderDeviceD3D11)
+SamplerStateDX11::SamplerStateDX11(IRenderDeviceDX11& RenderDeviceDX11)
+	: m_RenderDeviceDX11(RenderDeviceDX11)
 	, m_pSamplerState(nullptr)
 {}
 
@@ -42,7 +42,7 @@ void SamplerStateDX11::Bind(uint32_t ID, const IShader* shader, IShaderParameter
         samplerDesc.MaxLOD = m_fMaxLOD;
 
         m_pSamplerState = NULL;
-        m_RenderDeviceD3D11->GetDeviceD3D11()->CreateSamplerState(&samplerDesc, &m_pSamplerState);
+        m_RenderDeviceDX11.GetDeviceD3D11()->CreateSamplerState(&samplerDesc, &m_pSamplerState);
 
         m_bIsDirty = false;
     }
@@ -52,22 +52,22 @@ void SamplerStateDX11::Bind(uint32_t ID, const IShader* shader, IShaderParameter
     switch (shader->GetType())
     {
         case EShaderType::VertexShader:
-            m_RenderDeviceD3D11->GetDeviceContextD3D11()->VSSetSamplers(ID, 1, pSamplers);
+            m_RenderDeviceDX11.GetDeviceContextD3D11()->VSSetSamplers(ID, 1, pSamplers);
             break;
         case EShaderType::TessellationControlShader:
-            m_RenderDeviceD3D11->GetDeviceContextD3D11()->HSSetSamplers(ID, 1, pSamplers);
+            m_RenderDeviceDX11.GetDeviceContextD3D11()->HSSetSamplers(ID, 1, pSamplers);
             break;
         case EShaderType::TessellationEvaluationShader:
-            m_RenderDeviceD3D11->GetDeviceContextD3D11()->DSSetSamplers(ID, 1, pSamplers);
+            m_RenderDeviceDX11.GetDeviceContextD3D11()->DSSetSamplers(ID, 1, pSamplers);
             break;
         case EShaderType::GeometryShader:
-            m_RenderDeviceD3D11->GetDeviceContextD3D11()->GSSetSamplers(ID, 1, pSamplers);
+            m_RenderDeviceDX11.GetDeviceContextD3D11()->GSSetSamplers(ID, 1, pSamplers);
             break;
         case EShaderType::PixelShader:
-            m_RenderDeviceD3D11->GetDeviceContextD3D11()->PSSetSamplers(ID, 1, pSamplers);
+            m_RenderDeviceDX11.GetDeviceContextD3D11()->PSSetSamplers(ID, 1, pSamplers);
             break;
         case EShaderType::ComputeShader:
-            m_RenderDeviceD3D11->GetDeviceContextD3D11()->CSSetSamplers(ID, 1, pSamplers);
+            m_RenderDeviceDX11.GetDeviceContextD3D11()->CSSetSamplers(ID, 1, pSamplers);
             break;
     }
 }
@@ -79,22 +79,22 @@ void SamplerStateDX11::UnBind(uint32_t ID, const IShader* shader, IShaderParamet
     switch (shader->GetType())
     {
         case EShaderType::VertexShader:
-            m_RenderDeviceD3D11->GetDeviceContextD3D11()->VSSetSamplers(ID, 1, pSamplers);
+            m_RenderDeviceDX11.GetDeviceContextD3D11()->VSSetSamplers(ID, 1, pSamplers);
             break;
         case EShaderType::TessellationControlShader:
-            m_RenderDeviceD3D11->GetDeviceContextD3D11()->HSSetSamplers(ID, 1, pSamplers);
+            m_RenderDeviceDX11.GetDeviceContextD3D11()->HSSetSamplers(ID, 1, pSamplers);
             break;
         case EShaderType::TessellationEvaluationShader:
-            m_RenderDeviceD3D11->GetDeviceContextD3D11()->DSSetSamplers(ID, 1, pSamplers);
+            m_RenderDeviceDX11.GetDeviceContextD3D11()->DSSetSamplers(ID, 1, pSamplers);
             break;
         case EShaderType::GeometryShader:
-            m_RenderDeviceD3D11->GetDeviceContextD3D11()->GSSetSamplers(ID, 1, pSamplers);
+            m_RenderDeviceDX11.GetDeviceContextD3D11()->GSSetSamplers(ID, 1, pSamplers);
             break;
         case EShaderType::PixelShader:
-            m_RenderDeviceD3D11->GetDeviceContextD3D11()->PSSetSamplers(ID, 1, pSamplers);
+            m_RenderDeviceDX11.GetDeviceContextD3D11()->PSSetSamplers(ID, 1, pSamplers);
             break;
         case EShaderType::ComputeShader:
-            m_RenderDeviceD3D11->GetDeviceContextD3D11()->CSSetSamplers(ID, 1, pSamplers);
+            m_RenderDeviceDX11.GetDeviceContextD3D11()->CSSetSamplers(ID, 1, pSamplers);
             break;
     }
 }

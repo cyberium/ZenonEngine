@@ -3,32 +3,32 @@
 // General
 #include "UI_Button_Material.h"
 
-UI_Button_Material::UI_Button_Material(IRenderDevice* RenderDevice) :
-	MaterialProxie(RenderDevice->CreateMaterial(sizeof(MaterialProperties)))
+UI_Button_Material::UI_Button_Material(IRenderDevice& RenderDevice) :
+	MaterialProxie(RenderDevice.GetObjectsFactory().CreateMaterial(sizeof(MaterialProperties)))
 {
 	m_pProperties = (MaterialProperties*)_aligned_malloc(sizeof(MaterialProperties), 16);
 	*m_pProperties = MaterialProperties();
 
 	// CreateShaders
-	IShader* g_pVertexShader = RenderDevice->CreateShader(
+	const auto& vertexShader = RenderDevice.GetObjectsFactory().CreateShader(
 		EShaderType::VertexShader, "IDB_SHADER_UI_BUTTON", IShader::ShaderMacros(), "VS_main", "latest"
 	);
-    g_pVertexShader->LoadInputLayoutFromReflector();
+	vertexShader->LoadInputLayoutFromReflector();
 
-	IShader* g_pPixelShader = RenderDevice->CreateShader(
+	const auto& pixelShader = RenderDevice.GetObjectsFactory().CreateShader(
 		EShaderType::PixelShader, "IDB_SHADER_UI_BUTTON", IShader::ShaderMacros(), "PS_main", "latest"
 	);
 
 	// Create samplers
-	ISamplerState* g_LinearClampSampler = RenderDevice->CreateSamplerState();
+	const auto& g_LinearClampSampler = RenderDevice.GetObjectsFactory().CreateSamplerState();
 	g_LinearClampSampler->SetFilter(ISamplerState::MinFilter::MinLinear, ISamplerState::MagFilter::MagLinear, ISamplerState::MipFilter::MipLinear);
 	g_LinearClampSampler->SetWrapMode(ISamplerState::WrapMode::Clamp, ISamplerState::WrapMode::Clamp, ISamplerState::WrapMode::Clamp);
 
-	g_pPixelShader->GetShaderParameterByName("DiffuseTextureSampler")->Set(g_LinearClampSampler);
+	pixelShader->GetShaderParameterByName("DiffuseTextureSampler")->Set(g_LinearClampSampler);
 
 	// Material
-	SetShader(EShaderType::VertexShader, g_pVertexShader);
-	SetShader(EShaderType::PixelShader, g_pPixelShader);
+	SetShader(EShaderType::VertexShader, vertexShader);
+	SetShader(EShaderType::PixelShader, pixelShader);
 }
 
 UI_Button_Material::~UI_Button_Material()

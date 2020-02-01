@@ -3,9 +3,9 @@
 class ZN_API TextureDX11 : public ITexture, public std::enable_shared_from_this<TextureDX11>
 {
 public:
-	TextureDX11(IRenderDeviceDX11* RenderDeviceD3D11);
-	TextureDX11(IRenderDeviceDX11* RenderDeviceD3D11, uint16_t width, uint16_t height, uint16_t slices, const TextureFormat& format, CPUAccess cpuAccess, bool bUAV = false);
-	TextureDX11(IRenderDeviceDX11* RenderDeviceD3D11, uint16_t size, uint16_t count, const TextureFormat& format, CPUAccess cpuAccess, bool bUAV = false);
+	TextureDX11(IRenderDeviceDX11& RenderDeviceDX11);
+	TextureDX11(IRenderDeviceDX11& RenderDeviceDX11, uint16_t width, uint16_t height, uint16_t slices, const TextureFormat& format, CPUAccess cpuAccess, bool bUAV = false);
+	TextureDX11(IRenderDeviceDX11& RenderDeviceDX11, uint16_t size, uint16_t count, const TextureFormat& format, CPUAccess cpuAccess, bool bUAV = false);
 	virtual ~TextureDX11();
 
 	virtual bool LoadTextureCustom(uint16_t width, uint16_t height, void* pixels);
@@ -123,5 +123,5 @@ private:
 	mutable bool m_bIsDirty;
 
 private: // Link to parent d3d11 device
-	IRenderDeviceDX11* m_RenderDeviceD3D11;
+	IRenderDeviceDX11& m_RenderDeviceDX11;
 };

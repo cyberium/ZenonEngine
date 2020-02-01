@@ -8,40 +8,41 @@ public:
 	RasterizerStateBase();
     virtual ~RasterizerStateBase();
 
-	virtual void SetFillMode(FillMode frontFace = FillMode::Solid, FillMode backFace = FillMode::Solid);
-	virtual void GetFillMode(FillMode& frontFace, FillMode& backFace) const;
+	// IRasterizerState
+	virtual void SetFillMode(FillMode frontFace = FillMode::Solid, FillMode backFace = FillMode::Solid) override;
+	virtual void GetFillMode(FillMode& frontFace, FillMode& backFace) const override;
 
-	virtual void SetCullMode(CullMode cullMode = CullMode::Back);
-	virtual CullMode GetCullMode() const;
+	virtual void SetCullMode(CullMode cullMode = CullMode::Back) override;
+	virtual CullMode GetCullMode() const override;
 
-	virtual void SetFrontFacing(FrontFace frontFace = FrontFace::CounterClockwise);
-	virtual FrontFace GetFrontFacing() const;
+	virtual void SetFrontFacing(FrontFace frontFace = FrontFace::CounterClockwise) override;
+	virtual FrontFace GetFrontFacing() const override;
 
-	virtual void SetDepthBias(float depthBias = 0.0f, float slopeBias = 0.0f, float biasClamp = 0.0f);
-	virtual void GetDepthBias(float& depthBias, float& slopeBias, float& biasClamp) const;
+	virtual void SetDepthBias(float depthBias = 0.0f, float slopeBias = 0.0f, float biasClamp = 0.0f) override;
+	virtual void GetDepthBias(float& depthBias, float& slopeBias, float& biasClamp) const override;
 
-	virtual void SetDepthClipEnabled(bool depthClipEnabled = true);
-	virtual bool GetDepthClipEnabled() const;
+	virtual void SetDepthClipEnabled(bool depthClipEnabled = true) override;
+	virtual bool GetDepthClipEnabled() const override;
 
-	virtual void SetViewport(const Viewport* viewport);
-	virtual void SetViewports(const std::vector<const Viewport*>& viewports);
-	virtual const std::vector<const Viewport *>& GetViewports();
+	virtual void SetViewport(const Viewport* viewport) override;
+	virtual void SetViewports(const std::vector<const Viewport*>& viewports) override;
+	virtual const std::vector<const Viewport *>& GetViewports() const override;
 
-	virtual void SetScissorEnabled(bool scissorEnable = false);
-	virtual bool GetScissorEnabled() const;
+	virtual void SetScissorEnabled(bool scissorEnable = false) override;
+	virtual bool GetScissorEnabled() const override;
 
-	virtual void SetScissorRect(const Rect& rect);
-	virtual void SetScissorRects(const std::vector<Rect>& rects);
-	virtual const std::vector<Rect>& GetScissorRects() const;
+	virtual void SetScissorRect(const Rect& rect) override;
+	virtual void SetScissorRects(const std::vector<Rect>& rects) override;
+	virtual const std::vector<Rect>& GetScissorRects() const override;
 
-	virtual void SetMultisampleEnabled(bool multisampleEnabled = false);
-	virtual bool GetMultisampleEnabled() const;
+	virtual void SetMultisampleEnabled(bool multisampleEnabled = false) override;
+	virtual bool GetMultisampleEnabled() const override;
 
-	virtual void SetAntialiasedLineEnable(bool antialiasedLineEnable);
-	virtual bool GetAntialiasedLineEnable() const;
+	virtual void SetAntialiasedLineEnable(bool antialiasedLineEnable) override;
+	virtual bool GetAntialiasedLineEnable() const override;
 
-	virtual void SetForcedSampleCount(uint8_t forcedSampleCount = 0);
-	virtual uint8_t GetForcedSampleCount();
+	virtual void SetForcedSampleCount(uint8_t forcedSampleCount = 0) override;
+	virtual uint8_t GetForcedSampleCount() const override;
 
 	virtual void SetConservativeRasterizationEnabled(bool conservativeRasterizationEnabled = false);
 	virtual bool GetConservativeRasterizationEnabled() const;

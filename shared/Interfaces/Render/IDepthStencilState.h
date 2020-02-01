@@ -199,4 +199,5 @@ ZN_INTERFACE ZN_API IDepthStencilState
 	virtual const StencilMode& GetStencilMode() const = 0;
 
 	virtual void Bind() = 0;
+	virtual void Unbind() = 0;
 };

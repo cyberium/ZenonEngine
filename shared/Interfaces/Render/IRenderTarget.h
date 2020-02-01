@@ -38,8 +38,8 @@ ZN_INTERFACE ZN_API IRenderTarget
 	 * @see https://msdn.microsoft.com/en-us/library/windows/desktop/ff476465(v=vs.85).aspx
 	 * @see https://www.opengl.org/sdk/docs/man/html/glFramebufferTexture.xhtml
 	 */
-	virtual void AttachTexture(AttachmentPoint attachment, ITexture* texture) = 0;
-	virtual ITexture* GetTexture(AttachmentPoint attachment) = 0;
+	virtual void AttachTexture(AttachmentPoint attachment, std::shared_ptr<ITexture> Texture) = 0;
+	virtual const ITexture& GetTexture(AttachmentPoint attachment) = 0;
 
 	/**
 	 * Clear the contents of a texture attached to a specific attachment point.
@@ -72,14 +72,14 @@ ZN_INTERFACE ZN_API IRenderTarget
 	 * are 8 - num color textures. So there can only be a total of 8 color textures
 	 * and RWbuffers attached to the render target at any time.
 	 */
-	virtual void AttachStructuredBuffer(uint8_t slot, IStructuredBuffer* rwBuffer) = 0;
-	virtual IStructuredBuffer* GetStructuredBuffer(uint8_t slot) = 0;
+	virtual void AttachStructuredBuffer(uint8_t slot, std::shared_ptr<IStructuredBuffer> rwBuffer) = 0;
+	virtual const IStructuredBuffer& GetStructuredBuffer(uint8_t slot) = 0;
 
 	/**
 	 * Resize the color and depth/stencil textures that are associated to this render target view.
 	 * Resizing a texture will clear it's contents.
 	 */
-	virtual void Resize(uint16_t width, uint16_t height) = 0;
+	virtual void Resize(size_t width, size_t height) = 0;
 
 	/**
 	 * Bind this render target to the rendering pipeline.

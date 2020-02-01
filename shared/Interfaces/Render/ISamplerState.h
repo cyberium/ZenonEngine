@@ -106,5 +106,5 @@ ZN_INTERFACE ZN_API ISamplerState
 	virtual void UnBind(uint32_t ID, const IShader* shader, IShaderParameter::Type parameterType) const = 0;
 };
 
-typedef std::vector< ISamplerState* > SamplerList;
-typedef std::unordered_map<uint8, ISamplerState*> SamplersMap;
+typedef std::vector<std::shared_ptr<ISamplerState>> SamplerList;
+typedef std::unordered_map<uint8, std::shared_ptr<ISamplerState>> SamplersMap;

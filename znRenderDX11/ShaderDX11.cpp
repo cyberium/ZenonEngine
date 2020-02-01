@@ -7,8 +7,8 @@
 std::string GetLatestProfile(EShaderType type, const D3D_FEATURE_LEVEL& _featureLevel);
 // FORWARD END
 
-ShaderDX11::ShaderDX11(IRenderDeviceDX11* RenderDeviceD3D11)
-	: m_RenderDeviceD3D11(RenderDeviceD3D11)
+ShaderDX11::ShaderDX11(IRenderDeviceDX11& RenderDeviceDX11)
+	: m_RenderDeviceDX11(RenderDeviceDX11)
 {}
 
 ShaderDX11::~ShaderDX11()
@@ -38,7 +38,7 @@ bool ShaderDX11::LoadShaderFromString(EShaderType shaderType, const std::string&
 		std::string _profile = profile;
 		if (profile == "latest")
 		{
-			D3D_FEATURE_LEVEL featureLevel = m_RenderDeviceD3D11->GetDeviceD3D11()->GetFeatureLevel();
+			D3D_FEATURE_LEVEL featureLevel = m_RenderDeviceDX11.GetDeviceD3D11()->GetFeatureLevel();
 			_profile = GetLatestProfile(shaderType, featureLevel);
 			if (_profile.empty())
 			{
@@ -74,8 +74,8 @@ bool ShaderDX11::LoadShaderFromString(EShaderType shaderType, const std::string&
 		flags |= D3DCOMPILE_OPTIMIZATION_LEVEL3;
 #endif
 
-        std::shared_ptr<IFile> file = m_RenderDeviceD3D11->GetRenderDevice()->GetBaseManager()->GetManager<IFilesManager>()->Open(fileName);
-        std::string data = RecursionInclude(m_RenderDeviceD3D11->GetRenderDevice()->GetBaseManager(), file);
+        std::shared_ptr<IFile> file = m_RenderDeviceDX11.GetBaseManager()->GetManager<IFilesManager>()->Open(fileName);
+        std::string data = RecursionInclude(m_RenderDeviceDX11.GetBaseManager(), file);
 
 		hr = D3DCompile(data.c_str(), data.size(), fileName.c_str(), macros.data(), D3D_COMPILE_STANDARD_FILE_INCLUDE, entryPoint.c_str(), _profile.c_str(), flags, 0, &pShaderBlob, &pErrorBlob);
 
@@ -111,22 +111,22 @@ bool ShaderDX11::LoadShaderFromString(EShaderType shaderType, const std::string&
 	switch (m_ShaderType)
 	{
 	case EShaderType::VertexShader:
-		hr = m_RenderDeviceD3D11->GetDeviceD3D11()->CreateVertexShader(m_pShaderBlob->GetBufferPointer(), m_pShaderBlob->GetBufferSize(), nullptr, &m_pVertexShader);
+		hr = m_RenderDeviceDX11.GetDeviceD3D11()->CreateVertexShader(m_pShaderBlob->GetBufferPointer(), m_pShaderBlob->GetBufferSize(), nullptr, &m_pVertexShader);
 		break;
 	case EShaderType::TessellationControlShader:
-		hr = m_RenderDeviceD3D11->GetDeviceD3D11()->CreateHullShader(m_pShaderBlob->GetBufferPointer(), m_pShaderBlob->GetBufferSize(), nullptr, &m_pHullShader);
+		hr = m_RenderDeviceDX11.GetDeviceD3D11()->CreateHullShader(m_pShaderBlob->GetBufferPointer(), m_pShaderBlob->GetBufferSize(), nullptr, &m_pHullShader);
 		break;
 	case EShaderType::TessellationEvaluationShader:
-		hr = m_RenderDeviceD3D11->GetDeviceD3D11()->CreateDomainShader(m_pShaderBlob->GetBufferPointer(), m_pShaderBlob->GetBufferSize(), nullptr, &m_pDomainShader);
+		hr = m_RenderDeviceDX11.GetDeviceD3D11()->CreateDomainShader(m_pShaderBlob->GetBufferPointer(), m_pShaderBlob->GetBufferSize(), nullptr, &m_pDomainShader);
 		break;
 	case EShaderType::GeometryShader:
-		hr = m_RenderDeviceD3D11->GetDeviceD3D11()->CreateGeometryShader(m_pShaderBlob->GetBufferPointer(), m_pShaderBlob->GetBufferSize(), nullptr, &m_pGeometryShader);
+		hr = m_RenderDeviceDX11.GetDeviceD3D11()->CreateGeometryShader(m_pShaderBlob->GetBufferPointer(), m_pShaderBlob->GetBufferSize(), nullptr, &m_pGeometryShader);
 		break;
 	case EShaderType::PixelShader:
-		hr = m_RenderDeviceD3D11->GetDeviceD3D11()->CreatePixelShader(m_pShaderBlob->GetBufferPointer(), m_pShaderBlob->GetBufferSize(), nullptr, &m_pPixelShader);
+		hr = m_RenderDeviceDX11.GetDeviceD3D11()->CreatePixelShader(m_pShaderBlob->GetBufferPointer(), m_pShaderBlob->GetBufferSize(), nullptr, &m_pPixelShader);
 		break;
 	case EShaderType::ComputeShader:
-		hr = m_RenderDeviceD3D11->GetDeviceD3D11()->CreateComputeShader(m_pShaderBlob->GetBufferPointer(), m_pShaderBlob->GetBufferSize(), nullptr, &m_pComputeShader);
+		hr = m_RenderDeviceDX11.GetDeviceD3D11()->CreateComputeShader(m_pShaderBlob->GetBufferPointer(), m_pShaderBlob->GetBufferSize(), nullptr, &m_pComputeShader);
 		break;
 	default:
 		Log::Error("Invalid shader type.");
@@ -207,7 +207,7 @@ bool ShaderDX11::LoadShaderFromString(EShaderType shaderType, const std::string&
 
 bool ShaderDX11::LoadShaderFromFile(EShaderType shaderType, const std::string& fileName, const ShaderMacros& shaderMacros, const std::string& entryPoint, const std::string& profile, IShaderInputLayout* _customLayout)
 {
-	std::shared_ptr<IFile> file = m_RenderDeviceD3D11->GetRenderDevice()->GetBaseManager()->GetManager<IFilesManager>()->Open(fileName);
+	std::shared_ptr<IFile> file = m_RenderDeviceDX11.GetBaseManager()->GetManager<IFilesManager>()->Open(fileName);
 
 	std::string data = "";
 	while (!file->isEof())
@@ -237,7 +237,7 @@ bool ShaderDX11::LoadInputLayoutFromReflector()
 		return false;
 	}
 
-	std::shared_ptr<ShaderInputLayoutDX11> inputLayout = std::make_shared<ShaderInputLayoutDX11>(m_RenderDeviceD3D11);
+	std::shared_ptr<ShaderInputLayoutDX11> inputLayout = std::make_shared<ShaderInputLayoutDX11>(m_RenderDeviceDX11);
     inputLayout->LoadFromReflector(m_pShaderBlob, pReflector);
     m_InputLayout = inputLayout;
 
@@ -249,7 +249,7 @@ bool ShaderDX11::LoadInputLayoutFromCustomElements(const std::vector<SCustomVert
 	if (m_InputLayout)
 		return true;
 
-    std::shared_ptr<ShaderInputLayoutDX11> inputLayout = std::make_shared<ShaderInputLayoutDX11>(m_RenderDeviceD3D11);
+    std::shared_ptr<ShaderInputLayoutDX11> inputLayout = std::make_shared<ShaderInputLayoutDX11>(m_RenderDeviceDX11);
     inputLayout->LoadFromCustomElements(m_pShaderBlob, declIn);
     m_InputLayout = inputLayout;
 
@@ -262,28 +262,28 @@ void ShaderDX11::Bind() const
 	{
 		_ASSERT(m_InputLayout);
 		_ASSERT(std::dynamic_pointer_cast<ShaderInputLayoutDX11>(m_InputLayout)->GetInputLayout());
-		m_RenderDeviceD3D11->GetDeviceContextD3D11()->IASetInputLayout(std::dynamic_pointer_cast<ShaderInputLayoutDX11>(m_InputLayout)->GetInputLayout());
-		m_RenderDeviceD3D11->GetDeviceContextD3D11()->VSSetShader(m_pVertexShader, nullptr, 0);
+		m_RenderDeviceDX11.GetDeviceContextD3D11()->IASetInputLayout(std::dynamic_pointer_cast<ShaderInputLayoutDX11>(m_InputLayout)->GetInputLayout());
+		m_RenderDeviceDX11.GetDeviceContextD3D11()->VSSetShader(m_pVertexShader, nullptr, 0);
 	}
 	else if (m_pHullShader)
 	{
-		m_RenderDeviceD3D11->GetDeviceContextD3D11()->HSSetShader(m_pHullShader, nullptr, 0);
+		m_RenderDeviceDX11.GetDeviceContextD3D11()->HSSetShader(m_pHullShader, nullptr, 0);
 	}
 	else if (m_pDomainShader)
 	{
-		m_RenderDeviceD3D11->GetDeviceContextD3D11()->DSSetShader(m_pDomainShader, nullptr, 0);
+		m_RenderDeviceDX11.GetDeviceContextD3D11()->DSSetShader(m_pDomainShader, nullptr, 0);
 	}
 	else if (m_pGeometryShader)
 	{
-		m_RenderDeviceD3D11->GetDeviceContextD3D11()->GSSetShader(m_pGeometryShader, nullptr, 0);
+		m_RenderDeviceDX11.GetDeviceContextD3D11()->GSSetShader(m_pGeometryShader, nullptr, 0);
 	}
 	else if (m_pPixelShader)
 	{
-		m_RenderDeviceD3D11->GetDeviceContextD3D11()->PSSetShader(m_pPixelShader, nullptr, 0);
+		m_RenderDeviceDX11.GetDeviceContextD3D11()->PSSetShader(m_pPixelShader, nullptr, 0);
 	}
 	else if (m_pComputeShader)
 	{
-		m_RenderDeviceD3D11->GetDeviceContextD3D11()->CSSetShader(m_pComputeShader, nullptr, 0);
+		m_RenderDeviceDX11.GetDeviceContextD3D11()->CSSetShader(m_pComputeShader, nullptr, 0);
 	}
 
 	for (const auto& value : m_ShaderParameters)
@@ -301,36 +301,36 @@ void ShaderDX11::UnBind() const
 
 	if (m_pVertexShader)
 	{
-		m_RenderDeviceD3D11->GetDeviceContextD3D11()->IASetInputLayout(nullptr);
-		m_RenderDeviceD3D11->GetDeviceContextD3D11()->VSSetShader(nullptr, nullptr, 0);
+		m_RenderDeviceDX11.GetDeviceContextD3D11()->IASetInputLayout(nullptr);
+		m_RenderDeviceDX11.GetDeviceContextD3D11()->VSSetShader(nullptr, nullptr, 0);
 	}
 	else if (m_pHullShader)
 	{
-		m_RenderDeviceD3D11->GetDeviceContextD3D11()->HSSetShader(nullptr, nullptr, 0);
+		m_RenderDeviceDX11.GetDeviceContextD3D11()->HSSetShader(nullptr, nullptr, 0);
 	}
 	else if (m_pDomainShader)
 	{
-		m_RenderDeviceD3D11->GetDeviceContextD3D11()->DSSetShader(nullptr, nullptr, 0);
+		m_RenderDeviceDX11.GetDeviceContextD3D11()->DSSetShader(nullptr, nullptr, 0);
 	}
 	else if (m_pGeometryShader)
 	{
-		m_RenderDeviceD3D11->GetDeviceContextD3D11()->GSSetShader(nullptr, nullptr, 0);
+		m_RenderDeviceDX11.GetDeviceContextD3D11()->GSSetShader(nullptr, nullptr, 0);
 	}
 	else if (m_pPixelShader)
 	{
-		m_RenderDeviceD3D11->GetDeviceContextD3D11()->PSSetShader(nullptr, nullptr, 0);
+		m_RenderDeviceDX11.GetDeviceContextD3D11()->PSSetShader(nullptr, nullptr, 0);
 	}
 	else if (m_pComputeShader)
 	{
-		m_RenderDeviceD3D11->GetDeviceContextD3D11()->CSSetShader(nullptr, nullptr, 0);
+		m_RenderDeviceDX11.GetDeviceContextD3D11()->CSSetShader(nullptr, nullptr, 0);
 	}
 }
 
 void ShaderDX11::Dispatch(const glm::uvec3& numGroups)
 {
-	if (m_RenderDeviceD3D11->GetDeviceContextD3D11() && m_pComputeShader)
+	if (m_RenderDeviceDX11.GetDeviceContextD3D11() && m_pComputeShader)
 	{
-		m_RenderDeviceD3D11->GetDeviceContextD3D11()->Dispatch(numGroups.x, numGroups.y, numGroups.z);
+		m_RenderDeviceDX11.GetDeviceContextD3D11()->Dispatch(numGroups.x, numGroups.y, numGroups.z);
 	}
 }
 

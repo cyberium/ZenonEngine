@@ -6,9 +6,9 @@
 // Additional
 #include "GeometryDX11.h"
 
-MeshDX11::MeshDX11(IRenderDeviceDX11* RenderDeviceD3D11)
+MeshDX11::MeshDX11(IRenderDeviceDX11& RenderDeviceDX11)
 {
-	m_Geometry = std::make_shared<GeometryDX11>(RenderDeviceD3D11);
+	m_Geometry = std::make_unique<GeometryDX11>(RenderDeviceDX11);
 }
 
 MeshDX11::~MeshDX11()

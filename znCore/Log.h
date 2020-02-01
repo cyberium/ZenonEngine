@@ -7,7 +7,7 @@ class ZN_API CLog : public ILog
 	friend class Log;
 public:
     CLog();
-	~CLog();
+	virtual ~CLog();
 
 	// ILog
 	bool AddDebugOutput(std::shared_ptr<IDebugOutput> _debugOutput) override;

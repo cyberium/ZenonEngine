@@ -5,7 +5,7 @@
 class ZN_API ShaderDX11 : public ShaderBase, public std::enable_shared_from_this<ShaderDX11>
 {
 public:
-	ShaderDX11(IRenderDeviceDX11* RenderDeviceD3D11);
+	ShaderDX11(IRenderDeviceDX11& RenderDeviceDX11);
 	virtual ~ShaderDX11();
 
 	// IShader
@@ -36,5 +36,5 @@ private:
 	ATL::CComPtr<ID3DBlob>             m_pShaderBlob;
 
 private: // Link to parent d3d11 device
-	IRenderDeviceDX11* m_RenderDeviceD3D11;
+	IRenderDeviceDX11& m_RenderDeviceDX11;
 };

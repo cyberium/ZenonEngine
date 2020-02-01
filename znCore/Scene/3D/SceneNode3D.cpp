@@ -394,7 +394,7 @@ void SceneNode3D::UpdateCamera(const ICameraComponent3D* camera)
 	// Do nothing...
 }
 
-void SceneNode3D::UpdateViewport(const Viewport * viewport)
+void SceneNode3D::UpdateViewport(const Viewport& viewport)
 {
 	// Do nothing...
 }

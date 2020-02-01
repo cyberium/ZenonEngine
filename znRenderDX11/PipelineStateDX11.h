@@ -8,13 +8,13 @@ class ZN_API PipelineStateDX11
 	: public PipelineStateBase
 {
 public:
-	PipelineStateDX11(IRenderDeviceDX11* RenderDeviceD3D11);
+	PipelineStateDX11(IRenderDeviceDX11& RenderDeviceDX11);
 	virtual ~PipelineStateDX11();
 
 	// IPipelineState
-	void Bind() override;
-	void UnBind() override;
+	void Bind() override final;
+	void UnBind() override final;
 
 private: // Link to parent d3d11 device
-	IRenderDeviceDX11* m_RenderDeviceD3D11;
+	IRenderDeviceDX11& m_RenderDeviceDX11;
 };

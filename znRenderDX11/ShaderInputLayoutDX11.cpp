@@ -15,8 +15,8 @@ DXGI_FORMAT GetDXGIFormat(const D3D11_SIGNATURE_PARAMETER_DESC& paramDesc);
 // FORWARD END
 
 
-ShaderInputLayoutDX11::ShaderInputLayoutDX11(IRenderDeviceDX11* RenderDeviceD3D11)
-	: m_RenderDeviceD3D11(RenderDeviceD3D11)
+ShaderInputLayoutDX11::ShaderInputLayoutDX11(IRenderDeviceDX11& RenderDeviceDX11)
+	: m_RenderDeviceDX11(RenderDeviceDX11)
 {
 }
 
@@ -99,7 +99,7 @@ bool ShaderInputLayoutDX11::LoadFromReflector(ID3DBlob * pShaderBlob, ID3D11Shad
 
 	if (inputElements.size() > 0)
 	{
-		if (FAILED(hr = m_RenderDeviceD3D11->GetDeviceD3D11()->CreateInputLayout(inputElements.data(), (UINT)inputElements.size(), pShaderBlob->GetBufferPointer(), pShaderBlob->GetBufferSize(), &m_pInputLayout)))
+		if (FAILED(hr = m_RenderDeviceDX11.GetDeviceD3D11()->CreateInputLayout(inputElements.data(), (UINT)inputElements.size(), pShaderBlob->GetBufferPointer(), pShaderBlob->GetBufferSize(), &m_pInputLayout)))
 		{
 			Log::Error("Failed to create input layout.");
 			return false;
@@ -122,7 +122,7 @@ bool ShaderInputLayoutDX11::LoadFromCustomElements(ID3DBlob * pShaderBlob, const
 	if (inputElements.size() > 0)
 	{
 		HRESULT hr = S_OK;
-		if (FAILED(hr = m_RenderDeviceD3D11->GetDeviceD3D11()->CreateInputLayout(inputElements.data(), (UINT)inputElements.size() - 1, pShaderBlob->GetBufferPointer(), pShaderBlob->GetBufferSize(), &m_pInputLayout)))
+		if (FAILED(hr = m_RenderDeviceDX11.GetDeviceD3D11()->CreateInputLayout(inputElements.data(), (UINT)inputElements.size() - 1, pShaderBlob->GetBufferPointer(), pShaderBlob->GetBufferSize(), &m_pInputLayout)))
 		{
 			Log::Error("Failed to create input layout.");
 			return false;

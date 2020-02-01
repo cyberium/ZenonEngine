@@ -17,8 +17,8 @@ public:
 	typedef std::function<void(ArgumentType&)> FunctionType;
 	typedef std::shared_ptr<FunctionType> FunctionDecl;
 	typedef std::set<FunctionDecl> FunctionsSet;
-
-    template<class _Fx,  class... _Types>
+	
+	template<class _Fx,  class... _Types>
     FunctionDecl connect(_Fx&& _Func, _Types&&... _Args)
     {
         // https://stackoverflow.com/questions/20588191/error-with-variadiac-template-parameter-pack-must-be-expanded
@@ -66,7 +66,7 @@ public:
 	}
 
 private:
-	mutable FunctionsSet m_Functions;
+	FunctionsSet m_Functions;
 };
 
 

@@ -3,7 +3,7 @@
 // General
 #include "MaterialProxie.h"
 
-MaterialProxie::MaterialProxie(IMaterial* _materal)
+MaterialProxie::MaterialProxie(std::shared_ptr<IMaterial> _materal)
 	: m_Material(_materal)
 {
 	_ASSERT(m_Material);
@@ -12,6 +12,11 @@ MaterialProxie::MaterialProxie(IMaterial* _materal)
 MaterialProxie::~MaterialProxie()
 {}
 
+
+
+//
+// IMaterial
+//
 void MaterialProxie::SetName(const std::string & Name)
 {
 	m_Material->SetName(Name);
@@ -22,12 +27,12 @@ std::string MaterialProxie::GetName() const
 	return m_Material->GetName();
 }
 
-void MaterialProxie::SetShader(EShaderType type, IShader* pShader)
+void MaterialProxie::SetShader(EShaderType type, const std::shared_ptr<IShader> pShader)
 {
 	m_Material->SetShader(type, pShader);
 }
 
-IShader* MaterialProxie::GetShader(EShaderType type) const
+const IShader& MaterialProxie::GetShader(EShaderType type) const
 {
 	return m_Material->GetShader(type);
 }
@@ -37,24 +42,24 @@ const ShaderMap & MaterialProxie::GetShaders() const
 	return m_Material->GetShaders();
 }
 
-ITexture* MaterialProxie::GetTexture(uint8 ID) const
-{
-	return m_Material->GetTexture(ID);
-}
-
-void MaterialProxie::SetTexture(uint8 type, ITexture* texture)
+void MaterialProxie::SetTexture(uint8 type, const std::shared_ptr<ITexture> texture)
 {
 	m_Material->SetTexture(type, texture);
 }
 
-ISamplerState* MaterialProxie::GetSampler(uint8 ID) const
+const ITexture& MaterialProxie::GetTexture(uint8 ID) const
 {
-    return m_Material->GetSampler(ID);
+	return m_Material->GetTexture(ID);
 }
 
-void MaterialProxie::SetSampler(uint8 ID, ISamplerState* samplerState)
+void MaterialProxie::SetSampler(uint8 ID, const std::shared_ptr<ISamplerState> samplerState)
 {
-    m_Material->SetSampler(ID, samplerState);
+	m_Material->SetSampler(ID, samplerState);
+}
+
+const ISamplerState& MaterialProxie::GetSampler(uint8 ID) const
+{
+    return m_Material->GetSampler(ID);
 }
 
 void MaterialProxie::Bind(const ShaderMap& shaders) const

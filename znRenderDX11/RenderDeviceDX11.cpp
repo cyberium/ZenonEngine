@@ -3,38 +3,23 @@
 // General
 #include "RenderDeviceDX11.h"
 
-
-
-
-class D3DMultithreadLocker
-{
-public:
-    D3DMultithreadLocker(ID3D11Multithread * locker)
-        : m_Locker(locker)
-    {
-        //m_Locker->Enter();
-    }
-
-    ~D3DMultithreadLocker()
-    {
-        //m_Locker->Leave();
-    }
-
-private:
-    ATL::CComPtr<ID3D11Multithread> m_Locker;
-};
-
-
-
-
+// Additional
+#include "RenderObjectsFactoryDX11.h"
 
 RenderDeviceDX11::RenderDeviceDX11(IBaseManager* BaseManager)
 	: m_BaseManager(BaseManager)
-{}
+{
+	m_RenderObjectsFactory = std::make_unique<CRenderObjectsFactoryDX11>(*this);
+}
 
 RenderDeviceDX11::~RenderDeviceDX11()
 {}
 
+
+
+//
+// IRenderDevice
+//
 bool RenderDeviceDX11::Initialize()
 {
 	InitializeD3D11();
@@ -46,14 +31,6 @@ bool RenderDeviceDX11::Initialize()
 
 void RenderDeviceDX11::Finalize()
 {
-	m_Meshes.clear();
-	m_Shaders.clear();
-	m_Textures.clear();
-	m_Buffers.clear();
-	m_Samplers.clear();
-	m_Pipelines.clear();
-	m_Queries.clear();
-
 #if defined(_DEBUG)
 	if (m_DebugD3D11)
 	{
@@ -77,13 +54,26 @@ IBaseManager* RenderDeviceDX11::GetBaseManager() const
 	return m_BaseManager;
 }
 
-
-
-IRenderDevice* RenderDeviceDX11::GetRenderDevice()
+IRenderPrimitivesFactory & RenderDeviceDX11::GetPrimitivesFactory() const
 {
-	return this;
+	return __super::GetPrimitivesFactory();
 }
 
+IRenderObjectsFactory & RenderDeviceDX11::GetObjectsFactory() const
+{
+	return __super::GetObjectsFactory();
+}
+
+std::shared_ptr<ITexture> RenderDeviceDX11::GetDefaultTexture() const
+{
+	return __super::GetDefaultTexture();
+}
+
+
+
+//
+// RenderDeviceDX11
+//
 ID3D11Device4* RenderDeviceDX11::GetDeviceD3D11()
 {
     return m_DeviceD3D11;
@@ -91,9 +81,6 @@ ID3D11Device4* RenderDeviceDX11::GetDeviceD3D11()
 
 ID3D11DeviceContext3* RenderDeviceDX11::GetDeviceContextD3D11()
 {
-	//std::thread::id thrId = std::this_thread::get_id();
-	//printf("ThreadID is %d\n", thrId);
-
 	return m_DeviceImmediateContext;
 }
 
@@ -219,22 +206,4 @@ void RenderDeviceDX11::InitializeD3D11()
     {
         Log::Error("Failed to qauery adapter description.");
     }
-}
-
-void RenderDeviceDX11::DestroyBufferD3D11(IBuffer* buffer)
-{
-	//auto& iter = std::find(m_Buffers.begin(), m_Buffers.end(), buffer);
-	//if (iter != m_Buffers.end())
-	//{
-	//	m_Buffers.erase(iter);
-	//}
-}
-
-
-//
-// Private
-//
-void RenderDeviceDX11::LoadDefaultResources()
-{
-    m_pDefaultTexture = CreateTexture2D("IDB_DEFAULT_TEXTURE");
 }

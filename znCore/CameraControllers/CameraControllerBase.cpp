@@ -29,11 +29,11 @@ ICameraComponent3D* CCameraControllerBase::GetCamera() const
 	return m_Camera;
 }
 
-Ray CCameraControllerBase::ScreenPointToRay(const Viewport* Viewport, glm::vec2 screenPoint) const
+Ray CCameraControllerBase::ScreenPointToRay(const Viewport& Viewport, glm::vec2 screenPoint) const
 {
 	glm::vec4 clipPoint = glm::vec4(screenPoint, 1, 1);
-	clipPoint.x = (screenPoint.x - Viewport->GetX()) / Viewport->GetWidth();
-	clipPoint.y = 1.0f - (screenPoint.y - Viewport->GetY()) / Viewport->GetHeight();
+	clipPoint.x = (screenPoint.x - Viewport.GetX()) / Viewport.GetWidth();
+	clipPoint.y = 1.0f - (screenPoint.y - Viewport.GetY()) / Viewport.GetHeight();
 	clipPoint = clipPoint * 2.0f - 1.0f;
 
 	glm::vec3 p0 = m_Camera->GetTranslation();

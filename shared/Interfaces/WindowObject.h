@@ -9,11 +9,11 @@ ZN_INTERFACE ZN_API INativeWindow
 {
 	virtual ~INativeWindow() {}
 
-	virtual void SetWindowTitle(std::string WindowName) = 0;
+	virtual void SetWindowTitle(const std::string& WindowName) = 0;
 	virtual std::string GetWindowTitle() const = 0;
 	
-	virtual long GetWindowWidth() const = 0;         // include borders
-	virtual long GetWindowHeight() const = 0;        // include borders
+	virtual size_t GetWindowWidth() const = 0;         // include borders
+	virtual size_t GetWindowHeight() const = 0;        // include borders
 	
 	virtual void SetCursorPosition(const glm::ivec2& CursorPosition) = 0;
 	virtual glm::ivec2 GetCursorPosition() const = 0;
@@ -26,7 +26,7 @@ ZN_INTERFACE ZN_API INativeWindow
 };
 
 
-ZN_INTERFACE ZN_API INativeWindow_WindowsSpecific // WINDOWS only (but in my engine only Windows avaliable... :(
+ZN_INTERFACE ZN_API INativeWindow_WindowsSpecific // WINDOWS only but in my engine only Windows avaliable... :(
 {
 	virtual ~INativeWindow_WindowsSpecific() {}
 

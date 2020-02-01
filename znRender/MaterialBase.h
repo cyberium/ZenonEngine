@@ -1,23 +1,25 @@
 #pragma once
 
-class ZN_API MaterialBase : public IMaterial
+class ZN_API MaterialBase 
+	: public IMaterial
 {
 public:
-	MaterialBase(IRenderDevice* renderDevice, size_t Size);
+	MaterialBase(IRenderDevice& renderDevice, size_t Size);
 	virtual ~MaterialBase();
 
+	// IMaterial
 	virtual void SetName(const std::string& Name);
 	virtual std::string GetName() const;
 
-	virtual void SetShader(EShaderType type, IShader* pShader);
-	virtual IShader* GetShader(EShaderType type) const;
+	virtual void SetShader(EShaderType type, const std::shared_ptr<IShader> pShader);
+	virtual const IShader& GetShader(EShaderType type) const;
 	virtual const ShaderMap& GetShaders() const;
 
-	virtual ITexture* GetTexture(uint8 ID) const;
-	virtual void SetTexture(uint8 ID, ITexture* texture);
-
-    virtual ISamplerState* GetSampler(uint8 ID) const;
-    virtual void SetSampler(uint8 ID, ISamplerState* samplerState);
+	virtual void SetTexture(uint8 ID, const std::shared_ptr<ITexture> texture);
+	virtual const ITexture& GetTexture(uint8 ID) const;
+	
+	virtual void SetSampler(uint8 ID, const std::shared_ptr<ISamplerState> samplerState);
+    virtual const ISamplerState& GetSampler(uint8 ID) const;
 
 	virtual void Bind(const ShaderMap& shaders) const;
 	virtual void Unbind(const ShaderMap& shaders) const;
@@ -37,9 +39,11 @@ protected:
 	TextureMap                       m_Textures;
     SamplersMap                      m_Samplers;
 
-	IConstantBuffer* m_pConstantBuffer;
+	std::shared_ptr<IConstantBuffer> m_pConstantBuffer;
 
 	IMaterial*         m_Wrapper;
-	IRenderDevice*     m_RenderDevice;
 	mutable bool                     m_Dirty;
+
+private:
+	IRenderDevice&     m_RenderDevice;
 };

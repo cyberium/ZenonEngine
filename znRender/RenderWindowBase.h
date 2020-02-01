@@ -9,7 +9,7 @@ class ZN_API RenderWindowBase
 	, public std::enable_shared_from_this<IRenderWindow>
 {
 public:
-	RenderWindowBase(IRenderDevice* RenderDevice, INativeWindow * WindowObject, bool vSync = false);
+	RenderWindowBase(INativeWindow& WindowObject, bool vSync = false);
 	virtual ~RenderWindowBase();
 
 	virtual void OnUpdate(UpdateEventArgs& e);
@@ -19,18 +19,24 @@ public:
 	virtual void OnRenderUI(RenderEventArgs& e);
 
 
+	// INativeWindow
+	void SetWindowTitle(const std::string& WindowName) override;
+	std::string GetWindowTitle() const override;
+	size_t GetWindowWidth() const override;
+	size_t GetWindowHeight() const  override;
+	void SetCursorPosition(const glm::ivec2& CursorPosition) override;
+	glm::ivec2 GetCursorPosition() const override;
+	void ShowCursor() override;
+	void HideCursor() override;
+	void SetEventsListener(INativeWindowEventListener* WindowEventsListener) override;
+	void ResetEventsListener() override;
+
+
 	// IRenderWindow
-	size_t                                          GetWindowWidth() const;
-	size_t                                          GetWindowHeight() const;
-	glm::ivec2                                      GetWindowSize() const;
-	bool                                            IsVSync() const;
-
+	bool                                            IsVSync() const override;
 	virtual void                                    Present() = 0;
-
-    IRenderDevice*                                  GetRenderDevice() const;
-	IRenderTarget*                                  GetRenderTarget() const;
-	INativeWindow*                                  GetWindowObject() const;
-	const Viewport*									GetViewport() const;
+	const IRenderTarget&                            GetRenderTarget() const override;
+	const Viewport&									GetViewport() const override;
 
 
 	//
@@ -42,6 +48,7 @@ public:
 	RenderEvent&        PostRender() override;
 	RenderEvent&        RenderUI() override;
 
+	// Window events
 	Event&				WindowInputFocus() override; // Window gets input focus
 	Event&				WindowInputBlur() override;  // Window loses input focus
 	Event&				WindowMinimize() override;   // Window is minimized.
@@ -49,11 +56,13 @@ public:
 	ResizeEvent&        WindowResize() override;
 	WindowCloseEvent&   WindowClose() override;
 
+	// Keyboard events
 	KeyboardEvent&      WindowKeyPressed() override;
 	KeyboardEvent&      WindowKeyReleased() override;
 	Event&              WindowKeyboardFocus() override;
 	Event&              WindowKeyboardBlur() override;
 
+	// Mouse events
 	MouseMotionEvent&   WindowMouseMoved() override;
 	MouseButtonEvent&   WindowMouseButtonPressed() override;
 	MouseButtonEvent&   WindowMouseButtonReleased() override;
@@ -90,29 +99,26 @@ public:
 	void OnWindowMouseBlur(EventArgs& Args) override;
 
 
-	//
 	// IApplicationEventsConnection
-	//
 	void											Connect(IApplicationEvents* ApplicationEvents) override;
 	void											Disconnect(IApplicationEvents* ApplicationEvents) override;
 
 protected:
+	virtual IRenderDevice&                          GetRenderDevice() const = 0;
     virtual void                                    CreateSwapChain();
     virtual void                                    ResizeSwapChainBuffers(uint32_t width, uint32_t height) = 0;
 
-private:
-	Viewport                                        m_Viewport;
-	INativeWindow *                                 m_WindowObject;
-
-    IRenderDevice*                                  m_RenderDevice;
-    IRenderTarget*                                  m_RenderTarget;
-
+protected:
+	INativeWindow&                                  m_NativeWindow;
 	bool                                            m_vSync;
+	std::shared_ptr<IRenderTarget>                  m_RenderTarget;
+	Viewport                                        m_Viewport;
 	
     bool                                            m_bResizePending;  
 
+
 private: // IApplicationEventsConnection
-	Delegate<UpdateEventArgs>::FunctionDecl  m_UpdateConnection;
+	Delegate<UpdateEventArgs>::FunctionDecl         m_UpdateConnection;
 
 private:
 	// IRenderWindowEvents

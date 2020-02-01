@@ -6,7 +6,7 @@ class ZN_API QueryDX11
 	: public IQuery
 {
 public:
-	QueryDX11(IRenderDeviceDX11* RenderDeviceD3D11, QueryType queryType, uint8_t numBuffers);
+	QueryDX11(IRenderDeviceDX11& RenderDeviceDX11, QueryType queryType, uint8_t numBuffers);
 	virtual ~QueryDX11();
 
 	virtual void Begin(int64_t frame = 0L);
@@ -28,5 +28,5 @@ private:
 	uint8_t m_NumBuffers; // How many queries will be used to prevent stalling the GPU.
 
 private: // Link to parent d3d11 device
-	IRenderDeviceDX11* m_RenderDeviceD3D11;
+	IRenderDeviceDX11& m_RenderDeviceDX11;
 };

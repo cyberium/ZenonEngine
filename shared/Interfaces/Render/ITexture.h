@@ -217,6 +217,6 @@ ZN_INTERFACE ZN_API __declspec(novtable) ITexture
 	}
 };
 
-typedef std::vector<ITexture*> TextureList;
-typedef std::unordered_map<uint8_t, ITexture*> TextureMap;
-typedef std::unordered_map<std::string, ITexture*> TextureNameMap;
+typedef std::vector<std::shared_ptr<ITexture>> TextureList;
+typedef std::unordered_map<uint8_t, std::shared_ptr<ITexture>> TextureMap;
+typedef std::unordered_map<std::string, std::shared_ptr<ITexture>> TextureNameMap;

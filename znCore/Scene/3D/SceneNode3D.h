@@ -93,7 +93,7 @@ public:
 	virtual void                                    OnUpdate(UpdateEventArgs& e) override final;
 	virtual void                                    DoUpdate(UpdateEventArgs& e) override;
 	virtual void                                    UpdateCamera(const ICameraComponent3D* camera) override;
-	virtual void                                    UpdateViewport(const Viewport* viewport) override;
+	virtual void                                    UpdateViewport(const Viewport& viewport) override;
 
 	// Load & Save
 	bool                                            Load(std::shared_ptr<IXMLReader> Reader) override;

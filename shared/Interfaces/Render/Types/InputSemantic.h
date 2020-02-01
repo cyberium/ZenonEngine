@@ -15,6 +15,7 @@ struct ZN_API InputSemantic
 		, GLSize(0)
 	{}
 
+	// TODO: Delete me!!!
 	InputSemantic(const std::string& name, uint32 index, uint32 GLtype, uint32 GLsize)
 		: Name(name)
 		, Index(index)

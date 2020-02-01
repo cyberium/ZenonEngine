@@ -53,7 +53,7 @@ public:
 	{
 		if (m_CachedRenderDevice == nullptr)
 		{
-			m_CachedRenderDevice = new RenderDeviceDX11(m_BaseManager);
+			m_CachedRenderDevice = (IRenderDeviceDX11*)new RenderDeviceDX11(m_BaseManager);
 			m_CachedRenderDevice->Initialize();
 		}
 

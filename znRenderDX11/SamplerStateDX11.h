@@ -3,7 +3,7 @@
 class ZN_API SamplerStateDX11 : public SamplerStateBase
 {
 public:
-	SamplerStateDX11(IRenderDeviceDX11* RenderDeviceD3D11);
+	SamplerStateDX11(IRenderDeviceDX11& RenderDeviceDX11);
 	virtual	~SamplerStateDX11();
 
     // SamplerState
@@ -14,5 +14,5 @@ private:
 	mutable ATL::CComPtr<ID3D11SamplerState> m_pSamplerState;
 
 private: // Link to parent d3d11 device
-	IRenderDeviceDX11* m_RenderDeviceD3D11;
+	IRenderDeviceDX11& m_RenderDeviceDX11;
 };

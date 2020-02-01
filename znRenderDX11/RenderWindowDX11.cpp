@@ -7,13 +7,13 @@
 static DXGI_RATIONAL QueryRefreshRate(UINT screenWidth, UINT screenHeight, BOOL vsync);
 // FORWARD END
 
-RenderWindowDX11::RenderWindowDX11(IRenderDeviceDX11* RenderDeviceD3D11, INativeWindow * WindowObject, bool vSync)
-	: RenderWindowBase(RenderDeviceD3D11->GetRenderDevice(), WindowObject, vSync)
-    , m_RenderDeviceD3D11(RenderDeviceD3D11)
+RenderWindowDX11::RenderWindowDX11(IRenderDeviceDX11& RenderDeviceDX11, INativeWindow& WindowObject, bool vSync)
+	: RenderWindowBase(WindowObject, vSync)
+    , m_RenderDeviceDX11(RenderDeviceDX11)
 	, m_pSwapChain(nullptr)
 	, m_pBackBuffer(nullptr)
 {
-	WindowObject->SetEventsListener(this);
+	WindowObject.SetEventsListener(this);
 
 	CreateSwapChain();
 }
@@ -26,20 +26,17 @@ RenderWindowDX11::~RenderWindowDX11()
 		m_pSwapChain->SetFullscreenState(false, NULL);
 	}
 
-	GetWindowObject()->ResetEventsListener();
+	m_NativeWindow.ResetEventsListener();
 }
 
 
 void RenderWindowDX11::Present()
 {
-    GetRenderTarget()->Bind();
+	m_RenderTarget->Bind();
 
 	// Copy the render target's color buffer to the swap chain's back buffer.
-	TextureDX11* colorBuffer = dynamic_cast<TextureDX11*>(GetRenderTarget()->GetTexture(IRenderTarget::AttachmentPoint::Color0));
-	if (colorBuffer)
-	{
-		m_RenderDeviceD3D11->GetDeviceContextD3D11()->CopyResource(m_pBackBuffer, colorBuffer->GetTextureResource());
-	}
+	const TextureDX11& colorTexture = dynamic_cast<const TextureDX11&>(m_RenderTarget->GetTexture(IRenderTarget::AttachmentPoint::Color0));
+	m_RenderDeviceDX11.GetDeviceContextD3D11()->CopyResource(m_pBackBuffer, colorTexture.GetTextureResource());
 
 	if (IsVSync())
 	{
@@ -53,9 +50,15 @@ void RenderWindowDX11::Present()
 }
 
 
+
 //
 // Protected
 //
+IRenderDevice& RenderWindowDX11::GetRenderDevice() const
+{
+	return m_RenderDeviceDX11;
+}
+
 void RenderWindowDX11::CreateSwapChain()
 {
     RenderWindowBase::CreateSwapChain();
@@ -103,11 +106,11 @@ void RenderWindowDX11::CreateSwapChain()
     swapChainFullScreenDesc.RefreshRate = QueryRefreshRate(windowWidth, windowHeight, vSync);
     swapChainFullScreenDesc.Windowed = true;
 
-	INativeWindow_WindowsSpecific* nativeWindow_WindowsSpecific = dynamic_cast<INativeWindow_WindowsSpecific*>(GetWindowObject());
+	INativeWindow_WindowsSpecific& nativeWindow_WindowsSpecific = dynamic_cast<INativeWindow_WindowsSpecific&>(m_NativeWindow);
 
     // First create a DXGISwapChain1
     ATL::CComPtr<IDXGISwapChain1> pSwapChain;
-    if (FAILED(factory->CreateSwapChainForHwnd(m_RenderDeviceD3D11->GetDeviceD3D11(), nativeWindow_WindowsSpecific->GetHWnd(), &swapChainDesc, &swapChainFullScreenDesc, nullptr, &pSwapChain)))
+    if (FAILED(factory->CreateSwapChainForHwnd(m_RenderDeviceDX11.GetDeviceD3D11(), nativeWindow_WindowsSpecific.GetHWnd(), &swapChainDesc, &swapChainFullScreenDesc, nullptr, &pSwapChain)))
     {
         Log::Error("Failed to create swap chain.");
     }
@@ -131,7 +134,7 @@ void RenderWindowDX11::CreateSwapChain()
         m_SampleDesc.Count,
         8, 8, 8, 8, 0, 0
     );
-    ITexture* colorTexture = GetRenderDevice()->CreateTexture2D(windowWidth, windowHeight, 1, colorTextureFormat);
+    std::shared_ptr<ITexture> colorTexture = m_RenderDeviceDX11.GetObjectsFactory().CreateTexture2D(windowWidth, windowHeight, 1, colorTextureFormat);
 
     // Depth/stencil buffer
     ITexture::TextureFormat depthStencilTextureFormat(
@@ -139,11 +142,11 @@ void RenderWindowDX11::CreateSwapChain()
         ITexture::Type::UnsignedNormalized,
         m_SampleDesc.Count,
         0, 0, 0, 0, 24, 8);
-    ITexture* depthStencilTexture = GetRenderDevice()->CreateTexture2D(windowWidth, windowHeight, 1, depthStencilTextureFormat);
+	std::shared_ptr<ITexture> depthStencilTexture = m_RenderDeviceDX11.GetObjectsFactory().CreateTexture2D(windowWidth, windowHeight, 1, depthStencilTextureFormat);
 
-    GetRenderTarget()->AttachTexture(IRenderTarget::AttachmentPoint::Color0, colorTexture);
-    GetRenderTarget()->AttachTexture(IRenderTarget::AttachmentPoint::DepthStencil, depthStencilTexture);
-    GetRenderTarget()->Resize(windowWidth, windowHeight);
+    m_RenderTarget->AttachTexture(IRenderTarget::AttachmentPoint::Color0, colorTexture);
+	m_RenderTarget->AttachTexture(IRenderTarget::AttachmentPoint::DepthStencil, depthStencilTexture);
+	m_RenderTarget->Resize(windowWidth, windowHeight);
 }
 
 void RenderWindowDX11::ResizeSwapChainBuffers(uint32_t width, uint32_t height)
@@ -153,7 +156,7 @@ void RenderWindowDX11::ResizeSwapChainBuffers(uint32_t width, uint32_t height)
     height = glm::max<uint32_t>(height, 1);
 
     //// Make sure we're not referencing the render targets when the window is resized.
-    m_RenderDeviceD3D11->GetDeviceContextD3D11()->OMSetRenderTargets(0, nullptr, nullptr);
+    m_RenderDeviceDX11.GetDeviceContextD3D11()->OMSetRenderTargets(0, nullptr, nullptr);
 
     // Release the current render target views and texture resources.
     m_pBackBuffer.Release();
@@ -170,7 +173,7 @@ void RenderWindowDX11::ResizeSwapChainBuffers(uint32_t width, uint32_t height)
     }
 
     // Resize the render target.
-    GetRenderTarget()->Resize(width, height);
+    m_RenderTarget->Resize(width, height);
 }
 
 

@@ -3,8 +3,8 @@
 // General
 #include "MaterialDX11.h"
 
-MaterialDX11::MaterialDX11(IRenderDeviceDX11* RenderDeviceD3D11, size_t Size)
-	: MaterialBase(RenderDeviceD3D11->GetRenderDevice(), Size)
+MaterialDX11::MaterialDX11(IRenderDeviceDX11& RenderDeviceDX11, size_t Size)
+	: MaterialBase(RenderDeviceDX11, Size)
 {}
 
 MaterialDX11::~MaterialDX11()
@@ -19,7 +19,7 @@ void MaterialDX11::Bind(const ShaderMap& shaders) const
 	{
 		for (auto shader : shaders)
 		{
-			BindForShader(shader.second);
+			BindForShader(shader.second.get());
 		}
 	}
 	else
@@ -27,7 +27,7 @@ void MaterialDX11::Bind(const ShaderMap& shaders) const
 		for (auto shader : m_Shaders)
 		{
 			shader.second->Bind();
-			BindForShader(shader.second);
+			BindForShader(shader.second.get());
 		}
 	}
 }
@@ -38,14 +38,14 @@ void MaterialDX11::Unbind(const ShaderMap& shaders) const
 	{
 		for (auto shader : shaders)
 		{
-			UnbindForShader(shader.second);
+			UnbindForShader(shader.second.get());
 		}
 	}
 	else
 	{
 		for (const auto& it : m_Shaders)
 		{
-			UnbindForShader(it.second);
+			UnbindForShader(it.second.get());
 		}
 	}
 
@@ -60,7 +60,7 @@ void MaterialDX11::BindForShader(const IShader* shader) const
 	{
 		for (const auto& textureIt : m_Textures)
 		{
-			const ITexture* texture = textureIt.second;
+			const auto& texture = textureIt.second;
 			_ASSERT(texture != nullptr);
 
 			texture->Bind((uint32_t)textureIt.first, shader, IShaderParameter::Type::Texture);
@@ -68,7 +68,7 @@ void MaterialDX11::BindForShader(const IShader* shader) const
 
 		for (const auto& samplerStateIt : m_Samplers)
 		{
-			const ISamplerState* samplerState = samplerStateIt.second;
+			const auto& samplerState = samplerStateIt.second;
 			_ASSERT(samplerState != nullptr);
 
 			samplerState->Bind((uint32_t)samplerStateIt.first, shader, IShaderParameter::Type::Sampler);
@@ -78,7 +78,7 @@ void MaterialDX11::BindForShader(const IShader* shader) const
 	IShaderParameter* materialParameter = shader->GetShaderParameterByName("Material");
 	if (materialParameter->IsValid() && m_pConstantBuffer != nullptr)
 	{
-		materialParameter->SetConstantBuffer(m_pConstantBuffer);
+		materialParameter->SetConstantBuffer(m_pConstantBuffer.get());
 		materialParameter->Bind();
 	}
 }
@@ -91,7 +91,7 @@ void MaterialDX11::UnbindForShader(const IShader* shader) const
 	{
 		for (const auto& textureIt : m_Textures)
 		{
-			const ITexture* texture = textureIt.second;
+			const auto& texture = textureIt.second;
 			_ASSERT(texture != nullptr);
 
 			texture->UnBind((uint32_t)textureIt.first, shader, IShaderParameter::Type::Texture);
@@ -99,7 +99,7 @@ void MaterialDX11::UnbindForShader(const IShader* shader) const
 
 		for (const auto& samplerStateIt : m_Samplers)
 		{
-			const ISamplerState* samplerState = samplerStateIt.second;
+			const auto& samplerState = samplerStateIt.second;
 			_ASSERT(samplerState != nullptr);
 
 			samplerState->UnBind((uint32_t)samplerStateIt.first, shader, IShaderParameter::Type::Sampler);

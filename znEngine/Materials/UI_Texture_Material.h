@@ -1,13 +1,14 @@
 #pragma once
 
-class ZN_API UI_Texture_Material : public MaterialProxie
+class ZN_API UI_Texture_Material 
+	: public MaterialProxie
 {
 	typedef MaterialProxie base;
 public:
-	UI_Texture_Material(IRenderDevice* RenderDevice);
+	UI_Texture_Material(IRenderDevice& RenderDevice);
 	virtual ~UI_Texture_Material();
 
-	void SetTexture(ITexture* _texture);
+	void SetTexture(const std::shared_ptr<ITexture> _texture);
 	void SetColor(vec4 color);
 	
 protected:

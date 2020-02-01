@@ -2,18 +2,17 @@
 
 #include "BufferDX11.h"
 
-BufferDX11::BufferDX11(IRenderDeviceDX11* RenderDeviceD3D11, UINT bindFlags, const void* data, size_t count, UINT offset, UINT stride)
-	: m_RenderDeviceD3D11(RenderDeviceD3D11)
-	, m_pBuffer(NULL)
-	, m_uiOffset(offset)
-	, m_uiStride(stride)
+BufferDX11::BufferDX11(IRenderDeviceDX11& RenderDeviceDX11, UINT bindFlags, const void* data, size_t count, UINT offset, UINT stride)
+	: m_RenderDeviceDX11(RenderDeviceDX11)
+	, m_Offset(offset)
+	, m_Stride(stride)
 	, m_BindFlags(bindFlags)
-	, m_uiCount((UINT)count)
+	, m_Count((UINT)count)
 {
 	D3D11_BUFFER_DESC bufferDesc;
 	bufferDesc.Usage = D3D11_USAGE_DEFAULT;
 	bufferDesc.BindFlags = bindFlags;
-	bufferDesc.ByteWidth = m_uiStride * m_uiCount;
+	bufferDesc.ByteWidth = m_Stride * m_Count;
 	bufferDesc.CPUAccessFlags = 0;
 	bufferDesc.MiscFlags = 0;
 	bufferDesc.StructureByteStride = 0;
@@ -23,7 +22,7 @@ BufferDX11::BufferDX11(IRenderDeviceDX11* RenderDeviceD3D11, UINT bindFlags, con
 	resourceData.SysMemPitch = 0;
 	resourceData.SysMemSlicePitch = 0;
 
-	if (FAILED(m_RenderDeviceD3D11->GetDeviceD3D11()->CreateBuffer(&bufferDesc, &resourceData, &m_pBuffer)))
+	if (FAILED(m_RenderDeviceDX11.GetDeviceD3D11()->CreateBuffer(&bufferDesc, &resourceData, &m_pBuffer)))
 	{
 		_ASSERT_EXPR(false, "Failed to create buffer.");
 		return;
@@ -35,19 +34,24 @@ BufferDX11::~BufferDX11()
     
 }
 
+
+
+//
+// IBuffer
+//
 bool BufferDX11::Bind(uint32 id, const IShader* shader, IShaderParameter::Type parameterType) const
 {
 	ID3D11Buffer* buffers[] = { m_pBuffer };
-	UINT offsets[] = { m_uiOffset };
-	UINT strides[] = { m_uiStride };
+	UINT offsets[] = { m_Offset };
+	UINT strides[] = { m_Stride };
 
 	switch (m_BindFlags)
 	{
 	case D3D11_BIND_VERTEX_BUFFER:
-		m_RenderDeviceD3D11->GetDeviceContextD3D11()->IASetVertexBuffers(id, 1, buffers, strides, offsets);
+		m_RenderDeviceDX11.GetDeviceContextD3D11()->IASetVertexBuffers(id, 1, buffers, strides, offsets);
 		break;
 	case D3D11_BIND_INDEX_BUFFER:
-		m_RenderDeviceD3D11->GetDeviceContextD3D11()->IASetIndexBuffer(m_pBuffer, m_uiStride == 4 ? DXGI_FORMAT_R32_UINT : DXGI_FORMAT_R16_UINT, 0);
+		m_RenderDeviceDX11.GetDeviceContextD3D11()->IASetIndexBuffer(m_pBuffer, m_Stride == 4 ? DXGI_FORMAT_R32_UINT : DXGI_FORMAT_R16_UINT, 0);
 		break;
 	default:
 		_ASSERT(false);
@@ -65,10 +69,10 @@ void BufferDX11::UnBind(uint32 id, const IShader* shader, IShaderParameter::Type
 	switch (m_BindFlags)
 	{
 	case D3D11_BIND_VERTEX_BUFFER:
-		m_RenderDeviceD3D11->GetDeviceContextD3D11()->IASetVertexBuffers(id, 1, buffers, strides, offsets);
+		m_RenderDeviceDX11.GetDeviceContextD3D11()->IASetVertexBuffers(id, 1, buffers, strides, offsets);
 		break;
 	case D3D11_BIND_INDEX_BUFFER:
-		m_RenderDeviceD3D11->GetDeviceContextD3D11()->IASetIndexBuffer(nullptr, DXGI_FORMAT_UNKNOWN, 0);
+		m_RenderDeviceDX11.GetDeviceContextD3D11()->IASetIndexBuffer(nullptr, DXGI_FORMAT_UNKNOWN, 0);
 		break;
 	default:
 		_ASSERT(false);
@@ -79,9 +83,9 @@ void BufferDX11::Copy(IBuffer* other) const
 {
 	BufferDX11* srcBuffer = dynamic_cast<BufferDX11*>(other);
 
-	if (srcBuffer && srcBuffer != this && m_uiCount * m_uiStride == srcBuffer->m_uiCount * srcBuffer->m_uiStride)
+	if (srcBuffer && srcBuffer != this && m_Count * m_Stride == srcBuffer->m_Count * srcBuffer->m_Stride)
 	{
-		m_RenderDeviceD3D11->GetDeviceContextD3D11()->CopyResource(m_pBuffer, srcBuffer->m_pBuffer);
+		m_RenderDeviceDX11.GetDeviceContextD3D11()->CopyResource(m_pBuffer, srcBuffer->m_pBuffer);
 	}
 	else
 	{
@@ -110,15 +114,15 @@ IBuffer::BufferType BufferDX11::GetType() const
 
 uint32 BufferDX11::GetElementCount() const
 {
-	return m_uiCount;
+	return m_Count;
 }
 
 uint32 BufferDX11::GetElementStride() const
 {
-	return m_uiStride;
+	return m_Stride;
 }
 
 uint32 BufferDX11::GetElementOffset() const
 {
-    return m_uiOffset;
+    return m_Offset;
 }

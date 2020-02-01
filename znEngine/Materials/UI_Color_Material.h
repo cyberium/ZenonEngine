@@ -3,7 +3,7 @@
 class ZN_API UI_Color_Material : public MaterialProxie
 {
 public:
-	UI_Color_Material(IRenderDevice* RenderDevice);
+	UI_Color_Material(IRenderDevice& RenderDevice);
 	virtual ~UI_Color_Material();
 
 	void SetColor(vec4 color);

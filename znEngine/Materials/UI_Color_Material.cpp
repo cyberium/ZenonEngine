@@ -3,20 +3,20 @@
 // General
 #include "UI_Color_Material.h"
 
-UI_Color_Material::UI_Color_Material(IRenderDevice* RenderDevice) :
-	MaterialProxie(RenderDevice->CreateMaterial(sizeof(MaterialProperties)))
+UI_Color_Material::UI_Color_Material(IRenderDevice& RenderDevice) :
+	MaterialProxie(RenderDevice.GetObjectsFactory().CreateMaterial(sizeof(MaterialProperties)))
 {
 	m_pProperties = (MaterialProperties*)_aligned_malloc(sizeof(MaterialProperties), 16);
 	*m_pProperties = MaterialProperties();
 
 	// CreateShaders
-	IShader* g_pVertexShader = RenderDevice->CreateShader(
-		EShaderType::VertexShader, "IDB_SHADER_UI_COLOR", IShader::ShaderMacros(), "VS_main", "latest"
+	const auto& g_pVertexShader = RenderDevice.GetObjectsFactory().CreateShader(
+		EShaderType::VertexShader, "IDB_SHADER_UI_COLOR", "VS_main", IShader::ShaderMacros(), "latest"
 	);
     g_pVertexShader->LoadInputLayoutFromReflector();
 
-	IShader* g_pPixelShader = RenderDevice->CreateShader(
-		EShaderType::PixelShader, "IDB_SHADER_UI_COLOR", IShader::ShaderMacros(), "PS_main", "latest"
+	const auto& g_pPixelShader = RenderDevice.GetObjectsFactory().CreateShader(
+		EShaderType::PixelShader, "IDB_SHADER_UI_COLOR", "PS_main", IShader::ShaderMacros(), "latest"
 	);
 
 	// Material

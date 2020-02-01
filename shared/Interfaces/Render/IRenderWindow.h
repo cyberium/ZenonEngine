@@ -8,20 +8,15 @@ class Viewport;
 // FORWARD END
 
 ZN_INTERFACE ZN_API IRenderWindow
+	: public INativeWindow
 {
 	virtual ~IRenderWindow() {}
 
-	virtual size_t GetWindowWidth() const = 0;
-	virtual size_t GetWindowHeight() const = 0;
-	virtual glm::ivec2 GetWindowSize() const = 0;
 	virtual bool IsVSync() const = 0;
-
 	virtual void Present() = 0;
 
-	virtual IRenderDevice* GetRenderDevice() const = 0;
-	virtual IRenderTarget* GetRenderTarget() const = 0;
-	virtual INativeWindow* GetWindowObject() const = 0;
-	virtual const Viewport* GetViewport() const = 0;
+	virtual const IRenderTarget& GetRenderTarget() const = 0;
+	virtual const Viewport& GetViewport() const = 0;
 };
 
 ZN_INTERFACE ZN_API IRenderWindowEvents

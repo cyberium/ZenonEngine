@@ -10,10 +10,10 @@ public:
 	virtual ~CNativeWindow_WindowsSpecific();
 
 	// INativeWindow
-	void SetWindowTitle(std::string WindowName) override;
+	void SetWindowTitle(const std::string& WindowName) override;
 	std::string GetWindowTitle() const override;
-	long GetWindowWidth() const override;
-	long GetWindowHeight() const override;
+	size_t GetWindowWidth() const override;
+	size_t GetWindowHeight() const override;
 	void SetCursorPosition(const glm::ivec2& CursorPosition) override;
 	glm::ivec2 GetCursorPosition() const override;
 	void ShowCursor() override;

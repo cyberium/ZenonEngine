@@ -35,7 +35,7 @@ void main_internal(int argumentCount, char* arguments[])
 	IRenderWindow* firstRenderWindow = renderDevice->CreateRenderWindow(nativeWindow.get(), false);
 	app.AddRenderWindow(firstRenderWindow);
 
-	std::shared_ptr<IScene> scene = BaseManager->GetManager<IScenesFactory>()->CreateScene("SceneTCEditor");
+	std::shared_ptr<IScene> scene = BaseManager->GetManager<IScenesFactory>()->CreateScene("SceneDefault");
 	scene->ConnectEvents(dynamic_cast<IRenderWindowEvents*>(firstRenderWindow));
 	scene->Initialize();
 

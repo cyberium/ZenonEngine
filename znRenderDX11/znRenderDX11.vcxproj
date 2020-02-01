@@ -97,7 +97,7 @@
     <ClCompile Include="GeometryDX11.cpp" />
     <ClCompile Include="MaterialDX11.cpp" />
     <ClCompile Include="MeshDX11.cpp" />
-    <ClCompile Include="RenderDeviceDX11_CreateAndDestroy.cpp" />
+    <ClCompile Include="RenderObjectsFactoryDX11.cpp" />
     <ClCompile Include="TextureDX11Loader.cpp" />
     <ClCompile Include="znRenderDX11.cpp" />
     <ClCompile Include="PipelineStateDX11.cpp" />
@@ -129,6 +129,7 @@
     <ClInclude Include="QueryDX11.h" />
     <ClInclude Include="RasterizerStateDX11.h" />
     <ClInclude Include="RenderDeviceDX11.h" />
+    <ClInclude Include="RenderObjectsFactoryDX11.h" />
     <ClInclude Include="RenderTargetDX11.h" />
     <ClInclude Include="RenderWindowDX11.h" />
     <ClInclude Include="SamplerStateDX11.h" />

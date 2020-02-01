@@ -4,7 +4,7 @@ class ZN_API ShaderInputLayoutDX11
 	: public ShaderInputLayoutBase
 {
 public:
-	ShaderInputLayoutDX11(IRenderDeviceDX11* RenderDeviceD3D11);
+	ShaderInputLayoutDX11(IRenderDeviceDX11& RenderDeviceDX11);
 	virtual ~ShaderInputLayoutDX11();
 
     // IShaderInputLayout
@@ -21,5 +21,5 @@ private:
 	ATL::CComPtr<ID3D11InputLayout> m_pInputLayout;
 
 private: // Link to parent d3d11 device
-	IRenderDeviceDX11* m_RenderDeviceD3D11;
+	IRenderDeviceDX11& m_RenderDeviceDX11;
 };

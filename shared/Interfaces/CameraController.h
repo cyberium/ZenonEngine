@@ -21,7 +21,7 @@ ZN_INTERFACE ZN_API ICameraController
 	virtual void SetCamera(ICameraComponent3D* Camera) = 0;
 
 	virtual ICameraComponent3D* GetCamera() const = 0;
-	virtual Ray ScreenPointToRay(const Viewport* Viewport, glm::vec2 screenPoint) const = 0;
+	virtual Ray ScreenPointToRay(const Viewport& Viewport, glm::vec2 screenPoint) const = 0;
 
 	// Input events
 	virtual void OnKeyPressed(KeyEventArgs& e) = 0;

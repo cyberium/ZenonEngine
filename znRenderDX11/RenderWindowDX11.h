@@ -7,12 +7,13 @@ class ZN_API RenderWindowDX11
 	: public RenderWindowBase
 {
 public:
-	RenderWindowDX11(IRenderDeviceDX11* RenderDeviceD3D11, INativeWindow * WindowObject, bool vSync);
+	RenderWindowDX11(IRenderDeviceDX11& RenderDeviceDX11, INativeWindow& WindowObject, bool vSync);
 	virtual ~RenderWindowDX11();
 
 	void                                            Present() override final;
 
 protected:
+	IRenderDevice&									GetRenderDevice() const override final;
     void                                            CreateSwapChain() override final;
 	void                                            ResizeSwapChainBuffers(uint32_t width, uint32_t height) override final;
 
@@ -23,5 +24,5 @@ private:
 	DXGI_SAMPLE_DESC m_SampleDesc;      // Used to enable multisampling AA
 
 private: // Link to parent d3d11 device
-	IRenderDeviceDX11* m_RenderDeviceD3D11;
+	IRenderDeviceDX11& m_RenderDeviceDX11;
 };

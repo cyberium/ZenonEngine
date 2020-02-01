@@ -25,11 +25,19 @@
     <ClCompile Include="ShaderBase.cpp" />
     <ClCompile Include="ShaderInputLayoutBase.cpp" />
     <ClCompile Include="MaterialBase.cpp" />
-    <ClCompile Include="RenderDeviceBase.cpp" />
     <ClCompile Include="RenderWindowBase.cpp" />
     <ClCompile Include="GeometryBase.cpp" />
     <ClCompile Include="PipelineStateBase.cpp">
       <Filter>Pipeline</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderDeviceBase.cpp">
+      <Filter>Render Device</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderPrimitivesFactory.cpp">
+      <Filter>Render Device</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderObjectsFactory.cpp">
+      <Filter>Render Device</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -63,11 +71,19 @@
     <ClInclude Include="ShaderBase.h" />
     <ClInclude Include="ShaderInputLayoutBase.h" />
     <ClInclude Include="MaterialBase.h" />
-    <ClInclude Include="RenderDeviceBase.h" />
     <ClInclude Include="RenderWindowBase.h" />
     <ClInclude Include="GeometryBase.h" />
     <ClInclude Include="PipelineStateBase.h">
       <Filter>Pipeline</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderDeviceBase.h">
+      <Filter>Render Device</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderPrimitivesFactory.h">
+      <Filter>Render Device</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderObjectsFactory.h">
+      <Filter>Render Device</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -82,6 +98,9 @@
     </Filter>
     <Filter Include="Shaders">
       <UniqueIdentifier>{09c42574-6da1-44b9-8eeb-49413f7b8dd2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Render Device">
+      <UniqueIdentifier>{956c4b28-9e6e-47fd-b5e8-5d6fe0bd0e1e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -55,7 +55,7 @@ CNativeWindow_WindowsSpecific::~CNativeWindow_WindowsSpecific()
 //
 // INativeWindow
 //
-void CNativeWindow_WindowsSpecific::SetWindowTitle(std::string WindowName)
+void CNativeWindow_WindowsSpecific::SetWindowTitle(const std::string& WindowName)
 {
 	SetWindowTextW(m_HWnd, Resources::ConvertString(WindowName).c_str());
 }
@@ -68,7 +68,7 @@ std::string CNativeWindow_WindowsSpecific::GetWindowTitle() const
 	return Resources::ConvertString(title);
 }
 
-long CNativeWindow_WindowsSpecific::GetWindowWidth() const
+size_t CNativeWindow_WindowsSpecific::GetWindowWidth() const
 {
 	RECT clientRect = { 0 };
 
@@ -78,7 +78,7 @@ long CNativeWindow_WindowsSpecific::GetWindowWidth() const
 	return clientRect.right - clientRect.left;
 }
 
-long CNativeWindow_WindowsSpecific::GetWindowHeight() const
+size_t CNativeWindow_WindowsSpecific::GetWindowHeight() const
 {
 	RECT clientRect = { 0 };
 

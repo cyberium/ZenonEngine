@@ -29,17 +29,17 @@ const BoundingBox& GeometryBase::GetBounds() const
 	return m_Bounds;
 }
 
-void GeometryBase::AddVertexBuffer(const BufferBinding& binding, IBuffer* buffer)
+void GeometryBase::AddVertexBuffer(const BufferBinding& binding, std::shared_ptr<IBuffer> buffer)
 {
     m_VertexBuffers[binding] = buffer;
 }
 
-void GeometryBase::SetVertexBuffer(IBuffer* buffer)
+void GeometryBase::SetVertexBuffer(std::shared_ptr<IBuffer> buffer)
 {
     m_VertexBuffer = buffer;
 }
 
-void GeometryBase::SetIndexBuffer(IBuffer* buffer)
+void GeometryBase::SetIndexBuffer(std::shared_ptr<IBuffer> buffer)
 {
     m_pIndexBuffer = buffer;
 }

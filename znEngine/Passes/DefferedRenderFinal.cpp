@@ -3,25 +3,25 @@
 // General
 #include "DefferedRenderFinal.h"
 
-CDefferedRenderFinal::CDefferedRenderFinal(IRenderDevice* RenderDevice, std::shared_ptr<CDefferedRender> DefferedRender, std::shared_ptr<CDefferedRenderPrepareLights> DefferedRenderPrepareLights)
+CDefferedRenderFinal::CDefferedRenderFinal(IRenderDevice& RenderDevice, std::shared_ptr<CDefferedRender> DefferedRender, std::shared_ptr<CDefferedRenderPrepareLights> DefferedRenderPrepareLights)
 	: RenderPassPipelined(RenderDevice)
 	, m_DefferedRender(DefferedRender)
 	, m_DefferedRenderPrepareLights(DefferedRenderPrepareLights)
 {
 	m_ScreenToViewData = (SScreenToViewParams*)_aligned_malloc(sizeof(SScreenToViewParams), 16);
-	m_ScreenToViewConstantBuffer = GetRenderDevice()->CreateConstantBuffer(SScreenToViewParams());
+	m_ScreenToViewConstantBuffer = GetRenderDevice().CreateConstantBuffer(SScreenToViewParams());
 
 	m_LightResultData = (SLightResult*)_aligned_malloc(sizeof(SLightResult), 16);
-	m_LightResultConstantBuffer = GetRenderDevice()->CreateConstantBuffer(SLightResult());
+	m_LightResultConstantBuffer = GetRenderDevice().CreateConstantBuffer(SLightResult());
 }
 
 CDefferedRenderFinal::~CDefferedRenderFinal()
 {
 	_aligned_free(m_LightResultData);
-	GetRenderDevice()->DestroyConstantBuffer(m_LightResultConstantBuffer);
+	GetRenderDevice().DestroyConstantBuffer(m_LightResultConstantBuffer);
 
 	_aligned_free(m_ScreenToViewData);
-	GetRenderDevice()->DestroyConstantBuffer(m_ScreenToViewConstantBuffer);
+	GetRenderDevice().DestroyConstantBuffer(m_ScreenToViewConstantBuffer);
 }
 
 
@@ -37,7 +37,7 @@ void CDefferedRenderFinal::PreRender(RenderEventArgs& e)
 	m_ScreenToViewData->InverseProjection = glm::inverse(e.Camera->GetProjectionMatrix());
 	m_ScreenToViewData->InverseView = glm::inverse(e.Camera->GetViewMatrix());
 	m_ScreenToViewData->InverseProjectionView = e.Camera->GetInverseProjectionViewMatrix();
-	m_ScreenToViewData->ScreenDimensions = glm::vec2(e.PipelineState->GetRasterizerState()->GetViewports()[0]->GetWidth(), e.PipelineState->GetRasterizerState()->GetViewports()[0]->GetHeight());
+	m_ScreenToViewData->ScreenDimensions = glm::vec2(e.PipelineState->GetRasterizerState().GetViewports()[0]->GetWidth(), e.PipelineState->GetRasterizerState().GetViewports()[0]->GetHeight());
 	m_ScreenToViewConstantBuffer->Set(*m_ScreenToViewData);
 	
 	IShaderParameter* screenToViewParams = GetPipeline()->GetShader(EShaderType::PixelShader)->GetShaderParameterByName("ScreenToViewParams");
@@ -71,32 +71,32 @@ void CDefferedRenderFinal::PostRender(RenderEventArgs& e)
 //
 // IRenderPassPipelined
 //
-std::shared_ptr<IRenderPassPipelined> CDefferedRenderFinal::CreatePipeline(IRenderTarget* RenderTarget, const Viewport * Viewport)
+std::shared_ptr<IRenderPassPipelined> CDefferedRenderFinal::CreatePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport)
 {
-	m_QuadMesh = GetRenderDevice()->GetPrimitiveCollection()->CreateQuad();
+	m_QuadMesh = GetRenderDevice().GetPrimitivesFactory().CreateQuad();
 
-	IShader* vertexShader = GetRenderDevice()->CreateShader(EShaderType::VertexShader, "IDB_SHADER_3D_DEFFERED", IShader::ShaderMacros(), "VS_ScreenQuad", "latest");
+	const auto& vertexShader = GetRenderDevice().CreateShader(EShaderType::VertexShader, "IDB_SHADER_3D_DEFFERED", IShader::ShaderMacros(), "VS_ScreenQuad", "latest");
 	vertexShader->LoadInputLayoutFromReflector();
 
-	IShader* pixelShader = GetRenderDevice()->CreateShader(EShaderType::PixelShader, "IDB_SHADER_3D_DEFFERED", IShader::ShaderMacros(), "PS_DeferredLighting", "latest");
+	const auto& pixelShader = GetRenderDevice().CreateShader(EShaderType::PixelShader, "IDB_SHADER_3D_DEFFERED", IShader::ShaderMacros(), "PS_DeferredLighting", "latest");
 
 	// PIPELINES
-	IPipelineState* defferedFinalPipeline = GetRenderDevice()->CreatePipelineState();
-	defferedFinalPipeline->GetBlendState()->SetBlendMode(additiveBlending);
-	defferedFinalPipeline->GetDepthStencilState()->SetDepthMode(disableDepthWrites);
-	defferedFinalPipeline->GetRasterizerState()->SetCullMode(IRasterizerState::CullMode::None);
-	defferedFinalPipeline->GetRasterizerState()->SetFillMode(IRasterizerState::FillMode::Solid);
+	IPipelineState* defferedFinalPipeline = GetRenderDevice().CreatePipelineState();
+	defferedFinalPipeline->GetBlendState().SetBlendMode(additiveBlending);
+	defferedFinalPipeline->GetDepthStencilState().SetDepthMode(disableDepthWrites);
+	defferedFinalPipeline->GetRasterizerState().SetCullMode(IRasterizerState::CullMode::None);
+	defferedFinalPipeline->GetRasterizerState().SetFillMode(IRasterizerState::FillMode::Solid);
 	defferedFinalPipeline->SetRenderTarget(RenderTarget);
-	defferedFinalPipeline->GetRasterizerState()->SetViewport(Viewport);
+	defferedFinalPipeline->GetRasterizerState().SetViewport(Viewport);
 	defferedFinalPipeline->SetShader(EShaderType::VertexShader, vertexShader);
 	defferedFinalPipeline->SetShader(EShaderType::PixelShader, pixelShader);
 
-	ISamplerState* sampler = GetRenderDevice()->CreateSamplerState();
+	ISamplerState* sampler = GetRenderDevice().CreateSamplerState();
 	sampler->SetFilter(ISamplerState::MinFilter::MinLinear, ISamplerState::MagFilter::MagLinear, ISamplerState::MipFilter::MipLinear);
 	sampler->SetWrapMode(ISamplerState::WrapMode::Repeat, ISamplerState::WrapMode::Repeat);
 	defferedFinalPipeline->SetSampler(0, sampler);
 
-	ISamplerState* samplerClamp = GetRenderDevice()->CreateSamplerState();
+	ISamplerState* samplerClamp = GetRenderDevice().CreateSamplerState();
 	samplerClamp->SetFilter(ISamplerState::MinFilter::MinLinear, ISamplerState::MagFilter::MagLinear, ISamplerState::MipFilter::MipLinear);
 	samplerClamp->SetWrapMode(ISamplerState::WrapMode::Clamp, ISamplerState::WrapMode::Clamp);
 	defferedFinalPipeline->SetSampler(1, samplerClamp);

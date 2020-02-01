@@ -24,9 +24,11 @@
 #pragma comment(lib, "dxgi.lib")
 #pragma comment(lib, "dxguid.lib")
 
-ZN_INTERFACE IRenderDeviceDX11
+ZN_INTERFACE ZN_API IRenderDeviceDX11
+	: public IRenderDevice
 {
-	virtual IRenderDevice* GetRenderDevice() = 0;
+	virtual ~IRenderDeviceDX11() {}
+
 	virtual ID3D11Device4* GetDeviceD3D11() = 0;
 	virtual ID3D11DeviceContext3* GetDeviceContextD3D11() = 0;
 };

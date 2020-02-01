@@ -3,8 +3,8 @@
 // General
 #include "UI_Font_Material.h"
 
-UI_Font_Material::UI_Font_Material(IRenderDevice* RenderDevice) :
-	MaterialProxie(RenderDevice->CreateMaterial(sizeof(MaterialProperties)))
+UI_Font_Material::UI_Font_Material(IRenderDevice& RenderDevice) :
+	MaterialProxie(RenderDevice.GetObjectsFactory().CreateMaterial(sizeof(MaterialProperties)))
 {
 	m_pProperties = (MaterialProperties*)_aligned_malloc(sizeof(MaterialProperties), 16);
 	*m_pProperties = MaterialProperties();

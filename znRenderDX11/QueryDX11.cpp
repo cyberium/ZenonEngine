@@ -2,8 +2,8 @@
 
 #include "QueryDX11.h"
 
-QueryDX11::QueryDX11(IRenderDeviceDX11* RenderDeviceD3D11, QueryType queryType, uint8_t numBuffers)
-	: m_RenderDeviceD3D11(RenderDeviceD3D11)
+QueryDX11::QueryDX11(IRenderDeviceDX11& RenderDeviceDX11, QueryType queryType, uint8_t numBuffers)
+	: m_RenderDeviceDX11(RenderDeviceDX11)
 	, m_QueryType(queryType)
 	, m_NumBuffers(numBuffers)
 {
@@ -32,7 +32,7 @@ QueryDX11::QueryDX11(IRenderDeviceDX11* RenderDeviceD3D11, QueryType queryType, 
 
 	for (uint8_t i = 0; i < m_NumBuffers; ++i)
 	{
-		if (FAILED(m_RenderDeviceD3D11->GetDeviceD3D11()->CreateQuery(&queryDesc, &m_Queries[0][i])))
+		if (FAILED(m_RenderDeviceDX11.GetDeviceD3D11()->CreateQuery(&queryDesc, &m_Queries[0][i])))
 		{
 			Log::Error("Failed to create Query object.");
 		}
@@ -49,8 +49,8 @@ QueryDX11::QueryDX11(IRenderDeviceDX11* RenderDeviceD3D11, QueryType queryType, 
 
 		for (uint8_t i = 0; i < m_NumBuffers; ++i)
 		{
-			if (FAILED(m_RenderDeviceD3D11->GetDeviceD3D11()->CreateQuery(&queryDesc, &m_Queries[1][i])) ||
-				FAILED(m_RenderDeviceD3D11->GetDeviceD3D11()->CreateQuery(&disjointQueryDesc, &m_DisjointQueries[i])))
+			if (FAILED(m_RenderDeviceDX11.GetDeviceD3D11()->CreateQuery(&queryDesc, &m_Queries[1][i])) ||
+				FAILED(m_RenderDeviceDX11.GetDeviceD3D11()->CreateQuery(&disjointQueryDesc, &m_DisjointQueries[i])))
 			{
 				Log::Error("Failed to create timer query object.");
 			}
@@ -68,12 +68,12 @@ void QueryDX11::Begin(int64_t frame)
 	{
 		if (m_QueryType == QueryType::Timer)
 		{
-			m_RenderDeviceD3D11->GetDeviceContextD3D11()->Begin(m_DisjointQueries[buffer]);
-			m_RenderDeviceD3D11->GetDeviceContextD3D11()->End(m_Queries[0][buffer]);
+			m_RenderDeviceDX11.GetDeviceContextD3D11()->Begin(m_DisjointQueries[buffer]);
+			m_RenderDeviceDX11.GetDeviceContextD3D11()->End(m_Queries[0][buffer]);
 		}
 		else
 		{
-			m_RenderDeviceD3D11->GetDeviceContextD3D11()->Begin(m_Queries[0][buffer]);
+			m_RenderDeviceDX11.GetDeviceContextD3D11()->Begin(m_Queries[0][buffer]);
 		}
 	}
 }
@@ -85,12 +85,12 @@ void QueryDX11::End(int64_t frame)
 	{
 		if (m_QueryType == QueryType::Timer)
 		{
-			m_RenderDeviceD3D11->GetDeviceContextD3D11()->End(m_Queries[1][buffer]);
-			m_RenderDeviceD3D11->GetDeviceContextD3D11()->End(m_DisjointQueries[buffer]);
+			m_RenderDeviceDX11.GetDeviceContextD3D11()->End(m_Queries[1][buffer]);
+			m_RenderDeviceDX11.GetDeviceContextD3D11()->End(m_DisjointQueries[buffer]);
 		}
 		else
 		{
-			m_RenderDeviceD3D11->GetDeviceContextD3D11()->End(m_Queries[0][buffer]);
+			m_RenderDeviceDX11.GetDeviceContextD3D11()->End(m_Queries[0][buffer]);
 		}
 	}
 
@@ -105,11 +105,11 @@ bool QueryDX11::QueryResultAvailable(int64_t frame)
 	{
 		if (m_QueryType == QueryType::Timer)
 		{
-			result = (m_RenderDeviceD3D11->GetDeviceContextD3D11()->GetData(m_DisjointQueries[buffer], nullptr, 0, 0) == S_OK);
+			result = (m_RenderDeviceDX11.GetDeviceContextD3D11()->GetData(m_DisjointQueries[buffer], nullptr, 0, 0) == S_OK);
 		}
 		else
 		{
-			result = (m_RenderDeviceD3D11->GetDeviceContextD3D11()->GetData(m_Queries[0][buffer], nullptr, 0, 0) == S_OK);
+			result = (m_RenderDeviceDX11.GetDeviceContextD3D11()->GetData(m_Queries[0][buffer], nullptr, 0, 0) == S_OK);
 		}
 	}
 
@@ -125,17 +125,17 @@ IQuery::QueryResult QueryDX11::GetQueryResult(int64_t frame)
 	{
 		if (m_QueryType == QueryType::Timer)
 		{
-			while (m_RenderDeviceD3D11->GetDeviceContextD3D11()->GetData(m_DisjointQueries[buffer], nullptr, 0, 0) == S_FALSE)
+			while (m_RenderDeviceDX11.GetDeviceContextD3D11()->GetData(m_DisjointQueries[buffer], nullptr, 0, 0) == S_FALSE)
 			{
 				Sleep(1L);
 			}
 			D3D11_QUERY_DATA_TIMESTAMP_DISJOINT timeStampDisjoint;
-			m_RenderDeviceD3D11->GetDeviceContextD3D11()->GetData(m_DisjointQueries[buffer], &timeStampDisjoint, sizeof(D3D11_QUERY_DATA_TIMESTAMP_DISJOINT), 0);
+			m_RenderDeviceDX11.GetDeviceContextD3D11()->GetData(m_DisjointQueries[buffer], &timeStampDisjoint, sizeof(D3D11_QUERY_DATA_TIMESTAMP_DISJOINT), 0);
 			if (timeStampDisjoint.Disjoint == FALSE)
 			{
 				UINT64 beginTime, endTime;
-				if (m_RenderDeviceD3D11->GetDeviceContextD3D11()->GetData(m_Queries[0][buffer], &beginTime, sizeof(UINT64), 0) == S_OK &&
-					m_RenderDeviceD3D11->GetDeviceContextD3D11()->GetData(m_Queries[1][buffer], &endTime, sizeof(UINT64), 0) == S_OK)
+				if (m_RenderDeviceDX11.GetDeviceContextD3D11()->GetData(m_Queries[0][buffer], &beginTime, sizeof(UINT64), 0) == S_OK &&
+					m_RenderDeviceDX11.GetDeviceContextD3D11()->GetData(m_Queries[1][buffer], &endTime, sizeof(UINT64), 0) == S_OK)
 				{
 					result.ElapsedTime = (endTime - beginTime) / double(timeStampDisjoint.Frequency);
 					result.IsValid = true;
@@ -145,7 +145,7 @@ IQuery::QueryResult QueryDX11::GetQueryResult(int64_t frame)
 		else
 		{
 			// Wait for the results to become available.
-			while (m_RenderDeviceD3D11->GetDeviceContextD3D11()->GetData(m_Queries[0][buffer], nullptr, 0, 0))
+			while (m_RenderDeviceDX11.GetDeviceContextD3D11()->GetData(m_Queries[0][buffer], nullptr, 0, 0))
 			{
 				Sleep(1L);
 			}
@@ -155,7 +155,7 @@ IQuery::QueryResult QueryDX11::GetQueryResult(int64_t frame)
 			case QueryType::CountSamples:
 			{
 				UINT64 numSamples = 0;
-				if (m_RenderDeviceD3D11->GetDeviceContextD3D11()->GetData(m_Queries[0][buffer], &numSamples, sizeof(UINT64), 0) == S_OK)
+				if (m_RenderDeviceDX11.GetDeviceContextD3D11()->GetData(m_Queries[0][buffer], &numSamples, sizeof(UINT64), 0) == S_OK)
 				{
 					result.NumSamples = numSamples;
 					result.IsValid = true;
@@ -165,7 +165,7 @@ IQuery::QueryResult QueryDX11::GetQueryResult(int64_t frame)
 			case IQuery::QueryType::CountSamplesPredicate:
 			{
 				BOOL anySamples = FALSE;
-				if (m_RenderDeviceD3D11->GetDeviceContextD3D11()->GetData(m_Queries[0][buffer], &anySamples, sizeof(UINT64), 0) == S_OK)
+				if (m_RenderDeviceDX11.GetDeviceContextD3D11()->GetData(m_Queries[0][buffer], &anySamples, sizeof(UINT64), 0) == S_OK)
 				{
 					result.AnySamples = anySamples == TRUE;
 					result.IsValid = true;
@@ -176,7 +176,7 @@ IQuery::QueryResult QueryDX11::GetQueryResult(int64_t frame)
 			case IQuery::QueryType::CountTransformFeedbackPrimitives:
 			{
 				D3D11_QUERY_DATA_SO_STATISTICS streamOutStats = {};
-				if (m_RenderDeviceD3D11->GetDeviceContextD3D11()->GetData(m_Queries[0][buffer], &streamOutStats, sizeof(D3D11_QUERY_DATA_SO_STATISTICS), 0) == S_OK)
+				if (m_RenderDeviceDX11.GetDeviceContextD3D11()->GetData(m_Queries[0][buffer], &streamOutStats, sizeof(D3D11_QUERY_DATA_SO_STATISTICS), 0) == S_OK)
 				{
 					result.PrimitivesGenerated = result.TransformFeedbackPrimitives = streamOutStats.NumPrimitivesWritten;
 					result.IsValid = true;

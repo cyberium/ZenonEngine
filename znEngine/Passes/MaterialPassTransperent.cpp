@@ -32,12 +32,12 @@ std::shared_ptr<IRenderPassPipelined> CMaterialPassTransperent::CreatePipeline(I
 
 	// PIPELINES
 	IPipelineState* Pipeline = GetRenderDevice()->CreatePipelineState();
-	Pipeline->GetBlendState()->SetBlendMode(alphaBlending);
-	Pipeline->GetDepthStencilState()->SetDepthMode(enableDepthWrites);
-	Pipeline->GetRasterizerState()->SetCullMode(IRasterizerState::CullMode::None);
-	Pipeline->GetRasterizerState()->SetFillMode(IRasterizerState::FillMode::Solid);
+	Pipeline->GetBlendState().SetBlendMode(alphaBlending);
+	Pipeline->GetDepthStencilState().SetDepthMode(enableDepthWrites);
+	Pipeline->GetRasterizerState().SetCullMode(IRasterizerState::CullMode::None);
+	Pipeline->GetRasterizerState().SetFillMode(IRasterizerState::FillMode::Solid);
 	Pipeline->SetRenderTarget(RenderTarget);
-	Pipeline->GetRasterizerState()->SetViewport(Viewport);
+	Pipeline->GetRasterizerState().SetViewport(Viewport);
 	Pipeline->SetShader(EShaderType::VertexShader, g_pVertexShader);
 	Pipeline->SetShader(EShaderType::PixelShader, g_pPixelShader);
 

@@ -130,7 +130,7 @@ ZN_INTERFACE ZN_API IRasterizerState
 	*/
 	virtual void SetViewport(const Viewport* viewport) = 0;
 	virtual void SetViewports(const std::vector<const Viewport*>& viewports) = 0;
-	virtual const std::vector<const Viewport *>& GetViewports() = 0;
+	virtual const std::vector<const Viewport*>& GetViewports() const = 0;
 
 	/**
 	* Enable scissor-rectangle culling.
@@ -179,7 +179,7 @@ ZN_INTERFACE ZN_API IRasterizerState
 	 * @see https://msdn.microsoft.com/en-us/library/hh404489(v=vs.85).aspx
 	 */
 	virtual void SetForcedSampleCount(uint8_t forcedSampleCount = 0) = 0;
-	virtual uint8_t GetForcedSampleCount() = 0;
+	virtual uint8_t GetForcedSampleCount() const = 0;
 
 	/**
 	 * Enable conservative rasterization mode.
@@ -190,4 +190,5 @@ ZN_INTERFACE ZN_API IRasterizerState
 	virtual bool GetConservativeRasterizationEnabled() const = 0;
 
 	virtual void Bind() = 0;
+	virtual void Unbind() = 0;
 };

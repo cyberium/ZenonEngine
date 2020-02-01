@@ -3,24 +3,24 @@
 // General
 #include "UI_Texture_Material.h"
 
-UI_Texture_Material::UI_Texture_Material(IRenderDevice* RenderDevice) 
-	: MaterialProxie(RenderDevice->CreateMaterial(sizeof(MaterialProperties)))
+UI_Texture_Material::UI_Texture_Material(IRenderDevice& RenderDevice) 
+	: MaterialProxie(RenderDevice.GetObjectsFactory().CreateMaterial(sizeof(MaterialProperties)))
 {
 	m_pProperties = (MaterialProperties*)_aligned_malloc(sizeof(MaterialProperties), 16);
 	*m_pProperties = MaterialProperties();
 
 	// CreateShaders
-	IShader* g_pVertexShader = RenderDevice->CreateShader(
-		EShaderType::VertexShader, "IDB_SHADER_UI_TEXTURE", IShader::ShaderMacros(), "VS_main", "latest"
+	const auto& g_pVertexShader = RenderDevice.GetObjectsFactory().CreateShader(
+		EShaderType::VertexShader, "IDB_SHADER_UI_TEXTURE", "VS_main", IShader::ShaderMacros(), "latest"
 	);
     g_pVertexShader->LoadInputLayoutFromReflector();
 
-	IShader* g_pPixelShader = RenderDevice->CreateShader(
-		EShaderType::PixelShader, "IDB_SHADER_UI_TEXTURE", IShader::ShaderMacros(), "PS_main", "latest"
+	const auto& g_pPixelShader = RenderDevice.GetObjectsFactory().CreateShader(
+		EShaderType::PixelShader, "IDB_SHADER_UI_TEXTURE", "PS_main", IShader::ShaderMacros(), "latest"
 	);
 
 	// Create samplers
-	ISamplerState* g_LinearClampSampler = RenderDevice->CreateSamplerState();
+	const auto& g_LinearClampSampler = RenderDevice.GetObjectsFactory().CreateSamplerState();
 	g_LinearClampSampler->SetFilter(ISamplerState::MinFilter::MinLinear, ISamplerState::MagFilter::MagLinear, ISamplerState::MipFilter::MipLinear);
 	g_LinearClampSampler->SetWrapMode(ISamplerState::WrapMode::Clamp, ISamplerState::WrapMode::Clamp, ISamplerState::WrapMode::Clamp);
 
@@ -40,7 +40,7 @@ UI_Texture_Material::~UI_Texture_Material()
 	}
 }
 
-void UI_Texture_Material::SetTexture(ITexture* _texture)
+void UI_Texture_Material::SetTexture(const std::shared_ptr<ITexture> _texture)
 {
 	base::SetTexture(0, _texture);
 	MarkConstantBufferDirty();

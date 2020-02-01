@@ -84,6 +84,6 @@ ZN_INTERFACE ZN_API __declspec(novtable) IShader
 	virtual void Dispatch(const glm::uvec3& numGroups) = 0;
 };
 
-typedef std::vector<IShader*> ShaderList;
-typedef std::unordered_map<EShaderType, IShader*> ShaderMap;
-typedef std::unordered_map<std::string, IShader*> ShaderNameMap;
+typedef std::vector<std::shared_ptr<IShader>> ShaderList;
+typedef std::unordered_map<EShaderType, std::shared_ptr<IShader>> ShaderMap;
+typedef std::unordered_map<std::string, std::shared_ptr<IShader>> ShaderNameMap;

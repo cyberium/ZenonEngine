@@ -24,11 +24,11 @@ ZN_INTERFACE ZN_API IRenderPassPipelined : public IRenderPass
 {
 	virtual ~IRenderPassPipelined() {}
 
-	virtual std::shared_ptr<IRenderPassPipelined> CreatePipeline(IRenderTarget* RenderTarget, const Viewport* Viewport) = 0;
-	virtual std::shared_ptr<IRenderPassPipelined> SetPipeline(IPipelineState* Pipeline) = 0;
-	virtual IPipelineState* GetPipeline() const = 0;
+	virtual std::shared_ptr<IRenderPassPipelined> CreatePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport* Viewport) = 0;
+	virtual std::shared_ptr<IRenderPassPipelined> SetPipeline(std::shared_ptr<IPipelineState> Pipeline) = 0;
+	virtual const IPipelineState& GetPipeline() const = 0;
 
-	virtual void UpdateViewport(const Viewport * _viewport) = 0;
+	virtual void UpdateViewport(const Viewport& _viewport) = 0;
 };
 
 

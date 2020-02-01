@@ -87,7 +87,6 @@ public:
 	void                                            SetScene(std::weak_ptr<IScene> Scene);
 	void                                            SetParentInternal(std::weak_ptr<ISceneNodeUI> parentNode);
 
-
 protected:
 	virtual void									UpdateLocalTransform();
 	virtual void									UpdateWorldTransform();

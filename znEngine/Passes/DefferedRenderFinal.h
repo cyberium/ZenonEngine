@@ -7,7 +7,7 @@ class CDefferedRenderFinal
 	: public RenderPassPipelined
 {
 public:
-	CDefferedRenderFinal(IRenderDevice* RenderDevice, std::shared_ptr<CDefferedRender> DefferedRender, std::shared_ptr<CDefferedRenderPrepareLights> DefferedRenderPrepareLights);
+	CDefferedRenderFinal(IRenderDevice& RenderDevice, std::shared_ptr<CDefferedRender> DefferedRender, std::shared_ptr<CDefferedRenderPrepareLights> DefferedRenderPrepareLights);
 	virtual ~CDefferedRenderFinal();
 
 	// IRenderPass
@@ -16,7 +16,7 @@ public:
 	void PostRender(RenderEventArgs& e) override;
 
 	// IRenderPassPipelined
-	std::shared_ptr<IRenderPassPipelined> CreatePipeline(IRenderTarget* RenderTarget, const Viewport* Viewport) override;
+	std::shared_ptr<IRenderPassPipelined> CreatePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport* Viewport) override;
 
 protected:
 	void BindLightParamsForCurrentIteration(const RenderEventArgs& e, const CDefferedRenderPrepareLights::SLightResult& LightResult);
@@ -51,5 +51,5 @@ private:
 	std::shared_ptr<CDefferedRender> m_DefferedRender;
 	std::shared_ptr<CDefferedRenderPrepareLights> m_DefferedRenderPrepareLights;
 
-	IMesh* m_QuadMesh;
+	std::shared_ptr<IMesh> m_QuadMesh;
 };

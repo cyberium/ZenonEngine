@@ -21,14 +21,18 @@ RasterizerStateBase::RasterizerStateBase()
     , m_ViewportsDirty(true)
     , m_ScissorRectsDirty(true)
 {
-
+	m_Viewports.resize(8, nullptr);
+	m_ScissorRects.resize(8, Rect());
 }
 
 RasterizerStateBase::~RasterizerStateBase()
-{
+{}
 
-}
 
+
+//
+// IRasterizerState
+//
 void RasterizerStateBase::SetFillMode(FillMode frontFace, FillMode backFace)
 {
     m_FrontFaceFillMode = frontFace;
@@ -102,7 +106,7 @@ void RasterizerStateBase::SetViewports(const std::vector<const Viewport *>& view
     m_ViewportsDirty = true;
 }
 
-const std::vector<const Viewport *>& RasterizerStateBase::GetViewports()
+const std::vector<const Viewport *>& RasterizerStateBase::GetViewports() const
 {
     return m_Viewports;
 }
@@ -163,7 +167,7 @@ void RasterizerStateBase::SetForcedSampleCount(uint8_t sampleCount)
     m_StateDirty = true;
 }
 
-uint8_t RasterizerStateBase::GetForcedSampleCount()
+uint8_t RasterizerStateBase::GetForcedSampleCount() const
 {
     return m_ForcedSampleCount;
 }

@@ -97,8 +97,8 @@ protected:
 	std::shared_ptr<SceneNode3D>                    m_RootNode3D;
 	std::shared_ptr<CUIBaseNode>                    m_RootNodeUI;
 
-	IQuery*                                         m_FrameQuery;
-	IQuery*                                         m_TestQuery;
+	std::shared_ptr<IQuery>                         m_FrameQuery;
+	std::shared_ptr<IQuery>                         m_TestQuery;
 	double                                          m_FrameTime;
 
 	std::chrono::time_point<std::chrono::high_resolution_clock> m_Start, m_End;

@@ -3,7 +3,7 @@
 // General
 #include "MaterialBase.h"
 
-MaterialBase::MaterialBase(IRenderDevice* RenderDevice, size_t Size)
+MaterialBase::MaterialBase(IRenderDevice& RenderDevice, size_t Size)
 	: m_Name("MaterialBase")
 	, m_RenderDevice(RenderDevice)
 	, m_Dirty(true)
@@ -11,7 +11,7 @@ MaterialBase::MaterialBase(IRenderDevice* RenderDevice, size_t Size)
 {
 	if (Size > 0)
 	{
-		m_pConstantBuffer = m_RenderDevice->CreateConstantBuffer(nullptr, Size);
+		m_pConstantBuffer = m_RenderDevice.GetObjectsFactory().CreateConstantBuffer(nullptr, Size);
 	}
 }
 
@@ -19,6 +19,11 @@ MaterialBase::~MaterialBase()
 {
 }
 
+
+
+//
+// IMaterial
+//
 void MaterialBase::SetName(const std::string & Name)
 {
 	m_Name = Name;
@@ -29,21 +34,18 @@ std::string MaterialBase::GetName() const
 	return m_Name;
 }
 
-
-void MaterialBase::SetShader(EShaderType type, IShader* pShader)
+void MaterialBase::SetShader(EShaderType type, const std::shared_ptr<IShader> pShader)
 {
 	m_Shaders[type] = pShader;
 }
 
-IShader* MaterialBase::GetShader(EShaderType type) const
+const IShader& MaterialBase::GetShader(EShaderType type) const
 {
 	const auto& iter = m_Shaders.find(type);
-	if (iter != m_Shaders.end())
-	{
-		return iter->second;
-	}
+	if (iter == m_Shaders.end())
+		throw CException(L"Shader not found.");
 
-	return nullptr;
+	return *iter->second;
 }
 
 const ShaderMap& MaterialBase::GetShaders() const
@@ -51,39 +53,34 @@ const ShaderMap& MaterialBase::GetShaders() const
 	return m_Shaders;
 }
 
-
-ITexture* MaterialBase::GetTexture(uint8 ID) const
-{
-	const auto& itr = m_Textures.find(ID);
-	if (itr != m_Textures.end())
-	{
-		return itr->second;
-	}
-
-	return nullptr;
-}
-
-void MaterialBase::SetTexture(uint8 ID, ITexture* texture)
+void MaterialBase::SetTexture(uint8 ID, const std::shared_ptr<ITexture> texture)
 {
 	m_Textures[ID] = texture;
 	m_Dirty = true;
 }
 
-ISamplerState* MaterialBase::GetSampler(uint8 ID) const
+const ITexture& MaterialBase::GetTexture(uint8 ID) const
 {
-    const auto& itr = m_Samplers.find(ID);
-    if (itr != m_Samplers.end())
-    {
-        return itr->second;
-    }
+	const auto& iter = m_Textures.find(ID);
+	if (iter != m_Textures.end())
+		throw CException(L"Texture not found.");
 
-    return nullptr;
+	return *iter->second;
 }
 
-void MaterialBase::SetSampler(uint8 ID, ISamplerState* samplerState)
+void MaterialBase::SetSampler(uint8 ID, const std::shared_ptr<ISamplerState> samplerState)
 {
-    m_Samplers[ID] = samplerState;
-    m_Dirty = true;
+	m_Samplers[ID] = samplerState;
+	m_Dirty = true;
+}
+
+const ISamplerState& MaterialBase::GetSampler(uint8 ID) const
+{
+    const auto& iter = m_Samplers.find(ID);
+    if (iter == m_Samplers.end())
+		throw CException(L"Sampler not found.");
+
+    return *iter->second;
 }
 
 

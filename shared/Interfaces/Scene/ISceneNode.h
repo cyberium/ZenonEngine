@@ -107,7 +107,7 @@ ZN_INTERFACE ZN_API __declspec(novtable) ISceneNode3D
 	virtual void OnUpdate(UpdateEventArgs& e) = 0;
 	virtual void DoUpdate(UpdateEventArgs& e) = 0;
 	virtual void UpdateCamera(const ICameraComponent3D* camera) = 0;
-	virtual void UpdateViewport(const Viewport* viewport) = 0;
+	virtual void UpdateViewport(const Viewport& viewport) = 0;
 
 	// Load & Save
 	virtual bool Load(std::shared_ptr<IXMLReader> Reader) = 0;

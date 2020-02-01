@@ -3,7 +3,7 @@
 //#define MAXD3DDECLUSAGEINDEX    15
 //#define MAXD3DDECLLENGTH        64 // does not include "end" marker vertex element
 
-enum class ZN_API ECustomVertexElementType
+enum class ZN_API ECustomVertexElementType : uint8_t
 {
 	FLOAT1 = 0,
 	FLOAT2 = 1,
@@ -25,7 +25,7 @@ enum class ZN_API ECustomVertexElementType
 	UNUSED = 17
 };
 
-enum class ZN_API ECustomVertexElementUsage
+enum class ZN_API ECustomVertexElementUsage : uint8_t
 {
 	POSITION = 0,
 	BLENDWEIGHT = 1,

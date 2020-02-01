@@ -92,6 +92,8 @@
     <ClCompile Include="Primitives\Geometry.cpp" />
     <ClCompile Include="RasterizerStateBase.cpp" />
     <ClCompile Include="RenderDeviceBase.cpp" />
+    <ClCompile Include="RenderObjectsFactory.cpp" />
+    <ClCompile Include="RenderPrimitivesFactory.cpp" />
     <ClCompile Include="RenderWindowBase.cpp" />
     <ClCompile Include="SamplerStateBase.cpp" />
     <ClCompile Include="ShaderBase.cpp" />
@@ -115,6 +117,8 @@
     <ClInclude Include="MeshBase.h" />
     <ClInclude Include="RasterizerStateBase.h" />
     <ClInclude Include="RenderDeviceBase.h" />
+    <ClInclude Include="RenderObjectsFactory.h" />
+    <ClInclude Include="RenderPrimitivesFactory.h" />
     <ClInclude Include="RenderWindowBase.h" />
     <ClInclude Include="SamplerStateBase.h" />
     <ClInclude Include="ShaderBase.h" />

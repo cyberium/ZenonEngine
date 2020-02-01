@@ -1,28 +1,30 @@
 #pragma once
 
-class StructuredBufferDX11 : public IStructuredBuffer
+class StructuredBufferDX11 
+	: public IStructuredBuffer
 {
 public:
-	StructuredBufferDX11(IRenderDeviceDX11* RenderDeviceD3D11, UINT bindFlags, const void* data, size_t count, UINT stride, CPUAccess cpuAccess = CPUAccess::None, bool bUAV = false);
+	StructuredBufferDX11(IRenderDeviceDX11& RenderDeviceDX11, UINT bindFlags, const void* data, size_t count, UINT stride, CPUAccess cpuAccess = CPUAccess::None, bool bUAV = false);
 	virtual ~StructuredBufferDX11();
 
-	virtual bool Bind(uint32 id, const IShader* shader, IShaderParameter::Type parameterType) const override;
-	virtual void UnBind(uint32 id, const IShader* shader, IShaderParameter::Type parameterType) const override;
+	// IBuffer
+	bool Bind(uint32 id, const IShader* shader, IShaderParameter::Type parameterType) const override;
+	void UnBind(uint32 id, const IShader* shader, IShaderParameter::Type parameterType) const override;
+	void Copy(IBuffer* other) const override;
+	BufferType GetType() const override;
+	uint32 GetElementCount() const override;
+	uint32 GetElementStride() const override;
+    uint32 GetElementOffset() const override;
 
-	virtual BufferType GetType() const override;
-	virtual uint32 GetElementCount() const override;
-	virtual uint32 GetElementStride() const override;
-    virtual uint32 GetElementOffset() const override;
-
+	// IStructuredBuffer
 	virtual void Copy(IStructuredBuffer* other) override;
+	virtual void Set(void* data, size_t elementSize, size_t offset, size_t numElements) override;
 	virtual void Clear() override;
 
+	// IStructuredBufferDX11
 	ID3D11UnorderedAccessView* GetUnorderedAccessView() const;
 
 protected:
-	virtual void Copy(IBuffer* other) const override;
-	virtual void SetData(void* data, size_t elementSize, size_t offset, size_t numElements) override;
-
 	void Commit() const;
 
 private:
@@ -55,5 +57,5 @@ private:
 	CPUAccess m_CPUAccess;
 
 private: // Link to parent d3d11 device
-	IRenderDeviceDX11* m_RenderDeviceD3D11;
+	IRenderDeviceDX11& m_RenderDeviceDX11;
 };

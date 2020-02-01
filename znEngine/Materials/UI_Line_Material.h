@@ -3,7 +3,7 @@
 class ZN_API UI_Line_Material : public MaterialProxie
 {
 public:
-    UI_Line_Material(IRenderDevice* RenderDevice);
+    UI_Line_Material(IRenderDevice& RenderDevice);
 	virtual ~UI_Line_Material();
 
     // UI_Line_Material

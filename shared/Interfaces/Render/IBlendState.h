@@ -245,4 +245,5 @@ ZN_INTERFACE ZN_API IBlendState
 	virtual bool GetIndependentBlend() const = 0;
 
 	virtual void Bind() = 0;
+	virtual void Unbind() = 0;
 };

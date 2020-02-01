@@ -3,15 +3,14 @@
 // General
 #include "RenderWindowBase.h"
 
-RenderWindowBase::RenderWindowBase(IRenderDevice* RenderDevice, INativeWindow * WindowObject, bool vSync)
-	: m_RenderDevice(RenderDevice)
-    , m_WindowObject(WindowObject)
+RenderWindowBase::RenderWindowBase(INativeWindow& WindowObject, bool vSync)
+	: m_NativeWindow(WindowObject)
 	, m_vSync(vSync)
 
     , m_bResizePending(false)
 {
-	m_Viewport.SetWidth(WindowObject->GetWindowWidth());
-	m_Viewport.SetHeight(WindowObject->GetWindowHeight());
+	m_Viewport.SetWidth(WindowObject.GetWindowWidth());
+	m_Viewport.SetHeight(WindowObject.GetWindowHeight());
 }
 
 RenderWindowBase::~RenderWindowBase()
@@ -75,46 +74,77 @@ void RenderWindowBase::OnRenderUI(RenderEventArgs & e)
 
 
 //
-// IRenderWindow
+// INativeWindow
 //
+void RenderWindowBase::SetWindowTitle(const std::string& WindowName)
+{
+	m_NativeWindow.SetWindowTitle(WindowName);
+}
+
+std::string RenderWindowBase::GetWindowTitle() const
+{
+	return m_NativeWindow.GetWindowTitle();
+}
+
 size_t RenderWindowBase::GetWindowWidth() const
 {
-	return m_WindowObject->GetWindowWidth();
+	return m_NativeWindow.GetWindowWidth();
 }
 
 size_t RenderWindowBase::GetWindowHeight() const
 {
-    return m_WindowObject->GetWindowHeight();
+    return m_NativeWindow.GetWindowHeight();
 }
 
-glm::ivec2 RenderWindowBase::GetWindowSize() const
+void RenderWindowBase::SetCursorPosition(const glm::ivec2 & CursorPosition)
 {
-	return glm::ivec2(GetWindowWidth(), GetWindowHeight());
+	m_NativeWindow.SetCursorPosition(CursorPosition);
 }
 
+glm::ivec2 RenderWindowBase::GetCursorPosition() const
+{
+	return m_NativeWindow.GetCursorPosition();
+}
+
+void RenderWindowBase::ShowCursor()
+{
+	m_NativeWindow.ShowCursor();
+}
+
+void RenderWindowBase::HideCursor()
+{
+	m_NativeWindow.HideCursor();
+}
+
+void RenderWindowBase::SetEventsListener(INativeWindowEventListener* WindowEventsListener)
+{
+	_ASSERT_EXPR(false, L"Not implemented!");
+}
+
+void RenderWindowBase::ResetEventsListener()
+{
+	_ASSERT_EXPR(false, L"Not implemented!");
+}
+
+
+
+
+//
+// IRenderWindow
+//
 bool RenderWindowBase::IsVSync() const
 {
 	return m_vSync;
 }
 
-IRenderDevice* RenderWindowBase::GetRenderDevice() const
+const IRenderTarget& RenderWindowBase::GetRenderTarget() const
 {
-    return m_RenderDevice;
+    return *m_RenderTarget;
 }
 
-IRenderTarget* RenderWindowBase::GetRenderTarget() const
+const Viewport& RenderWindowBase::GetViewport() const
 {
-    return m_RenderTarget;
-}
-
-INativeWindow* RenderWindowBase::GetWindowObject() const
-{
-	return m_WindowObject;
-}
-
-const Viewport* RenderWindowBase::GetViewport() const
-{
-	return &m_Viewport;
+	return m_Viewport;
 }
 
 
@@ -350,7 +380,10 @@ void RenderWindowBase::Disconnect(IApplicationEvents * ApplicationEvents)
 
 
 
+//
+// Protected
+//
 void RenderWindowBase::CreateSwapChain()
 {
-	m_RenderTarget = GetRenderDevice()->CreateRenderTarget();
+	m_RenderTarget = GetRenderDevice().GetObjectsFactory().CreateRenderTarget();
 }

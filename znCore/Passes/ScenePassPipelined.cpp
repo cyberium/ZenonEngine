@@ -4,7 +4,7 @@
 #include "ScenePassPipelined.h"
 
 
-ScenePassPipelined::ScenePassPipelined(IRenderDevice* RenderDevice, std::shared_ptr<IScene> Scene)
+ScenePassPipelined::ScenePassPipelined(IRenderDevice& RenderDevice, std::shared_ptr<IScene> Scene)
 	: RenderPassPipelined(RenderDevice)
 	, m_Scene(Scene)
 {}

@@ -16,6 +16,8 @@
 #include "../znRender/GeometryBase.h"
 #include "../znRender/MeshBase.h"
 #include "../znRender/RenderDeviceBase.h"
+#include "../znRender/RenderPrimitivesFactory.h"
+#include "../znRender/RenderObjectsFactory.h"
 #include "../znRender/RenderWindowBase.h"
 #include "../znRender/SamplerStateBase.h"
 #include "../znRender/ShaderBase.h"

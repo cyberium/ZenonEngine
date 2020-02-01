@@ -2,8 +2,8 @@
 
 #include "StructuredBufferDX11.h"
 
-StructuredBufferDX11::StructuredBufferDX11(IRenderDeviceDX11* RenderDeviceD3D11, UINT bindFlags, const void* data, size_t count, UINT stride, CPUAccess cpuAccess, bool bUAV)
-	: m_RenderDeviceD3D11(RenderDeviceD3D11)
+StructuredBufferDX11::StructuredBufferDX11(IRenderDeviceDX11& RenderDeviceDX11, UINT bindFlags, const void* data, size_t count, UINT stride, CPUAccess cpuAccess, bool bUAV)
+	: m_RenderDeviceDX11(RenderDeviceDX11)
 	, m_uiStride(stride)
 	, m_uiCount((UINT)count)
 	, m_BindFlags(bindFlags)
@@ -59,7 +59,7 @@ StructuredBufferDX11::StructuredBufferDX11(IRenderDeviceDX11* RenderDeviceD3D11,
 	subResourceData.SysMemPitch = 0;
 	subResourceData.SysMemSlicePitch = 0;
 
-	if (FAILED(m_RenderDeviceD3D11->GetDeviceD3D11()->CreateBuffer(&bufferDesc, &subResourceData, &m_pBuffer)))
+	if (FAILED(m_RenderDeviceDX11.GetDeviceD3D11()->CreateBuffer(&bufferDesc, &subResourceData, &m_pBuffer)))
 	{
 		_ASSERT_EXPR(false, "Failed to create read/write buffer.");
 		return;
@@ -73,7 +73,7 @@ StructuredBufferDX11::StructuredBufferDX11(IRenderDeviceDX11* RenderDeviceD3D11,
 		srvDesc.Buffer.FirstElement = 0;
 		srvDesc.Buffer.NumElements = m_uiCount;
 
-		if (FAILED(m_RenderDeviceD3D11->GetDeviceD3D11()->CreateShaderResourceView(m_pBuffer, &srvDesc, &m_pSRV)))
+		if (FAILED(m_RenderDeviceDX11.GetDeviceD3D11()->CreateShaderResourceView(m_pBuffer, &srvDesc, &m_pSRV)))
 		{
 			_ASSERT_EXPR(false, "Failed to create shader resource view.");
 			return;
@@ -89,7 +89,7 @@ StructuredBufferDX11::StructuredBufferDX11(IRenderDeviceDX11* RenderDeviceD3D11,
 		uavDesc.Buffer.NumElements = m_uiCount;
 		uavDesc.Buffer.Flags = 0;
 
-		if (FAILED(m_RenderDeviceD3D11->GetDeviceD3D11()->CreateUnorderedAccessView(m_pBuffer, &uavDesc, &m_pUAV)))
+		if (FAILED(m_RenderDeviceDX11.GetDeviceD3D11()->CreateUnorderedAccessView(m_pBuffer, &uavDesc, &m_pUAV)))
 		{
 			_ASSERT_EXPR(false, "Failed to create unordered access view.");
 			return;
@@ -100,6 +100,10 @@ StructuredBufferDX11::StructuredBufferDX11(IRenderDeviceDX11* RenderDeviceD3D11,
 StructuredBufferDX11::~StructuredBufferDX11()
 {}
 
+
+//
+// IBuffer
+//
 bool StructuredBufferDX11::Bind(uint32 ID, const IShader* shader, IShaderParameter::Type parameterType) const
 {
 	if (m_bIsDirty)
@@ -115,22 +119,22 @@ bool StructuredBufferDX11::Bind(uint32 ID, const IShader* shader, IShaderParamet
 		switch (shader->GetType())
 		{
 		case EShaderType::VertexShader:
-			m_RenderDeviceD3D11->GetDeviceContextD3D11()->VSSetShaderResources(ID, 1, srv);
+			m_RenderDeviceDX11.GetDeviceContextD3D11()->VSSetShaderResources(ID, 1, srv);
 			break;
 		case EShaderType::TessellationControlShader:
-			m_RenderDeviceD3D11->GetDeviceContextD3D11()->HSSetShaderResources(ID, 1, srv);
+			m_RenderDeviceDX11.GetDeviceContextD3D11()->HSSetShaderResources(ID, 1, srv);
 			break;
 		case EShaderType::TessellationEvaluationShader:
-			m_RenderDeviceD3D11->GetDeviceContextD3D11()->DSSetShaderResources(ID, 1, srv);
+			m_RenderDeviceDX11.GetDeviceContextD3D11()->DSSetShaderResources(ID, 1, srv);
 			break;
 		case EShaderType::GeometryShader:
-			m_RenderDeviceD3D11->GetDeviceContextD3D11()->GSSetShaderResources(ID, 1, srv);
+			m_RenderDeviceDX11.GetDeviceContextD3D11()->GSSetShaderResources(ID, 1, srv);
 			break;
 		case EShaderType::PixelShader:
-			m_RenderDeviceD3D11->GetDeviceContextD3D11()->PSSetShaderResources(ID, 1, srv);
+			m_RenderDeviceDX11.GetDeviceContextD3D11()->PSSetShaderResources(ID, 1, srv);
 			break;
 		case EShaderType::ComputeShader:
-			m_RenderDeviceD3D11->GetDeviceContextD3D11()->CSSetShaderResources(ID, 1, srv);
+			m_RenderDeviceDX11.GetDeviceContextD3D11()->CSSetShaderResources(ID, 1, srv);
 			break;
 		}
 	}
@@ -140,7 +144,7 @@ bool StructuredBufferDX11::Bind(uint32 ID, const IShader* shader, IShaderParamet
 		switch (shader->GetType())
 		{
 		case EShaderType::ComputeShader:
-			m_RenderDeviceD3D11->GetDeviceContextD3D11()->CSSetUnorderedAccessViews(ID, 1, uav, nullptr);
+			m_RenderDeviceDX11.GetDeviceContextD3D11()->CSSetUnorderedAccessViews(ID, 1, uav, nullptr);
 			break;
 		}
 	}
@@ -158,22 +162,22 @@ void StructuredBufferDX11::UnBind(uint32 ID, const IShader* shader, IShaderParam
 		switch (shader->GetType())
 		{
 		case EShaderType::VertexShader:
-			m_RenderDeviceD3D11->GetDeviceContextD3D11()->VSSetShaderResources(ID, 1, srv);
+			m_RenderDeviceDX11.GetDeviceContextD3D11()->VSSetShaderResources(ID, 1, srv);
 			break;
 		case EShaderType::TessellationControlShader:
-			m_RenderDeviceD3D11->GetDeviceContextD3D11()->HSSetShaderResources(ID, 1, srv);
+			m_RenderDeviceDX11.GetDeviceContextD3D11()->HSSetShaderResources(ID, 1, srv);
 			break;
 		case EShaderType::TessellationEvaluationShader:
-			m_RenderDeviceD3D11->GetDeviceContextD3D11()->DSSetShaderResources(ID, 1, srv);
+			m_RenderDeviceDX11.GetDeviceContextD3D11()->DSSetShaderResources(ID, 1, srv);
 			break;
 		case EShaderType::GeometryShader:
-			m_RenderDeviceD3D11->GetDeviceContextD3D11()->GSSetShaderResources(ID, 1, srv);
+			m_RenderDeviceDX11.GetDeviceContextD3D11()->GSSetShaderResources(ID, 1, srv);
 			break;
 		case EShaderType::PixelShader:
-			m_RenderDeviceD3D11->GetDeviceContextD3D11()->PSSetShaderResources(ID, 1, srv);
+			m_RenderDeviceDX11.GetDeviceContextD3D11()->PSSetShaderResources(ID, 1, srv);
 			break;
 		case EShaderType::ComputeShader:
-			m_RenderDeviceD3D11->GetDeviceContextD3D11()->CSSetShaderResources(ID, 1, srv);
+			m_RenderDeviceDX11.GetDeviceContextD3D11()->CSSetShaderResources(ID, 1, srv);
 			break;
 		}
 	}
@@ -182,91 +186,16 @@ void StructuredBufferDX11::UnBind(uint32 ID, const IShader* shader, IShaderParam
 		switch (shader->GetType())
 		{
 		case EShaderType::ComputeShader:
-			m_RenderDeviceD3D11->GetDeviceContextD3D11()->CSSetUnorderedAccessViews(ID, 1, uav, nullptr);
+			m_RenderDeviceDX11.GetDeviceContextD3D11()->CSSetUnorderedAccessViews(ID, 1, uav, nullptr);
 			break;
 		}
 	}
 
 }
 
-void StructuredBufferDX11::SetData(void* data, size_t elementSize, size_t offset, size_t numElements)
-{
-	unsigned char* first = (unsigned char*)data + (offset * elementSize);
-	unsigned char* last = first + (numElements * elementSize);
-	m_Data.assign(first, last);
-
-	m_bIsDirty = true;
-}
-
-void StructuredBufferDX11::Commit() const
-{
-	if (m_bIsDirty && m_bDynamic && m_pBuffer)
-	{
-		D3D11_MAPPED_SUBRESOURCE mappedResource;
-		// Copy the contents of the data buffer to the GPU.
-
-		if (FAILED(m_RenderDeviceD3D11->GetDeviceContextD3D11()->Map(m_pBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource)))
-		{
-			Log::Error("Failed to map subresource.");
-		}
-
-		size_t sizeInBytes = m_Data.size();
-		memcpy_s(mappedResource.pData, sizeInBytes, m_Data.data(), sizeInBytes);
-
-		m_RenderDeviceD3D11->GetDeviceContextD3D11()->Unmap(m_pBuffer, 0);
-
-		m_bIsDirty = false;
-	}
-}
-
-void StructuredBufferDX11::Copy(IStructuredBuffer* other)
-{
-	StructuredBufferDX11* srcBuffer = dynamic_cast<StructuredBufferDX11*>(other);
-
-	if (srcBuffer->m_bIsDirty)
-	{
-		// Make sure the contents of the source buffer are up-to-date
-		srcBuffer->Commit();
-	}
-
-	if (srcBuffer && srcBuffer != this &&
-		m_uiCount * m_uiStride == srcBuffer->m_uiCount * srcBuffer->m_uiStride)
-	{
-		m_RenderDeviceD3D11->GetDeviceContextD3D11()->CopyResource(m_pBuffer, srcBuffer->m_pBuffer);
-	}
-	else
-	{
-		Log::Error("Source buffer is not compatible with this buffer.");
-	}
-
-	if (((int)m_CPUAccess & (int)CPUAccess::Read) != 0)
-	{
-		D3D11_MAPPED_SUBRESOURCE mappedResource;
-
-		// Copy the texture data from the buffer resource
-		if (FAILED(m_RenderDeviceD3D11->GetDeviceContextD3D11()->Map(m_pBuffer, 0, D3D11_MAP_READ, 0, &mappedResource)))
-		{
-			Log::Error("Failed to map texture resource for reading.");
-		}
-
-		memcpy_s(m_Data.data(), m_Data.size(), mappedResource.pData, m_Data.size());
-
-		m_RenderDeviceD3D11->GetDeviceContextD3D11()->Unmap(m_pBuffer, 0);
-	}
-}
-
 void StructuredBufferDX11::Copy(IBuffer* other) const
 {
 	Copy(dynamic_cast<IStructuredBuffer*>(other));
-}
-
-void StructuredBufferDX11::Clear()
-{
-	if (m_pUAV)
-	{
-		FLOAT clearColor[4] = { 0, 0, 0, 0 };
-		m_RenderDeviceD3D11->GetDeviceContextD3D11()->ClearUnorderedAccessViewFloat(m_pUAV, clearColor);
-	}
 }
 
 IBuffer::BufferType StructuredBufferDX11::GetType() const
@@ -289,7 +218,92 @@ uint32 StructuredBufferDX11::GetElementOffset() const
     return 0;
 }
 
+
+
+//
+// IStructuredBuffer
+//
+void StructuredBufferDX11::Copy(IStructuredBuffer* other)
+{
+	StructuredBufferDX11* srcBuffer = dynamic_cast<StructuredBufferDX11*>(other);
+
+	if (srcBuffer->m_bIsDirty)
+	{
+		srcBuffer->Commit();
+	}
+
+	if (srcBuffer && srcBuffer != this && m_uiCount * m_uiStride == srcBuffer->m_uiCount * srcBuffer->m_uiStride)
+	{
+		m_RenderDeviceDX11.GetDeviceContextD3D11()->CopyResource(m_pBuffer, srcBuffer->m_pBuffer);
+	}
+	else
+	{
+		Log::Error("Source buffer is not compatible with this buffer.");
+	}
+
+	if (((uint8_t)m_CPUAccess & (uint8_t)CPUAccess::Read) != 0)
+	{
+		D3D11_MAPPED_SUBRESOURCE mappedResource;
+
+		if (FAILED(m_RenderDeviceDX11.GetDeviceContextD3D11()->Map(m_pBuffer, 0, D3D11_MAP_READ, 0, &mappedResource)))
+		{
+			Log::Error("Failed to map texture resource for reading.");
+		}
+
+		memcpy_s(m_Data.data(), m_Data.size(), mappedResource.pData, m_Data.size());
+
+		m_RenderDeviceDX11.GetDeviceContextD3D11()->Unmap(m_pBuffer, 0);
+	}
+}
+
+void StructuredBufferDX11::Set(void* data, size_t elementSize, size_t offset, size_t numElements)
+{
+	unsigned char* first = (unsigned char*)data + (offset * elementSize);
+	unsigned char* last = first + (numElements * elementSize);
+	m_Data.assign(first, last);
+
+	m_bIsDirty = true;
+}
+
+void StructuredBufferDX11::Clear()
+{
+	if (m_pUAV)
+	{
+		FLOAT clearColor[4] = { 0, 0, 0, 0 };
+		m_RenderDeviceDX11.GetDeviceContextD3D11()->ClearUnorderedAccessViewFloat(m_pUAV, clearColor);
+	}
+}
+
+
+
+//
+// IStructuredBufferDX11
+//
 ID3D11UnorderedAccessView* StructuredBufferDX11::GetUnorderedAccessView() const
 {
 	return m_pUAV;
+}
+
+
+
+//
+// Protected
+//
+void StructuredBufferDX11::Commit() const
+{
+	if (m_bIsDirty && m_bDynamic && m_pBuffer)
+	{
+		D3D11_MAPPED_SUBRESOURCE mappedResource;
+
+		if (FAILED(m_RenderDeviceDX11.GetDeviceContextD3D11()->Map(m_pBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource)))
+		{
+			Log::Error("Failed to map subresource.");
+		}
+
+		memcpy_s(mappedResource.pData, m_Data.size(), m_Data.data(), m_Data.size());
+
+		m_RenderDeviceDX11.GetDeviceContextD3D11()->Unmap(m_pBuffer, 0);
+
+		m_bIsDirty = false;
+	}
 }

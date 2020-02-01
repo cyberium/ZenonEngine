@@ -8,6 +8,7 @@ public:
 	BlendStateBase();
     virtual ~BlendStateBase();
 
+	// IBlendState
 	virtual void SetBlendMode(const BlendMode& blendMode);
 	virtual void SetBlendModes(const std::vector<BlendMode>& blendModes);
 	virtual const std::vector<BlendMode>& GetBlendModes() const;
@@ -26,13 +27,13 @@ public:
 
 protected:
     typedef std::vector<BlendMode> BlendModeList;
-    BlendModeList                                   m_BlendModes;
+    BlendModeList m_BlendModes;
 
-    bool                                            m_bAlphaToCoverageEnabled;
-    bool                                            m_bIndependentBlendEnabled;
-    uint32_t                                        m_SampleMask;
+    bool m_bAlphaToCoverageEnabled;
+    bool m_bIndependentBlendEnabled;
+    uint32_t m_SampleMask;
 
-    vec4                                            m_ConstBlendFactor;
+    vec4 m_ConstBlendFactor;
 
-    bool                                            m_bDirty;
+    bool m_bDirty;
 };

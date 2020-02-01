@@ -16,6 +16,10 @@ BlendStateBase::~BlendStateBase()
 {
 }
 
+
+//
+// IBlendState
+//
 void BlendStateBase::SetBlendMode(const BlendStateBase::BlendMode& blendMode)
 {
     m_BlendModes[0] = blendMode;

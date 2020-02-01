@@ -1,12 +1,10 @@
 #include "stdafx.h"
 
-#include "TextureDX11.h"
-#include "StructuredBufferDX11.h"
-
+// General
 #include "RenderTargetDX11.h"
 
-RenderTargetDX11::RenderTargetDX11(IRenderDeviceDX11* RenderDeviceD3D11)
-	: m_RenderDeviceD3D11(RenderDeviceD3D11)
+RenderTargetDX11::RenderTargetDX11(IRenderDeviceDX11& RenderDeviceDX11)
+	: m_RenderDeviceDX11(RenderDeviceDX11)
 	, m_Width(0)
 	, m_Height(0)
 	, m_bCheckValidity(false)
@@ -20,24 +18,24 @@ RenderTargetDX11::~RenderTargetDX11()
 
 }
 
-void RenderTargetDX11::AttachTexture(AttachmentPoint attachment, ITexture* texture)
+void RenderTargetDX11::AttachTexture(AttachmentPoint attachment, std::shared_ptr<ITexture> texture)
 {
-	TextureDX11* textureDX11 = dynamic_cast<TextureDX11*>(texture);
+	std::shared_ptr<TextureDX11> textureDX11 = std::dynamic_pointer_cast<TextureDX11>(texture);
 	m_Textures[(uint8_t)attachment] = textureDX11;
 
 	// Next time the render target is "bound", check that it is valid.
 	m_bCheckValidity = true;
 }
 
-ITexture* RenderTargetDX11::GetTexture(AttachmentPoint attachment)
+const ITexture& RenderTargetDX11::GetTexture(AttachmentPoint attachment)
 {
-	return m_Textures[(uint8_t)attachment];
+	return *m_Textures[(uint8_t)attachment];
 }
 
 
 void RenderTargetDX11::Clear(AttachmentPoint attachment, ClearFlags clearFlags, cvec4 color, float depth, uint8_t stencil)
 {
-	TextureDX11* texture = m_Textures[(uint8_t)attachment];
+	const std::shared_ptr<TextureDX11>& texture = m_Textures[(uint8_t)attachment];
 	if (texture)
 	{
 		texture->Clear(clearFlags, color, depth, stencil);
@@ -54,7 +52,7 @@ void RenderTargetDX11::Clear(ClearFlags clearFlags, cvec4 color, float depth, ui
 
 void RenderTargetDX11::GenerateMipMaps()
 {
-	for (auto texture : m_Textures)
+	for (const auto& texture : m_Textures)
 	{
 		if (texture)
 		{
@@ -63,31 +61,27 @@ void RenderTargetDX11::GenerateMipMaps()
 	}
 }
 
-void RenderTargetDX11::AttachStructuredBuffer(uint8_t slot, IStructuredBuffer* rwBuffer)
+void RenderTargetDX11::AttachStructuredBuffer(uint8_t slot, std::shared_ptr<IStructuredBuffer> rwBuffer)
 {
-	StructuredBufferDX11* rwbufferDX11 = dynamic_cast<StructuredBufferDX11*>(rwBuffer);
+	std::shared_ptr<StructuredBufferDX11> rwbufferDX11 = std::dynamic_pointer_cast<StructuredBufferDX11>(rwBuffer);
 	m_StructuredBuffers[slot] = rwbufferDX11;
 
 	// Next time the render target is "bound", check that it is valid.
 	m_bCheckValidity = true;
 }
 
-IStructuredBuffer* RenderTargetDX11::GetStructuredBuffer(uint8_t slot)
+const IStructuredBuffer& RenderTargetDX11::GetStructuredBuffer(uint8_t slot)
 {
-	if (slot < m_StructuredBuffers.size())
-	{
-		return m_StructuredBuffers[slot];
-	}
-	return nullptr;
+	return *m_StructuredBuffers[slot];
 }
 
 
-void RenderTargetDX11::Resize(uint16_t width, uint16_t height)
+void RenderTargetDX11::Resize(size_t width, size_t height)
 {
 	if (m_Width != width || m_Height != height)
 	{
-		m_Width = glm::max<uint16_t>(width, 1);
-		m_Height = glm::max<uint16_t>(height, 1);
+		m_Width = glm::max<size_t>(width, 1);
+		m_Height = glm::max<size_t>(height, 1);
 
 		// Resize the attached textures.
 		for (const auto& texture : m_Textures)
@@ -114,32 +108,32 @@ void RenderTargetDX11::Bind()
 	ID3D11RenderTargetView* renderTargetViews[8];
 	UINT numRTVs = 0;
 	for (uint8_t i = 0; i < 8; i++)
-		if (TextureDX11* texture = m_Textures[i])
+		if (const auto& texture = m_Textures[i])
 			renderTargetViews[numRTVs++] = texture->GetRenderTargetView();
 
 	ID3D11UnorderedAccessView* uavViews[8];
 	UINT uavStartSlot = numRTVs;
 	UINT numUAVs = 0;
 	for (uint8_t i = 0; i < 8; i++)
-		if (StructuredBufferDX11* rwbuffer = m_StructuredBuffers[i])
+		if (const auto& rwbuffer = m_StructuredBuffers[i])
 			uavViews[numUAVs++] = rwbuffer->GetUnorderedAccessView();
 
 	ID3D11DepthStencilView* depthStencilView = nullptr;
-	if (TextureDX11* depthTexture = m_Textures[(uint8_t)AttachmentPoint::Depth])
+	if (const auto& depthTexture = m_Textures[(uint8_t)AttachmentPoint::Depth])
 	{
 		depthStencilView = depthTexture->GetDepthStencilView();
 	}
-	else if (TextureDX11* depthStencilTexture = m_Textures[(uint8_t)AttachmentPoint::DepthStencil])
+	else if (const auto& depthStencilTexture = m_Textures[(uint8_t)AttachmentPoint::DepthStencil])
 	{
 		depthStencilView = depthStencilTexture->GetDepthStencilView();
 	}
 
-	m_RenderDeviceD3D11->GetDeviceContextD3D11()->OMSetRenderTargetsAndUnorderedAccessViews(numRTVs, renderTargetViews, depthStencilView, uavStartSlot, numUAVs, uavViews, nullptr);
+	m_RenderDeviceDX11.GetDeviceContextD3D11()->OMSetRenderTargetsAndUnorderedAccessViews(numRTVs, renderTargetViews, depthStencilView, uavStartSlot, numUAVs, uavViews, nullptr);
 }
 
 void RenderTargetDX11::UnBind()
 {
-	m_RenderDeviceD3D11->GetDeviceContextD3D11()->OMSetRenderTargetsAndUnorderedAccessViews(0, nullptr, nullptr, 0, 0, nullptr, nullptr);
+	m_RenderDeviceDX11.GetDeviceContextD3D11()->OMSetRenderTargetsAndUnorderedAccessViews(0, NULL, NULL, 0, 0, NULL, NULL);
 }
 
 bool RenderTargetDX11::IsValid() const
@@ -148,7 +142,7 @@ bool RenderTargetDX11::IsValid() const
 	int width = -1;
 	int height = -1;
 
-	for (auto texture : m_Textures)
+	for (const auto& texture : m_Textures)
 	{
 		if (texture)
 		{

@@ -30,17 +30,17 @@ const BoundingBox& MeshBase::GetBounds() const
 	return m_Geometry->GetBounds();
 }
 
-void MeshBase::AddVertexBuffer(const BufferBinding& binding, IBuffer* buffer)
+void MeshBase::AddVertexBuffer(const BufferBinding& binding, std::shared_ptr<IBuffer> buffer)
 {
 	m_Geometry->AddVertexBuffer(binding, buffer);
 }
 
-void MeshBase::SetVertexBuffer(IBuffer* buffer)
+void MeshBase::SetVertexBuffer(std::shared_ptr<IBuffer> buffer)
 {
 	m_Geometry->SetVertexBuffer(buffer);
 }
 
-void MeshBase::SetIndexBuffer(IBuffer* buffer)
+void MeshBase::SetIndexBuffer(std::shared_ptr<IBuffer> buffer)
 {
 	m_Geometry->SetIndexBuffer(buffer);
 }
@@ -69,9 +69,9 @@ void MeshBase::AddMaterial(const std::shared_ptr<IMaterial> Material, SGeometryP
 	m_MaterialForGeometryParts.push_back(renderGeometryArgs);
 }
 
-IGeometry* MeshBase::GetGeometry() const
+IGeometry& MeshBase::GetGeometry() const
 {
-	return m_Geometry.get();
+	return *m_Geometry;
 }
 
 bool MeshBase::Accept(IVisitor* visitor, SGeometryPartParams GeometryPartParams = SGeometryPartParams())

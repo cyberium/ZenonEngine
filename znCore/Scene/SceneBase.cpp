@@ -21,8 +21,8 @@ void SceneBase::Initialize()
 {
 	m_VideoSettings = GetBaseManager()->GetManager<ISettings>()->GetGroup("Video");
 
-	m_FrameQuery = GetRenderDevice()->CreateQuery(IQuery::QueryType::Timer, 1);
-	m_TestQuery = GetRenderDevice()->CreateQuery(IQuery::QueryType::CountSamples, 1);
+	m_FrameQuery = GetRenderDevice()->GetObjectsFactory().CreateQuery(IQuery::QueryType::Timer, 1);
+	m_TestQuery = GetRenderDevice()->GetObjectsFactory().CreateQuery(IQuery::QueryType::CountSamples, 1);
 
 	m_RootNode3D = std::make_shared<SceneNode3D>();
 	m_RootNode3D->SetScene(weak_from_this());
