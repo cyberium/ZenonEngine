@@ -7,15 +7,12 @@ CDefferedRenderPrepareLights::CDefferedRenderPrepareLights(IRenderDevice& Render
 	: RenderPass(RenderDevice)
 	, m_BuildRenderListPass(BuildRenderListPass)
 {
-	m_PerObjectData = (PerObject3D*)_aligned_malloc(sizeof(PerObject3D), 16);
 	m_PerObjectConstantBuffer = GetRenderDevice().GetObjectsFactory().CreateConstantBuffer(PerObject3D());
-
 	m_PerFrameConstantBuffer = GetRenderDevice().GetObjectsFactory().CreateConstantBuffer(PerFrame());
 }
 
 CDefferedRenderPrepareLights::~CDefferedRenderPrepareLights()
 {
-	_aligned_free(m_PerObjectData);
 }
 
 const std::vector<CDefferedRenderPrepareLights::SLightResult>& CDefferedRenderPrepareLights::GetLightResult() const
@@ -126,6 +123,16 @@ std::shared_ptr<IRenderPassPipelined> CDefferedRenderPrepareLights::CreatePipeli
 	//shadowPipeline->SetShader(EShaderType::PixelShader, pixelShader);
 
 	m_ShadowPipeline = shadowPipeline;
+
+
+	m_PerObjectShaderParameter = &vertexShader->GetShaderParameterByName("PerObject");
+	_ASSERT(m_PerObjectShaderParameter->IsValid());
+	m_PerObjectShaderParameter->SetConstantBuffer(m_PerObjectConstantBuffer);
+
+	m_PerFrameShaderParameter = &vertexShader->GetShaderParameterByName("PerFrame");
+	_ASSERT(m_PerFrameShaderParameter->IsValid());
+	m_PerFrameShaderParameter->SetConstantBuffer(m_PerFrameConstantBuffer);
+
 	return nullptr;
 	//return SetPipeline(shadowPipeline);
 }
@@ -163,53 +170,21 @@ std::shared_ptr<ITexture> CDefferedRenderPrepareLights::CreateShadowTextureDepth
 	return GetRenderDevice().GetObjectsFactory().CreateTexture2D(cShadowTextureSize, cShadowTextureSize, 1, depthStencilTextureFormat);
 }
 
-void CDefferedRenderPrepareLights::DoRenderToOneContext()
-{
-}
-
 void CDefferedRenderPrepareLights::BindPerFrameParamsForCurrentIteration(const ILightComponent3D * LightComponent)
 {
 	PerFrame perFrame;
 	perFrame.View = LightComponent->GetViewMatrix();
 	perFrame.Projection = LightComponent->GetProjectionMatrix();
-	SetPerFrameData(perFrame);
+	m_PerFrameConstantBuffer->Set(perFrame);
 
-	BindPerFrameDataToVertexShader(m_ShadowPipeline->GetShader(EShaderType::VertexShader).get());
+	m_PerFrameShaderParameter->Bind();
 }
 
 void CDefferedRenderPrepareLights::BindPerObjectParamsForCurrentIteration(const ISceneNode3D * SceneNode)
 {
-	m_PerObjectData->Model = SceneNode->GetWorldTransfom();
-	m_PerObjectConstantBuffer->Set(*m_PerObjectData);
+	PerObject3D perObject3D;
+	perObject3D.Model = SceneNode->GetWorldTransfom();
+	m_PerObjectConstantBuffer->Set(perObject3D);
 
-	auto& perObjectParam = m_ShadowPipeline->GetShader(EShaderType::VertexShader)->GetShaderParameterByName("PerObject");
-	if (perObjectParam.IsValid() && m_PerObjectConstantBuffer != nullptr)
-	{
-		perObjectParam.SetConstantBuffer(m_PerObjectConstantBuffer);
-		perObjectParam.Bind();
-	}
-	else
-	{
-		_ASSERT(false);
-	}
-}
-
-
-
-//
-// Protected
-//
-void CDefferedRenderPrepareLights::SetPerFrameData(const PerFrame& PerFrame)
-{
-	m_PerFrameConstantBuffer->Set(PerFrame);
-}
-
-void CDefferedRenderPrepareLights::BindPerFrameDataToVertexShader(const IShader* VertexShader) const
-{
-	auto& perFrameParam = VertexShader->GetShaderParameterByName("PerFrame");
-	if (perFrameParam.IsValid() && m_PerFrameConstantBuffer != nullptr)
-	{
-		perFrameParam.SetConstantBuffer(m_PerFrameConstantBuffer);
-		perFrameParam.Bind();
-	}
+	m_PerObjectShaderParameter->Bind();
 }

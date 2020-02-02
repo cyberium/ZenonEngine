@@ -6,13 +6,11 @@
 CDefferedRender::CDefferedRender(IRenderDevice& RenderDevice, std::shared_ptr<BuildRenderListPass> BuildRenderListPass)
 	: RenderListProcessorPass(RenderDevice, BuildRenderListPass)
 {
-	m_PerObjectData = (PerObject3D*)_aligned_malloc(sizeof(PerObject3D), 16);
 	m_PerObjectConstantBuffer = GetRenderDevice().GetObjectsFactory().CreateConstantBuffer(PerObject3D());
 }
 
 CDefferedRender::~CDefferedRender()
 {
-	_aligned_free(m_PerObjectData);
 }
 
 
@@ -96,6 +94,10 @@ std::shared_ptr<IRenderPassPipelined> CDefferedRender::CreatePipeline(std::share
 	auto vertexShader = GetRenderDevice().GetObjectsFactory().CreateShader(EShaderType::VertexShader, "IDB_SHADER_3D_MODEL_DEFFERED", "VS_PTN");
 	vertexShader->LoadInputLayoutFromReflector();
 
+	m_PerObjectShaderParameter = &vertexShader->GetShaderParameterByName("PerObject");
+	_ASSERT(m_PerObjectShaderParameter->IsValid());
+	m_PerObjectShaderParameter->SetConstantBuffer(m_PerObjectConstantBuffer);
+
 	auto pixelShader = GetRenderDevice().GetObjectsFactory().CreateShader(EShaderType::PixelShader, "IDB_SHADER_3D_MODEL_DEFFERED", "PS_main");
 
 	// PIPELINES
@@ -138,24 +140,21 @@ bool CDefferedRender::Visit(ISceneNode3D * node)
 {
 	RenderListProcessorPass::Visit(node);
 
-	m_PerObjectData->Model = node->GetWorldTransfom();
-	m_PerObjectConstantBuffer->Set(*m_PerObjectData);
-
-	auto& perObjectParameter = GetPipeline().GetShaders().at(EShaderType::VertexShader)->GetShaderParameterByName("PerObject");
-	if (perObjectParameter.IsValid() && m_PerObjectConstantBuffer != nullptr)
-	{
-		perObjectParameter.SetConstantBuffer(m_PerObjectConstantBuffer);
-		perObjectParameter.Bind();
-	}
+	PerObject3D perObject3D;
+	perObject3D.Model = node->GetWorldTransfom();
+	m_PerObjectConstantBuffer->Set(perObject3D);
+	m_PerObjectShaderParameter->Bind();
 
 	return true;
 }
 
 bool CDefferedRender::Visit(IGeometry * Geometry, const IMaterial * Material, SGeometryPartParams GeometryPartParams)
 {
-	Material->Bind(GetRenderEventArgs().PipelineState->GetShaders());
-	bool result = Geometry->Render(GetRenderEventArgs(), GetRenderEventArgs().PipelineState->GetShaders(), Material, GeometryPartParams);
-	Material->Unbind(GetRenderEventArgs().PipelineState->GetShaders());
+	const auto& shaders = GetRenderEventArgs().PipelineState->GetShaders();
+
+	Material->Bind(shaders);
+	bool result = Geometry->Render(GetRenderEventArgs(), shaders, Material, GeometryPartParams);
+	Material->Unbind(shaders);
 
 	return result;
 }

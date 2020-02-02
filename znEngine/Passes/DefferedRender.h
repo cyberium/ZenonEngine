@@ -28,8 +28,8 @@ public:
 	bool Visit(ILightComponent3D* light) override;
 
 private:
-	PerObject3D* m_PerObjectData;
 	std::shared_ptr<IConstantBuffer> m_PerObjectConstantBuffer;
+	IShaderParameter* m_PerObjectShaderParameter;
 
 private:
 	std::shared_ptr<ITexture> m_Texture0;

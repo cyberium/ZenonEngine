@@ -36,11 +36,8 @@ private: // Pass light params
 	struct __declspec(novtable, align(16)) SLightResult
 	{
 		SLight Light;
-
 		glm::mat4 LightViewMatrix;
-
 		glm::mat4 LightProjectionMatrix;
-
 		uint32 IsShadowEnabled;
 		glm::vec3 __Padding;
 	};

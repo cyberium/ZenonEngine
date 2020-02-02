@@ -66,13 +66,6 @@ bool GeometryDX11::Render(const RenderEventArgs& RenderEventArgs, const ShaderMa
 	const auto& vertexShader = ShadersMap.at(EShaderType::VertexShader);
 	_ASSERT(vertexShader != nullptr);
 
-	/*auto& perObjectParameter = vertexShader->GetShaderParameterByName("PerObject");
-	if (perObjectParameter.IsValid() && PerObject != nullptr)
-	{
-		perObjectParameter.SetConstantBuffer(std::const_pointer_cast<IConstantBuffer>(std::shared_ptr<const IConstantBuffer>(PerObject)));
-		perObjectParameter.Bind();
-	}*/
-
 	if (m_VertexBuffer != nullptr)
 	{
 		m_VertexBuffer->Bind(0, vertexShader.get(), IShaderParameter::Type::Buffer);
@@ -119,12 +112,6 @@ bool GeometryDX11::Render(const RenderEventArgs& RenderEventArgs, const ShaderMa
 			}
 		}
 	}
-
-	/*perObjectParameter = vertexShader->GetShaderParameterByName("PerObject");
-	if (perObjectParameter.IsValid())
-	{
-		perObjectParameter.Unbind();
-	}*/
 
 	return true;
 }

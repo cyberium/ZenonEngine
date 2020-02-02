@@ -163,7 +163,7 @@ void CGameState_World::Load3D()
 
 
 	{
-		const int iterCnt = 6;
+		const int iterCnt = 15;
 		const float offset = 13.0f;
 		const float scale = 5.0f;
 
@@ -198,7 +198,7 @@ void CGameState_World::Load3D()
 					sceneNode->SetName("Ball [" + std::to_string(i) + ", " + std::to_string(j) + ", " + std::to_string(k) + "]");
 					sceneNode->SetTranslate(vec3(offset * i, offset * k, offset * j));
 					sceneNode->SetScale(vec3(scale));
-					sceneNode->GetComponent<IMeshComponent3D>()->AddMesh(((i % 2 == 0) || (j % 2 == 0) && (k % 2 == 0)) ? mesh : mesh2);
+					sceneNode->GetComponent<IMeshComponent3D>()->AddMesh(((i % 2 == 0) || (j % 2 == 0) && (k % 2 == 0)) ? mesh2 : mesh2);
 
 					BoundingBox bbox = BoundingBox(glm::vec3(-1.0f, -1.0f, -1.0f), glm::vec3(1.0f, 1.0f, 1.0f));
 					bbox.transform(sceneNode->GetWorldTransfom());

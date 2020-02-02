@@ -34,13 +34,12 @@ protected:
 	std::shared_ptr<ITexture> CreateShadowTexture0() const;
 	std::shared_ptr<ITexture> CreateShadowTextureDepthStencil() const;
 	
-	void DoRenderToOneContext();
 	void BindPerFrameParamsForCurrentIteration(const ILightComponent3D* LightComponent);
 	void BindPerObjectParamsForCurrentIteration(const ISceneNode3D* SceneNode);
 
 private: // Pass light params
-	PerObject3D* m_PerObjectData;
 	std::shared_ptr<IConstantBuffer> m_PerObjectConstantBuffer;
+	IShaderParameter* m_PerObjectShaderParameter;
 
 protected:
 	__declspec(align(16)) struct PerFrame
@@ -48,9 +47,8 @@ protected:
 		glm::mat4 View;
 		glm::mat4 Projection;
 	};
-	void SetPerFrameData(const PerFrame& PerFrame);
-	void BindPerFrameDataToVertexShader(const IShader* VertexShader) const;
 	std::shared_ptr<IConstantBuffer> m_PerFrameConstantBuffer;
+	IShaderParameter* m_PerFrameShaderParameter;
 
 private: // For shadow rendering
 	std::shared_ptr<IPipelineState> m_ShadowPipeline;

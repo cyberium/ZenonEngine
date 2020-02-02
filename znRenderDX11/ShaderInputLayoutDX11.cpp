@@ -32,7 +32,7 @@ ShaderInputLayoutDX11::~ShaderInputLayoutDX11()
 //
 bool ShaderInputLayoutDX11::HasSemantic(const BufferBinding & binding) const
 {
-    for (auto& it : m_InputSemantics)
+    for (const auto& it : m_InputSemantics)
         if (it.first.Name == binding.Name && it.first.Index == binding.Index)
             return true;       
 
