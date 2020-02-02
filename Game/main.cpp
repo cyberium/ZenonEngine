@@ -50,9 +50,9 @@ int main(int argumentCount, char* arguments[])
 
 	_CrtSetBreakAlloc(158);
 
-	//main_internal(argumentCount, arguments);		
+	main_internal(argumentCount, arguments);		
 
-	//delete BaseManager;
+	delete BaseManager;
 
 	_CrtMemDumpAllObjectsSince(NULL);
 

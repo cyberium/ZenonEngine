@@ -7,7 +7,7 @@ ZN_INTERFACE IShaderInputLayout;
 
 ZN_INTERFACE ZN_API __declspec(novtable) IShader
 {
-	typedef std::unordered_map<std::string, std::shared_ptr<IShaderParameter>> ParameterMap;
+	typedef std::map<std::string, std::shared_ptr<IShaderParameter>> ParameterMap;
 
 	virtual ~IShader() {}
 
@@ -20,7 +20,7 @@ ZN_INTERFACE ZN_API __declspec(novtable) IShader
 	 * A shader macro consists of a macro name and a definition.
 	 * Use this to pass macro definitions to the shader compiler.
 	 */
-	typedef std::unordered_map< std::string, std::string > ShaderMacros;
+	typedef std::map< std::string, std::string > ShaderMacros;
 
 
 	/**
