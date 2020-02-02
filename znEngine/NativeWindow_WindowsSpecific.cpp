@@ -128,6 +128,12 @@ void CNativeWindow_WindowsSpecific::HideCursor()
 	::ShowCursor(FALSE);
 }
 
+void CNativeWindow_WindowsSpecific::Close()
+{
+	if (::CloseWindow(m_HWnd))
+		_ASSERT_EXPR(false, "CNativeWindow_WindowsSpecific: Failed to '::CloseWindow'.");
+}
+
 void CNativeWindow_WindowsSpecific::SetEventsListener(INativeWindowEventListener * WindowEventsListener)
 {
 	m_EventListener = WindowEventsListener;

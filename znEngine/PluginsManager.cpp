@@ -16,8 +16,10 @@ CznPluginsManager::~CznPluginsManager()
 {
 	for (const auto& pluginPair : m_Plugins)
 	{
-		FreeLibrary(pluginPair.first);
+		RemovePlugin(pluginPair.second);
 	}
+
+	m_Plugins.clear();
 }
 
 
@@ -44,19 +46,17 @@ bool CznPluginsManager::AddPlugin(const std::string& PluginDLLName)
 		if (pluginDLL == NULL)
 		{
 			DWORD lastError = ::GetLastError();
-			throw CPluginException_NotAPlguin("File not found.");
+			throw CPluginException_NotAPlguin("Error while ::LoadLibrary().");
 		}
 
-		void* getPluginProcNative = GetProcAddress(pluginDLL, "GetPlugin");
+		void* getPluginProcNative = ::GetProcAddress(pluginDLL, "GetPlugin");
 		if (getPluginProcNative == NULL)
 		{
 			FreeLibrary(pluginDLL);
 			return false;
 		}
 
-		GetPluginFuncProc* getPluginProc = (GetPluginFuncProc*)getPluginProcNative;
-
-		std::shared_ptr<IznPlugin> pluginObject(getPluginProc(m_BaseManager));
+		std::shared_ptr<IznPlugin> pluginObject(((GetPluginFuncProc*)getPluginProcNative)(m_BaseManager));
 		if (pluginObject == nullptr)
 		{
 			FreeLibrary(pluginDLL);
@@ -86,6 +86,23 @@ bool CznPluginsManager::AddPlugin(const std::string& PluginDLLName)
 
 void CznPluginsManager::RemovePlugin(std::shared_ptr<IznPlugin> Plugin)
 {
+	const auto& iter = std::find_if(m_Plugins.begin(), m_Plugins.end(), [&Plugin](const std::pair<HMODULE, std::shared_ptr<IznPlugin>>& Plugin0) -> bool { return Plugin0.second.get() == Plugin.get(); });
+	if (iter == m_Plugins.end())
+	{
+		Log::Warn("Plguin not found.");
+		return;
+	}
+
+	iter->second->Finalize();
+
+	// Notify all listeners about finalize plguin
+	for (const auto& listener : m_PluginsEventsListener)
+		listener->OnPluginFinalized(iter->second);
+
+	if (::FreeLibrary(iter->first) == FALSE)
+		_ASSERT_EXPR(false, L"CznPluginsManager: Failed to '::FreeLibrary()'.");
+
+	iter->second.reset();
 }
 
 void CznPluginsManager::InitializeAllPlugins()
@@ -110,5 +127,12 @@ void CznPluginsManager::AddPluginEventListener(std::shared_ptr<IznPluginsEventLi
 
 void CznPluginsManager::RemovePluginEventListener(std::shared_ptr<IznPluginsEventListener> PluginEventListener)
 {
+	const auto& iter = std::find(m_PluginsEventsListener.begin(), m_PluginsEventsListener.end(), PluginEventListener);
+	if (iter == m_PluginsEventsListener.end())
+	{
+		Log::Warn("Unable to remove plugin event listeneer.");
+		return;
+	}
 
+	m_PluginsEventsListener.erase(iter);
 }

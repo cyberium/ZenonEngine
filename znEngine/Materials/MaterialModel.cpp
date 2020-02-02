@@ -4,9 +4,8 @@
 #include "MaterialModel.h"
 
 MaterialModel::MaterialModel(const IBaseManager* BaseManager)
-	: MaterialProxie(BaseManager->GetManager<IRenderDevice>()->GetObjectsFactory().CreateMaterial(sizeof(MaterialProperties)))
+	: MaterialProxie(BaseManager->GetApplication().GetRenderDevice().GetObjectsFactory().CreateMaterial(sizeof(MaterialProperties)))
 	, m_BaseManager(BaseManager)
-	, m_RenderDevice(BaseManager->GetManager<IRenderDevice>())
 {
 	// Constant buffer
 	m_pProperties = (MaterialProperties*)_aligned_malloc(sizeof(MaterialProperties), 16);

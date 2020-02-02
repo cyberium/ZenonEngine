@@ -16,6 +16,7 @@ public:
 	// IznPluginsEventListener
 	void OnPluginAdded(std::shared_ptr<IznPlugin> Plugin) override;
 	void OnPluginInitialized(std::shared_ptr<IznPlugin> Plugin) override;
+	void OnPluginFinalized(std::shared_ptr<IznPlugin> Plugin) override;
 
 private:
 	std::vector<std::shared_ptr<IRenderPassCreator>> m_Creators;

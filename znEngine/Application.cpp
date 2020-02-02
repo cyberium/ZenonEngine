@@ -12,7 +12,9 @@ Application::Application(IBaseManager* BaseManager)
 	, m_bIsInitialized(false)
 	, m_bIsRunning(false)
 {
-	m_HINSTANCE = ::GetModuleHandle(NULL);
+	m_HInstance = ::GetModuleHandle(NULL);
+
+	dynamic_cast<IBaseManagerInternal*>(m_BaseManager)->SetApplicationInternal(this);
 }
 
 Application::Application(IBaseManager* BaseManager, HINSTANCE hInstance)
@@ -20,11 +22,14 @@ Application::Application(IBaseManager* BaseManager, HINSTANCE hInstance)
 	, m_bIsInitialized(false)
 	, m_bIsRunning(false)
 {
-	m_HINSTANCE = hInstance;
+	m_HInstance = hInstance;
+
+	dynamic_cast<IBaseManagerInternal*>(m_BaseManager)->SetApplicationInternal(this);
 }
 
 Application::~Application()
 {
+	dynamic_cast<IBaseManagerInternal*>(m_BaseManager)->SetApplicationInternal(nullptr);
 }
 
 
@@ -49,9 +54,9 @@ void Application::Stop()
 }
 
 
-IRenderDevice* Application::CreateRenderDevice(RenderDeviceType DeviceType)
+IRenderDevice& Application::CreateRenderDevice(RenderDeviceType DeviceType)
 {
-	SetRenderDevice(m_BaseManager->GetManager<IznRenderDeviceFactory>()->GetRenderDeviceCreator(DeviceType)->CreateRenderDevice());
+	m_pRenderDevice = m_BaseManager->GetManager<IznRenderDeviceFactory>()->GetRenderDeviceCreator(DeviceType).CreateRenderDevice();
 	return GetRenderDevice();
 }
 
@@ -72,7 +77,6 @@ void Application::DeleleRenderWindow(IRenderWindow* RenderWindow)
 //
 // IApplication
 //
-
 void Application::DoBeforeRun()
 {
 	if (m_bIsInitialized)
@@ -88,8 +92,6 @@ int Application::DoRun()
 {
 	static Timer elapsedTime;
 
-	
-
 	MSG msg = { 0 };
 	while (PeekMessageW(&msg, NULL, 0, 0, PM_REMOVE))
 	{
@@ -100,11 +102,7 @@ int Application::DoRun()
 			// Destroy any windows that are still hanging around.
 			for (const auto& it : m_Windows)
 			{
-				if (it != nullptr)
-				{
-					const auto& nativeWindow = std::dynamic_pointer_cast<INativeWindow_WindowsSpecific>(it);
-					SendMessageW(nativeWindow->GetHWnd(), WM_CLOSE, NULL, NULL); // TODO: Investigate me!
-				}
+				it->Close();
 			}
 
 			// Setting this to false will cause the main application's message pump to stop.
@@ -136,20 +134,20 @@ IBaseManager* Application::GetBaseManager() const
 	return m_BaseManager;
 }
 
-IRenderDevice* Application::GetRenderDevice() const
+IRenderDevice& Application::GetRenderDevice() const
 {
-	_ASSERT(m_pRenderDevice);
-	return m_pRenderDevice;
+	_ASSERT(m_pRenderDevice != nullptr);
+	return *m_pRenderDevice;
 }
 
-void Application::SetRenderDevice(IRenderDevice* _renderDevice)
-{
-	m_pRenderDevice = _renderDevice;
-}
 
-HINSTANCE Application::GetHINSTANCE()
+
+//
+// IApplication_WindowsSpecific
+//
+HINSTANCE Application::GetHInstance() const
 {
-	return m_HINSTANCE;
+	return m_HInstance;
 }
 
 

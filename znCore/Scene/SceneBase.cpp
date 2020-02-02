@@ -10,8 +10,9 @@
 
 SceneBase::SceneBase(IBaseManager* BaseManager)
 	: m_BaseManager(BaseManager)
-	, m_RenderDevice(*(BaseManager->GetManager<IRenderDevice>()))
+	, m_RenderDevice(BaseManager->GetApplication().GetRenderDevice())
 {
+	
 }
 
 SceneBase::~SceneBase()

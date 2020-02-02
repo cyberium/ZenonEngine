@@ -12,7 +12,7 @@
 #include "FBXDisplayCommon.h"
 
 CFBXMesh::CFBXMesh(const IBaseManager * BaseManager, std::weak_ptr<CFBXSceneNode> OwnerFBXNode)
-	: MeshProxie(BaseManager->GetManager<IRenderDevice>()->CreateMesh())
+	: MeshProxie(BaseManager->GetApplication().GetRenderDevice().GetObjectsFactory().CreateMesh())
 	, m_BaseManager(BaseManager)
 	, m_OwnerFBXNode(OwnerFBXNode)
 {
@@ -24,7 +24,7 @@ CFBXMesh::~CFBXMesh()
 
 void CFBXMesh::Load(fbxsdk::FbxMesh* NativeMesh)
 {
-	IRenderDevice* renderDevice = m_BaseManager->GetManager<IRenderDevice>();
+	IRenderDevice& renderDevice = m_BaseManager->GetApplication().GetRenderDevice();
 
 	NativeMesh->GenerateNormals(true, true);
 
@@ -327,9 +327,9 @@ void CFBXMesh::Load(fbxsdk::FbxMesh* NativeMesh)
 		}
 	}
 
-	AddVertexBuffer(BufferBinding("POSITION", 0), renderDevice->CreateVertexBuffer(vertices));
-	AddVertexBuffer(BufferBinding("TEXCOORD", 0), renderDevice->CreateVertexBuffer(uvs));
-	AddVertexBuffer(BufferBinding("NORMAL", 0), renderDevice->CreateVertexBuffer(normals));
+	AddVertexBuffer(BufferBinding("POSITION", 0), renderDevice.GetObjectsFactory().CreateVertexBuffer(vertices));
+	AddVertexBuffer(BufferBinding("TEXCOORD", 0), renderDevice.GetObjectsFactory().CreateVertexBuffer(uvs));
+	AddVertexBuffer(BufferBinding("NORMAL", 0), renderDevice.GetObjectsFactory().CreateVertexBuffer(normals));
 
 	//if (!binormal.empty())
 	//	AddVertexBuffer(BufferBinding("BINORMAL", 0), renderDevice->CreateVertexBuffer(binormal));

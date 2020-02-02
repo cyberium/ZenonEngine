@@ -21,6 +21,8 @@ ZN_INTERFACE ZN_API INativeWindow
 	virtual void ShowCursor() = 0;
 	virtual void HideCursor() = 0;
 
+	virtual void Close() = 0;
+
 	virtual void SetEventsListener(INativeWindowEventListener* WindowEventsListener) = 0;
 	virtual void ResetEventsListener() = 0;
 };

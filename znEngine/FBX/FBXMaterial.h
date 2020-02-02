@@ -19,7 +19,7 @@ public:
 	void Load(fbxsdk::FbxSurfaceMaterial* NativeMaterial);
 
 protected:
-	ITexture* LoadTexture(fbxsdk::FbxTexture* Texture);
+	std::shared_ptr<ITexture> LoadTexture(fbxsdk::FbxTexture* Texture);
 
 private:
 	std::weak_ptr<CFBXSceneNode> m_OwnerFBXNode;

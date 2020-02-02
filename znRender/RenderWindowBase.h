@@ -28,6 +28,7 @@ public:
 	glm::ivec2 GetCursorPosition() const override;
 	void ShowCursor() override;
 	void HideCursor() override;
+	void Close() override;
 	void SetEventsListener(INativeWindowEventListener* WindowEventsListener) override;
 	void ResetEventsListener() override;
 

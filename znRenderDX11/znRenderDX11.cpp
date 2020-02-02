@@ -15,10 +15,11 @@ class CznRenderDX11Plugin
 public:
 	CznRenderDX11Plugin(IBaseManager* BaseManager)
 		: m_BaseManager(BaseManager)
-		, m_CachedRenderDevice(nullptr)
 	{}
 	virtual ~CznRenderDX11Plugin()
-	{}
+	{
+		OutputDebugStringW(L"CznRenderDX11Plugin deleted.\n");
+	}
 
 
 
@@ -32,7 +33,9 @@ public:
 		return true;
 	}
 	void Finalize() override
-	{}
+	{
+		gLogInstance = nullptr;
+	}
 	std::string GetName() const override
 	{
 		return "DirectX render support plugin.";
@@ -45,35 +48,24 @@ public:
 	//
 	// IznRenderDeviceCreator
 	//
-	RenderDeviceType GetRenderDeviceType() const
+	RenderDeviceType GetRenderDeviceType() const override
 	{
 		return RenderDeviceType::RenderDeviceType_DirectX;
 	}
-	IRenderDevice* CreateRenderDevice()
+	std::unique_ptr<IRenderDevice> CreateRenderDevice() const override
 	{
-		if (m_CachedRenderDevice == nullptr)
-		{
-			m_CachedRenderDevice = (IRenderDeviceDX11*)new RenderDeviceDX11(m_BaseManager);
-			m_CachedRenderDevice->Initialize();
-		}
-
-		return m_CachedRenderDevice;
+		std::unique_ptr<IRenderDeviceDX11> renderDevice = std::make_unique<RenderDeviceDX11>(m_BaseManager);
+		renderDevice->Initialize();
+		return std::move(renderDevice);
 	}
 
 private:
 	IBaseManager* m_BaseManager;
-	IRenderDevice* m_CachedRenderDevice;
 };
 
 
 
-IznPlugin* plugin = nullptr;
 extern "C" __declspec(dllexport) IznPlugin* WINAPI GetPlugin(IBaseManager* BaseManager)
 {
-	if (plugin == nullptr)
-	{
-		plugin = new CznRenderDX11Plugin(BaseManager);
-	}
-
-	return plugin;
+	return new CznRenderDX11Plugin(BaseManager);
 }

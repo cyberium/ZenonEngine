@@ -25,6 +25,7 @@ ZN_INTERFACE ZN_API IznPluginsEventListener
 
 	virtual void OnPluginAdded(std::shared_ptr<IznPlugin> Plugin) = 0;
 	virtual void OnPluginInitialized(std::shared_ptr<IznPlugin> Plugin) = 0;
+	virtual void OnPluginFinalized(std::shared_ptr<IznPlugin> Plugin) = 0;
 };
 
 

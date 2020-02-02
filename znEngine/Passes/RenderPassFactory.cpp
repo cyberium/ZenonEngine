@@ -56,11 +56,17 @@ std::shared_ptr<IRenderPass> CRenderPassFactory::CreateRenderPass(std::string Re
 //
 void CRenderPassFactory::OnPluginAdded(std::shared_ptr<IznPlugin> Plugin)
 {
+
+}
+
+void CRenderPassFactory::OnPluginInitialized(std::shared_ptr<IznPlugin> Plugin)
+{
 	if (std::shared_ptr<IRenderPassCreator> creator = std::dynamic_pointer_cast<IRenderPassCreator>(Plugin))
 	{
 		AddRenderPassCreator(creator);
 	}
 }
 
-void CRenderPassFactory::OnPluginInitialized(std::shared_ptr<IznPlugin> Plugin)
-{}
+void CRenderPassFactory::OnPluginFinalized(std::shared_ptr<IznPlugin> Plugin)
+{
+}

@@ -139,5 +139,4 @@ protected:
 
 protected:
 	const IBaseManager* m_BaseManager;
-	IRenderDevice* m_RenderDevice;
 };

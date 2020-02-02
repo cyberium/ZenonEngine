@@ -68,3 +68,7 @@ void CScenesFactory::OnPluginInitialized(std::shared_ptr<IznPlugin> Plugin)
 {
 
 }
+
+void CScenesFactory::OnPluginFinalized(std::shared_ptr<IznPlugin> Plugin)
+{
+}

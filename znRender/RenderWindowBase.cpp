@@ -116,6 +116,11 @@ void RenderWindowBase::HideCursor()
 	m_NativeWindow.HideCursor();
 }
 
+void RenderWindowBase::Close()
+{
+	m_NativeWindow.Close();
+}
+
 void RenderWindowBase::SetEventsListener(INativeWindowEventListener* WindowEventsListener)
 {
 	_ASSERT_EXPR(false, L"Not implemented!");

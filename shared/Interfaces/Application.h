@@ -14,11 +14,17 @@ ZN_INTERFACE ZN_API IApplication
 	virtual void                            DoAfterRun() = 0;
 
 	virtual IBaseManager*                   GetBaseManager() const = 0;
-	virtual IRenderDevice*                  GetRenderDevice() const = 0;
-	virtual void                            SetRenderDevice(IRenderDevice* RenderDevice) = 0;
-
-	virtual HINSTANCE                       GetHINSTANCE() = 0;
+	virtual IRenderDevice&                  GetRenderDevice() const = 0;
 };
+
+
+ZN_INTERFACE ZN_API IApplication_WindowsSpecific
+{
+	virtual ~IApplication_WindowsSpecific() {}
+
+	virtual HINSTANCE GetHInstance() const = 0;
+};
+
 
 ZN_INTERFACE ZN_API IApplicationEvents
 {

@@ -124,7 +124,7 @@ void CFBXMaterial::Load(fbxsdk::FbxSurfaceMaterial* NativeMaterial)
 		{
 			fbxsdk::FbxTexture* lTexture = lProperty.GetSrcObject<fbxsdk::FbxTexture>(0);
 
-			ITexture* texture = LoadTexture(lTexture);
+			const auto& texture = LoadTexture(lTexture);
 
 			fbxsdk::FbxLayerElement::EType texureType = FBXSDK_TEXTURE_TYPE(j);
 			switch (texureType)
@@ -187,7 +187,7 @@ void CFBXMaterial::Load(fbxsdk::FbxSurfaceMaterial* NativeMaterial)
 //
 // Protected
 //
-ITexture* CFBXMaterial::LoadTexture(fbxsdk::FbxTexture * Texture)
+std::shared_ptr<ITexture> CFBXMaterial::LoadTexture(fbxsdk::FbxTexture * Texture)
 {
 	Log::Print("CFBXMaterial: Loading texture '%s'.", Texture->GetName());
 
@@ -197,7 +197,7 @@ ITexture* CFBXMaterial::LoadTexture(fbxsdk::FbxTexture * Texture)
 	// For exporter
 	//fileTexture->SetFileName(fileTexture->GetRelativeFileName());
 
-	return m_BaseManager->GetManager<IRenderDevice>()->CreateTexture2D(m_OwnerFBXNode.lock()->GetOwnerScene().lock()->GetPath() + fileTexture->GetRelativeFileName());
+	return m_BaseManager->GetApplication().GetRenderDevice().GetObjectsFactory().LoadTexture2D(m_OwnerFBXNode.lock()->GetOwnerScene().lock()->GetPath() + fileTexture->GetRelativeFileName());
 }
 
 #endif

@@ -2,6 +2,7 @@
 
 class ZN_API CBaseManager 
 	: public IBaseManager
+	, public IBaseManagerInternal
 {
 public:
 	CBaseManager();
@@ -11,7 +12,12 @@ public:
 	void AddManager(GUID Type, const std::shared_ptr<IManager>& Manager) override;
 	void RemoveManager(GUID Type) override;
 	IManager* GetManager(GUID Type) const override;
+	const IApplication& GetApplication() const override;
+
+	// IBaseManagerInternal
+	void SetApplicationInternal(const IApplication* Application) override;
 
 private:
 	std::unordered_map<GUID, std::shared_ptr<IManager>> m_Managers;
+	const IApplication* m_Application;
 };

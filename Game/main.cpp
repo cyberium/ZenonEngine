@@ -26,13 +26,12 @@ void main_internal(int argumentCount, char* arguments[])
 		BaseManager->GetManager<ISettings>()->GetGroup("Video")->GetSettingT<glm::vec2>("WindowSize")->Get().y
 	);
 
-	IRenderDevice* renderDevice = app.CreateRenderDevice(RenderDeviceType::RenderDeviceType_DirectX);
-	BaseManager->AddManager<IRenderDevice>(std::shared_ptr<IRenderDevice>(renderDevice));
+	IRenderDevice& renderDevice = app.CreateRenderDevice(RenderDeviceType::RenderDeviceType_DirectX);
 
-	std::shared_ptr<IFontsManager> fontsManager = std::make_shared<FontsManager>(*renderDevice, BaseManager);
+	std::shared_ptr<IFontsManager> fontsManager = std::make_shared<FontsManager>(renderDevice, BaseManager);
 	BaseManager->AddManager<IFontsManager>(fontsManager);
 
-	std::shared_ptr<IRenderWindow> firstRenderWindow = renderDevice->GetObjectsFactory().CreateRenderWindow(*nativeWindow, false);
+	const auto& firstRenderWindow = renderDevice.GetObjectsFactory().CreateRenderWindow(*nativeWindow, false);
 	app.AddRenderWindow(firstRenderWindow);
 
 	std::shared_ptr<IScene> scene = BaseManager->GetManager<IScenesFactory>()->CreateScene("SceneDefault");

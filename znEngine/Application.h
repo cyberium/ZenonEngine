@@ -2,7 +2,8 @@
 
 class ZN_API Application :
 	public Object, 
-	public IApplication, 
+	public IApplication,
+	public IApplication_WindowsSpecific,
 	public IApplicationEvents
 {
 public:
@@ -15,7 +16,7 @@ public:
 	void                            Stop();
 
 	// Creators
-	IRenderDevice*                  CreateRenderDevice(RenderDeviceType DeviceType);
+	IRenderDevice&                  CreateRenderDevice(RenderDeviceType DeviceType);
 	void                            AddRenderWindow(std::shared_ptr<IRenderWindow> RenderWindow);
 	void                            DeleleRenderWindow(IRenderWindow* RenderWindow);
 
@@ -23,11 +24,11 @@ public:
 	void                            DoBeforeRun() override;
 	int                             DoRun() override;
 	void                            DoAfterRun() override;
-
 	IBaseManager*					GetBaseManager() const override;
-	IRenderDevice*                  GetRenderDevice() const override;
-	void                            SetRenderDevice(IRenderDevice* _renderDevice) override;
-	HINSTANCE                       GetHINSTANCE() override;
+	IRenderDevice&                  GetRenderDevice() const override;
+
+	// IApplication_WindowsSpecific
+	HINSTANCE                       GetHInstance() const override;
 
 	// IApplicationEvents
 	Event&                          ApplicationInitialize();
@@ -38,20 +39,20 @@ public:
 	Delegate<UserEventArgs>&        ApplicationUserEvent();
 
 private:
-	IBaseManager*					m_BaseManager;
-	bool                            m_bIsInitialized;
-	bool                            m_bIsRunning;
+	bool                                            m_bIsInitialized;
+	bool                                            m_bIsRunning;
 
-	HINSTANCE                       m_HINSTANCE;
+	IBaseManager*                                   m_BaseManager;
+	std::unique_ptr<IRenderDevice>					m_pRenderDevice;
+	std::vector<std::shared_ptr<IRenderWindow>>     m_Windows;
 
-	IRenderDevice*					m_pRenderDevice;
-	std::vector<std::shared_ptr<IRenderWindow>>		m_Windows;
+	HINSTANCE                                       m_HInstance;
 
 private: // IApplicationEvents
-	Event									 m_Initialize;
-	UpdateEvent								 m_Update;
-	Event									 m_Terminate;
-	Event									 m_Terminated;
-	Event									 m_Exit;
-	Delegate<UserEventArgs>					 m_UserEvent;
+	Event                                           m_Initialize;
+	UpdateEvent                                     m_Update;
+	Event                                           m_Terminate;
+	Event                                           m_Terminated;
+	Event                                           m_Exit;
+	Delegate<UserEventArgs>                         m_UserEvent;
 };

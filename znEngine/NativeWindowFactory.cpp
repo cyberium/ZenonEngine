@@ -32,7 +32,7 @@ namespace
 		}
 
 
-		INativeWindow_WindowsSpecific* nativeWindow = (INativeWindow_WindowsSpecific*)GetWindowLongPtr(hwnd, GWLP_USERDATA);
+		INativeWindow_WindowsSpecific* nativeWindow = (INativeWindow_WindowsSpecific*)::GetWindowLongPtrW(hwnd, GWLP_USERDATA);
 		if (nativeWindow != nullptr)
 		{
 			return nativeWindow->Windows_ProcessMessage(hwnd, message, wParam, lParam);
@@ -44,7 +44,7 @@ namespace
 
 
 
-CNativeWindowFactory::CNativeWindowFactory(IApplication * Application)
+CNativeWindowFactory::CNativeWindowFactory(IApplication_WindowsSpecific * Application)
 	: m_Application(Application)
 {
 	//
@@ -59,7 +59,7 @@ CNativeWindowFactory::CNativeWindowFactory(IApplication * Application)
 	renderWindowClass.lpfnWndProc = &ZenonWndProc;
 	renderWindowClass.cbClsExtra = 0;
 	renderWindowClass.cbWndExtra = 0;
-	renderWindowClass.hInstance = m_Application->GetHINSTANCE();
+	renderWindowClass.hInstance = m_Application->GetHInstance();
 	renderWindowClass.hIcon = LoadIcon(hDll, MAKEINTRESOURCE(2));
 	renderWindowClass.hCursor = LoadCursor(NULL, IDC_ARROW);
 	renderWindowClass.hbrBackground = (HBRUSH)(COLOR_WINDOW + 1);
@@ -73,7 +73,7 @@ CNativeWindowFactory::CNativeWindowFactory(IApplication * Application)
 
 CNativeWindowFactory::~CNativeWindowFactory()
 {
-	if (::UnregisterClassW(cZenonWindowClassName, m_Application->GetHINSTANCE()) == FALSE)
+	if (::UnregisterClassW(cZenonWindowClassName, m_Application->GetHInstance()) == FALSE)
 		_ASSERT_EXPR(false, "CNativeWindowFactory: Failed to unregister render window class.");
 }
 
@@ -96,7 +96,7 @@ std::shared_ptr<INativeWindow> CNativeWindowFactory::CreateWindowInstance(LPCWST
 	int windowX = (screenWidth - windowWidth) / 2;
 	int windowY = (screenHeight - windowHeight) / 2;
 
-	HWND hWnd = CreateWindowEx
+	HWND hWnd = CreateWindowExW
 	(
 		NULL,
 		cZenonWindowClassName,
@@ -105,7 +105,7 @@ std::shared_ptr<INativeWindow> CNativeWindowFactory::CreateWindowInstance(LPCWST
 		windowX, windowY, windowWidth, windowHeight,
 		NULL,
 		NULL,
-		m_Application->GetHINSTANCE(),
+		m_Application->GetHInstance(),
 		NULL
 	);
 

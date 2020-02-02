@@ -269,7 +269,6 @@
       <Filter>FBX\Parts</Filter>
     </ClCompile>
     <ClCompile Include="NativeWindowFactory.cpp" />
-    <ClCompile Include="NativeWindow_WindowsSpecific.cpp" />
     <ClCompile Include="Scene_Default.cpp">
       <Filter>Scenes</Filter>
     </ClCompile>
@@ -282,6 +281,7 @@
     <ClCompile Include="Passes\UIFontPass.cpp">
       <Filter>Passes\UI</Filter>
     </ClCompile>
+    <ClCompile Include="NativeWindow_WindowsSpecific.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="common.h">
@@ -458,7 +458,6 @@
     </ClInclude>
     <ClInclude Include="ThreadPool.h" />
     <ClInclude Include="NativeWindowFactory.h" />
-    <ClInclude Include="NativeWindow_WindowsSpecific.h" />
     <ClInclude Include="Scene_Default.h">
       <Filter>Scenes</Filter>
     </ClInclude>
@@ -471,6 +470,7 @@
     <ClInclude Include="Passes\UIFontPass.h">
       <Filter>Passes\UI</Filter>
     </ClInclude>
+    <ClInclude Include="NativeWindow_WindowsSpecific.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="znEngine.rc">
