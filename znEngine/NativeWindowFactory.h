@@ -10,7 +10,7 @@ public:
 	//
 	// IWindowCreator
 	//
-	std::shared_ptr<INativeWindow> CreateWindowInstance(LPCWSTR WindowName, LONG Width, LONG Height) override;
+	std::unique_ptr<INativeWindow> CreateWindowInstance(LPCWSTR WindowName, LONG Width, LONG Height) override;
 	
 private:
 	const IApplication_WindowsSpecific* m_Application;

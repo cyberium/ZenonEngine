@@ -12,6 +12,9 @@ CBaseManager::CBaseManager()
 
 CBaseManager::~CBaseManager()
 {
+	for (auto rit = m_Managers.rbegin(); rit != m_Managers.rend(); rit++)
+		rit->Manager.reset();
+
 	OutputDebugString(L"CBaseManager destroyed.\n");
 }
 
@@ -22,10 +25,11 @@ CBaseManager::~CBaseManager()
 //
 void CBaseManager::AddManager(GUID Type, const std::shared_ptr<IManager>& _manager)
 {
-	if (m_Managers.find(Type) != m_Managers.end())
+	const auto& it = std::find_if(m_Managers.begin(), m_Managers.end(), [&Type](const SManagerInfo& ManagerInfo) -> bool {return ManagerInfo.Key == Type; });
+	if (it != m_Managers.end())
 		_ASSERT_EXPR(false, L"Manager already exists.");
 
-	m_Managers.insert(std::make_pair(Type, _manager));
+	m_Managers.push_back(SManagerInfo(Type, _manager));
 }
 
 void CBaseManager::RemoveManager(GUID Type)
@@ -35,10 +39,11 @@ void CBaseManager::RemoveManager(GUID Type)
 
 IManager* CBaseManager::GetManager(GUID Type) const
 {
-	if (m_Managers.find(Type) == m_Managers.end())
+	const auto& it = std::find_if(m_Managers.begin(), m_Managers.end(), [&Type](const SManagerInfo& ManagerInfo) -> bool {return ManagerInfo.Key == Type; });
+	if (it == m_Managers.end())
 		return nullptr;
 
-	return m_Managers.at(Type).get();
+	return it->Manager.get();
 }
 
 const IApplication& CBaseManager::GetApplication() const

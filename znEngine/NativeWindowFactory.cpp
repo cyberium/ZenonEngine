@@ -81,7 +81,7 @@ CNativeWindowFactory::~CNativeWindowFactory()
 //
 // IWindowCreator
 //
-std::shared_ptr<INativeWindow> CNativeWindowFactory::CreateWindowInstance(LPCWSTR WindowName, LONG Width, LONG Height)
+std::unique_ptr<INativeWindow> CNativeWindowFactory::CreateWindowInstance(LPCWSTR WindowName, LONG Width, LONG Height)
 {
 	int screenWidth = ::GetSystemMetrics(SM_CXSCREEN);
 	int screenHeight = ::GetSystemMetrics(SM_CYSCREEN);
@@ -122,8 +122,7 @@ std::shared_ptr<INativeWindow> CNativeWindowFactory::CreateWindowInstance(LPCWST
 	//	_ASSERT_EXPR(false, "CNativeWindowFactory: Failed to bring window to top.");
 	}
 
-	std::shared_ptr<INativeWindow> nativeWindow = std::make_shared<CNativeWindow_WindowsSpecific>(hWnd);
+	std::unique_ptr<INativeWindow> nativeWindow = std::make_unique<CNativeWindow_WindowsSpecific>(hWnd);
 	SetWindowLongPtrW(hWnd, GWLP_USERDATA, (LONG_PTR)(dynamic_cast<INativeWindow_WindowsSpecific*>(nativeWindow.get())));
-
-    return nativeWindow;
+    return std::move(nativeWindow);
 }

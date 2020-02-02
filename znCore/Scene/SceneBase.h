@@ -79,7 +79,7 @@ protected:
 	std::shared_ptr<ICameraController>              GetCameraController() const;
 
 	IRenderDevice&                                  GetRenderDevice() const;
-	const std::shared_ptr<IRenderWindow>&           GetRenderWindow() const;
+	std::shared_ptr<IRenderWindow>                  GetRenderWindow() const;
 
 
 protected: // Input events process recursive
@@ -140,5 +140,5 @@ private:
 private: // Quick access
 	IBaseManager*                                   m_BaseManager;
 	IRenderDevice&                                  m_RenderDevice;
-	std::shared_ptr<IRenderWindow>                  m_RenderWindow;
+	std::weak_ptr<IRenderWindow>                    m_RenderWindow;
 };

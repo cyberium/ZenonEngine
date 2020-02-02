@@ -99,7 +99,7 @@ void SceneBase::DisconnectEvents(const std::shared_ptr<IRenderWindowEvents>& Win
 	WindowEvents->WindowMouseMoved().disconnect(m_OnMouseMovedConnection);
 	WindowEvents->WindowMouseWheel().disconnect(m_OnMouseWheelConnection);
 
-	m_RenderWindow = nullptr;
+	m_RenderWindow.reset();
 }
 
 
@@ -247,8 +247,8 @@ void SceneBase::OnWindowResize(ResizeEventArgs & e)
 	if (GetCameraController())
 		GetCameraController()->OnResize(e);
 
-	m_Technique3D.UpdateViewport(m_RenderWindow->GetViewport());
-	m_TechniqueUI.UpdateViewport(m_RenderWindow->GetViewport());
+	m_Technique3D.UpdateViewport(GetRenderWindow()->GetViewport());
+	m_TechniqueUI.UpdateViewport(GetRenderWindow()->GetViewport());
 }
 
 
@@ -398,9 +398,11 @@ IRenderDevice& SceneBase::GetRenderDevice() const
 	return m_RenderDevice;
 }
 
-const std::shared_ptr<IRenderWindow>& SceneBase::GetRenderWindow() const
+std::shared_ptr<IRenderWindow> SceneBase::GetRenderWindow() const
 {
-	return m_RenderWindow;
+	std::shared_ptr<IRenderWindow> renderWindow = m_RenderWindow.lock();
+	_ASSERT(renderWindow);
+	return std::move(renderWindow);
 }
 
 

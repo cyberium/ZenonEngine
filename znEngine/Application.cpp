@@ -102,7 +102,7 @@ int Application::DoRun()
 			// Destroy any windows that are still hanging around.
 			for (const auto& it : m_Windows)
 			{
-				it->Close();
+				it.lock()->Close();
 			}
 
 			// Setting this to false will cause the main application's message pump to stop.

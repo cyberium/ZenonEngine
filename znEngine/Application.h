@@ -44,7 +44,7 @@ private:
 
 	IBaseManager*                                   m_BaseManager;
 	std::unique_ptr<IRenderDevice>					m_pRenderDevice;
-	std::vector<std::shared_ptr<IRenderWindow>>     m_Windows;
+	std::vector<std::weak_ptr<IRenderWindow>>		m_Windows;
 
 	HINSTANCE                                       m_HInstance;
 

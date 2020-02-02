@@ -13,7 +13,9 @@ RenderDeviceDX11::RenderDeviceDX11(IBaseManager* BaseManager)
 }
 
 RenderDeviceDX11::~RenderDeviceDX11()
-{}
+{
+	Log::Info("RenderDeviceDX11 destroyed.");
+}
 
 
 

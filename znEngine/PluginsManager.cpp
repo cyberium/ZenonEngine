@@ -14,9 +14,9 @@ CznPluginsManager::CznPluginsManager(IBaseManager* BaseManager)
 
 CznPluginsManager::~CznPluginsManager()
 {
-	for (const auto& pluginPair : m_Plugins)
+	for (const auto& pluginDescription : m_Plugins)
 	{
-		RemovePlugin(pluginPair.second);
+		RemovePlugin(pluginDescription.Path);
 	}
 
 	m_Plugins.clear();
@@ -31,43 +31,36 @@ bool CznPluginsManager::AddPlugin(const std::string& PluginDLLName)
 {
 	try
 	{
-		//if (m_Plugins.find(PluginDLLName) != m_Plugins.end())
-		//{
-		//	throw CPluginException("Already registered.");
-		//}
+		SPluginDescription pluginDescription;
+		pluginDescription.Path = PluginDLLName;
 
-		char modulePath[MAX_PATH];
-		::GetModuleFileNameA(NULL, modulePath, MAX_PATH);
-
-		std::string modulePathStr(modulePath);
-		modulePathStr = modulePathStr.substr(0, modulePathStr.find_last_of("\\") + 1);
-
-		HMODULE pluginDLL = LoadLibraryA(PluginDLLName.c_str());
-		if (pluginDLL == NULL)
+		pluginDescription.HModule = LoadLibraryA(pluginDescription.Path.c_str());
+		if (pluginDescription.HModule == NULL)
 		{
 			DWORD lastError = ::GetLastError();
 			throw CPluginException_NotAPlguin("Error while ::LoadLibrary().");
 		}
 
-		void* getPluginProcNative = ::GetProcAddress(pluginDLL, "GetPlugin");
+
+		void* getPluginProcNative = ::GetProcAddress(pluginDescription.HModule, "GetPlugin");
 		if (getPluginProcNative == NULL)
 		{
-			FreeLibrary(pluginDLL);
+			::FreeLibrary(pluginDescription.HModule);
 			return false;
 		}
 
-		std::shared_ptr<IznPlugin> pluginObject(((GetPluginFuncProc*)getPluginProcNative)(m_BaseManager));
-		if (pluginObject == nullptr)
+		pluginDescription.Plugin = std::shared_ptr<IznPlugin>(((GetPluginFuncProc*)getPluginProcNative)(m_BaseManager));
+		if (pluginDescription.Plugin == nullptr)
 		{
-			FreeLibrary(pluginDLL);
+			::FreeLibrary(pluginDescription.HModule);
 			throw CPluginException("Error while create plugin object.");
 		}
 
-		m_Plugins.push_back(std::make_pair(pluginDLL, pluginObject));
+		m_Plugins.push_back(pluginDescription);
 
 		// Notify all listeners about new plguin
 		for (const auto& listener : m_PluginsEventsListener)
-			listener->OnPluginAdded(pluginObject);
+			listener->OnPluginAdded(pluginDescription.Plugin);
 	}
 	catch (const CPluginException_NotAPlguin& e)
 	{
@@ -84,32 +77,32 @@ bool CznPluginsManager::AddPlugin(const std::string& PluginDLLName)
 	return true;
 }
 
-void CznPluginsManager::RemovePlugin(std::shared_ptr<IznPlugin> Plugin)
+void CznPluginsManager::RemovePlugin(const std::string& PluginDLLName)
 {
-	const auto& iter = std::find_if(m_Plugins.begin(), m_Plugins.end(), [&Plugin](const std::pair<HMODULE, std::shared_ptr<IznPlugin>>& Plugin0) -> bool { return Plugin0.second.get() == Plugin.get(); });
+	const auto& iter = std::find_if(m_Plugins.begin(), m_Plugins.end(), [&PluginDLLName](const SPluginDescription& PluginDescription) -> bool { return PluginDescription.Path == PluginDLLName; });
 	if (iter == m_Plugins.end())
 	{
 		Log::Warn("Plguin not found.");
 		return;
 	}
 
-	iter->second->Finalize();
+	iter->Plugin->Finalize();
 
 	// Notify all listeners about finalize plguin
 	for (const auto& listener : m_PluginsEventsListener)
-		listener->OnPluginFinalized(iter->second);
+		listener->OnPluginFinalized(iter->Plugin);
 
-	if (::FreeLibrary(iter->first) == FALSE)
+	iter->Plugin.reset();
+
+	if (::FreeLibrary(iter->HModule) == FALSE)
 		_ASSERT_EXPR(false, L"CznPluginsManager: Failed to '::FreeLibrary()'.");
-
-	iter->second.reset();
 }
 
 void CznPluginsManager::InitializeAllPlugins()
 {
-	for (const auto& pluginPair : m_Plugins)
+	for (const auto& pluginDescription : m_Plugins)
 	{
-		const std::shared_ptr<IznPlugin>& plugin = pluginPair.second;
+		const auto& plugin = pluginDescription.Plugin;
 
 		if (!plugin->Initialize())
 			throw CPluginException("Error while initialize.");

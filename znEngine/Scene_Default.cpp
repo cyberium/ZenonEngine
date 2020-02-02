@@ -15,7 +15,9 @@ CGameState_World::CGameState_World(IBaseManager * BaseManager)
 {}
 
 CGameState_World::~CGameState_World()
-{}
+{
+	OutputDebugStringW(L"Destroyed.");
+}
 
 
 //

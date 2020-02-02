@@ -31,14 +31,22 @@ public:
 
 	// IznPluginsManager
 	bool											AddPlugin(const std::string& PluginDLLName);
-	void											RemovePlugin(std::shared_ptr<IznPlugin> Plugin);
+	void											RemovePlugin(const std::string& PluginDLLName);
 	void											InitializeAllPlugins();
 	void                                            AddPluginEventListener(std::shared_ptr<IznPluginsEventListener> PluginEventListener);
 	void                                            RemovePluginEventListener(std::shared_ptr<IznPluginsEventListener> PluginEventListener);                               
 
 private:
+	struct SPluginDescription
+	{
+		std::string Path;
+		HMODULE HModule;
+		std::shared_ptr<IznPlugin> Plugin;
+	};
+
+private:
 	IBaseManager*                                   m_BaseManager;
-	std::vector<std::pair<HMODULE, std::shared_ptr<IznPlugin>>> m_Plugins;
+	std::vector<SPluginDescription> m_Plugins;
 	std::vector<std::shared_ptr<IznPluginsEventListener>> m_PluginsEventsListener;
 };
 

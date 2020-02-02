@@ -19,7 +19,7 @@ ScenePassPipelined::~ScenePassPipelined()
 //
 void ScenePassPipelined::Render(RenderEventArgs& e)
 {
-	m_Scene->Accept(this);
+	GetScene()->Accept(this);
 }
 
 
@@ -29,5 +29,7 @@ void ScenePassPipelined::Render(RenderEventArgs& e)
 //
 std::shared_ptr<IScene> ScenePassPipelined::GetScene() const
 {
-	return m_Scene;
+	auto scene = m_Scene.lock();
+	_ASSERT(scene != nullptr);
+	return scene;
 }

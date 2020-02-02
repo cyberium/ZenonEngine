@@ -70,5 +70,5 @@ ZN_INTERFACE ZN_API INativeWindowFactory
 {
 	virtual ~INativeWindowFactory() {}
 
-	virtual std::shared_ptr<INativeWindow> CreateWindowInstance(LPCWSTR WindowName, LONG Width, LONG Height) = 0;
+	virtual std::unique_ptr<INativeWindow> CreateWindowInstance(LPCWSTR WindowName, LONG Width, LONG Height) = 0;
 };

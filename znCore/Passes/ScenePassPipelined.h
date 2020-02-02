@@ -16,5 +16,5 @@ protected:
 	std::shared_ptr<IScene> GetScene() const;
 	
 private:
-	std::shared_ptr<IScene> m_Scene;
+	std::weak_ptr<IScene> m_Scene;
 };

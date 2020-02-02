@@ -18,7 +18,7 @@ ScenePass::~ScenePass()
 //
 void ScenePass::Render(RenderEventArgs & e)
 {
-	m_Scene->Accept(this);
+	GetScene()->Accept(this);
 }
 
 
@@ -28,5 +28,7 @@ void ScenePass::Render(RenderEventArgs & e)
 //
 std::shared_ptr<IScene> ScenePass::GetScene() const
 {
-	return m_Scene;
+	auto scene = m_Scene.lock();
+	_ASSERT(scene != nullptr);
+	return scene;
 }

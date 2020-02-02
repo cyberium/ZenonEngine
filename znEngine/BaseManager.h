@@ -17,7 +17,20 @@ public:
 	// IBaseManagerInternal
 	void SetApplicationInternal(const IApplication* Application) override;
 
+
 private:
-	std::unordered_map<GUID, std::shared_ptr<IManager>> m_Managers;
+	struct SManagerInfo
+	{
+		SManagerInfo(const GUID& Key, const std::shared_ptr<IManager>& Manager)
+			: Key(Key)
+			, Manager(Manager)
+		{}
+
+		GUID Key;
+		std::shared_ptr<IManager> Manager;
+	};
+
+private:
+	std::vector<SManagerInfo> m_Managers;
 	const IApplication* m_Application;
 };

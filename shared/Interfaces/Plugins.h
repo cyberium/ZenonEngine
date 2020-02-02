@@ -37,7 +37,7 @@ ZN_INTERFACE ZN_API
 	virtual ~IznPluginsManager() {}
 
 	virtual bool									AddPlugin(const std::string& PluginDLLName) = 0;
-	virtual void									RemovePlugin(std::shared_ptr<IznPlugin> Plugin) = 0;
+	virtual void									RemovePlugin(const std::string& PluginDLLName) = 0;
 
 	virtual void                                    InitializeAllPlugins() = 0;
 
