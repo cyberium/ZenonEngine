@@ -7,7 +7,7 @@ namespace
 {
 	const char* cDefaultText = "<empty>";
 	const vec2  cDefaultOffset = vec2(0.0f, 0.0f);
-	const vec4  cDefaultColor = vec4(0.0f, 0.0f, 0.0f, 1.0f);
+	const vec4  cDefaultColor = vec4(1.0f, 1.0f, 1.0f, 1.0f);
 }
 
 CUITextNode::CUITextNode()

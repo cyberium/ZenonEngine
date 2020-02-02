@@ -10,10 +10,6 @@ public:
 	virtual void SetName(const std::string& Name) override;
 	virtual std::string GetName() const override;
 
-	virtual void SetShader(EShaderType type, const std::shared_ptr<IShader> pShader) override;
-	virtual const std::shared_ptr<IShader>& GetShader(EShaderType type) const override;
-	virtual const ShaderMap& GetShaders() const override;
-
 	virtual void SetTexture(uint8 type, const std::shared_ptr<ITexture> texture) override;
 	virtual const std::shared_ptr<ITexture>& GetTexture(uint8 ID) const override;
 	

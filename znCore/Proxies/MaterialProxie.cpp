@@ -27,21 +27,6 @@ std::string MaterialProxie::GetName() const
 	return m_Material->GetName();
 }
 
-void MaterialProxie::SetShader(EShaderType type, const std::shared_ptr<IShader> pShader)
-{
-	m_Material->SetShader(type, pShader);
-}
-
-const std::shared_ptr<IShader>& MaterialProxie::GetShader(EShaderType type) const
-{
-	return m_Material->GetShader(type);
-}
-
-const ShaderMap & MaterialProxie::GetShaders() const
-{
-	return m_Material->GetShaders();
-}
-
 void MaterialProxie::SetTexture(uint8 type, const std::shared_ptr<ITexture> texture)
 {
 	m_Material->SetTexture(type, texture);

@@ -23,8 +23,8 @@ UI_Button_Material::UI_Button_Material(IRenderDevice& RenderDevice) :
 	pixelShader->GetShaderParameterByName("DiffuseTextureSampler").Set(g_LinearClampSampler);
 
 	// Material
-	SetShader(EShaderType::VertexShader, vertexShader);
-	SetShader(EShaderType::PixelShader, pixelShader);
+	//SetShader(EShaderType::VertexShader, vertexShader);
+	//SetShader(EShaderType::PixelShader, pixelShader);
 }
 
 UI_Button_Material::~UI_Button_Material()

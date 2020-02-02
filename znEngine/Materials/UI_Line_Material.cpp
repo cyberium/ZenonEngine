@@ -24,9 +24,9 @@ UI_Line_Material::UI_Line_Material(IRenderDevice& RenderDevice) :
 	);
 
 	// Material
-	SetShader(EShaderType::VertexShader, g_pVertexShader);
-    SetShader(EShaderType::GeometryShader, g_pGeomShader);
-	SetShader(EShaderType::PixelShader, g_pPixelShader);
+	//SetShader(EShaderType::VertexShader, g_pVertexShader);
+    //SetShader(EShaderType::GeometryShader, g_pGeomShader);
+	//SetShader(EShaderType::PixelShader, g_pPixelShader);
 }
 
 UI_Line_Material::~UI_Line_Material()

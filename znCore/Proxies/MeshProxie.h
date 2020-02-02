@@ -24,7 +24,7 @@ public:
 
 	virtual IGeometry& GetGeometry() const override;
 
-	virtual bool Render(const RenderEventArgs& renderEventArgs, const std::shared_ptr<IConstantBuffer>& perObject, const SGeometryPartParams& GeometryPartParams = SGeometryPartParams()) override;
+	virtual bool Render(const RenderEventArgs& renderEventArgs, const SGeometryPartParams& GeometryPartParams = SGeometryPartParams()) override;
 
 	virtual bool Accept(IVisitor* visitor, SGeometryPartParams GeometryPartParams = SGeometryPartParams());
 

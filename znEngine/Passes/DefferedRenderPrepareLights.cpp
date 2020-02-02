@@ -56,7 +56,7 @@ void CDefferedRenderPrepareLights::Render(RenderEventArgs& e)
 			{
 				BindPerObjectParamsForCurrentIteration(geometryIt.Node);
 
-				geometryIt.Geometry->Render(e, nullptr, m_ShadowPipeline->GetShaders(), nullptr, geometryIt.GeometryPartParams);
+				geometryIt.Geometry->Render(e, m_ShadowPipeline->GetShaders(), nullptr, geometryIt.GeometryPartParams);
 			}
 
 			if (i < m_LightResult.size())

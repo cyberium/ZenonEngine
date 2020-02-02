@@ -14,12 +14,17 @@ MeshDX11::MeshDX11(IRenderDeviceDX11& RenderDeviceDX11)
 MeshDX11::~MeshDX11()
 {}
 
+
+
+//
+// IMesh
+//
 void MeshDX11::SetPrimitiveTopology(PrimitiveTopology _topology)
 {
 	m_Geometry->SetPrimitiveTopology(_topology);
 }
 
-bool MeshDX11::Render(const RenderEventArgs& renderArgs, const std::shared_ptr<IConstantBuffer>& perObject, const SGeometryPartParams& GeometryPartParams)
+bool MeshDX11::Render(const RenderEventArgs& renderArgs, const SGeometryPartParams& GeometryPartParams)
 {
 	return true;
 }

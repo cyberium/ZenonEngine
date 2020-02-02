@@ -27,8 +27,8 @@ UI_Texture_Material::UI_Texture_Material(IRenderDevice& RenderDevice)
     SetSampler(0, g_LinearClampSampler);
 
 	// Material
-	SetShader(EShaderType::VertexShader, g_pVertexShader);
-	SetShader(EShaderType::PixelShader, g_pPixelShader);
+	//SetShader(EShaderType::VertexShader, g_pVertexShader);
+	//SetShader(EShaderType::PixelShader, g_pPixelShader);
 }
 
 UI_Texture_Material::~UI_Texture_Material()

@@ -20,8 +20,8 @@ UI_Color_Material::UI_Color_Material(IRenderDevice& RenderDevice) :
 	);
 
 	// Material
-	SetShader(EShaderType::VertexShader, g_pVertexShader);
-	SetShader(EShaderType::PixelShader, g_pPixelShader);
+	//SetShader(EShaderType::VertexShader, g_pVertexShader);
+	//SetShader(EShaderType::PixelShader, g_pPixelShader);
 }
 
 UI_Color_Material::~UI_Color_Material()

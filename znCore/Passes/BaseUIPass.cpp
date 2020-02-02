@@ -45,27 +45,26 @@ bool BaseUIPass::Visit(ISceneNodeUI* sceneNode)
 	m_PerObjectData->Model = sceneNode->GetWorldTransfom();
 	m_PerObjectConstantBuffer->Set(m_PerObjectData, sizeof(PerObjectUI));
 
+	auto& perObjectParameter = GetPipeline().GetShaders().at(EShaderType::VertexShader)->GetShaderParameterByName("PerObject");
+	if (perObjectParameter.IsValid() && m_PerObjectConstantBuffer != nullptr)
+	{
+		perObjectParameter.SetConstantBuffer(m_PerObjectConstantBuffer);
+		perObjectParameter.Bind();
+	}
+
 	return true;
 }
 
 bool BaseUIPass::Visit(IMesh * Mesh, SGeometryPartParams GeometryPartParams)
 {
-	return Mesh->Render(GetRenderEventArgs(), m_PerObjectConstantBuffer, GeometryPartParams);
+	return Mesh->Render(GetRenderEventArgs(), GeometryPartParams);
 }
 
 bool BaseUIPass::Visit(IGeometry* Geometry, const IMaterial* Material, SGeometryPartParams GeometryPartParams)
 {
-	ShaderMap shadersMap;
-
-	if (Material)
-		shadersMap = Material->GetShaders();
-
-	if (shadersMap.empty())
-		shadersMap = GetRenderEventArgs().PipelineState->GetShaders();
-
-	Material->Bind(shadersMap);
-	bool result = Geometry->Render(GetRenderEventArgs(), m_PerObjectConstantBuffer, shadersMap, Material, GeometryPartParams);
-	Material->Unbind(shadersMap);
+	Material->Bind(GetRenderEventArgs().PipelineState->GetShaders());
+	bool result = Geometry->Render(GetRenderEventArgs(), GetRenderEventArgs().PipelineState->GetShaders(), Material, GeometryPartParams);
+	Material->Unbind(GetRenderEventArgs().PipelineState->GetShaders());
 	return result;
 }
 

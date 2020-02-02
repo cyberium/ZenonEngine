@@ -31,8 +31,8 @@ MaterialDebug::MaterialDebug(IRenderDevice& RenderDevice)
 	}
 	vertexShader->LoadInputLayoutFromReflector();
 
-	SetShader(EShaderType::VertexShader, vertexShader);
-	SetShader(EShaderType::PixelShader, pixelShader);
+	//SetShader(EShaderType::VertexShader, vertexShader);
+	//SetShader(EShaderType::PixelShader, pixelShader);
 }
 
 MaterialDebug::~MaterialDebug()

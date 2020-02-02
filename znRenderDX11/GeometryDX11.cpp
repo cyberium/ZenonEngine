@@ -38,7 +38,7 @@ void GeometryDX11::SetPrimitiveTopology(PrimitiveTopology _topology)
 	}
 }
 
-bool GeometryDX11::Render(const RenderEventArgs& RenderEventArgs, const std::shared_ptr<IConstantBuffer>& PerObject, const ShaderMap& ShadersMap, const IMaterial* Material, const SGeometryPartParams& GeometryPartParams) const
+bool GeometryDX11::Render(const RenderEventArgs& RenderEventArgs, const ShaderMap& ShadersMap, const IMaterial* Material, const SGeometryPartParams& GeometryPartParams) const
 {
 	UINT indexStartLocation = GeometryPartParams.IndexStartLocation;
 	UINT indexCnt = GeometryPartParams.IndexCnt;
@@ -66,29 +66,12 @@ bool GeometryDX11::Render(const RenderEventArgs& RenderEventArgs, const std::sha
 	const auto& vertexShader = ShadersMap.at(EShaderType::VertexShader);
 	_ASSERT(vertexShader != nullptr);
 
-	const auto& geomShaderIt = ShadersMap.find(EShaderType::GeometryShader);
-	const IShader* geomShader = nullptr;
-	if (geomShaderIt != ShadersMap.end())
-	{
-		geomShader = geomShaderIt->second.get();
-	}
-
-	auto& perObjectParameter = vertexShader->GetShaderParameterByName("PerObject");
+	/*auto& perObjectParameter = vertexShader->GetShaderParameterByName("PerObject");
 	if (perObjectParameter.IsValid() && PerObject != nullptr)
 	{
 		perObjectParameter.SetConstantBuffer(std::const_pointer_cast<IConstantBuffer>(std::shared_ptr<const IConstantBuffer>(PerObject)));
 		perObjectParameter.Bind();
-	}
-
-	if (geomShader)
-	{
-		auto& perObjectParameterGS = geomShader->GetShaderParameterByName("PerObject");
-		if (perObjectParameterGS.IsValid() && PerObject != nullptr)
-		{
-			perObjectParameterGS.SetConstantBuffer(std::const_pointer_cast<IConstantBuffer>(std::shared_ptr<const IConstantBuffer>(PerObject)));
-			perObjectParameterGS.Bind();
-		}
-	}
+	}*/
 
 	if (m_VertexBuffer != nullptr)
 	{
@@ -137,16 +120,16 @@ bool GeometryDX11::Render(const RenderEventArgs& RenderEventArgs, const std::sha
 		}
 	}
 
-	perObjectParameter = vertexShader->GetShaderParameterByName("PerObject");
+	/*perObjectParameter = vertexShader->GetShaderParameterByName("PerObject");
 	if (perObjectParameter.IsValid())
 	{
 		perObjectParameter.Unbind();
-	}
+	}*/
 
 	return true;
 }
 
-bool GeometryDX11::RenderInstanced(const RenderEventArgs& RenderEventArgs, const std::shared_ptr<IStructuredBuffer>& InstancesBuffer, const ShaderMap& ShadersMap, const IMaterial* Material, const SGeometryPartParams& GeometryPartParams) const
+bool GeometryDX11::RenderInstanced(const RenderEventArgs& RenderEventArgs, const ShaderMap& ShadersMap, const IMaterial* Material, const SGeometryPartParams& GeometryPartParams) const
 {
 	UINT indexStartLocation = GeometryPartParams.IndexStartLocation;
 	UINT indexCnt = GeometryPartParams.IndexCnt;
@@ -181,12 +164,12 @@ bool GeometryDX11::RenderInstanced(const RenderEventArgs& RenderEventArgs, const
 		geomShader = geomShaderIt->second.get();
 	}
 
-	auto& instancesBufferParameter = vertexShader->GetShaderParameterByName("Instances");
+	/*auto& instancesBufferParameter = vertexShader->GetShaderParameterByName("Instances");
 	if (instancesBufferParameter.IsValid() && InstancesBuffer != nullptr)
 	{
 		instancesBufferParameter.SetStructuredBuffer(std::const_pointer_cast<IStructuredBuffer>(std::shared_ptr<const IStructuredBuffer>(InstancesBuffer)));
 		instancesBufferParameter.Bind();
-	}
+	}*/
 
 	if (m_VertexBuffer != nullptr)
 	{
@@ -210,12 +193,12 @@ bool GeometryDX11::RenderInstanced(const RenderEventArgs& RenderEventArgs, const
 	if (m_pIndexBuffer != NULL)
 	{
 		m_pIndexBuffer->Bind(0, vertexShader.get(), IShaderParameter::Type::Buffer);
-		m_RenderDeviceDX11.GetDeviceContextD3D11()->DrawIndexedInstanced(indexCnt, InstancesBuffer->GetElementCount(), indexStartLocation, vertexStartLocation, 2);
+		//m_RenderDeviceDX11.GetDeviceContextD3D11()->DrawIndexedInstanced(indexCnt, InstancesBuffer->GetElementCount(), indexStartLocation, vertexStartLocation, 2);
 		m_pIndexBuffer->UnBind(0, vertexShader.get(), IShaderParameter::Type::Buffer);
 	}
 	else
 	{
-		m_RenderDeviceDX11.GetDeviceContextD3D11()->DrawInstanced(vertexCnt, InstancesBuffer->GetElementCount(), vertexStartLocation, 0);
+		//m_RenderDeviceDX11.GetDeviceContextD3D11()->DrawInstanced(vertexCnt, InstancesBuffer->GetElementCount(), vertexStartLocation, 0);
 	}
 
 	if (m_VertexBuffer != nullptr)
@@ -235,11 +218,11 @@ bool GeometryDX11::RenderInstanced(const RenderEventArgs& RenderEventArgs, const
 		}
 	}
 
-	instancesBufferParameter = vertexShader->GetShaderParameterByName("Instances");
+	/*instancesBufferParameter = vertexShader->GetShaderParameterByName("Instances");
 	if (instancesBufferParameter.IsValid())
 	{
 		instancesBufferParameter.Unbind();
-	}
+	}*/
 
 	return true;
 }
