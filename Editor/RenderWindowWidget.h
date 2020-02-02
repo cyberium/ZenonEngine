@@ -1,6 +1,6 @@
 #pragma once
 
-#include <QtWidgets/QFrame>
+#include <QtWidgets/qframe.h>
 
 class RenderWindowWidget
 	: public QFrame
@@ -14,14 +14,15 @@ public:
 	virtual ~RenderWindowWidget();
 
 	// INativeWindow
-	void SetWindowTitle(std::string WindowName) override;
+	void SetWindowTitle(const std::string& WindowName) override;
 	std::string GetWindowTitle() const override;
-	long GetWindowWidth() const override;
-	long GetWindowHeight() const override;
+	size_t GetWindowWidth() const override;
+	size_t GetWindowHeight() const override;
 	void SetCursorPosition(const glm::ivec2& CursorPosition);
 	glm::ivec2 GetCursorPosition() const override;
 	void ShowCursor();
 	void HideCursor();
+	void Close();
 	void SetEventsListener(INativeWindowEventListener* WindowEventsListener);
 	void ResetEventsListener();
 
@@ -48,6 +49,8 @@ private:
 	void moveEvent(QMoveEvent *event) override;
 	void resizeEvent(QResizeEvent *event) override;
 	void closeEvent(QCloseEvent *event) override;
+	void showEvent(QShowEvent* event) override;
+	void hideEvent(QHideEvent* event) override;
 
 private:
 	INativeWindowEventListener* m_EventListener;

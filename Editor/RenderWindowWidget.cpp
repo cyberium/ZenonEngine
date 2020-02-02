@@ -21,7 +21,7 @@ RenderWindowWidget::~RenderWindowWidget()
 //
 // INativeWindow
 //
-void RenderWindowWidget::SetWindowTitle(std::string WindowName)
+void RenderWindowWidget::SetWindowTitle(const std::string& WindowName)
 {
 }
 
@@ -30,12 +30,12 @@ std::string RenderWindowWidget::GetWindowTitle() const
 	return std::string();
 }
 
-long RenderWindowWidget::GetWindowWidth() const
+size_t RenderWindowWidget::GetWindowWidth() const
 {
 	return geometry().width();
 }
 
-long RenderWindowWidget::GetWindowHeight() const
+size_t RenderWindowWidget::GetWindowHeight() const
 {
 	return geometry().height();
 }
@@ -59,6 +59,10 @@ void RenderWindowWidget::ShowCursor()
 void RenderWindowWidget::HideCursor()
 {
 	_ASSERT(false);
+}
+
+void RenderWindowWidget::Close()
+{
 }
 
 void RenderWindowWidget::SetEventsListener(INativeWindowEventListener * WindowEventsListener)
@@ -252,5 +256,15 @@ void RenderWindowWidget::resizeEvent(QResizeEvent * event)
 
 void RenderWindowWidget::closeEvent(QCloseEvent * event)
 {
+	
 	m_EventListener->OnWindowClose(WindowCloseEventArgs(this));
+}
+
+void RenderWindowWidget::showEvent(QShowEvent * event)
+{
+}
+
+void RenderWindowWidget::hideEvent(QHideEvent * event)
+{
+	PostQuitMessage(0);
 }
