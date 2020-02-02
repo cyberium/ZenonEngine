@@ -9,7 +9,7 @@ namespace
 	const vec4  cDefaultColor = vec4(1.0f, 1.0f, 1.0f, 1.0f);
 }
 
-CUIButtonNode::CUIButtonNode(IRenderDevice* RenderDevice)
+CUIButtonNode::CUIButtonNode(IRenderDevice& RenderDevice)
 	: m_State(Idle)
 {
 	m_Material = std::make_shared<UI_Button_Material>(RenderDevice);
@@ -29,15 +29,15 @@ CUIButtonNode::~CUIButtonNode()
 //
 void CUIButtonNode::CreateDefault()
 {
-	m_Material->SetIdleTexture(GetBaseManager()->GetManager<IRenderDevice>()->CreateTexture2D("Textures\\btn_idle.png"));
-	m_Material->SetHoverTexture(GetBaseManager()->GetManager<IRenderDevice>()->CreateTexture2D("Textures\\btn_hover.png"));
-	m_Material->SetClickedTexture(GetBaseManager()->GetManager<IRenderDevice>()->CreateTexture2D("Textures\\btn_clicked.png"));
-	m_Material->SetDisabledTexture(GetBaseManager()->GetManager<IRenderDevice>()->CreateTexture2D("Textures\\btn_disabled.png"));
+	m_Material->SetIdleTexture(GetBaseManager()->GetManager<IRenderDevice>()->GetObjectsFactory().LoadTexture2D("Textures\\btn_idle.png"));
+	m_Material->SetHoverTexture(GetBaseManager()->GetManager<IRenderDevice>()->GetObjectsFactory().LoadTexture2D("Textures\\btn_hover.png"));
+	m_Material->SetClickedTexture(GetBaseManager()->GetManager<IRenderDevice>()->GetObjectsFactory().LoadTexture2D("Textures\\btn_clicked.png"));
+	m_Material->SetDisabledTexture(GetBaseManager()->GetManager<IRenderDevice>()->GetObjectsFactory().LoadTexture2D("Textures\\btn_disabled.png"));
 
-	ITexture* idleTexture = m_Material->GetTexture(0);
+	const auto& idleTexture = m_Material->GetTexture(0);
     m_Size = idleTexture->GetSize();
 
-	m_Mesh = GetBaseManager()->GetManager<IRenderDevice>()->GetPrimitiveCollection()->CreateUIQuad(idleTexture->GetWidth(), idleTexture->GetHeight());
+	m_Mesh = GetBaseManager()->GetManager<IRenderDevice>()->GetPrimitivesFactory().CreateUIQuad(idleTexture->GetWidth(), idleTexture->GetHeight());
 	m_Mesh->SetMaterial(m_Material);
 
     m_TextNode = CreateSceneNode<CUITextNode>();

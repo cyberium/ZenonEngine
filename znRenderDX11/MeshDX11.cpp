@@ -19,7 +19,7 @@ void MeshDX11::SetPrimitiveTopology(PrimitiveTopology _topology)
 	m_Geometry->SetPrimitiveTopology(_topology);
 }
 
-bool MeshDX11::Render(const RenderEventArgs* renderArgs, const IConstantBuffer* perObject, SGeometryPartParams GeometryPartParams)
+bool MeshDX11::Render(const RenderEventArgs& renderArgs, const std::shared_ptr<IConstantBuffer>& perObject, const SGeometryPartParams& GeometryPartParams)
 {
 	return true;
 }

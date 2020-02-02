@@ -137,9 +137,9 @@ bool RenderWindowBase::IsVSync() const
 	return m_vSync;
 }
 
-const IRenderTarget& RenderWindowBase::GetRenderTarget() const
+const std::shared_ptr<IRenderTarget>& RenderWindowBase::GetRenderTarget() const
 {
-    return *m_RenderTarget;
+    return m_RenderTarget;
 }
 
 const Viewport& RenderWindowBase::GetViewport() const

@@ -9,19 +9,16 @@ CDefferedRenderFinal::CDefferedRenderFinal(IRenderDevice& RenderDevice, std::sha
 	, m_DefferedRenderPrepareLights(DefferedRenderPrepareLights)
 {
 	m_ScreenToViewData = (SScreenToViewParams*)_aligned_malloc(sizeof(SScreenToViewParams), 16);
-	m_ScreenToViewConstantBuffer = GetRenderDevice().CreateConstantBuffer(SScreenToViewParams());
+	m_ScreenToViewConstantBuffer = GetRenderDevice().GetObjectsFactory().CreateConstantBuffer(SScreenToViewParams());
 
 	m_LightResultData = (SLightResult*)_aligned_malloc(sizeof(SLightResult), 16);
-	m_LightResultConstantBuffer = GetRenderDevice().CreateConstantBuffer(SLightResult());
+	m_LightResultConstantBuffer = GetRenderDevice().GetObjectsFactory().CreateConstantBuffer(SLightResult());
 }
 
 CDefferedRenderFinal::~CDefferedRenderFinal()
 {
 	_aligned_free(m_LightResultData);
-	GetRenderDevice().DestroyConstantBuffer(m_LightResultConstantBuffer);
-
 	_aligned_free(m_ScreenToViewData);
-	GetRenderDevice().DestroyConstantBuffer(m_ScreenToViewConstantBuffer);
 }
 
 
@@ -37,14 +34,14 @@ void CDefferedRenderFinal::PreRender(RenderEventArgs& e)
 	m_ScreenToViewData->InverseProjection = glm::inverse(e.Camera->GetProjectionMatrix());
 	m_ScreenToViewData->InverseView = glm::inverse(e.Camera->GetViewMatrix());
 	m_ScreenToViewData->InverseProjectionView = e.Camera->GetInverseProjectionViewMatrix();
-	m_ScreenToViewData->ScreenDimensions = glm::vec2(e.PipelineState->GetRasterizerState().GetViewports()[0]->GetWidth(), e.PipelineState->GetRasterizerState().GetViewports()[0]->GetHeight());
+	m_ScreenToViewData->ScreenDimensions = glm::vec2(e.PipelineState->GetRasterizerState()->GetViewports()[0]->GetWidth(), e.PipelineState->GetRasterizerState()->GetViewports()[0]->GetHeight());
 	m_ScreenToViewConstantBuffer->Set(*m_ScreenToViewData);
 	
-	IShaderParameter* screenToViewParams = GetPipeline()->GetShader(EShaderType::PixelShader)->GetShaderParameterByName("ScreenToViewParams");
-	if (screenToViewParams->IsValid() && m_ScreenToViewConstantBuffer != nullptr)
+	auto& screenToViewParams = GetPipeline().GetShader(EShaderType::PixelShader)->GetShaderParameterByName("ScreenToViewParams");
+	if (screenToViewParams.IsValid() && m_ScreenToViewConstantBuffer != nullptr)
 	{
-		screenToViewParams->SetConstantBuffer(m_ScreenToViewConstantBuffer);
-		screenToViewParams->Bind();
+		screenToViewParams.SetConstantBuffer(m_ScreenToViewConstantBuffer);
+		screenToViewParams.Bind();
 	}
 	// Once per frame
 }
@@ -57,7 +54,7 @@ void CDefferedRenderFinal::Render(RenderEventArgs& e)
 		BindLightParamsForCurrentIteration(e, lightResult);
 
 		SGeometryPartParams GeometryPartParams;
-		m_QuadMesh->GetGeometry()->Render(&e, nullptr, GetPipeline()->GetShaders(), nullptr, GeometryPartParams);
+		m_QuadMesh->GetGeometry().Render(e, nullptr, GetPipeline().GetShaders(), nullptr, GeometryPartParams);
 	}
 }
 
@@ -75,28 +72,28 @@ std::shared_ptr<IRenderPassPipelined> CDefferedRenderFinal::CreatePipeline(std::
 {
 	m_QuadMesh = GetRenderDevice().GetPrimitivesFactory().CreateQuad();
 
-	const auto& vertexShader = GetRenderDevice().CreateShader(EShaderType::VertexShader, "IDB_SHADER_3D_DEFFERED", IShader::ShaderMacros(), "VS_ScreenQuad", "latest");
+	auto vertexShader = GetRenderDevice().GetObjectsFactory().CreateShader(EShaderType::VertexShader, "IDB_SHADER_3D_DEFFERED", "VS_ScreenQuad");
 	vertexShader->LoadInputLayoutFromReflector();
 
-	const auto& pixelShader = GetRenderDevice().CreateShader(EShaderType::PixelShader, "IDB_SHADER_3D_DEFFERED", IShader::ShaderMacros(), "PS_DeferredLighting", "latest");
+	auto& pixelShader = GetRenderDevice().GetObjectsFactory().CreateShader(EShaderType::PixelShader, "IDB_SHADER_3D_DEFFERED", "PS_DeferredLighting");
 
 	// PIPELINES
-	IPipelineState* defferedFinalPipeline = GetRenderDevice().CreatePipelineState();
-	defferedFinalPipeline->GetBlendState().SetBlendMode(additiveBlending);
-	defferedFinalPipeline->GetDepthStencilState().SetDepthMode(disableDepthWrites);
-	defferedFinalPipeline->GetRasterizerState().SetCullMode(IRasterizerState::CullMode::None);
-	defferedFinalPipeline->GetRasterizerState().SetFillMode(IRasterizerState::FillMode::Solid);
+	auto& defferedFinalPipeline = GetRenderDevice().GetObjectsFactory().CreatePipelineState();
+	defferedFinalPipeline->GetBlendState()->SetBlendMode(additiveBlending);
+	defferedFinalPipeline->GetDepthStencilState()->SetDepthMode(disableDepthWrites);
+	defferedFinalPipeline->GetRasterizerState()->SetCullMode(IRasterizerState::CullMode::None);
+	defferedFinalPipeline->GetRasterizerState()->SetFillMode(IRasterizerState::FillMode::Solid);
 	defferedFinalPipeline->SetRenderTarget(RenderTarget);
-	defferedFinalPipeline->GetRasterizerState().SetViewport(Viewport);
+	defferedFinalPipeline->GetRasterizerState()->SetViewport(Viewport);
 	defferedFinalPipeline->SetShader(EShaderType::VertexShader, vertexShader);
 	defferedFinalPipeline->SetShader(EShaderType::PixelShader, pixelShader);
 
-	ISamplerState* sampler = GetRenderDevice().CreateSamplerState();
+	auto& sampler = GetRenderDevice().GetObjectsFactory().CreateSamplerState();
 	sampler->SetFilter(ISamplerState::MinFilter::MinLinear, ISamplerState::MagFilter::MagLinear, ISamplerState::MipFilter::MipLinear);
 	sampler->SetWrapMode(ISamplerState::WrapMode::Repeat, ISamplerState::WrapMode::Repeat);
 	defferedFinalPipeline->SetSampler(0, sampler);
 
-	ISamplerState* samplerClamp = GetRenderDevice().CreateSamplerState();
+	auto& samplerClamp = GetRenderDevice().GetObjectsFactory().CreateSamplerState();
 	samplerClamp->SetFilter(ISamplerState::MinFilter::MinLinear, ISamplerState::MagFilter::MagLinear, ISamplerState::MipFilter::MipLinear);
 	samplerClamp->SetWrapMode(ISamplerState::WrapMode::Clamp, ISamplerState::WrapMode::Clamp);
 	defferedFinalPipeline->SetSampler(1, samplerClamp);
@@ -136,11 +133,11 @@ void CDefferedRenderFinal::BindLightParamsForCurrentIteration(const RenderEventA
 	    *m_LightResultData = lightResult;
 		m_LightResultConstantBuffer->Set(*m_LightResultData);
 
-		IShaderParameter* lightParam = GetPipeline()->GetShader(EShaderType::PixelShader)->GetShaderParameterByName("LightResult");
-		if (lightParam->IsValid() && m_LightResultConstantBuffer != nullptr)
+		auto& lightParam = GetPipeline().GetShader(EShaderType::PixelShader)->GetShaderParameterByName("LightResult");
+		if (lightParam.IsValid() && m_LightResultConstantBuffer != nullptr)
 		{
-			lightParam->SetConstantBuffer(m_LightResultConstantBuffer);
-			lightParam->Bind();
+			lightParam.SetConstantBuffer(m_LightResultConstantBuffer);
+			lightParam.Bind();
 		}
 		else
 		{
@@ -149,11 +146,11 @@ void CDefferedRenderFinal::BindLightParamsForCurrentIteration(const RenderEventA
 	}
 
 	{
-		IShaderParameter* shadowTexture = GetPipeline()->GetShader(EShaderType::PixelShader)->GetShaderParameterByName("TextureShadow");
-		if (shadowTexture->IsValid() && LightResult.IsShadowEnable && LightResult.ShadowTexture != nullptr)
+		auto& shadowTexture = GetPipeline().GetShader(EShaderType::PixelShader)->GetShaderParameterByName("TextureShadow");
+		if (shadowTexture.IsValid() && LightResult.IsShadowEnable && LightResult.ShadowTexture != nullptr)
 		{
-			shadowTexture->SetTexture(LightResult.ShadowTexture);
-			shadowTexture->Bind();
+			shadowTexture.SetTexture(LightResult.ShadowTexture);
+			shadowTexture.Bind();
 		}
 		else
 		{

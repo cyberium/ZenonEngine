@@ -6,7 +6,7 @@ class ZN_API CUIColorNode : public CUIBaseNode
 {
 	typedef CUIBaseNode base;
 public:
-	CUIColorNode(IRenderDevice* RenderDevice, vec2 Size = vec2(1.0f, 1.0f));
+	CUIColorNode(IRenderDevice& RenderDevice, vec2 Size = vec2(1.0f, 1.0f));
 	virtual ~CUIColorNode();
 
 	// CUIColorNode
@@ -19,6 +19,6 @@ public:
 
 private:
     glm::vec2                           m_Size;
-	IMesh*              m_Mesh;
+	std::shared_ptr<IMesh>              m_Mesh;
 	std::shared_ptr<UI_Color_Material>  m_Material;
 };

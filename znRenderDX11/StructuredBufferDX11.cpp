@@ -193,9 +193,9 @@ void StructuredBufferDX11::UnBind(uint32 ID, const IShader* shader, IShaderParam
 
 }
 
-void StructuredBufferDX11::Copy(IBuffer* other) const
+void StructuredBufferDX11::Copy(const IBuffer* other) const
 {
-	Copy(dynamic_cast<IStructuredBuffer*>(other));
+	Copy(dynamic_cast<const IStructuredBuffer*>(other));
 }
 
 IBuffer::BufferType StructuredBufferDX11::GetType() const
@@ -223,9 +223,9 @@ uint32 StructuredBufferDX11::GetElementOffset() const
 //
 // IStructuredBuffer
 //
-void StructuredBufferDX11::Copy(IStructuredBuffer* other)
+void StructuredBufferDX11::Copy(const IStructuredBuffer* other)
 {
-	StructuredBufferDX11* srcBuffer = dynamic_cast<StructuredBufferDX11*>(other);
+	const StructuredBufferDX11* srcBuffer = dynamic_cast<const StructuredBufferDX11*>(other);
 
 	if (srcBuffer->m_bIsDirty)
 	{

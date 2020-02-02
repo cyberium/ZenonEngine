@@ -3,7 +3,7 @@
 // General
 #include "ScenePass.h"
 
-ScenePass::ScenePass(IRenderDevice* RenderDevice, std::shared_ptr<IScene> Scene)
+ScenePass::ScenePass(IRenderDevice& RenderDevice, std::shared_ptr<IScene> Scene)
 	: RenderPass(RenderDevice)
 	, m_Scene(Scene)
 {}

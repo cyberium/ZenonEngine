@@ -16,7 +16,7 @@ public:
 
 	// Creators
 	IRenderDevice*                  CreateRenderDevice(RenderDeviceType DeviceType);
-	void                            AddRenderWindow(IRenderWindow* RenderWindow);
+	void                            AddRenderWindow(std::shared_ptr<IRenderWindow> RenderWindow);
 	void                            DeleleRenderWindow(IRenderWindow* RenderWindow);
 
 	// IApplication
@@ -45,7 +45,7 @@ private:
 	HINSTANCE                       m_HINSTANCE;
 
 	IRenderDevice*					m_pRenderDevice;
-	std::vector<IRenderWindow*>		m_Windows;
+	std::vector<std::shared_ptr<IRenderWindow>>		m_Windows;
 
 private: // IApplicationEvents
 	Event									 m_Initialize;

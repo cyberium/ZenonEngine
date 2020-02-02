@@ -35,8 +35,9 @@ void RenderWindowDX11::Present()
 	m_RenderTarget->Bind();
 
 	// Copy the render target's color buffer to the swap chain's back buffer.
-	const TextureDX11& colorTexture = dynamic_cast<const TextureDX11&>(m_RenderTarget->GetTexture(IRenderTarget::AttachmentPoint::Color0));
-	m_RenderDeviceDX11.GetDeviceContextD3D11()->CopyResource(m_pBackBuffer, colorTexture.GetTextureResource());
+	std::shared_ptr<ITexture> colorTexture = m_RenderTarget->GetTexture(IRenderTarget::AttachmentPoint::Color0);
+	std::shared_ptr<TextureDX11> colorTextureDX11 = std::dynamic_pointer_cast<TextureDX11>(colorTexture);
+	m_RenderDeviceDX11.GetDeviceContextD3D11()->CopyResource(m_pBackBuffer, colorTextureDX11->GetTextureResource());
 
 	if (IsVSync())
 	{

@@ -10,7 +10,7 @@ public:
 	// IBuffer
 	bool Bind(uint32 id, const IShader* shader, IShaderParameter::Type parameterType) const override;
 	void UnBind(uint32 id, const IShader* shader, IShaderParameter::Type parameterType) const override;
-	void Copy(IBuffer* other) const override;
+	void Copy(const IBuffer* other) const override;
 	BufferType GetType() const override;
 	uint32 GetElementCount() const override;
 	uint32 GetElementStride() const override;

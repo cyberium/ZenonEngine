@@ -9,8 +9,8 @@ public:
 
 	virtual void                                    SetPrimitiveTopology(PrimitiveTopology Topology) override;
 
-	virtual bool                                    Render(const RenderEventArgs* renderArgs, const IConstantBuffer* PerObject, const ShaderMap& ShadersMap, const IMaterial* Material, const SGeometryPartParams& GeometryPartParams) const override;
-	virtual bool                                    RenderInstanced(const RenderEventArgs* renderArgs, const IStructuredBuffer* InstancesBuffer, const ShaderMap& ShadersMap, const IMaterial* Material, SGeometryPartParams GeometryPartParams) const override;
+	virtual bool                                    Render(         const RenderEventArgs& RenderEventArgs, const std::shared_ptr<IConstantBuffer>& PerObject,         const ShaderMap& ShadersMap, const IMaterial* Material, const SGeometryPartParams& GeometryPartParams) const override;
+	virtual bool                                    RenderInstanced(const RenderEventArgs& RenderEventArgs, const std::shared_ptr<IStructuredBuffer>& InstancesBuffer, const ShaderMap& ShadersMap, const IMaterial* Material, const SGeometryPartParams& GeometryPartParams) const override;
 
 private:
 	D3D11_PRIMITIVE_TOPOLOGY                        m_PrimitiveTopology;

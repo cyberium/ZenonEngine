@@ -92,9 +92,9 @@ void ConstantBufferDX11::UnBind(uint32 id, const IShader* shader, IShaderParamet
 	}
 }
 
-void ConstantBufferDX11::Copy(IBuffer* other) const
+void ConstantBufferDX11::Copy(const IBuffer* other) const
 {
-	this->Copy(dynamic_cast<IConstantBuffer*>(other));
+	this->Copy(dynamic_cast<const IConstantBuffer*>(other));
 }
 
 IBuffer::BufferType ConstantBufferDX11::GetType() const
@@ -122,9 +122,9 @@ uint32 ConstantBufferDX11::GetElementOffset() const
 //
 // IConstantBuffer
 //
-void ConstantBufferDX11::Copy(IConstantBuffer* other) const
+void ConstantBufferDX11::Copy(const IConstantBuffer* other) const
 {
-	ConstantBufferDX11* srcBuffer = dynamic_cast<ConstantBufferDX11*>(other);
+	const ConstantBufferDX11* srcBuffer = dynamic_cast<const ConstantBufferDX11*>(other);
 
 	if (srcBuffer && srcBuffer != this && m_BufferSize == srcBuffer->m_BufferSize)
 	{

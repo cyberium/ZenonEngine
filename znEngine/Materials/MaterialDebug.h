@@ -3,7 +3,7 @@
 class ZN_API MaterialDebug : public MaterialProxie
 {
 public:
-	MaterialDebug(IRenderDevice* RenderDevice);
+	MaterialDebug(IRenderDevice& RenderDevice);
 	virtual ~MaterialDebug();
 
 	cvec4 GetDiffuseColor() const;

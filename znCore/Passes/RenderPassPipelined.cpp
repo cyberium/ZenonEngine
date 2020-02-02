@@ -104,7 +104,7 @@ std::shared_ptr<IRenderPassPipelined> RenderPassPipelined::SetPipeline(std::shar
 	return shared_from_this();
 }
 
-const IPipelineState& RenderPassPipelined::GetPipeline() const
+IPipelineState& RenderPassPipelined::GetPipeline() const
 {
 	_ASSERT_EXPR(m_Pipeline != nullptr, L"RenderPassPipelined: Pipeline is null. Don't use this class without pipeline.");
 	return *m_Pipeline;
@@ -114,7 +114,7 @@ const IPipelineState& RenderPassPipelined::GetPipeline() const
 void RenderPassPipelined::UpdateViewport(const Viewport& _viewport)
 {
 	_ASSERT_EXPR(m_Pipeline != nullptr, L"RenderPassPipelined: Pipeline is null. Don't use this class without pipeline.");
-	m_Pipeline->GetRasterizerState().SetViewport(&_viewport);
+	m_Pipeline->GetRasterizerState()->SetViewport(&_viewport);
 }
 
 
@@ -162,10 +162,10 @@ void RenderPassPipelined::FillPerFrameData()
 	m_PerFrameConstantBuffer->Set(perFrame);
 }
 
-const RenderEventArgs* RenderPassPipelined::GetRenderEventArgs() const
+const RenderEventArgs& RenderPassPipelined::GetRenderEventArgs() const
 {
 	_ASSERT(m_RenderEventArgs != nullptr);
-	return m_RenderEventArgs;
+	return *m_RenderEventArgs;
 }
 
 const IRenderDevice& RenderPassPipelined::GetRenderDevice() const
@@ -191,10 +191,10 @@ void RenderPassPipelined::SetPerFrameData(const PerFrame& PerFrame)
 
 void RenderPassPipelined::BindPerFrameDataToVertexShader(const IShader * VertexShader) const
 {
-	IShaderParameter* perFrameParam = VertexShader->GetShaderParameterByName("PerFrame");
-	if (perFrameParam->IsValid() && m_PerFrameConstantBuffer != nullptr)
+	auto& perFrameParam = VertexShader->GetShaderParameterByName("PerFrame");
+	if (perFrameParam.IsValid() && m_PerFrameConstantBuffer != nullptr)
 	{
-		perFrameParam->SetConstantBuffer(m_PerFrameConstantBuffer.get());
-		perFrameParam->Bind();
+		perFrameParam.SetConstantBuffer(m_PerFrameConstantBuffer);
+		perFrameParam.Bind();
 	}
 }

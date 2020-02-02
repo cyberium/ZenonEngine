@@ -25,7 +25,7 @@ public:
 		Disabled = 3
 	};
 
-	CUIButtonNode(IRenderDevice* RenderDevice);
+	CUIButtonNode(IRenderDevice& RenderDevice);
 	virtual ~CUIButtonNode();
 
 	// CUIButtonNode
@@ -50,7 +50,7 @@ public:
 private:
     glm::vec2                            m_Size;
 	uint32                               m_State;
-	IMesh*               m_Mesh;
+	std::shared_ptr<IMesh>               m_Mesh;
 	std::shared_ptr<UI_Button_Material>  m_Material;
 	CUITextNode*         m_TextNode;
 	

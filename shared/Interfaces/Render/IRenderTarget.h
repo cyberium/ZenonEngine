@@ -39,7 +39,7 @@ ZN_INTERFACE ZN_API IRenderTarget
 	 * @see https://www.opengl.org/sdk/docs/man/html/glFramebufferTexture.xhtml
 	 */
 	virtual void AttachTexture(AttachmentPoint attachment, std::shared_ptr<ITexture> Texture) = 0;
-	virtual const ITexture& GetTexture(AttachmentPoint attachment) = 0;
+	virtual const std::shared_ptr<ITexture>& GetTexture(AttachmentPoint attachment) = 0;
 
 	/**
 	 * Clear the contents of a texture attached to a specific attachment point.
@@ -73,7 +73,7 @@ ZN_INTERFACE ZN_API IRenderTarget
 	 * and RWbuffers attached to the render target at any time.
 	 */
 	virtual void AttachStructuredBuffer(uint8_t slot, std::shared_ptr<IStructuredBuffer> rwBuffer) = 0;
-	virtual const IStructuredBuffer& GetStructuredBuffer(uint8_t slot) = 0;
+	virtual const std::shared_ptr < IStructuredBuffer>& GetStructuredBuffer(uint8_t slot) = 0;
 
 	/**
 	 * Resize the color and depth/stencil textures that are associated to this render target view.
@@ -102,4 +102,4 @@ ZN_INTERFACE ZN_API IRenderTarget
 	virtual bool IsValid() const = 0;
 };
 
-typedef std::vector<IRenderTarget*> RenderTargetList;
+typedef std::vector<std::shared_ptr<IRenderTarget>> RenderTargetList;

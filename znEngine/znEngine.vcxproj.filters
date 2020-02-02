@@ -94,9 +94,6 @@
     <Filter Include="Resources\Scripts">
       <UniqueIdentifier>{0f67c8ef-60be-472e-98e4-315af5eac75f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Scene Funcitonal\UI\Custom nodes">
-      <UniqueIdentifier>{61af9f68-e3f7-4429-a1ef-2e1c9e057132}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Passes\UI">
       <UniqueIdentifier>{46e412dd-bb55-422f-9cf7-d860c116b3c4}</UniqueIdentifier>
     </Filter>
@@ -273,9 +270,6 @@
     </ClCompile>
     <ClCompile Include="NativeWindowFactory.cpp" />
     <ClCompile Include="NativeWindow_WindowsSpecific.cpp" />
-    <ClCompile Include="Scene_TCEditor.cpp">
-      <Filter>Scenes</Filter>
-    </ClCompile>
     <ClCompile Include="Scene_Default.cpp">
       <Filter>Scenes</Filter>
     </ClCompile>
@@ -284,9 +278,6 @@
     </ClCompile>
     <ClCompile Include="SceneFunctional\ScenesFactory.cpp">
       <Filter>Scenes\Creator</Filter>
-    </ClCompile>
-    <ClCompile Include="SceneFunctional\UI\RichTextEditorForTC.cpp">
-      <Filter>Scene Funcitonal\UI\Custom nodes</Filter>
     </ClCompile>
     <ClCompile Include="Passes\UIFontPass.cpp">
       <Filter>Passes\UI</Filter>
@@ -468,9 +459,6 @@
     <ClInclude Include="ThreadPool.h" />
     <ClInclude Include="NativeWindowFactory.h" />
     <ClInclude Include="NativeWindow_WindowsSpecific.h" />
-    <ClInclude Include="Scene_TCEditor.h">
-      <Filter>Scenes</Filter>
-    </ClInclude>
     <ClInclude Include="Scene_Default.h">
       <Filter>Scenes</Filter>
     </ClInclude>
@@ -479,9 +467,6 @@
     </ClInclude>
     <ClInclude Include="SceneFunctional\ScenesFactory.h">
       <Filter>Scenes\Creator</Filter>
-    </ClInclude>
-    <ClInclude Include="SceneFunctional\UI\RichTextEditorForTC.h">
-      <Filter>Scene Funcitonal\UI\Custom nodes</Filter>
     </ClInclude>
     <ClInclude Include="Passes\UIFontPass.h">
       <Filter>Passes\UI</Filter>
@@ -517,12 +502,6 @@
     <Text Include="Resources\Fonts\consola.ttf">
       <Filter>Resources\Fonts</Filter>
     </Text>
-    <Text Include="Resources\shaders_D3D\3D\Debug.hlsl">
-      <Filter>Resources\Shaders_D3D\3D</Filter>
-    </Text>
-    <Text Include="Resources\shaders_D3D\3D\Textured.hlsl">
-      <Filter>Resources\shaders_D3D\3D</Filter>
-    </Text>
     <Text Include="Resources\shaders_OGL\UI\UI_Font.vs">
       <Filter>Resources\Shaders_OGL\UI</Filter>
     </Text>
@@ -547,9 +526,6 @@
     <Text Include="Resources\shaders_D3D\3D\Shadow.hlsl">
       <Filter>Resources\Shaders_D3D\3D</Filter>
     </Text>
-    <Text Include="Resources\shaders_D3D\3D\Model_Deffered.hlsl">
-      <Filter>Resources\Shaders_D3D\3D</Filter>
-    </Text>
     <Text Include="Resources\shaders_D3D\3D\Model_Forward.hlsl">
       <Filter>Resources\Shaders_D3D\3D</Filter>
     </Text>
@@ -558,9 +534,6 @@
     </Text>
     <Text Include="Resources\shaders_D3D\Types.hlsl">
       <Filter>Resources\shaders_D3D</Filter>
-    </Text>
-    <Text Include="Resources\shaders_D3D\3D\Deffered.hlsl">
-      <Filter>Resources\Shaders_D3D\3D</Filter>
     </Text>
     <Text Include="Resources\shaders_D3D\UI\UI_Common.hlsl">
       <Filter>Resources\Shaders_D3D\UI\Base</Filter>
@@ -578,5 +551,9 @@
     <None Include="Resources\Scripts\TestScript.lua">
       <Filter>Resources\Scripts</Filter>
     </None>
+    <None Include="Resources\shaders_D3D\3D\Debug.hlsl" />
+    <None Include="Resources\shaders_D3D\3D\Textured.hlsl" />
+    <None Include="Resources\shaders_D3D\3D\Model_Deffered.hlsl" />
+    <None Include="Resources\shaders_D3D\3D\Deffered.hlsl" />
   </ItemGroup>
 </Project>

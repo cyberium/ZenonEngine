@@ -12,16 +12,16 @@ public:
 	// IShaderParameter
 	Type GetType() const;
 	bool IsValid() const;
-	void SetSource(const IShaderParameterSource* ShaderParameterSource) override final;
-	const IShaderParameterSource* GetSource()  override final;
-	void SetConstantBuffer(const IConstantBuffer* constantBuffer) override final;
-	const IConstantBuffer* GetConstantBuffer() const override final;
-	void SetTexture(const ITexture* texture) override final;
-	const ITexture* GetTexture() const override final;
-	void SetSampler(const ISamplerState* sampler) override final;
-	const ISamplerState* GetSampler() const override final;
-	void SetStructuredBuffer(const IStructuredBuffer* rwBuffer) override final;
-	const IStructuredBuffer* GetStructuredBuffer() const override final;
+	void SetSource(std::shared_ptr<IShaderParameterSource> ShaderParameterSource) override final;
+	const std::shared_ptr<IShaderParameterSource>& GetSource()  override final;
+	void SetConstantBuffer(std::shared_ptr<IConstantBuffer> constantBuffer) override final;
+	const std::shared_ptr<IConstantBuffer>& GetConstantBuffer() const override final;
+	void SetTexture(std::shared_ptr<ITexture> texture) override final;
+	const std::shared_ptr<ITexture>& GetTexture() const override final;
+	void SetSampler(std::shared_ptr<ISamplerState> sampler) override final;
+	const std::shared_ptr<ISamplerState>& GetSampler() const override final;
+	void SetStructuredBuffer(std::shared_ptr<IStructuredBuffer> rwBuffer) override final;
+	const std::shared_ptr<IStructuredBuffer>& GetStructuredBuffer() const override final;
 
 	void Bind() override;
 	void Unbind() override;
@@ -32,8 +32,8 @@ private:
 	const IShader*          m_Shader;
 	Type                    m_ParameterType;
 
-	const IConstantBuffer*  m_pConstantBuffer;
-	const ITexture*         m_pTexture;
-	const ISamplerState*    m_pSamplerState;
-	const IStructuredBuffer*m_pStructuredBuffer;
+	std::shared_ptr<IConstantBuffer>  m_pConstantBuffer;
+	std::shared_ptr<ITexture>         m_pTexture;
+	std::shared_ptr<ISamplerState>    m_pSamplerState;
+	std::shared_ptr<IStructuredBuffer> m_pStructuredBuffer;
 };

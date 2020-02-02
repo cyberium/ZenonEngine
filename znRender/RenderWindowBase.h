@@ -35,7 +35,7 @@ public:
 	// IRenderWindow
 	bool                                            IsVSync() const override;
 	virtual void                                    Present() = 0;
-	const IRenderTarget&                            GetRenderTarget() const override;
+	const std::shared_ptr<IRenderTarget>&           GetRenderTarget() const override;
 	const Viewport&									GetViewport() const override;
 
 

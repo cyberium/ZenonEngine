@@ -52,7 +52,7 @@ std::string CRenderPassDefaultCreator::GetRenderPassName(size_t Index) const
 	throw CException("CRenderPassDefaultCreator: GetRenderPassName(%d) is out of bounds. Count = %d", Index, GetRenderPassCount());
 }
 
-std::shared_ptr<IRenderPass> CRenderPassDefaultCreator::CreateRenderPass(size_t Index, IRenderDevice* RenderDevice, IRenderTarget* RenderTarget, const Viewport * Viewport, std::shared_ptr<IScene> Scene) const
+std::shared_ptr<IRenderPass> CRenderPassDefaultCreator::CreateRenderPass(size_t Index, IRenderDevice& RenderDevice, std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport, std::shared_ptr<IScene> Scene) const
 {
 	if (Index == 0)
 	{

@@ -29,14 +29,14 @@ void main_internal(int argumentCount, char* arguments[])
 	IRenderDevice* renderDevice = app.CreateRenderDevice(RenderDeviceType::RenderDeviceType_DirectX);
 	BaseManager->AddManager<IRenderDevice>(std::shared_ptr<IRenderDevice>(renderDevice));
 
-	std::shared_ptr<IFontsManager> fontsManager = std::make_shared<FontsManager>(renderDevice, BaseManager);
+	std::shared_ptr<IFontsManager> fontsManager = std::make_shared<FontsManager>(*renderDevice, BaseManager);
 	BaseManager->AddManager<IFontsManager>(fontsManager);
 
-	IRenderWindow* firstRenderWindow = renderDevice->CreateRenderWindow(nativeWindow.get(), false);
+	std::shared_ptr<IRenderWindow> firstRenderWindow = renderDevice->GetObjectsFactory().CreateRenderWindow(*nativeWindow, false);
 	app.AddRenderWindow(firstRenderWindow);
 
 	std::shared_ptr<IScene> scene = BaseManager->GetManager<IScenesFactory>()->CreateScene("SceneDefault");
-	scene->ConnectEvents(dynamic_cast<IRenderWindowEvents*>(firstRenderWindow));
+	scene->ConnectEvents(std::dynamic_pointer_cast<IRenderWindowEvents>(firstRenderWindow));
 	scene->Initialize();
 
 	app.Run();

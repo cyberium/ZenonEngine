@@ -55,9 +55,9 @@ IRenderDevice* Application::CreateRenderDevice(RenderDeviceType DeviceType)
 	return GetRenderDevice();
 }
 
-void Application::AddRenderWindow(IRenderWindow* RenderWindow)
+void Application::AddRenderWindow(std::shared_ptr<IRenderWindow> RenderWindow)
 {
-	dynamic_cast<IApplicationEventsConnection*>(RenderWindow)->Connect(this);
+	std::dynamic_pointer_cast<IApplicationEventsConnection>(RenderWindow)->Connect(this);
 
 	m_Windows.push_back(RenderWindow);
 }
@@ -102,7 +102,7 @@ int Application::DoRun()
 			{
 				if (it != nullptr)
 				{
-					INativeWindow_WindowsSpecific* nativeWindow = dynamic_cast<INativeWindow_WindowsSpecific*>(it->GetWindowObject());
+					const auto& nativeWindow = std::dynamic_pointer_cast<INativeWindow_WindowsSpecific>(it);
 					SendMessageW(nativeWindow->GetHWnd(), WM_CLOSE, NULL, NULL); // TODO: Investigate me!
 				}
 			}

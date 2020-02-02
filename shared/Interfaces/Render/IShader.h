@@ -55,7 +55,7 @@ ZN_INTERFACE ZN_API __declspec(novtable) IShader
 	/**
 	 * Get a shader input layout description
 	 */
-	virtual IShaderInputLayout* GetInputLayout() const = 0;
+	virtual IShaderInputLayout& GetInputLayout() const = 0;
 
 	/**
 	 * Get a reference to a parameter defined in the shader.
@@ -64,7 +64,7 @@ ZN_INTERFACE ZN_API __declspec(novtable) IShader
 	 * is not found in the shader, then this function will return an invalid shader parameter.
 	 * You can check for validity using the IShaderParameter::IsValid method.
 	 */
-	virtual IShaderParameter* GetShaderParameterByName(const std::string& name) const = 0;
+	virtual IShaderParameter& GetShaderParameterByName(const std::string& name) const = 0;
 
 	/**
 	 * Bind this shader for use in the rendering pipeline.

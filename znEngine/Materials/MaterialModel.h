@@ -35,8 +35,9 @@ public:
 	void SetReflectionColor(const glm::vec3& Color);
 	void SetReflectionFactor(float Factor);
 
-	virtual ITexture* GetTexture(ETextureType TextureType) const;
-	virtual void SetTexture(ETextureType TextureType, ITexture* texture);
+	virtual void SetTexture(ETextureType TextureType, std::shared_ptr<ITexture> texture);
+	virtual const std::shared_ptr<ITexture>& GetTexture(ETextureType TextureType) const;
+	
 
 protected:
 	void UpdateConstantBuffer() const override;

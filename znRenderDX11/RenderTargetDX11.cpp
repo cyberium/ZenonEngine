@@ -20,22 +20,19 @@ RenderTargetDX11::~RenderTargetDX11()
 
 void RenderTargetDX11::AttachTexture(AttachmentPoint attachment, std::shared_ptr<ITexture> texture)
 {
-	std::shared_ptr<TextureDX11> textureDX11 = std::dynamic_pointer_cast<TextureDX11>(texture);
-	m_Textures[(uint8_t)attachment] = textureDX11;
-
-	// Next time the render target is "bound", check that it is valid.
+	m_Textures[(uint8_t)attachment] = texture;
 	m_bCheckValidity = true;
 }
 
-const ITexture& RenderTargetDX11::GetTexture(AttachmentPoint attachment)
+const std::shared_ptr<ITexture>& RenderTargetDX11::GetTexture(AttachmentPoint attachment)
 {
-	return *m_Textures[(uint8_t)attachment];
+	return m_Textures.at((uint8_t)attachment);
 }
 
 
 void RenderTargetDX11::Clear(AttachmentPoint attachment, ClearFlags clearFlags, cvec4 color, float depth, uint8_t stencil)
 {
-	const std::shared_ptr<TextureDX11>& texture = m_Textures[(uint8_t)attachment];
+	const std::shared_ptr<ITexture>& texture = m_Textures[(uint8_t)attachment];
 	if (texture)
 	{
 		texture->Clear(clearFlags, color, depth, stencil);
@@ -70,9 +67,9 @@ void RenderTargetDX11::AttachStructuredBuffer(uint8_t slot, std::shared_ptr<IStr
 	m_bCheckValidity = true;
 }
 
-const IStructuredBuffer& RenderTargetDX11::GetStructuredBuffer(uint8_t slot)
+const std::shared_ptr<IStructuredBuffer>& RenderTargetDX11::GetStructuredBuffer(uint8_t slot)
 {
-	return *m_StructuredBuffers[slot];
+	return m_StructuredBuffers[slot];
 }
 
 
@@ -109,7 +106,7 @@ void RenderTargetDX11::Bind()
 	UINT numRTVs = 0;
 	for (uint8_t i = 0; i < 8; i++)
 		if (const auto& texture = m_Textures[i])
-			renderTargetViews[numRTVs++] = texture->GetRenderTargetView();
+			renderTargetViews[numRTVs++] = std::dynamic_pointer_cast<TextureDX11>(texture)->GetRenderTargetView();
 
 	ID3D11UnorderedAccessView* uavViews[8];
 	UINT uavStartSlot = numRTVs;
@@ -121,11 +118,11 @@ void RenderTargetDX11::Bind()
 	ID3D11DepthStencilView* depthStencilView = nullptr;
 	if (const auto& depthTexture = m_Textures[(uint8_t)AttachmentPoint::Depth])
 	{
-		depthStencilView = depthTexture->GetDepthStencilView();
+		depthStencilView = std::dynamic_pointer_cast<TextureDX11>(depthTexture)->GetDepthStencilView();
 	}
 	else if (const auto& depthStencilTexture = m_Textures[(uint8_t)AttachmentPoint::DepthStencil])
 	{
-		depthStencilView = depthStencilTexture->GetDepthStencilView();
+		depthStencilView = std::dynamic_pointer_cast<TextureDX11>(depthStencilTexture)->GetDepthStencilView();
 	}
 
 	m_RenderDeviceDX11.GetDeviceContextD3D11()->OMSetRenderTargetsAndUnorderedAccessViews(numRTVs, renderTargetViews, depthStencilView, uavStartSlot, numUAVs, uavViews, nullptr);
@@ -146,7 +143,7 @@ bool RenderTargetDX11::IsValid() const
 	{
 		if (texture)
 		{
-			if (texture->GetRenderTargetView()) 
+			if (std::dynamic_pointer_cast<TextureDX11>(texture)->GetRenderTargetView())
 				++numRTV;
 
 			if (width == -1 || height == -1)

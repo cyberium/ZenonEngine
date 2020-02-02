@@ -32,16 +32,20 @@ ZN_INTERFACE ZN_API __declspec(novtable) IShaderParameter
 	// Test to see if this is a valid shader parameter.
 	virtual bool IsValid() const = 0;
 
-	virtual void SetSource(const IShaderParameterSource* ShaderParameterSource) = 0;
-	virtual const IShaderParameterSource* GetSource() = 0;
-	virtual void SetConstantBuffer(const IConstantBuffer* constantBuffer) = 0;
-	virtual const IConstantBuffer* GetConstantBuffer() const = 0;
-	virtual void SetTexture(const ITexture* texture) = 0;
-	virtual const ITexture* GetTexture() const = 0;
-	virtual void SetSampler(const ISamplerState* sampler) = 0;
-	virtual const ISamplerState* GetSampler() const = 0;
-	virtual void SetStructuredBuffer(const IStructuredBuffer* rwBuffer) = 0;
-	virtual const IStructuredBuffer* GetStructuredBuffer() const = 0;
+	virtual void SetSource(std::shared_ptr<IShaderParameterSource> ShaderParameterSource) = 0;
+	virtual const std::shared_ptr<IShaderParameterSource>& GetSource() = 0;
+
+	virtual void SetConstantBuffer(std::shared_ptr<IConstantBuffer> constantBuffer) = 0;
+	virtual const std::shared_ptr<IConstantBuffer>& GetConstantBuffer() const = 0;
+
+	virtual void SetTexture(std::shared_ptr<ITexture> texture) = 0;
+	virtual const std::shared_ptr<ITexture>& GetTexture() const = 0;
+
+	virtual void SetSampler(std::shared_ptr<ISamplerState> sampler) = 0;
+	virtual const std::shared_ptr<ISamplerState>& GetSampler() const = 0;
+
+	virtual void SetStructuredBuffer(std::shared_ptr<IStructuredBuffer> rwBuffer) = 0;
+	virtual const std::shared_ptr<IStructuredBuffer>& GetStructuredBuffer() const = 0;
 
 	// Bind the shader parameter to a specific slot for the given shader type
 	virtual void Bind() = 0;
@@ -50,10 +54,16 @@ ZN_INTERFACE ZN_API __declspec(novtable) IShaderParameter
 	// Templates
 
 	template <typename T>
-	void Set(const T* value);
+	inline void Set(std::shared_ptr<T> value)
+	{
+		_ASSERT(false);
+	}
 
 	template <typename T>
-	const T* Get() const;
+	inline const std::shared_ptr<T>& Get() const
+	{
+		_ASSERT(false);
+	}
 };
 
 
@@ -62,43 +72,43 @@ ZN_INTERFACE ZN_API __declspec(novtable) IShaderParameter
 // Template specizalizations
 //
 template<> 
-inline void IShaderParameter::Set<IConstantBuffer>(const IConstantBuffer* value)
+inline void IShaderParameter::Set<IConstantBuffer>(std::shared_ptr<IConstantBuffer> value)
 {
 	SetConstantBuffer(value);
 }
 template<> 
-inline void IShaderParameter::Set<ITexture>(const ITexture* value)
+inline void IShaderParameter::Set<ITexture>(std::shared_ptr<ITexture> value)
 {
 	SetTexture(value);
 }
 template<> 
-inline void IShaderParameter::Set<ISamplerState>(const ISamplerState* value)
+inline void IShaderParameter::Set<ISamplerState>(std::shared_ptr<ISamplerState> value)
 {
 	SetSampler(value);
 }
 template<> 
-inline void IShaderParameter::Set<IStructuredBuffer>(const IStructuredBuffer* value)
+inline void IShaderParameter::Set<IStructuredBuffer>(std::shared_ptr<IStructuredBuffer> value)
 {
 	SetStructuredBuffer(value);
 }
 
 template<>
-inline const IConstantBuffer* IShaderParameter::Get<IConstantBuffer>() const
+inline const std::shared_ptr<IConstantBuffer>& IShaderParameter::Get<IConstantBuffer>() const
 {
 	return GetConstantBuffer();
 }
 template<>
-inline const ITexture* IShaderParameter::Get<ITexture>() const
+inline const std::shared_ptr<ITexture>& IShaderParameter::Get<ITexture>() const
 {
 	return GetTexture();
 }
 template<>
-inline const ISamplerState* IShaderParameter::Get<ISamplerState>() const
+inline const std::shared_ptr<ISamplerState>& IShaderParameter::Get<ISamplerState>() const
 {
 	return GetSampler();
 }
 template<>
-inline const IStructuredBuffer* IShaderParameter::Get<IStructuredBuffer>() const
+inline const std::shared_ptr<IStructuredBuffer>& IShaderParameter::Get<IStructuredBuffer>() const
 {
 	return GetStructuredBuffer();
 }

@@ -22,13 +22,13 @@ void PipelineStateBase::SetShader(EShaderType type, const std::shared_ptr<IShade
 	m_Shaders[type] = pShader;
 }
 
-const IShader& PipelineStateBase::GetShader(EShaderType type) const
+const std::shared_ptr<IShader>& PipelineStateBase::GetShader(EShaderType type) const
 {
 	const auto& iter = m_Shaders.find(type);
 	if (iter == m_Shaders.end())
 		throw CException(L"Shader not found.");
 
-	return *iter->second;
+	return iter->second;
 }
 
 const ShaderMap& PipelineStateBase::GetShaders() const
@@ -41,13 +41,13 @@ void PipelineStateBase::SetTexture(uint8 ID, const std::shared_ptr < ITexture> t
 	m_Textures[ID] = texture;
 }
 
-const ITexture& PipelineStateBase::GetTexture(uint8 ID) const
+const std::shared_ptr<ITexture>& PipelineStateBase::GetTexture(uint8 ID) const
 {
 	const auto& itr = m_Textures.find(ID);
 	if (itr == m_Textures.end())
 		throw CException(L"Texture not found.");
 
-	return *itr->second;
+	return itr->second;
 }
 
 const TextureMap& PipelineStateBase::GetTextures() const
@@ -60,13 +60,13 @@ void PipelineStateBase::SetSampler(uint8 ID, const std::shared_ptr<ISamplerState
 	m_Samplers[ID] = samplerState;
 }
 
-const ISamplerState& PipelineStateBase::GetSampler(uint8 ID) const
+const std::shared_ptr<ISamplerState>& PipelineStateBase::GetSampler(uint8 ID) const
 {
 	const auto& itr = m_Samplers.find(ID);
 	if (itr == m_Samplers.end())
 		throw CException(L"Sampler not found.");
 
-	return *itr->second;
+	return itr->second;
 }
 
 const SamplersMap& PipelineStateBase::GetSamplers() const
@@ -79,9 +79,9 @@ void PipelineStateBase::SetBlendState(const std::shared_ptr<IBlendState> blendSt
 	m_BlendState = blendState;
 }
 
-IBlendState& PipelineStateBase::GetBlendState() const
+const std::shared_ptr<IBlendState>& PipelineStateBase::GetBlendState() const
 {
-	return *m_BlendState;
+	return m_BlendState;
 }
 
 void PipelineStateBase::SetRasterizerState(const std::shared_ptr<IRasterizerState > rasterizerState)
@@ -89,9 +89,9 @@ void PipelineStateBase::SetRasterizerState(const std::shared_ptr<IRasterizerStat
 	m_RasterizerState = rasterizerState;
 }
 
-IRasterizerState& PipelineStateBase::GetRasterizerState() const
+const std::shared_ptr<IRasterizerState>& PipelineStateBase::GetRasterizerState() const
 {
-	return *m_RasterizerState;
+	return m_RasterizerState;
 }
 
 void PipelineStateBase::SetDepthStencilState(const std::shared_ptr<IDepthStencilState > depthStencilState)
@@ -99,9 +99,9 @@ void PipelineStateBase::SetDepthStencilState(const std::shared_ptr<IDepthStencil
 	m_DepthStencilState = depthStencilState;
 }
 
-IDepthStencilState& PipelineStateBase::GetDepthStencilState() const
+const std::shared_ptr<IDepthStencilState>& PipelineStateBase::GetDepthStencilState() const
 {
-	return *m_DepthStencilState;
+	return m_DepthStencilState;
 }
 
 void PipelineStateBase::SetRenderTarget(const std::shared_ptr<IRenderTarget> renderTarget)
@@ -109,7 +109,7 @@ void PipelineStateBase::SetRenderTarget(const std::shared_ptr<IRenderTarget> ren
 	m_RenderTarget = renderTarget;
 }
 
-const IRenderTarget& PipelineStateBase::GetRenderTarget() const
+const std::shared_ptr<IRenderTarget>& PipelineStateBase::GetRenderTarget() const
 {
-	return *m_RenderTarget;
+	return m_RenderTarget;
 }

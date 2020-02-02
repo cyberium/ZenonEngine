@@ -3,7 +3,7 @@
 // General
 #include "LightComponent3D.h"
 
-CLightComponent3D::CLightComponent3D(const ISceneNode3D* OwnerNode)
+CLightComponent3D::CLightComponent3D(const ISceneNode3D& OwnerNode)
     : CComponentBase(OwnerNode)
 {
 	m_LightStruct = (SLight*)_aligned_malloc(sizeof(SLight), 16);
@@ -119,8 +119,8 @@ const SLight& CLightComponent3D::GetLightStruct() const
 //
 void CLightComponent3D::DoUpdate(UpdateEventArgs & e)
 {
-	m_LightStruct->PositionWS = glm::vec4(GetOwnerNode()->GetTranslation(), 1.0f);
-	m_LightStruct->DirectionWS = glm::vec4(GetOwnerNode()->GetRotation(), 0.0f);
+	m_LightStruct->PositionWS = glm::vec4(GetOwnerNode().GetTranslation(), 1.0f);
+	m_LightStruct->DirectionWS = glm::vec4(GetOwnerNode().GetRotation(), 0.0f);
 }
 
 bool CLightComponent3D::Accept(IVisitor* visitor)

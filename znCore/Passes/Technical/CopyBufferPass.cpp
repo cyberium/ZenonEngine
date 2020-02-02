@@ -3,7 +3,7 @@
 // General
 #include "CopyBufferPass.h"
 
-CopyBufferPass::CopyBufferPass(IRenderDevice* RenderDevice, IBuffer* destinationBuffer, IBuffer* sourceBuffer)
+CopyBufferPass::CopyBufferPass(IRenderDevice& RenderDevice, IBuffer* destinationBuffer, IBuffer* sourceBuffer)
 	: RenderPass(RenderDevice)
 	, m_DestinationBuffer(destinationBuffer)
 	, m_SourceBuffer(sourceBuffer)

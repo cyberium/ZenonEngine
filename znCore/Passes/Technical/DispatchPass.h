@@ -6,7 +6,7 @@ class ZN_API DispatchPass
 	: public RenderPass
 {
 public:
-	DispatchPass(IRenderDevice* RenderDevice, IShader* computeShader, const glm::uvec3& numGroups);
+	DispatchPass(IRenderDevice& RenderDevice, IShader* computeShader, const glm::uvec3& numGroups);
 	virtual ~DispatchPass();
 
 	// Render the pass. This should only be called by the RenderTechnique.

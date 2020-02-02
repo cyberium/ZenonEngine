@@ -12,11 +12,11 @@ public:
 		const ISceneNode3D* LightSceneNode;
 		const ILightComponent3D* LightComponent;
 		bool IsShadowEnable;
-		ITexture* ShadowTexture;
+		std::shared_ptr<ITexture> ShadowTexture;
 	};
 
 public:
-	CDefferedRenderPrepareLights(IRenderDevice* RenderDevice, std::shared_ptr<BuildRenderListPass> BuildRenderListPass);
+	CDefferedRenderPrepareLights(IRenderDevice& RenderDevice, std::shared_ptr<BuildRenderListPass> BuildRenderListPass);
 	virtual ~CDefferedRenderPrepareLights();
 
 	const std::vector<SLightResult>& GetLightResult() const;
@@ -27,12 +27,12 @@ public:
 	void PostRender(RenderEventArgs& e) override;
 
 	// IRenderPassPipelined
-	std::shared_ptr<IRenderPassPipelined> CreatePipeline(IRenderTarget* RenderTarget, const Viewport* Viewport);
-	void UpdateViewport(const Viewport * _viewport);
+	std::shared_ptr<IRenderPassPipelined> CreatePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport* Viewport);
+	void UpdateViewport(const Viewport* _viewport);
 
 protected:
-	ITexture* CreateShadowTexture0() const;
-	ITexture* CreateShadowTextureDepthStencil() const;
+	std::shared_ptr<ITexture> CreateShadowTexture0() const;
+	std::shared_ptr<ITexture> CreateShadowTextureDepthStencil() const;
 	
 	void DoRenderToOneContext();
 	void BindPerFrameParamsForCurrentIteration(const ILightComponent3D* LightComponent);
@@ -40,7 +40,7 @@ protected:
 
 private: // Pass light params
 	PerObject3D* m_PerObjectData;
-	IConstantBuffer* m_PerObjectConstantBuffer;
+	std::shared_ptr<IConstantBuffer> m_PerObjectConstantBuffer;
 
 protected:
 	__declspec(align(16)) struct PerFrame
@@ -50,11 +50,11 @@ protected:
 	};
 	void SetPerFrameData(const PerFrame& PerFrame);
 	void BindPerFrameDataToVertexShader(const IShader* VertexShader) const;
-	IConstantBuffer* m_PerFrameConstantBuffer;
+	std::shared_ptr<IConstantBuffer> m_PerFrameConstantBuffer;
 
 private: // For shadow rendering
-	IPipelineState* m_ShadowPipeline;
-	IRenderTarget* m_ShadowRenderTarget;
+	std::shared_ptr<IPipelineState> m_ShadowPipeline;
+	std::shared_ptr<IRenderTarget> m_ShadowRenderTarget;
 	Viewport m_ShadowViewport;
 	std::vector<SLightResult> m_LightResult;
 

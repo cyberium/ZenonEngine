@@ -30,7 +30,7 @@ private: // some every frame data
 		glm::vec2 ScreenDimensions;
 	};
 	SScreenToViewParams* m_ScreenToViewData;
-	IConstantBuffer* m_ScreenToViewConstantBuffer;
+	std::shared_ptr<IConstantBuffer> m_ScreenToViewConstantBuffer;
 
 private: // Pass light params
 	struct __declspec(novtable, align(16)) SLightResult
@@ -45,7 +45,7 @@ private: // Pass light params
 		glm::vec3 __Padding;
 	};
 	SLightResult* m_LightResultData;
-	IConstantBuffer* m_LightResultConstantBuffer;
+	std::shared_ptr<IConstantBuffer> m_LightResultConstantBuffer;
 
 private:
 	std::shared_ptr<CDefferedRender> m_DefferedRender;

@@ -3,7 +3,7 @@
 // General
 #include "DispatchPass.h"
 
-DispatchPass::DispatchPass(IRenderDevice* RenderDevice, IShader* computeShader, const glm::uvec3& numGroups)
+DispatchPass::DispatchPass(IRenderDevice& RenderDevice, IShader* computeShader, const glm::uvec3& numGroups)
 	: RenderPass(RenderDevice)
 	, m_pComputeShader(computeShader)
 	, m_NumGroups(numGroups)

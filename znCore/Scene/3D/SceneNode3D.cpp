@@ -353,9 +353,9 @@ void SceneNode3D::RaiseComponentMessage(ISceneNodeComponent* Component, Componen
 }
 void SceneNode3D::RegisterComponents()
 {
-	ISceneNode3D::AddComponent<CLightComponent3D>(std::make_shared<CLightComponent3D>(this));
-    SetMeshComponent(ISceneNode3D::AddComponent(std::make_shared<CMeshComponent3D>(this)));
-    SetColliderComponent(ISceneNode3D::AddComponent(std::make_shared<CColliderComponent3D>(this)));
+	ISceneNode3D::AddComponent<CLightComponent3D>(std::make_shared<CLightComponent3D>(*this));
+    SetMeshComponent(ISceneNode3D::AddComponent(std::make_shared<CMeshComponent3D>(*this)));
+    SetColliderComponent(ISceneNode3D::AddComponent(std::make_shared<CColliderComponent3D>(*this)));
 }
 
 

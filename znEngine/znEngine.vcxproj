@@ -24,7 +24,6 @@
     <ClCompile Include="FBX\FBXSceneNode.cpp" />
     <ClCompile Include="FBX\FBXStream.cpp" />
     <ClCompile Include="Passes\UIFontPass.cpp" />
-    <ClCompile Include="SceneFunctional\UI\RichTextEditorForTC.cpp" />
     <ClCompile Include="Scene_Default.cpp" />
     <ClCompile Include="Images\ImageDDS.cpp" />
     <ClCompile Include="Images\ImagePNG.cpp" />
@@ -69,7 +68,6 @@
     <ClCompile Include="SceneFunctional\UI\UITexture.cpp" />
     <ClCompile Include="SceneFunctional\UI\UIUtils.cpp" />
     <ClCompile Include="SceneFunctional\UI\UIWindow.cpp" />
-    <ClCompile Include="Scene_TCEditor.cpp" />
     <ClCompile Include="Settings.cpp" />
     <ClCompile Include="Settings\GroupVideo.cpp" />
     <ClCompile Include="stdafx.cpp">
@@ -95,7 +93,6 @@
     <ClInclude Include="FBX\FBXSceneNode.h" />
     <ClInclude Include="FBX\FBXStream.h" />
     <ClInclude Include="Passes\UIFontPass.h" />
-    <ClInclude Include="SceneFunctional\UI\RichTextEditorForTC.h" />
     <ClInclude Include="Scene_Default.h" />
     <ClInclude Include="Images\ImageDDS.h" />
     <ClInclude Include="Images\ImagePNG.h" />
@@ -141,7 +138,6 @@
     <ClInclude Include="SceneFunctional\UI\UITexture.h" />
     <ClInclude Include="SceneFunctional\UI\UIUtils.h" />
     <ClInclude Include="SceneFunctional\UI\UIWindow.h" />
-    <ClInclude Include="Scene_TCEditor.h" />
     <ClInclude Include="Settings.h" />
     <ClInclude Include="Settings\GroupVideo.h" />
     <ClInclude Include="stdafx.h" />

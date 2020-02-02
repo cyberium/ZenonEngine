@@ -20,7 +20,7 @@ ZN_INTERFACE ZN_API IBuffer
 	virtual bool Bind(uint32 id, const IShader* shader, IShaderParameter::Type parameterType) const = 0;
 	virtual void UnBind(uint32 id, const IShader* shader, IShaderParameter::Type parameterType) const = 0;
 
-	virtual void Copy(IBuffer* Other) const = 0;
+	virtual void Copy(const IBuffer* Other) const = 0;
 
 	virtual BufferType GetType() const = 0;
 	virtual uint32 GetElementCount() const = 0;
@@ -36,7 +36,7 @@ ZN_INTERFACE ZN_API IConstantBuffer
 {
 	virtual ~IConstantBuffer() {}
 
-	virtual void Copy(IConstantBuffer* Other) const = 0;
+	virtual void Copy(const IConstantBuffer* Other) const = 0;
 	virtual void Set(const void* data, size_t size) = 0;
 
 	// Templates
@@ -56,7 +56,7 @@ ZN_INTERFACE ZN_API IStructuredBuffer
 {
 	virtual ~IStructuredBuffer() {}
 
-	virtual void Copy(IStructuredBuffer* other) = 0;
+	virtual void Copy(const IStructuredBuffer* other) = 0;
 	virtual void Set(void* data, size_t elementSize, size_t offset, size_t numElements) = 0;
 	virtual void Clear() = 0;
 

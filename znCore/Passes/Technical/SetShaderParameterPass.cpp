@@ -3,7 +3,7 @@
 // General
 #include "SetShaderParameterPass.h"
 
-CSetShaderParameterPass::CSetShaderParameterPass(IRenderDevice* RenderDevice, IShaderParameter* Destination, std::function<IShaderParameterSource*(void)> FuncGetSource)
+CSetShaderParameterPass::CSetShaderParameterPass(IRenderDevice& RenderDevice, IShaderParameter* Destination, std::function<std::shared_ptr<IShaderParameterSource>(void)> FuncGetSource)
 	: RenderPass(RenderDevice)
 	, m_Destination(Destination)
 	, m_FuncGetSource(FuncGetSource)
@@ -12,7 +12,7 @@ CSetShaderParameterPass::CSetShaderParameterPass(IRenderDevice* RenderDevice, IS
 	_ASSERT(FuncGetSource != nullptr);
 }
 
-CSetShaderParameterPass::CSetShaderParameterPass(IRenderDevice* RenderDevice, IShaderParameter* Destination, IShaderParameterSource* Source)
+CSetShaderParameterPass::CSetShaderParameterPass(IRenderDevice& RenderDevice, IShaderParameter* Destination, std::shared_ptr<IShaderParameterSource> Source)
 	: RenderPass(RenderDevice)
 	, m_Destination(Destination)
 	, m_Source(Source)
@@ -31,7 +31,7 @@ void CSetShaderParameterPass::Render(RenderEventArgs& e)
 
 	if (m_FuncGetSource != nullptr)
 	{
-		IShaderParameterSource* sps = m_FuncGetSource();
+		const auto& sps = m_FuncGetSource();
 		if (sps != nullptr)
 		{
 			m_Destination->SetSource(sps);

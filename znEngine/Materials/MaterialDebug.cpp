@@ -3,36 +3,36 @@
 // General
 #include "MaterialDebug.h"
 
-MaterialDebug::MaterialDebug(IRenderDevice* RenderDevice)
-	: MaterialProxie(RenderDevice->CreateMaterial(sizeof(MaterialProperties)))
+MaterialDebug::MaterialDebug(IRenderDevice& RenderDevice)
+	: MaterialProxie(RenderDevice.GetObjectsFactory().CreateMaterial(sizeof(MaterialProperties)))
 {
 	m_pProperties = (MaterialProperties*)_aligned_malloc(sizeof(MaterialProperties), 16);
 	*m_pProperties = MaterialProperties();
 
-	IShader* g_pVertexShader;
-	IShader* g_pPixelShader;
-	if (RenderDevice->GetDeviceType() == RenderDeviceType::RenderDeviceType_DirectX)
+	std::shared_ptr<IShader> vertexShader;
+	std::shared_ptr<IShader> pixelShader;
+	if (RenderDevice.GetDeviceType() == RenderDeviceType::RenderDeviceType_DirectX)
 	{
-		g_pVertexShader = RenderDevice->CreateShader(
-			EShaderType::VertexShader, "IDB_SHADER_3D_DEBUG", IShader::ShaderMacros(), "VS_main", "latest"
+		vertexShader = RenderDevice.GetObjectsFactory().CreateShader(
+			EShaderType::VertexShader, "IDB_SHADER_3D_DEBUG", "VS_main", IShader::ShaderMacros(),  "latest"
 		);
-		g_pPixelShader = RenderDevice->CreateShader(
-			EShaderType::PixelShader, "IDB_SHADER_3D_DEBUG", IShader::ShaderMacros(), "PS_main", "latest"
+		pixelShader = RenderDevice.GetObjectsFactory().CreateShader(
+			EShaderType::PixelShader, "IDB_SHADER_3D_DEBUG", "PS_main", IShader::ShaderMacros(),  "latest"
 		);
 	}
 	else
 	{
-		g_pVertexShader = RenderDevice->CreateShader(
-			EShaderType::VertexShader, "IDB_SHADER_OGL_3D_DEBUG_VS", IShader::ShaderMacros(), "", ""
+		vertexShader = RenderDevice.GetObjectsFactory().CreateShader(
+			EShaderType::VertexShader, "IDB_SHADER_OGL_3D_DEBUG_VS", "", IShader::ShaderMacros(),  ""
 		);
-		g_pPixelShader = RenderDevice->CreateShader(
-			EShaderType::PixelShader, "IDB_SHADER_OGL_3D_DEBUG_PS", IShader::ShaderMacros(), "", ""
+		pixelShader = RenderDevice.GetObjectsFactory().CreateShader(
+			EShaderType::PixelShader, "IDB_SHADER_OGL_3D_DEBUG_PS", "", IShader::ShaderMacros(),  ""
 		);
 	}
-	g_pVertexShader->LoadInputLayoutFromReflector();
+	vertexShader->LoadInputLayoutFromReflector();
 
-	SetShader(EShaderType::VertexShader, g_pVertexShader);
-	SetShader(EShaderType::PixelShader, g_pPixelShader);
+	SetShader(EShaderType::VertexShader, vertexShader);
+	SetShader(EShaderType::PixelShader, pixelShader);
 }
 
 MaterialDebug::~MaterialDebug()

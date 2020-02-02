@@ -116,7 +116,7 @@ private:
 
 
 
-BuildRenderListPass::BuildRenderListPass(IRenderDevice* RenderDevice, std::shared_ptr<IScene> Scene)
+BuildRenderListPass::BuildRenderListPass(IRenderDevice& RenderDevice, std::shared_ptr<IScene> Scene)
 	: ScenePass(RenderDevice, Scene)
 	, m_CurrentSceneNode(nullptr)
 {

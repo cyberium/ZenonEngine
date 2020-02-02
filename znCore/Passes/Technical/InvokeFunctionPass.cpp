@@ -3,7 +3,7 @@
 // General
 #include "InvokeFunctionPass.h"
 
-InvokeFunctionPass::InvokeFunctionPass(IRenderDevice* RenderDevice, std::function<void(void)> func)
+InvokeFunctionPass::InvokeFunctionPass(IRenderDevice& RenderDevice, std::function<void(void)> func)
 	: RenderPass(RenderDevice)
 	, m_Func(func)
 {}

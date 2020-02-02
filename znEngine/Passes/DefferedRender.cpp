@@ -3,44 +3,43 @@
 // General
 #include "DefferedRender.h"
 
-CDefferedRender::CDefferedRender(IRenderDevice* RenderDevice, std::shared_ptr<BuildRenderListPass> BuildRenderListPass)
+CDefferedRender::CDefferedRender(IRenderDevice& RenderDevice, std::shared_ptr<BuildRenderListPass> BuildRenderListPass)
 	: RenderListProcessorPass(RenderDevice, BuildRenderListPass)
 {
 	m_PerObjectData = (PerObject3D*)_aligned_malloc(sizeof(PerObject3D), 16);
-	m_PerObjectConstantBuffer = GetRenderDevice()->CreateConstantBuffer(PerObject3D());
+	m_PerObjectConstantBuffer = GetRenderDevice().GetObjectsFactory().CreateConstantBuffer(PerObject3D());
 }
 
 CDefferedRender::~CDefferedRender()
 {
 	_aligned_free(m_PerObjectData);
-	GetRenderDevice()->DestroyConstantBuffer(m_PerObjectConstantBuffer);
 }
 
 
 //
 // CDefferedRender
 //
-ITexture* CDefferedRender::GetTexture0() const
+std::shared_ptr<ITexture> CDefferedRender::GetTexture0() const
 {
 	return m_Texture0;
 }
 
-ITexture* CDefferedRender::GetTexture1() const
+std::shared_ptr<ITexture> CDefferedRender::GetTexture1() const
 {
 	return m_Texture1;
 }
 
-ITexture* CDefferedRender::GetTexture2() const
+std::shared_ptr<ITexture> CDefferedRender::GetTexture2() const
 {
 	return m_Texture2;
 }
 
-ITexture* CDefferedRender::GetTexture3() const
+std::shared_ptr<ITexture> CDefferedRender::GetTexture3() const
 {
 	return m_Texture3;
 }
 
-ITexture* CDefferedRender::GetTextureDepthStencil() const
+std::shared_ptr<ITexture> CDefferedRender::GetTextureDepthStencil() const
 {
 	return m_DepthStencilTexture;
 }
@@ -50,7 +49,7 @@ void CDefferedRender::PreRender(RenderEventArgs & e)
 {
 	RenderListProcessorPass::PreRender(e);
 
-	GetPipeline()->GetRenderTarget()->Clear(ClearFlags::All, glm::vec4(0.0f, 0.0f, 0.0f, 0.0f));
+	GetPipeline().GetRenderTarget()->Clear(ClearFlags::All, glm::vec4(0.0f, 0.0f, 0.0f, 0.0f));
 }
 
 
@@ -58,7 +57,7 @@ void CDefferedRender::PreRender(RenderEventArgs & e)
 //
 // IRenderPassPipelined
 //
-std::shared_ptr<IRenderPassPipelined> CDefferedRender::CreatePipeline(IRenderTarget* /*RenderTarget*/, const Viewport * Viewport)
+std::shared_ptr<IRenderPassPipelined> CDefferedRender::CreatePipeline(std::shared_ptr<IRenderTarget> /*RenderTarget*/, const Viewport * Viewport)
 {
 	ITexture::TextureFormat colorTextureFormat
 	(
@@ -74,10 +73,10 @@ std::shared_ptr<IRenderPassPipelined> CDefferedRender::CreatePipeline(IRenderTar
 		1,
 		32, 32, 32, 32, 0, 0
 	);
-	m_Texture0 = GetRenderDevice()->CreateTexture2D(Viewport->GetWidth(), Viewport->GetHeight(), 1, colorTextureFormat);
-	m_Texture1 = GetRenderDevice()->CreateTexture2D(Viewport->GetWidth(), Viewport->GetHeight(), 1, colorTextureFormat);
-	//m_Texture2 = GetRenderDevice()->CreateTexture2D(Viewport->GetWidth(), Viewport->GetHeight(), 1, positionTextureFormat);
-	m_Texture3 = GetRenderDevice()->CreateTexture2D(Viewport->GetWidth(), Viewport->GetHeight(), 1, positionTextureFormat);
+	m_Texture0 = GetRenderDevice().GetObjectsFactory().CreateTexture2D(Viewport->GetWidth(), Viewport->GetHeight(), 1, colorTextureFormat);
+	m_Texture1 = GetRenderDevice().GetObjectsFactory().CreateTexture2D(Viewport->GetWidth(), Viewport->GetHeight(), 1, colorTextureFormat);
+	//m_Texture2 = GetRenderDevice().GetObjectsFactory().CreateTexture2D(Viewport->GetWidth(), Viewport->GetHeight(), 1, positionTextureFormat);
+	m_Texture3 = GetRenderDevice().GetObjectsFactory().CreateTexture2D(Viewport->GetWidth(), Viewport->GetHeight(), 1, positionTextureFormat);
 
 	// Depth/stencil buffer
 	ITexture::TextureFormat depthStencilTextureFormat(
@@ -85,37 +84,37 @@ std::shared_ptr<IRenderPassPipelined> CDefferedRender::CreatePipeline(IRenderTar
 		ITexture::Type::UnsignedNormalized,
 		1,
 		0, 0, 0, 0, 24, 8);
-	m_DepthStencilTexture = GetRenderDevice()->CreateTexture2D(Viewport->GetWidth(), Viewport->GetHeight(), 1, depthStencilTextureFormat);
+	m_DepthStencilTexture = GetRenderDevice().GetObjectsFactory().CreateTexture2D(Viewport->GetWidth(), Viewport->GetHeight(), 1, depthStencilTextureFormat);
 
-	IRenderTarget* rt = GetRenderDevice()->CreateRenderTarget();
+	auto rt = GetRenderDevice().GetObjectsFactory().CreateRenderTarget();
 	rt->AttachTexture(IRenderTarget::AttachmentPoint::Color0, m_Texture0);
 	rt->AttachTexture(IRenderTarget::AttachmentPoint::Color1, m_Texture1);
 	//rt->AttachTexture(IRenderTarget::AttachmentPoint::Color2, m_Texture2);
 	rt->AttachTexture(IRenderTarget::AttachmentPoint::Color3, m_Texture3);
 	rt->AttachTexture(IRenderTarget::AttachmentPoint::DepthStencil, m_DepthStencilTexture);
 
-	IShader* vertexShader = GetRenderDevice()->CreateShader(EShaderType::VertexShader, "IDB_SHADER_3D_MODEL_DEFFERED", IShader::ShaderMacros(), "VS_PTN", "latest");
+	auto vertexShader = GetRenderDevice().GetObjectsFactory().CreateShader(EShaderType::VertexShader, "IDB_SHADER_3D_MODEL_DEFFERED", "VS_PTN");
 	vertexShader->LoadInputLayoutFromReflector();
 
-	IShader* pixelShader = GetRenderDevice()->CreateShader(EShaderType::PixelShader, "IDB_SHADER_3D_MODEL_DEFFERED", IShader::ShaderMacros(), "PS_main", "latest");
+	auto pixelShader = GetRenderDevice().GetObjectsFactory().CreateShader(EShaderType::PixelShader, "IDB_SHADER_3D_MODEL_DEFFERED", "PS_main");
 
 	// PIPELINES
-	IPipelineState* defferedPipeline = GetRenderDevice()->CreatePipelineState();
-	defferedPipeline->GetBlendState().SetBlendMode(disableBlending);
-	defferedPipeline->GetDepthStencilState().SetDepthMode(enableDepthWrites);
-	defferedPipeline->GetRasterizerState().SetCullMode(IRasterizerState::CullMode::Back);
-	defferedPipeline->GetRasterizerState().SetFillMode(IRasterizerState::FillMode::Solid);
+	auto defferedPipeline = GetRenderDevice().GetObjectsFactory().CreatePipelineState();
+	defferedPipeline->GetBlendState()->SetBlendMode(disableBlending);
+	defferedPipeline->GetDepthStencilState()->SetDepthMode(enableDepthWrites);
+	defferedPipeline->GetRasterizerState()->SetCullMode(IRasterizerState::CullMode::Back);
+	defferedPipeline->GetRasterizerState()->SetFillMode(IRasterizerState::FillMode::Solid);
 	defferedPipeline->SetRenderTarget(rt);
-	defferedPipeline->GetRasterizerState().SetViewport(Viewport);
+	defferedPipeline->GetRasterizerState()->SetViewport(Viewport);
 	defferedPipeline->SetShader(EShaderType::VertexShader, vertexShader);
 	defferedPipeline->SetShader(EShaderType::PixelShader, pixelShader);
 
-	ISamplerState* sampler = GetRenderDevice()->CreateSamplerState();
+	auto sampler = GetRenderDevice().GetObjectsFactory().CreateSamplerState();
 	sampler->SetFilter(ISamplerState::MinFilter::MinLinear, ISamplerState::MagFilter::MagLinear, ISamplerState::MipFilter::MipLinear);
 	sampler->SetWrapMode(ISamplerState::WrapMode::Repeat, ISamplerState::WrapMode::Repeat);
 	defferedPipeline->SetSampler(0, sampler);
 
-	ISamplerState* samplerClamp = GetRenderDevice()->CreateSamplerState();
+	auto samplerClamp = GetRenderDevice().GetObjectsFactory().CreateSamplerState();
 	samplerClamp->SetFilter(ISamplerState::MinFilter::MinLinear, ISamplerState::MagFilter::MagLinear, ISamplerState::MipFilter::MipLinear);
 	samplerClamp->SetWrapMode(ISamplerState::WrapMode::Clamp, ISamplerState::WrapMode::Clamp);
 	defferedPipeline->SetSampler(1, samplerClamp);
@@ -123,11 +122,11 @@ std::shared_ptr<IRenderPassPipelined> CDefferedRender::CreatePipeline(IRenderTar
 	return SetPipeline(defferedPipeline);
 }
 
-void CDefferedRender::UpdateViewport(const Viewport * _viewport)
+void CDefferedRender::UpdateViewport(const Viewport& _viewport)
 {
 	RenderListProcessorPass::UpdateViewport(_viewport);
 
-	GetPipeline()->GetRenderTarget()->Resize(_viewport->GetWidth(), _viewport->GetHeight());
+	GetPipeline().GetRenderTarget()->Resize(_viewport.GetWidth(), _viewport.GetHeight());
 }
 
 
@@ -153,7 +152,7 @@ bool CDefferedRender::Visit(IGeometry * Geometry, const IMaterial * Material, SG
 		shadersMap = Material->GetShaders();
 
 	if (shadersMap.empty())
-		shadersMap = GetRenderEventArgs()->PipelineState->GetShaders();
+		shadersMap = GetRenderEventArgs().PipelineState->GetShaders();
 
 	Material->Bind(shadersMap);
 	bool result = Geometry->Render(GetRenderEventArgs(), m_PerObjectConstantBuffer, shadersMap, Material, GeometryPartParams);

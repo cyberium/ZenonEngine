@@ -12,14 +12,14 @@ public:
 	virtual std::string GetName() const;
 
 	virtual void SetShader(EShaderType type, const std::shared_ptr<IShader> pShader);
-	virtual const IShader& GetShader(EShaderType type) const;
+	virtual const std::shared_ptr<IShader>& GetShader(EShaderType type) const;
 	virtual const ShaderMap& GetShaders() const;
 
 	virtual void SetTexture(uint8 ID, const std::shared_ptr<ITexture> texture);
-	virtual const ITexture& GetTexture(uint8 ID) const;
+	virtual const std::shared_ptr<ITexture>& GetTexture(uint8 ID) const;
 	
 	virtual void SetSampler(uint8 ID, const std::shared_ptr<ISamplerState> samplerState);
-    virtual const ISamplerState& GetSampler(uint8 ID) const;
+    virtual const std::shared_ptr<ISamplerState>& GetSampler(uint8 ID) const;
 
 	virtual void Bind(const ShaderMap& shaders) const;
 	virtual void Unbind(const ShaderMap& shaders) const;

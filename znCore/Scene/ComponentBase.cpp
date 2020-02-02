@@ -6,18 +6,18 @@
 // Additional
 #include "Properties.h"
 
-CComponentBase::CComponentBase(const ISceneNode3D* OwnerNode)
+CComponentBase::CComponentBase(const ISceneNode3D& OwnerNode)
     : m_OwnerNode(OwnerNode)
 {
 	m_PropertyGroup = std::make_shared<CPropertiesGroup>();
-	OwnerNode->GetProperties()->AddProperty(m_PropertyGroup);
+	OwnerNode.GetProperties()->AddProperty(m_PropertyGroup);
 }
 
 CComponentBase::~CComponentBase()
 {
 }
 
-const ISceneNode3D* CComponentBase::GetOwnerNode() const
+const ISceneNode3D& CComponentBase::GetOwnerNode() const
 {
     return m_OwnerNode;
 }
@@ -71,5 +71,5 @@ bool CComponentBase::Accept(IVisitor* visitor)
 //
 void CComponentBase::RaiseComponentMessage(ComponentMessageType Message)
 {
-	m_OwnerNode->RaiseComponentMessage(this, Message);
+	m_OwnerNode.RaiseComponentMessage(this, Message);
 }

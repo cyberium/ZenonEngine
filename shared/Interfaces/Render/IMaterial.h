@@ -14,14 +14,14 @@ ZN_INTERFACE ZN_API IMaterial
 	virtual std::string GetName() const = 0;
 
 	virtual void SetShader(EShaderType type, const std::shared_ptr<IShader> pShader) = 0;
-	virtual const IShader& GetShader(EShaderType type) const = 0;
+	virtual const std::shared_ptr<IShader>& GetShader(EShaderType type) const = 0;
 	virtual const ShaderMap& GetShaders() const = 0;
 
 	virtual void SetTexture(uint8 ID, const std::shared_ptr<ITexture> texture) = 0;
-	virtual const ITexture& GetTexture(uint8 ID) const = 0;
+	virtual const std::shared_ptr<ITexture>& GetTexture(uint8 ID) const = 0;
 	
 	virtual void SetSampler(uint8 ID, const std::shared_ptr<ISamplerState> samplerState) = 0;
-	virtual const ISamplerState& GetSampler(uint8 ID) const = 0;
+	virtual const std::shared_ptr<ISamplerState>& GetSampler(uint8 ID) const = 0;
 	
 	virtual void Bind(const ShaderMap& shaders) const = 0;
 	virtual void Unbind(const ShaderMap& shaders) const = 0;

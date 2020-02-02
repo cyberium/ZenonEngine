@@ -10,21 +10,17 @@ UI_Button_Material::UI_Button_Material(IRenderDevice& RenderDevice) :
 	*m_pProperties = MaterialProperties();
 
 	// CreateShaders
-	const auto& vertexShader = RenderDevice.GetObjectsFactory().CreateShader(
-		EShaderType::VertexShader, "IDB_SHADER_UI_BUTTON", IShader::ShaderMacros(), "VS_main", "latest"
-	);
+	auto vertexShader = RenderDevice.GetObjectsFactory().CreateShader(EShaderType::VertexShader, "IDB_SHADER_UI_BUTTON", "VS_main");
 	vertexShader->LoadInputLayoutFromReflector();
 
-	const auto& pixelShader = RenderDevice.GetObjectsFactory().CreateShader(
-		EShaderType::PixelShader, "IDB_SHADER_UI_BUTTON", IShader::ShaderMacros(), "PS_main", "latest"
-	);
+	auto pixelShader = RenderDevice.GetObjectsFactory().CreateShader(EShaderType::PixelShader, "IDB_SHADER_UI_BUTTON", "PS_main");
 
 	// Create samplers
-	const auto& g_LinearClampSampler = RenderDevice.GetObjectsFactory().CreateSamplerState();
+	auto g_LinearClampSampler = RenderDevice.GetObjectsFactory().CreateSamplerState();
 	g_LinearClampSampler->SetFilter(ISamplerState::MinFilter::MinLinear, ISamplerState::MagFilter::MagLinear, ISamplerState::MipFilter::MipLinear);
 	g_LinearClampSampler->SetWrapMode(ISamplerState::WrapMode::Clamp, ISamplerState::WrapMode::Clamp, ISamplerState::WrapMode::Clamp);
 
-	pixelShader->GetShaderParameterByName("DiffuseTextureSampler")->Set(g_LinearClampSampler);
+	pixelShader->GetShaderParameterByName("DiffuseTextureSampler").Set(g_LinearClampSampler);
 
 	// Material
 	SetShader(EShaderType::VertexShader, vertexShader);
@@ -40,25 +36,25 @@ UI_Button_Material::~UI_Button_Material()
 	}
 }
 
-void UI_Button_Material::SetIdleTexture(ITexture* _texture)
+void UI_Button_Material::SetIdleTexture(std::shared_ptr<ITexture> _texture)
 {
 	base::SetTexture(0, _texture);
 	MarkConstantBufferDirty();
 }
 
-void UI_Button_Material::SetHoverTexture(ITexture* _texture)
+void UI_Button_Material::SetHoverTexture(std::shared_ptr<ITexture> _texture)
 {
 	base::SetTexture(1, _texture);
 	MarkConstantBufferDirty();
 }
 
-void UI_Button_Material::SetClickedTexture(ITexture* _texture)
+void UI_Button_Material::SetClickedTexture(std::shared_ptr<ITexture> _texture)
 {
 	base::SetTexture(2, _texture);
 	MarkConstantBufferDirty();
 }
 
-void UI_Button_Material::SetDisabledTexture(ITexture* _texture)
+void UI_Button_Material::SetDisabledTexture(std::shared_ptr<ITexture> _texture)
 {
 	base::SetTexture(3, _texture);
 	MarkConstantBufferDirty();

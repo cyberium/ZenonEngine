@@ -10,14 +10,14 @@ public:
 	// IBuffer
 	bool Bind(uint32 id, const IShader* shader, IShaderParameter::Type parameterType) const override;
 	void UnBind(uint32 id, const IShader* shader, IShaderParameter::Type parameterType) const override;
-	void Copy(IBuffer* other) const override;
+	void Copy(const IBuffer* other) const override;
 	BufferType GetType() const override;
 	uint32 GetElementCount() const override;
 	uint32 GetElementStride() const override;
     uint32 GetElementOffset() const override;
 
 	// IStructuredBuffer
-	virtual void Copy(IStructuredBuffer* other) override;
+	virtual void Copy(const IStructuredBuffer* other) override;
 	virtual void Set(void* data, size_t elementSize, size_t offset, size_t numElements) override;
 	virtual void Clear() override;
 

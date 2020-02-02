@@ -5,7 +5,7 @@ class ZN_API RenderPass
 	, public Object
 {
 public:
-	RenderPass(IRenderDevice* RenderDevice);
+	RenderPass(IRenderDevice& RenderDevice);
 	virtual ~RenderPass();
 
 	// IRenderPass
@@ -24,12 +24,12 @@ public:
 
 protected:
 	const RenderEventArgs* GetRenderEventArgs() const;
-    IRenderDevice* GetRenderDevice() const;
+    IRenderDevice& GetRenderDevice() const;
 	const IBaseManager* GetBaseManager() const;
 
 private:
 	bool                                            m_Enabled;
     const RenderEventArgs*                          m_RenderEventArgs;
-    IRenderDevice*									m_RenderDevice;
+    IRenderDevice&									m_RenderDevice;
 	const IBaseManager*                             m_BaseManager;
 };

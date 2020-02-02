@@ -75,11 +75,11 @@ void MaterialDX11::BindForShader(const IShader* shader) const
 		}
 	}
 
-	IShaderParameter* materialParameter = shader->GetShaderParameterByName("Material");
-	if (materialParameter->IsValid() && m_pConstantBuffer != nullptr)
+	auto& materialParameter = shader->GetShaderParameterByName("Material");
+	if (materialParameter.IsValid() && m_pConstantBuffer != nullptr)
 	{
-		materialParameter->SetConstantBuffer(m_pConstantBuffer.get());
-		materialParameter->Bind();
+		materialParameter.SetConstantBuffer(m_pConstantBuffer);
+		materialParameter.Bind();
 	}
 }
 
@@ -106,9 +106,9 @@ void MaterialDX11::UnbindForShader(const IShader* shader) const
 		}
 	}
 
-	IShaderParameter* materialParameter = shader->GetShaderParameterByName("Material");
-	if (materialParameter->IsValid() && m_pConstantBuffer != nullptr)
+	auto& materialParameter = shader->GetShaderParameterByName("Material");
+	if (materialParameter.IsValid() && m_pConstantBuffer != nullptr)
 	{
-		materialParameter->Unbind();
+		materialParameter.Unbind();
 	}
 }

@@ -21,11 +21,11 @@ Base3DPass::~Base3DPass()
 //
 bool Base3DPass::Visit(ISceneNode3D* sceneNode)
 {
-	const ICameraComponent3D* camera = GetRenderEventArgs()->Camera;
+	const ICameraComponent3D* camera = GetRenderEventArgs().Camera;
 	if (camera)
 		sceneNode->UpdateCamera(camera);
 
-	const Viewport* viewport = GetRenderEventArgs()->PipelineState->GetRasterizerState().GetViewports()[0];
+	const Viewport* viewport = GetRenderEventArgs().PipelineState->GetRasterizerState()->GetViewports()[0];
 	if (viewport)
 		sceneNode->UpdateViewport(*viewport);
 
@@ -37,7 +37,7 @@ bool Base3DPass::Visit(ISceneNode3D* sceneNode)
 
 bool Base3DPass::Visit(IMesh * Mesh, SGeometryPartParams GeometryPartParams)
 {
-	return Mesh->Render(GetRenderEventArgs(), m_PerObjectConstantBuffer.get(), GeometryPartParams);
+	return Mesh->Render(GetRenderEventArgs(), m_PerObjectConstantBuffer, GeometryPartParams);
 }
 
 bool Base3DPass::Visit(IGeometry* Geometry, const IMaterial* Material, SGeometryPartParams GeometryPartParams)
@@ -48,10 +48,10 @@ bool Base3DPass::Visit(IGeometry* Geometry, const IMaterial* Material, SGeometry
 		shadersMap = Material->GetShaders();
 
 	if (shadersMap.empty())
-		shadersMap = GetRenderEventArgs()->PipelineState->GetShaders();
+		shadersMap = GetRenderEventArgs().PipelineState->GetShaders();
 
 	Material->Bind(shadersMap);
-	bool result = Geometry->Render(GetRenderEventArgs(), m_PerObjectConstantBuffer.get(), shadersMap, Material, GeometryPartParams);
+	bool result = Geometry->Render(GetRenderEventArgs(), m_PerObjectConstantBuffer, shadersMap, Material, GeometryPartParams);
 	Material->Unbind(shadersMap);
 
 	return result;

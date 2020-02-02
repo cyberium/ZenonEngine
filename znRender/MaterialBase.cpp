@@ -39,13 +39,13 @@ void MaterialBase::SetShader(EShaderType type, const std::shared_ptr<IShader> pS
 	m_Shaders[type] = pShader;
 }
 
-const IShader& MaterialBase::GetShader(EShaderType type) const
+const std::shared_ptr<IShader>& MaterialBase::GetShader(EShaderType type) const
 {
 	const auto& iter = m_Shaders.find(type);
 	if (iter == m_Shaders.end())
 		throw CException(L"Shader not found.");
 
-	return *iter->second;
+	return iter->second;
 }
 
 const ShaderMap& MaterialBase::GetShaders() const
@@ -59,13 +59,13 @@ void MaterialBase::SetTexture(uint8 ID, const std::shared_ptr<ITexture> texture)
 	m_Dirty = true;
 }
 
-const ITexture& MaterialBase::GetTexture(uint8 ID) const
+const std::shared_ptr<ITexture>& MaterialBase::GetTexture(uint8 ID) const
 {
 	const auto& iter = m_Textures.find(ID);
 	if (iter != m_Textures.end())
 		throw CException(L"Texture not found.");
 
-	return *iter->second;
+	return iter->second;
 }
 
 void MaterialBase::SetSampler(uint8 ID, const std::shared_ptr<ISamplerState> samplerState)
@@ -74,13 +74,13 @@ void MaterialBase::SetSampler(uint8 ID, const std::shared_ptr<ISamplerState> sam
 	m_Dirty = true;
 }
 
-const ISamplerState& MaterialBase::GetSampler(uint8 ID) const
+const std::shared_ptr<ISamplerState>& MaterialBase::GetSampler(uint8 ID) const
 {
     const auto& iter = m_Samplers.find(ID);
     if (iter == m_Samplers.end())
 		throw CException(L"Sampler not found.");
 
-    return *iter->second;
+    return iter->second;
 }
 
 

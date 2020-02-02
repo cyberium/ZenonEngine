@@ -38,7 +38,7 @@ void GeometryDX11::SetPrimitiveTopology(PrimitiveTopology _topology)
 	}
 }
 
-bool GeometryDX11::Render(const RenderEventArgs* renderArgs, const IConstantBuffer* PerObject, const ShaderMap& ShadersMap, const IMaterial* Material, const SGeometryPartParams& GeometryPartParams) const
+bool GeometryDX11::Render(const RenderEventArgs& RenderEventArgs, const std::shared_ptr<IConstantBuffer>& PerObject, const ShaderMap& ShadersMap, const IMaterial* Material, const SGeometryPartParams& GeometryPartParams) const
 {
 	UINT indexStartLocation = GeometryPartParams.IndexStartLocation;
 	UINT indexCnt = GeometryPartParams.IndexCnt;
@@ -73,20 +73,20 @@ bool GeometryDX11::Render(const RenderEventArgs* renderArgs, const IConstantBuff
 		geomShader = geomShaderIt->second.get();
 	}
 
-	IShaderParameter* perObjectParameter = vertexShader->GetShaderParameterByName("PerObject");
-	if (perObjectParameter->IsValid() && PerObject != nullptr)
+	auto& perObjectParameter = vertexShader->GetShaderParameterByName("PerObject");
+	if (perObjectParameter.IsValid() && PerObject != nullptr)
 	{
-		perObjectParameter->SetConstantBuffer(PerObject);
-		perObjectParameter->Bind();
+		perObjectParameter.SetConstantBuffer(std::const_pointer_cast<IConstantBuffer>(std::shared_ptr<const IConstantBuffer>(PerObject)));
+		perObjectParameter.Bind();
 	}
 
 	if (geomShader)
 	{
-		IShaderParameter* perObjectParameterGS = geomShader->GetShaderParameterByName("PerObject");
-		if (perObjectParameterGS->IsValid() && PerObject != nullptr)
+		auto& perObjectParameterGS = geomShader->GetShaderParameterByName("PerObject");
+		if (perObjectParameterGS.IsValid() && PerObject != nullptr)
 		{
-			perObjectParameterGS->SetConstantBuffer(PerObject);
-			perObjectParameterGS->Bind();
+			perObjectParameterGS.SetConstantBuffer(std::const_pointer_cast<IConstantBuffer>(std::shared_ptr<const IConstantBuffer>(PerObject)));
+			perObjectParameterGS.Bind();
 		}
 	}
 
@@ -99,9 +99,9 @@ bool GeometryDX11::Render(const RenderEventArgs* renderArgs, const IConstantBuff
 		for (const auto& buffer : m_VertexBuffers)
 		{
 			const auto& binding = buffer.first;
-			if (vertexShader->GetInputLayout()->HasSemantic(binding))
+			if (vertexShader->GetInputLayout().HasSemantic(binding))
 			{
-				UINT slotID = vertexShader->GetInputLayout()->GetSemanticSlot(binding);
+				UINT slotID = vertexShader->GetInputLayout().GetSemanticSlot(binding);
 				buffer.second->Bind(slotID, vertexShader.get(), IShaderParameter::Type::Buffer);
 			}
 		}
@@ -129,24 +129,24 @@ bool GeometryDX11::Render(const RenderEventArgs* renderArgs, const IConstantBuff
 		for (const auto& buffer : m_VertexBuffers)
 		{
 			const BufferBinding& binding = buffer.first;
-			if (vertexShader->GetInputLayout()->HasSemantic(binding))
+			if (vertexShader->GetInputLayout().HasSemantic(binding))
 			{
-				UINT slotID = vertexShader->GetInputLayout()->GetSemanticSlot(binding);
+				UINT slotID = vertexShader->GetInputLayout().GetSemanticSlot(binding);
 				buffer.second->UnBind(slotID, vertexShader.get(), IShaderParameter::Type::Buffer);
 			}
 		}
 	}
 
 	perObjectParameter = vertexShader->GetShaderParameterByName("PerObject");
-	if (perObjectParameter->IsValid())
+	if (perObjectParameter.IsValid())
 	{
-		perObjectParameter->Unbind();
+		perObjectParameter.Unbind();
 	}
 
 	return true;
 }
 
-bool GeometryDX11::RenderInstanced(const RenderEventArgs * renderArgs, const IStructuredBuffer * InstancesBuffer, const ShaderMap& ShadersMap, const IMaterial* Material, SGeometryPartParams GeometryPartParams) const
+bool GeometryDX11::RenderInstanced(const RenderEventArgs& RenderEventArgs, const std::shared_ptr<IStructuredBuffer>& InstancesBuffer, const ShaderMap& ShadersMap, const IMaterial* Material, const SGeometryPartParams& GeometryPartParams) const
 {
 	UINT indexStartLocation = GeometryPartParams.IndexStartLocation;
 	UINT indexCnt = GeometryPartParams.IndexCnt;
@@ -181,11 +181,11 @@ bool GeometryDX11::RenderInstanced(const RenderEventArgs * renderArgs, const ISt
 		geomShader = geomShaderIt->second.get();
 	}
 
-	IShaderParameter* instancesBufferParameter = vertexShader->GetShaderParameterByName("Instances");
-	if (instancesBufferParameter->IsValid() && InstancesBuffer != nullptr)
+	auto& instancesBufferParameter = vertexShader->GetShaderParameterByName("Instances");
+	if (instancesBufferParameter.IsValid() && InstancesBuffer != nullptr)
 	{
-		instancesBufferParameter->SetStructuredBuffer(InstancesBuffer);
-		instancesBufferParameter->Bind();
+		instancesBufferParameter.SetStructuredBuffer(std::const_pointer_cast<IStructuredBuffer>(std::shared_ptr<const IStructuredBuffer>(InstancesBuffer)));
+		instancesBufferParameter.Bind();
 	}
 
 	if (m_VertexBuffer != nullptr)
@@ -197,9 +197,9 @@ bool GeometryDX11::RenderInstanced(const RenderEventArgs * renderArgs, const ISt
 		for (const auto& buffer : m_VertexBuffers)
 		{
 			const BufferBinding& binding = buffer.first;
-			if (vertexShader->GetInputLayout()->HasSemantic(binding))
+			if (vertexShader->GetInputLayout().HasSemantic(binding))
 			{
-				UINT slotID = vertexShader->GetInputLayout()->GetSemanticSlot(binding);
+				UINT slotID = vertexShader->GetInputLayout().GetSemanticSlot(binding);
 				buffer.second->Bind(slotID, vertexShader.get(), IShaderParameter::Type::Buffer);
 			}
 		}
@@ -227,18 +227,18 @@ bool GeometryDX11::RenderInstanced(const RenderEventArgs * renderArgs, const ISt
 		for (const auto& buffer : m_VertexBuffers)
 		{
 			const BufferBinding& binding = buffer.first;
-			if (vertexShader->GetInputLayout()->HasSemantic(binding))
+			if (vertexShader->GetInputLayout().HasSemantic(binding))
 			{
-				UINT slotID = vertexShader->GetInputLayout()->GetSemanticSlot(binding);
+				UINT slotID = vertexShader->GetInputLayout().GetSemanticSlot(binding);
 				buffer.second->UnBind(slotID, vertexShader.get(), IShaderParameter::Type::Buffer);
 			}
 		}
 	}
 
 	instancesBufferParameter = vertexShader->GetShaderParameterByName("Instances");
-	if (instancesBufferParameter->IsValid())
+	if (instancesBufferParameter.IsValid())
 	{
-		instancesBufferParameter->Unbind();
+		instancesBufferParameter.Unbind();
 	}
 
 	return true;

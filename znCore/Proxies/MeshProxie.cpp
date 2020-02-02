@@ -73,7 +73,7 @@ IGeometry& MeshProxie::GetGeometry() const
 	return m_Mesh->GetGeometry();
 }
 
-bool MeshProxie::Render(const RenderEventArgs* renderEventArgs, const IConstantBuffer* perObject, SGeometryPartParams GeometryPartParams)
+bool MeshProxie::Render(const RenderEventArgs& renderEventArgs, const std::shared_ptr<IConstantBuffer>& perObject, const SGeometryPartParams& GeometryPartParams)
 {
 	return m_Mesh->Render(renderEventArgs, perObject, GeometryPartParams);
 }

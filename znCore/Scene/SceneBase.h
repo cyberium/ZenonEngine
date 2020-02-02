@@ -15,8 +15,8 @@ public:
 	virtual ~SceneBase();
 
 	// IScene
-	void                                            ConnectEvents(IRenderWindowEvents* WindowEvents) override final;
-	void                                            DisconnectEvents(IRenderWindowEvents* WindowEvents) override final;
+	void                                            ConnectEvents(const std::shared_ptr<IRenderWindowEvents>& WindowEvents) override final;
+	void                                            DisconnectEvents(const std::shared_ptr<IRenderWindowEvents>& WindowEvents) override final;
 
 	virtual void                                    Initialize();
 	virtual void                                    Finalize();
@@ -78,8 +78,8 @@ protected:
 	void                                            SetCameraController(std::shared_ptr<ICameraController> CameraController);
 	std::shared_ptr<ICameraController>              GetCameraController() const;
 
-	IRenderDevice*                                  GetRenderDevice() const;
-	IRenderWindow*                                  GetRenderWindow() const;
+	IRenderDevice&                                  GetRenderDevice() const;
+	const std::shared_ptr<IRenderWindow>&           GetRenderWindow() const;
 
 
 protected: // Input events process recursive
@@ -139,6 +139,6 @@ private:
 
 private: // Quick access
 	IBaseManager*                                   m_BaseManager;
-	IRenderDevice*                                  m_RenderDevice;
-	IRenderWindow*                                  m_RenderWindow;
+	IRenderDevice&                                  m_RenderDevice;
+	std::shared_ptr<IRenderWindow>                  m_RenderWindow;
 };

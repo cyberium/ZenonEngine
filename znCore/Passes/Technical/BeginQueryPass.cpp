@@ -3,7 +3,7 @@
 // General
 #include "BeginQueryPass.h"
 
-BeginQueryPass::BeginQueryPass(IRenderDevice* RenderDevice, IQuery* query)
+BeginQueryPass::BeginQueryPass(IRenderDevice& RenderDevice, IQuery* query)
     : RenderPass(RenderDevice)
 	, m_pQuery(query)
 {}

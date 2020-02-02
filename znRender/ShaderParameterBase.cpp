@@ -45,34 +45,34 @@ bool ShaderParameterBase::IsValid() const
 	return m_ParameterType != ShaderParameterBase::Type::Invalid;
 }
 
-void ShaderParameterBase::SetSource(const IShaderParameterSource * ShaderParameterSource)
+void ShaderParameterBase::SetSource(std::shared_ptr<IShaderParameterSource> ShaderParameterSource)
 {
-	if (const IConstantBuffer* value = dynamic_cast<const IConstantBuffer*>(ShaderParameterSource))
+	if (std::shared_ptr<IConstantBuffer> value = std::dynamic_pointer_cast<IConstantBuffer>(ShaderParameterSource))
 	{
 		m_pConstantBuffer = value;
 		return;
 	}
 
-	if (const ITexture* value = dynamic_cast<const ITexture*>(ShaderParameterSource))
+	if (std::shared_ptr<ITexture> value = std::dynamic_pointer_cast<ITexture>(ShaderParameterSource))
 	{
 		m_pTexture = value;
 		return;
 	}
 
-	if (const ISamplerState* value = dynamic_cast<const ISamplerState*>(ShaderParameterSource))
+	if (std::shared_ptr<ISamplerState> value = std::dynamic_pointer_cast<ISamplerState>(ShaderParameterSource))
 	{
 		m_pSamplerState = value;
 		return;
 	}
 
-	if (const IStructuredBuffer* value = dynamic_cast<const IStructuredBuffer*>(ShaderParameterSource))
+	if (std::shared_ptr<IStructuredBuffer> value = std::dynamic_pointer_cast<IStructuredBuffer>(ShaderParameterSource))
 	{
 		m_pStructuredBuffer = value;
 		return;
 	}
 }
 
-const IShaderParameterSource * ShaderParameterBase::GetSource()
+const std::shared_ptr<IShaderParameterSource>& ShaderParameterBase::GetSource()
 {
 	if (m_pConstantBuffer)
 	{
@@ -91,45 +91,45 @@ const IShaderParameterSource * ShaderParameterBase::GetSource()
 		return m_pStructuredBuffer;
 	}
 
-	return nullptr;
+	throw CException("This shader parameter doesn't contains any assigments.");
 }
 
-void ShaderParameterBase::SetConstantBuffer(const IConstantBuffer* buffer)
+void ShaderParameterBase::SetConstantBuffer(std::shared_ptr<IConstantBuffer> buffer)
 {
 	m_pConstantBuffer = buffer;
 }
 
-const IConstantBuffer * ShaderParameterBase::GetConstantBuffer() const
+const std::shared_ptr<IConstantBuffer>& ShaderParameterBase::GetConstantBuffer() const
 {
 	return m_pConstantBuffer;
 }
 
-void ShaderParameterBase::SetTexture(const ITexture* texture)
+void ShaderParameterBase::SetTexture(std::shared_ptr<ITexture> texture)
 {
 	m_pTexture = texture;
 }
 
-const ITexture * ShaderParameterBase::GetTexture() const
+const std::shared_ptr<ITexture>& ShaderParameterBase::GetTexture() const
 {
 	return m_pTexture;
 }
 
-void ShaderParameterBase::SetSampler(const ISamplerState* sampler)
+void ShaderParameterBase::SetSampler(std::shared_ptr<ISamplerState> sampler)
 {
 	m_pSamplerState = sampler;
 }
 
-const ISamplerState * ShaderParameterBase::GetSampler() const
+const std::shared_ptr<ISamplerState>& ShaderParameterBase::GetSampler() const
 {
 	return m_pSamplerState;
 }
 
-void ShaderParameterBase::SetStructuredBuffer(const IStructuredBuffer* rwBuffer)
+void ShaderParameterBase::SetStructuredBuffer(std::shared_ptr<IStructuredBuffer> rwBuffer)
 {
 	m_pStructuredBuffer = rwBuffer;
 }
 
-const IStructuredBuffer * ShaderParameterBase::GetStructuredBuffer() const
+const std::shared_ptr<IStructuredBuffer>& ShaderParameterBase::GetStructuredBuffer() const
 {
 	return m_pStructuredBuffer;
 }
@@ -159,21 +159,17 @@ void ShaderParameterBase::Unbind()
 	if (m_pConstantBuffer)
 	{
 		m_pConstantBuffer->UnBind(m_uiSlotID, m_Shader, m_ParameterType);
-		m_pConstantBuffer = nullptr;
 	}
 	if (m_pTexture)
 	{
 		m_pTexture->UnBind(m_uiSlotID, m_Shader, m_ParameterType);
-		m_pTexture = nullptr;
 	}
 	if (m_pSamplerState)
 	{
 		m_pSamplerState->UnBind(m_uiSlotID, m_Shader, m_ParameterType);
-		m_pSamplerState = nullptr;
 	}
 	if (m_pStructuredBuffer)
 	{
 		m_pStructuredBuffer->UnBind(m_uiSlotID, m_Shader, m_ParameterType);
-		m_pStructuredBuffer = nullptr;
 	}
 }

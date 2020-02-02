@@ -10,8 +10,8 @@
 
 SceneBase::SceneBase(IBaseManager* BaseManager)
 	: m_BaseManager(BaseManager)
+	, m_RenderDevice(*(BaseManager->GetManager<IRenderDevice>()))
 {
-	m_RenderDevice = m_BaseManager->GetManager<IRenderDevice>();
 }
 
 SceneBase::~SceneBase()
@@ -21,8 +21,8 @@ void SceneBase::Initialize()
 {
 	m_VideoSettings = GetBaseManager()->GetManager<ISettings>()->GetGroup("Video");
 
-	m_FrameQuery = GetRenderDevice()->GetObjectsFactory().CreateQuery(IQuery::QueryType::Timer, 1);
-	m_TestQuery = GetRenderDevice()->GetObjectsFactory().CreateQuery(IQuery::QueryType::CountSamples, 1);
+	m_FrameQuery = GetRenderDevice().GetObjectsFactory().CreateQuery(IQuery::QueryType::Timer, 1);
+	m_TestQuery = GetRenderDevice().GetObjectsFactory().CreateQuery(IQuery::QueryType::CountSamples, 1);
 
 	m_RootNode3D = std::make_shared<SceneNode3D>();
 	m_RootNode3D->SetScene(weak_from_this());
@@ -56,9 +56,9 @@ void SceneBase::Finalize()
 {
 }
 
-void SceneBase::ConnectEvents(IRenderWindowEvents * WindowEvents)
+void SceneBase::ConnectEvents(const std::shared_ptr<IRenderWindowEvents>& WindowEvents)
 {
-	m_RenderWindow = dynamic_cast<IRenderWindow*>(WindowEvents);
+	m_RenderWindow = std::dynamic_pointer_cast<IRenderWindow>(WindowEvents);
 
 	// RenderWindowEvents
 	m_OnUpdateConnection = WindowEvents->Update().connect(&SceneBase::OnUpdate, this, std::placeholders::_1);
@@ -82,7 +82,7 @@ void SceneBase::ConnectEvents(IRenderWindowEvents * WindowEvents)
 	m_OnMouseWheelConnection = WindowEvents->WindowMouseWheel().connect(&SceneBase::OnWindowMouseWheel, this, std::placeholders::_1);
 }
 
-void SceneBase::DisconnectEvents(IRenderWindowEvents * WindowEvents)
+void SceneBase::DisconnectEvents(const std::shared_ptr<IRenderWindowEvents>& WindowEvents)
 {
 	WindowEvents->Update().disconnect(m_OnUpdateConnection);
 	WindowEvents->PreRender().disconnect(m_OnPreRenderConnection);
@@ -392,12 +392,12 @@ std::shared_ptr<ICameraController> SceneBase::GetCameraController() const
 	return m_DefaultCameraController;
 }
 
-IRenderDevice * SceneBase::GetRenderDevice() const
+IRenderDevice& SceneBase::GetRenderDevice() const
 {
 	return m_RenderDevice;
 }
 
-IRenderWindow * SceneBase::GetRenderWindow() const
+const std::shared_ptr<IRenderWindow>& SceneBase::GetRenderWindow() const
 {
 	return m_RenderWindow;
 }

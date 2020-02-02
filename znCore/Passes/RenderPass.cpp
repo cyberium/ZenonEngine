@@ -3,11 +3,11 @@
 // General
 #include "RenderPass.h"
 
-RenderPass::RenderPass(IRenderDevice* RenderDevice)
+RenderPass::RenderPass(IRenderDevice& RenderDevice)
 	: m_Enabled(true)
     , m_RenderEventArgs(nullptr)
     , m_RenderDevice(RenderDevice)
-	, m_BaseManager(RenderDevice->GetBaseManager())
+	, m_BaseManager(RenderDevice.GetBaseManager())
 {}
 
 RenderPass::~RenderPass()
@@ -77,7 +77,7 @@ const RenderEventArgs* RenderPass::GetRenderEventArgs() const
     return m_RenderEventArgs;
 }
 
-IRenderDevice* RenderPass::GetRenderDevice() const
+IRenderDevice& RenderPass::GetRenderDevice() const
 {
     return m_RenderDevice;
 }

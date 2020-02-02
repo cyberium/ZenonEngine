@@ -15,7 +15,7 @@ ZN_INTERFACE ZN_API IRenderWindow
 	virtual bool IsVSync() const = 0;
 	virtual void Present() = 0;
 
-	virtual const IRenderTarget& GetRenderTarget() const = 0;
+	virtual const std::shared_ptr<IRenderTarget>& GetRenderTarget() const = 0;
 	virtual const Viewport& GetViewport() const = 0;
 };
 

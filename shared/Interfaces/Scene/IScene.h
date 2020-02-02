@@ -14,8 +14,8 @@ ZN_INTERFACE ZN_API __declspec(novtable) IScene
 {
 	virtual ~IScene() {}
 
-	virtual void ConnectEvents(IRenderWindowEvents* WindowEvents) = 0;
-	virtual void DisconnectEvents(IRenderWindowEvents* WindowEvents) = 0;
+	virtual void ConnectEvents(const std::shared_ptr<IRenderWindowEvents>& WindowEvents) = 0;
+	virtual void DisconnectEvents(const std::shared_ptr<IRenderWindowEvents>& WindowEvents) = 0;
 
 	virtual void Initialize() = 0;
 	virtual void Finalize() = 0;

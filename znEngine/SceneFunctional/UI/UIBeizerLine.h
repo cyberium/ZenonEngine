@@ -2,11 +2,12 @@
 
 #include "../../Materials/UI_Line_Material.h"
 
-class ZN_API CUIBeizerLineNode : public CUIBaseNode
+class ZN_API CUIBeizerLineNode 
+	: public CUIBaseNode
 {
 	typedef CUIBaseNode base;
 public:
-	CUIBeizerLineNode(IRenderDevice* RenderDevice);
+	CUIBeizerLineNode(IRenderDevice& RenderDevice);
 	virtual	~CUIBeizerLineNode();
 
 	// CUIBeizerLineNode
@@ -24,8 +25,8 @@ protected:
     void UpdateBuffer();
 
 private:
-	IMesh*              m_Mesh;
-    IBuffer*            m_PointsBuffer;
+	std::shared_ptr<IMesh>              m_Mesh;
+    std::shared_ptr<IBuffer>            m_PointsBuffer;
 	std::shared_ptr<UI_Line_Material>   m_Material;
 
     vec2                                m_StartPoint;

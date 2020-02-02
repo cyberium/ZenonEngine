@@ -3,7 +3,7 @@
 // General
 #include "EndQueryPass.h"
 
-EndQueryPass::EndQueryPass(IRenderDevice* RenderDevice, IQuery* query)
+EndQueryPass::EndQueryPass(IRenderDevice& RenderDevice, IQuery* query)
     : RenderPass(RenderDevice)
 	, m_pQuery(query)
 {}

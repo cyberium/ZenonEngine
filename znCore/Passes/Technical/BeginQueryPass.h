@@ -6,7 +6,7 @@ class ZN_API BeginQueryPass
 	: public RenderPass
 {
 public:
-	BeginQueryPass(IRenderDevice* RenderDevice, IQuery* query);
+	BeginQueryPass(IRenderDevice& RenderDevice, IQuery* query);
 	virtual ~BeginQueryPass();
 
 	virtual void Render(RenderEventArgs& e);

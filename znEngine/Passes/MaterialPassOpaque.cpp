@@ -6,7 +6,7 @@
 // Additional
 #include "Materials/MaterialModel.h"
 
-CMaterialPassOpaque::CMaterialPassOpaque(IRenderDevice* RenderDevice, std::shared_ptr<IScene> Scene)
+CMaterialPassOpaque::CMaterialPassOpaque(IRenderDevice& RenderDevice, std::shared_ptr<IScene> Scene)
 	: Base3DPass(RenderDevice, Scene)
 {}
 
@@ -18,35 +18,35 @@ CMaterialPassOpaque::~CMaterialPassOpaque()
 //
 // IRenderPassPipelined
 //
-std::shared_ptr<IRenderPassPipelined> CMaterialPassOpaque::CreatePipeline(IRenderTarget* RenderTarget, const Viewport * Viewport)
+std::shared_ptr<IRenderPassPipelined> CMaterialPassOpaque::CreatePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport)
 {
-	IShader* g_pVertexShader;
-	IShader* g_pPixelShader;
+	std::shared_ptr<IShader> vertexShader;
+	std::shared_ptr<IShader> pixelShader;
 
-	if (GetRenderDevice()->GetDeviceType() == RenderDeviceType::RenderDeviceType_DirectX)
+	if (GetRenderDevice().GetDeviceType() == RenderDeviceType::RenderDeviceType_DirectX)
 	{
-		g_pVertexShader = GetRenderDevice()->CreateShader(EShaderType::VertexShader, "IDB_SHADER_3D_MODEL_FORWARD", IShader::ShaderMacros(), "VS_PTN", "latest");
-		g_pPixelShader = GetRenderDevice()->CreateShader(EShaderType::PixelShader, "IDB_SHADER_3D_MODEL_FORWARD", IShader::ShaderMacros(), "PS_main", "latest");
+		vertexShader = GetRenderDevice().GetObjectsFactory().CreateShader(EShaderType::VertexShader, "IDB_SHADER_3D_MODEL_FORWARD", "VS_PTN");
+		pixelShader = GetRenderDevice().GetObjectsFactory().CreateShader(EShaderType::PixelShader, "IDB_SHADER_3D_MODEL_FORWARD", "PS_main");
 	}
-	g_pVertexShader->LoadInputLayoutFromReflector();
+	vertexShader->LoadInputLayoutFromReflector();
 
 	// PIPELINES
-	IPipelineState* Pipeline = GetRenderDevice()->CreatePipelineState();
-	Pipeline->GetBlendState().SetBlendMode(disableBlending);
-	Pipeline->GetDepthStencilState().SetDepthMode(enableDepthWrites);
-	Pipeline->GetRasterizerState().SetCullMode(IRasterizerState::CullMode::None);
-	Pipeline->GetRasterizerState().SetFillMode(IRasterizerState::FillMode::Solid);
+	auto Pipeline = GetRenderDevice().GetObjectsFactory().CreatePipelineState();
+	Pipeline->GetBlendState()->SetBlendMode(disableBlending);
+	Pipeline->GetDepthStencilState()->SetDepthMode(enableDepthWrites);
+	Pipeline->GetRasterizerState()->SetCullMode(IRasterizerState::CullMode::None);
+	Pipeline->GetRasterizerState()->SetFillMode(IRasterizerState::FillMode::Solid);
 	Pipeline->SetRenderTarget(RenderTarget);
-	Pipeline->GetRasterizerState().SetViewport(Viewport);
-	Pipeline->SetShader(EShaderType::VertexShader, g_pVertexShader);
-	Pipeline->SetShader(EShaderType::PixelShader, g_pPixelShader);
+	Pipeline->GetRasterizerState()->SetViewport(Viewport);
+	Pipeline->SetShader(EShaderType::VertexShader, vertexShader);
+	Pipeline->SetShader(EShaderType::PixelShader, pixelShader);
 
-	ISamplerState* sampler = GetRenderDevice()->CreateSamplerState();
+	auto sampler = GetRenderDevice().GetObjectsFactory().CreateSamplerState();
 	sampler->SetFilter(ISamplerState::MinFilter::MinLinear, ISamplerState::MagFilter::MagLinear, ISamplerState::MipFilter::MipLinear);
 	sampler->SetWrapMode(ISamplerState::WrapMode::Repeat, ISamplerState::WrapMode::Repeat);
 	Pipeline->SetSampler(0, sampler);
 
-	ISamplerState* samplerClamp = GetRenderDevice()->CreateSamplerState();
+	auto samplerClamp = GetRenderDevice().GetObjectsFactory().CreateSamplerState();
 	samplerClamp->SetFilter(ISamplerState::MinFilter::MinLinear, ISamplerState::MagFilter::MagLinear, ISamplerState::MipFilter::MipLinear);
 	samplerClamp->SetWrapMode(ISamplerState::WrapMode::Clamp, ISamplerState::WrapMode::Clamp);
 	Pipeline->SetSampler(1, samplerClamp);

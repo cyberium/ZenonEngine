@@ -7,7 +7,7 @@ public:
 	MeshDX11(IRenderDeviceDX11& RenderDeviceDX11);
 	virtual	~MeshDX11();
 
-	virtual void SetPrimitiveTopology(PrimitiveTopology _topology);
+	virtual void SetPrimitiveTopology(PrimitiveTopology _topology) override;
 
-	virtual bool Render(const RenderEventArgs* renderArgs, const IConstantBuffer* perObject, SGeometryPartParams GeometryPartParams);
+	virtual bool Render(const RenderEventArgs& renderArgs, const std::shared_ptr<IConstantBuffer>& perObject, const SGeometryPartParams& GeometryPartParams) override final;
 };

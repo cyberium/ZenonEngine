@@ -173,7 +173,7 @@ ZN_INTERFACE ZN_API __declspec(novtable) ITexture
 	 * @see https://msdn.microsoft.com/en-us/library/windows/desktop/ff476392(v=vs.85).aspx
 	 * @see https://www.opengl.org/sdk/docs/man/html/glCopyTexSubImage2D.xhtml
 	 */
-	virtual void Copy(ITexture* other) = 0;
+	virtual void Copy(const std::shared_ptr<ITexture>& other) = 0;
 
 	/**
 	 * Clear the texture.

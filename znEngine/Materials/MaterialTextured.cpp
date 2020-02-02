@@ -3,8 +3,8 @@
 // General
 #include "MaterialTextured.h"
 
-MaterialTextured::MaterialTextured(IRenderDevice* RenderDevice)
-	: MaterialProxie(RenderDevice->CreateMaterial(sizeof(MaterialProperties)))
+MaterialTextured::MaterialTextured(IRenderDevice& RenderDevice)
+	: MaterialProxie(RenderDevice.GetObjectsFactory().CreateMaterial(sizeof(MaterialProperties)))
 {
 	// Constant buffer
 	m_pProperties = (MaterialProperties*)_aligned_malloc(sizeof(MaterialProperties), 16);

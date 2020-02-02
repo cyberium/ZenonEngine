@@ -6,7 +6,7 @@
 // Additional
 #include "Materials/MaterialDebug.h"
 
-CDebugMaterialPass::CDebugMaterialPass(IRenderDevice* RenderDevice, std::shared_ptr<IScene> Scene)
+CDebugMaterialPass::CDebugMaterialPass(IRenderDevice& RenderDevice, std::shared_ptr<IScene> Scene)
 	: Base3DPass(RenderDevice, Scene)
 {}
 
@@ -18,36 +18,31 @@ CDebugMaterialPass::~CDebugMaterialPass()
 //
 // IRenderPassPipelined
 //
-std::shared_ptr<IRenderPassPipelined> CDebugMaterialPass::CreatePipeline(IRenderTarget* RenderTarget, const Viewport * Viewport)
+std::shared_ptr<IRenderPassPipelined> CDebugMaterialPass::CreatePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport)
 {
-	IShader* g_pVertexShader;
-	IShader* g_pGeometryShader;
-	IShader* g_pPixelShader;
+	std::shared_ptr<IShader> vertexShader;
+	std::shared_ptr<IShader> geometryShader;
+	std::shared_ptr<IShader> pixelShader;
 
-	if (GetRenderDevice()->GetDeviceType() == RenderDeviceType::RenderDeviceType_DirectX)
+	if (GetRenderDevice().GetDeviceType() == RenderDeviceType::RenderDeviceType_DirectX)
 	{
-		g_pVertexShader = GetRenderDevice()->CreateShader(EShaderType::VertexShader, "IDB_SHADER_3D_DEBUG", IShader::ShaderMacros(), "VS_main", "latest");
-		g_pGeometryShader = GetRenderDevice()->CreateShader(EShaderType::GeometryShader, "IDB_SHADER_3D_DEBUG", IShader::ShaderMacros(), "GS_main", "latest");
-		g_pPixelShader = GetRenderDevice()->CreateShader(EShaderType::PixelShader, "IDB_SHADER_3D_DEBUG", IShader::ShaderMacros(), "PS_main", "latest");
+		vertexShader = GetRenderDevice().GetObjectsFactory().CreateShader(EShaderType::VertexShader, "IDB_SHADER_3D_DEBUG", "VS_main");
+		geometryShader = GetRenderDevice().GetObjectsFactory().CreateShader(EShaderType::GeometryShader, "IDB_SHADER_3D_DEBUG", "GS_main");
+		pixelShader = GetRenderDevice().GetObjectsFactory().CreateShader(EShaderType::PixelShader, "IDB_SHADER_3D_DEBUG", "PS_main");
 	}
-	else
-	{
-		g_pVertexShader = GetRenderDevice()->CreateShader(EShaderType::VertexShader, "IDB_SHADER_OGL_3D_DEBUG_VS", IShader::ShaderMacros(), "", "");
-		g_pPixelShader = GetRenderDevice()->CreateShader(EShaderType::PixelShader, "IDB_SHADER_OGL_3D_DEBUG_PS", IShader::ShaderMacros(), "", "");
-	}
-	g_pVertexShader->LoadInputLayoutFromReflector();
+	vertexShader->LoadInputLayoutFromReflector();
 
 	// PIPELINES
-	IPipelineState* Pipeline = GetRenderDevice()->CreatePipelineState();
-	Pipeline->GetBlendState().SetBlendMode(disableBlending);
-	Pipeline->GetDepthStencilState().SetDepthMode(enableDepthWrites);
-	Pipeline->GetRasterizerState().SetCullMode(IRasterizerState::CullMode::None);
-	Pipeline->GetRasterizerState().SetFillMode(IRasterizerState::FillMode::Solid);
+	auto Pipeline = GetRenderDevice().GetObjectsFactory().CreatePipelineState();
+	Pipeline->GetBlendState()->SetBlendMode(disableBlending);
+	Pipeline->GetDepthStencilState()->SetDepthMode(enableDepthWrites);
+	Pipeline->GetRasterizerState()->SetCullMode(IRasterizerState::CullMode::None);
+	Pipeline->GetRasterizerState()->SetFillMode(IRasterizerState::FillMode::Solid);
 	Pipeline->SetRenderTarget(RenderTarget);
-	Pipeline->GetRasterizerState().SetViewport(Viewport);
-	Pipeline->SetShader(EShaderType::VertexShader, g_pVertexShader);
-	Pipeline->SetShader(EShaderType::GeometryShader, g_pGeometryShader);
-	Pipeline->SetShader(EShaderType::PixelShader, g_pPixelShader);
+	Pipeline->GetRasterizerState()->SetViewport(Viewport);
+	Pipeline->SetShader(EShaderType::VertexShader, vertexShader);
+	Pipeline->SetShader(EShaderType::GeometryShader, geometryShader);
+	Pipeline->SetShader(EShaderType::PixelShader, pixelShader);
 
 	return SetPipeline(Pipeline);
 }

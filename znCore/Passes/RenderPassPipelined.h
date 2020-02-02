@@ -21,7 +21,7 @@ public:
 	// IRenderPassPipelined
 	virtual std::shared_ptr<IRenderPassPipelined> CreatePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport* Viewport) override;
 	virtual std::shared_ptr<IRenderPassPipelined> SetPipeline(std::shared_ptr<IPipelineState> Pipeline) override;
-	virtual const IPipelineState& GetPipeline() const override;
+	virtual IPipelineState& GetPipeline() const override;
 	virtual void UpdateViewport(const Viewport& _viewport) override;
 
 	// IVisitor
@@ -34,7 +34,7 @@ public:
 protected:
 	virtual void FillPerFrameData();
 
-	const RenderEventArgs* GetRenderEventArgs() const;
+	const RenderEventArgs& GetRenderEventArgs() const;
     const IRenderDevice& GetRenderDevice() const;
 	const IBaseManager* GetBaseManager() const;
 

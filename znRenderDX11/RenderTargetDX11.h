@@ -11,7 +11,7 @@ public:
 	virtual ~RenderTargetDX11();
 
 	virtual void AttachTexture(AttachmentPoint attachment, std::shared_ptr<ITexture> texture) override;
-	virtual const ITexture& GetTexture(AttachmentPoint attachment) override;
+	virtual const std::shared_ptr<ITexture>& GetTexture(AttachmentPoint attachment) override;
 
 	virtual void Clear(AttachmentPoint attachemnt, ClearFlags clearFlags = ClearFlags::All, cvec4 color = vec4(0), float depth = 1.0f, uint8_t stencil = 0) override;
 	virtual void Clear(ClearFlags clearFlags = ClearFlags::All, cvec4 color = vec4(0), float depth = 1.0f, uint8_t stencil = 0) override;
@@ -19,7 +19,7 @@ public:
 	virtual void GenerateMipMaps() override;
 
 	virtual void AttachStructuredBuffer(uint8_t slot, std::shared_ptr<IStructuredBuffer> rwBuffer) override;
-	virtual const IStructuredBuffer& GetStructuredBuffer(uint8_t slot) override;
+	virtual const std::shared_ptr<IStructuredBuffer>& GetStructuredBuffer(uint8_t slot) override;
 
 	virtual void Resize(size_t width, size_t height) override;
 	virtual void Bind() override;
@@ -27,7 +27,7 @@ public:
 	virtual bool IsValid() const override;
 
 private:
-	typedef std::vector<std::shared_ptr<TextureDX11>> TextureList;
+	typedef std::vector<std::shared_ptr<ITexture>> TextureList;
 	TextureList m_Textures;
 
 	typedef std::vector<std::shared_ptr<StructuredBufferDX11>> StructuredBufferList;

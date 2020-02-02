@@ -71,7 +71,7 @@ ZN_INTERFACE ZN_API IRenderObjectsFactory
 
 	virtual std::shared_ptr<IRenderWindow>    CreateRenderWindow(INativeWindow& NativeWindow, bool vSync) = 0;
 	virtual std::shared_ptr<IMesh>            CreateMesh() = 0;
-	virtual std::shared_ptr<IShader>          CreateShader(EShaderType type, const std::string& fileName, const std::string& entryPoint, const IShader::ShaderMacros& shaderMacros, const std::string& profile, IShaderInputLayout* _customLayout = nullptr) = 0;
+	virtual std::shared_ptr<IShader>          CreateShader(EShaderType type, const std::string& fileName, const std::string& entryPoint, const IShader::ShaderMacros& shaderMacros = IShader::ShaderMacros(), const std::string& profile = "latest", IShaderInputLayout* _customLayout = nullptr) = 0;
 
 	virtual std::shared_ptr<ITexture>         CreateEmptyTexture() = 0;
 	virtual std::shared_ptr<ITexture>         CreateTexture2D(size_t width, size_t height, size_t slices, const ITexture::TextureFormat& format = ITexture::TextureFormat(), CPUAccess cpuAccess = CPUAccess::None, bool gpuWrite = false) = 0;
@@ -140,7 +140,8 @@ ZN_INTERFACE ZN_API IRenderObjectsFactory
 };
 
 
-ZN_INTERFACE ZN_API __declspec(novtable, uuid("19615D02-1592-4420-8D0C-3DB4F7C6186A")) IRenderDevice : public IManager
+ZN_INTERFACE ZN_API __declspec(novtable, uuid("19615D02-1592-4420-8D0C-3DB4F7C6186A")) IRenderDevice 
+	: public IManager
 {
 	virtual ~IRenderDevice() {}
 

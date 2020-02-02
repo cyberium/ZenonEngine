@@ -23,14 +23,14 @@ BaseUIPass::~BaseUIPass()
 std::shared_ptr<IRenderPassPipelined> BaseUIPass::CreatePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport)
 {
 	std::shared_ptr<IPipelineState> UIPipeline = GetRenderDevice().GetObjectsFactory().CreatePipelineState();
-	UIPipeline->GetBlendState().SetBlendMode(alphaBlending);
-	UIPipeline->GetDepthStencilState().SetDepthMode(disableDepthWrites);
-	UIPipeline->GetRasterizerState().SetCullMode(IRasterizerState::CullMode::None);
-	UIPipeline->GetRasterizerState().SetFillMode(IRasterizerState::FillMode::Solid);
-	UIPipeline->GetRasterizerState().SetAntialiasedLineEnable(false);
-	UIPipeline->GetRasterizerState().SetMultisampleEnabled(false);
+	UIPipeline->GetBlendState()->SetBlendMode(alphaBlending);
+	UIPipeline->GetDepthStencilState()->SetDepthMode(disableDepthWrites);
+	UIPipeline->GetRasterizerState()->SetCullMode(IRasterizerState::CullMode::None);
+	UIPipeline->GetRasterizerState()->SetFillMode(IRasterizerState::FillMode::Solid);
+	UIPipeline->GetRasterizerState()->SetAntialiasedLineEnable(false);
+	UIPipeline->GetRasterizerState()->SetMultisampleEnabled(false);
 	UIPipeline->SetRenderTarget(RenderTarget);
-	UIPipeline->GetRasterizerState().SetViewport(Viewport);
+	UIPipeline->GetRasterizerState()->SetViewport(Viewport);
 
 	return SetPipeline(UIPipeline);
 }
@@ -50,7 +50,7 @@ bool BaseUIPass::Visit(ISceneNodeUI* sceneNode)
 
 bool BaseUIPass::Visit(IMesh * Mesh, SGeometryPartParams GeometryPartParams)
 {
-	return Mesh->Render(GetRenderEventArgs(), m_PerObjectConstantBuffer.get(), GeometryPartParams);
+	return Mesh->Render(GetRenderEventArgs(), m_PerObjectConstantBuffer, GeometryPartParams);
 }
 
 bool BaseUIPass::Visit(IGeometry* Geometry, const IMaterial* Material, SGeometryPartParams GeometryPartParams)
@@ -61,10 +61,10 @@ bool BaseUIPass::Visit(IGeometry* Geometry, const IMaterial* Material, SGeometry
 		shadersMap = Material->GetShaders();
 
 	if (shadersMap.empty())
-		shadersMap = GetRenderEventArgs()->PipelineState->GetShaders();
+		shadersMap = GetRenderEventArgs().PipelineState->GetShaders();
 
 	Material->Bind(shadersMap);
-	bool result = Geometry->Render(GetRenderEventArgs(), m_PerObjectConstantBuffer.get(), shadersMap, Material, GeometryPartParams);
+	bool result = Geometry->Render(GetRenderEventArgs(), m_PerObjectConstantBuffer, shadersMap, Material, GeometryPartParams);
 	Material->Unbind(shadersMap);
 	return result;
 }
@@ -76,7 +76,7 @@ bool BaseUIPass::Visit(IGeometry* Geometry, const IMaterial* Material, SGeometry
 //
 void BaseUIPass::FillPerFrameData()
 {
-	const Viewport* viewport = GetRenderEventArgs()->PipelineState->GetRasterizerState().GetViewports()[0];
+	const Viewport* viewport = GetRenderEventArgs().PipelineState->GetRasterizerState()->GetViewports()[0];
 	_ASSERT(viewport);
 
 	PerFrame perFrame;

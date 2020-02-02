@@ -26,7 +26,7 @@ void CGameState_World::Initialize()
 	SceneBase::Initialize();
 
 	ISceneNode3D* cameraNode = GetRootNode3D()->CreateSceneNode<SceneNode3D>();
-	cameraNode->AddComponent(std::make_shared<CCameraComponent3D>(cameraNode));
+	cameraNode->AddComponent(std::make_shared<CCameraComponent3D>(*cameraNode));
 
 	SetCameraController(std::make_shared<CFreeCameraController>());
 	GetCameraController()->SetCamera(cameraNode->GetComponent<ICameraComponent3D>());
@@ -54,7 +54,7 @@ void CGameState_World::OnRayIntersected(const glm::vec3& Point)
 	matDebug->SetDiffuseColor(vec4(1.0f, 0.0f, 0.0f, 1.0f));
 	matDebug->SetWrapper(matDebug);
 
-	IMesh* meshPlane = GetRenderDevice()->GetPrimitiveCollection()->CreateSphere();
+	IMesh* meshPlane = GetRenderDevice().GetPrimitiveCollection()->CreateSphere();
 	meshPlane->SetMaterial(matDebug);
 
 	std::shared_ptr<ISceneNode3D> sceneNodePlane = m_Scene->CreateWrappedSceneNode<SceneNode3D>("SceneNode3D", m_Scene->GetRootNode());
@@ -151,7 +151,7 @@ void CGameState_World::Load3D()
 
 	//std::shared_ptr<MaterialTextured> materialTextured = std::make_shared<MaterialTextured>(GetRenderDevice());
 	//materialTextured->SetDiffuseColor(vec4(1.0f, 1.0f, 1.0f, 1.0f));
-	//materialTextured->SetTexture(0, GetRenderDevice()->CreateTexture2D("Sponza_Floor_diffuse.png"));
+	//materialTextured->SetTexture(0, GetRenderDevice().CreateTexture2D("Sponza_Floor_diffuse.png"));
 	//materialTextured->SetWrapper(materialTextured);
 
 
@@ -170,16 +170,16 @@ void CGameState_World::Load3D()
 		mat->SetSpecularColor(vec3(1.0f, 1.0f, 1.0f));
 		mat->SetSpecularFactor(4.0f);
 		mat->SetBumpFactor(4.0f);
-		mat->SetTexture(MaterialModel::ETextureType::TextureDiffuse, GetRenderDevice()->CreateTexture2D("Sponza_Floor_diffuse.png"));
-		//mat->SetTexture(MaterialModel::ETextureType::TextureNormalMap, GetRenderDevice()->CreateTexture2D("Sponza_Floor_normal.png"));
-		mat->SetTexture(MaterialModel::ETextureType::TextureSpecular, GetRenderDevice()->CreateTexture2D("Sponza_Floor_roughness.png"));
-		//mat->SetTexture(MaterialModel::ETextureType::TextureBump, GetRenderDevice()->CreateTexture2D("Sponza_Floor_roughness.png"));
+		mat->SetTexture(MaterialModel::ETextureType::TextureDiffuse, GetRenderDevice().GetObjectsFactory().LoadTexture2D("Sponza_Floor_diffuse.png"));
+		//mat->SetTexture(MaterialModel::ETextureType::TextureNormalMap, GetRenderDevice().LoadTexture2D("Sponza_Floor_normal.png"));
+		mat->SetTexture(MaterialModel::ETextureType::TextureSpecular, GetRenderDevice().GetObjectsFactory().LoadTexture2D("Sponza_Floor_roughness.png"));
+		//mat->SetTexture(MaterialModel::ETextureType::TextureBump, GetRenderDevice().LoadTexture2D("Sponza_Floor_roughness.png"));
 		mat->SetWrapper(mat.get());
 
-		IMesh* mesh = GetRenderDevice()->GetPrimitiveCollection()->CreateCube();
+		auto mesh = GetRenderDevice().GetPrimitivesFactory().CreateCube();
 		mesh->SetMaterial(mat);
 
-		IMesh* mesh2 = GetRenderDevice()->GetPrimitiveCollection()->CreateSphere();
+		auto mesh2 = GetRenderDevice().GetPrimitivesFactory().CreateSphere();
 		mesh2->SetMaterial(mat);
 
 		m_RootForBoxes = GetRootNode3D()->CreateSceneNode<SceneNode3D>();
@@ -219,13 +219,13 @@ void CGameState_World::Load3D()
 		mat2->SetSpecularColor(vec3(1.0f, 1.0f, 1.0f));
 		mat2->SetSpecularFactor(0.0f);
 		mat2->SetBumpFactor(4.0f);
-		//mat2->SetTexture(MaterialModel::ETextureType::TextureDiffuse, GetRenderDevice()->CreateTexture2D("Sponza_Ceiling_diffuse.png"));
-		//mat2->SetTexture(MaterialModel::ETextureType::TextureNormalMap, GetRenderDevice()->CreateTexture2D("Sponza_Ceiling_normal.png"));
-		//mat2->SetTexture(MaterialModel::ETextureType::TextureSpecular, GetRenderDevice()->CreateTexture2D("Sponza_Ceiling_roughness.png"));
-		//mat2->SetTexture(MaterialModel::ETextureType::TextureBump, GetRenderDevice()->CreateTexture2D("Sponza_Ceiling_roughness.png"));
+		//mat2->SetTexture(MaterialModel::ETextureType::TextureDiffuse, GetRenderDevice().CreateTexture2D("Sponza_Ceiling_diffuse.png"));
+		//mat2->SetTexture(MaterialModel::ETextureType::TextureNormalMap, GetRenderDevice().CreateTexture2D("Sponza_Ceiling_normal.png"));
+		//mat2->SetTexture(MaterialModel::ETextureType::TextureSpecular, GetRenderDevice().CreateTexture2D("Sponza_Ceiling_roughness.png"));
+		//mat2->SetTexture(MaterialModel::ETextureType::TextureBump, GetRenderDevice().CreateTexture2D("Sponza_Ceiling_roughness.png"));
 		mat2->SetWrapper(mat2.get());
 
-		IMesh* meshPlane = GetRenderDevice()->GetPrimitiveCollection()->CreatePlane();
+		auto& meshPlane = GetRenderDevice().GetPrimitivesFactory().CreatePlane();
 		meshPlane->SetMaterial(mat2);
 
 		ISceneNode3D* sceneNodePlane = GetRootNode3D()->CreateSceneNode<SceneNode3D>();
@@ -243,13 +243,13 @@ void CGameState_World::Load3D()
 	m_BuildRenderListPass = std::make_shared<BuildRenderListPass>(GetRenderDevice(), shared_from_this());
 
 	m_DefferedRenderPass = std::make_shared<CDefferedRender>(GetRenderDevice(), m_BuildRenderListPass);
-	m_DefferedRenderPass->CreatePipeline(GetRenderWindow()->GetRenderTarget(), GetRenderWindow()->GetViewport());
+	m_DefferedRenderPass->CreatePipeline(std::shared_ptr<IRenderTarget>(GetRenderWindow()->GetRenderTarget()), &GetRenderWindow()->GetViewport());
 
 	m_DefferedRenderPrepareLights = std::make_shared<CDefferedRenderPrepareLights>(GetRenderDevice(), m_BuildRenderListPass);
 	m_DefferedRenderPrepareLights->CreatePipeline(nullptr, nullptr);
 
 	m_DefferedFinalRenderPass = std::make_shared<CDefferedRenderFinal>(GetRenderDevice(), m_DefferedRenderPass, m_DefferedRenderPrepareLights);
-	m_DefferedFinalRenderPass->CreatePipeline(GetRenderWindow()->GetRenderTarget(), GetRenderWindow()->GetViewport());
+	m_DefferedFinalRenderPass->CreatePipeline(GetRenderWindow()->GetRenderTarget(), &GetRenderWindow()->GetViewport());
 
 
 	vec4 color = vec4(0.0, 0.0f, 0.0f, 1.0f);
@@ -258,7 +258,7 @@ void CGameState_World::Load3D()
 	m_Technique3D.AddPass(m_DefferedRenderPass);
 	m_Technique3D.AddPass(m_DefferedRenderPrepareLights);
 	m_Technique3D.AddPass(m_DefferedFinalRenderPass);
-	m_Technique3D.AddPass(GetBaseManager()->GetManager<IRenderPassFactory>()->CreateRenderPass("TexturedMaterialPass", GetRenderDevice(), GetRenderWindow()->GetRenderTarget(), GetRenderWindow()->GetViewport(), shared_from_this()));
+	m_Technique3D.AddPass(GetBaseManager()->GetManager<IRenderPassFactory>()->CreateRenderPass("TexturedMaterialPass", GetRenderDevice(), GetRenderWindow()->GetRenderTarget(), &GetRenderWindow()->GetViewport(), shared_from_this()));
 }
 
 void CGameState_World::LoadUI()
@@ -283,7 +283,7 @@ void CGameState_World::LoadUI()
 	TextureUI3->SetScale(vec2(600, 600));
 	TextureUI3->SetTexture(m_DefferedRenderPass->GetTexture3());*/
 
-	m_TechniqueUI.AddPass(std::make_shared<CUIFontPass>(GetRenderDevice(), shared_from_this())->CreatePipeline(GetRenderWindow()->GetRenderTarget(), GetRenderWindow()->GetViewport()));
+	m_TechniqueUI.AddPass(std::make_shared<CUIFontPass>(GetRenderDevice(), shared_from_this())->CreatePipeline(GetRenderWindow()->GetRenderTarget(), &GetRenderWindow()->GetViewport()));
 }
 
 

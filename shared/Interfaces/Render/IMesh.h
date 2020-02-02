@@ -33,7 +33,7 @@ ZN_INTERFACE ZN_API __declspec(novtable) IMesh : public std::enable_shared_from_
 
 	virtual IGeometry&                              GetGeometry() const = 0;
 
-	virtual bool                                    Render(const RenderEventArgs* renderEventArgs, const IConstantBuffer* perObject, SGeometryPartParams GeometryPartParams = SGeometryPartParams()) = 0;
+	virtual bool                                    Render(const RenderEventArgs& renderEventArgs, const std::shared_ptr<IConstantBuffer>& perObject, const SGeometryPartParams& GeometryPartParams = SGeometryPartParams()) = 0;
 
 	virtual bool                                    Accept(IVisitor* visitor, SGeometryPartParams GeometryPartParams = SGeometryPartParams()) = 0;
 };

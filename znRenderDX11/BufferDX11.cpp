@@ -79,9 +79,9 @@ void BufferDX11::UnBind(uint32 id, const IShader* shader, IShaderParameter::Type
 	}
 }
 
-void BufferDX11::Copy(IBuffer* other) const
+void BufferDX11::Copy(const IBuffer* other) const
 {
-	BufferDX11* srcBuffer = dynamic_cast<BufferDX11*>(other);
+	const BufferDX11* srcBuffer = dynamic_cast<const BufferDX11*>(other);
 
 	if (srcBuffer && srcBuffer != this && m_Count * m_Stride == srcBuffer->m_Count * srcBuffer->m_Stride)
 	{

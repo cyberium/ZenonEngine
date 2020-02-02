@@ -4,7 +4,7 @@
 #include "MaterialModel.h"
 
 MaterialModel::MaterialModel(const IBaseManager* BaseManager)
-	: MaterialProxie(BaseManager->GetManager<IRenderDevice>()->CreateMaterial(sizeof(MaterialProperties)))
+	: MaterialProxie(BaseManager->GetManager<IRenderDevice>()->GetObjectsFactory().CreateMaterial(sizeof(MaterialProperties)))
 	, m_BaseManager(BaseManager)
 	, m_RenderDevice(BaseManager->GetManager<IRenderDevice>())
 {
@@ -76,12 +76,7 @@ void MaterialModel::SetReflectionFactor(float Factor)
 	MarkConstantBufferDirty();
 }
 
-ITexture* MaterialModel::GetTexture(ETextureType TextureType) const
-{
-	return MaterialProxie::GetTexture((uint32)TextureType);
-}
-
-void MaterialModel::SetTexture(ETextureType TextureType, ITexture* texture)
+void MaterialModel::SetTexture(ETextureType TextureType, std::shared_ptr<ITexture> texture)
 {
 	switch (TextureType)
 	{
@@ -152,6 +147,10 @@ void MaterialModel::SetTexture(ETextureType TextureType, ITexture* texture)
 	MaterialProxie::SetTexture((uint32)TextureType, texture);
 }
 
+const std::shared_ptr<ITexture>& MaterialModel::GetTexture(ETextureType TextureType) const
+{
+	return MaterialProxie::GetTexture((uint32)TextureType);
+}
 
 //
 // Protected

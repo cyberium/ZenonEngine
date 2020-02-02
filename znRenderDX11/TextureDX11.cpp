@@ -506,11 +506,11 @@ void TextureDX11::FetchPixel(glm::ivec2 coord, uint8_t*& pixel, size_t size)
 	pixel = &m_Buffer[index];
 }
 
-void TextureDX11::Copy(ITexture* other)
+void TextureDX11::Copy(const std::shared_ptr<ITexture>& other)
 {
-	TextureDX11* srcTexture = dynamic_cast<TextureDX11*>(other);
+	const auto& srcTexture = std::dynamic_pointer_cast<TextureDX11>(other);
 
-	if (srcTexture && srcTexture != this)
+	if (srcTexture && srcTexture.get() != this)
 	{
 		if (m_TextureDimension == srcTexture->m_TextureDimension &&
 			m_TextureWidth == srcTexture->m_TextureWidth &&
