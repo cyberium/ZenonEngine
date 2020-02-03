@@ -33,7 +33,7 @@ ZN_INTERFACE ZN_API __declspec(novtable) IShaderParameter
 	virtual bool IsValid() const = 0;
 
 	virtual void SetSource(std::shared_ptr<IShaderParameterSource> ShaderParameterSource) = 0;
-	virtual const std::shared_ptr<IShaderParameterSource>& GetSource() = 0;
+	virtual std::shared_ptr<IShaderParameterSource> GetSource() const = 0;
 
 	virtual void SetConstantBuffer(std::shared_ptr<IConstantBuffer> constantBuffer) = 0;
 	virtual const std::shared_ptr<IConstantBuffer>& GetConstantBuffer() const = 0;

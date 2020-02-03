@@ -8,6 +8,6 @@ public:
 
 	void SetPrimitiveTopology(PrimitiveTopology _topology) override final;
 
-	virtual bool Render(const RenderEventArgs* renderArgs, const IConstantBuffer* perObject, SGeometryPartParams GeometryPartParams);
+	virtual bool Render(const RenderEventArgs* renderArgs, const IConstantBuffer* perObject, SGeometryDrawArgs GeometryDrawArgs);
 
 };

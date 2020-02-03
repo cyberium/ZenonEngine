@@ -18,8 +18,8 @@ public:
 	// IVisitor
 	virtual bool Visit(ISceneNode3D* node) override;
 	virtual bool Visit(ISceneNodeUI* node) override;
-	virtual bool Visit(IMesh* Mesh, SGeometryPartParams GeometryPartParams = SGeometryPartParams()) override;
-	virtual bool Visit(IGeometry* Geometry, const IMaterial* Material, SGeometryPartParams GeometryPartParams = SGeometryPartParams()) override;
+	virtual bool Visit(IMesh* Mesh, SGeometryDrawArgs GeometryDrawArgs = SGeometryDrawArgs()) override;
+	virtual bool Visit(IGeometry* Geometry, const IMaterial* Material, SGeometryDrawArgs GeometryDrawArgs = SGeometryDrawArgs()) override;
 	virtual bool Visit(ILightComponent3D* light) override;
 
 protected:

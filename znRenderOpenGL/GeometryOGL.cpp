@@ -62,15 +62,15 @@ void GeometryOGL::SetPrimitiveTopology(PrimitiveTopology _topology)
 	}
 }
 
-bool GeometryOGL::Render(const RenderEventArgs * renderArgs, const IConstantBuffer * PerObject, const std::unordered_map<EShaderType, IShader*>& ShadersMap, const IMaterial * Material, const SGeometryPartParams & GeometryPartParams) const
+bool GeometryOGL::Render(const RenderEventArgs * renderArgs, const IConstantBuffer * PerObject, const std::unordered_map<EShaderType, IShader*>& ShadersMap, const IMaterial * Material, const SGeometryDrawArgs & GeometryDrawArgs) const
 {
-	UINT indexStartLocation = GeometryPartParams.IndexStartLocation;
-	UINT indexCnt = GeometryPartParams.IndexCnt;
+	UINT indexStartLocation = GeometryDrawArgs.IndexStartLocation;
+	UINT indexCnt = GeometryDrawArgs.IndexCnt;
 	if (indexCnt == UINT_MAX && m_pIndexBuffer != nullptr)
 		indexCnt = m_pIndexBuffer->GetElementCount();
 
-	UINT vertexStartLocation = GeometryPartParams.VertexStartLocation;
-	UINT vertexCnt = GeometryPartParams.VertexCnt;
+	UINT vertexStartLocation = GeometryDrawArgs.VertexStartLocation;
+	UINT vertexCnt = GeometryDrawArgs.VertexCnt;
 	if (vertexCnt == UINT_MAX)
 	{
 		if (m_VertexBuffer != nullptr)
@@ -198,7 +198,7 @@ bool GeometryOGL::Render(const RenderEventArgs * renderArgs, const IConstantBuff
 	return true;
 }
 
-bool GeometryOGL::RenderInstanced(const RenderEventArgs * renderArgs, const IStructuredBuffer * InstancesBuffer, const std::unordered_map<EShaderType, IShader*>& ShadersMap, const IMaterial * Material, SGeometryPartParams GeometryPartParams) const
+bool GeometryOGL::RenderInstanced(const RenderEventArgs * renderArgs, const IStructuredBuffer * InstancesBuffer, const std::unordered_map<EShaderType, IShader*>& ShadersMap, const IMaterial * Material, SGeometryDrawArgs GeometryDrawArgs) const
 {
 	return false;
 }

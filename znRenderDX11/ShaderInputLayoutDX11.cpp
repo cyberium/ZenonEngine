@@ -45,7 +45,6 @@ const InputSemantic& ShaderInputLayoutDX11::GetSemantic(const BufferBinding & bi
         if (it.first.Name == binding.Name && it.first.Index == binding.Index)
             return it.first;
 
-    _ASSERT(false);
     return gs_InvalidShaderSemantic;
 }
 
@@ -55,7 +54,6 @@ UINT ShaderInputLayoutDX11::GetSemanticSlot(const BufferBinding & binding) const
         if (it.first.Name == binding.Name && it.first.Index == binding.Index)
             return it.second;
 
-    _ASSERT(false);
     return UINT_MAX;
 }
 

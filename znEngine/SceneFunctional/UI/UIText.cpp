@@ -92,10 +92,10 @@ bool CUITextNode::AcceptMesh(IVisitor* visitor)
 		m_Material->SetOffset(_offset);
 		_offset.x += static_cast<float>(m_Font->GetCharWidth(ch)) + 0.01f;
 
-		SGeometryPartParams geometryPartParams;
-		geometryPartParams.VertexStartLocation = (ch) * 6;
-		geometryPartParams.VertexCnt = 6;
-		m_Font->Accept(visitor, geometryPartParams);
+		SGeometryDrawArgs GeometryDrawArgs;
+		GeometryDrawArgs.VertexStartLocation = (ch) * 6;
+		GeometryDrawArgs.VertexCnt = 6;
+		m_Font->Accept(visitor, GeometryDrawArgs);
 	}
 
 	return true;

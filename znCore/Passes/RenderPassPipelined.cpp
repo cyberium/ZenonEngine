@@ -132,12 +132,12 @@ bool RenderPassPipelined::Visit(ISceneNodeUI* node)
 	return false;
 }
 
-bool RenderPassPipelined::Visit(IMesh* Mesh, SGeometryPartParams GeometryPartParams)
+bool RenderPassPipelined::Visit(IMesh* Mesh, SGeometryDrawArgs GeometryDrawArgs)
 {
     return false;
 }
 
-bool RenderPassPipelined::Visit(IGeometry * Geometry, const IMaterial* Material, SGeometryPartParams GeometryPartParams)
+bool RenderPassPipelined::Visit(IGeometry * Geometry, const IMaterial* Material, SGeometryDrawArgs GeometryDrawArgs)
 {
 	return false;
 }

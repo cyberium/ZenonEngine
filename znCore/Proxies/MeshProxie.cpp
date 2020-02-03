@@ -63,9 +63,9 @@ void MeshProxie::SetMaterial(const std::shared_ptr<IMaterial> Material)
 	m_Mesh->SetMaterial(Material);
 }
 
-void MeshProxie::AddMaterial(const std::shared_ptr<IMaterial> Material, SGeometryPartParams GeometryPartParams)
+void MeshProxie::AddMaterial(const std::shared_ptr<IMaterial> Material, SGeometryDrawArgs GeometryDrawArgs)
 {
-	m_Mesh->AddMaterial(Material, GeometryPartParams);
+	m_Mesh->AddMaterial(Material, GeometryDrawArgs);
 }
 
 IGeometry& MeshProxie::GetGeometry() const
@@ -73,12 +73,12 @@ IGeometry& MeshProxie::GetGeometry() const
 	return m_Mesh->GetGeometry();
 }
 
-bool MeshProxie::Render(const RenderEventArgs& renderEventArgs, const SGeometryPartParams& GeometryPartParams)
+bool MeshProxie::Render(const RenderEventArgs& renderEventArgs, const SGeometryDrawArgs& GeometryDrawArgs) const
 {
-	return m_Mesh->Render(renderEventArgs, GeometryPartParams);
+	return m_Mesh->Render(renderEventArgs, GeometryDrawArgs);
 }
 
-bool MeshProxie::Accept(IVisitor* visitor, SGeometryPartParams GeometryPartParams)
+bool MeshProxie::Accept(IVisitor* visitor, SGeometryDrawArgs GeometryDrawArgs)
 {
-	return m_Mesh->Accept(visitor, GeometryPartParams);
+	return m_Mesh->Accept(visitor, GeometryDrawArgs);
 }

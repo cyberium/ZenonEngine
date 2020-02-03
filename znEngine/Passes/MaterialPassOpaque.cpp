@@ -59,12 +59,12 @@ std::shared_ptr<IRenderPassPipelined> CMaterialPassOpaque::CreatePipeline(std::s
 //
 // IVisitor
 //
-bool CMaterialPassOpaque::Visit(IMesh * Mesh, SGeometryPartParams GeometryPartParams)
+bool CMaterialPassOpaque::Visit(IMesh * Mesh, SGeometryDrawArgs GeometryDrawArgs)
 {
-	return Base3DPass::Visit(Mesh, GeometryPartParams);
+	return Base3DPass::Visit(Mesh, GeometryDrawArgs);
 }
 
-bool CMaterialPassOpaque::Visit(IGeometry * Geometry, const IMaterial* Material, SGeometryPartParams GeometryPartParams)
+bool CMaterialPassOpaque::Visit(IGeometry * Geometry, const IMaterial* Material, SGeometryDrawArgs GeometryDrawArgs)
 {
 	const MaterialModel* objMaterial = dynamic_cast<const MaterialModel*>(Material);
 	if (objMaterial == nullptr)
@@ -73,5 +73,5 @@ bool CMaterialPassOpaque::Visit(IGeometry * Geometry, const IMaterial* Material,
 	//if (objMaterial->GetTexture(0) == nullptr || objMaterial->GetTexture(0)->IsTransparent() == true)
 	//	return false;
 
-	return Base3DPass::Visit(Geometry, Material, GeometryPartParams);
+	return Base3DPass::Visit(Geometry, Material, GeometryDrawArgs);
 }

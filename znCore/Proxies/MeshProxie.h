@@ -20,13 +20,13 @@ public:
 	virtual void SetPrimitiveTopology(PrimitiveTopology _topology);
 
 	virtual void SetMaterial(const std::shared_ptr<IMaterial> Material);
-	virtual void AddMaterial(const std::shared_ptr<IMaterial> Material, SGeometryPartParams GeometryPartParams = SGeometryPartParams()) override;
+	virtual void AddMaterial(const std::shared_ptr<IMaterial> Material, SGeometryDrawArgs GeometryDrawArgs = SGeometryDrawArgs()) override;
 
 	virtual IGeometry& GetGeometry() const override;
 
-	virtual bool Render(const RenderEventArgs& renderEventArgs, const SGeometryPartParams& GeometryPartParams = SGeometryPartParams()) override;
+	virtual bool Render(const RenderEventArgs& renderEventArgs, const SGeometryDrawArgs& GeometryDrawArgs = SGeometryDrawArgs()) const override;
 
-	virtual bool Accept(IVisitor* visitor, SGeometryPartParams GeometryPartParams = SGeometryPartParams());
+	virtual bool Accept(IVisitor* visitor, SGeometryDrawArgs GeometryDrawArgs = SGeometryDrawArgs());
 
 private:
 	std::shared_ptr<IMesh> m_Mesh;

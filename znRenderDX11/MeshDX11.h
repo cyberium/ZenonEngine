@@ -10,5 +10,5 @@ public:
 	// IMesh
 	virtual void SetPrimitiveTopology(PrimitiveTopology _topology) override;
 
-	virtual bool Render(const RenderEventArgs& renderArgs, const SGeometryPartParams& GeometryPartParams) override final;
+	virtual bool Render(const RenderEventArgs& renderArgs, const SGeometryDrawArgs& GeometryDrawArgs) const override final;
 };

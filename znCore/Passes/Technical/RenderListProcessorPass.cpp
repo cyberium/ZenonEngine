@@ -18,7 +18,7 @@ void RenderListProcessorPass::Render(RenderEventArgs & e)
 	for (const auto& it : m_BuildRenderListPass->GetGeometryList())
 	{
 		Visit(const_cast<ISceneNode3D*>(it.Node)); // TODO!!!
-		Visit(const_cast<IGeometry*>(it.Geometry), it.Material, it.GeometryPartParams);
+		Visit(const_cast<IGeometry*>(it.Geometry), it.Material, it.GeometryDrawArgs);
 	}
 
 	for (const auto& it : m_BuildRenderListPass->GetLightList())

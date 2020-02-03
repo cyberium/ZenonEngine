@@ -13,8 +13,8 @@ public:
 
 	void											SetPrimitiveTopology(PrimitiveTopology _topology) override final;
 
-	virtual bool                                    Render(const RenderEventArgs* renderArgs, const IConstantBuffer* PerObject, const std::unordered_map<EShaderType, IShader*>& ShadersMap, const IMaterial* Material, const SGeometryPartParams& GeometryPartParams) const override;
-	virtual bool                                    RenderInstanced(const RenderEventArgs* renderArgs, const IStructuredBuffer* InstancesBuffer, const std::unordered_map<EShaderType, IShader*>& ShadersMap, const IMaterial* Material, SGeometryPartParams GeometryPartParams) const override;
+	virtual bool                                    Render(const RenderEventArgs* renderArgs, const IConstantBuffer* PerObject, const std::unordered_map<EShaderType, IShader*>& ShadersMap, const IMaterial* Material, const SGeometryDrawArgs& GeometryDrawArgs) const override;
+	virtual bool                                    RenderInstanced(const RenderEventArgs* renderArgs, const IStructuredBuffer* InstancesBuffer, const std::unordered_map<EShaderType, IShader*>& ShadersMap, const IMaterial* Material, SGeometryDrawArgs GeometryDrawArgs) const override;
 
 
 private:

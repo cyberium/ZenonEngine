@@ -21,7 +21,7 @@ void MeshOGL::SetPrimitiveTopology(PrimitiveTopology _topology)
 	m_Geometry->SetPrimitiveTopology(_topology);
 }
 
-bool MeshOGL::Render(const RenderEventArgs * renderArgs, const IConstantBuffer * perObject, SGeometryPartParams GeometryPartParams)
+bool MeshOGL::Render(const RenderEventArgs * renderArgs, const IConstantBuffer * perObject, SGeometryDrawArgs GeometryDrawArgs)
 {
 	return true;
 }

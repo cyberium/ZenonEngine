@@ -148,12 +148,12 @@ bool CDefferedRender::Visit(ISceneNode3D * node)
 	return true;
 }
 
-bool CDefferedRender::Visit(IGeometry * Geometry, const IMaterial * Material, SGeometryPartParams GeometryPartParams)
+bool CDefferedRender::Visit(IGeometry * Geometry, const IMaterial * Material, SGeometryDrawArgs GeometryDrawArgs)
 {
 	const auto& shaders = GetRenderEventArgs().PipelineState->GetShaders();
 
 	Material->Bind(shaders);
-	bool result = Geometry->Render(GetRenderEventArgs(), shaders, Material, GeometryPartParams);
+	bool result = Geometry->Render(GetRenderEventArgs(), shaders, Material, GeometryDrawArgs);
 	Material->Unbind(shaders);
 
 	return result;

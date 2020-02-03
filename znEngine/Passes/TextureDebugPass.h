@@ -11,6 +11,6 @@ public:
 	std::shared_ptr<IRenderPassPipelined> CreatePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport* Viewport) override final;
 
 	// IVisitor
-	bool Visit(IMesh* Mesh, SGeometryPartParams GeometryPartParams) override final;
-	bool Visit(IGeometry* Geometry, const IMaterial* Material, SGeometryPartParams GeometryPartParams = SGeometryPartParams()) override final;
+	bool Visit(IMesh* Mesh, SGeometryDrawArgs GeometryDrawArgs) override final;
+	bool Visit(IGeometry* Geometry, const IMaterial* Material, SGeometryDrawArgs GeometryDrawArgs = SGeometryDrawArgs()) override final;
 };

@@ -8,17 +8,17 @@ class ZN_API BuildRenderListPass
 public:
 	struct ZN_API SGeometryElement
 	{
-		SGeometryElement(const ISceneNode3D* Node, const IGeometry* Geometry, const IMaterial* Material, const SGeometryPartParams GeometryPartParams)
+		SGeometryElement(const ISceneNode3D* Node, const IGeometry* Geometry, const IMaterial* Material, const SGeometryDrawArgs GeometryDrawArgs)
 			: Node(Node)
 			, Geometry(Geometry)
 			, Material(Material)
-			, GeometryPartParams(GeometryPartParams)
+			, GeometryDrawArgs(GeometryDrawArgs)
 		{}
 
 		const ISceneNode3D* Node;
 		const IGeometry* Geometry;
 		const IMaterial* Material;
-		const SGeometryPartParams GeometryPartParams;
+		const SGeometryDrawArgs GeometryDrawArgs;
 	};
 
 	struct ZN_API SLightElement
@@ -45,8 +45,8 @@ public:
 
 	// IVisitor
 	virtual bool Visit(ISceneNode3D* node) override;
-	virtual bool Visit(IMesh* Mesh, SGeometryPartParams GeometryPartParams = SGeometryPartParams()) override;
-	virtual bool Visit(IGeometry* Geometry, const IMaterial* Material, SGeometryPartParams GeometryPartParams = SGeometryPartParams()) override;
+	virtual bool Visit(IMesh* Mesh, SGeometryDrawArgs GeometryDrawArgs = SGeometryDrawArgs()) override;
+	virtual bool Visit(IGeometry* Geometry, const IMaterial* Material, SGeometryDrawArgs GeometryDrawArgs = SGeometryDrawArgs()) override;
 	virtual bool Visit(ILightComponent3D* light) override;
 
 private:

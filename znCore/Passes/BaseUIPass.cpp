@@ -55,15 +55,15 @@ bool BaseUIPass::Visit(ISceneNodeUI* sceneNode)
 	return true;
 }
 
-bool BaseUIPass::Visit(IMesh * Mesh, SGeometryPartParams GeometryPartParams)
+bool BaseUIPass::Visit(IMesh * Mesh, SGeometryDrawArgs GeometryDrawArgs)
 {
-	return Mesh->Render(GetRenderEventArgs(), GeometryPartParams);
+	return Mesh->Render(GetRenderEventArgs(), GeometryDrawArgs);
 }
 
-bool BaseUIPass::Visit(IGeometry* Geometry, const IMaterial* Material, SGeometryPartParams GeometryPartParams)
+bool BaseUIPass::Visit(IGeometry* Geometry, const IMaterial* Material, SGeometryDrawArgs GeometryDrawArgs)
 {
 	Material->Bind(GetRenderEventArgs().PipelineState->GetShaders());
-	bool result = Geometry->Render(GetRenderEventArgs(), GetRenderEventArgs().PipelineState->GetShaders(), Material, GeometryPartParams);
+	bool result = Geometry->Render(GetRenderEventArgs(), GetRenderEventArgs().PipelineState->GetShaders(), Material, GeometryDrawArgs);
 	Material->Unbind(GetRenderEventArgs().PipelineState->GetShaders());
 	return result;
 }

@@ -551,9 +551,15 @@
     <None Include="Resources\Scripts\TestScript.lua">
       <Filter>Resources\Scripts</Filter>
     </None>
-    <None Include="Resources\shaders_D3D\3D\Debug.hlsl" />
-    <None Include="Resources\shaders_D3D\3D\Textured.hlsl" />
-    <None Include="Resources\shaders_D3D\3D\Model_Deffered.hlsl" />
     <None Include="Resources\shaders_D3D\3D\Deffered.hlsl" />
+    <None Include="Resources\shaders_D3D\3D\Model_Deffered.hlsl">
+      <Filter>Resources\Shaders_D3D\3D</Filter>
+    </None>
+    <None Include="Resources\shaders_D3D\3D\Textured.hlsl">
+      <Filter>Resources\Shaders_D3D\3D\Base</Filter>
+    </None>
+    <None Include="Resources\shaders_D3D\3D\Debug.hlsl">
+      <Filter>Resources\Shaders_D3D\3D\Base</Filter>
+    </None>
   </ItemGroup>
 </Project>

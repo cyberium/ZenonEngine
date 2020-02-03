@@ -61,11 +61,11 @@ void MeshBase::SetMaterial(const std::shared_ptr<IMaterial> Material)
 	}
 }
 
-void MeshBase::AddMaterial(const std::shared_ptr<IMaterial> Material, SGeometryPartParams GeometryPartParams)
+void MeshBase::AddMaterial(const std::shared_ptr<IMaterial> Material, SGeometryDrawArgs GeometryDrawArgs)
 {
 	SRenderGeometryArgs renderGeometryArgs;
 	renderGeometryArgs.Material = Material;
-	renderGeometryArgs.GeometryPartParams = GeometryPartParams;
+	renderGeometryArgs.GeometryDrawArgs = GeometryDrawArgs;
 	m_MaterialForGeometryParts.push_back(renderGeometryArgs);
 }
 
@@ -74,15 +74,15 @@ IGeometry& MeshBase::GetGeometry() const
 	return *m_Geometry;
 }
 
-bool MeshBase::Accept(IVisitor* visitor, SGeometryPartParams GeometryPartParams = SGeometryPartParams())
+bool MeshBase::Accept(IVisitor* visitor, SGeometryDrawArgs GeometryDrawArgs = SGeometryDrawArgs())
 {
-	bool visitResult = visitor->Visit(this, GeometryPartParams);
+	bool visitResult = visitor->Visit(this, GeometryDrawArgs);
 
 	for (const auto& materialForGeometryPart : m_MaterialForGeometryParts)
 	{
 		const IMaterial* material = materialForGeometryPart.Material.get();
 
-		visitResult = m_Geometry->Accept(visitor, material, ((! GeometryPartParams.IsDefault()) ? GeometryPartParams : materialForGeometryPart.GeometryPartParams));
+		visitResult = m_Geometry->Accept(visitor, material, ((! GeometryDrawArgs.IsDefault()) ? GeometryDrawArgs : materialForGeometryPart.GeometryDrawArgs));
 	}
 
     return visitResult;

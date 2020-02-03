@@ -13,7 +13,7 @@ public:
 	Type GetType() const;
 	bool IsValid() const;
 	void SetSource(std::shared_ptr<IShaderParameterSource> ShaderParameterSource) override final;
-	const std::shared_ptr<IShaderParameterSource>& GetSource()  override final;
+	std::shared_ptr<IShaderParameterSource> GetSource() const override final;
 	void SetConstantBuffer(std::shared_ptr<IConstantBuffer> constantBuffer) override final;
 	const std::shared_ptr<IConstantBuffer>& GetConstantBuffer() const override final;
 	void SetTexture(std::shared_ptr<ITexture> texture) override final;

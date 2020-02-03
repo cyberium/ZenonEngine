@@ -78,11 +78,11 @@ bool CUIFontPass::Visit(ISceneNodeUI * node)
 	return BaseUIPass::Visit(node);
 }
 
-bool CUIFontPass::Visit(IMesh * Mesh, SGeometryPartParams GeometryPartParams)
+bool CUIFontPass::Visit(IMesh * Mesh, SGeometryDrawArgs GeometryDrawArgs)
 {
 	if (CFontMesh* fontMesh = dynamic_cast<CFontMesh*>(Mesh))
 	{
-		return BaseUIPass::Visit(Mesh, GeometryPartParams);
+		return BaseUIPass::Visit(Mesh, GeometryDrawArgs);
 	}
 
 	return false;

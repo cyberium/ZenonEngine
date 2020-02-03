@@ -53,8 +53,8 @@ void CDefferedRenderFinal::Render(RenderEventArgs& e)
 		// Once per light
 		BindLightParamsForCurrentIteration(e, lightResult);
 
-		SGeometryPartParams GeometryPartParams;
-		m_QuadMesh->GetGeometry().Render(e, GetPipeline().GetShaders(), nullptr, GeometryPartParams);
+		SGeometryDrawArgs GeometryDrawArgs;
+		m_QuadMesh->GetGeometry().Render(e, GetPipeline().GetShaders(), nullptr, GeometryDrawArgs);
 	}
 }
 

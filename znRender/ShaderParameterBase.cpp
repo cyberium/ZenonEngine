@@ -72,7 +72,7 @@ void ShaderParameterBase::SetSource(std::shared_ptr<IShaderParameterSource> Shad
 	}
 }
 
-const std::shared_ptr<IShaderParameterSource>& ShaderParameterBase::GetSource()
+std::shared_ptr<IShaderParameterSource> ShaderParameterBase::GetSource() const
 {
 	if (m_pConstantBuffer)
 	{

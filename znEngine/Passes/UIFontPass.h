@@ -12,7 +12,7 @@ public:
 
 	// IVisitor
 	virtual bool Visit(ISceneNodeUI* node) override;
-	virtual bool Visit(IMesh* Mesh, SGeometryPartParams GeometryPartParams = SGeometryPartParams()) override;
+	virtual bool Visit(IMesh* Mesh, SGeometryDrawArgs GeometryDrawArgs = SGeometryDrawArgs()) override;
 
 private:
 

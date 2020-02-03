@@ -29,13 +29,13 @@ ZN_INTERFACE ZN_API __declspec(novtable) IMesh : public std::enable_shared_from_
 	virtual void                                    SetPrimitiveTopology(PrimitiveTopology _topology) = 0;
 
 	virtual void                                    SetMaterial(const std::shared_ptr<IMaterial> Material) = 0;
-	virtual void                                    AddMaterial(const std::shared_ptr<IMaterial> Material, SGeometryPartParams GeometryPartParams = SGeometryPartParams()) = 0;
+	virtual void                                    AddMaterial(const std::shared_ptr<IMaterial> Material, SGeometryDrawArgs GeometryDrawArgs = SGeometryDrawArgs()) = 0;
 
 	virtual IGeometry&                              GetGeometry() const = 0;
 
-	virtual bool                                    Render(const RenderEventArgs& renderEventArgs, const SGeometryPartParams& GeometryPartParams = SGeometryPartParams()) = 0;
+	virtual bool                                    Render(const RenderEventArgs& renderEventArgs, const SGeometryDrawArgs& GeometryDrawArgs = SGeometryDrawArgs()) const = 0;
 
-	virtual bool                                    Accept(IVisitor* visitor, SGeometryPartParams GeometryPartParams = SGeometryPartParams()) = 0;
+	virtual bool                                    Accept(IVisitor* visitor, SGeometryDrawArgs GeometryDrawArgs = SGeometryDrawArgs()) = 0;
 };
 
 typedef std::vector<IMesh*> MeshList;

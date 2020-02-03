@@ -307,10 +307,6 @@ void SceneNode3D::SetWorldTransform(cmat4 worldTransform)
 	SetLocalTransform(inverseParentTransform * worldTransform);
 }
 
-void SceneNode3D::ForceRecalculateLocalTransform()
-{
-	UpdateLocalTransform();
-}
 
 
 //
@@ -529,6 +525,12 @@ void SceneNode3D::UpdateWorldTransform()
 	m_InverseWorldTransform = glm::inverse(m_WorldTransform);
 	
 	RaiseComponentMessage(nullptr, UUID_OnTransformChanged);
+}
+
+
+void SceneNode3D::ForceRecalculateLocalTransform()
+{
+	UpdateLocalTransform();
 }
 
 IBaseManager* SceneNode3D::GetBaseManager() const

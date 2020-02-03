@@ -24,7 +24,7 @@ void MeshDX11::SetPrimitiveTopology(PrimitiveTopology _topology)
 	m_Geometry->SetPrimitiveTopology(_topology);
 }
 
-bool MeshDX11::Render(const RenderEventArgs& renderArgs, const SGeometryPartParams& GeometryPartParams)
+bool MeshDX11::Render(const RenderEventArgs& renderArgs, const SGeometryDrawArgs& GeometryDrawArgs) const
 {
 	return true;
 }

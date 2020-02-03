@@ -72,7 +72,7 @@ private:
 		{
 			CRenderDeviceLocker locker(GetRenderDevice());
 			it.Material->Bind(shadersMap);
-			it.Geometry->Render(GetRenderEventArgs(), GetPerObjectConstantBuffer(threadNum), shadersMap, it.Material, it.GeometryPartParams);
+			it.Geometry->Render(GetRenderEventArgs(), GetPerObjectConstantBuffer(threadNum), shadersMap, it.Material, it.GeometryDrawArgs);
 			it.Material->Unbind(shadersMap);
 		}
 	}
@@ -104,7 +104,7 @@ private:
 			shadersMap = GetRenderEventArgs()->PipelineState->GetShaders();
 
 		geom.Material->Bind(shadersMap);
-		geom.Geometry->RenderInstanced(GetRenderEventArgs(), buffer, shadersMap, geom.Material, geom.GeometryPartParams);
+		geom.Geometry->RenderInstanced(GetRenderEventArgs(), buffer, shadersMap, geom.Material, geom.GeometryDrawArgs);
 		geom.Material->Unbind(shadersMap);
 
 		GetRenderDevice()->DestroyStructuredBuffer(buffer);
@@ -171,14 +171,14 @@ bool BuildRenderListPass::Visit(ISceneNode3D * node)
 	return true;
 }
 
-bool BuildRenderListPass::Visit(IMesh * Mesh, SGeometryPartParams GeometryPartParams)
+bool BuildRenderListPass::Visit(IMesh * Mesh, SGeometryDrawArgs GeometryDrawArgs)
 {
 	return true;
 }
 
-bool BuildRenderListPass::Visit(IGeometry * Geometry, const IMaterial * Material, SGeometryPartParams GeometryPartParams)
+bool BuildRenderListPass::Visit(IGeometry * Geometry, const IMaterial * Material, SGeometryDrawArgs GeometryDrawArgs)
 {
-	m_GeometryList.push_back(SGeometryElement(m_CurrentSceneNode, Geometry, Material, GeometryPartParams));
+	m_GeometryList.push_back(SGeometryElement(m_CurrentSceneNode, Geometry, Material, GeometryDrawArgs));
 	return true;
 }
 

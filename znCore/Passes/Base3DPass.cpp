@@ -42,15 +42,15 @@ bool Base3DPass::Visit(ISceneNode3D* sceneNode)
 	return true;
 }
 
-bool Base3DPass::Visit(IMesh * Mesh, SGeometryPartParams GeometryPartParams)
+bool Base3DPass::Visit(IMesh * Mesh, SGeometryDrawArgs GeometryDrawArgs)
 {
-	return Mesh->Render(GetRenderEventArgs(), GeometryPartParams);
+	return Mesh->Render(GetRenderEventArgs(), GeometryDrawArgs);
 }
 
-bool Base3DPass::Visit(IGeometry* Geometry, const IMaterial* Material, SGeometryPartParams GeometryPartParams)
+bool Base3DPass::Visit(IGeometry* Geometry, const IMaterial* Material, SGeometryDrawArgs GeometryDrawArgs)
 {
 	Material->Bind(GetRenderEventArgs().PipelineState->GetShaders());
-	bool result = Geometry->Render(GetRenderEventArgs(), GetRenderEventArgs().PipelineState->GetShaders(), Material, GeometryPartParams);
+	bool result = Geometry->Render(GetRenderEventArgs(), GetRenderEventArgs().PipelineState->GetShaders(), Material, GeometryDrawArgs);
 	Material->Unbind(GetRenderEventArgs().PipelineState->GetShaders());
 
 	return result;

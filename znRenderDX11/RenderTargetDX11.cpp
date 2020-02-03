@@ -97,7 +97,7 @@ void RenderTargetDX11::Bind()
 	{
 		if (!IsValid())
 		{
-			Log::Error("Invalid render target.");
+			throw CException("Invalid render target.");
 		}
 		m_bCheckValidity = false;
 	}
@@ -113,7 +113,7 @@ void RenderTargetDX11::Bind()
 	UINT numUAVs = 0;
 	for (uint8_t i = 0; i < 8; i++)
 		if (const auto& rwbuffer = m_StructuredBuffers[i])
-			uavViews[numUAVs++] = rwbuffer->GetUnorderedAccessView();
+			uavViews[numUAVs++] = std::dynamic_pointer_cast<StructuredBufferDX11>(rwbuffer)->GetUnorderedAccessView();
 
 	ID3D11DepthStencilView* depthStencilView = nullptr;
 	if (const auto& depthTexture = m_Textures[(uint8_t)AttachmentPoint::Depth])

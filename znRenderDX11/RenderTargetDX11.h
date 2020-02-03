@@ -30,7 +30,7 @@ private:
 	typedef std::vector<std::shared_ptr<ITexture>> TextureList;
 	TextureList m_Textures;
 
-	typedef std::vector<std::shared_ptr<StructuredBufferDX11>> StructuredBufferList;
+	typedef std::vector<std::shared_ptr<IStructuredBuffer>> StructuredBufferList;
 	StructuredBufferList m_StructuredBuffers;
 
 	uint16_t m_Width;

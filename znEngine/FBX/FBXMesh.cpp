@@ -544,13 +544,13 @@ void CFBXMesh::DisplayMaterialConnections(fbxsdk::FbxMesh* NativeMesh)
 
 		for (const auto& it : polygonConnectionInfos)
 		{
-			SGeometryPartParams geometryPartParams;
-			geometryPartParams.VertexStartLocation = it.second.PolygonBegin * 3;
-			geometryPartParams.VertexCnt = it.second.PolygonEnd * 3 - geometryPartParams.VertexStartLocation + 3;
+			SGeometryDrawArgs GeometryDrawArgs;
+			GeometryDrawArgs.VertexStartLocation = it.second.PolygonBegin * 3;
+			GeometryDrawArgs.VertexCnt = it.second.PolygonEnd * 3 - GeometryDrawArgs.VertexStartLocation + 3;
 
-			AddMaterial(m_OwnerFBXNode.lock()->GetMaterial(it.first), geometryPartParams);
+			AddMaterial(m_OwnerFBXNode.lock()->GetMaterial(it.first), GeometryDrawArgs);
 
-			//Log::Info("Material with id '%d' added for (%d to %d)", it.first, geometryPartParams.VertexStartLocation, geometryPartParams.VertexCnt);
+			//Log::Info("Material with id '%d' added for (%d to %d)", it.first, GeometryDrawArgs.VertexStartLocation, GeometryDrawArgs.VertexCnt);
 		}
 	}
 }

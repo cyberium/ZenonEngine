@@ -44,9 +44,9 @@ void GeometryBase::SetIndexBuffer(std::shared_ptr<IBuffer> buffer)
     m_pIndexBuffer = buffer;
 }
 
-bool GeometryBase::Accept(IVisitor * visitor, const IMaterial* Material, SGeometryPartParams GeometryPartParams)
+bool GeometryBase::Accept(IVisitor * visitor, const IMaterial* Material, SGeometryDrawArgs GeometryDrawArgs)
 {
-	return visitor->Visit(this, Material, GeometryPartParams);
+	return visitor->Visit(this, Material, GeometryDrawArgs);
 }
 
 void GeometryBase::UpdateHash()
@@ -69,4 +69,38 @@ void GeometryBase::UpdateHash()
 
 	std::hash<std::string> hashFunc;
 	m_Hash = hashFunc(hash);
+}
+
+void GeometryBase::BindVertexBuffersToShader(const IShader& Shader) const
+{
+	if (m_VertexBuffer != nullptr)
+	{
+		m_VertexBuffer->Bind(0, &Shader, IShaderParameter::Type::Buffer);
+	}
+	else
+	{
+		for (const auto& buffer : m_VertexBuffers)
+		{
+			UINT slotID = Shader.GetInputLayout().GetSemanticSlot(buffer.first);
+			if (slotID != UINT_MAX)
+				buffer.second->Bind(slotID, &Shader, IShaderParameter::Type::Buffer);
+		}
+	}
+}
+
+void GeometryBase::UnbindVertexBuffersFromShader(const IShader& Shader) const
+{
+	if (m_VertexBuffer != nullptr)
+	{
+		m_VertexBuffer->UnBind(0, &Shader, IShaderParameter::Type::Buffer);
+	}
+	else
+	{
+		for (const auto& buffer : m_VertexBuffers)
+		{
+			UINT slotID = Shader.GetInputLayout().GetSemanticSlot(buffer.first);
+			if (slotID != UINT_MAX)
+				buffer.second->UnBind(slotID, &Shader, IShaderParameter::Type::Buffer);
+		}
+	}
 }

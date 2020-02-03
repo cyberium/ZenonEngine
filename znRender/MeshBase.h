@@ -21,11 +21,11 @@ public:
 	virtual void                                    SetIndexBuffer(std::shared_ptr<IBuffer> buffer) override;
 
 	void                                            SetMaterial(const std::shared_ptr<IMaterial> Material);
-	void											AddMaterial(const std::shared_ptr<IMaterial> Material, SGeometryPartParams GeometryPartParams = SGeometryPartParams()) override final;
+	void											AddMaterial(const std::shared_ptr<IMaterial> Material, SGeometryDrawArgs GeometryDrawArgs = SGeometryDrawArgs()) override final;
 
 	virtual IGeometry&                              GetGeometry() const override;
 
-	virtual bool                                    Accept(IVisitor* visitor, SGeometryPartParams GeometryPartParams);
+	virtual bool                                    Accept(IVisitor* visitor, SGeometryDrawArgs GeometryDrawArgs);
 
 protected:
 	std::unique_ptr<GeometryBase>					m_Geometry;

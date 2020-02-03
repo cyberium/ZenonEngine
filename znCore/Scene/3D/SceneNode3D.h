@@ -55,8 +55,6 @@ public:
 	virtual mat4									GetParentWorldTransform() const;
 	virtual void									SetWorldTransform(cmat4 worldTransform);
 
-	virtual void									ForceRecalculateLocalTransform() override;
-
 
 	//
 	// Components engine
@@ -111,6 +109,7 @@ public:
 protected:
 	virtual void									UpdateLocalTransform();
 	virtual void									UpdateWorldTransform();
+	virtual void									ForceRecalculateLocalTransform();
 	IBaseManager*                                   GetBaseManager() const;
 
 	void                                            SetMeshComponent(IMeshComponent3D* MeshComponent);

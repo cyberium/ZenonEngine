@@ -71,8 +71,6 @@ ZN_INTERFACE ZN_API __declspec(novtable) ISceneNode3D
 	virtual mat4 GetParentWorldTransform() const = 0;
 	virtual void SetWorldTransform(cmat4 worldTransform) = 0;
 
-	virtual void ForceRecalculateLocalTransform() = 0;
-
 
 
 	//

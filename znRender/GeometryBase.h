@@ -17,10 +17,12 @@ public:
 	virtual void                                    SetVertexBuffer(std::shared_ptr<IBuffer> buffer) override;
 	virtual void                                    SetIndexBuffer(std::shared_ptr<IBuffer> buffer) override;
 
-	virtual bool                                    Accept(IVisitor* visitor, const IMaterial* Material, SGeometryPartParams GeometryPartParams = SGeometryPartParams()) override;
+	virtual bool                                    Accept(IVisitor* visitor, const IMaterial* Material, SGeometryDrawArgs GeometryDrawArgs = SGeometryDrawArgs()) override;
 
 protected:
 	void UpdateHash();
+	void BindVertexBuffersToShader(const IShader& Shader) const;
+	void UnbindVertexBuffersFromShader(const IShader& Shader) const;
 
 protected:
 	BoundingBox                                     m_Bounds;
