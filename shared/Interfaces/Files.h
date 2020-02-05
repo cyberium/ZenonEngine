@@ -17,8 +17,8 @@ ZN_INTERFACE ZN_API IByteBuffer
 	virtual const uint8*  getDataFromCurrent() const = 0;
 	virtual bool          isEof() const = 0;
 
-	virtual void          seek(size_t _bufferOffsetAbsolute) = 0;
-	virtual void          seekRelative(intptr_t _bufferOffsetRelative) = 0;
+	virtual void          seek(size_t AbsoluteOffset) = 0;
+	virtual void          seekRelative(intptr_t RelativeOffset) = 0;
 
 	virtual bool          readLine(std::string* _string) = 0;
 	virtual bool          readBytes(void* _destination, size_t _size = 1) = 0;

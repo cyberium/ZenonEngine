@@ -42,6 +42,7 @@ public:
 
 		CChunkedFile cf;
 		cf.AddChunk("TEST", bb);
+		cf.AddChunk("SOME", bb);
 		cf.Save(f);
 
 		std::shared_ptr<IByteBuffer> bb2 = cf.GetChunk("TEST");

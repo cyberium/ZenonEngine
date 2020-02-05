@@ -31,10 +31,7 @@ std::shared_ptr<IFile> CLibraryResourceFileStotage::OpenFile(std::string Filenam
             std::shared_ptr<CFile> file = std::make_shared<CFile>(Filename);
             CByteBuffer& byteBuffer = file->GetByteBuffer();
 
-            byteBuffer.Allocate(resourceSize + 1);
-            memcpy_s(&byteBuffer.getDataEx()[0], resourceSize, resourceData, resourceSize);
-			byteBuffer.getDataEx()[resourceSize] = '\0';
-			byteBuffer.SetFilled();
+			byteBuffer = std::move(CByteBuffer(resourceData, resourceSize));
             
             return file;
         }

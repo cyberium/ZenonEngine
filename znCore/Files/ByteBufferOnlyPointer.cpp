@@ -8,15 +8,16 @@ CByteBufferOnlyPointer::CByteBufferOnlyPointer(const CByteBufferOnlyPointer& _ot
 {
 	m_Data = _other.m_Data;
 	m_DataSize = _other.m_DataSize;
-	m_IsEOF = _other.m_IsEOF;
 	m_CurrentPosition = _other.m_CurrentPosition;
 }
 
-CByteBufferOnlyPointer::CByteBufferOnlyPointer(const uint8_t* DataPtr, size_t DataSize)
+CByteBufferOnlyPointer::CByteBufferOnlyPointer(const void* DataPtr, size_t DataSize)
 {
-	m_Data = DataPtr;
+	_ASSERT(DataPtr != nullptr);
+	_ASSERT(DataSize != 0);
+
+	m_Data = static_cast<const uint8*>(DataPtr);
 	m_DataSize = DataSize;
-	m_IsEOF = false;
 	m_CurrentPosition = 0;
 }
 
@@ -26,11 +27,10 @@ CByteBufferOnlyPointer::~CByteBufferOnlyPointer()
 
 //--
 
-CByteBufferOnlyPointer& CByteBufferOnlyPointer::operator=(const CByteBufferOnlyPointer& _other)
+const CByteBufferOnlyPointer& CByteBufferOnlyPointer::operator=(const CByteBufferOnlyPointer& _other)
 {
 	m_Data = _other.m_Data;
 	m_DataSize = _other.m_DataSize;
-	m_IsEOF = _other.m_IsEOF;
 	m_CurrentPosition = _other.m_CurrentPosition;
 
 	return *this;
@@ -38,19 +38,16 @@ CByteBufferOnlyPointer& CByteBufferOnlyPointer::operator=(const CByteBufferOnlyP
 
 //--
 
-void CByteBufferOnlyPointer::seek(size_t _bufferOffsetAbsolute)
+void CByteBufferOnlyPointer::seek(size_t AbsoluteOffset)
 {
-	_ASSERT(_bufferOffsetAbsolute <= getSize());
-	m_CurrentPosition = _bufferOffsetAbsolute;
-	m_IsEOF = m_CurrentPosition >= getSize();
+	_ASSERT(m_CurrentPosition + AbsoluteOffset >= 0 && AbsoluteOffset <= getSize());
+	m_CurrentPosition = AbsoluteOffset;
 }
 
-void CByteBufferOnlyPointer::seekRelative(intptr_t _bufferOffsetRelative)
+void CByteBufferOnlyPointer::seekRelative(intptr_t RelativeOffset)
 {
-	_ASSERT(m_CurrentPosition + _bufferOffsetRelative >= 0);
-	_ASSERT(m_CurrentPosition + _bufferOffsetRelative <= getSize());
-	m_CurrentPosition += _bufferOffsetRelative;
-	m_IsEOF = m_CurrentPosition >= getSize();
+	_ASSERT(m_CurrentPosition + RelativeOffset >= 0 && RelativeOffset <= getSize());
+	m_CurrentPosition += RelativeOffset;
 }
 
 //-- READ
@@ -58,9 +55,7 @@ void CByteBufferOnlyPointer::seekRelative(intptr_t _bufferOffsetRelative)
 bool CByteBufferOnlyPointer::readLine(std::string* _string)
 {
 	_ASSERT(_string != nullptr);
-
-	if (m_IsEOF)
-		return false;
+	_ASSERT(isEof() == false);
 
 	// Find first incorrect symbol
 	uint64 lineEndPos;
@@ -81,7 +76,6 @@ bool CByteBufferOnlyPointer::readLine(std::string* _string)
 
 	std::string line(buff);
 	delete[] buff;
-	//line = Utils::Trim(line);
 
 	(*_string) = line;
 	return true;
@@ -89,45 +83,39 @@ bool CByteBufferOnlyPointer::readLine(std::string* _string)
 
 bool CByteBufferOnlyPointer::readBytes(void* _destination, size_t _size)
 {
-	if (m_IsEOF)
-	{
-		return false;
-	}
+	_ASSERT(_destination != nullptr);
+	_ASSERT(isEof() == false);
 
 	uint64 posAfterRead = m_CurrentPosition + _size;
 	if (posAfterRead >= getSize())
 	{
 		_size = getSize() - m_CurrentPosition;
-		m_IsEOF = true;
+		posAfterRead = getSize();
 	}
 
-	_ASSERT(_destination != nullptr);
 	std::memcpy(_destination, &(m_Data[m_CurrentPosition]), _size);
-
 	m_CurrentPosition = posAfterRead;
 
 	return true;
 }
 
-void CByteBufferOnlyPointer::readString(std::string* _string)
+void CByteBufferOnlyPointer::readString(std::string * _string)
 {
 	_ASSERT(_string != nullptr);
+	_ASSERT(isEof() == false);
 
-	std::string str = "";
+	*_string = "";
 	while (true)
 	{
 		uint8 byte;
-		readBytes(&byte, sizeof(uint8));
+		if (readBytes(&byte, sizeof(uint8)) == false)
+			break;
 
-		str.append(1, static_cast<char>(byte));
+		(*_string).append(1, static_cast<char>(byte));
 
 		if (byte == '\0')
-		{
 			break;
-		}
 	}
-
-	(*_string) = str;
 }
 
 void CByteBufferOnlyPointer::writeLine(std::string String)

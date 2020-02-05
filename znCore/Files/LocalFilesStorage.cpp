@@ -45,10 +45,11 @@ std::shared_ptr<IFile> CLocalFilesStorage::OpenFile(std::string FileName, EFileA
 		}
 
 		// Read data
-		byteBuffer.Allocate(fileSize + 1);
-		stream.read((char*)&byteBuffer.getDataEx()[0], fileSize);
-		byteBuffer.getDataEx()[fileSize] = '\0';
-		byteBuffer.SetFilled();
+		std::vector<uint8> buffer;
+		buffer.resize(fileSize);
+		stream.read(reinterpret_cast<char*>(&buffer[0]), fileSize);
+
+		byteBuffer = std::move(CByteBuffer(std::move(buffer)));
 		
 		std::streamsize readedBytes = stream.gcount();
 		if (readedBytes < fileSize)

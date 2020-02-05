@@ -5,20 +5,20 @@ class ZN_API CByteBufferOnlyPointer
 {
 public:
 	CByteBufferOnlyPointer(const CByteBufferOnlyPointer& _other);
-	CByteBufferOnlyPointer(const uint8_t* DataPtr, size_t DataSize);
-	~CByteBufferOnlyPointer();
+	CByteBufferOnlyPointer(const void* DataPtr, size_t DataSize);
+	virtual ~CByteBufferOnlyPointer();
 
-	CByteBufferOnlyPointer& operator=(const CByteBufferOnlyPointer& _other);
+	const CByteBufferOnlyPointer& operator=(const CByteBufferOnlyPointer& _other);
 
 	// IByteBuffer
 	size_t getSize() const override { return m_DataSize; }
 	size_t getPos() const override { return m_CurrentPosition; }
 	const uint8* getData() const override { return m_Data; }
 	const uint8* getDataFromCurrent() const override { return &m_Data[m_CurrentPosition]; }
-	bool isEof() const override { return m_IsEOF; }
+	bool isEof() const override { return m_CurrentPosition >= m_DataSize; }
 
-	void seek(size_t _bufferOffsetAbsolute) override;
-	void seekRelative(intptr_t _bufferOffsetRelative) override;
+	void seek(size_t AbsoluteOffset) override;
+	void seekRelative(intptr_t RelativeOffset) override;
 
 	bool readLine(std::string* _string) override;
 	bool readBytes(void* _destination, size_t _size) override;
@@ -29,7 +29,10 @@ public:
 	void writeString(std::string String) override;
 
 private:
-	bool                m_IsEOF;
+	CByteBufferOnlyPointer(CByteBufferOnlyPointer&&) = delete;
+	const CByteBufferOnlyPointer& operator=(CByteBufferOnlyPointer&&) = delete;
+
+private:
 	const uint8*		m_Data;
 	size_t              m_DataSize;
 	size_t              m_CurrentPosition;
