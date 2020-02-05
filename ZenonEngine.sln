@@ -54,6 +54,10 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Binaries", "Binaries", "{DFFFFFB9-E725-4935-8AEB-AD452223F7DB}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Tests", "Tests\Tests.vcxproj", "{AE3BC0AA-C469-4530-B761-C9777D3BE0D2}"
+	ProjectSection(ProjectDependencies) = postProject
+		{51252F60-B8DC-4090-BBA3-DD05942110F0} = {51252F60-B8DC-4090-BBA3-DD05942110F0}
+		{590C7C79-AE16-4DB2-B61C-BB7B25B76B42} = {590C7C79-AE16-4DB2-B61C-BB7B25B76B42}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

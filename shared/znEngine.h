@@ -9,6 +9,8 @@
 
 #include "../znEngine/SceneFunctional/UI/Fonts/FontsManager.h"
 
+#include "../znEngine/Formats/ChunkedFile.h"
+
 /*
  * Initialize improtant managers and plugins
  */

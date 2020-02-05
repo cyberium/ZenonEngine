@@ -97,6 +97,9 @@
     <Filter Include="Passes\UI">
       <UniqueIdentifier>{46e412dd-bb55-422f-9cf7-d860c116b3c4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Formats">
+      <UniqueIdentifier>{342227e0-e22d-4457-be0c-b50002d6727d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -282,6 +285,9 @@
       <Filter>Passes\UI</Filter>
     </ClCompile>
     <ClCompile Include="NativeWindow_WindowsSpecific.cpp" />
+    <ClCompile Include="Formats\ChunkedFile.cpp">
+      <Filter>Formats</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="common.h">
@@ -471,6 +477,9 @@
       <Filter>Passes\UI</Filter>
     </ClInclude>
     <ClInclude Include="NativeWindow_WindowsSpecific.h" />
+    <ClInclude Include="Formats\ChunkedFile.h">
+      <Filter>Formats</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="znEngine.rc">
@@ -540,6 +549,9 @@
     </Text>
     <Text Include="Resources\shaders_D3D\UI\UI_VertexBase.hlsl">
       <Filter>Resources\Shaders_D3D\UI\Base</Filter>
+    </Text>
+    <Text Include="Formats\FormatsDescription.txt">
+      <Filter>Formats</Filter>
     </Text>
   </ItemGroup>
   <ItemGroup>

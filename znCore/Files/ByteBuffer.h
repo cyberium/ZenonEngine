@@ -9,7 +9,7 @@ public:
 	CByteBuffer(const CByteBuffer& _other);
 	CByteBuffer(CByteBuffer&& _other);
 	CByteBuffer(size_t _size);
-	~CByteBuffer();
+	virtual ~CByteBuffer();
 
 	CByteBuffer& operator=(const CByteBuffer& _other);
 	CByteBuffer& operator=(CByteBuffer&&  _other);

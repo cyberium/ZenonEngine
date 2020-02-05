@@ -27,6 +27,18 @@ ZN_INTERFACE ZN_API IByteBuffer
 	virtual void          writeLine(std::string String) = 0;
 	virtual void          writeBytes(const void* Source, size_t BytesCount) = 0;
 	virtual void          writeString(std::string String) = 0;
+
+	template <typename T>
+	inline bool read(T* Destination)
+	{
+		return readBytes(Destination, sizeof(T));
+	}
+
+	template <typename T>
+	inline void write(const T* Source)
+	{
+		writeBytes(Source, sizeof(T));
+	}
 };
 
 //--
@@ -44,7 +56,8 @@ ZN_INTERFACE ZN_API IByteBufferEx
 
 //--
 
-ZN_INTERFACE ZN_API IFile : public IByteBuffer
+ZN_INTERFACE ZN_API IFile 
+	: public IByteBuffer
 {
 	virtual ~IFile() {}
 

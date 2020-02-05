@@ -100,17 +100,6 @@
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\znCore\znCore.vcxproj">
-      <Project>{a4e6f769-0036-4128-a409-495d9207f587}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\znEngine\znEngine.vcxproj">
-      <Project>{51252f60-b8dc-4090-bba3-dd05942110f0}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\znRender\znRender.vcxproj">
-      <Project>{4bfb75a1-ee52-478a-bdac-30ffb977ebb7}</Project>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
