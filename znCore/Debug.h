@@ -1,5 +1,6 @@
 #pragma once
 
+/*
 #ifdef _DEBUG
 	#define _CRTDBG_MAP_ALLOC
 	#include <stdlib.h>
@@ -9,6 +10,7 @@
 #else
 	#define DBG_NEW new
 #endif
+*/
 
 namespace StaticAssert
 {

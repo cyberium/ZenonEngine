@@ -11,8 +11,8 @@ public:
     virtual ~CMeshComponent3D();
 
 	// IMeshComponent3D
-    virtual void AddMesh(std::shared_ptr<IMesh> mesh);
-    virtual void RemoveMesh(IMesh* mesh);
+    virtual void AddMesh(std::shared_ptr<IModel> mesh);
+    virtual void RemoveMesh(IModel* mesh);
     virtual const MeshList& GetMeshes();
 
     // CComponentBase

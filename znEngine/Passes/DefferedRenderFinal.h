@@ -48,5 +48,5 @@ private:
 	std::shared_ptr<CDefferedRender> m_DefferedRender;
 	std::shared_ptr<CDefferedRenderPrepareLights> m_DefferedRenderPrepareLights;
 
-	std::shared_ptr<IMesh> m_QuadMesh;
+	std::shared_ptr<IGeometry> m_QuadGeometry;
 };

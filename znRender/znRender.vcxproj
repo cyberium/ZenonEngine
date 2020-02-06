@@ -81,7 +81,7 @@
     <ClCompile Include="DepthStencilStateBase.cpp" />
     <ClCompile Include="GeometryBase.cpp" />
     <ClCompile Include="MaterialBase.cpp" />
-    <ClCompile Include="MeshBase.cpp" />
+    <ClCompile Include="ModelBase.cpp" />
     <ClCompile Include="PipelineStateBase.cpp" />
     <ClCompile Include="Primitives\Geometry.cpp" />
     <ClCompile Include="RasterizerStateBase.cpp" />
@@ -108,7 +108,7 @@
     <ClInclude Include="MaterialBase.h" />
     <ClInclude Include="PipelineStateBase.h" />
     <ClInclude Include="Primitives\Geometry.h" />
-    <ClInclude Include="MeshBase.h" />
+    <ClInclude Include="ModelBase.h" />
     <ClInclude Include="RasterizerStateBase.h" />
     <ClInclude Include="RenderDeviceBase.h" />
     <ClInclude Include="RenderObjectsFactory.h" />

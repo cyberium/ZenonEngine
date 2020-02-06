@@ -32,6 +32,8 @@ public:
 	void Save(std::shared_ptr<IFile> File);
 
 	// CChunkedFile (shared)
+	void                                       AddChunk(const std::string& ChunkName, const void* DataPtr, size_t DataSize);
+	void                                       AddChunk(const std::string& ChunkName, const std::vector<uint8>& Bytes);
 	void                                       AddChunk(const std::string& ChunkName, const std::shared_ptr<IByteBuffer>& ByteBuffer);
 	std::shared_ptr<IByteBuffer>               GetChunk(const std::string& ChunkName);
 	std::vector<std::shared_ptr<IByteBuffer>>  GetChunks(const std::string& ChunkName);

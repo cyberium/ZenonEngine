@@ -19,7 +19,7 @@ public:
 
 	// IVisitor
 	virtual bool Visit(ISceneNodeUI* node) override;
-	virtual bool Visit(IMesh* Mesh, SGeometryDrawArgs GeometryDrawArgs = SGeometryDrawArgs()) override;
+	virtual bool Visit(IModel* Model) override;
 	virtual bool Visit(IGeometry* Geometry, const IMaterial* Material, SGeometryDrawArgs GeometryDrawArgs = SGeometryDrawArgs()) override;
 
 protected:

@@ -52,9 +52,9 @@ std::shared_ptr<IRenderPassPipelined> CDebugMaterialPass::CreatePipeline(std::sh
 //
 // IVisitor
 //
-bool CDebugMaterialPass::Visit(IMesh * Mesh, SGeometryDrawArgs GeometryDrawArgs)
+bool CDebugMaterialPass::Visit(IModel * Model)
 {
-	return Base3DPass::Visit(Mesh, GeometryDrawArgs);
+	return Base3DPass::Visit(Model);
 }
 
 bool CDebugMaterialPass::Visit(IGeometry * Geometry, const IMaterial* Material, SGeometryDrawArgs GeometryDrawArgs)

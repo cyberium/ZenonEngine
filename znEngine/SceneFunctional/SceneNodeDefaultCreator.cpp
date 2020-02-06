@@ -90,7 +90,7 @@ ISceneNodeUI * CSceneNodeDefaultCreator::CreateSceneNodeUI(ISceneNodeUI * Parent
 	}
 	else if (Index == 2)
 	{
-	return Parent->CreateSceneNode<CUITextNode>();
+		return Parent->CreateSceneNode<CUITextNode>();
 	}
 
 	throw CException("CSceneNodeDefaultCreator: CreateSceneNode(%d) is out of bounds. Count = %d", Index, GetSceneNodesCount());

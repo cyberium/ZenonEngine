@@ -51,7 +51,7 @@ bool RenderPass::Visit(ISceneNodeUI* node)
 	return false;
 }
 
-bool RenderPass::Visit(IMesh* Mesh, SGeometryDrawArgs GeometryDrawArgs)
+bool RenderPass::Visit(IModel* Model)
 {
     return false;
 }

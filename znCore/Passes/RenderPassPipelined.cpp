@@ -132,7 +132,7 @@ bool RenderPassPipelined::Visit(ISceneNodeUI* node)
 	return false;
 }
 
-bool RenderPassPipelined::Visit(IMesh* Mesh, SGeometryDrawArgs GeometryDrawArgs)
+bool RenderPassPipelined::Visit(IModel* Model)
 {
     return false;
 }

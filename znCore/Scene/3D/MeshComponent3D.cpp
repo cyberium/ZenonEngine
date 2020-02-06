@@ -11,14 +11,14 @@ CMeshComponent3D::~CMeshComponent3D()
 {}
 
 
-void CMeshComponent3D::AddMesh(std::shared_ptr<IMesh> mesh)
+void CMeshComponent3D::AddMesh(std::shared_ptr<IModel> mesh)
 {
     MeshList::iterator iter = std::find(m_Meshes.begin(), m_Meshes.end(), mesh);
     if (iter == m_Meshes.end())
         m_Meshes.push_back(mesh);
 }
 
-void CMeshComponent3D::RemoveMesh(IMesh* mesh)
+void CMeshComponent3D::RemoveMesh(IModel* mesh)
 {
     //MeshList::iterator iter = std::find(m_Meshes.begin(), m_Meshes.end(), mesh);
     //if (iter != m_Meshes.end())

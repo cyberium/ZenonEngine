@@ -56,7 +56,7 @@ void CGameState_World::OnRayIntersected(const glm::vec3& Point)
 	matDebug->SetDiffuseColor(vec4(1.0f, 0.0f, 0.0f, 1.0f));
 	matDebug->SetWrapper(matDebug);
 
-	IMesh* meshPlane = GetRenderDevice().GetPrimitiveCollection()->CreateSphere();
+	IModel* meshPlane = GetRenderDevice().GetPrimitiveCollection()->CreateSphere();
 	meshPlane->SetMaterial(matDebug);
 
 	std::shared_ptr<ISceneNode3D> sceneNodePlane = m_Scene->CreateWrappedSceneNode<SceneNode3D>("SceneNode3D", m_Scene->GetRootNode());
@@ -178,11 +178,12 @@ void CGameState_World::Load3D()
 		//mat->SetTexture(MaterialModel::ETextureType::TextureBump, GetRenderDevice().LoadTexture2D("Sponza_Floor_roughness.png"));
 		mat->SetWrapper(mat.get());
 
-		auto mesh = GetRenderDevice().GetPrimitivesFactory().CreateCube();
-		mesh->SetMaterial(mat);
+		auto cubeModel = GetRenderDevice().GetObjectsFactory().CreateModel();
+		cubeModel->AddConnection(mat, GetRenderDevice().GetPrimitivesFactory().CreateCube());
+	
+		auto sphereModel = GetRenderDevice().GetObjectsFactory().CreateModel();
+		sphereModel->AddConnection(mat, GetRenderDevice().GetPrimitivesFactory().CreateSphere());
 
-		auto mesh2 = GetRenderDevice().GetPrimitivesFactory().CreateSphere();
-		mesh2->SetMaterial(mat);
 
 		m_RootForBoxes = GetRootNode3D()->CreateSceneNode<SceneNode3D>();
 		//m_RootForBoxes->SetTranslate(glm::vec3(150, 0, 150));
@@ -198,7 +199,7 @@ void CGameState_World::Load3D()
 					sceneNode->SetName("Ball [" + std::to_string(i) + ", " + std::to_string(j) + ", " + std::to_string(k) + "]");
 					sceneNode->SetTranslate(vec3(offset * i, offset * k, offset * j));
 					sceneNode->SetScale(vec3(scale));
-					sceneNode->GetComponent<IMeshComponent3D>()->AddMesh(((i % 2 == 0) || (j % 2 == 0) && (k % 2 == 0)) ? mesh2 : mesh2);
+					sceneNode->GetComponent<IMeshComponent3D>()->AddMesh(((i % 2 == 0) || (j % 2 == 0) && (k % 2 == 0)) ? cubeModel : sphereModel);
 
 					BoundingBox bbox = BoundingBox(glm::vec3(-1.0f, -1.0f, -1.0f), glm::vec3(1.0f, 1.0f, 1.0f));
 					bbox.transform(sceneNode->GetWorldTransfom());
@@ -227,14 +228,14 @@ void CGameState_World::Load3D()
 		//mat2->SetTexture(MaterialModel::ETextureType::TextureBump, GetRenderDevice().CreateTexture2D("Sponza_Ceiling_roughness.png"));
 		mat2->SetWrapper(mat2.get());
 
-		auto& meshPlane = GetRenderDevice().GetPrimitivesFactory().CreatePlane();
-		meshPlane->SetMaterial(mat2);
+		auto& modelPlane = GetRenderDevice().GetObjectsFactory().CreateModel();
+		modelPlane->AddConnection(mat2, GetRenderDevice().GetPrimitivesFactory().CreatePlane());
 
 		ISceneNode3D* sceneNodePlane = GetRootNode3D()->CreateSceneNode<SceneNode3D>();
 		sceneNodePlane->SetName("Ground");
 		sceneNodePlane->SetTranslate(vec3(0, cPlaneY, 0));
 		sceneNodePlane->SetScale(vec3(cPlaneSize));
-		sceneNodePlane->GetComponent<IMeshComponent3D>()->AddMesh(meshPlane);
+		sceneNodePlane->GetComponent<IMeshComponent3D>()->AddMesh(modelPlane);
 	}
 
 	//std::shared_ptr<ISceneNode3D> fbxSceneNode = GetBaseManager()->GetManager<ISceneNodesFactory>()->CreateSceneNode(m_Scene->GetRootNode(), "FBXSceneNode");

@@ -19,6 +19,6 @@ public:
 
 private:
     glm::vec2                           m_Size;
-	std::shared_ptr<IMesh>              m_Mesh;
+	std::shared_ptr<IModel>             m_Mesh;
 	std::shared_ptr<UI_Color_Material>  m_Material;
 };

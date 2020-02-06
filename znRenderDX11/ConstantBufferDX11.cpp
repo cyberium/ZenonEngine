@@ -87,8 +87,6 @@ void ConstantBufferDX11::UnBind(uint32 id, const IShader* shader, IShaderParamet
 	case EShaderType::ComputeShader:
 		m_RenderDeviceDX11.GetDeviceContextD3D11()->CSSetConstantBuffers(id, 1, pBuffers);
 		break;
-	default:
-		break;
 	}
 }
 

@@ -43,7 +43,7 @@ void CUITextNode::Initialize()
 //
 // CUITextNode
 //
-void CUITextNode::SetFont(std::shared_ptr<CFontMesh> _font)
+void CUITextNode::SetFont(std::shared_ptr<CFont> _font)
 {
     _ASSERT(_font != nullptr);
 
@@ -51,9 +51,14 @@ void CUITextNode::SetFont(std::shared_ptr<CFontMesh> _font)
     m_Material->SetTexture(0, m_Font->GetTexture());
 }
 
-std::shared_ptr<CFontMesh> CUITextNode::GetFont() const
+std::shared_ptr<CFont> CUITextNode::GetFont() const
 {
     return m_Font;
+}
+
+const std::shared_ptr<UI_Font_Material>& CUITextNode::GetMaterial() const
+{
+	return m_Material;
 }
 
 void CUITextNode::SetTextColor(cvec4 _color)
@@ -69,6 +74,16 @@ glm::vec2 CUITextNode::GetTextSize() const
     return glm::vec2(width, height);
 }
 
+const std::string CUITextNode::GetText() const
+{
+	return m_TextProperty->Get();
+}
+
+const glm::vec2 CUITextNode::GetOffset() const
+{
+	return m_OffsetProperty->Get();
+}
+
 
 
 //
@@ -77,26 +92,4 @@ glm::vec2 CUITextNode::GetTextSize() const
 glm::vec2 CUITextNode::GetSize()
 {
     return GetTextSize() + 2.0f * m_OffsetProperty->Get();
-}
-
-bool CUITextNode::AcceptMesh(IVisitor* visitor)
-{
-	const std::string& _text = m_TextProperty->Get();
-	vec2 _offset = m_OffsetProperty->Get();
-
-	m_Font->SetMaterial(m_Material);
-
-	for (uint32 i = 0; i < _text.length(); i++)
-	{
-		uint8 ch = _text.c_str()[i];
-		m_Material->SetOffset(_offset);
-		_offset.x += static_cast<float>(m_Font->GetCharWidth(ch)) + 0.01f;
-
-		SGeometryDrawArgs GeometryDrawArgs;
-		GeometryDrawArgs.VertexStartLocation = (ch) * 6;
-		GeometryDrawArgs.VertexCnt = 6;
-		m_Font->Accept(visitor, GeometryDrawArgs);
-	}
-
-	return true;
 }

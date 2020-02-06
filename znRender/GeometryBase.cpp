@@ -13,35 +13,30 @@ GeometryBase::~GeometryBase()
 {
 }
 
-size_t GeometryBase::GetHash() const
-{
-	return 0;
-}
-
 
 void GeometryBase::SetBounds(const BoundingBox& Bounds)
 {
 	m_Bounds = Bounds;
 }
 
-const BoundingBox& GeometryBase::GetBounds() const
+BoundingBox GeometryBase::GetBounds() const
 {
 	return m_Bounds;
 }
 
-void GeometryBase::AddVertexBuffer(const BufferBinding& binding, std::shared_ptr<IBuffer> buffer)
+void GeometryBase::AddVertexBuffer(const BufferBinding& binding, const std::shared_ptr<IBuffer>& VertexBuffer)
 {
-    m_VertexBuffers[binding] = buffer;
+    m_VertexBuffers[binding] = VertexBuffer;
 }
 
-void GeometryBase::SetVertexBuffer(std::shared_ptr<IBuffer> buffer)
+void GeometryBase::SetVertexBuffer(const std::shared_ptr<IBuffer>& GlobalVertexBuffer)
 {
-    m_VertexBuffer = buffer;
+    m_VertexBuffer = GlobalVertexBuffer;
 }
 
-void GeometryBase::SetIndexBuffer(std::shared_ptr<IBuffer> buffer)
+void GeometryBase::SetIndexBuffer(const std::shared_ptr<IBuffer>& IndeBuffer)
 {
-    m_pIndexBuffer = buffer;
+    m_pIndexBuffer = IndeBuffer;
 }
 
 bool GeometryBase::Accept(IVisitor * visitor, const IMaterial* Material, SGeometryDrawArgs GeometryDrawArgs)
@@ -49,58 +44,106 @@ bool GeometryBase::Accept(IVisitor * visitor, const IMaterial* Material, SGeomet
 	return visitor->Visit(this, Material, GeometryDrawArgs);
 }
 
-void GeometryBase::UpdateHash()
-{
-	std::string hash = "";
-	if (m_pIndexBuffer)
-		hash += std::to_string(m_pIndexBuffer->GetElementCount());
 
-	if (m_VertexBuffer)
-		hash += std::to_string(m_VertexBuffer->GetElementCount());
 
-	for (const auto& it : m_VertexBuffers)
-	{
-		hash += it.first.Name;
-		hash += std::to_string(it.first.Index);
-
-		if (it.second)
-			hash += std::to_string(it.second->GetElementCount());
-	}
-
-	std::hash<std::string> hashFunc;
-	m_Hash = hashFunc(hash);
-}
-
-void GeometryBase::BindVertexBuffersToShader(const IShader& Shader) const
+//
+// Protected
+//
+void GeometryBase::BindVertexBuffersToVertexShader(const IShader* VertexShader) const
 {
 	if (m_VertexBuffer != nullptr)
 	{
-		m_VertexBuffer->Bind(0, &Shader, IShaderParameter::Type::Buffer);
+		m_VertexBuffer->Bind(0, VertexShader, IShaderParameter::Type::Buffer);
 	}
 	else
 	{
 		for (const auto& buffer : m_VertexBuffers)
 		{
-			UINT slotID = Shader.GetInputLayout().GetSemanticSlot(buffer.first);
+			UINT slotID = VertexShader->GetInputLayout().GetSemanticSlot(buffer.first);
 			if (slotID != UINT_MAX)
-				buffer.second->Bind(slotID, &Shader, IShaderParameter::Type::Buffer);
+				buffer.second->Bind(slotID, VertexShader, IShaderParameter::Type::Buffer);
 		}
 	}
 }
 
-void GeometryBase::UnbindVertexBuffersFromShader(const IShader& Shader) const
+void GeometryBase::UnbindVertexBuffersFromVertexShader(const IShader* VertexShader) const
 {
 	if (m_VertexBuffer != nullptr)
 	{
-		m_VertexBuffer->UnBind(0, &Shader, IShaderParameter::Type::Buffer);
+		m_VertexBuffer->UnBind(0, VertexShader, IShaderParameter::Type::Buffer);
 	}
 	else
 	{
 		for (const auto& buffer : m_VertexBuffers)
 		{
-			UINT slotID = Shader.GetInputLayout().GetSemanticSlot(buffer.first);
+			UINT slotID = VertexShader->GetInputLayout().GetSemanticSlot(buffer.first);
 			if (slotID != UINT_MAX)
-				buffer.second->UnBind(slotID, &Shader, IShaderParameter::Type::Buffer);
+				buffer.second->UnBind(slotID, VertexShader, IShaderParameter::Type::Buffer);
 		}
 	}
+}
+
+SGeometryDrawArgs GeometryBase::FixGeometryDrawArgs(const SGeometryDrawArgs & GeometryDrawArgs) const
+{
+	SGeometryDrawArgs fixedArgs;
+
+	fixedArgs.IndexStartLocation = GeometryDrawArgs.IndexStartLocation;
+	fixedArgs.IndexCnt = GeometryDrawArgs.IndexCnt;
+	if (fixedArgs.IndexCnt == UINT_MAX && m_pIndexBuffer != nullptr)
+		fixedArgs.IndexCnt = m_pIndexBuffer->GetElementCount();
+
+	fixedArgs.VertexStartLocation = GeometryDrawArgs.VertexStartLocation;
+	fixedArgs.VertexCnt = GeometryDrawArgs.VertexCnt;
+	if (fixedArgs.VertexCnt == UINT_MAX)
+	{
+		if (m_VertexBuffer != nullptr)
+		{
+			fixedArgs.VertexCnt = m_VertexBuffer->GetElementCount();
+		}
+		else if (!m_VertexBuffers.empty())
+		{
+			fixedArgs.VertexCnt = (*m_VertexBuffers.begin()).second->GetElementCount();
+		}
+		else
+		{
+			_ASSERT(false);
+		}
+	}
+
+	return fixedArgs;
+}
+
+SGeometryDrawInstancedArgs GeometryBase::FixGeometryDrawInstancedArgs(const SGeometryDrawInstancedArgs & GeometryDrawInstancedArgs) const
+{
+	SGeometryDrawInstancedArgs fixedArgs;
+
+	fixedArgs.InstanceStartIndex = GeometryDrawInstancedArgs.InstanceStartIndex;
+	fixedArgs.InstanceCnt = GeometryDrawInstancedArgs.InstanceCnt;
+	if (fixedArgs.InstanceCnt == UINT_MAX)
+		_ASSERT_EXPR(false, L"GeometryBase: Specify instance count same as instance buffer size.");
+
+	fixedArgs.IndexStartLocation = GeometryDrawInstancedArgs.IndexStartLocation;
+	fixedArgs.IndexCnt = GeometryDrawInstancedArgs.IndexCnt;
+	if (fixedArgs.IndexCnt == UINT_MAX && m_pIndexBuffer != nullptr)
+		fixedArgs.IndexCnt = m_pIndexBuffer->GetElementCount();
+
+	fixedArgs.VertexStartLocation = GeometryDrawInstancedArgs.VertexStartLocation;
+	fixedArgs.VertexCnt = GeometryDrawInstancedArgs.VertexCnt;
+	if (fixedArgs.VertexCnt == UINT_MAX)
+	{
+		if (m_VertexBuffer != nullptr)
+		{
+			fixedArgs.VertexCnt = m_VertexBuffer->GetElementCount();
+		}
+		else if (!m_VertexBuffers.empty())
+		{
+			fixedArgs.VertexCnt = (*m_VertexBuffers.begin()).second->GetElementCount();
+		}
+		else
+		{
+			_ASSERT(false);
+		}
+	}
+
+	return fixedArgs;
 }

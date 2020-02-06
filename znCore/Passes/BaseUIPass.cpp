@@ -55,15 +55,15 @@ bool BaseUIPass::Visit(ISceneNodeUI* sceneNode)
 	return true;
 }
 
-bool BaseUIPass::Visit(IMesh * Mesh, SGeometryDrawArgs GeometryDrawArgs)
+bool BaseUIPass::Visit(IModel * Model)
 {
-	return Mesh->Render(GetRenderEventArgs(), GeometryDrawArgs);
+	return Model->Render(GetRenderEventArgs());
 }
 
 bool BaseUIPass::Visit(IGeometry* Geometry, const IMaterial* Material, SGeometryDrawArgs GeometryDrawArgs)
 {
 	Material->Bind(GetRenderEventArgs().PipelineState->GetShaders());
-	bool result = Geometry->Render(GetRenderEventArgs(), GetRenderEventArgs().PipelineState->GetShaders(), Material, GeometryDrawArgs);
+	bool result = Geometry->Render(GetRenderEventArgs(), GetRenderEventArgs().PipelineState->GetShaders().at(EShaderType::VertexShader).get(), GeometryDrawArgs);
 	Material->Unbind(GetRenderEventArgs().PipelineState->GetShaders());
 	return result;
 }

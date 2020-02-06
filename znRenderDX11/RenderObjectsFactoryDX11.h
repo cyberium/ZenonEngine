@@ -10,7 +10,8 @@ public:
 	// IRenderObjectsFactory
 	std::shared_ptr<IRenderWindow>      CreateRenderWindow(INativeWindow& WindowObject, bool vSync) override;
 	std::shared_ptr<IShader>            CreateShader(EShaderType type, const std::string& fileName, const std::string& entryPoint, const IShader::ShaderMacros& shaderMacros, const std::string& profile, IShaderInputLayout* _customLayout = nullptr) override;
-	std::shared_ptr<IMesh>              CreateMesh() override;
+	std::shared_ptr<IGeometry>          CreateGeometry() override;
+	std::shared_ptr<IModel>             CreateModel() override;
 
 	std::shared_ptr<ITexture>           CreateEmptyTexture();
 	std::shared_ptr<ITexture>           CreateTexture2D(size_t width, size_t height, size_t slices = 1, const ITexture::TextureFormat& format = ITexture::TextureFormat(), CPUAccess cpuAccess = CPUAccess::None, bool gpuWrite = false) override;

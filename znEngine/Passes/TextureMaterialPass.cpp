@@ -65,9 +65,9 @@ std::shared_ptr<IRenderPassPipelined> CTexturedMaterialPass::CreatePipeline(std:
 //
 // IVisitor
 //
-bool CTexturedMaterialPass::Visit(IMesh * Mesh, SGeometryDrawArgs GeometryDrawArgs)
+bool CTexturedMaterialPass::Visit(IModel * Model)
 {
-	return Base3DPass::Visit(Mesh, GeometryDrawArgs);
+	return Base3DPass::Visit(Model);
 }
 
 bool CTexturedMaterialPass::Visit(IGeometry * Geometry, const IMaterial* Material, SGeometryDrawArgs GeometryDrawArgs)

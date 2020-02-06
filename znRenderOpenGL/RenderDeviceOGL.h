@@ -37,8 +37,8 @@ public:
 	virtual IShader* CreateShader(EShaderType type, const std::string& fileName, const IShader::ShaderMacros& shaderMacros, const std::string& entryPoint, const std::string& profile, IShaderInputLayout* _customLayout);
 	virtual void DestroyShader(IShader* shader);
 	
-	virtual IMesh* CreateMesh();
-	virtual void DestroyMesh(IMesh* mesh);
+	virtual IModel* CreateMesh();
+	virtual void DestroyMesh(IModel* mesh);
 
 	virtual ITexture* CreateTexture2D(const std::string& fileName);
 	virtual ITexture* CreateTextureCube(const std::string& fileName);

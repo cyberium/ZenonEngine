@@ -255,15 +255,15 @@ void RenderDeviceOGL::Unlock()
 }
 
 
-IMesh* RenderDeviceOGL::CreateMesh()
+IModel* RenderDeviceOGL::CreateMesh()
 {
-	IMesh* mesh = std::make_shared<MeshOGL>();
+	IModel* mesh = std::make_shared<MeshOGL>();
 	m_Meshes.push_back(mesh);
 
 	return mesh;
 }
 
-void RenderDeviceOGL::DestroyMesh(IMesh* mesh)
+void RenderDeviceOGL::DestroyMesh(IModel* mesh)
 {
 	MeshList::iterator iter = std::find(m_Meshes.begin(), m_Meshes.end(), mesh);
 	if (iter != m_Meshes.end())

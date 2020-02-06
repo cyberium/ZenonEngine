@@ -25,17 +25,17 @@ ZN_INTERFACE ZN_API IRefManager : public IManager
 
 
 // FORWARD BEGIN
-class CFontMesh;
+class CFont;
 // FORWARD END
 
 ZN_INTERFACE ZN_API
 	__declspec(novtable, uuid("1427E242-CCB8-4AEC-ABC8-17DE58A96B05"))
-	IFontsManager : public IRefManager<CFontMesh>
+	IFontsManager : public IRefManager<CFont>
 {
 	virtual ~IFontsManager() {};
 
-	virtual std::shared_ptr<CFontMesh> GetMainFont() const = 0;
-	virtual std::shared_ptr<CFontMesh> Add(const std::string& _fontFileName, uint32 _fontSize) = 0;
+	virtual std::shared_ptr<CFont> GetMainFont() const = 0;
+	virtual std::shared_ptr<CFont> Add(const std::string& _fontFileName, uint32 _fontSize) = 0;
 };
 
 //--

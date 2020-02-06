@@ -53,7 +53,7 @@ void CGameState_Editor::OnRayIntersected(const glm::vec3& Point)
 	matDebug->SetDiffuseColor(vec4(1.0f, 0.0f, 0.0f, 1.0f));
 	matDebug->SetWrapper(matDebug);
 
-	IMesh* meshPlane = GetRenderDevice()->GetPrimitiveCollection()->CreateSphere();
+	IModel* meshPlane = GetRenderDevice()->GetPrimitiveCollection()->CreateSphere();
 	meshPlane->SetMaterial(matDebug);
 
 	std::shared_ptr<SceneNode3D> sceneNodePlane = m_Scene3D->CreateWrappedSceneNode<SceneNode3D>("SceneNode3D", m_Scene3D->GetRootNode());
@@ -111,7 +111,7 @@ void CGameState_Editor::Load3D()
 	matDebug->SetDiffuseColor(vec4(0.0f, 1.0f, 1.0f, 1.0f));
 	matDebug->SetWrapper(matDebug);
 
-	IMesh* meshPlane = GetRenderDevice()->GetPrimitiveCollection()->CreatePlane();
+	IModel* meshPlane = GetRenderDevice()->GetPrimitiveCollection()->CreatePlane();
 	meshPlane->SetMaterial(matDebug);
 
 	std::shared_ptr<SceneNode3D> sceneNodePlane = m_Scene3D->CreateWrappedSceneNode<SceneNode3D>("SceneNode3D", m_Scene3D->GetRootNode());
@@ -130,7 +130,7 @@ void CGameState_Editor::Load3D()
 	mat->SetTexture(0, GetRenderDevice()->CreateTexture2D("default.png"));
 	mat->SetWrapper(mat);
 
-	IMesh* mesh = GetRenderDevice()->GetPrimitiveCollection()->CreateSphere();
+	IModel* mesh = GetRenderDevice()->GetPrimitiveCollection()->CreateSphere();
 	mesh->SetMaterial(mat);
 
 	for (size_t i = 0; i < iterCnt; i++)

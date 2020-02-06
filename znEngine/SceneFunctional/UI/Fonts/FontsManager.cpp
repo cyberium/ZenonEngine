@@ -27,12 +27,12 @@ FontsManager::~FontsManager()
 //
 // IFontsManager
 //
-std::shared_ptr<CFontMesh> FontsManager::GetMainFont() const
+std::shared_ptr<CFont> FontsManager::GetMainFont() const
 {
 	return m_MainFont;
 }
 
-std::shared_ptr<CFontMesh> FontsManager::Add(const std::string& _fontFileName, uint32 _fontSize)
+std::shared_ptr<CFont> FontsManager::Add(const std::string& _fontFileName, uint32 _fontSize)
 {
 	return CRefManager1Dim::Add(_fontFileName + "__" + std::to_string(_fontSize));
 }
@@ -54,7 +54,7 @@ struct VertexPTN
 };
 typedef std::vector<VertexPTN> VertexesPTN;
 
-std::shared_ptr<CFontMesh> FontsManager::CreateAction(const std::string& _nameAndSize)
+std::shared_ptr<CFont> FontsManager::CreateAction(const std::string& _nameAndSize)
 {
 	uint32_t _delimIndex = static_cast<uint32>(_nameAndSize.find_last_of("__"));
 	if (_delimIndex == -1)
@@ -75,7 +75,7 @@ std::shared_ptr<CFontMesh> FontsManager::CreateAction(const std::string& _nameAn
 
     
     std::vector<uint32> charWidth;
-    charWidth.reserve(CFontMesh::NUM_CHARS);
+    charWidth.reserve(CFont::NUM_CHARS);
 	uint32 charHeight = 0;
 
 	FT_Library ftLibrary;
@@ -113,7 +113,7 @@ std::shared_ptr<CFontMesh> FontsManager::CreateAction(const std::string& _nameAn
 	uint32_t lineSpace = imageWidth;
 	uint32_t lines = 1;
 
-	for (uint32 ch = 0; ch < CFontMesh::NUM_CHARS; ++ch)
+	for (uint32 ch = 0; ch < CFont::NUM_CHARS; ++ch)
 	{
 		uint32_t charIndex = FT_Get_Char_Index(face, ch);
 
@@ -154,7 +154,7 @@ std::shared_ptr<CFontMesh> FontsManager::CreateAction(const std::string& _nameAn
 
 	VertexesPTN vertices;
 
-	for (uint32 ch = 0; ch < CFontMesh::NUM_CHARS; ++ch)
+	for (uint32 ch = 0; ch < CFont::NUM_CHARS; ++ch)
 	{
 		//Log::Warn("Char [%c] %d", char(ch), ch);
 		uint32_t charIndex = FT_Get_Char_Index(face, ch);
@@ -200,7 +200,7 @@ std::shared_ptr<CFontMesh> FontsManager::CreateAction(const std::string& _nameAn
 	}
 
 
-	std::shared_ptr<IMesh> __geom = m_RenderDevice.GetObjectsFactory().CreateMesh();
+	std::shared_ptr<IGeometry> __geom = m_RenderDevice.GetObjectsFactory().CreateGeometry();
 	__geom->AddVertexBuffer(BufferBinding("POSITION", 0), m_RenderDevice.GetObjectsFactory().CreateVoidVertexBuffer(vertices.data(), vertices.size(), 0,            sizeof(VertexPTN)));
     __geom->AddVertexBuffer(BufferBinding("TEXCOORD", 0), m_RenderDevice.GetObjectsFactory().CreateVoidVertexBuffer(vertices.data(), vertices.size(), sizeof(vec3), sizeof(VertexPTN)));
 
@@ -215,7 +215,7 @@ std::shared_ptr<CFontMesh> FontsManager::CreateAction(const std::string& _nameAn
 
 	//
 
-	std::shared_ptr<CFontMesh> font = std::make_shared<CFontMesh>(texture, __geom, charWidth, charHeight);
+	std::shared_ptr<CFont> font = std::make_shared<CFont>(texture, __geom, charWidth, charHeight);
 
 	Log::Info("FontsManager[%s]: Font loaded. Size [%d].", f->Path_Name().c_str(), fontSize);
 

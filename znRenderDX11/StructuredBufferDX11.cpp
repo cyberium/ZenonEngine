@@ -54,7 +54,7 @@ StructuredBufferDX11::StructuredBufferDX11(IRenderDeviceDX11& RenderDeviceDX11, 
 	bufferDesc.MiscFlags = D3D11_RESOURCE_MISC_BUFFER_STRUCTURED;
 	bufferDesc.StructureByteStride = m_uiStride;
 
-	D3D11_SUBRESOURCE_DATA subResourceData;
+	D3D11_SUBRESOURCE_DATA subResourceData = { 0 };
 	subResourceData.pSysMem = (void*)m_Data.data();
 	subResourceData.SysMemPitch = 0;
 	subResourceData.SysMemSlicePitch = 0;

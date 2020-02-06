@@ -153,7 +153,7 @@ bool CDefferedRender::Visit(IGeometry * Geometry, const IMaterial * Material, SG
 	const auto& shaders = GetRenderEventArgs().PipelineState->GetShaders();
 
 	Material->Bind(shaders);
-	bool result = Geometry->Render(GetRenderEventArgs(), shaders, Material, GeometryDrawArgs);
+	bool result = Geometry->Render(GetRenderEventArgs(), shaders.at(EShaderType::VertexShader).get(), GeometryDrawArgs);
 	Material->Unbind(shaders);
 
 	return result;

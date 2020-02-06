@@ -51,7 +51,7 @@
     <ClCompile Include="Passes\Technical\RenderListProcessorPass.cpp" />
     <ClCompile Include="Passes\Technical\SetShaderParameterPass.cpp" />
     <ClCompile Include="Proxies\MaterialProxie.cpp" />
-    <ClCompile Include="Proxies\MeshProxie.cpp" />
+    <ClCompile Include="Proxies\ModelProxie.cpp" />
     <ClCompile Include="Proxies\SceneNodeProxie.cpp" />
     <ClCompile Include="Random.cpp" />
     <ClCompile Include="RefManager1DimAssync.cpp" />
@@ -86,6 +86,8 @@
     <ClInclude Include="..\shared\Interfaces\Render\IRenderTechnique.h" />
     <ClInclude Include="..\shared\Interfaces\Render\Types\RenderGeometryParams.h" />
     <ClInclude Include="..\shared\Interfaces\Render\Types\ShaderType.h" />
+    <ClInclude Include="..\shared\Interfaces\Scene\ISceneNode3D.h" />
+    <ClInclude Include="..\shared\Interfaces\Scene\ISceneNodeUI.h" />
     <ClInclude Include="..\shared\Interfaces\Scene\Types\Light.h" />
     <ClInclude Include="..\shared\Interfaces\XML.h" />
     <ClInclude Include="..\shared\znCore.h" />
@@ -120,7 +122,7 @@
     <ClInclude Include="..\shared\Interfaces\Render\ICamera.h" />
     <ClInclude Include="..\shared\Interfaces\Render\IDepthStencilState.h" />
     <ClInclude Include="..\shared\Interfaces\Render\IMaterial.h" />
-    <ClInclude Include="..\shared\Interfaces\Render\IMesh.h" />
+    <ClInclude Include="..\shared\Interfaces\Render\IModel.h" />
     <ClInclude Include="..\shared\Interfaces\Render\IPipelineState.h" />
     <ClInclude Include="..\shared\Interfaces\Render\IQuery.h" />
     <ClInclude Include="..\shared\Interfaces\Render\IRasterizerState.h" />
@@ -146,7 +148,6 @@
     <ClInclude Include="..\shared\Interfaces\Scene\IActions.h" />
     <ClInclude Include="..\shared\Interfaces\Scene\IProperties.h" />
     <ClInclude Include="..\shared\Interfaces\Scene\IScene.h" />
-    <ClInclude Include="..\shared\Interfaces\Scene\ISceneNode.h" />
     <ClInclude Include="..\shared\Interfaces\Scene\ISceneNodeComponents.h" />
     <ClInclude Include="..\shared\Interfaces\Scene\ISceneNodeProvider.h" />
     <ClInclude Include="..\shared\Interfaces\Settings.h" />
@@ -188,7 +189,7 @@
     <ClInclude Include="Passes\Technical\RenderListProcessorPass.h" />
     <ClInclude Include="Passes\Technical\SetShaderParameterPass.h" />
     <ClInclude Include="Proxies\MaterialProxie.h" />
-    <ClInclude Include="Proxies\MeshProxie.h" />
+    <ClInclude Include="Proxies\ModelProxie.h" />
     <ClInclude Include="Proxies\SceneNodeProxie.h" />
     <ClInclude Include="Proxies\__Proxies.h" />
     <ClInclude Include="Random.h" />

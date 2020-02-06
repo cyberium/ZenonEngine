@@ -1,5 +1,7 @@
 #pragma once
 
+#if 0
+
 #include "../../Materials/UI_Line_Material.h"
 
 class ZN_API CUIBeizerLineNode 
@@ -25,10 +27,13 @@ protected:
     void UpdateBuffer();
 
 private:
-	std::shared_ptr<IMesh>              m_Mesh;
+	std::shared_ptr<IModel>              m_Mesh;
     std::shared_ptr<IBuffer>            m_PointsBuffer;
 	std::shared_ptr<UI_Line_Material>   m_Material;
 
     vec2                                m_StartPoint;
     vec2                                m_EndPoint;
 };
+
+#endif
+

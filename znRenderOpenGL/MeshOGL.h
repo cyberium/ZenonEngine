@@ -1,6 +1,6 @@
 #pragma once
 
-class ZN_API MeshOGL : public MeshBase
+class ZN_API MeshOGL : public ModelBase
 {
 public:
     MeshOGL();

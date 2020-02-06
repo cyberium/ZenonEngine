@@ -62,12 +62,12 @@ ZN_INTERFACE __declspec(novtable, UUID_ColliderComponent) ZN_API IColliderCompon
 ZN_INTERFACE __declspec(novtable, UUID_MeshComponent) ZN_API IMeshComponent3D
 {
 public:
-	typedef std::vector<std::shared_ptr<IMesh>> MeshList;
+	typedef std::vector<std::shared_ptr<IModel>> MeshList;
 
 	virtual ~IMeshComponent3D() {}
 
-	virtual void AddMesh(std::shared_ptr<IMesh> mesh) = 0;
-	virtual void RemoveMesh(IMesh* mesh) = 0;
+	virtual void AddMesh(std::shared_ptr<IModel> mesh) = 0;
+	virtual void RemoveMesh(IModel* mesh) = 0;
 	virtual const MeshList& GetMeshes() = 0;
 };
 

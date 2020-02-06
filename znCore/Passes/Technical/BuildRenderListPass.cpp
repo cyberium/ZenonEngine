@@ -171,7 +171,7 @@ bool BuildRenderListPass::Visit(ISceneNode3D * node)
 	return true;
 }
 
-bool BuildRenderListPass::Visit(IMesh * Mesh, SGeometryDrawArgs GeometryDrawArgs)
+bool BuildRenderListPass::Visit(IModel * Model)
 {
 	return true;
 }

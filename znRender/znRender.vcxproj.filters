@@ -20,7 +20,6 @@
     <ClCompile Include="RasterizerStateBase.cpp">
       <Filter>Pipeline</Filter>
     </ClCompile>
-    <ClCompile Include="MeshBase.cpp" />
     <ClCompile Include="SamplerStateBase.cpp" />
     <ClCompile Include="ShaderBase.cpp" />
     <ClCompile Include="ShaderInputLayoutBase.cpp" />
@@ -39,6 +38,7 @@
     <ClCompile Include="RenderObjectsFactory.cpp">
       <Filter>Render Device</Filter>
     </ClCompile>
+    <ClCompile Include="ModelBase.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="common.h">
@@ -66,7 +66,6 @@
     <ClInclude Include="RasterizerStateBase.h">
       <Filter>Pipeline</Filter>
     </ClInclude>
-    <ClInclude Include="MeshBase.h" />
     <ClInclude Include="SamplerStateBase.h" />
     <ClInclude Include="ShaderBase.h" />
     <ClInclude Include="ShaderInputLayoutBase.h" />
@@ -85,6 +84,7 @@
     <ClInclude Include="RenderObjectsFactory.h">
       <Filter>Render Device</Filter>
     </ClInclude>
+    <ClInclude Include="ModelBase.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Common">

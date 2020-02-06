@@ -48,7 +48,7 @@ int main(int argumentCount, char* arguments[])
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 	_CrtSetReportMode(_CRT_ERROR, _CRTDBG_MODE_DEBUG);
 
-	_CrtSetBreakAlloc(158);
+	//_CrtSetBreakAlloc(158);
 
 	main_internal(argumentCount, arguments);		
 

@@ -23,7 +23,8 @@ protected:
 	std::unordered_map<RenderObjectID, std::weak_ptr<IShader>>            m_Shaders;
 	std::unordered_map<std::string,    std::weak_ptr<IShader>>            m_ShadersByName;
 
-	std::unordered_map<RenderObjectID, std::weak_ptr<IMesh>>              m_Meshes;
+	std::unordered_map<RenderObjectID, std::weak_ptr<IGeometry>>          m_Geometries;
+	std::unordered_map<RenderObjectID, std::weak_ptr<IModel>>             m_Models;
 
 	std::unordered_map<RenderObjectID, std::weak_ptr<ITexture>>           m_Textures;
 	std::unordered_map<std::string,    std::weak_ptr<ITexture>>           m_TexturesByName;

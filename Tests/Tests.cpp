@@ -18,16 +18,16 @@ public:
 	{
 		const uint8 cTestBytes[] = { 0, 1, 2, 3, 4 };
 
-		std::shared_ptr<IByteBuffer> bb = std::make_shared<CByteBuffer>();
-		bb->writeBytes(cTestBytes, sizeof(cTestBytes));
+		std::shared_ptr<IByteBuffer> bb = std::make_shared<CByteBuffer>(cTestBytes, sizeof(cTestBytes));
 
 		std::shared_ptr<IFile> f = std::make_shared<CFile>("D:\\TestFile.bin");
 
 		CChunkedFile cf;
 		cf.AddChunk("TEST", bb);
+		cf.AddChunk("TEST", cTestBytes, sizeof(cTestBytes));
 		cf.Save(f);
 
-		Assert::AreEqual(f->getSize(), size_t(4 + 4 + 12 + (5 * 1)));
+		Assert::AreEqual(f->getSize(), size_t(4 + 4 + (12 * 2) + (5 * 2)));
 	}
 
 

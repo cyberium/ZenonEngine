@@ -89,7 +89,7 @@ void BufferDX11::Copy(const IBuffer* other) const
 	}
 	else
 	{
-		Log::Error("Source buffer is not compatible with this buffer.");
+		throw CException("Source buffer is not compatible with this buffer.");
 	}
 }
 

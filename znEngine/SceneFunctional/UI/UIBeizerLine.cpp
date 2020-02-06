@@ -1,5 +1,7 @@
 #include "stdafx.h"
 
+#if 0
+
 // General
 #include "UIBeizerLine.h"
 
@@ -89,3 +91,5 @@ void CUIBeizerLineNode::UpdateBuffer()
     auto pointsBufferNew = GetBaseManager()->GetApplication().GetRenderDevice().GetObjectsFactory().CreateVertexBuffer(p, 4);
     m_PointsBuffer->Copy(pointsBufferNew.get());
 }
+
+#endif

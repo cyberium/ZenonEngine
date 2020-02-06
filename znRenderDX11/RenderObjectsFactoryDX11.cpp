@@ -10,7 +10,8 @@
 #include "StructuredBufferDX11.h"
 #include "RenderTargetDX11.h"
 #include "MaterialDX11.h"
-#include "MeshDX11.h"
+#include "GeometryDX11.h"
+#include "ModelDX11.h"
 #include "ShaderDX11.h"
 #include "TextureDX11.h"
 #include "SamplerStateDX11.h"
@@ -41,7 +42,8 @@ CRenderObjectsFactoryDX11::CRenderObjectsFactoryDX11(IRenderDeviceDX11& RenderDe
 
 CRenderObjectsFactoryDX11::~CRenderObjectsFactoryDX11()
 {
-	m_Meshes.clear();
+	m_Geometries.clear();
+	m_Models.clear();
 	m_Shaders.clear();
 	m_Textures.clear();
 	m_Buffers.clear();
@@ -82,11 +84,17 @@ std::shared_ptr<IShader> CRenderObjectsFactoryDX11::CreateShader(EShaderType typ
 	return object;
 }
 
-
-std::shared_ptr<IMesh> CRenderObjectsFactoryDX11::CreateMesh()
+std::shared_ptr<IGeometry> CRenderObjectsFactoryDX11::CreateGeometry()
 {
-	std::shared_ptr<IMesh> object = std::make_shared<MeshDX11>(m_RenderDeviceDX11);
-	m_Meshes.insert(std::make_pair(GenerateRenderObjectID(), object));
+	std::shared_ptr<IGeometry> object = std::make_shared<GeometryDX11>(m_RenderDeviceDX11);
+	m_Geometries.insert(std::make_pair(GenerateRenderObjectID(), object));
+	return object;
+}
+
+std::shared_ptr<IModel> CRenderObjectsFactoryDX11::CreateModel()
+{
+	std::shared_ptr<IModel> object = std::make_shared<ModelDX11>(m_RenderDeviceDX11);
+	m_Models.insert(std::make_pair(GenerateRenderObjectID(), object));
 	return object;
 }
 

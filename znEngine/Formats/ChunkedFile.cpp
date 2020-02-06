@@ -102,6 +102,16 @@ void CChunkedFile::Save(std::shared_ptr<IFile> File)
 	}
 }
 
+void CChunkedFile::AddChunk(const std::string & ChunkName, const void * DataPtr, size_t DataSize)
+{
+	AddChunk(ChunkName, std::make_shared<CByteBuffer>(DataPtr, DataSize));
+}
+
+void CChunkedFile::AddChunk(const std::string & ChunkName, const std::vector<uint8>& Bytes)
+{
+	AddChunk(ChunkName, std::make_shared<CByteBuffer>(Bytes.data(), Bytes.size()));
+}
+
 void CChunkedFile::AddChunk(const std::string & ChunkName, const std::shared_ptr<IByteBuffer>& ByteBuffer)
 {
 	const auto& it = m_Chunks.find(ChunkName);
@@ -128,7 +138,9 @@ std::shared_ptr<IByteBuffer> CChunkedFile::GetChunk(const std::string & ChunkNam
 	if (chunksIt->second.size() > 1)
 		Log::Warn("Chunk '%s' has '%d' instanced in file. First will be returned.", ChunkName.c_str(), chunksIt->second.size());
 
+	// Reset byte buffer
 	(*(chunksIt->second.begin()))->seek(0);
+
 	return *(chunksIt->second.begin());
 }
 
@@ -141,6 +153,7 @@ std::vector<std::shared_ptr<IByteBuffer>> CChunkedFile::GetChunks(const std::str
 		return std::vector<std::shared_ptr<IByteBuffer>>();
 	}
 
+	// Reset byte buffers
 	for (const auto& it : chunksIt->second)
 		it->seek(0);
 

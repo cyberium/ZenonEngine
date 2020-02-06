@@ -12,7 +12,7 @@
 #include "FBXDisplayCommon.h"
 
 CFBXMesh::CFBXMesh(const IBaseManager * BaseManager, std::weak_ptr<CFBXSceneNode> OwnerFBXNode)
-	: MeshProxie(BaseManager->GetApplication().GetRenderDevice().GetObjectsFactory().CreateMesh())
+	: ModelProxie(BaseManager->GetApplication().GetRenderDevice().GetObjectsFactory().CreateMesh())
 	, m_BaseManager(BaseManager)
 	, m_OwnerFBXNode(OwnerFBXNode)
 {

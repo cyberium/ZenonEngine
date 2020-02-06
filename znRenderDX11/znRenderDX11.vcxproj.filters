@@ -4,7 +4,6 @@
     <ClCompile Include="stdafx.cpp">
       <Filter>Common</Filter>
     </ClCompile>
-    <ClCompile Include="MeshDX11.cpp" />
     <ClCompile Include="QueryDX11.cpp" />
     <ClCompile Include="RenderTargetDX11.cpp" />
     <ClCompile Include="RenderWindowDX11.cpp" />
@@ -48,12 +47,12 @@
     <ClCompile Include="RenderObjectsFactoryDX11.cpp">
       <Filter>RenderDevice</Filter>
     </ClCompile>
+    <ClCompile Include="ModelDX11.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
       <Filter>Common</Filter>
     </ClInclude>
-    <ClInclude Include="MeshDX11.h" />
     <ClInclude Include="QueryDX11.h" />
     <ClInclude Include="RenderTargetDX11.h" />
     <ClInclude Include="RenderWindowDX11.h" />
@@ -94,6 +93,7 @@
     <ClInclude Include="RenderObjectsFactoryDX11.h">
       <Filter>RenderDevice</Filter>
     </ClInclude>
+    <ClInclude Include="ModelDX11.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Common">

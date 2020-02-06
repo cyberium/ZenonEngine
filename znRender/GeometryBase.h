@@ -8,28 +8,25 @@ public:
 	GeometryBase();
 	virtual ~GeometryBase();
 
-	virtual size_t                                  GetHash() const override;
+	// IGeometry
+	virtual void         SetBounds(const BoundingBox& Bounds) override;
+	virtual BoundingBox  GetBounds() const override;
 
-	virtual void                                    SetBounds(const BoundingBox& Bounds) override;
-	virtual const BoundingBox&                      GetBounds() const override;
+	virtual void         AddVertexBuffer(const BufferBinding& binding, const std::shared_ptr<IBuffer>& VertexBuffer) override;
+	virtual void         SetVertexBuffer(const std::shared_ptr<IBuffer>& GlobalVertexBuffer) override;
+	virtual void         SetIndexBuffer(const std::shared_ptr<IBuffer>& IndexBuffer) override;
 
-	virtual void                                    AddVertexBuffer(const BufferBinding& binding, std::shared_ptr<IBuffer> buffer) override;
-	virtual void                                    SetVertexBuffer(std::shared_ptr<IBuffer> buffer) override;
-	virtual void                                    SetIndexBuffer(std::shared_ptr<IBuffer> buffer) override;
-
-	virtual bool                                    Accept(IVisitor* visitor, const IMaterial* Material, SGeometryDrawArgs GeometryDrawArgs = SGeometryDrawArgs()) override;
-
-protected:
-	void UpdateHash();
-	void BindVertexBuffersToShader(const IShader& Shader) const;
-	void UnbindVertexBuffersFromShader(const IShader& Shader) const;
+	virtual bool         Accept(IVisitor* visitor, const IMaterial* Material, SGeometryDrawArgs GeometryDrawArgs = SGeometryDrawArgs()) override;
 
 protected:
-	BoundingBox                                     m_Bounds;
-	std::unordered_map<BufferBinding, std::shared_ptr<IBuffer>> m_VertexBuffers;
-	std::shared_ptr<IBuffer>                        m_VertexBuffer;
-	std::shared_ptr<IBuffer>                        m_pIndexBuffer;
+	void                 BindVertexBuffersToVertexShader(const IShader* VertexShader) const;
+	void                 UnbindVertexBuffersFromVertexShader(const IShader* VertexShader) const;
+	SGeometryDrawArgs    FixGeometryDrawArgs(const SGeometryDrawArgs& GeometryDrawArgs) const;
+	SGeometryDrawInstancedArgs FixGeometryDrawInstancedArgs(const SGeometryDrawInstancedArgs& GeometryDrawInstancedArgs) const;
 
-private:
-	size_t                                          m_Hash;
+protected:
+	BoundingBox               m_Bounds;
+	BuffersMap                m_VertexBuffers;
+	std::shared_ptr<IBuffer>  m_VertexBuffer;
+	std::shared_ptr<IBuffer>  m_pIndexBuffer;
 };

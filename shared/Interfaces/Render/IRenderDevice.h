@@ -2,7 +2,7 @@
 
 // FORWARD BEGIN
 ZN_INTERFACE IRenderWindow;
-ZN_INTERFACE IMesh;
+ZN_INTERFACE IGeometry;
 ZN_INTERFACE IShader;
 ZN_INTERFACE ITexture;
 ZN_INTERFACE IMaterial;
@@ -20,21 +20,21 @@ ZN_INTERFACE ZN_API IRenderPrimitivesFactory
 {
 	virtual ~IRenderPrimitivesFactory() {}
 
-	virtual std::shared_ptr<IMesh> CreateLine(cvec3 _dest) = 0; // Create a line
-	virtual std::shared_ptr<IMesh> CreatePlane(cvec3 N = vec3(0, 1, 0)) = 0; // Create a plane in 3D.
-	virtual std::shared_ptr<IMesh> CreateScreenQuad(float left = 0.0f, float right = 1.0f, float bottom = 0.0f, float top = 1.0f, float z = 0.0f) = 0; // Create a screen-space quad that can be used to render full-screen post-process effects to the screen.
-	virtual std::shared_ptr<IMesh> CreateSphere() = 0;
-	virtual std::shared_ptr<IMesh> CreateCube() = 0;
-	virtual std::shared_ptr<IMesh> CreateCone() = 0;
-	virtual std::shared_ptr<IMesh> CreateQuad() = 0;
+	virtual std::shared_ptr<IGeometry> CreateLine(cvec3 _dest) = 0; // Create a line
+	virtual std::shared_ptr<IGeometry> CreatePlane(cvec3 N = vec3(0, 1, 0)) = 0; // Create a plane in 3D.
+	virtual std::shared_ptr<IGeometry> CreateScreenQuad(float left = 0.0f, float right = 1.0f, float bottom = 0.0f, float top = 1.0f, float z = 0.0f) = 0; // Create a screen-space quad that can be used to render full-screen post-process effects to the screen.
+	virtual std::shared_ptr<IGeometry> CreateSphere() = 0;
+	virtual std::shared_ptr<IGeometry> CreateCube() = 0;
+	virtual std::shared_ptr<IGeometry> CreateCone() = 0;
+	virtual std::shared_ptr<IGeometry> CreateQuad() = 0;
 
 	// 3D meshes
-	virtual std::shared_ptr<IMesh> Create3DQuad(float width = 10.0f, float height = 10.0f) = 0;
-	virtual std::shared_ptr<IMesh> Create3DBeizerLine(vec3 start = vec3(0.0f, 0.0f, 0.0f), vec3 end = vec3(500.0f, 0.0f, 500.0f)) = 0;
+	virtual std::shared_ptr<IGeometry> Create3DQuad(float width = 10.0f, float height = 10.0f) = 0;
+	virtual std::shared_ptr<IGeometry> Create3DBeizerLine(vec3 start = vec3(0.0f, 0.0f, 0.0f), vec3 end = vec3(500.0f, 0.0f, 500.0f)) = 0;
 
 	// UI meshes
-	virtual std::shared_ptr<IMesh> CreateUIQuad(float width = 10.0f, float height = 10.0f) = 0;
-	virtual std::shared_ptr<IMesh> CreateUIBeizerLine(vec2 start = vec2(0.0f, 0.0f), vec2 end = vec2(500.0f, 500.0f)) = 0;
+	virtual std::shared_ptr<IGeometry> CreateUIQuad(float width = 10.0f, float height = 10.0f) = 0;
+	virtual std::shared_ptr<IGeometry> CreateUIBeizerLine(vec2 start = vec2(0.0f, 0.0f), vec2 end = vec2(500.0f, 500.0f)) = 0;
 };
 
 
@@ -66,11 +66,10 @@ ZN_INTERFACE ZN_API IRenderObjectsFactory
 	virtual bool                              HoldRenderObject(RenderObjectID ID) const = 0;
 	virtual bool                              UnholdRenderObject(RenderObjectID ID) const = 0;
 	virtual std::shared_ptr<IRenderObject>    GetRenderObject(RenderObjectID ID) const = 0;
-	//virtual void                              DestroyRenderObject(RenderObjectID ID) = 0; // TODO: Investigate usability of this method
-
 
 	virtual std::shared_ptr<IRenderWindow>    CreateRenderWindow(INativeWindow& NativeWindow, bool vSync) = 0;
-	virtual std::shared_ptr<IMesh>            CreateMesh() = 0;
+	virtual std::shared_ptr<IGeometry>        CreateGeometry() = 0;
+	virtual std::shared_ptr<IModel>           CreateModel() = 0;
 	virtual std::shared_ptr<IShader>          CreateShader(EShaderType type, const std::string& fileName, const std::string& entryPoint, const IShader::ShaderMacros& shaderMacros = IShader::ShaderMacros(), const std::string& profile = "latest", IShaderInputLayout* _customLayout = nullptr) = 0;
 
 	virtual std::shared_ptr<ITexture>         CreateEmptyTexture() = 0;

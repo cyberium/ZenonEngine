@@ -1,5 +1,7 @@
 #pragma once
 
+#if 0
+
 #include "UIText.h"
 #include "../../Materials/UI_Button_Material.h"
 
@@ -50,8 +52,10 @@ public:
 private:
     glm::vec2                            m_Size;
 	uint32                               m_State;
-	std::shared_ptr<IMesh>               m_Mesh;
+	std::shared_ptr<IModel>               m_Mesh;
 	std::shared_ptr<UI_Button_Material>  m_Material;
 	CUITextNode*         m_TextNode;
 	
 };
+
+#endif

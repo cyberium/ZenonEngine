@@ -162,9 +162,6 @@
     <ClCompile Include="Proxies\MaterialProxie.cpp">
       <Filter>__Proxies</Filter>
     </ClCompile>
-    <ClCompile Include="Proxies\MeshProxie.cpp">
-      <Filter>__Proxies</Filter>
-    </ClCompile>
     <ClCompile Include="Proxies\SceneNodeProxie.cpp">
       <Filter>__Proxies</Filter>
     </ClCompile>
@@ -302,6 +299,9 @@
     </ClCompile>
     <ClCompile Include="Scene\UI\SceneNodeUI.cpp">
       <Filter>Scene functional</Filter>
+    </ClCompile>
+    <ClCompile Include="Proxies\ModelProxie.cpp">
+      <Filter>__Proxies</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -455,9 +455,6 @@
     <ClInclude Include="..\shared\Interfaces\Render\IMaterial.h">
       <Filter>__Interfaces\Render</Filter>
     </ClInclude>
-    <ClInclude Include="..\shared\Interfaces\Render\IMesh.h">
-      <Filter>__Interfaces\Render</Filter>
-    </ClInclude>
     <ClInclude Include="..\shared\Interfaces\Render\IPipelineState.h">
       <Filter>__Interfaces\Render</Filter>
     </ClInclude>
@@ -539,13 +536,7 @@
     <ClInclude Include="..\shared\Interfaces\Scene\IScene.h">
       <Filter>__Interfaces\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="..\shared\Interfaces\Scene\ISceneNode.h">
-      <Filter>__Interfaces\Scene</Filter>
-    </ClInclude>
     <ClInclude Include="Proxies\MaterialProxie.h">
-      <Filter>__Proxies</Filter>
-    </ClInclude>
-    <ClInclude Include="Proxies\MeshProxie.h">
       <Filter>__Proxies</Filter>
     </ClInclude>
     <ClInclude Include="..\shared\Interfaces\__Interfaces.h">
@@ -718,6 +709,18 @@
     </ClInclude>
     <ClInclude Include="Scene\UI\SceneNodeUI.h">
       <Filter>Scene functional</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\Interfaces\Render\IModel.h">
+      <Filter>__Interfaces\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="Proxies\ModelProxie.h">
+      <Filter>__Proxies</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\Interfaces\Scene\ISceneNode3D.h">
+      <Filter>__Interfaces\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\Interfaces\Scene\ISceneNodeUI.h">
+      <Filter>__Interfaces\Scene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

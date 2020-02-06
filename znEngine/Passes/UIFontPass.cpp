@@ -4,7 +4,7 @@
 #include "UIFontPass.h"
 
 // Additional
-#include "SceneFunctional/UI/Fonts/Font.h"
+#include "SceneFunctional/UI/UIText.h"
 
 CUIFontPass::CUIFontPass(IRenderDevice& RenderDevice, std::shared_ptr<IScene> Scene)
 	: BaseUIPass(RenderDevice, Scene)
@@ -75,15 +75,40 @@ std::shared_ptr<IRenderPassPipelined> CUIFontPass::CreatePipeline(std::shared_pt
 //
 bool CUIFontPass::Visit(ISceneNodeUI * node)
 {
-	return BaseUIPass::Visit(node);
-}
-
-bool CUIFontPass::Visit(IMesh * Mesh, SGeometryDrawArgs GeometryDrawArgs)
-{
-	if (CFontMesh* fontMesh = dynamic_cast<CFontMesh*>(Mesh))
+	if (CUITextNode* textNode = dynamic_cast<CUITextNode*>(node))
 	{
-		return BaseUIPass::Visit(Mesh, GeometryDrawArgs);
+		BaseUIPass::Visit(node);
+
+		const std::shared_ptr<CFont>& font = textNode->GetFont();
+		const std::shared_ptr<UI_Font_Material>& mat = textNode->GetMaterial();
+
+		mat->Bind(GetPipeline().GetShaders());
+		{
+			const std::string _text = textNode->GetText();
+			vec2 _offset = textNode->GetOffset();
+
+			for (uint32 i = 0; i < _text.length(); i++)
+			{
+				uint8 ch = _text.c_str()[i];
+				mat->SetOffset(_offset);
+				mat->Bind(GetPipeline().GetShaders());
+				_offset.x += static_cast<float>(font->GetCharWidth(ch)) + 0.01f;
+
+				SGeometryDrawArgs GeometryDrawArgs;
+				GeometryDrawArgs.VertexStartLocation = (ch) * 6;
+				GeometryDrawArgs.VertexCnt = 6;
+
+				font->GetGeometry()->Render(GetRenderEventArgs(), GetRenderEventArgs().PipelineState->GetShaders().at(EShaderType::VertexShader).get(), GeometryDrawArgs);
+			}
+		}
+		mat->Unbind(GetPipeline().GetShaders());
 	}
 
+	return false;
+}
+
+bool CUIFontPass::Visit(IModel * Model)
+{
+	_ASSERT(false);
 	return false;
 }

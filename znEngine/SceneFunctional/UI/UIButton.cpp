@@ -1,5 +1,7 @@
 #include "stdafx.h"
 
+#if 0
+
 // General
 #include "UIButton.h"
 
@@ -120,3 +122,5 @@ bool CUIButtonNode::AcceptMesh(IVisitor* visitor)
 	
 	return m_Mesh->Accept(visitor);
 }
+
+#endif

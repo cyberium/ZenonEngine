@@ -15,6 +15,7 @@ typedef Delegate<UIBaseNodeClickedEventArgs> UIBaseNodeClickedEvent;
 
 class ZN_API CUIBaseNode 
 	: public ISceneNodeUI
+	, public ISceneNodeUIWithWrapper
 {
 	friend IScene;
 
@@ -69,6 +70,10 @@ public:
 	virtual bool                                    Accept(IVisitor* visitor);
 	virtual bool                                    AcceptMesh(IVisitor* visitor);
 
+
+	// ISceneNodeUIWithWrapper
+	void                                            SetWrapper(const ISceneNodeUI* WrapperNode) override final;
+
 	// Input events
 	virtual bool                                    OnKeyPressed(KeyEventArgs& e);
 	virtual void                                    OnKeyReleased(KeyEventArgs& e);
@@ -120,5 +125,6 @@ private:
 	glm::mat4										m_WorldTransform;
 	glm::mat4										m_InverseWorldTransform;
 
+	const ISceneNodeUI*                             m_WrapperNode;
 };
 

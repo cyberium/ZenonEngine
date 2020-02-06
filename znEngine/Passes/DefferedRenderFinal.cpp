@@ -54,7 +54,7 @@ void CDefferedRenderFinal::Render(RenderEventArgs& e)
 		BindLightParamsForCurrentIteration(e, lightResult);
 
 		SGeometryDrawArgs GeometryDrawArgs;
-		m_QuadMesh->GetGeometry().Render(e, GetPipeline().GetShaders(), nullptr, GeometryDrawArgs);
+		m_QuadGeometry->Render(e, GetPipeline().GetShaders().at(EShaderType::VertexShader).get(), GeometryDrawArgs);
 	}
 }
 
@@ -70,7 +70,7 @@ void CDefferedRenderFinal::PostRender(RenderEventArgs& e)
 //
 std::shared_ptr<IRenderPassPipelined> CDefferedRenderFinal::CreatePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport)
 {
-	m_QuadMesh = GetRenderDevice().GetPrimitivesFactory().CreateQuad();
+	m_QuadGeometry = GetRenderDevice().GetPrimitivesFactory().CreateQuad();
 
 	auto vertexShader = GetRenderDevice().GetObjectsFactory().CreateShader(EShaderType::VertexShader, "IDB_SHADER_3D_DEFFERED", "VS_ScreenQuad");
 	vertexShader->LoadInputLayoutFromReflector();

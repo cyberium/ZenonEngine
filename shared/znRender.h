@@ -14,7 +14,7 @@
 
 #include "../znRender/MaterialBase.h"
 #include "../znRender/GeometryBase.h"
-#include "../znRender/MeshBase.h"
+#include "../znRender/ModelBase.h"
 #include "../znRender/RenderDeviceBase.h"
 #include "../znRender/RenderPrimitivesFactory.h"
 #include "../znRender/RenderObjectsFactory.h"

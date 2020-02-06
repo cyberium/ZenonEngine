@@ -9,7 +9,7 @@ class CFBXSceneNode;
 // FORWARD END
 
 class CFBXMesh
-	: public MeshProxie
+	: public ModelProxie
 {
 public:
 	CFBXMesh(const IBaseManager* BaseManager, std::weak_ptr<CFBXSceneNode> OwnerFBXNode);

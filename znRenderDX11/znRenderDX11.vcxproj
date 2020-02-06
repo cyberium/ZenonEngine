@@ -90,7 +90,7 @@
     <ClCompile Include="DepthStencilStateDX11.cpp" />
     <ClCompile Include="GeometryDX11.cpp" />
     <ClCompile Include="MaterialDX11.cpp" />
-    <ClCompile Include="MeshDX11.cpp" />
+    <ClCompile Include="ModelDX11.cpp" />
     <ClCompile Include="RenderObjectsFactoryDX11.cpp" />
     <ClCompile Include="TextureDX11Loader.cpp" />
     <ClCompile Include="znRenderDX11.cpp" />
@@ -118,7 +118,7 @@
     <ClInclude Include="DepthStencilStateDX11.h" />
     <ClInclude Include="GeometryDX11.h" />
     <ClInclude Include="MaterialDX11.h" />
-    <ClInclude Include="MeshDX11.h" />
+    <ClInclude Include="ModelDX11.h" />
     <ClInclude Include="PipelineStateDX11.h" />
     <ClInclude Include="QueryDX11.h" />
     <ClInclude Include="RasterizerStateDX11.h" />
