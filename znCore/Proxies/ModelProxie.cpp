@@ -47,7 +47,7 @@ bool ModelProxie::Render(const RenderEventArgs& renderEventArgs) const
 	return m_Model->Render(renderEventArgs);
 }
 
-bool ModelProxie::Accept(IVisitor* visitor)
+void ModelProxie::Accept(IVisitor* visitor)
 {
-	return m_Model->Accept(visitor);
+	m_Model->Accept(visitor);
 }

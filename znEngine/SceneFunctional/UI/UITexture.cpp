@@ -48,9 +48,6 @@ glm::vec2 CUITextureNode::GetSize()
     return m_Size;
 }
 
-bool CUITextureNode::AcceptMesh(IVisitor* visitor)
+void CUITextureNode::AcceptMesh(IVisitor* visitor)
 {
-
-
-	return m_Mesh->Accept(visitor);
 }

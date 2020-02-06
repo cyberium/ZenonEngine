@@ -29,7 +29,7 @@ public:
 	virtual void                                    DoUpdate(UpdateEventArgs& e) override;
 
     // Accept from SceneNode
-    virtual bool                                    Accept(IVisitor* visitor) override;
+    virtual void                                    Accept(IVisitor* visitor) override;
 
 protected:
     void                                            RaiseComponentMessage(ComponentMessageType Message);

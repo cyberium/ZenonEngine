@@ -18,7 +18,7 @@ public:
 
 	virtual bool Render(const RenderEventArgs& renderEventArgs) const override;
 
-	virtual bool Accept(IVisitor* visitor) override;
+	virtual void Accept(IVisitor* visitor) override;
 
 private:
 	std::shared_ptr<IModel> m_Model;

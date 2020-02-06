@@ -98,7 +98,7 @@ public:
 	bool                                            Save(std::shared_ptr<IXMLWriter> Writer) override;
 
 	// Allow a visitor to visit this node.
-	virtual bool                                    Accept(IVisitor* visitor) override;
+	virtual void                                    Accept(IVisitor* visitor) override;
 
 
 public:

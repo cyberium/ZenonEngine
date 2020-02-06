@@ -28,7 +28,7 @@ ZN_INTERFACE ZN_API ISceneNodeComponent
 	virtual void DoUpdate(UpdateEventArgs& e) = 0;
 
 	// Visit functional
-    virtual bool Accept(IVisitor* visitor) = 0;
+    virtual void Accept(IVisitor* visitor) = 0;
 };
 typedef std::unordered_map<GUID, std::shared_ptr<ISceneNodeComponent>> ComponentsMap;
 

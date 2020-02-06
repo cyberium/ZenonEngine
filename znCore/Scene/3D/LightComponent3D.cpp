@@ -123,10 +123,10 @@ void CLightComponent3D::DoUpdate(UpdateEventArgs & e)
 	m_LightStruct->DirectionWS = glm::vec4(GetOwnerNode().GetRotation(), 0.0f);
 }
 
-bool CLightComponent3D::Accept(IVisitor* visitor)
+void CLightComponent3D::Accept(IVisitor* visitor)
 {
-	if (GetType() != ELightType::Unknown)
-		return visitor->Visit(this);
+	if (GetType() == ELightType::Unknown)
+		return;
 
-	return false;
+	visitor->Visit(this);
 }

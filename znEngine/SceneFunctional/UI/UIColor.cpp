@@ -36,7 +36,6 @@ glm::vec2 CUIColorNode::GetSize()
     return m_Size;
 }
 
-bool CUIColorNode::AcceptMesh(IVisitor* visitor)
+void CUIColorNode::AcceptMesh(IVisitor* visitor)
 {
-	return m_Mesh->Accept(visitor);
 }

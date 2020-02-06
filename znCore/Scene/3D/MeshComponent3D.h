@@ -16,7 +16,7 @@ public:
     virtual const MeshList& GetMeshes();
 
     // CComponentBase
-    virtual bool Accept(IVisitor* visitor) override;
+    virtual void Accept(IVisitor* visitor) override;
 
 private:
     MeshList m_Meshes;

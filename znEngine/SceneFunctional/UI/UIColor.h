@@ -15,7 +15,7 @@ public:
 	// CUIBaseNode
     virtual glm::vec2 GetSize() override;
 
-	virtual bool AcceptMesh(IVisitor* visitor) override;
+	virtual void AcceptMesh(IVisitor* visitor) override;
 
 private:
     glm::vec2                           m_Size;

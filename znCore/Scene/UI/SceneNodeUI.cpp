@@ -266,28 +266,22 @@ bool CUIBaseNode::IsPointInBoundsAbs(glm::vec2 Point)
 //
 // Render functional
 //
-bool CUIBaseNode::Accept(IVisitor* visitor)
+void CUIBaseNode::Accept(IVisitor* visitor)
 {
-	bool visitResult = visitor->Visit(this/*const_cast<ISceneNodeUI*>(m_WrapperNode)*/);
+	if (visitor->Visit(this))
+	{
+		AcceptMesh(visitor);
+	}
 
-    // Visit childs
-    for (const auto& child : GetChilds())
-        child->Accept(visitor);
-
-	if (!visitResult)
-		return false;
-
-	// Visit meshes
-	AcceptMesh(visitor);
-
-	return visitResult;
-
-	return false;
+	const auto& childs = GetChilds();
+	std::for_each(childs.begin(), childs.end(), [&visitor](const std::shared_ptr<ISceneNodeUI>& Child) {
+		Child->Accept(visitor);
+	});
 }
 
-bool CUIBaseNode::AcceptMesh(IVisitor* visitor)
+void CUIBaseNode::AcceptMesh(IVisitor* visitor)
 {
-	return false;
+
 }
 
 

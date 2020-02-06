@@ -443,37 +443,20 @@ bool SceneNode3D::Save(std::shared_ptr<IXMLWriter> Writer)
 	return true;
 }
 
-bool SceneNode3D::Accept(IVisitor* visitor)
+void SceneNode3D::Accept(IVisitor* visitor)
 {
-	bool visitResult = visitor->Visit(this);
-
-	//if (visitResult && !GetComponent<IColliderComponent3D>()->CheckFrustum(((AbstractPass*)visitor)->GetRenderEventArgs()->Camera))
-	//{
-	//	return false;
-	//}
-
-	if (visitResult)
+	if (visitor->Visit(this))
 	{
 		const auto& components = GetComponents();
-		std::for_each(components.begin(), components.end(), [&visitor](const std::pair<GUID, std::shared_ptr<ISceneNodeComponent>>& Component)
-		{
+		std::for_each(components.begin(), components.end(), [&visitor](const std::pair<GUID, std::shared_ptr<ISceneNodeComponent>>& Component) {
 			Component.second->Accept(visitor);
 		});
 	}
 
-	// Now visit children
 	const auto& childs = GetChilds();
-	std::for_each(childs.begin(), childs.end(), [&visitor](const std::shared_ptr<ISceneNode3D>& Child)
-	{
-#ifdef LOADER_ENABLED
-		std::shared_ptr<ILoadable> loadable = std::dynamic_pointer_cast<ILoadable>(child);
-		if (loadable != nullptr && !loadable->isLoaded())
-			continue;
-#endif
+	std::for_each(childs.begin(), childs.end(), [&visitor](const std::shared_ptr<ISceneNode3D>& Child) {
 		Child->Accept(visitor);
 	});
-
-	return visitResult;
 }
 
 

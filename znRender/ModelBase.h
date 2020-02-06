@@ -27,7 +27,7 @@ public:
 	virtual void									AddConnection(const std::shared_ptr<IMaterial>& Material, const std::shared_ptr<IGeometry>& Geometry, SGeometryDrawArgs GeometryDrawArgs = SGeometryDrawArgs()) override;
 
 
-	virtual bool                                    Accept(IVisitor* visitor) override;
+	virtual void                                    Accept(IVisitor* visitor) override;
 
 protected:
 	std::string                                     m_Name;

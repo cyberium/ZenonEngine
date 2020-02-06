@@ -112,7 +112,7 @@ ZN_INTERFACE ZN_API __declspec(novtable) ISceneNode3D
 	virtual bool Save(std::shared_ptr<IXMLWriter> Writer) = 0;
 
 	// Visitor functionality
-	virtual bool Accept(IVisitor* visitor) = 0;
+	virtual void Accept(IVisitor* visitor) = 0;
 };
 
 

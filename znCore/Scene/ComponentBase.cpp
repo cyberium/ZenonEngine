@@ -59,9 +59,8 @@ void CComponentBase::DoUpdate(UpdateEventArgs & e)
 	// Do nothing...
 }
 
-bool CComponentBase::Accept(IVisitor* visitor)
+void CComponentBase::Accept(IVisitor* visitor)
 {
-    return false;
 }
 
 

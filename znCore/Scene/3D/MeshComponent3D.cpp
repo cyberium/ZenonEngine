@@ -35,15 +35,10 @@ const CMeshComponent3D::MeshList& CMeshComponent3D::GetMeshes()
 //
 // ISceneNodeComponent
 //
-bool CMeshComponent3D::Accept(IVisitor* visitor)
+void CMeshComponent3D::Accept(IVisitor* visitor)
 {
-    bool acceptResult = true;
-
 	const auto& meshes = GetMeshes();
-	std::for_each(meshes.begin(), meshes.end(), [&acceptResult, &visitor](const auto& Mesh)
-	{
-		acceptResult = Mesh->Accept(visitor);
+	std::for_each(meshes.begin(), meshes.end(), [&visitor](const auto& Mesh) {
+		Mesh->Accept(visitor);
 	});
-
-    return acceptResult;
 }

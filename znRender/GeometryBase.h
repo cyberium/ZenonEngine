@@ -16,7 +16,7 @@ public:
 	virtual void         SetVertexBuffer(const std::shared_ptr<IBuffer>& GlobalVertexBuffer) override;
 	virtual void         SetIndexBuffer(const std::shared_ptr<IBuffer>& IndexBuffer) override;
 
-	virtual bool         Accept(IVisitor* visitor, const IMaterial* Material, SGeometryDrawArgs GeometryDrawArgs = SGeometryDrawArgs()) override;
+	virtual void         Accept(IVisitor* visitor, const IMaterial* Material, SGeometryDrawArgs GeometryDrawArgs = SGeometryDrawArgs()) override;
 
 protected:
 	void                 BindVertexBuffersToVertexShader(const IShader* VertexShader) const;

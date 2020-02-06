@@ -48,5 +48,5 @@ ZN_INTERFACE ZN_API IGeometry : public std::enable_shared_from_this<IGeometry>
 	
 	// For IVisitor
 
-	virtual bool Accept(IVisitor* visitor, const IMaterial* Material, SGeometryDrawArgs GeometryDrawArgs = SGeometryDrawArgs()) = 0;
+	virtual void Accept(IVisitor* visitor, const IMaterial* Material, SGeometryDrawArgs GeometryDrawArgs = SGeometryDrawArgs()) = 0;
 };

@@ -62,7 +62,7 @@ ZN_INTERFACE ZN_API __declspec(novtable) ISceneNodeUI
 	virtual mat4 GetWorldTransfom() const = 0;
 
 	// Allow a visitor to visit this node.
-	virtual bool Accept(IVisitor* visitor) = 0;
+	virtual void Accept(IVisitor* visitor) = 0;
 };
 
 ZN_INTERFACE ZN_API __declspec(novtable) ISceneNodeUIWithWrapper

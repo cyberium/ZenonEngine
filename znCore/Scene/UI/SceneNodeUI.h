@@ -67,8 +67,8 @@ public:
     virtual bool                                    IsPointInBoundsAbs(glm::vec2 Point) ;
 
 	// Allow a visitor to visit this node. 
-	virtual bool                                    Accept(IVisitor* visitor);
-	virtual bool                                    AcceptMesh(IVisitor* visitor);
+	virtual void                                    Accept(IVisitor* visitor);
+	virtual void                                    AcceptMesh(IVisitor* visitor);
 
 
 	// ISceneNodeUIWithWrapper

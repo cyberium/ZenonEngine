@@ -29,7 +29,7 @@ public:
 
     // ISceneNodeComponent
 	virtual void DoUpdate(UpdateEventArgs& e) override;
-    virtual bool Accept(IVisitor* visitor) override;
+    virtual void Accept(IVisitor* visitor) override;
 
 private:
 	SLight* m_LightStruct;

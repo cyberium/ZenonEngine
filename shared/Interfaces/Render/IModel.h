@@ -34,7 +34,7 @@ ZN_INTERFACE ZN_API __declspec(novtable) IModel
 
 	// For IVisitor
 
-	virtual bool                                    Accept(IVisitor* visitor) = 0;
+	virtual void                                    Accept(IVisitor* visitor) = 0;
 };
 typedef std::shared_ptr<IModel> IModelPtr;
 

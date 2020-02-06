@@ -40,14 +40,12 @@ void ModelBase::AddConnection(const std::shared_ptr<IMaterial>& Material, const 
 	m_Connections.push_back(connection);
 }
 
-bool ModelBase::Accept(IVisitor* visitor)
+void ModelBase::Accept(IVisitor* visitor)
 {
-	bool visitResult = visitor->Visit(this);
+	visitor->Visit(this);
 
 	for (const auto& connection : m_Connections)
 	{
-		visitResult = connection.Geometry->Accept(visitor, connection.Material.get(), connection.GeometryDrawArgs);
+		connection.Geometry->Accept(visitor, connection.Material.get(), connection.GeometryDrawArgs);
 	}
-
-    return visitResult;
 }

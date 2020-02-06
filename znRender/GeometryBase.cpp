@@ -39,9 +39,9 @@ void GeometryBase::SetIndexBuffer(const std::shared_ptr<IBuffer>& IndeBuffer)
     m_pIndexBuffer = IndeBuffer;
 }
 
-bool GeometryBase::Accept(IVisitor * visitor, const IMaterial* Material, SGeometryDrawArgs GeometryDrawArgs)
+void GeometryBase::Accept(IVisitor * visitor, const IMaterial* Material, SGeometryDrawArgs GeometryDrawArgs)
 {
-	return visitor->Visit(this, Material, GeometryDrawArgs);
+	visitor->Visit(this, Material, GeometryDrawArgs);
 }
 
 
