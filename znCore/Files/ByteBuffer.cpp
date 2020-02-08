@@ -167,6 +167,30 @@ void CByteBuffer::writeBytes(const void * Source, size_t BytesCount)
 	}
 }
 
+
+void CByteBuffer::writeDummy(size_t BytesCount)
+{
+	for (size_t i = 0; i < BytesCount; i++)
+	{
+		if (isEof())
+		{
+			m_Data.push_back(0x00);
+		}
+		else
+		{
+			m_Data[m_CurrentPosition] = 0x00;
+		}
+
+		m_CurrentPosition += 1;
+	}
+}
+
+void CByteBuffer::insert(size_t Position, const void * DataPtr, size_t DataSize)
+{
+	m_Data.insert(m_Data.begin() + Position, static_cast<const uint8*>(DataPtr), static_cast<const uint8*>(DataPtr) + DataSize);
+}
+
 void CByteBuffer::writeString(std::string String)
 {
+	writeBytes(String.c_str(), String.size());
 }

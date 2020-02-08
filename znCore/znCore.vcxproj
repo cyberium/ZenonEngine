@@ -50,6 +50,7 @@
     <ClCompile Include="Passes\Technical\InvokeFunctionPass.cpp" />
     <ClCompile Include="Passes\Technical\RenderListProcessorPass.cpp" />
     <ClCompile Include="Passes\Technical\SetShaderParameterPass.cpp" />
+    <ClCompile Include="Proxies\GeometryProxie.cpp" />
     <ClCompile Include="Proxies\MaterialProxie.cpp" />
     <ClCompile Include="Proxies\ModelProxie.cpp" />
     <ClCompile Include="Proxies\SceneNodeProxie.cpp" />
@@ -188,6 +189,7 @@
     <ClInclude Include="Passes\Technical\InvokeFunctionPass.h" />
     <ClInclude Include="Passes\Technical\RenderListProcessorPass.h" />
     <ClInclude Include="Passes\Technical\SetShaderParameterPass.h" />
+    <ClInclude Include="Proxies\GeometryProxie.h" />
     <ClInclude Include="Proxies\MaterialProxie.h" />
     <ClInclude Include="Proxies\ModelProxie.h" />
     <ClInclude Include="Proxies\SceneNodeProxie.h" />

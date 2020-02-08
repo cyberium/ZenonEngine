@@ -17,6 +17,13 @@ class RenderEventArgs;
 ZN_INTERFACE ZN_API __declspec(novtable) IModel 
 	: public std::enable_shared_from_this<IModel>
 {
+	struct ZN_API SConnection
+	{
+		std::shared_ptr<IMaterial> Material;
+		std::shared_ptr<IGeometry> Geometry;
+		SGeometryDrawArgs          GeometryDrawArgs;
+	};
+
 	virtual ~IModel() {}
 
 	virtual void                                    SetName(const std::string& Name) = 0;
@@ -29,6 +36,7 @@ ZN_INTERFACE ZN_API __declspec(novtable) IModel
 	 * Добавляет пару геометрия[+GeometryPart] - Материал
 	*/
 	virtual void									AddConnection(const std::shared_ptr<IMaterial>& Material, const std::shared_ptr<IGeometry>& Geometry, SGeometryDrawArgs GeometryDrawArgs = SGeometryDrawArgs()) = 0;
+	virtual const std::vector<SConnection>&         GetConnections() const = 0;
 
 	virtual bool                                    Render(const RenderEventArgs& renderEventArgs) const = 0;
 

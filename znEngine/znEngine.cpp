@@ -189,7 +189,7 @@ IBaseManager* WINAPI InitializeEngine(std::vector<std::string> Arguments, std::s
 			std::vector<std::string> fileNamesInWorkDirectory = GetAllFilesInDirectory(PathToPlugins, {}, ".dll");
 			for (const auto& it : fileNamesInWorkDirectory)
 			{
-				if (it.find("znRender") != std::string::npos)
+				//if (it.find("znRender") != std::string::npos)
 					pluginsManager->AddPlugin(it);
 			}
 		}

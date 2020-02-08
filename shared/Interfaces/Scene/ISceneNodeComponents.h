@@ -17,7 +17,7 @@ ZN_INTERFACE ZN_API ISceneNodeComponent
 
     // Callbacks
     virtual void OnParentChanged() = 0;
-    virtual void OnMessage(ISceneNodeComponent* Component, ComponentMessageType Message) = 0;
+    virtual void OnMessage(const ISceneNodeComponent* Component, ComponentMessageType Message) = 0;
 	virtual IPropertiesGroup* GetPropertiesGroup() const = 0;
 
 	// Load & Save

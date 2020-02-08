@@ -202,7 +202,7 @@ const glm::mat4 & CCameraComponent3D::GetInverseProjectionViewMatrix() const
 //
 // ISceneNodeComponent
 //
-void CCameraComponent3D::OnMessage(ISceneNodeComponent* Component, ComponentMessageType Message)
+void CCameraComponent3D::OnMessage(const ISceneNodeComponent* Component, ComponentMessageType Message)
 {
 	if (Component == nullptr && Message == UUID_OnTransformChanged)
 	{

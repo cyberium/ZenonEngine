@@ -128,6 +128,16 @@ void CByteBufferOnlyPointer::writeBytes(const void * Source, size_t BytesCount)
 	_ASSERT_EXPR(false, L"Unsupported write operation.");
 }
 
+void CByteBufferOnlyPointer::writeDummy(size_t BytesCount)
+{
+	_ASSERT_EXPR(false, L"Unsupported write operation.");
+}
+
+void CByteBufferOnlyPointer::insert(size_t Position, const void * DataPtr, size_t DataSize)
+{
+	_ASSERT_EXPR(false, L"Unsupported write operation.");
+}
+
 void CByteBufferOnlyPointer::writeString(std::string String)
 {
 	_ASSERT_EXPR(false, L"Unsupported write operation.");

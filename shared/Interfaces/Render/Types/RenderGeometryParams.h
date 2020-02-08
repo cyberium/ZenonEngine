@@ -2,11 +2,11 @@
 
 struct ZN_API SGeometryDrawArgs
 {
-	SGeometryDrawArgs()
-		: IndexStartLocation(0)
-		, IndexCnt(UINT_MAX)
-		, VertexStartLocation(0)
-		, VertexCnt(UINT_MAX)
+	SGeometryDrawArgs(UINT IndexStartLocation = 0, UINT IndexCnt = UINT_MAX, UINT VertexStartLocation = 0, UINT VertexCnt = UINT_MAX)
+		: IndexStartLocation(IndexStartLocation)
+		, IndexCnt(IndexCnt)
+		, VertexStartLocation(VertexStartLocation)
+		, VertexCnt(VertexCnt)
 	{}
 
 	UINT IndexStartLocation;

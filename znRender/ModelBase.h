@@ -6,14 +6,6 @@ class ZN_API ModelBase
 	: public IModel
 	, public Object
 {
-protected:
-	struct ZN_API SConnection
-	{
-		std::shared_ptr<IMaterial> Material;
-		std::shared_ptr<IGeometry> Geometry;
-		SGeometryDrawArgs          GeometryDrawArgs;
-	};
-
 public:
 	ModelBase();
 	virtual ~ModelBase();
@@ -25,7 +17,7 @@ public:
 	virtual BoundingBox                             GetBounds() const override;
 
 	virtual void									AddConnection(const std::shared_ptr<IMaterial>& Material, const std::shared_ptr<IGeometry>& Geometry, SGeometryDrawArgs GeometryDrawArgs = SGeometryDrawArgs()) override;
-
+	const std::vector<SConnection>&                 GetConnections() const override;
 
 	virtual void                                    Accept(IVisitor* visitor) override;
 

@@ -28,6 +28,7 @@ void ModelBase::SetBounds(const BoundingBox& Bounds)
 
 BoundingBox ModelBase::GetBounds() const
 {
+	// TODO:
 	return BoundingBox();
 }
 
@@ -38,6 +39,11 @@ void ModelBase::AddConnection(const std::shared_ptr<IMaterial>& Material, const 
 	connection.Geometry = Geometry;
 	connection.GeometryDrawArgs = GeometryDrawArgs;
 	m_Connections.push_back(connection);
+}
+
+const std::vector<IModel::SConnection>& ModelBase::GetConnections() const
+{
+	return m_Connections;
 }
 
 void ModelBase::Accept(IVisitor* visitor)

@@ -12,10 +12,9 @@
 #pragma comment(lib, "freetype.lib")
 
 FontsManager::FontsManager(IRenderDevice& RenderDevice, IBaseManager* BaseManager)
-	: m_RenderDevice(RenderDevice)
-	, m_BaseManager(BaseManager)
+	: m_BaseManager(BaseManager)
 {
-	m_MainFont = Add("IDB_FONT_CONSOLAS", 14);
+	m_MainFont = Add(RenderDevice, "IDB_FONT_CONSOLAS", 14);
 }
 
 FontsManager::~FontsManager()
@@ -32,9 +31,9 @@ std::shared_ptr<CFont> FontsManager::GetMainFont() const
 	return m_MainFont;
 }
 
-std::shared_ptr<CFont> FontsManager::Add(const std::string& _fontFileName, uint32 _fontSize)
+std::shared_ptr<CFont> FontsManager::Add(IRenderDevice& RenderDevice, const std::string& _fontFileName, uint32 _fontSize)
 {
-	return CRefManager1Dim::Add(_fontFileName + "__" + std::to_string(_fontSize));
+	return CRefManager1Dim::Add(RenderDevice, _fontFileName + "__" + std::to_string(_fontSize));
 }
 
 //
@@ -54,7 +53,7 @@ struct VertexPTN
 };
 typedef std::vector<VertexPTN> VertexesPTN;
 
-std::shared_ptr<CFont> FontsManager::CreateAction(const std::string& _nameAndSize)
+std::shared_ptr<CFont> FontsManager::CreateAction(IRenderDevice& RenderDevice, const std::string& _nameAndSize)
 {
 	uint32_t _delimIndex = static_cast<uint32>(_nameAndSize.find_last_of("__"));
 	if (_delimIndex == -1)
@@ -200,12 +199,12 @@ std::shared_ptr<CFont> FontsManager::CreateAction(const std::string& _nameAndSiz
 	}
 
 
-	std::shared_ptr<IGeometry> __geom = m_RenderDevice.GetObjectsFactory().CreateGeometry();
-	__geom->AddVertexBuffer(BufferBinding("POSITION", 0), m_RenderDevice.GetObjectsFactory().CreateVoidVertexBuffer(vertices.data(), vertices.size(), 0,            sizeof(VertexPTN)));
-    __geom->AddVertexBuffer(BufferBinding("TEXCOORD", 0), m_RenderDevice.GetObjectsFactory().CreateVoidVertexBuffer(vertices.data(), vertices.size(), sizeof(vec3), sizeof(VertexPTN)));
+	std::shared_ptr<IGeometry> __geom = RenderDevice.GetObjectsFactory().CreateGeometry();
+	__geom->AddVertexBuffer(BufferBinding("POSITION", 0), RenderDevice.GetObjectsFactory().CreateVoidVertexBuffer(vertices.data(), vertices.size(), 0,            sizeof(VertexPTN)));
+    __geom->AddVertexBuffer(BufferBinding("TEXCOORD", 0), RenderDevice.GetObjectsFactory().CreateVoidVertexBuffer(vertices.data(), vertices.size(), sizeof(vec3), sizeof(VertexPTN)));
 
 	// Font texture
-	std::shared_ptr<ITexture> texture = m_RenderDevice.GetObjectsFactory().CreateEmptyTexture();
+	std::shared_ptr<ITexture> texture = RenderDevice.GetObjectsFactory().CreateEmptyTexture();
 	texture->LoadTextureCustom(imageWidth, imageHeight, image);
 
 	delete[] image;

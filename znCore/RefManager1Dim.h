@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Interfaces/Render/IRenderDevice.h"
+
 template <class T>
 class CRefManager1Dim
 {
@@ -7,7 +9,7 @@ public:
 	CRefManager1Dim();
 	virtual ~CRefManager1Dim();
 
-	std::shared_ptr<T> Add(const std::string& name);
+	std::shared_ptr<T> Add(IRenderDevice& RenderDevice, const std::string& name);
 	bool Exists(const std::string& name) const;
 	void Delete(const std::string& name);
 	void Delete(std::shared_ptr<T> item);
@@ -19,7 +21,7 @@ public:
 	void PrintAllInfo();
 
 protected:
-	virtual std::shared_ptr<T> CreateAction(const std::string& name);
+	virtual std::shared_ptr<T> CreateAction(IRenderDevice& RenderDevice, const std::string& name);
 	virtual bool DeleteAction(const std::string& name);
 
 public:

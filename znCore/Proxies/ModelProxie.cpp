@@ -3,10 +3,10 @@
 // General
 #include "ModelProxie.h"
 
-ModelProxie::ModelProxie(std::shared_ptr<IModel> Model)
+ModelProxie::ModelProxie(const std::shared_ptr<IModel>& Model)
 	: m_Model(Model)
 {
-	_ASSERT(m_Model);
+	_ASSERT(m_Model != nullptr);
 }
 
 ModelProxie::~ModelProxie()
@@ -42,6 +42,11 @@ void ModelProxie::AddConnection(const std::shared_ptr<IMaterial>& Material, cons
 	m_Model->AddConnection(Material, Geometry, GeometryDrawArgs);
 }
 
+const std::vector<ModelProxie::SConnection>& ModelProxie::GetConnections() const
+{
+	return m_Model->GetConnections();
+}
+
 bool ModelProxie::Render(const RenderEventArgs& renderEventArgs) const
 {
 	return m_Model->Render(renderEventArgs);
@@ -49,5 +54,10 @@ bool ModelProxie::Render(const RenderEventArgs& renderEventArgs) const
 
 void ModelProxie::Accept(IVisitor* visitor)
 {
-	m_Model->Accept(visitor);
+	visitor->Visit(this);
+
+	for (const auto& connection : GetConnections())
+	{
+		connection.Geometry->Accept(visitor, connection.Material.get(), connection.GeometryDrawArgs);
+	}
 }

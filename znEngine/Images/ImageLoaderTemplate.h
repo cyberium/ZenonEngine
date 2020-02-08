@@ -1,6 +1,6 @@
 #pragma once
 
-class CImageBase
+class ZN_API CImageBase
 	: public IImage
 {
 public:
@@ -32,7 +32,7 @@ protected:
 
 
 template <typename TIMAGE>
-class CImageLoaderT
+class ZN_API CImageLoaderT
 	: public IImageLoader
 {
 public:

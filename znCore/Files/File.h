@@ -34,6 +34,14 @@ public:
 	 { 
 		 return m_ByteBuffer.getDataFromCurrent(); 
 	 }
+	 uint8* getDataEx() override
+	 {
+		 return m_ByteBuffer.getDataEx();
+	 }
+	 uint8* getDataFromCurrentEx() override
+	 {
+		 return m_ByteBuffer.getDataFromCurrentEx();
+	 }
 	 bool isEof() const override 
 	 { 
 		 return m_ByteBuffer.isEof(); 
@@ -66,6 +74,14 @@ public:
 	 void writeBytes(const void * Source, size_t BytesCount) override
 	 {
 		 m_ByteBuffer.writeBytes(Source, BytesCount);
+	 }
+	 void writeDummy(size_t BytesCount) override
+	 {
+		 m_ByteBuffer.writeDummy(BytesCount);
+	 }
+	 void insert(size_t Position, const void * DataPtr, size_t DataSize)
+	 {
+		 m_ByteBuffer.insert(Position, DataPtr, DataSize);
 	 }
 	 void writeString(std::string String) override
 	 {

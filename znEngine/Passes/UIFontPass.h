@@ -1,6 +1,6 @@
 #pragma once
 
-class CUIFontPass
+class ZN_API CUIFontPass
 	: public BaseUIPass
 {
 public:

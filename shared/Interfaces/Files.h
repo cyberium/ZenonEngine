@@ -15,6 +15,8 @@ ZN_INTERFACE ZN_API IByteBuffer
 	virtual size_t        getPos() const = 0;
 	virtual const uint8*  getData() const = 0;
 	virtual const uint8*  getDataFromCurrent() const = 0;
+	virtual uint8*        getDataEx() = 0;
+	virtual uint8*        getDataFromCurrentEx() = 0;
 	virtual bool          isEof() const = 0;
 
 	virtual void          seek(size_t AbsoluteOffset) = 0;
@@ -26,6 +28,8 @@ ZN_INTERFACE ZN_API IByteBuffer
 
 	virtual void          writeLine(std::string String) = 0;
 	virtual void          writeBytes(const void* Source, size_t BytesCount) = 0;
+	virtual void          writeDummy(size_t BytesCount) = 0;
+	virtual void          insert(size_t Position, const void * DataPtr, size_t DataSize) = 0;
 	virtual void          writeString(std::string String) = 0;
 
 	template <typename T>

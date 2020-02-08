@@ -62,21 +62,31 @@ public:
 
 
 	bool                                            IsComponentExists(GUID ComponentID) const override;
-	ISceneNodeComponent*                            GetComponent(GUID ComponentID) const override;
-	ISceneNodeComponent*                            AddComponent(GUID ComponentID, std::shared_ptr<ISceneNodeComponent> Component) override;
+	std::shared_ptr<ISceneNodeComponent>            GetComponent(GUID ComponentID) const override;
+	std::shared_ptr<ISceneNodeComponent>            AddComponent(GUID ComponentID, const std::shared_ptr<ISceneNodeComponent>& Component) override;
 	const ComponentsMap&                            GetComponents() const override;
-	void                                            RaiseComponentMessage(ISceneNodeComponent* Component, ComponentMessageType Message) const override;
+	void                                            RaiseComponentMessage(const ISceneNodeComponent* Component, ComponentMessageType Message) const override;
 	virtual void                                    RegisterComponents() override;
     
-	template<typename T> inline T* GetComponent()
+	
+	template<typename T> inline bool IsComponentExists()
+	{
+		return ISceneNode3D::IsComponentExists<T>();
+	}
+	template<typename T> inline std::shared_ptr<T> GetComponent()
 	{
 		return ISceneNode3D::GetComponent<T>();
 	}
-	template<> inline IMeshComponent3D* GetComponent<IMeshComponent3D>()
+	template<typename T> inline std::shared_ptr<T> AddComponent(const std::shared_ptr<T>& Component)
+	{
+		return ISceneNode3D::AddComponent<T>(Component);
+	}
+
+	template<> inline std::shared_ptr<IMeshComponent3D> GetComponent<IMeshComponent3D>()
 	{
 		return m_Components_Mesh;
 	}
-	template<> inline IColliderComponent3D* GetComponent<IColliderComponent3D>()
+	template<> inline std::shared_ptr<IColliderComponent3D> GetComponent<IColliderComponent3D>()
 	{
 		return m_Components_Collider;
 	}
@@ -112,8 +122,8 @@ protected:
 	virtual void									ForceRecalculateLocalTransform();
 	IBaseManager*                                   GetBaseManager() const;
 
-	void                                            SetMeshComponent(IMeshComponent3D* MeshComponent);
-    void                                            SetColliderComponent(IColliderComponent3D* ColliderComponent);
+	void                                            SetMeshComponent(const std::shared_ptr<IMeshComponent3D>& MeshComponent);
+    void                                            SetColliderComponent(const std::shared_ptr<IColliderComponent3D>& ColliderComponent);
 
 private:
 	std::string                                     m_Type;
@@ -139,6 +149,6 @@ private:
 	glm::mat4										m_InverseWorldTransform;
 
 	ComponentsMap                                   m_Components;
-	IMeshComponent3D*								m_Components_Mesh;
-    IColliderComponent3D*							m_Components_Collider;
+	std::shared_ptr<IMeshComponent3D>				m_Components_Mesh;
+    std::shared_ptr<IColliderComponent3D>			m_Components_Collider;
 };

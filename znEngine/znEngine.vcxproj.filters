@@ -288,6 +288,9 @@
     <ClCompile Include="Formats\ChunkedFile.cpp">
       <Filter>Formats</Filter>
     </ClCompile>
+    <ClCompile Include="Images\DDSFormat.cpp">
+      <Filter>Images</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="common.h">
@@ -480,6 +483,9 @@
     <ClInclude Include="Formats\ChunkedFile.h">
       <Filter>Formats</Filter>
     </ClInclude>
+    <ClInclude Include="Images\DDSFormat.h">
+      <Filter>Images</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="znEngine.rc">
@@ -572,6 +578,9 @@
     </None>
     <None Include="Resources\shaders_D3D\3D\Debug.hlsl">
       <Filter>Resources\Shaders_D3D\3D\Base</Filter>
+    </None>
+    <None Include="Images\DDSFormat.inl">
+      <Filter>Images</Filter>
     </None>
   </ItemGroup>
 </Project>

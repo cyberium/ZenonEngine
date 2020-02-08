@@ -318,20 +318,20 @@ bool SceneNode3D::IsComponentExists(GUID ComponentID) const
 	return components.find(ComponentID) != components.end();
 }
 
-ISceneNodeComponent* SceneNode3D::GetComponent(GUID ComponentID) const
+std::shared_ptr<ISceneNodeComponent> SceneNode3D::GetComponent(GUID ComponentID) const
 {
 	const auto& components = GetComponents();
 	const auto& component = components.find(ComponentID);
 	if (component == components.end())
 		return nullptr;
 
-	return component->second.get();
+	return component->second;
 }
 
-ISceneNodeComponent* SceneNode3D::AddComponent(GUID ComponentID, std::shared_ptr<ISceneNodeComponent> Component)
+std::shared_ptr<ISceneNodeComponent> SceneNode3D::AddComponent(GUID ComponentID, const std::shared_ptr<ISceneNodeComponent>& Component)
 {
 	m_Components[ComponentID] = Component;
-	return Component.get();
+	return Component;
 }
 
 const ComponentsMap& SceneNode3D::GetComponents() const
@@ -339,7 +339,7 @@ const ComponentsMap& SceneNode3D::GetComponents() const
 	return m_Components;
 }
 
-void SceneNode3D::RaiseComponentMessage(ISceneNodeComponent* Component, ComponentMessageType Message) const
+void SceneNode3D::RaiseComponentMessage(const ISceneNodeComponent* Component, ComponentMessageType Message) const
 {
 	const auto& components = GetComponents();
 	std::for_each(components.begin(), components.end(), [&Component, &Message](const std::pair<GUID, std::shared_ptr<ISceneNodeComponent>>& ComponentMapIter)
@@ -521,12 +521,12 @@ IBaseManager* SceneNode3D::GetBaseManager() const
 	return dynamic_cast<IBaseManagerHolder*>(GetScene())->GetBaseManager();
 }
 
-void SceneNode3D::SetMeshComponent(IMeshComponent3D* MeshComponent)
+void SceneNode3D::SetMeshComponent(const std::shared_ptr<IMeshComponent3D>& MeshComponent)
 {
 	m_Components_Mesh = MeshComponent;
 }
 
-void SceneNode3D::SetColliderComponent(IColliderComponent3D* ColliderComponent)
+void SceneNode3D::SetColliderComponent(const std::shared_ptr<IColliderComponent3D>& ColliderComponent)
 {
     m_Components_Collider = ColliderComponent;
 }

@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Interfaces/Render/IRenderDevice.h"
+
 template<class T>
 CRefManager1Dim<T>::CRefManager1Dim()
 {
@@ -21,7 +23,7 @@ CRefManager1Dim<T>::~CRefManager1Dim()
 }
 
 template <class T>
-std::shared_ptr<T> CRefManager1Dim<T>::Add(const std::string& name)
+std::shared_ptr<T> CRefManager1Dim<T>::Add(IRenderDevice& RenderDevice, const std::string& name)
 {
 	std::shared_ptr<T> item = GetItemByName(name);
 	if (item != nullptr)
@@ -29,7 +31,7 @@ std::shared_ptr<T> CRefManager1Dim<T>::Add(const std::string& name)
 		return item;
 	}
 
-	item = CreateAction(name);
+	item = CreateAction(RenderDevice, name);
 	if (item != nullptr)
 	{
 		objects[name] = item;
@@ -118,7 +120,7 @@ void CRefManager1Dim<T>::PrintAllInfo()
 }
 
 template<class T>
-inline std::shared_ptr<T> CRefManager1Dim<T>::CreateAction(const std::string& name)
+inline std::shared_ptr<T> CRefManager1Dim<T>::CreateAction(IRenderDevice& RenderDevice, const std::string& name)
 {
 	return NULL;
 }

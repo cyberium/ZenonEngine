@@ -184,7 +184,7 @@ void SceneBase::OnPreRender(RenderEventArgs & e)
 void SceneBase::OnRender(RenderEventArgs & e)
 {
 	if (GetCameraController())
-		e.Camera = GetCameraController()->GetCamera();
+		e.Camera = GetCameraController()->GetCamera().get();
 
 	m_Technique3D.Render(e);
 }
@@ -209,7 +209,7 @@ void SceneBase::OnPostRender(RenderEventArgs & e)
 void SceneBase::OnRenderUI(RenderEventArgs & e)
 {
 	if (GetCameraController())
-		e.Camera = GetCameraController()->GetCamera();
+		e.Camera = GetCameraController()->GetCamera().get();
 
 
 

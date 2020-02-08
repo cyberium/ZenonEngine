@@ -50,7 +50,7 @@ bool CColliderComponent3D::CheckDistance(const ICameraComponent3D* Camera, float
     return true;//distToCamera < _distance;
 }
 
-void CColliderComponent3D::OnMessage(ISceneNodeComponent* Component, ComponentMessageType Message)
+void CColliderComponent3D::OnMessage(const ISceneNodeComponent* Component, ComponentMessageType Message)
 {
     switch (Message)
     {

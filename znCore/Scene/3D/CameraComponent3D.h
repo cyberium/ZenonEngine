@@ -43,7 +43,7 @@ public:
 	const glm::mat4& GetInverseProjectionViewMatrix() const override;
 
     // ISceneNodeComponent
-	virtual void OnMessage(ISceneNodeComponent* Component, ComponentMessageType Message) override;
+	virtual void OnMessage(const ISceneNodeComponent* Component, ComponentMessageType Message) override;
 
 protected:
 	glm::vec3 EulerAnglesToDirectionVector(float Yaw, float Pitch);

@@ -306,6 +306,9 @@
     <ClCompile Include="Passes\Technical\RenderListProcessorPass.cpp">
       <Filter>Passes\3D</Filter>
     </ClCompile>
+    <ClCompile Include="Proxies\GeometryProxie.cpp">
+      <Filter>__Proxies</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Log.h">
@@ -724,6 +727,9 @@
     </ClInclude>
     <ClInclude Include="Passes\Technical\RenderListProcessorPass.h">
       <Filter>Passes\3D</Filter>
+    </ClInclude>
+    <ClInclude Include="Proxies\GeometryProxie.h">
+      <Filter>__Proxies</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

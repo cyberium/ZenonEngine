@@ -18,7 +18,7 @@ public:
     bool CheckDistance(const ICameraComponent3D* Camera, float _distance) const override;
 
     // CComponentBase
-    void OnMessage(ISceneNodeComponent* Component, ComponentMessageType Message) override;
+    void OnMessage(const ISceneNodeComponent* Component, ComponentMessageType Message) override;
 
 protected:
     virtual void UpdateBounds();

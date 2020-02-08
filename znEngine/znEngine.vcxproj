@@ -24,6 +24,7 @@
     <ClCompile Include="FBX\FBXSceneNode.cpp" />
     <ClCompile Include="FBX\FBXStream.cpp" />
     <ClCompile Include="Formats\ChunkedFile.cpp" />
+    <ClCompile Include="Images\DDSFormat.cpp" />
     <ClCompile Include="Passes\UIFontPass.cpp" />
     <ClCompile Include="Scene_Default.cpp" />
     <ClCompile Include="Images\ImageDDS.cpp" />
@@ -94,6 +95,7 @@
     <ClInclude Include="FBX\FBXSceneNode.h" />
     <ClInclude Include="FBX\FBXStream.h" />
     <ClInclude Include="Formats\ChunkedFile.h" />
+    <ClInclude Include="Images\DDSFormat.h" />
     <ClInclude Include="Passes\UIFontPass.h" />
     <ClInclude Include="Scene_Default.h" />
     <ClInclude Include="Images\ImageDDS.h" />
@@ -181,6 +183,7 @@
     </Text>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Images\DDSFormat.inl" />
     <None Include="Resources\shaders_D3D\3D\Debug.hlsl">
       <FileType>Document</FileType>
     </None>

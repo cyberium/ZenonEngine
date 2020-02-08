@@ -1,6 +1,7 @@
 #pragma once
 
 // FORWARD BEGIN
+ZN_INTERFACE IRenderDevice;
 ZN_INTERFACE IApplication;
 // FORWARD END
 
@@ -16,7 +17,7 @@ ZN_INTERFACE ZN_API IRefManager : public IManager
 {	
 	virtual ~IRefManager() {};
 
-	virtual std::shared_ptr<T> Add(const std::string& name) = 0;
+	virtual std::shared_ptr<T> Add(IRenderDevice& RenderDevice, const std::string& name) = 0;
 	virtual bool Exists(const std::string& name) const = 0;
 	virtual void Delete(const std::string& name) = 0;
 	virtual void Delete(std::shared_ptr<T> item) = 0;
@@ -35,7 +36,7 @@ ZN_INTERFACE ZN_API
 	virtual ~IFontsManager() {};
 
 	virtual std::shared_ptr<CFont> GetMainFont() const = 0;
-	virtual std::shared_ptr<CFont> Add(const std::string& _fontFileName, uint32 _fontSize) = 0;
+	virtual std::shared_ptr<CFont> Add(IRenderDevice& RenderDevice, const std::string& _fontFileName, uint32 _fontSize) = 0;
 };
 
 //--

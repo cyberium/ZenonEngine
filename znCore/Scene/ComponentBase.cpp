@@ -32,7 +32,7 @@ void CComponentBase::OnParentChanged()
 	// do nothing
 }
 
-void CComponentBase::OnMessage(ISceneNodeComponent* Component, ComponentMessageType Message)
+void CComponentBase::OnMessage(const ISceneNodeComponent* Component, ComponentMessageType Message)
 {
 	// do nothing
 }

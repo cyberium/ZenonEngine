@@ -4,17 +4,18 @@ class ZN_API ModelProxie
 	: public IModel
 {
 public:
-	ModelProxie(std::shared_ptr<IModel> Model);
+	ModelProxie(const std::shared_ptr<IModel>& Model);
 	virtual ~ModelProxie();
 
 	// IModel
-	virtual void SetName(const std::string& Name) override;
-	virtual std::string GetName() const override;
+	void SetName(const std::string& Name) override final;
+	std::string GetName() const override final;
 
 	virtual void SetBounds(const BoundingBox& Bounds) override;
 	virtual BoundingBox GetBounds() const override;
 
-	virtual void AddConnection(const std::shared_ptr<IMaterial>& Material, const std::shared_ptr<IGeometry>& Geometry, SGeometryDrawArgs GeometryDrawArgs = SGeometryDrawArgs()) override;
+	void AddConnection(const std::shared_ptr<IMaterial>& Material, const std::shared_ptr<IGeometry>& Geometry, SGeometryDrawArgs GeometryDrawArgs = SGeometryDrawArgs()) override final;
+	const std::vector<SConnection>& GetConnections() const override final;
 
 	virtual bool Render(const RenderEventArgs& renderEventArgs) const override;
 

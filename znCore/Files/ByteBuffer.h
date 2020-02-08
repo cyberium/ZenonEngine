@@ -19,6 +19,8 @@ public:
 	size_t getPos() const override { return m_CurrentPosition; }
 	const uint8* getData() const override { return m_Data.data(); }
 	const uint8* getDataFromCurrent() const override { return &m_Data[m_CurrentPosition]; }
+	uint8* getDataEx() override { return m_Data.data(); }
+	uint8* getDataFromCurrentEx() override { return &m_Data[m_CurrentPosition]; }
 	bool isEof() const override { return m_CurrentPosition >= m_Data.size(); }
 
     void seek(size_t AbsoluteOffset) override;
@@ -30,6 +32,8 @@ public:
 
 	void writeLine(std::string String) override;
 	void writeBytes(const void * Source, size_t BytesCount) override;
+	void writeDummy(size_t BytesCount) override;
+	void insert(size_t Position, const void * DataPtr, size_t DataSize);
 	void writeString(std::string String) override;
 
 private:
