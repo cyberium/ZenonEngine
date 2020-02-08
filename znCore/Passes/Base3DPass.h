@@ -16,11 +16,10 @@ public:
 	virtual ~Base3DPass();
 
 	// IVisitor
-	virtual bool Visit(ISceneNode3D* node) override;
-	virtual bool Visit(IModel* Model) override;
-	virtual bool Visit(IGeometry* Geometry, const IMaterial* Material, SGeometryDrawArgs GeometryDrawArgs = SGeometryDrawArgs()) override;
+	virtual bool Visit(const ISceneNode3D* node) override;
+	virtual bool Visit(const IModel* Model) override;
+	virtual bool Visit(const IGeometry* Geometry, const IMaterial* Material, SGeometryDrawArgs GeometryDrawArgs = SGeometryDrawArgs()) override;
 
 protected:
-	PerObject3D* m_PerObjectData;
 	std::shared_ptr<IConstantBuffer> m_PerObjectConstantBuffer;
 };

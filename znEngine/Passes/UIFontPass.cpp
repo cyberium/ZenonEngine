@@ -73,9 +73,9 @@ std::shared_ptr<IRenderPassPipelined> CUIFontPass::CreatePipeline(std::shared_pt
 //
 // IVisitor
 //
-bool CUIFontPass::Visit(ISceneNodeUI * node)
+bool CUIFontPass::Visit(const ISceneNodeUI * node)
 {
-	if (CUITextNode* textNode = dynamic_cast<CUITextNode*>(node))
+	if (const CUITextNode* textNode = dynamic_cast<const CUITextNode*>(node))
 	{
 		BaseUIPass::Visit(node);
 
@@ -107,7 +107,7 @@ bool CUIFontPass::Visit(ISceneNodeUI * node)
 	return false;
 }
 
-bool CUIFontPass::Visit(IModel * Model)
+bool CUIFontPass::Visit(const IModel * Model)
 {
 	_ASSERT(false);
 	return false;

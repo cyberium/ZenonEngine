@@ -106,6 +106,9 @@
     <Filter Include="Externals\lua">
       <UniqueIdentifier>{b25aeee7-42cc-4c8f-a169-d2862e2b6dc1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Passes\3D">
+      <UniqueIdentifier>{97324916-dd39-465d-803b-5864d3ffa59a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Log.cpp">
@@ -285,12 +288,6 @@
     <ClCompile Include="Passes\Technical\SetShaderParameterPass.cpp">
       <Filter>Passes\Technical</Filter>
     </ClCompile>
-    <ClCompile Include="Passes\Technical\BuildRenderListPass.cpp">
-      <Filter>Passes\Technical</Filter>
-    </ClCompile>
-    <ClCompile Include="Passes\Technical\RenderListProcessorPass.cpp">
-      <Filter>Passes\Technical</Filter>
-    </ClCompile>
     <ClCompile Include="Scene\3D\CameraComponent3D.cpp">
       <Filter>Scene functional\3D</Filter>
     </ClCompile>
@@ -302,6 +299,12 @@
     </ClCompile>
     <ClCompile Include="Proxies\ModelProxie.cpp">
       <Filter>__Proxies</Filter>
+    </ClCompile>
+    <ClCompile Include="Passes\Technical\BuildRenderListPass.cpp">
+      <Filter>Passes\3D</Filter>
+    </ClCompile>
+    <ClCompile Include="Passes\Technical\RenderListProcessorPass.cpp">
+      <Filter>Passes\3D</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -692,14 +695,8 @@
     <ClInclude Include="Passes\Technical\SetShaderParameterPass.h">
       <Filter>Passes\Technical</Filter>
     </ClInclude>
-    <ClInclude Include="Passes\Technical\BuildRenderListPass.h">
-      <Filter>Passes\Technical</Filter>
-    </ClInclude>
     <ClInclude Include="..\shared\Interfaces\Render\IRenderTechnique.h">
       <Filter>__Interfaces\Render</Filter>
-    </ClInclude>
-    <ClInclude Include="Passes\Technical\RenderListProcessorPass.h">
-      <Filter>Passes\Technical</Filter>
     </ClInclude>
     <ClInclude Include="Scene\3D\CameraComponent3D.h">
       <Filter>Scene functional\3D</Filter>
@@ -721,6 +718,12 @@
     </ClInclude>
     <ClInclude Include="..\shared\Interfaces\Scene\ISceneNodeUI.h">
       <Filter>__Interfaces\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Passes\Technical\BuildRenderListPass.h">
+      <Filter>Passes\3D</Filter>
+    </ClInclude>
+    <ClInclude Include="Passes\Technical\RenderListProcessorPass.h">
+      <Filter>Passes\3D</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

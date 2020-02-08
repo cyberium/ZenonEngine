@@ -40,7 +40,7 @@ std::shared_ptr<IRenderPassPipelined> BaseUIPass::CreatePipeline(std::shared_ptr
 //
 // IVisitor
 //
-bool BaseUIPass::Visit(ISceneNodeUI* sceneNode)
+bool BaseUIPass::Visit(const ISceneNodeUI* sceneNode)
 {
 	m_PerObjectData->Model = sceneNode->GetWorldTransfom();
 	m_PerObjectConstantBuffer->Set(m_PerObjectData, sizeof(PerObjectUI));
@@ -55,12 +55,12 @@ bool BaseUIPass::Visit(ISceneNodeUI* sceneNode)
 	return true;
 }
 
-bool BaseUIPass::Visit(IModel * Model)
+bool BaseUIPass::Visit(const IModel * Model)
 {
 	return Model->Render(GetRenderEventArgs());
 }
 
-bool BaseUIPass::Visit(IGeometry* Geometry, const IMaterial* Material, SGeometryDrawArgs GeometryDrawArgs)
+bool BaseUIPass::Visit(const IGeometry* Geometry, const IMaterial* Material, SGeometryDrawArgs GeometryDrawArgs)
 {
 	Material->Bind(GetRenderEventArgs().PipelineState->GetShaders());
 	bool result = Geometry->Render(GetRenderEventArgs(), GetRenderEventArgs().PipelineState->GetShaders().at(EShaderType::VertexShader).get(), GeometryDrawArgs);

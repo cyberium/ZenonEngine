@@ -44,10 +44,10 @@ public:
 	virtual void Render(RenderEventArgs& e) override;
 
 	// IVisitor
-	virtual bool Visit(ISceneNode3D* node) override;
-	virtual bool Visit(IModel* Model) override;
-	virtual bool Visit(IGeometry* Geometry, const IMaterial* Material, SGeometryDrawArgs GeometryDrawArgs = SGeometryDrawArgs()) override;
-	virtual bool Visit(ILightComponent3D* light) override;
+	virtual bool Visit(const ISceneNode3D* node) override;
+	virtual bool Visit(const IModel* Model) override;
+	virtual bool Visit(const IGeometry* Geometry, const IMaterial* Material, SGeometryDrawArgs GeometryDrawArgs = SGeometryDrawArgs()) override;
+	virtual bool Visit(const ILightComponent3D* light) override;
 
 private:
 	const ISceneNode3D* m_CurrentSceneNode;

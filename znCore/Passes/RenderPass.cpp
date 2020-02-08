@@ -41,27 +41,27 @@ void RenderPass::PostRender(RenderEventArgs& e)
 //
 // IVisitor
 //
-bool RenderPass::Visit(ISceneNode3D* node)
+bool RenderPass::Visit(const ISceneNode3D* node)
 {
 	return false;
 }
 
-bool RenderPass::Visit(ISceneNodeUI* node)
+bool RenderPass::Visit(const ISceneNodeUI* node)
 {
 	return false;
 }
 
-bool RenderPass::Visit(IModel* Model)
+bool RenderPass::Visit(const IModel* Model)
 {
     return false;
 }
 
-bool RenderPass::Visit(IGeometry * Geometry, const IMaterial* Material, SGeometryDrawArgs GeometryDrawArgs)
+bool RenderPass::Visit(const IGeometry * Geometry, const IMaterial* Material, SGeometryDrawArgs GeometryDrawArgs)
 {
 	return false;
 }
 
-bool RenderPass::Visit(ILightComponent3D* light)
+bool RenderPass::Visit(const ILightComponent3D* light)
 {
 	return false;
 }

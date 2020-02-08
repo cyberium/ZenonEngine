@@ -164,25 +164,25 @@ void BuildRenderListPass::Render(RenderEventArgs & e)
 //
 // IVisitor
 //
-bool BuildRenderListPass::Visit(ISceneNode3D * node)
+bool BuildRenderListPass::Visit(const ISceneNode3D * node)
 {
 	m_CurrentSceneNode = node;
 
 	return true;
 }
 
-bool BuildRenderListPass::Visit(IModel * Model)
+bool BuildRenderListPass::Visit(const IModel * Model)
 {
 	return true;
 }
 
-bool BuildRenderListPass::Visit(IGeometry * Geometry, const IMaterial * Material, SGeometryDrawArgs GeometryDrawArgs)
+bool BuildRenderListPass::Visit(const IGeometry * Geometry, const IMaterial * Material, SGeometryDrawArgs GeometryDrawArgs)
 {
 	m_GeometryList.push_back(SGeometryElement(m_CurrentSceneNode, Geometry, Material, GeometryDrawArgs));
 	return true;
 }
 
-bool BuildRenderListPass::Visit(ILightComponent3D * light)
+bool BuildRenderListPass::Visit(const ILightComponent3D * light)
 {
 	m_LightList.push_back(SLightElement(m_CurrentSceneNode, light));
 	return true;

@@ -4,16 +4,16 @@ class ZN_API Viewport
 {
 public:
 	Viewport()
-		: X(0.0f)
-		, Y(0.0f)
-		, Width(320.0f)
-		, Height(240.0f)
+		: X(0)
+		, Y(0)
+		, Width(320)
+		, Height(240)
 		, MinDepth(0.0f)
 		, MaxDepth(1.0f)
 	{
 		UpdateOrthoMatrix();
 	}
-    Viewport(float x, float y, float width, float height, float minDepth, float maxDepth)
+    Viewport(size_t x, size_t y, size_t width, size_t height, float minDepth, float maxDepth)
 		: X(x)
 		, Y(y)
 		, Width(width)
@@ -32,31 +32,31 @@ public:
 	}
     void UpdateOrthoMatrix()
 	{
-		OrthoMatrix = glm::ortho<float>(X, Width, Height, Y, MinDepth - 1.0f, MaxDepth);
+		OrthoMatrix = glm::ortho<float>(static_cast<float>(X), static_cast<float>(Width), static_cast<float>(Height), static_cast<float>(Y), MinDepth - 1.0f, MaxDepth);
 	}
 
-	float GetX() const
+	size_t GetX() const
 	{
 		return X;
 	}
-	float GetY() const
+	size_t GetY() const
 	{
 		return Y;
 	}
-	float GetWidth() const
+	size_t GetWidth() const
 	{
 		return Width;
 	}
-	void SetWidth(float Value)
+	void SetWidth(size_t Value)
 	{
 		Width = Value;
 		UpdateOrthoMatrix();
 	}
-	float GetHeight() const
+	size_t GetHeight() const
 	{
 		return Height;
 	}
-	void SetHeight(float Value)
+	void SetHeight(size_t Value)
 	{
 		Height = Value;
 		UpdateOrthoMatrix();
@@ -71,10 +71,10 @@ public:
 	}
 
 private:
-	float X;
-	float Y;
-	float Width;
-	float Height;
+	size_t X;
+	size_t Y;
+	size_t Width;
+	size_t Height;
 	float MinDepth;
 	float MaxDepth;
 

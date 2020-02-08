@@ -25,9 +25,9 @@ ZN_INTERFACE ZN_API IVisitor : public std::enable_shared_from_this<IVisitor>
 {
 	virtual ~IVisitor() {}
 
-	virtual bool Visit(ISceneNode3D* node) = 0;
-	virtual bool Visit(ISceneNodeUI* node) = 0;
-	virtual bool Visit(IModel* Model) = 0;
-	virtual bool Visit(IGeometry* Geometry, const IMaterial* Material, SGeometryDrawArgs GeometryDrawArgs = SGeometryDrawArgs()) = 0;
-	virtual bool Visit(ILightComponent3D* Light) = 0;
+	virtual bool Visit(const ISceneNode3D* node) = 0;
+	virtual bool Visit(const ISceneNodeUI* node) = 0;
+	virtual bool Visit(const IModel* Model) = 0;
+	virtual bool Visit(const IGeometry* Geometry, const IMaterial* Material, SGeometryDrawArgs GeometryDrawArgs = SGeometryDrawArgs()) = 0;
+	virtual bool Visit(const ILightComponent3D* Light) = 0;
 };

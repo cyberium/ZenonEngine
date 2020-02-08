@@ -23,9 +23,9 @@ public:
 	void UpdateViewport(const Viewport& _viewport) override;
 
 	// IVisitor
-	bool Visit(ISceneNode3D* node) override;
-	bool Visit(IGeometry* Geometry, const IMaterial* Material, SGeometryDrawArgs GeometryDrawArgs = SGeometryDrawArgs()) override;
-	bool Visit(ILightComponent3D* light) override;
+	bool Visit(const ISceneNode3D* node) override;
+	bool Visit(const IGeometry* Geometry, const IMaterial* Material, SGeometryDrawArgs GeometryDrawArgs = SGeometryDrawArgs()) override;
+	bool Visit(const ILightComponent3D* light) override;
 
 private:
 	std::shared_ptr<IConstantBuffer> m_PerObjectConstantBuffer;

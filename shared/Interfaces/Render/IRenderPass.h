@@ -7,7 +7,8 @@ ZN_INTERFACE IPipelineState;
 class Viewport;
 // FORWARD END
 
-ZN_INTERFACE ZN_API IRenderPass : public IVisitor
+ZN_INTERFACE ZN_API IRenderPass 
+	: public IVisitor
 {
 	virtual ~IRenderPass() {}
 
@@ -20,7 +21,8 @@ ZN_INTERFACE ZN_API IRenderPass : public IVisitor
 };
 
 
-ZN_INTERFACE ZN_API IRenderPassPipelined : public IRenderPass
+ZN_INTERFACE ZN_API IRenderPassPipelined 
+	: public IRenderPass
 {
 	virtual ~IRenderPassPipelined() {}
 
@@ -46,9 +48,7 @@ ZN_INTERFACE ZN_API IRenderPassCreator
 
 
 
-ZN_INTERFACE ZN_API
-__declspec(uuid("A0ED56A7-77B5-40E4-B479-1CA95CAAD96C"))
-IRenderPassFactory
+ZN_INTERFACE ZN_API __declspec(uuid("A0ED56A7-77B5-40E4-B479-1CA95CAAD96C")) IRenderPassFactory
 	: public IManager
 {
 	virtual ~IRenderPassFactory() {}

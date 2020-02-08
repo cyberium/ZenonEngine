@@ -136,7 +136,7 @@ void CDefferedRender::UpdateViewport(const Viewport& _viewport)
 //
 // IVisitor
 //
-bool CDefferedRender::Visit(ISceneNode3D * node)
+bool CDefferedRender::Visit(const ISceneNode3D * node)
 {
 	RenderListProcessorPass::Visit(node);
 
@@ -148,7 +148,7 @@ bool CDefferedRender::Visit(ISceneNode3D * node)
 	return true;
 }
 
-bool CDefferedRender::Visit(IGeometry * Geometry, const IMaterial * Material, SGeometryDrawArgs GeometryDrawArgs)
+bool CDefferedRender::Visit(const IGeometry * Geometry, const IMaterial * Material, SGeometryDrawArgs GeometryDrawArgs)
 {
 	const auto& shaders = GetRenderEventArgs().PipelineState->GetShaders();
 
@@ -159,7 +159,7 @@ bool CDefferedRender::Visit(IGeometry * Geometry, const IMaterial * Material, SG
 	return result;
 }
 
-bool CDefferedRender::Visit(ILightComponent3D * light)
+bool CDefferedRender::Visit(const ILightComponent3D * light)
 {
 	return false;
 }
