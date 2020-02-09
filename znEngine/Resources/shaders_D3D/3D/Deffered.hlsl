@@ -129,8 +129,8 @@ float4 PS_DeferredLighting(VS_Output VSOut) : SV_Target
 
 	float4 colorResult = (diffuse * lit.Diffuse) + (specular * lit.Specular);
 	
-	if (IsShadowed(PModel))
-		return colorResult * 0.3f;
+	//if (IsShadowed(PModel))
+	//	return colorResult * 0.3f;
 
 
 	

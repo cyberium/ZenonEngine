@@ -132,7 +132,7 @@ void CGameState_World::Load3D()
 
 		sceneNodeLight2->GetComponent<ILightComponent3D>()->SetType(ELightType::Spot);
 		sceneNodeLight2->GetComponent<ILightComponent3D>()->SetColor(glm::vec3(0.0f, 0.0f, 1.0f));
-		sceneNodeLight2->GetComponent<ILightComponent3D>()->SetRange(4000.0f);
+		sceneNodeLight2->GetComponent<ILightComponent3D>()->SetRange(7000.0f);
 		sceneNodeLight2->GetComponent<ILightComponent3D>()->SetIntensity(1.0f);
 		sceneNodeLight2->GetComponent<ILightComponent3D>()->SetSpotlightAngle(20.0f);
 
