@@ -147,4 +147,6 @@ ZN_INTERFACE __declspec(novtable, UUID_CameraComponent) ZN_API ICameraComponent3
 
 	virtual const glm::mat4& GetProjectionViewMatrix() const = 0;
 	virtual const glm::mat4& GetInverseProjectionViewMatrix() const = 0;
+
+	virtual const Frustum& GetFrustum() const = 0;
 };

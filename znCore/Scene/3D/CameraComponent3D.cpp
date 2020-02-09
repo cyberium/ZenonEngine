@@ -197,6 +197,11 @@ const glm::mat4 & CCameraComponent3D::GetInverseProjectionViewMatrix() const
 	return m_Inverse_ProjectionView;
 }
 
+const Frustum & CCameraComponent3D::GetFrustum() const
+{
+	return m_Frustum;
+}
+
 
 
 //
@@ -293,6 +298,8 @@ void CCameraComponent3D::UpdateView()
 
 	m_View = glm::lookAt(GetOwnerNode().GetTranslation(), GetOwnerNode().GetTranslation() + GetOwnerNode().GetRotation(), m_UpDirection);
 	m_Inverse_View = glm::inverse(m_View);
+
+	m_Frustum.buildViewFrustum(m_View, m_Projection);
 
 	m_View_Dirty = false;
 	m_ProjectionView_Dirty = true;

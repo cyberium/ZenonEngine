@@ -4,6 +4,9 @@
 #include "ImageDDS.h"
 
 
+using namespace DDSFormat;
+
+
 //
 // CImageDDS
 //

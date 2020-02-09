@@ -30,7 +30,7 @@ CFreeCameraController::~CFreeCameraController()
 //
 void CFreeCameraController::OnUpdate(UpdateEventArgs& e)
 {
-	float moveMultiplier = (TranslateFaster) ? 5 : 1;
+	float moveMultiplier = (TranslateFaster) ? 2.0f : 0.22f;
 
 	GetCamera()->DoMoveFront(Forward * moveMultiplier);
 	GetCamera()->DoMoveBack(Back * moveMultiplier);

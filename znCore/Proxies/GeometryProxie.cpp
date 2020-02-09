@@ -7,6 +7,9 @@ GeometryProxie::GeometryProxie(const std::shared_ptr<IGeometry>& Geometry)
 	: m_Geometry(Geometry)
 {
 	_ASSERT(m_Geometry != nullptr);
+
+	m_GeometryInternal = std::dynamic_pointer_cast<IGeometryInternal>(m_Geometry);
+	_ASSERT(m_GeometryInternal != nullptr);
 }
 
 GeometryProxie::~GeometryProxie()
@@ -47,17 +50,37 @@ void GeometryProxie::SetPrimitiveTopology(PrimitiveTopology Topology)
 	m_Geometry->SetPrimitiveTopology(Topology);
 }
 
-bool GeometryProxie::Render(const RenderEventArgs & RenderEventArgs, const IShader * VertexShader, const SGeometryDrawArgs GeometryDrawArgs) const
+void GeometryProxie::Render(const RenderEventArgs & RenderEventArgs, const IShader * VertexShader, const SGeometryDrawArgs GeometryDrawArgs) const
 {
-	return m_Geometry->Render(RenderEventArgs, VertexShader, GeometryDrawArgs);
+	m_Geometry->Render(RenderEventArgs, VertexShader, GeometryDrawArgs);
 }
 
-bool GeometryProxie::RenderInstanced(const RenderEventArgs & RenderEventArgs, const IShader * VertexShader, const SGeometryDrawInstancedArgs GeometryDrawInstancedArgs) const
+void GeometryProxie::RenderInstanced(const RenderEventArgs & RenderEventArgs, const IShader * VertexShader, const SGeometryDrawInstancedArgs GeometryDrawInstancedArgs) const
 {
-	return m_Geometry->RenderInstanced(RenderEventArgs, VertexShader, GeometryDrawInstancedArgs);
+	m_Geometry->RenderInstanced(RenderEventArgs, VertexShader, GeometryDrawInstancedArgs);
 }
 
 void GeometryProxie::Accept(IVisitor * visitor, const IMaterial * Material, SGeometryDrawArgs GeometryDrawArgs)
 {
 	visitor->Visit(this, Material, GeometryDrawArgs);
+}
+
+void GeometryProxie::Render_BindAllBuffers(const RenderEventArgs & RenderEventArgs, const IShader * VertexShader) const
+{
+	m_GeometryInternal->Render_BindAllBuffers(RenderEventArgs, VertexShader);
+}
+
+void GeometryProxie::Render_Draw(const SGeometryDrawArgs GeometryDrawArgs) const
+{
+	m_GeometryInternal->Render_Draw(GeometryDrawArgs);
+}
+
+void GeometryProxie::Render_DrawInstanced(const SGeometryDrawInstancedArgs GeometryDrawInstancedArgs) const
+{
+	m_GeometryInternal->Render_DrawInstanced(GeometryDrawInstancedArgs);
+}
+
+void GeometryProxie::Render_UnbindAllBuffers(const RenderEventArgs & RenderEventArgs, const IShader * VertexShader) const
+{
+	m_GeometryInternal->Render_UnbindAllBuffers(RenderEventArgs, VertexShader);
 }

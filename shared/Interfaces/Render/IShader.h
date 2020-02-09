@@ -85,5 +85,5 @@ ZN_INTERFACE ZN_API __declspec(novtable) IShader
 };
 
 typedef std::vector<std::shared_ptr<IShader>> ShaderList;
-typedef std::unordered_map<EShaderType, std::shared_ptr<IShader>> ShaderMap;
-typedef std::unordered_map<std::string, std::shared_ptr<IShader>> ShaderNameMap;
+typedef std::map<EShaderType, std::shared_ptr<IShader>> ShaderMap;
+typedef std::map<std::string, std::shared_ptr<IShader>> ShaderNameMap;

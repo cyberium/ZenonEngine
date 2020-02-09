@@ -1,0 +1,36 @@
+//////////////////////////////////////////////////////////////////////////////////////////////
+// Chuncked structure:
+//////////////////////////////////////////////////////////////////////////////////////////////
+
+Binary file may be chunked. All chunked files contains information about his chunks at file begin (header):
+
+// FILE CONTENT BEGIN
+{
+	SChunksHeader  (4 + sizeof(SChunkLink) * LCNT bytes) // 'Header' of any chunked structure. Provides fast access to any chunk
+	{
+		VERS (4 bytes, unsigned int)          // 12      // Version of this file
+		LCNT (4 bytes, unsigned int)          // 3       // Count of chunks link
+		[
+	
+			SChunkLink  (12 bytes)                       // Link to chunk in file. Provide possibility to read needed only sections without read all file.
+			{
+				CHID (4 bytes, char[4])       // "NAME"  // Chunk identifier. Not unique.
+				CHOF (4 bytes, unsigned int)  // 123456  // Offset of this chunk from data begin in bytes.
+				CHSZ (4 bytes, unsigned int)  // 123456  // Chunk size in bytes
+			},
+			...
+		]
+	}
+}
+//
+// ... data ...
+//
+// FILE CONTENT END
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////
+// Geometry description:
+//////////////////////////////////////////////////////////////////////////////////////////////
+
+TODO

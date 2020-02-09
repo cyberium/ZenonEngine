@@ -49,39 +49,6 @@ void GeometryBase::Accept(IVisitor * visitor, const IMaterial* Material, SGeomet
 //
 // Protected
 //
-void GeometryBase::BindVertexBuffersToVertexShader(const IShader* VertexShader) const
-{
-	if (m_VertexBuffer != nullptr)
-	{
-		m_VertexBuffer->Bind(0, VertexShader, IShaderParameter::Type::Buffer);
-	}
-	else
-	{
-		for (const auto& buffer : m_VertexBuffers)
-		{
-			UINT slotID = VertexShader->GetInputLayout().GetSemanticSlot(buffer.first);
-			if (slotID != UINT_MAX)
-				buffer.second->Bind(slotID, VertexShader, IShaderParameter::Type::Buffer);
-		}
-	}
-}
-
-void GeometryBase::UnbindVertexBuffersFromVertexShader(const IShader* VertexShader) const
-{
-	if (m_VertexBuffer != nullptr)
-	{
-		m_VertexBuffer->UnBind(0, VertexShader, IShaderParameter::Type::Buffer);
-	}
-	else
-	{
-		for (const auto& buffer : m_VertexBuffers)
-		{
-			UINT slotID = VertexShader->GetInputLayout().GetSemanticSlot(buffer.first);
-			if (slotID != UINT_MAX)
-				buffer.second->UnBind(slotID, VertexShader, IShaderParameter::Type::Buffer);
-		}
-	}
-}
 
 SGeometryDrawArgs GeometryBase::FixGeometryDrawArgs(const SGeometryDrawArgs & GeometryDrawArgs) const
 {

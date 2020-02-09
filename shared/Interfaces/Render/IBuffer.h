@@ -63,7 +63,7 @@ ZN_INTERFACE ZN_API IStructuredBuffer
 	// Templates
 
 	template<typename T>
-	inline void Set(const std::vector<T>& value)
+	inline void Set(const std::vector<T>& values)
 	{
 		Set((void*)values.data(), sizeof(T), 0, values.size());
 	}

@@ -24,13 +24,15 @@
     <ClCompile Include="FBX\FBXSceneNode.cpp" />
     <ClCompile Include="FBX\FBXStream.cpp" />
     <ClCompile Include="Formats\ChunkedFile.cpp" />
-    <ClCompile Include="Images\DDSFormat.cpp" />
+    <ClCompile Include="Formats\Fonts\Font.cpp" />
+    <ClCompile Include="Formats\Fonts\FontsManager.cpp" />
+    <ClCompile Include="Formats\Images\DDSFormat.cpp" />
+    <ClCompile Include="Formats\Images\ImageDDS.cpp" />
+    <ClCompile Include="Formats\Images\ImageLoaderTemplate.cpp" />
+    <ClCompile Include="Formats\Images\ImagePNG.cpp" />
+    <ClCompile Include="Formats\Images\ImagesFactory.cpp" />
     <ClCompile Include="Passes\UIFontPass.cpp" />
     <ClCompile Include="Scene_Default.cpp" />
-    <ClCompile Include="Images\ImageDDS.cpp" />
-    <ClCompile Include="Images\ImagePNG.cpp" />
-    <ClCompile Include="Images\ImageLoaderTemplate.cpp" />
-    <ClCompile Include="Images\ImagesFactory.cpp" />
     <ClCompile Include="Materials\MaterialDebug.cpp" />
     <ClCompile Include="Materials\MaterialTextured.cpp" />
     <ClCompile Include="Materials\MaterialModel.cpp" />
@@ -56,8 +58,6 @@
     <ClCompile Include="SceneFunctional\SceneNodeDefaultCreator.cpp" />
     <ClCompile Include="SceneFunctional\SceneNodesFactory.cpp" />
     <ClCompile Include="SceneFunctional\ScenesFactory.cpp" />
-    <ClCompile Include="SceneFunctional\UI\Fonts\Font.cpp" />
-    <ClCompile Include="SceneFunctional\UI\Fonts\FontsManager.cpp" />
     <ClCompile Include="SceneFunctional\UI\UIBeizerLine.cpp" />
     <ClCompile Include="SceneFunctional\UI\UIButton.cpp" />
     <ClCompile Include="SceneFunctional\UI\UIColor.cpp" />
@@ -95,13 +95,15 @@
     <ClInclude Include="FBX\FBXSceneNode.h" />
     <ClInclude Include="FBX\FBXStream.h" />
     <ClInclude Include="Formats\ChunkedFile.h" />
-    <ClInclude Include="Images\DDSFormat.h" />
+    <ClInclude Include="Formats\Fonts\Font.h" />
+    <ClInclude Include="Formats\Fonts\FontsManager.h" />
+    <ClInclude Include="Formats\Images\DDSFormat.h" />
+    <ClInclude Include="Formats\Images\ImageDDS.h" />
+    <ClInclude Include="Formats\Images\ImageLoaderTemplate.h" />
+    <ClInclude Include="Formats\Images\ImagePNG.h" />
+    <ClInclude Include="Formats\Images\ImagesFactory.h" />
     <ClInclude Include="Passes\UIFontPass.h" />
     <ClInclude Include="Scene_Default.h" />
-    <ClInclude Include="Images\ImageDDS.h" />
-    <ClInclude Include="Images\ImagePNG.h" />
-    <ClInclude Include="Images\ImageLoaderTemplate.h" />
-    <ClInclude Include="Images\ImagesFactory.h" />
     <ClInclude Include="Materials\MaterialDebug.h" />
     <ClInclude Include="Materials\MaterialTextured.h" />
     <ClInclude Include="Materials\MaterialModel.h" />
@@ -128,8 +130,6 @@
     <ClInclude Include="SceneFunctional\SceneNodeDefaultCreator.h" />
     <ClInclude Include="SceneFunctional\SceneNodesFactory.h" />
     <ClInclude Include="SceneFunctional\ScenesFactory.h" />
-    <ClInclude Include="SceneFunctional\UI\Fonts\Font.h" />
-    <ClInclude Include="SceneFunctional\UI\Fonts\FontsManager.h" />
     <ClInclude Include="SceneFunctional\UI\UIBeizerLine.h" />
     <ClInclude Include="SceneFunctional\UI\UIButton.h" />
     <ClInclude Include="SceneFunctional\UI\UIColor.h" />
@@ -183,7 +183,7 @@
     </Text>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Images\DDSFormat.inl" />
+    <None Include="Formats\Images\DDSFormat.inl" />
     <None Include="Resources\shaders_D3D\3D\Debug.hlsl">
       <FileType>Document</FileType>
     </None>

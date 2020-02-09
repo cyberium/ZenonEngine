@@ -262,12 +262,12 @@ public:
 		uint64_t FrameCounter
 	)
 		: EventArgs(caller)
-		, ElapsedTime(DeltaTime)
+		, DeltaTime(DeltaTime)
 		, TotalTime(TotalTime)
 		, FrameCounter(FrameCounter)
 	{}
 
-	float                                           ElapsedTime;
+	float                                           DeltaTime;
 	float                                           TotalTime;
 	int64_t                                         FrameCounter;
 };
@@ -289,7 +289,7 @@ public:
 		const ISceneNodeUI* NodeUI = nullptr
 	)
 		: EventArgs(Caller)
-		, ElapsedTime(DeltaTime)
+		, DeltaTime(DeltaTime)
 		, TotalTime(TotalTime)
 		, FrameCounter(FrameCounter)
 
@@ -299,7 +299,7 @@ public:
 		, NodeUI2(NodeUI)
 	{}
 
-	float                                           ElapsedTime;
+	float                                           DeltaTime;
 	float                                           TotalTime;
 	int64_t                                         FrameCounter;
 

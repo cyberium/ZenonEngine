@@ -58,14 +58,8 @@
     <Filter Include="Scene Funcitonal\UI\Utils">
       <UniqueIdentifier>{58530eb5-a58f-4c13-94b2-0d6730fa84eb}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Scene Funcitonal\UI\Fonts">
-      <UniqueIdentifier>{a14d68cf-974d-4fe9-8bb3-b39b310eae0b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Resources\Textures">
       <UniqueIdentifier>{f841afa5-fa24-4948-a5bb-cc5e7cd3ea2a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Images">
-      <UniqueIdentifier>{e6bb9cbb-303a-4b03-bd60-ddcae714b9be}</UniqueIdentifier>
     </Filter>
     <Filter Include="Passes\3D\DefferedLighting">
       <UniqueIdentifier>{10098261-ebbf-4465-8c32-402b36a51158}</UniqueIdentifier>
@@ -99,6 +93,12 @@
     </Filter>
     <Filter Include="Formats">
       <UniqueIdentifier>{342227e0-e22d-4457-be0c-b50002d6727d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Formats\Images">
+      <UniqueIdentifier>{e6bb9cbb-303a-4b03-bd60-ddcae714b9be}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Formats\Fonts">
+      <UniqueIdentifier>{42e015df-4a5d-4cd0-a2db-2356c165cd3a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -144,12 +144,6 @@
     </ClCompile>
     <ClCompile Include="SceneFunctional\UI\UIUtils.cpp">
       <Filter>Scene Funcitonal\UI\Utils</Filter>
-    </ClCompile>
-    <ClCompile Include="SceneFunctional\UI\Fonts\Font.cpp">
-      <Filter>Scene Funcitonal\UI\Fonts</Filter>
-    </ClCompile>
-    <ClCompile Include="SceneFunctional\UI\Fonts\FontsManager.cpp">
-      <Filter>Scene Funcitonal\UI\Fonts</Filter>
     </ClCompile>
     <ClCompile Include="znEngine.cpp">
       <Filter>Common</Filter>
@@ -207,18 +201,6 @@
     </ClCompile>
     <ClCompile Include="Passes\TextureDebugPass.cpp">
       <Filter>Passes\3D</Filter>
-    </ClCompile>
-    <ClCompile Include="Images\ImagesFactory.cpp">
-      <Filter>Images</Filter>
-    </ClCompile>
-    <ClCompile Include="Images\ImageLoaderTemplate.cpp">
-      <Filter>Images</Filter>
-    </ClCompile>
-    <ClCompile Include="Images\ImageDDS.cpp">
-      <Filter>Images</Filter>
-    </ClCompile>
-    <ClCompile Include="Images\ImagePNG.cpp">
-      <Filter>Images</Filter>
     </ClCompile>
     <ClCompile Include="Materials\MaterialModel.cpp">
       <Filter>Materials</Filter>
@@ -288,8 +270,26 @@
     <ClCompile Include="Formats\ChunkedFile.cpp">
       <Filter>Formats</Filter>
     </ClCompile>
-    <ClCompile Include="Images\DDSFormat.cpp">
-      <Filter>Images</Filter>
+    <ClCompile Include="Formats\Images\DDSFormat.cpp">
+      <Filter>Formats\Images</Filter>
+    </ClCompile>
+    <ClCompile Include="Formats\Images\ImageDDS.cpp">
+      <Filter>Formats\Images</Filter>
+    </ClCompile>
+    <ClCompile Include="Formats\Images\ImageLoaderTemplate.cpp">
+      <Filter>Formats\Images</Filter>
+    </ClCompile>
+    <ClCompile Include="Formats\Images\ImagePNG.cpp">
+      <Filter>Formats\Images</Filter>
+    </ClCompile>
+    <ClCompile Include="Formats\Images\ImagesFactory.cpp">
+      <Filter>Formats\Images</Filter>
+    </ClCompile>
+    <ClCompile Include="Formats\Fonts\Font.cpp">
+      <Filter>Formats\Fonts</Filter>
+    </ClCompile>
+    <ClCompile Include="Formats\Fonts\FontsManager.cpp">
+      <Filter>Formats\Fonts</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -341,12 +341,6 @@
     </ClInclude>
     <ClInclude Include="SceneFunctional\UI\UIUtils.h">
       <Filter>Scene Funcitonal\UI\Utils</Filter>
-    </ClInclude>
-    <ClInclude Include="SceneFunctional\UI\Fonts\Font.h">
-      <Filter>Scene Funcitonal\UI\Fonts</Filter>
-    </ClInclude>
-    <ClInclude Include="SceneFunctional\UI\Fonts\FontsManager.h">
-      <Filter>Scene Funcitonal\UI\Fonts</Filter>
     </ClInclude>
     <ClInclude Include="Settings\GroupVideo.h">
       <Filter>Settings</Filter>
@@ -401,18 +395,6 @@
     </ClInclude>
     <ClInclude Include="Passes\TextureDebugPass.h">
       <Filter>Passes\3D</Filter>
-    </ClInclude>
-    <ClInclude Include="Images\ImagesFactory.h">
-      <Filter>Images</Filter>
-    </ClInclude>
-    <ClInclude Include="Images\ImageLoaderTemplate.h">
-      <Filter>Images</Filter>
-    </ClInclude>
-    <ClInclude Include="Images\ImageDDS.h">
-      <Filter>Images</Filter>
-    </ClInclude>
-    <ClInclude Include="Images\ImagePNG.h">
-      <Filter>Images</Filter>
     </ClInclude>
     <ClInclude Include="Materials\MaterialModel.h">
       <Filter>Materials</Filter>
@@ -483,8 +465,26 @@
     <ClInclude Include="Formats\ChunkedFile.h">
       <Filter>Formats</Filter>
     </ClInclude>
-    <ClInclude Include="Images\DDSFormat.h">
-      <Filter>Images</Filter>
+    <ClInclude Include="Formats\Images\DDSFormat.h">
+      <Filter>Formats\Images</Filter>
+    </ClInclude>
+    <ClInclude Include="Formats\Images\ImageDDS.h">
+      <Filter>Formats\Images</Filter>
+    </ClInclude>
+    <ClInclude Include="Formats\Images\ImageLoaderTemplate.h">
+      <Filter>Formats\Images</Filter>
+    </ClInclude>
+    <ClInclude Include="Formats\Images\ImagePNG.h">
+      <Filter>Formats\Images</Filter>
+    </ClInclude>
+    <ClInclude Include="Formats\Images\ImagesFactory.h">
+      <Filter>Formats\Images</Filter>
+    </ClInclude>
+    <ClInclude Include="Formats\Fonts\Font.h">
+      <Filter>Formats\Fonts</Filter>
+    </ClInclude>
+    <ClInclude Include="Formats\Fonts\FontsManager.h">
+      <Filter>Formats\Fonts</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -579,8 +579,8 @@
     <None Include="Resources\shaders_D3D\3D\Debug.hlsl">
       <Filter>Resources\Shaders_D3D\3D\Base</Filter>
     </None>
-    <None Include="Images\DDSFormat.inl">
-      <Filter>Images</Filter>
+    <None Include="Formats\Images\DDSFormat.inl">
+      <Filter>Formats\Images</Filter>
     </None>
   </ItemGroup>
 </Project>

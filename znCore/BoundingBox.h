@@ -19,8 +19,8 @@ public:
 		return *this;
 	}
 
-	void set(cvec3 _min, cvec3 _max, bool _needConvert = false);
-	void calculate(const vec3* _verts, uint32 _count, bool _needConvert = false);
+	void set(cvec3 _min, cvec3 _max);
+	void calculate(const vec3* _verts, uint32 _count);
 	void calculateCenter();
 	void clear();
 

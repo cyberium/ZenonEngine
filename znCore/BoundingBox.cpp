@@ -15,29 +15,29 @@ BoundingBox::BoundingBox(vec3 _min, vec3 _max) :
 	calculateCenter();
 }
 
-void BoundingBox::set(cvec3 _min, cvec3 _max, bool _needConvert)
+void BoundingBox::set(cvec3 _min, cvec3 _max)
 {
 	m_Min = _min;
 	m_Max = _max;
 
 	// Fix bounding box
-	if (_needConvert)
+	/*if (_needConvert)
 	{
 		m_Min = Fix_XZmY(m_Min);
 		m_Max = Fix_XZmY(m_Max);
 		std::swap(m_Min.z, m_Max.z);
-	}
+	}*/
 
 	//_ASSERT(min.x < max.x && min.y < max.y && min.z < max.z);
 
 	calculateCenter();
 }
 
-void BoundingBox::calculate(const vec3* _verts, uint32 _count, bool _needConvert)
+void BoundingBox::calculate(const vec3* _verts, uint32 _count)
 {
 	for (uint32 i = 0; i < _count; i++)
 	{
-		vec3 v = (_needConvert) ? (Fix_XZmY(_verts[i])) : _verts[i];
+		vec3 v =/*(_needConvert) ? (Fix_XZmY(_verts[i])) :*/ _verts[i];
 
 		if (v.x < m_Min.x) m_Min.x = v.x;
 		if (v.y < m_Min.y) m_Min.y = v.y;

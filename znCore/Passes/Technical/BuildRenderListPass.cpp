@@ -118,19 +118,21 @@ private:
 
 BuildRenderListPass::BuildRenderListPass(IRenderDevice& RenderDevice, std::shared_ptr<IScene> Scene)
 	: ScenePass(RenderDevice, Scene)
-	, m_CurrentSceneNode(nullptr)
-{
-}
+{}
 
 BuildRenderListPass::~BuildRenderListPass()
-{
-}
+{}
 
 
 
 //
 // BuildRenderListPass
 //
+const std::vector<BuildRenderListPass::SModelElement>& BuildRenderListPass::GetModelsList() const
+{
+	return m_ModelsList;
+}
+
 const std::vector<BuildRenderListPass::SGeometryElement>& BuildRenderListPass::GetGeometryList() const
 {
 	return m_GeometryList;
@@ -150,7 +152,10 @@ void BuildRenderListPass::PreRender(RenderEventArgs & e)
 {
 	ScenePass::PreRender(e);
 
+	m_NodesList.clear();
+	m_ModelsList.clear();
 	m_GeometryList.clear();
+
 	m_LightList.clear();
 }
 
@@ -166,24 +171,26 @@ void BuildRenderListPass::Render(RenderEventArgs & e)
 //
 bool BuildRenderListPass::Visit(const ISceneNode3D * node)
 {
-	m_CurrentSceneNode = node;
-
+	m_NodesList.push_back(node);
 	return true;
 }
 
 bool BuildRenderListPass::Visit(const IModel * Model)
 {
+	_ASSERT(m_NodesList.empty() == false);
+	m_ModelsList.push_back(SModelElement(m_NodesList.back(), Model));
 	return true;
 }
 
 bool BuildRenderListPass::Visit(const IGeometry * Geometry, const IMaterial * Material, SGeometryDrawArgs GeometryDrawArgs)
 {
-	m_GeometryList.push_back(SGeometryElement(m_CurrentSceneNode, Geometry, Material, GeometryDrawArgs));
+	_ASSERT(m_ModelsList.empty() == false);
+	m_GeometryList.push_back(SGeometryElement(m_ModelsList.back().Node, m_ModelsList.back().Model, Geometry, Material, GeometryDrawArgs));
 	return true;
 }
 
 bool BuildRenderListPass::Visit(const ILightComponent3D * light)
 {
-	m_LightList.push_back(SLightElement(m_CurrentSceneNode, light));
+	m_LightList.push_back(SLightElement(m_NodesList.back(), light));
 	return true;
 }

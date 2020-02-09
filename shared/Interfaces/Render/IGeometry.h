@@ -43,10 +43,20 @@ ZN_INTERFACE ZN_API IGeometry : public std::enable_shared_from_this<IGeometry>
 
 	virtual void SetPrimitiveTopology(PrimitiveTopology Topology) = 0;
 
-	virtual bool Render(         const RenderEventArgs& RenderEventArgs, const IShader* VertexShader, const SGeometryDrawArgs GeometryDrawArgs = SGeometryDrawArgs()) const = 0;
-	virtual bool RenderInstanced(const RenderEventArgs& RenderEventArgs, const IShader* VertexShader, const SGeometryDrawInstancedArgs GeometryDrawInstancedArgs = SGeometryDrawInstancedArgs()) const = 0;
+	virtual void Render(         const RenderEventArgs& RenderEventArgs, const IShader* VertexShader, const SGeometryDrawArgs GeometryDrawArgs = SGeometryDrawArgs()) const = 0;
+	virtual void RenderInstanced(const RenderEventArgs& RenderEventArgs, const IShader* VertexShader, const SGeometryDrawInstancedArgs GeometryDrawInstancedArgs = SGeometryDrawInstancedArgs()) const = 0;
 	
 	// For IVisitor
-
 	virtual void Accept(IVisitor* visitor, const IMaterial* Material, SGeometryDrawArgs GeometryDrawArgs = SGeometryDrawArgs()) = 0;
+};
+
+
+ZN_INTERFACE ZN_API IGeometryInternal
+{
+	virtual ~IGeometryInternal() {}
+
+	virtual void Render_BindAllBuffers(const RenderEventArgs& RenderEventArgs, const IShader* VertexShader) const = 0;
+	virtual void Render_Draw(const SGeometryDrawArgs GeometryDrawArgs = SGeometryDrawArgs()) const = 0;
+	virtual void Render_DrawInstanced(const SGeometryDrawInstancedArgs GeometryDrawInstancedArgs = SGeometryDrawInstancedArgs()) const = 0;
+	virtual void Render_UnbindAllBuffers(const RenderEventArgs& RenderEventArgs, const IShader* VertexShader) const = 0;
 };

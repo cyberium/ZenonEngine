@@ -222,9 +222,9 @@ void SceneBase::OnRenderUI(RenderEventArgs & e)
 		if (frameResult.IsValid)
 		{
 			if (GetRenderDevice()->GetDeviceType() == RenderDeviceType::RenderDeviceType_DirectX)
-				m_FrameTime = frameResult.ElapsedTime * 1000.0;
+				m_FrameTime = frameResult.DeltaTime * 1000.0;
 			else
-				m_FrameTime = frameResult.ElapsedTime / 1000000.0;
+				m_FrameTime = frameResult.DeltaTime / 1000000.0;
 
 			double fpsValue = 1000.0f / m_FrameTime;
 

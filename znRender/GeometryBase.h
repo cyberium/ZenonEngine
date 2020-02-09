@@ -19,8 +19,6 @@ public:
 	virtual void         Accept(IVisitor* visitor, const IMaterial* Material, SGeometryDrawArgs GeometryDrawArgs = SGeometryDrawArgs()) override;
 
 protected:
-	void                 BindVertexBuffersToVertexShader(const IShader* VertexShader) const;
-	void                 UnbindVertexBuffersFromVertexShader(const IShader* VertexShader) const;
 	SGeometryDrawArgs    FixGeometryDrawArgs(const SGeometryDrawArgs& GeometryDrawArgs) const;
 	SGeometryDrawInstancedArgs FixGeometryDrawInstancedArgs(const SGeometryDrawInstancedArgs& GeometryDrawInstancedArgs) const;
 

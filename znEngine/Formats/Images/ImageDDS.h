@@ -12,8 +12,8 @@ public:
 
 protected:
 	bool LoadImageData(std::shared_ptr<IFile> File);
-	bool LoadRGB(const DDSURFACEDESC2& desc, std::shared_ptr<IFile> io);
-	bool LoadDXT(int type, const DDSURFACEDESC2& desc, std::shared_ptr<IFile> io);
+	bool LoadRGB(const DDSFormat::DDSURFACEDESC2& desc, std::shared_ptr<IFile> io);
+	bool LoadDXT(int type, const DDSFormat::DDSURFACEDESC2& desc, std::shared_ptr<IFile> io);
 
 	template <class DECODER>
 	bool LoadDXT_Helper(std::shared_ptr<IFile> io);

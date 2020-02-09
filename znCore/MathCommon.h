@@ -77,3 +77,8 @@ static inline int ftoi_r(double val)
 	u.dval = val + 6755399441055744.0;  // Magic number: 2^52 * 1.5;
 	return u.ival[0];         // Needs to be [1] for big-endian
 }
+
+static inline vec3 Fix_X0Z(cvec3 _vec)
+{
+	return vec3(_vec.x, 0.0f, _vec.z);
+}

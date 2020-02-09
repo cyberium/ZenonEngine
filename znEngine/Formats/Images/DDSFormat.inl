@@ -12,7 +12,7 @@ void DecodeDXTBlock(BYTE *dstData, const BYTE *srcBlock, long dstPitch, int bw, 
 		decoder.SetY(y);
 		for (int x = 0; x < bw; x++)
 		{
-			decoder.GetColor(x, y, (Color8888 &)*dst);
+			decoder.GetColor(x, y, (DDSFormat::Color8888 &)*dst);
 			dst += 4;
 		}
 	}

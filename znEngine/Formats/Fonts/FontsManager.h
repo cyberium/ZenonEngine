@@ -12,7 +12,7 @@ public:
 
 	// IFontsManager
 	std::shared_ptr<CFont> GetMainFont() const override;
-	std::shared_ptr<CFont> Add(IRenderDevice& RenderDevice, const std::string& _fontFileName, uint32 _fontSize);
+	std::shared_ptr<CFont> Add(IRenderDevice& RenderDevice, const std::string& _fontFileName, uint32 _fontSize) override;
 
 	// CRefManager1Dim
 	std::shared_ptr<CFont> CreateAction(IRenderDevice& RenderDevice, const std::string& name) override;

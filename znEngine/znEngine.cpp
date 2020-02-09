@@ -14,10 +14,10 @@
 #include "Passes/RenderPassFactory.h"
 
 // Additional (Images)
-#include "Images/ImagesFactory.h"
-#include "Images/ImageLoaderTemplate.h"
-#include "Images/ImagePNG.h"
-#include "Images/ImageDDS.h"
+#include "Formats/Images/ImagesFactory.h"
+#include "Formats/Images/ImageLoaderTemplate.h"
+#include "Formats/Images/ImagePNG.h"
+#include "Formats/Images/ImageDDS.h"
 
 #include "Settings/GroupVideo.h"
 

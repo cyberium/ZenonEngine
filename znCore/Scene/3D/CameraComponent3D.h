@@ -42,6 +42,8 @@ public:
 	const glm::mat4& GetProjectionViewMatrix() const override;
 	const glm::mat4& GetInverseProjectionViewMatrix() const override;
 
+	const Frustum& GetFrustum() const;
+
     // ISceneNodeComponent
 	virtual void OnMessage(const ISceneNodeComponent* Component, ComponentMessageType Message) override;
 
@@ -74,6 +76,8 @@ private:
 	glm::mat4                                       m_ProjectionView;
 	glm::mat4                                       m_Inverse_ProjectionView;
 	bool                                            m_ProjectionView_Dirty;
+
+	Frustum                                         m_Frustum;
 
 
 	// Perspective projection

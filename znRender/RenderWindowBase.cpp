@@ -24,7 +24,7 @@ RenderWindowBase::~RenderWindowBase()
 //
 void RenderWindowBase::OnUpdate(UpdateEventArgs& e)
 {
-	UpdateEventArgs updateArgs(this, e.ElapsedTime, e.TotalTime, e.FrameCounter);
+	UpdateEventArgs updateArgs(this, e.DeltaTime, e.TotalTime, e.FrameCounter);
 	m_Update(updateArgs);
 
 	//GetRenderDevice()->Lock();
@@ -35,7 +35,7 @@ void RenderWindowBase::OnUpdate(UpdateEventArgs& e)
 			m_bResizePending = false;
 		}
 
-		RenderEventArgs renderArgs(this, e.ElapsedTime, e.TotalTime, e.FrameCounter, nullptr, nullptr, nullptr);
+		RenderEventArgs renderArgs(this, e.DeltaTime, e.TotalTime, e.FrameCounter, nullptr, nullptr, nullptr);
 
 		m_RenderTarget->Bind();
 		{

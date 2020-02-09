@@ -3,10 +3,9 @@
 // General
 #include "DDSFormat.h"
 
-
 // Get the 4 possible colors for a block
 //
-void GetBlockColors(const DXTColBlock &block, Color8888 colors[4], bool isDXT1)
+void DDSFormat::GetBlockColors(const DDSFormat::DXTColBlock& block, DDSFormat::Color8888 colors[4], bool isDXT1)
 {
 	// expand from 565 to 888
 	for (int i = 0; i < 2; i++)

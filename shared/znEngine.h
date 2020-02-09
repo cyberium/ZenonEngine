@@ -7,12 +7,12 @@
 #include "../znEngine/Materials/MaterialDebug.h"
 #include "../znEngine/Materials/MaterialTextured.h"
 
-#include "../znEngine/SceneFunctional/UI/Fonts/FontsManager.h"
 #include "../znEngine/Passes/UIFontPass.h"
 
 #include "../znEngine/Formats/ChunkedFile.h"
-#include "../znEngine/Images/DDSFormat.h"
-#include "../znEngine/Images/ImageLoaderTemplate.h"
+#include "../znEngine/Formats/Fonts/FontsManager.h"
+#include "../znEngine/Formats/Images/DDSFormat.h"
+#include "../znEngine/Formats/Images/ImageLoaderTemplate.h"
 
 /*
  * Initialize improtant managers and plugins
