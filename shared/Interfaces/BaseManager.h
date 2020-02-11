@@ -45,7 +45,7 @@ ZN_INTERFACE ZN_API __declspec(novtable, uuid("BB9FD479-C7AD-4F57-837B-E299A04AF
 {
 	virtual ~IBaseManager() {};
 
-	virtual void AddManager(GUID Type, const std::shared_ptr<IManager>& Manager) = 0;
+	virtual IManager* AddManager(GUID Type, const std::shared_ptr<IManager>& Manager) = 0;
 	virtual void RemoveManager(GUID Type) = 0;
 	virtual IManager* GetManager(GUID Type) const = 0;
 
@@ -54,9 +54,9 @@ ZN_INTERFACE ZN_API __declspec(novtable, uuid("BB9FD479-C7AD-4F57-837B-E299A04AF
 	// Templates
 
 	template<typename T>
-	inline void AddManager(const std::shared_ptr<IManager>& _manager)
+	inline T* AddManager(const std::shared_ptr<IManager>& _manager)
 	{
-		AddManager(__uuidof(T), _manager);
+		return dynamic_cast<T*>(AddManager(__uuidof(T), _manager));
 	}
 
 	template<typename T>

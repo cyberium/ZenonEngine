@@ -19,6 +19,7 @@ CColliderComponent3D::~CColliderComponent3D()
 void CColliderComponent3D::SetBounds(BoundingBox _bbox)
 {
 	m_Bounds = _bbox;
+	RaiseComponentMessage(UUID_OnBoundsChanget);
 }
 cbbox CColliderComponent3D::GetBounds() const
 {
@@ -57,6 +58,27 @@ void CColliderComponent3D::OnMessage(const ISceneNodeComponent* Component, Compo
 	case UUID_OnTransformChanged:
 	{
 		UpdateBounds();
+	}
+	case UUID_OnParentChanged:
+	{
+		// Update THIS bounds
+		if (GetOwnerNode().GetParent())
+		{
+			BoundingBox bbox = GetOwnerNode().GetParent()->GetComponent<IColliderComponent3D>()->GetBounds();
+			bbox.makeUnion(GetBounds());
+			GetOwnerNode().GetParent()->GetComponent<IColliderComponent3D>()->SetBounds(bbox);
+		}
+	}
+	break;
+	case UUID_OnBoundsChanget:
+	{
+		if (GetOwnerNode().GetParent())
+		{
+			// Update THIS bounds
+			BoundingBox bbox = GetOwnerNode().GetParent()->GetComponent<IColliderComponent3D>()->GetBounds();
+			bbox.makeUnion(GetBounds());
+			GetOwnerNode().GetParent()->GetComponent<IColliderComponent3D>()->SetBounds(bbox);
+		}
 	}
 	break;
 	}

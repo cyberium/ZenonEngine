@@ -27,11 +27,6 @@ const ISceneNode3D& CComponentBase::GetOwnerNode() const
 //
 // ISceneNodeComponent
 //
-void CComponentBase::OnParentChanged()
-{
-	// do nothing
-}
-
 void CComponentBase::OnMessage(const ISceneNodeComponent* Component, ComponentMessageType Message)
 {
 	// do nothing

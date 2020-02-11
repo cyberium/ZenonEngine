@@ -22,7 +22,7 @@ public:
 
 	// Childs functional
 	virtual void                                    AddChild(std::shared_ptr<ISceneNode3D> childNode) override;
-	virtual void                                    RemoveChild(std::shared_ptr<ISceneNode3D> childNode) override;
+	virtual void                                    RemoveChild(const ISceneNode3D* childNode) override;
 	virtual void                                    SetParent(ISceneNode3D* parentNode) override;
 	virtual ISceneNode3D*                           GetParent() const override;
 	virtual const Node3DList&                       GetChilds() override;

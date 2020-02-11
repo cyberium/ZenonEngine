@@ -117,28 +117,36 @@ void SceneNode3D::AddChild(std::shared_ptr<ISceneNode3D> childNode)
 		if (!childNode->GetName().empty())
 			m_ChildrenByName.insert(Node3DNameMap::value_type(childNode->GetName(), childNode));
 
-		GetScene()->RaiseSceneChangeEvent(ESceneChangeType::NodeAdded, shared_from_this(), childNode);
+		GetScene()->RaiseSceneChangeEvent(ESceneChangeType::NodeAdded, this, childNode.get());
 	}
 }
 
-void SceneNode3D::RemoveChild(std::shared_ptr<ISceneNode3D> childNode)
+void SceneNode3D::RemoveChild(const ISceneNode3D* childNode)
 {
-	if (childNode)
+	if (childNode == nullptr)
 	{
-		_ASSERT_EXPR(false, L"Child node must not be NULL.");
+		Log::Warn("Child node must not be NULL.");
+		return;
 	}
 
-	Node3DList::iterator iter = std::find(m_Children.begin(), m_Children.end(), childNode);
+	Node3DList::iterator iter = std::find_if(m_Children.begin(), m_Children.end(), [&childNode](const std::shared_ptr<ISceneNode3D>& SceneNode3D) -> bool { return SceneNode3D.get() == childNode; });
 	if (iter != m_Children.end())
 	{
-		std::dynamic_pointer_cast<SceneNode3D>(childNode)->SetParentInternal(std::weak_ptr<ISceneNode3D>());
+		std::dynamic_pointer_cast<SceneNode3D>(*iter)->SetParentInternal(std::weak_ptr<ISceneNode3D>());
 
+	
+		Node3DNameMap::iterator iter2 = m_ChildrenByName.find((*iter)->GetName());
+		
+		// Delete from general list
 		m_Children.erase(iter);
-		Node3DNameMap::iterator iter2 = m_ChildrenByName.find(childNode->GetName());
-		if (iter2 != m_ChildrenByName.end())
-			m_ChildrenByName.erase(iter2);
 
-		GetScene()->RaiseSceneChangeEvent(ESceneChangeType::NodeRemoved, shared_from_this(), childNode);
+		// Delete from name access list
+		if (iter2 != m_ChildrenByName.end())
+		{
+			m_ChildrenByName.erase(iter2);
+		}
+
+		GetScene()->RaiseSceneChangeEvent(ESceneChangeType::NodeRemoved, this, childNode);
 	}
 	else
 	{
@@ -156,7 +164,7 @@ void SceneNode3D::SetParent(ISceneNode3D* parentNode)
 	std::shared_ptr<ISceneNode3D> currentParent = m_ParentNode.lock();
 	if (currentParent != nullptr)
 	{
-		currentParent->RemoveChild(shared_from_this());
+		currentParent->RemoveChild(this);
 		m_ParentNode.reset();
 	}
 
@@ -182,7 +190,7 @@ void SceneNode3D::RaiseOnParentChanged()
 
 	for (auto c : m_Components)
 	{
-		c.second->OnParentChanged();
+		c.second->OnMessage(nullptr, UUID_OnParentChanged);
 	}
 }
 

@@ -23,13 +23,14 @@ CBaseManager::~CBaseManager()
 //
 // IBaseManager
 //
-void CBaseManager::AddManager(GUID Type, const std::shared_ptr<IManager>& _manager)
+IManager* CBaseManager::AddManager(GUID Type, const std::shared_ptr<IManager>& _manager)
 {
 	const auto& it = std::find_if(m_Managers.begin(), m_Managers.end(), [&Type](const SManagerInfo& ManagerInfo) -> bool {return ManagerInfo.Key == Type; });
 	if (it != m_Managers.end())
 		_ASSERT_EXPR(false, L"Manager already exists.");
 
 	m_Managers.push_back(SManagerInfo(Type, _manager));
+	return _manager.get();
 }
 
 void CBaseManager::RemoveManager(GUID Type)

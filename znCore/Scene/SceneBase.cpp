@@ -151,9 +151,9 @@ Delegate<SceneChangeEventArgs>& SceneBase::SceneChangeEvent()
 	return m_SceneChangeEvent;
 }
 
-void SceneBase::RaiseSceneChangeEvent(ESceneChangeType SceneChangeType, std::shared_ptr<ISceneNode3D> OwnerNode, std::shared_ptr<ISceneNode3D> ChildNode)
+void SceneBase::RaiseSceneChangeEvent(ESceneChangeType SceneChangeType, const ISceneNode3D* OwnerNode, const ISceneNode3D* ChildNode)
 {
-	m_SceneChangeEvent(SceneChangeEventArgs(this, shared_from_this(), SceneChangeType, OwnerNode, ChildNode));
+	m_SceneChangeEvent(SceneChangeEventArgs(this, this, SceneChangeType, OwnerNode, ChildNode));
 }
 
 void SceneBase::RaiseRayIntersected(const glm::vec3 & Point)

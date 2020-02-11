@@ -33,7 +33,7 @@ public:
 
 	// Scene events
 	Delegate<SceneChangeEventArgs>&					SceneChangeEvent() override;
-	void                                            RaiseSceneChangeEvent(ESceneChangeType SceneChangeType, std::shared_ptr<ISceneNode3D> OwnerNode, std::shared_ptr<ISceneNode3D> ChildNode);
+	void                                            RaiseSceneChangeEvent(ESceneChangeType SceneChangeType, const ISceneNode3D* OwnerNode, const ISceneNode3D* ChildNode) override;
 	virtual void                                    RaiseRayIntersected(const glm::vec3& Point);
 
 	// Engine events

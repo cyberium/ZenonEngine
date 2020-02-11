@@ -9,7 +9,7 @@ public:
 	virtual ~CBaseManager();
 
 	// IBaseManager
-	void AddManager(GUID Type, const std::shared_ptr<IManager>& Manager) override;
+	IManager* AddManager(GUID Type, const std::shared_ptr<IManager>& Manager) override;
 	void RemoveManager(GUID Type) override;
 	IManager* GetManager(GUID Type) const override;
 	const IApplication& GetApplication() const override;

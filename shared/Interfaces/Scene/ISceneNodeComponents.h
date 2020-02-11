@@ -16,7 +16,6 @@ ZN_INTERFACE ZN_API ISceneNodeComponent
 	virtual ~ISceneNodeComponent() {}
 
     // Callbacks
-    virtual void OnParentChanged() = 0;
     virtual void OnMessage(const ISceneNodeComponent* Component, ComponentMessageType Message) = 0;
 	virtual IPropertiesGroup* GetPropertiesGroup() const = 0;
 
@@ -33,7 +32,7 @@ ZN_INTERFACE ZN_API ISceneNodeComponent
 typedef std::unordered_map<GUID, std::shared_ptr<ISceneNodeComponent>> ComponentsMap;
 
 const ComponentMessageType UUID_OnParentChanged = 1;
-const ComponentMessageType UUID_OnTransformChanged = 2; // Change LocalTransform of parent, change world transform of this or parent, 
+const ComponentMessageType UUID_OnTransformChanged = 2; // Change LocalTransform of parent, change world transform of this or parent,
 
 
 
@@ -52,7 +51,7 @@ ZN_INTERFACE __declspec(novtable, UUID_ColliderComponent) ZN_API IColliderCompon
 	virtual bool CheckDistance2D(const ICameraComponent3D* Camera, float _distance) const = 0;
 	virtual bool CheckDistance(const ICameraComponent3D* Camera, float _distance) const = 0;
 };
-
+const ComponentMessageType UUID_OnBoundsChanget = 10;
 
 
 //
@@ -70,7 +69,8 @@ public:
 	virtual void RemoveMesh(IModel* mesh) = 0;
 	virtual const MeshList& GetMeshes() = 0;
 };
-
+const ComponentMessageType UUID_OnModelAdded = 30;
+const ComponentMessageType UUID_OnModelRemoved = 30;
 
 
 //

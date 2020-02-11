@@ -32,7 +32,7 @@ ZN_INTERFACE ZN_API __declspec(novtable) IScene
 
 	// Events
 	virtual SceneChangeEvent& SceneChangeEvent() = 0;
-	virtual void RaiseSceneChangeEvent(ESceneChangeType SceneChangeType, std::shared_ptr<ISceneNode3D> OwnerNode, std::shared_ptr<ISceneNode3D> ChildNode) = 0;
+	virtual void RaiseSceneChangeEvent(ESceneChangeType SceneChangeType, const ISceneNode3D* OwnerNode, const ISceneNode3D* ChildNode) = 0;
 
 
 	// Templates

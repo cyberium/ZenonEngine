@@ -17,7 +17,6 @@ public:
 
 
 	// ISceneNodeComponent
-	virtual void                                    OnParentChanged() override;
 	virtual void                                    OnMessage(const ISceneNodeComponent* Component, ComponentMessageType Message) override;
 	virtual IPropertiesGroup*                       GetPropertiesGroup() const override;
 

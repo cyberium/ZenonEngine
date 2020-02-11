@@ -29,7 +29,7 @@ ZN_INTERFACE ZN_API __declspec(novtable) ISceneNode3D
 	virtual std::string	GetName() const = 0;
 
 	virtual void AddChild(std::shared_ptr<ISceneNode3D> childNode) = 0;
-	virtual void RemoveChild(std::shared_ptr<ISceneNode3D> childNode) = 0;
+	virtual void RemoveChild(const ISceneNode3D* childNode) = 0;
 	virtual void SetParent(ISceneNode3D* parentNode) = 0;
 	virtual ISceneNode3D* GetParent() const = 0;
 	virtual const Node3DList& GetChilds() = 0;
