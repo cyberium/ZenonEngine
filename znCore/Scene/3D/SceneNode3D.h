@@ -132,6 +132,7 @@ private:
 	Node3DList                                      m_Children;
 	Node3DNameMap                                   m_ChildrenByName;
 	std::weak_ptr<ISceneNode3D>                     m_ParentNode;
+	std::mutex                                      m_ChildMutex;
 
 	std::shared_ptr<IActionsGroup>                  m_ActionsGroup;
 	std::shared_ptr<IPropertiesGroup>               m_PropertiesGroup;

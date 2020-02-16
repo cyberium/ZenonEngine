@@ -61,7 +61,7 @@ void MaterialDX11::BindForShader(const IShader* shader) const
 		for (const auto& textureIt : m_Textures)
 		{
 			const auto& texture = textureIt.second;
-			_ASSERT(texture != nullptr);
+			if (texture != nullptr) // TODO: ASSERT
 
 			texture->Bind((uint32_t)textureIt.first, shader, IShaderParameter::Type::Texture);
 		}
@@ -69,7 +69,7 @@ void MaterialDX11::BindForShader(const IShader* shader) const
 		for (const auto& samplerStateIt : m_Samplers)
 		{
 			const auto& samplerState = samplerStateIt.second;
-			_ASSERT(samplerState != nullptr);
+			if (samplerState != nullptr) // TODO: ASSERT
 
 			samplerState->Bind((uint32_t)samplerStateIt.first, shader, IShaderParameter::Type::Sampler);
 		}
@@ -92,7 +92,7 @@ void MaterialDX11::UnbindForShader(const IShader* shader) const
 		for (const auto& textureIt : m_Textures)
 		{
 			const auto& texture = textureIt.second;
-			_ASSERT(texture != nullptr);
+			if (texture != nullptr) // TODO: ASSERT
 
 			texture->UnBind((uint32_t)textureIt.first, shader, IShaderParameter::Type::Texture);
 		}
@@ -100,7 +100,7 @@ void MaterialDX11::UnbindForShader(const IShader* shader) const
 		for (const auto& samplerStateIt : m_Samplers)
 		{
 			const auto& samplerState = samplerStateIt.second;
-			_ASSERT(samplerState != nullptr);
+			if (samplerState != nullptr) // TODO: ASSERT
 
 			samplerState->UnBind((uint32_t)samplerStateIt.first, shader, IShaderParameter::Type::Sampler);
 		}

@@ -33,17 +33,26 @@ public:
 	}
 
 	//! Gets the next result in the queue, if any.
-	bool next(T& result)
+	bool next(T& result, const std::function<bool(T)>& CondToDelete)
 	{
 		std::lock_guard<std::mutex> lock(m_Lock);
 
 		if (_queue.empty())
-		{
 			return false;
-		}
 
 		result = _queue.front();
+
+		bool cond = true;
+
+		if (CondToDelete != nullptr && CondToDelete(result) == true)
+			cond = false;
+
 		_queue.pop_front();
+		if (cond == false)
+		{
+			_queue.push_back(result);
+			return false;
+		}
 
 		return true;
 	}
@@ -81,6 +90,7 @@ public:
 	bool empty()
 	{
 		std::lock_guard<std::mutex> lock(m_Lock);
+
 		return _queue.empty();
 	}
 

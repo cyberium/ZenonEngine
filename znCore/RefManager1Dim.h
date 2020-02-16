@@ -26,6 +26,7 @@ protected:
 
 public:
 	std::unordered_map<std::string, std::shared_ptr<T>> objects; // name - item
+	std::mutex m_Mutex;
 };
 
 #include "RefManager1Dim.inl"

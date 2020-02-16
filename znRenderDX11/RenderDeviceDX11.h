@@ -35,4 +35,6 @@ private:
 	ATL::CComPtr<ID3D11DeviceContext3>              m_DeviceImmediateContext;
 	ATL::CComPtr<ID3D11DeviceContext3>              m_DeviceDefferedContext;
 	ATL::CComPtr<ID3D11Multithread>                 m_pMultiThread;
+
+	std::thread::id                                 m_MainThreadID;
 };

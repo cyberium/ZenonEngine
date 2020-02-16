@@ -4,22 +4,20 @@ class ZN_API CLoadableObject
 	: public ILoadable
 {
 public:
-	CLoadableObject();
+	CLoadableObject(const ILoadable* Depends = nullptr);
 	virtual ~CLoadableObject();
-
-	virtual bool									PreLoad();
 
 	virtual bool									Load();
 	virtual bool									Delete();
 
-	virtual void									setLoadingBegin();
-	virtual bool									isLoadingBegin() const;
-	virtual void									setLoaded();
-	virtual bool									isLoaded() const;
+	virtual void                                    SetState(ELoadableState State) override;
+	virtual ELoadableState                          GetState() const override;
 
+	const ILoadable*                                getDepends() const;
 	virtual uint32									getPriority() const;
 
 private:
-	std::atomic<bool>                               m_IsLoadingBegin;
-	std::atomic<bool>                               m_IsLoaded;
+	std::atomic<ELoadableState>                     m_State;
+
+	const ILoadable*                                m_Depends;
 };

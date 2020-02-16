@@ -2,22 +2,30 @@
 
 // Forward BEGIN
 ZN_INTERFACE IManager;
+ZN_INTERFACE ICameraComponent3D;
 // Forward END
 
 ZN_INTERFACE ZN_API ILoadable
 {
-	virtual											~ILoadable() {}
+	enum class ZN_API ELoadableState : uint32
+	{
+		Created = 0,
+		Loading,
+		Loaded,
+		Unloading,
+		Unloaded,
+		Deleted
+	};
 
-	virtual bool									PreLoad() = 0;
+	virtual											~ILoadable() {}
 
 	virtual bool									Load() = 0;
 	virtual bool									Delete() = 0;
 
-	virtual void									setLoadingBegin() = 0;
-	virtual bool									isLoadingBegin() const = 0;
-	virtual void									setLoaded() = 0;
-	virtual bool									isLoaded() const = 0;
+	virtual void                                    SetState(ELoadableState State) = 0;
+	virtual ELoadableState                          GetState() const = 0;
 
+	virtual const ILoadable*                        getDepends() const = 0;
 	virtual uint32									getPriority() const = 0;
 };
 
@@ -27,9 +35,14 @@ ZN_INTERFACE ZN_API
 {
 	virtual ~ILoader() {}
 
-	virtual void AddToLoadQueue(std::shared_ptr<ILoadable> _item) = 0;
+	virtual void Start() = 0;
+	virtual void Stop() = 0;
+
+	virtual void SetCamera(std::shared_ptr<ICameraComponent3D> _camera) = 0;
+
+	virtual void AddToLoadQueue(ILoadable* _item) = 0;
 	virtual void LoadAll() = 0;
 
-	virtual void AddToDeleteQueue(std::shared_ptr<ILoadable> _item) = 0;
+	virtual void AddToDeleteQueue(ILoadable* _item) = 0;
 	virtual void DeleteAll() = 0;
 };

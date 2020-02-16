@@ -10,6 +10,8 @@ RenderDeviceDX11::RenderDeviceDX11(IBaseManager* BaseManager)
 	: m_BaseManager(BaseManager)
 {
 	m_RenderObjectsFactory = std::make_unique<CRenderObjectsFactoryDX11>(*this);
+
+	m_MainThreadID = std::this_thread::get_id();
 }
 
 RenderDeviceDX11::~RenderDeviceDX11()
@@ -83,6 +85,7 @@ ID3D11Device4* RenderDeviceDX11::GetDeviceD3D11()
 
 ID3D11DeviceContext3* RenderDeviceDX11::GetDeviceContextD3D11()
 {
+	//_ASSERT(m_MainThreadID == std::this_thread::get_id());
 	return m_DeviceImmediateContext;
 }
 

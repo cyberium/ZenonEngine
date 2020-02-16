@@ -23,6 +23,7 @@ TextureDX11::TextureDX11(IRenderDeviceDX11& RenderDeviceDX11)
 	, m_ShaderResourceViewFormat(DXGI_FORMAT_UNKNOWN)
 	, m_RenderTargetViewFormat(DXGI_FORMAT_UNKNOWN)
 	, m_bGenerateMipmaps(false)
+	, m_MipMapsGenerated(false)
 	, m_BPP(0)
 	, m_Pitch(0)
 	, m_bIsTransparent(false)
@@ -41,6 +42,7 @@ TextureDX11::TextureDX11(IRenderDeviceDX11& RenderDeviceDX11, uint16_t width, ui
 	, m_TextureFormat(format)
 	, m_CPUAccess(cpuAccess)
 	, m_bGenerateMipmaps(false)
+	, m_MipMapsGenerated(false)
 	, m_bIsTransparent(true)
 	, m_bIsDirty(false)
 {
@@ -97,7 +99,7 @@ TextureDX11::TextureDX11(IRenderDeviceDX11& RenderDeviceDX11, uint16_t width, ui
 		ReportTextureFormatError(m_TextureFormat, "Unsupported texture format for 2D textures.");
 	}
 	// Can the texture be dynamically modified on the CPU?
-	m_bDynamic = (int)m_CPUAccess != 0 && (m_TextureResourceFormatSupport & D3D11_FORMAT_SUPPORT_CPU_LOCKABLE) != 0;
+	m_bDynamic = ((int)m_CPUAccess & (int)CPUAccess::Write) != 0 && (m_TextureResourceFormatSupport & D3D11_FORMAT_SUPPORT_CPU_LOCKABLE) != 0;
 	// Can mipmaps be automatically generated for this texture format?
 	m_bGenerateMipmaps = !m_bDynamic && (m_ShaderResourceViewFormatSupport & D3D11_FORMAT_SUPPORT_MIP_AUTOGEN) != 0;
 	// Are UAVs supported?
@@ -167,6 +169,7 @@ TextureDX11::TextureDX11(IRenderDeviceDX11& RenderDeviceDX11, uint16_t size, uin
 	m_bDynamic = ((int)m_CPUAccess & (int)CPUAccess::Write) != 0 && (m_TextureResourceFormatSupport & D3D11_FORMAT_SUPPORT_CPU_LOCKABLE) != 0;
 	// Can mipmaps be automatically generated for this texture format?
 	m_bGenerateMipmaps = !m_bDynamic && (m_ShaderResourceViewFormatSupport & D3D11_FORMAT_SUPPORT_MIP_AUTOGEN) != 0; // && ( m_RenderTargetViewFormatSupport & D3D11_FORMAT_SUPPORT_MIP_AUTOGEN ) != 0;
+	m_MipMapsGenerated = false;
 	// Are UAVs supported?
 	m_bUAV = bUAV && (m_UnorderedAccessViewFormatSupport & D3D11_FORMAT_SUPPORT_SHADER_LOAD) != 0;
 
@@ -576,7 +579,10 @@ void TextureDX11::Bind(uint32_t ID, EShaderType _shaderType, IShaderParameter::T
 {
 	if (m_bIsDirty)
 	{
-		if (m_bDynamic && m_pTexture2D)
+		m_RenderDeviceDX11.GetDeviceContextD3D11()->UpdateSubresource(m_pTexture2D, 0, nullptr, m_Buffer.data(), m_Pitch, 0);
+		m_RenderDeviceDX11.GetDeviceContextD3D11()->GenerateMips(m_pShaderResourceView);
+
+		/*if (m_bDynamic && m_pTexture2D)
 		{
 			D3D11_MAPPED_SUBRESOURCE mappedResource;
 
@@ -593,9 +599,10 @@ void TextureDX11::Bind(uint32_t ID, EShaderType _shaderType, IShaderParameter::T
 
 			if (m_bGenerateMipmaps)
 			{
+				m_RenderDeviceDX11.GetDeviceContextD3D11()->UpdateSubresource(m_pTexture2D, 0, nullptr, m_Buffer.data(), m_Pitch, 0);
 				m_RenderDeviceDX11.GetDeviceContextD3D11()->GenerateMips(m_pShaderResourceView);
 			}
-		}
+		}*/
 		m_bIsDirty = false;
 	}
 

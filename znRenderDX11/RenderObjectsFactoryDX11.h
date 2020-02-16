@@ -34,4 +34,5 @@ public:
 
 private:
 	IRenderDeviceDX11& m_RenderDeviceDX11;
+	std::recursive_mutex m_LockMutex;
 };

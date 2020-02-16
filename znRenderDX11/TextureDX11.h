@@ -107,6 +107,7 @@ private:
 	DXGI_SAMPLE_DESC m_SampleDesc;
 	// TRUE if mipmaps are supported on the given texture type.
 	bool m_bGenerateMipmaps;
+	mutable bool m_MipMapsGenerated;
 	// Bits-per pixel
 	uint8_t m_BPP; 
 

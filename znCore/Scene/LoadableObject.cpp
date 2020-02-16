@@ -3,19 +3,14 @@
 // General
 #include "LoadableObject.h"
 
-CLoadableObject::CLoadableObject()
-	: m_IsLoadingBegin(false)
-	, m_IsLoaded(false)
+CLoadableObject::CLoadableObject(const ILoadable* Depends)
+	: m_State(ELoadableState::Created)
+	, m_Depends(Depends)
 {
 }
 
 CLoadableObject::~CLoadableObject()
 {
-}
-
-bool CLoadableObject::PreLoad()
-{
-	return false;
 }
 
 bool CLoadableObject::Load()
@@ -28,24 +23,20 @@ bool CLoadableObject::Delete()
 	return false;
 }
 
-void CLoadableObject::setLoadingBegin()
+void CLoadableObject::SetState(ELoadableState State)
 {
-	m_IsLoadingBegin = true;
+	m_State = State;
 }
 
-bool CLoadableObject::isLoadingBegin() const
+ILoadable::ELoadableState CLoadableObject::GetState() const
 {
-	return m_IsLoadingBegin;
+	return m_State;
 }
 
-void CLoadableObject::setLoaded()
-{
-	m_IsLoaded = true;
-}
 
-bool CLoadableObject::isLoaded() const
+const ILoadable * CLoadableObject::getDepends() const
 {
-	return m_IsLoaded;
+	return m_Depends;
 }
 
 uint32 CLoadableObject::getPriority() const

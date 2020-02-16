@@ -25,6 +25,8 @@ CRefManager1Dim<T>::~CRefManager1Dim()
 template <class T>
 std::shared_ptr<T> CRefManager1Dim<T>::Add(IRenderDevice& RenderDevice, const std::string& name)
 {
+	std::lock_guard<std::mutex> lock(m_Mutex);
+
 	std::shared_ptr<T> item = GetItemByName(name);
 	if (item != nullptr)
 	{
@@ -49,6 +51,8 @@ bool CRefManager1Dim<T>::Exists(const std::string& name) const
 template <class T>
 void CRefManager1Dim<T>::Delete(const std::string& name)
 {
+	std::lock_guard<std::mutex> lock(m_Mutex);
+
 	std::shared_ptr<T> item = GetItemByName(name);
 	if (item != nullptr)
 	{

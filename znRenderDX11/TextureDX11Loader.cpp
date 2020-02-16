@@ -83,11 +83,13 @@ bool TextureDX11::LoadTextureCustom(uint16_t width, uint16_t height, void * pixe
 	// From DirectXTK (28/05/2015) @see https://directxtk.codeplex.com/
 	if (m_bGenerateMipmaps)
 	{
-		m_RenderDeviceDX11.GetDeviceContextD3D11()->UpdateSubresource(m_pTexture2D, 0, nullptr, pixels, m_Pitch, 0);
-		m_RenderDeviceDX11.GetDeviceContextD3D11()->GenerateMips(m_pShaderResourceView);
+		//m_RenderDeviceDX11.GetDeviceContextD3D11()->UpdateSubresource(m_pTexture2D, 0, nullptr, pixels, m_Pitch, 0);
+		//m_RenderDeviceDX11.GetDeviceContextD3D11()->GenerateMips(m_pShaderResourceView);
 	}
 
-	m_bIsDirty = false;
+	m_Buffer.assign(static_cast<uint8*>(pixels), static_cast<uint8*>(pixels) + (width * height * 4));
+
+	m_bIsDirty = true;
 
 	return true;
 }
@@ -368,6 +370,7 @@ bool TextureDX11::LoadTexture2D(const std::string& fileName)
 	// Can mipmaps be automatically generated for this texture format?
 	m_bGenerateMipmaps = !m_bDynamic && (m_ShaderResourceViewFormatSupport & D3D11_FORMAT_SUPPORT_MIP_AUTOGEN) != 0;
 
+
 	// Load the texture data into a GPU texture.
 	D3D11_TEXTURE2D_DESC textureDesc = { 0 };
 	textureDesc.Width = m_TextureWidth;
@@ -415,14 +418,9 @@ bool TextureDX11::LoadTexture2D(const std::string& fileName)
 		return false;
 	}
 
-	// From DirectXTK (28/05/2015) @see https://directxtk.codeplex.com/
-	if (m_bGenerateMipmaps)
-	{
-		m_RenderDeviceDX11.GetDeviceContextD3D11()->UpdateSubresource(m_pTexture2D, 0, nullptr, image->GetData(), image->GetStride(), 0);
-		m_RenderDeviceDX11.GetDeviceContextD3D11()->GenerateMips(m_pShaderResourceView);
-	}
+	m_Buffer.assign(image->GetData(), image->GetData() + (image->GetWidth() * image->GetHeight() * image->GetBitsPerPixel() / 8));
 
-	m_bIsDirty = false;
+	m_bIsDirty = true;
 
 	return true;
 }
