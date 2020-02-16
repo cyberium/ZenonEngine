@@ -13,6 +13,7 @@ public:
 	std::shared_ptr<IGeometry> CreateScreenQuad(float left = 0.0f, float right = 1.0f, float bottom = 0.0f, float top = 1.0f, float z = 0.0f) override;
 	std::shared_ptr<IGeometry> CreateSphere() override;
 	std::shared_ptr<IGeometry> CreateCube() override;
+	std::shared_ptr<IGeometry> CreateBBox() override;
 	std::shared_ptr<IGeometry> CreateCone() override;
 	std::shared_ptr<IGeometry> CreateQuad() override;
 

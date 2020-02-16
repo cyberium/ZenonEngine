@@ -68,6 +68,10 @@ public:
 	void                                            RaiseComponentMessage(const ISceneNodeComponent* Component, ComponentMessageType Message) const override;
 	virtual void                                    RegisterComponents() override;
     
+	inline std::shared_ptr<IColliderComponent3D>    GetColliderComponent() const override
+	{
+		return m_Components_Collider;
+	}
 	
 	template<typename T> inline bool IsComponentExists()
 	{
@@ -82,14 +86,6 @@ public:
 		return ISceneNode3D::AddComponent<T>(Component);
 	}
 
-	template<> inline std::shared_ptr<IMeshComponent3D> GetComponent<IMeshComponent3D>()
-	{
-		return m_Components_Mesh;
-	}
-	template<> inline std::shared_ptr<IColliderComponent3D> GetComponent<IColliderComponent3D>()
-	{
-		return m_Components_Collider;
-	}
 
 
 	//
@@ -132,7 +128,6 @@ private:
 	Node3DList                                      m_Children;
 	Node3DNameMap                                   m_ChildrenByName;
 	std::weak_ptr<ISceneNode3D>                     m_ParentNode;
-	std::mutex                                      m_ChildMutex;
 
 	std::shared_ptr<IActionsGroup>                  m_ActionsGroup;
 	std::shared_ptr<IPropertiesGroup>               m_PropertiesGroup;

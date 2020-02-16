@@ -5,6 +5,7 @@
 
 CColliderComponent3D::CColliderComponent3D(const ISceneNode3D& OwnerNode)
 	: CComponentBase(OwnerNode)
+	, m_DebugDraw(true)
 {
 }
 
@@ -24,6 +25,16 @@ void CColliderComponent3D::SetBounds(BoundingBox _bbox)
 cbbox CColliderComponent3D::GetBounds() const
 {
 	return m_Bounds;
+}
+
+void CColliderComponent3D::SetDebugDrawMode(bool Value)
+{
+	m_DebugDraw = Value;
+}
+
+bool CColliderComponent3D::GetDebugDrawMode() const
+{
+	return m_DebugDraw;
 }
 
 bool CColliderComponent3D::CheckFrustum(const ICameraComponent3D* Camera) const
@@ -62,23 +73,23 @@ void CColliderComponent3D::OnMessage(const ISceneNodeComponent* Component, Compo
 	case UUID_OnParentChanged:
 	{
 		// Update THIS bounds
-		if (GetOwnerNode().GetParent())
+		/*if (GetOwnerNode().GetParent())
 		{
 			BoundingBox bbox = GetOwnerNode().GetParent()->GetComponent<IColliderComponent3D>()->GetBounds();
 			bbox.makeUnion(GetBounds());
 			GetOwnerNode().GetParent()->GetComponent<IColliderComponent3D>()->SetBounds(bbox);
-		}
+		}*/
 	}
 	break;
 	case UUID_OnBoundsChanget:
 	{
-		if (GetOwnerNode().GetParent())
+		/*if (GetOwnerNode().GetParent())
 		{
 			// Update THIS bounds
 			BoundingBox bbox = GetOwnerNode().GetParent()->GetComponent<IColliderComponent3D>()->GetBounds();
 			bbox.makeUnion(GetBounds());
 			GetOwnerNode().GetParent()->GetComponent<IColliderComponent3D>()->SetBounds(bbox);
-		}
+		}*/
 	}
 	break;
 	}

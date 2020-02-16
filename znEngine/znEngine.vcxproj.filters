@@ -291,6 +291,9 @@
     <ClCompile Include="Formats\Fonts\FontsManager.cpp">
       <Filter>Formats\Fonts</Filter>
     </ClCompile>
+    <ClCompile Include="Passes\DrawBoundingBoxPass.cpp">
+      <Filter>Passes\3D</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="common.h">
@@ -486,6 +489,9 @@
     <ClInclude Include="Formats\Fonts\FontsManager.h">
       <Filter>Formats\Fonts</Filter>
     </ClInclude>
+    <ClInclude Include="Passes\DrawBoundingBoxPass.h">
+      <Filter>Passes\3D</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="znEngine.rc">
@@ -569,7 +575,6 @@
     <None Include="Resources\Scripts\TestScript.lua">
       <Filter>Resources\Scripts</Filter>
     </None>
-    <None Include="Resources\shaders_D3D\3D\Deffered.hlsl" />
     <None Include="Resources\shaders_D3D\3D\Model_Deffered.hlsl">
       <Filter>Resources\Shaders_D3D\3D</Filter>
     </None>
@@ -581,6 +586,9 @@
     </None>
     <None Include="Formats\Images\DDSFormat.inl">
       <Filter>Formats\Images</Filter>
+    </None>
+    <None Include="Resources\shaders_D3D\3D\Deffered.hlsl">
+      <Filter>Resources\Shaders_D3D\3D</Filter>
     </None>
   </ItemGroup>
 </Project>

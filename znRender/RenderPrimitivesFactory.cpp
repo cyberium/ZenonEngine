@@ -138,6 +138,27 @@ std::shared_ptr<IGeometry> CRenderPrimitivesFactory::CreateCube()
 	return geometry;
 }
 
+std::shared_ptr<IGeometry> CRenderPrimitivesFactory::CreateBBox()
+{
+	DirectX::VertexCollection vertices;
+	DirectX::IndexCollection indices;
+	DirectX::ComputeBox(vertices, indices, DirectX::XMFLOAT3(1.0f, 1.0f, 1.0f), false, false);
+
+	for (auto& v : vertices)
+		v.position += 0.5f;
+
+	std::shared_ptr<IGeometry> geometry = m_RenderDevice.GetObjectsFactory().CreateGeometry();
+	geometry->SetPrimitiveTopology(PrimitiveTopology::TriangleList);
+
+	std::shared_ptr<IBuffer> __vbPos = m_RenderDevice.GetObjectsFactory().CreateVoidVertexBuffer(vertices.data(), vertices.size(), 0, sizeof(DirectX::VertexPositionTextureNormal));
+	geometry->AddVertexBuffer(BufferBinding("POSITION", 0), __vbPos);
+
+	std::shared_ptr<IBuffer> __ib = m_RenderDevice.GetObjectsFactory().CreateIndexBuffer(indices);
+	geometry->SetIndexBuffer(__ib);
+
+	return geometry;
+}
+
 
 std::shared_ptr<IGeometry> CRenderPrimitivesFactory::CreateCone()
 {

@@ -30,6 +30,10 @@ public:
 
 	// Visit funcitonal
 	void                                            Accept(IVisitor* visitor) override;
+	bool                                            IsOnAccept() const override;
+	void                                            AddChild(ISceneNode3D* ParentNode, const std::shared_ptr<ISceneNode3D>& ChildNode) override;
+	void                                            Lock() override;
+	void                                            Unlock() override;
 
 	// Scene events
 	Delegate<SceneChangeEventArgs>&					SceneChangeEvent() override;
@@ -37,38 +41,35 @@ public:
 	virtual void                                    RaiseRayIntersected(const glm::vec3& Point);
 
 	// Engine events
-	virtual void                                    OnUpdate(UpdateEventArgs& e);
+	virtual void                                    OnUpdate(UpdateEventArgs& e) ;
 	virtual void                                    OnPreRender(RenderEventArgs& e);
 	virtual void                                    OnRender(RenderEventArgs& e);
 	virtual void                                    OnPostRender(RenderEventArgs& e);
 	virtual void                                    OnRenderUI(RenderEventArgs& e);
 
-
-	//
 	// INativeWindowEventListener
-	//
 	// Window events
-	virtual void OnWindowInputFocus(EventArgs& Args) override {} // Window gets input focus
-	virtual void OnWindowInputBlur(EventArgs& Args) override {}  // Window loses input focus
-	virtual void OnWindowMinimize(EventArgs& Args) override {}   // Window is minimized.
-	virtual void OnWindowRestore(EventArgs& Args) override {}    // Window is restored.
-	virtual void OnWindowResize(ResizeEventArgs& Args) override;
-	virtual void OnWindowClose(WindowCloseEventArgs& Args) override {}
+	virtual void                                    OnWindowInputFocus(EventArgs& Args) override {} // Window gets input focus
+	virtual void                                    OnWindowInputBlur(EventArgs& Args) override {}  // Window loses input focus
+	virtual void                                    OnWindowMinimize(EventArgs& Args) override {}   // Window is minimized.
+	virtual void                                    OnWindowRestore(EventArgs& Args) override {}    // Window is restored.
+	virtual void                                    OnWindowResize(ResizeEventArgs& Args) override;
+	virtual void                                    OnWindowClose(WindowCloseEventArgs& Args) override {}
 
 	// Keyboard events
-	virtual bool OnWindowKeyPressed(KeyEventArgs& e) override;
-	virtual void OnWindowKeyReleased(KeyEventArgs& e) override;
-	virtual void OnWindowKeyboardFocus(EventArgs& Args) override {}
-	virtual void OnWindowKeyboardBlur(EventArgs& Args) override {}
+	virtual bool                                    OnWindowKeyPressed(KeyEventArgs& e) override;
+	virtual void                                    OnWindowKeyReleased(KeyEventArgs& e) override;
+	virtual void                                    OnWindowKeyboardFocus(EventArgs& Args) override {}
+	virtual void                                    OnWindowKeyboardBlur(EventArgs& Args) override {}
 
 	// Mouse events
-	virtual void OnWindowMouseMoved(MouseMotionEventArgs& e) override;
-	virtual bool OnWindowMouseButtonPressed(MouseButtonEventArgs& e) override;
-	virtual void OnWindowMouseButtonReleased(MouseButtonEventArgs& e) override;
-	virtual bool OnWindowMouseWheel(MouseWheelEventArgs& e) override;
-	virtual void OnWindowMouseLeave(EventArgs& e) override {}
-	virtual void OnWindowMouseFocus(EventArgs& e) override {}
-	virtual void OnWindowMouseBlur(EventArgs& e) override {}
+	virtual void                                    OnWindowMouseMoved(MouseMotionEventArgs& e) override;
+	virtual bool                                    OnWindowMouseButtonPressed(MouseButtonEventArgs& e) override;
+	virtual void                                    OnWindowMouseButtonReleased(MouseButtonEventArgs& e) override;
+	virtual bool                                    OnWindowMouseWheel(MouseWheelEventArgs& e) override;
+	virtual void                                    OnWindowMouseLeave(EventArgs& e) override {}
+	virtual void                                    OnWindowMouseFocus(EventArgs& e) override {}
+	virtual void                                    OnWindowMouseBlur(EventArgs& e) override {}
 
 	// IBaseManagerHolder
 	IBaseManager*                                   GetBaseManager() const override final;
@@ -136,9 +137,12 @@ private: // Mouse events connections
 private:
 	Delegate<SceneChangeEventArgs>					m_SceneChangeEvent;
 
+	bool                                                                       m_OnAcceptPhase;
+	std::vector<std::pair<ISceneNode3D*, std::shared_ptr<ISceneNode3D>>> m_AddChildList;
 
 private: // Quick access
 	IBaseManager*                                   m_BaseManager;
 	IRenderDevice&                                  m_RenderDevice;
 	std::weak_ptr<IRenderWindow>                    m_RenderWindow;
+	std::mutex                                      m_SceneMutex;
 };

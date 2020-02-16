@@ -22,6 +22,7 @@ public:
 
 protected:
 	std::shared_ptr<IConstantBuffer> m_PerObjectConstantBuffer;
+	IShaderParameter* m_PerObjectParameter;
 };
 
 

@@ -31,6 +31,7 @@
     <ClCompile Include="Formats\Images\ImageLoaderTemplate.cpp" />
     <ClCompile Include="Formats\Images\ImagePNG.cpp" />
     <ClCompile Include="Formats\Images\ImagesFactory.cpp" />
+    <ClCompile Include="Passes\DrawBoundingBoxPass.cpp" />
     <ClCompile Include="Passes\UIFontPass.cpp" />
     <ClCompile Include="Scene_Default.cpp" />
     <ClCompile Include="Materials\MaterialDebug.cpp" />
@@ -102,6 +103,7 @@
     <ClInclude Include="Formats\Images\ImageLoaderTemplate.h" />
     <ClInclude Include="Formats\Images\ImagePNG.h" />
     <ClInclude Include="Formats\Images\ImagesFactory.h" />
+    <ClInclude Include="Passes\DrawBoundingBoxPass.h" />
     <ClInclude Include="Passes\UIFontPass.h" />
     <ClInclude Include="Scene_Default.h" />
     <ClInclude Include="Materials\MaterialDebug.h" />

@@ -9,7 +9,8 @@
 #include "XML/XMLManager.h"
 
 SceneBase::SceneBase(IBaseManager* BaseManager)
-	: m_BaseManager(BaseManager)
+	: m_OnAcceptPhase(false)
+	, m_BaseManager(BaseManager)
 	, m_RenderDevice(BaseManager->GetApplication().GetRenderDevice())
 {
 	
@@ -135,11 +136,41 @@ bool SceneBase::Save(std::shared_ptr<IXMLWriter> Writer)
 
 void SceneBase::Accept(IVisitor * visitor)
 {
+	m_OnAcceptPhase = true;
+
 	if (m_RootNode3D)
 		m_RootNode3D->Accept(visitor);
 
 	if (m_RootNodeUI)
 		m_RootNodeUI->Accept(visitor);
+
+	m_OnAcceptPhase = false;
+
+	for (const auto& it : m_AddChildList)
+		it.second->SetParent(it.first);
+	m_AddChildList.clear();
+}
+
+bool SceneBase::IsOnAccept() const
+{
+	return m_OnAcceptPhase;
+}
+
+void SceneBase::AddChild(ISceneNode3D* ParentNode, const std::shared_ptr<ISceneNode3D>& ChildNode)
+{
+	CSceneLocker locker(this);
+
+	m_AddChildList.push_back(std::make_pair(ParentNode, ChildNode));
+}
+
+void SceneBase::Lock()
+{
+	m_SceneMutex.lock();
+}
+
+void SceneBase::Unlock()
+{
+	m_SceneMutex.unlock();
 }
 
 
@@ -170,8 +201,15 @@ void SceneBase::OnUpdate(UpdateEventArgs& e)
 	if (GetCameraController())
 		GetCameraController()->OnUpdate(e);
 
+	m_OnAcceptPhase = true;
 	if (m_RootNode3D)
 		m_RootNode3D->OnUpdate(e);
+
+	m_OnAcceptPhase = false;
+
+	for (const auto& it : m_AddChildList)
+		it.second->SetParent(it.first);
+	m_AddChildList.clear();
 }
 
 void SceneBase::OnPreRender(RenderEventArgs & e)

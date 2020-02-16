@@ -55,7 +55,7 @@ void CLoader::AddToLoadQueue(ILoadable* _item)
 	m_QueueLoad.Add(_item);
 #else
 	_item->Load();
-	_item->setLoaded();
+	_item->SetState(ILoadable::ELoadableState::Loaded);
 #endif
 }
 

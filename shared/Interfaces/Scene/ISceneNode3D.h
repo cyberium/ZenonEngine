@@ -8,6 +8,7 @@ class Viewport;
 ZN_INTERFACE IVisitor;
 class UpdateEventArgs;
 ZN_INTERFACE IManager;
+ZN_INTERFACE IColliderComponent3D;
 // FORWARD END
 
 
@@ -83,6 +84,8 @@ ZN_INTERFACE ZN_API __declspec(novtable) ISceneNode3D
 	virtual void RaiseComponentMessage(const ISceneNodeComponent* Component, ComponentMessageType Message) const = 0;
 	virtual void RegisterComponents() = 0;
 
+	virtual std::shared_ptr<IColliderComponent3D> GetColliderComponent() const = 0;
+
 	template<typename T> inline bool IsComponentExists()
 	{
 		return IsComponentExists(__uuidof(T));
@@ -92,6 +95,10 @@ ZN_INTERFACE ZN_API __declspec(novtable) ISceneNode3D
 		if (std::shared_ptr<ISceneNodeComponent> component = GetComponent(__uuidof(T)))
 			return std::dynamic_pointer_cast<T>(component);
 		return nullptr;
+	}
+	template<> inline std::shared_ptr<IColliderComponent3D> GetComponent<IColliderComponent3D>() const
+	{
+		return GetColliderComponent();
 	}
 	template<typename T> inline std::shared_ptr<T> AddComponent(const std::shared_ptr<T>& Component)
 	{

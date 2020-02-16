@@ -25,6 +25,7 @@ ZN_INTERFACE ZN_API IRenderPrimitivesFactory
 	virtual std::shared_ptr<IGeometry> CreateScreenQuad(float left = 0.0f, float right = 1.0f, float bottom = 0.0f, float top = 1.0f, float z = 0.0f) = 0; // Create a screen-space quad that can be used to render full-screen post-process effects to the screen.
 	virtual std::shared_ptr<IGeometry> CreateSphere() = 0;
 	virtual std::shared_ptr<IGeometry> CreateCube() = 0;
+	virtual std::shared_ptr<IGeometry> CreateBBox() = 0;
 	virtual std::shared_ptr<IGeometry> CreateCone() = 0;
 	virtual std::shared_ptr<IGeometry> CreateQuad() = 0;
 

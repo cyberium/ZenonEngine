@@ -108,7 +108,7 @@ void SceneNode3D::AddChild(std::shared_ptr<ISceneNode3D> childNode)
 	if (childNode == nullptr)
 		_ASSERT_EXPR(false, L"Child node must not be NULL.");
 
-	std::lock_guard<std::mutex> lock(m_ChildMutex);
+	CSceneLocker locker(GetScene());
 
 	Node3DList::iterator iter = std::find(m_Children.begin(), m_Children.end(), childNode);
 	if (iter == m_Children.end())
@@ -131,7 +131,7 @@ void SceneNode3D::RemoveChild(const ISceneNode3D* childNode)
 		return;
 	}
 
-	std::lock_guard<std::mutex> lock(m_ChildMutex);
+	CSceneLocker locker(GetScene());
 
 	Node3DList::iterator iter = std::find_if(m_Children.begin(), m_Children.end(), [&childNode](const std::shared_ptr<ISceneNode3D>& SceneNode3D) -> bool { return SceneNode3D.get() == childNode; });
 	if (iter != m_Children.end())
@@ -164,6 +164,8 @@ void SceneNode3D::RemoveChild(const ISceneNode3D* childNode)
 
 void SceneNode3D::SetParent(ISceneNode3D* parentNode)
 {
+
+
 	// Remove from current parent
 	std::shared_ptr<ISceneNode3D> currentParent = m_ParentNode.lock();
 	if (currentParent != nullptr)
@@ -184,6 +186,8 @@ ISceneNode3D* SceneNode3D::GetParent() const
 
 const SceneNode3D::Node3DList& SceneNode3D::GetChilds()
 {
+	//CSceneLocker locker(GetScene());
+
 	return m_Children;
 }
 
@@ -286,8 +290,6 @@ void SceneNode3D::SetLocalTransform(cmat4 localTransform)
 
 	UpdateWorldTransform();
 
-	std::lock_guard<std::mutex> lock(m_ChildMutex);
-
 	// After world updated, we can update all childs
 	for (auto it : GetChilds())
 		std::dynamic_pointer_cast<SceneNode3D>(it)->UpdateWorldTransform();
@@ -387,8 +389,6 @@ void SceneNode3D::OnUpdate(UpdateEventArgs & e)
 		Component.second->DoUpdate(e);
 	});
 
-	std::lock_guard<std::mutex> lock(m_ChildMutex);
-
 	const auto& childs = GetChilds();
 	std::for_each(childs.begin(), childs.end(), [&e](const std::shared_ptr<ISceneNode3D>& Child)
 	{
@@ -461,6 +461,10 @@ bool SceneNode3D::Save(std::shared_ptr<IXMLWriter> Writer)
 
 void SceneNode3D::Accept(IVisitor* visitor)
 {
+	if (const auto& loadableObject = dynamic_cast<ILoadable*>(this))
+		if (loadableObject->GetState() != ILoadable::ELoadableState::Loaded)
+			return;
+
 	if (visitor->Visit(this))
 	{
 		const auto& components = GetComponents();
@@ -468,8 +472,6 @@ void SceneNode3D::Accept(IVisitor* visitor)
 			Component.second->Accept(visitor);
 		});
 	}
-
-	std::lock_guard<std::mutex> lock(m_ChildMutex);
 
 	const auto& childs = GetChilds();
 	std::for_each(childs.begin(), childs.end(), [&visitor](const std::shared_ptr<ISceneNode3D>& Child) {

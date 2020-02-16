@@ -13,6 +13,9 @@ public:
     // IColliderComponent3D
     void SetBounds(BoundingBox _bbox) override;
     cbbox GetBounds() const override;
+	void SetDebugDrawMode(bool Value) override;
+	bool GetDebugDrawMode() const override;
+
     bool CheckFrustum(const ICameraComponent3D* Camera) const override;
     bool CheckDistance2D(const ICameraComponent3D* Camera, float _distance) const override;
     bool CheckDistance(const ICameraComponent3D* Camera, float _distance) const override;
@@ -25,4 +28,5 @@ protected:
 
 private:
     BoundingBox m_Bounds;
+	bool m_DebugDraw;
 };

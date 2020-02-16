@@ -13,12 +13,11 @@ public:
 	// IMeshComponent3D
     virtual void AddMesh(std::shared_ptr<IModel> mesh);
     virtual void RemoveMesh(IModel* mesh);
-    virtual const MeshList& GetMeshes();
+    const MeshList GetMeshes();
 
     // CComponentBase
     virtual void Accept(IVisitor* visitor) override;
 
 private:
     MeshList m_Meshes;
-    std::mutex m_MeshMutex;
 };

@@ -13,7 +13,7 @@ CMeshComponent3D::~CMeshComponent3D()
 
 void CMeshComponent3D::AddMesh(std::shared_ptr<IModel> mesh)
 {
-	std::lock_guard<std::mutex> lock(m_MeshMutex);
+	//CSceneLocker locker(GetOwnerNode().GetScene());
 
     MeshList::iterator iter = std::find(m_Meshes.begin(), m_Meshes.end(), mesh);
     if (iter == m_Meshes.end())
@@ -22,15 +22,16 @@ void CMeshComponent3D::AddMesh(std::shared_ptr<IModel> mesh)
 
 void CMeshComponent3D::RemoveMesh(IModel* mesh)
 {
+	//CSceneLocker locker(GetOwnerNode().GetScene());
+
     //MeshList::iterator iter = std::find(m_Meshes.begin(), m_Meshes.end(), mesh);
     //if (iter != m_Meshes.end())
     //    m_Meshes.erase(iter);
 }
 
-const CMeshComponent3D::MeshList& CMeshComponent3D::GetMeshes()
+const CMeshComponent3D::MeshList CMeshComponent3D::GetMeshes()
 {
-	std::lock_guard<std::mutex> lock(m_MeshMutex);
-
+	//CSceneLocker locker(GetOwnerNode().GetScene());
     return m_Meshes;
 }
 

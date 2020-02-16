@@ -5,6 +5,7 @@
 
 Base3DPass::Base3DPass(IRenderDevice& RenderDevice, std::shared_ptr<IScene> scene)
     : ScenePassPipelined(RenderDevice, scene)
+	, m_PerObjectParameter(nullptr)
 {
 	m_PerObjectConstantBuffer = GetRenderDevice().GetObjectsFactory().CreateConstantBuffer(PerObject3D());
 }
@@ -33,11 +34,13 @@ bool Base3DPass::Visit(const ISceneNode3D* sceneNode)
 	perObject3D.Model = sceneNode->GetWorldTransfom();
 	m_PerObjectConstantBuffer->Set(perObject3D);
 
-	auto& perObjectParameter = GetPipeline().GetShaders().at(EShaderType::VertexShader)->GetShaderParameterByName("PerObject");
-	if (perObjectParameter.IsValid() && m_PerObjectConstantBuffer != nullptr)
+	if (m_PerObjectParameter == nullptr)
+		m_PerObjectParameter = &(GetPipeline().GetShaders().at(EShaderType::VertexShader)->GetShaderParameterByName("PerObject"));
+
+	if (m_PerObjectParameter->IsValid() && m_PerObjectConstantBuffer != nullptr)
 	{
-		perObjectParameter.SetConstantBuffer(m_PerObjectConstantBuffer);
-		perObjectParameter.Bind();
+		m_PerObjectParameter->SetConstantBuffer(m_PerObjectConstantBuffer);
+		m_PerObjectParameter->Bind();
 	}
 
 	return true;

@@ -29,6 +29,10 @@ ZN_INTERFACE ZN_API __declspec(novtable) IScene
 
 	// Passes will go to this
 	virtual void Accept(IVisitor* visitor) = 0;
+	virtual bool IsOnAccept() const = 0;
+	virtual void AddChild(ISceneNode3D* ParentNode, const std::shared_ptr<ISceneNode3D>& ChildNode) = 0;
+	virtual void Lock() = 0;
+	virtual void Unlock() = 0;
 
 	// Events
 	virtual SceneChangeEvent& SceneChangeEvent() = 0;
@@ -48,7 +52,15 @@ ZN_INTERFACE ZN_API __declspec(novtable) IScene
 		newNode->SetScene(weak_from_this());
 		newNode->RegisterComponents();
 		newNode->Initialize();
-		newNode->SetParent(Parent);
+
+		if (IsOnAccept())
+		{
+			AddChild(Parent, newNode);
+		}
+		else
+		{
+			newNode->SetParent(Parent);
+		}
 
 		return newNode.get();
 	}
@@ -67,6 +79,25 @@ ZN_INTERFACE ZN_API __declspec(novtable) IScene
 		return newNode.get();
 	}
 };
+
+
+class ZN_API CSceneLocker
+{
+public:
+	CSceneLocker(IScene* Scene)
+		: m_Scene(Scene)
+	{
+		m_Scene->Lock();
+	}
+	~CSceneLocker()
+	{
+		m_Scene->Unlock();
+	}
+
+private:
+	IScene* m_Scene;
+};
+
 
 //
 // For plugins

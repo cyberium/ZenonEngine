@@ -46,6 +46,8 @@ ZN_INTERFACE __declspec(novtable, UUID_ColliderComponent) ZN_API IColliderCompon
 
 	virtual void SetBounds(BoundingBox _bbox) = 0;
 	virtual cbbox GetBounds() const = 0;
+	virtual void SetDebugDrawMode(bool Value) = 0;
+	virtual bool GetDebugDrawMode() const = 0;
 
 	virtual bool CheckFrustum(const ICameraComponent3D* Camera) const = 0;
 	virtual bool CheckDistance2D(const ICameraComponent3D* Camera, float _distance) const = 0;
@@ -67,7 +69,7 @@ public:
 
 	virtual void AddMesh(std::shared_ptr<IModel> mesh) = 0;
 	virtual void RemoveMesh(IModel* mesh) = 0;
-	virtual const MeshList& GetMeshes() = 0;
+	virtual const MeshList GetMeshes() = 0;
 };
 const ComponentMessageType UUID_OnModelAdded = 30;
 const ComponentMessageType UUID_OnModelRemoved = 30;
