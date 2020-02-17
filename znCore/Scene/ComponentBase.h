@@ -24,10 +24,8 @@ public:
 	virtual bool                                    Load(std::shared_ptr<IXMLReader> Reader) override;
 	virtual bool                                    Save(std::shared_ptr<IXMLWriter> Writer) override;
 
-	// Called before all others calls
-	virtual void                                    DoUpdate(UpdateEventArgs& e) override;
-
     // Accept from SceneNode
+	virtual void                                    Update(const UpdateEventArgs& e) override;
     virtual void                                    Accept(IVisitor* visitor) override;
 
 protected:

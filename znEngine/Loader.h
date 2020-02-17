@@ -28,26 +28,23 @@ public:
 		}
 
 		ILoadable* loadable = m_Queue.front();
+		m_Queue.pop_front();
+
 		if (loadable == NULL)
 		{
-			m_Queue.pop_front();
 			return false;
 		}
 
 		if (loadable->GetState() == ILoadable::ELoadableState::Loading || loadable->GetState() == ILoadable::ELoadableState::Loaded)
 		{
-			m_Queue.pop_front();
 			return false;
 		}
 
 		if (loadable->getDepends() != nullptr && loadable->getDepends()->GetState() != ILoadable::ELoadableState::Loaded)
 		{
-			m_Queue.pop_front();
 			m_Queue.push_back(loadable);
 			return false;
 		}
-
-		m_Queue.pop_front();
 		
 		(*result) = loadable;
 		return true;

@@ -28,7 +28,7 @@ public:
 	const SLight& GetLightStruct() const override;
 
     // ISceneNodeComponent
-	virtual void DoUpdate(UpdateEventArgs& e) override;
+	virtual void Update(const UpdateEventArgs& e) override;
     virtual void Accept(IVisitor* visitor) override;
 
 private:

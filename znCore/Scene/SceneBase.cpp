@@ -27,29 +27,29 @@ void SceneBase::Initialize()
 	m_TestQuery = GetRenderDevice().GetObjectsFactory().CreateQuery(IQuery::QueryType::CountSamples, 1);
 
 	m_RootNode3D = std::make_shared<SceneNode3D>();
-	m_RootNode3D->SetScene(weak_from_this());
+	std::dynamic_pointer_cast<SceneNode3D>(m_RootNode3D)->SetScene(weak_from_this());
 	m_RootNode3D->RegisterComponents();
 	m_RootNode3D->Initialize();
 	m_RootNode3D->SetParent(nullptr);
 	m_RootNode3D->SetName("Root node 3D");
 
 	m_RootNodeUI = std::make_shared<CUIBaseNode>();
-	m_RootNodeUI->SetScene(weak_from_this());
+	std::dynamic_pointer_cast<CUIBaseNode>(m_RootNodeUI)->SetScene(weak_from_this());
 	m_RootNodeUI->Initialize();
 	m_RootNodeUI->SetParent(nullptr);
 	m_RootNodeUI->SetName("Root node UI");
 
 	{
-		m_CameraPosText = GetBaseManager()->GetManager<ISceneNodesFactory>()->CreateSceneNodeUI(GetRootNodeUI(), "TextUI");
+		m_CameraPosText = GetBaseManager()->GetManager<ISceneNodesFactory>()->CreateSceneNodeUI(GetRootNodeUI().get(), "TextUI");
 		m_CameraPosText->SetTranslate(vec2(700.0f, 0.0f));
 
-		m_CameraRotText = GetBaseManager()->GetManager<ISceneNodesFactory>()->CreateSceneNodeUI(GetRootNodeUI(), "TextUI");
+		m_CameraRotText = GetBaseManager()->GetManager<ISceneNodesFactory>()->CreateSceneNodeUI(GetRootNodeUI().get(), "TextUI");
 		m_CameraRotText->SetTranslate(vec2(700.0f, 20.0f));
 
-		m_CameraRot2Text = GetBaseManager()->GetManager<ISceneNodesFactory>()->CreateSceneNodeUI(GetRootNodeUI(), "TextUI");
+		m_CameraRot2Text = GetBaseManager()->GetManager<ISceneNodesFactory>()->CreateSceneNodeUI(GetRootNodeUI().get(), "TextUI");
 		m_CameraRot2Text->SetTranslate(vec2(700.0f, 40.0f));
 
-		m_FPSText = GetBaseManager()->GetManager<ISceneNodesFactory>()->CreateSceneNodeUI(GetRootNodeUI(), "TextUI");
+		m_FPSText = GetBaseManager()->GetManager<ISceneNodesFactory>()->CreateSceneNodeUI(GetRootNodeUI().get(), "TextUI");
 		m_FPSText->SetTranslate(vec2(700.0f, 60.0f));
 	}
 }
@@ -108,14 +108,25 @@ void SceneBase::DisconnectEvents(const std::shared_ptr<IRenderWindowEvents>& Win
 //
 // IScene
 //
-ISceneNode3D* SceneBase::GetRootNode3D() const
+std::shared_ptr<ISceneNode3D> SceneBase::GetRootNode3D() const
 {
-	return m_RootNode3D.get();
+	return m_RootNode3D;
 }
 
-ISceneNodeUI * SceneBase::GetRootNodeUI() const
+std::shared_ptr<ISceneNodeUI> SceneBase::GetRootNodeUI() const
 {
-	return m_RootNodeUI.get();
+	return m_RootNodeUI;
+}
+
+void SceneBase::SetCameraController(std::shared_ptr<ICameraController> CameraController)
+{
+	_ASSERT(CameraController != nullptr);
+	m_DefaultCameraController = CameraController;
+}
+
+std::shared_ptr<ICameraController> SceneBase::GetCameraController() const
+{
+	return m_DefaultCameraController;
 }
 
 bool SceneBase::Load(std::shared_ptr<IXMLReader> Reader)
@@ -146,6 +157,7 @@ void SceneBase::Accept(IVisitor * visitor)
 
 	m_OnAcceptPhase = false;
 
+	std::lock_guard<std::mutex> lock(m_AddChildListMutex);
 	for (const auto& it : m_AddChildList)
 		it.second->SetParent(it.first);
 	m_AddChildList.clear();
@@ -158,7 +170,7 @@ bool SceneBase::IsOnAccept() const
 
 void SceneBase::AddChild(ISceneNode3D* ParentNode, const std::shared_ptr<ISceneNode3D>& ChildNode)
 {
-	CSceneLocker locker(this);
+	std::lock_guard<std::mutex> lock(m_AddChildListMutex);
 
 	m_AddChildList.push_back(std::make_pair(ParentNode, ChildNode));
 }
@@ -199,17 +211,22 @@ void SceneBase::RaiseRayIntersected(const glm::vec3 & Point)
 void SceneBase::OnUpdate(UpdateEventArgs& e)
 {
 	if (GetCameraController())
+	{
 		GetCameraController()->OnUpdate(e);
+		e.Camera = GetCameraController()->GetCamera().get();
+		e.CameraForCulling = GetCameraController()->GetCamera().get();
+	}
 
 	m_OnAcceptPhase = true;
+
 	if (m_RootNode3D)
-		m_RootNode3D->OnUpdate(e);
+		DoUpdate_Rec(m_RootNode3D, e);
 
 	m_OnAcceptPhase = false;
 
-	for (const auto& it : m_AddChildList)
-		it.second->SetParent(it.first);
-	m_AddChildList.clear();
+	//for (const auto& it : m_AddChildList)
+	//	it.second->SetParent(it.first);
+	//m_AddChildList.clear();
 }
 
 void SceneBase::OnPreRender(RenderEventArgs & e)
@@ -222,7 +239,10 @@ void SceneBase::OnPreRender(RenderEventArgs & e)
 void SceneBase::OnRender(RenderEventArgs & e)
 {
 	if (GetCameraController())
+	{
 		e.Camera = GetCameraController()->GetCamera().get();
+		e.CameraForCulling = GetCameraController()->GetCamera().get();
+	}
 
 	m_Technique3D.Render(e);
 }
@@ -420,16 +440,6 @@ IBaseManager* SceneBase::GetBaseManager() const
 //
 // Protected
 //
-void SceneBase::SetCameraController(std::shared_ptr<ICameraController> CameraController)
-{
-	_ASSERT(CameraController != nullptr);
-	m_DefaultCameraController = CameraController;
-}
-
-std::shared_ptr<ICameraController> SceneBase::GetCameraController() const
-{
-	return m_DefaultCameraController;
-}
 
 IRenderDevice& SceneBase::GetRenderDevice() const
 {
@@ -444,6 +454,24 @@ std::shared_ptr<IRenderWindow> SceneBase::GetRenderWindow() const
 }
 
 
+
+void SceneBase::DoUpdate_Rec(const std::shared_ptr<ISceneNode3D>& Node, const UpdateEventArgs & e)
+{
+	Node->Update(e);
+
+	const auto& components = Node->GetComponents();
+	std::for_each(components.begin(), components.end(), [&e](const std::pair<GUID, std::shared_ptr<ISceneNodeComponent>>& Component)
+	{
+		_ASSERT(Component.second);
+		Component.second->Update(e);
+	});
+
+	const auto& childs = Node->GetChilds();
+	std::for_each(childs.begin(), childs.end(), [this, &e](const std::shared_ptr<ISceneNode3D>& Child)
+	{
+		DoUpdate_Rec(Child, e);
+	});
+}
 
 //
 // Input events process recursive

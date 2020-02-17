@@ -20,8 +20,11 @@ ZN_INTERFACE ZN_API __declspec(novtable) IScene
 	virtual void Initialize() = 0;
 	virtual void Finalize() = 0;
 
-	virtual ISceneNode3D* GetRootNode3D() const = 0;
-	virtual ISceneNodeUI* GetRootNodeUI() const = 0;
+	virtual std::shared_ptr<ISceneNode3D> GetRootNode3D() const = 0;
+	virtual std::shared_ptr<ISceneNodeUI> GetRootNodeUI() const = 0;
+
+	virtual void SetCameraController(std::shared_ptr<ICameraController> CameraController) = 0;
+	virtual std::shared_ptr<ICameraController> GetCameraController() const = 0;
 
 	// Load & Save
 	virtual bool Load(std::shared_ptr<IXMLReader> Reader) = 0;

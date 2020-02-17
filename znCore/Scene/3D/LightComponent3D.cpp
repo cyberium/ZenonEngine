@@ -117,7 +117,7 @@ const SLight& CLightComponent3D::GetLightStruct() const
 //
 // ISceneNodeComponent
 //
-void CLightComponent3D::DoUpdate(UpdateEventArgs & e)
+void CLightComponent3D::Update(const UpdateEventArgs & e)
 {
 	m_LightStruct->PositionWS = glm::vec4(GetOwnerNode().GetTranslation(), 1.0f);
 	m_LightStruct->DirectionWS = glm::vec4(GetOwnerNode().GetRotation(), 0.0f);

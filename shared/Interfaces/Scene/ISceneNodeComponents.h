@@ -23,10 +23,8 @@ ZN_INTERFACE ZN_API ISceneNodeComponent
 	virtual bool Load(std::shared_ptr<IXMLReader> Reader) = 0;
 	virtual bool Save(std::shared_ptr<IXMLWriter> Writer) = 0;
 
-	// Called before all others calls
-	virtual void DoUpdate(UpdateEventArgs& e) = 0;
-
 	// Visit functional
+	virtual void Update(const UpdateEventArgs& e) = 0;
     virtual void Accept(IVisitor* visitor) = 0;
 };
 typedef std::unordered_map<GUID, std::shared_ptr<ISceneNodeComponent>> ComponentsMap;

@@ -21,8 +21,10 @@ public:
 	virtual void                                    Initialize();
 	virtual void                                    Finalize();
 
-	ISceneNode3D*									GetRootNode3D() const override;
-	ISceneNodeUI*									GetRootNodeUI() const override;
+	std::shared_ptr<ISceneNode3D>					GetRootNode3D() const override;
+	std::shared_ptr<ISceneNodeUI>					GetRootNodeUI() const override;
+	void                                            SetCameraController(std::shared_ptr<ICameraController> CameraController);
+	std::shared_ptr<ICameraController>              GetCameraController() const;
 
 	// Load & Save
 	bool                                            Load(std::shared_ptr<IXMLReader> Reader) override;
@@ -76,14 +78,13 @@ public:
 
 
 protected:
-	void                                            SetCameraController(std::shared_ptr<ICameraController> CameraController);
-	std::shared_ptr<ICameraController>              GetCameraController() const;
-
 	IRenderDevice&                                  GetRenderDevice() const;
 	std::shared_ptr<IRenderWindow>                  GetRenderWindow() const;
 
 
 protected: // Input events process recursive
+	void                                            DoUpdate_Rec(const std::shared_ptr<ISceneNode3D>& Node, const UpdateEventArgs& e);
+
 	bool                                            DoKeyPressed_Rec(const std::shared_ptr<ISceneNodeUI>& Node, KeyEventArgs& e);
 	void                                            DoKeyReleased_Rec(const std::shared_ptr<ISceneNodeUI>& Node, KeyEventArgs& e);
 	void                                            DoMouseMoved_Rec(const std::shared_ptr<ISceneNodeUI>& Node, MouseMotionEventArgs& e);
@@ -95,8 +96,8 @@ protected:
 	RenderTechnique                                 m_Technique3D;
 	RenderTechnique                                 m_TechniqueUI;
 
-	std::shared_ptr<SceneNode3D>                    m_RootNode3D;
-	std::shared_ptr<CUIBaseNode>                    m_RootNodeUI;
+	std::shared_ptr<ISceneNode3D>                   m_RootNode3D;
+	std::shared_ptr<ISceneNodeUI>                   m_RootNodeUI;
 
 	std::shared_ptr<IQuery>                         m_FrameQuery;
 	std::shared_ptr<IQuery>                         m_TestQuery;
@@ -137,8 +138,9 @@ private: // Mouse events connections
 private:
 	Delegate<SceneChangeEventArgs>					m_SceneChangeEvent;
 
-	bool                                                                       m_OnAcceptPhase;
+	std::atomic_bool                                                     m_OnAcceptPhase;
 	std::vector<std::pair<ISceneNode3D*, std::shared_ptr<ISceneNode3D>>> m_AddChildList;
+	std::mutex                                                           m_AddChildListMutex;
 
 private: // Quick access
 	IBaseManager*                                   m_BaseManager;

@@ -93,17 +93,12 @@ public:
 	//
 
 
-	// Called before all others calls
-	virtual void                                    OnUpdate(UpdateEventArgs& e) override final;
-	virtual void                                    DoUpdate(UpdateEventArgs& e) override;
-	virtual void                                    UpdateCamera(const ICameraComponent3D* camera) override;
-	virtual void                                    UpdateViewport(const Viewport& viewport) override;
-
 	// Load & Save
 	bool                                            Load(std::shared_ptr<IXMLReader> Reader) override;
 	bool                                            Save(std::shared_ptr<IXMLWriter> Writer) override;
 
 	// Allow a visitor to visit this node.
+	virtual void                                    Update(const UpdateEventArgs& e) override;
 	virtual void                                    Accept(IVisitor* visitor) override;
 
 
@@ -120,6 +115,7 @@ protected:
 
 	void                                            SetMeshComponent(const std::shared_ptr<IMeshComponent3D>& MeshComponent);
     void                                            SetColliderComponent(const std::shared_ptr<IColliderComponent3D>& ColliderComponent);
+
 
 private:
 	std::string                                     m_Type;

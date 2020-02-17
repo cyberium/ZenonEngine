@@ -378,38 +378,7 @@ void SceneNode3D::RegisterComponents()
 
 
 
-void SceneNode3D::OnUpdate(UpdateEventArgs & e)
-{
-	DoUpdate(e);
 
-	const auto& components = GetComponents();
-	std::for_each(components.begin(), components.end(), [&e](const std::pair<GUID, std::shared_ptr<ISceneNodeComponent>>& Component)
-	{
-		_ASSERT(Component.second);
-		Component.second->DoUpdate(e);
-	});
-
-	const auto& childs = GetChilds();
-	std::for_each(childs.begin(), childs.end(), [&e](const std::shared_ptr<ISceneNode3D>& Child)
-	{
-		Child->OnUpdate(e);
-	});
-}
-
-void SceneNode3D::DoUpdate(UpdateEventArgs & e)
-{
-	// Do nothing...
-}
-
-void SceneNode3D::UpdateCamera(const ICameraComponent3D* camera)
-{
-	// Do nothing...
-}
-
-void SceneNode3D::UpdateViewport(const Viewport& viewport)
-{
-	// Do nothing...
-}
 
 bool SceneNode3D::Load(std::shared_ptr<IXMLReader> Reader)
 {
@@ -457,6 +426,11 @@ bool SceneNode3D::Save(std::shared_ptr<IXMLWriter> Writer)
 	}
 
 	return true;
+}
+
+void SceneNode3D::Update(const UpdateEventArgs & e)
+{
+	// Do nothing...
 }
 
 void SceneNode3D::Accept(IVisitor* visitor)

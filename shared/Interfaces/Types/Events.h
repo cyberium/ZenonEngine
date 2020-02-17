@@ -251,7 +251,8 @@ public:
 typedef Delegate<ResizeEventArgs> ResizeEvent;
 
 
-class ZN_API UpdateEventArgs : public EventArgs
+class ZN_API UpdateEventArgs 
+	: public EventArgs
 {
 public:
 	UpdateEventArgs
@@ -259,54 +260,44 @@ public:
 		const Object* caller,
 		float DeltaTime,
 		float TotalTime,
-		uint64_t FrameCounter
+		uint64_t FrameCounter,
+		const ICameraComponent3D* Camera,
+		const ICameraComponent3D* CameraForCulling
 	)
 		: EventArgs(caller)
 		, DeltaTime(DeltaTime)
 		, TotalTime(TotalTime)
 		, FrameCounter(FrameCounter)
+		, Camera(Camera)
+		, CameraForCulling(CameraForCulling)
 	{}
 
 	float                                           DeltaTime;
 	float                                           TotalTime;
 	int64_t                                         FrameCounter;
+
+	// Engine specific. TODO: Replace me!
+	const ICameraComponent3D*                       Camera;
+	const ICameraComponent3D*                       CameraForCulling;
 };
 typedef Delegate<UpdateEventArgs> UpdateEvent;
 
 
-class ZN_API RenderEventArgs : public EventArgs
+class ZN_API RenderEventArgs 
+	: public UpdateEventArgs
 {
 public:
 	RenderEventArgs
 	(
-		const Object* Caller,
-		float DeltaTime,
-		float TotalTime,
-		uint64_t FrameCounter,
-		const ICameraComponent3D* Camera,
-		const IPipelineState* PipelineState,
-		const ISceneNode3D* Node,
-		const ISceneNodeUI* NodeUI = nullptr
+		const UpdateEventArgs& UpdateEventArgs,
+		const IPipelineState* PipelineState
 	)
-		: EventArgs(Caller)
-		, DeltaTime(DeltaTime)
-		, TotalTime(TotalTime)
-		, FrameCounter(FrameCounter)
-
-		, Camera(Camera)
+		: UpdateEventArgs(UpdateEventArgs)
 		, PipelineState(PipelineState)
-		, Node2(Node)
-		, NodeUI2(NodeUI)
 	{}
 
-	float                                           DeltaTime;
-	float                                           TotalTime;
-	int64_t                                         FrameCounter;
-
-	const ICameraComponent3D*                       Camera;
+	// Engine specific. TODO: Replace me!
 	const IPipelineState*                           PipelineState;
-	const ISceneNode3D*                             Node2;
-	const ISceneNodeUI*                             NodeUI2;
 };
 typedef Delegate<RenderEventArgs> RenderEvent;
 
