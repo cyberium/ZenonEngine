@@ -88,7 +88,7 @@ void CUIBeizerLineNode::UpdateBuffer()
     p[2] = P2;
     p[3] = m_EndPoint;
 
-    auto pointsBufferNew = GetBaseManager()->GetApplication().GetRenderDevice().GetObjectsFactory().CreateVertexBuffer(p, 4);
+    auto pointsBufferNew = GetBaseManager().GetApplication().GetRenderDevice().GetObjectsFactory().CreateVertexBuffer(p, 4);
     m_PointsBuffer->Copy(pointsBufferNew.get());
 }
 

@@ -5,10 +5,10 @@
 
 
 
-typedef IznPlugin*(GetPluginFuncProc)(IBaseManager* BaseManager);
+typedef IznPlugin*(GetPluginFuncProc)(IBaseManager& BaseManager);
 
 
-CznPluginsManager::CznPluginsManager(IBaseManager* BaseManager)
+CznPluginsManager::CznPluginsManager(IBaseManager& BaseManager)
 	: m_BaseManager(BaseManager)
 {}
 

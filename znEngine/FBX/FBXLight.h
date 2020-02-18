@@ -11,7 +11,7 @@ class CFBXSceneNode;
 class CFBXLight
 {
 public:
-	CFBXLight(const IBaseManager* BaseManager, std::weak_ptr<CFBXSceneNode> OwnerFBXNode);
+	CFBXLight(const IBaseManager& BaseManager, std::weak_ptr<CFBXSceneNode> OwnerFBXNode);
 	virtual ~CFBXLight();
 
 	void Load(fbxsdk::FbxLight* NativeLight);
@@ -20,7 +20,7 @@ private:
 	std::weak_ptr<CFBXSceneNode> m_OwnerFBXNode;
 
 private:
-	const IBaseManager* m_BaseManager;
+	const IBaseManager& m_BaseManager;
 };
 
 #endif

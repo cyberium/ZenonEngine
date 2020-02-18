@@ -26,7 +26,7 @@ class ZN_API CznPluginsManager
 	: public IznPluginsManager
 {
 public:
-	CznPluginsManager(IBaseManager* BaseManager);
+	CznPluginsManager(IBaseManager& BaseManager);
 	virtual ~CznPluginsManager();
 
 	// IznPluginsManager
@@ -45,7 +45,7 @@ private:
 	};
 
 private:
-	IBaseManager*                                   m_BaseManager;
+	IBaseManager&                                   m_BaseManager;
 	std::vector<SPluginDescription> m_Plugins;
 	std::vector<std::shared_ptr<IznPluginsEventListener>> m_PluginsEventsListener;
 };

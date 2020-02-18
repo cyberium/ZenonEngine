@@ -11,7 +11,7 @@ class ZN_API SceneBase
 	, public Object
 {
 public:
-	SceneBase(IBaseManager* BaseManager);
+	SceneBase(IBaseManager& BaseManager);
 	virtual ~SceneBase();
 
 	// IScene
@@ -74,7 +74,7 @@ public:
 	virtual void                                    OnWindowMouseBlur(EventArgs& e) override {}
 
 	// IBaseManagerHolder
-	IBaseManager*                                   GetBaseManager() const override final;
+	IBaseManager&                                   GetBaseManager() const override final;
 
 
 protected:
@@ -143,7 +143,7 @@ private:
 	std::mutex                                                           m_AddChildListMutex;
 
 private: // Quick access
-	IBaseManager*                                   m_BaseManager;
+	IBaseManager&                                   m_BaseManager;
 	IRenderDevice&                                  m_RenderDevice;
 	std::weak_ptr<IRenderWindow>                    m_RenderWindow;
 	std::mutex                                      m_SceneMutex;

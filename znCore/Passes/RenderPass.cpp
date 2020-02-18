@@ -82,8 +82,7 @@ IRenderDevice& RenderPass::GetRenderDevice() const
     return m_RenderDevice;
 }
 
-const IBaseManager* RenderPass::GetBaseManager() const
+const IBaseManager& RenderPass::GetBaseManager() const
 {
-	_ASSERT(m_BaseManager != nullptr);
 	return m_BaseManager;
 }

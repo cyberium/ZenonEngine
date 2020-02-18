@@ -8,7 +8,7 @@ class CGameState_Editor
 	: public CGameState
 {
 public:
-	CGameState_Editor(IBaseManager * BaseManager, IRenderWindow* RenderWindow, IWindowEvents* WindowEvents, MainEditor * Editor);
+	CGameState_Editor(IBaseManager& BaseManager, IRenderWindow* RenderWindow, IWindowEvents* WindowEvents, MainEditor * Editor);
 	virtual ~CGameState_Editor();
 
 	// IGameState

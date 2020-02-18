@@ -3,14 +3,14 @@
 // General
 #include "Settings.h"
 
-CSettings::CSettings(IBaseManager* BaseManager)
+CSettings::CSettings(IBaseManager& BaseManager)
 	: m_BaseManager(BaseManager)
 {
 }
 
 CSettings::~CSettings()
 {
-	m_BaseManager->RemoveManager<ISettings>();
+	m_BaseManager.RemoveManager<ISettings>();
 }
 
 void CSettings::AddGroup(const std::string& GroupName, std::shared_ptr<ISettingGroup> Group)

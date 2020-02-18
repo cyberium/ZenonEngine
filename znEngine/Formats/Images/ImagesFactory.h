@@ -4,7 +4,7 @@ class ZN_API CImagesFactory
 	: public IImagesFactory
 {
 public:
-	CImagesFactory(const IBaseManager* BaseManager);
+	CImagesFactory(const IBaseManager& BaseManager);
 	virtual ~CImagesFactory();
 
 	// IImagesFactory
@@ -16,5 +16,5 @@ private:
 	std::vector<std::shared_ptr<IImageLoader>> m_ImageLoaders;
 
 private:
-	const IBaseManager* m_BaseManager;
+	const IBaseManager& m_BaseManager;
 };

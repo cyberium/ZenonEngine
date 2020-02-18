@@ -173,9 +173,8 @@ const IRenderDevice& RenderPassPipelined::GetRenderDevice() const
     return m_RenderDevice;
 }
 
-const IBaseManager* RenderPassPipelined::GetBaseManager() const
+const IBaseManager& RenderPassPipelined::GetBaseManager() const
 {
-	_ASSERT(m_BaseManager != nullptr);
 	return m_BaseManager;
 }
 

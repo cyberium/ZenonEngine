@@ -9,7 +9,7 @@
 #include "FBXStream.h"
 #include "FBXDisplayCommon.h"
 
-CFBXScene::CFBXScene(const IBaseManager* BaseManager, fbxsdk::FbxScene* NativeScene)
+CFBXScene::CFBXScene(const IBaseManager& BaseManager, fbxsdk::FbxScene* NativeScene)
 	: m_BaseManager(BaseManager)
 	, m_NativeScene(NativeScene)
 {

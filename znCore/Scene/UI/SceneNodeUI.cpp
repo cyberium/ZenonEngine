@@ -397,7 +397,7 @@ void CUIBaseNode::UpdateWorldTransform()
 	m_InverseWorldTransform = glm::inverse(m_WorldTransform);
 }
 
-IBaseManager * CUIBaseNode::GetBaseManager() const
+IBaseManager& CUIBaseNode::GetBaseManager() const
 {
 	return dynamic_cast<IBaseManagerHolder*>(GetScene())->GetBaseManager();
 }

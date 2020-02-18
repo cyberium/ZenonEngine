@@ -12,7 +12,7 @@
 // Additional
 #include "FBXDisplayCommon.h"
 
-CFBXLight::CFBXLight(const IBaseManager * BaseManager, std::weak_ptr<CFBXSceneNode> OwnerFBXNode)
+CFBXLight::CFBXLight(const IBaseManager& BaseManager, std::weak_ptr<CFBXSceneNode> OwnerFBXNode)
 	: m_BaseManager(BaseManager)
 	, m_OwnerFBXNode(OwnerFBXNode)
 {

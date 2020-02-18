@@ -149,7 +149,7 @@ ZN_INTERFACE ZN_API __declspec(novtable) IRenderDevice
 
 	virtual std::string                GetDeviceName() const = 0;
 	virtual const RenderDeviceType     GetDeviceType() const = 0;
-	virtual IBaseManager*              GetBaseManager() const = 0;
+	virtual IBaseManager&              GetBaseManager() const = 0;
 
 	virtual IRenderPrimitivesFactory&  GetPrimitivesFactory() const = 0;
 	virtual IRenderObjectsFactory&     GetObjectsFactory() const = 0;

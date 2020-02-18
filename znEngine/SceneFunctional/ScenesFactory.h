@@ -5,7 +5,7 @@ class CScenesFactory
 	, public IznPluginsEventListener
 {
 public:
-	CScenesFactory(IBaseManager* BaseManager);
+	CScenesFactory(IBaseManager& BaseManager);
 	virtual ~CScenesFactory();
 
 	// IScenesFactory

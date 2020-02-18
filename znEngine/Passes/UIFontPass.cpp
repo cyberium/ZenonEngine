@@ -63,7 +63,7 @@ std::shared_ptr<IRenderPassPipelined> CUIFontPass::CreatePipeline(std::shared_pt
 	GetPipeline().SetShader(EShaderType::PixelShader, g_pPixelShader);
 
 	// Diryy hack!
-	GetPipeline().SetTexture(0, GetBaseManager()->GetManager<IFontsManager>()->GetMainFont()->GetTexture());
+	GetPipeline().SetTexture(0, GetBaseManager().GetManager<IFontsManager>()->GetMainFont()->GetTexture());
 
 	return shared_from_this();
 }

@@ -6,7 +6,7 @@
 // Additional
 #include "SceneNodeDefaultCreator.h"
 
-CSceneNodesFactory::CSceneNodesFactory(IBaseManager* BaseManager)
+CSceneNodesFactory::CSceneNodesFactory(IBaseManager& BaseManager)
 {
 	AddSceneNodeCreator(std::make_shared<CSceneNodeDefaultCreator>(BaseManager));
 }
@@ -35,7 +35,7 @@ void CSceneNodesFactory::RemoveSceneNodeCreator(std::shared_ptr<ISceneNodeCreato
 //
 // ISceneNodesFactory
 //
-ISceneNode3D* CSceneNodesFactory::CreateSceneNode3D(ISceneNode3D* Parent, std::string SceneNodeTypeName) const
+std::shared_ptr<ISceneNode3D> CSceneNodesFactory::CreateSceneNode3D(ISceneNode3D* Parent, std::string SceneNodeTypeName) const
 {
 	for (const auto& creator : m_Creators)
 	{

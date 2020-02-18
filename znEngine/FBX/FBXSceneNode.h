@@ -14,7 +14,7 @@ class ZN_API CFBXSceneNode
 	: public SceneNode3D
 {
 public:
-	CFBXSceneNode(const IBaseManager* BaseManager, std::weak_ptr<CFBXScene> OwnerScene, fbxsdk::FbxNode * NativeNode);
+	CFBXSceneNode(const IBaseManager& BaseManager, std::weak_ptr<CFBXScene> OwnerScene, fbxsdk::FbxNode * NativeNode);
 	virtual ~CFBXSceneNode();
 
 	void LoadNode();
@@ -34,7 +34,7 @@ private:
 	fbxsdk::FbxNode* m_NativeNode;
 
 private:
-	const IBaseManager* m_BaseManager;
+	const IBaseManager& m_BaseManager;
 };
 
 #endif

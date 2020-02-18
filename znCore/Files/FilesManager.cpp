@@ -4,14 +4,14 @@
 #include "FilesManager.h"
 
 
-CFilesManager::CFilesManager(IBaseManager* BaseManager)
+CFilesManager::CFilesManager(IBaseManager& BaseManager)
 	: m_BaseManager(BaseManager)
 {
 }
 
 CFilesManager::~CFilesManager()
 {
-	m_BaseManager->RemoveManager<IFilesManager>();
+	m_BaseManager.RemoveManager<IFilesManager>();
 }
 
 std::shared_ptr<IFile> CFilesManager::Open(std::string FileName, EFileAccessType FileAccessType)

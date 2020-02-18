@@ -26,7 +26,7 @@ void Test2() { Log::Print("TEST2"); }
 
 //
 
-CConsole::CConsole(IBaseManager* BaseManager)
+CConsole::CConsole(IBaseManager& BaseManager)
 	: m_BaseManager(BaseManager)
 {
 }
@@ -35,7 +35,7 @@ CConsole::~CConsole()
 {
 	ERASE_VECTOR(m_ConsoleCommands);
 
-	m_BaseManager->RemoveManager<IConsole>();
+	m_BaseManager.RemoveManager<IConsole>();
 }
 
 void CConsole::AddCommonCommands()

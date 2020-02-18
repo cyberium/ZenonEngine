@@ -31,15 +31,15 @@ CUIButtonNode::~CUIButtonNode()
 //
 void CUIButtonNode::CreateDefault()
 {
-	m_Material->SetIdleTexture(GetBaseManager()->GetApplication().GetRenderDevice().GetObjectsFactory().LoadTexture2D("Textures\\btn_idle.png"));
-	m_Material->SetHoverTexture(GetBaseManager()->GetApplication().GetRenderDevice().GetObjectsFactory().LoadTexture2D("Textures\\btn_hover.png"));
-	m_Material->SetClickedTexture(GetBaseManager()->GetApplication().GetRenderDevice().GetObjectsFactory().LoadTexture2D("Textures\\btn_clicked.png"));
-	m_Material->SetDisabledTexture(GetBaseManager()->GetApplication().GetRenderDevice().GetObjectsFactory().LoadTexture2D("Textures\\btn_disabled.png"));
+	m_Material->SetIdleTexture(GetBaseManager().GetApplication().GetRenderDevice().GetObjectsFactory().LoadTexture2D("Textures\\btn_idle.png"));
+	m_Material->SetHoverTexture(GetBaseManager().GetApplication().GetRenderDevice().GetObjectsFactory().LoadTexture2D("Textures\\btn_hover.png"));
+	m_Material->SetClickedTexture(GetBaseManager().GetApplication().GetRenderDevice().GetObjectsFactory().LoadTexture2D("Textures\\btn_clicked.png"));
+	m_Material->SetDisabledTexture(GetBaseManager().GetApplication().GetRenderDevice().GetObjectsFactory().LoadTexture2D("Textures\\btn_disabled.png"));
 
 	const auto& idleTexture = m_Material->GetTexture(0);
     m_Size = idleTexture->GetSize();
 
-	m_Mesh = GetBaseManager()->GetApplication().GetRenderDevice().GetPrimitivesFactory().CreateUIQuad(idleTexture->GetWidth(), idleTexture->GetHeight());
+	m_Mesh = GetBaseManager().GetApplication().GetRenderDevice().GetPrimitivesFactory().CreateUIQuad(idleTexture->GetWidth(), idleTexture->GetHeight());
 	m_Mesh->SetMaterial(m_Material);
 
     m_TextNode = CreateSceneNode<CUITextNode>();

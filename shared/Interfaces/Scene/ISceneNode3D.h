@@ -36,7 +36,7 @@ ZN_INTERFACE ZN_API __declspec(novtable) ISceneNode3D
 	virtual const Node3DList& GetChilds() = 0;
 	virtual void RaiseOnParentChanged() = 0;
 
-	template<typename T, typename... Args> inline T* CreateSceneNode(Args &&... _Args)
+	template<typename T, typename... Args> inline std::shared_ptr<T> CreateSceneNode(Args &&... _Args)
 	{
 		return GetScene()->CreateSceneNode<T>(this, std::forward<Args>(_Args)...);
 	}
@@ -126,7 +126,7 @@ ZN_INTERFACE ZN_API __declspec(novtable) ISceneNodeCreator
 
 	virtual size_t GetSceneNodesCount() const = 0;
 	virtual std::string GetSceneNodeTypeName(size_t Index) const = 0;
-	virtual ISceneNode3D* CreateSceneNode3D(ISceneNode3D* Parent, size_t Index) const = 0;
+	virtual std::shared_ptr<ISceneNode3D> CreateSceneNode3D(ISceneNode3D* Parent, size_t Index) const = 0;
 	virtual ISceneNodeUI* CreateSceneNodeUI(ISceneNodeUI* Parent, size_t Index) const = 0;
 };
 
@@ -138,6 +138,6 @@ ZN_INTERFACE ZN_API __declspec(novtable, uuid("9C3ACF8D-F30D-47AE-BBA1-D71DEA6B1
 	virtual void AddSceneNodeCreator(std::shared_ptr<ISceneNodeCreator> Creator) = 0;
 	virtual void RemoveSceneNodeCreator(std::shared_ptr<ISceneNodeCreator> Creator) = 0;
 
-	virtual ISceneNode3D* CreateSceneNode3D(ISceneNode3D* Parent, std::string SceneNodeTypeName) const = 0;
+	virtual std::shared_ptr<ISceneNode3D> CreateSceneNode3D(ISceneNode3D* Parent, std::string SceneNodeTypeName) const = 0;
 	virtual ISceneNodeUI* CreateSceneNodeUI(ISceneNodeUI* Parent, std::string SceneNodeTypeName) const = 0;
 };

@@ -1,6 +1,6 @@
 #include "stdafx.h"
 
-static IBaseManager* BaseManager = nullptr;
+static IBaseManager& BaseManager = nullptr;
 
 
 void main_internal(int argumentCount, char* arguments[])

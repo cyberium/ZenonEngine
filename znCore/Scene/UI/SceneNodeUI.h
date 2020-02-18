@@ -95,7 +95,7 @@ public:
 protected:
 	virtual void									UpdateLocalTransform();
 	virtual void									UpdateWorldTransform();
-	IBaseManager*                                   GetBaseManager() const;
+	IBaseManager&                                   GetBaseManager() const;
 
 public: // Syntetic events // TODO: Make private
 	bool                                            IsMouseOnNode() const;

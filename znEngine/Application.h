@@ -7,8 +7,8 @@ class ZN_API Application :
 	public IApplicationEvents
 {
 public:
-	Application(IBaseManager* BaseManager);
-	Application(IBaseManager* BaseManager, HINSTANCE hInstance);
+	Application(IBaseManager& BaseManager);
+	Application(IBaseManager& BaseManager, HINSTANCE hInstance);
 	virtual ~Application();
 
 	// Default query
@@ -24,7 +24,7 @@ public:
 	void                            DoBeforeRun() override;
 	int                             DoRun() override;
 	void                            DoAfterRun() override;
-	IBaseManager*					GetBaseManager() const override;
+	IBaseManager&					GetBaseManager() const override;
 	IRenderDevice&                  GetRenderDevice() const override;
 
 	// IApplication_WindowsSpecific
@@ -42,7 +42,7 @@ private:
 	bool                                            m_bIsInitialized;
 	bool                                            m_bIsRunning;
 
-	IBaseManager*                                   m_BaseManager;
+	IBaseManager&                                   m_BaseManager;
 	std::unique_ptr<IRenderDevice>					m_pRenderDevice;
 	std::vector<std::weak_ptr<IRenderWindow>>		m_Windows;
 

@@ -9,7 +9,7 @@
 
 #include "GameState_Editor.h"
 
-static IBaseManager* BaseManager = nullptr;
+static IBaseManager& BaseManager = nullptr;
 
 void main_internal(int argc, char *argv[])
 {

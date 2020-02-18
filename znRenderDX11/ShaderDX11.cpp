@@ -74,7 +74,7 @@ bool ShaderDX11::LoadShaderFromString(EShaderType shaderType, const std::string&
 		flags |= D3DCOMPILE_OPTIMIZATION_LEVEL3;
 #endif
 
-        std::shared_ptr<IFile> file = m_RenderDeviceDX11.GetBaseManager()->GetManager<IFilesManager>()->Open(fileName);
+        std::shared_ptr<IFile> file = m_RenderDeviceDX11.GetBaseManager().GetManager<IFilesManager>()->Open(fileName);
         std::string data = RecursionInclude(m_RenderDeviceDX11.GetBaseManager(), file);
 
 		hr = D3DCompile(data.c_str(), data.size(), fileName.c_str(), macros.data(), D3D_COMPILE_STANDARD_FILE_INCLUDE, entryPoint.c_str(), _profile.c_str(), flags, 0, &pShaderBlob, &pErrorBlob);
@@ -207,7 +207,7 @@ bool ShaderDX11::LoadShaderFromString(EShaderType shaderType, const std::string&
 
 bool ShaderDX11::LoadShaderFromFile(EShaderType shaderType, const std::string& fileName, const ShaderMacros& shaderMacros, const std::string& entryPoint, const std::string& profile, IShaderInputLayout* _customLayout)
 {
-	std::shared_ptr<IFile> file = m_RenderDeviceDX11.GetBaseManager()->GetManager<IFilesManager>()->Open(fileName);
+	std::shared_ptr<IFile> file = m_RenderDeviceDX11.GetBaseManager().GetManager<IFilesManager>()->Open(fileName);
 
 	std::string data = "";
 	while (!file->isEof())

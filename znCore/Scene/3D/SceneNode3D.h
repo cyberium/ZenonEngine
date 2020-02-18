@@ -111,7 +111,7 @@ protected:
 	virtual void									UpdateLocalTransform();
 	virtual void									UpdateWorldTransform();
 	virtual void									ForceRecalculateLocalTransform();
-	IBaseManager*                                   GetBaseManager() const;
+	IBaseManager&                                   GetBaseManager() const;
 
 	void                                            SetMeshComponent(const std::shared_ptr<IMeshComponent3D>& MeshComponent);
     void                                            SetColliderComponent(const std::shared_ptr<IColliderComponent3D>& ColliderComponent);

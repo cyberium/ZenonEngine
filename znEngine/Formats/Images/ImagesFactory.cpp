@@ -3,7 +3,7 @@
 // General
 #include "ImagesFactory.h"
 
-CImagesFactory::CImagesFactory(const IBaseManager* BaseManager)
+CImagesFactory::CImagesFactory(const IBaseManager& BaseManager)
 	: m_BaseManager(BaseManager)
 {
 }

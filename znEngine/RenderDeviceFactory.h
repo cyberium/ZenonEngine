@@ -5,7 +5,7 @@ class CznRenderDeviceFactory
 	, public IznPluginsEventListener
 {
 public:
-	CznRenderDeviceFactory(IBaseManager* BaseManager);
+	CznRenderDeviceFactory(IBaseManager& BaseManager);
 	virtual ~CznRenderDeviceFactory();
 
 	// IznRenderDeviceFactory
@@ -22,5 +22,5 @@ private:
 	std::vector<const IznRenderDeviceCreator*> m_Creators;
 
 private:
-	IBaseManager* m_BaseManager;
+	IBaseManager& m_BaseManager;
 };

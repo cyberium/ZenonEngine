@@ -16,7 +16,7 @@
 #include "Materials/MaterialDebug.h"
 #include "Materials/MaterialTextured.h"
 
-CFBXSceneNode::CFBXSceneNode(const IBaseManager* BaseManager, std::weak_ptr<CFBXScene> OwnerScene, fbxsdk::FbxNode * NativeNode)
+CFBXSceneNode::CFBXSceneNode(const IBaseManager& BaseManager, std::weak_ptr<CFBXScene> OwnerScene, fbxsdk::FbxNode * NativeNode)
 	: m_BaseManager(BaseManager)
 	, m_OwnerScene(OwnerScene)
 	, m_NativeNode(NativeNode)
@@ -89,11 +89,11 @@ void CFBXSceneNode::LoadNode()
 			std::shared_ptr<CFBXLight> fbxLight = std::make_shared<CFBXLight>(m_BaseManager, std::dynamic_pointer_cast<CFBXSceneNode>(shared_from_this()));
 			fbxLight->Load(m_NativeNode->GetLight());
 
-			std::shared_ptr<MaterialTextured> matDebug = std::make_shared<MaterialTextured>(m_BaseManager->GetApplication().GetRenderDevice());
-			matDebug->SetTexture(0, m_BaseManager->GetApplication().GetRenderDevice().GetDefaultTexture());
+			std::shared_ptr<MaterialTextured> matDebug = std::make_shared<MaterialTextured>(m_BaseManager.GetApplication().GetRenderDevice());
+			matDebug->SetTexture(0, m_BaseManager.GetApplication().GetRenderDevice().GetDefaultTexture());
 			matDebug->SetWrapper(matDebug.get());
 
-			const auto& mesh = m_BaseManager->GetApplication().GetRenderDevice().GetPrimitivesFactory().CreateCone();
+			const auto& mesh = m_BaseManager.GetApplication().GetRenderDevice().GetPrimitivesFactory().CreateCone();
 			mesh->SetMaterial(matDebug);
 			GetComponent<IMeshComponent3D>()->AddMesh(mesh);
 

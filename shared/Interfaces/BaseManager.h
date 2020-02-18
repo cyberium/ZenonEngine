@@ -89,5 +89,5 @@ ZN_INTERFACE ZN_API IBaseManagerHolder
 {
 	virtual ~IBaseManagerHolder() {}
 
-	virtual IBaseManager* GetBaseManager() const = 0;
+	virtual IBaseManager& GetBaseManager() const = 0;
 };

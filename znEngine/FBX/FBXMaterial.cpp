@@ -19,7 +19,7 @@ inline glm::vec3 ToGLMVec3(const FbxPropertyT<FbxDouble3>& FBXVec3)
 	return glm::vec3(FBXVec3.Get()[0], FBXVec3.Get()[1], FBXVec3.Get()[2]);
 }
 
-CFBXMaterial::CFBXMaterial(const IBaseManager* BaseManager, std::weak_ptr<CFBXSceneNode> OwnerFBXNode)
+CFBXMaterial::CFBXMaterial(const IBaseManager& BaseManager, std::weak_ptr<CFBXSceneNode> OwnerFBXNode)
 	: MaterialModel(BaseManager)
 	, m_OwnerFBXNode(OwnerFBXNode)
 {
@@ -197,7 +197,7 @@ std::shared_ptr<ITexture> CFBXMaterial::LoadTexture(fbxsdk::FbxTexture * Texture
 	// For exporter
 	//fileTexture->SetFileName(fileTexture->GetRelativeFileName());
 
-	return m_BaseManager->GetApplication().GetRenderDevice().GetObjectsFactory().LoadTexture2D(m_OwnerFBXNode.lock()->GetOwnerScene().lock()->GetPath() + fileTexture->GetRelativeFileName());
+	return m_BaseManager.GetApplication().GetRenderDevice().GetObjectsFactory().LoadTexture2D(m_OwnerFBXNode.lock()->GetOwnerScene().lock()->GetPath() + fileTexture->GetRelativeFileName());
 }
 
 #endif

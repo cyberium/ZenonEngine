@@ -12,7 +12,7 @@ class ZN_API CGameState_World
 	: public SceneBase
 {
 public:
-	CGameState_World(IBaseManager * BaseManager);
+	CGameState_World(IBaseManager& BaseManager);
 	virtual ~CGameState_World();
 
 	// IGameState
@@ -41,7 +41,7 @@ private:
 	std::shared_ptr<IRenderPass> m_Model_Pass_Transperent;
 
 
-	SceneNode3D* m_RootForBoxes;
+	std::shared_ptr<SceneNode3D> m_RootForBoxes;
 
 	std::shared_ptr<BuildRenderListPass> m_BuildRenderListPass;
 	std::shared_ptr<CDefferedRender> m_DefferedRenderPass;

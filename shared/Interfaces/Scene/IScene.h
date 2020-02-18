@@ -47,7 +47,7 @@ ZN_INTERFACE ZN_API __declspec(novtable) IScene
 
 	// Creates new SceneNode and initialize it. You !must! call this method instead of creating nodes in code
 	template<class T, typename... Args>
-	inline T* CreateSceneNode(ISceneNode3D* Parent, Args &&... _Args)
+	inline std::shared_ptr<T> CreateSceneNode(ISceneNode3D* Parent, Args &&... _Args)
 	{
 		static_assert(std::is_convertible<T*, ISceneNode3D*>::value, "T must inherit ISceneNode3D as public.");
 
@@ -65,7 +65,7 @@ ZN_INTERFACE ZN_API __declspec(novtable) IScene
 			newNode->SetParent(Parent);
 		}
 
-		return newNode.get();
+		return newNode;
 	}
 
 	// Creates new SceneNode and initialize it. You !must! call this method instead of creating nodes in code

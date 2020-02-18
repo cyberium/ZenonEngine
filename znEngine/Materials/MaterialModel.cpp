@@ -3,8 +3,8 @@
 // General
 #include "MaterialModel.h"
 
-MaterialModel::MaterialModel(const IBaseManager* BaseManager)
-	: MaterialProxie(BaseManager->GetApplication().GetRenderDevice().GetObjectsFactory().CreateMaterial(sizeof(MaterialProperties)))
+MaterialModel::MaterialModel(const IBaseManager& BaseManager)
+	: MaterialProxie(BaseManager.GetApplication().GetRenderDevice().GetObjectsFactory().CreateMaterial(sizeof(MaterialProperties)))
 	, m_BaseManager(BaseManager)
 {
 	// Constant buffer

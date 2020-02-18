@@ -5,7 +5,7 @@ class ZN_API RenderDeviceDX11
 	, public IRenderDeviceDX11
 {
 public:
-	RenderDeviceDX11(IBaseManager* BaseManager);
+	RenderDeviceDX11(IBaseManager& BaseManager);
 	virtual ~RenderDeviceDX11();
 
 	// IRenderDevice
@@ -13,7 +13,7 @@ public:
 	void                                            Finalize() override;
 	std::string                                     GetDeviceName() const;
     const RenderDeviceType                          GetDeviceType() const;
-	IBaseManager*                                   GetBaseManager() const;
+	IBaseManager&                                   GetBaseManager() const;
 	IRenderPrimitivesFactory&                       GetPrimitivesFactory() const override;
 	IRenderObjectsFactory&                          GetObjectsFactory() const override;
 	std::shared_ptr<ITexture>                       GetDefaultTexture() const override;
@@ -27,7 +27,7 @@ protected:
 	void                                            InitializeD3D11();
 
 private:
-	IBaseManager*                                   m_BaseManager;
+	IBaseManager&                                   m_BaseManager;
 
 	// DirectX
 	ATL::CComPtr<ID3D11Device4>                     m_DeviceD3D11;

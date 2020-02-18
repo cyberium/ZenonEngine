@@ -19,7 +19,7 @@ public:
 	};
 
 public:
-	MaterialModel(const IBaseManager* BaseManage);
+	MaterialModel(const IBaseManager& BaseManage);
 	virtual ~MaterialModel();
 
 	void SetEmissiveColor(const glm::vec3& Color);
@@ -138,5 +138,5 @@ protected:
 	MaterialProperties* m_pProperties;
 
 protected:
-	const IBaseManager* m_BaseManager;
+	const IBaseManager& m_BaseManager;
 };

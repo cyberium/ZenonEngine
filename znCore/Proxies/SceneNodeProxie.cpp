@@ -165,7 +165,7 @@ void CSceneNodeProxie::RaiseOnParentChanged()
 //
 // Protected
 //
-IBaseManager* CSceneNodeProxie::GetBaseManager() const
+IBaseManager& CSceneNodeProxie::GetBaseManager() const
 {
 	return std::dynamic_pointer_cast<IBaseManagerHolder>(GetScene())->GetBaseManager();
 }

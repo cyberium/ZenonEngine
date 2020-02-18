@@ -11,7 +11,7 @@
 #include FT_FREETYPE_H
 #pragma comment(lib, "freetype.lib")
 
-FontsManager::FontsManager(IRenderDevice& RenderDevice, IBaseManager* BaseManager)
+FontsManager::FontsManager(IRenderDevice& RenderDevice, IBaseManager& BaseManager)
 	: m_BaseManager(BaseManager)
 {
 	m_MainFont = Add(RenderDevice, "IDB_FONT_CONSOLAS", 14);
@@ -65,7 +65,7 @@ std::shared_ptr<CFont> FontsManager::CreateAction(IRenderDevice& RenderDevice, c
 	std::string fontFileName = _nameAndSize.substr(0, _delimIndex - 1);
 	uint32 fontSize = Utils::ToType<uint32>(_nameAndSize.substr(_delimIndex + 1));
 
-	std::shared_ptr<IFile> f = m_BaseManager->GetManager<IFilesManager>()->Open(fontFileName);
+	std::shared_ptr<IFile> f = m_BaseManager.GetManager<IFilesManager>()->Open(fontFileName);
 	if (f == nullptr)
 	{
 		Log::Fatal("FontsManager[%s]: Error while loading font.", _nameAndSize.c_str());

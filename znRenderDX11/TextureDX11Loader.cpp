@@ -98,7 +98,7 @@ bool TextureDX11::LoadTextureCustom(uint16_t width, uint16_t height, void * pixe
 
 bool TextureDX11::LoadTexture2D(const std::string& fileName)
 {
-	std::shared_ptr<IFile> f = m_RenderDevice.lock()->GetBaseManager()->GetManager<IFilesManager>()->Open(fileName);
+	std::shared_ptr<IFile> f = m_RenderDevice.lock()->GetBaseManager().GetManager<IFilesManager>()->Open(fileName);
 	if (f == nullptr)
 		return false;
 
@@ -326,13 +326,13 @@ bool TextureDX11::LoadTexture2D(const std::string& fileName)
 
 bool TextureDX11::LoadTexture2D(const std::string& fileName)
 {
-	std::shared_ptr<IFile> f = m_RenderDeviceDX11.GetBaseManager()->GetManager<IFilesManager>()->Open(fileName);
+	std::shared_ptr<IFile> f = m_RenderDeviceDX11.GetBaseManager().GetManager<IFilesManager>()->Open(fileName);
 	if (f == nullptr)
 	{
 		return false;
 	}
 
-	std::shared_ptr<IImage> image = m_RenderDeviceDX11.GetBaseManager()->GetManager<IImagesFactory>()->CreateImage(f);
+	std::shared_ptr<IImage> image = m_RenderDeviceDX11.GetBaseManager().GetManager<IImagesFactory>()->CreateImage(f);
 	if (image == nullptr)
 	{
 		return false;

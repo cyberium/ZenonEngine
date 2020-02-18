@@ -5,14 +5,14 @@ class CSceneNodesFactory
 	, public IznPluginsEventListener
 {
 public:
-	CSceneNodesFactory(IBaseManager* BaseManager);
+	CSceneNodesFactory(IBaseManager& BaseManager);
 	virtual ~CSceneNodesFactory();
 
 	// ISceneNodesFactory
 	void AddSceneNodeCreator(std::shared_ptr<ISceneNodeCreator> Creator) override;
 	void RemoveSceneNodeCreator(std::shared_ptr<ISceneNodeCreator> Creator) override;
 
-	ISceneNode3D* CreateSceneNode3D(ISceneNode3D* Parent, std::string SceneNodeTypeName) const override;
+	std::shared_ptr<ISceneNode3D> CreateSceneNode3D(ISceneNode3D* Parent, std::string SceneNodeTypeName) const override;
 	ISceneNodeUI* CreateSceneNodeUI(ISceneNodeUI* Parent, std::string SceneNodeTypeName) const override;
 
 	// IznPluginsEventListener

@@ -5,7 +5,7 @@
 class ZN_API CConsole : public IConsole
 {
 public:
-	CConsole(IBaseManager* BaseManager);
+	CConsole(IBaseManager& BaseManager);
 	virtual ~CConsole();
 
 	void AddCommonCommands();
@@ -17,7 +17,7 @@ public:
 	bool ProcessConsoleCommand(std::string _line) override;
 
 private:
-	IBaseManager* m_BaseManager;
+	IBaseManager& m_BaseManager;
 	ConsoleCommands m_ConsoleCommands;
 
 private:

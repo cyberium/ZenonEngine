@@ -510,7 +510,7 @@ void SceneNode3D::ForceRecalculateLocalTransform()
 	UpdateLocalTransform();
 }
 
-IBaseManager* SceneNode3D::GetBaseManager() const
+IBaseManager& SceneNode3D::GetBaseManager() const
 {
 	return dynamic_cast<IBaseManagerHolder*>(GetScene())->GetBaseManager();
 }

@@ -30,9 +30,9 @@ void CUITextNode::Initialize()
 	m_OffsetProperty->Set(cDefaultOffset);
 	GetProperties()->AddProperty(m_OffsetProperty);
 
-	m_Font = GetBaseManager()->GetManager<IFontsManager>()->GetMainFont();
+	m_Font = GetBaseManager().GetManager<IFontsManager>()->GetMainFont();
 
-	m_Material = std::make_shared<UI_Font_Material>(GetBaseManager()->GetApplication().GetRenderDevice());
+	m_Material = std::make_shared<UI_Font_Material>(GetBaseManager().GetApplication().GetRenderDevice());
 	m_Material->SetWrapper(m_Material.get());
 	m_Material->SetTexture(0, m_Font->GetTexture());
 	m_Material->SetColor(cDefaultColor);

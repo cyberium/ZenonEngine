@@ -84,7 +84,7 @@ public:
 	}
 
 protected:
-	IBaseManager* GetBaseManager() const;
+	IBaseManager& GetBaseManager() const;
 
 private:
 	std::shared_ptr<ISceneNode3D> m_SceneNode;

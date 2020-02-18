@@ -6,7 +6,7 @@
 // Additional
 #include "RenderObjectsFactoryDX11.h"
 
-RenderDeviceDX11::RenderDeviceDX11(IBaseManager* BaseManager)
+RenderDeviceDX11::RenderDeviceDX11(IBaseManager& BaseManager)
 	: m_BaseManager(BaseManager)
 {
 	m_RenderObjectsFactory = std::make_unique<CRenderObjectsFactoryDX11>(*this);
@@ -53,7 +53,7 @@ const RenderDeviceType RenderDeviceDX11::GetDeviceType() const
     return RenderDeviceType::RenderDeviceType_DirectX;
 }
 
-IBaseManager* RenderDeviceDX11::GetBaseManager() const
+IBaseManager& RenderDeviceDX11::GetBaseManager() const
 {
 	return m_BaseManager;
 }

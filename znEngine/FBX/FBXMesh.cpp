@@ -11,8 +11,8 @@
 // Additional
 #include "FBXDisplayCommon.h"
 
-CFBXMesh::CFBXMesh(const IBaseManager * BaseManager, std::weak_ptr<CFBXSceneNode> OwnerFBXNode)
-	: ModelProxie(BaseManager->GetApplication().GetRenderDevice().GetObjectsFactory().CreateMesh())
+CFBXMesh::CFBXMesh(const IBaseManager& BaseManager, std::weak_ptr<CFBXSceneNode> OwnerFBXNode)
+	: ModelProxie(BaseManager.GetApplication().GetRenderDevice().GetObjectsFactory().CreateMesh())
 	, m_BaseManager(BaseManager)
 	, m_OwnerFBXNode(OwnerFBXNode)
 {
@@ -24,7 +24,7 @@ CFBXMesh::~CFBXMesh()
 
 void CFBXMesh::Load(fbxsdk::FbxMesh* NativeMesh)
 {
-	IRenderDevice& renderDevice = m_BaseManager->GetApplication().GetRenderDevice();
+	IRenderDevice& renderDevice = m_BaseManager.GetApplication().GetRenderDevice();
 
 	NativeMesh->GenerateNormals(true, true);
 

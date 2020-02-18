@@ -25,11 +25,11 @@ public:
 protected:
 	const RenderEventArgs* GetRenderEventArgs() const;
     IRenderDevice& GetRenderDevice() const;
-	const IBaseManager* GetBaseManager() const;
+	const IBaseManager& GetBaseManager() const;
 
 private:
 	bool                                            m_Enabled;
     const RenderEventArgs*                          m_RenderEventArgs;
     IRenderDevice&									m_RenderDevice;
-	const IBaseManager*                             m_BaseManager;
+	const IBaseManager&                             m_BaseManager;
 };

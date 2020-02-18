@@ -7,29 +7,29 @@ float g_GameDeltaTime = 0.0f;
 float g_ApplicationTime = 0.0f;
 int64_t g_FrameCounter = 0L;
 
-Application::Application(IBaseManager* BaseManager)
+Application::Application(IBaseManager& BaseManager)
 	: m_BaseManager(BaseManager)
 	, m_bIsInitialized(false)
 	, m_bIsRunning(false)
 {
 	m_HInstance = ::GetModuleHandle(NULL);
 
-	dynamic_cast<IBaseManagerInternal*>(m_BaseManager)->SetApplicationInternal(this);
+	dynamic_cast<IBaseManagerInternal*>(&m_BaseManager)->SetApplicationInternal(this);
 }
 
-Application::Application(IBaseManager* BaseManager, HINSTANCE hInstance)
+Application::Application(IBaseManager& BaseManager, HINSTANCE hInstance)
 	: m_BaseManager(BaseManager)
 	, m_bIsInitialized(false)
 	, m_bIsRunning(false)
 {
 	m_HInstance = hInstance;
 
-	dynamic_cast<IBaseManagerInternal*>(m_BaseManager)->SetApplicationInternal(this);
+	dynamic_cast<IBaseManagerInternal*>(&m_BaseManager)->SetApplicationInternal(this);
 }
 
 Application::~Application()
 {
-	dynamic_cast<IBaseManagerInternal*>(m_BaseManager)->SetApplicationInternal(nullptr);
+	dynamic_cast<IBaseManagerInternal*>(&m_BaseManager)->SetApplicationInternal(nullptr);
 }
 
 
@@ -56,7 +56,7 @@ void Application::Stop()
 
 IRenderDevice& Application::CreateRenderDevice(RenderDeviceType DeviceType)
 {
-	m_pRenderDevice = m_BaseManager->GetManager<IznRenderDeviceFactory>()->GetRenderDeviceCreator(DeviceType).CreateRenderDevice();
+	m_pRenderDevice = m_BaseManager.GetManager<IznRenderDeviceFactory>()->GetRenderDeviceCreator(DeviceType).CreateRenderDevice();
 	return GetRenderDevice();
 }
 
@@ -129,7 +129,7 @@ void Application::DoAfterRun()
 	m_Terminated(EventArgs(this));
 }
 
-IBaseManager* Application::GetBaseManager() const
+IBaseManager& Application::GetBaseManager() const
 {
 	return m_BaseManager;
 }

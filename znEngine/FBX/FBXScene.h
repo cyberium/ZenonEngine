@@ -11,7 +11,7 @@
 class CFBXScene : public std::enable_shared_from_this<CFBXScene>
 {
 public:
-	CFBXScene(const IBaseManager* BaseManager, fbxsdk::FbxScene* NativeScene);
+	CFBXScene(const IBaseManager& BaseManager, fbxsdk::FbxScene* NativeScene);
 	virtual ~CFBXScene();
 
 	bool LoadFromFile(std::shared_ptr<IFile> File);
@@ -32,7 +32,7 @@ private:
 	CFBXSceneNode* m_RootNode;
 
 private:
-	const IBaseManager* m_BaseManager;
+	const IBaseManager& m_BaseManager;
 };
 
 #endif

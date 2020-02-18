@@ -113,20 +113,19 @@ IBaseManager* WINAPI InitializeEngine(std::vector<std::string> Arguments, std::s
 {
 	IBaseManager* baseManager = new CBaseManager();
 
-
-	std::shared_ptr<IznPluginsManager> pluginsManager = std::make_shared<CznPluginsManager>(baseManager);
+	std::shared_ptr<IznPluginsManager> pluginsManager = std::make_shared<CznPluginsManager>(*baseManager);
 	baseManager->AddManager<IznPluginsManager>(pluginsManager);
 
 	// Settings
 	{
-		std::shared_ptr<ISettings> settings = std::make_shared<CSettings>(baseManager);
+		std::shared_ptr<ISettings> settings = std::make_shared<CSettings>(*baseManager);
 		baseManager->AddManager<ISettings>(settings);
 		settings->AddGroup("Video", std::make_shared<CGroupVideo>());
 	}
 
 	// Files
 	{
-		std::shared_ptr<IFilesManager> filesManager = std::make_shared<CFilesManager>(baseManager);
+		std::shared_ptr<IFilesManager> filesManager = std::make_shared<CFilesManager>(*baseManager);
 		baseManager->AddManager<IFilesManager>(filesManager);
 		filesManager->AddFilesStorage("ModuleFS", std::make_shared<CLibraryResourceFileStotage>(GetModuleHandle(L"znEngine.dll")));
 		filesManager->AddFilesStorage("PCEveryFileAccess", std::make_shared<CLocalFilesStorage>(""));
@@ -139,18 +138,18 @@ IBaseManager* WINAPI InitializeEngine(std::vector<std::string> Arguments, std::s
 		std::shared_ptr<CLog> log = std::make_shared<CLog>();
 		baseManager->AddManager<ILog>(log);
 
-		std::shared_ptr<CConsole> console = std::make_shared<CConsole>(baseManager);
+		std::shared_ptr<CConsole> console = std::make_shared<CConsole>(*baseManager);
 		baseManager->AddManager<IConsole>(console);
 		console->AddCommonCommands();
 	}
 
 	// Render stuff
 	{
-		baseManager->AddManager<IImagesFactory>(std::make_shared<CImagesFactory>(baseManager));
+		baseManager->AddManager<IImagesFactory>(std::make_shared<CImagesFactory>(*baseManager));
 		baseManager->GetManager<IImagesFactory>()->AddImageLoader(std::make_shared<CImageLoaderT<CImagePNG>>());
 		baseManager->GetManager<IImagesFactory>()->AddImageLoader(std::make_shared<CImageLoaderT<CImageDDS>>());
 
-		std::shared_ptr<IznRenderDeviceFactory> renderDeviceFactory = std::make_shared<CznRenderDeviceFactory>(baseManager);
+		std::shared_ptr<IznRenderDeviceFactory> renderDeviceFactory = std::make_shared<CznRenderDeviceFactory>(*baseManager);
 		baseManager->AddManager<IznRenderDeviceFactory>(renderDeviceFactory);
 		pluginsManager->AddPluginEventListener(std::dynamic_pointer_cast<IznPluginsEventListener>(renderDeviceFactory));
 	}
@@ -160,14 +159,14 @@ IBaseManager* WINAPI InitializeEngine(std::vector<std::string> Arguments, std::s
 		std::shared_ptr<ILoader> laoder = std::make_shared<CLoader>();
 		baseManager->AddManager<ILoader>(laoder);
 
-		std::shared_ptr<ISceneNodesFactory> factory = std::make_shared<CSceneNodesFactory>(baseManager);
+		std::shared_ptr<ISceneNodesFactory> factory = std::make_shared<CSceneNodesFactory>(*baseManager);
 		baseManager->AddManager<ISceneNodesFactory>(factory);
 		pluginsManager->AddPluginEventListener(std::dynamic_pointer_cast<IznPluginsEventListener>(factory));
 	}
 
 	// Scene
 	{
-		std::shared_ptr<IScenesFactory> factory = std::make_shared<CScenesFactory>(baseManager);
+		std::shared_ptr<IScenesFactory> factory = std::make_shared<CScenesFactory>(*baseManager);
 		baseManager->AddManager<IScenesFactory>(factory);
 		pluginsManager->AddPluginEventListener(std::dynamic_pointer_cast<IznPluginsEventListener>(factory));
 	}

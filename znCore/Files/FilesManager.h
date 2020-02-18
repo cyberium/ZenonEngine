@@ -3,7 +3,7 @@
 class ZN_API CFilesManager : public IFilesManager
 {
 public:
-	CFilesManager(IBaseManager* BaseManager);
+	CFilesManager(IBaseManager& BaseManager);
 	virtual ~CFilesManager();
 
 	// IFilesManager
@@ -16,6 +16,6 @@ public:
 	std::shared_ptr<IFilesStorage> GetFilesStorage(std::string StorageName) const override final;
 
 private:
-	IBaseManager* m_BaseManager;
+	IBaseManager& m_BaseManager;
 	std::unordered_map<std::string, std::shared_ptr<IFilesStorage>> m_Storages;
 };

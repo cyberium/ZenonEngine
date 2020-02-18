@@ -8,10 +8,10 @@
 #include "UI/SceneNodeUI.h"
 #include "XML/XMLManager.h"
 
-SceneBase::SceneBase(IBaseManager* BaseManager)
+SceneBase::SceneBase(IBaseManager& BaseManager)
 	: m_OnAcceptPhase(false)
 	, m_BaseManager(BaseManager)
-	, m_RenderDevice(BaseManager->GetApplication().GetRenderDevice())
+	, m_RenderDevice(BaseManager.GetApplication().GetRenderDevice())
 {
 	
 }
@@ -21,16 +21,12 @@ SceneBase::~SceneBase()
 
 void SceneBase::Initialize()
 {
-	m_VideoSettings = GetBaseManager()->GetManager<ISettings>()->GetGroup("Video");
+	m_VideoSettings = GetBaseManager().GetManager<ISettings>()->GetGroup("Video");
 
 	m_FrameQuery = GetRenderDevice().GetObjectsFactory().CreateQuery(IQuery::QueryType::Timer, 1);
 	m_TestQuery = GetRenderDevice().GetObjectsFactory().CreateQuery(IQuery::QueryType::CountSamples, 1);
 
-	m_RootNode3D = std::make_shared<SceneNode3D>();
-	std::dynamic_pointer_cast<SceneNode3D>(m_RootNode3D)->SetScene(weak_from_this());
-	m_RootNode3D->RegisterComponents();
-	m_RootNode3D->Initialize();
-	m_RootNode3D->SetParent(nullptr);
+	m_RootNode3D = CreateSceneNode<SceneNode3D>(nullptr);
 	m_RootNode3D->SetName("Root node 3D");
 
 	m_RootNodeUI = std::make_shared<CUIBaseNode>();
@@ -40,16 +36,16 @@ void SceneBase::Initialize()
 	m_RootNodeUI->SetName("Root node UI");
 
 	{
-		m_CameraPosText = GetBaseManager()->GetManager<ISceneNodesFactory>()->CreateSceneNodeUI(GetRootNodeUI().get(), "TextUI");
+		m_CameraPosText = GetBaseManager().GetManager<ISceneNodesFactory>()->CreateSceneNodeUI(GetRootNodeUI().get(), "TextUI");
 		m_CameraPosText->SetTranslate(vec2(700.0f, 0.0f));
 
-		m_CameraRotText = GetBaseManager()->GetManager<ISceneNodesFactory>()->CreateSceneNodeUI(GetRootNodeUI().get(), "TextUI");
+		m_CameraRotText = GetBaseManager().GetManager<ISceneNodesFactory>()->CreateSceneNodeUI(GetRootNodeUI().get(), "TextUI");
 		m_CameraRotText->SetTranslate(vec2(700.0f, 20.0f));
 
-		m_CameraRot2Text = GetBaseManager()->GetManager<ISceneNodesFactory>()->CreateSceneNodeUI(GetRootNodeUI().get(), "TextUI");
+		m_CameraRot2Text = GetBaseManager().GetManager<ISceneNodesFactory>()->CreateSceneNodeUI(GetRootNodeUI().get(), "TextUI");
 		m_CameraRot2Text->SetTranslate(vec2(700.0f, 40.0f));
 
-		m_FPSText = GetBaseManager()->GetManager<ISceneNodesFactory>()->CreateSceneNodeUI(GetRootNodeUI().get(), "TextUI");
+		m_FPSText = GetBaseManager().GetManager<ISceneNodesFactory>()->CreateSceneNodeUI(GetRootNodeUI().get(), "TextUI");
 		m_FPSText->SetTranslate(vec2(700.0f, 60.0f));
 	}
 }
@@ -329,7 +325,7 @@ bool SceneBase::OnWindowKeyPressed(KeyEventArgs & e)
 		Save(writer);
 
 		std::shared_ptr<IFile> xmlFile = writer->SaveToFile("Scene.xml");
-		GetBaseManager()->GetManager<IFilesManager>()->GetFilesStorage("ZenonGamedata")->SaveFile(xmlFile);
+		GetBaseManager().GetManager<IFilesManager>()->GetFilesStorage("ZenonGamedata")->SaveFile(xmlFile);
 	}
 
 	if (m_RootNodeUI)
@@ -430,7 +426,7 @@ bool SceneBase::OnWindowMouseWheel(MouseWheelEventArgs & e)
 //
 // IBaseManagerHolder
 //
-IBaseManager* SceneBase::GetBaseManager() const
+IBaseManager& SceneBase::GetBaseManager() const
 {
 	return m_BaseManager;
 }

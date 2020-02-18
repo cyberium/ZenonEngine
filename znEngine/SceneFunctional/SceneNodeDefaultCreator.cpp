@@ -11,7 +11,7 @@
 #pragma comment(lib, "libfbxsdk-md.lib")
 #endif
 
-CSceneNodeDefaultCreator::CSceneNodeDefaultCreator(const IBaseManager* BaseManager)
+CSceneNodeDefaultCreator::CSceneNodeDefaultCreator(const IBaseManager& BaseManager)
 	: m_BaseManager(BaseManager)
 {}
 
@@ -57,7 +57,7 @@ std::string CSceneNodeDefaultCreator::GetSceneNodeTypeName(size_t Index) const
 	throw CException("CSceneNodeDefaultCreator: GetSceneNodeTypeName(%d) is out of bounds. Count = %d", Index, GetSceneNodesCount());
 }
 
-ISceneNode3D* CSceneNodeDefaultCreator::CreateSceneNode3D(ISceneNode3D* Parent, size_t Index) const
+std::shared_ptr<ISceneNode3D> CSceneNodeDefaultCreator::CreateSceneNode3D(ISceneNode3D* Parent, size_t Index) const
 {
 	if (Index == 0)
 	{
@@ -70,9 +70,9 @@ ISceneNode3D* CSceneNodeDefaultCreator::CreateSceneNode3D(ISceneNode3D* Parent, 
 		CFBXManager fbxManager(m_BaseManager);
 
 		std::shared_ptr<CFBXScene> m_FBXScene = fbxManager.CreateScene("SomeSceneName");
-		//m_FBXScene->LoadFromFile(m_BaseManager->GetManager<IFilesManager>()->Open("Bistro_v4\\Bistro v4 Update\\Bistro_v4\\Bistro_Exterior.fbx"));
-		m_FBXScene->LoadFromFile(m_BaseManager->GetManager<IFilesManager>()->Open("Sponza\\sponza.fbx"));
-		//m_FBXScene->LoadFromFile(m_BaseManager->GetManager<IFilesManager>()->Open("tower\\tower.fbx"));
+		//m_FBXScene->LoadFromFile(m_BaseManager.GetManager<IFilesManager>()->Open("Bistro_v4\\Bistro v4 Update\\Bistro_v4\\Bistro_Exterior.fbx"));
+		m_FBXScene->LoadFromFile(m_BaseManager.GetManager<IFilesManager>()->Open("Sponza\\sponza.fbx"));
+		//m_FBXScene->LoadFromFile(m_BaseManager.GetManager<IFilesManager>()->Open("tower\\tower.fbx"));
 		m_FBXScene->LoadNodes(Parent);
 
 		return m_FBXScene->GetRootNode();

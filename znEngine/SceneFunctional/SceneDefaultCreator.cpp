@@ -6,7 +6,7 @@
 // Additional
 #include "Scene_Default.h"
 
-CSceneDefaultCreator::CSceneDefaultCreator(IBaseManager* BaseManager)
+CSceneDefaultCreator::CSceneDefaultCreator(IBaseManager& BaseManager)
 	: m_BaseManager(BaseManager)
 {}
 

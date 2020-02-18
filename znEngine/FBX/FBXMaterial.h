@@ -13,7 +13,7 @@ class ZN_API CFBXMaterial
 	: public MaterialModel
 {
 public:
-	CFBXMaterial(const IBaseManager* BaseManager, std::weak_ptr<CFBXSceneNode> OwnerFBXNode);
+	CFBXMaterial(const IBaseManager& BaseManager, std::weak_ptr<CFBXSceneNode> OwnerFBXNode);
 	virtual ~CFBXMaterial();
 
 	void Load(fbxsdk::FbxSurfaceMaterial* NativeMaterial);

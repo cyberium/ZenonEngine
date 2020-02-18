@@ -13,7 +13,7 @@ ZN_INTERFACE ZN_API IApplication
 	virtual int                             DoRun() = 0;
 	virtual void                            DoAfterRun() = 0;
 
-	virtual IBaseManager*                   GetBaseManager() const = 0;
+	virtual IBaseManager&                   GetBaseManager() const = 0;
 	virtual IRenderDevice&                  GetRenderDevice() const = 0;
 };
 

@@ -6,7 +6,7 @@
 // Additional
 #include "SceneDefaultCreator.h"
 
-CScenesFactory::CScenesFactory(IBaseManager* BaseManager)
+CScenesFactory::CScenesFactory(IBaseManager& BaseManager)
 {
 	AddSceneCreator(std::make_shared<CSceneDefaultCreator>(BaseManager));
 }

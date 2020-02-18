@@ -3,14 +3,14 @@
 // General
 #include "RenderDeviceFactory.h"
 
-CznRenderDeviceFactory::CznRenderDeviceFactory(IBaseManager* BaseManager)
+CznRenderDeviceFactory::CznRenderDeviceFactory(IBaseManager& BaseManager)
 	: m_BaseManager(BaseManager)
 {}
 
 CznRenderDeviceFactory::~CznRenderDeviceFactory()
 {
 	OutputDebugStringW(L"Destroyed.");
-	//m_BaseManager->GetManager<IznPluginsManager>()->RemovePluginEventListener(std::shared_ptr<IznPluginsEventListener>(this));
+	//m_BaseManager.GetManager<IznPluginsManager>()->RemovePluginEventListener(std::shared_ptr<IznPluginsEventListener>(this));
 }
 
 //

@@ -12,7 +12,7 @@ class CFBXMesh
 	: public ModelProxie
 {
 public:
-	CFBXMesh(const IBaseManager* BaseManager, std::weak_ptr<CFBXSceneNode> OwnerFBXNode);
+	CFBXMesh(const IBaseManager& BaseManager, std::weak_ptr<CFBXSceneNode> OwnerFBXNode);
 	virtual ~CFBXMesh();
 
 	void Load(fbxsdk::FbxMesh* NativeMesh);
@@ -25,7 +25,7 @@ private:
 	std::weak_ptr<CFBXSceneNode> m_OwnerFBXNode;
 
 private:
-	const IBaseManager* m_BaseManager;
+	const IBaseManager& m_BaseManager;
 };
 
 #endif

@@ -36,7 +36,7 @@ protected:
 
 	const RenderEventArgs& GetRenderEventArgs() const;
     const IRenderDevice& GetRenderDevice() const;
-	const IBaseManager* GetBaseManager() const;
+	const IBaseManager& GetBaseManager() const;
 
 protected:
 	static IBlendState::BlendMode alphaBlending;
@@ -62,6 +62,6 @@ private:
 	std::shared_ptr<IPipelineState>					m_Pipeline;
     const RenderEventArgs*							m_RenderEventArgs;
    
-	const IBaseManager*                             m_BaseManager;
+	const IBaseManager&                             m_BaseManager;
 	const IRenderDevice&							m_RenderDevice;
 };

@@ -10,7 +10,7 @@
 
 using namespace fbxsdk;
 
-CFBXManager::CFBXManager(const IBaseManager* BaseManager)
+CFBXManager::CFBXManager(const IBaseManager& BaseManager)
 	: m_BaseManager(BaseManager)
 {
 	m_SdkManager = FbxManager::Create();

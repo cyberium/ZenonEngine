@@ -13,7 +13,7 @@ class CznRenderDX11Plugin
 	, public IznRenderDeviceCreator
 {
 public:
-	CznRenderDX11Plugin(IBaseManager* BaseManager)
+	CznRenderDX11Plugin(IBaseManager& BaseManager)
 		: m_BaseManager(BaseManager)
 	{}
 	virtual ~CznRenderDX11Plugin()
@@ -28,7 +28,7 @@ public:
 	//
 	bool Initialize() override
 	{
-		gLogInstance = dynamic_cast<CLog*>(m_BaseManager->GetManager<ILog>());
+		gLogInstance = dynamic_cast<CLog*>(m_BaseManager.GetManager<ILog>());
 
 		return true;
 	}
@@ -60,12 +60,12 @@ public:
 	}
 
 private:
-	IBaseManager* m_BaseManager;
+	IBaseManager& m_BaseManager;
 };
 
 
 
 extern "C" __declspec(dllexport) IznPlugin* WINAPI GetPlugin(IBaseManager* BaseManager)
 {
-	return new CznRenderDX11Plugin(BaseManager);
+	return new CznRenderDX11Plugin(*BaseManager);
 }
