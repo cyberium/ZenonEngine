@@ -246,7 +246,7 @@ void SceneNode3D::SetLocalTransform(cmat4 localTransform)
 	UpdateWorldTransform();
 
 	// After world updated, we can update all childs
-	for (auto it : GetChilds())
+	for (const auto& it : GetChilds())
 		std::dynamic_pointer_cast<SceneNode3D>(it)->UpdateWorldTransform();
 }
 
@@ -432,6 +432,8 @@ void SceneNode3D::AddChildInternal(const std::shared_ptr<ISceneNode3D>& ChildNod
 	// And add child to named list
 	if (!ChildNode->GetName().empty())
 		m_ChildrenByName.insert(Node3DNameMap::value_type(ChildNode->GetName(), ChildNode));
+
+	std::dynamic_pointer_cast<SceneNode3D>(ChildNode)->SetParentInternal(weak_from_this());
 
 	// TODO: Какой ивент посылать первым?
 	ChildNode->RaiseOnParentChanged();

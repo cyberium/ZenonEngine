@@ -8,5 +8,5 @@ ZN_INTERFACE ZN_API ISceneNodeProvider
 {
 	virtual ~ISceneNodeProvider() {}
 
-	virtual void CreateInsances(ISceneNode3D* _parent) const = 0;
+	virtual void CreateInsances(const std::shared_ptr<ISceneNode3D>& Parent) const = 0;
 };

@@ -154,7 +154,10 @@ void SceneBase::Accept(IVisitor * visitor)
 void SceneBase::AddChild(const std::shared_ptr<ISceneNode3D>& ParentNode, const std::shared_ptr<ISceneNode3D>& ChildNode)
 {
 	if (ParentNode == nullptr)
+	{
+		Log::Warn("Can't add child instanse to nullptr parent.");
 		return;
+	}
 
 	if (m_SceneIsBusy.try_lock() == false)
 	{
@@ -171,7 +174,10 @@ void SceneBase::AddChild(const std::shared_ptr<ISceneNode3D>& ParentNode, const 
 void SceneBase::RemoveChild(const std::shared_ptr<ISceneNode3D>& ParentNode, const std::shared_ptr<ISceneNode3D>& ChildNode)
 {
 	if (ParentNode == nullptr)
+	{
+		Log::Warn("Can't remove child instanse from nullptr parent.");
 		return;
+	}
 
 	if (m_SceneIsBusy.try_lock() == false)
 	{
