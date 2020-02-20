@@ -32,10 +32,8 @@ ZN_INTERFACE ZN_API __declspec(novtable) IScene
 
 	// Passes will go to this
 	virtual void Accept(IVisitor* visitor) = 0;
-	virtual bool IsOnAccept() const = 0;
-	virtual void AddChild(ISceneNode3D* ParentNode, const std::shared_ptr<ISceneNode3D>& ChildNode) = 0;
-	virtual void Lock() = 0;
-	virtual void Unlock() = 0;
+	virtual void AddChild(const std::shared_ptr<ISceneNode3D>& ParentNode, const std::shared_ptr<ISceneNode3D>& ChildNode) = 0;
+	virtual void RemoveChild(const std::shared_ptr<ISceneNode3D>& ParentNode, const std::shared_ptr<ISceneNode3D>& ChildNode) = 0;
 
 	// Events
 	virtual SceneChangeEvent& SceneChangeEvent() = 0;
@@ -47,25 +45,18 @@ ZN_INTERFACE ZN_API __declspec(novtable) IScene
 
 	// Creates new SceneNode and initialize it. You !must! call this method instead of creating nodes in code
 	template<class T, typename... Args>
-	inline std::shared_ptr<T> CreateSceneNode(ISceneNode3D* Parent, Args &&... _Args)
+	inline std::shared_ptr<T> CreateSceneNode(const std::shared_ptr<ISceneNode3D>& Parent, Args &&... _Args)
 	{
 		static_assert(std::is_convertible<T*, ISceneNode3D*>::value, "T must inherit ISceneNode3D as public.");
 
-		std::shared_ptr<T> newNode = std::make_shared<T>(std::forward<Args>(_Args)...);
-		newNode->SetScene(weak_from_this());
-		newNode->RegisterComponents();
-		newNode->Initialize();
+		std::shared_ptr<T> node = std::make_shared<T>(std::forward<Args>(_Args)...);
+		node->SetSceneInternal(weak_from_this());
+		node->RegisterComponents();
+		node->Initialize();
 
-		if (IsOnAccept())
-		{
-			AddChild(Parent, newNode);
-		}
-		else
-		{
-			newNode->SetParent(Parent);
-		}
+		this->AddChild(Parent, node);
 
-		return newNode;
+		return node;
 	}
 
 	// Creates new SceneNode and initialize it. You !must! call this method instead of creating nodes in code
@@ -83,23 +74,6 @@ ZN_INTERFACE ZN_API __declspec(novtable) IScene
 	}
 };
 
-
-class ZN_API CSceneLocker
-{
-public:
-	CSceneLocker(IScene* Scene)
-		: m_Scene(Scene)
-	{
-		m_Scene->Lock();
-	}
-	~CSceneLocker()
-	{
-		m_Scene->Unlock();
-	}
-
-private:
-	IScene* m_Scene;
-};
 
 
 //

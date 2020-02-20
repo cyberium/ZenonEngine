@@ -29,16 +29,15 @@ ZN_INTERFACE ZN_API __declspec(novtable) ISceneNode3D
 	virtual void SetName(std::string Name) = 0;
 	virtual std::string	GetName() const = 0;
 
-	virtual void AddChild(std::shared_ptr<ISceneNode3D> childNode) = 0;
-	virtual void RemoveChild(const ISceneNode3D* childNode) = 0;
-	virtual void SetParent(ISceneNode3D* parentNode) = 0;
-	virtual ISceneNode3D* GetParent() const = 0;
+	virtual void AddChild(const std::shared_ptr<ISceneNode3D>& childNode) = 0;
+	virtual void RemoveChild(ISceneNode3D* childNode) = 0;
+	virtual std::weak_ptr<ISceneNode3D> GetParent() const = 0;
 	virtual const Node3DList& GetChilds() = 0;
 	virtual void RaiseOnParentChanged() = 0;
 
 	template<typename T, typename... Args> inline std::shared_ptr<T> CreateSceneNode(Args &&... _Args)
 	{
-		return GetScene()->CreateSceneNode<T>(this, std::forward<Args>(_Args)...);
+		return GetScene()->CreateSceneNode<T>(shared_from_this(), std::forward<Args>(_Args)...);
 	}
 
 	virtual IActionsGroup* GetActions() const = 0;

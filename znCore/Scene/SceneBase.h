@@ -32,10 +32,8 @@ public:
 
 	// Visit funcitonal
 	void                                            Accept(IVisitor* visitor) override;
-	bool                                            IsOnAccept() const override;
-	void                                            AddChild(ISceneNode3D* ParentNode, const std::shared_ptr<ISceneNode3D>& ChildNode) override;
-	void                                            Lock() override;
-	void                                            Unlock() override;
+	void                                            AddChild(const std::shared_ptr<ISceneNode3D>& ParentNode, const std::shared_ptr<ISceneNode3D>& ChildNode) override;
+	void                                            RemoveChild(const std::shared_ptr<ISceneNode3D>& ParentNode, const std::shared_ptr<ISceneNode3D>& ChildNode) override;
 
 	// Scene events
 	Delegate<SceneChangeEventArgs>&					SceneChangeEvent() override;
@@ -138,9 +136,11 @@ private: // Mouse events connections
 private:
 	Delegate<SceneChangeEventArgs>					m_SceneChangeEvent;
 
-	std::atomic_bool                                                     m_OnAcceptPhase;
-	std::vector<std::pair<ISceneNode3D*, std::shared_ptr<ISceneNode3D>>> m_AddChildList;
-	std::mutex                                                           m_AddChildListMutex;
+protected: // Функционал по отложенному добавлению нод
+	std::vector<std::pair<std::shared_ptr<ISceneNode3D>, std::shared_ptr<ISceneNode3D>>> m_AddChildList;
+	std::vector<std::pair<std::shared_ptr<ISceneNode3D>, std::shared_ptr<ISceneNode3D>>> m_RemoveChildList;
+	std::mutex                                                                           m_ListsAreBusy;
+	std::mutex                                                                           m_SceneIsBusy;
 
 private: // Quick access
 	IBaseManager&                                   m_BaseManager;

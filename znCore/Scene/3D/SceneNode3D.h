@@ -21,10 +21,9 @@ public:
 	std::string										GetName() const override;
 
 	// Childs functional
-	virtual void                                    AddChild(std::shared_ptr<ISceneNode3D> childNode) override;
-	virtual void                                    RemoveChild(const ISceneNode3D* childNode) override;
-	virtual void                                    SetParent(ISceneNode3D* parentNode) override;
-	virtual ISceneNode3D*                           GetParent() const override;
+	virtual void                                    AddChild(const std::shared_ptr<ISceneNode3D>& childNode) override;
+	virtual void                                    RemoveChild(ISceneNode3D* childNode) override;
+	virtual std::weak_ptr<ISceneNode3D>             GetParent() const override;
 	virtual const Node3DList&                       GetChilds() override;
 	void                                            RaiseOnParentChanged() override;
 
@@ -102,8 +101,10 @@ public:
 	virtual void                                    Accept(IVisitor* visitor) override;
 
 
-public:
-	void                                            SetScene(std::weak_ptr<IScene> Scene);
+private:
+	void                                            SetSceneInternal(const std::weak_ptr<IScene>& Scene);
+	void                                            AddChildInternal(const std::shared_ptr<ISceneNode3D>& ChildNode);
+	void                                            RemoveChildInternal(ISceneNode3D* ChildNode);
 	void                                            SetParentInternal(std::weak_ptr<ISceneNode3D> parentNode);
 
 

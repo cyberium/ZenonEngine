@@ -338,8 +338,11 @@ typedef Delegate<SceneEventArgs> SceneEvent;
 
 enum class ZN_API ESceneChangeType
 {
-	NodeAdded = 0,
-	NodeRemoved
+	NodeCreated = 0,
+	NodeDestroyed,
+
+	NodeAddedToParent,
+	NodeRemovedFromParent
 };
 
 class ZN_API SceneChangeEventArgs : public SceneEventArgs
