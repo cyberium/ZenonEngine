@@ -37,6 +37,8 @@ std::shared_ptr<IRenderPassPipelined> CDrawBoundingBoxPass::CreatePipeline(std::
 	Pipeline->GetDepthStencilState()->SetDepthMode(enableDepthWrites);
 	Pipeline->GetRasterizerState()->SetCullMode(IRasterizerState::CullMode::None);
 	Pipeline->GetRasterizerState()->SetFillMode(IRasterizerState::FillMode::Wireframe);
+	Pipeline->GetRasterizerState()->SetMultisampleEnabled(true);
+	Pipeline->GetRasterizerState()->SetAntialiasedLineEnable(true);
 	Pipeline->SetRenderTarget(RenderTarget);
 	Pipeline->GetRasterizerState()->SetViewport(Viewport);
 	Pipeline->SetShader(EShaderType::VertexShader, vertexShader);
@@ -59,8 +61,7 @@ bool CDrawBoundingBoxPass::Visit(const ISceneNode3D * SceneNode3D)
 	if (! colliderComponent->GetDebugDrawMode())
 		return false;
 
-	BoundingBox bbox = colliderComponent->GetBounds();
-	bbox.transform(SceneNode3D->GetWorldTransfom());
+	BoundingBox bbox = colliderComponent->GetWorldBounds();
 
 	glm::mat4 bboxMatrix = glm::mat4(1.0f);
 	bboxMatrix = glm::translate(bboxMatrix, bbox.getMin());

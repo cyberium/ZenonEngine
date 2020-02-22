@@ -536,9 +536,6 @@
     <ClInclude Include="..\shared\Interfaces\Scene\ISceneNodeComponents.h">
       <Filter>__Interfaces\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="..\shared\Interfaces\Scene\ISceneNodeProvider.h">
-      <Filter>__Interfaces\Scene</Filter>
-    </ClInclude>
     <ClInclude Include="..\shared\Interfaces\Scene\IScene.h">
       <Filter>__Interfaces\Scene</Filter>
     </ClInclude>
@@ -730,6 +727,9 @@
     </ClInclude>
     <ClInclude Include="Proxies\GeometryProxie.h">
       <Filter>__Proxies</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\Interfaces\Scene\ISceneNodeTools.h">
+      <Filter>__Interfaces\Scene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

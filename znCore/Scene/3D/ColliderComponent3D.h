@@ -13,6 +13,7 @@ public:
     // IColliderComponent3D
     void SetBounds(BoundingBox _bbox) override;
     cbbox GetBounds() const override;
+	cbbox GetWorldBounds() const override;
 	void SetDebugDrawMode(bool Value) override;
 	bool GetDebugDrawMode() const override;
 
@@ -28,5 +29,6 @@ protected:
 
 private:
     BoundingBox m_Bounds;
+	BoundingBox m_WorldBounds;
 	bool m_DebugDraw;
 };

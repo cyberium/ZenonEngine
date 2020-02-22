@@ -30,7 +30,8 @@ ZN_INTERFACE ZN_API ISceneNodeComponent
 typedef std::unordered_map<GUID, std::shared_ptr<ISceneNodeComponent>> ComponentsMap;
 
 const ComponentMessageType UUID_OnParentChanged = 1;
-const ComponentMessageType UUID_OnTransformChanged = 2; // Change LocalTransform of parent, change world transform of this or parent,
+const ComponentMessageType UUID_OnLocalTransformChanged = 2;
+const ComponentMessageType UUID_OnWorldTransformChanged = 3;
 
 
 
@@ -44,6 +45,7 @@ ZN_INTERFACE __declspec(novtable, UUID_ColliderComponent) ZN_API IColliderCompon
 
 	virtual void SetBounds(BoundingBox _bbox) = 0;
 	virtual cbbox GetBounds() const = 0;
+	virtual cbbox GetWorldBounds() const = 0;
 	virtual void SetDebugDrawMode(bool Value) = 0;
 	virtual bool GetDebugDrawMode() const = 0;
 
@@ -52,6 +54,80 @@ ZN_INTERFACE __declspec(novtable, UUID_ColliderComponent) ZN_API IColliderCompon
 	virtual bool CheckDistance(const ICameraComponent3D* Camera, float _distance) const = 0;
 };
 const ComponentMessageType UUID_OnBoundsChanget = 10;
+
+
+
+//
+// PORTAL COMPONENT
+//
+
+ZN_INTERFACE IPortalRoom;
+
+ZN_INTERFACE __declspec(novtable) IPortal
+{
+	enum class ZN_API Side
+	{
+		None,
+		Inner,
+		Outer
+	};
+
+	virtual ~IPortal() {}
+
+	virtual Frustum CreatePolyFrustum(glm::vec3 Eye) const = 0;
+
+	virtual bool IsVisible(const Frustum& Frustum) const = 0;
+	virtual bool IsVisible(const std::vector<Plane>& Planes) const = 0;
+	virtual bool IsPositive(cvec3 InvTranslateCamera) const = 0;
+
+	virtual std::shared_ptr<IPortalRoom> GetRoomObject(glm::vec3 Eye) const = 0;
+};
+
+
+/**
+  * В каждой комнате содержаться объекты.
+  * Объект видим если соблюдены следующие условия:
+  *   - комната видима
+  *     а) комната видима через портал
+  *     б) комната видима из-за того что игрок находится в ней
+  *   - объект видим через портал
+*/
+ZN_INTERFACE __declspec(novtable) IPortalRoomObject
+{
+	virtual ~IPortalRoomObject() {}
+
+	virtual BoundingBox GetBoundingBox() const = 0;
+	virtual void SetVisibilityState(bool Value) = 0;
+};
+
+
+/**
+  * Комната в которой содержаться объекты и которые отделены 
+  * друг от друга и от внешнего мира порталами. 
+  * Внутри комнаты могут быть и другие комнаты.
+*/
+ZN_INTERFACE __declspec(novtable) IPortalRoom
+{
+	virtual ~IPortalRoom() {}
+
+	virtual void AddPortal(const std::shared_ptr<IPortal>& Portal) = 0;
+	virtual const std::vector<std::shared_ptr<IPortal>>& GetPortals() const = 0;
+	virtual void AddRoomObject(const std::weak_ptr<IPortalRoomObject>& RoomObject) = 0;
+	virtual const std::vector<std::weak_ptr<IPortalRoomObject>>& GetRoomObjects() const = 0;
+
+	virtual void Reset() = 0;
+	virtual BoundingBox GetBoundingBox() const = 0;
+	virtual void SetVisibilityState(bool Value) = 0;
+	virtual void SetCalculatedState(bool Value) = 0;
+	virtual bool IsCalculated() const = 0;
+};
+
+#define UUID_PortalsComponent uuid("C4B0195E-B6E4-458E-A371-C0698335A5A7")
+ZN_INTERFACE __declspec(novtable, UUID_PortalsComponent) ZN_API IPortalsComponent3D
+{
+	virtual ~IPortalsComponent3D() {}
+};
+
 
 
 //
@@ -69,8 +145,9 @@ public:
 	virtual void RemoveMesh(IModel* mesh) = 0;
 	virtual const MeshList GetMeshes() = 0;
 };
-const ComponentMessageType UUID_OnModelAdded = 30;
-const ComponentMessageType UUID_OnModelRemoved = 30;
+const ComponentMessageType const UUID_OnModelAdded = 30;
+const ComponentMessageType const UUID_OnModelRemoved = 30;
+
 
 
 //
@@ -149,4 +226,5 @@ ZN_INTERFACE __declspec(novtable, UUID_CameraComponent) ZN_API ICameraComponent3
 	virtual const glm::mat4& GetInverseProjectionViewMatrix() const = 0;
 
 	virtual const Frustum& GetFrustum() const = 0;
+	virtual const glm::vec3& GetCameraUpDirection() const = 0;
 };

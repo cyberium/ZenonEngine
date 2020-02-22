@@ -22,7 +22,7 @@ public:
 
 	// Childs functional
 	virtual void                                    AddChild(const std::shared_ptr<ISceneNode3D>& childNode) override;
-	virtual void                                    RemoveChild(ISceneNode3D* childNode) override;
+	virtual void                                    RemoveChild(const std::shared_ptr<ISceneNode3D>& childNode) override;
 	virtual std::weak_ptr<ISceneNode3D>             GetParent() const override;
 	virtual const Node3DList&                       GetChilds() override;
 	void                                            RaiseOnParentChanged() override;
@@ -72,11 +72,11 @@ public:
 		return m_Components_Collider;
 	}
 	
-	template<typename T> inline bool IsComponentExists()
+	template<typename T> inline bool IsComponentExists() const
 	{
 		return ISceneNode3D::IsComponentExists<T>();
 	}
-	template<typename T> inline std::shared_ptr<T> GetComponent()
+	template<typename T> inline std::shared_ptr<T> GetComponent() const
 	{
 		return ISceneNode3D::GetComponent<T>();
 	}
@@ -104,8 +104,8 @@ public:
 private:
 	void                                            SetSceneInternal(const std::weak_ptr<IScene>& Scene);
 	void                                            AddChildInternal(const std::shared_ptr<ISceneNode3D>& ChildNode);
-	void                                            RemoveChildInternal(ISceneNode3D* ChildNode);
-	void                                            SetParentInternal(std::weak_ptr<ISceneNode3D> parentNode);
+	void                                            RemoveChildInternal(const std::shared_ptr<ISceneNode3D>& ChildNode);
+	void                                            SetParentInternal(const std::weak_ptr<ISceneNode3D>& parentNode);
 
 
 protected:

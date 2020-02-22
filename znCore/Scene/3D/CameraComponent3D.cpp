@@ -202,6 +202,11 @@ const Frustum & CCameraComponent3D::GetFrustum() const
 	return m_Frustum;
 }
 
+const glm::vec3 & CCameraComponent3D::GetCameraUpDirection() const
+{
+	return m_UpDirection;
+}
+
 
 
 //
@@ -209,7 +214,7 @@ const Frustum & CCameraComponent3D::GetFrustum() const
 //
 void CCameraComponent3D::OnMessage(const ISceneNodeComponent* Component, ComponentMessageType Message)
 {
-	if (Component == nullptr && Message == UUID_OnTransformChanged)
+	if (Component == nullptr && Message == UUID_OnWorldTransformChanged)
 	{
 		m_View_Dirty = true;
 	}

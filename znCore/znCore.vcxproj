@@ -150,7 +150,7 @@
     <ClInclude Include="..\shared\Interfaces\Scene\IProperties.h" />
     <ClInclude Include="..\shared\Interfaces\Scene\IScene.h" />
     <ClInclude Include="..\shared\Interfaces\Scene\ISceneNodeComponents.h" />
-    <ClInclude Include="..\shared\Interfaces\Scene\ISceneNodeProvider.h" />
+    <ClInclude Include="..\shared\Interfaces\Scene\ISceneNodeTools.h" />
     <ClInclude Include="..\shared\Interfaces\Settings.h" />
     <ClInclude Include="..\shared\Interfaces\Types\Events.h" />
     <ClInclude Include="..\shared\Interfaces\Types\KeyCodes.h" />

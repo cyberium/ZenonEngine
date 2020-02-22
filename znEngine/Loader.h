@@ -8,37 +8,34 @@
 class ZN_API CLoaderQueue
 {
 public:
-	inline void Add(ILoadable* item)
+	inline void Add(const std::weak_ptr<ILoadable>& item)
 	{
 		std::lock_guard<std::mutex> lock(m_Lock);
 
 		m_Queue.push_back(item);
 	}
 
-	inline bool GetNextItem(ILoadable ** result)
+	inline bool GetNextItem(std::shared_ptr<ILoadable> * Result)
 	{
+		_ASSERT(Result != NULL);
+		_ASSERT(*Result == NULL);
+
 		std::lock_guard<std::mutex> lock(m_Lock);
 
-		_ASSERT(result != NULL);
-		_ASSERT(*result == NULL);
-
 		if (m_Queue.empty())
-		{
 			return false;
-		}
 
-		ILoadable* loadable = m_Queue.front();
+		auto loadableWPtr = m_Queue.front();
 		m_Queue.pop_front();
 
-		if (loadable == NULL)
-		{
+		// Объект уже кто-то удалил, загружать не будем
+		auto loadable = loadableWPtr.lock();
+		if (loadable == nullptr)
 			return false;
-		}
 
-		if (loadable->GetState() == ILoadable::ELoadableState::Loading || loadable->GetState() == ILoadable::ELoadableState::Loaded)
-		{
+		// Загружать можно только созданные объекты
+		if (loadable->GetState() != ILoadable::ELoadableState::Created)
 			return false;
-		}
 
 		if (loadable->getDepends() != nullptr && loadable->getDepends()->GetState() != ILoadable::ELoadableState::Loaded)
 		{
@@ -46,7 +43,7 @@ public:
 			return false;
 		}
 		
-		(*result) = loadable;
+		(*Result) = loadable;
 		return true;
 	}
 
@@ -59,7 +56,7 @@ public:
 
 private:
 	std::mutex m_Lock;
-	std::list<ILoadable*> m_Queue;
+	std::list<std::weak_ptr<ILoadable>> m_Queue;
 };
 
 
@@ -74,13 +71,11 @@ public:
 	void Start() override;
 	void Stop() override;
 
-	void AddToLoadQueue(ILoadable* _item) override;
-	void LoadAll() override;
-
-	void AddToDeleteQueue(ILoadable* _item) override;
-	void DeleteAll() override;
-
 	void SetCamera(std::shared_ptr<ICameraComponent3D> _camera);
+
+	void AddToLoadQueue(const std::weak_ptr<ILoadable>& LoadableItemWPtr) override;
+	void AddToDeleteQueue(const std::weak_ptr<ILoadable>& LoadableItemWPtr) override;
+
 
 #ifdef LOADER_ENABLED
 	void LoaderThread(std::future<void> _promiseExiter);
@@ -104,7 +99,7 @@ public:
 #endif
 
 private:
-	const static uint32                    c_PoolSize = 4;
+	const static uint32                    c_PoolSize = 8;
 
 private:
 	CLoaderQueue m_QueueLoad;

@@ -27,6 +27,11 @@ cbbox CColliderComponent3D::GetBounds() const
 	return m_Bounds;
 }
 
+cbbox CColliderComponent3D::GetWorldBounds() const
+{
+	return m_WorldBounds;
+}
+
 void CColliderComponent3D::SetDebugDrawMode(bool Value)
 {
 	m_DebugDraw = Value;
@@ -66,7 +71,7 @@ void CColliderComponent3D::OnMessage(const ISceneNodeComponent* Component, Compo
 {
 	switch (Message)
 	{
-	case UUID_OnTransformChanged:
+	case UUID_OnWorldTransformChanged:
 	{
 		UpdateBounds();
 	}
@@ -83,13 +88,8 @@ void CColliderComponent3D::OnMessage(const ISceneNodeComponent* Component, Compo
 	break;
 	case UUID_OnBoundsChanget:
 	{
-		/*if (GetOwnerNode().GetParent())
-		{
-			// Update THIS bounds
-			BoundingBox bbox = GetOwnerNode().GetParent()->GetComponent<IColliderComponent3D>()->GetBounds();
-			bbox.makeUnion(GetBounds());
-			GetOwnerNode().GetParent()->GetComponent<IColliderComponent3D>()->SetBounds(bbox);
-		}*/
+		_ASSERT(Component == this);
+		UpdateBounds();
 	}
 	break;
 	}
@@ -103,5 +103,7 @@ void CColliderComponent3D::OnMessage(const ISceneNodeComponent* Component, Compo
 //
 void CColliderComponent3D::UpdateBounds()
 {
-	// do nothing
+	BoundingBox bounds = m_Bounds;
+	bounds.transform(GetOwnerNode().GetWorldTransfom());
+	m_WorldBounds = bounds;
 }

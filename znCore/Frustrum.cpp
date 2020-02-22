@@ -6,13 +6,27 @@
 // Additional
 #include "Plane.h"
 
+Frustum::Frustum()
+{
+}
+
+Frustum::Frustum(const Plane * Planes, uint32 PlanesCount)
+{
+	buildCustomFrustrum(Planes, PlanesCount);
+}
+
+Frustum::Frustum(const glm::mat4& viewMat, const glm::mat4& projMat)
+{
+	buildViewFrustum(viewMat, projMat);
+}
+
 void Frustum::buildCustomFrustrum(const Plane* _planes, uint32 _planesCount)
 {
+	m_Planes.resize(_planesCount);
 	for (uint32 i = 0; i < _planesCount; i++)
 	{
 		m_Planes[i] = _planes[i];
 	}
-	m_PlanesCount = _planesCount;
 }
 
 void Frustum::buildViewFrustum(const mat4 &transMat, float fov, float aspect, float nearPlane, float farPlane)
@@ -51,13 +65,13 @@ void Frustum::buildViewFrustum(const mat4 &transMat, float left, float right, fl
 	}
 
 	// Build planes
+	m_Planes.resize(6);
 	m_Planes[0] = Plane(m_Origin, m_Corners[3], m_Corners[0]);		// Left
 	m_Planes[1] = Plane(m_Origin, m_Corners[1], m_Corners[2]);		// Right
 	m_Planes[2] = Plane(m_Origin, m_Corners[0], m_Corners[1]);		// Bottom
 	m_Planes[3] = Plane(m_Origin, m_Corners[2], m_Corners[3]);		// Top
 	m_Planes[4] = Plane(m_Corners[0], m_Corners[1], m_Corners[2]);	// Near
 	m_Planes[5] = Plane(m_Corners[5], m_Corners[4], m_Corners[7]);	// Far
-	m_PlanesCount = 6;
 }
 
 void Frustum::buildViewFrustum(const mat4 &viewMat, const mat4 &projMat)
@@ -68,6 +82,7 @@ void Frustum::buildViewFrustum(const mat4 &viewMat, const mat4 &projMat)
 
 	mat4 m = projMat * viewMat;
 
+	m_Planes.resize(6);
 	m_Planes[0] = Plane(-(m[0][3] + m[0][0]), -(m[1][3] + m[1][0]),
 		-(m[2][3] + m[2][0]), -(m[3][3] + m[3][0]));	// Left
 	m_Planes[1] = Plane(-(m[0][3] - m[0][0]), -(m[1][3] - m[1][0]),
@@ -80,7 +95,6 @@ void Frustum::buildViewFrustum(const mat4 &viewMat, const mat4 &projMat)
 		-(m[2][3] + m[2][2]), -(m[3][3] + m[3][2]));	// Near
 	m_Planes[5] = Plane(-(m[0][3] - m[0][2]), -(m[1][3] - m[1][2]),
 		-(m[2][3] - m[2][2]), -(m[3][3] - m[3][2]));	// Far
-	m_PlanesCount = 6;
 
 	m_Origin = glm::inverse(viewMat) * vec4(0, 0, 0, 0);
 
@@ -126,13 +140,13 @@ void Frustum::buildBoxFrustum(const mat4 &transMat, float left, float right, flo
 	}
 
 	// Build planes
+	m_Planes.resize(6);
 	m_Planes[0] = Plane(m_Corners[0], m_Corners[3], m_Corners[7]);	// Left
 	m_Planes[1] = Plane(m_Corners[2], m_Corners[1], m_Corners[6]);	// Right
 	m_Planes[2] = Plane(m_Corners[0], m_Corners[4], m_Corners[5]);	// Bottom
 	m_Planes[3] = Plane(m_Corners[3], m_Corners[2], m_Corners[6]);	// Top
 	m_Planes[4] = Plane(m_Corners[0], m_Corners[1], m_Corners[2]);	// Front
 	m_Planes[5] = Plane(m_Corners[4], m_Corners[7], m_Corners[6]);	// Back
-	m_PlanesCount = 6;
 }
 
 //
@@ -140,7 +154,7 @@ void Frustum::buildBoxFrustum(const mat4 &transMat, float left, float right, flo
 bool Frustum::cullSphere(vec3 pos, float rad) const
 {
 	// Check the distance of the center to the planes
-	for (uint32 i = 0; i < 6; ++i)
+	for (size_t i = 0; i < m_Planes.size(); ++i)
 	{
 		if (m_Planes[i].distToPoint(pos) > rad) return true;
 	}
@@ -150,12 +164,12 @@ bool Frustum::cullSphere(vec3 pos, float rad) const
 
 bool Frustum::cullBox(const BoundingBox& b) const
 {
-	return cullBoxByPlanes(m_Planes, m_PlanesCount, b);
+	return cullBoxByPlanes(m_Planes.data(), m_Planes.size(), b);
 }
 
 bool Frustum::cullFrustum(const Frustum& frust) const
 {
-	for (uint32 i = 0; i < m_PlanesCount; ++i)
+	for (size_t i = 0; i < m_Planes.size(); ++i)
 	{
 		bool allOut = true;
 
@@ -176,7 +190,12 @@ bool Frustum::cullFrustum(const Frustum& frust) const
 
 bool Frustum::cullPoly(const vec3* verts, uint32 nums) const
 {
-	return cullPolyByPlanes(m_Planes, m_PlanesCount, verts, nums);
+	return cullPolyByPlanes(m_Planes.data(), m_Planes.size(), verts, nums);
+}
+
+bool Frustum::cullPoly(const std::vector<glm::vec3>& PolyVertices) const
+{
+	return cullPolyByPlanes(m_Planes.data(), m_Planes.size(), PolyVertices);
 }
 
 //

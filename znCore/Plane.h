@@ -4,9 +4,9 @@ class ZN_API Plane
 {
 public:
 	Plane()
-	{
-		normal.x = 0; normal.y = 0; normal.z = 0; dist = 0;
-	};
+		: normal(glm::vec3(0.0f))
+		, dist(0.0f)
+	{};
 
 	explicit Plane(const float a, const float b, const float c, const float d)
 	{
@@ -34,7 +34,7 @@ public:
 	}
 
 public:
-	vec3 normal;
+	glm::vec3 normal;
 	float dist;
 };
 
@@ -59,23 +59,30 @@ inline bool cullBoxByPlanes(const Plane* _planes, uint32 _planesCount, const Bou
 	return false;
 }
 
-inline bool cullPolyByPlanes(const Plane* _planes, uint32 _planesCount, const vec3* verts, uint32 vertsCount)
+
+inline bool cullPolyByPlanes(const Plane* Planes, size_t PlanesCount, const glm::vec3* Vertices, size_t VerticesCount)
 {
-	for (uint32 i = 0; i < _planesCount; ++i)
+	for (size_t i = 0; i < PlanesCount; ++i)
 	{
 		bool allOut = true;
 
-		for (uint32 j = 0; j < vertsCount; ++j)
+		for (size_t j = 0; j < VerticesCount; j++)
 		{
-			if (_planes[i].distToPoint(verts[j]) < 0)
+			if (Planes[i].distToPoint(Vertices[j]) < 0)
 			{
 				allOut = false;
 				break;
 			}
 		}
 
-		if (allOut) return true;
+		if (allOut) 
+			return true;
 	}
 
 	return false;
+}
+
+inline bool cullPolyByPlanes(const Plane* Planes, size_t PlanesCount, const std::vector<glm::vec3>& PolyVertices)
+{
+	return cullPolyByPlanes(Planes, PlanesCount, PolyVertices.data(), PolyVertices.size());
 }

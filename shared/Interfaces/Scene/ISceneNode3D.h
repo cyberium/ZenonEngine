@@ -30,7 +30,7 @@ ZN_INTERFACE ZN_API __declspec(novtable) ISceneNode3D
 	virtual std::string	GetName() const = 0;
 
 	virtual void AddChild(const std::shared_ptr<ISceneNode3D>& childNode) = 0;
-	virtual void RemoveChild(ISceneNode3D* childNode) = 0;
+	virtual void RemoveChild(const std::shared_ptr<ISceneNode3D>& childNode) = 0;
 	virtual std::weak_ptr<ISceneNode3D> GetParent() const = 0;
 	virtual const Node3DList& GetChilds() = 0;
 	virtual void RaiseOnParentChanged() = 0;
@@ -113,30 +113,4 @@ ZN_INTERFACE ZN_API __declspec(novtable) ISceneNode3D
 	// Actions
 	virtual void Update(const UpdateEventArgs& e) = 0;
 	virtual void Accept(IVisitor* visitor) = 0;
-};
-
-
-//
-// For plugins
-//
-ZN_INTERFACE ZN_API __declspec(novtable) ISceneNodeCreator
-{
-	virtual ~ISceneNodeCreator() {}
-
-	virtual size_t GetSceneNodesCount() const = 0;
-	virtual std::string GetSceneNodeTypeName(size_t Index) const = 0;
-	virtual std::shared_ptr<ISceneNode3D> CreateSceneNode3D(ISceneNode3D* Parent, size_t Index) const = 0;
-	virtual ISceneNodeUI* CreateSceneNodeUI(ISceneNodeUI* Parent, size_t Index) const = 0;
-};
-
-ZN_INTERFACE ZN_API __declspec(novtable, uuid("9C3ACF8D-F30D-47AE-BBA1-D71DEA6B14D4")) ISceneNodesFactory
-	: public IManager
-{
-	virtual ~ISceneNodesFactory() {}
-
-	virtual void AddSceneNodeCreator(std::shared_ptr<ISceneNodeCreator> Creator) = 0;
-	virtual void RemoveSceneNodeCreator(std::shared_ptr<ISceneNodeCreator> Creator) = 0;
-
-	virtual std::shared_ptr<ISceneNode3D> CreateSceneNode3D(ISceneNode3D* Parent, std::string SceneNodeTypeName) const = 0;
-	virtual ISceneNodeUI* CreateSceneNodeUI(ISceneNodeUI* Parent, std::string SceneNodeTypeName) const = 0;
 };

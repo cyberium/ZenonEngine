@@ -187,7 +187,7 @@ void SceneBase::RemoveChild(const std::shared_ptr<ISceneNode3D>& ParentNode, con
 	}
 	else
 	{
-		ParentNode->RemoveChild(ChildNode.get());
+		ParentNode->RemoveChild(ChildNode);
 		m_SceneIsBusy.unlock();
 	}
 }
@@ -235,7 +235,7 @@ void SceneBase::OnUpdate(UpdateEventArgs& e)
 		m_AddChildList.clear();
 
 		for (const auto& it : m_RemoveChildList)
-			it.first->RemoveChild(it.second.get());
+			it.first->RemoveChild(it.second);
 		m_RemoveChildList.clear();
 	}
 

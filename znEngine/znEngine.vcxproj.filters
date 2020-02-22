@@ -43,21 +43,6 @@
     <Filter Include="Settings">
       <UniqueIdentifier>{c55d8656-eb02-4071-98e0-ef05ce94f3ba}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Scene Funcitonal">
-      <UniqueIdentifier>{8c49bf34-6b4c-469d-9001-5b6044462676}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Scene Funcitonal\UI">
-      <UniqueIdentifier>{aeead1cf-e045-48e6-b75c-499dd6f7476a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Scene Funcitonal\UI\UIContainerGarmoshka">
-      <UniqueIdentifier>{2c5b150c-4814-4a73-bda8-ac6cdf2f7f38}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Scene Funcitonal\UI\UIContainerList">
-      <UniqueIdentifier>{b93002ef-9ad2-41b9-b244-84fd234dc24e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Scene Funcitonal\UI\Utils">
-      <UniqueIdentifier>{58530eb5-a58f-4c13-94b2-0d6730fa84eb}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Resources\Textures">
       <UniqueIdentifier>{f841afa5-fa24-4948-a5bb-cc5e7cd3ea2a}</UniqueIdentifier>
     </Filter>
@@ -100,6 +85,21 @@
     <Filter Include="Formats\Fonts">
       <UniqueIdentifier>{42e015df-4a5d-4cd0-a2db-2356c165cd3a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SceneNodes">
+      <UniqueIdentifier>{8c49bf34-6b4c-469d-9001-5b6044462676}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SceneNodes\UI">
+      <UniqueIdentifier>{aeead1cf-e045-48e6-b75c-499dd6f7476a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SceneNodes\UI\UIContainerGarmoshka">
+      <UniqueIdentifier>{2c5b150c-4814-4a73-bda8-ac6cdf2f7f38}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SceneNodes\UI\UIContainerList">
+      <UniqueIdentifier>{b93002ef-9ad2-41b9-b244-84fd234dc24e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SceneNodes\UI\Utils">
+      <UniqueIdentifier>{58530eb5-a58f-4c13-94b2-0d6730fa84eb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -107,19 +107,19 @@
     </ClCompile>
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="SceneFunctional\UI\UIContainerGarmoshka.cpp">
-      <Filter>Scene Funcitonal\UI\UIContainerGarmoshka</Filter>
+      <Filter>SceneNodes\UI\UIContainerGarmoshka</Filter>
     </ClCompile>
     <ClCompile Include="SceneFunctional\UI\UIContainerGarmoshkaCategory.cpp">
-      <Filter>Scene Funcitonal\UI\UIContainerGarmoshka</Filter>
+      <Filter>SceneNodes\UI\UIContainerGarmoshka</Filter>
     </ClCompile>
     <ClCompile Include="SceneFunctional\UI\UIContainerGarmoshkaCategoryHeader.cpp">
-      <Filter>Scene Funcitonal\UI\UIContainerGarmoshka</Filter>
+      <Filter>SceneNodes\UI\UIContainerGarmoshka</Filter>
     </ClCompile>
     <ClCompile Include="SceneFunctional\UI\UIContainerListBase.cpp">
-      <Filter>Scene Funcitonal\UI\UIContainerList</Filter>
+      <Filter>SceneNodes\UI\UIContainerList</Filter>
     </ClCompile>
     <ClCompile Include="SceneFunctional\UI\UIContainerListWithActivation.cpp">
-      <Filter>Scene Funcitonal\UI\UIContainerList</Filter>
+      <Filter>SceneNodes\UI\UIContainerList</Filter>
     </ClCompile>
     <ClCompile Include="Materials\MaterialDebug.cpp">
       <Filter>Materials</Filter>
@@ -143,7 +143,7 @@
       <Filter>Materials</Filter>
     </ClCompile>
     <ClCompile Include="SceneFunctional\UI\UIUtils.cpp">
-      <Filter>Scene Funcitonal\UI\Utils</Filter>
+      <Filter>SceneNodes\UI\Utils</Filter>
     </ClCompile>
     <ClCompile Include="znEngine.cpp">
       <Filter>Common</Filter>
@@ -155,7 +155,7 @@
       <Filter>Passes\3D</Filter>
     </ClCompile>
     <ClCompile Include="SceneFunctional\SceneNodesFactory.cpp">
-      <Filter>Scene Funcitonal</Filter>
+      <Filter>SceneNodes</Filter>
     </ClCompile>
     <ClCompile Include="RenderDeviceFactory.cpp">
       <Filter>Managers</Filter>
@@ -167,7 +167,7 @@
       <Filter>Managers</Filter>
     </ClCompile>
     <ClCompile Include="SceneFunctional\SceneNodeDefaultCreator.cpp">
-      <Filter>Scene Funcitonal</Filter>
+      <Filter>SceneNodes</Filter>
     </ClCompile>
     <ClCompile Include="Loader.cpp">
       <Filter>Managers</Filter>
@@ -182,22 +182,22 @@
       <Filter>Passes</Filter>
     </ClCompile>
     <ClCompile Include="SceneFunctional\UI\UIBeizerLine.cpp">
-      <Filter>Scene Funcitonal\UI</Filter>
+      <Filter>SceneNodes\UI</Filter>
     </ClCompile>
     <ClCompile Include="SceneFunctional\UI\UIButton.cpp">
-      <Filter>Scene Funcitonal\UI</Filter>
+      <Filter>SceneNodes\UI</Filter>
     </ClCompile>
     <ClCompile Include="SceneFunctional\UI\UIColor.cpp">
-      <Filter>Scene Funcitonal\UI</Filter>
+      <Filter>SceneNodes\UI</Filter>
     </ClCompile>
     <ClCompile Include="SceneFunctional\UI\UIText.cpp">
-      <Filter>Scene Funcitonal\UI</Filter>
+      <Filter>SceneNodes\UI</Filter>
     </ClCompile>
     <ClCompile Include="SceneFunctional\UI\UITexture.cpp">
-      <Filter>Scene Funcitonal\UI</Filter>
+      <Filter>SceneNodes\UI</Filter>
     </ClCompile>
     <ClCompile Include="SceneFunctional\UI\UIWindow.cpp">
-      <Filter>Scene Funcitonal\UI</Filter>
+      <Filter>SceneNodes\UI</Filter>
     </ClCompile>
     <ClCompile Include="Passes\TextureDebugPass.cpp">
       <Filter>Passes\3D</Filter>
@@ -307,19 +307,19 @@
       <Filter>Common</Filter>
     </ClInclude>
     <ClInclude Include="SceneFunctional\UI\UIContainerGarmoshka.h">
-      <Filter>Scene Funcitonal\UI\UIContainerGarmoshka</Filter>
+      <Filter>SceneNodes\UI\UIContainerGarmoshka</Filter>
     </ClInclude>
     <ClInclude Include="SceneFunctional\UI\UIContainerGarmoshkaCategory.h">
-      <Filter>Scene Funcitonal\UI\UIContainerGarmoshka</Filter>
+      <Filter>SceneNodes\UI\UIContainerGarmoshka</Filter>
     </ClInclude>
     <ClInclude Include="SceneFunctional\UI\UIContainerGarmoshkaCategoryHeader.h">
-      <Filter>Scene Funcitonal\UI\UIContainerGarmoshka</Filter>
+      <Filter>SceneNodes\UI\UIContainerGarmoshka</Filter>
     </ClInclude>
     <ClInclude Include="SceneFunctional\UI\UIContainerListBase.h">
-      <Filter>Scene Funcitonal\UI\UIContainerList</Filter>
+      <Filter>SceneNodes\UI\UIContainerList</Filter>
     </ClInclude>
     <ClInclude Include="SceneFunctional\UI\UIContainerListWithActivation.h">
-      <Filter>Scene Funcitonal\UI\UIContainerList</Filter>
+      <Filter>SceneNodes\UI\UIContainerList</Filter>
     </ClInclude>
     <ClInclude Include="Materials\MaterialDebug.h">
       <Filter>Materials</Filter>
@@ -343,7 +343,7 @@
       <Filter>Materials</Filter>
     </ClInclude>
     <ClInclude Include="SceneFunctional\UI\UIUtils.h">
-      <Filter>Scene Funcitonal\UI\Utils</Filter>
+      <Filter>SceneNodes\UI\Utils</Filter>
     </ClInclude>
     <ClInclude Include="Settings\GroupVideo.h">
       <Filter>Settings</Filter>
@@ -352,7 +352,7 @@
       <Filter>Passes\3D</Filter>
     </ClInclude>
     <ClInclude Include="SceneFunctional\SceneNodesFactory.h">
-      <Filter>Scene Funcitonal</Filter>
+      <Filter>SceneNodes</Filter>
     </ClInclude>
     <ClInclude Include="RenderDeviceFactory.h">
       <Filter>Managers</Filter>
@@ -364,7 +364,7 @@
       <Filter>Managers</Filter>
     </ClInclude>
     <ClInclude Include="SceneFunctional\SceneNodeDefaultCreator.h">
-      <Filter>Scene Funcitonal</Filter>
+      <Filter>SceneNodes</Filter>
     </ClInclude>
     <ClInclude Include="Loader.h">
       <Filter>Managers</Filter>
@@ -379,22 +379,22 @@
       <Filter>Passes</Filter>
     </ClInclude>
     <ClInclude Include="SceneFunctional\UI\UIBeizerLine.h">
-      <Filter>Scene Funcitonal\UI</Filter>
+      <Filter>SceneNodes\UI</Filter>
     </ClInclude>
     <ClInclude Include="SceneFunctional\UI\UIButton.h">
-      <Filter>Scene Funcitonal\UI</Filter>
+      <Filter>SceneNodes\UI</Filter>
     </ClInclude>
     <ClInclude Include="SceneFunctional\UI\UIColor.h">
-      <Filter>Scene Funcitonal\UI</Filter>
+      <Filter>SceneNodes\UI</Filter>
     </ClInclude>
     <ClInclude Include="SceneFunctional\UI\UIText.h">
-      <Filter>Scene Funcitonal\UI</Filter>
+      <Filter>SceneNodes\UI</Filter>
     </ClInclude>
     <ClInclude Include="SceneFunctional\UI\UITexture.h">
-      <Filter>Scene Funcitonal\UI</Filter>
+      <Filter>SceneNodes\UI</Filter>
     </ClInclude>
     <ClInclude Include="SceneFunctional\UI\UIWindow.h">
-      <Filter>Scene Funcitonal\UI</Filter>
+      <Filter>SceneNodes\UI</Filter>
     </ClInclude>
     <ClInclude Include="Passes\TextureDebugPass.h">
       <Filter>Passes\3D</Filter>

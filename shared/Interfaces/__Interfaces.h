@@ -181,4 +181,4 @@ class Rect;
 #include "Interfaces/Scene/ISceneNode3D.h"
 #include "Interfaces/Scene/ISceneNodeUI.h"
 #include "Interfaces/Scene/IScene.h"
-#include "Interfaces/Scene/ISceneNodeProvider.h"
+#include "Interfaces/Scene/ISceneNodeTools.h"

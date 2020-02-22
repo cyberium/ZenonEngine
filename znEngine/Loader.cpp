@@ -49,52 +49,27 @@ void CLoader::Stop()
 #endif
 }
 
-void CLoader::AddToLoadQueue(ILoadable* _item)
-{
-#ifdef LOADER_ENABLED
-	m_QueueLoad.Add(_item);
-#else
-	_item->Load();
-	_item->SetState(ILoadable::ELoadableState::Loaded);
-#endif
-}
-
-void CLoader::LoadAll()
-{
-	/*while (!m_QueueLoad.empty())
-	{
-		ILoadable* obj = m_QueueLoad.peek();
-
-		obj->SetState(ILoadable::ELoadableState::Loading);
-		obj->Load();
-		obj->SetState(ILoadable::ELoadableState::Loaded);
-
-		m_QueueLoad.pop();
-	}*/
-}
-
-void CLoader::AddToDeleteQueue(ILoadable* _item)
-{
-	m_QueueDelete.Add(_item);
-}
-
-void CLoader::DeleteAll()
-{
-	/*while (!m_QueueDelete.empty())
-	{
-		ILoadable* obj = m_QueueDelete.peek();
-
-		obj->Delete();
-
-		m_QueueDelete.pop();
-	}*/
-}
-
-
 void CLoader::SetCamera(std::shared_ptr<ICameraComponent3D> _camera)
 {
 	m_Camera = _camera;
 }
+
+void CLoader::AddToLoadQueue(const std::weak_ptr<ILoadable>& LoadableItemWPtr)
+{
+#ifdef LOADER_ENABLED
+	m_QueueLoad.Add(LoadableItemWPtr);
+#else
+	auto loadableItem = LoadableItemWPtr.lock();
+	loadableItem->Load();
+	loadableItem->SetState(ILoadable::ELoadableState::Loaded);
+#endif
+}
+
+void CLoader::AddToDeleteQueue(const std::weak_ptr<ILoadable>& LoadableItemWPtr)
+{
+	m_QueueDelete.Add(LoadableItemWPtr);
+}
+
 
 #ifdef LOADER_ENABLED
 
@@ -108,11 +83,9 @@ void CLoader::LoaderThread(std::future<void> _promiseExiter)
 			continue;
 		}
 
-		ILoadable* objectToLoad = nullptr;
+		std::shared_ptr<ILoadable> objectToLoad = nullptr;
 		if (!m_QueueLoad.GetNextItem(&objectToLoad))
-		{
 			continue;
-		}
 
 		objectToLoad->SetState(ILoadable::ELoadableState::Loading);
 		objectToLoad->Load();

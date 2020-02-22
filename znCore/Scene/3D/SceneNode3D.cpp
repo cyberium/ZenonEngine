@@ -100,6 +100,8 @@ std::string SceneNode3D::GetName() const
 	return m_Name;
 }
 
+
+
 //
 // Childs functional
 //
@@ -117,7 +119,7 @@ void SceneNode3D::AddChild(const std::shared_ptr<ISceneNode3D>& childNode)
 			return;
 		}
 
-		std::dynamic_pointer_cast<SceneNode3D>(currentChildParent)->RemoveChildInternal(childNode.get());
+		std::dynamic_pointer_cast<SceneNode3D>(currentChildParent)->RemoveChildInternal(childNode);
 	}
 
 	// 2. Добавляем чилда в нового парента (возможно нужно его об этом нотифицировать, например для перерасчета BoundingBox)
@@ -125,7 +127,7 @@ void SceneNode3D::AddChild(const std::shared_ptr<ISceneNode3D>& childNode)
 	
 }
 
-void SceneNode3D::RemoveChild(ISceneNode3D* childNode)
+void SceneNode3D::RemoveChild(const std::shared_ptr<ISceneNode3D>& childNode)
 {
 	if (childNode == nullptr)
 	{
@@ -437,14 +439,15 @@ void SceneNode3D::AddChildInternal(const std::shared_ptr<ISceneNode3D>& ChildNod
 
 	// TODO: Какой ивент посылать первым?
 	ChildNode->RaiseOnParentChanged();
-	GetScene()->RaiseSceneChangeEvent(ESceneChangeType::NodeAddedToParent, this, ChildNode.get());
+	//GetScene()->RaiseSceneChangeEvent(ESceneChangeType::NodeAddedToParent, this, ChildNode.get());
 }
 
-void SceneNode3D::RemoveChildInternal(ISceneNode3D * ChildNode)
+void SceneNode3D::RemoveChildInternal(const std::shared_ptr<ISceneNode3D>& ChildNode)
 {
-	const auto& childListIter = std::find_if(m_Children.begin(), m_Children.end(), [&ChildNode](const std::shared_ptr<ISceneNode3D>& SceneNode3D) -> bool { return SceneNode3D.get() == ChildNode; });
+	const auto& childListIter = std::find(m_Children.begin(), m_Children.end(), ChildNode);
 	if (childListIter == m_Children.end())
-		throw CException(L"Can't remove child because don't found.");
+		//throw CException(L"Can't remove child because don't found.");
+		return;
 
 	// Delete from list
 	m_Children.erase(childListIter);
@@ -456,14 +459,14 @@ void SceneNode3D::RemoveChildInternal(ISceneNode3D * ChildNode)
 	if (childNameMapIter != m_ChildrenByName.end())
 		m_ChildrenByName.erase(childNameMapIter);
 
-	dynamic_cast<SceneNode3D*>(ChildNode)->SetParentInternal(std::weak_ptr<ISceneNode3D>());
+	std::dynamic_pointer_cast<SceneNode3D>(ChildNode)->SetParentInternal(std::weak_ptr<ISceneNode3D>());
 
 	// TODO: Какой ивент посылать первым?
 	ChildNode->RaiseOnParentChanged();
-	GetScene()->RaiseSceneChangeEvent(ESceneChangeType::NodeRemovedFromParent, this, ChildNode);
+	//GetScene()->RaiseSceneChangeEvent(ESceneChangeType::NodeRemovedFromParent, this, ChildNode);
 }
 
-void SceneNode3D::SetParentInternal(std::weak_ptr<ISceneNode3D> parentNode)
+void SceneNode3D::SetParentInternal(const std::weak_ptr<ISceneNode3D>& parentNode)
 {
 	m_ParentNode = parentNode;
 }
@@ -492,7 +495,7 @@ void SceneNode3D::UpdateLocalTransform()
 
 	SetLocalTransform(localTransform);
 
-	RaiseComponentMessage(nullptr, UUID_OnTransformChanged);
+	RaiseComponentMessage(nullptr, UUID_OnLocalTransformChanged);
 }
 
 void SceneNode3D::UpdateWorldTransform()
@@ -500,7 +503,7 @@ void SceneNode3D::UpdateWorldTransform()
 	m_WorldTransform = GetParentWorldTransform() * m_LocalTransform;
 	m_InverseWorldTransform = glm::inverse(m_WorldTransform);
 	
-	RaiseComponentMessage(nullptr, UUID_OnTransformChanged);
+	RaiseComponentMessage(nullptr, UUID_OnWorldTransformChanged);
 }
 
 
