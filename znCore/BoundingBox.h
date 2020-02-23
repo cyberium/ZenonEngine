@@ -7,7 +7,7 @@ class ZN_API BoundingBox
 {
 public:
 	BoundingBox();
-	explicit BoundingBox(vec3 _mix, vec3 _max);
+	BoundingBox(const glm::vec3& Min, const glm::vec3& Max);
 
 	BoundingBox& operator=(const BoundingBox& _other)
 	{
@@ -19,7 +19,7 @@ public:
 		return *this;
 	}
 
-	void set(cvec3 _min, cvec3 _max);
+	void set(const glm::vec3& Min, const glm::vec3& Max);
 	void calculate(const vec3* _verts, uint32 _count);
 	void calculateCenter();
 	void clear();

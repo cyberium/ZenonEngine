@@ -9,7 +9,7 @@ ZN_INTERFACE ISceneNodesFactory;
 // FORWARD END
 
 
-ZN_INTERFACE ZN_API __declspec(novtable) IScene 
+ZN_INTERFACE ZN_API IScene 
 	: public std::enable_shared_from_this<IScene>
 {
 	virtual ~IScene() {}

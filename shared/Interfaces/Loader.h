@@ -25,8 +25,8 @@ ZN_INTERFACE ZN_API ILoadable
 	virtual void                                    SetState(ELoadableState State) = 0;
 	virtual ELoadableState                          GetState() const = 0;
 
-	virtual const ILoadable*                        getDepends() const = 0;
-	virtual uint32									getPriority() const = 0;
+	virtual void                                    AddDependense(const std::weak_ptr<ILoadable>& Loadable) = 0;
+	virtual std::weak_ptr<ILoadable>                GetDependense() const = 0;
 };
 
 ZN_INTERFACE ZN_API

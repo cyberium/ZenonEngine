@@ -406,7 +406,8 @@ void SceneNode3D::Accept(IVisitor* visitor)
 
 	const auto& childs = GetChilds();
 	std::for_each(childs.begin(), childs.end(), [&visitor](const std::shared_ptr<ISceneNode3D>& Child) {
-		Child->Accept(visitor);
+		if (Child != nullptr)
+			Child->Accept(visitor);
 	});
 }
 

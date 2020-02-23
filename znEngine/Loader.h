@@ -1,6 +1,6 @@
 #pragma once
 
-#define LOADER_ENABLED
+//#define LOADER_ENABLED
 //#define SORTER_ENABLED
 
 
@@ -37,10 +37,13 @@ public:
 		if (loadable->GetState() != ILoadable::ELoadableState::Created)
 			return false;
 
-		if (loadable->getDepends() != nullptr && loadable->getDepends()->GetState() != ILoadable::ELoadableState::Loaded)
+		if (auto depends = loadable->GetDependense().lock())
 		{
-			m_Queue.push_back(loadable);
-			return false;
+			if (depends->GetState() != ILoadable::ELoadableState::Loaded)
+			{
+				m_Queue.push_back(loadable);
+				return false;
+			}
 		}
 		
 		(*Result) = loadable;

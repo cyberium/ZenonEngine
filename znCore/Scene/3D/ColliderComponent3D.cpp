@@ -42,29 +42,29 @@ bool CColliderComponent3D::GetDebugDrawMode() const
 	return m_DebugDraw;
 }
 
-bool CColliderComponent3D::CheckFrustum(const ICameraComponent3D* Camera) const
+bool CColliderComponent3D::IsCulledByFrustum(const ICameraComponent3D* Camera) const
 {
 	_ASSERT(Camera != nullptr);
 
-	return !Camera->GetFrustum().cullBox(GetBounds());
+	return Camera->GetFrustum().cullBox(GetWorldBounds());
 }
 
-bool CColliderComponent3D::CheckDistance2D(const ICameraComponent3D* Camera, float _distance) const
+bool CColliderComponent3D::IsCulledByDistance2D(const ICameraComponent3D* Camera, float _distance) const
 {
 	_ASSERT(Camera != nullptr);
 
 	glm::vec3 cameraPosition = Camera->GetTranslation();
-	float distToCamera2D = glm::length(Fix_X0Z(cameraPosition) - Fix_X0Z(GetBounds().getCenter())) - GetBounds().getRadius();
-	return distToCamera2D < _distance;
+	float distToCamera2D = glm::length(Fix_X0Z(cameraPosition) - Fix_X0Z(GetWorldBounds().getCenter())) - GetWorldBounds().getRadius();
+	return distToCamera2D > _distance;
 }
 
-bool CColliderComponent3D::CheckDistance(const ICameraComponent3D* Camera, float _distance) const
+bool CColliderComponent3D::IsCulledByDistance(const ICameraComponent3D* Camera, float _distance) const
 {
 	_ASSERT(Camera != nullptr);
 
 	glm::vec3 cameraPosition = Camera->GetTranslation();
-	float distToCamera = glm::length(cameraPosition - GetBounds().getCenter()) - GetBounds().getRadius();
-	return distToCamera < _distance;
+	float distToCamera = glm::length(cameraPosition - GetWorldBounds().getCenter()) - GetWorldBounds().getRadius();
+	return distToCamera > _distance;
 }
 
 void CColliderComponent3D::OnMessage(const ISceneNodeComponent* Component, ComponentMessageType Message)
@@ -74,16 +74,6 @@ void CColliderComponent3D::OnMessage(const ISceneNodeComponent* Component, Compo
 	case UUID_OnWorldTransformChanged:
 	{
 		UpdateBounds();
-	}
-	case UUID_OnParentChanged:
-	{
-		// Update THIS bounds
-		/*if (GetOwnerNode().GetParent())
-		{
-			BoundingBox bbox = GetOwnerNode().GetParent()->GetComponent<IColliderComponent3D>()->GetBounds();
-			bbox.makeUnion(GetBounds());
-			GetOwnerNode().GetParent()->GetComponent<IColliderComponent3D>()->SetBounds(bbox);
-		}*/
 	}
 	break;
 	case UUID_OnBoundsChanget:

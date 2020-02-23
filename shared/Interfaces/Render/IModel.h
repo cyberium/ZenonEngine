@@ -14,7 +14,7 @@ class RenderEventArgs;
   * и связь материала и геометрии между собой
   *
 */
-ZN_INTERFACE ZN_API __declspec(novtable) IModel 
+ZN_INTERFACE ZN_API IModel 
 	: public std::enable_shared_from_this<IModel>
 {
 	struct ZN_API SConnection

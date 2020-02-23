@@ -5,9 +5,8 @@ struct IManager;
 struct IDebugOutput;
 // Forward END
 
-struct ZN_API
-	__declspec(novtable, uuid("114337A3-0FD0-4AB4-9CBC-40B6FE4E1796"))
-	ILog : IManager
+ZN_INTERFACE ZN_API __declspec(uuid("114337A3-0FD0-4AB4-9CBC-40B6FE4E1796")) ILog 
+	: public IManager
 {
 	virtual ~ILog() {}
 

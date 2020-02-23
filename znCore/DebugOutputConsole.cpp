@@ -24,21 +24,31 @@ void DebugOutput_ConsoleWindows::Print(IDebugOutput::DebugMessageType Type, cons
 	unsigned short color;
 	switch (Type)
 	{
-		case TYPE_INFO:
-		color = ConsoleWindowsColor::GRAY;
+		case IDebugOutput::DebugMessageType::TYPE_INFO:
+		{
+			color = ConsoleWindowsColor::GRAY;
+		}
 		break;
-		case TYPE_PRINT:
-		color = ConsoleWindowsColor::WHITE;
+		case IDebugOutput::DebugMessageType::TYPE_PRINT:
+		{
+			color = ConsoleWindowsColor::WHITE;
+		}
 		break;
-		case TYPE_GREEN:
-		color = ConsoleWindowsColor::GREEN;
+		case IDebugOutput::DebugMessageType::TYPE_GREEN:
+		{
+			color = ConsoleWindowsColor::GREEN;
+		}
 		break;
-		case TYPE_WARNING:
-		color = ConsoleWindowsColor::YELLOW;
+		case IDebugOutput::DebugMessageType::TYPE_WARNING:
+		{
+			color = ConsoleWindowsColor::YELLOW;
+		}
 		break;
-		case TYPE_ERROR:
-		case TYPE_FATAL:
-		color = ConsoleWindowsColor::RED;
+		case IDebugOutput::DebugMessageType::TYPE_ERROR:
+		case IDebugOutput::DebugMessageType::TYPE_FATAL:
+		{
+			color = ConsoleWindowsColor::RED;
+		}
 		break;
 	}
 

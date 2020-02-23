@@ -3,11 +3,10 @@
 // General
 #include "LoadableObject.h"
 
-CLoadableObject::CLoadableObject(const ILoadable* Depends)
+CLoadableObject::CLoadableObject(std::weak_ptr<ILoadable> Depends)
 	: m_State(ELoadableState::Created)
 	, m_Depends(Depends)
-{
-}
+{}
 
 CLoadableObject::~CLoadableObject()
 {
@@ -33,13 +32,13 @@ ILoadable::ELoadableState CLoadableObject::GetState() const
 	return m_State;
 }
 
-
-const ILoadable * CLoadableObject::getDepends() const
+void CLoadableObject::AddDependense(const std::weak_ptr<ILoadable>& Loadable)
 {
-	return m_Depends;
+	_ASSERT(m_Depends.lock() == nullptr);
+	m_Depends = Loadable;
 }
 
-uint32 CLoadableObject::getPriority() const
+std::weak_ptr<ILoadable> CLoadableObject::GetDependense() const
 {
-	return 0;
+	return m_Depends;
 }

@@ -5,7 +5,7 @@ ZN_INTERFACE ISceneNode3D;
 ZN_INTERFACE ISceneNodeUI;
 // FORWARD END
 
-ZN_INTERFACE ZN_API __declspec(novtable) ISceneNodeCreator
+ZN_INTERFACE ZN_API ISceneNodeCreator
 {
 	virtual ~ISceneNodeCreator() {}
 
@@ -16,7 +16,7 @@ ZN_INTERFACE ZN_API __declspec(novtable) ISceneNodeCreator
 };
 
 
-ZN_INTERFACE ZN_API __declspec(novtable, uuid("9C3ACF8D-F30D-47AE-BBA1-D71DEA6B14D4")) ISceneNodesFactory
+ZN_INTERFACE ZN_API __declspec(uuid("9C3ACF8D-F30D-47AE-BBA1-D71DEA6B14D4")) ISceneNodesFactory
 	: public IManager
 {
 	virtual ~ISceneNodesFactory() {}

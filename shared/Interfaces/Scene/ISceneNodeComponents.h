@@ -39,7 +39,7 @@ const ComponentMessageType UUID_OnWorldTransformChanged = 3;
 // COLLIDER COMPONENT 3D
 //
 #define UUID_ColliderComponent uuid("78BD7168-51CB-4760-ADD2-218CF4E88CE2")
-ZN_INTERFACE __declspec(novtable, UUID_ColliderComponent) ZN_API IColliderComponent3D
+ZN_INTERFACE __declspec(UUID_ColliderComponent) ZN_API IColliderComponent3D
 {
 	virtual ~IColliderComponent3D() {}
 
@@ -49,9 +49,9 @@ ZN_INTERFACE __declspec(novtable, UUID_ColliderComponent) ZN_API IColliderCompon
 	virtual void SetDebugDrawMode(bool Value) = 0;
 	virtual bool GetDebugDrawMode() const = 0;
 
-	virtual bool CheckFrustum(const ICameraComponent3D* Camera) const = 0;
-	virtual bool CheckDistance2D(const ICameraComponent3D* Camera, float _distance) const = 0;
-	virtual bool CheckDistance(const ICameraComponent3D* Camera, float _distance) const = 0;
+	virtual bool IsCulledByFrustum(const ICameraComponent3D* Camera) const = 0;
+	virtual bool IsCulledByDistance2D(const ICameraComponent3D* Camera, float Distance) const = 0;
+	virtual bool IsCulledByDistance(const ICameraComponent3D* Camera, float Distance) const = 0;
 };
 const ComponentMessageType UUID_OnBoundsChanget = 10;
 
@@ -63,7 +63,7 @@ const ComponentMessageType UUID_OnBoundsChanget = 10;
 
 ZN_INTERFACE IPortalRoom;
 
-ZN_INTERFACE __declspec(novtable) IPortal
+ZN_INTERFACE ZN_API IPortal
 {
 	enum class ZN_API Side
 	{
@@ -92,7 +92,7 @@ ZN_INTERFACE __declspec(novtable) IPortal
   *     б) комната видима из-за того что игрок находится в ней
   *   - объект видим через портал
 */
-ZN_INTERFACE __declspec(novtable) IPortalRoomObject
+ZN_INTERFACE ZN_API IPortalRoomObject
 {
 	virtual ~IPortalRoomObject() {}
 
@@ -106,7 +106,7 @@ ZN_INTERFACE __declspec(novtable) IPortalRoomObject
   * друг от друга и от внешнего мира порталами. 
   * Внутри комнаты могут быть и другие комнаты.
 */
-ZN_INTERFACE __declspec(novtable) IPortalRoom
+ZN_INTERFACE ZN_API IPortalRoom
 {
 	virtual ~IPortalRoom() {}
 
@@ -123,7 +123,7 @@ ZN_INTERFACE __declspec(novtable) IPortalRoom
 };
 
 #define UUID_PortalsComponent uuid("C4B0195E-B6E4-458E-A371-C0698335A5A7")
-ZN_INTERFACE __declspec(novtable, UUID_PortalsComponent) ZN_API IPortalsComponent3D
+ZN_INTERFACE __declspec(UUID_PortalsComponent) ZN_API IPortalsComponent3D
 {
 	virtual ~IPortalsComponent3D() {}
 };
@@ -134,7 +134,7 @@ ZN_INTERFACE __declspec(novtable, UUID_PortalsComponent) ZN_API IPortalsComponen
 // MESH COMPONENT 3D
 //
 #define UUID_MeshComponent uuid("403E886D-7BD7-438B-868D-AC4380830716")
-ZN_INTERFACE __declspec(novtable, UUID_MeshComponent) ZN_API IMeshComponent3D
+ZN_INTERFACE __declspec(UUID_MeshComponent) ZN_API IMeshComponent3D
 {
 public:
 	typedef std::vector<std::shared_ptr<IModel>> MeshList;
@@ -154,7 +154,7 @@ const ComponentMessageType const UUID_OnModelRemoved = 30;
 // LIGHT COMPONENT 3D
 //
 #define UUID_LightComponent uuid("2198326E-A00F-43C8-9EF5-4F60A8ABBBAE")
-ZN_INTERFACE __declspec(novtable, UUID_LightComponent) ZN_API ILightComponent3D
+ZN_INTERFACE __declspec(UUID_LightComponent) ZN_API ILightComponent3D
 {
 	virtual ~ILightComponent3D() {}
 
@@ -185,7 +185,7 @@ ZN_INTERFACE __declspec(novtable, UUID_LightComponent) ZN_API ILightComponent3D
 // CAMERA COMPONENT 3D
 //
 #define UUID_CameraComponent uuid("1F7DED3C-7622-46FA-BA17-4E405BA982DC")
-ZN_INTERFACE __declspec(novtable, UUID_CameraComponent) ZN_API ICameraComponent3D
+ZN_INTERFACE __declspec(UUID_CameraComponent) ZN_API ICameraComponent3D
 {
 	enum class ZN_API EPerspectiveProjectionHand
 	{

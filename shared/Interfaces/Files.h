@@ -103,9 +103,8 @@ ZN_INTERFACE ZN_API	IFilesStorageEx
 
 //--
 
-struct ZN_API
-	__declspec(novtable, uuid("5DC32EB8-9A63-4FAD-A4BF-81916B8EF86A"))
-	IFilesManager : public IManager
+ZN_INTERFACE ZN_API __declspec(uuid("5DC32EB8-9A63-4FAD-A4BF-81916B8EF86A")) IFilesManager 
+	: public IManager
 {
 	virtual ~IFilesManager() {}
 

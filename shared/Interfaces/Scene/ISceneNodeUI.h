@@ -10,7 +10,7 @@ class UpdateEventArgs;
 ZN_INTERFACE IManager;
 // FORWARD END
 
-ZN_INTERFACE ZN_API __declspec(novtable) ISceneNodeUI
+ZN_INTERFACE ZN_API ISceneNodeUI
 	: public std::enable_shared_from_this<ISceneNodeUI>
 {
 	typedef std::vector<std::shared_ptr<ISceneNodeUI>>                NodeUIList;
@@ -65,7 +65,7 @@ ZN_INTERFACE ZN_API __declspec(novtable) ISceneNodeUI
 	virtual void Accept(IVisitor* visitor) = 0;
 };
 
-ZN_INTERFACE ZN_API __declspec(novtable) ISceneNodeUIWithWrapper
+ZN_INTERFACE ZN_API ISceneNodeUIWithWrapper
 {
 	virtual ~ISceneNodeUIWithWrapper() {}
 

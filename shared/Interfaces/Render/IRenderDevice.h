@@ -140,7 +140,7 @@ ZN_INTERFACE ZN_API IRenderObjectsFactory
 };
 
 
-ZN_INTERFACE ZN_API __declspec(novtable) IRenderDevice
+ZN_INTERFACE ZN_API IRenderDevice
 {
 	virtual ~IRenderDevice() {}
 

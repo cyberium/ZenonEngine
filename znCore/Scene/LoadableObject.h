@@ -4,7 +4,7 @@ class ZN_API CLoadableObject
 	: public ILoadable
 {
 public:
-	CLoadableObject(const ILoadable* Depends = nullptr);
+	CLoadableObject(std::weak_ptr<ILoadable> Depends = std::weak_ptr<ILoadable>());
 	virtual ~CLoadableObject();
 
 	virtual bool									Load();
@@ -13,11 +13,10 @@ public:
 	virtual void                                    SetState(ELoadableState State) override;
 	virtual ELoadableState                          GetState() const override;
 
-	const ILoadable*                                getDepends() const;
-	virtual uint32									getPriority() const;
+	void                                            AddDependense(const std::weak_ptr<ILoadable>& Loadable) override final;
+	std::weak_ptr<ILoadable>                        GetDependense() const override final;
 
 private:
 	std::atomic<ELoadableState>                     m_State;
-
-	const ILoadable*                                m_Depends;
+	std::weak_ptr<ILoadable>                        m_Depends;
 };

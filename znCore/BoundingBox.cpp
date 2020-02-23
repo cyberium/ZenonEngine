@@ -8,17 +8,15 @@ BoundingBox::BoundingBox()
     clear();
 }
 
-BoundingBox::BoundingBox(vec3 _min, vec3 _max) :
-	m_Min(_min),
-	m_Max(_max)
+BoundingBox::BoundingBox(const glm::vec3& Min, const glm::vec3& Max)
 {
-	calculateCenter();
+	set(Min, Max);
 }
 
-void BoundingBox::set(cvec3 _min, cvec3 _max)
+void BoundingBox::set(const glm::vec3& Min, const glm::vec3& Max)
 {
-	m_Min = _min;
-	m_Max = _max;
+	m_Min = Min;
+	m_Max = Max;
 
 	// Fix bounding box
 	/*if (_needConvert)
@@ -37,7 +35,7 @@ void BoundingBox::calculate(const vec3* _verts, uint32 _count)
 {
 	for (uint32 i = 0; i < _count; i++)
 	{
-		vec3 v =/*(_needConvert) ? (Fix_XZmY(_verts[i])) :*/ _verts[i];
+		const vec3 v =/*(_needConvert) ? (Fix_XZmY(_verts[i])) :*/ _verts[i];
 
 		if (v.x < m_Min.x) m_Min.x = v.x;
 		if (v.y < m_Min.y) m_Min.y = v.y;
@@ -120,8 +118,7 @@ void BoundingBox::transform(const mat4& m)
 	m_Min = vec3(minB[0], minB[1], minB[2]);
 	m_Max = vec3(maxB[0], maxB[1], maxB[2]);
 
-	_ASSERT(m_IsCenterCalc);
-	m_Center = m * vec4(m_Center, 0);
+	calculateCenter();
 }
 
 bool BoundingBox::makeUnion(const BoundingBox& b)

@@ -17,9 +17,9 @@ public:
 	void SetDebugDrawMode(bool Value) override;
 	bool GetDebugDrawMode() const override;
 
-    bool CheckFrustum(const ICameraComponent3D* Camera) const override;
-    bool CheckDistance2D(const ICameraComponent3D* Camera, float _distance) const override;
-    bool CheckDistance(const ICameraComponent3D* Camera, float _distance) const override;
+	bool IsCulledByFrustum(const ICameraComponent3D* Camera) const override;
+	bool IsCulledByDistance2D(const ICameraComponent3D* Camera, float Distance) const override;
+	bool IsCulledByDistance(const ICameraComponent3D* Camera, float Distance) const override;
 
     // CComponentBase
     void OnMessage(const ISceneNodeComponent* Component, ComponentMessageType Message) override;

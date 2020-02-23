@@ -13,7 +13,7 @@ ZN_INTERFACE IColliderComponent3D;
 
 
 
-ZN_INTERFACE ZN_API __declspec(novtable) ISceneNode3D
+ZN_INTERFACE ZN_API ISceneNode3D
 	: public std::enable_shared_from_this<ISceneNode3D>
 {
 	typedef std::vector<std::shared_ptr<ISceneNode3D>>                Node3DList;

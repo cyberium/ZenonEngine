@@ -483,7 +483,8 @@ void SceneBase::DoUpdate_Rec(const std::shared_ptr<ISceneNode3D>& Node, const Up
 	const auto& childs = Node->GetChilds();
 	std::for_each(childs.begin(), childs.end(), [this, &e](const std::shared_ptr<ISceneNode3D>& Child)
 	{
-		DoUpdate_Rec(Child, e);
+		if (Child != nullptr)
+			DoUpdate_Rec(Child, e);
 	});
 }
 

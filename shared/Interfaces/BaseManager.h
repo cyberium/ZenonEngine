@@ -5,7 +5,7 @@ ZN_INTERFACE IRenderDevice;
 ZN_INTERFACE IApplication;
 // FORWARD END
 
-ZN_INTERFACE ZN_API __declspec(novtable, uuid("BDC2768B-055D-42EA-ABE3-CF17CD21178D")) IManager
+ZN_INTERFACE ZN_API __declspec(uuid("BDC2768B-055D-42EA-ABE3-CF17CD21178D")) IManager
 {
 	virtual ~IManager() = 0 {};
 };
@@ -30,7 +30,7 @@ class CFont;
 // FORWARD END
 
 ZN_INTERFACE ZN_API
-	__declspec(novtable, uuid("1427E242-CCB8-4AEC-ABC8-17DE58A96B05"))
+	__declspec(uuid("1427E242-CCB8-4AEC-ABC8-17DE58A96B05"))
 	IFontsManager : public IRefManager<CFont>
 {
 	virtual ~IFontsManager() {};
@@ -41,7 +41,7 @@ ZN_INTERFACE ZN_API
 
 //--
 
-ZN_INTERFACE ZN_API __declspec(novtable, uuid("BB9FD479-C7AD-4F57-837B-E299A04AF171")) IBaseManager
+ZN_INTERFACE ZN_API __declspec(uuid("BB9FD479-C7AD-4F57-837B-E299A04AF171")) IBaseManager
 {
 	virtual ~IBaseManager() {};
 
@@ -77,7 +77,7 @@ ZN_INTERFACE ZN_API __declspec(novtable, uuid("BB9FD479-C7AD-4F57-837B-E299A04AF
 };
 
 
-ZN_INTERFACE ZN_API __declspec(novtable) IBaseManagerInternal
+ZN_INTERFACE ZN_API IBaseManagerInternal
 {
 	virtual ~IBaseManagerInternal() {}
 

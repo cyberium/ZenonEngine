@@ -10,7 +10,7 @@
 #define ZN_API __declspec(dllimport) 
 #endif
 
-#define ZN_INTERFACE struct
+#define ZN_INTERFACE struct __declspec(novtable)
 
 #define _CRT_SECURE_NO_WARNINGS
 
