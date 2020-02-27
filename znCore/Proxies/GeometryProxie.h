@@ -20,14 +20,12 @@ public:
 	void SetPrimitiveTopology(PrimitiveTopology Topology) override final;
 
 	virtual void Render(const RenderEventArgs& RenderEventArgs, const IShader* VertexShader, const SGeometryDrawArgs GeometryDrawArgs = SGeometryDrawArgs()) const override;
-	virtual void RenderInstanced(const RenderEventArgs& RenderEventArgs, const IShader* VertexShader, const SGeometryDrawInstancedArgs GeometryDrawInstancedArgs = SGeometryDrawInstancedArgs()) const override;
 
 	virtual void Accept(IVisitor* visitor, const IMaterial* Material, SGeometryDrawArgs GeometryDrawArgs = SGeometryDrawArgs()) override;
 
 	// IGeometryInternal
 	void Render_BindAllBuffers(const RenderEventArgs& RenderEventArgs, const IShader* VertexShader) const override final;
 	void Render_Draw(const SGeometryDrawArgs GeometryDrawArgs = SGeometryDrawArgs()) const override final;
-	void Render_DrawInstanced(const SGeometryDrawInstancedArgs GeometryDrawInstancedArgs = SGeometryDrawInstancedArgs()) const override final;
 	void Render_UnbindAllBuffers(const RenderEventArgs& RenderEventArgs, const IShader* VertexShader) const override final;
 
 private:

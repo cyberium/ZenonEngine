@@ -256,9 +256,9 @@ void StructuredBufferDX11::Copy(const IStructuredBuffer* other)
 	}
 }
 
-void StructuredBufferDX11::Set(void* data, size_t elementSize, size_t offset, size_t numElements)
+void StructuredBufferDX11::Set(void* data, size_t elementSize, size_t numElements)
 {
-	unsigned char* first = (unsigned char*)data + (offset * elementSize);
+	unsigned char* first = (unsigned char*)data;
 	unsigned char* last = first + (numElements * elementSize);
 	m_Data.assign(first, last);
 

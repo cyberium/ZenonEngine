@@ -12,18 +12,16 @@ CException::CException(const char * Message, ...)
 	int len = vsnprintf(NULL, 0, Message, args);
 	if (len > 0)
 	{
-		char* buff = new char[len + 1];
-		vsnprintf(&buff[0], len + 1, Message, args);
-		throw std::exception(buff);
-		delete[] buff;
+		m_Message.resize(len);
+		vsnprintf(&m_Message[0], len, Message, args);
 	}
 
 	va_end(args);
 }
 
 CException::CException(std::string Message)
+	: m_Message(Message)
 {
-	throw std::exception(Message.c_str());
 }
 
 CException::CException(const wchar_t * WMessage, ...)
@@ -34,10 +32,10 @@ CException::CException(const wchar_t * WMessage, ...)
 	int len = vswprintf(NULL, 0, WMessage, args);
 	if (len > 0)
 	{
-		wchar_t* buff = new wchar_t[len + 1];
-		vswprintf(&buff[0], len + 1, WMessage, args);
-		throw std::exception(Resources::ConvertString(buff).c_str());
-		delete[] buff;
+		std::wstring wMessage;
+		wMessage.resize(len);
+		vswprintf(&wMessage[0], len, WMessage, args);
+		m_Message = Resources::ConvertString(wMessage);
 	}
 
 	va_end(args);
@@ -45,5 +43,5 @@ CException::CException(const wchar_t * WMessage, ...)
 
 CException::CException(std::wstring WMessage)
 {
-	throw std::exception(Resources::ConvertString(WMessage).c_str());
+	m_Message = Resources::ConvertString(WMessage);
 }

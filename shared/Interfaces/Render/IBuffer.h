@@ -57,7 +57,7 @@ ZN_INTERFACE ZN_API IStructuredBuffer
 	virtual ~IStructuredBuffer() {}
 
 	virtual void Copy(const IStructuredBuffer* other) = 0;
-	virtual void Set(void* data, size_t elementSize, size_t offset, size_t numElements) = 0;
+	virtual void Set(void* data, size_t elementSize, size_t numElements) = 0;
 	virtual void Clear() = 0;
 
 	// Templates
@@ -65,7 +65,7 @@ ZN_INTERFACE ZN_API IStructuredBuffer
 	template<typename T>
 	inline void Set(const std::vector<T>& values)
 	{
-		Set((void*)values.data(), sizeof(T), 0, values.size());
+		Set((void*)values.data(), sizeof(T), values.size());
 	}
 };
 

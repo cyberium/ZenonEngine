@@ -79,38 +79,3 @@ SGeometryDrawArgs GeometryBase::FixGeometryDrawArgs(const SGeometryDrawArgs & Ge
 
 	return fixedArgs;
 }
-
-SGeometryDrawInstancedArgs GeometryBase::FixGeometryDrawInstancedArgs(const SGeometryDrawInstancedArgs & GeometryDrawInstancedArgs) const
-{
-	SGeometryDrawInstancedArgs fixedArgs;
-
-	fixedArgs.InstanceStartIndex = GeometryDrawInstancedArgs.InstanceStartIndex;
-	fixedArgs.InstanceCnt = GeometryDrawInstancedArgs.InstanceCnt;
-	if (fixedArgs.InstanceCnt == UINT_MAX)
-		_ASSERT_EXPR(false, L"GeometryBase: Specify instance count same as instance buffer size.");
-
-	fixedArgs.IndexStartLocation = GeometryDrawInstancedArgs.IndexStartLocation;
-	fixedArgs.IndexCnt = GeometryDrawInstancedArgs.IndexCnt;
-	if (fixedArgs.IndexCnt == UINT_MAX && m_pIndexBuffer != nullptr)
-		fixedArgs.IndexCnt = m_pIndexBuffer->GetElementCount();
-
-	fixedArgs.VertexStartLocation = GeometryDrawInstancedArgs.VertexStartLocation;
-	fixedArgs.VertexCnt = GeometryDrawInstancedArgs.VertexCnt;
-	if (fixedArgs.VertexCnt == UINT_MAX)
-	{
-		if (m_VertexBuffer != nullptr)
-		{
-			fixedArgs.VertexCnt = m_VertexBuffer->GetElementCount();
-		}
-		else if (!m_VertexBuffers.empty())
-		{
-			fixedArgs.VertexCnt = (*m_VertexBuffers.begin()).second->GetElementCount();
-		}
-		else
-		{
-			_ASSERT(false);
-		}
-	}
-
-	return fixedArgs;
-}

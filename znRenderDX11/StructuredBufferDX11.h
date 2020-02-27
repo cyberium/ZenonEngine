@@ -18,7 +18,7 @@ public:
 
 	// IStructuredBuffer
 	virtual void Copy(const IStructuredBuffer* other) override;
-	virtual void Set(void* data, size_t elementSize, size_t offset, size_t numElements) override;
+	virtual void Set(void* data, size_t elementSize, size_t numElements) override;
 	virtual void Clear() override;
 
 	// IStructuredBufferDX11

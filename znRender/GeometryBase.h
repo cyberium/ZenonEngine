@@ -20,7 +20,6 @@ public:
 
 protected:
 	SGeometryDrawArgs    FixGeometryDrawArgs(const SGeometryDrawArgs& GeometryDrawArgs) const;
-	SGeometryDrawInstancedArgs FixGeometryDrawInstancedArgs(const SGeometryDrawInstancedArgs& GeometryDrawInstancedArgs) const;
 
 protected:
 	BoundingBox               m_Bounds;

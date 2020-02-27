@@ -7,24 +7,14 @@ struct ZN_API SGeometryDrawArgs
 		, IndexCnt(IndexCnt)
 		, VertexStartLocation(VertexStartLocation)
 		, VertexCnt(VertexCnt)
+		, InstanceStartIndex(0)
+		, InstanceCnt(UINT_MAX)
 	{}
 
 	UINT IndexStartLocation;
 	UINT IndexCnt;
 	UINT VertexStartLocation;
 	UINT VertexCnt;
-};
-
-
-struct ZN_API SGeometryDrawInstancedArgs
-	: public SGeometryDrawArgs
-{
-	SGeometryDrawInstancedArgs()
-		: SGeometryDrawArgs()
-		, InstanceStartIndex(0)
-		, InstanceCnt(UINT_MAX)
-	{}
-
 	UINT InstanceStartIndex;
 	UINT InstanceCnt;
 };

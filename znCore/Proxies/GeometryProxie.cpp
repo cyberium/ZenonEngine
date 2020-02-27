@@ -55,11 +55,6 @@ void GeometryProxie::Render(const RenderEventArgs & RenderEventArgs, const IShad
 	m_Geometry->Render(RenderEventArgs, VertexShader, GeometryDrawArgs);
 }
 
-void GeometryProxie::RenderInstanced(const RenderEventArgs & RenderEventArgs, const IShader * VertexShader, const SGeometryDrawInstancedArgs GeometryDrawInstancedArgs) const
-{
-	m_Geometry->RenderInstanced(RenderEventArgs, VertexShader, GeometryDrawInstancedArgs);
-}
-
 void GeometryProxie::Accept(IVisitor * visitor, const IMaterial * Material, SGeometryDrawArgs GeometryDrawArgs)
 {
 	visitor->Visit(this, Material, GeometryDrawArgs);
@@ -73,11 +68,6 @@ void GeometryProxie::Render_BindAllBuffers(const RenderEventArgs & RenderEventAr
 void GeometryProxie::Render_Draw(const SGeometryDrawArgs GeometryDrawArgs) const
 {
 	m_GeometryInternal->Render_Draw(GeometryDrawArgs);
-}
-
-void GeometryProxie::Render_DrawInstanced(const SGeometryDrawInstancedArgs GeometryDrawInstancedArgs) const
-{
-	m_GeometryInternal->Render_DrawInstanced(GeometryDrawInstancedArgs);
 }
 
 void GeometryProxie::Render_UnbindAllBuffers(const RenderEventArgs & RenderEventArgs, const IShader * VertexShader) const

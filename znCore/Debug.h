@@ -30,13 +30,12 @@ inline void FatalMessageBox(const char* _title, const char* _message, ...)
 	va_start(args, _message);
 
 	int len = vsnprintf(NULL, 0, _message, args);
-	char* buff = nullptr;
 	if (len > 0)
 	{
-		buff = new char[len + 1];
-		vsnprintf(&buff[0], len + 1, _message, args);
-		MessageBoxA(HWND_DESKTOP, buff, _title, MB_ICONERROR | MB_OK);
-		delete buff;
+		std::string message;
+		message.resize(len);
+		vsnprintf(&message[0], len, _message, args);
+		MessageBoxA(HWND_DESKTOP, message.c_str(), _title, MB_ICONERROR | MB_OK);
 	}
 
 	va_end(args);
@@ -50,10 +49,15 @@ public:
 
 	CException(const wchar_t* WMessage, ...);
 	CException(std::wstring WMessage);
+
+	const std::string Message() const { return m_Message; }
+	const char* MessageCStr() const { return m_Message.c_str(); }
+
+private:
+	std::string m_Message;
 };
 
 #ifndef _DEBUG
-
 	#define _ASSERT(expr)   \
 	if ((!(expr)))          \
 	{                       \
@@ -65,5 +69,4 @@ public:
 	{                                 \
 		throw CException(msg);        \
 	} 
-
 #endif

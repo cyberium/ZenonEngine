@@ -45,13 +45,6 @@ void GeometryDX11::Render(const RenderEventArgs& RenderEventArgs, const IShader*
 	Render_UnbindAllBuffers(RenderEventArgs, VertexShader);
 }
 
-void GeometryDX11::RenderInstanced(const RenderEventArgs& RenderEventArgs, const IShader* VertexShader, const SGeometryDrawInstancedArgs GeometryDrawInstancedArgs) const
-{
-	Render_BindAllBuffers(RenderEventArgs, VertexShader);
-	Render_DrawInstanced(GeometryDrawInstancedArgs);
-	Render_UnbindAllBuffers(RenderEventArgs, VertexShader);
-}
-
 
 
 //
@@ -84,21 +77,27 @@ void GeometryDX11::Render_Draw(const SGeometryDrawArgs GeometryDrawArgs) const
 	m_RenderDeviceDX11.GetDeviceContextD3D11()->IASetPrimitiveTopology(m_PrimitiveTopology);
 
 	if (m_pIndexBuffer != NULL)
-		m_RenderDeviceDX11.GetDeviceContextD3D11()->DrawIndexed(args.IndexCnt, args.IndexStartLocation, args.VertexStartLocation);
+	{
+		if (args.InstanceCnt != UINT32_MAX)
+		{
+			m_RenderDeviceDX11.GetDeviceContextD3D11()->DrawIndexedInstanced(args.IndexCnt, args.InstanceCnt, args.IndexStartLocation, args.VertexStartLocation, args.InstanceCnt);
+		}
+		else
+		{
+			m_RenderDeviceDX11.GetDeviceContextD3D11()->DrawIndexed(args.IndexCnt, args.IndexStartLocation, args.VertexStartLocation);
+		}	
+	}
 	else
-		m_RenderDeviceDX11.GetDeviceContextD3D11()->Draw(args.VertexCnt, args.VertexStartLocation);
-}
-
-void GeometryDX11::Render_DrawInstanced(const SGeometryDrawInstancedArgs GeometryDrawInstancedArgs) const
-{
-	SGeometryDrawInstancedArgs args = FixGeometryDrawInstancedArgs(GeometryDrawInstancedArgs);
-
-	m_RenderDeviceDX11.GetDeviceContextD3D11()->IASetPrimitiveTopology(m_PrimitiveTopology);
-
-	if (m_pIndexBuffer != NULL)
-		m_RenderDeviceDX11.GetDeviceContextD3D11()->DrawIndexedInstanced(args.IndexCnt, args.InstanceCnt, args.IndexStartLocation, args.VertexStartLocation, args.InstanceCnt);
-	else
-		m_RenderDeviceDX11.GetDeviceContextD3D11()->DrawInstanced(args.VertexCnt, args.InstanceCnt, args.VertexStartLocation, args.InstanceStartIndex);
+	{
+		if (args.InstanceCnt != UINT32_MAX)
+		{
+			m_RenderDeviceDX11.GetDeviceContextD3D11()->DrawInstanced(args.VertexCnt, args.InstanceCnt, args.VertexStartLocation, args.InstanceStartIndex);
+		}
+		else
+		{
+			m_RenderDeviceDX11.GetDeviceContextD3D11()->Draw(args.VertexCnt, args.VertexStartLocation);
+		}		
+	}
 }
 
 void GeometryDX11::Render_UnbindAllBuffers(const RenderEventArgs & RenderEventArgs, const IShader * VertexShader) const
