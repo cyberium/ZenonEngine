@@ -30,7 +30,6 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 #include "SocketHandlerEp.h"
-#include "Exception.h"
 #include "IMutex.h"
 #include "Utility.h"
 
@@ -50,7 +49,7 @@ SocketHandlerEp::SocketHandlerEp(StdLog *p)
 	m_epoll = epoll_create(FD_SETSIZE);
 	if (m_epoll == -1)
 	{
-		throw Exception(StrError(Errno));
+		throw std::exception(StrError(Errno));
 	}
 #endif
 }
@@ -64,7 +63,7 @@ SocketHandlerEp::SocketHandlerEp(IMutex& mutex, StdLog *p)
 	m_epoll = epoll_create(FD_SETSIZE);
 	if (m_epoll == -1)
 	{
-		throw Exception(StrError(Errno));
+		throw std::exception(StrError(Errno));
 	}
 #endif
 }
@@ -78,7 +77,7 @@ SocketHandlerEp::SocketHandlerEp(IMutex& mutex, ISocketHandler& parent, StdLog *
 	m_epoll = epoll_create(FD_SETSIZE);
 	if (m_epoll == -1)
 	{
-		throw Exception(StrError(Errno));
+		throw std::exception(StrError(Errno));
 	}
 #endif
 }

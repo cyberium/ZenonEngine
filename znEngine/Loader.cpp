@@ -23,10 +23,14 @@ void CLoader::Start()
 		//m_Thread_Loader[i].detach();
 	}
 
+#ifdef DELETER_ENABLED
+	std::future<void> futureObj = m_Thread_Deleter_Promise.get_future();
+	m_Thread_Deleter = std::thread(&CLoader::DeleterThread, this, std::move(futureObj));
+#endif
+
 #ifdef SORTER_ENABLED
 	std::future<void> futureObj = m_Thread_Sorter_Promise.get_future();
 	m_Thread_Sorter = std::thread(&CLoader::SorterThread, this, std::move(futureObj));
-	m_Thread_Sorter.detach();
 #endif
 #endif
 }
@@ -37,14 +41,17 @@ void CLoader::Stop()
 	for (int i = 0; i < c_PoolSize; i++)
 	{
 		m_Thread_Loader_Promise_Exiter[i].set_value();
-
-		if (m_Thread_Loader[i].joinable())
-			m_Thread_Loader[i].join();
-		else
-			_ASSERT(false);
+		_ASSERT(m_Thread_Loader[i].joinable());
+		m_Thread_Loader[i].join();
 	}
-
 	m_QueueLoad.Clear();
+
+#ifdef DELETER_ENABLED
+	m_Thread_Deleter_Promise.set_value();
+	_ASSERT(m_Thread_Deleter.joinable());
+	m_Thread_Deleter.join();
+	m_QueueDelete.Clear();
+#endif
 
 #ifdef SORTER_ENABLED
 	m_Thread_Sorter_Promise.set_value();
@@ -70,7 +77,7 @@ void CLoader::AddToLoadQueue(const std::weak_ptr<ILoadable>& LoadableItemWPtr)
 #endif
 }
 
-void CLoader::AddToDeleteQueue(const std::weak_ptr<ILoadable>& LoadableItemWPtr)
+void CLoader::AddToDeleteQueue(const std::shared_ptr<ILoadable>& LoadableItemWPtr)
 {
 	m_QueueDelete.Add(LoadableItemWPtr);
 }
@@ -100,8 +107,23 @@ void CLoader::LoaderThread(std::future<void> _promiseExiter)
 	Log::Green("Loader thread stopped.");
 }
 
-#ifdef SORTER_ENABLED
+#ifdef DELETER_ENABLED
+void CLoader::DeleterThread(std::future<void> _promiseExiter)
+{
+	while (_promiseExiter.wait_for(std::chrono::milliseconds(0)) == std::future_status::timeout)
+	{
+		if (m_QueueDelete.IsEmpty())
+		{
+			std::this_thread::sleep_for(std::chrono::milliseconds(20));
+			continue;
+		}
 
+		m_QueueDelete.DeleteItem();
+	}
+}
+#endif
+
+#ifdef SORTER_ENABLED
 void CLoader::SorterThread(std::future<void> _promiseExiter)
 {
 	while (_promiseExiter.wait_for(std::chrono::milliseconds(0)) == std::future_status::timeout)
@@ -157,7 +179,6 @@ bool CLoader::sortFunctor::operator()(const ILoadable* first, const ILoadable* s
 
 	return first->getPriority() < second->getPriority();
 }
-
 #endif
 
 #endif

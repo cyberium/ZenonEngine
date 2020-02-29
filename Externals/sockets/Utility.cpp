@@ -1045,11 +1045,6 @@ unsigned long Utility::Rng::Get()
 }
 
 
-bool Utility::ncmap_compare::operator()(const std::string& x, const std::string& y) const
-{
-	return strcasecmp(x.c_str(), y.c_str()) < 0;
-}
-
 const std::string Utility::Stack()
 {
 #if defined LINUX

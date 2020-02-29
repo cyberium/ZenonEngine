@@ -14,6 +14,33 @@
 
 #define _CRT_SECURE_NO_WARNINGS
 
+#ifdef _DEBUG
+	#define _CRTDBG_MAP_ALLOC
+	#include <stdlib.h>
+	#include <crtdbg.h>
+
+	#define DEBUG_NEW new ( _NORMAL_BLOCK , __FILE__ , __LINE__ )
+
+	inline void* operator new(size_t sz)
+	{
+		if (sz == 32)
+			_errno();
+
+		if (void *ptr = malloc(sz))
+			return ptr;
+
+		return nullptr;
+	}
+
+	inline void operator delete(void* ptr) noexcept
+	{
+		free(ptr);
+	}
+
+	#include <memory>
+#endif
+
+
 // General types
 typedef signed char int8;
 typedef unsigned char uint8;

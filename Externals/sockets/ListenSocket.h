@@ -42,12 +42,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "ISocketHandler.h"
 #include "Socket.h"
 #include "Utility.h"
-#include "SctpSocket.h"
 #include "Ipv4Address.h"
 #include "Ipv6Address.h"
-#ifdef ENABLE_EXCEPTIONS
-#include "Exception.h"
-#endif
 #include "Lock.h"
 
 #ifdef SOCKETS_NAMESPACE
@@ -272,7 +268,7 @@ public:
 			Handler().LogError(this, "bind", Errno, StrError(Errno), LOG_LEVEL_FATAL);
 			closesocket(s);
 #ifdef ENABLE_EXCEPTIONS
-			throw Exception("bind() failed for port " + Utility::l2string(ad.GetPort()) + ": " + StrError(Errno));
+			throw std::exception("bind() failed for port " + Utility::l2string(ad.GetPort()) + ": " + StrError(Errno));
 #endif
 			return -1;
 		}
@@ -281,7 +277,7 @@ public:
 			Handler().LogError(this, "listen", Errno, StrError(Errno), LOG_LEVEL_FATAL);
 			closesocket(s);
 #ifdef ENABLE_EXCEPTIONS
-			throw Exception("listen() failed for port " + Utility::l2string(ad.GetPort()) + ": " + StrError(Errno));
+			throw std::exception("listen() failed for port " + Utility::l2string(ad.GetPort()) + ": " + StrError(Errno));
 #endif
 			return -1;
 		}

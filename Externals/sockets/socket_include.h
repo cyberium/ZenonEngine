@@ -41,7 +41,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 /* Define SOCKETS_DYNAMIC_TEMP to use dynamically allocated buffers
    in read operations - helps on ECOS */
-#define SOCKETS_DYNAMIC_TEMP
+//#define SOCKETS_DYNAMIC_TEMP
 
 /** define type to uniquely identify a socket instance. */
 typedef unsigned long socketuid_t;

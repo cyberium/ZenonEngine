@@ -43,9 +43,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "Utility.h"
 #include "Ipv4Address.h"
 #include "Ipv6Address.h"
-#ifdef ENABLE_EXCEPTIONS
-#include "Exception.h"
-#endif
 // include this to see strange sights
 //#include <linux/in6.h>
 
@@ -178,7 +175,7 @@ int UdpSocket::Bind(SocketAddress& ad, int range)
 			Handler().LogError(this, "bind", Errno, StrError(Errno), LOG_LEVEL_FATAL);
 			SetCloseAndDelete();
 #ifdef ENABLE_EXCEPTIONS
-			throw Exception("bind() failed for UdpSocket, port:range: " + Utility::l2string(ad.GetPort()) + ":" + Utility::l2string(range));
+			throw std::exception("bind() failed for UdpSocket, port:range: " + Utility::l2string(ad.GetPort()) + ":" + Utility::l2string(range));
 #endif
 			return -1;
 		}

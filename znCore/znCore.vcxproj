@@ -11,10 +11,6 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\Externals\sockets\Exception.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
     <ClCompile Include="..\Externals\sockets\Ipv4Address.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
@@ -170,7 +166,6 @@
     <ClCompile Include="XML\XMLManager.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\Externals\sockets\Exception.h" />
     <ClInclude Include="..\Externals\sockets\IMutex.h" />
     <ClInclude Include="..\Externals\sockets\Ipv4Address.h" />
     <ClInclude Include="..\Externals\sockets\Ipv6Address.h" />

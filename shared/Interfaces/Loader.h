@@ -41,5 +41,5 @@ ZN_INTERFACE ZN_API
 	virtual void SetCamera(std::shared_ptr<ICameraComponent3D> _camera) = 0;
 
 	virtual void AddToLoadQueue(const std::weak_ptr<ILoadable>& LoadableItem) = 0;
-	virtual void AddToDeleteQueue(const std::weak_ptr<ILoadable>& LoadableItem) = 0;
+	virtual void AddToDeleteQueue(const std::shared_ptr<ILoadable>& LoadableItem) = 0;
 };

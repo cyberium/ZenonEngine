@@ -336,9 +336,6 @@
     <ClCompile Include="..\Externals\sockets\Parse.cpp">
       <Filter>Socket\Utilities</Filter>
     </ClCompile>
-    <ClCompile Include="..\Externals\sockets\Exception.cpp">
-      <Filter>Socket\Utilities</Filter>
-    </ClCompile>
     <ClCompile Include="..\Externals\sockets\Utility.cpp">
       <Filter>Socket\Utilities</Filter>
     </ClCompile>
@@ -831,9 +828,6 @@
       <Filter>Socket\Base</Filter>
     </ClInclude>
     <ClInclude Include="..\Externals\sockets\Parse.h">
-      <Filter>Socket\Utilities</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Externals\sockets\Exception.h">
       <Filter>Socket\Utilities</Filter>
     </ClInclude>
     <ClInclude Include="..\Externals\sockets\Utility.h">

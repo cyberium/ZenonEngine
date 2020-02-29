@@ -43,14 +43,6 @@ CRenderObjectsFactoryDX11::CRenderObjectsFactoryDX11(IRenderDeviceDX11& RenderDe
 
 CRenderObjectsFactoryDX11::~CRenderObjectsFactoryDX11()
 {
-	m_Geometries.clear();
-	m_Models.clear();
-	m_Shaders.clear();
-	m_Textures.clear();
-	m_Buffers.clear();
-	m_Samplers.clear();
-	m_Pipelines.clear();
-	m_Queries.clear();
 }
 
 
@@ -90,7 +82,7 @@ std::shared_ptr<IGeometry> CRenderObjectsFactoryDX11::CreateGeometry()
 	std::lock_guard<std::recursive_mutex> locker(m_LockMutex);
 
 	std::shared_ptr<IGeometry> object = std::make_shared<GeometryDX11>(m_RenderDeviceDX11);
-	m_Geometries.insert(std::make_pair(GenerateRenderObjectID(), object));
+	//m_Geometries.insert(std::make_pair(GenerateRenderObjectID(), object));
 	return object;
 }
 
@@ -99,7 +91,7 @@ std::shared_ptr<IModel> CRenderObjectsFactoryDX11::CreateModel()
 	std::lock_guard<std::recursive_mutex> locker(m_LockMutex);
 
 	std::shared_ptr<IModel> object = std::make_shared<ModelDX11>(m_RenderDeviceDX11);
-	m_Models.insert(std::make_pair(GenerateRenderObjectID(), object));
+	//m_Models.insert(std::make_pair(GenerateRenderObjectID(), object));
 	return object;
 }
 
@@ -108,7 +100,7 @@ std::shared_ptr<ITexture> CRenderObjectsFactoryDX11::CreateEmptyTexture()
 	std::lock_guard<std::recursive_mutex> locker(m_LockMutex);
 
 	std::shared_ptr<ITexture> object = std::make_shared<TextureDX11>(m_RenderDeviceDX11);
-	m_Textures.insert(std::make_pair(GenerateRenderObjectID(), object));
+	//m_Textures.insert(std::make_pair(GenerateRenderObjectID(), object));
 	return object;
 }
 
@@ -117,7 +109,7 @@ std::shared_ptr<ITexture> CRenderObjectsFactoryDX11::CreateTexture2D(size_t widt
 	std::lock_guard<std::recursive_mutex> locker(m_LockMutex);
 
 	std::shared_ptr<ITexture> object = std::make_shared<TextureDX11>(m_RenderDeviceDX11, width, height, slices, format, cpuAccess, gpuWrite);
-	m_Textures.insert(std::make_pair(GenerateRenderObjectID(), object));
+	//m_Textures.insert(std::make_pair(GenerateRenderObjectID(), object));
 	return object;
 }
 
@@ -126,7 +118,7 @@ std::shared_ptr<ITexture> CRenderObjectsFactoryDX11::CreateTextureCube(size_t si
 	std::lock_guard<std::recursive_mutex> locker(m_LockMutex);
 
 	std::shared_ptr<ITexture> object = std::make_shared<TextureDX11>(m_RenderDeviceDX11, size, numCubes, format, cpuAccess, gpuWrite);
-	m_Textures.insert(std::make_pair(GenerateRenderObjectID(), object));
+	//m_Textures.insert(std::make_pair(GenerateRenderObjectID(), object));
 	return object;
 }
 
@@ -138,15 +130,21 @@ std::shared_ptr<ITexture> CRenderObjectsFactoryDX11::LoadTexture2D(const std::st
 	if (iter != m_TexturesByName.end())
 	{
 		if (std::shared_ptr<ITexture> texture = iter->second.lock())
+		{
 			return texture;
+		}
+		else
+		{
+			m_TexturesByName.erase(iter);
+		}
 	}
 
 	std::shared_ptr<ITexture> object = std::make_shared<TextureDX11>(m_RenderDeviceDX11);
 	if (!object->LoadTexture2D(fileName))
 		return m_RenderDeviceDX11.GetDefaultTexture();
 
-	m_Textures.insert(std::make_pair(GenerateRenderObjectID(), object));
-	m_TexturesByName.insert(std::make_pair(fileName, object));
+	//m_Textures[GenerateRenderObjectID()] = object;
+	m_TexturesByName[fileName] = object;
 
 	return object;
 }
@@ -159,14 +157,20 @@ std::shared_ptr<ITexture> CRenderObjectsFactoryDX11::LoadTextureCube(const std::
 	if (iter != m_TexturesByName.end())
 	{
 		if (std::shared_ptr<ITexture> texture = iter->second.lock())
+		{
 			return texture;
+		}
+		else
+		{
+			m_TexturesByName.erase(iter);
+		}
 	}
 
 	std::shared_ptr<ITexture> object = std::make_shared<TextureDX11>(m_RenderDeviceDX11);
 	object->LoadTextureCube(fileName);
 
-	m_Textures.insert(std::make_pair(GenerateRenderObjectID(), object));
-	m_TexturesByName.insert(std::make_pair(fileName, object));
+	//m_Textures.insert(std::make_pair(GenerateRenderObjectID(), object));
+	m_TexturesByName[fileName] = object;
 
 	return object;
 }
@@ -176,7 +180,7 @@ std::shared_ptr<IMaterial> CRenderObjectsFactoryDX11::CreateMaterial(size_t Size
 	std::lock_guard<std::recursive_mutex> locker(m_LockMutex);
 
 	std::shared_ptr<IMaterial> object = std::make_shared<MaterialDX11>(m_RenderDeviceDX11, Size);
-	m_Materials.insert(std::make_pair(GenerateRenderObjectID(), object));
+	//m_Materials.insert(std::make_pair(GenerateRenderObjectID(), object));
 	return object;
 }
 
@@ -185,7 +189,7 @@ std::shared_ptr<IRenderTarget> CRenderObjectsFactoryDX11::CreateRenderTarget()
 	std::lock_guard<std::recursive_mutex> locker(m_LockMutex);
 
 	std::shared_ptr<IRenderTarget> object = std::make_shared<RenderTargetDX11>(m_RenderDeviceDX11);
-	m_RenderTargets.insert(std::make_pair(GenerateRenderObjectID(), object));
+	//m_RenderTargets.insert(std::make_pair(GenerateRenderObjectID(), object));
 	return object;
 }
 
@@ -194,7 +198,7 @@ std::shared_ptr<IQuery> CRenderObjectsFactoryDX11::CreateQuery(IQuery::QueryType
 	std::lock_guard<std::recursive_mutex> locker(m_LockMutex);
 
 	std::shared_ptr<IQuery> object = std::make_shared<QueryDX11>(m_RenderDeviceDX11, queryType, numBuffers);
-	m_Queries.insert(std::make_pair(GenerateRenderObjectID(), object));
+	//m_Queries.insert(std::make_pair(GenerateRenderObjectID(), object));
 	return object;
 }
 
@@ -203,7 +207,7 @@ std::shared_ptr<ISamplerState> CRenderObjectsFactoryDX11::CreateSamplerState()
 	std::lock_guard<std::recursive_mutex> locker(m_LockMutex);
 
 	std::shared_ptr<ISamplerState> object = std::make_shared<SamplerStateDX11>(m_RenderDeviceDX11);
-	m_Samplers.insert(std::make_pair(GenerateRenderObjectID(), object));
+	//m_Samplers.insert(std::make_pair(GenerateRenderObjectID(), object));
 	return object;
 }
 
@@ -212,7 +216,7 @@ std::shared_ptr<IBlendState> CRenderObjectsFactoryDX11::CreateBlendState()
 	std::lock_guard<std::recursive_mutex> locker(m_LockMutex);
 
 	std::shared_ptr<IBlendState> object = std::make_shared<BlendStateDX11>(m_RenderDeviceDX11);
-	m_BlendStates.insert(std::make_pair(GenerateRenderObjectID(), object));
+	//m_BlendStates.insert(std::make_pair(GenerateRenderObjectID(), object));
 	return object;
 }
 
@@ -221,7 +225,7 @@ std::shared_ptr<IDepthStencilState> CRenderObjectsFactoryDX11::CreateDepthStenci
 	std::lock_guard<std::recursive_mutex> locker(m_LockMutex);
 
 	std::shared_ptr<IDepthStencilState> object = std::make_shared<DepthStencilStateDX11>(m_RenderDeviceDX11);
-	m_DepthStencilStates.insert(std::make_pair(GenerateRenderObjectID(), object));
+	//m_DepthStencilStates.insert(std::make_pair(GenerateRenderObjectID(), object));
 	return object;
 }
 
@@ -230,7 +234,7 @@ std::shared_ptr<IRasterizerState> CRenderObjectsFactoryDX11::CreateRasterizerSta
 	std::lock_guard<std::recursive_mutex> locker(m_LockMutex);
 
 	std::shared_ptr<IRasterizerState> object = std::make_shared<RasterizerStateDX11>(m_RenderDeviceDX11);
-	m_RasterizerStates.insert(std::make_pair(GenerateRenderObjectID(), object));
+	//m_RasterizerStates.insert(std::make_pair(GenerateRenderObjectID(), object));
 	return object;
 }
 
@@ -239,7 +243,7 @@ std::shared_ptr<IPipelineState> CRenderObjectsFactoryDX11::CreatePipelineState()
 	std::lock_guard<std::recursive_mutex> locker(m_LockMutex);
 
 	std::shared_ptr<IPipelineState> object = std::make_shared<PipelineStateDX11>(m_RenderDeviceDX11);
-	m_Pipelines.insert(std::make_pair(GenerateRenderObjectID(), object));
+	//m_Pipelines.insert(std::make_pair(GenerateRenderObjectID(), object));
 	return object;
 }
 
@@ -248,7 +252,7 @@ std::shared_ptr<IBuffer> CRenderObjectsFactoryDX11::CreateVoidVertexBuffer(const
 	std::lock_guard<std::recursive_mutex> locker(m_LockMutex);
 
 	std::shared_ptr<IBuffer> object = std::make_shared<BufferDX11>(m_RenderDeviceDX11, D3D11_BIND_VERTEX_BUFFER, data, count, offset, stride);
-	m_Buffers.insert(std::make_pair(GenerateRenderObjectID(), object));
+	//m_Buffers.insert(std::make_pair(GenerateRenderObjectID(), object));
 	return object;
 }
 
@@ -257,7 +261,7 @@ std::shared_ptr<IBuffer> CRenderObjectsFactoryDX11::CreateVoidIndexBuffer(const 
 	std::lock_guard<std::recursive_mutex> locker(m_LockMutex);
 
 	std::shared_ptr<IBuffer> object = std::make_shared<BufferDX11>(m_RenderDeviceDX11, D3D11_BIND_INDEX_BUFFER, data, count, offset, stride);
-	m_Buffers.insert(std::make_pair(GenerateRenderObjectID(), object));
+	//m_Buffers.insert(std::make_pair(GenerateRenderObjectID(), object));
 	return object;
 }
 
@@ -271,7 +275,7 @@ std::shared_ptr<IConstantBuffer> CRenderObjectsFactoryDX11::CreateConstantBuffer
 		object->Set(data, size);
 	}
 
-	m_Buffers.insert(std::make_pair(GenerateRenderObjectID(), object));
+	//m_Buffers.insert(std::make_pair(GenerateRenderObjectID(), object));
 
 	return object;
 }
@@ -281,6 +285,6 @@ std::shared_ptr<IStructuredBuffer> CRenderObjectsFactoryDX11::CreateStructuredBu
 	std::lock_guard<std::recursive_mutex> locker(m_LockMutex);
 
 	std::shared_ptr<IStructuredBuffer> object = std::make_shared<StructuredBufferDX11>(m_RenderDeviceDX11, 0, data, count, stride, cpuAccess, gpuWrite);
-	m_Buffers.insert(std::make_pair(GenerateRenderObjectID(), object));
+	//m_Buffers.insert(std::make_pair(GenerateRenderObjectID(), object));
 	return object;
 }

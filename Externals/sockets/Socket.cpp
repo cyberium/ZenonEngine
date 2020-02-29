@@ -46,9 +46,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #include "SocketAddress.h"
 #include "SocketHandler.h"
-#ifdef ENABLE_EXCEPTIONS
-#include "Exception.h"
-#endif
 #include "Ipv4Address.h"
 #ifdef ENABLE_IPV6
 #include "Ipv6Address.h"
@@ -213,7 +210,7 @@ SOCKET Socket::CreateSocket(int af,int type, const std::string& protocol)
 			Handler().LogError(this, "getprotobyname", Errno, StrError(Errno), LOG_LEVEL_FATAL);
 			SetCloseAndDelete();
 #ifdef ENABLE_EXCEPTIONS
-			throw Exception(std::string("getprotobyname() failed: ") + StrError(Errno));
+			throw std::exception(std::string("getprotobyname() failed: ") + StrError(Errno));
 #endif
 			return INVALID_SOCKET;
 		}
@@ -226,7 +223,7 @@ SOCKET Socket::CreateSocket(int af,int type, const std::string& protocol)
 		Handler().LogError(this, "socket", Errno, StrError(Errno), LOG_LEVEL_FATAL);
 		SetCloseAndDelete();
 #ifdef ENABLE_EXCEPTIONS
-		throw Exception(std::string("socket() failed: ") + StrError(Errno));
+		throw std::exception(std::string("socket() failed: ") + StrError(Errno));
 #endif
 		return INVALID_SOCKET;
 	}

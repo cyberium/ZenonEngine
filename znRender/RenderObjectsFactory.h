@@ -11,14 +11,14 @@ public:
 	bool                              HoldRenderObject(RenderObjectID ID) const;
 	bool                              UnholdRenderObject(RenderObjectID ID) const;
 	std::shared_ptr<IRenderObject>    GetRenderObject(RenderObjectID ID) const;
-
+	void                              ClearCache() override;
 
 protected:
 	RenderObjectID                    GenerateRenderObjectID();
 
 
 protected:
-	std::unordered_map<RenderObjectID, std::weak_ptr<IRenderWindow>> m_RenderWindows;
+	std::unordered_map<RenderObjectID, std::weak_ptr<IRenderWindow>>      m_RenderWindows;
 
 	std::unordered_map<RenderObjectID, std::weak_ptr<IShader>>            m_Shaders;
 	std::unordered_map<std::string,    std::weak_ptr<IShader>>            m_ShadersByName;

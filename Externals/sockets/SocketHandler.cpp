@@ -46,7 +46,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "IMutex.h"
 #include "Utility.h"
 #include "SocketAddress.h"
-#include "Exception.h"
 #include "SocketHandlerThread.h"
 #include "Lock.h"
 
@@ -255,7 +254,7 @@ bool SocketHandler::ParentHandlerIsValid()
 ISocketHandler& SocketHandler::ParentHandler()
 {
 	if (!m_b_parent_is_valid)
-		throw Exception("No parent sockethandler available");
+		throw std::exception("No parent sockethandler available");
 	return m_parent;
 }
 
@@ -263,7 +262,7 @@ ISocketHandler& SocketHandler::ParentHandler()
 ISocketHandler& SocketHandler::GetRandomHandler()
 {
 	if (m_threads.empty())
-		throw Exception("SocketHandler is not multithreaded");
+		throw std::exception("SocketHandler is not multithreaded");
 	size_t min_count = 99999;
 	SocketHandlerThread *match = NULL;
 	for (std::list<SocketHandlerThread *>::iterator it = m_threads.begin(); it != m_threads.end(); ++it)
@@ -282,7 +281,7 @@ ISocketHandler& SocketHandler::GetRandomHandler()
 	}
 	if (match)
 		return match -> Handler();
-	throw Exception("Can't locate free threaded sockethandler");
+	throw std::exception("Can't locate free threaded sockethandler");
 }
 
 
@@ -884,7 +883,9 @@ DEB(		fprintf(stderr, "Trying to add fd %d,  m_add.size() %d\n", (int)s, (int)m_
 		else
 		{
 			m_b_check_callonconnect |= p -> CallOnConnect();
+#ifdef ENABLE_DETACH
 			m_b_check_detach |= p -> IsDetach();
+#endif
 			m_b_check_timeout |= p -> CheckTimeout();
 			m_b_check_retry |= p -> RetryClientConnect();
 /*
@@ -1274,14 +1275,14 @@ printf("]\n");
 			break;
 		case WSAEINVAL:
 			LogError(NULL, "SocketHandler::Select", err, StrError(err), LOG_LEVEL_FATAL);
-			throw Exception("select(n): n is negative. Or struct timeval contains bad time values (<0).");
+			throw std::exception("select(n): n is negative. Or struct timeval contains bad time values (<0).");
 		case WSAEFAULT:
 			LogError(NULL, "SocketHandler::Select", err, StrError(err), LOG_LEVEL_ERROR);
 			break;
 		case WSANOTINITIALISED:
-			throw Exception("WSAStartup not successfully called");
+			throw std::exception("WSAStartup not successfully called");
 		case WSAENETDOWN:
-			throw Exception("Network subsystem failure");
+			throw std::exception("Network subsystem failure");
 		}
 #else
 		switch (err)
@@ -1293,7 +1294,7 @@ printf("]\n");
 			break;
 		case EINVAL:
 			LogError(NULL, "SocketHandler::Select", err, StrError(err), LOG_LEVEL_FATAL);
-			throw Exception("select(n): n is negative. Or struct timeval contains bad time values (<0).");
+			throw std::exception("select(n): n is negative. Or struct timeval contains bad time values (<0).");
 		case ENOMEM:
 			LogError(NULL, "SocketHandler::Select", err, StrError(err), LOG_LEVEL_ERROR);
 			break;
