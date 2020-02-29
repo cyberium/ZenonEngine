@@ -23,7 +23,7 @@ StructuredBufferDX11::StructuredBufferDX11(IRenderDeviceDX11& RenderDeviceDX11, 
 	}
 	else
 	{
-		m_Data.reserve(numBytes);
+		m_Data.resize(numBytes);
 	}
 
 	// Create a GPU buffer to store the data.
@@ -297,7 +297,8 @@ void StructuredBufferDX11::Commit() const
 
 		if (FAILED(m_RenderDeviceDX11.GetDeviceContextD3D11()->Map(m_pBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource)))
 		{
-			Log::Error("Failed to map subresource.");
+			_ASSERT_EXPR(false, "Failed to map subresource.");
+			return;
 		}
 
 		memcpy_s(mappedResource.pData, m_Data.size(), m_Data.data(), m_Data.size());

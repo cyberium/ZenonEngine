@@ -77,5 +77,8 @@ SGeometryDrawArgs GeometryBase::FixGeometryDrawArgs(const SGeometryDrawArgs & Ge
 		}
 	}
 
+	fixedArgs.InstanceStartIndex = GeometryDrawArgs.InstanceStartIndex;
+	fixedArgs.InstanceCnt = GeometryDrawArgs.InstanceCnt;
+
 	return fixedArgs;
 }
