@@ -10,7 +10,7 @@ CLoader::CLoader()
 
 CLoader::~CLoader()
 {
-
+	Stop();
 }
 
 void CLoader::Start()
@@ -20,7 +20,7 @@ void CLoader::Start()
 	{
 		std::future<void> futureObj = m_Thread_Loader_Promise_Exiter[i].get_future();
 		m_Thread_Loader[i] = std::thread(&CLoader::LoaderThread, this, std::move(futureObj));
-		m_Thread_Loader[i].detach();
+		//m_Thread_Loader[i].detach();
 	}
 
 #ifdef SORTER_ENABLED
@@ -37,9 +37,14 @@ void CLoader::Stop()
 	for (int i = 0; i < c_PoolSize; i++)
 	{
 		m_Thread_Loader_Promise_Exiter[i].set_value();
+
 		if (m_Thread_Loader[i].joinable())
 			m_Thread_Loader[i].join();
+		else
+			_ASSERT(false);
 	}
+
+	m_QueueLoad.Clear();
 
 #ifdef SORTER_ENABLED
 	m_Thread_Sorter_Promise.set_value();
@@ -91,6 +96,8 @@ void CLoader::LoaderThread(std::future<void> _promiseExiter)
 		objectToLoad->Load();
 		objectToLoad->SetState(ILoadable::ELoadableState::Loaded);
 	}
+
+	Log::Green("Loader thread stopped.");
 }
 
 #ifdef SORTER_ENABLED

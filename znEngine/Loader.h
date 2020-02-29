@@ -57,6 +57,12 @@ public:
 		return m_Queue.empty();
 	}
 
+	inline void Clear()
+	{
+		std::lock_guard<std::mutex> lock(m_Lock);
+		m_Queue.clear();
+	}
+
 private:
 	std::mutex m_Lock;
 	std::list<std::weak_ptr<ILoadable>> m_Queue;

@@ -1,6 +1,6 @@
 #include "stdafx.h"
 
-static IBaseManager& BaseManager = nullptr;
+static IBaseManager* BaseManager = nullptr;
 
 
 void main_internal(int argumentCount, char* arguments[])
@@ -9,7 +9,7 @@ void main_internal(int argumentCount, char* arguments[])
 	BaseManager = InitializeEngine(ArgumentsToVector(argumentCount, arguments), "");
 
 	// 3. Create application
-	Application app(BaseManager, ::GetModuleHandle(NULL));
+	Application app(*BaseManager, ::GetModuleHandle(NULL));
 
 
 	//CXMLManager xmlM;
@@ -29,7 +29,7 @@ void main_internal(int argumentCount, char* arguments[])
 
 	IRenderDevice& renderDevice = app.CreateRenderDevice(RenderDeviceType::RenderDeviceType_DirectX);
 
-	std::shared_ptr<IFontsManager> fontsManager = std::make_shared<FontsManager>(renderDevice, BaseManager);
+	std::shared_ptr<IFontsManager> fontsManager = std::make_shared<FontsManager>(renderDevice, *BaseManager);
 	BaseManager->AddManager<IFontsManager>(std::move(fontsManager));
 
 	const auto& firstRenderWindow = renderDevice.GetObjectsFactory().CreateRenderWindow(*nativeWindow, false);
@@ -45,16 +45,21 @@ void main_internal(int argumentCount, char* arguments[])
 
 int main(int argumentCount, char* arguments[])
 {
+#ifdef _DEBUG
+	_CrtMemState _ms;
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 	_CrtSetReportMode(_CRT_ERROR, _CRTDBG_MODE_DEBUG);
 
 	//_CrtSetBreakAlloc(158);
+#endif
 
 	main_internal(argumentCount, arguments);		
 
-	delete BaseManager;
+	if (BaseManager)
+		delete BaseManager;
 
-	_CrtMemDumpAllObjectsSince(NULL);
-
+#ifdef _DEBUG
+	_CrtMemDumpAllObjectsSince(&_ms);
+#endif
 	return 0;
 }
