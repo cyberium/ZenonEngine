@@ -3,7 +3,6 @@
 // General
 #include "Debug.h"
 
-
 CException::CException(const char * Message, ...)
 {
 	va_list args;

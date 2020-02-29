@@ -1,5 +1,33 @@
 #pragma once
 
+#ifdef _DEBUG
+	#define _CRTDBG_MAP_ALLOC
+	#include <stdlib.h>
+	#include <crtdbg.h>
+
+	#define DEBUG_NEW new ( _NORMAL_BLOCK , __FILE__ , __LINE__ )
+
+	//namespace std
+	//{
+		inline void* operator new(size_t sz)
+		{
+			if (sz == 8239)
+				_errno();
+
+			if (void *ptr = malloc(sz))
+				return ptr;
+
+			return nullptr;
+		}
+
+		inline void operator delete(void* ptr) noexcept
+		{
+			free(ptr);
+		}
+	//}
+
+	#include <memory>
+#endif
 
 namespace StaticAssert
 {
