@@ -324,28 +324,7 @@
     <ClCompile Include="Proxies\GeometryProxie.cpp">
       <Filter>__Proxies</Filter>
     </ClCompile>
-    <ClCompile Include="..\Externals\sockets\Event.cpp">
-      <Filter>Socket</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Externals\sockets\EventHandler.cpp">
-      <Filter>Socket</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Externals\sockets\EventTime.cpp">
-      <Filter>Socket</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Externals\sockets\IEventOwner.cpp">
-      <Filter>Socket</Filter>
-    </ClCompile>
     <ClCompile Include="..\Externals\sockets\socket_include.cpp">
-      <Filter>Socket</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Externals\sockets\SocketHandlerEp.cpp">
-      <Filter>Socket</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Externals\sockets\SocketHandlerThread.cpp">
-      <Filter>Socket</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Externals\sockets\StreamWriter.cpp">
       <Filter>Socket</Filter>
     </ClCompile>
     <ClCompile Include="..\Externals\sockets\Ipv4Address.cpp">
@@ -353,9 +332,6 @@
     </ClCompile>
     <ClCompile Include="..\Externals\sockets\Ipv6Address.cpp">
       <Filter>Socket\Base</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Externals\sockets\Debug.cpp">
-      <Filter>Socket\Utilities</Filter>
     </ClCompile>
     <ClCompile Include="..\Externals\sockets\Parse.cpp">
       <Filter>Socket\Utilities</Filter>
@@ -399,12 +375,6 @@
     <ClCompile Include="..\Externals\sockets\UdpSocket.cpp">
       <Filter>Socket\Base</Filter>
     </ClCompile>
-    <ClCompile Include="..\Externals\sockets\SmtpdSocket.cpp">
-      <Filter>Socket\Base</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Externals\sockets\SctpSocket.cpp">
-      <Filter>Socket\Base</Filter>
-    </ClCompile>
     <ClCompile Include="..\Externals\sockets\ResolvSocket.cpp">
       <Filter>Socket\Base</Filter>
     </ClCompile>
@@ -413,6 +383,12 @@
     </ClCompile>
     <ClCompile Include="..\Externals\sockets\StdoutLog.cpp">
       <Filter>Socket\Log help classes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Externals\sockets\SocketHandlerEp.cpp">
+      <Filter>Socket\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Externals\sockets\SocketHandlerThread.cpp">
+      <Filter>Socket\Base</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -836,33 +812,6 @@
     <ClInclude Include="..\shared\Interfaces\Scene\ISceneNodeTools.h">
       <Filter>__Interfaces\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="..\Externals\sockets\Event.h">
-      <Filter>Socket</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Externals\sockets\EventHandler.h">
-      <Filter>Socket</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Externals\sockets\EventTime.h">
-      <Filter>Socket</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Externals\sockets\IBase.h">
-      <Filter>Socket</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Externals\sockets\IEventHandler.h">
-      <Filter>Socket</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Externals\sockets\IEventOwner.h">
-      <Filter>Socket</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Externals\sockets\IFileUpload.h">
-      <Filter>Socket</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Externals\sockets\IHttpServer.h">
-      <Filter>Socket</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Externals\sockets\IModel.h">
-      <Filter>Socket</Filter>
-    </ClInclude>
     <ClInclude Include="..\Externals\sockets\ISocketHandler.h">
       <Filter>Socket</Filter>
     </ClInclude>
@@ -872,16 +821,7 @@
     <ClInclude Include="..\Externals\sockets\socket_include.h">
       <Filter>Socket</Filter>
     </ClInclude>
-    <ClInclude Include="..\Externals\sockets\SocketHandlerEp.h">
-      <Filter>Socket</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Externals\sockets\SocketHandlerThread.h">
-      <Filter>Socket</Filter>
-    </ClInclude>
     <ClInclude Include="..\Externals\sockets\sockets-config.h">
-      <Filter>Socket</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Externals\sockets\StreamWriter.h">
       <Filter>Socket</Filter>
     </ClInclude>
     <ClInclude Include="..\Externals\sockets\Ipv4Address.h">
@@ -889,9 +829,6 @@
     </ClInclude>
     <ClInclude Include="..\Externals\sockets\Ipv6Address.h">
       <Filter>Socket\Base</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Externals\sockets\Debug.h">
-      <Filter>Socket\Utilities</Filter>
     </ClInclude>
     <ClInclude Include="..\Externals\sockets\Parse.h">
       <Filter>Socket\Utilities</Filter>
@@ -941,12 +878,6 @@
     <ClInclude Include="..\Externals\sockets\UdpSocket.h">
       <Filter>Socket\Base</Filter>
     </ClInclude>
-    <ClInclude Include="..\Externals\sockets\SmtpdSocket.h">
-      <Filter>Socket\Base</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Externals\sockets\SctpSocket.h">
-      <Filter>Socket\Base</Filter>
-    </ClInclude>
     <ClInclude Include="..\Externals\sockets\ResolvSocket.h">
       <Filter>Socket\Base</Filter>
     </ClInclude>
@@ -961,6 +892,12 @@
     </ClInclude>
     <ClInclude Include="..\Externals\sockets\StdoutLog.h">
       <Filter>Socket\Log help classes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\sockets\SocketHandlerEp.h">
+      <Filter>Socket\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\sockets\SocketHandlerThread.h">
+      <Filter>Socket\Base</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

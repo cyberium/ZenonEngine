@@ -66,61 +66,6 @@ class Utility
 		int m_value;
 		unsigned long m_tmp[TWIST_LEN];
 	};
-	class ncmap_compare {
-	public:
-		bool operator()(const std::string& x, const std::string& y) const;
-	};
-public:
-	template<typename Y> class ncmap : public std::map<std::string, Y, ncmap_compare> {
-	public:
-		ncmap() {}
-	};
-	class Uri {
-	public:
-		Uri(const std::string& url);
-
-		const std::string& Url() const { return m_url; }
-		const std::string& UrlUri() const { return m_uri; }
-		const std::string& QueryString() const { return m_query_string; }
-		const std::string& Protocol() const { return m_protocol; }
-		const std::string& Host() const { return m_host; }
-		int Port() const { return m_port; }
-		const std::string& Path() const { return m_path; }
-		const std::string& File() const { return m_file; }
-		const std::string& Extension() const { return m_ext; }
-
-		const std::string& ToString() const { return m_url; }
-
-		const std::string& User() const { return m_user; }
-		const std::string& Auth() const { return m_auth; }
-
-	private:
-		std::string m_url;
-		std::string m_uri;
-		std::string m_query_string;
-		std::string m_protocol;
-		std::string m_host;
-		int m_port;
-		std::string m_path;
-		std::string m_file;
-		std::string m_ext;
-		std::string m_user;
-		std::string m_auth;
-	};
-	class Path
-	{
-	public:
-		Path(const std::string& );
-
-		const std::string& GetPath() const { return m_path; }
-		const std::string& GetFilename() const { return m_file; }
-		const std::string& GetExtension() const { return m_ext; }
-
-	private:
-		std::string m_path;
-		std::string m_file;
-		std::string m_ext;
-	};
 public:
 	static std::string l2string(long l);
 	static std::string bigint2string(int64_t l);
@@ -216,10 +161,6 @@ public:
 	/** Utf8 decrypt, encrypt. */
 	static const std::string FromUtf8(const std::string& );
 	static const std::string ToUtf8(const std::string&);
-
-	/** File system stuff */
-	static const Path CurrentDirectory();
-	static bool ChangeDirectory(const Path& to_dir);
 
 	/** wait a specified number of ms */
 	static void Sleep(int ms);

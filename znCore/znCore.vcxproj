@@ -11,27 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\Externals\sockets\Debug.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="..\Externals\sockets\Event.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="..\Externals\sockets\EventHandler.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="..\Externals\sockets\EventTime.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
     <ClCompile Include="..\Externals\sockets\Exception.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="..\Externals\sockets\IEventOwner.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
@@ -63,15 +43,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="..\Externals\sockets\SctpSocket.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
     <ClCompile Include="..\Externals\sockets\Semaphore.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="..\Externals\sockets\SmtpdSocket.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
@@ -108,10 +80,6 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="..\Externals\sockets\StreamSocket.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="..\Externals\sockets\StreamWriter.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
@@ -202,17 +170,7 @@
     <ClCompile Include="XML\XMLManager.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\Externals\sockets\Debug.h" />
-    <ClInclude Include="..\Externals\sockets\Event.h" />
-    <ClInclude Include="..\Externals\sockets\EventHandler.h" />
-    <ClInclude Include="..\Externals\sockets\EventTime.h" />
     <ClInclude Include="..\Externals\sockets\Exception.h" />
-    <ClInclude Include="..\Externals\sockets\IBase.h" />
-    <ClInclude Include="..\Externals\sockets\IEventHandler.h" />
-    <ClInclude Include="..\Externals\sockets\IEventOwner.h" />
-    <ClInclude Include="..\Externals\sockets\IFileUpload.h" />
-    <ClInclude Include="..\Externals\sockets\IHttpServer.h" />
-    <ClInclude Include="..\Externals\sockets\IModel.h" />
     <ClInclude Include="..\Externals\sockets\IMutex.h" />
     <ClInclude Include="..\Externals\sockets\Ipv4Address.h" />
     <ClInclude Include="..\Externals\sockets\Ipv6Address.h" />
@@ -224,9 +182,7 @@
     <ClInclude Include="..\Externals\sockets\Parse.h" />
     <ClInclude Include="..\Externals\sockets\ResolvServer.h" />
     <ClInclude Include="..\Externals\sockets\ResolvSocket.h" />
-    <ClInclude Include="..\Externals\sockets\SctpSocket.h" />
     <ClInclude Include="..\Externals\sockets\Semaphore.h" />
-    <ClInclude Include="..\Externals\sockets\SmtpdSocket.h" />
     <ClInclude Include="..\Externals\sockets\Socket.h" />
     <ClInclude Include="..\Externals\sockets\SocketAddress.h" />
     <ClInclude Include="..\Externals\sockets\SocketHandler.h" />
@@ -239,7 +195,6 @@
     <ClInclude Include="..\Externals\sockets\StdLog.h" />
     <ClInclude Include="..\Externals\sockets\StdoutLog.h" />
     <ClInclude Include="..\Externals\sockets\StreamSocket.h" />
-    <ClInclude Include="..\Externals\sockets\StreamWriter.h" />
     <ClInclude Include="..\Externals\sockets\TcpSocket.h" />
     <ClInclude Include="..\Externals\sockets\Thread.h" />
     <ClInclude Include="..\Externals\sockets\UdpSocket.h" />

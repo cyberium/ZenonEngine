@@ -124,12 +124,6 @@ public:
 	}
 
 	int Bind(SocketAddress& ad,int depth) {
-#ifdef USE_SCTP
-		if (dynamic_cast<SctpSocket *>(m_creator))
-		{
-			return Bind(ad, "sctp", depth);
-		}
-#endif
 		return Bind(ad, "tcp", depth);
 	}
 
@@ -223,12 +217,6 @@ public:
 		\param depth Listen queue depth */
 	int Bind(ipaddr_t a,port_t port,int depth = 20) {
 		Ipv4Address ad(a, port);
-#ifdef USE_SCTP
-		if (dynamic_cast<SctpSocket *>(m_creator))
-		{
-			return Bind(ad, "sctp", depth);
-		}
-#endif
 		return Bind(ad, "tcp", depth);
 	}
 	/** Bind and listen to ipv4 interface.
@@ -249,12 +237,6 @@ public:
 		\param depth Listen queue depth */
 	int Bind(in6_addr a,port_t port,int depth = 20) {
 		Ipv6Address ad(a, port);
-#ifdef USE_SCTP
-		if (dynamic_cast<SctpSocket *>(m_creator))
-		{
-			return Bind(ad, "sctp", depth);
-		}
-#endif
 		return Bind(ad, "tcp", depth);
 	}
 	/** Bind and listen to ipv6 interface.
