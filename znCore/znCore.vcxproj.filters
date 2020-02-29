@@ -109,6 +109,21 @@
     <Filter Include="Passes\3D">
       <UniqueIdentifier>{97324916-dd39-465d-803b-5864d3ffa59a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Socket">
+      <UniqueIdentifier>{3f578926-37f3-4e2b-8a8d-78374d8e3859}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Socket\Base">
+      <UniqueIdentifier>{fca75443-070c-433d-b47d-35b3b722018d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Socket\Log help classes">
+      <UniqueIdentifier>{870de67b-f940-473e-b5fe-ee377a5f15fe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Socket\Threading">
+      <UniqueIdentifier>{fd5a3dfe-362f-41f8-b1e3-0bbc6d8ab207}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Socket\Utilities">
+      <UniqueIdentifier>{a22d4113-bcc9-428d-af20-ea78e1c5efdf}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Log.cpp">
@@ -308,6 +323,96 @@
     </ClCompile>
     <ClCompile Include="Proxies\GeometryProxie.cpp">
       <Filter>__Proxies</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Externals\sockets\Event.cpp">
+      <Filter>Socket</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Externals\sockets\EventHandler.cpp">
+      <Filter>Socket</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Externals\sockets\EventTime.cpp">
+      <Filter>Socket</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Externals\sockets\IEventOwner.cpp">
+      <Filter>Socket</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Externals\sockets\socket_include.cpp">
+      <Filter>Socket</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Externals\sockets\SocketHandlerEp.cpp">
+      <Filter>Socket</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Externals\sockets\SocketHandlerThread.cpp">
+      <Filter>Socket</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Externals\sockets\StreamWriter.cpp">
+      <Filter>Socket</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Externals\sockets\Ipv4Address.cpp">
+      <Filter>Socket\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Externals\sockets\Ipv6Address.cpp">
+      <Filter>Socket\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Externals\sockets\Debug.cpp">
+      <Filter>Socket\Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Externals\sockets\Parse.cpp">
+      <Filter>Socket\Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Externals\sockets\Exception.cpp">
+      <Filter>Socket\Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Externals\sockets\Utility.cpp">
+      <Filter>Socket\Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Externals\sockets\Mutex.cpp">
+      <Filter>Socket\Threading</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Externals\sockets\Thread.cpp">
+      <Filter>Socket\Threading</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Externals\sockets\Semaphore.cpp">
+      <Filter>Socket\Threading</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Externals\sockets\Lock.cpp">
+      <Filter>Socket\Threading</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Externals\sockets\Socket.cpp">
+      <Filter>Socket\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Externals\sockets\SocketHandler.cpp">
+      <Filter>Socket\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Externals\sockets\SocketStream.cpp">
+      <Filter>Socket\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Externals\sockets\SocketThread.cpp">
+      <Filter>Socket\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Externals\sockets\StreamSocket.cpp">
+      <Filter>Socket\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Externals\sockets\TcpSocket.cpp">
+      <Filter>Socket\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Externals\sockets\UdpSocket.cpp">
+      <Filter>Socket\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Externals\sockets\SmtpdSocket.cpp">
+      <Filter>Socket\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Externals\sockets\SctpSocket.cpp">
+      <Filter>Socket\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Externals\sockets\ResolvSocket.cpp">
+      <Filter>Socket\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Externals\sockets\ResolvServer.cpp">
+      <Filter>Socket\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Externals\sockets\StdoutLog.cpp">
+      <Filter>Socket\Log help classes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -730,6 +835,132 @@
     </ClInclude>
     <ClInclude Include="..\shared\Interfaces\Scene\ISceneNodeTools.h">
       <Filter>__Interfaces\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\sockets\Event.h">
+      <Filter>Socket</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\sockets\EventHandler.h">
+      <Filter>Socket</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\sockets\EventTime.h">
+      <Filter>Socket</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\sockets\IBase.h">
+      <Filter>Socket</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\sockets\IEventHandler.h">
+      <Filter>Socket</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\sockets\IEventOwner.h">
+      <Filter>Socket</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\sockets\IFileUpload.h">
+      <Filter>Socket</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\sockets\IHttpServer.h">
+      <Filter>Socket</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\sockets\IModel.h">
+      <Filter>Socket</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\sockets\ISocketHandler.h">
+      <Filter>Socket</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\sockets\IStream.h">
+      <Filter>Socket</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\sockets\socket_include.h">
+      <Filter>Socket</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\sockets\SocketHandlerEp.h">
+      <Filter>Socket</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\sockets\SocketHandlerThread.h">
+      <Filter>Socket</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\sockets\sockets-config.h">
+      <Filter>Socket</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\sockets\StreamWriter.h">
+      <Filter>Socket</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\sockets\Ipv4Address.h">
+      <Filter>Socket\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\sockets\Ipv6Address.h">
+      <Filter>Socket\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\sockets\Debug.h">
+      <Filter>Socket\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\sockets\Parse.h">
+      <Filter>Socket\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\sockets\Exception.h">
+      <Filter>Socket\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\sockets\Utility.h">
+      <Filter>Socket\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\sockets\Mutex.h">
+      <Filter>Socket\Threading</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\sockets\Thread.h">
+      <Filter>Socket\Threading</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\sockets\Semaphore.h">
+      <Filter>Socket\Threading</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\sockets\Lock.h">
+      <Filter>Socket\Threading</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\sockets\IMutex.h">
+      <Filter>Socket\Threading</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\sockets\Socket.h">
+      <Filter>Socket\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\sockets\SocketAddress.h">
+      <Filter>Socket\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\sockets\SocketHandler.h">
+      <Filter>Socket\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\sockets\SocketStream.h">
+      <Filter>Socket\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\sockets\SocketThread.h">
+      <Filter>Socket\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\sockets\StreamSocket.h">
+      <Filter>Socket\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\sockets\TcpSocket.h">
+      <Filter>Socket\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\sockets\UdpSocket.h">
+      <Filter>Socket\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\sockets\SmtpdSocket.h">
+      <Filter>Socket\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\sockets\SctpSocket.h">
+      <Filter>Socket\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\sockets\ResolvSocket.h">
+      <Filter>Socket\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\sockets\ResolvServer.h">
+      <Filter>Socket\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\sockets\ListenSocket.h">
+      <Filter>Socket\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\sockets\StdLog.h">
+      <Filter>Socket\Log help classes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Externals\sockets\StdoutLog.h">
+      <Filter>Socket\Log help classes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

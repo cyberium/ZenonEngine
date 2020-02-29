@@ -55,7 +55,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "Utility.h"
 #include "Ipv4Address.h"
 #include "Ipv6Address.h"
-#include "IFile.h"
 #include "Lock.h"
 
 #ifdef SOCKETS_NAMESPACE
@@ -549,10 +548,6 @@ DEB(			n = SSL_get_error(m_ssl, n);
 		if (n > 0 && n <= TCP_BUFSIZE_READ)
 		{
 			m_bytes_received += n;
-			if (GetTrafficMonitor())
-			{
-				GetTrafficMonitor() -> fwrite(buf, 1, n);
-			}
 			if (!m_b_input_buffer_disabled && !ibuf.Write(buf,n))
 			{
 				Handler().LogError(this, "OnRead", 0, "ibuf overflow", LOG_LEVEL_WARNING);
@@ -844,10 +839,6 @@ int TcpSocket::TryWrite(const char *buf, size_t len)
 	if (n > 0)
 	{
 		m_bytes_sent += n;
-		if (GetTrafficMonitor())
-		{
-			GetTrafficMonitor() -> fwrite(buf, 1, n);
-		}
 	}
 	return n;
 }

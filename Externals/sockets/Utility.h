@@ -122,8 +122,6 @@ public:
 		std::string m_ext;
 	};
 public:
-	static std::string base64(const std::string& str_in);
-	static std::string base64d(const std::string& str_in);
 	static std::string l2string(long l);
 	static std::string bigint2string(int64_t l);
 	static std::string bigint2string(uint64_t l);
@@ -212,8 +210,6 @@ public:
 
 	/** Returns a random 32-bit integer */
 	static unsigned long Rnd();
-
-	static const char *Logo;
 
 	static const std::string Stack();
 
