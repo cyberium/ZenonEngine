@@ -67,7 +67,7 @@ public:
 	void                                            RaiseComponentMessage(const ISceneNodeComponent* Component, ComponentMessageType Message) const override;
 	virtual void                                    RegisterComponents() override;
     
-	inline std::shared_ptr<IColliderComponent3D>    GetColliderComponent() const override
+	inline const std::shared_ptr<IColliderComponent3D>& GetColliderComponent() const override
 	{
 		return m_Components_Collider;
 	}

@@ -40,6 +40,9 @@ public:
 		if (loadable->GetState() != ILoadable::ELoadableState::Created)
 			return false;
 
+		//if (loadable->GetDependense().expired())
+		//	return false;
+
 		if (auto depends = loadable->GetDependense().lock())
 		{
 			if (depends->GetState() != ILoadable::ELoadableState::Loaded)
@@ -101,7 +104,12 @@ public:
 
 		// Удаляем только то, где количество ссылок == 1
 		if (loadable.use_count() != 1)
+		{
 			m_Queue.push_back(loadable);
+			return;
+		}
+
+		loadable->SetState(ILoadable::ELoadableState::Deleted);
 	}
 
 	inline bool IsEmpty()
