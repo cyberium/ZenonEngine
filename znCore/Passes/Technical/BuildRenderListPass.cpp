@@ -194,3 +194,56 @@ bool BuildRenderListPass::Visit(const ILightComponent3D * light)
 	m_LightList.push_back(SLightElement(m_NodesList.back(), light));
 	return true;
 }
+
+
+
+//
+// CSceneNodeListPass
+//
+CSceneNodeListPass::CSceneNodeListPass(IRenderDevice & RenderDevice, const std::shared_ptr<IScene>& Scene)
+	: ScenePass(RenderDevice, Scene)
+{
+}
+
+CSceneNodeListPass::~CSceneNodeListPass()
+{
+}
+
+const std::vector<const ISceneNode3D*>& CSceneNodeListPass::GetNodesList(SceneNodeType SceneNodeType) const
+{
+	if (m_NodesByType.find(SceneNodeType) == m_NodesByType.end())
+		return m_EmptyList;
+	return m_NodesByType.at(SceneNodeType);
+}
+
+
+
+//
+// IRenderPass
+//
+void CSceneNodeListPass::PreRender(RenderEventArgs & e)
+{
+	ScenePass::PreRender(e);
+
+	m_NodesByType.clear();
+}
+
+void CSceneNodeListPass::Render(RenderEventArgs & e)
+{
+	ScenePass::Render(e);
+}
+
+
+
+//
+// IVisitor
+//
+bool CSceneNodeListPass::Visit(const ISceneNode3D * SceneNode)
+{
+	SceneNodeType type = SceneNode->GetType();
+	if (SceneNode->GetType() < 0)
+		return false;
+
+	m_NodesByType[type].push_back(SceneNode);
+	return false;
+}

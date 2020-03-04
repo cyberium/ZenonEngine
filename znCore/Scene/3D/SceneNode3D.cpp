@@ -25,6 +25,7 @@ SceneNode3D::SceneNode3D()
 	, m_InverseWorldTransform(1.0f)
 {
 	SetName("SceneNode3D");
+	SetType(-1);
 
 	m_InverseLocalTransform = glm::inverse(m_LocalTransform);
 
@@ -80,14 +81,19 @@ void SceneNode3D::Finalize()
 {
 }
 
-void SceneNode3D::SetType(std::string Type)
+void SceneNode3D::SetType(SceneNodeType Type)
 {
 	m_Type = Type;
 }
 
-std::string SceneNode3D::GetType() const
+SceneNodeType SceneNode3D::GetType() const
 {
 	return m_Type;
+}
+
+bool SceneNode3D::Is(SceneNodeType SceneNodeType) const
+{
+	return m_Type == SceneNodeType;
 }
 
 void SceneNode3D::SetName(std::string Name)
@@ -392,9 +398,9 @@ void SceneNode3D::Update(const UpdateEventArgs & e)
 
 void SceneNode3D::Accept(IVisitor* visitor)
 {
-	if (const auto& loadableObject = dynamic_cast<ILoadable*>(this))
-		if (loadableObject->GetState() != ILoadable::ELoadableState::Loaded)
-			return;
+	//if (const auto& loadableObject = dynamic_cast<ILoadable*>(this))
+	//	if (loadableObject->GetState() != ILoadable::ELoadableState::Loaded)
+	//		return;
 
 	if (visitor->Visit(this))
 	{

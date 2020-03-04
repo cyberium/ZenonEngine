@@ -2,6 +2,37 @@
 
 #include "../ScenePass.h"
 
+
+
+//
+// CSceneNodeListPass
+//
+class ZN_API CSceneNodeListPass
+	: public ScenePass
+{
+public:
+	CSceneNodeListPass(IRenderDevice& RenderDevice, const std::shared_ptr<IScene>& Scene);
+	virtual ~CSceneNodeListPass();
+
+	const std::vector<const ISceneNode3D*>& GetNodesList(SceneNodeType SceneNodeType) const;
+
+	// IRenderPass
+	virtual void PreRender(RenderEventArgs& e) override;
+	virtual void Render(RenderEventArgs& e) override;
+
+	// IVisitor
+	virtual bool Visit(const ISceneNode3D* SceneNode) override;
+
+private:
+	std::unordered_map<SceneNodeType, std::vector<const ISceneNode3D*>> m_NodesByType;
+	std::vector<const ISceneNode3D*> m_EmptyList;
+};
+
+
+
+//
+// BuildRenderListPass
+//
 class ZN_API BuildRenderListPass
 	: public ScenePass
 {

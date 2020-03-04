@@ -109,8 +109,7 @@ void RasterizerStateDX11::Bind()
 {
     if (m_StateDirty)
     {
-        D3D11_RASTERIZER_DESC1 rasterizerDesc = {};
-
+        D3D11_RASTERIZER_DESC1 rasterizerDesc = { };
         rasterizerDesc.FillMode = TranslateFillMode(m_FrontFaceFillMode);
         rasterizerDesc.CullMode = TranslateCullMode(m_CullMode);
         rasterizerDesc.FrontCounterClockwise = TranslateFrontFace(m_FrontFace);
@@ -125,9 +124,7 @@ void RasterizerStateDX11::Bind()
 
         m_pRasterizerState = NULL;
         if (FAILED(m_RenderDeviceDX11.GetDeviceD3D11()->CreateRasterizerState1(&rasterizerDesc, &m_pRasterizerState)))
-        {
-            Log::Error("Failed to create rasterizer state.");
-        }
+            throw CException("Failed to create rasterizer state.");
 
         m_StateDirty = false;
     }
@@ -163,76 +160,61 @@ void RasterizerStateDX11::Unbind()
 //
 D3D11_FILL_MODE TranslateFillMode(IRasterizerState::FillMode fillMode)
 {
-	D3D11_FILL_MODE result = D3D11_FILL_SOLID;
 	switch (fillMode)
 	{
-	case IRasterizerState::FillMode::Wireframe:
-		result = D3D11_FILL_WIREFRAME;
-		break;
-	case IRasterizerState::FillMode::Solid:
-		result = D3D11_FILL_SOLID;
-		break;
-	default:
-        throw std::exception("Unknown fill mode.");
+		case IRasterizerState::FillMode::Wireframe:
+			return D3D11_FILL_WIREFRAME;
+		case IRasterizerState::FillMode::Solid:
+			return D3D11_FILL_SOLID;
+		default:
+			throw std::exception("Unknown fill mode.");
 	}
-
-	return result;
+	return D3D11_FILL_SOLID;
 }
 
 D3D11_CULL_MODE TranslateCullMode(IRasterizerState::CullMode cullMode)
 {
-	D3D11_CULL_MODE result = D3D11_CULL_BACK;
 	switch (cullMode)
 	{
-	case IRasterizerState::CullMode::None:
-		result = D3D11_CULL_NONE;
-		break;
-	case IRasterizerState::CullMode::Front:
-		result = D3D11_CULL_FRONT;
-		break;
-	case IRasterizerState::CullMode::Back:
-		result = D3D11_CULL_BACK;
-		break;
-	case IRasterizerState::CullMode::FrontAndBack:
-		// This mode is not supported in DX11.
-		break;
-	default:
-        throw std::exception("Unknown cull mode.");
+		case IRasterizerState::CullMode::None:
+			return D3D11_CULL_NONE;
+		case IRasterizerState::CullMode::Front:
+			return D3D11_CULL_FRONT;
+		case IRasterizerState::CullMode::Back:
+			return D3D11_CULL_BACK;
+		default:
+			throw std::exception("Unknown cull mode.");
 	}
-
-	return result;
+	return D3D11_CULL_NONE;
 }
 
 bool TranslateFrontFace(IRasterizerState::FrontFace frontFace)
 {
-	bool frontCounterClockwise = true;
 	switch (frontFace)
 	{
-	case IRasterizerState::FrontFace::Clockwise:
-		frontCounterClockwise = false;
-		break;
-	case IRasterizerState::FrontFace::CounterClockwise:
-		frontCounterClockwise = true;
-		break;
-	default:
-		throw std::exception("Unknown front face winding order.");
+		case IRasterizerState::FrontFace::Clockwise:
+			return false;
+		case IRasterizerState::FrontFace::CounterClockwise:
+			return true;
+		default:
+			throw std::exception("Unknown front face winding order.");
 	}
-
-	return frontCounterClockwise;
+	return true;
 }
 
 std::vector<D3D11_RECT> TranslateRects(const std::vector<Rect>& rects)
 {
-	std::vector<D3D11_RECT> result(rects.size());
+	std::vector<D3D11_RECT> result;
 	for (uint32 i = 0; i < rects.size(); i++)
 	{
-		D3D11_RECT& d3dRect = result[i];
 		const Rect& rect = rects[i];
 
+		D3D11_RECT d3dRect;
 		d3dRect.top = static_cast<LONG>(rect.Y + 0.5f);
 		d3dRect.bottom = static_cast<LONG>(rect.Y + rect.Height + 0.5f);
 		d3dRect.left = static_cast<LONG>(rect.X + 0.5f);
 		d3dRect.right = static_cast<LONG>(rect.X + rect.Width + 0.5f);
+		result.push_back(d3dRect);
 	}
 
 	return result;
@@ -241,16 +223,14 @@ std::vector<D3D11_RECT> TranslateRects(const std::vector<Rect>& rects)
 std::vector<D3D11_VIEWPORT> TranslateViewports(const std::vector<const Viewport *>& viewports)
 {
 	std::vector<D3D11_VIEWPORT> result;
-
 	for (uint32 i = 0; i < viewports.size(); i++)
 	{
-		if (viewports[i] == nullptr)
+		const Viewport* viewport = viewports[i];
+		if (viewport == nullptr)
 			break;
 
-		D3D11_VIEWPORT d3dViewport;
-		const Viewport* viewport = viewports[i];
-
 		// I could probably do a reinterpret cast here...
+		D3D11_VIEWPORT d3dViewport;
 		d3dViewport.TopLeftX = viewport->GetX();
 		d3dViewport.TopLeftY = viewport->GetY();
 		d3dViewport.Width = viewport->GetWidth();

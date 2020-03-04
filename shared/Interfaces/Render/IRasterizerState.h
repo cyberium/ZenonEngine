@@ -37,8 +37,7 @@ ZN_INTERFACE ZN_API IRasterizerState
 	{
 		None,
 		Front,
-		Back,
-		FrontAndBack    // OpenGL only
+		Back
 	};
 
 	/**

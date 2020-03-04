@@ -11,7 +11,7 @@ ZN_INTERFACE IManager;
 ZN_INTERFACE IColliderComponent3D;
 // FORWARD END
 
-
+typedef ZN_API int64 SceneNodeType;
 
 ZN_INTERFACE ZN_API ISceneNode3D
 	: public std::enable_shared_from_this<ISceneNode3D>
@@ -24,8 +24,9 @@ ZN_INTERFACE ZN_API ISceneNode3D
 	virtual void Initialize() = 0;
 	virtual void Finalize() = 0;
 
-	virtual void SetType(std::string Type) = 0;
-	virtual std::string GetType() const = 0;
+	virtual void SetType(SceneNodeType Type) = 0;
+	virtual SceneNodeType GetType() const = 0;
+	virtual bool Is(SceneNodeType SceneNodeType) const = 0;
 	virtual void SetName(std::string Name) = 0;
 	virtual std::string	GetName() const = 0;
 

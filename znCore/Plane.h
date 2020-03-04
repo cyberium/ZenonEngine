@@ -25,9 +25,6 @@ public:
 		dist = - glm::dot(normal, c);
 	}
 
-	// ----------------
-	// Other operations
-	// ----------------
 	float distToPoint(cvec3 v) const
 	{
 		return glm::dot(normal, v) + dist;
@@ -38,19 +35,20 @@ public:
 	float dist;
 };
 
-inline bool cullBoxByPlanes(const Plane* _planes, uint32 _planesCount, const BoundingBox& b)
+
+inline bool cullBoxByPlanes(const Plane* Planes, size_t PlanesCount, const BoundingBox& BBox)
 {
 	// Idea for optimized AABB testing from www.lighthouse3d.com
-	for (uint32 i = 0; i < _planesCount; ++i)
+	for (size_t i = 0; i < PlanesCount; ++i)
 	{
-		cvec3 n = _planes[i].normal;
+		cvec3 n = Planes[i].normal;
 
-		vec3 positive = b.getMin();
-		if (n.x <= 0) positive.x = b.getMax().x;
-		if (n.y <= 0) positive.y = b.getMax().y;
-		if (n.z <= 0) positive.z = b.getMax().z;
+		vec3 positive = BBox.getMin();
+		if (n.x <= 0.0f) positive.x = BBox.getMax().x;
+		if (n.y <= 0.0f) positive.y = BBox.getMax().y;
+		if (n.z <= 0.0f) positive.z = BBox.getMax().z;
 
-		if (_planes[i].distToPoint(positive) > 0)
+		if (Planes[i].distToPoint(positive) > 0)
 		{
 			return true;
 		}
@@ -58,7 +56,6 @@ inline bool cullBoxByPlanes(const Plane* _planes, uint32 _planesCount, const Bou
 
 	return false;
 }
-
 
 inline bool cullPolyByPlanes(const Plane* Planes, size_t PlanesCount, const glm::vec3* Vertices, size_t VerticesCount)
 {
@@ -68,7 +65,7 @@ inline bool cullPolyByPlanes(const Plane* Planes, size_t PlanesCount, const glm:
 
 		for (size_t j = 0; j < VerticesCount; j++)
 		{
-			if (Planes[i].distToPoint(Vertices[j]) < 0)
+			if (Planes[i].distToPoint(Vertices[j]) < 0.0f)
 			{
 				allOut = false;
 				break;
@@ -85,4 +82,9 @@ inline bool cullPolyByPlanes(const Plane* Planes, size_t PlanesCount, const glm:
 inline bool cullPolyByPlanes(const Plane* Planes, size_t PlanesCount, const std::vector<glm::vec3>& PolyVertices)
 {
 	return cullPolyByPlanes(Planes, PlanesCount, PolyVertices.data(), PolyVertices.size());
+}
+
+inline bool cullPolyByPlanes(const std::vector<Plane>& Planes, const std::vector<glm::vec3>& PolyVertices)
+{
+	return cullPolyByPlanes(Planes.data(), Planes.size(), PolyVertices.data(), PolyVertices.size());
 }

@@ -1,6 +1,6 @@
 #pragma once
 
-class ZN_API SceneNode3D 
+class ZN_API SceneNode3D
 	: public ISceneNode3D
 {
     friend IScene;
@@ -15,8 +15,9 @@ public:
 	virtual void                                    Finalize() override;
 
 	// Name & Type
-	void                                            SetType(std::string Type) override;
-	std::string										GetType() const override;
+	void                                            SetType(SceneNodeType Type) override;
+	SceneNodeType									GetType() const override;
+	bool                                            Is(SceneNodeType SceneNodeType) const;
 	void                                            SetName(std::string Name) override;
 	std::string										GetName() const override;
 
@@ -119,7 +120,7 @@ protected:
 
 
 private:
-	std::string                                     m_Type;
+	SceneNodeType                                   m_Type;
 	std::string                                     m_Name;
 
 	Node3DList                                      m_Children;
