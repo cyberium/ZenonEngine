@@ -243,12 +243,12 @@ void CGameState_World::Load3D()
 
 
 
-	m_BuildRenderListPass = std::make_shared<BuildRenderListPass>(GetRenderDevice(), shared_from_this());
+	m_SceneCreateTypelessListPass = std::make_shared<CSceneCreateTypelessListPass>(GetRenderDevice(), shared_from_this());
 
-	m_DefferedRenderPass = std::make_shared<CDefferedRender>(GetRenderDevice(), m_BuildRenderListPass);
+	m_DefferedRenderPass = std::make_shared<CDefferedRender>(GetRenderDevice(), m_SceneCreateTypelessListPass);
 	m_DefferedRenderPass->CreatePipeline(std::shared_ptr<IRenderTarget>(GetRenderWindow()->GetRenderTarget()), &GetRenderWindow()->GetViewport());
 
-	m_DefferedRenderPrepareLights = std::make_shared<CDefferedRenderPrepareLights>(GetRenderDevice(), m_BuildRenderListPass);
+	m_DefferedRenderPrepareLights = std::make_shared<CDefferedRenderPrepareLights>(GetRenderDevice(), m_SceneCreateTypelessListPass);
 	m_DefferedRenderPrepareLights->CreatePipeline(nullptr, nullptr);
 
 	m_DefferedFinalRenderPass = std::make_shared<CDefferedRenderFinal>(GetRenderDevice(), m_DefferedRenderPass, m_DefferedRenderPrepareLights);
@@ -257,7 +257,7 @@ void CGameState_World::Load3D()
 
 	vec4 color = vec4(0.0, 0.0f, 0.0f, 1.0f);
 	m_Technique3D.AddPass(std::make_shared<ClearRenderTargetPass>(GetRenderDevice(), GetRenderWindow()->GetRenderTarget(), ClearFlags::All, color /*glm::vec4(0.2f, 0.2f, 0.2f, 0.2f)*/, 1.0f, 0));
-	m_Technique3D.AddPass(m_BuildRenderListPass);
+	m_Technique3D.AddPass(m_SceneCreateTypelessListPass);
 	m_Technique3D.AddPass(m_DefferedRenderPass);
 	m_Technique3D.AddPass(m_DefferedRenderPrepareLights);
 	m_Technique3D.AddPass(m_DefferedFinalRenderPass);

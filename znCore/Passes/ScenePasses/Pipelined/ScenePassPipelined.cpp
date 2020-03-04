@@ -3,16 +3,13 @@
 // General
 #include "ScenePassPipelined.h"
 
-
-ScenePassPipelined::ScenePassPipelined(IRenderDevice& RenderDevice, std::shared_ptr<IScene> Scene)
+ScenePassPipelined::ScenePassPipelined(IRenderDevice& RenderDevice, const std::shared_ptr<IScene>& Scene)
 	: RenderPassPipelined(RenderDevice)
 	, m_Scene(Scene)
 {}
 
 ScenePassPipelined::~ScenePassPipelined()
 {}
-
-
 
 //
 // IRenderPass
@@ -21,8 +18,6 @@ void ScenePassPipelined::Render(RenderEventArgs& e)
 {
 	GetScene()->Accept(this);
 }
-
-
 
 //
 // Protected

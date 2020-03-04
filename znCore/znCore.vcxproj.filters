@@ -91,9 +91,6 @@
     <Filter Include="__Interfaces\Scene\Types">
       <UniqueIdentifier>{1e2fe722-e211-4ea0-a5c6-04867d657526}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Passes\Pipelined">
-      <UniqueIdentifier>{acd44d22-594d-492d-88a3-2882f5723b17}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Passes\Technical">
       <UniqueIdentifier>{aaaebf5e-d1ff-4156-8c87-5e16f7cc457b}</UniqueIdentifier>
     </Filter>
@@ -105,9 +102,6 @@
     </Filter>
     <Filter Include="Externals\lua">
       <UniqueIdentifier>{b25aeee7-42cc-4c8f-a169-d2862e2b6dc1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Passes\3D">
-      <UniqueIdentifier>{97324916-dd39-465d-803b-5864d3ffa59a}</UniqueIdentifier>
     </Filter>
     <Filter Include="Socket">
       <UniqueIdentifier>{3f578926-37f3-4e2b-8a8d-78374d8e3859}</UniqueIdentifier>
@@ -123,6 +117,12 @@
     </Filter>
     <Filter Include="Socket\Utilities">
       <UniqueIdentifier>{a22d4113-bcc9-428d-af20-ea78e1c5efdf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Passes\ScenePasses">
+      <UniqueIdentifier>{20e71630-fea1-44ca-aa47-67283f7cd572}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Passes\ScenePasses\Pipelined">
+      <UniqueIdentifier>{4ce61172-7e02-4463-92dd-9ecd3000e3b6}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -261,21 +261,6 @@
     <ClCompile Include="Passes\RenderPass.cpp">
       <Filter>Passes</Filter>
     </ClCompile>
-    <ClCompile Include="Passes\ScenePass.cpp">
-      <Filter>Passes</Filter>
-    </ClCompile>
-    <ClCompile Include="Passes\RenderPassPipelined.cpp">
-      <Filter>Passes\Pipelined</Filter>
-    </ClCompile>
-    <ClCompile Include="Passes\ScenePassPipelined.cpp">
-      <Filter>Passes\Pipelined</Filter>
-    </ClCompile>
-    <ClCompile Include="Passes\Base3DPass.cpp">
-      <Filter>Passes\Pipelined</Filter>
-    </ClCompile>
-    <ClCompile Include="Passes\BaseUIPass.cpp">
-      <Filter>Passes\Pipelined</Filter>
-    </ClCompile>
     <ClCompile Include="Passes\Technical\BeginQueryPass.cpp">
       <Filter>Passes\Technical</Filter>
     </ClCompile>
@@ -314,12 +299,6 @@
     </ClCompile>
     <ClCompile Include="Proxies\ModelProxie.cpp">
       <Filter>__Proxies</Filter>
-    </ClCompile>
-    <ClCompile Include="Passes\Technical\BuildRenderListPass.cpp">
-      <Filter>Passes\3D</Filter>
-    </ClCompile>
-    <ClCompile Include="Passes\Technical\RenderListProcessorPass.cpp">
-      <Filter>Passes\3D</Filter>
     </ClCompile>
     <ClCompile Include="Proxies\GeometryProxie.cpp">
       <Filter>__Proxies</Filter>
@@ -386,6 +365,30 @@
     </ClCompile>
     <ClCompile Include="..\Externals\sockets\SocketHandlerThread.cpp">
       <Filter>Socket\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="Passes\ScenePasses\ScenePass.cpp">
+      <Filter>Passes\ScenePasses</Filter>
+    </ClCompile>
+    <ClCompile Include="Passes\ScenePasses\SceneCreateTypedListsPass.cpp">
+      <Filter>Passes\ScenePasses</Filter>
+    </ClCompile>
+    <ClCompile Include="Passes\ScenePasses\SceneCreateTypelessListPass.cpp">
+      <Filter>Passes\ScenePasses</Filter>
+    </ClCompile>
+    <ClCompile Include="Passes\ScenePasses\Pipelined\Base3DPass.cpp">
+      <Filter>Passes\ScenePasses\Pipelined</Filter>
+    </ClCompile>
+    <ClCompile Include="Passes\ScenePasses\Pipelined\BaseUIPass.cpp">
+      <Filter>Passes\ScenePasses\Pipelined</Filter>
+    </ClCompile>
+    <ClCompile Include="Passes\ScenePasses\Pipelined\ScenePassPipelined.cpp">
+      <Filter>Passes\ScenePasses\Pipelined</Filter>
+    </ClCompile>
+    <ClCompile Include="Passes\RenderPassPipelined.cpp">
+      <Filter>Passes</Filter>
+    </ClCompile>
+    <ClCompile Include="Passes\ScenePasses\Pipelined\BaseTypedList3DPass.cpp">
+      <Filter>Passes\ScenePasses\Pipelined</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -731,21 +734,6 @@
     <ClInclude Include="Passes\RenderPass.h">
       <Filter>Passes</Filter>
     </ClInclude>
-    <ClInclude Include="Passes\ScenePass.h">
-      <Filter>Passes</Filter>
-    </ClInclude>
-    <ClInclude Include="Passes\RenderPassPipelined.h">
-      <Filter>Passes\Pipelined</Filter>
-    </ClInclude>
-    <ClInclude Include="Passes\ScenePassPipelined.h">
-      <Filter>Passes\Pipelined</Filter>
-    </ClInclude>
-    <ClInclude Include="Passes\Base3DPass.h">
-      <Filter>Passes\Pipelined</Filter>
-    </ClInclude>
-    <ClInclude Include="Passes\BaseUIPass.h">
-      <Filter>Passes\Pipelined</Filter>
-    </ClInclude>
     <ClInclude Include="Passes\Technical\BeginQueryPass.h">
       <Filter>Passes\Technical</Filter>
     </ClInclude>
@@ -796,12 +784,6 @@
     </ClInclude>
     <ClInclude Include="..\shared\Interfaces\Scene\ISceneNodeUI.h">
       <Filter>__Interfaces\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="Passes\Technical\BuildRenderListPass.h">
-      <Filter>Passes\3D</Filter>
-    </ClInclude>
-    <ClInclude Include="Passes\Technical\RenderListProcessorPass.h">
-      <Filter>Passes\3D</Filter>
     </ClInclude>
     <ClInclude Include="Proxies\GeometryProxie.h">
       <Filter>__Proxies</Filter>
@@ -892,6 +874,30 @@
     </ClInclude>
     <ClInclude Include="..\Externals\sockets\SocketHandlerThread.h">
       <Filter>Socket\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="Passes\ScenePasses\ScenePass.h">
+      <Filter>Passes\ScenePasses</Filter>
+    </ClInclude>
+    <ClInclude Include="Passes\ScenePasses\SceneCreateTypedListsPass.h">
+      <Filter>Passes\ScenePasses</Filter>
+    </ClInclude>
+    <ClInclude Include="Passes\ScenePasses\SceneCreateTypelessListPass.h">
+      <Filter>Passes\ScenePasses</Filter>
+    </ClInclude>
+    <ClInclude Include="Passes\ScenePasses\Pipelined\Base3DPass.h">
+      <Filter>Passes\ScenePasses\Pipelined</Filter>
+    </ClInclude>
+    <ClInclude Include="Passes\ScenePasses\Pipelined\BaseUIPass.h">
+      <Filter>Passes\ScenePasses\Pipelined</Filter>
+    </ClInclude>
+    <ClInclude Include="Passes\ScenePasses\Pipelined\ScenePassPipelined.h">
+      <Filter>Passes\ScenePasses\Pipelined</Filter>
+    </ClInclude>
+    <ClInclude Include="Passes\RenderPassPipelined.h">
+      <Filter>Passes</Filter>
+    </ClInclude>
+    <ClInclude Include="Passes\ScenePasses\Pipelined\BaseTypedList3DPass.h">
+      <Filter>Passes\ScenePasses\Pipelined</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

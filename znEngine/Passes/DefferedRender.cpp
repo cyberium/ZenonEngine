@@ -3,8 +3,9 @@
 // General
 #include "DefferedRender.h"
 
-CDefferedRender::CDefferedRender(IRenderDevice& RenderDevice, std::shared_ptr<BuildRenderListPass> BuildRenderListPass)
-	: RenderListProcessorPass(RenderDevice, BuildRenderListPass)
+CDefferedRender::CDefferedRender(IRenderDevice& RenderDevice, const std::shared_ptr<CSceneCreateTypelessListPass>& SceneCreateTypelessListPass)
+	: RenderPassPipelined(RenderDevice)
+	, m_SceneCreateTypelessListPass(SceneCreateTypelessListPass)
 {
 	m_PerObjectConstantBuffer = GetRenderDevice().GetObjectsFactory().CreateConstantBuffer(PerObject3D());
 }
@@ -42,15 +43,30 @@ std::shared_ptr<ITexture> CDefferedRender::GetTextureDepthStencil() const
 	return m_DepthStencilTexture;
 }
 
-
+//
+// IRenderPass
+//
 void CDefferedRender::PreRender(RenderEventArgs & e)
 {
-	RenderListProcessorPass::PreRender(e);
+	__super::PreRender(e);
 
 	GetPipeline().GetRenderTarget()->Clear(ClearFlags::All, glm::vec4(0.0f, 0.0f, 0.0f, 0.0f));
 }
 
+void CDefferedRender::Render(RenderEventArgs& e)
+{
+	for (const auto& it : m_SceneCreateTypelessListPass->GetGeometryList())
+	{
+		Visit(const_cast<ISceneNode3D*>(it.Node)); // TODO!!!
+		Visit(const_cast<IGeometry*>(it.Geometry), it.Material, it.GeometryDrawArgs);
+	}
 
+	for (const auto& it : m_SceneCreateTypelessListPass->GetLightList())
+	{
+		Visit(const_cast<ISceneNode3D*>(it.SceneNode)); // TODO!!!
+		Visit(const_cast<ILightComponent3D*>(it.Light));
+	}
+}
 
 //
 // IRenderPassPipelined
@@ -126,7 +142,7 @@ std::shared_ptr<IRenderPassPipelined> CDefferedRender::CreatePipeline(std::share
 
 void CDefferedRender::UpdateViewport(const Viewport& _viewport)
 {
-	RenderListProcessorPass::UpdateViewport(_viewport);
+	__super::UpdateViewport(_viewport);
 
 	GetPipeline().GetRenderTarget()->Resize(_viewport.GetWidth(), _viewport.GetHeight());
 }
@@ -138,7 +154,7 @@ void CDefferedRender::UpdateViewport(const Viewport& _viewport)
 //
 bool CDefferedRender::Visit(const ISceneNode3D * node)
 {
-	RenderListProcessorPass::Visit(node);
+	__super::Visit(node);
 
 	PerObject3D perObject3D;
 	perObject3D.Model = node->GetWorldTransfom();

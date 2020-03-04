@@ -1,10 +1,10 @@
 #pragma once
 
 class CDefferedRender
-	: public RenderListProcessorPass
+	: public RenderPassPipelined
 {
 public:
-	CDefferedRender(IRenderDevice& RenderDevice, std::shared_ptr<BuildRenderListPass> BuildRenderListPass);
+	CDefferedRender(IRenderDevice& RenderDevice, const std::shared_ptr<CSceneCreateTypelessListPass>& SceneCreateTypelessListPass);
 	virtual ~CDefferedRender();
 
 	// CDefferedRender
@@ -16,7 +16,7 @@ public:
 
 	// IRenderPass
 	void PreRender(RenderEventArgs& e) override;
-
+	void Render(RenderEventArgs& e) override;
 
 	// IRenderPassPipelined
 	std::shared_ptr<IRenderPassPipelined> CreatePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport* Viewport) override;
@@ -26,6 +26,9 @@ public:
 	bool Visit(const ISceneNode3D* node) override;
 	bool Visit(const IGeometry* Geometry, const IMaterial* Material, SGeometryDrawArgs GeometryDrawArgs = SGeometryDrawArgs()) override;
 	bool Visit(const ILightComponent3D* light) override;
+
+private:
+	std::shared_ptr<CSceneCreateTypelessListPass> m_SceneCreateTypelessListPass;
 
 private:
 	std::shared_ptr<IConstantBuffer> m_PerObjectConstantBuffer;

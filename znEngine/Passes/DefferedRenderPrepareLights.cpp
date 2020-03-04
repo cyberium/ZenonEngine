@@ -3,9 +3,9 @@
 // General
 #include "DefferedRenderPrepareLights.h"
 
-CDefferedRenderPrepareLights::CDefferedRenderPrepareLights(IRenderDevice& RenderDevice, std::shared_ptr<BuildRenderListPass> BuildRenderListPass)
+CDefferedRenderPrepareLights::CDefferedRenderPrepareLights(IRenderDevice& RenderDevice, const std::shared_ptr<CSceneCreateTypelessListPass>& SceneCreateTypelessListPass)
 	: RenderPass(RenderDevice)
-	, m_BuildRenderListPass(BuildRenderListPass)
+	, m_SceneCreateTypelessListPass(SceneCreateTypelessListPass)
 {
 	m_PerObjectConstantBuffer = GetRenderDevice().GetObjectsFactory().CreateConstantBuffer(PerObject3D());
 	m_PerFrameConstantBuffer = GetRenderDevice().GetObjectsFactory().CreateConstantBuffer(PerFrame());
@@ -37,11 +37,11 @@ void CDefferedRenderPrepareLights::PreRender(RenderEventArgs& e)
 
 void CDefferedRenderPrepareLights::Render(RenderEventArgs& e)
 {
-	for (size_t i = 0; i < m_BuildRenderListPass->GetLightList().size(); i++)
+	for (size_t i = 0; i < m_SceneCreateTypelessListPass->GetLightList().size(); i++)
 	{
 
 
-		const auto& lightIt = m_BuildRenderListPass->GetLightList().at(i);
+		const auto& lightIt = m_SceneCreateTypelessListPass->GetLightList().at(i);
 
 		m_ShadowPipeline->Bind();
 		{
@@ -49,7 +49,7 @@ void CDefferedRenderPrepareLights::Render(RenderEventArgs& e)
 
 			BindPerFrameParamsForCurrentIteration(lightIt.Light);
 
-			for (const auto& geometryIt : m_BuildRenderListPass->GetGeometryList())
+			for (const auto& geometryIt : m_SceneCreateTypelessListPass->GetGeometryList())
 			{
 				BindPerObjectParamsForCurrentIteration(geometryIt.Node);
 
@@ -60,7 +60,7 @@ void CDefferedRenderPrepareLights::Render(RenderEventArgs& e)
 			{
 				SLightResult& lightResult = m_LightResult.at(i);
 				lightResult.IsEnabled = true;
-				lightResult.LightSceneNode = lightIt.Node;
+				lightResult.LightSceneNode = lightIt.SceneNode;
 				lightResult.LightComponent = lightIt.Light;
 				lightResult.IsShadowEnable = true;
 				lightResult.ShadowTexture->Copy(m_ShadowRenderTarget->GetTexture(IRenderTarget::AttachmentPoint::DepthStencil));
@@ -69,7 +69,7 @@ void CDefferedRenderPrepareLights::Render(RenderEventArgs& e)
 			{
 				SLightResult lightResult;
 				lightResult.IsEnabled = true;
-				lightResult.LightSceneNode = lightIt.Node;
+				lightResult.LightSceneNode = lightIt.SceneNode;
 				lightResult.LightComponent = lightIt.Light;
 				lightResult.IsShadowEnable = true;
 				lightResult.ShadowTexture = CreateShadowTextureDepthStencil();

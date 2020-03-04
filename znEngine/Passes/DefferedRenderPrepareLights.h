@@ -16,7 +16,7 @@ public:
 	};
 
 public:
-	CDefferedRenderPrepareLights(IRenderDevice& RenderDevice, std::shared_ptr<BuildRenderListPass> BuildRenderListPass);
+	CDefferedRenderPrepareLights(IRenderDevice& RenderDevice, const std::shared_ptr<CSceneCreateTypelessListPass>& BuildRenderListPass);
 	virtual ~CDefferedRenderPrepareLights();
 
 	const std::vector<SLightResult>& GetLightResult() const;
@@ -57,7 +57,7 @@ private: // For shadow rendering
 	std::vector<SLightResult> m_LightResult;
 
 private:
-	std::shared_ptr<BuildRenderListPass> m_BuildRenderListPass;
+	std::shared_ptr<CSceneCreateTypelessListPass> m_SceneCreateTypelessListPass;
 
 private: // consts
 	const float cShadowTextureSize = 4096.0f; //16384.0f;

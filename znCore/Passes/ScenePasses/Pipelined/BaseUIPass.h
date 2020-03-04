@@ -11,7 +11,7 @@ class ZN_API BaseUIPass
 	: public ScenePassPipelined
 {
 public:
-	BaseUIPass(IRenderDevice& RenderDevice, std::shared_ptr<IScene> Scene);
+	BaseUIPass(IRenderDevice& RenderDevice, const std::shared_ptr<IScene>& Scene);
 	virtual ~BaseUIPass();
 
 	// IRenderPassPipelined
@@ -26,6 +26,5 @@ protected:
 	virtual void FillPerFrameData() override;
 
 protected:
-	PerObjectUI* m_PerObjectData;
 	std::shared_ptr<IConstantBuffer> m_PerObjectConstantBuffer;
 };

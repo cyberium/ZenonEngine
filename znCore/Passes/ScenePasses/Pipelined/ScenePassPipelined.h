@@ -1,12 +1,12 @@
 #pragma once
 
-#include "RenderPassPipelined.h"
+#include "../../RenderPassPipelined.h"
 
 class ZN_API ScenePassPipelined
 	: public RenderPassPipelined
 {
 public:
-	ScenePassPipelined(IRenderDevice& RenderDevice, std::shared_ptr<IScene> Scene);
+	ScenePassPipelined(IRenderDevice& RenderDevice, const std::shared_ptr<IScene>& Scene);
 	virtual ~ScenePassPipelined();
 
 	// IRenderPass

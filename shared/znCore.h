@@ -23,13 +23,17 @@
 #include "../znCore/Passes/RenderTechnique.h"
 #include "../znCore/Passes/RenderPass.h"
 #include "../znCore/Passes/RenderPassPipelined.h"
-#include "../znCore/Passes/ScenePass.h"
-#include "../znCore/Passes/ScenePassPipelined.h"
-#include "../znCore/Passes/Base3DPass.h"
-#include "../znCore/Passes/BaseUIPass.h"
+
+#include "../znCore/Passes/ScenePasses/ScenePass.h"
+#include "../znCore/Passes/ScenePasses/SceneCreateTypedListsPass.h"
+#include "../znCore/Passes/ScenePasses/SceneCreateTypelessListPass.h"
+
+#include "../znCore/Passes/ScenePasses/Pipelined/ScenePassPipelined.h"
+#include "../znCore/Passes/ScenePasses/Pipelined/Base3DPass.h"
+#include "../znCore/Passes/ScenePasses/Pipelined/BaseTypedList3DPass.h"
+#include "../znCore/Passes/ScenePasses/Pipelined/BaseUIPass.h"
 
 #include "../znCore/Passes/Technical/BeginQueryPass.h"
-#include "../znCore/Passes/Technical/BuildRenderListPass.h"
 #include "../znCore/Passes/Technical/ClearRenderTargetPass.h"
 #include "../znCore/Passes/Technical/CopyBufferPass.h"
 #include "../znCore/Passes/Technical/CopyTexturePass.h"
@@ -37,7 +41,6 @@
 #include "../znCore/Passes/Technical/EndQueryPass.h"
 #include "../znCore/Passes/Technical/GenerateMipMapsPass.h"
 #include "../znCore/Passes/Technical/InvokeFunctionPass.h"
-#include "../znCore/Passes/Technical/RenderListProcessorPass.h"
 #include "../znCore/Passes/Technical/SetShaderParameterPass.h"
 
 // Camera controllers

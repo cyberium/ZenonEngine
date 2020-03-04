@@ -3,7 +3,7 @@
 // General
 #include "ScenePass.h"
 
-ScenePass::ScenePass(IRenderDevice& RenderDevice, std::shared_ptr<IScene> Scene)
+ScenePass::ScenePass(IRenderDevice& RenderDevice, const std::shared_ptr<IScene>& Scene)
 	: RenderPass(RenderDevice)
 	, m_Scene(Scene)
 {}
@@ -26,9 +26,7 @@ void ScenePass::Render(RenderEventArgs & e)
 //
 // Protected
 //
-std::shared_ptr<IScene> ScenePass::GetScene() const
+const std::shared_ptr<IScene>& ScenePass::GetScene() const
 {
-	auto scene = m_Scene.lock();
-	_ASSERT(scene != nullptr);
-	return scene;
+	return m_Scene;
 }

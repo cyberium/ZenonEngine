@@ -3,16 +3,14 @@
 // General
 #include "BaseUIPass.h"
 
-BaseUIPass::BaseUIPass(IRenderDevice& RenderDevice, std::shared_ptr<IScene> Scene)
+BaseUIPass::BaseUIPass(IRenderDevice& RenderDevice, const std::shared_ptr<IScene>& Scene)
 	: ScenePassPipelined(RenderDevice, Scene)
 {
-	m_PerObjectData = (PerObjectUI*)_aligned_malloc(sizeof(PerObjectUI), 16);
 	m_PerObjectConstantBuffer = GetRenderDevice().GetObjectsFactory().CreateConstantBuffer(PerObjectUI());
 }
 
 BaseUIPass::~BaseUIPass()
 {
-	_aligned_free(m_PerObjectData);
 }
 
 
@@ -42,8 +40,9 @@ std::shared_ptr<IRenderPassPipelined> BaseUIPass::CreatePipeline(std::shared_ptr
 //
 bool BaseUIPass::Visit(const ISceneNodeUI* sceneNode)
 {
-	m_PerObjectData->Model = sceneNode->GetWorldTransfom();
-	m_PerObjectConstantBuffer->Set(m_PerObjectData, sizeof(PerObjectUI));
+	PerObjectUI perObjectUI;
+	perObjectUI.Model = sceneNode->GetWorldTransfom();
+	m_PerObjectConstantBuffer->Set(perObjectUI);
 
 	auto& perObjectParameter = GetPipeline().GetShaders().at(EShaderType::VertexShader)->GetShaderParameterByName("PerObject");
 	if (perObjectParameter.IsValid() && m_PerObjectConstantBuffer != nullptr)
@@ -80,7 +79,7 @@ void BaseUIPass::FillPerFrameData()
 	_ASSERT(viewport);
 
 	PerFrame perFrame;
-	perFrame.View = mat4(1.0f);
+	perFrame.View = glm::mat4(1.0f);
 	perFrame.Projection = viewport->GetOrthoMatix();
 	SetPerFrameData(perFrame);
 }
