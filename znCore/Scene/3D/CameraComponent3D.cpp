@@ -216,6 +216,8 @@ void CCameraComponent3D::OnMessage(const ISceneNodeComponent* Component, Compone
 {
 	if (Component == nullptr && Message == UUID_OnWorldTransformChanged)
 	{
+		UpdateView();
+		UpdateProjectionView();
 		m_View_Dirty = true;
 	}
 }

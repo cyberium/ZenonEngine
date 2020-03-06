@@ -54,7 +54,7 @@ std::shared_ptr<IRenderPassPipelined> CDrawBoundingBoxPass::CreatePipeline(std::
 //
 bool CDrawBoundingBoxPass::Visit(const ISceneNode3D * SceneNode3D)
 {
-	const std::shared_ptr<IColliderComponent3D>& colliderComponent = SceneNode3D->GetComponent<IColliderComponent3D>();
+	const std::shared_ptr<IColliderComponent3D>& colliderComponent = SceneNode3D->GetColliderComponent();
 	if (colliderComponent == nullptr)
 		return false;
 

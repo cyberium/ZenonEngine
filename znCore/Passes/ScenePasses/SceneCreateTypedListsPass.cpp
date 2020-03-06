@@ -74,6 +74,12 @@ bool CSceneCreateTypedListsPass::Visit(const ISceneNode3D * SceneNode)
 	if (SceneNode->GetType() < 0)
 		return false;
 
+	if (const auto& colliderComponent = SceneNode->GetColliderComponent())
+	{
+		if (colliderComponent->IsCulled(GetRenderEventArgs()->Camera))
+			return false;
+	}
+
 	m_LastSceneNode = SceneNode;
 	m_NodesList[SceneNode->GetType()].push_back(CSceneCreateTypelessListPass::SNodeElement(SceneNode));
 	return true;

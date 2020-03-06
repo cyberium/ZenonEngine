@@ -147,7 +147,7 @@ void CGameState_Editor::Load3D()
 
 				BoundingBox bbox = BoundingBox(glm::vec3(-1.0f, -1.0f, -1.0f), glm::vec3(1.0f, 1.0f, 1.0f));
 				bbox.transform(sceneNode->GetWorldTransfom());
-				sceneNode->GetComponent<CColliderComponent3D>()->SetBounds(bbox);
+				sceneNode->GetColliderComponent()->SetBounds(bbox);
 			}
 		}
 	}

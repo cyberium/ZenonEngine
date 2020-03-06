@@ -37,17 +37,32 @@ const ComponentMessageType UUID_OnWorldTransformChanged = 3;
 #define UUID_ColliderComponent uuid("78BD7168-51CB-4760-ADD2-218CF4E88CE2")
 ZN_INTERFACE __declspec(UUID_ColliderComponent) ZN_API IColliderComponent3D
 {
+	enum class ZN_API ECullStrategy
+	{
+		None = 0,
+		ByDistance,
+		ByDistance2D,
+		ByFrustrum,
+		ByFrustrumAndDistance2D,
+		ByFrustrumAndDistance
+	};
+
 	virtual ~IColliderComponent3D() {}
 
+	virtual void SetCullStrategy(ECullStrategy CullStrategy) = 0;
+	virtual ECullStrategy GetCullStrategy() const = 0;
+	virtual void SetCullDistance(float Distance) = 0;
+	virtual float GetCullDistance() const = 0;
 	virtual void SetBounds(BoundingBox _bbox) = 0;
 	virtual cbbox GetBounds() const = 0;
 	virtual cbbox GetWorldBounds() const = 0;
 	virtual void SetDebugDrawMode(bool Value) = 0;
 	virtual bool GetDebugDrawMode() const = 0;
 
+	virtual bool IsCulled(const ICameraComponent3D* Camera) const = 0;
 	virtual bool IsCulledByFrustum(const ICameraComponent3D* Camera) const = 0;
-	virtual bool IsCulledByDistance2D(const ICameraComponent3D* Camera, float Distance) const = 0;
-	virtual bool IsCulledByDistance(const ICameraComponent3D* Camera, float Distance) const = 0;
+	virtual bool IsCulledByDistance2D(const ICameraComponent3D* Camera) const = 0;
+	virtual bool IsCulledByDistance(const ICameraComponent3D* Camera) const = 0;
 };
 const ComponentMessageType UUID_OnBoundsChanget = 10;
 

@@ -265,9 +265,7 @@ glm::mat4 SceneNode3D::GetParentWorldTransform() const
 {
 	glm::mat4 parentTransform(1.0f);
 	if (auto parent = GetParent().lock())
-	{
 		parentTransform = parent->GetWorldTransfom();
-	}
 
 	return parentTransform;
 }
