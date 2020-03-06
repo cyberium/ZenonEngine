@@ -15,15 +15,29 @@ public:
 
 	bool HasNodesList(SceneNodeType SceneNodeType) const;
 	const std::vector<CSceneCreateTypelessListPass::SNodeElement>& GetNodesList(SceneNodeType SceneNodeType) const;
+	bool HasModelsList(SceneNodeType SceneNodeType) const;
+	const std::vector<CSceneCreateTypelessListPass::SModelElement>& GetModelsList(SceneNodeType SceneNodeType) const;
+	bool HasGeometriesList(SceneNodeType SceneNodeType) const;
+	const std::vector<CSceneCreateTypelessListPass::SGeometryElement>& GetGeometriesList(SceneNodeType SceneNodeType) const;
 
 	// IRenderPass
 	virtual void PreRender(RenderEventArgs& e) override;
 	virtual void Render(RenderEventArgs& e) override;
 
 	// IVisitor
-	virtual bool Visit(const ISceneNode3D* SceneNode) override;
+	bool Visit(const ISceneNode3D* SceneNode) override;
+	bool Visit(const IModel* Model) override;
+	bool Visit(const IGeometry* Geometry, const IMaterial* Material, SGeometryDrawArgs GeometryDrawArgs = SGeometryDrawArgs()) override;
+	bool Visit(const ILightComponent3D* light) override;
 
 private:
-	std::unordered_map<SceneNodeType, std::vector<CSceneCreateTypelessListPass::SNodeElement>> m_NodesByType;
-	std::vector<CSceneCreateTypelessListPass::SNodeElement> m_EmptyList;
+	std::unordered_map<SceneNodeType, std::vector<CSceneCreateTypelessListPass::SNodeElement>>      m_NodesList;
+	std::unordered_map<SceneNodeType, std::vector<CSceneCreateTypelessListPass::SModelElement>>     m_ModelsList;
+	std::unordered_map<SceneNodeType, std::vector<CSceneCreateTypelessListPass::SGeometryElement>>  m_GeometryList;
+	std::unordered_map<SceneNodeType, std::vector<CSceneCreateTypelessListPass::SLightElement>>     m_LightList;
+
+	const ISceneNode3D*       m_LastSceneNode;
+	const IModel*             m_LastModel;
+	const IGeometry*          m_LastGeometry;
+	const ILightComponent3D*  m_LastLight;
 };

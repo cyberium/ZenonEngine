@@ -20,6 +20,7 @@ public:
 	virtual bool Visit(const ISceneNodeUI* node) override;
 	virtual bool Visit(const IModel* Model) override;
 	virtual bool Visit(const IGeometry* Geometry, const IMaterial* Material, SGeometryDrawArgs GeometryDrawArgs = SGeometryDrawArgs()) override;
+	virtual bool Visit(const ISceneNodeComponent* Component) override;
 	virtual bool Visit(const ILightComponent3D* light) override;
 
 protected:

@@ -26,10 +26,6 @@ ZN_INTERFACE ZN_API IScene
 	virtual void SetCameraController(std::shared_ptr<ICameraController> CameraController) = 0;
 	virtual std::shared_ptr<ICameraController> GetCameraController() const = 0;
 
-	// Load & Save
-	virtual bool Load(std::shared_ptr<IXMLReader> Reader) = 0;
-	virtual bool Save(std::shared_ptr<IXMLWriter> Writer) = 0;
-
 	// Passes will go to this
 	virtual void Accept(IVisitor* visitor) = 0;
 	virtual void AddChild(const std::shared_ptr<ISceneNode3D>& ParentNode, const std::shared_ptr<ISceneNode3D>& ChildNode) = 0;

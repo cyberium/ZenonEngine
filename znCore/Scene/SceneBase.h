@@ -26,10 +26,6 @@ public:
 	void                                            SetCameraController(std::shared_ptr<ICameraController> CameraController);
 	std::shared_ptr<ICameraController>              GetCameraController() const;
 
-	// Load & Save
-	bool                                            Load(std::shared_ptr<IXMLReader> Reader) override;
-	bool                                            Save(std::shared_ptr<IXMLWriter> Writer) override;
-
 	// Visit funcitonal
 	void                                            Accept(IVisitor* visitor) override;
 	void                                            AddChild(const std::shared_ptr<ISceneNode3D>& ParentNode, const std::shared_ptr<ISceneNode3D>& ChildNode) override;

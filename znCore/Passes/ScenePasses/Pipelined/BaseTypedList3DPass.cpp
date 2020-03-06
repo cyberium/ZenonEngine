@@ -30,32 +30,39 @@ CBaseList3DPass::~CBaseList3DPass()
 //
 void CBaseList3DPass::Render(RenderEventArgs & e)
 {
-	std::for_each(m_AcceptSceneNodeTypes.begin(), m_AcceptSceneNodeTypes.end(), [this](SceneNodeType SceneNodeType) {
-		const auto& list = m_SceneNodeListPass->GetNodesList(SceneNodeType);
-		std::for_each(list.begin(), list.end(), [this](const CSceneCreateTypelessListPass::SNodeElement& SceneNodeElement) {
-			if (Visit(SceneNodeElement.SceneNode))
-			{
-				const auto& components = SceneNodeElement.SceneNode->GetComponents();
-				std::for_each(components.begin(), components.end(), [this](const std::pair<GUID, std::shared_ptr<ISceneNodeComponent>>& Component) {
-					Component.second->Accept(this);
-				});
-			}
-		});
-	});
-	/*for (const auto& snType : m_AcceptSceneNodeTypes)
-	{
-		const auto& list = m_SceneNodeListPass->GetNodesList(snType);
-		for (const auto& it : list)
+	/*const auto& acceptableNodeTypesList = GetAcceptableNodeTypes();
+	std::for_each(acceptableNodeTypesList.begin(), acceptableNodeTypesList.end(), [this](SceneNodeType acceptableNodeType) {
+		if (GetSceneNodeListPass()->HasNodesList(acceptableNodeType))
 		{
-			if (Visit(it))
+			const auto& list = GetSceneNodeListPass()->GetNodesList(acceptableNodeType);
+			std::for_each(list.begin(), list.end(), [this](const CSceneCreateTypelessListPass::SNodeElement& SceneNodeElement) {
+				if (Visit(SceneNodeElement.SceneNode))
+				{
+					const auto& components = SceneNodeElement.SceneNode->GetComponents();
+					std::for_each(components.begin(), components.end(), [this](const std::pair<GUID, std::shared_ptr<ISceneNodeComponent>>& Component) {
+						Component.second->Accept(this);
+					});
+				}
+			});
+		}
+	});*/
+
+	for (const auto& acceptableNodeType : GetAcceptableNodeTypes())
+	{
+		if (GetSceneNodeListPass()->HasNodesList(acceptableNodeType))
+		{
+			for (const auto& SceneNodeElement : GetSceneNodeListPass()->GetNodesList(acceptableNodeType))
 			{
-				const auto& components = it->GetComponents();
-				std::for_each(components.begin(), components.end(), [this](const std::pair<GUID, std::shared_ptr<ISceneNodeComponent>>& Component) {
-					Component.second->Accept(this);
-				});
+				if (Visit(SceneNodeElement.SceneNode))
+				{
+					const auto& components = SceneNodeElement.SceneNode->GetComponents();
+					std::for_each(components.begin(), components.end(), [this](const std::pair<GUID, std::shared_ptr<ISceneNodeComponent>>& Component) {
+						Component.second->Accept(this);
+					});
+				}
 			}
 		}
-	}*/
+	}
 }
 
 //
@@ -63,17 +70,7 @@ void CBaseList3DPass::Render(RenderEventArgs & e)
 //
 bool CBaseList3DPass::Visit(const ISceneNode3D * SceneNode)
 {
-	//const ICameraComponent3D* camera = GetRenderEventArgs().Camera;
-	//if (camera)
-	//	sceneNode->UpdateCamera(camera);
-
-	// Do check frustum
-
-	//const Viewport* viewport = GetRenderEventArgs().PipelineState->GetRasterizerState()->GetViewports()[0];
-	//if (viewport)
-	//	sceneNode->UpdateViewport(*viewport);
-
-	PerObject3D perObject3D;
+	static PerObject3D perObject3D;
 	perObject3D.Model = SceneNode->GetWorldTransfom();
 	m_PerObjectConstantBuffer->Set(perObject3D);
 
@@ -100,4 +97,19 @@ bool CBaseList3DPass::Visit(const IGeometry * Geometry, const IMaterial * Materi
 	Geometry->Render(GetRenderEventArgs(), GetRenderEventArgs().PipelineState->GetShaders().at(EShaderType::VertexShader).get(), GeometryDrawArgs);
 	Material->Unbind(GetRenderEventArgs().PipelineState->GetShaders());
 	return true;
+}
+
+
+
+//
+// Protected
+//
+const std::shared_ptr<CSceneCreateTypedListsPass>& CBaseList3DPass::GetSceneNodeListPass() const
+{
+	return m_SceneNodeListPass;
+}
+
+const std::vector<SceneNodeType>& CBaseList3DPass::GetAcceptableNodeTypes() const
+{
+	return m_AcceptSceneNodeTypes;
 }

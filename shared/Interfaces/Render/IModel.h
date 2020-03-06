@@ -46,4 +46,4 @@ ZN_INTERFACE ZN_API IModel
 };
 typedef std::shared_ptr<IModel> IModelPtr;
 
-typedef std::vector<std::shared_ptr<IModel>> MeshList;
+typedef std::vector<std::shared_ptr<IModel>> ModelsList;

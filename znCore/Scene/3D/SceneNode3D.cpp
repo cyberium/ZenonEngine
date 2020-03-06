@@ -7,7 +7,7 @@
 #include "Scene/Actions.h"
 #include "Scene/Properties.h"
 
-#include "MeshComponent3D.h"
+#include "ModelsComponent3D.h"
 #include "ColliderComponent3D.h"
 #include "LightComponent3D.h"
 
@@ -61,8 +61,6 @@ SceneNode3D::SceneNode3D()
 
 		GetProperties()->AddProperty(propertiesGroup);
 	}
-
-	
 }
 
 SceneNode3D::~SceneNode3D()
@@ -182,33 +180,32 @@ IScene * SceneNode3D::GetScene() const
 
 
 
-
 //
 // Transform functional
 //
-void SceneNode3D::SetTranslate(cvec3 _translate)
+void SceneNode3D::SetTranslate(const glm::vec3& _translate)
 {
 	m_Translate = _translate;
 	UpdateLocalTransform();
 }
 
-void SceneNode3D::AddTranslate(vec3 Translate)
+void SceneNode3D::AddTranslate(const glm::vec3& Translate)
 {
 	SetTranslate(GetTranslation() + Translate);
 }
 
-cvec3 SceneNode3D::GetTranslation() const
+const glm::vec3& SceneNode3D::GetTranslation() const
 {
 	return m_Translate;
 }
 
-void SceneNode3D::SetRotation(cvec3 _rotate)
+void SceneNode3D::SetRotation(const glm::vec3& _rotate)
 {
 	m_Rotate = _rotate;
 	UpdateLocalTransform();
 }
 
-cvec3 SceneNode3D::GetRotation() const
+const glm::vec3& SceneNode3D::GetRotation() const
 {
 	return m_Rotate;
 }
@@ -220,18 +217,18 @@ void SceneNode3D::SetRotationQuaternion(cquat _rotate)
 	UpdateLocalTransform();
 }
 
-cquat SceneNode3D::GetRotationQuaternion() const
+const glm::quat& SceneNode3D::GetRotationQuaternion() const
 {
 	return m_RotateQuat;
 }
 
-void SceneNode3D::SetScale(cvec3 _scale)
+void SceneNode3D::SetScale(const glm::vec3& _scale)
 {
 	m_Scale = _scale;
 	UpdateLocalTransform();
 }
 
-cvec3 SceneNode3D::GetScale() const
+const glm::vec3& SceneNode3D::GetScale() const
 {
 	return m_Scale;
 }
@@ -252,10 +249,6 @@ void SceneNode3D::SetLocalTransform(cmat4 localTransform)
 	m_InverseLocalTransform = glm::inverse(localTransform);
 
 	UpdateWorldTransform();
-
-	// After world updated, we can update all childs
-	for (const auto& it : GetChilds())
-		std::dynamic_pointer_cast<SceneNode3D>(it)->UpdateWorldTransform();
 }
 
 mat4 SceneNode3D::GetWorldTransfom() const
@@ -321,16 +314,25 @@ const ComponentsMap& SceneNode3D::GetComponents() const
 void SceneNode3D::RaiseComponentMessage(const ISceneNodeComponent* Component, ComponentMessageType Message) const
 {
 	const auto& components = GetComponents();
-	std::for_each(components.begin(), components.end(), [&Component, &Message](const std::pair<GUID, std::shared_ptr<ISceneNodeComponent>>& ComponentMapIter)
-	{
+	std::for_each(components.begin(), components.end(), [&Component, &Message](const std::pair<GUID, std::shared_ptr<ISceneNodeComponent>>& ComponentMapIter) {
 		ComponentMapIter.second->OnMessage(Component, Message);
 	});
 }
 void SceneNode3D::RegisterComponents()
 {
-	ISceneNode3D::AddComponent<CLightComponent3D>(std::make_shared<CLightComponent3D>(*this));
-    SetMeshComponent(ISceneNode3D::AddComponent(std::make_shared<CMeshComponent3D>(*this)));
-    SetColliderComponent(ISceneNode3D::AddComponent(std::make_shared<CColliderComponent3D>(*this)));
+	m_Components_Models = AddComponent(std::make_shared<CModelsComponent3D>(*this));
+	m_Components_Collider = AddComponent(std::make_shared<CColliderComponent3D>(*this));
+	AddComponent(std::make_shared<CLightComponent3D>(*this));
+}
+
+const std::shared_ptr<IColliderComponent3D>& SceneNode3D::GetColliderComponent() const
+{
+	return m_Components_Collider;
+}
+
+const std::shared_ptr<IModelsComponent3D>& SceneNode3D::GetModelsComponent() const
+{
+	return m_Components_Models;
 }
 
 
@@ -338,59 +340,6 @@ void SceneNode3D::RegisterComponents()
 //
 // Others
 //
-
-
-
-
-
-bool SceneNode3D::Load(std::shared_ptr<IXMLReader> Reader)
-{
-	return false;
-}
-
-bool SceneNode3D::Save(std::shared_ptr<IXMLWriter> Writer)
-{
-	/*
-
-	std::shared_ptr<IXMLWriter> componentWriter = Writer->CreateChild("TransformComponent3D");
-
-	std::shared_ptr<IXMLWriter> translate = componentWriter->CreateChild("Translate");
-	translate->AddAttribute("X", std::to_string(GetTranslation().x));
-	translate->AddAttribute("Y", std::to_string(GetTranslation().y));
-	translate->AddAttribute("Z", std::to_string(GetTranslation().z));
-
-	std::shared_ptr<IXMLWriter> rotate = componentWriter->CreateChild("Rotate");
-	rotate->AddAttribute("X", std::to_string(GetRotation().x));
-	rotate->AddAttribute("Y", std::to_string(GetRotation().y));
-	rotate->AddAttribute("Z", std::to_string(GetRotation().z));
-
-	std::shared_ptr<IXMLWriter> scale = componentWriter->CreateChild("Scale");
-	scale->AddAttribute("X", std::to_string(GetScale().x));
-	scale->AddAttribute("Y", std::to_string(GetScale().y));
-	scale->AddAttribute("Z", std::to_string(GetScale().z));
-	
-	*/
-
-	std::shared_ptr<IXMLWriter> thisSceneNodeWriter = Writer->CreateChild("SceneNode");
-	thisSceneNodeWriter->AddAttribute("Name", GetName());
-
-	if (GetComponents().size() > 0)
-	{
-		std::shared_ptr<IXMLWriter> componentsWriter = thisSceneNodeWriter->CreateChild("Components");
-		for (const auto& component : GetComponents())
-			component.second->Save(componentsWriter);
-	}
-
-	if (GetChilds().size() > 0)
-	{
-		std::shared_ptr<IXMLWriter> childsWriter = thisSceneNodeWriter->CreateChild("Childs");
-		for (const auto& child : GetChilds())
-			child->Save(childsWriter);
-	}
-
-	return true;
-}
-
 void SceneNode3D::Update(const UpdateEventArgs & e)
 {
 	// Do nothing...
@@ -510,6 +459,10 @@ void SceneNode3D::UpdateWorldTransform()
 	m_WorldTransform = GetParentWorldTransform() * m_LocalTransform;
 	m_InverseWorldTransform = glm::inverse(m_WorldTransform);
 	
+	// After world updated, we can update all childs
+	for (const auto& it : GetChilds())
+		std::dynamic_pointer_cast<SceneNode3D>(it)->UpdateWorldTransform();
+
 	RaiseComponentMessage(nullptr, UUID_OnWorldTransformChanged);
 }
 
@@ -522,14 +475,4 @@ void SceneNode3D::ForceRecalculateLocalTransform()
 IBaseManager& SceneNode3D::GetBaseManager() const
 {
 	return dynamic_cast<IBaseManagerHolder*>(GetScene())->GetBaseManager();
-}
-
-void SceneNode3D::SetMeshComponent(const std::shared_ptr<IMeshComponent3D>& MeshComponent)
-{
-	m_Components_Mesh = MeshComponent;
-}
-
-void SceneNode3D::SetColliderComponent(const std::shared_ptr<IColliderComponent3D>& ColliderComponent)
-{
-    m_Components_Collider = ColliderComponent;
 }

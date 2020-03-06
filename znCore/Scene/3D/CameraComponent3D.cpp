@@ -222,8 +222,6 @@ void CCameraComponent3D::OnMessage(const ISceneNodeComponent* Component, Compone
 
 
 
-
-
 //
 // Protected
 //
@@ -241,15 +239,6 @@ glm::vec3 CCameraComponent3D::EulerAnglesToDirectionVector(float Yaw, float Pitc
 	m_UpDirection = glm::cross(m_RightDirection, direction);
 
 	return direction;
-}
-
-namespace
-{
-	template <typename T>
-	int sign(T val)
-	{
-		return (T(0) < val) - (val < T(0));
-	}
 }
 
 void CCameraComponent3D::DirectionVectorToEulerAngles(const glm::vec3& Direction)
@@ -271,7 +260,7 @@ void CCameraComponent3D::DirectionVectorToEulerAngles(const glm::vec3& Direction
 
 	// If we're twisted upside-down, return a roll in the range +-(pi/2, pi)
 	if (m_UpDirection.y < 0)
-		roll = sign(roll) * glm::pi<float>() - roll;
+		roll = glm::sign(roll) * glm::pi<float>() - roll;
 
 
 	float yawDegrees = glm::degrees(yaw);

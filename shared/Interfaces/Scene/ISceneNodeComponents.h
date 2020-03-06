@@ -19,10 +19,6 @@ ZN_INTERFACE ZN_API ISceneNodeComponent
     virtual void OnMessage(const ISceneNodeComponent* Component, ComponentMessageType Message) = 0;
 	virtual IPropertiesGroup* GetPropertiesGroup() const = 0;
 
-	// Load & Save
-	virtual bool Load(std::shared_ptr<IXMLReader> Reader) = 0;
-	virtual bool Save(std::shared_ptr<IXMLWriter> Writer) = 0;
-
 	// Visit functional
 	virtual void Update(const UpdateEventArgs& e) = 0;
     virtual void Accept(IVisitor* visitor) = 0;
@@ -131,22 +127,20 @@ ZN_INTERFACE __declspec(UUID_PortalsComponent) ZN_API IPortalsComponent3D
 
 
 //
-// MESH COMPONENT 3D
+// MODELS COMPONENT 3D
 //
-#define UUID_MeshComponent uuid("403E886D-7BD7-438B-868D-AC4380830716")
-ZN_INTERFACE __declspec(UUID_MeshComponent) ZN_API IMeshComponent3D
+#define UUID_ModelsComponent uuid("403E886D-7BD7-438B-868D-AC4380830716")
+ZN_INTERFACE __declspec(UUID_ModelsComponent) ZN_API IModelsComponent3D
 {
 public:
-	typedef std::vector<std::shared_ptr<IModel>> MeshList;
+	virtual ~IModelsComponent3D() {}
 
-	virtual ~IMeshComponent3D() {}
-
-	virtual void AddMesh(std::shared_ptr<IModel> mesh) = 0;
-	virtual void RemoveMesh(IModel* mesh) = 0;
-	virtual const MeshList GetMeshes() = 0;
+	virtual void AddModel(const std::shared_ptr<IModel>& Model) = 0;
+	virtual void RemoveModel(const std::shared_ptr<IModel>& Model) = 0;
+	virtual const ModelsList& GetModels() = 0;
 };
-const ComponentMessageType const UUID_OnModelAdded = 30;
-const ComponentMessageType const UUID_OnModelRemoved = 30;
+const ComponentMessageType UUID_OnModelAdded = 30;
+const ComponentMessageType UUID_OnModelRemoved = 30;
 
 
 

@@ -7,28 +7,22 @@ public:
     CComponentBase(const ISceneNode3D& OwnerNode);
     virtual ~CComponentBase();
 
-	const ISceneNode3D&								GetOwnerNode() const;
-
     // Components engine template access
     template<typename T>
     std::shared_ptr<T>                              IsComponentExists();
     template<typename T>
     std::shared_ptr<T>                              GetComponent();
 
-
 	// ISceneNodeComponent
 	virtual void                                    OnMessage(const ISceneNodeComponent* Component, ComponentMessageType Message) override;
 	virtual IPropertiesGroup*                       GetPropertiesGroup() const override;
-
-	// Load & Save
-	virtual bool                                    Load(std::shared_ptr<IXMLReader> Reader) override;
-	virtual bool                                    Save(std::shared_ptr<IXMLWriter> Writer) override;
 
     // Accept from SceneNode
 	virtual void                                    Update(const UpdateEventArgs& e) override;
     virtual void                                    Accept(IVisitor* visitor) override;
 
 protected:
+	const ISceneNode3D&								GetOwnerNode() const;
     void                                            RaiseComponentMessage(ComponentMessageType Message);
 
 private:

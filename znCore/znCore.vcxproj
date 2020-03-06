@@ -126,6 +126,7 @@
     <ClCompile Include="Passes\ScenePasses\SceneCreateTypedListsPass.cpp" />
     <ClCompile Include="Passes\ScenePasses\SceneCreateTypelessListPass.cpp" />
     <ClCompile Include="Passes\ScenePasses\ScenePass.cpp" />
+    <ClCompile Include="Passes\ScenePasses\SceneXMLFunctional.cpp" />
     <ClCompile Include="Passes\Technical\BeginQueryPass.cpp" />
     <ClCompile Include="Passes\Technical\ClearRenderTargetPass.cpp" />
     <ClCompile Include="Passes\Technical\CopyBufferPass.cpp" />
@@ -145,7 +146,7 @@
     <ClCompile Include="Scene\3D\CameraComponent3D.cpp" />
     <ClCompile Include="Scene\3D\ColliderComponent3D.cpp" />
     <ClCompile Include="Scene\3D\LightComponent3D.cpp" />
-    <ClCompile Include="Scene\3D\MeshComponent3D.cpp" />
+    <ClCompile Include="Scene\3D\ModelsComponent3D.cpp" />
     <ClCompile Include="Scene\3D\SceneNode3D.cpp" />
     <ClCompile Include="Scene\Actions.cpp" />
     <ClCompile Include="Scene\ComponentBase.cpp" />
@@ -294,6 +295,7 @@
     <ClInclude Include="Passes\ScenePasses\SceneCreateTypedListsPass.h" />
     <ClInclude Include="Passes\ScenePasses\SceneCreateTypelessListPass.h" />
     <ClInclude Include="Passes\ScenePasses\ScenePass.h" />
+    <ClInclude Include="Passes\ScenePasses\SceneXMLFunctional.h" />
     <ClInclude Include="Passes\Technical\BeginQueryPass.h" />
     <ClInclude Include="Passes\Technical\ClearRenderTargetPass.h" />
     <ClInclude Include="Passes\Technical\CopyBufferPass.h" />
@@ -318,7 +320,7 @@
     <ClInclude Include="Scene\3D\CameraComponent3D.h" />
     <ClInclude Include="Scene\3D\ColliderComponent3D.h" />
     <ClInclude Include="Scene\3D\LightComponent3D.h" />
-    <ClInclude Include="Scene\3D\MeshComponent3D.h" />
+    <ClInclude Include="Scene\3D\ModelsComponent3D.h" />
     <ClInclude Include="Scene\3D\SceneNode3D.h" />
     <ClInclude Include="Scene\Actions.h" />
     <ClInclude Include="Scene\ComponentBase.h" />

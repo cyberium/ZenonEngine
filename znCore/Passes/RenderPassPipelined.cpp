@@ -142,6 +142,11 @@ bool RenderPassPipelined::Visit(const IGeometry * Geometry, const IMaterial* Mat
 	return false;
 }
 
+bool RenderPassPipelined::Visit(const ISceneNodeComponent * Component)
+{
+	return false;
+}
+
 bool RenderPassPipelined::Visit(const ILightComponent3D* light)
 {
 	return false;

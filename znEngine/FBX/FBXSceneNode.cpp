@@ -80,7 +80,7 @@ void CFBXSceneNode::LoadNode()
 		{
 			const auto& fbxMesh = std::make_shared<CFBXMesh>(m_BaseManager, std::dynamic_pointer_cast<CFBXSceneNode>(shared_from_this()));
 			fbxMesh->Load(m_NativeNode->GetMesh());
-			GetComponent<IMeshComponent3D>()->AddMesh(fbxMesh);
+			GetComponent<IModelsComponent3D>()->AddMesh(fbxMesh);
 		}
 		break;
 
@@ -95,7 +95,7 @@ void CFBXSceneNode::LoadNode()
 
 			const auto& mesh = m_BaseManager.GetApplication().GetRenderDevice().GetPrimitivesFactory().CreateCone();
 			mesh->SetMaterial(matDebug);
-			GetComponent<IMeshComponent3D>()->AddMesh(mesh);
+			GetComponent<IModelsComponent3D>()->AddMesh(mesh);
 
 		}
 		break;

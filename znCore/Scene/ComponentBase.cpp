@@ -17,11 +17,6 @@ CComponentBase::~CComponentBase()
 {
 }
 
-const ISceneNode3D& CComponentBase::GetOwnerNode() const
-{
-    return m_OwnerNode;
-}
-
 
 
 //
@@ -37,17 +32,6 @@ IPropertiesGroup* CComponentBase::GetPropertiesGroup() const
 	return m_PropertyGroup.get();
 }
 
-bool CComponentBase::Load(std::shared_ptr<IXMLReader> Reader)
-{
-	_ASSERT_EXPR(false, L"Not implemented.");
-	return false;
-}
-
-bool CComponentBase::Save(std::shared_ptr<IXMLWriter> Writer)
-{
-	//_ASSERT_EXPR(false, L"Not implemented.");
-	return false;
-}
 
 void CComponentBase::Update(const UpdateEventArgs & e)
 {
@@ -64,6 +48,11 @@ void CComponentBase::Accept(IVisitor* visitor)
 //
 // Protected
 //
+const ISceneNode3D& CComponentBase::GetOwnerNode() const
+{
+	return m_OwnerNode;
+}
+
 void CComponentBase::RaiseComponentMessage(ComponentMessageType Message)
 {
 	m_OwnerNode.RaiseComponentMessage(this, Message);

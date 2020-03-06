@@ -21,6 +21,10 @@ public:
 	virtual bool Visit(const IGeometry* Geometry, const IMaterial* Material, SGeometryDrawArgs GeometryDrawArgs = SGeometryDrawArgs()) override;
 
 protected:
+	const std::shared_ptr<CSceneCreateTypedListsPass>& GetSceneNodeListPass() const;
+	const std::vector<SceneNodeType>& GetAcceptableNodeTypes() const;
+
+protected:
 	std::shared_ptr<CSceneCreateTypedListsPass> m_SceneNodeListPass;
 	std::vector<SceneNodeType> m_AcceptSceneNodeTypes;
 

@@ -9,6 +9,7 @@ ZN_INTERFACE ISceneNodeUI;
 ZN_INTERFACE IModel;
 ZN_INTERFACE IGeometry;
 ZN_INTERFACE IMaterial;
+ZN_INTERFACE ISceneNodeComponent;
 ZN_INTERFACE ILightComponent3D;
 // FORWARD END
 
@@ -29,5 +30,6 @@ ZN_INTERFACE ZN_API IVisitor : public std::enable_shared_from_this<IVisitor>
 	virtual bool Visit(const ISceneNodeUI* node) = 0;
 	virtual bool Visit(const IModel* Model) = 0;
 	virtual bool Visit(const IGeometry* Geometry, const IMaterial* Material, SGeometryDrawArgs GeometryDrawArgs = SGeometryDrawArgs()) = 0;
+	virtual bool Visit(const ISceneNodeComponent* Component) = 0;
 	virtual bool Visit(const ILightComponent3D* Light) = 0;
 };

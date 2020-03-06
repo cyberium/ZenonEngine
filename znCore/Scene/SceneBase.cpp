@@ -124,22 +124,6 @@ std::shared_ptr<ICameraController> SceneBase::GetCameraController() const
 	return m_DefaultCameraController;
 }
 
-bool SceneBase::Load(std::shared_ptr<IXMLReader> Reader)
-{
-	return false;
-}
-
-bool SceneBase::Save(std::shared_ptr<IXMLWriter> Writer)
-{
-	std::shared_ptr<IXMLWriter> writer = Writer->CreateChild("Scene");
-	writer->AddAttribute("IsScene", "true");
-
-	for (const auto& rootChild : GetRootNode3D()->GetChilds())
-		rootChild->Save(writer);
-
-	return false;
-}
-
 void SceneBase::Accept(IVisitor * visitor)
 {
 	std::lock_guard<std::mutex> lock(m_SceneIsBusy);
@@ -333,7 +317,7 @@ bool SceneBase::OnWindowKeyPressed(KeyEventArgs & e)
 	if (GetCameraController())
 		GetCameraController()->OnKeyPressed(e);
 
-	if (e.Key == KeyCode::J)
+	/*if (e.Key == KeyCode::J)
 	{
 		CXMLManager xmlM;
 
@@ -344,7 +328,7 @@ bool SceneBase::OnWindowKeyPressed(KeyEventArgs & e)
 
 		std::shared_ptr<IFile> xmlFile = writer->SaveToFile("Scene.xml");
 		GetBaseManager().GetManager<IFilesManager>()->GetFilesStorage("ZenonGamedata")->SaveFile(xmlFile);
-	}
+	}*/
 
 	if (m_RootNodeUI)
 		return DoKeyPressed_Rec(m_RootNodeUI, e);

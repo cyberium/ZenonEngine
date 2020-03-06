@@ -10,7 +10,7 @@ public:
 	virtual ~ScenePass();
 
 	// IRenderPass
-	void Render(RenderEventArgs& e) override;
+	virtual void Render(RenderEventArgs& e) override;
 
 protected:
 	const std::shared_ptr<IScene>& GetScene() const;

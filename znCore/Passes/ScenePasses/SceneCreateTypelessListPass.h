@@ -32,7 +32,6 @@ public:
 
 		const ISceneNode3D* SceneNode;
 		const IModel* Model;
-		//std::vector<SGeometryElement> GeometriesElements;
 	};
 
 	struct ZN_API SLightElement
@@ -53,8 +52,6 @@ public:
 		{}
 
 		const ISceneNode3D* SceneNode;
-		//std::vector<SModelElement> ModelsElements;
-		//std::vector<SLightElement> LightsElement;
 	};
 
 public:
@@ -67,17 +64,17 @@ public:
 	const std::vector<SLightElement>& GetLightList() const;
 
 	// IRenderPass
-	virtual void PreRender(RenderEventArgs& e) override;
-	virtual void Render(RenderEventArgs& e) override;
+	void PreRender(RenderEventArgs& e) override;
+	void Render(RenderEventArgs& e) override;
 
 	// IVisitor
-	virtual bool Visit(const ISceneNode3D* SceneNode) override;
-	virtual bool Visit(const IModel* Model) override;
-	virtual bool Visit(const IGeometry* Geometry, const IMaterial* Material, SGeometryDrawArgs GeometryDrawArgs = SGeometryDrawArgs()) override;
-	virtual bool Visit(const ILightComponent3D* light) override;
+	bool Visit(const ISceneNode3D* SceneNode) override;
+	bool Visit(const IModel* Model) override;
+	bool Visit(const IGeometry* Geometry, const IMaterial* Material, SGeometryDrawArgs GeometryDrawArgs = SGeometryDrawArgs()) override;
+	bool Visit(const ILightComponent3D* light) override;
 
 private:
-	std::vector<SNodeElement>  m_NodesList;
+	std::vector<SNodeElement>         m_NodesList;
 	std::vector<SModelElement>        m_ModelsList;
 	std::vector<SGeometryElement>     m_GeometryList;
 	std::vector<SLightElement>        m_LightList;

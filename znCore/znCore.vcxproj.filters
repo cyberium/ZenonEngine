@@ -198,9 +198,6 @@
     <ClCompile Include="Scene\3D\LightComponent3D.cpp">
       <Filter>Scene functional\3D</Filter>
     </ClCompile>
-    <ClCompile Include="Scene\3D\MeshComponent3D.cpp">
-      <Filter>Scene functional\3D</Filter>
-    </ClCompile>
     <ClCompile Include="Scene\LoadableObject.cpp">
       <Filter>Scene functional</Filter>
     </ClCompile>
@@ -389,6 +386,12 @@
     </ClCompile>
     <ClCompile Include="Passes\ScenePasses\Pipelined\BaseTypedList3DPass.cpp">
       <Filter>Passes\ScenePasses\Pipelined</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\3D\ModelsComponent3D.cpp">
+      <Filter>Scene functional\3D</Filter>
+    </ClCompile>
+    <ClCompile Include="Passes\ScenePasses\SceneXMLFunctional.cpp">
+      <Filter>Passes\ScenePasses</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -656,9 +659,6 @@
     <ClInclude Include="Scene\3D\LightComponent3D.h">
       <Filter>Scene functional\3D</Filter>
     </ClInclude>
-    <ClInclude Include="Scene\3D\MeshComponent3D.h">
-      <Filter>Scene functional\3D</Filter>
-    </ClInclude>
     <ClInclude Include="Scene\LoadableObject.h">
       <Filter>Scene functional</Filter>
     </ClInclude>
@@ -898,6 +898,12 @@
     </ClInclude>
     <ClInclude Include="Passes\ScenePasses\Pipelined\BaseTypedList3DPass.h">
       <Filter>Passes\ScenePasses\Pipelined</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\3D\ModelsComponent3D.h">
+      <Filter>Scene functional\3D</Filter>
+    </ClInclude>
+    <ClInclude Include="Passes\ScenePasses\SceneXMLFunctional.h">
+      <Filter>Passes\ScenePasses</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

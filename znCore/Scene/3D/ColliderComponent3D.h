@@ -30,5 +30,5 @@ protected:
 private:
     BoundingBox m_Bounds;
 	BoundingBox m_WorldBounds;
-	bool m_DebugDraw;
+	bool        m_DebugDraw;
 };

@@ -61,6 +61,11 @@ bool RenderPass::Visit(const IGeometry * Geometry, const IMaterial* Material, SG
 	return false;
 }
 
+bool RenderPass::Visit(const ISceneNodeComponent * Component)
+{
+	return false;
+}
+
 bool RenderPass::Visit(const ILightComponent3D* light)
 {
 	return false;

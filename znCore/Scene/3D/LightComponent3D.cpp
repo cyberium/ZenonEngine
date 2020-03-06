@@ -128,5 +128,5 @@ void CLightComponent3D::Accept(IVisitor* visitor)
 	if (GetType() == ELightType::Unknown)
 		return;
 
-	visitor->Visit(this);
+	visitor->Visit((const ILightComponent3D*) this);
 }

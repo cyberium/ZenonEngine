@@ -63,7 +63,7 @@ void CGameState_World::OnRayIntersected(const glm::vec3& Point)
 	sceneNodePlane->SetName("Sphere.");
 	std::dynamic_pointer_cast<ISceneNode3D>(sceneNodePlane)->SetTranslate(Point);
 	std::dynamic_pointer_cast<ISceneNode3D>(sceneNodePlane)->SetScale(vec3(50.0f, 50.0f, 50.0f));
-	sceneNodePlane->GetComponent<IMeshComponent3D>()->AddMesh(meshPlane);
+	sceneNodePlane->GetComponent<IModelsComponent3D>()->AddMesh(meshPlane);
 
 	Log::Green("Sphere created at %f %f %f", Point.x, Point.y, Point.z);
 	*/
@@ -199,7 +199,7 @@ void CGameState_World::Load3D()
 					sceneNode->SetName("Ball [" + std::to_string(i) + ", " + std::to_string(j) + ", " + std::to_string(k) + "]");
 					sceneNode->SetTranslate(vec3(offset * i, offset * k, offset * j));
 					sceneNode->SetScale(vec3(scale));
-					sceneNode->GetComponent<IMeshComponent3D>()->AddMesh(((i % 2 == 0) || (j % 2 == 0) && (k % 2 == 0)) ? cubeModel : sphereModel);
+					sceneNode->GetComponent<IModelsComponent3D>()->AddModel(((i % 2 == 0) || (j % 2 == 0) && (k % 2 == 0)) ? cubeModel : sphereModel);
 
 					BoundingBox bbox = BoundingBox(glm::vec3(-1.0f, -1.0f, -1.0f), glm::vec3(1.0f, 1.0f, 1.0f));
 					bbox.transform(sceneNode->GetWorldTransfom());
@@ -235,7 +235,7 @@ void CGameState_World::Load3D()
 		sceneNodePlane->SetName("Ground");
 		sceneNodePlane->SetTranslate(vec3(0, cPlaneY, 0));
 		sceneNodePlane->SetScale(vec3(cPlaneSize));
-		sceneNodePlane->GetComponent<IMeshComponent3D>()->AddMesh(modelPlane);
+		sceneNodePlane->GetComponent<IModelsComponent3D>()->AddModel(modelPlane);
 	}
 
 	//std::shared_ptr<ISceneNode3D> fbxSceneNode = GetBaseManager().GetManager<ISceneNodesFactory>()->CreateSceneNode(m_Scene->GetRootNode(), "FBXSceneNode");
@@ -255,7 +255,7 @@ void CGameState_World::Load3D()
 	m_DefferedFinalRenderPass->CreatePipeline(GetRenderWindow()->GetRenderTarget(), &GetRenderWindow()->GetViewport());
 
 
-	vec4 color = vec4(0.0, 0.0f, 0.0f, 1.0f);
+	glm::vec4 color = glm::vec4(0.0, 0.0f, 0.0f, 1.0f);
 	m_Technique3D.AddPass(std::make_shared<ClearRenderTargetPass>(GetRenderDevice(), GetRenderWindow()->GetRenderTarget(), ClearFlags::All, color /*glm::vec4(0.2f, 0.2f, 0.2f, 0.2f)*/, 1.0f, 0));
 	m_Technique3D.AddPass(m_SceneCreateTypelessListPass);
 	m_Technique3D.AddPass(m_DefferedRenderPass);

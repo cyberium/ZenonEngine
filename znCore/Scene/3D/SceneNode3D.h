@@ -36,15 +36,15 @@ public:
 	//
 	// Transform functional
 	//
-	void											SetTranslate(cvec3 Translate) override;
-	void                                            AddTranslate(vec3 Translate) override;
-	cvec3											GetTranslation() const override;
-	void											SetRotation(cvec3 _rotate) override;
-	cvec3											GetRotation() const override;
+	void											SetTranslate(const glm::vec3& Translate) override;
+	void                                            AddTranslate(const glm::vec3& Translate) override;
+	const glm::vec3&								GetTranslation() const override;
+	void											SetRotation(const glm::vec3& _rotate) override;
+	const glm::vec3&                                GetRotation() const override;
 	void											SetRotationQuaternion(cquat _rotate) override;
-	cquat											GetRotationQuaternion() const override;
-	void											SetScale(cvec3 _scale) override;
-	cvec3											GetScale() const override;
+	const glm::quat&								GetRotationQuaternion() const override;
+	void											SetScale(const glm::vec3& _scale) override;
+	const glm::vec3&								GetScale() const override;
 
 	virtual mat4									GetLocalTransform() const;
 	virtual mat4									GetInverseLocalTransform() const;
@@ -59,8 +59,6 @@ public:
 	//
 	// Components engine
 	//
-
-
 	bool                                            IsComponentExists(GUID ComponentID) const override;
 	std::shared_ptr<ISceneNodeComponent>            GetComponent(GUID ComponentID) const override;
 	std::shared_ptr<ISceneNodeComponent>            AddComponent(GUID ComponentID, const std::shared_ptr<ISceneNodeComponent>& Component) override;
@@ -68,36 +66,26 @@ public:
 	void                                            RaiseComponentMessage(const ISceneNodeComponent* Component, ComponentMessageType Message) const override;
 	virtual void                                    RegisterComponents() override;
     
-	inline const std::shared_ptr<IColliderComponent3D>& GetColliderComponent() const override
-	{
-		return m_Components_Collider;
-	}
-	
-	template<typename T> inline bool IsComponentExists() const
+	template<typename T> inline bool                IsComponentExists() const
 	{
 		return ISceneNode3D::IsComponentExists<T>();
 	}
-	template<typename T> inline std::shared_ptr<T> GetComponent() const
+	template<typename T> inline std::shared_ptr<T>  GetComponent() const
 	{
 		return ISceneNode3D::GetComponent<T>();
 	}
-	template<typename T> inline std::shared_ptr<T> AddComponent(const std::shared_ptr<T>& Component)
+	template<typename T> inline std::shared_ptr<T>  AddComponent(const std::shared_ptr<T>& Component)
 	{
 		return ISceneNode3D::AddComponent<T>(Component);
 	}
 
+	const std::shared_ptr<IColliderComponent3D>&    GetColliderComponent() const;
+	const std::shared_ptr<IModelsComponent3D>&      GetModelsComponent() const;
 
 
 	//
 	// Others
 	//
-
-
-	// Load & Save
-	bool                                            Load(std::shared_ptr<IXMLReader> Reader) override;
-	bool                                            Save(std::shared_ptr<IXMLWriter> Writer) override;
-
-	// Allow a visitor to visit this node.
 	virtual void                                    Update(const UpdateEventArgs& e) override;
 	virtual void                                    Accept(IVisitor* visitor) override;
 
@@ -115,9 +103,9 @@ protected:
 	virtual void									ForceRecalculateLocalTransform();
 	IBaseManager&                                   GetBaseManager() const;
 
-	void                                            SetMeshComponent(const std::shared_ptr<IMeshComponent3D>& MeshComponent);
-    void                                            SetColliderComponent(const std::shared_ptr<IColliderComponent3D>& ColliderComponent);
-
+	std::shared_ptr<IColliderComponent3D>			m_Components_Collider;
+	std::shared_ptr<IModelsComponent3D>				m_Components_Models;
+	std::shared_ptr<ILightComponent3D>				m_Components_Light;
 
 private:
 	SceneNodeType                                   m_Type;
@@ -143,6 +131,4 @@ private:
 	glm::mat4										m_InverseWorldTransform;
 
 	ComponentsMap                                   m_Components;
-	std::shared_ptr<IMeshComponent3D>				m_Components_Mesh;
-    std::shared_ptr<IColliderComponent3D>			m_Components_Collider;
 };

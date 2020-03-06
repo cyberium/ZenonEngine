@@ -45,6 +45,7 @@ private:
 	std::string m_Message;
 };
 
+#if 1
 #ifndef _DEBUG
 	#define _ASSERT(expr)   \
 	if ((!(expr)))          \
@@ -57,4 +58,5 @@ private:
 	{                                 \
 		throw CException(msg);        \
 	} 
+#endif
 #endif
