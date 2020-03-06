@@ -53,7 +53,8 @@ void CBaseList3DPass::Render(RenderEventArgs & e)
 		{
 			for (const auto& SceneNodeElement : GetSceneNodeListPass()->GetNodesList(acceptableNodeType))
 			{
-				if (Visit(SceneNodeElement.SceneNode))
+				EVisitResult visitResult = Visit(SceneNodeElement.SceneNode);
+				if (visitResult == EVisitResult::AllowAll)
 				{
 					const auto& components = SceneNodeElement.SceneNode->GetComponents();
 					std::for_each(components.begin(), components.end(), [this](const std::pair<GUID, std::shared_ptr<ISceneNodeComponent>>& Component) {
@@ -68,7 +69,7 @@ void CBaseList3DPass::Render(RenderEventArgs & e)
 //
 // IVisitor
 //
-bool CBaseList3DPass::Visit(const ISceneNode3D * SceneNode)
+EVisitResult CBaseList3DPass::Visit(const ISceneNode3D * SceneNode)
 {
 	static PerObject3D perObject3D;
 	perObject3D.Model = SceneNode->GetWorldTransfom();
@@ -83,20 +84,21 @@ bool CBaseList3DPass::Visit(const ISceneNode3D * SceneNode)
 		m_PerObjectParameter->Bind();
 	}
 
-	return true;
+	return EVisitResult::AllowAll;
 }
 
-bool CBaseList3DPass::Visit(const IModel * Model)
+EVisitResult CBaseList3DPass::Visit(const IModel * Model)
 {
-	return Model->Render(GetRenderEventArgs());
+	Model->Render(GetRenderEventArgs());
+	return EVisitResult::AllowAll;
 }
 
-bool CBaseList3DPass::Visit(const IGeometry * Geometry, const IMaterial * Material, SGeometryDrawArgs GeometryDrawArgs)
+EVisitResult CBaseList3DPass::Visit(const IGeometry * Geometry, const IMaterial * Material, SGeometryDrawArgs GeometryDrawArgs)
 {
 	Material->Bind(GetRenderEventArgs().PipelineState->GetShaders());
 	Geometry->Render(GetRenderEventArgs(), GetRenderEventArgs().PipelineState->GetShaders().at(EShaderType::VertexShader).get(), GeometryDrawArgs);
 	Material->Unbind(GetRenderEventArgs().PipelineState->GetShaders());
-	return true;
+	return EVisitResult::AllowAll;
 }
 
 

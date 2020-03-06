@@ -68,10 +68,10 @@ public:
 	void Render(RenderEventArgs& e) override;
 
 	// IVisitor
-	bool Visit(const ISceneNode3D* SceneNode) override;
-	bool Visit(const IModel* Model) override;
-	bool Visit(const IGeometry* Geometry, const IMaterial* Material, SGeometryDrawArgs GeometryDrawArgs = SGeometryDrawArgs()) override;
-	bool Visit(const ILightComponent3D* light) override;
+	EVisitResult Visit(const ISceneNode3D* SceneNode) override;
+	EVisitResult Visit(const IModel* Model) override;
+	EVisitResult Visit(const IGeometry* Geometry, const IMaterial* Material, SGeometryDrawArgs GeometryDrawArgs = SGeometryDrawArgs()) override;
+	EVisitResult Visit(const ILightComponent3D* light) override;
 
 private:
 	std::vector<SNodeElement>         m_NodesList;
@@ -97,22 +97,22 @@ public:
 	{}
 
 	// IVisitor
-	bool Visit(const ISceneNode3D* SceneNode) override
+	EVisitResult Visit(const ISceneNode3D* SceneNode) override
 	{
 		if (const TNode* SceneNodeT = dynamic_cast<const TNode*>(SceneNode))
 			return CSceneCreateTypelessListPass::Visit(SceneNodeT);
-		return false;
+		return EVisitResult::Block;
 	}
-	bool Visit(const IModel* Model) override
+	EVisitResult Visit(const IModel* Model) override
 	{
 		if (const TModel* ModelT = dynamic_cast<const TModel*>(Model))
 			return CSceneCreateTypelessListPass::Visit(ModelT);
-		return false;
+		return EVisitResult::Block;
 	}
-	bool Visit(const IGeometry* Geometry, const IMaterial* Material, SGeometryDrawArgs GeometryDrawArgs = SGeometryDrawArgs()) override
+	EVisitResult Visit(const IGeometry* Geometry, const IMaterial* Material, SGeometryDrawArgs GeometryDrawArgs = SGeometryDrawArgs()) override
 	{
 		if (const TGeometry* GeometryT = dynamic_cast<const TGeometry*>(Geometry))
 			return CSceneCreateTypelessListPass::Visit(GeometryT, Material, GeometryDrawArgs);
-		return false;
+		return EVisitResult::Block;
 	}
 };

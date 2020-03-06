@@ -71,32 +71,32 @@ bool CComponentBase::Save(std::shared_ptr<IXMLWriter> Writer)
 			child->Save(childsWriter);
 	}*/
 
-bool CSceneXMLFucntional::Visit(const ISceneNode3D * node)
+EVisitResult CSceneXMLFucntional::Visit(const ISceneNode3D * node)
 {
-	return false;
+	return EVisitResult::Block;
 }
 
-bool CSceneXMLFucntional::Visit(const ISceneNodeUI * node)
+EVisitResult CSceneXMLFucntional::Visit(const ISceneNodeUI * node)
 {
-	return false;
+	return EVisitResult::Block;
 }
 
-bool CSceneXMLFucntional::Visit(const IModel * Model)
+EVisitResult CSceneXMLFucntional::Visit(const IModel * Model)
 {
-	return false;
+	return EVisitResult::Block;
 }
 
-bool CSceneXMLFucntional::Visit(const IGeometry * Geometry, const IMaterial * Material, SGeometryDrawArgs GeometryDrawArgs)
+EVisitResult CSceneXMLFucntional::Visit(const IGeometry * Geometry, const IMaterial * Material, SGeometryDrawArgs GeometryDrawArgs)
 {
-	return false;
+	return EVisitResult::Block;
 }
 
-bool CSceneXMLFucntional::Visit(const ISceneNodeComponent * Component)
+EVisitResult CSceneXMLFucntional::Visit(const ISceneNodeComponent * Component)
 {
-	return false;
+	return EVisitResult::Block;
 }
 
-bool CSceneXMLFucntional::Visit(const ILightComponent3D * light)
+EVisitResult CSceneXMLFucntional::Visit(const ILightComponent3D * light)
 {
-	return false;
+	return EVisitResult::Block;
 }

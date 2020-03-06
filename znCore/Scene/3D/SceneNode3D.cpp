@@ -348,8 +348,10 @@ void SceneNode3D::Accept(IVisitor* visitor)
 	//if (const auto& loadableObject = dynamic_cast<ILoadable*>(this))
 	//	if (loadableObject->GetState() != ILoadable::ELoadableState::Loaded)
 	//		return;
+	
+	EVisitResult visitResult = visitor->Visit(this);
 
-	if (visitor->Visit(this))
+	if (visitResult & EVisitResult::AllowVisitContent)
 	{
 		const auto& components = GetComponents();
 		std::for_each(components.begin(), components.end(), [&visitor](const std::pair<GUID, std::shared_ptr<ISceneNodeComponent>>& Component) {
@@ -357,11 +359,14 @@ void SceneNode3D::Accept(IVisitor* visitor)
 		});
 	}
 
-	const auto& childs = GetChilds();
-	std::for_each(childs.begin(), childs.end(), [&visitor](const std::shared_ptr<ISceneNode3D>& Child) {
-		if (Child != nullptr)
-			Child->Accept(visitor);
-	});
+	if (visitResult & EVisitResult::AllowVisitChilds)
+	{
+		const auto& childs = GetChilds();
+		std::for_each(childs.begin(), childs.end(), [&visitor](const std::shared_ptr<ISceneNode3D>& Child) {
+			if (Child != nullptr)
+				Child->Accept(visitor);
+		});
+	}
 }
 
 

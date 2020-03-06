@@ -11,8 +11,6 @@ ScenePass::ScenePass(IRenderDevice& RenderDevice, const std::shared_ptr<IScene>&
 ScenePass::~ScenePass()
 {}
 
-
-
 //
 // IRenderPass
 //
@@ -20,8 +18,6 @@ void ScenePass::Render(RenderEventArgs & e)
 {
 	GetScene()->Accept(this);
 }
-
-
 
 //
 // Protected

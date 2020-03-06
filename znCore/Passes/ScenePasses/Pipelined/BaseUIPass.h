@@ -18,9 +18,9 @@ public:
 	virtual std::shared_ptr<IRenderPassPipelined> CreatePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport* Viewport) override;
 
 	// IVisitor
-	virtual bool Visit(const ISceneNodeUI* node) override;
-	virtual bool Visit(const IModel* Model) override;
-	virtual bool Visit(const IGeometry* Geometry, const IMaterial* Material, SGeometryDrawArgs GeometryDrawArgs = SGeometryDrawArgs()) override;
+	virtual EVisitResult Visit(const ISceneNodeUI* node) override;
+	virtual EVisitResult Visit(const IModel* Model) override;
+	virtual EVisitResult Visit(const IGeometry* Geometry, const IMaterial* Material, SGeometryDrawArgs GeometryDrawArgs = SGeometryDrawArgs()) override;
 
 protected:
 	virtual void FillPerFrameData() override;

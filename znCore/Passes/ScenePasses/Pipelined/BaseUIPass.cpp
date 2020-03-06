@@ -38,7 +38,7 @@ std::shared_ptr<IRenderPassPipelined> BaseUIPass::CreatePipeline(std::shared_ptr
 //
 // IVisitor
 //
-bool BaseUIPass::Visit(const ISceneNodeUI* sceneNode)
+EVisitResult BaseUIPass::Visit(const ISceneNodeUI* sceneNode)
 {
 	PerObjectUI perObjectUI;
 	perObjectUI.Model = sceneNode->GetWorldTransfom();
@@ -51,21 +51,22 @@ bool BaseUIPass::Visit(const ISceneNodeUI* sceneNode)
 		perObjectParameter.Bind();
 	}
 
-	return true;
+	return EVisitResult::AllowAll;
 }
 
-bool BaseUIPass::Visit(const IModel * Model)
+EVisitResult BaseUIPass::Visit(const IModel * Model)
 {
-	return Model->Render(GetRenderEventArgs());
+	Model->Render(GetRenderEventArgs());
+	return EVisitResult::AllowAll;
 }
 
-bool BaseUIPass::Visit(const IGeometry* Geometry, const IMaterial* Material, SGeometryDrawArgs GeometryDrawArgs)
+EVisitResult BaseUIPass::Visit(const IGeometry* Geometry, const IMaterial* Material, SGeometryDrawArgs GeometryDrawArgs)
 {
 	Material->Bind(GetRenderEventArgs().PipelineState->GetShaders());
 	Geometry->Render(GetRenderEventArgs(), GetRenderEventArgs().PipelineState->GetShaders().at(EShaderType::VertexShader).get(), GeometryDrawArgs);
 	Material->Unbind(GetRenderEventArgs().PipelineState->GetShaders());
 
-	return true;
+	return EVisitResult::AllowAll;
 }
 
 

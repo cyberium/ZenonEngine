@@ -152,19 +152,17 @@ void CDefferedRender::UpdateViewport(const Viewport& _viewport)
 //
 // IVisitor
 //
-bool CDefferedRender::Visit(const ISceneNode3D * node)
+EVisitResult CDefferedRender::Visit(const ISceneNode3D * node)
 {
-	__super::Visit(node);
-
 	PerObject3D perObject3D;
 	perObject3D.Model = node->GetWorldTransfom();
 	m_PerObjectConstantBuffer->Set(perObject3D);
 	m_PerObjectShaderParameter->Bind();
 
-	return true;
+	return EVisitResult::AllowAll;
 }
 
-bool CDefferedRender::Visit(const IGeometry * Geometry, const IMaterial * Material, SGeometryDrawArgs GeometryDrawArgs)
+EVisitResult CDefferedRender::Visit(const IGeometry * Geometry, const IMaterial * Material, SGeometryDrawArgs GeometryDrawArgs)
 {
 	const auto& shaders = GetRenderEventArgs().PipelineState->GetShaders();
 
@@ -172,10 +170,10 @@ bool CDefferedRender::Visit(const IGeometry * Geometry, const IMaterial * Materi
 	Geometry->Render(GetRenderEventArgs(), shaders.at(EShaderType::VertexShader).get(), GeometryDrawArgs);
 	Material->Unbind(shaders);
 
-	return true;
+	return EVisitResult::AllowAll;
 }
 
-bool CDefferedRender::Visit(const ILightComponent3D * light)
+EVisitResult CDefferedRender::Visit(const ILightComponent3D * light)
 {
-	return false;
+	return EVisitResult::AllowAll;
 }

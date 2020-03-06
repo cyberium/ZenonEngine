@@ -23,9 +23,9 @@ public:
 	void UpdateViewport(const Viewport& _viewport) override;
 
 	// IVisitor
-	bool Visit(const ISceneNode3D* node) override;
-	bool Visit(const IGeometry* Geometry, const IMaterial* Material, SGeometryDrawArgs GeometryDrawArgs = SGeometryDrawArgs()) override;
-	bool Visit(const ILightComponent3D* light) override;
+	EVisitResult Visit(const ISceneNode3D* node) override;
+	EVisitResult Visit(const IGeometry* Geometry, const IMaterial* Material, SGeometryDrawArgs GeometryDrawArgs = SGeometryDrawArgs()) override;
+	EVisitResult Visit(const ILightComponent3D* light) override;
 
 private:
 	std::shared_ptr<CSceneCreateTypelessListPass> m_SceneCreateTypelessListPass;

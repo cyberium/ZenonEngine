@@ -63,54 +63,64 @@ void CSceneCreateTypedListsPass::PreRender(RenderEventArgs & e)
 
 void CSceneCreateTypedListsPass::Render(RenderEventArgs & e)
 {
+	/*if (Visit(GetScene()->GetRootNode3D().get()))
+	{
+		const auto& components = GetScene()->GetRootNode3D()->GetComponents();
+		std::for_each(components.begin(), components.end(), [this](const std::pair<GUID, std::shared_ptr<ISceneNodeComponent>>& Component) {
+			Component.second->Accept(this);
+		});
+
+		const auto& childs = GetScene()->GetRootNode3D()->Get
+	}*/
+
 	ScenePass::Render(e);
 }
 
 //
 // IVisitor
 //
-bool CSceneCreateTypedListsPass::Visit(const ISceneNode3D * SceneNode)
+EVisitResult CSceneCreateTypedListsPass::Visit(const ISceneNode3D * SceneNode)
 {
 	if (SceneNode->GetType() < 0)
-		return false;
+		return EVisitResult::AllowVisitChilds;
 
 	if (const auto& colliderComponent = SceneNode->GetColliderComponent())
 	{
 		if (colliderComponent->IsCulled(GetRenderEventArgs()->Camera))
-			return false;
+			return EVisitResult::Block;
 	}
 
 	m_LastSceneNode = SceneNode;
 	m_NodesList[SceneNode->GetType()].push_back(CSceneCreateTypelessListPass::SNodeElement(SceneNode));
-	return true;
+	return EVisitResult::AllowAll;
 }
 
-bool CSceneCreateTypedListsPass::Visit(const IModel * Model)
+EVisitResult CSceneCreateTypedListsPass::Visit(const IModel * Model)
 {
 	_ASSERT(m_LastSceneNode != nullptr);
 	_ASSERT(m_LastSceneNode->GetType() >= 0);
 
 	m_LastModel = Model;
 	m_ModelsList[m_LastSceneNode->GetType()].push_back(CSceneCreateTypelessListPass::SModelElement(m_LastSceneNode, Model));
-	return true;
+	return EVisitResult::AllowAll;
 }
 
-bool CSceneCreateTypedListsPass::Visit(const IGeometry * Geometry, const IMaterial * Material, SGeometryDrawArgs GeometryDrawArgs)
+EVisitResult CSceneCreateTypedListsPass::Visit(const IGeometry * Geometry, const IMaterial * Material, SGeometryDrawArgs GeometryDrawArgs)
 {
 	_ASSERT(m_LastSceneNode != nullptr);
 	_ASSERT(m_LastSceneNode->GetType() >= 0);
 	_ASSERT(m_LastModel != nullptr);
 
 	m_GeometryList[m_LastSceneNode->GetType()].push_back(CSceneCreateTypelessListPass::SGeometryElement(m_LastSceneNode, m_LastModel, Geometry, Material, GeometryDrawArgs));
-	return true;
+	return EVisitResult::AllowAll;
 }
 
-bool CSceneCreateTypedListsPass::Visit(const ILightComponent3D * light)
+EVisitResult CSceneCreateTypedListsPass::Visit(const ILightComponent3D * light)
 {
 	_ASSERT(m_LastSceneNode != nullptr);
 	_ASSERT(m_LastSceneNode->GetType() >= 0);
 
 	m_LastLight = light;
 	m_LightList[m_LastSceneNode->GetType()].push_back(CSceneCreateTypelessListPass::SLightElement(m_LastSceneNode, light));
-	return true;
+	return EVisitResult::AllowAll;
 }

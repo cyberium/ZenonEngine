@@ -52,14 +52,14 @@ std::shared_ptr<IRenderPassPipelined> CDrawBoundingBoxPass::CreatePipeline(std::
 //
 // IVisitor
 //
-bool CDrawBoundingBoxPass::Visit(const ISceneNode3D * SceneNode3D)
+EVisitResult CDrawBoundingBoxPass::Visit(const ISceneNode3D * SceneNode3D)
 {
 	const std::shared_ptr<IColliderComponent3D>& colliderComponent = SceneNode3D->GetColliderComponent();
 	if (colliderComponent == nullptr)
-		return false;
+		return EVisitResult::AllowVisitChilds;
 
 	if (! colliderComponent->GetDebugDrawMode())
-		return false;
+		return EVisitResult::AllowVisitChilds;
 
 	BoundingBox bbox = colliderComponent->GetWorldBounds();
 
@@ -84,15 +84,15 @@ bool CDrawBoundingBoxPass::Visit(const ISceneNode3D * SceneNode3D)
 
 	m_QuadGeometry->Render(GetRenderEventArgs(), vertexShader);
 
-	return true;
+	return EVisitResult::AllowAll;
 }
 
-bool CDrawBoundingBoxPass::Visit(const IModel * Model)
+EVisitResult CDrawBoundingBoxPass::Visit(const IModel * Model)
 {
-	return false;
+	return EVisitResult::Block;
 }
 
-bool CDrawBoundingBoxPass::Visit(const IGeometry * Geometry, const IMaterial * Material, SGeometryDrawArgs GeometryDrawArgs)
+EVisitResult CDrawBoundingBoxPass::Visit(const IGeometry * Geometry, const IMaterial * Material, SGeometryDrawArgs GeometryDrawArgs)
 {
-	return false;
+	return EVisitResult::Block;
 }

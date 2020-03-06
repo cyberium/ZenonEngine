@@ -13,6 +13,14 @@ ZN_INTERFACE ISceneNodeComponent;
 ZN_INTERFACE ILightComponent3D;
 // FORWARD END
 
+enum ZN_API EVisitResult : size_t
+{
+	Block = 1 << 0,
+	AllowVisitChilds = 1 << 1,
+	AllowVisitContent = 1 << 2,
+	AllowAll = AllowVisitChilds | AllowVisitContent
+};
+
 /**
   * Паттерн посетитель используется в ZenonEngine в частности для отрисовки сцены.
   *
@@ -26,10 +34,10 @@ ZN_INTERFACE ZN_API IVisitor : public std::enable_shared_from_this<IVisitor>
 {
 	virtual ~IVisitor() {}
 
-	virtual bool Visit(const ISceneNode3D* node) = 0;
-	virtual bool Visit(const ISceneNodeUI* node) = 0;
-	virtual bool Visit(const IModel* Model) = 0;
-	virtual bool Visit(const IGeometry* Geometry, const IMaterial* Material, SGeometryDrawArgs GeometryDrawArgs = SGeometryDrawArgs()) = 0;
-	virtual bool Visit(const ISceneNodeComponent* Component) = 0;
-	virtual bool Visit(const ILightComponent3D* Light) = 0;
+	virtual EVisitResult Visit(const ISceneNode3D* node) = 0;
+	virtual EVisitResult Visit(const ISceneNodeUI* node) = 0;
+	virtual EVisitResult Visit(const IModel* Model) = 0;
+	virtual EVisitResult Visit(const IGeometry* Geometry, const IMaterial* Material, SGeometryDrawArgs GeometryDrawArgs = SGeometryDrawArgs()) = 0;
+	virtual EVisitResult Visit(const ISceneNodeComponent* Component) = 0;
+	virtual EVisitResult Visit(const ILightComponent3D* Light) = 0;
 };

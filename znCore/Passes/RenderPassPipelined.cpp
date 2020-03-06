@@ -122,34 +122,34 @@ void RenderPassPipelined::UpdateViewport(const Viewport& _viewport)
 //
 // IVisitor
 //
-bool RenderPassPipelined::Visit(const ISceneNode3D* node)
+EVisitResult RenderPassPipelined::Visit(const ISceneNode3D* node)
 {
-	return false;
+	return EVisitResult::Block;
 }
 
-bool RenderPassPipelined::Visit(const ISceneNodeUI* node)
+EVisitResult RenderPassPipelined::Visit(const ISceneNodeUI* node)
 {
-	return false;
+	return EVisitResult::Block;
 }
 
-bool RenderPassPipelined::Visit(const IModel* Model)
+EVisitResult RenderPassPipelined::Visit(const IModel* Model)
 {
-    return false;
+    return EVisitResult::Block;
 }
 
-bool RenderPassPipelined::Visit(const IGeometry * Geometry, const IMaterial* Material, SGeometryDrawArgs GeometryDrawArgs)
+EVisitResult RenderPassPipelined::Visit(const IGeometry * Geometry, const IMaterial* Material, SGeometryDrawArgs GeometryDrawArgs)
 {
-	return false;
+	return EVisitResult::Block;
 }
 
-bool RenderPassPipelined::Visit(const ISceneNodeComponent * Component)
+EVisitResult RenderPassPipelined::Visit(const ISceneNodeComponent * Component)
 {
-	return false;
+	return EVisitResult::Block;
 }
 
-bool RenderPassPipelined::Visit(const ILightComponent3D* light)
+EVisitResult RenderPassPipelined::Visit(const ILightComponent3D* light)
 {
-	return false;
+	return EVisitResult::Block;
 }
 
 

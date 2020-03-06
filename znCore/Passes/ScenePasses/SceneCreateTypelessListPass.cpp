@@ -54,39 +54,35 @@ void CSceneCreateTypelessListPass::Render(RenderEventArgs & e)
 //
 // IVisitor
 //
-bool CSceneCreateTypelessListPass::Visit(const ISceneNode3D * SceneNode)
+EVisitResult CSceneCreateTypelessListPass::Visit(const ISceneNode3D * SceneNode)
 {
 	m_NodesList.push_back(SNodeElement(SceneNode));
-	return true;
+	return EVisitResult::AllowAll;
 }
 
-bool CSceneCreateTypelessListPass::Visit(const IModel * Model)
+EVisitResult CSceneCreateTypelessListPass::Visit(const IModel * Model)
 {
 	_ASSERT(! m_NodesList.empty());
 	const auto& lastNodeElement = m_NodesList.back();
 	//lastNodeElement.ModelsElements.push_back(SModelElement(lastNodeElement.SceneNode, Model));
 	m_ModelsList.push_back(SModelElement(lastNodeElement.SceneNode, Model));
-	return true;
+	return EVisitResult::AllowAll;
 }
 
-bool CSceneCreateTypelessListPass::Visit(const IGeometry * Geometry, const IMaterial * Material, SGeometryDrawArgs GeometryDrawArgs)
+EVisitResult CSceneCreateTypelessListPass::Visit(const IGeometry * Geometry, const IMaterial * Material, SGeometryDrawArgs GeometryDrawArgs)
 {
 	_ASSERT(! m_ModelsList.empty());
 	const auto& lastModelElement = m_ModelsList.back();
 	//lastModelElement.GeometriesElements.push_back(SGeometryElement(lastModelElement.SceneNode, lastModelElement.Model, Geometry, Material, GeometryDrawArgs));
 	m_GeometryList.push_back(SGeometryElement(lastModelElement.SceneNode, lastModelElement.Model, Geometry, Material, GeometryDrawArgs));
-	return true;
+	return EVisitResult::AllowAll;
 }
 
-bool CSceneCreateTypelessListPass::Visit(const ILightComponent3D * light)
+EVisitResult CSceneCreateTypelessListPass::Visit(const ILightComponent3D * light)
 {
 	_ASSERT(! m_NodesList.empty());
 	const auto& lastNodeElement = m_NodesList.back();
 	//lastNodeElement.LightsElement.push_back(SLightElement(lastNodeElement.SceneNode, light));
 	m_LightList.push_back(SLightElement(lastNodeElement.SceneNode, light));
-	return true;
+	return EVisitResult::AllowAll;
 }
-
-
-
-
