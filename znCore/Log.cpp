@@ -66,7 +66,7 @@ bool CLog::DeleteDebugOutput(std::shared_ptr<IDebugOutput> _debugOutput)
 //
 void CLog::PushMessageToAllDebugOutputs(IDebugOutput::DebugMessageType _type, const char* _message, va_list& _vaList)
 {
-	std::unique_lock<std::mutex> lck(m_Mutex, std::defer_lock);
+	std::lock_guard<std::mutex> lck(m_Mutex);
 
 	int len = vsnprintf(NULL, 0, _message, _vaList);
 	if (len > 0)

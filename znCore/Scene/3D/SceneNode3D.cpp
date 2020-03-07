@@ -27,8 +27,6 @@ SceneNode3D::SceneNode3D()
 	SetName("SceneNode3D");
 	SetType(-1);
 
-	m_InverseLocalTransform = glm::inverse(m_LocalTransform);
-
 	m_ActionsGroup = std::make_shared<CActionsGroup>("General");
 	m_PropertiesGroup = std::make_shared<CPropertiesGroup>("General", "Some important scene node properties.");
 

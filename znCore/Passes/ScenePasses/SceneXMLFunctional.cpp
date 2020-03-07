@@ -96,7 +96,7 @@ EVisitResult CSceneXMLFucntional::Visit(const ISceneNodeComponent * Component)
 	return EVisitResult::Block;
 }
 
-EVisitResult CSceneXMLFucntional::Visit(const ILightComponent3D * light)
+EVisitResult CSceneXMLFucntional::Visit(const ILight3D * light)
 {
 	return EVisitResult::Block;
 }

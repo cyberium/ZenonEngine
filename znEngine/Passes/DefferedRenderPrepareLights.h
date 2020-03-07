@@ -9,8 +9,8 @@ public:
 	struct SLightResult
 	{
 		bool IsEnabled;
-		const ISceneNode3D* LightSceneNode;
-		const ILightComponent3D* LightComponent;
+		const ISceneNode3D* SceneNode;
+		const ILight3D* Light;
 		bool IsShadowEnable;
 		std::shared_ptr<ITexture> ShadowTexture;
 	};
@@ -34,7 +34,7 @@ protected:
 	std::shared_ptr<ITexture> CreateShadowTexture0() const;
 	std::shared_ptr<ITexture> CreateShadowTextureDepthStencil() const;
 	
-	void BindPerFrameParamsForCurrentIteration(const ILightComponent3D* LightComponent);
+	void BindPerFrameParamsForCurrentIteration(const ILight3D * Light);
 	void BindPerObjectParamsForCurrentIteration(const ISceneNode3D* SceneNode);
 
 private: // Pass light params

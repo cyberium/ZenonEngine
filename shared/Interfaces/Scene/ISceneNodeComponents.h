@@ -162,6 +162,15 @@ const ComponentMessageType UUID_OnModelRemoved = 30;
 //
 // LIGHT COMPONENT 3D
 //
+ZN_INTERFACE ZN_API ILight3D
+{
+	virtual ~ILight3D() {}
+
+	virtual glm::mat4 GetViewMatrix() const = 0;
+	virtual glm::mat4 GetProjectionMatrix() const = 0;
+	virtual const SLight& GetLightStruct() const = 0;
+};
+
 #define UUID_LightComponent uuid("2198326E-A00F-43C8-9EF5-4F60A8ABBBAE")
 ZN_INTERFACE __declspec(UUID_LightComponent) ZN_API ILightComponent3D
 {
@@ -181,11 +190,6 @@ ZN_INTERFACE __declspec(UUID_LightComponent) ZN_API ILightComponent3D
 
 	virtual void SetSpotlightAngle(float Value) = 0;
 	virtual float GetSpotlightAngle() const = 0;
-
-	virtual glm::mat4 GetViewMatrix() const = 0;
-	virtual glm::mat4 GetProjectionMatrix() const = 0;
-
-	virtual const SLight& GetLightStruct() const = 0;
 };
 
 
@@ -236,4 +240,33 @@ ZN_INTERFACE __declspec(UUID_CameraComponent) ZN_API ICameraComponent3D
 
 	virtual const Frustum& GetFrustum() const = 0;
 	virtual const glm::vec3& GetCameraUpDirection() const = 0;
+};
+
+
+
+//
+// SKELETON COMPONENT 3D
+//
+
+ZN_INTERFACE ZN_API ISkeletonBone3D
+{
+	virtual ~ISkeletonBone3D() {}
+
+	// Static data
+	virtual const std::weak_ptr<ISkeletonBone3D>& GetParentBone() const = 0;
+	virtual const std::vector<std::shared_ptr<ISkeletonBone3D>>& GetChilds() const = 0;
+	virtual glm::vec3 GetPivotPoint() const = 0;
+
+	// Dynamic data
+	virtual const glm::mat4& GetMatrix() const = 0;
+	virtual const glm::mat4& GetRotateMatrix() const = 0;
+};
+
+#define UUID_SkeletonComponent uuid("6A913E4D-B4E9-4E7C-8A09-F606D7A85CD5")
+ZN_INTERFACE __declspec(UUID_SkeletonComponent) ZN_API ISkeletonComponent3D
+{
+	virtual ~ISkeletonComponent3D() {}
+
+	virtual std::shared_ptr<ISkeletonBone3D> GetBone(size_t Index) const = 0;
+	virtual void Calculate(uint32 GlobalTime) = 0;
 };

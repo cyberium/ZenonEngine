@@ -28,7 +28,7 @@ public:
 	EVisitResult Visit(const ISceneNode3D* SceneNode) override;
 	EVisitResult Visit(const IModel* Model) override;
 	EVisitResult Visit(const IGeometry* Geometry, const IMaterial* Material, SGeometryDrawArgs GeometryDrawArgs = SGeometryDrawArgs()) override;
-	EVisitResult Visit(const ILightComponent3D* light) override;
+	EVisitResult Visit(const ILight3D* light) override;
 
 private:
 	std::unordered_map<SceneNodeType, std::vector<CSceneCreateTypelessListPass::SNodeElement>>      m_NodesList;
@@ -39,5 +39,5 @@ private:
 	const ISceneNode3D*       m_LastSceneNode;
 	const IModel*             m_LastModel;
 	const IGeometry*          m_LastGeometry;
-	const ILightComponent3D*  m_LastLight;
+	const ILight3D*           m_LastLight;
 };

@@ -115,7 +115,7 @@ EVisitResult CSceneCreateTypedListsPass::Visit(const IGeometry * Geometry, const
 	return EVisitResult::AllowAll;
 }
 
-EVisitResult CSceneCreateTypedListsPass::Visit(const ILightComponent3D * light)
+EVisitResult CSceneCreateTypedListsPass::Visit(const ILight3D * light)
 {
 	_ASSERT(m_LastSceneNode != nullptr);
 	_ASSERT(m_LastSceneNode->GetType() >= 0);

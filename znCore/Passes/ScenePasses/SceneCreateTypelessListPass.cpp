@@ -78,7 +78,7 @@ EVisitResult CSceneCreateTypelessListPass::Visit(const IGeometry * Geometry, con
 	return EVisitResult::AllowAll;
 }
 
-EVisitResult CSceneCreateTypelessListPass::Visit(const ILightComponent3D * light)
+EVisitResult CSceneCreateTypelessListPass::Visit(const ILight3D * light)
 {
 	_ASSERT(! m_NodesList.empty());
 	const auto& lastNodeElement = m_NodesList.back();

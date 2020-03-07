@@ -117,11 +117,11 @@ void CDefferedRenderFinal::BindLightParamsForCurrentIteration(const RenderEventA
 	_ASSERT(camera != nullptr);
 
 	SLightResult lightResult;
-	lightResult.Light = LightResult.LightComponent->GetLightStruct();
+	lightResult.Light = LightResult.Light->GetLightStruct();
 	lightResult.Light.PositionVS = camera->GetViewMatrix() * glm::vec4(lightResult.Light.PositionWS.xyz(), 1.0f);
 	lightResult.Light.DirectionVS = glm::normalize(camera->GetViewMatrix() * glm::vec4(lightResult.Light.DirectionWS.xyz(), 0.0f));
-	lightResult.LightViewMatrix = LightResult.LightComponent->GetViewMatrix();
-	lightResult.LightProjectionMatrix = LightResult.LightComponent->GetProjectionMatrix();
+	lightResult.LightViewMatrix = LightResult.Light->GetViewMatrix();
+	lightResult.LightProjectionMatrix = LightResult.Light->GetProjectionMatrix();
 	lightResult.IsShadowEnabled = LightResult.IsShadowEnable;
 
 	{

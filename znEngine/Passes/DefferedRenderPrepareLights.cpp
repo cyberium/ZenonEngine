@@ -39,8 +39,6 @@ void CDefferedRenderPrepareLights::Render(RenderEventArgs& e)
 {
 	for (size_t i = 0; i < m_SceneCreateTypelessListPass->GetLightList().size(); i++)
 	{
-
-
 		const auto& lightIt = m_SceneCreateTypelessListPass->GetLightList().at(i);
 
 		m_ShadowPipeline->Bind();
@@ -60,8 +58,8 @@ void CDefferedRenderPrepareLights::Render(RenderEventArgs& e)
 			{
 				SLightResult& lightResult = m_LightResult.at(i);
 				lightResult.IsEnabled = true;
-				lightResult.LightSceneNode = lightIt.SceneNode;
-				lightResult.LightComponent = lightIt.Light;
+				lightResult.SceneNode = lightIt.SceneNode;
+				lightResult.Light = lightIt.Light;
 				lightResult.IsShadowEnable = true;
 				lightResult.ShadowTexture->Copy(m_ShadowRenderTarget->GetTexture(IRenderTarget::AttachmentPoint::DepthStencil));
 			}
@@ -69,8 +67,8 @@ void CDefferedRenderPrepareLights::Render(RenderEventArgs& e)
 			{
 				SLightResult lightResult;
 				lightResult.IsEnabled = true;
-				lightResult.LightSceneNode = lightIt.SceneNode;
-				lightResult.LightComponent = lightIt.Light;
+				lightResult.SceneNode = lightIt.SceneNode;
+				lightResult.Light = lightIt.Light;
 				lightResult.IsShadowEnable = true;
 				lightResult.ShadowTexture = CreateShadowTextureDepthStencil();
 
@@ -170,11 +168,11 @@ std::shared_ptr<ITexture> CDefferedRenderPrepareLights::CreateShadowTextureDepth
 	return GetRenderDevice().GetObjectsFactory().CreateTexture2D(cShadowTextureSize, cShadowTextureSize, 1, depthStencilTextureFormat);
 }
 
-void CDefferedRenderPrepareLights::BindPerFrameParamsForCurrentIteration(const ILightComponent3D * LightComponent)
+void CDefferedRenderPrepareLights::BindPerFrameParamsForCurrentIteration(const ILight3D * Light)
 {
 	PerFrame perFrame;
-	perFrame.View = LightComponent->GetViewMatrix();
-	perFrame.Projection = LightComponent->GetProjectionMatrix();
+	perFrame.View = Light->GetViewMatrix();
+	perFrame.Projection = Light->GetProjectionMatrix();
 	m_PerFrameConstantBuffer->Set(perFrame);
 
 	m_PerFrameShaderParameter->Bind();

@@ -4,6 +4,7 @@
 
 class __declspec(UUID_LightComponent) ZN_API CLightComponent3D
 	: public ILightComponent3D
+	, public ILight3D
 	, public CComponentBase
 {
 public:
@@ -22,9 +23,9 @@ public:
 	void SetSpotlightAngle(float Value) override;
 	float GetSpotlightAngle() const override;
 
+	// ILight3D
 	glm::mat4 GetViewMatrix() const override;
 	glm::mat4 GetProjectionMatrix() const override;
-
 	const SLight& GetLightStruct() const override;
 
     // ISceneNodeComponent

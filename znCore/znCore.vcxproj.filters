@@ -76,9 +76,6 @@
     <Filter Include="Scene functional\3D">
       <UniqueIdentifier>{1ae3c30a-22f6-4504-89c3-f52e29eeb48e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Scene functional\UI">
-      <UniqueIdentifier>{fcd39ff1-26d9-4089-8521-acf7e4f2a574}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Scene functional\Properties">
       <UniqueIdentifier>{4bf4e6dc-9ab3-48d8-a7d6-b36ce4087f3a}</UniqueIdentifier>
     </Filter>
@@ -123,6 +120,9 @@
     </Filter>
     <Filter Include="Passes\ScenePasses\Pipelined">
       <UniqueIdentifier>{4ce61172-7e02-4463-92dd-9ecd3000e3b6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scene functional\UI">
+      <UniqueIdentifier>{ee3bbc74-e550-4693-b40e-567ec2f794b8}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -288,12 +288,6 @@
     <ClCompile Include="Scene\3D\CameraComponent3D.cpp">
       <Filter>Scene functional\3D</Filter>
     </ClCompile>
-    <ClCompile Include="Scene\3D\SceneNode3D.cpp">
-      <Filter>Scene functional</Filter>
-    </ClCompile>
-    <ClCompile Include="Scene\UI\SceneNodeUI.cpp">
-      <Filter>Scene functional</Filter>
-    </ClCompile>
     <ClCompile Include="Proxies\ModelProxie.cpp">
       <Filter>__Proxies</Filter>
     </ClCompile>
@@ -392,6 +386,15 @@
     </ClCompile>
     <ClCompile Include="Passes\ScenePasses\SceneXMLFunctional.cpp">
       <Filter>Passes\ScenePasses</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\UI\SceneNodeUI.cpp">
+      <Filter>Scene functional\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\3D\SceneNode3D.cpp">
+      <Filter>Scene functional\3D</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\3D\SkeletonAnimation.cpp">
+      <Filter>Scene functional\3D</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -767,12 +770,6 @@
     <ClInclude Include="Scene\3D\CameraComponent3D.h">
       <Filter>Scene functional\3D</Filter>
     </ClInclude>
-    <ClInclude Include="Scene\3D\SceneNode3D.h">
-      <Filter>Scene functional</Filter>
-    </ClInclude>
-    <ClInclude Include="Scene\UI\SceneNodeUI.h">
-      <Filter>Scene functional</Filter>
-    </ClInclude>
     <ClInclude Include="..\shared\Interfaces\Render\IModel.h">
       <Filter>__Interfaces\Render</Filter>
     </ClInclude>
@@ -904,6 +901,15 @@
     </ClInclude>
     <ClInclude Include="Passes\ScenePasses\SceneXMLFunctional.h">
       <Filter>Passes\ScenePasses</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\UI\SceneNodeUI.h">
+      <Filter>Scene functional\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\3D\SceneNode3D.h">
+      <Filter>Scene functional\3D</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\3D\SkeletonAnimation.h">
+      <Filter>Scene functional\3D</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

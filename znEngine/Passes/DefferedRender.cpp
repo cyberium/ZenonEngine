@@ -57,14 +57,14 @@ void CDefferedRender::Render(RenderEventArgs& e)
 {
 	for (const auto& it : m_SceneCreateTypelessListPass->GetGeometryList())
 	{
-		Visit(const_cast<ISceneNode3D*>(it.Node)); // TODO!!!
-		Visit(const_cast<IGeometry*>(it.Geometry), it.Material, it.GeometryDrawArgs);
+		Visit(it.Node);
+		Visit(it.Geometry, it.Material, it.GeometryDrawArgs);
 	}
 
 	for (const auto& it : m_SceneCreateTypelessListPass->GetLightList())
 	{
-		Visit(const_cast<ISceneNode3D*>(it.SceneNode)); // TODO!!!
-		Visit(const_cast<ILightComponent3D*>(it.Light));
+		Visit(it.SceneNode);
+		Visit(it.Light);
 	}
 }
 
@@ -173,7 +173,7 @@ EVisitResult CDefferedRender::Visit(const IGeometry * Geometry, const IMaterial 
 	return EVisitResult::AllowAll;
 }
 
-EVisitResult CDefferedRender::Visit(const ILightComponent3D * light)
+EVisitResult CDefferedRender::Visit(const ILight3D * light)
 {
 	return EVisitResult::AllowAll;
 }

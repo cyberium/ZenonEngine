@@ -148,6 +148,7 @@
     <ClCompile Include="Scene\3D\LightComponent3D.cpp" />
     <ClCompile Include="Scene\3D\ModelsComponent3D.cpp" />
     <ClCompile Include="Scene\3D\SceneNode3D.cpp" />
+    <ClCompile Include="Scene\3D\SkeletonAnimation.cpp" />
     <ClCompile Include="Scene\Actions.cpp" />
     <ClCompile Include="Scene\ComponentBase.cpp" />
     <ClCompile Include="Scene\LoadableObject.cpp" />
@@ -322,6 +323,7 @@
     <ClInclude Include="Scene\3D\LightComponent3D.h" />
     <ClInclude Include="Scene\3D\ModelsComponent3D.h" />
     <ClInclude Include="Scene\3D\SceneNode3D.h" />
+    <ClInclude Include="Scene\3D\SkeletonAnimation.h" />
     <ClInclude Include="Scene\Actions.h" />
     <ClInclude Include="Scene\ComponentBase.h" />
     <ClInclude Include="Scene\LoadableObject.h" />

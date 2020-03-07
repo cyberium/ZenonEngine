@@ -119,7 +119,7 @@ int Application::DoRun()
 
 	//try
 	{
-		UpdateEventArgs updateArgs(this, g_GameDeltaTime * 166.0f, g_ApplicationTime * 166.0f, g_FrameCounter, nullptr, nullptr);
+		UpdateEventArgs updateArgs(this, g_GameDeltaTime * 1000.0f, g_ApplicationTime * 1000.0f, g_FrameCounter, nullptr, nullptr);
 		m_Update(updateArgs);
 	}
 	//catch (const std::exception& e)

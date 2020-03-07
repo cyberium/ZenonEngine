@@ -21,7 +21,7 @@ public:
 	virtual EVisitResult Visit(const IModel* Model) override;
 	virtual EVisitResult Visit(const IGeometry* Geometry, const IMaterial* Material, SGeometryDrawArgs GeometryDrawArgs = SGeometryDrawArgs()) override;
 	virtual EVisitResult Visit(const ISceneNodeComponent* Component) override;
-	virtual EVisitResult Visit(const ILightComponent3D* light) override;
+	virtual EVisitResult Visit(const ILight3D* light) override;
 
 protected:
 	const RenderEventArgs* GetRenderEventArgs() const;

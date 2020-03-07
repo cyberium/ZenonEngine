@@ -3,7 +3,7 @@
 // DON'T FORGET ABOUT PADDINGS!
 // DON'T USE 'bool'!
 
-enum class ZN_API ELightType : uint32_t //Don't delete uint32_t becouse mapped to render
+enum class ZN_API ELightType : uint32_t // Don't delete uint32_t becouse mapped to render
 {
 	Point = 0,
 	Spot,
@@ -18,7 +18,7 @@ struct __declspec(novtable, align(16)) ZN_API SLight
 		, DirectionWS(0, -1, 0, 0)
 		, PositionVS(0, 0, 0, 1)
 		, DirectionVS(0, 0, 1, 0)
-		, Color(1, 1, 1, 1)
+		, Color(1.0f, 1.0f, 1.0f, 1.0f)
 
 		, Type(ELightType::Unknown)
 		, Range(99999.0f)

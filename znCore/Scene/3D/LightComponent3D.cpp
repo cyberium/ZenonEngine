@@ -70,20 +70,24 @@ float CLightComponent3D::GetSpotlightAngle() const
 	return m_LightStruct->SpotlightAngle;
 }
 
+//
+// ILight3D
+//
 glm::mat4 CLightComponent3D::GetViewMatrix() const
 {
-	if (m_LightStruct->Type != ELightType::Unknown)
+	if (m_LightStruct->Type == ELightType::Point)
 	{
-		if (m_LightStruct->Type == ELightType::Directional)
-		{
-			glm::vec3 position = -m_LightStruct->DirectionWS.xyz();
-			position *= 100.0f;
-			return glm::lookAt(position, position + m_LightStruct->DirectionWS.xyz(), glm::vec3(0.0f, 1.0f, 0.0f));
-		}
-		else if (m_LightStruct->Type == ELightType::Spot)
-		{
-			return glm::lookAt(m_LightStruct->PositionWS.xyz(), m_LightStruct->PositionWS.xyz() + m_LightStruct->DirectionWS.xyz(), glm::vec3(0.0f, 1.0f, 0.0f));
-		}
+		return glm::mat4(1.0f);
+	}
+	else if (m_LightStruct->Type == ELightType::Spot)
+	{
+		return glm::lookAt(m_LightStruct->PositionWS.xyz(), m_LightStruct->PositionWS.xyz() + m_LightStruct->DirectionWS.xyz(), glm::vec3(0.0f, 1.0f, 0.0f));
+	}
+	else if (m_LightStruct->Type == ELightType::Directional)
+	{
+		glm::vec3 position = -m_LightStruct->DirectionWS.xyz();
+		position *= 100.0f;
+		return glm::lookAt(position, position + m_LightStruct->DirectionWS.xyz(), glm::vec3(0.0f, 1.0f, 0.0f));
 	}
 
 	return glm::mat4(1.0f);
@@ -91,17 +95,18 @@ glm::mat4 CLightComponent3D::GetViewMatrix() const
 
 glm::mat4 CLightComponent3D::GetProjectionMatrix() const
 {
-	if (m_LightStruct->Type != ELightType::Unknown)
+	if (m_LightStruct->Type == ELightType::Point)
 	{
-		if (m_LightStruct->Type == ELightType::Directional)
-		{
-			const float t = 300.0f;
-			return glm::ortho<float>(-t, t, -t, t, -t, t);
-		}
-		else if (m_LightStruct->Type == ELightType::Spot)
-		{
-			return glm::perspective(glm::radians(m_LightStruct->SpotlightAngle * 2.0f), 1.0f, 0.5f, 10000.0f);
-		}
+		return glm::mat4(1.0f);
+	}
+	else if (m_LightStruct->Type == ELightType::Spot)
+	{
+		return glm::perspective(glm::radians(m_LightStruct->SpotlightAngle * 2.0f), 1.0f, 0.5f, 10000.0f);
+	}
+	else if (m_LightStruct->Type == ELightType::Directional)
+	{
+		const float t = 300.0f;
+		return glm::ortho<float>(-t, t, -t, t, -t, t);
 	}
 	
 	return glm::mat4(1.0f);
@@ -128,5 +133,5 @@ void CLightComponent3D::Accept(IVisitor* visitor)
 	if (GetType() == ELightType::Unknown)
 		return;
 
-	visitor->Visit((const ILightComponent3D*) this);
+	visitor->Visit((const ILight3D*) this);
 }

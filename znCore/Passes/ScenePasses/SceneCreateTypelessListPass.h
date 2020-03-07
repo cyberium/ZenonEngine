@@ -36,13 +36,13 @@ public:
 
 	struct ZN_API SLightElement
 	{
-		SLightElement(const ISceneNode3D* SceneNode, const ILightComponent3D* Light)
+		SLightElement(const ISceneNode3D* SceneNode, const ILight3D* Light)
 			: SceneNode(SceneNode)
 			, Light(Light)
 		{}
 
 		const ISceneNode3D* SceneNode;
-		const ILightComponent3D* Light;
+		const ILight3D* Light;
 	};
 
 	struct ZN_API SNodeElement
@@ -71,7 +71,7 @@ public:
 	EVisitResult Visit(const ISceneNode3D* SceneNode) override;
 	EVisitResult Visit(const IModel* Model) override;
 	EVisitResult Visit(const IGeometry* Geometry, const IMaterial* Material, SGeometryDrawArgs GeometryDrawArgs = SGeometryDrawArgs()) override;
-	EVisitResult Visit(const ILightComponent3D* light) override;
+	EVisitResult Visit(const ILight3D* light) override;
 
 private:
 	std::vector<SNodeElement>         m_NodesList;

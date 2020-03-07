@@ -66,7 +66,7 @@ EVisitResult RenderPass::Visit(const ISceneNodeComponent * Component)
 	return EVisitResult::Block;
 }
 
-EVisitResult RenderPass::Visit(const ILightComponent3D* light)
+EVisitResult RenderPass::Visit(const ILight3D* light)
 {
 	return EVisitResult::Block;
 }

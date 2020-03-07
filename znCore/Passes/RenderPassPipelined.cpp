@@ -147,7 +147,7 @@ EVisitResult RenderPassPipelined::Visit(const ISceneNodeComponent * Component)
 	return EVisitResult::Block;
 }
 
-EVisitResult RenderPassPipelined::Visit(const ILightComponent3D* light)
+EVisitResult RenderPassPipelined::Visit(const ILight3D* light)
 {
 	return EVisitResult::Block;
 }
