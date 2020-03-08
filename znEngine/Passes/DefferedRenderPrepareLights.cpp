@@ -7,7 +7,7 @@ CDefferedRenderPrepareLights::CDefferedRenderPrepareLights(IRenderDevice& Render
 	: RenderPass(RenderDevice)
 	, m_SceneCreateTypelessListPass(SceneCreateTypelessListPass)
 {
-	m_PerObjectConstantBuffer = GetRenderDevice().GetObjectsFactory().CreateConstantBuffer(PerObject3D());
+	m_PerObjectConstantBuffer = GetRenderDevice().GetObjectsFactory().CreateConstantBuffer(PerObject());
 	m_PerFrameConstantBuffer = GetRenderDevice().GetObjectsFactory().CreateConstantBuffer(PerFrame());
 }
 
@@ -170,9 +170,14 @@ std::shared_ptr<ITexture> CDefferedRenderPrepareLights::CreateShadowTextureDepth
 
 void CDefferedRenderPrepareLights::BindPerFrameParamsForCurrentIteration(const ILight3D * Light)
 {
-	PerFrame perFrame;
-	perFrame.View = Light->GetViewMatrix();
-	perFrame.Projection = Light->GetProjectionMatrix();
+	const Viewport* viewport = GetRenderEventArgs()->PipelineState->GetRasterizerState()->GetViewports()[0];
+	_ASSERT(viewport != nullptr);
+
+	PerFrame perFrame(
+		Light->GetViewMatrix(), 
+		Light->GetProjectionMatrix(), 
+		glm::vec2(viewport->GetWidth(), viewport->GetHeight())
+	);
 	m_PerFrameConstantBuffer->Set(perFrame);
 
 	m_PerFrameShaderParameter->Bind();
@@ -180,9 +185,9 @@ void CDefferedRenderPrepareLights::BindPerFrameParamsForCurrentIteration(const I
 
 void CDefferedRenderPrepareLights::BindPerObjectParamsForCurrentIteration(const ISceneNode3D * SceneNode)
 {
-	PerObject3D perObject3D;
-	perObject3D.Model = SceneNode->GetWorldTransfom();
-	m_PerObjectConstantBuffer->Set(perObject3D);
+	PerObject perObject;
+	perObject.Model = SceneNode->GetWorldTransfom();
+	m_PerObjectConstantBuffer->Set(perObject);
 
 	m_PerObjectShaderParameter->Bind();
 }

@@ -11,7 +11,6 @@ public:
 	virtual ~CDefferedRenderFinal();
 
 	// IRenderPass
-	void PreRender(RenderEventArgs& e) override;
 	void Render(RenderEventArgs& e) override;
 	void PostRender(RenderEventArgs& e) override;
 
@@ -21,17 +20,6 @@ public:
 protected:
 	void BindLightParamsForCurrentIteration(const RenderEventArgs& e, const CDefferedRenderPrepareLights::SLightResult& LightResult);
 
-private: // some every frame data
-	__declspec(align(16)) struct SScreenToViewParams
-	{
-		glm::mat4 InverseProjection;
-		glm::mat4 InverseView;
-		glm::mat4 InverseProjectionView;
-		glm::vec2 ScreenDimensions;
-	};
-	SScreenToViewParams* m_ScreenToViewData;
-	std::shared_ptr<IConstantBuffer> m_ScreenToViewConstantBuffer;
-
 private: // Pass light params
 	struct __declspec(novtable, align(16)) SLightResult
 	{
@@ -39,7 +27,7 @@ private: // Pass light params
 		glm::mat4 LightViewMatrix;
 		glm::mat4 LightProjectionMatrix;
 		uint32 IsShadowEnabled;
-		glm::vec3 __Padding;
+		// 12 bytes padding
 	};
 	SLightResult* m_LightResultData;
 	std::shared_ptr<IConstantBuffer> m_LightResultConstantBuffer;

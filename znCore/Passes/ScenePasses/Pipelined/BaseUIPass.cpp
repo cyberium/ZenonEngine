@@ -5,8 +5,9 @@
 
 BaseUIPass::BaseUIPass(IRenderDevice& RenderDevice, const std::shared_ptr<IScene>& Scene)
 	: ScenePassPipelined(RenderDevice, Scene)
+	, m_PerObjectParameter(nullptr)
 {
-	m_PerObjectConstantBuffer = GetRenderDevice().GetObjectsFactory().CreateConstantBuffer(PerObjectUI());
+	m_PerObjectConstantBuffer = GetRenderDevice().GetObjectsFactory().CreateConstantBuffer(PerObject());
 }
 
 BaseUIPass::~BaseUIPass()
@@ -40,15 +41,17 @@ std::shared_ptr<IRenderPassPipelined> BaseUIPass::CreatePipeline(std::shared_ptr
 //
 EVisitResult BaseUIPass::Visit(const ISceneNodeUI* sceneNode)
 {
-	PerObjectUI perObjectUI;
-	perObjectUI.Model = sceneNode->GetWorldTransfom();
-	m_PerObjectConstantBuffer->Set(perObjectUI);
+	PerObject perObject;
+	perObject.Model = sceneNode->GetWorldTransfom();
+	m_PerObjectConstantBuffer->Set(perObject);
 
-	auto& perObjectParameter = GetPipeline().GetShaders().at(EShaderType::VertexShader)->GetShaderParameterByName("PerObject");
-	if (perObjectParameter.IsValid() && m_PerObjectConstantBuffer != nullptr)
+	if (m_PerObjectParameter == nullptr)
+		m_PerObjectParameter = &(GetPipeline().GetShaders().at(EShaderType::VertexShader)->GetShaderParameterByName("PerObject"));
+
+	if (m_PerObjectParameter->IsValid() && m_PerObjectConstantBuffer != nullptr)
 	{
-		perObjectParameter.SetConstantBuffer(m_PerObjectConstantBuffer);
-		perObjectParameter.Bind();
+		m_PerObjectParameter->SetConstantBuffer(m_PerObjectConstantBuffer);
+		m_PerObjectParameter->Bind();
 	}
 
 	return EVisitResult::AllowAll;
@@ -77,10 +80,12 @@ EVisitResult BaseUIPass::Visit(const IGeometry* Geometry, const IMaterial* Mater
 void BaseUIPass::FillPerFrameData()
 {
 	const Viewport* viewport = GetRenderEventArgs().PipelineState->GetRasterizerState()->GetViewports()[0];
-	_ASSERT(viewport);
+	_ASSERT(viewport != nullptr);
 
-	PerFrame perFrame;
-	perFrame.View = glm::mat4(1.0f);
-	perFrame.Projection = viewport->GetOrthoMatix();
+	PerFrame perFrame(
+		glm::mat4(1.0f), 
+		viewport->GetOrthoMatix(), 
+		glm::vec2(viewport->GetWidth(), viewport->GetHeight())
+	);
 	SetPerFrameData(perFrame);
 }

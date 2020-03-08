@@ -565,6 +565,9 @@
     <Text Include="Formats\FormatsDescription.txt">
       <Filter>Formats</Filter>
     </Text>
+    <Text Include="Resources\shaders_D3D\3D\Particle.hlsl">
+      <Filter>Resources\Shaders_D3D\3D</Filter>
+    </Text>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Resources\Textures\default.png">

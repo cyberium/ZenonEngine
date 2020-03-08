@@ -7,7 +7,7 @@ CDefferedRender::CDefferedRender(IRenderDevice& RenderDevice, const std::shared_
 	: RenderPassPipelined(RenderDevice)
 	, m_SceneCreateTypelessListPass(SceneCreateTypelessListPass)
 {
-	m_PerObjectConstantBuffer = GetRenderDevice().GetObjectsFactory().CreateConstantBuffer(PerObject3D());
+	m_PerObjectConstantBuffer = GetRenderDevice().GetObjectsFactory().CreateConstantBuffer(PerObject());
 }
 
 CDefferedRender::~CDefferedRender()
@@ -154,9 +154,9 @@ void CDefferedRender::UpdateViewport(const Viewport& _viewport)
 //
 EVisitResult CDefferedRender::Visit(const ISceneNode3D * node)
 {
-	PerObject3D perObject3D;
-	perObject3D.Model = node->GetWorldTransfom();
-	m_PerObjectConstantBuffer->Set(perObject3D);
+	PerObject perObject;
+	perObject.Model = node->GetWorldTransfom();
+	m_PerObjectConstantBuffer->Set(perObject);
 	m_PerObjectShaderParameter->Bind();
 
 	return EVisitResult::AllowAll;

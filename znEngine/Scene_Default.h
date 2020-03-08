@@ -37,10 +37,6 @@ private:
 	std::shared_ptr<CUITextureNode> m_TextureUI;
 
 private:
-	std::shared_ptr<IRenderPass> m_Model_Pass_Opaque;
-	std::shared_ptr<IRenderPass> m_Model_Pass_Transperent;
-
-
 	std::shared_ptr<SceneNode3D> m_RootForBoxes;
 
 	std::shared_ptr<CSceneCreateTypelessListPass> m_SceneCreateTypelessListPass;

@@ -86,7 +86,7 @@ float4 PS_DeferredLighting(VS_Output VSOut) : SV_Target
 	const float depth = TextureDepthStencil.Load(int3(texCoord, 0)).r;
 
 	const float4 PView = ScreenToView(float4(texCoord, depth, 1.0f));
-	const float4 PModel = mul(InverseView, PView);
+	const float4 PModel = mul(PF.InverseView, PView);
 
 	// View vector
 	float4 V = normalize(eyePos - PView);

@@ -9,7 +9,7 @@ CBaseList3DPass::CBaseList3DPass(IRenderDevice& RenderDevice, const std::shared_
 	, m_PerObjectParameter(nullptr)
 {
 	m_AcceptSceneNodeTypes.push_back(SceneNodeType);
-	m_PerObjectConstantBuffer = GetRenderDevice().GetObjectsFactory().CreateConstantBuffer(PerObject3D());
+	m_PerObjectConstantBuffer = GetRenderDevice().GetObjectsFactory().CreateConstantBuffer(PerObject());
 }
 
 CBaseList3DPass::CBaseList3DPass(IRenderDevice & RenderDevice, const std::shared_ptr<CSceneCreateTypedListsPass>& SceneNodeListPass, std::vector<SceneNodeType> SceneNodeTypesList)
@@ -18,7 +18,7 @@ CBaseList3DPass::CBaseList3DPass(IRenderDevice & RenderDevice, const std::shared
 	, m_PerObjectParameter(nullptr)
 {
 	m_AcceptSceneNodeTypes = SceneNodeTypesList;
-	m_PerObjectConstantBuffer = GetRenderDevice().GetObjectsFactory().CreateConstantBuffer(PerObject3D());
+	m_PerObjectConstantBuffer = GetRenderDevice().GetObjectsFactory().CreateConstantBuffer(PerObject());
 }
 
 CBaseList3DPass::~CBaseList3DPass()
@@ -71,9 +71,9 @@ void CBaseList3DPass::Render(RenderEventArgs & e)
 //
 EVisitResult CBaseList3DPass::Visit(const ISceneNode3D * SceneNode)
 {
-	static PerObject3D perObject3D;
-	perObject3D.Model = SceneNode->GetWorldTransfom();
-	m_PerObjectConstantBuffer->Set(perObject3D);
+	PerObject perObject;
+	perObject.Model = SceneNode->GetWorldTransfom();
+	m_PerObjectConstantBuffer->Set(perObject);
 
 	if (m_PerObjectParameter == nullptr)
 		m_PerObjectParameter = &(GetPipeline().GetShaders().at(EShaderType::VertexShader)->GetShaderParameterByName("PerObject"));

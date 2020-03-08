@@ -247,7 +247,6 @@ ZN_INTERFACE __declspec(UUID_CameraComponent) ZN_API ICameraComponent3D
 //
 // SKELETON COMPONENT 3D
 //
-
 ZN_INTERFACE ZN_API ISkeletonBone3D
 {
 	virtual ~ISkeletonBone3D() {}
@@ -266,6 +265,25 @@ ZN_INTERFACE ZN_API ISkeletonBone3D
 ZN_INTERFACE __declspec(UUID_SkeletonComponent) ZN_API ISkeletonComponent3D
 {
 	virtual ~ISkeletonComponent3D() {}
+
+	virtual std::shared_ptr<ISkeletonBone3D> GetBone(size_t Index) const = 0;
+	virtual void Calculate(uint32 GlobalTime) = 0;
+};
+
+
+//
+// PARTICLE COMPONENT 3D
+//
+
+ZN_INTERFACE ZN_API IParticle
+{
+	virtual ~IParticle() {}
+};
+
+#define UUID_ParticleComponent uuid("B0168C5F-60C0-4210-B3EF-740FEB89FFDD")
+ZN_INTERFACE __declspec(UUID_ParticleComponent) ZN_API IParticleComponent3D
+{
+	virtual ~IParticleComponent3D() {}
 
 	virtual std::shared_ptr<ISkeletonBone3D> GetBone(size_t Index) const = 0;
 	virtual void Calculate(uint32 GlobalTime) = 0;

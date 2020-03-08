@@ -27,6 +27,7 @@ Texture2D TextureTransparency             : register(t7);
 Texture2D TextureReflection               : register(t8);
 Texture2D TextureDisplacement             : register(t9);
 
+
 VertexShaderOutput VS_main(VSInputPTNTB IN)
 {
 	const float4x4 mv = mul(PF.View, PO.Model);

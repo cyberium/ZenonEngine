@@ -3,12 +3,6 @@
 #include "ScenePassPipelined.h"
 #include "../SceneCreateTypedListsPass.h"
 
-__declspec(align(16)) struct ZN_API PerObject3D
-{
-	glm::mat4 Model;
-};
-
-
 class ZN_API Base3DPass 
 	: public ScenePassPipelined
 {

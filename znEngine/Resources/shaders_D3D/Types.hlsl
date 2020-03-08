@@ -41,6 +41,10 @@ struct PerFrame
 {
 	float4x4 View;
 	float4x4 Projection;
+	float4x4 InverseView;
+	float4x4 InverseProjection;
+	float4x4 InverseViewProjection;
+	float2   ScreenDimensions;
 };
 
 // ----------------------------------------------------------------------

@@ -67,9 +67,9 @@ EVisitResult CDrawBoundingBoxPass::Visit(const ISceneNode3D * SceneNode3D)
 	bboxMatrix = glm::translate(bboxMatrix, bbox.getMin());
 	bboxMatrix = glm::scale(bboxMatrix, bbox.getMax() - bbox.getMin());
 
-	PerObject3D perObject3D;
-	perObject3D.Model = bboxMatrix;
-	m_PerObjectConstantBuffer->Set(perObject3D);
+	PerObject perObject;
+	perObject.Model = bboxMatrix;
+	m_PerObjectConstantBuffer->Set(perObject);
 
 	const IShader* vertexShader = GetPipeline().GetShaders().at(EShaderType::VertexShader).get();
 

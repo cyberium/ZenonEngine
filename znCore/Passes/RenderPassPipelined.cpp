@@ -63,15 +63,7 @@ void RenderPassPipelined::PreRender(RenderEventArgs& e)
 	FillPerFrameData();
 
 	for (const auto& shaderIt : m_Pipeline->GetShaders())
-	{
-		const auto& shader = shaderIt.second;
-		_ASSERT(shader != nullptr);
-
-		if (shader->GetType() == EShaderType::VertexShader)
-		{
-			BindPerFrameDataToVertexShader(shader.get());
-		}
-	}
+		BindPerFrameData(shaderIt.second.get());
 }
 
 void RenderPassPipelined::PostRender(RenderEventArgs& e)
@@ -161,9 +153,14 @@ void RenderPassPipelined::FillPerFrameData()
 {
 	_ASSERT(m_RenderEventArgs->Camera != nullptr);
 
-	PerFrame perFrame;
-	perFrame.View = m_RenderEventArgs->Camera->GetViewMatrix();
-	perFrame.Projection = m_RenderEventArgs->Camera->GetProjectionMatrix();
+	PerFrame perFrame(
+		m_RenderEventArgs->Camera->GetViewMatrix(), 
+		m_RenderEventArgs->Camera->GetProjectionMatrix(), 
+		glm::vec2(
+			m_RenderEventArgs->PipelineState->GetRasterizerState()->GetViewports()[0]->GetWidth(), 
+			m_RenderEventArgs->PipelineState->GetRasterizerState()->GetViewports()[0]->GetHeight()
+		)
+	);
 	m_PerFrameConstantBuffer->Set(perFrame);
 }
 
@@ -193,9 +190,11 @@ void RenderPassPipelined::SetPerFrameData(const PerFrame& PerFrame)
 	m_PerFrameConstantBuffer->Set(PerFrame);
 }
 
-void RenderPassPipelined::BindPerFrameDataToVertexShader(const IShader * VertexShader) const
+void RenderPassPipelined::BindPerFrameData(const IShader * Shader) const
 {
-	auto& perFrameParam = VertexShader->GetShaderParameterByName("PerFrame");
+	_ASSERT(Shader != nullptr);
+
+	auto& perFrameParam = Shader->GetShaderParameterByName("PerFrame");
 	if (perFrameParam.IsValid() && m_PerFrameConstantBuffer != nullptr)
 	{
 		perFrameParam.SetConstantBuffer(m_PerFrameConstantBuffer);

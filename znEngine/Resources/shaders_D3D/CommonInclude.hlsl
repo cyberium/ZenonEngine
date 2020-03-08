@@ -21,15 +21,6 @@ cbuffer PerFrame : register(b1)
 	PerFrame PF;
 }
 
-// b2 is material
-
-cbuffer ScreenToViewParams : register(b3)
-{
-	float4x4 InverseProjection;
-	float4x4 InverseView;
-	float4x4 InverseViewProjection;
-	float2 ScreenDimensions;
-}
 
 sampler LinearRepeatSampler     : register(s0);
 sampler LinearClampSampler      : register(s1);
@@ -39,7 +30,7 @@ sampler LinearClampSampler      : register(s1);
 float4 ClipToView(float4 clip)
 {
 	// View space position.
-	float4 view = mul(InverseProjection, clip);
+	float4 view = mul(PF.InverseProjection, clip);
 
 	// Perspecitive projection.
 	view = view / view.w;
@@ -47,11 +38,12 @@ float4 ClipToView(float4 clip)
 	return view;
 }
 
+
 // Convert screen space coordinates to view space.
 float4 ScreenToView(float4 screen)
 {
 	// Convert to normalized texture coordinates
-	float2 texCoord = screen.xy / ScreenDimensions;
+	float2 texCoord = screen.xy / PF.ScreenDimensions;
 
 	// Convert to clip space
 	float4 clip = float4(float2(texCoord.x, 1.0f - texCoord.y) * 2.0f - 1.0f, screen.z, screen.w);
@@ -64,20 +56,13 @@ float4 ScreenToView(float4 screen)
 float4 ScreenToViewOtrho(float4 screen)
 {
 	// Convert to normalized texture coordinates
-	float2 texCoord = screen.xy / ScreenDimensions;
+	float2 texCoord = screen.xy / PF.ScreenDimensions;
 
 	// Convert to clip space
 	float4 clip = float4(float2(texCoord.x, 1.0f - texCoord.y) * 2.0f - 1.0f, screen.z, screen.w);
 
-	return mul(InverseProjection, clip);
+	return mul(PF.InverseProjection, clip);
 }
-
-
-
-
-
-
-
 
 
 // Compute a plane from 3 noncollinear points that form a triangle.
@@ -98,6 +83,7 @@ Plane ComputePlane(float3 p0, float3 p1, float3 p2)
 	return plane;
 }
 
+
 // Check to see if a sphere is fully behind (inside the negative halfspace of) a plane.
 // Source: Real-time collision detection, Christer Ericson (2005)
 bool SphereInsidePlane(Sphere sphere, Plane plane)
@@ -105,11 +91,13 @@ bool SphereInsidePlane(Sphere sphere, Plane plane)
 	return dot(plane.N, sphere.c) - plane.d < -sphere.r;
 }
 
+
 // Check to see if a point is fully behind (inside the negative halfspace of) a plane.
 bool PointInsidePlane(float3 p, Plane plane)
 {
 	return dot(plane.N, p) - plane.d < 0;
 }
+
 
 // Check to see if a cone if fully behind (inside the negative halfspace of) a plane.
 // Source: Real-time collision detection, Christer Ericson (2005)
@@ -125,6 +113,7 @@ bool ConeInsidePlane(Cone cone, Plane plane)
 	// of the plane.
 	return PointInsidePlane(cone.T, plane) && PointInsidePlane(Q, plane);
 }
+
 
 // Check to see of a light is partially contained within the frustum.
 bool SphereInsideFrustum(Sphere sphere, Frustum frustum, float zNear, float zFar)

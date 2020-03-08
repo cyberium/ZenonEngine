@@ -244,6 +244,11 @@
   <ItemGroup>
     <None Include="Resources\Scripts\TestScript.lua" />
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="Resources\shaders_D3D\3D\Particle.hlsl">
+      <FileType>Document</FileType>
+    </Text>
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{51252F60-B8DC-4090-BBA3-DD05942110F0}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>

@@ -8,9 +8,6 @@ CDefferedRenderFinal::CDefferedRenderFinal(IRenderDevice& RenderDevice, std::sha
 	, m_DefferedRender(DefferedRender)
 	, m_DefferedRenderPrepareLights(DefferedRenderPrepareLights)
 {
-	m_ScreenToViewData = (SScreenToViewParams*)_aligned_malloc(sizeof(SScreenToViewParams), 16);
-	m_ScreenToViewConstantBuffer = GetRenderDevice().GetObjectsFactory().CreateConstantBuffer(SScreenToViewParams());
-
 	m_LightResultData = (SLightResult*)_aligned_malloc(sizeof(SLightResult), 16);
 	m_LightResultConstantBuffer = GetRenderDevice().GetObjectsFactory().CreateConstantBuffer(SLightResult());
 }
@@ -18,7 +15,6 @@ CDefferedRenderFinal::CDefferedRenderFinal(IRenderDevice& RenderDevice, std::sha
 CDefferedRenderFinal::~CDefferedRenderFinal()
 {
 	_aligned_free(m_LightResultData);
-	_aligned_free(m_ScreenToViewData);
 }
 
 
@@ -26,25 +22,6 @@ CDefferedRenderFinal::~CDefferedRenderFinal()
 //
 // IRenderPass
 //
-void CDefferedRenderFinal::PreRender(RenderEventArgs& e)
-{
-	RenderPassPipelined::PreRender(e);
-
-	// Once per frame
-	m_ScreenToViewData->InverseProjection = glm::inverse(e.Camera->GetProjectionMatrix());
-	m_ScreenToViewData->InverseView = glm::inverse(e.Camera->GetViewMatrix());
-	m_ScreenToViewData->InverseProjectionView = e.Camera->GetInverseProjectionViewMatrix();
-	m_ScreenToViewData->ScreenDimensions = glm::vec2(e.PipelineState->GetRasterizerState()->GetViewports()[0]->GetWidth(), e.PipelineState->GetRasterizerState()->GetViewports()[0]->GetHeight());
-	m_ScreenToViewConstantBuffer->Set(*m_ScreenToViewData);
-	
-	auto& screenToViewParams = GetPipeline().GetShader(EShaderType::PixelShader)->GetShaderParameterByName("ScreenToViewParams");
-	if (screenToViewParams.IsValid() && m_ScreenToViewConstantBuffer != nullptr)
-	{
-		screenToViewParams.SetConstantBuffer(m_ScreenToViewConstantBuffer);
-		screenToViewParams.Bind();
-	}
-	// Once per frame
-}
 
 void CDefferedRenderFinal::Render(RenderEventArgs& e)
 {

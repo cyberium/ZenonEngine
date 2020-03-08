@@ -42,11 +42,6 @@ private: // Pass light params
 	IShaderParameter* m_PerObjectShaderParameter;
 
 protected:
-	__declspec(align(16)) struct PerFrame
-	{
-		glm::mat4 View;
-		glm::mat4 Projection;
-	};
 	std::shared_ptr<IConstantBuffer> m_PerFrameConstantBuffer;
 	IShaderParameter* m_PerFrameShaderParameter;
 

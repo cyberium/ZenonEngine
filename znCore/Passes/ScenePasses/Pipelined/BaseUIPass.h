@@ -2,11 +2,6 @@
 
 #include "ScenePassPipelined.h"
 
-__declspec(align(16)) struct ZN_API PerObjectUI
-{
-	glm::mat4 Model;
-};
-
 class ZN_API BaseUIPass 
 	: public ScenePassPipelined
 {
@@ -27,4 +22,5 @@ protected:
 
 protected:
 	std::shared_ptr<IConstantBuffer> m_PerObjectConstantBuffer;
+	IShaderParameter* m_PerObjectParameter;
 };
