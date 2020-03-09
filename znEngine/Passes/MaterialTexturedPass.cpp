@@ -6,11 +6,11 @@
 // Additional
 #include "Materials/MaterialTextured.h"
 
-CTexturedMaterialPass::CTexturedMaterialPass(IRenderDevice& RenderDevice, std::shared_ptr<IScene> Scene)
+CMaterial_Textured_Pass::CMaterial_Textured_Pass(IRenderDevice& RenderDevice, std::shared_ptr<IScene> Scene)
 	: Base3DPass(RenderDevice, Scene)
 {}
 
-CTexturedMaterialPass::~CTexturedMaterialPass()
+CMaterial_Textured_Pass::~CMaterial_Textured_Pass()
 {}
 
 
@@ -18,7 +18,7 @@ CTexturedMaterialPass::~CTexturedMaterialPass()
 //
 // IRenderPassPipelined
 //
-std::shared_ptr<IRenderPassPipelined> CTexturedMaterialPass::CreatePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport)
+std::shared_ptr<IRenderPassPipelined> CMaterial_Textured_Pass::CreatePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport)
 {
 	std::shared_ptr<IShader> vertexShader;
 	std::shared_ptr<IShader> pixelShader;
@@ -65,12 +65,12 @@ std::shared_ptr<IRenderPassPipelined> CTexturedMaterialPass::CreatePipeline(std:
 //
 // IVisitor
 //
-EVisitResult CTexturedMaterialPass::Visit(const IModel * Model)
+EVisitResult CMaterial_Textured_Pass::Visit(const IModel * Model)
 {
 	return Base3DPass::Visit(Model);
 }
 
-EVisitResult CTexturedMaterialPass::Visit(const IGeometry * Geometry, const IMaterial* Material, SGeometryDrawArgs GeometryDrawArgs)
+EVisitResult CMaterial_Textured_Pass::Visit(const IGeometry * Geometry, const IMaterial* Material, SGeometryDrawArgs GeometryDrawArgs)
 {
 	const MaterialTextured* objMaterial = dynamic_cast<const MaterialTextured*>(Material);
 	if (objMaterial == nullptr)

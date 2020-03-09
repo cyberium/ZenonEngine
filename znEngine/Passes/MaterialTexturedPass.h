@@ -1,11 +1,11 @@
 #pragma once
 
-class CTexturedMaterialPass 
+class CMaterial_Textured_Pass 
 	: public Base3DPass
 {
 public:
-	CTexturedMaterialPass(IRenderDevice& RenderDevice, std::shared_ptr<IScene> Scene);
-	virtual ~CTexturedMaterialPass();
+	CMaterial_Textured_Pass(IRenderDevice& RenderDevice, std::shared_ptr<IScene> Scene);
+	virtual ~CMaterial_Textured_Pass();
 
 	// IRenderPassPipelined
 	std::shared_ptr<IRenderPassPipelined> CreatePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport* Viewport) override final;

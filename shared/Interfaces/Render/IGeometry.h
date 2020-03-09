@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Interfaces/Render/Types/RenderGeometryParams.h"
+#include "Interfaces/Render/Types/RenderTypes.h"
 
 // FORWARD BEGIN
 ZN_INTERFACE IBuffer;

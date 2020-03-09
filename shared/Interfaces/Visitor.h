@@ -1,7 +1,6 @@
 #pragma once
 
-#include "Interfaces/Render/Types/RenderGeometryParams.h"
-#include "Interfaces/Render/Types/ShaderType.h"
+#include "Interfaces/Render/Types/RenderTypes.h"
 
 // FORWARD BEGIN
 ZN_INTERFACE ISceneNode3D;

@@ -581,22 +581,10 @@
     <ClInclude Include="..\shared\Interfaces\Render\ITexture.h">
       <Filter>__Interfaces\Render</Filter>
     </ClInclude>
-    <ClInclude Include="..\shared\Interfaces\Render\Types\BufferBinding.h">
-      <Filter>__Interfaces\Render\Types</Filter>
-    </ClInclude>
-    <ClInclude Include="..\shared\Interfaces\Render\Types\ClearFlags.h">
-      <Filter>__Interfaces\Render\Types</Filter>
-    </ClInclude>
-    <ClInclude Include="..\shared\Interfaces\Render\Types\CPUAccess.h">
-      <Filter>__Interfaces\Render\Types</Filter>
-    </ClInclude>
     <ClInclude Include="..\shared\Interfaces\Render\Types\CustomVertexElement.h">
       <Filter>__Interfaces\Render\Types</Filter>
     </ClInclude>
     <ClInclude Include="..\shared\Interfaces\Render\Types\InputSemantic.h">
-      <Filter>__Interfaces\Render\Types</Filter>
-    </ClInclude>
-    <ClInclude Include="..\shared\Interfaces\Render\Types\PrimitiveTopology.h">
       <Filter>__Interfaces\Render\Types</Filter>
     </ClInclude>
     <ClInclude Include="..\shared\Interfaces\Render\Types\Viewport.h">
@@ -724,12 +712,6 @@
     </ClInclude>
     <ClInclude Include="..\shared\Interfaces\Render\IGeometry.h">
       <Filter>__Interfaces\Render</Filter>
-    </ClInclude>
-    <ClInclude Include="..\shared\Interfaces\Render\Types\RenderGeometryParams.h">
-      <Filter>__Interfaces\Render\Types</Filter>
-    </ClInclude>
-    <ClInclude Include="..\shared\Interfaces\Render\Types\ShaderType.h">
-      <Filter>__Interfaces\Render\Types</Filter>
     </ClInclude>
     <ClInclude Include="..\shared\Interfaces\Scene\Types\Light.h">
       <Filter>__Interfaces\Scene\Types</Filter>
@@ -910,6 +892,9 @@
     </ClInclude>
     <ClInclude Include="Scene\3D\SkeletonAnimation.h">
       <Filter>Scene functional\3D</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\Interfaces\Render\Types\RenderTypes.h">
+      <Filter>__Interfaces\Render\Types</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

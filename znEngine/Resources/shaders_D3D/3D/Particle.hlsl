@@ -70,34 +70,6 @@ void GS_Billboard(point float4 input[1] : POSITION, inout TriangleStream<PixelSh
 	//const float4x4 mv = mul(PF.View, PO.Model);
 	const float4x4 mvp = mul(PF.Projection, PF.View);
 
-
-	/*PixelShaderInput outputVert;
-	outputVert.position = mul(mvp, float4(vert[0], 1.0f));
-	outputVert.texcoord = texCoord[0];
-	OutputStream.Append(outputVert);
-
-	outputVert.position = mul(mvp, float4(vert[1], 1.0f));
-	outputVert.texcoord = texCoord[1];
-	OutputStream.Append(outputVert);
-
-	outputVert.position = mul(mvp, float4(vert[2], 1.0f));
-	outputVert.texcoord = texCoord[2];
-	OutputStream.Append(outputVert);
-	OutputStream.RestartStrip();
-
-	outputVert.position = mul(mvp, float4(vert[2], 1.0f));
-	outputVert.texcoord = texCoord[2];
-	OutputStream.Append(outputVert);
-
-	outputVert.position = mul(mvp, float4(vert[1], 1.0f));
-	outputVert.texcoord = texCoord[1];
-	OutputStream.Append(outputVert);
-
-	outputVert.position = mul(mvp, float4(vert[3], 1.0f));
-	outputVert.texcoord = texCoord[3];
-	OutputStream.Append(outputVert);
-	OutputStream.RestartStrip();*/
-
 	// Now we "append" or add the vertices to the outgoing stream list
 	PixelShaderInput outputVert;
 	for (int i = 0; i < 4; i++)

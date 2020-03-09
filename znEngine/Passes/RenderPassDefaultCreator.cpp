@@ -61,13 +61,13 @@ std::shared_ptr<IRenderPass> CRenderPassDefaultCreator::CreateRenderPass(size_t 
 	}
 	else if (Index == 1)
 	{
-		std::shared_ptr<IRenderPassPipelined> passPipelined = std::make_shared<CDebugMaterialPass>(RenderDevice, Scene);
+		std::shared_ptr<IRenderPassPipelined> passPipelined = std::make_shared<CMaterial_Debug_Pass>(RenderDevice, Scene);
 		passPipelined->CreatePipeline(RenderTarget, Viewport);
 		return passPipelined;
 	}
 	else if (Index == 2)
 	{
-		std::shared_ptr<IRenderPassPipelined> passPipelined = std::make_shared<CTexturedMaterialPass>(RenderDevice, Scene);
+		std::shared_ptr<IRenderPassPipelined> passPipelined = std::make_shared<CMaterial_Textured_Pass>(RenderDevice, Scene);
 		passPipelined->CreatePipeline(RenderTarget, Viewport);
 		return passPipelined;
 	}

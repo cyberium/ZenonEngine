@@ -1,11 +1,11 @@
 #pragma once
 
-class CDebugMaterialPass 
+class CMaterial_Debug_Pass 
 	: public Base3DPass
 {
 public:
-	CDebugMaterialPass(IRenderDevice& RenderDevice, std::shared_ptr<IScene> Scene);
-	virtual ~CDebugMaterialPass();
+	CMaterial_Debug_Pass(IRenderDevice& RenderDevice, std::shared_ptr<IScene> Scene);
+	virtual ~CMaterial_Debug_Pass();
 
 	// IRenderPassPipelined
 	std::shared_ptr<IRenderPassPipelined> CreatePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport* Viewport) override final;

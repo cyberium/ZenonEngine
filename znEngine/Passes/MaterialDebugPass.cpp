@@ -6,11 +6,11 @@
 // Additional
 #include "Materials/MaterialDebug.h"
 
-CDebugMaterialPass::CDebugMaterialPass(IRenderDevice& RenderDevice, std::shared_ptr<IScene> Scene)
+CMaterial_Debug_Pass::CMaterial_Debug_Pass(IRenderDevice& RenderDevice, std::shared_ptr<IScene> Scene)
 	: Base3DPass(RenderDevice, Scene)
 {}
 
-CDebugMaterialPass::~CDebugMaterialPass()
+CMaterial_Debug_Pass::~CMaterial_Debug_Pass()
 {}
 
 
@@ -18,7 +18,7 @@ CDebugMaterialPass::~CDebugMaterialPass()
 //
 // IRenderPassPipelined
 //
-std::shared_ptr<IRenderPassPipelined> CDebugMaterialPass::CreatePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport)
+std::shared_ptr<IRenderPassPipelined> CMaterial_Debug_Pass::CreatePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport)
 {
 	std::shared_ptr<IShader> vertexShader;
 	std::shared_ptr<IShader> geometryShader;
@@ -52,12 +52,12 @@ std::shared_ptr<IRenderPassPipelined> CDebugMaterialPass::CreatePipeline(std::sh
 //
 // IVisitor
 //
-EVisitResult CDebugMaterialPass::Visit(const IModel * Model)
+EVisitResult CMaterial_Debug_Pass::Visit(const IModel * Model)
 {
 	return Base3DPass::Visit(Model);
 }
 
-EVisitResult CDebugMaterialPass::Visit(const IGeometry * Geometry, const IMaterial* Material, SGeometryDrawArgs GeometryDrawArgs)
+EVisitResult CMaterial_Debug_Pass::Visit(const IGeometry * Geometry, const IMaterial* Material, SGeometryDrawArgs GeometryDrawArgs)
 {
 	//const MaterialDebug* objMaterial = dynamic_cast<const MaterialDebug*>(Material);
 	//if (objMaterial == nullptr)

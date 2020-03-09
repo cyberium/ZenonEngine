@@ -200,8 +200,6 @@
     <ClInclude Include="..\shared\Interfaces\Render\IGeometry.h" />
     <ClInclude Include="..\shared\Interfaces\Render\IImageLoader.h" />
     <ClInclude Include="..\shared\Interfaces\Render\IRenderTechnique.h" />
-    <ClInclude Include="..\shared\Interfaces\Render\Types\RenderGeometryParams.h" />
-    <ClInclude Include="..\shared\Interfaces\Render\Types\ShaderType.h" />
     <ClInclude Include="..\shared\Interfaces\Scene\ISceneNode3D.h" />
     <ClInclude Include="..\shared\Interfaces\Scene\ISceneNodeUI.h" />
     <ClInclude Include="..\shared\Interfaces\Scene\Types\Light.h" />
@@ -252,12 +250,9 @@
     <ClInclude Include="..\shared\Interfaces\Render\IShaderInputLayout.h" />
     <ClInclude Include="..\shared\Interfaces\Render\IShaderParameter.h" />
     <ClInclude Include="..\shared\Interfaces\Render\ITexture.h" />
-    <ClInclude Include="..\shared\Interfaces\Render\Types\BufferBinding.h" />
-    <ClInclude Include="..\shared\Interfaces\Render\Types\ClearFlags.h" />
-    <ClInclude Include="..\shared\Interfaces\Render\Types\CPUAccess.h" />
+    <ClInclude Include="..\shared\Interfaces\Render\Types\RenderTypes.h" />
     <ClInclude Include="..\shared\Interfaces\Render\Types\CustomVertexElement.h" />
     <ClInclude Include="..\shared\Interfaces\Render\Types\InputSemantic.h" />
-    <ClInclude Include="..\shared\Interfaces\Render\Types\PrimitiveTopology.h" />
     <ClInclude Include="..\shared\Interfaces\Render\Types\Ray.h" />
     <ClInclude Include="..\shared\Interfaces\Render\Types\RaycastHit.h" />
     <ClInclude Include="..\shared\Interfaces\Render\Types\Viewport.h" />
