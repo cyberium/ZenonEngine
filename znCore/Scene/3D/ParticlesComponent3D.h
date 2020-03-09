@@ -15,7 +15,10 @@ public:
 
 	// IParticleSystem
 	void AddParticle(const SParticle& Particle) override;
+	void ClearParticles() override;
 	const std::vector<SParticle>& GetParticles() const override;
+	void SetMaterial(const std::shared_ptr<IMaterial>& Material) override;
+	std::shared_ptr<IMaterial> GetMaterial() const override;
 
 	// ISceneNodeComponent
 	virtual void Update(const UpdateEventArgs& e) override;
@@ -23,4 +26,5 @@ public:
 
 private:
 	std::vector<SParticle> m_Particles;
+	std::shared_ptr<IMaterial> m_Material;
 };

@@ -300,7 +300,11 @@ ZN_INTERFACE ZN_API IParticleSystem
 	virtual ~IParticleSystem() {}
 
 	virtual void AddParticle(const SParticle& Particle) = 0;
+	virtual void ClearParticles() = 0;
 	virtual const std::vector<SParticle>& GetParticles() const = 0;
+
+	virtual void SetMaterial(const std::shared_ptr<IMaterial>& Material) = 0;
+	virtual std::shared_ptr<IMaterial> GetMaterial() const = 0;
 };
 
 #define UUID_ParticleComponent uuid("B0168C5F-60C0-4210-B3EF-740FEB89FFDD")

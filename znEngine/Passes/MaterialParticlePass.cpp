@@ -107,9 +107,14 @@ EVisitResult CMaterialParticlePass::Visit(const IParticleSystem * ParticlesSyste
 	m_ShaderParticlesBufferParameter->SetStructuredBuffer(m_ParticlesBuffer);
 	m_ShaderParticlesBufferParameter->Bind();
 
+	// Bind material
+	ParticlesSystem->GetMaterial()->Bind(GetRenderEventArgs().PipelineState->GetShaders());
+
+	// Draw geom
 	SGeometryDrawArgs args;
 	args.VertexCnt = ParticlesSystem->GetParticles().size();
 	m_Geometry->Render(GetRenderEventArgs(), GetRenderEventArgs().PipelineState->GetShaders().at(EShaderType::VertexShader).get(), args);
+
 
 	return EVisitResult();
 }

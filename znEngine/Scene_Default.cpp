@@ -259,17 +259,18 @@ void CGameState_World::Load3D()
 		auto geom = GetRenderDevice().GetObjectsFactory().CreateGeometry();
 		geom->SetPrimitiveTopology(PrimitiveTopology::TriangleStrip);
 		geom->AddVertexBuffer(BufferBinding("POSITION", 0), buffer);
-		
-		auto material = std::make_shared<MaterialParticle>(GetRenderDevice());
-		material->SetTexture(0, GetRenderDevice().GetObjectsFactory().LoadTexture2D("particle.png"));
 
 		auto model = GetRenderDevice().GetObjectsFactory().CreateModel();
 		model->AddConnection(material, geom);*/
+
+		auto material = std::make_shared<MaterialParticle>(GetRenderDevice());
+		material->SetTexture(0, GetRenderDevice().GetObjectsFactory().LoadTexture2D("particle.png"));
 
 		auto particlesNode = GetRootNode3D()->CreateSceneNode<SceneNode3D>();
 		particlesNode->SetName("Particles");
 		//particlesNode->GetComponent<IModelsComponent3D>()->AddModel(model);
 		auto particlesComponent = std::make_shared<CParticlesComponent3D>(*particlesNode);
+		particlesComponent->SetMaterial(material);
 		particlesNode->AddComponent(particlesComponent);
 
 

@@ -17,14 +17,14 @@ void MaterialDX11::Bind(const ShaderMap& shaders) const
 	// means shader in Pipeline state
 	if (m_Shaders.empty())
 	{
-		for (auto shader : shaders)
+		for (const auto& shader : shaders)
 		{
 			BindForShader(shader.second.get());
 		}
 	}
 	else
 	{
-		for (auto shader : m_Shaders)
+		for (const auto& shader : m_Shaders)
 		{
 			shader.second->Bind();
 			BindForShader(shader.second.get());
@@ -36,7 +36,7 @@ void MaterialDX11::Unbind(const ShaderMap& shaders) const
 {
 	if (m_Shaders.empty())
 	{
-		for (auto shader : shaders)
+		for (const auto& shader : shaders)
 		{
 			UnbindForShader(shader.second.get());
 		}

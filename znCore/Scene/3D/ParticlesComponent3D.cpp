@@ -21,9 +21,24 @@ void CParticlesComponent3D::AddParticle(const SParticle& Particle)
 	m_Particles.push_back(Particle);
 }
 
+void CParticlesComponent3D::ClearParticles()
+{
+	m_Particles.clear();
+}
+
 const std::vector<SParticle>& CParticlesComponent3D::GetParticles() const
 {
 	return m_Particles;
+}
+
+void CParticlesComponent3D::SetMaterial(const std::shared_ptr<IMaterial>& Material)
+{
+	m_Material = Material;
+}
+
+std::shared_ptr<IMaterial> CParticlesComponent3D::GetMaterial() const
+{
+	return m_Material;
 }
 
 
