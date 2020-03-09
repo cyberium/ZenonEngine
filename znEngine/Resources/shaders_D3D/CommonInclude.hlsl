@@ -172,7 +172,7 @@ float3 GetCameraPosition()
 
 float3 GetCameraUp()
 {
-	return float3(PF.View[1][0], PF.View[1][1], PF.View[1][2]);
+	return float3(PF.InverseView[0][1], PF.InverseView[1][1], PF.InverseView[2][1]);
 }
 
 float Blur(Texture2D Texture, sampler Sampler, float2 Coords)

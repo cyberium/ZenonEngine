@@ -26,7 +26,6 @@
 #include "Color.h"
 #include "Timer.h"
 #include "HighResolutionTimer.h"
-#include "Resource.h"
 
 // Utils
 #include "Random.h"

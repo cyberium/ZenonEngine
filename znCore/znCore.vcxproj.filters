@@ -37,9 +37,6 @@
     <Filter Include="Common\Helpers">
       <UniqueIdentifier>{59b139b6-3568-49b9-afe7-7e6b75e45abd}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resources">
-      <UniqueIdentifier>{f6b2d17f-2043-4399-87eb-3ea48206e496}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Common\Timers">
       <UniqueIdentifier>{4ed86a83-bc26-44a8-8c60-1dbec01ff0c6}</UniqueIdentifier>
     </Filter>
@@ -132,9 +129,6 @@
     <ClCompile Include="Utils.cpp">
       <Filter>Common\Helpers</Filter>
     </ClCompile>
-    <ClCompile Include="UtilsConvert.cpp">
-      <Filter>Common\Helpers</Filter>
-    </ClCompile>
     <ClCompile Include="BoundingBox.cpp">
       <Filter>Common\Primitives</Filter>
     </ClCompile>
@@ -173,9 +167,6 @@
     </ClCompile>
     <ClCompile Include="Random.cpp">
       <Filter>Common\Helpers</Filter>
-    </ClCompile>
-    <ClCompile Include="Resource.cpp">
-      <Filter>Resources</Filter>
     </ClCompile>
     <ClCompile Include="Proxies\MaterialProxie.cpp">
       <Filter>__Proxies</Filter>
@@ -396,6 +387,9 @@
     <ClCompile Include="Scene\3D\SkeletonAnimation.cpp">
       <Filter>Scene functional\3D</Filter>
     </ClCompile>
+    <ClCompile Include="Scene\3D\ParticlesComponent3D.cpp">
+      <Filter>Scene functional\3D</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Log.h">
@@ -424,18 +418,6 @@
     </ClInclude>
     <ClInclude Include="Color.h">
       <Filter>Common</Filter>
-    </ClInclude>
-    <ClInclude Include="Vec2f.h">
-      <Filter>Common\Math</Filter>
-    </ClInclude>
-    <ClInclude Include="Vec3f.h">
-      <Filter>Common\Math</Filter>
-    </ClInclude>
-    <ClInclude Include="Vec4f.h">
-      <Filter>Common\Math</Filter>
-    </ClInclude>
-    <ClInclude Include="Quaternion.h">
-      <Filter>Common\Math</Filter>
     </ClInclude>
     <ClInclude Include="Matrix.h">
       <Filter>Common\Math</Filter>
@@ -490,9 +472,6 @@
     </ClInclude>
     <ClInclude Include="..\shared\znCore.h">
       <Filter>Common</Filter>
-    </ClInclude>
-    <ClInclude Include="Resource.h">
-      <Filter>Resources</Filter>
     </ClInclude>
     <ClInclude Include="MathTypes.h">
       <Filter>Common</Filter>
@@ -895,6 +874,9 @@
     </ClInclude>
     <ClInclude Include="..\shared\Interfaces\Render\Types\RenderTypes.h">
       <Filter>__Interfaces\Render\Types</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\3D\ParticlesComponent3D.h">
+      <Filter>Scene functional\3D</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

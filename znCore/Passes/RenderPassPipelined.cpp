@@ -144,6 +144,11 @@ EVisitResult RenderPassPipelined::Visit(const ILight3D* light)
 	return EVisitResult::Block;
 }
 
+EVisitResult RenderPassPipelined::Visit(const IParticleSystem * ParticleSystem)
+{
+	return EVisitResult::Block;
+}
+
 
 
 //

@@ -119,11 +119,11 @@ private:
 	std::shared_ptr<IPropertiesGroup>               m_PropertiesGroup;
 	std::weak_ptr<IScene>                           m_Scene;
 
-	vec3											m_Translate;
-	vec3											m_Rotate;
-	quat											m_RotateQuat;
+	glm::vec3										m_Translate;
+	glm::vec3										m_Rotate;
+	glm::quat										m_RotateQuat;
 	bool											m_IsRotateQuat;
-	vec3											m_Scale;
+	glm::vec3										m_Scale;
 
 	glm::mat4										m_LocalTransform;
 	glm::mat4										m_InverseLocalTransform;

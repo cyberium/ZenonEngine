@@ -13,7 +13,6 @@ cbuffer Material : register(b2)
 };
 
 Texture2D DiffuseTexture : register(t0);
-sampler DiffuseTextureSampler : register(s0);
 
 VertexShaderOutput VS_main(VSInputPT IN)
 {
@@ -29,7 +28,7 @@ VertexShaderOutput VS_main(VSInputPT IN)
 
 DefferedRenderPSOut PS_main(VertexShaderOutput IN) : SV_TARGET
 {
-	float4 diffuseColor = DiffuseTexture.Sample(DiffuseTextureSampler, IN.texCoord);
+	float4 diffuseColor = DiffuseTexture.Sample(LinearRepeatSampler, IN.texCoord);
 	if (diffuseColor.a < 0.05f)
 		discard;
 

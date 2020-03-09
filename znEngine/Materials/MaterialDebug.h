@@ -1,6 +1,7 @@
 #pragma once
 
-class ZN_API MaterialDebug : public MaterialProxie
+class ZN_API MaterialDebug 
+	: public MaterialProxie
 {
 public:
 	MaterialDebug(IRenderDevice& RenderDevice);

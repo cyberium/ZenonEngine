@@ -100,6 +100,9 @@
     <Filter Include="SceneNodes\UI\Utils">
       <UniqueIdentifier>{58530eb5-a58f-4c13-94b2-0d6730fa84eb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Materials\UI materials">
+      <UniqueIdentifier>{2341db42-48fb-4ccf-a7d0-ae8d040f8087}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -125,21 +128,6 @@
       <Filter>Materials</Filter>
     </ClCompile>
     <ClCompile Include="Materials\MaterialTextured.cpp">
-      <Filter>Materials</Filter>
-    </ClCompile>
-    <ClCompile Include="Materials\UI_Button_Material.cpp">
-      <Filter>Materials</Filter>
-    </ClCompile>
-    <ClCompile Include="Materials\UI_Color_Material.cpp">
-      <Filter>Materials</Filter>
-    </ClCompile>
-    <ClCompile Include="Materials\UI_Font_Material.cpp">
-      <Filter>Materials</Filter>
-    </ClCompile>
-    <ClCompile Include="Materials\UI_Line_Material.cpp">
-      <Filter>Materials</Filter>
-    </ClCompile>
-    <ClCompile Include="Materials\UI_Texture_Material.cpp">
       <Filter>Materials</Filter>
     </ClCompile>
     <ClCompile Include="SceneFunctional\UI\UIUtils.cpp">
@@ -297,6 +285,24 @@
     <ClCompile Include="Passes\MaterialParticlePass.cpp">
       <Filter>Passes\3D</Filter>
     </ClCompile>
+    <ClCompile Include="Materials\UI_Button_Material.cpp">
+      <Filter>Materials\UI materials</Filter>
+    </ClCompile>
+    <ClCompile Include="Materials\UI_Color_Material.cpp">
+      <Filter>Materials\UI materials</Filter>
+    </ClCompile>
+    <ClCompile Include="Materials\UI_Font_Material.cpp">
+      <Filter>Materials\UI materials</Filter>
+    </ClCompile>
+    <ClCompile Include="Materials\UI_Line_Material.cpp">
+      <Filter>Materials\UI materials</Filter>
+    </ClCompile>
+    <ClCompile Include="Materials\UI_Texture_Material.cpp">
+      <Filter>Materials\UI materials</Filter>
+    </ClCompile>
+    <ClCompile Include="Materials\MaterialParticle.cpp">
+      <Filter>Materials</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="common.h">
@@ -328,21 +334,6 @@
       <Filter>Materials</Filter>
     </ClInclude>
     <ClInclude Include="Materials\MaterialTextured.h">
-      <Filter>Materials</Filter>
-    </ClInclude>
-    <ClInclude Include="Materials\UI_Button_Material.h">
-      <Filter>Materials</Filter>
-    </ClInclude>
-    <ClInclude Include="Materials\UI_Color_Material.h">
-      <Filter>Materials</Filter>
-    </ClInclude>
-    <ClInclude Include="Materials\UI_Font_Material.h">
-      <Filter>Materials</Filter>
-    </ClInclude>
-    <ClInclude Include="Materials\UI_Line_Material.h">
-      <Filter>Materials</Filter>
-    </ClInclude>
-    <ClInclude Include="Materials\UI_Texture_Material.h">
       <Filter>Materials</Filter>
     </ClInclude>
     <ClInclude Include="SceneFunctional\UI\UIUtils.h">
@@ -497,6 +488,24 @@
     </ClInclude>
     <ClInclude Include="Passes\MaterialParticlePass.h">
       <Filter>Passes\3D</Filter>
+    </ClInclude>
+    <ClInclude Include="Materials\UI_Button_Material.h">
+      <Filter>Materials\UI materials</Filter>
+    </ClInclude>
+    <ClInclude Include="Materials\UI_Color_Material.h">
+      <Filter>Materials\UI materials</Filter>
+    </ClInclude>
+    <ClInclude Include="Materials\UI_Font_Material.h">
+      <Filter>Materials\UI materials</Filter>
+    </ClInclude>
+    <ClInclude Include="Materials\UI_Line_Material.h">
+      <Filter>Materials\UI materials</Filter>
+    </ClInclude>
+    <ClInclude Include="Materials\UI_Texture_Material.h">
+      <Filter>Materials\UI materials</Filter>
+    </ClInclude>
+    <ClInclude Include="Materials\MaterialParticle.h">
+      <Filter>Materials</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

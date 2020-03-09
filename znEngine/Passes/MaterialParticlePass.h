@@ -13,4 +13,10 @@ public:
 	// IVisitor
 	EVisitResult Visit(const IModel* Model) override;
 	EVisitResult Visit(const IGeometry* Geometry, const IMaterial* Material, SGeometryDrawArgs GeometryDrawArgs = SGeometryDrawArgs()) override;
+	EVisitResult Visit(const IParticleSystem* ParticlesSystem) override;
+
+private:
+	IShaderParameter*                  m_ShaderParticlesBufferParameter;
+	std::shared_ptr<IStructuredBuffer> m_ParticlesBuffer;
+	std::shared_ptr<IGeometry>         m_Geometry;
 };

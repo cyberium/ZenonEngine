@@ -3,9 +3,9 @@
 #include "Formats/Fonts/Font.h"
 #include "../../Materials/UI_Font_Material.h"
 
-class ZN_API CUITextNode : public CUIBaseNode
+class ZN_API CUITextNode 
+	: public CUIBaseNode
 {
-	typedef CUIBaseNode base;
 public:
 	CUITextNode();
 	virtual ~CUITextNode();

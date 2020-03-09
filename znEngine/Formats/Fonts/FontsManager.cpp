@@ -63,7 +63,7 @@ std::shared_ptr<CFont> FontsManager::CreateAction(IRenderDevice& RenderDevice, c
 	}
 
 	std::string fontFileName = _nameAndSize.substr(0, _delimIndex - 1);
-	uint32 fontSize = Utils::ToType<uint32>(_nameAndSize.substr(_delimIndex + 1));
+	uint32 fontSize = 14l;//Utils::ToType<uint32>(_nameAndSize.substr(_delimIndex + 1));
 
 	std::shared_ptr<IFile> f = m_BaseManager.GetManager<IFilesManager>()->Open(fontFileName);
 	if (f == nullptr)

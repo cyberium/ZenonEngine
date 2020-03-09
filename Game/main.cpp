@@ -6,7 +6,7 @@ static IBaseManager* BaseManager = nullptr;
 void main_internal(int argumentCount, char* arguments[])
 {
 	// 1. Initialize engine and some improtant managers
-	BaseManager = InitializeEngine(ArgumentsToVector(argumentCount, arguments), "");
+	BaseManager = InitializeEngine(Utils::ArgumentsToVector(argumentCount, arguments), "");
 
 	// 3. Create application
 	Application app(*BaseManager, ::GetModuleHandle(NULL));

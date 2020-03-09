@@ -1,10 +1,11 @@
 #pragma once
 
-class ZN_API MaterialTextured : public MaterialProxie
+class ZN_API MaterialParticle 
+	: public MaterialProxie
 {
 public:
-	MaterialTextured(IRenderDevice& RenderDevice);
-	virtual ~MaterialTextured();
+	MaterialParticle(IRenderDevice& RenderDevice);
+	virtual ~MaterialParticle();
 
 	cvec4 GetDiffuseColor() const;
 	void SetDiffuseColor(cvec4 diffuse);

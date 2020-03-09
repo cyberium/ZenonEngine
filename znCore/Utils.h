@@ -1,58 +1,27 @@
 #pragma once
 
-class ZN_API Utils
+namespace Utils
 {
-public:
-    // Convert
-    static   std::string ToString(const type_info& type, void* value);
+    ZN_API std::string Trim(std::string& _string, const std::string& delimiters = " \f\n\r\t\v");
+	ZN_API std::string TrimLeft(std::string& _string, const std::string& delimiters = " \f\n\r\t\v");
+	ZN_API std::string TrimRight(std::string& _string, const std::string& delimiters = " \f\n\r\t\v");
 
-    // Common types
-    template <typename T>
-    static   T ToType(const std::string& _string);
+	ZN_API std::string ToLower(const std::string& _string);
+	ZN_API std::string ToUpper(const std::string& _string);
 
-    static   bool ToBool(const std::string& _string);
-
-    // My types
-    static  vec2 ToPoint(std::string& _string);
-    static  vec3 ToVector3(std::string& _string);
-
-    // Parse
-    static   std::string ParseSectionName(std::string& _string);
-    static   std::string ParseSectionAndIncludeName(std::string& _string, std::string& _includeSectionName);
-    static   void ParseKeyPair(std::string& _string, std::string& key, std::string& val);
-
-    static   bool TryParse(const type_info& type, const std::string& _string, void* output);
-
-    // String
-    static   std::string Trim(std::string& _string, const std::string& delimiters = " \f\n\r\t\v");
-    static   std::string TrimLeft(std::string& _string, const std::string& delimiters = " \f\n\r\t\v");
-    static   std::string TrimRight(std::string& _string, const std::string& delimiters = " \f\n\r\t\v");
-
-    static   std::string ToLower(const std::string& _string);
-	static   std::string ToUpper(const std::string& _string);
-
-    static   int popFirstInt(std::string& _string, char separator = 0);
-    static   double popFirstDouble(std::string& _string, char separator = 0);
-    static   float popFirstFloat(std::string& _string, char separator = 0);
-
-    static   std::string GetFirstSubString(std::string& _string, char separator = 0);
-    static   std::string getNextToken(const std::string& _string, uint32_t& cursor, char separator);
-    static   std::string stripCarriageReturn(const std::string& line);
-    static   std::string getLine(std::ifstream& infile);
-
-    static   bool PointInRectangle(const vec2 _point, const vec2 _rectStart, const vec2 _rectEnd);
+	ZN_API std::vector<std::string> ArgumentsToVector(int argumentsCount, char* arguments[]);
 };
 
-// Common types
-template <typename T>
-inline T Utils::ToType(const std::string& _string)
+
+namespace Resources
 {
-    T result;
-    if (!(std::stringstream(_string) >> result))
-    {
-        result = 0;
-    }
-    return result;
+	ZN_API std::string Utf8_to_cp1251(const std::string& AString);
+	ZN_API std::string cp1251_to_utf8(const std::string& AString);
+
+	ZN_API std::wstring ConvertString(const std::string& AString);
+	ZN_API std::string ConvertString(const std::wstring& WString);
+
+	ZN_API std::wstring GetStringResource(HMODULE HModule, int ID, const std::wstring& type);
 }
 
 inline bool getBitH2L(uint8* data, uint32 bit)
@@ -90,5 +59,3 @@ inline void SafeDeleteArray(T& ptr)
 		ptr = NULL;
 	}
 }
-
-ZN_API std::vector<std::string> ArgumentsToVector(int argumentsCount, char* arguments[]);

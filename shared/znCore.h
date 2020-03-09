@@ -65,6 +65,7 @@
 #include "../znCore/Scene/3D/LightComponent3D.h"
 #include "../znCore/Scene/3D/ModelsComponent3D.h"
 #include "../znCore/Scene/3D/CameraComponent3D.h"
+#include "../znCore/Scene/3D/ParticlesComponent3D.h"
 
 // UI
 #include "../znCore/Scene/UI/SceneNodeUI.h"

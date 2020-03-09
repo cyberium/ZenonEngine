@@ -71,6 +71,11 @@ EVisitResult RenderPass::Visit(const ILight3D* light)
 	return EVisitResult::Block;
 }
 
+EVisitResult RenderPass::Visit(const IParticleSystem * ParticleSystem)
+{
+	return EVisitResult::Block;
+}
+
 
 
 //

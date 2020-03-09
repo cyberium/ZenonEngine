@@ -275,9 +275,32 @@ ZN_INTERFACE __declspec(UUID_SkeletonComponent) ZN_API ISkeletonComponent3D
 // PARTICLE COMPONENT 3D
 //
 
-ZN_INTERFACE ZN_API IParticle
+struct __declspec(novtable, align(16)) ZN_API SParticle
 {
-	virtual ~IParticle() {}
+	SParticle()
+		: Position(glm::vec3(0.0f))
+		, Color(glm::vec4(1.0f))
+		, Size(glm::vec2(10.0f))
+	{}
+
+	glm::vec3 Position;
+	float __padding0;
+	//--------------------------------------------------------------( 16 bytes )
+
+	glm::vec4 Color;
+	//--------------------------------------------------------------( 16 bytes )
+
+	glm::vec2 Size;
+	float __padding1[2];
+	//--------------------------------------------------------------( 16 bytes )
+};
+
+ZN_INTERFACE ZN_API IParticleSystem
+{
+	virtual ~IParticleSystem() {}
+
+	virtual void AddParticle(const SParticle& Particle) = 0;
+	virtual const std::vector<SParticle>& GetParticles() const = 0;
 };
 
 #define UUID_ParticleComponent uuid("B0168C5F-60C0-4210-B3EF-740FEB89FFDD")
@@ -285,6 +308,4 @@ ZN_INTERFACE __declspec(UUID_ParticleComponent) ZN_API IParticleComponent3D
 {
 	virtual ~IParticleComponent3D() {}
 
-	virtual std::shared_ptr<ISkeletonBone3D> GetBone(size_t Index) const = 0;
-	virtual void Calculate(uint32 GlobalTime) = 0;
 };

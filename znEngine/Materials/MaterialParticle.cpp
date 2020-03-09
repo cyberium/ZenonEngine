@@ -1,39 +1,33 @@
 #include "stdafx.h"
 
 // General
-#include "MaterialTextured.h"
+#include "MaterialParticle.h"
 
-MaterialTextured::MaterialTextured(IRenderDevice& RenderDevice)
+MaterialParticle::MaterialParticle(IRenderDevice& RenderDevice)
 	: MaterialProxie(RenderDevice.GetObjectsFactory().CreateMaterial(sizeof(MaterialProperties)))
 {
-	// Constant buffer
 	m_pProperties = (MaterialProperties*)_aligned_malloc(sizeof(MaterialProperties), 16);
 	*m_pProperties = MaterialProperties();
 }
 
-MaterialTextured::~MaterialTextured()
+MaterialParticle::~MaterialParticle()
 {
-	if (m_pProperties)
-	{
-		_aligned_free(m_pProperties);
-		m_pProperties = nullptr;
-	}
+	_aligned_free(m_pProperties);
+	m_pProperties = nullptr;
 }
 
-cvec4 MaterialTextured::GetDiffuseColor() const
+cvec4 MaterialParticle::GetDiffuseColor() const
 {
 	return m_pProperties->DiffuseColor;
 }
 
-//-----
-
-void MaterialTextured::SetDiffuseColor(cvec4 diffuse)
+void MaterialParticle::SetDiffuseColor(cvec4 diffuse)
 {
 	m_pProperties->DiffuseColor = diffuse;
 	MarkConstantBufferDirty();
 }
 
-void MaterialTextured::UpdateConstantBuffer() const
+void MaterialParticle::UpdateConstantBuffer() const
 {
 	MaterialProxie::UpdateConstantBuffer(m_pProperties, sizeof(MaterialProperties));
 }

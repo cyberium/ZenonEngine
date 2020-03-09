@@ -13,7 +13,7 @@ enum class ZN_API ELightType : uint32_t // Don't delete uint32_t becouse mapped 
 
 struct __declspec(novtable, align(16)) ZN_API SLight
 {
-	SLight::SLight()
+	SLight()
 		: PositionWS(0, 0, 0, 1)
 		, DirectionWS(0, -1, 0, 0)
 		, PositionVS(0, 0, 0, 1)
@@ -43,6 +43,4 @@ struct __declspec(novtable, align(16)) ZN_API SLight
 	float Intensity; // The intensity of the light.
 	float SpotlightAngle; // The half angle of the spotlight cone.
 	//--------------------------------------------------------------(16 bytes )
-
-	//--------------------------------------------------------------( 16 * 7 = 112 bytes )
 };

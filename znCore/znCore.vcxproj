@@ -142,11 +142,11 @@
     <ClCompile Include="Proxies\SceneNodeProxie.cpp" />
     <ClCompile Include="Random.cpp" />
     <ClCompile Include="RefManager1DimAssync.cpp" />
-    <ClCompile Include="Resource.cpp" />
     <ClCompile Include="Scene\3D\CameraComponent3D.cpp" />
     <ClCompile Include="Scene\3D\ColliderComponent3D.cpp" />
     <ClCompile Include="Scene\3D\LightComponent3D.cpp" />
     <ClCompile Include="Scene\3D\ModelsComponent3D.cpp" />
+    <ClCompile Include="Scene\3D\ParticlesComponent3D.cpp" />
     <ClCompile Include="Scene\3D\SceneNode3D.cpp" />
     <ClCompile Include="Scene\3D\SkeletonAnimation.cpp" />
     <ClCompile Include="Scene\Actions.cpp" />
@@ -162,7 +162,6 @@
     </ClCompile>
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="Utils.cpp" />
-    <ClCompile Include="UtilsConvert.cpp" />
     <ClCompile Include="XML\tinyxml.cpp" />
     <ClCompile Include="XML\tinyxmlerror.cpp" />
     <ClCompile Include="XML\tinyxmlparser.cpp" />
@@ -308,15 +307,14 @@
     <ClInclude Include="Proxies\__Proxies.h" />
     <ClInclude Include="Random.h" />
     <ClInclude Include="Plane.h" />
-    <ClInclude Include="Quaternion.h" />
     <ClInclude Include="Rect.h" />
     <ClInclude Include="RefManager1Dim.h" />
     <ClInclude Include="RefManager1DimAssync.h" />
-    <ClInclude Include="Resource.h" />
     <ClInclude Include="Scene\3D\CameraComponent3D.h" />
     <ClInclude Include="Scene\3D\ColliderComponent3D.h" />
     <ClInclude Include="Scene\3D\LightComponent3D.h" />
     <ClInclude Include="Scene\3D\ModelsComponent3D.h" />
+    <ClInclude Include="Scene\3D\ParticlesComponent3D.h" />
     <ClInclude Include="Scene\3D\SceneNode3D.h" />
     <ClInclude Include="Scene\3D\SkeletonAnimation.h" />
     <ClInclude Include="Scene\Actions.h" />
@@ -330,9 +328,6 @@
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="Utils.h" />
-    <ClInclude Include="Vec2f.h" />
-    <ClInclude Include="Vec3f.h" />
-    <ClInclude Include="Vec4f.h" />
     <ClInclude Include="XML\tinyxml.h" />
     <ClInclude Include="XML\XMLManager.h" />
   </ItemGroup>

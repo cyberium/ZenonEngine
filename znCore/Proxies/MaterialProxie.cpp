@@ -7,6 +7,7 @@ MaterialProxie::MaterialProxie(std::shared_ptr<IMaterial> _materal)
 	: m_Material(_materal)
 {
 	_ASSERT(m_Material != nullptr);
+	SetWrapper(nullptr);
 }
 
 MaterialProxie::~MaterialProxie()

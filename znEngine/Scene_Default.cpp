@@ -6,6 +6,7 @@
 // Additional
 #include "Materials/MaterialDebug.h"
 #include "Materials/MaterialTextured.h"
+#include "Materials/MaterialParticle.h"
 #include "Materials/MaterialModel.h"
 
 #include "Passes/MaterialDebugPass.h"
@@ -180,11 +181,9 @@ void CGameState_World::Load3D()
 		textMaterial->SetTexture(MaterialModel::ETextureType::TextureDiffuse, GetRenderDevice().GetObjectsFactory().LoadTexture2D("Sponza_Floor_diffuse.png"));
 		//textMaterial->SetTexture(MaterialModel::ETextureType::TextureNormalMap, GetRenderDevice().LoadTexture2D("Sponza_Floor_normal.png"));
 		textMaterial->SetTexture(MaterialModel::ETextureType::TextureSpecular, GetRenderDevice().GetObjectsFactory().LoadTexture2D("Sponza_Floor_roughness.png"));
-		//textMaterial->SetTexture(MaterialModel::ETextureType::TextureBump, GetRenderDevice().LoadTexture2D("Sponza_Floor_roughness.png"));
-		textMaterial->SetWrapper(textMaterial.get());*/
+		//textMaterial->SetTexture(MaterialModel::ETextureType::TextureBump, GetRenderDevice().LoadTexture2D("Sponza_Floor_roughness.png"));*/
 
 		std::shared_ptr<MaterialTextured> textMaterial = std::make_shared<MaterialTextured>(GetRenderDevice());
-		textMaterial->SetWrapper(textMaterial.get());
 		textMaterial->SetTexture(0, GetRenderDevice().GetObjectsFactory().LoadTexture2D("Sponza_Floor_diffuse.png"));
 
 		auto cubeModel = GetRenderDevice().GetObjectsFactory().CreateModel();
@@ -234,11 +233,9 @@ void CGameState_World::Load3D()
 		//textMaterial->SetTexture(MaterialModel::ETextureType::TextureDiffuse, GetRenderDevice().CreateTexture2D("Sponza_Ceiling_diffuse.png"));
 		//textMaterial->SetTexture(MaterialModel::ETextureType::TextureNormalMap, GetRenderDevice().CreateTexture2D("Sponza_Ceiling_normal.png"));
 		//textMaterial->SetTexture(MaterialModel::ETextureType::TextureSpecular, GetRenderDevice().CreateTexture2D("Sponza_Ceiling_roughness.png"));
-		//textMaterial->SetTexture(MaterialModel::ETextureType::TextureBump, GetRenderDevice().CreateTexture2D("Sponza_Ceiling_roughness.png"));
-		textMaterial->SetWrapper(textMaterial.get());*/
+		//textMaterial->SetTexture(MaterialModel::ETextureType::TextureBump, GetRenderDevice().CreateTexture2D("Sponza_Ceiling_roughness.png"));*/
 
 		std::shared_ptr<MaterialTextured> textMaterial = std::make_shared<MaterialTextured>(GetRenderDevice());
-		textMaterial->SetWrapper(textMaterial.get());
 		textMaterial->SetTexture(0, GetRenderDevice().GetObjectsFactory().LoadTexture2D("Sponza_Floor_diffuse.png"));
 
 		auto& modelPlane = GetRenderDevice().GetObjectsFactory().CreateModel();
@@ -256,26 +253,38 @@ void CGameState_World::Load3D()
 	//
 	// PARTICLES
 	{
-		Random r(time(0));
-		std::vector<glm::vec3> particles;
-		for (size_t i = 0; i < 1000; i++)
-		{
-			glm::vec3 pos = glm::vec3(r.NextFloat(), r.NextFloat(), r.NextFloat()) * 1000.0f - glm::vec3(500.0f, 0.0f, 500.0f);
-			particles.push_back(pos);
-		}
 
-		auto buffer = GetRenderDevice().GetObjectsFactory().CreateVertexBuffer(particles);
+		/*auto buffer = GetRenderDevice().GetObjectsFactory().CreateVertexBuffer(particles);
 
 		auto geom = GetRenderDevice().GetObjectsFactory().CreateGeometry();
 		geom->SetPrimitiveTopology(PrimitiveTopology::TriangleStrip);
 		geom->AddVertexBuffer(BufferBinding("POSITION", 0), buffer);
 		
+		auto material = std::make_shared<MaterialParticle>(GetRenderDevice());
+		material->SetTexture(0, GetRenderDevice().GetObjectsFactory().LoadTexture2D("particle.png"));
+
 		auto model = GetRenderDevice().GetObjectsFactory().CreateModel();
-		model->AddConnection(nullptr, geom);
+		model->AddConnection(material, geom);*/
 
 		auto particlesNode = GetRootNode3D()->CreateSceneNode<SceneNode3D>();
 		particlesNode->SetName("Particles");
-		particlesNode->GetComponent<IModelsComponent3D>()->AddModel(model);
+		//particlesNode->GetComponent<IModelsComponent3D>()->AddModel(model);
+		auto particlesComponent = std::make_shared<CParticlesComponent3D>(*particlesNode);
+		particlesNode->AddComponent(particlesComponent);
+
+
+
+		float areaSize = 2000.0f;
+		Random r(time(0));
+		for (size_t i = 0; i < 1000000; i++)
+		{
+			SParticle particle;
+			particle.Position = glm::vec3(r.NextFloat(), r.NextFloat(), r.NextFloat()) * areaSize - glm::vec3(areaSize / 2.0f, 0.0f, areaSize / 2.0f);
+			float size = r.NextFloat() * 3.0f + 1.0f;
+			particle.Size = glm::vec2(size, size);
+			particle.Color = glm::vec4(r.NextFloat(), r.NextFloat(), r.NextFloat(), 1.0f);
+			particlesComponent->AddParticle(particle);
+		}
 	}
 
 
@@ -298,12 +307,12 @@ void CGameState_World::Load3D()
 
 	glm::vec4 color = glm::vec4(0.0, 0.0f, 0.0f, 1.0f);
 	m_Technique3D.AddPass(std::make_shared<ClearRenderTargetPass>(GetRenderDevice(), GetRenderWindow()->GetRenderTarget(), ClearFlags::All, color /*glm::vec4(0.2f, 0.2f, 0.2f, 0.2f)*/, 1.0f, 0));
-	m_Technique3D.AddPass(std::make_shared<CMaterialParticlePass>(GetRenderDevice(), shared_from_this())->CreatePipeline(GetRenderWindow()->GetRenderTarget(), &GetRenderWindow()->GetViewport()));
 	/*m_Technique3D.AddPass(m_SceneCreateTypelessListPass);
 	m_Technique3D.AddPass(m_DefferedRenderPass);
 	m_Technique3D.AddPass(m_DefferedRenderPrepareLights);
 	m_Technique3D.AddPass(m_DefferedFinalRenderPass);*/
 	m_Technique3D.AddPass(GetBaseManager().GetManager<IRenderPassFactory>()->CreateRenderPass("TexturedMaterialPass", GetRenderDevice(), GetRenderWindow()->GetRenderTarget(), &GetRenderWindow()->GetViewport(), shared_from_this()));
+	m_Technique3D.AddPass(std::make_shared<CMaterialParticlePass>(GetRenderDevice(), shared_from_this())->CreatePipeline(GetRenderWindow()->GetRenderTarget(), &GetRenderWindow()->GetViewport()));
 }
 
 void CGameState_World::LoadUI()

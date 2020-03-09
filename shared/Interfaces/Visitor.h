@@ -10,6 +10,7 @@ ZN_INTERFACE IGeometry;
 ZN_INTERFACE IMaterial;
 ZN_INTERFACE ISceneNodeComponent;
 ZN_INTERFACE ILight3D;
+ZN_INTERFACE IParticleSystem;
 // FORWARD END
 
 enum ZN_API EVisitResult : size_t
@@ -33,10 +34,11 @@ ZN_INTERFACE ZN_API IVisitor : public std::enable_shared_from_this<IVisitor>
 {
 	virtual ~IVisitor() {}
 
-	virtual EVisitResult Visit(const ISceneNode3D* node) = 0;
-	virtual EVisitResult Visit(const ISceneNodeUI* node) = 0;
+	virtual EVisitResult Visit(const ISceneNode3D* SceneNode) = 0;
+	virtual EVisitResult Visit(const ISceneNodeUI* SceneNode) = 0;
 	virtual EVisitResult Visit(const IModel* Model) = 0;
 	virtual EVisitResult Visit(const IGeometry* Geometry, const IMaterial* Material, SGeometryDrawArgs GeometryDrawArgs = SGeometryDrawArgs()) = 0;
 	virtual EVisitResult Visit(const ISceneNodeComponent* Component) = 0;
 	virtual EVisitResult Visit(const ILight3D* Light) = 0;
+	virtual EVisitResult Visit(const IParticleSystem* ParticleSystem) = 0;
 };

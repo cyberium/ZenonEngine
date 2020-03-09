@@ -1,10 +1,5 @@
 #pragma once
 
-#include "MathCommon.h"
-#include "Vec3f.h"
-#include "Vec4f.h"
-#include "Quaternion.h"
-
 inline static vec3 extractScale(cmat4 _m)
 {
 	vec3 scale;

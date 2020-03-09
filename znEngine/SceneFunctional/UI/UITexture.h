@@ -2,9 +2,9 @@
 
 #include "../../Materials/UI_Texture_Material.h"
 
-class ZN_API CUITextureNode : public CUIBaseNode
+class ZN_API CUITextureNode 
+	: public CUIBaseNode
 {
-	typedef CUIBaseNode base;
 public:
 	CUITextureNode(IRenderDevice& RenderDevice, vec2 Size = vec2(1.0f, 1.0f));
 	virtual ~CUITextureNode();
