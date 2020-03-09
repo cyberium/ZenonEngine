@@ -4,8 +4,8 @@
 #include "RenderPassDefaultCreator.h"
 
 // Additional
-#include "Passes/TextureDebugPass.h"
-#include "Passes/TextureMaterialPass.h"
+#include "Passes/MaterialDebugPass.h"
+#include "Passes/MaterialTexturedPass.h"
 #include "Passes/MaterialPassOpaque.h"
 #include "Passes/MaterialPassTransperent.h"
 

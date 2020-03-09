@@ -51,7 +51,5 @@ void ModelBase::Accept(IVisitor* visitor)
 	visitor->Visit(this);
 
 	for (const auto& connection : m_Connections)
-	{
 		connection.Geometry->Accept(visitor, connection.Material.get(), connection.GeometryDrawArgs);
-	}
 }

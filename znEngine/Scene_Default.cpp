@@ -8,7 +8,10 @@
 #include "Materials/MaterialTextured.h"
 #include "Materials/MaterialModel.h"
 
-#include "Passes/TextureMaterialPass.h"
+#include "Passes/MaterialDebugPass.h"
+#include "Passes/MaterialTexturedPass.h"
+#include "Passes/MaterialParticlePass.h"
+
 #include "Passes/MaterialPassOpaque.h"
 #include "Passes/UIFontPass.h"
 
@@ -78,7 +81,7 @@ void CGameState_World::OnRayIntersected(const glm::vec3& Point)
 //
 void CGameState_World::OnPreRender(RenderEventArgs& e)
 {
-	m_RootForBoxes->SetRotation(glm::vec3(m_RootForBoxes->GetRotation().x, m_RootForBoxes->GetRotation().y + 0.01, 0.0f));
+	//m_RootForBoxes->SetRotation(glm::vec3(m_RootForBoxes->GetRotation().x, m_RootForBoxes->GetRotation().y + 0.01, 0.0f));
 
 	SceneBase::OnPreRender(e);
 }
@@ -169,7 +172,7 @@ void CGameState_World::Load3D()
 		const float offset = 13.0f;
 		const float scale = 5.0f;
 
-		std::shared_ptr<MaterialModel> textMaterial = std::make_shared<MaterialModel>(GetBaseManager());
+		/*std::shared_ptr<MaterialModel> textMaterial = std::make_shared<MaterialModel>(GetBaseManager());
 		textMaterial->SetDiffuseColor(vec3(1.0f, 1.0f, 1.0f));
 		textMaterial->SetSpecularColor(vec3(1.0f, 1.0f, 1.0f));
 		textMaterial->SetSpecularFactor(4.0f);
@@ -178,11 +181,11 @@ void CGameState_World::Load3D()
 		//textMaterial->SetTexture(MaterialModel::ETextureType::TextureNormalMap, GetRenderDevice().LoadTexture2D("Sponza_Floor_normal.png"));
 		textMaterial->SetTexture(MaterialModel::ETextureType::TextureSpecular, GetRenderDevice().GetObjectsFactory().LoadTexture2D("Sponza_Floor_roughness.png"));
 		//textMaterial->SetTexture(MaterialModel::ETextureType::TextureBump, GetRenderDevice().LoadTexture2D("Sponza_Floor_roughness.png"));
-		textMaterial->SetWrapper(textMaterial.get());
+		textMaterial->SetWrapper(textMaterial.get());*/
 
-		//std::shared_ptr<MaterialTextured> textMaterial = std::make_shared<MaterialTextured>(GetRenderDevice());
-		//textMaterial->SetWrapper(textMaterial.get());
-		//textMaterial->SetTexture(0, GetRenderDevice().GetObjectsFactory().LoadTexture2D("Sponza_Floor_diffuse.png"));
+		std::shared_ptr<MaterialTextured> textMaterial = std::make_shared<MaterialTextured>(GetRenderDevice());
+		textMaterial->SetWrapper(textMaterial.get());
+		textMaterial->SetTexture(0, GetRenderDevice().GetObjectsFactory().LoadTexture2D("Sponza_Floor_diffuse.png"));
 
 		auto cubeModel = GetRenderDevice().GetObjectsFactory().CreateModel();
 		cubeModel->AddConnection(textMaterial, GetRenderDevice().GetPrimitivesFactory().CreateCube());
@@ -223,7 +226,7 @@ void CGameState_World::Load3D()
 		const float cPlaneSize = 500.0f;
 		const float cPlaneY = -10.0f;
 
-		std::shared_ptr<MaterialModel> textMaterial = std::make_shared<MaterialModel>(GetBaseManager());
+		/*std::shared_ptr<MaterialModel> textMaterial = std::make_shared<MaterialModel>(GetBaseManager());
 		textMaterial->SetDiffuseColor(vec3(1.0f, 1.0f, 1.0f));
 		textMaterial->SetSpecularColor(vec3(1.0f, 1.0f, 1.0f));
 		textMaterial->SetSpecularFactor(0.0f);
@@ -232,11 +235,11 @@ void CGameState_World::Load3D()
 		//textMaterial->SetTexture(MaterialModel::ETextureType::TextureNormalMap, GetRenderDevice().CreateTexture2D("Sponza_Ceiling_normal.png"));
 		//textMaterial->SetTexture(MaterialModel::ETextureType::TextureSpecular, GetRenderDevice().CreateTexture2D("Sponza_Ceiling_roughness.png"));
 		//textMaterial->SetTexture(MaterialModel::ETextureType::TextureBump, GetRenderDevice().CreateTexture2D("Sponza_Ceiling_roughness.png"));
-		textMaterial->SetWrapper(textMaterial.get());
+		textMaterial->SetWrapper(textMaterial.get());*/
 
-		//std::shared_ptr<MaterialTextured> textMaterial = std::make_shared<MaterialTextured>(GetRenderDevice());
-		//textMaterial->SetWrapper(textMaterial.get());
-		//textMaterial->SetTexture(0, GetRenderDevice().GetObjectsFactory().LoadTexture2D("Sponza_Floor_diffuse.png"));
+		std::shared_ptr<MaterialTextured> textMaterial = std::make_shared<MaterialTextured>(GetRenderDevice());
+		textMaterial->SetWrapper(textMaterial.get());
+		textMaterial->SetTexture(0, GetRenderDevice().GetObjectsFactory().LoadTexture2D("Sponza_Floor_diffuse.png"));
 
 		auto& modelPlane = GetRenderDevice().GetObjectsFactory().CreateModel();
 		modelPlane->AddConnection(textMaterial, GetRenderDevice().GetPrimitivesFactory().CreatePlane());
@@ -247,6 +250,34 @@ void CGameState_World::Load3D()
 		sceneNodePlane->SetScale(vec3(cPlaneSize));
 		sceneNodePlane->GetComponent<IModelsComponent3D>()->AddModel(modelPlane);
 	}
+
+
+
+	//
+	// PARTICLES
+	{
+		Random r(time(0));
+		std::vector<glm::vec3> particles;
+		for (size_t i = 0; i < 1000; i++)
+		{
+			glm::vec3 pos = glm::vec3(r.NextFloat(), r.NextFloat(), r.NextFloat()) * 1000.0f - glm::vec3(500.0f, 0.0f, 500.0f);
+			particles.push_back(pos);
+		}
+
+		auto buffer = GetRenderDevice().GetObjectsFactory().CreateVertexBuffer(particles);
+
+		auto geom = GetRenderDevice().GetObjectsFactory().CreateGeometry();
+		geom->SetPrimitiveTopology(PrimitiveTopology::TriangleStrip);
+		geom->AddVertexBuffer(BufferBinding("POSITION", 0), buffer);
+		
+		auto model = GetRenderDevice().GetObjectsFactory().CreateModel();
+		model->AddConnection(nullptr, geom);
+
+		auto particlesNode = GetRootNode3D()->CreateSceneNode<SceneNode3D>();
+		particlesNode->SetName("Particles");
+		particlesNode->GetComponent<IModelsComponent3D>()->AddModel(model);
+	}
+
 
 	//std::shared_ptr<ISceneNode3D> fbxSceneNode = GetBaseManager().GetManager<ISceneNodesFactory>()->CreateSceneNode(m_Scene->GetRootNode(), "FBXSceneNode");
 	//fbxSceneNode->GetComponent<ITransformComponent3D>()->SetScale(vec3(15.0f, 15.0f, 15.0f));
@@ -267,11 +298,11 @@ void CGameState_World::Load3D()
 
 	glm::vec4 color = glm::vec4(0.0, 0.0f, 0.0f, 1.0f);
 	m_Technique3D.AddPass(std::make_shared<ClearRenderTargetPass>(GetRenderDevice(), GetRenderWindow()->GetRenderTarget(), ClearFlags::All, color /*glm::vec4(0.2f, 0.2f, 0.2f, 0.2f)*/, 1.0f, 0));
-	//m_Technique3D.AddPass(std::make_shared<CTexturedMaterialPass>(GetRenderDevice(), shared_from_this())->CreatePipeline(GetRenderWindow()->GetRenderTarget(), &GetRenderWindow()->GetViewport()));
-	m_Technique3D.AddPass(m_SceneCreateTypelessListPass);
+	m_Technique3D.AddPass(std::make_shared<CMaterialParticlePass>(GetRenderDevice(), shared_from_this())->CreatePipeline(GetRenderWindow()->GetRenderTarget(), &GetRenderWindow()->GetViewport()));
+	/*m_Technique3D.AddPass(m_SceneCreateTypelessListPass);
 	m_Technique3D.AddPass(m_DefferedRenderPass);
 	m_Technique3D.AddPass(m_DefferedRenderPrepareLights);
-	m_Technique3D.AddPass(m_DefferedFinalRenderPass);
+	m_Technique3D.AddPass(m_DefferedFinalRenderPass);*/
 	m_Technique3D.AddPass(GetBaseManager().GetManager<IRenderPassFactory>()->CreateRenderPass("TexturedMaterialPass", GetRenderDevice(), GetRenderWindow()->GetRenderTarget(), &GetRenderWindow()->GetViewport(), shared_from_this()));
 }
 

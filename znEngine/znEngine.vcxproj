@@ -32,6 +32,7 @@
     <ClCompile Include="Formats\Images\ImagePNG.cpp" />
     <ClCompile Include="Formats\Images\ImagesFactory.cpp" />
     <ClCompile Include="Passes\DrawBoundingBoxPass.cpp" />
+    <ClCompile Include="Passes\MaterialParticlePass.cpp" />
     <ClCompile Include="Passes\UIFontPass.cpp" />
     <ClCompile Include="Scene_Default.cpp" />
     <ClCompile Include="Materials\MaterialDebug.cpp" />
@@ -49,8 +50,8 @@
     <ClCompile Include="Passes\MaterialPassTransperent.cpp" />
     <ClCompile Include="Passes\RenderPassDefaultCreator.cpp" />
     <ClCompile Include="Passes\RenderPassFactory.cpp" />
-    <ClCompile Include="Passes\TextureDebugPass.cpp" />
-    <ClCompile Include="Passes\TextureMaterialPass.cpp" />
+    <ClCompile Include="Passes\MaterialDebugPass.cpp" />
+    <ClCompile Include="Passes\MaterialTexturedPass.cpp" />
     <ClCompile Include="PluginsManager.cpp" />
     <ClCompile Include="RenderDeviceFactory.cpp" />
     <ClCompile Include="Application.cpp" />
@@ -104,6 +105,7 @@
     <ClInclude Include="Formats\Images\ImagePNG.h" />
     <ClInclude Include="Formats\Images\ImagesFactory.h" />
     <ClInclude Include="Passes\DrawBoundingBoxPass.h" />
+    <ClInclude Include="Passes\MaterialParticlePass.h" />
     <ClInclude Include="Passes\UIFontPass.h" />
     <ClInclude Include="Scene_Default.h" />
     <ClInclude Include="Materials\MaterialDebug.h" />
@@ -121,8 +123,8 @@
     <ClInclude Include="Passes\MaterialPassTransperent.h" />
     <ClInclude Include="Passes\RenderPassDefaultCreator.h" />
     <ClInclude Include="Passes\RenderPassFactory.h" />
-    <ClInclude Include="Passes\TextureDebugPass.h" />
-    <ClInclude Include="Passes\TextureMaterialPass.h" />
+    <ClInclude Include="Passes\MaterialDebugPass.h" />
+    <ClInclude Include="Passes\MaterialTexturedPass.h" />
     <ClInclude Include="PluginsManager.h" />
     <ClInclude Include="RenderDeviceFactory.h" />
     <ClInclude Include="Application.h" />

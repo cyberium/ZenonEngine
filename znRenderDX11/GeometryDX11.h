@@ -10,6 +10,7 @@ public:
 
 	// IGeometry
 	void                      SetPrimitiveTopology(PrimitiveTopology Topology) override;
+	PrimitiveTopology         GetPrimitiveTopology() const override;
 
 	void                      Render(         const RenderEventArgs& RenderEventArgs, const IShader* VertexShader, const SGeometryDrawArgs GeometryDrawArgs) const override;
 

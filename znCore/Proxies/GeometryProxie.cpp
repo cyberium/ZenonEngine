@@ -50,6 +50,11 @@ void GeometryProxie::SetPrimitiveTopology(PrimitiveTopology Topology)
 	m_Geometry->SetPrimitiveTopology(Topology);
 }
 
+PrimitiveTopology GeometryProxie::GetPrimitiveTopology() const
+{
+	return m_Geometry->GetPrimitiveTopology();
+}
+
 void GeometryProxie::Render(const RenderEventArgs & RenderEventArgs, const IShader * VertexShader, const SGeometryDrawArgs GeometryDrawArgs) const
 {
 	m_Geometry->Render(RenderEventArgs, VertexShader, GeometryDrawArgs);

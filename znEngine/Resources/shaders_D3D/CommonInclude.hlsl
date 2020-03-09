@@ -165,6 +165,16 @@ bool ConeInsideFrustum(Cone cone, Frustum frustum, float zNear, float zFar)
 	return result;
 }
 
+float3 GetCameraPosition()
+{
+	return float3(PF.InverseView[0][3], PF.InverseView[1][3], PF.InverseView[2][3]);
+}
+
+float3 GetCameraUp()
+{
+	return float3(PF.View[1][0], PF.View[1][1], PF.View[1][2]);
+}
+
 float Blur(Texture2D Texture, sampler Sampler, float2 Coords)
 {
 	float2 shadowBlurStep = float2(1.0f / 2048.0f, 1.0f / 2048.0f);

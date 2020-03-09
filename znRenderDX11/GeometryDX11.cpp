@@ -38,6 +38,26 @@ void GeometryDX11::SetPrimitiveTopology(PrimitiveTopology _topology)
 	}
 }
 
+PrimitiveTopology GeometryDX11::GetPrimitiveTopology() const
+{
+	switch (m_PrimitiveTopology)
+	{
+		case D3D11_PRIMITIVE_TOPOLOGY_POINTLIST:
+			return PrimitiveTopology::PointList;
+		case D3D11_PRIMITIVE_TOPOLOGY_LINELIST_ADJ:
+			return PrimitiveTopology::LineList;
+		case D3D11_PRIMITIVE_TOPOLOGY_LINESTRIP:
+			return PrimitiveTopology::LineStrip;
+		case D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST:
+			return PrimitiveTopology::TriangleList;
+		case D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP:
+			return PrimitiveTopology::TriangleStrip;
+	}
+
+	_ASSERT(false);
+	return PrimitiveTopology::PointList;
+}
+
 void GeometryDX11::Render(const RenderEventArgs& RenderEventArgs, const IShader* VertexShader, const SGeometryDrawArgs GeometryDrawArgs) const
 {
 	Render_BindAllBuffers(RenderEventArgs, VertexShader);

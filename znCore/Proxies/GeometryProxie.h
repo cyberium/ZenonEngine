@@ -18,6 +18,7 @@ public:
 	void SetIndexBuffer(const std::shared_ptr<IBuffer>& IndexBuffer) override final;
 
 	void SetPrimitiveTopology(PrimitiveTopology Topology) override final;
+	PrimitiveTopology GetPrimitiveTopology() const override final;
 
 	virtual void Render(const RenderEventArgs& RenderEventArgs, const IShader* VertexShader, const SGeometryDrawArgs GeometryDrawArgs = SGeometryDrawArgs()) const override;
 

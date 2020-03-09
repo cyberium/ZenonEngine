@@ -1,7 +1,7 @@
 #include "stdafx.h"
 
 // General
-#include "TextureDebugPass.h"
+#include "MaterialDebugPass.h"
 
 // Additional
 #include "Materials/MaterialDebug.h"

@@ -43,8 +43,10 @@ EVisitResult Base3DPass::Visit(const IModel * Model)
 
 EVisitResult Base3DPass::Visit(const IGeometry* Geometry, const IMaterial* Material, SGeometryDrawArgs GeometryDrawArgs)
 {
-	Material->Bind(GetRenderEventArgs().PipelineState->GetShaders());
+	if (Material)
+		Material->Bind(GetRenderEventArgs().PipelineState->GetShaders());
 	Geometry->Render(GetRenderEventArgs(), GetRenderEventArgs().PipelineState->GetShaders().at(EShaderType::VertexShader).get(), GeometryDrawArgs);
-	Material->Unbind(GetRenderEventArgs().PipelineState->GetShaders());
+	if (Material)
+		Material->Unbind(GetRenderEventArgs().PipelineState->GetShaders());
 	return EVisitResult::AllowAll;
 }

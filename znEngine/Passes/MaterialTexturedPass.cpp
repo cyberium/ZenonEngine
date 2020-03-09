@@ -1,7 +1,7 @@
 #include "stdafx.h"
 
 // General
-#include "TextureMaterialPass.h"
+#include "MaterialTexturedPass.h"
 
 // Additional
 #include "Materials/MaterialTextured.h"
@@ -20,20 +20,20 @@ CTexturedMaterialPass::~CTexturedMaterialPass()
 //
 std::shared_ptr<IRenderPassPipelined> CTexturedMaterialPass::CreatePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport)
 {
-	std::shared_ptr<IShader> g_pVertexShader;
-	std::shared_ptr<IShader> g_pPixelShader;
+	std::shared_ptr<IShader> vertexShader;
+	std::shared_ptr<IShader> pixelShader;
 
 	if (GetRenderDevice().GetDeviceType() == RenderDeviceType::RenderDeviceType_DirectX)
 	{
-		g_pVertexShader = GetRenderDevice().GetObjectsFactory().CreateShader(EShaderType::VertexShader, "IDB_SHADER_3D_TEXTURED", "VS_main");
-		g_pPixelShader = GetRenderDevice().GetObjectsFactory().CreateShader(EShaderType::PixelShader, "IDB_SHADER_3D_TEXTURED", "PS_main");
+		vertexShader = GetRenderDevice().GetObjectsFactory().CreateShader(EShaderType::VertexShader, "IDB_SHADER_3D_TEXTURED", "VS_main");
+		pixelShader = GetRenderDevice().GetObjectsFactory().CreateShader(EShaderType::PixelShader, "IDB_SHADER_3D_TEXTURED", "PS_main");
 	}
 	else
 	{
-		g_pVertexShader = GetRenderDevice().GetObjectsFactory().CreateShader(EShaderType::VertexShader, "IDB_SHADER_OGL_3D_TEXTURED_VS", "");
-		g_pPixelShader = GetRenderDevice().GetObjectsFactory().CreateShader(EShaderType::PixelShader, "IDB_SHADER_OGL_3D_TEXTURED_PS", "");
+		vertexShader = GetRenderDevice().GetObjectsFactory().CreateShader(EShaderType::VertexShader, "IDB_SHADER_OGL_3D_TEXTURED_VS", "");
+		pixelShader = GetRenderDevice().GetObjectsFactory().CreateShader(EShaderType::PixelShader, "IDB_SHADER_OGL_3D_TEXTURED_PS", "");
 	}
-	g_pVertexShader->LoadInputLayoutFromReflector();
+	vertexShader->LoadInputLayoutFromReflector();
 
 	//std::vector<SCustomVertexElement> elements;
 	//elements.push_back({ 0, 0,  ECustomVertexElementType::FLOAT3, ECustomVertexElementUsage::POSITION, 0 });
@@ -49,8 +49,8 @@ std::shared_ptr<IRenderPassPipelined> CTexturedMaterialPass::CreatePipeline(std:
 	Pipeline->GetRasterizerState()->SetFillMode(IRasterizerState::FillMode::Solid);
 	Pipeline->SetRenderTarget(RenderTarget);
 	Pipeline->GetRasterizerState()->SetViewport(Viewport);
-	Pipeline->SetShader(EShaderType::VertexShader, g_pVertexShader);
-	Pipeline->SetShader(EShaderType::PixelShader, g_pPixelShader);
+	Pipeline->SetShader(EShaderType::VertexShader, vertexShader);
+	Pipeline->SetShader(EShaderType::PixelShader, pixelShader);
 
 	auto sampler = GetRenderDevice().GetObjectsFactory().CreateSamplerState();
 	sampler->SetFilter(ISamplerState::MinFilter::MinLinear, ISamplerState::MagFilter::MagLinear, ISamplerState::MipFilter::MipLinear);

@@ -151,9 +151,6 @@
     <ClCompile Include="Settings\GroupVideo.cpp">
       <Filter>Settings</Filter>
     </ClCompile>
-    <ClCompile Include="Passes\TextureMaterialPass.cpp">
-      <Filter>Passes\3D</Filter>
-    </ClCompile>
     <ClCompile Include="SceneFunctional\SceneNodesFactory.cpp">
       <Filter>SceneNodes</Filter>
     </ClCompile>
@@ -198,9 +195,6 @@
     </ClCompile>
     <ClCompile Include="SceneFunctional\UI\UIWindow.cpp">
       <Filter>SceneNodes\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="Passes\TextureDebugPass.cpp">
-      <Filter>Passes\3D</Filter>
     </ClCompile>
     <ClCompile Include="Materials\MaterialModel.cpp">
       <Filter>Materials</Filter>
@@ -294,6 +288,15 @@
     <ClCompile Include="Passes\DrawBoundingBoxPass.cpp">
       <Filter>Passes\3D</Filter>
     </ClCompile>
+    <ClCompile Include="Passes\MaterialDebugPass.cpp">
+      <Filter>Passes\3D</Filter>
+    </ClCompile>
+    <ClCompile Include="Passes\MaterialTexturedPass.cpp">
+      <Filter>Passes\3D</Filter>
+    </ClCompile>
+    <ClCompile Include="Passes\MaterialParticlePass.cpp">
+      <Filter>Passes\3D</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="common.h">
@@ -348,9 +351,6 @@
     <ClInclude Include="Settings\GroupVideo.h">
       <Filter>Settings</Filter>
     </ClInclude>
-    <ClInclude Include="Passes\TextureMaterialPass.h">
-      <Filter>Passes\3D</Filter>
-    </ClInclude>
     <ClInclude Include="SceneFunctional\SceneNodesFactory.h">
       <Filter>SceneNodes</Filter>
     </ClInclude>
@@ -395,9 +395,6 @@
     </ClInclude>
     <ClInclude Include="SceneFunctional\UI\UIWindow.h">
       <Filter>SceneNodes\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="Passes\TextureDebugPass.h">
-      <Filter>Passes\3D</Filter>
     </ClInclude>
     <ClInclude Include="Materials\MaterialModel.h">
       <Filter>Materials</Filter>
@@ -492,6 +489,15 @@
     <ClInclude Include="Passes\DrawBoundingBoxPass.h">
       <Filter>Passes\3D</Filter>
     </ClInclude>
+    <ClInclude Include="Passes\MaterialDebugPass.h">
+      <Filter>Passes\3D</Filter>
+    </ClInclude>
+    <ClInclude Include="Passes\MaterialTexturedPass.h">
+      <Filter>Passes\3D</Filter>
+    </ClInclude>
+    <ClInclude Include="Passes\MaterialParticlePass.h">
+      <Filter>Passes\3D</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="znEngine.rc">
@@ -566,7 +572,7 @@
       <Filter>Formats</Filter>
     </Text>
     <Text Include="Resources\shaders_D3D\3D\Particle.hlsl">
-      <Filter>Resources\Shaders_D3D\3D</Filter>
+      <Filter>Resources\Shaders_D3D\3D\Base</Filter>
     </Text>
   </ItemGroup>
   <ItemGroup>

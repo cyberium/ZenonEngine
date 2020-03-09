@@ -42,6 +42,7 @@ ZN_INTERFACE ZN_API IGeometry : public std::enable_shared_from_this<IGeometry>
 	virtual void SetIndexBuffer(const std::shared_ptr<IBuffer>& IndexBuffer) = 0;
 
 	virtual void SetPrimitiveTopology(PrimitiveTopology Topology) = 0;
+	virtual PrimitiveTopology GetPrimitiveTopology() const = 0;
 
 	virtual void Render(         const RenderEventArgs& RenderEventArgs, const IShader* VertexShader, const SGeometryDrawArgs GeometryDrawArgs = SGeometryDrawArgs()) const = 0;
 	
