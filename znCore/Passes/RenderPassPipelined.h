@@ -55,7 +55,6 @@ public:
 	virtual std::shared_ptr<IRenderPassPipelined> CreatePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport* Viewport) override;
 	virtual std::shared_ptr<IRenderPassPipelined> SetPipeline(std::shared_ptr<IPipelineState> Pipeline) override;
 	virtual IPipelineState& GetPipeline() const override;
-	virtual void UpdateViewport(const Viewport& _viewport) override;
 
 	// IVisitor
 	virtual EVisitResult Visit(const ISceneNode3D* node) override;

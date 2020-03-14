@@ -22,7 +22,7 @@ public:
 	float Width;
 	float Height;
 
-    bool isPointInRect(vec2 Point) const
+    bool isPointInRect(const glm::vec2& Point) const
     {
         return (Point.x >= X) && (Point.x < (X + Width)) && (Point.y >= Y) && (Point.y < (Y + Height));
     }

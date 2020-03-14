@@ -94,12 +94,13 @@ void CDefferedRenderPrepareLights::PostRender(RenderEventArgs& e)
 //
 std::shared_ptr<IRenderPassPipelined> CDefferedRenderPrepareLights::CreatePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport)
 {
+	m_ShadowViewport.SetWidth(cShadowTextureSize);
+	m_ShadowViewport.SetHeight(cShadowTextureSize);
+
 	m_ShadowRenderTarget = GetRenderDevice().GetObjectsFactory().CreateRenderTarget();
 	//m_ShadowRenderTarget->AttachTexture(IRenderTarget::AttachmentPoint::Color0, CreateShadowTexture0());
 	m_ShadowRenderTarget->AttachTexture(IRenderTarget::AttachmentPoint::DepthStencil, CreateShadowTextureDepthStencil());
-
-	m_ShadowViewport.SetWidth(cShadowTextureSize);
-	m_ShadowViewport.SetHeight(cShadowTextureSize);
+	m_ShadowRenderTarget->SetViewport(m_ShadowViewport);
 
 	auto& vertexShader = GetRenderDevice().GetObjectsFactory().CreateShader(EShaderType::VertexShader, "IDB_SHADER_3D_SHADOW", "VS_Shadow");
 	vertexShader->LoadInputLayoutFromReflector();
@@ -116,7 +117,6 @@ std::shared_ptr<IRenderPassPipelined> CDefferedRenderPrepareLights::CreatePipeli
 	shadowPipeline->GetRasterizerState()->SetCullMode(IRasterizerState::CullMode::None);
 	shadowPipeline->GetRasterizerState()->SetFillMode(IRasterizerState::FillMode::Solid);
 	shadowPipeline->SetRenderTarget(m_ShadowRenderTarget);
-	shadowPipeline->GetRasterizerState()->SetViewport(&m_ShadowViewport);
 	shadowPipeline->SetShader(EShaderType::VertexShader, vertexShader);
 	//shadowPipeline->SetShader(EShaderType::PixelShader, pixelShader);
 
@@ -170,13 +170,12 @@ std::shared_ptr<ITexture> CDefferedRenderPrepareLights::CreateShadowTextureDepth
 
 void CDefferedRenderPrepareLights::BindPerFrameParamsForCurrentIteration(const ILight3D * Light)
 {
-	const Viewport* viewport = GetRenderEventArgs()->PipelineState->GetRasterizerState()->GetViewports()[0];
-	_ASSERT(viewport != nullptr);
+	const Viewport& viewport = GetRenderEventArgs()->PipelineState->GetRenderTarget()->GetViewport();
 
 	PerFrame perFrame(
 		Light->GetViewMatrix(), 
 		Light->GetProjectionMatrix(), 
-		glm::vec2(viewport->GetWidth(), viewport->GetHeight())
+		glm::vec2(viewport.GetWidth(), viewport.GetHeight())
 	);
 	m_PerFrameConstantBuffer->Set(perFrame);
 

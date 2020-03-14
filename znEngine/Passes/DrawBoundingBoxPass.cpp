@@ -40,7 +40,6 @@ std::shared_ptr<IRenderPassPipelined> CDrawBoundingBoxPass::CreatePipeline(std::
 	Pipeline->GetRasterizerState()->SetMultisampleEnabled(true);
 	Pipeline->GetRasterizerState()->SetAntialiasedLineEnable(true);
 	Pipeline->SetRenderTarget(RenderTarget);
-	Pipeline->GetRasterizerState()->SetViewport(Viewport);
 	Pipeline->SetShader(EShaderType::VertexShader, vertexShader);
 	Pipeline->SetShader(EShaderType::PixelShader, pixelShader);
 

@@ -103,13 +103,6 @@ IPipelineState& RenderPassPipelined::GetPipeline() const
 }
 
 
-void RenderPassPipelined::UpdateViewport(const Viewport& _viewport)
-{
-	_ASSERT_EXPR(m_Pipeline != nullptr, L"RenderPassPipelined: Pipeline is null. Don't use this class without pipeline.");
-	m_Pipeline->GetRasterizerState()->SetViewport(&_viewport);
-}
-
-
 
 //
 // IVisitor
@@ -162,8 +155,8 @@ void RenderPassPipelined::FillPerFrameData()
 		m_RenderEventArgs->Camera->GetViewMatrix(), 
 		m_RenderEventArgs->Camera->GetProjectionMatrix(), 
 		glm::vec2(
-			m_RenderEventArgs->PipelineState->GetRasterizerState()->GetViewports()[0]->GetWidth(), 
-			m_RenderEventArgs->PipelineState->GetRasterizerState()->GetViewports()[0]->GetHeight()
+			m_RenderEventArgs->PipelineState->GetRenderTarget()->GetViewport().GetWidth(), 
+			m_RenderEventArgs->PipelineState->GetRenderTarget()->GetViewport().GetHeight()
 		)
 	);
 	m_PerFrameConstantBuffer->Set(perFrame);

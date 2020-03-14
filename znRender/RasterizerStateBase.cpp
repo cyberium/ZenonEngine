@@ -18,11 +18,8 @@ RasterizerStateBase::RasterizerStateBase()
     , m_ConservativeRasterization(false)
     , m_ForcedSampleCount(0)
     , m_StateDirty(true)
-    , m_ViewportsDirty(true)
-    , m_ScissorRectsDirty(true)
 {
-	m_Viewports.resize(8, nullptr);
-	m_ScissorRects.resize(8, Rect());
+
 }
 
 RasterizerStateBase::~RasterizerStateBase()
@@ -94,23 +91,6 @@ bool RasterizerStateBase::GetDepthClipEnabled() const
     return m_DepthClipEnabled;
 }
 
-void RasterizerStateBase::SetViewport(const Viewport * viewport)
-{
-    m_Viewports[0] = viewport;
-    m_ViewportsDirty = true;
-}
-
-void RasterizerStateBase::SetViewports(const std::vector<const Viewport *>& viewports)
-{
-    m_Viewports = viewports;
-    m_ViewportsDirty = true;
-}
-
-const std::vector<const Viewport *>& RasterizerStateBase::GetViewports() const
-{
-    return m_Viewports;
-}
-
 void RasterizerStateBase::SetScissorEnabled(bool scissorEnable)
 {
     m_ScissorEnabled = scissorEnable;
@@ -120,23 +100,6 @@ void RasterizerStateBase::SetScissorEnabled(bool scissorEnable)
 bool RasterizerStateBase::GetScissorEnabled() const
 {
     return m_ScissorEnabled;
-}
-
-void RasterizerStateBase::SetScissorRect(const Rect& rect)
-{
-    m_ScissorRects[0] = rect;
-    m_ScissorRectsDirty = true;
-}
-
-void RasterizerStateBase::SetScissorRects(const std::vector<Rect>& rects)
-{
-    m_ScissorRects = rects;
-    m_ScissorRectsDirty = true;
-}
-
-const std::vector<Rect>& RasterizerStateBase::GetScissorRects() const
-{
-    return m_ScissorRects;
 }
 
 void RasterizerStateBase::SetMultisampleEnabled(bool multisampleEnabled)

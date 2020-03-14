@@ -29,7 +29,6 @@ std::shared_ptr<IRenderPassPipelined> BaseUIPass::CreatePipeline(std::shared_ptr
 	UIPipeline->GetRasterizerState()->SetAntialiasedLineEnable(false);
 	UIPipeline->GetRasterizerState()->SetMultisampleEnabled(false);
 	UIPipeline->SetRenderTarget(RenderTarget);
-	UIPipeline->GetRasterizerState()->SetViewport(Viewport);
 
 	return SetPipeline(UIPipeline);
 }
@@ -79,13 +78,12 @@ EVisitResult BaseUIPass::Visit(const IGeometry* Geometry, const IMaterial* Mater
 //
 void BaseUIPass::FillPerFrameData()
 {
-	const Viewport* viewport = GetRenderEventArgs().PipelineState->GetRasterizerState()->GetViewports()[0];
-	_ASSERT(viewport != nullptr);
+	const Viewport& viewport = GetRenderEventArgs().PipelineState->GetRenderTarget()->GetViewport();
 
 	PerFrame perFrame(
 		glm::mat4(1.0f), 
-		viewport->GetOrthoMatix(), 
-		glm::vec2(viewport->GetWidth(), viewport->GetHeight())
+		viewport.GetOrthoMatix(), 
+		glm::vec2(viewport.GetWidth(), viewport.GetHeight())
 	);
 	SetPerFrameData(perFrame);
 }

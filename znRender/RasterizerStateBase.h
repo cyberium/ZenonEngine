@@ -24,16 +24,8 @@ public:
 	virtual void SetDepthClipEnabled(bool depthClipEnabled = true) override;
 	virtual bool GetDepthClipEnabled() const override;
 
-	virtual void SetViewport(const Viewport* viewport) override;
-	virtual void SetViewports(const std::vector<const Viewport*>& viewports) override;
-	virtual const std::vector<const Viewport *>& GetViewports() const override;
-
 	virtual void SetScissorEnabled(bool scissorEnable = false) override;
 	virtual bool GetScissorEnabled() const override;
-
-	virtual void SetScissorRect(const Rect& rect) override;
-	virtual void SetScissorRects(const std::vector<Rect>& rects) override;
-	virtual const std::vector<Rect>& GetScissorRects() const override;
 
 	virtual void SetMultisampleEnabled(bool multisampleEnabled = false) override;
 	virtual bool GetMultisampleEnabled() const override;
@@ -69,13 +61,6 @@ protected:
 
     uint8_t                                         m_ForcedSampleCount;
 
-    typedef std::vector<Rect>						RectList;
-    RectList                                        m_ScissorRects;
-
-    typedef std::vector<const Viewport*>			ViewportList;
-    ViewportList                                    m_Viewports;
-
     bool                                            m_StateDirty;
-    bool                                            m_ViewportsDirty;
-    bool                                            m_ScissorRectsDirty;
+
 };

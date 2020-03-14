@@ -37,7 +37,6 @@ std::shared_ptr<IRenderPassPipelined> CMaterialPassOpaque::CreatePipeline(std::s
 	Pipeline->GetRasterizerState()->SetCullMode(IRasterizerState::CullMode::None);
 	Pipeline->GetRasterizerState()->SetFillMode(IRasterizerState::FillMode::Solid);
 	Pipeline->SetRenderTarget(RenderTarget);
-	Pipeline->GetRasterizerState()->SetViewport(Viewport);
 	Pipeline->SetShader(EShaderType::VertexShader, vertexShader);
 	Pipeline->SetShader(EShaderType::PixelShader, pixelShader);
 

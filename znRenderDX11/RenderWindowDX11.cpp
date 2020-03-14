@@ -70,10 +70,7 @@ void RenderWindowDX11::CreateSwapChain()
 
     ATL::CComPtr<IDXGIFactory2> factory;
     if (FAILED(CreateDXGIFactory(__uuidof(IDXGIFactory2), (void**)&factory)))
-    {
-        Log::Error("Failed to create DXGI factory.");
-		return;
-    }
+        throw CException("Failed to create DXGI factory.");
 
 	m_SampleDesc = { 1, 0 };
 
@@ -111,20 +108,14 @@ void RenderWindowDX11::CreateSwapChain()
     // First create a DXGISwapChain1
     ATL::CComPtr<IDXGISwapChain1> pSwapChain;
     if (FAILED(factory->CreateSwapChainForHwnd(m_RenderDeviceDX11.GetDeviceD3D11(), nativeWindow_WindowsSpecific.GetHWnd(), &swapChainDesc, &swapChainFullScreenDesc, nullptr, &pSwapChain)))
-    {
-        Log::Error("Failed to create swap chain.");
-    }
+		throw CException("Failed to create swap chain.");
 
     // Now query for the IDXGISwapChain2 interface.
     if (FAILED(pSwapChain->QueryInterface<IDXGISwapChain2>(&m_pSwapChain)))
-    {
-        Log::Error("Failed to retrieve IDXGISwapChain2 interface.");
-    }
+		throw CException("Failed to retrieve IDXGISwapChain2 interface.");
 
     if (FAILED(m_pSwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (void**)&m_pBackBuffer)))
-    {
-        Log::Error("Failed to get back buffer pointer from swap chain.");
-    }
+		throw CException("Failed to get back buffer pointer from swap chain.");
 
     // Color buffer (Color0)
     ITexture::TextureFormat colorTextureFormat
@@ -146,7 +137,8 @@ void RenderWindowDX11::CreateSwapChain()
 
     m_RenderTarget->AttachTexture(IRenderTarget::AttachmentPoint::Color0, colorTexture);
 	m_RenderTarget->AttachTexture(IRenderTarget::AttachmentPoint::DepthStencil, depthStencilTexture);
-	m_RenderTarget->Resize(windowWidth, windowHeight);
+	m_RenderTarget->SetViewport(GetViewport());
+	//m_RenderTarget->Resize(windowWidth, windowHeight);
 }
 
 void RenderWindowDX11::ResizeSwapChainBuffers(uint32_t width, uint32_t height)
@@ -167,13 +159,10 @@ void RenderWindowDX11::ResizeSwapChainBuffers(uint32_t width, uint32_t height)
         Log::Error("Failed to resize the swap chain buffer.");
     }
 
-    if (FAILED(m_pSwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (void**)&m_pBackBuffer)))
-    {
-        Log::Error("Failed to get back buffer pointer from swap chain.");
-    }
-
-    // Resize the render target.
-    m_RenderTarget->Resize(width, height);
+	if (FAILED(m_pSwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (void**)&m_pBackBuffer)))
+	{
+		Log::Error("Failed to get back buffer pointer from swap chain.");
+	}
 }
 
 

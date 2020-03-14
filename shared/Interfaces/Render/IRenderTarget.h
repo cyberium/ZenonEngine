@@ -76,6 +76,24 @@ ZN_INTERFACE ZN_API IRenderTarget
 	virtual const std::shared_ptr < IStructuredBuffer>& GetStructuredBuffer(uint8_t slot) = 0;
 
 	/**
+	* Specify an array of viewports to bind to the rasterizer stage.
+	* The helper function SetViewport can be used to set the viewport at index 0.
+	*/
+	virtual void SetViewport(const Viewport& viewport) = 0;
+	virtual const Viewport& GetViewport() const = 0;
+
+	/**
+	 * If scissor rectangle culling is enabled, then use the rectangles passed
+	 * in the rects array to perform scissor culling. One scissor rectangle
+	 * is specified per viewport.
+	 * If the user sends more than GL_MAX_VIEWPORTS (for OpenGL) or ?? for DirectX
+	 * scissor rects then only the first GL_MAX_VIEWPORTS or ?? will be set.
+	 * Rectangle coordinates are in window coordinates.
+	 */
+	virtual void SetScissorRect(const Rect& rect) = 0;
+	virtual const Rect& GetScissorRect() const = 0;
+
+	/**
 	 * Resize the color and depth/stencil textures that are associated to this render target view.
 	 * Resizing a texture will clear it's contents.
 	 */
@@ -92,14 +110,6 @@ ZN_INTERFACE ZN_API IRenderTarget
 	 * Unbind this render target from the rendering pipeline.
 	 */
 	virtual void UnBind() = 0;
-
-	/**
-	 * After attaching color, depth, stencil, and StructuredBuffers to the render target,
-	 * you can check if the render target is valid using this method.
-	 * The render target will also be checked for validity before it is bound
-	 * to rendering pipeline (using the RenderTarget::Bind method).
-	 */
-	virtual bool IsValid() const = 0;
 };
 
 typedef std::vector<std::shared_ptr<IRenderTarget>> RenderTargetList;

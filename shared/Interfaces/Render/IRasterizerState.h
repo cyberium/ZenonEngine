@@ -124,31 +124,11 @@ ZN_INTERFACE ZN_API IRasterizerState
 	virtual bool GetDepthClipEnabled() const = 0;
 
 	/**
-	* Specify an array of viewports to bind to the rasterizer stage.
-	* The helper function SetViewport can be used to set the viewport at index 0.
-	*/
-	virtual void SetViewport(const Viewport* viewport) = 0;
-	virtual void SetViewports(const std::vector<const Viewport*>& viewports) = 0;
-	virtual const std::vector<const Viewport*>& GetViewports() const = 0;
-
-	/**
 	* Enable scissor-rectangle culling.
 	* Default value is false.
 	*/
 	virtual void SetScissorEnabled(bool scissorEnable = false) = 0;
 	virtual bool GetScissorEnabled() const = 0;
-
-	/**
-	 * If scissor rectangle culling is enabled, then use the rectangles passed
-	 * in the rects array to perform scissor culling. One scissor rectangle
-	 * is specified per viewport.
-	 * If the user sends more than GL_MAX_VIEWPORTS (for OpenGL) or ?? for DirectX
-	 * scissor rects then only the first GL_MAX_VIEWPORTS or ?? will be set.
-	 * Rectangle coordinates are in window coordinates.
-	 */
-	virtual void SetScissorRect(const Rect& rect) = 0;
-	virtual void SetScissorRects(const std::vector<Rect>& rects) = 0;
-	virtual const std::vector<Rect>& GetScissorRects() const = 0;
 
 	/**
 	 * Specifies whether to use the quadrilateral or alpha line anti-aliasing

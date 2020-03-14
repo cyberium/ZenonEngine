@@ -60,7 +60,6 @@ std::shared_ptr<IRenderPassPipelined> CDefferedRenderFinal::CreatePipeline(std::
 	defferedFinalPipeline->GetRasterizerState()->SetCullMode(IRasterizerState::CullMode::None);
 	defferedFinalPipeline->GetRasterizerState()->SetFillMode(IRasterizerState::FillMode::Solid);
 	defferedFinalPipeline->SetRenderTarget(RenderTarget);
-	defferedFinalPipeline->GetRasterizerState()->SetViewport(Viewport);
 	defferedFinalPipeline->SetShader(EShaderType::VertexShader, vertexShader);
 	defferedFinalPipeline->SetShader(EShaderType::PixelShader, pixelShader);
 

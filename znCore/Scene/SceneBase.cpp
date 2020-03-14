@@ -64,7 +64,6 @@ void SceneBase::ConnectEvents(const std::shared_ptr<IRenderWindowEvents>& Window
 	m_OnPostRenderConnection = WindowEvents->PostRender().connect(&SceneBase::OnPostRender, this, std::placeholders::_1);
 	m_OnRenderUIConnection = WindowEvents->RenderUI().connect(&SceneBase::OnRenderUI, this, std::placeholders::_1);
 
-
 	// Window events connections
 	m_OnResizeConnection = WindowEvents->WindowResize().connect(&SceneBase::OnWindowResize, this, std::placeholders::_1);
 
@@ -303,9 +302,6 @@ void SceneBase::OnWindowResize(ResizeEventArgs & e)
 {
 	if (GetCameraController())
 		GetCameraController()->OnResize(e);
-
-	m_Technique3D.UpdateViewport(GetRenderWindow()->GetViewport());
-	m_TechniqueUI.UpdateViewport(GetRenderWindow()->GetViewport());
 }
 
 

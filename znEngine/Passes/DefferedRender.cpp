@@ -123,7 +123,6 @@ std::shared_ptr<IRenderPassPipelined> CDefferedRender::CreatePipeline(std::share
 	defferedPipeline->GetRasterizerState()->SetCullMode(IRasterizerState::CullMode::Back);
 	defferedPipeline->GetRasterizerState()->SetFillMode(IRasterizerState::FillMode::Solid);
 	defferedPipeline->SetRenderTarget(rt);
-	defferedPipeline->GetRasterizerState()->SetViewport(Viewport);
 	defferedPipeline->SetShader(EShaderType::VertexShader, vertexShader);
 	defferedPipeline->SetShader(EShaderType::PixelShader, pixelShader);
 
@@ -138,13 +137,6 @@ std::shared_ptr<IRenderPassPipelined> CDefferedRender::CreatePipeline(std::share
 	defferedPipeline->SetSampler(1, samplerClamp);
 
 	return SetPipeline(defferedPipeline);
-}
-
-void CDefferedRender::UpdateViewport(const Viewport& _viewport)
-{
-	__super::UpdateViewport(_viewport);
-
-	GetPipeline().GetRenderTarget()->Resize(_viewport.GetWidth(), _viewport.GetHeight());
 }
 
 

@@ -16,9 +16,6 @@ public:
 private:
 	ATL::CComPtr<ID3D11RasterizerState1>            m_pRasterizerState;
 
-	std::vector<D3D11_RECT>                         m_d3dRects;
-	std::vector<D3D11_VIEWPORT>                     m_d3dViewports;
-
 private: // Link to parent d3d11 device
 	IRenderDeviceDX11&                              m_RenderDeviceDX11;
 };

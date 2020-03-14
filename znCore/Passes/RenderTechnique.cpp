@@ -44,11 +44,3 @@ void RenderTechnique::Render(RenderEventArgs& renderEventArgs)
 	}
 }
 
-void RenderTechnique::UpdateViewport(const Viewport& _viewport)
-{
-	for (const auto& pass : m_Passes)
-	{
-		if (IRenderPassPipelined* pipelinedPass = dynamic_cast<IRenderPassPipelined*>(pass.get()))
-			pipelinedPass->UpdateViewport(_viewport);
-	}
-}

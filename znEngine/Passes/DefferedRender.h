@@ -20,7 +20,6 @@ public:
 
 	// IRenderPassPipelined
 	std::shared_ptr<IRenderPassPipelined> CreatePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport* Viewport) override;
-	void UpdateViewport(const Viewport& _viewport) override;
 
 	// IVisitor
 	EVisitResult Visit(const ISceneNode3D* node) override;

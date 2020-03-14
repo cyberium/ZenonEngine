@@ -3,11 +3,38 @@
 // General
 #include "RenderTargetDX11.h"
 
+namespace
+{
+	D3D11_RECT TranslateRect(const Rect& rect)
+	{
+		D3D11_RECT d3dRect = { 0 };
+		d3dRect.top = static_cast<LONG>(glm::round(rect.Y));
+		d3dRect.bottom = static_cast<LONG>(glm::round(rect.Y + rect.Height));
+		d3dRect.left = static_cast<LONG>(glm::round(rect.X));
+		d3dRect.right = static_cast<LONG>(glm::round(rect.X + rect.Width));
+		return d3dRect;
+	}
+
+	D3D11_VIEWPORT TranslateViewport(const Viewport& viewport)
+	{
+		D3D11_VIEWPORT d3dViewport = { 0 };
+		d3dViewport.TopLeftX = viewport.GetX();
+		d3dViewport.TopLeftY = viewport.GetY();
+		d3dViewport.Width = viewport.GetWidth();
+		d3dViewport.Height = viewport.GetHeight();
+		d3dViewport.MinDepth = viewport.GetMinDepth();
+		d3dViewport.MaxDepth = viewport.GetMaxDepth();
+		return d3dViewport;
+	}
+}
+
 RenderTargetDX11::RenderTargetDX11(IRenderDeviceDX11& RenderDeviceDX11)
 	: m_RenderDeviceDX11(RenderDeviceDX11)
 	, m_Width(0)
 	, m_Height(0)
 	, m_bCheckValidity(false)
+	, m_ViewportDirty(true)
+	, m_ScissorDirty(true)
 {
 	m_Textures.resize((size_t)IRenderTarget::AttachmentPoint::NumAttachmentPoints + 1);
 	m_StructuredBuffers.resize(8);
@@ -29,6 +56,29 @@ const std::shared_ptr<ITexture>& RenderTargetDX11::GetTexture(AttachmentPoint at
 	return m_Textures.at((uint8_t)attachment);
 }
 
+void RenderTargetDX11::AttachStructuredBuffer(uint8_t slot, std::shared_ptr<IStructuredBuffer> rwBuffer)
+{
+	std::shared_ptr<StructuredBufferDX11> rwbufferDX11 = std::dynamic_pointer_cast<StructuredBufferDX11>(rwBuffer);
+	m_StructuredBuffers[slot] = rwbufferDX11;
+
+	m_bCheckValidity = true;
+}
+
+const std::shared_ptr<IStructuredBuffer>& RenderTargetDX11::GetStructuredBuffer(uint8_t slot)
+{
+	return m_StructuredBuffers[slot];
+}
+
+void RenderTargetDX11::GenerateMipMaps()
+{
+	for (const auto& texture : m_Textures)
+	{
+		if (texture)
+		{
+			texture->GenerateMipMaps();
+		}
+	}
+}
 
 void RenderTargetDX11::Clear(AttachmentPoint attachment, ClearFlags clearFlags, cvec4 color, float depth, uint8_t stencil)
 {
@@ -47,36 +97,33 @@ void RenderTargetDX11::Clear(ClearFlags clearFlags, cvec4 color, float depth, ui
 	}
 }
 
-void RenderTargetDX11::GenerateMipMaps()
+void RenderTargetDX11::SetViewport(const Viewport& viewport)
 {
-	for (const auto& texture : m_Textures)
-	{
-		if (texture)
-		{
-			texture->GenerateMipMaps();
-		}
-	}
+	m_Viewport = viewport;
+	m_ViewportDirty = true;
+}
+const Viewport& RenderTargetDX11::GetViewport() const
+{
+	return m_Viewport;
 }
 
-void RenderTargetDX11::AttachStructuredBuffer(uint8_t slot, std::shared_ptr<IStructuredBuffer> rwBuffer)
+void RenderTargetDX11::SetScissorRect(const Rect& rect)
 {
-	std::shared_ptr<StructuredBufferDX11> rwbufferDX11 = std::dynamic_pointer_cast<StructuredBufferDX11>(rwBuffer);
-	m_StructuredBuffers[slot] = rwbufferDX11;
-
-	// Next time the render target is "bound", check that it is valid.
-	m_bCheckValidity = true;
+	m_Scissor = rect;
+	m_ScissorDirty = true;
 }
 
-const std::shared_ptr<IStructuredBuffer>& RenderTargetDX11::GetStructuredBuffer(uint8_t slot)
+const Rect& RenderTargetDX11::GetScissorRect() const
 {
-	return m_StructuredBuffers[slot];
+	return m_Scissor;
 }
-
 
 void RenderTargetDX11::Resize(size_t width, size_t height)
 {
 	if (m_Width != width || m_Height != height)
 	{
+		Log::Green("RenderTargetResized: %d, %d", width, height);
+
 		m_Width = glm::max<size_t>(width, 1);
 		m_Height = glm::max<size_t>(height, 1);
 
@@ -88,6 +135,10 @@ void RenderTargetDX11::Resize(size_t width, size_t height)
 				texture->Resize(m_Width, m_Height);
 			}
 		}
+
+		m_Viewport.SetWidth(m_Width);
+		m_Viewport.SetHeight(m_Height);
+		m_ViewportDirty = true;
 	}
 }
 
@@ -126,13 +177,38 @@ void RenderTargetDX11::Bind()
 	}
 
 	m_RenderDeviceDX11.GetDeviceContextD3D11()->OMSetRenderTargetsAndUnorderedAccessViews(numRTVs, renderTargetViews, depthStencilView, uavStartSlot, numUAVs, uavViews, nullptr);
+
+	// Viewport & Scissor
+	{
+		if (m_ViewportDirty)
+		{
+			m_ViewportRectD3D = TranslateViewport(m_Viewport);
+			m_ViewportDirty = false;
+		}
+
+		if (m_ScissorDirty)
+		{
+			m_ScissorRectD3D = TranslateRect(m_Scissor);
+			m_ScissorDirty = false;
+		}
+
+		m_RenderDeviceDX11.GetDeviceContextD3D11()->RSSetViewports(1, &m_ViewportRectD3D);
+		m_RenderDeviceDX11.GetDeviceContextD3D11()->RSSetScissorRects(1, &m_ScissorRectD3D);
+	}
 }
 
 void RenderTargetDX11::UnBind()
 {
+	m_RenderDeviceDX11.GetDeviceContextD3D11()->RSSetViewports(0, NULL);
+	m_RenderDeviceDX11.GetDeviceContextD3D11()->RSSetScissorRects(0, NULL);
+
 	m_RenderDeviceDX11.GetDeviceContextD3D11()->OMSetRenderTargetsAndUnorderedAccessViews(0, NULL, NULL, 0, 0, NULL, NULL);
 }
 
+
+//
+// Protected
+//
 bool RenderTargetDX11::IsValid() const
 {
 	UINT numRTV = 0;
@@ -177,5 +253,3 @@ bool RenderTargetDX11::IsValid() const
 
 	return true;
 }
-
-
