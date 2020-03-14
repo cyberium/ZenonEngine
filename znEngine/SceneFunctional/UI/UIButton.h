@@ -4,15 +4,6 @@
 #include "../../Materials/UI_Button_Material.h"
 
 
-class ZN_API UIButtonClickEventArgs
-{
-public:
-	UIButtonClickEventArgs()
-	{}
-};
-typedef Delegate<UIButtonClickEventArgs> UIButtonClickEvent;
-
-
 class ZN_API CUIButtonNode 
 	: public SceneNodeUI
 {
@@ -30,6 +21,8 @@ public:
 
 	// CUIButtonNode
 	void CreateDefault();
+	void SetText(const std::string& Text);
+	void SetOnClickCallback(std::function<void()> OnClickCallback);
 
 	// Input events
 	virtual bool OnMouseButtonPressed(MouseButtonEventArgs& e) override;
@@ -45,13 +38,12 @@ public:
 	virtual void Accept(IVisitor* visitor) override;
 	virtual void AcceptMesh(IVisitor* visitor) override;
 
-	UIButtonClickEvent Click;
-
 private:
     glm::vec2                            m_Size;
 	uint32                               m_State;
 	std::shared_ptr<IModel>              m_Mesh;
 	std::shared_ptr<UI_Button_Material>  m_Material;
 	std::shared_ptr<CUITextNode>         m_TextNode;
+	std::function<void()>                m_OnClickCallback;
 	
 };

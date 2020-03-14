@@ -27,10 +27,10 @@ CUIButtonNode::~CUIButtonNode()
 //
 void CUIButtonNode::CreateDefault()
 {
-	m_Material->SetIdleTexture(GetBaseManager().GetApplication().GetRenderDevice().GetObjectsFactory().LoadTexture2D("Textures\\btn_idle.png"));
-	m_Material->SetHoverTexture(GetBaseManager().GetApplication().GetRenderDevice().GetObjectsFactory().LoadTexture2D("Textures\\btn_hover.png"));
-	m_Material->SetClickedTexture(GetBaseManager().GetApplication().GetRenderDevice().GetObjectsFactory().LoadTexture2D("Textures\\btn_clicked.png"));
-	m_Material->SetDisabledTexture(GetBaseManager().GetApplication().GetRenderDevice().GetObjectsFactory().LoadTexture2D("Textures\\btn_disabled.png"));
+	m_Material->SetIdleTexture(GetBaseManager().GetApplication().GetRenderDevice().GetObjectsFactory().LoadTexture2D("btn_idle.png"));
+	m_Material->SetHoverTexture(GetBaseManager().GetApplication().GetRenderDevice().GetObjectsFactory().LoadTexture2D("btn_hover.png"));
+	m_Material->SetClickedTexture(GetBaseManager().GetApplication().GetRenderDevice().GetObjectsFactory().LoadTexture2D("btn_clicked.png"));
+	m_Material->SetDisabledTexture(GetBaseManager().GetApplication().GetRenderDevice().GetObjectsFactory().LoadTexture2D("btn_idle.png"));
 
 	const auto& idleTexture = m_Material->GetTexture(0);
     m_Size = idleTexture->GetSize();
@@ -43,7 +43,17 @@ void CUIButtonNode::CreateDefault()
     m_TextNode = CreateSceneNode<CUITextNode>();
 	m_TextNode->GetProperties()->GetPropertyT<std::string>("Text")->Set(cDefaultText);
 	m_TextNode->SetTranslate(vec2(10.0f, 10.0f));
-	m_TextNode->SetTextColor(vec4(0.0f, 0.0f, 1.0f, 1.0f));
+	m_TextNode->SetTextColor(vec4(1.0f, 1.0f, 1.0f, 1.0f));
+}
+
+void CUIButtonNode::SetText(const std::string& Text)
+{
+	m_TextNode->GetProperties()->GetPropertyT<std::string>("Text")->Set(Text);
+}
+
+void CUIButtonNode::SetOnClickCallback(std::function<void()> OnClickCallback)
+{
+	m_OnClickCallback = OnClickCallback;
 }
 
 
@@ -56,8 +66,8 @@ bool CUIButtonNode::OnMouseButtonPressed(MouseButtonEventArgs & e)
 	m_State = Clicked;
 
 	// Raise event
-	UIButtonClickEventArgs args;
-	Click(args);
+	if (m_OnClickCallback)
+		m_OnClickCallback();
 
 	return true;
 }
