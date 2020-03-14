@@ -129,6 +129,7 @@ const SceneNodeUI::NodeUIList& SceneNodeUI::GetChilds()
 
 void SceneNodeUI::RaiseOnParentChanged()
 {
+	UpdateWorldTransform();
 }
 
 
@@ -154,7 +155,6 @@ IScene * SceneNodeUI::GetScene() const
 void SceneNodeUI::SetTranslate(cvec2 _translate)
 {
 	m_Translate = _translate;
-
 	UpdateLocalTransform();
 }
 cvec2 SceneNodeUI::GetTranslation() const
@@ -407,6 +407,10 @@ void SceneNodeUI::UpdateWorldTransform()
 
 	m_WorldTransform = parentTransform * m_LocalTransform;
 	m_InverseWorldTransform = glm::inverse(m_WorldTransform);
+
+	// After world updated, we can update all childs
+	for (const auto& it : GetChilds())
+		std::dynamic_pointer_cast<SceneNodeUI>(it)->UpdateWorldTransform();
 }
 
 IBaseManager& SceneNodeUI::GetBaseManager() const

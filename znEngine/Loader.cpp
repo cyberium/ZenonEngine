@@ -24,7 +24,7 @@ void CLoader::Start()
 	}
 
 #ifdef DELETER_ENABLED
-	std::future<void> futureObj = m_Thread_Deleter_Promise.get_future();
+ 	std::future<void> futureObj = m_Thread_Deleter_Promise.get_future();
 	m_Thread_Deleter = std::thread(&CLoader::DeleterThread, this, std::move(futureObj));
 #endif
 

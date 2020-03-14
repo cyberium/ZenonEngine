@@ -34,6 +34,7 @@
     <ClCompile Include="Materials\MaterialParticle.cpp" />
     <ClCompile Include="Passes\DrawBoundingBoxPass.cpp" />
     <ClCompile Include="Passes\MaterialParticlePass.cpp" />
+    <ClCompile Include="Passes\UIButtonPass.cpp" />
     <ClCompile Include="Passes\UIFontPass.cpp" />
     <ClCompile Include="Scene_Default.cpp" />
     <ClCompile Include="Materials\MaterialDebug.cpp" />
@@ -108,6 +109,7 @@
     <ClInclude Include="Materials\MaterialParticle.h" />
     <ClInclude Include="Passes\DrawBoundingBoxPass.h" />
     <ClInclude Include="Passes\MaterialParticlePass.h" />
+    <ClInclude Include="Passes\UIButtonPass.h" />
     <ClInclude Include="Passes\UIFontPass.h" />
     <ClInclude Include="Scene_Default.h" />
     <ClInclude Include="Materials\MaterialDebug.h" />

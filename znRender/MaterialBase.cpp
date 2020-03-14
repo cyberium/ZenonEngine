@@ -62,7 +62,7 @@ void MaterialBase::SetTexture(uint8 ID, const std::shared_ptr<ITexture> texture)
 const std::shared_ptr<ITexture>& MaterialBase::GetTexture(uint8 ID) const
 {
 	const auto& iter = m_Textures.find(ID);
-	if (iter != m_Textures.end())
+	if (iter == m_Textures.end())
 		throw CException(L"Texture not found.");
 
 	return iter->second;

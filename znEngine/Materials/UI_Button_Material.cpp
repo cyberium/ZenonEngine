@@ -8,23 +8,6 @@ UI_Button_Material::UI_Button_Material(IRenderDevice& RenderDevice) :
 {
 	m_pProperties = (MaterialProperties*)_aligned_malloc(sizeof(MaterialProperties), 16);
 	*m_pProperties = MaterialProperties();
-
-	// CreateShaders
-	auto vertexShader = RenderDevice.GetObjectsFactory().CreateShader(EShaderType::VertexShader, "IDB_SHADER_UI_BUTTON", "VS_main");
-	vertexShader->LoadInputLayoutFromReflector();
-
-	auto pixelShader = RenderDevice.GetObjectsFactory().CreateShader(EShaderType::PixelShader, "IDB_SHADER_UI_BUTTON", "PS_main");
-
-	// Create samplers
-	auto g_LinearClampSampler = RenderDevice.GetObjectsFactory().CreateSamplerState();
-	g_LinearClampSampler->SetFilter(ISamplerState::MinFilter::MinLinear, ISamplerState::MagFilter::MagLinear, ISamplerState::MipFilter::MipLinear);
-	g_LinearClampSampler->SetWrapMode(ISamplerState::WrapMode::Clamp, ISamplerState::WrapMode::Clamp, ISamplerState::WrapMode::Clamp);
-
-	pixelShader->GetShaderParameterByName("DiffuseTextureSampler").Set(g_LinearClampSampler);
-
-	// Material
-	//SetShader(EShaderType::VertexShader, vertexShader);
-	//SetShader(EShaderType::PixelShader, pixelShader);
 }
 
 UI_Button_Material::~UI_Button_Material()

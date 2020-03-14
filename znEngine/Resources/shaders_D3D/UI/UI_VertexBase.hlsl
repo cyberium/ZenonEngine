@@ -2,7 +2,7 @@
 
 VertexShaderOutput VS_main(VertexShaderInput IN)
 {
-	const float4x4 mp = mul(Projection, Model);
+	const float4x4 mp = mul(PF.Projection, PO.Model);
 
 	VertexShaderOutput OUT;
 	OUT.position = mul(mp, float4(IN.position, 0.0f, 1.0f));

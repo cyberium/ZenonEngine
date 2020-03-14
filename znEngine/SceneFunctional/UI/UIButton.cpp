@@ -1,7 +1,5 @@
 #include "stdafx.h"
 
-#if 0
-
 // General
 #include "UIButton.h"
 
@@ -16,8 +14,6 @@ CUIButtonNode::CUIButtonNode(IRenderDevice& RenderDevice)
 {
 	m_Material = std::make_shared<UI_Button_Material>(RenderDevice);
 	m_Material->SetWrapper(m_Material.get());
-
-
 }
 
 CUIButtonNode::~CUIButtonNode()
@@ -39,8 +35,10 @@ void CUIButtonNode::CreateDefault()
 	const auto& idleTexture = m_Material->GetTexture(0);
     m_Size = idleTexture->GetSize();
 
-	m_Mesh = GetBaseManager().GetApplication().GetRenderDevice().GetPrimitivesFactory().CreateUIQuad(idleTexture->GetWidth(), idleTexture->GetHeight());
-	m_Mesh->SetMaterial(m_Material);
+	auto geometry = GetBaseManager().GetApplication().GetRenderDevice().GetPrimitivesFactory().CreateUIQuad(idleTexture->GetWidth(), idleTexture->GetHeight());
+	
+	m_Mesh = GetBaseManager().GetApplication().GetRenderDevice().GetObjectsFactory().CreateModel();
+	m_Mesh->AddConnection(m_Material, geometry);
 
     m_TextNode = CreateSceneNode<CUITextNode>();
 	m_TextNode->GetProperties()->GetPropertyT<std::string>("Text")->Set(cDefaultText);
@@ -102,25 +100,14 @@ glm::vec2 CUIButtonNode::GetSize()
     return m_Size;
 }
 
-bool CUIButtonNode::Accept(IVisitor* visitor)
+void CUIButtonNode::Accept(IVisitor* visitor)
 {
-	bool visitResult = base::Accept(visitor);
-	if (!visitResult)
-		return false;
-
-	if (m_TextNode != nullptr)
-	{
-		m_TextNode->Accept(visitor);
-	}
-
-	return true;
+	SceneNodeUI::Accept(visitor);
 }
 
-bool CUIButtonNode::AcceptMesh(IVisitor* visitor)
+void CUIButtonNode::AcceptMesh(IVisitor* visitor)
 {
 	m_Material->SetState(m_State);
 	
 	return m_Mesh->Accept(visitor);
 }
-
-#endif
