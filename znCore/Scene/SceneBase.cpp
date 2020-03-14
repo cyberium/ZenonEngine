@@ -28,10 +28,7 @@ void SceneBase::Initialize()
 	m_RootNode3D = CreateSceneNode<SceneNode3D>(nullptr);
 	m_RootNode3D->SetName("Root node 3D");
 
-	m_RootNodeUI = std::make_shared<CUIBaseNode>();
-	std::dynamic_pointer_cast<CUIBaseNode>(m_RootNodeUI)->SetScene(weak_from_this());
-	m_RootNodeUI->Initialize();
-	m_RootNodeUI->SetParent(nullptr);
+	m_RootNodeUI = CreateSceneNodeUI<SceneNodeUI>(nullptr);
 	m_RootNodeUI->SetName("Root node UI");
 
 	{
@@ -474,7 +471,7 @@ void SceneBase::DoUpdate_Rec(const std::shared_ptr<ISceneNode3D>& Node, const Up
 //
 bool SceneBase::DoKeyPressed_Rec(const std::shared_ptr<ISceneNodeUI>& Node, KeyEventArgs & e)
 {
-	std::shared_ptr<CUIBaseNode> NodeAsUINode = std::dynamic_pointer_cast<CUIBaseNode>(Node);
+	std::shared_ptr<SceneNodeUI> NodeAsUINode = std::dynamic_pointer_cast<SceneNodeUI>(Node);
 	if (NodeAsUINode != nullptr)
 	{
 		for (auto child : NodeAsUINode->GetChilds())
@@ -490,7 +487,7 @@ bool SceneBase::DoKeyPressed_Rec(const std::shared_ptr<ISceneNodeUI>& Node, KeyE
 
 void SceneBase::DoKeyReleased_Rec(const std::shared_ptr<ISceneNodeUI>& Node, KeyEventArgs & e)
 {
-	std::shared_ptr<CUIBaseNode> NodeAsUINode = std::dynamic_pointer_cast<CUIBaseNode>(Node);
+	std::shared_ptr<SceneNodeUI> NodeAsUINode = std::dynamic_pointer_cast<SceneNodeUI>(Node);
 	if (NodeAsUINode != nullptr)
 	{
 
@@ -505,7 +502,7 @@ void SceneBase::DoKeyReleased_Rec(const std::shared_ptr<ISceneNodeUI>& Node, Key
 
 void SceneBase::DoMouseMoved_Rec(const std::shared_ptr<ISceneNodeUI>& Node, MouseMotionEventArgs & e)
 {
-	std::shared_ptr<CUIBaseNode> NodeAsUINode = std::dynamic_pointer_cast<CUIBaseNode>(Node);
+	std::shared_ptr<SceneNodeUI> NodeAsUINode = std::dynamic_pointer_cast<SceneNodeUI>(Node);
 	if (NodeAsUINode != nullptr)
 	{
 		for (auto child : NodeAsUINode->GetChilds())
@@ -537,7 +534,7 @@ void SceneBase::DoMouseMoved_Rec(const std::shared_ptr<ISceneNodeUI>& Node, Mous
 
 bool SceneBase::DoMouseButtonPressed_Rec(const std::shared_ptr<ISceneNodeUI>& Node, MouseButtonEventArgs & e)
 {
-	std::shared_ptr<CUIBaseNode> NodeAsUINode = std::dynamic_pointer_cast<CUIBaseNode>(Node);
+	std::shared_ptr<SceneNodeUI> NodeAsUINode = std::dynamic_pointer_cast<SceneNodeUI>(Node);
 	if (NodeAsUINode != nullptr)
 	{
 		for (auto child : NodeAsUINode->GetChilds())
@@ -554,7 +551,7 @@ bool SceneBase::DoMouseButtonPressed_Rec(const std::shared_ptr<ISceneNodeUI>& No
 
 void SceneBase::DoMouseButtonReleased_Rec(const std::shared_ptr<ISceneNodeUI>& Node, MouseButtonEventArgs & e)
 {
-	std::shared_ptr<CUIBaseNode> NodeAsUINode = std::dynamic_pointer_cast<CUIBaseNode>(Node);
+	std::shared_ptr<SceneNodeUI> NodeAsUINode = std::dynamic_pointer_cast<SceneNodeUI>(Node);
 	if (NodeAsUINode != nullptr)
 	{
 		for (auto child : NodeAsUINode->GetChilds())
@@ -566,7 +563,7 @@ void SceneBase::DoMouseButtonReleased_Rec(const std::shared_ptr<ISceneNodeUI>& N
 
 bool SceneBase::DoMouseWheel_Rec(const std::shared_ptr<ISceneNodeUI>& Node, MouseWheelEventArgs & e)
 {
-	std::shared_ptr<CUIBaseNode> NodeAsUINode = std::dynamic_pointer_cast<CUIBaseNode>(Node);
+	std::shared_ptr<SceneNodeUI> NodeAsUINode = std::dynamic_pointer_cast<SceneNodeUI>(Node);
 	if (NodeAsUINode != nullptr)
 	{
 

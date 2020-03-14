@@ -28,18 +28,18 @@ void CUIContainerListWithActivation::Initialize(glm::vec2 MaxSize)
 
 }
 
-void CUIContainerListWithActivation::SetHeader(std::shared_ptr<CUIBaseNode> Header)
+void CUIContainerListWithActivation::SetHeader(std::shared_ptr<SceneNodeUI> Header)
 {
     Header->SetParentInternal(weak_from_this());
     m_Header = Header;
 }
 
-std::shared_ptr<CUIBaseNode> CUIContainerListWithActivation::GetHeader() const
+std::shared_ptr<SceneNodeUI> CUIContainerListWithActivation::GetHeader() const
 {
     return m_Header;
 }
 
-void CUIContainerListWithActivation::AddChild(std::shared_ptr<CUIBaseNode> Child, bool /*IsNeedCalculate*/)
+void CUIContainerListWithActivation::AddChild(std::shared_ptr<SceneNodeUI> Child, bool /*IsNeedCalculate*/)
 {
     base::AddChild(Child, false);
 
@@ -63,11 +63,11 @@ bool CUIContainerListWithActivation::IsActive() const
 
 
 //
-// CUIBaseNode
+// SceneNodeUI
 //
-std::vector<std::shared_ptr<CUIBaseNode>> CUIContainerListWithActivation::GetChilds() const
+std::vector<std::shared_ptr<SceneNodeUI>> CUIContainerListWithActivation::GetChilds() const
 {
-    std::vector<std::shared_ptr<CUIBaseNode>> childs;
+    std::vector<std::shared_ptr<SceneNodeUI>> childs;
 
     if (m_Header)
         childs.push_back(m_Header);
@@ -84,12 +84,12 @@ std::vector<std::shared_ptr<CUIBaseNode>> CUIContainerListWithActivation::GetChi
 //
 // Protected
 //
-std::vector<std::shared_ptr<CUIBaseNode>> CUIContainerListWithActivation::GetNodesUsingMaxSize() const
+std::vector<std::shared_ptr<SceneNodeUI>> CUIContainerListWithActivation::GetNodesUsingMaxSize() const
 {
     if (m_IsActive)
         return base::GetNodesUsingMaxSize();
 
-    return std::vector<std::shared_ptr<CUIBaseNode>>();
+    return std::vector<std::shared_ptr<SceneNodeUI>>();
 }
 
 #endif

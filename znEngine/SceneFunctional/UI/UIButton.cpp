@@ -95,7 +95,7 @@ void CUIButtonNode::OnMouseLeaved()
 
 
 //
-// CUIBaseNode
+// SceneNodeUI
 //
 glm::vec2 CUIButtonNode::GetSize()
 {

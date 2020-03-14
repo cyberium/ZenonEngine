@@ -1,7 +1,7 @@
 #pragma once
 
 class ZN_API CUIWindowNode 
-	: public CUIBaseNode
+	: public SceneNodeUI
 {
 public:
 	CUIWindowNode();

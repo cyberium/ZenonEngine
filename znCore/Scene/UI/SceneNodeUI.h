@@ -13,9 +13,8 @@ typedef Delegate<UIBaseNodeClickedEventArgs> UIBaseNodeClickedEvent;
 
 
 
-class ZN_API CUIBaseNode 
+class ZN_API SceneNodeUI 
 	: public ISceneNodeUI
-	, public ISceneNodeUIWithWrapper
 {
 	friend IScene;
 
@@ -24,8 +23,8 @@ public:
 	typedef std::multimap<std::string, std::shared_ptr<ISceneNodeUI>> NodeUINameMap;
 
 public:
-	CUIBaseNode();
-	virtual ~CUIBaseNode();
+	SceneNodeUI();
+	virtual ~SceneNodeUI();
 
 	virtual void                                    Initialize() override;
 	virtual void                                    Finalize() override;
@@ -37,11 +36,11 @@ public:
 	std::string										GetName() const override;
 	
 	// Childs functional
-	virtual void                                    AddChild(std::shared_ptr<ISceneNodeUI> childNode) override;
-	virtual void                                    RemoveChild(std::shared_ptr<ISceneNodeUI> childNode) override;
-	virtual void                                    SetParent(ISceneNodeUI* parentNode) override;
-	virtual ISceneNodeUI*                           GetParent() const override;
+	virtual void                                    AddChild(const std::shared_ptr<ISceneNodeUI>& childNode) override;
+	virtual void                                    RemoveChild(const std::shared_ptr<ISceneNodeUI>& childNode) override;
+	virtual std::weak_ptr<ISceneNodeUI>             GetParent() const override;
 	virtual const NodeUIList&                       GetChilds() override;
+	void                                            RaiseOnParentChanged() override final;
 
 	// Actions & Properties
 	virtual IActionsGroup*                          GetActions() const;
@@ -57,7 +56,6 @@ public:
 	void											SetScale(cvec2 _scale);
 	cvec2											GetScale() const;
 	glm::vec2										GetScaleAbs() const;
-
 	virtual mat4									GetLocalTransform() const;
 	virtual mat4									GetWorldTransfom() const;
 
@@ -69,10 +67,6 @@ public:
 	// Allow a visitor to visit this node. 
 	virtual void                                    Accept(IVisitor* visitor);
 	virtual void                                    AcceptMesh(IVisitor* visitor);
-
-
-	// ISceneNodeUIWithWrapper
-	void                                            SetWrapper(const ISceneNodeUI* WrapperNode) override final;
 
 	// Input events
 	virtual bool                                    OnKeyPressed(KeyEventArgs& e);
@@ -88,9 +82,11 @@ public:
 	virtual void                                    OnMouseEntered();
 	virtual void                                    OnMouseLeaved();
 
-public:
-	void                                            SetScene(std::weak_ptr<IScene> Scene);
-	void                                            SetParentInternal(std::weak_ptr<ISceneNodeUI> parentNode);
+private:
+	void                                            SetSceneInternal(const std::weak_ptr<IScene>& Scene);
+	void                                            AddChildInternal(const std::shared_ptr<ISceneNodeUI>& ChildNode);
+	void                                            RemoveChildInternal(const std::shared_ptr<ISceneNodeUI>& ChildNode);
+	void                                            SetParentInternal(const std::weak_ptr<ISceneNodeUI>& parentNode);
 
 protected:
 	virtual void									UpdateLocalTransform();
@@ -102,7 +98,6 @@ public: // Syntetic events // TODO: Make private
 	void                                            DoMouseEntered();
 	void                                            DoMouseLeaved();
 	bool                                            m_IsMouseOnNode;
-
 
 private:
 	std::string                                     m_Type;
@@ -117,14 +112,12 @@ private:
 	std::weak_ptr<IScene>                           m_Scene;
 
 private:
-	vec2											m_Translate;
-	vec3											m_Rotate;
-	vec2											m_Scale;
+	glm::vec2										m_Translate;
+	glm::vec3										m_Rotate;
+	glm::vec2										m_Scale;
 	glm::mat4										m_LocalTransform;
 	glm::mat4										m_InverseLocalTransform;
 	glm::mat4										m_WorldTransform;
 	glm::mat4										m_InverseWorldTransform;
-
-	const ISceneNodeUI*                             m_WrapperNode;
 };
 

@@ -371,7 +371,7 @@ void SceneNode3D::Accept(IVisitor* visitor)
 
 
 //
-// Public
+// Private
 //
 void SceneNode3D::SetSceneInternal(const std::weak_ptr<IScene>& Scene)
 {

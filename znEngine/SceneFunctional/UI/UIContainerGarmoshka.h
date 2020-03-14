@@ -8,7 +8,7 @@
 // ContainerGarmoshka
 #include "UIContainerGarmoshkaCategory.h"
 
-class CUIContainerGarmoshka : public CUIBaseNode
+class CUIContainerGarmoshka : public SceneNodeUI
 {
 public:
     CUIContainerGarmoshka();
@@ -27,10 +27,10 @@ public:
 
 
     //
-    // CUIBaseNode
+    // SceneNodeUI
     //
     glm::vec2 GetSize() const override final;
-    std::vector<std::shared_ptr<CUIBaseNode>> GetChilds() const override;
+    std::vector<std::shared_ptr<SceneNodeUI>> GetChilds() const override;
 
 protected:
     void CalculateActiveCategory();

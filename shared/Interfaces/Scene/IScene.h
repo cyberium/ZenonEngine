@@ -28,6 +28,8 @@ ZN_INTERFACE ZN_API IScene
 
 	// Passes will go to this
 	virtual void Accept(IVisitor* visitor) = 0;
+
+	// TODO: Shit code. Maybe need thread safe child containers?
 	virtual void AddChild(const std::shared_ptr<ISceneNode3D>& ParentNode, const std::shared_ptr<ISceneNode3D>& ChildNode) = 0;
 	virtual void RemoveChild(const std::shared_ptr<ISceneNode3D>& ParentNode, const std::shared_ptr<ISceneNode3D>& ChildNode) = 0;
 
@@ -39,7 +41,6 @@ ZN_INTERFACE ZN_API IScene
 	// Templates
 
 
-	// Creates new SceneNode and initialize it. You !must! call this method instead of creating nodes in code
 	template<class T, typename... Args>
 	inline std::shared_ptr<T> CreateSceneNode(const std::shared_ptr<ISceneNode3D>& Parent, Args &&... _Args)
 	{
@@ -50,23 +51,25 @@ ZN_INTERFACE ZN_API IScene
 		node->RegisterComponents();
 		node->Initialize();
 
+		// Delayed loader.
 		this->AddChild(Parent, node);
 
 		return node;
 	}
 
-	// Creates new SceneNode and initialize it. You !must! call this method instead of creating nodes in code
 	template<class T, typename... Args>
-	inline T* CreateSceneNodeUI(ISceneNodeUI* Parent, Args &&... _Args)
+	inline std::shared_ptr<T> CreateSceneNodeUI(const std::shared_ptr<ISceneNodeUI>& Parent, Args &&... _Args)
 	{
 		static_assert(std::is_convertible<T*, ISceneNodeUI*>::value, "T must inherit ISceneNodeUI as public.");
 
 		std::shared_ptr<T> newNode = std::make_shared<T>(std::forward<Args>(_Args)...);
-		newNode->SetScene(weak_from_this());
+		newNode->SetSceneInternal(weak_from_this());
 		newNode->Initialize();
-		newNode->SetParent(Parent);
+		
+		if (Parent)
+			Parent->AddChild(newNode);
 
-		return newNode.get();
+		return newNode;
 	}
 };
 

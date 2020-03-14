@@ -82,11 +82,11 @@ std::shared_ptr<ISceneNode3D> CSceneNodeDefaultCreator::CreateSceneNode3D(IScene
 	throw CException("CSceneNodeDefaultCreator: CreateSceneNode(%d) is out of bounds. Count = %d", Index, GetSceneNodesCount());
 }
 
-ISceneNodeUI * CSceneNodeDefaultCreator::CreateSceneNodeUI(ISceneNodeUI * Parent, size_t Index) const
+std::shared_ptr<ISceneNodeUI> CSceneNodeDefaultCreator::CreateSceneNodeUI(ISceneNodeUI * Parent, size_t Index) const
 {
 	if (Index == 1)
 	{
-		return Parent->CreateSceneNode<CUIBaseNode>();
+		return Parent->CreateSceneNode<SceneNodeUI>();
 	}
 	else if (Index == 2)
 	{

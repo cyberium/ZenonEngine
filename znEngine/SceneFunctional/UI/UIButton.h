@@ -15,9 +15,9 @@ public:
 typedef Delegate<UIButtonClickEventArgs> UIButtonClickEvent;
 
 
-class ZN_API CUIButtonNode : public CUIBaseNode
+class ZN_API CUIButtonNode : public SceneNodeUI
 {
-	typedef CUIBaseNode base;
+	typedef SceneNodeUI base;
 public:
 	enum ButtonState : uint32
 	{
@@ -41,7 +41,7 @@ public:
 	virtual void OnMouseEntered() override;
 	virtual void OnMouseLeaved() override;
 
-	// CUIBaseNode
+	// SceneNodeUI
     virtual glm::vec2 GetSize() override;
 
 	virtual bool Accept(IVisitor* visitor) override;

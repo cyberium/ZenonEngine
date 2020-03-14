@@ -28,15 +28,15 @@ ZN_INTERFACE ZN_API ISceneNodeUI
 	virtual std::string	GetName() const = 0;
 	
 	// Childs functional
-	virtual void AddChild(std::shared_ptr<ISceneNodeUI> childNode) = 0;
-	virtual void RemoveChild(std::shared_ptr<ISceneNodeUI> childNode) = 0;
-	virtual void SetParent(ISceneNodeUI* parentNode) = 0;
-	virtual ISceneNodeUI* GetParent() const = 0;
+	virtual void AddChild(const std::shared_ptr<ISceneNodeUI>& childNode) = 0;
+	virtual void RemoveChild(const std::shared_ptr<ISceneNodeUI>& childNode) = 0;
+	virtual std::weak_ptr<ISceneNodeUI> GetParent() const = 0;
 	virtual const NodeUIList& GetChilds() = 0;
+	virtual void RaiseOnParentChanged() = 0;
 
-	template<typename T, typename... Args> inline T* CreateSceneNode(Args &&... _Args)
+	template<typename T, typename... Args> inline std::shared_ptr<T> CreateSceneNode(Args &&... _Args)
 	{
-		return GetScene()->CreateSceneNodeUI<T>(this, std::forward<Args>(_Args)...);
+		return GetScene()->CreateSceneNodeUI<T>(shared_from_this(), std::forward<Args>(_Args)...);
 	}
 
 	// Actions & Properties
@@ -63,11 +63,4 @@ ZN_INTERFACE ZN_API ISceneNodeUI
 
 	// Allow a visitor to visit this node.
 	virtual void Accept(IVisitor* visitor) = 0;
-};
-
-ZN_INTERFACE ZN_API ISceneNodeUIWithWrapper
-{
-	virtual ~ISceneNodeUIWithWrapper() {}
-
-	virtual void SetWrapper(const ISceneNodeUI* WrapperNode) = 0;
 };

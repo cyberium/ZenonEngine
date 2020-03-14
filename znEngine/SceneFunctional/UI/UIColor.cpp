@@ -29,7 +29,7 @@ void CUIColorNode::SetColor(vec4 _color)
 
 
 //
-// CUIBaseNode
+// SceneNodeUI
 //
 glm::vec2 CUIColorNode::GetSize()
 {

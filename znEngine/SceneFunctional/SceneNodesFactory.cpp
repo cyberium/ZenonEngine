@@ -51,7 +51,7 @@ std::shared_ptr<ISceneNode3D> CSceneNodesFactory::CreateSceneNode3D(ISceneNode3D
 	return nullptr;
 }
 
-ISceneNodeUI* CSceneNodesFactory::CreateSceneNodeUI(ISceneNodeUI* Parent, std::string SceneNodeTypeName) const
+std::shared_ptr<ISceneNodeUI> CSceneNodesFactory::CreateSceneNodeUI(ISceneNodeUI* Parent, std::string SceneNodeTypeName) const
 {
 	for (const auto& creator : m_Creators)
 	{

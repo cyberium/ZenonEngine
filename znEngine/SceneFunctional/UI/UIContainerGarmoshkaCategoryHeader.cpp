@@ -64,16 +64,16 @@ void CUIContainerGarmoshkaCategoryHeader::SetText(const std::string& Text)
 
 
 //
-// CUIBaseNode
+// SceneNodeUI
 //
 glm::vec2 CUIContainerGarmoshkaCategoryHeader::GetSize() const
 {
     return m_Background->GetSize();
 }
 
-std::vector<std::shared_ptr<CUIBaseNode>> CUIContainerGarmoshkaCategoryHeader::GetChilds() const
+std::vector<std::shared_ptr<SceneNodeUI>> CUIContainerGarmoshkaCategoryHeader::GetChilds() const
 {
-    std::vector<std::shared_ptr<CUIBaseNode>> childs;
+    std::vector<std::shared_ptr<SceneNodeUI>> childs;
 
     if (m_Background)
         childs.push_back(m_Background);
@@ -88,7 +88,7 @@ std::vector<std::shared_ptr<CUIBaseNode>> CUIContainerGarmoshkaCategoryHeader::G
 
 bool CUIContainerGarmoshkaCategoryHeader::OnMouseButtonPressed(MouseButtonEventArgs & e)
 {
-    std::shared_ptr<CUIBaseNode> parent = m_ParentNode.lock();
+    std::shared_ptr<SceneNodeUI> parent = m_ParentNode.lock();
     _ASSERT(parent != nullptr);
 
     std::shared_ptr<CUIContainerGarmoshkaCategory> parentAsContainerGarmoshka = std::dynamic_pointer_cast<CUIContainerGarmoshkaCategory>(parent);

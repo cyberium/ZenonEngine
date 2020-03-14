@@ -73,7 +73,7 @@ void CUIContainerListBase::CreateDefault()
     AddChild(ch5);
 }
 
-void CUIContainerListBase::AddChild(std::shared_ptr<CUIBaseNode> Child, bool IsNeedCalculate)
+void CUIContainerListBase::AddChild(std::shared_ptr<SceneNodeUI> Child, bool IsNeedCalculate)
 {
     _ASSERT(Child != nullptr);
 
@@ -103,14 +103,14 @@ void CUIContainerListBase::DecStartNodeIndex()
 
 
 //
-// CUIBaseNode
+// SceneNodeUI
 //
 glm::vec2 CUIContainerListBase::GetSize() const
 {
     return owUIUtils::CalculateChildsVerticalSize(GetChilds(), m_c_ChildsVerticalPadding);
 }
 
-std::vector<std::shared_ptr<CUIBaseNode>> CUIContainerListBase::GetChilds() const
+std::vector<std::shared_ptr<SceneNodeUI>> CUIContainerListBase::GetChilds() const
 {
     return GetNodesUsingMaxSize();
 }
@@ -120,9 +120,9 @@ std::vector<std::shared_ptr<CUIBaseNode>> CUIContainerListBase::GetChilds() cons
 //
 // Protected
 //
-std::vector<std::shared_ptr<CUIBaseNode>> CUIContainerListBase::GetNodesUsingMaxSize() const
+std::vector<std::shared_ptr<SceneNodeUI>> CUIContainerListBase::GetNodesUsingMaxSize() const
 {
-    std::vector<std::shared_ptr<CUIBaseNode>> childs;
+    std::vector<std::shared_ptr<SceneNodeUI>> childs;
     float currentYSize = 0.0f;
 
     for (size_t i = m_StartNodeIndex; i < m_Nodes.size(); i++)

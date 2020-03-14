@@ -23,22 +23,22 @@ public:
     // CUIContainerListWithActivation
     void Initialize(glm::vec2 MaxSize);
 
-    void SetHeader(std::shared_ptr<CUIBaseNode> Header);
-    std::shared_ptr<CUIBaseNode> GetHeader() const;
+    void SetHeader(std::shared_ptr<SceneNodeUI> Header);
+    std::shared_ptr<SceneNodeUI> GetHeader() const;
 
-    void AddChild(std::shared_ptr<CUIBaseNode> Child, bool IsNeedCalculate = true) override;
+    void AddChild(std::shared_ptr<SceneNodeUI> Child, bool IsNeedCalculate = true) override;
 
     void SetActive(bool Active);
     bool IsActive() const;
 
-    // CUIBaseNode
-    virtual std::vector<std::shared_ptr<CUIBaseNode>> GetChilds() const override final;
+    // SceneNodeUI
+    virtual std::vector<std::shared_ptr<SceneNodeUI>> GetChilds() const override final;
 
 protected:
-    virtual std::vector<std::shared_ptr<CUIBaseNode>> GetNodesUsingMaxSize() const override;
+    virtual std::vector<std::shared_ptr<SceneNodeUI>> GetNodesUsingMaxSize() const override;
 
 private:
-    std::shared_ptr<CUIBaseNode>    m_Header;
+    std::shared_ptr<SceneNodeUI>    m_Header;
     bool                            m_IsActive;
 };
 

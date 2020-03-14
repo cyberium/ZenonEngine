@@ -5,9 +5,9 @@
 #include "../../Materials/UI_Line_Material.h"
 
 class ZN_API CUIBeizerLineNode 
-	: public CUIBaseNode
+	: public SceneNodeUI
 {
-	typedef CUIBaseNode base;
+	typedef SceneNodeUI base;
 public:
 	CUIBeizerLineNode(IRenderDevice& RenderDevice);
 	virtual	~CUIBeizerLineNode();
@@ -18,7 +18,7 @@ public:
     void                                            SetPosEnd(vec2 PosEnd);
     void                                            SetThickness(float Thickness);
 
-	// CUIBaseNode
+	// SceneNodeUI
     virtual glm::vec2                               GetSize() override final;
 
 	virtual bool                                    AcceptMesh(IVisitor* visitor) override;

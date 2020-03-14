@@ -3,7 +3,7 @@
 #include "../../Materials/UI_Texture_Material.h"
 
 class ZN_API CUITextureNode 
-	: public CUIBaseNode
+	: public SceneNodeUI
 {
 public:
 	CUITextureNode(IRenderDevice& RenderDevice, vec2 Size = vec2(1.0f, 1.0f));
@@ -13,7 +13,7 @@ public:
 	void SetTexture(std::shared_ptr<ITexture> _texture);
 	void SetColor(vec4 _color);
 
-	// CUIBaseNode
+	// SceneNodeUI
     virtual glm::vec2 GetSize() override;
 
 	virtual void AcceptMesh(IVisitor* visitor) override;

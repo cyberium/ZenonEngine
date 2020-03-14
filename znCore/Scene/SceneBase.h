@@ -102,10 +102,10 @@ protected:
 	std::shared_ptr<ICameraController>              m_DefaultCameraController;
 	std::shared_ptr<ISettingGroup>                  m_VideoSettings;
 
-	ISceneNodeUI*                                   m_CameraPosText;
-	ISceneNodeUI*                                   m_CameraRotText;
-	ISceneNodeUI*                                   m_CameraRot2Text;
-	ISceneNodeUI*                                   m_FPSText;
+	std::shared_ptr<ISceneNodeUI>                   m_CameraPosText;
+	std::shared_ptr<ISceneNodeUI>                   m_CameraRotText;
+	std::shared_ptr<ISceneNodeUI>                   m_CameraRot2Text;
+	std::shared_ptr<ISceneNodeUI>                   m_FPSText;
 
 
 private: // IRenderWindowEvents

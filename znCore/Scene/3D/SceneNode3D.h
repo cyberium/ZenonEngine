@@ -89,13 +89,11 @@ public:
 	virtual void                                    Update(const UpdateEventArgs& e) override;
 	virtual void                                    Accept(IVisitor* visitor) override;
 
-
 private:
 	void                                            SetSceneInternal(const std::weak_ptr<IScene>& Scene);
 	void                                            AddChildInternal(const std::shared_ptr<ISceneNode3D>& ChildNode);
 	void                                            RemoveChildInternal(const std::shared_ptr<ISceneNode3D>& ChildNode);
 	void                                            SetParentInternal(const std::weak_ptr<ISceneNode3D>& parentNode);
-
 
 protected:
 	virtual void									UpdateLocalTransform();
@@ -123,7 +121,6 @@ private:
 	glm::quat										m_RotateQuat;
 	bool											m_IsRotateQuat;
 	glm::vec3										m_Scale;
-
 	glm::mat4										m_LocalTransform;
 	glm::mat4										m_InverseLocalTransform;
 	glm::mat4										m_WorldTransform;

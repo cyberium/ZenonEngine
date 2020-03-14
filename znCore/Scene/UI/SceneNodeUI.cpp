@@ -7,7 +7,7 @@
 #include "Scene/Actions.h"
 #include "Scene/Properties.h"
 
-CUIBaseNode::CUIBaseNode()
+SceneNodeUI::SceneNodeUI()
 	: m_IsMouseOnNode(false)
 	, m_Translate(vec2())
 	, m_Rotate(vec3())
@@ -19,9 +19,7 @@ CUIBaseNode::CUIBaseNode()
 	, m_WorldTransform(1.0f)
 	, m_InverseWorldTransform(1.0f)
 {
-	SetName("CUIBaseNode");
-
-	m_InverseLocalTransform = glm::inverse(m_LocalTransform);
+	SetName("SceneNodeUI");
 
 	m_ActionsGroup = std::make_shared<CActionsGroup>("General");
 	m_PropertiesGroup = std::make_shared<CPropertiesGroup>("General", "Some important scene node properties.");
@@ -29,13 +27,13 @@ CUIBaseNode::CUIBaseNode()
 	// Name properties
 	{
 		std::shared_ptr<CPropertyWrapped<std::string>> nameProperty = std::make_shared<CPropertyWrapped<std::string>>("Name", "Scene node name.");
-		nameProperty->SetValueSetter(std::bind(&CUIBaseNode::SetName, this, std::placeholders::_1));
-		nameProperty->SetValueGetter(std::bind(&CUIBaseNode::GetName, this));
+		nameProperty->SetValueSetter(std::bind(&SceneNodeUI::SetName, this, std::placeholders::_1));
+		nameProperty->SetValueGetter(std::bind(&SceneNodeUI::GetName, this));
 		GetProperties()->AddProperty(nameProperty);
 	}
 }
 
-CUIBaseNode::~CUIBaseNode()
+SceneNodeUI::~SceneNodeUI()
 {
 }
 
@@ -46,12 +44,12 @@ CUIBaseNode::~CUIBaseNode()
 //
 // ISceneNodeUI
 //
-void CUIBaseNode::Initialize()
+void SceneNodeUI::Initialize()
 {
 
 }
 
-void CUIBaseNode::Finalize()
+void SceneNodeUI::Finalize()
 {
 
 }
@@ -61,22 +59,22 @@ void CUIBaseNode::Finalize()
 //
 // Name & Type
 //
-std::string CUIBaseNode::GetType() const
+std::string SceneNodeUI::GetType() const
 {
 	return m_Type;
 }
 
-void CUIBaseNode::SetType(std::string Type)
+void SceneNodeUI::SetType(std::string Type)
 {
 	m_Type = Type;
 }
 
-std::string CUIBaseNode::GetName() const
+std::string SceneNodeUI::GetName() const
 {
 	return m_Name;
 }
 
-void CUIBaseNode::SetName(std::string Name)
+void SceneNodeUI::SetName(std::string Name)
 {
 	m_Name = Name;
 }
@@ -86,76 +84,51 @@ void CUIBaseNode::SetName(std::string Name)
 //
 // Childs functional
 //
-void CUIBaseNode::AddChild(std::shared_ptr<ISceneNodeUI> childNode)
+void SceneNodeUI::AddChild(const std::shared_ptr<ISceneNodeUI>& childNode)
 {
 	if (childNode == nullptr)
-		_ASSERT_EXPR(false, L"Child node must not be NULL.");
+		throw CException(L"SceneNodeUI: Child node must not be NULL.");
 
-	NodeUIList::iterator iter = std::find(m_Children.begin(), m_Children.end(), childNode);
-	if (iter == m_Children.end())
+	// 1. Удаляем чилда у текущего родителя (возможно нужно его об этом нотифицировать, например для перерасчета BoundingBox)
+	if (auto currentChildParent = childNode->GetParent().lock())
 	{
-		std::dynamic_pointer_cast<CUIBaseNode>(childNode)->m_ParentNode = weak_from_this();
-
-		m_Children.push_back(childNode);
-		if (!childNode->GetName().empty())
-			m_ChildrenByName.insert(NodeUINameMap::value_type(childNode->GetName(), childNode));
-
-		//GetScene()->RaiseSceneChangeEvent(ESceneChangeType::NodeAdded, shared_from_this(), childNode);
-	}
-}
-
-void CUIBaseNode::RemoveChild(std::shared_ptr<ISceneNodeUI> childNode)
-{
-	if (childNode)
-	{
-		_ASSERT_EXPR(false, L"Child node must not be NULL.");
-	}
-
-	NodeUIList::iterator iter = std::find(m_Children.begin(), m_Children.end(), childNode);
-	if (iter != m_Children.end())
-	{
-		std::dynamic_pointer_cast<CUIBaseNode>(childNode)->m_ParentNode = std::weak_ptr<ISceneNodeUI>();
-
-		m_Children.erase(iter);
-		NodeUINameMap::iterator iter2 = m_ChildrenByName.find(childNode->GetName());
-		if (iter2 != m_ChildrenByName.end())
-			m_ChildrenByName.erase(iter2);
-
-		//GetScene()->RaiseSceneChangeEvent(ESceneChangeType::NodeRemoved, shared_from_this(), childNode);
-	}
-	else
-	{
-		// Maybe this node appears lower in the hierarchy...
-		for (auto child : m_Children)
+		if (currentChildParent == shared_from_this())
 		{
-			child->RemoveChild(childNode);
+			Log::Warn("SceneNodeUI: Failed to add child to his current parent.");
+			return;
 		}
+
+		std::dynamic_pointer_cast<SceneNodeUI>(currentChildParent)->RemoveChildInternal(childNode);
 	}
+
+	// 2. Добавляем чилда в нового парента (возможно нужно его об этом нотифицировать, например для перерасчета BoundingBox)
+	this->AddChildInternal(childNode);
+
 }
 
-void CUIBaseNode::SetParent(ISceneNodeUI* parentNode)
+void SceneNodeUI::RemoveChild(const std::shared_ptr<ISceneNodeUI>& childNode)
 {
-	// Remove from current parent
-	std::shared_ptr<ISceneNodeUI> currentParent = m_ParentNode.lock();
-	if (currentParent != nullptr)
+	if (childNode == nullptr)
 	{
-		currentParent->RemoveChild(shared_from_this());
-		m_ParentNode.reset();
+		Log::Warn("SceneNodeUI: Child node must not be NULL.");
+		return;
 	}
 
-	// Add to new parent
-	if (ISceneNodeUI* newParent = parentNode)
-		newParent->AddChild(shared_from_this());
+	this->RemoveChildInternal(childNode);
 }
 
-ISceneNodeUI* CUIBaseNode::GetParent() const
+std::weak_ptr<ISceneNodeUI> SceneNodeUI::GetParent() const
 {
-	return m_ParentNode.lock().get();
+	return m_ParentNode;
 }
 
-const CUIBaseNode::NodeUIList& CUIBaseNode::GetChilds()
+const SceneNodeUI::NodeUIList& SceneNodeUI::GetChilds()
 {
 	return m_Children;
+}
+
+void SceneNodeUI::RaiseOnParentChanged()
+{
 }
 
 
@@ -163,74 +136,74 @@ const CUIBaseNode::NodeUIList& CUIBaseNode::GetChilds()
 //
 // Actions & Properties
 //
-IActionsGroup * CUIBaseNode::GetActions() const
+IActionsGroup * SceneNodeUI::GetActions() const
 {
 	return m_ActionsGroup.get();
 }
 
-IPropertiesGroup * CUIBaseNode::GetProperties() const
+IPropertiesGroup * SceneNodeUI::GetProperties() const
 {
 	return m_PropertiesGroup.get();
 }
 
-IScene * CUIBaseNode::GetScene() const
+IScene * SceneNodeUI::GetScene() const
 {
 	return m_Scene.lock().get();
 }
 
-void CUIBaseNode::SetTranslate(cvec2 _translate)
+void SceneNodeUI::SetTranslate(cvec2 _translate)
 {
 	m_Translate = _translate;
 
 	UpdateLocalTransform();
 }
-cvec2 CUIBaseNode::GetTranslation() const
+cvec2 SceneNodeUI::GetTranslation() const
 {
 	return m_Translate;
 }
-glm::vec2 CUIBaseNode::GetTranslationAbs() const
+glm::vec2 SceneNodeUI::GetTranslationAbs() const
 {
 	glm::vec2 parentTranslate = glm::vec2(0.0f, 0.0f);
-	if (ISceneNodeUI* parent = GetParent())
+	if (auto parent = GetParent().lock())
 		parentTranslate = parent->GetTranslationAbs();
 	return parentTranslate + GetTranslation();
 }
 
-void CUIBaseNode::SetRotation(cvec3 _rotate)
+void SceneNodeUI::SetRotation(cvec3 _rotate)
 {
 	m_Rotate = _rotate;
 
 	UpdateLocalTransform();
 }
-cvec3 CUIBaseNode::GetRotation() const
+cvec3 SceneNodeUI::GetRotation() const
 {
 	return m_Rotate;
 }
 
-void CUIBaseNode::SetScale(cvec2 _scale)
+void SceneNodeUI::SetScale(cvec2 _scale)
 {
 	m_Scale = _scale;
 
 	UpdateLocalTransform();
 }
-cvec2 CUIBaseNode::GetScale() const
+cvec2 SceneNodeUI::GetScale() const
 {
 	return m_Scale;
 }
-glm::vec2 CUIBaseNode::GetScaleAbs() const
+glm::vec2 SceneNodeUI::GetScaleAbs() const
 {
 	glm::vec2 parentScale = vec2(1.0f, 1.0f);
-	if (ISceneNodeUI* parent = GetParent())
+	if (auto parent = GetParent().lock())
 		parentScale = parent->GetScaleAbs();
 	return parentScale * GetScale();
 }
 
-mat4 CUIBaseNode::GetLocalTransform() const
+mat4 SceneNodeUI::GetLocalTransform() const
 {
 	return m_LocalTransform;
 }
 
-mat4 CUIBaseNode::GetWorldTransfom() const
+mat4 SceneNodeUI::GetWorldTransfom() const
 {
 	return m_WorldTransform;
 }
@@ -241,12 +214,12 @@ mat4 CUIBaseNode::GetWorldTransfom() const
 // Size & bounds
 //
 
-glm::vec2 CUIBaseNode::GetSize()
+glm::vec2 SceneNodeUI::GetSize()
 {
     return glm::vec2(99999.0f, 999999.0f);
 }
 
-BoundingRect CUIBaseNode::GetBoundsAbs()
+BoundingRect SceneNodeUI::GetBoundsAbs()
 {
     BoundingRect boundRect = BoundingRect(GetTranslationAbs(), GetTranslationAbs() + GetSize() * GetScaleAbs());
 
@@ -256,7 +229,7 @@ BoundingRect CUIBaseNode::GetBoundsAbs()
     return boundRect;
 }
 
-bool CUIBaseNode::IsPointInBoundsAbs(glm::vec2 Point)
+bool SceneNodeUI::IsPointInBoundsAbs(glm::vec2 Point)
 {
     return GetBoundsAbs().isPointInside(Point);
 }
@@ -266,7 +239,7 @@ bool CUIBaseNode::IsPointInBoundsAbs(glm::vec2 Point)
 //
 // Render functional
 //
-void CUIBaseNode::Accept(IVisitor* visitor)
+void SceneNodeUI::Accept(IVisitor* visitor)
 {
 	EVisitResult visitResult = visitor->Visit(this);
 	
@@ -284,19 +257,9 @@ void CUIBaseNode::Accept(IVisitor* visitor)
 	}
 }
 
-void CUIBaseNode::AcceptMesh(IVisitor* visitor)
+void SceneNodeUI::AcceptMesh(IVisitor* visitor)
 {
 
-}
-
-
-
-//
-// ISceneNodeUIWithWrapper
-//
-void CUIBaseNode::SetWrapper(const ISceneNodeUI * WrapperNode)
-{
-	m_WrapperNode = WrapperNode;
 }
 
 
@@ -304,22 +267,22 @@ void CUIBaseNode::SetWrapper(const ISceneNodeUI * WrapperNode)
 //
 // Input events
 //
-bool CUIBaseNode::OnKeyPressed(KeyEventArgs & e)
+bool SceneNodeUI::OnKeyPressed(KeyEventArgs & e)
 {
 	return false;
 }
 
-void CUIBaseNode::OnKeyReleased(KeyEventArgs & e)
+void SceneNodeUI::OnKeyReleased(KeyEventArgs & e)
 {
 	// Do nothing
 }
 
-void CUIBaseNode::OnMouseMoved(MouseMotionEventArgs& e)
+void SceneNodeUI::OnMouseMoved(MouseMotionEventArgs& e)
 {
 	// Do nothing
 }
 
-bool CUIBaseNode::OnMouseButtonPressed(MouseButtonEventArgs & e)
+bool SceneNodeUI::OnMouseButtonPressed(MouseButtonEventArgs & e)
 {
     // Raise 'Clicked' callback
     {
@@ -330,12 +293,12 @@ bool CUIBaseNode::OnMouseButtonPressed(MouseButtonEventArgs & e)
 	return false;
 }
 
-void CUIBaseNode::OnMouseButtonReleased(MouseButtonEventArgs & e)
+void SceneNodeUI::OnMouseButtonReleased(MouseButtonEventArgs & e)
 {
 	// Do nothing
 }
 
-bool CUIBaseNode::OnMouseWheel(MouseWheelEventArgs & e)
+bool SceneNodeUI::OnMouseWheel(MouseWheelEventArgs & e)
 {
 	return false;
 }
@@ -345,12 +308,12 @@ bool CUIBaseNode::OnMouseWheel(MouseWheelEventArgs & e)
 //
 // Syntetic events
 //
-void CUIBaseNode::OnMouseEntered()
+void SceneNodeUI::OnMouseEntered()
 {
 	// Do nothing
 }
 
-void CUIBaseNode::OnMouseLeaved()
+void SceneNodeUI::OnMouseLeaved()
 {
 	// Do nothing
 }
@@ -358,14 +321,60 @@ void CUIBaseNode::OnMouseLeaved()
 
 
 //
-// Public
+// Private
 //
-void CUIBaseNode::SetScene(std::weak_ptr<IScene> Scene)
+void SceneNodeUI::SetSceneInternal(const std::weak_ptr<IScene>& Scene)
 {
 	m_Scene = Scene;
 }
 
-void CUIBaseNode::SetParentInternal(std::weak_ptr<ISceneNodeUI> parentNode)
+void SceneNodeUI::AddChildInternal(const std::shared_ptr<ISceneNodeUI>& ChildNode)
+{
+	_ASSERT(ChildNode != nullptr);
+
+	const auto& iter = std::find(m_Children.begin(), m_Children.end(), ChildNode);
+	if (iter != m_Children.end())
+		throw CException(L"This parent already has this child.");
+
+	// Add to common list
+	m_Children.push_back(ChildNode);
+
+	// And add child to named list
+	if (!ChildNode->GetName().empty())
+		m_ChildrenByName.insert(NodeUINameMap::value_type(ChildNode->GetName(), ChildNode));
+
+	std::dynamic_pointer_cast<SceneNodeUI>(ChildNode)->SetParentInternal(weak_from_this());
+
+	// TODO: Какой ивент посылать первым?
+	ChildNode->RaiseOnParentChanged();
+	//GetScene()->RaiseSceneChangeEvent(ESceneChangeType::NodeAddedToParent, this, ChildNode.get());
+}
+
+void SceneNodeUI::RemoveChildInternal(const std::shared_ptr<ISceneNodeUI>& ChildNode)
+{
+	const auto& childListIter = std::find(m_Children.begin(), m_Children.end(), ChildNode);
+	if (childListIter == m_Children.end())
+		//throw CException(L"Can't remove child because don't found.");
+		return;
+
+	// Delete from list
+	m_Children.erase(childListIter);
+
+	// TODO: Если единственная ссылка на чилда осталась в списке чилдов, то всё взорвется?
+
+	// Delete from name map
+	const auto& childNameMapIter = m_ChildrenByName.find(ChildNode->GetName());
+	if (childNameMapIter != m_ChildrenByName.end())
+		m_ChildrenByName.erase(childNameMapIter);
+
+	std::dynamic_pointer_cast<SceneNodeUI>(ChildNode)->SetParentInternal(std::weak_ptr<ISceneNodeUI>());
+
+	// TODO: Какой ивент посылать первым?
+	ChildNode->RaiseOnParentChanged();
+	//GetScene()->RaiseSceneChangeEvent(ESceneChangeType::NodeRemovedFromParent, this, ChildNode);
+}
+
+void SceneNodeUI::SetParentInternal(const std::weak_ptr<ISceneNodeUI>& parentNode)
 {
 	m_ParentNode = parentNode;
 }
@@ -375,7 +384,7 @@ void CUIBaseNode::SetParentInternal(std::weak_ptr<ISceneNodeUI> parentNode)
 //
 // Protected
 //
-void CUIBaseNode::UpdateLocalTransform()
+void SceneNodeUI::UpdateLocalTransform()
 {
 	m_LocalTransform = glm::mat4(1.0f);
 
@@ -390,40 +399,37 @@ void CUIBaseNode::UpdateLocalTransform()
 	UpdateWorldTransform();
 }
 
-void CUIBaseNode::UpdateWorldTransform()
+void SceneNodeUI::UpdateWorldTransform()
 {
 	glm::mat4 parentTransform(1.0f);
-	if (CUIBaseNode* parent = dynamic_cast<CUIBaseNode*>(GetParent()))
-	{
-		parentTransform = parent->m_WorldTransform;
-	}
+	if (auto parent = GetParent().lock())
+		parentTransform = parent->GetWorldTransfom();
 
 	m_WorldTransform = parentTransform * m_LocalTransform;
 	m_InverseWorldTransform = glm::inverse(m_WorldTransform);
 }
 
-IBaseManager& CUIBaseNode::GetBaseManager() const
+IBaseManager& SceneNodeUI::GetBaseManager() const
 {
 	return dynamic_cast<IBaseManagerHolder*>(GetScene())->GetBaseManager();
 }
 
 
 
-
 //
 // Syntetic events PRIVATE
 //
-bool CUIBaseNode::IsMouseOnNode() const
+bool SceneNodeUI::IsMouseOnNode() const
 {
 	return m_IsMouseOnNode;
 }
 
-void CUIBaseNode::DoMouseEntered()
+void SceneNodeUI::DoMouseEntered()
 {
 	m_IsMouseOnNode = true;
 }
 
-void CUIBaseNode::DoMouseLeaved()
+void SceneNodeUI::DoMouseLeaved()
 {
 	m_IsMouseOnNode = false;
 }

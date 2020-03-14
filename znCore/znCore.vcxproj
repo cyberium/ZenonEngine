@@ -200,6 +200,7 @@
     <ClInclude Include="..\shared\Interfaces\Render\IImageLoader.h" />
     <ClInclude Include="..\shared\Interfaces\Render\IRenderTechnique.h" />
     <ClInclude Include="..\shared\Interfaces\Scene\ISceneNode3D.h" />
+    <ClInclude Include="..\shared\Interfaces\Scene\ISceneNodeBase.h" />
     <ClInclude Include="..\shared\Interfaces\Scene\ISceneNodeUI.h" />
     <ClInclude Include="..\shared\Interfaces\Scene\Types\Light.h" />
     <ClInclude Include="..\shared\Interfaces\XML.h" />

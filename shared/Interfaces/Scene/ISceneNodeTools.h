@@ -12,7 +12,7 @@ ZN_INTERFACE ZN_API ISceneNodeCreator
 	virtual size_t GetSceneNodesCount() const = 0;
 	virtual std::string GetSceneNodeTypeName(size_t Index) const = 0;
 	virtual std::shared_ptr<ISceneNode3D> CreateSceneNode3D(ISceneNode3D* Parent, size_t Index) const = 0;
-	virtual ISceneNodeUI* CreateSceneNodeUI(ISceneNodeUI* Parent, size_t Index) const = 0;
+	virtual std::shared_ptr<ISceneNodeUI> CreateSceneNodeUI(ISceneNodeUI* Parent, size_t Index) const = 0;
 };
 
 
@@ -25,7 +25,7 @@ ZN_INTERFACE ZN_API __declspec(uuid("9C3ACF8D-F30D-47AE-BBA1-D71DEA6B14D4")) ISc
 	virtual void RemoveSceneNodeCreator(std::shared_ptr<ISceneNodeCreator> Creator) = 0;
 
 	virtual std::shared_ptr<ISceneNode3D> CreateSceneNode3D(ISceneNode3D* Parent, std::string SceneNodeTypeName) const = 0;
-	virtual ISceneNodeUI* CreateSceneNodeUI(ISceneNodeUI* Parent, std::string SceneNodeTypeName) const = 0;
+	virtual std::shared_ptr<ISceneNodeUI> CreateSceneNodeUI(ISceneNodeUI* Parent, std::string SceneNodeTypeName) const = 0;
 };
 
 

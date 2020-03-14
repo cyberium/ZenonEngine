@@ -13,7 +13,7 @@
 class CUIContainerGarmoshka;
 // FORWARD END
 
-class CUIContainerGarmoshkaCategoryHeader : public CUIBaseNode
+class CUIContainerGarmoshkaCategoryHeader : public SceneNodeUI
 {
 public:
     CUIContainerGarmoshkaCategoryHeader(std::weak_ptr<CUIContainerGarmoshka> ContainerGarmoshka);
@@ -23,9 +23,9 @@ public:
     void Initialize();
     void SetText(const std::string& Text);
 
-    // CUIBaseNode
+    // SceneNodeUI
     glm::vec2 GetSize() const override final;
-    std::vector<std::shared_ptr<CUIBaseNode>> GetChilds() const override final;
+    std::vector<std::shared_ptr<SceneNodeUI>> GetChilds() const override final;
 
     // Input events
     virtual bool OnMouseButtonPressed(MouseButtonEventArgs& e) override final;

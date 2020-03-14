@@ -3,7 +3,7 @@
 #include "../../Materials/UI_Color_Material.h"
 
 class ZN_API CUIColorNode 
-	: public CUIBaseNode
+	: public SceneNodeUI
 {
 public:
 	CUIColorNode(IRenderDevice& RenderDevice, vec2 Size = vec2(1.0f, 1.0f));
@@ -12,7 +12,7 @@ public:
 	// CUIColorNode
 	void SetColor(vec4 _color);
 
-	// CUIBaseNode
+	// SceneNodeUI
     virtual glm::vec2 GetSize() override;
 
 	virtual void AcceptMesh(IVisitor* visitor) override;

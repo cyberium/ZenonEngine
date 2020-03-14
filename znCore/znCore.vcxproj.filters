@@ -878,6 +878,9 @@
     <ClInclude Include="Scene\3D\ParticlesComponent3D.h">
       <Filter>Scene functional\3D</Filter>
     </ClInclude>
+    <ClInclude Include="..\shared\Interfaces\Scene\ISceneNodeBase.h">
+      <Filter>__Interfaces\Scene</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="RefManager1Dim.inl">
