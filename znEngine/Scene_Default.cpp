@@ -82,7 +82,7 @@ void CGameState_World::OnRayIntersected(const glm::vec3& Point)
 //
 void CGameState_World::OnPreRender(RenderEventArgs& e)
 {
-	//m_RootForBoxes->SetRotation(glm::vec3(m_RootForBoxes->GetRotation().x, m_RootForBoxes->GetRotation().y + 0.01, 0.0f));
+	m_RootForBoxes->SetRotation(glm::vec3(m_RootForBoxes->GetRotation().x, m_RootForBoxes->GetRotation().y + 0.01, 0.0f));
 
 	SceneBase::OnPreRender(e);
 }
@@ -266,7 +266,7 @@ void CGameState_World::Load3D()
 		auto material = std::make_shared<MaterialParticle>(GetRenderDevice());
 		material->SetTexture(0, GetRenderDevice().GetObjectsFactory().LoadTexture2D("particle.png"));
 
-		auto particlesNode = GetRootNode3D()->CreateSceneNode<SceneNode3D>();
+		auto particlesNode = m_RootForBoxes->CreateSceneNode<SceneNode3D>();
 		particlesNode->SetName("Particles");
 		//particlesNode->GetComponent<IModelsComponent3D>()->AddModel(model);
 		auto particlesComponent = std::make_shared<CParticlesComponent3D>(*particlesNode);

@@ -6,9 +6,11 @@
 
 #include "../znEngine/Materials/MaterialDebug.h"
 #include "../znEngine/Materials/MaterialTextured.h"
+#include "../znEngine/Materials/MaterialParticle.h"
 
 #include "../znEngine/Passes/UIFontPass.h"
 #include "../znEngine/Passes/DrawBoundingBoxPass.h"
+#include "../znEngine/Passes/MaterialParticlePass.h"
 
 #include "../znEngine/Formats/ChunkedFile.h"
 #include "../znEngine/Formats/Fonts/FontsManager.h"

@@ -242,6 +242,7 @@ void SceneBase::OnRender(RenderEventArgs & e)
 		e.CameraForCulling = GetCameraController()->GetCamera().get();
 	}
 
+	//Sleep(15);
 	m_Technique3D.Render(e);
 }
 
@@ -287,8 +288,8 @@ void SceneBase::OnRenderUI(RenderEventArgs & e)
 			m_FPSText->GetProperties()->GetPropertyT<std::string>("Text")->Set("FPS: " + std::to_string(uint64(fpsValue)));
 		}*/
 
-		int elapsed_microseconds = std::chrono::duration_cast<std::chrono::microseconds>(m_End - m_Start).count();
-		double fpsValue = 1000000.0 / double(elapsed_microseconds);
+		//int elapsed_microseconds = std::chrono::duration_cast<std::chrono::microseconds>(m_End - m_Start).count();
+		double fpsValue = 1000.0 / double(e.DeltaTime);
 		m_FPSText->GetProperties()->GetPropertyT<std::string>("Text")->Set("FPS: " + std::to_string(uint64(fpsValue)));
 	}
 }

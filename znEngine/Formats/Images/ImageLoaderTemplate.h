@@ -5,8 +5,16 @@ class ZN_API CImageBase
 {
 public:
 	CImageBase();
+	CImageBase(uint32 Width, uint32 Height, uint32 BitsPerPixel, bool IsTransperent);
 	virtual ~CImageBase();
 
+	template <typename T>
+	T& GetPixel(uint32 x, uint32 y)
+	{
+		return *((T*)((uint8*)m_Data + y * m_Stride + x * (m_BitsPerPixel / 8)));
+	}
+
+	uint8*                  GetDataEx();
 	std::shared_ptr<IImage> Convert8To32Bit();
 	std::shared_ptr<IImage> Convert24To32Bit();
 
@@ -17,6 +25,7 @@ public:
 	uint32 GetStride() const override;
 	bool IsTransperent() const override;
 	const uint8* GetData() const override;
+	void Resize(uint32 NewWidth, uint32 NewHeight) override;
 
 protected:
 	uint8* GetLine(uint32 Line) const;

@@ -267,7 +267,6 @@ ZN_INTERFACE __declspec(UUID_SkeletonComponent) ZN_API ISkeletonComponent3D
 	virtual ~ISkeletonComponent3D() {}
 
 	virtual std::shared_ptr<ISkeletonBone3D> GetBone(size_t Index) const = 0;
-	virtual void Calculate(uint32 GlobalTime) = 0;
 };
 
 

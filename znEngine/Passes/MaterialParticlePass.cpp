@@ -12,7 +12,7 @@ CMaterialParticlePass::CMaterialParticlePass(IRenderDevice& RenderDevice, std::s
 	m_Geometry = GetRenderDevice().GetObjectsFactory().CreateGeometry();
 	m_Geometry->SetPrimitiveTopology(PrimitiveTopology::PointList);
 
-	m_ParticlesBuffer = GetRenderDevice().GetObjectsFactory().CreateStructuredBuffer(nullptr, 1000, sizeof(SParticle), CPUAccess::Write);
+	m_GeomParticlesBuffer = GetRenderDevice().GetObjectsFactory().CreateStructuredBuffer(nullptr, 1000, sizeof(SParticle), CPUAccess::Write);
 }
 
 CMaterialParticlePass::~CMaterialParticlePass()
@@ -47,11 +47,11 @@ std::shared_ptr<IRenderPassPipelined> CMaterialParticlePass::CreatePipeline(std:
 	auto Pipeline = GetRenderDevice().GetObjectsFactory().CreatePipelineState();
 	Pipeline->GetBlendState()->SetBlendMode(alphaBlending
 		/*IBlendState::BlendMode(true, false,
-		IBlendState::BlendFactor::One, IBlendState::BlendFactor::One,
+		IBlendState::BlendFactor::SrcAlpha, IBlendState::BlendFactor::One,
 		IBlendState::BlendOperation::Add,
-		IBlendState::BlendFactor::One, IBlendState::BlendFactor::One)*/
+		IBlendState::BlendFactor::SrcAlpha, IBlendState::BlendFactor::One)*/
 	);
-	Pipeline->GetDepthStencilState()->SetDepthMode(enableDepthWrites);
+	Pipeline->GetDepthStencilState()->SetDepthMode(disableDepthWrites);
 	Pipeline->GetRasterizerState()->SetCullMode(IRasterizerState::CullMode::None);
 	Pipeline->GetRasterizerState()->SetFillMode(IRasterizerState::FillMode::Solid);
 	Pipeline->SetRenderTarget(RenderTarget);
@@ -60,12 +60,17 @@ std::shared_ptr<IRenderPassPipelined> CMaterialParticlePass::CreatePipeline(std:
 	Pipeline->SetShader(EShaderType::GeometryShader, geomShader);
 	Pipeline->SetShader(EShaderType::PixelShader, pixelShader);
 
-	m_ShaderParticlesBufferParameter = &geomShader->GetShaderParameterByName("Particles");
-	_ASSERT(m_ShaderParticlesBufferParameter->IsValid());
+	// 'PerObject' in geom shader
+	m_GeomShaderPerObjectParameter = &geomShader->GetShaderParameterByName("PerObject");
+	_ASSERT(m_GeomShaderPerObjectParameter->IsValid());
+
+	// 'Particles' in geom shader
+	m_GeomShaderParticlesBufferParameter = &geomShader->GetShaderParameterByName("Particles");
+	_ASSERT(m_GeomShaderParticlesBufferParameter->IsValid());
 
 	auto sampler = GetRenderDevice().GetObjectsFactory().CreateSamplerState();
 	sampler->SetFilter(ISamplerState::MinFilter::MinLinear, ISamplerState::MagFilter::MagLinear, ISamplerState::MipFilter::MipLinear);
-	sampler->SetWrapMode(ISamplerState::WrapMode::Repeat, ISamplerState::WrapMode::Repeat);
+	sampler->SetWrapMode(ISamplerState::WrapMode::Clamp, ISamplerState::WrapMode::Clamp);
 	Pipeline->SetSampler(0, sampler);
 
 	sampler = GetRenderDevice().GetObjectsFactory().CreateSamplerState();
@@ -81,6 +86,19 @@ std::shared_ptr<IRenderPassPipelined> CMaterialParticlePass::CreatePipeline(std:
 //
 // IVisitor
 //
+EVisitResult CMaterialParticlePass::Visit(const ISceneNode3D * SceneNode)
+{
+	EVisitResult visitResult = Base3DPass::Visit(SceneNode);
+
+	if (m_GeomShaderPerObjectParameter->IsValid() && m_PerObjectConstantBuffer != nullptr)
+	{
+		m_GeomShaderPerObjectParameter->SetConstantBuffer(m_PerObjectConstantBuffer);
+		m_GeomShaderPerObjectParameter->Bind();
+	}
+
+	return visitResult;
+}
+
 EVisitResult CMaterialParticlePass::Visit(const IModel * Model)
 {
 	return Base3DPass::Visit(Model);
@@ -98,23 +116,25 @@ EVisitResult CMaterialParticlePass::Visit(const IGeometry * Geometry, const IMat
 EVisitResult CMaterialParticlePass::Visit(const IParticleSystem * ParticlesSystem)
 {
 	const std::vector<SParticle>& partilces = ParticlesSystem->GetParticles();
+	if (partilces.empty())
+		return EVisitResult::AllowAll;
 
-	if (partilces.size() > m_ParticlesBuffer->GetElementCount())
-		m_ParticlesBuffer = GetRenderDevice().GetObjectsFactory().CreateStructuredBuffer(partilces, CPUAccess::Write);
+	if (partilces.size() > m_GeomParticlesBuffer->GetElementCount())
+		m_GeomParticlesBuffer = GetRenderDevice().GetObjectsFactory().CreateStructuredBuffer(partilces, CPUAccess::Write);
 	else
-		m_ParticlesBuffer->Set(partilces);
+		m_GeomParticlesBuffer->Set(partilces);
 
-	m_ShaderParticlesBufferParameter->SetStructuredBuffer(m_ParticlesBuffer);
-	m_ShaderParticlesBufferParameter->Bind();
+	m_GeomShaderParticlesBufferParameter->SetStructuredBuffer(m_GeomParticlesBuffer);
+	m_GeomShaderParticlesBufferParameter->Bind();
 
 	// Bind material
-	ParticlesSystem->GetMaterial()->Bind(GetRenderEventArgs().PipelineState->GetShaders());
+	if (ParticlesSystem->GetMaterial())
+		ParticlesSystem->GetMaterial()->Bind(GetRenderEventArgs().PipelineState->GetShaders());
 
 	// Draw geom
 	SGeometryDrawArgs args;
-	args.VertexCnt = ParticlesSystem->GetParticles().size();
+	args.VertexCnt = partilces.size();
 	m_Geometry->Render(GetRenderEventArgs(), GetRenderEventArgs().PipelineState->GetShaders().at(EShaderType::VertexShader).get(), args);
 
-
-	return EVisitResult();
+	return EVisitResult::AllowAll;
 }

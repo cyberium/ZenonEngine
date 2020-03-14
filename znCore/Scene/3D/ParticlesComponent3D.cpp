@@ -48,7 +48,7 @@ std::shared_ptr<IMaterial> CParticlesComponent3D::GetMaterial() const
 //
 void CParticlesComponent3D::Update(const UpdateEventArgs & e)
 {
-	for (auto pIt = m_Particles.begin(); pIt != m_Particles.end(); )
+	/*for (auto pIt = m_Particles.begin(); pIt != m_Particles.end(); )
 	{
 		auto& p = *pIt;
 		if (glm::length(p.Position) < 5.0f)
@@ -63,7 +63,7 @@ void CParticlesComponent3D::Update(const UpdateEventArgs & e)
 		p.Position += diff;
 
 		pIt++;
-	}
+	}*/
 }
 
 void CParticlesComponent3D::Accept(IVisitor * visitor)

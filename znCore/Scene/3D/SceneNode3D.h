@@ -15,23 +15,23 @@ public:
 	virtual void                                    Finalize() override;
 
 	// Name & Type
-	void                                            SetType(SceneNodeType Type) override;
-	SceneNodeType									GetType() const override;
-	bool                                            Is(SceneNodeType SceneNodeType) const;
-	void                                            SetName(std::string Name) override;
-	std::string										GetName() const override;
+	void                                            SetType(SceneNodeType Type) override final;
+	SceneNodeType									GetType() const override final;
+	bool                                            Is(SceneNodeType SceneNodeType) const final;
+	void                                            SetName(std::string Name) override final;
+	std::string										GetName() const override final;
 
 	// Childs functional
-	virtual void                                    AddChild(const std::shared_ptr<ISceneNode3D>& childNode) override;
-	virtual void                                    RemoveChild(const std::shared_ptr<ISceneNode3D>& childNode) override;
-	virtual std::weak_ptr<ISceneNode3D>             GetParent() const override;
-	virtual const Node3DList&                       GetChilds() override;
-	void                                            RaiseOnParentChanged() override;
+	virtual void                                    AddChild(const std::shared_ptr<ISceneNode3D>& childNode) override final;
+	virtual void                                    RemoveChild(const std::shared_ptr<ISceneNode3D>& childNode) override final;
+	virtual std::weak_ptr<ISceneNode3D>             GetParent() const override final;
+	virtual const Node3DList&                       GetChilds() override final;
+	void                                            RaiseOnParentChanged() override final;
 
 	// Actions & Properties
-	IActionsGroup*									GetActions() const override;
-	IPropertiesGroup*								GetProperties() const override;
-	IScene*											GetScene() const override;
+	IActionsGroup*									GetActions() const override final;
+	IPropertiesGroup*								GetProperties() const override final;
+	IScene*											GetScene() const override final;
 
 	//
 	// Transform functional
@@ -100,7 +100,6 @@ private:
 protected:
 	virtual void									UpdateLocalTransform();
 	virtual void									UpdateWorldTransform();
-	virtual void									ForceRecalculateLocalTransform();
 	IBaseManager&                                   GetBaseManager() const;
 
 	std::shared_ptr<IColliderComponent3D>			m_Components_Collider;

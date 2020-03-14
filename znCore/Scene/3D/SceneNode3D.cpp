@@ -353,7 +353,8 @@ void SceneNode3D::Accept(IVisitor* visitor)
 	{
 		const auto& components = GetComponents();
 		std::for_each(components.begin(), components.end(), [&visitor](const std::pair<GUID, std::shared_ptr<ISceneNodeComponent>>& Component) {
-			Component.second->Accept(visitor);
+			if (Component.second)
+				Component.second->Accept(visitor);
 		});
 	}
 
@@ -465,12 +466,6 @@ void SceneNode3D::UpdateWorldTransform()
 		std::dynamic_pointer_cast<SceneNode3D>(it)->UpdateWorldTransform();
 
 	RaiseComponentMessage(nullptr, UUID_OnWorldTransformChanged);
-}
-
-
-void SceneNode3D::ForceRecalculateLocalTransform()
-{
-	UpdateLocalTransform();
 }
 
 IBaseManager& SceneNode3D::GetBaseManager() const

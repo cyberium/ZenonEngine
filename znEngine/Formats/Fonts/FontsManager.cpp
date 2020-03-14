@@ -4,9 +4,9 @@
 #include "FontsManager.h"
 
 // Additional
-#include "Application.h"
+#include "Formats/Images/ImageLoaderTemplate.h"
 
-// Additional
+// FreeType
 #include <freetype/config/ftheader.h>
 #include FT_FREETYPE_H
 #pragma comment(lib, "freetype.lib")
@@ -203,11 +203,14 @@ std::shared_ptr<CFont> FontsManager::CreateAction(IRenderDevice& RenderDevice, c
 	__geom->AddVertexBuffer(BufferBinding("POSITION", 0), RenderDevice.GetObjectsFactory().CreateVoidVertexBuffer(vertices.data(), vertices.size(), 0,            sizeof(VertexPTN)));
     __geom->AddVertexBuffer(BufferBinding("TEXCOORD", 0), RenderDevice.GetObjectsFactory().CreateVoidVertexBuffer(vertices.data(), vertices.size(), sizeof(vec3), sizeof(VertexPTN)));
 
+	// Font image
+	std::shared_ptr<CImageBase> fontImage = std::make_shared<CImageBase>(imageWidth, imageHeight, 32, true);
+	std::memcpy(fontImage->GetDataEx(), image, imageHeight * imageWidth * 4);
+	delete[] image;
+
 	// Font texture
 	std::shared_ptr<ITexture> texture = RenderDevice.GetObjectsFactory().CreateEmptyTexture();
-	texture->LoadTextureCustom(imageWidth, imageHeight, image);
-
-	delete[] image;
+	texture->LoadTextureFromImage(fontImage);
 
 	FT_Done_Face(face);
 	FT_Done_FreeType(ftLibrary);

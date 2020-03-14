@@ -1,6 +1,7 @@
 #pragma once
 
 // FORWARD BEGIN
+ZN_INTERFACE IImage;
 ZN_INTERFACE IShader;
 ZN_INTERFACE IShaderParameterSource;
 // FORWARD END
@@ -100,7 +101,7 @@ ZN_INTERFACE ZN_API ITexture
 	/**
 	 * Load a 2D custom texture
 	 */
-	virtual bool LoadTextureCustom(uint16_t width, uint16_t height, void* pixels) = 0;
+	virtual bool LoadTextureFromImage(const std::shared_ptr<IImage>& Image) = 0;
 
 	/**
 	 * Load a 2D texture from a file path.

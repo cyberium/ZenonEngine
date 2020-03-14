@@ -11,7 +11,7 @@ public:
 	 * @param maxTimeStep: Clamp to the maximum time step when the GetElapsedTime function is queried.
 	 * This is useful when debugging and we don't want to have massive time-steps thus breaking the application.
 	 */
-	Timer(float maxTimeStep = 0.03333f);
+	Timer();
 
 	/**
 	 * Query the elapsed time since either, the object was created or,
@@ -22,6 +22,5 @@ public:
 	float GetElapsedTime() const;
 
 private:
-	float m_fMaxTimeStep;
 	mutable float m_fPrevious;
 };

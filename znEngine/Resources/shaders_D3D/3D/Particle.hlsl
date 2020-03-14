@@ -65,7 +65,9 @@ void GS_Billboard(point GeometryShaderInput input[1], inout TriangleStream<Pixel
 {
 	Particle p = Particles[input[0].VertexID];
 
-	float3 planeNormal = p.Position.xyz - GetCameraPosition();
+	float3 transformePosition = mul(PO.Model, float4(p.Position, 1.0f)).xyz;
+
+	float3 planeNormal = transformePosition - GetCameraPosition();
 	planeNormal = normalize(planeNormal);
 
 	float3 upVector = GetCameraUp();
@@ -73,15 +75,15 @@ void GS_Billboard(point GeometryShaderInput input[1], inout TriangleStream<Pixel
 	float3 rightVector = normalize(cross(planeNormal, upVector));
 	rightVector *= (p.Size.x / 2.0f);
 
-	upVector *= p.Size.y;
+	upVector *= (p.Size.y / 2.0f);
 	
 
 	// Create the billboards quad
 	float3 vert[4];
-	vert[0] = p.Position.xyz - rightVector; // Get bottom left vertex
-	vert[1] = p.Position.xyz + rightVector; // Get bottom right vertex
-	vert[2] = p.Position.xyz - rightVector + upVector; // Get top left vertex
-	vert[3] = p.Position.xyz + rightVector + upVector; // Get top right vertex
+	vert[0] = transformePosition - rightVector - upVector; // Get bottom left vertex
+	vert[1] = transformePosition + rightVector - upVector; // Get bottom right vertex
+	vert[2] = transformePosition - rightVector + upVector; // Get top left vertex
+	vert[3] = transformePosition + rightVector + upVector; // Get top right vertex
 
 
 	// Get billboards texture coordinates
@@ -109,10 +111,8 @@ void GS_Billboard(point GeometryShaderInput input[1], inout TriangleStream<Pixel
 DefferedRenderPSOut PS_main(PixelShaderInput input) : SV_TARGET
 {
 	float4 DiffuseColor = DiffuseTexture.Sample(LinearClampSampler, input.texcoord);
-	if (DiffuseColor.a < 0.01)
-		discard;
-
-	//float4 DiffuseColor = float4(1.0f, 1.0f, 1.0f, 1.0f);
+	//if (DiffuseColor.a < 0.01)
+	//	DiffuseColor = float4(0.0f, 0.0f, 0.0f, 1.0f);
 
 	DefferedRenderPSOut OUT;
 	OUT.Diffuse = DiffuseColor * input.color;
