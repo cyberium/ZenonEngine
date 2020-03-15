@@ -6,14 +6,14 @@ class ZN_API CUIColorNode
 	: public SceneNodeUI
 {
 public:
-	CUIColorNode(IRenderDevice& RenderDevice, vec2 Size = vec2(1.0f, 1.0f));
+	CUIColorNode(IRenderDevice& RenderDevice, glm::vec2 Size = glm::vec2(1.0f, 1.0f));
 	virtual ~CUIColorNode();
 
 	// CUIColorNode
-	void SetColor(vec4 _color);
+	void SetColor(glm::vec4 _color);
 
 	// SceneNodeUI
-    virtual glm::vec2 GetSize() override;
+    virtual glm::vec2 GetSize() const override;
 
 	virtual void AcceptMesh(IVisitor* visitor) override;
 

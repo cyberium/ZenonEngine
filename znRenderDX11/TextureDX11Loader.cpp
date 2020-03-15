@@ -84,7 +84,8 @@ bool TextureDX11::LoadTextureFromImage(const std::shared_ptr<IImage>& Image)
 		return false;
 	}
 
-	m_Buffer.assign(Image->GetData(), Image->GetData() + (Image->GetWidth() * Image->GetHeight() * Image->GetBitsPerPixel() / 8));
+	m_Buffer.resize(Image->GetHeight() * Image->GetStride());
+	m_Buffer.assign(Image->GetData(), Image->GetData() + (Image->GetHeight() * Image->GetStride()));
 
 	m_bIsDirty = true;
 

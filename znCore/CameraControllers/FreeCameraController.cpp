@@ -12,7 +12,7 @@ CFreeCameraController::CFreeCameraController()
 	, Down(0.0f)
 	, Pitch(0.0f)
 	, Yaw(0.0f)
-	, m_PreviousPoint(vec3(0.0f))
+	, m_PreviousPoint(glm::vec3(0.0f))
 	, TranslateFaster(false)
 	, RotateFaster(false)
 {

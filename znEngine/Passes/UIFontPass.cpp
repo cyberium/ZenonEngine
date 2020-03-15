@@ -85,7 +85,7 @@ EVisitResult CUIFontPass::Visit(const ISceneNodeUI * node)
 		mat->Bind(GetPipeline().GetShaders());
 		{
 			const std::string _text = textNode->GetText();
-			vec2 _offset = textNode->GetOffset();
+			glm::vec2 _offset = textNode->GetOffset();
 
 			for (uint32 i = 0; i < _text.length(); i++)
 			{

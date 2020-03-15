@@ -20,14 +20,14 @@ MaterialTextured::~MaterialTextured()
 	}
 }
 
-cvec4 MaterialTextured::GetDiffuseColor() const
+const glm::vec4& MaterialTextured::GetDiffuseColor() const
 {
 	return m_pProperties->DiffuseColor;
 }
 
 //-----
 
-void MaterialTextured::SetDiffuseColor(cvec4 diffuse)
+void MaterialTextured::SetDiffuseColor(const glm::vec4& diffuse)
 {
 	m_pProperties->DiffuseColor = diffuse;
 	MarkConstantBufferDirty();

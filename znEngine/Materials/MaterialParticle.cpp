@@ -16,12 +16,12 @@ MaterialParticle::~MaterialParticle()
 	m_pProperties = nullptr;
 }
 
-cvec4 MaterialParticle::GetDiffuseColor() const
+const glm::vec4& MaterialParticle::GetDiffuseColor() const
 {
 	return m_pProperties->DiffuseColor;
 }
 
-void MaterialParticle::SetDiffuseColor(cvec4 diffuse)
+void MaterialParticle::SetDiffuseColor(const glm::vec4& diffuse)
 {
 	m_pProperties->DiffuseColor = diffuse;
 	MarkConstantBufferDirty();

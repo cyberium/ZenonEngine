@@ -31,11 +31,11 @@ void BoundingBox::set(const glm::vec3& Min, const glm::vec3& Max)
 	calculateCenter();
 }
 
-void BoundingBox::calculate(const vec3* _verts, uint32 _count)
+void BoundingBox::calculate(const glm::vec3* _verts, uint32 _count)
 {
 	for (uint32 i = 0; i < _count; i++)
 	{
-		const vec3 v =/*(_needConvert) ? (Fix_XZmY(_verts[i])) :*/ _verts[i];
+		const glm::vec3 v =/*(_needConvert) ? (Fix_XZmY(_verts[i])) :*/ _verts[i];
 
 		if (v.x < m_Min.x) m_Min.x = v.x;
 		if (v.y < m_Min.y) m_Min.y = v.y;
@@ -58,41 +58,41 @@ void BoundingBox::calculateCenter()
 
 void BoundingBox::clear()
 {
-	m_Min = vec3(Math::MinFloat, Math::MinFloat, Math::MinFloat);
-	m_Max = vec3(Math::MaxFloat, Math::MaxFloat, Math::MaxFloat);
-	m_Center = vec3(0.0f, 0.0f, 0.0f);
+	m_Min = glm::vec3(Math::MinFloat, Math::MinFloat, Math::MinFloat);
+	m_Max = glm::vec3(Math::MaxFloat, Math::MaxFloat, Math::MaxFloat);
+	m_Center = glm::vec3(0.0f, 0.0f, 0.0f);
 	m_Radius = Math::MaxFloat / 2.0f;
 	m_IsCenterCalc = true;
 }
 
 //
 
-vec3 BoundingBox::getCorner(uint32 index) const
+glm::vec3 BoundingBox::getCorner(uint32 index) const
 {
 	switch (index)
 	{
 	case 0:
-		return vec3(m_Min.x, m_Min.y, m_Max.z);
+		return glm::vec3(m_Min.x, m_Min.y, m_Max.z);
 	case 1:
-		return vec3(m_Max.x, m_Min.y, m_Max.z);
+		return glm::vec3(m_Max.x, m_Min.y, m_Max.z);
 	case 2:
-		return vec3(m_Max.x, m_Max.y, m_Max.z);
+		return glm::vec3(m_Max.x, m_Max.y, m_Max.z);
 	case 3:
-		return vec3(m_Min.x, m_Max.y, m_Max.z);
+		return glm::vec3(m_Min.x, m_Max.y, m_Max.z);
 	case 4:
-		return vec3(m_Min.x, m_Min.y, m_Min.z);
+		return glm::vec3(m_Min.x, m_Min.y, m_Min.z);
 	case 5:
-		return vec3(m_Max.x, m_Min.y, m_Min.z);
+		return glm::vec3(m_Max.x, m_Min.y, m_Min.z);
 	case 6:
-		return vec3(m_Max.x, m_Max.y, m_Min.z);
+		return glm::vec3(m_Max.x, m_Max.y, m_Min.z);
 	case 7:
-		return vec3(m_Min.x, m_Max.y, m_Min.z);
+		return glm::vec3(m_Min.x, m_Max.y, m_Min.z);
 	default:
-		return vec3();
+		return glm::vec3();
 	}
 }
 
-void BoundingBox::transform(const mat4& m)
+void BoundingBox::transform(const glm::mat4& m)
 {
 	// Efficient algorithm for transforming an AABB, taken from Graphics Gems
 
@@ -115,8 +115,8 @@ void BoundingBox::transform(const mat4& m)
 		}
 	}
 
-	m_Min = vec3(minB[0], minB[1], minB[2]);
-	m_Max = vec3(maxB[0], maxB[1], maxB[2]);
+	m_Min = glm::vec3(minB[0], minB[1], minB[2]);
+	m_Max = glm::vec3(maxB[0], maxB[1], maxB[2]);
 
 	calculateCenter();
 }
@@ -148,7 +148,7 @@ bool BoundingBox::makeUnion(const BoundingBox& b)
 	return changed;
 }
 
-bool BoundingBox::isPointInside(cvec3 _point) const
+bool BoundingBox::isPointInside(const glm::vec3& _point) const
 {
 	if (_point.x < m_Min.x || _point.y < m_Min.y ||	_point.z < m_Min.z ||
 		_point.x > m_Max.x || _point.y > m_Max.y ||	_point.z > m_Max.z)

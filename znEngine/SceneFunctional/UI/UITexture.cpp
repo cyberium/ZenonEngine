@@ -5,10 +5,10 @@
 
 namespace
 {
-	const vec4 cDefaultColor = vec4(1.0f, 1.0f, 1.0f, 1.0f);
+	const glm::vec4 cDefaultColor = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
 }
 
-CUITextureNode::CUITextureNode(IRenderDevice& RenderDevice, vec2 Size)
+CUITextureNode::CUITextureNode(IRenderDevice& RenderDevice, glm::vec2 Size)
 	: m_Size(Size)
 {
 	m_Material = std::make_shared<UI_Texture_Material>(RenderDevice);
@@ -32,7 +32,7 @@ void CUITextureNode::SetTexture(std::shared_ptr<ITexture> _texture)
 	m_Material->SetTexture(_texture);
 }
 
-void CUITextureNode::SetColor(vec4 _color)
+void CUITextureNode::SetColor(glm::vec4 _color)
 {
 	m_Material->SetColor(_color);
 }
@@ -43,11 +43,12 @@ void CUITextureNode::SetColor(vec4 _color)
 //
 // SceneNodeUI
 //
-glm::vec2 CUITextureNode::GetSize()
+glm::vec2 CUITextureNode::GetSize() const
 {
     return m_Size;
 }
 
 void CUITextureNode::AcceptMesh(IVisitor* visitor)
 {
+	m_Mesh->Accept(visitor);
 }

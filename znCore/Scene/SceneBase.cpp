@@ -33,16 +33,16 @@ void SceneBase::Initialize()
 
 	{
 		m_CameraPosText = GetBaseManager().GetManager<ISceneNodesFactory>()->CreateSceneNodeUI(GetRootNodeUI().get(), "TextUI");
-		m_CameraPosText->SetTranslate(vec2(700.0f, 0.0f));
+		m_CameraPosText->SetTranslate(glm::vec2(700.0f, 0.0f));
 
 		m_CameraRotText = GetBaseManager().GetManager<ISceneNodesFactory>()->CreateSceneNodeUI(GetRootNodeUI().get(), "TextUI");
-		m_CameraRotText->SetTranslate(vec2(700.0f, 20.0f));
+		m_CameraRotText->SetTranslate(glm::vec2(700.0f, 20.0f));
 
 		m_CameraRot2Text = GetBaseManager().GetManager<ISceneNodesFactory>()->CreateSceneNodeUI(GetRootNodeUI().get(), "TextUI");
-		m_CameraRot2Text->SetTranslate(vec2(700.0f, 40.0f));
+		m_CameraRot2Text->SetTranslate(glm::vec2(700.0f, 40.0f));
 
 		m_FPSText = GetBaseManager().GetManager<ISceneNodesFactory>()->CreateSceneNodeUI(GetRootNodeUI().get(), "TextUI");
-		m_FPSText->SetTranslate(vec2(700.0f, 60.0f));
+		m_FPSText->SetTranslate(glm::vec2(700.0f, 60.0f));
 	}
 }
 
@@ -250,7 +250,7 @@ void SceneBase::OnPostRender(RenderEventArgs & e)
 
 	if (GetCameraController())
 	{
-		vec3 cameraTrans = GetCameraController()->GetCamera()->GetTranslation();
+		glm::vec3 cameraTrans = GetCameraController()->GetCamera()->GetTranslation();
 		m_CameraPosText->GetProperties()->GetPropertyT<std::string>("Text")->Set("Pos: x = " + std::to_string(cameraTrans.x) + ", y = " + std::to_string(cameraTrans.y) + ", z = " + std::to_string(cameraTrans.z));
 		m_CameraRotText->GetProperties()->GetPropertyT<std::string>("Text")->Set("Rot: yaw = " + std::to_string(GetCameraController()->GetCamera()->GetYaw()) + ", pitch = " + std::to_string(GetCameraController()->GetCamera()->GetPitch()));
 		m_CameraRot2Text->GetProperties()->GetPropertyT<std::string>("Text")->Set("Rot: [" + std::to_string(GetCameraController()->GetCamera()->GetDirection().x) + ", " + std::to_string(GetCameraController()->GetCamera()->GetDirection().y) + ", " + std::to_string(GetCameraController()->GetCamera()->GetDirection().z) + "].");

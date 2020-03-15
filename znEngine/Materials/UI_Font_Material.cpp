@@ -24,14 +24,14 @@ UI_Font_Material::~UI_Font_Material()
 //
 // UI_Font_Material
 //
-void UI_Font_Material::SetColor(vec4 color)
+void UI_Font_Material::SetColor(glm::vec4 color)
 {
 	m_pProperties->Color = color;
 	MarkConstantBufferDirty();
 }
 
 
-void UI_Font_Material::SetOffset(vec2 offset)
+void UI_Font_Material::SetOffset(glm::vec2 offset)
 {
 	m_pProperties->Offset = offset;
 	MarkConstantBufferDirty();

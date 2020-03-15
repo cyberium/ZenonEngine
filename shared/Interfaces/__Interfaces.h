@@ -70,18 +70,6 @@ typedef unsigned long long uint64;
 #include <glm/glm/gtx/norm.hpp>
 #pragma warning( pop ) 
 
-typedef glm::vec2 vec2;
-typedef const vec2& cvec2;
-typedef glm::vec3 vec3;
-typedef const vec3& cvec3;
-typedef glm::vec4 vec4;
-typedef const vec4& cvec4;
-typedef glm::mat4x4 mat4;
-typedef const mat4& cmat4;
-typedef glm::quat quat;
-typedef const quat& cquat;
-
-
 #ifndef WIN32_LEAN_AND_MEAN
 #   define WIN32_LEAN_AND_MEAN 1
 #endif

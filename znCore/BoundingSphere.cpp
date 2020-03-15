@@ -8,7 +8,7 @@ inline float InvSqr(float v)
 	return (v != 0.0f) ? 1.0f / (v * v) : 0.0f;
 }
 
-BoundingSphere::BoundingSphere(cvec3 center, float radius)
+BoundingSphere::BoundingSphere(const glm::vec3& center, float radius)
 	: m_Center(center)
 	, m_Radius(radius)
 	, m_InvRadiusSqr(0)
@@ -16,7 +16,7 @@ BoundingSphere::BoundingSphere(cvec3 center, float radius)
 	m_InvRadiusSqr = InvSqr(m_Radius);
 }
 
-cvec3 BoundingSphere::GetCenter() const
+const glm::vec3& BoundingSphere::GetCenter() const
 {
 	return m_Center;
 }

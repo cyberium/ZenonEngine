@@ -16,20 +16,19 @@
 #include "Passes/MaterialPassOpaque.h"
 #include "Passes/UIFontPass.h"
 
-CGameState_World::CGameState_World(IBaseManager& BaseManager)
+CSceneDefault::CSceneDefault(IBaseManager& BaseManager)
 	: SceneBase(BaseManager)
 {}
 
-CGameState_World::~CGameState_World()
+CSceneDefault::~CSceneDefault()
 {
-	OutputDebugStringW(L"Destroyed.");
 }
 
 
 //
 // IGameState
 //
-void CGameState_World::Initialize()
+void CSceneDefault::Initialize()
 {
 	SceneBase::Initialize();
 
@@ -43,19 +42,19 @@ void CGameState_World::Initialize()
 	Load3D();
 	LoadUI();
 
-	cameraNode->SetTranslate(vec3(-50, 160, 170));
+	cameraNode->SetTranslate(glm::vec3(-50, 160, 170));
 	GetCameraController()->GetCamera()->SetYaw(-51);
 	GetCameraController()->GetCamera()->SetPitch(-38);
 }
 
-void CGameState_World::Finalize()
+void CSceneDefault::Finalize()
 {
 	// Insert code here
 
 	SceneBase::Finalize();
 }
 
-void CGameState_World::OnRayIntersected(const glm::vec3& Point)
+void CSceneDefault::OnRayIntersected(const glm::vec3& Point)
 {
 	/*
 	std::shared_ptr<MaterialDebug> matDebug = std::make_shared<MaterialDebug>(GetRenderDevice());
@@ -80,7 +79,7 @@ void CGameState_World::OnRayIntersected(const glm::vec3& Point)
 //
 //
 //
-void CGameState_World::OnPreRender(RenderEventArgs& e)
+void CSceneDefault::OnPreRender(RenderEventArgs& e)
 {
 	m_RootForBoxes->SetRotation(glm::vec3(m_RootForBoxes->GetRotation().x, m_RootForBoxes->GetRotation().y + 0.01, 0.0f));
 
@@ -92,7 +91,7 @@ void CGameState_World::OnPreRender(RenderEventArgs& e)
 //
 // Keyboard events
 //
-bool CGameState_World::OnWindowKeyPressed(KeyEventArgs & e)
+bool CSceneDefault::OnWindowKeyPressed(KeyEventArgs & e)
 {
 	//if (e.Key == KeyCode::F4)
 	//	m_Model_Pass_Opaque->SetEnabled(!m_Model_Pass_Opaque->IsEnabled());
@@ -103,7 +102,7 @@ bool CGameState_World::OnWindowKeyPressed(KeyEventArgs & e)
 	return SceneBase::OnWindowKeyPressed(e);
 }
 
-void CGameState_World::OnWindowKeyReleased(KeyEventArgs & e)
+void CSceneDefault::OnWindowKeyReleased(KeyEventArgs & e)
 {
 	SceneBase::OnWindowKeyReleased(e);
 }
@@ -113,7 +112,7 @@ void CGameState_World::OnWindowKeyReleased(KeyEventArgs & e)
 //
 //
 //
-void CGameState_World::Load3D()
+void CSceneDefault::Load3D()
 {
 	//--------------------------------------------------------------------------
 	// Lights
@@ -205,8 +204,8 @@ void CGameState_World::Load3D()
 				{
 					auto sceneNode = m_RootForBoxes->CreateSceneNode<SceneNode3D>();
 					sceneNode->SetName("Ball [" + std::to_string(i) + ", " + std::to_string(j) + ", " + std::to_string(k) + "]");
-					sceneNode->SetTranslate(vec3(offset * i, offset * k, offset * j));
-					sceneNode->SetScale(vec3(scale));
+					sceneNode->SetTranslate(glm::vec3(offset * i, offset * k, offset * j));
+					sceneNode->SetScale(glm::vec3(scale));
 					sceneNode->GetComponent<IModelsComponent3D>()->AddModel(((i % 2 == 0) || (j % 2 == 0) && (k % 2 == 0)) ? cubeModel : sphereModel);
 
 					BoundingBox bbox = BoundingBox(glm::vec3(-1.0f, -1.0f, -1.0f), glm::vec3(1.0f, 1.0f, 1.0f));
@@ -243,8 +242,8 @@ void CGameState_World::Load3D()
 
 		auto sceneNodePlane = GetRootNode3D()->CreateSceneNode<SceneNode3D>();
 		sceneNodePlane->SetName("Ground");
-		sceneNodePlane->SetTranslate(vec3(0, cPlaneY, 0));
-		sceneNodePlane->SetScale(vec3(cPlaneSize));
+		sceneNodePlane->SetTranslate(glm::vec3(0, cPlaneY, 0));
+		sceneNodePlane->SetScale(glm::vec3(cPlaneSize));
 		sceneNodePlane->GetComponent<IModelsComponent3D>()->AddModel(modelPlane);
 	}
 
@@ -316,7 +315,7 @@ void CGameState_World::Load3D()
 	m_Technique3D.AddPass(std::make_shared<CMaterialParticlePass>(GetRenderDevice(), shared_from_this())->CreatePipeline(GetRenderWindow()->GetRenderTarget(), &GetRenderWindow()->GetViewport()));
 }
 
-void CGameState_World::LoadUI()
+void CSceneDefault::LoadUI()
 {
 	/*std::shared_ptr<CUITextureNode> TextureUI0 = m_SceneUI->GetRootNode()->CreateWrappedSceneNode<CUITextureNode>("Test", GetRenderDevice());
 	TextureUI0->SetTranslate(vec2(000.0f, 000.0f));
@@ -342,7 +341,7 @@ void CGameState_World::LoadUI()
 }
 
 
-void CGameState_World::GenerateLights(std::shared_ptr<ISceneNode3D> Node, uint32_t numLights)
+void CSceneDefault::GenerateLights(std::shared_ptr<ISceneNode3D> Node, uint32_t numLights)
 {
 	float MinRange = 100.1f;
 	float MaxRange = 2000.0f;
@@ -350,8 +349,8 @@ void CGameState_World::GenerateLights(std::shared_ptr<ISceneNode3D> Node, uint32
 	float MinSpotAngle = 1.0f;
 	float MaxSpotAngle = 60.0f;
 
-	vec3 BoundsMin = vec3(-500, -200, -500);
-	vec3 BoundsMax = vec3(500, 200, 500);
+	glm::vec3 BoundsMin = glm::vec3(-500, -200, -500);
+	glm::vec3 BoundsMax = glm::vec3(500, 200, 500);
 	bool GeneratePointLights = true;
 	bool GenerateSpotLights = false;
 	bool GenerateDirectionalLights = false;
@@ -420,7 +419,7 @@ void CGameState_World::GenerateLights(std::shared_ptr<ISceneNode3D> Node, uint32
 	}
 }
 
-void CGameState_World::UpdateLights()
+void CSceneDefault::UpdateLights()
 {
 
 }

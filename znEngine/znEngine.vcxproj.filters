@@ -306,6 +306,9 @@
     <ClCompile Include="Passes\UIButtonPass.cpp">
       <Filter>Passes\UI</Filter>
     </ClCompile>
+    <ClCompile Include="Passes\UITexturePass.cpp">
+      <Filter>Passes\UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="common.h">
@@ -511,6 +514,9 @@
       <Filter>Materials</Filter>
     </ClInclude>
     <ClInclude Include="Passes\UIButtonPass.h">
+      <Filter>Passes\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Passes\UITexturePass.h">
       <Filter>Passes\UI</Filter>
     </ClInclude>
   </ItemGroup>

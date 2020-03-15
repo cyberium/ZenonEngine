@@ -237,7 +237,7 @@ glm::vec3 CCameraComponent3D::EulerAnglesToDirectionVector(float Yaw, float Pitc
 	direction = glm::normalize(direction);
 
 	// Also re-calculate the Right and Up vector
-	m_RightDirection = glm::normalize(glm::cross(direction, vec3(0.0f, 1.0f, 0.0f)));
+	m_RightDirection = glm::normalize(glm::cross(direction, glm::vec3(0.0f, 1.0f, 0.0f)));
 	m_UpDirection = glm::cross(m_RightDirection, direction);
 
 	return direction;

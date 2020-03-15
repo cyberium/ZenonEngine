@@ -6,15 +6,15 @@ class ZN_API CUITextureNode
 	: public SceneNodeUI
 {
 public:
-	CUITextureNode(IRenderDevice& RenderDevice, vec2 Size = vec2(1.0f, 1.0f));
+	CUITextureNode(IRenderDevice& RenderDevice, glm::vec2 Size = glm::vec2(1.0f, 1.0f));
 	virtual ~CUITextureNode();
 
 	// CUITextureNode
 	void SetTexture(std::shared_ptr<ITexture> _texture);
-	void SetColor(vec4 _color);
+	void SetColor(glm::vec4 _color);
 
 	// SceneNodeUI
-    virtual glm::vec2 GetSize() override;
+    virtual glm::vec2 GetSize() const override;
 
 	virtual void AcceptMesh(IVisitor* visitor) override;
 

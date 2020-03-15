@@ -182,7 +182,7 @@ ZN_INTERFACE ZN_API ITexture
 	 * @param depth The depth value to use for depth textures.
 	 * @param stencil The stencil value to use for depth/stencil textures.
 	 */
-	virtual void Clear(ClearFlags clearFlags = ClearFlags::All, cvec4 color = vec4(0), float depth = 1.0f, uint8_t stencil = 0) = 0;
+	virtual void Clear(ClearFlags clearFlags = ClearFlags::All, const glm::vec4& color = glm::vec4(0), float depth = 1.0f, uint8_t stencil = 0) = 0;
 
 	/**
 	 * Bind this texture for use by the shaders.

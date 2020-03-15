@@ -33,7 +33,7 @@ UI_Color_Material::~UI_Color_Material()
 	}
 }
 
-void UI_Color_Material::SetColor(vec4 color)
+void UI_Color_Material::SetColor(glm::vec4 color)
 {
 	m_pProperties->Color = color;
 	MarkConstantBufferDirty();

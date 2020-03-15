@@ -12,7 +12,7 @@ public:
 	// Pivot
 	void                                            SetPivotDistance(float pivotDistance);
 	float                                           GetPivotDistance() const;
-	vec3                                            GetPivotPoint() const;
+	glm::vec3                                       GetPivotPoint() const;
 
 	// Engine events
 	void                                            OnUpdate(UpdateEventArgs& e);
@@ -27,7 +27,7 @@ public:
 	void                                            OnMouseMoved(MouseMotionEventArgs& e);
 
 protected:
-	vec3                                            ProjectOntoUnitSphere(glm::ivec2 screenPos);
+	glm::vec3                                       ProjectOntoUnitSphere(glm::ivec2 screenPos);
 
 private:
 	// Translation movement

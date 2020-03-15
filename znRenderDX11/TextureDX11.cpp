@@ -552,7 +552,7 @@ void TextureDX11::Copy(const std::shared_ptr<ITexture>& other)
 	}
 }
 
-void TextureDX11::Clear(ClearFlags clearFlags, cvec4 color, float depth, uint8_t stencil)
+void TextureDX11::Clear(ClearFlags clearFlags, const glm::vec4& color, float depth, uint8_t stencil)
 {
 	if (m_pRenderTargetView && ((int)clearFlags & (int)ClearFlags::Color) != 0)
 	{
@@ -581,6 +581,8 @@ void TextureDX11::Bind(uint32_t ID, EShaderType _shaderType, IShaderParameter::T
 	{
 		m_RenderDeviceDX11.GetDeviceContextD3D11()->UpdateSubresource(m_pTexture2D, 0, nullptr, m_Buffer.data(), m_Pitch, 0);
 		m_RenderDeviceDX11.GetDeviceContextD3D11()->GenerateMips(m_pShaderResourceView);
+
+		const_cast<TextureDX11*>(this)->m_Buffer.clear();
 
 		/*if (m_bDynamic && m_pTexture2D)
 		{

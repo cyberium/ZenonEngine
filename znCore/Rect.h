@@ -3,7 +3,7 @@
 class Rect
 {
 public:
-    Rect(vec2 Point, vec2 Size)
+    Rect(const glm::vec2& Point, const glm::vec2& Size)
         : X(Point.x)
         , Y(Point.y)
         , Width(Size.x)

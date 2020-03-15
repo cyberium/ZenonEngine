@@ -13,8 +13,8 @@
 
 SceneNode3D::SceneNode3D()
 	: m_Translate(0.0f)
-	, m_Rotate(vec3(0.0f))
-	, m_RotateQuat(quat())
+	, m_Rotate(glm::vec3(0.0f))
+	, m_RotateQuat(glm::quat())
 	, m_IsRotateQuat(false)
 	, m_Scale(1.0f)
 
@@ -208,7 +208,7 @@ const glm::vec3& SceneNode3D::GetRotation() const
 	return m_Rotate;
 }
 
-void SceneNode3D::SetRotationQuaternion(cquat _rotate)
+void SceneNode3D::SetRotationQuaternion(const glm::quat& _rotate)
 {
 	m_RotateQuat = _rotate;
 	m_IsRotateQuat = true;
@@ -231,17 +231,17 @@ const glm::vec3& SceneNode3D::GetScale() const
 	return m_Scale;
 }
 
-mat4 SceneNode3D::GetLocalTransform() const
+glm::mat4 SceneNode3D::GetLocalTransform() const
 {
 	return m_LocalTransform;
 }
 
-mat4 SceneNode3D::GetInverseLocalTransform() const
+glm::mat4 SceneNode3D::GetInverseLocalTransform() const
 {
 	return m_InverseLocalTransform;
 }
 
-void SceneNode3D::SetLocalTransform(cmat4 localTransform)
+void SceneNode3D::SetLocalTransform(const glm::mat4& localTransform)
 {
 	m_LocalTransform = localTransform;
 	m_InverseLocalTransform = glm::inverse(localTransform);
@@ -249,12 +249,12 @@ void SceneNode3D::SetLocalTransform(cmat4 localTransform)
 	UpdateWorldTransform();
 }
 
-mat4 SceneNode3D::GetWorldTransfom() const
+glm::mat4 SceneNode3D::GetWorldTransfom() const
 {
 	return m_WorldTransform;
 }
 
-mat4 SceneNode3D::GetInverseWorldTransform() const
+glm::mat4 SceneNode3D::GetInverseWorldTransform() const
 {
 	return m_InverseWorldTransform;
 }
@@ -268,9 +268,9 @@ glm::mat4 SceneNode3D::GetParentWorldTransform() const
 	return parentTransform;
 }
 
-void SceneNode3D::SetWorldTransform(cmat4 worldTransform)
+void SceneNode3D::SetWorldTransform(const glm::mat4& worldTransform)
 {
-	mat4 inverseParentTransform = glm::inverse(GetParentWorldTransform());
+	glm::mat4 inverseParentTransform = glm::inverse(GetParentWorldTransform());
 
 	SetLocalTransform(inverseParentTransform * worldTransform);
 }

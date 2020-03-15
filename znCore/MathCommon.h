@@ -78,7 +78,7 @@ static inline int ftoi_r(double val)
 	return u.ival[0];         // Needs to be [1] for big-endian
 }
 
-static inline vec3 Fix_X0Z(cvec3 _vec)
+static inline glm::vec3 Fix_X0Z(const glm::vec3& _vec)
 {
-	return vec3(_vec.x, 0.0f, _vec.z);
+	return glm::vec3(_vec.x, 0.0f, _vec.z);
 }

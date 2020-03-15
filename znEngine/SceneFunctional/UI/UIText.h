@@ -16,14 +16,14 @@ public:
     void                        SetFont(std::shared_ptr<CFont> _font);
     std::shared_ptr<CFont>      GetFont() const;
 	const std::shared_ptr<UI_Font_Material>& GetMaterial() const;
-    void                        SetTextColor(cvec4 _color);
+    void                        SetTextColor(const glm::vec4& _color);
     glm::vec2                   GetTextSize() const;
 
 	const std::string         GetText() const;
 	const glm::vec2           GetOffset() const;
 
 	// SceneNodeUI
-    virtual glm::vec2           GetSize() override;
+    virtual glm::vec2           GetSize() const override;
 
 private:
 	std::shared_ptr<CFont>             m_Font;

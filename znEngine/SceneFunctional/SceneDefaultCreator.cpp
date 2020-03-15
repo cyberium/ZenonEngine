@@ -46,7 +46,7 @@ std::shared_ptr<IScene> CSceneDefaultCreator::CreateScene(size_t Index) const
 	}
 	else if (Index == 1)
 	{
-		return std::make_shared<CGameState_World>(m_BaseManager);
+		return std::make_shared<CSceneDefault>(m_BaseManager);
 	}
 
 	return nullptr;

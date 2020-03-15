@@ -33,5 +33,5 @@ public:
 protected:
 	std::shared_ptr<ICameraComponent3D>				m_Camera;
 	
-	vec2                                            m_PreviousMousePosition;
+	glm::vec2                                       m_PreviousMousePosition;
 };

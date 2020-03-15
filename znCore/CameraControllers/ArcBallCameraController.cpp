@@ -38,7 +38,7 @@ float CArcBallCameraController::GetPivotDistance() const
 	return m_PivotDistance;
 }
 
-vec3 CArcBallCameraController::GetPivotPoint() const
+glm::vec3 CArcBallCameraController::GetPivotPoint() const
 {
 	return m_Camera->GetTranslation();
 }
@@ -214,7 +214,7 @@ void CArcBallCameraController::OnMouseMoved(MouseMotionEventArgs& e)
 	}
 }
 
-vec3 CArcBallCameraController::ProjectOntoUnitSphere(glm::ivec2 screenPos)
+glm::vec3 CArcBallCameraController::ProjectOntoUnitSphere(glm::ivec2 screenPos)
 {
 	//TODO: const Viewport * viewport = m_Camera->GetViewport();
 

@@ -44,14 +44,14 @@ MaterialDebug::~MaterialDebug()
 	}
 }
 
-cvec4 MaterialDebug::GetDiffuseColor() const
+const glm::vec4& MaterialDebug::GetDiffuseColor() const
 {
 	return m_pProperties->m_DiffuseColor;
 }
 
 //-----
 
-void MaterialDebug::SetDiffuseColor(cvec4 diffuse)
+void MaterialDebug::SetDiffuseColor(const glm::vec4& diffuse)
 {
 	m_pProperties->m_DiffuseColor = diffuse;
 	MarkConstantBufferDirty();

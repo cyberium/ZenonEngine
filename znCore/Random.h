@@ -31,21 +31,21 @@ public:
 
     // Generates a random vec2 (non-normalized)
     // Each component is in the range [0, 1].
-    vec2 NextVec2f() const;
+	glm::vec2 NextVec2f() const;
 
     // Generates a random vec3 (non-normalized)
     // Each component is in the range [0, 1].
-    vec3 NextVec3f() const;
+	glm::vec3 NextVec3f() const;
 
     // Generate a 2D random unit vector.
-    vec2 UnitVector2f() const;
+	glm::vec2 UnitVector2f() const;
 
     // Generate a 3D random unit vector.
-    vec3 UnitVector3f() const;
+	glm::vec3 UnitVector3f() const;
 
     // Generate a random unit vector in the hemisphere 
     // of the passed-in normal vector.
-    vec3 Hemisphere(cvec3 normal);
+	glm::vec3 Hemisphere(const glm::vec3& normal);
 
 private:
     // Mersene Twister 19937 generator (64 bit) 

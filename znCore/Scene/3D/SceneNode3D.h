@@ -41,19 +41,19 @@ public:
 	const glm::vec3&								GetTranslation() const override;
 	void											SetRotation(const glm::vec3& _rotate) override;
 	const glm::vec3&                                GetRotation() const override;
-	void											SetRotationQuaternion(cquat _rotate) override;
+	void											SetRotationQuaternion(const glm::quat& _rotate) override;
 	const glm::quat&								GetRotationQuaternion() const override;
 	void											SetScale(const glm::vec3& _scale) override;
 	const glm::vec3&								GetScale() const override;
 
-	virtual mat4									GetLocalTransform() const;
-	virtual mat4									GetInverseLocalTransform() const;
-	virtual void									SetLocalTransform(cmat4 localTransform);
+	virtual glm::mat4								GetLocalTransform() const;
+	virtual glm::mat4								GetInverseLocalTransform() const;
+	virtual void									SetLocalTransform(const glm::mat4& localTransform);
 
-	virtual mat4									GetWorldTransfom() const;
-	virtual mat4									GetInverseWorldTransform() const;
-	virtual mat4									GetParentWorldTransform() const;
-	virtual void									SetWorldTransform(cmat4 worldTransform);
+	virtual glm::mat4								GetWorldTransfom() const;
+	virtual glm::mat4								GetInverseWorldTransform() const;
+	virtual glm::mat4								GetParentWorldTransform() const;
+	virtual void									SetWorldTransform(const glm::mat4& worldTransform);
 
 
 	//

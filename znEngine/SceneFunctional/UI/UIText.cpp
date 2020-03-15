@@ -6,8 +6,8 @@
 namespace
 {
 	const char* cDefaultText = "<empty>";
-	const vec2  cDefaultOffset = vec2(0.0f, 0.0f);
-	const vec4  cDefaultColor = vec4(1.0f, 1.0f, 1.0f, 1.0f);
+	const glm::vec2  cDefaultOffset = glm::vec2(0.0f, 0.0f);
+	const glm::vec4  cDefaultColor = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
 }
 
 CUITextNode::CUITextNode()
@@ -61,7 +61,7 @@ const std::shared_ptr<UI_Font_Material>& CUITextNode::GetMaterial() const
 	return m_Material;
 }
 
-void CUITextNode::SetTextColor(cvec4 _color)
+void CUITextNode::SetTextColor(const glm::vec4& _color)
 {
     m_Material->SetColor(_color);
 }
@@ -89,7 +89,7 @@ const glm::vec2 CUITextNode::GetOffset() const
 //
 // SceneNodeUI
 //
-glm::vec2 CUITextNode::GetSize()
+glm::vec2 CUITextNode::GetSize() const
 {
     return GetTextSize() + 2.0f * m_OffsetProperty->Get();
 }

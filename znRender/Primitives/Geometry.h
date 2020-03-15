@@ -24,9 +24,9 @@ namespace DirectX
 
 		VertexPositionTextureNormal(XMFLOAT3 const& position, XMFLOAT3 const& normal, XMFLOAT2 const& textureCoordinate)
 		{
-			this->position = vec3(position.x, position.y, position.z);
-			this->textureCoordinate = vec2(textureCoordinate.x, textureCoordinate.y);
-			this->normal = vec3(normal.x, normal.y, normal.z);
+			this->position = glm::vec3(position.x, position.y, position.z);
+			this->textureCoordinate = glm::vec2(textureCoordinate.x, textureCoordinate.y);
+			this->normal = glm::vec3(normal.x, normal.y, normal.z);
 		}
 
 		VertexPositionTextureNormal(FXMVECTOR position, FXMVECTOR normal, FXMVECTOR textureCoordinate)
@@ -39,14 +39,14 @@ namespace DirectX
 			XMStoreFloat2(&textureCoordinate2, textureCoordinate);
 			XMStoreFloat3(&normal2, normal);
 
-			this->position = vec3(position2.x, position2.y, position2.z);
-			this->textureCoordinate = vec2(textureCoordinate2.x, textureCoordinate2.y);
-			this->normal = vec3(normal2.x, normal2.y, normal2.z);
+			this->position = glm::vec3(position2.x, position2.y, position2.z);
+			this->textureCoordinate = glm::vec2(textureCoordinate2.x, textureCoordinate2.y);
+			this->normal = glm::vec3(normal2.x, normal2.y, normal2.z);
 		}
 
-		vec3 position;
-		vec2 textureCoordinate;
-		vec3 normal;
+		glm::vec3 position;
+		glm::vec2 textureCoordinate;
+		glm::vec3 normal;
 	};
 
     typedef std::vector<VertexPositionTextureNormal> VertexCollection;

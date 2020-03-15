@@ -9,23 +9,23 @@
 
 inline bool rayTriangleIntersection
 (
-	cvec3 rayOrig, 
-	cvec3 rayDir,
-	cvec3 vert0, 
-	cvec3 vert1, 
-	cvec3 vert2,
-	vec3& intsPoint
+	const glm::vec3& rayOrig, 
+	const glm::vec3& rayDir,
+	const glm::vec3& vert0, 
+	const glm::vec3& vert1, 
+	const glm::vec3& vert2,
+	glm::vec3& intsPoint
 )
 {
 	// Idea: Tomas Moeller and Ben Trumbore
 	// in Fast, Minimum getRenderStorage Ray/Triangle Intersection 
 
 	// Find vectors for two edges sharing vert0
-	vec3 edge1 = vert1 - vert0;
-	vec3 edge2 = vert2 - vert0;
+	glm::vec3 edge1 = vert1 - vert0;
+	glm::vec3 edge2 = vert2 - vert0;
 
 	// Begin calculating determinant - also used to calculate U parameter
-	vec3 pvec = glm::cross(rayDir, edge2);
+	glm::vec3 pvec = glm::cross(rayDir, edge2);
 
 	// If determinant is near zero, ray lies in plane of triangle
 	float det = glm::dot(edge1, pvec);
@@ -57,14 +57,14 @@ inline bool rayTriangleIntersection
 	float inv_det = 1.0f / det;
 
 	// Calculate distance from vert0 to ray origin
-	vec3 tvec = rayOrig - vert0;
+	glm::vec3 tvec = rayOrig - vert0;
 
 	// Calculate U parameter and test bounds
 	float u = glm::dot(tvec, pvec) * inv_det;
 	if (u < 0.0f || u > 1.0f) return 0;
 
 	// Prepare to test V parameter
-	vec3 qvec = glm::cross(tvec, edge1);
+	glm::vec3 qvec = glm::cross(tvec, edge1);
 
 	// Calculate V parameter and test bounds
 	float v = glm::dot(rayDir, qvec) * inv_det;
@@ -76,7 +76,7 @@ inline bool rayTriangleIntersection
 
 	// Calculate intersection point and test ray length and direction
 	intsPoint = rayOrig + rayDir * t;
-	vec3 vec = intsPoint - rayOrig;
+	glm::vec3 vec = intsPoint - rayOrig;
 	if (glm::dot(vec, rayDir) < 0 || glm::length(vec) > glm::length(rayDir)) return false;
 
 	return true;
@@ -87,10 +87,10 @@ inline bool rayTriangleIntersection
 
 inline bool rayAABBIntersection
 (
-	cvec3 rayOrig, 
-	cvec3 rayDir,				
-	cvec3 mins, 
-	cvec3 maxs
+	const glm::vec3& rayOrig, 
+	const glm::vec3& rayDir,				
+	const glm::vec3& mins, 
+	const glm::vec3& maxs
 )
 {
 	// SLAB based optimized ray/AABB intersection routine
@@ -114,9 +114,9 @@ inline bool rayAABBIntersection
 	if ((lmax >= 0.0f) & (lmax >= lmin))
 	{
 		// Consider length
-		const vec3 rayDest = rayOrig + rayDir;
-		vec3 rayMins(minf(rayDest.x, rayOrig.x), minf(rayDest.y, rayOrig.y), minf(rayDest.z, rayOrig.z));
-		vec3 rayMaxs(maxf(rayDest.x, rayOrig.x), maxf(rayDest.y, rayOrig.y), maxf(rayDest.z, rayOrig.z));
+		const glm::vec3 rayDest = rayOrig + rayDir;
+		glm::vec3 rayMins(minf(rayDest.x, rayOrig.x), minf(rayDest.y, rayOrig.y), minf(rayDest.z, rayOrig.z));
+		glm::vec3 rayMaxs(maxf(rayDest.x, rayOrig.x), maxf(rayDest.y, rayOrig.y), maxf(rayDest.z, rayOrig.z));
 		return
 			(rayMins.x < maxs.x) && (rayMaxs.x > mins.x) &&
 			(rayMins.y < maxs.y) && (rayMaxs.y > mins.y) &&
@@ -131,15 +131,15 @@ inline bool rayAABBIntersection
 
 inline float nearestDistToAABB
 (
-	cvec3 pos, 
-	cvec3 mins, 
-	cvec3 maxs
+	const glm::vec3& pos, 
+	const glm::vec3& mins, 
+	const glm::vec3& maxs
 )
 {
-	const vec3 center = (mins + maxs) * 0.5f;
-	const vec3 extent = (maxs - mins) * 0.5f;
+	const glm::vec3 center = (mins + maxs) * 0.5f;
+	const glm::vec3 extent = (maxs - mins) * 0.5f;
 
-	vec3 nearestVec;
+	glm::vec3 nearestVec;
 	nearestVec.x = maxf(0, fabsf(pos.x - center.x) - extent.x);
 	nearestVec.y = maxf(0, fabsf(pos.y - center.y) - extent.y);
 	nearestVec.z = maxf(0, fabsf(pos.z - center.z) - extent.z);
@@ -147,25 +147,25 @@ inline float nearestDistToAABB
 	return glm::length(nearestVec);
 }
 
-inline vec3 screenToWord
+inline glm::vec3 screenToWord
 (
-	cvec2 _mousePos, 
-	cvec2 windowSize, 
-	cmat4 projection_matrix, 
-	cmat4 view_matrix
+	const glm::vec2& _mousePos, 
+	const glm::vec2& windowSize, 
+	const glm::mat4& projection_matrix, 
+	const glm::mat4& view_matrix
 )
 {
 	float x = (2.0f * _mousePos.x) / windowSize.x - 1.0f;
 	float y = 1.0f - (2.0f * _mousePos.y) / windowSize.y;
 
-	vec2 ray_nds = vec2(x, y);
+	glm::vec2 ray_nds = glm::vec2(x, y);
 
-	vec4 ray_clip = vec4(ray_nds.x, ray_nds.y, -1.0, 1.0);
+	glm::vec4 ray_clip = glm::vec4(ray_nds.x, ray_nds.y, -1.0, 1.0);
 
-	vec4 ray_eye = glm::inverse(projection_matrix) * ray_clip;
-	ray_eye = vec4(ray_eye.x, ray_eye.y, -1.0, 0.0);
+	glm::vec4 ray_eye = glm::inverse(projection_matrix) * ray_clip;
+	ray_eye = glm::vec4(ray_eye.x, ray_eye.y, -1.0, 0.0);
 
-	vec3 ray_wor = glm::inverse(view_matrix) * ray_eye;
+	glm::vec3 ray_wor = glm::inverse(view_matrix) * ray_eye;
 	ray_wor = glm::normalize(ray_wor);
 
 	return ray_wor;

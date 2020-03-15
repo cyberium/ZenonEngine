@@ -5,7 +5,9 @@
 #include "../znEngine/NativeWindow_WindowsSpecific.h"
 
 // Nodes
+#include "../znEngine/SceneFunctional/UI/UIText.h"
 #include "../znEngine/SceneFunctional/UI/UIButton.h"
+#include "../znEngine/SceneFunctional/UI/UITexture.h"
 
 // Materials
 #include "../znEngine/Materials/MaterialDebug.h"
@@ -15,6 +17,7 @@
 // Passes
 #include "../znEngine/Passes/UIFontPass.h"
 #include "../znEngine/Passes/UIButtonPass.h"
+#include "../znEngine/Passes/UITexturePass.h"
 
 #include "../znEngine/Passes/DrawBoundingBoxPass.h"
 #include "../znEngine/Passes/MaterialParticlePass.h"

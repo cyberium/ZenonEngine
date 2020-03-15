@@ -7,8 +7,8 @@ public:
 	MaterialParticle(IRenderDevice& RenderDevice);
 	virtual ~MaterialParticle();
 
-	cvec4 GetDiffuseColor() const;
-	void SetDiffuseColor(cvec4 diffuse);
+	const glm::vec4& GetDiffuseColor() const;
+	void SetDiffuseColor(const glm::vec4& diffuse);
 
 	void UpdateConstantBuffer() const override;
 

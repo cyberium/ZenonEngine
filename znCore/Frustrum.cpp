@@ -29,7 +29,7 @@ void Frustum::buildCustomFrustrum(const Plane* _planes, uint32 _planesCount)
 	}
 }
 
-void Frustum::buildViewFrustum(const mat4 &transMat, float fov, float aspect, float nearPlane, float farPlane)
+void Frustum::buildViewFrustum(const glm::mat4& transMat, float fov, float aspect, float nearPlane, float farPlane)
 {
 	float ymax = nearPlane * tanf(glm::radians(fov / 2));
 	float xmax = ymax * aspect;
@@ -37,7 +37,7 @@ void Frustum::buildViewFrustum(const mat4 &transMat, float fov, float aspect, fl
 	buildViewFrustum(transMat, -xmax, xmax, -ymax, ymax, nearPlane, farPlane);
 }
 
-void Frustum::buildViewFrustum(const mat4 &transMat, float left, float right, float bottom, float top, float nearPlane, float farPlane)
+void Frustum::buildViewFrustum(const glm::mat4& transMat, float left, float right, float bottom, float top, float nearPlane, float farPlane)
 {
 	// Use intercept theorem to get params for far plane
 	float left_f = left * farPlane / nearPlane;
@@ -46,22 +46,22 @@ void Frustum::buildViewFrustum(const mat4 &transMat, float left, float right, fl
 	float top_f = top * farPlane / nearPlane;
 
 	// Get points on near plane
-	m_Corners[0] = vec3(left, bottom, -nearPlane);
-	m_Corners[1] = vec3(right, bottom, -nearPlane);
-	m_Corners[2] = vec3(right, top, -nearPlane);
-	m_Corners[3] = vec3(left, top, -nearPlane);
+	m_Corners[0] = glm::vec3(left, bottom, -nearPlane);
+	m_Corners[1] = glm::vec3(right, bottom, -nearPlane);
+	m_Corners[2] = glm::vec3(right, top, -nearPlane);
+	m_Corners[3] = glm::vec3(left, top, -nearPlane);
 
 	// Get points on far plane
-	m_Corners[4] = vec3(left_f, bottom_f, -farPlane);
-	m_Corners[5] = vec3(right_f, bottom_f, -farPlane);
-	m_Corners[6] = vec3(right_f, top_f, -farPlane);
-	m_Corners[7] = vec3(left_f, top_f, -farPlane);
+	m_Corners[4] = glm::vec3(left_f, bottom_f, -farPlane);
+	m_Corners[5] = glm::vec3(right_f, bottom_f, -farPlane);
+	m_Corners[6] = glm::vec3(right_f, top_f, -farPlane);
+	m_Corners[7] = glm::vec3(left_f, top_f, -farPlane);
 
 	// Transform points to fit camera position and rotation
-	m_Origin = transMat * vec4(0, 0, 0, 0);
+	m_Origin = transMat * glm::vec4(0, 0, 0, 0);
 	for (uint32 i = 0; i < 8; ++i)
 	{
-		m_Corners[i] = transMat * vec4(m_Corners[i], 0.0f);
+		m_Corners[i] = transMat * glm::vec4(m_Corners[i], 0.0f);
 	}
 
 	// Build planes
@@ -74,13 +74,13 @@ void Frustum::buildViewFrustum(const mat4 &transMat, float left, float right, fl
 	m_Planes[5] = Plane(m_Corners[5], m_Corners[4], m_Corners[7]);	// Far
 }
 
-void Frustum::buildViewFrustum(const mat4 &viewMat, const mat4 &projMat)
+void Frustum::buildViewFrustum(const glm::mat4& viewMat, const glm::mat4& projMat)
 {
 	// This routine works with the OpenGL projection matrix
 	// The view matrix is the inverse camera transformation matrix
 	// Note: Frustum corners are not updated!
 
-	mat4 m = projMat * viewMat;
+	const glm::mat4 m = projMat * viewMat;
 
 	m_Planes.resize(6);
 	m_Planes[0] = Plane(-(m[0][3] + m[0][0]), -(m[1][3] + m[1][0]),
@@ -96,47 +96,47 @@ void Frustum::buildViewFrustum(const mat4 &viewMat, const mat4 &projMat)
 	m_Planes[5] = Plane(-(m[0][3] - m[0][2]), -(m[1][3] - m[1][2]),
 		-(m[2][3] - m[2][2]), -(m[3][3] - m[3][2]));	// Far
 
-	m_Origin = glm::inverse(viewMat) * vec4(0, 0, 0, 0);
+	m_Origin = glm::inverse(viewMat) * glm::vec4(0, 0, 0, 0);
 
 	// Calculate corners
-	mat4 mm = glm::inverse(m);
-	vec4 corner = mm * vec4(-1, -1, -1, 1);
-	m_Corners[0] = vec3(corner.x / corner.w, corner.y / corner.w, corner.z / corner.w);
-	corner = mm * vec4(1, -1, -1, 1);
-	m_Corners[1] = vec3(corner.x / corner.w, corner.y / corner.w, corner.z / corner.w);
-	corner = mm * vec4(1, 1, -1, 1);
-	m_Corners[2] = vec3(corner.x / corner.w, corner.y / corner.w, corner.z / corner.w);
-	corner = mm * vec4(-1, 1, -1, 1);
-	m_Corners[3] = vec3(corner.x / corner.w, corner.y / corner.w, corner.z / corner.w);
-	corner = mm * vec4(-1, -1, 1, 1);
-	m_Corners[4] = vec3(corner.x / corner.w, corner.y / corner.w, corner.z / corner.w);
-	corner = mm * vec4(1, -1, 1, 1);
-	m_Corners[5] = vec3(corner.x / corner.w, corner.y / corner.w, corner.z / corner.w);
-	corner = mm * vec4(1, 1, 1, 1);
-	m_Corners[6] = vec3(corner.x / corner.w, corner.y / corner.w, corner.z / corner.w);
-	corner = mm * vec4(-1, 1, 1, 1);
-	m_Corners[7] = vec3(corner.x / corner.w, corner.y / corner.w, corner.z / corner.w);
+	glm::mat4 mm = glm::inverse(m);
+	glm::vec4 corner = mm * glm::vec4(-1, -1, -1, 1);
+	m_Corners[0] = glm::vec3(corner.x / corner.w, corner.y / corner.w, corner.z / corner.w);
+	corner = mm * glm::vec4(1, -1, -1, 1);
+	m_Corners[1] = glm::vec3(corner.x / corner.w, corner.y / corner.w, corner.z / corner.w);
+	corner = mm * glm::vec4(1, 1, -1, 1);
+	m_Corners[2] = glm::vec3(corner.x / corner.w, corner.y / corner.w, corner.z / corner.w);
+	corner = mm * glm::vec4(-1, 1, -1, 1);
+	m_Corners[3] = glm::vec3(corner.x / corner.w, corner.y / corner.w, corner.z / corner.w);
+	corner = mm * glm::vec4(-1, -1, 1, 1);
+	m_Corners[4] = glm::vec3(corner.x / corner.w, corner.y / corner.w, corner.z / corner.w);
+	corner = mm * glm::vec4(1, -1, 1, 1);
+	m_Corners[5] = glm::vec3(corner.x / corner.w, corner.y / corner.w, corner.z / corner.w);
+	corner = mm * glm::vec4(1, 1, 1, 1);
+	m_Corners[6] = glm::vec3(corner.x / corner.w, corner.y / corner.w, corner.z / corner.w);
+	corner = mm * glm::vec4(-1, 1, 1, 1);
+	m_Corners[7] = glm::vec3(corner.x / corner.w, corner.y / corner.w, corner.z / corner.w);
 }
 
-void Frustum::buildBoxFrustum(const mat4 &transMat, float left, float right, float bottom, float top, float front, float back)
+void Frustum::buildBoxFrustum(const glm::mat4& transMat, float left, float right, float bottom, float top, float front, float back)
 {
 	// Get points on front plane
-	m_Corners[0] = vec3(left, bottom, front);
-	m_Corners[1] = vec3(right, bottom, front);
-	m_Corners[2] = vec3(right, top, front);
-	m_Corners[3] = vec3(left, top, front);
+	m_Corners[0] = glm::vec3(left, bottom, front);
+	m_Corners[1] = glm::vec3(right, bottom, front);
+	m_Corners[2] = glm::vec3(right, top, front);
+	m_Corners[3] = glm::vec3(left, top, front);
 
 	// Get points on far plane
-	m_Corners[4] = vec3(left, bottom, back);
-	m_Corners[5] = vec3(right, bottom, back);
-	m_Corners[6] = vec3(right, top, back);
-	m_Corners[7] = vec3(left, top, back);
+	m_Corners[4] = glm::vec3(left, bottom, back);
+	m_Corners[5] = glm::vec3(right, bottom, back);
+	m_Corners[6] = glm::vec3(right, top, back);
+	m_Corners[7] = glm::vec3(left, top, back);
 
 	// Transform points to fit camera position and rotation
-	m_Origin = transMat * vec4(0);
+	m_Origin = transMat * glm::vec4(0);
 	for (uint32 i = 0; i < 8; ++i)
 	{
-		m_Corners[i] = transMat * vec4(m_Corners[i], 0);
+		m_Corners[i] = transMat * glm::vec4(m_Corners[i], 0);
 	}
 
 	// Build planes
@@ -151,7 +151,7 @@ void Frustum::buildBoxFrustum(const mat4 &transMat, float left, float right, flo
 
 //
 
-bool Frustum::cullSphere(vec3 pos, float rad) const
+bool Frustum::cullSphere(glm::vec3 pos, float rad) const
 {
 	// Check the distance of the center to the planes
 	for (size_t i = 0; i < m_Planes.size(); ++i)
@@ -188,7 +188,7 @@ bool Frustum::cullFrustum(const Frustum& frust) const
 	return false;
 }
 
-bool Frustum::cullPoly(const vec3* verts, uint32 nums) const
+bool Frustum::cullPoly(const glm::vec3* verts, uint32 nums) const
 {
 	return cullPolyByPlanes(m_Planes.data(), m_Planes.size(), verts, nums);
 }
@@ -200,7 +200,7 @@ bool Frustum::cullPoly(const std::vector<glm::vec3>& PolyVertices) const
 
 //
 
-void Frustum::calcAABB(vec3& mins, vec3& maxs) const
+void Frustum::calcAABB(glm::vec3& mins, glm::vec3& maxs) const
 {
 	mins.x = Math::MaxFloat; mins.y = Math::MaxFloat; mins.z = Math::MaxFloat;
 	maxs.x = -Math::MaxFloat; maxs.y = -Math::MaxFloat; maxs.z = -Math::MaxFloat;

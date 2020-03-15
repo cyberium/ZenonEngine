@@ -9,7 +9,7 @@ public:
 	virtual ~UI_Texture_Material();
 
 	void SetTexture(const std::shared_ptr<ITexture> _texture);
-	void SetColor(vec4 color);
+	void SetColor(glm::vec4 color);
 	
 protected:
 	void UpdateConstantBuffer() const override;
@@ -20,7 +20,7 @@ private:
 		MaterialProperties()
 			: Color(1.0f, 1.0f, 1.0f, 1.0f)
 		{}
-		vec4 Color;
+		glm::vec4 Color;
 		//-------------------------- ( 32 bytes )
 	};
 	MaterialProperties* m_pProperties;

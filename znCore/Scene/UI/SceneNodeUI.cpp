@@ -9,8 +9,8 @@
 
 SceneNodeUI::SceneNodeUI()
 	: m_IsMouseOnNode(false)
-	, m_Translate(vec2())
-	, m_Rotate(vec3())
+	, m_Translate(glm::vec2(0.0f))
+	, m_Rotate(glm::vec3(0.0f))
 	, m_Scale(1.0f, 1.0f)
 
 	// Transform functinal
@@ -152,12 +152,12 @@ IScene * SceneNodeUI::GetScene() const
 	return m_Scene.lock().get();
 }
 
-void SceneNodeUI::SetTranslate(cvec2 _translate)
+void SceneNodeUI::SetTranslate(const glm::vec2& _translate)
 {
 	m_Translate = _translate;
 	UpdateLocalTransform();
 }
-cvec2 SceneNodeUI::GetTranslation() const
+const glm::vec2& SceneNodeUI::GetTranslation() const
 {
 	return m_Translate;
 }
@@ -169,41 +169,41 @@ glm::vec2 SceneNodeUI::GetTranslationAbs() const
 	return parentTranslate + GetTranslation();
 }
 
-void SceneNodeUI::SetRotation(cvec3 _rotate)
+void SceneNodeUI::SetRotation(const glm::vec3& _rotate)
 {
 	m_Rotate = _rotate;
 
 	UpdateLocalTransform();
 }
-cvec3 SceneNodeUI::GetRotation() const
+const glm::vec3& SceneNodeUI::GetRotation() const
 {
 	return m_Rotate;
 }
 
-void SceneNodeUI::SetScale(cvec2 _scale)
+void SceneNodeUI::SetScale(const glm::vec2& _scale)
 {
 	m_Scale = _scale;
 
 	UpdateLocalTransform();
 }
-cvec2 SceneNodeUI::GetScale() const
+const glm::vec2& SceneNodeUI::GetScale() const
 {
 	return m_Scale;
 }
 glm::vec2 SceneNodeUI::GetScaleAbs() const
 {
-	glm::vec2 parentScale = vec2(1.0f, 1.0f);
+	glm::vec2 parentScale = glm::vec2(1.0f);
 	if (auto parent = GetParent().lock())
 		parentScale = parent->GetScaleAbs();
 	return parentScale * GetScale();
 }
 
-mat4 SceneNodeUI::GetLocalTransform() const
+glm::mat4 SceneNodeUI::GetLocalTransform() const
 {
 	return m_LocalTransform;
 }
 
-mat4 SceneNodeUI::GetWorldTransfom() const
+glm::mat4 SceneNodeUI::GetWorldTransfom() const
 {
 	return m_WorldTransform;
 }
@@ -214,7 +214,7 @@ mat4 SceneNodeUI::GetWorldTransfom() const
 // Size & bounds
 //
 
-glm::vec2 SceneNodeUI::GetSize()
+glm::vec2 SceneNodeUI::GetSize() const
 {
     return glm::vec2(99999.0f, 999999.0f);
 }
@@ -229,7 +229,7 @@ BoundingRect SceneNodeUI::GetBoundsAbs()
     return boundRect;
 }
 
-bool SceneNodeUI::IsPointInBoundsAbs(glm::vec2 Point)
+bool SceneNodeUI::IsPointInBoundsAbs(const glm::vec2& Point)
 {
     return GetBoundsAbs().isPointInside(Point);
 }
@@ -265,6 +265,16 @@ void SceneNodeUI::AcceptMesh(IVisitor* visitor)
 
 
 //
+// UI events
+//
+void SceneNodeUI::SetOnClickCallback(std::function<void(const ISceneNodeUI* Node, glm::vec2)> OnClickCallback)
+{
+	m_OnClickCallback = OnClickCallback;
+}
+
+
+
+//
 // Input events
 //
 bool SceneNodeUI::OnKeyPressed(KeyEventArgs & e)
@@ -284,11 +294,12 @@ void SceneNodeUI::OnMouseMoved(MouseMotionEventArgs& e)
 
 bool SceneNodeUI::OnMouseButtonPressed(MouseButtonEventArgs & e)
 {
-    // Raise 'Clicked' callback
-    {
-        UIBaseNodeClickedEventArgs args(shared_from_this());
-        Clicked(args);
-    }
+	// Raise event
+	if (m_OnClickCallback)
+	{
+		m_OnClickCallback(this, glm::vec2(e.X, e.Y) - GetTranslationAbs());
+		return true;
+	}
 
 	return false;
 }

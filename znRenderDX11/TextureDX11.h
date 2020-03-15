@@ -25,7 +25,7 @@ public:
 
 	virtual void Resize(uint16_t width, uint16_t height = 0, uint16_t depth = 0);
 	virtual void Copy(const std::shared_ptr<ITexture>& other);
-	virtual void Clear(ClearFlags clearFlags = ClearFlags::All, cvec4 color = vec4(0), float depth = 1.0f, uint8_t stencil = 0);
+	virtual void Clear(ClearFlags clearFlags = ClearFlags::All, const glm::vec4& color = glm::vec4(0), float depth = 1.0f, uint8_t stencil = 0);
 
 	virtual void Bind(uint32_t ID, const IShader* shader, IShaderParameter::Type parameterType) const override;
 	virtual void Bind(uint32_t ID, EShaderType _shaderType, IShaderParameter::Type parameterType) const override;

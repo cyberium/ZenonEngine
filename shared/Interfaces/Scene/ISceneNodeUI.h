@@ -47,19 +47,24 @@ ZN_INTERFACE ZN_API ISceneNodeUI
 	//
 	// Transform functional
 	//
-	virtual void SetTranslate(cvec2 _translate) = 0;
-	virtual cvec2 GetTranslation() const = 0;
+	virtual void SetTranslate(const glm::vec2& _translate) = 0;
+	virtual const glm::vec2& GetTranslation() const = 0;
 	virtual glm::vec2 GetTranslationAbs() const = 0;
 
-	virtual void SetRotation(cvec3 _rotate) = 0;
-	virtual cvec3 GetRotation() const = 0;
+	virtual void SetRotation(const glm::vec3& _rotate) = 0;
+	virtual const glm::vec3& GetRotation() const = 0;
 
-	virtual void SetScale(cvec2 _scale) = 0;
-	virtual cvec2 GetScale() const = 0;
+	virtual void SetScale(const glm::vec2& _scale) = 0;
+	virtual const glm::vec2& GetScale() const = 0;
 	virtual glm::vec2 GetScaleAbs() const = 0;
 
-	virtual mat4 GetLocalTransform() const = 0;
-	virtual mat4 GetWorldTransfom() const = 0;
+	virtual glm::mat4 GetLocalTransform() const = 0;
+	virtual glm::mat4 GetWorldTransfom() const = 0;
+
+	// Size & bounds functional
+	virtual glm::vec2 GetSize() const = 0;
+	virtual BoundingRect GetBoundsAbs() = 0;
+	virtual bool IsPointInBoundsAbs(const glm::vec2& Point) = 0;
 
 	// Allow a visitor to visit this node.
 	virtual void Accept(IVisitor* visitor) = 0;

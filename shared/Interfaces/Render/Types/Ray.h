@@ -10,7 +10,7 @@ public:
 	Ray()
 	{}
 
-	Ray(vec3 origin, vec3 direction)
+	Ray(glm::vec3 origin, glm::vec3 direction)
 		: m_Origin(origin)
 		, m_Direction(direction)
 	{}
@@ -18,24 +18,24 @@ public:
 	virtual ~Ray()
 	{}
 
-	inline vec3 GetOrigin() const
+	inline glm::vec3 GetOrigin() const
 	{
 		return m_Origin;
 	}
 
-	inline vec3 GetDirection() const
+	inline glm::vec3 GetDirection() const
 	{
 		return m_Direction;
 	}
 
-	inline vec3 GetPointOnRay(float distance) const
+	inline glm::vec3 GetPointOnRay(float distance) const
 	{
 		return m_Origin + (m_Direction * distance);
 	}
 
 private:
-	vec3 m_Origin;
-	vec3 m_Direction;
+	glm::vec3 m_Origin;
+	glm::vec3 m_Direction;
 
 	IMaterial* m_pMaterial;
 };

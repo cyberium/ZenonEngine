@@ -3,7 +3,7 @@
 // General
 #include "UIColor.h"
 
-CUIColorNode::CUIColorNode(IRenderDevice& RenderDevice, vec2 Size)
+CUIColorNode::CUIColorNode(IRenderDevice& RenderDevice, glm::vec2 Size)
 	: m_Size(Size)
 {
 	m_Material = std::make_shared<UI_Color_Material>(RenderDevice);
@@ -21,7 +21,7 @@ CUIColorNode::~CUIColorNode()
 //
 // CUIColorNode
 //
-void CUIColorNode::SetColor(vec4 _color)
+void CUIColorNode::SetColor(glm::vec4 _color)
 {
 	m_Material->SetColor(_color);
 }
@@ -31,7 +31,7 @@ void CUIColorNode::SetColor(vec4 _color)
 //
 // SceneNodeUI
 //
-glm::vec2 CUIColorNode::GetSize()
+glm::vec2 CUIColorNode::GetSize() const
 {
     return m_Size;
 }

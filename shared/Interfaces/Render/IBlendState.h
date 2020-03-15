@@ -204,8 +204,8 @@ ZN_INTERFACE ZN_API IBlendState
 	/**
 	 * Set a constant blend factor that is used when the BlendFactor is set to ConstBlendFactor.
 	 */
-	virtual void SetConstBlendFactor(cvec4 constantBlendFactor) = 0;
-	virtual cvec4 GetConstBlendFactor() const = 0;
+	virtual void SetConstBlendFactor(const glm::vec4& constantBlendFactor) = 0;
+	virtual const glm::vec4& GetConstBlendFactor() const = 0;
 
 	/**
 	 * The sample mask determines which samples get updated in all the active render targets.

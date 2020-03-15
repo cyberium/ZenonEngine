@@ -43,7 +43,7 @@ UI_Line_Material::~UI_Line_Material()
 //
 // UI_Line_Material
 //
-void UI_Line_Material::SetColor(vec4 Color)
+void UI_Line_Material::SetColor(glm::vec4 Color)
 {
 	m_pProperties->Color = Color;
 	MarkConstantBufferDirty();
@@ -55,7 +55,7 @@ void UI_Line_Material::SetThickness(float Thickness)
     MarkConstantBufferDirty();
 }
 
-void UI_Line_Material::SetViewport(vec2 Size)
+void UI_Line_Material::SetViewport(glm::vec2 Size)
 {
     m_pProperties->Viewport = Size;
     MarkConstantBufferDirty();

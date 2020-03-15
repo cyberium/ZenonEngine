@@ -24,8 +24,8 @@ public:
 	virtual void SetMaxLOD(float maxLOD);
 	virtual float GetMaxLOD() const;
 
-	virtual void SetBorderColor(cvec4 borderColor);
-	virtual vec4 GetBorderColor() const;
+	virtual void SetBorderColor(const glm::vec4& borderColor);
+	virtual glm::vec4 GetBorderColor() const;
 
 	virtual void EnableAnisotropicFiltering(bool enabled);
 	virtual bool IsAnisotropicFilteringEnabled() const;
@@ -45,7 +45,7 @@ protected:
     float                                           m_fMinLOD;
     float                                           m_fMaxLOD;
 
-    vec4		                                    m_BorderColor;
+	glm::vec4		                                m_BorderColor;
 
     bool                                            m_bIsAnisotropicFilteringEnabled;
     uint8_t                                         m_AnisotropicFiltering;

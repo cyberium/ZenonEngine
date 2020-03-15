@@ -89,7 +89,7 @@ ZN_INTERFACE ZN_API IPortal
 
 	virtual bool IsVisible(const Frustum& Frustum) const = 0;
 	virtual bool IsVisible(const std::vector<Plane>& Planes) const = 0;
-	virtual bool IsPositive(cvec3 InvTranslateCamera) const = 0;
+	virtual bool IsPositive(const glm::vec3& InvTranslateCamera) const = 0;
 
 	virtual std::shared_ptr<IPortalRoom> GetRoomObject(glm::vec3 Eye) const = 0;
 };

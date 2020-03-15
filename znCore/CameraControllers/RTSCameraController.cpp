@@ -35,7 +35,7 @@ void CRTSCameraController::SetCameraPosition(glm::vec2 Position)
 
 void CRTSCameraController::SetCameraDistance(float Distance)
 {
-	vec3 BoundsPosition = m_Bounds.getCenter();
+	glm::vec3 BoundsPosition = m_Bounds.getCenter();
 	BoundsPosition.y = Distance;
 
 	if (m_Bounds.isPointInside(BoundsPosition))
@@ -90,7 +90,7 @@ void CRTSCameraController::OnMouseWheel(MouseWheelEventArgs& e)
 //
 void CRTSCameraController::AddX(float Value)
 {
-	vec3 CameraPosition = m_CameraPosition;
+	glm::vec3 CameraPosition = m_CameraPosition;
 	CameraPosition.x += Value;
 
 	if (m_Bounds.isPointInside(CameraPosition))
@@ -101,7 +101,7 @@ void CRTSCameraController::AddX(float Value)
 
 void CRTSCameraController::AddY(float Value)
 {
-	vec3 CameraPosition = m_CameraPosition;
+	glm::vec3 CameraPosition = m_CameraPosition;
 	CameraPosition.y += Value;
 
 	if (m_Bounds.isPointInside(CameraPosition))
@@ -112,7 +112,7 @@ void CRTSCameraController::AddY(float Value)
 
 void CRTSCameraController::AddZ(float Value)
 {
-	vec3 CameraPosition = m_CameraPosition;
+	glm::vec3 CameraPosition = m_CameraPosition;
 	CameraPosition.z += Value;
 
 	if (m_Bounds.isPointInside(CameraPosition))

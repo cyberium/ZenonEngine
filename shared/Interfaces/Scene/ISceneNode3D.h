@@ -66,20 +66,20 @@ ZN_INTERFACE ZN_API ISceneNode3D
 	virtual void SetRotation(const glm::vec3& _rotate) = 0;
 	virtual const glm::vec3& GetRotation() const = 0;
 
-	virtual void SetRotationQuaternion(cquat _rotate) = 0;
+	virtual void SetRotationQuaternion(const glm::quat& _rotate) = 0;
 	virtual const glm::quat& GetRotationQuaternion() const = 0;
 
 	virtual void SetScale(const glm::vec3& _scale) = 0;
 	virtual const glm::vec3& GetScale() const = 0;
 
-	virtual mat4 GetLocalTransform() const = 0;
-	virtual mat4 GetInverseLocalTransform() const = 0;
-	virtual void SetLocalTransform(cmat4 localTransform) = 0;
+	virtual glm::mat4 GetLocalTransform() const = 0;
+	virtual glm::mat4 GetInverseLocalTransform() const = 0;
+	virtual void SetLocalTransform(const glm::mat4& localTransform) = 0;
 
-	virtual mat4 GetWorldTransfom() const = 0;
-	virtual mat4 GetInverseWorldTransform() const = 0;
-	virtual mat4 GetParentWorldTransform() const = 0;
-	virtual void SetWorldTransform(cmat4 worldTransform) = 0;
+	virtual glm::mat4 GetWorldTransfom() const = 0;
+	virtual glm::mat4 GetInverseWorldTransform() const = 0;
+	virtual glm::mat4 GetParentWorldTransform() const = 0;
+	virtual void SetWorldTransform(const glm::mat4& worldTransform) = 0;
 
 
 	virtual const std::shared_ptr<IColliderComponent3D>& GetColliderComponent() const = 0;

@@ -22,10 +22,10 @@ CRenderPrimitivesFactory::~CRenderPrimitivesFactory()
 //
 // IRenderPrimitivesFactory
 //
-std::shared_ptr<IGeometry> CRenderPrimitivesFactory::CreateLine(cvec3 _dest)
+std::shared_ptr<IGeometry> CRenderPrimitivesFactory::CreateLine(const glm::vec3& _dest)
 {
-	vec3 p[2];
-	p[0] = vec3(0.0f, 0.0f, 0.0f);
+	glm::vec3 p[2];
+	p[0] = glm::vec3(0.0f, 0.0f, 0.0f);
 	p[1] = _dest;
 
 	std::shared_ptr<IGeometry> geometry = m_RenderDevice.GetObjectsFactory().CreateGeometry();
@@ -37,7 +37,7 @@ std::shared_ptr<IGeometry> CRenderPrimitivesFactory::CreateLine(cvec3 _dest)
 	return geometry;
 }
 
-std::shared_ptr<IGeometry> CRenderPrimitivesFactory::CreatePlane(cvec3 N)
+std::shared_ptr<IGeometry> CRenderPrimitivesFactory::CreatePlane(const glm::vec3& N)
 {
 	DirectX::VertexCollection vertices;
 	vertices.push_back(DirectX::VertexPositionTextureNormal(DirectX::XMFLOAT3( 1.0f, 0.0f,  1.0f), DirectX::XMFLOAT3(0.0f, 1.0f, 0.0f), DirectX::XMFLOAT2(1.0f, 0.0f)));
@@ -184,17 +184,17 @@ std::shared_ptr<IGeometry> CRenderPrimitivesFactory::CreateCone()
 
 std::shared_ptr<IGeometry> CRenderPrimitivesFactory::CreateQuad()
 {
-	vec2 vertices[4];
-	vertices[0] = vec2( 1.0f, 1.0f);
-	vertices[1] = vec2(-1.0f, 1.0f);
-	vertices[2] = vec2(-1.0f, -1.0f);
-	vertices[3] = vec2( 1.0f, -1.0f);
+	glm::vec2 vertices[4];
+	vertices[0] = glm::vec2( 1.0f, 1.0f);
+	vertices[1] = glm::vec2(-1.0f, 1.0f);
+	vertices[2] = glm::vec2(-1.0f, -1.0f);
+	vertices[3] = glm::vec2( 1.0f, -1.0f);
 
-	vec2 texCoords[4];
-	texCoords[0] = vec2(1.0f, 0.0f);
-	texCoords[1] = vec2(0.0f, 0.0f);
-	texCoords[2] = vec2(0.0f, 1.0f);
-	texCoords[3] = vec2(1.0f, 1.0f);
+	glm::vec2 texCoords[4];
+	texCoords[0] = glm::vec2(1.0f, 0.0f);
+	texCoords[1] = glm::vec2(0.0f, 0.0f);
+	texCoords[2] = glm::vec2(0.0f, 1.0f);
+	texCoords[3] = glm::vec2(1.0f, 1.0f);
 
 	uint16 indices[6];
 	indices[0] = 1;
@@ -225,17 +225,17 @@ std::shared_ptr<IGeometry> CRenderPrimitivesFactory::CreateQuad()
 //
 std::shared_ptr<IGeometry> CRenderPrimitivesFactory::Create3DQuad(float width, float height)
 {
-    vec3 vertices[4];
-    vertices[0] = vec3(width, 0.0f, height);
-    vertices[1] = vec3(0.0f, 0.0f, height);
-    vertices[2] = vec3(0.0f, 0.0f, 0.0f);
-    vertices[3] = vec3(width, 0.0f, 0.0f);
+	glm::vec3 vertices[4];
+    vertices[0] = glm::vec3(width, 0.0f, height);
+    vertices[1] = glm::vec3(0.0f, 0.0f, height);
+    vertices[2] = glm::vec3(0.0f, 0.0f, 0.0f);
+    vertices[3] = glm::vec3(width, 0.0f, 0.0f);
 
-    vec2 texCoords[4];
-    texCoords[0] = vec2(1.0f, 0.0f);
-    texCoords[1] = vec2(0.0f, 0.0f);
-    texCoords[2] = vec2(0.0f, 1.0f);
-    texCoords[3] = vec2(1.0f, 1.0f);
+	glm::vec2 texCoords[4];
+    texCoords[0] = glm::vec2(1.0f, 0.0f);
+    texCoords[1] = glm::vec2(0.0f, 0.0f);
+    texCoords[2] = glm::vec2(0.0f, 1.0f);
+    texCoords[3] = glm::vec2(1.0f, 1.0f);
 
     uint16 indices[6];
     indices[0] = 1;
@@ -259,12 +259,12 @@ std::shared_ptr<IGeometry> CRenderPrimitivesFactory::Create3DQuad(float width, f
     return geometry;
 }
 
-std::shared_ptr<IGeometry> CRenderPrimitivesFactory::Create3DBeizerLine(vec3 start, vec3 end)
+std::shared_ptr<IGeometry> CRenderPrimitivesFactory::Create3DBeizerLine(glm::vec3 start, glm::vec3 end)
 {
-    vec3 p[4];
+	glm::vec3 p[4];
     p[0] = start;
-    p[1] = vec3((end - start).x / 2.0f, start.y, 0.0f);
-    p[2] = vec3((end - start).x / 2.0f, end.y, 0.0f);
+    p[1] = glm::vec3((end - start).x / 2.0f, start.y, 0.0f);
+    p[2] = glm::vec3((end - start).x / 2.0f, end.y, 0.0f);
     p[3] = end;
 
     std::shared_ptr<IGeometry> geometry = m_RenderDevice.GetObjectsFactory().CreateGeometry();
@@ -283,17 +283,17 @@ std::shared_ptr<IGeometry> CRenderPrimitivesFactory::Create3DBeizerLine(vec3 sta
 //
 std::shared_ptr<IGeometry> CRenderPrimitivesFactory::CreateUIQuad(float width, float height)
 {
-    vec2 vertices[4];
-    vertices[0] = vec2(width, height);
-    vertices[1] = vec2(0.0f, height);
-    vertices[2] = vec2(0.0f, 0.0f);
-    vertices[3] = vec2(width, 0.0f);
+	glm::vec2 vertices[4];
+    vertices[0] = glm::vec2(width, height);
+    vertices[1] = glm::vec2(0.0f, height);
+    vertices[2] = glm::vec2(0.0f, 0.0f);
+    vertices[3] = glm::vec2(width, 0.0f);
 
-    vec2 texCoords[4];
-    texCoords[0] = vec2(1.0f, 0.0f);
-    texCoords[1] = vec2(0.0f, 0.0f);
-    texCoords[2] = vec2(0.0f, 1.0f);
-    texCoords[3] = vec2(1.0f, 1.0f);
+	glm::vec2 texCoords[4];
+    texCoords[0] = glm::vec2(1.0f, 0.0f);
+    texCoords[1] = glm::vec2(0.0f, 0.0f);
+    texCoords[2] = glm::vec2(0.0f, 1.0f);
+    texCoords[3] = glm::vec2(1.0f, 1.0f);
 
     uint16 indices[6];
     indices[0] = 1;
@@ -317,12 +317,12 @@ std::shared_ptr<IGeometry> CRenderPrimitivesFactory::CreateUIQuad(float width, f
     return geometry;
 }
 
-std::shared_ptr<IGeometry> CRenderPrimitivesFactory::CreateUIBeizerLine(vec2 start, vec2 end)
+std::shared_ptr<IGeometry> CRenderPrimitivesFactory::CreateUIBeizerLine(glm::vec2 start, glm::vec2 end)
 {
-    vec2 vertices[4];
+	glm::vec2 vertices[4];
     vertices[0] = start;
-    vertices[1] = vec2((end - start).x / 2.0f, start.y);
-    vertices[2] = vec2((end - start).x / 2.0f, end.y);
+    vertices[1] = glm::vec2((end - start).x / 2.0f, start.y);
+    vertices[2] = glm::vec2((end - start).x / 2.0f, end.y);
     vertices[3] = end;
 
     std::shared_ptr<IGeometry> geometry = m_RenderDevice.GetObjectsFactory().CreateGeometry();

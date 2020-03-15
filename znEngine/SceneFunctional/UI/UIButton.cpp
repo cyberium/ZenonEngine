@@ -6,7 +6,7 @@
 namespace
 {
 	const char* cDefaultText = "<empty>";
-	const vec4  cDefaultColor = vec4(1.0f, 1.0f, 1.0f, 1.0f);
+	const glm::vec4  cDefaultColor = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
 }
 
 CUIButtonNode::CUIButtonNode(IRenderDevice& RenderDevice)
@@ -42,18 +42,13 @@ void CUIButtonNode::CreateDefault()
 
     m_TextNode = CreateSceneNode<CUITextNode>();
 	m_TextNode->GetProperties()->GetPropertyT<std::string>("Text")->Set(cDefaultText);
-	m_TextNode->SetTranslate(vec2(10.0f, 10.0f));
-	m_TextNode->SetTextColor(vec4(1.0f, 1.0f, 1.0f, 1.0f));
+	m_TextNode->SetTranslate(glm::vec2(10.0f, 10.0f));
+	m_TextNode->SetTextColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
 }
 
 void CUIButtonNode::SetText(const std::string& Text)
 {
 	m_TextNode->GetProperties()->GetPropertyT<std::string>("Text")->Set(Text);
-}
-
-void CUIButtonNode::SetOnClickCallback(std::function<void()> OnClickCallback)
-{
-	m_OnClickCallback = OnClickCallback;
 }
 
 
@@ -65,11 +60,7 @@ bool CUIButtonNode::OnMouseButtonPressed(MouseButtonEventArgs & e)
 {
 	m_State = Clicked;
 
-	// Raise event
-	if (m_OnClickCallback)
-		m_OnClickCallback();
-
-	return true;
+	return __super::OnMouseButtonPressed(e);
 }
 
 void CUIButtonNode::OnMouseButtonReleased(MouseButtonEventArgs & e)
@@ -105,7 +96,7 @@ void CUIButtonNode::OnMouseLeaved()
 //
 // SceneNodeUI
 //
-glm::vec2 CUIButtonNode::GetSize()
+glm::vec2 CUIButtonNode::GetSize() const
 {
     return m_Size;
 }

@@ -20,7 +20,7 @@ public:
 	void                                            OnMouseMoved(MouseMotionEventArgs& e) override;
 
 private:
-	vec3 m_PreviousPoint;
+	glm::vec3 m_PreviousPoint;
 	float Forward, Back, Left, Right, Up, Down;
 
     float Yaw;

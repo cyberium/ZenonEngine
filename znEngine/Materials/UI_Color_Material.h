@@ -6,7 +6,7 @@ public:
 	UI_Color_Material(IRenderDevice& RenderDevice);
 	virtual ~UI_Color_Material();
 
-	void SetColor(vec4 color);
+	void SetColor(glm::vec4 color);
 
 protected:
 	void UpdateConstantBuffer() const override;
@@ -17,7 +17,7 @@ private:
 		MaterialProperties()
 			: Color(1, 1, 1, 1)
 		{}
-		vec4 Color;
+		glm::vec4 Color;
 		//-------------------------- ( 32 bytes )
 	};
 	MaterialProperties* m_pProperties;

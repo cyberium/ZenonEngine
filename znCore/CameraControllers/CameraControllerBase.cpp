@@ -5,7 +5,7 @@
 
 CCameraControllerBase::CCameraControllerBase()
 	: m_Camera(nullptr)
-	, m_PreviousMousePosition(vec2(0.0f))
+	, m_PreviousMousePosition(glm::vec2(0.0f))
 {
 }
 

@@ -99,13 +99,13 @@ float SamplerStateBase::GetMaxLOD() const
     return m_fMaxLOD;
 }
 
-void SamplerStateBase::SetBorderColor(cvec4 borderColor)
+void SamplerStateBase::SetBorderColor(const glm::vec4& borderColor)
 {
     m_BorderColor = borderColor;
     m_bIsDirty = true;
 }
 
-vec4 SamplerStateBase::GetBorderColor() const
+glm::vec4 SamplerStateBase::GetBorderColor() const
 {
     return m_BorderColor;
 }

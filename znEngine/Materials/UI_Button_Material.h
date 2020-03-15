@@ -12,7 +12,7 @@ public:
 	void SetClickedTexture(std::shared_ptr<ITexture> _texture);
 	void SetDisabledTexture(std::shared_ptr<ITexture> _texture);
 
-	void SetColor(vec4 color);
+	void SetColor(glm::vec4 color);
 	void SetState(uint32 state);
 
 protected:
@@ -24,9 +24,9 @@ private:
 		MaterialProperties()
 			: Color(1.0f, 1.0f, 1.0f, 1.0f)
 		{}
-		vec4   Color;
+		glm::vec4 Color;
 		uint32 State;
-		vec3   Padding;
+		glm::vec3 Padding;
 		//-------------------------- ( 32 bytes )
 	};
 	MaterialProperties* m_pProperties;

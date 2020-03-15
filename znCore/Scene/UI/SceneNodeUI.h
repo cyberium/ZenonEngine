@@ -1,27 +1,9 @@
 #pragma once
 
-class ZN_API UIBaseNodeClickedEventArgs
-{
-public:
-    UIBaseNodeClickedEventArgs(std::shared_ptr<ISceneNodeUI> Initiator)
-        : Initiator(Initiator)
-    {}
-
-    std::shared_ptr<ISceneNodeUI> Initiator;
-};
-typedef Delegate<UIBaseNodeClickedEventArgs> UIBaseNodeClickedEvent;
-
-
-
 class ZN_API SceneNodeUI 
 	: public ISceneNodeUI
 {
 	friend IScene;
-
-public:
-	typedef std::vector<std::shared_ptr<ISceneNodeUI>>                NodeUIList;
-	typedef std::multimap<std::string, std::shared_ptr<ISceneNodeUI>> NodeUINameMap;
-
 public:
 	SceneNodeUI();
 	virtual ~SceneNodeUI();
@@ -30,43 +12,46 @@ public:
 	virtual void                                    Finalize() override;
 
 	// Name & Type
-	void                                            SetType(std::string Type) override;
-	std::string										GetType() const override;
-	void                                            SetName(std::string Name) override;
-	std::string										GetName() const override;
+	void                                            SetType(std::string Type) override final;
+	std::string										GetType() const override final;
+	void                                            SetName(std::string Name) override final;
+	std::string										GetName() const override final;
 	
 	// Childs functional
-	virtual void                                    AddChild(const std::shared_ptr<ISceneNodeUI>& childNode) override;
-	virtual void                                    RemoveChild(const std::shared_ptr<ISceneNodeUI>& childNode) override;
-	virtual std::weak_ptr<ISceneNodeUI>             GetParent() const override;
-	virtual const NodeUIList&                       GetChilds() override;
+	virtual void                                    AddChild(const std::shared_ptr<ISceneNodeUI>& childNode) override final;
+	virtual void                                    RemoveChild(const std::shared_ptr<ISceneNodeUI>& childNode) override final;
+	virtual std::weak_ptr<ISceneNodeUI>             GetParent() const override final;
+	virtual const NodeUIList&                       GetChilds() override final;
 	void                                            RaiseOnParentChanged() override final;
 
 	// Actions & Properties
-	virtual IActionsGroup*                          GetActions() const;
-	virtual IPropertiesGroup*                       GetProperties() const;
-	virtual IScene*                                 GetScene() const;
+	virtual IActionsGroup*                          GetActions() const final;
+	virtual IPropertiesGroup*                       GetProperties() const final;
+	virtual IScene*                                 GetScene() const final;
 
 	// ISceneNodeUI
-	void											SetTranslate(cvec2 _translate);
-	cvec2											GetTranslation() const;
+	void											SetTranslate(const glm::vec2& _translate);
+	const glm::vec2&											GetTranslation() const;
 	glm::vec2										GetTranslationAbs() const;
-	void											SetRotation(cvec3 _rotate);
-	cvec3											GetRotation() const;
-	void											SetScale(cvec2 _scale);
-	cvec2											GetScale() const;
+	void											SetRotation(const glm::vec3& _rotate);
+	const glm::vec3&											GetRotation() const;
+	void											SetScale(const glm::vec2& _scale);
+	const glm::vec2&											GetScale() const;
 	glm::vec2										GetScaleAbs() const;
-	virtual mat4									GetLocalTransform() const;
-	virtual mat4									GetWorldTransfom() const;
+	virtual glm::mat4									GetLocalTransform() const;
+	virtual glm::mat4									GetWorldTransfom() const;
 
 	// Size & bounds functional
-    virtual glm::vec2                               GetSize();
-    virtual BoundingRect                            GetBoundsAbs();
-    virtual bool                                    IsPointInBoundsAbs(glm::vec2 Point) ;
+    virtual glm::vec2                               GetSize() const override;
+    virtual BoundingRect                            GetBoundsAbs() override;
+    virtual bool                                    IsPointInBoundsAbs(const glm::vec2& Point) override;
 
 	// Allow a visitor to visit this node. 
 	virtual void                                    Accept(IVisitor* visitor);
 	virtual void                                    AcceptMesh(IVisitor* visitor);
+
+	// UI events
+	void                                            SetOnClickCallback(std::function<void(const ISceneNodeUI* Node, glm::vec2)> OnClickCallback);
 
 	// Input events
 	virtual bool                                    OnKeyPressed(KeyEventArgs& e);
@@ -75,8 +60,6 @@ public:
 	virtual bool                                    OnMouseButtonPressed(MouseButtonEventArgs& e);
 	virtual void                                    OnMouseButtonReleased(MouseButtonEventArgs& e);
 	virtual bool                                    OnMouseWheel(MouseWheelEventArgs& e);
-
-    UIBaseNodeClickedEvent							Clicked;
 
 	// Syntetic events
 	virtual void                                    OnMouseEntered();
@@ -119,5 +102,8 @@ private:
 	glm::mat4										m_InverseLocalTransform;
 	glm::mat4										m_WorldTransform;
 	glm::mat4										m_InverseWorldTransform;
+
+private:
+	std::function<void(const ISceneNodeUI* Node, glm::vec2)> m_OnClickCallback;
 };
 

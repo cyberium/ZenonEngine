@@ -25,10 +25,6 @@ UI_Texture_Material::UI_Texture_Material(IRenderDevice& RenderDevice)
 	g_LinearClampSampler->SetWrapMode(ISamplerState::WrapMode::Clamp, ISamplerState::WrapMode::Clamp, ISamplerState::WrapMode::Clamp);
 
     SetSampler(0, g_LinearClampSampler);
-
-	// Material
-	//SetShader(EShaderType::VertexShader, g_pVertexShader);
-	//SetShader(EShaderType::PixelShader, g_pPixelShader);
 }
 
 UI_Texture_Material::~UI_Texture_Material()
@@ -46,7 +42,7 @@ void UI_Texture_Material::SetTexture(const std::shared_ptr<ITexture> _texture)
 	MarkConstantBufferDirty();
 }
 
-void UI_Texture_Material::SetColor(vec4 color)
+void UI_Texture_Material::SetColor(glm::vec4 color)
 {
 	m_pProperties->Color = color;
 	MarkConstantBufferDirty();

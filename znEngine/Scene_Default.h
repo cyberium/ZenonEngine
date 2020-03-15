@@ -8,12 +8,12 @@
 
 #include "SceneFunctional/UI/UITexture.h"
 
-class ZN_API CGameState_World 
+class ZN_API CSceneDefault 
 	: public SceneBase
 {
 public:
-	CGameState_World(IBaseManager& BaseManager);
-	virtual ~CGameState_World();
+	CSceneDefault(IBaseManager& BaseManager);
+	virtual ~CSceneDefault();
 
 	// IGameState
 	void Initialize() override;
@@ -31,7 +31,7 @@ private:
 	void Load3D();
 	void LoadUI();
 	void GenerateLights(std::shared_ptr<ISceneNode3D> Node, uint32_t numLights);
-	void CGameState_World::UpdateLights();
+	void CSceneDefault::UpdateLights();
 
 private:
 	std::shared_ptr<CUITextureNode> m_TextureUI;

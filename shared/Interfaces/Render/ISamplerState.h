@@ -85,8 +85,8 @@ ZN_INTERFACE ZN_API ISamplerState
 	/**
 	 * Sets the border color to use if the wrap mode is set to Border.
 	 */
-	virtual void SetBorderColor(cvec4 borderColor) = 0;
-	virtual vec4 GetBorderColor() const = 0;
+	virtual void SetBorderColor(const glm::vec4& borderColor) = 0;
+	virtual glm::vec4 GetBorderColor() const = 0;
 
 	/**
 	 * Enable Anisotropic filtering (where supported).

@@ -66,14 +66,14 @@ bool BlendStateBase::GetIndependentBlend() const
     return m_bIndependentBlendEnabled;
 }
 
-void BlendStateBase::SetConstBlendFactor(cvec4 constantBlendFactor)
+void BlendStateBase::SetConstBlendFactor(const glm::vec4& constantBlendFactor)
 {
     m_ConstBlendFactor = constantBlendFactor;
     // No need to set the dirty flag as this value is not used to create the blend state object.
     // It is only used when activating the blend state of the output merger.
 }
 
-cvec4 BlendStateBase::GetConstBlendFactor() const
+const glm::vec4& BlendStateBase::GetConstBlendFactor() const
 {
     return m_ConstBlendFactor;
 }

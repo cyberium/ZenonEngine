@@ -13,8 +13,8 @@ public:
 	virtual void SetBlendModes(const std::vector<BlendMode>& blendModes);
 	virtual const std::vector<BlendMode>& GetBlendModes() const;
 
-	virtual void SetConstBlendFactor(cvec4 constantBlendFactor);
-	virtual cvec4 GetConstBlendFactor() const;
+	virtual void SetConstBlendFactor(const glm::vec4& constantBlendFactor);
+	virtual const glm::vec4& GetConstBlendFactor() const;
 
     virtual void SetSampleMask(uint32_t sampleMask);
 	virtual uint32_t GetSampleMask() const;
@@ -33,7 +33,7 @@ protected:
     bool m_bIndependentBlendEnabled;
     uint32_t m_SampleMask;
 
-    vec4 m_ConstBlendFactor;
+	glm::vec4 m_ConstBlendFactor;
 
     bool m_bDirty;
 };

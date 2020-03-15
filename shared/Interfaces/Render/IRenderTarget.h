@@ -49,7 +49,7 @@ ZN_INTERFACE ZN_API IRenderTarget
 	 * @param depth The depth value to use for depth attachment points.
 	 * @param stencil The stencil value to use for stencil attachment points.
 	 */
-	virtual void Clear(AttachmentPoint attachemnt, ClearFlags clearFlags = ClearFlags::All, cvec4 color = vec4(0), float depth = 1.0f, uint8_t stencil = 0) = 0;
+	virtual void Clear(AttachmentPoint attachemnt, ClearFlags clearFlags = ClearFlags::All, const glm::vec4& color = glm::vec4(0), float depth = 1.0f, uint8_t stencil = 0) = 0;
 
 	/**
 	* Clear the contents of all of the textures attached to the render target.
@@ -58,7 +58,7 @@ ZN_INTERFACE ZN_API IRenderTarget
 	* @param depth The depth value to use for depth attachment points.
 	* @param stencil The stencil value to use for stencil attachment points.
 	*/
-	virtual void Clear(ClearFlags clearFlags = ClearFlags::All, cvec4 color = vec4(0), float depth = 1.0f, uint8_t stencil = 0) = 0;
+	virtual void Clear(ClearFlags clearFlags = ClearFlags::All, const glm::vec4& color = glm::vec4(0), float depth = 1.0f, uint8_t stencil = 0) = 0;
 
 	/**
 	 * Generate mipmaps for all of the textures that are attached to the render target.

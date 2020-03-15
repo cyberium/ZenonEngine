@@ -20,32 +20,32 @@ public:
 	}
 
 	void set(const glm::vec3& Min, const glm::vec3& Max);
-	void calculate(const vec3* _verts, uint32 _count);
+	void calculate(const glm::vec3* _verts, uint32 _count);
 	void calculateCenter();
 	void clear();
 
 	//
 
-	void setMin(cvec3 _min) { m_Min = _min; m_IsCenterCalc = false; }
+	void setMin(const glm::vec3& _min) { m_Min = _min; m_IsCenterCalc = false; }
 	void setMinY(float value) { m_Min.y = value; m_IsCenterCalc = false; }
-	cvec3 getMin() const { return m_Min; }
+	const glm::vec3& getMin() const { return m_Min; }
 
-	void setMax(cvec3 _max) { m_Max = _max; m_IsCenterCalc = false; }
+	void setMax(const glm::vec3& _max) { m_Max = _max; m_IsCenterCalc = false; }
 	void setMaxY(float value) { m_Max.y = value; m_IsCenterCalc = false; }
-	cvec3 getMax() const { return m_Max; }
+	const glm::vec3& getMax() const { return m_Max; }
 
-	cvec3 getCenter() const { _ASSERT(m_IsCenterCalc); return m_Center; }
+	const glm::vec3& getCenter() const { _ASSERT(m_IsCenterCalc); return m_Center; }
 	float getRadius() const { _ASSERT(m_IsCenterCalc); return m_Radius; }
 
-	vec3 getCorner(uint32 index) const;
-	void transform(const mat4& m);
+	glm::vec3 getCorner(uint32 index) const;
+	void transform(const glm::mat4& m);
 	bool makeUnion(const BoundingBox& b);
-	bool isPointInside(cvec3 _point) const;
+	bool isPointInside(const glm::vec3& _point) const;
 
 private:
-	vec3 m_Min;
-	vec3 m_Max;
-	vec3 m_Center;
+	glm::vec3 m_Min;
+	glm::vec3 m_Max;
+	glm::vec3 m_Center;
 	float m_Radius;
 	bool m_IsCenterCalc;
 };

@@ -1,30 +1,30 @@
 #include "stdafx.h"
 
 // General
-#include "UIButtonPass.h"
+#include "UITexturePass.h"
 
 // Additional
-#include "SceneFunctional/UI/UIButton.h"
+#include "SceneFunctional/UI/UITexture.h"
 
-CUIButtonPass::CUIButtonPass(IRenderDevice& RenderDevice, std::shared_ptr<IScene> Scene)
+CUITexturePass::CUITexturePass(IRenderDevice& RenderDevice, std::shared_ptr<IScene> Scene)
 	: BaseUIPass(RenderDevice, Scene)
 {}
 
-CUIButtonPass::~CUIButtonPass()
+CUITexturePass::~CUITexturePass()
 {}
 
 
 //
 // IRenderPassPipelined
 //
-std::shared_ptr<IRenderPassPipelined> CUIButtonPass::CreatePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport)
+std::shared_ptr<IRenderPassPipelined> CUITexturePass::CreatePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport)
 {
 	BaseUIPass::CreatePipeline(RenderTarget, Viewport);
 	
-	std::shared_ptr<IShader> vertexShader = GetRenderDevice().GetObjectsFactory().CreateShader(EShaderType::VertexShader, "IDB_SHADER_UI_BUTTON", "VS_main");
+	std::shared_ptr<IShader> vertexShader = GetRenderDevice().GetObjectsFactory().CreateShader(EShaderType::VertexShader, "IDB_SHADER_UI_TEXTURE", "VS_main");
 	vertexShader->LoadInputLayoutFromReflector();
 
-	std::shared_ptr<IShader> pixelShader = GetRenderDevice().GetObjectsFactory().CreateShader(EShaderType::PixelShader, "IDB_SHADER_UI_BUTTON", "PS_main");
+	std::shared_ptr<IShader> pixelShader = GetRenderDevice().GetObjectsFactory().CreateShader(EShaderType::PixelShader, "IDB_SHADER_UI_TEXTURE", "PS_main");
 
 	// Create samplers
 	std::shared_ptr<ISamplerState> sampler = GetRenderDevice().GetObjectsFactory().CreateSamplerState();
@@ -43,9 +43,9 @@ std::shared_ptr<IRenderPassPipelined> CUIButtonPass::CreatePipeline(std::shared_
 //
 // IVisitor
 //
-EVisitResult CUIButtonPass::Visit(const ISceneNodeUI * node)
+EVisitResult CUITexturePass::Visit(const ISceneNodeUI * node)
 {
-	if (const CUIButtonNode* textNode = dynamic_cast<const CUIButtonNode*>(node))
+	if (const CUITextureNode* textNode = dynamic_cast<const CUITextureNode*>(node))
 	{
 		return BaseUIPass::Visit(node);
 	}
@@ -53,7 +53,7 @@ EVisitResult CUIButtonPass::Visit(const ISceneNodeUI * node)
 	return EVisitResult::AllowVisitChilds;
 }
 
-EVisitResult CUIButtonPass::Visit(const IModel * Model)
+EVisitResult CUITexturePass::Visit(const IModel * Model)
 {
 	return __super::Visit(Model);
 }

@@ -9,7 +9,7 @@ BoundingRect::BoundingRect() :
 	m_IsCenterCalc(false)
 {}
 
-BoundingRect::BoundingRect(vec2 _min, vec2 _max) :
+BoundingRect::BoundingRect(glm::vec2 _min, glm::vec2 _max) :
 	m_Min(_min),
 	m_Max(_max)
 {
@@ -49,9 +49,9 @@ void BoundingRect::calculateCenter()
 
 void BoundingRect::clear()
 {
-	m_Min = vec2(0, 0);
-	m_Max = vec2(0, 0);
-	m_Center = vec2(0, 0);
+	m_Min = glm::vec2(0, 0);
+	m_Max = glm::vec2(0, 0);
+	m_Center = glm::vec2(0, 0);
 	m_Radius = 0.0f;
 	m_IsCenterCalc = false;
 }
@@ -63,19 +63,19 @@ glm::vec2 BoundingRect::getCorner(uint32 index) const
 	switch (index)
 	{
 	case 0:
-		return vec2(m_Min.x, m_Min.y);
+		return glm::vec2(m_Min.x, m_Min.y);
 	case 1:
-		return vec2(m_Max.x, m_Min.y);
+		return glm::vec2(m_Max.x, m_Min.y);
 	case 2:
-		return vec2(m_Max.x, m_Max.y);
+		return glm::vec2(m_Max.x, m_Max.y);
 	case 3:
-		return vec2(m_Min.x, m_Max.y);
+		return glm::vec2(m_Min.x, m_Max.y);
 	default:
-		return vec2();
+		return glm::vec2(0.0f);
 	}
 }
 
-void BoundingRect::transform(const mat4& m)
+void BoundingRect::transform(const glm::mat4& m)
 {
 	float minA[2] = { m_Min.x, m_Min.y};
 	float minB[2];
@@ -96,11 +96,11 @@ void BoundingRect::transform(const mat4& m)
 		}
 	}
 
-	m_Min = vec2(minB[0], minB[1]);
-	m_Max = vec2(maxB[0], maxB[1]);
+	m_Min = glm::vec2(minB[0], minB[1]);
+	m_Max = glm::vec2(maxB[0], maxB[1]);
 
 	_ASSERT(m_IsCenterCalc);
-	m_Center = m * vec4(m_Center, 0.0f, 0.0f);
+	m_Center = m * glm::vec4(m_Center, 0.0f, 0.0f);
 }
 
 bool BoundingRect::makeUnion(const BoundingRect& b)

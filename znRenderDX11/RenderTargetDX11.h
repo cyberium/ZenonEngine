@@ -18,8 +18,8 @@ public:
 
 	void GenerateMipMaps() override;
 
-	void Clear(AttachmentPoint attachemnt, ClearFlags clearFlags = ClearFlags::All, cvec4 color = vec4(0), float depth = 1.0f, uint8_t stencil = 0) override;
-	void Clear(ClearFlags clearFlags = ClearFlags::All, cvec4 color = vec4(0), float depth = 1.0f, uint8_t stencil = 0) override;
+	void Clear(AttachmentPoint attachemnt, ClearFlags clearFlags = ClearFlags::All, const glm::vec4& color = glm::vec4(0), float depth = 1.0f, uint8_t stencil = 0) override;
+	void Clear(ClearFlags clearFlags = ClearFlags::All, const glm::vec4& color = glm::vec4(0), float depth = 1.0f, uint8_t stencil = 0) override;
 
 	void SetViewport(const Viewport& viewport) override;
 	const Viewport& GetViewport() const override;

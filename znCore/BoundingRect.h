@@ -38,14 +38,14 @@ public:
 	//
 
     glm::vec2 getCorner(uint32 index) const;
-	void transform(const mat4& m);
+	void transform(const glm::mat4& m);
 	bool makeUnion(const BoundingRect& b);
 	bool isPointInside(glm::vec2 _point) const;
 
 private:
-	vec2 m_Min;
-	vec2 m_Max;
-	vec2 m_Center;
+	glm::vec2 m_Min;
+	glm::vec2 m_Max;
+	glm::vec2 m_Center;
 	float m_Radius;
 	bool m_IsCenterCalc;
 };
