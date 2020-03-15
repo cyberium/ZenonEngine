@@ -5,7 +5,7 @@
 
 CColliderComponent3D::CColliderComponent3D(const ISceneNode3D& OwnerNode)
 	: CComponentBase(OwnerNode)
-	, m_CullStrategy(ECullStrategy::ByFrustrumAndDistance)
+	, m_CullStrategy(ECullStrategy::None)
 	, m_CullDistance(99999.0f) // Don't use FloatMax
 	, m_DebugDraw(true)
 {
@@ -99,8 +99,8 @@ bool CColliderComponent3D::IsCulledByDistance2D(const ICameraComponent3D* Camera
 {
 	_ASSERT(Camera != nullptr);
 
-	glm::vec3 cameraPosition = Camera->GetTranslation();
-	float distToCamera2D = glm::length(Fix_X0Z(cameraPosition) - Fix_X0Z(GetWorldBounds().getCenter())) - GetWorldBounds().getRadius();
+	const glm::vec3 cameraPosition = Camera->GetTranslation();
+	const float distToCamera2D = glm::length(Fix_X0Z(cameraPosition) - Fix_X0Z(GetWorldBounds().getCenter())) - GetWorldBounds().getRadius();
 	return distToCamera2D > m_CullDistance;
 }
 
@@ -108,8 +108,8 @@ bool CColliderComponent3D::IsCulledByDistance(const ICameraComponent3D* Camera) 
 {
 	_ASSERT(Camera != nullptr);
 
-	glm::vec3 cameraPosition = Camera->GetTranslation();
-	float distToCamera = glm::length(cameraPosition - GetWorldBounds().getCenter()) - GetWorldBounds().getRadius();
+	const glm::vec3 cameraPosition = Camera->GetTranslation();
+	const float distToCamera = glm::length(cameraPosition - GetWorldBounds().getCenter()) - GetWorldBounds().getRadius();
 	return distToCamera > m_CullDistance;
 }
 
@@ -117,17 +117,17 @@ void CColliderComponent3D::OnMessage(const ISceneNodeComponent* Component, Compo
 {
 	switch (Message)
 	{
-	case UUID_OnWorldTransformChanged:
-	{
-		UpdateBounds();
-	}
-	break;
-	case UUID_OnBoundsChanget:
-	{
-		_ASSERT(Component == this);
-		UpdateBounds();
-	}
-	break;
+		case UUID_OnWorldTransformChanged:
+		{
+			UpdateBounds();
+		}
+		break;
+		case UUID_OnBoundsChanget:
+		{
+			_ASSERT(Component == this);
+			UpdateBounds();
+		}
+		break;
 	}
 
 }

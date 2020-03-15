@@ -29,12 +29,16 @@ struct __declspec(novtable, align(16)) ZN_API SLight
 	
 	glm::vec4 PositionWS;  // Position for point and spot lights (World space).
 	//--------------------------------------------------------------( 16 bytes )
+
 	glm::vec4 DirectionWS; // Direction for spot and directional lights (World space).
 	//--------------------------------------------------------------( 16 bytes )
+
 	glm::vec4 PositionVS;  // Position for point and spot lights (View space).
 	//--------------------------------------------------------------( 16 bytes )
+
 	glm::vec4 DirectionVS; // Direction for spot and directional lights (View space).
 	//--------------------------------------------------------------( 16 bytes )
+
 	glm::vec4 Color;       // Color of the light. Diffuse and specular colors are not separated.
 	//--------------------------------------------------------------( 16 bytes )
 	
