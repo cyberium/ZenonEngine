@@ -2,6 +2,7 @@
 
 class ZN_API SceneNode3D
 	: public ISceneNode3D
+	, public ISceneNode3DInternal
 {
     friend IScene;
 public:
@@ -90,14 +91,16 @@ public:
 	virtual void                                    Accept(IVisitor* visitor) override;
 
 private:
-	void                                            SetSceneInternal(const std::weak_ptr<IScene>& Scene);
-	void                                            AddChildInternal(const std::shared_ptr<ISceneNode3D>& ChildNode);
-	void                                            RemoveChildInternal(const std::shared_ptr<ISceneNode3D>& ChildNode);
-	void                                            SetParentInternal(const std::weak_ptr<ISceneNode3D>& parentNode);
+	// ISceneNode3DInternal
+	void                                            SetSceneInternal(const std::weak_ptr<IScene>& Scene) override;
+	void                                            AddChildInternal(const std::shared_ptr<ISceneNode3D>& ChildNode) override;
+	void                                            RemoveChildInternal(const std::shared_ptr<ISceneNode3D>& ChildNode) override;
+	void                                            SetParentInternal(const std::weak_ptr<ISceneNode3D>& parentNode) override;
 
 protected:
-	virtual void									UpdateLocalTransform();
-	virtual void									UpdateWorldTransform();
+	virtual glm::mat4                               CalculateLocalTransform() const;
+	void											UpdateLocalTransform();
+	void											UpdateWorldTransform();
 	IBaseManager&                                   GetBaseManager() const;
 
 	std::shared_ptr<IColliderComponent3D>			m_Components_Collider;

@@ -45,6 +45,17 @@ public:
 		const ILight3D* Light;
 	};
 
+	struct ZN_API SParticleSystemElement
+	{
+		SParticleSystemElement(const ISceneNode3D* SceneNode, const IParticleSystem* ParticleSystem)
+			: SceneNode(SceneNode)
+			, ParticleSystem(ParticleSystem)
+		{}
+
+		const ISceneNode3D* SceneNode;
+		const IParticleSystem* ParticleSystem;
+	};
+
 	struct ZN_API SNodeElement
 	{
 		SNodeElement(const ISceneNode3D* SceneNode)

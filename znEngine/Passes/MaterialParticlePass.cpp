@@ -51,8 +51,8 @@ std::shared_ptr<IRenderPassPipelined> CMaterialParticlePass::CreatePipeline(std:
 		IBlendState::BlendOperation::Add,
 		IBlendState::BlendFactor::SrcAlpha, IBlendState::BlendFactor::One)*/
 	);
-	Pipeline->GetDepthStencilState()->SetDepthMode(disableDepthWrites);
-	Pipeline->GetRasterizerState()->SetCullMode(IRasterizerState::CullMode::None);
+	Pipeline->GetDepthStencilState()->SetDepthMode(enableTestDisableWrites);
+	Pipeline->GetRasterizerState()->SetCullMode(IRasterizerState::CullMode::Back);
 	Pipeline->GetRasterizerState()->SetFillMode(IRasterizerState::FillMode::Solid);
 	Pipeline->SetRenderTarget(RenderTarget);
 	Pipeline->SetShader(EShaderType::VertexShader, vertexShader);
@@ -71,11 +71,6 @@ std::shared_ptr<IRenderPassPipelined> CMaterialParticlePass::CreatePipeline(std:
 	sampler->SetFilter(ISamplerState::MinFilter::MinLinear, ISamplerState::MagFilter::MagLinear, ISamplerState::MipFilter::MipLinear);
 	sampler->SetWrapMode(ISamplerState::WrapMode::Clamp, ISamplerState::WrapMode::Clamp);
 	Pipeline->SetSampler(0, sampler);
-
-	sampler = GetRenderDevice().GetObjectsFactory().CreateSamplerState();
-	sampler->SetFilter(ISamplerState::MinFilter::MinLinear, ISamplerState::MagFilter::MagLinear, ISamplerState::MipFilter::MipLinear);
-	sampler->SetWrapMode(ISamplerState::WrapMode::Clamp, ISamplerState::WrapMode::Clamp);
-	Pipeline->SetSampler(1, sampler);
 
 	return SetPipeline(Pipeline);
 }
@@ -116,7 +111,7 @@ EVisitResult CMaterialParticlePass::Visit(const IParticleSystem * ParticlesSyste
 {
 	const std::vector<SParticle>& partilces = ParticlesSystem->GetParticles();
 	if (partilces.empty())
-		return EVisitResult::AllowAll;
+		return EVisitResult::Block;
 
 	if (partilces.size() > m_GeomParticlesBuffer->GetElementCount())
 		m_GeomParticlesBuffer = GetRenderDevice().GetObjectsFactory().CreateStructuredBuffer(partilces, CPUAccess::Write);
@@ -125,6 +120,10 @@ EVisitResult CMaterialParticlePass::Visit(const IParticleSystem * ParticlesSyste
 
 	m_GeomShaderParticlesBufferParameter->SetStructuredBuffer(m_GeomParticlesBuffer);
 	m_GeomShaderParticlesBufferParameter->Bind();
+
+	// Blend state
+	if (ParticlesSystem->GetBlendState())
+		ParticlesSystem->GetBlendState()->Bind();
 
 	// Bind material
 	if (ParticlesSystem->GetMaterial())

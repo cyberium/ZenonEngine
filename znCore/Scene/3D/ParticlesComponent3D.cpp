@@ -41,6 +41,11 @@ std::shared_ptr<IMaterial> CParticlesComponent3D::GetMaterial() const
 	return m_Material;
 }
 
+std::shared_ptr<IBlendState> CParticlesComponent3D::GetBlendState() const
+{
+	return std::shared_ptr<IBlendState>();
+}
+
 
 
 //

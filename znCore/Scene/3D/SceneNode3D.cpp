@@ -115,13 +115,14 @@ void SceneNode3D::AddChild(const std::shared_ptr<ISceneNode3D>& childNode)
 	// 1. Удаляем чилда у текущего родителя (возможно нужно его об этом нотифицировать, например для перерасчета BoundingBox)
 	if (auto currentChildParent = childNode->GetParent().lock())
 	{
-		if (currentChildParent == shared_from_this())
+		if (currentChildParent != shared_from_this())
 		{
-			Log::Warn("SceneNode3D: Failed to add child to his current parent.");
-			return;
+			std::dynamic_pointer_cast<SceneNode3D>(currentChildParent)->RemoveChildInternal(childNode);
+			//Log::Warn("SceneNode3D: Failed to add child to his current parent.");
+			//return;
 		}
 
-		std::dynamic_pointer_cast<SceneNode3D>(currentChildParent)->RemoveChildInternal(childNode);
+		
 	}
 
 	// 2. Добавляем чилда в нового парента (возможно нужно его об этом нотифицировать, например для перерасчета BoundingBox)
@@ -371,7 +372,7 @@ void SceneNode3D::Accept(IVisitor* visitor)
 
 
 //
-// Private
+// ISceneNode3DInternal
 //
 void SceneNode3D::SetSceneInternal(const std::weak_ptr<IScene>& Scene)
 {
@@ -431,12 +432,9 @@ void SceneNode3D::SetParentInternal(const std::weak_ptr<ISceneNode3D>& parentNod
 
 
 
-//
-// Protected
-//
-void SceneNode3D::UpdateLocalTransform()
+glm::mat4 SceneNode3D::CalculateLocalTransform() const
 {
-	glm::mat4 localTransform = glm::mat4(1.0f);
+	glm::mat4 localTransform(1.0f);
 
 	localTransform = glm::translate(localTransform, m_Translate);
 	if (m_IsRotateQuat)
@@ -451,8 +449,15 @@ void SceneNode3D::UpdateLocalTransform()
 	}
 	localTransform = glm::scale(localTransform, m_Scale);
 
-	SetLocalTransform(localTransform);
+	return localTransform;
+}
 
+//
+// Protected
+//
+void SceneNode3D::UpdateLocalTransform()
+{
+	SetLocalTransform(CalculateLocalTransform());
 	RaiseComponentMessage(nullptr, UUID_OnLocalTransformChanged);
 }
 

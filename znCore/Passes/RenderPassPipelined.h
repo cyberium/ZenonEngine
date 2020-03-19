@@ -77,6 +77,7 @@ protected:
 	static IBlendState::BlendMode additiveBlending;
 	static IBlendState::BlendMode disableBlending;
 	static IDepthStencilState::DepthMode enableDepthWrites;
+	static IDepthStencilState::DepthMode enableTestDisableWrites;
 	static IDepthStencilState::DepthMode disableDepthWrites;
 
 protected:

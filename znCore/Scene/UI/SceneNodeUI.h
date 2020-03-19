@@ -31,15 +31,15 @@ public:
 
 	// ISceneNodeUI
 	void											SetTranslate(const glm::vec2& _translate);
-	const glm::vec2&											GetTranslation() const;
+	const glm::vec2&								GetTranslation() const;
 	glm::vec2										GetTranslationAbs() const;
 	void											SetRotation(const glm::vec3& _rotate);
-	const glm::vec3&											GetRotation() const;
+	const glm::vec3&								GetRotation() const;
 	void											SetScale(const glm::vec2& _scale);
-	const glm::vec2&											GetScale() const;
+	const glm::vec2&								GetScale() const;
 	glm::vec2										GetScaleAbs() const;
-	virtual glm::mat4									GetLocalTransform() const;
-	virtual glm::mat4									GetWorldTransfom() const;
+	virtual glm::mat4								GetLocalTransform() const;
+	virtual glm::mat4								GetWorldTransfom() const;
 
 	// Size & bounds functional
     virtual glm::vec2                               GetSize() const override;

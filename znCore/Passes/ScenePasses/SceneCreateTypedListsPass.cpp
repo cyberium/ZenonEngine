@@ -49,6 +49,16 @@ const std::vector<CSceneCreateTypelessListPass::SGeometryElement>& CSceneCreateT
 	return m_GeometryList.at(SceneNodeType);
 }
 
+bool CSceneCreateTypedListsPass::HasParticleSystemsList(SceneNodeType SceneNodeType) const
+{
+	return m_ParticleSystemList.find(SceneNodeType) != m_ParticleSystemList.end();
+}
+
+const std::vector<CSceneCreateTypelessListPass::SParticleSystemElement>& CSceneCreateTypedListsPass::GetParticleSystemList(SceneNodeType SceneNodeType) const
+{
+	return m_ParticleSystemList.at(SceneNodeType);
+}
+
 //
 // IRenderPass
 //
@@ -122,5 +132,15 @@ EVisitResult CSceneCreateTypedListsPass::Visit(const ILight3D * light)
 
 	m_LastLight = light;
 	m_LightList[m_LastSceneNode->GetType()].push_back(CSceneCreateTypelessListPass::SLightElement(m_LastSceneNode, light));
+	return EVisitResult::AllowAll;
+}
+
+EVisitResult CSceneCreateTypedListsPass::Visit(const IParticleSystem * ParticleSystem)
+{
+	_ASSERT(m_LastSceneNode != nullptr);
+	_ASSERT(m_LastSceneNode->GetType() >= 0);
+
+	m_LastParticleSystem = ParticleSystem;
+	m_ParticleSystemList[m_LastSceneNode->GetType()].push_back(CSceneCreateTypelessListPass::SParticleSystemElement(m_LastSceneNode, ParticleSystem));
 	return EVisitResult::AllowAll;
 }

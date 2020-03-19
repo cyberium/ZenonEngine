@@ -162,6 +162,56 @@ const ComponentMessageType UUID_OnModelRemoved = 30;
 //
 // LIGHT COMPONENT 3D
 //
+
+// DON'T FORGET ABOUT PADDINGS!
+// DON'T USE 'bool'!
+
+enum class ZN_API ELightType : uint32_t // Don't delete uint32_t becouse mapped to render
+{
+	Point = 0,
+	Spot,
+	Directional,
+	Unknown
+};
+
+struct __declspec(novtable, align(16)) ZN_API SLight
+{
+	SLight()
+		: PositionWS(0, 0, 0, 1)
+		, DirectionWS(0, -1, 0, 0)
+		, PositionVS(0, 0, 0, 1)
+		, DirectionVS(0, 0, 1, 0)
+		, Color(1.0f, 1.0f, 1.0f, 1.0f)
+
+		, Type(ELightType::Unknown)
+		, Range(99999.0f)
+		, Intensity(1.0f)
+		, SpotlightAngle(45.0f)
+	{}
+
+
+	glm::vec4 PositionWS;  // Position for point and spot lights (World space).
+	//--------------------------------------------------------------( 16 bytes )
+
+	glm::vec4 DirectionWS; // Direction for spot and directional lights (World space).
+	//--------------------------------------------------------------( 16 bytes )
+
+	glm::vec4 PositionVS;  // Position for point and spot lights (View space).
+	//--------------------------------------------------------------( 16 bytes )
+
+	glm::vec4 DirectionVS; // Direction for spot and directional lights (View space).
+	//--------------------------------------------------------------( 16 bytes )
+
+	glm::vec4 Color;       // Color of the light. Diffuse and specular colors are not separated.
+	//--------------------------------------------------------------( 16 bytes )
+
+	ELightType Type; // The type of the light.
+	float Range; // The range of the light.
+	float Intensity; // The intensity of the light.
+	float SpotlightAngle; // The half angle of the spotlight cone.
+	//--------------------------------------------------------------(16 bytes )
+};
+
 ZN_INTERFACE ZN_API ILight3D
 {
 	virtual ~ILight3D() {}
@@ -278,12 +328,18 @@ struct __declspec(novtable, align(16)) ZN_API SParticle
 {
 	SParticle()
 		: Position(glm::vec3(0.0f))
+		, TexCoordBegin(glm::vec2(0.0f))
+		, TexCoordEnd(glm::vec2(1.0f))
 		, Color(glm::vec4(1.0f))
 		, Size(glm::vec2(10.0f))
 	{}
 
 	glm::vec3 Position;
 	float __padding0;
+	//--------------------------------------------------------------( 16 bytes )
+
+	glm::vec2 TexCoordBegin;
+	glm::vec2 TexCoordEnd;
 	//--------------------------------------------------------------( 16 bytes )
 
 	glm::vec4 Color;
@@ -304,6 +360,8 @@ ZN_INTERFACE ZN_API IParticleSystem
 
 	virtual void SetMaterial(const std::shared_ptr<IMaterial>& Material) = 0;
 	virtual std::shared_ptr<IMaterial> GetMaterial() const = 0;
+
+	virtual std::shared_ptr<IBlendState> GetBlendState() const = 0;
 };
 
 #define UUID_ParticleComponent uuid("B0168C5F-60C0-4210-B3EF-740FEB89FFDD")

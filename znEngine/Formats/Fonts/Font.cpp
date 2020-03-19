@@ -29,8 +29,9 @@ std::shared_ptr<IGeometry> CFont::GetGeometry() const
 
 uint32 CFont::GetCharWidth(char _char) const
 {
-	_ASSERT(_char < m_WidthArray.size());
-	return m_WidthArray[_char];
+	unsigned char uChar = static_cast<unsigned char>(_char);
+	_ASSERT(uChar < m_WidthArray.size());
+	return m_WidthArray[uChar];
 }
 
 uint32 CFont::GetStringWidth(const std::string& _string) const

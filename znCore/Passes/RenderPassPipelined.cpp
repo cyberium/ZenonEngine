@@ -7,6 +7,7 @@ IBlendState::BlendMode RenderPassPipelined::alphaBlending = IBlendState::BlendMo
 IBlendState::BlendMode RenderPassPipelined::additiveBlending = IBlendState::BlendMode(true, false, IBlendState::BlendFactor::One, IBlendState::BlendFactor::One);
 IBlendState::BlendMode RenderPassPipelined::disableBlending = IBlendState::BlendMode(false);
 IDepthStencilState::DepthMode RenderPassPipelined::enableDepthWrites = IDepthStencilState::DepthMode(true, IDepthStencilState::DepthWrite::Enable);
+IDepthStencilState::DepthMode RenderPassPipelined::enableTestDisableWrites = IDepthStencilState::DepthMode(true, IDepthStencilState::DepthWrite::Disable);
 IDepthStencilState::DepthMode RenderPassPipelined::disableDepthWrites = IDepthStencilState::DepthMode(false, IDepthStencilState::DepthWrite::Disable);
 
 

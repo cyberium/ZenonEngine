@@ -19,6 +19,7 @@ public:
 	const std::vector<SParticle>& GetParticles() const override;
 	void SetMaterial(const std::shared_ptr<IMaterial>& Material) override;
 	std::shared_ptr<IMaterial> GetMaterial() const override;
+	std::shared_ptr<IBlendState> GetBlendState() const override;
 
 	// ISceneNodeComponent
 	virtual void Update(const UpdateEventArgs& e) override;

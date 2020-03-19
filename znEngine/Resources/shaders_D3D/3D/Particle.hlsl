@@ -7,6 +7,10 @@ struct Particle
 	float __padding0;
 	//--------------------------------------------------------------( 16 bytes )
 
+	float2 TexCoordBegin;
+	float2 TexCoordEnd;
+	//--------------------------------------------------------------( 16 bytes )
+
 	float4 Color;
 	//--------------------------------------------------------------( 16 bytes )
 
@@ -59,13 +63,31 @@ GeometryShaderInput VS_main(VertexShaderInput VertexIN)
 	return ghi;
 }
 
+float3 TransformPoint(const float3 Point, const float4x4 Matrix)
+{
+	return mul(Matrix, float4(Point, 1.0f)).xyz;
+}
+
+float3 TransformPoint2(const float3 Point, const float4x4 Matrix)
+{
+	return mul(Matrix, float4(Point, 0.0f)).xyz;
+}
+
+float3 ExtractScaleMatrix(const float4x4 Matrix)
+{
+	float3 scale;
+	scale.x = length(float3(Matrix[0][0], Matrix[0][1], Matrix[0][2])); // 1st column
+	scale.y = length(float3(Matrix[1][0], Matrix[1][1], Matrix[1][2])); // 2nd column
+	scale.z = length(float3(Matrix[2][0], Matrix[2][1], Matrix[2][2])); // 3rd columt
+	return scale;
+}
 
 [maxvertexcount(4)]
 void GS_Billboard(point GeometryShaderInput input[1], inout TriangleStream<PixelShaderInput> OutputStream)
 {
 	Particle p = Particles[input[0].VertexID];
 
-	float3 transformePosition = mul(PO.Model, float4(p.Position, 1.0f)).xyz;
+	float3 transformePosition = TransformPoint(p.Position, PO.Model);
 
 	float3 planeNormal = transformePosition - GetCameraPosition();
 	planeNormal = normalize(planeNormal);
@@ -74,9 +96,11 @@ void GS_Billboard(point GeometryShaderInput input[1], inout TriangleStream<Pixel
 
 	float3 rightVector = normalize(cross(planeNormal, upVector));
 	rightVector *= (p.Size.x / 2.0f);
-
 	upVector *= (p.Size.y / 2.0f);
-	
+
+	float scale = length(ExtractScaleMatrix(PO.Model));
+	rightVector *= ExtractScaleMatrix(PO.Model).x * scale.x;
+	upVector *= ExtractScaleMatrix(PO.Model).y * scale.x;
 
 	// Create the billboards quad
 	float3 vert[4];
@@ -85,13 +109,12 @@ void GS_Billboard(point GeometryShaderInput input[1], inout TriangleStream<Pixel
 	vert[2] = transformePosition - rightVector + upVector; // Get top left vertex
 	vert[3] = transformePosition + rightVector + upVector; // Get top right vertex
 
-
 	// Get billboards texture coordinates
 	float2 texCoord[4];
-	texCoord[0] = float2(0, 1);
-	texCoord[1] = float2(1, 1);
-	texCoord[2] = float2(0, 0);
-	texCoord[3] = float2(1, 0);
+	texCoord[0] = float2(p.TexCoordBegin.x, p.TexCoordEnd.y);
+	texCoord[1] = float2(p.TexCoordEnd.x,   p.TexCoordEnd.y);
+	texCoord[2] = float2(p.TexCoordBegin.x, p.TexCoordBegin.y);
+	texCoord[3] = float2(p.TexCoordEnd.x,   p.TexCoordBegin.y);
 
 	//const float4x4 mv = mul(PF.View, PO.Model);
 	const float4x4 mvp = mul(PF.Projection, PF.View);
@@ -110,7 +133,7 @@ void GS_Billboard(point GeometryShaderInput input[1], inout TriangleStream<Pixel
 
 DefferedRenderPSOut PS_main(PixelShaderInput input) : SV_TARGET
 {
-	float4 DiffuseColor = DiffuseTexture.Sample(LinearClampSampler, input.texcoord);
+	float4 DiffuseColor = DiffuseTexture.Sample(LinearClampSampler, float2(input.texcoord.x, 1.0f - input.texcoord.y));
 	//if (DiffuseColor.a < 0.01)
 	//	DiffuseColor = float4(0.0f, 0.0f, 0.0f, 1.0f);
 
