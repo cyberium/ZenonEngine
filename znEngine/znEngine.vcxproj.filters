@@ -70,9 +70,6 @@
     <Filter Include="Resources\Shaders_D3D\3D\Base">
       <UniqueIdentifier>{f305d0f6-cefa-493d-8527-35571ff021e1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resources\Scripts">
-      <UniqueIdentifier>{0f67c8ef-60be-472e-98e4-315af5eac75f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Passes\UI">
       <UniqueIdentifier>{46e412dd-bb55-422f-9cf7-d860c116b3c4}</UniqueIdentifier>
     </Filter>
@@ -602,9 +599,6 @@
     </Image>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Scripts\TestScript.lua">
-      <Filter>Resources\Scripts</Filter>
-    </None>
     <None Include="Resources\shaders_D3D\3D\Model_Deffered.hlsl">
       <Filter>Resources\Shaders_D3D\3D</Filter>
     </None>

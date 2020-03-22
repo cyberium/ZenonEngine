@@ -97,7 +97,9 @@ EVisitResult CSceneCreateTypedListsPass::Visit(const ISceneNode3D * SceneNode)
 	if (const auto& colliderComponent = SceneNode->GetColliderComponent())
 	{
 		if (colliderComponent->IsCulled(GetRenderEventArgs()->CameraForCulling))
+		{
 			return EVisitResult::Block;
+		}
 	}
 
 	m_LastSceneNode = SceneNode;

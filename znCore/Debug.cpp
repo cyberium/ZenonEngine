@@ -34,7 +34,7 @@ CException::CException(const wchar_t * WMessage, ...)
 		std::wstring wMessage;
 		wMessage.resize(len);
 		vswprintf(&wMessage[0], len, WMessage, args);
-		m_Message = Resources::ConvertString(wMessage);
+		m_Message = Resources::utf16_to_utf8(wMessage);
 	}
 
 	va_end(args);
@@ -42,5 +42,5 @@ CException::CException(const wchar_t * WMessage, ...)
 
 CException::CException(std::wstring WMessage)
 {
-	m_Message = Resources::ConvertString(WMessage);
+	m_Message = Resources::utf16_to_utf8(WMessage);
 }

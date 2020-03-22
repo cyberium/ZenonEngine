@@ -250,9 +250,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Scripts\TestScript.lua" />
-  </ItemGroup>
-  <ItemGroup>
     <Text Include="Resources\shaders_D3D\3D\Particle.hlsl">
       <FileType>Document</FileType>
     </Text>

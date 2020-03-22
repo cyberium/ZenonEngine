@@ -34,7 +34,7 @@ std::string GetExeFileName()
 	wchar_t buffer[MAX_PATH];
 	GetModuleFileName(NULL, buffer, MAX_PATH);
 
-	return Resources::ConvertString(buffer);
+	return Resources::utf16_to_utf8(buffer);
 }
 
 std::string GetExePath()

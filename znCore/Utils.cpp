@@ -50,7 +50,7 @@ namespace Utils
 namespace Resources
 {
 	// Convert a multi-byte character std::string (UTF-8) to a multi-byte character std::string (CP1251)
-	std::string Utf8_to_cp1251(const std::string& AString)
+	std::string utf8_to_cp1251(const std::string& AString)
 	{
 		std::string res;
 
@@ -127,14 +127,14 @@ namespace Resources
 	}
 
 	// Convert a multi-byte character std::string (UTF-8) to a wide (UTF-16) encoded std::string.
-	std::wstring ConvertString(const std::string& AString)
+	std::wstring utf8_to_utf16(const std::string& AString)
 	{
 		std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
 		return converter.from_bytes(AString);
 	}
 
 	// Converts a wide (UTF-16) encoded std::string into a multi-byte (UTF-8) character std::string.
-	std::string ConvertString(const std::wstring& WString)
+	std::string utf16_to_utf8(const std::wstring& WString)
 	{
 		std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
 		return converter.to_bytes(WString);

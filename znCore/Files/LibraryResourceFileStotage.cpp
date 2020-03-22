@@ -18,7 +18,7 @@ CLibraryResourceFileStotage::~CLibraryResourceFileStotage()
 
 std::shared_ptr<IFile> CLibraryResourceFileStotage::OpenFile(std::string Filename, EFileAccessType FileAccessType)
 {
-    HRSRC hResource = FindResource(m_HModule, Resources::ConvertString(Filename).c_str(), RT_RCDATA);
+    HRSRC hResource = FindResource(m_HModule, Resources::utf8_to_utf16(Filename).c_str(), RT_RCDATA);
     if (hResource != NULL)
     {
         HGLOBAL hResourceData = LoadResource(m_HModule, hResource);
@@ -48,7 +48,7 @@ bool CLibraryResourceFileStotage::SaveFile(std::shared_ptr<IFile> File)
 
 size_t CLibraryResourceFileStotage::GetFileSize(std::string Filename)
 {
-    HRSRC hResource = FindResource(m_HModule, Resources::ConvertString(Filename).c_str(), RT_RCDATA);
+    HRSRC hResource = FindResource(m_HModule, Resources::utf8_to_utf16(Filename).c_str(), RT_RCDATA);
     if (hResource != NULL)
     {
         return static_cast<size_t>(SizeofResource(m_HModule, hResource));
@@ -59,7 +59,7 @@ size_t CLibraryResourceFileStotage::GetFileSize(std::string Filename)
 
 bool CLibraryResourceFileStotage::IsFileExists(std::string Filename)
 {
-    return FindResource(m_HModule, Resources::ConvertString(Filename).c_str(), RT_RCDATA) != NULL;
+    return FindResource(m_HModule, Resources::utf8_to_utf16(Filename).c_str(), RT_RCDATA) != NULL;
 }
 
 IFilesStorageEx::Priority CLibraryResourceFileStotage::GetPriority() const

@@ -54,10 +54,18 @@ bool ModelProxie::Render(const RenderEventArgs& renderEventArgs) const
 
 void ModelProxie::Accept(IVisitor* visitor)
 {
-	visitor->Visit(this);
+	EVisitResult visitResult = visitor->Visit(this);
 
-	for (const auto& connection : GetConnections())
+	if (visitResult & EVisitResult::AllowVisitContent)
 	{
-		connection.Geometry->Accept(visitor, connection.Material.get(), connection.GeometryDrawArgs);
+
+	}
+
+	if (visitResult & EVisitResult::AllowVisitChilds)
+	{
+		for (const auto& connection : GetConnections())
+		{
+			connection.Geometry->Accept(visitor, connection.Material.get(), connection.GeometryDrawArgs);
+		}
 	}
 }

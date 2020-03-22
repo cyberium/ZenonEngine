@@ -28,7 +28,7 @@ protected:
 	std::shared_ptr<CSceneCreateTypedListsPass> m_SceneNodeListPass;
 	std::vector<SceneNodeType> m_AcceptSceneNodeTypes;
 
-protected:
+private:
 	std::shared_ptr<IConstantBuffer> m_PerObjectConstantBuffer;
 	IShaderParameter* m_PerObjectParameter;
 };

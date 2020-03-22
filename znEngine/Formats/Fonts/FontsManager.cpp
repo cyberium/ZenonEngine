@@ -85,7 +85,6 @@ std::shared_ptr<CFont> FontsManager::CreateAction(IRenderDevice& RenderDevice, c
 	{
 		Log::Error("FontsManager[%s]: Error while loading font. Could not load font file.", f->Path_Name().c_str());
 
-		// Unload
 		FT_Done_FreeType(ftLibrary);
 		return nullptr;
 	}

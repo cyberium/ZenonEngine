@@ -48,8 +48,18 @@ const std::vector<IModel::SConnection>& ModelBase::GetConnections() const
 
 void ModelBase::Accept(IVisitor* visitor)
 {
-	visitor->Visit(this);
+	EVisitResult visitResult = visitor->Visit(this);
 
-	for (const auto& connection : m_Connections)
-		connection.Geometry->Accept(visitor, connection.Material.get(), connection.GeometryDrawArgs);
+	if (visitResult & EVisitResult::AllowVisitContent)
+	{
+
+	}
+
+	if (visitResult & EVisitResult::AllowVisitChilds)
+	{
+		for (const auto& connection : GetConnections())
+		{
+			connection.Geometry->Accept(visitor, connection.Material.get(), connection.GeometryDrawArgs);
+		}
+	}
 }

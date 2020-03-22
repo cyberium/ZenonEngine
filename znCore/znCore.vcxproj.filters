@@ -34,9 +34,6 @@
     <Filter Include="Common\Threads">
       <UniqueIdentifier>{94a88278-a0a3-4d93-8432-ca705b1e488d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Common\Helpers">
-      <UniqueIdentifier>{59b139b6-3568-49b9-afe7-7e6b75e45abd}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Common\Timers">
       <UniqueIdentifier>{4ed86a83-bc26-44a8-8c60-1dbec01ff0c6}</UniqueIdentifier>
     </Filter>
@@ -126,9 +123,6 @@
     <ClCompile Include="Log.cpp">
       <Filter>Log</Filter>
     </ClCompile>
-    <ClCompile Include="Utils.cpp">
-      <Filter>Common\Helpers</Filter>
-    </ClCompile>
     <ClCompile Include="BoundingBox.cpp">
       <Filter>Common\Primitives</Filter>
     </ClCompile>
@@ -164,9 +158,6 @@
     </ClCompile>
     <ClCompile Include="BoundingRect.cpp">
       <Filter>Common\Primitives</Filter>
-    </ClCompile>
-    <ClCompile Include="Random.cpp">
-      <Filter>Common\Helpers</Filter>
     </ClCompile>
     <ClCompile Include="Proxies\MaterialProxie.cpp">
       <Filter>__Proxies</Filter>
@@ -390,6 +381,12 @@
     <ClCompile Include="Scene\3D\ParticlesComponent3D.cpp">
       <Filter>Scene functional\3D</Filter>
     </ClCompile>
+    <ClCompile Include="Utils.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="Random.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Log.h">
@@ -403,9 +400,6 @@
     </ClInclude>
     <ClInclude Include="RefManager1Dim.h">
       <Filter>RefManager\1 Dim</Filter>
-    </ClInclude>
-    <ClInclude Include="Utils.h">
-      <Filter>Common\Helpers</Filter>
     </ClInclude>
     <ClInclude Include="BoundingBox.h">
       <Filter>Common\Primitives</Filter>
@@ -466,9 +460,6 @@
     </ClInclude>
     <ClInclude Include="BoundingRect.h">
       <Filter>Common\Primitives</Filter>
-    </ClInclude>
-    <ClInclude Include="Random.h">
-      <Filter>Common\Helpers</Filter>
     </ClInclude>
     <ClInclude Include="..\shared\znCore.h">
       <Filter>Common</Filter>
@@ -880,6 +871,12 @@
     </ClInclude>
     <ClInclude Include="..\shared\Interfaces\Scene\ISceneNodeBase.h">
       <Filter>__Interfaces\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Random.h">
+      <Filter>Common</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
