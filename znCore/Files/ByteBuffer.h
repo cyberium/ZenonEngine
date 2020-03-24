@@ -36,6 +36,12 @@ public:
 	void insert(size_t Position, const void * DataPtr, size_t DataSize);
 	void writeString(std::string String) override;
 
+	// PackedGUID
+	void ReadPackedUInt64(uint64& guid);
+	void ReadPackedUInt64(uint8 mask, uint64& value);
+	void AppendPackedUInt64(uint64 guid);
+	size_t PackUInt64(uint64 value, uint8* mask, uint8* result);
+
 private:
 	std::vector<uint8>  m_Data;
 	size_t              m_CurrentPosition;
