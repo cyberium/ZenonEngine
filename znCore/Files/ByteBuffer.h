@@ -36,6 +36,10 @@ public:
 	void insert(size_t Position, const void * DataPtr, size_t DataSize);
 	void writeString(std::string String) override;
 
+	uint32 ReadUInt32();
+	float ReadFloat();
+	double ReadDouble();
+
 	// PackedGUID
 	void ReadPackedUInt64(uint64& guid);
 	void ReadPackedUInt64(uint8 mask, uint64& value);

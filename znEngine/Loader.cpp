@@ -79,7 +79,12 @@ void CLoader::AddToLoadQueue(const std::weak_ptr<ILoadable>& LoadableItemWPtr)
 
 void CLoader::AddToDeleteQueue(const std::shared_ptr<ILoadable>& LoadableItemWPtr)
 {
+#ifdef DELETER_ENABLED
 	m_QueueDelete.Add(LoadableItemWPtr);
+#else
+	std::shared_ptr<ILoadable> loadable = LoadableItemWPtr;
+#endif
+	
 }
 
 

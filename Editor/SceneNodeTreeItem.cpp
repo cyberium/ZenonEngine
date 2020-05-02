@@ -9,13 +9,13 @@ CSceneNodeTreeItem::CSceneNodeTreeItem()
 {
 }
 
-CSceneNodeTreeItem::CSceneNodeTreeItem(ISceneNode3D* SceneNode3D, CSceneNodeTreeItem * Parent)
+CSceneNodeTreeItem::CSceneNodeTreeItem(const std::shared_ptr<ISceneNode3D>& SceneNode3D, CSceneNodeTreeItem * Parent)
 	: m_SceneNode3D(SceneNode3D)
 	, m_Parent(Parent)
 {
 	for (const auto& ch : SceneNode3D->GetChilds())
 	{
-		CSceneNodeTreeItem* treeItem = new CSceneNodeTreeItem(ch.get(), this);
+		CSceneNodeTreeItem* treeItem = new CSceneNodeTreeItem(ch, this);
 		addChild(treeItem);
 	}
 }
@@ -73,7 +73,7 @@ int CSceneNodeTreeItem::childNumberInParent() const
 	return 0;
 }
 
-ISceneNode3D* CSceneNodeTreeItem::GetSceneNode() const
+std::shared_ptr<ISceneNode3D> CSceneNodeTreeItem::GetSceneNode() const
 {
 	return m_SceneNode3D;
 }

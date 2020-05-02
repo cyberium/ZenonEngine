@@ -42,7 +42,7 @@ const ModelsList& CModelsComponent3D::GetModels()
 void CModelsComponent3D::Accept(IVisitor* visitor)
 {
 	const auto& models = GetModels();
-	std::for_each(models.begin(), models.end(), [&visitor](const auto& Model) {
+	std::for_each(models.begin(), models.end(), [visitor](const auto& Model) {
 		if (Model)
 			Model->Accept(visitor);
 	});

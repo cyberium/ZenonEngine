@@ -198,6 +198,30 @@ void CByteBuffer::writeString(std::string String)
 	writeBytes(String.c_str(), String.size());
 }
 
+uint32 CByteBuffer::ReadUInt32()
+{
+	uint32 value = 0;
+	readBytes(&value, sizeof(uint32));
+	return value;
+}
+
+float CByteBuffer::ReadFloat()
+{
+	float value = 0.0f;
+	readBytes(&value, sizeof(float));
+	return value;
+}
+
+double CByteBuffer::ReadDouble()
+{
+	double value = 0.0;
+	readBytes(&value, sizeof(double));
+	return value;
+}
+
+
+
+
 
 void CByteBuffer::ReadPackedUInt64(uint64& guid)
 {

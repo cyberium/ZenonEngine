@@ -104,5 +104,5 @@ void MainEditor::onCurrentChanged(const QModelIndex& current, const QModelIndex&
 	CSceneNodeTreeItem* item = static_cast<CSceneNodeTreeItem*>(current.internalPointer());
 	_ASSERT_EXPR(item != nullptr, L"Item is null.");
 
-	OnSceneNodeSelected(item->GetSceneNode());
+	OnSceneNodeSelected(item->GetSceneNode().get());
 }

@@ -30,7 +30,7 @@ void main_internal(int argumentCount, char* arguments[])
 	IRenderDevice& renderDevice = app.CreateRenderDevice(RenderDeviceType::RenderDeviceType_DirectX);
 
 	std::shared_ptr<IFontsManager> fontsManager = std::make_shared<FontsManager>(renderDevice, *BaseManager);
-	BaseManager->AddManager<IFontsManager>(std::move(fontsManager));
+	BaseManager->AddManager<IFontsManager>(fontsManager);
 
 	const auto& firstRenderWindow = renderDevice.GetObjectsFactory().CreateRenderWindow(*nativeWindow, false);
 	app.AddRenderWindow(firstRenderWindow);

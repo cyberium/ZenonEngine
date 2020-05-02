@@ -41,7 +41,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <map>
 
 
-#define TCP_BUFSIZE_READ 16400
+#define TCP_BUFSIZE_READ 16400 * 10
 #define TCP_OUTPUT_CAPACITY 1024000
 
 // flags used in OnDisconnect callback

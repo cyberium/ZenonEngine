@@ -9,22 +9,22 @@
 
 #include "GameState_Editor.h"
 
-static IBaseManager& BaseManager = nullptr;
+static IBaseManager* BaseManager = nullptr;
 
 void main_internal(int argc, char *argv[])
 {
 	// 1. Initialize engine and some improtant managers
-	BaseManager = InitializeEngine(ArgumentsToVector(argc, argv), "");
+	BaseManager = InitializeEngine(Utils::ArgumentsToVector(argc, argv), "");
 
 	// 3. Create application
-	Application app(BaseManager, ::GetModuleHandle(NULL));
+	Application app(*BaseManager, ::GetModuleHandle(NULL));
 
 	QApplication a(argc, argv);
 	MainEditor w;
 
 	IRenderDevice& renderDevice = app.CreateRenderDevice(RenderDeviceType::RenderDeviceType_DirectX);
 
-	std::shared_ptr<IFontsManager> fontsManager = std::make_shared<FontsManager>(renderDevice, BaseManager);
+	std::shared_ptr<IFontsManager> fontsManager = std::make_shared<FontsManager>(renderDevice, *BaseManager);
 	BaseManager->AddManager<IFontsManager>(fontsManager);
 
 	// Render window for main editor

@@ -8,7 +8,7 @@ class CSceneNodeTreeItem
 {
 public:
 	CSceneNodeTreeItem();
-	CSceneNodeTreeItem(ISceneNode3D* SceneNode3D, CSceneNodeTreeItem * Parent);
+	CSceneNodeTreeItem(const std::shared_ptr<ISceneNode3D>& SceneNode3D, CSceneNodeTreeItem * Parent);
 	virtual ~CSceneNodeTreeItem();
 
 	void											addChild(CSceneNodeTreeItem * child);
@@ -19,11 +19,11 @@ public:
 	QVariant										data() const;
 	int												childNumberInParent() const; 
 
-	ISceneNode3D*									GetSceneNode() const;
+	std::shared_ptr<ISceneNode3D>					GetSceneNode() const;
 
 private:
 	CSceneNodeTreeItem*								m_Parent;
 	std::vector<CSceneNodeTreeItem*>				m_Childs;
 
-	ISceneNode3D*									m_SceneNode3D;
+	std::shared_ptr<ISceneNode3D>					m_SceneNode3D;
 };
