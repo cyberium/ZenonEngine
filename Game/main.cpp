@@ -11,14 +11,6 @@ void main_internal(int argumentCount, char* arguments[])
 	// 3. Create application
 	Application app(*BaseManager, ::GetModuleHandle(NULL));
 
-
-	//CXMLManager xmlM;
-
-	// Reader
-	//std::shared_ptr<IXMLReader> reader = xmlM.CreateReader(BaseManager->GetManager<IFilesManager>()->Open("Scene.xml"));
-
-	
-
 	CNativeWindowFactory nativeWindowFactory(&app);
 
 	std::unique_ptr<INativeWindow> nativeWindow = nativeWindowFactory.CreateWindowInstance(

@@ -18,7 +18,7 @@
 #define QTN_PROPERTY_AUX_H
 
 #include "../CoreAPI.h"
-#include <QtCore/QObject>
+#include <QObject>
 
 // forward declarations
 class QtnPropertyBase;

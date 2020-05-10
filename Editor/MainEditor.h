@@ -1,6 +1,6 @@
 #pragma once
 
-#include <QtWidgets/QMainWindow>
+#include <QMainWindow>
 #include "ui_MainEditor.h"
 
 #include "SceneNodeTreeModel.h"

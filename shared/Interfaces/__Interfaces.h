@@ -5,15 +5,16 @@
 //---------------------------------------------------------//
 
 #ifdef OW_ENGINE_EXPORTS
-#define ZN_API __declspec(dllexport) 
+	#define ZN_API __declspec(dllexport) 
 #else
-#define ZN_API __declspec(dllimport) 
+	#define ZN_API __declspec(dllimport) 
 #endif
 
 #define ZN_INTERFACE struct __declspec(novtable)
 
 #define _CRT_SECURE_NO_WARNINGS
 
+/*
 #ifdef _DEBUG
 	#define _CRTDBG_MAP_ALLOC
 	#include <stdlib.h>
@@ -38,7 +39,7 @@
 	}
 
 	#include <memory>
-#endif
+#endif*/
 
 
 // General types

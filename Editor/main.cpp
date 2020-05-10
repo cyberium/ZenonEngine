@@ -2,7 +2,7 @@
 
 // Additional
 #include "MainEditor.h"
-#include <QtWidgets/QApplication>
+#include <QApplication>
 
 #include "DebugOutputEditorLog.h"
 #include "RenderWindowWidget.h"
@@ -30,6 +30,8 @@ void main_internal(int argc, char *argv[])
 	// Render window for main editor
 	std::shared_ptr<IRenderWindow> renderWindow = renderDevice.GetObjectsFactory().CreateRenderWindow(*w.getUI().EditorWindow, false);
 	app.AddRenderWindow(renderWindow);
+
+	BaseManager->GetManager<ILoader>()->Start();
 
 	std::shared_ptr<IScene> scene = BaseManager->GetManager<IScenesFactory>()->CreateScene("SceneDefault");
 	scene->ConnectEvents(std::dynamic_pointer_cast<IRenderWindowEvents>(renderWindow));

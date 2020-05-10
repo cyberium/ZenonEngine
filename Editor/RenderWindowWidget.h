@@ -1,6 +1,6 @@
 #pragma once
 
-#include <QtWidgets/qframe.h>
+#include <qframe.h>
 
 class RenderWindowWidget
 	: public QFrame
