@@ -181,6 +181,7 @@ struct __declspec(novtable, align(16)) ZN_API SLight
 		, DirectionWS(0, -1, 0, 0)
 		, PositionVS(0, 0, 0, 1)
 		, DirectionVS(0, 0, 1, 0)
+		, AmbientColor(0.1f, 0.1f, 0.1f, 1.0f)
 		, Color(1.0f, 1.0f, 1.0f, 1.0f)
 
 		, Type(ELightType::Unknown)
@@ -200,6 +201,9 @@ struct __declspec(novtable, align(16)) ZN_API SLight
 	//--------------------------------------------------------------( 16 bytes )
 
 	glm::vec4 DirectionVS; // Direction for spot and directional lights (View space).
+	//--------------------------------------------------------------( 16 bytes )
+
+	glm::vec4 AmbientColor;// Ambient color of the light.
 	//--------------------------------------------------------------( 16 bytes )
 
 	glm::vec4 Color;       // Color of the light. Diffuse and specular colors are not separated.
@@ -225,6 +229,9 @@ ZN_INTERFACE ZN_API ILight3D
 ZN_INTERFACE __declspec(UUID_LightComponent) ZN_API ILightComponent3D
 {
 	virtual ~ILightComponent3D() {}
+
+	virtual void SetAmbientColor(glm::vec3 Value) = 0;
+	virtual glm::vec3 GetAmbientColor() const = 0;
 
 	virtual void SetColor(glm::vec3 Value) = 0;
 	virtual glm::vec3 GetColor() const = 0;
@@ -370,3 +377,25 @@ ZN_INTERFACE __declspec(UUID_ParticleComponent) ZN_API IParticleComponent3D
 	virtual ~IParticleComponent3D() {}
 
 };
+
+
+
+//
+// PHYSICS BODY COMPONENT 3D
+//
+
+ZN_INTERFACE ZN_API IPhysicsBody
+{
+	virtual ~IPhysicsBody() {}
+
+	virtual glm::vec3 GetPosition() const = 0;
+};
+
+#define UUID_PhysicsComponent uuid("678B0AA5-0CD4-4C87-874A-20CD2AC82D2D")
+ZN_INTERFACE __declspec(UUID_PhysicsComponent)ZN_API IPhysicsComponent
+{
+	virtual ~IPhysicsComponent() {}
+
+	virtual glm::vec3 GetPhysicsPosition() const = 0;
+};
+

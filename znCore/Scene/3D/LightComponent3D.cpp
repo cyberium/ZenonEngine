@@ -20,6 +20,16 @@ CLightComponent3D::~CLightComponent3D()
 //
 // ILightComponent3D
 //
+void CLightComponent3D::SetAmbientColor(glm::vec3 Value)
+{
+	m_LightStruct->AmbientColor = glm::vec4(Value, 1.0f);
+}
+
+glm::vec3 CLightComponent3D::GetAmbientColor() const
+{
+	return m_LightStruct->AmbientColor.rgb;
+}
+
 void CLightComponent3D::SetColor(glm::vec3 Value)
 {
 	m_LightStruct->Color = glm::vec4(Value, 1.0f);

@@ -49,7 +49,7 @@ void MainEditor::ApplyScene(std::shared_ptr<IScene> Scene)
 {
 	m_Scene = Scene;
 
-	m_SceneTreeViewerModel->SetModelData(Scene);
+	m_SceneTreeViewerModel->SetModelData(Scene->GetRootNode3D());
 
 	ui.SceneTreeViewer->expandAll();
 }

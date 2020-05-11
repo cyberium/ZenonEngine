@@ -6,8 +6,8 @@ public:
 	Viewport()
 		: X(0)
 		, Y(0)
-		, Width(320)
-		, Height(240)
+		, Width(1280)
+		, Height(1024)
 		, MinDepth(0.0f)
 		, MaxDepth(1.0f)
 	{

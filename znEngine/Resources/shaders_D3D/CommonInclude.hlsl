@@ -180,7 +180,7 @@ float Blur(Texture2D Texture, sampler Sampler, float2 Coords)
 	float2 shadowBlurStep = float2(1.0f / 2048.0f, 1.0f / 2048.0f);
 
 	float sum = 0.0;
-	const int FILTER_SIZE = 3;
+	const int FILTER_SIZE = 5;
 	const float HALF_FILTER_SIZE = 0.5 * float(FILTER_SIZE);
 
 	for (int i = 0; i < FILTER_SIZE; i++)

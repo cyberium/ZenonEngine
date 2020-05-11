@@ -74,7 +74,7 @@ void RenderWindowDX11::CreateSwapChain()
 
 	m_SampleDesc = { 1, 0 };
 
-	UINT sampleCount = 1;
+	/*UINT sampleCount = 1;
 	UINT qualityLevels = 0;
 	while (SUCCEEDED(m_RenderDeviceDX11.GetDeviceD3D11()->CheckMultisampleQualityLevels(DXGI_FORMAT_R8G8B8A8_UNORM, sampleCount, &qualityLevels)) && qualityLevels > 0)
 	{
@@ -84,7 +84,7 @@ void RenderWindowDX11::CreateSwapChain()
 
 		// But can we do better?
 		sampleCount = sampleCount * 2;
-	}
+	}*/
 	
 
     DXGI_SWAP_CHAIN_DESC1 swapChainDesc = {};

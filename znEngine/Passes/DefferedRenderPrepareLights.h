@@ -55,5 +55,5 @@ private:
 	std::shared_ptr<CSceneCreateTypelessListPass> m_SceneCreateTypelessListPass;
 
 private: // consts
-	const float cShadowTextureSize = 4096.0f; //16384.0f;
+	const float cShadowTextureSize = 4096.0f * 2.0f; //16384.0f;
 };

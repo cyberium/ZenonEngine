@@ -12,6 +12,8 @@ public:
     virtual ~CLightComponent3D();
 
 	// ILightComponent3D
+	void SetAmbientColor(glm::vec3 Value) override;
+	glm::vec3 GetAmbientColor() const override;
 	void SetColor(glm::vec3 Value) override;
 	glm::vec3 GetColor() const override;
 	void SetType(ELightType Value) override;

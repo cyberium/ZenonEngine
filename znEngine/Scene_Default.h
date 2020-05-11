@@ -5,8 +5,9 @@
 #include "Passes/DefferedRenderPrepareLights.h"
 #include "Passes/DefferedRenderFinal.h"
 
-
 #include "SceneFunctional/UI/UITexture.h"
+
+#include "reactphysics3d.h"
 
 class ZN_API CSceneDefault 
 	: public SceneBase
@@ -43,4 +44,6 @@ private:
 	std::shared_ptr<CDefferedRender> m_DefferedRenderPass;
 	std::shared_ptr<CDefferedRenderPrepareLights> m_DefferedRenderPrepareLights;
 	std::shared_ptr<CDefferedRenderFinal> m_DefferedFinalRenderPass;
+
+	rp3d::DynamicsWorld m_World;
 };

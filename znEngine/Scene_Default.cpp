@@ -16,9 +16,19 @@
 #include "Passes/MaterialPassOpaque.h"
 #include "Passes/UIFontPass.h"
 
+#include "Physics/Adapters/ReactPhysicsComponent.h"
+
 CSceneDefault::CSceneDefault(IBaseManager& BaseManager)
 	: SceneBase(BaseManager)
-{}
+	, m_World(rp3d::Vector3(0.0f, -9.81f, 0.0f))
+{
+	// Change the number of iterations of the velocity solver
+	m_World.setNbIterationsVelocitySolver(15);
+
+	// Change the number of iterations of the position solver
+	m_World.setNbIterationsPositionSolver(8);
+
+}
 
 CSceneDefault::~CSceneDefault()
 {
@@ -38,6 +48,11 @@ void CSceneDefault::Initialize()
 	SetCameraController(std::make_shared<CFreeCameraController>());
 	GetCameraController()->SetCamera(cameraNode->GetComponent<ICameraComponent3D>());
 	GetCameraController()->GetCamera()->SetPerspectiveProjection(ICameraComponent3D::EPerspectiveProjectionHand::Right, 45.0f, static_cast<float>(GetRenderWindow()->GetWindowWidth()) / static_cast<float>(GetRenderWindow()->GetWindowHeight()), 0.5f, 10000.0f);
+
+	rp3d::Vector3 gravity(0.0, -9.81, 0.0);
+	// Create the dynamics world
+	rp3d::DynamicsWorld world(gravity);
+
 
 	Load3D();
 	LoadUI();
@@ -81,7 +96,9 @@ void CSceneDefault::OnRayIntersected(const glm::vec3& Point)
 //
 void CSceneDefault::OnPreRender(RenderEventArgs& e)
 {
-	m_RootForBoxes->SetRotation(glm::vec3(m_RootForBoxes->GetRotation().x, m_RootForBoxes->GetRotation().y + 0.01, 0.0f));
+	m_World.update(e.DeltaTime / 1000.0f * 2.0f);
+
+	//m_RootForBoxes->SetRotation(glm::vec3(m_RootForBoxes->GetRotation().x, m_RootForBoxes->GetRotation().y + 0.01, 0.0f));
 
 	SceneBase::OnPreRender(e);
 }
@@ -125,11 +142,11 @@ void CSceneDefault::Load3D()
 		sceneNodeLight->SetRotation(glm::vec3(-0.5f, -0.5f, -0.5f));
 
 		sceneNodeLight->GetComponent<ILightComponent3D>()->SetType(ELightType::Spot);
-		sceneNodeLight->GetComponent<ILightComponent3D>()->SetColor(glm::vec3(1.0f, 1.0f, 0.0f));
-		sceneNodeLight->GetComponent<ILightComponent3D>()->SetRange(10000.0f);
-		sceneNodeLight->GetComponent<ILightComponent3D>()->SetIntensity(1.5f);
-		sceneNodeLight->GetComponent<ILightComponent3D>()->SetSpotlightAngle(20.0f);
-
+		sceneNodeLight->GetComponent<ILightComponent3D>()->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
+		sceneNodeLight->GetComponent<ILightComponent3D>()->SetRange(5000.0f);
+		sceneNodeLight->GetComponent<ILightComponent3D>()->SetIntensity(1.0f);
+		sceneNodeLight->GetComponent<ILightComponent3D>()->SetSpotlightAngle(25.0f);
+#if 0
 		auto sceneNodeLight2 = GetRootNode3D()->CreateSceneNode<SceneNode3D>();
 		sceneNodeLight2->SetName("Light node2");
 		sceneNodeLight2->SetTranslate(glm::vec3(-300.0f, 300.0f, 300.0f));
@@ -142,7 +159,7 @@ void CSceneDefault::Load3D()
 		sceneNodeLight2->GetComponent<ILightComponent3D>()->SetSpotlightAngle(20.0f);
 
 
-#if 0
+
 		std::shared_ptr<SceneNode3D> sceneNodeLightCenter = CreateWrappedSceneNode<SceneNode3D>("SceneNode3D", m_Scene->GetRootNode());
 		sceneNodeLightCenter->SetName("Directional light");
 		sceneNodeLightCenter->SetTranslate(glm::vec3(0.0f, 0.0f, 0.0f));
@@ -166,24 +183,26 @@ void CSceneDefault::Load3D()
 	// Cubes & Spheres
 	//--------------------------------------------------------------------------
 
+	Random r(0);
+
 
 	{
-		const int iterCnt = 6;
+		const int iterCnt = 10;
 		const float offset = 13.0f;
 		const float scale = 5.0f;
 
-		/*std::shared_ptr<MaterialModel> textMaterial = std::make_shared<MaterialModel>(GetBaseManager());
-		textMaterial->SetDiffuseColor(vec3(1.0f, 1.0f, 1.0f));
-		textMaterial->SetSpecularColor(vec3(1.0f, 1.0f, 1.0f));
+		std::shared_ptr<MaterialModel> textMaterial = std::make_shared<MaterialModel>(GetBaseManager());
+		textMaterial->SetDiffuseColor(glm::vec3(1.0f, 1.0f, 1.0f));
+		textMaterial->SetSpecularColor(glm::vec3(1.0f, 1.0f, 1.0f));
 		textMaterial->SetSpecularFactor(4.0f);
-		textMaterial->SetBumpFactor(4.0f);
-		textMaterial->SetTexture(MaterialModel::ETextureType::TextureDiffuse, GetRenderDevice().GetObjectsFactory().LoadTexture2D("Sponza_Floor_diffuse.png"));
-		//textMaterial->SetTexture(MaterialModel::ETextureType::TextureNormalMap, GetRenderDevice().LoadTexture2D("Sponza_Floor_normal.png"));
-		textMaterial->SetTexture(MaterialModel::ETextureType::TextureSpecular, GetRenderDevice().GetObjectsFactory().LoadTexture2D("Sponza_Floor_roughness.png"));
-		//textMaterial->SetTexture(MaterialModel::ETextureType::TextureBump, GetRenderDevice().LoadTexture2D("Sponza_Floor_roughness.png"));*/
+		textMaterial->SetBumpFactor(8.0f);
+		textMaterial->SetTexture(MaterialModel::ETextureType::TextureDiffuse, GetRenderDevice().GetObjectsFactory().LoadTexture2D("AmazonScene\\BuildingTextures\\concrete_smooth_03_diff.dds"));
+		//textMaterial->SetTexture(MaterialModel::ETextureType::TextureNormalMap, GetRenderDevice().GetObjectsFactory().LoadTexture2D("Sponza_Ceiling_normal.png"));
+		textMaterial->SetTexture(MaterialModel::ETextureType::TextureSpecular, GetRenderDevice().GetObjectsFactory().LoadTexture2D("AmazonScene\\BuildingTextures\\concrete_smooth_03_spec.dds"));
+		textMaterial->SetTexture(MaterialModel::ETextureType::TextureBump, GetRenderDevice().GetObjectsFactory().LoadTexture2D("AmazonScene\\BuildingTextures\\concrete_smooth_03_ddna.dds"));
 
-		std::shared_ptr<MaterialTextured> textMaterial = std::make_shared<MaterialTextured>(GetRenderDevice());
-		textMaterial->SetTexture(0, GetRenderDevice().GetObjectsFactory().LoadTexture2D("Sponza_Floor_diffuse.png"));
+		//std::shared_ptr<MaterialTextured> textMaterial = std::make_shared<MaterialTextured>(GetRenderDevice());
+		//textMaterial->SetTexture(0, GetRenderDevice().GetObjectsFactory().LoadTexture2D("Sponza_Floor_diffuse.png"));
 
 		auto cubeModel = GetRenderDevice().GetObjectsFactory().CreateModel();
 		cubeModel->AddConnection(textMaterial, GetRenderDevice().GetPrimitivesFactory().CreateCube());
@@ -206,11 +225,37 @@ void CSceneDefault::Load3D()
 					sceneNode->SetName("Ball [" + std::to_string(i) + ", " + std::to_string(j) + ", " + std::to_string(k) + "]");
 					sceneNode->SetTranslate(glm::vec3(offset * i, offset * k, offset * j));
 					sceneNode->SetScale(glm::vec3(scale));
-					sceneNode->GetComponent<IModelsComponent3D>()->AddModel(((i % 2 == 0) || (j % 2 == 0) && (k % 2 == 0)) ? cubeModel : sphereModel);
+					//sceneNode->GetComponent<IModelsComponent3D>()->AddModel(((i % 2 == 0) || (j % 2 == 0) && (k % 2 == 0)) ? cubeModel : sphereModel);
+					sceneNode->GetComponent<IModelsComponent3D>()->AddModel(sphereModel);
 
 					BoundingBox bbox = BoundingBox(glm::vec3(-1.0f, -1.0f, -1.0f), glm::vec3(1.0f, 1.0f, 1.0f));
 					bbox.transform(sceneNode->GetWorldTransfom());
 					sceneNode->GetColliderComponent()->SetBounds(bbox);
+
+
+
+
+
+					rp3d::Vector3 initPosition(offset * i + r.NextFloat() / 5.0f, offset * k, offset * j + r.NextFloat() / 5.0f);
+					rp3d::Quaternion initOrientation = rp3d::Quaternion::identity();
+					rp3d::Transform transform(initPosition, initOrientation);
+
+					// Create a rigid body in the world
+					rp3d::RigidBody * body;
+					body = m_World.createRigidBody(transform);
+					body->setType(rp3d::BodyType::DYNAMIC);
+					body->getMaterial().setFrictionCoefficient(0.8);
+
+					// Create the sphere collision shape
+					float radius = rp3d::decimal(scale);
+					rp3d::SphereShape * shape = new rp3d::SphereShape(radius / 2.0f);
+
+					rp3d::ProxyShape * proxyShape;
+					proxyShape = body->addCollisionShape(shape, rp3d::Transform::identity(), rp3d::decimal(5.0));
+
+
+					std::shared_ptr<CReactPhysicsComponent> component = std::make_shared<CReactPhysicsComponent>(*sceneNode, body);
+					sceneNode->AddComponent(component);
 				}
 			}
 		}
@@ -224,18 +269,18 @@ void CSceneDefault::Load3D()
 		const float cPlaneSize = 500.0f;
 		const float cPlaneY = -10.0f;
 
-		/*std::shared_ptr<MaterialModel> textMaterial = std::make_shared<MaterialModel>(GetBaseManager());
-		textMaterial->SetDiffuseColor(vec3(1.0f, 1.0f, 1.0f));
-		textMaterial->SetSpecularColor(vec3(1.0f, 1.0f, 1.0f));
-		textMaterial->SetSpecularFactor(0.0f);
-		textMaterial->SetBumpFactor(4.0f);
-		//textMaterial->SetTexture(MaterialModel::ETextureType::TextureDiffuse, GetRenderDevice().CreateTexture2D("Sponza_Ceiling_diffuse.png"));
-		//textMaterial->SetTexture(MaterialModel::ETextureType::TextureNormalMap, GetRenderDevice().CreateTexture2D("Sponza_Ceiling_normal.png"));
-		//textMaterial->SetTexture(MaterialModel::ETextureType::TextureSpecular, GetRenderDevice().CreateTexture2D("Sponza_Ceiling_roughness.png"));
-		//textMaterial->SetTexture(MaterialModel::ETextureType::TextureBump, GetRenderDevice().CreateTexture2D("Sponza_Ceiling_roughness.png"));*/
+		std::shared_ptr<MaterialModel> textMaterial = std::make_shared<MaterialModel>(GetBaseManager());
+		textMaterial->SetDiffuseColor(glm::vec3(1.0f, 1.0f, 1.0f));
+		textMaterial->SetSpecularColor(glm::vec3(1.0f, 1.0f, 1.0f));
+		textMaterial->SetSpecularFactor(1.0f);
+		textMaterial->SetBumpFactor(8.0f);
+		textMaterial->SetTexture(MaterialModel::ETextureType::TextureDiffuse, GetRenderDevice().GetObjectsFactory().LoadTexture2D("AmazonScene\\OtherTextures\\Colors\\Orange.dds"));
+		//textMaterial->SetTexture(MaterialModel::ETextureType::TextureNormalMap, GetRenderDevice().GetObjectsFactory().LoadTexture2D("Sponza_Ceiling_normal.png"));
+		//textMaterial->SetTexture(MaterialModel::ETextureType::TextureSpecular, GetRenderDevice().GetObjectsFactory().LoadTexture2D("AmazonScene\\BuildingTextures\\concrete_smooth_03_spec.dds"));
+		//textMaterial->SetTexture(MaterialModel::ETextureType::TextureBump, GetRenderDevice().GetObjectsFactory().LoadTexture2D("AmazonScene\\BuildingTextures\\concrete_smooth_03_ddna.dds"));
 
-		std::shared_ptr<MaterialTextured> textMaterial = std::make_shared<MaterialTextured>(GetRenderDevice());
-		textMaterial->SetTexture(0, GetRenderDevice().GetObjectsFactory().LoadTexture2D("Sponza_Floor_diffuse.png"));
+		//std::shared_ptr<MaterialTextured> textMaterial = std::make_shared<MaterialTextured>(GetRenderDevice());
+		//textMaterial->SetTexture(0, GetRenderDevice().GetObjectsFactory().LoadTexture2D("idi na huy.png"));
 
 		auto& modelPlane = GetRenderDevice().GetObjectsFactory().CreateModel();
 		modelPlane->AddConnection(textMaterial, GetRenderDevice().GetPrimitivesFactory().CreatePlane());
@@ -245,6 +290,30 @@ void CSceneDefault::Load3D()
 		sceneNodePlane->SetTranslate(glm::vec3(0, cPlaneY, 0));
 		sceneNodePlane->SetScale(glm::vec3(cPlaneSize));
 		sceneNodePlane->GetComponent<IModelsComponent3D>()->AddModel(modelPlane);
+
+
+
+		rp3d::Vector3 initPosition(0, cPlaneY, 0);
+		rp3d::Quaternion initOrientation = rp3d::Quaternion::identity();
+		rp3d::Transform transform(initPosition, initOrientation);
+
+		// Create a rigid body in the world
+		rp3d::RigidBody * body;
+		body = m_World.createRigidBody(transform);
+		body->setType(rp3d::BodyType::STATIC);
+		body->getMaterial().setFrictionCoefficient(0.8);
+		body->getMaterial().setRollingResistance(0.2);
+
+		rp3d::BoxShape * shape = new rp3d::BoxShape(rp3d::Vector3(cPlaneSize, 0.001f, cPlaneSize));
+
+		rp3d::ProxyShape * proxyShape;
+		proxyShape = body->addCollisionShape(shape, rp3d::Transform::identity(), rp3d::decimal(5.0));
+
+
+		std::shared_ptr<CReactPhysicsComponent> component = std::make_shared<CReactPhysicsComponent>(*sceneNodePlane, body);
+		sceneNodePlane->AddComponent(component);
+
+
 	}
 
 
@@ -261,6 +330,10 @@ void CSceneDefault::Load3D()
 
 		auto model = GetRenderDevice().GetObjectsFactory().CreateModel();
 		model->AddConnection(material, geom);*/
+
+
+
+		/*
 
 		auto material = std::make_shared<MaterialParticle>(GetRenderDevice());
 		material->SetTexture(0, GetRenderDevice().GetObjectsFactory().LoadTexture2D("particle.png"));
@@ -285,6 +358,7 @@ void CSceneDefault::Load3D()
 			particle.Color = glm::vec4(r.NextFloat(), r.NextFloat(), r.NextFloat(), 1.0f);
 			particlesComponent->AddParticle(particle);
 		}
+		*/
 	}
 
 
@@ -307,12 +381,12 @@ void CSceneDefault::Load3D()
 
 	glm::vec4 color = glm::vec4(0.0, 0.0f, 0.0f, 1.0f);
 	m_Technique3D.AddPass(std::make_shared<ClearRenderTargetPass>(GetRenderDevice(), GetRenderWindow()->GetRenderTarget(), ClearFlags::All, color /*glm::vec4(0.2f, 0.2f, 0.2f, 0.2f)*/, 1.0f, 0));
-	/*m_Technique3D.AddPass(m_SceneCreateTypelessListPass);
+	m_Technique3D.AddPass(m_SceneCreateTypelessListPass);
 	m_Technique3D.AddPass(m_DefferedRenderPass);
 	m_Technique3D.AddPass(m_DefferedRenderPrepareLights);
-	m_Technique3D.AddPass(m_DefferedFinalRenderPass);*/
-	m_Technique3D.AddPass(GetBaseManager().GetManager<IRenderPassFactory>()->CreateRenderPass("TexturedMaterialPass", GetRenderDevice(), GetRenderWindow()->GetRenderTarget(), &GetRenderWindow()->GetViewport(), shared_from_this()));
-	m_Technique3D.AddPass(std::make_shared<CMaterialParticlePass>(GetRenderDevice(), shared_from_this())->CreatePipeline(GetRenderWindow()->GetRenderTarget(), &GetRenderWindow()->GetViewport()));
+	m_Technique3D.AddPass(m_DefferedFinalRenderPass);
+	//m_Technique3D.AddPass(GetBaseManager().GetManager<IRenderPassFactory>()->CreateRenderPass("TexturedMaterialPass", GetRenderDevice(), GetRenderWindow()->GetRenderTarget(), &GetRenderWindow()->GetViewport(), shared_from_this()));
+	//m_Technique3D.AddPass(std::make_shared<CMaterialParticlePass>(GetRenderDevice(), shared_from_this())->CreatePipeline(GetRenderWindow()->GetRenderTarget(), &GetRenderWindow()->GetViewport()));
 }
 
 void CSceneDefault::LoadUI()

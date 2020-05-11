@@ -25,7 +25,10 @@ struct Light
 	
 	float4 DirectionVS;   // Direction for spot and directional lights (View space).
 	//--------------------------------------------------------------( 16 bytes )
-	
+
+	float4 AmbientColor;  // Ambient color of the light.
+	//--------------------------------------------------------------( 16 bytes )
+
 	float4 Color;         // Color of the light. Diffuse and specular colors are not separated.
 	//--------------------------------------------------------------( 16 bytes )
 	
@@ -41,6 +44,7 @@ struct Light
 // This lighting result is returned by the lighting functions for each light type.
 struct LightingResult
 {
+	float4 Ambient;
 	float4 Diffuse;
 	float4 Specular;
 };
@@ -80,6 +84,11 @@ float4 DoBumpMapping(float3x3 TBN, Texture2D tex, sampler s, float2 uv, float bu
 	normal = mul(normal, TBN);
 
 	return float4(normal, 0);
+}
+
+float4 DoAmbient(Light light)
+{
+	return light.AmbientColor;
 }
 
 float4 DoDiffuse(Light light, float4 L, float4 N)
@@ -127,6 +136,7 @@ LightingResult DoPointLight(Light light, Material mat, float4 V, float4 P, float
 
 	float attenuation = DoAttenuation(light, distance);
 
+	result.Ambient = DoAmbient(light) * attenuation * light.Intensity;
 	result.Diffuse = DoDiffuse(light, L, N) * attenuation * light.Intensity;
 	result.Specular = DoSpecular(light, mat, V, L, N) * attenuation * light.Intensity;
 
@@ -139,6 +149,7 @@ LightingResult DoDirectionalLight(Light light, Material mat, float4 V, float4 P,
 
 	float4 L = normalize(-light.DirectionVS);
 
+	result.Ambient = DoAmbient(light) * light.Intensity;
 	result.Diffuse = DoDiffuse(light, L, N) * light.Intensity;
 	result.Specular = DoSpecular(light, mat, V, L, N) * light.Intensity;
 
@@ -156,6 +167,7 @@ LightingResult DoSpotLight(Light light, Material mat, float4 V, float4 P, float4
 	float attenuation = DoAttenuation(light, distance);
 	float spotIntensity = DoSpotCone(light, L);
 
+	result.Ambient = DoAmbient(light) * attenuation * light.Intensity;
 	result.Diffuse = DoDiffuse(light, L, N) * attenuation * spotIntensity * light.Intensity;
 	result.Specular = DoSpecular(light, mat, V, L, N) * attenuation * spotIntensity * light.Intensity;
 
@@ -201,6 +213,8 @@ LightingResult DoLighting(StructuredBuffer<Light> lights, Material mat, float4 e
 			}
 			break;
 		}
+
+		totalResult.Ambient += result.Ambient;
 		totalResult.Diffuse += result.Diffuse;
 		totalResult.Specular += result.Specular;
 	}

@@ -19,7 +19,7 @@ CSceneNodeTreeModel::~CSceneNodeTreeModel()
 //
 // CSceneNodeTreeModel
 //
-void CSceneNodeTreeModel::SetModelData(std::shared_ptr<IScene> Scene3D)
+void CSceneNodeTreeModel::SetModelData(const std::shared_ptr<ISceneNode3D>& SceneNode3D)
 {
 	if (m_RootItem)
 	{
@@ -27,7 +27,7 @@ void CSceneNodeTreeModel::SetModelData(std::shared_ptr<IScene> Scene3D)
 	}
 
 	m_RootItem = new CSceneNodeTreeItem();
-	m_RootItem->addChild(new CSceneNodeTreeItem(Scene3D->GetRootNode3D(), m_RootItem));
+	m_RootItem->addChild(new CSceneNodeTreeItem(SceneNode3D, m_RootItem));
 }
 
 
