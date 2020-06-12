@@ -31,13 +31,6 @@ std::shared_ptr<CFont> FontsManager::GetMainFont() const
 	return m_MainFont;
 }
 
-std::shared_ptr<CFont> FontsManager::Add(IRenderDevice& RenderDevice, const std::string& _fontFileName, uint32 _fontSize)
-{
-	return CRefManager1Dim::Add(RenderDevice, _fontFileName + "__" + std::to_string(_fontSize));
-}
-
-//
-
 
 struct VertexPTN
 {
@@ -53,22 +46,14 @@ struct VertexPTN
 };
 typedef std::vector<VertexPTN> VertexesPTN;
 
-std::shared_ptr<CFont> FontsManager::CreateAction(IRenderDevice& RenderDevice, const std::string& _nameAndSize)
+std::shared_ptr<CFont> FontsManager::Add(IRenderDevice& RenderDevice, const std::string& _fontFileName, uint32 _fontSize)
 {
-	uint32_t _delimIndex = static_cast<uint32>(_nameAndSize.find_last_of("__"));
-	if (_delimIndex == -1)
-	{
-		Log::Error("FontsManager[%s]: Incorrect font nameAndSize.", _nameAndSize.c_str());
-		return nullptr;
-	}
+	uint32 fontSize = _fontSize;
 
-	std::string fontFileName = _nameAndSize.substr(0, _delimIndex - 1);
-	uint32 fontSize = 14l;//Utils::ToType<uint32>(_nameAndSize.substr(_delimIndex + 1));
-
-	std::shared_ptr<IFile> f = m_BaseManager.GetManager<IFilesManager>()->Open(fontFileName);
+	std::shared_ptr<IFile> f = m_BaseManager.GetManager<IFilesManager>()->Open(_fontFileName);
 	if (f == nullptr)
 	{
-		Log::Fatal("FontsManager[%s]: Error while loading font.", _nameAndSize.c_str());
+		Log::Fatal("FontsManager[%s]: Error while loading font.", _fontFileName.c_str());
 		return nullptr;
 	}
 
@@ -222,9 +207,3 @@ std::shared_ptr<CFont> FontsManager::CreateAction(IRenderDevice& RenderDevice, c
 
 	return font;
 }
-
-bool FontsManager::DeleteAction(const std::string& name)
-{
-	return true;
-}
-

@@ -7,7 +7,6 @@ CUIColorNode::CUIColorNode(IRenderDevice& RenderDevice, glm::vec2 Size)
 	: m_Size(Size)
 {
 	m_Material = std::make_shared<UI_Color_Material>(RenderDevice);
-	m_Material->SetWrapper(m_Material.get());;
 
 	m_Mesh = RenderDevice.GetObjectsFactory().CreateModel();
 	m_Mesh->AddConnection(m_Material, RenderDevice.GetPrimitivesFactory().CreateUIQuad(Size.x, Size.y));

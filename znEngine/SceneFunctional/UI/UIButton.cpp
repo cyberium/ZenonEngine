@@ -13,7 +13,6 @@ CUIButtonNode::CUIButtonNode(IRenderDevice& RenderDevice)
 	: m_State(Idle)
 {
 	m_Material = std::make_shared<UI_Button_Material>(RenderDevice);
-	m_Material->SetWrapper(m_Material.get());
 }
 
 CUIButtonNode::~CUIButtonNode()

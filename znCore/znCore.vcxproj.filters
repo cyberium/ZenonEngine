@@ -7,12 +7,6 @@
     <Filter Include="Common">
       <UniqueIdentifier>{ad29bc23-2620-4c7e-936f-19c0ecea08b4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="RefManager">
-      <UniqueIdentifier>{e8b7d06f-ce44-4d51-8bb0-e6370cc39c70}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="RefManager\1 Dim">
-      <UniqueIdentifier>{2d2bf5e2-b8bf-4ce5-8ac0-2e7f796bc4ab}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Common\Primitives">
       <UniqueIdentifier>{93169e20-4b0c-45b2-82e2-49aad2886db8}</UniqueIdentifier>
     </Filter>
@@ -27,9 +21,6 @@
     </Filter>
     <Filter Include="Log\DebugOutput">
       <UniqueIdentifier>{154efe91-d5a0-4a4d-9b1d-d053b1d5228b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="RefManager\1 Dim Assync">
-      <UniqueIdentifier>{d1c95b6f-a767-47df-bed7-b177d7d1e2eb}</UniqueIdentifier>
     </Filter>
     <Filter Include="Common\Threads">
       <UniqueIdentifier>{94a88278-a0a3-4d93-8432-ca705b1e488d}</UniqueIdentifier>
@@ -137,9 +128,6 @@
     </ClCompile>
     <ClCompile Include="stdafx.cpp">
       <Filter>Common</Filter>
-    </ClCompile>
-    <ClCompile Include="RefManager1DimAssync.cpp">
-      <Filter>RefManager\1 Dim Assync</Filter>
     </ClCompile>
     <ClCompile Include="DebugOutputConsole.cpp">
       <Filter>Log\DebugOutput</Filter>
@@ -398,9 +386,6 @@
     <ClInclude Include="Macros.h">
       <Filter>Common</Filter>
     </ClInclude>
-    <ClInclude Include="RefManager1Dim.h">
-      <Filter>RefManager\1 Dim</Filter>
-    </ClInclude>
     <ClInclude Include="BoundingBox.h">
       <Filter>Common\Primitives</Filter>
     </ClInclude>
@@ -430,9 +415,6 @@
     </ClInclude>
     <ClInclude Include="stdafx.h">
       <Filter>Common</Filter>
-    </ClInclude>
-    <ClInclude Include="RefManager1DimAssync.h">
-      <Filter>RefManager\1 Dim Assync</Filter>
     </ClInclude>
     <ClInclude Include="DebugOutputConsole.h">
       <Filter>Log\DebugOutput</Filter>
@@ -880,12 +862,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="RefManager1Dim.inl">
-      <Filter>RefManager\1 Dim</Filter>
-    </None>
-    <None Include="RefManager1DimAssync.inl">
-      <Filter>RefManager\1 Dim Assync</Filter>
-    </None>
     <None Include="Scene\ComponentBase.inl">
       <Filter>Scene functional</Filter>
     </None>

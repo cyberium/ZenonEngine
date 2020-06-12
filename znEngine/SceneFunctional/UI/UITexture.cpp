@@ -12,7 +12,6 @@ CUITextureNode::CUITextureNode(IRenderDevice& RenderDevice, glm::vec2 Size)
 	: m_Size(Size)
 {
 	m_Material = std::make_shared<UI_Texture_Material>(RenderDevice);
-	m_Material->SetWrapper(m_Material.get());
 	m_Material->SetColor(cDefaultColor);
 
 	m_Mesh = RenderDevice.GetObjectsFactory().CreateModel();

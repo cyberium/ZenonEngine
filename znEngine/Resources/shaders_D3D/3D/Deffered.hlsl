@@ -46,7 +46,7 @@ float4 PS_ScreenQuad(VS_Output VSOut) : SV_TARGET
 
 bool IsShadowed(float4 PModel)
 {
-	const float bias = 0.000001f;
+	const float bias = 0.000005f;
 
 	const float4x4 mvpl = mul(LightProjectionMatrix, LightViewMatrix);
 	const float4 lightViewPosition = mul(mvpl, PModel);
@@ -58,8 +58,8 @@ bool IsShadowed(float4 PModel)
 	if ((saturate(projectTexCoord.x) == projectTexCoord.x) && (saturate(projectTexCoord.y) == projectTexCoord.y))
 	{
 		//float depthValue = TextureShadow.Load(int3(projectTexCoord, 0)).r;
-		float depthValue = Blur(TextureShadow, LinearClampSampler, projectTexCoord);
-		//float depthValue = TextureShadow.Sample(LinearClampSampler, projectTexCoord).r;
+		//float depthValue = Blur(TextureShadow, LinearClampSampler, projectTexCoord);
+		float depthValue = TextureShadow.Sample(LinearClampSampler, projectTexCoord).r;
 
 		float lightDepthValue = (lightViewPosition.z / lightViewPosition.w);
 		lightDepthValue -= bias;

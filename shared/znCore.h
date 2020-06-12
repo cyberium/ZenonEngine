@@ -2,9 +2,6 @@
 
 #include "../znCore/common.h"
 
-// Ref manager Sync
-#include "../znCore/RefManager1Dim.h"
-#include "../znCore/RefManager1DimAssync.h"
 
 // Files
 #include "../znCore/Files/ByteBuffer.h"

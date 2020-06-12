@@ -1,6 +1,6 @@
 #pragma once
 
-#include "reactphysics3d.h"
+#include <reactphysics3d.h>
 
 class __declspec(UUID_PhysicsComponent) CReactPhysicsComponent
 	: public CComponentBase

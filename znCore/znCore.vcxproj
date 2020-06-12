@@ -141,7 +141,6 @@
     <ClCompile Include="Proxies\ModelProxie.cpp" />
     <ClCompile Include="Proxies\SceneNodeProxie.cpp" />
     <ClCompile Include="Random.cpp" />
-    <ClCompile Include="RefManager1DimAssync.cpp" />
     <ClCompile Include="Scene\3D\CameraComponent3D.cpp" />
     <ClCompile Include="Scene\3D\ColliderComponent3D.cpp" />
     <ClCompile Include="Scene\3D\LightComponent3D.cpp" />
@@ -309,8 +308,6 @@
     <ClInclude Include="Random.h" />
     <ClInclude Include="Plane.h" />
     <ClInclude Include="Rect.h" />
-    <ClInclude Include="RefManager1Dim.h" />
-    <ClInclude Include="RefManager1DimAssync.h" />
     <ClInclude Include="Scene\3D\CameraComponent3D.h" />
     <ClInclude Include="Scene\3D\ColliderComponent3D.h" />
     <ClInclude Include="Scene\3D\LightComponent3D.h" />
@@ -333,8 +330,6 @@
     <ClInclude Include="XML\XMLManager.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="RefManager1DimAssync.inl" />
-    <None Include="RefManager1Dim.inl" />
     <None Include="Scene\ComponentBase.inl" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

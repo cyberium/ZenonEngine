@@ -3,8 +3,93 @@
   <ItemGroup>
     <ClCompile Include="Tests.cpp" />
     <ClCompile Include="stdafx.cpp" />
+    <ClCompile Include="..\Externals\sockets\tests\bind_address.cpp">
+      <Filter>sokets</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Externals\sockets\tests\chunked.cpp">
+      <Filter>sokets</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Externals\sockets\tests\copy.cpp">
+      <Filter>sokets</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Externals\sockets\tests\crlf.cpp">
+      <Filter>sokets</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Externals\sockets\tests\detach.cpp">
+      <Filter>sokets</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Externals\sockets\tests\echoserver.cpp">
+      <Filter>sokets</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Externals\sockets\tests\events.cpp">
+      <Filter>sokets</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Externals\sockets\tests\http.cpp">
+      <Filter>sokets</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Externals\sockets\tests\http_post.cpp">
+      <Filter>sokets</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Externals\sockets\tests\httpd.cpp">
+      <Filter>sokets</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Externals\sockets\tests\httpd_test.cpp">
+      <Filter>sokets</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Externals\sockets\tests\httpget.cpp">
+      <Filter>sokets</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Externals\sockets\tests\https.cpp">
+      <Filter>sokets</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Externals\sockets\tests\json.cpp">
+      <Filter>sokets</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Externals\sockets\tests\listener.cpp">
+      <Filter>sokets</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Externals\sockets\tests\resolve.cpp">
+      <Filter>sokets</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Externals\sockets\tests\resume.cpp">
+      <Filter>sokets</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Externals\sockets\tests\retry.cpp">
+      <Filter>sokets</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Externals\sockets\tests\scanr.cpp">
+      <Filter>sokets</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Externals\sockets\tests\semtest.cpp">
+      <Filter>sokets</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Externals\sockets\tests\sloppy_http.cpp">
+      <Filter>sokets</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Externals\sockets\tests\sockets_test.cpp">
+      <Filter>sokets</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Externals\sockets\tests\stressclient.cpp">
+      <Filter>sokets</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Externals\sockets\tests\threadstress.cpp">
+      <Filter>sokets</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Externals\sockets\tests\x.cpp">
+      <Filter>sokets</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="sokets">
+      <UniqueIdentifier>{7095134c-4c93-4098-b3ac-8eef419ca48f}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Externals\sockets\tests\Makefile">
+      <Filter>sokets</Filter>
+    </None>
   </ItemGroup>
 </Project>

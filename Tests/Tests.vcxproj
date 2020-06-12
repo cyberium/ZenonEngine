@@ -91,6 +91,31 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\Externals\sockets\tests\bind_address.cpp" />
+    <ClCompile Include="..\Externals\sockets\tests\chunked.cpp" />
+    <ClCompile Include="..\Externals\sockets\tests\copy.cpp" />
+    <ClCompile Include="..\Externals\sockets\tests\crlf.cpp" />
+    <ClCompile Include="..\Externals\sockets\tests\detach.cpp" />
+    <ClCompile Include="..\Externals\sockets\tests\echoserver.cpp" />
+    <ClCompile Include="..\Externals\sockets\tests\events.cpp" />
+    <ClCompile Include="..\Externals\sockets\tests\http.cpp" />
+    <ClCompile Include="..\Externals\sockets\tests\httpd.cpp" />
+    <ClCompile Include="..\Externals\sockets\tests\httpd_test.cpp" />
+    <ClCompile Include="..\Externals\sockets\tests\httpget.cpp" />
+    <ClCompile Include="..\Externals\sockets\tests\https.cpp" />
+    <ClCompile Include="..\Externals\sockets\tests\http_post.cpp" />
+    <ClCompile Include="..\Externals\sockets\tests\json.cpp" />
+    <ClCompile Include="..\Externals\sockets\tests\listener.cpp" />
+    <ClCompile Include="..\Externals\sockets\tests\resolve.cpp" />
+    <ClCompile Include="..\Externals\sockets\tests\resume.cpp" />
+    <ClCompile Include="..\Externals\sockets\tests\retry.cpp" />
+    <ClCompile Include="..\Externals\sockets\tests\scanr.cpp" />
+    <ClCompile Include="..\Externals\sockets\tests\semtest.cpp" />
+    <ClCompile Include="..\Externals\sockets\tests\sloppy_http.cpp" />
+    <ClCompile Include="..\Externals\sockets\tests\sockets_test.cpp" />
+    <ClCompile Include="..\Externals\sockets\tests\stressclient.cpp" />
+    <ClCompile Include="..\Externals\sockets\tests\threadstress.cpp" />
+    <ClCompile Include="..\Externals\sockets\tests\x.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -99,6 +124,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Externals\sockets\tests\Makefile" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

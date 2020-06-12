@@ -91,7 +91,6 @@ void CFBXSceneNode::LoadNode()
 
 			std::shared_ptr<MaterialTextured> matDebug = std::make_shared<MaterialTextured>(m_BaseManager.GetApplication().GetRenderDevice());
 			matDebug->SetTexture(0, m_BaseManager.GetApplication().GetRenderDevice().GetDefaultTexture());
-			matDebug->SetWrapper(matDebug.get());
 
 			const auto& mesh = m_BaseManager.GetApplication().GetRenderDevice().GetPrimitivesFactory().CreateCone();
 			mesh->SetMaterial(matDebug);
@@ -144,7 +143,6 @@ bool CFBXSceneNode::LoadMaterials()
 	for (int i = 0; i < m_NativeNode->GetMaterialCount(); i++)
 	{
 		std::shared_ptr<CFBXMaterial> znMaterial = std::make_shared<CFBXMaterial>(m_BaseManager, std::dynamic_pointer_cast<CFBXSceneNode>(shared_from_this()));
-		znMaterial->SetWrapper(znMaterial.get());
 		znMaterial->Load(m_NativeNode->GetMaterial(i));
 		m_MaterialsArray.push_back(znMaterial);
 	}
