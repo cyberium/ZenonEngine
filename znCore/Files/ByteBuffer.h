@@ -30,11 +30,11 @@ public:
     bool readBytes(void* _destination, size_t _size) override;
     void readString(std::string* _string) override;
 
-	void writeLine(std::string String) override;
+	void writeLine(const std::string& String) override;
 	void writeBytes(const void * Source, size_t BytesCount) override;
 	void writeDummy(size_t BytesCount) override;
 	void insert(size_t Position, const void * DataPtr, size_t DataSize);
-	void writeString(std::string String) override;
+	void writeString(const std::string& String) override;
 
 	uint32 ReadUInt32();
 	float ReadFloat();

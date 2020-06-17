@@ -187,7 +187,7 @@ void CSceneDefault::Load3D()
 
 
 	{
-		const int iterCnt = 10;
+		const int iterCnt = 2;
 		const float offset = 13.0f;
 		const float scale = 5.0f;
 
@@ -362,8 +362,8 @@ void CSceneDefault::Load3D()
 	}
 
 
-	//std::shared_ptr<ISceneNode3D> fbxSceneNode = GetBaseManager().GetManager<ISceneNodesFactory>()->CreateSceneNode(m_Scene->GetRootNode(), "FBXSceneNode");
-	//fbxSceneNode->GetComponent<ITransformComponent3D>()->SetScale(vec3(15.0f, 15.0f, 15.0f));
+	std::shared_ptr<ISceneNode3D> fbxSceneNode = GetBaseManager().GetManager<ISceneNodesFactory>()->CreateSceneNode3D(GetRootNode3D().get(), "FBXSceneNode");
+	//fbxSceneNode->SetScale(glm::vec3(15.0f, 15.0f, 15.0f));
 
 
 

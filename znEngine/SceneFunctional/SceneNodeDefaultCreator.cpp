@@ -9,6 +9,8 @@
 #ifdef ZN_FBX_SDK_ENABLE
 #include "FBX/FBXManager.h"
 #pragma comment(lib, "libfbxsdk-md.lib")
+#pragma comment(lib, "libxml2-md.lib")
+#pragma comment(lib, "zlib-md.lib")
 #endif
 
 CSceneNodeDefaultCreator::CSceneNodeDefaultCreator(const IBaseManager& BaseManager)
@@ -71,8 +73,9 @@ std::shared_ptr<ISceneNode3D> CSceneNodeDefaultCreator::CreateSceneNode3D(IScene
 
 		std::shared_ptr<CFBXScene> m_FBXScene = fbxManager.CreateScene("SomeSceneName");
 		//m_FBXScene->LoadFromFile(m_BaseManager.GetManager<IFilesManager>()->Open("Bistro_v4\\Bistro v4 Update\\Bistro_v4\\Bistro_Exterior.fbx"));
-		m_FBXScene->LoadFromFile(m_BaseManager.GetManager<IFilesManager>()->Open("Sponza\\sponza.fbx"));
+		//m_FBXScene->LoadFromFile(m_BaseManager.GetManager<IFilesManager>()->Open("Sponza\\sponza.fbx"));
 		//m_FBXScene->LoadFromFile(m_BaseManager.GetManager<IFilesManager>()->Open("tower\\tower.fbx"));
+		m_FBXScene->LoadFromFile(m_BaseManager.GetManager<IFilesManager>()->Open("bolt.fbx"));
 		m_FBXScene->LoadNodes(Parent);
 
 		return m_FBXScene->GetRootNode();

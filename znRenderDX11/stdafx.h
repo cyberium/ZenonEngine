@@ -32,3 +32,19 @@ ZN_INTERFACE ZN_API IRenderDeviceDX11
 	virtual ID3D11Device4* GetDeviceD3D11() = 0;
 	virtual ID3D11DeviceContext3* GetDeviceContextD3D11() = 0;
 };
+
+void DoCheckHR(HRESULT hr, ATL::CComBSTR Message = L"");
+
+#define CHECK_HR(x) \
+	{ \
+		HRESULT __hr = (x); \
+		if (FAILED(__hr)) \
+			DoCheckHR(__hr); \
+	}
+
+#define CHECK_HR_MSG(x, y) \
+	{ \
+		HRESULT __hr = (x); \
+		if (FAILED(__hr)) \
+			DoCheckHR(__hr, y); \
+	}

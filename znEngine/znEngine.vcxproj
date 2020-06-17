@@ -291,7 +291,6 @@
     <ClCompile Include="FBX\FBXScene.cpp" />
     <ClCompile Include="FBX\FBXSceneNode.cpp" />
     <ClCompile Include="FBX\FBXStream.cpp" />
-    <ClCompile Include="Formats\ChunkedFile.cpp" />
     <ClCompile Include="Formats\Fonts\Font.cpp" />
     <ClCompile Include="Formats\Fonts\FontsManager.cpp" />
     <ClCompile Include="Formats\Images\DDSFormat.cpp" />
@@ -454,7 +453,6 @@
     <ClInclude Include="FBX\FBXScene.h" />
     <ClInclude Include="FBX\FBXSceneNode.h" />
     <ClInclude Include="FBX\FBXStream.h" />
-    <ClInclude Include="Formats\ChunkedFile.h" />
     <ClInclude Include="Formats\Fonts\Font.h" />
     <ClInclude Include="Formats\Fonts\FontsManager.h" />
     <ClInclude Include="Formats\Images\DDSFormat.h" />
@@ -516,7 +514,6 @@
     <ClInclude Include="NativeWindow_WindowsSpecific.h" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="Formats\FormatsDescription.txt" />
     <Text Include="Resources\shaders_D3D\CommonInclude.hlsl">
     </Text>
     <Text Include="Resources\shaders_D3D\Types.hlsl">
@@ -653,7 +650,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>ZN_FBX_SDK_ENABLE1;_DEBUG;_WINDOWS;_USRDLL;OW_ENGINE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\shared\;..\Externals\;..\Externals\FreeImage-3.17.0\LibPNG\;..\Externals\freetype-2.9.1\include\;..\Externals\reactphysics3d-0.7.1\src\;..\znEngine\;$(ZN_FBX_SDK_PATH)include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\shared\;..\Externals\;..\Externals\FreeImage-3.17.0\LibPNG\;..\Externals\freetype-2.9.1\include\;..\Externals\reactphysics3d-0.7.1\src\;..\znEngine\;$(ZN_FBX_SDK_PATH)include\;C:\Program Files\Autodesk\FBX\FBX SDK\2020.0.1\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatSpecificWarningsAsErrors>4172</TreatSpecificWarningsAsErrors>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <DisableSpecificWarnings>4251</DisableSpecificWarnings>
@@ -665,7 +662,7 @@
       <Command>copy /Y "$(Platform)\$(Configuration)\$(ProjectName).res" "$(SolutionDir)bin_$(PlatformShortName)\$(Configuration)\$(ProjectName).res" </Command>
     </PostBuildEvent>
     <Link>
-      <AdditionalLibraryDirectories>$(SolutionDir)\bin_$(PlatformShortName)\$(Configuration)\;$(ZN_FBX_SDK_PATH)lib\vs2015\$(PlatformShortName)\$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)\bin_$(PlatformShortName)\$(Configuration)\;$(ZN_FBX_SDK_PATH)lib\vs2015\$(PlatformShortName)\$(Configuration)\;C:\Program Files\Autodesk\FBX\FBX SDK\2020.0.1\lib\vs2017\$(PlatformShortName)\$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>zlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <GenerateDebugInformation>DebugFull</GenerateDebugInformation>
     </Link>
@@ -676,7 +673,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <Optimization>MaxSpeed</Optimization>
       <PreprocessorDefinitions>ZN_FBX_SDK_ENABLE1;NDEBUG;_WINDOWS;_USRDLL;OW_ENGINE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\shared\;..\Externals\;..\Externals\FreeImage-3.17.0\LibPNG\;..\Externals\freetype-2.9.1\include\;..\Externals\reactphysics3d-0.7.1\src\;..\znEngine\;$(ZN_FBX_SDK_PATH)include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\shared\;..\Externals\;..\Externals\FreeImage-3.17.0\LibPNG\;..\Externals\freetype-2.9.1\include\;..\Externals\reactphysics3d-0.7.1\src\;..\znEngine\;$(ZN_FBX_SDK_PATH)include\;C:\Program Files\Autodesk\FBX\FBX SDK\2020.0.1\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <TreatSpecificWarningsAsErrors>4172</TreatSpecificWarningsAsErrors>
@@ -690,7 +687,7 @@
       <Command>copy /Y "$(Platform)\$(Configuration)\$(ProjectName).res" "$(SolutionDir)bin_$(PlatformShortName)\$(Configuration)\$(ProjectName).res" </Command>
     </PostBuildEvent>
     <Link>
-      <AdditionalLibraryDirectories>$(SolutionDir)\bin_$(PlatformShortName)\$(Configuration)\;$(ZN_FBX_SDK_PATH)lib\vs2015\$(PlatformShortName)\$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)\bin_$(PlatformShortName)\$(Configuration)\;$(ZN_FBX_SDK_PATH)lib\vs2015\$(PlatformShortName)\$(Configuration)\;C:\Program Files\Autodesk\FBX\FBX SDK\2020.0.1\lib\vs2017\$(PlatformShortName)\$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>zlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>

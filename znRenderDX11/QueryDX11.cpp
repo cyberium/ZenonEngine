@@ -32,10 +32,7 @@ QueryDX11::QueryDX11(IRenderDeviceDX11& RenderDeviceDX11, QueryType queryType, u
 
 	for (uint8_t i = 0; i < m_NumBuffers; ++i)
 	{
-		if (FAILED(m_RenderDeviceDX11.GetDeviceD3D11()->CreateQuery(&queryDesc, &m_Queries[0][i])))
-		{
-			Log::Error("Failed to create Query object.");
-		}
+		CHECK_HR_MSG(m_RenderDeviceDX11.GetDeviceD3D11()->CreateQuery(&queryDesc, &m_Queries[0][i]), L"Failed to create Query object.");
 	}
 
 	// For timer queries, we also need to create the disjoint timer queries.
@@ -52,7 +49,7 @@ QueryDX11::QueryDX11(IRenderDeviceDX11& RenderDeviceDX11, QueryType queryType, u
 			if (FAILED(m_RenderDeviceDX11.GetDeviceD3D11()->CreateQuery(&queryDesc, &m_Queries[1][i])) ||
 				FAILED(m_RenderDeviceDX11.GetDeviceD3D11()->CreateQuery(&disjointQueryDesc, &m_DisjointQueries[i])))
 			{
-				Log::Error("Failed to create timer query object.");
+				throw CznRenderException("Failed to create timer query object.");
 			}
 		}
 	}

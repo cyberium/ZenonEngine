@@ -66,6 +66,21 @@ struct ZN_API BufferBinding
 		return (Name == rhs.Name) && (Index == rhs.Index);
 	}
 
+	inline void Load(const std::shared_ptr<IByteBuffer>& ByteBuffer)
+	{
+		uint32 signature;
+		ByteBuffer->read(&signature);
+		ByteBuffer->readString(&Name);
+		ByteBuffer->read(&Index);
+	}
+
+	inline void Save(const std::shared_ptr<IByteBuffer>& ByteBuffer) const
+	{
+		ByteBuffer->write(&cBufferBindingSignature);
+		ByteBuffer->writeString(Name);
+		ByteBuffer->write(&Index);
+	}
+
 	std::string  Name;
 	uint32       Index;
 };

@@ -44,6 +44,53 @@ void GeometryBase::Accept(IVisitor * visitor, const IMaterial* Material, SGeomet
 	visitor->Visit(this, Material, GeometryDrawArgs);
 }
 
+void GeometryBase::Load(const std::shared_ptr<IFile>& File)
+{
+	uint32 vertexBuffersCnt;
+	File->read(&vertexBuffersCnt);
+	for (uint32 i = 0; i < vertexBuffersCnt; i++)
+	{
+		BufferBinding bufferBinding;
+		bufferBinding.Load(File);
+
+		
+	}
+}
+
+void GeometryBase::Save(const std::shared_ptr<IFile>& File)
+{
+	uint32 vertexBuffersCnt = m_VertexBuffers.size();
+	File->write(&vertexBuffersCnt);
+	for (const auto& b : m_VertexBuffers)
+	{
+		if (const auto& loadableFromFile = std::dynamic_pointer_cast<ILoadableFromFile>(b.second))
+		{
+			b.first.Save(File);
+			loadableFromFile->Save(File);
+		}
+	}
+
+	uint8 isVertexBufferExists = (m_VertexBuffer != nullptr) ? 0x01 : 0x00;
+	File->write(&isVertexBufferExists);
+	if (isVertexBufferExists)
+	{
+		if (const auto& loadableFromFile = std::dynamic_pointer_cast<ILoadableFromFile>(m_VertexBuffer))
+		{
+			loadableFromFile->Save(File);
+		}
+	}
+
+	uint8 isIndexBufferExists = (m_pIndexBuffer != nullptr) ? 0x01 : 0x00;
+	File->write(&isIndexBufferExists);
+	if (isIndexBufferExists)
+	{
+		if (const auto& loadableFromFile = std::dynamic_pointer_cast<ILoadableFromFile>(m_pIndexBuffer))
+		{
+			loadableFromFile->Save(File);
+		}
+	}
+}
+
 
 
 //

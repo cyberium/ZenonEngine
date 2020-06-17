@@ -70,7 +70,7 @@ bool ShaderInputLayoutDX11::LoadFromReflector(ID3DBlob * pShaderBlob, ID3D11Shad
 	D3D11_SHADER_DESC shaderDescription;
 	if (FAILED(hr = pReflector->GetDesc(&shaderDescription)))
 	{
-		Log::Error("Failed to get shader description from shader reflector.");
+		throw CznRenderException("Failed to get shader description from shader reflector.");
 		return false;
 	}
 
@@ -99,7 +99,7 @@ bool ShaderInputLayoutDX11::LoadFromReflector(ID3DBlob * pShaderBlob, ID3D11Shad
 	{
 		if (FAILED(hr = m_RenderDeviceDX11.GetDeviceD3D11()->CreateInputLayout(inputElements.data(), (UINT)inputElements.size(), pShaderBlob->GetBufferPointer(), pShaderBlob->GetBufferSize(), &m_pInputLayout)))
 		{
-			Log::Error("Failed to create input layout.");
+			throw CznRenderException("Failed to create input layout.");
 			return false;
 		}
 	}
@@ -122,7 +122,7 @@ bool ShaderInputLayoutDX11::LoadFromCustomElements(ID3DBlob * pShaderBlob, const
 		HRESULT hr = S_OK;
 		if (FAILED(hr = m_RenderDeviceDX11.GetDeviceD3D11()->CreateInputLayout(inputElements.data(), (UINT)inputElements.size() - 1, pShaderBlob->GetBufferPointer(), pShaderBlob->GetBufferSize(), &m_pInputLayout)))
 		{
-			Log::Error("Failed to create input layout.");
+			throw CznRenderException("Failed to create input layout.");
 			return false;
 		}
 	}

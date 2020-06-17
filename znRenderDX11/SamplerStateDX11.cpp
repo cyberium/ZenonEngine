@@ -26,7 +26,7 @@ void SamplerStateDX11::Bind(uint32_t ID, const IShader* shader, IShaderParameter
 {
     if (m_bIsDirty || m_pSamplerState == nullptr)
     {
-        D3D11_SAMPLER_DESC samplerDesc;
+		D3D11_SAMPLER_DESC samplerDesc;
         samplerDesc.Filter = DX11TranslateFilter(m_bIsAnisotropicFilteringEnabled, m_CompareMode, m_MinFilter, m_MagFilter, m_MipFilter);
         samplerDesc.AddressU = DX11TranslateWrapMode(m_WrapModeU);
         samplerDesc.AddressV = DX11TranslateWrapMode(m_WrapModeV);
@@ -42,7 +42,7 @@ void SamplerStateDX11::Bind(uint32_t ID, const IShader* shader, IShaderParameter
         samplerDesc.MaxLOD = m_fMaxLOD;
 
         m_pSamplerState = NULL;
-        m_RenderDeviceDX11.GetDeviceD3D11()->CreateSamplerState(&samplerDesc, &m_pSamplerState);
+        CHECK_HR(m_RenderDeviceDX11.GetDeviceD3D11()->CreateSamplerState(&samplerDesc, &m_pSamplerState));
 
         m_bIsDirty = false;
     }

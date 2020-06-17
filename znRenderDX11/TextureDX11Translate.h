@@ -1342,7 +1342,7 @@ static ITexture::TextureFormat DX11TranslateFormat(DXGI_FORMAT format, uint8_t n
 		result.StencilBits = 0;
 		break;
 	default:
-		Log::Error("Unsupported DXGI format.");
+		throw CznRenderException("Unsupported DXGI format.");
 		break;
 	}
 
@@ -1625,7 +1625,7 @@ static uint8_t DX11GetBPP(DXGI_FORMAT format)
 		bpp = 32;
 		break;
 	default:
-		Log::Error("Unsupported texture format.");
+		throw CznRenderException("Unsupported texture format.");
 		break;
 	}
 

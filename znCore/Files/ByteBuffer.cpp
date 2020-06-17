@@ -147,7 +147,7 @@ void CByteBuffer::readString(std::string* _string)
 }
 
 
-void CByteBuffer::writeLine(std::string String)
+void CByteBuffer::writeLine(const std::string& String)
 {
 }
 
@@ -193,9 +193,10 @@ void CByteBuffer::insert(size_t Position, const void * DataPtr, size_t DataSize)
 	m_Data.insert(m_Data.begin() + Position, static_cast<const uint8*>(DataPtr), static_cast<const uint8*>(DataPtr) + DataSize);
 }
 
-void CByteBuffer::writeString(std::string String)
+void CByteBuffer::writeString(const std::string& String)
 {
 	writeBytes(String.c_str(), String.size());
+	writeBytes("\0", 1);
 }
 
 uint32 CByteBuffer::ReadUInt32()

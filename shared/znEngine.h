@@ -22,7 +22,6 @@
 #include "../znEngine/Passes/DrawBoundingBoxPass.h"
 #include "../znEngine/Passes/MaterialParticlePass.h"
 
-#include "../znEngine/Formats/ChunkedFile.h"
 #include "../znEngine/Formats/Fonts/FontsManager.h"
 #include "../znEngine/Formats/Images/DDSFormat.h"
 #include "../znEngine/Formats/Images/ImageLoaderTemplate.h"

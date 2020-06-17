@@ -43,3 +43,17 @@ ZN_INTERFACE ZN_API
 	virtual void AddToLoadQueue(const std::weak_ptr<ILoadable>& LoadableItem) = 0;
 	virtual void AddToDeleteQueue(const std::shared_ptr<ILoadable>& LoadableItem) = 0;
 };
+
+ZN_INTERFACE ZN_API
+	__declspec(uuid("ECC273E7-3F46-4A34-A69B-4CE3D814420C"))
+	ILoadableFromFile
+{
+	virtual ~ILoadableFromFile() {}
+
+	virtual void Load(const std::shared_ptr<IFile>& File) = 0;
+	virtual void Save(const std::shared_ptr<IFile>& File) = 0;
+};
+
+const uint32 cBufferBindingSignature = 0x00100000;
+const uint32 cInputSemanticSignature = 0x00100001;
+

@@ -8,9 +8,9 @@ IznPlugin* plugin = nullptr;
 class CznScriptEnginePlugin : public IznPlugin
 {
 public:
-	CznScriptEnginePlugin()
+	CznScriptEnginePlugin(IBaseManager* BaseManager)
 	{
-
+		m_BaseManager = BaseManager;
 	}
 	virtual ~CznScriptEnginePlugin()
 	{
@@ -22,15 +22,24 @@ public:
 	//
 	// IznPlugin
 	//
-	bool Initialize(IBaseManager* BaseManager)
+	bool Initialize()
 	{
-		m_BaseManager = BaseManager;
+		
 
 		return true;
 	}
 	void Finalize()
 	{
 
+	}
+
+	std::string GetName() const override
+	{
+		return "Lua script plugin";
+	}
+	std::string GetDescription() const override
+	{
+		return "Provide lua support";
 	}
 
 private:
@@ -41,7 +50,7 @@ IznPlugin* GetPlugin(IBaseManager* BaseManager)
 {
 	if (plugin == nullptr)
 	{
-		plugin = new CznScriptEnginePlugin();
+		plugin = new CznScriptEnginePlugin(BaseManager);
 	}
 
 	return plugin;

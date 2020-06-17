@@ -264,7 +264,7 @@ std::string CFBXScene::GetPath() const
 	return m_Path;
 }
 
-CFBXSceneNode* CFBXScene::GetRootNode() const
+std::shared_ptr<CFBXSceneNode> CFBXScene::GetRootNode() const
 {
 	return m_RootNode;
 }

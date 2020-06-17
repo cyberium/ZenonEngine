@@ -22,15 +22,15 @@ ZN_INTERFACE ZN_API IByteBuffer
 	virtual void          seek(size_t AbsoluteOffset) = 0;
 	virtual void          seekRelative(intptr_t RelativeOffset) = 0;
 
-	virtual bool          readLine(std::string* _string) = 0;
+	virtual bool          readLine(std::string * String) = 0;
 	virtual bool          readBytes(void* _destination, size_t _size = 1) = 0;
-	virtual void          readString(std::string* _string) = 0;
+	virtual void          readString(std::string * String) = 0;
 
-	virtual void          writeLine(std::string String) = 0;
+	virtual void          writeLine(const std::string& String) = 0;
 	virtual void          writeBytes(const void* Source, size_t BytesCount) = 0;
 	virtual void          writeDummy(size_t BytesCount) = 0;
 	virtual void          insert(size_t Position, const void * DataPtr, size_t DataSize) = 0;
-	virtual void          writeString(std::string String) = 0;
+	virtual void          writeString(const std::string& String) = 0;
 
 	template <typename T>
 	inline bool read(T* Destination)

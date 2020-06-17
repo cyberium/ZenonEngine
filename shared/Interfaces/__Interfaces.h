@@ -79,6 +79,11 @@ typedef unsigned long long uint64;
 #   define NOMINMAX
 #endif
 
+#ifndef VC_EXTRALEAN
+#	define VC_EXTRALEAN		// Exclude rarely-used stuff from Windows headers
+#endif
+
+
 // STL Types
 #include <map>
 #include <set>

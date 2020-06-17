@@ -12,7 +12,7 @@
 #include "FBXDisplayCommon.h"
 
 CFBXMesh::CFBXMesh(const IBaseManager& BaseManager, std::weak_ptr<CFBXSceneNode> OwnerFBXNode)
-	: ModelProxie(BaseManager.GetApplication().GetRenderDevice().GetObjectsFactory().CreateMesh())
+	: ModelProxie(BaseManager.GetApplication().GetRenderDevice().GetObjectsFactory().CreateModel())
 	, m_BaseManager(BaseManager)
 	, m_OwnerFBXNode(OwnerFBXNode)
 {
@@ -327,9 +327,11 @@ void CFBXMesh::Load(fbxsdk::FbxMesh* NativeMesh)
 		}
 	}
 
-	AddVertexBuffer(BufferBinding("POSITION", 0), renderDevice.GetObjectsFactory().CreateVertexBuffer(vertices));
-	AddVertexBuffer(BufferBinding("TEXCOORD", 0), renderDevice.GetObjectsFactory().CreateVertexBuffer(uvs));
-	AddVertexBuffer(BufferBinding("NORMAL", 0), renderDevice.GetObjectsFactory().CreateVertexBuffer(normals));
+	m_Geometry = m_BaseManager.GetApplication().GetRenderDevice().GetObjectsFactory().CreateGeometry();
+
+	m_Geometry->AddVertexBuffer(BufferBinding("POSITION", 0), renderDevice.GetObjectsFactory().CreateVertexBuffer(vertices));
+	m_Geometry->AddVertexBuffer(BufferBinding("TEXCOORD", 0), renderDevice.GetObjectsFactory().CreateVertexBuffer(uvs));
+	m_Geometry->AddVertexBuffer(BufferBinding("NORMAL", 0), renderDevice.GetObjectsFactory().CreateVertexBuffer(normals));
 
 	//if (!binormal.empty())
 	//	AddVertexBuffer(BufferBinding("BINORMAL", 0), renderDevice->CreateVertexBuffer(binormal));
@@ -507,7 +509,7 @@ void CFBXMesh::DisplayMaterialConnections(fbxsdk::FbxMesh* NativeMesh)
 				int lMatId = lMaterialElement->GetIndexArray().GetAt(0);
 				_ASSERT(lMatId >= 0);
 
-				SetMaterial(m_OwnerFBXNode.lock()->GetMaterial(lMatId));
+				AddConnection(m_OwnerFBXNode.lock()->GetMaterial(lMatId), m_Geometry);
 			}
 			else
 			{
@@ -548,7 +550,7 @@ void CFBXMesh::DisplayMaterialConnections(fbxsdk::FbxMesh* NativeMesh)
 			GeometryDrawArgs.VertexStartLocation = it.second.PolygonBegin * 3;
 			GeometryDrawArgs.VertexCnt = it.second.PolygonEnd * 3 - GeometryDrawArgs.VertexStartLocation + 3;
 
-			AddMaterial(m_OwnerFBXNode.lock()->GetMaterial(it.first), GeometryDrawArgs);
+			AddConnection(m_OwnerFBXNode.lock()->GetMaterial(it.first), m_Geometry, GeometryDrawArgs);
 
 			//Log::Info("Material with id '%d' added for (%d to %d)", it.first, GeometryDrawArgs.VertexStartLocation, GeometryDrawArgs.VertexCnt);
 		}

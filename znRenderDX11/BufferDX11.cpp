@@ -9,24 +9,20 @@ BufferDX11::BufferDX11(IRenderDeviceDX11& RenderDeviceDX11, UINT bindFlags, cons
 	, m_BindFlags(bindFlags)
 	, m_Count((UINT)count)
 {
-	D3D11_BUFFER_DESC bufferDesc;
+	D3D11_BUFFER_DESC bufferDesc = { 0 };
 	bufferDesc.Usage = D3D11_USAGE_DEFAULT;
-	bufferDesc.BindFlags = bindFlags;
+	bufferDesc.BindFlags = m_BindFlags;
 	bufferDesc.ByteWidth = m_Stride * m_Count;
 	bufferDesc.CPUAccessFlags = 0;
 	bufferDesc.MiscFlags = 0;
 	bufferDesc.StructureByteStride = 0;
 
-	D3D11_SUBRESOURCE_DATA resourceData;
+	D3D11_SUBRESOURCE_DATA resourceData = { 0 };
 	resourceData.pSysMem = data;
 	resourceData.SysMemPitch = 0;
 	resourceData.SysMemSlicePitch = 0;
 
-	if (FAILED(m_RenderDeviceDX11.GetDeviceD3D11()->CreateBuffer(&bufferDesc, &resourceData, &m_pBuffer)))
-	{
-		_ASSERT_EXPR(false, "Failed to create buffer.");
-		return;
-	}
+	CHECK_HR_MSG(m_RenderDeviceDX11.GetDeviceD3D11()->CreateBuffer(&bufferDesc, &resourceData, &m_pBuffer), L"Failed to create buffer.");
 }
 
 BufferDX11::~BufferDX11()
@@ -82,15 +78,12 @@ void BufferDX11::UnBind(uint32 id, const IShader* shader, IShaderParameter::Type
 void BufferDX11::Copy(const IBuffer* other) const
 {
 	const BufferDX11* srcBuffer = dynamic_cast<const BufferDX11*>(other);
-
 	if (srcBuffer && srcBuffer != this && m_Count * m_Stride == srcBuffer->m_Count * srcBuffer->m_Stride)
 	{
 		m_RenderDeviceDX11.GetDeviceContextD3D11()->CopyResource(m_pBuffer, srcBuffer->m_pBuffer);
 	}
 	else
-	{
-		throw CException("Source buffer is not compatible with this buffer.");
-	}
+		throw CznRenderException("Source buffer is not compatible with this buffer.");
 }
 
 IBuffer::BufferType BufferDX11::GetType() const
@@ -125,4 +118,22 @@ uint32 BufferDX11::GetElementStride() const
 uint32 BufferDX11::GetElementOffset() const
 {
     return m_Offset;
+}
+
+void BufferDX11::Load(const std::shared_ptr<IFile>& File)
+{
+
+}
+
+void BufferDX11::Save(const std::shared_ptr<IFile>& File)
+{
+	D3D11_MAPPED_SUBRESOURCE mappedResource = { 0 };
+	CHECK_HR(m_RenderDeviceDX11.GetDeviceContextD3D11()->Map(m_pBuffer, 0, D3D11_MAP_READ, 0, &mappedResource));
+
+	std::vector<uint8> data;
+	data.resize(mappedResource.RowPitch * mappedResource.DepthPitch);
+
+	memcpy_s(data.data(), data.size(), mappedResource.pData, data.size());
+
+	m_RenderDeviceDX11.GetDeviceContextD3D11()->Unmap(m_pBuffer, 0);
 }

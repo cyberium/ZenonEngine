@@ -54,7 +54,7 @@ void CFBXSceneNode::LoadNode()
 
 	//SetRotation(glm::vec3(lRotation[0], lRotation[1], lRotation[2]));
 
-	//SetLocalTransform(globalTransform);
+	SetLocalTransform(globalTransform);
 
 	//
 	// Load childs
@@ -63,7 +63,7 @@ void CFBXSceneNode::LoadNode()
 	{
 		fbxsdk::FbxNode* fbxNode = m_NativeNode->GetChild(i);
 
-		CFBXSceneNode* childFbxNode = CreateSceneNode<CFBXSceneNode>(m_BaseManager, m_OwnerScene, fbxNode);
+		std::shared_ptr<CFBXSceneNode> childFbxNode = CreateSceneNode<CFBXSceneNode>(m_BaseManager, m_OwnerScene, fbxNode);
 		childFbxNode->LoadNode();
 	}
 
@@ -80,7 +80,7 @@ void CFBXSceneNode::LoadNode()
 		{
 			const auto& fbxMesh = std::make_shared<CFBXMesh>(m_BaseManager, std::dynamic_pointer_cast<CFBXSceneNode>(shared_from_this()));
 			fbxMesh->Load(m_NativeNode->GetMesh());
-			GetComponent<IModelsComponent3D>()->AddMesh(fbxMesh);
+			GetComponent<IModelsComponent3D>()->AddModel(fbxMesh);
 		}
 		break;
 
@@ -92,9 +92,11 @@ void CFBXSceneNode::LoadNode()
 			std::shared_ptr<MaterialTextured> matDebug = std::make_shared<MaterialTextured>(m_BaseManager.GetApplication().GetRenderDevice());
 			matDebug->SetTexture(0, m_BaseManager.GetApplication().GetRenderDevice().GetDefaultTexture());
 
-			const auto& mesh = m_BaseManager.GetApplication().GetRenderDevice().GetPrimitivesFactory().CreateCone();
-			mesh->SetMaterial(matDebug);
-			GetComponent<IModelsComponent3D>()->AddMesh(mesh);
+			auto geometry = m_BaseManager.GetApplication().GetRenderDevice().GetPrimitivesFactory().CreateCone();
+			auto model = m_BaseManager.GetApplication().GetRenderDevice().GetObjectsFactory().CreateModel();
+			model->AddConnection(matDebug, geometry);
+
+			GetComponent<IModelsComponent3D>()->AddModel(model);
 
 		}
 		break;

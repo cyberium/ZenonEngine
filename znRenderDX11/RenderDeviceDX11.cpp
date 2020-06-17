@@ -148,13 +148,13 @@ void RenderDeviceDX11::InitializeD3D11()
 
     if (FAILED(hr))
     {
-        Log::Error("Failed to created DirectX 11 Device");
+        throw CznRenderException("Failed to created DirectX 11 Device");
         return;
     }
 
     if (FAILED(pDevice->QueryInterface<ID3D11Device4>(&m_DeviceD3D11)))
     {
-        Log::Error("Failed to create DirectX 11.2 device");
+        throw CznRenderException("Failed to create DirectX 11.2 device");
     }
 
     // Now get the immediate device context.
@@ -165,7 +165,7 @@ void RenderDeviceDX11::InitializeD3D11()
     // Need to explitly set the multithreaded mode for this device
     if (FAILED(m_DeviceImmediateContext->QueryInterface(__uuidof(ID3D11Multithread), (void**)&m_pMultiThread)))
     {
-        Log::Error("Failed to create DirectX 11.2 device");
+        throw CznRenderException("Failed to create DirectX 11.2 device");
     }
     m_pMultiThread->SetMultithreadProtected(FALSE);
 
@@ -201,14 +201,14 @@ void RenderDeviceDX11::InitializeD3D11()
 
     if (FAILED(CreateDXGIFactory(__uuidof(IDXGIFactory), (void**)&factory)))
     {
-        Log::Error("Failed to create DXGIFactory.");
+        throw CznRenderException("Failed to create DXGIFactory.");
     }
     if (FAILED(factory->EnumAdapters(0, &adapter)))
     {
-        Log::Error("Failed to enumerate adapter.");
+        throw CznRenderException("Failed to enumerate adapter.");
     }
     if (FAILED(adapter->GetDesc(&adapterDescription)))
     {
-        Log::Error("Failed to qauery adapter description.");
+        throw CznRenderException("Failed to qauery adapter description.");
     }
 }

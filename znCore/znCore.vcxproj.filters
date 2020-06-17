@@ -375,6 +375,9 @@
     <ClCompile Include="Random.cpp">
       <Filter>Common</Filter>
     </ClCompile>
+    <ClCompile Include="Files\ChunkedFile.cpp">
+      <Filter>Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Log.h">
@@ -860,10 +863,18 @@
     <ClInclude Include="Random.h">
       <Filter>Common</Filter>
     </ClInclude>
+    <ClInclude Include="Files\ChunkedFile.h">
+      <Filter>Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Scene\ComponentBase.inl">
       <Filter>Scene functional</Filter>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Files\FormatsDescription.txt">
+      <Filter>Files</Filter>
+    </Text>
   </ItemGroup>
 </Project>

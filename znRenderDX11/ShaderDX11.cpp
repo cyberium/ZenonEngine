@@ -33,7 +33,7 @@ bool ShaderDX11::LoadShaderFromString(EShaderType shaderType, const std::string&
 	HRESULT hr;
 	{
 		ATL::CComPtr<ID3DBlob> pShaderBlob;
-		ATL::CComPtr<ID3DBlob> pErrorBlob;
+		
 
 		std::string _profile = profile;
 		if (profile == "latest")
@@ -42,13 +42,23 @@ bool ShaderDX11::LoadShaderFromString(EShaderType shaderType, const std::string&
 			_profile = GetLatestProfile(shaderType, featureLevel);
 			if (_profile.empty())
 			{
-				Log::Error("Invalid shader type for feature level.");
+				throw CznRenderException("Invalid shader type for feature level.");
 				return false;
 			}
 		}
 
+        std::shared_ptr<IFile> file = m_RenderDeviceDX11.GetBaseManager().GetManager<IFilesManager>()->Open(fileName);
+        std::string data = RecursionInclude(m_RenderDeviceDX11.GetBaseManager(), file);
+
+		UINT flags = D3DCOMPILE_ENABLE_STRICTNESS;
+#if defined( _DEBUG )
+		flags |= D3DCOMPILE_DEBUG;
+#else
+		flags |= D3DCOMPILE_OPTIMIZATION_LEVEL3;
+#endif
+
 		std::vector<D3D_SHADER_MACRO> macros;
-		for (auto macro : shaderMacros)
+		for (const auto& macro : shaderMacros)
 		{
 			// The macro definitions passed to this function only store temporary std::string objects.
 			// I need to copy the temporary strings into the D3D macro type 
@@ -66,36 +76,28 @@ bool ShaderDX11::LoadShaderFromString(EShaderType shaderType, const std::string&
 		}
 		macros.push_back({ 0, 0 });
 
+		ATL::CComPtr<ID3DBlob> pErrorBlob;
 
-		UINT flags = D3DCOMPILE_ENABLE_STRICTNESS;
-#if defined( _DEBUG )
-		flags |= D3DCOMPILE_DEBUG;
-#else
-		flags |= D3DCOMPILE_OPTIMIZATION_LEVEL3;
-#endif
-
-        std::shared_ptr<IFile> file = m_RenderDeviceDX11.GetBaseManager().GetManager<IFilesManager>()->Open(fileName);
-        std::string data = RecursionInclude(m_RenderDeviceDX11.GetBaseManager(), file);
-
-		hr = D3DCompile(data.c_str(), data.size(), fileName.c_str(), macros.data(), D3D_COMPILE_STANDARD_FILE_INCLUDE, entryPoint.c_str(), _profile.c_str(), flags, 0, &pShaderBlob, &pErrorBlob);
-
-		// We're done compiling.. Delete the macro definitions.
-		for (D3D_SHADER_MACRO macro : macros)
-		{
-			delete[] macro.Name;
-			delete[] macro.Definition;
-		}
-		macros.clear();
-
-		if (FAILED(hr))
-		{
-			if (pErrorBlob)
+			hr = D3DCompile(data.c_str(), data.size(), fileName.c_str(), macros.data(), D3D_COMPILE_STANDARD_FILE_INCLUDE, entryPoint.c_str(), _profile.c_str(), flags, 0, &pShaderBlob, &pErrorBlob);
+			if (FAILED(hr))
 			{
-				OutputDebugStringA(static_cast<char*>(pErrorBlob->GetBufferPointer()));
-				Log::Error(static_cast<char*>(pErrorBlob->GetBufferPointer()));
+				if (pErrorBlob != nullptr)
+				{
+					throw CznRenderException(std::string(static_cast<char*>(pErrorBlob->GetBufferPointer()), pErrorBlob->GetBufferSize()));
+				}
+				return false;
 			}
-			return false;
-		}
+
+			// We're done compiling.. Delete the macro definitions.
+			for (D3D_SHADER_MACRO macro : macros)
+			{
+				delete[] macro.Name;
+				delete[] macro.Definition;
+			}
+			macros.clear();
+
+		
+		
 
 		m_pShaderBlob = pShaderBlob;
 	}
@@ -129,13 +131,13 @@ bool ShaderDX11::LoadShaderFromString(EShaderType shaderType, const std::string&
 		hr = m_RenderDeviceDX11.GetDeviceD3D11()->CreateComputeShader(m_pShaderBlob->GetBufferPointer(), m_pShaderBlob->GetBufferSize(), nullptr, &m_pComputeShader);
 		break;
 	default:
-		Log::Error("Invalid shader type.");
+		throw CznRenderException("Invalid shader type.");
 		break;
 	}
 
 	if (FAILED(hr))
 	{
-		Log::Error("Failed to create shader.");
+		throw CznRenderException("Failed to create shader.");
 		return false;
 	}
 
@@ -144,7 +146,7 @@ bool ShaderDX11::LoadShaderFromString(EShaderType shaderType, const std::string&
 	ATL::CComPtr<ID3D11ShaderReflection> pReflector;
 	if (FAILED(hr = D3DReflect(m_pShaderBlob->GetBufferPointer(), m_pShaderBlob->GetBufferSize(), IID_ID3D11ShaderReflection, (void**)&pReflector)))
 	{
-		Log::Error("Failed to reflect shader.");
+		throw CznRenderException("Failed to reflect shader.");
 		return false;
 	}
 
@@ -152,7 +154,7 @@ bool ShaderDX11::LoadShaderFromString(EShaderType shaderType, const std::string&
 	D3D11_SHADER_DESC shaderDescription;
 	if (FAILED(hr = pReflector->GetDesc(&shaderDescription)))
 	{
-		Log::Error("Failed to get shader description from shader reflector.");
+		throw CznRenderException("Failed to get shader description from shader reflector.");
 		return false;
 	}
 
@@ -162,7 +164,7 @@ bool ShaderDX11::LoadShaderFromString(EShaderType shaderType, const std::string&
 	for (UINT i = 0; i < shaderDescription.BoundResources; ++i)
 	{
 		D3D11_SHADER_INPUT_BIND_DESC bindDesc;
-		pReflector->GetResourceBindingDesc(i, &bindDesc);
+		CHECK_HR(pReflector->GetResourceBindingDesc(i, &bindDesc));
 		std::string resourceName = bindDesc.Name;
 
 		IShaderParameter::Type parameterType = IShaderParameter::Type::Invalid;
@@ -233,7 +235,7 @@ bool ShaderDX11::LoadInputLayoutFromReflector()
 	ATL::CComPtr<ID3D11ShaderReflection> pReflector;
 	if (FAILED(hr = D3DReflect(m_pShaderBlob->GetBufferPointer(), m_pShaderBlob->GetBufferSize(), IID_ID3D11ShaderReflection, (void**)&pReflector)))
 	{
-		Log::Error("Failed to reflect shader.");
+		throw CznRenderException("Failed to reflect shader.");
 		return false;
 	}
 

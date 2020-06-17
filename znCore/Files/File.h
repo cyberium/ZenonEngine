@@ -67,7 +67,7 @@ public:
 		 m_ByteBuffer.readString(_string);
 	 }
 
-	 void writeLine(std::string String) override
+	 void writeLine(const std::string& String) override
 	 {
 		 m_ByteBuffer.writeLine(String);
 	 }
@@ -83,7 +83,7 @@ public:
 	 {
 		 m_ByteBuffer.insert(Position, DataPtr, DataSize);
 	 }
-	 void writeString(std::string String) override
+	 void writeString(const std::string& String) override
 	 {
 		 m_ByteBuffer.writeString(String);
 	 }

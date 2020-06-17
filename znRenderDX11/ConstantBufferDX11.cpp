@@ -14,11 +14,7 @@ ConstantBufferDX11::ConstantBufferDX11(IRenderDeviceDX11& RenderDeviceDX11, size
 	bufferDesc.MiscFlags = 0;
 	bufferDesc.StructureByteStride = 0;
 
-	if (FAILED(m_RenderDeviceDX11.GetDeviceD3D11()->CreateBuffer(&bufferDesc, nullptr, &m_pBuffer)))
-	{
-		_ASSERT_EXPR(false, "Failed to create constant buffer for shader.");
-		return;
-	}
+	CHECK_HR_MSG(m_RenderDeviceDX11.GetDeviceD3D11()->CreateBuffer(&bufferDesc, nullptr, &m_pBuffer), L"Failed to create constant buffer");
 }
 
 ConstantBufferDX11::~ConstantBufferDX11()
@@ -130,7 +126,7 @@ void ConstantBufferDX11::Copy(const IConstantBuffer* other) const
 	}
 	else
 	{
-		Log::Error("Source buffer is not compatible with this buffer.");
+		throw CznRenderException("Source buffer is not compatible with this buffer.");
 	}
 }
 
@@ -139,13 +135,9 @@ void ConstantBufferDX11::Set(const void* data, size_t size)
 	_ASSERT(size == m_BufferSize);
 
 	D3D11_MAPPED_SUBRESOURCE mappedResource = { 0 };
-	if (FAILED(m_RenderDeviceDX11.GetDeviceContextD3D11()->Map(m_pBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource)))
-	{
-		_ASSERT_EXPR(false, "Failed to map constant buffer.");
-		return;
-	}
+	CHECK_HR(m_RenderDeviceDX11.GetDeviceContextD3D11()->Map(m_pBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource));
 
-	memcpy(mappedResource.pData, data, m_BufferSize);
+	memcpy_s(mappedResource.pData, m_BufferSize, data, size);
 
 	m_RenderDeviceDX11.GetDeviceContextD3D11()->Unmap(m_pBuffer, 0);
 }

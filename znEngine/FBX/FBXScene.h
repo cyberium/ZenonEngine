@@ -23,13 +23,13 @@ public:
 	fbxsdk::FbxScene*   GetNativeScene() const;
 	fbxsdk::FbxManager* GetNativeManager() const;
 	std::string         GetPath() const;
-	CFBXSceneNode* GetRootNode() const;
+	std::shared_ptr<CFBXSceneNode> GetRootNode() const;
 
 private:
 	std::string m_Path;
 	fbxsdk::FbxScene* m_NativeScene;
 
-	CFBXSceneNode* m_RootNode;
+	std::shared_ptr<CFBXSceneNode> m_RootNode;
 
 private:
 	const IBaseManager& m_BaseManager;

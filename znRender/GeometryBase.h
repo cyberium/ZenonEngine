@@ -18,6 +18,9 @@ public:
 
 	virtual void         Accept(IVisitor* visitor, const IMaterial* Material, SGeometryDrawArgs GeometryDrawArgs = SGeometryDrawArgs()) override;
 
+	void                 Load(const std::shared_ptr<IFile>& File);
+	void                 Save(const std::shared_ptr<IFile>& File);
+
 protected:
 	SGeometryDrawArgs    FixGeometryDrawArgs(const SGeometryDrawArgs& GeometryDrawArgs) const;
 

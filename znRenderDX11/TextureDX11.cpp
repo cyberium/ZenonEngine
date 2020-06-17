@@ -76,23 +76,23 @@ TextureDX11::TextureDX11(IRenderDeviceDX11& RenderDeviceDX11, uint16_t width, ui
 	// Query for texture format support.
 	if (FAILED(m_RenderDeviceDX11.GetDeviceD3D11()->CheckFormatSupport(m_TextureResourceFormat, &m_TextureResourceFormatSupport)))
 	{
-		Log::Error("Failed to query texture resource format support.");
+		throw CznRenderException("Failed to query texture resource format support.");
 	}
 	if (FAILED(m_RenderDeviceDX11.GetDeviceD3D11()->CheckFormatSupport(m_DepthStencilViewFormat, &m_DepthStencilViewFormatSupport)))
 	{
-		Log::Error("Failed to query depth/stencil format support.");
+		throw CznRenderException("Failed to query depth/stencil format support.");
 	}
 	if (FAILED(m_RenderDeviceDX11.GetDeviceD3D11()->CheckFormatSupport(m_ShaderResourceViewFormat, &m_ShaderResourceViewFormatSupport)))
 	{
-		Log::Error("Failed to query shader resource format support.");
+		throw CznRenderException("Failed to query shader resource format support.");
 	}
 	if (FAILED(m_RenderDeviceDX11.GetDeviceD3D11()->CheckFormatSupport(m_RenderTargetViewFormat, &m_RenderTargetViewFormatSupport)))
 	{
-		Log::Error("Failed to query render target format support.");
+		throw CznRenderException("Failed to query render target format support.");
 	}
 	if (FAILED(m_RenderDeviceDX11.GetDeviceD3D11()->CheckFormatSupport(m_UnorderedAccessViewFormat, &m_UnorderedAccessViewFormatSupport)))
 	{
-		Log::Error("Failed to query render target format support.");
+		throw CznRenderException("Failed to query render target format support.");
 	}
 	if ((m_TextureResourceFormatSupport & D3D11_FORMAT_SUPPORT_TEXTURE2D) == 0)
 	{
@@ -137,19 +137,19 @@ TextureDX11::TextureDX11(IRenderDeviceDX11& RenderDeviceDX11, uint16_t size, uin
 	// Query for texture format support.
 	if (FAILED(m_RenderDeviceDX11.GetDeviceD3D11()->CheckFormatSupport(m_TextureResourceFormat, &m_TextureResourceFormatSupport)))
 	{
-		Log::Error("Failed to query texture resource format support.");
+		throw CznRenderException("Failed to query texture resource format support.");
 	}
 	if (FAILED(m_RenderDeviceDX11.GetDeviceD3D11()->CheckFormatSupport(m_DepthStencilViewFormat, &m_DepthStencilViewFormatSupport)))
 	{
-		Log::Error("Failed to query depth/stencil format support.");
+		throw CznRenderException("Failed to query depth/stencil format support.");
 	}
 	if (FAILED(m_RenderDeviceDX11.GetDeviceD3D11()->CheckFormatSupport(m_ShaderResourceViewFormat, &m_ShaderResourceViewFormatSupport)))
 	{
-		Log::Error("Failed to query shader resource format support.");
+		throw CznRenderException("Failed to query shader resource format support.");
 	}
 	if (FAILED(m_RenderDeviceDX11.GetDeviceD3D11()->CheckFormatSupport(m_RenderTargetViewFormat, &m_RenderTargetViewFormatSupport)))
 	{
-		Log::Error("Failed to query render target format support.");
+		throw CznRenderException("Failed to query render target format support.");
 	}
 	if ((m_TextureResourceFormatSupport & D3D11_FORMAT_SUPPORT_TEXTURECUBE) == 0)
 	{
@@ -157,7 +157,7 @@ TextureDX11::TextureDX11(IRenderDeviceDX11& RenderDeviceDX11, uint16_t size, uin
 	}
 	if (FAILED(m_RenderDeviceDX11.GetDeviceD3D11()->CheckFormatSupport(m_UnorderedAccessViewFormat, &m_UnorderedAccessViewFormatSupport)))
 	{
-		Log::Error("Failed to query render target format support.");
+		throw CznRenderException("Failed to query render target format support.");
 	}
 
 	if ((m_TextureResourceFormatSupport & D3D11_FORMAT_SUPPORT_TEXTURECUBE) == 0)
@@ -288,7 +288,7 @@ void TextureDX11::Resize2D(uint16_t width, uint16_t height)
 
 		if (FAILED(m_RenderDeviceDX11.GetDeviceD3D11()->CreateTexture2D(&textureDesc, nullptr, &m_pTexture2D)))
 		{
-			Log::Error("Failed to create texture.");
+			throw CznRenderException("Failed to create texture.");
 			return;
 		}
 
@@ -330,9 +330,8 @@ void TextureDX11::Resize2D(uint16_t width, uint16_t height)
 
 			if (FAILED(m_RenderDeviceDX11.GetDeviceD3D11()->CreateDepthStencilView(m_pTexture2D, &depthStencilViewDesc, &m_pDepthStencilView)))
 			{
-				Log::Error("Failed to create depth/stencil view.");
+				throw CznRenderException("Failed to create depth/stencil view.");
 			}
-			Log::Error("Texture created!");
 		}
 
 		if ((textureDesc.BindFlags & D3D11_BIND_SHADER_RESOURCE) != 0)
@@ -374,7 +373,7 @@ void TextureDX11::Resize2D(uint16_t width, uint16_t height)
 
 			if (FAILED(m_RenderDeviceDX11.GetDeviceD3D11()->CreateShaderResourceView(m_pTexture2D, &resourceViewDesc, &m_pShaderResourceView)))
 			{
-				Log::Error("Failed to create texture resource view.");
+				throw CznRenderException("Failed to create texture resource view.");
 			}
 			else if (m_bGenerateMipmaps)
 			{
@@ -420,7 +419,7 @@ void TextureDX11::Resize2D(uint16_t width, uint16_t height)
 
 			if (FAILED(m_RenderDeviceDX11.GetDeviceD3D11()->CreateRenderTargetView(m_pTexture2D, &renderTargetViewDesc, &m_pRenderTargetView)))
 			{
-				Log::Error("Failed to create render target view.");
+				throw CznRenderException("Failed to create render target view.");
 			}
 		}
 
@@ -448,7 +447,7 @@ void TextureDX11::Resize2D(uint16_t width, uint16_t height)
 
 			if (FAILED(m_RenderDeviceDX11.GetDeviceD3D11()->CreateUnorderedAccessView(m_pTexture2D, &unorderedAccessViewDesc, &m_pUnorderedAccessView)))
 			{
-				Log::Error("Failed to create unordered access view.");
+				throw CznRenderException("Failed to create unordered access view.");
 			}
 		}
 
@@ -474,7 +473,7 @@ void TextureDX11::Resize(uint16_t width, uint16_t height, uint16_t depth)
 		ResizeCube(width);
 		break;
 	default:
-		Log::Error("Unknown texture dimension.");
+		throw CznRenderException("Unknown texture dimension.");
 		break;
 	}
 
@@ -532,7 +531,7 @@ void TextureDX11::Copy(const std::shared_ptr<ITexture>& other)
 		}
 		else
 		{
-			Log::Error("Incompatible source texture.");
+			throw CznRenderException("Incompatible source texture.");
 		}
 	}
 
@@ -543,7 +542,7 @@ void TextureDX11::Copy(const std::shared_ptr<ITexture>& other)
 		// Copy the texture data from the texture resource
 		if (FAILED(m_RenderDeviceDX11.GetDeviceContextD3D11()->Map(m_pTexture2D, 0, D3D11_MAP_READ, 0, &mappedResource)))
 		{
-			Log::Error("Failed to map texture resource for reading.");
+			throw CznRenderException("Failed to map texture resource for reading.");
 		}
 
 		memcpy_s(m_Buffer.data(), m_Buffer.size(), mappedResource.pData, m_Buffer.size());
@@ -592,7 +591,7 @@ void TextureDX11::Bind(uint32_t ID, EShaderType _shaderType, IShaderParameter::T
 			HRESULT hr = m_RenderDeviceDX11.GetDeviceContextD3D11()->Map(m_pTexture2D, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource);
 			if (FAILED(hr))
 			{
-				Log::Error("Failed to map texture resource for writing.");
+				throw CznRenderException("Failed to map texture resource for writing.");
 			}
 
 			memcpy_s(mappedResource.pData, m_Buffer.size(), m_Buffer.data(), m_Buffer.size());
@@ -721,7 +720,7 @@ const std::vector<uint8>& TextureDX11::GetBuffer()
 		// Copy the texture data from the texture resource
 		if (FAILED(m_RenderDeviceDX11.GetDeviceContextD3D11()->Map(m_pTexture2D, 0, D3D11_MAP_READ, 0, &mappedResource)))
 		{
-			Log::Error("Failed to map texture resource for reading.");
+			throw CznRenderException("Failed to map texture resource for reading.");
 		}
 
 		memcpy_s(m_Buffer.data(), m_Buffer.size(), mappedResource.pData, m_Buffer.size());

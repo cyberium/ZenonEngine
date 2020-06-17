@@ -59,11 +59,7 @@ StructuredBufferDX11::StructuredBufferDX11(IRenderDeviceDX11& RenderDeviceDX11, 
 	subResourceData.SysMemPitch = 0;
 	subResourceData.SysMemSlicePitch = 0;
 
-	if (FAILED(m_RenderDeviceDX11.GetDeviceD3D11()->CreateBuffer(&bufferDesc, &subResourceData, &m_pBuffer)))
-	{
-		_ASSERT_EXPR(false, "Failed to create read/write buffer.");
-		return;
-	}
+	CHECK_HR_MSG(m_RenderDeviceDX11.GetDeviceD3D11()->CreateBuffer(&bufferDesc, &subResourceData, &m_pBuffer), L"Failed to create read/write buffer.");
 
 	if ((bufferDesc.BindFlags & D3D11_BIND_SHADER_RESOURCE) != 0)
 	{
@@ -73,11 +69,7 @@ StructuredBufferDX11::StructuredBufferDX11(IRenderDeviceDX11& RenderDeviceDX11, 
 		srvDesc.Buffer.FirstElement = 0;
 		srvDesc.Buffer.NumElements = m_uiCount;
 
-		if (FAILED(m_RenderDeviceDX11.GetDeviceD3D11()->CreateShaderResourceView(m_pBuffer, &srvDesc, &m_pSRV)))
-		{
-			_ASSERT_EXPR(false, "Failed to create shader resource view.");
-			return;
-		}
+		CHECK_HR_MSG(m_RenderDeviceDX11.GetDeviceD3D11()->CreateShaderResourceView(m_pBuffer, &srvDesc, &m_pSRV), L"Failed to create shader resource view.");
 	}
 
 	if ((bufferDesc.BindFlags & D3D11_BIND_UNORDERED_ACCESS) != 0)
@@ -89,11 +81,7 @@ StructuredBufferDX11::StructuredBufferDX11(IRenderDeviceDX11& RenderDeviceDX11, 
 		uavDesc.Buffer.NumElements = m_uiCount;
 		uavDesc.Buffer.Flags = 0;
 
-		if (FAILED(m_RenderDeviceDX11.GetDeviceD3D11()->CreateUnorderedAccessView(m_pBuffer, &uavDesc, &m_pUAV)))
-		{
-			_ASSERT_EXPR(false, "Failed to create unordered access view.");
-			return;
-		}
+		CHECK_HR_MSG(m_RenderDeviceDX11.GetDeviceD3D11()->CreateUnorderedAccessView(m_pBuffer, &uavDesc, &m_pUAV), L"Failed to create unordered access view.");
 	}
 }
 
@@ -238,7 +226,7 @@ void StructuredBufferDX11::Copy(const IStructuredBuffer* other)
 	}
 	else
 	{
-		Log::Error("Source buffer is not compatible with this buffer.");
+		throw CznRenderException("Source buffer is not compatible with this buffer.");
 	}
 
 	if (((uint8_t)m_CPUAccess & (uint8_t)CPUAccess::Read) != 0)
@@ -247,7 +235,7 @@ void StructuredBufferDX11::Copy(const IStructuredBuffer* other)
 
 		if (FAILED(m_RenderDeviceDX11.GetDeviceContextD3D11()->Map(m_pBuffer, 0, D3D11_MAP_READ, 0, &mappedResource)))
 		{
-			Log::Error("Failed to map texture resource for reading.");
+			throw CznRenderException("Failed to map texture resource for reading.");
 		}
 
 		memcpy_s(m_Data.data(), m_Data.size(), mappedResource.pData, m_Data.size());
@@ -293,13 +281,8 @@ void StructuredBufferDX11::Commit() const
 {
 	if (m_bIsDirty && m_bDynamic && m_pBuffer)
 	{
-		D3D11_MAPPED_SUBRESOURCE mappedResource;
-
-		if (FAILED(m_RenderDeviceDX11.GetDeviceContextD3D11()->Map(m_pBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource)))
-		{
-			_ASSERT_EXPR(false, "Failed to map subresource.");
-			return;
-		}
+		D3D11_MAPPED_SUBRESOURCE mappedResource = { 0 };
+		CHECK_HR(m_RenderDeviceDX11.GetDeviceContextD3D11()->Map(m_pBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource));
 
 		memcpy_s(mappedResource.pData, m_Data.size(), m_Data.data(), m_Data.size());
 

@@ -41,8 +41,23 @@ public:
 	const std::string Message() const { return m_Message; }
 	const char* MessageCStr() const { return m_Message.c_str(); }
 
-private:
+protected:
+	CException() 
+		: m_Message("")
+	{}
+
+protected:
 	std::string m_Message;
+};
+
+class ZN_API CznRenderException
+	: public CException
+{
+public:
+	CznRenderException(const char* Message, ...);
+	CznRenderException(std::string Message) : CException(Message) {}
+	CznRenderException(const wchar_t* WMessage, ...);
+	CznRenderException(std::wstring WMessage) : CException(WMessage) {}
 };
 
 #if 1

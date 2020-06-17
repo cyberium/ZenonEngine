@@ -7,8 +7,7 @@ std::string RecursionInclude(IBaseManager& BaseManager, std::shared_ptr<IFile> f
 {
     if (f == nullptr)
     {
-        Log::Error("Error open shader.");
-        return "";
+        throw CznRenderException("Error open shader.");
     }
 
     std::string data = "";

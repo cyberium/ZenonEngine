@@ -156,12 +156,12 @@ void RenderWindowDX11::ResizeSwapChainBuffers(uint32_t width, uint32_t height)
     // Resize the swap chain buffers.
     if (FAILED(m_pSwapChain->ResizeBuffers(1, width, height, DXGI_FORMAT_R8G8B8A8_UNORM, 0)))
     {
-        Log::Error("Failed to resize the swap chain buffer.");
+        throw CznRenderException("Failed to resize the swap chain buffer.");
     }
 
 	if (FAILED(m_pSwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (void**)&m_pBackBuffer)))
 	{
-		Log::Error("Failed to get back buffer pointer from swap chain.");
+		throw CznRenderException("Failed to get back buffer pointer from swap chain.");
 	}
 }
 
@@ -184,23 +184,23 @@ static DXGI_RATIONAL QueryRefreshRate(UINT screenWidth, UINT screenHeight, BOOL 
         // Create a DirectX graphics interface factory.
         if (FAILED(CreateDXGIFactory(__uuidof(IDXGIFactory), (void**)&factory)))
         {
-            Log::Error("Failed to create DXGIFactory");
+            throw CznRenderException("Failed to create DXGIFactory");
         }
 
         if (FAILED(factory->EnumAdapters(0, &adapter)))
         {
-            Log::Error("Failed to enumerate adapters.");
+            throw CznRenderException("Failed to enumerate adapters.");
         }
 
         if (FAILED(adapter->EnumOutputs(0, &adapterOutput)))
         {
-            Log::Error("Failed to enumerate adapter outputs.");
+            throw CznRenderException("Failed to enumerate adapter outputs.");
         }
 
         UINT numDisplayModes;
         if (FAILED(adapterOutput->GetDisplayModeList(DXGI_FORMAT_R8G8B8A8_UNORM, DXGI_ENUM_MODES_INTERLACED, &numDisplayModes, NULL)))
         {
-            Log::Error("Failed to query display modes.");
+            throw CznRenderException("Failed to query display modes.");
         }
 
         displayModeList = new DXGI_MODE_DESC[numDisplayModes];
@@ -208,7 +208,7 @@ static DXGI_RATIONAL QueryRefreshRate(UINT screenWidth, UINT screenHeight, BOOL 
 
         if (FAILED(adapterOutput->GetDisplayModeList(DXGI_FORMAT_R8G8B8A8_UNORM, DXGI_ENUM_MODES_INTERLACED, &numDisplayModes, displayModeList)))
         {
-            Log::Error("Failed to query dispaly mode list.");
+            throw CznRenderException("Failed to query dispaly mode list.");
         }
 
         // Now store the refresh rate of the monitor that matches the width and height of the requested screen.

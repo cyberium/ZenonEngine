@@ -29,7 +29,7 @@ public:
 	virtual ~CChunkedFile();
 
 	void Open(const std::shared_ptr<IByteBuffer>& ByteBuffer);
-	void Save(std::shared_ptr<IFile> File);
+	void Save(const std::shared_ptr<IByteBuffer>& File);
 
 	// CChunkedFile (shared)
 	void                                       AddChunk(const std::string& ChunkName, const void* DataPtr, size_t DataSize);

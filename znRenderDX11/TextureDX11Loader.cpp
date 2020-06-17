@@ -113,7 +113,7 @@ bool TextureDX11::LoadTexture2D(const std::string& fileName)
 	if (dib == nullptr || FreeImage_HasPixels(dib) == FALSE)
 	{
 		//_ASSERT_EXPR(false, "Failed to load image.");
-		Log::Error("TextureDX11: Error while loading '%s': Unknown format.", fileName.c_str());
+		throw CznRenderException("TextureDX11: Error while loading '%s': Unknown format.", fileName.c_str());
 		return false;
 	}
 
@@ -342,7 +342,7 @@ bool TextureDX11::LoadTextureCube(const std::string& fileName)
 	/*fs::path filePath( fileName );
 	if ( !fs::exists( filePath ) || !fs::is_regular_file( filePath ) )
 	{
-		Log::Error( "Could not load texture: " + filePath.std::string() );
+		throw CznRenderException( "Could not load texture: " + filePath.std::string() );
 		return false;
 	}
 
@@ -367,14 +367,14 @@ bool TextureDX11::LoadTextureCube(const std::string& fileName)
 
 	if ( fif == FIF_UNKNOWN || !FreeImage_FIFSupportsReading( fif ) )
 	{
-		Log::Error( "Unknow file format: " + filePath.std::string() );
+		throw CznRenderException( "Unknow file format: " + filePath.std::string() );
 		return false;
 	}
 
 	FIMULTIBITMAP* dib = FreeImage_OpenMultiBitmap( fif, filePath.std::string().c_str(), FALSE, TRUE, TRUE );
 	if ( dib == nullptr || FreeImage_GetPageCount( dib ) == 0 )
 	{
-		Log::Error( "Failed to load image: " + filePath.std::string() );
+		throw CznRenderException( "Failed to load image: " + filePath.std::string() );
 		return false;
 	}
 

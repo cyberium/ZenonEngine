@@ -3,6 +3,10 @@
 // General
 #include "ChunkedFile.h"
 
+// Additional
+#include "ByteBuffer.h"
+#include "ByteBufferOnlyPointer.h"
+
 // Consts
 const uint32 cActualVersion = 0x01;
 // Consts
@@ -61,15 +65,12 @@ void CChunkedFile::Open(const std::shared_ptr<IByteBuffer>& ByteBuffer)
 	Log::Info("Chunks Open END.");
 }
 
-void CChunkedFile::Save(std::shared_ptr<IFile> File)
+void CChunkedFile::Save(const std::shared_ptr<IByteBuffer>& ByteBuffer)
 {
-	_ASSERT(File != nullptr);
-	_ASSERT_EXPR(File->getPos() == 0 && File->getSize() == 0, L"Destination file must be untouched for chunk writing.");
+	_ASSERT(ByteBuffer != nullptr);
+	_ASSERT_EXPR(ByteBuffer->getPos() == 0 && ByteBuffer->getSize() == 0, L"Destination file must be untouched for chunk writing.");
 
-	File->write(&cActualVersion);
-
-	uint32 chunksCategotyCnt = static_cast<uint32>(m_Chunks.size());
-	File->write(&chunksCategotyCnt);
+	ByteBuffer->write(&cActualVersion);
 
 	std::vector<SLinkAndBuffer> linksAndBuffers;
 	uint32 lastOffeset = 0;
@@ -78,7 +79,7 @@ void CChunkedFile::Save(std::shared_ptr<IFile> File)
 	{
 		for (const auto& it2 : it.second)
 		{
-			SLinkAndBuffer linkAndBuffer;
+			SLinkAndBuffer linkAndBuffer = { 0 };
 
 			memcpy_s(linkAndBuffer.Link.CHID, 4, it.first.c_str(), 4);
 			linkAndBuffer.Link.CHOF = lastOffeset;
@@ -91,15 +92,14 @@ void CChunkedFile::Save(std::shared_ptr<IFile> File)
 		}
 	}
 
-	for (const auto& it : linksAndBuffers)
-	{
-		File->write(&it.Link);
-	}
+	uint32 linksAndBuffersCategotyCnt = static_cast<uint32>(linksAndBuffers.size());
+	ByteBuffer->write(&linksAndBuffersCategotyCnt);
 
 	for (const auto& it : linksAndBuffers)
-	{
-		File->writeBytes(it.Buffer->getData(), it.Buffer->getSize());
-	}
+		ByteBuffer->write(&it.Link);
+
+	for (const auto& it : linksAndBuffers)
+		ByteBuffer->writeBytes(it.Buffer->getData(), it.Buffer->getSize());
 }
 
 void CChunkedFile::AddChunk(const std::string & ChunkName, const void * DataPtr, size_t DataSize)

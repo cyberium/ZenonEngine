@@ -2,6 +2,7 @@
 
 class BufferDX11 
 	: public IBuffer
+	, public ILoadableFromFile
 {
 public:
 	BufferDX11(IRenderDeviceDX11& RenderDeviceDX11, UINT bindFlags, const void* data, size_t count, UINT offset, UINT stride);
@@ -15,6 +16,9 @@ public:
 	uint32 GetElementCount() const override;
 	uint32 GetElementStride() const override;
     uint32 GetElementOffset() const override;
+
+	void Load(const std::shared_ptr<IFile>& File);
+	void Save(const std::shared_ptr<IFile>& File);
 
 
 private:

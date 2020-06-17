@@ -23,6 +23,7 @@ protected:
 
 private:
 	std::weak_ptr<CFBXSceneNode> m_OwnerFBXNode;
+	std::shared_ptr<IGeometry> m_Geometry;
 
 private:
 	const IBaseManager& m_BaseManager;

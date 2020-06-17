@@ -57,7 +57,7 @@ void DepthStencilStateDX11::Bind()
 		m_pDepthStencilState = NULL;
 		if (FAILED(m_RenderDeviceDX11.GetDeviceD3D11()->CreateDepthStencilState(&depthStencilDesc, &m_pDepthStencilState)))
 		{
-			Log::Error("Failed to create depth stencil state.");
+			throw CznRenderException("Failed to create depth stencil state.");
 		}
 
 		m_bDirty = false;
@@ -89,7 +89,7 @@ D3D11_DEPTH_WRITE_MASK TranslateDepthWriteMask(IDepthStencilState::DepthWrite de
 		result = D3D11_DEPTH_WRITE_MASK_ZERO;
 		break;
 	default:
-		Log::Error("Unknown depth write mask.");
+		throw CznRenderException("Unknown depth write mask.");
 		break;
 	}
 
@@ -127,7 +127,7 @@ D3D11_COMPARISON_FUNC TranslateCompareFunc(IDepthStencilState::CompareFunction c
 		result = D3D11_COMPARISON_ALWAYS;
 		break;
 	default:
-		Log::Error("Unknown compare function.");
+		throw CznRenderException("Unknown compare function.");
 		break;
 	}
 
@@ -165,7 +165,7 @@ D3D11_STENCIL_OP TranslateStencilOperation(IDepthStencilState::StencilOperation 
 		result = D3D11_STENCIL_OP_DECR;
 		break;
 	default:
-		Log::Error("Unknown stencil operation.");
+		throw CznRenderException("Unknown stencil operation.");
 		break;
 	}
 
