@@ -32,29 +32,29 @@ ShaderInputLayoutDX11::~ShaderInputLayoutDX11()
 //
 bool ShaderInputLayoutDX11::HasSemantic(const BufferBinding & binding) const
 {
-    for (const auto& it : m_InputSemantics)
-        if (it.first.Name == binding.Name && it.first.Index == binding.Index)
-            return true;       
+	for (const auto& it : m_InputSemantics)
+		if (it.first.Name == binding.Name && it.first.Index == binding.Index)
+			return true;
 
-    return false;
+	return false;
 }
 
 const InputSemantic& ShaderInputLayoutDX11::GetSemantic(const BufferBinding & binding) const
 {
-    for (auto& it : m_InputSemantics)
-        if (it.first.Name == binding.Name && it.first.Index == binding.Index)
-            return it.first;
+	for (auto& it : m_InputSemantics)
+		if (it.first.Name == binding.Name && it.first.Index == binding.Index)
+			return it.first;
 
-    return gs_InvalidShaderSemantic;
+	return gs_InvalidShaderSemantic;
 }
 
 UINT ShaderInputLayoutDX11::GetSemanticSlot(const BufferBinding & binding) const
 {
-    for (auto& it : m_InputSemantics)
-        if (it.first.Name == binding.Name && it.first.Index == binding.Index)
-            return it.second;
+	for (auto& it : m_InputSemantics)
+		if (it.first.Name == binding.Name && it.first.Index == binding.Index)
+			return it.second;
 
-    return UINT_MAX;
+	return UINT_MAX;
 }
 
 
@@ -64,23 +64,17 @@ UINT ShaderInputLayoutDX11::GetSemanticSlot(const BufferBinding & binding) const
 //
 bool ShaderInputLayoutDX11::LoadFromReflector(ID3DBlob * pShaderBlob, ID3D11ShaderReflection * pReflector)
 {
-	HRESULT hr = S_OK;
-
 	// Query input parameters and build the input layout
-	D3D11_SHADER_DESC shaderDescription;
-	if (FAILED(hr = pReflector->GetDesc(&shaderDescription)))
-	{
-		throw CznRenderException("Failed to get shader description from shader reflector.");
-		return false;
-	}
+	D3D11_SHADER_DESC shaderDescription = {};
+	CHECK_HR(pReflector->GetDesc(&shaderDescription), L"Failed to get shader description from shader reflector.");
 
 	std::vector<D3D11_INPUT_ELEMENT_DESC> inputElements;
 	for (UINT i = 0; i < shaderDescription.InputParameters; ++i)
 	{
-		D3D11_SIGNATURE_PARAMETER_DESC parameterSignature;
-		pReflector->GetInputParameterDesc(i, &parameterSignature);
+		D3D11_SIGNATURE_PARAMETER_DESC parameterSignature = {};
+		CHECK_HR(pReflector->GetInputParameterDesc(i, &parameterSignature));
 
-		D3D11_INPUT_ELEMENT_DESC inputElement;
+		D3D11_INPUT_ELEMENT_DESC inputElement = {};
 		inputElement.SemanticName = parameterSignature.SemanticName;
 		inputElement.SemanticIndex = parameterSignature.SemanticIndex;
 		inputElement.InputSlot = i; // TODO: If using interleaved arrays, then the input slot should be 0.  If using packed arrays, the input slot will vary.
@@ -89,19 +83,15 @@ bool ShaderInputLayoutDX11::LoadFromReflector(ID3DBlob * pShaderBlob, ID3D11Shad
 		inputElement.InstanceDataStepRate = 0;
 		inputElement.Format = GetDXGIFormat(parameterSignature);
 		inputElements.push_back(inputElement);
-		
-		assert(inputElement.Format != DXGI_FORMAT_UNKNOWN);
+
+		_ASSERT(inputElement.Format != DXGI_FORMAT_UNKNOWN);
 
 		m_InputSemantics.insert(SemanticMap::value_type(InputSemantic(inputElement.SemanticName, inputElement.SemanticIndex), i));
 	}
 
 	if (inputElements.size() > 0)
 	{
-		if (FAILED(hr = m_RenderDeviceDX11.GetDeviceD3D11()->CreateInputLayout(inputElements.data(), (UINT)inputElements.size(), pShaderBlob->GetBufferPointer(), pShaderBlob->GetBufferSize(), &m_pInputLayout)))
-		{
-			throw CznRenderException("Failed to create input layout.");
-			return false;
-		}
+		CHECK_HR_MSG(m_RenderDeviceDX11.GetDeviceD3D11()->CreateInputLayout(inputElements.data(), (UINT)inputElements.size(), pShaderBlob->GetBufferPointer(), pShaderBlob->GetBufferSize(), &m_pInputLayout), L"Failed to create input layout.");
 	}
 
 	return true;
@@ -119,12 +109,7 @@ bool ShaderInputLayoutDX11::LoadFromCustomElements(ID3DBlob * pShaderBlob, const
 
 	if (inputElements.size() > 0)
 	{
-		HRESULT hr = S_OK;
-		if (FAILED(hr = m_RenderDeviceDX11.GetDeviceD3D11()->CreateInputLayout(inputElements.data(), (UINT)inputElements.size() - 1, pShaderBlob->GetBufferPointer(), pShaderBlob->GetBufferSize(), &m_pInputLayout)))
-		{
-			throw CznRenderException("Failed to create input layout.");
-			return false;
-		}
+		CHECK_HR_MSG(m_RenderDeviceDX11.GetDeviceD3D11()->CreateInputLayout(inputElements.data(), (UINT)inputElements.size() - 1, pShaderBlob->GetBufferPointer(), pShaderBlob->GetBufferSize(), &m_pInputLayout), L"Failed to create input layout.");
 	}
 
 	return true;

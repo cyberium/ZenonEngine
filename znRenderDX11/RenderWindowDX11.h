@@ -18,7 +18,7 @@ protected:
 	void                                            ResizeSwapChainBuffers(uint32_t width, uint32_t height) override final;
 
 private:
-	ATL::CComPtr<IDXGISwapChain2>                   m_pSwapChain;
+	ATL::CComPtr<IDXGISwapChain4>                   m_pSwapChain;
 	ATL::CComPtr<ID3D11Texture2D>                   m_pBackBuffer;
 
 	DXGI_SAMPLE_DESC m_SampleDesc;      // Used to enable multisampling AA

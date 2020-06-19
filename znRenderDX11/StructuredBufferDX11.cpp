@@ -19,7 +19,7 @@ StructuredBufferDX11::StructuredBufferDX11(IRenderDeviceDX11& RenderDeviceDX11, 
 
 	if (data)
 	{
-		m_Data.assign((uint8_t*)data, (uint8_t*)data + numBytes);
+		m_Data.assign((const uint8_t*)data, (const uint8_t*)data + numBytes);
 	}
 	else
 	{
@@ -257,7 +257,7 @@ void StructuredBufferDX11::Clear()
 {
 	if (m_pUAV)
 	{
-		FLOAT clearColor[4] = { 0, 0, 0, 0 };
+		FLOAT clearColor[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
 		m_RenderDeviceDX11.GetDeviceContextD3D11()->ClearUnorderedAccessViewFloat(m_pUAV, clearColor);
 	}
 }

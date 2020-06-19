@@ -38,7 +38,7 @@ protected:
 	 * The render target will also be checked for validity before it is bound
 	 * to rendering pipeline (using the RenderTarget::Bind method).
 	 */
-	bool IsValid() const;
+	void IsValid();
 
 private:
 	TextureList m_Textures;

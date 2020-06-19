@@ -50,8 +50,8 @@ ZN_INTERFACE ZN_API
 {
 	virtual ~ILoadableFromFile() {}
 
-	virtual void Load(const std::shared_ptr<IFile>& File) = 0;
-	virtual void Save(const std::shared_ptr<IFile>& File) = 0;
+	virtual void Load(const std::shared_ptr<IByteBuffer>& ByteBuffer) = 0;
+	virtual void Save(const std::shared_ptr<IByteBuffer>& ByteBuffer) = 0;
 };
 
 const uint32 cBufferBindingSignature = 0x00100000;

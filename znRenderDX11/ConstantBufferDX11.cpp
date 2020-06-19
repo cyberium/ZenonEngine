@@ -33,27 +33,27 @@ bool ConstantBufferDX11::Bind(uint32 id, const IShader* shader, IShaderParameter
 
 	switch (shader->GetType())
 	{
-	case EShaderType::VertexShader:
-		m_RenderDeviceDX11.GetDeviceContextD3D11()->VSSetConstantBuffers(id, 1, pBuffers);
-		break;
-	case EShaderType::TessellationControlShader:
-		m_RenderDeviceDX11.GetDeviceContextD3D11()->HSSetConstantBuffers(id, 1, pBuffers);
-		break;
-	case EShaderType::TessellationEvaluationShader:
-		m_RenderDeviceDX11.GetDeviceContextD3D11()->DSSetConstantBuffers(id, 1, pBuffers);
-		break;
-	case EShaderType::GeometryShader:
-		m_RenderDeviceDX11.GetDeviceContextD3D11()->GSSetConstantBuffers(id, 1, pBuffers);
-		break;
-	case EShaderType::PixelShader:
-		m_RenderDeviceDX11.GetDeviceContextD3D11()->PSSetConstantBuffers(id, 1, pBuffers);
-		break;
-	case EShaderType::ComputeShader:
-		m_RenderDeviceDX11.GetDeviceContextD3D11()->CSSetConstantBuffers(id, 1, pBuffers);
-		break;
-	default:
-		result = false;
-		break;
+		case EShaderType::VertexShader:
+			m_RenderDeviceDX11.GetDeviceContextD3D11()->VSSetConstantBuffers(id, 1, pBuffers);
+			break;
+		case EShaderType::TessellationControlShader:
+			m_RenderDeviceDX11.GetDeviceContextD3D11()->HSSetConstantBuffers(id, 1, pBuffers);
+			break;
+		case EShaderType::TessellationEvaluationShader:
+			m_RenderDeviceDX11.GetDeviceContextD3D11()->DSSetConstantBuffers(id, 1, pBuffers);
+			break;
+		case EShaderType::GeometryShader:
+			m_RenderDeviceDX11.GetDeviceContextD3D11()->GSSetConstantBuffers(id, 1, pBuffers);
+			break;
+		case EShaderType::PixelShader:
+			m_RenderDeviceDX11.GetDeviceContextD3D11()->PSSetConstantBuffers(id, 1, pBuffers);
+			break;
+		case EShaderType::ComputeShader:
+			m_RenderDeviceDX11.GetDeviceContextD3D11()->CSSetConstantBuffers(id, 1, pBuffers);
+			break;
+		default:
+			result = false;
+			break;
 	}
 
 	return result;
@@ -132,7 +132,8 @@ void ConstantBufferDX11::Copy(const IConstantBuffer* other) const
 
 void ConstantBufferDX11::Set(const void* data, size_t size)
 {
-	_ASSERT(size == m_BufferSize);
+	if (size != m_BufferSize)
+		throw CException(L"ConstantBufferDX11: Buffers sizes mistmath. Current: '%d', New: '%d'.", m_BufferSize, size);
 
 	D3D11_MAPPED_SUBRESOURCE mappedResource = { 0 };
 	CHECK_HR(m_RenderDeviceDX11.GetDeviceContextD3D11()->Map(m_pBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource));

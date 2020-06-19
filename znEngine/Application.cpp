@@ -117,16 +117,15 @@ int Application::DoRun()
 	g_ApplicationTime += g_GameDeltaTime;
 	g_FrameCounter++;
 
-	//try
+	try
 	{
 		UpdateEventArgs updateArgs(this, g_GameDeltaTime, g_ApplicationTime, g_FrameCounter, nullptr, nullptr);
 		m_Update(updateArgs);
 	}
-	//catch (const std::exception& e)
-	//{
-	//	Log::Error("Exception: '%s'", e.what());
-	//	throw e;
-	//}
+	catch (const CznRenderException& e)
+	{
+		Log::Fatal("Exception: '%s'", e.MessageCStr());
+	}
 
 	return static_cast<int>(msg.wParam);
 }

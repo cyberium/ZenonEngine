@@ -2,6 +2,7 @@
 
 class ZN_API GeometryBase 
 	: public IGeometry
+	, public ILoadableFromFile
 	, public Object
 {
 public:
@@ -18,8 +19,8 @@ public:
 
 	virtual void         Accept(IVisitor* visitor, const IMaterial* Material, SGeometryDrawArgs GeometryDrawArgs = SGeometryDrawArgs()) override;
 
-	void                 Load(const std::shared_ptr<IFile>& File);
-	void                 Save(const std::shared_ptr<IFile>& File);
+	void                 Load(const std::shared_ptr<IByteBuffer>& ByteBuffer);
+	void                 Save(const std::shared_ptr<IByteBuffer>& ByteBuffer);
 
 protected:
 	SGeometryDrawArgs    FixGeometryDrawArgs(const SGeometryDrawArgs& GeometryDrawArgs) const;

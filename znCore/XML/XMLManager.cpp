@@ -7,6 +7,19 @@
 #include "tinyxml.h"
 #include "Files/File.h"
 
+
+namespace
+{
+	void CheckTinyXMLError(const TiXmlDocument* TiniXMLDocument)
+	{
+		if (TiniXMLDocument->Error())
+		{
+			throw CException(L"TinyXMLError: %s. ID: '%d', Row: '%d', Col: '%d'.", Resources::utf8_to_utf16(TiniXMLDocument->ErrorDesc()), TiniXMLDocument->ErrorId(), TiniXMLDocument->ErrorRow(), TiniXMLDocument->ErrorCol());
+		}
+	}
+}
+
+
 // CONST BEGIN
 const char* cXMLRootNodeSignature = "xml";
 // CONST END
@@ -23,7 +36,7 @@ std::shared_ptr<IXMLReader> CXMLManager::CreateReader(std::shared_ptr<IFile> Fil
 {
 	TiXmlDocument* xmlDocument = new TiXmlDocument();
 	bool loadOkay = xmlDocument->LoadFile(File);
-	_ASSERT_EXPR(loadOkay, "Error while loading XML.");
+	CheckTinyXMLError(xmlDocument);
 
 	const TiXmlElement* root = xmlDocument->FirstChildElement();
 	_ASSERT_EXPR(root->ValueStr() == cXMLRootNodeSignature, L"All ZenonEngine xml file must contains root node with specified name.");
@@ -115,6 +128,8 @@ CXMLWriter::CXMLWriter(std::shared_ptr<TiXmlDocument> Document, TiXmlElement * E
 
 CXMLWriter::~CXMLWriter()
 {
+	_ASSERT(m_Element != nullptr);
+	delete m_Element;
 }
 
 void CXMLWriter::SetValue(std::string Value)
@@ -143,6 +158,7 @@ std::shared_ptr<IFile> CXMLWriter::SaveToFile(std::string Filename)
 	TiXmlPrinter printer;
 	printer.SetIndent("\t");
 	m_Document->Accept(&printer);
+	CheckTinyXMLError(m_Document.get());
 
 	file->writeBytes(printer.CStr(), printer.Size());
 

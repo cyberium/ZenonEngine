@@ -17,13 +17,17 @@ public:
 	uint32 GetElementStride() const override;
     uint32 GetElementOffset() const override;
 
-	void Load(const std::shared_ptr<IFile>& File);
-	void Save(const std::shared_ptr<IFile>& File);
+	void Load(const std::shared_ptr<IByteBuffer>& ByteBuffer) override;
+	void Save(const std::shared_ptr<IByteBuffer>& ByteBuffer) override;
 
+private:
+	void InitializeInternal(UINT bindFlags, const void* data, size_t count, UINT offset, UINT stride);
 
 private:
 	ATL::CComPtr<ID3D11Buffer> m_pBuffer;
-
+	
+	typedef std::vector<uint8_t> BufferType;
+	BufferType m_Data;
 	UINT m_Count; // The number of elements in this buffer.
 	UINT m_Offset; // The offset of the vertex buffer in bytes.
 	UINT m_Stride; // The stride of the vertex buffer in bytes.

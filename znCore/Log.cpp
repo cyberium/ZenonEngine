@@ -168,5 +168,18 @@ void Log::Error(const char* _message, ...)
 
 void Log::Fatal(const char* _message, ...)
 {
-	FatalMessageBox(_message, "Fatal");
+	va_list vaList;
+	va_start(vaList, _message);
+	{
+		int len = vsnprintf(NULL, 0, _message, vaList);
+		if (len > 0)
+		{
+			std::string buff;
+			buff.resize(len + 1);
+			vsnprintf(&buff[0], len + 1, _message, vaList);
+
+			FatalMessageBox("Fatal error!", buff.c_str());
+		}
+	}
+	va_end(vaList);
 }

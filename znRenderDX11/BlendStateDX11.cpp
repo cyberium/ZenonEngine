@@ -79,7 +79,7 @@ void BlendStateDX11::Bind()
         }
 
 		m_BlendState = NULL;
-		m_RenderDeviceDX11.GetDeviceD3D11()->CreateBlendState1(&blendDesc, &m_BlendState);
+		CHECK_HR(m_RenderDeviceDX11.GetDeviceD3D11()->CreateBlendState1(&blendDesc, &m_BlendState));
 
         m_bDirty = false;
     }
@@ -155,7 +155,7 @@ D3D11_BLEND TranslateBlendFactor(IBlendState::BlendFactor blendFactor)
 		result = D3D11_BLEND_INV_SRC1_ALPHA;
 		break;
 	default:
-        throw std::exception("Unknown blend factor.");
+        throw CException("Unknown blend factor.");
 	}
 
 	return result;
@@ -182,7 +182,7 @@ D3D11_BLEND_OP TranslateBlendOp(IBlendState::BlendOperation blendOperation)
 		result = D3D11_BLEND_OP_MAX;
 		break;
 	default:
-		throw std::exception("Unknown blend operation.");
+		throw CException("Unknown blend operation.");
 	}
 
 	return result;
@@ -266,8 +266,7 @@ D3D11_LOGIC_OP TranslateLogicOperator(IBlendState::LogicOperator logicOp)
 		result = D3D11_LOGIC_OP_OR_INVERTED;
 		break;
 	default:
-        throw std::exception("Unknown LogicOperator.");
-		break;
+        throw CException("Unknown LogicOperator.");
 	}
 
 	return result;

@@ -11,29 +11,39 @@ void main_internal(int argumentCount, char* arguments[])
 	// 3. Create application
 	Application app(*BaseManager, ::GetModuleHandle(NULL));
 
-	CNativeWindowFactory nativeWindowFactory(&app);
+	try
+	{
+		CNativeWindowFactory nativeWindowFactory(&app);
 
-	std::unique_ptr<INativeWindow> nativeWindow = nativeWindowFactory.CreateWindowInstance(
-		L"Zenon Engine",
-		BaseManager->GetManager<ISettings>()->GetGroup("Video")->GetSettingT<glm::vec2>("WindowSize")->Get().x,
-		BaseManager->GetManager<ISettings>()->GetGroup("Video")->GetSettingT<glm::vec2>("WindowSize")->Get().y
-	);
+		std::unique_ptr<INativeWindow> nativeWindow = nativeWindowFactory.CreateWindowInstance(
+			L"Zenon Engine",
+			BaseManager->GetManager<ISettings>()->GetGroup("Video")->GetSettingT<glm::vec2>("WindowSize")->Get().x,
+			BaseManager->GetManager<ISettings>()->GetGroup("Video")->GetSettingT<glm::vec2>("WindowSize")->Get().y
+		);
 
-	IRenderDevice& renderDevice = app.CreateRenderDevice(RenderDeviceType::RenderDeviceType_DirectX);
+		IRenderDevice& renderDevice = app.CreateRenderDevice(RenderDeviceType::RenderDeviceType_DirectX);
 
-	std::shared_ptr<IFontsManager> fontsManager = std::make_shared<FontsManager>(renderDevice, *BaseManager);
-	BaseManager->AddManager<IFontsManager>(fontsManager);
+		std::shared_ptr<IFontsManager> fontsManager = std::make_shared<FontsManager>(renderDevice, *BaseManager);
+		BaseManager->AddManager<IFontsManager>(fontsManager);
 
-	const auto& firstRenderWindow = renderDevice.GetObjectsFactory().CreateRenderWindow(*nativeWindow, false);
-	app.AddRenderWindow(firstRenderWindow);
+		const auto& firstRenderWindow = renderDevice.GetObjectsFactory().CreateRenderWindow(*nativeWindow, false);
+		app.AddRenderWindow(firstRenderWindow);
 
-	BaseManager->GetManager<ILoader>()->Start();
+		BaseManager->GetManager<ILoader>()->Start();
 
-	std::shared_ptr<IScene> scene = BaseManager->GetManager<IScenesFactory>()->CreateScene("SceneDefault");
-	scene->ConnectEvents(std::dynamic_pointer_cast<IRenderWindowEvents>(firstRenderWindow));
-	scene->Initialize();
+		std::shared_ptr<IScene> scene = BaseManager->GetManager<IScenesFactory>()->CreateScene("SceneDefault");
+		scene->ConnectEvents(std::dynamic_pointer_cast<IRenderWindowEvents>(firstRenderWindow));
+		scene->Initialize();
 
-	app.Run();
+		app.Run();
+
+	}
+	catch (const CznRenderException& e)
+	{
+		Log::Fatal(e.MessageCStr());
+	}
+
+	
 }
 
 

@@ -7,7 +7,7 @@ namespace
 {
 	D3D11_RECT TranslateRect(const Rect& rect)
 	{
-		D3D11_RECT d3dRect = { 0 };
+		D3D11_RECT d3dRect = { };
 		d3dRect.top = static_cast<LONG>(glm::round(rect.Y));
 		d3dRect.bottom = static_cast<LONG>(glm::round(rect.Y + rect.Height));
 		d3dRect.left = static_cast<LONG>(glm::round(rect.X));
@@ -17,7 +17,7 @@ namespace
 
 	D3D11_VIEWPORT TranslateViewport(const Viewport& viewport)
 	{
-		D3D11_VIEWPORT d3dViewport = { 0 };
+		D3D11_VIEWPORT d3dViewport = { };
 		d3dViewport.TopLeftX = viewport.GetX();
 		d3dViewport.TopLeftY = viewport.GetY();
 		d3dViewport.Width = viewport.GetWidth();
@@ -144,14 +144,7 @@ void RenderTargetDX11::Resize(size_t width, size_t height)
 
 void RenderTargetDX11::Bind()
 {
-	if (m_bCheckValidity)
-	{
-		if (!IsValid())
-		{
-			throw CException("Invalid render target.");
-		}
-		m_bCheckValidity = false;
-	}
+	
 
 	ID3D11RenderTargetView* renderTargetViews[8];
 	UINT numRTVs = 0;
@@ -209,18 +202,22 @@ void RenderTargetDX11::UnBind()
 //
 // Protected
 //
-bool RenderTargetDX11::IsValid() const
+void RenderTargetDX11::IsValid()
 {
+	if (!m_bCheckValidity)
+		return;
+
 	UINT numRTV = 0;
 	int width = -1;
 	int height = -1;
 
-	for (const auto& texture : m_Textures)
+	for (size_t i = 0; i < m_Textures.size(); i++)
 	{
+		const auto& texture = m_Textures[i];
 		if (texture)
 		{
 			if (std::dynamic_pointer_cast<TextureDX11>(texture)->GetRenderTargetView())
-				++numRTV;
+				numRTV++;
 
 			if (width == -1 || height == -1)
 			{
@@ -230,9 +227,7 @@ bool RenderTargetDX11::IsValid() const
 			else
 			{
 				if (texture->GetWidth() != width || texture->GetHeight() != height)
-				{
-					return false;
-				}
+					throw CznRenderException("RenderTarget is invalid. Texture '" + std::to_string(i)  + "' has different size [" + std::to_string(texture->GetWidth()) + "x" + std::to_string(texture->GetHeight()) + "] then other textures [" + std::to_string(width) + "x" + std::to_string(height) + "].");
 			}
 		}
 	}
@@ -242,14 +237,12 @@ bool RenderTargetDX11::IsValid() const
 	{
 		if (rwBuffer)
 		{
-			++numUAV;
+			numUAV++;
 		}
 	}
 
 	if (numRTV + numUAV > 8)
-	{
-		return false;
-	}
+		throw CznRenderException("RenderTarget is invalid. Count of RTV(" + std::to_string(numRTV) +") and UAV(" + std::to_string(numUAV) + ") greater then 8.");
 
-	return true;
+	m_bCheckValidity = true;
 }

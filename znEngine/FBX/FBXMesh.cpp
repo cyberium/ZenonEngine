@@ -55,6 +55,7 @@ void CFBXMesh::Load(fbxsdk::FbxMesh* NativeMesh)
 			int cnt = NativeMesh->GetElementUVCount();
 			if (cnt > 1)
 				cnt = 1;
+
 			for (int l = 0; l < cnt; ++l)
 			{
 				const fbxsdk::FbxGeometryElementUV* leUV = NativeMesh->GetElementUV(l);
@@ -91,15 +92,15 @@ void CFBXMesh::Load(fbxsdk::FbxMesh* NativeMesh)
 					int lTextureUVIndex = NativeMesh->GetTextureUVIndex(i, j);
 					switch (leUV->GetReferenceMode())
 					{
-						case FbxGeometryElement::eDirect:
-						case FbxGeometryElement::eIndexToDirect:
-						{
-							uvs.push_back(glm::vec2(leUV->GetDirectArray().GetAt(lTextureUVIndex)[0], leUV->GetDirectArray().GetAt(lTextureUVIndex)[1]));
-						}
-						break;
-						default:
-							_ASSERT(false);
-							break; // other reference modes not shown here!
+					case FbxGeometryElement::eDirect:
+					case FbxGeometryElement::eIndexToDirect:
+					{
+						uvs.push_back(glm::vec2(leUV->GetDirectArray().GetAt(lTextureUVIndex)[0], leUV->GetDirectArray().GetAt(lTextureUVIndex)[1]));
+					}
+					break;
+					default:
+						_ASSERT(false);
+						break; // other reference modes not shown here!
 					}
 				}
 				break;
@@ -115,7 +116,7 @@ void CFBXMesh::Load(fbxsdk::FbxMesh* NativeMesh)
 					break;
 				}
 			}
-		
+
 
 
 			//
@@ -134,22 +135,22 @@ void CFBXMesh::Load(fbxsdk::FbxMesh* NativeMesh)
 				{
 					switch (elem->GetReferenceMode())
 					{
-						case FbxGeometryElement::eDirect:
-						{
-							glm::vec3 uv = glm::vec3(elem->GetDirectArray().GetAt(lControlPointIndex)[0], elem->GetDirectArray().GetAt(lControlPointIndex)[1], elem->GetDirectArray().GetAt(lControlPointIndex)[2]);
-							normals.push_back(uv);
-						}
-						break;
-						case FbxGeometryElement::eIndexToDirect:
-						{
-							int id = elem->GetIndexArray().GetAt(lControlPointIndex);
-							glm::vec3 uv = glm::vec3(elem->GetDirectArray().GetAt(id)[0], elem->GetDirectArray().GetAt(id)[1], elem->GetDirectArray().GetAt(id)[2]);
-							normals.push_back(uv);
-						}
-						break;
-						default:
-							_ASSERT(false);
-							break; // other reference modes not shown here!
+					case FbxGeometryElement::eDirect:
+					{
+						glm::vec3 uv = glm::vec3(elem->GetDirectArray().GetAt(lControlPointIndex)[0], elem->GetDirectArray().GetAt(lControlPointIndex)[1], elem->GetDirectArray().GetAt(lControlPointIndex)[2]);
+						normals.push_back(uv);
+					}
+					break;
+					case FbxGeometryElement::eIndexToDirect:
+					{
+						int id = elem->GetIndexArray().GetAt(lControlPointIndex);
+						glm::vec3 uv = glm::vec3(elem->GetDirectArray().GetAt(id)[0], elem->GetDirectArray().GetAt(id)[1], elem->GetDirectArray().GetAt(id)[2]);
+						normals.push_back(uv);
+					}
+					break;
+					default:
+						_ASSERT(false);
+						break; // other reference modes not shown here!
 					}
 				}
 				break;
@@ -159,20 +160,20 @@ void CFBXMesh::Load(fbxsdk::FbxMesh* NativeMesh)
 					int lTextureUVIndex = NativeMesh->GetTextureUVIndex(i, j);
 					switch (elem->GetReferenceMode())
 					{
-						case FbxGeometryElement::eDirect:
-						{
-							normals.push_back(glm::vec3(elem->GetDirectArray().GetAt(lTextureUVIndex)[0], elem->GetDirectArray().GetAt(lTextureUVIndex)[1], elem->GetDirectArray().GetAt(lTextureUVIndex)[2]));
-						}
-						break;
-						case FbxGeometryElement::eIndexToDirect:
-						{
-							int id = elem->GetIndexArray().GetAt(lTextureUVIndex);
-							normals.push_back(glm::vec3(elem->GetDirectArray().GetAt(id)[0], elem->GetDirectArray().GetAt(id)[1], elem->GetDirectArray().GetAt(id)[2]));
-						}
-						break;
-						default:
-							_ASSERT(false);
-							break; // other reference modes not shown here!
+					case FbxGeometryElement::eDirect:
+					{
+						normals.push_back(glm::vec3(elem->GetDirectArray().GetAt(lTextureUVIndex)[0], elem->GetDirectArray().GetAt(lTextureUVIndex)[1], elem->GetDirectArray().GetAt(lTextureUVIndex)[2]));
+					}
+					break;
+					case FbxGeometryElement::eIndexToDirect:
+					{
+						int id = elem->GetIndexArray().GetAt(lTextureUVIndex);
+						normals.push_back(glm::vec3(elem->GetDirectArray().GetAt(id)[0], elem->GetDirectArray().GetAt(id)[1], elem->GetDirectArray().GetAt(id)[2]));
+					}
+					break;
+					default:
+						_ASSERT(false);
+						break; // other reference modes not shown here!
 					}
 				}
 				break;

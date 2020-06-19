@@ -55,10 +55,7 @@ void DepthStencilStateDX11::Bind()
 		D3D11_DEPTH_STENCIL_DESC depthStencilDesc = TranslateDepthStencilState(m_DepthMode, m_StencilMode);
 
 		m_pDepthStencilState = NULL;
-		if (FAILED(m_RenderDeviceDX11.GetDeviceD3D11()->CreateDepthStencilState(&depthStencilDesc, &m_pDepthStencilState)))
-		{
-			throw CznRenderException("Failed to create depth stencil state.");
-		}
+		CHECK_HR(m_RenderDeviceDX11.GetDeviceD3D11()->CreateDepthStencilState(&depthStencilDesc, &m_pDepthStencilState));
 
 		m_bDirty = false;
 	}
@@ -90,7 +87,6 @@ D3D11_DEPTH_WRITE_MASK TranslateDepthWriteMask(IDepthStencilState::DepthWrite de
 		break;
 	default:
 		throw CznRenderException("Unknown depth write mask.");
-		break;
 	}
 
 	return result;
@@ -128,7 +124,6 @@ D3D11_COMPARISON_FUNC TranslateCompareFunc(IDepthStencilState::CompareFunction c
 		break;
 	default:
 		throw CznRenderException("Unknown compare function.");
-		break;
 	}
 
 	return result;
@@ -166,7 +161,6 @@ D3D11_STENCIL_OP TranslateStencilOperation(IDepthStencilState::StencilOperation 
 		break;
 	default:
 		throw CznRenderException("Unknown stencil operation.");
-		break;
 	}
 
 	return result;
@@ -174,8 +168,7 @@ D3D11_STENCIL_OP TranslateStencilOperation(IDepthStencilState::StencilOperation 
 
 D3D11_DEPTH_STENCILOP_DESC TranslateFaceOperation(IDepthStencilState::FaceOperation faceOperation)
 {
-	D3D11_DEPTH_STENCILOP_DESC result;
-
+	D3D11_DEPTH_STENCILOP_DESC result = {};
 	result.StencilFailOp = TranslateStencilOperation(faceOperation.StencilFail);
 	result.StencilDepthFailOp = TranslateStencilOperation(faceOperation.StencilPassDepthFail);
 	result.StencilPassOp = TranslateStencilOperation(faceOperation.StencilDepthPass);
@@ -186,8 +179,7 @@ D3D11_DEPTH_STENCILOP_DESC TranslateFaceOperation(IDepthStencilState::FaceOperat
 
 D3D11_DEPTH_STENCIL_DESC TranslateDepthStencilState(const IDepthStencilState::DepthMode& depthMode, const IDepthStencilState::StencilMode& stencilMode)
 {
-	D3D11_DEPTH_STENCIL_DESC result;
-
+	D3D11_DEPTH_STENCIL_DESC result = {};
 	result.DepthEnable = depthMode.DepthEnable;
 	result.DepthWriteMask = TranslateDepthWriteMask(depthMode.DepthWriteMask);
 	result.DepthFunc = TranslateCompareFunc(depthMode.DepthFunction);

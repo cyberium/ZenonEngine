@@ -149,8 +149,7 @@ void RasterizerStateDX11::Bind()
         rasterizerDesc.ForcedSampleCount = m_ForcedSampleCount;
 
         m_pRasterizerState = NULL;
-        if (FAILED(m_RenderDeviceDX11.GetDeviceD3D11()->CreateRasterizerState1(&rasterizerDesc, &m_pRasterizerState)))
-            throw CException("Failed to create rasterizer state.");
+		CHECK_HR(m_RenderDeviceDX11.GetDeviceD3D11()->CreateRasterizerState1(&rasterizerDesc, &m_pRasterizerState));
 
         m_StateDirty = false;
     }

@@ -25,8 +25,11 @@ inline void FatalMessageBox(const char* _title, const char* _message, ...)
 		vsnprintf(&message[0], len, _message, args);
 		MessageBoxA(HWND_DESKTOP, message.c_str(), _title, MB_ICONERROR | MB_OK);
 	}
-
+		
 	va_end(args);
+
+	DebugBreak();
+	exit(-1);
 }
 
 class ZN_API CException 

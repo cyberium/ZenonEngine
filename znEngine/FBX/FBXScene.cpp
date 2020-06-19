@@ -113,7 +113,6 @@ bool CFBXScene::LoadFromFile(std::shared_ptr<IFile> File)
 		return lStatus;
 	}
 
-
 #if 0
 	if (lStatus == false && lImporter->GetStatus().GetCode() == FbxStatus::ePasswordError)
 	{
