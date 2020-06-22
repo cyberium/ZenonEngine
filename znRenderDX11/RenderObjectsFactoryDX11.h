@@ -32,6 +32,10 @@ public:
 	std::shared_ptr<IConstantBuffer>    CreateConstantBuffer(const void* data, size_t size) override;
 	std::shared_ptr<IStructuredBuffer>  CreateStructuredBuffer(void* data, size_t count, size_t stride, CPUAccess cpuAccess = CPUAccess::None, bool gpuWrite = false) override;
 
+	std::shared_ptr<IBuffer>            LoadVoidBuffer(const std::shared_ptr<IByteBuffer>& ByteBuffer) override;
+	std::shared_ptr<IConstantBuffer>    LoadConstantBuffer(const std::shared_ptr<IByteBuffer>& ByteBuffer) override;
+	std::shared_ptr<IStructuredBuffer>  LoadStructuredBuffer(const std::shared_ptr<IByteBuffer>& ByteBuffer) override;
+
 private:
 	IRenderDeviceDX11& m_RenderDeviceDX11;
 	std::recursive_mutex m_LockMutex;

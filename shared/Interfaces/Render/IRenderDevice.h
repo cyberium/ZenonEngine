@@ -94,6 +94,10 @@ ZN_INTERFACE ZN_API IRenderObjectsFactory
 	virtual std::shared_ptr<IConstantBuffer>  CreateConstantBuffer(const void* data, size_t size) = 0;
 	virtual std::shared_ptr<IStructuredBuffer> CreateStructuredBuffer(void* data, size_t count, size_t stride, CPUAccess cpuAccess = CPUAccess::None, bool gpuWrite = false) = 0;
 
+	virtual std::shared_ptr<IBuffer>            LoadVoidBuffer(const std::shared_ptr<IByteBuffer>& ByteBuffer) = 0;
+	virtual std::shared_ptr<IConstantBuffer>    LoadConstantBuffer(const std::shared_ptr<IByteBuffer>& ByteBuffer) = 0;
+	virtual std::shared_ptr<IStructuredBuffer>  LoadStructuredBuffer(const std::shared_ptr<IByteBuffer>& ByteBuffer) = 0;
+
 	// Templates
 
 	template <typename T>

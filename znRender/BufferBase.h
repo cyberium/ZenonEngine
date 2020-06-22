@@ -15,6 +15,7 @@ public:
 	CBufferBase(IRenderDevice& RenderDevice, IBuffer::BufferType ByfferType);
 	virtual ~CBufferBase();
 
+protected:
 	// IBuffer
 	virtual bool Bind(uint32 id, const IShader* shader, IShaderParameter::Type parameterType) const = 0;
 	virtual void UnBind(uint32 id, const IShader* shader, IShaderParameter::Type parameterType) const = 0;
@@ -29,8 +30,8 @@ public:
 	virtual void Save(const std::shared_ptr<IByteBuffer>& ByteBuffer) override;
 
 	// IBufferPrivate
-	void InitializeBufferBase(const void* data, uint32 count, uint32 offset, uint32 stride) override;
-	void DoInitializeBuffer() override;
+	void InitializeBufferBase(const void* data, uint32 count, uint32 offset, uint32 stride) override final;
+	virtual void DoInitializeBuffer() = 0;
 
 protected:
  	const std::vector<uint8>& GetData() const;

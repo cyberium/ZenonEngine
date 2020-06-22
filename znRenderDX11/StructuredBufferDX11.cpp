@@ -146,7 +146,6 @@ void StructuredBufferDX11::Copy(const IStructuredBuffer* other)
 void StructuredBufferDX11::Set(void* data, size_t elementSize, size_t numElements)
 {
 	SetData(data, numElements * elementSize);
-
 	m_bIsDirty = true;
 }
 
@@ -189,7 +188,11 @@ void StructuredBufferDX11::Commit() const
 	}
 }
 
-void StructuredBufferDX11::DoInitializeBuffer()
+
+//
+// IStructuredBufferPrivate
+//
+void StructuredBufferDX11::DoInitializeStructuredBuffer()
 {
 	// Create a GPU buffer to store the data.
 	D3D11_BUFFER_DESC bufferDesc = {};
@@ -224,11 +227,8 @@ void StructuredBufferDX11::DoInitializeBuffer()
 	subResourceData.SysMemSlicePitch = 0;
 
 	CHECK_HR_MSG(m_RenderDeviceDX11.GetDeviceD3D11()->CreateBuffer(&bufferDesc, &subResourceData, &m_pBuffer), L"Failed to create read/write buffer.");
-}
 
-void StructuredBufferDX11::DoInitializeStructuredBuffer()
-{
-	if ((((uint32)GetCPUAccess() & (uint32)CPUAccess::None) != 0) || (((uint32)GetCPUAccess() & (uint32)CPUAccess::Write) != 0))
+	if ((bufferDesc.BindFlags & D3D11_BIND_SHADER_RESOURCE) != 0)
 	{
 		D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc = {};
 		srvDesc.Format = DXGI_FORMAT_UNKNOWN;
@@ -239,7 +239,7 @@ void StructuredBufferDX11::DoInitializeStructuredBuffer()
 		CHECK_HR_MSG(m_RenderDeviceDX11.GetDeviceD3D11()->CreateShaderResourceView(m_pBuffer, &srvDesc, &m_pSRV), L"Failed to create shader resource view.");
 	}
 
-	if ((((uint32)GetCPUAccess() & (uint32)CPUAccess::None) != 0) && GetGPUWrite())
+	if ((bufferDesc.BindFlags & D3D11_BIND_UNORDERED_ACCESS) != 0)
 	{
 		D3D11_UNORDERED_ACCESS_VIEW_DESC uavDesc = {};
 		uavDesc.Format = DXGI_FORMAT_UNKNOWN;

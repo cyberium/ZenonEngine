@@ -12,7 +12,7 @@ public:
 	void UnBind(uint32 id, const IShader* shader, IShaderParameter::Type parameterType) const override;
 	void Copy(const IBuffer* other) const override;
 
-protected:
+	// IBufferPrivate
 	void DoInitializeBuffer() override;
 
 private:

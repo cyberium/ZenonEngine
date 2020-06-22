@@ -3,6 +3,7 @@
 class ZN_API GeometryProxie
 	: public IGeometry
 	, public IGeometryInternal
+	, public ILoadableFromFile
 {
 public:
 	GeometryProxie(const std::shared_ptr<IGeometry>& Geometry);
@@ -28,6 +29,10 @@ public:
 	void Render_BindAllBuffers(const RenderEventArgs& RenderEventArgs, const IShader* VertexShader) const override final;
 	void Render_Draw(const SGeometryDrawArgs GeometryDrawArgs = SGeometryDrawArgs()) const override final;
 	void Render_UnbindAllBuffers(const RenderEventArgs& RenderEventArgs, const IShader* VertexShader) const override final;
+
+	// ILoadableFromFile
+	void Load(const std::shared_ptr<IByteBuffer>& ByteBuffer) override;
+	void Save(const std::shared_ptr<IByteBuffer>& ByteBuffer) override;
 
 private:
 	std::shared_ptr<IGeometry> m_Geometry;

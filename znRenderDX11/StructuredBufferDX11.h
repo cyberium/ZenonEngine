@@ -24,17 +24,17 @@ public:
 	// IStructuredBufferDX11
 	ID3D11UnorderedAccessView* GetUnorderedAccessView() const;
 
-protected:
-	void DoInitializeBuffer() override;
+	// IStructuredBufferPrivate
 	void DoInitializeStructuredBuffer() override;
+
+private:
 	void Commit() const;
 
 private:
 	ATL::CComPtr<ID3D11Buffer> m_pBuffer;
 	ATL::CComPtr<ID3D11ShaderResourceView> m_pSRV;
 	ATL::CComPtr<ID3D11UnorderedAccessView> m_pUAV;
-
-	mutable bool m_bIsDirty; // Marked dirty if the contents of the buffer differ from what is stored on the GPU.
+	mutable bool m_bIsDirty;
 
 private: // Link to parent d3d11 device
 

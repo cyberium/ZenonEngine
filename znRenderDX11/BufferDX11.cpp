@@ -13,10 +13,8 @@ namespace
 				return D3D11_BIND_VERTEX_BUFFER;
 			case IBuffer::BufferType::IndexBuffer:
 				return D3D11_BIND_INDEX_BUFFER;
-			case IBuffer::BufferType::ConstantBuffer:
-				return D3D11_BIND_CONSTANT_BUFFER;
 			default:
-				throw CznRenderException("Buffer: Unknown buffer type.");
+				throw CznRenderException("Buffer: Incorrect buffer type.");
 		}
 	}
 }

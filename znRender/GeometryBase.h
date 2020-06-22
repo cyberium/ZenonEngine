@@ -6,7 +6,7 @@ class ZN_API GeometryBase
 	, public Object
 {
 public:
-	GeometryBase();
+	GeometryBase(IRenderDevice& RenderDevice);
 	virtual ~GeometryBase();
 
 	// IGeometry
@@ -16,6 +16,9 @@ public:
 	virtual void         AddVertexBuffer(const BufferBinding& binding, const std::shared_ptr<IBuffer>& VertexBuffer) override;
 	virtual void         SetVertexBuffer(const std::shared_ptr<IBuffer>& GlobalVertexBuffer) override;
 	virtual void         SetIndexBuffer(const std::shared_ptr<IBuffer>& IndexBuffer) override;
+
+	void                 SetPrimitiveTopology(PrimitiveTopology Topology) override;
+	PrimitiveTopology    GetPrimitiveTopology() const override;
 
 	virtual void         Accept(IVisitor* visitor, const IMaterial* Material, SGeometryDrawArgs GeometryDrawArgs = SGeometryDrawArgs()) override;
 
@@ -30,4 +33,8 @@ protected:
 	BuffersMap                m_VertexBuffers;
 	std::shared_ptr<IBuffer>  m_VertexBuffer;
 	std::shared_ptr<IBuffer>  m_pIndexBuffer;
+	PrimitiveTopology         m_PrimitiveTopology;
+
+private: // Link to parent d3d11 device
+	IRenderDevice& m_RenderDevice;
 };

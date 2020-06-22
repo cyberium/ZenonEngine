@@ -8,56 +8,40 @@
 // General
 #include "GeometryDX11.h"
 
+namespace
+{
+	D3D11_PRIMITIVE_TOPOLOGY PrimitiveTopologyToDX11PrimitiveTopology(PrimitiveTopology PrimitiveTopology)
+	{
+		switch (PrimitiveTopology)
+		{
+			case PrimitiveTopology::PointList:
+				return D3D11_PRIMITIVE_TOPOLOGY_POINTLIST;
+			case PrimitiveTopology::LineList:
+				return D3D11_PRIMITIVE_TOPOLOGY_LINELIST_ADJ; // TODO REMOVE ME!
+			case PrimitiveTopology::LineStrip:
+				return D3D11_PRIMITIVE_TOPOLOGY_LINESTRIP;
+			case PrimitiveTopology::TriangleList:
+				return D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
+			case PrimitiveTopology::TriangleStrip:
+				return D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP;
+		}
+		throw CznRenderException("GeometryDX11: Invalid primitive topology.");
+	}
+}
+
 GeometryDX11::GeometryDX11(IRenderDeviceDX11& RenderDeviceDX11)
-	: m_RenderDeviceDX11(RenderDeviceDX11)
-	, m_PrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST)
+	: GeometryBase(RenderDeviceDX11)
+	, m_RenderDeviceDX11(RenderDeviceDX11)
 {}
 
 GeometryDX11::~GeometryDX11()
 {}
 
-void GeometryDX11::SetPrimitiveTopology(PrimitiveTopology _topology)
-{
-	switch (_topology)
-	{
-	case PrimitiveTopology::PointList:
-		m_PrimitiveTopology = D3D11_PRIMITIVE_TOPOLOGY_POINTLIST;
-		break;
-	case PrimitiveTopology::LineList:
-		m_PrimitiveTopology = D3D11_PRIMITIVE_TOPOLOGY_LINELIST_ADJ; // TODO REMOVE ME!
-		break;
-	case PrimitiveTopology::LineStrip:
-		m_PrimitiveTopology = D3D11_PRIMITIVE_TOPOLOGY_LINESTRIP;
-		break;
-	case PrimitiveTopology::TriangleList:
-		m_PrimitiveTopology = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
-		break;
-	case PrimitiveTopology::TriangleStrip:
-		m_PrimitiveTopology = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP;
-		break;
-	}
-}
 
-PrimitiveTopology GeometryDX11::GetPrimitiveTopology() const
-{
-	switch (m_PrimitiveTopology)
-	{
-		case D3D11_PRIMITIVE_TOPOLOGY_POINTLIST:
-			return PrimitiveTopology::PointList;
-		case D3D11_PRIMITIVE_TOPOLOGY_LINELIST_ADJ:
-			return PrimitiveTopology::LineList;
-		case D3D11_PRIMITIVE_TOPOLOGY_LINESTRIP:
-			return PrimitiveTopology::LineStrip;
-		case D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST:
-			return PrimitiveTopology::TriangleList;
-		case D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP:
-			return PrimitiveTopology::TriangleStrip;
-	}
 
-	_ASSERT(false);
-	return PrimitiveTopology::PointList;
-}
-
+//
+// IGeometry
+//
 void GeometryDX11::Render(const RenderEventArgs& RenderEventArgs, const IShader* VertexShader, const SGeometryDrawArgs GeometryDrawArgs) const
 {
 	Render_BindAllBuffers(RenderEventArgs, VertexShader);
@@ -94,7 +78,7 @@ void GeometryDX11::Render_Draw(const SGeometryDrawArgs GeometryDrawArgs) const
 {
 	SGeometryDrawArgs args = FixGeometryDrawArgs(GeometryDrawArgs);
 
-	m_RenderDeviceDX11.GetDeviceContextD3D11()->IASetPrimitiveTopology(m_PrimitiveTopology);
+	m_RenderDeviceDX11.GetDeviceContextD3D11()->IASetPrimitiveTopology(PrimitiveTopologyToDX11PrimitiveTopology(GetPrimitiveTopology()));
 
 	if (m_pIndexBuffer != NULL)
 	{

@@ -16,9 +16,8 @@ GeometryProxie::~GeometryProxie()
 {}
 
 
-
 //
-// IModel
+// IGeometry
 //
 void GeometryProxie::SetBounds(const BoundingBox & Bounds)
 {
@@ -65,6 +64,10 @@ void GeometryProxie::Accept(IVisitor * visitor, const IMaterial * Material, SGeo
 	visitor->Visit(this, Material, GeometryDrawArgs);
 }
 
+
+//
+// IGeometryInternal
+//
 void GeometryProxie::Render_BindAllBuffers(const RenderEventArgs & RenderEventArgs, const IShader * VertexShader) const
 {
 	m_GeometryInternal->Render_BindAllBuffers(RenderEventArgs, VertexShader);
@@ -78,4 +81,28 @@ void GeometryProxie::Render_Draw(const SGeometryDrawArgs GeometryDrawArgs) const
 void GeometryProxie::Render_UnbindAllBuffers(const RenderEventArgs & RenderEventArgs, const IShader * VertexShader) const
 {
 	m_GeometryInternal->Render_UnbindAllBuffers(RenderEventArgs, VertexShader);
+}
+
+
+//
+// ILoadableFromFile
+//
+void GeometryProxie::Load(const std::shared_ptr<IByteBuffer>& ByteBuffer)
+{
+	if (const auto& loadableFromFile = std::dynamic_pointer_cast<ILoadableFromFile>(m_Geometry))
+	{
+		loadableFromFile->Load(ByteBuffer);
+	}
+	else
+		_ASSERT(false);
+}
+
+void GeometryProxie::Save(const std::shared_ptr<IByteBuffer>& ByteBuffer)
+{
+	if (const auto& loadableFromFile = std::dynamic_pointer_cast<ILoadableFromFile>(m_Geometry))
+	{
+		loadableFromFile->Save(ByteBuffer);
+	}
+	else
+		_ASSERT(false);
 }

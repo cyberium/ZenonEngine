@@ -17,6 +17,8 @@ public:
 	CStructuredBufferBase(IRenderDevice& RenderDevice);
 	virtual ~CStructuredBufferBase();
 
+protected:
+	// IBuffer
 	BufferType GetType() const override { return CBufferBase::GetType(); }
 	uint32 GetElementCount() const override { return CBufferBase::GetElementCount(); }
 	uint32 GetElementStride() const override { return CBufferBase::GetElementStride(); };
@@ -26,8 +28,11 @@ public:
 	void Load(const std::shared_ptr<IByteBuffer>& ByteBuffer) override;
 	void Save(const std::shared_ptr<IByteBuffer>& ByteBuffer) override;
 
+	// IBufferPrivate
+	void DoInitializeBuffer() override;
+
 	// IStructuredBufferPrivate
-	void InitializeStructuredBufferBase(CPUAccess CPUAccess, bool GPUWrite) override;
+	void InitializeStructuredBufferBase(CPUAccess CPUAccess, bool GPUWrite) override final;
 	void DoInitializeStructuredBuffer() = 0;
 
 protected:

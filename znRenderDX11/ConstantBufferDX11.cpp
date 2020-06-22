@@ -5,6 +5,7 @@
 ConstantBufferDX11::ConstantBufferDX11(IRenderDeviceDX11& RenderDeviceDX11)
 	: CBufferBase(RenderDeviceDX11, IBuffer::BufferType::ConstantBuffer)
 	, m_RenderDeviceDX11(RenderDeviceDX11)
+	, m_bIsDirty(false)
 {}
 
 ConstantBufferDX11::~ConstantBufferDX11()
@@ -17,7 +18,11 @@ ConstantBufferDX11::~ConstantBufferDX11()
 //
 bool ConstantBufferDX11::Bind(uint32 id, const IShader* shader, IShaderParameter::Type parameterType) const
 {
-	bool result = true;
+	if (m_bIsDirty)
+	{
+		Commit();
+		m_bIsDirty = false;
+	}
 
 	ID3D11Buffer* pBuffers[] = { m_pBuffer };
 
@@ -42,11 +47,10 @@ bool ConstantBufferDX11::Bind(uint32 id, const IShader* shader, IShaderParameter
 			m_RenderDeviceDX11.GetDeviceContextD3D11()->CSSetConstantBuffers(id, 1, pBuffers);
 			break;
 		default:
-			result = false;
-			break;
+			_ASSERT(FALSE);
 	}
 
-	return result;
+	return true;
 }
 
 void ConstantBufferDX11::UnBind(uint32 id, const IShader* shader, IShaderParameter::Type parameterType) const
@@ -105,14 +109,14 @@ void ConstantBufferDX11::Set(const void* data, size_t size)
 	if (size != GetElementCount())
 		throw CException(L"ConstantBufferDX11: Buffers sizes mistmath. Current: '%d', New: '%d'.", GetElementCount(), size);
 
-	D3D11_MAPPED_SUBRESOURCE mappedResource = { 0 };
-	CHECK_HR(m_RenderDeviceDX11.GetDeviceContextD3D11()->Map(m_pBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource));
-
-	memcpy_s(mappedResource.pData, GetElementCount(), data, size);
-
-	m_RenderDeviceDX11.GetDeviceContextD3D11()->Unmap(m_pBuffer, 0);
+	SetData(data, size);
+	m_bIsDirty = true;
 }
 
+
+//
+// IBufferPrivate
+//
 void ConstantBufferDX11::DoInitializeBuffer()
 {
 	D3D11_BUFFER_DESC bufferDesc = { 0 };
@@ -124,4 +128,21 @@ void ConstantBufferDX11::DoInitializeBuffer()
 	bufferDesc.StructureByteStride = 0;
 
 	CHECK_HR_MSG(m_RenderDeviceDX11.GetDeviceD3D11()->CreateBuffer(&bufferDesc, nullptr, &m_pBuffer), L"Failed to create constant buffer");
+}
+
+
+//
+// Pivate
+//
+void ConstantBufferDX11::Commit() const
+{
+	if (m_bIsDirty && m_pBuffer)
+	{
+		D3D11_MAPPED_SUBRESOURCE mappedResource = { };
+		CHECK_HR(m_RenderDeviceDX11.GetDeviceContextD3D11()->Map(m_pBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource));
+
+		memcpy_s(mappedResource.pData, GetElementCount(), GetData().data(), GetData().size());
+
+		m_RenderDeviceDX11.GetDeviceContextD3D11()->Unmap(m_pBuffer, 0);
+	}
 }

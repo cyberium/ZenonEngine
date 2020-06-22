@@ -29,6 +29,18 @@ void CStructuredBufferBase::Save(const std::shared_ptr<IByteBuffer>& ByteBuffer)
 	ByteBuffer->write(&m_GPUWrite);
 }
 
+
+//
+// IBufferPrivate
+//
+void CStructuredBufferBase::DoInitializeBuffer()
+{
+}
+
+
+//
+// IStructuredBufferPrivate
+//
 void CStructuredBufferBase::InitializeStructuredBufferBase(CPUAccess CPUAccess, bool GPUWrite)
 {
 	m_CPUAccess = CPUAccess;
@@ -49,5 +61,5 @@ bool CStructuredBufferBase::GetGPUWrite() const
 
 bool CStructuredBufferBase::IsDynamic() const
 {
-	return (uint32_t)m_CPUAccess != 0;
+	return (uint32)m_CPUAccess != 0;
 }

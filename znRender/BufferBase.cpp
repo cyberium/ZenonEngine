@@ -6,21 +6,16 @@
 CBufferBase::CBufferBase(IRenderDevice& RenderDevice, IBuffer::BufferType ByfferType)
 	: m_RenderDevice(RenderDevice)
 	, m_BufferType(ByfferType)
-{
-
-}
+{}
 
 CBufferBase::~CBufferBase()
-{
-
-}
+{}
 
 
 
 //
 // IBuffer
 //
-
 IBuffer::BufferType CBufferBase::GetType() const
 {
 	return m_BufferType;
@@ -43,14 +38,15 @@ uint32 CBufferBase::GetElementOffset() const
 
 void CBufferBase::Load(const std::shared_ptr<IByteBuffer>& ByteBuffer)
 {
-	uint32 offset, stride, bindFlags, count;
+	IBuffer::BufferType bufferType;
+	uint32 count, offset, stride;
 	uint32 dataSize;
 	std::vector<uint8> data;
 
+	ByteBuffer->read(&bufferType);
+	ByteBuffer->read(&count);
 	ByteBuffer->read(&offset);
 	ByteBuffer->read(&stride);
-	ByteBuffer->read(&bindFlags);
-	ByteBuffer->read(&count);
 
 	// Data of buffer
 	{
@@ -59,16 +55,17 @@ void CBufferBase::Load(const std::shared_ptr<IByteBuffer>& ByteBuffer)
 		ByteBuffer->readBytes(data.data(), dataSize);
 	}
 
-	//InitializeInternal(bindFlags, data.data(), count, offset, stride);
+	m_BufferType = bufferType;
+	InitializeBufferBase(data.data(), count, offset, stride);
 }
 
 void CBufferBase::Save(const std::shared_ptr<IByteBuffer>& ByteBuffer)
 {
-	ByteBuffer->write(&m_Offset);
-	ByteBuffer->write(&m_Stride);
 	ByteBuffer->write(&m_BufferType);
 	ByteBuffer->write(&m_Count);
-
+	ByteBuffer->write(&m_Offset);
+	ByteBuffer->write(&m_Stride);
+	
 	// Data of buffer
 	{
 		size_t dataSize = m_Data.size();
@@ -91,11 +88,6 @@ void CBufferBase::InitializeBufferBase(const void * data, uint32 count, uint32 o
 	DoInitializeBuffer();
 }
 
-void CBufferBase::DoInitializeBuffer()
-{
-	_ASSERT(false);
-}
-
 const std::vector<uint8>& CBufferBase::GetData() const
 {
 	return m_Data;
@@ -110,6 +102,9 @@ void CBufferBase::SetData(const void * data, size_t dataSize)
 {
 	if (!m_Data.empty())
 		m_Data.clear();
+
 	if (data != nullptr)
 		m_Data.assign((const uint8*)data, (const uint8*)data + dataSize);
+	else
+		m_Data.resize(dataSize);
 }

@@ -34,25 +34,6 @@ std::string MaterialBase::GetName() const
 	return m_Name;
 }
 
-void MaterialBase::SetShader(EShaderType type, const std::shared_ptr<IShader> pShader)
-{
-	m_Shaders[type] = pShader;
-}
-
-const std::shared_ptr<IShader>& MaterialBase::GetShader(EShaderType type) const
-{
-	const auto& iter = m_Shaders.find(type);
-	if (iter == m_Shaders.end())
-		throw CException(L"Shader not found.");
-
-	return iter->second;
-}
-
-const ShaderMap& MaterialBase::GetShaders() const
-{
-	return m_Shaders;
-}
-
 void MaterialBase::SetTexture(uint8 ID, const std::shared_ptr<ITexture> texture)
 {
 	m_Textures[ID] = texture;
