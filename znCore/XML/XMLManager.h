@@ -54,6 +54,8 @@ public:
 	// IXMLWriter
 	void SetValue(std::string Value) override;
 	void AddAttribute(std::string AttributeName, std::string AttributeValue) const override;
+	void AddIntAttribute(std::string AttributeName, int AttributeValue) const override;
+	void AddFloatAttribute(std::string AttributeName, double AttributeValue) const override;
 
 	std::shared_ptr<IXMLWriter> CreateChild(std::string ChildName) const override;
 

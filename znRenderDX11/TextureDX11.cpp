@@ -23,7 +23,6 @@ TextureDX11::TextureDX11(IRenderDeviceDX11& RenderDeviceDX11)
 	, m_ShaderResourceViewFormat(DXGI_FORMAT_UNKNOWN)
 	, m_RenderTargetViewFormat(DXGI_FORMAT_UNKNOWN)
 	, m_bGenerateMipmaps(false)
-	, m_MipMapsGenerated(false)
 	, m_BPP(0)
 	, m_Pitch(0)
 	, m_bIsTransparent(false)
@@ -42,7 +41,6 @@ TextureDX11::TextureDX11(IRenderDeviceDX11& RenderDeviceDX11, uint16_t width, ui
 	, m_TextureFormat(format)
 	, m_CPUAccess(cpuAccess)
 	, m_bGenerateMipmaps(false)
-	, m_MipMapsGenerated(false)
 	, m_bIsTransparent(true)
 	, m_bIsDirty(false)
 {
@@ -50,9 +48,7 @@ TextureDX11::TextureDX11(IRenderDeviceDX11& RenderDeviceDX11, uint16_t width, ui
 
 	m_TextureDimension = ITexture::Dimension::Texture2D;
 	if (m_NumSlices > 1)
-	{
 		m_TextureDimension = ITexture::Dimension::Texture2DArray;
-	}
 
 	// Translate to DXGI format.
 	DXGI_FORMAT dxgiFormat = DX11TranslateFormat(format);
@@ -60,44 +56,34 @@ TextureDX11::TextureDX11(IRenderDeviceDX11& RenderDeviceDX11, uint16_t width, ui
 
 	// Translate back to original format (for best match format).
 	m_TextureFormat = DX11TranslateFormat(dxgiFormat, format.NumSamples);
+
 	// Convert Depth/Stencil formats to typeless texture resource formats.
 	m_TextureResourceFormat = DX11GetTextureFormat(dxgiFormat);
+
 	// Convert typeless formats to Depth/Stencil view formats.
 	m_DepthStencilViewFormat = DX11GetDSVFormat(dxgiFormat);
+
 	// Convert depth/stencil and typeless formats to Shader Resource View formats.
 	m_ShaderResourceViewFormat = DX11GetSRVFormat(dxgiFormat);
+
 	// Convert typeless formats to Render Target View formats.
 	m_RenderTargetViewFormat = DX11GetRTVFormat(dxgiFormat);
+
 	// Convert typeless format to Unordered Access View formats.
 	m_UnorderedAccessViewFormat = DX11GetUAVFormat(dxgiFormat);
 
 	m_BPP = DX11GetBPP(m_TextureResourceFormat);
 
 	// Query for texture format support.
-	if (FAILED(m_RenderDeviceDX11.GetDeviceD3D11()->CheckFormatSupport(m_TextureResourceFormat, &m_TextureResourceFormatSupport)))
-	{
-		throw CznRenderException("Failed to query texture resource format support.");
-	}
-	if (FAILED(m_RenderDeviceDX11.GetDeviceD3D11()->CheckFormatSupport(m_DepthStencilViewFormat, &m_DepthStencilViewFormatSupport)))
-	{
-		throw CznRenderException("Failed to query depth/stencil format support.");
-	}
-	if (FAILED(m_RenderDeviceDX11.GetDeviceD3D11()->CheckFormatSupport(m_ShaderResourceViewFormat, &m_ShaderResourceViewFormatSupport)))
-	{
-		throw CznRenderException("Failed to query shader resource format support.");
-	}
-	if (FAILED(m_RenderDeviceDX11.GetDeviceD3D11()->CheckFormatSupport(m_RenderTargetViewFormat, &m_RenderTargetViewFormatSupport)))
-	{
-		throw CznRenderException("Failed to query render target format support.");
-	}
-	if (FAILED(m_RenderDeviceDX11.GetDeviceD3D11()->CheckFormatSupport(m_UnorderedAccessViewFormat, &m_UnorderedAccessViewFormatSupport)))
-	{
-		throw CznRenderException("Failed to query render target format support.");
-	}
+	CHECK_HR_MSG(m_RenderDeviceDX11.GetDeviceD3D11()->CheckFormatSupport(m_TextureResourceFormat, &m_TextureResourceFormatSupport), L"Failed to query texture resource format support.");
+	CHECK_HR_MSG(m_RenderDeviceDX11.GetDeviceD3D11()->CheckFormatSupport(m_DepthStencilViewFormat, &m_DepthStencilViewFormatSupport), L"Failed to query depth/stencil format support.");
+	CHECK_HR_MSG(m_RenderDeviceDX11.GetDeviceD3D11()->CheckFormatSupport(m_ShaderResourceViewFormat, &m_ShaderResourceViewFormatSupport), L"Failed to query shader resource format support.");
+	CHECK_HR_MSG(m_RenderDeviceDX11.GetDeviceD3D11()->CheckFormatSupport(m_RenderTargetViewFormat, &m_RenderTargetViewFormatSupport), L"Failed to query RT format support.");
+	CHECK_HR_MSG(m_RenderDeviceDX11.GetDeviceD3D11()->CheckFormatSupport(m_UnorderedAccessViewFormat, &m_UnorderedAccessViewFormatSupport), L"Failed to query UAV format support.");
+
 	if ((m_TextureResourceFormatSupport & D3D11_FORMAT_SUPPORT_TEXTURE2D) == 0)
-	{
 		ReportTextureFormatError(m_TextureFormat, "Unsupported texture format for 2D textures.");
-	}
+
 	// Can the texture be dynamically modified on the CPU?
 	m_bDynamic = ((int)m_CPUAccess & (int)CPUAccess::Write) != 0 && (m_TextureResourceFormatSupport & D3D11_FORMAT_SUPPORT_CPU_LOCKABLE) != 0;
 	// Can mipmaps be automatically generated for this texture format?
@@ -135,44 +121,23 @@ TextureDX11::TextureDX11(IRenderDeviceDX11& RenderDeviceDX11, uint16_t size, uin
 	m_UnorderedAccessViewFormat = DX11GetUAVFormat(dxgiFormat);
 
 	// Query for texture format support.
-	if (FAILED(m_RenderDeviceDX11.GetDeviceD3D11()->CheckFormatSupport(m_TextureResourceFormat, &m_TextureResourceFormatSupport)))
-	{
-		throw CznRenderException("Failed to query texture resource format support.");
-	}
-	if (FAILED(m_RenderDeviceDX11.GetDeviceD3D11()->CheckFormatSupport(m_DepthStencilViewFormat, &m_DepthStencilViewFormatSupport)))
-	{
-		throw CznRenderException("Failed to query depth/stencil format support.");
-	}
-	if (FAILED(m_RenderDeviceDX11.GetDeviceD3D11()->CheckFormatSupport(m_ShaderResourceViewFormat, &m_ShaderResourceViewFormatSupport)))
-	{
-		throw CznRenderException("Failed to query shader resource format support.");
-	}
-	if (FAILED(m_RenderDeviceDX11.GetDeviceD3D11()->CheckFormatSupport(m_RenderTargetViewFormat, &m_RenderTargetViewFormatSupport)))
-	{
-		throw CznRenderException("Failed to query render target format support.");
-	}
-	if ((m_TextureResourceFormatSupport & D3D11_FORMAT_SUPPORT_TEXTURECUBE) == 0)
-	{
-		ReportTextureFormatError(m_TextureFormat, "Unsupported texture format for cubemap textures.");
-	}
-	if (FAILED(m_RenderDeviceDX11.GetDeviceD3D11()->CheckFormatSupport(m_UnorderedAccessViewFormat, &m_UnorderedAccessViewFormatSupport)))
-	{
-		throw CznRenderException("Failed to query render target format support.");
-	}
+	CHECK_HR_MSG(m_RenderDeviceDX11.GetDeviceD3D11()->CheckFormatSupport(m_TextureResourceFormat, &m_TextureResourceFormatSupport), L"Failed to query texture resource format support.");
+	CHECK_HR_MSG(m_RenderDeviceDX11.GetDeviceD3D11()->CheckFormatSupport(m_DepthStencilViewFormat, &m_DepthStencilViewFormatSupport), L"Failed to query depth/stencil format support.");
+	CHECK_HR_MSG(m_RenderDeviceDX11.GetDeviceD3D11()->CheckFormatSupport(m_ShaderResourceViewFormat, &m_ShaderResourceViewFormatSupport), L"Failed to query shader resource format support.");
+	CHECK_HR_MSG(m_RenderDeviceDX11.GetDeviceD3D11()->CheckFormatSupport(m_RenderTargetViewFormat, &m_RenderTargetViewFormatSupport), L"Failed to query render target format support.");
+	CHECK_HR_MSG(m_RenderDeviceDX11.GetDeviceD3D11()->CheckFormatSupport(m_UnorderedAccessViewFormat, &m_UnorderedAccessViewFormatSupport), L"Failed to query render target format support.");
 
 	if ((m_TextureResourceFormatSupport & D3D11_FORMAT_SUPPORT_TEXTURECUBE) == 0)
-	{
 		ReportTextureFormatError(m_TextureFormat, "Unsupported texture format for cube textures.");
-	}
 
 	// Can the texture be dynamically modified on the CPU?
 	m_bDynamic = ((int)m_CPUAccess & (int)CPUAccess::Write) != 0 && (m_TextureResourceFormatSupport & D3D11_FORMAT_SUPPORT_CPU_LOCKABLE) != 0;
 	// Can mipmaps be automatically generated for this texture format?
 	m_bGenerateMipmaps = !m_bDynamic && (m_ShaderResourceViewFormatSupport & D3D11_FORMAT_SUPPORT_MIP_AUTOGEN) != 0; // && ( m_RenderTargetViewFormatSupport & D3D11_FORMAT_SUPPORT_MIP_AUTOGEN ) != 0;
-	m_MipMapsGenerated = false;
 	// Are UAVs supported?
 	m_bUAV = bUAV && (m_UnorderedAccessViewFormatSupport & D3D11_FORMAT_SUPPORT_SHADER_LOAD) != 0;
 
+	Resize(size, size);
 }
 
 TextureDX11::~TextureDX11()
@@ -243,13 +208,14 @@ void TextureDX11::Resize2D(uint16_t width, uint16_t height)
 		m_TextureHeight = glm::max<uint16_t>(height, 1);
 
 		// Create texture with the dimensions specified.
-		D3D11_TEXTURE2D_DESC textureDesc = { 0 };
+		D3D11_TEXTURE2D_DESC textureDesc = { };
 		textureDesc.ArraySize = m_NumSlices;
 		textureDesc.Format = m_TextureResourceFormat;
 		textureDesc.SampleDesc = m_SampleDesc;
 		textureDesc.Width = m_TextureWidth;
 		textureDesc.Height = m_TextureHeight;
 		textureDesc.MipLevels = 1;
+		textureDesc.MiscFlags = m_bGenerateMipmaps ? D3D11_RESOURCE_MISC_GENERATE_MIPS : 0;
 
 		if (((int)m_CPUAccess & (int)CPUAccess::Read) != 0)
 		{
@@ -284,18 +250,12 @@ void TextureDX11::Resize2D(uint16_t width, uint16_t height)
 			textureDesc.BindFlags |= D3D11_BIND_UNORDERED_ACCESS;
 		}
 
-		textureDesc.MiscFlags = m_bGenerateMipmaps ? D3D11_RESOURCE_MISC_GENERATE_MIPS : 0;
-
-		if (FAILED(m_RenderDeviceDX11.GetDeviceD3D11()->CreateTexture2D(&textureDesc, nullptr, &m_pTexture2D)))
-		{
-			throw CznRenderException("Failed to create texture.");
-			return;
-		}
+		CHECK_HR(m_RenderDeviceDX11.GetDeviceD3D11()->CreateTexture2D(&textureDesc, nullptr, &m_pTexture2D));
 
 		if ((textureDesc.BindFlags & D3D11_BIND_DEPTH_STENCIL) != 0)
 		{
 			// Create the depth/stencil view for the texture.
-			D3D11_DEPTH_STENCIL_VIEW_DESC depthStencilViewDesc;
+			D3D11_DEPTH_STENCIL_VIEW_DESC depthStencilViewDesc = {};
 			depthStencilViewDesc.Format = m_DepthStencilViewFormat;
 			depthStencilViewDesc.Flags = 0;
 
@@ -328,16 +288,12 @@ void TextureDX11::Resize2D(uint16_t width, uint16_t height)
 				}
 			}
 
-			if (FAILED(m_RenderDeviceDX11.GetDeviceD3D11()->CreateDepthStencilView(m_pTexture2D, &depthStencilViewDesc, &m_pDepthStencilView)))
-			{
-				throw CznRenderException("Failed to create depth/stencil view.");
-			}
+			CHECK_HR(m_RenderDeviceDX11.GetDeviceD3D11()->CreateDepthStencilView(m_pTexture2D, &depthStencilViewDesc, &m_pDepthStencilView));
 		}
 
 		if ((textureDesc.BindFlags & D3D11_BIND_SHADER_RESOURCE) != 0)
 		{
-			// Create a Shader resource view for the texture.
-			D3D11_SHADER_RESOURCE_VIEW_DESC resourceViewDesc;
+			D3D11_SHADER_RESOURCE_VIEW_DESC resourceViewDesc = {};
 			resourceViewDesc.Format = m_ShaderResourceViewFormat;
 
 			if (m_NumSlices > 1)
@@ -371,11 +327,9 @@ void TextureDX11::Resize2D(uint16_t width, uint16_t height)
 				}
 			}
 
-			if (FAILED(m_RenderDeviceDX11.GetDeviceD3D11()->CreateShaderResourceView(m_pTexture2D, &resourceViewDesc, &m_pShaderResourceView)))
-			{
-				throw CznRenderException("Failed to create texture resource view.");
-			}
-			else if (m_bGenerateMipmaps)
+			CHECK_HR(m_RenderDeviceDX11.GetDeviceD3D11()->CreateShaderResourceView(m_pTexture2D, &resourceViewDesc, &m_pShaderResourceView));
+			
+			if (m_bGenerateMipmaps)
 			{
 				m_RenderDeviceDX11.GetDeviceContextD3D11()->GenerateMips(m_pShaderResourceView);
 			}
@@ -384,7 +338,7 @@ void TextureDX11::Resize2D(uint16_t width, uint16_t height)
 		if ((textureDesc.BindFlags & D3D11_BIND_RENDER_TARGET) != 0)
 		{
 			// Create the render target view for the texture.
-			D3D11_RENDER_TARGET_VIEW_DESC renderTargetViewDesc;
+			D3D11_RENDER_TARGET_VIEW_DESC renderTargetViewDesc = {};
 			renderTargetViewDesc.Format = m_RenderTargetViewFormat;
 
 			if (m_NumSlices > 1)
@@ -417,19 +371,16 @@ void TextureDX11::Resize2D(uint16_t width, uint16_t height)
 				}
 			}
 
-			if (FAILED(m_RenderDeviceDX11.GetDeviceD3D11()->CreateRenderTargetView(m_pTexture2D, &renderTargetViewDesc, &m_pRenderTargetView)))
-			{
-				throw CznRenderException("Failed to create render target view.");
-			}
+			CHECK_HR(m_RenderDeviceDX11.GetDeviceD3D11()->CreateRenderTargetView(m_pTexture2D, &renderTargetViewDesc, &m_pRenderTargetView));
 		}
 
 		if ((textureDesc.BindFlags & D3D11_BIND_UNORDERED_ACCESS) != 0)
 		{
 			// UAVs cannot be multi sampled.
-			assert(m_SampleDesc.Count == 1);
+			_ASSERT(m_SampleDesc.Count == 1);
 
 			// Create a Shader resource view for the texture.
-			D3D11_UNORDERED_ACCESS_VIEW_DESC unorderedAccessViewDesc;
+			D3D11_UNORDERED_ACCESS_VIEW_DESC unorderedAccessViewDesc = {};
 			unorderedAccessViewDesc.Format = m_UnorderedAccessViewFormat;
 
 			if (m_NumSlices > 1)
@@ -445,45 +396,36 @@ void TextureDX11::Resize2D(uint16_t width, uint16_t height)
 				unorderedAccessViewDesc.Texture2D.MipSlice = 0;
 			}
 
-			if (FAILED(m_RenderDeviceDX11.GetDeviceD3D11()->CreateUnorderedAccessView(m_pTexture2D, &unorderedAccessViewDesc, &m_pUnorderedAccessView)))
-			{
-				throw CznRenderException("Failed to create unordered access view.");
-			}
+			CHECK_HR(m_RenderDeviceDX11.GetDeviceD3D11()->CreateUnorderedAccessView(m_pTexture2D, &unorderedAccessViewDesc, &m_pUnorderedAccessView));
 		}
-
-		//assert(m_BPP > 0 && m_BPP % 8 == 0);
-		//m_Buffer.resize(width * height * (m_BPP / 8));
 	}
 }
 
 void TextureDX11::ResizeCube(uint16_t size)
 {
-	// TODO
+	_ASSERT(FALSE);
 }
 
 void TextureDX11::Resize(uint16_t width, uint16_t height, uint16_t depth)
 {
 	switch (m_TextureDimension)
 	{
-	case Dimension::Texture2D:
-	case Dimension::Texture2DArray:
-		Resize2D(width, height);
-		break;
-	case ITexture::Dimension::TextureCube:
-		ResizeCube(width);
-		break;
-	default:
-		throw CznRenderException("Unknown texture dimension.");
-		break;
+		case Dimension::Texture2D:
+		case Dimension::Texture2DArray:
+			Resize2D(width, height);
+			break;
+		case ITexture::Dimension::TextureCube:
+			ResizeCube(width);
+			break;
+		default:
+			throw CznRenderException("Unknown texture dimension.");
 	}
-
-	return;
 }
 
 void TextureDX11::Plot(glm::ivec2 coord, const uint8_t* pixel, size_t size)
 {
-	assert(m_BPP > 0 && m_BPP % 8 == 0);
-	assert(coord.s < m_TextureWidth && coord.t < m_TextureHeight && size == (m_BPP / 8));
+	_ASSERT(m_BPP > 0 && m_BPP % 8 == 0);
+	_ASSERT(coord.s < m_TextureWidth && coord.t < m_TextureHeight && size == (m_BPP / 8));
 
 	uint8_t bytesPerPixel = (m_BPP / 8);
 	uint32_t stride = m_TextureWidth * bytesPerPixel;
@@ -499,8 +441,8 @@ void TextureDX11::Plot(glm::ivec2 coord, const uint8_t* pixel, size_t size)
 
 void TextureDX11::FetchPixel(glm::ivec2 coord, uint8_t*& pixel, size_t size)
 {
-	assert(m_BPP > 0 && m_BPP % 8 == 0);
-	assert(coord.s < m_TextureWidth && coord.t < m_TextureHeight && size == (m_BPP / 8));
+	_ASSERT(m_BPP > 0 && m_BPP % 8 == 0);
+	_ASSERT(coord.s < m_TextureWidth && coord.t < m_TextureHeight && size == (m_BPP / 8));
 
 	uint8_t bytesPerPixel = (m_BPP / 8);
 	uint32_t stride = m_TextureWidth * bytesPerPixel;
@@ -537,13 +479,8 @@ void TextureDX11::Copy(const std::shared_ptr<ITexture>& other)
 
 	if (((int)m_CPUAccess & (int)CPUAccess::Read) != 0 && m_pTexture2D)
 	{
-		D3D11_MAPPED_SUBRESOURCE mappedResource;
-
-		// Copy the texture data from the texture resource
-		if (FAILED(m_RenderDeviceDX11.GetDeviceContextD3D11()->Map(m_pTexture2D, 0, D3D11_MAP_READ, 0, &mappedResource)))
-		{
-			throw CznRenderException("Failed to map texture resource for reading.");
-		}
+		D3D11_MAPPED_SUBRESOURCE mappedResource = { };
+		CHECK_HR(m_RenderDeviceDX11.GetDeviceContextD3D11()->Map(m_pTexture2D, 0, D3D11_MAP_READ, 0, &mappedResource));
 
 		memcpy_s(m_Buffer.data(), m_Buffer.size(), mappedResource.pData, m_Buffer.size());
 
@@ -553,19 +490,19 @@ void TextureDX11::Copy(const std::shared_ptr<ITexture>& other)
 
 void TextureDX11::Clear(ClearFlags clearFlags, const glm::vec4& color, float depth, uint8_t stencil)
 {
-	if (m_pRenderTargetView && ((int)clearFlags & (int)ClearFlags::Color) != 0)
+	if (m_pRenderTargetView)
 	{
-		m_RenderDeviceDX11.GetDeviceContextD3D11()->ClearRenderTargetView(m_pRenderTargetView, glm::value_ptr(color));
+		if (((int)clearFlags & (int)ClearFlags::Color) != 0)
+			m_RenderDeviceDX11.GetDeviceContextD3D11()->ClearRenderTargetView(m_pRenderTargetView, glm::value_ptr(color));
 	}
 
+	if (m_pDepthStencilView)
 	{
 		UINT flags = 0;
 		flags |= ((int)clearFlags & (int)ClearFlags::Depth) != 0 ? D3D11_CLEAR_DEPTH : 0;
 		flags |= ((int)clearFlags & (int)ClearFlags::Stencil) != 0 ? D3D11_CLEAR_STENCIL : 0;
-		if (m_pDepthStencilView && flags > 0)
-		{
+		if (flags > 0)
 			m_RenderDeviceDX11.GetDeviceContextD3D11()->ClearDepthStencilView(m_pDepthStencilView, flags, depth, stencil);
-		}
 	}
 }
 
@@ -614,33 +551,33 @@ void TextureDX11::Bind(uint32_t ID, EShaderType _shaderType, IShaderParameter::T
 	{
 		switch (_shaderType)
 		{
-		case EShaderType::VertexShader:
-			m_RenderDeviceDX11.GetDeviceContextD3D11()->VSSetShaderResources(ID, 1, srv);
-			break;
-		case EShaderType::TessellationControlShader:
-			m_RenderDeviceDX11.GetDeviceContextD3D11()->HSSetShaderResources(ID, 1, srv);
-			break;
-		case EShaderType::TessellationEvaluationShader:
-			m_RenderDeviceDX11.GetDeviceContextD3D11()->DSSetShaderResources(ID, 1, srv);
-			break;
-		case EShaderType::GeometryShader:
-			m_RenderDeviceDX11.GetDeviceContextD3D11()->GSSetShaderResources(ID, 1, srv);
-			break;
-		case EShaderType::PixelShader:
-			m_RenderDeviceDX11.GetDeviceContextD3D11()->PSSetShaderResources(ID, 1, srv);
-			break;
-		case EShaderType::ComputeShader:
-			m_RenderDeviceDX11.GetDeviceContextD3D11()->CSSetShaderResources(ID, 1, srv);
-			break;
+			case EShaderType::VertexShader:
+				m_RenderDeviceDX11.GetDeviceContextD3D11()->VSSetShaderResources(ID, 1, srv);
+				break;
+			case EShaderType::TessellationControlShader:
+				m_RenderDeviceDX11.GetDeviceContextD3D11()->HSSetShaderResources(ID, 1, srv);
+				break;
+			case EShaderType::TessellationEvaluationShader:
+				m_RenderDeviceDX11.GetDeviceContextD3D11()->DSSetShaderResources(ID, 1, srv);
+				break;
+			case EShaderType::GeometryShader:
+				m_RenderDeviceDX11.GetDeviceContextD3D11()->GSSetShaderResources(ID, 1, srv);
+				break;
+			case EShaderType::PixelShader:
+				m_RenderDeviceDX11.GetDeviceContextD3D11()->PSSetShaderResources(ID, 1, srv);
+				break;
+			case EShaderType::ComputeShader:
+				m_RenderDeviceDX11.GetDeviceContextD3D11()->CSSetShaderResources(ID, 1, srv);
+				break;
 		}
 	}
 	else if (parameterType == IShaderParameter::Type::RWTexture && m_pUnorderedAccessView)
 	{
 		switch (_shaderType)
 		{
-		case EShaderType::ComputeShader:
-			m_RenderDeviceDX11.GetDeviceContextD3D11()->CSSetUnorderedAccessViews(ID, 1, uav, nullptr);
-			break;
+			case EShaderType::ComputeShader:
+				m_RenderDeviceDX11.GetDeviceContextD3D11()->CSSetUnorderedAccessViews(ID, 1, uav, nullptr);
+				break;
 		}
 	}
 }
@@ -660,51 +597,48 @@ void TextureDX11::UnBind(uint32_t ID, EShaderType _shaderType, IShaderParameter:
 	{
 		switch (_shaderType)
 		{
-		case EShaderType::VertexShader:
-			m_RenderDeviceDX11.GetDeviceContextD3D11()->VSSetShaderResources(ID, 1, srv);
-			break;
-		case EShaderType::TessellationControlShader:
-			m_RenderDeviceDX11.GetDeviceContextD3D11()->HSSetShaderResources(ID, 1, srv);
-			break;
-		case EShaderType::TessellationEvaluationShader:
-			m_RenderDeviceDX11.GetDeviceContextD3D11()->DSSetShaderResources(ID, 1, srv);
-			break;
-		case EShaderType::GeometryShader:
-			m_RenderDeviceDX11.GetDeviceContextD3D11()->GSSetShaderResources(ID, 1, srv);
-			break;
-		case EShaderType::PixelShader:
-			m_RenderDeviceDX11.GetDeviceContextD3D11()->PSSetShaderResources(ID, 1, srv);
-			break;
-		case EShaderType::ComputeShader:
-			m_RenderDeviceDX11.GetDeviceContextD3D11()->CSSetShaderResources(ID, 1, srv);
-			break;
+			case EShaderType::VertexShader:
+				m_RenderDeviceDX11.GetDeviceContextD3D11()->VSSetShaderResources(ID, 1, srv);
+				break;
+			case EShaderType::TessellationControlShader:
+				m_RenderDeviceDX11.GetDeviceContextD3D11()->HSSetShaderResources(ID, 1, srv);
+				break;
+			case EShaderType::TessellationEvaluationShader:
+				m_RenderDeviceDX11.GetDeviceContextD3D11()->DSSetShaderResources(ID, 1, srv);
+				break;
+			case EShaderType::GeometryShader:
+				m_RenderDeviceDX11.GetDeviceContextD3D11()->GSSetShaderResources(ID, 1, srv);
+				break;
+			case EShaderType::PixelShader:
+				m_RenderDeviceDX11.GetDeviceContextD3D11()->PSSetShaderResources(ID, 1, srv);
+				break;
+			case EShaderType::ComputeShader:
+				m_RenderDeviceDX11.GetDeviceContextD3D11()->CSSetShaderResources(ID, 1, srv);
+				break;
 		}
 	}
 	else if (parameterType == IShaderParameter::Type::RWTexture)
 	{
 		switch (_shaderType)
 		{
-		case EShaderType::ComputeShader:
-			m_RenderDeviceDX11.GetDeviceContextD3D11()->CSSetUnorderedAccessViews(ID, 1, uav, nullptr);
-			break;
+			case EShaderType::ComputeShader:
+				m_RenderDeviceDX11.GetDeviceContextD3D11()->CSSetUnorderedAccessViews(ID, 1, uav, nullptr);
+				break;
 		}
 	}
 }
 
 DXGI_SAMPLE_DESC TextureDX11::GetSupportedSampleCount(DXGI_FORMAT format, uint8_t numSamples)
 {
-	DXGI_SAMPLE_DESC sampleDesc;
+	DXGI_SAMPLE_DESC sampleDesc = {};
 
 	UINT sampleCount = 1;
 	UINT qualityLevels = 0;
 
 	while (sampleCount <= numSamples && SUCCEEDED(m_RenderDeviceDX11.GetDeviceD3D11()->CheckMultisampleQualityLevels(format, sampleCount, &qualityLevels)) && qualityLevels > 0)
 	{
-		// That works...
 		sampleDesc.Count = sampleCount;
 		sampleDesc.Quality = qualityLevels - 1;
-
-		// But can we do better?
 		sampleCount = sampleCount * 2;
 	}
 
@@ -736,13 +670,13 @@ ID3D11Resource* TextureDX11::GetTextureResource() const
 	ID3D11Resource* resource = nullptr;
 	switch (m_TextureDimension)
 	{
-	case ITexture::Dimension::Texture2D:
-	case ITexture::Dimension::Texture2DArray:
-		resource = m_pTexture2D;
-		break;
-	case ITexture::Dimension::TextureCube:
-		resource = m_pTexture3D;
-		break;
+		case ITexture::Dimension::Texture2D:
+		case ITexture::Dimension::Texture2DArray:
+			resource = m_pTexture2D;
+			break;
+		case ITexture::Dimension::TextureCube:
+			resource = m_pTexture3D;
+			break;
 	}
 
 	return resource;

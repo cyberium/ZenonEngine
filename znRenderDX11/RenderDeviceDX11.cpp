@@ -166,8 +166,8 @@ void RenderDeviceDX11::InitializeD3D11()
         if (SUCCEEDED(m_DebugD3D11->QueryInterface<ID3D11InfoQueue>(&d3dInfoQueue)))
         {
 
-            //d3dInfoQueue->SetBreakOnSeverity(D3D11_MESSAGE_SEVERITY_CORRUPTION, TRUE);
-            //d3dInfoQueue->SetBreakOnSeverity(D3D11_MESSAGE_SEVERITY_ERROR, TRUE);
+            d3dInfoQueue->SetBreakOnSeverity(D3D11_MESSAGE_SEVERITY_CORRUPTION, TRUE);
+            d3dInfoQueue->SetBreakOnSeverity(D3D11_MESSAGE_SEVERITY_ERROR, TRUE);
             //d3dInfoQueue->SetBreakOnSeverity(D3D11_MESSAGE_SEVERITY_WARNING, TRUE);
 
             D3D11_MESSAGE_ID hide[] =

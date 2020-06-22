@@ -38,7 +38,7 @@ bool TextureDX11::LoadTextureFromImage(const std::shared_ptr<IImage>& Image)
 
 
 	// Load the texture data into a GPU texture.
-	D3D11_TEXTURE2D_DESC textureDesc = { 0 };
+	D3D11_TEXTURE2D_DESC textureDesc = { };
 	textureDesc.Width = m_TextureWidth;
 	textureDesc.Height = m_TextureHeight;
 	textureDesc.MipLevels = m_bGenerateMipmaps ? 0 : 1;
@@ -58,30 +58,29 @@ bool TextureDX11::LoadTextureFromImage(const std::shared_ptr<IImage>& Image)
 	textureDesc.CPUAccessFlags = 0;
 	textureDesc.MiscFlags = m_bGenerateMipmaps ? D3D11_RESOURCE_MISC_GENERATE_MIPS : 0;
 
-
-	D3D11_SUBRESOURCE_DATA subresourceData;
-	subresourceData.pSysMem = Image->GetData();
-	subresourceData.SysMemPitch = Image->GetStride();
-	subresourceData.SysMemSlicePitch = 0;
-
-	if (FAILED(m_RenderDeviceDX11.GetDeviceD3D11()->CreateTexture2D(&textureDesc, m_bGenerateMipmaps ? nullptr : &subresourceData, &m_pTexture2D)))
+	if (m_bGenerateMipmaps)
 	{
-		_ASSERT_EXPR(false, "Failed to create texture.");
-		return false;
+		CHECK_HR_MSG(m_RenderDeviceDX11.GetDeviceD3D11()->CreateTexture2D(&textureDesc, NULL, &m_pTexture2D), L"Failed to create texture with mipmaps.");
+	}
+	else
+	{
+		D3D11_SUBRESOURCE_DATA subresourceData = { };
+		subresourceData.pSysMem = Image->GetData();
+		subresourceData.SysMemPitch = Image->GetStride();
+		subresourceData.SysMemSlicePitch = 0;
+
+		CHECK_HR_MSG(m_RenderDeviceDX11.GetDeviceD3D11()->CreateTexture2D(&textureDesc, &subresourceData, &m_pTexture2D), L"Failed to create texture.");
 	}
 
 	// Create a Shader resource view for the texture.
-	D3D11_SHADER_RESOURCE_VIEW_DESC resourceViewDesc;
-
-	resourceViewDesc.Format = m_ShaderResourceViewFormat;
-	resourceViewDesc.ViewDimension = D3D_SRV_DIMENSION_TEXTURE2D;
-	resourceViewDesc.Texture2D.MipLevels = m_bGenerateMipmaps ? -1 : 1;
-	resourceViewDesc.Texture2D.MostDetailedMip = 0;
-
-	if (FAILED(m_RenderDeviceDX11.GetDeviceD3D11()->CreateShaderResourceView(m_pTexture2D, &resourceViewDesc, &m_pShaderResourceView)))
 	{
-		_ASSERT_EXPR(false, "Failed to create texture resource view.");
-		return false;
+		D3D11_SHADER_RESOURCE_VIEW_DESC resourceViewDesc = {};
+		resourceViewDesc.Format = m_ShaderResourceViewFormat;
+		resourceViewDesc.ViewDimension = D3D_SRV_DIMENSION_TEXTURE2D;
+		resourceViewDesc.Texture2D.MipLevels = m_bGenerateMipmaps ? -1 : 1;
+		resourceViewDesc.Texture2D.MostDetailedMip = 0;
+
+		CHECK_HR_MSG(m_RenderDeviceDX11.GetDeviceD3D11()->CreateShaderResourceView(m_pTexture2D, &resourceViewDesc, &m_pShaderResourceView), L"Failed to create texture resource view.");
 	}
 
 	m_Buffer.resize(Image->GetHeight() * Image->GetStride());

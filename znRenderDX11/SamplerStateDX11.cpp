@@ -24,7 +24,7 @@ SamplerStateDX11::~SamplerStateDX11()
 //
 void SamplerStateDX11::Bind(uint32_t ID, const IShader* shader, IShaderParameter::Type parameterType) const
 {
-    if (m_bIsDirty || m_pSamplerState == nullptr)
+    if (m_bIsDirty)
     {
 		D3D11_SAMPLER_DESC samplerDesc;
         samplerDesc.Filter = DX11TranslateFilter(m_bIsAnisotropicFilteringEnabled, m_CompareMode, m_MinFilter, m_MagFilter, m_MipFilter);
@@ -159,57 +159,42 @@ D3D11_FILTER DX11TranslateFilter(bool IsAnisotropicFilteringEnabled, ISamplerSta
 
 D3D11_TEXTURE_ADDRESS_MODE DX11TranslateWrapMode(ISamplerState::WrapMode wrapMode)
 {
-	D3D11_TEXTURE_ADDRESS_MODE addressMode = D3D11_TEXTURE_ADDRESS_WRAP;
-
 	switch (wrapMode)
 	{
-	case ISamplerState::WrapMode::Repeat:
-		addressMode = D3D11_TEXTURE_ADDRESS_WRAP;
-		break;
-	case ISamplerState::WrapMode::Clamp:
-		addressMode = D3D11_TEXTURE_ADDRESS_CLAMP;
-		break;
-	case ISamplerState::WrapMode::Mirror:
-		addressMode = D3D11_TEXTURE_ADDRESS_MIRROR;
-		break;
-	case ISamplerState::WrapMode::Border:
-		addressMode = D3D11_TEXTURE_ADDRESS_BORDER;
-		break;
+		case ISamplerState::WrapMode::Repeat:
+			return D3D11_TEXTURE_ADDRESS_WRAP;
+		case ISamplerState::WrapMode::Clamp:
+			return D3D11_TEXTURE_ADDRESS_CLAMP;
+		case ISamplerState::WrapMode::Mirror:
+			return D3D11_TEXTURE_ADDRESS_MIRROR;
+		case ISamplerState::WrapMode::Border:
+			return D3D11_TEXTURE_ADDRESS_BORDER;
 	}
 
-	return addressMode;
+	throw CznRenderException("DX11TranslateWrapMode: Incorrect wrap mode.");
 }
 
 D3D11_COMPARISON_FUNC DX11TranslateComparisonFunction(ISamplerState::CompareFunc compareFunc)
 {
-	D3D11_COMPARISON_FUNC compareFuncD3D11 = D3D11_COMPARISON_ALWAYS;
 	switch (compareFunc)
 	{
-	case ISamplerState::CompareFunc::Never:
-		compareFuncD3D11 = D3D11_COMPARISON_NEVER;
-		break;
-	case ISamplerState::CompareFunc::Less:
-		compareFuncD3D11 = D3D11_COMPARISON_LESS;
-		break;
-	case ISamplerState::CompareFunc::Equal:
-		compareFuncD3D11 = D3D11_COMPARISON_EQUAL;
-		break;
-	case ISamplerState::CompareFunc::LessEqual:
-		compareFuncD3D11 = D3D11_COMPARISON_LESS_EQUAL;
-		break;
-	case ISamplerState::CompareFunc::Greater:
-		compareFuncD3D11 = D3D11_COMPARISON_GREATER;
-		break;
-	case ISamplerState::CompareFunc::NotEqual:
-		compareFuncD3D11 = D3D11_COMPARISON_NOT_EQUAL;
-		break;
-	case ISamplerState::CompareFunc::GreaterEqual:
-		compareFuncD3D11 = D3D11_COMPARISON_GREATER_EQUAL;
-		break;
-	case ISamplerState::CompareFunc::Always:
-		compareFuncD3D11 = D3D11_COMPARISON_ALWAYS;
-		break;
+		case ISamplerState::CompareFunc::Never:
+			return D3D11_COMPARISON_NEVER;
+		case ISamplerState::CompareFunc::Less:
+			return D3D11_COMPARISON_LESS;
+		case ISamplerState::CompareFunc::Equal:
+			return D3D11_COMPARISON_EQUAL;
+		case ISamplerState::CompareFunc::LessEqual:
+			return D3D11_COMPARISON_LESS_EQUAL;
+		case ISamplerState::CompareFunc::Greater:
+			return D3D11_COMPARISON_GREATER;
+		case ISamplerState::CompareFunc::NotEqual:
+			return D3D11_COMPARISON_NOT_EQUAL;
+		case ISamplerState::CompareFunc::GreaterEqual:
+			return D3D11_COMPARISON_GREATER_EQUAL;
+		case ISamplerState::CompareFunc::Always:
+			return D3D11_COMPARISON_ALWAYS;
 	}
 
-	return compareFuncD3D11;
+	throw CznRenderException("DX11TranslateComparisonFunction: Incorrect compare function.");
 }

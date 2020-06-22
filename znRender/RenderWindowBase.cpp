@@ -45,9 +45,10 @@ void RenderWindowBase::OnUpdate(UpdateEventArgs& e)
 			OnPostRender(renderArgs);
 			OnRenderUI(renderArgs);
 		}
-		//m_RenderTarget->UnBind(); ???
+		
 
 		Present();
+		m_RenderTarget->UnBind();
 	}
 	//GetRenderDevice()->Unlock();
 }

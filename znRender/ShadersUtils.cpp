@@ -27,7 +27,7 @@ std::string RecursionInclude(IBaseManager& BaseManager, std::shared_ptr<IFile> f
         }
 
         // Find directive
-        if (line[0] == '#' && line[1] == 'i' && line[2] == 'n' && line[3] == 'c' && line[4] == 'l')
+        /*if (line[0] == '#' && line[1] == 'i' && line[2] == 'n' && line[3] == 'c' && line[4] == 'l')
         {
             size_t firstBracketPosition = line.find('"');
             _ASSERT(firstBracketPosition != std::string::npos);
@@ -43,7 +43,7 @@ std::string RecursionInclude(IBaseManager& BaseManager, std::shared_ptr<IFile> f
             data += RecursionInclude(BaseManager, includeFile) + '\n';
 
             continue;
-        }
+        }*/
 
         data += line + '\n';
     }

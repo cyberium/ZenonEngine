@@ -12,6 +12,9 @@
 #include "../znRender/PipelineStateBase.h"
 #include "../znRender/RasterizerStateBase.h"
 
+#include "../znRender/BufferBase.h"
+#include "../znRender/StructuredBufferBase.h"
+
 #include "../znRender/MaterialBase.h"
 #include "../znRender/GeometryBase.h"
 #include "../znRender/ModelBase.h"

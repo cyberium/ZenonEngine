@@ -89,7 +89,10 @@ std::string CXMLReader::GetAttribute(std::string AttributeName) const
 	const std::string* string;
 	string = m_Element->Attribute(AttributeName);
 	if (string == nullptr)
-		_ASSERT_EXPR(false, L"CXMLReader: Unable to get xml attribute.");
+	{
+		Log::Warn("CXMLReader: Unable to get xml attribute '%s'.", AttributeName.c_str());
+		return nullptr;
+	}
 
 	return *string;
 }
@@ -98,7 +101,10 @@ std::shared_ptr<IXMLReader> CXMLReader::GetChild(std::string ChildName) const
 {
 	const TiXmlElement* childNode = m_Element->FirstChildElement(ChildName);
 	if (childNode == nullptr)
-		_ASSERT_EXPR(false, L"CXMLReader: Unable to find child.");
+	{
+		Log::Warn("CXMLReader: Unable to find child '%s'.", ChildName.c_str());
+		return nullptr;
+	}
 
 	return std::make_shared<CXMLReader>(m_Document, childNode);
 }
@@ -140,7 +146,20 @@ void CXMLWriter::SetValue(std::string Value)
 
 void CXMLWriter::AddAttribute(std::string AttributeName, std::string AttributeValue) const
 {
+	_ASSERT(m_Element->Attribute(AttributeName) != nullptr);
 	m_Element->SetAttribute(AttributeName, AttributeValue);
+}
+
+void CXMLWriter::AddIntAttribute(std::string AttributeName, int AttributeValue) const
+{
+	_ASSERT(m_Element->Attribute(AttributeName) != nullptr);
+	m_Element->SetAttribute(AttributeName, AttributeValue);
+}
+
+void CXMLWriter::AddFloatAttribute(std::string AttributeName, double AttributeValue) const
+{
+	_ASSERT(m_Element->Attribute(AttributeName) != nullptr);
+	m_Element->SetDoubleAttribute(AttributeName, AttributeValue);
 }
 
 std::shared_ptr<IXMLWriter> CXMLWriter::CreateChild(std::string ChildName) const

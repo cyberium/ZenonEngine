@@ -6,7 +6,7 @@ ZN_INTERFACE IShaderParameterSource;
 
 ZN_INTERFACE ZN_API IBuffer
 {
-	enum class ZN_API BufferType
+	enum class ZN_API BufferType : uint32
 	{
 		Unknown = 0,
 		VertexBuffer,

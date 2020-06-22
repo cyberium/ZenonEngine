@@ -3,6 +3,9 @@
 // General
 #include "ShaderDX11.h"
 
+// Additional
+#include "ShaderDX11Include.h"
+
 // FORWARD BEGIN
 std::string GetLatestProfile(EShaderType type, const D3D_FEATURE_LEVEL& _featureLevel);
 // FORWARD END
@@ -43,7 +46,6 @@ bool ShaderDX11::LoadShaderFromString(EShaderType shaderType, const std::string&
 			if (_profile.empty())
 			{
 				throw CznRenderException("Invalid shader type for feature level.");
-				return false;
 			}
 		}
 
@@ -78,7 +80,9 @@ bool ShaderDX11::LoadShaderFromString(EShaderType shaderType, const std::string&
 
 		ATL::CComPtr<ID3DBlob> pErrorBlob;
 
-			hr = D3DCompile(data.c_str(), data.size(), fileName.c_str(), macros.data(), D3D_COMPILE_STANDARD_FILE_INCLUDE, entryPoint.c_str(), _profile.c_str(), flags, 0, &pShaderBlob, &pErrorBlob);
+		CShaderDX11Include shaderInclude(m_RenderDeviceDX11.GetBaseManager());
+
+			hr = D3DCompile(data.c_str(), data.size(), fileName.c_str(), macros.data(), &shaderInclude, entryPoint.c_str(), _profile.c_str(), flags, 0, &pShaderBlob, &pErrorBlob);
 			if (FAILED(hr))
 			{
 				if (pErrorBlob != nullptr)
@@ -95,9 +99,6 @@ bool ShaderDX11::LoadShaderFromString(EShaderType shaderType, const std::string&
 				delete[] macro.Definition;
 			}
 			macros.clear();
-
-		
-		
 
 		m_pShaderBlob = pShaderBlob;
 	}
@@ -132,39 +133,28 @@ bool ShaderDX11::LoadShaderFromString(EShaderType shaderType, const std::string&
 		break;
 	default:
 		throw CznRenderException("Invalid shader type.");
-		break;
 	}
 
 	if (FAILED(hr))
 	{
 		throw CznRenderException("Failed to create shader.");
-		return false;
 	}
 
-	// Reflect the parameters from the shader.
-	// Inspired by: http://members.gamedev.net/JasonZ/Heiroglyph/D3D11ShaderReflection.pdf
-	ATL::CComPtr<ID3D11ShaderReflection> pReflector;
-	if (FAILED(hr = D3DReflect(m_pShaderBlob->GetBufferPointer(), m_pShaderBlob->GetBufferSize(), IID_ID3D11ShaderReflection, (void**)&pReflector)))
-	{
-		throw CznRenderException("Failed to reflect shader.");
-		return false;
-	}
+	// Reflect the parameters from the shader. Inspired by: http://members.gamedev.net/JasonZ/Heiroglyph/D3D11ShaderReflection.pdf
+	ATL::CComPtr<ID3D11ShaderReflection> shaderReflector;
+	CHECK_HR_MSG(D3DReflect(m_pShaderBlob->GetBufferPointer(), m_pShaderBlob->GetBufferSize(), IID_ID3D11ShaderReflection, (void**)&shaderReflector), L"Failed to reflect shader.");
 
 	// Query input parameters and build the input layout
-	D3D11_SHADER_DESC shaderDescription;
-	if (FAILED(hr = pReflector->GetDesc(&shaderDescription)))
-	{
-		throw CznRenderException("Failed to get shader description from shader reflector.");
-		return false;
-	}
+	D3D11_SHADER_DESC shaderDescription = { };
+	CHECK_HR_MSG(shaderReflector->GetDesc(&shaderDescription), L"Failed to get shader description from shader reflector.");
 
 	// LAYOUT HERE
 
 	// Query Resources that are bound to the shader.
 	for (UINT i = 0; i < shaderDescription.BoundResources; ++i)
 	{
-		D3D11_SHADER_INPUT_BIND_DESC bindDesc;
-		CHECK_HR(pReflector->GetResourceBindingDesc(i, &bindDesc));
+		D3D11_SHADER_INPUT_BIND_DESC bindDesc = { };
+		CHECK_HR(shaderReflector->GetResourceBindingDesc(i, &bindDesc));
 		std::string resourceName = bindDesc.Name;
 
 		IShaderParameter::Type parameterType = IShaderParameter::Type::Invalid;
@@ -225,22 +215,18 @@ bool ShaderDX11::LoadShaderFromFile(EShaderType shaderType, const std::string& f
 
 bool ShaderDX11::LoadInputLayoutFromReflector()
 {
-	if (m_InputLayout)
-		return true;
-
-	HRESULT hr = S_OK;
-
-	// Reflect the parameters from the shader.
-	// Inspired by: http://members.gamedev.net/JasonZ/Heiroglyph/D3D11ShaderReflection.pdf
-	ATL::CComPtr<ID3D11ShaderReflection> pReflector;
-	if (FAILED(hr = D3DReflect(m_pShaderBlob->GetBufferPointer(), m_pShaderBlob->GetBufferSize(), IID_ID3D11ShaderReflection, (void**)&pReflector)))
+	if (m_InputLayout != nullptr)
 	{
-		throw CznRenderException("Failed to reflect shader.");
-		return false;
+		Log::Warn("ShaderDX11: Imput layout already loaded.");
+		return true;
 	}
 
+	// Reflect the parameters from the shader. Inspired by: http://members.gamedev.net/JasonZ/Heiroglyph/D3D11ShaderReflection.pdf
+	ATL::CComPtr<ID3D11ShaderReflection> shaderReflector;
+	CHECK_HR_MSG(D3DReflect(m_pShaderBlob->GetBufferPointer(), m_pShaderBlob->GetBufferSize(), IID_ID3D11ShaderReflection, (void**)&shaderReflector), L"Failed to reflect shader.");
+
 	std::shared_ptr<ShaderInputLayoutDX11> inputLayout = std::make_shared<ShaderInputLayoutDX11>(m_RenderDeviceDX11);
-    inputLayout->LoadFromReflector(m_pShaderBlob, pReflector);
+    inputLayout->LoadFromReflector(m_pShaderBlob, shaderReflector);
     m_InputLayout = inputLayout;
 
 	return true;
@@ -248,8 +234,11 @@ bool ShaderDX11::LoadInputLayoutFromReflector()
 
 bool ShaderDX11::LoadInputLayoutFromCustomElements(const std::vector<SCustomVertexElement>& declIn)
 {
-	if (m_InputLayout)
+	if (m_InputLayout != nullptr)
+	{
+		Log::Warn("ShaderDX11: Imput layout already loaded.");
 		return true;
+	}
 
     std::shared_ptr<ShaderInputLayoutDX11> inputLayout = std::make_shared<ShaderInputLayoutDX11>(m_RenderDeviceDX11);
     inputLayout->LoadFromCustomElements(m_pShaderBlob, declIn);
@@ -340,97 +329,80 @@ std::string GetLatestProfile(EShaderType type, const D3D_FEATURE_LEVEL& _feature
 {
 	switch (type)
 	{
-	case EShaderType::VertexShader:
-		switch (_featureLevel)
-		{
-		case D3D_FEATURE_LEVEL_11_1:
-		case D3D_FEATURE_LEVEL_11_0:
-			return "vs_5_0";
-			break;
-		case D3D_FEATURE_LEVEL_10_1:
-			return "vs_4_1";
-			break;
-		case D3D_FEATURE_LEVEL_10_0:
-			return "vs_4_0";
-			break;
-		case D3D_FEATURE_LEVEL_9_3:
-			return "vs_4_0_level_9_3";
-			break;
-		case D3D_FEATURE_LEVEL_9_2:
-		case D3D_FEATURE_LEVEL_9_1:
-			return "vs_4_0_level_9_1";
-			break;
-		}
+		case EShaderType::VertexShader:
+			switch (_featureLevel)
+			{
+				case D3D_FEATURE_LEVEL_11_1:
+				case D3D_FEATURE_LEVEL_11_0:
+					return "vs_5_0";
+				case D3D_FEATURE_LEVEL_10_1:
+					return "vs_4_1";
+				case D3D_FEATURE_LEVEL_10_0:
+					return "vs_4_0";
+				case D3D_FEATURE_LEVEL_9_3:
+					return "vs_4_0_level_9_3";
+				case D3D_FEATURE_LEVEL_9_2:
+				case D3D_FEATURE_LEVEL_9_1:
+					return "vs_4_0_level_9_1";
+			}
 		break;
-	case EShaderType::TessellationControlShader:
-		switch (_featureLevel)
-		{
-		case D3D_FEATURE_LEVEL_11_1:
-		case D3D_FEATURE_LEVEL_11_0:
-			return "ds_5_0";
-			break;
-		}
+		case EShaderType::TessellationControlShader:
+			switch (_featureLevel)
+			{
+				case D3D_FEATURE_LEVEL_11_1:
+				case D3D_FEATURE_LEVEL_11_0:
+					return "ds_5_0";
+			}
 		break;
-	case EShaderType::TessellationEvaluationShader:
-		switch (_featureLevel)
-		{
-		case D3D_FEATURE_LEVEL_11_1:
-		case D3D_FEATURE_LEVEL_11_0:
-			return "hs_5_0";
-			break;
-		}
+		case EShaderType::TessellationEvaluationShader:
+			switch (_featureLevel)
+			{
+				case D3D_FEATURE_LEVEL_11_1:
+				case D3D_FEATURE_LEVEL_11_0:
+					return "hs_5_0";
+			}
 		break;
-	case EShaderType::GeometryShader:
-		switch (_featureLevel)
-		{
-		case D3D_FEATURE_LEVEL_11_1:
-		case D3D_FEATURE_LEVEL_11_0:
-			return "gs_5_0";
-			break;
-		case D3D_FEATURE_LEVEL_10_1:
-			return "gs_4_1";
-			break;
-		case D3D_FEATURE_LEVEL_10_0:
-			return "gs_4_0";
-			break;
-		}
+		case EShaderType::GeometryShader:
+			switch (_featureLevel)
+			{
+				case D3D_FEATURE_LEVEL_11_1:
+				case D3D_FEATURE_LEVEL_11_0:
+					return "gs_5_0";
+				case D3D_FEATURE_LEVEL_10_1:
+					return "gs_4_1";
+				case D3D_FEATURE_LEVEL_10_0:
+					return "gs_4_0";
+			}
 		break;
-	case EShaderType::PixelShader:
-		switch (_featureLevel)
-		{
-		case D3D_FEATURE_LEVEL_11_1:
-		case D3D_FEATURE_LEVEL_11_0:
-			return "ps_5_0";
-			break;
-		case D3D_FEATURE_LEVEL_10_1:
-			return "ps_4_1";
-			break;
-		case D3D_FEATURE_LEVEL_10_0:
-			return "ps_4_0";
-			break;
-		case D3D_FEATURE_LEVEL_9_3:
-			return "ps_4_0_level_9_3";
-			break;
-		case D3D_FEATURE_LEVEL_9_2:
-		case D3D_FEATURE_LEVEL_9_1:
-			return "ps_4_0_level_9_1";
-			break;
-		}
+		case EShaderType::PixelShader:
+			switch (_featureLevel)
+			{
+				case D3D_FEATURE_LEVEL_11_1:
+				case D3D_FEATURE_LEVEL_11_0:
+					return "ps_5_0";
+				case D3D_FEATURE_LEVEL_10_1:
+					return "ps_4_1";
+				case D3D_FEATURE_LEVEL_10_0:
+					return "ps_4_0";
+				case D3D_FEATURE_LEVEL_9_3:
+					return "ps_4_0_level_9_3";
+				case D3D_FEATURE_LEVEL_9_2:
+				case D3D_FEATURE_LEVEL_9_1:
+					return "ps_4_0_level_9_1";
+			}
 		break;
-	case EShaderType::ComputeShader:
-		switch (_featureLevel)
-		{
-		case D3D_FEATURE_LEVEL_11_1:
-		case D3D_FEATURE_LEVEL_11_0:
-			return "cs_5_0";
-			break;
-		case D3D_FEATURE_LEVEL_10_1:
-			return "cs_4_1";
-			break;
-		case D3D_FEATURE_LEVEL_10_0:
-			return "cs_4_0";
-			break;
-		}
+		case EShaderType::ComputeShader:
+			switch (_featureLevel)
+			{
+				case D3D_FEATURE_LEVEL_11_1:
+				case D3D_FEATURE_LEVEL_11_0:
+					return "cs_5_0";
+				case D3D_FEATURE_LEVEL_10_1:
+					return "cs_4_1";
+				case D3D_FEATURE_LEVEL_10_0:
+					return "cs_4_0";
+			}
+		break;
 	}
 
 	return "";

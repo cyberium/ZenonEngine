@@ -92,6 +92,7 @@
     <ClCompile Include="MaterialDX11.cpp" />
     <ClCompile Include="ModelDX11.cpp" />
     <ClCompile Include="RenderObjectsFactoryDX11.cpp" />
+    <ClCompile Include="ShaderDX11Include.cpp" />
     <ClCompile Include="TextureDX11Loader.cpp" />
     <ClCompile Include="znRenderDX11.cpp" />
     <ClCompile Include="PipelineStateDX11.cpp" />
@@ -128,6 +129,7 @@
     <ClInclude Include="RenderWindowDX11.h" />
     <ClInclude Include="SamplerStateDX11.h" />
     <ClInclude Include="ShaderDX11.h" />
+    <ClInclude Include="ShaderDX11Include.h" />
     <ClInclude Include="ShaderInputLayoutDX11.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="StructuredBufferDX11.h" />

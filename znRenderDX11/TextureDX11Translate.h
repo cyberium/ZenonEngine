@@ -1626,7 +1626,6 @@ static uint8_t DX11GetBPP(DXGI_FORMAT format)
 		break;
 	default:
 		throw CznRenderException("Unsupported texture format.");
-		break;
 	}
 
 	return bpp;

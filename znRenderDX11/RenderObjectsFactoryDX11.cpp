@@ -251,7 +251,8 @@ std::shared_ptr<IBuffer> CRenderObjectsFactoryDX11::CreateVoidVertexBuffer(const
 {
 	std::lock_guard<std::recursive_mutex> locker(m_LockMutex);
 
-	std::shared_ptr<IBuffer> object = std::make_shared<BufferDX11>(m_RenderDeviceDX11, D3D11_BIND_VERTEX_BUFFER, data, count, offset, stride);
+	std::shared_ptr<IBuffer> object = std::make_shared<BufferDX11>(m_RenderDeviceDX11, IBuffer::BufferType::VertexBuffer);
+	std::dynamic_pointer_cast<IBufferPrivate>(object)->InitializeBufferBase(data, count, offset, stride);
 	//m_Buffers.insert(std::make_pair(GenerateRenderObjectID(), object));
 	return object;
 }
@@ -260,7 +261,8 @@ std::shared_ptr<IBuffer> CRenderObjectsFactoryDX11::CreateVoidIndexBuffer(const 
 {
 	std::lock_guard<std::recursive_mutex> locker(m_LockMutex);
 
-	std::shared_ptr<IBuffer> object = std::make_shared<BufferDX11>(m_RenderDeviceDX11, D3D11_BIND_INDEX_BUFFER, data, count, offset, stride);
+	std::shared_ptr<IBuffer> object = std::make_shared<BufferDX11>(m_RenderDeviceDX11, IBuffer::BufferType::IndexBuffer);
+	std::dynamic_pointer_cast<IBufferPrivate>(object)->InitializeBufferBase(data, count, offset, stride);
 	//m_Buffers.insert(std::make_pair(GenerateRenderObjectID(), object));
 	return object;
 }
@@ -269,11 +271,10 @@ std::shared_ptr<IConstantBuffer> CRenderObjectsFactoryDX11::CreateConstantBuffer
 {
 	std::lock_guard<std::recursive_mutex> locker(m_LockMutex);
 
-	std::shared_ptr<IConstantBuffer> object = std::make_shared<ConstantBufferDX11>(m_RenderDeviceDX11, size);
+	std::shared_ptr<IConstantBuffer> object = std::make_shared<ConstantBufferDX11>(m_RenderDeviceDX11);
+	std::dynamic_pointer_cast<IBufferPrivate>(object)->InitializeBufferBase(data, size, 0, 0);
 	if (data)
-	{
 		object->Set(data, size);
-	}
 
 	//m_Buffers.insert(std::make_pair(GenerateRenderObjectID(), object));
 
@@ -284,7 +285,9 @@ std::shared_ptr<IStructuredBuffer> CRenderObjectsFactoryDX11::CreateStructuredBu
 {
 	std::lock_guard<std::recursive_mutex> locker(m_LockMutex);
 
-	std::shared_ptr<IStructuredBuffer> object = std::make_shared<StructuredBufferDX11>(m_RenderDeviceDX11, 0, data, count, stride, cpuAccess, gpuWrite);
+	std::shared_ptr<IStructuredBuffer> object = std::make_shared<StructuredBufferDX11>(m_RenderDeviceDX11);
+	std::dynamic_pointer_cast<IBufferPrivate>(object)->InitializeBufferBase(data, count, 0, stride);
+	std::dynamic_pointer_cast<IStructuredBufferPrivate>(object)->InitializeStructuredBufferBase(cpuAccess, gpuWrite);
 	//m_Buffers.insert(std::make_pair(GenerateRenderObjectID(), object));
 	return object;
 }

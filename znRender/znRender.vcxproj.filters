@@ -39,6 +39,12 @@
       <Filter>Render Device</Filter>
     </ClCompile>
     <ClCompile Include="ModelBase.cpp" />
+    <ClCompile Include="BufferBase.cpp">
+      <Filter>Buffers</Filter>
+    </ClCompile>
+    <ClCompile Include="StructuredBufferBase.cpp">
+      <Filter>Buffers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="common.h">
@@ -85,6 +91,12 @@
       <Filter>Render Device</Filter>
     </ClInclude>
     <ClInclude Include="ModelBase.h" />
+    <ClInclude Include="BufferBase.h">
+      <Filter>Buffers</Filter>
+    </ClInclude>
+    <ClInclude Include="StructuredBufferBase.h">
+      <Filter>Buffers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Common">
@@ -101,6 +113,9 @@
     </Filter>
     <Filter Include="Render Device">
       <UniqueIdentifier>{956c4b28-9e6e-47fd-b5e8-5d6fe0bd0e1e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Buffers">
+      <UniqueIdentifier>{7c65b2b6-701e-4cd4-9b72-7821bc5659fe}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

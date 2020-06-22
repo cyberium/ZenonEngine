@@ -98,7 +98,7 @@ void RenderWindowDX11::CreateSwapChain()
 	CHECK_HR_MSG(factory->CreateSwapChainForHwnd(m_RenderDeviceDX11.GetDeviceD3D11(), nativeWindow_WindowsSpecific.GetHWnd(), &swapChainDesc, &swapChainFullScreenDesc, nullptr, &pSwapChain), L"Failed to create swap chain.");
 
     // Now query for the IDXGISwapChain2 interface.
-	CHECK_HR_MSG(pSwapChain->QueryInterface<IDXGISwapChain4>(&m_pSwapChain), L"Failed to retrieve IDXGISwapChain2 interface."));
+	CHECK_HR_MSG(pSwapChain->QueryInterface<IDXGISwapChain4>(&m_pSwapChain), L"Failed to retrieve IDXGISwapChain interface.");
 
 	CHECK_HR_MSG(m_pSwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (void**)&m_pBackBuffer), L"Failed to get back buffer pointer from swap chain.");
 

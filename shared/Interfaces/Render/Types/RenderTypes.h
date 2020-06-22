@@ -3,7 +3,7 @@
 /**
  * Flags to specify which value should be cleared.
  */
-enum class ZN_API ClearFlags : uint8_t
+enum class ZN_API ClearFlags : uint32_t
 {
 	Color = 1 << 0,
 	Depth = 1 << 1,
@@ -16,7 +16,7 @@ enum class ZN_API ClearFlags : uint8_t
 /**
   * CPU Access. Used for textures and Buffers
  */
-enum class ZN_API CPUAccess : uint8_t
+enum class ZN_API CPUAccess : uint32_t
 {
 	None = 0,                 // No CPU access to this texture is necessary.
 	Read = (1 << 0),          // CPU reads permitted.
@@ -25,7 +25,7 @@ enum class ZN_API CPUAccess : uint8_t
 };
 
 
-enum class ZN_API EShaderType : uint8_t
+enum class ZN_API EShaderType : uint32_t
 {
 	UnknownShaderType = 0,
 	VertexShader,
@@ -39,7 +39,7 @@ enum class ZN_API EShaderType : uint8_t
 /**
  * Used for meshes
  */
-enum class ZN_API PrimitiveTopology : uint8_t
+enum class ZN_API PrimitiveTopology : uint32_t
 {
 	PointList,
 	LineList,

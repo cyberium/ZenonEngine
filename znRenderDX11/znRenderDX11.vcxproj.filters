@@ -48,6 +48,7 @@
       <Filter>RenderDevice</Filter>
     </ClCompile>
     <ClCompile Include="ModelDX11.cpp" />
+    <ClCompile Include="ShaderDX11Include.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -94,6 +95,7 @@
       <Filter>RenderDevice</Filter>
     </ClInclude>
     <ClInclude Include="ModelDX11.h" />
+    <ClInclude Include="ShaderDX11Include.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Common">

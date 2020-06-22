@@ -2,20 +2,10 @@
 
 #include "ConstantBufferDX11.h"
 
-ConstantBufferDX11::ConstantBufferDX11(IRenderDeviceDX11& RenderDeviceDX11, size_t size)
-	: m_RenderDeviceDX11(RenderDeviceDX11)
-	, m_BufferSize(size)
-{
-	D3D11_BUFFER_DESC bufferDesc = { 0 };
-	bufferDesc.Usage = D3D11_USAGE_DYNAMIC;
-	bufferDesc.ByteWidth = (UINT)m_BufferSize;
-	bufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
-	bufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
-	bufferDesc.MiscFlags = 0;
-	bufferDesc.StructureByteStride = 0;
-
-	CHECK_HR_MSG(m_RenderDeviceDX11.GetDeviceD3D11()->CreateBuffer(&bufferDesc, nullptr, &m_pBuffer), L"Failed to create constant buffer");
-}
+ConstantBufferDX11::ConstantBufferDX11(IRenderDeviceDX11& RenderDeviceDX11)
+	: CBufferBase(RenderDeviceDX11, IBuffer::BufferType::ConstantBuffer)
+	, m_RenderDeviceDX11(RenderDeviceDX11)
+{}
 
 ConstantBufferDX11::~ConstantBufferDX11()
 {}
@@ -91,26 +81,6 @@ void ConstantBufferDX11::Copy(const IBuffer* other) const
 	this->Copy(dynamic_cast<const IConstantBuffer*>(other));
 }
 
-IBuffer::BufferType ConstantBufferDX11::GetType() const
-{
-	return BufferType::ConstantBuffer;
-}
-
-uint32 ConstantBufferDX11::GetElementCount() const
-{
-	return 1;
-}
-
-uint32 ConstantBufferDX11::GetElementStride() const
-{
-	return 0;
-}
-
-uint32 ConstantBufferDX11::GetElementOffset() const
-{
-	return 0;
-}
-
 
 
 //
@@ -120,7 +90,7 @@ void ConstantBufferDX11::Copy(const IConstantBuffer* other) const
 {
 	const ConstantBufferDX11* srcBuffer = dynamic_cast<const ConstantBufferDX11*>(other);
 
-	if (srcBuffer && srcBuffer != this && m_BufferSize == srcBuffer->m_BufferSize)
+	if (srcBuffer && srcBuffer != this && GetElementCount() == srcBuffer->GetElementCount())
 	{
 		m_RenderDeviceDX11.GetDeviceContextD3D11()->CopyResource(m_pBuffer, srcBuffer->m_pBuffer);
 	}
@@ -132,13 +102,26 @@ void ConstantBufferDX11::Copy(const IConstantBuffer* other) const
 
 void ConstantBufferDX11::Set(const void* data, size_t size)
 {
-	if (size != m_BufferSize)
-		throw CException(L"ConstantBufferDX11: Buffers sizes mistmath. Current: '%d', New: '%d'.", m_BufferSize, size);
+	if (size != GetElementCount())
+		throw CException(L"ConstantBufferDX11: Buffers sizes mistmath. Current: '%d', New: '%d'.", GetElementCount(), size);
 
 	D3D11_MAPPED_SUBRESOURCE mappedResource = { 0 };
 	CHECK_HR(m_RenderDeviceDX11.GetDeviceContextD3D11()->Map(m_pBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResource));
 
-	memcpy_s(mappedResource.pData, m_BufferSize, data, size);
+	memcpy_s(mappedResource.pData, GetElementCount(), data, size);
 
 	m_RenderDeviceDX11.GetDeviceContextD3D11()->Unmap(m_pBuffer, 0);
+}
+
+void ConstantBufferDX11::DoInitializeBuffer()
+{
+	D3D11_BUFFER_DESC bufferDesc = { 0 };
+	bufferDesc.Usage = D3D11_USAGE_DYNAMIC;
+	bufferDesc.ByteWidth = GetElementCount();
+	bufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+	bufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+	bufferDesc.MiscFlags = 0;
+	bufferDesc.StructureByteStride = 0;
+
+	CHECK_HR_MSG(m_RenderDeviceDX11.GetDeviceD3D11()->CreateBuffer(&bufferDesc, nullptr, &m_pBuffer), L"Failed to create constant buffer");
 }

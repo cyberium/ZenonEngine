@@ -23,7 +23,7 @@ ZN_INTERFACE ZN_API IByteBuffer
 	virtual void          seekRelative(intptr_t RelativeOffset) = 0;
 
 	virtual bool          readLine(std::string * String) = 0;
-	virtual bool          readBytes(void* _destination, size_t _size = 1) = 0;
+	virtual bool          readBytes(void* _destination, size_t BytesCount) = 0;
 	virtual void          readString(std::string * String) = 0;
 
 	virtual void          writeLine(const std::string& String) = 0;
