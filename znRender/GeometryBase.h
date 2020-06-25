@@ -22,6 +22,7 @@ public:
 
 	virtual void         Accept(IVisitor* visitor, const IMaterial* Material, SGeometryDrawArgs GeometryDrawArgs = SGeometryDrawArgs()) override;
 
+	// ILoadableFromFile
 	void                 Load(const std::shared_ptr<IByteBuffer>& ByteBuffer);
 	void                 Save(const std::shared_ptr<IByteBuffer>& ByteBuffer);
 

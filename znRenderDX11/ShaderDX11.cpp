@@ -155,7 +155,6 @@ bool ShaderDX11::LoadShaderFromString(EShaderType shaderType, const std::string&
 	{
 		D3D11_SHADER_INPUT_BIND_DESC bindDesc = { };
 		CHECK_HR(shaderReflector->GetResourceBindingDesc(i, &bindDesc));
-		std::string resourceName = bindDesc.Name;
 
 		IShaderParameter::Type parameterType = IShaderParameter::Type::Invalid;
 
@@ -180,8 +179,8 @@ bool ShaderDX11::LoadShaderFromString(EShaderType shaderType, const std::string&
 		}
 
 		// Create an empty shader parameter that should be filled-in by the application.
-		std::shared_ptr<IShaderParameter> shaderParameter = std::make_shared<ShaderParameterBase>(resourceName, bindDesc.BindPoint, this, parameterType);
-		m_ShaderParameters.insert(ParameterMap::value_type(resourceName, shaderParameter));
+		std::shared_ptr<IShaderParameter> shaderParameter = std::make_shared<ShaderParameterBase>(bindDesc.Name, bindDesc.BindPoint, this, parameterType);
+		m_ShaderParameters.insert(ParameterMap::value_type(bindDesc.Name, shaderParameter));
 	}
 
 	// Now try to restore the original shader parameters (if there were any)

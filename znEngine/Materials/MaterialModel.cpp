@@ -4,75 +4,72 @@
 #include "MaterialModel.h"
 
 MaterialModel::MaterialModel(const IBaseManager& BaseManager)
-	: MaterialProxie(BaseManager.GetApplication().GetRenderDevice().GetObjectsFactory().CreateMaterial(sizeof(MaterialProperties)))
+	: MaterialProxieT(BaseManager.GetApplication().GetRenderDevice())
 	, m_BaseManager(BaseManager)
 {
-	// Constant buffer
-	m_pProperties = (MaterialProperties*)_aligned_malloc(sizeof(MaterialProperties), 16);
-	*m_pProperties = MaterialProperties();
+	SetType(MaterialModelType);
+	SetName("MaterialModel");
+
+
 }
 
 MaterialModel::~MaterialModel()
 {
-	if (m_pProperties)
-	{
-		_aligned_free(m_pProperties);
-		m_pProperties = nullptr;
-	}
+
 }
 
 void MaterialModel::SetEmissiveColor(const glm::vec3 & Color)
 {
-	m_pProperties->Emissive = Color;
-	MarkConstantBufferDirty();
+	MaterialData().Emissive = Color;
+	MarkMaterialDataDirty();
 }
 
 void MaterialModel::SetAmbientColor(const glm::vec3 & Color)
 {
-	m_pProperties->Ambient = Color;
-	MarkConstantBufferDirty();
+	MaterialData().Ambient = Color;
+	MarkMaterialDataDirty();
 }
 
 void MaterialModel::SetDiffuseColor(const glm::vec3 & Color)
 {
-	m_pProperties->Diffuse = Color;
-	MarkConstantBufferDirty();
+	MaterialData().Diffuse = Color;
+	MarkMaterialDataDirty();
 }
 
 void MaterialModel::SetBump(const glm::vec3 & Color)
 {
-	m_pProperties->Bump = Color;
-	MarkConstantBufferDirty();
+	MaterialData().Bump = Color;
+	MarkMaterialDataDirty();
 }
 
 void MaterialModel::SetBumpFactor(float Factor)
 {
-	m_pProperties->BumpFactor = Factor;
-	MarkConstantBufferDirty();
+	MaterialData().BumpFactor = Factor;
+	MarkMaterialDataDirty();
 }
 
 void MaterialModel::SetSpecularColor(const glm::vec3 & Color)
 {
-	m_pProperties->Specular = Color;
-	MarkConstantBufferDirty();
+	MaterialData().Specular = Color;
+	MarkMaterialDataDirty();
 }
 
 void MaterialModel::SetSpecularFactor(float Factor)
 {
-	m_pProperties->SpecularFactor = Factor;
-	MarkConstantBufferDirty();
+	MaterialData().SpecularFactor = Factor;
+	MarkMaterialDataDirty();
 }
 
 void MaterialModel::SetReflectionColor(const glm::vec3 & Color)
 {
-	m_pProperties->Reflection = Color;
-	MarkConstantBufferDirty();
+	MaterialData().Reflection = Color;
+	MarkMaterialDataDirty();
 }
 
 void MaterialModel::SetReflectionFactor(float Factor)
 {
-	m_pProperties->ReflectionFactor = Factor;
-	MarkConstantBufferDirty();
+	MaterialData().ReflectionFactor = Factor;
+	MarkMaterialDataDirty();
 }
 
 void MaterialModel::SetTexture(ETextureType TextureType, std::shared_ptr<ITexture> texture)
@@ -81,62 +78,62 @@ void MaterialModel::SetTexture(ETextureType TextureType, std::shared_ptr<ITextur
 	{
 		case ETextureType::TextureDiffuse:
 		{
-			m_pProperties->HasTextureDiffuse = true;
-			MarkConstantBufferDirty();
+			MaterialData().HasTextureDiffuse = true;
+			MarkMaterialDataDirty();
 		}
 		break;
 		case ETextureType::TextureEmissive:
 		{
-			m_pProperties->HasTextureEmissive = true;
-			MarkConstantBufferDirty();
+			MaterialData().HasTextureEmissive = true;
+			MarkMaterialDataDirty();
 		}
 		break;
 		case ETextureType::TextureAmbient:
 		{
-			m_pProperties->HasTextureAmbient = true;
-			MarkConstantBufferDirty();
+			MaterialData().HasTextureAmbient = true;
+			MarkMaterialDataDirty();
 		}
 		break;
 		case ETextureType::TextureSpecular:
 		{
-			m_pProperties->HasTextureSpecular = true;
-			MarkConstantBufferDirty();
+			MaterialData().HasTextureSpecular = true;
+			MarkMaterialDataDirty();
 		}
 		break;
 		case ETextureType::TextureShininess:
 		{
-			m_pProperties->HasTextureShininess = true;
-			MarkConstantBufferDirty();
+			MaterialData().HasTextureShininess = true;
+			MarkMaterialDataDirty();
 		}
 		break;
 		case ETextureType::TextureNormalMap:
 		{
-			m_pProperties->HasTextureNormalMap = true;
-			MarkConstantBufferDirty();
+			MaterialData().HasTextureNormalMap = true;
+			MarkMaterialDataDirty();
 		}
 		break;
 		case ETextureType::TextureBump:
 		{
-			m_pProperties->HasTextureBump = true;
-			MarkConstantBufferDirty();
+			MaterialData().HasTextureBump = true;
+			MarkMaterialDataDirty();
 		}
 		break;
 		case ETextureType::TextureTransparency:
 		{
-			m_pProperties->HasTextureTransparency = true;
-			MarkConstantBufferDirty();
+			MaterialData().HasTextureTransparency = true;
+			MarkMaterialDataDirty();
 		}
 		break;
 		case ETextureType::TextureReflection:
 		{
-			m_pProperties->HasTextureReflection = true;
-			MarkConstantBufferDirty();
+			MaterialData().HasTextureReflection = true;
+			MarkMaterialDataDirty();
 		}
 		break;
 		case ETextureType::TextureDisplacement:
 		{
-			m_pProperties->HasTextureDisplacement = true;
-			MarkConstantBufferDirty();
+			MaterialData().HasTextureDisplacement = true;
+			MarkMaterialDataDirty();
 		}
 		break;
 		default:
@@ -154,24 +151,20 @@ const std::shared_ptr<ITexture>& MaterialModel::GetTexture(ETextureType TextureT
 //
 // Protected
 //
-void MaterialModel::UpdateConstantBuffer() const
-{
-	MaterialProxie::UpdateConstantBuffer(m_pProperties, sizeof(MaterialProperties));
-}
 
 void MaterialModel::PrintInfo()
 {
 	Log::Info("--------------------------------------------------");
 	Log::Info("MaterialModel: ");
-	Log::Info("Emissive: [%f, %f, %f]. Factor [%f].", m_pProperties->Emissive.r, m_pProperties->Emissive.g, m_pProperties->Emissive.b, m_pProperties->EmissiveFactor);
-	Log::Info("Ambient: [%f, %f, %f]. Factor [%f].", m_pProperties->Ambient.r, m_pProperties->Ambient.g, m_pProperties->Ambient.b, m_pProperties->AmbientFactor);
-	Log::Info("Diffuse: [%f, %f, %f]. Factor [%f].", m_pProperties->Diffuse.r, m_pProperties->Diffuse.g, m_pProperties->Diffuse.b, m_pProperties->DiffuseFactor);
-	Log::Info("NormalMap: [%f, %f, %f]. Shrineses [%f].", m_pProperties->NormalMap.r, m_pProperties->NormalMap.g, m_pProperties->NormalMap.b, m_pProperties->Shininess);
-	Log::Info("Bump: [%f, %f, %f]. Factor [%f].", m_pProperties->Bump.r, m_pProperties->Bump.g, m_pProperties->Bump.b, m_pProperties->BumpFactor);
-	Log::Info("TransparentColor: [%f, %f, %f]. Factor [%f].", m_pProperties->TransparentColor.r, m_pProperties->TransparentColor.g, m_pProperties->TransparentColor.b, m_pProperties->TransparencyFactor);
-	Log::Info("DisplacementColor: [%f, %f, %f]. Factor [%f].", m_pProperties->DisplacementColor.r, m_pProperties->DisplacementColor.g, m_pProperties->DisplacementColor.b, m_pProperties->DisplacementFactor);
-	Log::Info("VectorDisplacementColor: [%f, %f, %f]. Factor [%f].", m_pProperties->VectorDisplacementColor.r, m_pProperties->VectorDisplacementColor.g, m_pProperties->VectorDisplacementColor.b, m_pProperties->VectorDisplacementFactor);
-	Log::Info("Specular: [%f, %f, %f]. Factor [%f].", m_pProperties->Specular.r, m_pProperties->Specular.g, m_pProperties->Specular.b, m_pProperties->SpecularFactor);
-	Log::Info("VectorDisplacementColor: [%f, %f, %f]. Factor [%f].", m_pProperties->Reflection.r, m_pProperties->Reflection.g, m_pProperties->Reflection.b, m_pProperties->ReflectionFactor);
+	Log::Info("Emissive: [%f, %f, %f]. Factor [%f].", MaterialData().Emissive.r, MaterialData().Emissive.g, MaterialData().Emissive.b, MaterialData().EmissiveFactor);
+	Log::Info("Ambient: [%f, %f, %f]. Factor [%f].", MaterialData().Ambient.r, MaterialData().Ambient.g, MaterialData().Ambient.b, MaterialData().AmbientFactor);
+	Log::Info("Diffuse: [%f, %f, %f]. Factor [%f].", MaterialData().Diffuse.r, MaterialData().Diffuse.g, MaterialData().Diffuse.b, MaterialData().DiffuseFactor);
+	Log::Info("NormalMap: [%f, %f, %f]. Shrineses [%f].", MaterialData().NormalMap.r, MaterialData().NormalMap.g, MaterialData().NormalMap.b, MaterialData().Shininess);
+	Log::Info("Bump: [%f, %f, %f]. Factor [%f].", MaterialData().Bump.r, MaterialData().Bump.g, MaterialData().Bump.b, MaterialData().BumpFactor);
+	Log::Info("TransparentColor: [%f, %f, %f]. Factor [%f].", MaterialData().TransparentColor.r, MaterialData().TransparentColor.g, MaterialData().TransparentColor.b, MaterialData().TransparencyFactor);
+	Log::Info("DisplacementColor: [%f, %f, %f]. Factor [%f].", MaterialData().DisplacementColor.r, MaterialData().DisplacementColor.g, MaterialData().DisplacementColor.b, MaterialData().DisplacementFactor);
+	Log::Info("VectorDisplacementColor: [%f, %f, %f]. Factor [%f].", MaterialData().VectorDisplacementColor.r, MaterialData().VectorDisplacementColor.g, MaterialData().VectorDisplacementColor.b, MaterialData().VectorDisplacementFactor);
+	Log::Info("Specular: [%f, %f, %f]. Factor [%f].", MaterialData().Specular.r, MaterialData().Specular.g, MaterialData().Specular.b, MaterialData().SpecularFactor);
+	Log::Info("VectorDisplacementColor: [%f, %f, %f]. Factor [%f].", MaterialData().Reflection.r, MaterialData().Reflection.g, MaterialData().Reflection.b, MaterialData().ReflectionFactor);
 	Log::Info("");
 }

@@ -97,6 +97,14 @@ std::string CXMLReader::GetAttribute(std::string AttributeName) const
 	return *string;
 }
 
+glm::vec3 CXMLReader::GetVec3Attribute(std::string AttributeName) const
+{
+	auto attributeString = GetAttribute(AttributeName);
+	glm::vec3 value(0.0f);
+	sscanf_s(attributeString.c_str(), "%f, %f, %f", &value.x, &value.y, &value.z);
+	return value;
+}
+
 std::shared_ptr<IXMLReader> CXMLReader::GetChild(std::string ChildName) const
 {
 	const TiXmlElement* childNode = m_Element->FirstChildElement(ChildName);
@@ -160,6 +168,15 @@ void CXMLWriter::AddFloatAttribute(std::string AttributeName, double AttributeVa
 {
 	_ASSERT(m_Element->Attribute(AttributeName) != nullptr);
 	m_Element->SetDoubleAttribute(AttributeName, AttributeValue);
+}
+
+void CXMLWriter::AddVec3Attribute(std::string AttributeName, glm::vec3 AttributeValue) const
+{
+	char buff[256];
+	sprintf_s(buff, 256, "%f, %f, %f", AttributeValue.x, AttributeValue.y, AttributeValue.z);
+
+	_ASSERT(m_Element->Attribute(AttributeName) != nullptr);
+	m_Element->SetAttribute(AttributeName, buff);
 }
 
 std::shared_ptr<IXMLWriter> CXMLWriter::CreateChild(std::string ChildName) const

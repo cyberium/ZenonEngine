@@ -552,6 +552,9 @@
     <ClCompile Include="Physics\Adapters\ReactPhysicsComponent.cpp">
       <Filter>Physics</Filter>
     </ClCompile>
+    <ClCompile Include="MaterialsFactory.cpp">
+      <Filter>Materials</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="common.h">
@@ -1019,6 +1022,9 @@
     </ClInclude>
     <ClInclude Include="Physics\Adapters\ReactPhysicsComponent.h">
       <Filter>Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="MaterialsFactory.h">
+      <Filter>Materials</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

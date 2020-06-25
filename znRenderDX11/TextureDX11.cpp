@@ -15,9 +15,8 @@ TextureDX11::TextureDX11(IRenderDeviceDX11& RenderDeviceDX11)
 	, m_DepthStencilViewFormatSupport(0)
 	, m_ShaderResourceViewFormatSupport(0)
 	, m_RenderTargetViewFormatSupport(0)
-	, m_CPUAccess(CPUAccess::None)
+	, m_Access(EAccess::None)
 	, m_bDynamic(false)
-	, m_bUAV(false)
 	, m_TextureResourceFormat(DXGI_FORMAT_UNKNOWN)
 	, m_DepthStencilViewFormat(DXGI_FORMAT_UNKNOWN)
 	, m_ShaderResourceViewFormat(DXGI_FORMAT_UNKNOWN)
@@ -30,7 +29,7 @@ TextureDX11::TextureDX11(IRenderDeviceDX11& RenderDeviceDX11)
 {}
 
 // 2D Texture
-TextureDX11::TextureDX11(IRenderDeviceDX11& RenderDeviceDX11, uint16_t width, uint16_t height, uint16_t slices, const ITexture::TextureFormat& format, CPUAccess cpuAccess, bool bUAV)
+TextureDX11::TextureDX11(IRenderDeviceDX11& RenderDeviceDX11, uint16_t width, uint16_t height, uint16_t slices, const ITexture::TextureFormat& format, EAccess Access)
 	: m_RenderDeviceDX11(RenderDeviceDX11)
 	, m_pTexture2D(nullptr)
 	, m_pShaderResourceView(nullptr)
@@ -39,7 +38,7 @@ TextureDX11::TextureDX11(IRenderDeviceDX11& RenderDeviceDX11, uint16_t width, ui
 	, m_TextureHeight(0)
 	, m_BPP(0)
 	, m_TextureFormat(format)
-	, m_CPUAccess(cpuAccess)
+	, m_Access(Access)
 	, m_bGenerateMipmaps(false)
 	, m_bIsTransparent(true)
 	, m_bIsDirty(false)
@@ -85,17 +84,20 @@ TextureDX11::TextureDX11(IRenderDeviceDX11& RenderDeviceDX11, uint16_t width, ui
 		ReportTextureFormatError(m_TextureFormat, "Unsupported texture format for 2D textures.");
 
 	// Can the texture be dynamically modified on the CPU?
-	m_bDynamic = ((int)m_CPUAccess & (int)CPUAccess::Write) != 0 && (m_TextureResourceFormatSupport & D3D11_FORMAT_SUPPORT_CPU_LOCKABLE) != 0;
+	m_bDynamic = ((int)m_Access & (int)EAccess::CPUWrite) != 0 && (m_TextureResourceFormatSupport & D3D11_FORMAT_SUPPORT_CPU_LOCKABLE) != 0;
+	
 	// Can mipmaps be automatically generated for this texture format?
 	m_bGenerateMipmaps = !m_bDynamic && (m_ShaderResourceViewFormatSupport & D3D11_FORMAT_SUPPORT_MIP_AUTOGEN) != 0;
-	// Are UAVs supported?
-	m_bUAV = bUAV && (m_UnorderedAccessViewFormatSupport & D3D11_FORMAT_SUPPORT_SHADER_LOAD) != 0;
+	
+	if ((((uint32)m_Access & (uint32)EAccess::GPUWrite) != 0))
+		if ((m_UnorderedAccessViewFormatSupport & D3D11_FORMAT_SUPPORT_SHADER_LOAD) == 0)
+			throw CznRenderException("Format fon't support Unordered access view.");
 
 	Resize(width, height);
 }
 
 // CUBE Texture
-TextureDX11::TextureDX11(IRenderDeviceDX11& RenderDeviceDX11, uint16_t size, uint16_t count, const TextureFormat& format, CPUAccess cpuAccess, bool bUAV)
+TextureDX11::TextureDX11(IRenderDeviceDX11& RenderDeviceDX11, uint16_t size, uint16_t count, const TextureFormat& format, EAccess cpuAccess)
 	: m_RenderDeviceDX11(RenderDeviceDX11)
 {
 	m_TextureDimension = ITexture::Dimension::TextureCube;
@@ -131,11 +133,14 @@ TextureDX11::TextureDX11(IRenderDeviceDX11& RenderDeviceDX11, uint16_t size, uin
 		ReportTextureFormatError(m_TextureFormat, "Unsupported texture format for cube textures.");
 
 	// Can the texture be dynamically modified on the CPU?
-	m_bDynamic = ((int)m_CPUAccess & (int)CPUAccess::Write) != 0 && (m_TextureResourceFormatSupport & D3D11_FORMAT_SUPPORT_CPU_LOCKABLE) != 0;
+	m_bDynamic = ((int)m_Access & (int)EAccess::CPUWrite) != 0 && (m_TextureResourceFormatSupport & D3D11_FORMAT_SUPPORT_CPU_LOCKABLE) != 0;
+	
 	// Can mipmaps be automatically generated for this texture format?
 	m_bGenerateMipmaps = !m_bDynamic && (m_ShaderResourceViewFormatSupport & D3D11_FORMAT_SUPPORT_MIP_AUTOGEN) != 0; // && ( m_RenderTargetViewFormatSupport & D3D11_FORMAT_SUPPORT_MIP_AUTOGEN ) != 0;
-	// Are UAVs supported?
-	m_bUAV = bUAV && (m_UnorderedAccessViewFormatSupport & D3D11_FORMAT_SUPPORT_SHADER_LOAD) != 0;
+
+	if ((((uint32)m_Access & (uint32)EAccess::GPUWrite) != 0))
+		if ((m_UnorderedAccessViewFormatSupport & D3D11_FORMAT_SUPPORT_SHADER_LOAD) == 0)
+			throw CznRenderException("Format fon't support Unordered access view.");
 
 	Resize(size, size);
 }
@@ -153,7 +158,7 @@ void TextureDX11::GenerateMipMaps()
 	}
 }
 
-ITexture* TextureDX11::GetFace(CubeFace face) const
+/*ITexture* TextureDX11::GetFace(CubeFace face) const
 {
 	return nullptr;
 }
@@ -161,7 +166,7 @@ ITexture* TextureDX11::GetFace(CubeFace face) const
 ITexture* TextureDX11::GetSlice(uint32 slice) const
 {
 	return nullptr;
-}
+}*/
 
 uint16_t TextureDX11::GetWidth() const
 {
@@ -195,209 +200,209 @@ bool TextureDX11::IsTransparent() const
 
 void TextureDX11::Resize2D(uint16_t width, uint16_t height)
 {
-	if (m_TextureWidth != width || m_TextureHeight != height)
+	if (m_TextureWidth == width && m_TextureHeight == height)
+		throw CznRenderException("Unable to resize texture.");
+
+	// Release resource before resizing
+	m_pTexture2D.Release();
+	m_pRenderTargetView.Release();
+	m_pDepthStencilView.Release();
+	m_pShaderResourceView.Release();
+	m_pUnorderedAccessView.Release();
+
+	m_TextureWidth = glm::max<uint16_t>(width, 1);
+	m_TextureHeight = glm::max<uint16_t>(height, 1);
+
+	// Create texture with the dimensions specified.
+	D3D11_TEXTURE2D_DESC textureDesc = { };
+	textureDesc.ArraySize = m_NumSlices;
+	textureDesc.Format = m_TextureResourceFormat;
+	textureDesc.SampleDesc = m_SampleDesc;
+	textureDesc.Width = m_TextureWidth;
+	textureDesc.Height = m_TextureHeight;
+	textureDesc.MipLevels = 1;
+	textureDesc.MiscFlags = m_bGenerateMipmaps ? D3D11_RESOURCE_MISC_GENERATE_MIPS : 0;
+
+	if (((int)m_Access & (int)EAccess::CPURead) != 0)
 	{
-		// Release resource before resizing
-		m_pTexture2D.Release();
-		m_pRenderTargetView.Release();
-		m_pDepthStencilView.Release();
-		m_pShaderResourceView.Release();
-		m_pUnorderedAccessView.Release();
+		textureDesc.Usage = D3D11_USAGE_STAGING;
+		textureDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE | D3D11_CPU_ACCESS_READ;
+	}
+	else if (((int)m_Access & (int)EAccess::CPUWrite) != 0)
+	{
+		textureDesc.Usage = D3D11_USAGE_DYNAMIC;
+		textureDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+	}
+	else
+	{
+		textureDesc.Usage = D3D11_USAGE_DEFAULT;
+		textureDesc.CPUAccessFlags = 0;
+	}
 
-		m_TextureWidth = glm::max<uint16_t>(width, 1);
-		m_TextureHeight = glm::max<uint16_t>(height, 1);
+	if ((((uint32)m_Access & (uint32)EAccess::CPURead) == 0) && !m_bDynamic && (m_DepthStencilViewFormatSupport & D3D11_FORMAT_SUPPORT_DEPTH_STENCIL) != 0)
+	{
+		textureDesc.BindFlags |= D3D11_BIND_DEPTH_STENCIL;
+	}
+	if (!m_bDynamic && (m_RenderTargetViewFormatSupport & D3D11_FORMAT_SUPPORT_RENDER_TARGET) != 0)
+	{
+		textureDesc.BindFlags |= D3D11_BIND_RENDER_TARGET;
+	}
+	if (((int)m_Access & (int)EAccess::CPURead) == 0)
+	{
+		textureDesc.BindFlags |= D3D11_BIND_SHADER_RESOURCE;
+	}
+	if ((((uint32)m_Access & (uint32)EAccess::CPURead) != 0) && !m_bDynamic)
+	{
+		textureDesc.BindFlags |= D3D11_BIND_UNORDERED_ACCESS;
+	}
 
-		// Create texture with the dimensions specified.
-		D3D11_TEXTURE2D_DESC textureDesc = { };
-		textureDesc.ArraySize = m_NumSlices;
-		textureDesc.Format = m_TextureResourceFormat;
-		textureDesc.SampleDesc = m_SampleDesc;
-		textureDesc.Width = m_TextureWidth;
-		textureDesc.Height = m_TextureHeight;
-		textureDesc.MipLevels = 1;
-		textureDesc.MiscFlags = m_bGenerateMipmaps ? D3D11_RESOURCE_MISC_GENERATE_MIPS : 0;
+	CHECK_HR(m_RenderDeviceDX11.GetDeviceD3D11()->CreateTexture2D(&textureDesc, nullptr, &m_pTexture2D));
 
-		if (((int)m_CPUAccess & (int)CPUAccess::Read) != 0)
+	if ((textureDesc.BindFlags & D3D11_BIND_DEPTH_STENCIL) != 0)
+	{
+		// Create the depth/stencil view for the texture.
+		D3D11_DEPTH_STENCIL_VIEW_DESC depthStencilViewDesc = {};
+		depthStencilViewDesc.Format = m_DepthStencilViewFormat;
+		depthStencilViewDesc.Flags = 0;
+
+		if (m_NumSlices > 1)
 		{
-			textureDesc.Usage = D3D11_USAGE_STAGING;
-			textureDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE | D3D11_CPU_ACCESS_READ;
-		}
-		else if (((int)m_CPUAccess & (int)CPUAccess::Write) != 0)
-		{
-			textureDesc.Usage = D3D11_USAGE_DYNAMIC;
-			textureDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+			if (m_SampleDesc.Count > 1)
+			{
+				depthStencilViewDesc.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2DMSARRAY;
+				depthStencilViewDesc.Texture2DMSArray.FirstArraySlice = 0;
+				depthStencilViewDesc.Texture2DMSArray.ArraySize = m_NumSlices;
+			}
+			else
+			{
+				depthStencilViewDesc.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2DARRAY;
+				depthStencilViewDesc.Texture2DArray.MipSlice = 0;
+				depthStencilViewDesc.Texture2DArray.FirstArraySlice = 0;
+				depthStencilViewDesc.Texture2DArray.ArraySize = m_NumSlices;
+			}
 		}
 		else
 		{
-			textureDesc.Usage = D3D11_USAGE_DEFAULT;
-			textureDesc.CPUAccessFlags = 0;
-		}
-
-		if (!m_bUAV && !m_bDynamic && (m_DepthStencilViewFormatSupport & D3D11_FORMAT_SUPPORT_DEPTH_STENCIL) != 0)
-		{
-			textureDesc.BindFlags |= D3D11_BIND_DEPTH_STENCIL;
-		}
-		if (!m_bDynamic && (m_RenderTargetViewFormatSupport & D3D11_FORMAT_SUPPORT_RENDER_TARGET) != 0)
-		{
-			textureDesc.BindFlags |= D3D11_BIND_RENDER_TARGET;
-		}
-		if (((int)m_CPUAccess & (int)CPUAccess::Read) == 0)
-		{
-			textureDesc.BindFlags |= D3D11_BIND_SHADER_RESOURCE;
-		}
-		if (m_bUAV && !m_bDynamic)
-		{
-			textureDesc.BindFlags |= D3D11_BIND_UNORDERED_ACCESS;
-		}
-
-		CHECK_HR(m_RenderDeviceDX11.GetDeviceD3D11()->CreateTexture2D(&textureDesc, nullptr, &m_pTexture2D));
-
-		if ((textureDesc.BindFlags & D3D11_BIND_DEPTH_STENCIL) != 0)
-		{
-			// Create the depth/stencil view for the texture.
-			D3D11_DEPTH_STENCIL_VIEW_DESC depthStencilViewDesc = {};
-			depthStencilViewDesc.Format = m_DepthStencilViewFormat;
-			depthStencilViewDesc.Flags = 0;
-
-			if (m_NumSlices > 1)
+			if (m_SampleDesc.Count > 1)
 			{
-				if (m_SampleDesc.Count > 1)
-				{
-					depthStencilViewDesc.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2DMSARRAY;
-					depthStencilViewDesc.Texture2DMSArray.FirstArraySlice = 0;
-					depthStencilViewDesc.Texture2DMSArray.ArraySize = m_NumSlices;
-				}
-				else
-				{
-					depthStencilViewDesc.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2DARRAY;
-					depthStencilViewDesc.Texture2DArray.MipSlice = 0;
-					depthStencilViewDesc.Texture2DArray.FirstArraySlice = 0;
-					depthStencilViewDesc.Texture2DArray.ArraySize = m_NumSlices;
-				}
+				depthStencilViewDesc.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2DMS;
 			}
 			else
 			{
-				if (m_SampleDesc.Count > 1)
-				{
-					depthStencilViewDesc.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2DMS;
-				}
-				else
-				{
-					depthStencilViewDesc.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
-					depthStencilViewDesc.Texture2D.MipSlice = 0;
-				}
+				depthStencilViewDesc.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
+				depthStencilViewDesc.Texture2D.MipSlice = 0;
 			}
-
-			CHECK_HR(m_RenderDeviceDX11.GetDeviceD3D11()->CreateDepthStencilView(m_pTexture2D, &depthStencilViewDesc, &m_pDepthStencilView));
 		}
 
-		if ((textureDesc.BindFlags & D3D11_BIND_SHADER_RESOURCE) != 0)
-		{
-			D3D11_SHADER_RESOURCE_VIEW_DESC resourceViewDesc = {};
-			resourceViewDesc.Format = m_ShaderResourceViewFormat;
+		CHECK_HR(m_RenderDeviceDX11.GetDeviceD3D11()->CreateDepthStencilView(m_pTexture2D, &depthStencilViewDesc, &m_pDepthStencilView));
+	}
 
-			if (m_NumSlices > 1)
+	if ((textureDesc.BindFlags & D3D11_BIND_SHADER_RESOURCE) != 0)
+	{
+		D3D11_SHADER_RESOURCE_VIEW_DESC resourceViewDesc = {};
+		resourceViewDesc.Format = m_ShaderResourceViewFormat;
+
+		if (m_NumSlices > 1)
+		{
+			if (m_SampleDesc.Count > 1)
 			{
-				if (m_SampleDesc.Count > 1)
-				{
-					resourceViewDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2DMSARRAY;
-					resourceViewDesc.Texture2DMSArray.FirstArraySlice = 0;
-					resourceViewDesc.Texture2DMSArray.ArraySize = m_NumSlices;
-				}
-				else
-				{
-					resourceViewDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2DARRAY;
-					resourceViewDesc.Texture2DArray.FirstArraySlice = 0;
-					resourceViewDesc.Texture2DArray.ArraySize = m_NumSlices;
-					resourceViewDesc.Texture2DArray.MipLevels = m_bGenerateMipmaps ? -1 : 1;
-					resourceViewDesc.Texture2DArray.MostDetailedMip = 0;
-				}
+				resourceViewDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2DMSARRAY;
+				resourceViewDesc.Texture2DMSArray.FirstArraySlice = 0;
+				resourceViewDesc.Texture2DMSArray.ArraySize = m_NumSlices;
 			}
 			else
 			{
-				if (m_SampleDesc.Count > 1)
-				{
-					resourceViewDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2DMS;
-				}
-				else
-				{
-					resourceViewDesc.ViewDimension = D3D_SRV_DIMENSION_TEXTURE2D;
-					resourceViewDesc.Texture2D.MipLevels = m_bGenerateMipmaps ? -1 : 1;
-					resourceViewDesc.Texture2D.MostDetailedMip = 0;
-				}
-			}
-
-			CHECK_HR(m_RenderDeviceDX11.GetDeviceD3D11()->CreateShaderResourceView(m_pTexture2D, &resourceViewDesc, &m_pShaderResourceView));
-			
-			if (m_bGenerateMipmaps)
-			{
-				m_RenderDeviceDX11.GetDeviceContextD3D11()->GenerateMips(m_pShaderResourceView);
+				resourceViewDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2DARRAY;
+				resourceViewDesc.Texture2DArray.FirstArraySlice = 0;
+				resourceViewDesc.Texture2DArray.ArraySize = m_NumSlices;
+				resourceViewDesc.Texture2DArray.MipLevels = m_bGenerateMipmaps ? -1 : 1;
+				resourceViewDesc.Texture2DArray.MostDetailedMip = 0;
 			}
 		}
-
-		if ((textureDesc.BindFlags & D3D11_BIND_RENDER_TARGET) != 0)
+		else
 		{
-			// Create the render target view for the texture.
-			D3D11_RENDER_TARGET_VIEW_DESC renderTargetViewDesc = {};
-			renderTargetViewDesc.Format = m_RenderTargetViewFormat;
-
-			if (m_NumSlices > 1)
+			if (m_SampleDesc.Count > 1)
 			{
-				if (m_SampleDesc.Count > 1)
-				{
-					renderTargetViewDesc.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2DMSARRAY;
-					renderTargetViewDesc.Texture2DArray.FirstArraySlice = 0;
-					renderTargetViewDesc.Texture2DArray.ArraySize = m_NumSlices;
-
-				}
-				else
-				{
-					renderTargetViewDesc.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2DARRAY;
-					renderTargetViewDesc.Texture2DArray.MipSlice = 0;
-					renderTargetViewDesc.Texture2DArray.FirstArraySlice = 0;
-					renderTargetViewDesc.Texture2DArray.ArraySize = m_NumSlices;
-				}
+				resourceViewDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2DMS;
 			}
 			else
 			{
-				if (m_SampleDesc.Count > 1)
-				{
-					renderTargetViewDesc.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2DMS;
-				}
-				else
-				{
-					renderTargetViewDesc.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2D;
-					renderTargetViewDesc.Texture2D.MipSlice = 0;
-				}
+				resourceViewDesc.ViewDimension = D3D_SRV_DIMENSION_TEXTURE2D;
+				resourceViewDesc.Texture2D.MipLevels = m_bGenerateMipmaps ? -1 : 1;
+				resourceViewDesc.Texture2D.MostDetailedMip = 0;
 			}
-
-			CHECK_HR(m_RenderDeviceDX11.GetDeviceD3D11()->CreateRenderTargetView(m_pTexture2D, &renderTargetViewDesc, &m_pRenderTargetView));
 		}
 
-		if ((textureDesc.BindFlags & D3D11_BIND_UNORDERED_ACCESS) != 0)
+		CHECK_HR(m_RenderDeviceDX11.GetDeviceD3D11()->CreateShaderResourceView(m_pTexture2D, &resourceViewDesc, &m_pShaderResourceView));
+
+		if (m_bGenerateMipmaps)
 		{
-			// UAVs cannot be multi sampled.
-			_ASSERT(m_SampleDesc.Count == 1);
+			m_RenderDeviceDX11.GetDeviceContextD3D11()->GenerateMips(m_pShaderResourceView);
+		}
+	}
 
-			// Create a Shader resource view for the texture.
-			D3D11_UNORDERED_ACCESS_VIEW_DESC unorderedAccessViewDesc = {};
-			unorderedAccessViewDesc.Format = m_UnorderedAccessViewFormat;
+	if ((textureDesc.BindFlags & D3D11_BIND_RENDER_TARGET) != 0)
+	{
+		// Create the render target view for the texture.
+		D3D11_RENDER_TARGET_VIEW_DESC renderTargetViewDesc = {};
+		renderTargetViewDesc.Format = m_RenderTargetViewFormat;
 
-			if (m_NumSlices > 1)
+		if (m_NumSlices > 1)
+		{
+			if (m_SampleDesc.Count > 1)
 			{
-				unorderedAccessViewDesc.ViewDimension = D3D11_UAV_DIMENSION_TEXTURE2DARRAY;
-				unorderedAccessViewDesc.Texture2DArray.MipSlice = 0;
-				unorderedAccessViewDesc.Texture2DArray.FirstArraySlice = 0;
-				unorderedAccessViewDesc.Texture2DArray.ArraySize = m_NumSlices;
+				renderTargetViewDesc.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2DMSARRAY;
+				renderTargetViewDesc.Texture2DArray.FirstArraySlice = 0;
+				renderTargetViewDesc.Texture2DArray.ArraySize = m_NumSlices;
+
 			}
 			else
 			{
-				unorderedAccessViewDesc.ViewDimension = D3D11_UAV_DIMENSION_TEXTURE2D;
-				unorderedAccessViewDesc.Texture2D.MipSlice = 0;
+				renderTargetViewDesc.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2DARRAY;
+				renderTargetViewDesc.Texture2DArray.MipSlice = 0;
+				renderTargetViewDesc.Texture2DArray.FirstArraySlice = 0;
+				renderTargetViewDesc.Texture2DArray.ArraySize = m_NumSlices;
 			}
-
-			CHECK_HR(m_RenderDeviceDX11.GetDeviceD3D11()->CreateUnorderedAccessView(m_pTexture2D, &unorderedAccessViewDesc, &m_pUnorderedAccessView));
 		}
+		else
+		{
+			if (m_SampleDesc.Count > 1)
+			{
+				renderTargetViewDesc.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2DMS;
+			}
+			else
+			{
+				renderTargetViewDesc.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2D;
+				renderTargetViewDesc.Texture2D.MipSlice = 0;
+			}
+		}
+
+		CHECK_HR(m_RenderDeviceDX11.GetDeviceD3D11()->CreateRenderTargetView(m_pTexture2D, &renderTargetViewDesc, &m_pRenderTargetView));
+	}
+
+	if ((textureDesc.BindFlags & D3D11_BIND_UNORDERED_ACCESS) != 0)
+	{
+		// UAVs cannot be multi sampled.
+		_ASSERT(m_SampleDesc.Count == 1);
+
+		// Create a Shader resource view for the texture.
+		D3D11_UNORDERED_ACCESS_VIEW_DESC unorderedAccessViewDesc = {};
+		unorderedAccessViewDesc.Format = m_UnorderedAccessViewFormat;
+
+		if (m_NumSlices > 1)
+		{
+			unorderedAccessViewDesc.ViewDimension = D3D11_UAV_DIMENSION_TEXTURE2DARRAY;
+			unorderedAccessViewDesc.Texture2DArray.MipSlice = 0;
+			unorderedAccessViewDesc.Texture2DArray.FirstArraySlice = 0;
+			unorderedAccessViewDesc.Texture2DArray.ArraySize = m_NumSlices;
+		}
+		else
+		{
+			unorderedAccessViewDesc.ViewDimension = D3D11_UAV_DIMENSION_TEXTURE2D;
+			unorderedAccessViewDesc.Texture2D.MipSlice = 0;
+		}
+
+		CHECK_HR(m_RenderDeviceDX11.GetDeviceD3D11()->CreateUnorderedAccessView(m_pTexture2D, &unorderedAccessViewDesc, &m_pUnorderedAccessView));
 	}
 }
 
@@ -420,6 +425,11 @@ void TextureDX11::Resize(uint16_t width, uint16_t height, uint16_t depth)
 		default:
 			throw CznRenderException("Unknown texture dimension.");
 	}
+}
+
+void TextureDX11::Initialize()
+{
+
 }
 
 void TextureDX11::Plot(glm::ivec2 coord, const uint8_t* pixel, size_t size)
@@ -477,7 +487,7 @@ void TextureDX11::Copy(const std::shared_ptr<ITexture>& other)
 		}
 	}
 
-	if (((int)m_CPUAccess & (int)CPUAccess::Read) != 0 && m_pTexture2D)
+	if (((int)m_Access & (int)EAccess::CPURead) != 0 && m_pTexture2D)
 	{
 		D3D11_MAPPED_SUBRESOURCE mappedResource = { };
 		CHECK_HR(m_RenderDeviceDX11.GetDeviceContextD3D11()->Map(m_pTexture2D, 0, D3D11_MAP_READ, 0, &mappedResource));
@@ -506,7 +516,7 @@ void TextureDX11::Clear(ClearFlags clearFlags, const glm::vec4& color, float dep
 	}
 }
 
-void TextureDX11::Bind(uint32_t ID, const IShader* shader, IShaderParameter::Type parameterType) const 
+void TextureDX11::Bind(uint32_t ID, const IShader* shader, IShaderParameter::Type parameterType) const
 {
 	Bind(ID, shader->GetType(), parameterType);
 }
@@ -551,33 +561,33 @@ void TextureDX11::Bind(uint32_t ID, EShaderType _shaderType, IShaderParameter::T
 	{
 		switch (_shaderType)
 		{
-			case EShaderType::VertexShader:
-				m_RenderDeviceDX11.GetDeviceContextD3D11()->VSSetShaderResources(ID, 1, srv);
-				break;
-			case EShaderType::TessellationControlShader:
-				m_RenderDeviceDX11.GetDeviceContextD3D11()->HSSetShaderResources(ID, 1, srv);
-				break;
-			case EShaderType::TessellationEvaluationShader:
-				m_RenderDeviceDX11.GetDeviceContextD3D11()->DSSetShaderResources(ID, 1, srv);
-				break;
-			case EShaderType::GeometryShader:
-				m_RenderDeviceDX11.GetDeviceContextD3D11()->GSSetShaderResources(ID, 1, srv);
-				break;
-			case EShaderType::PixelShader:
-				m_RenderDeviceDX11.GetDeviceContextD3D11()->PSSetShaderResources(ID, 1, srv);
-				break;
-			case EShaderType::ComputeShader:
-				m_RenderDeviceDX11.GetDeviceContextD3D11()->CSSetShaderResources(ID, 1, srv);
-				break;
+		case EShaderType::VertexShader:
+			m_RenderDeviceDX11.GetDeviceContextD3D11()->VSSetShaderResources(ID, 1, srv);
+			break;
+		case EShaderType::TessellationControlShader:
+			m_RenderDeviceDX11.GetDeviceContextD3D11()->HSSetShaderResources(ID, 1, srv);
+			break;
+		case EShaderType::TessellationEvaluationShader:
+			m_RenderDeviceDX11.GetDeviceContextD3D11()->DSSetShaderResources(ID, 1, srv);
+			break;
+		case EShaderType::GeometryShader:
+			m_RenderDeviceDX11.GetDeviceContextD3D11()->GSSetShaderResources(ID, 1, srv);
+			break;
+		case EShaderType::PixelShader:
+			m_RenderDeviceDX11.GetDeviceContextD3D11()->PSSetShaderResources(ID, 1, srv);
+			break;
+		case EShaderType::ComputeShader:
+			m_RenderDeviceDX11.GetDeviceContextD3D11()->CSSetShaderResources(ID, 1, srv);
+			break;
 		}
 	}
 	else if (parameterType == IShaderParameter::Type::RWTexture && m_pUnorderedAccessView)
 	{
 		switch (_shaderType)
 		{
-			case EShaderType::ComputeShader:
-				m_RenderDeviceDX11.GetDeviceContextD3D11()->CSSetUnorderedAccessViews(ID, 1, uav, nullptr);
-				break;
+		case EShaderType::ComputeShader:
+			m_RenderDeviceDX11.GetDeviceContextD3D11()->CSSetUnorderedAccessViews(ID, 1, uav, nullptr);
+			break;
 		}
 	}
 }
@@ -597,33 +607,33 @@ void TextureDX11::UnBind(uint32_t ID, EShaderType _shaderType, IShaderParameter:
 	{
 		switch (_shaderType)
 		{
-			case EShaderType::VertexShader:
-				m_RenderDeviceDX11.GetDeviceContextD3D11()->VSSetShaderResources(ID, 1, srv);
-				break;
-			case EShaderType::TessellationControlShader:
-				m_RenderDeviceDX11.GetDeviceContextD3D11()->HSSetShaderResources(ID, 1, srv);
-				break;
-			case EShaderType::TessellationEvaluationShader:
-				m_RenderDeviceDX11.GetDeviceContextD3D11()->DSSetShaderResources(ID, 1, srv);
-				break;
-			case EShaderType::GeometryShader:
-				m_RenderDeviceDX11.GetDeviceContextD3D11()->GSSetShaderResources(ID, 1, srv);
-				break;
-			case EShaderType::PixelShader:
-				m_RenderDeviceDX11.GetDeviceContextD3D11()->PSSetShaderResources(ID, 1, srv);
-				break;
-			case EShaderType::ComputeShader:
-				m_RenderDeviceDX11.GetDeviceContextD3D11()->CSSetShaderResources(ID, 1, srv);
-				break;
+		case EShaderType::VertexShader:
+			m_RenderDeviceDX11.GetDeviceContextD3D11()->VSSetShaderResources(ID, 1, srv);
+			break;
+		case EShaderType::TessellationControlShader:
+			m_RenderDeviceDX11.GetDeviceContextD3D11()->HSSetShaderResources(ID, 1, srv);
+			break;
+		case EShaderType::TessellationEvaluationShader:
+			m_RenderDeviceDX11.GetDeviceContextD3D11()->DSSetShaderResources(ID, 1, srv);
+			break;
+		case EShaderType::GeometryShader:
+			m_RenderDeviceDX11.GetDeviceContextD3D11()->GSSetShaderResources(ID, 1, srv);
+			break;
+		case EShaderType::PixelShader:
+			m_RenderDeviceDX11.GetDeviceContextD3D11()->PSSetShaderResources(ID, 1, srv);
+			break;
+		case EShaderType::ComputeShader:
+			m_RenderDeviceDX11.GetDeviceContextD3D11()->CSSetShaderResources(ID, 1, srv);
+			break;
 		}
 	}
 	else if (parameterType == IShaderParameter::Type::RWTexture)
 	{
 		switch (_shaderType)
 		{
-			case EShaderType::ComputeShader:
-				m_RenderDeviceDX11.GetDeviceContextD3D11()->CSSetUnorderedAccessViews(ID, 1, uav, nullptr);
-				break;
+		case EShaderType::ComputeShader:
+			m_RenderDeviceDX11.GetDeviceContextD3D11()->CSSetUnorderedAccessViews(ID, 1, uav, nullptr);
+			break;
 		}
 	}
 }
@@ -647,7 +657,7 @@ DXGI_SAMPLE_DESC TextureDX11::GetSupportedSampleCount(DXGI_FORMAT format, uint8_
 
 const std::vector<uint8>& TextureDX11::GetBuffer()
 {
-	/*if (((int)m_CPUAccess & (int)CPUAccess::Read) != 0 && m_pTexture2D)
+	/*if (((int)m_Access & (int)EAccess::Read) != 0 && m_pTexture2D)
 	{
 		D3D11_MAPPED_SUBRESOURCE mappedResource;
 
@@ -670,13 +680,13 @@ ID3D11Resource* TextureDX11::GetTextureResource() const
 	ID3D11Resource* resource = nullptr;
 	switch (m_TextureDimension)
 	{
-		case ITexture::Dimension::Texture2D:
-		case ITexture::Dimension::Texture2DArray:
-			resource = m_pTexture2D;
-			break;
-		case ITexture::Dimension::TextureCube:
-			resource = m_pTexture3D;
-			break;
+	case ITexture::Dimension::Texture2D:
+	case ITexture::Dimension::Texture2DArray:
+		resource = m_pTexture2D;
+		break;
+	case ITexture::Dimension::TextureCube:
+		resource = m_pTexture3D;
+		break;
 	}
 
 	return resource;
@@ -700,5 +710,10 @@ ID3D11RenderTargetView* TextureDX11::GetRenderTargetView() const
 ID3D11UnorderedAccessView* TextureDX11::GetUnorderedAccessView() const
 {
 	return m_pUnorderedAccessView;
+}
+
+std::string TextureDX11::GetFileName() const
+{
+	return m_FileName;
 }
 

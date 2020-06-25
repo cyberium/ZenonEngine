@@ -17,16 +17,14 @@ void CStructuredBufferBase::Load(const std::shared_ptr<IByteBuffer>& ByteBuffer)
 {
 	CBufferBase::Load(ByteBuffer);
 
-	ByteBuffer->read(&m_CPUAccess);
-	ByteBuffer->read(&m_GPUWrite);
+	ByteBuffer->read(&m_Access);
 }
 
 void CStructuredBufferBase::Save(const std::shared_ptr<IByteBuffer>& ByteBuffer)
 {
 	CBufferBase::Save(ByteBuffer);
 
-	ByteBuffer->write(&m_CPUAccess);
-	ByteBuffer->write(&m_GPUWrite);
+	ByteBuffer->write(&m_Access);
 }
 
 
@@ -41,25 +39,19 @@ void CStructuredBufferBase::DoInitializeBuffer()
 //
 // IStructuredBufferPrivate
 //
-void CStructuredBufferBase::InitializeStructuredBufferBase(CPUAccess CPUAccess, bool GPUWrite)
+void CStructuredBufferBase::InitializeStructuredBufferBase(EAccess EAccess)
 {
-	m_CPUAccess = CPUAccess;
-	m_GPUWrite = GPUWrite;
+	m_Access = EAccess;
 
 	DoInitializeStructuredBuffer();
 }
 
-CPUAccess CStructuredBufferBase::GetCPUAccess() const
+EAccess CStructuredBufferBase::GetAccess() const
 {
-	return m_CPUAccess;
-}
-
-bool CStructuredBufferBase::GetGPUWrite() const
-{
-	return m_GPUWrite;
+	return m_Access;
 }
 
 bool CStructuredBufferBase::IsDynamic() const
 {
-	return (uint32)m_CPUAccess != 0;
+	return (uint32)m_Access != (uint32)EAccess::None && (uint32)m_Access != (uint32)EAccess::GPUWrite;
 }

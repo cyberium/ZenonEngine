@@ -36,37 +36,37 @@ void CFBXMaterial::Load(fbxsdk::FbxSurfaceMaterial* NativeMaterial)
 	_ASSERT_EXPR(NativeMaterial->Is<fbxsdk::FbxSurfacePhong>(), "FBX material must be 'FbxSurfacePhong'.");
 	fbxsdk::FbxSurfacePhong* surfacePhong = fbxsdk::FbxCast<fbxsdk::FbxSurfacePhong>(NativeMaterial);
 
-	m_pProperties->Emissive = ToGLMVec3(surfacePhong->Emissive);
-	m_pProperties->EmissiveFactor = ToFloat(surfacePhong->EmissiveFactor);
+	MaterialData().Emissive = ToGLMVec3(surfacePhong->Emissive);
+	MaterialData().EmissiveFactor = ToFloat(surfacePhong->EmissiveFactor);
 
-	m_pProperties->Ambient = ToGLMVec3(surfacePhong->Ambient);
-	m_pProperties->AmbientFactor = ToFloat(surfacePhong->AmbientFactor);
+	MaterialData().Ambient = ToGLMVec3(surfacePhong->Ambient);
+	MaterialData().AmbientFactor = ToFloat(surfacePhong->AmbientFactor);
 
-	m_pProperties->Diffuse = ToGLMVec3(surfacePhong->Diffuse);
-	m_pProperties->DiffuseFactor = ToFloat(surfacePhong->DiffuseFactor);
+	MaterialData().Diffuse = ToGLMVec3(surfacePhong->Diffuse);
+	MaterialData().DiffuseFactor = ToFloat(surfacePhong->DiffuseFactor);
 
-	m_pProperties->NormalMap = ToGLMVec3(surfacePhong->NormalMap);
-	m_pProperties->Shininess = ToFloat(surfacePhong->Shininess);
+	MaterialData().NormalMap = ToGLMVec3(surfacePhong->NormalMap);
+	MaterialData().Shininess = ToFloat(surfacePhong->Shininess);
 
-	m_pProperties->Bump = ToGLMVec3(surfacePhong->Bump);
-	m_pProperties->BumpFactor = ToFloat(surfacePhong->BumpFactor);
+	MaterialData().Bump = ToGLMVec3(surfacePhong->Bump);
+	MaterialData().BumpFactor = ToFloat(surfacePhong->BumpFactor);
 
-	m_pProperties->TransparentColor = ToGLMVec3(surfacePhong->TransparentColor);
-	m_pProperties->TransparencyFactor = ToFloat(surfacePhong->TransparencyFactor);
+	MaterialData().TransparentColor = ToGLMVec3(surfacePhong->TransparentColor);
+	MaterialData().TransparencyFactor = ToFloat(surfacePhong->TransparencyFactor);
 
-	m_pProperties->DisplacementColor = ToGLMVec3(surfacePhong->DisplacementColor);
-	m_pProperties->DisplacementFactor = ToFloat(surfacePhong->DisplacementFactor);
+	MaterialData().DisplacementColor = ToGLMVec3(surfacePhong->DisplacementColor);
+	MaterialData().DisplacementFactor = ToFloat(surfacePhong->DisplacementFactor);
 
-	m_pProperties->VectorDisplacementColor = ToGLMVec3(surfacePhong->VectorDisplacementColor);
-	m_pProperties->VectorDisplacementFactor = ToFloat(surfacePhong->VectorDisplacementFactor);
+	MaterialData().VectorDisplacementColor = ToGLMVec3(surfacePhong->VectorDisplacementColor);
+	MaterialData().VectorDisplacementFactor = ToFloat(surfacePhong->VectorDisplacementFactor);
 
-	m_pProperties->Specular = ToGLMVec3(surfacePhong->Specular);
-	m_pProperties->SpecularFactor = ToFloat(surfacePhong->SpecularFactor);
+	MaterialData().Specular = ToGLMVec3(surfacePhong->Specular);
+	MaterialData().SpecularFactor = ToFloat(surfacePhong->SpecularFactor);
 
-	m_pProperties->Reflection = ToGLMVec3(surfacePhong->Reflection);
-	m_pProperties->ReflectionFactor = ToFloat(surfacePhong->ReflectionFactor);
+	MaterialData().Reflection = ToGLMVec3(surfacePhong->Reflection);
+	MaterialData().ReflectionFactor = ToFloat(surfacePhong->ReflectionFactor);
 
-	MarkConstantBufferDirty();
+	MarkMaterialDataDirty();
 
 	//PrintInfo();
 
@@ -179,7 +179,7 @@ void CFBXMaterial::Load(fbxsdk::FbxSurfaceMaterial* NativeMaterial)
 		}
 	}
 
-	MarkConstantBufferDirty();
+	MarkMaterialDataDirty();
 }
 
 

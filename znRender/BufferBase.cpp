@@ -40,7 +40,7 @@ void CBufferBase::Load(const std::shared_ptr<IByteBuffer>& ByteBuffer)
 {
 	IBuffer::BufferType bufferType;
 	uint32 count, offset, stride;
-	uint32 dataSize;
+	size_t dataSize;
 	std::vector<uint8> data;
 
 	ByteBuffer->read(&bufferType);

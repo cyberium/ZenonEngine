@@ -3,8 +3,9 @@
 // General
 #include "ModelBase.h"
 
-ModelBase::ModelBase()
-    : m_Name("ModelBase")
+ModelBase::ModelBase(IRenderDevice& RenderDevice)
+    : m_RenderDevice(RenderDevice)
+	, m_Name("ModelBase")
 {}
 
 ModelBase::~ModelBase()
@@ -61,5 +62,58 @@ void ModelBase::Accept(IVisitor* visitor)
 		{
 			connection.Geometry->Accept(visitor, connection.Material.get(), connection.GeometryDrawArgs);
 		}
+	}
+}
+
+void ModelBase::Load(const std::shared_ptr<IByteBuffer>& ByteBuffer)
+{
+	size_t connectionsCount = m_Connections.size();
+	ByteBuffer->read(&connectionsCount);
+
+	for (size_t i = 0; i < connectionsCount; i++)
+	{
+		auto material = m_RenderDevice.GetBaseManager().GetManager<IMaterialsFactory>()->CreateMaterial(10);
+		if (auto materialAsLoadableFromFile = std::dynamic_pointer_cast<ILoadableFromFile>(material))
+		{
+			materialAsLoadableFromFile->Load(ByteBuffer);
+		}
+		else
+			_ASSERT(false);
+
+		auto geometry = m_RenderDevice.GetObjectsFactory().CreateGeometry();
+		if (auto geometryAsLoadableFromFile = std::dynamic_pointer_cast<ILoadableFromFile>(geometry))
+		{
+			geometryAsLoadableFromFile->Load(ByteBuffer);
+		}
+		else
+			_ASSERT(false);
+
+		AddConnection(material, geometry);
+	}
+}
+
+void ModelBase::Save(const std::shared_ptr<IByteBuffer>& ByteBuffer)
+{
+	//std::vector<std::shared_ptr<IMaterial>> modelMaterials;
+	size_t connectionsCount = m_Connections.size();
+	ByteBuffer->write(&connectionsCount);
+
+	for (const auto& it : m_Connections)
+	{
+		//if (std::find(modelMaterials.begin(), modelMaterials.end(), it.Material) != modelMaterials.end()
+
+		if (auto materialAsLoadableFromFile = std::dynamic_pointer_cast<ILoadableFromFile>(it.Material))
+		{
+			materialAsLoadableFromFile->Save(ByteBuffer);
+		}
+		else
+			throw CException("ModelBase: Material '%s' is not loadable from file.", it.Material->GetName().c_str());
+
+		if (auto geometryAsLoadableFromFile = std::dynamic_pointer_cast<ILoadableFromFile>(it.Geometry))
+		{
+			geometryAsLoadableFromFile->Save(ByteBuffer);
+		}
+		else
+			throw CException("ModelBase: Geometry is not loadable from file.");
 	}
 }

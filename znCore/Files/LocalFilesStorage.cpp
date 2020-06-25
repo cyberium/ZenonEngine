@@ -85,8 +85,7 @@ bool CLocalFilesStorage::SaveFile(std::shared_ptr<IFile> File)
 	}
 	else
 	{
-		_ASSERT_EXPR(false, L"Unable to open file.");
-		return false;
+		throw CException("Unable to open file.");
 	}
 
 	stream.close();

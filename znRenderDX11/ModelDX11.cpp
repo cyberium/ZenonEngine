@@ -7,6 +7,7 @@
 #include "GeometryDX11.h"
 
 ModelDX11::ModelDX11(IRenderDeviceDX11& RenderDeviceDX11)
+	: ModelBase(RenderDeviceDX11)
 {}
 
 ModelDX11::~ModelDX11()

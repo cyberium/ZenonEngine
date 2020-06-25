@@ -130,7 +130,7 @@ bool CImagePNG::IsFileSupported(std::shared_ptr<IFile> File)
 
 	if (!File->Extension().empty())
 	{
-		return Utils::ToLower(File->Extension()) == "png";
+		return strcmp(Utils::ToLower(File->Extension()).c_str(), "png") == 0;
 	}
 
 	const size_t cPNGSigSize = 8;

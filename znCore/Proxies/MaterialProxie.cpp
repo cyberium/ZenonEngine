@@ -7,7 +7,9 @@ MaterialProxie::MaterialProxie(std::shared_ptr<IMaterial> _materal)
 	: m_Material(_materal)
 {
 	_ASSERT(m_Material != nullptr);
-	SetWrapper(nullptr);
+
+	SetType(0);
+	SetName("MaterialProxie");
 }
 
 MaterialProxie::~MaterialProxie()
@@ -18,6 +20,21 @@ MaterialProxie::~MaterialProxie()
 //
 // IMaterial
 //
+void MaterialProxie::SetType(MaterialType Type)
+{
+	m_Material->SetType(Type);
+}
+
+MaterialType MaterialProxie::GetType() const
+{
+	return m_Material->GetType();
+}
+
+bool MaterialProxie::Is(MaterialType MaterialType) const
+{
+	return m_Material->Is(MaterialType);
+}
+
 void MaterialProxie::SetName(const std::string & Name)
 {
 	m_Material->SetName(Name);
@@ -58,22 +75,52 @@ void MaterialProxie::Unbind(const ShaderMap& shaders) const
 	m_Material->Unbind(shaders);
 }
 
-void MaterialProxie::SetWrapper(IMaterial* /*_wrapper*/)
+
+
+//
+// ILoadableFromFile
+//
+void MaterialProxie::Load(const std::shared_ptr<IByteBuffer>& ByteBuffer)
 {
-	m_Material->SetWrapper(this);
+	if (const auto& loadableFromFile = std::dynamic_pointer_cast<ILoadableFromFile>(m_Material))
+	{
+		loadableFromFile->Load(ByteBuffer);
+	}
+	else
+		_ASSERT(false);
 }
 
-void MaterialProxie::UpdateConstantBuffer() const
+void MaterialProxie::Save(const std::shared_ptr<IByteBuffer>& ByteBuffer)
 {
-	m_Material->UpdateConstantBuffer();
+	if (const auto& loadableFromFile = std::dynamic_pointer_cast<ILoadableFromFile>(m_Material))
+	{
+		loadableFromFile->Save(ByteBuffer);
+	}
+	else
+		_ASSERT(false);
 }
 
-void MaterialProxie::UpdateConstantBuffer(const void* _data, size_t size) const
+
+
+//
+// IMaterialDataOwner
+//
+void MaterialProxie::InitializeMaterialData(size_t BufferSize)
 {
-	m_Material->UpdateConstantBuffer(_data, size);
+	return std::dynamic_pointer_cast<IMaterialDataOwner>(m_Material)->InitializeMaterialData(BufferSize);
 }
 
-void MaterialProxie::MarkConstantBufferDirty()
+const void * MaterialProxie::GetMaterialData() const
 {
-	m_Material->MarkConstantBufferDirty();
+	return std::dynamic_pointer_cast<const IMaterialDataOwner>(m_Material)->GetMaterialData();
+}
+
+void * MaterialProxie::GetMaterialDataEx()
+{
+	return std::dynamic_pointer_cast<IMaterialDataOwner>(m_Material)->GetMaterialDataEx();
+}
+
+void MaterialProxie::MarkMaterialDataDirty()
+{
+	std::dynamic_pointer_cast<IMaterialDataOwner>(m_Material)->MarkMaterialDataDirty();
 }

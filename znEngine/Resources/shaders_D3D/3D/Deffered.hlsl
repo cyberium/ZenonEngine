@@ -101,7 +101,7 @@ float4 PS_DeferredLighting(VS_Output VSOut) : SV_Target
 
 	Light light = L;//Lights[LightIndex];
 
-	Material mat = (Material)0;
+	MaterialModel mat = (MaterialModel)0;
 	mat.Diffuse = diffuse;
 	mat.Specular = specular;
 	mat.SpecularFactor = specularPower;

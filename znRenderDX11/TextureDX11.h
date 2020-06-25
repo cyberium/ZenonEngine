@@ -1,11 +1,14 @@
 #pragma once
 
-class ZN_API TextureDX11 : public ITexture, public std::enable_shared_from_this<TextureDX11>
+class ZN_API TextureDX11 
+	: public ITexture
+	, public IFileNameOwner
+	, public std::enable_shared_from_this<TextureDX11>
 {
 public:
 	TextureDX11(IRenderDeviceDX11& RenderDeviceDX11);
-	TextureDX11(IRenderDeviceDX11& RenderDeviceDX11, uint16_t width, uint16_t height, uint16_t slices, const TextureFormat& format, CPUAccess cpuAccess, bool bUAV = false);
-	TextureDX11(IRenderDeviceDX11& RenderDeviceDX11, uint16_t size, uint16_t count, const TextureFormat& format, CPUAccess cpuAccess, bool bUAV = false);
+	TextureDX11(IRenderDeviceDX11& RenderDeviceDX11, uint16_t width, uint16_t height, uint16_t slices, const TextureFormat& format, EAccess cpuAccess);
+	TextureDX11(IRenderDeviceDX11& RenderDeviceDX11, uint16_t size, uint16_t count, const TextureFormat& format, EAccess cpuAccess);
 	virtual ~TextureDX11();
 
 	virtual bool LoadTextureFromImage(const std::shared_ptr<IImage>& Image);
@@ -14,8 +17,6 @@ public:
 
 	virtual void GenerateMipMaps();
 
-	virtual ITexture* GetFace(CubeFace face) const;
-	virtual ITexture* GetSlice(uint32 slice) const;
 	virtual uint16_t GetWidth() const;
 	virtual uint16_t GetHeight() const;
 	glm::ivec2 GetSize() const;
@@ -50,7 +51,12 @@ public:
 	// Get the unordered access view so it can be bound to compute shaders and pixel shaders as a RWTexture
 	ID3D11UnorderedAccessView* GetUnorderedAccessView() const;
 
+	// IFileNameOwner
+	std::string GetFileName() const override;
+
 protected:
+	void Initialize();
+	
 	virtual void Plot(glm::ivec2 coord, const uint8_t* pixel, size_t size);
 	virtual void FetchPixel(glm::ivec2 coord, uint8_t*& pixel, size_t size);
 
@@ -92,11 +98,9 @@ private:
 	UINT m_RenderTargetViewFormatSupport;
 	UINT m_UnorderedAccessViewFormatSupport;
 
-	CPUAccess m_CPUAccess;
+	EAccess m_Access;
 	// Set to true if CPU write access is supported.
 	bool m_bDynamic;
-	// This resource should be used as a UAV.
-	bool m_bUAV;
 
 	DXGI_FORMAT m_TextureResourceFormat;
 	DXGI_FORMAT m_DepthStencilViewFormat;
@@ -122,6 +126,8 @@ private:
 	std::string m_TextureFileName;
 
 	mutable bool m_bIsDirty;
+
+	std::string m_FileName;
 
 private: // Link to parent d3d11 device
 	IRenderDeviceDX11& m_RenderDeviceDX11;

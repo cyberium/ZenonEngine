@@ -4,10 +4,8 @@
 #include "UI_Texture_Material.h"
 
 UI_Texture_Material::UI_Texture_Material(IRenderDevice& RenderDevice) 
-	: MaterialProxie(RenderDevice.GetObjectsFactory().CreateMaterial(sizeof(MaterialProperties)))
+	: UI_Color_Material(RenderDevice)
 {
-	m_pProperties = (MaterialProperties*)_aligned_malloc(sizeof(MaterialProperties), 16);
-	*m_pProperties = MaterialProperties();
 
 	// CreateShaders
 	const auto& g_pVertexShader = RenderDevice.GetObjectsFactory().CreateShader(
@@ -29,27 +27,10 @@ UI_Texture_Material::UI_Texture_Material(IRenderDevice& RenderDevice)
 
 UI_Texture_Material::~UI_Texture_Material()
 {
-	if (m_pProperties)
-	{
-		_aligned_free(m_pProperties);
-		m_pProperties = nullptr;
-	}
 }
 
 void UI_Texture_Material::SetTexture(const std::shared_ptr<ITexture> _texture)
 {
-	base::SetTexture(0, _texture);
-	MarkConstantBufferDirty();
-}
-
-void UI_Texture_Material::SetColor(glm::vec4 color)
-{
-	m_pProperties->Color = color;
-	MarkConstantBufferDirty();
-}
-
-
-void UI_Texture_Material::UpdateConstantBuffer() const
-{
-	base::UpdateConstantBuffer(m_pProperties, sizeof(MaterialProperties));
+	__super::SetTexture(0, _texture);
+	MarkMaterialDataDirty();
 }

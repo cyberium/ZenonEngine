@@ -36,7 +36,7 @@ std::shared_ptr<IRenderPassPipelined> CDrawBoundingBoxPass::CreatePipeline(std::
 	Pipeline->GetBlendState()->SetBlendMode(disableBlending);
 	Pipeline->GetDepthStencilState()->SetDepthMode(enableDepthWrites);
 	Pipeline->GetRasterizerState()->SetCullMode(IRasterizerState::CullMode::None);
-	Pipeline->GetRasterizerState()->SetFillMode(IRasterizerState::FillMode::Wireframe);
+	Pipeline->GetRasterizerState()->SetFillMode(IRasterizerState::FillMode::Wireframe, IRasterizerState::FillMode::Solid);
 	Pipeline->GetRasterizerState()->SetMultisampleEnabled(true);
 	Pipeline->GetRasterizerState()->SetAntialiasedLineEnable(true);
 	Pipeline->SetRenderTarget(RenderTarget);

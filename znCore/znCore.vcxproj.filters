@@ -866,6 +866,9 @@
     <ClInclude Include="Files\ChunkedFile.h">
       <Filter>Files</Filter>
     </ClInclude>
+    <ClInclude Include="Proxies\MaterialProxieT.h">
+      <Filter>__Proxies</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Scene\ComponentBase.inl">

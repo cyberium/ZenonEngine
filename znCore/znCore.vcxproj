@@ -304,6 +304,7 @@
     <ClInclude Include="Passes\Technical\SetShaderParameterPass.h" />
     <ClInclude Include="Proxies\GeometryProxie.h" />
     <ClInclude Include="Proxies\MaterialProxie.h" />
+    <ClInclude Include="Proxies\MaterialProxieT.h" />
     <ClInclude Include="Proxies\ModelProxie.h" />
     <ClInclude Include="Proxies\SceneNodeProxie.h" />
     <ClInclude Include="Proxies\__Proxies.h" />

@@ -132,7 +132,7 @@ void CByteBuffer::readString(std::string* _string)
 	_ASSERT(_string != nullptr);
 	_ASSERT(isEof() == false);
 
-	*_string = "";
+	(*_string).clear();
 	while (true)
 	{
 		uint8 byte;

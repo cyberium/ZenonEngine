@@ -2,39 +2,51 @@
 
 class ZN_API MaterialBase 
 	: public IMaterial
+	, public IMaterialDataOwner
+	, public ILoadableFromFile
 {
 public:
-	MaterialBase(IRenderDevice& renderDevice, size_t Size);
+	MaterialBase(IRenderDevice& renderDevice);
 	virtual ~MaterialBase();
 
 	// IMaterial
-	virtual void SetName(const std::string& Name) override;
-	virtual std::string GetName() const override;
+	void          SetType(MaterialType Type) override;
+	MaterialType  GetType() const override;
+	bool          Is(MaterialType MaterialType) const override;
+	void          SetName(const std::string& Name) override;
+	std::string   GetName() const override;
 
-	virtual void SetTexture(uint8 ID, const std::shared_ptr<ITexture> texture) override;
+	virtual void  SetTexture(uint8 ID, const std::shared_ptr<ITexture> texture) override;
 	virtual const std::shared_ptr<ITexture>& GetTexture(uint8 ID) const override;
 	
-	virtual void SetSampler(uint8 ID, const std::shared_ptr<ISamplerState> samplerState) override;
+	virtual void  SetSampler(uint8 ID, const std::shared_ptr<ISamplerState> samplerState) override;
     virtual const std::shared_ptr<ISamplerState>& GetSampler(uint8 ID) const override;
 
 	virtual void Bind(const ShaderMap& shaders) const override;
 	virtual void Unbind(const ShaderMap& shaders) const override;
 
-	virtual void SetWrapper(IMaterial* _wrapper) override;
-	virtual void UpdateConstantBuffer() const override;
-	virtual void UpdateConstantBuffer(const void* _data, size_t size) const override;
-	virtual void MarkConstantBufferDirty() override;
+	// ILoadableFromFile
+	virtual void Load(const std::shared_ptr<IByteBuffer>& ByteBuffer) override;
+	virtual void Save(const std::shared_ptr<IByteBuffer>& ByteBuffer) override;
+
+	// IMaterialDataOwner
+	void         InitializeMaterialData(size_t BufferSize) override;
+	const void*  GetMaterialData() const override;
+	void*        GetMaterialDataEx() override;
+	void         MarkMaterialDataDirty() override;
+
+private:
+	void         FinalizeMaterialData();
 
 protected:
-
-
-protected:
+	size_t                           m_BufferSize;
+	MaterialType                     m_Type;
 	std::string                      m_Name;
 	TextureMap                       m_Textures;
 	ShaderMap                        m_Shaders;
     SamplersMap                      m_Samplers;
-	std::shared_ptr<IConstantBuffer> m_pConstantBuffer;
-	IMaterial*                       m_Wrapper;
+	void*                            m_MaterialData;
+	std::shared_ptr<IConstantBuffer> m_ConstantBuffer;
 	mutable bool                     m_Dirty;
 
 private:

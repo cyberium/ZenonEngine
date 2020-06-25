@@ -1,9 +1,10 @@
 #pragma once
 
-class ZN_API MaterialDX11 : public MaterialBase
+class ZN_API MaterialDX11 
+	: public MaterialBase
 {
 public:
-	MaterialDX11(IRenderDeviceDX11& RenderDeviceDX11, size_t Size);
+	MaterialDX11(IRenderDeviceDX11& RenderDeviceDX11);
 	virtual ~MaterialDX11();
 
     // MaterialBase

@@ -24,6 +24,7 @@ ZN_INTERFACE ZN_API IXMLWriter
 	virtual void AddAttribute(std::string AttributeName, std::string AttributeValue) const = 0;
 	virtual void AddIntAttribute(std::string AttributeName, int AttributeValue) const = 0;
 	virtual void AddFloatAttribute(std::string AttributeName, double AttributeValue) const = 0;
+	virtual void AddVec3Attribute(std::string AttributeName, glm::vec3 AttributeValue) const = 0;
 
 	virtual std::shared_ptr<IXMLWriter> CreateChild(std::string ChildName) const = 0;
 

@@ -97,7 +97,7 @@ float4 DoDiffuse(Light light, float4 L, float4 N)
 	return light.Color * NdotL;
 }
 
-float4 DoSpecular(Light light, Material mat, float4 V, float4 L, float4 N)
+float4 DoSpecular(Light light, MaterialModel mat, float4 V, float4 L, float4 N)
 {
 	float4 R = normalize(reflect(-L, N));
 	float RdotV = max(dot(R, V), 0);
@@ -126,7 +126,7 @@ float DoSpotCone(Light light, float4 L)
 	return smoothstep(minCos, maxCos, cosAngle);
 }
 
-LightingResult DoPointLight(Light light, Material mat, float4 V, float4 P, float4 N)
+LightingResult DoPointLight(Light light, MaterialModel mat, float4 V, float4 P, float4 N)
 {
 	LightingResult result;
 
@@ -143,7 +143,7 @@ LightingResult DoPointLight(Light light, Material mat, float4 V, float4 P, float
 	return result;
 }
 
-LightingResult DoDirectionalLight(Light light, Material mat, float4 V, float4 P, float4 N)
+LightingResult DoDirectionalLight(Light light, MaterialModel mat, float4 V, float4 P, float4 N)
 {
 	LightingResult result;
 
@@ -156,7 +156,7 @@ LightingResult DoDirectionalLight(Light light, Material mat, float4 V, float4 P,
 	return result;
 }
 
-LightingResult DoSpotLight(Light light, Material mat, float4 V, float4 P, float4 N)
+LightingResult DoSpotLight(Light light, MaterialModel mat, float4 V, float4 P, float4 N)
 {
 	LightingResult result;
 
@@ -174,7 +174,7 @@ LightingResult DoSpotLight(Light light, Material mat, float4 V, float4 P, float4
 	return result;
 }
 
-LightingResult DoLighting(StructuredBuffer<Light> lights, Material mat, float4 eyePos, float4 P, float4 N)
+LightingResult DoLighting(StructuredBuffer<Light> lights, MaterialModel mat, float4 eyePos, float4 P, float4 N)
 {
 	float4 V = normalize(eyePos - P);
 

@@ -4,7 +4,7 @@
 
 ZN_INTERFACE IStructuredBufferPrivate
 {
-	virtual void InitializeStructuredBufferBase(CPUAccess CPUAccess, bool GPUWrite) = 0;
+	virtual void InitializeStructuredBufferBase(EAccess EAccess) = 0;
 	virtual void DoInitializeStructuredBuffer() = 0;
 };
 
@@ -32,15 +32,13 @@ protected:
 	void DoInitializeBuffer() override;
 
 	// IStructuredBufferPrivate
-	void InitializeStructuredBufferBase(CPUAccess CPUAccess, bool GPUWrite) override final;
+	void InitializeStructuredBufferBase(EAccess EAccess) override final;
 	void DoInitializeStructuredBuffer() = 0;
 
 protected:
-	CPUAccess GetCPUAccess() const;
-	bool GetGPUWrite() const;
+	EAccess GetAccess() const;
 	bool IsDynamic() const;
 
 private:
-	CPUAccess m_CPUAccess;
-	bool m_GPUWrite;
+	EAccess m_Access;
 };

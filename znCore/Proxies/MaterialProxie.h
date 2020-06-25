@@ -1,12 +1,18 @@
 #pragma once
 
-class ZN_API MaterialProxie : public IMaterial
+class ZN_API MaterialProxie 
+	: public IMaterial
+	, public ILoadableFromFile
+	, protected IMaterialDataOwner
 {
 public:
 	MaterialProxie(std::shared_ptr<IMaterial> _materal);
 	virtual ~MaterialProxie() override;
 
 	// IMaterial
+	virtual void SetType(MaterialType Type) override;
+	virtual MaterialType GetType() const override;
+	virtual bool Is(MaterialType MaterialType) const override;
 	virtual void SetName(const std::string& Name) override;
 	virtual std::string GetName() const override;
 
@@ -19,10 +25,16 @@ public:
 	virtual void Bind(const ShaderMap& shaders) const override;
 	virtual void Unbind(const ShaderMap& shaders) const override;
 
-	virtual void SetWrapper(IMaterial* _wrapper) override;
-	virtual void UpdateConstantBuffer() const override;
-	virtual void UpdateConstantBuffer(const void* _data, size_t size) const override;
-	virtual void MarkConstantBufferDirty() override;
+	// ILoadableFromFile
+	void Load(const std::shared_ptr<IByteBuffer>& ByteBuffer) override;
+	void Save(const std::shared_ptr<IByteBuffer>& ByteBuffer) override;
+
+protected:
+	// IMaterialDataOwner
+	void InitializeMaterialData(size_t BufferSize) override;
+	const void* GetMaterialData() const override;
+	void* GetMaterialDataEx() override;
+	void MarkMaterialDataDirty() override;
 
 private:
 	std::shared_ptr<IMaterial> m_Material;

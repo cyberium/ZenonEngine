@@ -25,7 +25,7 @@ std::shared_ptr<IRenderPassPipelined> BaseUIPass::CreatePipeline(std::shared_ptr
 	UIPipeline->GetBlendState()->SetBlendMode(alphaBlending);
 	UIPipeline->GetDepthStencilState()->SetDepthMode(disableDepthWrites);
 	UIPipeline->GetRasterizerState()->SetCullMode(IRasterizerState::CullMode::None);
-	UIPipeline->GetRasterizerState()->SetFillMode(IRasterizerState::FillMode::Solid);
+	UIPipeline->GetRasterizerState()->SetFillMode(IRasterizerState::FillMode::Solid, IRasterizerState::FillMode::Solid);
 	UIPipeline->GetRasterizerState()->SetAntialiasedLineEnable(false);
 	UIPipeline->GetRasterizerState()->SetMultisampleEnabled(false);
 	UIPipeline->SetRenderTarget(RenderTarget);

@@ -8,6 +8,7 @@
 #include "PluginsManager.h"
 #include "Settings.h"
 #include "RenderDeviceFactory.h"
+#include "MaterialsFactory.h"
 #include "Loader.h"
 #include "SceneFunctional/SceneNodesFactory.h"
 #include "SceneFunctional/ScenesFactory.h"
@@ -148,6 +149,9 @@ IBaseManager* WINAPI InitializeEngine(std::vector<std::string> Arguments, std::s
 		baseManager->AddManager<IImagesFactory>(std::make_shared<CImagesFactory>(*baseManager));
 		baseManager->GetManager<IImagesFactory>()->AddImageLoader(std::make_shared<CImageLoaderT<CImagePNG>>());
 		baseManager->GetManager<IImagesFactory>()->AddImageLoader(std::make_shared<CImageLoaderT<CImageDDS>>());
+
+		auto materialsFactory = std::make_shared<CMaterialsFactory>(*baseManager);
+		baseManager->AddManager<IMaterialsFactory>(materialsFactory);
 
 		std::shared_ptr<IznRenderDeviceFactory> renderDeviceFactory = std::make_shared<CznRenderDeviceFactory>(*baseManager);
 		baseManager->AddManager<IznRenderDeviceFactory>(renderDeviceFactory);

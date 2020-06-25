@@ -12,7 +12,7 @@ CMaterialParticlePass::CMaterialParticlePass(IRenderDevice& RenderDevice, std::s
 	m_Geometry = GetRenderDevice().GetObjectsFactory().CreateGeometry();
 	m_Geometry->SetPrimitiveTopology(PrimitiveTopology::PointList);
 
-	m_GeomParticlesBuffer = GetRenderDevice().GetObjectsFactory().CreateStructuredBuffer(nullptr, 1000, sizeof(SParticle), CPUAccess::Write);
+	m_GeomParticlesBuffer = GetRenderDevice().GetObjectsFactory().CreateStructuredBuffer(nullptr, 1000, sizeof(SParticle), EAccess::CPUWrite);
 }
 
 CMaterialParticlePass::~CMaterialParticlePass()
@@ -53,7 +53,7 @@ std::shared_ptr<IRenderPassPipelined> CMaterialParticlePass::CreatePipeline(std:
 	);
 	Pipeline->GetDepthStencilState()->SetDepthMode(enableTestDisableWrites);
 	Pipeline->GetRasterizerState()->SetCullMode(IRasterizerState::CullMode::Back);
-	Pipeline->GetRasterizerState()->SetFillMode(IRasterizerState::FillMode::Solid);
+	Pipeline->GetRasterizerState()->SetFillMode(IRasterizerState::FillMode::Solid, IRasterizerState::FillMode::Solid);
 	Pipeline->SetRenderTarget(RenderTarget);
 	Pipeline->SetShader(EShaderType::VertexShader, vertexShader);
 	Pipeline->SetShader(EShaderType::GeometryShader, geomShader);
@@ -114,7 +114,7 @@ EVisitResult CMaterialParticlePass::Visit(const IParticleSystem * ParticlesSyste
 		return EVisitResult::Block;
 
 	if (partilces.size() > m_GeomParticlesBuffer->GetElementCount())
-		m_GeomParticlesBuffer = GetRenderDevice().GetObjectsFactory().CreateStructuredBuffer(partilces, CPUAccess::Write);
+		m_GeomParticlesBuffer = GetRenderDevice().GetObjectsFactory().CreateStructuredBuffer(partilces, EAccess::CPUWrite);
 	else
 		m_GeomParticlesBuffer->Set(partilces);
 

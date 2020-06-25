@@ -16,12 +16,13 @@ enum class ZN_API ClearFlags : uint32
 /**
   * CPU Access. Used for textures and Buffers
  */
-enum class ZN_API CPUAccess : uint32
+enum class ZN_API EAccess : uint32
 {
-	None = 0,                 // No CPU access to this texture is necessary.
-	Read = (1 << 0),          // CPU reads permitted.
-	Write = (1 << 1),         // CPU writes permitted.
-	ReadWrite = Read | Write
+	None = 0,                 // No CPU or GPU access to this texture is necessary.
+	CPURead = (1 << 0),          // CPU reads permitted.
+	CPUWrite = (1 << 1),         // CPU writes permitted.
+	GPUWrite = (1 << 2),
+	CPUReadAndWrite = CPURead | CPUWrite,
 };
 
 

@@ -2,6 +2,7 @@
 
 class ZN_API ModelProxie 
 	: public IModel
+	, public ILoadableFromFile
 {
 public:
 	ModelProxie(const std::shared_ptr<IModel>& Model);
@@ -20,6 +21,10 @@ public:
 	virtual bool Render(const RenderEventArgs& renderEventArgs) const override;
 
 	virtual void Accept(IVisitor* visitor) override;
+
+	// ILoadableFromFile
+	void Load(const std::shared_ptr<IByteBuffer>& ByteBuffer) override;
+	void Save(const std::shared_ptr<IByteBuffer>& ByteBuffer) override;
 
 private:
 	std::shared_ptr<IModel> m_Model;

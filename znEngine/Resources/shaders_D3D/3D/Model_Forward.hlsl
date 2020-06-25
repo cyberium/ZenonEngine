@@ -15,7 +15,7 @@ struct VertexShaderOutput
 
 cbuffer Material : register(b2)
 {
-	Material Mat;
+	MaterialModel Mat;
 };
 
 
@@ -143,7 +143,7 @@ DefferedRenderPSOut PS_main(VertexShaderOutput IN) : SV_TARGET
 {
 	// Everything is in view space.
 	float4 eyePos = { 0, 0, 0, 1 };
-	Material mat = Mat;
+	MaterialModel mat = Mat;
 
 	float4 diffuse = float4(mat.Diffuse * mat.DiffuseFactor, 1.0f);
 	if (mat.HasTextureDiffuse)

@@ -1,25 +1,24 @@
 #pragma once
 
+namespace
+{
+	__declspec(align(16)) struct SMaterialDebugProperties
+	{
+		SMaterialDebugProperties()
+			: DiffuseColor(1.0f, 1.0f, 1.0f, 1.0f)
+		{}
+		glm::vec4 DiffuseColor;
+		//-------------------------- ( 16 bytes )
+	};
+}
+
 class ZN_API MaterialDebug 
-	: public MaterialProxie
+	: public MaterialProxieT<SMaterialDebugProperties>
 {
 public:
 	MaterialDebug(IRenderDevice& RenderDevice);
 	virtual ~MaterialDebug();
 
-	const glm::vec4& GetDiffuseColor() const;
+	glm::vec4 GetDiffuseColor() const;
 	void SetDiffuseColor(const glm::vec4& diffuse);
-
-	void UpdateConstantBuffer() const override;
-
-private:
-	__declspec(align(16)) struct MaterialProperties
-	{
-		MaterialProperties()
-			: m_DiffuseColor(1.0f, 1.0f, 1.0f, 1.0f)
-		{}
-		glm::vec4 m_DiffuseColor;
-		//-------------------------- ( 16 bytes )
-	};
-	MaterialProperties* m_pProperties;
 };

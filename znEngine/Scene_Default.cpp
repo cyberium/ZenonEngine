@@ -187,7 +187,7 @@ void CSceneDefault::Load3D()
 
 
 	{
-		const int iterCnt = 2;
+		const int iterCnt = 0;
 		const float offset = 13.0f;
 		const float scale = 5.0f;
 

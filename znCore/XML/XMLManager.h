@@ -33,6 +33,7 @@ public:
 	std::string GetName() const override;
 	std::string GetValue() const override;
 	std::string GetAttribute(std::string AttributeName) const override;
+	glm::vec3   GetVec3Attribute(std::string AttributeName) const;
 
 	std::shared_ptr<IXMLReader> GetChild(std::string ChildName) const override;
 	std::vector<std::shared_ptr<IXMLReader>> GetChilds() const override;
@@ -56,6 +57,7 @@ public:
 	void AddAttribute(std::string AttributeName, std::string AttributeValue) const override;
 	void AddIntAttribute(std::string AttributeName, int AttributeValue) const override;
 	void AddFloatAttribute(std::string AttributeName, double AttributeValue) const override;
+	void AddVec3Attribute(std::string AttributeName, glm::vec3 AttributeValue) const override;
 
 	std::shared_ptr<IXMLWriter> CreateChild(std::string ChildName) const override;
 

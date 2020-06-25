@@ -4,10 +4,11 @@
 
 class ZN_API ModelBase 
 	: public IModel
+	, public ILoadableFromFile
 	, public Object
 {
 public:
-	ModelBase();
+	ModelBase(IRenderDevice& RenderDevice);
 	virtual ~ModelBase();
 
 	virtual void                                    SetName(const std::string& Name) override;
@@ -21,8 +22,15 @@ public:
 
 	virtual void                                    Accept(IVisitor* visitor) override;
 
+	// ILoadableFromFile
+	void											Load(const std::shared_ptr<IByteBuffer>& ByteBuffer);
+	void											Save(const std::shared_ptr<IByteBuffer>& ByteBuffer);
+
 protected:
 	std::string                                     m_Name;
 
 	std::vector<SConnection>				        m_Connections;
+
+private: // Link to parent d3d11 device
+	IRenderDevice& m_RenderDevice;
 };

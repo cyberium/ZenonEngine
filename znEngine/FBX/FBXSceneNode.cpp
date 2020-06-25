@@ -78,8 +78,32 @@ void CFBXSceneNode::LoadNode()
 	{
 		case fbxsdk::FbxNodeAttribute::EType::eMesh:
 		{
-			const auto& fbxMesh = std::make_shared<CFBXMesh>(m_BaseManager, std::dynamic_pointer_cast<CFBXSceneNode>(shared_from_this()));
+			auto fbxMesh = std::make_shared<CFBXMesh>(m_BaseManager, std::dynamic_pointer_cast<CFBXSceneNode>(shared_from_this()));
+			fbxMesh->SetName(m_NativeNode->GetName());
 			fbxMesh->Load(m_NativeNode->GetMesh());
+
+			if (std::shared_ptr<ILoadableFromFile> loadableFromFile = std::dynamic_pointer_cast<ILoadableFromFile>(fbxMesh))
+			{
+				auto localFileStorage = m_BaseManager.GetManager<IFilesManager>()->GetFilesStorage("ZenonGamedata");
+
+				auto file = std::make_shared<CFile>("generatedModels\\model" + std::string(m_NativeNode->GetName()) + ".znmdl");
+
+				loadableFromFile->Save(file);
+				file->seek(0);
+
+				localFileStorage->SaveFile(file);
+
+
+				auto model = m_BaseManager.GetApplication().GetRenderDevice().GetObjectsFactory().CreateModel();
+				if (std::shared_ptr<ILoadableFromFile> loadableFromFile2 = std::dynamic_pointer_cast<ILoadableFromFile>(model))
+				{
+					loadableFromFile2->Load(file);
+					GetComponent<IModelsComponent3D>()->AddModel(model);
+					break;
+
+				}
+			}
+
 			GetComponent<IModelsComponent3D>()->AddModel(fbxMesh);
 		}
 		break;

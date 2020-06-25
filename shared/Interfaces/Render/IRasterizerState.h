@@ -61,13 +61,13 @@ ZN_INTERFACE ZN_API IRasterizerState
 
 	virtual ~IRasterizerState() {}
 
-	virtual void SetFillMode(FillMode frontFace = FillMode::Solid, FillMode backFace = FillMode::Solid) = 0;
+	virtual void SetFillMode(FillMode frontFace, FillMode backFace) = 0;
 	virtual void GetFillMode(FillMode& frontFace, FillMode& backFace) const = 0;
 
-	virtual void SetCullMode(CullMode cullMode = CullMode::Back) = 0;
+	virtual void SetCullMode(CullMode cullMode) = 0;
 	virtual CullMode GetCullMode() const = 0;
 
-	virtual void SetFrontFacing(FrontFace frontFace = FrontFace::CounterClockwise) = 0;
+	virtual void SetFrontFacing(FrontFace frontFace) = 0;
 	virtual FrontFace GetFrontFacing() const = 0;
 
 	/**
@@ -138,7 +138,7 @@ ZN_INTERFACE ZN_API IRasterizerState
 	 * @see https://msdn.microsoft.com/en-us/library/windows/desktop/hh404489(v=vs.85).aspx
 	 * @see https://www.opengl.org/sdk/docs/man/html/glEnable.xhtml at GL_MULTISAMPLE
 	 */
-	virtual void SetMultisampleEnabled(bool multisampleEnabled = false) = 0;
+	virtual void SetMultisampleEnabled(bool multisampleEnabled) = 0;
 	virtual bool GetMultisampleEnabled() const = 0;
 
 	/**
@@ -157,7 +157,7 @@ ZN_INTERFACE ZN_API IRasterizerState
 	 * At the time of this writing, I could not find an OpenGL equivalent.
 	 * @see https://msdn.microsoft.com/en-us/library/hh404489(v=vs.85).aspx
 	 */
-	virtual void SetForcedSampleCount(uint8_t forcedSampleCount = 0) = 0;
+	virtual void SetForcedSampleCount(uint8_t forcedSampleCount) = 0;
 	virtual uint8_t GetForcedSampleCount() const = 0;
 
 	/**
@@ -165,7 +165,7 @@ ZN_INTERFACE ZN_API IRasterizerState
 	 * Currently only supported in DirectX 11.3 and 12.
 	 * @see https://msdn.microsoft.com/en-us/library/windows/desktop/dn903791(v=vs.85).aspx
 	 */
-	virtual void SetConservativeRasterizationEnabled(bool conservativeRasterizationEnabled = false) = 0;
+	virtual void SetConservativeRasterizationEnabled(bool conservativeRasterizationEnabled) = 0;
 	virtual bool GetConservativeRasterizationEnabled() const = 0;
 
 	virtual void Bind() = 0;

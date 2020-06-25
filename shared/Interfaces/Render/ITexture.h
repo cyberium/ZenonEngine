@@ -125,7 +125,7 @@ ZN_INTERFACE ZN_API ITexture
 	 * For 1D, and 2D textures, this function always returns the only
 	 * face of the texture (the texture itself).
 	 */
-	virtual ITexture* GetFace(CubeFace face) const = 0;
+	//virtual ITexture* GetFace(CubeFace face) const = 0;
 
 	/**
 	 * 3D textures store several slices of 2D textures.
@@ -134,7 +134,7 @@ ZN_INTERFACE ZN_API ITexture
 	 * For 1D and 2D textures, this function will always return the texture
 	 * itself.
 	 */
-	virtual ITexture* GetSlice(uint32 slice) const = 0;
+	//virtual ITexture* GetSlice(uint32 slice) const = 0;
 
 	virtual uint16_t GetWidth() const = 0;  // Get the width of the textures in texels.
 	virtual uint16_t GetHeight() const = 0; // Get the height of the texture in texles.
@@ -153,7 +153,7 @@ ZN_INTERFACE ZN_API ITexture
 
 	/**
 	 * Plot a color to the texture.
-	 * This method is only valid for texture created with CPUAccess::Write access.
+	 * This method is only valid for texture created with EAccess::Write access.
 	 * @param coord The non-normalized texture coordinate.
 	 * @param color The color to plot (RGBA).
 	 */
@@ -162,7 +162,7 @@ ZN_INTERFACE ZN_API ITexture
 	/**
 	 * Retrieve the pixel at a particular location in the
 	 * texture.
-	 * This method is only valid for textures created with CPUAccess::Read access.
+	 * This method is only valid for textures created with EAccess::Read access.
 	 * @param coord The non-normalized texture coordinate.
 	 * @return The pixel cast to the requested type.
 	 */

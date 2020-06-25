@@ -75,12 +75,12 @@ ZN_INTERFACE ZN_API IRenderObjectsFactory
 	virtual std::shared_ptr<IShader>          CreateShader(EShaderType type, const std::string& fileName, const std::string& entryPoint, const IShader::ShaderMacros& shaderMacros = IShader::ShaderMacros(), const std::string& profile = "latest", IShaderInputLayout* _customLayout = nullptr) = 0;
 
 	virtual std::shared_ptr<ITexture>         CreateEmptyTexture() = 0;
-	virtual std::shared_ptr<ITexture>         CreateTexture2D(size_t width, size_t height, size_t slices, const ITexture::TextureFormat& format = ITexture::TextureFormat(), CPUAccess cpuAccess = CPUAccess::None, bool gpuWrite = false) = 0;
-	virtual std::shared_ptr<ITexture>         CreateTextureCube(size_t size, size_t numCubes = 1, const ITexture::TextureFormat& format = ITexture::TextureFormat(), CPUAccess cpuAccess = CPUAccess::None, bool gpuWrite = false) = 0;
+	virtual std::shared_ptr<ITexture>         CreateTexture2D(size_t width, size_t height, size_t slices, const ITexture::TextureFormat& format = ITexture::TextureFormat(), EAccess cpuAccess = EAccess::None) = 0;
+	virtual std::shared_ptr<ITexture>         CreateTextureCube(size_t size, size_t numCubes = 1, const ITexture::TextureFormat& format = ITexture::TextureFormat(), EAccess cpuAccess = EAccess::None) = 0;
 	virtual std::shared_ptr<ITexture>         LoadTexture2D(const std::string& fileName) = 0;
 	virtual std::shared_ptr<ITexture>         LoadTextureCube(const std::string& fileName) = 0;
 
-	virtual std::shared_ptr<IMaterial>        CreateMaterial(size_t Size) = 0;
+	virtual std::shared_ptr<IMaterial>        CreateMaterial() = 0;
 	virtual std::shared_ptr<IRenderTarget>    CreateRenderTarget() = 0;
 	virtual std::shared_ptr<IQuery>           CreateQuery(IQuery::QueryType queryType = IQuery::QueryType::Timer, size_t numBuffers = 3) = 0;
 	
@@ -92,7 +92,7 @@ ZN_INTERFACE ZN_API IRenderObjectsFactory
 	virtual std::shared_ptr<IBuffer>          CreateVoidVertexBuffer(const void* data, size_t count, size_t offset, size_t stride) = 0;
 	virtual std::shared_ptr<IBuffer>          CreateVoidIndexBuffer(const void* data, size_t count, size_t offset, size_t stride) = 0;
 	virtual std::shared_ptr<IConstantBuffer>  CreateConstantBuffer(const void* data, size_t size) = 0;
-	virtual std::shared_ptr<IStructuredBuffer> CreateStructuredBuffer(void* data, size_t count, size_t stride, CPUAccess cpuAccess = CPUAccess::None, bool gpuWrite = false) = 0;
+	virtual std::shared_ptr<IStructuredBuffer> CreateStructuredBuffer(void* data, size_t count, size_t stride, EAccess cpuAccess = EAccess::None) = 0;
 
 	virtual std::shared_ptr<IBuffer>            LoadVoidBuffer(const std::shared_ptr<IByteBuffer>& ByteBuffer) = 0;
 	virtual std::shared_ptr<IConstantBuffer>    LoadConstantBuffer(const std::shared_ptr<IByteBuffer>& ByteBuffer) = 0;
@@ -138,9 +138,9 @@ ZN_INTERFACE ZN_API IRenderObjectsFactory
 	}
 
 	template<typename T>
-	inline std::shared_ptr<IStructuredBuffer> CreateStructuredBuffer(const std::vector<T>& data, CPUAccess cpuAccess = CPUAccess::None, bool gpuWrite = false)
+	inline std::shared_ptr<IStructuredBuffer> CreateStructuredBuffer(const std::vector<T>& data, EAccess cpuAccess = EAccess::None)
 	{
-		return CreateStructuredBuffer((void*)data.data(), data.size(), sizeof(T), cpuAccess, gpuWrite);
+		return CreateStructuredBuffer((void*)data.data(), data.size(), sizeof(T), cpuAccess);
 	}
 };
 

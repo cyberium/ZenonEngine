@@ -1,4 +1,4 @@
-struct Material
+struct MaterialModel
 {
 	float3 Emissive;					// Emissive color property.
 	float EmissiveFactor;				// Emissive factor property. This factor is used to attenuate the emissive color.

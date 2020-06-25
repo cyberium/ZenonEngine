@@ -9,34 +9,34 @@ public:
     virtual ~RasterizerStateBase();
 
 	// IRasterizerState
-	virtual void SetFillMode(FillMode frontFace = FillMode::Solid, FillMode backFace = FillMode::Solid) override;
+	virtual void SetFillMode(FillMode frontFace, FillMode backFace) override;
 	virtual void GetFillMode(FillMode& frontFace, FillMode& backFace) const override;
 
-	virtual void SetCullMode(CullMode cullMode = CullMode::Back) override;
+	virtual void SetCullMode(CullMode cullMode) override;
 	virtual CullMode GetCullMode() const override;
 
-	virtual void SetFrontFacing(FrontFace frontFace = FrontFace::CounterClockwise) override;
+	virtual void SetFrontFacing(FrontFace frontFace) override;
 	virtual FrontFace GetFrontFacing() const override;
 
-	virtual void SetDepthBias(float depthBias = 0.0f, float slopeBias = 0.0f, float biasClamp = 0.0f) override;
+	virtual void SetDepthBias(float depthBias, float slopeBias, float biasClamp) override;
 	virtual void GetDepthBias(float& depthBias, float& slopeBias, float& biasClamp) const override;
 
-	virtual void SetDepthClipEnabled(bool depthClipEnabled = true) override;
+	virtual void SetDepthClipEnabled(bool depthClipEnabled) override;
 	virtual bool GetDepthClipEnabled() const override;
 
-	virtual void SetScissorEnabled(bool scissorEnable = false) override;
+	virtual void SetScissorEnabled(bool scissorEnable) override;
 	virtual bool GetScissorEnabled() const override;
 
-	virtual void SetMultisampleEnabled(bool multisampleEnabled = false) override;
+	virtual void SetMultisampleEnabled(bool multisampleEnabled) override;
 	virtual bool GetMultisampleEnabled() const override;
 
 	virtual void SetAntialiasedLineEnable(bool antialiasedLineEnable) override;
 	virtual bool GetAntialiasedLineEnable() const override;
 
-	virtual void SetForcedSampleCount(uint8_t forcedSampleCount = 0) override;
+	virtual void SetForcedSampleCount(uint8_t forcedSampleCount) override;
 	virtual uint8_t GetForcedSampleCount() const override;
 
-	virtual void SetConservativeRasterizationEnabled(bool conservativeRasterizationEnabled = false);
+	virtual void SetConservativeRasterizationEnabled(bool conservativeRasterizationEnabled);
 	virtual bool GetConservativeRasterizationEnabled() const;
 
 protected:

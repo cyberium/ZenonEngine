@@ -1,52 +1,10 @@
 #pragma once
 
-class ZN_API MaterialModel
-	: public MaterialProxie
+namespace
 {
-public:
-	enum class ZN_API ETextureType
+	__declspec(align(16)) struct SMaterialModelProperties
 	{
-		TextureDiffuse = 0,
-		TextureEmissive,
-		TextureAmbient,
-		TextureSpecular,
-		TextureShininess,
-		TextureNormalMap,
-		TextureBump,
-		TextureTransparency,
-		TextureReflection,
-		TextureDisplacement
-	};
-
-public:
-	MaterialModel(const IBaseManager& BaseManage);
-	virtual ~MaterialModel();
-
-	void SetEmissiveColor(const glm::vec3& Color);
-	void SetAmbientColor(const glm::vec3& Color);
-	void SetDiffuseColor(const glm::vec3& Color);
-
-	void SetBump(const glm::vec3& Color);
-	void SetBumpFactor(float Factor);
-
-	void SetSpecularColor(const glm::vec3& Color);
-	void SetSpecularFactor(float Factor);
-
-	void SetReflectionColor(const glm::vec3& Color);
-	void SetReflectionFactor(float Factor);
-
-	virtual void SetTexture(ETextureType TextureType, std::shared_ptr<ITexture> texture);
-	virtual const std::shared_ptr<ITexture>& GetTexture(ETextureType TextureType) const;
-	
-
-protected:
-	void UpdateConstantBuffer() const override;
-	void PrintInfo();
-
-protected:
-	__declspec(align(16)) struct MaterialProperties
-	{
-		MaterialProperties()
+		SMaterialModelProperties()
 			: Emissive(glm::vec3(0.0f, 0.0f, 0.0f))
 			, EmissiveFactor(1.0f)
 
@@ -135,7 +93,50 @@ protected:
 		uint32 HasTextureDisplacement;
 		uint32 Padding[2];
 	};
-	MaterialProperties* m_pProperties;
+}
+
+const MaterialType MaterialModelType = 10;
+
+class ZN_API MaterialModel
+	: public MaterialProxieT<SMaterialModelProperties>
+{
+public:
+	enum class ZN_API ETextureType: uint32
+	{
+		TextureDiffuse = 0,
+		TextureEmissive,
+		TextureAmbient,
+		TextureSpecular,
+		TextureShininess,
+		TextureNormalMap,
+		TextureBump,
+		TextureTransparency,
+		TextureReflection,
+		TextureDisplacement
+	};
+
+public:
+	MaterialModel(const IBaseManager& BaseManage);
+	virtual ~MaterialModel();
+
+	void SetEmissiveColor(const glm::vec3& Color);
+	void SetAmbientColor(const glm::vec3& Color);
+	void SetDiffuseColor(const glm::vec3& Color);
+
+	void SetBump(const glm::vec3& Color);
+	void SetBumpFactor(float Factor);
+
+	void SetSpecularColor(const glm::vec3& Color);
+	void SetSpecularFactor(float Factor);
+
+	void SetReflectionColor(const glm::vec3& Color);
+	void SetReflectionFactor(float Factor);
+
+	virtual void SetTexture(ETextureType TextureType, std::shared_ptr<ITexture> texture);
+	virtual const std::shared_ptr<ITexture>& GetTexture(ETextureType TextureType) const;
+	
+protected:
+	void PrintInfo();
 
 protected:
 	const IBaseManager& m_BaseManager;

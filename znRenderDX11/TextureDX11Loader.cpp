@@ -20,10 +20,7 @@ bool TextureDX11::LoadTextureFromImage(const std::shared_ptr<IImage>& Image)
 	m_ShaderResourceViewFormat = m_RenderTargetViewFormat = m_TextureResourceFormat;
 	m_SampleDesc = GetSupportedSampleCount(m_TextureResourceFormat, 1);
 
-	if (FAILED(m_RenderDeviceDX11.GetDeviceD3D11()->CheckFormatSupport(m_TextureResourceFormat, &m_TextureResourceFormatSupport)))
-	{
-		_ASSERT_EXPR(false, "Failed to query format support.");
-	}
+	CHECK_HR(m_RenderDeviceDX11.GetDeviceD3D11()->CheckFormatSupport(m_TextureResourceFormat, &m_TextureResourceFormatSupport));
 
 	if ((m_TextureResourceFormatSupport & D3D11_FORMAT_SUPPORT_TEXTURE2D) == 0)
 	{
@@ -330,6 +327,8 @@ bool TextureDX11::LoadTexture2D(const std::string& fileName)
 	std::shared_ptr<IImage> image = m_RenderDeviceDX11.GetBaseManager().GetManager<IImagesFactory>()->CreateImage(f);
 	if (image == nullptr)
 		return false;
+
+	m_FileName = fileName;
 
 	return LoadTextureFromImage(image);
 }

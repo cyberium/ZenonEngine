@@ -132,7 +132,7 @@ void StructuredBufferDX11::Copy(const IStructuredBuffer* other)
 		throw CznRenderException("Source buffer is not compatible with this buffer.");
 	}
 
-	if (((uint8_t)GetCPUAccess() & (uint8_t)CPUAccess::Read) != 0)
+	if (((uint8_t)GetAccess() & (uint8_t)EAccess::CPURead) != 0)
 	{
 		D3D11_MAPPED_SUBRESOURCE mappedResource = {};
 		CHECK_HR(m_RenderDeviceDX11.GetDeviceContextD3D11()->Map(m_pBuffer, 0, D3D11_MAP_READ, 0, &mappedResource));
@@ -200,12 +200,12 @@ void StructuredBufferDX11::DoInitializeStructuredBuffer()
 	bufferDesc.MiscFlags = D3D11_RESOURCE_MISC_BUFFER_STRUCTURED;
 	bufferDesc.StructureByteStride = GetElementStride();
 
-	if (((uint32)GetCPUAccess() & (uint32)CPUAccess::Read) != 0)
+	if (((uint32)GetAccess() & (uint32)EAccess::CPURead) != 0)
 	{
 		bufferDesc.Usage = D3D11_USAGE_STAGING;
 		bufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE | D3D11_CPU_ACCESS_READ;
 	}
-	else if (((uint32)GetCPUAccess() & (uint32)CPUAccess::Write) != 0)
+	else if (((uint32)GetAccess() & (uint32)EAccess::CPUWrite) != 0)
 	{
 		bufferDesc.Usage = D3D11_USAGE_DYNAMIC;
 		bufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
@@ -214,8 +214,9 @@ void StructuredBufferDX11::DoInitializeStructuredBuffer()
 	else
 	{
 		bufferDesc.Usage = D3D11_USAGE_DEFAULT;
+		bufferDesc.CPUAccessFlags = 0;
 		bufferDesc.BindFlags = D3D11_BIND_SHADER_RESOURCE;
-		if (GetGPUWrite() && !IsDynamic()) // UAV can't be CPU writable buffer
+		if ((((uint32)GetAccess() & (uint32)EAccess::GPUWrite) != 0) && !IsDynamic()) // UAV can't be CPU writable buffer
 		{
 			bufferDesc.BindFlags |= D3D11_BIND_UNORDERED_ACCESS;
 		}

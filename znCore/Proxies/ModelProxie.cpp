@@ -69,3 +69,28 @@ void ModelProxie::Accept(IVisitor* visitor)
 		}
 	}
 }
+
+
+
+//
+// ILoadableFromFile
+//
+void ModelProxie::Load(const std::shared_ptr<IByteBuffer>& ByteBuffer)
+{
+	if (const auto& loadableFromFile = std::dynamic_pointer_cast<ILoadableFromFile>(m_Model))
+	{
+		loadableFromFile->Load(ByteBuffer);
+	}
+	else
+		_ASSERT(false);
+}
+
+void ModelProxie::Save(const std::shared_ptr<IByteBuffer>& ByteBuffer)
+{
+	if (const auto& loadableFromFile = std::dynamic_pointer_cast<ILoadableFromFile>(m_Model))
+	{
+		loadableFromFile->Save(ByteBuffer);
+	}
+	else
+		_ASSERT(false);
+}
