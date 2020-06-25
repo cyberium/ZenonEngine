@@ -9,7 +9,7 @@ public:
 	Frustum(const Plane* Planes, uint32 PlanesCount);
 	Frustum(const glm::mat4& viewMat, const glm::mat4& projMat);
 
-	const const std::vector<Plane> getPlanes() const { return m_Planes; }
+	const std::vector<Plane> getPlanes() const { return m_Planes; }
 	const glm::vec3& getOrigin() const { return m_Origin; }
 	const glm::vec3& getCorner(uint32 index) const { return m_Corners[index]; }
 

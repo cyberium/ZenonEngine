@@ -19,42 +19,42 @@ CSceneCreateTypedListsPass::~CSceneCreateTypedListsPass()
 //
 // CSceneCreateTypedListsPass
 //
-bool CSceneCreateTypedListsPass::HasNodesList(SceneNodeType SceneNodeType) const
+bool CSceneCreateTypedListsPass::HasNodesList(ObjectClassKey SceneNodeType) const
 {
 	return m_NodesList.find(SceneNodeType) != m_NodesList.end();
 }
 
-const std::vector<CSceneCreateTypelessListPass::SNodeElement>& CSceneCreateTypedListsPass::GetNodesList(SceneNodeType SceneNodeType) const
+const std::vector<CSceneCreateTypelessListPass::SNodeElement>& CSceneCreateTypedListsPass::GetNodesList(ObjectClassKey SceneNodeType) const
 {
 	return m_NodesList.at(SceneNodeType);
 }
 
-bool CSceneCreateTypedListsPass::HasModelsList(SceneNodeType SceneNodeType) const
+bool CSceneCreateTypedListsPass::HasModelsList(ObjectClassKey SceneNodeType) const
 {
 	return m_ModelsList.find(SceneNodeType) != m_ModelsList.end();
 }
 
-const std::vector<CSceneCreateTypelessListPass::SModelElement>& CSceneCreateTypedListsPass::GetModelsList(SceneNodeType SceneNodeType) const
+const std::vector<CSceneCreateTypelessListPass::SModelElement>& CSceneCreateTypedListsPass::GetModelsList(ObjectClassKey SceneNodeType) const
 {
 	return m_ModelsList.at(SceneNodeType);
 }
 
-bool CSceneCreateTypedListsPass::HasGeometriesList(SceneNodeType SceneNodeType) const
+bool CSceneCreateTypedListsPass::HasGeometriesList(ObjectClassKey SceneNodeType) const
 {
 	return m_GeometryList.find(SceneNodeType) != m_GeometryList.end();
 }
 
-const std::vector<CSceneCreateTypelessListPass::SGeometryElement>& CSceneCreateTypedListsPass::GetGeometriesList(SceneNodeType SceneNodeType) const
+const std::vector<CSceneCreateTypelessListPass::SGeometryElement>& CSceneCreateTypedListsPass::GetGeometriesList(ObjectClassKey SceneNodeType) const
 {
 	return m_GeometryList.at(SceneNodeType);
 }
 
-bool CSceneCreateTypedListsPass::HasParticleSystemsList(SceneNodeType SceneNodeType) const
+bool CSceneCreateTypedListsPass::HasParticleSystemsList(ObjectClassKey SceneNodeType) const
 {
 	return m_ParticleSystemList.find(SceneNodeType) != m_ParticleSystemList.end();
 }
 
-const std::vector<CSceneCreateTypelessListPass::SParticleSystemElement>& CSceneCreateTypedListsPass::GetParticleSystemList(SceneNodeType SceneNodeType) const
+const std::vector<CSceneCreateTypelessListPass::SParticleSystemElement>& CSceneCreateTypedListsPass::GetParticleSystemList(ObjectClassKey SceneNodeType) const
 {
 	return m_ParticleSystemList.at(SceneNodeType);
 }
@@ -91,8 +91,8 @@ void CSceneCreateTypedListsPass::Render(RenderEventArgs & e)
 //
 EVisitResult CSceneCreateTypedListsPass::Visit(const ISceneNode3D * SceneNode)
 {
-	if (SceneNode->GetType() < 0)
-		return EVisitResult::AllowVisitChilds;
+	//if (SceneNode->GetClassKey() < 0)
+	//	return EVisitResult::AllowVisitChilds;
 
 	if (const auto& colliderComponent = SceneNode->GetColliderComponent())
 	{
@@ -103,46 +103,46 @@ EVisitResult CSceneCreateTypedListsPass::Visit(const ISceneNode3D * SceneNode)
 	}
 
 	m_LastSceneNode = SceneNode;
-	m_NodesList[SceneNode->GetType()].push_back(CSceneCreateTypelessListPass::SNodeElement(SceneNode));
+	m_NodesList[SceneNode->GetClassKey()].push_back(CSceneCreateTypelessListPass::SNodeElement(SceneNode));
 	return EVisitResult::AllowAll;
 }
 
 EVisitResult CSceneCreateTypedListsPass::Visit(const IModel * Model)
 {
 	_ASSERT(m_LastSceneNode != nullptr);
-	_ASSERT(m_LastSceneNode->GetType() >= 0);
+	_ASSERT(m_LastSceneNode->GetClassKey() >= 0);
 
 	m_LastModel = Model;
-	m_ModelsList[m_LastSceneNode->GetType()].push_back(CSceneCreateTypelessListPass::SModelElement(m_LastSceneNode, Model));
+	m_ModelsList[m_LastSceneNode->GetClassKey()].push_back(CSceneCreateTypelessListPass::SModelElement(m_LastSceneNode, Model));
 	return EVisitResult::AllowAll;
 }
 
 EVisitResult CSceneCreateTypedListsPass::Visit(const IGeometry * Geometry, const IMaterial * Material, SGeometryDrawArgs GeometryDrawArgs)
 {
 	_ASSERT(m_LastSceneNode != nullptr);
-	_ASSERT(m_LastSceneNode->GetType() >= 0);
+	_ASSERT(m_LastSceneNode->GetClassKey() >= 0);
 	_ASSERT(m_LastModel != nullptr);
 
-	m_GeometryList[m_LastSceneNode->GetType()].push_back(CSceneCreateTypelessListPass::SGeometryElement(m_LastSceneNode, m_LastModel, Geometry, Material, GeometryDrawArgs));
+	m_GeometryList[m_LastSceneNode->GetClassKey()].push_back(CSceneCreateTypelessListPass::SGeometryElement(m_LastSceneNode, m_LastModel, Geometry, Material, GeometryDrawArgs));
 	return EVisitResult::AllowAll;
 }
 
 EVisitResult CSceneCreateTypedListsPass::Visit(const ILight3D * light)
 {
 	_ASSERT(m_LastSceneNode != nullptr);
-	_ASSERT(m_LastSceneNode->GetType() >= 0);
+	_ASSERT(m_LastSceneNode->GetClassKey() >= 0);
 
 	m_LastLight = light;
-	m_LightList[m_LastSceneNode->GetType()].push_back(CSceneCreateTypelessListPass::SLightElement(m_LastSceneNode, light));
+	m_LightList[m_LastSceneNode->GetClassKey()].push_back(CSceneCreateTypelessListPass::SLightElement(m_LastSceneNode, light));
 	return EVisitResult::AllowAll;
 }
 
 EVisitResult CSceneCreateTypedListsPass::Visit(const IParticleSystem * ParticleSystem)
 {
 	_ASSERT(m_LastSceneNode != nullptr);
-	_ASSERT(m_LastSceneNode->GetType() >= 0);
+	_ASSERT(m_LastSceneNode->GetClassKey() >= 0);
 
 	m_LastParticleSystem = ParticleSystem;
-	m_ParticleSystemList[m_LastSceneNode->GetType()].push_back(CSceneCreateTypelessListPass::SParticleSystemElement(m_LastSceneNode, ParticleSystem));
+	m_ParticleSystemList[m_LastSceneNode->GetClassKey()].push_back(CSceneCreateTypelessListPass::SParticleSystemElement(m_LastSceneNode, ParticleSystem));
 	return EVisitResult::AllowAll;
 }

@@ -17,16 +17,6 @@ ModelProxie::~ModelProxie()
 //
 // IModel
 //
-void ModelProxie::SetName(const std::string & Name)
-{
-	m_Model->SetName(Name);
-}
-
-std::string ModelProxie::GetName() const
-{
-	return m_Model->GetName();
-}
-
 void ModelProxie::SetBounds(const BoundingBox & Bounds)
 {
 	m_Model->SetBounds(Bounds);

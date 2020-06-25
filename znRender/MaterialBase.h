@@ -10,12 +10,6 @@ public:
 	virtual ~MaterialBase();
 
 	// IMaterial
-	void          SetType(MaterialType Type) override;
-	MaterialType  GetType() const override;
-	bool          Is(MaterialType MaterialType) const override;
-	void          SetName(const std::string& Name) override;
-	std::string   GetName() const override;
-
 	virtual void  SetTexture(uint8 ID, const std::shared_ptr<ITexture> texture) override;
 	virtual const std::shared_ptr<ITexture>& GetTexture(uint8 ID) const override;
 	
@@ -40,8 +34,6 @@ private:
 
 protected:
 	size_t                           m_BufferSize;
-	MaterialType                     m_Type;
-	std::string                      m_Name;
 	TextureMap                       m_Textures;
 	ShaderMap                        m_Shaders;
     SamplersMap                      m_Samplers;

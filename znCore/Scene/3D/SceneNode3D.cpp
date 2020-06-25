@@ -24,8 +24,7 @@ SceneNode3D::SceneNode3D()
 	, m_WorldTransform(1.0f)
 	, m_InverseWorldTransform(1.0f)
 {
-	SetName("SceneNode3D");
-	SetType(-1);
+	SetClassName("SceneNode3D");
 
 	m_ActionsGroup = std::make_shared<CActionsGroup>("General");
 	m_PropertiesGroup = std::make_shared<CPropertiesGroup>("General", "Some important scene node properties.");
@@ -70,38 +69,10 @@ SceneNode3D::~SceneNode3D()
 // ISceneNode3D
 //
 void SceneNode3D::Initialize()
-{
-}
+{}
 
 void SceneNode3D::Finalize()
-{
-}
-
-void SceneNode3D::SetType(SceneNodeType Type)
-{
-	m_Type = Type;
-}
-
-SceneNodeType SceneNode3D::GetType() const
-{
-	return m_Type;
-}
-
-bool SceneNode3D::Is(SceneNodeType SceneNodeType) const
-{
-	return m_Type == SceneNodeType;
-}
-
-void SceneNode3D::SetName(std::string Name)
-{
-	m_Name = Name;
-}
-
-std::string SceneNode3D::GetName() const
-{
-	return m_Name;
-}
-
+{}
 
 
 //

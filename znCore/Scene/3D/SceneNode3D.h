@@ -15,13 +15,6 @@ public:
 	virtual void                                    Initialize() override;
 	virtual void                                    Finalize() override;
 
-	// Name & Type
-	void                                            SetType(SceneNodeType Type) override final;
-	SceneNodeType									GetType() const override final;
-	bool                                            Is(SceneNodeType SceneNodeType) const final;
-	void                                            SetName(std::string Name) override final;
-	std::string										GetName() const override final;
-
 	// Childs functional
 	virtual void                                    AddChild(const std::shared_ptr<ISceneNode3D>& childNode) override final;
 	virtual void                                    RemoveChild(const std::shared_ptr<ISceneNode3D>& childNode) override final;
@@ -108,9 +101,6 @@ protected:
 	std::shared_ptr<ILightComponent3D>				m_Components_Light;
 
 private:
-	SceneNodeType                                   m_Type;
-	std::string                                     m_Name;
-
 	Node3DList                                      m_Children;
 	Node3DNameMap                                   m_ChildrenByName;
 	std::weak_ptr<ISceneNode3D>                     m_ParentNode;

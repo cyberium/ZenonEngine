@@ -6,8 +6,7 @@
 MaterialDX11::MaterialDX11(IRenderDeviceDX11& RenderDeviceDX11)
 	: MaterialBase(RenderDeviceDX11)
 {
-	SetType(0);
-	SetName("MaterialDX11");
+	SetClassName("MaterialDX11");
 }
 
 MaterialDX11::~MaterialDX11()

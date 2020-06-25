@@ -11,7 +11,8 @@ ZN_INTERFACE IManager;
 // FORWARD END
 
 ZN_INTERFACE ZN_API ISceneNodeUI
-	: public std::enable_shared_from_this<ISceneNodeUI>
+	: public Object
+    , public std::enable_shared_from_this<ISceneNodeUI>
 {
 	typedef std::vector<std::shared_ptr<ISceneNodeUI>>                NodeUIList;
 	typedef std::multimap<std::string, std::shared_ptr<ISceneNodeUI>> NodeUINameMap;
@@ -20,12 +21,6 @@ ZN_INTERFACE ZN_API ISceneNodeUI
 
 	virtual void Initialize() = 0;
 	virtual void Finalize() = 0;
-
-	// Name & Type
-	virtual void SetType(std::string Type) = 0;
-	virtual std::string GetType() const = 0;
-	virtual void SetName(std::string Name) = 0;
-	virtual std::string	GetName() const = 0;
 	
 	// Childs functional
 	virtual void AddChild(const std::shared_ptr<ISceneNodeUI>& childNode) = 0;

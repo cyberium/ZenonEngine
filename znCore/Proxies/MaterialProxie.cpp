@@ -8,8 +8,7 @@ MaterialProxie::MaterialProxie(std::shared_ptr<IMaterial> _materal)
 {
 	_ASSERT(m_Material != nullptr);
 
-	SetType(0);
-	SetName("MaterialProxie");
+	SetClassName("MaterialProxie");
 }
 
 MaterialProxie::~MaterialProxie()
@@ -20,30 +19,6 @@ MaterialProxie::~MaterialProxie()
 //
 // IMaterial
 //
-void MaterialProxie::SetType(MaterialType Type)
-{
-	m_Material->SetType(Type);
-}
-
-MaterialType MaterialProxie::GetType() const
-{
-	return m_Material->GetType();
-}
-
-bool MaterialProxie::Is(MaterialType MaterialType) const
-{
-	return m_Material->Is(MaterialType);
-}
-
-void MaterialProxie::SetName(const std::string & Name)
-{
-	m_Material->SetName(Name);
-}
-
-std::string MaterialProxie::GetName() const
-{
-	return m_Material->GetName();
-}
 
 void MaterialProxie::SetTexture(uint8 type, const std::shared_ptr<ITexture> texture)
 {

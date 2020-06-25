@@ -23,9 +23,9 @@ void CMaterialsFactory::RemoveMaterialsCreator(std::shared_ptr<IMaterialsCreator
 {
 }
 
-std::shared_ptr<IMaterial> CMaterialsFactory::CreateMaterial(MaterialType MaterialType) const
+std::shared_ptr<IMaterial> CMaterialsFactory::CreateMaterial(std::string ObjectType) const
 {
-	if (MaterialType == MaterialModelType)
+	if (ObjectType == "MaterialModel")
 	{
 		return std::make_shared<MaterialModel>(m_BaseManager);
 	}

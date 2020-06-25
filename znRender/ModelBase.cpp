@@ -5,21 +5,12 @@
 
 ModelBase::ModelBase(IRenderDevice& RenderDevice)
     : m_RenderDevice(RenderDevice)
-	, m_Name("ModelBase")
-{}
+{
+	SetName("ModelBase");
+}
 
 ModelBase::~ModelBase()
 {}
-
-void ModelBase::SetName(const std::string& Name)
-{
-	m_Name = Name;
-}
-
-std::string ModelBase::GetName() const
-{
-	return m_Name;
-}
 
 void ModelBase::SetBounds(const BoundingBox& Bounds)
 {
@@ -72,7 +63,7 @@ void ModelBase::Load(const std::shared_ptr<IByteBuffer>& ByteBuffer)
 
 	for (size_t i = 0; i < connectionsCount; i++)
 	{
-		auto material = m_RenderDevice.GetBaseManager().GetManager<IMaterialsFactory>()->CreateMaterial(10);
+		auto material = m_RenderDevice.GetBaseManager().GetManager<IMaterialsFactory>()->CreateMaterial("MaterialModel");
 		if (auto materialAsLoadableFromFile = std::dynamic_pointer_cast<ILoadableFromFile>(material))
 		{
 			materialAsLoadableFromFile->Load(ByteBuffer);

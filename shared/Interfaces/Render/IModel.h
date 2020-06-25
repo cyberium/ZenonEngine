@@ -15,7 +15,8 @@ class RenderEventArgs;
   *
 */
 ZN_INTERFACE ZN_API IModel 
-	: public std::enable_shared_from_this<IModel>
+	: public Object
+    , public std::enable_shared_from_this<IModel>
 {
 	struct ZN_API SConnection
 	{
@@ -25,9 +26,6 @@ ZN_INTERFACE ZN_API IModel
 	};
 
 	virtual ~IModel() {}
-
-	virtual void                                    SetName(const std::string& Name) = 0;
-	virtual std::string                             GetName() const = 0;
 
 	virtual void                                    SetBounds(const BoundingBox& Bounds) = 0;
 	virtual BoundingBox                             GetBounds() const = 0;

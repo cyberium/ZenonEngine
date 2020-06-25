@@ -10,12 +10,6 @@ public:
 	virtual ~MaterialProxie() override;
 
 	// IMaterial
-	virtual void SetType(MaterialType Type) override;
-	virtual MaterialType GetType() const override;
-	virtual bool Is(MaterialType MaterialType) const override;
-	virtual void SetName(const std::string& Name) override;
-	virtual std::string GetName() const override;
-
 	virtual void SetTexture(uint8 type, const std::shared_ptr<ITexture> texture) override;
 	virtual const std::shared_ptr<ITexture>& GetTexture(uint8 ID) const override;
 	

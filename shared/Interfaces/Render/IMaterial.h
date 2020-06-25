@@ -6,17 +6,10 @@ ZN_INTERFACE ITexture;
 ZN_INTERFACE ISamplerState;
 // FORWARD END
 
-typedef ZN_API int64 MaterialType;
-
 ZN_INTERFACE ZN_API IMaterial 
+	: public Object
 {
 	virtual ~IMaterial() {}
-
-	virtual void SetType(MaterialType Type) = 0;
-	virtual MaterialType GetType() const = 0;
-	virtual bool Is(MaterialType MaterialType) const = 0;
-	virtual void SetName(const std::string& Name) = 0;
-	virtual std::string GetName() const = 0;
 
 	virtual void SetTexture(uint8 ID, const std::shared_ptr<ITexture> texture) = 0;
 	virtual const std::shared_ptr<ITexture>& GetTexture(uint8 ID) const = 0;
@@ -49,7 +42,7 @@ ZN_INTERFACE ZN_API IMaterialsCreator
 	virtual ~IMaterialsCreator() {}
 
 	virtual size_t GetSupportedMaterialsTypesCount() const = 0;
-	virtual MaterialType GetSupportedMaterialsTypeName(size_t Index) const = 0;
+	virtual std::string GetSupportedMaterialsClassName(size_t Index) const = 0;
 	virtual std::shared_ptr<IMaterial> CreateMaterial(size_t Index) const = 0;
 };
 
@@ -62,5 +55,5 @@ ZN_INTERFACE ZN_API __declspec(uuid("BA11EAC5-26D2-4F3C-A171-7A216257424C")) IMa
 	virtual void AddMaterialsCreator(std::shared_ptr<IMaterialsCreator> Creator) = 0;
 	virtual void RemoveMaterialsCreator(std::shared_ptr<IMaterialsCreator> Creator) = 0;
 
-	virtual std::shared_ptr<IMaterial> CreateMaterial(MaterialType MaterialType) const = 0;
+	virtual std::shared_ptr<IMaterial> CreateMaterial(std::string ClassName) const = 0;
 };

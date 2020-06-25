@@ -5,13 +5,11 @@
 
 MaterialBase::MaterialBase(IRenderDevice& RenderDevice)
 	: m_BufferSize(0)
-	, m_Type(0)
 	, m_RenderDevice(RenderDevice)
 	, m_Dirty(true)
 	, m_MaterialData(nullptr)
 {
-	SetType(0);
-	SetName("MaterialBase");
+	SetClassName("MaterialBase");
 }
 
 MaterialBase::~MaterialBase()
@@ -28,30 +26,6 @@ MaterialBase::~MaterialBase()
 //
 // IMaterial
 //
-void MaterialBase::SetType(MaterialType Type)
-{
-	m_Type = Type;
-}
-
-MaterialType MaterialBase::GetType() const
-{
-	return m_Type;
-}
-
-bool MaterialBase::Is(MaterialType MaterialType) const
-{
-	return m_Type == MaterialType;
-}
-
-void MaterialBase::SetName(const std::string & Name)
-{
-	m_Name = Name;
-}
-
-std::string MaterialBase::GetName() const
-{
-	return m_Name;
-}
 
 void MaterialBase::SetTexture(uint8 ID, const std::shared_ptr<ITexture> texture)
 {
@@ -63,7 +37,7 @@ const std::shared_ptr<ITexture>& MaterialBase::GetTexture(uint8 ID) const
 {
 	const auto& iter = m_Textures.find(ID);
 	if (iter == m_Textures.end())
-		throw CznRenderException("MaterialBase: Texture with index '%d' not found in material '%s'.", ID, m_Name.c_str());
+		throw CznRenderException("MaterialBase: Texture with index '%d' not found in material '%s'.", ID, GetName().c_str());
 
 	return iter->second;
 }
@@ -78,7 +52,7 @@ const std::shared_ptr<ISamplerState>& MaterialBase::GetSampler(uint8 ID) const
 {
     const auto& iter = m_Samplers.find(ID);
     if (iter == m_Samplers.end())
-		throw CznRenderException("MaterialBase: Sampler with index '%d' not found in material '%s'.", ID, m_Name.c_str());
+		throw CznRenderException("MaterialBase: Sampler with index '%d' not found in material '%s'.", ID, GetName().c_str());
 
     return iter->second;
 }
@@ -107,7 +81,7 @@ void MaterialBase::Unbind(const ShaderMap& shaders) const
 //
 void MaterialBase::Load(const std::shared_ptr<IByteBuffer>& ByteBuffer)
 {
-	ByteBuffer->readString(&m_Name);
+	//ByteBuffer->readString(&m_Name);
 
 	ByteBuffer->read(&m_BufferSize);
 	if (m_BufferSize > 0)
@@ -145,7 +119,7 @@ void MaterialBase::Load(const std::shared_ptr<IByteBuffer>& ByteBuffer)
 void MaterialBase::Save(const std::shared_ptr<IByteBuffer>& ByteBuffer)
 {
 	// Name
-	ByteBuffer->writeString(m_Name);
+	//ByteBuffer->writeString(m_Name);
 
 	// Material data
 	ByteBuffer->write(&m_BufferSize);

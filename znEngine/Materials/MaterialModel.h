@@ -95,8 +95,6 @@ namespace
 	};
 }
 
-const MaterialType MaterialModelType = 10;
-
 class ZN_API MaterialModel
 	: public MaterialProxieT<SMaterialModelProperties>
 {

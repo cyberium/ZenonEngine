@@ -10,12 +10,6 @@ public:
 
 	virtual void                                    Initialize() override;
 	virtual void                                    Finalize() override;
-
-	// Name & Type
-	void                                            SetType(std::string Type) override final;
-	std::string										GetType() const override final;
-	void                                            SetName(std::string Name) override final;
-	std::string										GetName() const override final;
 	
 	// Childs functional
 	virtual void                                    AddChild(const std::shared_ptr<ISceneNodeUI>& childNode) override final;
@@ -83,9 +77,6 @@ public: // Syntetic events // TODO: Make private
 	bool                                            m_IsMouseOnNode;
 
 private:
-	std::string                                     m_Type;
-	std::string                                     m_Name;
-
 	NodeUIList                                      m_Children;
 	NodeUINameMap                                   m_ChildrenByName;
 	std::weak_ptr<ISceneNodeUI>                     m_ParentNode;

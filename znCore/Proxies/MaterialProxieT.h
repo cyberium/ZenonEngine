@@ -10,7 +10,7 @@ public:
 	MaterialProxieT(IRenderDevice& RenderDevice)
 		: MaterialProxie(RenderDevice.GetObjectsFactory().CreateMaterial())
 	{
-		SetName("MaterialProxieT");
+		SetClassName("MaterialProxieT");
 
 		InitializeMaterialData(sizeof(T));
 		MaterialData() = T();

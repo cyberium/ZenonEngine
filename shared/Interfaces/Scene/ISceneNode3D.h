@@ -20,10 +20,9 @@ ZN_INTERFACE IColliderComponent3D;
   * 3) 
 */
 
-typedef ZN_API int64 SceneNodeType;
-
 ZN_INTERFACE ZN_API ISceneNode3D
-	: public std::enable_shared_from_this<ISceneNode3D>
+	: public Object
+	, public std::enable_shared_from_this<ISceneNode3D>
 {
 	typedef std::vector<std::shared_ptr<ISceneNode3D>>                Node3DList;
 	typedef std::multimap<std::string, std::shared_ptr<ISceneNode3D>> Node3DNameMap;
@@ -32,12 +31,6 @@ ZN_INTERFACE ZN_API ISceneNode3D
 
 	virtual void Initialize() = 0;
 	virtual void Finalize() = 0;
-
-	virtual void SetType(SceneNodeType Type) = 0;
-	virtual SceneNodeType GetType() const = 0;
-	virtual bool Is(SceneNodeType SceneNodeType) const = 0;
-	virtual void SetName(std::string Name) = 0;
-	virtual std::string	GetName() const = 0;
 
 	virtual void AddChild(const std::shared_ptr<ISceneNode3D>& childNode) = 0;
 	virtual void RemoveChild(const std::shared_ptr<ISceneNode3D>& childNode) = 0;

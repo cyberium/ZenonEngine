@@ -19,7 +19,7 @@ SceneNodeUI::SceneNodeUI()
 	, m_WorldTransform(1.0f)
 	, m_InverseWorldTransform(1.0f)
 {
-	SetName("SceneNodeUI");
+	SetClassName("SceneNodeUI");
 
 	m_ActionsGroup = std::make_shared<CActionsGroup>("General");
 	m_PropertiesGroup = std::make_shared<CPropertiesGroup>("General", "Some important scene node properties.");
@@ -52,31 +52,6 @@ void SceneNodeUI::Initialize()
 void SceneNodeUI::Finalize()
 {
 
-}
-
-
-
-//
-// Name & Type
-//
-std::string SceneNodeUI::GetType() const
-{
-	return m_Type;
-}
-
-void SceneNodeUI::SetType(std::string Type)
-{
-	m_Type = Type;
-}
-
-std::string SceneNodeUI::GetName() const
-{
-	return m_Name;
-}
-
-void SceneNodeUI::SetName(std::string Name)
-{
-	m_Name = Name;
 }
 
 

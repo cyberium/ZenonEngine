@@ -9,9 +9,6 @@ public:
 	virtual ~ModelProxie();
 
 	// IModel
-	void SetName(const std::string& Name) override final;
-	std::string GetName() const override final;
-
 	virtual void SetBounds(const BoundingBox& Bounds) override;
 	virtual BoundingBox GetBounds() const override;
 
