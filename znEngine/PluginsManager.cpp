@@ -115,6 +115,8 @@ void CznPluginsManager::InitializeAllPlugins()
 
 void CznPluginsManager::AddPluginEventListener(std::shared_ptr<IznPluginsEventListener> PluginEventListener)
 {
+	if (PluginEventListener == nullptr)
+		throw CException("PluginsManager: PluginEventListener is nullptr.");
 	m_PluginsEventsListener.push_back(PluginEventListener);
 }
 

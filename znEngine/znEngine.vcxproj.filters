@@ -181,9 +181,6 @@
     <ClCompile Include="Settings\GroupVideo.cpp">
       <Filter>Settings</Filter>
     </ClCompile>
-    <ClCompile Include="SceneFunctional\SceneNodesFactory.cpp">
-      <Filter>SceneNodes</Filter>
-    </ClCompile>
     <ClCompile Include="RenderDeviceFactory.cpp">
       <Filter>Managers</Filter>
     </ClCompile>
@@ -192,9 +189,6 @@
     </ClCompile>
     <ClCompile Include="BaseManager.cpp">
       <Filter>Managers</Filter>
-    </ClCompile>
-    <ClCompile Include="SceneFunctional\SceneNodeDefaultCreator.cpp">
-      <Filter>SceneNodes</Filter>
     </ClCompile>
     <ClCompile Include="Loader.cpp">
       <Filter>Managers</Filter>
@@ -555,6 +549,9 @@
     <ClCompile Include="MaterialsFactory.cpp">
       <Filter>Materials</Filter>
     </ClCompile>
+    <ClCompile Include="SceneFunctional\SceneNodeEngineCreator.cpp">
+      <Filter>SceneNodes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="common.h">
@@ -594,9 +591,6 @@
     <ClInclude Include="Settings\GroupVideo.h">
       <Filter>Settings</Filter>
     </ClInclude>
-    <ClInclude Include="SceneFunctional\SceneNodesFactory.h">
-      <Filter>SceneNodes</Filter>
-    </ClInclude>
     <ClInclude Include="RenderDeviceFactory.h">
       <Filter>Managers</Filter>
     </ClInclude>
@@ -605,9 +599,6 @@
     </ClInclude>
     <ClInclude Include="BaseManager.h">
       <Filter>Managers</Filter>
-    </ClInclude>
-    <ClInclude Include="SceneFunctional\SceneNodeDefaultCreator.h">
-      <Filter>SceneNodes</Filter>
     </ClInclude>
     <ClInclude Include="Loader.h">
       <Filter>Managers</Filter>
@@ -1025,6 +1016,9 @@
     </ClInclude>
     <ClInclude Include="MaterialsFactory.h">
       <Filter>Materials</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneFunctional\SceneNodeEngineCreator.h">
+      <Filter>SceneNodes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

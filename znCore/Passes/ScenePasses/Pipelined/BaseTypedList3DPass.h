@@ -8,8 +8,8 @@ class ZN_API CBaseList3DPass
 	: public RenderPassPipelined
 {
 public:
-	CBaseList3DPass(IRenderDevice& RenderDevice, const std::shared_ptr<CSceneCreateTypedListsPass>& SceneCreateTypedListsPass, ObjectClassKey SceneNodeType);
-	CBaseList3DPass(IRenderDevice& RenderDevice, const std::shared_ptr<CSceneCreateTypedListsPass>& SceneCreateTypedListsPass, std::vector<ObjectClassKey> SceneNodeTypesList);
+	CBaseList3DPass(IRenderDevice& RenderDevice, const std::shared_ptr<CSceneCreateTypedListsPass>& SceneCreateTypedListsPass, ObjectClassType SceneNodeType);
+	CBaseList3DPass(IRenderDevice& RenderDevice, const std::shared_ptr<CSceneCreateTypedListsPass>& SceneCreateTypedListsPass, std::vector<ObjectClassType> SceneNodeTypesList);
 	virtual ~CBaseList3DPass();
 
 	// IRenderPassPipelined
@@ -22,11 +22,11 @@ public:
 
 protected:
 	const std::shared_ptr<CSceneCreateTypedListsPass>& GetSceneNodeListPass() const;
-	const std::vector<ObjectClassKey>& GetAcceptableNodeTypes() const;
+	const std::vector<ObjectClassType>& GetAcceptableNodeTypes() const;
 
 protected:
 	std::shared_ptr<CSceneCreateTypedListsPass> m_SceneNodeListPass;
-	std::vector<ObjectClassKey> m_AcceptSceneNodeTypes;
+	std::vector<ObjectClassType> m_AcceptSceneNodeTypes;
 
 private:
 	std::shared_ptr<IConstantBuffer> m_PerObjectConstantBuffer;

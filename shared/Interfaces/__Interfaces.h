@@ -71,6 +71,8 @@ typedef unsigned long long uint64;
 #include <glm/glm/gtx/norm.hpp>
 #pragma warning( pop ) 
 
+#include <guiddef.h>
+
 #ifndef WIN32_LEAN_AND_MEAN
 #   define WIN32_LEAN_AND_MEAN 1
 #endif
@@ -124,7 +126,6 @@ class Rect;
 #include "Interfaces/Types/Object.h"
 #include "Interfaces/Types/Events.h"
 
-
 //---------------------------------------------------------//
 //--                Base Interfaces                      --//
 //---------------------------------------------------------//
@@ -137,6 +138,7 @@ class Rect;
 #include "Interfaces/Loader.h"
 #include "Interfaces/Log.h"
 #include "Interfaces/Networking.h"
+#include "Interfaces/Types/ObjectsFactory.h"
 #include "Interfaces/Plugins.h"
 #include "Interfaces/Settings.h"
 #include "Interfaces/Visitor.h"

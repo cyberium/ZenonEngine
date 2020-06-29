@@ -306,6 +306,7 @@
     <ClCompile Include="Passes\UIFontPass.cpp" />
     <ClCompile Include="Passes\UITexturePass.cpp" />
     <ClCompile Include="Physics\Adapters\ReactPhysicsComponent.cpp" />
+    <ClCompile Include="SceneFunctional\SceneNodeEngineCreator.cpp" />
     <ClCompile Include="Scene_Default.cpp" />
     <ClCompile Include="Materials\MaterialDebug.cpp" />
     <ClCompile Include="Materials\MaterialTextured.cpp" />
@@ -329,8 +330,6 @@
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="Loader.cpp" />
     <ClCompile Include="SceneFunctional\SceneDefaultCreator.cpp" />
-    <ClCompile Include="SceneFunctional\SceneNodeDefaultCreator.cpp" />
-    <ClCompile Include="SceneFunctional\SceneNodesFactory.cpp" />
     <ClCompile Include="SceneFunctional\ScenesFactory.cpp" />
     <ClCompile Include="SceneFunctional\UI\UIBeizerLine.cpp" />
     <ClCompile Include="SceneFunctional\UI\UIButton.cpp" />
@@ -469,6 +468,7 @@
     <ClInclude Include="Passes\UIFontPass.h" />
     <ClInclude Include="Passes\UITexturePass.h" />
     <ClInclude Include="Physics\Adapters\ReactPhysicsComponent.h" />
+    <ClInclude Include="SceneFunctional\SceneNodeEngineCreator.h" />
     <ClInclude Include="Scene_Default.h" />
     <ClInclude Include="Materials\MaterialDebug.h" />
     <ClInclude Include="Materials\MaterialTextured.h" />
@@ -493,8 +493,6 @@
     <ClInclude Include="common.h" />
     <ClInclude Include="Loader.h" />
     <ClInclude Include="SceneFunctional\SceneDefaultCreator.h" />
-    <ClInclude Include="SceneFunctional\SceneNodeDefaultCreator.h" />
-    <ClInclude Include="SceneFunctional\SceneNodesFactory.h" />
     <ClInclude Include="SceneFunctional\ScenesFactory.h" />
     <ClInclude Include="SceneFunctional\UI\UIBeizerLine.h" />
     <ClInclude Include="SceneFunctional\UI\UIButton.h" />

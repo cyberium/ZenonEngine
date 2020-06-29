@@ -112,7 +112,8 @@ bool CByteBuffer::readLine(std::string* _string)
 bool CByteBuffer::readBytes(void* _destination, size_t _size)
 {
 	_ASSERT(_destination != nullptr);
-	_ASSERT(isEof() == false);
+	if (isEof())
+		return false;
 
 	uint64 posAfterRead = m_CurrentPosition + _size;
 	if (posAfterRead >= getSize())

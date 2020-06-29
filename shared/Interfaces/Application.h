@@ -1,5 +1,7 @@
 #pragma once
 
+#include <Windows.h>
+
 // Forward BEGIN
 ZN_INTERFACE IRenderDevice;
 ZN_INTERFACE IRenderWindow;

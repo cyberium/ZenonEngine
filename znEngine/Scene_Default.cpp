@@ -362,7 +362,7 @@ void CSceneDefault::Load3D()
 	}
 
 
-	std::shared_ptr<ISceneNode3D> fbxSceneNode = GetBaseManager().GetManager<ISceneNodesFactory>()->CreateSceneNode3D(GetRootNode3D().get(), "FBXSceneNode");
+	std::shared_ptr<ISceneNode3D> fbxSceneNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactory(ofkSceneNode3D)->GetClassCreatorCast<ISceneNode3DCreator>(cSceneNode_FBXNode)->CreateSceneNode3D(GetRootNode3D().get(), cSceneNode_FBXNode);
 	//fbxSceneNode->SetScale(glm::vec3(15.0f, 15.0f, 15.0f));
 
 

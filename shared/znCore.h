@@ -51,6 +51,10 @@
 #include "../znCore/Scene/LoadableObject.h"
 
 
+#include "../znCore/ObjectsFactories/ObjectsFactory.h"
+#include "../znCore/ObjectsFactories/ObjectClassFactory.h"
+#include "../znCore/ObjectsFactories/SceneNode3DCreator.h"
+
 // Base
 #include "../znCore/Scene/SceneBase.h"
 #include "../znCore/Scene/ComponentBase.h"

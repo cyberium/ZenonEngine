@@ -10,9 +10,9 @@
 #include "RenderDeviceFactory.h"
 #include "MaterialsFactory.h"
 #include "Loader.h"
-#include "SceneFunctional/SceneNodesFactory.h"
-#include "SceneFunctional/ScenesFactory.h"
 #include "Passes/RenderPassFactory.h"
+#include "SceneFunctional/ScenesFactory.h"
+#include "SceneFunctional/SceneNodeEngineCreator.h"
 
 // Additional (Images)
 #include "Formats/Images/ImagesFactory.h"
@@ -163,9 +163,22 @@ IBaseManager* WINAPI InitializeEngine(std::vector<std::string> Arguments, std::s
 		std::shared_ptr<ILoader> laoder = std::make_shared<CLoader>();
 		baseManager->AddManager<ILoader>(laoder);
 
-		std::shared_ptr<ISceneNodesFactory> factory = std::make_shared<CSceneNodesFactory>(*baseManager);
-		baseManager->AddManager<ISceneNodesFactory>(factory);
-		pluginsManager->AddPluginEventListener(std::dynamic_pointer_cast<IznPluginsEventListener>(factory));
+		std::shared_ptr<IObjectsFactory> factory = std::make_shared<CObjectsFactory>(*baseManager);
+		baseManager->AddManager<IObjectsFactory>(factory);
+
+		std::shared_ptr<IObjectClassFactory> sceneNode3DFactory = std::make_shared<CObjectClassFactory>(ofkSceneNode3D);
+		factory->AddClassFactory(sceneNode3DFactory);
+
+		std::shared_ptr<CSceneNode3DEngineCreator> sceneNode3DClassCreator = std::make_shared<CSceneNode3DEngineCreator>(*baseManager);
+		sceneNode3DFactory->AddClassCreator(sceneNode3DClassCreator);
+
+
+
+		std::shared_ptr<IObjectClassFactory> sceneNodeUIFactory = std::make_shared<CObjectClassFactory>(ofkSceneNodeUI);
+		factory->AddClassFactory(sceneNodeUIFactory);
+
+		std::shared_ptr<CSceneNodeUIEngineCreator> sceneNodeUIClassCreator = std::make_shared<CSceneNodeUIEngineCreator>(*baseManager);
+		sceneNodeUIFactory->AddClassCreator(sceneNodeUIClassCreator);
 	}
 
 	// Scene

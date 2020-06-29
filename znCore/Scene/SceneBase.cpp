@@ -32,16 +32,16 @@ void SceneBase::Initialize()
 	m_RootNodeUI->SetName("Root node UI");
 
 	{
-		m_CameraPosText = GetBaseManager().GetManager<ISceneNodesFactory>()->CreateSceneNodeUI(GetRootNodeUI().get(), "TextUI");
+		m_CameraPosText = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactory(ofkSceneNodeUI)->GetClassCreatorCast<ISceneNodeUICreator>(cSceneNodeUI_Text)->CreateSceneNodeUI(GetRootNodeUI().get(), cSceneNodeUI_Text);
 		m_CameraPosText->SetTranslate(glm::vec2(700.0f, 0.0f));
 
-		m_CameraRotText = GetBaseManager().GetManager<ISceneNodesFactory>()->CreateSceneNodeUI(GetRootNodeUI().get(), "TextUI");
+		m_CameraRotText = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactory(ofkSceneNodeUI)->GetClassCreatorCast<ISceneNodeUICreator>(cSceneNodeUI_Text)->CreateSceneNodeUI(GetRootNodeUI().get(), cSceneNodeUI_Text);
 		m_CameraRotText->SetTranslate(glm::vec2(700.0f, 20.0f));
 
-		m_CameraRot2Text = GetBaseManager().GetManager<ISceneNodesFactory>()->CreateSceneNodeUI(GetRootNodeUI().get(), "TextUI");
+		m_CameraRot2Text = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactory(ofkSceneNodeUI)->GetClassCreatorCast<ISceneNodeUICreator>(cSceneNodeUI_Text)->CreateSceneNodeUI(GetRootNodeUI().get(), cSceneNodeUI_Text);
 		m_CameraRot2Text->SetTranslate(glm::vec2(700.0f, 40.0f));
 
-		m_FPSText = GetBaseManager().GetManager<ISceneNodesFactory>()->CreateSceneNodeUI(GetRootNodeUI().get(), "TextUI");
+		m_FPSText = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactory(ofkSceneNodeUI)->GetClassCreatorCast<ISceneNodeUICreator>(cSceneNodeUI_Text)->CreateSceneNodeUI(GetRootNodeUI().get(), cSceneNodeUI_Text);
 		m_FPSText->SetTranslate(glm::vec2(700.0f, 60.0f));
 	}
 }

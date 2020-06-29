@@ -109,6 +109,12 @@
     <Filter Include="Scene functional\UI">
       <UniqueIdentifier>{ee3bbc74-e550-4693-b40e-567ec2f794b8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Object system">
+      <UniqueIdentifier>{15e421b3-d1fd-4098-91e6-1d5660a87fc3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object system\Typed creators">
+      <UniqueIdentifier>{97c61480-573e-483c-83a4-9732e99153ea}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Log.cpp">
@@ -377,6 +383,18 @@
     </ClCompile>
     <ClCompile Include="Files\ChunkedFile.cpp">
       <Filter>Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjectsFactories\ObjectsFactory.cpp">
+      <Filter>Object system</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjectsFactories\ObjectClassFactory.cpp">
+      <Filter>Object system</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjectsFactories\ObjectClassCreator.cpp">
+      <Filter>Object system</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjectsFactories\SceneNode3DCreator.cpp">
+      <Filter>Object system\Typed creators</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -868,6 +886,21 @@
     </ClInclude>
     <ClInclude Include="Proxies\MaterialProxieT.h">
       <Filter>__Proxies</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjectsFactories\ObjectsFactory.h">
+      <Filter>Object system</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjectsFactories\ObjectClassFactory.h">
+      <Filter>Object system</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjectsFactories\ObjectClassCreator.h">
+      <Filter>Object system</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\Interfaces\Types\ObjectsFactory.h">
+      <Filter>__Interfaces\Types</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjectsFactories\SceneNode3DCreator.h">
+      <Filter>Object system\Typed creators</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

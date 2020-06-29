@@ -117,6 +117,10 @@
     <ClCompile Include="HighResolutionTimer.cpp" />
     <ClCompile Include="Console.cpp" />
     <ClCompile Include="Log.cpp" />
+    <ClCompile Include="ObjectsFactories\ObjectClassFactory.cpp" />
+    <ClCompile Include="ObjectsFactories\ObjectClassCreator.cpp" />
+    <ClCompile Include="ObjectsFactories\ObjectsFactory.cpp" />
+    <ClCompile Include="ObjectsFactories\SceneNode3DCreator.cpp" />
     <ClCompile Include="Passes\RenderPass.cpp" />
     <ClCompile Include="Passes\RenderPassPipelined.cpp" />
     <ClCompile Include="Passes\RenderTechnique.cpp" />
@@ -203,6 +207,7 @@
     <ClInclude Include="..\shared\Interfaces\Scene\ISceneNodeBase.h" />
     <ClInclude Include="..\shared\Interfaces\Scene\ISceneNodeUI.h" />
     <ClInclude Include="..\shared\Interfaces\Scene\Types\Light.h" />
+    <ClInclude Include="..\shared\Interfaces\Types\ObjectsFactory.h" />
     <ClInclude Include="..\shared\Interfaces\XML.h" />
     <ClInclude Include="..\shared\znCore.h" />
     <ClInclude Include="BoundingBox.h" />
@@ -282,6 +287,10 @@
     <ClInclude Include="Matrix.h" />
     <ClInclude Include="Console.h" />
     <ClInclude Include="Log.h" />
+    <ClInclude Include="ObjectsFactories\ObjectClassFactory.h" />
+    <ClInclude Include="ObjectsFactories\ObjectClassCreator.h" />
+    <ClInclude Include="ObjectsFactories\ObjectsFactory.h" />
+    <ClInclude Include="ObjectsFactories\SceneNode3DCreator.h" />
     <ClInclude Include="Passes\RenderPass.h" />
     <ClInclude Include="Passes\RenderPassPipelined.h" />
     <ClInclude Include="Passes\RenderTechnique.h" />
