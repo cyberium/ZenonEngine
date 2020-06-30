@@ -4,7 +4,7 @@
 
 class ZN_API ModelBase 
 	: public IModel
-	, public ILoadableFromFile
+	, public IObjectLoadSave
 {
 public:
 	ModelBase(IRenderDevice& RenderDevice);
@@ -18,7 +18,7 @@ public:
 
 	virtual void                                    Accept(IVisitor* visitor) override;
 
-	// ILoadableFromFile
+	// IObjectLoadSave
 	void											Load(const std::shared_ptr<IByteBuffer>& ByteBuffer);
 	void											Save(const std::shared_ptr<IByteBuffer>& ByteBuffer);
 

@@ -44,13 +44,6 @@ ZN_INTERFACE ZN_API
 	virtual void AddToDeleteQueue(const std::shared_ptr<ILoadable>& LoadableItem) = 0;
 };
 
-ZN_INTERFACE ZN_API	ILoadableFromFile
-{
-	virtual ~ILoadableFromFile() {}
-
-	virtual void Load(const std::shared_ptr<IByteBuffer>& ByteBuffer) = 0;
-	virtual void Save(const std::shared_ptr<IByteBuffer>& ByteBuffer) = 0;
-};
 
 ZN_INTERFACE ZN_API IFileNameOwner
 {

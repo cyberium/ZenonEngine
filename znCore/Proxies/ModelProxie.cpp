@@ -63,11 +63,11 @@ void ModelProxie::Accept(IVisitor* visitor)
 
 
 //
-// ILoadableFromFile
+// IObjectLoadSave
 //
 void ModelProxie::Load(const std::shared_ptr<IByteBuffer>& ByteBuffer)
 {
-	if (const auto& loadableFromFile = std::dynamic_pointer_cast<ILoadableFromFile>(m_Model))
+	if (const auto& loadableFromFile = std::dynamic_pointer_cast<IObjectLoadSave>(m_Model))
 	{
 		loadableFromFile->Load(ByteBuffer);
 	}
@@ -77,7 +77,7 @@ void ModelProxie::Load(const std::shared_ptr<IByteBuffer>& ByteBuffer)
 
 void ModelProxie::Save(const std::shared_ptr<IByteBuffer>& ByteBuffer)
 {
-	if (const auto& loadableFromFile = std::dynamic_pointer_cast<ILoadableFromFile>(m_Model))
+	if (const auto& loadableFromFile = std::dynamic_pointer_cast<IObjectLoadSave>(m_Model))
 	{
 		loadableFromFile->Save(ByteBuffer);
 	}

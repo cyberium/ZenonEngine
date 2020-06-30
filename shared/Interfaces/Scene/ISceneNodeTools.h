@@ -9,18 +9,35 @@ const ObjectClassType cSceneNode3D = 527338441;
 const ObjectClassType cSceneNodeUI = 525832104;
 const ObjectClassType cSceneNodeUI_Text = 525832105;
 
-ZN_INTERFACE ZN_API ISceneNode3DCreator
+ZN_INTERFACE ZN_API ISceneNode3DCreationArgs
+	: public IObjectCreationArgs
 {
-	virtual ~ISceneNode3DCreator() {}
+	virtual ~ISceneNode3DCreationArgs() {}
 
-	virtual std::shared_ptr<ISceneNode3D> CreateSceneNode3D(ISceneNode3D * Parent, ObjectClassType ObjectClassKey) = 0;
+	virtual IScene* GetScene() = 0;
 };
 
-ZN_INTERFACE ZN_API ISceneNodeUICreator
+ZN_INTERFACE ZN_API ISceneNode3DFactory
 {
-	virtual ~ISceneNodeUICreator() {}
+	virtual ~ISceneNode3DFactory() {}
 
-	virtual std::shared_ptr<ISceneNodeUI> CreateSceneNodeUI(ISceneNodeUI * Parent, ObjectClassType ObjectClassKey) = 0;
+	virtual std::shared_ptr<ISceneNode3D> CreateSceneNode3D(IScene* Scene, ObjectClassType ObjectClassKey) = 0;
+	virtual std::shared_ptr<ISceneNode3D> LoadSceneNode3D(IScene* Scene, std::shared_ptr<IByteBuffer> Bytes) = 0;
+};
+
+ZN_INTERFACE ZN_API ISceneNodeUICreationArgs
+	: public IObjectCreationArgs
+{
+	virtual ~ISceneNodeUICreationArgs() {}
+
+	virtual IScene* GetScene() const = 0;
+};
+
+ZN_INTERFACE ZN_API ISceneNodeUIFactory
+{
+	virtual ~ISceneNodeUIFactory() {}
+
+	virtual std::shared_ptr<ISceneNodeUI> CreateSceneNodeUI(IScene* Scene, ObjectClassType ObjectClassKey) = 0;
 };
 
 

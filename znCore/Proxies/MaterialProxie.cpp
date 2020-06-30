@@ -53,11 +53,11 @@ void MaterialProxie::Unbind(const ShaderMap& shaders) const
 
 
 //
-// ILoadableFromFile
+// IObjectLoadSave
 //
 void MaterialProxie::Load(const std::shared_ptr<IByteBuffer>& ByteBuffer)
 {
-	if (const auto& loadableFromFile = std::dynamic_pointer_cast<ILoadableFromFile>(m_Material))
+	if (const auto& loadableFromFile = std::dynamic_pointer_cast<IObjectLoadSave>(m_Material))
 	{
 		loadableFromFile->Load(ByteBuffer);
 	}
@@ -67,7 +67,7 @@ void MaterialProxie::Load(const std::shared_ptr<IByteBuffer>& ByteBuffer)
 
 void MaterialProxie::Save(const std::shared_ptr<IByteBuffer>& ByteBuffer)
 {
-	if (const auto& loadableFromFile = std::dynamic_pointer_cast<ILoadableFromFile>(m_Material))
+	if (const auto& loadableFromFile = std::dynamic_pointer_cast<IObjectLoadSave>(m_Material))
 	{
 		loadableFromFile->Save(ByteBuffer);
 	}

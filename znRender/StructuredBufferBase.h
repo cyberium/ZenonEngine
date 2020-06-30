@@ -24,7 +24,7 @@ protected:
 	uint32 GetElementStride() const override { return CBufferBase::GetElementStride(); };
 	uint32 GetElementOffset() const override { return CBufferBase::GetElementOffset(); };
 
-	// ILoadableFromFile
+	// IObjectLoadSave
 	void Load(const std::shared_ptr<IByteBuffer>& ByteBuffer) override;
 	void Save(const std::shared_ptr<IByteBuffer>& ByteBuffer) override;
 

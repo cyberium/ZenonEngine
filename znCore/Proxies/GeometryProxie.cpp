@@ -85,11 +85,11 @@ void GeometryProxie::Render_UnbindAllBuffers(const RenderEventArgs & RenderEvent
 
 
 //
-// ILoadableFromFile
+// IObjectLoadSave
 //
 void GeometryProxie::Load(const std::shared_ptr<IByteBuffer>& ByteBuffer)
 {
-	if (const auto& loadableFromFile = std::dynamic_pointer_cast<ILoadableFromFile>(m_Geometry))
+	if (const auto& loadableFromFile = std::dynamic_pointer_cast<IObjectLoadSave>(m_Geometry))
 	{
 		loadableFromFile->Load(ByteBuffer);
 	}
@@ -99,7 +99,7 @@ void GeometryProxie::Load(const std::shared_ptr<IByteBuffer>& ByteBuffer)
 
 void GeometryProxie::Save(const std::shared_ptr<IByteBuffer>& ByteBuffer)
 {
-	if (const auto& loadableFromFile = std::dynamic_pointer_cast<ILoadableFromFile>(m_Geometry))
+	if (const auto& loadableFromFile = std::dynamic_pointer_cast<IObjectLoadSave>(m_Geometry))
 	{
 		loadableFromFile->Save(ByteBuffer);
 	}

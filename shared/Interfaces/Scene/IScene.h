@@ -52,7 +52,10 @@ ZN_INTERFACE ZN_API IScene
 		node->Initialize();
 
 		// Delayed loader.
-		this->AddChild(Parent, node);
+		if (Parent == nullptr)
+			this->AddChild(GetRootNode3D(), node);
+		else
+			this->AddChild(Parent, node);
 
 		return node;
 	}
@@ -65,9 +68,11 @@ ZN_INTERFACE ZN_API IScene
 		std::shared_ptr<T> newNode = std::make_shared<T>(std::forward<Args>(_Args)...);
 		newNode->SetSceneInternal(weak_from_this());
 		newNode->Initialize();
-		
+
 		if (Parent)
 			Parent->AddChild(newNode);
+		else if (GetRootNodeUI())
+			GetRootNodeUI()->AddChild(newNode);
 
 		return newNode;
 	}

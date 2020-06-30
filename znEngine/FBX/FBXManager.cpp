@@ -13,33 +13,30 @@ using namespace fbxsdk;
 CFBXManager::CFBXManager(const IBaseManager& BaseManager)
 	: m_BaseManager(BaseManager)
 {
-	m_SdkManager = FbxManager::Create();
-	if (!m_SdkManager)
+	m_FBXManager = FbxManager::Create();
+	if (!m_FBXManager)
 		throw CException("CFBXManager: Unable to create FBX Manager.");
 
-	Log::Print("CFBXManager: Autodesk FBX SDK version %s", m_SdkManager->GetVersion());
+	Log::Print("CFBXManager: Autodesk FBX SDK version %s", m_FBXManager->GetVersion());
 
 	// Create an IOSettings object. This object holds all import/export settings.
-	FbxIOSettings* ios = FbxIOSettings::Create(m_SdkManager, IOSROOT);
-	m_SdkManager->SetIOSettings(ios);
+	FbxIOSettings* ios = FbxIOSettings::Create(m_FBXManager, IOSROOT);
+	m_FBXManager->SetIOSettings(ios);
 
 	// Load plugins from the executable directory (optional)
 	FbxString lPath = FbxGetApplicationDirectory();
-	m_SdkManager->LoadPluginsDirectory(lPath.Buffer());
+	m_FBXManager->LoadPluginsDirectory(lPath.Buffer());
 }
 
 CFBXManager::~CFBXManager()
 {
-	m_SdkManager->Destroy();
+	m_FBXManager->Destroy();
 }
 
-std::shared_ptr<CFBXScene> CFBXManager::CreateScene(std::string SceneName)
+std::shared_ptr<CFBXSceneNode> CFBXManager::CreateSceneNode(IScene* Scene, std::string SceneName)
 {
-	FbxScene* fbxScene = FbxScene::Create(m_SdkManager, SceneName.c_str());
-	if (!fbxScene)
-		throw CException("CFBXManager: Unable to create FBX scene.");
-
-	return std::make_shared<CFBXScene>(m_BaseManager, fbxScene);
+	auto rootNode = Scene->CreateSceneNode<CFBXSceneNode>(nullptr, m_BaseManager, m_FBXManager);
+	return rootNode;
 }
 
 #endif

@@ -64,7 +64,7 @@ void ModelBase::Load(const std::shared_ptr<IByteBuffer>& ByteBuffer)
 	for (size_t i = 0; i < connectionsCount; i++)
 	{
 		auto material = m_RenderDevice.GetBaseManager().GetManager<IMaterialsFactory>()->CreateMaterial("MaterialModel");
-		if (auto materialAsLoadableFromFile = std::dynamic_pointer_cast<ILoadableFromFile>(material))
+		if (auto materialAsLoadableFromFile = std::dynamic_pointer_cast<IObjectLoadSave>(material))
 		{
 			materialAsLoadableFromFile->Load(ByteBuffer);
 		}
@@ -72,14 +72,17 @@ void ModelBase::Load(const std::shared_ptr<IByteBuffer>& ByteBuffer)
 			_ASSERT(false);
 
 		auto geometry = m_RenderDevice.GetObjectsFactory().CreateGeometry();
-		if (auto geometryAsLoadableFromFile = std::dynamic_pointer_cast<ILoadableFromFile>(geometry))
+		if (auto geometryAsLoadableFromFile = std::dynamic_pointer_cast<IObjectLoadSave>(geometry))
 		{
 			geometryAsLoadableFromFile->Load(ByteBuffer);
 		}
 		else
 			_ASSERT(false);
 
-		AddConnection(material, geometry);
+		SGeometryDrawArgs geometryDrawArgs;
+		ByteBuffer->read(&geometryDrawArgs);
+
+		AddConnection(material, geometry, geometryDrawArgs);
 	}
 }
 
@@ -93,18 +96,20 @@ void ModelBase::Save(const std::shared_ptr<IByteBuffer>& ByteBuffer)
 	{
 		//if (std::find(modelMaterials.begin(), modelMaterials.end(), it.Material) != modelMaterials.end()
 
-		if (auto materialAsLoadableFromFile = std::dynamic_pointer_cast<ILoadableFromFile>(it.Material))
+		if (auto materialAsLoadableFromFile = std::dynamic_pointer_cast<IObjectLoadSave>(it.Material))
 		{
 			materialAsLoadableFromFile->Save(ByteBuffer);
 		}
 		else
 			throw CException("ModelBase: Material '%s' is not loadable from file.", it.Material->GetName().c_str());
 
-		if (auto geometryAsLoadableFromFile = std::dynamic_pointer_cast<ILoadableFromFile>(it.Geometry))
+		if (auto geometryAsLoadableFromFile = std::dynamic_pointer_cast<IObjectLoadSave>(it.Geometry))
 		{
 			geometryAsLoadableFromFile->Save(ByteBuffer);
 		}
 		else
 			throw CException("ModelBase: Geometry is not loadable from file.");
+
+		ByteBuffer->write(&it.GeometryDrawArgs);
 	}
 }

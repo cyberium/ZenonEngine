@@ -32,16 +32,20 @@ void SceneBase::Initialize()
 	m_RootNodeUI->SetName("Root node UI");
 
 	{
-		m_CameraPosText = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactory(ofkSceneNodeUI)->GetClassCreatorCast<ISceneNodeUICreator>(cSceneNodeUI_Text)->CreateSceneNodeUI(GetRootNodeUI().get(), cSceneNodeUI_Text);
+		m_CameraPosText = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeUIFactory>(ofkSceneNodeUI)->CreateSceneNodeUI(this, cSceneNodeUI_Text);
+		GetRootNodeUI()->AddChild(m_CameraPosText);
 		m_CameraPosText->SetTranslate(glm::vec2(700.0f, 0.0f));
 
-		m_CameraRotText = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactory(ofkSceneNodeUI)->GetClassCreatorCast<ISceneNodeUICreator>(cSceneNodeUI_Text)->CreateSceneNodeUI(GetRootNodeUI().get(), cSceneNodeUI_Text);
+		m_CameraRotText = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeUIFactory>(ofkSceneNodeUI)->CreateSceneNodeUI(this, cSceneNodeUI_Text);
+		GetRootNodeUI()->AddChild(m_CameraRotText);
 		m_CameraRotText->SetTranslate(glm::vec2(700.0f, 20.0f));
 
-		m_CameraRot2Text = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactory(ofkSceneNodeUI)->GetClassCreatorCast<ISceneNodeUICreator>(cSceneNodeUI_Text)->CreateSceneNodeUI(GetRootNodeUI().get(), cSceneNodeUI_Text);
+		m_CameraRot2Text = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeUIFactory>(ofkSceneNodeUI)->CreateSceneNodeUI(this, cSceneNodeUI_Text);
+		GetRootNodeUI()->AddChild(m_CameraRot2Text);
 		m_CameraRot2Text->SetTranslate(glm::vec2(700.0f, 40.0f));
 
-		m_FPSText = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactory(ofkSceneNodeUI)->GetClassCreatorCast<ISceneNodeUICreator>(cSceneNodeUI_Text)->CreateSceneNodeUI(GetRootNodeUI().get(), cSceneNodeUI_Text);
+		m_FPSText = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeUIFactory>(ofkSceneNodeUI)->CreateSceneNodeUI(this, cSceneNodeUI_Text);
+		GetRootNodeUI()->AddChild(m_FPSText);
 		m_FPSText->SetTranslate(glm::vec2(700.0f, 60.0f));
 	}
 }

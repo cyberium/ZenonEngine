@@ -11,7 +11,7 @@ void main_internal(int argumentCount, char* arguments[])
 	// 3. Create application
 	Application app(*BaseManager, ::GetModuleHandle(NULL));
 
-	//try
+	try
 	{
 		CNativeWindowFactory nativeWindowFactory(&app);
 
@@ -38,10 +38,10 @@ void main_internal(int argumentCount, char* arguments[])
 		app.Run();
 
 	}
-	//catch (const CznRenderException& e)
-	//{
-	//	Log::Fatal(e.MessageCStr());
-	//}
+	catch (const CznRenderException& e)
+	{
+		Log::Fatal(e.MessageCStr());
+	}
 
 	
 }

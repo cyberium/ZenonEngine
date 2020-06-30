@@ -1,6 +1,7 @@
 #pragma once
 
 ZN_INTERFACE IManager;
+ZN_INTERFACE IByteBuffer;
 
 #define UI64LIT(N) UINT64_C(N)
 
@@ -41,6 +42,14 @@ ZN_INTERFACE ZN_API IObjectInternal
 	virtual void SetGuid(uint64 guid) = 0;
 };
 
+ZN_INTERFACE ZN_API	IObjectLoadSave
+{
+	virtual ~IObjectLoadSave() {}
+
+	virtual void Load(const std::shared_ptr<IByteBuffer>& ByteBuffer) = 0;
+	virtual void Save(const std::shared_ptr<IByteBuffer>& ByteBuffer) = 0;
+};
+
 class ZN_API Object
 	: public IObject
 	, public IObjectInternal
@@ -52,9 +61,6 @@ public:
 		static const Guid Empty;
 
 	public:
-		Guid()
-			: m_GUID(0)
-		{ }
 		explicit Guid(uint64 guid)
 			: m_GUID(guid)
 		{ }
@@ -151,14 +157,14 @@ public:
 
 protected:
 	Object()
+		: m_Guid(0ull)
 	{
 		m_Name = "";
-		m_Guid = Guid(ofkObject, 1u, 1u);
 	}
 	Object(ObjectFactoryType Factory, ObjectClassType Class)
+		: m_Guid(0ull)
 	{
 		m_Name = "";
-		m_Guid = Guid(Factory, Class, 0u);
 	}
 	virtual ~Object()
 	{}

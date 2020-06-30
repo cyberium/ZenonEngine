@@ -68,7 +68,7 @@ void CFBXMaterial::Load(fbxsdk::FbxSurfaceMaterial* NativeMaterial)
 
 	MarkMaterialDataDirty();
 
-	//PrintInfo();
+	PrintInfo();
 
 	for (int j = 0; j < fbxsdk::FbxLayerElement::sTypeTextureCount; j++)
 	{
@@ -197,7 +197,7 @@ std::shared_ptr<ITexture> CFBXMaterial::LoadTexture(fbxsdk::FbxTexture * Texture
 	// For exporter
 	//fileTexture->SetFileName(fileTexture->GetRelativeFileName());
 
-	return m_BaseManager.GetApplication().GetRenderDevice().GetObjectsFactory().LoadTexture2D(m_OwnerFBXNode.lock()->GetOwnerScene().lock()->GetPath() + fileTexture->GetRelativeFileName());
+	return m_BaseManager.GetApplication().GetRenderDevice().GetObjectsFactory().LoadTexture2D(/*m_OwnerFBXNode.lock()->GetOwnerScene().lock()->GetPath() +*/ fileTexture->GetRelativeFileName());
 }
 
 #endif

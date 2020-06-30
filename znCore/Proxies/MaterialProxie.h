@@ -2,7 +2,7 @@
 
 class ZN_API MaterialProxie 
 	: public IMaterial
-	, public ILoadableFromFile
+	, public IObjectLoadSave
 	, protected IMaterialDataOwner
 {
 public:
@@ -19,7 +19,7 @@ public:
 	virtual void Bind(const ShaderMap& shaders) const override;
 	virtual void Unbind(const ShaderMap& shaders) const override;
 
-	// ILoadableFromFile
+	// IObjectLoadSave
 	void Load(const std::shared_ptr<IByteBuffer>& ByteBuffer) override;
 	void Save(const std::shared_ptr<IByteBuffer>& ByteBuffer) override;
 

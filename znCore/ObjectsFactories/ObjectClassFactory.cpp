@@ -3,8 +3,9 @@
 // General
 #include "ObjectClassFactory.h"
 
-CObjectClassFactory::CObjectClassFactory(ObjectFactoryType Type)
-	: m_Type(Type)
+CObjectClassFactory::CObjectClassFactory(IBaseManager& BaseManager, ObjectFactoryType Type)
+	: m_BaseManager(BaseManager)
+	, m_Type(Type)
 	, m_Counter(0)
 {}
 
@@ -20,7 +21,7 @@ std::shared_ptr<IObjectClassCreator> CObjectClassFactory::GetClassCreator(Object
 {
 	const auto& it = m_ClassCreators.find(ObjectClassKey);
 	if (it == m_ClassCreators.end())
-		throw CException("ObjectsFactory : ClassCreator '%d' not found.", ObjectClassKey);
+		throw CException("ClassFactory : ClassCreator '%d' not found.", ObjectClassKey);
 	return it->second.second;
 }
 
@@ -31,7 +32,7 @@ void CObjectClassFactory::AddClassCreator(std::shared_ptr<IObjectClassCreator> C
 		auto classKey = Creator->GetSupportedClassKey(i);
 		const auto& it = m_ClassCreators.find(classKey);
 		if (it != m_ClassCreators.end())
-			throw CException("ObjectsFactory: ClassCreator '%d' already exists in ClassFactory '%d'.", classKey, GetType());
+			throw CException("ClassFactory: ClassCreator '%d' already exists in ClassFactory '%d'.", classKey, GetType());
 		m_ClassCreators.insert(std::make_pair(classKey, std::make_pair(i, Creator)));
 	}
 }
@@ -43,7 +44,7 @@ void CObjectClassFactory::RemoveClassCreator(std::shared_ptr<IObjectClassCreator
 		auto classKey = Creator->GetSupportedClassKey(i);
 		const auto& it = m_ClassCreators.find(classKey);
 		if (it == m_ClassCreators.end())
-			throw CException("ObjectsFactory: Unable to remove ClassCreator '%d' because not found in ClassFactory '%d'.", classKey, GetType());
+			throw CException("ClassFactory: Unable to remove ClassCreator '%d' because not found in ClassFactory '%d'.", classKey, GetType());
 		m_ClassCreators.erase(it);
 	}
 }
@@ -58,7 +59,7 @@ Object::Guid CObjectClassFactory::GenerateGuid(ObjectClassType ObjectClassKey)
 	return Object::Guid(GetType(), ObjectClassKey, ++m_Counter);
 }
 
-std::shared_ptr<IObject> CObjectClassFactory::CreateObject(ObjectClassType ObjectClassKey)
+std::shared_ptr<IObject> CObjectClassFactory::CreateObject(ObjectClassType ObjectClassKey, const IObjectCreationArgs* ObjectCreationArgs)
 {
 	auto objectUUID = GenerateGuid(ObjectClassKey);
 
@@ -66,16 +67,45 @@ std::shared_ptr<IObject> CObjectClassFactory::CreateObject(ObjectClassType Objec
 	if (it == m_ClassCreators.end())
 		throw CException("ClassFactory: Unable find ClassCreator for '%d' in ClassFactory '%d'.", ObjectClassKey, GetType());
 	
-	//size_t creatorIndex = it->second.first;
+	size_t creatorIndex = it->second.first;
 	auto creatorObject = it->second.second;
-	auto createdObject = creatorObject->CreateObject(ObjectClassKey);
+
+	auto createdObject = creatorObject->CreateObject(creatorIndex, ObjectCreationArgs);
 	if (auto objectInternal = std::dynamic_pointer_cast<IObjectInternal>(createdObject))
 	{
 		objectInternal->SetGuid(objectUUID.GetRawValue());
-		Log::Info("ObjectsFactory: Object [%s] created.", createdObject->GetName().c_str());
+		Log::Green("ClassFactory: Object [%s] created.", createdObject->GetName().c_str());
 	}
 	else
-		throw CException("ObjectsFactory: Object [%s] not support IObjectInternal.", objectUUID.CStr());
+		throw CException("ClassFactory: Object [%s] not support IObjectInternal.", objectUUID.CStr());
 
 	return createdObject;
+}
+
+std::shared_ptr<IObject> CObjectClassFactory::LoadObject(ObjectClassType ObjectClassKey, std::shared_ptr<IByteBuffer> Bytes)
+{
+	auto objectUUID = GenerateGuid(ObjectClassKey);
+
+	auto it = m_ClassCreators.find(ObjectClassKey);
+	if (it == m_ClassCreators.end())
+		throw CException("ClassFactory: Unable find ClassCreator for '%d' in ClassFactory '%d'.", ObjectClassKey, GetType());
+
+	size_t creatorIndex = it->second.first;
+	auto creatorObject = it->second.second;
+
+	auto loadedObject = creatorObject->CreateObject(creatorIndex, nullptr);
+	if (auto objectInternal = std::dynamic_pointer_cast<IObjectInternal>(loadedObject))
+	{
+		objectInternal->SetGuid(objectUUID.GetRawValue());
+		Log::Green("ClassFactory: Object [%s] loaded.", loadedObject->GetName().c_str());
+	}
+	else
+		throw CException("ClassFactory: Object [%s] not support IObjectInternal.", objectUUID.CStr());
+
+	return loadedObject;
+}
+
+std::shared_ptr<IByteBuffer> CObjectClassFactory::SaveObject(std::shared_ptr<IObject> Object)
+{
+	return std::shared_ptr<IByteBuffer>();
 }

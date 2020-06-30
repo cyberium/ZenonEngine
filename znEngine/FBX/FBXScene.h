@@ -6,18 +6,14 @@
 
 #include "FBXSceneNode.h"
 
-
-
-class CFBXScene : public std::enable_shared_from_this<CFBXScene>
+class CFBXScene 
+	: public std::enable_shared_from_this<CFBXScene>
 {
 public:
-	CFBXScene(const IBaseManager& BaseManager, fbxsdk::FbxScene* NativeScene);
+	CFBXScene(const IBaseManager& BaseManager, fbxsdk::FbxManager* FBXManager);
 	virtual ~CFBXScene();
 
 	bool LoadFromFile(std::shared_ptr<IFile> File);
-	bool SaveToFile(std::shared_ptr<IFile> File, int pFileFormat = -1, bool pEmbedMedia = false);
-
-	bool LoadNodes(ISceneNode3D* ParentNode);
 
 public:
 	fbxsdk::FbxScene*   GetNativeScene() const;

@@ -1020,6 +1020,9 @@
     <ClInclude Include="SceneFunctional\SceneNodeEngineCreator.h">
       <Filter>SceneNodes</Filter>
     </ClInclude>
+    <ClInclude Include="FBX\FBXInterfaces.h">
+      <Filter>FBX</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="znEngine.rc">

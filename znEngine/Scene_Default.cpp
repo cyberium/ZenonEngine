@@ -14,9 +14,76 @@
 #include "Passes/MaterialParticlePass.h"
 
 #include "Passes/MaterialPassOpaque.h"
+#include "Passes/MaterialPassTransperent.h"
 #include "Passes/UIFontPass.h"
 
 #include "Physics/Adapters/ReactPhysicsComponent.h"
+
+// Additional
+#include <filesystem>
+namespace fs = std::experimental::filesystem;
+
+namespace
+{
+	std::string str_tolower(std::string s)
+	{
+		std::transform(s.begin(), s.end(), s.begin(), [](char c)
+		{
+			return std::tolower(c, std::locale()); }
+		);
+		return s;
+	}
+
+	std::vector<std::string> GetAllFilesInDirectory(const std::string& Directory, const std::vector<std::string> DirSkipList = { }, const std::string& FileExtention = "")
+	{
+		std::vector<std::string> listOfFiles;
+
+		try
+		{
+			// Check if given path exists and points to a directory
+			if (fs::exists(Directory) && fs::is_directory(Directory))
+			{
+				// Create a Recursive Directory Iterator object and points to the starting of directory
+				fs::recursive_directory_iterator iter(Directory);
+
+				// Create a Recursive Directory Iterator object pointing to end.
+				fs::recursive_directory_iterator end;
+
+				// Iterate till end
+				while (iter != end)
+				{
+					// Check if current entry is a directory and if exists in skip list
+					if (fs::is_directory(iter->path()) && (std::find(DirSkipList.begin(), DirSkipList.end(), iter->path().filename()) != DirSkipList.end()))
+					{
+						iter.disable_recursion_pending();
+					}
+					else if (!fs::is_directory(iter->path()) && (!FileExtention.empty()) && (iter->path().has_extension()) && (str_tolower(iter->path().extension().string()) == str_tolower(FileExtention)))
+					{
+						listOfFiles.push_back(iter->path().string());
+					}
+					else
+					{
+						iter.disable_recursion_pending();
+					}
+
+					std::error_code ec;
+					// Increment the iterator to point to next entry in recursive iteration
+					iter.increment(ec);
+					if (ec)
+					{
+						Log::Error("GetAllFilesInDirectory: Error while accessing '%s'. Error: '%s'.", iter->path().string().c_str(), ec.message().c_str());
+					}
+				}
+			}
+		}
+		catch (const std::system_error& e)
+		{
+			Log::Error("GetAllFilesInDirectory: Exception '%s'", e.what());
+		}
+
+		return listOfFiles;
+	}
+}
 
 CSceneDefault::CSceneDefault(IBaseManager& BaseManager)
 	: SceneBase(BaseManager)
@@ -265,9 +332,10 @@ void CSceneDefault::Load3D()
 	// Plane
 	//--------------------------------------------------------------------------
 
+#if 1
 	{
-		const float cPlaneSize = 500.0f;
-		const float cPlaneY = -10.0f;
+		const float cPlaneSize = 120.0f;
+		const float cPlaneY = 0.0f;
 
 		std::shared_ptr<MaterialModel> textMaterial = std::make_shared<MaterialModel>(GetBaseManager());
 		textMaterial->SetDiffuseColor(glm::vec3(1.0f, 1.0f, 1.0f));
@@ -315,6 +383,7 @@ void CSceneDefault::Load3D()
 
 
 	}
+#endif
 
 
 
@@ -361,8 +430,9 @@ void CSceneDefault::Load3D()
 		*/
 	}
 
-
-	std::shared_ptr<ISceneNode3D> fbxSceneNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactory(ofkSceneNode3D)->GetClassCreatorCast<ISceneNode3DCreator>(cSceneNode_FBXNode)->CreateSceneNode3D(GetRootNode3D().get(), cSceneNode_FBXNode);
+	std::shared_ptr<ISceneNode3D> fbxSceneNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>(ofkSceneNode3D)->CreateSceneNode3D(this, cSceneNode_FBXNode);
+	std::shared_ptr<ISceneNode3D> fbxSceneNode2 = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>(ofkSceneNode3D)->CreateSceneNode3D(this, cSceneNode_FBXNode);
+	fbxSceneNode2->SetTranslate(glm::vec3(10, 0, 0));
 	//fbxSceneNode->SetScale(glm::vec3(15.0f, 15.0f, 15.0f));
 
 
@@ -378,13 +448,19 @@ void CSceneDefault::Load3D()
 	m_DefferedFinalRenderPass = std::make_shared<CDefferedRenderFinal>(GetRenderDevice(), m_DefferedRenderPass, m_DefferedRenderPrepareLights);
 	m_DefferedFinalRenderPass->CreatePipeline(GetRenderWindow()->GetRenderTarget(), &GetRenderWindow()->GetViewport());
 
-
 	glm::vec4 color = glm::vec4(0.0, 0.0f, 0.0f, 1.0f);
 	m_Technique3D.AddPass(std::make_shared<ClearRenderTargetPass>(GetRenderDevice(), GetRenderWindow()->GetRenderTarget(), ClearFlags::All, color /*glm::vec4(0.2f, 0.2f, 0.2f, 0.2f)*/, 1.0f, 0));
+	
+#if 1
 	m_Technique3D.AddPass(m_SceneCreateTypelessListPass);
 	m_Technique3D.AddPass(m_DefferedRenderPass);
 	m_Technique3D.AddPass(m_DefferedRenderPrepareLights);
 	m_Technique3D.AddPass(m_DefferedFinalRenderPass);
+#else
+	m_Technique3D.AddPass(std::make_shared<CMaterialPassTransperent>(GetRenderDevice(), shared_from_this())->CreatePipeline(GetRenderWindow()->GetRenderTarget(), &GetRenderWindow()->GetViewport()));
+	m_Technique3D.AddPass(std::make_shared<CMaterialPassOpaque>(GetRenderDevice(), shared_from_this())->CreatePipeline(GetRenderWindow()->GetRenderTarget(), &GetRenderWindow()->GetViewport()));
+#endif
+
 	//m_Technique3D.AddPass(GetBaseManager().GetManager<IRenderPassFactory>()->CreateRenderPass("TexturedMaterialPass", GetRenderDevice(), GetRenderWindow()->GetRenderTarget(), &GetRenderWindow()->GetViewport(), shared_from_this()));
 	//m_Technique3D.AddPass(std::make_shared<CMaterialParticlePass>(GetRenderDevice(), shared_from_this())->CreatePipeline(GetRenderWindow()->GetRenderTarget(), &GetRenderWindow()->GetViewport()));
 }

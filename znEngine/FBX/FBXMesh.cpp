@@ -11,10 +11,9 @@
 // Additional
 #include "FBXDisplayCommon.h"
 
-CFBXMesh::CFBXMesh(const IBaseManager& BaseManager, std::weak_ptr<CFBXSceneNode> OwnerFBXNode)
+CFBXMesh::CFBXMesh(const IBaseManager& BaseManager)
 	: ModelProxie(BaseManager.GetApplication().GetRenderDevice().GetObjectsFactory().CreateModel())
 	, m_BaseManager(BaseManager)
-	, m_OwnerFBXNode(OwnerFBXNode)
 {
 }
 
@@ -22,7 +21,7 @@ CFBXMesh::~CFBXMesh()
 {
 }
 
-void CFBXMesh::Load(fbxsdk::FbxMesh* NativeMesh)
+void CFBXMesh::Load(const CFBXSceneNode& FBXNode, fbxsdk::FbxMesh* NativeMesh)
 {
 	IRenderDevice& renderDevice = m_BaseManager.GetApplication().GetRenderDevice();
 
@@ -474,10 +473,10 @@ void CFBXMesh::Load(fbxsdk::FbxMesh* NativeMesh)
 
 	Log::Info("CFBXMesh: Mesh '%s' loaded. Polygons count = '%d'. (Has normals: '%s')", NativeMesh->GetName(), NativeMesh->GetPolygonCount(), (!normals.empty()) ? "true" : "false");
 
-	DisplayMaterialConnections(NativeMesh);
+	DisplayMaterialConnections(FBXNode, NativeMesh);
 }
 
-void CFBXMesh::DisplayMaterialConnections(fbxsdk::FbxMesh* NativeMesh)
+void CFBXMesh::DisplayMaterialConnections(const CFBXSceneNode& FBXNode, fbxsdk::FbxMesh* NativeMesh)
 {
 	struct SPolygonConnectionInfo
 	{
@@ -510,7 +509,7 @@ void CFBXMesh::DisplayMaterialConnections(fbxsdk::FbxMesh* NativeMesh)
 				int lMatId = lMaterialElement->GetIndexArray().GetAt(0);
 				_ASSERT(lMatId >= 0);
 
-				AddConnection(m_OwnerFBXNode.lock()->GetMaterial(lMatId), m_Geometry);
+				AddConnection(FBXNode.GetMaterial(lMatId), m_Geometry);
 			}
 			else
 			{
@@ -551,7 +550,7 @@ void CFBXMesh::DisplayMaterialConnections(fbxsdk::FbxMesh* NativeMesh)
 			GeometryDrawArgs.VertexStartLocation = it.second.PolygonBegin * 3;
 			GeometryDrawArgs.VertexCnt = it.second.PolygonEnd * 3 - GeometryDrawArgs.VertexStartLocation + 3;
 
-			AddConnection(m_OwnerFBXNode.lock()->GetMaterial(it.first), m_Geometry, GeometryDrawArgs);
+			AddConnection(FBXNode.GetMaterial(it.first), m_Geometry, GeometryDrawArgs);
 
 			//Log::Info("Material with id '%d' added for (%d to %d)", it.first, GeometryDrawArgs.VertexStartLocation, GeometryDrawArgs.VertexCnt);
 		}

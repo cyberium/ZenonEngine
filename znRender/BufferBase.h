@@ -8,7 +8,7 @@ ZN_INTERFACE IBufferPrivate
 
 class ZN_API CBufferBase
 	: public IBuffer
-	, public ILoadableFromFile
+	, public IObjectLoadSave
 	, public IBufferPrivate
 {
 public:
@@ -25,7 +25,7 @@ protected:
 	uint32 GetElementStride() const override;
 	uint32 GetElementOffset() const override;
 
-	// ILoadableFromFile
+	// IObjectLoadSave
 	virtual void Load(const std::shared_ptr<IByteBuffer>& ByteBuffer) override;
 	virtual void Save(const std::shared_ptr<IByteBuffer>& ByteBuffer) override;
 

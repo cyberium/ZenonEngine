@@ -446,6 +446,7 @@
     <ClInclude Include="FBX\FBXDisplayCommon.h" />
     <ClInclude Include="FBX\FBXDisplayLink.h" />
     <ClInclude Include="FBX\FBXDisplayShape.h" />
+    <ClInclude Include="FBX\FBXInterfaces.h" />
     <ClInclude Include="FBX\FBXLight.h" />
     <ClInclude Include="FBX\FBXManager.h" />
     <ClInclude Include="FBX\FBXMaterial.h" />

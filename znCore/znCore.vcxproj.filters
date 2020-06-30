@@ -393,7 +393,7 @@
     <ClCompile Include="ObjectsFactories\ObjectClassCreator.cpp">
       <Filter>Object system</Filter>
     </ClCompile>
-    <ClCompile Include="ObjectsFactories\SceneNode3DCreator.cpp">
+    <ClCompile Include="ObjectsFactories\SceneNode3DFactory.cpp">
       <Filter>Object system\Typed creators</Filter>
     </ClCompile>
   </ItemGroup>
@@ -899,7 +899,7 @@
     <ClInclude Include="..\shared\Interfaces\Types\ObjectsFactory.h">
       <Filter>__Interfaces\Types</Filter>
     </ClInclude>
-    <ClInclude Include="ObjectsFactories\SceneNode3DCreator.h">
+    <ClInclude Include="ObjectsFactories\SceneNode3DFactory.h">
       <Filter>Object system\Typed creators</Filter>
     </ClInclude>
   </ItemGroup>

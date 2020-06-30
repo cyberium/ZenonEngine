@@ -168,18 +168,26 @@ void Log::Error(const char* _message, ...)
 
 void Log::Fatal(const char* _message, ...)
 {
-	va_list vaList;
-	va_start(vaList, _message);
+	va_list args;
+	va_start(args, _message);
+
+	// Push to common log
 	{
-		int len = vsnprintf(NULL, 0, _message, vaList);
+		if (gLogInstance)
+			gLogInstance->PushMessageToAllDebugOutputs(IDebugOutput::DebugMessageType::TYPE_ERROR, _message, args);
+	}
+
+	// And to message box
+	{
+		int len = vsnprintf(NULL, 0, _message, args);
 		if (len > 0)
 		{
 			std::string buff;
 			buff.resize(len + 1);
-			vsnprintf(&buff[0], len + 1, _message, vaList);
+			vsnprintf(&buff[0], len + 1, _message, args);
 
 			FatalMessageBox("Fatal error!", buff.c_str());
 		}
 	}
-	va_end(vaList);
+	va_end(args);
 }

@@ -91,15 +91,15 @@ VertexShaderOutput VS_PTN(VSInputPTN IN)
 	OUT.normalVS = mul(mv, float4(IN.normal, 0.0f)).xyz;
 	OUT.texCoord = IN.texCoord;
 
-	const float4x4 mvl = mul(PL.LightView, PO.Model);
-	const float4x4 mvpl = mul(PL.LightProjection, mvl);
+	//const float4x4 mvl = mul(PL.LightView, PO.Model);
+	//const float4x4 mvpl = mul(PL.LightProjection, mvl);
 
-	OUT.lightViewPosition = mul(mvpl, float4(IN.position, 1.0f));
+	//OUT.lightViewPosition = mul(mvpl, float4(IN.position, 1.0f));
 
 	return OUT;
 }
 
-VertexShaderOutput VS_PTN_Instanced(VSInputPTN_Instanced IN, uint InstanceID : SV_InstanceID)
+VertexShaderOutput VS_PTN_Instanced(VSInputPTN IN, uint InstanceID : SV_InstanceID)
 {
 	float3 tangent = (float3)0;
 	float3 binormal = (float3)0;
@@ -125,8 +125,8 @@ VertexShaderOutput VS_PTN_Instanced(VSInputPTN_Instanced IN, uint InstanceID : S
 
 	PerObject po = Instances[InstanceID];
 
-	const float4x4 mv = mul(po.View, po.Model);
-	const float4x4 mvp = mul(po.Projection, mv);
+	const float4x4 mv = mul(PF.View, po.Model);
+	const float4x4 mvp = mul(PF.Projection, mv);
 
 	VertexShaderOutput OUT;
 	OUT.position = mul(mvp, float4(IN.position, 1.0f));
@@ -228,11 +228,7 @@ DefferedRenderPSOut PS_main(VertexShaderOutput IN) : SV_TARGET
 		N = normalize(float4(IN.normalVS, 0));
 	}
 
-
-
-
-
-	LightingResult lit = DoLighting(Lights, mat, eyePos, P, N);
+/*	LightingResult lit = DoLighting(Lights, mat, eyePos, P, N);
 	diffuse *= float4(lit.Diffuse.rgb, 1.0f); // Discard the alpha value from the lighting calculations.
 
 	float4 specular = 0;
@@ -254,7 +250,9 @@ DefferedRenderPSOut PS_main(VertexShaderOutput IN) : SV_TARGET
 		specular *= lit.Specular;
 	}
 
-	float4 colorResult = float4((/*ambient + */emissive + diffuse + specular).rgb, 1.0f/*alpha * (1.0 - mat.TransparencyFactor)*/);
+	/*float4 colorResult = float4((ambient + emissive + diffuse + specular).rgb, 1.0f
+	//alpha * (1.0 - mat.TransparencyFactor)
+	);
 
 	float bias = 0.00001f;
 
@@ -277,11 +275,13 @@ DefferedRenderPSOut PS_main(VertexShaderOutput IN) : SV_TARGET
 		{
 			colorResult *= 0.1f;
 		}
-	}
+	}*/
+
+	float4 colorResult = float4(diffuse.rgb, 1.0f);
 
 
 	DefferedRenderPSOut OUT;
-	OUT.PositionWS = IN.position;
+	//OUT.PositionWS = IN.position;
 	//OUT.Diffuse = float4(N.xyz, 1.0f);
 	//OUT.Diffuse = diffuse;
 	OUT.Diffuse = colorResult;

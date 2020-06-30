@@ -40,7 +40,10 @@ ZN_INTERFACE ZN_API ISceneNode3D
 
 	template<typename T, typename... Args> inline std::shared_ptr<T> CreateSceneNode(Args &&... _Args)
 	{
-		return GetScene()->CreateSceneNode<T>(shared_from_this(), std::forward<Args>(_Args)...);
+		if (auto scene = GetScene())
+			return scene->CreateSceneNode<T>(shared_from_this(), std::forward<Args>(_Args)...);
+		
+		return nullptr;
 	}
 
 	virtual IActionsGroup* GetActions() const = 0;

@@ -3,7 +3,7 @@
 class ZN_API MaterialBase 
 	: public IMaterial
 	, public IMaterialDataOwner
-	, public ILoadableFromFile
+	, public IObjectLoadSave
 {
 public:
 	MaterialBase(IRenderDevice& renderDevice);
@@ -19,7 +19,7 @@ public:
 	virtual void Bind(const ShaderMap& shaders) const override;
 	virtual void Unbind(const ShaderMap& shaders) const override;
 
-	// ILoadableFromFile
+	// IObjectLoadSave
 	virtual void Load(const std::shared_ptr<IByteBuffer>& ByteBuffer) override;
 	virtual void Save(const std::shared_ptr<IByteBuffer>& ByteBuffer) override;
 

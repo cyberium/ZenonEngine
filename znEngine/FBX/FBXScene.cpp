@@ -9,10 +9,15 @@
 #include "FBXStream.h"
 #include "FBXDisplayCommon.h"
 
-CFBXScene::CFBXScene(const IBaseManager& BaseManager, fbxsdk::FbxScene* NativeScene)
+CFBXScene::CFBXScene(const IBaseManager& BaseManager, fbxsdk::FbxManager* FBXManager)
 	: m_BaseManager(BaseManager)
-	, m_NativeScene(NativeScene)
+	, m_NativeScene(nullptr)
 {
+	FbxScene* fbxScene = FbxScene::Create(FBXManager, "Default FBX scene.");
+	if (fbxScene == nullptr)
+		throw CException("FBXManager: Unable to create FBX scene.");
+
+	m_NativeScene = fbxScene;
 }
 
 CFBXScene::~CFBXScene()
@@ -28,8 +33,7 @@ bool CFBXScene::LoadFromFile(std::shared_ptr<IFile> File)
 	int lFileFormat = -1;
 	int i, lAnimStackCount;
 	bool lStatus;
-	char lPassword[1024];
-
+	
 	// Get the file version number generate by the FBX SDK.
 	fbxsdk::FbxManager::GetFileFormatVersion(lSDKMajor, lSDKMinor, lSDKRevision);
 
@@ -68,6 +72,7 @@ bool CFBXScene::LoadFromFile(std::shared_ptr<IFile> File)
 		// From this point, it is possible to access animation stack information without
 		// the expense of loading the entire file.
 
+#if 0
 		Log::Print("Animation Stack Information");
 
 		lAnimStackCount = lImporter->GetAnimStackCount();
@@ -93,6 +98,7 @@ bool CFBXScene::LoadFromFile(std::shared_ptr<IFile> File)
 			Log::Print("         Import State: %s", lTakeInfo->mSelect ? "true" : "false");
 			Log::Print("\n");
 		}
+#endif
 
 		// Set the import states. By default, the import states are always set to true. The code below shows how to change these states.
 		GetNativeManager()->GetIOSettings()->SetBoolProp(IMP_FBX_MATERIAL, true);
@@ -118,6 +124,7 @@ bool CFBXScene::LoadFromFile(std::shared_ptr<IFile> File)
 	{
 		Log::Print("Please enter password: ");
 
+		char lPassword[1024];
 		lPassword[0] = '\0';
 
 		FBXSDK_CRT_SECURE_NO_WARNING_BEGIN
@@ -126,8 +133,8 @@ bool CFBXScene::LoadFromFile(std::shared_ptr<IFile> File)
 
 			FbxString lString(lPassword);
 
-		m_SdkManager->GetIOSettings()->SetStringProp(IMP_FBX_PASSWORD, lString);
-		m_SdkManager->GetIOSettings()->SetBoolProp(IMP_FBX_PASSWORD_ENABLE, true);
+		m_FBXManager->GetIOSettings()->SetStringProp(IMP_FBX_PASSWORD, lString);
+		m_FBXManager->GetIOSettings()->SetBoolProp(IMP_FBX_PASSWORD_ENABLE, true);
 
 		lStatus = lImporter->Import(pScene);
 
@@ -160,70 +167,10 @@ bool CFBXScene::LoadFromFile(std::shared_ptr<IFile> File)
 	return lStatus;
 }
 
-bool CFBXScene::SaveToFile(std::shared_ptr<IFile> File, int pFileFormat, bool pEmbedMedia)
-{
-	int lMajor, lMinor, lRevision;
-	bool lStatus = true;
-
-	// Create an exporter.
-	fbxsdk::FbxExporter* lExporter = fbxsdk::FbxExporter::Create(GetNativeManager(), "");
-
-	if (pFileFormat < 0 || pFileFormat >= GetNativeManager()->GetIOPluginRegistry()->GetWriterFormatCount())
-	{
-		// Write in fall back format in less no ASCII format found
-		pFileFormat = GetNativeManager()->GetIOPluginRegistry()->GetNativeWriterFormat();
-
-		//Try to export in ASCII if possible
-		for (int lFormatIndex = 0; lFormatIndex < GetNativeManager()->GetIOPluginRegistry()->GetWriterFormatCount(); lFormatIndex++)
-		{
-			if (GetNativeManager()->GetIOPluginRegistry()->WriterIsFBX(lFormatIndex))
-			{
-				FbxString lDesc = GetNativeManager()->GetIOPluginRegistry()->GetWriterFormatDescription(lFormatIndex);
-				const char *lASCII = "ascii";
-				if (lDesc.Find(lASCII) >= 0)
-				{
-					pFileFormat = lFormatIndex;
-					break;
-				}
-			}
-		}
-	}
-
-	// Set the export states. By default, the export states are always set to  true except for the option eEXPORT_TEXTURE_AS_EMBEDDED. The code below shows how to change these states.
-	GetNativeManager()->GetIOSettings()->SetBoolProp(EXP_FBX_MATERIAL, true);
-	GetNativeManager()->GetIOSettings()->SetBoolProp(EXP_FBX_TEXTURE, true);
-	GetNativeManager()->GetIOSettings()->SetBoolProp(EXP_FBX_EMBEDDED, pEmbedMedia);
-	GetNativeManager()->GetIOSettings()->SetBoolProp(EXP_FBX_SHAPE, true);
-	GetNativeManager()->GetIOSettings()->SetBoolProp(EXP_FBX_GOBO, true);
-	GetNativeManager()->GetIOSettings()->SetBoolProp(EXP_FBX_ANIMATION, true);
-	GetNativeManager()->GetIOSettings()->SetBoolProp(EXP_FBX_GLOBAL_SETTINGS, true);
-
-	// Create wrapper for file
-	CFBXStream fbxStream(File, GetNativeManager()->GetIOPluginRegistry());
-
-	// Initialize the exporter by providing a filename.
-	if (lExporter->Initialize(&fbxStream, NULL, pFileFormat, GetNativeManager()->GetIOSettings()) == false)
-	{
-		Log::Print("Call to FbxExporter::Initialize() failed.\n");
-		Log::Print("Error returned: %s\n\n", lExporter->GetStatus().GetErrorString());
-		return false;
-	}
-
-	fbxsdk::FbxManager::GetFileFormatVersion(lMajor, lMinor, lRevision);
-	Log::Print("FBX file format version %d.%d.%d\n\n", lMajor, lMinor, lRevision);
-
-	// Export the scene.
-	lStatus = lExporter->Export(m_NativeScene);
-
-	// Destroy the exporter.
-	lExporter->Destroy();
-
-	return lStatus;
-}
 
 //------------------------------------------------------------------------------------------------------
-
-bool CFBXScene::LoadNodes(ISceneNode3D* ParentNode)
+/*
+bool CFBXScene::LoadNodes(IScene* Scene)
 {
 	DisplayMetaData(GetNativeScene());
 	DisplayHierarchy(GetNativeScene());
@@ -235,15 +182,22 @@ bool CFBXScene::LoadNodes(ISceneNode3D* ParentNode)
 		Log::Print("%d GEOM NAME = '%s'", i, geom->GetNameOnly().Buffer());
 	}
 
-	m_RootNode = ParentNode->CreateSceneNode<CFBXSceneNode>(m_BaseManager, weak_from_this(), m_NativeScene->GetRootNode());
-	m_RootNode->LoadNode();
-	//m_RootNode->SetScale(glm::vec3(10));
-
-
-
 	return true;
 }
 
+std::shared_ptr<IModel> CFBXScene::ExtractModel()
+{
+	m_RootNode = std::make_shared<CFBXSceneNode>(m_BaseManager, weak_from_this(), m_NativeScene->GetRootNode());
+	m_RootNode->LoadNode();
+
+	_ASSERT(m_RootNode->GetChilds().size() == 1);
+
+	auto modelsChild = std::dynamic_pointer_cast<CFBXSceneNode>(m_RootNode->GetChilds().at(0));
+	_ASSERT(modelsChild->GetModel() != nullptr);
+
+	return modelsChild->GetModel();
+}
+*/
 
 //------------------------------------------------------------------------------------------------------
 

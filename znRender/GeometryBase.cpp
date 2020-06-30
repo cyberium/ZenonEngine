@@ -98,7 +98,7 @@ void GeometryBase::Save(const std::shared_ptr<IByteBuffer>& ByteBuffer)
 	ByteBuffer->write(&vertexBuffersCnt);
 	for (const auto& b : m_VertexBuffers)
 	{
-		if (const auto& loadableFromFile = std::dynamic_pointer_cast<ILoadableFromFile>(b.second))
+		if (const auto& loadableFromFile = std::dynamic_pointer_cast<IObjectLoadSave>(b.second))
 		{
 			b.first.Save(ByteBuffer);
 			loadableFromFile->Save(ByteBuffer);
@@ -111,7 +111,7 @@ void GeometryBase::Save(const std::shared_ptr<IByteBuffer>& ByteBuffer)
 	ByteBuffer->write(&isVertexBufferExists);
 	if (isVertexBufferExists)
 	{
-		if (const auto& loadableFromFile = std::dynamic_pointer_cast<ILoadableFromFile>(m_VertexBuffer))
+		if (const auto& loadableFromFile = std::dynamic_pointer_cast<IObjectLoadSave>(m_VertexBuffer))
 		{
 			loadableFromFile->Save(ByteBuffer);
 		}
@@ -123,7 +123,7 @@ void GeometryBase::Save(const std::shared_ptr<IByteBuffer>& ByteBuffer)
 	ByteBuffer->write(&isIndexBufferExists);
 	if (isIndexBufferExists)
 	{
-		if (const auto& loadableFromFile = std::dynamic_pointer_cast<ILoadableFromFile>(m_pIndexBuffer))
+		if (const auto& loadableFromFile = std::dynamic_pointer_cast<IObjectLoadSave>(m_pIndexBuffer))
 		{
 			loadableFromFile->Save(ByteBuffer);
 		}

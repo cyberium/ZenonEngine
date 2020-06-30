@@ -4,6 +4,7 @@
 
 #include <fbxsdk.h>
 
+#include "FBXInterfaces.h"
 #include "FBXMaterial.h"
 
 // FORWARD BEGIN
@@ -12,29 +13,32 @@ class CFBXScene;
 
 class ZN_API CFBXSceneNode
 	: public SceneNode3D
+	, public IFBXSceneNode3D
 {
 public:
-	CFBXSceneNode(const IBaseManager& BaseManager, std::weak_ptr<CFBXScene> OwnerScene, fbxsdk::FbxNode * NativeNode);
+	CFBXSceneNode(const IBaseManager& BaseManager, fbxsdk::FbxManager* FBXManager);
 	virtual ~CFBXSceneNode();
 
-	void LoadNode();
-
-	bool LoadMaterials();
+	void InitializeFromFile(const std::string& FileName);
+	void LoadNode(fbxsdk::FbxNode * NativeNode);
+	
 	const std::vector<std::shared_ptr<CFBXMaterial>>& GetMaterials() const;
 	std::shared_ptr<CFBXMaterial> GetMaterial(int Index) const;
+	std::shared_ptr<IModel> GetModel() const;
 
-	std::weak_ptr<CFBXScene> GetOwnerScene() const;
-	fbxsdk::FbxNode* GetNativeNode() const;
+protected:
+	void LoadChilds(fbxsdk::FbxNode * NativeNode);
+	void LoadMaterials(fbxsdk::FbxNode * NativeNode);
+	void LoadModel(fbxsdk::FbxNode * NativeNode);
+	void LoadLight(fbxsdk::FbxNode * NativeNode);
 
 private:
 	std::vector<std::shared_ptr<CFBXMaterial>> m_MaterialsArray;
-
-private:
-	std::weak_ptr<CFBXScene> m_OwnerScene;
-	fbxsdk::FbxNode* m_NativeNode;
+	std::shared_ptr<IModel> m_Model;
 
 private:
 	const IBaseManager& m_BaseManager;
+	fbxsdk::FbxManager* m_FBXManager;
 };
 
 #endif

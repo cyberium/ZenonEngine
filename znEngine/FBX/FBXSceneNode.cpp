@@ -10,26 +10,45 @@
 
 // Additional
 #include "FBXDisplayCommon.h"
+
 #include "FBXMesh.h"
 #include "FBXLight.h"
 
 #include "Materials/MaterialDebug.h"
 #include "Materials/MaterialTextured.h"
 
-CFBXSceneNode::CFBXSceneNode(const IBaseManager& BaseManager, std::weak_ptr<CFBXScene> OwnerScene, fbxsdk::FbxNode * NativeNode)
+CFBXSceneNode::CFBXSceneNode(const IBaseManager& BaseManager, fbxsdk::FbxManager* FBXManager)
 	: m_BaseManager(BaseManager)
-	, m_OwnerScene(OwnerScene)
-	, m_NativeNode(NativeNode)
+	, m_FBXManager(FBXManager)
 {
+
 }
 
 CFBXSceneNode::~CFBXSceneNode()
+{}
+
+void CFBXSceneNode::InitializeFromFile(const std::string & FileName)
 {
+	auto file = GetBaseManager().GetManager<IFilesManager>()->Open(FileName);
+	if (file == nullptr)
+		throw CException("FBXSCeneNode: File '%s' not found.", FileName.c_str());
+
+	auto FBXScene = std::make_shared<CFBXScene>(m_BaseManager, m_FBXManager);
+	if (!FBXScene->LoadFromFile(file))
+		throw CException("FBXSCeneNode: Unable to load '%s'.", FileName.c_str());
+
+	DisplayMetaData(FBXScene->GetNativeScene());
+	DisplayHierarchy(FBXScene->GetNativeScene());
+
+	LoadNode(FBXScene->GetNativeScene()->GetRootNode());
 }
 
-void CFBXSceneNode::LoadNode()
+void CFBXSceneNode::LoadNode(fbxsdk::FbxNode * NativeNode)
 {
-	fbxsdk::FbxAMatrix& lGlobalTransform = m_NativeNode->EvaluateLocalTransform();
+	//if (m_FBXScene != nullptr)
+	//	throw CException("FBXSceneNode: Node '%s' already initialized.", GetName().c_str());
+
+	fbxsdk::FbxAMatrix& lGlobalTransform = NativeNode->EvaluateLocalTransform();
 	glm::mat4 globalTransform;
 	for (uint32 i = 0; i < 4; i++)
 	{
@@ -42,13 +61,13 @@ void CFBXSceneNode::LoadNode()
 #if 0
 
 	// Get the node’s default TRS properties
-	fbxsdk::FbxDouble3 lTranslation = m_NativeNode->LclTranslation.Get();
+	fbxsdk::FbxDouble3 lTranslation = NativeNode->LclTranslation.Get();
 	Display4DVector("Translation: ", lTranslation, "");
 
-	fbxsdk::FbxDouble3 lRotation = m_NativeNode->EvaluateLocalRotation();
+	fbxsdk::FbxDouble3 lRotation = NativeNode->EvaluateLocalRotation();
 	Display4DVector("Rotation: ", lRotation, "");
 
-	fbxsdk::FbxDouble3 lScaling = m_NativeNode->LclScaling.Get();
+	fbxsdk::FbxDouble3 lScaling = NativeNode->LclScaling.Get();
 	Display4DVector("Scaling: ", lScaling, "");
 #endif
 
@@ -56,72 +75,26 @@ void CFBXSceneNode::LoadNode()
 
 	SetLocalTransform(globalTransform);
 
-	//
-	// Load childs
-	//
-	for (int i = 0; i < m_NativeNode->GetChildCount(); i++)
-	{
-		fbxsdk::FbxNode* fbxNode = m_NativeNode->GetChild(i);
+	LoadChilds(NativeNode);
 
-		std::shared_ptr<CFBXSceneNode> childFbxNode = CreateSceneNode<CFBXSceneNode>(m_BaseManager, m_OwnerScene, fbxNode);
-		childFbxNode->LoadNode();
-	}
-
-	LoadMaterials();
-
-	if (m_NativeNode->GetNodeAttribute() == nullptr)
-	{
+	if (NativeNode->GetNodeAttribute() == nullptr)
 		return;
-	}
 
-	switch (m_NativeNode->GetNodeAttribute()->GetAttributeType())
+	LoadMaterials(NativeNode);
+
+	switch (NativeNode->GetNodeAttribute()->GetAttributeType())
 	{
 		case fbxsdk::FbxNodeAttribute::EType::eMesh:
 		{
-			auto fbxMesh = std::make_shared<CFBXMesh>(m_BaseManager, std::dynamic_pointer_cast<CFBXSceneNode>(shared_from_this()));
-			fbxMesh->SetName(m_NativeNode->GetName());
-			fbxMesh->Load(m_NativeNode->GetMesh());
-
-			if (std::shared_ptr<ILoadableFromFile> loadableFromFile = std::dynamic_pointer_cast<ILoadableFromFile>(fbxMesh))
-			{
-				auto localFileStorage = m_BaseManager.GetManager<IFilesManager>()->GetFilesStorage("ZenonGamedata");
-
-				auto file = std::make_shared<CFile>("generatedModels\\model" + std::string(m_NativeNode->GetName()) + ".znmdl");
-
-				loadableFromFile->Save(file);
-				file->seek(0);
-
-				localFileStorage->SaveFile(file);
-
-
-				auto model = m_BaseManager.GetApplication().GetRenderDevice().GetObjectsFactory().CreateModel();
-				if (std::shared_ptr<ILoadableFromFile> loadableFromFile2 = std::dynamic_pointer_cast<ILoadableFromFile>(model))
-				{
-					loadableFromFile2->Load(file);
-					GetComponent<IModelsComponent3D>()->AddModel(model);
-					break;
-
-				}
-			}
-
-			GetComponent<IModelsComponent3D>()->AddModel(fbxMesh);
+			LoadModel(NativeNode);
+			if (auto component = GetComponent<IModelsComponent3D>())
+				component->AddModel(m_Model);
 		}
 		break;
 
 		case fbxsdk::FbxNodeAttribute::EType::eLight:
 		{
-			std::shared_ptr<CFBXLight> fbxLight = std::make_shared<CFBXLight>(m_BaseManager, std::dynamic_pointer_cast<CFBXSceneNode>(shared_from_this()));
-			fbxLight->Load(m_NativeNode->GetLight());
-
-			std::shared_ptr<MaterialTextured> matDebug = std::make_shared<MaterialTextured>(m_BaseManager.GetApplication().GetRenderDevice());
-			matDebug->SetTexture(0, m_BaseManager.GetApplication().GetRenderDevice().GetDefaultTexture());
-
-			auto geometry = m_BaseManager.GetApplication().GetRenderDevice().GetPrimitivesFactory().CreateCone();
-			auto model = m_BaseManager.GetApplication().GetRenderDevice().GetObjectsFactory().CreateModel();
-			model->AddConnection(matDebug, geometry);
-
-			GetComponent<IModelsComponent3D>()->AddModel(model);
-
+			LoadLight(NativeNode);
 		}
 		break;
 
@@ -160,22 +133,6 @@ void CFBXSceneNode::LoadNode()
 }
 
 
-
-//------------------------------------------------------------------------------------------------------
-
-bool CFBXSceneNode::LoadMaterials()
-{
-	//Log::Print("CFBXSceneNode: Materials count '%d'.", m_NativeNode->GetMaterialCount());
-	for (int i = 0; i < m_NativeNode->GetMaterialCount(); i++)
-	{
-		std::shared_ptr<CFBXMaterial> znMaterial = std::make_shared<CFBXMaterial>(m_BaseManager, std::dynamic_pointer_cast<CFBXSceneNode>(shared_from_this()));
-		znMaterial->Load(m_NativeNode->GetMaterial(i));
-		m_MaterialsArray.push_back(znMaterial);
-	}
-
-	return true;
-}
-
 const std::vector<std::shared_ptr<CFBXMaterial>>& CFBXSceneNode::GetMaterials() const
 {
 	return m_MaterialsArray;
@@ -186,14 +143,66 @@ std::shared_ptr<CFBXMaterial> CFBXSceneNode::GetMaterial(int Index) const
 	return m_MaterialsArray.at(Index);
 }
 
-std::weak_ptr<CFBXScene> CFBXSceneNode::GetOwnerScene() const
+std::shared_ptr<IModel> CFBXSceneNode::GetModel() const
 {
-	return m_OwnerScene;
+	return m_Model;
 }
 
-fbxsdk::FbxNode * CFBXSceneNode::GetNativeNode() const
+
+
+//
+// Protected
+//
+void CFBXSceneNode::LoadChilds(fbxsdk::FbxNode * NativeNode)
 {
-	return m_NativeNode;
+	for (int i = 0; i < NativeNode->GetChildCount(); i++)
+	{
+		fbxsdk::FbxNode* fbxNode = NativeNode->GetChild(i);
+		_ASSERT(fbxNode != nullptr);
+
+		std::shared_ptr<CFBXSceneNode> childFbxNode = CreateSceneNode<CFBXSceneNode>(m_BaseManager, m_FBXManager);
+		if (childFbxNode == nullptr)
+		{
+			childFbxNode = std::make_shared<CFBXSceneNode>(m_BaseManager, m_FBXManager);
+			std::dynamic_pointer_cast<ISceneNode3DInternal>(shared_from_this())->AddChildInternal(childFbxNode);
+		}
+		childFbxNode->LoadNode(fbxNode);
+	}
+}
+
+void CFBXSceneNode::LoadMaterials(fbxsdk::FbxNode * NativeNode)
+{
+	Log::Print("CFBXSceneNode: Materials count '%d'.", NativeNode->GetMaterialCount());
+	for (int i = 0; i < NativeNode->GetMaterialCount(); i++)
+	{
+		std::shared_ptr<CFBXMaterial> znMaterial = std::make_shared<CFBXMaterial>(m_BaseManager, std::dynamic_pointer_cast<CFBXSceneNode>(shared_from_this()));
+		znMaterial->Load(NativeNode->GetMaterial(i));
+		m_MaterialsArray.push_back(znMaterial);
+	}
+}
+
+void CFBXSceneNode::LoadModel(fbxsdk::FbxNode * NativeNode)
+{
+	auto fbxMesh = std::make_shared<CFBXMesh>(m_BaseManager);
+	fbxMesh->SetName(NativeNode->GetName());
+	fbxMesh->Load(*this, NativeNode->GetMesh());
+	m_Model = fbxMesh;
+
+	
+}
+
+void CFBXSceneNode::LoadLight(fbxsdk::FbxNode * NativeNode)
+{
+	std::shared_ptr<CFBXLight> fbxLight = std::make_shared<CFBXLight>(m_BaseManager, std::dynamic_pointer_cast<CFBXSceneNode>(shared_from_this()));
+	fbxLight->Load(NativeNode->GetLight());
+
+	//std::shared_ptr<MaterialTextured> matDebug = std::make_shared<MaterialTextured>(m_BaseManager.GetApplication().GetRenderDevice());
+	//matDebug->SetTexture(0, m_BaseManager.GetApplication().GetRenderDevice().GetDefaultTexture());
+
+	//auto geometry = m_BaseManager.GetApplication().GetRenderDevice().GetPrimitivesFactory().CreateCone();
+	//auto model = m_BaseManager.GetApplication().GetRenderDevice().GetObjectsFactory().CreateModel();
+	//model->AddConnection(matDebug, geometry);
+	//GetComponent<IModelsComponent3D>()->AddModel(model);
 }
 
 #endif

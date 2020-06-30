@@ -77,7 +77,7 @@ void MaterialBase::Unbind(const ShaderMap& shaders) const
 
 
 //
-// ILoadableFromFile
+// IObjectLoadSave
 //
 void MaterialBase::Load(const std::shared_ptr<IByteBuffer>& ByteBuffer)
 {

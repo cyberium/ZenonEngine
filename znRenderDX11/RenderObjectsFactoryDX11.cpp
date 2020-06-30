@@ -297,7 +297,7 @@ std::shared_ptr<IBuffer> CRenderObjectsFactoryDX11::LoadVoidBuffer(const std::sh
 	std::lock_guard<std::recursive_mutex> locker(m_LockMutex);
 
 	std::shared_ptr<IBuffer> object = std::make_shared<BufferDX11>(m_RenderDeviceDX11, IBuffer::BufferType::Unknown);
-	if (const auto& loadableFromFile = std::dynamic_pointer_cast<ILoadableFromFile>(object))
+	if (const auto& loadableFromFile = std::dynamic_pointer_cast<IObjectLoadSave>(object))
 		loadableFromFile->Load(ByteBuffer);
 
 	return object;
@@ -308,7 +308,7 @@ std::shared_ptr<IConstantBuffer> CRenderObjectsFactoryDX11::LoadConstantBuffer(c
 	std::lock_guard<std::recursive_mutex> locker(m_LockMutex);
 
 	std::shared_ptr<IConstantBuffer> object = std::make_shared<ConstantBufferDX11>(m_RenderDeviceDX11);
-	if (const auto& loadableFromFile = std::dynamic_pointer_cast<ILoadableFromFile>(object))
+	if (const auto& loadableFromFile = std::dynamic_pointer_cast<IObjectLoadSave>(object))
 		loadableFromFile->Load(ByteBuffer);
 
 	return object;
@@ -319,7 +319,7 @@ std::shared_ptr<IStructuredBuffer> CRenderObjectsFactoryDX11::LoadStructuredBuff
 	std::lock_guard<std::recursive_mutex> locker(m_LockMutex);
 
 	std::shared_ptr<IStructuredBuffer> object = std::make_shared<StructuredBufferDX11>(m_RenderDeviceDX11);
-	if (const auto& loadableFromFile = std::dynamic_pointer_cast<ILoadableFromFile>(object))
+	if (const auto& loadableFromFile = std::dynamic_pointer_cast<IObjectLoadSave>(object))
 		loadableFromFile->Load(ByteBuffer);
 
 	return object;

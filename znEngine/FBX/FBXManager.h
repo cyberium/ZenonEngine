@@ -4,7 +4,9 @@
 
 #include <fbxsdk.h>
 
+#include "FBXInterfaces.h"
 #include "FBXScene.h"
+#include "FBXSceneNode.h"
 
 class CFBXManager
 {
@@ -12,10 +14,10 @@ public:
 	CFBXManager(const IBaseManager& BaseManager);
 	virtual ~CFBXManager();
 
-	std::shared_ptr<CFBXScene> CreateScene(std::string SceneName);
+	std::shared_ptr<CFBXSceneNode> CreateSceneNode(IScene* Scene, std::string SceneName);
 
 private:
-	fbxsdk::FbxManager* m_SdkManager;
+	fbxsdk::FbxManager* m_FBXManager;
 	const IBaseManager& m_BaseManager;
 };
 
