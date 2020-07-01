@@ -11,8 +11,8 @@ public:
 	virtual ~CSceneNode3DFactory();
 
 	// ISceneNode3DCreator
-	std::shared_ptr<ISceneNode3D> CreateSceneNode3D(IScene* Scene, ObjectClassType ObjectClassKey) override;
-	std::shared_ptr<ISceneNode3D> LoadSceneNode3D(IScene* Scene, std::shared_ptr<IByteBuffer> Bytes) override;
+	std::shared_ptr<ISceneNode3D> CreateSceneNode3D(IScene* Scene, ObjectClassType ObjectClassKey, const std::shared_ptr<ISceneNode3D>& Parent) override;
+	std::shared_ptr<ISceneNode3D> LoadSceneNode3D(IScene* Scene, std::shared_ptr<IByteBuffer> Bytes, const std::shared_ptr<ISceneNode3D>& Parent) override;
 };
 
 
@@ -25,6 +25,6 @@ public:
 	virtual ~CSceneNodeUIFactory();
 
 	// ISceneNodeUICreator
-	std::shared_ptr<ISceneNodeUI> CreateSceneNodeUI(IScene* Scene, ObjectClassType ObjectClassKey) override;
+	std::shared_ptr<ISceneNodeUI> CreateSceneNodeUI(IScene* Scene, ObjectClassType ObjectClassKey, const std::shared_ptr<ISceneNodeUI>& Parent) override;
 
 };

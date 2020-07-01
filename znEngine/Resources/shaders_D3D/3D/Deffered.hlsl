@@ -91,7 +91,7 @@ float4 PS_DeferredLighting(VS_Output VSOut) : SV_Target
 	// View vector
 	float4 V = normalize(eyePos - PView);
 
-	float4 diffuse        = Texture0.Load(int3(texCoord, 0));
+	float4 diffuse        = Texture0.Load(int3(texCoord, 0)); // Texture0.Sample(LinearClampSampler, texCoord);
 	float4 specular       = Texture1.Load(int3(texCoord, 0));
 	//float4 nativePosition = Texture2.Load(int3(texCoord, 0));
 	float4 N              = Texture3.Load(int3(texCoord, 0));

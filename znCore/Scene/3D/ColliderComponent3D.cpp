@@ -113,6 +113,14 @@ bool CColliderComponent3D::IsCulledByDistance(const ICameraComponent3D* Camera) 
 	return distToCamera > m_CullDistance;
 }
 
+bool CColliderComponent3D::IsRayIntersects(const Ray & Ray) const
+{
+	if (GetBounds().isClear())
+		return false;
+
+	return HitBoundingBox(GetWorldBounds().getMin(), GetWorldBounds().getMax(), Ray.GetOrigin(), Ray.GetDirection());
+}
+
 void CColliderComponent3D::OnMessage(const ISceneNodeComponent* Component, ComponentMessageType Message)
 {
 	switch (Message)

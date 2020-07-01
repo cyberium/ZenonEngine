@@ -12,6 +12,7 @@
 // Materials
 #include "../znEngine/Materials/MaterialDebug.h"
 #include "../znEngine/Materials/MaterialTextured.h"
+#include "../znEngine/Materials/MaterialModel.h"
 #include "../znEngine/Materials/MaterialParticle.h"
 
 // Passes

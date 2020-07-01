@@ -27,21 +27,7 @@ CFBXSceneNode::CFBXSceneNode(const IBaseManager& BaseManager, fbxsdk::FbxManager
 CFBXSceneNode::~CFBXSceneNode()
 {}
 
-void CFBXSceneNode::InitializeFromFile(const std::string & FileName)
-{
-	auto file = GetBaseManager().GetManager<IFilesManager>()->Open(FileName);
-	if (file == nullptr)
-		throw CException("FBXSCeneNode: File '%s' not found.", FileName.c_str());
 
-	auto FBXScene = std::make_shared<CFBXScene>(m_BaseManager, m_FBXManager);
-	if (!FBXScene->LoadFromFile(file))
-		throw CException("FBXSCeneNode: Unable to load '%s'.", FileName.c_str());
-
-	DisplayMetaData(FBXScene->GetNativeScene());
-	DisplayHierarchy(FBXScene->GetNativeScene());
-
-	LoadNode(FBXScene->GetNativeScene()->GetRootNode());
-}
 
 void CFBXSceneNode::LoadNode(fbxsdk::FbxNode * NativeNode)
 {
@@ -73,7 +59,7 @@ void CFBXSceneNode::LoadNode(fbxsdk::FbxNode * NativeNode)
 
 	//SetRotation(glm::vec3(lRotation[0], lRotation[1], lRotation[2]));
 
-	SetLocalTransform(globalTransform);
+	//SetLocalTransform(globalTransform);
 
 	LoadChilds(NativeNode);
 
@@ -143,6 +129,27 @@ std::shared_ptr<CFBXMaterial> CFBXSceneNode::GetMaterial(int Index) const
 	return m_MaterialsArray.at(Index);
 }
 
+
+
+//
+// IFBXSceneNode3D
+//
+void CFBXSceneNode::InitializeFromFile(const std::string & FileName)
+{
+	auto file = GetBaseManager().GetManager<IFilesManager>()->Open(FileName);
+	if (file == nullptr)
+		throw CException("FBXSCeneNode: File '%s' not found.", FileName.c_str());
+
+	auto FBXScene = std::make_shared<CFBXScene>(m_BaseManager, m_FBXManager);
+	if (!FBXScene->LoadFromFile(file))
+		throw CException("FBXSCeneNode: Unable to load '%s'.", FileName.c_str());
+
+	DisplayMetaData(FBXScene->GetNativeScene());
+	DisplayHierarchy(FBXScene->GetNativeScene());
+
+	LoadNode(FBXScene->GetNativeScene()->GetRootNode());
+}
+
 std::shared_ptr<IModel> CFBXSceneNode::GetModel() const
 {
 	return m_Model;
@@ -188,7 +195,7 @@ void CFBXSceneNode::LoadModel(fbxsdk::FbxNode * NativeNode)
 	fbxMesh->Load(*this, NativeNode->GetMesh());
 	m_Model = fbxMesh;
 
-	
+
 }
 
 void CFBXSceneNode::LoadLight(fbxsdk::FbxNode * NativeNode)

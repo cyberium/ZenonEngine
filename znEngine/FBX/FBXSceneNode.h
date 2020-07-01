@@ -19,12 +19,14 @@ public:
 	CFBXSceneNode(const IBaseManager& BaseManager, fbxsdk::FbxManager* FBXManager);
 	virtual ~CFBXSceneNode();
 
-	void InitializeFromFile(const std::string& FileName);
 	void LoadNode(fbxsdk::FbxNode * NativeNode);
-	
+
 	const std::vector<std::shared_ptr<CFBXMaterial>>& GetMaterials() const;
 	std::shared_ptr<CFBXMaterial> GetMaterial(int Index) const;
-	std::shared_ptr<IModel> GetModel() const;
+
+	// IFBXSceneNode3D
+	void InitializeFromFile(const std::string& FileName) override;
+	std::shared_ptr<IModel> GetModel() const override;
 
 protected:
 	void LoadChilds(fbxsdk::FbxNode * NativeNode);

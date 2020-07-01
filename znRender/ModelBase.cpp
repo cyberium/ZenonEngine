@@ -14,14 +14,12 @@ ModelBase::~ModelBase()
 
 void ModelBase::SetBounds(const BoundingBox& Bounds)
 {
-	// TODO:
-	//m_Geometry->SetBounds(Bounds);
+	m_BoundingBox = Bounds;
 }
 
 BoundingBox ModelBase::GetBounds() const
 {
-	// TODO:
-	return BoundingBox();
+	return m_BoundingBox;
 }
 
 void ModelBase::AddConnection(const std::shared_ptr<IMaterial>& Material, const std::shared_ptr<IGeometry>& Geometry, SGeometryDrawArgs GeometryDrawArgs)
@@ -58,6 +56,10 @@ void ModelBase::Accept(IVisitor* visitor)
 
 void ModelBase::Load(const std::shared_ptr<IByteBuffer>& ByteBuffer)
 {
+	BoundingBox bounds;
+	bounds.Load(ByteBuffer);
+	m_BoundingBox = bounds;
+
 	size_t connectionsCount = m_Connections.size();
 	ByteBuffer->read(&connectionsCount);
 
@@ -88,6 +90,8 @@ void ModelBase::Load(const std::shared_ptr<IByteBuffer>& ByteBuffer)
 
 void ModelBase::Save(const std::shared_ptr<IByteBuffer>& ByteBuffer)
 {
+	m_BoundingBox.Save(ByteBuffer);
+
 	//std::vector<std::shared_ptr<IMaterial>> modelMaterials;
 	size_t connectionsCount = m_Connections.size();
 	ByteBuffer->write(&connectionsCount);

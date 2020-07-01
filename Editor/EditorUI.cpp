@@ -40,15 +40,6 @@ MainEditor::~MainEditor()
 {
 }
 
-//
-// IEditorUIFrame
-//
-void MainEditor::OnSceneNode3DSelected(const std::shared_ptr<ISceneNode3D>& SceneNode3D) const
-{
-}
-
-
-
 void MainEditor::OnSceneNodeSelected(ISceneNode3D* SceneNode)
 {
 	m_PropertiesController->SceneNodeSelected(SceneNode);

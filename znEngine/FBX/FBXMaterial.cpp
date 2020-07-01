@@ -68,7 +68,7 @@ void CFBXMaterial::Load(fbxsdk::FbxSurfaceMaterial* NativeMaterial)
 
 	MarkMaterialDataDirty();
 
-	PrintInfo();
+	//PrintInfo();
 
 	for (int j = 0; j < fbxsdk::FbxLayerElement::sTypeTextureCount; j++)
 	{

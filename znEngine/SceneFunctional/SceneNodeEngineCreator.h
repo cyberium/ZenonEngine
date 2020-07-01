@@ -1,5 +1,7 @@
 #pragma once
 
+#include "FBX/FBXInterfaces.h"
+
 class CSceneNode3DEngineCreator
 	: public CObjectClassCreator
 {
@@ -9,6 +11,9 @@ public:
 
 	// IObjectClassCreator
 	virtual std::shared_ptr<IObject> CreateObject(size_t Index, const IObjectCreationArgs* ObjectCreationArgs) override;
+
+private:
+	std::shared_ptr<IFBXManager> m_FBXManager;
 };
 
 

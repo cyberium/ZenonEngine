@@ -5,16 +5,22 @@
 
 CRTSCameraController::CRTSCameraController()
 {
-	//m_Camera = std::make_shared<CCamera>();
-	//GetCameraMovement()->SetYaw(0.0f);
-	//GetCameraMovement()->SetPitch(-90.0f);
-
-	//m_MouseMoveMultiplier = 0.3f;
-	//m_MouseWheelMultiplier = 8.7f;
+	SetBounds(BoundingBox(glm::vec3(-100.0f), glm::vec3(100.0f)));
 }
 
 CRTSCameraController::~CRTSCameraController()
 {
+}
+
+void CRTSCameraController::SetCamera(const std::shared_ptr<ICameraComponent3D>& Camera)
+{
+	Camera->SetYaw(0.0f);
+	Camera->SetPitch(-75.0f);
+
+	m_MouseMoveMultiplier = 0.2f;
+	m_MouseWheelMultiplier = 8.7f;
+
+	__super::SetCamera(Camera);
 }
 
 
@@ -51,7 +57,7 @@ void CRTSCameraController::SetCameraDistance(float Distance)
 //
 void CRTSCameraController::OnUpdate(UpdateEventArgs& e)
 {
-	//GetCamera()->SetTranslate(m_CameraPosition);
+	
 }
 
 
@@ -66,12 +72,13 @@ void CRTSCameraController::OnMouseMoved(MouseMotionEventArgs& e)
 		glm::vec2 currPoint = glm::vec2(e.X, e.Y);
 		glm::vec2 diff = currPoint - m_PreviousMousePosition;
 		diff *= m_MouseMoveMultiplier;
-		diff = -diff;
 
-		AddX(diff.x);
-		AddZ(diff.y);
+		AddX(diff.y);
+		AddZ(-diff.x);
 
 		m_PreviousMousePosition = currPoint;
+
+		GetCamera()->SetTranslation(m_CameraPosition);
 	}
 }
 
@@ -81,6 +88,8 @@ void CRTSCameraController::OnMouseWheel(MouseWheelEventArgs& e)
 	value *= m_MouseWheelMultiplier;
 
 	AddY(value);
+
+	GetCamera()->SetTranslation(m_CameraPosition);
 }
 
 

@@ -29,20 +29,52 @@ std::shared_ptr<ICameraComponent3D> CCameraControllerBase::GetCamera() const
 	return m_Camera;
 }
 
-Ray CCameraControllerBase::ScreenPointToRay(const Viewport& Viewport, glm::vec2 screenPoint) const
+Ray CCameraControllerBase::ScreenToRay(const Viewport& Viewport, const glm::vec2& screenPoint) const
 {
-	glm::vec4 clipPoint = glm::vec4(screenPoint, 1, 1);
-	clipPoint.x = (screenPoint.x - Viewport.GetX()) / Viewport.GetWidth();
-	clipPoint.y = 1.0f - (screenPoint.y - Viewport.GetY()) / Viewport.GetHeight();
-	clipPoint = clipPoint * 2.0f - 1.0f;
+	glm::vec4 viewport = glm::vec4(Viewport.GetX(), Viewport.GetY(), Viewport.GetWidth(), Viewport.GetHeight());
+	glm::vec3 nearSource = glm::vec3((float)screenPoint.x, (float)Viewport.GetHeight() - (float)screenPoint.y, 0.0f);
+	glm::vec3 farSource = glm::vec3((float)screenPoint.x, (float)Viewport.GetHeight() - (float)screenPoint.y, 1.0f);
+	glm::vec3 nearPoint = glm::unProject(nearSource, GetCamera()->GetViewMatrix(), GetCamera()->GetProjectionMatrix(), viewport);
+	glm::vec3 farPoint = glm::unProject(farSource, GetCamera()->GetViewMatrix(), GetCamera()->GetProjectionMatrix(), viewport);
 
-	glm::vec3 p0 = m_Camera->GetTranslation();
-	glm::vec4 worldSpace = m_Camera->GetInverseProjectionMatrix() * clipPoint;
-	glm::vec3 p1 = glm::vec3(worldSpace / worldSpace.w);
+	glm::vec3 direction = farPoint - nearPoint;
+	direction = glm::normalize(direction);
 
-	return Ray(p0, glm::normalize(p1 - p0));
+	return Ray(nearPoint, direction);
 }
 
+glm::vec3 CCameraControllerBase::ScreenToWorld(const Viewport& Viewport, const glm::vec2& screenPoint) const
+{
+	Ray ray = ScreenToRay(Viewport, screenPoint);
+
+	glm::vec3 n = glm::vec3(0.f, 1.f, 0.f);
+	Plane p = Plane(n, 0.f);
+
+	// Calculate distance of intersection point from r.origin.
+	float denominator = glm::dot(p.normal, ray.GetDirection());
+	float numerator = glm::dot(p.normal, ray.GetOrigin()) + p.dist;
+	float t = -(numerator / denominator);
+
+	return ray.GetOrigin() + ray.GetDirection() * t;
+}
+
+glm::vec3 CCameraControllerBase::ScreenToPlane(const Viewport & Viewport, const glm::vec2 & screenPoint, const Plane& Plane) const
+{
+	return RayToPlane(ScreenToRay(Viewport, screenPoint), Plane);
+}
+
+glm::vec3 CCameraControllerBase::RayToPlane(const Ray & Ray, const Plane & Plane) const
+{
+	float denominator = glm::dot(Plane.normal, Ray.GetDirection());
+	if (glm::abs(denominator) > 0.0001f)
+	{
+		float t = glm::dot(Plane.GetCenter() - Ray.GetOrigin(), Plane.normal) / denominator;
+		if (t >= 0)
+			return Ray.GetOrigin() + Ray.GetDirection() * t;
+	}
+
+	return glm::vec3(Math::MinFloat);
+}
 
 
 //

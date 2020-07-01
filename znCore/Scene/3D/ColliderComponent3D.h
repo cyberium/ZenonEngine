@@ -25,6 +25,7 @@ public:
 	bool IsCulledByFrustum(const ICameraComponent3D* Camera) const override;
 	bool IsCulledByDistance2D(const ICameraComponent3D* Camera) const override;
 	bool IsCulledByDistance(const ICameraComponent3D* Camera) const override;
+	bool IsRayIntersects(const Ray& Ray) const override;
 
     // CComponentBase
     void OnMessage(const ISceneNodeComponent* Component, ComponentMessageType Message) override;

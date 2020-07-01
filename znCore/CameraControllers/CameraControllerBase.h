@@ -11,7 +11,10 @@ public:
 	void											SetCamera(const std::shared_ptr<ICameraComponent3D>& Camera) override;
 	std::shared_ptr<ICameraComponent3D>             GetCamera() const override;
 
-	Ray	                                            ScreenPointToRay(const Viewport& Viewport, glm::vec2 screenPoint) const override;
+	Ray	                                            ScreenToRay(const Viewport& Viewport, const glm::vec2& screenPoint) const override;
+	glm::vec3	                                    ScreenToWorld(const Viewport& Viewport, const glm::vec2& screenPoint) const override;
+	glm::vec3                                       ScreenToPlane(const Viewport& Viewport, const glm::vec2& screenPoint, const Plane& Plane) const override;
+	glm::vec3                                       RayToPlane(const Ray& Ray, const Plane& Plane) const override;
 
     // Engine events
     virtual void                                    OnUpdate(UpdateEventArgs& e) override;

@@ -9,6 +9,10 @@ public:
 	                                                CRTSCameraController();
 	virtual                                         ~CRTSCameraController();
 
+	//
+	void                                            SetCamera(const std::shared_ptr<ICameraComponent3D>& Camera) override;
+
+
 	// RTS camera
 	void                                            SetBounds(BoundingBox Bounds);
 	void                                            SetCameraPosition(glm::vec2 Position);

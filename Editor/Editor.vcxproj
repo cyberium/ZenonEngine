@@ -109,7 +109,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="DebugOutputEditorLog.cpp" />
-    <ClCompile Include="GameState_Editor.cpp" />
+    <ClCompile Include="Editor3DFrame.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainEditor.cpp" />
     <ClCompile Include="PropertyEditor\Core\Core\PropertyBool.cpp">
@@ -344,7 +344,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DebugOutputEditorLog.h" />
-    <ClInclude Include="GameState_Editor.h" />
+    <ClInclude Include="Editor3DFrame.h" />
+    <ClInclude Include="EditorInterfaces.h" />
     <ClInclude Include="PropertyEditor\Core\Auxiliary\PropertyAux.h" />
     <ClInclude Include="PropertyEditor\Core\Auxiliary\PropertyDelegateInfo.h" />
     <ClInclude Include="PropertyEditor\Core\Auxiliary\PropertyMacro.h" />

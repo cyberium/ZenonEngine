@@ -34,7 +34,9 @@ public:
 	// Scene events
 	Delegate<SceneChangeEventArgs>&					SceneChangeEvent() override;
 	void                                            RaiseSceneChangeEvent(ESceneChangeType SceneChangeType, const ISceneNode3D* OwnerNode, const ISceneNode3D* ChildNode) override;
-	virtual void                                    RaiseRayIntersected(const glm::vec3& Point);
+	virtual void                                    OnMouseClickToWorld(MouseButtonEventArgs::MouseButton& MouseButton, const glm::vec2& MousePosition, const Ray& RayToWorld);
+	virtual void                                    OnMouseReleaseToWorld(MouseButtonEventArgs::MouseButton& MouseButton, const glm::vec2& MousePosition, const Ray& RayToWorld);
+	virtual void                                    OnMouseMoveToWorld(MouseButtonEventArgs::MouseButton& MouseButton, const glm::vec2& MousePosition, const Ray& RayToWorld);
 
 	// Engine events
 	virtual void                                    OnUpdate(UpdateEventArgs& e) ;
@@ -74,6 +76,8 @@ public:
 protected:
 	IRenderDevice&                                  GetRenderDevice() const;
 	std::shared_ptr<IRenderWindow>                  GetRenderWindow() const;
+
+	std::shared_ptr<ISceneNode3D>                   FindIntersection(const Ray& Ray);
 
 
 protected: // Input events process recursive

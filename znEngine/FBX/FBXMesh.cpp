@@ -11,6 +11,13 @@
 // Additional
 #include "FBXDisplayCommon.h"
 
+
+inline glm::vec3 ToGLMVec3(const FbxPropertyT<FbxDouble3>& FBXVec3)
+{
+	return glm::vec3(FBXVec3.Get()[0], FBXVec3.Get()[1], FBXVec3.Get()[2]);
+}
+
+
 CFBXMesh::CFBXMesh(const IBaseManager& BaseManager)
 	: ModelProxie(BaseManager.GetApplication().GetRenderDevice().GetObjectsFactory().CreateModel())
 	, m_BaseManager(BaseManager)
@@ -25,10 +32,21 @@ void CFBXMesh::Load(const CFBXSceneNode& FBXNode, fbxsdk::FbxMesh* NativeMesh)
 {
 	IRenderDevice& renderDevice = m_BaseManager.GetApplication().GetRenderDevice();
 
+	if (NativeMesh == nullptr)
+		return;
+
+	FbxVector4* lControlPoints = NativeMesh->GetControlPoints();
+	if (lControlPoints == nullptr)
+		return;
+
+	SetName(NativeMesh->GetName());
+
+	NativeMesh->ComputeBBox();
+	SetBounds(BoundingBox(ToGLMVec3(NativeMesh->BBoxMin), ToGLMVec3(NativeMesh->BBoxMax)));
+
 	NativeMesh->GenerateNormals(true, true);
 
 	DisplayMetaDataConnections(NativeMesh);
-
 
 	std::vector<glm::vec3> vertices;
 	std::vector<glm::vec2> uvs;
@@ -36,7 +54,6 @@ void CFBXMesh::Load(const CFBXSceneNode& FBXNode, fbxsdk::FbxMesh* NativeMesh)
 	std::vector<glm::vec3> binormal;
 	std::vector<glm::vec3> tangent;
 
-	FbxVector4* lControlPoints = NativeMesh->GetControlPoints();
 	for (int i = 0; i < NativeMesh->GetPolygonCount(); i++)
 	{
 		int lPolygonSize = NativeMesh->GetPolygonSize(i);

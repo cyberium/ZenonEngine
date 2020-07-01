@@ -53,6 +53,11 @@
     <Filter Include="Property editor\Widget\Delegates\Utils">
       <UniqueIdentifier>{0f6f97d0-49b2-49cc-b430-b735220f9d9d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+      <ParseFiles>true</ParseFiles>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="RenderWindowWidget.cpp">
@@ -233,7 +238,6 @@
     <ClCompile Include="PropertyEditor\PropertyWidget\Utils\InplaceEditing.cpp">
       <Filter>Property editor\Widget\Utils</Filter>
     </ClCompile>
-    <ClCompile Include="MainEditor.cpp" />
     <ClCompile Include="PropertyEditor\PropertiesController.cpp">
       <Filter>Property editor</Filter>
     </ClCompile>
@@ -243,7 +247,6 @@
     <ClCompile Include="PropertyEditor\PropertyWidget\Delegates\Core\PropertyDelegateVec3.cpp">
       <Filter>Property editor\Widget\Delegates\Core</Filter>
     </ClCompile>
-    <ClCompile Include="GameState_Editor.cpp" />
     <ClCompile Include="PropertyEditor\Core\Core\PropertyString.cpp">
       <Filter>Property editor\Core\Core</Filter>
     </ClCompile>
@@ -251,6 +254,10 @@
       <Filter>Property editor\Widget\Delegates\Core</Filter>
     </ClCompile>
     <ClCompile Include="DebugOutputEditorLog.cpp" />
+    <ClCompile Include="Editor3DFrame.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MainEditor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -377,9 +384,14 @@
       <Filter>Property editor\Widget\Delegates\Core</Filter>
     </ClInclude>
     <ClInclude Include="DebugOutputEditorLog.h" />
-    <ClInclude Include="GameState_Editor.h" />
     <ClInclude Include="PropertyEditor\PropertyWidget\Delegates\Core\PropertyDelegateString.h">
       <Filter>Property editor\Widget\Delegates\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Editor3DFrame.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="EditorInterfaces.h">
+      <Filter>Common</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

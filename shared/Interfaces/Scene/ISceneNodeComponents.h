@@ -63,6 +63,7 @@ ZN_INTERFACE __declspec(UUID_ColliderComponent) ZN_API IColliderComponent3D
 	virtual bool IsCulledByFrustum(const ICameraComponent3D* Camera) const = 0;
 	virtual bool IsCulledByDistance2D(const ICameraComponent3D* Camera) const = 0;
 	virtual bool IsCulledByDistance(const ICameraComponent3D* Camera) const = 0;
+	virtual bool IsRayIntersects(const Ray& Ray) const = 0;
 };
 const ComponentMessageType UUID_OnBoundsChanget = 10;
 

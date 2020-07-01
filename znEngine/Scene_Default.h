@@ -20,7 +20,8 @@ public:
 	void Initialize() override;
 	void Finalize() override;
 
-	virtual void OnRayIntersected(const glm::vec3& Point);
+	virtual void OnMouseClickToWorld(MouseButtonEventArgs::MouseButton& MouseButton, const glm::vec2& MousePosition, const Ray& RayToWorld) override;
+	virtual void OnMouseMoveToWorld(MouseButtonEventArgs::MouseButton& MouseButton, const glm::vec2& MousePosition, const Ray& RayToWorld) override;
 
 	virtual void OnPreRender(RenderEventArgs& e) override;
 
@@ -46,4 +47,6 @@ private:
 	std::shared_ptr<CDefferedRenderFinal> m_DefferedFinalRenderPass;
 
 	rp3d::DynamicsWorld m_World;
+
+	std::shared_ptr<SceneNode3D> sceneNodeParentt;
 };

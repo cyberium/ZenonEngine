@@ -8,6 +8,11 @@ public:
 		, dist(0.0f)
 	{};
 
+	Plane(const glm::vec3& normal, float Dist)
+		: normal(normal)
+		, dist(Dist)
+	{};
+
 	explicit Plane(const float a, const float b, const float c, const float d)
 	{
 		normal = glm::vec3(a, b, c);
@@ -23,6 +28,11 @@ public:
 		normal = glm::cross(cb, ca);
 		normal = glm::normalize(normal);
 		dist = - glm::dot(normal, c);
+	}
+
+	glm::vec3 GetCenter() const
+	{
+		return normal * dist;
 	}
 
 	float distToPoint(const glm::vec3& v) const

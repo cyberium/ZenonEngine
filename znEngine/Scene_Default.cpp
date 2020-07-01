@@ -19,6 +19,8 @@
 
 #include "Physics/Adapters/ReactPhysicsComponent.h"
 
+#include "FBX/FBXInterfaces.h"
+
 // Additional
 #include <filesystem>
 namespace fs = std::experimental::filesystem;
@@ -40,8 +42,11 @@ namespace
 
 		try
 		{
+			bool isExists = fs::exists(Directory);
+			bool isDir = fs::is_directory(Directory);
+
 			// Check if given path exists and points to a directory
-			if (fs::exists(Directory) && fs::is_directory(Directory))
+			if (isExists && isDir)
 			{
 				// Create a Recursive Directory Iterator object and points to the starting of directory
 				fs::recursive_directory_iterator iter(Directory);
@@ -114,7 +119,7 @@ void CSceneDefault::Initialize()
 
 	SetCameraController(std::make_shared<CFreeCameraController>());
 	GetCameraController()->SetCamera(cameraNode->GetComponent<ICameraComponent3D>());
-	GetCameraController()->GetCamera()->SetPerspectiveProjection(ICameraComponent3D::EPerspectiveProjectionHand::Right, 45.0f, static_cast<float>(GetRenderWindow()->GetWindowWidth()) / static_cast<float>(GetRenderWindow()->GetWindowHeight()), 0.5f, 10000.0f);
+	GetCameraController()->GetCamera()->SetPerspectiveProjection(ICameraComponent3D::EPerspectiveProjectionHand::Right, 45.0f, static_cast<float>(GetRenderWindow()->GetWindowWidth()) / static_cast<float>(GetRenderWindow()->GetWindowHeight()), 1.0f, 5000.0f);
 
 	rp3d::Vector3 gravity(0.0, -9.81, 0.0);
 	// Create the dynamics world
@@ -136,24 +141,14 @@ void CSceneDefault::Finalize()
 	SceneBase::Finalize();
 }
 
-void CSceneDefault::OnRayIntersected(const glm::vec3& Point)
+void CSceneDefault::OnMouseClickToWorld(MouseButtonEventArgs::MouseButton& MouseButton, const glm::vec2& MousePosition, const Ray& RayToWorld)
 {
-	/*
-	std::shared_ptr<MaterialDebug> matDebug = std::make_shared<MaterialDebug>(GetRenderDevice());
-	matDebug->SetDiffuseColor(vec4(1.0f, 0.0f, 0.0f, 1.0f));
-	matDebug->SetWrapper(matDebug);
+	if (MouseButton == MouseButtonEventArgs::MouseButton::Left)
+		sceneNodeParentt->SetTranslate(GetCameraController()->RayToPlane(RayToWorld, Plane(glm::vec3(0.0f, 1.0f, 0.0f), 25.0f)));
+}
 
-	IModel* meshPlane = GetRenderDevice().GetPrimitiveCollection()->CreateSphere();
-	meshPlane->SetMaterial(matDebug);
-
-	std::shared_ptr<ISceneNode3D> sceneNodePlane = m_Scene->CreateWrappedSceneNode<SceneNode3D>("SceneNode3D", m_Scene->GetRootNode());
-	sceneNodePlane->SetName("Sphere.");
-	std::dynamic_pointer_cast<ISceneNode3D>(sceneNodePlane)->SetTranslate(Point);
-	std::dynamic_pointer_cast<ISceneNode3D>(sceneNodePlane)->SetScale(vec3(50.0f, 50.0f, 50.0f));
-	sceneNodePlane->GetComponent<IModelsComponent3D>()->AddMesh(meshPlane);
-
-	Log::Green("Sphere created at %f %f %f", Point.x, Point.y, Point.z);
-	*/
+void CSceneDefault::OnMouseMoveToWorld(MouseButtonEventArgs::MouseButton& MouseButton, const glm::vec2 & MousePosition, const Ray & RayToWorld)
+{
 }
 
 
@@ -205,14 +200,14 @@ void CSceneDefault::Load3D()
 	{
 		auto sceneNodeLight = GetRootNode3D()->CreateSceneNode<SceneNode3D>();
 		sceneNodeLight->SetName("Light node");
-		sceneNodeLight->SetTranslate(glm::vec3(300.0f, 300.0f, 300.0f));
-		sceneNodeLight->SetRotation(glm::vec3(-0.5f, -0.5f, -0.5f));
+		sceneNodeLight->SetTranslate(glm::vec3(80.0f, 600.0f, 80.0f));
+		sceneNodeLight->SetRotation(glm::vec3(0.0f, -1.0f, 0.0f));
 
 		sceneNodeLight->GetComponent<ILightComponent3D>()->SetType(ELightType::Spot);
 		sceneNodeLight->GetComponent<ILightComponent3D>()->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
-		sceneNodeLight->GetComponent<ILightComponent3D>()->SetRange(5000.0f);
+		sceneNodeLight->GetComponent<ILightComponent3D>()->SetRange(48000.0f);
 		sceneNodeLight->GetComponent<ILightComponent3D>()->SetIntensity(1.0f);
-		sceneNodeLight->GetComponent<ILightComponent3D>()->SetSpotlightAngle(25.0f);
+		sceneNodeLight->GetComponent<ILightComponent3D>()->SetSpotlightAngle(55.0f);
 #if 0
 		auto sceneNodeLight2 = GetRootNode3D()->CreateSceneNode<SceneNode3D>();
 		sceneNodeLight2->SetName("Light node2");
@@ -332,10 +327,10 @@ void CSceneDefault::Load3D()
 	// Plane
 	//--------------------------------------------------------------------------
 
-#if 1
+#if 0
 	{
 		const float cPlaneSize = 120.0f;
-		const float cPlaneY = 0.0f;
+		const float cPlaneY = -50.0f;
 
 		std::shared_ptr<MaterialModel> textMaterial = std::make_shared<MaterialModel>(GetBaseManager());
 		textMaterial->SetDiffuseColor(glm::vec3(1.0f, 1.0f, 1.0f));
@@ -430,10 +425,128 @@ void CSceneDefault::Load3D()
 		*/
 	}
 
-	std::shared_ptr<ISceneNode3D> fbxSceneNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>(ofkSceneNode3D)->CreateSceneNode3D(this, cSceneNode_FBXNode);
-	std::shared_ptr<ISceneNode3D> fbxSceneNode2 = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>(ofkSceneNode3D)->CreateSceneNode3D(this, cSceneNode_FBXNode);
-	fbxSceneNode2->SetTranslate(glm::vec3(10, 0, 0));
+	auto fileNames = GetAllFilesInDirectory("C:\\_engine\\ZenonEngine_gamedata\\natureKit\\models\\fbxformat", {}, ".fbx");
+	
+	std::vector<std::string> modelsList;
+	modelsList.push_back("C:\\_engine\\ZenonEngine_gamedata\\natureKit\\models\\fbxformat\\ground_dirt.fbx");
+	modelsList.push_back("C:\\_engine\\ZenonEngine_gamedata\\natureKit\\models\\fbxformat\\ground_dirtRiver.fbx");
+	modelsList.push_back("C:\\_engine\\ZenonEngine_gamedata\\natureKit\\models\\fbxformat\\ground_dirtRiverBanks.fbx");
+	modelsList.push_back("C:\\_engine\\ZenonEngine_gamedata\\natureKit\\models\\fbxformat\\ground_dirtRiverCorner.fbx");
+	modelsList.push_back("C:\\_engine\\ZenonEngine_gamedata\\natureKit\\models\\fbxformat\\ground_dirtRiverCornerBank.fbx");
+	modelsList.push_back("C:\\_engine\\ZenonEngine_gamedata\\natureKit\\models\\fbxformat\\ground_dirtRiverCornerInner.fbx");
+	modelsList.push_back("C:\\_engine\\ZenonEngine_gamedata\\natureKit\\models\\fbxformat\\ground_dirtRiverCrossing.fbx");
+	modelsList.push_back("C:\\_engine\\ZenonEngine_gamedata\\natureKit\\models\\fbxformat\\ground_dirtRiverEnd.fbx");
+	modelsList.push_back("C:\\_engine\\ZenonEngine_gamedata\\natureKit\\models\\fbxformat\\ground_dirtRiverEntrance.fbx");
+	modelsList.push_back("C:\\_engine\\ZenonEngine_gamedata\\natureKit\\models\\fbxformat\\ground_dirtRiverRocks.fbx");
+	modelsList.push_back("C:\\_engine\\ZenonEngine_gamedata\\natureKit\\models\\fbxformat\\ground_dirtRiverSide.fbx");
+	modelsList.push_back("C:\\_engine\\ZenonEngine_gamedata\\natureKit\\models\\fbxformat\\ground_dirtRiverSideCorner.fbx");
+	modelsList.push_back("C:\\_engine\\ZenonEngine_gamedata\\natureKit\\models\\fbxformat\\ground_dirtRiverT.fbx");
+	modelsList.push_back("C:\\_engine\\ZenonEngine_gamedata\\natureKit\\models\\fbxformat\\ground_dirtRiverTile.fbx");
+	modelsList.push_back("C:\\_engine\\ZenonEngine_gamedata\\natureKit\\models\\fbxformat\\ground_dirtRiverWater.fbx");
+	modelsList.push_back("C:\\_engine\\ZenonEngine_gamedata\\natureKit\\models\\fbxformat\\ground_grass.fbx");
+	modelsList.push_back("C:\\_engine\\ZenonEngine_gamedata\\natureKit\\models\\fbxformat\\ground_pathBend.fbx");
+	modelsList.push_back("C:\\_engine\\ZenonEngine_gamedata\\natureKit\\models\\fbxformat\\ground_pathBendBank.fbx");
+	modelsList.push_back("C:\\_engine\\ZenonEngine_gamedata\\natureKit\\models\\fbxformat\\ground_pathCorner.fbx");
+	modelsList.push_back("C:\\_engine\\ZenonEngine_gamedata\\natureKit\\models\\fbxformat\\ground_pathCornerSmall.fbx");
+	modelsList.push_back("C:\\_engine\\ZenonEngine_gamedata\\natureKit\\models\\fbxformat\\ground_pathCross.fbx");
+	modelsList.push_back("C:\\_engine\\ZenonEngine_gamedata\\natureKit\\models\\fbxformat\\ground_pathEnd.fbx");
+	modelsList.push_back("C:\\_engine\\ZenonEngine_gamedata\\natureKit\\models\\fbxformat\\ground_pathEndClosed.fbx");
+	modelsList.push_back("C:\\_engine\\ZenonEngine_gamedata\\natureKit\\models\\fbxformat\\ground_pathOpen.fbx");
+	modelsList.push_back("C:\\_engine\\ZenonEngine_gamedata\\natureKit\\models\\fbxformat\\ground_pathRocks.fbx");
+	modelsList.push_back("C:\\_engine\\ZenonEngine_gamedata\\natureKit\\models\\fbxformat\\ground_pathSide.fbx");
+	modelsList.push_back("C:\\_engine\\ZenonEngine_gamedata\\natureKit\\models\\fbxformat\\ground_pathSideOpen.fbx");
+	modelsList.push_back("C:\\_engine\\ZenonEngine_gamedata\\natureKit\\models\\fbxformat\\ground_pathSplit.fbx");
+	modelsList.push_back("C:\\_engine\\ZenonEngine_gamedata\\natureKit\\models\\fbxformat\\ground_pathStraight.fbx");
+	modelsList.push_back("C:\\_engine\\ZenonEngine_gamedata\\natureKit\\models\\fbxformat\\ground_pathTile.fbx");
+	modelsList.push_back("C:\\_engine\\ZenonEngine_gamedata\\natureKit\\models\\fbxformat\\ground_riverBend.fbx");
+	modelsList.push_back("C:\\_engine\\ZenonEngine_gamedata\\natureKit\\models\\fbxformat\\ground_riverBendBank.fbx");
+	modelsList.push_back("C:\\_engine\\ZenonEngine_gamedata\\natureKit\\models\\fbxformat\\ground_riverCorner.fbx");
+	modelsList.push_back("C:\\_engine\\ZenonEngine_gamedata\\natureKit\\models\\fbxformat\\ground_riverCornerSmall.fbx");
+	modelsList.push_back("C:\\_engine\\ZenonEngine_gamedata\\natureKit\\models\\fbxformat\\ground_riverCross.fbx");
+	modelsList.push_back("C:\\_engine\\ZenonEngine_gamedata\\natureKit\\models\\fbxformat\\ground_riverEnd.fbx");
+
+	if (!modelsList.empty())
+	{
+		auto it = modelsList.begin();
+		auto sizeSqrtDouble = glm::sqrt(modelsList.size());
+		size_t sizeSqrt = static_cast<size_t>(sizeSqrtDouble);
+		//sizeSqrt = 6;
+
+		for (size_t x = 0; x < sizeSqrt; x++)
+		{
+			for (size_t y = 0; y < sizeSqrt; y++)
+			{
+				auto fileName = (*it++);
+				if (it == modelsList.end())
+					continue;
+
+				Log::Info(fileName.c_str());
+
+				try
+				{
+					std::shared_ptr<ISceneNode3D> sceneNodeParent = CreateSceneNode<SceneNode3D>(GetRootNode3D());
+					sceneNodeParent->SetTranslate(glm::vec3(float(x) * 10.0f, 0.0f, float(y) * 10.0f));
+
+					if (GetBaseManager().GetManager<IFilesManager>()->IsFileExists(fileName + ".znmdl"))
+					{
+						auto model = GetRenderDevice().GetObjectsFactory().CreateModel();
+						if (auto loadable = std::dynamic_pointer_cast<IObjectLoadSave>(model))
+						{
+							loadable->Load(GetBaseManager().GetManager<IFilesManager>()->Open(fileName + ".znmdl"));
+						}
+
+						sceneNodeParent->GetComponent<IModelsComponent3D>()->AddModel(model);
+
+						sceneNodeParent->GetComponent<IColliderComponent3D>()->SetBounds(model->GetBounds());
+						continue;
+					}
+
+					//continue;
+					
+					std::shared_ptr<ISceneNode3D> sceneNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>(ofkSceneNode3D)->CreateSceneNode3D(this, cSceneNode_FBXNode);
+					sceneNodeParent->AddChild(sceneNode);
+
+					std::shared_ptr<IFBXSceneNode3D> fbxSceneNode = std::dynamic_pointer_cast<IFBXSceneNode3D>(sceneNode);
+					fbxSceneNode->InitializeFromFile(fileName);
+
+					auto model = std::dynamic_pointer_cast<IFBXSceneNode3D>(sceneNode->GetChilds().at(0))->GetModel();
+					if (auto loadable = std::dynamic_pointer_cast<IObjectLoadSave>(model))
+					{
+						std::shared_ptr<IFile> file = std::make_shared<CFile>(fileName + ".znmdl");
+						loadable->Save(file);
+
+						GetBaseManager().GetManager<IFilesManager>()->GetFilesStorage("PCEveryFileAccess")->SaveFile(file);
+					}
+				}
+				catch (const CException& e)
+				{
+					Log::Error(e.MessageCStr());
+				}
+			}
+		}
+	}
+	
+
+	//node->InitializeFromFile("Nature Kit (2.1)\\Models\\FBX format\\tree_thin_dark.fbx");
+
+	//std::shared_ptr<ISceneNode3D> fbxSceneNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>(ofkSceneNode3D)->CreateSceneNode3D(this, cSceneNode_FBXNode);
+	//std::shared_ptr<ISceneNode3D> fbxSceneNode2 = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>(ofkSceneNode3D)->CreateSceneNode3D(this, cSceneNode_FBXNode);
+	//fbxSceneNode2->SetTranslate(glm::vec3(10, 0, 0));
 	//fbxSceneNode->SetScale(glm::vec3(15.0f, 15.0f, 15.0f));
+
+
+	{
+		sceneNodeParentt = CreateSceneNode<SceneNode3D>(GetRootNode3D());
+		sceneNodeParentt->SetTranslate(glm::vec3(0.0f, 0.0f, 0.0f));
+
+		//auto model = GetRenderDevice().GetObjectsFactory().CreateModel();
+		//if (auto loadable = std::dynamic_pointer_cast<IObjectLoadSave>(model))
+		//{
+		//	loadable->Load(GetBaseManager().GetManager<IFilesManager>()->Open("C:\\_engine\\ZenonEngine_gamedata\\natureKit\\models\\fbxformat\\ground_grass.fbx.znmdl"));
+		//}
+
+		//sceneNodeParentt->GetComponent<IModelsComponent3D>()->AddModel(model);
+	}
 
 
 

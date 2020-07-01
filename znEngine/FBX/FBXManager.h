@@ -9,12 +9,14 @@
 #include "FBXSceneNode.h"
 
 class CFBXManager
+	: public IFBXManager
 {
 public:
 	CFBXManager(const IBaseManager& BaseManager);
 	virtual ~CFBXManager();
 
-	std::shared_ptr<CFBXSceneNode> CreateSceneNode(IScene* Scene, std::string SceneName);
+	// IFBXManager
+	std::shared_ptr<IFBXSceneNode3D> CreateSceneNode(IScene* Scene, std::string SceneName) override;
 
 private:
 	fbxsdk::FbxManager* m_FBXManager;

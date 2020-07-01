@@ -122,6 +122,7 @@ std::shared_ptr<IRenderPassPipelined> CDefferedRender::CreatePipeline(std::share
 	defferedPipeline->GetDepthStencilState()->SetDepthMode(enableDepthWrites);
 	defferedPipeline->GetRasterizerState()->SetCullMode(IRasterizerState::CullMode::Back);
 	defferedPipeline->GetRasterizerState()->SetFillMode(IRasterizerState::FillMode::Solid, IRasterizerState::FillMode::Solid);
+	defferedPipeline->GetRasterizerState()->SetMultisampleEnabled(true);
 	defferedPipeline->SetRenderTarget(rt);
 	defferedPipeline->SetShader(EShaderType::VertexShader, vertexShader);
 	defferedPipeline->SetShader(EShaderType::PixelShader, pixelShader);

@@ -7,7 +7,7 @@
 #include "DebugOutputEditorLog.h"
 #include "RenderWindowWidget.h"
 
-#include "GameState_Editor.h"
+#include "Editor3DFrame.h"
 
 static IBaseManager* BaseManager = nullptr;
 
@@ -33,7 +33,8 @@ void main_internal(int argc, char *argv[])
 
 	BaseManager->GetManager<ILoader>()->Start();
 
-	std::shared_ptr<IScene> scene = BaseManager->GetManager<IScenesFactory>()->CreateScene("SceneDefault");
+	//std::shared_ptr<IScene> scene = BaseManager->GetManager<IScenesFactory>()->CreateScene("SceneDefault");
+	std::shared_ptr<IScene> scene = std::make_shared<CSceneEditor>(*BaseManager);
 	scene->ConnectEvents(std::dynamic_pointer_cast<IRenderWindowEvents>(renderWindow));
 	scene->Initialize();
 
@@ -42,7 +43,7 @@ void main_internal(int argc, char *argv[])
 
 	w.show();
 
-	//BaseManager->GetManager<ILog>()->AddDebugOutput(std::make_shared<DebugOutput_EditorLog>(w.getUI().LogTextEdit));
+	BaseManager->GetManager<ILog>()->AddDebugOutput(std::make_shared<DebugOutput_EditorLog>(w.getUI().LogTextEdit));
 
 	app.Run();
 

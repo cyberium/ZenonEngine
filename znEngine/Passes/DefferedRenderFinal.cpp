@@ -59,9 +59,11 @@ std::shared_ptr<IRenderPassPipelined> CDefferedRenderFinal::CreatePipeline(std::
 	defferedFinalPipeline->GetDepthStencilState()->SetDepthMode(disableDepthWrites);
 	defferedFinalPipeline->GetRasterizerState()->SetCullMode(IRasterizerState::CullMode::None);
 	defferedFinalPipeline->GetRasterizerState()->SetFillMode(IRasterizerState::FillMode::Solid, IRasterizerState::FillMode::Solid);
+	defferedFinalPipeline->GetRasterizerState()->SetMultisampleEnabled(true);
 	defferedFinalPipeline->SetRenderTarget(RenderTarget);
 	defferedFinalPipeline->SetShader(EShaderType::VertexShader, vertexShader);
 	defferedFinalPipeline->SetShader(EShaderType::PixelShader, pixelShader);
+	
 
 	auto& sampler = GetRenderDevice().GetObjectsFactory().CreateSamplerState();
 	sampler->SetFilter(ISamplerState::MinFilter::MinLinear, ISamplerState::MagFilter::MagLinear, ISamplerState::MipFilter::MipLinear);

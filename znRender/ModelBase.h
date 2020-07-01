@@ -23,6 +23,7 @@ public:
 	void											Save(const std::shared_ptr<IByteBuffer>& ByteBuffer);
 
 protected:
+	BoundingBox                                     m_BoundingBox;
 	std::vector<SConnection>				        m_Connections;
 
 private: // Link to parent d3d11 device

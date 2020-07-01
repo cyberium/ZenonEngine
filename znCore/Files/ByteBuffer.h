@@ -196,3 +196,14 @@ inline CByteBuffer& operator<<(CByteBuffer& bb, const std::string& _string)
 	bb.writeBytes((uint8*)_string.c_str(), _string.size() + 1);
 	return bb;
 }
+
+
+inline CByteBuffer& operator<<(CByteBuffer& buf, BoundingBox const& guid)
+{
+
+}
+
+inline CByteBuffer& operator>>(CByteBuffer& buf, BoundingBox&       guid)
+{
+
+}

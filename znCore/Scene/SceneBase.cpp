@@ -191,10 +191,19 @@ void SceneBase::RaiseSceneChangeEvent(ESceneChangeType SceneChangeType, const IS
 	m_SceneChangeEvent(SceneChangeEventArgs(this, this, SceneChangeType, OwnerNode, ChildNode));
 }
 
-void SceneBase::RaiseRayIntersected(const glm::vec3 & Point)
+void SceneBase::OnMouseClickToWorld(MouseButtonEventArgs::MouseButton& MouseButton, const glm::vec2& MousePosition, const Ray& RayToWorld)
+{
+
+}
+
+void SceneBase::OnMouseReleaseToWorld(MouseButtonEventArgs::MouseButton & MouseButton, const glm::vec2 & MousePosition, const Ray & RayToWorld)
 {
 }
 
+void SceneBase::OnMouseMoveToWorld(MouseButtonEventArgs::MouseButton& MouseButton, const glm::vec2& MousePosition, const Ray& RayToWorld)
+{
+
+}
 
 
 //
@@ -315,19 +324,6 @@ bool SceneBase::OnWindowKeyPressed(KeyEventArgs & e)
 	if (GetCameraController())
 		GetCameraController()->OnKeyPressed(e);
 
-	/*if (e.Key == KeyCode::J)
-	{
-		CXMLManager xmlM;
-
-		// Writer
-		std::shared_ptr<IXMLWriter> writer = xmlM.CreateWriter();
-
-		Save(writer);
-
-		std::shared_ptr<IFile> xmlFile = writer->SaveToFile("Scene.xml");
-		GetBaseManager().GetManager<IFilesManager>()->GetFilesStorage("ZenonGamedata")->SaveFile(xmlFile);
-	}*/
-
 	if (m_RootNodeUI)
 		return DoKeyPressed_Rec(m_RootNodeUI, e);
 
@@ -351,7 +347,18 @@ void SceneBase::OnWindowKeyReleased(KeyEventArgs & e)
 void SceneBase::OnWindowMouseMoved(MouseMotionEventArgs & e)
 {
 	if (GetCameraController())
+	{
 		GetCameraController()->OnMouseMoved(e);
+
+		MouseButtonEventArgs::MouseButton btn = MouseButtonEventArgs::MouseButton::None;
+		if (e.LeftButton)
+			btn = MouseButtonEventArgs::MouseButton::Left;
+		else if (e.RightButton)
+			btn = MouseButtonEventArgs::MouseButton::Right;
+
+
+		OnMouseMoveToWorld(btn, e.GetPoint(), GetCameraController()->ScreenToRay(GetRenderWindow()->GetViewport(), e.GetPoint()));
+	}
 
 	if (m_RootNodeUI)
 		DoMouseMoved_Rec(m_RootNodeUI, e);
@@ -362,37 +369,7 @@ bool SceneBase::OnWindowMouseButtonPressed(MouseButtonEventArgs & e)
 	if (GetCameraController())
 	{
 		GetCameraController()->OnMouseButtonPressed(e);
-
-		if (e.LeftButton)
-		{
-			Ray cameraDownRay = Ray(GetCameraController()->GetCamera()->GetTranslation(), glm::vec3(0.0f, -1.0f, 0.0f));
-			Ray resultRay = GetCameraController()->ScreenPointToRay(GetRenderWindow()->GetViewport(), glm::vec2(e.X, e.Y));
-
-			float cosAlpha = (resultRay.GetDirection().x * cameraDownRay.GetDirection().x) + (resultRay.GetDirection().y * cameraDownRay.GetDirection().y) + (resultRay.GetDirection().z * cameraDownRay.GetDirection().z);
-			cosAlpha /=
-				(
-					sqrt
-					(
-					(resultRay.GetDirection().x * resultRay.GetDirection().x) +
-						(resultRay.GetDirection().y * resultRay.GetDirection().y) +
-						(resultRay.GetDirection().z * resultRay.GetDirection().z)
-					)
-					*
-					sqrt
-					(
-					(cameraDownRay.GetDirection().x * cameraDownRay.GetDirection().x) +
-						(cameraDownRay.GetDirection().y * cameraDownRay.GetDirection().y) +
-						(cameraDownRay.GetDirection().z * cameraDownRay.GetDirection().z)
-					)
-					);
-
-			float d = GetCameraController()->GetCamera()->GetTranslation().y / cosAlpha;
-			if (d < 10000.0f)
-			{
-				glm::vec3 point = resultRay.GetPointOnRay(d);
-				RaiseRayIntersected(point);
-			}
-		}
+		OnMouseClickToWorld(e.Button, e.GetPoint(), GetCameraController()->ScreenToRay(GetRenderWindow()->GetViewport(), e.GetPoint()));
 	}
 
 	if (m_RootNodeUI)
@@ -404,7 +381,10 @@ bool SceneBase::OnWindowMouseButtonPressed(MouseButtonEventArgs & e)
 void SceneBase::OnWindowMouseButtonReleased(MouseButtonEventArgs & e)
 {
 	if (GetCameraController())
+	{
 		GetCameraController()->OnMouseButtonReleased(e);
+		OnMouseReleaseToWorld(e.Button, e.GetPoint(), GetCameraController()->ScreenToRay(GetRenderWindow()->GetViewport(), e.GetPoint()));
+	}
 
 	if (m_RootNodeUI)
 		DoMouseButtonReleased_Rec(m_RootNodeUI, e);
@@ -447,6 +427,33 @@ std::shared_ptr<IRenderWindow> SceneBase::GetRenderWindow() const
 	std::shared_ptr<IRenderWindow> renderWindow = m_RenderWindow.lock();
 	_ASSERT(renderWindow);
 	return std::move(renderWindow);
+}
+
+void FillIntersectedList(const std::shared_ptr<ISceneNode3D>& Parent, const Ray & Ray, std::map<float, std::shared_ptr<ISceneNode3D>> * intersectedNodes)
+{
+	const auto& childs = Parent->GetChilds();
+	for (const auto& it : childs)
+	{
+		if (auto collider = it->GetComponent<IColliderComponent3D>())
+		{
+			if (collider->IsRayIntersects(Ray))
+			{
+				float dist = nearestDistToAABB(Ray.GetOrigin(), collider->GetWorldBounds());
+				intersectedNodes->insert(std::make_pair(dist, it));
+			}
+
+			FillIntersectedList(it, Ray, intersectedNodes);
+		}
+	}
+}
+
+std::shared_ptr<ISceneNode3D> SceneBase::FindIntersection(const Ray & Ray)
+{
+	std::map<float, std::shared_ptr<ISceneNode3D>> intersectedNodes;
+	FillIntersectedList(GetRootNode3D(), Ray, &intersectedNodes);
+	if (intersectedNodes.empty())
+		return nullptr;
+	return intersectedNodes.begin()->second;
 }
 
 

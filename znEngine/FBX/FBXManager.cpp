@@ -33,10 +33,9 @@ CFBXManager::~CFBXManager()
 	m_FBXManager->Destroy();
 }
 
-std::shared_ptr<CFBXSceneNode> CFBXManager::CreateSceneNode(IScene* Scene, std::string SceneName)
+std::shared_ptr<IFBXSceneNode3D> CFBXManager::CreateSceneNode(IScene* Scene, std::string SceneName)
 {
-	auto rootNode = Scene->CreateSceneNode<CFBXSceneNode>(nullptr, m_BaseManager, m_FBXManager);
-	return rootNode;
+	return Scene->CreateSceneNode<CFBXSceneNode>(nullptr, m_BaseManager, m_FBXManager);
 }
 
 #endif

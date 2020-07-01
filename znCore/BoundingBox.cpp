@@ -65,6 +65,12 @@ void BoundingBox::clear()
 	m_IsCenterCalc = true;
 }
 
+bool BoundingBox::isClear() const
+{
+	return (m_Min.x == Math::MinFloat) || (m_Min.y == Math::MinFloat) || (m_Min.z == Math::MinFloat) || 
+		   (m_Max.x == Math::MaxFloat) || (m_Max.y == Math::MaxFloat) || (m_Max.z == Math::MaxFloat);
+}
+
 //
 
 glm::vec3 BoundingBox::getCorner(uint32 index) const
