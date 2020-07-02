@@ -30,12 +30,14 @@ ZN_INTERFACE ZN_API IScene
 	virtual void Accept(IVisitor* visitor) = 0;
 
 	// TODO: Shit code. Maybe need thread safe child containers?
+	virtual void Freeze() = 0;
+	virtual void Unfreeze() = 0;
 	virtual void AddChild(const std::shared_ptr<ISceneNode3D>& ParentNode, const std::shared_ptr<ISceneNode3D>& ChildNode) = 0;
 	virtual void RemoveChild(const std::shared_ptr<ISceneNode3D>& ParentNode, const std::shared_ptr<ISceneNode3D>& ChildNode) = 0;
 
 	// Events
 	virtual SceneChangeEvent& SceneChangeEvent() = 0;
-	virtual void RaiseSceneChangeEvent(ESceneChangeType SceneChangeType, const ISceneNode3D* OwnerNode, const ISceneNode3D* ChildNode) = 0;
+	virtual void RaiseSceneChangeEvent(ESceneChangeType SceneChangeType, const std::shared_ptr<ISceneNode3D>& OwnerNode, const std::shared_ptr<ISceneNode3D>& ChildNode) = 0;
 
 
 	// Templates

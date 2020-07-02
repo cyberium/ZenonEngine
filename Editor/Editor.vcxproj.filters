@@ -61,7 +61,6 @@
     <ClCompile Include="stdafx.cpp">
       <Filter>Common</Filter>
     </ClCompile>
-    <ClCompile Include="main.cpp" />
     <ClCompile Include="PropertyEditor\Core\Enum.cpp">
       <Filter>ZenonWidgets\Property editor\Core</Filter>
     </ClCompile>
@@ -257,6 +256,7 @@
     <ClCompile Include="ZenonWidgets\SceneNodeViewer\SceneNodeTreeViewerWidget.cpp">
       <Filter>ZenonWidgets\SceneNodeViewer</Filter>
     </ClCompile>
+    <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -390,9 +390,6 @@
     <ClInclude Include="ZenonWidgets\SceneNodeViewer\SceneNodeTreeItem.h">
       <Filter>ZenonWidgets\SceneNodeViewer</Filter>
     </ClInclude>
-    <ClInclude Include="ZenonWidgets\SceneNodeViewer\SceneNodeTreeModel.h">
-      <Filter>ZenonWidgets\SceneNodeViewer</Filter>
-    </ClInclude>
     <ClInclude Include="_widgetPropertyEditor.h">
       <Filter>ZenonWidgets</Filter>
     </ClInclude>
@@ -493,6 +490,9 @@
       <Filter>ZenonWidgets\ZenonWindow3D</Filter>
     </QtMoc>
     <QtMoc Include="ZenonWidgets\SceneNodeViewer\SceneNodeTreeViewerWidget.h">
+      <Filter>ZenonWidgets\SceneNodeViewer</Filter>
+    </QtMoc>
+    <QtMoc Include="ZenonWidgets\SceneNodeViewer\SceneNodeTreeModel.h">
       <Filter>ZenonWidgets\SceneNodeViewer</Filter>
     </QtMoc>
   </ItemGroup>

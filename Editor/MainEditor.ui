@@ -30,7 +30,7 @@
     </sizepolicy>
    </property>
    <property name="styleSheet">
-    <string notr="true">background-color: rgb(255, 128, 0);</string>
+    <string notr="true"/>
    </property>
    <layout class="QHBoxLayout" name="horizontalLayout_4">
     <property name="spacing">
@@ -247,7 +247,7 @@
            <number>1</number>
           </property>
           <item>
-           <widget class="ZenonWindow3D" name="MainEditor3D">
+           <widget class="ZenonWindow3D" name="MainEditor3D" native="true">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
               <horstretch>0</horstretch>
@@ -256,8 +256,8 @@
             </property>
             <property name="minimumSize">
              <size>
-              <width>1024</width>
-              <height>768</height>
+              <width>600</width>
+              <height>480</height>
              </size>
             </property>
             <property name="maximumSize">
@@ -265,9 +265,6 @@
               <width>2560</width>
               <height>1440</height>
              </size>
-            </property>
-            <property name="styleSheet">
-             <string notr="true">background-color: rgb(0, 255, 255);</string>
             </property>
            </widget>
           </item>
@@ -751,7 +748,7 @@
  <customwidgets>
   <customwidget>
    <class>ZenonWindow3D</class>
-   <extends>QFrame</extends>
+   <extends>QWidget</extends>
    <header location="global">_widgetZenonWindow3D.h</header>
    <container>1</container>
   </customwidget>

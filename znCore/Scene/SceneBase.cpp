@@ -135,6 +135,18 @@ void SceneBase::Accept(IVisitor * visitor)
 		GetRootNodeUI()->Accept(visitor);
 }
 
+void SceneBase::Freeze()
+{
+	// Ensures the mutex will be locked
+	//while (m_SceneIsBusy.try_lock());
+	//m_SceneIsBusy.lock();
+}
+
+void SceneBase::Unfreeze()
+{
+	//m_SceneIsBusy.unlock();
+}
+
 void SceneBase::AddChild(const std::shared_ptr<ISceneNode3D>& ParentNode, const std::shared_ptr<ISceneNode3D>& ChildNode)
 {
 	if (ParentNode == nullptr)
@@ -150,7 +162,16 @@ void SceneBase::AddChild(const std::shared_ptr<ISceneNode3D>& ParentNode, const 
 	}
 	else
 	{
-		ParentNode->AddChild(ChildNode);
+		try
+		{
+			ParentNode->AddChild(ChildNode);
+		}
+		catch (...)
+		{
+			m_SceneIsBusy.unlock();
+			throw;
+		}
+
 		m_SceneIsBusy.unlock();
 	}
 }
@@ -166,12 +187,20 @@ void SceneBase::RemoveChild(const std::shared_ptr<ISceneNode3D>& ParentNode, con
 	if (m_SceneIsBusy.try_lock() == false)
 	{
 		std::lock_guard<std::mutex> lock(m_ListsAreBusy);
-
 		m_RemoveChildList.push_back(std::make_pair(ParentNode, ChildNode));
 	}
 	else
 	{
-		ParentNode->RemoveChild(ChildNode);
+		try
+		{
+			ParentNode->RemoveChild(ChildNode);
+		}
+		catch (...)
+		{
+			m_SceneIsBusy.unlock();
+			throw;
+		}
+
 		m_SceneIsBusy.unlock();
 	}
 }
@@ -186,7 +215,7 @@ Delegate<SceneChangeEventArgs>& SceneBase::SceneChangeEvent()
 	return m_SceneChangeEvent;
 }
 
-void SceneBase::RaiseSceneChangeEvent(ESceneChangeType SceneChangeType, const ISceneNode3D* OwnerNode, const ISceneNode3D* ChildNode)
+void SceneBase::RaiseSceneChangeEvent(ESceneChangeType SceneChangeType, const std::shared_ptr<ISceneNode3D>& OwnerNode, const std::shared_ptr<ISceneNode3D>& ChildNode)
 {
 	m_SceneChangeEvent(SceneChangeEventArgs(this, this, SceneChangeType, OwnerNode, ChildNode));
 }

@@ -4,11 +4,17 @@
 #include "ZenonWindow3D.h"
 
 ZenonWindow3D::ZenonWindow3D(QWidget *parent)
-	: QFrame(parent)
+	: QWidget(parent)
+	, m_Editor3D(nullptr)
+	, m_EditorUI(nullptr)
 {
-	setAttribute(Qt::WA_NativeWindow);
-	setAttribute(Qt::WA_PaintOnScreen);
-	setAttribute(Qt::WA_NoSystemBackground);
+	//setAttribute(Qt::WA_NativeWindow);
+	//setAttribute(Qt::WA_PaintOnScreen);
+	//setAttribute(Qt::WA_NoSystemBackground);
+	//setAttribute(Qt::WA_NoMousePropagation);
+
+	this->setContextMenuPolicy(Qt::CustomContextMenu);
+	connect(this, SIGNAL(customContextMenuRequested(const QPoint &)), this, SLOT(slotCustomMenuRequested(const QPoint &)));
 }
 
 ZenonWindow3D::~ZenonWindow3D()
@@ -90,6 +96,31 @@ LRESULT ZenonWindow3D::Windows_ProcessMessage(HWND hwnd, UINT message, WPARAM wP
 	return 0;
 }
 
+
+
+//
+// Slots
+//
+void ZenonWindow3D::slotCustomMenuRequested(const QPoint& pos)
+{
+	QMenu * menu = new QMenu(this);
+
+	auto node = m_Editor3D->GetNodeUnderMouse(glm::ivec2(pos.x(), pos.y()));
+	if (node == nullptr)
+		return;
+
+	m_EditorUI->ExtendContextMenu(menu, node);
+
+	menu->popup(mapToGlobal(pos));
+}
+
+void ZenonWindow3D::slotEditRecord()
+{
+}
+
+void ZenonWindow3D::slotRemoveRecord()
+{
+}
 
 
 //

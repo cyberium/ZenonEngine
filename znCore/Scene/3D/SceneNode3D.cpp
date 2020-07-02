@@ -28,7 +28,18 @@ SceneNode3D::SceneNode3D()
 
 	m_ActionsGroup = std::make_shared<CActionsGroup>("General");
 	m_PropertiesGroup = std::make_shared<CPropertiesGroup>("General", "Some important scene node properties.");
+}
 
+SceneNode3D::~SceneNode3D()
+{}
+
+
+
+//
+// ISceneNode3D
+//
+void SceneNode3D::Initialize()
+{
 	// Name properties
 	{
 		std::shared_ptr<CPropertyWrapped<std::string>> nameProperty = std::make_shared<CPropertyWrapped<std::string>>("Name", "Scene node name.");
@@ -58,18 +69,23 @@ SceneNode3D::SceneNode3D()
 
 		GetProperties()->AddProperty(propertiesGroup);
 	}
+
+	// Actions
+	{
+		std::shared_ptr<CAction> removeAction = std::make_shared<CAction>("Remove", "Remove this node from world. this action affected on childs!");
+		removeAction->SetAction([](const std::shared_ptr<ISceneNode3D>& SceneNode) -> bool {
+			if (SceneNode == nullptr)
+				return false;
+
+			if (SceneNode->GetScene() == nullptr)
+				return false;
+
+			SceneNode->GetScene()->RemoveChild(SceneNode->GetParent().lock(), SceneNode);
+			return true;
+		});
+		GetActions()->AddAction(removeAction);
+	}
 }
-
-SceneNode3D::~SceneNode3D()
-{}
-
-
-
-//
-// ISceneNode3D
-//
-void SceneNode3D::Initialize()
-{}
 
 void SceneNode3D::Finalize()
 {}
@@ -369,7 +385,7 @@ void SceneNode3D::AddChildInternal(const std::shared_ptr<ISceneNode3D>& ChildNod
 
 	// TODO: Какой ивент посылать первым?
 	ChildNode->RaiseOnParentChanged();
-	//GetScene()->RaiseSceneChangeEvent(ESceneChangeType::NodeAddedToParent, this, ChildNode.get());
+	GetScene()->RaiseSceneChangeEvent(ESceneChangeType::NodeAddedToParent, shared_from_this(), ChildNode);
 }
 
 void SceneNode3D::RemoveChildInternal(const std::shared_ptr<ISceneNode3D>& ChildNode)
@@ -393,7 +409,7 @@ void SceneNode3D::RemoveChildInternal(const std::shared_ptr<ISceneNode3D>& Child
 
 	// TODO: Какой ивент посылать первым?
 	ChildNode->RaiseOnParentChanged();
-	//GetScene()->RaiseSceneChangeEvent(ESceneChangeType::NodeRemovedFromParent, this, ChildNode);
+	GetScene()->RaiseSceneChangeEvent(ESceneChangeType::NodeRemovedFromParent, shared_from_this(), ChildNode);
 }
 
 void SceneNode3D::SetParentInternal(const std::weak_ptr<ISceneNode3D>& parentNode)

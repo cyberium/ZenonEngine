@@ -49,6 +49,29 @@ void CSceneEditor::Finalize()
 	SceneBase::Finalize();
 }
 
+void CSceneEditor::AddChild(const std::shared_ptr<ISceneNode3D>& ParentNode, const std::shared_ptr<ISceneNode3D>& ChildNode)
+{
+	if (ChildNode != m_SelectedNode)
+		DoSelectNode(ChildNode);
+
+	__super::AddChild(ParentNode, ChildNode);
+}
+
+void CSceneEditor::RemoveChild(const std::shared_ptr<ISceneNode3D>& ParentNode, const std::shared_ptr<ISceneNode3D>& ChildNode)
+{
+	if (ChildNode == m_SelectedNode)
+		DoSelectNode(nullptr);
+
+	__super::RemoveChild(ParentNode, ChildNode);
+}
+
+void CSceneEditor::RaiseSceneChangeEvent(ESceneChangeType SceneChangeType, const std::shared_ptr<ISceneNode3D>& OwnerNode, const std::shared_ptr<ISceneNode3D>& ChildNode)
+{
+	m_EditorUI->OnSceneChanged();
+
+
+}
+
 void CSceneEditor::OnMouseClickToWorld(MouseButtonEventArgs::MouseButton & MouseButton, const glm::vec2 & MousePosition, const Ray & RayToWorld)
 {
 	if (MouseButton == MouseButtonEventArgs::MouseButton::Left)
@@ -107,6 +130,16 @@ void CSceneEditor::OnWindowKeyReleased(KeyEventArgs & e)
 //
 // IEditor3DFrame
 //
+void CSceneEditor::LockUpdates()
+{
+	Freeze();
+}
+
+void CSceneEditor::UnlockUpdates()
+{
+	Unfreeze();
+}
+
 std::shared_ptr<ISceneNode3D> CSceneEditor::GetRealRootNode3D() const
 {
 	return GetRootNode3D();
@@ -168,12 +201,31 @@ void CSceneEditor::MoveDraggedNode(const glm::vec3 & Position)
 
 void CSceneEditor::DoSelectNode(const std::shared_ptr<ISceneNode3D>& Node)
 {
-	const auto& bbox = Node->GetComponent<IColliderComponent3D>()->GetBounds();
-	auto size = bbox.getMax() - bbox.getMin();
+	if (m_SelectedNodeBBox == nullptr || m_Mover == nullptr)
+		return;
 
-	m_SelectedNode->SetTranslate(Node->GetTranslation() + bbox.getMin() - 0.1f * size);
+	if (Node == nullptr)
+	{
+		m_SelectedNode = Node;
+		m_SelectedNodeBBox->SetTranslate(glm::vec3(0.0f));
+		m_SelectedNodeBBox->SetScale(glm::vec3(0.0f));
+
+		m_Mover->SetTranslate(glm::vec3(0.0f));
+		m_Mover->SetScale(glm::vec3(0.0f));
+		return;
+	}
+
+	const auto& bbox = Node->GetComponent<IColliderComponent3D>()->GetBounds();
+	auto size = glm::abs(bbox.getMax() - bbox.getMin());
+
+	m_SelectedNode = Node;
+	m_SelectedNodeBBox->SetTranslate(Node->GetTranslation() + bbox.getMin() - 0.1f * size);
+	m_SelectedNodeBBox->SetScale(size * 1.2f);
+
+	float bboxSize = (size.x + size.y + size.z) / 3.0f;
+	m_Mover->SetTranslate(Node->GetTranslation() + bbox.getCenter());
+	m_Mover->SetScale(glm::vec3(bboxSize) * 3.0f);
 	
-	m_SelectedNode->SetScale(size * 1.2f);
 }
 
 std::shared_ptr<ISceneNode3D> CSceneEditor::CreateNode(const glm::ivec3& Position, int32 type)
@@ -304,14 +356,41 @@ void CSceneEditor::Load3D()
 	m_DraggedNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>(ofkSceneNode3D)->CreateSceneNode3D(this, cSceneNode3D, GetRootNode3D());
 	m_DraggedNode->SetName("Dragged node parent.");
 
-	m_SelectedNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>(ofkSceneNode3D)->CreateSceneNode3D(this, cSceneNode3D, GetRootNode3D());
-	m_SelectedNode->SetName("Dragged node parent.");
-	auto geometry = GetRenderDevice().GetPrimitivesFactory().CreateBBox();
-	auto material = std::make_shared<MaterialDebug>(GetRenderDevice());
-	material->SetDiffuseColor(glm::vec4(1.0f, 1.0f, 0.0f, 1.0f));
-	auto model = GetRenderDevice().GetObjectsFactory().CreateModel();
-	model->AddConnection(material, geometry);
-	m_SelectedNode->GetComponent<IModelsComponent3D>()->AddModel(model);
+	{
+		m_SelectedNodeBBox = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>(ofkSceneNode3D)->CreateSceneNode3D(this, cSceneNode3D, GetRootNode3D());
+		m_SelectedNodeBBox->SetName("Selector node.");
+		auto geometry = GetRenderDevice().GetPrimitivesFactory().CreateBBox();
+		auto material = std::make_shared<MaterialDebug>(GetRenderDevice());
+		material->SetDiffuseColor(glm::vec4(1.0f, 1.0f, 0.0f, 1.0f));
+		auto model = GetRenderDevice().GetObjectsFactory().CreateModel();
+		model->AddConnection(material, geometry);
+		m_SelectedNodeBBox->GetComponent<IModelsComponent3D>()->AddModel(model);
+	}
+
+	{
+		m_Mover = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>(ofkSceneNode3D)->CreateSceneNode3D(this, cSceneNode3D, GetRootNode3D());
+		m_Mover->SetName("Mover node.");
+
+		auto X_Geom = GetRenderDevice().GetPrimitivesFactory().CreateLine(glm::vec3(1.0f, 0.0f, 0.0f));
+		auto Y_Geom = GetRenderDevice().GetPrimitivesFactory().CreateLine(glm::vec3(0.0f, 1.0f, 0.0f));
+		auto Z_Geom = GetRenderDevice().GetPrimitivesFactory().CreateLine(glm::vec3(0.0f, 0.0f, 1.0f));
+
+		auto materialX = std::make_shared<MaterialDebug>(GetRenderDevice());
+		materialX->SetDiffuseColor(glm::vec4(1.0f, 0.3f, 0.1f, 1.0f));
+
+		auto materialY = std::make_shared<MaterialDebug>(GetRenderDevice());
+		materialY->SetDiffuseColor(glm::vec4(0.3f, 1.0f, 0.3f, 1.0f));
+
+		auto materialZ = std::make_shared<MaterialDebug>(GetRenderDevice());
+		materialZ->SetDiffuseColor(glm::vec4(0.1f, 0.3f, 1.0f, 1.0f));
+
+		auto model = GetRenderDevice().GetObjectsFactory().CreateModel();
+		model->AddConnection(materialX, X_Geom);
+		model->AddConnection(materialY, Y_Geom);
+		model->AddConnection(materialZ, Z_Geom);
+
+		m_Mover->GetComponent<IModelsComponent3D>()->AddModel(model);
+	}
 
 	glm::vec4 color = glm::vec4(0.0, 0.0f, 0.0f, 1.0f);
 	m_Technique3D.AddPass(std::make_shared<ClearRenderTargetPass>(GetRenderDevice(), GetRenderWindow()->GetRenderTarget(), ClearFlags::All, color /*glm::vec4(0.2f, 0.2f, 0.2f, 0.2f)*/, 1.0f, 0));

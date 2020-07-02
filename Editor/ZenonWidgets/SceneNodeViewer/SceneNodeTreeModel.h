@@ -5,15 +5,17 @@
 
 #include "SceneNodeTreeItem.h"
 
-class CSceneNodeTreeModel 
+class SceneNodeTreeModel 
 	: public QAbstractItemModel 
 {
+	Q_OBJECT
 public:
-	CSceneNodeTreeModel(QObject *parent = 0);
-	virtual ~CSceneNodeTreeModel();
+	SceneNodeTreeModel(QObject *parent = 0);
+	virtual ~SceneNodeTreeModel();
 
-	// CSceneNodeTreeModel
+	// SceneNodeTreeModel
 	void SetModelData(const std::shared_ptr<ISceneNode3D>& SceneNode3D);
+	QModelIndex Find(const std::shared_ptr<ISceneNode3D>& Node);
 
 	//
 	// QAbstractItemModel

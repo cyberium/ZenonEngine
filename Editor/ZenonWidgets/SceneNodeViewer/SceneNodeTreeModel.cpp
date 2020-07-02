@@ -3,13 +3,13 @@
 // General
 #include "SceneNodeTreeModel.h"
 
-CSceneNodeTreeModel::CSceneNodeTreeModel(QObject * parent)
+SceneNodeTreeModel::SceneNodeTreeModel(QObject * parent)
 	: QAbstractItemModel(parent) 
 {
 	m_RootItem = new CSceneNodeTreeItem();
 }
 
-CSceneNodeTreeModel::~CSceneNodeTreeModel() 
+SceneNodeTreeModel::~SceneNodeTreeModel() 
 { 
 	delete m_RootItem;
 }
@@ -17,9 +17,9 @@ CSceneNodeTreeModel::~CSceneNodeTreeModel()
 
 
 //
-// CSceneNodeTreeModel
+// SceneNodeTreeModel
 //
-void CSceneNodeTreeModel::SetModelData(const std::shared_ptr<ISceneNode3D>& SceneNode3D)
+void SceneNodeTreeModel::SetModelData(const std::shared_ptr<ISceneNode3D>& SceneNode3D)
 {
 	if (m_RootItem)
 	{
@@ -30,12 +30,42 @@ void CSceneNodeTreeModel::SetModelData(const std::shared_ptr<ISceneNode3D>& Scen
 	m_RootItem->addChild(new CSceneNodeTreeItem(SceneNode3D, m_RootItem));
 }
 
+bool forEach(QAbstractItemModel* model, QModelIndex parent, const std::shared_ptr<ISceneNode3D>& Node, QModelIndex * FindedPosition)
+{
+	for (int r = 0; r < model->rowCount(parent); ++r) 
+	{
+		QModelIndex index = model->index(r, 0, parent);
+		_ASSERT(index.isValid());
+
+		CSceneNodeTreeItem* item = static_cast<CSceneNodeTreeItem*>(index.internalPointer());
+		if (item->GetSceneNode() == Node)
+		{
+			*FindedPosition = index;
+			return true;
+		}
+
+		if (model->hasChildren(index)) 
+			if (false == forEach(model, index, Node, FindedPosition))
+				return false;
+	}
+
+	return false;
+}
+
+
+QModelIndex SceneNodeTreeModel::Find(const std::shared_ptr<ISceneNode3D>& Node)
+{
+	QModelIndex findedIndex;
+	forEach(this, QModelIndex(), Node, &findedIndex);
+	return findedIndex;
+}
+
 
 
 //
 // QAbstractItemModel
 //
-QVariant CSceneNodeTreeModel::headerData(int section, Qt::Orientation orientation, int role) const
+QVariant SceneNodeTreeModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
 	if (orientation == Qt::Horizontal && role == Qt::DisplayRole)
 		return m_RootItem->data();
@@ -43,7 +73,7 @@ QVariant CSceneNodeTreeModel::headerData(int section, Qt::Orientation orientatio
 	return QVariant();
 }
 
-QVariant CSceneNodeTreeModel::data(const QModelIndex& index, int role) const 
+QVariant SceneNodeTreeModel::data(const QModelIndex& index, int role) const 
 {
 	if (!index.isValid()) 
 		return QVariant();
@@ -55,7 +85,7 @@ QVariant CSceneNodeTreeModel::data(const QModelIndex& index, int role) const
 	return item->data();
 }
 
-Qt::ItemFlags CSceneNodeTreeModel::flags(const QModelIndex& index) const 
+Qt::ItemFlags SceneNodeTreeModel::flags(const QModelIndex& index) const 
 {
 	if (!index.isValid()) 
 		return 0;
@@ -63,40 +93,43 @@ Qt::ItemFlags CSceneNodeTreeModel::flags(const QModelIndex& index) const
 	return QAbstractItemModel::flags(index);
 }
 
-QModelIndex CSceneNodeTreeModel::index(int row, int column, const QModelIndex& parent) const 
+QModelIndex SceneNodeTreeModel::index(int row, int column, const QModelIndex& parent) const 
 {
 	if (parent.isValid() && parent.column() != 0) 
 		return QModelIndex();
 
-	CSceneNodeTreeItem *parentItem = getItem(parent);
+	CSceneNodeTreeItem * parentItem = getItem(parent);
 
-	CSceneNodeTreeItem *childItem = parentItem->child(row);
+	CSceneNodeTreeItem * childItem = parentItem->child(row);
 	if (childItem) 
 		return createIndex(row, column, childItem);
 	else 
 		return QModelIndex();
 }
 
-QModelIndex CSceneNodeTreeModel::parent(const QModelIndex& index) const 
+QModelIndex SceneNodeTreeModel::parent(const QModelIndex& index) const 
 {
-	if (!index.isValid()) 
+	if (!index.isValid())
 		return QModelIndex();
 
-	CSceneNodeTreeItem * childItem = getItem(index);
-	CSceneNodeTreeItem * parentItem = childItem->parentItem();
-	if (parentItem == m_RootItem) 
+	CSceneNodeTreeItem *childItem = static_cast<CSceneNodeTreeItem*>(index.internalPointer());
+	CSceneNodeTreeItem *parentItem = childItem->parentItem();
+
+	if (parentItem == m_RootItem)
 		return QModelIndex();
 
 	return createIndex(parentItem->childNumberInParent(), 0, parentItem);
 }
 
-int CSceneNodeTreeModel::rowCount(const QModelIndex& parent) const 
+int SceneNodeTreeModel::rowCount(const QModelIndex& parent) const 
 {
-	CSceneNodeTreeItem *parentItem = getItem(parent);
-	return parentItem->childCount();
+	if (parent.isValid())
+		return static_cast<CSceneNodeTreeItem*>(parent.internalPointer())->childCount();
+
+	return m_RootItem->childCount();
 }
 
-int CSceneNodeTreeModel::columnCount(const QModelIndex& parent) const
+int SceneNodeTreeModel::columnCount(const QModelIndex& parent) const
 {
 	return 1;
 }
@@ -106,7 +139,7 @@ int CSceneNodeTreeModel::columnCount(const QModelIndex& parent) const
 //
 // Private
 //
-CSceneNodeTreeItem* CSceneNodeTreeModel::getItem(const QModelIndex& index) const
+CSceneNodeTreeItem* SceneNodeTreeModel::getItem(const QModelIndex& index) const
 {
 	if (!index.isValid())
 	{

@@ -10,6 +10,46 @@
 
 static IBaseManager* BaseManager = nullptr;
 
+class EvtLoopTicker 
+	: public QObject
+{
+	//Q_OBJECT
+public:
+
+	EvtLoopTicker(QObject * parent, Application& App)
+		: QObject(parent)
+		, m_Application(App)
+	{
+		m_Application.DoBeforeRun();
+	}
+
+public slots:
+	void launch()
+	{
+		tickNext();
+	}
+
+private slots:
+	void tick()
+	{
+		m_Application.Run();
+
+		// Continue ticking
+		tickNext();
+	}
+
+private:
+	void tickNext()
+	{
+		// Trigger the tick() invokation when the event loop runs next time
+		QMetaObject::invokeMethod(this, "tick", Qt::QueuedConnection);
+	}
+
+	Application& m_Application;
+
+};
+
+
 void main_internal(int argc, char *argv[])
 {
 	// 1. Initialize engine and some improtant managers
@@ -27,7 +67,7 @@ void main_internal(int argc, char *argv[])
 	BaseManager->AddManager<IFontsManager>(fontsManager);
 
 	// Render window for main editor
-	std::shared_ptr<IRenderWindow> renderWindow = renderDevice.GetObjectsFactory().CreateRenderWindow(*(editorUI.getUI()).MainEditor3D, false);
+	std::shared_ptr<IRenderWindow> renderWindow = renderDevice.GetObjectsFactory().CreateRenderWindow(*editorUI.getMainEditor(), false);
 	app.AddRenderWindow(renderWindow);
 
 	BaseManager->GetManager<ILoader>()->Start();
@@ -43,9 +83,24 @@ void main_internal(int argc, char *argv[])
 
 	editorUI.show();
 
-	BaseManager->GetManager<ILog>()->AddDebugOutput(std::make_shared<DebugOutput_EditorLog>(editorUI.getUI().LogTextEdit));
+	app.DoBeforeRun();
 
-	app.Run();
+	QTimer *timer = new QTimer(&editorUI);
+	editorUI.connect(timer, &QTimer::timeout, &editorUI, [&app] {
+		app.Run();
+	});
+	timer->start();
+
+	auto logDebugOutput = std::make_shared<DebugOutput_EditorLog>(editorUI.getUI().LogTextEdit);
+	BaseManager->GetManager<ILog>()->AddDebugOutput(logDebugOutput);
+
+	a.exec();
+
+	BaseManager->GetManager<ILog>()->DeleteDebugOutput(logDebugOutput);
+
+	timer->stop();
+	
+	app.DoAfterRun();
 
 	a.closeAllWindows();
 }

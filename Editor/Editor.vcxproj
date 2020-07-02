@@ -110,7 +110,12 @@
   <ItemGroup>
     <ClCompile Include="DebugOutputEditorLog.cpp" />
     <ClCompile Include="Editor3DFrame.cpp" />
-    <ClCompile Include="main.cpp" />
+    <ClCompile Include="main.cpp">
+      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">input</DynamicSource>
+      <QtMocFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(Filename).moc</QtMocFileName>
+      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Release|x64'">input</DynamicSource>
+      <QtMocFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">%(Filename).moc</QtMocFileName>
+    </ClCompile>
     <ClCompile Include="MainEditor.cpp" />
     <ClCompile Include="PropertyEditor\Core\Core\PropertyBool.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
@@ -353,7 +358,7 @@
     <ClInclude Include="PropertyEditor\Core\Auxiliary\PropertyTemplates.h" />
     <ClInclude Include="PropertyEditor\Core\CoreAPI.h" />
     <ClInclude Include="ZenonWidgets\SceneNodeViewer\SceneNodeTreeItem.h" />
-    <ClInclude Include="ZenonWidgets\SceneNodeViewer\SceneNodeTreeModel.h" />
+    <QtMoc Include="ZenonWidgets\SceneNodeViewer\SceneNodeTreeModel.h" />
     <QtMoc Include="ZenonWidgets\SceneNodeViewer\SceneNodeTreeViewerWidget.h" />
     <ClInclude Include="_widgetPropertyEditor.h" />
     <ClInclude Include="_widgetSceneNodeViewer.h" />
