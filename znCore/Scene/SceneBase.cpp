@@ -128,11 +128,11 @@ void SceneBase::Accept(IVisitor * visitor)
 {
 	std::lock_guard<std::mutex> lock(m_SceneIsBusy);
 
-	if (m_RootNode3D)
-		m_RootNode3D->Accept(visitor);
+	if (GetRootNode3D())
+		GetRootNode3D()->Accept(visitor);
 
-	if (m_RootNodeUI)
-		m_RootNodeUI->Accept(visitor);
+	if (GetRootNodeUI())
+		GetRootNodeUI()->Accept(visitor);
 }
 
 void SceneBase::AddChild(const std::shared_ptr<ISceneNode3D>& ParentNode, const std::shared_ptr<ISceneNode3D>& ChildNode)
@@ -232,8 +232,8 @@ void SceneBase::OnUpdate(UpdateEventArgs& e)
 		m_RemoveChildList.clear();
 	}
 
-	if (m_RootNode3D)
-		DoUpdate_Rec(m_RootNode3D, e);
+	if (GetRootNode3D())
+		DoUpdate_Rec(GetRootNode3D(), e);
 }
 
 void SceneBase::OnPreRender(RenderEventArgs & e)
@@ -324,8 +324,8 @@ bool SceneBase::OnWindowKeyPressed(KeyEventArgs & e)
 	if (GetCameraController())
 		GetCameraController()->OnKeyPressed(e);
 
-	if (m_RootNodeUI)
-		return DoKeyPressed_Rec(m_RootNodeUI, e);
+	if (GetRootNodeUI())
+		return DoKeyPressed_Rec(GetRootNodeUI(), e);
 
 	return false;
 }
@@ -335,8 +335,8 @@ void SceneBase::OnWindowKeyReleased(KeyEventArgs & e)
 	if (GetCameraController())
 		GetCameraController()->OnKeyReleased(e);
 
-	if (m_RootNodeUI)
-		DoKeyReleased_Rec(m_RootNodeUI, e);
+	if (GetRootNodeUI())
+		DoKeyReleased_Rec(GetRootNodeUI(), e);
 }
 
 
@@ -360,8 +360,8 @@ void SceneBase::OnWindowMouseMoved(MouseMotionEventArgs & e)
 		OnMouseMoveToWorld(btn, e.GetPoint(), GetCameraController()->ScreenToRay(GetRenderWindow()->GetViewport(), e.GetPoint()));
 	}
 
-	if (m_RootNodeUI)
-		DoMouseMoved_Rec(m_RootNodeUI, e);
+	if (GetRootNodeUI())
+		DoMouseMoved_Rec(GetRootNodeUI(), e);
 }
 
 bool SceneBase::OnWindowMouseButtonPressed(MouseButtonEventArgs & e)
@@ -372,8 +372,8 @@ bool SceneBase::OnWindowMouseButtonPressed(MouseButtonEventArgs & e)
 		OnMouseClickToWorld(e.Button, e.GetPoint(), GetCameraController()->ScreenToRay(GetRenderWindow()->GetViewport(), e.GetPoint()));
 	}
 
-	if (m_RootNodeUI)
-		return DoMouseButtonPressed_Rec(m_RootNodeUI, e);
+	if (GetRootNodeUI())
+		return DoMouseButtonPressed_Rec(GetRootNodeUI(), e);
 
 	return false;
 }
@@ -386,8 +386,8 @@ void SceneBase::OnWindowMouseButtonReleased(MouseButtonEventArgs & e)
 		OnMouseReleaseToWorld(e.Button, e.GetPoint(), GetCameraController()->ScreenToRay(GetRenderWindow()->GetViewport(), e.GetPoint()));
 	}
 
-	if (m_RootNodeUI)
-		DoMouseButtonReleased_Rec(m_RootNodeUI, e);
+	if (GetRootNodeUI())
+		DoMouseButtonReleased_Rec(GetRootNodeUI(), e);
 }
 
 bool SceneBase::OnWindowMouseWheel(MouseWheelEventArgs & e)
@@ -395,8 +395,8 @@ bool SceneBase::OnWindowMouseWheel(MouseWheelEventArgs & e)
 	if (GetCameraController())
 		GetCameraController()->OnMouseWheel(e);
 
-	if (m_RootNodeUI)
-		return DoMouseWheel_Rec(m_RootNodeUI, e);
+	if (GetRootNodeUI())
+		return DoMouseWheel_Rec(GetRootNodeUI(), e);
 
 	return false;
 }
@@ -447,7 +447,7 @@ void FillIntersectedList(const std::shared_ptr<ISceneNode3D>& Parent, const Ray 
 	}
 }
 
-std::shared_ptr<ISceneNode3D> SceneBase::FindIntersection(const Ray & Ray)
+std::shared_ptr<ISceneNode3D> SceneBase::FindIntersection(const Ray& Ray) const
 {
 	std::map<float, std::shared_ptr<ISceneNode3D>> intersectedNodes;
 	FillIntersectedList(GetRootNode3D(), Ray, &intersectedNodes);

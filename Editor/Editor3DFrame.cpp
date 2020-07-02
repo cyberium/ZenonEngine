@@ -3,82 +3,20 @@
 // Gerenal
 #include "Editor3DFrame.h"
 
-// Additional
-#include <filesystem>
-namespace fs = std::experimental::filesystem;
-
-namespace
-{
-	std::string str_tolower(std::string s)
-	{
-		std::transform(s.begin(), s.end(), s.begin(), [](char c)
-		{
-			return std::tolower(c, std::locale()); }
-		);
-		return s;
-	}
-
-	std::vector<std::string> GetAllFilesInDirectory(const std::string& Directory, const std::vector<std::string> DirSkipList = { }, const std::string& FileExtention = "")
-	{
-		std::vector<std::string> listOfFiles;
-
-		try
-		{
-			bool isExists = fs::exists(Directory);
-			bool isDir = fs::is_directory(Directory);
-
-			// Check if given path exists and points to a directory
-			if (isExists && isDir)
-			{
-				// Create a Recursive Directory Iterator object and points to the starting of directory
-				fs::recursive_directory_iterator iter(Directory);
-
-				// Create a Recursive Directory Iterator object pointing to end.
-				fs::recursive_directory_iterator end;
-
-				// Iterate till end
-				while (iter != end)
-				{
-					// Check if current entry is a directory and if exists in skip list
-					if (fs::is_directory(iter->path()) && (std::find(DirSkipList.begin(), DirSkipList.end(), iter->path().filename()) != DirSkipList.end()))
-					{
-						iter.disable_recursion_pending();
-					}
-					else if (!fs::is_directory(iter->path()) && (!FileExtention.empty()) && (iter->path().has_extension()) && (str_tolower(iter->path().extension().string()) == str_tolower(FileExtention)))
-					{
-						listOfFiles.push_back(iter->path().string());
-					}
-					else
-					{
-						iter.disable_recursion_pending();
-					}
-
-					std::error_code ec;
-					// Increment the iterator to point to next entry in recursive iteration
-					iter.increment(ec);
-					if (ec)
-					{
-						Log::Error("GetAllFilesInDirectory: Error while accessing '%s'. Error: '%s'.", iter->path().string().c_str(), ec.message().c_str());
-					}
-				}
-			}
-		}
-		catch (const std::system_error& e)
-		{
-			Log::Error("GetAllFilesInDirectory: Exception '%s'", e.what());
-		}
-
-		return listOfFiles;
-	}
-}
-
 CSceneEditor::CSceneEditor(IBaseManager& BaseManager)
 	: SceneBase(BaseManager)
+	, m_EditorUI(nullptr)
 {
 }
 
 CSceneEditor::~CSceneEditor()
 {
+}
+
+void CSceneEditor::SetEditorUI(IEditorUIFrame * EditorUIFrame)
+{
+	m_EditorUI = EditorUIFrame;
+
 }
 
 
@@ -94,7 +32,7 @@ void CSceneEditor::Initialize()
 
 	SetCameraController(std::make_shared<CFreeCameraController>());
 	GetCameraController()->SetCamera(cameraNode->GetComponent<ICameraComponent3D>());
-	GetCameraController()->GetCamera()->SetPerspectiveProjection(ICameraComponent3D::EPerspectiveProjectionHand::Right, 45.0f, static_cast<float>(GetRenderWindow()->GetWindowWidth()) / static_cast<float>(GetRenderWindow()->GetWindowHeight()), 0.5f, 10000.0f);
+	GetCameraController()->GetCamera()->SetPerspectiveProjection(ICameraComponent3D::EPerspectiveProjectionHand::Right, 45.0f, static_cast<float>(GetRenderWindow()->GetWindowWidth()) / static_cast<float>(GetRenderWindow()->GetWindowHeight()), 1.0f, 5000.0f);
 
 	Load3D();
 	LoadUI();
@@ -113,10 +51,28 @@ void CSceneEditor::Finalize()
 
 void CSceneEditor::OnMouseClickToWorld(MouseButtonEventArgs::MouseButton & MouseButton, const glm::vec2 & MousePosition, const Ray & RayToWorld)
 {
-	auto node = FindIntersection(RayToWorld);
-	if (node == nullptr)
-		return;
-	node->SetTranslate(node->GetTranslation() + glm::vec3(0.0f, 1.0f, 0.0f));
+	if (MouseButton == MouseButtonEventArgs::MouseButton::Left)
+	{
+		auto node = FindIntersection(RayToWorld);
+		if (node == nullptr)
+		{
+
+			glm::vec3 resultPosition = GetCameraController()->RayToPlane(RayToWorld, Plane(glm::vec3(0.0f, 1.0f, 0.0f), 0.0f));
+
+//MoveDraggedNode(resultPosition);
+
+			CreateNode(ToBoxCoords(resultPosition), 0);
+
+			return;
+		}
+
+		OnSceneNodeSelected(node);
+		m_EditorUI->OnSceneNodeSelectedIn3DEditor(node);
+	}
+	else if (MouseButton == MouseButtonEventArgs::MouseButton::Right)
+	{
+
+	}
 }
 
 void CSceneEditor::OnMouseMoveToWorld(MouseButtonEventArgs::MouseButton & MouseButton, const glm::vec2& MousePosition, const Ray & RayToWorld)
@@ -124,42 +80,20 @@ void CSceneEditor::OnMouseMoveToWorld(MouseButtonEventArgs::MouseButton & MouseB
 	if (MouseButton == MouseButtonEventArgs::MouseButton::Left)
 	{
 		glm::vec3 resultPosition = GetCameraController()->RayToPlane(RayToWorld, Plane(glm::vec3(0.0f, 1.0f, 0.0f), 0.0f));
-		resultPosition /= 10.0f;
-		resultPosition = glm::round(resultPosition);
-		resultPosition *= 10.0f;
 
-		sceneNodeParentt->SetTranslate(resultPosition);
+		//MoveDraggedNode(resultPosition);
 	}
 }
 
 
-
-
-//
-//
-//
 void CSceneEditor::OnPreRender(RenderEventArgs& e)
 {
-	//m_World.update(e.DeltaTime / 1000.0f * 2.0f);
-
-	//m_RootForBoxes->SetRotation(glm::vec3(m_RootForBoxes->GetRotation().x, m_RootForBoxes->GetRotation().y + 0.01, 0.0f));
 
 	SceneBase::OnPreRender(e);
 }
 
-
-
-//
-// Keyboard events
-//
 bool CSceneEditor::OnWindowKeyPressed(KeyEventArgs & e)
 {
-	//if (e.Key == KeyCode::F4)
-	//	m_Model_Pass_Opaque->SetEnabled(!m_Model_Pass_Opaque->IsEnabled());
-
-	//if (e.Key == KeyCode::F5)
-	//	m_Model_Pass_Transperent->SetEnabled(!m_Model_Pass_Transperent->IsEnabled());
-
 	return SceneBase::OnWindowKeyPressed(e);
 }
 
@@ -171,8 +105,99 @@ void CSceneEditor::OnWindowKeyReleased(KeyEventArgs & e)
 
 
 //
+// IEditor3DFrame
 //
+std::shared_ptr<ISceneNode3D> CSceneEditor::GetRealRootNode3D() const
+{
+	return GetRootNode3D();
+}
+
+std::shared_ptr<ISceneNode3D> CSceneEditor::GetNodeUnderMouse(const glm::ivec2& MousePos) const
+{
+	return FindIntersection(GetCameraController()->ScreenToRay(GetRenderWindow()->GetViewport(), MousePos));
+}
+
+void CSceneEditor::OnSceneNodeSelectedInUIEditor(const std::shared_ptr<ISceneNode3D>& SceneNode3D)
+{
+	DoSelectNode(SceneNode3D);
+}
+
+
 //
+// IEditorSharedFrame
+//
+void CSceneEditor::OnSceneNodeSelected(const std::shared_ptr<ISceneNode3D>& SceneNode3D)
+{
+	DoSelectNode(SceneNode3D);
+}
+
+
+
+
+
+
+
+glm::ivec3 CSceneEditor::ToBoxCoords(const glm::vec3 & Position)
+{
+	return glm::round(Position / 10.0f);
+}
+
+glm::vec3 CSceneEditor::FixBoxCoords(const glm::vec3 & Position)
+{
+	glm::vec3 newPosition = Position;
+	newPosition /= 10.0f;
+	newPosition = glm::round(newPosition);
+	newPosition *= 10.0f;
+	return newPosition;
+}
+
+//
+// Protected
+//
+void CSceneEditor::MoveDraggedNode(const glm::vec3 & Position)
+{
+	if (m_DraggedNode)
+	{
+		glm::vec3 newPosition = Position;
+		newPosition /= 10.0f;
+		newPosition = glm::round(newPosition);
+		newPosition *= 10.0f;
+		m_DraggedNode->SetTranslate(newPosition);
+	}
+}
+
+void CSceneEditor::DoSelectNode(const std::shared_ptr<ISceneNode3D>& Node)
+{
+	const auto& bbox = Node->GetComponent<IColliderComponent3D>()->GetBounds();
+	auto size = bbox.getMax() - bbox.getMin();
+
+	m_SelectedNode->SetTranslate(Node->GetTranslation() + bbox.getMin() - 0.1f * size);
+	
+	m_SelectedNode->SetScale(size * 1.2f);
+}
+
+std::shared_ptr<ISceneNode3D> CSceneEditor::CreateNode(const glm::ivec3& Position, int32 type)
+{
+	auto it = std::find_if(m_Nodes.begin(), m_Nodes.end(), [&Position] (const CSceneEditor::SNode& Object) -> bool {
+		return (Object.X == Position.x) && (Object.Y == Position.y) && (Object.Z == Position.z);
+	});
+
+	if (it != m_Nodes.end())
+		return it->SceneNode;
+
+	auto node = CreateSceneNode<SceneNode3D>(GetRootNode3D());
+	node->SetTranslate(glm::vec3(Position) * 10.0f);
+
+	auto model = GetRenderDevice().GetObjectsFactory().CreateModel();
+	if (auto loadable = std::dynamic_pointer_cast<IObjectLoadSave>(model))
+		loadable->Load(GetBaseManager().GetManager<IFilesManager>()->Open("C:\\_engine\\ZenonEngine_gamedata\\natureKit\\models\\fbxformat\\ground_grass.fbx.znmdl"));
+
+	node->GetComponent<IModelsComponent3D>()->AddModel(model);
+	node->GetComponent<IColliderComponent3D>()->SetBounds(/*BoundingBox(glm::vec3(-5.0f), glm::vec3(5.0f))*/model->GetBounds());
+
+	return node;
+}
+
 void CSceneEditor::Load3D()
 {
 	{
@@ -188,7 +213,7 @@ void CSceneEditor::Load3D()
 		sceneNodeLight->GetComponent<ILightComponent3D>()->SetSpotlightAngle(55.0f);
 	}
 
-	auto fileNames = GetAllFilesInDirectory("C:\\_engine\\ZenonEngine_gamedata\\natureKit\\models\\fbxformat", {}, ".fbx");
+	auto fileNames = Utils::GetAllFilesInDirectory("C:\\_engine\\ZenonEngine_gamedata\\models", ".znmdl");
 
 	std::vector<std::string> modelsList;
 	modelsList.push_back("C:\\_engine\\ZenonEngine_gamedata\\natureKit\\models\\fbxformat\\ground_dirt.fbx");
@@ -228,10 +253,10 @@ void CSceneEditor::Load3D()
 	modelsList.push_back("C:\\_engine\\ZenonEngine_gamedata\\natureKit\\models\\fbxformat\\ground_riverCross.fbx");
 	modelsList.push_back("C:\\_engine\\ZenonEngine_gamedata\\natureKit\\models\\fbxformat\\ground_riverEnd.fbx");
 
-	if (!modelsList.empty())
+	if (!fileNames.empty())
 	{
-		auto it = modelsList.begin();
-		auto sizeSqrtDouble = glm::sqrt(modelsList.size());
+		auto it = fileNames.begin();
+		auto sizeSqrtDouble = glm::sqrt(fileNames.size());
 		size_t sizeSqrt = glm::round(sizeSqrtDouble);
 		//sizeSqrt = 6;
 
@@ -239,9 +264,10 @@ void CSceneEditor::Load3D()
 		{
 			for (size_t y = 0; y < sizeSqrt; y++)
 			{
-				auto fileName = (*it++);
-				if (it == modelsList.end())
+				if (it == fileNames.end())
 					continue;
+
+				auto fileName = (*it++);
 
 				Log::Info(fileName.c_str());
 
@@ -252,14 +278,14 @@ void CSceneEditor::Load3D()
 
 					std::shared_ptr<ISceneNode3D> sceneNodeParent = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>(ofkSceneNode3D)->CreateSceneNode3D(this, cSceneNode3D, GetRootNode3D());
 					sceneNodeParent->SetName(name);
-					sceneNodeParent->SetTranslate(glm::vec3(float(x) * 10.0f, 0.0f, float(y) * 10.0f));
+					sceneNodeParent->SetTranslate(500.0f + glm::vec3(float(x) * 40.0f, 0.0f, float(y) * 40.0f));
 
-					if (GetBaseManager().GetManager<IFilesManager>()->IsFileExists(fileName + ".znmdl"))
+					if (GetBaseManager().GetManager<IFilesManager>()->IsFileExists(fileName))
 					{
 						auto model = GetRenderDevice().GetObjectsFactory().CreateModel();
 						if (auto loadable = std::dynamic_pointer_cast<IObjectLoadSave>(model))
 						{
-							loadable->Load(GetBaseManager().GetManager<IFilesManager>()->Open(fileName + ".znmdl"));
+							loadable->Load(GetBaseManager().GetManager<IFilesManager>()->Open(fileName));
 						}
 
 						sceneNodeParent->GetComponent<IModelsComponent3D>()->AddModel(model);
@@ -275,23 +301,24 @@ void CSceneEditor::Load3D()
 		}
 	}
 
-	sceneNodeParentt = CreateSceneNode<SceneNode3D>(GetRootNode3D());
-	sceneNodeParentt->SetTranslate(glm::vec3(0.0f, 0.0f, 0.0f));
+	m_DraggedNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>(ofkSceneNode3D)->CreateSceneNode3D(this, cSceneNode3D, GetRootNode3D());
+	m_DraggedNode->SetName("Dragged node parent.");
 
+	m_SelectedNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>(ofkSceneNode3D)->CreateSceneNode3D(this, cSceneNode3D, GetRootNode3D());
+	m_SelectedNode->SetName("Dragged node parent.");
+	auto geometry = GetRenderDevice().GetPrimitivesFactory().CreateBBox();
+	auto material = std::make_shared<MaterialDebug>(GetRenderDevice());
+	material->SetDiffuseColor(glm::vec4(1.0f, 1.0f, 0.0f, 1.0f));
 	auto model = GetRenderDevice().GetObjectsFactory().CreateModel();
-	if (auto loadable = std::dynamic_pointer_cast<IObjectLoadSave>(model))
-	{
-		loadable->Load(GetBaseManager().GetManager<IFilesManager>()->Open("C:\\_engine\\ZenonEngine_gamedata\\natureKit\\models\\fbxformat\\ground_grass.fbx.znmdl"));
-	}
-
-	sceneNodeParentt->GetComponent<IModelsComponent3D>()->AddModel(model);
-	sceneNodeParentt->GetComponent<IColliderComponent3D>()->SetBounds(BoundingBox(glm::vec3(-5.0f), glm::vec3(5.0f)));
+	model->AddConnection(material, geometry);
+	m_SelectedNode->GetComponent<IModelsComponent3D>()->AddModel(model);
 
 	glm::vec4 color = glm::vec4(0.0, 0.0f, 0.0f, 1.0f);
 	m_Technique3D.AddPass(std::make_shared<ClearRenderTargetPass>(GetRenderDevice(), GetRenderWindow()->GetRenderTarget(), ClearFlags::All, color /*glm::vec4(0.2f, 0.2f, 0.2f, 0.2f)*/, 1.0f, 0));
 	m_Technique3D.AddPass(GetBaseManager().GetManager<IRenderPassFactory>()->CreateRenderPass("ModelPassOpaque", GetRenderDevice(), GetRenderWindow()->GetRenderTarget(), &GetRenderWindow()->GetViewport(), shared_from_this()));
 	m_Technique3D.AddPass(GetBaseManager().GetManager<IRenderPassFactory>()->CreateRenderPass("ModelPassTransperent", GetRenderDevice(), GetRenderWindow()->GetRenderTarget(), &GetRenderWindow()->GetViewport(), shared_from_this()));
-	m_Technique3D.AddPass(std::make_shared<CDrawBoundingBoxPass>(GetRenderDevice(), shared_from_this())->CreatePipeline(GetRenderWindow()->GetRenderTarget(), &GetRenderWindow()->GetViewport()));
+	//m_Technique3D.AddPass(std::make_shared<CDrawBoundingBoxPass>(GetRenderDevice(), shared_from_this())->CreatePipeline(GetRenderWindow()->GetRenderTarget(), &GetRenderWindow()->GetViewport()));
+	m_Technique3D.AddPass(GetBaseManager().GetManager<IRenderPassFactory>()->CreateRenderPass("DebugPass", GetRenderDevice(), GetRenderWindow()->GetRenderTarget(), &GetRenderWindow()->GetViewport(), shared_from_this()));
 }
 
 void CSceneEditor::LoadUI()

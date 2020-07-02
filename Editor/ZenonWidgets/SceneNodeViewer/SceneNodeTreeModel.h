@@ -8,7 +8,6 @@
 class CSceneNodeTreeModel 
 	: public QAbstractItemModel 
 {
-	Q_OBJECT
 public:
 	CSceneNodeTreeModel(QObject *parent = 0);
 	virtual ~CSceneNodeTreeModel();

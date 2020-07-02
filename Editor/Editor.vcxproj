@@ -334,13 +334,14 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="RenderWindowWidget.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="SceneNodeTreeItem.cpp" />
-    <ClCompile Include="SceneNodeTreeModel.cpp" />
+    <ClCompile Include="ZenonWidgets\SceneNodeViewer\SceneNodeTreeItem.cpp" />
+    <ClCompile Include="ZenonWidgets\SceneNodeViewer\SceneNodeTreeModel.cpp" />
+    <ClCompile Include="ZenonWidgets\SceneNodeViewer\SceneNodeTreeViewerWidget.cpp" />
+    <ClCompile Include="ZenonWidgets\ZenonWindow3D\ZenonWindow3D.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DebugOutputEditorLog.h" />
@@ -351,6 +352,13 @@
     <ClInclude Include="PropertyEditor\Core\Auxiliary\PropertyMacro.h" />
     <ClInclude Include="PropertyEditor\Core\Auxiliary\PropertyTemplates.h" />
     <ClInclude Include="PropertyEditor\Core\CoreAPI.h" />
+    <ClInclude Include="ZenonWidgets\SceneNodeViewer\SceneNodeTreeItem.h" />
+    <ClInclude Include="ZenonWidgets\SceneNodeViewer\SceneNodeTreeModel.h" />
+    <QtMoc Include="ZenonWidgets\SceneNodeViewer\SceneNodeTreeViewerWidget.h" />
+    <ClInclude Include="_widgetPropertyEditor.h" />
+    <ClInclude Include="_widgetSceneNodeViewer.h" />
+    <ClInclude Include="_widgetZenonWindow3D.h" />
+    <QtMoc Include="ZenonWidgets\ZenonWindow3D\ZenonWindow3D.h" />
     <QtMoc Include="PropertyEditor\Core\Core\PropertyBool.h" />
     <QtMoc Include="PropertyEditor\Core\Core\PropertyDouble.h" />
     <QtMoc Include="PropertyEditor\Core\Core\PropertyEnum.h" />
@@ -423,16 +431,7 @@
     <ClInclude Include="PropertyEditor\PropertyWidget\PropertyWidgetAPI.h" />
     <QtMoc Include="PropertyEditor\PropertyWidget\Utils\AccessibilityProxy.h" />
     <ClInclude Include="PropertyEditor\PropertyWidget\Utils\InplaceEditing.h" />
-    <ClInclude Include="SceneNodeTreeItem.h" />
-    <QtMoc Include="SceneNodeTreeModel.h">
-      <ForceInclude Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">stdafx.h;../../%(Filename)%(Extension)</ForceInclude>
-      <ForceInclude Condition="'$(Configuration)|$(Platform)'=='Release|x64'">stdafx.h;../../%(Filename)%(Extension)</ForceInclude>
-    </QtMoc>
     <QtMoc Include="MainEditor.h">
-      <ForceInclude Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">stdafx.h;../../%(Filename)%(Extension)</ForceInclude>
-      <ForceInclude Condition="'$(Configuration)|$(Platform)'=='Release|x64'">stdafx.h;../../%(Filename)%(Extension)</ForceInclude>
-    </QtMoc>
-    <QtMoc Include="RenderWindowWidget.h">
       <ForceInclude Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">stdafx.h;../../%(Filename)%(Extension)</ForceInclude>
       <ForceInclude Condition="'$(Configuration)|$(Platform)'=='Release|x64'">stdafx.h;../../%(Filename)%(Extension)</ForceInclude>
     </QtMoc>

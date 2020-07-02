@@ -3,115 +3,68 @@
 // General
 #include "MainEditor.h"
 
-// Addtionals
-#include "SceneNodeTreeModel.h"
-#include "RenderWindowWidget.h"
-
 #include <qfilesystemmodel.h>
 
 MainEditor::MainEditor(QWidget* Parent)
 	: QMainWindow(Parent)
 {
-	ui.setupUi(this);
+	m_UI.setupUi(this);
 
+	QFileSystemModel* fsModel = new QFileSystemModel(this);
+	fsModel->setRootPath("D:\\_programming\\ZenonEngine\\gamedata");
+	m_UI.FSTreeViewer->setModel(fsModel);
 
-	m_PropertiesController = std::make_shared<CPropertiesController>(ui.PropertyEditor);
-
-	// Add context menu for scene node viewer
-	m_SceneTreeViewerContextMenu = std::make_shared<QMenu>(this);
-	m_SceneTreeViewerContextMenu->setTitle("Somec context menu title.");
-	ui.SceneTreeViewer->setContextMenuPolicy(Qt::CustomContextMenu);
-	connect(ui.SceneTreeViewer, SIGNAL(customContextMenuRequested(const QPoint &)), this, SLOT(onCustomContextMenu(const QPoint &)));
-	
-	// SceneNodeTreeView: Main settings
-	m_SceneTreeViewerModel = new CSceneNodeTreeModel(this);
-	ui.SceneTreeViewer->setModel(m_SceneTreeViewerModel);
-
-	// SceneNodeTreeView: Selection settings
-	ui.SceneTreeViewer->setSelectionMode(QAbstractItemView::SingleSelection);
-	QItemSelectionModel* selectionModel = ui.SceneTreeViewer->selectionModel();
-	connect(selectionModel, SIGNAL(currentChanged(const QModelIndex&, const QModelIndex&)), this, SLOT(onCurrentChanged(const QModelIndex&, const QModelIndex&)));
+	m_PropertiesController = std::make_shared<CPropertiesController>(m_UI.PropertyEditor);
 
 	// Unite file browser and log docker
-	QMainWindow::tabifyDockWidget(ui.DockerFileBrowser, ui.DockerLog);
+	QMainWindow::tabifyDockWidget(m_UI.DockerFileBrowser, m_UI.DockerLog);
 }
 
 MainEditor::~MainEditor()
 {
 }
 
-//
-// IEditorUIFrame
-//
-void MainEditor::OnSceneNode3DSelected(const std::shared_ptr<ISceneNode3D>& SceneNode3D) const
+void MainEditor::OnSceneNodeSelectedIn3DEditor(const std::shared_ptr<ISceneNode3D>& SceneNode3D)
 {
+	OnSceneNodeSelected(SceneNode3D);
 }
 
-
-
-void MainEditor::OnSceneNodeSelected(ISceneNode3D* SceneNode)
+void MainEditor::OnSceneNodeSelected(const std::shared_ptr<ISceneNode3D>& SceneNode3D)
 {
-	m_PropertiesController->SceneNodeSelected(SceneNode);
-}
-
-void MainEditor::ApplyScene(std::shared_ptr<IScene> Scene)
-{
-	m_Scene = Scene;
-
-	m_SceneTreeViewerModel->SetModelData(Scene->GetRootNode3D());
-
-	ui.SceneTreeViewer->expandAll();
-}
-
-void MainEditor::ApplyTest()
-{
-	QFileSystemModel* fsModel = new QFileSystemModel(this);
-	fsModel->setRootPath("D:\\_programming\\ZenonEngine\\gamedata");
-	ui.FSTreeViewer->setModel(fsModel);
-
-	m_PropertiesController->SceneNodeSelected(nullptr);
+	getSceneTree()->RefreshTreeViewModel(SceneNode3D);
+	m_PropertiesController->OnSceneNodeSelected(SceneNode3D.get());
 }
 
 
 //
 // Slots
 //
-void MainEditor::onCustomContextMenu(const QPoint& point)
+
+void MainEditor::slotCustomMenuRequested(const QPoint& pos)
 {
-	QModelIndex index = ui.SceneTreeViewer->indexAt(point);
-	if (!index.isValid())
-	{
-		return;
-	}
+	/* Create an object context menu */
+	QMenu * menu = new QMenu(this);
 
-	CSceneNodeTreeItem* item = static_cast<CSceneNodeTreeItem*>(index.internalPointer());
-	_ASSERT_EXPR(item != nullptr, L"Item is null.");
+	/* Create actions to the context menu */
+	QAction * editDevice = new QAction(trUtf8("Редактировать"), this);
+	QAction * deleteDevice = new QAction(trUtf8("Удалить"), this);
 
-	m_SceneTreeViewerContextMenu->clear();
+	/* Connect slot handlers for Action pop-up menu */
+	connect(editDevice, SIGNAL(triggered()), this, SLOT(slotEditRecord()));     // Call Handler dialog editing
+	connect(deleteDevice, SIGNAL(triggered()), this, SLOT(slotRemoveRecord())); // Handler delete records
 
-	{
-		QAction* nameAction = new QAction(item->GetSceneNode()->GetName().c_str(), m_SceneTreeViewerContextMenu.get());
-		nameAction->setEnabled(false);
-		m_SceneTreeViewerContextMenu->addAction(nameAction);
+	/* Set the actions to the menu */
+	menu->addAction(editDevice);
+	menu->addAction(deleteDevice);
 
-		m_SceneTreeViewerContextMenu->addSeparator();
-
-		QAction* uninstallAction33 = new QAction("Uninstall TA33", m_SceneTreeViewerContextMenu.get());
-		m_SceneTreeViewerContextMenu->addAction(uninstallAction33);
-	}
-
-	m_SceneTreeViewerContextMenu->exec(ui.SceneTreeViewer->viewport()->mapToGlobal(point));
+	/* Call the context menu */
+	menu->popup(pos);
 }
 
-void MainEditor::onCurrentChanged(const QModelIndex& current, const QModelIndex& previous)
+void MainEditor::slotEditRecord()
 {
-	if (!current.isValid())
-	{
-		return;
-	}
+}
 
-	CSceneNodeTreeItem* item = static_cast<CSceneNodeTreeItem*>(current.internalPointer());
-	_ASSERT_EXPR(item != nullptr, L"Item is null.");
-
-	OnSceneNodeSelected(item->GetSceneNode().get());
+void MainEditor::slotRemoveRecord()
+{
 }

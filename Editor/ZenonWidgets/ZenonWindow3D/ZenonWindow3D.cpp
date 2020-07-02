@@ -1,10 +1,9 @@
 #include "stdafx.h"
 
 // General
-#include "RenderWindowWidget.h"
+#include "ZenonWindow3D.h"
 
-
-RenderWindowWidget::RenderWindowWidget(QWidget *parent)
+ZenonWindow3D::ZenonWindow3D(QWidget *parent)
 	: QFrame(parent)
 {
 	setAttribute(Qt::WA_NativeWindow);
@@ -12,7 +11,7 @@ RenderWindowWidget::RenderWindowWidget(QWidget *parent)
 	setAttribute(Qt::WA_NoSystemBackground);
 }
 
-RenderWindowWidget::~RenderWindowWidget()
+ZenonWindow3D::~ZenonWindow3D()
 {
 }
 
@@ -21,56 +20,56 @@ RenderWindowWidget::~RenderWindowWidget()
 //
 // INativeWindow
 //
-void RenderWindowWidget::SetWindowTitle(const std::string& WindowName)
+void ZenonWindow3D::SetWindowTitle(const std::string& WindowName)
 {
 }
 
-std::string RenderWindowWidget::GetWindowTitle() const
+std::string ZenonWindow3D::GetWindowTitle() const
 {
 	return std::string();
 }
 
-size_t RenderWindowWidget::GetWindowWidth() const
+size_t ZenonWindow3D::GetWindowWidth() const
 {
 	return geometry().width();
 }
 
-size_t RenderWindowWidget::GetWindowHeight() const
+size_t ZenonWindow3D::GetWindowHeight() const
 {
 	return geometry().height();
 }
 
-void RenderWindowWidget::SetCursorPosition(const glm::ivec2 & CursorPosition)
+void ZenonWindow3D::SetCursorPosition(const glm::ivec2 & CursorPosition)
 {
 	_ASSERT(false);
 }
 
-glm::ivec2 RenderWindowWidget::GetCursorPosition() const
+glm::ivec2 ZenonWindow3D::GetCursorPosition() const
 {
 	_ASSERT(false);
 	return glm::ivec2();
 }
 
-void RenderWindowWidget::ShowCursor()
+void ZenonWindow3D::ShowCursor()
 {
 	_ASSERT(false);
 }
 
-void RenderWindowWidget::HideCursor()
+void ZenonWindow3D::HideCursor()
 {
 	_ASSERT(false);
 }
 
-void RenderWindowWidget::Close()
+void ZenonWindow3D::Close()
 {
 }
 
-void RenderWindowWidget::SetEventsListener(INativeWindowEventListener * WindowEventsListener)
+void ZenonWindow3D::SetEventsListener(INativeWindowEventListener * WindowEventsListener)
 {
 	m_EventListener = WindowEventsListener;
 }
 
-void RenderWindowWidget::ResetEventsListener()
+void ZenonWindow3D::ResetEventsListener()
 {
 	m_EventListener = nullptr;
 }
@@ -80,12 +79,12 @@ void RenderWindowWidget::ResetEventsListener()
 //
 // INativeWindow_WindowsSpecific
 //
-HWND RenderWindowWidget::GetHWnd() const
+HWND ZenonWindow3D::GetHWnd() const
 {
 	return (HWND)winId();
 }
 
-LRESULT RenderWindowWidget::Windows_ProcessMessage(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
+LRESULT ZenonWindow3D::Windows_ProcessMessage(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	_ASSERT(FALSE);
 	return 0;
@@ -113,7 +112,7 @@ MouseButtonEventArgs::MouseButton QtToZenonMouseBotton(Qt::MouseButton qtState)
 	return MouseButtonEventArgs::MouseButton::None;
 }
 
-void RenderWindowWidget::mousePressEvent(QMouseEvent * event)
+void ZenonWindow3D::mousePressEvent(QMouseEvent * event)
 {
 	MouseButtonEventArgs args
 	(
@@ -131,7 +130,7 @@ void RenderWindowWidget::mousePressEvent(QMouseEvent * event)
 	m_EventListener->OnWindowMouseButtonPressed(args);
 }
 
-void RenderWindowWidget::mouseReleaseEvent(QMouseEvent * event)
+void ZenonWindow3D::mouseReleaseEvent(QMouseEvent * event)
 {
 	MouseButtonEventArgs args
 	(
@@ -149,11 +148,11 @@ void RenderWindowWidget::mouseReleaseEvent(QMouseEvent * event)
 	m_EventListener->OnWindowMouseButtonReleased(args);
 }
 
-void RenderWindowWidget::mouseDoubleClickEvent(QMouseEvent * event)
+void ZenonWindow3D::mouseDoubleClickEvent(QMouseEvent * event)
 {
 }
 
-void RenderWindowWidget::mouseMoveEvent(QMouseEvent * event)
+void ZenonWindow3D::mouseMoveEvent(QMouseEvent * event)
 {
 	MouseMotionEventArgs args
 	(
@@ -169,7 +168,7 @@ void RenderWindowWidget::mouseMoveEvent(QMouseEvent * event)
 	m_EventListener->OnWindowMouseMoved(args);
 }
 
-void RenderWindowWidget::wheelEvent(QWheelEvent * event)
+void ZenonWindow3D::wheelEvent(QWheelEvent * event)
 {
 	MouseWheelEventArgs args
 	(
@@ -187,7 +186,7 @@ void RenderWindowWidget::wheelEvent(QWheelEvent * event)
 	m_EventListener->OnWindowMouseWheel(args);
 }
 
-void RenderWindowWidget::keyPressEvent(QKeyEvent * event)
+void ZenonWindow3D::keyPressEvent(QKeyEvent * event)
 {
 	KeyEventArgs args
 	(
@@ -202,7 +201,7 @@ void RenderWindowWidget::keyPressEvent(QKeyEvent * event)
 	m_EventListener->OnWindowKeyPressed(args);
 }
 
-void RenderWindowWidget::keyReleaseEvent(QKeyEvent * event)
+void ZenonWindow3D::keyReleaseEvent(QKeyEvent * event)
 {
 	KeyEventArgs args
 	(
@@ -217,54 +216,54 @@ void RenderWindowWidget::keyReleaseEvent(QKeyEvent * event)
 	m_EventListener->OnWindowKeyReleased(args);
 }
 
-void RenderWindowWidget::focusInEvent(QFocusEvent * event)
+void ZenonWindow3D::focusInEvent(QFocusEvent * event)
 {
 	m_EventListener->OnWindowInputFocus(EventArgs(this));
 }
 
-void RenderWindowWidget::focusOutEvent(QFocusEvent * event)
+void ZenonWindow3D::focusOutEvent(QFocusEvent * event)
 {
 	m_EventListener->OnWindowInputBlur(EventArgs(this));
 }
 
-void RenderWindowWidget::enterEvent(QEvent * event)
+void ZenonWindow3D::enterEvent(QEvent * event)
 {
 	setFocus();
 
 	m_EventListener->OnWindowMouseFocus(EventArgs(this));
 }
 
-void RenderWindowWidget::leaveEvent(QEvent * event)
+void ZenonWindow3D::leaveEvent(QEvent * event)
 {
 	m_EventListener->OnWindowMouseLeave(EventArgs(this));
 }
 
-void RenderWindowWidget::paintEvent(QPaintEvent *pEvent)
+void ZenonWindow3D::paintEvent(QPaintEvent *pEvent)
 {
 	// do nothing
 }
 
-void RenderWindowWidget::moveEvent(QMoveEvent * event)
+void ZenonWindow3D::moveEvent(QMoveEvent * event)
 {
 	// do nothing
 }
 
-void RenderWindowWidget::resizeEvent(QResizeEvent * event)
+void ZenonWindow3D::resizeEvent(QResizeEvent * event)
 {
 	m_EventListener->OnWindowResize(ResizeEventArgs(this, event->size().width(), event->size().height()));
 }
 
-void RenderWindowWidget::closeEvent(QCloseEvent * event)
+void ZenonWindow3D::closeEvent(QCloseEvent * event)
 {
 	
 	m_EventListener->OnWindowClose(WindowCloseEventArgs(this));
 }
 
-void RenderWindowWidget::showEvent(QShowEvent * event)
+void ZenonWindow3D::showEvent(QShowEvent * event)
 {
 }
 
-void RenderWindowWidget::hideEvent(QHideEvent * event)
+void ZenonWindow3D::hideEvent(QHideEvent * event)
 {
 	PostQuitMessage(0);
 }

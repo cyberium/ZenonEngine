@@ -77,7 +77,7 @@ protected:
 	IRenderDevice&                                  GetRenderDevice() const;
 	std::shared_ptr<IRenderWindow>                  GetRenderWindow() const;
 
-	std::shared_ptr<ISceneNode3D>                   FindIntersection(const Ray& Ray);
+	std::shared_ptr<ISceneNode3D>                   FindIntersection(const Ray& Ray) const;
 
 
 protected: // Input events process recursive

@@ -20,7 +20,7 @@ CPropertiesController::~CPropertiesController()
 {
 }
 
-void CPropertiesController::SceneNodeSelected(ISceneNode3D* SceneNode)
+void CPropertiesController::OnSceneNodeSelected(ISceneNode3D* SceneNode)
 {
 	auto m_propertySetRoot = new QtnPropertySet(this);
 

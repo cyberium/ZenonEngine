@@ -5,7 +5,6 @@
 #include <QApplication>
 
 #include "DebugOutputEditorLog.h"
-#include "RenderWindowWidget.h"
 
 #include "Editor3DFrame.h"
 
@@ -20,7 +19,7 @@ void main_internal(int argc, char *argv[])
 	Application app(*BaseManager, ::GetModuleHandle(NULL));
 
 	QApplication a(argc, argv);
-	MainEditor w;
+	MainEditor editorUI;
 
 	IRenderDevice& renderDevice = app.CreateRenderDevice(RenderDeviceType::RenderDeviceType_DirectX);
 
@@ -28,22 +27,23 @@ void main_internal(int argc, char *argv[])
 	BaseManager->AddManager<IFontsManager>(fontsManager);
 
 	// Render window for main editor
-	std::shared_ptr<IRenderWindow> renderWindow = renderDevice.GetObjectsFactory().CreateRenderWindow(*w.getUI().EditorWindow, false);
+	std::shared_ptr<IRenderWindow> renderWindow = renderDevice.GetObjectsFactory().CreateRenderWindow(*(editorUI.getUI()).MainEditor3D, false);
 	app.AddRenderWindow(renderWindow);
 
 	BaseManager->GetManager<ILoader>()->Start();
 
 	//std::shared_ptr<IScene> scene = BaseManager->GetManager<IScenesFactory>()->CreateScene("SceneDefault");
-	std::shared_ptr<IScene> scene = std::make_shared<CSceneEditor>(*BaseManager);
+	std::shared_ptr<CSceneEditor> scene = std::make_shared<CSceneEditor>(*BaseManager);
+
+	scene->SetEditorUI(&editorUI);
+	editorUI.SetEditor3D(scene.get());
+
 	scene->ConnectEvents(std::dynamic_pointer_cast<IRenderWindowEvents>(renderWindow));
 	scene->Initialize();
 
-	w.ApplyScene(scene);
-	w.ApplyTest();
+	editorUI.show();
 
-	w.show();
-
-	BaseManager->GetManager<ILog>()->AddDebugOutput(std::make_shared<DebugOutput_EditorLog>(w.getUI().LogTextEdit));
+	BaseManager->GetManager<ILog>()->AddDebugOutput(std::make_shared<DebugOutput_EditorLog>(editorUI.getUI().LogTextEdit));
 
 	app.Run();
 

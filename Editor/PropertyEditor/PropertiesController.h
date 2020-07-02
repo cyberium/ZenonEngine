@@ -3,14 +3,14 @@
 #include "ui_MainEditor.h"
 
 class CPropertiesController
-	: QObject
+	: public QObject
 {
 	Q_OBJECT
 public:
 	CPropertiesController(QtnPropertyWidget * PropertyWidget);
 	virtual ~CPropertiesController();
 
-	void SceneNodeSelected(ISceneNode3D* SceneNode);
+	void OnSceneNodeSelected(ISceneNode3D* SceneNode);
 
 public:
 	void CreateProperty(QtnPropertySet* PropertiesSet, IProperty* Property);

@@ -1,17 +1,19 @@
 #pragma once
 
+#include <QtCore/QObject>
 #include <qframe.h>
 
-class RenderWindowWidget
+class ZenonWindow3D
 	: public QFrame
 	, public INativeWindow
 	, public INativeWindow_WindowsSpecific
 	, public Object
 {
 	Q_OBJECT
+	Q_DISABLE_COPY(ZenonWindow3D)
 public:
-	RenderWindowWidget(QWidget * parent);
-	virtual ~RenderWindowWidget();
+	ZenonWindow3D(QWidget * parent);
+	virtual ~ZenonWindow3D();
 
 	// INativeWindow
 	void SetWindowTitle(const std::string& WindowName) override;

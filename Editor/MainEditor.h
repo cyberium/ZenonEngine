@@ -4,13 +4,13 @@
 #include "ui_MainEditor.h"
 
 #include "EditorInterfaces.h"
-#include "SceneNodeTreeModel.h"
 
 #include "PropertyEditor/PropertiesController.h"
 
 class MainEditor 
 	: public QMainWindow
 	, public IEditorUIFrame
+	, public IEditorSharedFrame
 {
 	Q_OBJECT
 
@@ -18,29 +18,31 @@ public:
 	MainEditor(QWidget* Parent = nullptr);
 	virtual ~MainEditor();
 
+	inline Ui::MainEditorClass getUI() const { return m_UI; }
+	inline ZenonWindow3D * getMainEditor3DWindow() const { return m_UI.MainEditor3D; }
+	inline SceneNodeTreeViewerWidget * getSceneTree() const { return m_UI.SceneTreeViewer; }
+	inline void SetEditor3D(IEditor3DFrame* Editor3DFrame) { 
+		m_Editor3D = Editor3DFrame; 
+		getUI().SceneTreeViewer->SetEditors(Editor3DFrame, this);
+	}
+
 	// IEditorUIFrame
-	void OnSceneNode3DSelected(const std::shared_ptr<ISceneNode3D>& SceneNode3D) const override;
+	void OnSceneNodeSelectedIn3DEditor(const std::shared_ptr<ISceneNode3D>& SceneNode3D) override;
 
-	void OnSceneNodeSelected(ISceneNode3D* SceneNode);
+	// IEditorSharedFrame
+	void OnSceneNodeSelected(const std::shared_ptr<ISceneNode3D>& SceneNode3D) override;
 
-	void ApplyScene(std::shared_ptr<IScene> Scene);
-	void ApplyTest();
-
-	Ui::MainEditorClass getUI() const { return ui; }
 
 private slots:
-	void onCustomContextMenu(const QPoint& point);
-	void onCurrentChanged(const QModelIndex& current, const QModelIndex& previous);
-
+	void slotCustomMenuRequested(const QPoint& pos);
+	void slotEditRecord();
+	void slotRemoveRecord();
 private:
-	CSceneNodeTreeModel * m_SceneTreeViewerModel;
-	std::shared_ptr<IScene> m_Scene;
 	
-
-	std::shared_ptr<QMenu>                          m_SceneTreeViewerContextMenu;
-
 	std::shared_ptr<CPropertiesController>          m_PropertiesController;
 
 private:
-	Ui::MainEditorClass ui;
+	IEditor3DFrame* m_Editor3D;
+	Ui::MainEditorClass m_UI;
+	
 };

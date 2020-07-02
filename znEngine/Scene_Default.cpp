@@ -21,75 +21,6 @@
 
 #include "FBX/FBXInterfaces.h"
 
-// Additional
-#include <filesystem>
-namespace fs = std::experimental::filesystem;
-
-namespace
-{
-	std::string str_tolower(std::string s)
-	{
-		std::transform(s.begin(), s.end(), s.begin(), [](char c)
-		{
-			return std::tolower(c, std::locale()); }
-		);
-		return s;
-	}
-
-	std::vector<std::string> GetAllFilesInDirectory(const std::string& Directory, const std::vector<std::string> DirSkipList = { }, const std::string& FileExtention = "")
-	{
-		std::vector<std::string> listOfFiles;
-
-		try
-		{
-			bool isExists = fs::exists(Directory);
-			bool isDir = fs::is_directory(Directory);
-
-			// Check if given path exists and points to a directory
-			if (isExists && isDir)
-			{
-				// Create a Recursive Directory Iterator object and points to the starting of directory
-				fs::recursive_directory_iterator iter(Directory);
-
-				// Create a Recursive Directory Iterator object pointing to end.
-				fs::recursive_directory_iterator end;
-
-				// Iterate till end
-				while (iter != end)
-				{
-					// Check if current entry is a directory and if exists in skip list
-					if (fs::is_directory(iter->path()) && (std::find(DirSkipList.begin(), DirSkipList.end(), iter->path().filename()) != DirSkipList.end()))
-					{
-						iter.disable_recursion_pending();
-					}
-					else if (!fs::is_directory(iter->path()) && (!FileExtention.empty()) && (iter->path().has_extension()) && (str_tolower(iter->path().extension().string()) == str_tolower(FileExtention)))
-					{
-						listOfFiles.push_back(iter->path().string());
-					}
-					else
-					{
-						iter.disable_recursion_pending();
-					}
-
-					std::error_code ec;
-					// Increment the iterator to point to next entry in recursive iteration
-					iter.increment(ec);
-					if (ec)
-					{
-						Log::Error("GetAllFilesInDirectory: Error while accessing '%s'. Error: '%s'.", iter->path().string().c_str(), ec.message().c_str());
-					}
-				}
-			}
-		}
-		catch (const std::system_error& e)
-		{
-			Log::Error("GetAllFilesInDirectory: Exception '%s'", e.what());
-		}
-
-		return listOfFiles;
-	}
-}
-
 CSceneDefault::CSceneDefault(IBaseManager& BaseManager)
 	: SceneBase(BaseManager)
 	, m_World(rp3d::Vector3(0.0f, -9.81f, 0.0f))
@@ -425,9 +356,9 @@ void CSceneDefault::Load3D()
 		*/
 	}
 
-	auto fileNames = GetAllFilesInDirectory("C:\\_engine\\ZenonEngine_gamedata\\natureKit\\models\\fbxformat", {}, ".fbx");
+	auto fileNames = Utils::GetAllFilesInDirectory("C:\\_engine\\ZenonEngine_gamedata\\models", ".fbx");
 	
-	std::vector<std::string> modelsList;
+	/*std::vector<std::string> modelsList;
 	modelsList.push_back("C:\\_engine\\ZenonEngine_gamedata\\natureKit\\models\\fbxformat\\ground_dirt.fbx");
 	modelsList.push_back("C:\\_engine\\ZenonEngine_gamedata\\natureKit\\models\\fbxformat\\ground_dirtRiver.fbx");
 	modelsList.push_back("C:\\_engine\\ZenonEngine_gamedata\\natureKit\\models\\fbxformat\\ground_dirtRiverBanks.fbx");
@@ -463,12 +394,12 @@ void CSceneDefault::Load3D()
 	modelsList.push_back("C:\\_engine\\ZenonEngine_gamedata\\natureKit\\models\\fbxformat\\ground_riverCorner.fbx");
 	modelsList.push_back("C:\\_engine\\ZenonEngine_gamedata\\natureKit\\models\\fbxformat\\ground_riverCornerSmall.fbx");
 	modelsList.push_back("C:\\_engine\\ZenonEngine_gamedata\\natureKit\\models\\fbxformat\\ground_riverCross.fbx");
-	modelsList.push_back("C:\\_engine\\ZenonEngine_gamedata\\natureKit\\models\\fbxformat\\ground_riverEnd.fbx");
+	modelsList.push_back("C:\\_engine\\ZenonEngine_gamedata\\natureKit\\models\\fbxformat\\ground_riverEnd.fbx");*/
 
-	if (!modelsList.empty())
+	if (!fileNames.empty())
 	{
-		auto it = modelsList.begin();
-		auto sizeSqrtDouble = glm::sqrt(modelsList.size());
+		auto it = fileNames.begin();
+		auto sizeSqrtDouble = glm::sqrt(fileNames.size());
 		size_t sizeSqrt = static_cast<size_t>(sizeSqrtDouble);
 		//sizeSqrt = 6;
 
@@ -477,7 +408,7 @@ void CSceneDefault::Load3D()
 			for (size_t y = 0; y < sizeSqrt; y++)
 			{
 				auto fileName = (*it++);
-				if (it == modelsList.end())
+				if (it == fileNames.end())
 					continue;
 
 				Log::Info(fileName.c_str());
@@ -485,7 +416,7 @@ void CSceneDefault::Load3D()
 				try
 				{
 					std::shared_ptr<ISceneNode3D> sceneNodeParent = CreateSceneNode<SceneNode3D>(GetRootNode3D());
-					sceneNodeParent->SetTranslate(glm::vec3(float(x) * 10.0f, 0.0f, float(y) * 10.0f));
+					sceneNodeParent->SetTranslate(glm::vec3(float(x) * 30.0f, 0.0f, float(y) * 30.0f));
 
 					if (GetBaseManager().GetManager<IFilesManager>()->IsFileExists(fileName + ".znmdl"))
 					{
@@ -501,7 +432,7 @@ void CSceneDefault::Load3D()
 						continue;
 					}
 
-					//continue;
+					continue;
 					
 					std::shared_ptr<ISceneNode3D> sceneNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>(ofkSceneNode3D)->CreateSceneNode3D(this, cSceneNode_FBXNode);
 					sceneNodeParent->AddChild(sceneNode);

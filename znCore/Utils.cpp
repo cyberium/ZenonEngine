@@ -3,6 +3,10 @@
 // General
 #include "Utils.h"
 
+// Additional
+#include <filesystem>
+namespace fs = std::experimental::filesystem;
+
 namespace Utils
 {
 	std::string Trim(std::string& s, const std::string& delimiters)
@@ -44,6 +48,57 @@ namespace Utils
 			argumnets.push_back(std::string(arguments[i]));
 		}
 		return argumnets;
+	}
+
+	std::vector<std::string> GetAllFilesInDirectory(const std::string& Directory, const std::string& FileExtention, const std::vector<std::string> DirSkipList)
+	{
+		std::vector<std::string> listOfFiles;
+
+		try
+		{
+			bool isExists = fs::exists(Directory);
+			bool isDir = fs::is_directory(Directory);
+
+			// Check if given path exists and points to a directory
+			if (isExists && isDir)
+			{
+				// Create a Recursive Directory Iterator object and points to the starting of directory
+				fs::recursive_directory_iterator iter(Directory);
+
+				// Create a Recursive Directory Iterator object pointing to end.
+				fs::recursive_directory_iterator end;
+
+				// Iterate till end
+				while (iter != end)
+				{
+					// Check if current entry is a directory and if exists in skip list
+					if (fs::is_directory(iter->path()) && (std::find(DirSkipList.begin(), DirSkipList.end(), iter->path().filename()) != DirSkipList.end()))
+					{
+						iter.disable_recursion_pending();
+					}
+					else if (!fs::is_directory(iter->path()) && (!FileExtention.empty()) && (iter->path().has_extension()) && (Utils::ToLower(iter->path().extension().string()) == Utils::ToLower(FileExtention)))
+					{
+						listOfFiles.push_back(iter->path().string());
+					}
+					else
+					{
+						iter.disable_recursion_pending();
+					}
+
+					std::error_code ec;
+					// Increment the iterator to point to next entry in recursive iteration
+					iter.increment(ec);
+					if (ec)
+						throw CException("GetAllFilesInDirectory: Error while accessing '%s'. Error: '%s'.", iter->path().string().c_str(), ec.message().c_str());
+				}
+			}
+		}
+		catch (const std::system_error& e)
+		{
+			throw CException("GetAllFilesInDirectory: Exception '%s'", e.what());
+		}
+
+		return listOfFiles;
 	}
 }
 

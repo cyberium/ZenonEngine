@@ -247,7 +247,7 @@
            <number>1</number>
           </property>
           <item>
-           <widget class="RenderWindowWidget" name="EditorWindow">
+           <widget class="ZenonWindow3D" name="MainEditor3D">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
               <horstretch>0</horstretch>
@@ -549,7 +549,7 @@
       <number>0</number>
      </property>
      <item>
-      <widget class="QTreeView" name="SceneTreeViewer">
+      <widget class="SceneNodeTreeViewerWidget" name="SceneTreeViewer">
        <property name="enabled">
         <bool>true</bool>
        </property>
@@ -640,7 +640,7 @@
    <widget class="QWidget" name="DockerLogContent">
     <layout class="QHBoxLayout" name="horizontalLayout_7">
      <property name="spacing">
-      <number>0</number>
+      <number>5</number>
      </property>
      <property name="leftMargin">
       <number>0</number>
@@ -670,6 +670,46 @@
        </property>
        <property name="plainText">
         <string/>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+  </widget>
+  <widget class="QDockWidget" name="Collection">
+   <property name="features">
+    <set>QDockWidget::DockWidgetMovable</set>
+   </property>
+   <property name="windowTitle">
+    <string>Collection</string>
+   </property>
+   <attribute name="dockWidgetArea">
+    <number>2</number>
+   </attribute>
+   <widget class="QWidget" name="DockerCollectionContent">
+    <layout class="QHBoxLayout" name="horizontalLayout_8">
+     <property name="spacing">
+      <number>5</number>
+     </property>
+     <property name="leftMargin">
+      <number>0</number>
+     </property>
+     <property name="topMargin">
+      <number>0</number>
+     </property>
+     <property name="rightMargin">
+      <number>0</number>
+     </property>
+     <property name="bottomMargin">
+      <number>0</number>
+     </property>
+     <item>
+      <widget class="QTableView" name="tableView">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
        </property>
       </widget>
      </item>
@@ -710,16 +750,21 @@
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>
   <customwidget>
-   <class>RenderWindowWidget</class>
+   <class>ZenonWindow3D</class>
    <extends>QFrame</extends>
-   <header>Renderwindowwidget.h</header>
+   <header location="global">_widgetZenonWindow3D.h</header>
    <container>1</container>
   </customwidget>
   <customwidget>
    <class>QtnPropertyWidget</class>
    <extends>QWidget</extends>
-   <header>qtnpropertywidget.h</header>
+   <header location="global">_widgetPropertyEditor.h</header>
    <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>SceneNodeTreeViewerWidget</class>
+   <extends>QTreeView</extends>
+   <header location="global">_widgetSceneNodeViewer.h</header>
   </customwidget>
  </customwidgets>
  <resources>

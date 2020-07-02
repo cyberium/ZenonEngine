@@ -16,8 +16,7 @@ CUIButtonNode::CUIButtonNode(IRenderDevice& RenderDevice)
 }
 
 CUIButtonNode::~CUIButtonNode()
-{
-}
+{}
 
 
 
