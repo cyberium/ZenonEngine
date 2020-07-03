@@ -22,6 +22,11 @@ CPropertiesController::~CPropertiesController()
 
 void CPropertiesController::OnSceneNodeSelected(ISceneNode3D* SceneNode)
 {
+	if (m_PropertyWidget->propertySet())
+	{
+		delete m_PropertyWidget->propertySet();
+	}
+
 	auto m_propertySetRoot = new QtnPropertySet(this);
 
 	/*
@@ -77,14 +82,19 @@ void CPropertiesController::OnSceneNodeSelected(ISceneNode3D* SceneNode)
 	if (SceneNode)
 	{
 		CreateProperty(m_propertySetRoot, SceneNode->GetProperties());
+
+		for (const auto& c : SceneNode->GetComponents())
+		{
+			CreateProperty(m_propertySetRoot, c.second->GetProperties());
+		}
 	}
 
 	m_PropertyWidget->setPropertySet(m_propertySetRoot);
 }
 
-void CPropertiesController::CreateProperty(QtnPropertySet * PropertiesSet, IProperty* Property)
+void CPropertiesController::CreateProperty(QtnPropertySet * PropertiesSet, const std::shared_ptr<IProperty>& Property)
 {
-	if (IPropertiesGroup* propGroup = dynamic_cast<IPropertiesGroup*>(Property))
+	if (auto propGroup = std::dynamic_pointer_cast<IPropertiesGroup>(Property))
 	{
 		QtnPropertySet* propertySet = new QtnPropertySet(this);
 		propertySet->setName(propGroup->GetName().c_str());
@@ -92,11 +102,18 @@ void CPropertiesController::CreateProperty(QtnPropertySet * PropertiesSet, IProp
 		PropertiesSet->addChildProperty(propertySet);
 
 		for (const auto& prop : propGroup->GetProperties())
-		{
-			CreateProperty(propertySet, prop.second.get());
-		}
+			CreateProperty(propertySet, prop.second);
 	}
-	else if (IPropertyT<std::string>* propT = dynamic_cast<IPropertyT<std::string>*>(Property))
+	else if (auto act = std::dynamic_pointer_cast<IPropertyAction>(Property))
+	{
+		QtnPropertyButton* actionProperty = qtnCreateProperty<QtnPropertyButton>(PropertiesSet);
+		actionProperty->setName(act->GetName().c_str());
+		actionProperty->setDescription(act->GetDescription().c_str());
+		actionProperty->setClickHandler([act](const QtnPropertyButton* Button) {
+			act->ExecuteAction();
+		});
+	}
+	else if (auto propT = std::dynamic_pointer_cast<IPropertyT<std::string>>(Property))
 	{
 		QtnPropertyString* stringProperty = qtnCreateProperty<QtnPropertyString>(PropertiesSet);
 		stringProperty->setName(propT->GetName().c_str());
@@ -104,27 +121,23 @@ void CPropertiesController::CreateProperty(QtnPropertySet * PropertiesSet, IProp
 		stringProperty->setValue(propT->Get());
 
 		// From engine to editor
-		propT->SetValueChangedCallback
-		(
-			[stringProperty](const std::string& value) 
-			{  
+		propT->SetValueChangedCallback(
+			[stringProperty](const std::string& value) {  
 				stringProperty->setValue(value); 
 			}
 		);
 
 		// From editor to engine
-		QObject::connect
-		(
+		QObject::connect(
 			stringProperty, 
 			&QtnProperty::propertyDidChange, 
-			[stringProperty, propT](const QtnPropertyBase* changedProperty, const QtnPropertyBase* firedProperty, QtnPropertyChangeReason reason)
-			{
+			[stringProperty, propT](const QtnPropertyBase* changedProperty, const QtnPropertyBase* firedProperty, QtnPropertyChangeReason reason) {
 				if (reason & QtnPropertyChangeReasonValue)
 					propT->Set(stringProperty->value(), true);
 			}
 		);
 	}
-	else if (IPropertyT<float>* propT = dynamic_cast<IPropertyT<float>*>(Property))
+	else if (auto propT = std::dynamic_pointer_cast<IPropertyT<float>>(Property))
 	{
 		QtnPropertyFloat* floatProperty = qtnCreateProperty<QtnPropertyFloat>(PropertiesSet);
 		floatProperty->setName(propT->GetName().c_str());
@@ -132,27 +145,23 @@ void CPropertiesController::CreateProperty(QtnPropertySet * PropertiesSet, IProp
 		floatProperty->setValue(propT->Get());
 
 		// From engine to editor
-		propT->SetValueChangedCallback
-		(
-			[floatProperty](const float& value) 
-			{  
+		propT->SetValueChangedCallback(
+			[floatProperty](const float& value) {  
 				floatProperty->setValue(value); 
 			}
 		);
 
 		// From editor to engine
-		QObject::connect
-		(
+		QObject::connect(
 			floatProperty, 
 			&QtnProperty::propertyDidChange, 
-			[floatProperty, propT](const QtnPropertyBase* changedProperty, const QtnPropertyBase* firedProperty, QtnPropertyChangeReason reason)
-			{
+			[floatProperty, propT](const QtnPropertyBase* changedProperty, const QtnPropertyBase* firedProperty, QtnPropertyChangeReason reason) {
 				if (reason & QtnPropertyChangeReasonValue)
 					propT->Set(floatProperty->value(), true);
 			}
 		);
 	}
-	else if (IPropertyT<glm::vec3>* propT = dynamic_cast<IPropertyT<glm::vec3>*>(Property))
+	else if (auto propT = std::dynamic_pointer_cast<IPropertyT<glm::vec3>>(Property))
 	{
 		QtnPropertyVec3* vec3Property = qtnCreateProperty<QtnPropertyVec3>(PropertiesSet);
 		vec3Property->setName(propT->GetName().c_str());
@@ -160,21 +169,17 @@ void CPropertiesController::CreateProperty(QtnPropertySet * PropertiesSet, IProp
 		vec3Property->setValue(propT->Get());
 
 		// From engine to editor
-		propT->SetValueChangedCallback
-		(
-			[vec3Property](const glm::vec3& value) 
-			{
+		propT->SetValueChangedCallback(
+			[vec3Property](const glm::vec3& value) {
 				vec3Property->setValue(value); 
 			}
 		);
 
 		// From editor to engine
-		QObject::connect
-		(
+		QObject::connect(
 			vec3Property, 
 			&QtnProperty::propertyDidChange, 
-			[vec3Property, propT](const QtnPropertyBase* changedProperty, const QtnPropertyBase* firedProperty, QtnPropertyChangeReason reason)
-			{
+			[vec3Property, propT](const QtnPropertyBase* changedProperty, const QtnPropertyBase* firedProperty, QtnPropertyChangeReason reason) {
 				if (reason & QtnPropertyChangeReasonValue)
 					propT->Set(vec3Property->value(), true);
 			}
@@ -185,3 +190,4 @@ void CPropertiesController::CreateProperty(QtnPropertySet * PropertiesSet, IProp
 		Log::Error("Unsupported property [%s] type.", Property->GetName().c_str());
 	}
 }
+

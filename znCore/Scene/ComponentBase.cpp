@@ -5,12 +5,12 @@
 
 // Additional
 #include "Properties.h"
+#include "Actions.h"
 
 CComponentBase::CComponentBase(const ISceneNode3D& OwnerNode)
     : m_OwnerNode(OwnerNode)
 {
-	m_PropertyGroup = std::make_shared<CPropertiesGroup>();
-	OwnerNode.GetProperties()->AddProperty(m_PropertyGroup);
+	m_Properties = std::make_shared<CPropertiesGroup>();
 }
 
 CComponentBase::~CComponentBase()
@@ -27,9 +27,9 @@ void CComponentBase::OnMessage(const ISceneNodeComponent* Component, ComponentMe
 	// do nothing
 }
 
-IPropertiesGroup* CComponentBase::GetPropertiesGroup() const
+std::shared_ptr<IPropertiesGroup> CComponentBase::GetProperties() const
 {
-	return m_PropertyGroup.get();
+	return m_Properties;
 }
 
 

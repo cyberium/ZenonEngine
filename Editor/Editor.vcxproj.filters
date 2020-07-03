@@ -56,6 +56,15 @@
     <Filter Include="ZenonWidgets\Property editor\Widget\Utils">
       <UniqueIdentifier>{b3a70016-f26c-4bb6-818d-3b5bfd1fe4d4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Editor3D">
+      <UniqueIdentifier>{72c27b49-4bcb-47f0-aec6-118b1a67b28d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EditorUI">
+      <UniqueIdentifier>{d284ce63-8176-4a03-9452-17676299a635}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ZenonWidgets\ZenonLogViewer">
+      <UniqueIdentifier>{a2567b87-e171-4d4f-939b-a53f0c3bba7c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -241,9 +250,6 @@
     <ClCompile Include="PropertyEditor\PropertyWidget\Delegates\Core\PropertyDelegateString.cpp">
       <Filter>ZenonWidgets\Property editor\Widget\Delegates\Core</Filter>
     </ClCompile>
-    <ClCompile Include="DebugOutputEditorLog.cpp" />
-    <ClCompile Include="MainEditor.cpp" />
-    <ClCompile Include="Editor3DFrame.cpp" />
     <ClCompile Include="ZenonWidgets\ZenonWindow3D\ZenonWindow3D.cpp">
       <Filter>ZenonWidgets\ZenonWindow3D</Filter>
     </ClCompile>
@@ -257,6 +263,15 @@
       <Filter>ZenonWidgets\SceneNodeViewer</Filter>
     </ClCompile>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Editor3DFrame.cpp">
+      <Filter>Editor3D</Filter>
+    </ClCompile>
+    <ClCompile Include="MainEditor.cpp">
+      <Filter>EditorUI</Filter>
+    </ClCompile>
+    <ClCompile Include="ZenonWidgets\ZenonLogViewer\ZenonLogViewer.cpp">
+      <Filter>ZenonWidgets\ZenonLogViewer</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -379,14 +394,12 @@
     <ClInclude Include="PropertyEditor\PropertyWidget\Delegates\Core\PropertyDelegateVec3.h">
       <Filter>ZenonWidgets\Property editor\Widget\Delegates\Core</Filter>
     </ClInclude>
-    <ClInclude Include="DebugOutputEditorLog.h" />
     <ClInclude Include="PropertyEditor\PropertyWidget\Delegates\Core\PropertyDelegateString.h">
       <Filter>ZenonWidgets\Property editor\Widget\Delegates\Core</Filter>
     </ClInclude>
     <ClInclude Include="EditorInterfaces.h">
       <Filter>Common</Filter>
     </ClInclude>
-    <ClInclude Include="Editor3DFrame.h" />
     <ClInclude Include="ZenonWidgets\SceneNodeViewer\SceneNodeTreeItem.h">
       <Filter>ZenonWidgets\SceneNodeViewer</Filter>
     </ClInclude>
@@ -397,6 +410,12 @@
       <Filter>ZenonWidgets</Filter>
     </ClInclude>
     <ClInclude Include="_widgetZenonWindow3D.h">
+      <Filter>ZenonWidgets</Filter>
+    </ClInclude>
+    <ClInclude Include="Editor3DFrame.h">
+      <Filter>Editor3D</Filter>
+    </ClInclude>
+    <ClInclude Include="_widgetZenonLogViewer.h">
       <Filter>ZenonWidgets</Filter>
     </ClInclude>
   </ItemGroup>
@@ -476,7 +495,6 @@
     <QtMoc Include="PropertyEditor\Core\PropertyBase.h">
       <Filter>ZenonWidgets\Property editor\Core</Filter>
     </QtMoc>
-    <QtMoc Include="MainEditor.h" />
     <QtMoc Include="PropertyEditor\Core\Core\PropertyVec3.h">
       <Filter>ZenonWidgets\Property editor\Core\Core</Filter>
     </QtMoc>
@@ -495,6 +513,12 @@
     <QtMoc Include="ZenonWidgets\SceneNodeViewer\SceneNodeTreeModel.h">
       <Filter>ZenonWidgets\SceneNodeViewer</Filter>
     </QtMoc>
+    <QtMoc Include="MainEditor.h">
+      <Filter>EditorUI</Filter>
+    </QtMoc>
+    <QtMoc Include="ZenonWidgets\ZenonLogViewer\ZenonLogViewer.h">
+      <Filter>ZenonWidgets\ZenonLogViewer</Filter>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="MainEditor.qrc">
@@ -507,6 +531,8 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <QtUic Include="MainEditor.ui" />
+    <QtUic Include="MainEditor.ui">
+      <Filter>EditorUI</Filter>
+    </QtUic>
   </ItemGroup>
 </Project>

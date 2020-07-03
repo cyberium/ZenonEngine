@@ -17,7 +17,7 @@ ZN_INTERFACE ZN_API ISceneNodeComponent
 
     // Callbacks
     virtual void OnMessage(const ISceneNodeComponent* Component, ComponentMessageType Message) = 0;
-	virtual IPropertiesGroup* GetPropertiesGroup() const = 0;
+	virtual std::shared_ptr<IPropertiesGroup> GetProperties() const = 0;
 
 	// Visit functional
 	virtual void Update(const UpdateEventArgs& e) = 0;

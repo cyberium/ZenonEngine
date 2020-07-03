@@ -4,13 +4,13 @@
 #include "SceneNodeTreeModel.h"
 
 SceneNodeTreeModel::SceneNodeTreeModel(QObject * parent)
-	: QAbstractItemModel(parent) 
+	: QAbstractItemModel(parent)
 {
 	m_RootItem = new CSceneNodeTreeItem();
 }
 
-SceneNodeTreeModel::~SceneNodeTreeModel() 
-{ 
+SceneNodeTreeModel::~SceneNodeTreeModel()
+{
 	delete m_RootItem;
 }
 
@@ -32,7 +32,7 @@ void SceneNodeTreeModel::SetModelData(const std::shared_ptr<ISceneNode3D>& Scene
 
 bool forEach(QAbstractItemModel* model, QModelIndex parent, const std::shared_ptr<ISceneNode3D>& Node, QModelIndex * FindedPosition)
 {
-	for (int r = 0; r < model->rowCount(parent); ++r) 
+	for (int r = 0; r < model->rowCount(parent); ++r)
 	{
 		QModelIndex index = model->index(r, 0, parent);
 		_ASSERT(index.isValid());
@@ -44,7 +44,7 @@ bool forEach(QAbstractItemModel* model, QModelIndex parent, const std::shared_pt
 			return true;
 		}
 
-		if (model->hasChildren(index)) 
+		if (model->hasChildren(index))
 			if (false == forEach(model, index, Node, FindedPosition))
 				return false;
 	}
@@ -73,16 +73,22 @@ QVariant SceneNodeTreeModel::headerData(int section, Qt::Orientation orientation
 	return QVariant();
 }
 
-QVariant SceneNodeTreeModel::data(const QModelIndex& index, int role) const 
+QVariant SceneNodeTreeModel::data(const QModelIndex& index, int role) const
 {
-	if (!index.isValid()) 
+	if (!index.isValid())
 		return QVariant();
 
-	if (role != Qt::DisplayRole) 
-		return QVariant();
-
-	CSceneNodeTreeItem *item = getItem(index);
-	return item->data();
+	if (role == Qt::DisplayRole)
+	{
+		CSceneNodeTreeItem *item = getItem(index);
+		return item->data();
+	}
+	else if (role == Qt::DecorationRole)
+	{
+		return QColor(255, 88, 88);
+	}
+		
+	return QVariant();
 }
 
 Qt::ItemFlags SceneNodeTreeModel::flags(const QModelIndex& index) const 

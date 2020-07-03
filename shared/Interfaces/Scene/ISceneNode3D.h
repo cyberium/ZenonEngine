@@ -20,12 +20,16 @@ ZN_INTERFACE IColliderComponent3D;
   * 3) 
 */
 
+const ObjectClassType cSceneNode3D = 527338441;
+
 ZN_INTERFACE ZN_API ISceneNode3D
 	: public Object
 	, public std::enable_shared_from_this<ISceneNode3D>
 {
 	typedef std::vector<std::shared_ptr<ISceneNode3D>>                Node3DList;
 	typedef std::multimap<std::string, std::shared_ptr<ISceneNode3D>> Node3DNameMap;
+
+	static ObjectClassType GetClass() { return cSceneNode3D; }
 
 	virtual ~ISceneNode3D() {}
 
@@ -46,8 +50,7 @@ ZN_INTERFACE ZN_API ISceneNode3D
 		return nullptr;
 	}
 
-	virtual IActionsGroup* GetActions() const = 0;
-	virtual IPropertiesGroup* GetProperties() const = 0;
+	virtual std::shared_ptr<IPropertiesGroup> GetProperties() const = 0;
 	virtual IScene* GetScene() const = 0;
 
 

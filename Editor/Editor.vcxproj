@@ -108,7 +108,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="DebugOutputEditorLog.cpp" />
     <ClCompile Include="Editor3DFrame.cpp" />
     <ClCompile Include="main.cpp">
       <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">input</DynamicSource>
@@ -346,10 +345,10 @@
     <ClCompile Include="ZenonWidgets\SceneNodeViewer\SceneNodeTreeItem.cpp" />
     <ClCompile Include="ZenonWidgets\SceneNodeViewer\SceneNodeTreeModel.cpp" />
     <ClCompile Include="ZenonWidgets\SceneNodeViewer\SceneNodeTreeViewerWidget.cpp" />
+    <ClCompile Include="ZenonWidgets\ZenonLogViewer\ZenonLogViewer.cpp" />
     <ClCompile Include="ZenonWidgets\ZenonWindow3D\ZenonWindow3D.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="DebugOutputEditorLog.h" />
     <ClInclude Include="Editor3DFrame.h" />
     <ClInclude Include="EditorInterfaces.h" />
     <ClInclude Include="PropertyEditor\Core\Auxiliary\PropertyAux.h" />
@@ -360,8 +359,10 @@
     <ClInclude Include="ZenonWidgets\SceneNodeViewer\SceneNodeTreeItem.h" />
     <QtMoc Include="ZenonWidgets\SceneNodeViewer\SceneNodeTreeModel.h" />
     <QtMoc Include="ZenonWidgets\SceneNodeViewer\SceneNodeTreeViewerWidget.h" />
+    <QtMoc Include="ZenonWidgets\ZenonLogViewer\ZenonLogViewer.h" />
     <ClInclude Include="_widgetPropertyEditor.h" />
     <ClInclude Include="_widgetSceneNodeViewer.h" />
+    <ClInclude Include="_widgetZenonLogViewer.h" />
     <ClInclude Include="_widgetZenonWindow3D.h" />
     <QtMoc Include="ZenonWidgets\ZenonWindow3D\ZenonWindow3D.h" />
     <QtMoc Include="PropertyEditor\Core\Core\PropertyBool.h" />

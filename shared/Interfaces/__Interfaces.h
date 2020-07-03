@@ -194,7 +194,7 @@ class Rect;
 //--                 Scene Interfaces                    --//
 //---------------------------------------------------------//
 #include "Interfaces/Scene/IActions.h"
-#include "Interfaces/Scene/IProperties.h"
+//#include "Interfaces/Scene/IProperties.h"
 #include "Interfaces/Scene/ISceneNodeComponents.h"
 #include "Interfaces/Scene/ISceneNode3D.h"
 #include "Interfaces/Scene/ISceneNodeUI.h"

@@ -82,6 +82,6 @@ void SceneNodeTreeViewerWidget::onCurrentChanged(const QModelIndex& current, con
 	CSceneNodeTreeItem* item = static_cast<CSceneNodeTreeItem*>(current.internalPointer());
 	_ASSERT_EXPR(item != nullptr, L"Item is null.");
 
-	//m_EditorUI->OnSceneNodeSelectedIn3DEditor(item->GetSceneNode());
+	m_EditorUI->OnSceneNodeSelected(item->GetSceneNode());
 	m_Editor3D->OnSceneNodeSelectedInUIEditor(item->GetSceneNode());
 }

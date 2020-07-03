@@ -263,7 +263,6 @@
     <ClInclude Include="..\shared\Interfaces\Render\Types\RaycastHit.h" />
     <ClInclude Include="..\shared\Interfaces\Render\Types\Viewport.h" />
     <ClInclude Include="..\shared\Interfaces\Scene\IActions.h" />
-    <ClInclude Include="..\shared\Interfaces\Scene\IProperties.h" />
     <ClInclude Include="..\shared\Interfaces\Scene\IScene.h" />
     <ClInclude Include="..\shared\Interfaces\Scene\ISceneNodeComponents.h" />
     <ClInclude Include="..\shared\Interfaces\Scene\ISceneNodeTools.h" />

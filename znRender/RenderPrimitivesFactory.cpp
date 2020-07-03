@@ -140,7 +140,44 @@ std::shared_ptr<IGeometry> CRenderPrimitivesFactory::CreateCube()
 
 std::shared_ptr<IGeometry> CRenderPrimitivesFactory::CreateBBox()
 {
-	DirectX::VertexCollection vertices;
+	std::vector<glm::vec3> points;
+	points.push_back(glm::vec3(0.0, 0.0, 0.0));
+	points.push_back(glm::vec3(1.0, 0.0, 0.0));
+	points.push_back(glm::vec3(0.0, 0.0, 0.0));
+	points.push_back(glm::vec3(0.0, 1.0, 0.0));
+	points.push_back(glm::vec3(0.0, 0.0, 0.0));
+	points.push_back(glm::vec3(0.0, 0.0, 1.0));
+
+
+	points.push_back(glm::vec3(1.0, 0.0, 0.0));
+	points.push_back(glm::vec3(1.0, 1.0, 0.0));
+	points.push_back(glm::vec3(1.0, 0.0, 0.0));
+	points.push_back(glm::vec3(1.0, 0.0, 1.0));
+	
+	points.push_back(glm::vec3(0.0, 1.0, 0.0));
+	points.push_back(glm::vec3(0.0, 1.0, 1.0));
+	points.push_back(glm::vec3(0.0, 1.0, 0.0));
+	points.push_back(glm::vec3(1.0, 1.0, 0.0));
+
+	points.push_back(glm::vec3(0.0, 0.0, 1.0));
+	points.push_back(glm::vec3(0.0, 1.0, 1.0));
+	points.push_back(glm::vec3(0.0, 0.0, 1.0));
+	points.push_back(glm::vec3(1.0, 0.0, 1.0));
+
+	points.push_back(glm::vec3(1.0, 1.0, 1.0));
+	points.push_back(glm::vec3(1.0, 1.0, 0.0));
+	points.push_back(glm::vec3(1.0, 1.0, 1.0));
+	points.push_back(glm::vec3(0.0, 1.0, 1.0));
+	points.push_back(glm::vec3(1.0, 1.0, 1.0));
+	points.push_back(glm::vec3(1.0, 0.0, 1.0));
+
+	std::shared_ptr<IGeometry> geometry = m_RenderDevice.GetObjectsFactory().CreateGeometry();
+	geometry->SetPrimitiveTopology(PrimitiveTopology::LineList);
+
+	std::shared_ptr<IBuffer> __vb = m_RenderDevice.GetObjectsFactory().CreateVertexBuffer(points.data(), points.size());
+	geometry->AddVertexBuffer(BufferBinding("POSITION", 0), __vb);
+
+	/*DirectX::VertexCollection vertices;
 	DirectX::IndexCollection indices;
 	DirectX::ComputeBox(vertices, indices, DirectX::XMFLOAT3(1.0f, 1.0f, 1.0f), false, false);
 
@@ -154,7 +191,7 @@ std::shared_ptr<IGeometry> CRenderPrimitivesFactory::CreateBBox()
 	geometry->AddVertexBuffer(BufferBinding("POSITION", 0), __vbPos);
 
 	std::shared_ptr<IBuffer> __ib = m_RenderDevice.GetObjectsFactory().CreateIndexBuffer(indices);
-	geometry->SetIndexBuffer(__ib);
+	geometry->SetIndexBuffer(__ib);*/
 
 	return geometry;
 }

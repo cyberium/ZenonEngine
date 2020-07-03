@@ -8,6 +8,7 @@ ZN_INTERFACE IEditorSharedFrame
 };
 
 ZN_INTERFACE IEditor3DFrame
+	: public IEditorSharedFrame
 {
 	virtual ~IEditor3DFrame() {}
 
@@ -19,6 +20,7 @@ ZN_INTERFACE IEditor3DFrame
 };
 
 ZN_INTERFACE IEditorUIFrame
+	: public IEditorSharedFrame
 {
 	virtual ~IEditorUIFrame() {}
 

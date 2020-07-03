@@ -6,6 +6,7 @@
 CParticlesComponent3D::CParticlesComponent3D(const ISceneNode3D & SceneNode)
 	: CComponentBase(SceneNode)
 {
+	GetProperties()->SetName("ParticlesComponent");
 }
 
 CParticlesComponent3D::~CParticlesComponent3D()

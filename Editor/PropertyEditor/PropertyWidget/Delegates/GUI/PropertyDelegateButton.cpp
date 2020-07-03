@@ -64,7 +64,11 @@ void QtnPropertyDelegateButton::createSubItemsImpl(QtnDrawContext& context, QLis
         if (style->inherits("QWindowsVistaStyle"))
             option.styleObject = nullptr;
 
+		float XOffset = (item.rect.right() - item.rect.left()) / 2.0f;
+
         option.rect = item.rect;
+		option.rect.setLeft(option.rect.left() + XOffset);
+		//option.rect.setRight(option.rect.right() - XOffset);
         option.text = m_title;
 
         owner().invokePreDrawButton(&option);

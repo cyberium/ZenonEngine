@@ -23,8 +23,7 @@ public:
 	void                                            RaiseOnParentChanged() override final;
 
 	// Actions & Properties
-	IActionsGroup*									GetActions() const override final;
-	IPropertiesGroup*								GetProperties() const override final;
+	std::shared_ptr<IPropertiesGroup>				GetProperties() const override final;
 	IScene*											GetScene() const override final;
 
 	//
@@ -98,14 +97,12 @@ protected:
 
 	std::shared_ptr<IColliderComponent3D>			m_Components_Collider;
 	std::shared_ptr<IModelsComponent3D>				m_Components_Models;
-	std::shared_ptr<ILightComponent3D>				m_Components_Light;
 
 private:
 	Node3DList                                      m_Children;
 	Node3DNameMap                                   m_ChildrenByName;
 	std::weak_ptr<ISceneNode3D>                     m_ParentNode;
 
-	std::shared_ptr<IActionsGroup>                  m_ActionsGroup;
 	std::shared_ptr<IPropertiesGroup>               m_PropertiesGroup;
 	std::weak_ptr<IScene>                           m_Scene;
 

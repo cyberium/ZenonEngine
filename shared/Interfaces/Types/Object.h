@@ -142,6 +142,7 @@ public:
 	//
 	void SetName(const std::string& Name) override
 	{
+		//_ASSERT(Name.find(' ') == Name.end() && Name.find('.') == Name.end());
 		m_Name = Name;
 	}
 	void SetClassName(const std::string& Name)  override

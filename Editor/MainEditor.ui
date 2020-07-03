@@ -615,7 +615,7 @@
     </layout>
    </widget>
   </widget>
-  <widget class="QDockWidget" name="DockerLog">
+  <widget class="QDockWidget" name="DockerLogViewer">
    <property name="minimumSize">
     <size>
      <width>250</width>
@@ -652,7 +652,7 @@
       <number>0</number>
      </property>
      <item>
-      <widget class="QPlainTextEdit" name="LogTextEdit">
+      <widget class="ZenonLogViewer" name="LogViewer">
        <property name="font">
         <font>
          <family>Courier New</family>
@@ -762,6 +762,11 @@
    <class>SceneNodeTreeViewerWidget</class>
    <extends>QTreeView</extends>
    <header location="global">_widgetSceneNodeViewer.h</header>
+  </customwidget>
+  <customwidget>
+   <class>ZenonLogViewer</class>
+   <extends>QPlainTextEdit</extends>
+   <header location="global">_widgetZenonLogViewer.h</header>
   </customwidget>
  </customwidgets>
  <resources>

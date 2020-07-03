@@ -40,10 +40,9 @@ void GS_main(point VertexShaderOutput vertices[1], inout LineStream<VertexShader
 
 DefferedRenderPSOut PS_main() : SV_TARGET
 {
-	float4 DiffuseColor = float4(0.0f, 1.0f, 0.0f, 1.0f);
 	DefferedRenderPSOut OUT;
-	OUT.Diffuse = DiffuseColor;
-	OUT.Specular = DiffuseColor;
+	OUT.Diffuse = DiffuseColor0;
+	OUT.Specular = DiffuseColor0;
 	OUT.NormalWS = float4(1.0f, 1.0f, 1.0f, 0.0f);
 	return OUT;
 }

@@ -58,8 +58,8 @@ void BoundingBox::calculateCenter()
 
 void BoundingBox::clear()
 {
-	m_Min = glm::vec3(Math::MinFloat, Math::MinFloat, Math::MinFloat);
-	m_Max = glm::vec3(Math::MaxFloat, Math::MaxFloat, Math::MaxFloat);
+	m_Min = glm::vec3(Math::MinFloat);
+	m_Max = glm::vec3(Math::MaxFloat);
 	m_Center = glm::vec3(0.0f, 0.0f, 0.0f);
 	m_Radius = Math::MaxFloat / 2.0f;
 	m_IsCenterCalc = true;

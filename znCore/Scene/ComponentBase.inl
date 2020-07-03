@@ -3,14 +3,14 @@
 //
 // Components engine template access
 //
-template<typename T>
-inline std::shared_ptr<T> CComponentBase::IsComponentExists()
+template<class T>
+inline std::shared_ptr<T> CComponentBase::IsComponentExists() const
 {
     return GetOwnerNode().IsComponentExists(__uuidof(T));
 }
 
-template<typename T>
-inline std::shared_ptr<T> CComponentBase::GetComponent()
+template<class T>
+inline std::shared_ptr<T> CComponentBase::GetComponent() const
 {
     std::shared_ptr<ISceneNodeComponent> component = GetOwnerNode().GetComponent(__uuidof(T));
     if (component == nullptr)

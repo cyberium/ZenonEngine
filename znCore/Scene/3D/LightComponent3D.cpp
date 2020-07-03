@@ -6,6 +6,8 @@
 CLightComponent3D::CLightComponent3D(const ISceneNode3D& OwnerNode)
     : CComponentBase(OwnerNode)
 {
+	GetProperties()->SetName("LightComponent");
+
 	m_LightStruct = (SLight*)_aligned_malloc(sizeof(SLight), 16);
 	*m_LightStruct = SLight();
 }

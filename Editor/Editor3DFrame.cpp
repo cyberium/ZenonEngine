@@ -28,6 +28,7 @@ void CSceneEditor::Initialize()
 	SceneBase::Initialize();
 
 	auto cameraNode = GetRootNode3D()->CreateSceneNode<SceneNode3D>();
+	cameraNode->SetName("Camera");
 	cameraNode->AddComponent(std::make_shared<CCameraComponent3D>(*cameraNode));
 
 	SetCameraController(std::make_shared<CFreeCameraController>());
@@ -254,10 +255,11 @@ void CSceneEditor::Load3D()
 {
 	{
 		auto sceneNodeLight = GetRootNode3D()->CreateSceneNode<SceneNode3D>();
-		sceneNodeLight->SetName("Light node");
+		sceneNodeLight->SetName("Light");
 		sceneNodeLight->SetTranslate(glm::vec3(80.0f, 600.0f, 80.0f));
 		sceneNodeLight->SetRotation(glm::vec3(0.0f, -1.0f, 0.0f));
 
+		sceneNodeLight->AddComponent(std::make_shared<CLightComponent3D>(*sceneNodeLight.get()));
 		sceneNodeLight->GetComponent<ILightComponent3D>()->SetType(ELightType::Spot);
 		sceneNodeLight->GetComponent<ILightComponent3D>()->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
 		sceneNodeLight->GetComponent<ILightComponent3D>()->SetRange(48000.0f);

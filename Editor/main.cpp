@@ -4,8 +4,6 @@
 #include "MainEditor.h"
 #include <QApplication>
 
-#include "DebugOutputEditorLog.h"
-
 #include "Editor3DFrame.h"
 
 static IBaseManager* BaseManager = nullptr;
@@ -91,18 +89,17 @@ void main_internal(int argc, char *argv[])
 	});
 	timer->start();
 
-	auto logDebugOutput = std::make_shared<DebugOutput_EditorLog>(editorUI.getUI().LogTextEdit);
-	BaseManager->GetManager<ILog>()->AddDebugOutput(logDebugOutput);
+	std::shared_ptr<IDebugOutput> debugOutput(editorUI.getUI().LogViewer);
+	BaseManager->GetManager<ILog>()->AddDebugOutput(debugOutput);
 
 	a.exec();
 
-	BaseManager->GetManager<ILog>()->DeleteDebugOutput(logDebugOutput);
+	BaseManager->GetManager<ILog>()->DeleteDebugOutput(debugOutput);
 
 	timer->stop();
+	a.closeAllWindows();
 	
 	app.DoAfterRun();
-
-	a.closeAllWindows();
 }
 
 

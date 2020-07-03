@@ -82,7 +82,7 @@ public:
 		: m_Name("CPropertyWrappedName")
 		, m_Description("CPropertyWrappedDescription")
 	{}
-	CPropertyWrapped(std::string Name, std::string Description)
+	CPropertyWrapped(std::string Name, std::string Description = "")
 		: m_Name(Name)
 		, m_Description(Description)
 	{}
@@ -142,7 +142,7 @@ public:
 	{
 		m_FuncSetter = Function;
 	}
-	void SetValueGetter(std::function<T()> Function)
+	void SetValueGetter(std::function<T(void)> Function)
 	{
 		m_FuncGetter = Function;
 	}

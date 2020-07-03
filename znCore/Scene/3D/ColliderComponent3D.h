@@ -33,6 +33,12 @@ public:
 protected:
     virtual void UpdateBounds();
 
+	// Properties helper
+	virtual void SetMinBounds(const glm::vec3& Min);
+	virtual glm::vec3 GetMinBounds() const;
+	virtual void SetMaxBounds(const glm::vec3& Max);
+	virtual glm::vec3 GetMaxBounds() const;
+
 private:
 	ECullStrategy  m_CullStrategy;
 	float          m_CullDistance;

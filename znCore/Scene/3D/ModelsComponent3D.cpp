@@ -6,8 +6,8 @@
 CModelsComponent3D::CModelsComponent3D(const ISceneNode3D& OwnerNode)
     : CComponentBase(OwnerNode)
 {
-	GetPropertiesGroup()->SetName("Model");
-	GetPropertiesGroup()->SetDescription("Contains data about visual model");
+	GetProperties()->SetName("ModelsComponent");
+	GetProperties()->SetDescription("Contains data about visual model");
 }
 
 CModelsComponent3D::~CModelsComponent3D()

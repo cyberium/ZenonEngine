@@ -10,7 +10,6 @@
 class MainEditor 
 	: public QMainWindow
 	, public IEditorUIFrame
-	, public IEditorSharedFrame
 {
 	Q_OBJECT
 

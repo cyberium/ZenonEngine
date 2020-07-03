@@ -10,12 +10,17 @@ class UpdateEventArgs;
 ZN_INTERFACE IManager;
 // FORWARD END
 
+const ObjectClassType cSceneNodeUI = 525832104;
+const ObjectClassType cSceneNodeUI_Text = 525832105;
+
 ZN_INTERFACE ZN_API ISceneNodeUI
 	: public Object
     , public std::enable_shared_from_this<ISceneNodeUI>
 {
 	typedef std::vector<std::shared_ptr<ISceneNodeUI>>                NodeUIList;
 	typedef std::multimap<std::string, std::shared_ptr<ISceneNodeUI>> NodeUINameMap;
+
+	static ObjectClassType GetClass() { return cSceneNodeUI; }
 
 	virtual ~ISceneNodeUI() {}
 
@@ -35,8 +40,7 @@ ZN_INTERFACE ZN_API ISceneNodeUI
 	}
 
 	// Actions & Properties
-	virtual IActionsGroup* GetActions() const = 0;
-	virtual IPropertiesGroup* GetProperties() const = 0;
+	virtual std::shared_ptr<IPropertiesGroup> GetProperties() const = 0;
 	virtual IScene* GetScene() const = 0;
 
 	//

@@ -12,15 +12,17 @@ CCameraComponent3D::CCameraComponent3D(const ISceneNode3D& OwnerNode)
 	, m_View_Dirty(true)
 	, m_ProjectionView_Dirty(true)
 {
+	GetProperties()->SetName("CameraComponent");
+
 	m_Yaw_XProperty = std::make_shared<CPropertyWrapped<float>>("Yaw", "Rotation around the Y axis (in degrees).");
 	m_Yaw_XProperty->SetValueSetter(std::bind(&CCameraComponent3D::SetYaw, this, std::placeholders::_1));
 	m_Yaw_XProperty->SetValueGetter(std::bind(&CCameraComponent3D::GetYaw, this));
-	GetPropertiesGroup()->AddProperty(m_Yaw_XProperty);
+	GetProperties()->AddProperty(m_Yaw_XProperty);
 
 	m_Pitch_YProperty = std::make_shared<CPropertyWrapped<float>>("Pitch", "Rotation around the X and Y axis (in degrees).");
 	m_Pitch_YProperty->SetValueSetter(std::bind(&CCameraComponent3D::SetPitch, this, std::placeholders::_1));
 	m_Pitch_YProperty->SetValueGetter(std::bind(&CCameraComponent3D::GetPitch, this));
-	GetPropertiesGroup()->AddProperty(m_Pitch_YProperty);
+	GetProperties()->AddProperty(m_Pitch_YProperty);
 }
 
 CCameraComponent3D::~CCameraComponent3D()

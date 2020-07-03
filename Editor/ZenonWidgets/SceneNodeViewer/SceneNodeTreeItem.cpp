@@ -65,9 +65,9 @@ int CSceneNodeTreeItem::childNumberInParent() const
 {
 	if (m_Parent)
 	{
-		const auto& elemIter = std::find(m_Parent->m_Childs.begin(), m_Parent->m_Childs.end(), this);
-		if (elemIter != m_Parent->m_Childs.end())
-			return std::distance(m_Parent->m_Childs.begin(), elemIter);
+		const auto& it = std::find(m_Parent->m_Childs.begin(), m_Parent->m_Childs.end(), this);
+		if (it != m_Parent->m_Childs.end())
+			return std::distance(m_Parent->m_Childs.begin(), it);
 	}
 
 	return 0;

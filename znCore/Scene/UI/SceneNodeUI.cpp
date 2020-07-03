@@ -21,8 +21,7 @@ SceneNodeUI::SceneNodeUI()
 {
 	SetClassName("SceneNodeUI");
 
-	m_ActionsGroup = std::make_shared<CActionsGroup>("General");
-	m_PropertiesGroup = std::make_shared<CPropertiesGroup>("General", "Some important scene node properties.");
+	m_PropertiesGroup = std::make_shared<CPropertiesGroup>("SceneNodeProperties", "Some important scene node UI properties.");
 
 	// Name properties
 	{
@@ -112,14 +111,10 @@ void SceneNodeUI::RaiseOnParentChanged()
 //
 // Actions & Properties
 //
-IActionsGroup * SceneNodeUI::GetActions() const
-{
-	return m_ActionsGroup.get();
-}
 
-IPropertiesGroup * SceneNodeUI::GetProperties() const
+std::shared_ptr<IPropertiesGroup> SceneNodeUI::GetProperties() const
 {
-	return m_PropertiesGroup.get();
+	return m_PropertiesGroup;
 }
 
 IScene * SceneNodeUI::GetScene() const
@@ -331,9 +326,7 @@ void SceneNodeUI::AddChildInternal(const std::shared_ptr<ISceneNodeUI>& ChildNod
 
 	std::dynamic_pointer_cast<SceneNodeUI>(ChildNode)->SetParentInternal(weak_from_this());
 
-	// TODO: Какой ивент посылать первым?
 	ChildNode->RaiseOnParentChanged();
-	//GetScene()->RaiseSceneChangeEvent(ESceneChangeType::NodeAddedToParent, this, ChildNode.get());
 }
 
 void SceneNodeUI::RemoveChildInternal(const std::shared_ptr<ISceneNodeUI>& ChildNode)
@@ -355,9 +348,7 @@ void SceneNodeUI::RemoveChildInternal(const std::shared_ptr<ISceneNodeUI>& Child
 
 	std::dynamic_pointer_cast<SceneNodeUI>(ChildNode)->SetParentInternal(std::weak_ptr<ISceneNodeUI>());
 
-	// TODO: Какой ивент посылать первым?
 	ChildNode->RaiseOnParentChanged();
-	//GetScene()->RaiseSceneChangeEvent(ESceneChangeType::NodeRemovedFromParent, this, ChildNode);
 }
 
 void SceneNodeUI::SetParentInternal(const std::weak_ptr<ISceneNodeUI>& parentNode)

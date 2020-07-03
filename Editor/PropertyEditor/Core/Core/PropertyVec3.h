@@ -2,11 +2,7 @@
 
 #include "../Auxiliary/PropertyTemplates.h"
 
-
-
 Q_DECLARE_METATYPE(glm::vec3)
-
-
 
 class QTN_PE_CORE_EXPORT QtnPropertyVec3Base : public QtnSinglePropertyBase<glm::vec3>
 {

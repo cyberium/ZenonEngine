@@ -19,8 +19,7 @@ public:
 	void                                            RaiseOnParentChanged() override final;
 
 	// Actions & Properties
-	virtual IActionsGroup*                          GetActions() const final;
-	virtual IPropertiesGroup*                       GetProperties() const final;
+	virtual std::shared_ptr<IPropertiesGroup>       GetProperties() const final;
 	virtual IScene*                                 GetScene() const final;
 
 	// ISceneNodeUI
@@ -81,7 +80,6 @@ private:
 	NodeUINameMap                                   m_ChildrenByName;
 	std::weak_ptr<ISceneNodeUI>                     m_ParentNode;
 
-	std::shared_ptr<IActionsGroup>                  m_ActionsGroup;
 	std::shared_ptr<IPropertiesGroup>               m_PropertiesGroup;
 	std::weak_ptr<IScene>                           m_Scene;
 

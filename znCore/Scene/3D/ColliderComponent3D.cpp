@@ -3,12 +3,40 @@
 // General
 #include "ColliderComponent3D.h"
 
+// Additional
+#include "Scene/Actions.h"
+#include "Scene/Properties.h"
+
 CColliderComponent3D::CColliderComponent3D(const ISceneNode3D& OwnerNode)
 	: CComponentBase(OwnerNode)
 	, m_CullStrategy(ECullStrategy::None)
 	, m_CullDistance(99999.0f) // Don't use FloatMax
 	, m_DebugDraw(true)
 {
+	GetProperties()->SetName("ColliderComponent");
+
+	{
+		auto minBounds = std::make_shared<CPropertyWrapped<glm::vec3>>("BBoxMin", "");
+		minBounds->SetValueSetter(std::bind(&CColliderComponent3D::SetMinBounds, this, std::placeholders::_1));
+		minBounds->SetValueGetter(std::bind(&CColliderComponent3D::GetMinBounds, this));
+		GetProperties()->AddProperty(minBounds);
+
+		auto maxBounds = std::make_shared<CPropertyWrapped<glm::vec3>>("BBoxMax", "");
+		maxBounds->SetValueSetter(std::bind(&CColliderComponent3D::SetMaxBounds, this, std::placeholders::_1));
+		maxBounds->SetValueGetter(std::bind(&CColliderComponent3D::GetMaxBounds, this));
+		GetProperties()->AddProperty(maxBounds);
+	}
+
+	// Actions
+	{
+		std::shared_ptr<CAction> clear = std::make_shared<CAction>("Clear", "Clean BBox. (set to infinite).");
+		clear->SetAction([this] () -> bool {
+			SetBounds(BoundingBox());
+			return true;
+		});
+
+		GetProperties()->AddProperty(clear);
+	}
 }
 
 CColliderComponent3D::~CColliderComponent3D()
@@ -46,6 +74,23 @@ void CColliderComponent3D::SetBounds(BoundingBox _bbox)
 }
 cbbox CColliderComponent3D::GetBounds() const
 {
+	if (m_Bounds.isClear())
+	{
+		if (auto models = GetComponent<IModelsComponent3D>())
+		{
+			glm::vec3 floatMin(Math::MinFloat);
+			glm::vec3 floatMax(Math::MaxFloat);
+
+			BoundingBox newBBox(floatMax, floatMin);
+			for (const auto& m : models->GetModels())
+				newBBox.makeUnion(m->GetBounds());
+
+			if (newBBox.getMin() != floatMax && newBBox.getMax() != floatMin)
+			{
+				const_cast<CColliderComponent3D*>(this)->SetBounds(newBBox);
+			}
+		}
+	}
 	return m_Bounds;
 }
 
@@ -150,4 +195,24 @@ void CColliderComponent3D::UpdateBounds()
 	BoundingBox bounds = m_Bounds;
 	bounds.transform(GetOwnerNode().GetWorldTransfom());
 	m_WorldBounds = bounds;
+}
+
+void CColliderComponent3D::SetMinBounds(const glm::vec3 & Min)
+{
+	m_Bounds.setMin(Min);
+}
+
+glm::vec3 CColliderComponent3D::GetMinBounds() const
+{
+	return m_Bounds.getMin();
+}
+
+void CColliderComponent3D::SetMaxBounds(const glm::vec3 & Max)
+{
+	m_Bounds.setMax(Max);
+}
+
+glm::vec3 CColliderComponent3D::GetMaxBounds() const
+{
+	return m_Bounds.getMax();
 }

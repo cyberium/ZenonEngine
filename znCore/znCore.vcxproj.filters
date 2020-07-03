@@ -641,9 +641,6 @@
     <ClInclude Include="Scene\SceneBase.h">
       <Filter>Scene functional</Filter>
     </ClInclude>
-    <ClInclude Include="..\shared\Interfaces\Scene\IProperties.h">
-      <Filter>__Interfaces\Scene</Filter>
-    </ClInclude>
     <ClInclude Include="..\shared\Interfaces\Scene\IActions.h">
       <Filter>__Interfaces\Scene</Filter>
     </ClInclude>

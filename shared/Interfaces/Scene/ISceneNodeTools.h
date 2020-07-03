@@ -5,9 +5,6 @@ ZN_INTERFACE ISceneNode3D;
 ZN_INTERFACE ISceneNodeUI;
 // FORWARD END
 
-const ObjectClassType cSceneNode3D = 527338441;
-const ObjectClassType cSceneNodeUI = 525832104;
-const ObjectClassType cSceneNodeUI_Text = 525832105;
 
 ZN_INTERFACE ZN_API ISceneNode3DCreationArgs
 	: public IObjectCreationArgs

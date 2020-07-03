@@ -59,9 +59,9 @@ EVisitResult CMaterial_Debug_Pass::Visit(const IModel * Model)
 
 EVisitResult CMaterial_Debug_Pass::Visit(const IGeometry * Geometry, const IMaterial* Material, SGeometryDrawArgs GeometryDrawArgs)
 {
-	//const MaterialDebug* objMaterial = dynamic_cast<const MaterialDebug*>(Material);
-	//if (objMaterial == nullptr)
-	//	return false;
+	const MaterialDebug* objMaterial = dynamic_cast<const MaterialDebug*>(Material);
+	if (objMaterial == nullptr)
+		return EVisitResult::Block;
 
 	return Base3DPass::Visit(Geometry, Material, GeometryDrawArgs);
 }

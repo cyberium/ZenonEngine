@@ -17,7 +17,7 @@ MainEditor::MainEditor(QWidget* Parent)
 	m_PropertiesController = std::make_shared<CPropertiesController>(m_UI.PropertyEditor);
 
 	// Unite file browser and log docker
-	QMainWindow::tabifyDockWidget(m_UI.DockerFileBrowser, m_UI.DockerLog);
+	QMainWindow::tabifyDockWidget(m_UI.DockerFileBrowser, m_UI.DockerLogViewer);
 }
 
 MainEditor::~MainEditor()
@@ -37,13 +37,16 @@ void MainEditor::ExtendContextMenu(QMenu * Menu, const std::shared_ptr<ISceneNod
 	nameAction->setEnabled(false);
 
 	std::vector<QAction *> actions;
-	for (const auto& it : Node->GetActions()->GetActions())
+	for (const auto& it : Node->GetProperties()->GetProperties())
 	{
-		QAction * action = new QAction(it.second->GetName().c_str(), this);
-		connect(action, &QAction::triggered, this, [&it, Node] {
-			it.second->ExecuteAction(Node);
-		});
-		actions.push_back(action);
+		if (auto act = std::dynamic_pointer_cast<IPropertyAction>(it.second))
+		{
+			QAction * action = new QAction(it.second->GetName().c_str(), this);
+			connect(action, &QAction::triggered, this, [act] {
+				act->ExecuteAction();
+			});
+			actions.push_back(action);
+		}
 	}
 
 	/* Set the actions to the menu */

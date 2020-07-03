@@ -26,8 +26,7 @@ SceneNode3D::SceneNode3D()
 {
 	SetClassName("SceneNode3D");
 
-	m_ActionsGroup = std::make_shared<CActionsGroup>("General");
-	m_PropertiesGroup = std::make_shared<CPropertiesGroup>("General", "Some important scene node properties.");
+	m_PropertiesGroup = std::make_shared<CPropertiesGroup>("SceneNodeProperties", "Some important scene node 3d properties.");
 }
 
 SceneNode3D::~SceneNode3D()
@@ -73,17 +72,16 @@ void SceneNode3D::Initialize()
 	// Actions
 	{
 		std::shared_ptr<CAction> removeAction = std::make_shared<CAction>("Remove", "Remove this node from world. this action affected on childs!");
-		removeAction->SetAction([](const std::shared_ptr<ISceneNode3D>& SceneNode) -> bool {
-			if (SceneNode == nullptr)
+		removeAction->SetAction([this]() -> bool {
+			auto sceneNode = this->shared_from_this();
+			if (sceneNode->GetScene() == nullptr)
 				return false;
 
-			if (SceneNode->GetScene() == nullptr)
-				return false;
-
-			SceneNode->GetScene()->RemoveChild(SceneNode->GetParent().lock(), SceneNode);
+			sceneNode->GetScene()->RemoveChild(sceneNode->GetParent().lock(), sceneNode);
 			return true;
 		});
-		GetActions()->AddAction(removeAction);
+
+		GetProperties()->AddProperty(removeAction);
 	}
 }
 
@@ -149,14 +147,9 @@ void SceneNode3D::RaiseOnParentChanged()
 	}
 }
 
-IActionsGroup * SceneNode3D::GetActions() const
+std::shared_ptr<IPropertiesGroup> SceneNode3D::GetProperties() const
 {
-	return m_ActionsGroup.get();
-}
-
-IPropertiesGroup * SceneNode3D::GetProperties() const
-{
-	return m_PropertiesGroup.get();
+	return m_PropertiesGroup;
 }
 
 IScene * SceneNode3D::GetScene() const
@@ -306,7 +299,6 @@ void SceneNode3D::RegisterComponents()
 {
 	m_Components_Models = AddComponent(std::make_shared<CModelsComponent3D>(*this));
 	m_Components_Collider = AddComponent(std::make_shared<CColliderComponent3D>(*this));
-	AddComponent(std::make_shared<CLightComponent3D>(*this));
 }
 
 const std::shared_ptr<IColliderComponent3D>& SceneNode3D::GetColliderComponent() const

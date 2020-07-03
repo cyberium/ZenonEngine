@@ -8,14 +8,14 @@ public:
     virtual ~CComponentBase();
 
     // Components engine template access
-    template<typename T>
-    std::shared_ptr<T>                              IsComponentExists();
-    template<typename T>
-    std::shared_ptr<T>                              GetComponent();
+    template<class T>
+    std::shared_ptr<T>                              IsComponentExists() const;
+    template<class T>
+    std::shared_ptr<T>                              GetComponent() const;
 
 	// ISceneNodeComponent
 	virtual void                                    OnMessage(const ISceneNodeComponent* Component, ComponentMessageType Message) override;
-	virtual IPropertiesGroup*                       GetPropertiesGroup() const override;
+	virtual std::shared_ptr<IPropertiesGroup>       GetProperties() const override;
 
     // Accept from SceneNode
 	virtual void                                    Update(const UpdateEventArgs& e) override;
@@ -27,7 +27,7 @@ protected:
 
 private:
     const ISceneNode3D&								m_OwnerNode;
-	std::shared_ptr<IPropertiesGroup>               m_PropertyGroup;
+	std::shared_ptr<IPropertiesGroup>               m_Properties;
 };
 
 #include "ComponentBase.inl"

@@ -348,7 +348,7 @@ enum class ZN_API ESceneChangeType
 class ZN_API SceneChangeEventArgs : public SceneEventArgs
 {
 public:
-	SceneChangeEventArgs(const Object* caller, const IScene* Scene, ESceneChangeType SceneChangeType, const ISceneNode3D* OwnerNode, const ISceneNode3D* ChildNode)
+	SceneChangeEventArgs(const Object* caller, const IScene* Scene, ESceneChangeType SceneChangeType, const std::shared_ptr<ISceneNode3D>& OwnerNode, const std::shared_ptr<ISceneNode3D>& ChildNode)
 		: SceneEventArgs(caller, Scene)
 		, SceneChangeType(SceneChangeType)
 		, OwnerNode(OwnerNode)
@@ -356,7 +356,7 @@ public:
 	{}
 
 	const ESceneChangeType SceneChangeType;
-	const ISceneNode3D* OwnerNode;
-	const ISceneNode3D* ChildNode;
+	std::shared_ptr<ISceneNode3D> OwnerNode;
+	std::shared_ptr<ISceneNode3D> ChildNode;
 };
 typedef Delegate<SceneChangeEventArgs> SceneChangeEvent;

@@ -5,7 +5,6 @@
 class CSceneEditor
 	: public SceneBase
 	, public IEditor3DFrame
-	, public IEditorSharedFrame
 {
 public:
 	CSceneEditor(IBaseManager& BaseManager);

@@ -17,7 +17,7 @@ namespace
 			case PrimitiveTopology::PointList:
 				return D3D11_PRIMITIVE_TOPOLOGY_POINTLIST;
 			case PrimitiveTopology::LineList:
-				return D3D11_PRIMITIVE_TOPOLOGY_LINELIST_ADJ; // TODO REMOVE ME!
+				return D3D11_PRIMITIVE_TOPOLOGY_LINELIST ; // TODO REMOVE ME!
 			case PrimitiveTopology::LineStrip:
 				return D3D11_PRIMITIVE_TOPOLOGY_LINESTRIP;
 			case PrimitiveTopology::TriangleList:
