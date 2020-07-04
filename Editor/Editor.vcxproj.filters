@@ -20,9 +20,6 @@
     <Filter Include="ZenonWidgets\ZenonWindow3D">
       <UniqueIdentifier>{50d6cf7f-674b-41a7-a9e7-9fdb274d15c7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ZenonWidgets\SceneNodeViewer">
-      <UniqueIdentifier>{38a607c6-b557-4a38-91a1-db4d748cf3e0}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ZenonWidgets\Property editor">
       <UniqueIdentifier>{f77936a4-99bb-4512-9f80-79d0bac640e2}</UniqueIdentifier>
     </Filter>
@@ -64,6 +61,12 @@
     </Filter>
     <Filter Include="ZenonWidgets\ZenonLogViewer">
       <UniqueIdentifier>{a2567b87-e171-4d4f-939b-a53f0c3bba7c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ZenonWidgets\ZenonSceneViewer">
+      <UniqueIdentifier>{38a607c6-b557-4a38-91a1-db4d748cf3e0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ZenonWidgets\ZenonCollectionViewer">
+      <UniqueIdentifier>{c0c7ada6-3fe4-4119-8fbe-45792247683d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -253,15 +256,6 @@
     <ClCompile Include="ZenonWidgets\ZenonWindow3D\ZenonWindow3D.cpp">
       <Filter>ZenonWidgets\ZenonWindow3D</Filter>
     </ClCompile>
-    <ClCompile Include="ZenonWidgets\SceneNodeViewer\SceneNodeTreeItem.cpp">
-      <Filter>ZenonWidgets\SceneNodeViewer</Filter>
-    </ClCompile>
-    <ClCompile Include="ZenonWidgets\SceneNodeViewer\SceneNodeTreeModel.cpp">
-      <Filter>ZenonWidgets\SceneNodeViewer</Filter>
-    </ClCompile>
-    <ClCompile Include="ZenonWidgets\SceneNodeViewer\SceneNodeTreeViewerWidget.cpp">
-      <Filter>ZenonWidgets\SceneNodeViewer</Filter>
-    </ClCompile>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Editor3DFrame.cpp">
       <Filter>Editor3D</Filter>
@@ -274,6 +268,9 @@
     </ClCompile>
     <ClCompile Include="SceneNodesSelector.cpp">
       <Filter>Editor3D</Filter>
+    </ClCompile>
+    <ClCompile Include="ZenonWidgets\ZenonSceneViewer\ZenonSceneViewerWidget.cpp">
+      <Filter>ZenonWidgets\ZenonSceneViewer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -403,13 +400,7 @@
     <ClInclude Include="EditorInterfaces.h">
       <Filter>Common</Filter>
     </ClInclude>
-    <ClInclude Include="ZenonWidgets\SceneNodeViewer\SceneNodeTreeItem.h">
-      <Filter>ZenonWidgets\SceneNodeViewer</Filter>
-    </ClInclude>
     <ClInclude Include="_widgetPropertyEditor.h">
-      <Filter>ZenonWidgets</Filter>
-    </ClInclude>
-    <ClInclude Include="_widgetSceneNodeViewer.h">
       <Filter>ZenonWidgets</Filter>
     </ClInclude>
     <ClInclude Include="_widgetZenonWindow3D.h">
@@ -424,8 +415,14 @@
     <ClInclude Include="SceneNodesSelector.h">
       <Filter>Editor3D</Filter>
     </ClInclude>
-    <ClInclude Include="ZenonWidgets\SceneNodeViewer\TreeItemTemplate.h">
-      <Filter>ZenonWidgets\SceneNodeViewer</Filter>
+    <ClInclude Include="_widgetZenonSceneViewer.h">
+      <Filter>ZenonWidgets</Filter>
+    </ClInclude>
+    <ClInclude Include="ZenonWidgets\ZenonSceneViewer\TreeItemTemplate.h">
+      <Filter>ZenonWidgets\ZenonSceneViewer</Filter>
+    </ClInclude>
+    <ClInclude Include="ZenonWidgets\ZenonSceneViewer\TreeModelTemplate.h">
+      <Filter>ZenonWidgets\ZenonSceneViewer</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -516,17 +513,14 @@
     <QtMoc Include="ZenonWidgets\ZenonWindow3D\ZenonWindow3D.h">
       <Filter>ZenonWidgets\ZenonWindow3D</Filter>
     </QtMoc>
-    <QtMoc Include="ZenonWidgets\SceneNodeViewer\SceneNodeTreeViewerWidget.h">
-      <Filter>ZenonWidgets\SceneNodeViewer</Filter>
-    </QtMoc>
-    <QtMoc Include="ZenonWidgets\SceneNodeViewer\SceneNodeTreeModel.h">
-      <Filter>ZenonWidgets\SceneNodeViewer</Filter>
-    </QtMoc>
     <QtMoc Include="MainEditor.h">
       <Filter>EditorUI</Filter>
     </QtMoc>
     <QtMoc Include="ZenonWidgets\ZenonLogViewer\ZenonLogViewer.h">
       <Filter>ZenonWidgets\ZenonLogViewer</Filter>
+    </QtMoc>
+    <QtMoc Include="ZenonWidgets\ZenonSceneViewer\ZenonSceneViewerWidget.h">
+      <Filter>ZenonWidgets\ZenonSceneViewer</Filter>
     </QtMoc>
   </ItemGroup>
   <ItemGroup>

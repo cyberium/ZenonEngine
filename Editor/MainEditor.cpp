@@ -58,7 +58,7 @@ void MainEditor::ExtendContextMenu(QMenu * Menu, const std::shared_ptr<ISceneNod
 
 void MainEditor::OnSceneChanged()
 {
-	getSceneTree()->RefreshTreeViewModel();
+	getSceneViewer()->RefreshTreeViewModel();
 }
 
 
@@ -68,7 +68,12 @@ void MainEditor::OnSceneChanged()
 //
 void MainEditor::Selector_OnSelectionChange()
 {
-	getSceneTree()->SelectNodes(Selector_GetSelectedNodes());
+	const auto& selectedNodes = Selector_GetSelectedNodes();
+	if (selectedNodes.size() == 1)
+		getSceneViewer()->SelectNode(Selector_GetFirstSelectedNode());
+
+	getSceneViewer()->SelectNodes(selectedNodes);
+
 
 	m_PropertiesController->OnSceneNodeSelected(Selector_GetFirstSelectedNode().get());
 }

@@ -3,16 +3,17 @@
 #include <QtWidgets/QTreeView>
 
 #include "EditorInterfaces.h"
-#include "SceneNodeTreeModel.h"
 
-class SceneNodeTreeViewerWidget
+#include "TreeModelTemplate.h"
+
+class ZenonSceneViewerWidget
 	: public QTreeView
 {
 	Q_OBJECT
-	Q_DISABLE_COPY(SceneNodeTreeViewerWidget)
+	Q_DISABLE_COPY(ZenonSceneViewerWidget)
 public:
-	explicit SceneNodeTreeViewerWidget(QWidget * parent = nullptr);
-	virtual ~SceneNodeTreeViewerWidget();
+	explicit ZenonSceneViewerWidget(QWidget * parent = nullptr);
+	virtual ~ZenonSceneViewerWidget();
 
 	void SetEditors(IEditor3DFrame* Editor3DFrame, IEditorUIFrame* EditorUIFrame) { m_Editor3D = Editor3DFrame; m_EditorUI = EditorUIFrame; }
 
@@ -32,7 +33,7 @@ private slots:
 	void onDoubleClicked(const QModelIndex &index);
 
 private:
-	std::shared_ptr<SceneNodeTreeModel> m_Model;
+	std::shared_ptr<CQtToZenonTreeModel<ISceneNode3D>> m_Model;
 	std::shared_ptr<QMenu> m_SceneTreeViewerContextMenu;
 	bool m_LockForSelectionChangedEvent;
 

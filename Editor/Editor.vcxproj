@@ -343,10 +343,8 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="ZenonWidgets\SceneNodeViewer\SceneNodeTreeItem.cpp" />
-    <ClCompile Include="ZenonWidgets\SceneNodeViewer\SceneNodeTreeModel.cpp" />
-    <ClCompile Include="ZenonWidgets\SceneNodeViewer\SceneNodeTreeViewerWidget.cpp" />
     <ClCompile Include="ZenonWidgets\ZenonLogViewer\ZenonLogViewer.cpp" />
+    <ClCompile Include="ZenonWidgets\ZenonSceneViewer\ZenonSceneViewerWidget.cpp" />
     <ClCompile Include="ZenonWidgets\ZenonWindow3D\ZenonWindow3D.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -358,14 +356,13 @@
     <ClInclude Include="PropertyEditor\Core\Auxiliary\PropertyTemplates.h" />
     <ClInclude Include="PropertyEditor\Core\CoreAPI.h" />
     <ClInclude Include="SceneNodesSelector.h" />
-    <ClInclude Include="ZenonWidgets\SceneNodeViewer\SceneNodeTreeItem.h" />
-    <QtMoc Include="ZenonWidgets\SceneNodeViewer\SceneNodeTreeModel.h" />
-    <QtMoc Include="ZenonWidgets\SceneNodeViewer\SceneNodeTreeViewerWidget.h" />
     <QtMoc Include="ZenonWidgets\ZenonLogViewer\ZenonLogViewer.h" />
-    <ClInclude Include="ZenonWidgets\SceneNodeViewer\TreeItemTemplate.h" />
+    <ClInclude Include="ZenonWidgets\ZenonSceneViewer\TreeItemTemplate.h" />
+    <QtMoc Include="ZenonWidgets\ZenonSceneViewer\ZenonSceneViewerWidget.h" />
+    <ClInclude Include="ZenonWidgets\ZenonSceneViewer\TreeModelTemplate.h" />
     <ClInclude Include="_widgetPropertyEditor.h" />
-    <ClInclude Include="_widgetSceneNodeViewer.h" />
     <ClInclude Include="_widgetZenonLogViewer.h" />
+    <ClInclude Include="_widgetZenonSceneViewer.h" />
     <ClInclude Include="_widgetZenonWindow3D.h" />
     <QtMoc Include="ZenonWidgets\ZenonWindow3D\ZenonWindow3D.h" />
     <QtMoc Include="PropertyEditor\Core\Core\PropertyBool.h" />

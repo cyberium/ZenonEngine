@@ -21,11 +21,11 @@ public:
 
 	inline Ui::MainEditorClass getUI() const { return m_UI; }
 	inline ZenonWindow3D * getMainEditor() const { return m_UI.MainEditor3D; }
-	inline SceneNodeTreeViewerWidget * getSceneTree() const { return m_UI.SceneTreeViewer; }
+	inline ZenonSceneViewerWidget * getSceneViewer() const { return m_UI.SceneViewer; }
 	inline void SetEditor3D(IEditor3DFrame* Editor3DFrame) { 
 		m_Editor3D = Editor3DFrame; 
 		getMainEditor()->SetEditors(Editor3DFrame, this);
-		getSceneTree()->SetEditors(Editor3DFrame, this);
+		getSceneViewer()->SetEditors(Editor3DFrame, this);
 		Selector_SetOtherSelector(dynamic_cast<CSceneNodesSelector*>(m_Editor3D));
 	}
 
