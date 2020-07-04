@@ -4,51 +4,39 @@
 #include <QVector>
 #include <QVariant>
 
-
-template <typename T>
-class CQtToZenonTreeModel;
-
-template <typename T>
 class CQtToZenonTreeItem
-
-	
 {
 public:
-	CQtToZenonTreeItem(CQtToZenonTreeModel<T>& Model)
+	CQtToZenonTreeItem()
 		: m_TObject(nullptr)
 		, m_Parent(nullptr)
-		, m_Model(Model)
 	{}
 
-	CQtToZenonTreeItem(CQtToZenonTreeModel<T>& Model, const std::shared_ptr<T>& TObject, CQtToZenonTreeItem * Parent)
+	CQtToZenonTreeItem(const std::shared_ptr<IModelCollectionItem>& TObject, CQtToZenonTreeItem * Parent)
 		: m_TObject(TObject)
 		, m_Parent(Parent)
-		, m_Model(Model)
 	{
 		for (const auto& ch : m_TObject->GetChilds())
-		{
-			addChild(new CQtToZenonTreeItem<T>(m_Model, ch, this));
-		}
+			addChild(new CQtToZenonTreeItem(ch, this));
 	}
 	virtual ~CQtToZenonTreeItem()
 	{
 
 	}
 
-	void SetRoot(const std::shared_ptr<T>& TObject)
+	void SetRoot(const std::shared_ptr<IModelCollectionItem>& TObject)
 	{
 		m_TObject = TObject;
 		for (const auto& ch : m_TObject->GetChilds())
-			addChild(new CQtToZenonTreeItem<T>(m_Model, ch, this));
+			addChild(new CQtToZenonTreeItem(ch, this));
 	}
 
-	void addChild(CQtToZenonTreeItem<T> * child)
+	void addChild(CQtToZenonTreeItem * child)
 	{
-		m_Model.Add(child->GetTObject()->GetGuid(), child);
 		m_Childs.push_back(child);
 	}
 
-	CQtToZenonTreeItem<T>* child(int row)
+	CQtToZenonTreeItem* child(int row)
 	{
 		if (row < 0 || row >= m_Childs.size())
 			return nullptr;
@@ -58,7 +46,7 @@ public:
 	{
 		return m_Childs.size();
 	}
-	CQtToZenonTreeItem<T>* parentItem()
+	CQtToZenonTreeItem* parentItem()
 	{
 		return m_Parent;
 	}
@@ -66,7 +54,7 @@ public:
 	QVariant data() const
 	{
 		if (m_TObject == nullptr)
-			return QVariant("Root.");
+			return QVariant("Root");
 		return QVariant(m_TObject->GetName().c_str());
 	}
 	int childNumberInParent() const
@@ -81,15 +69,13 @@ public:
 		return 0;
 	}
 
-	std::shared_ptr<T> GetTObject() const
+	std::shared_ptr<IObject> GetTObject() const
 	{
-		return m_TObject;
+		return m_TObject->Object();
 	}
 
 private:
-	CQtToZenonTreeItem<T>*			    m_Parent;
-	std::vector<CQtToZenonTreeItem<T>*>	m_Childs;
-
-	std::shared_ptr<T>	                m_TObject;
-	CQtToZenonTreeModel<T>&             m_Model;
+	CQtToZenonTreeItem*			          m_Parent;
+	std::vector<CQtToZenonTreeItem*>	  m_Childs;
+	std::shared_ptr<IModelCollectionItem> m_TObject;
 };

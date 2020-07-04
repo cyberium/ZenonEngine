@@ -85,7 +85,7 @@ void main_internal(int argc, char *argv[])
 
 	QTimer *timer = new QTimer(&editorUI);
 	editorUI.connect(timer, &QTimer::timeout, &editorUI, [&app] {
-		app.Run();
+		app.DoRun();
 	});
 	timer->start();
 

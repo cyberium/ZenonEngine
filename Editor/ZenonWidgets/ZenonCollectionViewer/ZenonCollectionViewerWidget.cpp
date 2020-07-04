@@ -1,0 +1,146 @@
+#include "stdafx.h"
+
+// General
+#include "ZenonCollectionViewerWidget.h"
+
+// Additional
+#include "SceneNodesSelector.h"
+
+ZenonCollectionViewerWidget::ZenonCollectionViewerWidget(QWidget * parent)
+	: QTreeView(parent)
+	, m_Editor3D(nullptr)
+	, m_EditorUI(nullptr)
+	, m_LockForSelectionChangedEvent(false)
+{
+	// Add context menu for scene node viewer
+	m_SceneTreeViewerContextMenu = std::make_shared<QMenu>(this);
+	m_SceneTreeViewerContextMenu->setTitle("Some context menu title.");
+
+	this->setContextMenuPolicy(Qt::CustomContextMenu);
+	connect(this, SIGNAL(customContextMenuRequested(const QPoint &)), this, SLOT(onCustomContextMenu(const QPoint &)));
+
+	// SceneNodeTreeView: Main settings
+	m_Model = std::make_shared<CQtToZenonTreeModel>(this);
+	this->setModel(m_Model.get());
+
+	// SceneNodeTreeView: Selection settings
+	this->setSelectionMode(QAbstractItemView::SingleSelection);
+	this->setSelectionBehavior(QAbstractItemView::SelectionBehavior::SelectItems);
+
+	QItemSelectionModel* selectionModel = this->selectionModel();
+	connect(selectionModel, SIGNAL(currentChanged(const QModelIndex&, const QModelIndex&)), this, SLOT(onCurrentChanged(const QModelIndex&, const QModelIndex&)));
+	connect(selectionModel, SIGNAL(selectionChanged(const QItemSelection&, const QItemSelection&)), this, SLOT(onSelectionChanged(const QItemSelection&, const QItemSelection&)));
+
+	connect(this, SIGNAL(clicked(const QModelIndex&)), this, SLOT(onClicked(const QModelIndex&)));
+}
+
+ZenonCollectionViewerWidget::~ZenonCollectionViewerWidget()
+{
+}
+
+void ZenonCollectionViewerWidget::SetModelsList(const std::vector<std::string>& Nodes)
+{
+	std::vector<std::shared_ptr<IModelCollectionItem>> models;
+	for (const auto& it : Nodes)
+	{
+		auto name = CFile(it).Name();
+		name = name.substr(0, name.find_first_of('.'));
+
+		auto model = m_Editor3D->GetRenderDevice2().GetObjectsFactory().CreateModel();
+		if (auto loadable = std::dynamic_pointer_cast<IObjectLoadSave>(model))
+			loadable->Load(m_Editor3D->GetBaseManager2().GetManager<IFilesManager>()->Open(it));
+		model->SetName(name);
+		models.push_back(std::make_shared<C3DModelModelItem>(model));
+	}
+
+	this->reset();
+	m_Model->SetChildRootItemsData(models);
+	this->expandAll();
+}
+
+void ZenonCollectionViewerWidget::mousePressEvent(QMouseEvent * event)
+{
+	if (m_LockForSelectionChangedEvent)
+		return;
+
+	if (event->button() == Qt::RightButton)
+		return;
+
+	QModelIndex index = indexAt(event->pos());
+	if (!index.isValid())
+		return;
+
+	auto item = static_cast<CQtToZenonTreeItem*>(index.internalPointer());
+	_ASSERT_EXPR(item != nullptr, L"Item is null.");
+
+	QPoint hotSpot = event->pos();
+
+	QMimeData *mimeData = new QMimeData;
+	mimeData->setText(item->GetTObject()->GetName().c_str());
+	//mimeData->setData(hotSpotMimeDataKey(), QByteArray::number(hotSpot.x()) + ' ' + QByteArray::number(hotSpot.y()));
+
+
+	QDrag *drag = new QDrag(this);
+	drag->setMimeData(mimeData);
+	drag->setHotSpot(hotSpot);
+	Qt::DropAction dropAction = drag->exec();
+	if (dropAction != Qt::DropAction::IgnoreAction)
+	{
+		if (dropAction == Qt::DropAction::CopyAction)
+			drag->cancel();
+	}
+	__super::mousePressEvent(event);
+}
+
+
+//
+// Slots
+//
+void ZenonCollectionViewerWidget::onCustomContextMenu(const QPoint& point)
+{
+	if (m_LockForSelectionChangedEvent)
+		return;
+
+	QModelIndex index = indexAt(point);
+	if (!index.isValid())
+		return;
+
+	auto item = static_cast<CQtToZenonTreeItem*>(index.internalPointer());
+	_ASSERT_EXPR(item != nullptr, L"Item is null.");
+
+	m_SceneTreeViewerContextMenu->clear();
+	//m_EditorUI->ExtendContextMenu(m_SceneTreeViewerContextMenu.get(), item->GetTObject());
+	m_SceneTreeViewerContextMenu->popup(mapToGlobal(point));
+}
+
+void ZenonCollectionViewerWidget::onCurrentChanged(const QModelIndex& current, const QModelIndex& previous)
+{
+
+}
+
+void ZenonCollectionViewerWidget::onSelectionChanged(const QItemSelection& selected, const QItemSelection &deselected)
+{
+	if (m_LockForSelectionChangedEvent)
+		return;
+
+}
+
+void ZenonCollectionViewerWidget::onPressed(const QModelIndex & index)
+{
+
+}
+
+void ZenonCollectionViewerWidget::onClicked(const QModelIndex & index)
+{
+	if (!index.isValid())
+		return;
+
+	auto item = static_cast<CQtToZenonTreeItem*>(index.internalPointer());
+	_ASSERT_EXPR(item != nullptr, L"Item is null.");
+
+}
+
+void ZenonCollectionViewerWidget::onDoubleClicked(const QModelIndex & index)
+{
+
+}

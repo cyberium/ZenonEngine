@@ -30,14 +30,23 @@ public:
 
 	void OnPreRender(RenderEventArgs& e) override;
 
+	void OnWindowMouseMoved(MouseMotionEventArgs& e) override;
+	bool OnWindowMouseButtonPressed(MouseButtonEventArgs& e) override;
+	void OnWindowMouseButtonReleased(MouseButtonEventArgs& e) override;
 	bool OnWindowKeyPressed(KeyEventArgs& e) override;
 	void OnWindowKeyReleased(KeyEventArgs& e) override;
 
 	// IEditor3DFrame
+	IBaseManager& GetBaseManager2() const;
+	IRenderDevice& GetRenderDevice2() const;
 	void LockUpdates() override;
 	void UnlockUpdates() override;
 	std::shared_ptr<ISceneNode3D> GetRealRootNode3D() const override;
 	std::shared_ptr<ISceneNode3D> GetNodeUnderMouse(const glm::ivec2& MousePos) const override;
+	void DropEvent(const glm::vec2& Position) override;
+	void DragEnterEvent(const SDragData& Data) override;
+	void DragMoveEvent(const glm::vec2& Position) override;
+	void DragLeaveEvent() override;
 
 	// CSceneNodesSelector
 	void Selector_OnSelectionChange() override;
@@ -50,7 +59,10 @@ protected:
 	void Load3D();
 	void LoadUI();
 
+	bool m_IsDraggingEnabled;
 	std::shared_ptr<ISceneNode3D> m_DraggedNode;
+
+
 	std::shared_ptr<ISceneNode3D> m_Mover;
 	
 	bool m_IsSelecting;

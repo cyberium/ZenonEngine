@@ -22,12 +22,8 @@ public:
 	inline Ui::MainEditorClass getUI() const { return m_UI; }
 	inline ZenonWindow3D * getMainEditor() const { return m_UI.MainEditor3D; }
 	inline ZenonSceneViewerWidget * getSceneViewer() const { return m_UI.SceneViewer; }
-	inline void SetEditor3D(IEditor3DFrame* Editor3DFrame) { 
-		m_Editor3D = Editor3DFrame; 
-		getMainEditor()->SetEditors(Editor3DFrame, this);
-		getSceneViewer()->SetEditors(Editor3DFrame, this);
-		Selector_SetOtherSelector(dynamic_cast<CSceneNodesSelector*>(m_Editor3D));
-	}
+	inline ZenonCollectionViewerWidget * getCollectionViewer() const { return m_UI.CollectionViewer; }
+	void SetEditor3D(IEditor3DFrame* Editor3DFrame);
 
 	// IEditorUIFrame
 	void ExtendContextMenu(QMenu * Menu, const std::shared_ptr<ISceneNode3D>& Node) override;

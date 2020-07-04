@@ -266,6 +266,9 @@
               <height>1440</height>
              </size>
             </property>
+            <property name="acceptDrops">
+             <bool>true</bool>
+            </property>
            </widget>
           </item>
          </layout>
@@ -556,6 +559,9 @@
          <verstretch>0</verstretch>
         </sizepolicy>
        </property>
+       <property name="dragEnabled">
+        <bool>true</bool>
+       </property>
        <property name="selectionMode">
         <enum>QAbstractItemView::ExtendedSelection</enum>
        </property>
@@ -710,13 +716,37 @@
       <number>0</number>
      </property>
      <item>
-      <widget class="QTableView" name="tableView">
+      <widget class="ZenonCollectionViewerWidget" name="CollectionViewer">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
        </property>
+       <property name="acceptDrops">
+        <bool>false</bool>
+       </property>
+       <property name="dragEnabled">
+        <bool>true</bool>
+       </property>
+       <property name="selectionMode">
+        <enum>QAbstractItemView::SingleSelection</enum>
+       </property>
+       <property name="verticalScrollMode">
+        <enum>QAbstractItemView::ScrollPerPixel</enum>
+       </property>
+       <property name="horizontalScrollMode">
+        <enum>QAbstractItemView::ScrollPerPixel</enum>
+       </property>
+       <property name="rootIsDecorated">
+        <bool>false</bool>
+       </property>
+       <property name="itemsExpandable">
+        <bool>false</bool>
+       </property>
+       <attribute name="headerVisible">
+        <bool>false</bool>
+       </attribute>
       </widget>
      </item>
     </layout>
@@ -776,6 +806,11 @@
    <class>ZenonLogViewer</class>
    <extends>QPlainTextEdit</extends>
    <header location="global">_widgetZenonLogViewer.h</header>
+  </customwidget>
+  <customwidget>
+   <class>ZenonCollectionViewerWidget</class>
+   <extends>QTreeView</extends>
+   <header location="global">_widgetZenonCollectionViewer.h</header>
   </customwidget>
  </customwidgets>
  <resources>

@@ -1,25 +1,23 @@
 #pragma once
 
-#include <QtWidgets/QTreeView>
+#include <QtWidgets/QTableView>
 
 #include "EditorInterfaces.h"
 
 #include "../TreeModelTemplate.h"
 
-class CSceneNodeModelItem
+class C3DModelModelItem
 	: public IModelCollectionItem
 {
 public:
-	CSceneNodeModelItem(const std::shared_ptr<ISceneNode3D>& SceneNode)
-		: m_SceneNode(SceneNode)
+	C3DModelModelItem(const std::shared_ptr<IModel>& Model)
+		: m_Model(Model)
 	{
-		for (const auto& it : SceneNode->GetChilds())
-			m_Childs.push_back(std::make_shared<CSceneNodeModelItem>(it));
 	}
 
 	std::string GetName() const override
 	{
-		return m_SceneNode->GetName();
+		return m_Model->GetName();
 	}
 	const std::vector<std::shared_ptr<IModelCollectionItem>>& GetChilds() override
 	{
@@ -27,28 +25,25 @@ public:
 	}
 	std::shared_ptr<IObject> Object() const
 	{
-		return m_SceneNode;
+		return m_Model;
 	}
 
 private:
-	std::shared_ptr<ISceneNode3D> m_SceneNode;
+	std::shared_ptr<IModel> m_Model;
 	std::vector<std::shared_ptr<IModelCollectionItem>> m_Childs;
 };
 
-class ZenonSceneViewerWidget
+class ZenonCollectionViewerWidget
 	: public QTreeView
 {
 	Q_OBJECT
-	Q_DISABLE_COPY(ZenonSceneViewerWidget)
+	Q_DISABLE_COPY(ZenonCollectionViewerWidget)
 public:
-	explicit ZenonSceneViewerWidget(QWidget * parent = nullptr);
-	virtual ~ZenonSceneViewerWidget();
+	explicit ZenonCollectionViewerWidget(QWidget * parent = nullptr);
+	virtual ~ZenonCollectionViewerWidget();
 
 	void SetEditors(IEditor3DFrame* Editor3DFrame, IEditorUIFrame* EditorUIFrame) { m_Editor3D = Editor3DFrame; m_EditorUI = EditorUIFrame; }
-
-	void RefreshTreeViewModel();
-	void SelectNode(const std::shared_ptr<ISceneNode3D>& Node);
-	void SelectNodes(const std::vector<std::shared_ptr<ISceneNode3D>>& Nodes);
+	void SetModelsList(const std::vector<std::string>& Nodes);
 
 protected:
 	virtual void mousePressEvent(QMouseEvent *event) override;
@@ -63,7 +58,7 @@ private slots:
 
 private:
 	std::shared_ptr<CQtToZenonTreeModel> m_Model;
-	std::shared_ptr<QMenu> m_ContextMenu;
+	std::shared_ptr<QMenu> m_SceneTreeViewerContextMenu;
 	bool m_LockForSelectionChangedEvent;
 
 private:

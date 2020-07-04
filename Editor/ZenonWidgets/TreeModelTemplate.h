@@ -5,7 +5,6 @@
 
 #include "TreeItemTemplate.h"
 
-template <typename T>
 class CQtToZenonTreeModel
 	: public QAbstractItemModel
 {
@@ -13,7 +12,7 @@ public:
 	CQtToZenonTreeModel(QObject *parent = nullptr)
 		: QAbstractItemModel(parent)
 	{
-		m_RootItem = new CQtToZenonTreeItem<T>(*this);
+		m_RootItem = new CQtToZenonTreeItem();
 	}
 	virtual ~CQtToZenonTreeModel()
 	{
@@ -21,36 +20,39 @@ public:
 	}
 
 	// CQtToZenonTreeModel
-	void SetModelData(const std::shared_ptr<T>& SceneNode3D)
+	void SetRootItemData(const std::shared_ptr<IModelCollectionItem>& Item)
 	{
-		auto oldRootItem = m_RootItem;
-
-		m_RootItem = new CQtToZenonTreeItem<T>(*this);
-		m_RootItem->SetRoot(SceneNode3D);
+		m_RootItem = new CQtToZenonTreeItem();
+		m_RootItem->SetRoot(Item);
 
 		//if (oldRootItem)
 		//	delete oldRootItem;
 	}
-	std::shared_ptr<T> Find(const QModelIndex& ModelIdnex)
+	void SetChildRootItemsData(const std::vector<std::shared_ptr<IModelCollectionItem>>& Items)
+	{
+		for (const auto& item : Items)
+			m_RootItem->addChild(new CQtToZenonTreeItem(item, m_RootItem));
+	}
+	std::shared_ptr<IObject> Find(const QModelIndex& ModelIdnex)
 	{
 		if (!ModelIdnex.isValid())
 			return nullptr;
 
-		auto item = static_cast<CQtToZenonTreeItem<T>*>(ModelIdnex.internalPointer());
+		auto item = static_cast<CQtToZenonTreeItem*>(ModelIdnex.internalPointer());
 		if (item == nullptr)
 			return nullptr;
 
 		return item->GetTObject();
 	}
 
-	static bool forEach(QAbstractItemModel* model, QModelIndex parent, const std::shared_ptr<T>& Node, QModelIndex * FindedPosition)
+	static bool forEach(QAbstractItemModel* model, QModelIndex parent, const std::shared_ptr<IObject>& Node, QModelIndex * FindedPosition)
 	{
 		for (int r = 0; r < model->rowCount(parent); ++r)
 		{
 			QModelIndex index = model->index(r, 0, parent);
 			_ASSERT(index.isValid());
 
-			CQtToZenonTreeItem<T>* item = static_cast<CQtToZenonTreeItem<T>*>(index.internalPointer());
+			CQtToZenonTreeItem* item = static_cast<CQtToZenonTreeItem*>(index.internalPointer());
 			if (item->GetTObject() == Node)
 			{
 				*FindedPosition = index;
@@ -58,22 +60,18 @@ public:
 			}
 
 			if (model->hasChildren(index))
-				if (false == forEach(model, index, Node, FindedPosition))
-					return false;
+				if (forEach(model, index, Node, FindedPosition))
+					return true;
 		}
 
 		return false;
 	}
 
-	QModelIndex Find(const std::shared_ptr<T>& Node)
+	QModelIndex Find(const std::shared_ptr<IObject>& Node)
 	{
 		QModelIndex findedIndex;
 		forEach(this, QModelIndex(), Node, &findedIndex);
 		return findedIndex;
-	}
-	void Add(Object::Guid Guid, CQtToZenonTreeItem<T>* SceneNodeTreeItem)
-	{
-		m_Map.insert(std::make_pair(Guid, SceneNodeTreeItem));
 	}
 
 
@@ -96,7 +94,7 @@ public:
 
 		if (role == Qt::DisplayRole)
 		{
-			CQtToZenonTreeItem<T>* item = getItem(index);
+			CQtToZenonTreeItem* item = getItem(index);
 			return item->data();
 		}
 		else if (role == Qt::DecorationRole)
@@ -124,8 +122,8 @@ public:
 		if (parent.isValid() && parent.column() != 0)
 			return QModelIndex();
 
-		CQtToZenonTreeItem<T>* parentItem = getItem(parent);
-		CQtToZenonTreeItem<T>* childItem = parentItem->child(row);
+		CQtToZenonTreeItem* parentItem = getItem(parent);
+		CQtToZenonTreeItem* childItem = parentItem->child(row);
 		if (childItem)
 			return createIndex(row, column, childItem);
 		else
@@ -136,7 +134,7 @@ public:
 		if (!index.isValid())
 			return QModelIndex();
 
-		auto childItem = static_cast<CQtToZenonTreeItem<T>*>(index.internalPointer());
+		auto childItem = static_cast<CQtToZenonTreeItem*>(index.internalPointer());
 		auto parentItem = childItem->parentItem();
 
 		if (parentItem == m_RootItem)
@@ -147,7 +145,7 @@ public:
 	int rowCount(const QModelIndex& parent = QModelIndex()) const override
 	{
 		if (parent.isValid())
-			return static_cast<CQtToZenonTreeItem<T>*>(parent.internalPointer())->childCount();
+			return static_cast<CQtToZenonTreeItem*>(parent.internalPointer())->childCount();
 
 		return m_RootItem->childCount();
 	}
@@ -157,18 +155,18 @@ public:
 	}
 
 private:
-	CQtToZenonTreeItem<T>* getItem(const QModelIndex& index) const
+	CQtToZenonTreeItem* getItem(const QModelIndex& index) const
 	{
 		if (!index.isValid())
 			return m_RootItem;
 
-		if (auto item = static_cast<CQtToZenonTreeItem<T>*>(index.internalPointer()))
+		if (auto item = static_cast<CQtToZenonTreeItem*>(index.internalPointer()))
 			return item;
 
 		return m_RootItem;
 	}
 
 private:
-	CQtToZenonTreeItem<T>* m_RootItem;
-	std::map<Object::Guid, CQtToZenonTreeItem<T>*> m_Map;
+	CQtToZenonTreeItem* m_RootItem;
+	std::map<Object::Guid, CQtToZenonTreeItem*> m_Map;
 };

@@ -13,14 +13,14 @@ ZenonSceneViewerWidget::ZenonSceneViewerWidget(QWidget * parent)
 	, m_LockForSelectionChangedEvent(false)
 {
 	// Add context menu for scene node viewer
-	m_SceneTreeViewerContextMenu = std::make_shared<QMenu>(this);
-	m_SceneTreeViewerContextMenu->setTitle("Some context menu title.");
+	m_ContextMenu = std::make_shared<QMenu>(this);
+	m_ContextMenu->setTitle("Some context menu title.");
 
 	this->setContextMenuPolicy(Qt::CustomContextMenu);
 	connect(this, SIGNAL(customContextMenuRequested(const QPoint &)), this, SLOT(onCustomContextMenu(const QPoint &)));
 
 	// SceneNodeTreeView: Main settings
-	m_Model = std::make_shared<CQtToZenonTreeModel<ISceneNode3D>>(this);
+	m_Model = std::make_shared<CQtToZenonTreeModel>(this);
 	this->setModel(m_Model.get());
 
 	// SceneNodeTreeView: Selection settings
@@ -46,7 +46,7 @@ void ZenonSceneViewerWidget::RefreshTreeViewModel()
 	m_Editor3D->LockUpdates();
 
 	this->reset();
-	m_Model->SetModelData(m_Editor3D->GetRealRootNode3D());
+	m_Model->SetRootItemData(std::make_shared<CSceneNodeModelItem>(m_Editor3D->GetRealRootNode3D()));
 	this->expandAll();
 
 	m_Editor3D->UnlockUpdates();
@@ -97,13 +97,12 @@ void ZenonSceneViewerWidget::onCustomContextMenu(const QPoint& point)
 	if (!index.isValid())
 		return;
 
-	auto item = static_cast<CQtToZenonTreeItem<ISceneNode3D>*>(index.internalPointer());
+	auto item = static_cast<CQtToZenonTreeItem*>(index.internalPointer());
 	_ASSERT_EXPR(item != nullptr, L"Item is null.");
 
-	m_SceneTreeViewerContextMenu->clear();
-	m_EditorUI->ExtendContextMenu(m_SceneTreeViewerContextMenu.get(), item->GetTObject());
-
-	m_SceneTreeViewerContextMenu->popup(mapToGlobal(point));
+	m_ContextMenu->clear();
+	m_EditorUI->ExtendContextMenu(m_ContextMenu.get(), std::static_pointer_cast<ISceneNode3D>(item->GetTObject()));
+	m_ContextMenu->popup(mapToGlobal(point));
 }
 
 void ZenonSceneViewerWidget::onCurrentChanged(const QModelIndex& current, const QModelIndex& previous)
@@ -120,7 +119,7 @@ void ZenonSceneViewerWidget::onSelectionChanged(const QItemSelection& selected, 
 	auto indexes = selectionModel()->selectedIndexes();
 	std::for_each(indexes.begin(), indexes.end(), [this, &selectedNodes](const QModelIndex& Index) {
 		if (auto node = m_Model->Find(Index))
-			selectedNodes.push_back(node);
+			selectedNodes.push_back(std::static_pointer_cast<ISceneNode3D>(node));
 	});
 	indexes.clear();
 
@@ -138,11 +137,11 @@ void ZenonSceneViewerWidget::onClicked(const QModelIndex & index)
 	if (!index.isValid())
 		return;
 
-	auto item = static_cast<CQtToZenonTreeItem<ISceneNode3D>*>(index.internalPointer());
+	auto item = static_cast<CQtToZenonTreeItem*>(index.internalPointer());
 	_ASSERT_EXPR(item != nullptr, L"Item is null.");
 
 	m_Editor3D->LockUpdates();
-	dynamic_cast<CSceneNodesSelector*>(m_Editor3D)->Selector_SelectNode(item->GetTObject(), false);
+	dynamic_cast<CSceneNodesSelector*>(m_Editor3D)->Selector_SelectNode(std::static_pointer_cast<ISceneNode3D>(item->GetTObject()), false);
 	m_Editor3D->UnlockUpdates();
 }
 

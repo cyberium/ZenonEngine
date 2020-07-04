@@ -61,6 +61,10 @@ private:
 	void showEvent(QShowEvent* event) override;
 	void hideEvent(QHideEvent* event) override;
 
+	void dropEvent(QDropEvent *event) override;
+	void dragEnterEvent(QDragEnterEvent *event) override;
+	void dragMoveEvent(QDragMoveEvent *event) override;
+	void dragLeaveEvent(QDragLeaveEvent *event) override;
 private:
 	IEditor3DFrame* m_Editor3D;
 	IEditorUIFrame* m_EditorUI;

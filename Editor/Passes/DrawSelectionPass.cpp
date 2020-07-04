@@ -41,7 +41,7 @@ void CDrawSelectionPass::RefreshInstanceBuffer()
 				bboxMatrix = glm::translate(bboxMatrix, bbox.getMin() - sizeIncrement);
 				bboxMatrix = glm::scale(bboxMatrix, size + sizeIncrement * 2.0f);
 
-				instances.push_back(SSelectorPerObject(bboxMatrix, glm::vec4(0.3f, 1.0f, 0.3f, 0.7f)));
+				instances.push_back(SSelectorPerObject(bboxMatrix, glm::vec4(0.8f, 0.8f, 0.8f, 0.7f)));
 			}
 		});
 

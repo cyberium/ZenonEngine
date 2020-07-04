@@ -8,13 +8,15 @@ ZenonWindow3D::ZenonWindow3D(QWidget *parent)
 	, m_Editor3D(nullptr)
 	, m_EditorUI(nullptr)
 {
-	//setAttribute(Qt::WA_NativeWindow);
-	//setAttribute(Qt::WA_PaintOnScreen);
-	//setAttribute(Qt::WA_NoSystemBackground);
-	//setAttribute(Qt::WA_NoMousePropagation);
+	setAttribute(Qt::WA_NativeWindow);
+	setAttribute(Qt::WA_PaintOnScreen);
+	setAttribute(Qt::WA_NoSystemBackground);
+	setAttribute(Qt::WA_NoMousePropagation);
 
-	this->setContextMenuPolicy(Qt::CustomContextMenu);
-	connect(this, SIGNAL(customContextMenuRequested(const QPoint &)), this, SLOT(slotCustomMenuRequested(const QPoint &)));
+	//this->setContextMenuPolicy(Qt::CustomContextMenu);
+	//connect(this, SIGNAL(customContextMenuRequested(const QPoint &)), this, SLOT(slotCustomMenuRequested(const QPoint &)));
+
+	setAcceptDrops(true);
 }
 
 ZenonWindow3D::~ZenonWindow3D()
@@ -297,4 +299,50 @@ void ZenonWindow3D::showEvent(QShowEvent * event)
 void ZenonWindow3D::hideEvent(QHideEvent * event)
 {
 	PostQuitMessage(0);
+}
+
+void ZenonWindow3D::dropEvent(QDropEvent * event)
+{
+	//event->acceptProposedAction();
+	m_Editor3D->DropEvent(glm::vec2(event->pos().x(), event->pos().y()));
+}
+
+void ZenonWindow3D::dragEnterEvent(QDragEnterEvent * event)
+{
+	const QMimeData *mimeData = event->mimeData();
+	if (mimeData->hasText()) 
+	{
+		std::string text = mimeData->text().toStdString();
+
+		SDragData data;
+		data.Message = text;
+		data.Position = glm::vec2(event->pos().x(), event->pos().y());
+		try
+		{
+			m_Editor3D->DragEnterEvent(data);
+		}
+		catch (...)
+		{
+			Log::Error("Error!");
+		}
+
+	}
+	else 
+	{
+		_ASSERT(false);
+	}
+
+	event->setDropAction(Qt::DropAction::MoveAction);
+	event->acceptProposedAction();
+}
+
+void ZenonWindow3D::dragMoveEvent(QDragMoveEvent * event)
+{
+	//repaint();
+	m_Editor3D->DragMoveEvent(glm::vec2(event->pos().x(), event->pos().y()));
+}
+
+void ZenonWindow3D::dragLeaveEvent(QDragLeaveEvent * event)
+{
+	m_Editor3D->DragLeaveEvent();
 }

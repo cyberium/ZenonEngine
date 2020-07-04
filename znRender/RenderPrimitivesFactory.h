@@ -9,6 +9,7 @@ public:
 
 	// IRenderPrimitivesFactory
 	std::shared_ptr<IGeometry> CreateLine(const glm::vec3& _dest) override; 
+	std::shared_ptr<IGeometry> CreateLines(size_t count = 100) override;
 	std::shared_ptr<IGeometry> CreatePlane(const glm::vec3& N = glm::vec3(0, 1, 0)) override;
 	std::shared_ptr<IGeometry> CreateScreenQuad(float left = 0.0f, float right = 1.0f, float bottom = 0.0f, float top = 1.0f, float z = 0.0f) override;
 	std::shared_ptr<IGeometry> CreateSphere() override;

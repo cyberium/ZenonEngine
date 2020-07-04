@@ -281,6 +281,9 @@
     <ClCompile Include="Passes\DrawSelectionPass.cpp">
       <Filter>Editor3D\Passes</Filter>
     </ClCompile>
+    <ClCompile Include="ZenonWidgets\ZenonCollectionViewer\ZenonCollectionViewerWidget.cpp">
+      <Filter>ZenonWidgets\ZenonCollectionViewer</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -427,17 +430,20 @@
     <ClInclude Include="_widgetZenonSceneViewer.h">
       <Filter>ZenonWidgets</Filter>
     </ClInclude>
-    <ClInclude Include="ZenonWidgets\ZenonSceneViewer\TreeItemTemplate.h">
-      <Filter>ZenonWidgets\ZenonSceneViewer</Filter>
-    </ClInclude>
-    <ClInclude Include="ZenonWidgets\ZenonSceneViewer\TreeModelTemplate.h">
-      <Filter>ZenonWidgets\ZenonSceneViewer</Filter>
-    </ClInclude>
     <ClInclude Include="EditedScene.h">
       <Filter>Editor3D</Filter>
     </ClInclude>
     <ClInclude Include="Passes\DrawSelectionPass.h">
       <Filter>Editor3D\Passes</Filter>
+    </ClInclude>
+    <ClInclude Include="ZenonWidgets\TreeItemTemplate.h">
+      <Filter>ZenonWidgets</Filter>
+    </ClInclude>
+    <ClInclude Include="ZenonWidgets\TreeModelTemplate.h">
+      <Filter>ZenonWidgets</Filter>
+    </ClInclude>
+    <ClInclude Include="_widgetZenonCollectionViewer.h">
+      <Filter>ZenonWidgets</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -536,6 +542,9 @@
     </QtMoc>
     <QtMoc Include="ZenonWidgets\ZenonSceneViewer\ZenonSceneViewerWidget.h">
       <Filter>ZenonWidgets\ZenonSceneViewer</Filter>
+    </QtMoc>
+    <QtMoc Include="ZenonWidgets\ZenonCollectionViewer\ZenonCollectionViewerWidget.h">
+      <Filter>ZenonWidgets\ZenonCollectionViewer</Filter>
     </QtMoc>
   </ItemGroup>
   <ItemGroup>

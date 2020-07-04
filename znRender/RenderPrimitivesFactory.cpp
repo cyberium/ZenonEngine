@@ -37,6 +37,34 @@ std::shared_ptr<IGeometry> CRenderPrimitivesFactory::CreateLine(const glm::vec3&
 	return geometry;
 }
 
+std::shared_ptr<IGeometry> CRenderPrimitivesFactory::CreateLines(size_t count)
+{
+	std::vector<glm::vec3> points;
+
+	int halfOfCount = count / 2;
+	float halfOfCountFloat = static_cast<float>(halfOfCount);
+
+	for (int i = -halfOfCount; i <= halfOfCount; i++)
+	{
+		points.push_back(glm::vec3(-halfOfCount, 0.f, i));
+		points.push_back(glm::vec3(halfOfCount, 0.f, i));
+	}
+
+	for (int i = -halfOfCount; i <= halfOfCount; i++)
+	{
+		points.push_back(glm::vec3(i, 0.f, -halfOfCount));
+		points.push_back(glm::vec3(i, 0.f, halfOfCount));
+	}
+
+	std::shared_ptr<IGeometry> geometry = m_RenderDevice.GetObjectsFactory().CreateGeometry();
+	geometry->SetPrimitiveTopology(PrimitiveTopology::LineList);
+
+	std::shared_ptr<IBuffer> __vb = m_RenderDevice.GetObjectsFactory().CreateVertexBuffer(points.data(), points.size());
+	geometry->AddVertexBuffer(BufferBinding("POSITION", 0), __vb);
+
+	return geometry;
+}
+
 std::shared_ptr<IGeometry> CRenderPrimitivesFactory::CreatePlane(const glm::vec3& N)
 {
 	DirectX::VertexCollection vertices;

@@ -18,12 +18,25 @@ MainEditor::MainEditor(QWidget* Parent)
 
 	// Unite file browser and log docker
 	QMainWindow::tabifyDockWidget(m_UI.DockerFileBrowser, m_UI.DockerLogViewer);
+
+	
 }
 
 MainEditor::~MainEditor()
 {
 }
 
+
+void MainEditor::SetEditor3D(IEditor3DFrame* Editor3DFrame)
+{
+	m_Editor3D = Editor3DFrame;
+	getMainEditor()->SetEditors(Editor3DFrame, this);
+	getSceneViewer()->SetEditors(Editor3DFrame, this);
+	getCollectionViewer()->SetEditors(Editor3DFrame, this);
+	Selector_SetOtherSelector(dynamic_cast<CSceneNodesSelector*>(m_Editor3D));
+
+	getCollectionViewer()->SetModelsList(Utils::GetAllFilesInDirectory("C:\\_engine\\ZenonEngine_gamedata\\models", ".znmdl"));
+}
 
 
 //
@@ -73,7 +86,6 @@ void MainEditor::Selector_OnSelectionChange()
 		getSceneViewer()->SelectNode(Selector_GetFirstSelectedNode());
 
 	getSceneViewer()->SelectNodes(selectedNodes);
-
 
 	m_PropertiesController->OnSceneNodeSelected(Selector_GetFirstSelectedNode().get());
 }
