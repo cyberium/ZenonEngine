@@ -3,20 +3,24 @@
 // General
 #include "SceneNodeTreeItem.h"
 
-CSceneNodeTreeItem::CSceneNodeTreeItem()
+// Additional
+#include "SceneNodeTreeModel.h"
+
+CSceneNodeTreeItem::CSceneNodeTreeItem(SceneNodeTreeModel * Model)
 	: m_SceneNode3D(nullptr)
 	, m_Parent(nullptr)
+	, m_Model(Model)
 {
 }
 
-CSceneNodeTreeItem::CSceneNodeTreeItem(const std::shared_ptr<ISceneNode3D>& SceneNode3D, CSceneNodeTreeItem * Parent)
+CSceneNodeTreeItem::CSceneNodeTreeItem(SceneNodeTreeModel * Model, const std::shared_ptr<ISceneNode3D>& SceneNode3D, CSceneNodeTreeItem * Parent)
 	: m_SceneNode3D(SceneNode3D)
 	, m_Parent(Parent)
+	, m_Model(Model)
 {
 	for (const auto& ch : SceneNode3D->GetChilds())
 	{
-		CSceneNodeTreeItem* treeItem = new CSceneNodeTreeItem(ch, this);
-		addChild(treeItem);
+		addChild(new CSceneNodeTreeItem(m_Model, ch, this));
 	}
 }
 
@@ -28,6 +32,7 @@ CSceneNodeTreeItem::~CSceneNodeTreeItem()
 
 void CSceneNodeTreeItem::addChild(CSceneNodeTreeItem * item) 
 {
+	m_Model->Add(item->GetSceneNode()->GetGuid(), item);
 	m_Childs.push_back(item);
 }
 

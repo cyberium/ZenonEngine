@@ -5,7 +5,7 @@ namespace
 	__declspec(align(16)) struct SMaterialUIColorProperties
 	{
 		SMaterialUIColorProperties()
-			: Color(1, 1, 1, 1)
+			: Color(1.0f, 1.0f, 1.0f, 1.0f)
 		{}
 		glm::vec4 Color;
 		//-------------------------- ( 32 bytes )
@@ -20,4 +20,5 @@ public:
 	virtual ~UI_Color_Material();
 
 	void SetColor(glm::vec4 color);
+	glm::vec4 GetColor() const;
 };

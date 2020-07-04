@@ -3,11 +3,14 @@
 // General
 #include "SceneNodeTreeViewerWidget.h"
 
+// Additional
+#include "SceneNodesSelector.h"
+
 SceneNodeTreeViewerWidget::SceneNodeTreeViewerWidget(QWidget * parent)
 	: QTreeView(parent)
 	, m_Editor3D(nullptr)
 	, m_EditorUI(nullptr)
-	, m_SelectionBlocked(false)
+	, m_LockForSelectionChangedEvent(false)
 {
 	// Add context menu for scene node viewer
 	m_SceneTreeViewerContextMenu = std::make_shared<QMenu>(this);
@@ -17,14 +20,17 @@ SceneNodeTreeViewerWidget::SceneNodeTreeViewerWidget(QWidget * parent)
 	connect(this, SIGNAL(customContextMenuRequested(const QPoint &)), this, SLOT(onCustomContextMenu(const QPoint &)));
 
 	// SceneNodeTreeView: Main settings
-	m_SceneTreeViewerModel = std::make_shared<SceneNodeTreeModel>(this);
-	this->setModel(m_SceneTreeViewerModel.get());
+	m_Model = std::make_shared<SceneNodeTreeModel>(this);
+	this->setModel(m_Model.get());
 
 	// SceneNodeTreeView: Selection settings
-	this->setSelectionMode(QAbstractItemView::SingleSelection);
+	this->setSelectionMode(QAbstractItemView::ExtendedSelection);
 	QItemSelectionModel* selectionModel = this->selectionModel();
+	this->setSelectionBehavior(QAbstractItemView::SelectionBehavior::SelectItems);
 	connect(selectionModel, SIGNAL(currentChanged(const QModelIndex&, const QModelIndex&)), this, SLOT(onCurrentChanged(const QModelIndex&, const QModelIndex&)));
+	connect(selectionModel, SIGNAL(selectionChanged(const QItemSelection&, const QItemSelection&)), this, SLOT(onSelectionChanged(const QItemSelection&, const QItemSelection&)));
 
+	connect(this, SIGNAL(clicked(const QModelIndex&)), this, SLOT(onClicked(const QModelIndex&)));
 }
 
 SceneNodeTreeViewerWidget::~SceneNodeTreeViewerWidget()
@@ -33,10 +39,13 @@ SceneNodeTreeViewerWidget::~SceneNodeTreeViewerWidget()
 
 void SceneNodeTreeViewerWidget::RefreshTreeViewModel()
 {
+	if (m_LockForSelectionChangedEvent)
+		return;
+
 	m_Editor3D->LockUpdates();
 
 	this->reset();
-	m_SceneTreeViewerModel->SetModelData(m_Editor3D->GetRealRootNode3D());
+	m_Model->SetModelData(m_Editor3D->GetRealRootNode3D());
 	this->expandAll();
 
 	m_Editor3D->UnlockUpdates();
@@ -44,9 +53,34 @@ void SceneNodeTreeViewerWidget::RefreshTreeViewModel()
 
 void SceneNodeTreeViewerWidget::SelectNode(const std::shared_ptr<ISceneNode3D>& Node)
 {
-	const auto& index = m_SceneTreeViewerModel->Find(Node);
+	m_LockForSelectionChangedEvent = true;
+	const auto& index = m_Model->Find(Node);
 	scrollTo(index);
 	selectionModel()->select(index, QItemSelectionModel::ClearAndSelect);
+	m_LockForSelectionChangedEvent = false;
+}
+
+void SceneNodeTreeViewerWidget::SelectNodes(const std::vector<std::shared_ptr<ISceneNode3D>>& Nodes)
+{
+	m_LockForSelectionChangedEvent = true;
+	selectionModel()->clear();
+	for (const auto& node : Nodes)
+	{
+		const auto& index = m_Model->Find(node);
+		selectionModel()->select(index, QItemSelectionModel::Select);
+	}
+	m_LockForSelectionChangedEvent = false;
+}
+
+void SceneNodeTreeViewerWidget::mousePressEvent(QMouseEvent * event)
+{
+	if (m_LockForSelectionChangedEvent)
+		return;
+
+	if (event->button() == Qt::RightButton)
+		return;
+
+	__super::mousePressEvent(event);
 }
 
 
@@ -55,7 +89,8 @@ void SceneNodeTreeViewerWidget::SelectNode(const std::shared_ptr<ISceneNode3D>& 
 //
 void SceneNodeTreeViewerWidget::onCustomContextMenu(const QPoint& point)
 {
-	m_SelectionBlocked = true;
+	if (m_LockForSelectionChangedEvent)
+		return;
 
 	QModelIndex index = indexAt(point);
 	if (!index.isValid())
@@ -64,24 +99,52 @@ void SceneNodeTreeViewerWidget::onCustomContextMenu(const QPoint& point)
 	CSceneNodeTreeItem* item = static_cast<CSceneNodeTreeItem*>(index.internalPointer());
 	_ASSERT_EXPR(item != nullptr, L"Item is null.");
 
-	QMenu * menu = new QMenu(this);
+	m_SceneTreeViewerContextMenu->clear();
+	m_EditorUI->ExtendContextMenu(m_SceneTreeViewerContextMenu.get(), item->GetSceneNode());
 
-	m_EditorUI->ExtendContextMenu(menu, item->GetSceneNode());
-
-	menu->popup(mapToGlobal(point));
-
-	m_SelectionBlocked = false;
-	
+	m_SceneTreeViewerContextMenu->popup(mapToGlobal(point));
 }
 
 void SceneNodeTreeViewerWidget::onCurrentChanged(const QModelIndex& current, const QModelIndex& previous)
 {
-	if (!current.isValid())
+
+}
+
+void SceneNodeTreeViewerWidget::onSelectionChanged(const QItemSelection &selected, const QItemSelection &deselected)
+{
+	if (m_LockForSelectionChangedEvent)
 		return;
 
-	CSceneNodeTreeItem* item = static_cast<CSceneNodeTreeItem*>(current.internalPointer());
+	std::vector<std::shared_ptr<ISceneNode3D>> selectedNodes;
+	auto indexes = selectionModel()->selectedIndexes();
+	std::for_each(indexes.begin(), indexes.end(), [this, &selectedNodes](const QModelIndex& Index) {
+		if (auto node = m_Model->Find(Index))
+			selectedNodes.push_back(node);
+	});
+	indexes.clear();
+
+	m_Editor3D->LockUpdates();
+	dynamic_cast<CSceneNodesSelector*>(m_Editor3D)->Selector_SelectNodes(selectedNodes, false);
+	m_Editor3D->UnlockUpdates();
+}
+
+void SceneNodeTreeViewerWidget::onPressed(const QModelIndex & index)
+{
+}
+
+void SceneNodeTreeViewerWidget::onClicked(const QModelIndex & index)
+{
+	if (!index.isValid())
+		return;
+
+	CSceneNodeTreeItem* item = static_cast<CSceneNodeTreeItem*>(index.internalPointer());
 	_ASSERT_EXPR(item != nullptr, L"Item is null.");
 
-	m_EditorUI->OnSceneNodeSelected(item->GetSceneNode());
-	m_Editor3D->OnSceneNodeSelectedInUIEditor(item->GetSceneNode());
+	m_Editor3D->LockUpdates();
+	dynamic_cast<CSceneNodesSelector*>(m_Editor3D)->Selector_SelectNode(item->GetSceneNode(), false);
+	m_Editor3D->UnlockUpdates();
+}
+
+void SceneNodeTreeViewerWidget::onDoubleClicked(const QModelIndex & index)
+{
 }

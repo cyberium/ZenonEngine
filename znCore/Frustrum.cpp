@@ -149,6 +149,34 @@ void Frustum::buildBoxFrustum(const glm::mat4& transMat, float left, float right
 	m_Planes[5] = Plane(m_Corners[4], m_Corners[7], m_Corners[6]);	// Back
 }
 
+void Frustum::buildBoxFrustum(Ray LT, Ray LB, Ray RT, Ray RB, float depth)
+{
+	glm::vec3 lt, lb, rt, rb;
+
+	// Get points on front plane
+	m_Corners[0] = LB.GetOrigin();
+	m_Corners[1] = RB.GetOrigin();
+	m_Corners[2] = RT.GetOrigin();
+	m_Corners[3] = LT.GetOrigin();
+
+	// Get points on far plane
+	m_Corners[4] = LB.GetOrigin() + LB.GetDirection() * depth;
+	m_Corners[5] = RB.GetOrigin() + RB.GetDirection() * depth;
+	m_Corners[6] = RT.GetOrigin() + RT.GetDirection() * depth;
+	m_Corners[7] = LT.GetOrigin() + LT.GetDirection() * depth;
+
+	m_Origin = glm::vec4(0);
+
+	// Build planes
+	m_Planes.resize(6);
+	m_Planes[0] = Plane(m_Corners[0], m_Corners[3], m_Corners[7]);	// Left
+	m_Planes[1] = Plane(m_Corners[2], m_Corners[1], m_Corners[6]);	// Right
+	m_Planes[2] = Plane(m_Corners[0], m_Corners[4], m_Corners[5]);	// Bottom
+	m_Planes[3] = Plane(m_Corners[3], m_Corners[2], m_Corners[6]);	// Top
+	m_Planes[4] = Plane(m_Corners[0], m_Corners[1], m_Corners[2]);	// Front
+	m_Planes[5] = Plane(m_Corners[4], m_Corners[7], m_Corners[6]);	// Back
+}
+
 //
 
 bool Frustum::cullSphere(glm::vec3 pos, float rad) const

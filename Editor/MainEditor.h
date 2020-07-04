@@ -4,12 +4,14 @@
 #include "ui_MainEditor.h"
 
 #include "EditorInterfaces.h"
+#include "SceneNodesSelector.h"
 
 #include "PropertyEditor/PropertiesController.h"
 
 class MainEditor 
 	: public QMainWindow
 	, public IEditorUIFrame
+	, public CSceneNodesSelector
 {
 	Q_OBJECT
 
@@ -24,15 +26,15 @@ public:
 		m_Editor3D = Editor3DFrame; 
 		getMainEditor()->SetEditors(Editor3DFrame, this);
 		getSceneTree()->SetEditors(Editor3DFrame, this);
+		Selector_SetOtherSelector(dynamic_cast<CSceneNodesSelector*>(m_Editor3D));
 	}
 
 	// IEditorUIFrame
 	void ExtendContextMenu(QMenu * Menu, const std::shared_ptr<ISceneNode3D>& Node) override;
 	void OnSceneChanged();
-	void OnSceneNodeSelectedIn3DEditor(const std::shared_ptr<ISceneNode3D>& SceneNode3D) override;
 
-	// IEditorSharedFrame
-	void OnSceneNodeSelected(const std::shared_ptr<ISceneNode3D>& SceneNode3D) override;
+	// CSceneNodesSelector
+	void Selector_OnSelectionChange() override;
 
 private:
 	std::shared_ptr<CPropertiesController> m_PropertiesController;

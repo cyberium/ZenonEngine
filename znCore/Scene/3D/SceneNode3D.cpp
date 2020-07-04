@@ -136,6 +136,10 @@ const SceneNode3D::Node3DList& SceneNode3D::GetChilds()
 	return m_Children;
 }
 
+void SceneNode3D::ClearChilds()
+{
+}
+
 void SceneNode3D::RaiseOnParentChanged()
 {
 	// Don't forget about update world transform

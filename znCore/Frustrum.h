@@ -18,6 +18,7 @@ public:
 	void buildViewFrustum(const glm::mat4& transMat, float left, float right, float bottom, float top, float nearPlane, float farPlane);
 	void buildViewFrustum(const glm::mat4& viewMat, const glm::mat4& projMat);
 	void buildBoxFrustum(const glm::mat4& transMat, float left, float right, float bottom, float top, float front, float back);
+	void buildBoxFrustum(Ray LT, Ray LB, Ray RT, Ray RB, float depth);
 
 	bool cullSphere(glm::vec3 pos, float rad) const;
 	bool cullBox(const BoundingBox& b) const;

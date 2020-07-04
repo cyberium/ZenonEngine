@@ -11,6 +11,7 @@
 SceneBase::SceneBase(IBaseManager& BaseManager)
 	: m_BaseManager(BaseManager)
 	, m_RenderDevice(BaseManager.GetApplication().GetRenderDevice())
+	, m_IsFreezed(false)
 {
 	
 }
@@ -137,14 +138,16 @@ void SceneBase::Accept(IVisitor * visitor)
 
 void SceneBase::Freeze()
 {
-	// Ensures the mutex will be locked
-	//while (m_SceneIsBusy.try_lock());
-	//m_SceneIsBusy.lock();
+	//std::lock_guard<std::mutex> lock(m_ListsAreBusy);
+
+	m_IsFreezed = true;
 }
 
 void SceneBase::Unfreeze()
 {
-	//m_SceneIsBusy.unlock();
+	//std::lock_guard<std::mutex> lock(m_ListsAreBusy);
+
+	m_IsFreezed = false;
 }
 
 void SceneBase::AddChild(const std::shared_ptr<ISceneNode3D>& ParentNode, const std::shared_ptr<ISceneNode3D>& ChildNode)
@@ -155,7 +158,7 @@ void SceneBase::AddChild(const std::shared_ptr<ISceneNode3D>& ParentNode, const 
 		return;
 	}
 
-	if (m_SceneIsBusy.try_lock() == false)
+	if (m_IsFreezed || m_SceneIsBusy.try_lock() == false)
 	{
 		std::lock_guard<std::mutex> lock(m_ListsAreBusy);
 		m_AddChildList.push_back(std::make_pair(ParentNode, ChildNode));
@@ -184,7 +187,7 @@ void SceneBase::RemoveChild(const std::shared_ptr<ISceneNode3D>& ParentNode, con
 		return;
 	}
 
-	if (m_SceneIsBusy.try_lock() == false)
+	if (m_IsFreezed || m_SceneIsBusy.try_lock() == false)
 	{
 		std::lock_guard<std::mutex> lock(m_ListsAreBusy);
 		m_RemoveChildList.push_back(std::make_pair(ParentNode, ChildNode));
@@ -249,6 +252,7 @@ void SceneBase::OnUpdate(UpdateEventArgs& e)
 
 	std::lock_guard<std::mutex> lock(m_SceneIsBusy);
 
+	if (!m_IsFreezed)
 	{
 		std::lock_guard<std::mutex> lock(m_ListsAreBusy);
 
@@ -476,6 +480,24 @@ void FillIntersectedList(const std::shared_ptr<ISceneNode3D>& Parent, const Ray 
 	}
 }
 
+void FillIntersectedList(const std::shared_ptr<ISceneNode3D>& Parent, const Frustum& Frustum, std::vector<std::shared_ptr<ISceneNode3D>> * intersectedNodes)
+{
+	const auto& childs = Parent->GetChilds();
+	for (const auto& it : childs)
+	{
+		FillIntersectedList(it, Frustum, intersectedNodes);
+
+		if (auto collider = it->GetComponent<IColliderComponent3D>())
+		{
+			if (collider->GetBounds().isClear())
+				continue;
+
+			if (! Frustum.cullBox(collider->GetWorldBounds()))
+				intersectedNodes->push_back(it);
+		}
+	}
+}
+
 std::shared_ptr<ISceneNode3D> SceneBase::FindIntersection(const Ray& Ray) const
 {
 	std::map<float, std::shared_ptr<ISceneNode3D>> intersectedNodes;
@@ -483,6 +505,13 @@ std::shared_ptr<ISceneNode3D> SceneBase::FindIntersection(const Ray& Ray) const
 	if (intersectedNodes.empty())
 		return nullptr;
 	return intersectedNodes.begin()->second;
+}
+
+std::vector<std::shared_ptr<ISceneNode3D>> SceneBase::FindIntersections(const Frustum & Frustum) const
+{
+	std::vector<std::shared_ptr<ISceneNode3D>> intersectedNodes;
+	FillIntersectedList(GetRootNode3D(), Frustum, &intersectedNodes);
+	return intersectedNodes;
 }
 
 

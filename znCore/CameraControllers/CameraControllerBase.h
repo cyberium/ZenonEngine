@@ -14,6 +14,7 @@ public:
 	Ray	                                            ScreenToRay(const Viewport& Viewport, const glm::vec2& screenPoint) const override;
 	glm::vec3	                                    ScreenToWorld(const Viewport& Viewport, const glm::vec2& screenPoint) const override;
 	glm::vec3                                       ScreenToPlane(const Viewport& Viewport, const glm::vec2& screenPoint, const Plane& Plane) const override;
+	glm::vec3                                       RayToWorld(const Ray& Ray) const override;
 	glm::vec3                                       RayToPlane(const Ray& Ray, const Plane& Plane) const override;
 
     // Engine events

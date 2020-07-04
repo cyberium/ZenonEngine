@@ -15,7 +15,9 @@ public:
 
 	// SceneNodeTreeModel
 	void SetModelData(const std::shared_ptr<ISceneNode3D>& SceneNode3D);
+	std::shared_ptr<ISceneNode3D> Find(const QModelIndex& ModelIdnex);
 	QModelIndex Find(const std::shared_ptr<ISceneNode3D>& Node);
+	void Add(Object::Guid Guid, CSceneNodeTreeItem * SceneNodeTreeItem);
 
 	//
 	// QAbstractItemModel
@@ -37,4 +39,5 @@ private:
 
 private:
 	CSceneNodeTreeItem* m_RootItem;
+	std::map<Object::Guid, CSceneNodeTreeItem*> m_Map;
 };

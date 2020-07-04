@@ -24,6 +24,7 @@ ZN_INTERFACE ZN_API ICameraController
 	virtual Ray ScreenToRay(const Viewport& Viewport, const glm::vec2& screenPoint) const = 0;
 	virtual glm::vec3 ScreenToWorld(const Viewport& Viewport, const glm::vec2& screenPoint) const = 0;
 	virtual glm::vec3 ScreenToPlane(const Viewport& Viewport, const glm::vec2& screenPoint, const Plane& Plane) const = 0;
+	virtual glm::vec3 RayToWorld(const Ray& Ray) const = 0;
 	virtual glm::vec3 RayToPlane(const Ray& Ray, const Plane& Plane) const = 0;
 
 	// Input events

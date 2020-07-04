@@ -4,11 +4,13 @@
 #include <QVector>
 #include <QVariant>
 
+class SceneNodeTreeModel;
+
 class CSceneNodeTreeItem
 {
 public:
-	CSceneNodeTreeItem();
-	CSceneNodeTreeItem(const std::shared_ptr<ISceneNode3D>& SceneNode3D, CSceneNodeTreeItem * Parent);
+	CSceneNodeTreeItem(SceneNodeTreeModel * Model);
+	CSceneNodeTreeItem(SceneNodeTreeModel * Model, const std::shared_ptr<ISceneNode3D>& SceneNode3D, CSceneNodeTreeItem * Parent);
 	virtual ~CSceneNodeTreeItem();
 
 	void											addChild(CSceneNodeTreeItem * child);
@@ -26,4 +28,5 @@ private:
 	std::vector<CSceneNodeTreeItem*>				m_Childs;
 
 	std::shared_ptr<ISceneNode3D>					m_SceneNode3D;
+	SceneNodeTreeModel *                            m_Model;
 };

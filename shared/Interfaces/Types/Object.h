@@ -124,6 +124,10 @@ public:
 			return "class_" + std::to_string(GetClass());
 		return m_ClassName;
 	}
+	Object::Guid GetGuid() const
+	{
+		return m_Guid;
+	}
 	ObjectFactoryType GetFactory() const  override
 	{
 		return m_Guid.GetFactoryKey();
@@ -169,11 +173,6 @@ protected:
 	}
 	virtual ~Object()
 	{}
-
-	const Guid& GetGuid() const
-	{
-		return m_Guid;
-	}
 
 private:
 	Object(const Object&) = delete;

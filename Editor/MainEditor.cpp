@@ -60,19 +60,15 @@ void MainEditor::OnSceneChanged()
 {
 	getSceneTree()->RefreshTreeViewModel();
 }
-void MainEditor::OnSceneNodeSelectedIn3DEditor(const std::shared_ptr<ISceneNode3D>& SceneNode3D)
-{
-	OnSceneNodeSelected(SceneNode3D);
-}
 
 
 
 //
-// IEditorSharedFrame
+// CSceneNodesSelector
 //
-void MainEditor::OnSceneNodeSelected(const std::shared_ptr<ISceneNode3D>& SceneNode3D)
+void MainEditor::Selector_OnSelectionChange()
 {
-	getSceneTree()->SelectNode(SceneNode3D);
+	getSceneTree()->SelectNodes(Selector_GetSelectedNodes());
 
-	m_PropertiesController->OnSceneNodeSelected(SceneNode3D.get());
+	m_PropertiesController->OnSceneNodeSelected(Selector_GetFirstSelectedNode().get());
 }

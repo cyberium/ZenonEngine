@@ -552,6 +552,9 @@
     <ClCompile Include="SceneFunctional\SceneNodeEngineCreator.cpp">
       <Filter>SceneNodes</Filter>
     </ClCompile>
+    <ClCompile Include="Passes\UIColorPass.cpp">
+      <Filter>Passes\UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="common.h">
@@ -1022,6 +1025,9 @@
     </ClInclude>
     <ClInclude Include="FBX\FBXInterfaces.h">
       <Filter>FBX</Filter>
+    </ClInclude>
+    <ClInclude Include="Passes\UIColorPass.h">
+      <Filter>Passes\UI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -80,7 +80,7 @@ protected:
 	std::shared_ptr<IRenderWindow>                  GetRenderWindow() const;
 
 	std::shared_ptr<ISceneNode3D>                   FindIntersection(const Ray& Ray) const;
-
+	std::vector<std::shared_ptr<ISceneNode3D>>      FindIntersections(const Frustum& Frustum) const;
 
 protected: // Input events process recursive
 	void                                            DoUpdate_Rec(const std::shared_ptr<ISceneNode3D>& Node, const UpdateEventArgs& e);
@@ -149,4 +149,5 @@ private: // Quick access
 	IRenderDevice&                                  m_RenderDevice;
 	std::weak_ptr<IRenderWindow>                    m_RenderWindow;
 	std::mutex                                      m_SceneMutex;
+	std::atomic_bool                                m_IsFreezed;
 };

@@ -63,6 +63,19 @@ glm::vec3 CCameraControllerBase::ScreenToPlane(const Viewport & Viewport, const 
 	return RayToPlane(ScreenToRay(Viewport, screenPoint), Plane);
 }
 
+glm::vec3 CCameraControllerBase::RayToWorld(const Ray& Ray) const
+{
+	glm::vec3 n = glm::vec3(0.f, 1.f, 0.f);
+	Plane p = Plane(n, 0.f);
+
+	// Calculate distance of intersection point from r.origin.
+	float denominator = glm::dot(p.normal, Ray.GetDirection());
+	float numerator = glm::dot(p.normal, Ray.GetOrigin()) + p.dist;
+	float t = -(numerator / denominator);
+
+	return Ray.GetOrigin() + Ray.GetDirection() * t;
+}
+
 glm::vec3 CCameraControllerBase::RayToPlane(const Ray & Ray, const Plane & Plane) const
 {
 	float denominator = glm::dot(Plane.normal, Ray.GetDirection());

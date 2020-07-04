@@ -271,7 +271,7 @@ void ZenonWindow3D::leaveEvent(QEvent * event)
 
 void ZenonWindow3D::paintEvent(QPaintEvent *pEvent)
 {
-	// do nothing
+	__super::paintEvent(pEvent);
 }
 
 void ZenonWindow3D::moveEvent(QMoveEvent * event)

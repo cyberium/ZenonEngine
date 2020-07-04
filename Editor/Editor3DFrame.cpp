@@ -6,6 +6,7 @@
 CSceneEditor::CSceneEditor(IBaseManager& BaseManager)
 	: SceneBase(BaseManager)
 	, m_EditorUI(nullptr)
+	, m_IsSelecting(false)
 {
 }
 
@@ -17,6 +18,7 @@ void CSceneEditor::SetEditorUI(IEditorUIFrame * EditorUIFrame)
 {
 	m_EditorUI = EditorUIFrame;
 
+	Selector_SetOtherSelector(dynamic_cast<CSceneNodesSelector*>(m_EditorUI));
 }
 
 
@@ -52,25 +54,39 @@ void CSceneEditor::Finalize()
 
 void CSceneEditor::AddChild(const std::shared_ptr<ISceneNode3D>& ParentNode, const std::shared_ptr<ISceneNode3D>& ChildNode)
 {
-	if (ChildNode != m_SelectedNode)
-		DoSelectNode(ChildNode);
+	//if (ChildNode != m_SelectedNode)
+	//	DoSelectNode(ChildNode);
 
 	__super::AddChild(ParentNode, ChildNode);
 }
 
 void CSceneEditor::RemoveChild(const std::shared_ptr<ISceneNode3D>& ParentNode, const std::shared_ptr<ISceneNode3D>& ChildNode)
 {
-	if (ChildNode == m_SelectedNode)
-		DoSelectNode(nullptr);
+	//if (ChildNode == m_SelectedNode)
+	//	DoSelectNode(nullptr);
 
 	__super::RemoveChild(ParentNode, ChildNode);
 }
 
+bool IsChildOf(const std::shared_ptr<ISceneNode3D>& Parent, const std::shared_ptr<ISceneNode3D>& Child)
+{
+	if (Parent == nullptr || Child == nullptr)
+		return false;
+
+	if (Parent == Child)
+		return true;
+
+	for (const auto& ch : Parent->GetChilds())
+		if (IsChildOf(ch, Child))
+			return true;
+
+	return false;
+}
+
 void CSceneEditor::RaiseSceneChangeEvent(ESceneChangeType SceneChangeType, const std::shared_ptr<ISceneNode3D>& OwnerNode, const std::shared_ptr<ISceneNode3D>& ChildNode)
 {
-	m_EditorUI->OnSceneChanged();
-
-
+	if (IsChildOf(GetRealRootNode3D(), ChildNode) || IsChildOf(GetRealRootNode3D(), OwnerNode))
+		m_EditorUI->OnSceneChanged();
 }
 
 void CSceneEditor::OnMouseClickToWorld(MouseButtonEventArgs::MouseButton & MouseButton, const glm::vec2 & MousePosition, const Ray & RayToWorld)
@@ -80,18 +96,20 @@ void CSceneEditor::OnMouseClickToWorld(MouseButtonEventArgs::MouseButton & Mouse
 		auto node = FindIntersection(RayToWorld);
 		if (node == nullptr)
 		{
+			m_SelectionPrevPos = MousePosition;
+			m_SelectionTexture->SetTranslate(MousePosition);
+			m_IsSelecting = true;
 
-			glm::vec3 resultPosition = GetCameraController()->RayToPlane(RayToWorld, Plane(glm::vec3(0.0f, 1.0f, 0.0f), 0.0f));
+			//glm::vec3 resultPosition = GetCameraController()->RayToPlane(RayToWorld, Plane(glm::vec3(0.0f, 1.0f, 0.0f), 0.0f));
 
 //MoveDraggedNode(resultPosition);
 
-			CreateNode(ToBoxCoords(resultPosition), 0);
+			//CreateNode(ToBoxCoords(resultPosition), 0);
 
 			return;
 		}
 
-		OnSceneNodeSelected(node);
-		m_EditorUI->OnSceneNodeSelectedIn3DEditor(node);
+		Selector_SelectNode(node);
 	}
 	else if (MouseButton == MouseButtonEventArgs::MouseButton::Right)
 	{
@@ -99,13 +117,47 @@ void CSceneEditor::OnMouseClickToWorld(MouseButtonEventArgs::MouseButton & Mouse
 	}
 }
 
+void CSceneEditor::OnMouseReleaseToWorld(MouseButtonEventArgs::MouseButton & MouseButton, const glm::vec2 & MousePosition, const Ray & RayToWorld)
+{
+	if (MouseButton == MouseButtonEventArgs::MouseButton::Left)
+	{
+		auto cachedSelectionPrevPos = m_SelectionPrevPos;
+
+		// Clear
+		m_SelectionTexture->SetScale(glm::vec3(0.001f));
+		m_SelectionPrevPos = MousePosition;
+
+		if (m_IsSelecting)
+		{
+			if (glm::length(glm::abs(cachedSelectionPrevPos - MousePosition)) > 10.0f)
+			{
+				Frustum f;
+				f.buildBoxFrustum(
+					GetCameraController()->ScreenToRay(GetRenderWindow()->GetViewport(), glm::vec2(glm::min(cachedSelectionPrevPos.x, MousePosition.x), glm::min(cachedSelectionPrevPos.y, MousePosition.y))),
+					GetCameraController()->ScreenToRay(GetRenderWindow()->GetViewport(), glm::vec2(glm::min(cachedSelectionPrevPos.x, MousePosition.x), glm::max(cachedSelectionPrevPos.y, MousePosition.y))),
+					GetCameraController()->ScreenToRay(GetRenderWindow()->GetViewport(), glm::vec2(glm::max(cachedSelectionPrevPos.x, MousePosition.x), glm::min(cachedSelectionPrevPos.y, MousePosition.y))),
+					GetCameraController()->ScreenToRay(GetRenderWindow()->GetViewport(), glm::vec2(glm::max(cachedSelectionPrevPos.x, MousePosition.x), glm::max(cachedSelectionPrevPos.y, MousePosition.y))),
+					15000.0f
+				);
+
+				auto nodes = FindIntersections(f);
+				if (!nodes.empty())
+					Selector_SelectNodes(nodes);
+			}
+			m_IsSelecting = false;
+		}
+	}
+}
+
 void CSceneEditor::OnMouseMoveToWorld(MouseButtonEventArgs::MouseButton & MouseButton, const glm::vec2& MousePosition, const Ray & RayToWorld)
 {
 	if (MouseButton == MouseButtonEventArgs::MouseButton::Left)
 	{
-		glm::vec3 resultPosition = GetCameraController()->RayToPlane(RayToWorld, Plane(glm::vec3(0.0f, 1.0f, 0.0f), 0.0f));
-
-		//MoveDraggedNode(resultPosition);
+		if (m_IsSelecting)
+		{
+			glm::vec2 scale = MousePosition - m_SelectionTexture->GetTranslation();
+			m_SelectionTexture->SetScale(scale);
+		}
 	}
 }
 
@@ -143,7 +195,7 @@ void CSceneEditor::UnlockUpdates()
 
 std::shared_ptr<ISceneNode3D> CSceneEditor::GetRealRootNode3D() const
 {
-	return GetRootNode3D();
+	return m_FakeRootNode3D;
 }
 
 std::shared_ptr<ISceneNode3D> CSceneEditor::GetNodeUnderMouse(const glm::ivec2& MousePos) const
@@ -151,19 +203,21 @@ std::shared_ptr<ISceneNode3D> CSceneEditor::GetNodeUnderMouse(const glm::ivec2& 
 	return FindIntersection(GetCameraController()->ScreenToRay(GetRenderWindow()->GetViewport(), MousePos));
 }
 
-void CSceneEditor::OnSceneNodeSelectedInUIEditor(const std::shared_ptr<ISceneNode3D>& SceneNode3D)
-{
-	DoSelectNode(SceneNode3D);
-}
 
 
 //
-// IEditorSharedFrame
+// CSceneNodesSelector
 //
-void CSceneEditor::OnSceneNodeSelected(const std::shared_ptr<ISceneNode3D>& SceneNode3D)
+void CSceneEditor::Selector_OnSelectionChange()
 {
-	DoSelectNode(SceneNode3D);
+	auto childs = m_RootForSelectedBBoxes->GetChilds();
+	for (const auto& ch : childs)
+		RemoveChild(m_RootForSelectedBBoxes, ch);
+
+	for (const auto& it : Selector_GetSelectedNodes())
+		CreateSelectionBBoxNodeForNode(it);
 }
+
 
 
 
@@ -200,35 +254,6 @@ void CSceneEditor::MoveDraggedNode(const glm::vec3 & Position)
 	}
 }
 
-void CSceneEditor::DoSelectNode(const std::shared_ptr<ISceneNode3D>& Node)
-{
-	if (m_SelectedNodeBBox == nullptr || m_Mover == nullptr)
-		return;
-
-	if (Node == nullptr)
-	{
-		m_SelectedNode = Node;
-		m_SelectedNodeBBox->SetTranslate(glm::vec3(0.0f));
-		m_SelectedNodeBBox->SetScale(glm::vec3(0.0f));
-
-		m_Mover->SetTranslate(glm::vec3(0.0f));
-		m_Mover->SetScale(glm::vec3(0.0f));
-		return;
-	}
-
-	const auto& bbox = Node->GetComponent<IColliderComponent3D>()->GetBounds();
-	auto size = glm::abs(bbox.getMax() - bbox.getMin());
-
-	m_SelectedNode = Node;
-	m_SelectedNodeBBox->SetTranslate(Node->GetTranslation() + bbox.getMin() - 0.1f * size);
-	m_SelectedNodeBBox->SetScale(size * 1.2f);
-
-	float bboxSize = (size.x + size.y + size.z) / 3.0f;
-	m_Mover->SetTranslate(Node->GetTranslation() + bbox.getCenter());
-	m_Mover->SetScale(glm::vec3(bboxSize) * 3.0f);
-	
-}
-
 std::shared_ptr<ISceneNode3D> CSceneEditor::CreateNode(const glm::ivec3& Position, int32 type)
 {
 	auto it = std::find_if(m_Nodes.begin(), m_Nodes.end(), [&Position] (const CSceneEditor::SNode& Object) -> bool {
@@ -239,8 +264,8 @@ std::shared_ptr<ISceneNode3D> CSceneEditor::CreateNode(const glm::ivec3& Positio
 		return it->SceneNode;
 
 	auto node = CreateSceneNode<SceneNode3D>(GetRootNode3D());
-	node->SetTranslate(glm::vec3(Position) * 10.0f);
-
+	node->SetTranslate(glm::vec3(Position));
+	node->SetScale(glm::vec3(25.0f));
 	auto model = GetRenderDevice().GetObjectsFactory().CreateModel();
 	if (auto loadable = std::dynamic_pointer_cast<IObjectLoadSave>(model))
 		loadable->Load(GetBaseManager().GetManager<IFilesManager>()->Open("C:\\_engine\\ZenonEngine_gamedata\\natureKit\\models\\fbxformat\\ground_grass.fbx.znmdl"));
@@ -251,8 +276,34 @@ std::shared_ptr<ISceneNode3D> CSceneEditor::CreateNode(const glm::ivec3& Positio
 	return node;
 }
 
+std::shared_ptr<ISceneNode3D> CSceneEditor::CreateSelectionBBoxNodeForNode(const std::shared_ptr<ISceneNode3D>& Node)
+{
+	if (Node == nullptr)
+		return nullptr;
+
+	auto selectionBBoxNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>(ofkSceneNode3D)->CreateSceneNode3D(this, cSceneNode3D, m_RootForSelectedBBoxes);
+	selectionBBoxNode->SetName("Selector for [" + Node->GetName() + "]");
+	auto geometry = GetRenderDevice().GetPrimitivesFactory().CreateBBox();
+	auto material = std::make_shared<MaterialDebug>(GetRenderDevice());
+	material->SetDiffuseColor(glm::vec4(1.0f, 1.0f, 0.0f, 1.0f));
+	auto model = GetRenderDevice().GetObjectsFactory().CreateModel();
+	model->AddConnection(material, geometry);
+	selectionBBoxNode->GetComponent<IModelsComponent3D>()->AddModel(model);
+
+	const auto& bbox = Node->GetComponent<IColliderComponent3D>()->GetBounds();
+	auto size = glm::abs(bbox.getMax() - bbox.getMin());
+
+	selectionBBoxNode->SetTranslate(Node->GetTranslation() + bbox.getMin() - 0.1f * size);
+	selectionBBoxNode->SetScale(size * 1.2f);
+
+	return selectionBBoxNode;
+}
+
 void CSceneEditor::Load3D()
 {
+	m_FakeRootNode3D = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>(ofkSceneNode3D)->CreateSceneNode3D(this, cSceneNode3D, GetRootNode3D());
+	m_FakeRootNode3D->SetName("SceneRoot");
+
 	{
 		auto sceneNodeLight = GetRootNode3D()->CreateSceneNode<SceneNode3D>();
 		sceneNodeLight->SetName("Light");
@@ -330,7 +381,7 @@ void CSceneEditor::Load3D()
 					auto name = CFile(fileName + ".znmdl").Name();
 					name = name.substr(0, name.find_first_of('.'));
 
-					std::shared_ptr<ISceneNode3D> sceneNodeParent = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>(ofkSceneNode3D)->CreateSceneNode3D(this, cSceneNode3D, GetRootNode3D());
+					std::shared_ptr<ISceneNode3D> sceneNodeParent = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>(ofkSceneNode3D)->CreateSceneNode3D(this, cSceneNode3D, GetRealRootNode3D());
 					sceneNodeParent->SetName(name);
 					sceneNodeParent->SetTranslate(500.0f + glm::vec3(float(x) * 40.0f, 0.0f, float(y) * 40.0f));
 
@@ -355,20 +406,11 @@ void CSceneEditor::Load3D()
 		}
 	}
 
-	m_DraggedNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>(ofkSceneNode3D)->CreateSceneNode3D(this, cSceneNode3D, GetRootNode3D());
-	m_DraggedNode->SetName("Dragged node parent.");
-
 	{
-		m_SelectedNodeBBox = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>(ofkSceneNode3D)->CreateSceneNode3D(this, cSceneNode3D, GetRootNode3D());
-		m_SelectedNodeBBox->SetName("Selector node.");
-		auto geometry = GetRenderDevice().GetPrimitivesFactory().CreateBBox();
-		auto material = std::make_shared<MaterialDebug>(GetRenderDevice());
-		material->SetDiffuseColor(glm::vec4(1.0f, 1.0f, 0.0f, 1.0f));
-		auto model = GetRenderDevice().GetObjectsFactory().CreateModel();
-		model->AddConnection(material, geometry);
-		m_SelectedNodeBBox->GetComponent<IModelsComponent3D>()->AddModel(model);
+		m_DraggedNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>(ofkSceneNode3D)->CreateSceneNode3D(this, cSceneNode3D, GetRootNode3D());
+		m_DraggedNode->SetName("Dragged node parent.");
 	}
-
+	
 	{
 		m_Mover = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>(ofkSceneNode3D)->CreateSceneNode3D(this, cSceneNode3D, GetRootNode3D());
 		m_Mover->SetName("Mover node.");
@@ -394,6 +436,11 @@ void CSceneEditor::Load3D()
 		m_Mover->GetComponent<IModelsComponent3D>()->AddModel(model);
 	}
 
+	{
+		m_RootForSelectedBBoxes = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>(ofkSceneNode3D)->CreateSceneNode3D(this, cSceneNode3D, GetRootNode3D());
+		m_RootForSelectedBBoxes->SetName("Root for BBox");
+	}
+
 	glm::vec4 color = glm::vec4(0.0, 0.0f, 0.0f, 1.0f);
 	m_Technique3D.AddPass(std::make_shared<ClearRenderTargetPass>(GetRenderDevice(), GetRenderWindow()->GetRenderTarget(), ClearFlags::All, color /*glm::vec4(0.2f, 0.2f, 0.2f, 0.2f)*/, 1.0f, 0));
 	m_Technique3D.AddPass(GetBaseManager().GetManager<IRenderPassFactory>()->CreateRenderPass("ModelPassOpaque", GetRenderDevice(), GetRenderWindow()->GetRenderTarget(), &GetRenderWindow()->GetViewport(), shared_from_this()));
@@ -404,5 +451,9 @@ void CSceneEditor::Load3D()
 
 void CSceneEditor::LoadUI()
 {
+	m_SelectionTexture = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeUIFactory>(ofkSceneNodeUI)->CreateSceneNodeUI(this, cSceneNodeUI_Color, GetRootNodeUI());
+	m_SelectionTexture->GetProperties()->GetPropertyT<glm::vec4>("Color")->Set(glm::vec4(0.1f, 0.3f, 1.0f, 0.3f));
+
+	m_TechniqueUI.AddPass(std::make_shared<CUIColorPass>(GetRenderDevice(), shared_from_this())->CreatePipeline(GetRenderWindow()->GetRenderTarget(), &GetRenderWindow()->GetViewport()));
 	m_TechniqueUI.AddPass(std::make_shared<CUIFontPass>(GetRenderDevice(), shared_from_this())->CreatePipeline(GetRenderWindow()->GetRenderTarget(), &GetRenderWindow()->GetViewport()));
 }

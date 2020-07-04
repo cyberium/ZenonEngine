@@ -272,6 +272,9 @@
     <ClCompile Include="ZenonWidgets\ZenonLogViewer\ZenonLogViewer.cpp">
       <Filter>ZenonWidgets\ZenonLogViewer</Filter>
     </ClCompile>
+    <ClCompile Include="SceneNodesSelector.cpp">
+      <Filter>Editor3D</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -417,6 +420,12 @@
     </ClInclude>
     <ClInclude Include="_widgetZenonLogViewer.h">
       <Filter>ZenonWidgets</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneNodesSelector.h">
+      <Filter>Editor3D</Filter>
+    </ClInclude>
+    <ClInclude Include="ZenonWidgets\SceneNodeViewer\TreeItemTemplate.h">
+      <Filter>ZenonWidgets\SceneNodeViewer</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -12,6 +12,7 @@ ZN_INTERFACE IManager;
 
 const ObjectClassType cSceneNodeUI = 525832104;
 const ObjectClassType cSceneNodeUI_Text = 525832105;
+const ObjectClassType cSceneNodeUI_Color = 525832106;
 
 ZN_INTERFACE ZN_API ISceneNodeUI
 	: public Object

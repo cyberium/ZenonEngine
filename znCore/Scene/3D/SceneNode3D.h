@@ -20,6 +20,7 @@ public:
 	virtual void                                    RemoveChild(const std::shared_ptr<ISceneNode3D>& childNode) override final;
 	virtual std::weak_ptr<ISceneNode3D>             GetParent() const override final;
 	virtual const Node3DList&                       GetChilds() override final;
+	void											ClearChilds() override;
 	void                                            RaiseOnParentChanged() override final;
 
 	// Actions & Properties

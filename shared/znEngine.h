@@ -18,6 +18,7 @@
 // Passes
 #include "../znEngine/Passes/UIFontPass.h"
 #include "../znEngine/Passes/UIButtonPass.h"
+#include "../znEngine/Passes/UIColorPass.h"
 #include "../znEngine/Passes/UITexturePass.h"
 
 #include "../znEngine/Passes/DrawBoundingBoxPass.h"

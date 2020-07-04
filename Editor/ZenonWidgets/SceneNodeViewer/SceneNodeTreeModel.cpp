@@ -6,7 +6,7 @@
 SceneNodeTreeModel::SceneNodeTreeModel(QObject * parent)
 	: QAbstractItemModel(parent)
 {
-	m_RootItem = new CSceneNodeTreeItem();
+	m_RootItem = new CSceneNodeTreeItem(this);
 }
 
 SceneNodeTreeModel::~SceneNodeTreeModel()
@@ -21,13 +21,25 @@ SceneNodeTreeModel::~SceneNodeTreeModel()
 //
 void SceneNodeTreeModel::SetModelData(const std::shared_ptr<ISceneNode3D>& SceneNode3D)
 {
-	if (m_RootItem)
-	{
-		delete m_RootItem;
-	}
+	auto oldRootItem = m_RootItem;
+	
+	m_RootItem = new CSceneNodeTreeItem(this);
+	m_RootItem->addChild(new CSceneNodeTreeItem(this, SceneNode3D, m_RootItem));
 
-	m_RootItem = new CSceneNodeTreeItem();
-	m_RootItem->addChild(new CSceneNodeTreeItem(SceneNode3D, m_RootItem));
+	//if (oldRootItem)
+	//	delete oldRootItem;
+}
+
+std::shared_ptr<ISceneNode3D> SceneNodeTreeModel::Find(const QModelIndex & ModelIdnex)
+{
+	if (!ModelIdnex.isValid())
+		return nullptr;
+
+	CSceneNodeTreeItem* item = static_cast<CSceneNodeTreeItem*>(ModelIdnex.internalPointer());
+	if (item == nullptr)
+		return nullptr;
+
+	return item->GetSceneNode();
 }
 
 bool forEach(QAbstractItemModel* model, QModelIndex parent, const std::shared_ptr<ISceneNode3D>& Node, QModelIndex * FindedPosition)
@@ -55,9 +67,16 @@ bool forEach(QAbstractItemModel* model, QModelIndex parent, const std::shared_pt
 
 QModelIndex SceneNodeTreeModel::Find(const std::shared_ptr<ISceneNode3D>& Node)
 {
+
+
 	QModelIndex findedIndex;
 	forEach(this, QModelIndex(), Node, &findedIndex);
 	return findedIndex;
+}
+
+void SceneNodeTreeModel::Add(Object::Guid Guid, CSceneNodeTreeItem * SceneNodeTreeItem)
+{
+	m_Map.insert(std::make_pair(Guid, SceneNodeTreeItem));
 }
 
 
@@ -148,15 +167,11 @@ int SceneNodeTreeModel::columnCount(const QModelIndex& parent) const
 CSceneNodeTreeItem* SceneNodeTreeModel::getItem(const QModelIndex& index) const
 {
 	if (!index.isValid())
-	{
 		return m_RootItem;
-	}
 
 	CSceneNodeTreeItem* item = static_cast<CSceneNodeTreeItem*>(index.internalPointer());
 	if (item)
-	{
 		return item;
-	}
 
 	return nullptr;
 }

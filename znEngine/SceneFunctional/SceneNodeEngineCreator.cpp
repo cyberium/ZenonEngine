@@ -5,6 +5,7 @@
 
 // Additional
 #include "UI/UIText.h"
+#include "UI/UIColor.h"
 
 #ifdef ZN_FBX_SDK_ENABLE
 #include "FBX/FBXManager.h"
@@ -34,12 +35,15 @@ std::shared_ptr<IObject> CSceneNode3DEngineCreator::CreateObject(size_t Index, c
 
 	if (Index == 0)
 	{
-		return sceneNodeCreationArgs->GetScene()->CreateSceneNode<SceneNode3D>(nullptr);
+		return sceneNodeCreationArgs->GetScene()->CreateSceneNode<SceneNode3D>(sceneNodeCreationArgs->GetParent());
 	}
 #ifdef ZN_FBX_SDK_ENABLE
 	else if (Index == 1)
 	{
-		return std::dynamic_pointer_cast<IObject>(m_FBXManager->CreateSceneNode(sceneNodeCreationArgs->GetScene(), "SomeSceneName"));
+		auto node = m_FBXManager->CreateSceneNode(sceneNodeCreationArgs->GetScene(), "SomeSceneName");
+		if (sceneNodeCreationArgs->GetParent() != nullptr)
+			sceneNodeCreationArgs->GetParent()->AddChild(std::dynamic_pointer_cast<ISceneNode3D>(node));
+		return std::dynamic_pointer_cast<IObject>(node);
 	}
 #endif
 
@@ -51,6 +55,7 @@ CSceneNodeUIEngineCreator::CSceneNodeUIEngineCreator(IBaseManager & BaseManager)
 {
 	AddKey(cSceneNodeUI);
 	AddKey(cSceneNodeUI_Text);
+	AddKey(cSceneNodeUI_Color);
 }
 
 CSceneNodeUIEngineCreator::~CSceneNodeUIEngineCreator()
@@ -70,6 +75,10 @@ std::shared_ptr<IObject> CSceneNodeUIEngineCreator::CreateObject(size_t Index, c
 	else if (Index == 1)
 	{
 		return sceneNodeCreationArgs->GetScene()->CreateSceneNodeUI<CUITextNode>(sceneNodeCreationArgs->GetParent());
+	}
+	else if (Index == 2)
+	{
+		return sceneNodeCreationArgs->GetScene()->CreateSceneNodeUI<CUIColorNode>(sceneNodeCreationArgs->GetParent());
 	}
 
 	return nullptr;
