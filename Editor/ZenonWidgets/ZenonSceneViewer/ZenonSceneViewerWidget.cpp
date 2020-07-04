@@ -14,7 +14,7 @@ ZenonSceneViewerWidget::ZenonSceneViewerWidget(QWidget * parent)
 {
 	// Add context menu for scene node viewer
 	m_SceneTreeViewerContextMenu = std::make_shared<QMenu>(this);
-	m_SceneTreeViewerContextMenu->setTitle("Somec context menu title.");
+	m_SceneTreeViewerContextMenu->setTitle("Some context menu title.");
 
 	this->setContextMenuPolicy(Qt::CustomContextMenu);
 	connect(this, SIGNAL(customContextMenuRequested(const QPoint &)), this, SLOT(onCustomContextMenu(const QPoint &)));

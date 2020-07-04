@@ -108,6 +108,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="EditedScene.cpp" />
     <ClCompile Include="Editor3DFrame.cpp" />
     <ClCompile Include="main.cpp">
       <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">input</DynamicSource>
@@ -116,6 +117,7 @@
       <QtMocFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">%(Filename).moc</QtMocFileName>
     </ClCompile>
     <ClCompile Include="MainEditor.cpp" />
+    <ClCompile Include="Passes\DrawSelectionPass.cpp" />
     <ClCompile Include="PropertyEditor\Core\Core\PropertyBool.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
@@ -348,8 +350,10 @@
     <ClCompile Include="ZenonWidgets\ZenonWindow3D\ZenonWindow3D.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="EditedScene.h" />
     <ClInclude Include="Editor3DFrame.h" />
     <ClInclude Include="EditorInterfaces.h" />
+    <ClInclude Include="Passes\DrawSelectionPass.h" />
     <ClInclude Include="PropertyEditor\Core\Auxiliary\PropertyAux.h" />
     <ClInclude Include="PropertyEditor\Core\Auxiliary\PropertyDelegateInfo.h" />
     <ClInclude Include="PropertyEditor\Core\Auxiliary\PropertyMacro.h" />

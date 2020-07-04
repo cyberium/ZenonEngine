@@ -145,6 +145,9 @@
     <Filter Include="Physics\reactphysics3d\mathematics">
       <UniqueIdentifier>{68519900-aca4-4b7a-affe-1d569eff1075}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resources\Shaders_D3D\3D\Editor">
+      <UniqueIdentifier>{64857836-8989-4f6f-abec-81d619938378}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -1101,6 +1104,9 @@
     </Text>
     <Text Include="Resources\shaders_D3D\3D\Particle.hlsl">
       <Filter>Resources\Shaders_D3D\3D\Base</Filter>
+    </Text>
+    <Text Include="Resources\shaders_D3D\3D\Editor\EditorShaders.hlsl">
+      <Filter>Resources\Shaders_D3D\3D\Editor</Filter>
     </Text>
   </ItemGroup>
   <ItemGroup>

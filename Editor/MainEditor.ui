@@ -566,13 +566,10 @@
         <enum>QAbstractItemView::ScrollPerPixel</enum>
        </property>
        <property name="indentation">
-        <number>15</number>
+        <number>20</number>
        </property>
        <property name="rootIsDecorated">
         <bool>false</bool>
-       </property>
-       <property name="animated">
-        <bool>true</bool>
        </property>
        <attribute name="headerVisible">
         <bool>false</bool>

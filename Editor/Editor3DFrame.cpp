@@ -8,6 +8,8 @@ CSceneEditor::CSceneEditor(IBaseManager& BaseManager)
 	, m_EditorUI(nullptr)
 	, m_IsSelecting(false)
 {
+	m_EditedScene = std::make_shared<CEditedScene>(BaseManager);
+	m_EditedScene->Initialize();
 }
 
 CSceneEditor::~CSceneEditor()
@@ -39,6 +41,8 @@ void CSceneEditor::Initialize()
 
 	Load3D();
 	LoadUI();
+
+	GetRootNode3D()->AddChild(m_EditedScene->GetRootNode3D());
 
 	cameraNode->SetTranslate(glm::vec3(-50, 160, 170));
 	GetCameraController()->GetCamera()->SetYaw(-51);
@@ -195,7 +199,7 @@ void CSceneEditor::UnlockUpdates()
 
 std::shared_ptr<ISceneNode3D> CSceneEditor::GetRealRootNode3D() const
 {
-	return m_FakeRootNode3D;
+	return m_EditedScene->GetRootNode3D();
 }
 
 std::shared_ptr<ISceneNode3D> CSceneEditor::GetNodeUnderMouse(const glm::ivec2& MousePos) const
@@ -210,12 +214,7 @@ std::shared_ptr<ISceneNode3D> CSceneEditor::GetNodeUnderMouse(const glm::ivec2& 
 //
 void CSceneEditor::Selector_OnSelectionChange()
 {
-	auto childs = m_RootForSelectedBBoxes->GetChilds();
-	for (const auto& ch : childs)
-		RemoveChild(m_RootForSelectedBBoxes, ch);
-
-	for (const auto& it : Selector_GetSelectedNodes())
-		CreateSelectionBBoxNodeForNode(it);
+	m_DrawSelectionPass->RefreshInstanceBuffer();
 }
 
 
@@ -254,56 +253,8 @@ void CSceneEditor::MoveDraggedNode(const glm::vec3 & Position)
 	}
 }
 
-std::shared_ptr<ISceneNode3D> CSceneEditor::CreateNode(const glm::ivec3& Position, int32 type)
-{
-	auto it = std::find_if(m_Nodes.begin(), m_Nodes.end(), [&Position] (const CSceneEditor::SNode& Object) -> bool {
-		return (Object.X == Position.x) && (Object.Y == Position.y) && (Object.Z == Position.z);
-	});
-
-	if (it != m_Nodes.end())
-		return it->SceneNode;
-
-	auto node = CreateSceneNode<SceneNode3D>(GetRootNode3D());
-	node->SetTranslate(glm::vec3(Position));
-	node->SetScale(glm::vec3(25.0f));
-	auto model = GetRenderDevice().GetObjectsFactory().CreateModel();
-	if (auto loadable = std::dynamic_pointer_cast<IObjectLoadSave>(model))
-		loadable->Load(GetBaseManager().GetManager<IFilesManager>()->Open("C:\\_engine\\ZenonEngine_gamedata\\natureKit\\models\\fbxformat\\ground_grass.fbx.znmdl"));
-
-	node->GetComponent<IModelsComponent3D>()->AddModel(model);
-	node->GetComponent<IColliderComponent3D>()->SetBounds(/*BoundingBox(glm::vec3(-5.0f), glm::vec3(5.0f))*/model->GetBounds());
-
-	return node;
-}
-
-std::shared_ptr<ISceneNode3D> CSceneEditor::CreateSelectionBBoxNodeForNode(const std::shared_ptr<ISceneNode3D>& Node)
-{
-	if (Node == nullptr)
-		return nullptr;
-
-	auto selectionBBoxNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>(ofkSceneNode3D)->CreateSceneNode3D(this, cSceneNode3D, m_RootForSelectedBBoxes);
-	selectionBBoxNode->SetName("Selector for [" + Node->GetName() + "]");
-	auto geometry = GetRenderDevice().GetPrimitivesFactory().CreateBBox();
-	auto material = std::make_shared<MaterialDebug>(GetRenderDevice());
-	material->SetDiffuseColor(glm::vec4(1.0f, 1.0f, 0.0f, 1.0f));
-	auto model = GetRenderDevice().GetObjectsFactory().CreateModel();
-	model->AddConnection(material, geometry);
-	selectionBBoxNode->GetComponent<IModelsComponent3D>()->AddModel(model);
-
-	const auto& bbox = Node->GetComponent<IColliderComponent3D>()->GetBounds();
-	auto size = glm::abs(bbox.getMax() - bbox.getMin());
-
-	selectionBBoxNode->SetTranslate(Node->GetTranslation() + bbox.getMin() - 0.1f * size);
-	selectionBBoxNode->SetScale(size * 1.2f);
-
-	return selectionBBoxNode;
-}
-
 void CSceneEditor::Load3D()
 {
-	m_FakeRootNode3D = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>(ofkSceneNode3D)->CreateSceneNode3D(this, cSceneNode3D, GetRootNode3D());
-	m_FakeRootNode3D->SetName("SceneRoot");
-
 	{
 		auto sceneNodeLight = GetRootNode3D()->CreateSceneNode<SceneNode3D>();
 		sceneNodeLight->SetName("Light");
@@ -316,94 +267,6 @@ void CSceneEditor::Load3D()
 		sceneNodeLight->GetComponent<ILightComponent3D>()->SetRange(48000.0f);
 		sceneNodeLight->GetComponent<ILightComponent3D>()->SetIntensity(1.0f);
 		sceneNodeLight->GetComponent<ILightComponent3D>()->SetSpotlightAngle(55.0f);
-	}
-
-	auto fileNames = Utils::GetAllFilesInDirectory("C:\\_engine\\ZenonEngine_gamedata\\models", ".znmdl");
-
-	std::vector<std::string> modelsList;
-	modelsList.push_back("C:\\_engine\\ZenonEngine_gamedata\\natureKit\\models\\fbxformat\\ground_dirt.fbx");
-	modelsList.push_back("C:\\_engine\\ZenonEngine_gamedata\\natureKit\\models\\fbxformat\\ground_dirtRiver.fbx");
-	modelsList.push_back("C:\\_engine\\ZenonEngine_gamedata\\natureKit\\models\\fbxformat\\ground_dirtRiverBanks.fbx");
-	modelsList.push_back("C:\\_engine\\ZenonEngine_gamedata\\natureKit\\models\\fbxformat\\ground_dirtRiverCorner.fbx");
-	modelsList.push_back("C:\\_engine\\ZenonEngine_gamedata\\natureKit\\models\\fbxformat\\ground_dirtRiverCornerBank.fbx");
-	modelsList.push_back("C:\\_engine\\ZenonEngine_gamedata\\natureKit\\models\\fbxformat\\ground_dirtRiverCornerInner.fbx");
-	modelsList.push_back("C:\\_engine\\ZenonEngine_gamedata\\natureKit\\models\\fbxformat\\ground_dirtRiverCrossing.fbx");
-	modelsList.push_back("C:\\_engine\\ZenonEngine_gamedata\\natureKit\\models\\fbxformat\\ground_dirtRiverEnd.fbx");
-	modelsList.push_back("C:\\_engine\\ZenonEngine_gamedata\\natureKit\\models\\fbxformat\\ground_dirtRiverEntrance.fbx");
-	modelsList.push_back("C:\\_engine\\ZenonEngine_gamedata\\natureKit\\models\\fbxformat\\ground_dirtRiverRocks.fbx");
-	modelsList.push_back("C:\\_engine\\ZenonEngine_gamedata\\natureKit\\models\\fbxformat\\ground_dirtRiverSide.fbx");
-	modelsList.push_back("C:\\_engine\\ZenonEngine_gamedata\\natureKit\\models\\fbxformat\\ground_dirtRiverSideCorner.fbx");
-	modelsList.push_back("C:\\_engine\\ZenonEngine_gamedata\\natureKit\\models\\fbxformat\\ground_dirtRiverT.fbx");
-	modelsList.push_back("C:\\_engine\\ZenonEngine_gamedata\\natureKit\\models\\fbxformat\\ground_dirtRiverTile.fbx");
-	modelsList.push_back("C:\\_engine\\ZenonEngine_gamedata\\natureKit\\models\\fbxformat\\ground_dirtRiverWater.fbx");
-	modelsList.push_back("C:\\_engine\\ZenonEngine_gamedata\\natureKit\\models\\fbxformat\\ground_grass.fbx");
-	modelsList.push_back("C:\\_engine\\ZenonEngine_gamedata\\natureKit\\models\\fbxformat\\ground_pathBend.fbx");
-	modelsList.push_back("C:\\_engine\\ZenonEngine_gamedata\\natureKit\\models\\fbxformat\\ground_pathBendBank.fbx");
-	modelsList.push_back("C:\\_engine\\ZenonEngine_gamedata\\natureKit\\models\\fbxformat\\ground_pathCorner.fbx");
-	modelsList.push_back("C:\\_engine\\ZenonEngine_gamedata\\natureKit\\models\\fbxformat\\ground_pathCornerSmall.fbx");
-	modelsList.push_back("C:\\_engine\\ZenonEngine_gamedata\\natureKit\\models\\fbxformat\\ground_pathCross.fbx");
-	modelsList.push_back("C:\\_engine\\ZenonEngine_gamedata\\natureKit\\models\\fbxformat\\ground_pathEnd.fbx");
-	modelsList.push_back("C:\\_engine\\ZenonEngine_gamedata\\natureKit\\models\\fbxformat\\ground_pathEndClosed.fbx");
-	modelsList.push_back("C:\\_engine\\ZenonEngine_gamedata\\natureKit\\models\\fbxformat\\ground_pathOpen.fbx");
-	modelsList.push_back("C:\\_engine\\ZenonEngine_gamedata\\natureKit\\models\\fbxformat\\ground_pathRocks.fbx");
-	modelsList.push_back("C:\\_engine\\ZenonEngine_gamedata\\natureKit\\models\\fbxformat\\ground_pathSide.fbx");
-	modelsList.push_back("C:\\_engine\\ZenonEngine_gamedata\\natureKit\\models\\fbxformat\\ground_pathSideOpen.fbx");
-	modelsList.push_back("C:\\_engine\\ZenonEngine_gamedata\\natureKit\\models\\fbxformat\\ground_pathSplit.fbx");
-	modelsList.push_back("C:\\_engine\\ZenonEngine_gamedata\\natureKit\\models\\fbxformat\\ground_pathStraight.fbx");
-	modelsList.push_back("C:\\_engine\\ZenonEngine_gamedata\\natureKit\\models\\fbxformat\\ground_pathTile.fbx");
-	modelsList.push_back("C:\\_engine\\ZenonEngine_gamedata\\natureKit\\models\\fbxformat\\ground_riverBend.fbx");
-	modelsList.push_back("C:\\_engine\\ZenonEngine_gamedata\\natureKit\\models\\fbxformat\\ground_riverBendBank.fbx");
-	modelsList.push_back("C:\\_engine\\ZenonEngine_gamedata\\natureKit\\models\\fbxformat\\ground_riverCorner.fbx");
-	modelsList.push_back("C:\\_engine\\ZenonEngine_gamedata\\natureKit\\models\\fbxformat\\ground_riverCornerSmall.fbx");
-	modelsList.push_back("C:\\_engine\\ZenonEngine_gamedata\\natureKit\\models\\fbxformat\\ground_riverCross.fbx");
-	modelsList.push_back("C:\\_engine\\ZenonEngine_gamedata\\natureKit\\models\\fbxformat\\ground_riverEnd.fbx");
-
-	if (!fileNames.empty())
-	{
-		auto it = fileNames.begin();
-		auto sizeSqrtDouble = glm::sqrt(fileNames.size());
-		size_t sizeSqrt = glm::round(sizeSqrtDouble);
-		//sizeSqrt = 6;
-
-		for (size_t x = 0; x < sizeSqrt; x++)
-		{
-			for (size_t y = 0; y < sizeSqrt; y++)
-			{
-				if (it == fileNames.end())
-					continue;
-
-				auto fileName = (*it++);
-
-				Log::Info(fileName.c_str());
-
-				try
-				{
-					auto name = CFile(fileName + ".znmdl").Name();
-					name = name.substr(0, name.find_first_of('.'));
-
-					std::shared_ptr<ISceneNode3D> sceneNodeParent = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>(ofkSceneNode3D)->CreateSceneNode3D(this, cSceneNode3D, GetRealRootNode3D());
-					sceneNodeParent->SetName(name);
-					sceneNodeParent->SetTranslate(500.0f + glm::vec3(float(x) * 40.0f, 0.0f, float(y) * 40.0f));
-
-					if (GetBaseManager().GetManager<IFilesManager>()->IsFileExists(fileName))
-					{
-						auto model = GetRenderDevice().GetObjectsFactory().CreateModel();
-						if (auto loadable = std::dynamic_pointer_cast<IObjectLoadSave>(model))
-						{
-							loadable->Load(GetBaseManager().GetManager<IFilesManager>()->Open(fileName));
-						}
-
-						sceneNodeParent->GetComponent<IModelsComponent3D>()->AddModel(model);
-						sceneNodeParent->GetComponent<IColliderComponent3D>()->SetBounds(model->GetBounds());
-						continue;
-					}
-				}
-				catch (const CException& e)
-				{
-					Log::Error(e.MessageCStr());
-				}
-			}
-		}
 	}
 
 	{
@@ -436,17 +299,15 @@ void CSceneEditor::Load3D()
 		m_Mover->GetComponent<IModelsComponent3D>()->AddModel(model);
 	}
 
-	{
-		m_RootForSelectedBBoxes = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>(ofkSceneNode3D)->CreateSceneNode3D(this, cSceneNode3D, GetRootNode3D());
-		m_RootForSelectedBBoxes->SetName("Root for BBox");
-	}
-
 	glm::vec4 color = glm::vec4(0.0, 0.0f, 0.0f, 1.0f);
 	m_Technique3D.AddPass(std::make_shared<ClearRenderTargetPass>(GetRenderDevice(), GetRenderWindow()->GetRenderTarget(), ClearFlags::All, color /*glm::vec4(0.2f, 0.2f, 0.2f, 0.2f)*/, 1.0f, 0));
 	m_Technique3D.AddPass(GetBaseManager().GetManager<IRenderPassFactory>()->CreateRenderPass("ModelPassOpaque", GetRenderDevice(), GetRenderWindow()->GetRenderTarget(), &GetRenderWindow()->GetViewport(), shared_from_this()));
 	m_Technique3D.AddPass(GetBaseManager().GetManager<IRenderPassFactory>()->CreateRenderPass("ModelPassTransperent", GetRenderDevice(), GetRenderWindow()->GetRenderTarget(), &GetRenderWindow()->GetViewport(), shared_from_this()));
 	//m_Technique3D.AddPass(std::make_shared<CDrawBoundingBoxPass>(GetRenderDevice(), shared_from_this())->CreatePipeline(GetRenderWindow()->GetRenderTarget(), &GetRenderWindow()->GetViewport()));
 	m_Technique3D.AddPass(GetBaseManager().GetManager<IRenderPassFactory>()->CreateRenderPass("DebugPass", GetRenderDevice(), GetRenderWindow()->GetRenderTarget(), &GetRenderWindow()->GetViewport(), shared_from_this()));
+	m_DrawSelectionPass = std::make_shared<CDrawSelectionPass>(GetRenderDevice(), this);
+	m_DrawSelectionPass->CreatePipeline(GetRenderWindow()->GetRenderTarget(), &GetRenderWindow()->GetViewport());
+	m_Technique3D.AddPass(m_DrawSelectionPass);
 }
 
 void CSceneEditor::LoadUI()

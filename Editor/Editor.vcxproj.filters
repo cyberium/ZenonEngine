@@ -68,6 +68,9 @@
     <Filter Include="ZenonWidgets\ZenonCollectionViewer">
       <UniqueIdentifier>{c0c7ada6-3fe4-4119-8fbe-45792247683d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Editor3D\Passes">
+      <UniqueIdentifier>{31ae868f-f71f-445a-b2dd-b32b1b388d09}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -272,6 +275,12 @@
     <ClCompile Include="ZenonWidgets\ZenonSceneViewer\ZenonSceneViewerWidget.cpp">
       <Filter>ZenonWidgets\ZenonSceneViewer</Filter>
     </ClCompile>
+    <ClCompile Include="EditedScene.cpp">
+      <Filter>Editor3D</Filter>
+    </ClCompile>
+    <ClCompile Include="Passes\DrawSelectionPass.cpp">
+      <Filter>Editor3D\Passes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -423,6 +432,12 @@
     </ClInclude>
     <ClInclude Include="ZenonWidgets\ZenonSceneViewer\TreeModelTemplate.h">
       <Filter>ZenonWidgets\ZenonSceneViewer</Filter>
+    </ClInclude>
+    <ClInclude Include="EditedScene.h">
+      <Filter>Editor3D</Filter>
+    </ClInclude>
+    <ClInclude Include="Passes\DrawSelectionPass.h">
+      <Filter>Editor3D\Passes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

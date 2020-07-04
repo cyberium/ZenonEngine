@@ -98,21 +98,21 @@ void SceneNode3D::AddChild(const std::shared_ptr<ISceneNode3D>& childNode)
 		throw CException(L"SceneNode3D: Child node must not be NULL.");
 
 	// 1. Удаляем чилда у текущего родителя (возможно нужно его об этом нотифицировать, например для перерасчета BoundingBox)
-	if (auto currentChildParent = childNode->GetParent().lock())
+	if (!childNode->GetParent().expired())
 	{
-		if (currentChildParent != shared_from_this())
+		if (auto currentChildParent = childNode->GetParent().lock())
 		{
-			std::dynamic_pointer_cast<SceneNode3D>(currentChildParent)->RemoveChildInternal(childNode);
-			//Log::Warn("SceneNode3D: Failed to add child to his current parent.");
-			//return;
+			if (currentChildParent != shared_from_this())
+			{
+				std::dynamic_pointer_cast<SceneNode3D>(currentChildParent)->RemoveChildInternal(childNode);
+				//Log::Warn("SceneNode3D: Failed to add child to his current parent.");
+				//return;
+			}
 		}
-
-		
 	}
 
 	// 2. Добавляем чилда в нового парента (возможно нужно его об этом нотифицировать, например для перерасчета BoundingBox)
 	this->AddChildInternal(childNode);
-	
 }
 
 void SceneNode3D::RemoveChild(const std::shared_ptr<ISceneNode3D>& childNode)

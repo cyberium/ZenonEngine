@@ -1,7 +1,9 @@
 #pragma once
 
 #include "EditorInterfaces.h"
+#include "EditedScene.h"
 #include "SceneNodesSelector.h"
+#include "Passes/DrawSelectionPass.h"
 
 class CSceneEditor
 	: public SceneBase
@@ -44,33 +46,19 @@ protected:
 	glm::ivec3 ToBoxCoords(const glm::vec3& Position);
 	glm::vec3 FixBoxCoords(const glm::vec3& Position);
 	void MoveDraggedNode(const glm::vec3& Position);
-	std::shared_ptr<ISceneNode3D> CreateNode(const glm::ivec3& Position, int32 type);
-
-	std::shared_ptr<ISceneNode3D> CreateSelectionBBoxNodeForNode(const std::shared_ptr<ISceneNode3D>& Node);
 
 	void Load3D();
 	void LoadUI();
 
 	std::shared_ptr<ISceneNode3D> m_DraggedNode;
-	std::shared_ptr<ISceneNode3D> m_RootForSelectedBBoxes;
-
+	std::shared_ptr<ISceneNode3D> m_Mover;
+	
 	bool m_IsSelecting;
 	glm::vec2 m_SelectionPrevPos;
 	std::shared_ptr<ISceneNodeUI> m_SelectionTexture;
-
-	struct SNode
-	{
-		int32 X;
-		int32 Y;
-		int32 Z;
-		int32 Type;
-		std::shared_ptr<ISceneNode3D> SceneNode;		
-	};
-	std::vector<SNode> m_Nodes;
-
-	std::shared_ptr<ISceneNode3D> m_Mover;
+	std::shared_ptr<CDrawSelectionPass> m_DrawSelectionPass;
 
 private:
 	IEditorUIFrame* m_EditorUI;
-	std::shared_ptr<ISceneNode3D> m_FakeRootNode3D;
+	std::shared_ptr<CEditedScene> m_EditedScene;
 };

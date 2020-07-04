@@ -12,9 +12,26 @@ cbuffer Material : register(b2)
 	float4 DiffuseColor0;
 };
 
+struct M2PerObject
+{
+	float4x4 Model;
+	float4   Color;
+};
+StructuredBuffer<M2PerObject> Instances : register(t3);
+
+
+
 float4 VS_main(VSInputP IN) : SV_POSITION
 {
 	const float4x4 mv = mul(PF.View, PO.Model);
+	const float4x4 mvp = mul(PF.Projection, mv);
+
+	return mul(mvp, float4(IN.position.xyz, 1.0f));
+}
+
+float4 VS_main_Inst(VSInputP IN, uint InstanceID : SV_InstanceID) : SV_POSITION
+{
+	const float4x4 mv = mul(PF.View, Instances[InstanceID].Model);
 	const float4x4 mvp = mul(PF.Projection, mv);
 
 	return mul(mvp, float4(IN.position.xyz, 1.0f));
