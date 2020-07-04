@@ -15,6 +15,7 @@ public:
 	virtual ~SceneBase();
 
 	// IScene
+	void                                            SetRenderWindow(const std::shared_ptr<IRenderWindow>& RenderWindow) override final;
 	void                                            ConnectEvents(const std::shared_ptr<IRenderWindowEvents>& WindowEvents) override final;
 	void                                            DisconnectEvents(const std::shared_ptr<IRenderWindowEvents>& WindowEvents) override final;
 

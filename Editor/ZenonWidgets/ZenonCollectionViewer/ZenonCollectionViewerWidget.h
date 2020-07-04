@@ -46,7 +46,9 @@ public:
 	void SetModelsList(const std::vector<std::string>& Nodes);
 
 protected:
-	virtual void mousePressEvent(QMouseEvent *event) override;
+	void mousePressEvent(QMouseEvent *event) override;
+	void mouseReleaseEvent(QMouseEvent *event) override;
+	void mouseMoveEvent(QMouseEvent *event) override;
 
 private slots:
 	void onCustomContextMenu(const QPoint& point);
@@ -60,6 +62,9 @@ private:
 	std::shared_ptr<CQtToZenonTreeModel> m_Model;
 	std::shared_ptr<QMenu> m_SceneTreeViewerContextMenu;
 	bool m_LockForSelectionChangedEvent;
+
+	bool m_StartDragging;
+	glm::vec2 m_PrevioisMousePos;
 
 private:
 	IEditor3DFrame* m_Editor3D;

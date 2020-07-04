@@ -24,6 +24,11 @@ void CSceneEditor::SetEditorUI(IEditorUIFrame * EditorUIFrame)
 	Selector_SetOtherSelector(dynamic_cast<CSceneNodesSelector*>(m_EditorUI));
 }
 
+void CSceneEditor::SetPreviewScene(const std::shared_ptr<CEditor3DPreviewScene>& PreviewScene)
+{
+	m_PreviewScene = PreviewScene;
+}
+
 
 //
 // IGameState
@@ -45,9 +50,10 @@ void CSceneEditor::Initialize()
 
 	GetRootNode3D()->AddChild(m_EditedScene->GetRootNode3D());
 
-	cameraNode->SetTranslate(glm::vec3(-50, 160, 170));
-	GetCameraController()->GetCamera()->SetYaw(-51);
-	GetCameraController()->GetCamera()->SetPitch(-38);
+	GetCameraController()->GetCamera()->SetTranslation(glm::vec3(15.0f * 2.0f));
+	GetCameraController()->GetCamera()->SetDirection(glm::vec3(-0.5f));
+	//GetCameraController()->GetCamera()->SetYaw(225);
+	//GetCameraController()->GetCamera()->SetPitch(-45);
 }
 
 void CSceneEditor::Finalize()
@@ -91,9 +97,17 @@ bool IsChildOf(const std::shared_ptr<ISceneNode3D>& Parent, const std::shared_pt
 void CSceneEditor::RaiseSceneChangeEvent(ESceneChangeType SceneChangeType, const std::shared_ptr<ISceneNode3D>& OwnerNode, const std::shared_ptr<ISceneNode3D>& ChildNode)
 {
 	if (SceneChangeType == ESceneChangeType::NodeRemovedFromParent)
-		m_DrawSelectionPass->RefreshInstanceBuffer();
+	{
+		for (const auto& node : Selector_GetSelectedNodes())
+		{
+			if (node == ChildNode)
+			{
+				Selector_RemoveNode(ChildNode);
+			}
+		}
+	}
 
-	if (IsChildOf(GetRealRootNode3D(), ChildNode))
+	if (IsChildOf(GetRealRootNode3D(), ChildNode) || IsChildOf(GetRealRootNode3D(), OwnerNode))
 		m_EditorUI->OnSceneChanged();
 }
 
@@ -241,6 +255,12 @@ std::shared_ptr<ISceneNode3D> CSceneEditor::GetNodeUnderMouse(const glm::ivec2& 
 	return nodes.begin()->second;
 }
 
+void CSceneEditor::OnCollectionWidget_ModelSelected(const std::shared_ptr<IModel>& Model)
+{
+	if (m_PreviewScene)
+		m_PreviewScene->SetModel(Model);
+}
+
 void CSceneEditor::DropEvent(const glm::vec2& Position)
 {
 	if (m_IsDraggingEnabled)
@@ -262,6 +282,7 @@ void CSceneEditor::DragEnterEvent(const SDragData& Data)
 
 	auto pos = GetCameraController()->ScreenToPlane(GetRenderWindow()->GetViewport(), Data.Position, Plane(glm::vec3(0.0f, 1.0f, 0.0f), 0.0f));
 	auto node = m_EditedScene->CreateNode(pos, Data.Message);
+
 	m_DraggedNode->AddChild(node);
 	m_DraggedNode->SetTranslate(pos);
 }
@@ -290,6 +311,7 @@ void CSceneEditor::DragLeaveEvent()
 //
 void CSceneEditor::Selector_OnSelectionChange()
 {
+
 	m_DrawSelectionPass->RefreshInstanceBuffer();
 }
 

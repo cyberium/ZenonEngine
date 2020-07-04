@@ -14,6 +14,7 @@ ZN_INTERFACE ZN_API IScene
 {
 	virtual ~IScene() {}
 
+	virtual void SetRenderWindow(const std::shared_ptr<IRenderWindow>& RenderWindow) = 0;
 	virtual void ConnectEvents(const std::shared_ptr<IRenderWindowEvents>& WindowEvents) = 0;
 	virtual void DisconnectEvents(const std::shared_ptr<IRenderWindowEvents>& WindowEvents) = 0;
 

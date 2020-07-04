@@ -11,6 +11,7 @@ ZenonCollectionViewerWidget::ZenonCollectionViewerWidget(QWidget * parent)
 	, m_Editor3D(nullptr)
 	, m_EditorUI(nullptr)
 	, m_LockForSelectionChangedEvent(false)
+	, m_StartDragging(false)
 {
 	// Add context menu for scene node viewer
 	m_SceneTreeViewerContextMenu = std::make_shared<QMenu>(this);
@@ -66,30 +67,48 @@ void ZenonCollectionViewerWidget::mousePressEvent(QMouseEvent * event)
 	if (event->button() == Qt::RightButton)
 		return;
 
-	QModelIndex index = indexAt(event->pos());
-	if (!index.isValid())
-		return;
+	m_StartDragging = false;
+	m_PrevioisMousePos = glm::ivec2(event->pos().x(), event->pos().y());
 
-	auto item = static_cast<CQtToZenonTreeItem*>(index.internalPointer());
-	_ASSERT_EXPR(item != nullptr, L"Item is null.");
-
-	QPoint hotSpot = event->pos();
-
-	QMimeData *mimeData = new QMimeData;
-	mimeData->setText(item->GetTObject()->GetName().c_str());
-	//mimeData->setData(hotSpotMimeDataKey(), QByteArray::number(hotSpot.x()) + ' ' + QByteArray::number(hotSpot.y()));
-
-
-	QDrag *drag = new QDrag(this);
-	drag->setMimeData(mimeData);
-	drag->setHotSpot(hotSpot);
-	Qt::DropAction dropAction = drag->exec();
-	if (dropAction != Qt::DropAction::IgnoreAction)
-	{
-		if (dropAction == Qt::DropAction::CopyAction)
-			drag->cancel();
-	}
 	__super::mousePressEvent(event);
+}
+
+void ZenonCollectionViewerWidget::mouseReleaseEvent(QMouseEvent * event)
+{
+	m_StartDragging = false;
+	__super::mouseReleaseEvent(event);
+}
+
+void ZenonCollectionViewerWidget::mouseMoveEvent(QMouseEvent * event)
+{
+	auto currentPos = glm::vec2(event->pos().x(), event->pos().y());
+	if (!m_StartDragging && glm::length(glm::abs(m_PrevioisMousePos - currentPos)) > 5.0f)
+	{
+		QModelIndex index = indexAt(event->pos());
+		if (!index.isValid())
+			return;
+
+		auto item = static_cast<CQtToZenonTreeItem*>(index.internalPointer());
+		if (item == nullptr)
+			return;
+
+		m_StartDragging = true;
+
+		QMimeData *mimeData = new QMimeData;
+		mimeData->setText(item->GetTObject()->GetName().c_str());
+
+		auto drag = new QDrag(this);
+		drag->setMimeData(mimeData);
+		drag->setHotSpot(event->pos());
+		Qt::DropAction dropAction = drag->exec();
+		if (dropAction != Qt::DropAction::IgnoreAction)
+		{
+			if (dropAction == Qt::DropAction::CopyAction)
+				drag->cancel();
+		}
+	}
+
+	__super::mouseMoveEvent(event);
 }
 
 
@@ -138,6 +157,7 @@ void ZenonCollectionViewerWidget::onClicked(const QModelIndex & index)
 	auto item = static_cast<CQtToZenonTreeItem*>(index.internalPointer());
 	_ASSERT_EXPR(item != nullptr, L"Item is null.");
 
+	m_Editor3D->OnCollectionWidget_ModelSelected(std::dynamic_pointer_cast<IModel>(item->GetTObject()));
 }
 
 void ZenonCollectionViewerWidget::onDoubleClicked(const QModelIndex & index)

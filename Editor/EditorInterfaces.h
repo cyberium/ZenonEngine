@@ -23,6 +23,8 @@ ZN_INTERFACE IEditor3DFrame
 	virtual std::shared_ptr<ISceneNode3D> GetRealRootNode3D() const = 0;
 	virtual std::shared_ptr<ISceneNode3D> GetNodeUnderMouse(const glm::ivec2& MousePos) const = 0;
 
+	virtual void OnCollectionWidget_ModelSelected(const std::shared_ptr<IModel>& Model) = 0;
+
 	virtual void DropEvent(const glm::vec2& Position) = 0;
 	virtual void DragEnterEvent(const SDragData& Data) = 0;
 	virtual void DragMoveEvent(const glm::vec2& Position) = 0;

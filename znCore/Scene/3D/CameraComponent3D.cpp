@@ -6,7 +6,7 @@
 CCameraComponent3D::CCameraComponent3D(const ISceneNode3D& OwnerNode)
     : CComponentBase(OwnerNode)
 	, m_RightDirection(0)
-	, m_UpDirection(0)
+	, m_UpDirection(glm::vec3(0.0f, 1.0f, 0.0f))
 	, m_Yaw_X(0.0f)
 	, m_Pitch_Y(0.0f)
 	, m_View_Dirty(true)
@@ -37,32 +37,45 @@ CCameraComponent3D::~CCameraComponent3D()
 //
 void CCameraComponent3D::DoMoveFront(float Value)
 {
+	if (Value == 0.0f)
+		return;
 	ISceneNode3D& sceneNode3D = const_cast<ISceneNode3D&>(GetOwnerNode());
 	sceneNode3D.AddTranslate(sceneNode3D.GetRotation() * Value);
+	m_View_Dirty = true;
 }
 
 void CCameraComponent3D::DoMoveBack(float Value)
 {
+	if (Value == 0.0f)
+		return;
 	ISceneNode3D& sceneNode3D = const_cast<ISceneNode3D&>(GetOwnerNode());
 	sceneNode3D.AddTranslate(-(sceneNode3D.GetRotation() * Value));
+	m_View_Dirty = true;
 }
 
 void CCameraComponent3D::DoMoveLeft(float Value)
 {
+	if (Value == 0.0f)
+		return;
 	ISceneNode3D& sceneNode3D = const_cast<ISceneNode3D&>(GetOwnerNode());
 	sceneNode3D.AddTranslate(-(m_RightDirection * Value));
+	m_View_Dirty = true;
 }
 
 void CCameraComponent3D::DoMoveRight(float Value)
 {
+	if (Value == 0.0f)
+		return;
 	ISceneNode3D& sceneNode3D = const_cast<ISceneNode3D&>(GetOwnerNode());
 	sceneNode3D.AddTranslate(m_RightDirection * Value);
+	m_View_Dirty = true;
 }
 
-void CCameraComponent3D::SetTranslation(glm::vec3 Translation) const
+void CCameraComponent3D::SetTranslation(glm::vec3 Translation)
 {
 	ISceneNode3D& sceneNode3D = const_cast<ISceneNode3D&>(GetOwnerNode());
 	sceneNode3D.SetTranslate(Translation);
+	m_View_Dirty = true;
 }
 
 glm::vec3 CCameraComponent3D::GetTranslation() const
@@ -70,10 +83,11 @@ glm::vec3 CCameraComponent3D::GetTranslation() const
 	return GetOwnerNode().GetTranslation();
 }
 
-void CCameraComponent3D::SetDirection(glm::vec3 Direction) const
+void CCameraComponent3D::SetDirection(glm::vec3 Direction)
 {
 	ISceneNode3D& sceneNode3D = const_cast<ISceneNode3D&>(GetOwnerNode());
 	sceneNode3D.SetRotation(Direction);
+	m_View_Dirty = true;
 }
 
 glm::vec3 CCameraComponent3D::GetDirection() const

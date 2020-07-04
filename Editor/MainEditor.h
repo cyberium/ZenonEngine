@@ -21,6 +21,7 @@ public:
 
 	inline Ui::MainEditorClass getUI() const { return m_UI; }
 	inline ZenonWindow3D * getMainEditor() const { return m_UI.MainEditor3D; }
+	inline ZenonWindowMinimal3DWidget * getModelPreview() const { return m_UI.ModelPreview; }
 	inline ZenonSceneViewerWidget * getSceneViewer() const { return m_UI.SceneViewer; }
 	inline ZenonCollectionViewerWidget * getCollectionViewer() const { return m_UI.CollectionViewer; }
 	void SetEditor3D(IEditor3DFrame* Editor3DFrame);

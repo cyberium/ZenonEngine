@@ -71,6 +71,9 @@
     <Filter Include="Editor3D\Passes">
       <UniqueIdentifier>{31ae868f-f71f-445a-b2dd-b32b1b388d09}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ZenonWidgets\ZenonWindowMinimal3D">
+      <UniqueIdentifier>{936459f3-5703-4224-8fff-5490074c0c94}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -284,6 +287,12 @@
     <ClCompile Include="ZenonWidgets\ZenonCollectionViewer\ZenonCollectionViewerWidget.cpp">
       <Filter>ZenonWidgets\ZenonCollectionViewer</Filter>
     </ClCompile>
+    <ClCompile Include="ZenonWidgets\ZenonWindowMinimal3D\ZenonWindowMinimal3D.cpp">
+      <Filter>ZenonWidgets\ZenonWindowMinimal3D</Filter>
+    </ClCompile>
+    <ClCompile Include="Editor3DPreviewScene.cpp">
+      <Filter>Editor3D</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -445,6 +454,12 @@
     <ClInclude Include="_widgetZenonCollectionViewer.h">
       <Filter>ZenonWidgets</Filter>
     </ClInclude>
+    <ClInclude Include="_widgetZenonWindowMinimal3D.h">
+      <Filter>ZenonWidgets</Filter>
+    </ClInclude>
+    <ClInclude Include="Editor3DPreviewScene.h">
+      <Filter>Editor3D</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="PropertyEditor\Core\Property.h">
@@ -545,6 +560,9 @@
     </QtMoc>
     <QtMoc Include="ZenonWidgets\ZenonCollectionViewer\ZenonCollectionViewerWidget.h">
       <Filter>ZenonWidgets\ZenonCollectionViewer</Filter>
+    </QtMoc>
+    <QtMoc Include="ZenonWidgets\ZenonWindowMinimal3D\ZenonWindowMinimal3D.h">
+      <Filter>ZenonWidgets\ZenonWindowMinimal3D</Filter>
     </QtMoc>
   </ItemGroup>
   <ItemGroup>

@@ -2,6 +2,7 @@
 
 #include "EditorInterfaces.h"
 #include "EditedScene.h"
+#include "Editor3DPreviewScene.h"
 #include "SceneNodesSelector.h"
 #include "Passes/DrawSelectionPass.h"
 
@@ -15,6 +16,7 @@ public:
 	virtual ~CSceneEditor();
 
 	void SetEditorUI(IEditorUIFrame* EditorUIFrame);
+	void SetPreviewScene(const std::shared_ptr<CEditor3DPreviewScene>& PreviewScene);
 
 	// SceneBase
 	void Initialize() override;
@@ -43,6 +45,7 @@ public:
 	void UnlockUpdates() override;
 	std::shared_ptr<ISceneNode3D> GetRealRootNode3D() const override;
 	std::shared_ptr<ISceneNode3D> GetNodeUnderMouse(const glm::ivec2& MousePos) const override;
+	void OnCollectionWidget_ModelSelected(const std::shared_ptr<IModel>& Model) override;
 	void DropEvent(const glm::vec2& Position) override;
 	void DragEnterEvent(const SDragData& Data) override;
 	void DragMoveEvent(const glm::vec2& Position) override;
@@ -62,7 +65,6 @@ protected:
 	bool m_IsDraggingEnabled;
 	std::shared_ptr<ISceneNode3D> m_DraggedNode;
 
-
 	std::shared_ptr<ISceneNode3D> m_Mover;
 	
 	bool m_IsSelecting;
@@ -72,5 +74,6 @@ protected:
 
 private:
 	IEditorUIFrame* m_EditorUI;
+	std::shared_ptr<CEditor3DPreviewScene> m_PreviewScene;
 	std::shared_ptr<CEditedScene> m_EditedScene;
 };

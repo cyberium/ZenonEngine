@@ -55,10 +55,13 @@ void SceneBase::Finalize()
 {
 }
 
+void SceneBase::SetRenderWindow(const std::shared_ptr<IRenderWindow>& RenderWindow)
+{
+	m_RenderWindow = RenderWindow;
+}
+
 void SceneBase::ConnectEvents(const std::shared_ptr<IRenderWindowEvents>& WindowEvents)
 {
-	m_RenderWindow = std::dynamic_pointer_cast<IRenderWindow>(WindowEvents);
-
 	// RenderWindowEvents
 	m_OnUpdateConnection = WindowEvents->Update().connect(&SceneBase::OnUpdate, this, std::placeholders::_1);
 	m_OnPreRenderConnection = WindowEvents->PreRender().connect(&SceneBase::OnPreRender, this, std::placeholders::_1);
@@ -96,7 +99,7 @@ void SceneBase::DisconnectEvents(const std::shared_ptr<IRenderWindowEvents>& Win
 	WindowEvents->WindowMouseMoved().disconnect(m_OnMouseMovedConnection);
 	WindowEvents->WindowMouseWheel().disconnect(m_OnMouseWheelConnection);
 
-	m_RenderWindow.reset();
+	SetRenderWindow(nullptr);
 }
 
 

@@ -5,6 +5,7 @@
 #include <QApplication>
 
 #include "Editor3DFrame.h"
+#include "Editor3DPreviewScene.h"
 
 static IBaseManager* BaseManager = nullptr;
 
@@ -58,26 +59,42 @@ void main_internal(int argc, char *argv[])
 
 	QApplication a(argc, argv);
 	MainEditor editorUI;
+	editorUI.showMaximized();
 
 	IRenderDevice& renderDevice = app.CreateRenderDevice(RenderDeviceType::RenderDeviceType_DirectX);
 
 	std::shared_ptr<IFontsManager> fontsManager = std::make_shared<FontsManager>(renderDevice, *BaseManager);
 	BaseManager->AddManager<IFontsManager>(fontsManager);
 
-	// Render window for main editor
-	std::shared_ptr<IRenderWindow> renderWindow = renderDevice.GetObjectsFactory().CreateRenderWindow(*editorUI.getMainEditor(), false);
-	app.AddRenderWindow(renderWindow);
-
 	BaseManager->GetManager<ILoader>()->Start();
 
-	//std::shared_ptr<IScene> scene = BaseManager->GetManager<IScenesFactory>()->CreateScene("SceneDefault");
-	std::shared_ptr<CSceneEditor> scene = std::make_shared<CSceneEditor>(*BaseManager);
+	
+		std::shared_ptr<IRenderWindow> renderWindowForModelPreview = renderDevice.GetObjectsFactory().CreateRenderWindow(*editorUI.getModelPreview(), false);
+		app.AddRenderWindow(renderWindowForModelPreview);
 
-	scene->SetEditorUI(&editorUI);
-	editorUI.SetEditor3D(scene.get());
+		//std::shared_ptr<IScene> scene = BaseManager->GetManager<IScenesFactory>()->CreateScene("SceneDefault");
+		std::shared_ptr<CEditor3DPreviewScene> sceneForPreview = std::make_shared<CEditor3DPreviewScene>(*BaseManager);
+		sceneForPreview->SetRenderWindow(renderWindowForModelPreview);
+		sceneForPreview->ConnectEvents(std::dynamic_pointer_cast<IRenderWindowEvents>(renderWindowForModelPreview));
+		sceneForPreview->Initialize();
+	
 
-	scene->ConnectEvents(std::dynamic_pointer_cast<IRenderWindowEvents>(renderWindow));
-	scene->Initialize();
+		
+			std::shared_ptr<IRenderWindow> renderWindow = renderDevice.GetObjectsFactory().CreateRenderWindow(*editorUI.getMainEditor(), false);
+			app.AddRenderWindow(renderWindow);
+
+			//std::shared_ptr<IScene> scene = BaseManager->GetManager<IScenesFactory>()->CreateScene("SceneDefault");
+			std::shared_ptr<CSceneEditor> scene = std::make_shared<CSceneEditor>(*BaseManager);
+
+			scene->SetEditorUI(&editorUI);
+			scene->SetPreviewScene(sceneForPreview);
+			editorUI.SetEditor3D(scene.get());
+
+			scene->SetRenderWindow(renderWindow);
+			scene->ConnectEvents(std::dynamic_pointer_cast<IRenderWindowEvents>(renderWindow));
+			scene->Initialize();
+		
+	
 
 	editorUI.show();
 

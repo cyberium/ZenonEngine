@@ -17,9 +17,9 @@ public:
 	void DoMoveLeft(float Value = 1.0f);
 	void DoMoveRight(float Value = 1.0f);
 
-	virtual void SetTranslation(glm::vec3 Translation) const override;
+	virtual void SetTranslation(glm::vec3 Translation) override;
 	virtual glm::vec3 GetTranslation() const override;
-	virtual void SetDirection(glm::vec3 Direction) const override;
+	virtual void SetDirection(glm::vec3 Direction) override;
 	virtual glm::vec3 GetDirection() const override;
 
 	void SetYaw(float Yaw) override;

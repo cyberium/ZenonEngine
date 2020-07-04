@@ -18,7 +18,7 @@ void CEditedScene::Initialize()
 
 	auto fileNames = Utils::GetAllFilesInDirectory("C:\\_engine\\ZenonEngine_gamedata\\models", ".znmdl");
 
-	if (!fileNames.empty())
+	if (false && !fileNames.empty())
 	{
 		auto it = fileNames.begin();
 		auto sizeSqrtDouble = glm::sqrt(fileNames.size());
@@ -84,7 +84,7 @@ void CEditedScene::RaiseSceneChangeEvent(ESceneChangeType SceneChangeType, const
 	if (parent == nullptr)
 		return;
 
-	parent->GetScene()->RaiseSceneChangeEvent(SceneChangeType, OwnerNode, ChildNode);
+	root->GetParent().lock()->GetScene()->RaiseSceneChangeEvent(SceneChangeType, OwnerNode, ChildNode);
 }
 
 
