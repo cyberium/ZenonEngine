@@ -1,5 +1,6 @@
 #pragma once
 
+const ObjectClassType cSceneNode_FBXNode = 527323442;
 ZN_INTERFACE ZN_API IFBXSceneNode3D
 {
 	virtual ~IFBXSceneNode3D() {}

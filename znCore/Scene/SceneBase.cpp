@@ -226,16 +226,16 @@ void SceneBase::RaiseSceneChangeEvent(ESceneChangeType SceneChangeType, const st
 	m_SceneChangeEvent(SceneChangeEventArgs(this, this, SceneChangeType, OwnerNode, ChildNode));
 }
 
-bool SceneBase::OnMouseClickToWorld(MouseButtonEventArgs::MouseButton& MouseButton, const glm::vec2& MousePosition, const Ray& RayToWorld)
+bool SceneBase::OnMouseClickToWorld(const MouseButtonEventArgs & e, const Ray& RayToWorld)
 {
 	return false;
 }
 
-void SceneBase::OnMouseReleaseToWorld(MouseButtonEventArgs::MouseButton & MouseButton, const glm::vec2 & MousePosition, const Ray & RayToWorld)
+void SceneBase::OnMouseReleaseToWorld(const MouseButtonEventArgs & e, const Ray & RayToWorld)
 {
 }
 
-void SceneBase::OnMouseMoveToWorld(MouseButtonEventArgs::MouseButton& MouseButton, const glm::vec2& MousePosition, const Ray& RayToWorld)
+void SceneBase::OnMouseMoveToWorld(const MouseMotionEventArgs & e, const Ray& RayToWorld)
 {
 
 }
@@ -383,14 +383,7 @@ void SceneBase::OnWindowMouseMoved(MouseMotionEventArgs & e)
 	if (GetCameraController())
 	{
 		GetCameraController()->OnMouseMoved(e);
-
-		MouseButtonEventArgs::MouseButton btn = MouseButtonEventArgs::MouseButton::None;
-		if (e.LeftButton)
-			btn = MouseButtonEventArgs::MouseButton::Left;
-		else if (e.RightButton)
-			btn = MouseButtonEventArgs::MouseButton::Right;
-
-		OnMouseMoveToWorld(btn, e.GetPoint(), GetCameraController()->ScreenToRay(GetRenderWindow()->GetViewport(), e.GetPoint()));
+		OnMouseMoveToWorld(e, GetCameraController()->ScreenToRay(GetRenderWindow()->GetViewport(), e.GetPoint()));
 	}
 
 	if (GetRootNodeUI())
@@ -401,7 +394,7 @@ bool SceneBase::OnWindowMouseButtonPressed(MouseButtonEventArgs & e)
 {	
 	if (GetCameraController())
 	{
-		if (OnMouseClickToWorld(e.Button, e.GetPoint(), GetCameraController()->ScreenToRay(GetRenderWindow()->GetViewport(), e.GetPoint())))
+		if (OnMouseClickToWorld(e, GetCameraController()->ScreenToRay(GetRenderWindow()->GetViewport(), e.GetPoint())))
 			return true;
 		GetCameraController()->OnMouseButtonPressed(e);
 	}
@@ -417,7 +410,7 @@ void SceneBase::OnWindowMouseButtonReleased(MouseButtonEventArgs & e)
 	if (GetCameraController())
 	{
 		GetCameraController()->OnMouseButtonReleased(e);
-		OnMouseReleaseToWorld(e.Button, e.GetPoint(), GetCameraController()->ScreenToRay(GetRenderWindow()->GetViewport(), e.GetPoint()));
+		OnMouseReleaseToWorld(e, GetCameraController()->ScreenToRay(GetRenderWindow()->GetViewport(), e.GetPoint()));
 	}
 
 	if (GetRootNodeUI())

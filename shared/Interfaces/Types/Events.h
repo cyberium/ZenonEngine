@@ -180,9 +180,9 @@ public:
 		: EventArgs(caller)
 		, Button(buttonID)
 		, State(state)
-		, LeftButton(leftButton)
-		, MiddleButton(middleButton)
-		, RightButton(rightButton)
+		//, LeftButton(leftButton)
+		//, MiddleButton(middleButton)
+		//, RightButton(rightButton)
 		, Control(control)
 		, Shift(shift)
 		, X(x)
@@ -191,9 +191,9 @@ public:
 
 	MouseButton Button; // The mouse button that was pressed or released.
 	ButtonState State;  // Was the button pressed or released?
-	bool LeftButton;    // Is the left mouse button down?
-	bool MiddleButton;  // Is the middle mouse button down?
-	bool RightButton;   // Is the right mouse button down?
+	//bool LeftButton;    // Is the left mouse button down?
+	//bool MiddleButton;  // Is the middle mouse button down?
+	//bool RightButton;   // Is the right mouse button down?
 	bool Control;       // Is the CTRL key down?
 	bool Shift;         // Is the Shift key down?
 

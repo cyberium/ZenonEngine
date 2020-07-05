@@ -125,7 +125,7 @@ public:
 	std::string GetName() const override
 	{
 		if (m_Name.empty())
-			return GetGuid().Str();
+			return GetClassName() + "_" + std::to_string(GetGuid().GetCounter());
 		return m_Name;
 	}
 	std::string GetClassName() const  override

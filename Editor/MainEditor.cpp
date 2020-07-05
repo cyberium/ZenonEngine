@@ -43,7 +43,44 @@ void MainEditor::SetEditor3D(IEditor3DFrame* Editor3DFrame)
 	getCollectionViewer()->SetEditors(Editor3DFrame, this);
 	Selector_SetOtherSelector(dynamic_cast<CSceneNodesSelector*>(m_Editor3D));
 
-	getCollectionViewer()->SetModelsList(Utils::GetAllFilesInDirectory("C:\\_engine\\ZenonEngine_gamedata\\models", ".znmdl"));
+	std::vector<std::string> realNames;
+
+	auto fileNames = Utils::GetAllFilesInDirectory("C:\\_engine\\ZenonEngine_gamedata\\models", ".fbx");
+	for (const auto& it : fileNames)
+	{
+		Log::Info(it.c_str());
+
+		try
+		{
+			std::string zenonFileName = it + ".znmdl";
+			if (m_Editor3D->GetBaseManager2().GetManager<IFilesManager>()->IsFileExists(zenonFileName))
+			{
+				realNames.push_back(zenonFileName);
+				continue;
+			}
+
+			std::shared_ptr<ISceneNode3D> sceneNode = m_Editor3D->GetBaseManager2().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>(ofkSceneNode3D)->CreateSceneNode3D(dynamic_cast<IScene*>(m_Editor3D), cSceneNode_FBXNode);
+
+			std::shared_ptr<IFBXSceneNode3D> fbxSceneNode = std::dynamic_pointer_cast<IFBXSceneNode3D>(sceneNode);
+			fbxSceneNode->InitializeFromFile(it);
+
+			auto model = std::dynamic_pointer_cast<IFBXSceneNode3D>(sceneNode->GetChilds().at(0))->GetModel();
+			if (auto loadable = std::dynamic_pointer_cast<IObjectLoadSave>(model))
+			{
+				std::shared_ptr<IFile> file = std::make_shared<CFile>(zenonFileName);
+				loadable->Save(file);
+
+				m_Editor3D->GetBaseManager2().GetManager<IFilesManager>()->GetFilesStorage("PCEveryFileAccess")->SaveFile(file);
+				realNames.push_back(zenonFileName);
+			}
+		}
+		catch (const CException& e)
+		{
+			Log::Error(e.MessageCStr());
+		}
+	}
+
+	getCollectionViewer()->SetModelsList(realNames);
 }
 
 

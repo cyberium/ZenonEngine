@@ -72,9 +72,9 @@ void CSceneDefault::Finalize()
 	SceneBase::Finalize();
 }
 
-bool CSceneDefault::OnMouseClickToWorld(MouseButtonEventArgs::MouseButton& MouseButton, const glm::vec2& MousePosition, const Ray& RayToWorld)
+bool CSceneDefault::OnMouseClickToWorld(const MouseButtonEventArgs & e, const Ray& RayToWorld)
 {
-	if (MouseButton == MouseButtonEventArgs::MouseButton::Left)
+	if (e.Button == MouseButtonEventArgs::MouseButton::Left)
 	{
 		sceneNodeParentt->SetTranslate(GetCameraController()->RayToPlane(RayToWorld, Plane(glm::vec3(0.0f, 1.0f, 0.0f), 25.0f)));
 		return true;
@@ -82,7 +82,7 @@ bool CSceneDefault::OnMouseClickToWorld(MouseButtonEventArgs::MouseButton& Mouse
 	return false;
 }
 
-void CSceneDefault::OnMouseMoveToWorld(MouseButtonEventArgs::MouseButton& MouseButton, const glm::vec2 & MousePosition, const Ray & RayToWorld)
+void CSceneDefault::OnMouseMoveToWorld(const MouseMotionEventArgs & e, const Ray & RayToWorld)
 {
 }
 

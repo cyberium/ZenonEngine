@@ -26,9 +26,9 @@ public:
 	void RemoveChild(const std::shared_ptr<ISceneNode3D>& ParentNode, const std::shared_ptr<ISceneNode3D>& ChildNode) override;
 
 	void RaiseSceneChangeEvent(ESceneChangeType SceneChangeType, const std::shared_ptr<ISceneNode3D>& OwnerNode, const std::shared_ptr<ISceneNode3D>& ChildNode) override;
-	bool OnMouseClickToWorld(MouseButtonEventArgs::MouseButton& MouseButton, const glm::vec2& MousePosition, const Ray& RayToWorld) override;
-	void OnMouseReleaseToWorld(MouseButtonEventArgs::MouseButton& MouseButton, const glm::vec2& MousePosition, const Ray& RayToWorld) override;
-	void OnMouseMoveToWorld(MouseButtonEventArgs::MouseButton& MouseButton, const glm::vec2& MousePosition, const Ray& RayToWorld) override;
+	bool OnMouseClickToWorld(const MouseButtonEventArgs & e, const Ray& RayToWorld) override;
+	void OnMouseReleaseToWorld(const MouseButtonEventArgs & e, const Ray& RayToWorld) override;
+	void OnMouseMoveToWorld(const MouseMotionEventArgs & e, const Ray& RayToWorld) override;
 
 	void OnPreRender(RenderEventArgs& e) override;
 

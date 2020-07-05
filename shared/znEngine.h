@@ -5,6 +5,7 @@
 #include "../znEngine/NativeWindow_WindowsSpecific.h"
 
 // Nodes
+#include "../znEngine/FBX/FBXInterfaces.h"
 #include "../znEngine/SceneFunctional/UI/UIText.h"
 #include "../znEngine/SceneFunctional/UI/UIButton.h"
 #include "../znEngine/SceneFunctional/UI/UITexture.h"

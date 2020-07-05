@@ -18,55 +18,7 @@ void CEditedScene::Initialize()
 
 	auto fileNames = Utils::GetAllFilesInDirectory("C:\\_engine\\ZenonEngine_gamedata\\models", ".znmdl");
 
-	if (false && !fileNames.empty())
-	{
-		auto it = fileNames.begin();
-		auto sizeSqrtDouble = glm::sqrt(fileNames.size());
-		size_t sizeSqrt = glm::round(sizeSqrtDouble);
-		//sizeSqrt = 6;
-
-		std::shared_ptr<ISceneNode3D> sceneNodeParent = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>(ofkSceneNode3D)->CreateSceneNode3D(this, cSceneNode3D, GetRootNode3D());
-
-		for (size_t x = 0; x < sizeSqrt; x++)
-		{
-			for (size_t y = 0; y < sizeSqrt; y++)
-			{
-				if (it == fileNames.end())
-					continue;
-
-				auto fileName = (*it++);
-
-				Log::Info(fileName.c_str());
-
-				try
-				{
-					auto name = CFile(fileName + ".znmdl").Name();
-					name = name.substr(0, name.find_first_of('.'));
-
-					std::shared_ptr<ISceneNode3D> sceneNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>(ofkSceneNode3D)->CreateSceneNode3D(this, cSceneNode3D, sceneNodeParent);
-					sceneNode->SetName(name);
-					sceneNode->SetTranslate(500.0f + glm::vec3(float(x) * 40.0f, 0.0f, float(y) * 40.0f));
-
-					if (GetBaseManager().GetManager<IFilesManager>()->IsFileExists(fileName))
-					{
-						auto model = GetRenderDevice().GetObjectsFactory().CreateModel();
-						if (auto loadable = std::dynamic_pointer_cast<IObjectLoadSave>(model))
-						{
-							loadable->Load(GetBaseManager().GetManager<IFilesManager>()->Open(fileName));
-						}
-
-						sceneNode->GetComponent<IModelsComponent3D>()->AddModel(model);
-						sceneNode->GetComponent<IColliderComponent3D>()->SetBounds(model->GetBounds());
-						continue;
-					}
-				}
-				catch (const CException& e)
-				{
-					Log::Error(e.MessageCStr());
-				}
-			}
-		}
-	}
+	
 }
 
 void CEditedScene::Finalize()
@@ -99,6 +51,7 @@ std::shared_ptr<ISceneNode3D> CEditedScene::CreateNode(const glm::ivec3& Positio
 	//	return it->SceneNode;
 
 	auto node = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>(ofkSceneNode3D)->CreateSceneNode3D(this, cSceneNode3D, GetRootNode3D());
+	node->SetClassName(Type);
 	//node->SetTranslate(glm::vec3(Position));
 	//node->SetScale(glm::vec3(25.0f));
 	auto model = GetRenderDevice().GetObjectsFactory().CreateModel();

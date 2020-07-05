@@ -105,9 +105,9 @@ void CEdtor3DFrame::RaiseSceneChangeEvent(ESceneChangeType SceneChangeType, cons
 		m_EditorUI->OnSceneChanged();
 }
 
-bool CEdtor3DFrame::OnMouseClickToWorld(MouseButtonEventArgs::MouseButton & MouseButton, const glm::vec2 & MousePosition, const Ray & RayToWorld)
+bool CEdtor3DFrame::OnMouseClickToWorld(const MouseButtonEventArgs & e, const Ray & RayToWorld)
 {
-	if (MouseButton == MouseButtonEventArgs::MouseButton::Left)
+	if (e.Button == MouseButtonEventArgs::MouseButton::Left)
 	{
 		if (m_IsDraggingEnabled)
 		{
@@ -118,16 +118,31 @@ bool CEdtor3DFrame::OnMouseClickToWorld(MouseButtonEventArgs::MouseButton & Mous
 		auto nodes = FindIntersection(RayToWorld);
 		if (nodes.empty())
 		{
-			m_SelectionPrevPos = MousePosition;
-			m_SelectionTexture->SetTranslate(MousePosition);
+			m_SelectionPrevPos = e.GetPoint();
+			m_SelectionTexture->SetTranslate(e.GetPoint());
 			m_IsSelecting = true;
 			return true;
 		}
 
-		Selector_SelectNode(nodes.begin()->second);
+		auto node = nodes.begin()->second;
+		_ASSERT(node != nullptr);
+
+		if (e.Control)
+		{
+			auto selectedNodes = Selector_GetSelectedNodes();
+			auto it = std::find(selectedNodes.begin(), selectedNodes.end(), node);
+			if (it != selectedNodes.end())
+				Selector_RemoveNode(node);
+			else
+				Selector_AddNode(node);
+		}
+		else
+		{
+			Selector_SelectNode(nodes.begin()->second);
+		}
 		return  true;
 	}
-	else if (MouseButton == MouseButtonEventArgs::MouseButton::Right)
+	else if (e.Button == MouseButtonEventArgs::MouseButton::Right)
 	{
 		if (m_IsDraggingEnabled)
 		{
@@ -139,26 +154,26 @@ bool CEdtor3DFrame::OnMouseClickToWorld(MouseButtonEventArgs::MouseButton & Mous
 	return false;
 }
 
-void CEdtor3DFrame::OnMouseReleaseToWorld(MouseButtonEventArgs::MouseButton & MouseButton, const glm::vec2 & MousePosition, const Ray & RayToWorld)
+void CEdtor3DFrame::OnMouseReleaseToWorld(const MouseButtonEventArgs & e, const Ray & RayToWorld)
 {
-	if (MouseButton == MouseButtonEventArgs::MouseButton::Left)
+	if (e.Button == MouseButtonEventArgs::MouseButton::Left)
 	{
 		auto cachedSelectionPrevPos = m_SelectionPrevPos;
 
 		// Clear
 		m_SelectionTexture->SetScale(glm::vec3(0.001f));
-		m_SelectionPrevPos = MousePosition;
+		m_SelectionPrevPos = e.GetPoint();
 
 		if (m_IsSelecting)
 		{
-			if (glm::length(glm::abs(cachedSelectionPrevPos - MousePosition)) > 10.0f)
+			if (glm::length(glm::abs(cachedSelectionPrevPos - e.GetPoint())) > 10.0f)
 			{
 				Frustum f;
 				f.buildBoxFrustum(
-					GetCameraController()->ScreenToRay(GetRenderWindow()->GetViewport(), glm::vec2(glm::min(cachedSelectionPrevPos.x, MousePosition.x), glm::min(cachedSelectionPrevPos.y, MousePosition.y))),
-					GetCameraController()->ScreenToRay(GetRenderWindow()->GetViewport(), glm::vec2(glm::min(cachedSelectionPrevPos.x, MousePosition.x), glm::max(cachedSelectionPrevPos.y, MousePosition.y))),
-					GetCameraController()->ScreenToRay(GetRenderWindow()->GetViewport(), glm::vec2(glm::max(cachedSelectionPrevPos.x, MousePosition.x), glm::min(cachedSelectionPrevPos.y, MousePosition.y))),
-					GetCameraController()->ScreenToRay(GetRenderWindow()->GetViewport(), glm::vec2(glm::max(cachedSelectionPrevPos.x, MousePosition.x), glm::max(cachedSelectionPrevPos.y, MousePosition.y))),
+					GetCameraController()->ScreenToRay(GetRenderWindow()->GetViewport(), glm::vec2(glm::min(cachedSelectionPrevPos.x, e.GetPoint().x), glm::min(cachedSelectionPrevPos.y, e.GetPoint().y))),
+					GetCameraController()->ScreenToRay(GetRenderWindow()->GetViewport(), glm::vec2(glm::min(cachedSelectionPrevPos.x, e.GetPoint().x), glm::max(cachedSelectionPrevPos.y, e.GetPoint().y))),
+					GetCameraController()->ScreenToRay(GetRenderWindow()->GetViewport(), glm::vec2(glm::max(cachedSelectionPrevPos.x, e.GetPoint().x), glm::min(cachedSelectionPrevPos.y, e.GetPoint().y))),
+					GetCameraController()->ScreenToRay(GetRenderWindow()->GetViewport(), glm::vec2(glm::max(cachedSelectionPrevPos.x, e.GetPoint().x), glm::max(cachedSelectionPrevPos.y, e.GetPoint().y))),
 					15000.0f
 				);
 
@@ -171,19 +186,19 @@ void CEdtor3DFrame::OnMouseReleaseToWorld(MouseButtonEventArgs::MouseButton & Mo
 	}
 }
 
-void CEdtor3DFrame::OnMouseMoveToWorld(MouseButtonEventArgs::MouseButton & MouseButton, const glm::vec2& MousePosition, const Ray & RayToWorld)
+void CEdtor3DFrame::OnMouseMoveToWorld(const MouseMotionEventArgs & e, const Ray & RayToWorld)
 {
 	if (m_IsDraggingEnabled)
 	{
-		DoMoveNode(MousePosition);
+		DoMoveNode(e.GetPoint());
 		return;
 	}
 
-	if (MouseButton == MouseButtonEventArgs::MouseButton::Left)
+	if (e.LeftButton)
 	{
 		if (m_IsSelecting)
 		{
-			glm::vec2 scale = MousePosition - m_SelectionTexture->GetTranslation();
+			glm::vec2 scale = e.GetPoint() - m_SelectionTexture->GetTranslation();
 			m_SelectionTexture->SetScale(scale);
 		}
 	}

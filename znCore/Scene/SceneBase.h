@@ -37,9 +37,9 @@ public:
 	// Scene events
 	Delegate<SceneChangeEventArgs>&					SceneChangeEvent() override;
 	void                                            RaiseSceneChangeEvent(ESceneChangeType SceneChangeType, const std::shared_ptr<ISceneNode3D>& OwnerNode, const std::shared_ptr<ISceneNode3D>& ChildNode) override;
-	virtual bool                                    OnMouseClickToWorld(MouseButtonEventArgs::MouseButton& MouseButton, const glm::vec2& MousePosition, const Ray& RayToWorld);
-	virtual void                                    OnMouseReleaseToWorld(MouseButtonEventArgs::MouseButton& MouseButton, const glm::vec2& MousePosition, const Ray& RayToWorld);
-	virtual void                                    OnMouseMoveToWorld(MouseButtonEventArgs::MouseButton& MouseButton, const glm::vec2& MousePosition, const Ray& RayToWorld);
+	virtual bool                                    OnMouseClickToWorld(const MouseButtonEventArgs & e, const Ray& RayToWorld);
+	virtual void                                    OnMouseReleaseToWorld(const MouseButtonEventArgs & e, const Ray& RayToWorld);
+	virtual void                                    OnMouseMoveToWorld(const MouseMotionEventArgs & e, const Ray& RayToWorld);
 
 	// Engine events
 	virtual void                                    OnUpdate(UpdateEventArgs& e) ;
