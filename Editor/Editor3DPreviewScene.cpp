@@ -30,15 +30,18 @@ void CEditor3DPreviewScene::SetModel(const std::shared_ptr<IModel>& Model)
 	GetCameraController()->GetCamera()->SetTranslation(glm::vec3(radius * 2.0f));
 	GetCameraController()->GetCamera()->SetDirection(glm::vec3(-0.5f));
 
+	ResizeEventArgs resizeArgs(nullptr, GetRenderWindow()->GetWindowWidth(), GetRenderWindow()->GetWindowHeight());
+	OnWindowResize(resizeArgs);
+
 	UpdateEventArgs uArgs(nullptr, 0.0f, 0.0f, 0.0f, nullptr, nullptr);
 
-	/*RenderEventArgs rArgs(uArgs, nullptr);
+	RenderEventArgs rArgs(uArgs, nullptr);
 	OnUpdate(rArgs);
 	OnPreRender(rArgs);
 	OnRender(rArgs);
 	OnPostRender(rArgs);
 	OnRenderUI(rArgs);
-	GetRenderWindow()->Present();*/
+	GetRenderWindow()->Present();
 }
 
 

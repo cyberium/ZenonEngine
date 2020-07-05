@@ -19,7 +19,15 @@ MainEditor::MainEditor(QWidget* Parent)
 	// Unite file browser and log docker
 	QMainWindow::tabifyDockWidget(m_UI.DockerFileBrowser, m_UI.DockerLogViewer);
 
-	
+	m_MoverValues.insert(std::make_pair("<disabled>", 0.001f));
+	m_MoverValues.insert(std::make_pair("x1.0", 1.0f));
+	m_MoverValues.insert(std::make_pair("x5.0", 5.0f));
+	m_MoverValues.insert(std::make_pair("x10.0", 10.0f));
+
+	// Add items to Combo Box
+	for (const auto& v : m_MoverValues)
+		m_UI.Editor3DFrame_MoverStep->addItem(v.first.c_str());
+	connect(m_UI.Editor3DFrame_MoverStep, SIGNAL(currentIndexChanged(const QString&)), this, SLOT(MoverStepCurrentIndexChanged(const QString&)));
 }
 
 MainEditor::~MainEditor()
@@ -164,4 +172,17 @@ void MainEditor::Selector_OnSelectionChange()
 	getSceneViewer()->SelectNodes(selectedNodes);
 
 	m_PropertiesController->OnSceneNodeSelected(Selector_GetFirstSelectedNode().get());
+}
+
+
+//
+// Signals
+//
+void MainEditor::MoverStepCurrentIndexChanged(const QString & String)
+{
+	auto it = m_MoverValues.find(String.toStdString());
+	if (it == m_MoverValues.end())
+		_ASSERT(FALSE);
+
+	m_Editor3D->SetMoverValue(it->second);
 }

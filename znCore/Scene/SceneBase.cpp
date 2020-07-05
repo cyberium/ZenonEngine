@@ -35,19 +35,19 @@ void SceneBase::Initialize()
 	{
 		m_CameraPosText = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeUIFactory>(ofkSceneNodeUI)->CreateSceneNodeUI(this, cSceneNodeUI_Text);
 		GetRootNodeUI()->AddChild(m_CameraPosText);
-		m_CameraPosText->SetTranslate(glm::vec2(700.0f, 0.0f));
+		m_CameraPosText->SetTranslate(glm::vec2(5.0f, 5.0f));
 
 		m_CameraRotText = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeUIFactory>(ofkSceneNodeUI)->CreateSceneNodeUI(this, cSceneNodeUI_Text);
 		GetRootNodeUI()->AddChild(m_CameraRotText);
-		m_CameraRotText->SetTranslate(glm::vec2(700.0f, 20.0f));
+		m_CameraRotText->SetTranslate(glm::vec2(5.0f, 25.0f));
 
 		m_CameraRot2Text = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeUIFactory>(ofkSceneNodeUI)->CreateSceneNodeUI(this, cSceneNodeUI_Text);
 		GetRootNodeUI()->AddChild(m_CameraRot2Text);
-		m_CameraRot2Text->SetTranslate(glm::vec2(700.0f, 40.0f));
+		m_CameraRot2Text->SetTranslate(glm::vec2(5.0f, 45.0f));
 
 		m_FPSText = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeUIFactory>(ofkSceneNodeUI)->CreateSceneNodeUI(this, cSceneNodeUI_Text);
 		GetRootNodeUI()->AddChild(m_FPSText);
-		m_FPSText->SetTranslate(glm::vec2(700.0f, 60.0f));
+		m_FPSText->SetTranslate(glm::vec2(5.0f, 65.0f));
 	}
 }
 
@@ -274,8 +274,6 @@ void SceneBase::OnUpdate(UpdateEventArgs& e)
 
 void SceneBase::OnPreRender(RenderEventArgs & e)
 {
-	//m_FrameQuery->Begin(e.FrameCounter);
-//m_TestQuery->Begin(e.FrameCounter);
 	m_Start = std::chrono::high_resolution_clock::now();
 }
 

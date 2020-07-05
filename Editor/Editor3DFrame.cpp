@@ -3,29 +3,30 @@
 // Gerenal
 #include "Editor3DFrame.h"
 
-CSceneEditor::CSceneEditor(IBaseManager& BaseManager)
+CEdtor3DFrame::CEdtor3DFrame(IBaseManager& BaseManager)
 	: SceneBase(BaseManager)
 	, m_EditorUI(nullptr)
 	, m_IsDraggingEnabled(false)
 	, m_IsDraggingPermanentCreation(false)
+	, m_MoverValue(1.0f)
 	, m_IsSelecting(false)
 {
 	m_EditedScene = std::make_shared<CEditedScene>(BaseManager);
 	m_EditedScene->Initialize();
 }
 
-CSceneEditor::~CSceneEditor()
+CEdtor3DFrame::~CEdtor3DFrame()
 {
 }
 
-void CSceneEditor::SetEditorUI(IEditorUIFrame * EditorUIFrame)
+void CEdtor3DFrame::SetEditorUI(IEditorUIFrame * EditorUIFrame)
 {
 	m_EditorUI = EditorUIFrame;
 
 	Selector_SetOtherSelector(dynamic_cast<CSceneNodesSelector*>(m_EditorUI));
 }
 
-void CSceneEditor::SetPreviewScene(const std::shared_ptr<CEditor3DPreviewScene>& PreviewScene)
+void CEdtor3DFrame::SetPreviewScene(const std::shared_ptr<CEditor3DPreviewScene>& PreviewScene)
 {
 	m_PreviewScene = PreviewScene;
 }
@@ -34,7 +35,7 @@ void CSceneEditor::SetPreviewScene(const std::shared_ptr<CEditor3DPreviewScene>&
 //
 // IGameState
 //
-void CSceneEditor::Initialize()
+void CEdtor3DFrame::Initialize()
 {
 	SceneBase::Initialize();
 
@@ -57,17 +58,17 @@ void CSceneEditor::Initialize()
 	GetCameraController()->GetCamera()->SetPitch(-45);
 }
 
-void CSceneEditor::Finalize()
+void CEdtor3DFrame::Finalize()
 {
 	SceneBase::Finalize();
 }
 
-void CSceneEditor::AddChild(const std::shared_ptr<ISceneNode3D>& ParentNode, const std::shared_ptr<ISceneNode3D>& ChildNode)
+void CEdtor3DFrame::AddChild(const std::shared_ptr<ISceneNode3D>& ParentNode, const std::shared_ptr<ISceneNode3D>& ChildNode)
 {
 	__super::AddChild(ParentNode, ChildNode);
 }
 
-void CSceneEditor::RemoveChild(const std::shared_ptr<ISceneNode3D>& ParentNode, const std::shared_ptr<ISceneNode3D>& ChildNode)
+void CEdtor3DFrame::RemoveChild(const std::shared_ptr<ISceneNode3D>& ParentNode, const std::shared_ptr<ISceneNode3D>& ChildNode)
 {
 	__super::RemoveChild(ParentNode, ChildNode);
 }
@@ -87,7 +88,7 @@ bool IsChildOf(const std::shared_ptr<ISceneNode3D>& Parent, const std::shared_pt
 	return false;
 }
 
-void CSceneEditor::RaiseSceneChangeEvent(ESceneChangeType SceneChangeType, const std::shared_ptr<ISceneNode3D>& OwnerNode, const std::shared_ptr<ISceneNode3D>& ChildNode)
+void CEdtor3DFrame::RaiseSceneChangeEvent(ESceneChangeType SceneChangeType, const std::shared_ptr<ISceneNode3D>& OwnerNode, const std::shared_ptr<ISceneNode3D>& ChildNode)
 {
 	if (SceneChangeType == ESceneChangeType::NodeRemovedFromParent)
 	{
@@ -104,7 +105,7 @@ void CSceneEditor::RaiseSceneChangeEvent(ESceneChangeType SceneChangeType, const
 		m_EditorUI->OnSceneChanged();
 }
 
-bool CSceneEditor::OnMouseClickToWorld(MouseButtonEventArgs::MouseButton & MouseButton, const glm::vec2 & MousePosition, const Ray & RayToWorld)
+bool CEdtor3DFrame::OnMouseClickToWorld(MouseButtonEventArgs::MouseButton & MouseButton, const glm::vec2 & MousePosition, const Ray & RayToWorld)
 {
 	if (MouseButton == MouseButtonEventArgs::MouseButton::Left)
 	{
@@ -138,7 +139,7 @@ bool CSceneEditor::OnMouseClickToWorld(MouseButtonEventArgs::MouseButton & Mouse
 	return false;
 }
 
-void CSceneEditor::OnMouseReleaseToWorld(MouseButtonEventArgs::MouseButton & MouseButton, const glm::vec2 & MousePosition, const Ray & RayToWorld)
+void CEdtor3DFrame::OnMouseReleaseToWorld(MouseButtonEventArgs::MouseButton & MouseButton, const glm::vec2 & MousePosition, const Ray & RayToWorld)
 {
 	if (MouseButton == MouseButtonEventArgs::MouseButton::Left)
 	{
@@ -170,7 +171,7 @@ void CSceneEditor::OnMouseReleaseToWorld(MouseButtonEventArgs::MouseButton & Mou
 	}
 }
 
-void CSceneEditor::OnMouseMoveToWorld(MouseButtonEventArgs::MouseButton & MouseButton, const glm::vec2& MousePosition, const Ray & RayToWorld)
+void CEdtor3DFrame::OnMouseMoveToWorld(MouseButtonEventArgs::MouseButton & MouseButton, const glm::vec2& MousePosition, const Ray & RayToWorld)
 {
 	if (m_IsDraggingEnabled)
 	{
@@ -189,33 +190,32 @@ void CSceneEditor::OnMouseMoveToWorld(MouseButtonEventArgs::MouseButton & MouseB
 }
 
 
-void CSceneEditor::OnPreRender(RenderEventArgs& e)
+void CEdtor3DFrame::OnPreRender(RenderEventArgs& e)
 {
-
 	SceneBase::OnPreRender(e);
 }
 
-void CSceneEditor::OnWindowMouseMoved(MouseMotionEventArgs & e)
+void CEdtor3DFrame::OnWindowMouseMoved(MouseMotionEventArgs & e)
 {
 	__super::OnWindowMouseMoved(e);
 }
 
-bool CSceneEditor::OnWindowMouseButtonPressed(MouseButtonEventArgs & e)
+bool CEdtor3DFrame::OnWindowMouseButtonPressed(MouseButtonEventArgs & e)
 {
 	return __super::OnWindowMouseButtonPressed(e);;
 }
 
-void CSceneEditor::OnWindowMouseButtonReleased(MouseButtonEventArgs & e)
+void CEdtor3DFrame::OnWindowMouseButtonReleased(MouseButtonEventArgs & e)
 {
 	__super::OnWindowMouseButtonReleased(e);
 }
 
-bool CSceneEditor::OnWindowKeyPressed(KeyEventArgs & e)
+bool CEdtor3DFrame::OnWindowKeyPressed(KeyEventArgs & e)
 {
 	return __super::OnWindowKeyPressed(e);
 }
 
-void CSceneEditor::OnWindowKeyReleased(KeyEventArgs & e)
+void CEdtor3DFrame::OnWindowKeyReleased(KeyEventArgs & e)
 {
 	__super::OnWindowKeyReleased(e);
 }
@@ -225,32 +225,32 @@ void CSceneEditor::OnWindowKeyReleased(KeyEventArgs & e)
 //
 // IEditor3DFrame
 //
-IBaseManager & CSceneEditor::GetBaseManager2() const
+IBaseManager& CEdtor3DFrame::GetBaseManager2() const
 {
 	return GetBaseManager();
 }
 
-IRenderDevice & CSceneEditor::GetRenderDevice2() const
+IRenderDevice& CEdtor3DFrame::GetRenderDevice2() const
 {
 	return GetRenderDevice();
 }
 
-void CSceneEditor::LockUpdates()
+void CEdtor3DFrame::LockUpdates()
 {
 	Freeze();
 }
 
-void CSceneEditor::UnlockUpdates()
+void CEdtor3DFrame::UnlockUpdates()
 {
 	Unfreeze();
 }
 
-std::shared_ptr<ISceneNode3D> CSceneEditor::GetRealRootNode3D() const
+std::shared_ptr<ISceneNode3D> CEdtor3DFrame::GetRealRootNode3D() const
 {
 	return m_EditedScene->GetRootNode3D();
 }
 
-std::shared_ptr<ISceneNode3D> CSceneEditor::GetNodeUnderMouse(const glm::ivec2& MousePos) const
+std::shared_ptr<ISceneNode3D> CEdtor3DFrame::GetNodeUnderMouse(const glm::ivec2& MousePos) const
 {
 	auto nodes = FindIntersection(GetCameraController()->ScreenToRay(GetRenderWindow()->GetViewport(), MousePos));
 	if (nodes.empty())
@@ -258,13 +258,13 @@ std::shared_ptr<ISceneNode3D> CSceneEditor::GetNodeUnderMouse(const glm::ivec2& 
 	return nodes.begin()->second;
 }
 
-void CSceneEditor::OnCollectionWidget_ModelSelected(const std::shared_ptr<IModel>& Model)
+void CEdtor3DFrame::OnCollectionWidget_ModelSelected(const std::shared_ptr<IModel>& Model)
 {
 	if (m_PreviewScene)
 		m_PreviewScene->SetModel(Model);
 }
 
-void CSceneEditor::DropEvent(const glm::vec2& Position)
+void CEdtor3DFrame::DropEvent(const glm::vec2& Position)
 {
 	if (m_IsDraggingEnabled)
 	{
@@ -277,7 +277,7 @@ void CSceneEditor::DropEvent(const glm::vec2& Position)
 	
 }
 
-void CSceneEditor::DragEnterEvent(const SDragData& Data)
+void CEdtor3DFrame::DragEnterEvent(const SDragData& Data)
 {
 	m_IsDraggingEnabled = true;
 	m_IsDraggingPermanentCreation = Data.IsCtrl;
@@ -290,7 +290,7 @@ void CSceneEditor::DragEnterEvent(const SDragData& Data)
 	m_DraggedNode->SetTranslate(pos);
 }
 
-void CSceneEditor::DragMoveEvent(const glm::vec2& Position)
+void CEdtor3DFrame::DragMoveEvent(const glm::vec2& Position)
 {
 	if (m_IsDraggingEnabled)
 	{
@@ -298,7 +298,7 @@ void CSceneEditor::DragMoveEvent(const glm::vec2& Position)
 	}
 }
 
-void CSceneEditor::DragLeaveEvent()
+void CEdtor3DFrame::DragLeaveEvent()
 {
 	m_IsDraggingEnabled = false;
 	m_IsDraggingPermanentCreation = false;
@@ -307,35 +307,40 @@ void CSceneEditor::DragLeaveEvent()
 		m_DraggedNode->RemoveChild(m_DraggedNode->GetChilds()[0]);
 }
 
+void CEdtor3DFrame::SetMoverValue(float value)
+{
+	m_MoverValue = value;
+}
+
 
 
 //
 // CSceneNodesSelector
 //
-void CSceneEditor::Selector_OnSelectionChange()
+void CEdtor3DFrame::Selector_OnSelectionChange()
 {
 	m_DrawSelectionPass->RefreshInstanceBuffer();
 }
 
 
-glm::ivec3 CSceneEditor::ToBoxCoords(const glm::vec3 & Position)
+glm::ivec3 CEdtor3DFrame::ToBoxCoords(const glm::vec3 & Position)
 {
-	return glm::round(Position / 10.0f);
+	return glm::round(Position / m_MoverValue);
 }
 
-glm::vec3 CSceneEditor::FixBoxCoords(const glm::vec3 & Position)
+glm::vec3 CEdtor3DFrame::FixBoxCoords(const glm::vec3 & Position)
 {
 	glm::vec3 newPosition = Position;
-	newPosition /= 10.0f;
+	newPosition /= m_MoverValue;
 	newPosition = glm::round(newPosition);
-	newPosition *= 10.0f;
+	newPosition *= m_MoverValue;
 	return newPosition;
 }
 
 //
 // Protected
 //
-void CSceneEditor::Load3D()
+void CEdtor3DFrame::Load3D()
 {
 	{
 		auto sceneNodeLight = GetRootNode3D()->CreateSceneNode<SceneNode3D>();
@@ -444,7 +449,7 @@ void CSceneEditor::Load3D()
 	m_Technique3D.AddPass(m_DrawSelectionPass);
 }
 
-void CSceneEditor::LoadUI()
+void CEdtor3DFrame::LoadUI()
 {
 	m_DraggerTextUI = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeUIFactory>(ofkSceneNodeUI)->CreateSceneNodeUI(this, cSceneNodeUI_Text);
 	GetRootNodeUI()->AddChild(m_DraggerTextUI);
@@ -456,7 +461,7 @@ void CSceneEditor::LoadUI()
 	m_TechniqueUI.AddPass(std::make_shared<CUIFontPass>(GetRenderDevice(), shared_from_this())->CreatePipeline(GetRenderWindow()->GetRenderTarget(), &GetRenderWindow()->GetViewport()));
 }
 
-void CSceneEditor::DoMoveNode(const glm::vec2& MousePos)
+void CEdtor3DFrame::DoMoveNode(const glm::vec2& MousePos)
 {
 	if (!m_IsDraggingEnabled)
 		return;
@@ -467,13 +472,14 @@ void CSceneEditor::DoMoveNode(const glm::vec2& MousePos)
 	auto bounds = m_DraggedNode->GetChilds()[0]->GetModelsComponent()->GetModels()[0]->GetBounds();
 	auto pos = GetCameraController()->RayToPlane(ray, Plane(glm::vec3(0.0f, 1.0f, 0.0f), bounds.getMax().y / 2.0f));
 
-	m_DraggedNode->SetTranslate(pos - bounds.getCenter());
+	pos -= bounds.getCenter();
+	m_DraggedNode->SetTranslate(FixBoxCoords(pos));
 
 	m_DraggerTextUI->GetProperties()->GetPropertyT<std::string>("Text")->Set("Pos: " + std::to_string(pos.x) + ", " + std::to_string(pos.y) + ", " + std::to_string(pos.z));
 	m_DraggerTextUI->SetTranslate(MousePos + glm::vec2(0.0f, - 15.0f));
 }
 
-void CSceneEditor::DoDropNodeAndCreateIt()
+void CEdtor3DFrame::DoDropNodeAndCreateIt()
 {
 	if (!m_IsDraggingEnabled)
 		return;

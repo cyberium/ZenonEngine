@@ -6,14 +6,14 @@
 #include "SceneNodesSelector.h"
 #include "Passes/DrawSelectionPass.h"
 
-class CSceneEditor
+class CEdtor3DFrame
 	: public SceneBase
 	, public IEditor3DFrame
 	, public CSceneNodesSelector
 {
 public:
-	CSceneEditor(IBaseManager& BaseManager);
-	virtual ~CSceneEditor();
+	CEdtor3DFrame(IBaseManager& BaseManager);
+	virtual ~CEdtor3DFrame();
 
 	void SetEditorUI(IEditorUIFrame* EditorUIFrame);
 	void SetPreviewScene(const std::shared_ptr<CEditor3DPreviewScene>& PreviewScene);
@@ -50,6 +50,7 @@ public:
 	void DragEnterEvent(const SDragData& Data) override;
 	void DragMoveEvent(const glm::vec2& Position) override;
 	void DragLeaveEvent() override;
+	void SetMoverValue(float value) override;
 
 	// CSceneNodesSelector
 	void Selector_OnSelectionChange() override;
@@ -70,6 +71,7 @@ private:
 	std::shared_ptr<ISceneNode3D> m_DraggedNode;
 	std::shared_ptr<ISceneNodeUI> m_DraggerTextUI;
 
+	float m_MoverValue;
 	std::shared_ptr<ISceneNode3D> m_Mover;
 	
 	bool m_IsSelecting;

@@ -30,6 +30,8 @@ ZN_INTERFACE IEditor3DFrame
 	virtual void DragEnterEvent(const SDragData& Data) = 0;
 	virtual void DragMoveEvent(const glm::vec2& Position) = 0;
 	virtual void DragLeaveEvent() = 0;
+
+	virtual void SetMoverValue(float value) = 0;
 };
 
 ZN_INTERFACE IEditorUIFrame

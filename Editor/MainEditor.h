@@ -33,8 +33,12 @@ public:
 	// CSceneNodesSelector
 	void Selector_OnSelectionChange() override;
 
+private slots:
+	void MoverStepCurrentIndexChanged(const QString &);
+
 private:
 	std::shared_ptr<CPropertiesController> m_PropertiesController;
+	std::map<std::string, float> m_MoverValues;
 
 private:
 	IEditor3DFrame* m_Editor3D;

@@ -15,9 +15,9 @@ public:
 	virtual ~SceneBase();
 
 	// IScene
-	void                                            SetRenderWindow(const std::shared_ptr<IRenderWindow>& RenderWindow) override final;
-	void                                            ConnectEvents(const std::shared_ptr<IRenderWindowEvents>& WindowEvents) override final;
-	void                                            DisconnectEvents(const std::shared_ptr<IRenderWindowEvents>& WindowEvents) override final;
+	void                                            SetRenderWindow(const std::shared_ptr<IRenderWindow>& RenderWindow) override;
+	void                                            ConnectEvents(const std::shared_ptr<IRenderWindowEvents>& WindowEvents) override;
+	void                                            DisconnectEvents(const std::shared_ptr<IRenderWindowEvents>& WindowEvents) override;
 
 	virtual void                                    Initialize();
 	virtual void                                    Finalize();
@@ -134,7 +134,6 @@ private: // Mouse events connections
 	Delegate<MouseButtonEventArgs>::FunctionDecl    m_OnMouseButtonReleasedConnection;
 	Delegate<MouseMotionEventArgs>::FunctionDecl    m_OnMouseMovedConnection;
 	Delegate<MouseWheelEventArgs>::FunctionDecl     m_OnMouseWheelConnection;
-
 
 private:
 	Delegate<SceneChangeEventArgs>					m_SceneChangeEvent;
