@@ -2,7 +2,7 @@
 
 class ZN_API RenderPass 
 	: public IRenderPass
-	, public Object
+	
 {
 public:
 	RenderPass(IRenderDevice& RenderDevice);

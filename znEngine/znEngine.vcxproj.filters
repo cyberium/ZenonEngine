@@ -148,6 +148,9 @@
     <Filter Include="Resources\Shaders_D3D\3D\Editor">
       <UniqueIdentifier>{64857836-8989-4f6f-abec-81d619938378}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resources\Shaders_D3D\3D\Deffered">
+      <UniqueIdentifier>{c75d5999-07a7-4693-8635-28690f452353}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -225,12 +228,6 @@
     </ClCompile>
     <ClCompile Include="Materials\MaterialModel.cpp">
       <Filter>Materials</Filter>
-    </ClCompile>
-    <ClCompile Include="Passes\MaterialPassOpaque.cpp">
-      <Filter>Passes\3D</Filter>
-    </ClCompile>
-    <ClCompile Include="Passes\MaterialPassTransperent.cpp">
-      <Filter>Passes\3D</Filter>
     </ClCompile>
     <ClCompile Include="Passes\DefferedRender.cpp">
       <Filter>Passes\3D\DefferedLighting</Filter>
@@ -558,6 +555,9 @@
     <ClCompile Include="Passes\UIColorPass.cpp">
       <Filter>Passes\UI</Filter>
     </ClCompile>
+    <ClCompile Include="Passes\MaterialModelPass.cpp">
+      <Filter>Passes\3D</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="common.h">
@@ -638,12 +638,6 @@
     </ClInclude>
     <ClInclude Include="Materials\MaterialModel.h">
       <Filter>Materials</Filter>
-    </ClInclude>
-    <ClInclude Include="Passes\MaterialPassOpaque.h">
-      <Filter>Passes\3D</Filter>
-    </ClInclude>
-    <ClInclude Include="Passes\MaterialPassTransperent.h">
-      <Filter>Passes\3D</Filter>
     </ClInclude>
     <ClInclude Include="Passes\DefferedRender.h">
       <Filter>Passes\3D\DefferedLighting</Filter>
@@ -1032,6 +1026,9 @@
     <ClInclude Include="Passes\UIColorPass.h">
       <Filter>Passes\UI</Filter>
     </ClInclude>
+    <ClInclude Include="Passes\MaterialModelPass.h">
+      <Filter>Passes\3D</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="znEngine.rc">
@@ -1084,9 +1081,6 @@
     <Text Include="Resources\shaders_D3D\Light.hlsl">
       <Filter>Resources\Shaders_D3D</Filter>
     </Text>
-    <Text Include="Resources\shaders_D3D\3D\Shadow.hlsl">
-      <Filter>Resources\Shaders_D3D\3D</Filter>
-    </Text>
     <Text Include="Resources\shaders_D3D\3D\Model_Forward.hlsl">
       <Filter>Resources\Shaders_D3D\3D</Filter>
     </Text>
@@ -1108,6 +1102,9 @@
     <Text Include="Resources\shaders_D3D\3D\Editor\EditorShaders.hlsl">
       <Filter>Resources\Shaders_D3D\3D\Editor</Filter>
     </Text>
+    <Text Include="Resources\shaders_D3D\3D\Shadow.hlsl">
+      <Filter>Resources\Shaders_D3D\3D\Deffered</Filter>
+    </Text>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Resources\Textures\default.png">
@@ -1115,9 +1112,6 @@
     </Image>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\shaders_D3D\3D\Model_Deffered.hlsl">
-      <Filter>Resources\Shaders_D3D\3D</Filter>
-    </None>
     <None Include="Resources\shaders_D3D\3D\Textured.hlsl">
       <Filter>Resources\Shaders_D3D\3D\Base</Filter>
     </None>
@@ -1128,7 +1122,10 @@
       <Filter>Formats\Images</Filter>
     </None>
     <None Include="Resources\shaders_D3D\3D\Deffered.hlsl">
-      <Filter>Resources\Shaders_D3D\3D</Filter>
+      <Filter>Resources\Shaders_D3D\3D\Deffered</Filter>
+    </None>
+    <None Include="Resources\shaders_D3D\3D\Model_Deffered.hlsl">
+      <Filter>Resources\Shaders_D3D\3D\Deffered</Filter>
     </None>
   </ItemGroup>
 </Project>

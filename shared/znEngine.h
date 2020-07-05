@@ -1,11 +1,12 @@
 #pragma once
 
+#include "../znEngine/common.h"
+
 #include "../znEngine/Application.h"
 #include "../znEngine/NativeWindowFactory.h"
 #include "../znEngine/NativeWindow_WindowsSpecific.h"
 
 // Nodes
-#include "../znEngine/FBX/FBXInterfaces.h"
 #include "../znEngine/SceneFunctional/UI/UIText.h"
 #include "../znEngine/SceneFunctional/UI/UIButton.h"
 #include "../znEngine/SceneFunctional/UI/UITexture.h"

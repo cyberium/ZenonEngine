@@ -35,14 +35,11 @@ struct __declspec(novtable, align(16)) ZN_API PerFrame
 
 class ZN_API RenderPassPipelined
 	: public IRenderPassPipelined
-	, public Object
+	, public std::enable_shared_from_this<IRenderPassPipelined>
 {
 public:
 	RenderPassPipelined(IRenderDevice& RenderDevice);
 	virtual ~RenderPassPipelined();
-
-	std::shared_ptr<IRenderPassPipelined> shared_from_this();
-	std::weak_ptr<IRenderPassPipelined> weak_from_this();
 
 	// IRenderPass
 	void SetEnabled(bool Value) override final;

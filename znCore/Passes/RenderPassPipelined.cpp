@@ -27,18 +27,6 @@ RenderPassPipelined::~RenderPassPipelined()
 
 
 
-std::shared_ptr<IRenderPassPipelined> RenderPassPipelined::shared_from_this()
-{
-	return std::dynamic_pointer_cast<IRenderPassPipelined>(IVisitor::shared_from_this());
-}
-
-std::weak_ptr<IRenderPassPipelined> RenderPassPipelined::weak_from_this()
-{
-	return std::weak_ptr<IRenderPassPipelined>(shared_from_this());
-}
-
-
-
 //
 // IRenderPass
 //

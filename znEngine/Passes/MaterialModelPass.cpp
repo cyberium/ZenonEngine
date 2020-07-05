@@ -1,24 +1,32 @@
 #include "stdafx.h"
 
 // General
-#include "MaterialPassOpaque.h"
+#include "MaterialModelPass.h"
 
 // Additional
 #include "Materials/MaterialModel.h"
 
-CMaterialPassOpaque::CMaterialPassOpaque(IRenderDevice& RenderDevice, std::shared_ptr<IScene> Scene)
+CMaterialModelPass::CMaterialModelPass(IRenderDevice& RenderDevice, std::shared_ptr<IScene> Scene)
 	: Base3DPass(RenderDevice, Scene)
+{
+	
+}
+
+CMaterialModelPass::~CMaterialModelPass()
 {}
 
-CMaterialPassOpaque::~CMaterialPassOpaque()
-{}
+
+IShaderParameter * CMaterialModelPass::GetLightsShaderParameter() const
+{
+	return m_ShaderLightsBufferParameter;
+}
 
 
 
 //
 // IRenderPassPipelined
 //
-std::shared_ptr<IRenderPassPipelined> CMaterialPassOpaque::CreatePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport)
+std::shared_ptr<IRenderPassPipelined> CMaterialModelPass::CreatePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport)
 {
 	std::shared_ptr<IShader> vertexShader;
 	std::shared_ptr<IShader> pixelShader;
@@ -50,6 +58,9 @@ std::shared_ptr<IRenderPassPipelined> CMaterialPassOpaque::CreatePipeline(std::s
 	samplerClamp->SetWrapMode(ISamplerState::WrapMode::Clamp, ISamplerState::WrapMode::Clamp);
 	Pipeline->SetSampler(1, samplerClamp);
 
+	m_ShaderLightsBufferParameter = &pixelShader->GetShaderParameterByName("Lights");
+	_ASSERT(m_ShaderLightsBufferParameter->IsValid());
+
 	return SetPipeline(Pipeline);
 }
 
@@ -58,12 +69,16 @@ std::shared_ptr<IRenderPassPipelined> CMaterialPassOpaque::CreatePipeline(std::s
 //
 // IVisitor
 //
-EVisitResult CMaterialPassOpaque::Visit(const IModel * Model)
+EVisitResult CMaterialModelPass::Visit(const IModel * Model)
 {
-	return Base3DPass::Visit(Model);
+	EVisitResult visitResult = AllowVisitChilds;
+
+		visitResult = Base3DPass::Visit(Model);
+	
+	return visitResult;
 }
 
-EVisitResult CMaterialPassOpaque::Visit(const IGeometry * Geometry, const IMaterial* Material, SGeometryDrawArgs GeometryDrawArgs)
+EVisitResult CMaterialModelPass::Visit(const IGeometry * Geometry, const IMaterial* Material, SGeometryDrawArgs GeometryDrawArgs)
 {
 	const MaterialModel* objMaterial = dynamic_cast<const MaterialModel*>(Material);
 	if (objMaterial == nullptr)
@@ -71,6 +86,17 @@ EVisitResult CMaterialPassOpaque::Visit(const IGeometry * Geometry, const IMater
 
 	//if (objMaterial->GetTexture(0) == nullptr || objMaterial->GetTexture(0)->IsTransparent() == true)
 	//	return false;
+	if (Material)
+		Material->Bind(GetRenderEventArgs().PipelineState->GetShaders());
 
-	return Base3DPass::Visit(Geometry, Material, GeometryDrawArgs);
+	m_ShaderLightsBufferParameter->Bind();
+
+	Geometry->Render(GetRenderEventArgs(), GetRenderEventArgs().PipelineState->GetShaders().at(EShaderType::VertexShader).get(), GeometryDrawArgs);
+
+	m_ShaderLightsBufferParameter->Unbind();
+
+	if (Material)
+		Material->Unbind(GetRenderEventArgs().PipelineState->GetShaders());
+
+	return AllowAll;
 }

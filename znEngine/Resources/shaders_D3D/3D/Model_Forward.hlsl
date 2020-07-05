@@ -1,5 +1,13 @@
 #include "IDB_SHADER_COMMON_INCLUDE"
 
+#define RENDERER_FORWARD 0
+#define RENDERER_DEFFERED 1
+
+#ifndef RENDERER_TYPE
+#pragma message( "RENDERER_TYPE undefined. Default to RENDERER_FORWARD.")
+#define RENDERER_TYPE RENDERER_FORWARD
+#endif
+
 struct VertexShaderOutput
 {
 	float4 position     : SV_POSITION;  // Clip space position.
@@ -9,7 +17,9 @@ struct VertexShaderOutput
 	float3 tangentVS    : TANGENT;      // View space tangent.
 	float3 binormalVS   : BINORMAL;     // View space binormal.
 
+#if RENDERER_TYPE == RENDERER_FORWARD
 	float4 lightViewPosition : TEXCOORD1;
+#endif
 };
 
 
@@ -17,7 +27,6 @@ cbuffer Material : register(b2)
 {
 	MaterialModel Mat;
 };
-
 
 Texture2D TextureDiffuse                  : register(t0);
 Texture2D TextureEmissive                 : register(t1);
@@ -30,9 +39,11 @@ Texture2D TextureTransparency             : register(t7);
 Texture2D TextureReflection               : register(t8);
 Texture2D TextureDisplacement             : register(t9);
 
+#if RENDERER_TYPE == RENDERER_FORWARD
 StructuredBuffer<Light> Lights  : register(t10);
-StructuredBuffer<PerObject> Instances  : register(t11);
+#endif
 
+StructuredBuffer<PerObject> Instances  : register(t11);
 Texture2D TextureShadow : register(t12);
 
 VertexShaderOutput VS_main(VSInputPTNTB IN)
@@ -93,7 +104,6 @@ VertexShaderOutput VS_PTN(VSInputPTN IN)
 
 	//const float4x4 mvl = mul(PL.LightView, PO.Model);
 	//const float4x4 mvpl = mul(PL.LightProjection, mvl);
-
 	//OUT.lightViewPosition = mul(mvpl, float4(IN.position, 1.0f));
 
 	return OUT;
@@ -228,29 +238,31 @@ DefferedRenderPSOut PS_main(VertexShaderOutput IN) : SV_TARGET
 		N = normalize(float4(IN.normalVS, 0));
 	}
 
-/*	LightingResult lit = DoLighting(Lights, mat, eyePos, P, N);
-	diffuse *= float4(lit.Diffuse.rgb, 1.0f); // Discard the alpha value from the lighting calculations.
+	LightingResult lit = DoLighting(Lights, mat, eyePos, P, N);
+	float4 diffuseLight = diffuse * float4(lit.Diffuse.rgb, 1.0f); // Discard the alpha value from the lighting calculations.
 
-	float4 specular = 0;
+	float4 specularLight = 0;
 	if (mat.SpecularFactor > 1.0f) // If specular power is too low, don't use it.
 	{
-		specular = float4(mat.Specular, 1.0);
+		specularLight = float4(mat.Specular, 1.0);
 		if (mat.HasTextureSpecular)
 		{
 			float4 specularTex = TextureSpecular.Sample(LinearRepeatSampler, IN.texCoord);
-			if (any(specular.rgb))
+			if (any(specularLight.rgb))
 			{
-				specular *= specularTex;
+				specularLight *= specularTex;
 			}
 			else
 			{
-				specular = specularTex;
+				specularLight = specularTex;
 			}
 		}
-		specular *= lit.Specular;
+		specularLight *= lit.Specular;
 	}
 
-	/*float4 colorResult = float4((ambient + emissive + diffuse + specular).rgb, 1.0f
+/*
+
+	float4 colorResult = float4((ambient + emissive + diffuseLight + specularLight).rgb, 1.0f
 	//alpha * (1.0 - mat.TransparencyFactor)
 	);
 
@@ -275,18 +287,16 @@ DefferedRenderPSOut PS_main(VertexShaderOutput IN) : SV_TARGET
 		{
 			colorResult *= 0.1f;
 		}
-	}*/
+	}
 
-	float4 colorResult = float4(diffuse.rgb, 1.0f);
+*/
 
+	float4 colorResult = float4(lit.Ambient.rgb * ambient.rgb * diffuse.rgb + diffuseLight.rgb + specularLight.rgb, 1.0f);
 
 	DefferedRenderPSOut OUT;
 	//OUT.PositionWS = IN.position;
-	//OUT.Diffuse = float4(N.xyz, 1.0f);
-	//OUT.Diffuse = diffuse;
 	OUT.Diffuse = colorResult;
-	//OUT.Diffuse = float4((/*ambient + */emissive + diffuse + specular).rgb, 1.0f/*alpha * (1.0 - mat.TransparencyFactor)*/);
-	OUT.Specular = float4(1.0, 1.0, 1.0, 1.0);
+	OUT.Specular = specularLight;
 	OUT.NormalWS = float4(1.0, 1.0, 1.0, 0.0);
 	return OUT;
 }

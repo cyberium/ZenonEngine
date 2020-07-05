@@ -320,8 +320,7 @@
     <ClCompile Include="Passes\DefferedRender.cpp" />
     <ClCompile Include="Passes\DefferedRenderFinal.cpp" />
     <ClCompile Include="Passes\DefferedRenderPrepareLights.cpp" />
-    <ClCompile Include="Passes\MaterialPassOpaque.cpp" />
-    <ClCompile Include="Passes\MaterialPassTransperent.cpp" />
+    <ClCompile Include="Passes\MaterialModelPass.cpp" />
     <ClCompile Include="Passes\RenderPassDefaultCreator.cpp" />
     <ClCompile Include="Passes\RenderPassFactory.cpp" />
     <ClCompile Include="Passes\MaterialDebugPass.cpp" />
@@ -484,8 +483,7 @@
     <ClInclude Include="Passes\DefferedRender.h" />
     <ClInclude Include="Passes\DefferedRenderFinal.h" />
     <ClInclude Include="Passes\DefferedRenderPrepareLights.h" />
-    <ClInclude Include="Passes\MaterialPassOpaque.h" />
-    <ClInclude Include="Passes\MaterialPassTransperent.h" />
+    <ClInclude Include="Passes\MaterialModelPass.h" />
     <ClInclude Include="Passes\RenderPassDefaultCreator.h" />
     <ClInclude Include="Passes\RenderPassFactory.h" />
     <ClInclude Include="Passes\MaterialDebugPass.h" />

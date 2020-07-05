@@ -64,6 +64,7 @@ protected:
 
 	void DoMoveNode(const glm::vec2& MousePos);
 	void DoDropNodeAndCreateIt();
+	void SetLights(const std::vector<SLight>& Lights);
 
 private:
 	bool m_IsDraggingEnabled;
@@ -78,6 +79,11 @@ private:
 	glm::vec2 m_SelectionPrevPos;
 	std::shared_ptr<ISceneNodeUI> m_SelectionTexture;
 	std::shared_ptr<CDrawSelectionPass> m_DrawSelectionPass;
+
+private: // Rendering
+	std::shared_ptr<IMaterialModelPass> m_MaterialModelPass;
+	std::shared_ptr<IStructuredBuffer>  m_LightsBuffer;
+	size_t							    m_LightsCnt;
 
 private:
 	IEditorUIFrame* m_EditorUI;

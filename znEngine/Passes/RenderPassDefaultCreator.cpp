@@ -6,8 +6,7 @@
 // Additional
 #include "Passes/MaterialDebugPass.h"
 #include "Passes/MaterialTexturedPass.h"
-#include "Passes/MaterialPassOpaque.h"
-#include "Passes/MaterialPassTransperent.h"
+#include "Passes/MaterialModelPass.h"
 
 CRenderPassDefaultCreator::CRenderPassDefaultCreator()
 {
@@ -42,11 +41,11 @@ std::string CRenderPassDefaultCreator::GetRenderPassName(size_t Index) const
 	}
 	else if (Index == 4)
 	{
-		return "ModelPassOpaque";
+		return "MaterialModelPass";
 	}
 	else if (Index == 5)
 	{
-		return "ModelPassTransperent";
+		return "InvokePass";
 	}
 
 	throw CException("CRenderPassDefaultCreator: GetRenderPassName(%d) is out of bounds. Count = %d", Index, GetRenderPassCount());
@@ -79,16 +78,17 @@ std::shared_ptr<IRenderPass> CRenderPassDefaultCreator::CreateRenderPass(size_t 
 	}
 	else if (Index == 4)
 	{
-		std::shared_ptr<IRenderPassPipelined> passPipelined = std::make_shared<CMaterialPassOpaque>(RenderDevice, Scene);
+		std::shared_ptr<IRenderPassPipelined> passPipelined = std::make_shared<CMaterialModelPass>(RenderDevice, Scene);
 		passPipelined->CreatePipeline(RenderTarget, Viewport);
 		return passPipelined;
 	}
 	else if (Index == 5)
 	{
-		std::shared_ptr<IRenderPassPipelined> passPipelined = std::make_shared<CMaterialPassTransperent>(RenderDevice, Scene);
-		passPipelined->CreatePipeline(RenderTarget, Viewport);
+		std::shared_ptr<IRenderPass> passPipelined = std::make_shared<InvokeFunctionPass>(RenderDevice, nullptr);
 		return passPipelined;
 	}
+
+
 
 	throw CException("CRenderPassDefaultCreator: CreateRenderPass(%d) is out of bounds. Count = %d", Index, GetRenderPassCount());
 }

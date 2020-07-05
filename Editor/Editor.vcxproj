@@ -76,6 +76,7 @@
       <AdditionalIncludeDirectories>..\Editor\;..\shared\;..\Externals\;.\PropertyEditor\Core;$(Qt_INCLUDEPATH_);D:\_programming\Qt\5.14.0\msvc2017_64\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>4251</DisableSpecificWarnings>
       <TreatSpecificWarningsAsErrors>4172</TreatSpecificWarningsAsErrors>
+      <PreprocessorDefinitions>$(Qt_DEFINES_);%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

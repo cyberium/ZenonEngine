@@ -13,8 +13,7 @@
 #include "Passes/MaterialTexturedPass.h"
 #include "Passes/MaterialParticlePass.h"
 
-#include "Passes/MaterialPassOpaque.h"
-#include "Passes/MaterialPassTransperent.h"
+#include "Passes/MaterialModelPass.h"
 #include "Passes/UIFontPass.h"
 
 #include "Physics/Adapters/ReactPhysicsComponent.h"
@@ -107,12 +106,6 @@ void CSceneDefault::OnPreRender(RenderEventArgs& e)
 //
 bool CSceneDefault::OnWindowKeyPressed(KeyEventArgs & e)
 {
-	//if (e.Key == KeyCode::F4)
-	//	m_Model_Pass_Opaque->SetEnabled(!m_Model_Pass_Opaque->IsEnabled());
-
-	//if (e.Key == KeyCode::F5)
-	//	m_Model_Pass_Transperent->SetEnabled(!m_Model_Pass_Transperent->IsEnabled());
-
 	return SceneBase::OnWindowKeyPressed(e);
 }
 
@@ -360,108 +353,6 @@ void CSceneDefault::Load3D()
 		*/
 	}
 
-	auto fileNames = Utils::GetAllFilesInDirectory("C:\\_engine\\ZenonEngine_gamedata\\models", ".fbx");
-	
-	/*std::vector<std::string> modelsList;
-	modelsList.push_back("C:\\_engine\\ZenonEngine_gamedata\\natureKit\\models\\fbxformat\\ground_dirt.fbx");
-	modelsList.push_back("C:\\_engine\\ZenonEngine_gamedata\\natureKit\\models\\fbxformat\\ground_dirtRiver.fbx");
-	modelsList.push_back("C:\\_engine\\ZenonEngine_gamedata\\natureKit\\models\\fbxformat\\ground_dirtRiverBanks.fbx");
-	modelsList.push_back("C:\\_engine\\ZenonEngine_gamedata\\natureKit\\models\\fbxformat\\ground_dirtRiverCorner.fbx");
-	modelsList.push_back("C:\\_engine\\ZenonEngine_gamedata\\natureKit\\models\\fbxformat\\ground_dirtRiverCornerBank.fbx");
-	modelsList.push_back("C:\\_engine\\ZenonEngine_gamedata\\natureKit\\models\\fbxformat\\ground_dirtRiverCornerInner.fbx");
-	modelsList.push_back("C:\\_engine\\ZenonEngine_gamedata\\natureKit\\models\\fbxformat\\ground_dirtRiverCrossing.fbx");
-	modelsList.push_back("C:\\_engine\\ZenonEngine_gamedata\\natureKit\\models\\fbxformat\\ground_dirtRiverEnd.fbx");
-	modelsList.push_back("C:\\_engine\\ZenonEngine_gamedata\\natureKit\\models\\fbxformat\\ground_dirtRiverEntrance.fbx");
-	modelsList.push_back("C:\\_engine\\ZenonEngine_gamedata\\natureKit\\models\\fbxformat\\ground_dirtRiverRocks.fbx");
-	modelsList.push_back("C:\\_engine\\ZenonEngine_gamedata\\natureKit\\models\\fbxformat\\ground_dirtRiverSide.fbx");
-	modelsList.push_back("C:\\_engine\\ZenonEngine_gamedata\\natureKit\\models\\fbxformat\\ground_dirtRiverSideCorner.fbx");
-	modelsList.push_back("C:\\_engine\\ZenonEngine_gamedata\\natureKit\\models\\fbxformat\\ground_dirtRiverT.fbx");
-	modelsList.push_back("C:\\_engine\\ZenonEngine_gamedata\\natureKit\\models\\fbxformat\\ground_dirtRiverTile.fbx");
-	modelsList.push_back("C:\\_engine\\ZenonEngine_gamedata\\natureKit\\models\\fbxformat\\ground_dirtRiverWater.fbx");
-	modelsList.push_back("C:\\_engine\\ZenonEngine_gamedata\\natureKit\\models\\fbxformat\\ground_grass.fbx");
-	modelsList.push_back("C:\\_engine\\ZenonEngine_gamedata\\natureKit\\models\\fbxformat\\ground_pathBend.fbx");
-	modelsList.push_back("C:\\_engine\\ZenonEngine_gamedata\\natureKit\\models\\fbxformat\\ground_pathBendBank.fbx");
-	modelsList.push_back("C:\\_engine\\ZenonEngine_gamedata\\natureKit\\models\\fbxformat\\ground_pathCorner.fbx");
-	modelsList.push_back("C:\\_engine\\ZenonEngine_gamedata\\natureKit\\models\\fbxformat\\ground_pathCornerSmall.fbx");
-	modelsList.push_back("C:\\_engine\\ZenonEngine_gamedata\\natureKit\\models\\fbxformat\\ground_pathCross.fbx");
-	modelsList.push_back("C:\\_engine\\ZenonEngine_gamedata\\natureKit\\models\\fbxformat\\ground_pathEnd.fbx");
-	modelsList.push_back("C:\\_engine\\ZenonEngine_gamedata\\natureKit\\models\\fbxformat\\ground_pathEndClosed.fbx");
-	modelsList.push_back("C:\\_engine\\ZenonEngine_gamedata\\natureKit\\models\\fbxformat\\ground_pathOpen.fbx");
-	modelsList.push_back("C:\\_engine\\ZenonEngine_gamedata\\natureKit\\models\\fbxformat\\ground_pathRocks.fbx");
-	modelsList.push_back("C:\\_engine\\ZenonEngine_gamedata\\natureKit\\models\\fbxformat\\ground_pathSide.fbx");
-	modelsList.push_back("C:\\_engine\\ZenonEngine_gamedata\\natureKit\\models\\fbxformat\\ground_pathSideOpen.fbx");
-	modelsList.push_back("C:\\_engine\\ZenonEngine_gamedata\\natureKit\\models\\fbxformat\\ground_pathSplit.fbx");
-	modelsList.push_back("C:\\_engine\\ZenonEngine_gamedata\\natureKit\\models\\fbxformat\\ground_pathStraight.fbx");
-	modelsList.push_back("C:\\_engine\\ZenonEngine_gamedata\\natureKit\\models\\fbxformat\\ground_pathTile.fbx");
-	modelsList.push_back("C:\\_engine\\ZenonEngine_gamedata\\natureKit\\models\\fbxformat\\ground_riverBend.fbx");
-	modelsList.push_back("C:\\_engine\\ZenonEngine_gamedata\\natureKit\\models\\fbxformat\\ground_riverBendBank.fbx");
-	modelsList.push_back("C:\\_engine\\ZenonEngine_gamedata\\natureKit\\models\\fbxformat\\ground_riverCorner.fbx");
-	modelsList.push_back("C:\\_engine\\ZenonEngine_gamedata\\natureKit\\models\\fbxformat\\ground_riverCornerSmall.fbx");
-	modelsList.push_back("C:\\_engine\\ZenonEngine_gamedata\\natureKit\\models\\fbxformat\\ground_riverCross.fbx");
-	modelsList.push_back("C:\\_engine\\ZenonEngine_gamedata\\natureKit\\models\\fbxformat\\ground_riverEnd.fbx");*/
-
-	if (!fileNames.empty())
-	{
-		auto it = fileNames.begin();
-		auto sizeSqrtDouble = glm::sqrt(fileNames.size());
-		size_t sizeSqrt = static_cast<size_t>(sizeSqrtDouble);
-		//sizeSqrt = 6;
-
-		for (size_t x = 0; x < sizeSqrt; x++)
-		{
-			for (size_t y = 0; y < sizeSqrt; y++)
-			{
-				auto fileName = (*it++);
-				if (it == fileNames.end())
-					continue;
-
-				Log::Info(fileName.c_str());
-
-				try
-				{
-					std::shared_ptr<ISceneNode3D> sceneNodeParent = CreateSceneNode<SceneNode3D>(GetRootNode3D());
-					sceneNodeParent->SetTranslate(glm::vec3(float(x) * 30.0f, 0.0f, float(y) * 30.0f));
-
-					if (GetBaseManager().GetManager<IFilesManager>()->IsFileExists(fileName + ".znmdl"))
-					{
-						auto model = GetRenderDevice().GetObjectsFactory().CreateModel();
-						if (auto loadable = std::dynamic_pointer_cast<IObjectLoadSave>(model))
-						{
-							loadable->Load(GetBaseManager().GetManager<IFilesManager>()->Open(fileName + ".znmdl"));
-						}
-
-						sceneNodeParent->GetComponent<IModelsComponent3D>()->AddModel(model);
-
-						sceneNodeParent->GetComponent<IColliderComponent3D>()->SetBounds(model->GetBounds());
-						continue;
-					}
-
-					continue;
-					
-					std::shared_ptr<ISceneNode3D> sceneNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>(ofkSceneNode3D)->CreateSceneNode3D(this, cSceneNode_FBXNode);
-					sceneNodeParent->AddChild(sceneNode);
-
-					std::shared_ptr<IFBXSceneNode3D> fbxSceneNode = std::dynamic_pointer_cast<IFBXSceneNode3D>(sceneNode);
-					fbxSceneNode->InitializeFromFile(fileName);
-
-					auto model = std::dynamic_pointer_cast<IFBXSceneNode3D>(sceneNode->GetChilds().at(0))->GetModel();
-					if (auto loadable = std::dynamic_pointer_cast<IObjectLoadSave>(model))
-					{
-						std::shared_ptr<IFile> file = std::make_shared<CFile>(fileName + ".znmdl");
-						loadable->Save(file);
-
-						GetBaseManager().GetManager<IFilesManager>()->GetFilesStorage("PCEveryFileAccess")->SaveFile(file);
-					}
-				}
-				catch (const CException& e)
-				{
-					Log::Error(e.MessageCStr());
-				}
-			}
-		}
-	}
-	
-
 	//node->InitializeFromFile("Nature Kit (2.1)\\Models\\FBX format\\tree_thin_dark.fbx");
 
 	//std::shared_ptr<ISceneNode3D> fbxSceneNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>(ofkSceneNode3D)->CreateSceneNode3D(this, cSceneNode_FBXNode);
@@ -506,7 +397,7 @@ void CSceneDefault::Load3D()
 	m_Technique3D.AddPass(m_DefferedFinalRenderPass);
 #else
 	m_Technique3D.AddPass(std::make_shared<CMaterialPassTransperent>(GetRenderDevice(), shared_from_this())->CreatePipeline(GetRenderWindow()->GetRenderTarget(), &GetRenderWindow()->GetViewport()));
-	m_Technique3D.AddPass(std::make_shared<CMaterialPassOpaque>(GetRenderDevice(), shared_from_this())->CreatePipeline(GetRenderWindow()->GetRenderTarget(), &GetRenderWindow()->GetViewport()));
+	m_Technique3D.AddPass(std::make_shared<CMaterialModelPass>(GetRenderDevice(), shared_from_this())->CreatePipeline(GetRenderWindow()->GetRenderTarget(), &GetRenderWindow()->GetViewport()));
 #endif
 
 	//m_Technique3D.AddPass(GetBaseManager().GetManager<IRenderPassFactory>()->CreateRenderPass("TexturedMaterialPass", GetRenderDevice(), GetRenderWindow()->GetRenderTarget(), &GetRenderWindow()->GetViewport(), shared_from_this()));
@@ -515,26 +406,6 @@ void CSceneDefault::Load3D()
 
 void CSceneDefault::LoadUI()
 {
-	/*std::shared_ptr<CUITextureNode> TextureUI0 = m_SceneUI->GetRootNode()->CreateWrappedSceneNode<CUITextureNode>("Test", GetRenderDevice());
-	TextureUI0->SetTranslate(vec2(000.0f, 000.0f));
-	TextureUI0->SetScale(vec2(600, 600));
-	TextureUI0->SetTexture(m_DefferedRenderPass->GetTexture0());
-
-	std::shared_ptr<CUITextureNode> TextureUI1 = m_SceneUI->GetRootNode()->CreateWrappedSceneNode<CUITextureNode>("Test", GetRenderDevice());
-	TextureUI1->SetTranslate(vec2(600.0f, 000.0f));
-	TextureUI1->SetScale(vec2(600, 600));
-	TextureUI1->SetTexture(m_DefferedRenderPass->GetTexture1());
-
-	std::shared_ptr<CUITextureNode> TextureUI2 = m_SceneUI->GetRootNode()->CreateWrappedSceneNode<CUITextureNode>("Test", GetRenderDevice());
-	TextureUI2->SetTranslate(vec2(000.0f, 600.0f));
-	TextureUI2->SetScale(vec2(600, 600));
-	TextureUI2->SetTexture(m_DefferedRenderPass->GetTexture2());
-
-	std::shared_ptr<CUITextureNode> TextureUI3 = m_SceneUI->GetRootNode()->CreateWrappedSceneNode<CUITextureNode>("Test", GetRenderDevice());
-	TextureUI3->SetTranslate(vec2(600.0f, 600.0f));
-	TextureUI3->SetScale(vec2(600, 600));
-	TextureUI3->SetTexture(m_DefferedRenderPass->GetTexture3());*/
-
 	m_TechniqueUI.AddPass(std::make_shared<CUIFontPass>(GetRenderDevice(), shared_from_this())->CreatePipeline(GetRenderWindow()->GetRenderTarget(), &GetRenderWindow()->GetViewport()));
 }
 

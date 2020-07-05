@@ -5,11 +5,15 @@
 
 InvokeFunctionPass::InvokeFunctionPass(IRenderDevice& RenderDevice, std::function<void(void)> func)
 	: RenderPass(RenderDevice)
-	, m_Func(func)
 {}
 
 InvokeFunctionPass::~InvokeFunctionPass()
 {}
+
+void InvokeFunctionPass::SetFunc(std::function<void(void)> func)
+{
+	m_Func = func;
+}
 
 void InvokeFunctionPass::Render(RenderEventArgs& e)
 {

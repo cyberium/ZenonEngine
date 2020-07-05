@@ -30,7 +30,8 @@ enum ZN_API EVisitResult : size_t
   *   3) ѕосетитель сообщает ISceneNode3D что "визит" прошел либо успешно либо нет
   *   4 ”спех) ¬ случае если визит ноды был одобрен посетителем, то нода    
 */
-ZN_INTERFACE ZN_API IVisitor : public std::enable_shared_from_this<IVisitor>
+ZN_INTERFACE ZN_API IVisitor 
+	: public Object
 {
 	virtual ~IVisitor() {}
 

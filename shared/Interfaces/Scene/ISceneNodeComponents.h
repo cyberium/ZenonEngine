@@ -188,7 +188,7 @@ struct __declspec(novtable, align(16)) ZN_API SLight
 		, Color(1.0f, 1.0f, 1.0f, 1.0f)
 
 		, Type(ELightType::Unknown)
-		, Range(99999.0f)
+		, Range(5000.0f)
 		, Intensity(1.0f)
 		, SpotlightAngle(45.0f)
 	{}
