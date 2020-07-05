@@ -13,6 +13,8 @@ public:
     template<class T>
     std::shared_ptr<T>                              GetComponent() const;
 
+	void											Copy(std::shared_ptr<ISceneNodeComponent> Destination) const override;
+
 	// ISceneNodeComponent
 	virtual void                                    OnMessage(const ISceneNodeComponent* Component, ComponentMessageType Message) override;
 	virtual std::shared_ptr<IPropertiesGroup>       GetProperties() const override;

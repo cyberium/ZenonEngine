@@ -134,7 +134,13 @@ void ZenonCollectionViewerWidget::onCustomContextMenu(const QPoint& point)
 
 void ZenonCollectionViewerWidget::onCurrentChanged(const QModelIndex& current, const QModelIndex& previous)
 {
+	if (!current.isValid())
+		return;
 
+	auto item = static_cast<CQtToZenonTreeItem*>(current.internalPointer());
+	_ASSERT_EXPR(item != nullptr, L"Item is null.");
+
+	m_Editor3D->OnCollectionWidget_ModelSelected(std::dynamic_pointer_cast<IModel>(item->GetTObject()));
 }
 
 void ZenonCollectionViewerWidget::onSelectionChanged(const QItemSelection& selected, const QItemSelection &deselected)
@@ -151,13 +157,7 @@ void ZenonCollectionViewerWidget::onPressed(const QModelIndex & index)
 
 void ZenonCollectionViewerWidget::onClicked(const QModelIndex & index)
 {
-	if (!index.isValid())
-		return;
 
-	auto item = static_cast<CQtToZenonTreeItem*>(index.internalPointer());
-	_ASSERT_EXPR(item != nullptr, L"Item is null.");
-
-	m_Editor3D->OnCollectionWidget_ModelSelected(std::dynamic_pointer_cast<IModel>(item->GetTObject()));
 }
 
 void ZenonCollectionViewerWidget::onDoubleClicked(const QModelIndex & index)

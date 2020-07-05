@@ -15,6 +15,8 @@ ZN_INTERFACE ZN_API ISceneNodeComponent
 {
 	virtual ~ISceneNodeComponent() {}
 
+	virtual void Copy(std::shared_ptr<ISceneNodeComponent> Destination) const = 0;
+
     // Callbacks
     virtual void OnMessage(const ISceneNodeComponent* Component, ComponentMessageType Message) = 0;
 	virtual std::shared_ptr<IPropertiesGroup> GetProperties() const = 0;

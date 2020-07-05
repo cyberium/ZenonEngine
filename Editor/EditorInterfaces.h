@@ -9,6 +9,7 @@ struct SDragData
 {
 	std::string Message;
 	glm::vec2 Position;
+	bool IsCtrl;
 };
 
 ZN_INTERFACE IEditor3DFrame

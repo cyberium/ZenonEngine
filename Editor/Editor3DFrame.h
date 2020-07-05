@@ -26,7 +26,7 @@ public:
 	void RemoveChild(const std::shared_ptr<ISceneNode3D>& ParentNode, const std::shared_ptr<ISceneNode3D>& ChildNode) override;
 
 	void RaiseSceneChangeEvent(ESceneChangeType SceneChangeType, const std::shared_ptr<ISceneNode3D>& OwnerNode, const std::shared_ptr<ISceneNode3D>& ChildNode) override;
-	void OnMouseClickToWorld(MouseButtonEventArgs::MouseButton& MouseButton, const glm::vec2& MousePosition, const Ray& RayToWorld) override;
+	bool OnMouseClickToWorld(MouseButtonEventArgs::MouseButton& MouseButton, const glm::vec2& MousePosition, const Ray& RayToWorld) override;
 	void OnMouseReleaseToWorld(MouseButtonEventArgs::MouseButton& MouseButton, const glm::vec2& MousePosition, const Ray& RayToWorld) override;
 	void OnMouseMoveToWorld(MouseButtonEventArgs::MouseButton& MouseButton, const glm::vec2& MousePosition, const Ray& RayToWorld) override;
 
@@ -57,13 +57,18 @@ public:
 protected:
 	glm::ivec3 ToBoxCoords(const glm::vec3& Position);
 	glm::vec3 FixBoxCoords(const glm::vec3& Position);
-	void MoveDraggedNode(const glm::vec3& Position);
 
 	void Load3D();
 	void LoadUI();
 
+	void DoMoveNode(const glm::vec2& MousePos);
+	void DoDropNodeAndCreateIt();
+
+private:
 	bool m_IsDraggingEnabled;
+	bool m_IsDraggingPermanentCreation;
 	std::shared_ptr<ISceneNode3D> m_DraggedNode;
+	std::shared_ptr<ISceneNodeUI> m_DraggerTextUI;
 
 	std::shared_ptr<ISceneNode3D> m_Mover;
 	

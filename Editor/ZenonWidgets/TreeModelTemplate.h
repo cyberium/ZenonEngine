@@ -97,16 +97,16 @@ public:
 			CQtToZenonTreeItem* item = getItem(index);
 			return item->data();
 		}
-		else if (role == Qt::DecorationRole)
+		/*else if (role == Qt::DecorationRole)
 		{
 			//if (index.column() == 0)
 			//{
-			QPixmap pixmap(QSize(24, 24));
+			QPixmap pixmap(QSize(18, 18));
 			pixmap.fill(QColor(255, 88, 88));
 			return QVariant(pixmap); //# √де self.icon это QPixma
 		//}
 		//return QColor(255, 88, 88);
-		}
+		}*/
 
 		return QVariant();
 	}

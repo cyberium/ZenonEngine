@@ -14,7 +14,7 @@ public:
 	//
 	virtual void                                    Initialize() override;
 	virtual void                                    Finalize() override;
-
+	virtual void                                    Copy(std::shared_ptr<ISceneNode3D> Destination) const override;
 	// Childs functional
 	virtual void                                    AddChild(const std::shared_ptr<ISceneNode3D>& childNode) override final;
 	virtual void                                    RemoveChild(const std::shared_ptr<ISceneNode3D>& childNode) override final;

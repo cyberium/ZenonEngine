@@ -11,7 +11,7 @@ ZenonWindowMinimal3DWidget::ZenonWindowMinimal3DWidget(QWidget *parent)
 	setAttribute(Qt::WA_NativeWindow);
 	setAttribute(Qt::WA_PaintOnScreen);
 	setAttribute(Qt::WA_NoSystemBackground);
-	setAttribute(Qt::WA_NoMousePropagation);
+	//setAttribute(Qt::WA_NoMousePropagation);
 }
 
 ZenonWindowMinimal3DWidget::~ZenonWindowMinimal3DWidget()

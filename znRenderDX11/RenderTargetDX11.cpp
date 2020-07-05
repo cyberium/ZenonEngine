@@ -122,7 +122,7 @@ void RenderTargetDX11::Resize(size_t width, size_t height)
 {
 	if (m_Width != width || m_Height != height)
 	{
-		Log::Green("RenderTargetResized: %d, %d", width, height);
+		//Log::Green("RenderTargetResized: %d, %d", width, height);
 
 		m_Width = glm::max<size_t>(width, 1);
 		m_Height = glm::max<size_t>(height, 1);

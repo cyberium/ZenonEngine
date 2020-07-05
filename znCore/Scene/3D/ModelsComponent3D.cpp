@@ -13,6 +13,13 @@ CModelsComponent3D::CModelsComponent3D(const ISceneNode3D& OwnerNode)
 CModelsComponent3D::~CModelsComponent3D()
 {}
 
+void CModelsComponent3D::Copy(std::shared_ptr<ISceneNodeComponent> Destination) const
+{
+	auto destCast = std::static_pointer_cast<CModelsComponent3D>(Destination);
+
+	destCast->m_Models = m_Models;
+}
+
 
 
 //

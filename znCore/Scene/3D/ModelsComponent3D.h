@@ -10,6 +10,8 @@ public:
 	CModelsComponent3D(const ISceneNode3D& OwnerNode);
     virtual ~CModelsComponent3D();
 
+	void Copy(std::shared_ptr<ISceneNodeComponent> Destination) const override;
+
 	// IModelsComponent3D
     void AddModel(const std::shared_ptr<IModel>& Model) override;
     void RemoveModel(const std::shared_ptr<IModel>& Model) override;

@@ -35,6 +35,7 @@ ZN_INTERFACE ZN_API ISceneNode3D
 
 	virtual void Initialize() = 0;
 	virtual void Finalize() = 0;
+	virtual void Copy(std::shared_ptr<ISceneNode3D> Destination) const = 0;
 
 	virtual void AddChild(const std::shared_ptr<ISceneNode3D>& childNode) = 0;
 	virtual void RemoveChild(const std::shared_ptr<ISceneNode3D>& childNode) = 0;

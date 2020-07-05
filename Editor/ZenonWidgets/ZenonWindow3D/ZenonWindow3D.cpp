@@ -8,7 +8,8 @@ ZenonWindow3D::ZenonWindow3D(QWidget *parent)
 	, m_Editor3D(nullptr)
 	, m_EditorUI(nullptr)
 {
-	setAcceptDrops(true);
+	this->setContextMenuPolicy(Qt::CustomContextMenu);
+	connect(this, SIGNAL(customContextMenuRequested(const QPoint &)), this, SLOT(onCustomContextMenu(const QPoint &)));
 }
 
 ZenonWindow3D::~ZenonWindow3D()
@@ -17,7 +18,7 @@ ZenonWindow3D::~ZenonWindow3D()
 //
 // Slots
 //
-void ZenonWindow3D::slotCustomMenuRequested(const QPoint& pos)
+void ZenonWindow3D::onCustomContextMenu(const QPoint& pos)
 {
 	QMenu * menu = new QMenu(this);
 
@@ -170,6 +171,7 @@ void ZenonWindow3D::dragEnterEvent(QDragEnterEvent * event)
 		SDragData data;
 		data.Message = text;
 		data.Position = glm::vec2(event->pos().x(), event->pos().y());
+		data.IsCtrl = (event->keyboardModifiers() & Qt::KeyboardModifier::ControlModifier) != 0;
 		try
 		{
 			m_Editor3D->DragEnterEvent(data);

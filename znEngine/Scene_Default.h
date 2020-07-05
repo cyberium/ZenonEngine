@@ -20,7 +20,7 @@ public:
 	void Initialize() override;
 	void Finalize() override;
 
-	virtual void OnMouseClickToWorld(MouseButtonEventArgs::MouseButton& MouseButton, const glm::vec2& MousePosition, const Ray& RayToWorld) override;
+	virtual bool OnMouseClickToWorld(MouseButtonEventArgs::MouseButton& MouseButton, const glm::vec2& MousePosition, const Ray& RayToWorld) override;
 	virtual void OnMouseMoveToWorld(MouseButtonEventArgs::MouseButton& MouseButton, const glm::vec2& MousePosition, const Ray& RayToWorld) override;
 
 	virtual void OnPreRender(RenderEventArgs& e) override;

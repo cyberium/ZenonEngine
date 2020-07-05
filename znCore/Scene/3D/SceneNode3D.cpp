@@ -88,6 +88,38 @@ void SceneNode3D::Initialize()
 void SceneNode3D::Finalize()
 {}
 
+void SceneNode3D::Copy(std::shared_ptr<ISceneNode3D> Destination) const
+{
+	Object::Copy(Destination);
+
+	auto destCast = std::dynamic_pointer_cast<SceneNode3D>(Destination);
+
+	destCast->m_Children.clear();
+	destCast->m_ChildrenByName.clear();
+	destCast->m_ParentNode;
+
+	destCast->m_PropertiesGroup;
+	destCast->m_Scene = m_Scene;
+
+	destCast->m_Translate = m_Translate;
+	destCast->m_Rotate = m_Rotate;
+	destCast->m_RotateQuat = m_RotateQuat;
+	destCast->m_IsRotateQuat = m_IsRotateQuat;
+	destCast->m_Scale = m_Scale;
+	destCast->m_LocalTransform = m_LocalTransform;
+	destCast->m_InverseLocalTransform = m_InverseLocalTransform;
+	destCast->m_WorldTransform = m_WorldTransform;
+	destCast->m_InverseWorldTransform = m_InverseWorldTransform;
+
+	for (const auto& c : GetComponents())
+	{
+		const auto& compInOther = destCast->m_Components.find(c.first);
+		_ASSERT(compInOther != destCast->m_Components.end());
+		c.second->Copy(compInOther->second);
+	}
+}
+
+
 
 //
 // Childs functional

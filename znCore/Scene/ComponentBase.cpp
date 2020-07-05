@@ -19,6 +19,10 @@ CComponentBase::~CComponentBase()
 
 
 
+void CComponentBase::Copy(std::shared_ptr<ISceneNodeComponent> Destination) const
+{
+}
+
 //
 // ISceneNodeComponent
 //

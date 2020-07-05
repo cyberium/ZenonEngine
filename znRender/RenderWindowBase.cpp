@@ -296,8 +296,6 @@ void RenderWindowBase::OnWindowRestore(EventArgs & Args)
 
 void RenderWindowBase::OnWindowResize(ResizeEventArgs& Args) // The RenderWindowBase window has be resized
 {
-	Log::Info("RenderWindowBase: OnWindowResize(%d, %d)", Args.Width, Args.Height);
-
 	m_Viewport.SetWidth(Args.Width);
 	m_Viewport.SetHeight(Args.Height);
 

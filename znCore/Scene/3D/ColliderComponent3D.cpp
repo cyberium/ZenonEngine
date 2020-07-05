@@ -43,6 +43,17 @@ CColliderComponent3D::~CColliderComponent3D()
 {
 }
 
+void CColliderComponent3D::Copy(std::shared_ptr<ISceneNodeComponent> Destination) const
+{
+	auto destCast = std::static_pointer_cast<CColliderComponent3D>(Destination);
+
+	destCast->m_CullStrategy = m_CullStrategy;
+	destCast->m_CullDistance = m_CullDistance;
+	destCast->m_Bounds = m_Bounds;
+	destCast->m_WorldBounds = m_WorldBounds;
+	destCast->m_DebugDraw = m_DebugDraw;
+}
+
 
 //
 // IColliderComponent3D

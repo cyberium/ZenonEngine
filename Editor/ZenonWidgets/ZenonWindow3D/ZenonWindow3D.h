@@ -16,7 +16,7 @@ public:
 	void SetEditors(IEditor3DFrame* Editor3DFrame, IEditorUIFrame* EditorUIFrame) { m_Editor3D = Editor3DFrame; m_EditorUI = EditorUIFrame; }
 
 private slots:
-	void slotCustomMenuRequested(const QPoint& pos);
+	void onCustomContextMenu(const QPoint& pos);
 
 private:
 	void mousePressEvent(QMouseEvent *event) override;

@@ -39,28 +39,104 @@ void MainEditor::SetEditor3D(IEditor3DFrame* Editor3DFrame)
 }
 
 
+namespace
+{
+	void FillActionsList(const std::shared_ptr<ISceneNode3D>& Node, std::map<std::string, std::vector<std::shared_ptr<IPropertyAction>>> * actionsNames)
+	{
+		for (const auto& it : Node->GetProperties()->GetProperties())
+		{
+			if (auto act = std::dynamic_pointer_cast<IPropertyAction>(it.second))
+			{
+				std::vector<std::shared_ptr<IPropertyAction>> actions;
+				actions.push_back(act);
+				actionsNames->insert(std::make_pair(it.second->GetName(), actions));
+			}
+		}
+	}
+
+	void FillActionsMap(const std::shared_ptr<ISceneNode3D>& Node, std::map<std::string, std::shared_ptr<IPropertyAction>> * actionsNames)
+	{
+		for (const auto& it : Node->GetProperties()->GetProperties())
+		{
+			if (auto act = std::dynamic_pointer_cast<IPropertyAction>(it.second))
+			{
+				actionsNames->insert(std::make_pair(it.second->GetName(), act));
+			}
+		}
+	}
+}
+
+
 //
 // IEditorUIFrame
 //
-
 void MainEditor::ExtendContextMenu(QMenu * Menu, const std::shared_ptr<ISceneNode3D>& Node)
 {
-	/* Create actions to the context menu */
-	QAction* nameAction = new QAction(Node->GetName().c_str(), this);
-	nameAction->setEnabled(false);
+	std::string contextMenuTitle = Node->GetName();
 
 	std::vector<QAction *> actions;
-	for (const auto& it : Node->GetProperties()->GetProperties())
+
+	if (Selector_GetSelectedNodes().size() > 1)
 	{
-		if (auto act = std::dynamic_pointer_cast<IPropertyAction>(it.second))
+		contextMenuTitle.append("and " + std::to_string(Selector_GetSelectedNodes().size()) + " nodes.");
+
+		std::map<std::string, std::vector<std::shared_ptr<IPropertyAction>>> mainNodeActionsNames;
+		FillActionsList(Node, &mainNodeActionsNames);
+
+		for (const auto& sel : Selector_GetSelectedNodes())
 		{
-			QAction * action = new QAction(it.second->GetName().c_str(), this);
-			connect(action, &QAction::triggered, this, [act] {
-				act->ExecuteAction();
+			if (sel == Node)
+				continue;
+
+			std::map<std::string, std::shared_ptr<IPropertyAction>> selNodeActionsNames;
+			FillActionsMap(sel, &selNodeActionsNames);
+
+			for (const auto& act : selNodeActionsNames)
+			{
+				auto it = std::find_if(mainNodeActionsNames.begin(), mainNodeActionsNames.end(), [&act](const std::pair<std::string, std::vector<std::shared_ptr<IPropertyAction>>>& mainNodeAction) -> bool {
+					return mainNodeAction.first == act.first;
+				});
+
+				if (it == mainNodeActionsNames.end())
+					continue;
+
+				mainNodeActionsNames[act.first].push_back(act.second);
+			}
+		}
+
+		for (const auto& it : mainNodeActionsNames)
+		{
+			std::string actionName = it.first;
+			auto actionsList = it.second;
+			if (actionsList.size() > 1)
+				actionName.append(" [" + std::to_string(actionsList.size()) + "]");
+			QAction * action = new QAction(actionName.c_str(), this);
+			this->connect(action, &QAction::triggered, this, [actionsList] {
+				for (const auto& act : actionsList)
+					act->ExecuteAction();
 			});
 			actions.push_back(action);
 		}
 	}
+	else
+	{
+		for (const auto& it : Node->GetProperties()->GetProperties())
+		{
+			if (auto act = std::dynamic_pointer_cast<IPropertyAction>(it.second))
+			{
+				QAction * action = new QAction(it.second->GetName().c_str(), this);
+				connect(action, &QAction::triggered, this, [act] {
+					act->ExecuteAction();
+				});
+				actions.push_back(action);
+			}
+		}
+
+	}
+
+	/* Create actions to the context menu */
+	QAction* nameAction = new QAction(contextMenuTitle.c_str(), this);
+	nameAction->setEnabled(false);
 
 	/* Set the actions to the menu */
 	Menu->addAction(nameAction);

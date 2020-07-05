@@ -61,6 +61,9 @@ public:
 		static const Guid Empty;
 
 	public:
+		Guid()
+			: m_GUID(0)
+		{ }
 		explicit Guid(uint64 guid)
 			: m_GUID(guid)
 		{ }
@@ -112,6 +115,13 @@ public:
 	//
 	// IObject
 	//
+	void Copy(std::shared_ptr<Object> Destination) const
+	{
+		if (GetGuid().GetClass() != Destination->GetGuid().GetClass() || GetGuid().GetFactoryKey() != Destination->GetGuid().GetFactoryKey())
+			throw std::exception("Unable to copy object.");
+		Destination->m_Name = m_Name;
+		Destination->m_ClassName = m_ClassName;
+	}
 	std::string GetName() const override
 	{
 		if (m_Name.empty())

@@ -7,6 +7,7 @@ CSceneEditor::CSceneEditor(IBaseManager& BaseManager)
 	: SceneBase(BaseManager)
 	, m_EditorUI(nullptr)
 	, m_IsDraggingEnabled(false)
+	, m_IsDraggingPermanentCreation(false)
 	, m_IsSelecting(false)
 {
 	m_EditedScene = std::make_shared<CEditedScene>(BaseManager);
@@ -52,30 +53,22 @@ void CSceneEditor::Initialize()
 
 	GetCameraController()->GetCamera()->SetTranslation(glm::vec3(15.0f * 2.0f));
 	GetCameraController()->GetCamera()->SetDirection(glm::vec3(-0.5f));
-	//GetCameraController()->GetCamera()->SetYaw(225);
-	//GetCameraController()->GetCamera()->SetPitch(-45);
+	GetCameraController()->GetCamera()->SetYaw(225);
+	GetCameraController()->GetCamera()->SetPitch(-45);
 }
 
 void CSceneEditor::Finalize()
 {
-	// Insert code here
-
 	SceneBase::Finalize();
 }
 
 void CSceneEditor::AddChild(const std::shared_ptr<ISceneNode3D>& ParentNode, const std::shared_ptr<ISceneNode3D>& ChildNode)
 {
-	//if (ChildNode != m_SelectedNode)
-	//	DoSelectNode(ChildNode);
-
 	__super::AddChild(ParentNode, ChildNode);
 }
 
 void CSceneEditor::RemoveChild(const std::shared_ptr<ISceneNode3D>& ParentNode, const std::shared_ptr<ISceneNode3D>& ChildNode)
 {
-	//if (ChildNode == m_SelectedNode)
-	//	DoSelectNode(nullptr);
-
 	__super::RemoveChild(ParentNode, ChildNode);
 }
 
@@ -111,32 +104,38 @@ void CSceneEditor::RaiseSceneChangeEvent(ESceneChangeType SceneChangeType, const
 		m_EditorUI->OnSceneChanged();
 }
 
-void CSceneEditor::OnMouseClickToWorld(MouseButtonEventArgs::MouseButton & MouseButton, const glm::vec2 & MousePosition, const Ray & RayToWorld)
+bool CSceneEditor::OnMouseClickToWorld(MouseButtonEventArgs::MouseButton & MouseButton, const glm::vec2 & MousePosition, const Ray & RayToWorld)
 {
 	if (MouseButton == MouseButtonEventArgs::MouseButton::Left)
 	{
+		if (m_IsDraggingEnabled)
+		{
+			DoDropNodeAndCreateIt();
+			return true;
+		}
+
 		auto nodes = FindIntersection(RayToWorld);
 		if (nodes.empty())
 		{
 			m_SelectionPrevPos = MousePosition;
 			m_SelectionTexture->SetTranslate(MousePosition);
 			m_IsSelecting = true;
-
-			//glm::vec3 resultPosition = GetCameraController()->RayToPlane(RayToWorld, Plane(glm::vec3(0.0f, 1.0f, 0.0f), 0.0f));
-
-//MoveDraggedNode(resultPosition);
-
-			//CreateNode(ToBoxCoords(resultPosition), 0);
-
-			return;
+			return true;
 		}
 
 		Selector_SelectNode(nodes.begin()->second);
+		return  true;
 	}
 	else if (MouseButton == MouseButtonEventArgs::MouseButton::Right)
 	{
-
+		if (m_IsDraggingEnabled)
+		{
+			DragLeaveEvent();
+			return true;
+		}
 	}
+
+	return false;
 }
 
 void CSceneEditor::OnMouseReleaseToWorld(MouseButtonEventArgs::MouseButton & MouseButton, const glm::vec2 & MousePosition, const Ray & RayToWorld)
@@ -173,6 +172,12 @@ void CSceneEditor::OnMouseReleaseToWorld(MouseButtonEventArgs::MouseButton & Mou
 
 void CSceneEditor::OnMouseMoveToWorld(MouseButtonEventArgs::MouseButton & MouseButton, const glm::vec2& MousePosition, const Ray & RayToWorld)
 {
+	if (m_IsDraggingEnabled)
+	{
+		DoMoveNode(MousePosition);
+		return;
+	}
+
 	if (MouseButton == MouseButtonEventArgs::MouseButton::Left)
 	{
 		if (m_IsSelecting)
@@ -192,8 +197,6 @@ void CSceneEditor::OnPreRender(RenderEventArgs& e)
 
 void CSceneEditor::OnWindowMouseMoved(MouseMotionEventArgs & e)
 {
-
-
 	__super::OnWindowMouseMoved(e);
 }
 
@@ -265,24 +268,24 @@ void CSceneEditor::DropEvent(const glm::vec2& Position)
 {
 	if (m_IsDraggingEnabled)
 	{
-		const auto& childs = m_DraggedNode->GetChilds();
-		if (childs.empty())
-			throw CException("TEST FUCK!!!!");
-		auto firstChild = *childs.begin();
-		firstChild->SetTranslate(m_DraggedNode->GetTranslation());
-		GetRealRootNode3D()->AddChild(firstChild);
-		Selector_SelectNode(firstChild);
-		DragLeaveEvent();
+		DoDropNodeAndCreateIt();
+
+		if (!m_IsDraggingPermanentCreation)
+			DragLeaveEvent();
 	}
+
+	
 }
 
 void CSceneEditor::DragEnterEvent(const SDragData& Data)
 {
 	m_IsDraggingEnabled = true;
+	m_IsDraggingPermanentCreation = Data.IsCtrl;
 
-	auto pos = GetCameraController()->ScreenToPlane(GetRenderWindow()->GetViewport(), Data.Position, Plane(glm::vec3(0.0f, 1.0f, 0.0f), 0.0f));
-	auto node = m_EditedScene->CreateNode(pos, Data.Message);
 
+	auto ray = GetCameraController()->ScreenToRay(GetRenderWindow()->GetViewport(), Data.Position);
+	auto node = m_EditedScene->CreateNode(glm::vec3(), Data.Message);
+	auto pos = GetCameraController()->RayToPlane(ray, Plane(glm::vec3(0.0f, 1.0f, 0.0f), node->GetModelsComponent()->GetModels()[0]->GetBounds().getCenter().y));
 	m_DraggedNode->AddChild(node);
 	m_DraggedNode->SetTranslate(pos);
 }
@@ -291,15 +294,15 @@ void CSceneEditor::DragMoveEvent(const glm::vec2& Position)
 {
 	if (m_IsDraggingEnabled)
 	{
-		auto pos = GetCameraController()->ScreenToPlane(GetRenderWindow()->GetViewport(), Position, Plane(glm::vec3(0.0f, 1.0f, 0.0f), 0.0f));
-		m_DraggedNode->SetTranslate(FixBoxCoords(pos));
-		return;
+		DoMoveNode(Position);
 	}
 }
 
 void CSceneEditor::DragLeaveEvent()
 {
 	m_IsDraggingEnabled = false;
+	m_IsDraggingPermanentCreation = false;
+	m_DraggerTextUI->GetProperties()->GetPropertyT<std::string>("Text")->Set("");
 	while (!m_DraggedNode->GetChilds().empty())
 		m_DraggedNode->RemoveChild(m_DraggedNode->GetChilds()[0]);
 }
@@ -311,15 +314,8 @@ void CSceneEditor::DragLeaveEvent()
 //
 void CSceneEditor::Selector_OnSelectionChange()
 {
-
 	m_DrawSelectionPass->RefreshInstanceBuffer();
 }
-
-
-
-
-
-
 
 
 glm::ivec3 CSceneEditor::ToBoxCoords(const glm::vec3 & Position)
@@ -339,18 +335,6 @@ glm::vec3 CSceneEditor::FixBoxCoords(const glm::vec3 & Position)
 //
 // Protected
 //
-void CSceneEditor::MoveDraggedNode(const glm::vec3 & Position)
-{
-	if (m_DraggedNode)
-	{
-		glm::vec3 newPosition = Position;
-		newPosition /= 10.0f;
-		newPosition = glm::round(newPosition);
-		newPosition *= 10.0f;
-		m_DraggedNode->SetTranslate(newPosition);
-	}
-}
-
 void CSceneEditor::Load3D()
 {
 	{
@@ -462,9 +446,53 @@ void CSceneEditor::Load3D()
 
 void CSceneEditor::LoadUI()
 {
+	m_DraggerTextUI = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeUIFactory>(ofkSceneNodeUI)->CreateSceneNodeUI(this, cSceneNodeUI_Text);
+	GetRootNodeUI()->AddChild(m_DraggerTextUI);
+
 	m_SelectionTexture = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeUIFactory>(ofkSceneNodeUI)->CreateSceneNodeUI(this, cSceneNodeUI_Color, GetRootNodeUI());
 	m_SelectionTexture->GetProperties()->GetPropertyT<glm::vec4>("Color")->Set(glm::vec4(0.1f, 0.3f, 1.0f, 0.3f));
 
 	m_TechniqueUI.AddPass(std::make_shared<CUIColorPass>(GetRenderDevice(), shared_from_this())->CreatePipeline(GetRenderWindow()->GetRenderTarget(), &GetRenderWindow()->GetViewport()));
 	m_TechniqueUI.AddPass(std::make_shared<CUIFontPass>(GetRenderDevice(), shared_from_this())->CreatePipeline(GetRenderWindow()->GetRenderTarget(), &GetRenderWindow()->GetViewport()));
+}
+
+void CSceneEditor::DoMoveNode(const glm::vec2& MousePos)
+{
+	if (!m_IsDraggingEnabled)
+		return;
+	
+	//auto posReal = GetCameraController()->ScreenToPlane(GetRenderWindow()->GetViewport(), MousePos, Plane(glm::vec3(0.0f, 1.0f, 0.0f), 0.0f));
+
+	auto ray = GetCameraController()->ScreenToRay(GetRenderWindow()->GetViewport(), MousePos);
+	auto bounds = m_DraggedNode->GetChilds()[0]->GetModelsComponent()->GetModels()[0]->GetBounds();
+	auto pos = GetCameraController()->RayToPlane(ray, Plane(glm::vec3(0.0f, 1.0f, 0.0f), bounds.getMax().y / 2.0f));
+
+	m_DraggedNode->SetTranslate(pos - bounds.getCenter());
+
+	m_DraggerTextUI->GetProperties()->GetPropertyT<std::string>("Text")->Set("Pos: " + std::to_string(pos.x) + ", " + std::to_string(pos.y) + ", " + std::to_string(pos.z));
+	m_DraggerTextUI->SetTranslate(MousePos + glm::vec2(0.0f, - 15.0f));
+}
+
+void CSceneEditor::DoDropNodeAndCreateIt()
+{
+	if (!m_IsDraggingEnabled)
+		return;
+
+	const auto& childs = m_DraggedNode->GetChilds();
+	if (childs.empty())
+		throw CException("TEST FUCK!!!!");
+
+	auto firstChild = *childs.begin();
+	firstChild->SetTranslate(m_DraggedNode->GetTranslation());
+	GetRealRootNode3D()->AddChild(firstChild);
+	Selector_SelectNode(firstChild);
+
+	if (m_IsDraggingPermanentCreation)
+	{
+		auto copiedNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>(ofkSceneNode3D)->CreateSceneNode3D(this, cSceneNode3D, GetRootNode3D());
+		firstChild->Copy(copiedNode);
+		copiedNode->SetTranslate(glm::vec3(0.0f));
+		_ASSERT(m_DraggedNode->GetChilds().empty());
+		m_DraggedNode->AddChild(copiedNode);
+	}
 }

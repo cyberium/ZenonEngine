@@ -266,6 +266,9 @@
               <height>1440</height>
              </size>
             </property>
+            <property name="mouseTracking">
+             <bool>true</bool>
+            </property>
             <property name="acceptDrops">
              <bool>true</bool>
             </property>
@@ -589,7 +592,7 @@
     <property name="maximumSize">
      <size>
       <width>400</width>
-      <height>1000</height>
+      <height>3000</height>
      </size>
     </property>
     <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -625,7 +628,7 @@
        <property name="maximumSize">
         <size>
          <width>400</width>
-         <height>600</height>
+         <height>2600</height>
         </size>
        </property>
        <property name="acceptDrops">

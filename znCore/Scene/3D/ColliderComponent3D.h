@@ -10,6 +10,8 @@ public:
 	CColliderComponent3D(const ISceneNode3D& OwnerNode);
     virtual ~CColliderComponent3D();
 
+	void Copy(std::shared_ptr<ISceneNodeComponent> Destination) const override;
+
     // IColliderComponent3D
 	void SetCullStrategy(ECullStrategy CullStrategy) override;
 	ECullStrategy GetCullStrategy() const override;
