@@ -141,7 +141,7 @@ bool CEdtor3DFrame::OnMouseClickToWorld(const MouseButtonEventArgs & e, const Ra
 
 		// MOVER BEGIN
 		m_MovingNode = m_Selector.GetFirstSelectedNode();
-		if (m_MovingNode != nullptr)
+		if (m_MovingNode != nullptr && !IsChildOf(m_MoverRoot, m_MovingNode))
 		{
 			{
 				auto pos = GetCameraController()->RayToPlane(RayToWorld, Plane(glm::vec3(0.0f, 1.0f, 0.0f), m_MovingNode->GetTranslation().y));
@@ -157,23 +157,22 @@ bool CEdtor3DFrame::OnMouseClickToWorld(const MouseButtonEventArgs & e, const Ra
 			{
 				if (it.second == m_MoverX)
 				{
-					m_MovingObjectPos = m_MovingNode->GetTranslation();
-					m_IsMoverEnable = true;
 					m_MoverNuber = 1;
-					return true;
 				}
 				else if (it.second == m_MoverY)
 				{
-					m_MovingObjectPos = m_MovingNode->GetTranslation();
-					m_IsMoverEnable = true;
 					m_MoverNuber = 2;
-					return true;
 				}
 				else if (it.second == m_MoverZ)
 				{
-					m_MovingObjectPos = m_MovingNode->GetTranslation();
-					m_IsMoverEnable = true;
 					m_MoverNuber = 3;
+				}
+
+				if (m_MoverNuber > 0)
+				{
+					m_MovingObjectPos = m_MovingNode->GetTranslation();
+					m_MoverRoot->SetScale(glm::vec3(m_MovingNode->GetColliderComponent()->GetBounds().getRadius() * 1.0f / 10.0f));
+					m_IsMoverEnable = true;
 					return true;
 				}
 			}
@@ -218,6 +217,8 @@ void CEdtor3DFrame::OnMouseReleaseToWorld(const MouseButtonEventArgs & e, const 
 	{
 		if (m_IsMoverEnable)
 		{
+			m_MoverNuber = 0;
+			//m_MoverRoot->SetScale(glm::vec3(0.001f));
 			m_IsMoverEnable = false;
 			m_MovingNode = nullptr;
 			m_MovingObjectPos = glm::vec3(0.0f);
@@ -253,44 +254,49 @@ void CEdtor3DFrame::OnMouseReleaseToWorld(const MouseButtonEventArgs & e, const 
 
 void CEdtor3DFrame::OnMouseMoveToWorld(const MouseMotionEventArgs & e, const Ray & RayToWorld)
 {
+
 	if (m_IsDraggingEnabled)
 	{
 		DoMoveNode(e.GetPoint());
 		return;
 	}
 
-	if (m_IsMoverEnable)
-	{
-		glm::vec3 pos = glm::vec3(0.0f);
-		if (m_MoverNuber == 1)
-		{
-			auto pos = GetCameraController()->RayToPlane(RayToWorld, Plane(glm::vec3(0.0f, 1.0f, 0.0f), m_MovingObjectPos.y));
-			m_MovingObjectPos = glm::vec3(pos.x + m_MoverOffset.x, m_MovingObjectPos.y, m_MovingObjectPos.z);
-		}
-		else if (m_MoverNuber == 3)
-		{
-			auto pos = GetCameraController()->RayToPlane(RayToWorld, Plane(glm::vec3(0.0f, 1.0f, 0.0f), m_MovingObjectPos.y));
-			m_MovingObjectPos = glm::vec3(m_MovingObjectPos.x, m_MovingObjectPos.y, pos.z + m_MoverOffset.z);
-		}
-		else if (m_MoverNuber == 2)
-		{
-			auto cameraPosX0Z = GetCameraController()->GetCamera()->GetTranslation();
-			cameraPosX0Z = glm::vec3(cameraPosX0Z.x, 0.0f, cameraPosX0Z.z);
-			auto movedObjectPosX0Z = glm::vec3(m_MovingObjectPos.x, 0.0f, m_MovingObjectPos.z);
-			auto planeNormal = glm::normalize(movedObjectPosX0Z - cameraPosX0Z);
-			auto pos = GetCameraController()->RayToPlane(RayToWorld, Plane(planeNormal, 0.0f));
-
-			m_MovingObjectPos = glm::vec3(m_MovingObjectPos.x, pos.y + m_MoverOffset.y, m_MovingObjectPos.z);
-		}
-
-		m_MovingNode->SetTranslate(m_MovingObjectPos);
-		m_MoverRoot->SetTranslate(m_MovingObjectPos);
-
-		return;
-	}
-
 	if (e.LeftButton)
 	{
+		if (m_IsMoverEnable)
+		{
+			glm::vec3 oldPos = m_MovingNode->GetTranslation();
+			glm::vec3 newPos = glm::vec3(0.0f);
+
+			if (m_MoverNuber == 1)
+			{
+				auto mousePos = GetCameraController()->RayToPlane(RayToWorld, Plane(glm::vec3(0.0f, 1.0f, 0.0f), oldPos.y));
+				newPos = glm::vec3(mousePos.x + m_MoverOffset.x, oldPos.y, oldPos.z);
+			}
+			else if (m_MoverNuber == 3)
+			{
+				auto mousePos = GetCameraController()->RayToPlane(RayToWorld, Plane(glm::vec3(0.0f, 1.0f, 0.0f), oldPos.y));
+				newPos = glm::vec3(oldPos.x, oldPos.y, mousePos.z + m_MoverOffset.z);
+			}
+			else if (m_MoverNuber == 2)
+			{
+				auto cameraPosX0Z = GetCameraController()->GetCamera()->GetTranslation();
+				cameraPosX0Z = glm::vec3(cameraPosX0Z.x, 0.0f, cameraPosX0Z.z);
+				auto movedObjectPosX0Z = glm::vec3(oldPos.x, 0.0f, oldPos.z);
+				auto planeNormal = glm::normalize(movedObjectPosX0Z - cameraPosX0Z);
+
+				auto mousePos = GetCameraController()->RayToPlane(RayToWorld, Plane(planeNormal, 0.0f));
+				newPos = glm::vec3(oldPos.x, mousePos.y + m_MoverOffset.y, oldPos.z);
+			}
+
+			m_MovingNode->SetTranslate(FixBoxCoords(newPos));
+			m_MoverRoot->SetTranslate(m_MovingNode->GetTranslation());
+
+			// Refresh selection bounds
+			m_DrawSelectionPass->SetNeedRefresh();
+			return;
+		}
+
 		if (m_IsSelecting)
 		{
 			glm::vec2 scale = e.GetPoint() - m_SelectionTexture->GetTranslation();
@@ -394,7 +400,7 @@ void CEdtor3DFrame::DropEvent(const glm::vec2& Position)
 			DragLeaveEvent();
 	}
 
-	
+
 }
 
 void CEdtor3DFrame::DragEnterEvent(const SDragData& Data)
@@ -439,7 +445,7 @@ void CEdtor3DFrame::SetMoverValue(float value)
 //
 void CEdtor3DFrame::OnSelectNodes()
 {
-	m_DrawSelectionPass->RefreshInstanceBuffer();
+	m_DrawSelectionPass->SetNeedRefresh();
 }
 
 
@@ -467,29 +473,29 @@ glm::vec3 CEdtor3DFrame::FixBoxCoords(const glm::vec3 & Position)
 //
 void CEdtor3DFrame::Load3D()
 {
-	
+
 	auto sceneNodeLight = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, this);
-		sceneNodeLight->SetName("Light");
-		sceneNodeLight->SetTranslate(glm::vec3(1500.0f, 1500.0f, 1500.0f));
-		sceneNodeLight->SetRotation(glm::vec3(-0.9f, -0.9f, -0.9f));
+	sceneNodeLight->SetName("Light");
+	sceneNodeLight->SetTranslate(glm::vec3(1500.0f, 1500.0f, 1500.0f));
+	sceneNodeLight->SetRotation(glm::vec3(-0.9f, -0.9f, -0.9f));
 
-		sceneNodeLight->AddComponent(std::make_shared<CLightComponent3D>(*sceneNodeLight.get()));
-		sceneNodeLight->GetComponent<ILightComponent3D>()->SetType(ELightType::Spot);
-		sceneNodeLight->GetComponent<ILightComponent3D>()->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
-		sceneNodeLight->GetComponent<ILightComponent3D>()->SetRange(99000.0f);
-		sceneNodeLight->GetComponent<ILightComponent3D>()->SetIntensity(1.0f);
-		sceneNodeLight->GetComponent<ILightComponent3D>()->SetSpotlightAngle(75.0f);
+	sceneNodeLight->AddComponent(std::make_shared<CLightComponent3D>(*sceneNodeLight.get()));
+	sceneNodeLight->GetComponent<ILightComponent3D>()->SetType(ELightType::Spot);
+	sceneNodeLight->GetComponent<ILightComponent3D>()->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
+	sceneNodeLight->GetComponent<ILightComponent3D>()->SetRange(99000.0f);
+	sceneNodeLight->GetComponent<ILightComponent3D>()->SetIntensity(1.0f);
+	sceneNodeLight->GetComponent<ILightComponent3D>()->SetSpotlightAngle(75.0f);
 
 
-	
+
 
 	{
 		m_DraggedNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, this);
 		m_DraggedNode->SetName("Dragged node parent.");
 	}
-	
+
 	{
-		m_MoverRoot = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, this, GetRealRootNode3D());
+		m_MoverRoot = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, this, GetRootNode3D());
 		m_MoverRoot->SetName("Mover");
 
 		std::shared_ptr<ISceneNode3D> sceneNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode_FBXNode, this);
@@ -604,10 +610,10 @@ void CEdtor3DFrame::Load3D()
 
 	glm::vec4 color = glm::vec4(0.33f, 0.33f, 0.33f, 1.0f);
 	m_Technique3D.AddPass(std::make_shared<ClearRenderTargetPass>(GetRenderDevice(), GetRenderWindow()->GetRenderTarget(), ClearFlags::All, color /*glm::vec4(0.2f, 0.2f, 0.2f, 0.2f)*/, 1.0f, 0));
-	
+
 	auto materialModelPass = GetBaseManager().GetManager<IRenderPassFactory>()->CreateRenderPass("MaterialModelPass", GetRenderDevice(), GetRenderWindow()->GetRenderTarget(), &GetRenderWindow()->GetViewport(), shared_from_this());
 	m_MaterialModelPass = std::dynamic_pointer_cast<IMaterialModelPass>(materialModelPass);
-	
+
 	{
 		auto invokePass = GetBaseManager().GetManager<IRenderPassFactory>()->CreateRenderPass("InvokePass", GetRenderDevice(), GetRenderWindow()->GetRenderTarget(), &GetRenderWindow()->GetViewport(), shared_from_this());
 		std::dynamic_pointer_cast<IInvokeFunctionPass>(invokePass)->SetFunc([sceneNodeLight, this]() {
@@ -628,7 +634,7 @@ void CEdtor3DFrame::Load3D()
 
 	// Debug render
 	m_Technique3D.AddPass(GetBaseManager().GetManager<IRenderPassFactory>()->CreateRenderPass("DebugPass", GetRenderDevice(), GetRenderWindow()->GetRenderTarget(), &GetRenderWindow()->GetViewport(), shared_from_this()));
-	
+
 	{
 		m_DrawSelectionPass = std::make_shared<CDrawSelectionPass>(GetRenderDevice(), m_Selector);
 		m_DrawSelectionPass->CreatePipeline(GetRenderWindow()->GetRenderTarget(), &GetRenderWindow()->GetViewport());
@@ -652,7 +658,7 @@ void CEdtor3DFrame::DoMoveNode(const glm::vec2& MousePos)
 {
 	if (!m_IsDraggingEnabled)
 		return;
-	
+
 	//auto posReal = GetCameraController()->ScreenToPlane(GetRenderWindow()->GetViewport(), MousePos, Plane(glm::vec3(0.0f, 1.0f, 0.0f), 0.0f));
 
 	auto ray = GetCameraController()->ScreenToRay(GetRenderWindow()->GetViewport(), MousePos);
@@ -663,7 +669,7 @@ void CEdtor3DFrame::DoMoveNode(const glm::vec2& MousePos)
 	m_DraggedNode->SetTranslate(FixBoxCoords(pos));
 
 	m_DraggerTextUI->GetProperties()->GetPropertyT<std::string>("Text")->Set("Pos: " + std::to_string(pos.x) + ", " + std::to_string(pos.y) + ", " + std::to_string(pos.z));
-	m_DraggerTextUI->SetTranslate(MousePos + glm::vec2(0.0f, - 15.0f));
+	m_DraggerTextUI->SetTranslate(MousePos + glm::vec2(0.0f, -15.0f));
 }
 
 void CEdtor3DFrame::DoDropNodeAndCreateIt()

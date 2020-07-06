@@ -8,6 +8,7 @@ const float cBBoxSizeIncrement = 0.05f;
 CDrawSelectionPass::CDrawSelectionPass(IRenderDevice& RenderDevice, IEditor_NodesSelector& Selector)
 	: RenderPassPipelined(RenderDevice)
 	, m_Selector(Selector)
+	, m_IsDirty(false)
 {
 	m_InstancesBuffer = GetRenderDevice().GetObjectsFactory().CreateStructuredBuffer(nullptr, 100, sizeof(SSelectorPerObject), EAccess::CPUWrite);
 }
@@ -15,43 +16,9 @@ CDrawSelectionPass::CDrawSelectionPass(IRenderDevice& RenderDevice, IEditor_Node
 CDrawSelectionPass::~CDrawSelectionPass()
 {}
 
-
-
-//
-// Protected
-//
-void CDrawSelectionPass::RefreshInstanceBuffer()
+void CDrawSelectionPass::SetNeedRefresh()
 {
-	m_InstancesCnt = 0;
-
-	auto selectedNodes = m_Selector.GetSelectedNodes();
-	if (!selectedNodes.empty())
-	{
-		std::vector<SSelectorPerObject> instances;
-		instances.reserve(selectedNodes.size());
-		std::for_each(selectedNodes.begin(), selectedNodes.end(), [&instances](const std::shared_ptr<ISceneNode3D>& selectedNode) {
-			const auto& colliderComponent = selectedNode->GetComponent<IColliderComponent3D>();
-			if (colliderComponent)
-			{
-				const BoundingBox& bbox = colliderComponent->GetWorldBounds();
-				const auto size = (bbox.getMax() - bbox.getMin());
-				const auto sizeIncrement = size * cBBoxSizeIncrement;
-
-				glm::mat4 bboxMatrix = glm::mat4(1.0f);
-				bboxMatrix = glm::translate(bboxMatrix, bbox.getMin() - sizeIncrement);
-				bboxMatrix = glm::scale(bboxMatrix, size + sizeIncrement * 2.0f);
-
-				instances.push_back(SSelectorPerObject(bboxMatrix, glm::vec4(0.8f, 0.8f, 0.8f, 0.7f)));
-			}
-		});
-
-		if (instances.size() > m_InstancesBuffer->GetElementCount())
-			m_InstancesBuffer = GetRenderDevice().GetObjectsFactory().CreateStructuredBuffer(instances, EAccess::CPUWrite);
-		else
-			m_InstancesBuffer->Set(instances);
-
-		m_InstancesCnt = instances.size();
-	}
+	m_IsDirty = true;
 }
 
 
@@ -61,8 +28,11 @@ void CDrawSelectionPass::RefreshInstanceBuffer()
 //
 void CDrawSelectionPass::Render(RenderEventArgs& e)
 {
-	if (m_Selector.GetSelectedNodes().size() != m_InstancesCnt)
+	if (m_Selector.GetSelectedNodes().size() != m_InstancesCnt || m_IsDirty)
+	{
 		RefreshInstanceBuffer();
+		m_IsDirty = false;
+	}
 
 	if (m_InstancesCnt > 0)
 	{
@@ -125,4 +95,43 @@ EVisitResult CDrawSelectionPass::Visit(const IModel * Model)
 {
 	_ASSERT(false);
 	return EVisitResult::Block;
+}
+
+
+
+//
+// Private
+//
+void CDrawSelectionPass::RefreshInstanceBuffer()
+{
+	m_InstancesCnt = 0;
+
+	auto selectedNodes = m_Selector.GetSelectedNodes();
+	if (!selectedNodes.empty())
+	{
+		std::vector<SSelectorPerObject> instances;
+		instances.reserve(selectedNodes.size());
+		std::for_each(selectedNodes.begin(), selectedNodes.end(), [&instances](const std::shared_ptr<ISceneNode3D>& selectedNode) {
+			const auto& colliderComponent = selectedNode->GetComponent<IColliderComponent3D>();
+			if (colliderComponent)
+			{
+				const BoundingBox& bbox = colliderComponent->GetWorldBounds();
+				const auto size = (bbox.getMax() - bbox.getMin());
+				const auto sizeIncrement = size * cBBoxSizeIncrement;
+
+				glm::mat4 bboxMatrix = glm::mat4(1.0f);
+				bboxMatrix = glm::translate(bboxMatrix, bbox.getMin() - sizeIncrement);
+				bboxMatrix = glm::scale(bboxMatrix, size + sizeIncrement * 2.0f);
+
+				instances.push_back(SSelectorPerObject(bboxMatrix, glm::vec4(0.8f, 0.8f, 0.8f, 0.7f)));
+			}
+		});
+
+		if (instances.size() > m_InstancesBuffer->GetElementCount())
+			m_InstancesBuffer = GetRenderDevice().GetObjectsFactory().CreateStructuredBuffer(instances, EAccess::CPUWrite);
+		else
+			m_InstancesBuffer->Set(instances);
+
+		m_InstancesCnt = instances.size();
+	}
 }

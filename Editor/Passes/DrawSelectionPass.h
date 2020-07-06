@@ -17,7 +17,7 @@ public:
 	CDrawSelectionPass(IRenderDevice& RenderDevice, IEditor_NodesSelector& Selector);
 	virtual ~CDrawSelectionPass();
 
-	void RefreshInstanceBuffer();
+	void SetNeedRefresh();
 
 	// IRenderPass
 	void Render(RenderEventArgs& e) override;
@@ -29,8 +29,12 @@ public:
 	EVisitResult Visit(const ISceneNode3D* node) override final;
 	EVisitResult Visit(const IModel* Model) override final;
 
+private:
+	void RefreshInstanceBuffer();
+
 protected:
 	IEditor_NodesSelector&             m_Selector;
+	bool                               m_IsDirty;
 
 	std::shared_ptr<IGeometry>         m_QuadGeometry;
 
