@@ -52,7 +52,7 @@ void CEditor3DPreviewScene::Initialize()
 {
 	SceneBase::Initialize();
 
-	auto cameraNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>(otSceneNode3D)->CreateSceneNode3D(this, cSceneNode3D, GetRootNode3D());
+	auto cameraNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, this);
 	cameraNode->SetName("Camera");
 	cameraNode->AddComponent(std::make_shared<CCameraComponent3D>(*cameraNode));
 
@@ -75,7 +75,7 @@ void CEditor3DPreviewScene::Finalize()
 
 void CEditor3DPreviewScene::Load3D()
 {
-	auto sceneNodeLight = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>(otSceneNode3D)->CreateSceneNode3D(this, cSceneNode3D, GetRootNode3D());
+	auto sceneNodeLight = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, this);
 	sceneNodeLight->SetName("Light");
 	sceneNodeLight->SetTranslate(glm::vec3(1500.0f, 1500.0f, 1500.0f));
 	sceneNodeLight->SetRotation(glm::vec3(-0.9f, -0.9f, -0.9f));
@@ -90,13 +90,13 @@ void CEditor3DPreviewScene::Load3D()
 	m_LightsBuffer = GetRenderDevice().GetObjectsFactory().CreateStructuredBuffer(nullptr, 8, sizeof(SLight), EAccess::CPUWrite);
 
 	{
-		m_Node = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>(otSceneNode3D)->CreateSceneNode3D(this, cSceneNode3D, GetRootNode3D());
+		m_Node = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, this);
 		m_Node->SetName("Node model preview.");
 	}
 
 
 	{
-		auto node = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>(otSceneNode3D)->CreateSceneNode3D(this, cSceneNode3D, GetRootNode3D());
+		auto node = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, this);
 		node->SetName("Grid node x10.");
 		node->SetTranslate(glm::vec3(0.0f, 0.03f, 0.0f));
 		node->SetScale(glm::vec3(10.0f));

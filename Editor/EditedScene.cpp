@@ -16,7 +16,7 @@ void CEditedScene::Initialize()
 {
 	SceneBase::Initialize();
 
-	auto fileNames = Utils::GetAllFilesInDirectory("C:\\_engine\\ZenonEngine_gamedata\\models", ".znmdl");
+	//auto fileNames = Utils::GetAllFilesInDirectory("C:\\_engine\\ZenonEngine_gamedata\\models", ".znmdl");
 
 	
 }
@@ -50,7 +50,7 @@ std::shared_ptr<ISceneNode3D> CEditedScene::CreateNode(const glm::ivec3& Positio
 	//if (it != m_Nodes.end())
 	//	return it->SceneNode;
 
-	auto node = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>(otSceneNode3D)->CreateSceneNode3D(this, cSceneNode3D, GetRootNode3D());
+	auto node = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, this);
 	node->SetName(Type);
 	//node->SetTranslate(glm::vec3(Position));
 	//node->SetScale(glm::vec3(25.0f));

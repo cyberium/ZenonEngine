@@ -7,6 +7,7 @@
 
 MainEditor::MainEditor(QWidget* Parent)
 	: QMainWindow(Parent)
+	, m_Selector(this)
 {
 	m_UI.setupUi(this);
 
@@ -41,7 +42,7 @@ void MainEditor::SetEditor3D(IEditor3DFrame* Editor3DFrame)
 	getMainEditor()->SetEditors(Editor3DFrame, this);
 	getSceneViewer()->SetEditors(Editor3DFrame, this);
 	getCollectionViewer()->SetEditors(Editor3DFrame, this);
-	Selector_SetOtherSelector(dynamic_cast<CSceneNodesSelector*>(m_Editor3D));
+	m_Selector.SetOtherSelector(m_Editor3D->GetNodesSelector());
 
 	std::vector<std::string> realNames;
 
@@ -59,7 +60,9 @@ void MainEditor::SetEditor3D(IEditor3DFrame* Editor3DFrame)
 				continue;
 			}
 
-			std::shared_ptr<ISceneNode3D> sceneNode = m_Editor3D->GetBaseManager2().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>(otSceneNode3D)->CreateSceneNode3D(dynamic_cast<IScene*>(m_Editor3D), cSceneNode_FBXNode);
+			continue;
+
+			std::shared_ptr<ISceneNode3D> sceneNode = m_Editor3D->GetBaseManager2().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode_FBXNode, dynamic_cast<IScene*>(m_Editor3D));
 
 			std::shared_ptr<IFBXSceneNode3D> fbxSceneNode = std::dynamic_pointer_cast<IFBXSceneNode3D>(sceneNode);
 			fbxSceneNode->InitializeFromFile(it);
@@ -81,6 +84,11 @@ void MainEditor::SetEditor3D(IEditor3DFrame* Editor3DFrame)
 	}
 
 	getCollectionViewer()->SetModelsList(realNames);
+}
+
+IEditor_NodesSelector * MainEditor::GetNodesSelector()
+{
+	return &m_Selector;
 }
 
 
@@ -117,21 +125,21 @@ namespace
 //
 bool MainEditor::ExtendContextMenu(QMenu * Menu, const std::shared_ptr<ISceneNode3D>& Node)
 {
-	if (!Selector_IsNodeSelected(Node))
+	if (!m_Selector.IsNodeSelected(Node))
 		return false;
 
 	std::string contextMenuTitle = Node->GetName();
 
 	std::vector<QAction *> actions;
 
-	if (Selector_GetSelectedNodes().size() > 1)
+	if (m_Selector.GetSelectedNodes().size() > 1)
 	{
-		contextMenuTitle.append(" and " + std::to_string(Selector_GetSelectedNodes().size()) + " nodes.");
+		contextMenuTitle.append(" and " + std::to_string(m_Selector.GetSelectedNodes().size()) + " nodes.");
 
 		std::map<std::string, std::vector<std::shared_ptr<IPropertyAction>>> mainNodeActionsNames;
 		FillActionsList(Node, &mainNodeActionsNames);
 
-		for (const auto& sel : Selector_GetSelectedNodes())
+		for (const auto& sel : m_Selector.GetSelectedNodes())
 		{
 			if (sel == Node)
 				continue;
@@ -203,17 +211,17 @@ void MainEditor::OnSceneChanged()
 
 
 //
-// CSceneNodesSelector
+// IEditor_NodesSelectorEventListener
 //
-void MainEditor::Selector_OnSelectionChange()
+void MainEditor::OnSelectNodes()
 {
-	const auto& selectedNodes = Selector_GetSelectedNodes();
+	const auto& selectedNodes = m_Selector.GetSelectedNodes();
 	if (selectedNodes.size() == 1)
-		getSceneViewer()->SelectNode(Selector_GetFirstSelectedNode());
+		getSceneViewer()->SelectNode(m_Selector.GetFirstSelectedNode());
 
 	getSceneViewer()->SelectNodes(selectedNodes);
 
-	m_PropertiesController->OnSceneNodeSelected(Selector_GetFirstSelectedNode().get());
+	m_PropertiesController->OnSceneNodeSelected(m_Selector.GetFirstSelectedNode().get());
 }
 
 

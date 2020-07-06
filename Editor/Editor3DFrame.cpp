@@ -5,10 +5,14 @@
 
 CEdtor3DFrame::CEdtor3DFrame(IBaseManager& BaseManager)
 	: SceneBase(BaseManager)
+	, m_Selector(this)
+
 	, m_EditorUI(nullptr)
 	, m_IsDraggingEnabled(false)
 	, m_IsDraggingPermanentCreation(false)
 	, m_MoverValue(1.0f)
+	, m_MoverNuber(-1)
+	, m_IsMoverEnable(false)
 	, m_IsSelecting(false)
 {
 	m_EditedScene = std::make_shared<CEditedScene>(BaseManager);
@@ -23,7 +27,7 @@ void CEdtor3DFrame::SetEditorUI(IEditorUIFrame * EditorUIFrame)
 {
 	m_EditorUI = EditorUIFrame;
 
-	Selector_SetOtherSelector(dynamic_cast<CSceneNodesSelector*>(m_EditorUI));
+	m_Selector.SetOtherSelector(m_EditorUI->GetNodesSelector());
 }
 
 void CEdtor3DFrame::SetPreviewScene(const std::shared_ptr<CEditor3DPreviewScene>& PreviewScene)
@@ -39,7 +43,7 @@ void CEdtor3DFrame::Initialize()
 {
 	SceneBase::Initialize();
 
-	auto cameraNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>(otSceneNode3D)->CreateSceneNode3D(this, cSceneNode3D, GetRootNode3D());
+	auto cameraNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, this);
 	cameraNode->SetName("Camera");
 	cameraNode->AddComponent(std::make_shared<CCameraComponent3D>(*cameraNode));
 
@@ -51,6 +55,15 @@ void CEdtor3DFrame::Initialize()
 
 	Load3D();
 	LoadUI();
+
+
+
+
+
+
+
+
+
 
 	GetRootNode3D()->AddChild(m_EditedScene->GetRootNode3D());
 
@@ -94,11 +107,11 @@ void CEdtor3DFrame::RaiseSceneChangeEvent(ESceneChangeType SceneChangeType, cons
 {
 	if (SceneChangeType == ESceneChangeType::NodeRemovedFromParent)
 	{
-		for (const auto& node : Selector_GetSelectedNodes())
+		for (const auto& node : m_Selector.GetSelectedNodes())
 		{
 			if (node == ChildNode)
 			{
-				Selector_RemoveNode(ChildNode);
+				m_Selector.RemoveNode(ChildNode);
 			}
 		}
 	}
@@ -126,19 +139,64 @@ bool CEdtor3DFrame::OnMouseClickToWorld(const MouseButtonEventArgs & e, const Ra
 			return true;
 		}
 
+		// MOVER BEGIN
+		m_MovingNode = m_Selector.GetFirstSelectedNode();
+		if (m_MovingNode != nullptr)
+		{
+			{
+				auto pos = GetCameraController()->RayToPlane(RayToWorld, Plane(glm::vec3(0.0f, 1.0f, 0.0f), m_MovingNode->GetTranslation().y));
+				auto cameraPosX0Z = GetCameraController()->GetCamera()->GetTranslation();
+				cameraPosX0Z = glm::vec3(cameraPosX0Z.x, 0.0f, cameraPosX0Z.z);
+				auto movedObjectPosX0Z = glm::vec3(m_MovingNode->GetTranslation().x, 0.0f, m_MovingNode->GetTranslation().z);
+				auto planeNormal = glm::normalize(movedObjectPosX0Z - cameraPosX0Z);
+				auto posYYY = GetCameraController()->RayToPlane(RayToWorld, Plane(planeNormal, 0.0f));
+				m_MoverOffset = m_MoverRoot->GetTranslation() - glm::vec3(pos.x, posYYY.y, pos.z);
+			}
+
+			for (const auto& it : nodes)
+			{
+				if (it.second == m_MoverX)
+				{
+					m_MovingObjectPos = m_MovingNode->GetTranslation();
+					m_IsMoverEnable = true;
+					m_MoverNuber = 1;
+					return true;
+				}
+				else if (it.second == m_MoverY)
+				{
+					m_MovingObjectPos = m_MovingNode->GetTranslation();
+					m_IsMoverEnable = true;
+					m_MoverNuber = 2;
+					return true;
+				}
+				else if (it.second == m_MoverZ)
+				{
+					m_MovingObjectPos = m_MovingNode->GetTranslation();
+					m_IsMoverEnable = true;
+					m_MoverNuber = 3;
+					return true;
+				}
+			}
+		}
+		// MOVER END
+
+
+
+
 		auto node = nodes.begin()->second;
 		_ASSERT(node != nullptr);
 
 		if (e.Control)
 		{
-			if (Selector_IsNodeSelected(node))
-				Selector_RemoveNode(node);
+			if (m_Selector.IsNodeSelected(node))
+				m_Selector.RemoveNode(node);
 			else
-				Selector_AddNode(node);
+				m_Selector.AddNode(node);
 		}
 		else
 		{
-			Selector_SelectNode(nodes.begin()->second);
+			m_Selector.SelectNode(nodes.begin()->second);
+			m_MoverRoot->SetTranslate(nodes.begin()->second->GetTranslation());
 		}
 		return  true;
 	}
@@ -158,6 +216,13 @@ void CEdtor3DFrame::OnMouseReleaseToWorld(const MouseButtonEventArgs & e, const 
 {
 	if (e.Button == MouseButtonEventArgs::MouseButton::Left)
 	{
+		if (m_IsMoverEnable)
+		{
+			m_IsMoverEnable = false;
+			m_MovingNode = nullptr;
+			m_MovingObjectPos = glm::vec3(0.0f);
+		}
+
 		auto cachedSelectionPrevPos = m_SelectionPrevPos;
 
 		// Clear
@@ -179,7 +244,7 @@ void CEdtor3DFrame::OnMouseReleaseToWorld(const MouseButtonEventArgs & e, const 
 
 				auto nodes = FindIntersections(f);
 				if (!nodes.empty())
-					Selector_SelectNodes(nodes);
+					m_Selector.SelectNodes(nodes);
 			}
 			m_IsSelecting = false;
 		}
@@ -191,6 +256,36 @@ void CEdtor3DFrame::OnMouseMoveToWorld(const MouseMotionEventArgs & e, const Ray
 	if (m_IsDraggingEnabled)
 	{
 		DoMoveNode(e.GetPoint());
+		return;
+	}
+
+	if (m_IsMoverEnable)
+	{
+		glm::vec3 pos = glm::vec3(0.0f);
+		if (m_MoverNuber == 1)
+		{
+			auto pos = GetCameraController()->RayToPlane(RayToWorld, Plane(glm::vec3(0.0f, 1.0f, 0.0f), m_MovingObjectPos.y));
+			m_MovingObjectPos = glm::vec3(pos.x + m_MoverOffset.x, m_MovingObjectPos.y, m_MovingObjectPos.z);
+		}
+		else if (m_MoverNuber == 3)
+		{
+			auto pos = GetCameraController()->RayToPlane(RayToWorld, Plane(glm::vec3(0.0f, 1.0f, 0.0f), m_MovingObjectPos.y));
+			m_MovingObjectPos = glm::vec3(m_MovingObjectPos.x, m_MovingObjectPos.y, pos.z + m_MoverOffset.z);
+		}
+		else if (m_MoverNuber == 2)
+		{
+			auto cameraPosX0Z = GetCameraController()->GetCamera()->GetTranslation();
+			cameraPosX0Z = glm::vec3(cameraPosX0Z.x, 0.0f, cameraPosX0Z.z);
+			auto movedObjectPosX0Z = glm::vec3(m_MovingObjectPos.x, 0.0f, m_MovingObjectPos.z);
+			auto planeNormal = glm::normalize(movedObjectPosX0Z - cameraPosX0Z);
+			auto pos = GetCameraController()->RayToPlane(RayToWorld, Plane(planeNormal, 0.0f));
+
+			m_MovingObjectPos = glm::vec3(m_MovingObjectPos.x, pos.y + m_MoverOffset.y, m_MovingObjectPos.z);
+		}
+
+		m_MovingNode->SetTranslate(m_MovingObjectPos);
+		m_MoverRoot->SetTranslate(m_MovingObjectPos);
+
 		return;
 	}
 
@@ -233,6 +328,16 @@ bool CEdtor3DFrame::OnWindowKeyPressed(KeyEventArgs & e)
 void CEdtor3DFrame::OnWindowKeyReleased(KeyEventArgs & e)
 {
 	__super::OnWindowKeyReleased(e);
+}
+
+
+
+//
+// IEditorSharedFrame
+//
+IEditor_NodesSelector * CEdtor3DFrame::GetNodesSelector()
+{
+	return &m_Selector;
 }
 
 
@@ -330,13 +435,18 @@ void CEdtor3DFrame::SetMoverValue(float value)
 
 
 //
-// CSceneNodesSelector
+// IEditor_NodesSelectorEventListener
 //
-void CEdtor3DFrame::Selector_OnSelectionChange()
+void CEdtor3DFrame::OnSelectNodes()
 {
 	m_DrawSelectionPass->RefreshInstanceBuffer();
 }
 
+
+
+//
+// CSceneNodesSelector
+//
 
 glm::ivec3 CEdtor3DFrame::ToBoxCoords(const glm::vec3 & Position)
 {
@@ -358,7 +468,7 @@ glm::vec3 CEdtor3DFrame::FixBoxCoords(const glm::vec3 & Position)
 void CEdtor3DFrame::Load3D()
 {
 	
-	auto sceneNodeLight = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>(otSceneNode3D)->CreateSceneNode3D(this, cSceneNode3D, GetRootNode3D());
+	auto sceneNodeLight = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, this);
 		sceneNodeLight->SetName("Light");
 		sceneNodeLight->SetTranslate(glm::vec3(1500.0f, 1500.0f, 1500.0f));
 		sceneNodeLight->SetRotation(glm::vec3(-0.9f, -0.9f, -0.9f));
@@ -374,37 +484,73 @@ void CEdtor3DFrame::Load3D()
 	
 
 	{
-		m_DraggedNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>(otSceneNode3D)->CreateSceneNode3D(this, cSceneNode3D, GetRootNode3D());
+		m_DraggedNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, this);
 		m_DraggedNode->SetName("Dragged node parent.");
 	}
 	
 	{
-		m_Mover = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>(otSceneNode3D)->CreateSceneNode3D(this, cSceneNode3D, GetRootNode3D());
-		m_Mover->SetName("Mover node.");
+		m_MoverRoot = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, this, GetRealRootNode3D());
+		m_MoverRoot->SetName("Mover node.");
 
-		auto X_Geom = GetRenderDevice().GetPrimitivesFactory().CreateLine(glm::vec3(1.0f, 0.0f, 0.0f));
-		auto Y_Geom = GetRenderDevice().GetPrimitivesFactory().CreateLine(glm::vec3(0.0f, 1.0f, 0.0f));
-		auto Z_Geom = GetRenderDevice().GetPrimitivesFactory().CreateLine(glm::vec3(0.0f, 0.0f, 1.0f));
 
-		auto materialX = std::make_shared<MaterialDebug>(GetRenderDevice());
-		materialX->SetDiffuseColor(glm::vec4(1.0f, 0.3f, 0.1f, 1.0f));
 
-		auto materialY = std::make_shared<MaterialDebug>(GetRenderDevice());
-		materialY->SetDiffuseColor(glm::vec4(0.3f, 1.0f, 0.3f, 1.0f));
+		std::shared_ptr<ISceneNode3D> sceneNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode_FBXNode, this);
 
-		auto materialZ = std::make_shared<MaterialDebug>(GetRenderDevice());
-		materialZ->SetDiffuseColor(glm::vec4(0.1f, 0.3f, 1.0f, 1.0f));
+		std::shared_ptr<IFBXSceneNode3D> fbxSceneNode = std::dynamic_pointer_cast<IFBXSceneNode3D>(sceneNode);
+		fbxSceneNode->InitializeFromFile("C:\\_engine\\ZenonEngine_gamedata\\arrow.FBX");
 
-		auto model = GetRenderDevice().GetObjectsFactory().CreateModel();
-		model->AddConnection(materialX, X_Geom);
-		model->AddConnection(materialY, Y_Geom);
-		model->AddConnection(materialZ, Z_Geom);
+		auto model = std::dynamic_pointer_cast<IFBXSceneNode3D>(sceneNode->GetChilds().at(0))->GetModel();
+		auto geom = model->GetConnections().begin()->Geometry;
+		if (auto loadable = std::dynamic_pointer_cast<IObjectLoadSave>(model))
+		{
+			std::shared_ptr<IFile> file = std::make_shared<CFile>("C:\\_engine\\ZenonEngine_gamedata\\arrow.znmdl");
+			loadable->Save(file);
 
-		m_Mover->GetComponent<IModelsComponent3D>()->AddModel(model);
+			GetBaseManager().GetManager<IFilesManager>()->GetFilesStorage("PCEveryFileAccess")->SaveFile(file);
+		}
+
+		// Mover node
+		{
+			auto materialX = std::make_shared<MaterialDebug>(GetRenderDevice());
+			materialX->SetDiffuseColor(glm::vec4(1.0f, 0.2f, 0.1f, 1.0f));
+			auto modelX = GetRenderDevice().GetObjectsFactory().CreateModel();
+			modelX->AddConnection(materialX, geom);
+
+			auto materialY = std::make_shared<MaterialDebug>(GetRenderDevice());
+			materialY->SetDiffuseColor(glm::vec4(0.1f, 1.0f, 0.1f, 1.0f));
+			auto modelY = GetRenderDevice().GetObjectsFactory().CreateModel();
+			modelY->AddConnection(materialY, geom);
+
+			auto materialZ = std::make_shared<MaterialDebug>(GetRenderDevice());
+			materialZ->SetDiffuseColor(glm::vec4(0.1f, 0.2f, 1.0f, 1.0f));
+			auto modelZ = GetRenderDevice().GetObjectsFactory().CreateModel();
+			modelZ->AddConnection(materialZ, geom);
+
+
+			m_MoverX = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, this, m_MoverRoot);
+			m_MoverX->SetRotation(glm::vec3(0.0f, 0.0f, -glm::half_pi<float>()));
+			//moverX->SetScale(glm::vec3(0.5f, 1.0f, 0.5f));
+			m_MoverX->GetModelsComponent()->AddModel(modelX);
+			m_MoverX->GetColliderComponent()->SetBounds(model->GetBounds());
+
+			m_MoverY = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, this, m_MoverRoot);
+			//moverY->SetScale(glm::vec3(0.5f, 1.0f, 0.5f));
+			m_MoverY->GetModelsComponent()->AddModel(modelY);
+			m_MoverY->GetColliderComponent()->SetBounds(model->GetBounds());
+
+			m_MoverZ = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, this, m_MoverRoot);
+			//moverZ->SetScale(glm::vec3(0.5f, 1.0f, 0.5f));
+			m_MoverZ->SetRotation(glm::vec3(glm::half_pi<float>(), 0.0f, 0.0f));
+			m_MoverZ->GetModelsComponent()->AddModel(modelZ);
+			m_MoverZ->GetColliderComponent()->SetBounds(model->GetBounds());
+		}
+
+
+		sceneNode->GetParent().lock()->RemoveChild(sceneNode);
 	}
 
 	{
-		auto node = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>(otSceneNode3D)->CreateSceneNode3D(this, cSceneNode3D, GetRootNode3D());
+		auto node = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, this);
 		node->SetName("Grid node x1.");
 		node->SetTranslate(glm::vec3(0.0f));
 		node->SetScale(glm::vec3(1.0f));
@@ -422,7 +568,7 @@ void CEdtor3DFrame::Load3D()
 
 
 	{
-		auto node = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>(otSceneNode3D)->CreateSceneNode3D(this, cSceneNode3D, GetRootNode3D());
+		auto node = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, this);
 		node->SetName("Grid node x10.");
 		node->SetTranslate(glm::vec3(0.0f, 0.03f, 0.0f));
 		node->SetScale(glm::vec3(10.0f));
@@ -439,7 +585,7 @@ void CEdtor3DFrame::Load3D()
 	}
 
 	{
-		auto node = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>(otSceneNode3D)->CreateSceneNode3D(this, cSceneNode3D, GetRootNode3D());
+		auto node = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, this);
 		node->SetName("Grid node x100.");
 		node->SetTranslate(glm::vec3(0.0f, 0.06f, 0.0f));
 		node->SetScale(glm::vec3(100.0f));
@@ -455,7 +601,7 @@ void CEdtor3DFrame::Load3D()
 		node->GetComponent<IModelsComponent3D>()->AddModel(model);
 	}
 
-	glm::vec4 color = glm::vec4(0.33, 0.33f, 0.33f, 1.0f);
+	glm::vec4 color = glm::vec4(0.33f, 0.33f, 0.33f, 1.0f);
 	m_Technique3D.AddPass(std::make_shared<ClearRenderTargetPass>(GetRenderDevice(), GetRenderWindow()->GetRenderTarget(), ClearFlags::All, color /*glm::vec4(0.2f, 0.2f, 0.2f, 0.2f)*/, 1.0f, 0));
 	
 	auto materialModelPass = GetBaseManager().GetManager<IRenderPassFactory>()->CreateRenderPass("MaterialModelPass", GetRenderDevice(), GetRenderWindow()->GetRenderTarget(), &GetRenderWindow()->GetViewport(), shared_from_this());
@@ -483,7 +629,7 @@ void CEdtor3DFrame::Load3D()
 	m_Technique3D.AddPass(GetBaseManager().GetManager<IRenderPassFactory>()->CreateRenderPass("DebugPass", GetRenderDevice(), GetRenderWindow()->GetRenderTarget(), &GetRenderWindow()->GetViewport(), shared_from_this()));
 	
 	{
-		m_DrawSelectionPass = std::make_shared<CDrawSelectionPass>(GetRenderDevice(), this);
+		m_DrawSelectionPass = std::make_shared<CDrawSelectionPass>(GetRenderDevice(), m_Selector);
 		m_DrawSelectionPass->CreatePipeline(GetRenderWindow()->GetRenderTarget(), &GetRenderWindow()->GetViewport());
 		m_Technique3D.AddPass(m_DrawSelectionPass);
 	}
@@ -491,10 +637,10 @@ void CEdtor3DFrame::Load3D()
 
 void CEdtor3DFrame::LoadUI()
 {
-	m_DraggerTextUI = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeUIFactory>(otSceneNodeUI)->CreateSceneNodeUI(this, cSceneNodeUI_Text);
+	m_DraggerTextUI = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeUIFactory>()->CreateSceneNodeUI(this, cSceneNodeUI_Text);
 	GetRootNodeUI()->AddChild(m_DraggerTextUI);
 
-	m_SelectionTexture = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeUIFactory>(otSceneNodeUI)->CreateSceneNodeUI(this, cSceneNodeUI_Color, GetRootNodeUI());
+	m_SelectionTexture = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeUIFactory>()->CreateSceneNodeUI(this, cSceneNodeUI_Color, GetRootNodeUI());
 	m_SelectionTexture->GetProperties()->GetPropertyT<glm::vec4>("Color")->Set(glm::vec4(0.1f, 0.3f, 1.0f, 0.3f));
 
 	m_TechniqueUI.AddPass(std::make_shared<CUIColorPass>(GetRenderDevice(), shared_from_this())->CreatePipeline(GetRenderWindow()->GetRenderTarget(), &GetRenderWindow()->GetViewport()));
@@ -531,11 +677,11 @@ void CEdtor3DFrame::DoDropNodeAndCreateIt()
 	auto firstChild = *childs.begin();
 	firstChild->SetTranslate(m_DraggedNode->GetTranslation());
 	GetRealRootNode3D()->AddChild(firstChild);
-	Selector_SelectNode(firstChild);
+	m_Selector.SelectNode(firstChild);
 
 	if (m_IsDraggingPermanentCreation)
 	{
-		auto copiedNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>(otSceneNode3D)->CreateSceneNode3D(this, cSceneNode3D, GetRootNode3D());
+		auto copiedNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, this);
 		firstChild->Copy(copiedNode);
 		copiedNode->SetTranslate(glm::vec3(0.0f));
 		_ASSERT(m_DraggedNode->GetChilds().empty());

@@ -81,8 +81,6 @@ void MaterialBase::Unbind(const ShaderMap& shaders) const
 //
 void MaterialBase::Load(const std::shared_ptr<IByteBuffer>& ByteBuffer)
 {
-	//ByteBuffer->readString(&m_Name);
-
 	ByteBuffer->read(&m_BufferSize);
 	if (m_BufferSize > 0)
 	{
@@ -118,9 +116,6 @@ void MaterialBase::Load(const std::shared_ptr<IByteBuffer>& ByteBuffer)
 
 void MaterialBase::Save(const std::shared_ptr<IByteBuffer>& ByteBuffer)
 {
-	// Name
-	//ByteBuffer->writeString(m_Name);
-
 	// Material data
 	ByteBuffer->write(&m_BufferSize);
 	if (m_BufferSize > 0)
@@ -163,6 +158,7 @@ void MaterialBase::InitializeMaterialData(size_t BufferSize)
 	if (BufferSize == m_BufferSize)
 		return;
 
+	// Delete current material data
 	FinalizeMaterialData();
 
 	m_BufferSize = BufferSize;
@@ -190,13 +186,11 @@ void MaterialBase::MarkMaterialDataDirty()
 
 void MaterialBase::FinalizeMaterialData()
 {
-	if (m_MaterialData != nullptr)
-	{
-		_aligned_free(m_MaterialData);
-		m_MaterialData = nullptr;
+	if (m_MaterialData == nullptr)
+		return;
+	
+	_aligned_free(m_MaterialData);
+	m_MaterialData = nullptr;
 
-		m_ConstantBuffer.reset();
-
-		//throw CznRenderException("MaterialBase: Material data already initialized for '%s'.", m_Name.c_str());
-	}
+	m_ConstantBuffer.reset();
 }

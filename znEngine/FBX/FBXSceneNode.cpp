@@ -167,7 +167,7 @@ void CFBXSceneNode::LoadChilds(fbxsdk::FbxNode * NativeNode)
 		fbxsdk::FbxNode* fbxNode = NativeNode->GetChild(i);
 		_ASSERT(fbxNode != nullptr);
 
-		std::shared_ptr<ISceneNode3D> childFbxNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>(otSceneNode3D)->CreateSceneNode3D(GetScene(), cSceneNode_FBXNode, shared_from_this());
+		std::shared_ptr<ISceneNode3D> childFbxNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode_FBXNode, GetScene(), shared_from_this());
 		std::static_pointer_cast<CFBXSceneNode>(childFbxNode)->LoadNode(fbxNode);
 	}
 }

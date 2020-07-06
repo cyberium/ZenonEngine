@@ -124,7 +124,7 @@ void ZenonSceneViewerWidget::onSelectionChanged(const QItemSelection& selected, 
 	indexes.clear();
 
 	m_Editor3D->LockUpdates();
-	dynamic_cast<CSceneNodesSelector*>(m_Editor3D)->Selector_SelectNodes(selectedNodes, false);
+	m_EditorUI->GetNodesSelector()->SelectNodes(selectedNodes);
 	m_Editor3D->UnlockUpdates();
 }
 
@@ -141,7 +141,7 @@ void ZenonSceneViewerWidget::onClicked(const QModelIndex & index)
 	_ASSERT_EXPR(item != nullptr, L"Item is null.");
 
 	m_Editor3D->LockUpdates();
-	dynamic_cast<CSceneNodesSelector*>(m_Editor3D)->Selector_SelectNode(std::static_pointer_cast<ISceneNode3D>(item->GetTObject()), false);
+	m_EditorUI->GetNodesSelector()->SelectNode(std::static_pointer_cast<ISceneNode3D>(item->GetTObject()));
 	m_Editor3D->UnlockUpdates();
 }
 

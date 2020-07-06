@@ -42,8 +42,8 @@ ZN_INTERFACE ZN_API __declspec(uuid("F2E660BC-4074-48D2-9786-67041B41E97E")) IOb
 	virtual std::shared_ptr<IByteBuffer> SaveObject(std::shared_ptr<IObject> Object) = 0;
 
 	template<class T>
-	inline std::shared_ptr<T> GetClassFactoryCast(ObjectType ObjectFactoryKey) const
+	inline std::shared_ptr<T> GetClassFactoryCast() const
 	{
-		return std::dynamic_pointer_cast<T>(GetClassFactory(ObjectFactoryKey));
+		return std::dynamic_pointer_cast<T>(GetClassFactory(T::GetSupportedObjectType()));
 	}
 };

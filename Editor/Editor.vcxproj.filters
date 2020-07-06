@@ -56,9 +56,6 @@
     <Filter Include="Editor3D">
       <UniqueIdentifier>{72c27b49-4bcb-47f0-aec6-118b1a67b28d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="EditorUI">
-      <UniqueIdentifier>{d284ce63-8176-4a03-9452-17676299a635}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ZenonWidgets\ZenonLogViewer">
       <UniqueIdentifier>{a2567b87-e171-4d4f-939b-a53f0c3bba7c}</UniqueIdentifier>
     </Filter>
@@ -73,6 +70,9 @@
     </Filter>
     <Filter Include="ZenonWidgets\ZenonWindowMinimal3D">
       <UniqueIdentifier>{936459f3-5703-4224-8fff-5490074c0c94}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Editor3D\Tools">
+      <UniqueIdentifier>{ee500cc7-f176-4ba2-af32-2078f1c9a29f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -266,14 +266,8 @@
     <ClCompile Include="Editor3DFrame.cpp">
       <Filter>Editor3D</Filter>
     </ClCompile>
-    <ClCompile Include="MainEditor.cpp">
-      <Filter>EditorUI</Filter>
-    </ClCompile>
     <ClCompile Include="ZenonWidgets\ZenonLogViewer\ZenonLogViewer.cpp">
       <Filter>ZenonWidgets\ZenonLogViewer</Filter>
-    </ClCompile>
-    <ClCompile Include="SceneNodesSelector.cpp">
-      <Filter>Editor3D</Filter>
     </ClCompile>
     <ClCompile Include="ZenonWidgets\ZenonSceneViewer\ZenonSceneViewerWidget.cpp">
       <Filter>ZenonWidgets\ZenonSceneViewer</Filter>
@@ -292,6 +286,10 @@
     </ClCompile>
     <ClCompile Include="Editor3DPreviewScene.cpp">
       <Filter>Editor3D</Filter>
+    </ClCompile>
+    <ClCompile Include="MainEditor.cpp" />
+    <ClCompile Include="Tools\NodesSelector.cpp">
+      <Filter>Editor3D\Tools</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -433,9 +431,6 @@
     <ClInclude Include="_widgetZenonLogViewer.h">
       <Filter>ZenonWidgets</Filter>
     </ClInclude>
-    <ClInclude Include="SceneNodesSelector.h">
-      <Filter>Editor3D</Filter>
-    </ClInclude>
     <ClInclude Include="_widgetZenonSceneViewer.h">
       <Filter>ZenonWidgets</Filter>
     </ClInclude>
@@ -459,6 +454,9 @@
     </ClInclude>
     <ClInclude Include="Editor3DPreviewScene.h">
       <Filter>Editor3D</Filter>
+    </ClInclude>
+    <ClInclude Include="Tools\NodesSelector.h">
+      <Filter>Editor3D\Tools</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -549,9 +547,6 @@
     <QtMoc Include="ZenonWidgets\ZenonWindow3D\ZenonWindow3D.h">
       <Filter>ZenonWidgets\ZenonWindow3D</Filter>
     </QtMoc>
-    <QtMoc Include="MainEditor.h">
-      <Filter>EditorUI</Filter>
-    </QtMoc>
     <QtMoc Include="ZenonWidgets\ZenonLogViewer\ZenonLogViewer.h">
       <Filter>ZenonWidgets\ZenonLogViewer</Filter>
     </QtMoc>
@@ -564,6 +559,7 @@
     <QtMoc Include="ZenonWidgets\ZenonWindowMinimal3D\ZenonWindowMinimal3D.h">
       <Filter>ZenonWidgets\ZenonWindowMinimal3D</Filter>
     </QtMoc>
+    <QtMoc Include="MainEditor.h" />
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="MainEditor.qrc">
@@ -576,8 +572,6 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <QtUic Include="MainEditor.ui">
-      <Filter>EditorUI</Filter>
-    </QtUic>
+    <QtUic Include="MainEditor.ui" />
   </ItemGroup>
 </Project>

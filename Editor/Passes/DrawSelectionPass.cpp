@@ -5,7 +5,7 @@
 
 const float cBBoxSizeIncrement = 0.05f;
 
-CDrawSelectionPass::CDrawSelectionPass(IRenderDevice& RenderDevice, CSceneNodesSelector * Selector)
+CDrawSelectionPass::CDrawSelectionPass(IRenderDevice& RenderDevice, IEditor_NodesSelector& Selector)
 	: RenderPassPipelined(RenderDevice)
 	, m_Selector(Selector)
 {
@@ -24,7 +24,7 @@ void CDrawSelectionPass::RefreshInstanceBuffer()
 {
 	m_InstancesCnt = 0;
 
-	auto selectedNodes = m_Selector->Selector_GetSelectedNodes();
+	auto selectedNodes = m_Selector.GetSelectedNodes();
 	if (!selectedNodes.empty())
 	{
 		std::vector<SSelectorPerObject> instances;
@@ -61,7 +61,7 @@ void CDrawSelectionPass::RefreshInstanceBuffer()
 //
 void CDrawSelectionPass::Render(RenderEventArgs& e)
 {
-	if (m_Selector->Selector_GetSelectedNodes().size() != m_InstancesCnt)
+	if (m_Selector.GetSelectedNodes().size() != m_InstancesCnt)
 		RefreshInstanceBuffer();
 
 	if (m_InstancesCnt > 0)

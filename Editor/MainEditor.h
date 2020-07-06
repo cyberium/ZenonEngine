@@ -4,14 +4,14 @@
 #include "ui_MainEditor.h"
 
 #include "EditorInterfaces.h"
-#include "SceneNodesSelector.h"
+#include "Tools/NodesSelector.h"
 
 #include "PropertyEditor/PropertiesController.h"
 
 class MainEditor 
 	: public QMainWindow
 	, public IEditorUIFrame
-	, public CSceneNodesSelector
+	, public IEditor_NodesSelectorEventListener
 {
 	Q_OBJECT
 
@@ -26,17 +26,21 @@ public:
 	inline ZenonCollectionViewerWidget * getCollectionViewer() const { return m_UI.CollectionViewer; }
 	void SetEditor3D(IEditor3DFrame* Editor3DFrame);
 
+	// IEditorSharedFrame
+	IEditor_NodesSelector* GetNodesSelector();
+
 	// IEditorUIFrame
 	bool ExtendContextMenu(QMenu * Menu, const std::shared_ptr<ISceneNode3D>& Node) override;
 	void OnSceneChanged();
 
-	// CSceneNodesSelector
-	void Selector_OnSelectionChange() override;
+	// IEditor_NodesSelectorEventListener
+	void OnSelectNodes() override;
 
 private slots:
 	void MoverStepCurrentIndexChanged(const QString &);
 
 private:
+	CSceneNodesSelector m_Selector;
 	std::shared_ptr<CPropertiesController> m_PropertiesController;
 	std::map<std::string, float> m_MoverValues;
 

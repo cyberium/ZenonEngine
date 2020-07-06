@@ -17,7 +17,7 @@ CSceneNode3DFactory::~CSceneNode3DFactory()
 //
 // ISceneNode3DFactory
 //
-std::shared_ptr<ISceneNode3D> CSceneNode3DFactory::CreateSceneNode3D(IScene* Scene, ObjectClass ObjectClassKey, const std::shared_ptr<ISceneNode3D>& Parent)
+std::shared_ptr<ISceneNode3D> CSceneNode3DFactory::CreateSceneNode3D(ObjectClass ObjectClassKey, IScene* Scene, const std::shared_ptr<ISceneNode3D>& Parent)
 {
 	class CSceneNode3DCreationArgs
 		: public ISceneNode3DCreationArgs
@@ -44,7 +44,7 @@ std::shared_ptr<ISceneNode3D> CSceneNode3DFactory::CreateSceneNode3D(IScene* Sce
 	return std::dynamic_pointer_cast<ISceneNode3D>(CreateObject(ObjectClassKey, &creationArgs));
 }
 
-std::shared_ptr<ISceneNode3D> CSceneNode3DFactory::LoadSceneNode3D(IScene * Scene, std::shared_ptr<IByteBuffer> Bytes, const std::shared_ptr<ISceneNode3D>& Parent)
+std::shared_ptr<ISceneNode3D> CSceneNode3DFactory::LoadSceneNode3D(std::shared_ptr<IByteBuffer> Bytes, IScene * Scene, const std::shared_ptr<ISceneNode3D>& Parent)
 {
 	return std::shared_ptr<ISceneNode3D>();
 }

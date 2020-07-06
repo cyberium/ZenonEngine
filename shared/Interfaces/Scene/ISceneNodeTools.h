@@ -17,11 +17,15 @@ ZN_INTERFACE ZN_API ISceneNode3DCreationArgs
 
 ZN_INTERFACE ZN_API ISceneNode3DFactory
 {
+	static ObjectType GetSupportedObjectType() { return otSceneNode3D; }
+
 	virtual ~ISceneNode3DFactory() {}
 
-	virtual std::shared_ptr<ISceneNode3D> CreateSceneNode3D(IScene* Scene, ObjectClass ObjectClassKey, const std::shared_ptr<ISceneNode3D>& Parent = nullptr) = 0;
-	virtual std::shared_ptr<ISceneNode3D> LoadSceneNode3D(IScene* Scene, std::shared_ptr<IByteBuffer> Bytes, const std::shared_ptr<ISceneNode3D>& Parent = nullptr) = 0;
+	virtual std::shared_ptr<ISceneNode3D> CreateSceneNode3D(ObjectClass ObjectClassKey, IScene* Scene, const std::shared_ptr<ISceneNode3D>& Parent = nullptr) = 0;
+	virtual std::shared_ptr<ISceneNode3D> LoadSceneNode3D(std::shared_ptr<IByteBuffer> Bytes, IScene* Scene, const std::shared_ptr<ISceneNode3D>& Parent = nullptr) = 0;
 };
+
+// ==================================================================
 
 ZN_INTERFACE ZN_API ISceneNodeUICreationArgs
 	: public IObjectCreationArgs
@@ -34,6 +38,8 @@ ZN_INTERFACE ZN_API ISceneNodeUICreationArgs
 
 ZN_INTERFACE ZN_API ISceneNodeUIFactory
 {
+	static ObjectType GetSupportedObjectType() { return otSceneNodeUI; }
+
 	virtual ~ISceneNodeUIFactory() {}
 
 	virtual std::shared_ptr<ISceneNodeUI> CreateSceneNodeUI(IScene* Scene, ObjectClass ObjectClassKey, const std::shared_ptr<ISceneNodeUI>& Parent = nullptr) = 0;

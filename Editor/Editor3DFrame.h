@@ -3,13 +3,13 @@
 #include "EditorInterfaces.h"
 #include "EditedScene.h"
 #include "Editor3DPreviewScene.h"
-#include "SceneNodesSelector.h"
+#include "Tools/NodesSelector.h"
 #include "Passes/DrawSelectionPass.h"
 
 class CEdtor3DFrame
 	: public SceneBase
 	, public IEditor3DFrame
-	, public CSceneNodesSelector
+	, public IEditor_NodesSelectorEventListener
 {
 public:
 	CEdtor3DFrame(IBaseManager& BaseManager);
@@ -38,6 +38,9 @@ public:
 	bool OnWindowKeyPressed(KeyEventArgs& e) override;
 	void OnWindowKeyReleased(KeyEventArgs& e) override;
 
+	// IEditorSharedFrame
+	IEditor_NodesSelector* GetNodesSelector();
+
 	// IEditor3DFrame
 	IBaseManager& GetBaseManager2() const;
 	IRenderDevice& GetRenderDevice2() const;
@@ -52,8 +55,8 @@ public:
 	void DragLeaveEvent() override;
 	void SetMoverValue(float value) override;
 
-	// CSceneNodesSelector
-	void Selector_OnSelectionChange() override;
+	// IEditor_NodesSelectorEventListener
+	void OnSelectNodes() override;
 
 protected:
 	glm::ivec3 ToBoxCoords(const glm::vec3& Position);
@@ -67,14 +70,24 @@ protected:
 	void SetLights(const std::vector<SLight>& Lights);
 
 private:
+	CSceneNodesSelector m_Selector;
+
 	bool m_IsDraggingEnabled;
 	bool m_IsDraggingPermanentCreation;
 	std::shared_ptr<ISceneNode3D> m_DraggedNode;
 	std::shared_ptr<ISceneNodeUI> m_DraggerTextUI;
 
 	float m_MoverValue;
-	std::shared_ptr<ISceneNode3D> m_Mover;
-	
+	bool m_IsMoverEnable;
+	int m_MoverNuber;
+	std::shared_ptr<ISceneNode3D> m_MovingNode;
+	glm::vec3 m_MovingObjectPos;
+	std::shared_ptr<ISceneNode3D> m_MoverRoot;
+	glm::vec3 m_MoverOffset;
+	std::shared_ptr<ISceneNode3D> m_MoverX;
+	std::shared_ptr<ISceneNode3D> m_MoverY;
+	std::shared_ptr<ISceneNode3D> m_MoverZ;
+
 	bool m_IsSelecting;
 	glm::vec2 m_SelectionPrevPos;
 	std::shared_ptr<ISceneNodeUI> m_SelectionTexture;
