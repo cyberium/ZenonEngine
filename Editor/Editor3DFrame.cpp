@@ -490,9 +490,7 @@ void CEdtor3DFrame::Load3D()
 	
 	{
 		m_MoverRoot = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, this, GetRealRootNode3D());
-		m_MoverRoot->SetName("Mover node.");
-
-
+		m_MoverRoot->SetName("Mover");
 
 		std::shared_ptr<ISceneNode3D> sceneNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode_FBXNode, this);
 
@@ -528,17 +526,20 @@ void CEdtor3DFrame::Load3D()
 
 
 			m_MoverX = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, this, m_MoverRoot);
+			m_MoverX->SetName("Mover_X");
 			m_MoverX->SetRotation(glm::vec3(0.0f, 0.0f, -glm::half_pi<float>()));
 			//moverX->SetScale(glm::vec3(0.5f, 1.0f, 0.5f));
 			m_MoverX->GetModelsComponent()->AddModel(modelX);
 			m_MoverX->GetColliderComponent()->SetBounds(model->GetBounds());
 
 			m_MoverY = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, this, m_MoverRoot);
+			m_MoverY->SetName("Mover_Y");
 			//moverY->SetScale(glm::vec3(0.5f, 1.0f, 0.5f));
 			m_MoverY->GetModelsComponent()->AddModel(modelY);
 			m_MoverY->GetColliderComponent()->SetBounds(model->GetBounds());
 
 			m_MoverZ = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, this, m_MoverRoot);
+			m_MoverZ->SetName("Mover_Z");
 			//moverZ->SetScale(glm::vec3(0.5f, 1.0f, 0.5f));
 			m_MoverZ->SetRotation(glm::vec3(glm::half_pi<float>(), 0.0f, 0.0f));
 			m_MoverZ->GetModelsComponent()->AddModel(modelZ);

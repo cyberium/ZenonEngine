@@ -3,9 +3,6 @@
 // General
 #include "ZenonCollectionViewerWidget.h"
 
-// Additional
-#include "SceneNodesSelector.h"
-
 ZenonCollectionViewerWidget::ZenonCollectionViewerWidget(QWidget * parent)
 	: QTreeView(parent)
 	, m_Editor3D(nullptr)

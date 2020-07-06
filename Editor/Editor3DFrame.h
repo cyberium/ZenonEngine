@@ -1,6 +1,5 @@
 #pragma once
 
-#include "EditorInterfaces.h"
 #include "EditedScene.h"
 #include "Editor3DPreviewScene.h"
 #include "Tools/NodesSelector.h"
@@ -58,18 +57,20 @@ public:
 	// IEditor_NodesSelectorEventListener
 	void OnSelectNodes() override;
 
-protected:
+protected: // Game
 	glm::ivec3 ToBoxCoords(const glm::vec3& Position);
 	glm::vec3 FixBoxCoords(const glm::vec3& Position);
 
 	void Load3D();
 	void LoadUI();
 
-	void DoMoveNode(const glm::vec2& MousePos);
-	void DoDropNodeAndCreateIt();
 	void SetLights(const std::vector<SLight>& Lights);
 
-private:
+protected: // Editor
+	void DoMoveNode(const glm::vec2& MousePos);
+	void DoDropNodeAndCreateIt();
+
+private: // Editor
 	CSceneNodesSelector m_Selector;
 
 	bool m_IsDraggingEnabled;

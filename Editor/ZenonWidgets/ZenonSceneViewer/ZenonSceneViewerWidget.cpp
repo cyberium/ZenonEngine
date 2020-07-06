@@ -3,9 +3,6 @@
 // General
 #include "ZenonSceneViewerWidget.h"
 
-// Additional
-#include "SceneNodesSelector.h"
-
 ZenonSceneViewerWidget::ZenonSceneViewerWidget(QWidget * parent)
 	: QTreeView(parent)
 	, m_Editor3D(nullptr)
@@ -101,7 +98,28 @@ void ZenonSceneViewerWidget::onCustomContextMenu(const QPoint& point)
 	_ASSERT_EXPR(item != nullptr, L"Item is null.");
 
 	m_ContextMenu->clear();
-	m_EditorUI->ExtendContextMenu(m_ContextMenu.get(), std::static_pointer_cast<ISceneNode3D>(item->GetTObject()));
+
+	std::string title;
+	std::vector<std::shared_ptr<IPropertyAction>> actions;
+	if (!m_EditorUI->ExtendContextMenu(std::dynamic_pointer_cast<ISceneNode3D>(item->GetTObject()), &title, &actions))
+		return;
+
+	/* Create actions to the context menu */
+	QAction* nameAction = new QAction(title.c_str(), this);
+	nameAction->setEnabled(false);
+
+	/* Set the actions to the menu */
+	m_ContextMenu->addAction(nameAction);
+	m_ContextMenu->addSeparator();
+	for (const auto& act : actions)
+	{
+		QAction * action = new QAction(act->GetName().c_str(), this);
+		connect(action, &QAction::triggered, this, [act] {
+			act->ExecuteAction();
+		});
+		m_ContextMenu->addAction(action);
+	}
+
 	m_ContextMenu->popup(mapToGlobal(point));
 }
 

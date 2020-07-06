@@ -2,8 +2,6 @@
 
 #include <qframe.h>
 
-#include "EditorInterfaces.h"
-
 class ZenonWindowMinimal3DWidget
 	: public QWidget
 	, public INativeWindow

@@ -1,7 +1,5 @@
 #pragma once
 
-#include "SceneNodesSelector.h"
-
 struct __declspec(novtable, align(16)) SSelectorPerObject
 {
 	SSelectorPerObject(const glm::mat4& Model, const glm::vec4& Color)
@@ -25,11 +23,11 @@ public:
 	void Render(RenderEventArgs& e) override;
 
 	// IRenderPassPipelined
-	virtual std::shared_ptr<IRenderPassPipelined> CreatePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport* Viewport) override;
+	std::shared_ptr<IRenderPassPipelined> CreatePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport* Viewport) override final;
 
 	// IVisitor
-	virtual EVisitResult Visit(const ISceneNode3D* node) override;
-	virtual EVisitResult Visit(const IModel* Model) override;
+	EVisitResult Visit(const ISceneNode3D* node) override final;
+	EVisitResult Visit(const IModel* Model) override final;
 
 protected:
 	IEditor_NodesSelector&             m_Selector;

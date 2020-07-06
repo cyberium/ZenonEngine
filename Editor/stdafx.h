@@ -7,4 +7,6 @@
 #include <znEngine.h>
 #pragma comment(lib, "znEngine.lib")
 
+#include "EditorInterfaces.h"
+
 #include <QtWidgets>

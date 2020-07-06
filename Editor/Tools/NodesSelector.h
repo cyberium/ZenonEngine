@@ -1,7 +1,5 @@
 #pragma once
 
-#include "EditorInterfaces.h"
-
 class CSceneNodesSelector
 	: public IEditor_NodesSelector
 	, public IEditor_NodesSelectorInternal

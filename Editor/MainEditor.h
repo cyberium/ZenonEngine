@@ -3,9 +3,7 @@
 #include <QMainWindow>
 #include "ui_MainEditor.h"
 
-#include "EditorInterfaces.h"
 #include "Tools/NodesSelector.h"
-
 #include "PropertyEditor/PropertiesController.h"
 
 class MainEditor 
@@ -30,7 +28,7 @@ public:
 	IEditor_NodesSelector* GetNodesSelector();
 
 	// IEditorUIFrame
-	bool ExtendContextMenu(QMenu * Menu, const std::shared_ptr<ISceneNode3D>& Node) override;
+	bool ExtendContextMenu(const std::shared_ptr<ISceneNode3D>& Node, std::string * Title, std::vector<std::shared_ptr<IPropertyAction>> * Actions) override;
 	void OnSceneChanged();
 
 	// IEditor_NodesSelectorEventListener

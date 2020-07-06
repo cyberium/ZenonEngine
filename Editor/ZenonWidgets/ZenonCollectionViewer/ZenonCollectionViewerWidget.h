@@ -2,8 +2,6 @@
 
 #include <QtWidgets/QTableView>
 
-#include "EditorInterfaces.h"
-
 #include "../TreeModelTemplate.h"
 
 class C3DModelModelItem

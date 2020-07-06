@@ -2,7 +2,6 @@
 
 #include <qframe.h>
 
-#include "EditorInterfaces.h"
 #include "../ZenonWindowMinimal3D/ZenonWindowMinimal3D.h"
 
 class ZenonWindow3D

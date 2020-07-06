@@ -1,10 +1,5 @@
 #pragma once
 
-#include "EditorInterfaces.h"
-#include "EditedScene.h"
-#include "SceneNodesSelector.h"
-#include "Passes/DrawSelectionPass.h"
-
 class CEditor3DPreviewScene
 	: public SceneBase
 {

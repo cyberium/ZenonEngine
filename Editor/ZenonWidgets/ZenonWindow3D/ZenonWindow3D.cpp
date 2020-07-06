@@ -26,8 +26,26 @@ void ZenonWindow3D::onCustomContextMenu(const QPoint& pos)
 	if (node == nullptr)
 		return;
 
-	if (! m_EditorUI->ExtendContextMenu(menu, node))
+	std::string title;
+	std::vector<std::shared_ptr<IPropertyAction>> actions;
+	if (! m_EditorUI->ExtendContextMenu(node, &title, &actions))
 		return;
+
+	/* Create actions to the context menu */
+	QAction* nameAction = new QAction(title.c_str(), this);
+	nameAction->setEnabled(false);
+
+	/* Set the actions to the menu */
+	menu->addAction(nameAction);
+	menu->addSeparator();
+	for (const auto& act : actions)
+	{
+		QAction * action = new QAction(act->GetName().c_str(), this);
+		connect(action, &QAction::triggered, this, [act] {
+			act->ExecuteAction();
+		});
+		menu->addAction(action);
+	}
 
 	menu->popup(mapToGlobal(pos));
 }

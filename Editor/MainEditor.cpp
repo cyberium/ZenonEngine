@@ -123,18 +123,22 @@ namespace
 //
 // IEditorUIFrame
 //
-bool MainEditor::ExtendContextMenu(QMenu * Menu, const std::shared_ptr<ISceneNode3D>& Node)
+bool MainEditor::ExtendContextMenu(const std::shared_ptr<ISceneNode3D>& Node, std::string * Title, std::vector<std::shared_ptr<IPropertyAction>> * Actions)
 {
+	_ASSERT(Title != NULL);
+	_ASSERT(Actions != NULL);
+	_ASSERT(Actions->empty());
+
 	if (!m_Selector.IsNodeSelected(Node))
 		return false;
 
-	std::string contextMenuTitle = Node->GetName();
+	*Title = Node->GetName();
 
 	std::vector<QAction *> actions;
 
 	if (m_Selector.GetSelectedNodes().size() > 1)
 	{
-		contextMenuTitle.append(" and " + std::to_string(m_Selector.GetSelectedNodes().size()) + " nodes.");
+		Title->append(" and " + std::to_string(m_Selector.GetSelectedNodes().size()) + " nodes.");
 
 		std::map<std::string, std::vector<std::shared_ptr<IPropertyAction>>> mainNodeActionsNames;
 		FillActionsList(Node, &mainNodeActionsNames);
@@ -166,12 +170,15 @@ bool MainEditor::ExtendContextMenu(QMenu * Menu, const std::shared_ptr<ISceneNod
 			auto actionsList = it.second;
 			if (actionsList.size() > 1)
 				actionName.append(" [" + std::to_string(actionsList.size()) + "]");
-			QAction * action = new QAction(actionName.c_str(), this);
-			this->connect(action, &QAction::triggered, this, [actionsList] {
+
+			std::shared_ptr<IPropertyAction> complexAction = std::make_shared<CAction>(actionName, "");
+			complexAction->SetAction([actionsList] () -> bool {
 				for (const auto& act : actionsList)
 					act->ExecuteAction();
+				return true;
 			});
-			actions.push_back(action);
+
+			Actions->push_back(complexAction);
 		}
 	}
 	else
@@ -180,25 +187,10 @@ bool MainEditor::ExtendContextMenu(QMenu * Menu, const std::shared_ptr<ISceneNod
 		{
 			if (auto act = std::dynamic_pointer_cast<IPropertyAction>(it.second))
 			{
-				QAction * action = new QAction(it.second->GetName().c_str(), this);
-				connect(action, &QAction::triggered, this, [act] {
-					act->ExecuteAction();
-				});
-				actions.push_back(action);
+				Actions->push_back(act);
 			}
 		}
-
 	}
-
-	/* Create actions to the context menu */
-	QAction* nameAction = new QAction(contextMenuTitle.c_str(), this);
-	nameAction->setEnabled(false);
-
-	/* Set the actions to the menu */
-	Menu->addAction(nameAction);
-	Menu->addSeparator();
-	for (const auto& it : actions)
-		Menu->addAction(it);
 
 	return true;
 }

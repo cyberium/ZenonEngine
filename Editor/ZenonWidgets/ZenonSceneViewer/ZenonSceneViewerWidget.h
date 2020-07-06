@@ -2,8 +2,6 @@
 
 #include <QtWidgets/QTreeView>
 
-#include "EditorInterfaces.h"
-
 #include "../TreeModelTemplate.h"
 
 class CSceneNodeModelItem
