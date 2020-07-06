@@ -39,7 +39,7 @@ private:
 	std::shared_ptr<CUITextureNode> m_TextureUI;
 
 private:
-	std::shared_ptr<SceneNode3D> m_RootForBoxes;
+	std::shared_ptr<ISceneNode3D> m_RootForBoxes;
 
 	std::shared_ptr<CSceneCreateTypelessListPass> m_SceneCreateTypelessListPass;
 	std::shared_ptr<CDefferedRender> m_DefferedRenderPass;
@@ -48,5 +48,5 @@ private:
 
 	rp3d::DynamicsWorld m_World;
 
-	std::shared_ptr<SceneNode3D> sceneNodeParentt;
+	std::shared_ptr<ISceneNode3D> sceneNodeParentt;
 };

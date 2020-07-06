@@ -13,14 +13,14 @@ public:
 	CSceneCreateTypedListsPass(IRenderDevice& RenderDevice, const std::shared_ptr<IScene>& Scene);
 	virtual ~CSceneCreateTypedListsPass();
 
-	bool HasNodesList(ObjectClassType SceneNodeType) const;
-	const std::vector<CSceneCreateTypelessListPass::SNodeElement>& GetNodesList(ObjectClassType SceneNodeType) const;
-	bool HasModelsList(ObjectClassType SceneNodeType) const;
-	const std::vector<CSceneCreateTypelessListPass::SModelElement>& GetModelsList(ObjectClassType SceneNodeType) const;
-	bool HasGeometriesList(ObjectClassType SceneNodeType) const;
-	const std::vector<CSceneCreateTypelessListPass::SGeometryElement>& GetGeometriesList(ObjectClassType SceneNodeType) const;
-	bool HasParticleSystemsList(ObjectClassType SceneNodeType) const;
-	const std::vector<CSceneCreateTypelessListPass::SParticleSystemElement>& GetParticleSystemList(ObjectClassType SceneNodeType) const;
+	bool HasNodesList(ObjectClass SceneNodeType) const;
+	const std::vector<CSceneCreateTypelessListPass::SNodeElement>& GetNodesList(ObjectClass SceneNodeType) const;
+	bool HasModelsList(ObjectClass SceneNodeType) const;
+	const std::vector<CSceneCreateTypelessListPass::SModelElement>& GetModelsList(ObjectClass SceneNodeType) const;
+	bool HasGeometriesList(ObjectClass SceneNodeType) const;
+	const std::vector<CSceneCreateTypelessListPass::SGeometryElement>& GetGeometriesList(ObjectClass SceneNodeType) const;
+	bool HasParticleSystemsList(ObjectClass SceneNodeType) const;
+	const std::vector<CSceneCreateTypelessListPass::SParticleSystemElement>& GetParticleSystemList(ObjectClass SceneNodeType) const;
 
 	// IRenderPass
 	virtual void PreRender(RenderEventArgs& e) override;
@@ -34,11 +34,11 @@ public:
 	EVisitResult Visit(const IParticleSystem* ParticleSystem) override;
 
 private:
-	std::unordered_map<ObjectClassType, std::vector<CSceneCreateTypelessListPass::SNodeElement>>      m_NodesList;
-	std::unordered_map<ObjectClassType, std::vector<CSceneCreateTypelessListPass::SModelElement>>     m_ModelsList;
-	std::unordered_map<ObjectClassType, std::vector<CSceneCreateTypelessListPass::SGeometryElement>>  m_GeometryList;
-	std::unordered_map<ObjectClassType, std::vector<CSceneCreateTypelessListPass::SLightElement>>     m_LightList;
-	std::unordered_map<ObjectClassType, std::vector<CSceneCreateTypelessListPass::SParticleSystemElement>>     m_ParticleSystemList;
+	std::unordered_map<ObjectClass, std::vector<CSceneCreateTypelessListPass::SNodeElement>>      m_NodesList;
+	std::unordered_map<ObjectClass, std::vector<CSceneCreateTypelessListPass::SModelElement>>     m_ModelsList;
+	std::unordered_map<ObjectClass, std::vector<CSceneCreateTypelessListPass::SGeometryElement>>  m_GeometryList;
+	std::unordered_map<ObjectClass, std::vector<CSceneCreateTypelessListPass::SLightElement>>     m_LightList;
+	std::unordered_map<ObjectClass, std::vector<CSceneCreateTypelessListPass::SParticleSystemElement>>     m_ParticleSystemList;
 
 	const ISceneNode3D*       m_LastSceneNode;
 	const IModel*             m_LastModel;

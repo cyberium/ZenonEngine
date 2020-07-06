@@ -49,7 +49,7 @@ void SamplerStateDX11::Bind(uint32_t ID, const IShader* shader, IShaderParameter
 
     ID3D11SamplerState* pSamplers[] = { m_pSamplerState };
 
-    switch (shader->GetType())
+    switch (shader->GetShaderType())
     {
         case EShaderType::VertexShader:
             m_RenderDeviceDX11.GetDeviceContextD3D11()->VSSetSamplers(ID, 1, pSamplers);
@@ -76,7 +76,7 @@ void SamplerStateDX11::UnBind(uint32_t ID, const IShader* shader, IShaderParamet
 {
     ID3D11SamplerState* pSamplers[] = { nullptr };
 
-    switch (shader->GetType())
+    switch (shader->GetShaderType())
     {
         case EShaderType::VertexShader:
             m_RenderDeviceDX11.GetDeviceContextD3D11()->VSSetSamplers(ID, 1, pSamplers);

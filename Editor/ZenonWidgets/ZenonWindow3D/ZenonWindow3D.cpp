@@ -26,7 +26,8 @@ void ZenonWindow3D::onCustomContextMenu(const QPoint& pos)
 	if (node == nullptr)
 		return;
 
-	m_EditorUI->ExtendContextMenu(menu, node);
+	if (! m_EditorUI->ExtendContextMenu(menu, node))
+		return;
 
 	menu->popup(mapToGlobal(pos));
 }

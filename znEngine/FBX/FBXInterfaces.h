@@ -1,6 +1,11 @@
 #pragma once
 
-const ObjectClassType cSceneNode_FBXNode = 527323442;
+namespace fbxsdk
+{
+	class FbxManager;
+}
+
+const ObjectClass cSceneNode_FBXNode = 527323442;
 ZN_INTERFACE ZN_API IFBXSceneNode3D
 {
 	virtual ~IFBXSceneNode3D() {}
@@ -11,5 +16,7 @@ ZN_INTERFACE ZN_API IFBXSceneNode3D
 
 ZN_INTERFACE ZN_API IFBXManager
 {
-	virtual std::shared_ptr<IFBXSceneNode3D> CreateSceneNode(IScene* Scene, std::string SceneName) = 0;
+#ifdef ZN_FBX_SDK_ENABLE
+	virtual fbxsdk::FbxManager* GetFBXManager() const = 0;
+#endif
 };

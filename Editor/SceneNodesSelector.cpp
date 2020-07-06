@@ -73,6 +73,11 @@ std::shared_ptr<ISceneNode3D> CSceneNodesSelector::Selector_GetFirstSelectedNode
 	return *first;
 }
 
+bool CSceneNodesSelector::Selector_IsNodeSelected(const std::shared_ptr<ISceneNode3D>& Node)
+{
+	return std::find(m_SelectedNodes.begin(), m_SelectedNodes.end(), Node) != m_SelectedNodes.end();
+}
+
 const CSceneNodesSelector::SelectedNodes& CSceneNodesSelector::Selector_GetSelectedNodes()
 {
 	return m_SelectedNodes;

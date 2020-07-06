@@ -19,7 +19,7 @@ public:
 
 protected:
 	// IBuffer
-	BufferType GetType() const override { return CBufferBase::GetType(); }
+	BufferType GetBufferType() const override { return CBufferBase::GetBufferType(); }
 	uint32 GetElementCount() const override { return CBufferBase::GetElementCount(); }
 	uint32 GetElementStride() const override { return CBufferBase::GetElementStride(); };
 	uint32 GetElementOffset() const override { return CBufferBase::GetElementOffset(); };

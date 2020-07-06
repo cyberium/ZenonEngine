@@ -59,7 +59,7 @@ void MainEditor::SetEditor3D(IEditor3DFrame* Editor3DFrame)
 				continue;
 			}
 
-			std::shared_ptr<ISceneNode3D> sceneNode = m_Editor3D->GetBaseManager2().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>(ofkSceneNode3D)->CreateSceneNode3D(dynamic_cast<IScene*>(m_Editor3D), cSceneNode_FBXNode);
+			std::shared_ptr<ISceneNode3D> sceneNode = m_Editor3D->GetBaseManager2().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>(otSceneNode3D)->CreateSceneNode3D(dynamic_cast<IScene*>(m_Editor3D), cSceneNode_FBXNode);
 
 			std::shared_ptr<IFBXSceneNode3D> fbxSceneNode = std::dynamic_pointer_cast<IFBXSceneNode3D>(sceneNode);
 			fbxSceneNode->InitializeFromFile(it);
@@ -115,15 +115,18 @@ namespace
 //
 // IEditorUIFrame
 //
-void MainEditor::ExtendContextMenu(QMenu * Menu, const std::shared_ptr<ISceneNode3D>& Node)
+bool MainEditor::ExtendContextMenu(QMenu * Menu, const std::shared_ptr<ISceneNode3D>& Node)
 {
+	if (!Selector_IsNodeSelected(Node))
+		return false;
+
 	std::string contextMenuTitle = Node->GetName();
 
 	std::vector<QAction *> actions;
 
 	if (Selector_GetSelectedNodes().size() > 1)
 	{
-		contextMenuTitle.append("and " + std::to_string(Selector_GetSelectedNodes().size()) + " nodes.");
+		contextMenuTitle.append(" and " + std::to_string(Selector_GetSelectedNodes().size()) + " nodes.");
 
 		std::map<std::string, std::vector<std::shared_ptr<IPropertyAction>>> mainNodeActionsNames;
 		FillActionsList(Node, &mainNodeActionsNames);
@@ -188,6 +191,8 @@ void MainEditor::ExtendContextMenu(QMenu * Menu, const std::shared_ptr<ISceneNod
 	Menu->addSeparator();
 	for (const auto& it : actions)
 		Menu->addAction(it);
+
+	return true;
 }
 
 void MainEditor::OnSceneChanged()

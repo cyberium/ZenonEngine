@@ -19,6 +19,7 @@ public:
 	void Selector_AddNode(const std::shared_ptr<ISceneNode3D>& Node, bool NeedSync = true);
 	void Selector_RemoveNode(const std::shared_ptr<ISceneNode3D>& Node, bool NeedSync = true);
 	std::shared_ptr<ISceneNode3D> Selector_GetFirstSelectedNode();
+	bool Selector_IsNodeSelected(const std::shared_ptr<ISceneNode3D>& Node);
 	const SelectedNodes& Selector_GetSelectedNodes();
 	void Selector_SetOtherSelector(CSceneNodesSelector * OtherSelector);
 	void Selector_SyncronizeWithOtherSelector();

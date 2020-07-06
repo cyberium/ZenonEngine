@@ -39,7 +39,7 @@ ZN_INTERFACE IEditorUIFrame
 {
 	virtual ~IEditorUIFrame() {}
 
-	virtual void ExtendContextMenu(QMenu * Menu, const std::shared_ptr<ISceneNode3D>& Node) = 0;
+	virtual bool ExtendContextMenu(QMenu * Menu, const std::shared_ptr<ISceneNode3D>& Node) = 0;
 	virtual void OnSceneChanged() = 0;
 };
 

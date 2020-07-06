@@ -16,7 +16,7 @@ public:
 	virtual ~CFBXManager();
 
 	// IFBXManager
-	std::shared_ptr<IFBXSceneNode3D> CreateSceneNode(IScene* Scene, std::string SceneName) override;
+	fbxsdk::FbxManager* GetFBXManager() const override;
 
 private:
 	fbxsdk::FbxManager* m_FBXManager;

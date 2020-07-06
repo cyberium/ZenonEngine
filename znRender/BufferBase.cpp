@@ -16,7 +16,7 @@ CBufferBase::~CBufferBase()
 //
 // IBuffer
 //
-IBuffer::BufferType CBufferBase::GetType() const
+IBuffer::BufferType CBufferBase::GetBufferType() const
 {
 	return m_BufferType;
 }

@@ -27,7 +27,7 @@ ZN_INTERFACE ZN_API IShaderParameter
 	virtual ~IShaderParameter() {}
 
 	// Get the type of the stored parameter.
-	virtual Type GetType() const = 0;
+	virtual Type GetParameterType() const = 0;
 
 	// Test to see if this is a valid shader parameter.
 	virtual bool IsValid() const = 0;

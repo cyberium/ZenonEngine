@@ -14,7 +14,7 @@ ZN_INTERFACE ZN_API IShader
 	/**
 	 * What type of shader is this?
 	 */
-	virtual EShaderType GetType() const = 0;
+	virtual EShaderType GetShaderType() const = 0;
 
 	/**
 	 * A shader macro consists of a macro name and a definition.

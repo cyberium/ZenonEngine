@@ -26,7 +26,7 @@ bool ConstantBufferDX11::Bind(uint32 id, const IShader* shader, IShaderParameter
 
 	ID3D11Buffer* pBuffers[] = { m_pBuffer };
 
-	switch (shader->GetType())
+	switch (shader->GetShaderType())
 	{
 		case EShaderType::VertexShader:
 			m_RenderDeviceDX11.GetDeviceContextD3D11()->VSSetConstantBuffers(id, 1, pBuffers);
@@ -57,7 +57,7 @@ void ConstantBufferDX11::UnBind(uint32 id, const IShader* shader, IShaderParamet
 {
 	ID3D11Buffer* pBuffers[] = { nullptr };
 
-	switch (shader->GetType())
+	switch (shader->GetShaderType())
 	{
 	case EShaderType::VertexShader:
 		m_RenderDeviceDX11.GetDeviceContextD3D11()->VSSetConstantBuffers(id, 1, pBuffers);

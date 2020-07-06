@@ -45,7 +45,7 @@ ZN_INTERFACE ZN_API IScene
 
 
 	template<class T, typename... Args>
-	inline std::shared_ptr<T> CreateSceneNode(const std::shared_ptr<ISceneNode3D>& Parent, Args &&... _Args)
+	inline std::shared_ptr<T> CreateSceneNode3DInternal(Args &&... _Args)
 	{
 		static_assert(std::is_convertible<T*, ISceneNode3D*>::value, "T must inherit ISceneNode3D as public.");
 
@@ -55,16 +55,16 @@ ZN_INTERFACE ZN_API IScene
 		node->Initialize();
 
 		// Delayed loader.
-		if (Parent == nullptr)
-			this->AddChild(GetRootNode3D(), node);
-		else
-			this->AddChild(Parent, node);
+		//if (Parent == nullptr)
+		//	this->AddChild(GetRootNode3D(), node);
+		//else
+		//	this->AddChild(Parent, node);
 
 		return node;
 	}
 
 	template<class T, typename... Args>
-	inline std::shared_ptr<T> CreateSceneNodeUI(const std::shared_ptr<ISceneNodeUI>& Parent, Args &&... _Args)
+	inline std::shared_ptr<T> CreateSceneNodeUIInternal(Args &&... _Args)
 	{
 		static_assert(std::is_convertible<T*, ISceneNodeUI*>::value, "T must inherit ISceneNodeUI as public.");
 
@@ -72,10 +72,10 @@ ZN_INTERFACE ZN_API IScene
 		newNode->SetSceneInternal(weak_from_this());
 		newNode->Initialize();
 
-		if (Parent)
-			Parent->AddChild(newNode);
-		else if (GetRootNodeUI())
-			GetRootNodeUI()->AddChild(newNode);
+		//if (Parent)
+		//	Parent->AddChild(newNode);
+		//else if (GetRootNodeUI())
+		//	GetRootNodeUI()->AddChild(newNode);
 
 		return newNode;
 	}

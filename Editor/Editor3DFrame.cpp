@@ -39,7 +39,7 @@ void CEdtor3DFrame::Initialize()
 {
 	SceneBase::Initialize();
 
-	auto cameraNode = GetRootNode3D()->CreateSceneNode<SceneNode3D>();
+	auto cameraNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>(otSceneNode3D)->CreateSceneNode3D(this, cSceneNode3D, GetRootNode3D());
 	cameraNode->SetName("Camera");
 	cameraNode->AddComponent(std::make_shared<CCameraComponent3D>(*cameraNode));
 
@@ -80,7 +80,7 @@ bool IsChildOf(const std::shared_ptr<ISceneNode3D>& Parent, const std::shared_pt
 	if (Parent == nullptr || Child == nullptr)
 		return false;
 
-	if (Parent->GetGuid() == Child->GetGuid())
+	if (Parent->GetGUID() == Child->GetGUID())
 		return true;
 
 	for (const auto& ch : Parent->GetChilds())
@@ -131,9 +131,7 @@ bool CEdtor3DFrame::OnMouseClickToWorld(const MouseButtonEventArgs & e, const Ra
 
 		if (e.Control)
 		{
-			auto selectedNodes = Selector_GetSelectedNodes();
-			auto it = std::find(selectedNodes.begin(), selectedNodes.end(), node);
-			if (it != selectedNodes.end())
+			if (Selector_IsNodeSelected(node))
 				Selector_RemoveNode(node);
 			else
 				Selector_AddNode(node);
@@ -360,7 +358,7 @@ glm::vec3 CEdtor3DFrame::FixBoxCoords(const glm::vec3 & Position)
 void CEdtor3DFrame::Load3D()
 {
 	
-		auto sceneNodeLight = GetRootNode3D()->CreateSceneNode<SceneNode3D>();
+	auto sceneNodeLight = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>(otSceneNode3D)->CreateSceneNode3D(this, cSceneNode3D, GetRootNode3D());
 		sceneNodeLight->SetName("Light");
 		sceneNodeLight->SetTranslate(glm::vec3(1500.0f, 1500.0f, 1500.0f));
 		sceneNodeLight->SetRotation(glm::vec3(-0.9f, -0.9f, -0.9f));
@@ -376,12 +374,12 @@ void CEdtor3DFrame::Load3D()
 	
 
 	{
-		m_DraggedNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>(ofkSceneNode3D)->CreateSceneNode3D(this, cSceneNode3D, GetRootNode3D());
+		m_DraggedNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>(otSceneNode3D)->CreateSceneNode3D(this, cSceneNode3D, GetRootNode3D());
 		m_DraggedNode->SetName("Dragged node parent.");
 	}
 	
 	{
-		m_Mover = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>(ofkSceneNode3D)->CreateSceneNode3D(this, cSceneNode3D, GetRootNode3D());
+		m_Mover = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>(otSceneNode3D)->CreateSceneNode3D(this, cSceneNode3D, GetRootNode3D());
 		m_Mover->SetName("Mover node.");
 
 		auto X_Geom = GetRenderDevice().GetPrimitivesFactory().CreateLine(glm::vec3(1.0f, 0.0f, 0.0f));
@@ -406,7 +404,7 @@ void CEdtor3DFrame::Load3D()
 	}
 
 	{
-		auto node = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>(ofkSceneNode3D)->CreateSceneNode3D(this, cSceneNode3D, GetRootNode3D());
+		auto node = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>(otSceneNode3D)->CreateSceneNode3D(this, cSceneNode3D, GetRootNode3D());
 		node->SetName("Grid node x1.");
 		node->SetTranslate(glm::vec3(0.0f));
 		node->SetScale(glm::vec3(1.0f));
@@ -424,7 +422,7 @@ void CEdtor3DFrame::Load3D()
 
 
 	{
-		auto node = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>(ofkSceneNode3D)->CreateSceneNode3D(this, cSceneNode3D, GetRootNode3D());
+		auto node = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>(otSceneNode3D)->CreateSceneNode3D(this, cSceneNode3D, GetRootNode3D());
 		node->SetName("Grid node x10.");
 		node->SetTranslate(glm::vec3(0.0f, 0.03f, 0.0f));
 		node->SetScale(glm::vec3(10.0f));
@@ -441,7 +439,7 @@ void CEdtor3DFrame::Load3D()
 	}
 
 	{
-		auto node = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>(ofkSceneNode3D)->CreateSceneNode3D(this, cSceneNode3D, GetRootNode3D());
+		auto node = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>(otSceneNode3D)->CreateSceneNode3D(this, cSceneNode3D, GetRootNode3D());
 		node->SetName("Grid node x100.");
 		node->SetTranslate(glm::vec3(0.0f, 0.06f, 0.0f));
 		node->SetScale(glm::vec3(100.0f));
@@ -493,10 +491,10 @@ void CEdtor3DFrame::Load3D()
 
 void CEdtor3DFrame::LoadUI()
 {
-	m_DraggerTextUI = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeUIFactory>(ofkSceneNodeUI)->CreateSceneNodeUI(this, cSceneNodeUI_Text);
+	m_DraggerTextUI = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeUIFactory>(otSceneNodeUI)->CreateSceneNodeUI(this, cSceneNodeUI_Text);
 	GetRootNodeUI()->AddChild(m_DraggerTextUI);
 
-	m_SelectionTexture = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeUIFactory>(ofkSceneNodeUI)->CreateSceneNodeUI(this, cSceneNodeUI_Color, GetRootNodeUI());
+	m_SelectionTexture = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeUIFactory>(otSceneNodeUI)->CreateSceneNodeUI(this, cSceneNodeUI_Color, GetRootNodeUI());
 	m_SelectionTexture->GetProperties()->GetPropertyT<glm::vec4>("Color")->Set(glm::vec4(0.1f, 0.3f, 1.0f, 0.3f));
 
 	m_TechniqueUI.AddPass(std::make_shared<CUIColorPass>(GetRenderDevice(), shared_from_this())->CreatePipeline(GetRenderWindow()->GetRenderTarget(), &GetRenderWindow()->GetViewport()));
@@ -537,7 +535,7 @@ void CEdtor3DFrame::DoDropNodeAndCreateIt()
 
 	if (m_IsDraggingPermanentCreation)
 	{
-		auto copiedNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>(ofkSceneNode3D)->CreateSceneNode3D(this, cSceneNode3D, GetRootNode3D());
+		auto copiedNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>(otSceneNode3D)->CreateSceneNode3D(this, cSceneNode3D, GetRootNode3D());
 		firstChild->Copy(copiedNode);
 		copiedNode->SetTranslate(glm::vec3(0.0f));
 		_ASSERT(m_DraggedNode->GetChilds().empty());

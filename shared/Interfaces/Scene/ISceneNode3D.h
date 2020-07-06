@@ -20,7 +20,7 @@ ZN_INTERFACE IColliderComponent3D;
   * 3) 
 */
 
-const ObjectClassType cSceneNode3D = 527338441;
+const ObjectClass cSceneNode3D = 527338441;
 
 ZN_INTERFACE ZN_API ISceneNode3D
 	: public Object
@@ -29,7 +29,8 @@ ZN_INTERFACE ZN_API ISceneNode3D
 	typedef std::vector<std::shared_ptr<ISceneNode3D>>                Node3DList;
 	typedef std::multimap<std::string, std::shared_ptr<ISceneNode3D>> Node3DNameMap;
 
-	static ObjectClassType GetClass() { return cSceneNode3D; }
+	static ObjectType GetType() { return otSceneNode3D; }
+	static ObjectClass GetClass() { return cSceneNode3D; }
 
 	virtual ~ISceneNode3D() {}
 
@@ -37,20 +38,20 @@ ZN_INTERFACE ZN_API ISceneNode3D
 	virtual void Finalize() = 0;
 	virtual void Copy(std::shared_ptr<ISceneNode3D> Destination) const = 0;
 
-	virtual void AddChild(const std::shared_ptr<ISceneNode3D>& childNode) = 0;
-	virtual void RemoveChild(const std::shared_ptr<ISceneNode3D>& childNode) = 0;
+	virtual void AddChild(std::shared_ptr<ISceneNode3D> childNode) = 0;
+	virtual void RemoveChild(std::shared_ptr<ISceneNode3D> childNode) = 0;
 	virtual std::weak_ptr<ISceneNode3D> GetParent() const = 0;
 	virtual const Node3DList& GetChilds() = 0;
 	virtual void ClearChilds() = 0;
 	virtual void RaiseOnParentChanged() = 0;
 
-	template<typename T, typename... Args> inline std::shared_ptr<T> CreateSceneNode(Args &&... _Args)
-	{
-		if (auto scene = GetScene())
-			return scene->CreateSceneNode<T>(shared_from_this(), std::forward<Args>(_Args)...);
-		
-		return nullptr;
-	}
+	//template<typename T, typename... Args> inline std::shared_ptr<T> CreateSceneNode(Args &&... _Args)
+	//{
+	//	if (auto scene = GetScene())
+	//		return scene->CreateSceneNode3D<T>(shared_from_this(), std::forward<Args>(_Args)...);
+	//	
+	//	return nullptr;
+	//}
 
 	virtual std::shared_ptr<IPropertiesGroup> GetProperties() const = 0;
 	virtual IScene* GetScene() const = 0;
@@ -91,7 +92,7 @@ ZN_INTERFACE ZN_API ISceneNode3D
 	//
 	virtual bool IsComponentExists(GUID ComponentID) const = 0;
 	virtual std::shared_ptr<ISceneNodeComponent> GetComponent(GUID ComponentID) const = 0;
-	virtual std::shared_ptr<ISceneNodeComponent> AddComponent(GUID ComponentID, const std::shared_ptr<ISceneNodeComponent>& Component) = 0;
+	virtual std::shared_ptr<ISceneNodeComponent> AddComponent(GUID ComponentID, std::shared_ptr<ISceneNodeComponent> Component) = 0;
 	virtual const ComponentsMap& GetComponents() const = 0;
 	virtual void RaiseComponentMessage(const ISceneNodeComponent* Component, ComponentMessageType Message) const = 0;
 	virtual void RegisterComponents() = 0;
@@ -108,7 +109,7 @@ ZN_INTERFACE ZN_API ISceneNode3D
 			return std::dynamic_pointer_cast<T>(component);
 		return nullptr;
 	}
-	template<typename T> inline std::shared_ptr<T> AddComponent(const std::shared_ptr<T>& Component)
+	template<typename T> inline std::shared_ptr<T> AddComponent(std::shared_ptr<T> Component)
 	{
 		if (std::shared_ptr<ISceneNodeComponent> component = AddComponent(__uuidof(T), Component))
 			return std::dynamic_pointer_cast<T>(component);
@@ -125,8 +126,8 @@ ZN_INTERFACE ZN_API ISceneNode3DInternal
 {
 	virtual ~ISceneNode3DInternal() {}
 
-	virtual void SetSceneInternal(const std::weak_ptr<IScene>& Scene) = 0;
-	virtual void AddChildInternal(const std::shared_ptr<ISceneNode3D>& ChildNode) = 0;
-	virtual void RemoveChildInternal(const std::shared_ptr<ISceneNode3D>& ChildNode) = 0;
-	virtual void SetParentInternal(const std::weak_ptr<ISceneNode3D>& parentNode) = 0;
+	virtual void SetSceneInternal(std::weak_ptr<IScene> Scene) = 0;
+	virtual void AddChildInternal(std::shared_ptr<ISceneNode3D> ChildNode) = 0;
+	virtual void RemoveChildInternal(std::shared_ptr<ISceneNode3D> ChildNode) = 0;
+	virtual void SetParentInternal(std::weak_ptr<ISceneNode3D> parentNode) = 0;
 };

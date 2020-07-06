@@ -10,7 +10,7 @@ public:
     virtual ~ShaderParameterBase();
 
 	// IShaderParameter
-	Type GetType() const;
+	Type GetParameterType() const;
 	bool IsValid() const;
 	void SetSource(std::shared_ptr<IShaderParameterSource> ShaderParameterSource) override final;
 	std::shared_ptr<IShaderParameterSource> GetSource() const override final;

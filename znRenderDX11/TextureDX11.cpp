@@ -518,7 +518,7 @@ void TextureDX11::Clear(ClearFlags clearFlags, const glm::vec4& color, float dep
 
 void TextureDX11::Bind(uint32_t ID, const IShader* shader, IShaderParameter::Type parameterType) const
 {
-	Bind(ID, shader->GetType(), parameterType);
+	Bind(ID, shader->GetShaderType(), parameterType);
 }
 
 void TextureDX11::Bind(uint32_t ID, EShaderType _shaderType, IShaderParameter::Type parameterType) const
@@ -595,7 +595,7 @@ void TextureDX11::Bind(uint32_t ID, EShaderType _shaderType, IShaderParameter::T
 
 void TextureDX11::UnBind(uint32_t ID, const IShader* shader, IShaderParameter::Type parameterType) const
 {
-	UnBind(ID, shader->GetType(), parameterType);
+	UnBind(ID, shader->GetShaderType(), parameterType);
 }
 
 void TextureDX11::UnBind(uint32_t ID, EShaderType _shaderType, IShaderParameter::Type parameterType) const

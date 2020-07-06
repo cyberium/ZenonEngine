@@ -75,7 +75,7 @@ void main_internal(int argc, char *argv[])
 		//std::shared_ptr<IScene> scene = BaseManager->GetManager<IScenesFactory>()->CreateScene("SceneDefault");
 		std::shared_ptr<CEditor3DPreviewScene> sceneForPreview = std::make_shared<CEditor3DPreviewScene>(*BaseManager);
 		sceneForPreview->SetRenderWindow(renderWindowForModelPreview);
-		//sceneForPreview->ConnectEvents(std::dynamic_pointer_cast<IRenderWindowEvents>(renderWindowForModelPreview));
+		sceneForPreview->ConnectEvents(std::dynamic_pointer_cast<IRenderWindowEvents>(renderWindowForModelPreview));
 		sceneForPreview->Initialize();
 	
 

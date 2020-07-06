@@ -3,7 +3,7 @@
 // General
 #include "BaseTypedList3DPass.h"
 
-CBaseList3DPass::CBaseList3DPass(IRenderDevice& RenderDevice, const std::shared_ptr<CSceneCreateTypedListsPass>& SceneNodeListPass, ObjectClassType SceneNodeType)
+CBaseList3DPass::CBaseList3DPass(IRenderDevice& RenderDevice, const std::shared_ptr<CSceneCreateTypedListsPass>& SceneNodeListPass, ObjectClass SceneNodeType)
 	: RenderPassPipelined(RenderDevice)
 	, m_SceneNodeListPass(SceneNodeListPass)
 	, m_PerObjectParameter(nullptr)
@@ -12,7 +12,7 @@ CBaseList3DPass::CBaseList3DPass(IRenderDevice& RenderDevice, const std::shared_
 	m_PerObjectConstantBuffer = GetRenderDevice().GetObjectsFactory().CreateConstantBuffer(PerObject());
 }
 
-CBaseList3DPass::CBaseList3DPass(IRenderDevice & RenderDevice, const std::shared_ptr<CSceneCreateTypedListsPass>& SceneNodeListPass, std::vector<ObjectClassType> SceneNodeTypesList)
+CBaseList3DPass::CBaseList3DPass(IRenderDevice & RenderDevice, const std::shared_ptr<CSceneCreateTypedListsPass>& SceneNodeListPass, std::vector<ObjectClass> SceneNodeTypesList)
 	: RenderPassPipelined(RenderDevice)
 	, m_SceneNodeListPass(SceneNodeListPass)
 	, m_PerObjectParameter(nullptr)
@@ -113,7 +113,7 @@ const std::shared_ptr<CSceneCreateTypedListsPass>& CBaseList3DPass::GetSceneNode
 	return m_SceneNodeListPass;
 }
 
-const std::vector<ObjectClassType>& CBaseList3DPass::GetAcceptableNodeTypes() const
+const std::vector<ObjectClass>& CBaseList3DPass::GetAcceptableNodeTypes() const
 {
 	return m_AcceptSceneNodeTypes;
 }

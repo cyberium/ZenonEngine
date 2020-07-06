@@ -13,7 +13,6 @@ CByteBuffer::CByteBuffer(const CByteBuffer& _other)
 	m_Data.resize(_other.m_Data.size());
 	std::copy(_other.m_Data.begin(), _other.m_Data.end(), m_Data.begin());
 	m_CurrentPosition = 0;
-	// m_CurrentPosition = _other.m_CurrentPosition; It is realy need?
 }
 
 CByteBuffer::CByteBuffer(CByteBuffer&& _other)

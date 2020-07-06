@@ -35,7 +35,7 @@ ShaderParameterBase::~ShaderParameterBase()
 //
 // IShaderParameter
 //
-ShaderParameterBase::Type ShaderParameterBase::GetType() const
+ShaderParameterBase::Type ShaderParameterBase::GetParameterType() const
 {
 	return m_ParameterType;
 }

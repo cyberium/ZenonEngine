@@ -38,10 +38,10 @@ void CUIButtonNode::CreateDefault()
 	m_Mesh = GetBaseManager().GetApplication().GetRenderDevice().GetObjectsFactory().CreateModel();
 	m_Mesh->AddConnection(m_Material, geometry);
 
-    m_TextNode = CreateSceneNode<CUITextNode>();
+    m_TextNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeUIFactory>(otSceneNode3D)->CreateSceneNodeUI(GetScene(), cSceneNodeUI_Text, shared_from_this());
 	m_TextNode->GetProperties()->GetPropertyT<std::string>("Text")->Set(cDefaultText);
 	m_TextNode->SetTranslate(glm::vec2(10.0f, 10.0f));
-	m_TextNode->SetTextColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+	std::static_pointer_cast<CUITextNode>(m_TextNode)->SetTextColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
 }
 
 void CUIButtonNode::SetText(const std::string& Text)

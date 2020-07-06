@@ -44,7 +44,7 @@ void CSceneDefault::Initialize()
 {
 	SceneBase::Initialize();
 
-	auto cameraNode = GetRootNode3D()->CreateSceneNode<SceneNode3D>();
+	auto cameraNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>(otSceneNode3D)->CreateSceneNode3D(this, cSceneNode3D, GetRootNode3D());
 	cameraNode->AddComponent(std::make_shared<CCameraComponent3D>(*cameraNode));
 
 	SetCameraController(std::make_shared<CFreeCameraController>());
@@ -126,7 +126,7 @@ void CSceneDefault::Load3D()
 	//--------------------------------------------------------------------------
 
 	{
-		auto sceneNodeLight = GetRootNode3D()->CreateSceneNode<SceneNode3D>();
+		auto sceneNodeLight = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>(otSceneNode3D)->CreateSceneNode3D(this, cSceneNode3D, GetRootNode3D());
 		sceneNodeLight->SetName("Light node");
 		sceneNodeLight->SetTranslate(glm::vec3(80.0f, 600.0f, 80.0f));
 		sceneNodeLight->SetRotation(glm::vec3(0.0f, -1.0f, 0.0f));
@@ -201,7 +201,7 @@ void CSceneDefault::Load3D()
 		sphereModel->AddConnection(textMaterial, GetRenderDevice().GetPrimitivesFactory().CreateSphere());
 
 
-		m_RootForBoxes = GetRootNode3D()->CreateSceneNode<SceneNode3D>();
+		m_RootForBoxes = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>(otSceneNode3D)->CreateSceneNode3D(this, cSceneNode3D, GetRootNode3D());
 		//m_RootForBoxes->SetTranslate(glm::vec3(150, 0, 150));
 
 
@@ -211,7 +211,7 @@ void CSceneDefault::Load3D()
 			{
 				for (int k = 0; k < iterCnt; k++)
 				{
-					auto sceneNode = m_RootForBoxes->CreateSceneNode<SceneNode3D>();
+					auto sceneNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>(otSceneNode3D)->CreateSceneNode3D(this, cSceneNode3D, m_RootForBoxes);
 					sceneNode->SetName("Ball [" + std::to_string(i) + ", " + std::to_string(j) + ", " + std::to_string(k) + "]");
 					sceneNode->SetTranslate(glm::vec3(offset * i, offset * k, offset * j));
 					sceneNode->SetScale(glm::vec3(scale));
@@ -355,14 +355,14 @@ void CSceneDefault::Load3D()
 
 	//node->InitializeFromFile("Nature Kit (2.1)\\Models\\FBX format\\tree_thin_dark.fbx");
 
-	//std::shared_ptr<ISceneNode3D> fbxSceneNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>(ofkSceneNode3D)->CreateSceneNode3D(this, cSceneNode_FBXNode);
-	//std::shared_ptr<ISceneNode3D> fbxSceneNode2 = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>(ofkSceneNode3D)->CreateSceneNode3D(this, cSceneNode_FBXNode);
+	//std::shared_ptr<ISceneNode3D> fbxSceneNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>(otSceneNode3D)->CreateSceneNode3D(this, cSceneNode_FBXNode);
+	//std::shared_ptr<ISceneNode3D> fbxSceneNode2 = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>(otSceneNode3D)->CreateSceneNode3D(this, cSceneNode_FBXNode);
 	//fbxSceneNode2->SetTranslate(glm::vec3(10, 0, 0));
 	//fbxSceneNode->SetScale(glm::vec3(15.0f, 15.0f, 15.0f));
 
 
 	{
-		sceneNodeParentt = CreateSceneNode<SceneNode3D>(GetRootNode3D());
+		sceneNodeParentt = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>(otSceneNode3D)->CreateSceneNode3D(this, cSceneNode3D, GetRootNode3D());
 		sceneNodeParentt->SetTranslate(glm::vec3(0.0f, 0.0f, 0.0f));
 
 		//auto model = GetRenderDevice().GetObjectsFactory().CreateModel();

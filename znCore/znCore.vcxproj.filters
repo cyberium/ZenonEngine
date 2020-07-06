@@ -899,6 +899,9 @@
     <ClInclude Include="ObjectsFactories\SceneNode3DFactory.h">
       <Filter>Object system\Typed creators</Filter>
     </ClInclude>
+    <ClInclude Include="..\shared\Interfaces\Types\Guid.h">
+      <Filter>__Interfaces\Types</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Scene\ComponentBase.inl">

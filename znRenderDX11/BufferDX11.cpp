@@ -41,7 +41,7 @@ bool BufferDX11::Bind(uint32 id, const IShader* shader, IShaderParameter::Type p
 	UINT offsets[] = { GetElementOffset() };
 	UINT strides[] = { GetElementStride() };
 
-	switch (GetType())
+	switch (GetBufferType())
 	{
 		case IBuffer::BufferType::VertexBuffer:
 			m_RenderDeviceDX11.GetDeviceContextD3D11()->IASetVertexBuffers(id, 1, buffers, strides, offsets);
@@ -62,7 +62,7 @@ void BufferDX11::UnBind(uint32 id, const IShader* shader, IShaderParameter::Type
 	UINT offsets[] = { 0 };
 	UINT strides[] = { 0 };
 
-	switch (GetType())
+	switch (GetBufferType())
 	{
 		case IBuffer::BufferType::VertexBuffer:
 			m_RenderDeviceDX11.GetDeviceContextD3D11()->IASetVertexBuffers(id, 1, buffers, strides, offsets);
@@ -97,7 +97,7 @@ void BufferDX11::DoInitializeBuffer()
 
 	D3D11_BUFFER_DESC bufferDesc = { 0 };
 	bufferDesc.Usage = D3D11_USAGE_DEFAULT;
-	bufferDesc.BindFlags = BufferTypeToBindFlags(GetType());
+	bufferDesc.BindFlags = BufferTypeToBindFlags(GetBufferType());
 	bufferDesc.ByteWidth = GetElementCount() * GetElementStride();
 	bufferDesc.CPUAccessFlags = 0;
 	bufferDesc.MiscFlags = 0;

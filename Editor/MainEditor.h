@@ -27,7 +27,7 @@ public:
 	void SetEditor3D(IEditor3DFrame* Editor3DFrame);
 
 	// IEditorUIFrame
-	void ExtendContextMenu(QMenu * Menu, const std::shared_ptr<ISceneNode3D>& Node) override;
+	bool ExtendContextMenu(QMenu * Menu, const std::shared_ptr<ISceneNode3D>& Node) override;
 	void OnSceneChanged();
 
 	// CSceneNodesSelector

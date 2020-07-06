@@ -20,7 +20,7 @@ protected:
 	virtual bool Bind(uint32 id, const IShader* shader, IShaderParameter::Type parameterType) const = 0;
 	virtual void UnBind(uint32 id, const IShader* shader, IShaderParameter::Type parameterType) const = 0;
 	virtual void Copy(const IBuffer* other) const = 0;
-	BufferType GetType() const override;
+	BufferType GetBufferType() const override;
 	uint32 GetElementCount() const override;
 	uint32 GetElementStride() const override;
 	uint32 GetElementOffset() const override;

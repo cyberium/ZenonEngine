@@ -7,7 +7,7 @@ public:
 	virtual ~ShaderBase();
 
 	// IShader
-	EShaderType GetType() const override final;
+	EShaderType GetShaderType() const override final;
 	IShaderInputLayout& GetInputLayout() const override final;
 	IShaderParameter& GetShaderParameterByName(const std::string& name) const override final;
 	

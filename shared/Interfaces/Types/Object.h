@@ -1,36 +1,29 @@
 #pragma once
 
+#include "Guid.h"
+
 ZN_INTERFACE IManager;
 ZN_INTERFACE IByteBuffer;
-
-#define UI64LIT(N) UINT64_C(N)
-
-typedef uint16 ObjectFactoryType;  // Kind of object (SceneNode, Material, Texture, etc...)
-typedef uint32 ObjectClassType;    // Class of object (MaterialDebug, MaterialModel, etc...)
-typedef uint32 ObjectCounterType;  // Unique ID of object (same with name)
-
-enum ObjectFactoryKey : ObjectFactoryType
-{
-	ofkEmpty = 0x0000,
-	ofkObject = 0x0001,
-
-	ofkSceneNode3D = 0x0100,
-	ofkSceneNodeUI = 0x0101,
-
-	ofkMaterial = 0x1100,
-	ofkModel = 0x1101
-};
 
 ZN_INTERFACE ZN_API IObject
 {
 	virtual ~IObject() {}
 
+	// Properties
+	virtual Guid GetGUID() const = 0;
+	virtual ObjectCounterType GetID() const = 0;
 	virtual std::string GetName() const = 0;
-	virtual std::string GetClassName() const = 0;
+	
+	virtual ObjectType GetType() const = 0;
+	virtual std::string GetTypeName() const = 0;
+	virtual bool IsType(ObjectType Type) const = 0;
 
-	virtual ObjectFactoryType GetFactory() const = 0;
-	virtual ObjectClassType GetClass() const = 0;
-	virtual bool Is(ObjectClassType ClassType) const = 0;
+	virtual ObjectClass GetClass() const = 0;
+	virtual std::string GetClassName() const = 0;
+	virtual bool IsClass(ObjectClass Class) const = 0;
+
+	// Methods
+	virtual void Copy(std::shared_ptr<IObject> Destination) const = 0;
 };
 
 ZN_INTERFACE ZN_API IObjectInternal
@@ -38,8 +31,15 @@ ZN_INTERFACE ZN_API IObjectInternal
 	virtual ~IObjectInternal() {}
 
 	virtual void SetName(const std::string& Name) = 0;
+	virtual void SetTypeName(const std::string& Name) = 0;
 	virtual void SetClassName(const std::string& Name) = 0;
-	virtual void SetGuid(uint64 guid) = 0;
+};
+
+ZN_INTERFACE ZN_API IObjectPrivate
+{
+	virtual ~IObjectPrivate() {}
+
+	virtual void SetGUID(const Guid& NewGuid) = 0;
 };
 
 ZN_INTERFACE ZN_API	IObjectLoadSave
@@ -53,122 +53,125 @@ ZN_INTERFACE ZN_API	IObjectLoadSave
 class ZN_API Object
 	: public IObject
 	, public IObjectInternal
+	, public IObjectPrivate
 {
 public:
-	class Guid
-	{
-	public:
-		static const Guid Empty;
-
-	public:
-		Guid()
-			: m_GUID(0)
-		{ }
-		explicit Guid(uint64 guid)
-			: m_GUID(guid)
-		{ }
-		Guid(ObjectFactoryType hi, ObjectClassType entry, ObjectCounterType counter)
-			: m_GUID(counter ? uint64(counter) | (uint64(entry) << 24) | (uint64(hi) << 48) : 0)
-		{ }
-
-		operator uint64() const { return m_GUID; }
-		uint64 GetRawValue() const { return m_GUID; }
-		bool IsEmpty() const { return m_GUID == 0; }
-
-		ObjectFactoryType GetFactoryKey() const { return ObjectFactoryType((m_GUID >> 48) & 0x0000FFFF); }
-		ObjectClassType GetClass() const { return ObjectClassType((m_GUID >> 24) & UI64LIT(0x0000000000FFFFFF)); }
-		ObjectCounterType GetCounter()  const { return ObjectCounterType(m_GUID & UI64LIT(0x0000000000FFFFFF)); }
-		ObjectCounterType GetMaxCounter() const { return ObjectCounterType(0x00FFFFFF); }
-		std::string Str() const { return "factory_" + std::to_string(GetFactoryKey()) + "_class_" + std::to_string(GetClass()) + "_id_" + std::to_string(GetCounter()); }
-		const char* CStr() const { return Str().c_str(); }
-
-		bool operator!() const { return IsEmpty(); }
-		bool operator==(const Guid& guid) const { return GetRawValue() == guid.GetRawValue(); }
-		bool operator!=(const Guid& guid) const { return GetRawValue() != guid.GetRawValue(); }
-		bool operator< (const Guid& guid) const { return GetRawValue() < guid.GetRawValue(); }
-
-	protected:
-		void Set(uint64 guid) { m_GUID = guid; }
-		void Clear() { m_GUID = 0; }
-
-	private:
-		explicit Guid(uint32) = delete;
-		explicit Guid(const uint32&) = delete;
-		Guid(ObjectFactoryType, ObjectCounterType) = delete;
-		Guid(ObjectFactoryType, ObjectClassType, uint64) = delete;
-		Guid(ObjectFactoryType, uint64) = delete;
-
-	private:
-		uint64 m_GUID;
-	};
-
-public:
-	/*virtual bool operator==(const Object& rhs) const
+	bool operator==(const Object& rhs) const
 	{
 		return m_Guid == rhs.m_Guid;
 	}
-	virtual bool operator!=(const Object& rhs) const
+	bool operator!=(const Object& rhs) const
 	{
 		return m_Guid != rhs.m_Guid;
-	}*/
+	}
 
 	//
 	// IObject
 	//
-	void Copy(std::shared_ptr<Object> Destination) const
-	{
-		if (GetGuid().GetClass() != Destination->GetGuid().GetClass() || GetGuid().GetFactoryKey() != Destination->GetGuid().GetFactoryKey())
-			throw std::exception("Unable to copy object.");
-		Destination->m_Name = m_Name;
-		Destination->m_ClassName = m_ClassName;
-	}
-	std::string GetName() const override
-	{
-		if (m_Name.empty())
-			return GetClassName() + "_" + std::to_string(GetGuid().GetCounter());
-		return m_Name;
-	}
-	std::string GetClassName() const  override
- 	{
-		if (m_ClassName.empty())
-			return "class_" + std::to_string(GetClass());
-		return m_ClassName;
-	}
-	Object::Guid GetGuid() const
+	Guid GetGUID() const override
 	{
 		return m_Guid;
 	}
-	ObjectFactoryType GetFactory() const  override
+	ObjectCounterType GetID() const override
 	{
-		return m_Guid.GetFactoryKey();
+		return GetGUID().GetCounter();
 	}
-	ObjectClassType GetClass() const  override
+	std::string GetName() const override
 	{
-		return m_Guid.GetClass();
+		//_ASSERT(m_ClassName.empty() == false);
+		return m_Name;
 	}
-	bool Is(ObjectClassType ClassType) const  override
+
+
+	// Type
+	ObjectType GetType() const override
 	{
-		return GetClass() == ClassType;
+		return m_Guid.GetObjectType();
 	}
+	std::string GetTypeName() const override
+	{
+		//_ASSERT(m_ClassName.empty() == false);
+		return m_TypeName;
+	}
+	bool IsType(ObjectType Type) const override
+	{
+		return GetType() == Type;
+	}
+
+
+	// Class
+	ObjectClass GetClass() const override
+	{
+		return m_Guid.GetObjectClass();
+	}
+	std::string GetClassName() const override
+ 	{
+		_ASSERT(m_ClassName.empty() == false);
+		return m_ClassName;
+	}
+	bool IsClass(ObjectClass Class) const override
+	{
+		return GetClass() == Class;
+	}
+
+
+	void Copy(std::shared_ptr<IObject> Destination) const
+	{
+		auto object = std::static_pointer_cast<Object>(Destination);
+
+		if (GetGUID().GetObjectClass() != object->GetGUID().GetObjectClass() || GetGUID().GetObjectType() != object->GetGUID().GetObjectType())
+			throw std::exception(("Unable to copy object with different type and class. Source: " + GetGUID().Str() + ", Destination: " + object->GetGUID().Str()).c_str());
+
+		object->m_Name = m_Name;
+		object->m_ClassName = m_ClassName;
+		object->m_TypeName = m_TypeName;
+	}
+	
 
 	//
 	// IObjectInternal
 	//
 	void SetName(const std::string& Name) override
 	{
-		//_ASSERT(Name.find(' ') == Name.end() && Name.find('.') == Name.end());
 		m_Name = Name;
 	}
 	void SetClassName(const std::string& Name)  override
 	{
 		m_ClassName = Name;
 	}
-	void SetGuid(uint64 guid) override
+	void SetTypeName(const std::string& Name) override
 	{
-		if (!m_Guid.IsEmpty())
-			throw std::exception(("Object " + GetGuid().Str() + " already has Guid.").c_str());
-		m_Guid = Guid(guid);
+		m_TypeName = Name;
 	}
+
+	
+private:
+	//
+	// IObjectPrivate
+	//
+	void SetGUID(const Guid& NewGuid) override 
+	{
+		if (GetGUID().IsEmpty() == false)
+			throw std::exception(("Object " + GetGUID().Str() + " already has Guid.").c_str());
+
+		if (NewGuid.IsEmpty())
+			throw std::exception("Cannot assign empty GUID for object.");
+
+		if (NewGuid.GetCounter() == 0)
+			throw std::exception(("Guid " + NewGuid.Str() + " not fully initialized.").c_str());
+
+		m_Guid = Guid(NewGuid.GetRawValue());
+
+		if (m_Name.empty())
+			m_Name = GetClassName() + "_id" + std::to_string(GetGUID().GetCounter());
+
+		if (m_ClassName.empty())
+			m_ClassName = "class" + std::to_string(GetClass());
+
+		if (m_TypeName.empty())
+			m_TypeName = "type" + std::to_string(GetType());
+	}
+
 
 protected:
 	Object()
@@ -176,7 +179,7 @@ protected:
 	{
 		m_Name = "";
 	}
-	Object(ObjectFactoryType Factory, ObjectClassType Class)
+	Object(ObjectType Factory, ObjectClass Class)
 		: m_Guid(0ull)
 	{
 		m_Name = "";
@@ -194,18 +197,5 @@ private:
 	Guid m_Guid;
 	std::string m_Name;
 	std::string m_ClassName;
+	std::string m_TypeName;
 };
-
-
-
-namespace std
-{
-	template<>
-	struct hash<Object::Guid>
-	{
-		size_t operator()(const Object::Guid& Guid) const noexcept
-		{
-			return Guid.GetRawValue();
-		}
-	};
-}

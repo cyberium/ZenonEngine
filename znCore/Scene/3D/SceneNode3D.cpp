@@ -124,7 +124,7 @@ void SceneNode3D::Copy(std::shared_ptr<ISceneNode3D> Destination) const
 //
 // Childs functional
 //
-void SceneNode3D::AddChild(const std::shared_ptr<ISceneNode3D>& childNode)
+void SceneNode3D::AddChild(std::shared_ptr<ISceneNode3D> childNode)
 {
 	if (childNode == nullptr)
 		throw CException(L"SceneNode3D: Child node must not be NULL.");
@@ -147,7 +147,7 @@ void SceneNode3D::AddChild(const std::shared_ptr<ISceneNode3D>& childNode)
 	this->AddChildInternal(childNode);
 }
 
-void SceneNode3D::RemoveChild(const std::shared_ptr<ISceneNode3D>& childNode)
+void SceneNode3D::RemoveChild(std::shared_ptr<ISceneNode3D> childNode)
 {
 	if (childNode == nullptr)
 	{
@@ -313,7 +313,7 @@ std::shared_ptr<ISceneNodeComponent> SceneNode3D::GetComponent(GUID ComponentID)
 	return component->second;
 }
 
-std::shared_ptr<ISceneNodeComponent> SceneNode3D::AddComponent(GUID ComponentID, const std::shared_ptr<ISceneNodeComponent>& Component)
+std::shared_ptr<ISceneNodeComponent> SceneNode3D::AddComponent(GUID ComponentID, std::shared_ptr<ISceneNodeComponent> Component)
 {
 	m_Components[ComponentID] = Component;
 	return Component;
@@ -389,12 +389,12 @@ void SceneNode3D::Accept(IVisitor* visitor)
 //
 // ISceneNode3DInternal
 //
-void SceneNode3D::SetSceneInternal(const std::weak_ptr<IScene>& Scene)
+void SceneNode3D::SetSceneInternal(std::weak_ptr<IScene> Scene)
 {
 	m_Scene = Scene;
 }
 
-void SceneNode3D::AddChildInternal(const std::shared_ptr<ISceneNode3D>& ChildNode)
+void SceneNode3D::AddChildInternal(std::shared_ptr<ISceneNode3D> ChildNode)
 {
 	_ASSERT(ChildNode != nullptr);
 
@@ -416,7 +416,7 @@ void SceneNode3D::AddChildInternal(const std::shared_ptr<ISceneNode3D>& ChildNod
 	GetScene()->RaiseSceneChangeEvent(ESceneChangeType::NodeAddedToParent, shared_from_this(), ChildNode);
 }
 
-void SceneNode3D::RemoveChildInternal(const std::shared_ptr<ISceneNode3D>& ChildNode)
+void SceneNode3D::RemoveChildInternal(std::shared_ptr<ISceneNode3D> ChildNode)
 {
 	const auto& childListIter = std::find(m_Children.begin(), m_Children.end(), ChildNode);
 	if (childListIter == m_Children.end())
@@ -440,7 +440,7 @@ void SceneNode3D::RemoveChildInternal(const std::shared_ptr<ISceneNode3D>& Child
 	GetScene()->RaiseSceneChangeEvent(ESceneChangeType::NodeRemovedFromParent, shared_from_this(), ChildNode);
 }
 
-void SceneNode3D::SetParentInternal(const std::weak_ptr<ISceneNode3D>& parentNode)
+void SceneNode3D::SetParentInternal(std::weak_ptr<ISceneNode3D> parentNode)
 {
 	m_ParentNode = parentNode;
 }

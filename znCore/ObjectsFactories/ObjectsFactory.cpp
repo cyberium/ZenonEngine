@@ -18,7 +18,7 @@ CObjectsFactory::~CObjectsFactory()
 //
 // IObjectsFactory
 //
-std::shared_ptr<IObjectClassFactory> CObjectsFactory::GetClassFactory(ObjectFactoryType ObjectFactoryKey) const
+std::shared_ptr<IObjectClassFactory> CObjectsFactory::GetClassFactory(ObjectType ObjectFactoryKey) const
 {
 	const auto& it = m_ClassFactories.find(ObjectFactoryKey);
 	if (it == m_ClassFactories.end())
@@ -44,9 +44,9 @@ void CObjectsFactory::RemoveClassFactory(std::shared_ptr<IObjectClassFactory> Cr
 	m_ClassFactories.erase(it);
 }
 
-std::shared_ptr<IObject> CObjectsFactory::CreateObject(ObjectFactoryType ObjectFactoryKey, ObjectClassType ObjectClassKey, const IObjectCreationArgs* ObjectCreationArgs)
+std::shared_ptr<IObject> CObjectsFactory::CreateObject(ObjectType ObjectFactoryKey, ObjectClass ObjectClassKey, const IObjectCreationArgs* ObjectCreationArgs)
 {
-	Object::Guid objectUUID(ObjectFactoryKey, ObjectClassKey, 0u);
+	Guid objectUUID(ObjectFactoryKey, ObjectClassKey, 0u);
 
 	try
 	{
@@ -71,9 +71,9 @@ std::shared_ptr<IObject> CObjectsFactory::LoadObject(std::shared_ptr<IByteBuffer
 
 	uint64 guidUInt = 0;
 	Bytes->read(&guidUInt);
-	Object::Guid storedGuid(guidUInt);
-	ObjectFactoryType storedFactoryKey = storedGuid.GetFactoryKey();
-	ObjectClassType storedClassType = storedGuid.GetClass();
+	Guid storedGuid(guidUInt);
+	ObjectType storedFactoryKey = storedGuid.GetObjectType();
+	ObjectClass storedClassType = storedGuid.GetObjectClass();
 
 	std::string storedName;
 	Bytes->readString(&storedName);
@@ -98,7 +98,7 @@ std::shared_ptr<IByteBuffer> CObjectsFactory::SaveObject(std::shared_ptr<IObject
 	std::shared_ptr<IByteBuffer> byteBuffer = std::make_shared<CByteBuffer>();
 	byteBuffer->write(&cObjectBinarySignatureBegin);
 
-	Object::Guid guid(Object->GetFactory(), Object->GetClass(), 1u);
+	Guid guid(Object->GetType(), Object->GetClass(), 1u);
 	uint64 guidRaw = guid.GetRawValue();
 	byteBuffer->write(&guidRaw);
 

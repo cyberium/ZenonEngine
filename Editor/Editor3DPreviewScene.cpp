@@ -30,7 +30,7 @@ void CEditor3DPreviewScene::SetModel(const std::shared_ptr<IModel>& Model)
 	GetCameraController()->GetCamera()->SetTranslation(glm::vec3(radius * 2.0f));
 	GetCameraController()->GetCamera()->SetDirection(glm::vec3(-0.5f));
 
-	ResizeEventArgs resizeArgs(nullptr, GetRenderWindow()->GetWindowWidth(), GetRenderWindow()->GetWindowHeight());
+	/*ResizeEventArgs resizeArgs(nullptr, GetRenderWindow()->GetWindowWidth(), GetRenderWindow()->GetWindowHeight());
 	OnWindowResize(resizeArgs);
 
 	UpdateEventArgs uArgs(nullptr, 0.0f, 0.0f, 0.0f, nullptr, nullptr);
@@ -41,7 +41,7 @@ void CEditor3DPreviewScene::SetModel(const std::shared_ptr<IModel>& Model)
 	OnRender(rArgs);
 	OnPostRender(rArgs);
 	OnRenderUI(rArgs);
-	GetRenderWindow()->Present();
+	GetRenderWindow()->Present();*/
 }
 
 
@@ -52,7 +52,7 @@ void CEditor3DPreviewScene::Initialize()
 {
 	SceneBase::Initialize();
 
-	auto cameraNode = GetRootNode3D()->CreateSceneNode<SceneNode3D>();
+	auto cameraNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>(otSceneNode3D)->CreateSceneNode3D(this, cSceneNode3D, GetRootNode3D());
 	cameraNode->SetName("Camera");
 	cameraNode->AddComponent(std::make_shared<CCameraComponent3D>(*cameraNode));
 
@@ -75,14 +75,28 @@ void CEditor3DPreviewScene::Finalize()
 
 void CEditor3DPreviewScene::Load3D()
 {
+	auto sceneNodeLight = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>(otSceneNode3D)->CreateSceneNode3D(this, cSceneNode3D, GetRootNode3D());
+	sceneNodeLight->SetName("Light");
+	sceneNodeLight->SetTranslate(glm::vec3(1500.0f, 1500.0f, 1500.0f));
+	sceneNodeLight->SetRotation(glm::vec3(-0.9f, -0.9f, -0.9f));
+
+	sceneNodeLight->AddComponent(std::make_shared<CLightComponent3D>(*sceneNodeLight.get()));
+	sceneNodeLight->GetComponent<ILightComponent3D>()->SetType(ELightType::Spot);
+	sceneNodeLight->GetComponent<ILightComponent3D>()->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
+	sceneNodeLight->GetComponent<ILightComponent3D>()->SetRange(99000.0f);
+	sceneNodeLight->GetComponent<ILightComponent3D>()->SetIntensity(1.0f);
+	sceneNodeLight->GetComponent<ILightComponent3D>()->SetSpotlightAngle(75.0f);
+
+	m_LightsBuffer = GetRenderDevice().GetObjectsFactory().CreateStructuredBuffer(nullptr, 8, sizeof(SLight), EAccess::CPUWrite);
+
 	{
-		m_Node = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>(ofkSceneNode3D)->CreateSceneNode3D(this, cSceneNode3D, GetRootNode3D());
+		m_Node = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>(otSceneNode3D)->CreateSceneNode3D(this, cSceneNode3D, GetRootNode3D());
 		m_Node->SetName("Node model preview.");
 	}
 
 
 	{
-		auto node = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>(ofkSceneNode3D)->CreateSceneNode3D(this, cSceneNode3D, GetRootNode3D());
+		auto node = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>(otSceneNode3D)->CreateSceneNode3D(this, cSceneNode3D, GetRootNode3D());
 		node->SetName("Grid node x10.");
 		node->SetTranslate(glm::vec3(0.0f, 0.03f, 0.0f));
 		node->SetScale(glm::vec3(10.0f));
@@ -100,7 +114,34 @@ void CEditor3DPreviewScene::Load3D()
 
 	glm::vec4 color = glm::vec4(0.33, 0.33f, 0.33f, 1.0f);
 	m_Technique3D.AddPass(std::make_shared<ClearRenderTargetPass>(GetRenderDevice(), GetRenderWindow()->GetRenderTarget(), ClearFlags::All, color /*glm::vec4(0.2f, 0.2f, 0.2f, 0.2f)*/, 1.0f, 0));
-	m_Technique3D.AddPass(GetBaseManager().GetManager<IRenderPassFactory>()->CreateRenderPass("MaterialModelPass", GetRenderDevice(), GetRenderWindow()->GetRenderTarget(), &GetRenderWindow()->GetViewport(), shared_from_this()));
+
+	auto materialModelPass = GetBaseManager().GetManager<IRenderPassFactory>()->CreateRenderPass("MaterialModelPass", GetRenderDevice(), GetRenderWindow()->GetRenderTarget(), &GetRenderWindow()->GetViewport(), shared_from_this());
+	m_MaterialModelPass = std::dynamic_pointer_cast<IMaterialModelPass>(materialModelPass);
+
+	{
+		auto invokePass = GetBaseManager().GetManager<IRenderPassFactory>()->CreateRenderPass("InvokePass", GetRenderDevice(), GetRenderWindow()->GetRenderTarget(), &GetRenderWindow()->GetViewport(), shared_from_this());
+		std::dynamic_pointer_cast<IInvokeFunctionPass>(invokePass)->SetFunc([sceneNodeLight, this]() {
+
+			std::vector<SLight> lights;
+			auto lightStruct = std::dynamic_pointer_cast<ILight3D>(sceneNodeLight->GetComponent<ILightComponent3D>())->GetLightStruct();
+			lightStruct.PositionVS = GetCameraController()->GetCamera()->GetViewMatrix() * glm::vec4(lightStruct.PositionWS.xyz(), 1.0f);
+			lightStruct.DirectionVS = glm::normalize(GetCameraController()->GetCamera()->GetViewMatrix() * glm::vec4(lightStruct.DirectionWS.xyz(), 0.0f));
+			lights.push_back(lightStruct);
+
+			if (lights.size() > m_LightsBuffer->GetElementCount())
+				m_LightsBuffer = GetRenderDevice().GetObjectsFactory().CreateStructuredBuffer(lights, EAccess::CPUWrite);
+			else
+				m_LightsBuffer->Set(lights);
+			m_LightsCnt = lights.size();
+
+			m_MaterialModelPass->GetLightsShaderParameter()->Set(m_LightsBuffer);
+		});
+		m_Technique3D.AddPass(invokePass);
+	}
+
+	m_Technique3D.AddPass(materialModelPass);
+
+	// Debug render
 	m_Technique3D.AddPass(GetBaseManager().GetManager<IRenderPassFactory>()->CreateRenderPass("DebugPass", GetRenderDevice(), GetRenderWindow()->GetRenderTarget(), &GetRenderWindow()->GetViewport(), shared_from_this()));
 }
 

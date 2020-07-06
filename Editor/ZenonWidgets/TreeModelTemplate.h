@@ -169,5 +169,5 @@ private:
 
 private:
 	CQtToZenonTreeItem* m_RootItem;
-	std::map<Object::Guid, CQtToZenonTreeItem*> m_Map;
+	std::map<Guid, CQtToZenonTreeItem*> m_Map;
 };

@@ -10,9 +10,9 @@ class UpdateEventArgs;
 ZN_INTERFACE IManager;
 // FORWARD END
 
-const ObjectClassType cSceneNodeUI = 525832104;
-const ObjectClassType cSceneNodeUI_Text = 525832105;
-const ObjectClassType cSceneNodeUI_Color = 525832106;
+const ObjectClass cSceneNodeUI = 525832104;
+const ObjectClass cSceneNodeUI_Text = 525832105;
+const ObjectClass cSceneNodeUI_Color = 525832106;
 
 ZN_INTERFACE ZN_API ISceneNodeUI
 	: public Object
@@ -21,7 +21,8 @@ ZN_INTERFACE ZN_API ISceneNodeUI
 	typedef std::vector<std::shared_ptr<ISceneNodeUI>>                NodeUIList;
 	typedef std::multimap<std::string, std::shared_ptr<ISceneNodeUI>> NodeUINameMap;
 
-	static ObjectClassType GetClass() { return cSceneNodeUI; }
+	static ObjectType GetType() { return otSceneNodeUI; }
+	static ObjectClass GetClass() { return cSceneNodeUI; }
 
 	virtual ~ISceneNodeUI() {}
 
@@ -35,10 +36,10 @@ ZN_INTERFACE ZN_API ISceneNodeUI
 	virtual const NodeUIList& GetChilds() = 0;
 	virtual void RaiseOnParentChanged() = 0;
 
-	template<typename T, typename... Args> inline std::shared_ptr<T> CreateSceneNode(Args &&... _Args)
-	{
-		return GetScene()->CreateSceneNodeUI<T>(shared_from_this(), std::forward<Args>(_Args)...);
-	}
+	//template<typename T, typename... Args> inline std::shared_ptr<T> CreateSceneNode(Args &&... _Args)
+	//{
+	//	return GetScene()->CreateSceneNodeUI<T>(shared_from_this(), std::forward<Args>(_Args)...);
+	//}
 
 	// Actions & Properties
 	virtual std::shared_ptr<IPropertiesGroup> GetProperties() const = 0;

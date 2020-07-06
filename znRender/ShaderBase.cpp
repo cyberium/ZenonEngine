@@ -16,7 +16,7 @@ ShaderBase::ShaderBase() :
 ShaderBase::~ShaderBase()
 {}
 
-EShaderType ShaderBase::GetType() const
+EShaderType ShaderBase::GetShaderType() const
 {
 	return m_ShaderType;
 }

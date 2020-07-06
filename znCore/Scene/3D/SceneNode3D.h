@@ -16,8 +16,8 @@ public:
 	virtual void                                    Finalize() override;
 	virtual void                                    Copy(std::shared_ptr<ISceneNode3D> Destination) const override;
 	// Childs functional
-	virtual void                                    AddChild(const std::shared_ptr<ISceneNode3D>& childNode) override final;
-	virtual void                                    RemoveChild(const std::shared_ptr<ISceneNode3D>& childNode) override final;
+	virtual void                                    AddChild(std::shared_ptr<ISceneNode3D> childNode) override final;
+	virtual void                                    RemoveChild(std::shared_ptr<ISceneNode3D> childNode) override final;
 	virtual std::weak_ptr<ISceneNode3D>             GetParent() const override final;
 	virtual const Node3DList&                       GetChilds() override final;
 	void											ClearChilds() override;
@@ -55,7 +55,7 @@ public:
 	//
 	bool                                            IsComponentExists(GUID ComponentID) const override;
 	std::shared_ptr<ISceneNodeComponent>            GetComponent(GUID ComponentID) const override;
-	std::shared_ptr<ISceneNodeComponent>            AddComponent(GUID ComponentID, const std::shared_ptr<ISceneNodeComponent>& Component) override;
+	std::shared_ptr<ISceneNodeComponent>            AddComponent(GUID ComponentID, std::shared_ptr<ISceneNodeComponent> Component) override;
 	const ComponentsMap&                            GetComponents() const override;
 	void                                            RaiseComponentMessage(const ISceneNodeComponent* Component, ComponentMessageType Message) const override;
 	virtual void                                    RegisterComponents() override;
@@ -85,10 +85,10 @@ public:
 
 private:
 	// ISceneNode3DInternal
-	void                                            SetSceneInternal(const std::weak_ptr<IScene>& Scene) override;
-	void                                            AddChildInternal(const std::shared_ptr<ISceneNode3D>& ChildNode) override;
-	void                                            RemoveChildInternal(const std::shared_ptr<ISceneNode3D>& ChildNode) override;
-	void                                            SetParentInternal(const std::weak_ptr<ISceneNode3D>& parentNode) override;
+	void                                            SetSceneInternal(std::weak_ptr<IScene> Scene) override;
+	void                                            AddChildInternal(std::shared_ptr<ISceneNode3D> ChildNode) override;
+	void                                            RemoveChildInternal(std::shared_ptr<ISceneNode3D> ChildNode) override;
+	void                                            SetParentInternal(std::weak_ptr<ISceneNode3D> parentNode) override;
 
 protected:
 	virtual glm::mat4                               CalculateLocalTransform() const;

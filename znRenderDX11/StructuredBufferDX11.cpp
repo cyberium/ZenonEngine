@@ -27,7 +27,7 @@ bool StructuredBufferDX11::Bind(uint32 ID, const IShader* shader, IShaderParamet
 	{
 		ID3D11ShaderResourceView* srv[] = { m_pSRV };
 
-		switch (shader->GetType())
+		switch (shader->GetShaderType())
 		{
 		case EShaderType::VertexShader:
 			m_RenderDeviceDX11.GetDeviceContextD3D11()->VSSetShaderResources(ID, 1, srv);
@@ -52,7 +52,7 @@ bool StructuredBufferDX11::Bind(uint32 ID, const IShader* shader, IShaderParamet
 	else if (parameterType == IShaderParameter::Type::RWBuffer && m_pUAV)
 	{
 		ID3D11UnorderedAccessView* uav[] = { m_pUAV };
-		switch (shader->GetType())
+		switch (shader->GetShaderType())
 		{
 		case EShaderType::ComputeShader:
 			m_RenderDeviceDX11.GetDeviceContextD3D11()->CSSetUnorderedAccessViews(ID, 1, uav, nullptr);
@@ -70,7 +70,7 @@ void StructuredBufferDX11::UnBind(uint32 ID, const IShader* shader, IShaderParam
 
 	if (parameterType == IShaderParameter::Type::Buffer)
 	{
-		switch (shader->GetType())
+		switch (shader->GetShaderType())
 		{
 		case EShaderType::VertexShader:
 			m_RenderDeviceDX11.GetDeviceContextD3D11()->VSSetShaderResources(ID, 1, srv);
@@ -94,7 +94,7 @@ void StructuredBufferDX11::UnBind(uint32 ID, const IShader* shader, IShaderParam
 	}
 	else if (parameterType == IShaderParameter::Type::RWBuffer)
 	{
-		switch (shader->GetType())
+		switch (shader->GetShaderType())
 		{
 		case EShaderType::ComputeShader:
 			m_RenderDeviceDX11.GetDeviceContextD3D11()->CSSetUnorderedAccessViews(ID, 1, uav, nullptr);

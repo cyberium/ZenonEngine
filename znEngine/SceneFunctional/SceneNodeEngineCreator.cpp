@@ -20,7 +20,9 @@ CSceneNode3DEngineCreator::CSceneNode3DEngineCreator(IBaseManager& BaseManager)
 	m_FBXManager = std::make_shared<CFBXManager>(GetBaseManager());
 
 	AddKey(cSceneNode3D);
+#ifdef ZN_FBX_SDK_ENABLE
 	AddKey(cSceneNode_FBXNode);
+#endif
 }
 
 CSceneNode3DEngineCreator::~CSceneNode3DEngineCreator()
@@ -31,23 +33,31 @@ CSceneNode3DEngineCreator::~CSceneNode3DEngineCreator()
 //
 std::shared_ptr<IObject> CSceneNode3DEngineCreator::CreateObject(size_t Index, const IObjectCreationArgs* ObjectCreationArgs)
 {
-	ISceneNode3DCreationArgs* sceneNodeCreationArgs = static_cast<ISceneNode3DCreationArgs*>(const_cast<IObjectCreationArgs*>(ObjectCreationArgs));
+	auto sceneNodeCreationArgs = static_cast<ISceneNode3DCreationArgs*>(const_cast<IObjectCreationArgs*>(ObjectCreationArgs));
+	auto scene = sceneNodeCreationArgs->GetScene();
+	auto parent = sceneNodeCreationArgs->GetParent();
+	std::shared_ptr<ISceneNode3D> createdNode = nullptr;
 
 	if (Index == 0)
 	{
-		return sceneNodeCreationArgs->GetScene()->CreateSceneNode<SceneNode3D>(sceneNodeCreationArgs->GetParent());
+		createdNode = sceneNodeCreationArgs->GetScene()->CreateSceneNode3DInternal<SceneNode3D>();
 	}
 #ifdef ZN_FBX_SDK_ENABLE
 	else if (Index == 1)
 	{
-		auto node = m_FBXManager->CreateSceneNode(sceneNodeCreationArgs->GetScene(), "SomeSceneName");
-		if (sceneNodeCreationArgs->GetParent() != nullptr)
-			sceneNodeCreationArgs->GetParent()->AddChild(std::dynamic_pointer_cast<ISceneNode3D>(node));
-		return std::dynamic_pointer_cast<IObject>(node);
+		createdNode = scene->CreateSceneNode3DInternal<CFBXSceneNode>(GetBaseManager(), m_FBXManager->GetFBXManager());
 	}
 #endif
 
-	return nullptr;
+	if (createdNode == nullptr)
+		throw CException("CSceneNode3DEngineCreator: CreateObject: Unable to create object with index %d.", Index);
+
+	if (parent)
+		scene->AddChild(parent, createdNode);
+	else if (scene->GetRootNode3D())
+		scene->AddChild(scene->GetRootNode3D(), createdNode);
+
+	return createdNode;
 }
 
 CSceneNodeUIEngineCreator::CSceneNodeUIEngineCreator(IBaseManager & BaseManager)
@@ -66,20 +76,31 @@ CSceneNodeUIEngineCreator::~CSceneNodeUIEngineCreator()
 //
 std::shared_ptr<IObject> CSceneNodeUIEngineCreator::CreateObject(size_t Index, const IObjectCreationArgs* ObjectCreationArgs)
 {
-	ISceneNodeUICreationArgs* sceneNodeCreationArgs = static_cast<ISceneNodeUICreationArgs*>(const_cast<IObjectCreationArgs*>(ObjectCreationArgs));
+	auto sceneNodeCreationArgs = static_cast<ISceneNodeUICreationArgs*>(const_cast<IObjectCreationArgs*>(ObjectCreationArgs));
+	auto scene = sceneNodeCreationArgs->GetScene();
+	auto parent = sceneNodeCreationArgs->GetParent();
+	std::shared_ptr<ISceneNodeUI> createdNode = nullptr;
 
 	if (Index == 0)
 	{
-		return sceneNodeCreationArgs->GetScene()->CreateSceneNodeUI<SceneNodeUI>(sceneNodeCreationArgs->GetParent());
+		createdNode = sceneNodeCreationArgs->GetScene()->CreateSceneNodeUIInternal<SceneNodeUI>();
 	}
 	else if (Index == 1)
 	{
-		return sceneNodeCreationArgs->GetScene()->CreateSceneNodeUI<CUITextNode>(sceneNodeCreationArgs->GetParent());
+		createdNode = sceneNodeCreationArgs->GetScene()->CreateSceneNodeUIInternal<CUITextNode>();
 	}
 	else if (Index == 2)
 	{
-		return sceneNodeCreationArgs->GetScene()->CreateSceneNodeUI<CUIColorNode>(sceneNodeCreationArgs->GetParent());
+		createdNode = sceneNodeCreationArgs->GetScene()->CreateSceneNodeUIInternal<CUIColorNode>();
 	}
 
-	return nullptr;
+	if (createdNode == nullptr)
+		throw CException("CSceneNodeUIEngineCreator: CreateObject: Unable to create object with index %d.", Index);
+
+	if (parent)
+		parent->AddChild(createdNode);
+	else if (scene->GetRootNodeUI())
+		scene->GetRootNodeUI()->AddChild(createdNode);
+
+	return createdNode;
 }

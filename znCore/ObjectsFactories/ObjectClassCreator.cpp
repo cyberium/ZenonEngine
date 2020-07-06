@@ -20,7 +20,7 @@ size_t CObjectClassCreator::GetSupportedClassCount() const
 	return m_Keys.size();
 }
 
-ObjectClassType CObjectClassCreator::GetSupportedClassKey(size_t Index) const
+ObjectClass CObjectClassCreator::GetSupportedClassKey(size_t Index) const
 {
 	_ASSERT(Index < GetSupportedClassCount());
 	return m_Keys.at(Index);
@@ -30,7 +30,7 @@ ObjectClassType CObjectClassCreator::GetSupportedClassKey(size_t Index) const
 //
 // Protected
 //
-void CObjectClassCreator::AddKey(ObjectClassType ObjectClassKey)
+void CObjectClassCreator::AddKey(ObjectClass ObjectClassKey)
 {
 	m_Keys.push_back(ObjectClassKey);
 }

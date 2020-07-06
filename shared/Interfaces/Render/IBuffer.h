@@ -5,6 +5,7 @@ ZN_INTERFACE IShaderParameterSource;
 // FORWARD END
 
 ZN_INTERFACE ZN_API IBuffer
+	: public Object
 {
 	enum class ZN_API BufferType : uint32
 	{
@@ -22,7 +23,7 @@ ZN_INTERFACE ZN_API IBuffer
 
 	virtual void Copy(const IBuffer* Other) const = 0;
 
-	virtual BufferType GetType() const = 0;
+	virtual BufferType GetBufferType() const = 0;
 	virtual uint32 GetElementCount() const = 0;
 	virtual uint32 GetElementStride() const = 0;
 	virtual uint32 GetElementOffset() const = 0;

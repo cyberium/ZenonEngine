@@ -7,7 +7,7 @@
 #include "Scene/3D/SceneNode3D.h"
 #include "Scene/UI/SceneNodeUI.h"
 
-CSceneNode3DFactory::CSceneNode3DFactory(IBaseManager& BaseManager, ObjectFactoryType Type)
+CSceneNode3DFactory::CSceneNode3DFactory(IBaseManager& BaseManager, ObjectType Type)
 	: CObjectClassFactory(BaseManager, Type)
 {}
 
@@ -17,7 +17,7 @@ CSceneNode3DFactory::~CSceneNode3DFactory()
 //
 // ISceneNode3DFactory
 //
-std::shared_ptr<ISceneNode3D> CSceneNode3DFactory::CreateSceneNode3D(IScene* Scene, ObjectClassType ObjectClassKey, const std::shared_ptr<ISceneNode3D>& Parent)
+std::shared_ptr<ISceneNode3D> CSceneNode3DFactory::CreateSceneNode3D(IScene* Scene, ObjectClass ObjectClassKey, const std::shared_ptr<ISceneNode3D>& Parent)
 {
 	class CSceneNode3DCreationArgs
 		: public ISceneNode3DCreationArgs
@@ -51,7 +51,7 @@ std::shared_ptr<ISceneNode3D> CSceneNode3DFactory::LoadSceneNode3D(IScene * Scen
 
 
 
-CSceneNodeUIFactory::CSceneNodeUIFactory(IBaseManager& BaseManager, ObjectFactoryType Type)
+CSceneNodeUIFactory::CSceneNodeUIFactory(IBaseManager& BaseManager, ObjectType Type)
 	: CObjectClassFactory(BaseManager, Type)
 {
 }
@@ -62,7 +62,7 @@ CSceneNodeUIFactory::~CSceneNodeUIFactory()
 //
 // ISceneNodeUIFactory
 //
-std::shared_ptr<ISceneNodeUI> CSceneNodeUIFactory::CreateSceneNodeUI(IScene* Scene, ObjectClassType ObjectClassKey, const std::shared_ptr<ISceneNodeUI>& Parent)
+std::shared_ptr<ISceneNodeUI> CSceneNodeUIFactory::CreateSceneNodeUI(IScene* Scene, ObjectClass ObjectClassKey, const std::shared_ptr<ISceneNodeUI>& Parent)
 {
 	class CSceneNodeUICreationArgs
 		: public ISceneNodeUICreationArgs

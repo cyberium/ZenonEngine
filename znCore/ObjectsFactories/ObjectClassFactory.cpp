@@ -3,7 +3,7 @@
 // General
 #include "ObjectClassFactory.h"
 
-CObjectClassFactory::CObjectClassFactory(IBaseManager& BaseManager, ObjectFactoryType Type)
+CObjectClassFactory::CObjectClassFactory(IBaseManager& BaseManager, ObjectType Type)
 	: m_BaseManager(BaseManager)
 	, m_Type(Type)
 	, m_Counter(0)
@@ -17,7 +17,7 @@ CObjectClassFactory::~CObjectClassFactory()
 //
 // IObjectClassFactory
 //
-std::shared_ptr<IObjectClassCreator> CObjectClassFactory::GetClassCreator(ObjectClassType ObjectClassKey) const
+std::shared_ptr<IObjectClassCreator> CObjectClassFactory::GetClassCreator(ObjectClass ObjectClassKey) const
 {
 	const auto& it = m_ClassCreators.find(ObjectClassKey);
 	if (it == m_ClassCreators.end())
@@ -49,17 +49,17 @@ void CObjectClassFactory::RemoveClassCreator(std::shared_ptr<IObjectClassCreator
 	}
 }
 
-ObjectFactoryType CObjectClassFactory::GetType() const
+ObjectType CObjectClassFactory::GetType() const
 {
 	return m_Type;
 }
 
-Object::Guid CObjectClassFactory::GenerateGuid(ObjectClassType ObjectClassKey)
+Guid CObjectClassFactory::GenerateGuid(ObjectClass ObjectClassKey)
 {
-	return Object::Guid(GetType(), ObjectClassKey, ++m_Counter);
+	return Guid(GetType(), ObjectClassKey, ++m_Counter);
 }
 
-std::shared_ptr<IObject> CObjectClassFactory::CreateObject(ObjectClassType ObjectClassKey, const IObjectCreationArgs* ObjectCreationArgs)
+std::shared_ptr<IObject> CObjectClassFactory::CreateObject(ObjectClass ObjectClassKey, const IObjectCreationArgs* ObjectCreationArgs)
 {
 	auto objectUUID = GenerateGuid(ObjectClassKey);
 
@@ -71,9 +71,9 @@ std::shared_ptr<IObject> CObjectClassFactory::CreateObject(ObjectClassType Objec
 	auto creatorObject = it->second.second;
 
 	auto createdObject = creatorObject->CreateObject(creatorIndex, ObjectCreationArgs);
-	if (auto objectInternal = std::dynamic_pointer_cast<IObjectInternal>(createdObject))
+	if (auto objectPrivate = std::dynamic_pointer_cast<IObjectPrivate>(createdObject))
 	{
-		objectInternal->SetGuid(objectUUID.GetRawValue());
+		objectPrivate->SetGUID(objectUUID);
 		Log::Green("ClassFactory: Object [%s] created.", createdObject->GetName().c_str());
 	}
 	else
@@ -82,7 +82,7 @@ std::shared_ptr<IObject> CObjectClassFactory::CreateObject(ObjectClassType Objec
 	return createdObject;
 }
 
-std::shared_ptr<IObject> CObjectClassFactory::LoadObject(ObjectClassType ObjectClassKey, std::shared_ptr<IByteBuffer> Bytes)
+std::shared_ptr<IObject> CObjectClassFactory::LoadObject(ObjectClass ObjectClassKey, std::shared_ptr<IByteBuffer> Bytes)
 {
 	auto objectUUID = GenerateGuid(ObjectClassKey);
 
@@ -94,9 +94,9 @@ std::shared_ptr<IObject> CObjectClassFactory::LoadObject(ObjectClassType ObjectC
 	auto creatorObject = it->second.second;
 
 	auto loadedObject = creatorObject->CreateObject(creatorIndex, nullptr);
-	if (auto objectInternal = std::dynamic_pointer_cast<IObjectInternal>(loadedObject))
+	if (auto objectPrivate = std::dynamic_pointer_cast<IObjectPrivate>(loadedObject))
 	{
-		objectInternal->SetGuid(objectUUID.GetRawValue());
+		objectPrivate->SetGUID(objectUUID);
 		Log::Green("ClassFactory: Object [%s] loaded.", loadedObject->GetName().c_str());
 	}
 	else

@@ -60,7 +60,7 @@ void MaterialDX11::BindForShader(const IShader* shader) const
 {
 	_ASSERT_EXPR(shader != nullptr, L"Shader must be not null.");
 
-	if (shader->GetType() == EShaderType::PixelShader)
+	if (shader->GetShaderType() == EShaderType::PixelShader)
 	{
 		for (const auto& textureIt : m_Textures)
 		{
@@ -101,7 +101,7 @@ void MaterialDX11::UnbindForShader(const IShader* shader) const
 		}
 	}
 
-	if (shader->GetType() == EShaderType::PixelShader)
+	if (shader->GetShaderType() == EShaderType::PixelShader)
 	{
 		for (const auto& textureIt : m_Textures)
 		{

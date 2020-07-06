@@ -22,6 +22,9 @@ protected:
 	void Load3D();
 	void LoadUI();
 
-private:
+private: // Rendering
 	std::shared_ptr<ISceneNode3D> m_Node;
+	std::shared_ptr<IMaterialModelPass> m_MaterialModelPass;
+	std::shared_ptr<IStructuredBuffer>  m_LightsBuffer;
+	size_t							    m_LightsCnt;
 };

@@ -19,7 +19,9 @@ class RenderEventArgs;
   *   параметры, специфичные для каждого объекта (World матрица). Данному объекту необходим доступ только в вершинный шейдер, 
   *   для передачи в него данных о каждой вершине.
 */
-ZN_INTERFACE ZN_API IGeometry : public std::enable_shared_from_this<IGeometry>
+ZN_INTERFACE ZN_API IGeometry 
+	: public Object
+	, public std::enable_shared_from_this<IGeometry>
 {
 	typedef std::unordered_map<BufferBinding, std::shared_ptr<IBuffer>> BuffersMap;
 

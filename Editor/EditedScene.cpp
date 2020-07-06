@@ -50,8 +50,8 @@ std::shared_ptr<ISceneNode3D> CEditedScene::CreateNode(const glm::ivec3& Positio
 	//if (it != m_Nodes.end())
 	//	return it->SceneNode;
 
-	auto node = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>(ofkSceneNode3D)->CreateSceneNode3D(this, cSceneNode3D, GetRootNode3D());
-	node->SetClassName(Type);
+	auto node = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>(otSceneNode3D)->CreateSceneNode3D(this, cSceneNode3D, GetRootNode3D());
+	node->SetName(Type);
 	//node->SetTranslate(glm::vec3(Position));
 	//node->SetScale(glm::vec3(25.0f));
 	auto model = GetRenderDevice().GetObjectsFactory().CreateModel();

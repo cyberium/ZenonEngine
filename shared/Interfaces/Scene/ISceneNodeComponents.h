@@ -10,9 +10,14 @@ ZN_INTERFACE IXMLWriter;
 
 typedef uint32 ComponentMessageType;
 
+const ObjectClass cSceneNodeComponent = 527338441;
+
 ZN_INTERFACE ZN_API ISceneNodeComponent 
 	: public std::enable_shared_from_this<ISceneNodeComponent>
 {
+	static ObjectType GetType() { return otSceneNodeComponent; }
+	static ObjectClass GetClass() { return cSceneNodeComponent; }
+
 	virtual ~ISceneNodeComponent() {}
 
 	virtual void Copy(std::shared_ptr<ISceneNodeComponent> Destination) const = 0;
