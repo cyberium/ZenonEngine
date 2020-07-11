@@ -6,7 +6,6 @@ class ZenonWindowMinimal3DWidget
 	: public QWidget
 	, public INativeWindow
 	, public INativeWindow_WindowsSpecific
-	, public Object
 {
 	Q_OBJECT
 public:

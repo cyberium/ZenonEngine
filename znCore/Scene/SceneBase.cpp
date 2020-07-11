@@ -6,7 +6,7 @@
 // Additonal
 #include "3D/SceneNode3D.h"
 #include "UI/SceneNodeUI.h"
-#include "XML/XMLManager.h"
+#include "3D/LightComponent3D.h"
 
 SceneBase::SceneBase(IBaseManager& BaseManager)
 	: m_BaseManager(BaseManager)
@@ -31,6 +31,20 @@ void SceneBase::Initialize()
 
 	m_RootNodeUI = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeUIFactory>()->CreateSceneNodeUI(this, cSceneNodeUI);
 	m_RootNodeUI->SetName("Root node UI");
+
+	{
+		m_LightNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, this);
+		m_LightNode->SetName("Light");
+		m_LightNode->SetTranslate(glm::vec3(1500.0f, 1500.0f, 1500.0f));
+		m_LightNode->SetRotation(glm::vec3(-0.9f, -0.9f, -0.9f));
+
+		m_LightNode->AddComponent(std::make_shared<CLightComponent3D>(*m_LightNode.get()));
+		m_LightNode->GetComponent<ILightComponent3D>()->SetType(ELightType::Spot);
+		m_LightNode->GetComponent<ILightComponent3D>()->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
+		m_LightNode->GetComponent<ILightComponent3D>()->SetRange(99000.0f);
+		m_LightNode->GetComponent<ILightComponent3D>()->SetIntensity(1.0f);
+		m_LightNode->GetComponent<ILightComponent3D>()->SetSpotlightAngle(75.0f);
+	}
 
 	{
 		m_CameraPosText = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeUIFactory>()->CreateSceneNodeUI(this, cSceneNodeUI_Text);
@@ -223,7 +237,7 @@ Delegate<SceneChangeEventArgs>& SceneBase::SceneChangeEvent()
 
 void SceneBase::RaiseSceneChangeEvent(ESceneChangeType SceneChangeType, const std::shared_ptr<ISceneNode3D>& OwnerNode, const std::shared_ptr<ISceneNode3D>& ChildNode)
 {
-	m_SceneChangeEvent(SceneChangeEventArgs(this, this, SceneChangeType, OwnerNode, ChildNode));
+	m_SceneChangeEvent(SceneChangeEventArgs(this, SceneChangeType, OwnerNode, ChildNode));
 }
 
 bool SceneBase::OnMouseClickToWorld(const MouseButtonEventArgs & e, const Ray& RayToWorld)
@@ -429,13 +443,26 @@ bool SceneBase::OnWindowMouseWheel(MouseWheelEventArgs & e)
 }
 
 
-
 //
 // IBaseManagerHolder
 //
 IBaseManager& SceneBase::GetBaseManager() const
 {
 	return m_BaseManager;
+}
+
+
+//
+// IObjectSaveLoad
+//
+void SceneBase::Load(const std::shared_ptr<IXMLReader>& Reader)
+{
+	_ASSERT(FALSE);
+}
+
+void SceneBase::Save(const std::shared_ptr<IXMLWriter>& Writer) const
+{
+	_ASSERT(FALSE);
 }
 
 
@@ -454,6 +481,11 @@ std::shared_ptr<IRenderWindow> SceneBase::GetRenderWindow() const
 	std::shared_ptr<IRenderWindow> renderWindow = m_RenderWindow.lock();
 	_ASSERT(renderWindow);
 	return std::move(renderWindow);
+}
+
+std::shared_ptr<ILightComponent3D> SceneBase::GetDefaultLight() const
+{
+	return m_LightNode->GetComponent<ILightComponent3D>();
 }
 
 namespace

@@ -77,78 +77,6 @@ void MaterialBase::Unbind(const ShaderMap& shaders) const
 
 
 //
-// IObjectLoadSave
-//
-void MaterialBase::Load(const std::shared_ptr<IByteBuffer>& ByteBuffer)
-{
-	ByteBuffer->read(&m_BufferSize);
-	if (m_BufferSize > 0)
-	{
-		InitializeMaterialData(m_BufferSize);
-		ByteBuffer->readBytes(m_MaterialData, m_BufferSize);
-	}
-
-	size_t texturesCount;
-	ByteBuffer->read(&texturesCount);
-	for (size_t i = 0; i < texturesCount; i++)
-	{
-		uint8 textureIndex;
-		ByteBuffer->read(&textureIndex);
-
-		std::string textureFileName;
-		ByteBuffer->readString(&textureFileName);
-
-		auto texture = m_RenderDevice.GetObjectsFactory().LoadTexture2D(textureFileName);
-		if (texture == nullptr)
-		{
-			Log::Error("MaterialBase: Unable load texture: '%s' with index '%d' for material '%s'.", textureFileName.c_str(), textureIndex, GetName().c_str());
-			texture = m_RenderDevice.GetDefaultTexture();
-		}
-
-		if (m_Textures.find(textureIndex) != m_Textures.end())
-		{
-			Log::Error("MaterialBase: Texture with index '%d' already set.", textureIndex);
-		}
-
-		m_Textures.insert(std::make_pair(textureIndex, texture));
-	}
-}
-
-void MaterialBase::Save(const std::shared_ptr<IByteBuffer>& ByteBuffer)
-{
-	// Material data
-	ByteBuffer->write(&m_BufferSize);
-	if (m_BufferSize > 0)
-		ByteBuffer->writeBytes(m_MaterialData, m_BufferSize);
-
-	// Textures
-	size_t texturesCount = m_Textures.size();
-	ByteBuffer->write(&texturesCount);
-	for (const auto& it : m_Textures)
-	{
-		if (it.second == nullptr)
-			throw CException("NullPtr texture for m_Texture[%d].", it.first);
-
-		if (auto fileNameOwner = std::dynamic_pointer_cast<IFileNameOwner>(it.second))
-		{
-			const auto fileName = fileNameOwner->GetFileName();
-			if (fileName.empty())
-				throw CException("Empty filename for m_Texture[%d].", it.first);
-
-			// Тупая проверка. Но для меня сейчас это надежда найти всякую хуйню с менеджером тексутр.
-			_ASSERT(m_RenderDevice.GetObjectsFactory().LoadTexture2D(fileName) == it.second);
-
-			ByteBuffer->write(&it.first);
-			ByteBuffer->writeString(fileNameOwner->GetFileName());
-		}
-		else
-			throw CException("Texture [%d] don't support 'IFileNameOwner'.");
-	}
-}
-
-
-
-//
 // IMaterialDataOwner
 //
 void MaterialBase::InitializeMaterialData(size_t BufferSize)
@@ -184,6 +112,94 @@ void MaterialBase::MarkMaterialDataDirty()
 	m_Dirty = true;
 }
 
+
+//
+// IObjectLoadSave
+//
+
+void MaterialBase::Load(const std::shared_ptr<IByteBuffer>& ByteBuffer)
+{
+	ByteBuffer->read(&m_BufferSize);
+	if (m_BufferSize > 0)
+	{
+		InitializeMaterialData(m_BufferSize);
+		ByteBuffer->readBytes(m_MaterialData, m_BufferSize);
+	}
+
+	size_t texturesCount;
+	ByteBuffer->read(&texturesCount);
+	for (size_t i = 0; i < texturesCount; i++)
+	{
+		uint8 textureIndex;
+		ByteBuffer->read(&textureIndex);
+
+		std::string textureFileName;
+		ByteBuffer->readString(&textureFileName);
+
+		auto texture = m_RenderDevice.GetObjectsFactory().LoadTexture2D(textureFileName);
+		if (texture == nullptr)
+		{
+			Log::Error("MaterialBase: Unable load texture: '%s' with index '%d' for material '%s'.", textureFileName.c_str(), textureIndex, GetName().c_str());
+			texture = m_RenderDevice.GetDefaultTexture();
+		}
+
+		if (m_Textures.find(textureIndex) != m_Textures.end())
+		{
+			Log::Error("MaterialBase: Texture with index '%d' already set.", textureIndex);
+		}
+
+		m_Textures.insert(std::make_pair(textureIndex, texture));
+	}
+}
+
+void MaterialBase::Save(const std::shared_ptr<IByteBuffer>& ByteBuffer) const
+{
+	// Material data
+	ByteBuffer->write(&m_BufferSize);
+	if (m_BufferSize > 0)
+		ByteBuffer->writeBytes(m_MaterialData, m_BufferSize);
+
+	// Textures
+	size_t texturesCount = m_Textures.size();
+	ByteBuffer->write(&texturesCount);
+	for (const auto& it : m_Textures)
+	{
+		if (it.second == nullptr)
+			throw CException("NullPtr texture for m_Texture[%d].", it.first);
+
+		if (auto fileNameOwner = std::dynamic_pointer_cast<IFileNameOwner>(it.second))
+		{
+			const auto fileName = fileNameOwner->GetFileName();
+			if (fileName.empty())
+				throw CException("Empty filename for m_Texture[%d].", it.first);
+
+			// Тупая проверка. Но для меня сейчас это надежда найти всякую хуйню с менеджером тексутр.
+			_ASSERT(m_RenderDevice.GetObjectsFactory().LoadTexture2D(fileName) == it.second);
+
+			ByteBuffer->write(&it.first);
+			ByteBuffer->writeString(fileNameOwner->GetFileName());
+		}
+		else
+			throw CException("Texture [%d] don't support 'IFileNameOwner'.");
+	}
+}
+
+void MaterialBase::Load(const std::shared_ptr<IXMLReader>& Reader)
+{
+	_ASSERT(false);
+}
+
+void MaterialBase::Save(const std::shared_ptr<IXMLWriter>& Writer) const
+{
+	_ASSERT(false);
+}
+
+
+
+
+//
+// Protected
+//
 void MaterialBase::FinalizeMaterialData()
 {
 	if (m_MaterialData == nullptr)

@@ -31,7 +31,6 @@ enum ZN_API EVisitResult : size_t
   *   4 Успех) В случае если визит ноды был одобрен посетителем, то нода    
 */
 ZN_INTERFACE ZN_API IVisitor 
-	: public Object
 {
 	virtual ~IVisitor() {}
 

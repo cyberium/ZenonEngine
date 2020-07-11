@@ -73,7 +73,7 @@ void CFBXSceneNode::LoadNode(fbxsdk::FbxNode * NativeNode)
 		case fbxsdk::FbxNodeAttribute::EType::eMesh:
 		{
 			LoadModel(NativeNode);
-			if (auto component = GetComponent<IModelsComponent3D>())
+			if (auto component = ISceneNode3D::GetComponent<IModelsComponent3D>())
 				component->AddModel(m_Model);
 		}
 		break;

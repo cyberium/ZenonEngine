@@ -3,7 +3,7 @@
 class ZN_API MaterialBase 
 	: public IMaterial
 	, public IMaterialDataOwner
-	, public IObjectLoadSave
+	, public Object
 {
 public:
 	MaterialBase(IRenderDevice& renderDevice);
@@ -19,15 +19,24 @@ public:
 	virtual void Bind(const ShaderMap& shaders) const override;
 	virtual void Unbind(const ShaderMap& shaders) const override;
 
-	// IObjectLoadSave
-	virtual void Load(const std::shared_ptr<IByteBuffer>& ByteBuffer) override;
-	virtual void Save(const std::shared_ptr<IByteBuffer>& ByteBuffer) override;
-
 	// IMaterialDataOwner
 	void         InitializeMaterialData(size_t BufferSize) override;
 	const void*  GetMaterialData() const override;
 	void*        GetMaterialDataEx() override;
 	void         MarkMaterialDataDirty() override;
+
+	// IObject
+	Guid GetGUID() const override final { return Object::GetGUID(); };
+	std::string GetName() const override final { return Object::GetName(); };
+	void SetName(const std::string& Name) override final { Object::SetName(Name); };
+	std::string GetTypeName() const override final { return Object::GetTypeName(); };
+	std::string GetClassNameW() const override final { return Object::GetClassNameW(); };
+
+	// IObjectLoadSave
+	void Load(const std::shared_ptr<IByteBuffer>& ByteBuffer) override;
+	void Save(const std::shared_ptr<IByteBuffer>& ByteBuffer) const override;
+	void Load(const std::shared_ptr<IXMLReader>& Reader) override;
+	void Save(const std::shared_ptr<IXMLWriter>& Writer) const override;
 
 private:
 	void         FinalizeMaterialData();

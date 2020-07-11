@@ -26,8 +26,8 @@ SceneNodeUI::SceneNodeUI()
 	// Name properties
 	{
 		std::shared_ptr<CPropertyWrapped<std::string>> nameProperty = std::make_shared<CPropertyWrapped<std::string>>("Name", "Scene node name.");
-		nameProperty->SetValueSetter(std::bind(&SceneNodeUI::SetName, this, std::placeholders::_1));
-		nameProperty->SetValueGetter(std::bind(&SceneNodeUI::GetName, this));
+		nameProperty->SetValueSetter(std::bind(&Object::SetName, this, std::placeholders::_1));
+		nameProperty->SetValueGetter(std::bind(&Object::GetName, this));
 		GetProperties()->AddProperty(nameProperty);
 	}
 }

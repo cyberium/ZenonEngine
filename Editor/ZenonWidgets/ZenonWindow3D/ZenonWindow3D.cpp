@@ -74,7 +74,6 @@ void ZenonWindow3D::mousePressEvent(QMouseEvent * event)
 {
 	MouseButtonEventArgs args
 	(
-		this,
 		QtToZenonMouseBotton(event->button()),
 		MouseButtonEventArgs::ButtonState::Pressed,
 		event->buttons() == Qt::MouseButton::LeftButton,
@@ -92,7 +91,6 @@ void ZenonWindow3D::mouseReleaseEvent(QMouseEvent * event)
 {
 	MouseButtonEventArgs args
 	(
-		this,
 		QtToZenonMouseBotton(event->button()),
 		MouseButtonEventArgs::ButtonState::Released,
 		event->buttons() == Qt::MouseButton::LeftButton,
@@ -114,7 +112,6 @@ void ZenonWindow3D::mouseMoveEvent(QMouseEvent * event)
 {
 	MouseMotionEventArgs args
 	(
-		this,
 		event->buttons() == Qt::MouseButton::LeftButton, 
 		event->buttons() == Qt::MouseButton::MiddleButton, 
 		event->buttons() == Qt::MouseButton::RightButton, 
@@ -130,7 +127,6 @@ void ZenonWindow3D::wheelEvent(QWheelEvent * event)
 {
 	MouseWheelEventArgs args
 	(
-		this,
 		event->delta(),
 		event->buttons() == Qt::MouseButton::LeftButton,
 		event->buttons() == Qt::MouseButton::MiddleButton,
@@ -148,7 +144,6 @@ void ZenonWindow3D::keyPressEvent(QKeyEvent * event)
 {
 	KeyEventArgs args
 	(
-		this,
 		(KeyCode)event->nativeVirtualKey(),
 		event->key(),
 		KeyEventArgs::KeyState::Pressed,
@@ -163,7 +158,6 @@ void ZenonWindow3D::keyReleaseEvent(QKeyEvent * event)
 {
 	KeyEventArgs args
 	(
-		this,
 		(KeyCode)event->nativeVirtualKey(),
 		event->key(),
 		KeyEventArgs::KeyState::Released,

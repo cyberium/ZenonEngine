@@ -23,7 +23,7 @@ ZN_INTERFACE IColliderComponent3D;
 const ObjectClass cSceneNode3D = 527338441;
 
 ZN_INTERFACE ZN_API ISceneNode3D
-	: public Object
+	: public IObject
 	, public std::enable_shared_from_this<ISceneNode3D>
 {
 	typedef std::vector<std::shared_ptr<ISceneNode3D>>                Node3DList;
@@ -44,14 +44,6 @@ ZN_INTERFACE ZN_API ISceneNode3D
 	virtual const Node3DList& GetChilds() = 0;
 	virtual void ClearChilds() = 0;
 	virtual void RaiseOnParentChanged() = 0;
-
-	//template<typename T, typename... Args> inline std::shared_ptr<T> CreateSceneNode(Args &&... _Args)
-	//{
-	//	if (auto scene = GetScene())
-	//		return scene->CreateSceneNode3D<T>(shared_from_this(), std::forward<Args>(_Args)...);
-	//	
-	//	return nullptr;
-	//}
 
 	virtual std::shared_ptr<IPropertiesGroup> GetProperties() const = 0;
 	virtual IScene* GetScene() const = 0;
@@ -83,21 +75,15 @@ ZN_INTERFACE ZN_API ISceneNode3D
 	virtual glm::mat4 GetParentWorldTransform() const = 0;
 	virtual void SetWorldTransform(const glm::mat4& worldTransform) = 0;
 
-
-	virtual const std::shared_ptr<IColliderComponent3D>& GetColliderComponent() const = 0;
-	virtual const std::shared_ptr<IModelsComponent3D>& GetModelsComponent() const = 0;
-
-	//
 	// Components engine
-	//
 	virtual bool IsComponentExists(GUID ComponentID) const = 0;
 	virtual std::shared_ptr<ISceneNodeComponent> GetComponent(GUID ComponentID) const = 0;
 	virtual std::shared_ptr<ISceneNodeComponent> AddComponent(GUID ComponentID, std::shared_ptr<ISceneNodeComponent> Component) = 0;
 	virtual const ComponentsMap& GetComponents() const = 0;
 	virtual void RaiseComponentMessage(const ISceneNodeComponent* Component, ComponentMessageType Message) const = 0;
 	virtual void RegisterComponents() = 0;
-
-	
+	virtual const std::shared_ptr<IColliderComponent3D>& GetColliderComponent() const = 0;
+	virtual const std::shared_ptr<IModelsComponent3D>& GetModelsComponent() const = 0;
 
 	template<typename T> inline bool IsComponentExists()
 	{

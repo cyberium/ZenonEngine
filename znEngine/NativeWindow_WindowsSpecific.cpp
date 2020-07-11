@@ -194,7 +194,7 @@ LRESULT CNativeWindow_WindowsSpecific::Windows_ProcessMessage(HWND hwnd, UINT me
 		unsigned int scanCode = (lParam & 0x00FF0000) >> 16;
 
 		if (m_EventListener)
-			m_EventListener->OnWindowKeyPressed(KeyEventArgs(this, key, c, KeyEventArgs::Pressed, control, shift, alt));
+			m_EventListener->OnWindowKeyPressed(KeyEventArgs(key, c, KeyEventArgs::Pressed, control, shift, alt));
 	}
 	break;
 	case WM_KEYUP:
@@ -220,7 +220,7 @@ LRESULT CNativeWindow_WindowsSpecific::Windows_ProcessMessage(HWND hwnd, UINT me
 		}
 
 		if (m_EventListener)
-			m_EventListener->OnWindowKeyReleased(KeyEventArgs(this, key, c, KeyEventArgs::Released, control, shift, alt));
+			m_EventListener->OnWindowKeyReleased(KeyEventArgs(key, c, KeyEventArgs::Released, control, shift, alt));
 	}
 	break;
 	case WM_SETFOCUS:
@@ -228,7 +228,7 @@ LRESULT CNativeWindow_WindowsSpecific::Windows_ProcessMessage(HWND hwnd, UINT me
 		m_bHasKeyboardFocus = true;
 
 		if (m_EventListener)
-			m_EventListener->OnWindowKeyboardFocus(EventArgs(this));
+			m_EventListener->OnWindowKeyboardFocus(EventArgs());
 	}
 	break;
 	case WM_KILLFOCUS:
@@ -236,7 +236,7 @@ LRESULT CNativeWindow_WindowsSpecific::Windows_ProcessMessage(HWND hwnd, UINT me
 		m_bHasKeyboardFocus = false;
 
 		if (m_EventListener)
-			m_EventListener->OnWindowKeyboardBlur(EventArgs(this));
+			m_EventListener->OnWindowKeyboardBlur(EventArgs());
 	}
 	break;
 
@@ -276,7 +276,7 @@ LRESULT CNativeWindow_WindowsSpecific::Windows_ProcessMessage(HWND hwnd, UINT me
 			m_InClientRect = true;
 		}
 
-		MouseMotionEventArgs mouseMotionEventArgs(this, lButton, mButton, rButton, control, shift, x, y);
+		MouseMotionEventArgs mouseMotionEventArgs(lButton, mButton, rButton, control, shift, x, y);
 		mouseMotionEventArgs.RelX = mouseMotionEventArgs.X - m_PreviousMousePosition.x;
 		mouseMotionEventArgs.RelY = mouseMotionEventArgs.Y - m_PreviousMousePosition.y;
 
@@ -300,7 +300,7 @@ LRESULT CNativeWindow_WindowsSpecific::Windows_ProcessMessage(HWND hwnd, UINT me
 		int y = ((int)(short)HIWORD(lParam));
 
 		if (m_EventListener)
-			m_EventListener->OnWindowMouseButtonPressed(MouseButtonEventArgs(this, DecodeMouseButton(message), MouseButtonEventArgs::ButtonState::Pressed, lButton, mButton, rButton, control, shift, x, y));
+			m_EventListener->OnWindowMouseButtonPressed(MouseButtonEventArgs(DecodeMouseButton(message), MouseButtonEventArgs::ButtonState::Pressed, lButton, mButton, rButton, control, shift, x, y));
 	}
 	break;
 	case WM_LBUTTONUP:
@@ -317,7 +317,7 @@ LRESULT CNativeWindow_WindowsSpecific::Windows_ProcessMessage(HWND hwnd, UINT me
 		int y = ((int)(short)HIWORD(lParam));
 
 		if (m_EventListener)
-			m_EventListener->OnWindowMouseButtonReleased(MouseButtonEventArgs(this, DecodeMouseButton(message), MouseButtonEventArgs::ButtonState::Released, lButton, mButton, rButton, control, shift, x, y));
+			m_EventListener->OnWindowMouseButtonReleased(MouseButtonEventArgs(DecodeMouseButton(message), MouseButtonEventArgs::ButtonState::Released, lButton, mButton, rButton, control, shift, x, y));
 	}
 	break;
 	case WM_MOUSEWHEEL:
@@ -346,7 +346,7 @@ LRESULT CNativeWindow_WindowsSpecific::Windows_ProcessMessage(HWND hwnd, UINT me
 			_ASSERT_EXPR(false, "CNativeWindow_WindowsSpecific: Failed to '::ScreenToClient'.");
 
 		if (m_EventListener)
-			m_EventListener->OnWindowMouseWheel(MouseWheelEventArgs(this, zDelta, lButton, mButton, rButton, control, shift, (int)clientToScreenPoint.x, (int)clientToScreenPoint.y));
+			m_EventListener->OnWindowMouseWheel(MouseWheelEventArgs(zDelta, lButton, mButton, rButton, control, shift, (int)clientToScreenPoint.x, (int)clientToScreenPoint.y));
 	}
 	break;
 	case WM_MOUSELEAVE: // Сообщение WM_MOUSELEAVE посылается в окно тогда, когда курсор оставляет рабочую область окна, заданную при предшествующем вызове функции TrackMouseEvent.
@@ -355,19 +355,19 @@ LRESULT CNativeWindow_WindowsSpecific::Windows_ProcessMessage(HWND hwnd, UINT me
 		m_InClientRect = false;
 
 		if (m_EventListener)
-			m_EventListener->OnWindowMouseLeave(EventArgs(this));
+			m_EventListener->OnWindowMouseLeave(EventArgs());
 	}
 	break;
 	case WM_MOUSEACTIVATE: // Сообщение WM_MOUSEACTIVATE отправляется тогда, когда курсор находится в неактивном окне, а пользователь нажимает кнопку мыши.
 	{
 		if (m_EventListener)
-			m_EventListener->OnWindowMouseFocus(EventArgs(this));
+			m_EventListener->OnWindowMouseFocus(EventArgs());
 	}
 	break;
 	case WM_CAPTURECHANGED: // Sent to the window that is losing the mouse capture.
 	{
 		if (m_EventListener)
-			m_EventListener->OnWindowMouseBlur(EventArgs(this));
+			m_EventListener->OnWindowMouseBlur(EventArgs());
 	}
 	break;
 
@@ -386,14 +386,14 @@ LRESULT CNativeWindow_WindowsSpecific::Windows_ProcessMessage(HWND hwnd, UINT me
 		case WA_CLICKACTIVE: // Activated by a mouse click.
 		{
 			if (m_EventListener)
-				m_EventListener->OnWindowInputFocus(EventArgs(this));
+				m_EventListener->OnWindowInputFocus(EventArgs());
 		}
 		break;
 
 		case WA_INACTIVE:
 		{
 			if (m_EventListener)
-				m_EventListener->OnWindowInputBlur(EventArgs(this));
+				m_EventListener->OnWindowInputBlur(EventArgs());
 		}
 		break;
 		}
@@ -423,14 +423,14 @@ LRESULT CNativeWindow_WindowsSpecific::Windows_ProcessMessage(HWND hwnd, UINT me
 		case SIZE_MINIMIZED: // The window has been minimized.
 		{
 			if (m_EventListener)
-				m_EventListener->OnWindowMinimize(EventArgs(this));
+				m_EventListener->OnWindowMinimize(EventArgs());
 		}
 		break;
 
 		case SIZE_MAXIMIZED: // The window has been maximized.
 		{
 			if (m_EventListener)
-				m_EventListener->OnWindowRestore(EventArgs(this));
+				m_EventListener->OnWindowRestore(EventArgs());
 		}
 		break;
 
@@ -442,7 +442,7 @@ LRESULT CNativeWindow_WindowsSpecific::Windows_ProcessMessage(HWND hwnd, UINT me
 			if (width != 0 && height != 0)
 			{
 				if (m_EventListener)
-					m_EventListener->OnWindowResize(ResizeEventArgs(this, width, height));
+					m_EventListener->OnWindowResize(ResizeEventArgs(width, height));
 			}
 		}
 		break;

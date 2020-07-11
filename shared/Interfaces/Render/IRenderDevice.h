@@ -147,6 +147,7 @@ ZN_INTERFACE ZN_API IRenderObjectsFactory
 
 
 ZN_INTERFACE ZN_API IRenderDevice
+	: std::enable_shared_from_this<IRenderDevice>
 {
 	virtual ~IRenderDevice() {}
 

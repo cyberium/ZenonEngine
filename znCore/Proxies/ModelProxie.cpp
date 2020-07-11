@@ -75,7 +75,7 @@ void ModelProxie::Load(const std::shared_ptr<IByteBuffer>& ByteBuffer)
 		_ASSERT(false);
 }
 
-void ModelProxie::Save(const std::shared_ptr<IByteBuffer>& ByteBuffer)
+void ModelProxie::Save(const std::shared_ptr<IByteBuffer>& ByteBuffer) const
 {
 	if (const auto& loadableFromFile = std::dynamic_pointer_cast<IObjectLoadSave>(m_Model))
 	{
@@ -83,4 +83,14 @@ void ModelProxie::Save(const std::shared_ptr<IByteBuffer>& ByteBuffer)
 	}
 	else
 		_ASSERT(false);
+}
+
+void ModelProxie::Load(const std::shared_ptr<IXMLReader>& Reader)
+{
+	_ASSERT(false);
+}
+
+void ModelProxie::Save(const std::shared_ptr<IXMLWriter>& Writer) const
+{
+	_ASSERT(false);
 }

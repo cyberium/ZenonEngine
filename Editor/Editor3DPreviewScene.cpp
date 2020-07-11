@@ -75,17 +75,11 @@ void CEditor3DPreviewScene::Finalize()
 
 void CEditor3DPreviewScene::Load3D()
 {
-	auto sceneNodeLight = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, this);
-	sceneNodeLight->SetName("Light");
-	sceneNodeLight->SetTranslate(glm::vec3(1500.0f, 1500.0f, 1500.0f));
-	sceneNodeLight->SetRotation(glm::vec3(-0.9f, -0.9f, -0.9f));
-
-	sceneNodeLight->AddComponent(std::make_shared<CLightComponent3D>(*sceneNodeLight.get()));
-	sceneNodeLight->GetComponent<ILightComponent3D>()->SetType(ELightType::Spot);
-	sceneNodeLight->GetComponent<ILightComponent3D>()->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
-	sceneNodeLight->GetComponent<ILightComponent3D>()->SetRange(99000.0f);
-	sceneNodeLight->GetComponent<ILightComponent3D>()->SetIntensity(1.0f);
-	sceneNodeLight->GetComponent<ILightComponent3D>()->SetSpotlightAngle(75.0f);
+	GetDefaultLight()->SetType(ELightType::Spot);
+	GetDefaultLight()->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
+	GetDefaultLight()->SetRange(99000.0f);
+	GetDefaultLight()->SetIntensity(1.0f);
+	GetDefaultLight()->SetSpotlightAngle(75.0f);
 
 	m_LightsBuffer = GetRenderDevice().GetObjectsFactory().CreateStructuredBuffer(nullptr, 8, sizeof(SLight), EAccess::CPUWrite);
 
@@ -120,10 +114,10 @@ void CEditor3DPreviewScene::Load3D()
 
 	{
 		auto invokePass = GetBaseManager().GetManager<IRenderPassFactory>()->CreateRenderPass("InvokePass", GetRenderDevice(), GetRenderWindow()->GetRenderTarget(), &GetRenderWindow()->GetViewport(), shared_from_this());
-		std::dynamic_pointer_cast<IInvokeFunctionPass>(invokePass)->SetFunc([sceneNodeLight, this]() {
+		std::dynamic_pointer_cast<IInvokeFunctionPass>(invokePass)->SetFunc([this]() {
 
 			std::vector<SLight> lights;
-			auto lightStruct = std::dynamic_pointer_cast<ILight3D>(sceneNodeLight->GetComponent<ILightComponent3D>())->GetLightStruct();
+			auto lightStruct = std::dynamic_pointer_cast<ILight3D>(GetDefaultLight())->GetLightStruct();
 			lightStruct.PositionVS = GetCameraController()->GetCamera()->GetViewMatrix() * glm::vec4(lightStruct.PositionWS.xyz(), 1.0f);
 			lightStruct.DirectionVS = glm::normalize(GetCameraController()->GetCamera()->GetViewMatrix() * glm::vec4(lightStruct.DirectionWS.xyz(), 0.0f));
 			lights.push_back(lightStruct);

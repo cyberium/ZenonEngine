@@ -291,6 +291,9 @@
     <ClCompile Include="Tools\NodesSelector.cpp">
       <Filter>Editor3D\Tools</Filter>
     </ClCompile>
+    <ClCompile Include="Tools\NodesMover.cpp">
+      <Filter>Editor3D\Tools</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -456,6 +459,9 @@
       <Filter>Editor3D</Filter>
     </ClInclude>
     <ClInclude Include="Tools\NodesSelector.h">
+      <Filter>Editor3D\Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="Tools\NodesMover.h">
       <Filter>Editor3D\Tools</Filter>
     </ClInclude>
   </ItemGroup>

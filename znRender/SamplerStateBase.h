@@ -1,6 +1,7 @@
 #pragma once
 
-class ZN_API SamplerStateBase : public ISamplerState, public Object
+class ZN_API SamplerStateBase 
+	: public ISamplerState
 {	
 public:
 	SamplerStateBase();

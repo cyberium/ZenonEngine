@@ -4,23 +4,29 @@
 
 class ZN_API ModelBase 
 	: public IModel
-	, public IObjectLoadSave
+	, public Object
 {
 public:
 	ModelBase(IRenderDevice& RenderDevice);
 	virtual ~ModelBase();
 
-	virtual void                                    SetBounds(const BoundingBox& Bounds) override;
-	virtual BoundingBox                             GetBounds() const override;
-
-	virtual void									AddConnection(const std::shared_ptr<IMaterial>& Material, const std::shared_ptr<IGeometry>& Geometry, SGeometryDrawArgs GeometryDrawArgs = SGeometryDrawArgs()) override;
+	void                                            SetBounds(const BoundingBox& Bounds) override;
+	BoundingBox                                     GetBounds() const override;
+	void									        AddConnection(const std::shared_ptr<IMaterial>& Material, const std::shared_ptr<IGeometry>& Geometry, SGeometryDrawArgs GeometryDrawArgs = SGeometryDrawArgs()) override;
 	const std::vector<SConnection>&                 GetConnections() const override;
 
 	virtual void                                    Accept(IVisitor* visitor) override;
 
+	// IObject
+	Guid                                            GetGUID() const override final { return Object::GetGUID(); };
+	std::string                                     GetName() const override final { return Object::GetName(); };
+	void                                            SetName(const std::string& Name) override final { Object::SetName(Name); };
+	std::string                                     GetTypeName() const override final { return Object::GetTypeName(); };
+	std::string                                     GetClassNameW() const override final { return Object::GetClassNameW(); };
+
 	// IObjectLoadSave
-	void											Load(const std::shared_ptr<IByteBuffer>& ByteBuffer);
-	void											Save(const std::shared_ptr<IByteBuffer>& ByteBuffer);
+	void											Load(const std::shared_ptr<IByteBuffer>& ByteBuffer) override;
+	void											Save(const std::shared_ptr<IByteBuffer>& ByteBuffer) const override;
 
 protected:
 	BoundingBox                                     m_BoundingBox;

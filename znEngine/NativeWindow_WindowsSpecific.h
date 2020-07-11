@@ -3,7 +3,6 @@
 class ZN_API CNativeWindow_WindowsSpecific
 	: public INativeWindow
 	, public INativeWindow_WindowsSpecific
-	, public Object
 {
 public:
 	CNativeWindow_WindowsSpecific(HWND HWnd);

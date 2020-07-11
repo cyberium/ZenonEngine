@@ -10,7 +10,8 @@ ZN_INTERFACE ISceneNodesFactory;
 
 
 ZN_INTERFACE ZN_API IScene 
-	: public std::enable_shared_from_this<IScene>
+	: public IObject
+    , public std::enable_shared_from_this<IScene>
 {
 	virtual ~IScene() {}
 

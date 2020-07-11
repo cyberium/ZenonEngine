@@ -48,6 +48,28 @@ void CComponentBase::Accept(IVisitor* visitor)
 }
 
 
+//
+// IObjectLoadSave
+//
+void CComponentBase::Load(const std::shared_ptr<IByteBuffer>& Buffer)
+{
+}
+
+void CComponentBase::Save(const std::shared_ptr<IByteBuffer>& Buffer) const
+{
+
+}
+
+void CComponentBase::Load(const std::shared_ptr<IXMLReader>& Reader)
+{
+
+}
+
+void CComponentBase::Save(const std::shared_ptr<IXMLWriter>& Writer) const
+{
+
+}
+
 
 //
 // Protected

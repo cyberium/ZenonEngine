@@ -1,6 +1,7 @@
 #pragma once
 
-class ZN_API ShaderBase : public IShader, public Object
+class ZN_API ShaderBase 
+	: public IShader
 {
 public:
 	ShaderBase();

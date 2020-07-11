@@ -59,7 +59,7 @@ void CBufferBase::Load(const std::shared_ptr<IByteBuffer>& ByteBuffer)
 	InitializeBufferBase(data.data(), count, offset, stride);
 }
 
-void CBufferBase::Save(const std::shared_ptr<IByteBuffer>& ByteBuffer)
+void CBufferBase::Save(const std::shared_ptr<IByteBuffer>& ByteBuffer) const
 {
 	ByteBuffer->write(&m_BufferType);
 	ByteBuffer->write(&m_Count);
@@ -72,6 +72,16 @@ void CBufferBase::Save(const std::shared_ptr<IByteBuffer>& ByteBuffer)
 		ByteBuffer->write(&dataSize);
 		ByteBuffer->writeBytes(m_Data.data(), dataSize);
 	}
+}
+
+void CBufferBase::Load(const std::shared_ptr<IXMLReader>& Reader)
+{
+	_ASSERT(false);
+}
+
+void CBufferBase::Save(const std::shared_ptr<IXMLWriter>& Writer) const
+{
+	_ASSERT(false);
 }
 
 

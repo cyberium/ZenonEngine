@@ -1,10 +1,9 @@
 #pragma once
 
-class ZN_API Application :
-	public Object, 
-	public IApplication,
-	public IApplication_WindowsSpecific,
-	public IApplicationEvents
+class ZN_API Application 
+	: public IApplication
+	, public IApplication_WindowsSpecific
+	, public IApplicationEvents
 {
 public:
 	Application(IBaseManager& BaseManager);

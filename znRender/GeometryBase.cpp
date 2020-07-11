@@ -90,7 +90,7 @@ void GeometryBase::Load(const std::shared_ptr<IByteBuffer>& ByteBuffer)
 	}
 }
 
-void GeometryBase::Save(const std::shared_ptr<IByteBuffer>& ByteBuffer)
+void GeometryBase::Save(const std::shared_ptr<IByteBuffer>& ByteBuffer) const
 {
 	ByteBuffer->write(&m_PrimitiveTopology);
 

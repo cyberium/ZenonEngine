@@ -82,7 +82,7 @@ void Application::DoBeforeRun()
 	if (m_bIsInitialized)
 		return;
 
-	m_Initialize(EventArgs(this));
+	m_Initialize(EventArgs());
 
 	m_bIsInitialized = true;
 	m_bIsRunning = true;
@@ -97,7 +97,7 @@ int Application::DoRun()
 	{
 		if (msg.message == WM_QUIT)
 		{
-			m_Exit(EventArgs(this));
+			m_Exit(EventArgs());
 
 			// Destroy any windows that are still hanging around.
 			for (const auto& it : m_Windows)
@@ -119,7 +119,7 @@ int Application::DoRun()
 
 	try
 	{
-		UpdateEventArgs updateArgs(this, g_GameDeltaTime, g_ApplicationTime, g_FrameCounter, nullptr, nullptr);
+		UpdateEventArgs updateArgs(g_GameDeltaTime, g_ApplicationTime, g_FrameCounter, nullptr, nullptr);
 		m_Update(updateArgs);
 	}
 	catch (const CznRenderException& e)
@@ -132,8 +132,8 @@ int Application::DoRun()
 
 void Application::DoAfterRun()
 {
-	m_Terminate(EventArgs(this));
-	m_Terminated(EventArgs(this));
+	m_Terminate(EventArgs());
+	m_Terminated(EventArgs());
 }
 
 IBaseManager& Application::GetBaseManager() const

@@ -2,7 +2,6 @@
 
 class ZN_API RenderTechnique
 	: public IRenderTechnique
-	, public Object
 {
 public:
 	RenderTechnique();

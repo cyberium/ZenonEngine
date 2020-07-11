@@ -24,16 +24,23 @@ protected:
 	uint32 GetElementStride() const override { return CBufferBase::GetElementStride(); };
 	uint32 GetElementOffset() const override { return CBufferBase::GetElementOffset(); };
 
-	// IObjectLoadSave
-	void Load(const std::shared_ptr<IByteBuffer>& ByteBuffer) override;
-	void Save(const std::shared_ptr<IByteBuffer>& ByteBuffer) override;
-
 	// IBufferPrivate
 	void DoInitializeBuffer() override;
 
 	// IStructuredBufferPrivate
 	void InitializeStructuredBufferBase(EAccess EAccess) override final;
 	void DoInitializeStructuredBuffer() = 0;
+
+	// IObject
+	Guid GetGUID() const override { return Object::GetGUID(); };
+	std::string GetName() const override { return Object::GetName(); };
+	void SetName(const std::string& Name) override { Object::SetName(Name); };
+	std::string GetTypeName() const override { return Object::GetTypeName(); };
+	std::string GetClassNameW() const override { return Object::GetClassNameW(); };
+
+	// IObjectLoadSave
+	void Load(const std::shared_ptr<IByteBuffer>& ByteBuffer) override;
+	void Save(const std::shared_ptr<IByteBuffer>& ByteBuffer) const override;
 
 protected:
 	EAccess GetAccess() const;

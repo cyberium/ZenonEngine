@@ -54,6 +54,11 @@ void ModelBase::Accept(IVisitor* visitor)
 	}
 }
 
+
+
+//
+// IObjectLoadSave
+//
 void ModelBase::Load(const std::shared_ptr<IByteBuffer>& ByteBuffer)
 {
 	BoundingBox bounds;
@@ -88,7 +93,7 @@ void ModelBase::Load(const std::shared_ptr<IByteBuffer>& ByteBuffer)
 	}
 }
 
-void ModelBase::Save(const std::shared_ptr<IByteBuffer>& ByteBuffer)
+void ModelBase::Save(const std::shared_ptr<IByteBuffer>& ByteBuffer) const
 {
 	m_BoundingBox.Save(ByteBuffer);
 

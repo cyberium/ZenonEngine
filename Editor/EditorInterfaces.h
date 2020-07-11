@@ -1,5 +1,9 @@
 #pragma once
 
+//
+// Nodes selector
+//
+
 typedef std::vector<std::shared_ptr<ISceneNode3D>> SelectedNodes;
 
 ZN_INTERFACE IEditor_NodesSelector
@@ -14,8 +18,6 @@ ZN_INTERFACE IEditor_NodesSelector
 	virtual std::shared_ptr<ISceneNode3D> GetFirstSelectedNode() = 0;
 	virtual bool IsNodeSelected(std::shared_ptr<ISceneNode3D> Node) = 0;
 	virtual const SelectedNodes& GetSelectedNodes() = 0;
-
-	
 };
 
 ZN_INTERFACE IEditor_NodesSelectorInternal
@@ -33,6 +35,23 @@ ZN_INTERFACE IEditor_NodesSelectorEventListener
 
 	virtual void OnSelectNodes() = 0;
 };
+
+
+//
+// Nodes mover
+//
+
+ZN_INTERFACE IEditor_NodesMover
+{
+	virtual ~IEditor_NodesMover() {}
+
+};
+
+
+
+//
+// Frames intfs
+//
 
 ZN_INTERFACE IEditorSharedFrame
 {

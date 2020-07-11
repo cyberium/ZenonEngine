@@ -1,7 +1,10 @@
 #pragma once
 
+#include "../../ObjectsFactories/Object.h"
+
 class ZN_API SceneNodeUI 
 	: public ISceneNodeUI
+	, public Object
 {
 	friend IScene;
 public:
@@ -22,26 +25,30 @@ public:
 	virtual std::shared_ptr<IPropertiesGroup>       GetProperties() const final;
 	virtual IScene*                                 GetScene() const final;
 
-	// ISceneNodeUI
-	void											SetTranslate(const glm::vec2& _translate);
-	const glm::vec2&								GetTranslation() const;
-	glm::vec2										GetTranslationAbs() const;
-	void											SetRotation(const glm::vec3& _rotate);
-	const glm::vec3&								GetRotation() const;
-	void											SetScale(const glm::vec2& _scale);
-	const glm::vec2&								GetScale() const;
-	glm::vec2										GetScaleAbs() const;
-	virtual glm::mat4								GetLocalTransform() const;
-	virtual glm::mat4								GetWorldTransfom() const;
+	void											SetTranslate(const glm::vec2& _translate) override;
+	const glm::vec2&								GetTranslation() const override;
+	glm::vec2										GetTranslationAbs() const override;
+	void											SetRotation(const glm::vec3& _rotate) override;
+	const glm::vec3&								GetRotation() const override;
+	void											SetScale(const glm::vec2& _scale) override;
+	const glm::vec2&								GetScale() const override;
+	glm::vec2										GetScaleAbs() const override;
+	virtual glm::mat4								GetLocalTransform() const override;
+	virtual glm::mat4								GetWorldTransfom() const override;
 
-	// Size & bounds functional
     virtual glm::vec2                               GetSize() const override;
     virtual BoundingRect                            GetBoundsAbs() override;
     virtual bool                                    IsPointInBoundsAbs(const glm::vec2& Point) override;
 
-	// Allow a visitor to visit this node. 
-	virtual void                                    Accept(IVisitor* visitor);
-	virtual void                                    AcceptMesh(IVisitor* visitor);
+	virtual void                                    Accept(IVisitor* visitor) override;
+	virtual void                                    AcceptMesh(IVisitor* visitor) override;
+
+	// IObject
+	Guid                                            GetGUID() const override final { return Object::GetGUID(); };
+	std::string                                     GetName() const override final { return Object::GetName(); };
+	void                                            SetName(const std::string& Name) override final { Object::SetName(Name); };
+	std::string                                     GetTypeName() const override final { return Object::GetTypeName(); };
+	std::string                                     GetClassNameW() const override final { return Object::GetClassNameW(); };
 
 	// UI events
 	void                                            SetOnClickCallback(std::function<void(const ISceneNodeUI* Node, glm::vec2)> OnClickCallback);

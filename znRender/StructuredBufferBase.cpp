@@ -13,28 +13,12 @@ CStructuredBufferBase::~CStructuredBufferBase()
 {
 }
 
-void CStructuredBufferBase::Load(const std::shared_ptr<IByteBuffer>& ByteBuffer)
-{
-	CBufferBase::Load(ByteBuffer);
-
-	ByteBuffer->read(&m_Access);
-}
-
-void CStructuredBufferBase::Save(const std::shared_ptr<IByteBuffer>& ByteBuffer)
-{
-	CBufferBase::Save(ByteBuffer);
-
-	ByteBuffer->write(&m_Access);
-}
-
-
 //
 // IBufferPrivate
 //
 void CStructuredBufferBase::DoInitializeBuffer()
 {
 }
-
 
 //
 // IStructuredBufferPrivate
@@ -54,4 +38,21 @@ EAccess CStructuredBufferBase::GetAccess() const
 bool CStructuredBufferBase::IsDynamic() const
 {
 	return (uint32)m_Access != (uint32)EAccess::None && (uint32)m_Access != (uint32)EAccess::GPUWrite;
+}
+
+//
+// IObjectLoadSave
+//
+void CStructuredBufferBase::Load(const std::shared_ptr<IByteBuffer>& ByteBuffer)
+{
+	CBufferBase::Load(ByteBuffer);
+
+	ByteBuffer->read(&m_Access);
+}
+
+void CStructuredBufferBase::Save(const std::shared_ptr<IByteBuffer>& ByteBuffer) const
+{
+	CBufferBase::Save(ByteBuffer);
+
+	ByteBuffer->write(&m_Access);
 }

@@ -2,7 +2,6 @@
 
 class ZN_API BlendStateBase 
 	: public IBlendState
-	, public Object
 {
 public:
 	BlendStateBase();

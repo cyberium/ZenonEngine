@@ -2,8 +2,6 @@
 
 class ZN_API CRenderDeviceBase 
 	: public IRenderDevice
-	, public Object
-	, public std::enable_shared_from_this<IRenderDevice>
 {
 public:
 	CRenderDeviceBase();

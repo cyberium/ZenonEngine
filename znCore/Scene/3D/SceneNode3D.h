@@ -1,20 +1,22 @@
 #pragma once
 
+#include "../../ObjectsFactories/Object.h"
+
 class ZN_API SceneNode3D
 	: public ISceneNode3D
 	, public ISceneNode3DInternal
+	, public Object
 {
     friend IScene;
 public:
 	SceneNode3D();
 	virtual ~SceneNode3D();
 
-	//
 	// ISceneNode3D
-	//
 	virtual void                                    Initialize() override;
 	virtual void                                    Finalize() override;
 	virtual void                                    Copy(std::shared_ptr<ISceneNode3D> Destination) const override;
+
 	// Childs functional
 	virtual void                                    AddChild(std::shared_ptr<ISceneNode3D> childNode) override final;
 	virtual void                                    RemoveChild(std::shared_ptr<ISceneNode3D> childNode) override final;
@@ -59,29 +61,23 @@ public:
 	const ComponentsMap&                            GetComponents() const override;
 	void                                            RaiseComponentMessage(const ISceneNodeComponent* Component, ComponentMessageType Message) const override;
 	virtual void                                    RegisterComponents() override;
-    
-	template<typename T> inline bool                IsComponentExists() const
-	{
-		return ISceneNode3D::IsComponentExists<T>();
-	}
-	template<typename T> inline std::shared_ptr<T>  GetComponent() const
-	{
-		return ISceneNode3D::GetComponent<T>();
-	}
-	template<typename T> inline std::shared_ptr<T>  AddComponent(const std::shared_ptr<T>& Component)
-	{
-		return ISceneNode3D::AddComponent<T>(Component);
-	}
-
 	const std::shared_ptr<IColliderComponent3D>&    GetColliderComponent() const;
 	const std::shared_ptr<IModelsComponent3D>&      GetModelsComponent() const;
 
-
-	//
 	// Others
-	//
 	virtual void                                    Update(const UpdateEventArgs& e) override;
 	virtual void                                    Accept(IVisitor* visitor) override;
+
+	// IObject
+	Guid                                            GetGUID() const override final { return Object::GetGUID(); };
+	std::string                                     GetName() const override final { return Object::GetName(); };
+	void                                            SetName(const std::string& Name) override final { Object::SetName(Name); };
+	std::string                                     GetTypeName() const override final { return Object::GetTypeName(); };
+	std::string                                     GetClassNameW() const override final { return Object::GetClassNameW(); };
+
+	// IObjectLoadSave
+	virtual void									Load(const std::shared_ptr<IXMLReader>& Reader) override;
+	virtual void									Save(const std::shared_ptr<IXMLWriter>& Writer) const override;
 
 private:
 	// ISceneNode3DInternal

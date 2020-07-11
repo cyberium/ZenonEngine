@@ -73,12 +73,7 @@ private:
 class ZN_API EventArgs
 {
 public:
-	EventArgs(const Object* caller)
-		: Caller(caller)
-	{}
-
-	// The object that invoked the event
-	const Object* Caller;
+	EventArgs()	{}
 };
 typedef Delegate<EventArgs> Event;
 
@@ -86,9 +81,8 @@ typedef Delegate<EventArgs> Event;
 class ZN_API WindowCloseEventArgs : public EventArgs
 {
 public:
-	WindowCloseEventArgs(const Object* caller)
-		: EventArgs(caller)
-		, ConfirmClose(true)
+	WindowCloseEventArgs()
+		: ConfirmClose(true)
 	{}
 
 	// The user can cancel a window closing operating by registering for the 
@@ -110,9 +104,8 @@ public:
 		Pressed = 1
 	};
 
-	KeyEventArgs(const Object* caller, KeyCode key, uint32 c, KeyState state, bool control, bool shift, bool alt)
-		: EventArgs(caller)
-		, Key(key)
+	KeyEventArgs(KeyCode key, uint32 c, KeyState state, bool control, bool shift, bool alt)
+		: Key(key)
 		, Char(c)
 		, State(state)
 		, Control(control)
@@ -133,9 +126,8 @@ typedef Delegate<KeyEventArgs> KeyboardEvent;
 class ZN_API MouseMotionEventArgs : public EventArgs
 {
 public:
-	MouseMotionEventArgs(const Object* caller, bool leftButton, bool middleButton, bool rightButton, bool control, bool shift, int x, int y)
-		: EventArgs(caller)
-		, LeftButton(leftButton)
+	MouseMotionEventArgs(bool leftButton, bool middleButton, bool rightButton, bool control, bool shift, int x, int y)
+		: LeftButton(leftButton)
 		, MiddleButton(middleButton)
 		, RightButton(rightButton)
 		, Control(control)
@@ -176,9 +168,8 @@ public:
 		Pressed = 1
 	};
 
-	MouseButtonEventArgs(const Object* caller, MouseButton buttonID, ButtonState state, bool leftButton, bool middleButton, bool rightButton, bool control, bool shift, int x, int y)
-		: EventArgs(caller)
-		, Button(buttonID)
+	MouseButtonEventArgs(MouseButton buttonID, ButtonState state, bool leftButton, bool middleButton, bool rightButton, bool control, bool shift, int x, int y)
+		: Button(buttonID)
 		, State(state)
 		//, LeftButton(leftButton)
 		//, MiddleButton(middleButton)
@@ -208,9 +199,8 @@ typedef Delegate<MouseButtonEventArgs> MouseButtonEvent;
 class ZN_API MouseWheelEventArgs : public EventArgs
 {
 public:
-	MouseWheelEventArgs(const Object* caller, float wheelDelta, bool leftButton, bool middleButton, bool rightButton, bool control, bool shift, int x, int y)
-		: EventArgs(caller)
-		, WheelDelta(wheelDelta)
+	MouseWheelEventArgs(float wheelDelta, bool leftButton, bool middleButton, bool rightButton, bool control, bool shift, int x, int y)
+		: WheelDelta(wheelDelta)
 		, LeftButton(leftButton)
 		, MiddleButton(middleButton)
 		, RightButton(rightButton)
@@ -239,9 +229,8 @@ typedef Delegate<MouseWheelEventArgs> MouseWheelEvent;
 class ZN_API ResizeEventArgs : public EventArgs
 {
 public:
-	ResizeEventArgs(const Object* caller, int width, int height)
-		: EventArgs(caller)
-		, Width(width)
+	ResizeEventArgs(int width, int height)
+		: Width(width)
 		, Height(height)
 	{}
 
@@ -257,15 +246,13 @@ class ZN_API UpdateEventArgs
 public:
 	UpdateEventArgs
 	(
-		const Object* caller,
 		float DeltaTime,
 		float TotalTime,
 		uint64_t FrameCounter,
 		const ICameraComponent3D* Camera,
 		const ICameraComponent3D* CameraForCulling
 	)
-		: EventArgs(caller)
-		, DeltaTime(DeltaTime)
+		: DeltaTime(DeltaTime)
 		, TotalTime(TotalTime)
 		, FrameCounter(FrameCounter)
 		, Camera(Camera)
@@ -305,9 +292,8 @@ typedef Delegate<RenderEventArgs> RenderEvent;
 class ZN_API UserEventArgs : public EventArgs
 {
 public:
-	UserEventArgs(const Object* caller, int code, void* data1, void* data2)
-		: EventArgs(caller)
-		, Code(code)
+	UserEventArgs(int code, void* data1, void* data2)
+		: Code(code)
 		, Data1(data1)
 		, Data2(data2)
 	{}
@@ -325,9 +311,8 @@ ZN_INTERFACE IScene;
 class ZN_API SceneEventArgs : public EventArgs
 {
 public:
-	SceneEventArgs(const Object* caller, const IScene* Scene)
-		: EventArgs(caller)
-		, Scene(Scene)
+	SceneEventArgs(const IScene* Scene)
+		: Scene(Scene)
 	{}
 
 	const IScene* Scene;
@@ -348,8 +333,8 @@ enum class ZN_API ESceneChangeType
 class ZN_API SceneChangeEventArgs : public SceneEventArgs
 {
 public:
-	SceneChangeEventArgs(const Object* caller, const IScene* Scene, ESceneChangeType SceneChangeType, const std::shared_ptr<ISceneNode3D>& OwnerNode, const std::shared_ptr<ISceneNode3D>& ChildNode)
-		: SceneEventArgs(caller, Scene)
+	SceneChangeEventArgs(const IScene* Scene, ESceneChangeType SceneChangeType, const std::shared_ptr<ISceneNode3D>& OwnerNode, const std::shared_ptr<ISceneNode3D>& ChildNode)
+		: SceneEventArgs(Scene)
 		, SceneChangeType(SceneChangeType)
 		, OwnerNode(OwnerNode)
 		, ChildNode(ChildNode)

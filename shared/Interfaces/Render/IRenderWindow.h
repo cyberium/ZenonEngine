@@ -9,6 +9,7 @@ class Viewport;
 
 ZN_INTERFACE ZN_API IRenderWindow
 	: public INativeWindow
+	, public std::enable_shared_from_this<IRenderWindow>
 {
 	virtual ~IRenderWindow() {}
 

@@ -2,7 +2,6 @@
 
 class ZN_API GeometryBase 
 	: public IGeometry
-	, public IObjectLoadSave
 	, public Object
 {
 public:
@@ -22,9 +21,16 @@ public:
 
 	virtual void         Accept(IVisitor* visitor, const IMaterial* Material, SGeometryDrawArgs GeometryDrawArgs = SGeometryDrawArgs()) override;
 
+	// IObject
+	Guid                 GetGUID() const override final { return Object::GetGUID(); };
+	std::string          GetName() const override final { return Object::GetName(); };
+	void                 SetName(const std::string& Name) override final { Object::SetName(Name); };
+	std::string          GetTypeName() const override final { return Object::GetTypeName(); };
+	std::string          GetClassNameW() const override final { return Object::GetClassNameW(); };
+
 	// IObjectLoadSave
-	void                 Load(const std::shared_ptr<IByteBuffer>& ByteBuffer);
-	void                 Save(const std::shared_ptr<IByteBuffer>& ByteBuffer);
+	void                 Load(const std::shared_ptr<IByteBuffer>& ByteBuffer) override;
+	void                 Save(const std::shared_ptr<IByteBuffer>& ByteBuffer) const override;
 
 protected:
 	SGeometryDrawArgs    FixGeometryDrawArgs(const SGeometryDrawArgs& GeometryDrawArgs) const;

@@ -88,6 +88,24 @@ void ConstantBufferDX11::Copy(const IBuffer* other) const
 
 
 //
+// IBufferPrivate
+//
+void ConstantBufferDX11::DoInitializeBuffer()
+{
+	D3D11_BUFFER_DESC bufferDesc = { 0 };
+	bufferDesc.Usage = D3D11_USAGE_DYNAMIC;
+	bufferDesc.ByteWidth = GetElementCount();
+	bufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+	bufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+	bufferDesc.MiscFlags = 0;
+	bufferDesc.StructureByteStride = 0;
+
+	CHECK_HR_MSG(m_RenderDeviceDX11.GetDeviceD3D11()->CreateBuffer(&bufferDesc, nullptr, &m_pBuffer), L"Failed to create constant buffer");
+}
+
+
+
+//
 // IConstantBuffer
 //
 void ConstantBufferDX11::Copy(const IConstantBuffer* other) const
@@ -113,22 +131,6 @@ void ConstantBufferDX11::Set(const void* data, size_t size)
 	m_bIsDirty = true;
 }
 
-
-//
-// IBufferPrivate
-//
-void ConstantBufferDX11::DoInitializeBuffer()
-{
-	D3D11_BUFFER_DESC bufferDesc = { 0 };
-	bufferDesc.Usage = D3D11_USAGE_DYNAMIC;
-	bufferDesc.ByteWidth = GetElementCount();
-	bufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
-	bufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
-	bufferDesc.MiscFlags = 0;
-	bufferDesc.StructureByteStride = 0;
-
-	CHECK_HR_MSG(m_RenderDeviceDX11.GetDeviceD3D11()->CreateBuffer(&bufferDesc, nullptr, &m_pBuffer), L"Failed to create constant buffer");
-}
 
 
 //

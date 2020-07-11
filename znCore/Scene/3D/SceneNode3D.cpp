@@ -42,8 +42,8 @@ void SceneNode3D::Initialize()
 	// Name properties
 	{
 		std::shared_ptr<CPropertyWrapped<std::string>> nameProperty = std::make_shared<CPropertyWrapped<std::string>>("Name", "Scene node name.");
-		nameProperty->SetValueSetter(std::bind(&SceneNode3D::SetName, this, std::placeholders::_1));
-		nameProperty->SetValueGetter(std::bind(&SceneNode3D::GetName, this));
+		nameProperty->SetValueSetter(std::bind(&Object::SetName, this, std::placeholders::_1));
+		nameProperty->SetValueGetter(std::bind(&Object::GetName, this));
 		GetProperties()->AddProperty(nameProperty);
 	}
 
@@ -333,8 +333,8 @@ void SceneNode3D::RaiseComponentMessage(const ISceneNodeComponent* Component, Co
 }
 void SceneNode3D::RegisterComponents()
 {
-	m_Components_Models = AddComponent(std::make_shared<CModelsComponent3D>(*this));
-	m_Components_Collider = AddComponent(std::make_shared<CColliderComponent3D>(*this));
+	m_Components_Models = ISceneNode3D::AddComponent(std::make_shared<CModelsComponent3D>(*this));
+	m_Components_Collider = ISceneNode3D::AddComponent(std::make_shared<CColliderComponent3D>(*this));
 }
 
 const std::shared_ptr<IColliderComponent3D>& SceneNode3D::GetColliderComponent() const
@@ -384,6 +384,19 @@ void SceneNode3D::Accept(IVisitor* visitor)
 	}
 }
 
+
+//
+// IObjectLoadSave
+//
+void SceneNode3D::Load(const std::shared_ptr<IXMLReader>& Reader)
+{
+
+}
+
+void SceneNode3D::Save(const std::shared_ptr<IXMLWriter>& Writer) const
+{
+
+}
 
 
 //

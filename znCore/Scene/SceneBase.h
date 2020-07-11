@@ -1,5 +1,7 @@
 #pragma once
 
+#include "../ObjectsFactories/Object.h"
+
 #include "3D/SceneNode3D.h"
 #include "UI/SceneNodeUI.h"
 #include "../Passes/RenderTechnique.h"
@@ -19,8 +21,8 @@ public:
 	void                                            ConnectEvents(const std::shared_ptr<IRenderWindowEvents>& WindowEvents) override;
 	void                                            DisconnectEvents(const std::shared_ptr<IRenderWindowEvents>& WindowEvents) override;
 
-	virtual void                                    Initialize();
-	virtual void                                    Finalize();
+	virtual void                                    Initialize() override;
+	virtual void                                    Finalize() override;
 
 	std::shared_ptr<ISceneNode3D>					GetRootNode3D() const override;
 	std::shared_ptr<ISceneNodeUI>					GetRootNodeUI() const override;
@@ -75,10 +77,21 @@ public:
 	// IBaseManagerHolder
 	IBaseManager&                                   GetBaseManager() const override final;
 
+	// IObject
+	Guid                                            GetGUID() const override final { return Object::GetGUID(); };
+	std::string                                     GetName() const override final { return Object::GetName(); };
+	void                                            SetName(const std::string& Name) override final { Object::SetName(Name); };
+	std::string                                     GetTypeName() const override final { return Object::GetTypeName(); };
+	std::string                                     GetClassNameW() const override final { return Object::GetClassNameW(); };
+
+	// IObjectSaveLoad
+	virtual void									Load(const std::shared_ptr<IXMLReader>& Reader) override;
+	virtual void									Save(const std::shared_ptr<IXMLWriter>& Writer) const override;
 
 protected:
 	IRenderDevice&                                  GetRenderDevice() const;
 	std::shared_ptr<IRenderWindow>                  GetRenderWindow() const;
+	std::shared_ptr<ILightComponent3D>              GetDefaultLight() const;
 
 	std::map<float, std::shared_ptr<ISceneNode3D>>  FindIntersection(const Ray& Ray) const;
 	std::vector<std::shared_ptr<ISceneNode3D>>      FindIntersections(const Frustum& Frustum) const;
@@ -99,6 +112,8 @@ protected:
 
 	std::shared_ptr<ISceneNode3D>                   m_RootNode3D;
 	std::shared_ptr<ISceneNodeUI>                   m_RootNodeUI;
+
+	std::shared_ptr<ISceneNode3D>                   m_LightNode;
 
 	std::shared_ptr<IQuery>                         m_FrameQuery;
 	std::shared_ptr<IQuery>                         m_TestQuery;

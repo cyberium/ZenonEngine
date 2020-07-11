@@ -13,7 +13,8 @@ typedef uint32 ComponentMessageType;
 const ObjectClass cSceneNodeComponent = 527338441;
 
 ZN_INTERFACE ZN_API ISceneNodeComponent 
-	: public std::enable_shared_from_this<ISceneNodeComponent>
+	: public IObject
+    , public std::enable_shared_from_this<ISceneNodeComponent>
 {
 	static ObjectType GetType() { return otSceneNodeComponent; }
 	static ObjectClass GetClass() { return cSceneNodeComponent; }
@@ -155,7 +156,6 @@ ZN_INTERFACE __declspec(UUID_PortalsComponent) ZN_API IPortalsComponent3D
 #define UUID_ModelsComponent uuid("403E886D-7BD7-438B-868D-AC4380830716")
 ZN_INTERFACE __declspec(UUID_ModelsComponent) ZN_API IModelsComponent3D
 {
-public:
 	virtual ~IModelsComponent3D() {}
 
 	virtual void AddModel(const std::shared_ptr<IModel>& Model) = 0;

@@ -5,8 +5,6 @@ class ZN_API RenderWindowBase
 	, public IRenderWindowEvents
 	, public INativeWindowEventListener
 	, public IApplicationEventsConnection
-	, public Object
-	, public std::enable_shared_from_this<IRenderWindow>
 {
 public:
 	RenderWindowBase(INativeWindow& WindowObject, bool vSync = false);

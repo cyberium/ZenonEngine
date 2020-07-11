@@ -2,7 +2,6 @@
 
 class ZN_API PipelineStateBase
 	: public IPipelineState
-	, public Object
 {
 public:
 	PipelineStateBase();

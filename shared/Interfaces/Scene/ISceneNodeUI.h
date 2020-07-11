@@ -15,7 +15,7 @@ const ObjectClass cSceneNodeUI_Text = 525832105;
 const ObjectClass cSceneNodeUI_Color = 525832106;
 
 ZN_INTERFACE ZN_API ISceneNodeUI
-	: public Object
+	: public IObject
     , public std::enable_shared_from_this<ISceneNodeUI>
 {
 	typedef std::vector<std::shared_ptr<ISceneNodeUI>>                NodeUIList;
@@ -69,4 +69,5 @@ ZN_INTERFACE ZN_API ISceneNodeUI
 
 	// Allow a visitor to visit this node.
 	virtual void Accept(IVisitor* visitor) = 0;
+	virtual void AcceptMesh(IVisitor* visitor) = 0;
 };

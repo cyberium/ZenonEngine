@@ -2,7 +2,6 @@
 
 class ZN_API RasterizerStateBase 
 	: public IRasterizerState
-	, public Object
 {
 public:
 	RasterizerStateBase();

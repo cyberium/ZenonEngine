@@ -71,10 +71,10 @@ void CFBXLight::Load(fbxsdk::FbxLight * NativeLight)
 	Display4DVector("Scale: ", lScale, "");
 	m_OwnerFBXNode.lock()->SetScale(glm::vec3(lScale[0], lScale[1], lScale[2]));*/
 
-	m_OwnerFBXNode.lock()->GetComponent<ILightComponent3D>()->SetType(lightTypes[NativeLight->LightType.Get()]);
-	m_OwnerFBXNode.lock()->GetComponent<ILightComponent3D>()->SetColor(glm::vec3(NativeLight->Color.Get()[0], NativeLight->Color.Get()[1], NativeLight->Color.Get()[2]));
-	m_OwnerFBXNode.lock()->GetComponent<ILightComponent3D>()->SetSpotlightAngle(NativeLight->OuterAngle.Get() / 2.0f);
-	m_OwnerFBXNode.lock()->GetComponent<ILightComponent3D>()->SetRange(NativeLight->Intensity.Get() / 40.0f);
+	m_OwnerFBXNode.lock()->ISceneNode3D::GetComponent<ILightComponent3D>()->SetType(lightTypes[NativeLight->LightType.Get()]);
+	m_OwnerFBXNode.lock()->ISceneNode3D::GetComponent<ILightComponent3D>()->SetColor(glm::vec3(NativeLight->Color.Get()[0], NativeLight->Color.Get()[1], NativeLight->Color.Get()[2]));
+	m_OwnerFBXNode.lock()->ISceneNode3D::GetComponent<ILightComponent3D>()->SetSpotlightAngle(NativeLight->OuterAngle.Get() / 2.0f);
+	m_OwnerFBXNode.lock()->ISceneNode3D::GetComponent<ILightComponent3D>()->SetRange(NativeLight->Intensity.Get() / 40.0f);
 }
 
 #endif

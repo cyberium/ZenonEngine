@@ -396,6 +396,9 @@
     <ClCompile Include="ObjectsFactories\SceneNode3DFactory.cpp">
       <Filter>Object system\Typed creators</Filter>
     </ClCompile>
+    <ClCompile Include="ObjectsFactories\Object.cpp">
+      <Filter>Object system</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Log.h">
@@ -901,6 +904,9 @@
     </ClInclude>
     <ClInclude Include="..\shared\Interfaces\Types\Guid.h">
       <Filter>__Interfaces\Types</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjectsFactories\Object.h">
+      <Filter>Object system</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

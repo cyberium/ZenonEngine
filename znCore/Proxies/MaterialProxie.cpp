@@ -8,7 +8,7 @@ MaterialProxie::MaterialProxie(std::shared_ptr<IMaterial> _materal)
 {
 	_ASSERT(m_Material != nullptr);
 
-	SetClassName("MaterialProxie");
+	//SetClassName("MaterialProxie");
 }
 
 MaterialProxie::~MaterialProxie()
@@ -65,7 +65,7 @@ void MaterialProxie::Load(const std::shared_ptr<IByteBuffer>& ByteBuffer)
 		_ASSERT(false);
 }
 
-void MaterialProxie::Save(const std::shared_ptr<IByteBuffer>& ByteBuffer)
+void MaterialProxie::Save(const std::shared_ptr<IByteBuffer>& ByteBuffer) const
 {
 	if (const auto& loadableFromFile = std::dynamic_pointer_cast<IObjectLoadSave>(m_Material))
 	{
@@ -73,6 +73,16 @@ void MaterialProxie::Save(const std::shared_ptr<IByteBuffer>& ByteBuffer)
 	}
 	else
 		_ASSERT(false);
+}
+
+void MaterialProxie::Load(const std::shared_ptr<IXMLReader>& Reader)
+{
+	_ASSERT(false);
+}
+
+void MaterialProxie::Save(const std::shared_ptr<IXMLWriter>& Writer) const
+{
+	_ASSERT(false);
 }
 
 

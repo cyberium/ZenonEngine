@@ -8,8 +8,8 @@ ZN_INTERFACE IBufferPrivate
 
 class ZN_API CBufferBase
 	: public IBuffer
-	, public IObjectLoadSave
 	, public IBufferPrivate
+	, public Object
 {
 public:
 	CBufferBase(IRenderDevice& RenderDevice, IBuffer::BufferType ByfferType);
@@ -25,13 +25,22 @@ protected:
 	uint32 GetElementStride() const override;
 	uint32 GetElementOffset() const override;
 
-	// IObjectLoadSave
-	virtual void Load(const std::shared_ptr<IByteBuffer>& ByteBuffer) override;
-	virtual void Save(const std::shared_ptr<IByteBuffer>& ByteBuffer) override;
-
 	// IBufferPrivate
 	void InitializeBufferBase(const void* data, uint32 count, uint32 offset, uint32 stride) override final;
 	virtual void DoInitializeBuffer() = 0;
+
+	// IObject
+	Guid GetGUID() const override { return Object::GetGUID(); };
+	std::string GetName() const override { return Object::GetName(); };
+	void SetName(const std::string& Name) override { Object::SetName(Name); };
+	std::string GetTypeName() const override { return Object::GetTypeName(); };
+	std::string GetClassNameW() const override { return Object::GetClassNameW(); };
+
+	// IObjectLoadSave
+	void Load(const std::shared_ptr<IByteBuffer>& ByteBuffer) override;
+	void Save(const std::shared_ptr<IByteBuffer>& ByteBuffer) const override;
+	void Load(const std::shared_ptr<IXMLReader>& Reader) override;
+	void Save(const std::shared_ptr<IXMLWriter>& Writer) const override;
 
 protected:
  	const std::vector<uint8>& GetData() const;

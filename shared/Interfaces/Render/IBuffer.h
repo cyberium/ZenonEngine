@@ -5,7 +5,7 @@ ZN_INTERFACE IShaderParameterSource;
 // FORWARD END
 
 ZN_INTERFACE ZN_API IBuffer
-	: public Object
+	: public IObject
 {
 	enum class ZN_API BufferType : uint32
 	{

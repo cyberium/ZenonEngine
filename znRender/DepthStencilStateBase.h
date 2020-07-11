@@ -2,7 +2,6 @@
 
 class ZN_API DepthStencilStateBase 
 	: public IDepthStencilState
-	, public Object
 {
 public:
 	DepthStencilStateBase();

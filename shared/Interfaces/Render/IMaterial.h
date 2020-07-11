@@ -7,7 +7,7 @@ ZN_INTERFACE ISamplerState;
 // FORWARD END
 
 ZN_INTERFACE ZN_API IMaterial 
-	: public Object
+	: public IObject
 {
 	virtual ~IMaterial() {}
 

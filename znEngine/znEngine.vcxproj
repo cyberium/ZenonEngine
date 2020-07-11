@@ -669,7 +669,7 @@
     </PostBuildEvent>
     <Link>
       <AdditionalLibraryDirectories>$(SolutionDir)\bin_$(PlatformShortName)\$(Configuration)\;$(ZN_FBX_SDK_PATH)lib\vs2015\$(PlatformShortName)\$(Configuration)\;C:\Program Files\Autodesk\FBX\FBX SDK\2020.0.1\lib\vs2017\$(PlatformShortName)\$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>zlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>zlib.lib;znCore.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <GenerateDebugInformation>DebugFull</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
@@ -694,7 +694,7 @@
     </PostBuildEvent>
     <Link>
       <AdditionalLibraryDirectories>$(SolutionDir)\bin_$(PlatformShortName)\$(Configuration)\;$(ZN_FBX_SDK_PATH)lib\vs2015\$(PlatformShortName)\$(Configuration)\;C:\Program Files\Autodesk\FBX\FBX SDK\2020.0.1\lib\vs2017\$(PlatformShortName)\$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>zlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>zlib.lib;znCore.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -78,6 +78,10 @@ const SelectedNodes& CSceneNodesSelector::GetSelectedNodes()
 	return m_SelectedNodes;
 }
 
+
+//
+// IEditor_NodesSelectorInternal
+//
 void CSceneNodesSelector::SetOtherSelector(IEditor_NodesSelector * OtherSelector)
 {
 	m_OtherSelector = OtherSelector;
