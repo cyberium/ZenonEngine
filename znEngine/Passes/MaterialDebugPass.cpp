@@ -24,7 +24,7 @@ std::shared_ptr<IRenderPassPipelined> CMaterial_Debug_Pass::CreatePipeline(std::
 	std::shared_ptr<IShader> geometryShader;
 	std::shared_ptr<IShader> pixelShader;
 
-	if (GetRenderDevice().GetDeviceType() == RenderDeviceType::RenderDeviceType_DirectX)
+	if (GetRenderDevice().GetDeviceType() == RenderDeviceType::RenderDeviceType_DirectX11)
 	{
 		vertexShader = GetRenderDevice().GetObjectsFactory().CreateShader(EShaderType::VertexShader, "IDB_SHADER_3D_DEBUG", "VS_main");
 		//geometryShader = GetRenderDevice().GetObjectsFactory().CreateShader(EShaderType::GeometryShader, "IDB_SHADER_3D_DEBUG", "GS_main");

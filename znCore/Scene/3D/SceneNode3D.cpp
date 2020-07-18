@@ -395,6 +395,14 @@ void SceneNode3D::Load(const std::shared_ptr<IXMLReader>& Reader)
 
 void SceneNode3D::Save(const std::shared_ptr<IXMLWriter>& Writer) const
 {
+	Object::Save(Writer);
+
+	Writer->AddVec3(m_Translate);
+	Writer->AddVec3(m_Rotate);
+	Writer->AddVec3(m_Scale);
+	if (m_IsRotateQuat)
+		throw CException("!!!");
+
 
 }
 

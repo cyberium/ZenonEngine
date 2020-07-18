@@ -399,6 +399,15 @@
     <ClCompile Include="ObjectsFactories\Object.cpp">
       <Filter>Object system</Filter>
     </ClCompile>
+    <ClCompile Include="XML\XMLReader.cpp">
+      <Filter>XML</Filter>
+    </ClCompile>
+    <ClCompile Include="XML\XMLWriter.cpp">
+      <Filter>XML</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjectsFactories\SceneNodeUIFactory.cpp">
+      <Filter>Object system\Typed creators</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Log.h">
@@ -907,6 +916,15 @@
     </ClInclude>
     <ClInclude Include="ObjectsFactories\Object.h">
       <Filter>Object system</Filter>
+    </ClInclude>
+    <ClInclude Include="XML\XMLReader.h">
+      <Filter>XML</Filter>
+    </ClInclude>
+    <ClInclude Include="XML\XMLWriter.h">
+      <Filter>XML</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjectsFactories\SceneNodeUIFactory.h">
+      <Filter>Object system\Typed creators</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

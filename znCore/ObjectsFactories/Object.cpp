@@ -82,12 +82,31 @@ void Object::Save(const std::shared_ptr<IByteBuffer>& Buffer) const
 
 void Object::Load(const std::shared_ptr<IXMLReader>& Reader)
 {
-	_ASSERT(FALSE);
+	ObjectType type = Reader->GetUInt16("Type");
+	ObjectClass class_ = Reader->GetUInt32("Class");
+	ObjectCounterType counter = Reader->GetUInt32("Counter");
+	m_Guid = Guid(type, class_, counter);
+
+	m_Name = Reader->GetStr("Name");
+	m_TypeName = Reader->GetStr("TypeName");
+	m_ClassName = Reader->GetStr("ClassName");
 }
 
 void Object::Save(const std::shared_ptr<IXMLWriter>& Writer) const
 {
-	_ASSERT(FALSE);
+	Writer->AddUInt16(m_Guid.GetObjectType(), "Type");
+	Writer->AddUInt32(m_Guid.GetObjectClass(), "Class");
+	Writer->AddUInt32(m_Guid.GetCounter(), "Counter");
+
+	// TODO: save only non defaults names
+	if (!m_Name.empty())
+		Writer->AddStr(m_Name, "Name");
+
+	if (!m_TypeName.empty())
+		Writer->AddStr(m_TypeName, "TypeName");
+
+	if (!m_ClassName.empty())
+		Writer->AddStr(m_ClassName, "ClassName");
 }
 
 
@@ -122,13 +141,9 @@ void Object::SetGUID(const Guid& NewGuid)
 
 Object::Object()
 	: m_Guid(0ull)
-{
-	m_Name = "";
-}
+{}
 Object::Object(ObjectType Factory, ObjectClass Class)
 	: m_Guid(0ull)
-{
-	m_Name = "";
-}
+{}
 Object::~Object()
 {}

@@ -22,7 +22,10 @@ ZN_INTERFACE ZN_API ISceneNode3DFactory
 	virtual ~ISceneNode3DFactory() {}
 
 	virtual std::shared_ptr<ISceneNode3D> CreateSceneNode3D(ObjectClass ObjectClassKey, IScene* Scene, const std::shared_ptr<ISceneNode3D>& Parent = nullptr) = 0;
-	virtual std::shared_ptr<ISceneNode3D> LoadSceneNode3D(std::shared_ptr<IByteBuffer> Bytes, IScene* Scene, const std::shared_ptr<ISceneNode3D>& Parent = nullptr) = 0;
+	virtual std::shared_ptr<IObject> LoadSceneNode3DXML(const std::shared_ptr<IXMLReader>& Reader, IScene* Scene, const std::shared_ptr<ISceneNode3D>& Parent = nullptr) = 0;
+	virtual std::shared_ptr<IXMLWriter> SaveSceneNode3DXML(std::shared_ptr<IObject> Object) = 0;
+	virtual std::shared_ptr<IObject> LoadSceneNode3D(const std::shared_ptr<IByteBuffer>& Bytes, IScene* Scene, const std::shared_ptr<ISceneNode3D>& Parent = nullptr) = 0;
+	virtual std::shared_ptr<IByteBuffer> SaveSceneNode3D(std::shared_ptr<IObject> Object) = 0;
 };
 
 // ==================================================================

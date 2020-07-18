@@ -54,7 +54,7 @@ namespace Utils
 		float x = Math::MaxFloat, y = Math::MaxFloat, z = Math::MaxFloat, w = Math::MaxFloat;
 		auto result = sscanf_s(_string.c_str(), "%f, %f, %f, %f", &x, &y, &z, &w);
 		if (result <= 0)
-			throw CException("Utils::ToVec3(%s) error.", _string.c_str());
+			throw CException("Utils::ToVec4(%s) error.", _string.c_str());
 		return glm::vec4(x, y, z, w);
 	}
 

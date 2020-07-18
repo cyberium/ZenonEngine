@@ -50,7 +50,7 @@ public:
 	//
 	RenderDeviceType GetRenderDeviceType() const override
 	{
-		return RenderDeviceType::RenderDeviceType_DirectX;
+		return RenderDeviceType::RenderDeviceType_DirectX11;
 	}
 	std::unique_ptr<IRenderDevice> CreateRenderDevice() const override
 	{

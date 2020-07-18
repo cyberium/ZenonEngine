@@ -6,6 +6,7 @@
 // Additional
 #include "Scene/3D/SceneNode3D.h"
 #include "Scene/UI/SceneNodeUI.h"
+#include "Files/File.h"
 
 CSceneNode3DFactory::CSceneNode3DFactory(IBaseManager& BaseManager, ObjectType Type)
 	: CObjectClassFactory(BaseManager, Type)
@@ -14,80 +15,53 @@ CSceneNode3DFactory::CSceneNode3DFactory(IBaseManager& BaseManager, ObjectType T
 CSceneNode3DFactory::~CSceneNode3DFactory()
 {}
 
+
+
 //
 // ISceneNode3DFactory
 //
 std::shared_ptr<ISceneNode3D> CSceneNode3DFactory::CreateSceneNode3D(ObjectClass ObjectClassKey, IScene* Scene, const std::shared_ptr<ISceneNode3D>& Parent)
 {
-	class CSceneNode3DCreationArgs
-		: public ISceneNode3DCreationArgs
-	{
-	public:
-		CSceneNode3DCreationArgs(IScene* Scene, const std::shared_ptr<ISceneNode3D>& Parent)
-			: m_Scene(Scene)
-			, m_Parent(Parent)
-		{}
-
-		IScene* GetScene() override
-		{
-			return m_Scene;
-		}
-		std::shared_ptr<ISceneNode3D> GetParent() const
-		{
-			return m_Parent;
-		}
-	private:
-		IScene* m_Scene;
-		std::shared_ptr<ISceneNode3D> m_Parent;
-	} const creationArgs(Scene, Parent);
-
+	CSceneNode3DCreationArgs creationArgs(Scene, Parent);
 	return std::dynamic_pointer_cast<ISceneNode3D>(CreateObject(ObjectClassKey, &creationArgs));
 }
-
-std::shared_ptr<ISceneNode3D> CSceneNode3DFactory::LoadSceneNode3D(std::shared_ptr<IByteBuffer> Bytes, IScene * Scene, const std::shared_ptr<ISceneNode3D>& Parent)
+std::shared_ptr<IObject> CSceneNode3DFactory::LoadSceneNode3DXML(const std::shared_ptr<IXMLReader>& Reader, IScene* Scene, const std::shared_ptr<ISceneNode3D>& Parent)
 {
-	return std::shared_ptr<ISceneNode3D>();
+	Guid guid = ReadGUIDXML(Reader);
+
+	CSceneNode3DCreationArgs creationArgs(Scene, Parent);
+	return std::dynamic_pointer_cast<ISceneNode3D>(CreateObject(guid.GetObjectClass(), &creationArgs));
 }
 
-
-
-CSceneNodeUIFactory::CSceneNodeUIFactory(IBaseManager& BaseManager, ObjectType Type)
-	: CObjectClassFactory(BaseManager, Type)
+std::shared_ptr<IXMLWriter> CSceneNode3DFactory::SaveSceneNode3DXML(std::shared_ptr<IObject> Object)
 {
+	auto writer = WriteGUIDXML(Object->GetGUID());
+
+	if (auto objectLoadSave = std::dynamic_pointer_cast<IObjectLoadSave>(Object))
+		objectLoadSave->Save(writer);
+
+	return writer;
 }
 
-CSceneNodeUIFactory::~CSceneNodeUIFactory()
-{}
-
-//
-// ISceneNodeUIFactory
-//
-std::shared_ptr<ISceneNodeUI> CSceneNodeUIFactory::CreateSceneNodeUI(IScene* Scene, ObjectClass ObjectClassKey, const std::shared_ptr<ISceneNodeUI>& Parent)
+std::shared_ptr<IObject> CSceneNode3DFactory::LoadSceneNode3D(const std::shared_ptr<IByteBuffer>& Bytes, IScene* Scene, const std::shared_ptr<ISceneNode3D>& Parent)
 {
-	class CSceneNodeUICreationArgs
-		: public ISceneNodeUICreationArgs
-	{
-	public:
-		CSceneNodeUICreationArgs(IScene* Scene, const std::shared_ptr<ISceneNodeUI>& Parent)
-			: m_Scene(Scene)
-			, m_Parent(Parent)
-		{}
+	Guid guid = ReadGUID(Bytes);
 
-		IScene* GetScene() const override
-		{
-			return m_Scene;
-		}
+	CSceneNode3DCreationArgs creationArgs(Scene, Parent);
+	std::shared_ptr<IObject> createdbject = CreateObject(guid.GetObjectClass(), &creationArgs);
 
-		std::shared_ptr<ISceneNodeUI> GetParent() const
-		{
-			return m_Parent;
-		}
+	if (auto objectLoadSave = std::dynamic_pointer_cast<IObjectLoadSave>(createdbject))
+		objectLoadSave->Load(Bytes);
 
-	private:
-		IScene* m_Scene;
-		std::shared_ptr<ISceneNodeUI> m_Parent;
+	return std::dynamic_pointer_cast<ISceneNode3D>(createdbject);
+}
 
-	} const creationArgs(Scene, Parent);
+std::shared_ptr<IByteBuffer> CSceneNode3DFactory::SaveSceneNode3D(std::shared_ptr<IObject> Object)
+{
+	std::shared_ptr<IByteBuffer> byteBuffer = WriteGUID(Object->GetGUID());
 
-	return std::dynamic_pointer_cast<ISceneNodeUI>(CreateObject(ObjectClassKey, &creationArgs));
+	if (auto objectLoadSave = std::dynamic_pointer_cast<IObjectLoadSave>(Object))
+		objectLoadSave->Save(byteBuffer);
+
+	return byteBuffer;
 }

@@ -654,9 +654,10 @@ void CEdtor3DFrame::DoMoveNode(const glm::vec2& MousePos)
 	auto ray = GetCameraController()->ScreenToRay(GetRenderWindow()->GetViewport(), MousePos);
 	auto bounds = m_DraggedNode->GetChilds()[0]->GetModelsComponent()->GetModels()[0]->GetBounds();
 	auto pos = GetCameraController()->RayToPlane(ray, Plane(glm::vec3(0.0f, 1.0f, 0.0f), bounds.getMax().y / 2.0f));
-
 	pos -= bounds.getCenter();
-	m_DraggedNode->SetTranslate(FixBoxCoords(pos));
+	pos = FixBoxCoords(pos);
+	
+	m_DraggedNode->SetTranslate(pos);
 
 	m_DraggerTextUI->GetProperties()->GetPropertyT<std::string>("Text")->Set("Pos: " + std::to_string(pos.x) + ", " + std::to_string(pos.y) + ", " + std::to_string(pos.z));
 	m_DraggerTextUI->SetTranslate(MousePos + glm::vec2(0.0f, -15.0f));

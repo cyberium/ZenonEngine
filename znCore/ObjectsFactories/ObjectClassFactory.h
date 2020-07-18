@@ -15,8 +15,13 @@ public:
 	Guid GenerateGuid(ObjectClass ObjectClassKey) override final;
 
 	virtual std::shared_ptr<IObject> CreateObject(ObjectClass ObjectClassKey, const IObjectCreationArgs* ObjectCreationArgs) override;
-	virtual std::shared_ptr<IObject> LoadObject(ObjectClass ObjectClassKey, std::shared_ptr<IByteBuffer> Bytes) override;
-	virtual std::shared_ptr<IByteBuffer> SaveObject(std::shared_ptr<IObject> Object) override;
+
+protected:
+	Guid ReadGUIDXML(const std::shared_ptr<IXMLReader>& Reader);
+	std::shared_ptr<IXMLWriter> WriteGUIDXML(Guid Guid);
+	Guid ReadGUID(const std::shared_ptr<IByteBuffer>& Bytes);
+	std::shared_ptr<IByteBuffer> WriteGUID(Guid Guid);
+	IBaseManager& GetBaseManager() const;
 
 private:
 	ObjectType m_Type;

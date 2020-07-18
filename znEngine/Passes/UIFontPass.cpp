@@ -28,7 +28,7 @@ std::shared_ptr<IRenderPassPipelined> CUIFontPass::CreatePipeline(std::shared_pt
 	std::shared_ptr<IShader> g_pVertexShader;
 	std::shared_ptr<IShader> g_pPixelShader;
 
-	if (GetRenderDevice().GetDeviceType() == RenderDeviceType::RenderDeviceType_DirectX)
+	if (GetRenderDevice().GetDeviceType() == RenderDeviceType::RenderDeviceType_DirectX11)
 	{
 		g_pVertexShader = GetRenderDevice().GetObjectsFactory().CreateShader(
 			EShaderType::VertexShader, "IDB_SHADER_UI_FONT", "VS_main"

@@ -61,7 +61,7 @@ void main_internal(int argc, char *argv[])
 	MainEditor editorUI;
 	editorUI.showMaximized();
 
-	IRenderDevice& renderDevice = app.CreateRenderDevice(RenderDeviceType::RenderDeviceType_DirectX);
+	IRenderDevice& renderDevice = app.CreateRenderDevice(RenderDeviceType::RenderDeviceType_DirectX11);
 
 	std::shared_ptr<IFontsManager> fontsManager = std::make_shared<FontsManager>(renderDevice, *BaseManager);
 	BaseManager->AddManager<IFontsManager>(fontsManager);

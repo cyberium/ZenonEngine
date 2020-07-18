@@ -3,7 +3,8 @@
 enum class ZN_API RenderDeviceType 
 {
 	RenderDeviceType_None = 0,
-	RenderDeviceType_DirectX,
+	RenderDeviceType_DirectX11,
+	RenderDeviceType_DirectX12,
 	RenderDeviceType_OpenGL
 };
 

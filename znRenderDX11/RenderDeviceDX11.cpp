@@ -50,7 +50,7 @@ std::string RenderDeviceDX11::GetDeviceName() const
 
 const RenderDeviceType RenderDeviceDX11::GetDeviceType() const
 {
-    return RenderDeviceType::RenderDeviceType_DirectX;
+    return RenderDeviceType::RenderDeviceType_DirectX11;
 }
 
 IBaseManager& RenderDeviceDX11::GetBaseManager() const

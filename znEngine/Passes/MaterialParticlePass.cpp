@@ -29,7 +29,7 @@ std::shared_ptr<IRenderPassPipelined> CMaterialParticlePass::CreatePipeline(std:
 	std::shared_ptr<IShader> geomShader;
 	std::shared_ptr<IShader> pixelShader;
 
-	if (GetRenderDevice().GetDeviceType() == RenderDeviceType::RenderDeviceType_DirectX)
+	if (GetRenderDevice().GetDeviceType() == RenderDeviceType::RenderDeviceType_DirectX11)
 	{
 		vertexShader = GetRenderDevice().GetObjectsFactory().CreateShader(EShaderType::VertexShader, "IDB_SHADER_3D_PARTICLE", "VS_main");
 		geomShader = GetRenderDevice().GetObjectsFactory().CreateShader(EShaderType::GeometryShader, "IDB_SHADER_3D_PARTICLE", "GS_Billboard");
