@@ -5,7 +5,6 @@
       <Filter>Common</Filter>
     </ClCompile>
     <ClCompile Include="QueryOGL.cpp" />
-    <ClCompile Include="RenderDeviceOGL.cpp" />
     <ClCompile Include="RenderTargetOGL.cpp" />
     <ClCompile Include="RenderWindowOGL.cpp" />
     <ClCompile Include="ShaderOGL.cpp" />
@@ -45,6 +44,9 @@
       <Filter>Converters</Filter>
     </ClCompile>
     <ClCompile Include="GeometryOGL.cpp" />
+    <ClCompile Include="RenderDeviceOGL.cpp">
+      <Filter>RenderDevice</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -52,7 +54,6 @@
     </ClInclude>
     <ClInclude Include="MeshOGL.h" />
     <ClInclude Include="QueryOGL.h" />
-    <ClInclude Include="RenderDeviceOGL.h" />
     <ClInclude Include="RenderTargetOGL.h" />
     <ClInclude Include="RenderWindowOGL.h" />
     <ClInclude Include="ShaderOGL.h" />
@@ -95,6 +96,9 @@
       <Filter>Converters</Filter>
     </ClInclude>
     <ClInclude Include="GeometryOGL.h" />
+    <ClInclude Include="RenderDeviceOGL.h">
+      <Filter>RenderDevice</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Common">
@@ -111,6 +115,9 @@
     </Filter>
     <Filter Include="Converters">
       <UniqueIdentifier>{a9f17ba5-2ed7-4d5c-8691-460ded8c16b2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="RenderDevice">
+      <UniqueIdentifier>{17af8b41-11b6-4369-8a4f-5d0c7ae90f80}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

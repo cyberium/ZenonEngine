@@ -96,16 +96,16 @@ std::shared_ptr<IObject> CObjectClassFactory::CreateObject(ObjectClass ObjectCla
 //
 Guid CObjectClassFactory::ReadGUIDXML(const std::shared_ptr<IXMLReader>& Reader)
 {
-	if (Reader->GetName() != cObjectXMLSignatureBegin)
-		throw CException("ObjectsFactory: XMLReader is not ZenonObject.");
+	//if (Reader->GetName() != cObjectXMLSignatureBegin)
+	//	throw CException("ObjectsFactory: XMLReader is not ZenonObject.");
 
-	ObjectType type = Reader->GetUInt16("Type");
-	ObjectClass class_ = Reader->GetUInt32("Class");
-	ObjectCounterType counter = Reader->GetUInt32("Counter");
+	ObjectType type = Reader->GetUInt16Attribute("Type");
+	ObjectClass class_ = Reader->GetUInt32Attribute("Class");
+	ObjectCounterType counter = Reader->GetUInt32Attribute("Counter");
 
 	Guid storedGuid(type, class_, counter);
-	if (storedGuid.GetObjectType() != GetType())
-		throw CException("ObjectsFactory: Stored factory mismatch!.");
+	//if (storedGuid.GetObjectType() != GetType())
+	//	throw CException("ObjectsFactory: Stored factory mismatch!.");
 
 	return storedGuid;
 }
@@ -115,14 +115,16 @@ std::shared_ptr<IXMLWriter> CObjectClassFactory::WriteGUIDXML(Guid Guid)
 	CXMLManager xmlManager;
 	auto writer = xmlManager.CreateWriter();
 	writer->SetName(cObjectXMLSignatureBegin);
-	writer->AddUInt16(Guid.GetObjectType(), "Type");
-	writer->AddUInt32(Guid.GetObjectClass(), "Class");
-	writer->AddUInt32(Guid.GetCounter(), "Counter");
+	writer->SetUInt16Attribute(Guid.GetObjectType(), "Type");
+	writer->SetUInt32Attribute(Guid.GetObjectClass(), "Class");
+	writer->SetUInt32Attribute(Guid.GetCounter(), "Counter");
 	return writer;
 }
 
 Guid CObjectClassFactory::ReadGUID(const std::shared_ptr<IByteBuffer>& Bytes)
 {
+	auto pos = Bytes->getPos();
+
 	uint32 storedSignature = 0;
 	Bytes->read(&storedSignature);
 	if (storedSignature != cObjectBinarySignatureBegin)
@@ -134,6 +136,7 @@ Guid CObjectClassFactory::ReadGUID(const std::shared_ptr<IByteBuffer>& Bytes)
 	if (storedGuid.GetObjectType() != GetType())
 		throw CException("ObjectsFactory: Stored factory mismatch!.");
 
+	Bytes->seek(pos);
 	return storedGuid;
 }
 

@@ -44,6 +44,18 @@ void CAction::SetDescription(const std::string & Description)
 	m_Description = Description;
 }
 
+void CAction::Load(const std::shared_ptr<IXMLReader>& Reader)
+{
+	SetName(Reader->GetName());
+	//SetDescription(Reader->GetStrAttribute("Description"));
+}
+
+void CAction::Save(const std::shared_ptr<IXMLWriter>& Writer) const
+{
+	Writer->SetName(GetName());
+	//Writer->SetStrAttribute(GetDescription(), "Description");
+}
+
 void CAction::SetAction(std::function<bool(void)> Action)
 {
 	m_Action = Action;

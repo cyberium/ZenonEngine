@@ -1,5 +1,6 @@
 <RCC>
   <qresource prefix="MainEditor">
+    <file>Resources/Icons/select.png</file>
     <file>Resources/Icons/add.png</file>
     <file>Resources/Icons/delete.png</file>
     <file>Resources/Icons/rotate.png</file>

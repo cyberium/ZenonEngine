@@ -20,7 +20,7 @@ ZN_INTERFACE IColliderComponent3D;
   * 3) 
 */
 
-const ObjectClass cSceneNode3D = 527338441;
+const ObjectClass cSceneNode3D = UINT16_MAX - 100u;
 
 ZN_INTERFACE ZN_API ISceneNode3D
 	: public IObject
@@ -29,8 +29,8 @@ ZN_INTERFACE ZN_API ISceneNode3D
 	typedef std::vector<std::shared_ptr<ISceneNode3D>>                Node3DList;
 	typedef std::multimap<std::string, std::shared_ptr<ISceneNode3D>> Node3DNameMap;
 
-	static ObjectType GetType() { return otSceneNode3D; }
-	static ObjectClass GetClass() { return cSceneNode3D; }
+	//static ObjectType GetType() { return otSceneNode3D; }
+	//static ObjectClass GetClass() { return cSceneNode3D; }
 
 	virtual ~ISceneNode3D() {}
 
@@ -41,7 +41,7 @@ ZN_INTERFACE ZN_API ISceneNode3D
 	virtual void AddChild(std::shared_ptr<ISceneNode3D> childNode) = 0;
 	virtual void RemoveChild(std::shared_ptr<ISceneNode3D> childNode) = 0;
 	virtual std::weak_ptr<ISceneNode3D> GetParent() const = 0;
-	virtual const Node3DList& GetChilds() = 0;
+	virtual const Node3DList& GetChilds() const = 0;
 	virtual void ClearChilds() = 0;
 	virtual void RaiseOnParentChanged() = 0;
 

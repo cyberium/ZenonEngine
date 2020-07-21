@@ -11,6 +11,8 @@
 #include "ColliderComponent3D.h"
 #include "LightComponent3D.h"
 
+#include "XML/XMLManager.h"
+
 SceneNode3D::SceneNode3D()
 	: m_Translate(0.0f)
 	, m_Rotate(glm::vec3(0.0f))
@@ -95,7 +97,6 @@ void SceneNode3D::Copy(std::shared_ptr<ISceneNode3D> Destination) const
 	auto destCast = std::dynamic_pointer_cast<SceneNode3D>(Destination);
 
 	destCast->m_Children.clear();
-	destCast->m_ChildrenByName.clear();
 	destCast->m_ParentNode;
 
 	destCast->m_PropertiesGroup;
@@ -163,7 +164,7 @@ std::weak_ptr<ISceneNode3D> SceneNode3D::GetParent() const
 	return m_ParentNode;
 }
 
-const SceneNode3D::Node3DList& SceneNode3D::GetChilds()
+const SceneNode3D::Node3DList& SceneNode3D::GetChilds() const
 {
 	return m_Children;
 }
@@ -390,20 +391,41 @@ void SceneNode3D::Accept(IVisitor* visitor)
 //
 void SceneNode3D::Load(const std::shared_ptr<IXMLReader>& Reader)
 {
+	Object::Load(Reader);
 
+	m_Translate = Reader->GetVec3Attribute("Translate");
+	m_Rotate = Reader->GetVec3Attribute("Rotate");
+	m_Scale = Reader->GetVec3Attribute("Scale");
+	if (m_IsRotateQuat)
+		throw CException("!!!");
+
+	if (Reader->IsChildExists("Childs"))
+	{
+		auto childsWriter = Reader->GetChild("Childs");
+		for (const auto& ch : childsWriter->GetChilds())
+		{
+			auto child = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->LoadSceneNode3DXML(ch, GetScene());
+			AddChild(child);
+		}
+	}
 }
 
 void SceneNode3D::Save(const std::shared_ptr<IXMLWriter>& Writer) const
 {
 	Object::Save(Writer);
 
-	Writer->AddVec3(m_Translate);
-	Writer->AddVec3(m_Rotate);
-	Writer->AddVec3(m_Scale);
-	if (m_IsRotateQuat)
-		throw CException("!!!");
+	DoSaveProperties(Writer);
 
-
+	const auto& childs = GetChilds();
+	if (false == childs.empty())
+	{
+		auto childsWriter = Writer->CreateChild("Childs");
+		for (const auto& ch : childs)
+		{
+			auto childWriter = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->SaveSceneNode3DXML(ch);
+			childsWriter->AddChild(childWriter);
+		}
+	}
 }
 
 
@@ -423,12 +445,29 @@ void SceneNode3D::AddChildInternal(std::shared_ptr<ISceneNode3D> ChildNode)
 	if (iter != m_Children.end())
 		throw CException(L"This parent already has this child.");
 
+	auto childIt = m_Children.end();
+	do
+	{
+		childIt = std::find_if(m_Children.begin(), m_Children.end(), [ChildNode](const std::shared_ptr<ISceneNode3D>& Child) -> bool {
+			char buff[256];
+			int num;
+			if (sscanf(Child->GetName().c_str(), "%s%d", buff, &num) > 0)
+				return ChildNode->GetName() == buff;
+			return ChildNode->GetName() == Child->GetName();
+		});
+		if (childIt != m_Children.end())
+		{
+			std::string newName = ChildNode->GetName();
+			char buff[256];
+			int num;
+			if (sscanf(newName.c_str(), "%s%d", buff, &num) > 0)
+				newName = buff;
+			ChildNode->SetName(newName + "" + std::to_string(ChildNode->GetGUID().GetCounter()));
+		}
+	} while (childIt != m_Children.end());
+
 	// Add to common list
 	m_Children.push_back(ChildNode);
-
-	// And add child to named list
-	if (!ChildNode->GetName().empty())
-		m_ChildrenByName.insert(Node3DNameMap::value_type(ChildNode->GetName(), ChildNode));
 
 	std::dynamic_pointer_cast<SceneNode3D>(ChildNode)->SetParentInternal(weak_from_this());
 
@@ -448,11 +487,6 @@ void SceneNode3D::RemoveChildInternal(std::shared_ptr<ISceneNode3D> ChildNode)
 	m_Children.erase(childListIter);
 
 	// TODO: Если единственная ссылка на чилда осталась в списке чилдов, то всё взорвется?
-
-	// Delete from name map
-	const auto& childNameMapIter = m_ChildrenByName.find(ChildNode->GetName());
-	if (childNameMapIter != m_ChildrenByName.end())
-		m_ChildrenByName.erase(childNameMapIter);
 
 	std::dynamic_pointer_cast<SceneNode3D>(ChildNode)->SetParentInternal(std::weak_ptr<ISceneNode3D>());
 
@@ -507,6 +541,17 @@ void SceneNode3D::UpdateWorldTransform()
 		std::dynamic_pointer_cast<SceneNode3D>(it)->UpdateWorldTransform();
 
 	RaiseComponentMessage(nullptr, UUID_OnWorldTransformChanged);
+}
+
+
+void SceneNode3D::DoSaveProperties(const std::shared_ptr<IXMLWriter>& Writer) const
+{
+	CXMLManager xml;
+	auto propertiesWriter = xml.CreateWriter("Properties");
+
+	GetProperties()->Save(propertiesWriter);
+	
+	Writer->AddChild(propertiesWriter);
 }
 
 IBaseManager& SceneNode3D::GetBaseManager() const

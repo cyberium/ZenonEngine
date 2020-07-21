@@ -15,9 +15,10 @@ public:
 	// IXML
 	std::shared_ptr<IXMLReader> CreateReader(std::shared_ptr<IFile> File) override;
 	std::shared_ptr<IXMLWriter> CreateWriter() override;
-
+	std::shared_ptr<IXMLWriter> CreateWriter(const std::string& NodeName) override;
+	std::shared_ptr<IFile> SaveWriterToFile(const std::shared_ptr<IXMLWriter>& Writer, const std::string& FileName) override;
 private:
 
 };
 
-void CheckTinyXMLError(const TiXmlDocument* TiniXMLDocument);
+void CheckTinyXMLError(const std::shared_ptr<TiXmlDocument>& TiniXMLDocument);

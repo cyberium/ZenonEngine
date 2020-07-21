@@ -36,8 +36,8 @@ public:
 	// ISceneNode3DCreator
 	std::shared_ptr<ISceneNode3D> CreateSceneNode3D(ObjectClass ObjectClassKey,       IScene* Scene, const std::shared_ptr<ISceneNode3D>& Parent) override;
 
-	std::shared_ptr<IObject>      LoadSceneNode3DXML(const std::shared_ptr<IXMLReader>& Reader, IScene* Scene, const std::shared_ptr<ISceneNode3D>& Parent = nullptr) override;
-	std::shared_ptr<IXMLWriter>   SaveSceneNode3DXML(std::shared_ptr<IObject> Object) override;
-	std::shared_ptr<IObject>      LoadSceneNode3D(const std::shared_ptr<IByteBuffer>& Bytes, IScene* Scene, const std::shared_ptr<ISceneNode3D>& Parent = nullptr) override;
-	std::shared_ptr<IByteBuffer>  SaveSceneNode3D(std::shared_ptr<IObject> Object) override;
+	std::shared_ptr<ISceneNode3D>      LoadSceneNode3DXML(const std::shared_ptr<IXMLReader>& Reader, IScene* Scene, const std::shared_ptr<ISceneNode3D>& Parent = nullptr) override;
+	std::shared_ptr<IXMLWriter>   SaveSceneNode3DXML(std::shared_ptr<ISceneNode3D> Object) override;
+	std::shared_ptr<ISceneNode3D>      LoadSceneNode3D(const std::shared_ptr<IByteBuffer>& Bytes, IScene* Scene, const std::shared_ptr<ISceneNode3D>& Parent = nullptr) override;
+	std::shared_ptr<IByteBuffer>  SaveSceneNode3D(std::shared_ptr<ISceneNode3D> Object) override;
 };

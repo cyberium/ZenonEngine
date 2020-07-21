@@ -21,7 +21,7 @@ public:
 	virtual void                                    AddChild(std::shared_ptr<ISceneNode3D> childNode) override final;
 	virtual void                                    RemoveChild(std::shared_ptr<ISceneNode3D> childNode) override final;
 	virtual std::weak_ptr<ISceneNode3D>             GetParent() const override final;
-	virtual const Node3DList&                       GetChilds() override final;
+	virtual const Node3DList&                       GetChilds() const override final;
 	void											ClearChilds() override;
 	void                                            RaiseOnParentChanged() override final;
 
@@ -90,6 +90,8 @@ protected:
 	virtual glm::mat4                               CalculateLocalTransform() const;
 	void											UpdateLocalTransform();
 	void											UpdateWorldTransform();
+	void                                            DoSaveProperties(const std::shared_ptr<IXMLWriter>& Writer) const;
+
 	IBaseManager&                                   GetBaseManager() const;
 
 	std::shared_ptr<IColliderComponent3D>			m_Components_Collider;
@@ -97,7 +99,6 @@ protected:
 
 private:
 	Node3DList                                      m_Children;
-	Node3DNameMap                                   m_ChildrenByName;
 	std::weak_ptr<ISceneNode3D>                     m_ParentNode;
 
 	std::shared_ptr<IPropertiesGroup>               m_PropertiesGroup;

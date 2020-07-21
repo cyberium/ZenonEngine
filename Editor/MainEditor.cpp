@@ -11,6 +11,10 @@ MainEditor::MainEditor(QWidget* Parent)
 {
 	m_UI.setupUi(this);
 
+	// MENU
+	connect(m_UI.actionOpen_Scene, SIGNAL(triggered()), this, SLOT(OnActionSceneLoad()));
+	connect(m_UI.actionSave_Scene, SIGNAL(triggered()), this, SLOT(OnActionSceneSave()));
+
 	QFileSystemModel* fsModel = new QFileSystemModel(this);
 	fsModel->setRootPath("D:\\_programming\\ZenonEngine\\gamedata");
 	m_UI.FSTreeViewer->setModel(fsModel);
@@ -214,6 +218,36 @@ void MainEditor::OnSelectNodes()
 	getSceneViewer()->SelectNodes(selectedNodes);
 
 	m_PropertiesController->OnSceneNodeSelected(m_Selector.GetFirstSelectedNode().get());
+}
+
+void MainEditor::OnActionSceneLoad()
+{
+	auto file = m_Editor3D->GetBaseManager2().GetManager<IFilesManager>()->Open("D:\\Scene.xml");
+	if (file == nullptr)
+		return;
+
+	CXMLManager xml;
+	auto reader = xml.CreateReader(file);
+
+	auto currentRoot = m_Editor3D->GetRealRootNode3D();
+	for (const auto& child : reader->GetChilds())
+	{
+		auto node = m_Editor3D->GetBaseManager2().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->LoadSceneNode3DXML(child, currentRoot->GetScene(), currentRoot->GetParent().lock());
+		currentRoot->AddChild(node);
+	}
+}
+
+void MainEditor::OnActionSceneSave()
+{
+	CXMLManager manager;
+
+	auto rootWriter = m_Editor3D->GetBaseManager2().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->SaveSceneNode3DXML(m_Editor3D->GetRealRootNode3D());
+
+	auto writer = manager.CreateWriter();
+	writer->AddChild(rootWriter);
+	
+	auto file = manager.SaveWriterToFile(writer, "D:\\Scene.xml");
+	m_Editor3D->GetBaseManager2().GetManager<IFilesManager>()->GetFilesStorage("PCEveryFileAccess")->SaveFile(file);
 }
 
 

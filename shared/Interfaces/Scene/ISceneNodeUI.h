@@ -10,9 +10,9 @@ class UpdateEventArgs;
 ZN_INTERFACE IManager;
 // FORWARD END
 
-const ObjectClass cSceneNodeUI = 525832104;
-const ObjectClass cSceneNodeUI_Text = 525832105;
-const ObjectClass cSceneNodeUI_Color = 525832106;
+const ObjectClass cSceneNodeUI = UINT16_MAX - 200u;
+const ObjectClass cSceneNodeUI_Text = UINT16_MAX - 201u;
+const ObjectClass cSceneNodeUI_Color = UINT16_MAX - 202u;
 
 ZN_INTERFACE ZN_API ISceneNodeUI
 	: public IObject
@@ -21,8 +21,8 @@ ZN_INTERFACE ZN_API ISceneNodeUI
 	typedef std::vector<std::shared_ptr<ISceneNodeUI>>                NodeUIList;
 	typedef std::multimap<std::string, std::shared_ptr<ISceneNodeUI>> NodeUINameMap;
 
-	static ObjectType GetType() { return otSceneNodeUI; }
-	static ObjectClass GetClass() { return cSceneNodeUI; }
+	//static ObjectType GetType() { return otSceneNodeUI; }
+	//static ObjectClass GetClass() { return cSceneNodeUI; }
 
 	virtual ~ISceneNodeUI() {}
 

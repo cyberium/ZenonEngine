@@ -5,7 +5,7 @@ namespace fbxsdk
 	class FbxManager;
 }
 
-const ObjectClass cSceneNode_FBXNode = 527323442;
+const ObjectClass cSceneNode_FBXNode = UINT16_MAX - 101u;
 ZN_INTERFACE ZN_API IFBXSceneNode3D
 {
 	virtual ~IFBXSceneNode3D() {}

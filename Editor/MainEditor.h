@@ -36,6 +36,8 @@ public:
 
 private slots:
 	void MoverStepCurrentIndexChanged(const QString &);
+	void OnActionSceneLoad();
+	void OnActionSceneSave();
 
 private:
 	CSceneNodesSelector m_Selector;

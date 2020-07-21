@@ -82,31 +82,31 @@ void Object::Save(const std::shared_ptr<IByteBuffer>& Buffer) const
 
 void Object::Load(const std::shared_ptr<IXMLReader>& Reader)
 {
-	ObjectType type = Reader->GetUInt16("Type");
-	ObjectClass class_ = Reader->GetUInt32("Class");
-	ObjectCounterType counter = Reader->GetUInt32("Counter");
+	ObjectType type = Reader->GetUInt16Attribute("Type");
+	ObjectClass class_ = Reader->GetUInt32Attribute("Class");
+	ObjectCounterType counter = Reader->GetUInt32Attribute("Counter");
 	m_Guid = Guid(type, class_, counter);
 
-	m_Name = Reader->GetStr("Name");
-	m_TypeName = Reader->GetStr("TypeName");
-	m_ClassName = Reader->GetStr("ClassName");
+	m_Name = Reader->GetStrAttribute("Name");
+	m_TypeName = Reader->GetStrAttribute("TypeName");
+	m_ClassName = Reader->GetStrAttribute("ClassName");
 }
 
 void Object::Save(const std::shared_ptr<IXMLWriter>& Writer) const
 {
-	Writer->AddUInt16(m_Guid.GetObjectType(), "Type");
-	Writer->AddUInt32(m_Guid.GetObjectClass(), "Class");
-	Writer->AddUInt32(m_Guid.GetCounter(), "Counter");
+	Writer->SetUInt16Attribute(m_Guid.GetObjectType(), "Type");
+	Writer->SetUInt32Attribute(m_Guid.GetObjectClass(), "Class");
+	Writer->SetUInt32Attribute(m_Guid.GetCounter(), "Counter");
 
 	// TODO: save only non defaults names
 	if (!m_Name.empty())
-		Writer->AddStr(m_Name, "Name");
+		Writer->SetStrAttribute(m_Name, "Name");
 
 	if (!m_TypeName.empty())
-		Writer->AddStr(m_TypeName, "TypeName");
+		Writer->SetStrAttribute(m_TypeName, "TypeName");
 
 	if (!m_ClassName.empty())
-		Writer->AddStr(m_ClassName, "ClassName");
+		Writer->SetStrAttribute(m_ClassName, "ClassName");
 }
 
 

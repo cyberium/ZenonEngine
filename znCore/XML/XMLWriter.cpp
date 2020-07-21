@@ -10,135 +10,259 @@
 #include "Utils.h"
 
 
+namespace
+{
+#include <inttypes.h>
 
-CXMLWriter::CXMLWriter(std::shared_ptr<TiXmlDocument> Document, TiXmlElement * Element)
-	: m_Document(Document)
-	, m_Element(Element)
+	template <typename T>
+	inline std::string SetNumericAttribute(std::string Pattern, T Value)
+	{
+		T value(Value);
+
+		char buff[256];
+		sprintf_s(buff, 256, (std::string("%") + Pattern).c_str(), value);
+		return buff;
+	}
+}
+
+
+CXMLWriter::CXMLWriter(const std::string& Name)
+	: m_Name(Name)
 {
 }
 
 CXMLWriter::~CXMLWriter()
 {
-	_ASSERT(m_Element != nullptr);
-	delete m_Element;
 }
 
+
+
+//
+// IXMLShared
+//
+std::string CXMLWriter::GetName() const
+{
+	return m_Name;
+}
+
+std::string CXMLWriter::GetValue() const
+{
+	return m_Value;
+}
+
+bool CXMLWriter::IsChildExists(const std::string& ChildName) const
+{
+	auto chIt = std::find_if(m_Childs.begin(), m_Childs.end(), [ChildName](const std::pair<std::string, std::shared_ptr<IXMLWriter>>& Value) -> bool {
+		return Value.first == ChildName;
+	});
+	return chIt != m_Childs.end();
+}
+
+bool CXMLWriter::IsAttributeExists(const std::string & AttributeName) const
+{
+	auto attrIt = std::find_if(m_Attributes.begin(), m_Attributes.end(), [AttributeName](const std::pair<std::string, std::string>& Value) -> bool {
+		return Value.first == AttributeName;
+	});
+	return attrIt != m_Attributes.end();
+}
+
+
+
+//
+// IXMLWriter
+//
 void CXMLWriter::SetName(const std::string & Value)
 {
-	m_Element->SetValue(Value);
+	m_Name = Value;
 }
 
-void CXMLWriter::SetValue(const std::string& Value)
+
+
+//
+// Attributes
+//
+void CXMLWriter::SetStrAttribute(std::string AttributeValue, const std::string& AttributeName)
 {
-	TiXmlText * text = new TiXmlText(Value);
-	m_Element->LinkEndChild(text);
+	if (IsAttributeExists(AttributeName))
+		throw CException("CXMLWriter: Attribute '%s' aleady exists!");
+	m_Attributes.push_back(std::make_pair(AttributeName, AttributeValue));
 }
 
-void CXMLWriter::AddStr(std::string AttributeValue, const std::string& AttributeName) const
+void CXMLWriter::SetInt8Attribute(int8 Value, const std::string & AttributeName)
 {
-	_ASSERT(m_Element->Attribute(AttributeName) != nullptr);
-	m_Element->SetAttribute(AttributeName, AttributeValue);
+	SetStrAttribute(SetNumericAttribute<int8>(PRId8, Value), AttributeName);
 }
 
-#include <inttypes.h>
-
-namespace
+void CXMLWriter::SetUInt8Attribute(uint8 Value, const std::string & AttributeName)
 {
-	template <typename T>
-	inline std::string SetNumericAttribute(const std::string& Pattern, T Value)
-	{
-		T value(Value);
-
-		char buff[256];
-		sprintf_s(buff, 256, Pattern.c_str(), value);
-		return buff;
-	}
+	SetStrAttribute(SetNumericAttribute<uint8>(PRIu8, Value), AttributeName);
 }
 
-void CXMLWriter::AddInt8(int8 Value, const std::string & AttributeName) const
+void CXMLWriter::SetInt16Attribute(int16 Value, const std::string & AttributeName)
 {
-	AddStr(AttributeName, SetNumericAttribute<int8>(PRId8, Value));
+	SetStrAttribute(SetNumericAttribute<int16>(PRId16, Value), AttributeName);
 }
 
-void CXMLWriter::AddUInt8(uint8 Value, const std::string & AttributeName) const
+void CXMLWriter::SetUInt16Attribute(uint16 Value, const std::string & AttributeName)
 {
-	AddStr(AttributeName, SetNumericAttribute<uint8>(PRIu8, Value));
+	SetStrAttribute(SetNumericAttribute<uint16>(PRIu16, Value), AttributeName);
 }
 
-void CXMLWriter::AddInt16(int16 Value, const std::string & AttributeName) const
+void CXMLWriter::SetInt32Attribute(int32 Value, const std::string & AttributeName)
 {
-	AddStr(AttributeName, SetNumericAttribute<int16>(PRId16, Value));
+	SetStrAttribute(SetNumericAttribute<int32>(PRId32, Value), AttributeName);
 }
 
-void CXMLWriter::AddUInt16(uint16 Value, const std::string & AttributeName) const
+void CXMLWriter::SetUInt32Attribute(uint32 Value, const std::string & AttributeName)
 {
-	AddStr(AttributeName, SetNumericAttribute<uint16>(PRIu16, Value));
+	SetStrAttribute(SetNumericAttribute<uint32>(PRIu32, Value), AttributeName);
 }
 
-void CXMLWriter::AddInt32(int32 Value, const std::string & AttributeName) const
+void CXMLWriter::SetInt64Attribute(int64 Value, const std::string & AttributeName)
 {
-	AddStr(AttributeName, SetNumericAttribute<int32>(PRId32, Value));
+	SetStrAttribute(SetNumericAttribute<int64>(PRId64, Value), AttributeName);
 }
 
-void CXMLWriter::AddUInt32(uint32 Value, const std::string & AttributeName) const
+void CXMLWriter::SetUInt64Attribute(uint64 Value, const std::string & AttributeName)
 {
-	AddStr(AttributeName, SetNumericAttribute<uint32>(PRIu32, Value));
+	SetStrAttribute(SetNumericAttribute<uint64>(PRIu64, Value), AttributeName);
 }
 
-void CXMLWriter::AddInt64(int64 Value, const std::string & AttributeName) const
+void CXMLWriter::SetFloatAttribute(float Value, const std::string & AttributeName)
 {
-	AddStr(AttributeName, SetNumericAttribute<int64>(PRId64, Value));
+	SetStrAttribute(SetNumericAttribute<float>("%f", Value), AttributeName);
 }
 
-void CXMLWriter::AddUInt64(uint64 Value, const std::string & AttributeName) const
+void CXMLWriter::SetDoubleAttribute(double Value, const std::string & AttributeName)
 {
-	AddStr(AttributeName, SetNumericAttribute<uint64>(PRIu64, Value));
+	SetStrAttribute(SetNumericAttribute<double>("%lf", Value), AttributeName);
 }
 
-void CXMLWriter::AddFloat(float Value, const std::string & AttributeName) const
+void CXMLWriter::SetVec2Attribute(glm::vec2 Value, const std::string & AttributeName)
 {
-	AddStr(AttributeName, SetNumericAttribute<float>("%f", Value));
+	char buff[256];
+	sprintf_s(buff, 256, "%f, %f", Value.x, Value.y);
+	SetStrAttribute(buff, AttributeName);
 }
 
-void CXMLWriter::AddDouble(double Value, const std::string & AttributeName) const
-{
-	AddStr(AttributeName, SetNumericAttribute<double>("%lf", Value));
-}
-
-void CXMLWriter::AddVec3(glm::vec3 AttributeValue, const std::string& AttributeName) const
+void CXMLWriter::SetVec3Attribute(glm::vec3 AttributeValue, const std::string& AttributeName)
 {
 	char buff[256];
 	sprintf_s(buff, 256, "%f, %f, %f", AttributeValue.x, AttributeValue.y, AttributeValue.z);
-	_ASSERT(m_Element->Attribute(AttributeName) != nullptr);
-	m_Element->SetAttribute(AttributeName, buff);
+	SetStrAttribute(buff, AttributeName);
 }
 
-void CXMLWriter::AddVec4(glm::vec4 AttributeValue, const std::string& AttributeName) const
+void CXMLWriter::SetVec4Attribute(glm::vec4 AttributeValue, const std::string& AttributeName)
 {
 	char buff[256];
 	sprintf_s(buff, 256, "%f, %f, %f, %f", AttributeValue.x, AttributeValue.y, AttributeValue.z, AttributeValue.w);
-	_ASSERT(m_Element->Attribute(AttributeName) != nullptr);
-	m_Element->SetAttribute(AttributeName, buff);
+	SetStrAttribute(buff, AttributeName);
 }
 
-std::shared_ptr<IXMLWriter> CXMLWriter::CreateChild(const std::string& ChildName) const
+std::vector< std::pair<std::string, std::string>> CXMLWriter::GetAttributes() const
 {
-	TiXmlElement * element = new TiXmlElement(ChildName);
-	m_Element->LinkEndChild(element);
-
-	return std::make_shared<CXMLWriter>(m_Document, element);
+	return m_Attributes;
 }
 
-std::shared_ptr<IFile> CXMLWriter::SaveToFile(const std::string& Filename)
+
+
+//
+// Values
+//
+void CXMLWriter::SetValue(const std::string& Value)
 {
-	std::shared_ptr<CFile> file = std::make_shared<CFile>(Filename);
+	m_Value = Value;
+}
 
-	TiXmlPrinter printer;
-	printer.SetIndent("\t");
-	m_Document->Accept(&printer);
-	CheckTinyXMLError(m_Document.get());
+void CXMLWriter::SetInt8(int8 Value)
+{
+	SetValue(SetNumericAttribute<int8>(PRId8, Value));
+}
 
-	file->writeBytes(printer.CStr(), printer.Size());
+void CXMLWriter::SetUInt8(uint8 Value)
+{
+	SetValue(SetNumericAttribute<uint8>(PRIu8, Value));
+}
 
-	return file;
+void CXMLWriter::SetInt16(int16 Value)
+{
+	SetValue(SetNumericAttribute<int16>(PRId16, Value));
+}
+
+void CXMLWriter::SetUInt16(uint16 Value)
+{
+	SetValue(SetNumericAttribute<uint16>(PRIu16, Value));
+}
+
+void CXMLWriter::SetInt32(int32 Value)
+{
+	SetValue(SetNumericAttribute<int32>(PRId32, Value));
+}
+
+void CXMLWriter::SetUInt32(uint32 Value)
+{
+	SetValue(SetNumericAttribute<uint32>(PRIu32, Value));
+}
+
+void CXMLWriter::SetInt64(int64 Value)
+{
+	SetValue(SetNumericAttribute<int64>(PRId64, Value));
+}
+
+void CXMLWriter::SetUInt64(uint64 Value)
+{
+	SetValue(SetNumericAttribute<uint64>(PRIu64, Value));
+}
+
+void CXMLWriter::SetFloat(float Value)
+{
+	SetValue(SetNumericAttribute<float>("%f", Value));
+}
+
+void CXMLWriter::SetDouble(double Value)
+{
+	SetValue(SetNumericAttribute<double>("%lf", Value));
+}
+
+void CXMLWriter::SetVec2(glm::vec2 Value)
+{
+	char buff[256];
+	sprintf_s(buff, 256, "%f, %f", Value.x, Value.y);
+	SetValue(buff);
+}
+
+void CXMLWriter::SetVec3(glm::vec3 AttributeValue)
+{
+	char buff[256];
+	sprintf_s(buff, 256, "%f, %f, %f", AttributeValue.x, AttributeValue.y, AttributeValue.z);
+	SetValue(buff);
+}
+
+void CXMLWriter::SetVec4(glm::vec4 AttributeValue)
+{
+	char buff[256];
+	sprintf_s(buff, 256, "%f, %f, %f, %f", AttributeValue.x, AttributeValue.y, AttributeValue.z, AttributeValue.w);
+	SetValue(buff);
+}
+
+
+//
+// Childs
+//
+std::shared_ptr<IXMLWriter> CXMLWriter::CreateChild(const std::string& ChildName)
+{
+	auto child = std::make_shared<CXMLWriter>(ChildName);
+	AddChild(child);
+	return child;
+}
+
+void CXMLWriter::AddChild(const std::shared_ptr<IXMLWriter>& Writer)
+{
+	//_ASSERT(false == IsChildExists(Writer->GetName()));
+	m_Childs.push_back(std::make_pair(Writer->GetName(), Writer));
+}
+
+std::vector< std::pair<std::string, std::shared_ptr<IXMLWriter>>> CXMLWriter::GetChilds() const
+{
+	return m_Childs;
 }
