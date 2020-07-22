@@ -10,13 +10,14 @@ public:
 	// IObjectClassCreator
 	virtual size_t GetSupportedClassCount() const override final;
 	virtual ObjectClass GetSupportedClassKey(size_t Index) const override final;
+	virtual std::string GetSupportedClassName(size_t Index) const override final;
 	virtual std::shared_ptr<IObject> CreateObject(size_t Index, const IObjectCreationArgs* ObjectCreationArgs) = 0;
 
 protected:
-	void AddKey(ObjectClass ObjectClassKey);
+	void AddKey(std::string ObjectName, ObjectClass ObjectClassKey);
 	IBaseManager& GetBaseManager();
 
 private:
-	std::vector<ObjectClass> m_Keys;
+	std::vector<std::pair<std::string, ObjectClass>> m_Keys;
 	IBaseManager& m_BaseManager;
 };

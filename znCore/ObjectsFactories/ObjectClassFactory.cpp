@@ -10,8 +10,9 @@
 const uint32 cObjectBinarySignatureBegin = 0x01231000;
 const const char* cObjectXMLSignatureBegin = "Object";
 
-CObjectClassFactory::CObjectClassFactory(IBaseManager& BaseManager, ObjectType Type)
+CObjectClassFactory::CObjectClassFactory(IBaseManager& BaseManager, const std::string& TypeName, ObjectType Type)
 	: m_BaseManager(BaseManager)
+	, m_TypeName(TypeName)
 	, m_Type(Type)
 	, m_Counter(0)
 {}
@@ -20,6 +21,15 @@ CObjectClassFactory::~CObjectClassFactory()
 {}
 
 
+
+std::unordered_map<ObjectClass, std::shared_ptr<IObjectClassCreator>> CObjectClassFactory::GetClassCreators() const
+{
+	std::unordered_map<ObjectClass, std::shared_ptr<IObjectClassCreator>> creators;
+	for (const auto& creator : m_ClassCreators)
+		creators.insert(std::make_pair(creator.first, creator.second.second));
+
+	return creators;
+}
 
 //
 // IObjectClassFactory
@@ -56,6 +66,11 @@ void CObjectClassFactory::RemoveClassCreator(std::shared_ptr<IObjectClassCreator
 	}
 }
 
+std::string CObjectClassFactory::GetTypeName() const
+{
+	return m_TypeName;
+}
+
 ObjectType CObjectClassFactory::GetType() const
 {
 	return m_Type;
@@ -80,7 +95,7 @@ std::shared_ptr<IObject> CObjectClassFactory::CreateObject(ObjectClass ObjectCla
 	auto createdObject = creatorObject->CreateObject(creatorIndex, ObjectCreationArgs);
 	if (auto objectPrivate = std::dynamic_pointer_cast<IObjectPrivate>(createdObject))
 	{
-		objectPrivate->SetGUID(objectUUID);
+		objectPrivate->SetGUID(&m_BaseManager, objectUUID);
 		Log::Green("ClassFactory: Object [%s] created.", createdObject->GetName().c_str());
 	}
 	else
@@ -96,29 +111,13 @@ std::shared_ptr<IObject> CObjectClassFactory::CreateObject(ObjectClass ObjectCla
 //
 Guid CObjectClassFactory::ReadGUIDXML(const std::shared_ptr<IXMLReader>& Reader)
 {
-	//if (Reader->GetName() != cObjectXMLSignatureBegin)
-	//	throw CException("ObjectsFactory: XMLReader is not ZenonObject.");
-
-	ObjectType type = Reader->GetUInt16Attribute("Type");
-	ObjectClass class_ = Reader->GetUInt32Attribute("Class");
-	ObjectCounterType counter = Reader->GetUInt32Attribute("Counter");
-
-	Guid storedGuid(type, class_, counter);
-	//if (storedGuid.GetObjectType() != GetType())
-	//	throw CException("ObjectsFactory: Stored factory mismatch!.");
-
-	return storedGuid;
+	return GenerateGuid(GetBaseManager().GetManager<IObjectsFactory>()->GetObjectClassByObjectClassName(Reader->GetName()));
 }
 
 std::shared_ptr<IXMLWriter> CObjectClassFactory::WriteGUIDXML(Guid Guid)
 {
 	CXMLManager xmlManager;
-	auto writer = xmlManager.CreateWriter();
-	writer->SetName(cObjectXMLSignatureBegin);
-	writer->SetUInt16Attribute(Guid.GetObjectType(), "Type");
-	writer->SetUInt32Attribute(Guid.GetObjectClass(), "Class");
-	writer->SetUInt32Attribute(Guid.GetCounter(), "Counter");
-	return writer;
+	return xmlManager.CreateWriter(GetBaseManager().GetManager<IObjectsFactory>()->GetObjectClassNameByObjectClass(Guid.GetObjectClass()));
 }
 
 Guid CObjectClassFactory::ReadGUID(const std::shared_ptr<IByteBuffer>& Bytes)

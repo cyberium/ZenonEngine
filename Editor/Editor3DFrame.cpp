@@ -45,7 +45,9 @@ void CEdtor3DFrame::Initialize()
 
 	auto cameraNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, this);
 	cameraNode->SetName("Camera");
-	cameraNode->AddComponent(std::make_shared<CCameraComponent3D>(*cameraNode));
+
+	auto cameraComponent = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<IComponentFactory>()->CreateComponentT<ICameraComponent3D>(cSceneNodeCameraComponent, *cameraNode);
+	cameraNode->AddComponent(cameraComponent);
 
 	SetCameraController(std::make_shared<CFreeCameraController>());
 	GetCameraController()->SetCamera(cameraNode->GetComponent<ICameraComponent3D>());

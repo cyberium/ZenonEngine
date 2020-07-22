@@ -9,7 +9,6 @@ MaterialBase::MaterialBase(IRenderDevice& RenderDevice)
 	, m_Dirty(true)
 	, m_MaterialData(nullptr)
 {
-	SetClassName("MaterialBase");
 }
 
 MaterialBase::~MaterialBase()

@@ -62,12 +62,12 @@ void CComponentBase::Save(const std::shared_ptr<IByteBuffer>& Buffer) const
 
 void CComponentBase::Load(const std::shared_ptr<IXMLReader>& Reader)
 {
-
+	Object::Load(Reader);
 }
 
 void CComponentBase::Save(const std::shared_ptr<IXMLWriter>& Writer) const
 {
-
+	Object::Save(Writer);
 }
 
 
@@ -77,6 +77,11 @@ void CComponentBase::Save(const std::shared_ptr<IXMLWriter>& Writer) const
 const ISceneNode3D& CComponentBase::GetOwnerNode() const
 {
 	return m_OwnerNode;
+}
+
+IBaseManager & CComponentBase::GetBaseManager() const
+{
+	return dynamic_cast<IBaseManagerHolder*>(GetOwnerNode().GetScene())->GetBaseManager();
 }
 
 void CComponentBase::RaiseComponentMessage(ComponentMessageType Message)

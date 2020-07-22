@@ -58,6 +58,7 @@
 #include "../znCore/ObjectsFactories/ObjectClassCreator.h"
 #include "../znCore/ObjectsFactories/SceneNode3DFactory.h"
 #include "../znCore/ObjectsFactories/SceneNodeUIFactory.h"
+#include "../znCore/ObjectsFactories/ComponentsFactory.h"
 
 // Base
 #include "../znCore/Scene/SceneBase.h"

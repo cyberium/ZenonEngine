@@ -38,7 +38,7 @@ void SceneBase::Initialize()
 		m_LightNode->SetTranslate(glm::vec3(1500.0f, 1500.0f, 1500.0f));
 		m_LightNode->SetRotation(glm::vec3(-0.9f, -0.9f, -0.9f));
 
-		m_LightNode->AddComponent(std::make_shared<CLightComponent3D>(*m_LightNode.get()));
+		m_LightNode->AddComponent(GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<IComponentFactory>()->CreateComponentT<ILightComponent3D>(cSceneNodeLightComponent, *m_LightNode.get()));
 		m_LightNode->GetComponent<ILightComponent3D>()->SetType(ELightType::Spot);
 		m_LightNode->GetComponent<ILightComponent3D>()->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
 		m_LightNode->GetComponent<ILightComponent3D>()->SetRange(99000.0f);
@@ -551,7 +551,7 @@ void SceneBase::DoUpdate_Rec(const std::shared_ptr<ISceneNode3D>& Node, const Up
 	Node->Update(e);
 
 	const auto& components = Node->GetComponents();
-	std::for_each(components.begin(), components.end(), [&e](const std::pair<GUID, std::shared_ptr<ISceneNodeComponent>>& Component)
+	std::for_each(components.begin(), components.end(), [&e](const std::pair<ObjectClass, std::shared_ptr<ISceneNodeComponent>>& Component)
 	{
 		_ASSERT(Component.second);
 		Component.second->Update(e);

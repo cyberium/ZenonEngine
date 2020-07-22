@@ -3,6 +3,7 @@
 #include "Guid.h"
 
 ZN_INTERFACE IManager;
+ZN_INTERFACE IBaseManager;
 ZN_INTERFACE IByteBuffer;
 ZN_INTERFACE IXMLReader;
 ZN_INTERFACE IXMLWriter;
@@ -28,19 +29,11 @@ ZN_INTERFACE ZN_API IObject
 	inline ObjectCounterType GetID() const { return GetGUID().GetCounter(); }
 };
 
-ZN_INTERFACE ZN_API IObjectInternal
-{
-	virtual ~IObjectInternal() {}
-
-	virtual void SetTypeName(const std::string& Name) = 0;
-	virtual void SetClassName(const std::string& Name) = 0;
-};
-
 ZN_INTERFACE ZN_API IObjectPrivate
 {
 	virtual ~IObjectPrivate() {}
 
-	virtual void SetGUID(const Guid& NewGuid) = 0;
+	virtual void SetGUID(const IBaseManager* BaseManager,const Guid& NewGuid) = 0;
 };
 
 ZN_INTERFACE ZN_API	IObjectLoadSave

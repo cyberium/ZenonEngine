@@ -19,8 +19,6 @@ SceneNodeUI::SceneNodeUI()
 	, m_WorldTransform(1.0f)
 	, m_InverseWorldTransform(1.0f)
 {
-	SetClassName("SceneNodeUI");
-
 	m_PropertiesGroup = std::make_shared<CPropertiesGroup>("SceneNodeProperties", "Some important scene node UI properties.");
 
 	// Name properties

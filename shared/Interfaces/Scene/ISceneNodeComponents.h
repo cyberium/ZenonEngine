@@ -10,14 +10,21 @@ ZN_INTERFACE IXMLWriter;
 
 typedef uint32 ComponentMessageType;
 
-const ObjectClass cSceneNodeComponent = 527338441;
+const ObjectClass cSceneNodeComponent = UINT16_MAX - 500u;
+const ObjectClass cSceneNodeColliderComponent = UINT16_MAX - 501u;
+const ObjectClass cSceneNodeModelsComponent = UINT16_MAX - 502u;
+const ObjectClass cSceneNodeSkeletonComponent = UINT16_MAX - 503u;
+const ObjectClass cSceneNodeParticleComponent = UINT16_MAX - 504u;
+const ObjectClass cSceneNodePhysicsComponent = UINT16_MAX - 505u;
+const ObjectClass cSceneNodePortalsComponent = UINT16_MAX - 506u;
+const ObjectClass cSceneNodeLightComponent = UINT16_MAX - 507u;
+const ObjectClass cSceneNodeCameraComponent = UINT16_MAX - 508u;
 
 ZN_INTERFACE ZN_API ISceneNodeComponent 
 	: public IObject
     , public std::enable_shared_from_this<ISceneNodeComponent>
 {
-	static ObjectType GetType() { return otSceneNodeComponent; }
-	static ObjectClass GetClass() { return cSceneNodeComponent; }
+	//static ObjectClass GetClassT() { return cSceneNodeComponent; }
 
 	virtual ~ISceneNodeComponent() {}
 
@@ -31,7 +38,7 @@ ZN_INTERFACE ZN_API ISceneNodeComponent
 	virtual void Update(const UpdateEventArgs& e) = 0;
     virtual void Accept(IVisitor* visitor) = 0;
 };
-typedef std::unordered_map<GUID, std::shared_ptr<ISceneNodeComponent>> ComponentsMap;
+typedef std::unordered_map<ObjectClass, std::shared_ptr<ISceneNodeComponent>> ComponentsMap;
 
 const ComponentMessageType UUID_OnParentChanged = 1;
 const ComponentMessageType UUID_OnLocalTransformChanged = 2;
@@ -54,6 +61,8 @@ ZN_INTERFACE __declspec(UUID_ColliderComponent) ZN_API IColliderComponent3D
 		ByFrustrumAndDistance2D,
 		ByFrustrumAndDistance
 	};
+
+	static ObjectClass GetClassT() { return cSceneNodeColliderComponent; }
 
 	virtual ~IColliderComponent3D() {}
 
@@ -145,6 +154,8 @@ ZN_INTERFACE ZN_API IPortalRoom
 #define UUID_PortalsComponent uuid("C4B0195E-B6E4-458E-A371-C0698335A5A7")
 ZN_INTERFACE __declspec(UUID_PortalsComponent) ZN_API IPortalsComponent3D
 {
+	static ObjectClass GetClassT() { return cSceneNodePortalsComponent; }
+
 	virtual ~IPortalsComponent3D() {}
 };
 
@@ -156,11 +167,13 @@ ZN_INTERFACE __declspec(UUID_PortalsComponent) ZN_API IPortalsComponent3D
 #define UUID_ModelsComponent uuid("403E886D-7BD7-438B-868D-AC4380830716")
 ZN_INTERFACE __declspec(UUID_ModelsComponent) ZN_API IModelsComponent3D
 {
+	static ObjectClass GetClassT() { return cSceneNodeModelsComponent; }
+
 	virtual ~IModelsComponent3D() {}
 
 	virtual void AddModel(const std::shared_ptr<IModel>& Model) = 0;
 	virtual void RemoveModel(const std::shared_ptr<IModel>& Model) = 0;
-	virtual const ModelsList& GetModels() = 0;
+	virtual const ModelsList& GetModels() const = 0;
 };
 const ComponentMessageType UUID_OnModelAdded = 30;
 const ComponentMessageType UUID_OnModelRemoved = 30;
@@ -236,6 +249,8 @@ ZN_INTERFACE ZN_API ILight3D
 #define UUID_LightComponent uuid("2198326E-A00F-43C8-9EF5-4F60A8ABBBAE")
 ZN_INTERFACE __declspec(UUID_LightComponent) ZN_API ILightComponent3D
 {
+	static ObjectClass GetClassT() { return cSceneNodeLightComponent; }
+
 	virtual ~ILightComponent3D() {}
 
 	virtual void SetAmbientColor(glm::vec3 Value) = 0;
@@ -270,6 +285,8 @@ ZN_INTERFACE __declspec(UUID_CameraComponent) ZN_API ICameraComponent3D
 		Left = 0,
 		Right
 	};
+
+	static ObjectClass GetClassT() { return cSceneNodeCameraComponent; }
 
 	virtual ~ICameraComponent3D() {}
 
@@ -329,6 +346,8 @@ ZN_INTERFACE ZN_API ISkeletonBone3D
 #define UUID_SkeletonComponent uuid("6A913E4D-B4E9-4E7C-8A09-F606D7A85CD5")
 ZN_INTERFACE __declspec(UUID_SkeletonComponent) ZN_API ISkeletonComponent3D
 {
+	static ObjectClass GetClassT() { return cSceneNodeSkeletonComponent; }
+
 	virtual ~ISkeletonComponent3D() {}
 
 	virtual std::shared_ptr<ISkeletonBone3D> GetBone(size_t Index) const = 0;
@@ -382,8 +401,9 @@ ZN_INTERFACE ZN_API IParticleSystem
 #define UUID_ParticleComponent uuid("B0168C5F-60C0-4210-B3EF-740FEB89FFDD")
 ZN_INTERFACE __declspec(UUID_ParticleComponent) ZN_API IParticleComponent3D
 {
-	virtual ~IParticleComponent3D() {}
+	static ObjectClass GetClassT() { return cSceneNodeParticleComponent; }
 
+	virtual ~IParticleComponent3D() {}
 };
 
 
@@ -402,6 +422,8 @@ ZN_INTERFACE ZN_API IPhysicsBody
 #define UUID_PhysicsComponent uuid("678B0AA5-0CD4-4C87-874A-20CD2AC82D2D")
 ZN_INTERFACE __declspec(UUID_PhysicsComponent)ZN_API IPhysicsComponent
 {
+	static ObjectClass GetClassT() { return cSceneNodePhysicsComponent; }
+
 	virtual ~IPhysicsComponent() {}
 
 	virtual glm::vec3 GetPhysicsPosition() const = 0;

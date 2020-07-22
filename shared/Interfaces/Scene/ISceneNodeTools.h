@@ -49,6 +49,39 @@ ZN_INTERFACE ZN_API ISceneNodeUIFactory
 };
 
 
+// ==================================================================
+
+
+ZN_INTERFACE ZN_API IComponentCreationArgs
+	: public IObjectCreationArgs
+{
+	virtual ~IComponentCreationArgs() {}
+
+	virtual ISceneNode3D& GetSceneNode() = 0;
+};
+
+ZN_INTERFACE ZN_API IComponentFactory
+{
+	static ObjectType GetSupportedObjectType() { return otSceneNodeComponent; }
+
+	virtual ~IComponentFactory() {}
+
+	virtual std::shared_ptr<ISceneNodeComponent> CreateComponent(ObjectClass ObjectClassKey, ISceneNode3D& SceneNode) = 0;
+	virtual std::shared_ptr<ISceneNodeComponent> LoadComponentXML(const std::shared_ptr<IXMLReader>& Reader, ISceneNode3D& SceneNode) = 0;
+	virtual std::shared_ptr<IXMLWriter> SaveComponentXML(std::shared_ptr<ISceneNodeComponent> Object) = 0;
+
+	template <typename T>
+	inline std::shared_ptr<T> CreateComponentT(ObjectClass ObjectClassKey, ISceneNode3D& SceneNode)
+	{
+		return std::dynamic_pointer_cast<T>(CreateComponent(ObjectClassKey, SceneNode));
+	}
+};
+
+
+//
+
+
+
 ZN_INTERFACE ZN_API ISceneNodeProvider
 {
 	virtual ~ISceneNodeProvider() {}

@@ -40,6 +40,7 @@ public:
 
 protected:
 	const ISceneNode3D&								GetOwnerNode() const;
+	IBaseManager&									GetBaseManager() const;
     void                                            RaiseComponentMessage(ComponentMessageType Message);
 
 private:

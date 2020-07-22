@@ -83,8 +83,8 @@ inline char HitBoundingBox(glm::vec3 minB, glm::vec3 maxB, glm::vec3 origin, glm
 	char quadrant[NUMDIM];
 	register int i;
 	int whichPlane;
-	double maxT[NUMDIM];
-	double candidatePlane[NUMDIM];
+	float maxT[NUMDIM];
+	float candidatePlane[NUMDIM];
 	
 	/* Find candidate planes; this loop can be avoided if
 	rays cast all from the eye(assume perpsective view) */

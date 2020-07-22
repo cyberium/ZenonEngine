@@ -408,6 +408,9 @@
     <ClCompile Include="ObjectsFactories\SceneNodeUIFactory.cpp">
       <Filter>Object system\Typed creators</Filter>
     </ClCompile>
+    <ClCompile Include="ObjectsFactories\ComponentsFactory.cpp">
+      <Filter>Object system\Typed creators</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Log.h">
@@ -924,6 +927,9 @@
       <Filter>XML</Filter>
     </ClInclude>
     <ClInclude Include="ObjectsFactories\SceneNodeUIFactory.h">
+      <Filter>Object system\Typed creators</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjectsFactories\ComponentsFactory.h">
       <Filter>Object system\Typed creators</Filter>
     </ClInclude>
   </ItemGroup>

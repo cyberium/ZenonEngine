@@ -37,6 +37,16 @@ const std::vector<ModelProxie::SConnection>& ModelProxie::GetConnections() const
 	return m_Model->GetConnections();
 }
 
+void ModelProxie::SetFileName(const std::string & FileName)
+{
+	m_Model->SetFileName(FileName);
+}
+
+std::string ModelProxie::GetFileName() const
+{
+	return m_Model->GetFileName();
+}
+
 bool ModelProxie::Render(const RenderEventArgs& renderEventArgs) const
 {
 	return m_Model->Render(renderEventArgs);

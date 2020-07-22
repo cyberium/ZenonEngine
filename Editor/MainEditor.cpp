@@ -230,11 +230,13 @@ void MainEditor::OnActionSceneLoad()
 	auto reader = xml.CreateReader(file);
 
 	auto currentRoot = m_Editor3D->GetRealRootNode3D();
-	for (const auto& child : reader->GetChilds())
-	{
-		auto node = m_Editor3D->GetBaseManager2().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->LoadSceneNode3DXML(child, currentRoot->GetScene(), currentRoot->GetParent().lock());
-		currentRoot->AddChild(node);
-	}
+	while (false == currentRoot->GetChilds().empty())
+		currentRoot->RemoveChild(currentRoot->GetChilds()[0]);
+
+	auto rootNodeXML = m_Editor3D->GetBaseManager2().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->LoadSceneNode3DXML(reader->GetChilds()[0], currentRoot->GetScene(), currentRoot->GetParent().lock());
+
+	while (false == rootNodeXML->GetChilds().empty())
+		currentRoot->AddChild(rootNodeXML->GetChilds()[0]);
 }
 
 void MainEditor::OnActionSceneSave()

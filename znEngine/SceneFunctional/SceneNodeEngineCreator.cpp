@@ -19,9 +19,9 @@ CSceneNode3DEngineCreator::CSceneNode3DEngineCreator(IBaseManager& BaseManager)
 {
 	m_FBXManager = std::make_shared<CFBXManager>(GetBaseManager());
 
-	AddKey(cSceneNode3D);
+	AddKey("SceneNode3D", cSceneNode3D);
 #ifdef ZN_FBX_SDK_ENABLE
-	AddKey(cSceneNode_FBXNode);
+	AddKey("SceneNodeFBX", cSceneNode_FBXNode);
 #endif
 }
 
@@ -63,9 +63,9 @@ std::shared_ptr<IObject> CSceneNode3DEngineCreator::CreateObject(size_t Index, c
 CSceneNodeUIEngineCreator::CSceneNodeUIEngineCreator(IBaseManager & BaseManager)
 	: CObjectClassCreator(BaseManager)
 {
-	AddKey(cSceneNodeUI);
-	AddKey(cSceneNodeUI_Text);
-	AddKey(cSceneNodeUI_Color);
+	AddKey("SceneNodeUI", cSceneNodeUI);
+	AddKey("SceneNodeUIText", cSceneNodeUI_Text);
+	AddKey("SceneNodeUIColor", cSceneNodeUI_Color);
 }
 
 CSceneNodeUIEngineCreator::~CSceneNodeUIEngineCreator()

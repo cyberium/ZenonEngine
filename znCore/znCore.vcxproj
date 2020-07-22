@@ -117,6 +117,7 @@
     <ClCompile Include="HighResolutionTimer.cpp" />
     <ClCompile Include="Console.cpp" />
     <ClCompile Include="Log.cpp" />
+    <ClCompile Include="ObjectsFactories\ComponentsFactory.cpp" />
     <ClCompile Include="ObjectsFactories\Object.cpp" />
     <ClCompile Include="ObjectsFactories\ObjectClassFactory.cpp" />
     <ClCompile Include="ObjectsFactories\ObjectClassCreator.cpp" />
@@ -291,6 +292,7 @@
     <ClInclude Include="Matrix.h" />
     <ClInclude Include="Console.h" />
     <ClInclude Include="Log.h" />
+    <ClInclude Include="ObjectsFactories\ComponentsFactory.h" />
     <ClInclude Include="ObjectsFactories\Object.h" />
     <ClInclude Include="ObjectsFactories\ObjectClassFactory.h" />
     <ClInclude Include="ObjectsFactories\ObjectClassCreator.h" />

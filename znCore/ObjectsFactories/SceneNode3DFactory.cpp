@@ -9,8 +9,8 @@
 #include "Files/File.h"
 #include "XML/XMLManager.h"
 
-CSceneNode3DFactory::CSceneNode3DFactory(IBaseManager& BaseManager, ObjectType Type)
-	: CObjectClassFactory(BaseManager, Type)
+CSceneNode3DFactory::CSceneNode3DFactory(IBaseManager& BaseManager, const std::string& TypeName, ObjectType Type)
+	: CObjectClassFactory(BaseManager, TypeName, Type)
 {}
 
 CSceneNode3DFactory::~CSceneNode3DFactory()
@@ -40,10 +40,7 @@ std::shared_ptr<ISceneNode3D> CSceneNode3DFactory::LoadSceneNode3DXML(const std:
 
 std::shared_ptr<IXMLWriter> CSceneNode3DFactory::SaveSceneNode3DXML(std::shared_ptr<ISceneNode3D> Object)
 {
-	//auto writer = WriteGUIDXML(Object->GetGUID());
-	
-	CXMLManager xmlManager;
-	auto writer = xmlManager.CreateWriter("SceneNode3D");
+	auto writer = WriteGUIDXML(Object->GetGUID());
 	if (auto objectLoadSave = std::dynamic_pointer_cast<IObjectLoadSave>(Object))
 		objectLoadSave->Save(writer);
 
@@ -56,7 +53,6 @@ std::shared_ptr<ISceneNode3D> CSceneNode3DFactory::LoadSceneNode3D(const std::sh
 
 	CSceneNode3DCreationArgs creationArgs(Scene, Parent);
 	std::shared_ptr<IObject> createdbject = CreateObject(guid.GetObjectClass(), &creationArgs);
-
 	if (auto objectLoadSave = std::dynamic_pointer_cast<IObjectLoadSave>(createdbject))
 		objectLoadSave->Load(Bytes);
 

@@ -57,10 +57,12 @@ std::shared_ptr<ISceneNode3D> CEditedScene::CreateNode(const glm::ivec3& Positio
 	auto model = GetRenderDevice().GetObjectsFactory().CreateModel();
 	if (auto loadable = std::dynamic_pointer_cast<IObjectLoadSave>(model))
 	{
-		auto file = GetBaseManager().GetManager<IFilesManager>()->Open("C:\\_engine\\ZenonEngine_gamedata\\models\\" + Type + ".fbx.znmdl");
+		auto fileName = "C:\\_engine\\ZenonEngine_gamedata\\models\\" + Type + ".fbx.znmdl";
+		auto file = GetBaseManager().GetManager<IFilesManager>()->Open(fileName);
 		if (file == nullptr)
 			throw CException("File not found.");
 		loadable->Load(file);
+		model->SetFileName(fileName);
 	}
 
 	node->GetComponent<IModelsComponent3D>()->AddModel(model);

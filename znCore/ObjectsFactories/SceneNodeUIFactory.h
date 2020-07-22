@@ -32,9 +32,9 @@ public:
 	};
 
 public:
-	CSceneNodeUIFactory(IBaseManager& BaseManager, ObjectType Type);
+	CSceneNodeUIFactory(IBaseManager& BaseManager, const std::string& TypeName, ObjectType Type);
 	virtual ~CSceneNodeUIFactory();
 
-	// ISceneNodeUICreator
+	// ISceneNodeUIFactory
 	std::shared_ptr<ISceneNodeUI> CreateSceneNodeUI(IScene* Scene, ObjectClass ObjectClassKey, const std::shared_ptr<ISceneNodeUI>& Parent) override;
 };

@@ -6,13 +6,13 @@
 template<class T>
 inline std::shared_ptr<T> CComponentBase::IsComponentExists() const
 {
-    return GetOwnerNode().IsComponentExists(__uuidof(T));
+    return GetOwnerNode().IsComponentExists(T::GetClassT());
 }
 
 template<class T>
 inline std::shared_ptr<T> CComponentBase::GetComponent() const
 {
-    std::shared_ptr<ISceneNodeComponent> component = GetOwnerNode().GetComponent(__uuidof(T));
+    std::shared_ptr<ISceneNodeComponent> component = GetOwnerNode().GetComponent(T::GetClassT());
     if (component == nullptr)
         return std::shared_ptr<T>();
 

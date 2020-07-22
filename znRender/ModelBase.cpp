@@ -36,6 +36,16 @@ const std::vector<IModel::SConnection>& ModelBase::GetConnections() const
 	return m_Connections;
 }
 
+void ModelBase::SetFileName(const std::string & FileName)
+{
+	m_FileName = FileName;
+}
+
+std::string ModelBase::GetFileName() const
+{
+	return m_FileName;
+}
+
 void ModelBase::Accept(IVisitor* visitor)
 {
 	EVisitResult visitResult = visitor->Visit(this);
@@ -61,6 +71,9 @@ void ModelBase::Accept(IVisitor* visitor)
 //
 void ModelBase::Load(const std::shared_ptr<IByteBuffer>& ByteBuffer)
 {
+	if (auto file = std::dynamic_pointer_cast<IFile>(ByteBuffer))
+		SetFileName(file->Path_Name());
+
 	BoundingBox bounds;
 	bounds.Load(ByteBuffer);
 	m_BoundingBox = bounds;
@@ -121,4 +134,36 @@ void ModelBase::Save(const std::shared_ptr<IByteBuffer>& ByteBuffer) const
 
 		ByteBuffer->write(&it.GeometryDrawArgs);
 	}
+}
+
+void ModelBase::Load(const std::shared_ptr<IXMLReader>& Reader)
+{
+	if (auto fileNameReader = Reader->GetChild("FileName"))
+		m_FileName = fileNameReader->GetValue();
+
+	// TODO: Replace with models maanger
+	auto modelFile = m_RenderDevice.GetBaseManager().GetManager<IFilesManager>()->Open(m_FileName);
+	if (modelFile)
+		Load(modelFile);
+}
+
+void ModelBase::Save(const std::shared_ptr<IXMLWriter>& Writer) const
+{
+	// TODO: Replace with models maanger
+	auto file = m_RenderDevice.GetBaseManager().GetManager<IFilesManager>()->Open(m_FileName);
+	if (file == nullptr)
+	{
+		file = std::make_shared<CFile>(m_FileName);
+		Save(file);
+		m_RenderDevice.GetBaseManager().GetManager<IFilesManager>()->GetFilesStorage("PCEveryFileAccess")->SaveFile(file);
+	}
+
+	CXMLManager xml;
+	auto modelWriter = xml.CreateWriter("Model");
+
+	auto fileNameWriter = xml.CreateWriter("FileName");
+	fileNameWriter->SetValue(m_FileName);
+	modelWriter->AddChild(fileNameWriter);
+
+	Writer->AddChild(modelWriter);
 }

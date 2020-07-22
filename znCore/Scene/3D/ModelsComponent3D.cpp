@@ -3,6 +3,9 @@
 // General
 #include "ModelsComponent3D.h"
 
+// Include
+#include "XML/XMLManager.h"
+
 CModelsComponent3D::CModelsComponent3D(const ISceneNode3D& OwnerNode)
     : CComponentBase(OwnerNode)
 {
@@ -18,6 +21,41 @@ void CModelsComponent3D::Copy(std::shared_ptr<ISceneNodeComponent> Destination) 
 	auto destCast = std::static_pointer_cast<CModelsComponent3D>(Destination);
 
 	destCast->m_Models = m_Models;
+}
+
+void CModelsComponent3D::Load(const std::shared_ptr<IXMLReader>& Reader)
+{
+	CComponentBase::Load(Reader);
+
+	auto modelsReader = Reader->GetChild("Models");
+	if (modelsReader)
+	{
+		for (const auto& modelReader : modelsReader->GetChilds())
+		{
+			auto model = GetBaseManager().GetApplication().GetRenderDevice().GetObjectsFactory().CreateModel();
+			if (auto loadable = std::dynamic_pointer_cast<IObjectLoadSave>(model))
+				loadable->Load(modelReader);
+			AddModel(model);
+		}
+	}
+}
+
+void CModelsComponent3D::Save(const std::shared_ptr<IXMLWriter>& Writer) const
+{
+	CComponentBase::Save(Writer);
+
+	auto models = GetModels();
+	if (false == models.empty())
+	{
+		CXMLManager xml;
+		auto modelsWriter = xml.CreateWriter("Models");
+		for (const auto& model : GetModels())
+		{
+			if (auto loadable = std::dynamic_pointer_cast<IObjectLoadSave>(model))
+				loadable->Save(modelsWriter);
+		}
+		Writer->AddChild(modelsWriter);
+	}
 }
 
 
@@ -39,7 +77,7 @@ void CModelsComponent3D::RemoveModel(const std::shared_ptr<IModel>& Model)
 	    m_Models.erase(iter);
 }
 
-const ModelsList& CModelsComponent3D::GetModels()
+const ModelsList& CModelsComponent3D::GetModels() const
 {
 	return m_Models;
 }

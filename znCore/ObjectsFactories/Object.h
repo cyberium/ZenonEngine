@@ -2,7 +2,6 @@
 
 class ZN_API Object
 	: public IObject
-	, public IObjectInternal
 	, public IObjectPrivate
 	, public IObjectLoadSave
 {
@@ -18,10 +17,6 @@ public:
 	virtual std::string GetClassNameW() const override;
 	virtual void Copy(std::shared_ptr<IObject> Destination) const;
 
-	// IObjectInternal
-	void SetClassName(const std::string& Name)  override final;
-	void SetTypeName(const std::string& Name) override final;
-
 	// IObjectLoadSave
 	virtual void Load(const std::shared_ptr<IByteBuffer>& Buffer) override;
 	virtual void Save(const std::shared_ptr<IByteBuffer>& Buffer) const override;
@@ -30,7 +25,7 @@ public:
 
 private:
 	// IObjectPrivate
-	void SetGUID(const Guid& NewGuid) override;
+	void SetGUID(const IBaseManager* BaseManager, const Guid& NewGuid) override;
 
 protected:
 	Object();
@@ -46,6 +41,6 @@ private:
 private:
 	Guid m_Guid;
 	std::string m_Name;
-	std::string m_ClassName;
-	std::string m_TypeName;
+
+	const IBaseManager* m_BaseManager;
 };

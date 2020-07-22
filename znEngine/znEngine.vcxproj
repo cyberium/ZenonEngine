@@ -307,6 +307,7 @@
     <ClCompile Include="Passes\UIFontPass.cpp" />
     <ClCompile Include="Passes\UITexturePass.cpp" />
     <ClCompile Include="Physics\Adapters\ReactPhysicsComponent.cpp" />
+    <ClCompile Include="SceneFunctional\ComponentsEngineCreator.cpp" />
     <ClCompile Include="SceneFunctional\SceneNodeEngineCreator.cpp" />
     <ClCompile Include="Scene_Default.cpp" />
     <ClCompile Include="Materials\MaterialDebug.cpp" />
@@ -470,6 +471,7 @@
     <ClInclude Include="Passes\UIFontPass.h" />
     <ClInclude Include="Passes\UITexturePass.h" />
     <ClInclude Include="Physics\Adapters\ReactPhysicsComponent.h" />
+    <ClInclude Include="SceneFunctional\ComponentsEngineCreator.h" />
     <ClInclude Include="SceneFunctional\SceneNodeEngineCreator.h" />
     <ClInclude Include="Scene_Default.h" />
     <ClInclude Include="Materials\MaterialDebug.h" />

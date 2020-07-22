@@ -55,9 +55,9 @@ public:
 	//
 	// Components engine
 	//
-	bool                                            IsComponentExists(GUID ComponentID) const override;
-	std::shared_ptr<ISceneNodeComponent>            GetComponent(GUID ComponentID) const override;
-	std::shared_ptr<ISceneNodeComponent>            AddComponent(GUID ComponentID, std::shared_ptr<ISceneNodeComponent> Component) override;
+	bool                                            IsComponentExists(ObjectClass ComponentID) const override;
+	std::shared_ptr<ISceneNodeComponent>            GetComponent(ObjectClass ComponentID) const override;
+	std::shared_ptr<ISceneNodeComponent>            AddComponent(ObjectClass ComponentID, std::shared_ptr<ISceneNodeComponent> Component) override;
 	const ComponentsMap&                            GetComponents() const override;
 	void                                            RaiseComponentMessage(const ISceneNodeComponent* Component, ComponentMessageType Message) const override;
 	virtual void                                    RegisterComponents() override;
@@ -70,8 +70,8 @@ public:
 
 	// IObject
 	Guid                                            GetGUID() const override final { return Object::GetGUID(); };
-	std::string                                     GetName() const override final { return Object::GetName(); };
-	void                                            SetName(const std::string& Name) override final { Object::SetName(Name); };
+	std::string                                     GetName() const override { return Object::GetName(); };
+	virtual void                                    SetName(const std::string& Name) override;
 	std::string                                     GetTypeName() const override final { return Object::GetTypeName(); };
 	std::string                                     GetClassNameW() const override final { return Object::GetClassNameW(); };
 
@@ -90,6 +90,7 @@ protected:
 	virtual glm::mat4                               CalculateLocalTransform() const;
 	void											UpdateLocalTransform();
 	void											UpdateWorldTransform();
+	void                                            DoLoadProperties(const std::shared_ptr<IXMLReader>& Reader) const;
 	void                                            DoSaveProperties(const std::shared_ptr<IXMLWriter>& Writer) const;
 
 	IBaseManager&                                   GetBaseManager() const;

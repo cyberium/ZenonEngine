@@ -26,8 +26,6 @@ SceneNode3D::SceneNode3D()
 	, m_WorldTransform(1.0f)
 	, m_InverseWorldTransform(1.0f)
 {
-	SetClassName("SceneNode3D");
-
 	m_PropertiesGroup = std::make_shared<CPropertiesGroup>("SceneNodeProperties", "Some important scene node 3d properties.");
 }
 
@@ -298,13 +296,13 @@ void SceneNode3D::SetWorldTransform(const glm::mat4& worldTransform)
 //
 // Components engine
 //
-bool SceneNode3D::IsComponentExists(GUID ComponentID) const
+bool SceneNode3D::IsComponentExists(ObjectClass ComponentID) const
 {
 	const auto& components = GetComponents();
 	return components.find(ComponentID) != components.end();
 }
 
-std::shared_ptr<ISceneNodeComponent> SceneNode3D::GetComponent(GUID ComponentID) const
+std::shared_ptr<ISceneNodeComponent> SceneNode3D::GetComponent(ObjectClass ComponentID) const
 {
 	const auto& components = GetComponents();
 	const auto& component = components.find(ComponentID);
@@ -314,7 +312,7 @@ std::shared_ptr<ISceneNodeComponent> SceneNode3D::GetComponent(GUID ComponentID)
 	return component->second;
 }
 
-std::shared_ptr<ISceneNodeComponent> SceneNode3D::AddComponent(GUID ComponentID, std::shared_ptr<ISceneNodeComponent> Component)
+std::shared_ptr<ISceneNodeComponent> SceneNode3D::AddComponent(ObjectClass ComponentID, std::shared_ptr<ISceneNodeComponent> Component)
 {
 	m_Components[ComponentID] = Component;
 	return Component;
@@ -328,14 +326,17 @@ const ComponentsMap& SceneNode3D::GetComponents() const
 void SceneNode3D::RaiseComponentMessage(const ISceneNodeComponent* Component, ComponentMessageType Message) const
 {
 	const auto& components = GetComponents();
-	std::for_each(components.begin(), components.end(), [&Component, &Message](const std::pair<GUID, std::shared_ptr<ISceneNodeComponent>>& ComponentMapIter) {
+	std::for_each(components.begin(), components.end(), [&Component, &Message](const std::pair<ObjectClass, std::shared_ptr<ISceneNodeComponent>>& ComponentMapIter) {
 		ComponentMapIter.second->OnMessage(Component, Message);
 	});
 }
 void SceneNode3D::RegisterComponents()
 {
-	m_Components_Models = ISceneNode3D::AddComponent(std::make_shared<CModelsComponent3D>(*this));
-	m_Components_Collider = ISceneNode3D::AddComponent(std::make_shared<CColliderComponent3D>(*this));
+	m_Components_Models = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<IComponentFactory>()->CreateComponentT<IModelsComponent3D>(cSceneNodeModelsComponent, *this);
+	m_Components_Models = ISceneNode3D::AddComponent(m_Components_Models);
+
+	m_Components_Collider = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<IComponentFactory>()->CreateComponentT<IColliderComponent3D>(cSceneNodeColliderComponent, *this);
+	m_Components_Collider = ISceneNode3D::AddComponent(m_Components_Collider);
 }
 
 const std::shared_ptr<IColliderComponent3D>& SceneNode3D::GetColliderComponent() const
@@ -369,7 +370,7 @@ void SceneNode3D::Accept(IVisitor* visitor)
 	if (visitResult & EVisitResult::AllowVisitContent)
 	{
 		const auto& components = GetComponents();
-		std::for_each(components.begin(), components.end(), [&visitor](const std::pair<GUID, std::shared_ptr<ISceneNodeComponent>>& Component) {
+		std::for_each(components.begin(), components.end(), [&visitor](const std::pair<ObjectClass, std::shared_ptr<ISceneNodeComponent>>& Component) {
 			if (Component.second)
 				Component.second->Accept(visitor);
 		});
@@ -386,6 +387,54 @@ void SceneNode3D::Accept(IVisitor* visitor)
 }
 
 
+
+
+//
+// IObject
+//
+
+namespace
+{
+	std::string ExtractClearName(const std::string& DirtyName)
+	{
+		char buff[256];
+		int num;
+		if (sscanf(DirtyName.c_str(), "%s%d", buff, &num) > 0)
+			return buff;
+
+		return DirtyName;
+	}
+}
+
+void SceneNode3D::SetName(const std::string& Name)
+{
+	std::string resultName = Name;
+	if (auto parent = GetParent().lock())
+	{
+		auto childs = parent->GetChilds();
+		auto childIt = childs.end();
+		do
+		{
+			childIt = std::find_if(childs.begin(), childs.end(), [resultName](const std::shared_ptr<ISceneNode3D>& Child) -> bool {
+				return resultName == Child->GetName();
+			});
+			if (childIt != childs.end())
+				resultName = ExtractClearName(resultName) + "" + std::to_string(GetGUID().GetCounter());
+
+		} while (childIt != childs.end());
+
+		_ASSERT(std::find_if(childs.begin(), childs.end(), [resultName](const std::shared_ptr<ISceneNode3D>& Child) -> bool {
+			return resultName == Child->GetName();
+		}) == childs.end());
+	}
+	else
+		_ASSERT(true);
+
+	
+	Object::SetName(resultName);
+}
+
+
 //
 // IObjectLoadSave
 //
@@ -393,11 +442,17 @@ void SceneNode3D::Load(const std::shared_ptr<IXMLReader>& Reader)
 {
 	Object::Load(Reader);
 
-	m_Translate = Reader->GetVec3Attribute("Translate");
-	m_Rotate = Reader->GetVec3Attribute("Rotate");
-	m_Scale = Reader->GetVec3Attribute("Scale");
-	if (m_IsRotateQuat)
-		throw CException("!!!");
+	DoLoadProperties(Reader);
+
+	if (Reader->IsChildExists("Components"))
+	{
+		auto componentsWriter = Reader->GetChild("Components");
+		for (const auto& ch : componentsWriter->GetChilds())
+		{
+			auto child = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<IComponentFactory>()->LoadComponentXML(ch, *this);
+			AddComponent(child->GetGUID().GetObjectClass(), child);
+		}
+	}
 
 	if (Reader->IsChildExists("Childs"))
 	{
@@ -415,6 +470,17 @@ void SceneNode3D::Save(const std::shared_ptr<IXMLWriter>& Writer) const
 	Object::Save(Writer);
 
 	DoSaveProperties(Writer);
+
+	const auto& components = GetComponents();
+	if (false == components.empty())
+	{
+		auto componentsWriter = Writer->CreateChild("Components");
+		for (const auto& ch : components)
+		{
+			auto childWriter = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<IComponentFactory>()->SaveComponentXML(ch.second);
+			componentsWriter->AddChild(childWriter);
+		}
+	}
 
 	const auto& childs = GetChilds();
 	if (false == childs.empty())
@@ -445,31 +511,12 @@ void SceneNode3D::AddChildInternal(std::shared_ptr<ISceneNode3D> ChildNode)
 	if (iter != m_Children.end())
 		throw CException(L"This parent already has this child.");
 
-	auto childIt = m_Children.end();
-	do
-	{
-		childIt = std::find_if(m_Children.begin(), m_Children.end(), [ChildNode](const std::shared_ptr<ISceneNode3D>& Child) -> bool {
-			char buff[256];
-			int num;
-			if (sscanf(Child->GetName().c_str(), "%s%d", buff, &num) > 0)
-				return ChildNode->GetName() == buff;
-			return ChildNode->GetName() == Child->GetName();
-		});
-		if (childIt != m_Children.end())
-		{
-			std::string newName = ChildNode->GetName();
-			char buff[256];
-			int num;
-			if (sscanf(newName.c_str(), "%s%d", buff, &num) > 0)
-				newName = buff;
-			ChildNode->SetName(newName + "" + std::to_string(ChildNode->GetGUID().GetCounter()));
-		}
-	} while (childIt != m_Children.end());
-
 	// Add to common list
 	m_Children.push_back(ChildNode);
 
 	std::dynamic_pointer_cast<SceneNode3D>(ChildNode)->SetParentInternal(weak_from_this());
+
+	ChildNode->SetName(ChildNode->GetName());
 
 	// TODO: Какой ивент посылать первым?
 	ChildNode->RaiseOnParentChanged();
@@ -543,12 +590,22 @@ void SceneNode3D::UpdateWorldTransform()
 	RaiseComponentMessage(nullptr, UUID_OnWorldTransformChanged);
 }
 
+namespace
+{
+
+}
+
+void SceneNode3D::DoLoadProperties(const std::shared_ptr<IXMLReader>& Reader) const
+{
+	auto reader = Reader->GetChild(GetProperties()->GetName());
+	if (reader)
+		GetProperties()->Load(reader);
+}
 
 void SceneNode3D::DoSaveProperties(const std::shared_ptr<IXMLWriter>& Writer) const
 {
 	CXMLManager xml;
-	auto propertiesWriter = xml.CreateWriter("Properties");
-
+	auto propertiesWriter = xml.CreateWriter(GetProperties()->GetName());
 	GetProperties()->Save(propertiesWriter);
 	
 	Writer->AddChild(propertiesWriter);

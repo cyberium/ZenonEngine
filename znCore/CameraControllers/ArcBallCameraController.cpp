@@ -50,7 +50,7 @@ glm::vec3 CArcBallCameraController::GetPivotPoint() const
 //
 void CArcBallCameraController::OnUpdate(UpdateEventArgs& e)
 {
-	float moveMultiplier = (TranslateFaster) ? 100 : 50;
+	float moveMultiplier = (TranslateFaster) ? 100.0 : 50.0;
 	//float rotateMultiplier = (RotateFaster) ? 600 : 300;
 
 #if 0

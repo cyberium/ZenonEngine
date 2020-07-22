@@ -7,8 +7,8 @@
 #include "Scene/UI/SceneNodeUI.h"
 
 
-CSceneNodeUIFactory::CSceneNodeUIFactory(IBaseManager& BaseManager, ObjectType Type)
-	: CObjectClassFactory(BaseManager, Type)
+CSceneNodeUIFactory::CSceneNodeUIFactory(IBaseManager& BaseManager, const std::string& TypeName, ObjectType Type)
+	: CObjectClassFactory(BaseManager, TypeName, Type)
 {
 }
 

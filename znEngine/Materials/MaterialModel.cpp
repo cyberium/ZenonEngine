@@ -7,7 +7,6 @@ MaterialModel::MaterialModel(const IBaseManager& BaseManager)
 	: MaterialProxieT(BaseManager.GetApplication().GetRenderDevice())
 	, m_BaseManager(BaseManager)
 {
-	SetClassName("MaterialModel");
 }
 
 MaterialModel::~MaterialModel()

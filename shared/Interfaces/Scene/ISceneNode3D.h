@@ -76,9 +76,9 @@ ZN_INTERFACE ZN_API ISceneNode3D
 	virtual void SetWorldTransform(const glm::mat4& worldTransform) = 0;
 
 	// Components engine
-	virtual bool IsComponentExists(GUID ComponentID) const = 0;
-	virtual std::shared_ptr<ISceneNodeComponent> GetComponent(GUID ComponentID) const = 0;
-	virtual std::shared_ptr<ISceneNodeComponent> AddComponent(GUID ComponentID, std::shared_ptr<ISceneNodeComponent> Component) = 0;
+	virtual bool IsComponentExists(ObjectClass ComponentID) const = 0;
+	virtual std::shared_ptr<ISceneNodeComponent> GetComponent(ObjectClass ComponentID) const = 0;
+	virtual std::shared_ptr<ISceneNodeComponent> AddComponent(ObjectClass ComponentID, std::shared_ptr<ISceneNodeComponent> Component) = 0;
 	virtual const ComponentsMap& GetComponents() const = 0;
 	virtual void RaiseComponentMessage(const ISceneNodeComponent* Component, ComponentMessageType Message) const = 0;
 	virtual void RegisterComponents() = 0;
@@ -87,17 +87,17 @@ ZN_INTERFACE ZN_API ISceneNode3D
 
 	template<typename T> inline bool IsComponentExists()
 	{
-		return IsComponentExists(__uuidof(T));
+		return IsComponentExists(T::GetClassT());
 	}
 	template<typename T> inline std::shared_ptr<T> GetComponent() const
 	{
-		if (std::shared_ptr<ISceneNodeComponent> component = GetComponent(__uuidof(T)))
+		if (std::shared_ptr<ISceneNodeComponent> component = GetComponent(T::GetClassT()))
 			return std::dynamic_pointer_cast<T>(component);
 		return nullptr;
 	}
 	template<typename T> inline std::shared_ptr<T> AddComponent(std::shared_ptr<T> Component)
 	{
-		if (std::shared_ptr<ISceneNodeComponent> component = AddComponent(__uuidof(T), Component))
+		if (std::shared_ptr<ISceneNodeComponent> component = AddComponent(T::GetClassT(), std::dynamic_pointer_cast<ISceneNodeComponent>(Component)))
 			return std::dynamic_pointer_cast<T>(component);
 		return nullptr;
 	}

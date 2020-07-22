@@ -558,6 +558,9 @@
     <ClCompile Include="Passes\MaterialModelPass.cpp">
       <Filter>Passes\3D</Filter>
     </ClCompile>
+    <ClCompile Include="SceneFunctional\ComponentsEngineCreator.cpp">
+      <Filter>SceneNodes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="common.h">
@@ -1028,6 +1031,9 @@
     </ClInclude>
     <ClInclude Include="Passes\MaterialModelPass.h">
       <Filter>Passes\3D</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneFunctional\ComponentsEngineCreator.h">
+      <Filter>SceneNodes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

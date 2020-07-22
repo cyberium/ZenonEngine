@@ -21,7 +21,6 @@ Guid Object::GetGUID() const
 }
 std::string Object::GetName() const
 {
-	//_ASSERT(m_ClassName.empty() == false);
 	return m_Name;
 }
 void Object::SetName(const std::string& Name)
@@ -30,13 +29,17 @@ void Object::SetName(const std::string& Name)
 }
 std::string Object::GetTypeName() const
 {
-	//_ASSERT(m_ClassName.empty() == false);
-	return m_TypeName;
+	if (m_BaseManager != nullptr)
+		return m_BaseManager->GetManager<IObjectsFactory>()->GetObjectTypeNameByObjectType(m_Guid.GetObjectType());
+
+	return "type" + std::to_string(m_Guid.GetObjectType());
 }
 std::string Object::GetClassNameW() const
 {
-	_ASSERT(m_ClassName.empty() == false);
-	return m_ClassName;
+	if (m_BaseManager != nullptr)
+		return m_BaseManager->GetManager<IObjectsFactory>()->GetObjectClassNameByObjectClass(m_Guid.GetObjectClass());
+
+	return "class" + std::to_string(m_Guid.GetObjectClass());
 }
 
 
@@ -48,21 +51,6 @@ void Object::Copy(std::shared_ptr<IObject> Destination) const
 		throw std::exception(("Unable to copy object with different type and class. Source: " + GetGUID().Str() + ", Destination: " + object->GetGUID().Str()).c_str());
 
 	object->m_Name = m_Name;
-	object->m_ClassName = m_ClassName;
-	object->m_TypeName = m_TypeName;
-}
-
-
-//
-// IObjectInternal
-//
-void Object::SetClassName(const std::string& Name)
-{
-	m_ClassName = Name;
-}
-void Object::SetTypeName(const std::string& Name)
-{
-	m_TypeName = Name;
 }
 
 
@@ -88,8 +76,6 @@ void Object::Load(const std::shared_ptr<IXMLReader>& Reader)
 	m_Guid = Guid(type, class_, counter);
 
 	m_Name = Reader->GetStrAttribute("Name");
-	m_TypeName = Reader->GetStrAttribute("TypeName");
-	m_ClassName = Reader->GetStrAttribute("ClassName");
 }
 
 void Object::Save(const std::shared_ptr<IXMLWriter>& Writer) const
@@ -101,12 +87,6 @@ void Object::Save(const std::shared_ptr<IXMLWriter>& Writer) const
 	// TODO: save only non defaults names
 	if (!m_Name.empty())
 		Writer->SetStrAttribute(m_Name, "Name");
-
-	if (!m_TypeName.empty())
-		Writer->SetStrAttribute(m_TypeName, "TypeName");
-
-	if (!m_ClassName.empty())
-		Writer->SetStrAttribute(m_ClassName, "ClassName");
 }
 
 
@@ -114,7 +94,7 @@ void Object::Save(const std::shared_ptr<IXMLWriter>& Writer) const
 //
 // IObjectPrivate
 //
-void Object::SetGUID(const Guid& NewGuid)
+void Object::SetGUID(const IBaseManager* BaseManager, const Guid& NewGuid)
 {
 	if (GetGUID().IsEmpty() == false)
 		throw std::exception(("Object " + GetGUID().Str() + " already has Guid.").c_str());
@@ -128,22 +108,18 @@ void Object::SetGUID(const Guid& NewGuid)
 	m_Guid = Guid(NewGuid.GetRawValue());
 
 	if (m_Name.empty())
-		m_Name = GetClassNameW() + "_id" + std::to_string(GetGUID().GetCounter());
-
-	if (m_ClassName.empty())
-		m_ClassName = "class" + std::to_string(GetClass());
-
-	if (m_TypeName.empty())
-		m_TypeName = "type" + std::to_string(GetType());
+		m_Name = GetClassNameW() + std::to_string(GetGUID().GetCounter());
 }
 
 
 
 Object::Object()
 	: m_Guid(0ull)
+	, m_BaseManager(nullptr)
 {}
 Object::Object(ObjectType Factory, ObjectClass Class)
 	: m_Guid(0ull)
+	, m_BaseManager(nullptr)
 {}
 Object::~Object()
 {}

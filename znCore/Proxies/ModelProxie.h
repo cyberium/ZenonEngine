@@ -15,7 +15,9 @@ public:
 	virtual BoundingBox GetBounds() const override;
 	void AddConnection(const std::shared_ptr<IMaterial>& Material, const std::shared_ptr<IGeometry>& Geometry, SGeometryDrawArgs GeometryDrawArgs = SGeometryDrawArgs()) override final;
 	const std::vector<SConnection>& GetConnections() const override final;
-	
+	void SetFileName(const std::string& FileName) override final;
+	std::string GetFileName() const override final;
+
 	virtual bool Render(const RenderEventArgs& renderEventArgs) const override;
 	virtual void Accept(IVisitor* visitor) override;
 

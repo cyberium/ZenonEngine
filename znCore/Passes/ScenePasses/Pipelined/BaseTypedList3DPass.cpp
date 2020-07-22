@@ -57,7 +57,7 @@ void CBaseList3DPass::Render(RenderEventArgs & e)
 				if (visitResult == EVisitResult::AllowAll)
 				{
 					const auto& components = SceneNodeElement.SceneNode->GetComponents();
-					std::for_each(components.begin(), components.end(), [this](const std::pair<GUID, std::shared_ptr<ISceneNodeComponent>>& Component) {
+					std::for_each(components.begin(), components.end(), [this](const std::pair<ObjectClass, std::shared_ptr<ISceneNodeComponent>>& Component) {
 						Component.second->Accept(this);
 					});
 				}
