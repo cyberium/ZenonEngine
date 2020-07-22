@@ -16,9 +16,21 @@ void CEditedScene::Initialize()
 {
 	SceneBase::Initialize();
 
-	//auto fileNames = Utils::GetAllFilesInDirectory("C:\\_engine\\ZenonEngine_gamedata\\models", ".znmdl");
+	auto cameraNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, this, GetRootNode3D());
+	cameraNode->SetName("Camera");
+	auto geom = GetRenderDevice().GetPrimitivesFactory().CreateBBox();
+	auto mat = std::make_shared<MaterialDebug>(GetRenderDevice());
+	mat->SetDiffuseColor(glm::vec4(1.0f, 1.0f, 0.3f, 1.0f));
+	auto model = GetRenderDevice().GetObjectsFactory().CreateModel();
+	model->AddConnection(mat, geom);
+	cameraNode->GetComponent<IModelsComponent3D>()->AddModel(model);
 
-	
+	auto cameraComponent = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<IComponentFactory>()->CreateComponentT<ICameraComponent3D>(cSceneNodeCameraComponent, *cameraNode);
+	cameraNode->AddComponent(cameraComponent);
+
+	SetCameraController(std::make_shared<CFreeCameraController>());
+	GetCameraController()->SetCamera(cameraNode->GetComponent<ICameraComponent3D>());
+	GetCameraController()->GetCamera()->SetPerspectiveProjection(ICameraComponent3D::EPerspectiveProjectionHand::Right, 45.0f, 1280.0f / 1024.0f, 1.0f, 5000.0f);	
 }
 
 void CEditedScene::Finalize()
@@ -43,17 +55,8 @@ void CEditedScene::RaiseSceneChangeEvent(ESceneChangeType SceneChangeType, const
 
 std::shared_ptr<ISceneNode3D> CEditedScene::CreateNode(const glm::ivec3& Position, const std::string& Type)
 {
-	//auto it = std::find_if(m_Nodes.begin(), m_Nodes.end(), [&Position](const CEditedScene::SNode& Object) -> bool {
-	//	return (Object.X == Position.x) && (Object.Y == Position.y) && (Object.Z == Position.z);
-	//});
-
-	//if (it != m_Nodes.end())
-	//	return it->SceneNode;
-
 	auto node = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, this);
 	node->SetName(Type);
-	//node->SetTranslate(glm::vec3(Position));
-	//node->SetScale(glm::vec3(25.0f));
 	auto model = GetRenderDevice().GetObjectsFactory().CreateModel();
 	if (auto loadable = std::dynamic_pointer_cast<IObjectLoadSave>(model))
 	{
@@ -66,7 +69,7 @@ std::shared_ptr<ISceneNode3D> CEditedScene::CreateNode(const glm::ivec3& Positio
 	}
 
 	node->GetComponent<IModelsComponent3D>()->AddModel(model);
-	node->GetComponent<IColliderComponent3D>()->SetBounds(/*BoundingBox(glm::vec3(-5.0f), glm::vec3(5.0f))*/model->GetBounds());
+	node->GetComponent<IColliderComponent3D>()->SetBounds(model->GetBounds());
 
 	return node;
 }

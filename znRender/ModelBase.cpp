@@ -151,7 +151,7 @@ void ModelBase::Save(const std::shared_ptr<IXMLWriter>& Writer) const
 {
 	// TODO: Replace with models maanger
 	auto file = m_RenderDevice.GetBaseManager().GetManager<IFilesManager>()->Open(m_FileName);
-	if (file == nullptr)
+	if (false == m_FileName.empty() && file == nullptr)
 	{
 		file = std::make_shared<CFile>(m_FileName);
 		Save(file);

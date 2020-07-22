@@ -409,27 +409,30 @@ namespace
 void SceneNode3D::SetName(const std::string& Name)
 {
 	std::string resultName = Name;
-	if (auto parent = GetParent().lock())
+
+	if (!GetGUID().IsEmpty())
 	{
-		auto childs = parent->GetChilds();
-		auto childIt = childs.end();
-		do
+		if (auto parent = GetParent().lock())
 		{
-			childIt = std::find_if(childs.begin(), childs.end(), [resultName](const std::shared_ptr<ISceneNode3D>& Child) -> bool {
+			auto childs = parent->GetChilds();
+			auto childIt = childs.end();
+			do
+			{
+				childIt = std::find_if(childs.begin(), childs.end(), [resultName](const std::shared_ptr<ISceneNode3D>& Child) -> bool {
+					return resultName == Child->GetName();
+				});
+				if (childIt != childs.end())
+					resultName = ExtractClearName(resultName) + "" + std::to_string(GetGUID().GetCounter());
+
+			} while (childIt != childs.end());
+
+			_ASSERT(std::find_if(childs.begin(), childs.end(), [resultName](const std::shared_ptr<ISceneNode3D>& Child) -> bool {
 				return resultName == Child->GetName();
-			});
-			if (childIt != childs.end())
-				resultName = ExtractClearName(resultName) + "" + std::to_string(GetGUID().GetCounter());
-
-		} while (childIt != childs.end());
-
-		_ASSERT(std::find_if(childs.begin(), childs.end(), [resultName](const std::shared_ptr<ISceneNode3D>& Child) -> bool {
-			return resultName == Child->GetName();
-		}) == childs.end());
+			}) == childs.end());
+		}
+		else
+			_ASSERT(true);
 	}
-	else
-		_ASSERT(true);
-
 	
 	Object::SetName(resultName);
 }

@@ -45,11 +45,33 @@ void CSceneDefault::Initialize()
 	SceneBase::Initialize();
 
 	auto cameraNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, this, GetRootNode3D());
-	cameraNode->AddComponent(std::make_shared<CCameraComponent3D>(*cameraNode));
+	cameraNode->SetName("Camera");
+
+	auto cameraComponent = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<IComponentFactory>()->CreateComponentT<ICameraComponent3D>(cSceneNodeCameraComponent, *cameraNode);
+	cameraNode->AddComponent(cameraComponent);
 
 	SetCameraController(std::make_shared<CFreeCameraController>());
 	GetCameraController()->SetCamera(cameraNode->GetComponent<ICameraComponent3D>());
 	GetCameraController()->GetCamera()->SetPerspectiveProjection(ICameraComponent3D::EPerspectiveProjectionHand::Right, 45.0f, static_cast<float>(GetRenderWindow()->GetWindowWidth()) / static_cast<float>(GetRenderWindow()->GetWindowHeight()), 1.0f, 5000.0f);
+
+	auto newRoot = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, this, GetRootNode3D());
+	cameraNode->SetName("NewRoot3D");
+
+	auto file = GetBaseManager().GetManager<IFilesManager>()->Open("D:\\Scene.xml");
+	if (file != nullptr)
+	{
+		CXMLManager xml;
+		auto reader = xml.CreateReader(file);
+
+		auto currentRoot = newRoot;
+		while (false == currentRoot->GetChilds().empty())
+			currentRoot->RemoveChild(currentRoot->GetChilds()[0]);
+
+		auto rootNodeXML = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->LoadSceneNode3DXML(reader->GetChilds()[0], currentRoot->GetScene(), currentRoot->GetParent().lock());
+
+		while (false == rootNodeXML->GetChilds().empty())
+			currentRoot->AddChild(rootNodeXML->GetChilds()[0]);
+	}
 
 	rp3d::Vector3 gravity(0.0, -9.81, 0.0);
 	// Create the dynamics world
@@ -126,47 +148,12 @@ void CSceneDefault::Load3D()
 	//--------------------------------------------------------------------------
 
 	{
-		auto sceneNodeLight = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, this, GetRootNode3D());
-		sceneNodeLight->SetName("Light node");
-		sceneNodeLight->SetTranslate(glm::vec3(80.0f, 600.0f, 80.0f));
-		sceneNodeLight->SetRotation(glm::vec3(0.0f, -1.0f, 0.0f));
-
-		sceneNodeLight->GetComponent<ILightComponent3D>()->SetType(ELightType::Spot);
-		sceneNodeLight->GetComponent<ILightComponent3D>()->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
-		sceneNodeLight->GetComponent<ILightComponent3D>()->SetRange(48000.0f);
-		sceneNodeLight->GetComponent<ILightComponent3D>()->SetIntensity(1.0f);
-		sceneNodeLight->GetComponent<ILightComponent3D>()->SetSpotlightAngle(55.0f);
-#if 0
-		auto sceneNodeLight2 = GetRootNode3D()->CreateSceneNode<SceneNode3D>();
-		sceneNodeLight2->SetName("Light node2");
-		sceneNodeLight2->SetTranslate(glm::vec3(-300.0f, 300.0f, 300.0f));
-		sceneNodeLight2->SetRotation(glm::vec3(0.5f, -0.5f, -0.5f));
-
-		sceneNodeLight2->GetComponent<ILightComponent3D>()->SetType(ELightType::Spot);
-		sceneNodeLight2->GetComponent<ILightComponent3D>()->SetColor(glm::vec3(0.0f, 0.0f, 1.0f));
-		sceneNodeLight2->GetComponent<ILightComponent3D>()->SetRange(7000.0f);
-		sceneNodeLight2->GetComponent<ILightComponent3D>()->SetIntensity(1.0f);
-		sceneNodeLight2->GetComponent<ILightComponent3D>()->SetSpotlightAngle(20.0f);
-
-
-
-		std::shared_ptr<SceneNode3D> sceneNodeLightCenter = CreateWrappedSceneNode<SceneNode3D>("SceneNode3D", m_Scene->GetRootNode());
-		sceneNodeLightCenter->SetName("Directional light");
-		sceneNodeLightCenter->SetTranslate(glm::vec3(0.0f, 0.0f, 0.0f));
-		sceneNodeLightCenter->SetRotation(glm::normalize(glm::vec3(-0.5f, -0.5f, -0.5f)));
-
-		sceneNodeLightCenter->GetComponent<ILightComponent3D>()->SetType(ELightType::Directional);
-		sceneNodeLightCenter->GetComponent<ILightComponent3D>()->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
-		sceneNodeLightCenter->GetComponent<ILightComponent3D>()->SetRange(10000.0f);
-		sceneNodeLightCenter->GetComponent<ILightComponent3D>()->SetIntensity(1.0f);
-		sceneNodeLightCenter->GetComponent<ILightComponent3D>()->SetSpotlightAngle(20.0f);
-#endif
+		GetDefaultLight()->SetType(ELightType::Spot);
+		GetDefaultLight()->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
+		GetDefaultLight()->SetRange(48000.0f);
+		GetDefaultLight()->SetIntensity(1.0f);
+		GetDefaultLight()->SetSpotlightAngle(55.0f);
 	}
-
-	//std::shared_ptr<MaterialTextured> materialTextured = std::make_shared<MaterialTextured>(GetRenderDevice());
-	//materialTextured->SetDiffuseColor(vec4(1.0f, 1.0f, 1.0f, 1.0f));
-	//materialTextured->SetTexture(0, GetRenderDevice().CreateTexture2D("Sponza_Floor_diffuse.png"));
-	//materialTextured->SetWrapper(materialTextured);
 
 
 	//--------------------------------------------------------------------------

@@ -45,6 +45,12 @@ void CEdtor3DFrame::Initialize()
 
 	auto cameraNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, this);
 	cameraNode->SetName("Camera");
+	auto geom = GetRenderDevice().GetPrimitivesFactory().CreateBBox();
+	auto mat = std::make_shared<MaterialDebug>(GetRenderDevice());
+	mat->SetDiffuseColor(glm::vec4(1.0f, 1.0f, 0.3f, 1.0f));
+	auto model = GetRenderDevice().GetObjectsFactory().CreateModel();
+	model->AddConnection(mat, geom);
+	cameraNode->GetComponent<IModelsComponent3D>()->AddModel(model);
 
 	auto cameraComponent = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<IComponentFactory>()->CreateComponentT<ICameraComponent3D>(cSceneNodeCameraComponent, *cameraNode);
 	cameraNode->AddComponent(cameraComponent);
@@ -675,17 +681,15 @@ void CEdtor3DFrame::DoDropNodeAndCreateIt()
 		throw CException("TEST FUCK!!!!");
 
 	auto firstChild = *childs.begin();
-	firstChild->SetTranslate(m_DraggedNode->GetTranslation());
-	GetRealRootNode3D()->AddChild(firstChild);
-	m_Selector.SelectNode(firstChild);
 
-	if (m_IsDraggingPermanentCreation)
+	auto copiedNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, this);
+	firstChild->Copy(copiedNode);
+	copiedNode->SetTranslate(m_DraggedNode->GetTranslation());
+	GetRealRootNode3D()->AddChild(copiedNode);
+
+	if (!m_IsDraggingPermanentCreation)
 	{
-		auto copiedNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, this);
-		firstChild->Copy(copiedNode);
-		copiedNode->SetTranslate(glm::vec3(0.0f));
-		_ASSERT(m_DraggedNode->GetChilds().empty());
-		m_DraggedNode->AddChild(copiedNode);
+		m_DraggedNode->RemoveChild(firstChild);
 	}
 }
 
