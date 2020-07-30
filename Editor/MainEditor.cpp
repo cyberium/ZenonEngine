@@ -7,7 +7,7 @@
 
 MainEditor::MainEditor(QWidget* Parent)
 	: QMainWindow(Parent)
-	, m_Selector(this)
+	, m_Selector(*this)
 {
 	m_UI.setupUi(this);
 
@@ -24,6 +24,16 @@ MainEditor::MainEditor(QWidget* Parent)
 	// Unite file browser and log docker
 	QMainWindow::tabifyDockWidget(m_UI.DockerFileBrowser, m_UI.DockerLogViewer);
 
+
+
+
+	//
+	// TOP
+	//
+
+	connect(m_UI.editorToolSelectorBtn, SIGNAL(released()), this, SLOT(OnEditorToolSelectorBtn()));
+	connect(m_UI.editorToolMoverBtn, SIGNAL(released()), this, SLOT(OnEditorToolMoverBtn()));
+
 	m_MoverValues.insert(std::make_pair("<disabled>", 0.001f));
 	m_MoverValues.insert(std::make_pair("x1.0", 1.0f));
 	m_MoverValues.insert(std::make_pair("x5.0", 5.0f));
@@ -33,6 +43,9 @@ MainEditor::MainEditor(QWidget* Parent)
 	for (const auto& v : m_MoverValues)
 		m_UI.Editor3DFrame_MoverStep->addItem(v.first.c_str());
 	connect(m_UI.Editor3DFrame_MoverStep, SIGNAL(currentIndexChanged(const QString&)), this, SLOT(MoverStepCurrentIndexChanged(const QString&)));
+
+
+
 }
 
 MainEditor::~MainEditor()
@@ -68,10 +81,10 @@ void MainEditor::SetEditor3D(IEditor3DFrame* Editor3DFrame)
 
 			std::shared_ptr<ISceneNode3D> sceneNode = m_Editor3D->GetBaseManager2().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode_FBXNode, dynamic_cast<IScene*>(m_Editor3D));
 
-			std::shared_ptr<IFBXSceneNode3D> fbxSceneNode = std::dynamic_pointer_cast<IFBXSceneNode3D>(sceneNode);
+			std::shared_ptr<IFBXNode> fbxSceneNode = std::dynamic_pointer_cast<IFBXNode>(sceneNode);
 			fbxSceneNode->InitializeFromFile(it);
 
-			auto model = std::dynamic_pointer_cast<IFBXSceneNode3D>(sceneNode->GetChilds().at(0))->GetModel();
+			auto model = std::dynamic_pointer_cast<IFBXNode>(sceneNode->GetChilds().at(0))->GetModel();
 			if (auto loadable = std::dynamic_pointer_cast<IObjectLoadSave>(model))
 			{
 				std::shared_ptr<IFile> file = std::make_shared<CFile>(zenonFileName);
@@ -250,6 +263,20 @@ void MainEditor::OnActionSceneSave()
 	
 	auto file = manager.SaveWriterToFile(writer, "D:\\Scene.xml");
 	m_Editor3D->GetBaseManager2().GetManager<IFilesManager>()->GetFilesStorage("PCEveryFileAccess")->SaveFile(file);
+}
+
+void MainEditor::OnEditorToolSelectorBtn()
+{
+	m_UI.editorToolSelectorBtn->setChecked(true);
+	m_UI.editorToolMoverBtn->setChecked(false);
+	m_Editor3D->EnableSelectorTool();
+}
+
+void MainEditor::OnEditorToolMoverBtn()
+{
+	m_UI.editorToolSelectorBtn->setChecked(false);
+	m_UI.editorToolMoverBtn->setChecked(true);
+	m_Editor3D->EnableMoverTool();
 }
 
 

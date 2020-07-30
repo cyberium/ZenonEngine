@@ -354,8 +354,12 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="Tools\NodesMover.cpp" />
-    <ClCompile Include="Tools\NodesSelector.cpp" />
+    <ClCompile Include="Tools\Editor3DToolBase.cpp" />
+    <ClCompile Include="Tools\EditorToolDragger.cpp" />
+    <ClCompile Include="Tools\EditorToolMover.cpp" />
+    <ClCompile Include="Tools\EditorToolSelector3D.cpp" />
+    <ClCompile Include="Tools\EditorToolSelectorBase.cpp" />
+    <ClCompile Include="Tools\EditorToolsCollection.cpp" />
     <ClCompile Include="ZenonWidgets\ZenonCollectionViewer\ZenonCollectionViewerWidget.cpp" />
     <ClCompile Include="ZenonWidgets\ZenonLogViewer\ZenonLogViewer.cpp" />
     <ClCompile Include="ZenonWidgets\ZenonSceneViewer\ZenonSceneViewerWidget.cpp" />
@@ -373,8 +377,12 @@
     <ClInclude Include="PropertyEditor\Core\Auxiliary\PropertyMacro.h" />
     <ClInclude Include="PropertyEditor\Core\Auxiliary\PropertyTemplates.h" />
     <ClInclude Include="PropertyEditor\Core\CoreAPI.h" />
-    <ClInclude Include="Tools\NodesMover.h" />
-    <ClInclude Include="Tools\NodesSelector.h" />
+    <ClInclude Include="Tools\Editor3DToolBase.h" />
+    <ClInclude Include="Tools\EditorToolDragger.h" />
+    <ClInclude Include="Tools\EditorToolMover.h" />
+    <ClInclude Include="Tools\EditorToolSelector3D.h" />
+    <ClInclude Include="Tools\EditorToolSelectorBase.h" />
+    <ClInclude Include="Tools\EditorToolsCollection.h" />
     <ClInclude Include="_widgetZenonWindowMinimal3D.h" />
     <QtMoc Include="ZenonWidgets\ZenonLogViewer\ZenonLogViewer.h" />
     <QtMoc Include="ZenonWidgets\ZenonSceneViewer\ZenonSceneViewerWidget.h" />

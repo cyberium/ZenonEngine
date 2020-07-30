@@ -8,6 +8,9 @@
 // Additional
 #include "FBXStream.h"
 #include "FBXDisplayCommon.h"
+#include "FBXSceneNode.h"
+#include "FBXSkeleton.h"
+#include "FBXAnimation.h"
 
 CFBXScene::CFBXScene(const IBaseManager& BaseManager, fbxsdk::FbxManager* FBXManager)
 	: m_BaseManager(BaseManager)
@@ -38,14 +41,14 @@ bool CFBXScene::LoadFromFile(std::shared_ptr<IFile> File)
 	fbxsdk::FbxManager::GetFileFormatVersion(lSDKMajor, lSDKMinor, lSDKRevision);
 
 	// Create an importer.
-	FbxImporter* lImporter = FbxImporter::Create(GetNativeManager(), "");
+	FbxImporter* lImporter = FbxImporter::Create(m_NativeScene->GetFbxManager(), "");
 
 	// Create wrapper for file
-	CFBXStream fbxStream(File, GetNativeManager()->GetIOPluginRegistry());
+	CFBXStream fbxStream(File, m_NativeScene->GetFbxManager()->GetIOPluginRegistry());
 	m_Path = File->Path();
 
 	// Initialize the importer by providing a filename.
-	const bool lImportStatus = lImporter->Initialize(&fbxStream, NULL, lFileFormat, GetNativeManager()->GetIOSettings());
+	const bool lImportStatus = lImporter->Initialize(&fbxStream, NULL, lFileFormat, m_NativeScene->GetFbxManager()->GetIOSettings());
 	lImporter->GetFileVersion(lFileMajor, lFileMinor, lFileRevision);
 
 	if (!lImportStatus)
@@ -72,7 +75,7 @@ bool CFBXScene::LoadFromFile(std::shared_ptr<IFile> File)
 		// From this point, it is possible to access animation stack information without
 		// the expense of loading the entire file.
 
-#if 0
+#if 1
 		Log::Print("Animation Stack Information");
 
 		lAnimStackCount = lImporter->GetAnimStackCount();
@@ -101,13 +104,13 @@ bool CFBXScene::LoadFromFile(std::shared_ptr<IFile> File)
 #endif
 
 		// Set the import states. By default, the import states are always set to true. The code below shows how to change these states.
-		GetNativeManager()->GetIOSettings()->SetBoolProp(IMP_FBX_MATERIAL, true);
-		GetNativeManager()->GetIOSettings()->SetBoolProp(IMP_FBX_TEXTURE, true);
-		GetNativeManager()->GetIOSettings()->SetBoolProp(IMP_FBX_LINK, true);
-		GetNativeManager()->GetIOSettings()->SetBoolProp(IMP_FBX_SHAPE, true);
-		GetNativeManager()->GetIOSettings()->SetBoolProp(IMP_FBX_GOBO, true);
-		GetNativeManager()->GetIOSettings()->SetBoolProp(IMP_FBX_ANIMATION, true);
-		GetNativeManager()->GetIOSettings()->SetBoolProp(IMP_FBX_GLOBAL_SETTINGS, true);
+		m_NativeScene->GetFbxManager()->GetIOSettings()->SetBoolProp(IMP_FBX_MATERIAL, true);
+		m_NativeScene->GetFbxManager()->GetIOSettings()->SetBoolProp(IMP_FBX_TEXTURE, true);
+		m_NativeScene->GetFbxManager()->GetIOSettings()->SetBoolProp(IMP_FBX_LINK, true);
+		m_NativeScene->GetFbxManager()->GetIOSettings()->SetBoolProp(IMP_FBX_SHAPE, true);
+		m_NativeScene->GetFbxManager()->GetIOSettings()->SetBoolProp(IMP_FBX_GOBO, true);
+		m_NativeScene->GetFbxManager()->GetIOSettings()->SetBoolProp(IMP_FBX_ANIMATION, true);
+		m_NativeScene->GetFbxManager()->GetIOSettings()->SetBoolProp(IMP_FBX_GLOBAL_SETTINGS, true);
 	}
 
 	// Import the scene.
@@ -147,7 +150,7 @@ bool CFBXScene::LoadFromFile(std::shared_ptr<IFile> File)
 
 	lImporter->Destroy();
 
-	FbxGeometryConverter converter(GetNativeManager());
+	FbxGeometryConverter converter(m_NativeScene->GetFbxManager());
 
 	Log::Info("CFBXScene: Triangulation started.");
 	Timer t;
@@ -163,6 +166,18 @@ bool CFBXScene::LoadFromFile(std::shared_ptr<IFile> File)
 	//	Log::Error("CFBXManager: Error while FbxGeometryConverter::SplitMeshesPerMaterial.");
 	//	return false;
 	//}
+
+	auto skeleton = std::make_shared<CFBXSkeleton>(m_BaseManager, *this);
+	skeleton->Load(m_NativeScene);
+	m_Skeleton = skeleton;
+
+	auto animation = std::make_shared<CFBXAnimation>(m_BaseManager, *this);
+	animation->Load(m_NativeScene);
+	m_Animation = animation;
+
+	auto root = std::make_shared<CFBXSceneNode>(m_BaseManager, *this);
+	root->LoadNode(m_NativeScene->GetRootNode());
+	m_RootNode = root;
 
 	return lStatus;
 }
@@ -201,25 +216,24 @@ std::shared_ptr<IModel> CFBXScene::ExtractModel()
 
 //------------------------------------------------------------------------------------------------------
 
-
-fbxsdk::FbxScene * CFBXScene::GetNativeScene() const
-{
-	return m_NativeScene;
-}
-
-fbxsdk::FbxManager * CFBXScene::GetNativeManager() const
-{
-	return m_NativeScene->GetFbxManager();
-}
-
 std::string CFBXScene::GetPath() const
 {
 	return m_Path;
 }
 
-std::shared_ptr<CFBXSceneNode> CFBXScene::GetRootNode() const
+std::shared_ptr<IFBXNode> CFBXScene::GetRootNode() const
 {
 	return m_RootNode;
+}
+
+std::shared_ptr<IFBXSkeleton> CFBXScene::GetSkeleton() const
+{
+	return m_Skeleton;
+}
+
+std::shared_ptr<IFBXAnimation> CFBXScene::GetAnimation() const
+{
+	return std::shared_ptr<IFBXAnimation>();
 }
 
 #endif

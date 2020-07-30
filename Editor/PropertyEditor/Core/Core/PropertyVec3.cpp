@@ -33,7 +33,7 @@ QtnProperty* qtnCreateXProperty(QObject *parent, QtnPropertyVec3Base *propertyPo
         point.x = newX;
         propertyPoint->setValue(point);
     });
-	xProperty->setStepValue(0.1f);
+	xProperty->setStepValue(0.01f);
     QtnPropertyBase::connectMasterSignals(*propertyPoint, *xProperty);
 
     return xProperty;
@@ -51,7 +51,7 @@ QtnProperty* qtnCreateYProperty(QObject *parent, QtnPropertyVec3Base *propertyPo
         point.y = newY;
         propertyPoint->setValue(point);
     });
-	yProperty->setStepValue(0.1f);
+	yProperty->setStepValue(0.01f);
     QtnPropertyBase::connectMasterSignals(*propertyPoint, *yProperty);
 
     return yProperty;
@@ -69,7 +69,7 @@ QtnProperty* qtnCreateZProperty(QObject *parent, QtnPropertyVec3Base *propertyPo
 		point.z = newZ;
 		propertyPoint->setValue(point);
 	});
-	zProperty->setStepValue(0.1f);
+	zProperty->setStepValue(0.01f);
 	QtnPropertyBase::connectMasterSignals(*propertyPoint, *zProperty);
 
 	return zProperty;

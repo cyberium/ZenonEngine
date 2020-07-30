@@ -74,6 +74,9 @@
     <Filter Include="Editor3D\Tools">
       <UniqueIdentifier>{ee500cc7-f176-4ba2-af32-2078f1c9a29f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Editor3D\Tools\Editor3D">
+      <UniqueIdentifier>{fe17a1bb-99d4-4241-8acf-096fd3fae80f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -288,11 +291,23 @@
       <Filter>Editor3D</Filter>
     </ClCompile>
     <ClCompile Include="MainEditor.cpp" />
-    <ClCompile Include="Tools\NodesSelector.cpp">
+    <ClCompile Include="Tools\EditorToolSelectorBase.cpp">
       <Filter>Editor3D\Tools</Filter>
     </ClCompile>
-    <ClCompile Include="Tools\NodesMover.cpp">
+    <ClCompile Include="Tools\EditorToolsCollection.cpp">
       <Filter>Editor3D\Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="Tools\Editor3DToolBase.cpp">
+      <Filter>Editor3D\Tools\Editor3D</Filter>
+    </ClCompile>
+    <ClCompile Include="Tools\EditorToolDragger.cpp">
+      <Filter>Editor3D\Tools\Editor3D</Filter>
+    </ClCompile>
+    <ClCompile Include="Tools\EditorToolMover.cpp">
+      <Filter>Editor3D\Tools\Editor3D</Filter>
+    </ClCompile>
+    <ClCompile Include="Tools\EditorToolSelector3D.cpp">
+      <Filter>Editor3D\Tools\Editor3D</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -458,11 +473,23 @@
     <ClInclude Include="Editor3DPreviewScene.h">
       <Filter>Editor3D</Filter>
     </ClInclude>
-    <ClInclude Include="Tools\NodesSelector.h">
+    <ClInclude Include="Tools\EditorToolSelectorBase.h">
       <Filter>Editor3D\Tools</Filter>
     </ClInclude>
-    <ClInclude Include="Tools\NodesMover.h">
+    <ClInclude Include="Tools\EditorToolsCollection.h">
       <Filter>Editor3D\Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="Tools\EditorToolSelector3D.h">
+      <Filter>Editor3D\Tools\Editor3D</Filter>
+    </ClInclude>
+    <ClInclude Include="Tools\Editor3DToolBase.h">
+      <Filter>Editor3D\Tools\Editor3D</Filter>
+    </ClInclude>
+    <ClInclude Include="Tools\EditorToolDragger.h">
+      <Filter>Editor3D\Tools\Editor3D</Filter>
+    </ClInclude>
+    <ClInclude Include="Tools\EditorToolMover.h">
+      <Filter>Editor3D\Tools\Editor3D</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

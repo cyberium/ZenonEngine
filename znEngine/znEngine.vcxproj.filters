@@ -151,6 +151,12 @@
     <Filter Include="Resources\Shaders_D3D\3D\Deffered">
       <UniqueIdentifier>{c75d5999-07a7-4693-8635-28690f452353}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SceneNodes\Skeleton">
+      <UniqueIdentifier>{daa5e6f4-e756-48cb-b9f7-ec0e8c6628d1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SceneNodes\Skeleton\Implementation">
+      <UniqueIdentifier>{198d437b-43f3-4a89-ba9d-abe76eeddd64}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -263,9 +269,6 @@
       <Filter>FBX\Helpers</Filter>
     </ClCompile>
     <ClCompile Include="FBX\FBXLight.cpp">
-      <Filter>FBX\Parts</Filter>
-    </ClCompile>
-    <ClCompile Include="FBX\FBXMesh.cpp">
       <Filter>FBX\Parts</Filter>
     </ClCompile>
     <ClCompile Include="FBX\FBXMaterial.cpp">
@@ -561,6 +564,33 @@
     <ClCompile Include="SceneFunctional\ComponentsEngineCreator.cpp">
       <Filter>SceneNodes</Filter>
     </ClCompile>
+    <ClCompile Include="FBX\FBXDisplayAnimation.cpp">
+      <Filter>FBX</Filter>
+    </ClCompile>
+    <ClCompile Include="FBX\FBXSkeleton.cpp">
+      <Filter>FBX\Parts</Filter>
+    </ClCompile>
+    <ClCompile Include="FBX\FBXAnimation.cpp">
+      <Filter>FBX\Parts</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneFunctional\GameModel.cpp">
+      <Filter>SceneNodes</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneFunctional\3D\Skeleton.cpp">
+      <Filter>SceneNodes\Skeleton\Implementation</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneFunctional\3D\SkeletonBone.cpp">
+      <Filter>SceneNodes\Skeleton\Implementation</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneFunctional\SkeletonComponent.cpp">
+      <Filter>SceneNodes\Skeleton</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneFunctional\SkeletonComponentBone.cpp">
+      <Filter>SceneNodes\Skeleton</Filter>
+    </ClCompile>
+    <ClCompile Include="FBX\FBXModel.cpp">
+      <Filter>FBX\Parts</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="common.h">
@@ -676,9 +706,6 @@
       <Filter>FBX\Helpers</Filter>
     </ClInclude>
     <ClInclude Include="FBX\FBXLight.h">
-      <Filter>FBX\Parts</Filter>
-    </ClInclude>
-    <ClInclude Include="FBX\FBXMesh.h">
       <Filter>FBX\Parts</Filter>
     </ClInclude>
     <ClInclude Include="FBX\FBXMaterial.h">
@@ -1034,6 +1061,36 @@
     </ClInclude>
     <ClInclude Include="SceneFunctional\ComponentsEngineCreator.h">
       <Filter>SceneNodes</Filter>
+    </ClInclude>
+    <ClInclude Include="FBX\FBXDisplayAnimation.h">
+      <Filter>FBX</Filter>
+    </ClInclude>
+    <ClInclude Include="FBX\FBXSkeleton.h">
+      <Filter>FBX\Parts</Filter>
+    </ClInclude>
+    <ClInclude Include="FBX\FBXAnimation.h">
+      <Filter>FBX\Parts</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneFunctional\GameModel.h">
+      <Filter>SceneNodes</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneFunctional\3D\AnimatedValue.h">
+      <Filter>SceneNodes\Skeleton\Implementation</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneFunctional\3D\Skeleton.h">
+      <Filter>SceneNodes\Skeleton\Implementation</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneFunctional\3D\SkeletonBone.h">
+      <Filter>SceneNodes\Skeleton\Implementation</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneFunctional\SkeletonComponent.h">
+      <Filter>SceneNodes\Skeleton</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneFunctional\SkeletonComponentBone.h">
+      <Filter>SceneNodes\Skeleton</Filter>
+    </ClInclude>
+    <ClInclude Include="FBX\FBXModel.h">
+      <Filter>FBX\Parts</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

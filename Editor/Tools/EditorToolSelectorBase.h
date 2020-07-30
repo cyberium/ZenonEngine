@@ -1,12 +1,12 @@
 #pragma once
 
-class CSceneNodesSelector
+class CEditorToolSelector
 	: public IEditor_NodesSelector
 	, public IEditor_NodesSelectorInternal
 {
 public:
-	CSceneNodesSelector(IEditor_NodesSelectorEventListener * Listener);
-	virtual ~CSceneNodesSelector();
+	CEditorToolSelector(IEditor_NodesSelectorEventListener& NodesSelectorEventListener);
+	virtual ~CEditorToolSelector();
 
 	// IEditor_NodesSelector
 	void SelectNode(std::shared_ptr<ISceneNode3D> Node) override;
@@ -23,10 +23,11 @@ public:
 	void SynchronizeWithOtherSelector(IEditor_NodesSelector * OtherSelector) override;
 
 protected:
-	void DoSynchronizeWithOtherSelector();
+	virtual void RaiseSelectEvent();
+	virtual void DoSynchronizeWithOtherSelector();
 
 private:
 	SelectedNodes m_SelectedNodes;
+	IEditor_NodesSelectorEventListener& m_NodesSelectorEventListener;
 	IEditor_NodesSelector * m_OtherSelector;
-	IEditor_NodesSelectorEventListener * m_SelectionEventsListener;
 };

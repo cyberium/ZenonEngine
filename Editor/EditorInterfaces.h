@@ -71,11 +71,16 @@ ZN_INTERFACE IEditor3DFrame
 	: public IEditorSharedFrame
 {
 	virtual ~IEditor3DFrame() {}
-
+	virtual std::shared_ptr<IScene> GetScene() = 0;
 	virtual IBaseManager& GetBaseManager2() const = 0;
 	virtual IRenderDevice& GetRenderDevice2() const = 0;
 	virtual void LockUpdates() = 0;
 	virtual void UnlockUpdates() = 0;
+
+	virtual void EnableSelectorTool() = 0;
+	virtual void EnableMoverTool() = 0;
+
+	virtual std::shared_ptr<IScene> GetRealScene() const = 0;
 	virtual std::shared_ptr<ISceneNode3D> GetRealRootNode3D() const = 0;
 	virtual std::shared_ptr<ISceneNode3D> GetNodeUnderMouse(const glm::ivec2& MousePos) const = 0;
 

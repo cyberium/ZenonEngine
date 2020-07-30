@@ -30,17 +30,14 @@ ZN_INTERFACE ZN_API IModel
 	virtual void                                    SetBounds(const BoundingBox& Bounds) = 0;
 	virtual BoundingBox                             GetBounds() const = 0;
 
+	virtual void                                    SetFileName(const std::string& FileName) = 0;
+	virtual std::string                             GetFileName() const = 0;
+
 	/**
 	 * Add pair geometry[+GeometryPart] - Material
 	*/
 	virtual void									AddConnection(const std::shared_ptr<IMaterial>& Material, const std::shared_ptr<IGeometry>& Geometry, SGeometryDrawArgs GeometryDrawArgs = SGeometryDrawArgs()) = 0;
 	virtual const std::vector<SConnection>&         GetConnections() const = 0;
-
-	/**
-	 * Set FileName for future use
-	*/
-	virtual void                                    SetFileName(const std::string& FileName) = 0;
-	virtual std::string                             GetFileName() const = 0;
 
 	virtual bool                                    Render(const RenderEventArgs& renderEventArgs) const = 0;
 

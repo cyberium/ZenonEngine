@@ -3,7 +3,7 @@
 #include <QMainWindow>
 #include "ui_MainEditor.h"
 
-#include "Tools/NodesSelector.h"
+#include "Tools/EditorToolSelectorBase.h"
 #include "PropertyEditor/PropertiesController.h"
 
 class MainEditor 
@@ -39,8 +39,11 @@ private slots:
 	void OnActionSceneLoad();
 	void OnActionSceneSave();
 
+	void OnEditorToolSelectorBtn();
+	void OnEditorToolMoverBtn();
+
 private:
-	CSceneNodesSelector m_Selector;
+	CEditorToolSelector m_Selector;
 	std::shared_ptr<CPropertiesController> m_PropertiesController;
 	std::map<std::string, float> m_MoverValues;
 

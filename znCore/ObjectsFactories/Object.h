@@ -9,12 +9,13 @@ public:
 	bool operator==(const Object& rhs) const;
 	bool operator!=(const Object& rhs) const;
 
+	virtual std::string GetTypeName() const;
+	virtual std::string GetClassNameW() const;
+
 	// IObject
 	virtual Guid GetGUID() const override;
 	virtual std::string GetName() const override;
 	virtual void SetName(const std::string& Name) override;
-	virtual std::string GetTypeName() const override;
-	virtual std::string GetClassNameW() const override;
 	virtual void Copy(std::shared_ptr<IObject> Destination) const;
 
 	// IObjectLoadSave

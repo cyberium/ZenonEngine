@@ -280,6 +280,8 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="BaseManager.cpp" />
+    <ClCompile Include="FBX\FBXAnimation.cpp" />
+    <ClCompile Include="FBX\FBXDisplayAnimation.cpp" />
     <ClCompile Include="FBX\FBXDisplayCache.cpp" />
     <ClCompile Include="FBX\FBXDisplayCommon.cpp" />
     <ClCompile Include="FBX\FBXDisplayLink.cpp" />
@@ -287,9 +289,10 @@
     <ClCompile Include="FBX\FBXLight.cpp" />
     <ClCompile Include="FBX\FBXManager.cpp" />
     <ClCompile Include="FBX\FBXMaterial.cpp" />
-    <ClCompile Include="FBX\FBXMesh.cpp" />
+    <ClCompile Include="FBX\FBXModel.cpp" />
     <ClCompile Include="FBX\FBXScene.cpp" />
     <ClCompile Include="FBX\FBXSceneNode.cpp" />
+    <ClCompile Include="FBX\FBXSkeleton.cpp" />
     <ClCompile Include="FBX\FBXStream.cpp" />
     <ClCompile Include="Formats\Fonts\Font.cpp" />
     <ClCompile Include="Formats\Fonts\FontsManager.cpp" />
@@ -307,7 +310,12 @@
     <ClCompile Include="Passes\UIFontPass.cpp" />
     <ClCompile Include="Passes\UITexturePass.cpp" />
     <ClCompile Include="Physics\Adapters\ReactPhysicsComponent.cpp" />
+    <ClCompile Include="SceneFunctional\3D\Skeleton.cpp" />
+    <ClCompile Include="SceneFunctional\3D\SkeletonBone.cpp" />
+    <ClCompile Include="SceneFunctional\SkeletonComponentBone.cpp" />
     <ClCompile Include="SceneFunctional\ComponentsEngineCreator.cpp" />
+    <ClCompile Include="SceneFunctional\GameModel.cpp" />
+    <ClCompile Include="SceneFunctional\SkeletonComponent.cpp" />
     <ClCompile Include="SceneFunctional\SceneNodeEngineCreator.cpp" />
     <ClCompile Include="Scene_Default.cpp" />
     <ClCompile Include="Materials\MaterialDebug.cpp" />
@@ -443,6 +451,8 @@
     <ClInclude Include="..\Externals\reactphysics3d-0.7.1\src\utils\Profiler.h" />
     <ClInclude Include="..\shared\znEngine.h" />
     <ClInclude Include="BaseManager.h" />
+    <ClInclude Include="FBX\FBXAnimation.h" />
+    <ClInclude Include="FBX\FBXDisplayAnimation.h" />
     <ClInclude Include="FBX\FBXDisplayCache.h" />
     <ClInclude Include="FBX\FBXDisplayCommon.h" />
     <ClInclude Include="FBX\FBXDisplayLink.h" />
@@ -451,9 +461,10 @@
     <ClInclude Include="FBX\FBXLight.h" />
     <ClInclude Include="FBX\FBXManager.h" />
     <ClInclude Include="FBX\FBXMaterial.h" />
-    <ClInclude Include="FBX\FBXMesh.h" />
+    <ClInclude Include="FBX\FBXModel.h" />
     <ClInclude Include="FBX\FBXScene.h" />
     <ClInclude Include="FBX\FBXSceneNode.h" />
+    <ClInclude Include="FBX\FBXSkeleton.h" />
     <ClInclude Include="FBX\FBXStream.h" />
     <ClInclude Include="Formats\Fonts\Font.h" />
     <ClInclude Include="Formats\Fonts\FontsManager.h" />
@@ -471,7 +482,13 @@
     <ClInclude Include="Passes\UIFontPass.h" />
     <ClInclude Include="Passes\UITexturePass.h" />
     <ClInclude Include="Physics\Adapters\ReactPhysicsComponent.h" />
+    <ClInclude Include="SceneFunctional\3D\AnimatedValue.h" />
+    <ClInclude Include="SceneFunctional\3D\Skeleton.h" />
+    <ClInclude Include="SceneFunctional\3D\SkeletonBone.h" />
+    <ClInclude Include="SceneFunctional\SkeletonComponentBone.h" />
     <ClInclude Include="SceneFunctional\ComponentsEngineCreator.h" />
+    <ClInclude Include="SceneFunctional\GameModel.h" />
+    <ClInclude Include="SceneFunctional\SkeletonComponent.h" />
     <ClInclude Include="SceneFunctional\SceneNodeEngineCreator.h" />
     <ClInclude Include="Scene_Default.h" />
     <ClInclude Include="Materials\MaterialDebug.h" />

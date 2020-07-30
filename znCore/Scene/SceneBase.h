@@ -18,6 +18,7 @@ public:
 
 	// IScene
 	void                                            SetRenderWindow(const std::shared_ptr<IRenderWindow>& RenderWindow) override;
+	std::shared_ptr<IRenderWindow>                  GetRenderWindow() const;
 	void                                            ConnectEvents(const std::shared_ptr<IRenderWindowEvents>& WindowEvents) override;
 	void                                            DisconnectEvents(const std::shared_ptr<IRenderWindowEvents>& WindowEvents) override;
 
@@ -26,8 +27,14 @@ public:
 
 	std::shared_ptr<ISceneNode3D>					GetRootNode3D() const override;
 	std::shared_ptr<ISceneNodeUI>					GetRootNodeUI() const override;
-	void                                            SetCameraController(std::shared_ptr<ICameraController> CameraController);
-	std::shared_ptr<ICameraController>              GetCameraController() const;
+	void                                            SetCameraController(std::shared_ptr<ICameraController> CameraController) override;
+	std::shared_ptr<ICameraController>              GetCameraController() const override;
+	std::map<float, std::shared_ptr<ISceneNode3D>>  FindIntersection(const Ray& Ray) const override;
+	std::map<float, std::shared_ptr<ISceneNode3D>>  FindIntersection(const Ray& Ray, std::function<bool(std::shared_ptr<ISceneNode3D>)> Filter) const override;
+	std::map<float, std::shared_ptr<ISceneNode3D>>  FindIntersection(const Ray& Ray, std::shared_ptr<ISceneNode3D> RootForFinder) const override;
+	std::vector<std::shared_ptr<ISceneNode3D>>      FindIntersections(const Frustum& Frustum) const override;
+	std::vector<std::shared_ptr<ISceneNode3D>>      FindIntersections(const Frustum& Frustum, std::function<bool(std::shared_ptr<ISceneNode3D>)> Filter) const override;
+	std::vector<std::shared_ptr<ISceneNode3D>>      FindIntersections(const Frustum& Frustum, std::shared_ptr<ISceneNode3D> RootForFinder) const;
 
 	// Visit funcitonal
 	void                                            Accept(IVisitor* visitor) override;
@@ -81,8 +88,6 @@ public:
 	Guid                                            GetGUID() const override final { return Object::GetGUID(); };
 	std::string                                     GetName() const override final { return Object::GetName(); };
 	void                                            SetName(const std::string& Name) override final { Object::SetName(Name); };
-	std::string                                     GetTypeName() const override final { return Object::GetTypeName(); };
-	std::string                                     GetClassNameW() const override final { return Object::GetClassNameW(); };
 
 	// IObjectSaveLoad
 	virtual void									Load(const std::shared_ptr<IXMLReader>& Reader) override;
@@ -90,11 +95,8 @@ public:
 
 protected:
 	IRenderDevice&                                  GetRenderDevice() const;
-	std::shared_ptr<IRenderWindow>                  GetRenderWindow() const;
 	std::shared_ptr<ILightComponent3D>              GetDefaultLight() const;
 
-	std::map<float, std::shared_ptr<ISceneNode3D>>  FindIntersection(const Ray& Ray) const;
-	std::vector<std::shared_ptr<ISceneNode3D>>      FindIntersections(const Frustum& Frustum) const;
 
 protected: // Input events process recursive
 	void                                            DoUpdate_Rec(const std::shared_ptr<ISceneNode3D>& Node, const UpdateEventArgs& e);

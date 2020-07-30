@@ -28,9 +28,7 @@ protected:
 	// IObject
 	Guid GetGUID() const override { return Object::GetGUID(); };
 	std::string GetName() const override { return Object::GetName(); };
-	void SetName(const std::string& Name) override { Object::SetName(Name); };
-	std::string GetTypeName() const override { return Object::GetTypeName(); };
-	std::string GetClassNameW() const override { return Object::GetClassNameW(); };
+	void SetName(const std::string& Name) override final { Object::SetName(Name); };
 
 private:
 	void Commit() const;

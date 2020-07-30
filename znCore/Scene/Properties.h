@@ -229,6 +229,16 @@ private:
 };
 
 
+class CPropertyWrappedColor
+	: public CPropertyWrapped<ColorRBG>
+{
+public:
+	CPropertyWrappedColor(std::string Name, std::string Description = "")
+		: CPropertyWrapped<ColorRBG>(Name, Description)
+	{}
+};
+
+
 // ------------------------------------------------------------------------------
 
 

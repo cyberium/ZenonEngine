@@ -2,10 +2,6 @@
 
 #ifdef ZN_FBX_SDK_ENABLE
 
-// Include
-#include "FBXScene.h"
-#include "FBXSceneNode.h"
-
 // General
 #include "FBXMaterial.h"
 
@@ -19,9 +15,10 @@ inline glm::vec3 ToGLMVec3(const FbxPropertyT<FbxDouble3>& FBXVec3)
 	return glm::vec3(FBXVec3.Get()[0], FBXVec3.Get()[1], FBXVec3.Get()[2]);
 }
 
-CFBXMaterial::CFBXMaterial(const IBaseManager& BaseManager, std::weak_ptr<CFBXSceneNode> OwnerFBXNode)
+CFBXMaterial::CFBXMaterial(const IBaseManager& BaseManager, const IFBXNode & FBXNode)
 	: MaterialModel(BaseManager)
-	, m_OwnerFBXNode(OwnerFBXNode)
+	, m_BaseManager(BaseManager)
+	, m_FBXNode(FBXNode)
 {
 }
 
@@ -185,6 +182,16 @@ void CFBXMaterial::Load(fbxsdk::FbxSurfaceMaterial* NativeMaterial)
 
 
 //
+// IFBXMaterial
+//
+std::shared_ptr<IMaterial> CFBXMaterial::GetMaterial()
+{
+	return shared_from_this();
+}
+
+
+
+//
 // Protected
 //
 std::shared_ptr<ITexture> CFBXMaterial::LoadTexture(fbxsdk::FbxTexture * Texture)
@@ -197,7 +204,10 @@ std::shared_ptr<ITexture> CFBXMaterial::LoadTexture(fbxsdk::FbxTexture * Texture
 	// For exporter
 	//fileTexture->SetFileName(fileTexture->GetRelativeFileName());
 
-	return m_BaseManager.GetApplication().GetRenderDevice().GetObjectsFactory().LoadTexture2D(/*m_OwnerFBXNode.lock()->GetOwnerScene().lock()->GetPath() +*/ fileTexture->GetRelativeFileName());
+	std::string fileName = fileTexture->GetRelativeFileName();
+	fileName = "C:/_engine/ZenonEngine_gamedata/Toon_RTS/Orcs/models/Materials/textures/ORC_StandardUnits.png";
+
+	return m_BaseManager.GetApplication().GetRenderDevice().GetObjectsFactory().LoadTexture2D(fileName);
 }
 
 #endif

@@ -1,13 +1,12 @@
 #pragma once
 
 #ifdef ZN_FBX_SDK_ENABLE
-
 #include <fbxsdk.h>
-
-#include "FBXSceneNode.h"
+#include "FBXInterfaces.h"
 
 class CFBXScene 
-	: public std::enable_shared_from_this<CFBXScene>
+	: public IFBXScene
+	, public std::enable_shared_from_this<CFBXScene>
 {
 public:
 	CFBXScene(const IBaseManager& BaseManager, fbxsdk::FbxManager* FBXManager);
@@ -16,17 +15,17 @@ public:
 	bool LoadFromFile(std::shared_ptr<IFile> File);
 
 public:
-	fbxsdk::FbxScene*   GetNativeScene() const;
-	fbxsdk::FbxManager* GetNativeManager() const;
-	std::string         GetPath() const;
-	std::shared_ptr<CFBXSceneNode> GetRootNode() const;
+	std::string GetPath() const;
+	std::shared_ptr<IFBXNode> GetRootNode() const override;
+	std::shared_ptr<IFBXSkeleton> GetSkeleton() const override;
+	std::shared_ptr<IFBXAnimation> GetAnimation() const override;
 
 private:
 	std::string m_Path;
 	fbxsdk::FbxScene* m_NativeScene;
-
-	std::shared_ptr<CFBXSceneNode> m_RootNode;
-
+	std::shared_ptr<IFBXNode> m_RootNode;
+	std::shared_ptr<IFBXSkeleton> m_Skeleton;
+	std::shared_ptr<IFBXAnimation> m_Animation;
 private:
 	const IBaseManager& m_BaseManager;
 };

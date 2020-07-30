@@ -2,24 +2,23 @@
 
 #ifdef ZN_FBX_SDK_ENABLE
 
-// Include
-#include "FBXScene.h"
-#include "FBXSceneNode.h"
-
 // General
 #include "FBXLight.h"
 
 // Additional
 #include "FBXDisplayCommon.h"
 
-CFBXLight::CFBXLight(const IBaseManager& BaseManager, std::weak_ptr<CFBXSceneNode> OwnerFBXNode)
+CFBXLight::CFBXLight(const IBaseManager& BaseManager, const IFBXNode& FBXNode)
 	: m_BaseManager(BaseManager)
-	, m_OwnerFBXNode(OwnerFBXNode)
+	, m_FBXNode(FBXNode)
 {
+	m_Light = (SLight*)_aligned_malloc(sizeof(SLight), 16);
+	*m_Light = SLight();
 }
 
 CFBXLight::~CFBXLight()
 {
+	_aligned_free(m_Light);
 }
 
 void CFBXLight::Load(fbxsdk::FbxLight * NativeLight)
@@ -71,10 +70,15 @@ void CFBXLight::Load(fbxsdk::FbxLight * NativeLight)
 	Display4DVector("Scale: ", lScale, "");
 	m_OwnerFBXNode.lock()->SetScale(glm::vec3(lScale[0], lScale[1], lScale[2]));*/
 
-	m_OwnerFBXNode.lock()->ISceneNode3D::GetComponent<ILightComponent3D>()->SetType(lightTypes[NativeLight->LightType.Get()]);
-	m_OwnerFBXNode.lock()->ISceneNode3D::GetComponent<ILightComponent3D>()->SetColor(glm::vec3(NativeLight->Color.Get()[0], NativeLight->Color.Get()[1], NativeLight->Color.Get()[2]));
-	m_OwnerFBXNode.lock()->ISceneNode3D::GetComponent<ILightComponent3D>()->SetSpotlightAngle(NativeLight->OuterAngle.Get() / 2.0f);
-	m_OwnerFBXNode.lock()->ISceneNode3D::GetComponent<ILightComponent3D>()->SetRange(NativeLight->Intensity.Get() / 40.0f);
+	m_Light->Type = lightTypes[NativeLight->LightType.Get()];
+	m_Light->Color = glm::vec4(NativeLight->Color.Get()[0], NativeLight->Color.Get()[1], NativeLight->Color.Get()[2], 1.0f);
+	m_Light->SpotlightAngle = NativeLight->OuterAngle.Get() / 2.0f;
+	m_Light->Range = NativeLight->Intensity.Get() / 40.0f;
+}
+
+const SLight& CFBXLight::GetLight() const
+{
+	return *m_Light;
 }
 
 #endif

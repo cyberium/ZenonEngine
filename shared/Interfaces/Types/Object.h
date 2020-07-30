@@ -16,8 +16,6 @@ ZN_INTERFACE ZN_API IObject
 	virtual Guid GetGUID() const = 0;
 	virtual std::string GetName() const = 0;
 	virtual void SetName(const std::string& Name) = 0;
-	virtual std::string GetTypeName() const = 0;
-	virtual std::string GetClassNameW() const = 0;
 
 	// Methods
 	//virtual void Copy(std::shared_ptr<IObject> Destination) const = 0;

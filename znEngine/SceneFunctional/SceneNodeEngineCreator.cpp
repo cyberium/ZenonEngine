@@ -17,12 +17,12 @@
 CSceneNode3DEngineCreator::CSceneNode3DEngineCreator(IBaseManager& BaseManager)
 	: CObjectClassCreator(BaseManager)
 {
-	m_FBXManager = std::make_shared<CFBXManager>(GetBaseManager());
+	//m_FBXManager = std::make_shared<CFBXManager>(GetBaseManager());
 
 	AddKey("SceneNode3D", cSceneNode3D);
-#ifdef ZN_FBX_SDK_ENABLE
-	AddKey("SceneNodeFBX", cSceneNode_FBXNode);
-#endif
+//#ifdef ZN_FBX_SDK_ENABLE
+//	AddKey("SceneNodeFBX", cSceneNode_FBXNode);
+//#endif
 }
 
 CSceneNode3DEngineCreator::~CSceneNode3DEngineCreator()
@@ -42,12 +42,12 @@ std::shared_ptr<IObject> CSceneNode3DEngineCreator::CreateObject(size_t Index, c
 	{
 		createdNode = sceneNodeCreationArgs->GetScene()->CreateSceneNode3DInternal<SceneNode3D>();
 	}
-#ifdef ZN_FBX_SDK_ENABLE
-	else if (Index == 1)
-	{
-		createdNode = scene->CreateSceneNode3DInternal<CFBXSceneNode>(GetBaseManager(), m_FBXManager->GetFBXManager());
-	}
-#endif
+//#ifdef ZN_FBX_SDK_ENABLE
+//	else if (Index == 1)
+//	{
+//		createdNode = scene->CreateSceneNode3DInternal<CFBXSceneNode>(GetBaseManager(), m_FBXManager->GetFBXManager());
+//	}
+//#endif
 
 	if (createdNode == nullptr)
 		throw CException("CSceneNode3DEngineCreator: CreateObject: Unable to create object with index %d.", Index);

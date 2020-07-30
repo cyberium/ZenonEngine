@@ -2,8 +2,7 @@
 
 #include "EditedScene.h"
 #include "Editor3DPreviewScene.h"
-#include "Tools/NodesSelector.h"
-#include "Passes/DrawSelectionPass.h"
+#include "Tools/EditorToolsCollection.h"
 
 class CEdtor3DFrame
 	: public SceneBase
@@ -41,58 +40,36 @@ public:
 	IEditor_NodesSelector* GetNodesSelector();
 
 	// IEditor3DFrame
+	std::shared_ptr<IScene> GetScene();
 	IBaseManager& GetBaseManager2() const;
 	IRenderDevice& GetRenderDevice2() const;
 	void LockUpdates() override;
 	void UnlockUpdates() override;
+
+	void EnableSelectorTool();
+	void EnableMoverTool();
+	void EnableDraggerTool();
+
+	std::shared_ptr<IScene> GetRealScene() const override;
 	std::shared_ptr<ISceneNode3D> GetRealRootNode3D() const override;
 	std::shared_ptr<ISceneNode3D> GetNodeUnderMouse(const glm::ivec2& MousePos) const override;
 	void OnCollectionWidget_ModelSelected(const std::shared_ptr<IModel>& Model) override;
+
 	void DropEvent(const glm::vec2& Position) override;
 	void DragEnterEvent(const SDragData& Data) override;
 	void DragMoveEvent(const glm::vec2& Position) override;
 	void DragLeaveEvent() override;
+
 	void SetMoverValue(float value) override;
 
 	// IEditor_NodesSelectorEventListener
 	void OnSelectNodes() override;
 
 protected: // Game
-	glm::ivec3 ToBoxCoords(const glm::vec3& Position);
-	glm::vec3 FixBoxCoords(const glm::vec3& Position);
-
 	void Load3D();
-	void LoadUI();
 
 	void SetLights(const std::vector<SLight>& Lights);
 
-protected: // Editor
-	void DoMoveNode(const glm::vec2& MousePos);
-	void DoDropNodeAndCreateIt();
-
-private: // Editor
-	CSceneNodesSelector m_Selector;
-
-	bool m_IsDraggingEnabled;
-	bool m_IsDraggingPermanentCreation;
-	std::shared_ptr<ISceneNode3D> m_DraggedNode;
-	std::shared_ptr<ISceneNodeUI> m_DraggerTextUI;
-
-	float m_MoverValue;
-	bool m_IsMoverEnable;
-	int m_MoverNuber;
-	std::shared_ptr<ISceneNode3D> m_MovingNode;
-	glm::vec3 m_MovingObjectPos;
-	std::shared_ptr<ISceneNode3D> m_MoverRoot;
-	glm::vec3 m_MoverOffset;
-	std::shared_ptr<ISceneNode3D> m_MoverX;
-	std::shared_ptr<ISceneNode3D> m_MoverY;
-	std::shared_ptr<ISceneNode3D> m_MoverZ;
-
-	bool m_IsSelecting;
-	glm::vec2 m_SelectionPrevPos;
-	std::shared_ptr<ISceneNodeUI> m_SelectionTexture;
-	std::shared_ptr<CDrawSelectionPass> m_DrawSelectionPass;
 
 private: // Rendering
 	std::shared_ptr<IMaterialModelPass> m_MaterialModelPass;
@@ -103,4 +80,5 @@ private:
 	IEditorUIFrame* m_EditorUI;
 	std::shared_ptr<CEditor3DPreviewScene> m_PreviewScene;
 	std::shared_ptr<CEditedScene> m_EditedScene;
+	CTools m_Tools;
 };

@@ -14,6 +14,7 @@
 #include "SceneFunctional/ScenesFactory.h"
 #include "SceneFunctional/ComponentsEngineCreator.h"
 #include "SceneFunctional/SceneNodeEngineCreator.h"
+#include "FBX/FBXManager.h"
 
 // Additional (Images)
 #include "Formats/Images/ImagesFactory.h"
@@ -115,6 +116,12 @@ IBaseManager* WINAPI InitializeEngine(std::vector<std::string> Arguments, std::s
 		factory->AddClassFactory(sceneNode3DFactory);
 		factory->AddClassFactory(sceneNodeUIFactory);
 		factory->AddClassFactory(componentFactory);
+	}
+
+	// FBX
+	{
+		auto fbxManager = std::make_shared<CFBXManager>(*baseManager);
+		baseManager->AddManager<IFBXManager>(fbxManager);
 	}
 
 	// Scene

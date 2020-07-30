@@ -71,6 +71,8 @@ typedef unsigned long long uint64;
 #include <glm/glm/gtx/norm.hpp>
 #pragma warning( pop ) 
 
+typedef glm::vec3 ColorRBG;
+
 #include <guiddef.h>
 
 #ifndef WIN32_LEAN_AND_MEAN

@@ -38,7 +38,7 @@ bool CFBXStream::Flush()
 int CFBXStream::Write(const void * pData, int pSize)
 {
 	m_File->writeBytes(pData, pSize);
-	return 0;
+	return pSize;
 }
 
 int CFBXStream::Read(void * pData, int pSize) const

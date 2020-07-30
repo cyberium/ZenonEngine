@@ -3,10 +3,28 @@
 // General
 #include "LightComponent3D.h"
 
+// Additional
+#include "Scene/Properties.h"
+
 CLightComponent3D::CLightComponent3D(const ISceneNode3D& OwnerNode)
     : CComponentBase(OwnerNode)
 {
 	GetProperties()->SetName("LightComponent");
+
+	std::shared_ptr<CPropertyWrapped<ColorRBG>> ambientColor = std::make_shared<CPropertyWrapped<ColorRBG>>("AmbientColor", "Ambient color part of the light.");
+	ambientColor->SetValueSetter(std::bind(&CLightComponent3D::SetAmbientColor, this, std::placeholders::_1));
+	ambientColor->SetValueGetter(std::bind(&CLightComponent3D::GetAmbientColor, this));
+	GetProperties()->AddProperty(ambientColor);
+
+	std::shared_ptr<CPropertyWrappedColor> diffuseColor = std::make_shared<CPropertyWrappedColor>("DiffuseColor", "Ambient color part of the light.");
+	diffuseColor->SetValueSetter(std::bind(&CLightComponent3D::SetColor, this, std::placeholders::_1));
+	diffuseColor->SetValueGetter(std::bind(&CLightComponent3D::GetColor, this));
+	GetProperties()->AddProperty(diffuseColor);
+
+	std::shared_ptr<CPropertyWrapped<float>> range = std::make_shared<CPropertyWrapped<float>>("Range", "Range of this light.");
+	range->SetValueSetter(std::bind(&CLightComponent3D::SetRange, this, std::placeholders::_1));
+	range->SetValueGetter(std::bind(&CLightComponent3D::GetRange, this));
+	GetProperties()->AddProperty(range);
 
 	m_LightStruct = (SLight*)_aligned_malloc(sizeof(SLight), 16);
 	*m_LightStruct = SLight();

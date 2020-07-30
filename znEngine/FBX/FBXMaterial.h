@@ -1,28 +1,30 @@
 #pragma once
 
 #ifdef ZN_FBX_SDK_ENABLE
-
 #include <fbxsdk.h>
-#include "Materials/MaterialModel.h"
+#include "FBXInterfaces.h"
 
-// FORWARD BEGIN
-class CFBXSceneNode;
-// FORWARD END
+#include "Materials/MaterialModel.h"
 
 class ZN_API CFBXMaterial
 	: public MaterialModel
+	, public IFBXMaterial
 {
 public:
-	CFBXMaterial(const IBaseManager& BaseManager, std::weak_ptr<CFBXSceneNode> OwnerFBXNode);
+	CFBXMaterial(const IBaseManager& BaseManager, const IFBXNode& FBXNode);
 	virtual ~CFBXMaterial();
 
 	void Load(fbxsdk::FbxSurfaceMaterial* NativeMaterial);
 
-protected:
+	// IFBXMaterial
+	std::shared_ptr<IMaterial> GetMaterial() override;
+
+private:
 	std::shared_ptr<ITexture> LoadTexture(fbxsdk::FbxTexture* Texture);
 
 private:
-	std::weak_ptr<CFBXSceneNode> m_OwnerFBXNode;
+	const IBaseManager& m_BaseManager;
+	const IFBXNode& m_FBXNode;
 };
 
 #endif

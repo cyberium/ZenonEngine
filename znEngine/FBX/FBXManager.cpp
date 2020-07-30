@@ -7,8 +7,8 @@
 
 // Additional
 #include "FBXStream.h"
-
-using namespace fbxsdk;
+#include "FBXScene.h"
+#include "FBXSceneNode.h"
 
 CFBXManager::CFBXManager(const IBaseManager& BaseManager)
 	: m_BaseManager(BaseManager)
@@ -31,13 +31,20 @@ CFBXManager::~CFBXManager()
 	m_FBXManager->Destroy();
 }
 
-
 //
 // IFBXManager
 //
-fbxsdk::FbxManager* CFBXManager::GetFBXManager() const
+std::shared_ptr<IFBXScene> CFBXManager::LoadFBX(const std::string & FileName)
 {
-	return m_FBXManager;
+	auto file = m_BaseManager.GetManager<IFilesManager>()->Open(FileName);
+	if (file == nullptr)
+		throw CException("FBXManager: File '%s' not found.", FileName.c_str());
+
+	auto FBXScene = std::make_shared<CFBXScene>(m_BaseManager, m_FBXManager);
+	if (!FBXScene->LoadFromFile(file))
+		throw CException("FBXManager: Unable to load '%s'.", FileName.c_str());
+
+	return FBXScene;
 }
 
 #endif

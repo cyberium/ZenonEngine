@@ -31,7 +31,6 @@ public:
 
 private:
 	void Load3D();
-	void LoadUI();
 	void GenerateLights(std::shared_ptr<ISceneNode3D> Node, uint32_t numLights);
 	void UpdateLights();
 

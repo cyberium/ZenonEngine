@@ -1,46 +1,46 @@
 #pragma once
 
 #ifdef ZN_FBX_SDK_ENABLE
-
 #include <fbxsdk.h>
-
 #include "FBXInterfaces.h"
-#include "FBXMaterial.h"
-
-// FORWARD BEGIN
-class CFBXScene;
-// FORWARD END
 
 class ZN_API CFBXSceneNode
-	: public SceneNode3D
-	, public IFBXSceneNode3D
+	: public IFBXNode
+	, public std::enable_shared_from_this<CFBXSceneNode>
 {
 public:
-	CFBXSceneNode(const IBaseManager& BaseManager, fbxsdk::FbxManager* FBXManager);
+	CFBXSceneNode(const IBaseManager& BaseManager, const IFBXScene& FBXScene);
 	virtual ~CFBXSceneNode();
 
 	void LoadNode(fbxsdk::FbxNode * NativeNode);
-
-	const std::vector<std::shared_ptr<CFBXMaterial>>& GetMaterials() const;
-	std::shared_ptr<CFBXMaterial> GetMaterial(int Index) const;
-
-	// IFBXSceneNode3D
-	void InitializeFromFile(const std::string& FileName) override;
-	std::shared_ptr<IModel> GetModel() const override;
+	
+	// IFBXNode
+	const IFBXScene& GetScene() const override;
+	std::weak_ptr<IFBXNode> GetParent() const override;
+	const std::vector<std::shared_ptr<IFBXNode>>& GetChilds() const override;
+	std::shared_ptr<IFBXMaterial> GetMaterial(int Index) const override;
+	std::shared_ptr<IFBXModel> GetModel() const override;
+	std::shared_ptr<IFBXLight> GetLight() const override;
 
 protected:
+	void LoadParams(fbxsdk::FbxNode * NativeNode);
 	void LoadChilds(fbxsdk::FbxNode * NativeNode);
 	void LoadMaterials(fbxsdk::FbxNode * NativeNode);
+	void LoadAttributes(fbxsdk::FbxNode * NativeNode);
 	void LoadModel(fbxsdk::FbxNode * NativeNode);
 	void LoadLight(fbxsdk::FbxNode * NativeNode);
 
 private:
-	std::vector<std::shared_ptr<CFBXMaterial>> m_MaterialsArray;
-	std::shared_ptr<IModel> m_Model;
+	std::weak_ptr<CFBXSceneNode> m_Parent;
+	std::vector<std::shared_ptr<IFBXNode>> m_Childs;
+
+	std::vector<std::shared_ptr<IFBXMaterial>> m_MaterialsArray;
+	std::shared_ptr<IFBXModel> m_Model;
+	std::shared_ptr<IFBXLight> m_Light;
 
 private:
 	const IBaseManager& m_BaseManager;
-	fbxsdk::FbxManager* m_FBXManager;
+	const IFBXScene& m_FBXScene;
 };
 
 #endif

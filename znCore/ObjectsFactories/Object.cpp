@@ -12,21 +12,6 @@ bool Object::operator!=(const Object& rhs) const
 	return m_Guid != rhs.m_Guid;
 }
 
-//
-// IObject
-//
-Guid Object::GetGUID() const
-{
-	return m_Guid;
-}
-std::string Object::GetName() const
-{
-	return m_Name;
-}
-void Object::SetName(const std::string& Name)
-{
-	m_Name = Name;
-}
 std::string Object::GetTypeName() const
 {
 	if (m_BaseManager != nullptr)
@@ -42,6 +27,21 @@ std::string Object::GetClassNameW() const
 	return "class" + std::to_string(m_Guid.GetObjectClass());
 }
 
+//
+// IObject
+//
+Guid Object::GetGUID() const
+{
+	return m_Guid;
+}
+std::string Object::GetName() const
+{
+	return m_Name;
+}
+void Object::SetName(const std::string& Name)
+{
+	m_Name = Name;
+}
 
 void Object::Copy(std::shared_ptr<IObject> Destination) const
 {

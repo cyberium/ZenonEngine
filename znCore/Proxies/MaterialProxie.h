@@ -25,8 +25,6 @@ public:
 	Guid GetGUID() const override final { return Object::GetGUID(); };
 	std::string GetName() const override final { return Object::GetName(); };
 	void SetName(const std::string& Name) override final { Object::SetName(Name); };
-	std::string GetTypeName() const override final { return Object::GetTypeName(); };
-	std::string GetClassNameW() const override final { return Object::GetClassNameW(); };
 
 	// IObjectLoadSave
 	void Load(const std::shared_ptr<IByteBuffer>& Buffer) override;

@@ -71,9 +71,7 @@ public:
 	// IObject
 	Guid                                            GetGUID() const override final { return Object::GetGUID(); };
 	std::string                                     GetName() const override { return Object::GetName(); };
-	virtual void                                    SetName(const std::string& Name) override;
-	std::string                                     GetTypeName() const override final { return Object::GetTypeName(); };
-	std::string                                     GetClassNameW() const override final { return Object::GetClassNameW(); };
+	void                                            SetName(const std::string& Name) override;
 
 	// IObjectLoadSave
 	virtual void									Load(const std::shared_ptr<IXMLReader>& Reader) override;
@@ -117,3 +115,18 @@ private:
 
 	ComponentsMap                                   m_Components;
 };
+
+inline bool IsChildOf(const std::shared_ptr<ISceneNode3D>& Parent, const std::shared_ptr<ISceneNode3D>& Child)
+{
+	if (Parent == nullptr || Child == nullptr)
+		return false;
+
+	if (Parent->GetGUID() == Child->GetGUID())
+		return true;
+
+	for (const auto& ch : Parent->GetChilds())
+		if (IsChildOf(ch, Child))
+			return true;
+
+	return false;
+}

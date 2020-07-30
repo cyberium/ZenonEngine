@@ -143,6 +143,7 @@ void CPropertiesController::CreateProperty(QtnPropertySet * PropertiesSet, const
 		floatProperty->setName(propT->GetName().c_str());
 		floatProperty->setDescription(propT->GetDescription().c_str());
 		floatProperty->setValue(propT->Get());
+		floatProperty->setStepValue(0.1f);
 
 		// From engine to editor
 		propT->SetValueChangedCallback(
@@ -159,6 +160,40 @@ void CPropertiesController::CreateProperty(QtnPropertySet * PropertiesSet, const
 				if (reason & QtnPropertyChangeReasonValue)
 					propT->Set(floatProperty->value(), true);
 			}
+		);
+	}
+	else if (auto propT = std::dynamic_pointer_cast<CPropertyWrappedColor>(Property))
+	{
+		QtnPropertyQColor* colorProperty = qtnCreateProperty<QtnPropertyQColor>(PropertiesSet);
+		colorProperty->setName(propT->GetName().c_str());
+		colorProperty->setDescription(propT->GetDescription().c_str());
+
+		QColor color;
+		color.setRgbF(propT->Get().r, propT->Get().g, propT->Get().b);
+		colorProperty->setValue(color);
+
+		// From engine to editor
+		propT->SetValueChangedCallback(
+			[colorProperty](const glm::vec3& value) {
+
+			QColor color;
+			color.setRgbF(value.r, value.g, value.b);
+			colorProperty->setValue(color);
+		}
+		);
+
+		// From editor to engine
+		QObject::connect(
+			colorProperty,
+			&QtnProperty::propertyDidChange,
+			[colorProperty, propT](const QtnPropertyBase* changedProperty, const QtnPropertyBase* firedProperty, QtnPropertyChangeReason reason) {
+			if (reason & QtnPropertyChangeReasonValue)
+			{
+				double r, g, b;
+				colorProperty->value().getRgbF(&r, &g, &b);
+				propT->Set(glm::vec3(r, g, b), true);
+			}
+		}
 		);
 	}
 	else if (auto propT = std::dynamic_pointer_cast<IPropertyT<glm::vec3>>(Property))

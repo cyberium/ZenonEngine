@@ -295,7 +295,7 @@ DefferedRenderPSOut PS_main(VertexShaderOutput IN) : SV_TARGET
 
 	DefferedRenderPSOut OUT;
 	//OUT.PositionWS = IN.position;
-	OUT.Diffuse = colorResult;
+	OUT.Diffuse = diffuse.rgba;//colorResult;
 	OUT.Specular = specularLight;
 	OUT.NormalWS = float4(1.0, 1.0, 1.0, 0.0);
 	return OUT;

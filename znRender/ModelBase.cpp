@@ -12,6 +12,16 @@ ModelBase::ModelBase(IRenderDevice& RenderDevice)
 ModelBase::~ModelBase()
 {}
 
+void ModelBase::SetFileName(const std::string & FileName)
+{
+	m_FileName = FileName;
+}
+
+std::string ModelBase::GetFileName() const
+{
+	return m_FileName;
+}
+
 void ModelBase::SetBounds(const BoundingBox& Bounds)
 {
 	m_BoundingBox = Bounds;
@@ -34,16 +44,6 @@ void ModelBase::AddConnection(const std::shared_ptr<IMaterial>& Material, const 
 const std::vector<IModel::SConnection>& ModelBase::GetConnections() const
 {
 	return m_Connections;
-}
-
-void ModelBase::SetFileName(const std::string & FileName)
-{
-	m_FileName = FileName;
-}
-
-std::string ModelBase::GetFileName() const
-{
-	return m_FileName;
 }
 
 void ModelBase::Accept(IVisitor* visitor)
@@ -138,11 +138,12 @@ void ModelBase::Save(const std::shared_ptr<IByteBuffer>& ByteBuffer) const
 
 void ModelBase::Load(const std::shared_ptr<IXMLReader>& Reader)
 {
+	std::string fileName;
 	if (auto fileNameReader = Reader->GetChild("FileName"))
-		m_FileName = fileNameReader->GetValue();
+		fileName = fileNameReader->GetValue();
 
 	// TODO: Replace with models maanger
-	auto modelFile = m_RenderDevice.GetBaseManager().GetManager<IFilesManager>()->Open(m_FileName);
+	auto modelFile = m_RenderDevice.GetBaseManager().GetManager<IFilesManager>()->Open(fileName);
 	if (modelFile)
 		Load(modelFile);
 }

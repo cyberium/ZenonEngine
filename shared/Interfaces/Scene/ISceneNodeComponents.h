@@ -19,6 +19,7 @@ const ObjectClass cSceneNodePhysicsComponent = UINT16_MAX - 505u;
 const ObjectClass cSceneNodePortalsComponent = UINT16_MAX - 506u;
 const ObjectClass cSceneNodeLightComponent = UINT16_MAX - 507u;
 const ObjectClass cSceneNodeCameraComponent = UINT16_MAX - 508u;
+const ObjectClass cSceneNodeSkeletonAnimationComponent = UINT16_MAX - 509u;
 
 ZN_INTERFACE ZN_API ISceneNodeComponent 
 	: public IObject
@@ -329,18 +330,30 @@ ZN_INTERFACE __declspec(UUID_CameraComponent) ZN_API ICameraComponent3D
 //
 // SKELETON COMPONENT 3D
 //
-ZN_INTERFACE ZN_API ISkeletonBone3D
+ZN_INTERFACE ZN_API ISkeletonComponentBone3D
 {
-	virtual ~ISkeletonBone3D() {}
+	virtual ~ISkeletonComponentBone3D() {}
 
 	// Static data
-	virtual const std::weak_ptr<ISkeletonBone3D>& GetParentBone() const = 0;
-	virtual const std::vector<std::shared_ptr<ISkeletonBone3D>>& GetChilds() const = 0;
+	virtual std::string GetName() const = 0;
+	virtual const std::weak_ptr<ISkeletonComponentBone3D>& GetParentBone() const = 0;
+	virtual const std::vector<std::shared_ptr<ISkeletonComponentBone3D>>& GetChilds() const = 0;
 	virtual glm::vec3 GetPivotPoint() const = 0;
 
 	// Dynamic data
 	virtual const glm::mat4& GetMatrix() const = 0;
 	virtual const glm::mat4& GetRotateMatrix() const = 0;
+};
+
+ZN_INTERFACE ZN_API ISkeletonComponentBoneInternal3D
+{
+	virtual ~ISkeletonComponentBoneInternal3D() {}
+
+	// Static data
+	virtual void AddChildInternal(const std::shared_ptr<ISkeletonComponentBone3D>& Child) = 0;
+	virtual void SetParentAndChildsInternals(const std::vector<std::shared_ptr<ISkeletonComponentBone3D>>& Bones) = 0;
+	virtual void Calculate(const ISceneNode3D& Instance, const ICameraComponent3D* Camera) = 0;
+	virtual void Reset() = 0;
 };
 
 #define UUID_SkeletonComponent uuid("6A913E4D-B4E9-4E7C-8A09-F606D7A85CD5")
@@ -350,7 +363,7 @@ ZN_INTERFACE __declspec(UUID_SkeletonComponent) ZN_API ISkeletonComponent3D
 
 	virtual ~ISkeletonComponent3D() {}
 
-	virtual std::shared_ptr<ISkeletonBone3D> GetBone(size_t Index) const = 0;
+	virtual std::shared_ptr<ISkeletonComponentBone3D> GetBone(size_t Index) const = 0;
 };
 
 
@@ -429,3 +442,15 @@ ZN_INTERFACE __declspec(UUID_PhysicsComponent)ZN_API IPhysicsComponent
 	virtual glm::vec3 GetPhysicsPosition() const = 0;
 };
 
+
+
+#define UUID_SkeletonAnimationComponent uuid("9F9EB54A-9DC3-4C9D-B2BE-715D6EB38068")
+ZN_INTERFACE __declspec(UUID_SkeletonAnimationComponent) ZN_API ISkeletonAnimationComponent
+{
+	static ObjectClass GetClassT() { return cSceneNodeSkeletonAnimationComponent; }
+
+	virtual ~ISkeletonAnimationComponent() {}
+
+	virtual uint16 getSequenceIndex() const = 0;
+	virtual uint32 getCurrentTime() const = 0;
+};

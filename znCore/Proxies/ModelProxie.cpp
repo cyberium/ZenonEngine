@@ -27,16 +27,6 @@ BoundingBox ModelProxie::GetBounds() const
 	return m_Model->GetBounds();
 }
 
-void ModelProxie::AddConnection(const std::shared_ptr<IMaterial>& Material, const std::shared_ptr<IGeometry>& Geometry, SGeometryDrawArgs GeometryDrawArgs)
-{
-	m_Model->AddConnection(Material, Geometry, GeometryDrawArgs);
-}
-
-const std::vector<ModelProxie::SConnection>& ModelProxie::GetConnections() const
-{
-	return m_Model->GetConnections();
-}
-
 void ModelProxie::SetFileName(const std::string & FileName)
 {
 	m_Model->SetFileName(FileName);
@@ -45,6 +35,16 @@ void ModelProxie::SetFileName(const std::string & FileName)
 std::string ModelProxie::GetFileName() const
 {
 	return m_Model->GetFileName();
+}
+
+void ModelProxie::AddConnection(const std::shared_ptr<IMaterial>& Material, const std::shared_ptr<IGeometry>& Geometry, SGeometryDrawArgs GeometryDrawArgs)
+{
+	m_Model->AddConnection(Material, Geometry, GeometryDrawArgs);
+}
+
+const std::vector<ModelProxie::SConnection>& ModelProxie::GetConnections() const
+{
+	return m_Model->GetConnections();
 }
 
 bool ModelProxie::Render(const RenderEventArgs& renderEventArgs) const
@@ -103,4 +103,9 @@ void ModelProxie::Load(const std::shared_ptr<IXMLReader>& Reader)
 void ModelProxie::Save(const std::shared_ptr<IXMLWriter>& Writer) const
 {
 	_ASSERT(false);
+}
+
+const std::shared_ptr<IModel> ModelProxie::GetModel() const
+{
+	return m_Model;
 }

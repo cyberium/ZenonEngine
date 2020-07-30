@@ -74,6 +74,13 @@ void SceneBase::SetRenderWindow(const std::shared_ptr<IRenderWindow>& RenderWind
 	m_RenderWindow = RenderWindow;
 }
 
+std::shared_ptr<IRenderWindow> SceneBase::GetRenderWindow() const
+{
+	std::shared_ptr<IRenderWindow> renderWindow = m_RenderWindow.lock();
+	_ASSERT(renderWindow);
+	return std::move(renderWindow);
+}
+
 void SceneBase::ConnectEvents(const std::shared_ptr<IRenderWindowEvents>& WindowEvents)
 {
 	// RenderWindowEvents
@@ -140,6 +147,107 @@ void SceneBase::SetCameraController(std::shared_ptr<ICameraController> CameraCon
 std::shared_ptr<ICameraController> SceneBase::GetCameraController() const
 {
 	return m_DefaultCameraController;
+}
+
+
+namespace
+{
+	void FillIntersectedList(const std::shared_ptr<ISceneNode3D>& Parent, const Frustum& Frustum, std::vector<std::shared_ptr<ISceneNode3D>> * intersectedNodes)
+	{
+		const auto& childs = Parent->GetChilds();
+		for (const auto& it : childs)
+		{
+			FillIntersectedList(it, Frustum, intersectedNodes);
+
+			if (auto collider = it->GetComponent<IColliderComponent3D>())
+			{
+				if (collider->GetBounds().isClear())
+					continue;
+
+				if (!Frustum.cullBox(collider->GetWorldBounds()))
+					intersectedNodes->push_back(it);
+			}
+		}
+	}
+
+	void FillIntersectedList(const std::shared_ptr<ISceneNode3D>& Parent, const Ray & Ray, std::map<float, std::shared_ptr<ISceneNode3D>> * intersectedNodes)
+	{
+		const auto& childs = Parent->GetChilds();
+		for (const auto& it : childs)
+		{
+			if (auto collider = it->GetComponent<IColliderComponent3D>())
+			{
+				FillIntersectedList(it, Ray, intersectedNodes);
+
+				if (collider->GetBounds().isClear())
+					continue;
+
+				if (!collider->IsRayIntersects(Ray))
+					continue;
+
+				float dist = nearestDistToAABB(Ray.GetOrigin(), collider->GetWorldBounds());
+				intersectedNodes->insert(std::make_pair(dist, it));
+			}
+		}
+	}
+}
+
+std::map<float, std::shared_ptr<ISceneNode3D>> SceneBase::FindIntersection(const Ray& Ray) const
+{
+	std::map<float, std::shared_ptr<ISceneNode3D>> intersectedNodes;
+	FillIntersectedList(GetRootNode3D(), Ray, &intersectedNodes);
+	return intersectedNodes;
+}
+
+std::map<float, std::shared_ptr<ISceneNode3D>> SceneBase::FindIntersection(const Ray& Ray, std::function<bool(std::shared_ptr<ISceneNode3D>)> Filter) const
+{
+	std::map<float, std::shared_ptr<ISceneNode3D>> intersectedNodes;
+	FillIntersectedList(GetRootNode3D(), Ray, &intersectedNodes);
+	auto it = intersectedNodes.begin();
+	while (it != intersectedNodes.end())
+	{
+		if (Filter(it->second))
+			it++;
+		else
+			it = intersectedNodes.erase(it);
+	}
+	return intersectedNodes;
+}
+
+std::map<float, std::shared_ptr<ISceneNode3D>> SceneBase::FindIntersection(const Ray& Ray, std::shared_ptr<ISceneNode3D> RootForFinder) const
+{
+	std::map<float, std::shared_ptr<ISceneNode3D>> intersectedNodes;
+	FillIntersectedList(RootForFinder, Ray, &intersectedNodes);
+	return intersectedNodes;
+}
+
+std::vector<std::shared_ptr<ISceneNode3D>> SceneBase::FindIntersections(const Frustum & Frustum) const
+{
+	std::vector<std::shared_ptr<ISceneNode3D>> intersectedNodes;
+	FillIntersectedList(GetRootNode3D(), Frustum, &intersectedNodes);
+	return intersectedNodes;
+}
+
+std::vector<std::shared_ptr<ISceneNode3D>> SceneBase::FindIntersections(const Frustum & Frustum, std::function<bool(std::shared_ptr<ISceneNode3D>)> Filter) const
+{
+	std::vector<std::shared_ptr<ISceneNode3D>> intersectedNodes;
+	FillIntersectedList(GetRootNode3D(), Frustum, &intersectedNodes);
+	auto it = intersectedNodes.begin();
+	while (it != intersectedNodes.end())
+	{
+		if (Filter(*it))
+			it++;
+		else
+			it = intersectedNodes.erase(it);
+	}
+	return intersectedNodes;
+}
+
+std::vector<std::shared_ptr<ISceneNode3D>> SceneBase::FindIntersections(const Frustum & Frustum, std::shared_ptr<ISceneNode3D> RootForFinder) const
+{
+	std::vector<std::shared_ptr<ISceneNode3D>> intersectedNodes;
+	FillIntersectedList(RootForFinder, Frustum, &intersectedNodes);
+	return intersectedNodes;
 }
 
 void SceneBase::Accept(IVisitor * visitor)
@@ -476,73 +584,11 @@ IRenderDevice& SceneBase::GetRenderDevice() const
 	return m_RenderDevice;
 }
 
-std::shared_ptr<IRenderWindow> SceneBase::GetRenderWindow() const
-{
-	std::shared_ptr<IRenderWindow> renderWindow = m_RenderWindow.lock();
-	_ASSERT(renderWindow);
-	return std::move(renderWindow);
-}
-
 std::shared_ptr<ILightComponent3D> SceneBase::GetDefaultLight() const
 {
 	return m_LightNode->GetComponent<ILightComponent3D>();
 }
 
-namespace
-{
-	void FillIntersectedList(const std::shared_ptr<ISceneNode3D>& Parent, const Frustum& Frustum, std::vector<std::shared_ptr<ISceneNode3D>> * intersectedNodes)
-	{
-		const auto& childs = Parent->GetChilds();
-		for (const auto& it : childs)
-		{
-			FillIntersectedList(it, Frustum, intersectedNodes);
-
-			if (auto collider = it->GetComponent<IColliderComponent3D>())
-			{
-				if (collider->GetBounds().isClear())
-					continue;
-
-				if (!Frustum.cullBox(collider->GetWorldBounds()))
-					intersectedNodes->push_back(it);
-			}
-		}
-	}
-
-	void FillIntersectedList(const std::shared_ptr<ISceneNode3D>& Parent, const Ray & Ray, std::map<float, std::shared_ptr<ISceneNode3D>> * intersectedNodes)
-	{
-		const auto& childs = Parent->GetChilds();
-		for (const auto& it : childs)
-		{
-			if (auto collider = it->GetComponent<IColliderComponent3D>())
-			{
-				FillIntersectedList(it, Ray, intersectedNodes);
-
-				if (collider->GetBounds().isClear())
-					continue;
-
-				if (!collider->IsRayIntersects(Ray))
-					continue;
-
-				float dist = nearestDistToAABB(Ray.GetOrigin(), collider->GetWorldBounds());
-				intersectedNodes->insert(std::make_pair(dist, it));				
-			}
-		}
-	}
-}
-
-std::map<float, std::shared_ptr<ISceneNode3D>> SceneBase::FindIntersection(const Ray& Ray) const
-{
-	std::map<float, std::shared_ptr<ISceneNode3D>> intersectedNodes;
-	FillIntersectedList(GetRootNode3D(), Ray, &intersectedNodes);
-	return intersectedNodes;
-}
-
-std::vector<std::shared_ptr<ISceneNode3D>> SceneBase::FindIntersections(const Frustum & Frustum) const
-{
-	std::vector<std::shared_ptr<ISceneNode3D>> intersectedNodes;
-	FillIntersectedList(GetRootNode3D(), Frustum, &intersectedNodes);
-	return intersectedNodes;
-}
 
 
 

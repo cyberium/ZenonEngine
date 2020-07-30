@@ -16,6 +16,7 @@ ZN_INTERFACE ZN_API IScene
 	virtual ~IScene() {}
 
 	virtual void SetRenderWindow(const std::shared_ptr<IRenderWindow>& RenderWindow) = 0;
+	virtual std::shared_ptr<IRenderWindow> GetRenderWindow() const = 0;
 	virtual void ConnectEvents(const std::shared_ptr<IRenderWindowEvents>& WindowEvents) = 0;
 	virtual void DisconnectEvents(const std::shared_ptr<IRenderWindowEvents>& WindowEvents) = 0;
 
@@ -27,6 +28,14 @@ ZN_INTERFACE ZN_API IScene
 
 	virtual void SetCameraController(std::shared_ptr<ICameraController> CameraController) = 0;
 	virtual std::shared_ptr<ICameraController> GetCameraController() const = 0;
+
+	virtual std::map<float, std::shared_ptr<ISceneNode3D>> FindIntersection(const Ray& Ray) const = 0;
+	virtual std::map<float, std::shared_ptr<ISceneNode3D>> FindIntersection(const Ray& Ray, std::function<bool(std::shared_ptr<ISceneNode3D>)> Filter) const = 0;
+	virtual std::map<float, std::shared_ptr<ISceneNode3D>> FindIntersection(const Ray& Ray, std::shared_ptr<ISceneNode3D> RootForFinder) const = 0;
+
+	virtual std::vector<std::shared_ptr<ISceneNode3D>> FindIntersections(const Frustum& Frustum) const = 0;
+	virtual std::vector<std::shared_ptr<ISceneNode3D>> FindIntersections(const Frustum& Frustum, std::function<bool(std::shared_ptr<ISceneNode3D>)> Filter) const = 0;
+	virtual std::vector<std::shared_ptr<ISceneNode3D>> FindIntersections(const Frustum& Frustum, std::shared_ptr<ISceneNode3D> RootForFinder) const = 0;
 
 	// Passes will go to this
 	virtual void Accept(IVisitor* visitor) = 0;

@@ -8,6 +8,7 @@ ZN_INTERFACE ISamplerState;
 
 ZN_INTERFACE ZN_API IMaterial 
 	: public IObject
+	, public std::enable_shared_from_this<IMaterial>
 {
 	virtual ~IMaterial() {}
 

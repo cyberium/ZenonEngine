@@ -50,26 +50,3 @@ void CEditedScene::RaiseSceneChangeEvent(ESceneChangeType SceneChangeType, const
 
 	root->GetParent().lock()->GetScene()->RaiseSceneChangeEvent(SceneChangeType, OwnerNode, ChildNode);
 }
-
-
-
-std::shared_ptr<ISceneNode3D> CEditedScene::CreateNode(const glm::ivec3& Position, const std::string& Type)
-{
-	auto node = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, this);
-	node->SetName(Type);
-	auto model = GetRenderDevice().GetObjectsFactory().CreateModel();
-	if (auto loadable = std::dynamic_pointer_cast<IObjectLoadSave>(model))
-	{
-		auto fileName = "C:\\_engine\\ZenonEngine_gamedata\\models\\" + Type + ".fbx.znmdl";
-		auto file = GetBaseManager().GetManager<IFilesManager>()->Open(fileName);
-		if (file == nullptr)
-			throw CException("File not found.");
-		loadable->Load(file);
-		model->SetFileName(fileName);
-	}
-
-	node->GetComponent<IModelsComponent3D>()->AddModel(model);
-	node->GetComponent<IColliderComponent3D>()->SetBounds(model->GetBounds());
-
-	return node;
-}

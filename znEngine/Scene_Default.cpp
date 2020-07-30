@@ -46,18 +46,22 @@ void CSceneDefault::Initialize()
 
 	auto cameraNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, this, GetRootNode3D());
 	cameraNode->SetName("Camera");
-
+	
 	auto cameraComponent = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<IComponentFactory>()->CreateComponentT<ICameraComponent3D>(cSceneNodeCameraComponent, *cameraNode);
 	cameraNode->AddComponent(cameraComponent);
 
 	SetCameraController(std::make_shared<CFreeCameraController>());
 	GetCameraController()->SetCamera(cameraNode->GetComponent<ICameraComponent3D>());
 	GetCameraController()->GetCamera()->SetPerspectiveProjection(ICameraComponent3D::EPerspectiveProjectionHand::Right, 45.0f, static_cast<float>(GetRenderWindow()->GetWindowWidth()) / static_cast<float>(GetRenderWindow()->GetWindowHeight()), 1.0f, 5000.0f);
+	
+	cameraNode->SetTranslate(glm::vec3(-50, 160, 170));
+	GetCameraController()->GetCamera()->SetYaw(-51);
+	GetCameraController()->GetCamera()->SetPitch(-38);
 
-	auto newRoot = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, this, GetRootNode3D());
-	cameraNode->SetName("NewRoot3D");
+	/*auto newRoot = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, this, GetRootNode3D());
+	newRoot->SetName("NewRoot3D");
 
-	auto file = GetBaseManager().GetManager<IFilesManager>()->Open("D:\\Scene.xml");
+	auto file = GetBaseManager().GetManager<IFilesManager>()->Open("D://Scene.xml");
 	if (file != nullptr)
 	{
 		CXMLManager xml;
@@ -71,7 +75,7 @@ void CSceneDefault::Initialize()
 
 		while (false == rootNodeXML->GetChilds().empty())
 			currentRoot->AddChild(rootNodeXML->GetChilds()[0]);
-	}
+	}*/
 
 	rp3d::Vector3 gravity(0.0, -9.81, 0.0);
 	// Create the dynamics world
@@ -79,11 +83,8 @@ void CSceneDefault::Initialize()
 
 
 	Load3D();
-	LoadUI();
 
-	cameraNode->SetTranslate(glm::vec3(-50, 160, 170));
-	GetCameraController()->GetCamera()->SetYaw(-51);
-	GetCameraController()->GetCamera()->SetPitch(-38);
+	m_TechniqueUI.AddPass(std::make_shared<CUIFontPass>(GetRenderDevice(), shared_from_this())->CreatePipeline(GetRenderWindow()->GetRenderTarget(), &GetRenderWindow()->GetViewport()));
 }
 
 void CSceneDefault::Finalize()
@@ -164,7 +165,7 @@ void CSceneDefault::Load3D()
 
 
 	{
-		const int iterCnt = 0;
+		const int iterCnt = 5;
 		const float offset = 13.0f;
 		const float scale = 5.0f;
 
@@ -173,10 +174,10 @@ void CSceneDefault::Load3D()
 		textMaterial->SetSpecularColor(glm::vec3(1.0f, 1.0f, 1.0f));
 		textMaterial->SetSpecularFactor(4.0f);
 		textMaterial->SetBumpFactor(8.0f);
-		textMaterial->SetTexture(MaterialModel::ETextureType::TextureDiffuse, GetRenderDevice().GetObjectsFactory().LoadTexture2D("AmazonScene\\BuildingTextures\\concrete_smooth_03_diff.dds"));
+		textMaterial->SetTexture(MaterialModel::ETextureType::TextureDiffuse, GetRenderDevice().GetObjectsFactory().LoadTexture2D("AmazonScene//BuildingTextures//concrete_smooth_03_diff.dds"));
 		//textMaterial->SetTexture(MaterialModel::ETextureType::TextureNormalMap, GetRenderDevice().GetObjectsFactory().LoadTexture2D("Sponza_Ceiling_normal.png"));
-		textMaterial->SetTexture(MaterialModel::ETextureType::TextureSpecular, GetRenderDevice().GetObjectsFactory().LoadTexture2D("AmazonScene\\BuildingTextures\\concrete_smooth_03_spec.dds"));
-		textMaterial->SetTexture(MaterialModel::ETextureType::TextureBump, GetRenderDevice().GetObjectsFactory().LoadTexture2D("AmazonScene\\BuildingTextures\\concrete_smooth_03_ddna.dds"));
+		textMaterial->SetTexture(MaterialModel::ETextureType::TextureSpecular, GetRenderDevice().GetObjectsFactory().LoadTexture2D("AmazonScene//BuildingTextures//concrete_smooth_03_spec.dds"));
+		textMaterial->SetTexture(MaterialModel::ETextureType::TextureBump, GetRenderDevice().GetObjectsFactory().LoadTexture2D("AmazonScene//BuildingTextures//concrete_smooth_03_ddna.dds"));
 
 		//std::shared_ptr<MaterialTextured> textMaterial = std::make_shared<MaterialTextured>(GetRenderDevice());
 		//textMaterial->SetTexture(0, GetRenderDevice().GetObjectsFactory().LoadTexture2D("Sponza_Floor_diffuse.png"));
@@ -242,7 +243,7 @@ void CSceneDefault::Load3D()
 	// Plane
 	//--------------------------------------------------------------------------
 
-#if 0
+#if 1
 	{
 		const float cPlaneSize = 120.0f;
 		const float cPlaneY = -50.0f;
@@ -252,10 +253,10 @@ void CSceneDefault::Load3D()
 		textMaterial->SetSpecularColor(glm::vec3(1.0f, 1.0f, 1.0f));
 		textMaterial->SetSpecularFactor(1.0f);
 		textMaterial->SetBumpFactor(8.0f);
-		textMaterial->SetTexture(MaterialModel::ETextureType::TextureDiffuse, GetRenderDevice().GetObjectsFactory().LoadTexture2D("AmazonScene\\OtherTextures\\Colors\\Orange.dds"));
+		textMaterial->SetTexture(MaterialModel::ETextureType::TextureDiffuse, GetRenderDevice().GetObjectsFactory().LoadTexture2D("AmazonScene//OtherTextures//Colors//Orange.dds"));
 		//textMaterial->SetTexture(MaterialModel::ETextureType::TextureNormalMap, GetRenderDevice().GetObjectsFactory().LoadTexture2D("Sponza_Ceiling_normal.png"));
-		//textMaterial->SetTexture(MaterialModel::ETextureType::TextureSpecular, GetRenderDevice().GetObjectsFactory().LoadTexture2D("AmazonScene\\BuildingTextures\\concrete_smooth_03_spec.dds"));
-		//textMaterial->SetTexture(MaterialModel::ETextureType::TextureBump, GetRenderDevice().GetObjectsFactory().LoadTexture2D("AmazonScene\\BuildingTextures\\concrete_smooth_03_ddna.dds"));
+		//textMaterial->SetTexture(MaterialModel::ETextureType::TextureSpecular, GetRenderDevice().GetObjectsFactory().LoadTexture2D("AmazonScene//BuildingTextures//concrete_smooth_03_spec.dds"));
+		//textMaterial->SetTexture(MaterialModel::ETextureType::TextureBump, GetRenderDevice().GetObjectsFactory().LoadTexture2D("AmazonScene//BuildingTextures//concrete_smooth_03_ddna.dds"));
 
 		//std::shared_ptr<MaterialTextured> textMaterial = std::make_shared<MaterialTextured>(GetRenderDevice());
 		//textMaterial->SetTexture(0, GetRenderDevice().GetObjectsFactory().LoadTexture2D("idi na huy.png"));
@@ -263,13 +264,11 @@ void CSceneDefault::Load3D()
 		auto& modelPlane = GetRenderDevice().GetObjectsFactory().CreateModel();
 		modelPlane->AddConnection(textMaterial, GetRenderDevice().GetPrimitivesFactory().CreatePlane());
 
-		auto sceneNodePlane = GetRootNode3D()->CreateSceneNode<SceneNode3D>();
+		auto sceneNodePlane = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, this);
 		sceneNodePlane->SetName("Ground");
 		sceneNodePlane->SetTranslate(glm::vec3(0, cPlaneY, 0));
 		sceneNodePlane->SetScale(glm::vec3(cPlaneSize));
 		sceneNodePlane->GetComponent<IModelsComponent3D>()->AddModel(modelPlane);
-
-
 
 		rp3d::Vector3 initPosition(0, cPlaneY, 0);
 		rp3d::Quaternion initOrientation = rp3d::Quaternion::identity();
@@ -340,27 +339,16 @@ void CSceneDefault::Load3D()
 		*/
 	}
 
-	//node->InitializeFromFile("Nature Kit (2.1)\\Models\\FBX format\\tree_thin_dark.fbx");
 
-	//std::shared_ptr<ISceneNode3D> fbxSceneNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>(otSceneNode3D)->CreateSceneNode3D(this, cSceneNode_FBXNode);
-	//std::shared_ptr<ISceneNode3D> fbxSceneNode2 = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>(otSceneNode3D)->CreateSceneNode3D(this, cSceneNode_FBXNode);
-	//fbxSceneNode2->SetTranslate(glm::vec3(10, 0, 0));
-	//fbxSceneNode->SetScale(glm::vec3(15.0f, 15.0f, 15.0f));
+	auto fbxScene = GetBaseManager().GetManager<IFBXManager>()->LoadFBX("C:/Users/Alexander/Downloads/Assets/Toon_RTS/Orcs/models/Single_Mesh/Orc_SM_shaman.FBX");
+	
+	std::shared_ptr<ISceneNode3D> sceneNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, this);
+	DoAddModels(sceneNode->GetModelsComponent(), fbxScene->GetRootNode());
 
 
-	{
-		sceneNodeParentt = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, this, GetRootNode3D());
-		sceneNodeParentt->SetTranslate(glm::vec3(0.0f, 0.0f, 0.0f));
-
-		//auto model = GetRenderDevice().GetObjectsFactory().CreateModel();
-		//if (auto loadable = std::dynamic_pointer_cast<IObjectLoadSave>(model))
-		//{
-		//	loadable->Load(GetBaseManager().GetManager<IFilesManager>()->Open("C:\\_engine\\ZenonEngine_gamedata\\natureKit\\models\\fbxformat\\ground_grass.fbx.znmdl"));
-		//}
-
-		//sceneNodeParentt->GetComponent<IModelsComponent3D>()->AddModel(model);
-	}
-
+	//std::shared_ptr<IFBXNode> fbxSceneNode = std::dynamic_pointer_cast<IFBXNode>(sceneNode);
+	//fbxSceneNode->InitializeFromFile("C:/Users/Alexander/Downloads/Assets/Toon_RTS/Orcs/animation/shaman/Orc_shaman_02_walk.FBX");
+	//fbxSceneNode->InitializeFromFile("C:/Users/Alexander/Downloads/Assets/Toon_RTS/Orcs/models/Single_Mesh/Orc_SM_shaman.FBX");
 
 
 	m_SceneCreateTypelessListPass = std::make_shared<CSceneCreateTypelessListPass>(GetRenderDevice(), shared_from_this());
@@ -377,25 +365,37 @@ void CSceneDefault::Load3D()
 	glm::vec4 color = glm::vec4(0.0, 0.0f, 0.0f, 1.0f);
 	m_Technique3D.AddPass(std::make_shared<ClearRenderTargetPass>(GetRenderDevice(), GetRenderWindow()->GetRenderTarget(), ClearFlags::All, color /*glm::vec4(0.2f, 0.2f, 0.2f, 0.2f)*/, 1.0f, 0));
 	
-#if 1
+#if 0
 	m_Technique3D.AddPass(m_SceneCreateTypelessListPass);
 	m_Technique3D.AddPass(m_DefferedRenderPass);
 	m_Technique3D.AddPass(m_DefferedRenderPrepareLights);
 	m_Technique3D.AddPass(m_DefferedFinalRenderPass);
 #else
-	m_Technique3D.AddPass(std::make_shared<CMaterialPassTransperent>(GetRenderDevice(), shared_from_this())->CreatePipeline(GetRenderWindow()->GetRenderTarget(), &GetRenderWindow()->GetViewport()));
-	m_Technique3D.AddPass(std::make_shared<CMaterialModelPass>(GetRenderDevice(), shared_from_this())->CreatePipeline(GetRenderWindow()->GetRenderTarget(), &GetRenderWindow()->GetViewport()));
+
+	auto materialModelPass = std::make_shared<CMaterialModelPass>(GetRenderDevice(), shared_from_this())->CreatePipeline(GetRenderWindow()->GetRenderTarget(), &GetRenderWindow()->GetViewport());
+
+	/*{
+		auto invokePass = GetBaseManager().GetManager<IRenderPassFactory>()->CreateRenderPass("InvokePass", GetRenderDevice(), GetRenderWindow()->GetRenderTarget(), &GetRenderWindow()->GetViewport(), shared_from_this());
+		std::dynamic_pointer_cast<IInvokeFunctionPass>(invokePass)->SetFunc([this]() {
+
+			std::vector<SLight> lights;
+			auto lightStruct = std::dynamic_pointer_cast<ILight3D>(GetDefaultLight())->GetLightStruct();
+			lightStruct.PositionVS = GetCameraController()->GetCamera()->GetViewMatrix() * glm::vec4(lightStruct.PositionWS.xyz(), 1.0f);
+			lightStruct.DirectionVS = glm::normalize(GetCameraController()->GetCamera()->GetViewMatrix() * glm::vec4(lightStruct.DirectionWS.xyz(), 0.0f));
+			lights.push_back(lightStruct);
+			SetLights(lights);
+
+			materialModelPass->GetLightsShaderParameter()->Set(m_LightsBuffer);
+		});
+		m_Technique3D.AddPass(invokePass);
+	}*/
+
+	m_Technique3D.AddPass(materialModelPass);
 #endif
 
 	//m_Technique3D.AddPass(GetBaseManager().GetManager<IRenderPassFactory>()->CreateRenderPass("TexturedMaterialPass", GetRenderDevice(), GetRenderWindow()->GetRenderTarget(), &GetRenderWindow()->GetViewport(), shared_from_this()));
 	//m_Technique3D.AddPass(std::make_shared<CMaterialParticlePass>(GetRenderDevice(), shared_from_this())->CreatePipeline(GetRenderWindow()->GetRenderTarget(), &GetRenderWindow()->GetViewport()));
 }
-
-void CSceneDefault::LoadUI()
-{
-	m_TechniqueUI.AddPass(std::make_shared<CUIFontPass>(GetRenderDevice(), shared_from_this())->CreatePipeline(GetRenderWindow()->GetRenderTarget(), &GetRenderWindow()->GetViewport()));
-}
-
 
 void CSceneDefault::GenerateLights(std::shared_ptr<ISceneNode3D> Node, uint32_t numLights)
 {
