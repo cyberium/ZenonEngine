@@ -233,7 +233,7 @@ std::shared_ptr<IFBXSkeleton> CFBXScene::GetSkeleton() const
 
 std::shared_ptr<IFBXAnimation> CFBXScene::GetAnimation() const
 {
-	return std::shared_ptr<IFBXAnimation>();
+	return m_Animation;
 }
 
 #endif

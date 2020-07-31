@@ -92,7 +92,7 @@ class AnimatedValue
 {
 public:
 	AnimatedValue()
-		: m_Type(Interpolations::INTERPOLATION_NONE)
+		: m_Type(Interpolations::INTERPOLATION_LINEAR)
 	{}
 
 	inline void Initialize(const AnimatedTrack<D>& b)
@@ -213,6 +213,15 @@ public:
 
 		//_ASSERT(false);
 		return T();
+	}
+
+	void MergeWithOther(const AnimatedValue<float>& other)
+	{
+		for (const auto& t : other.m_Times)
+			m_Times.push_back(t);
+
+		for (const auto& v : other.m_Values)
+			m_Values.push_back(v);
 	}
 
 private:

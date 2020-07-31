@@ -1,23 +1,23 @@
 #pragma once
 
-class CMaterialModelPass
+class ZN_API CDrawBonesPass
 	: public Base3DPass
-	, public IMaterialModelPass
 {
 public:
-	CMaterialModelPass(IRenderDevice& RenderDevice, std::shared_ptr<IScene> Scene);
-	virtual ~CMaterialModelPass();
-
-	IShaderParameter* GetLightsShaderParameter() const;
+	CDrawBonesPass(IRenderDevice& RenderDevice, std::shared_ptr<IScene> scene);
+	virtual ~CDrawBonesPass();
 
 	// IRenderPassPipelined
 	std::shared_ptr<IRenderPassPipelined> CreatePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport* Viewport) override;
 
 	// IVisitor
-	EVisitResult Visit(const ISceneNode3D* SceneNode) override;
+	EVisitResult Visit(const ISceneNode3D * SceneNode3D) override;
 	EVisitResult Visit(const IModel* Model) override;
 	EVisitResult Visit(const IGeometry* Geometry, const IMaterial* Material, SGeometryDrawArgs GeometryDrawArgs = SGeometryDrawArgs()) override;
 
 private:
-	IShaderParameter* m_ShaderLightsBufferParameter;
+	std::shared_ptr<IGeometry> m_QuadGeometry;
+	std::shared_ptr<IGeometry> m_SphereGeometry;
+	std::shared_ptr<IConstantBuffer> m_MaterialConstantBuffer;
+	IShaderParameter* m_MaterialParameter;
 };

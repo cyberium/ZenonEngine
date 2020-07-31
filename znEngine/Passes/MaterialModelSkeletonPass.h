@@ -1,14 +1,15 @@
 #pragma once
 
-class CMaterialModelPass
+class CMaterialModelSkeletonPass
 	: public Base3DPass
 	, public IMaterialModelPass
 {
 public:
-	CMaterialModelPass(IRenderDevice& RenderDevice, std::shared_ptr<IScene> Scene);
-	virtual ~CMaterialModelPass();
+	CMaterialModelSkeletonPass(IRenderDevice& RenderDevice, std::shared_ptr<IScene> Scene);
+	virtual ~CMaterialModelSkeletonPass();
 
 	IShaderParameter* GetLightsShaderParameter() const;
+	IShaderParameter* GetBonesShaderParameter() const;
 
 	// IRenderPassPipelined
 	std::shared_ptr<IRenderPassPipelined> CreatePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport* Viewport) override;
@@ -20,4 +21,5 @@ public:
 
 private:
 	IShaderParameter* m_ShaderLightsBufferParameter;
+	IShaderParameter* m_ShaderBonesBufferParameter;
 };

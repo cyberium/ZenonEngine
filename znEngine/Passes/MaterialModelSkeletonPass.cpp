@@ -1,24 +1,29 @@
 #include "stdafx.h"
 
 // General
-#include "MaterialModelPass.h"
+#include "MaterialModelSkeletonPass.h"
 
 // Additional
 #include "Materials/MaterialModel.h"
 
-CMaterialModelPass::CMaterialModelPass(IRenderDevice& RenderDevice, std::shared_ptr<IScene> Scene)
+CMaterialModelSkeletonPass::CMaterialModelSkeletonPass(IRenderDevice& RenderDevice, std::shared_ptr<IScene> Scene)
 	: Base3DPass(RenderDevice, Scene)
 {
 	
 }
 
-CMaterialModelPass::~CMaterialModelPass()
+CMaterialModelSkeletonPass::~CMaterialModelSkeletonPass()
 {}
 
 
-IShaderParameter * CMaterialModelPass::GetLightsShaderParameter() const
+IShaderParameter * CMaterialModelSkeletonPass::GetLightsShaderParameter() const
 {
 	return m_ShaderLightsBufferParameter;
+}
+
+IShaderParameter * CMaterialModelSkeletonPass::GetBonesShaderParameter() const
+{
+	return m_ShaderBonesBufferParameter;
 }
 
 
@@ -26,14 +31,14 @@ IShaderParameter * CMaterialModelPass::GetLightsShaderParameter() const
 //
 // IRenderPassPipelined
 //
-std::shared_ptr<IRenderPassPipelined> CMaterialModelPass::CreatePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport)
+std::shared_ptr<IRenderPassPipelined> CMaterialModelSkeletonPass::CreatePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport)
 {
 	std::shared_ptr<IShader> vertexShader;
 	std::shared_ptr<IShader> pixelShader;
 
 	if (GetRenderDevice().GetDeviceType() == RenderDeviceType::RenderDeviceType_DirectX11)
 	{
-		vertexShader = GetRenderDevice().GetObjectsFactory().CreateShader(EShaderType::VertexShader, "IDB_SHADER_3D_MODEL_FORWARD", "VS_PTN");
+		vertexShader = GetRenderDevice().GetObjectsFactory().CreateShader(EShaderType::VertexShader, "IDB_SHADER_3D_MODEL_FORWARD", "VS_main_Bones");
 		pixelShader = GetRenderDevice().GetObjectsFactory().CreateShader(EShaderType::PixelShader, "IDB_SHADER_3D_MODEL_FORWARD", "PS_main");
 	}
 	vertexShader->LoadInputLayoutFromReflector();
@@ -58,6 +63,9 @@ std::shared_ptr<IRenderPassPipelined> CMaterialModelPass::CreatePipeline(std::sh
 	samplerClamp->SetWrapMode(ISamplerState::WrapMode::Clamp, ISamplerState::WrapMode::Clamp);
 	Pipeline->SetSampler(1, samplerClamp);
 
+	m_ShaderBonesBufferParameter = &vertexShader->GetShaderParameterByName("Bones");
+	_ASSERT(m_ShaderBonesBufferParameter->IsValid());
+
 	m_ShaderLightsBufferParameter = &pixelShader->GetShaderParameterByName("Lights");
 	_ASSERT(m_ShaderLightsBufferParameter->IsValid());
 
@@ -66,22 +74,25 @@ std::shared_ptr<IRenderPassPipelined> CMaterialModelPass::CreatePipeline(std::sh
 
 
 
-EVisitResult CMaterialModelPass::Visit(const ISceneNode3D * SceneNode)
+EVisitResult CMaterialModelSkeletonPass::Visit(const ISceneNode3D * SceneNode)
 {
-	if (SceneNode->GetComponent<ISkeletonComponent3D>())
+	auto skeletonComponent = SceneNode->GetComponent<ISkeletonComponent3D>();
+	if (skeletonComponent == nullptr)
 		return EVisitResult::AllowVisitChilds;
+
+	m_ShaderBonesBufferParameter->Set(skeletonComponent->GetBonesBuffer());
 	return Base3DPass::Visit(SceneNode);
 }
 
 //
 // IVisitor
 //
-EVisitResult CMaterialModelPass::Visit(const IModel * Model)
+EVisitResult CMaterialModelSkeletonPass::Visit(const IModel * Model)
 {
 	return Base3DPass::Visit(Model);
 }
 
-EVisitResult CMaterialModelPass::Visit(const IGeometry * Geometry, const IMaterial* Material, SGeometryDrawArgs GeometryDrawArgs)
+EVisitResult CMaterialModelSkeletonPass::Visit(const IGeometry * Geometry, const IMaterial* Material, SGeometryDrawArgs GeometryDrawArgs)
 {
 	const MaterialModel* objMaterial = dynamic_cast<const MaterialModel*>(Material);
 	if (objMaterial == nullptr)
@@ -93,9 +104,11 @@ EVisitResult CMaterialModelPass::Visit(const IGeometry * Geometry, const IMateri
 		Material->Bind(GetRenderEventArgs().PipelineState->GetShaders());
 
 	m_ShaderLightsBufferParameter->Bind();
+	m_ShaderBonesBufferParameter->Bind();
 
 	Geometry->Render(GetRenderEventArgs(), GetRenderEventArgs().PipelineState->GetShaders().at(EShaderType::VertexShader).get(), GeometryDrawArgs);
 
+	m_ShaderBonesBufferParameter->Unbind();
 	m_ShaderLightsBufferParameter->Unbind();
 
 	if (Material)

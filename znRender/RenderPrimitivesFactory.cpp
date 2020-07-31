@@ -127,7 +127,7 @@ std::shared_ptr<IGeometry> CRenderPrimitivesFactory::CreateSphere()
 {
 	DirectX::VertexCollection vertices;
 	DirectX::IndexCollection indices;
-	DirectX::ComputeSphere(vertices, indices, 1.0f, 32, false, false);
+	DirectX::ComputeSphere(vertices, indices, 1.0f, 8, false, false);
 
 	std::shared_ptr<IGeometry> geometry = m_RenderDevice.GetObjectsFactory().CreateGeometry();
 
@@ -229,7 +229,7 @@ std::shared_ptr<IGeometry> CRenderPrimitivesFactory::CreateCone()
 {
 	DirectX::VertexCollection vertices;
 	DirectX::IndexCollection indices;
-	DirectX::ComputeCone(vertices, indices, 0.77f, 1.0f, 32, false);
+	DirectX::ComputeCone(vertices, indices, 0.5f, 1.0f, 8, false);
 
 	std::shared_ptr<IGeometry> geometry = m_RenderDevice.GetObjectsFactory().CreateGeometry();
 	geometry->SetPrimitiveTopology(PrimitiveTopology::TriangleList);

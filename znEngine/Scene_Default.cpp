@@ -14,9 +14,13 @@
 #include "Passes/MaterialParticlePass.h"
 
 #include "Passes/MaterialModelPass.h"
+#include "Passes/MaterialModelSkeletonPass.h"
+#include "Passes/DrawBonesPass.h"
 #include "Passes/UIFontPass.h"
 
 #include "Physics/Adapters/ReactPhysicsComponent.h"
+#include "SceneFunctional/SkeletonComponent.h"
+#include "SceneFunctional/AnimatorComponent.h"
 
 #include "FBX/FBXInterfaces.h"
 
@@ -339,11 +343,29 @@ void CSceneDefault::Load3D()
 		*/
 	}
 
-
-	auto fbxScene = GetBaseManager().GetManager<IFBXManager>()->LoadFBX("C:/Users/Alexander/Downloads/Assets/Toon_RTS/Orcs/models/Single_Mesh/Orc_SM_shaman.FBX");
-	
 	std::shared_ptr<ISceneNode3D> sceneNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, this);
-	DoAddModels(sceneNode->GetModelsComponent(), fbxScene->GetRootNode());
+	
+	// Models
+	auto fbxSceneModel = GetBaseManager().GetManager<IFBXManager>()->LoadFBX("C:/Users/Alexander/Downloads/Assets/Toon_RTS/Orcs/models/Single_Mesh/Orc_SM_shaman.FBX");
+	DoAddModels(sceneNode->GetModelsComponent(), fbxSceneModel->GetRootNode());
+
+	// Animator
+	sceneNode->AddComponent<ISkeletonAnimationComponent>(std::make_shared<CAnimatorComponent3D>(*sceneNode));
+	uint16 cntr = 0;
+	auto fbxSceneAnim = GetBaseManager().GetManager<IFBXManager>()->LoadFBX("C:/Users/Alexander/Downloads/Assets/Toon_RTS/Orcs/animation/shaman/Orc_shaman_01_idle_A.FBX");
+	for (const auto& anim : fbxSceneAnim->GetAnimation()->GetAnimations())
+		if (sceneNode->GetComponent<ISkeletonAnimationComponent>())
+			sceneNode->GetComponent<ISkeletonAnimationComponent>()->AddAnimation(cntr++, anim);
+
+	// Skeleton
+	auto skeletonFromModel = fbxSceneModel->GetSkeleton()->GetSkeleton();
+	auto skeletonFromAnim = fbxSceneAnim->GetSkeleton()->GetSkeleton();
+	skeletonFromModel.MergeWithOther(skeletonFromAnim);
+
+	// Skeleton component
+	sceneNode->AddComponent<ISkeletonComponent3D>(std::make_shared<CSkeletonComponent3D>(*sceneNode, skeletonFromModel));
+
+
 
 
 	//std::shared_ptr<IFBXNode> fbxSceneNode = std::dynamic_pointer_cast<IFBXNode>(sceneNode);
@@ -371,26 +393,9 @@ void CSceneDefault::Load3D()
 	m_Technique3D.AddPass(m_DefferedRenderPrepareLights);
 	m_Technique3D.AddPass(m_DefferedFinalRenderPass);
 #else
-
-	auto materialModelPass = std::make_shared<CMaterialModelPass>(GetRenderDevice(), shared_from_this())->CreatePipeline(GetRenderWindow()->GetRenderTarget(), &GetRenderWindow()->GetViewport());
-
-	/*{
-		auto invokePass = GetBaseManager().GetManager<IRenderPassFactory>()->CreateRenderPass("InvokePass", GetRenderDevice(), GetRenderWindow()->GetRenderTarget(), &GetRenderWindow()->GetViewport(), shared_from_this());
-		std::dynamic_pointer_cast<IInvokeFunctionPass>(invokePass)->SetFunc([this]() {
-
-			std::vector<SLight> lights;
-			auto lightStruct = std::dynamic_pointer_cast<ILight3D>(GetDefaultLight())->GetLightStruct();
-			lightStruct.PositionVS = GetCameraController()->GetCamera()->GetViewMatrix() * glm::vec4(lightStruct.PositionWS.xyz(), 1.0f);
-			lightStruct.DirectionVS = glm::normalize(GetCameraController()->GetCamera()->GetViewMatrix() * glm::vec4(lightStruct.DirectionWS.xyz(), 0.0f));
-			lights.push_back(lightStruct);
-			SetLights(lights);
-
-			materialModelPass->GetLightsShaderParameter()->Set(m_LightsBuffer);
-		});
-		m_Technique3D.AddPass(invokePass);
-	}*/
-
-	m_Technique3D.AddPass(materialModelPass);
+	m_Technique3D.AddPass(std::make_shared<CMaterialModelPass>(GetRenderDevice(), shared_from_this())->CreatePipeline(GetRenderWindow()->GetRenderTarget(), &GetRenderWindow()->GetViewport()));
+	m_Technique3D.AddPass(std::make_shared<CMaterialModelSkeletonPass>(GetRenderDevice(), shared_from_this())->CreatePipeline(GetRenderWindow()->GetRenderTarget(), &GetRenderWindow()->GetViewport()));
+	m_Technique3D.AddPass(std::make_shared<CDrawBonesPass>(GetRenderDevice(), shared_from_this())->CreatePipeline(GetRenderWindow()->GetRenderTarget(), &GetRenderWindow()->GetViewport()));
 #endif
 
 	//m_Technique3D.AddPass(GetBaseManager().GetManager<IRenderPassFactory>()->CreateRenderPass("TexturedMaterialPass", GetRenderDevice(), GetRenderWindow()->GetRenderTarget(), &GetRenderWindow()->GetViewport(), shared_from_this()));

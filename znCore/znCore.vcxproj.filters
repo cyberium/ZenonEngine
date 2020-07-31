@@ -369,9 +369,6 @@
     <ClCompile Include="Scene\3D\SceneNode3D.cpp">
       <Filter>Scene functional\3D</Filter>
     </ClCompile>
-    <ClCompile Include="Scene\3D\SkeletonAnimation.cpp">
-      <Filter>Scene functional\3D</Filter>
-    </ClCompile>
     <ClCompile Include="Scene\3D\ParticlesComponent3D.cpp">
       <Filter>Scene functional\3D</Filter>
     </ClCompile>
@@ -873,9 +870,6 @@
       <Filter>Scene functional\UI</Filter>
     </ClInclude>
     <ClInclude Include="Scene\3D\SceneNode3D.h">
-      <Filter>Scene functional\3D</Filter>
-    </ClInclude>
-    <ClInclude Include="Scene\3D\SkeletonAnimation.h">
       <Filter>Scene functional\3D</Filter>
     </ClInclude>
     <ClInclude Include="..\shared\Interfaces\Render\Types\RenderTypes.h">

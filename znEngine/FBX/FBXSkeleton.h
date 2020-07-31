@@ -17,6 +17,7 @@ public:
 
 	// IFBXSkeleton
 	const CSkeleton& GetSkeleton() const override;
+	CSkeleton& GetSkeletonEditable() override;
 
 protected:
 	void ProcessSkeletonHeirarchyre(FbxNode * node, int depth, int index, int parentindex);

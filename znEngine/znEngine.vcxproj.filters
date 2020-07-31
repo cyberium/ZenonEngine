@@ -157,6 +157,9 @@
     <Filter Include="SceneNodes\Skeleton\Implementation">
       <UniqueIdentifier>{198d437b-43f3-4a89-ba9d-abe76eeddd64}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SceneNodes\Animator">
+      <UniqueIdentifier>{838c70fc-eb36-4046-a1c5-ea858a764c7e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -590,6 +593,15 @@
     </ClCompile>
     <ClCompile Include="FBX\FBXModel.cpp">
       <Filter>FBX\Parts</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneFunctional\AnimatorComponent.cpp">
+      <Filter>SceneNodes\Animator</Filter>
+    </ClCompile>
+    <ClCompile Include="Passes\MaterialModelSkeletonPass.cpp">
+      <Filter>Passes\3D</Filter>
+    </ClCompile>
+    <ClCompile Include="Passes\DrawBonesPass.cpp">
+      <Filter>Passes\3D</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1091,6 +1103,15 @@
     </ClInclude>
     <ClInclude Include="FBX\FBXModel.h">
       <Filter>FBX\Parts</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneFunctional\AnimatorComponent.h">
+      <Filter>SceneNodes\Animator</Filter>
+    </ClInclude>
+    <ClInclude Include="Passes\MaterialModelSkeletonPass.h">
+      <Filter>Passes\3D</Filter>
+    </ClInclude>
+    <ClInclude Include="Passes\DrawBonesPass.h">
+      <Filter>Passes\3D</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

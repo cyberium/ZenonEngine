@@ -35,6 +35,16 @@ glm::vec3 CSkeletonComponentBone3D::GetPivotPoint() const
 	return glm::vec3(0.0f);
 }
 
+const glm::mat4 & CSkeletonComponentBone3D::GetPivotMatrix() const
+{
+	return m_Bone.GlobalInverse;
+}
+
+const glm::vec3 & CSkeletonComponentBone3D::GetTranslate() const
+{
+	return m_Translate;
+}
+
 const glm::mat4& CSkeletonComponentBone3D::GetMatrix() const
 {
 	return m_Matrix;
@@ -74,6 +84,8 @@ void CSkeletonComponentBone3D::Calculate(const ISceneNode3D& Instance, const ICa
 	auto parentBone = m_ParentBone.lock();
 	if (parentBone)
 		std::dynamic_pointer_cast<ISkeletonComponentBoneInternal3D>(parentBone)->Calculate(Instance, Camera);
+
+	m_Translate = m_Bone.CalcTranslate(Instance);
 
 	m_Matrix = m_Bone.CalcMatrix(Instance);
 	//m_RotateMatrix = m_Bone.calcRotationMatrix(Instance, GlobalTime);

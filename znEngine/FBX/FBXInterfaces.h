@@ -5,6 +5,7 @@ namespace fbxsdk
 	class FbxManager;
 }
 
+
 ZN_INTERFACE IFBXScene;
 
 #include "SceneFunctional/3D/Skeleton.h"
@@ -13,7 +14,7 @@ ZN_INTERFACE ZN_API IFBXAnimation
 {
 	virtual ~IFBXAnimation() {}
 
-	//virtual const SLight& GetLight() const = 0;
+	virtual const std::vector<SAnimation>& GetAnimations() const = 0;
 };
 
 ZN_INTERFACE ZN_API IFBXLight
@@ -42,6 +43,7 @@ ZN_INTERFACE ZN_API IFBXSkeleton
 	virtual ~IFBXSkeleton() {}
 
 	virtual const CSkeleton& GetSkeleton() const = 0;
+	virtual CSkeleton& GetSkeletonEditable () = 0;
 };
 
 //const ObjectClass cSceneNode_FBXNode = UINT16_MAX - 101u;

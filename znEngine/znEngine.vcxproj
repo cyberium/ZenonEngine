@@ -303,7 +303,9 @@
     <ClCompile Include="Formats\Images\ImagesFactory.cpp" />
     <ClCompile Include="MaterialsFactory.cpp" />
     <ClCompile Include="Materials\MaterialParticle.cpp" />
+    <ClCompile Include="Passes\DrawBonesPass.cpp" />
     <ClCompile Include="Passes\DrawBoundingBoxPass.cpp" />
+    <ClCompile Include="Passes\MaterialModelSkeletonPass.cpp" />
     <ClCompile Include="Passes\MaterialParticlePass.cpp" />
     <ClCompile Include="Passes\UIButtonPass.cpp" />
     <ClCompile Include="Passes\UIColorPass.cpp" />
@@ -312,6 +314,7 @@
     <ClCompile Include="Physics\Adapters\ReactPhysicsComponent.cpp" />
     <ClCompile Include="SceneFunctional\3D\Skeleton.cpp" />
     <ClCompile Include="SceneFunctional\3D\SkeletonBone.cpp" />
+    <ClCompile Include="SceneFunctional\AnimatorComponent.cpp" />
     <ClCompile Include="SceneFunctional\SkeletonComponentBone.cpp" />
     <ClCompile Include="SceneFunctional\ComponentsEngineCreator.cpp" />
     <ClCompile Include="SceneFunctional\GameModel.cpp" />
@@ -475,7 +478,9 @@
     <ClInclude Include="Formats\Images\ImagesFactory.h" />
     <ClInclude Include="MaterialsFactory.h" />
     <ClInclude Include="Materials\MaterialParticle.h" />
+    <ClInclude Include="Passes\DrawBonesPass.h" />
     <ClInclude Include="Passes\DrawBoundingBoxPass.h" />
+    <ClInclude Include="Passes\MaterialModelSkeletonPass.h" />
     <ClInclude Include="Passes\MaterialParticlePass.h" />
     <ClInclude Include="Passes\UIButtonPass.h" />
     <ClInclude Include="Passes\UIColorPass.h" />
@@ -485,6 +490,7 @@
     <ClInclude Include="SceneFunctional\3D\AnimatedValue.h" />
     <ClInclude Include="SceneFunctional\3D\Skeleton.h" />
     <ClInclude Include="SceneFunctional\3D\SkeletonBone.h" />
+    <ClInclude Include="SceneFunctional\AnimatorComponent.h" />
     <ClInclude Include="SceneFunctional\SkeletonComponentBone.h" />
     <ClInclude Include="SceneFunctional\ComponentsEngineCreator.h" />
     <ClInclude Include="SceneFunctional\GameModel.h" />

@@ -27,6 +27,11 @@ const CSkeleton& CFBXSkeleton::GetSkeleton() const
 	return m_Skeleton;
 }
 
+CSkeleton & CFBXSkeleton::GetSkeletonEditable()
+{
+	return m_Skeleton;
+}
+
 
 
 //
@@ -37,6 +42,19 @@ void CFBXSkeleton::ProcessSkeletonHeirarchyre(FbxNode * node, int depth, int ind
 	if (node->GetNodeAttribute() && node->GetNodeAttribute()->GetAttributeType() && node->GetNodeAttribute()->GetAttributeType() == FbxNodeAttribute::eSkeleton)
 	{
 		CSkeletonBone bone(node->GetName(), parentindex);
+		
+		fbxsdk::FbxAMatrix globalBindposeInverseMatrix = node->EvaluateGlobalTransform();
+
+		glm::mat4 globalBindposeInverseMatrixGLM;
+		for (uint32 i = 0; i < 4; i++)
+		{
+			for (uint32 j = 0; j < 4; j++)
+			{
+				globalBindposeInverseMatrixGLM[i][j] = globalBindposeInverseMatrix[i][j];
+			}
+		}
+		bone.GlobalInverse = globalBindposeInverseMatrixGLM;
+
 		m_Skeleton.AddBone(bone);
 	}
 

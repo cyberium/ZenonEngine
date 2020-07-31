@@ -4,13 +4,7 @@
 #include <fbxsdk.h>
 
 #include "SceneFunctional/3D/AnimatedValue.h"
-
-struct Animation
-{
-	std::string Name;
-	size_t FrameStart;
-	size_t FrameEnd;
-};
+#include "SceneFunctional/AnimatorComponent.h"
 
 class ZN_API CFBXAnimation
 	: public IFBXAnimation
@@ -21,13 +15,16 @@ public:
 
 	void Load(fbxsdk::FbxScene* FBXScene);
 
-private:
-	void DisplayAnimationRec(FbxAnimLayer* pAnimLayer, FbxNode* pNode, size_t AnimationIndex);
-	void DisplayChannels(FbxNode* pNode, FbxAnimLayer* pAnimLayer, size_t AnimationIndex);
-	void DisplayCurveKeys(FbxAnimCurve* pCurve, AnimatedValue<float>& valueInt, size_t AnimationIndex);
+	// IFBXAnimation
+	const std::vector<SAnimation>& GetAnimations() const override;
 
 private:
-	std::unordered_map<std::string, Animation> m_Animations;
+	void DisplayAnimationRec(fbxsdk::FbxAnimLayer* pAnimLayer, FbxNode* pNode, size_t AnimationIndex);
+	void DisplayChannels(FbxNode* pNode, FbxAnimLayer* pAnimLayer, size_t AnimationIndex);
+	void DisplayCurveKeys(FbxNode* pNode, FbxAnimCurve* pCurve, AnimatedValue<glm::mat4>& valueInt, size_t AnimationIndex);
+
+private:
+	std::vector<SAnimation> m_Animations;
 	const IBaseManager& m_BaseManager;
 	const IFBXScene& m_FBXScene;
 };

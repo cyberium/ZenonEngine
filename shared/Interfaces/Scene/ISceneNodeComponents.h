@@ -341,6 +341,8 @@ ZN_INTERFACE ZN_API ISkeletonComponentBone3D
 	virtual glm::vec3 GetPivotPoint() const = 0;
 
 	// Dynamic data
+	virtual const glm::mat4& GetPivotMatrix() const = 0;
+	virtual const glm::vec3& GetTranslate() const = 0;
 	virtual const glm::mat4& GetMatrix() const = 0;
 	virtual const glm::mat4& GetRotateMatrix() const = 0;
 };
@@ -364,6 +366,9 @@ ZN_INTERFACE __declspec(UUID_SkeletonComponent) ZN_API ISkeletonComponent3D
 	virtual ~ISkeletonComponent3D() {}
 
 	virtual std::shared_ptr<ISkeletonComponentBone3D> GetBone(size_t Index) const = 0;
+	virtual const std::vector<std::shared_ptr<ISkeletonComponentBone3D>>& GetBones() const = 0;
+	virtual std::shared_ptr<IStructuredBuffer> GetBonesBuffer() const = 0;
+	virtual std::vector<glm::mat4> CreatePose(size_t BoneStartIndex = 0, size_t BonesCount = 0) const = 0;
 };
 
 
@@ -442,6 +447,12 @@ ZN_INTERFACE __declspec(UUID_PhysicsComponent)ZN_API IPhysicsComponent
 	virtual glm::vec3 GetPhysicsPosition() const = 0;
 };
 
+struct SAnimation
+{
+	std::string Name;
+	uint32 FrameStart;
+	uint32 FrameEnd;
+};
 
 
 #define UUID_SkeletonAnimationComponent uuid("9F9EB54A-9DC3-4C9D-B2BE-715D6EB38068")
@@ -451,6 +462,8 @@ ZN_INTERFACE __declspec(UUID_SkeletonAnimationComponent) ZN_API ISkeletonAnimati
 
 	virtual ~ISkeletonAnimationComponent() {}
 
+	virtual void AddAnimation(uint16 AnimationId, const SAnimation& Animation) = 0;
+	virtual void PlayAnimation(uint16 AnimationId, bool Loop) = 0;
 	virtual uint16 getSequenceIndex() const = 0;
 	virtual uint32 getCurrentTime() const = 0;
 };

@@ -11,16 +11,24 @@ class ZN_API CFBXModel
 public:
 	struct FBXVertex
 	{
+		FBXVertex()
+		{
+			memset(weights, 0x00, 16);
+			memset(indexes, 0x00, 16);
+		}
+
 		// Render part
 		glm::vec3 pos;
-		glm::vec3 normal;
 		glm::vec2 uv;
+		glm::vec3 normal;
 		glm::vec3 tangent;
 		glm::vec3 binormal;
-		//std::vector<std::pair<float, uint32>> weightIndexes;
+		float weights[4];
+		uint32 indexes[4];
 
 		// Engine part
-		int32 controlPointIndex;
+		uint32 controlPointIndex;
+		glm::vec3 _unused;
 	};
 
 public:
@@ -36,7 +44,10 @@ private:
 	void MaterialLoad(fbxsdk::FbxMesh* NativeMesh);
 	void SkeletonLoad(fbxsdk::FbxMesh* NativeMesh);
 	FBXVertex& GetVertexByControlPointIndex(int Index);
+	void FixAllVertices(int ControlPointIndex, std::function<void(CFBXModel::FBXVertex&)> Fix);
 	//void DisplayMaterialMapping(fbxsdk::FbxGeometryElementMaterial* materialElement);
+
+
 
 private:
 	std::vector<FBXVertex> m_Vertices;

@@ -338,12 +338,18 @@ void CFBXModel::Load(fbxsdk::FbxMesh* NativeMesh)
 		}
 	}
 
+	SkeletonLoad(NativeMesh);
+
 	m_Geometry = m_BaseManager.GetApplication().GetRenderDevice().GetObjectsFactory().CreateGeometry();
 
 	m_Geometry->AddVertexBuffer(BufferBinding("POSITION", 0), renderDevice.GetObjectsFactory().CreateVoidVertexBuffer(m_Vertices.data(), m_Vertices.size(), 0, sizeof(FBXVertex)));
-	m_Geometry->AddVertexBuffer(BufferBinding("NORMAL", 0), renderDevice.GetObjectsFactory().CreateVoidVertexBuffer(m_Vertices.data(), m_Vertices.size(), 12, sizeof(FBXVertex)));
-	m_Geometry->AddVertexBuffer(BufferBinding("TEXCOORD", 0), renderDevice.GetObjectsFactory().CreateVoidVertexBuffer(m_Vertices.data(), m_Vertices.size(), 24, sizeof(FBXVertex)));
-	
+	m_Geometry->AddVertexBuffer(BufferBinding("TEXCOORD", 0), renderDevice.GetObjectsFactory().CreateVoidVertexBuffer(m_Vertices.data(), m_Vertices.size(), 12, sizeof(FBXVertex)));
+	m_Geometry->AddVertexBuffer(BufferBinding("NORMAL", 0), renderDevice.GetObjectsFactory().CreateVoidVertexBuffer(m_Vertices.data(), m_Vertices.size(), 12 + 8, sizeof(FBXVertex)));
+	m_Geometry->AddVertexBuffer(BufferBinding("BLENDWEIGHT", 0), renderDevice.GetObjectsFactory().CreateVoidVertexBuffer(m_Vertices.data(), m_Vertices.size(), 12 + 8 + 12 + 12 + 12, sizeof(FBXVertex)));
+	m_Geometry->AddVertexBuffer(BufferBinding("BLENDINDICES", 0), renderDevice.GetObjectsFactory().CreateVoidVertexBuffer(m_Vertices.data(), m_Vertices.size(), 12 + 8 + 12 + 12 + 12 + 16, sizeof(FBXVertex)));
+
+	MaterialLoad(NativeMesh);
+
 #if 0
 	if (!binormal.empty())
 		m_Geometry->AddVertexBuffer(BufferBinding("BINORMAL", 0), renderDevice.GetObjectsFactory().CreateVoidVertexBuffer(binormal));
@@ -354,8 +360,7 @@ void CFBXModel::Load(fbxsdk::FbxMesh* NativeMesh)
 
 	Log::Info("CFBXModel: Mesh '%s' loaded. Polygons count = '%d'.", NativeMesh->GetName(), NativeMesh->GetPolygonCount());
 
-	MaterialLoad(NativeMesh);
-	SkeletonLoad(NativeMesh);
+
 }
 
 
@@ -466,7 +471,7 @@ void CFBXModel::SkeletonLoad(fbxsdk::FbxMesh* NativeMesh)
 
 	for (unsigned int deformerIndex = 0; deformerIndex < NativeMesh->GetDeformerCount(); ++deformerIndex)
 	{
-		fbxsdk::FbxSkin* skin = reinterpret_cast<fbxsdk::FbxSkin*>(NativeMesh->GetDeformer(deformerIndex, FbxDeformer::eSkin));
+		fbxsdk::FbxSkin* skin = reinterpret_cast<fbxsdk::FbxSkin*>(NativeMesh->GetDeformer(deformerIndex, fbxsdk::FbxDeformer::eSkin));
 		if (skin == nullptr)
 		{
 			Log::Warn("FBXMesh: Skin not found for model %s.", NativeMesh->GetName());
@@ -481,20 +486,53 @@ void CFBXModel::SkeletonLoad(fbxsdk::FbxMesh* NativeMesh)
 			// Global pose
 			fbxsdk::FbxAMatrix transformMatrix;
 			cluster->GetTransformMatrix(transformMatrix);
+
 			fbxsdk::FbxAMatrix transformLinkMatrix;
 			cluster->GetTransformLinkMatrix(transformLinkMatrix);
-			fbxsdk::FbxAMatrix globalBindposeInverseMatrix = transformLinkMatrix.Inverse() * transformMatrix /** geometryTransform*/;
 
-			const auto& skeleton = m_FBXNode.GetScene().GetSkeleton()->GetSkeleton();
+			fbxsdk::FbxAMatrix transformAssociateModelMatrix;
+			cluster->GetTransformAssociateModelMatrix(transformAssociateModelMatrix);
+
+			fbxsdk::FbxAMatrix globalBindposeInverseMatrix = transformLinkMatrix.Inverse() * transformMatrix;
+
+			glm::mat4 globalBindposeInverseMatrixGLM;
+			for (uint32 i = 0; i < 4; i++)
+				for (uint32 j = 0; j < 4; j++)
+					globalBindposeInverseMatrixGLM[i][j] = globalBindposeInverseMatrix[i][j];
+
+			auto& skeleton = m_FBXNode.GetScene().GetSkeleton()->GetSkeletonEditable();
 			size_t jointIndex = skeleton.GetBoneIndexByName(jointname);
-			auto& joint = skeleton.GetBone(jointIndex);
+			auto& joint = skeleton.GetBoneByNameEditable(jointname);
+			//joint.GlobalInverse = globalBindposeInverseMatrixGLM;
 			//joint->Node = cluster->GetLink();
 			//joint->Mesh = NativeMesh;
 
+			std::map<int, std::vector<std::pair<float, size_t>>> weightIndexes;
 			for (unsigned int i = 0; i < cluster->GetControlPointIndicesCount(); ++i)
 			{
-				auto& v = GetVertexByControlPointIndex(cluster->GetControlPointIndices()[i]);
-				//v.weightIndexes.push_back(std::make_pair(cluster->GetControlPointWeights()[i], jointIndex));
+				auto it = weightIndexes.find(i);
+				if (it == weightIndexes.end())
+				{
+					weightIndexes.insert(std::make_pair(i, std::vector<std::pair<float, size_t>>({ std::make_pair(static_cast<float>(cluster->GetControlPointWeights()[i]), jointIndex) })));
+					continue;
+				}
+
+				it->second.push_back(std::make_pair(static_cast<float>(cluster->GetControlPointWeights()[i]), jointIndex));
+			}
+
+			for (const auto& w : weightIndexes)
+			{
+				for (auto& v : m_Vertices)
+				{
+					if (v.controlPointIndex == cluster->GetControlPointIndices()[w.first])
+					{
+						for (size_t i = 0; i < w.second.size(); i++)
+						{
+							v.indexes[i] = w.second[i].second;
+							v.weights[i] = w.second[i].first;
+						}
+					}
+				}
 			}
 		}
 	}
@@ -507,6 +545,11 @@ CFBXModel::FBXVertex& CFBXModel::GetVertexByControlPointIndex(int Index)
 		if (v.controlPointIndex == Index)
 			return v;
 	throw CException("Vertex by control point %d not found.", Index);
+}
+
+void CFBXModel::FixAllVertices(int ControlPointIndex, std::function<void(CFBXModel::FBXVertex&)> Fix)
+{
+
 }
 
 /*void CFBXModel::DisplayMaterialMapping(fbxsdk::FbxGeometryElementMaterial* materialElement)

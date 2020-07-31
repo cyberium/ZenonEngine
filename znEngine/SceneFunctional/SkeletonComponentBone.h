@@ -16,6 +16,8 @@ public:
 	const std::weak_ptr<ISkeletonComponentBone3D>& GetParentBone() const override;
 	const std::vector<std::shared_ptr<ISkeletonComponentBone3D>>& GetChilds() const override;
 	glm::vec3 GetPivotPoint() const override;
+	const glm::mat4& GetPivotMatrix() const override;
+	const glm::vec3& GetTranslate() const override;
 	const glm::mat4& GetMatrix() const override;
 	const glm::mat4& GetRotateMatrix() const override;
 
@@ -26,10 +28,11 @@ public:
 	void Reset() override;
 
 private:
-	const CSkeletonBone&                           m_Bone;
+	CSkeletonBone                                  m_Bone;
 	std::weak_ptr<ISkeletonComponentBone3D>        m_ParentBone;
 	std::vector<std::shared_ptr<ISkeletonComponentBone3D>> m_Childs;
 	glm::vec3                                      m_PivotPoint;
+	glm::vec3                                      m_Translate;
 	glm::mat4                                      m_Matrix;
 	glm::mat4                                      m_RotateMatrix;
 	bool                                           m_IsCalculated;

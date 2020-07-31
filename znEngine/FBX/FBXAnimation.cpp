@@ -57,12 +57,17 @@ void CFBXAnimation::Load(fbxsdk::FbxScene * FBXScene)
 		fbxsdk::FbxTime start = takeinfo->mLocalTimeSpan.GetStart();
 		fbxsdk::FbxTime end = takeinfo->mLocalTimeSpan.GetStop();
 
-		Animation a;
+		SAnimation a;
 		a.Name = lAnimStack->GetName();
-		a.FrameStart = start.GetFrameCount(fbxsdk::FbxTime::eFrames30);
-		a.FrameEnd = end.GetFrameCount(fbxsdk::FbxTime::eFrames30);
-		m_Animations.insert(std::make_pair(a.Name, a));
+		a.FrameStart = start.GetFrameCount(fbxsdk::FbxTime::eFrames60);
+		a.FrameEnd = end.GetFrameCount(fbxsdk::FbxTime::eFrames60);
+		m_Animations.push_back(a);
 	}
+}
+
+const std::vector<SAnimation>& CFBXAnimation::GetAnimations() const
+{
+	return m_Animations;
 }
 
 void CFBXAnimation::DisplayAnimationRec(fbxsdk::FbxAnimLayer* pAnimLayer, fbxsdk::FbxNode* pNode, size_t AnimationIndex)
@@ -84,14 +89,18 @@ void CFBXAnimation::DisplayAnimationRec(fbxsdk::FbxAnimLayer* pAnimLayer, fbxsdk
 	}
 }
 
-void CFBXAnimation::DisplayChannels(fbxsdk::FbxNode* pNode, fbxsdk::FbxAnimLayer* pAnimLayer, size_t AnimationIndex)
+void CFBXAnimation::DisplayChannels(FbxNode* pNode, fbxsdk::FbxAnimLayer* pAnimLayer, size_t AnimationIndex)
 {
 	try
 	{
 		fbxsdk::FbxAnimCurve* lAnimCurve = nullptr;
-		auto j = m_FBXScene.GetSkeleton()->GetSkeleton().GetBoneByName(pNode->GetName());
+		auto& j = m_FBXScene.GetSkeleton()->GetSkeletonEditable().GetBoneByNameEditable(pNode->GetName());
 
-		lAnimCurve = pNode->LclTranslation.GetCurve(pAnimLayer, FBXSDK_CURVENODE_COMPONENT_X);
+		lAnimCurve = pNode->LclRotation.GetCurve(pAnimLayer, FBXSDK_CURVENODE_COMPONENT_X);
+		if (lAnimCurve)
+			DisplayCurveKeys(pNode, lAnimCurve, j.mM, AnimationIndex);
+
+		/*lAnimCurve = pNode->LclTranslation.GetCurve(pAnimLayer, FBXSDK_CURVENODE_COMPONENT_X);
 		if (lAnimCurve)
 			DisplayCurveKeys(lAnimCurve, j.pX, AnimationIndex);
 		lAnimCurve = pNode->LclTranslation.GetCurve(pAnimLayer, FBXSDK_CURVENODE_COMPONENT_Y);
@@ -123,7 +132,7 @@ void CFBXAnimation::DisplayChannels(fbxsdk::FbxNode* pNode, fbxsdk::FbxAnimLayer
 			DisplayCurveKeys(lAnimCurve, j.sY, AnimationIndex);
 		lAnimCurve = pNode->LclScaling.GetCurve(pAnimLayer, FBXSDK_CURVENODE_COMPONENT_Z);
 		if (lAnimCurve)
-			DisplayCurveKeys(lAnimCurve, j.sZ, AnimationIndex);
+			DisplayCurveKeys(lAnimCurve, j.sZ, AnimationIndex);*/
 	}
 	catch (const CException& e)
 	{
@@ -131,16 +140,27 @@ void CFBXAnimation::DisplayChannels(fbxsdk::FbxNode* pNode, fbxsdk::FbxAnimLayer
 	}
 }
 
-void CFBXAnimation::DisplayCurveKeys(fbxsdk::FbxAnimCurve* pCurve, AnimatedValue<float>& valueInt, size_t AnimationIndex)
+void CFBXAnimation::DisplayCurveKeys(FbxNode* pNode, fbxsdk::FbxAnimCurve* pCurve, AnimatedValue<glm::mat4>& valueInt, size_t AnimationIndex)
 {
 	int lKeyCount = pCurve->KeyGetCount();
 	for (int lCount = 0; lCount < lKeyCount; lCount++)
 	{
 		FbxTime lKeyTime = pCurve->KeyGetTime(lCount);
-		valueInt.m_Times[AnimationIndex].push_back(lKeyTime.GetFrameCount(fbxsdk::FbxTime::eFrames30));
+		
+		if (AnimationIndex + 1 >= valueInt.m_Times.size())
+			valueInt.m_Times.resize(AnimationIndex + 1);
+		valueInt.m_Times[AnimationIndex].push_back(lKeyTime.GetFrameCount(fbxsdk::FbxTime::eFrames60));
 
-		float lKeyValue = static_cast<float>(pCurve->KeyGetValue(lCount));
-		valueInt.m_Values[AnimationIndex].push_back(lKeyValue);
+		fbxsdk::FbxAMatrix globalBindposeInverseMatrix = pNode->EvaluateGlobalTransform(lKeyTime);
+		glm::mat4 globalBindposeInverseMatrixGLM;
+		for (uint32 i = 0; i < 4; i++)
+			for (uint32 j = 0; j < 4; j++)
+				globalBindposeInverseMatrixGLM[i][j] = globalBindposeInverseMatrix[i][j];
+
+		//float lKeyValue = static_cast<float>(pCurve->KeyGetValue(lCount));
+		if (AnimationIndex + 1 >= valueInt.m_Values.size())
+			valueInt.m_Values.resize(AnimationIndex + 1);
+		valueInt.m_Values[AnimationIndex].push_back(globalBindposeInverseMatrixGLM);
 		valueInt.m_Type = Interpolations::INTERPOLATION_LINEAR;
 
 		/*lOutputString = "            Key Time: ";

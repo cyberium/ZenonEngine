@@ -45,6 +45,53 @@ StructuredBuffer<Light> Lights  : register(t10);
 
 StructuredBuffer<PerObject> Instances  : register(t11);
 Texture2D TextureShadow : register(t12);
+StructuredBuffer<float4x4> Bones : register(t13);
+
+
+VertexShaderOutput VS_main_Bones(VSInputPTNTBBB IN)
+{
+	float4 newVertex = float4(0.0f, 0.0f, 0.0f, 0.0f);
+
+	uint alLeastOne = 0;
+	for (uint i = 0; i < 4; i++)
+	{
+		if (IN.boneWeight[i] > 0.0f)
+		{
+			alLeastOne = 1;
+			//uint boneIndexes[4];
+			//boneIndexes[0] = (IN.boneIndex & 0xFF000000u >> 24) & 0x000000FFu;
+			//boneIndexes[1] = (IN.boneIndex & 0x00FF0000u >> 16) & 0x000000FFu;
+			//boneIndexes[2] = (IN.boneIndex & 0x0000FF00u >>  8) & 0x000000FFu;
+			//boneIndexes[3] = (IN.boneIndex & 0x000000FFu      ) & 0x000000FFu;
+
+			newVertex += mul(Bones[(IN.boneIndex[i])], float4(IN.position, 1.0f) * IN.boneWeight[i]);
+		}
+	}
+	
+	if (alLeastOne == 0)
+	{
+		newVertex = float4(IN.position, 1.0f);
+	}
+
+	const float4x4 mv = mul(PF.View, PO.Model);
+	const float4x4 mvp = mul(PF.Projection, mv);
+
+	VertexShaderOutput OUT;
+	OUT.position = mul(mvp, newVertex);
+	OUT.positionVS = mul(mv, newVertex).xyz;
+
+	//OUT.tangentVS = mul((float3x3)mv, IN.tangent);
+	//OUT.binormalVS = mul((float3x3)mv, IN.binormal);
+	//OUT.normalVS = mul((float3x3)mv, IN.normal);
+	OUT.tangentVS = mul(mv, float4(IN.tangent, 0.0f)).xyz;
+	OUT.binormalVS = mul(mv, float4(IN.binormal, 0.0f)).xyz;
+	OUT.normalVS = mul(mv, float4(IN.normal, 0.0f)).xyz;
+
+	OUT.texCoord = IN.texCoord;
+
+	return OUT;
+}
+
 
 VertexShaderOutput VS_main(VSInputPTNTB IN)
 {
@@ -151,8 +198,6 @@ VertexShaderOutput VS_PTN_Instanced(VSInputPTN IN, uint InstanceID : SV_Instance
 
 DefferedRenderPSOut PS_main(VertexShaderOutput IN) : SV_TARGET
 {
-	// Everything is in view space.
-	float4 eyePos = { 0, 0, 0, 1 };
 	MaterialModel mat = Mat;
 
 	float4 diffuse = float4(mat.Diffuse * mat.DiffuseFactor, 1.0f);
@@ -238,6 +283,8 @@ DefferedRenderPSOut PS_main(VertexShaderOutput IN) : SV_TARGET
 		N = normalize(float4(IN.normalVS, 0));
 	}
 
+
+	float4 eyePos = { 0, 0, 0, 1 };
 	LightingResult lit = DoLighting(Lights, mat, eyePos, P, N);
 	float4 diffuseLight = diffuse * float4(lit.Diffuse.rgb, 1.0f); // Discard the alpha value from the lighting calculations.
 
