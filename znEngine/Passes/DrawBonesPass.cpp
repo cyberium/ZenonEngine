@@ -148,11 +148,11 @@ EVisitResult CDrawBonesPass::Visit(const ISceneNode3D * SceneNode3D)
 
 
 		{
-			glm::mat4 m = b->GetPivotMatrix();
-			m = glm::scale(m, glm::vec3(4.0f));
+			//glm::mat4 m = b->GetPivotMatrix();
+			//m = glm::scale(m, glm::vec3(4.0f));
 
 			PerObject perObject;
-			perObject.Model = m * b->GetMatrix();
+			perObject.Model = b->GetMatrix();
 			m_PerObjectConstantBuffer->Set(perObject);
 
 			if (m_PerObjectParameter->IsValid() && m_PerObjectConstantBuffer != nullptr)

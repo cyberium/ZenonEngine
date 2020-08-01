@@ -21,7 +21,7 @@ public:
 private:
 	void DisplayAnimationRec(fbxsdk::FbxAnimLayer* pAnimLayer, FbxNode* pNode, size_t AnimationIndex);
 	void DisplayChannels(FbxNode* pNode, FbxAnimLayer* pAnimLayer, size_t AnimationIndex);
-	void DisplayCurveKeys(FbxNode* pNode, FbxAnimCurve* pCurve, AnimatedValue<glm::mat4>& valueInt, size_t AnimationIndex);
+	void DisplayCurveKeys(FbxNode* pNode, FbxAnimCurve* pCurve, AnimatedValue<float>& valueInt, size_t AnimationIndex);
 
 private:
 	std::vector<SAnimation> m_Animations;

@@ -28,6 +28,8 @@ void CSkeletonBone::MergeWithOther(const CSkeletonBone & other)
 	sY.MergeWithOther(other.sY);
 	sZ.MergeWithOther(other.sZ);
 
+	mM.MergeWithOther(other.mM);
+
 }
 
 bool CSkeletonBone::operator==(const CSkeletonBone & other) const
@@ -57,7 +59,7 @@ glm::mat4 CSkeletonBone::CalcMatrix(const ISceneNode3D& Instance) const
 	glm::mat4 m(1.0f);
 	if (const auto& animator = Instance.GetComponent<ISkeletonAnimationComponent>())
 	{
-		/*if (pX.IsUsesBySequence(animator->getSequenceIndex()))
+		if (pX.IsUsesBySequence(animator->getSequenceIndex()))
 		{
 			glm::vec3 p = glm::vec3(
 				pX.GetValue(animator->getSequenceIndex(), animator->getCurrentTime()),
@@ -91,12 +93,12 @@ glm::mat4 CSkeletonBone::CalcMatrix(const ISceneNode3D& Instance) const
 			);
 			m = glm::scale(m, s);
 		}
-		*/
+		
 
-		if (mM.IsUsesBySequence(animator->getSequenceIndex()))
-		{
-			m = mM.GetValue(animator->getSequenceIndex(), animator->getCurrentTime());
-		}
+		//if (mM.IsUsesBySequence(animator->getSequenceIndex()))
+		//{
+		//	m = mM.GetValue(animator->getSequenceIndex(), animator->getCurrentTime());
+		//}
 
 		//m = GlobalInverse * glm::inverse(m);
 	}

@@ -165,6 +165,8 @@ public:
 
 	inline T GetValue(uint16 SequenceIndex, uint32 time) const
 	{
+		_ASSERT(IsUsesBySequence(SequenceIndex));
+
 		if (IsStaticValue())
 		{
 			return m_Values.at(0).at(0);
@@ -215,7 +217,7 @@ public:
 		return T();
 	}
 
-	void MergeWithOther(const AnimatedValue<float>& other)
+	void MergeWithOther(const AnimatedValue<T>& other)
 	{
 		for (const auto& t : other.m_Times)
 			m_Times.push_back(t);

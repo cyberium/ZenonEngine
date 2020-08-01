@@ -52,7 +52,7 @@ std::vector<glm::mat4> CSkeletonComponent3D::CreatePose(size_t BoneStartIndex, s
 	std::vector<glm::mat4> result;
 	result.reserve(BonesCount);
 	for (size_t i = BoneStartIndex; i < BoneStartIndex + BonesCount; i++)
-		result.push_back(m_Bones[i]->GetPivotMatrix() * m_Bones[i]->GetMatrix());
+		result.push_back(glm::mat4(1.0f) /* m_Bones[i]->GetMatrix()*/);
 	return result;
 }
 

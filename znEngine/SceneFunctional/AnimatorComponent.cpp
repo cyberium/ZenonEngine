@@ -68,7 +68,7 @@ void CAnimatorComponent3D::Update(const UpdateEventArgs & e)
 
 	float fpsMultiplier = (e.DeltaTime) / 1000.0f * 60.0;
 
-	animtime += fpsMultiplier * 0.3f;
+	animtime += fpsMultiplier;
 	m_CurrentTime = static_cast<uint32>(m_CurrentAnimation->FrameStart + animtime);
 
 	// Animation don't ended

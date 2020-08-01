@@ -347,7 +347,7 @@ void CSceneDefault::Load3D()
 	
 	// Models
 	auto fbxSceneModel = GetBaseManager().GetManager<IFBXManager>()->LoadFBX("C:/Users/Alexander/Downloads/Assets/Toon_RTS/Orcs/models/Single_Mesh/Orc_SM_shaman.FBX");
-	DoAddModels(sceneNode->GetModelsComponent(), fbxSceneModel->GetRootNode());
+	//DoAddModels(sceneNode->GetModelsComponent(), fbxSceneModel->GetRootNode());
 
 	// Animator
 	sceneNode->AddComponent<ISkeletonAnimationComponent>(std::make_shared<CAnimatorComponent3D>(*sceneNode));
@@ -358,12 +358,12 @@ void CSceneDefault::Load3D()
 			sceneNode->GetComponent<ISkeletonAnimationComponent>()->AddAnimation(cntr++, anim);
 
 	// Skeleton
-	auto skeletonFromModel = fbxSceneModel->GetSkeleton()->GetSkeleton();
+	//auto skeletonFromModel = fbxSceneModel->GetSkeleton()->GetSkeleton();
 	auto skeletonFromAnim = fbxSceneAnim->GetSkeleton()->GetSkeleton();
-	skeletonFromModel.MergeWithOther(skeletonFromAnim);
+	//skeletonFromModel.MergeWithOther(skeletonFromAnim);
 
 	// Skeleton component
-	sceneNode->AddComponent<ISkeletonComponent3D>(std::make_shared<CSkeletonComponent3D>(*sceneNode, skeletonFromModel));
+	sceneNode->AddComponent<ISkeletonComponent3D>(std::make_shared<CSkeletonComponent3D>(*sceneNode, skeletonFromAnim));
 
 
 

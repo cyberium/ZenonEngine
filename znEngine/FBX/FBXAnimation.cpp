@@ -96,43 +96,43 @@ void CFBXAnimation::DisplayChannels(FbxNode* pNode, fbxsdk::FbxAnimLayer* pAnimL
 		fbxsdk::FbxAnimCurve* lAnimCurve = nullptr;
 		auto& j = m_FBXScene.GetSkeleton()->GetSkeletonEditable().GetBoneByNameEditable(pNode->GetName());
 
-		lAnimCurve = pNode->LclRotation.GetCurve(pAnimLayer, FBXSDK_CURVENODE_COMPONENT_X);
-		if (lAnimCurve)
-			DisplayCurveKeys(pNode, lAnimCurve, j.mM, AnimationIndex);
+		//lAnimCurve = pNode->LclRotation.GetCurve(pAnimLayer, FBXSDK_CURVENODE_COMPONENT_X);
+		//if (lAnimCurve)
+		//	DisplayCurveKeys(pNode, lAnimCurve, j.mM, AnimationIndex);
 
-		/*lAnimCurve = pNode->LclTranslation.GetCurve(pAnimLayer, FBXSDK_CURVENODE_COMPONENT_X);
+		lAnimCurve = pNode->LclTranslation.GetCurve(pAnimLayer, FBXSDK_CURVENODE_COMPONENT_X);
 		if (lAnimCurve)
-			DisplayCurveKeys(lAnimCurve, j.pX, AnimationIndex);
+			DisplayCurveKeys(pNode, lAnimCurve, j.pX, AnimationIndex);
 		lAnimCurve = pNode->LclTranslation.GetCurve(pAnimLayer, FBXSDK_CURVENODE_COMPONENT_Y);
 		if (lAnimCurve)
-			DisplayCurveKeys(lAnimCurve, j.pY, AnimationIndex);
+			DisplayCurveKeys(pNode, lAnimCurve, j.pY, AnimationIndex);
 		lAnimCurve = pNode->LclTranslation.GetCurve(pAnimLayer, FBXSDK_CURVENODE_COMPONENT_Z);
 		if (lAnimCurve)
-			DisplayCurveKeys(lAnimCurve, j.pZ, AnimationIndex);
+			DisplayCurveKeys(pNode, lAnimCurve, j.pZ, AnimationIndex);
 
 
 
 		lAnimCurve = pNode->LclRotation.GetCurve(pAnimLayer, FBXSDK_CURVENODE_COMPONENT_X);
 		if (lAnimCurve)
-			DisplayCurveKeys(lAnimCurve, j.rX, AnimationIndex);
+			DisplayCurveKeys(pNode, lAnimCurve, j.rX, AnimationIndex);
 		lAnimCurve = pNode->LclRotation.GetCurve(pAnimLayer, FBXSDK_CURVENODE_COMPONENT_Y);
 		if (lAnimCurve)
-			DisplayCurveKeys(lAnimCurve, j.rY, AnimationIndex);
+			DisplayCurveKeys(pNode, lAnimCurve, j.rY, AnimationIndex);
 		lAnimCurve = pNode->LclRotation.GetCurve(pAnimLayer, FBXSDK_CURVENODE_COMPONENT_Z);
 		if (lAnimCurve)
-			DisplayCurveKeys(lAnimCurve, j.rZ, AnimationIndex);
+			DisplayCurveKeys(pNode, lAnimCurve, j.rZ, AnimationIndex);
 
 
 
 		lAnimCurve = pNode->LclScaling.GetCurve(pAnimLayer, FBXSDK_CURVENODE_COMPONENT_X);
 		if (lAnimCurve)
-			DisplayCurveKeys(lAnimCurve, j.sX, AnimationIndex);
+			DisplayCurveKeys(pNode, lAnimCurve, j.sX, AnimationIndex);
 		lAnimCurve = pNode->LclScaling.GetCurve(pAnimLayer, FBXSDK_CURVENODE_COMPONENT_Y);
 		if (lAnimCurve)
-			DisplayCurveKeys(lAnimCurve, j.sY, AnimationIndex);
+			DisplayCurveKeys(pNode, lAnimCurve, j.sY, AnimationIndex);
 		lAnimCurve = pNode->LclScaling.GetCurve(pAnimLayer, FBXSDK_CURVENODE_COMPONENT_Z);
 		if (lAnimCurve)
-			DisplayCurveKeys(lAnimCurve, j.sZ, AnimationIndex);*/
+			DisplayCurveKeys(pNode, lAnimCurve, j.sZ, AnimationIndex);
 	}
 	catch (const CException& e)
 	{
@@ -140,7 +140,7 @@ void CFBXAnimation::DisplayChannels(FbxNode* pNode, fbxsdk::FbxAnimLayer* pAnimL
 	}
 }
 
-void CFBXAnimation::DisplayCurveKeys(FbxNode* pNode, fbxsdk::FbxAnimCurve* pCurve, AnimatedValue<glm::mat4>& valueInt, size_t AnimationIndex)
+void CFBXAnimation::DisplayCurveKeys(FbxNode* pNode, fbxsdk::FbxAnimCurve* pCurve, AnimatedValue<float>& valueInt, size_t AnimationIndex)
 {
 	int lKeyCount = pCurve->KeyGetCount();
 	for (int lCount = 0; lCount < lKeyCount; lCount++)
@@ -151,16 +151,16 @@ void CFBXAnimation::DisplayCurveKeys(FbxNode* pNode, fbxsdk::FbxAnimCurve* pCurv
 			valueInt.m_Times.resize(AnimationIndex + 1);
 		valueInt.m_Times[AnimationIndex].push_back(lKeyTime.GetFrameCount(fbxsdk::FbxTime::eFrames60));
 
-		fbxsdk::FbxAMatrix globalBindposeInverseMatrix = pNode->EvaluateGlobalTransform(lKeyTime);
-		glm::mat4 globalBindposeInverseMatrixGLM;
-		for (uint32 i = 0; i < 4; i++)
-			for (uint32 j = 0; j < 4; j++)
-				globalBindposeInverseMatrixGLM[i][j] = globalBindposeInverseMatrix[i][j];
+		//fbxsdk::FbxAMatrix globalBindposeInverseMatrix = pNode->EvaluateGlobalTransform(lKeyTime);
+		//glm::mat4 globalBindposeInverseMatrixGLM;
+		//for (uint32 i = 0; i < 4; i++)
+		//	for (uint32 j = 0; j < 4; j++)
+		//		globalBindposeInverseMatrixGLM[i][j] = globalBindposeInverseMatrix[i][j];
 
-		//float lKeyValue = static_cast<float>(pCurve->KeyGetValue(lCount));
+		float lKeyValue = static_cast<float>(pCurve->KeyGetValue(lCount));
 		if (AnimationIndex + 1 >= valueInt.m_Values.size())
 			valueInt.m_Values.resize(AnimationIndex + 1);
-		valueInt.m_Values[AnimationIndex].push_back(globalBindposeInverseMatrixGLM);
+		valueInt.m_Values[AnimationIndex].push_back(lKeyValue);
 		valueInt.m_Type = Interpolations::INTERPOLATION_LINEAR;
 
 		/*lOutputString = "            Key Time: ";
