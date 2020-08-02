@@ -26,36 +26,40 @@ CFBXModel::~CFBXModel()
 {
 }
 
-void CFBXModel::Load(fbxsdk::FbxMesh* NativeMesh)
+bool CFBXModel::Load(fbxsdk::FbxMesh* NativeMesh)
 {
-	IRenderDevice& renderDevice = m_BaseManager.GetApplication().GetRenderDevice();
-
 	if (NativeMesh == nullptr)
-		return;
+		return false;
+
+	SetName(NativeMesh->GetName());
 
 	FbxVector4* lControlPoints = NativeMesh->GetControlPoints();
 	if (lControlPoints == nullptr)
-		return;
-
-	SetName(NativeMesh->GetName());
+	{
+		Log::Error("FBXMesh doesn't containt control points.");
+		return false;
+	}
 
 	NativeMesh->ComputeBBox();
 	SetBounds(BoundingBox(ToGLMVec3(NativeMesh->BBoxMin), ToGLMVec3(NativeMesh->BBoxMax)));
 
-	NativeMesh->GenerateNormals(true, true);
+	if (!NativeMesh->GenerateNormals(true, false))
+	{
+		Log::Error("Error while generate normals.");
+		return false;
+	}
 
-	DisplayMetaDataConnections(NativeMesh);
-
-	/*std::vector<glm::vec3> vertices;
+	/*DisplayMetaDataConnections(NativeMesh);
+	std::vector<glm::vec3> vertices;
 	std::vector<glm::vec2> uvs;
 	std::vector<glm::vec3> normals;
 	std::vector<glm::vec3> binormal;
 	std::vector<glm::vec3> tangent;*/
 
 	m_Vertices.clear();
-	for (int i = 0; i < NativeMesh->GetPolygonCount(); i++)
+	for (int p = 0; p < NativeMesh->GetPolygonCount(); p++)
 	{
-		int lPolygonSize = NativeMesh->GetPolygonSize(i);
+		int lPolygonSize = NativeMesh->GetPolygonSize(p);
 		if (lPolygonSize > 3)
 			lPolygonSize = 3;
 
@@ -64,7 +68,7 @@ void CFBXModel::Load(fbxsdk::FbxMesh* NativeMesh)
 			FBXVertex v;
 			ZeroMemory(&v, sizeof(FBXVertex));
 			
-			int lControlPointIndex = NativeMesh->GetPolygonVertex(i, j);
+			int lControlPointIndex = NativeMesh->GetPolygonVertex(p, j);
 			v.controlPointIndex = lControlPointIndex;
 			v.pos = glm::vec3(lControlPoints[lControlPointIndex][0], lControlPoints[lControlPointIndex][1], lControlPoints[lControlPointIndex][2]);
 
@@ -104,7 +108,7 @@ void CFBXModel::Load(fbxsdk::FbxMesh* NativeMesh)
 
 				case FbxGeometryElement::eByPolygonVertex:
 				{
-					int lTextureUVIndex = NativeMesh->GetTextureUVIndex(i, j);
+					int lTextureUVIndex = NativeMesh->GetTextureUVIndex(p, j);
 					switch (leUV->GetReferenceMode())
 					{
 					case FbxGeometryElement::eDirect:
@@ -169,7 +173,7 @@ void CFBXModel::Load(fbxsdk::FbxMesh* NativeMesh)
 
 				case FbxGeometryElement::eByPolygonVertex:
 				{
-					int lTextureUVIndex = NativeMesh->GetTextureUVIndex(i, j);
+					int lTextureUVIndex = NativeMesh->GetTextureUVIndex(p, j);
 					switch (elem->GetReferenceMode())
 					{
 					case FbxGeometryElement::eDirect:
@@ -240,7 +244,7 @@ void CFBXModel::Load(fbxsdk::FbxMesh* NativeMesh)
 
 				case FbxGeometryElement::eByPolygonVertex:
 				{
-					int lTextureUVIndex = NativeMesh->GetTextureUVIndex(i, j);
+					int lTextureUVIndex = NativeMesh->GetTextureUVIndex(p, j);
 					switch (elem->GetReferenceMode())
 					{
 					case FbxGeometryElement::eDirect:
@@ -306,7 +310,7 @@ void CFBXModel::Load(fbxsdk::FbxMesh* NativeMesh)
 
 				case FbxGeometryElement::eByPolygonVertex:
 				{
-					int lTextureUVIndex = NativeMesh->GetTextureUVIndex(i, j);
+					int lTextureUVIndex = NativeMesh->GetTextureUVIndex(p, j);
 					switch (elem->GetReferenceMode())
 					{
 					case FbxGeometryElement::eDirect:
@@ -340,8 +344,8 @@ void CFBXModel::Load(fbxsdk::FbxMesh* NativeMesh)
 
 	SkeletonLoad(NativeMesh);
 
-	m_Geometry = m_BaseManager.GetApplication().GetRenderDevice().GetObjectsFactory().CreateGeometry();
-
+	IRenderDevice& renderDevice = m_BaseManager.GetApplication().GetRenderDevice();
+	m_Geometry = renderDevice.GetObjectsFactory().CreateGeometry();
 	m_Geometry->AddVertexBuffer(BufferBinding("POSITION", 0), renderDevice.GetObjectsFactory().CreateVoidVertexBuffer(m_Vertices.data(), m_Vertices.size(), 0, sizeof(FBXVertex)));
 	m_Geometry->AddVertexBuffer(BufferBinding("TEXCOORD", 0), renderDevice.GetObjectsFactory().CreateVoidVertexBuffer(m_Vertices.data(), m_Vertices.size(), 12, sizeof(FBXVertex)));
 	m_Geometry->AddVertexBuffer(BufferBinding("NORMAL", 0), renderDevice.GetObjectsFactory().CreateVoidVertexBuffer(m_Vertices.data(), m_Vertices.size(), 12 + 8, sizeof(FBXVertex)));
@@ -349,6 +353,8 @@ void CFBXModel::Load(fbxsdk::FbxMesh* NativeMesh)
 	m_Geometry->AddVertexBuffer(BufferBinding("BLENDINDICES", 0), renderDevice.GetObjectsFactory().CreateVoidVertexBuffer(m_Vertices.data(), m_Vertices.size(), 12 + 8 + 12 + 12 + 12 + 16, sizeof(FBXVertex)));
 
 	MaterialLoad(NativeMesh);
+
+	m_Vertices.clear();
 
 #if 0
 	if (!binormal.empty())
@@ -360,7 +366,7 @@ void CFBXModel::Load(fbxsdk::FbxMesh* NativeMesh)
 
 	Log::Info("CFBXModel: Mesh '%s' loaded. Polygons count = '%d'.", NativeMesh->GetName(), NativeMesh->GetPolygonCount());
 
-
+	return true;
 }
 
 
@@ -368,6 +374,11 @@ void CFBXModel::Load(fbxsdk::FbxMesh* NativeMesh)
 //
 // IFBXModel
 //
+const IFBXNode & CFBXModel::GetOwner() const
+{
+	return m_FBXNode;
+}
+
 std::shared_ptr<IModel> CFBXModel::GetModel()
 {
 	return shared_from_this();
@@ -469,7 +480,7 @@ void CFBXModel::SkeletonLoad(fbxsdk::FbxMesh* NativeMesh)
 		return;
 	}
 
-	for (unsigned int deformerIndex = 0; deformerIndex < NativeMesh->GetDeformerCount(); ++deformerIndex)
+	for (int deformerIndex = 0; deformerIndex < NativeMesh->GetDeformerCount(); ++deformerIndex)
 	{
 		fbxsdk::FbxSkin* skin = reinterpret_cast<fbxsdk::FbxSkin*>(NativeMesh->GetDeformer(deformerIndex, fbxsdk::FbxDeformer::eSkin));
 		if (skin == nullptr)
@@ -478,7 +489,7 @@ void CFBXModel::SkeletonLoad(fbxsdk::FbxMesh* NativeMesh)
 			continue;
 		}
 
-		for (unsigned int clusterIndex = 0; clusterIndex < skin->GetClusterCount(); ++clusterIndex)
+		for (int clusterIndex = 0; clusterIndex < skin->GetClusterCount(); ++clusterIndex)
 		{
 			fbxsdk::FbxCluster* cluster = skin->GetCluster(clusterIndex);
 			std::string jointname = cluster->GetLink()->GetName();
@@ -508,7 +519,7 @@ void CFBXModel::SkeletonLoad(fbxsdk::FbxMesh* NativeMesh)
 			//joint->Mesh = NativeMesh;
 
 			std::map<int, std::vector<std::pair<float, size_t>>> weightIndexes;
-			for (unsigned int i = 0; i < cluster->GetControlPointIndicesCount(); ++i)
+			for (int i = 0; i < cluster->GetControlPointIndicesCount(); ++i)
 			{
 				auto it = weightIndexes.find(i);
 				if (it == weightIndexes.end())

@@ -9,13 +9,15 @@ class ZN_API CFBXSceneNode
 	, public std::enable_shared_from_this<CFBXSceneNode>
 {
 public:
-	CFBXSceneNode(const IBaseManager& BaseManager, const IFBXScene& FBXScene);
+	CFBXSceneNode(const IBaseManager& BaseManager, IFBXScene& FBXScene);
 	virtual ~CFBXSceneNode();
 
 	void LoadNode(fbxsdk::FbxNode * NativeNode);
 	
 	// IFBXNode
 	const IFBXScene& GetScene() const override;
+	glm::mat4 GetTransform() const override;
+	glm::mat4 GetParentWorldTransform() const override;
 	std::weak_ptr<IFBXNode> GetParent() const override;
 	const std::vector<std::shared_ptr<IFBXNode>>& GetChilds() const override;
 	std::shared_ptr<IFBXMaterial> GetMaterial(int Index) const override;
@@ -31,6 +33,7 @@ protected:
 	void LoadLight(fbxsdk::FbxNode * NativeNode);
 
 private:
+	glm::mat4 m_Transform;
 	std::weak_ptr<CFBXSceneNode> m_Parent;
 	std::vector<std::shared_ptr<IFBXNode>> m_Childs;
 
@@ -40,7 +43,7 @@ private:
 
 private:
 	const IBaseManager& m_BaseManager;
-	const IFBXScene& m_FBXScene;
+	IFBXScene& m_FBXScene;
 };
 
 #endif

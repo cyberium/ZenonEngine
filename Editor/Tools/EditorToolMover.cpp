@@ -20,12 +20,11 @@ void CEditorToolMover::Initialize()
 	m_MoverRoot = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, GetScene(), GetScene()->GetRootNode3D());
 	m_MoverRoot->SetName("Mover");
 
-	std::shared_ptr<ISceneNode3D> sceneNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode_FBXNode, GetScene());
+	std::shared_ptr<IFBXScene> fbxScene = GetBaseManager().GetManager<IFBXManager>()->LoadFBX("C:\\_engine\\ZenonEngine_gamedata\\arrow.FBX");
 
-	std::shared_ptr<IFBXNode> fbxSceneNode = std::dynamic_pointer_cast<IFBXNode>(sceneNode);
-	fbxSceneNode->InitializeFromFile("C:\\_engine\\ZenonEngine_gamedata\\arrow.FBX");
-
-	auto model = std::dynamic_pointer_cast<IFBXNode>(sceneNode->GetChilds().at(0))->GetModel();
+	auto models = fbxScene->GetModels();
+	_ASSERT(models.size() == 1);
+	auto model = (*models.begin())->GetModel();
 	auto geom = model->GetConnections().begin()->Geometry;
 	if (auto loadable = std::dynamic_pointer_cast<IObjectLoadSave>(model))
 	{

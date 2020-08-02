@@ -16,9 +16,10 @@
 #include "Materials/MaterialDebug.h"
 #include "Materials/MaterialTextured.h"
 
-CFBXSceneNode::CFBXSceneNode(const IBaseManager& BaseManager, const IFBXScene& FBXScene)
+CFBXSceneNode::CFBXSceneNode(const IBaseManager& BaseManager, IFBXScene& FBXScene)
 	: m_BaseManager(BaseManager)
 	, m_FBXScene(FBXScene)
+	, m_Transform(glm::mat4(1.0f))
 {
 
 }
@@ -50,6 +51,27 @@ const IFBXScene & CFBXSceneNode::GetScene() const
 	return m_FBXScene;
 }
 
+glm::mat4 CFBXSceneNode::GetTransform() const
+{
+	return m_Transform;
+}
+
+glm::mat4 GetParentWorldTransformRec(const IFBXNode* node)
+{
+	glm::mat4 transform = node->GetTransform();
+	auto parent = node->GetParent().lock();
+	if (parent)
+		transform = GetParentWorldTransformRec(parent.get()) * transform;
+	return transform;
+}
+
+glm::mat4 CFBXSceneNode::GetParentWorldTransform() const
+{
+	if (auto parent = GetParent().lock())
+		return GetParentWorldTransformRec(parent.get());
+	return glm::mat4(1.0f);
+}
+
 std::weak_ptr<IFBXNode> CFBXSceneNode::GetParent() const
 {
 	return m_Parent;
@@ -74,9 +96,6 @@ std::shared_ptr<IFBXLight> CFBXSceneNode::GetLight() const
 {
 	return m_Light;
 }
-
-
-
 
 //
 // Protected
@@ -192,10 +211,12 @@ void CFBXSceneNode::LoadModel(fbxsdk::FbxNode * NativeNode)
 {
 	auto fbxMesh = std::make_shared<CFBXModel>(m_BaseManager, *this);
 	fbxMesh->SetName(NativeNode->GetName());
-	fbxMesh->Load(NativeNode->GetMesh());
-	
-	_ASSERT(m_Model == nullptr);
-	m_Model = fbxMesh;
+	if (fbxMesh->Load(NativeNode->GetMesh()))
+	{
+		_ASSERT(m_Model == nullptr);
+		m_Model = fbxMesh;
+		dynamic_cast<IFBXScenePrivate&>(m_FBXScene).AddModel(m_Model);
+	}
 }
 
 void CFBXSceneNode::LoadLight(fbxsdk::FbxNode * NativeNode)

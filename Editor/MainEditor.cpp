@@ -79,7 +79,7 @@ void MainEditor::SetEditor3D(IEditor3DFrame* Editor3DFrame)
 
 			continue;
 
-			std::shared_ptr<ISceneNode3D> sceneNode = m_Editor3D->GetBaseManager2().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode_FBXNode, dynamic_cast<IScene*>(m_Editor3D));
+			/*std::shared_ptr<ISceneNode3D> sceneNode = m_Editor3D->GetBaseManager2().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode_FBXNode, dynamic_cast<IScene*>(m_Editor3D));
 
 			std::shared_ptr<IFBXNode> fbxSceneNode = std::dynamic_pointer_cast<IFBXNode>(sceneNode);
 			fbxSceneNode->InitializeFromFile(it);
@@ -92,7 +92,7 @@ void MainEditor::SetEditor3D(IEditor3DFrame* Editor3DFrame)
 
 				m_Editor3D->GetBaseManager2().GetManager<IFilesManager>()->GetFilesStorage("PCEveryFileAccess")->SaveFile(file);
 				realNames.push_back(zenonFileName);
-			}
+			}*/
 		}
 		catch (const CException& e)
 		{

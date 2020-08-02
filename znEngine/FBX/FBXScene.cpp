@@ -226,6 +226,11 @@ std::shared_ptr<IFBXNode> CFBXScene::GetRootNode() const
 	return m_RootNode;
 }
 
+const std::vector<std::shared_ptr<IFBXModel>>& CFBXScene::GetModels() const
+{
+	return m_Models;
+}
+
 std::shared_ptr<IFBXSkeleton> CFBXScene::GetSkeleton() const
 {
 	return m_Skeleton;
@@ -234,6 +239,16 @@ std::shared_ptr<IFBXSkeleton> CFBXScene::GetSkeleton() const
 std::shared_ptr<IFBXAnimation> CFBXScene::GetAnimation() const
 {
 	return m_Animation;
+}
+
+
+
+//
+// IFBXScenePrivate
+//
+void CFBXScene::AddModel(const std::shared_ptr<IFBXModel>& Model)
+{
+	m_Models.push_back(Model);
 }
 
 #endif

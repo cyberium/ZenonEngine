@@ -504,8 +504,9 @@ void SceneBase::OnWindowMouseMoved(MouseMotionEventArgs & e)
 	if (GetCameraController())
 	{
 		GetCameraController()->OnMouseMoved(e);
-		OnMouseMoveToWorld(e, GetCameraController()->ScreenToRay(GetRenderWindow()->GetViewport(), e.GetPoint()));
 	}
+
+	OnMouseMoveToWorld(e, GetCameraController()->ScreenToRay(GetRenderWindow()->GetViewport(), e.GetPoint()));
 
 	if (GetRootNodeUI())
 		DoMouseMoved_Rec(GetRootNodeUI(), e);
@@ -515,10 +516,11 @@ bool SceneBase::OnWindowMouseButtonPressed(MouseButtonEventArgs & e)
 {	
 	if (GetCameraController())
 	{
-		if (OnMouseClickToWorld(e, GetCameraController()->ScreenToRay(GetRenderWindow()->GetViewport(), e.GetPoint())))
-			return true;
 		GetCameraController()->OnMouseButtonPressed(e);
 	}
+
+	if (OnMouseClickToWorld(e, GetCameraController()->ScreenToRay(GetRenderWindow()->GetViewport(), e.GetPoint())))
+		return true;
 
 	if (GetRootNodeUI())
 		return DoMouseButtonPressed_Rec(GetRootNodeUI(), e);

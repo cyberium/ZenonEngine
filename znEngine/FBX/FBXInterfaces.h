@@ -7,6 +7,7 @@ namespace fbxsdk
 
 
 ZN_INTERFACE IFBXScene;
+ZN_INTERFACE IFBXNode;
 
 #include "Scene/Skeleton.h"
 
@@ -35,6 +36,7 @@ ZN_INTERFACE ZN_API IFBXModel
 {
 	virtual ~IFBXModel() {}
 
+	virtual const IFBXNode& GetOwner() const = 0;
 	virtual std::shared_ptr<IModel> GetModel() = 0;
 };
 
@@ -52,6 +54,8 @@ ZN_INTERFACE ZN_API IFBXNode
 	virtual ~IFBXNode() {}
 
 	virtual const IFBXScene& GetScene() const = 0;
+	virtual glm::mat4 GetTransform() const = 0;
+	virtual glm::mat4 GetParentWorldTransform() const = 0;
 	virtual std::weak_ptr<IFBXNode> GetParent() const = 0;
 	virtual const std::vector<std::shared_ptr<IFBXNode>>& GetChilds() const = 0;
 	virtual std::shared_ptr<IFBXMaterial> GetMaterial(int Index) const = 0;
@@ -64,9 +68,18 @@ ZN_INTERFACE ZN_API IFBXScene
 	virtual ~IFBXScene() {}
 
 	virtual std::shared_ptr<IFBXNode> GetRootNode() const = 0;
+	virtual const std::vector<std::shared_ptr<IFBXModel>>& GetModels() const = 0;
 	virtual std::shared_ptr<IFBXSkeleton> GetSkeleton() const = 0;
 	virtual std::shared_ptr<IFBXAnimation> GetAnimation() const = 0;
 };
+
+ZN_INTERFACE ZN_API IFBXScenePrivate
+{
+	virtual ~IFBXScenePrivate() {}
+
+	virtual void AddModel(const std::shared_ptr<IFBXModel>& Model) = 0;
+};
+
 
 ZN_INTERFACE ZN_API __declspec(uuid("653A8D4D-5E21-4734-8296-91A2E99AE767")) IFBXManager
 	: public IManager
@@ -75,6 +88,8 @@ ZN_INTERFACE ZN_API __declspec(uuid("653A8D4D-5E21-4734-8296-91A2E99AE767")) IFB
 	virtual std::shared_ptr<IFBXScene> LoadFBX(const std::string& FileName) = 0;
 #endif
 };
+
+
 
 inline void DoAddModels(const std::shared_ptr<IModelsComponent3D>& ModelsComponent, std::shared_ptr<IFBXNode> Node)
 {

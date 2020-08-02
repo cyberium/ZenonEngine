@@ -35,10 +35,12 @@ public:
 	CFBXModel(const IBaseManager& BaseManager, const IFBXNode& FBXNode);
 	virtual ~CFBXModel();
 
-	void Load(fbxsdk::FbxMesh* NativeMesh);
+	bool Load(fbxsdk::FbxMesh* NativeMesh);
 
 	// IFBXModel
+	const IFBXNode& GetOwner() const override;
 	std::shared_ptr<IModel> GetModel() override;
+	
 
 private:
 	void MaterialLoad(fbxsdk::FbxMesh* NativeMesh);
