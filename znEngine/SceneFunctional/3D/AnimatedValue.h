@@ -45,6 +45,8 @@ inline glm::quat interpolateLinear<glm::quat>(const float r, const glm::quat& v1
 	return glm::slerp(v1, v2, r);
 }
 
+
+
 template<class T>
 inline T interpolateHermite(const float r, const T& v1, const T& v2, const T& in, const T& out)
 {

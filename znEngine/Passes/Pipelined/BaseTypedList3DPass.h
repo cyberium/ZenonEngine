@@ -1,7 +1,6 @@
 #pragma once
 
-#include "Base3DPass.h"
-#include "../SceneCreateTypedListsPass.h"
+#include "../Scene/SceneCreateTypedListsPass.h"
 
 
 class ZN_API CBaseList3DPass

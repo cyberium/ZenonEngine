@@ -4,8 +4,8 @@
 #include "Log.h"
 
 // Additional
-#include "DebugOutputConsole.h"
-#include "DebugOutputLog.h"
+#include "DebugOutput/DebugOutputConsole.h"
+#include "DebugOutput/DebugOutputLog.h"
 
 CLog* gLogInstance = nullptr;
 

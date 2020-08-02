@@ -14,45 +14,20 @@
 
 
 // Log outputs
-#include "../znCore/Console.h"
+#include "../znCore/Log/Console/Console.h"
 
 
 // Passes
 #include "../znCore/Passes/RenderTechnique.h"
 #include "../znCore/Passes/RenderPass.h"
 #include "../znCore/Passes/RenderPassPipelined.h"
-
 #include "../znCore/Passes/ScenePasses/ScenePass.h"
-#include "../znCore/Passes/ScenePasses/SceneCreateTypedListsPass.h"
-#include "../znCore/Passes/ScenePasses/SceneCreateTypelessListPass.h"
-
 #include "../znCore/Passes/ScenePasses/Pipelined/ScenePassPipelined.h"
 #include "../znCore/Passes/ScenePasses/Pipelined/Base3DPass.h"
-#include "../znCore/Passes/ScenePasses/Pipelined/BaseTypedList3DPass.h"
 #include "../znCore/Passes/ScenePasses/Pipelined/BaseUIPass.h"
 
 
-#include "../znCore/Passes/Technical/BeginQueryPass.h"
-#include "../znCore/Passes/Technical/ClearRenderTargetPass.h"
-#include "../znCore/Passes/Technical/CopyBufferPass.h"
-#include "../znCore/Passes/Technical/SetShaderParameterPass.h"
-#include "../znCore/Passes/Technical/CopyTexturePass.h"
-#include "../znCore/Passes/Technical/DispatchPass.h"
-#include "../znCore/Passes/Technical/EndQueryPass.h"
-#include "../znCore/Passes/Technical/GenerateMipMapsPass.h"
-#include "../znCore/Passes/Technical/InvokeFunctionPass.h"
-
-
-// Camera controllers
-#include "../znCore/CameraControllers/CameraControllerBase.h"
-#include "../znCore/CameraControllers/ArcBallCameraController.h"
-#include "../znCore/CameraControllers/FreeCameraController.h"
-#include "../znCore/CameraControllers/RTSCameraController.h"
-
-
 #include "../znCore/Scene/LoadableObject.h"
-
-
 #include "../znCore/ObjectsFactories/ObjectsFactory.h"
 #include "../znCore/ObjectsFactories/ObjectClassFactory.h"
 #include "../znCore/ObjectsFactories/ObjectClassCreator.h"

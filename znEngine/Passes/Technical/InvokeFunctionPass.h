@@ -1,7 +1,5 @@
 #pragma once
 
-#include "../RenderPass.h"
-
 ZN_INTERFACE ZN_API IInvokeFunctionPass
 {
 	virtual ~IInvokeFunctionPass() {}

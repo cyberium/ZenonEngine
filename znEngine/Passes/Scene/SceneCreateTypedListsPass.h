@@ -1,6 +1,5 @@
 #pragma once
 
-#include "ScenePass.h"
 #include "SceneCreateTypelessListPass.h"
 
 /**

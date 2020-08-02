@@ -1,7 +1,5 @@
 #pragma once
 
-#include "../RenderPass.h"
-
 class ZN_API CopyBufferPass 
 	: public RenderPass
 {

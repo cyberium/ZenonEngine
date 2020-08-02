@@ -4,9 +4,11 @@
 #include "RenderPassDefaultCreator.h"
 
 // Additional
+#include "Passes/Technical/ClearRenderTargetPass.h"
 #include "Passes/MaterialDebugPass.h"
 #include "Passes/MaterialTexturedPass.h"
 #include "Passes/MaterialModelPass.h"
+#include "Passes/Technical/InvokeFunctionPass.h"
 
 CRenderPassDefaultCreator::CRenderPassDefaultCreator()
 {

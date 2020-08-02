@@ -1,7 +1,6 @@
 #pragma once
 
 #include "ScenePassPipelined.h"
-#include "../SceneCreateTypedListsPass.h"
 
 class ZN_API Base3DPass 
 	: public ScenePassPipelined

@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Scene/SceneCreateTypelessListPass.h"
+
 class CDefferedRender
 	: public RenderPassPipelined
 {

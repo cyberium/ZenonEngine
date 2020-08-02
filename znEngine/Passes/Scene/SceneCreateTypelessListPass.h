@@ -1,7 +1,5 @@
 #pragma once
 
-#include "ScenePass.h"
-
 class ZN_API CSceneCreateTypelessListPass
 	: public ScenePass
 {

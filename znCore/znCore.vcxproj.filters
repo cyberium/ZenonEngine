@@ -7,12 +7,6 @@
     <Filter Include="Common">
       <UniqueIdentifier>{ad29bc23-2620-4c7e-936f-19c0ecea08b4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Common\Primitives">
-      <UniqueIdentifier>{93169e20-4b0c-45b2-82e2-49aad2886db8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Common\Math">
-      <UniqueIdentifier>{65c16df5-8780-49cd-9979-027c9bafdb50}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Log">
       <UniqueIdentifier>{ef746966-5439-4659-9eaa-b5406a1f5be7}</UniqueIdentifier>
     </Filter>
@@ -21,12 +15,6 @@
     </Filter>
     <Filter Include="Log\DebugOutput">
       <UniqueIdentifier>{154efe91-d5a0-4a4d-9b1d-d053b1d5228b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Common\Threads">
-      <UniqueIdentifier>{94a88278-a0a3-4d93-8432-ca705b1e488d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Common\Timers">
-      <UniqueIdentifier>{4ed86a83-bc26-44a8-8c60-1dbec01ff0c6}</UniqueIdentifier>
     </Filter>
     <Filter Include="__Interfaces">
       <UniqueIdentifier>{93caf0bd-6050-4d1e-829f-415f0328ee3d}</UniqueIdentifier>
@@ -52,9 +40,6 @@
     <Filter Include="Passes">
       <UniqueIdentifier>{030be646-acd2-408c-97f1-de057391b5a3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="CameraControllers">
-      <UniqueIdentifier>{cab15164-19e1-4d0c-b397-adb4def9c9c1}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Scene functional">
       <UniqueIdentifier>{8c8be4ea-0256-49e9-87bf-26a6e295f7ef}</UniqueIdentifier>
     </Filter>
@@ -72,9 +57,6 @@
     </Filter>
     <Filter Include="__Interfaces\Scene\Types">
       <UniqueIdentifier>{1e2fe722-e211-4ea0-a5c6-04867d657526}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Passes\Technical">
-      <UniqueIdentifier>{aaaebf5e-d1ff-4156-8c87-5e16f7cc457b}</UniqueIdentifier>
     </Filter>
     <Filter Include="Externals">
       <UniqueIdentifier>{635427f0-f1b7-41b1-a148-d6d9d2b4c7fe}</UniqueIdentifier>
@@ -103,9 +85,6 @@
     <Filter Include="Passes\ScenePasses">
       <UniqueIdentifier>{20e71630-fea1-44ca-aa47-67283f7cd572}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Passes\ScenePasses\Pipelined">
-      <UniqueIdentifier>{4ce61172-7e02-4463-92dd-9ecd3000e3b6}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Scene functional\UI">
       <UniqueIdentifier>{ee3bbc74-e550-4693-b40e-567ec2f794b8}</UniqueIdentifier>
     </Filter>
@@ -115,52 +94,28 @@
     <Filter Include="Object system\Typed creators">
       <UniqueIdentifier>{97c61480-573e-483c-83a4-9732e99153ea}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Passes\ScenePasses\Pipelined">
+      <UniqueIdentifier>{4ce61172-7e02-4463-92dd-9ecd3000e3b6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utils">
+      <UniqueIdentifier>{26e6b957-d71f-4cc0-8359-23775776d608}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utils\Math">
+      <UniqueIdentifier>{73bfe4fc-5b84-4989-b674-17022346fca1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utils\Primitives">
+      <UniqueIdentifier>{ad05b562-1a9b-4ff3-9c39-cbf71fd061b2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Log.cpp">
-      <Filter>Log</Filter>
-    </ClCompile>
-    <ClCompile Include="BoundingBox.cpp">
-      <Filter>Common\Primitives</Filter>
-    </ClCompile>
-    <ClCompile Include="Frustrum.cpp">
-      <Filter>Common\Primitives</Filter>
-    </ClCompile>
-    <ClCompile Include="ConsoleCommand.cpp">
-      <Filter>Log\Console</Filter>
-    </ClCompile>
-    <ClCompile Include="Console.cpp">
-      <Filter>Log\Console</Filter>
-    </ClCompile>
     <ClCompile Include="stdafx.cpp">
       <Filter>Common</Filter>
-    </ClCompile>
-    <ClCompile Include="DebugOutputConsole.cpp">
-      <Filter>Log\DebugOutput</Filter>
-    </ClCompile>
-    <ClCompile Include="DebugOutputLog.cpp">
-      <Filter>Log\DebugOutput</Filter>
-    </ClCompile>
-    <ClCompile Include="BoundingSphere.cpp">
-      <Filter>Common\Primitives</Filter>
-    </ClCompile>
-    <ClCompile Include="HighResolutionTimer.cpp">
-      <Filter>Common\Timers</Filter>
-    </ClCompile>
-    <ClCompile Include="Timer.cpp">
-      <Filter>Common\Timers</Filter>
-    </ClCompile>
-    <ClCompile Include="BoundingRect.cpp">
-      <Filter>Common\Primitives</Filter>
     </ClCompile>
     <ClCompile Include="Proxies\MaterialProxie.cpp">
       <Filter>__Proxies</Filter>
     </ClCompile>
     <ClCompile Include="Proxies\SceneNodeProxie.cpp">
       <Filter>__Proxies</Filter>
-    </ClCompile>
-    <ClCompile Include="SettingsGroupBase.cpp">
-      <Filter>Settings functional</Filter>
     </ClCompile>
     <ClCompile Include="Passes\RenderTechnique.cpp">
       <Filter>Passes</Filter>
@@ -176,18 +131,6 @@
     </ClCompile>
     <ClCompile Include="Scene\LoadableObject.cpp">
       <Filter>Scene functional</Filter>
-    </ClCompile>
-    <ClCompile Include="CameraControllers\ArcBallCameraController.cpp">
-      <Filter>CameraControllers</Filter>
-    </ClCompile>
-    <ClCompile Include="CameraControllers\CameraControllerBase.cpp">
-      <Filter>CameraControllers</Filter>
-    </ClCompile>
-    <ClCompile Include="CameraControllers\FreeCameraController.cpp">
-      <Filter>CameraControllers</Filter>
-    </ClCompile>
-    <ClCompile Include="CameraControllers\RTSCameraController.cpp">
-      <Filter>CameraControllers</Filter>
     </ClCompile>
     <ClCompile Include="Scene\SceneBase.cpp">
       <Filter>Scene functional</Filter>
@@ -210,9 +153,6 @@
     <ClCompile Include="XML\tinyxmlparser.cpp">
       <Filter>XML\tinyxml</Filter>
     </ClCompile>
-    <ClCompile Include="Debug.cpp">
-      <Filter>Common</Filter>
-    </ClCompile>
     <ClCompile Include="Files\ByteBuffer.cpp">
       <Filter>Files</Filter>
     </ClCompile>
@@ -233,33 +173,6 @@
     </ClCompile>
     <ClCompile Include="Passes\RenderPass.cpp">
       <Filter>Passes</Filter>
-    </ClCompile>
-    <ClCompile Include="Passes\Technical\BeginQueryPass.cpp">
-      <Filter>Passes\Technical</Filter>
-    </ClCompile>
-    <ClCompile Include="Passes\Technical\ClearRenderTargetPass.cpp">
-      <Filter>Passes\Technical</Filter>
-    </ClCompile>
-    <ClCompile Include="Passes\Technical\CopyBufferPass.cpp">
-      <Filter>Passes\Technical</Filter>
-    </ClCompile>
-    <ClCompile Include="Passes\Technical\CopyTexturePass.cpp">
-      <Filter>Passes\Technical</Filter>
-    </ClCompile>
-    <ClCompile Include="Passes\Technical\DispatchPass.cpp">
-      <Filter>Passes\Technical</Filter>
-    </ClCompile>
-    <ClCompile Include="Passes\Technical\EndQueryPass.cpp">
-      <Filter>Passes\Technical</Filter>
-    </ClCompile>
-    <ClCompile Include="Passes\Technical\GenerateMipMapsPass.cpp">
-      <Filter>Passes\Technical</Filter>
-    </ClCompile>
-    <ClCompile Include="Passes\Technical\InvokeFunctionPass.cpp">
-      <Filter>Passes\Technical</Filter>
-    </ClCompile>
-    <ClCompile Include="Passes\Technical\SetShaderParameterPass.cpp">
-      <Filter>Passes\Technical</Filter>
     </ClCompile>
     <ClCompile Include="Scene\3D\CameraComponent3D.cpp">
       <Filter>Scene functional\3D</Filter>
@@ -336,12 +249,6 @@
     <ClCompile Include="Passes\ScenePasses\ScenePass.cpp">
       <Filter>Passes\ScenePasses</Filter>
     </ClCompile>
-    <ClCompile Include="Passes\ScenePasses\SceneCreateTypedListsPass.cpp">
-      <Filter>Passes\ScenePasses</Filter>
-    </ClCompile>
-    <ClCompile Include="Passes\ScenePasses\SceneCreateTypelessListPass.cpp">
-      <Filter>Passes\ScenePasses</Filter>
-    </ClCompile>
     <ClCompile Include="Passes\ScenePasses\Pipelined\Base3DPass.cpp">
       <Filter>Passes\ScenePasses\Pipelined</Filter>
     </ClCompile>
@@ -354,14 +261,8 @@
     <ClCompile Include="Passes\RenderPassPipelined.cpp">
       <Filter>Passes</Filter>
     </ClCompile>
-    <ClCompile Include="Passes\ScenePasses\Pipelined\BaseTypedList3DPass.cpp">
-      <Filter>Passes\ScenePasses\Pipelined</Filter>
-    </ClCompile>
     <ClCompile Include="Scene\3D\ModelsComponent3D.cpp">
       <Filter>Scene functional\3D</Filter>
-    </ClCompile>
-    <ClCompile Include="Passes\ScenePasses\SceneXMLFunctional.cpp">
-      <Filter>Passes\ScenePasses</Filter>
     </ClCompile>
     <ClCompile Include="Scene\UI\SceneNodeUI.cpp">
       <Filter>Scene functional\UI</Filter>
@@ -371,12 +272,6 @@
     </ClCompile>
     <ClCompile Include="Scene\3D\ParticlesComponent3D.cpp">
       <Filter>Scene functional\3D</Filter>
-    </ClCompile>
-    <ClCompile Include="Utils.cpp">
-      <Filter>Common</Filter>
-    </ClCompile>
-    <ClCompile Include="Random.cpp">
-      <Filter>Common</Filter>
     </ClCompile>
     <ClCompile Include="Files\ChunkedFile.cpp">
       <Filter>Files</Filter>
@@ -408,78 +303,60 @@
     <ClCompile Include="ObjectsFactories\ComponentsFactory.cpp">
       <Filter>Object system\Typed creators</Filter>
     </ClCompile>
+    <ClCompile Include="Settings\SettingsGroupBase.cpp">
+      <Filter>Settings functional</Filter>
+    </ClCompile>
+    <ClCompile Include="Log\Console\Console.cpp">
+      <Filter>Log\Console</Filter>
+    </ClCompile>
+    <ClCompile Include="Log\Console\ConsoleCommand.cpp">
+      <Filter>Log\Console</Filter>
+    </ClCompile>
+    <ClCompile Include="Log\DebugOutput\DebugOutputConsole.cpp">
+      <Filter>Log\DebugOutput</Filter>
+    </ClCompile>
+    <ClCompile Include="Log\DebugOutput\DebugOutputLog.cpp">
+      <Filter>Log\DebugOutput</Filter>
+    </ClCompile>
+    <ClCompile Include="Log\Log.cpp">
+      <Filter>Log\DebugOutput</Filter>
+    </ClCompile>
+    <ClCompile Include="Utils\Primitives\BoundingBox.cpp">
+      <Filter>Utils\Primitives</Filter>
+    </ClCompile>
+    <ClCompile Include="Utils\Primitives\BoundingRect.cpp">
+      <Filter>Utils\Primitives</Filter>
+    </ClCompile>
+    <ClCompile Include="Utils\Primitives\BoundingSphere.cpp">
+      <Filter>Utils\Primitives</Filter>
+    </ClCompile>
+    <ClCompile Include="Utils\Primitives\Frustrum.cpp">
+      <Filter>Utils\Primitives</Filter>
+    </ClCompile>
+    <ClCompile Include="Utils\Debug.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Utils\Random.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Utils\Utils.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Utils\HighResolutionTimer.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Utils\Timer.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Log.h">
-      <Filter>Log</Filter>
-    </ClInclude>
-    <ClInclude Include="Debug.h">
-      <Filter>Common</Filter>
-    </ClInclude>
-    <ClInclude Include="Macros.h">
-      <Filter>Common</Filter>
-    </ClInclude>
-    <ClInclude Include="BoundingBox.h">
-      <Filter>Common\Primitives</Filter>
-    </ClInclude>
-    <ClInclude Include="Frustrum.h">
-      <Filter>Common\Primitives</Filter>
-    </ClInclude>
-    <ClInclude Include="Plane.h">
-      <Filter>Common\Primitives</Filter>
-    </ClInclude>
-    <ClInclude Include="Color.h">
-      <Filter>Common</Filter>
-    </ClInclude>
-    <ClInclude Include="Matrix.h">
-      <Filter>Common\Math</Filter>
-    </ClInclude>
-    <ClInclude Include="MathCommon.h">
-      <Filter>Common\Math</Filter>
-    </ClInclude>
-    <ClInclude Include="ConsoleCommand.h">
-      <Filter>Log\Console</Filter>
-    </ClInclude>
-    <ClInclude Include="Console.h">
-      <Filter>Log\Console</Filter>
-    </ClInclude>
     <ClInclude Include="common.h">
       <Filter>Common</Filter>
     </ClInclude>
     <ClInclude Include="stdafx.h">
       <Filter>Common</Filter>
     </ClInclude>
-    <ClInclude Include="DebugOutputConsole.h">
-      <Filter>Log\DebugOutput</Filter>
-    </ClInclude>
-    <ClInclude Include="DebugOutputLog.h">
-      <Filter>Log\DebugOutput</Filter>
-    </ClInclude>
-    <ClInclude Include="BoundingSphere.h">
-      <Filter>Common\Primitives</Filter>
-    </ClInclude>
-    <ClInclude Include="Timer.h">
-      <Filter>Common\Timers</Filter>
-    </ClInclude>
-    <ClInclude Include="HighResolutionTimer.h">
-      <Filter>Common\Timers</Filter>
-    </ClInclude>
-    <ClInclude Include="MapAssync.h">
-      <Filter>Common\Threads</Filter>
-    </ClInclude>
-    <ClInclude Include="LockedQueue.h">
-      <Filter>Common\Threads</Filter>
-    </ClInclude>
-    <ClInclude Include="Rect.h">
-      <Filter>Common\Primitives</Filter>
-    </ClInclude>
-    <ClInclude Include="BoundingRect.h">
-      <Filter>Common\Primitives</Filter>
-    </ClInclude>
     <ClInclude Include="..\shared\znCore.h">
-      <Filter>Common</Filter>
-    </ClInclude>
-    <ClInclude Include="MathTypes.h">
       <Filter>Common</Filter>
     </ClInclude>
     <ClInclude Include="..\shared\Interfaces\Application.h">
@@ -617,12 +494,6 @@
     <ClInclude Include="Proxies\__Proxies.h">
       <Filter>__Proxies</Filter>
     </ClInclude>
-    <ClInclude Include="SettingsGroupBase.h">
-      <Filter>Settings functional</Filter>
-    </ClInclude>
-    <ClInclude Include="SettingBase.h">
-      <Filter>Settings functional</Filter>
-    </ClInclude>
     <ClInclude Include="Passes\RenderTechnique.h">
       <Filter>Passes</Filter>
     </ClInclude>
@@ -637,18 +508,6 @@
     </ClInclude>
     <ClInclude Include="Scene\LoadableObject.h">
       <Filter>Scene functional</Filter>
-    </ClInclude>
-    <ClInclude Include="CameraControllers\ArcBallCameraController.h">
-      <Filter>CameraControllers</Filter>
-    </ClInclude>
-    <ClInclude Include="CameraControllers\CameraControllerBase.h">
-      <Filter>CameraControllers</Filter>
-    </ClInclude>
-    <ClInclude Include="CameraControllers\FreeCameraController.h">
-      <Filter>CameraControllers</Filter>
-    </ClInclude>
-    <ClInclude Include="CameraControllers\RTSCameraController.h">
-      <Filter>CameraControllers</Filter>
     </ClInclude>
     <ClInclude Include="Scene\SceneBase.h">
       <Filter>Scene functional</Filter>
@@ -700,33 +559,6 @@
     </ClInclude>
     <ClInclude Include="Passes\RenderPass.h">
       <Filter>Passes</Filter>
-    </ClInclude>
-    <ClInclude Include="Passes\Technical\BeginQueryPass.h">
-      <Filter>Passes\Technical</Filter>
-    </ClInclude>
-    <ClInclude Include="Passes\Technical\ClearRenderTargetPass.h">
-      <Filter>Passes\Technical</Filter>
-    </ClInclude>
-    <ClInclude Include="Passes\Technical\CopyBufferPass.h">
-      <Filter>Passes\Technical</Filter>
-    </ClInclude>
-    <ClInclude Include="Passes\Technical\CopyTexturePass.h">
-      <Filter>Passes\Technical</Filter>
-    </ClInclude>
-    <ClInclude Include="Passes\Technical\DispatchPass.h">
-      <Filter>Passes\Technical</Filter>
-    </ClInclude>
-    <ClInclude Include="Passes\Technical\EndQueryPass.h">
-      <Filter>Passes\Technical</Filter>
-    </ClInclude>
-    <ClInclude Include="Passes\Technical\GenerateMipMapsPass.h">
-      <Filter>Passes\Technical</Filter>
-    </ClInclude>
-    <ClInclude Include="Passes\Technical\InvokeFunctionPass.h">
-      <Filter>Passes\Technical</Filter>
-    </ClInclude>
-    <ClInclude Include="Passes\Technical\SetShaderParameterPass.h">
-      <Filter>Passes\Technical</Filter>
     </ClInclude>
     <ClInclude Include="..\shared\Interfaces\Render\IRenderTechnique.h">
       <Filter>__Interfaces\Render</Filter>
@@ -839,12 +671,6 @@
     <ClInclude Include="Passes\ScenePasses\ScenePass.h">
       <Filter>Passes\ScenePasses</Filter>
     </ClInclude>
-    <ClInclude Include="Passes\ScenePasses\SceneCreateTypedListsPass.h">
-      <Filter>Passes\ScenePasses</Filter>
-    </ClInclude>
-    <ClInclude Include="Passes\ScenePasses\SceneCreateTypelessListPass.h">
-      <Filter>Passes\ScenePasses</Filter>
-    </ClInclude>
     <ClInclude Include="Passes\ScenePasses\Pipelined\Base3DPass.h">
       <Filter>Passes\ScenePasses\Pipelined</Filter>
     </ClInclude>
@@ -857,14 +683,8 @@
     <ClInclude Include="Passes\RenderPassPipelined.h">
       <Filter>Passes</Filter>
     </ClInclude>
-    <ClInclude Include="Passes\ScenePasses\Pipelined\BaseTypedList3DPass.h">
-      <Filter>Passes\ScenePasses\Pipelined</Filter>
-    </ClInclude>
     <ClInclude Include="Scene\3D\ModelsComponent3D.h">
       <Filter>Scene functional\3D</Filter>
-    </ClInclude>
-    <ClInclude Include="Passes\ScenePasses\SceneXMLFunctional.h">
-      <Filter>Passes\ScenePasses</Filter>
     </ClInclude>
     <ClInclude Include="Scene\UI\SceneNodeUI.h">
       <Filter>Scene functional\UI</Filter>
@@ -880,12 +700,6 @@
     </ClInclude>
     <ClInclude Include="..\shared\Interfaces\Scene\ISceneNodeBase.h">
       <Filter>__Interfaces\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="Utils.h">
-      <Filter>Common</Filter>
-    </ClInclude>
-    <ClInclude Include="Random.h">
-      <Filter>Common</Filter>
     </ClInclude>
     <ClInclude Include="Files\ChunkedFile.h">
       <Filter>Files</Filter>
@@ -925,6 +739,78 @@
     </ClInclude>
     <ClInclude Include="ObjectsFactories\ComponentsFactory.h">
       <Filter>Object system\Typed creators</Filter>
+    </ClInclude>
+    <ClInclude Include="Settings\SettingBase.h">
+      <Filter>Settings functional</Filter>
+    </ClInclude>
+    <ClInclude Include="Settings\SettingsGroupBase.h">
+      <Filter>Settings functional</Filter>
+    </ClInclude>
+    <ClInclude Include="Log\Console\Console.h">
+      <Filter>Log\Console</Filter>
+    </ClInclude>
+    <ClInclude Include="Log\Console\ConsoleCommand.h">
+      <Filter>Log\Console</Filter>
+    </ClInclude>
+    <ClInclude Include="Log\DebugOutput\DebugOutputConsole.h">
+      <Filter>Log\DebugOutput</Filter>
+    </ClInclude>
+    <ClInclude Include="Log\DebugOutput\DebugOutputLog.h">
+      <Filter>Log\DebugOutput</Filter>
+    </ClInclude>
+    <ClInclude Include="Log\Log.h">
+      <Filter>Log\DebugOutput</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils\Math\MathCommon.h">
+      <Filter>Utils\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils\Math\MathTypes.h">
+      <Filter>Utils\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils\Math\Matrix.h">
+      <Filter>Utils\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils\Primitives\BoundingBox.h">
+      <Filter>Utils\Primitives</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils\Primitives\BoundingRect.h">
+      <Filter>Utils\Primitives</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils\Primitives\BoundingSphere.h">
+      <Filter>Utils\Primitives</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils\Primitives\Frustrum.h">
+      <Filter>Utils\Primitives</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils\Primitives\Plane.h">
+      <Filter>Utils\Primitives</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils\Primitives\Rect.h">
+      <Filter>Utils\Primitives</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils\Debug.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils\LockedQueue.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils\Macros.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils\MapAssync.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils\Random.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils\Utils.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils\HighResolutionTimer.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils\Timer.h">
+      <Filter>Utils</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
