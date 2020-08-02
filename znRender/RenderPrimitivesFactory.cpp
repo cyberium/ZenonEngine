@@ -6,6 +6,27 @@
 // Additional
 #include "Primitives/Geometry.h"
 
+namespace
+{
+	BoundingBox CalculateBounds(const DirectX::VertexCollection& vertices)
+	{
+		glm::vec3 min(Math::MaxFloat), max(Math::MinFloat);
+		for (const auto& v : vertices)
+		{
+			if (v.position.x < min.x) min.x = v.position.x;
+			if (v.position.x > max.x) max.x = v.position.x;
+
+			if (v.position.y < min.y) min.y = v.position.y;
+			if (v.position.y > max.y) max.y = v.position.y;
+
+			if (v.position.z < min.z) min.z = v.position.z;
+			if (v.position.z > max.z) max.z = v.position.z;
+		}
+
+		return BoundingBox(min, max);
+	}
+}
+
 CRenderPrimitivesFactory::CRenderPrimitivesFactory(IRenderDevice& RenderDevice)
 	: m_RenderDevice(RenderDevice)
 {
@@ -82,17 +103,9 @@ std::shared_ptr<IGeometry> CRenderPrimitivesFactory::CreatePlane(const glm::vec3
 	indices.push_back(3);
 
 	std::shared_ptr<IGeometry> geometry = m_RenderDevice.GetObjectsFactory().CreateGeometry();
-
-	std::shared_ptr<IBuffer> __vbPos = m_RenderDevice.GetObjectsFactory().CreateVoidVertexBuffer(vertices.data(), vertices.size(), 0, sizeof(DirectX::VertexPositionTextureNormal));
-	std::shared_ptr<IBuffer> __vbTex = m_RenderDevice.GetObjectsFactory().CreateVoidVertexBuffer(vertices.data(), vertices.size(), 12, sizeof(DirectX::VertexPositionTextureNormal));
-	std::shared_ptr<IBuffer> __vbNor = m_RenderDevice.GetObjectsFactory().CreateVoidVertexBuffer(vertices.data(), vertices.size(), 20, sizeof(DirectX::VertexPositionTextureNormal));
-	geometry->AddVertexBuffer(BufferBinding("POSITION", 0), __vbPos);
-	geometry->AddVertexBuffer(BufferBinding("NORMAL", 0), __vbNor);
-	geometry->AddVertexBuffer(BufferBinding("TEXCOORD", 0), __vbTex);
-
-	std::shared_ptr<IBuffer> __ib = m_RenderDevice.GetObjectsFactory().CreateIndexBuffer(indices);
-	geometry->SetIndexBuffer(__ib);
-
+	geometry->SetVertexBuffer(m_RenderDevice.GetObjectsFactory().CreateVoidVertexBuffer(vertices.data(), vertices.size(), 0, sizeof(DirectX::VertexPositionTextureNormal)));
+	geometry->SetIndexBuffer(m_RenderDevice.GetObjectsFactory().CreateIndexBuffer(indices));
+	geometry->SetBounds(CalculateBounds(vertices));
 	return geometry;
 }
 
@@ -113,13 +126,9 @@ std::shared_ptr<IGeometry> CRenderPrimitivesFactory::CreateScreenQuad(float left
 	indices.push_back(3);
 
 	std::shared_ptr<IGeometry> geometry = m_RenderDevice.GetObjectsFactory().CreateGeometry();
-
-	std::shared_ptr<IBuffer> __vb = m_RenderDevice.GetObjectsFactory().CreateVoidVertexBuffer(vertices.data(), vertices.size(), 0, sizeof(DirectX::VertexPositionTextureNormal));
-	geometry->SetVertexBuffer(__vb);
-
-	std::shared_ptr<IBuffer> __ib = m_RenderDevice.GetObjectsFactory().CreateIndexBuffer(indices);
-	geometry->SetIndexBuffer(__ib);
-
+	geometry->SetVertexBuffer(m_RenderDevice.GetObjectsFactory().CreateVoidVertexBuffer(vertices.data(), vertices.size(), 0, sizeof(DirectX::VertexPositionTextureNormal)));
+	geometry->SetIndexBuffer(m_RenderDevice.GetObjectsFactory().CreateIndexBuffer(indices));
+	geometry->SetBounds(CalculateBounds(vertices));
 	return geometry;
 }
 
@@ -130,17 +139,9 @@ std::shared_ptr<IGeometry> CRenderPrimitivesFactory::CreateSphere()
 	DirectX::ComputeSphere(vertices, indices, 1.0f, 8, false, false);
 
 	std::shared_ptr<IGeometry> geometry = m_RenderDevice.GetObjectsFactory().CreateGeometry();
-
-	std::shared_ptr<IBuffer> __vbPos = m_RenderDevice.GetObjectsFactory().CreateVoidVertexBuffer(vertices.data(), vertices.size(), 0, sizeof(DirectX::VertexPositionTextureNormal));
-	std::shared_ptr<IBuffer> __vbTex = m_RenderDevice.GetObjectsFactory().CreateVoidVertexBuffer(vertices.data(), vertices.size(), 12, sizeof(DirectX::VertexPositionTextureNormal));
-	std::shared_ptr<IBuffer> __vbNor = m_RenderDevice.GetObjectsFactory().CreateVoidVertexBuffer(vertices.data(), vertices.size(), 20, sizeof(DirectX::VertexPositionTextureNormal));
-	geometry->AddVertexBuffer(BufferBinding("POSITION", 0), __vbPos);
-	geometry->AddVertexBuffer(BufferBinding("NORMAL", 0), __vbNor);
-	geometry->AddVertexBuffer(BufferBinding("TEXCOORD", 0), __vbTex);
-
-	std::shared_ptr<IBuffer> __ib = m_RenderDevice.GetObjectsFactory().CreateIndexBuffer(indices);
-	geometry->SetIndexBuffer(__ib);
-
+	geometry->SetVertexBuffer(m_RenderDevice.GetObjectsFactory().CreateVoidVertexBuffer(vertices.data(), vertices.size(), 0, sizeof(DirectX::VertexPositionTextureNormal)));
+	geometry->SetIndexBuffer(m_RenderDevice.GetObjectsFactory().CreateIndexBuffer(indices));
+	geometry->SetBounds(CalculateBounds(vertices));
 	return geometry;
 }
 
@@ -151,18 +152,9 @@ std::shared_ptr<IGeometry> CRenderPrimitivesFactory::CreateCube()
 	DirectX::ComputeBox(vertices, indices, DirectX::XMFLOAT3(1.0f, 1.0f, 1.0f), false, false);
 
 	std::shared_ptr<IGeometry> geometry = m_RenderDevice.GetObjectsFactory().CreateGeometry();
-	geometry->SetPrimitiveTopology(PrimitiveTopology::TriangleList);
-
-	std::shared_ptr<IBuffer> __vbPos = m_RenderDevice.GetObjectsFactory().CreateVoidVertexBuffer(vertices.data(), vertices.size(), 0, sizeof(DirectX::VertexPositionTextureNormal));
-	std::shared_ptr<IBuffer> __vbTex = m_RenderDevice.GetObjectsFactory().CreateVoidVertexBuffer(vertices.data(), vertices.size(), 12, sizeof(DirectX::VertexPositionTextureNormal));
-	std::shared_ptr<IBuffer> __vbNor = m_RenderDevice.GetObjectsFactory().CreateVoidVertexBuffer(vertices.data(), vertices.size(), 20, sizeof(DirectX::VertexPositionTextureNormal));
-	geometry->AddVertexBuffer(BufferBinding("POSITION", 0), __vbPos);
-	geometry->AddVertexBuffer(BufferBinding("NORMAL", 0), __vbNor);
-	geometry->AddVertexBuffer(BufferBinding("TEXCOORD", 0), __vbTex);
-
-	std::shared_ptr<IBuffer> __ib = m_RenderDevice.GetObjectsFactory().CreateIndexBuffer(indices);
-	geometry->SetIndexBuffer(__ib);
-
+	geometry->SetVertexBuffer(m_RenderDevice.GetObjectsFactory().CreateVoidVertexBuffer(vertices.data(), vertices.size(), 0, sizeof(DirectX::VertexPositionTextureNormal)));
+	geometry->SetIndexBuffer(m_RenderDevice.GetObjectsFactory().CreateIndexBuffer(indices));
+	geometry->SetBounds(CalculateBounds(vertices));
 	return geometry;
 }
 
@@ -232,18 +224,22 @@ std::shared_ptr<IGeometry> CRenderPrimitivesFactory::CreateCone()
 	DirectX::ComputeCone(vertices, indices, 0.5f, 1.0f, 8, false);
 
 	std::shared_ptr<IGeometry> geometry = m_RenderDevice.GetObjectsFactory().CreateGeometry();
-	geometry->SetPrimitiveTopology(PrimitiveTopology::TriangleList);
+	geometry->SetVertexBuffer(m_RenderDevice.GetObjectsFactory().CreateVoidVertexBuffer(vertices.data(), vertices.size(), 0, sizeof(DirectX::VertexPositionTextureNormal)));
+	geometry->SetIndexBuffer(m_RenderDevice.GetObjectsFactory().CreateIndexBuffer(indices));
+	geometry->SetBounds(CalculateBounds(vertices));
+	return geometry;
+}
 
-	std::shared_ptr<IBuffer> __vbPos = m_RenderDevice.GetObjectsFactory().CreateVoidVertexBuffer(vertices.data(), vertices.size(), 0, sizeof(DirectX::VertexPositionTextureNormal));
-	std::shared_ptr<IBuffer> __vbTex = m_RenderDevice.GetObjectsFactory().CreateVoidVertexBuffer(vertices.data(), vertices.size(), 12, sizeof(DirectX::VertexPositionTextureNormal));
-	std::shared_ptr<IBuffer> __vbNor = m_RenderDevice.GetObjectsFactory().CreateVoidVertexBuffer(vertices.data(), vertices.size(), 20, sizeof(DirectX::VertexPositionTextureNormal));
-	geometry->AddVertexBuffer(BufferBinding("POSITION", 0), __vbPos);
-	geometry->AddVertexBuffer(BufferBinding("NORMAL", 0), __vbNor);
-	geometry->AddVertexBuffer(BufferBinding("TEXCOORD", 0), __vbTex);
+std::shared_ptr<IGeometry> CRenderPrimitivesFactory::CreateTorus(float Radius, float Thickness)
+{
+	DirectX::VertexCollection vertices;
+	DirectX::IndexCollection indices;
+	DirectX::ComputeTorus(vertices, indices, Radius * 2.0f, Thickness / 2.0f, 32, false);
 
-	std::shared_ptr<IBuffer> __ib = m_RenderDevice.GetObjectsFactory().CreateIndexBuffer(indices);
-	geometry->SetIndexBuffer(__ib);
-
+	std::shared_ptr<IGeometry> geometry = m_RenderDevice.GetObjectsFactory().CreateGeometry();
+	geometry->SetVertexBuffer(m_RenderDevice.GetObjectsFactory().CreateVoidVertexBuffer(vertices.data(), vertices.size(), 0, sizeof(DirectX::VertexPositionTextureNormal)));
+	geometry->SetIndexBuffer(m_RenderDevice.GetObjectsFactory().CreateIndexBuffer(indices));
+	geometry->SetBounds(CalculateBounds(vertices));
 	return geometry;
 }
 

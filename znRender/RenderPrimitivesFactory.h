@@ -16,6 +16,7 @@ public:
 	std::shared_ptr<IGeometry> CreateCube() override;
 	std::shared_ptr<IGeometry> CreateBBox() override;
 	std::shared_ptr<IGeometry> CreateCone() override;
+	std::shared_ptr<IGeometry> CreateTorus(float Radius, float Thickness) override;
 	std::shared_ptr<IGeometry> CreateQuad() override;
 
 	// 3D meshes

@@ -309,6 +309,9 @@
     <ClCompile Include="Tools\EditorToolSelector3D.cpp">
       <Filter>Editor3D\Tools\Editor3D</Filter>
     </ClCompile>
+    <ClCompile Include="Tools\EditorToolRotator.cpp">
+      <Filter>Editor3D\Tools\Editor3D</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -489,6 +492,9 @@
       <Filter>Editor3D\Tools\Editor3D</Filter>
     </ClInclude>
     <ClInclude Include="Tools\EditorToolMover.h">
+      <Filter>Editor3D\Tools\Editor3D</Filter>
+    </ClInclude>
+    <ClInclude Include="Tools\EditorToolRotator.h">
       <Filter>Editor3D\Tools\Editor3D</Filter>
     </ClInclude>
   </ItemGroup>

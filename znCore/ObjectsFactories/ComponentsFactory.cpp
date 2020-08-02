@@ -4,8 +4,8 @@
 #include "ComponentsFactory.h"
 
 // Additional
-#include "Scene/3D/SceneNode3D.h"
-#include "Scene/UI/SceneNodeUI.h"
+#include "Scene/SceneNode3D.h"
+#include "Scene/SceneNodeUI.h"
 #include "Files/File.h"
 #include "XML/XMLManager.h"
 

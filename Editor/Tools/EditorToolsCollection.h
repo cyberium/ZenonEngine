@@ -3,6 +3,7 @@
 #include "Editor3DToolBase.h"
 #include "EditorToolSelector3D.h"
 #include "EditorToolMover.h"
+#include "EditorToolRotator.h"
 #include "EditorToolDragger.h"
 
 class CTools
@@ -21,6 +22,7 @@ public:
 public: // Editor
 	std::shared_ptr<CEditorToolSelector3D> m_Selector;
 	std::shared_ptr<CEditorToolMover> m_Mover;
+	std::shared_ptr<CEditorToolRotator> m_Rotator;
 	std::shared_ptr<CEditorToolDragger> m_Drager;
 
 private:

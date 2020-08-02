@@ -4,7 +4,7 @@
 #include "SceneNodeUIFactory.h"
 
 // Additional
-#include "Scene/UI/SceneNodeUI.h"
+#include "Scene/SceneNodeUI.h"
 
 
 CSceneNodeUIFactory::CSceneNodeUIFactory(IBaseManager& BaseManager, const std::string& TypeName, ObjectType Type)

@@ -357,6 +357,7 @@
     <ClCompile Include="Tools\Editor3DToolBase.cpp" />
     <ClCompile Include="Tools\EditorToolDragger.cpp" />
     <ClCompile Include="Tools\EditorToolMover.cpp" />
+    <ClCompile Include="Tools\EditorToolRotator.cpp" />
     <ClCompile Include="Tools\EditorToolSelector3D.cpp" />
     <ClCompile Include="Tools\EditorToolSelectorBase.cpp" />
     <ClCompile Include="Tools\EditorToolsCollection.cpp" />
@@ -380,6 +381,7 @@
     <ClInclude Include="Tools\Editor3DToolBase.h" />
     <ClInclude Include="Tools\EditorToolDragger.h" />
     <ClInclude Include="Tools\EditorToolMover.h" />
+    <ClInclude Include="Tools\EditorToolRotator.h" />
     <ClInclude Include="Tools\EditorToolSelector3D.h" />
     <ClInclude Include="Tools\EditorToolSelectorBase.h" />
     <ClInclude Include="Tools\EditorToolsCollection.h" />

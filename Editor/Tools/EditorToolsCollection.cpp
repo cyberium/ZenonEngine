@@ -16,11 +16,16 @@ void CTools::Initialize()
 {
 	m_Selector = std::make_shared<CEditorToolSelector3D>(m_Editor3DFrame);
 	m_Selector->Initialize();
-	m_Tools.insert(std::make_pair(5, m_Selector));
+	m_Tools.insert(std::make_pair(55, m_Selector));
 
 	m_Mover = std::make_shared<CEditorToolMover>(m_Editor3DFrame);
 	m_Mover->Initialize();
-	m_Tools.insert(std::make_pair(3, m_Mover));
+	m_Tools.insert(std::make_pair(30, m_Mover));
+
+	m_Rotator = std::make_shared<CEditorToolRotator>(m_Editor3DFrame);
+	m_Rotator->Initialize();
+	m_Tools.insert(std::make_pair(31, m_Rotator));
+
 
 	m_Drager = std::make_shared<CEditorToolDragger>(m_Editor3DFrame);
 	m_Drager->Initialize();
