@@ -3,12 +3,8 @@
 // General
 #include "ScenesFactory.h"
 
-// Additional
-#include "SceneDefaultCreator.h"
-
 CScenesFactory::CScenesFactory(IBaseManager& BaseManager)
 {
-	AddSceneCreator(std::make_shared<CSceneDefaultCreator>(BaseManager));
 }
 
 CScenesFactory::~CScenesFactory()

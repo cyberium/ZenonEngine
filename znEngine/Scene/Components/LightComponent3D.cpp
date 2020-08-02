@@ -3,9 +3,6 @@
 // General
 #include "LightComponent3D.h"
 
-// Additional
-#include "Scene/Properties.h"
-
 CLightComponent3D::CLightComponent3D(const ISceneNode3D& OwnerNode)
     : CComponentBase(OwnerNode)
 {

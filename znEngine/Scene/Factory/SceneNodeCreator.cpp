@@ -1,11 +1,11 @@
 #include "stdafx.h"
 
 // General
-#include "SceneNodeEngineCreator.h"
+#include "SceneNodeCreator.h"
 
 // Additional
-#include "UI/UIText.h"
-#include "UI/UIColor.h"
+#include "Scene/Nodes/UIText.h"
+#include "Scene/Nodes/UIColor.h"
 
 #ifdef ZN_FBX_SDK_ENABLE
 #include "FBX/FBXManager.h"

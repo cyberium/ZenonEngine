@@ -3,14 +3,6 @@
 // General
 #include "SceneNode3D.h"
 
-// Additional
-#include "Scene/Actions.h"
-#include "Scene/Properties.h"
-
-#include "ModelsComponent3D.h"
-#include "ColliderComponent3D.h"
-#include "LightComponent3D.h"
-
 #include "XML/XMLManager.h"
 
 SceneNode3D::SceneNode3D()

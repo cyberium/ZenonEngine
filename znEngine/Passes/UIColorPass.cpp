@@ -4,7 +4,7 @@
 #include "UIColorPass.h"
 
 // Additional
-#include "SceneFunctional/UI/UIColor.h"
+#include "Scene/Nodes/UIColor.h"
 
 CUIColorPass::CUIColorPass(IRenderDevice& RenderDevice, std::shared_ptr<IScene> Scene)
 	: BaseUIPass(RenderDevice, Scene)

@@ -9,7 +9,7 @@
 #include "Materials/MaterialParticle.h"
 #include "Materials/MaterialModel.h"
 
-#include "SceneFunctional/CameraControllers/FreeCameraController.h"
+#include "Scene/Camera/FreeCameraController.h"
 
 #include "Passes/Technical/ClearRenderTargetPass.h"
 #include "Passes/MaterialDebugPass.h"
@@ -21,8 +21,8 @@
 #include "Passes/UIFontPass.h"
 
 #include "Physics/Adapters/ReactPhysicsComponent.h"
-#include "SceneFunctional/SkeletonComponent.h"
-#include "SceneFunctional/AnimatorComponent.h"
+#include "Scene/Components/Skeleton/SkeletonComponent.h"
+#include "Scene/Components/Skeleton/AnimatorComponent.h"
 
 #include "FBX/FBXInterfaces.h"
 

@@ -3,10 +3,6 @@
 // General
 #include "SceneNodeUI.h"
 
-// Additional
-#include "Scene/Actions.h"
-#include "Scene/Properties.h"
-
 SceneNodeUI::SceneNodeUI()
 	: m_IsMouseOnNode(false)
 	, m_Translate(glm::vec2(0.0f))

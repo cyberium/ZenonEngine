@@ -3,9 +3,6 @@
 // General
 #include "ModelsComponent3D.h"
 
-// Include
-#include "XML/XMLManager.h"
-
 CModelsComponent3D::CModelsComponent3D(const ISceneNode3D& OwnerNode)
     : CComponentBase(OwnerNode)
 {

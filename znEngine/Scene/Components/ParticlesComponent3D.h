@@ -1,7 +1,5 @@
 #pragma once
 
-#include "../ComponentBase.h"
-
 class __declspec(UUID_ParticleComponent) ZN_API CParticlesComponent3D
 	: public IParticleComponent3D
 	, public IParticleSystem

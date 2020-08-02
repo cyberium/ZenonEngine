@@ -5,7 +5,7 @@
 #include "Passes/DefferedRenderPrepareLights.h"
 #include "Passes/DefferedRenderFinal.h"
 
-#include "SceneFunctional/UI/UITexture.h"
+#include "Scene/Nodes/UITexture.h"
 
 #include "reactphysics3d.h"
 

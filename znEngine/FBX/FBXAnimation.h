@@ -3,8 +3,8 @@
 #ifdef ZN_FBX_SDK_ENABLE
 #include <fbxsdk.h>
 
-#include "SceneFunctional/3D/AnimatedValue.h"
-#include "SceneFunctional/AnimatorComponent.h"
+#include "Scene/AnimatedValue.h"
+#include "Scene/Components/Skeleton/AnimatorComponent.h"
 
 class ZN_API CFBXAnimation
 	: public IFBXAnimation

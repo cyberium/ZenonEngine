@@ -58,12 +58,6 @@
     <Filter Include="FBX\Parts">
       <UniqueIdentifier>{d92e52e1-0d78-44d9-ba88-a6990c61358e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Scenes">
-      <UniqueIdentifier>{e0cfab47-ff66-4a89-bfe3-35fd3eb3a994}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Scenes\Creator">
-      <UniqueIdentifier>{7127743b-0661-40a8-8c95-3cfb10c518e4}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Resources\Shaders_D3D\UI\Base">
       <UniqueIdentifier>{71930268-138d-475c-8c78-cbedd7440462}</UniqueIdentifier>
     </Filter>
@@ -81,21 +75,6 @@
     </Filter>
     <Filter Include="Formats\Fonts">
       <UniqueIdentifier>{42e015df-4a5d-4cd0-a2db-2356c165cd3a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SceneNodes">
-      <UniqueIdentifier>{8c49bf34-6b4c-469d-9001-5b6044462676}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SceneNodes\UI">
-      <UniqueIdentifier>{aeead1cf-e045-48e6-b75c-499dd6f7476a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SceneNodes\UI\UIContainerGarmoshka">
-      <UniqueIdentifier>{2c5b150c-4814-4a73-bda8-ac6cdf2f7f38}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SceneNodes\UI\UIContainerList">
-      <UniqueIdentifier>{b93002ef-9ad2-41b9-b244-84fd234dc24e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SceneNodes\UI\Utils">
-      <UniqueIdentifier>{58530eb5-a58f-4c13-94b2-0d6730fa84eb}</UniqueIdentifier>
     </Filter>
     <Filter Include="Materials\UI materials">
       <UniqueIdentifier>{2341db42-48fb-4ccf-a7d0-ae8d040f8087}</UniqueIdentifier>
@@ -151,15 +130,6 @@
     <Filter Include="Resources\Shaders_D3D\3D\Deffered">
       <UniqueIdentifier>{c75d5999-07a7-4693-8635-28690f452353}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SceneNodes\Skeleton">
-      <UniqueIdentifier>{daa5e6f4-e756-48cb-b9f7-ec0e8c6628d1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SceneNodes\Skeleton\Implementation">
-      <UniqueIdentifier>{198d437b-43f3-4a89-ba9d-abe76eeddd64}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SceneNodes\Animator">
-      <UniqueIdentifier>{838c70fc-eb36-4046-a1c5-ea858a764c7e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Passes\Technical">
       <UniqueIdentifier>{ee871fb8-2974-4629-a7f9-72e3b2816735}</UniqueIdentifier>
     </Filter>
@@ -169,8 +139,32 @@
     <Filter Include="Passes\Scene">
       <UniqueIdentifier>{fd4fe218-d1f4-4227-85f0-ddee57019a42}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SceneNodes\CameraControllers">
-      <UniqueIdentifier>{2625ee66-99e0-4e96-9430-5c5737e35bba}</UniqueIdentifier>
+    <Filter Include="Tools">
+      <UniqueIdentifier>{83bdfbf6-1b57-43c1-8b7e-8bb336dbf4b4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tools\AssyncLoader">
+      <UniqueIdentifier>{e514f7a9-fea4-480c-9491-3e243067c92c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Passes\Factory">
+      <UniqueIdentifier>{5640c233-c8f6-4a2c-b454-7e6d9952af01}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scene">
+      <UniqueIdentifier>{eedc56cc-1ee4-4cd6-b409-af2ed914884c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scene\Camera">
+      <UniqueIdentifier>{e3e728f3-88c2-4af0-90c0-10df5473eba1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scene\Components">
+      <UniqueIdentifier>{766f4f63-5f82-4ace-9365-a0c2425a32d5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scene\Factory">
+      <UniqueIdentifier>{42288e4e-a3cc-44e7-b889-8854e3ea2090}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scene\Nodes">
+      <UniqueIdentifier>{534c42f8-3515-4f60-9bd4-92b1ed91c63d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scene\Components\Skeleton">
+      <UniqueIdentifier>{601eab62-08ec-461d-a53f-7a7ca845dfa0}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -178,29 +172,11 @@
       <Filter>Common</Filter>
     </ClCompile>
     <ClCompile Include="Application.cpp" />
-    <ClCompile Include="SceneFunctional\UI\UIContainerGarmoshka.cpp">
-      <Filter>SceneNodes\UI\UIContainerGarmoshka</Filter>
-    </ClCompile>
-    <ClCompile Include="SceneFunctional\UI\UIContainerGarmoshkaCategory.cpp">
-      <Filter>SceneNodes\UI\UIContainerGarmoshka</Filter>
-    </ClCompile>
-    <ClCompile Include="SceneFunctional\UI\UIContainerGarmoshkaCategoryHeader.cpp">
-      <Filter>SceneNodes\UI\UIContainerGarmoshka</Filter>
-    </ClCompile>
-    <ClCompile Include="SceneFunctional\UI\UIContainerListBase.cpp">
-      <Filter>SceneNodes\UI\UIContainerList</Filter>
-    </ClCompile>
-    <ClCompile Include="SceneFunctional\UI\UIContainerListWithActivation.cpp">
-      <Filter>SceneNodes\UI\UIContainerList</Filter>
-    </ClCompile>
     <ClCompile Include="Materials\MaterialDebug.cpp">
       <Filter>Materials</Filter>
     </ClCompile>
     <ClCompile Include="Materials\MaterialTextured.cpp">
       <Filter>Materials</Filter>
-    </ClCompile>
-    <ClCompile Include="SceneFunctional\UI\UIUtils.cpp">
-      <Filter>SceneNodes\UI\Utils</Filter>
     </ClCompile>
     <ClCompile Include="znEngine.cpp">
       <Filter>Common</Filter>
@@ -217,35 +193,8 @@
     <ClCompile Include="BaseManager.cpp">
       <Filter>Managers</Filter>
     </ClCompile>
-    <ClCompile Include="Loader.cpp">
-      <Filter>Managers</Filter>
-    </ClCompile>
     <ClCompile Include="Settings.cpp">
       <Filter>Managers</Filter>
-    </ClCompile>
-    <ClCompile Include="Passes\RenderPassFactory.cpp">
-      <Filter>Passes</Filter>
-    </ClCompile>
-    <ClCompile Include="Passes\RenderPassDefaultCreator.cpp">
-      <Filter>Passes</Filter>
-    </ClCompile>
-    <ClCompile Include="SceneFunctional\UI\UIBeizerLine.cpp">
-      <Filter>SceneNodes\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="SceneFunctional\UI\UIButton.cpp">
-      <Filter>SceneNodes\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="SceneFunctional\UI\UIColor.cpp">
-      <Filter>SceneNodes\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="SceneFunctional\UI\UIText.cpp">
-      <Filter>SceneNodes\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="SceneFunctional\UI\UITexture.cpp">
-      <Filter>SceneNodes\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="SceneFunctional\UI\UIWindow.cpp">
-      <Filter>SceneNodes\UI</Filter>
     </ClCompile>
     <ClCompile Include="Materials\MaterialModel.cpp">
       <Filter>Materials</Filter>
@@ -290,15 +239,6 @@
       <Filter>FBX\Parts</Filter>
     </ClCompile>
     <ClCompile Include="NativeWindowFactory.cpp" />
-    <ClCompile Include="Scene_Default.cpp">
-      <Filter>Scenes</Filter>
-    </ClCompile>
-    <ClCompile Include="SceneFunctional\SceneDefaultCreator.cpp">
-      <Filter>Scenes\Creator</Filter>
-    </ClCompile>
-    <ClCompile Include="SceneFunctional\ScenesFactory.cpp">
-      <Filter>Scenes\Creator</Filter>
-    </ClCompile>
     <ClCompile Include="Passes\UIFontPass.cpp">
       <Filter>Passes\UI</Filter>
     </ClCompile>
@@ -567,17 +507,11 @@
     <ClCompile Include="MaterialsFactory.cpp">
       <Filter>Materials</Filter>
     </ClCompile>
-    <ClCompile Include="SceneFunctional\SceneNodeEngineCreator.cpp">
-      <Filter>SceneNodes</Filter>
-    </ClCompile>
     <ClCompile Include="Passes\UIColorPass.cpp">
       <Filter>Passes\UI</Filter>
     </ClCompile>
     <ClCompile Include="Passes\MaterialModelPass.cpp">
       <Filter>Passes\3D</Filter>
-    </ClCompile>
-    <ClCompile Include="SceneFunctional\ComponentsEngineCreator.cpp">
-      <Filter>SceneNodes</Filter>
     </ClCompile>
     <ClCompile Include="FBX\FBXDisplayAnimation.cpp">
       <Filter>FBX</Filter>
@@ -588,26 +522,8 @@
     <ClCompile Include="FBX\FBXAnimation.cpp">
       <Filter>FBX\Parts</Filter>
     </ClCompile>
-    <ClCompile Include="SceneFunctional\GameModel.cpp">
-      <Filter>SceneNodes</Filter>
-    </ClCompile>
-    <ClCompile Include="SceneFunctional\3D\Skeleton.cpp">
-      <Filter>SceneNodes\Skeleton\Implementation</Filter>
-    </ClCompile>
-    <ClCompile Include="SceneFunctional\3D\SkeletonBone.cpp">
-      <Filter>SceneNodes\Skeleton\Implementation</Filter>
-    </ClCompile>
-    <ClCompile Include="SceneFunctional\SkeletonComponent.cpp">
-      <Filter>SceneNodes\Skeleton</Filter>
-    </ClCompile>
-    <ClCompile Include="SceneFunctional\SkeletonComponentBone.cpp">
-      <Filter>SceneNodes\Skeleton</Filter>
-    </ClCompile>
     <ClCompile Include="FBX\FBXModel.cpp">
       <Filter>FBX\Parts</Filter>
-    </ClCompile>
-    <ClCompile Include="SceneFunctional\AnimatorComponent.cpp">
-      <Filter>SceneNodes\Animator</Filter>
     </ClCompile>
     <ClCompile Include="Passes\MaterialModelSkeletonPass.cpp">
       <Filter>Passes\3D</Filter>
@@ -651,17 +567,110 @@
     <ClCompile Include="Passes\Scene\SceneCreateTypelessListPass.cpp">
       <Filter>Passes\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="SceneFunctional\CameraControllers\ArcBallCameraController.cpp">
-      <Filter>SceneNodes\CameraControllers</Filter>
+    <ClCompile Include="AssyncLoader\LoadableObject.cpp">
+      <Filter>Tools\AssyncLoader</Filter>
     </ClCompile>
-    <ClCompile Include="SceneFunctional\CameraControllers\CameraControllerBase.cpp">
-      <Filter>SceneNodes\CameraControllers</Filter>
+    <ClCompile Include="AssyncLoader\Loader.cpp">
+      <Filter>Tools\AssyncLoader</Filter>
     </ClCompile>
-    <ClCompile Include="SceneFunctional\CameraControllers\FreeCameraController.cpp">
-      <Filter>SceneNodes\CameraControllers</Filter>
+    <ClCompile Include="Passes\RenderPassDefaultCreator.cpp">
+      <Filter>Passes\Factory</Filter>
     </ClCompile>
-    <ClCompile Include="SceneFunctional\CameraControllers\RTSCameraController.cpp">
-      <Filter>SceneNodes\CameraControllers</Filter>
+    <ClCompile Include="Passes\RenderPassFactory.cpp">
+      <Filter>Passes\Factory</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\GameModel.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\Scene_Default.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\Skeleton.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\SkeletonBone.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\Nodes\UIBeizerLine.cpp">
+      <Filter>Scene\Nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\Nodes\UIButton.cpp">
+      <Filter>Scene\Nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\Nodes\UIColor.cpp">
+      <Filter>Scene\Nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\Nodes\UIContainerGarmoshka.cpp">
+      <Filter>Scene\Nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\Nodes\UIContainerGarmoshkaCategory.cpp">
+      <Filter>Scene\Nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\Nodes\UIContainerGarmoshkaCategoryHeader.cpp">
+      <Filter>Scene\Nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\Nodes\UIContainerListBase.cpp">
+      <Filter>Scene\Nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\Nodes\UIContainerListWithActivation.cpp">
+      <Filter>Scene\Nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\Nodes\UIText.cpp">
+      <Filter>Scene\Nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\Nodes\UITexture.cpp">
+      <Filter>Scene\Nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\Nodes\UIUtils.cpp">
+      <Filter>Scene\Nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\Nodes\UIWindow.cpp">
+      <Filter>Scene\Nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\Factory\ComponentsCreator.cpp">
+      <Filter>Scene\Factory</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\Factory\SceneCreator.cpp">
+      <Filter>Scene\Factory</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\Factory\SceneNodeCreator.cpp">
+      <Filter>Scene\Factory</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\Components\CameraComponent3D.cpp">
+      <Filter>Scene\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\Components\ColliderComponent3D.cpp">
+      <Filter>Scene\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\Components\LightComponent3D.cpp">
+      <Filter>Scene\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\Components\ModelsComponent3D.cpp">
+      <Filter>Scene\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\Components\ParticlesComponent3D.cpp">
+      <Filter>Scene\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\Components\Skeleton\AnimatorComponent.cpp">
+      <Filter>Scene\Components\Skeleton</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\Components\Skeleton\SkeletonComponent.cpp">
+      <Filter>Scene\Components\Skeleton</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\Components\Skeleton\SkeletonComponentBone.cpp">
+      <Filter>Scene\Components\Skeleton</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\Camera\ArcBallCameraController.cpp">
+      <Filter>Scene\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\Camera\CameraControllerBase.cpp">
+      <Filter>Scene\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\Camera\FreeCameraController.cpp">
+      <Filter>Scene\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\Camera\RTSCameraController.cpp">
+      <Filter>Scene\Camera</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -675,29 +684,11 @@
     <ClInclude Include="..\shared\znEngine.h">
       <Filter>Common</Filter>
     </ClInclude>
-    <ClInclude Include="SceneFunctional\UI\UIContainerGarmoshka.h">
-      <Filter>SceneNodes\UI\UIContainerGarmoshka</Filter>
-    </ClInclude>
-    <ClInclude Include="SceneFunctional\UI\UIContainerGarmoshkaCategory.h">
-      <Filter>SceneNodes\UI\UIContainerGarmoshka</Filter>
-    </ClInclude>
-    <ClInclude Include="SceneFunctional\UI\UIContainerGarmoshkaCategoryHeader.h">
-      <Filter>SceneNodes\UI\UIContainerGarmoshka</Filter>
-    </ClInclude>
-    <ClInclude Include="SceneFunctional\UI\UIContainerListBase.h">
-      <Filter>SceneNodes\UI\UIContainerList</Filter>
-    </ClInclude>
-    <ClInclude Include="SceneFunctional\UI\UIContainerListWithActivation.h">
-      <Filter>SceneNodes\UI\UIContainerList</Filter>
-    </ClInclude>
     <ClInclude Include="Materials\MaterialDebug.h">
       <Filter>Materials</Filter>
     </ClInclude>
     <ClInclude Include="Materials\MaterialTextured.h">
       <Filter>Materials</Filter>
-    </ClInclude>
-    <ClInclude Include="SceneFunctional\UI\UIUtils.h">
-      <Filter>SceneNodes\UI\Utils</Filter>
     </ClInclude>
     <ClInclude Include="Settings\GroupVideo.h">
       <Filter>Settings</Filter>
@@ -711,35 +702,8 @@
     <ClInclude Include="BaseManager.h">
       <Filter>Managers</Filter>
     </ClInclude>
-    <ClInclude Include="Loader.h">
-      <Filter>Managers</Filter>
-    </ClInclude>
     <ClInclude Include="Settings.h">
       <Filter>Managers</Filter>
-    </ClInclude>
-    <ClInclude Include="Passes\RenderPassFactory.h">
-      <Filter>Passes</Filter>
-    </ClInclude>
-    <ClInclude Include="Passes\RenderPassDefaultCreator.h">
-      <Filter>Passes</Filter>
-    </ClInclude>
-    <ClInclude Include="SceneFunctional\UI\UIBeizerLine.h">
-      <Filter>SceneNodes\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="SceneFunctional\UI\UIButton.h">
-      <Filter>SceneNodes\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="SceneFunctional\UI\UIColor.h">
-      <Filter>SceneNodes\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="SceneFunctional\UI\UIText.h">
-      <Filter>SceneNodes\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="SceneFunctional\UI\UITexture.h">
-      <Filter>SceneNodes\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="SceneFunctional\UI\UIWindow.h">
-      <Filter>SceneNodes\UI</Filter>
     </ClInclude>
     <ClInclude Include="Materials\MaterialModel.h">
       <Filter>Materials</Filter>
@@ -785,15 +749,6 @@
     </ClInclude>
     <ClInclude Include="ThreadPool.h" />
     <ClInclude Include="NativeWindowFactory.h" />
-    <ClInclude Include="Scene_Default.h">
-      <Filter>Scenes</Filter>
-    </ClInclude>
-    <ClInclude Include="SceneFunctional\SceneDefaultCreator.h">
-      <Filter>Scenes\Creator</Filter>
-    </ClInclude>
-    <ClInclude Include="SceneFunctional\ScenesFactory.h">
-      <Filter>Scenes\Creator</Filter>
-    </ClInclude>
     <ClInclude Include="Passes\UIFontPass.h">
       <Filter>Passes\UI</Filter>
     </ClInclude>
@@ -1119,9 +1074,6 @@
     <ClInclude Include="MaterialsFactory.h">
       <Filter>Materials</Filter>
     </ClInclude>
-    <ClInclude Include="SceneFunctional\SceneNodeEngineCreator.h">
-      <Filter>SceneNodes</Filter>
-    </ClInclude>
     <ClInclude Include="FBX\FBXInterfaces.h">
       <Filter>FBX</Filter>
     </ClInclude>
@@ -1130,9 +1082,6 @@
     </ClInclude>
     <ClInclude Include="Passes\MaterialModelPass.h">
       <Filter>Passes\3D</Filter>
-    </ClInclude>
-    <ClInclude Include="SceneFunctional\ComponentsEngineCreator.h">
-      <Filter>SceneNodes</Filter>
     </ClInclude>
     <ClInclude Include="FBX\FBXDisplayAnimation.h">
       <Filter>FBX</Filter>
@@ -1143,29 +1092,8 @@
     <ClInclude Include="FBX\FBXAnimation.h">
       <Filter>FBX\Parts</Filter>
     </ClInclude>
-    <ClInclude Include="SceneFunctional\GameModel.h">
-      <Filter>SceneNodes</Filter>
-    </ClInclude>
-    <ClInclude Include="SceneFunctional\3D\AnimatedValue.h">
-      <Filter>SceneNodes\Skeleton\Implementation</Filter>
-    </ClInclude>
-    <ClInclude Include="SceneFunctional\3D\Skeleton.h">
-      <Filter>SceneNodes\Skeleton\Implementation</Filter>
-    </ClInclude>
-    <ClInclude Include="SceneFunctional\3D\SkeletonBone.h">
-      <Filter>SceneNodes\Skeleton\Implementation</Filter>
-    </ClInclude>
-    <ClInclude Include="SceneFunctional\SkeletonComponent.h">
-      <Filter>SceneNodes\Skeleton</Filter>
-    </ClInclude>
-    <ClInclude Include="SceneFunctional\SkeletonComponentBone.h">
-      <Filter>SceneNodes\Skeleton</Filter>
-    </ClInclude>
     <ClInclude Include="FBX\FBXModel.h">
       <Filter>FBX\Parts</Filter>
-    </ClInclude>
-    <ClInclude Include="SceneFunctional\AnimatorComponent.h">
-      <Filter>SceneNodes\Animator</Filter>
     </ClInclude>
     <ClInclude Include="Passes\MaterialModelSkeletonPass.h">
       <Filter>Passes\3D</Filter>
@@ -1209,17 +1137,113 @@
     <ClInclude Include="Passes\Scene\SceneCreateTypelessListPass.h">
       <Filter>Passes\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="SceneFunctional\CameraControllers\ArcBallCameraController.h">
-      <Filter>SceneNodes\CameraControllers</Filter>
+    <ClInclude Include="AssyncLoader\LoadableObject.h">
+      <Filter>Tools\AssyncLoader</Filter>
     </ClInclude>
-    <ClInclude Include="SceneFunctional\CameraControllers\CameraControllerBase.h">
-      <Filter>SceneNodes\CameraControllers</Filter>
+    <ClInclude Include="AssyncLoader\Loader.h">
+      <Filter>Tools\AssyncLoader</Filter>
     </ClInclude>
-    <ClInclude Include="SceneFunctional\CameraControllers\FreeCameraController.h">
-      <Filter>SceneNodes\CameraControllers</Filter>
+    <ClInclude Include="Passes\RenderPassDefaultCreator.h">
+      <Filter>Passes\Factory</Filter>
     </ClInclude>
-    <ClInclude Include="SceneFunctional\CameraControllers\RTSCameraController.h">
-      <Filter>SceneNodes\CameraControllers</Filter>
+    <ClInclude Include="Passes\RenderPassFactory.h">
+      <Filter>Passes\Factory</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\AnimatedValue.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\GameModel.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\Scene_Default.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\Skeleton.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\SkeletonBone.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\Nodes\UIBeizerLine.h">
+      <Filter>Scene\Nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\Nodes\UIButton.h">
+      <Filter>Scene\Nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\Nodes\UIColor.h">
+      <Filter>Scene\Nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\Nodes\UIContainerGarmoshka.h">
+      <Filter>Scene\Nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\Nodes\UIContainerGarmoshkaCategory.h">
+      <Filter>Scene\Nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\Nodes\UIContainerGarmoshkaCategoryHeader.h">
+      <Filter>Scene\Nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\Nodes\UIContainerListBase.h">
+      <Filter>Scene\Nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\Nodes\UIContainerListWithActivation.h">
+      <Filter>Scene\Nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\Nodes\UIText.h">
+      <Filter>Scene\Nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\Nodes\UITexture.h">
+      <Filter>Scene\Nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\Nodes\UIUtils.h">
+      <Filter>Scene\Nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\Nodes\UIWindow.h">
+      <Filter>Scene\Nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\Factory\ComponentsCreator.h">
+      <Filter>Scene\Factory</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\Factory\SceneCreator.h">
+      <Filter>Scene\Factory</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\Factory\SceneNodeCreator.h">
+      <Filter>Scene\Factory</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\Components\CameraComponent3D.h">
+      <Filter>Scene\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\Components\ColliderComponent3D.h">
+      <Filter>Scene\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\Components\LightComponent3D.h">
+      <Filter>Scene\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\Components\ModelsComponent3D.h">
+      <Filter>Scene\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\Components\ParticlesComponent3D.h">
+      <Filter>Scene\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\Components\Skeleton\AnimatorComponent.h">
+      <Filter>Scene\Components\Skeleton</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\Components\Skeleton\SkeletonComponent.h">
+      <Filter>Scene\Components\Skeleton</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\Components\Skeleton\SkeletonComponentBone.h">
+      <Filter>Scene\Components\Skeleton</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\Camera\ArcBallCameraController.h">
+      <Filter>Scene\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\Camera\CameraControllerBase.h">
+      <Filter>Scene\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\Camera\FreeCameraController.h">
+      <Filter>Scene\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\Camera\RTSCameraController.h">
+      <Filter>Scene\Camera</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

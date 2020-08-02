@@ -4,8 +4,8 @@
 #include "ComponentBase.h"
 
 // Additional
-#include "Properties.h"
-#include "Actions.h"
+#include "Settings/Properties.h"
+#include "Settings/Actions.h"
 
 CComponentBase::CComponentBase(const ISceneNode3D& OwnerNode)
     : m_OwnerNode(OwnerNode)

@@ -9,11 +9,11 @@
 #include "Settings.h"
 #include "RenderDeviceFactory.h"
 #include "MaterialsFactory.h"
-#include "Loader.h"
+#include "AssyncLoader/Loader.h"
 #include "Passes/RenderPassFactory.h"
-#include "SceneFunctional/ScenesFactory.h"
-#include "SceneFunctional/ComponentsEngineCreator.h"
-#include "SceneFunctional/SceneNodeEngineCreator.h"
+#include "Scene/Factory/SceneCreator.h"
+#include "Scene/Factory/ComponentsCreator.h"
+#include "Scene/Factory/SceneNodeCreator.h"
 #include "FBX/FBXManager.h"
 
 // Additional (Images)

@@ -4,7 +4,7 @@
 #include "UIFontPass.h"
 
 // Additional
-#include "SceneFunctional/UI/UIText.h"
+#include "Scene/Nodes/UIText.h"
 
 CUIFontPass::CUIFontPass(IRenderDevice& RenderDevice, std::shared_ptr<IScene> Scene)
 	: BaseUIPass(RenderDevice, Scene)

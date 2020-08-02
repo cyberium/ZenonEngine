@@ -8,15 +8,21 @@
 
 
 // Camera controllers
-#include "../znEngine/SceneFunctional/CameraControllers/CameraControllerBase.h"
-#include "../znEngine/SceneFunctional/CameraControllers/ArcBallCameraController.h"
-#include "../znEngine/SceneFunctional/CameraControllers/FreeCameraController.h"
-#include "../znEngine/SceneFunctional/CameraControllers/RTSCameraController.h"
+#include "../znEngine/Scene/Camera/CameraControllerBase.h"
+#include "../znEngine/Scene/Camera/ArcBallCameraController.h"
+#include "../znEngine/Scene/Camera/FreeCameraController.h"
+#include "../znEngine/Scene/Camera/RTSCameraController.h"
+
+#include "../znEngine/Scene/Components/ColliderComponent3D.h"
+#include "../znEngine/Scene/Components/LightComponent3D.h"
+#include "../znEngine/Scene/Components/ModelsComponent3D.h"
+#include "../znEngine/Scene/Components/CameraComponent3D.h"
+#include "../znEngine/Scene/Components/ParticlesComponent3D.h"
 
 // Nodes
-#include "../znEngine/SceneFunctional/UI/UIText.h"
-#include "../znEngine/SceneFunctional/UI/UIButton.h"
-#include "../znEngine/SceneFunctional/UI/UITexture.h"
+#include "../znEngine/Scene/Nodes/UIText.h"
+#include "../znEngine/Scene/Nodes/UIButton.h"
+#include "../znEngine/Scene/Nodes/UITexture.h"
 
 // Materials
 #include "../znEngine/Materials/MaterialDebug.h"

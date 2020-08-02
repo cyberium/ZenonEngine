@@ -1,10 +1,10 @@
 #include "stdafx.h"
 
 // General
-#include "SceneDefaultCreator.h"
+#include "SceneCreator.h"
 
 // Additional
-#include "Scene_Default.h"
+#include "Scene/Scene_Default.h"
 
 CSceneDefaultCreator::CSceneDefaultCreator(IBaseManager& BaseManager)
 	: m_BaseManager(BaseManager)

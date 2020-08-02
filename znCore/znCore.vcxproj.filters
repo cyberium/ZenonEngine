@@ -34,20 +34,8 @@
     <Filter Include="__Proxies">
       <UniqueIdentifier>{de08cb84-ae35-42fc-87cb-6959d1e26098}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Settings functional">
-      <UniqueIdentifier>{bc1f0964-30fc-4288-a8ea-cb5bd992e806}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Passes">
       <UniqueIdentifier>{030be646-acd2-408c-97f1-de057391b5a3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Scene functional">
-      <UniqueIdentifier>{8c8be4ea-0256-49e9-87bf-26a6e295f7ef}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Scene functional\3D">
-      <UniqueIdentifier>{1ae3c30a-22f6-4504-89c3-f52e29eeb48e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Scene functional\Properties">
-      <UniqueIdentifier>{4bf4e6dc-9ab3-48d8-a7d6-b36ce4087f3a}</UniqueIdentifier>
     </Filter>
     <Filter Include="XML">
       <UniqueIdentifier>{51d660eb-9fa6-4618-a563-39c01b7efc32}</UniqueIdentifier>
@@ -57,15 +45,6 @@
     </Filter>
     <Filter Include="__Interfaces\Scene\Types">
       <UniqueIdentifier>{1e2fe722-e211-4ea0-a5c6-04867d657526}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Externals">
-      <UniqueIdentifier>{635427f0-f1b7-41b1-a148-d6d9d2b4c7fe}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Externals\zlib">
-      <UniqueIdentifier>{791a8f47-959f-48d2-9f13-954f942cf78e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Externals\lua">
-      <UniqueIdentifier>{b25aeee7-42cc-4c8f-a169-d2862e2b6dc1}</UniqueIdentifier>
     </Filter>
     <Filter Include="Socket">
       <UniqueIdentifier>{3f578926-37f3-4e2b-8a8d-78374d8e3859}</UniqueIdentifier>
@@ -85,18 +64,6 @@
     <Filter Include="Passes\ScenePasses">
       <UniqueIdentifier>{20e71630-fea1-44ca-aa47-67283f7cd572}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Scene functional\UI">
-      <UniqueIdentifier>{ee3bbc74-e550-4693-b40e-567ec2f794b8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Object system">
-      <UniqueIdentifier>{15e421b3-d1fd-4098-91e6-1d5660a87fc3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Object system\Typed creators">
-      <UniqueIdentifier>{97c61480-573e-483c-83a4-9732e99153ea}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Passes\ScenePasses\Pipelined">
-      <UniqueIdentifier>{4ce61172-7e02-4463-92dd-9ecd3000e3b6}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Utils">
       <UniqueIdentifier>{26e6b957-d71f-4cc0-8359-23775776d608}</UniqueIdentifier>
     </Filter>
@@ -105,6 +72,18 @@
     </Filter>
     <Filter Include="Utils\Primitives">
       <UniqueIdentifier>{ad05b562-1a9b-4ff3-9c39-cbf71fd061b2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scene">
+      <UniqueIdentifier>{8c8be4ea-0256-49e9-87bf-26a6e295f7ef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Settings">
+      <UniqueIdentifier>{bc1f0964-30fc-4288-a8ea-cb5bd992e806}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Objects">
+      <UniqueIdentifier>{15e421b3-d1fd-4098-91e6-1d5660a87fc3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Objects\Typed creators">
+      <UniqueIdentifier>{97c61480-573e-483c-83a4-9732e99153ea}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -121,25 +100,10 @@
       <Filter>Passes</Filter>
     </ClCompile>
     <ClCompile Include="Scene\ComponentBase.cpp">
-      <Filter>Scene functional</Filter>
-    </ClCompile>
-    <ClCompile Include="Scene\3D\ColliderComponent3D.cpp">
-      <Filter>Scene functional\3D</Filter>
-    </ClCompile>
-    <ClCompile Include="Scene\3D\LightComponent3D.cpp">
-      <Filter>Scene functional\3D</Filter>
-    </ClCompile>
-    <ClCompile Include="Scene\LoadableObject.cpp">
-      <Filter>Scene functional</Filter>
+      <Filter>Scene</Filter>
     </ClCompile>
     <ClCompile Include="Scene\SceneBase.cpp">
-      <Filter>Scene functional</Filter>
-    </ClCompile>
-    <ClCompile Include="Scene\Properties.cpp">
-      <Filter>Scene functional\Properties</Filter>
-    </ClCompile>
-    <ClCompile Include="Scene\Actions.cpp">
-      <Filter>Scene functional\Properties</Filter>
+      <Filter>Scene</Filter>
     </ClCompile>
     <ClCompile Include="XML\XMLManager.cpp">
       <Filter>XML</Filter>
@@ -173,9 +137,6 @@
     </ClCompile>
     <ClCompile Include="Passes\RenderPass.cpp">
       <Filter>Passes</Filter>
-    </ClCompile>
-    <ClCompile Include="Scene\3D\CameraComponent3D.cpp">
-      <Filter>Scene functional\3D</Filter>
     </ClCompile>
     <ClCompile Include="Proxies\ModelProxie.cpp">
       <Filter>__Proxies</Filter>
@@ -249,47 +210,26 @@
     <ClCompile Include="Passes\ScenePasses\ScenePass.cpp">
       <Filter>Passes\ScenePasses</Filter>
     </ClCompile>
-    <ClCompile Include="Passes\ScenePasses\Pipelined\Base3DPass.cpp">
-      <Filter>Passes\ScenePasses\Pipelined</Filter>
-    </ClCompile>
-    <ClCompile Include="Passes\ScenePasses\Pipelined\BaseUIPass.cpp">
-      <Filter>Passes\ScenePasses\Pipelined</Filter>
-    </ClCompile>
-    <ClCompile Include="Passes\ScenePasses\Pipelined\ScenePassPipelined.cpp">
-      <Filter>Passes\ScenePasses\Pipelined</Filter>
-    </ClCompile>
     <ClCompile Include="Passes\RenderPassPipelined.cpp">
       <Filter>Passes</Filter>
-    </ClCompile>
-    <ClCompile Include="Scene\3D\ModelsComponent3D.cpp">
-      <Filter>Scene functional\3D</Filter>
-    </ClCompile>
-    <ClCompile Include="Scene\UI\SceneNodeUI.cpp">
-      <Filter>Scene functional\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="Scene\3D\SceneNode3D.cpp">
-      <Filter>Scene functional\3D</Filter>
-    </ClCompile>
-    <ClCompile Include="Scene\3D\ParticlesComponent3D.cpp">
-      <Filter>Scene functional\3D</Filter>
     </ClCompile>
     <ClCompile Include="Files\ChunkedFile.cpp">
       <Filter>Files</Filter>
     </ClCompile>
     <ClCompile Include="ObjectsFactories\ObjectsFactory.cpp">
-      <Filter>Object system</Filter>
+      <Filter>Objects</Filter>
     </ClCompile>
     <ClCompile Include="ObjectsFactories\ObjectClassFactory.cpp">
-      <Filter>Object system</Filter>
+      <Filter>Objects</Filter>
     </ClCompile>
     <ClCompile Include="ObjectsFactories\ObjectClassCreator.cpp">
-      <Filter>Object system</Filter>
+      <Filter>Objects</Filter>
     </ClCompile>
     <ClCompile Include="ObjectsFactories\SceneNode3DFactory.cpp">
-      <Filter>Object system\Typed creators</Filter>
+      <Filter>Objects\Typed creators</Filter>
     </ClCompile>
     <ClCompile Include="ObjectsFactories\Object.cpp">
-      <Filter>Object system</Filter>
+      <Filter>Objects</Filter>
     </ClCompile>
     <ClCompile Include="XML\XMLReader.cpp">
       <Filter>XML</Filter>
@@ -298,13 +238,13 @@
       <Filter>XML</Filter>
     </ClCompile>
     <ClCompile Include="ObjectsFactories\SceneNodeUIFactory.cpp">
-      <Filter>Object system\Typed creators</Filter>
+      <Filter>Objects\Typed creators</Filter>
     </ClCompile>
     <ClCompile Include="ObjectsFactories\ComponentsFactory.cpp">
-      <Filter>Object system\Typed creators</Filter>
+      <Filter>Objects\Typed creators</Filter>
     </ClCompile>
     <ClCompile Include="Settings\SettingsGroupBase.cpp">
-      <Filter>Settings functional</Filter>
+      <Filter>Settings</Filter>
     </ClCompile>
     <ClCompile Include="Log\Console\Console.cpp">
       <Filter>Log\Console</Filter>
@@ -316,9 +256,6 @@
       <Filter>Log\DebugOutput</Filter>
     </ClCompile>
     <ClCompile Include="Log\DebugOutput\DebugOutputLog.cpp">
-      <Filter>Log\DebugOutput</Filter>
-    </ClCompile>
-    <ClCompile Include="Log\Log.cpp">
       <Filter>Log\DebugOutput</Filter>
     </ClCompile>
     <ClCompile Include="Utils\Primitives\BoundingBox.cpp">
@@ -347,6 +284,33 @@
     </ClCompile>
     <ClCompile Include="Utils\Timer.cpp">
       <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Settings\Actions.cpp">
+      <Filter>Settings</Filter>
+    </ClCompile>
+    <ClCompile Include="Settings\Properties.cpp">
+      <Filter>Settings</Filter>
+    </ClCompile>
+    <ClCompile Include="Log\Log.cpp">
+      <Filter>Log</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\SceneNode3D.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\SceneNodeUI.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjectsFactories\ScenesFactory.cpp">
+      <Filter>Objects\Typed creators</Filter>
+    </ClCompile>
+    <ClCompile Include="Passes\ScenePasses\Pipelined\Base3DPass.cpp">
+      <Filter>Passes\ScenePasses</Filter>
+    </ClCompile>
+    <ClCompile Include="Passes\ScenePasses\Pipelined\BaseUIPass.cpp">
+      <Filter>Passes\ScenePasses</Filter>
+    </ClCompile>
+    <ClCompile Include="Passes\ScenePasses\Pipelined\ScenePassPipelined.cpp">
+      <Filter>Passes\ScenePasses</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -498,28 +462,13 @@
       <Filter>Passes</Filter>
     </ClInclude>
     <ClInclude Include="Scene\ComponentBase.h">
-      <Filter>Scene functional</Filter>
-    </ClInclude>
-    <ClInclude Include="Scene\3D\ColliderComponent3D.h">
-      <Filter>Scene functional\3D</Filter>
-    </ClInclude>
-    <ClInclude Include="Scene\3D\LightComponent3D.h">
-      <Filter>Scene functional\3D</Filter>
-    </ClInclude>
-    <ClInclude Include="Scene\LoadableObject.h">
-      <Filter>Scene functional</Filter>
+      <Filter>Scene</Filter>
     </ClInclude>
     <ClInclude Include="Scene\SceneBase.h">
-      <Filter>Scene functional</Filter>
+      <Filter>Scene</Filter>
     </ClInclude>
     <ClInclude Include="..\shared\Interfaces\Scene\IActions.h">
       <Filter>__Interfaces\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="Scene\Properties.h">
-      <Filter>Scene functional\Properties</Filter>
-    </ClInclude>
-    <ClInclude Include="Scene\Actions.h">
-      <Filter>Scene functional\Properties</Filter>
     </ClInclude>
     <ClInclude Include="XML\XMLManager.h">
       <Filter>XML</Filter>
@@ -562,9 +511,6 @@
     </ClInclude>
     <ClInclude Include="..\shared\Interfaces\Render\IRenderTechnique.h">
       <Filter>__Interfaces\Render</Filter>
-    </ClInclude>
-    <ClInclude Include="Scene\3D\CameraComponent3D.h">
-      <Filter>Scene functional\3D</Filter>
     </ClInclude>
     <ClInclude Include="..\shared\Interfaces\Render\IModel.h">
       <Filter>__Interfaces\Render</Filter>
@@ -671,32 +617,11 @@
     <ClInclude Include="Passes\ScenePasses\ScenePass.h">
       <Filter>Passes\ScenePasses</Filter>
     </ClInclude>
-    <ClInclude Include="Passes\ScenePasses\Pipelined\Base3DPass.h">
-      <Filter>Passes\ScenePasses\Pipelined</Filter>
-    </ClInclude>
-    <ClInclude Include="Passes\ScenePasses\Pipelined\BaseUIPass.h">
-      <Filter>Passes\ScenePasses\Pipelined</Filter>
-    </ClInclude>
-    <ClInclude Include="Passes\ScenePasses\Pipelined\ScenePassPipelined.h">
-      <Filter>Passes\ScenePasses\Pipelined</Filter>
-    </ClInclude>
     <ClInclude Include="Passes\RenderPassPipelined.h">
       <Filter>Passes</Filter>
     </ClInclude>
-    <ClInclude Include="Scene\3D\ModelsComponent3D.h">
-      <Filter>Scene functional\3D</Filter>
-    </ClInclude>
-    <ClInclude Include="Scene\UI\SceneNodeUI.h">
-      <Filter>Scene functional\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="Scene\3D\SceneNode3D.h">
-      <Filter>Scene functional\3D</Filter>
-    </ClInclude>
     <ClInclude Include="..\shared\Interfaces\Render\Types\RenderTypes.h">
       <Filter>__Interfaces\Render\Types</Filter>
-    </ClInclude>
-    <ClInclude Include="Scene\3D\ParticlesComponent3D.h">
-      <Filter>Scene functional\3D</Filter>
     </ClInclude>
     <ClInclude Include="..\shared\Interfaces\Scene\ISceneNodeBase.h">
       <Filter>__Interfaces\Scene</Filter>
@@ -708,25 +633,25 @@
       <Filter>__Proxies</Filter>
     </ClInclude>
     <ClInclude Include="ObjectsFactories\ObjectsFactory.h">
-      <Filter>Object system</Filter>
+      <Filter>Objects</Filter>
     </ClInclude>
     <ClInclude Include="ObjectsFactories\ObjectClassFactory.h">
-      <Filter>Object system</Filter>
+      <Filter>Objects</Filter>
     </ClInclude>
     <ClInclude Include="ObjectsFactories\ObjectClassCreator.h">
-      <Filter>Object system</Filter>
+      <Filter>Objects</Filter>
     </ClInclude>
     <ClInclude Include="..\shared\Interfaces\Types\ObjectsFactory.h">
       <Filter>__Interfaces\Types</Filter>
     </ClInclude>
     <ClInclude Include="ObjectsFactories\SceneNode3DFactory.h">
-      <Filter>Object system\Typed creators</Filter>
+      <Filter>Objects\Typed creators</Filter>
     </ClInclude>
     <ClInclude Include="..\shared\Interfaces\Types\Guid.h">
       <Filter>__Interfaces\Types</Filter>
     </ClInclude>
     <ClInclude Include="ObjectsFactories\Object.h">
-      <Filter>Object system</Filter>
+      <Filter>Objects</Filter>
     </ClInclude>
     <ClInclude Include="XML\XMLReader.h">
       <Filter>XML</Filter>
@@ -735,16 +660,16 @@
       <Filter>XML</Filter>
     </ClInclude>
     <ClInclude Include="ObjectsFactories\SceneNodeUIFactory.h">
-      <Filter>Object system\Typed creators</Filter>
+      <Filter>Objects\Typed creators</Filter>
     </ClInclude>
     <ClInclude Include="ObjectsFactories\ComponentsFactory.h">
-      <Filter>Object system\Typed creators</Filter>
+      <Filter>Objects\Typed creators</Filter>
     </ClInclude>
     <ClInclude Include="Settings\SettingBase.h">
-      <Filter>Settings functional</Filter>
+      <Filter>Settings</Filter>
     </ClInclude>
     <ClInclude Include="Settings\SettingsGroupBase.h">
-      <Filter>Settings functional</Filter>
+      <Filter>Settings</Filter>
     </ClInclude>
     <ClInclude Include="Log\Console\Console.h">
       <Filter>Log\Console</Filter>
@@ -756,9 +681,6 @@
       <Filter>Log\DebugOutput</Filter>
     </ClInclude>
     <ClInclude Include="Log\DebugOutput\DebugOutputLog.h">
-      <Filter>Log\DebugOutput</Filter>
-    </ClInclude>
-    <ClInclude Include="Log\Log.h">
       <Filter>Log\DebugOutput</Filter>
     </ClInclude>
     <ClInclude Include="Utils\Math\MathCommon.h">
@@ -812,10 +734,37 @@
     <ClInclude Include="Utils\Timer.h">
       <Filter>Utils</Filter>
     </ClInclude>
+    <ClInclude Include="Settings\Actions.h">
+      <Filter>Settings</Filter>
+    </ClInclude>
+    <ClInclude Include="Settings\Properties.h">
+      <Filter>Settings</Filter>
+    </ClInclude>
+    <ClInclude Include="Log\Log.h">
+      <Filter>Log</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\SceneNode3D.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\SceneNodeUI.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjectsFactories\ScenesFactory.h">
+      <Filter>Objects\Typed creators</Filter>
+    </ClInclude>
+    <ClInclude Include="Passes\ScenePasses\Pipelined\ScenePassPipelined.h">
+      <Filter>Passes\ScenePasses</Filter>
+    </ClInclude>
+    <ClInclude Include="Passes\ScenePasses\Pipelined\Base3DPass.h">
+      <Filter>Passes\ScenePasses</Filter>
+    </ClInclude>
+    <ClInclude Include="Passes\ScenePasses\Pipelined\BaseUIPass.h">
+      <Filter>Passes\ScenePasses</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Scene\ComponentBase.inl">
-      <Filter>Scene functional</Filter>
+      <Filter>Scene</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

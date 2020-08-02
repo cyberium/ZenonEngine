@@ -4,7 +4,7 @@
 #include "UIButtonPass.h"
 
 // Additional
-#include "SceneFunctional/UI/UIButton.h"
+#include "Scene/Nodes/UIButton.h"
 
 CUIButtonPass::CUIButtonPass(IRenderDevice& RenderDevice, std::shared_ptr<IScene> Scene)
 	: BaseUIPass(RenderDevice, Scene)

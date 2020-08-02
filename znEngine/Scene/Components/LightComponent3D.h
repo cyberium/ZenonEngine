@@ -1,7 +1,5 @@
 #pragma once
 
-#include "../ComponentBase.h"
-
 class __declspec(UUID_LightComponent) ZN_API CLightComponent3D
 	: public ILightComponent3D
 	, public ILight3D

@@ -1,8 +1,5 @@
 #pragma once
 
-#include "../ComponentBase.h"
-#include "../Properties.h"
-
 class __declspec(UUID_CameraComponent) ZN_API CCameraComponent3D
 	: public ICameraComponent3D
 	, public CComponentBase

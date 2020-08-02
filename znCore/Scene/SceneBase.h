@@ -2,8 +2,8 @@
 
 #include "../ObjectsFactories/Object.h"
 
-#include "3D/SceneNode3D.h"
-#include "UI/SceneNodeUI.h"
+#include "SceneNode3D.h"
+#include "SceneNodeUI.h"
 #include "../Passes/RenderTechnique.h"
 
 class ZN_API SceneBase 

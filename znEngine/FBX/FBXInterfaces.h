@@ -8,7 +8,7 @@ namespace fbxsdk
 
 ZN_INTERFACE IFBXScene;
 
-#include "SceneFunctional/3D/Skeleton.h"
+#include "Scene/Skeleton.h"
 
 ZN_INTERFACE ZN_API IFBXAnimation
 {

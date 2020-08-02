@@ -4,9 +4,8 @@
 #include "SceneBase.h"
 
 // Additonal
-#include "3D/SceneNode3D.h"
-#include "UI/SceneNodeUI.h"
-#include "3D/LightComponent3D.h"
+#include "SceneNode3D.h"
+#include "SceneNodeUI.h"
 
 SceneBase::SceneBase(IBaseManager& BaseManager)
 	: m_BaseManager(BaseManager)

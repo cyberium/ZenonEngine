@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../ObjectsFactories/Object.h"
+#include "../ObjectsFactories/Object.h"
 
 class ZN_API SceneNode3D
 	: public ISceneNode3D

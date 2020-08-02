@@ -1,7 +1,12 @@
 #include "stdafx.h"
 
 // General
-#include "ComponentsEngineCreator.h"
+#include "ComponentsCreator.h"
+#include "Scene/Components/CameraComponent3D.h"
+#include "Scene/Components/ColliderComponent3D.h"
+#include "Scene/Components/LightComponent3D.h"
+#include "Scene/Components/ModelsComponent3D.h"
+#include "Scene/Components/ParticlesComponent3D.h"
 
 CComponentsEngineCreator::CComponentsEngineCreator(IBaseManager& BaseManager)
 	: CObjectClassCreator(BaseManager)

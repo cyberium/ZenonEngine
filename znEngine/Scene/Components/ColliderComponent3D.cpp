@@ -3,10 +3,6 @@
 // General
 #include "ColliderComponent3D.h"
 
-// Additional
-#include "Scene/Actions.h"
-#include "Scene/Properties.h"
-
 CColliderComponent3D::CColliderComponent3D(const ISceneNode3D& OwnerNode)
 	: CComponentBase(OwnerNode)
 	, m_CullStrategy(ECullStrategy::None)

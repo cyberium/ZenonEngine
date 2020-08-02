@@ -4,7 +4,7 @@
 #include "UITexturePass.h"
 
 // Additional
-#include "SceneFunctional/UI/UITexture.h"
+#include "Scene/Nodes/UITexture.h"
 
 CUITexturePass::CUITexturePass(IRenderDevice& RenderDevice, std::shared_ptr<IScene> Scene)
 	: BaseUIPass(RenderDevice, Scene)
