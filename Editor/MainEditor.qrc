@@ -1,5 +1,7 @@
 <RCC>
   <qresource prefix="MainEditor">
+    <file>Resources/Icons/rotateRTS.png</file>
+    <file>Resources/Icons/translateRTS.png</file>
     <file>Resources/Icons/select.png</file>
     <file>Resources/Icons/add.png</file>
     <file>Resources/Icons/delete.png</file>

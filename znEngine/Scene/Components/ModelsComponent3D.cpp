@@ -17,23 +17,20 @@ void CModelsComponent3D::Copy(std::shared_ptr<ISceneNodeComponent> Destination) 
 {
 	auto destCast = std::static_pointer_cast<CModelsComponent3D>(Destination);
 
-	destCast->m_Models = m_Models;
+	destCast->m_Model = m_Model;
 }
 
 void CModelsComponent3D::Load(const std::shared_ptr<IXMLReader>& Reader)
 {
 	CComponentBase::Load(Reader);
 
-	auto modelsReader = Reader->GetChild("Models");
-	if (modelsReader)
+	auto modelReader = Reader->GetChild("Model");
+	if (modelReader)
 	{
-		for (const auto& modelReader : modelsReader->GetChilds())
-		{
-			auto model = GetBaseManager().GetApplication().GetRenderDevice().GetObjectsFactory().CreateModel();
-			if (auto loadable = std::dynamic_pointer_cast<IObjectLoadSave>(model))
-				loadable->Load(modelReader);
-			AddModel(model);
-		}
+		auto model = GetBaseManager().GetApplication().GetRenderDevice().GetObjectsFactory().CreateModel();
+		if (auto loadable = std::dynamic_pointer_cast<IObjectLoadSave>(model))
+			loadable->Load(modelReader);
+		SetModel(model);
 	}
 }
 
@@ -41,17 +38,14 @@ void CModelsComponent3D::Save(const std::shared_ptr<IXMLWriter>& Writer) const
 {
 	CComponentBase::Save(Writer);
 
-	auto models = GetModels();
-	if (false == models.empty())
+	auto model = GetModel();
+	if (model)
 	{
 		CXMLManager xml;
-		auto modelsWriter = xml.CreateWriter("Models");
-		for (const auto& model : GetModels())
-		{
-			if (auto loadable = std::dynamic_pointer_cast<IObjectLoadSave>(model))
-				loadable->Save(modelsWriter);
-		}
-		Writer->AddChild(modelsWriter);
+		auto modelWriter = xml.CreateWriter("Model");
+		if (auto loadable = std::dynamic_pointer_cast<IObjectLoadSave>(model))
+			loadable->Save(modelWriter);
+		Writer->AddChild(modelWriter);
 	}
 }
 
@@ -60,23 +54,20 @@ void CModelsComponent3D::Save(const std::shared_ptr<IXMLWriter>& Writer) const
 //
 // IModelsComponent3D
 //
-void CModelsComponent3D::AddModel(const std::shared_ptr<IModel>& Model)
+void CModelsComponent3D::SetModel(const std::shared_ptr<IModel>& Model)
 {
-	const auto& iter = std::find(m_Models.begin(), m_Models.end(), Model);
-	if (iter == m_Models.end())
-		m_Models.push_back(Model);
+	_ASSERT(m_Model == nullptr);
+	m_Model = Model;
 }
 
-void CModelsComponent3D::RemoveModel(const std::shared_ptr<IModel>& Model)
+void CModelsComponent3D::ResetModel()
 {
-	const auto& iter = std::find(m_Models.begin(), m_Models.end(), Model);
-	if (iter != m_Models.end())
-	    m_Models.erase(iter);
+	m_Model.reset();
 }
 
-const ModelsList& CModelsComponent3D::GetModels() const
+std::shared_ptr<IModel> CModelsComponent3D::GetModel() const
 {
-	return m_Models;
+	return m_Model;
 }
 
 
@@ -86,9 +77,6 @@ const ModelsList& CModelsComponent3D::GetModels() const
 //
 void CModelsComponent3D::Accept(IVisitor* visitor)
 {
-	const auto& models = GetModels();
-	std::for_each(models.begin(), models.end(), [visitor](const auto& Model) {
-		if (Model)
-			Model->Accept(visitor);
-	});
+	if (GetModel())
+		GetModel()->Accept(visitor);
 }

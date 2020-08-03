@@ -43,7 +43,7 @@ void ZenonSceneViewerWidget::RefreshTreeViewModel()
 	m_Editor3D->LockUpdates();
 
 	this->reset();
-	m_Model->SetRootItemData(std::make_shared<CSceneNodeModelItem>(m_Editor3D->GetRealRootNode3D()));
+	m_Model->SetRootItemData(std::make_shared<CSceneNodeModelItem>(m_Editor3D->GetEditedRootNode3D()));
 	this->expandAll();
 
 	m_Editor3D->UnlockUpdates();

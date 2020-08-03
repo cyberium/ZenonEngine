@@ -41,6 +41,7 @@ private slots:
 
 	void OnEditorToolSelectorBtn();
 	void OnEditorToolMoverBtn();
+	void OnEditorToolRotatorBtn();
 
 private:
 	CEditorToolSelector m_Selector;

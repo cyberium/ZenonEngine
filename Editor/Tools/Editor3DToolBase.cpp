@@ -13,19 +13,24 @@ CEditor3DToolBase::~CEditor3DToolBase()
 {
 }
 
+
+
+//
+// IEditorTool
+//
 void CEditor3DToolBase::Enable()
 {
 	m_IsEnabled = true;
 }
 
-bool CEditor3DToolBase::IsEnabled()
-{
-	return m_IsEnabled;
-}
-
 void CEditor3DToolBase::Disable()
 {
 	m_IsEnabled = false;
+}
+
+bool CEditor3DToolBase::IsEnabled() const
+{
+	return m_IsEnabled;
 }
 
 IEditor3DFrame& CEditor3DToolBase::GetEditor3DFrame() const

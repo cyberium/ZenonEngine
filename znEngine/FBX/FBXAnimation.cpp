@@ -94,7 +94,7 @@ void CFBXAnimation::DisplayChannels(FbxNode* pNode, fbxsdk::FbxAnimLayer* pAnimL
 	try
 	{
 		fbxsdk::FbxAnimCurve* lAnimCurve = nullptr;
-		auto& j = m_FBXScene.GetSkeleton()->GetSkeletonEditable().GetBoneByNameEditable(pNode->GetName());
+		auto& j = m_FBXScene.GetFBXSkeleton()->GetSkeletonEditable().GetBoneByNameEditable(pNode->GetName());
 
 		//lAnimCurve = pNode->LclRotation.GetCurve(pAnimLayer, FBXSDK_CURVENODE_COMPONENT_X);
 		//if (lAnimCurve)

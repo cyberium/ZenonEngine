@@ -2,20 +2,23 @@
 
 #include "Editor3DToolBase.h"
 
-class CEditorToolDragger
+class CEditor3DToolDragger
 	: public CEditor3DToolBase
 {
 public:
-	CEditorToolDragger(IEditor3DFrame& EditorFrame);
-	virtual ~CEditorToolDragger();
+	CEditor3DToolDragger(IEditor3DFrame& EditorFrame);
+	virtual ~CEditor3DToolDragger();
 
-	void Initialize();
-	void Finalize();
-	void Enable();
-	void Disable();
-	bool OnMouseClickToWorld(const MouseButtonEventArgs & e, const Ray& RayToWorld);
-	void OnMouseReleaseToWorld(const MouseButtonEventArgs & e, const Ray& RayToWorld);
-	void OnMouseMoveToWorld(const MouseMotionEventArgs& e, const Ray& RayToWorld);
+	// IEditorTool
+	void Initialize() override;
+	void Finalize() override;
+	void Enable() override;
+	void Disable() override;
+
+	// CEditor3DToolBase
+	bool OnMousePressed(const MouseButtonEventArgs & e, const Ray& RayToWorld) override;
+	void OnMouseReleased(const MouseButtonEventArgs & e, const Ray& RayToWorld) override;
+	void OnMouseMoved(const MouseMotionEventArgs& e, const Ray& RayToWorld) override;
 
 	void DropEvent(const glm::vec2& Position);
 	void DragEnterEvent(const SDragData& Data);

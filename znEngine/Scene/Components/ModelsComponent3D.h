@@ -13,13 +13,13 @@ public:
 	void Save(const std::shared_ptr<IXMLWriter>& Writer) const override;
 
 	// IModelsComponent3D
-    void AddModel(const std::shared_ptr<IModel>& Model) override;
-    void RemoveModel(const std::shared_ptr<IModel>& Model) override;
-    const ModelsList& GetModels() const override;
+    void SetModel(const std::shared_ptr<IModel>& Model) override;
+	void ResetModel() override;
+    std::shared_ptr<IModel> GetModel() const override;
 
     // CComponentBase
     virtual void Accept(IVisitor* visitor) override;
 
 private:
-    ModelsList m_Models;
+	std::shared_ptr<IModel> m_Model;
 };

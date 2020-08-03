@@ -15,14 +15,14 @@ public:
 	void LoadNode(fbxsdk::FbxNode * NativeNode);
 	
 	// IFBXNode
-	const IFBXScene& GetScene() const override;
+	const IFBXScene& GetFBXScene() const override;
 	glm::mat4 GetTransform() const override;
 	glm::mat4 GetParentWorldTransform() const override;
 	std::weak_ptr<IFBXNode> GetParent() const override;
 	const std::vector<std::shared_ptr<IFBXNode>>& GetChilds() const override;
-	std::shared_ptr<IFBXMaterial> GetMaterial(int Index) const override;
-	std::shared_ptr<IFBXModel> GetModel() const override;
-	std::shared_ptr<IFBXLight> GetLight() const override;
+	std::shared_ptr<IFBXMaterial> GetFBXMaterial(int Index) const override;
+	std::shared_ptr<IFBXModel> GetFBXModel() const override;
+	std::shared_ptr<IFBXLight> GetFBXLight() const override;
 
 protected:
 	void LoadParams(fbxsdk::FbxNode * NativeNode);

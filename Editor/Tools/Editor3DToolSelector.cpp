@@ -1,30 +1,30 @@
 #include "stdafx.h"
 
 // General
-#include "EditorToolSelector3D.h"
+#include "Editor3DToolSelector.h"
 
-CEditorToolSelector3D::CEditorToolSelector3D(IEditor3DFrame & EditorFrame)
+CEditor3DToolSelector::CEditor3DToolSelector(IEditor3DFrame & EditorFrame)
 	: CEditorToolSelector(reinterpret_cast<IEditor_NodesSelectorEventListener&>(EditorFrame))
 	, CEditor3DToolBase(EditorFrame)
 	, m_IsSelecting2D(false)
 {
 }
 
-CEditorToolSelector3D::~CEditorToolSelector3D()
+CEditor3DToolSelector::~CEditor3DToolSelector()
 {
 }
 
-void CEditorToolSelector3D::Initialize()
+void CEditor3DToolSelector::Initialize()
 {
 	m_SelectionTexture = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeUIFactory>()->CreateSceneNodeUI(GetScene(), cSceneNodeUI_Color, GetScene()->GetRootNodeUI());
 	m_SelectionTexture->GetProperties()->GetPropertyT<glm::vec4>("Color")->Set(glm::vec4(0.1f, 0.3f, 1.0f, 0.3f));
 }
 
-void CEditorToolSelector3D::Finalize()
+void CEditor3DToolSelector::Finalize()
 {
 }
 
-void CEditorToolSelector3D::Enable()
+void CEditor3DToolSelector::Enable()
 {
 	CEditor3DToolBase::Enable();
 
@@ -32,7 +32,7 @@ void CEditorToolSelector3D::Enable()
 	//m_DrawSelectionPass->SetEnabled(true);
 }
 
-void CEditorToolSelector3D::Disable()
+void CEditor3DToolSelector::Disable()
 {
 	CEditor3DToolBase::Disable();
 
@@ -40,9 +40,9 @@ void CEditorToolSelector3D::Disable()
 	//m_DrawSelectionPass->SetEnabled(false);
 }
 
-bool CEditorToolSelector3D::OnMouseClickToWorld(const MouseButtonEventArgs & e, const Ray & RayToWorld)
+bool CEditor3DToolSelector::OnMousePressed(const MouseButtonEventArgs & e, const Ray & RayToWorld)
 {
-	auto nodes = GetScene()->FindIntersection(RayToWorld, GetEditor3DFrame().GetRealRootNode3D());
+	auto nodes = GetScene()->FindIntersection(RayToWorld, GetEditor3DFrame().GetEditedRootNode3D());
 	if (nodes.empty())
 	{
 		if (IsEnabled())
@@ -77,7 +77,7 @@ bool CEditorToolSelector3D::OnMouseClickToWorld(const MouseButtonEventArgs & e, 
 	return true;
 }
 
-void CEditorToolSelector3D::OnMouseReleaseToWorld(const MouseButtonEventArgs & e, const Ray & RayToWorld)
+void CEditor3DToolSelector::OnMouseReleased(const MouseButtonEventArgs & e, const Ray & RayToWorld)
 {
 	if (!IsEnabled())
 		return;
@@ -103,7 +103,7 @@ void CEditorToolSelector3D::OnMouseReleaseToWorld(const MouseButtonEventArgs & e
 					10000.0f
 				);
 
-				auto nodes = GetScene()->FindIntersections(f, GetEditor3DFrame().GetRealRootNode3D());
+				auto nodes = GetScene()->FindIntersections(f, GetEditor3DFrame().GetEditedRootNode3D());
 				if (!nodes.empty())
 					SelectNodes(nodes);
 			}
@@ -112,7 +112,7 @@ void CEditorToolSelector3D::OnMouseReleaseToWorld(const MouseButtonEventArgs & e
 	}
 }
 
-void CEditorToolSelector3D::OnMouseMoveToWorld(const MouseMotionEventArgs & e, const Ray & RayToWorld)
+void CEditor3DToolSelector::OnMouseMoved(const MouseMotionEventArgs & e, const Ray & RayToWorld)
 {
 	if (!IsEnabled())
 		return;
@@ -124,7 +124,7 @@ void CEditorToolSelector3D::OnMouseMoveToWorld(const MouseMotionEventArgs & e, c
 	}
 }
 
-void CEditorToolSelector3D::AddPasses(RenderTechnique& RenderTechnique, std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport)
+void CEditor3DToolSelector::AddPasses(RenderTechnique& RenderTechnique, std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport)
 {
 	m_DrawSelectionPass = std::make_shared<CDrawSelectionPass>(GetRenderDevice(), *this);
 	m_DrawSelectionPass->CreatePipeline(RenderTarget, Viewport);
@@ -135,7 +135,7 @@ void CEditorToolSelector3D::AddPasses(RenderTechnique& RenderTechnique, std::sha
 //
 // Protected
 //
-void CEditorToolSelector3D::RaiseSelectEvent()
+void CEditor3DToolSelector::RaiseSelectEvent()
 {
 	CEditorToolSelector::RaiseSelectEvent();
 

@@ -46,9 +46,6 @@ public:
 	// Scene events
 	Delegate<SceneChangeEventArgs>&					SceneChangeEvent() override;
 	void                                            RaiseSceneChangeEvent(ESceneChangeType SceneChangeType, const std::shared_ptr<ISceneNode3D>& OwnerNode, const std::shared_ptr<ISceneNode3D>& ChildNode) override;
-	virtual bool                                    OnMouseClickToWorld(const MouseButtonEventArgs & e, const Ray& RayToWorld);
-	virtual void                                    OnMouseReleaseToWorld(const MouseButtonEventArgs & e, const Ray& RayToWorld);
-	virtual void                                    OnMouseMoveToWorld(const MouseMotionEventArgs & e, const Ray& RayToWorld);
 
 	// Engine events
 	virtual void                                    OnUpdate(UpdateEventArgs& e) ;
@@ -80,6 +77,11 @@ public:
 	virtual void                                    OnWindowMouseLeave(EventArgs& e) override {}
 	virtual void                                    OnWindowMouseFocus(EventArgs& e) override {}
 	virtual void                                    OnWindowMouseBlur(EventArgs& e) override {}
+
+	// Mouse in world events
+	virtual bool                                    OnMousePressed(const MouseButtonEventArgs & e, const Ray& RayToWorld);
+	virtual void                                    OnMouseReleased(const MouseButtonEventArgs & e, const Ray& RayToWorld);
+	virtual void                                    OnMouseMoved(const MouseMotionEventArgs & e, const Ray& RayToWorld);
 
 	// IBaseManagerHolder
 	IBaseManager&                                   GetBaseManager() const override final;

@@ -41,7 +41,7 @@ void CEdtor3DFrame::Initialize()
 	mat->SetDiffuseColor(glm::vec4(1.0f, 1.0f, 0.3f, 1.0f));
 	auto model = GetRenderDevice().GetObjectsFactory().CreateModel();
 	model->AddConnection(mat, geom);
-	cameraNode->GetComponent<IModelsComponent3D>()->AddModel(model);
+	cameraNode->GetComponent<IModelsComponent3D>()->SetModel(model);
 
 	auto cameraComponent = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<IComponentFactory>()->CreateComponentT<ICameraComponent3D>(cSceneNodeCameraComponent, *cameraNode);
 	cameraNode->AddComponent(cameraComponent);
@@ -132,28 +132,9 @@ void CEdtor3DFrame::RaiseSceneChangeEvent(ESceneChangeType SceneChangeType, cons
 		}
 	}
 
-	if (IsChildOf(GetRealRootNode3D(), ChildNode) || IsChildOf(GetRealRootNode3D(), OwnerNode))
+	if (IsChildOf(GetEditedRootNode3D(), ChildNode) || IsChildOf(GetEditedRootNode3D(), OwnerNode))
 		m_EditorUI->OnSceneChanged();
 }
-
-bool CEdtor3DFrame::OnMouseClickToWorld(const MouseButtonEventArgs & e, const Ray & RayToWorld)
-{
-	if (m_Tools.OnMouseClickToWorld(e, RayToWorld))
-		return true;
-
-	return false;
-}
-
-void CEdtor3DFrame::OnMouseReleaseToWorld(const MouseButtonEventArgs & e, const Ray & RayToWorld)
-{
-	m_Tools.OnMouseReleaseToWorld(e, RayToWorld);
-}
-
-void CEdtor3DFrame::OnMouseMoveToWorld(const MouseMotionEventArgs & e, const Ray & RayToWorld)
-{
-	m_Tools.OnMouseMoveToWorld(e, RayToWorld);
-}
-
 
 
 void CEdtor3DFrame::OnPreRender(RenderEventArgs& e)
@@ -186,6 +167,25 @@ bool CEdtor3DFrame::OnWindowKeyPressed(KeyEventArgs & e)
 void CEdtor3DFrame::OnWindowKeyReleased(KeyEventArgs & e)
 {
 	__super::OnWindowKeyReleased(e);
+}
+
+
+bool CEdtor3DFrame::OnMousePressed(const MouseButtonEventArgs & e, const Ray & RayToWorld)
+{
+	if (m_Tools.OnMousePressed(e, RayToWorld))
+		return true;
+
+	return false;
+}
+
+void CEdtor3DFrame::OnMouseReleased(const MouseButtonEventArgs & e, const Ray & RayToWorld)
+{
+	m_Tools.OnMouseReleased(e, RayToWorld);
+}
+
+void CEdtor3DFrame::OnMouseMoved(const MouseMotionEventArgs & e, const Ray & RayToWorld)
+{
+	m_Tools.OnMouseMoved(e, RayToWorld);
 }
 
 
@@ -229,28 +229,17 @@ void CEdtor3DFrame::UnlockUpdates()
 	Unfreeze();
 }
 
-void CEdtor3DFrame::EnableSelectorTool()
+void CEdtor3DFrame::DoEnableTool(ETool Tool)
 {
+	m_Tools.Enable(Tool);
 }
 
-void CEdtor3DFrame::EnableMoverTool()
-{
-	m_Tools.m_Mover->Enable();
-	m_Tools.m_Selector->Disable();
-}
-
-void CEdtor3DFrame::EnableDraggerTool()
-{
-	m_Tools.m_Mover->Disable();
-	m_Tools.m_Selector->Enable();
-}
-
-std::shared_ptr<IScene> CEdtor3DFrame::GetRealScene() const
+std::shared_ptr<IScene> CEdtor3DFrame::GetEditedScene() const
 {
 	return m_EditedScene;
 }
 
-std::shared_ptr<ISceneNode3D> CEdtor3DFrame::GetRealRootNode3D() const
+std::shared_ptr<ISceneNode3D> CEdtor3DFrame::GetEditedRootNode3D() const
 {
 	return m_EditedScene->GetRootNode3D();
 }
@@ -301,7 +290,8 @@ void CEdtor3DFrame::SetMoverValue(float value)
 //
 void CEdtor3DFrame::OnSelectNodes()
 {
-	
+
+	//m_Tools.m_Mover->Disable();
 }
 
 
@@ -332,7 +322,7 @@ void CEdtor3DFrame::Load3D()
 		auto model = GetRenderDevice().GetObjectsFactory().CreateModel();
 		model->AddConnection(mat, geom);
 
-		node->GetComponent<IModelsComponent3D>()->AddModel(model);
+		node->GetComponent<IModelsComponent3D>()->SetModel(model);
 	}
 
 	{
@@ -349,7 +339,7 @@ void CEdtor3DFrame::Load3D()
 		auto model = GetRenderDevice().GetObjectsFactory().CreateModel();
 		model->AddConnection(mat, geom);
 
-		node->GetComponent<IModelsComponent3D>()->AddModel(model);
+		node->GetComponent<IModelsComponent3D>()->SetModel(model);
 	}
 
 	{
@@ -366,7 +356,7 @@ void CEdtor3DFrame::Load3D()
 		auto model = GetRenderDevice().GetObjectsFactory().CreateModel();
 		model->AddConnection(mat, geom);
 
-		node->GetComponent<IModelsComponent3D>()->AddModel(model);
+		node->GetComponent<IModelsComponent3D>()->SetModel(model);
 	}
 
 

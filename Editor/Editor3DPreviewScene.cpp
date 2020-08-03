@@ -18,10 +18,10 @@ void CEditor3DPreviewScene::SetModel(const std::shared_ptr<IModel>& Model)
 	_ASSERT(Model != nullptr);
 
 	auto modelComponent = m_Node->GetComponent<IModelsComponent3D>();
-	while (!modelComponent->GetModels().empty())
-		modelComponent->RemoveModel(*modelComponent->GetModels().begin());
+	if (modelComponent->GetModel())
+		modelComponent->ResetModel();
 
-	modelComponent->AddModel(Model);
+	modelComponent->SetModel(Model);
 
 	const auto& modelBBox = Model->GetBounds();
 	float radius = modelBBox.getRadius();
@@ -103,7 +103,7 @@ void CEditor3DPreviewScene::Load3D()
 		auto model = GetRenderDevice().GetObjectsFactory().CreateModel();
 		model->AddConnection(mat, geom);
 
-		node->GetComponent<IModelsComponent3D>()->AddModel(model);
+		node->GetComponent<IModelsComponent3D>()->SetModel(model);
 	}
 
 	glm::vec4 color = glm::vec4(0.33, 0.33f, 0.33f, 1.0f);

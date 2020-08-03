@@ -46,7 +46,7 @@ void CFBXSceneNode::LoadNode(fbxsdk::FbxNode * NativeNode)
 //
 // IFBXNode
 //
-const IFBXScene & CFBXSceneNode::GetScene() const
+const IFBXScene & CFBXSceneNode::GetFBXScene() const
 {
 	return m_FBXScene;
 }
@@ -82,17 +82,17 @@ const std::vector<std::shared_ptr<IFBXNode>>& CFBXSceneNode::GetChilds() const
 	return m_Childs;
 }
 
-std::shared_ptr<IFBXMaterial> CFBXSceneNode::GetMaterial(int Index) const
+std::shared_ptr<IFBXMaterial> CFBXSceneNode::GetFBXMaterial(int Index) const
 {
 	return m_MaterialsArray.at(Index);
 }
 
-std::shared_ptr<IFBXModel> CFBXSceneNode::GetModel() const
+std::shared_ptr<IFBXModel> CFBXSceneNode::GetFBXModel() const
 {
 	return m_Model;
 }
 
-std::shared_ptr<IFBXLight> CFBXSceneNode::GetLight() const
+std::shared_ptr<IFBXLight> CFBXSceneNode::GetFBXLight() const
 {
 	return m_Light;
 }

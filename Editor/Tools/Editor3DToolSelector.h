@@ -4,24 +4,26 @@
 #include "EditorToolSelectorBase.h"
 #include "Passes/DrawSelectionPass.h"
 
-class CEditorToolSelector3D
+class CEditor3DToolSelector
 	: public CEditorToolSelector
 	, public CEditor3DToolBase
 {
 public:
-	CEditorToolSelector3D(IEditor3DFrame& EditorFrame);
-	virtual ~CEditorToolSelector3D();
+	CEditor3DToolSelector(IEditor3DFrame& EditorFrame);
+	virtual ~CEditor3DToolSelector();
+
+	// IEditorTool
+	void Initialize() override;
+	void Finalize() override;
+	void Enable() override;
+	void Disable() override;
 
 	// CEditor3DToolBase
-	void Initialize();
-	void Finalize();
-	void Enable();
-	void Disable();
-	bool OnMouseClickToWorld(const MouseButtonEventArgs & e, const Ray& RayToWorld);
-	void OnMouseReleaseToWorld(const MouseButtonEventArgs & e, const Ray& RayToWorld);
-	void OnMouseMoveToWorld(const MouseMotionEventArgs& e, const Ray& RayToWorld);
+	bool OnMousePressed(const MouseButtonEventArgs & e, const Ray& RayToWorld) override;
+	void OnMouseReleased(const MouseButtonEventArgs & e, const Ray& RayToWorld) override;
+	void OnMouseMoved(const MouseMotionEventArgs& e, const Ray& RayToWorld) override;
 
-	// 
+	// CEditor3DToolSelector
 	void AddPasses(RenderTechnique& RenderTechnique, std::shared_ptr<IRenderTarget> RenderTarget, const Viewport* Viewport);
 
 protected:

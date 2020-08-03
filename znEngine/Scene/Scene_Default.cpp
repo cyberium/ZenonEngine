@@ -20,7 +20,7 @@
 #include "Passes/DrawBonesPass.h"
 #include "Passes/UIFontPass.h"
 
-#include "Physics/Adapters/ReactPhysicsComponent.h"
+#include "Scene/Components/ReactPhysicsComponent.h"
 #include "Scene/Components/Skeleton/SkeletonComponent.h"
 #include "Scene/Components/Skeleton/AnimatorComponent.h"
 
@@ -100,7 +100,7 @@ void CSceneDefault::Finalize()
 	SceneBase::Finalize();
 }
 
-bool CSceneDefault::OnMouseClickToWorld(const MouseButtonEventArgs & e, const Ray& RayToWorld)
+bool CSceneDefault::OnMousePressed(const MouseButtonEventArgs & e, const Ray& RayToWorld)
 {
 	if (e.Button == MouseButtonEventArgs::MouseButton::Left)
 	{
@@ -110,7 +110,7 @@ bool CSceneDefault::OnMouseClickToWorld(const MouseButtonEventArgs & e, const Ra
 	return false;
 }
 
-void CSceneDefault::OnMouseMoveToWorld(const MouseMotionEventArgs & e, const Ray & RayToWorld)
+void CSceneDefault::OnMouseMoved(const MouseMotionEventArgs & e, const Ray & RayToWorld)
 {
 }
 
@@ -210,7 +210,7 @@ void CSceneDefault::Load3D()
 					sceneNode->SetTranslate(glm::vec3(offset * i, offset * k, offset * j));
 					sceneNode->SetScale(glm::vec3(scale));
 					//sceneNode->GetComponent<IModelsComponent3D>()->AddModel(((i % 2 == 0) || (j % 2 == 0) && (k % 2 == 0)) ? cubeModel : sphereModel);
-					sceneNode->GetComponent<IModelsComponent3D>()->AddModel(sphereModel);
+					sceneNode->GetComponent<IModelsComponent3D>()->SetModel(sphereModel);
 
 					BoundingBox bbox = BoundingBox(glm::vec3(-1.0f, -1.0f, -1.0f), glm::vec3(1.0f, 1.0f, 1.0f));
 					bbox.transform(sceneNode->GetWorldTransfom());
@@ -274,7 +274,7 @@ void CSceneDefault::Load3D()
 		sceneNodePlane->SetName("Ground");
 		sceneNodePlane->SetTranslate(glm::vec3(0, cPlaneY, 0));
 		sceneNodePlane->SetScale(glm::vec3(cPlaneSize));
-		sceneNodePlane->GetComponent<IModelsComponent3D>()->AddModel(modelPlane);
+		sceneNodePlane->GetComponent<IModelsComponent3D>()->SetModel(modelPlane);
 
 		rp3d::Vector3 initPosition(0, cPlaneY, 0);
 		rp3d::Quaternion initOrientation = rp3d::Quaternion::identity();
@@ -288,6 +288,9 @@ void CSceneDefault::Load3D()
 		body->getMaterial().setRollingResistance(0.2);
 
 		rp3d::BoxShape * shape = new rp3d::BoxShape(rp3d::Vector3(cPlaneSize, 0.001f, cPlaneSize));
+
+		
+
 
 		rp3d::ProxyShape * proxyShape;
 		proxyShape = body->addCollisionShape(shape, rp3d::Transform::identity(), rp3d::decimal(5.0));
@@ -345,23 +348,26 @@ void CSceneDefault::Load3D()
 		*/
 	}
 
+
+	//m_World.raycast(reactphysics3d::Ray(), reactphysics3d::RaycastCallback);
+
 	std::shared_ptr<ISceneNode3D> sceneNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, this);
 	
 	// Models
 	auto fbxSceneModel = GetBaseManager().GetManager<IFBXManager>()->LoadFBX("C:/Users/Alexander/Downloads/Assets/Toon_RTS/Orcs/models/Single_Mesh/Orc_SM_shaman.FBX");
-	//DoAddModels(sceneNode->GetModelsComponent(), fbxSceneModel->GetRootNode());
+	DoAddModels(sceneNode, fbxSceneModel->GetFBXRootNode());
 
 	// Animator
 	sceneNode->AddComponent<ISkeletonAnimationComponent>(std::make_shared<CAnimatorComponent3D>(*sceneNode));
 	uint16 cntr = 0;
 	auto fbxSceneAnim = GetBaseManager().GetManager<IFBXManager>()->LoadFBX("C:/Users/Alexander/Downloads/Assets/Toon_RTS/Orcs/animation/shaman/Orc_shaman_01_idle_A.FBX");
-	for (const auto& anim : fbxSceneAnim->GetAnimation()->GetAnimations())
+	for (const auto& anim : fbxSceneAnim->GetFBXAnimation()->GetAnimations())
 		if (sceneNode->GetComponent<ISkeletonAnimationComponent>())
 			sceneNode->GetComponent<ISkeletonAnimationComponent>()->AddAnimation(cntr++, anim);
 
 	// Skeleton
 	//auto skeletonFromModel = fbxSceneModel->GetSkeleton()->GetSkeleton();
-	auto skeletonFromAnim = fbxSceneAnim->GetSkeleton()->GetSkeleton();
+	auto skeletonFromAnim = fbxSceneAnim->GetFBXSkeleton()->GetSkeleton();
 	//skeletonFromModel.MergeWithOther(skeletonFromAnim);
 
 	// Skeleton component

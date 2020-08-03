@@ -422,7 +422,7 @@ void CFBXModel::MaterialLoad(fbxsdk::FbxMesh* NativeMesh)
 				_ASSERT(lMatId >= 0);
 
 				//FbxSurfaceMaterial* lMaterial = NativeMesh->GetNode()->GetMaterial(lMatId);
-				AddConnection(m_FBXNode.GetMaterial(lMatId)->GetMaterial(), m_Geometry);
+				AddConnection(m_FBXNode.GetFBXMaterial(lMatId)->GetMaterial(), m_Geometry);
 			}
 			else
 			{
@@ -463,7 +463,7 @@ void CFBXModel::MaterialLoad(fbxsdk::FbxMesh* NativeMesh)
 			GeometryDrawArgs.VertexStartLocation = it.second.PolygonBegin * 3;
 			GeometryDrawArgs.VertexCnt = it.second.PolygonEnd * 3 - GeometryDrawArgs.VertexStartLocation + 3;
 
-			AddConnection(m_FBXNode.GetMaterial(it.first)->GetMaterial(), m_Geometry, GeometryDrawArgs);
+			AddConnection(m_FBXNode.GetFBXMaterial(it.first)->GetMaterial(), m_Geometry, GeometryDrawArgs);
 
 			//Log::Info("Material with id '%d' added for (%d to %d)", it.first, GeometryDrawArgs.VertexStartLocation, GeometryDrawArgs.VertexCnt);
 		}
@@ -511,7 +511,7 @@ void CFBXModel::SkeletonLoad(fbxsdk::FbxMesh* NativeMesh)
 				for (uint32 j = 0; j < 4; j++)
 					globalBindposeInverseMatrixGLM[i][j] = globalBindposeInverseMatrix[i][j];
 
-			auto& skeleton = m_FBXNode.GetScene().GetSkeleton()->GetSkeletonEditable();
+			auto& skeleton = m_FBXNode.GetFBXScene().GetFBXSkeleton()->GetSkeletonEditable();
 			size_t jointIndex = skeleton.GetBoneIndexByName(jointname);
 			auto& joint = skeleton.GetBoneByNameEditable(jointname);
 			//joint.GlobalInverse = globalBindposeInverseMatrixGLM;
@@ -556,11 +556,6 @@ CFBXModel::FBXVertex& CFBXModel::GetVertexByControlPointIndex(int Index)
 		if (v.controlPointIndex == Index)
 			return v;
 	throw CException("Vertex by control point %d not found.", Index);
-}
-
-void CFBXModel::FixAllVertices(int ControlPointIndex, std::function<void(CFBXModel::FBXVertex&)> Fix)
-{
-
 }
 
 /*void CFBXModel::DisplayMaterialMapping(fbxsdk::FbxGeometryElementMaterial* materialElement)

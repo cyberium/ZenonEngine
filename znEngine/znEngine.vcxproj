@@ -325,7 +325,6 @@
     <ClCompile Include="Passes\UIColorPass.cpp" />
     <ClCompile Include="Passes\UIFontPass.cpp" />
     <ClCompile Include="Passes\UITexturePass.cpp" />
-    <ClCompile Include="Physics\Adapters\ReactPhysicsComponent.cpp" />
     <ClCompile Include="Materials\MaterialDebug.cpp" />
     <ClCompile Include="Materials\MaterialTextured.cpp" />
     <ClCompile Include="Materials\MaterialModel.cpp" />
@@ -354,6 +353,7 @@
     <ClCompile Include="Scene\Components\LightComponent3D.cpp" />
     <ClCompile Include="Scene\Components\ModelsComponent3D.cpp" />
     <ClCompile Include="Scene\Components\ParticlesComponent3D.cpp" />
+    <ClCompile Include="Scene\Components\ReactPhysicsComponent.cpp" />
     <ClCompile Include="Scene\Components\Skeleton\AnimatorComponent.cpp" />
     <ClCompile Include="Scene\Components\Skeleton\SkeletonComponent.cpp" />
     <ClCompile Include="Scene\Components\Skeleton\SkeletonComponentBone.cpp" />
@@ -521,7 +521,6 @@
     <ClInclude Include="Passes\UIColorPass.h" />
     <ClInclude Include="Passes\UIFontPass.h" />
     <ClInclude Include="Passes\UITexturePass.h" />
-    <ClInclude Include="Physics\Adapters\ReactPhysicsComponent.h" />
     <ClInclude Include="Materials\MaterialDebug.h" />
     <ClInclude Include="Materials\MaterialTextured.h" />
     <ClInclude Include="Materials\MaterialModel.h" />
@@ -552,6 +551,7 @@
     <ClInclude Include="Scene\Components\LightComponent3D.h" />
     <ClInclude Include="Scene\Components\ModelsComponent3D.h" />
     <ClInclude Include="Scene\Components\ParticlesComponent3D.h" />
+    <ClInclude Include="Scene\Components\ReactPhysicsComponent.h" />
     <ClInclude Include="Scene\Components\Skeleton\AnimatorComponent.h" />
     <ClInclude Include="Scene\Components\Skeleton\SkeletonComponent.h" />
     <ClInclude Include="Scene\Components\Skeleton\SkeletonComponentBone.h" />

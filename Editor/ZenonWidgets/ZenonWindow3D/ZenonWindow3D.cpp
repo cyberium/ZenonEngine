@@ -120,6 +120,9 @@ void ZenonWindow3D::mouseMoveEvent(QMouseEvent * event)
 		event->x(), 
 		event->y()
 	);
+	args.RelX = args.X - m_PreviousMousePosition.x;
+	args.RelY = args.Y - m_PreviousMousePosition.y;
+	m_PreviousMousePosition = glm::ivec2(args.X, args.Y);
 	m_EventListener->OnWindowMouseMoved(args);
 }
 

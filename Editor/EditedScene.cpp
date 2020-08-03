@@ -23,7 +23,7 @@ void CEditedScene::Initialize()
 	mat->SetDiffuseColor(glm::vec4(1.0f, 1.0f, 0.3f, 1.0f));
 	auto model = GetRenderDevice().GetObjectsFactory().CreateModel();
 	model->AddConnection(mat, geom);
-	cameraNode->GetComponent<IModelsComponent3D>()->AddModel(model);
+	cameraNode->GetComponent<IModelsComponent3D>()->SetModel(model);
 
 	auto cameraComponent = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<IComponentFactory>()->CreateComponentT<ICameraComponent3D>(cSceneNodeCameraComponent, *cameraNode);
 	cameraNode->AddComponent(cameraComponent);

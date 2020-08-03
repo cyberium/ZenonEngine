@@ -166,6 +166,9 @@
     <Filter Include="Scene\Components\Skeleton">
       <UniqueIdentifier>{601eab62-08ec-461d-a53f-7a7ca845dfa0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Scene\Skeleton">
+      <UniqueIdentifier>{050ad0ec-7772-4709-87d3-0e6eed05d274}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -501,9 +504,6 @@
     <ClCompile Include="..\Externals\reactphysics3d-0.7.1\src\utils\Profiler.cpp">
       <Filter>Physics\reactphysics3d\utils</Filter>
     </ClCompile>
-    <ClCompile Include="Physics\Adapters\ReactPhysicsComponent.cpp">
-      <Filter>Physics</Filter>
-    </ClCompile>
     <ClCompile Include="MaterialsFactory.cpp">
       <Filter>Materials</Filter>
     </ClCompile>
@@ -583,12 +583,6 @@
       <Filter>Scene</Filter>
     </ClCompile>
     <ClCompile Include="Scene\Scene_Default.cpp">
-      <Filter>Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="Scene\Skeleton.cpp">
-      <Filter>Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="Scene\SkeletonBone.cpp">
       <Filter>Scene</Filter>
     </ClCompile>
     <ClCompile Include="Scene\Nodes\UIBeizerLine.cpp">
@@ -671,6 +665,15 @@
     </ClCompile>
     <ClCompile Include="Scene\Camera\RTSCameraController.cpp">
       <Filter>Scene\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\Components\ReactPhysicsComponent.cpp">
+      <Filter>Scene\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\Skeleton.cpp">
+      <Filter>Scene\Skeleton</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\SkeletonBone.cpp">
+      <Filter>Scene\Skeleton</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1068,9 +1071,6 @@
     <ClInclude Include="..\Externals\reactphysics3d-0.7.1\src\reactphysics3d.h">
       <Filter>Physics\reactphysics3d</Filter>
     </ClInclude>
-    <ClInclude Include="Physics\Adapters\ReactPhysicsComponent.h">
-      <Filter>Physics</Filter>
-    </ClInclude>
     <ClInclude Include="MaterialsFactory.h">
       <Filter>Materials</Filter>
     </ClInclude>
@@ -1149,19 +1149,10 @@
     <ClInclude Include="Passes\RenderPassFactory.h">
       <Filter>Passes\Factory</Filter>
     </ClInclude>
-    <ClInclude Include="Scene\AnimatedValue.h">
-      <Filter>Scene</Filter>
-    </ClInclude>
     <ClInclude Include="Scene\GameModel.h">
       <Filter>Scene</Filter>
     </ClInclude>
     <ClInclude Include="Scene\Scene_Default.h">
-      <Filter>Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="Scene\Skeleton.h">
-      <Filter>Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="Scene\SkeletonBone.h">
       <Filter>Scene</Filter>
     </ClInclude>
     <ClInclude Include="Scene\Nodes\UIBeizerLine.h">
@@ -1244,6 +1235,18 @@
     </ClInclude>
     <ClInclude Include="Scene\Camera\RTSCameraController.h">
       <Filter>Scene\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\Components\ReactPhysicsComponent.h">
+      <Filter>Scene\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\SkeletonBone.h">
+      <Filter>Scene\Skeleton</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\Skeleton.h">
+      <Filter>Scene\Skeleton</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\AnimatedValue.h">
+      <Filter>Scene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

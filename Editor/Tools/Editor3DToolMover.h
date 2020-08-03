@@ -2,21 +2,25 @@
 
 #include "Editor3DToolBase.h"
 
-class CEditorToolMover
+class CEditor3DToolMover
 	: public CEditor3DToolBase
 {
 public:
-	CEditorToolMover(IEditor3DFrame& EditorFrame);
-	virtual ~CEditorToolMover();
+	CEditor3DToolMover(IEditor3DFrame& EditorFrame);
+	virtual ~CEditor3DToolMover();
 
-	void Initialize();
-	void Finalize();
-	void Enable();
-	void Disable();
-	bool OnMouseClickToWorld(const MouseButtonEventArgs & e, const Ray& RayToWorld);
-	void OnMouseReleaseToWorld(const MouseButtonEventArgs & e, const Ray& RayToWorld);
-	void OnMouseMoveToWorld(const MouseMotionEventArgs& e, const Ray& RayToWorld);
+	// IEditorTool
+	void Initialize() override;
+	void Finalize() override;
+	void Enable() override;
+	void Disable() override;
 
+	// CEditor3DToolBase
+	bool OnMousePressed(const MouseButtonEventArgs & e, const Ray& RayToWorld) override;
+	void OnMouseReleased(const MouseButtonEventArgs & e, const Ray& RayToWorld) override;
+	void OnMouseMoved(const MouseMotionEventArgs& e, const Ray& RayToWorld) override;
+
+	// CEditor3DToolMover
 	glm::ivec3 ToBoxCoords(const glm::vec3 & Position);
 	glm::vec3 FixBoxCoords(const glm::vec3 & Position);
 	void SetMoverValue(float Value);
@@ -26,7 +30,7 @@ protected:
 
 private:
 	float m_MoverValue;
-	bool m_IsMoverEnable;
+	bool m_IsMovingNow;
 	int m_MoverNuber;
 	std::shared_ptr<ISceneNode3D> m_MovingNode;
 	glm::vec3 m_MovingObjectPos;

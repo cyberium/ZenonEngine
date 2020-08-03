@@ -44,6 +44,6 @@ protected:
 	void hideEvent(QHideEvent* event) override;
 
 protected:
-
+	glm::ivec2 m_PreviousMousePosition;
 	INativeWindowEventListener* m_EventListener;
 };

@@ -26,10 +26,10 @@ void SceneBase::Initialize()
 	m_TestQuery = GetRenderDevice().GetObjectsFactory().CreateQuery(IQuery::QueryType::CountSamples, 1);
 
 	m_RootNode3D = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, this);
-	m_RootNode3D->SetName("Root node 3D");
+	m_RootNode3D->SetName("RootNode3D");
 
 	m_RootNodeUI = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeUIFactory>()->CreateSceneNodeUI(this, cSceneNodeUI);
-	m_RootNodeUI->SetName("Root node UI");
+	m_RootNodeUI->SetName("RootNodeUI");
 
 	{
 		m_LightNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, this);
@@ -160,7 +160,7 @@ namespace
 
 			if (auto collider = it->GetComponent<IColliderComponent3D>())
 			{
-				if (collider->GetBounds().isClear())
+				if (collider->GetBounds().IsInfinite())
 					continue;
 
 				if (!Frustum.cullBox(collider->GetWorldBounds()))
@@ -178,7 +178,7 @@ namespace
 			{
 				FillIntersectedList(it, Ray, intersectedNodes);
 
-				if (collider->GetBounds().isClear())
+				if (collider->GetBounds().IsInfinite())
 					continue;
 
 				if (!collider->IsRayIntersects(Ray))
@@ -347,19 +347,6 @@ void SceneBase::RaiseSceneChangeEvent(ESceneChangeType SceneChangeType, const st
 	m_SceneChangeEvent(SceneChangeEventArgs(this, SceneChangeType, OwnerNode, ChildNode));
 }
 
-bool SceneBase::OnMouseClickToWorld(const MouseButtonEventArgs & e, const Ray& RayToWorld)
-{
-	return false;
-}
-
-void SceneBase::OnMouseReleaseToWorld(const MouseButtonEventArgs & e, const Ray & RayToWorld)
-{
-}
-
-void SceneBase::OnMouseMoveToWorld(const MouseMotionEventArgs & e, const Ray& RayToWorld)
-{
-
-}
 
 
 //
@@ -501,12 +488,12 @@ void SceneBase::OnWindowKeyReleased(KeyEventArgs & e)
 //
 void SceneBase::OnWindowMouseMoved(MouseMotionEventArgs & e)
 {
-	if (GetCameraController())
-	{
-		GetCameraController()->OnMouseMoved(e);
-	}
+	if (GetCameraController() == nullptr)
+		throw CException("You must set CameraController to scene!");
+		
+	GetCameraController()->OnMouseMoved(e);
 
-	OnMouseMoveToWorld(e, GetCameraController()->ScreenToRay(GetRenderWindow()->GetViewport(), e.GetPoint()));
+	OnMouseMoved(e, GetCameraController()->ScreenToRay(GetRenderWindow()->GetViewport(), e.GetPoint()));
 
 	if (GetRootNodeUI())
 		DoMouseMoved_Rec(GetRootNodeUI(), e);
@@ -514,12 +501,12 @@ void SceneBase::OnWindowMouseMoved(MouseMotionEventArgs & e)
 
 bool SceneBase::OnWindowMouseButtonPressed(MouseButtonEventArgs & e)
 {	
-	if (GetCameraController())
-	{
-		GetCameraController()->OnMouseButtonPressed(e);
-	}
+	if (GetCameraController() == nullptr)
+		throw CException("You must set CameraController to scene!");
 
-	if (OnMouseClickToWorld(e, GetCameraController()->ScreenToRay(GetRenderWindow()->GetViewport(), e.GetPoint())))
+	GetCameraController()->OnMouseButtonPressed(e);
+
+	if (OnMousePressed(e, GetCameraController()->ScreenToRay(GetRenderWindow()->GetViewport(), e.GetPoint())))
 		return true;
 
 	if (GetRootNodeUI())
@@ -530,11 +517,12 @@ bool SceneBase::OnWindowMouseButtonPressed(MouseButtonEventArgs & e)
 
 void SceneBase::OnWindowMouseButtonReleased(MouseButtonEventArgs & e)
 {
-	if (GetCameraController())
-	{
-		GetCameraController()->OnMouseButtonReleased(e);
-		OnMouseReleaseToWorld(e, GetCameraController()->ScreenToRay(GetRenderWindow()->GetViewport(), e.GetPoint()));
-	}
+	if (GetCameraController() == nullptr)
+		throw CException("You must set CameraController to scene!");
+		
+	GetCameraController()->OnMouseButtonReleased(e);
+
+	OnMouseReleased(e, GetCameraController()->ScreenToRay(GetRenderWindow()->GetViewport(), e.GetPoint()));
 
 	if (GetRootNodeUI())
 		DoMouseButtonReleased_Rec(GetRootNodeUI(), e);
@@ -549,6 +537,25 @@ bool SceneBase::OnWindowMouseWheel(MouseWheelEventArgs & e)
 		return DoMouseWheel_Rec(GetRootNodeUI(), e);
 
 	return false;
+}
+
+
+
+//
+// Mouse in world events
+//
+bool SceneBase::OnMousePressed(const MouseButtonEventArgs & e, const Ray& RayToWorld)
+{
+	return false;
+}
+
+void SceneBase::OnMouseReleased(const MouseButtonEventArgs & e, const Ray & RayToWorld)
+{
+}
+
+void SceneBase::OnMouseMoved(const MouseMotionEventArgs & e, const Ray& RayToWorld)
+{
+
 }
 
 

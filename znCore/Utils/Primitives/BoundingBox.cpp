@@ -3,9 +3,9 @@
 // General
 #include "BoundingBox.h"
 
-BoundingBox::BoundingBox()
+BoundingBox::BoundingBox(EBBoxMode BBoxMode)
 {
-    clear();
+	clear(BBoxMode);
 }
 
 BoundingBox::BoundingBox(const glm::vec3& Min, const glm::vec3& Max)
@@ -56,19 +56,36 @@ void BoundingBox::calculateCenter()
 	m_IsCenterCalc = true;
 }
 
-void BoundingBox::clear()
+void BoundingBox::clear(EBBoxMode BBoxMode)
 {
-	m_Min = glm::vec3(Math::MinFloat);
-	m_Max = glm::vec3(Math::MaxFloat);
+	if (BBoxMode == BBoxMode_Infinite)
+	{
+		m_Min = glm::vec3(Math::MinFloat);
+		m_Max = glm::vec3(Math::MaxFloat);
+	}
+	else if (BBoxMode == BBoxMode_Incorrect)
+	{
+		m_Min = glm::vec3(Math::MaxFloat);
+		m_Max = glm::vec3(Math::MinFloat);
+	}
+	else
+		_ASSERT(false);
+
 	m_Center = glm::vec3(0.0f, 0.0f, 0.0f);
 	m_Radius = Math::MaxFloat / 2.0f;
 	m_IsCenterCalc = true;
 }
 
-bool BoundingBox::isClear() const
+bool BoundingBox::IsInfinite() const
 {
 	return (m_Min.x == Math::MinFloat) || (m_Min.y == Math::MinFloat) || (m_Min.z == Math::MinFloat) || 
 		   (m_Max.x == Math::MaxFloat) || (m_Max.y == Math::MaxFloat) || (m_Max.z == Math::MaxFloat);
+}
+
+bool BoundingBox::IsIncorrect() const
+{
+	return (m_Min.x == Math::MaxFloat) || (m_Min.y == Math::MaxFloat) || (m_Min.z == Math::MaxFloat) ||
+		   (m_Max.x == Math::MinFloat) || (m_Max.y == Math::MinFloat) || (m_Max.z == Math::MinFloat);
 }
 
 //

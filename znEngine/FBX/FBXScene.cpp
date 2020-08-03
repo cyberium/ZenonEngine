@@ -221,22 +221,22 @@ std::string CFBXScene::GetPath() const
 	return m_Path;
 }
 
-std::shared_ptr<IFBXNode> CFBXScene::GetRootNode() const
+std::shared_ptr<IFBXNode> CFBXScene::GetFBXRootNode() const
 {
 	return m_RootNode;
 }
 
-const std::vector<std::shared_ptr<IFBXModel>>& CFBXScene::GetModels() const
+const std::vector<std::shared_ptr<IFBXModel>>& CFBXScene::GetFBXModels() const
 {
 	return m_Models;
 }
 
-std::shared_ptr<IFBXSkeleton> CFBXScene::GetSkeleton() const
+std::shared_ptr<IFBXSkeleton> CFBXScene::GetFBXSkeleton() const
 {
 	return m_Skeleton;
 }
 
-std::shared_ptr<IFBXAnimation> CFBXScene::GetAnimation() const
+std::shared_ptr<IFBXAnimation> CFBXScene::GetFBXAnimation() const
 {
 	return m_Animation;
 }

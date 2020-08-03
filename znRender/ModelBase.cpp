@@ -29,6 +29,18 @@ void ModelBase::SetBounds(const BoundingBox& Bounds)
 
 BoundingBox ModelBase::GetBounds() const
 {
+	if (m_BoundingBox.IsInfinite())
+	{
+		glm::vec3 floatMin(Math::MinFloat);
+		glm::vec3 floatMax(Math::MaxFloat);
+		BoundingBox newBBox(floatMax, floatMin);
+
+		for (const auto& c : m_Connections)
+			newBBox.makeUnion(c.Geometry->GetBounds());
+
+		if (!newBBox.IsInfinite())
+			const_cast<ModelBase*>(this)->SetBounds(newBBox);
+	}
 	return m_BoundingBox;
 }
 
@@ -38,6 +50,15 @@ void ModelBase::AddConnection(const std::shared_ptr<IMaterial>& Material, const 
 	connection.Material = Material;
 	connection.Geometry = Geometry;
 	connection.GeometryDrawArgs = GeometryDrawArgs;
+
+	auto geomBounds = Geometry->GetBounds();
+	if (!geomBounds.IsInfinite())
+	{
+		if (m_BoundingBox.IsInfinite())
+			m_BoundingBox = BoundingBox(glm::vec3(Math::MaxFloat), glm::vec3(Math::MinFloat));
+		m_BoundingBox.makeUnion(geomBounds);
+	}
+	
 	m_Connections.push_back(connection);
 }
 

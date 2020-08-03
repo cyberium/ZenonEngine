@@ -81,7 +81,7 @@ void CColliderComponent3D::SetBounds(BoundingBox _bbox)
 }
 cbbox CColliderComponent3D::GetBounds() const
 {
-	if (m_Bounds.isClear())
+	if (m_Bounds.IsInfinite())
 	{
 		if (auto models = GetComponent<IModelsComponent3D>())
 		{
@@ -89,13 +89,11 @@ cbbox CColliderComponent3D::GetBounds() const
 			glm::vec3 floatMax(Math::MaxFloat);
 
 			BoundingBox newBBox(floatMax, floatMin);
-			for (const auto& m : models->GetModels())
-				newBBox.makeUnion(m->GetBounds());
+			if (auto model = models->GetModel())
+				newBBox.makeUnion(model->GetBounds());
 
 			if (newBBox.getMin() != floatMax && newBBox.getMax() != floatMin)
-			{
 				const_cast<CColliderComponent3D*>(this)->SetBounds(newBBox);
-			}
 		}
 	}
 	return m_Bounds;
@@ -167,7 +165,7 @@ bool CColliderComponent3D::IsCulledByDistance(const ICameraComponent3D* Camera) 
 
 bool CColliderComponent3D::IsRayIntersects(const Ray & Ray) const
 {
-	if (GetBounds().isClear())
+	if (GetBounds().IsInfinite())
 		return false;
 
 	return HitBoundingBox(GetWorldBounds().getMin(), GetWorldBounds().getMax(), Ray.GetOrigin(), Ray.GetDirection());

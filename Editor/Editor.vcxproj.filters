@@ -74,8 +74,8 @@
     <Filter Include="Editor3D\Tools">
       <UniqueIdentifier>{ee500cc7-f176-4ba2-af32-2078f1c9a29f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Editor3D\Tools\Editor3D">
-      <UniqueIdentifier>{fe17a1bb-99d4-4241-8acf-096fd3fae80f}</UniqueIdentifier>
+    <Filter Include="Editor3D\Tools\RTS">
+      <UniqueIdentifier>{6c6065dd-c080-4888-a750-25d3e8433b16}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -298,19 +298,28 @@
       <Filter>Editor3D\Tools</Filter>
     </ClCompile>
     <ClCompile Include="Tools\Editor3DToolBase.cpp">
-      <Filter>Editor3D\Tools\Editor3D</Filter>
+      <Filter>Editor3D\Tools</Filter>
     </ClCompile>
-    <ClCompile Include="Tools\EditorToolDragger.cpp">
-      <Filter>Editor3D\Tools\Editor3D</Filter>
+    <ClCompile Include="Tools\Editor3DToolDragger.cpp">
+      <Filter>Editor3D\Tools</Filter>
     </ClCompile>
-    <ClCompile Include="Tools\EditorToolMover.cpp">
-      <Filter>Editor3D\Tools\Editor3D</Filter>
+    <ClCompile Include="Tools\Editor3DToolMover.cpp">
+      <Filter>Editor3D\Tools</Filter>
     </ClCompile>
-    <ClCompile Include="Tools\EditorToolSelector3D.cpp">
-      <Filter>Editor3D\Tools\Editor3D</Filter>
+    <ClCompile Include="Tools\Editor3DToolRotator.cpp">
+      <Filter>Editor3D\Tools</Filter>
     </ClCompile>
-    <ClCompile Include="Tools\EditorToolRotator.cpp">
-      <Filter>Editor3D\Tools\Editor3D</Filter>
+    <ClCompile Include="Tools\Editor3DToolSelector.cpp">
+      <Filter>Editor3D\Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="Tools\RTS\Editor3DToolMoverRTS.cpp">
+      <Filter>Editor3D\Tools\RTS</Filter>
+    </ClCompile>
+    <ClCompile Include="Tools\RTS\Editor3DToolRotatorRTS.cpp">
+      <Filter>Editor3D\Tools\RTS</Filter>
+    </ClCompile>
+    <ClCompile Include="Tools\EditorUIToolBase.cpp">
+      <Filter>Editor3D\Tools</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -482,20 +491,29 @@
     <ClInclude Include="Tools\EditorToolsCollection.h">
       <Filter>Editor3D\Tools</Filter>
     </ClInclude>
-    <ClInclude Include="Tools\EditorToolSelector3D.h">
-      <Filter>Editor3D\Tools\Editor3D</Filter>
-    </ClInclude>
     <ClInclude Include="Tools\Editor3DToolBase.h">
-      <Filter>Editor3D\Tools\Editor3D</Filter>
+      <Filter>Editor3D\Tools</Filter>
     </ClInclude>
-    <ClInclude Include="Tools\EditorToolDragger.h">
-      <Filter>Editor3D\Tools\Editor3D</Filter>
+    <ClInclude Include="Tools\Editor3DToolDragger.h">
+      <Filter>Editor3D\Tools</Filter>
     </ClInclude>
-    <ClInclude Include="Tools\EditorToolMover.h">
-      <Filter>Editor3D\Tools\Editor3D</Filter>
+    <ClInclude Include="Tools\Editor3DToolMover.h">
+      <Filter>Editor3D\Tools</Filter>
     </ClInclude>
-    <ClInclude Include="Tools\EditorToolRotator.h">
-      <Filter>Editor3D\Tools\Editor3D</Filter>
+    <ClInclude Include="Tools\Editor3DToolRotator.h">
+      <Filter>Editor3D\Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="Tools\Editor3DToolSelector.h">
+      <Filter>Editor3D\Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="Tools\RTS\Editor3DToolMoverRTS.h">
+      <Filter>Editor3D\Tools\RTS</Filter>
+    </ClInclude>
+    <ClInclude Include="Tools\RTS\Editor3DToolRotatorRTS.h">
+      <Filter>Editor3D\Tools\RTS</Filter>
+    </ClInclude>
+    <ClInclude Include="Tools\EditorUIToolBase.h">
+      <Filter>Editor3D\Tools</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -355,12 +355,15 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="Tools\Editor3DToolBase.cpp" />
-    <ClCompile Include="Tools\EditorToolDragger.cpp" />
-    <ClCompile Include="Tools\EditorToolMover.cpp" />
-    <ClCompile Include="Tools\EditorToolRotator.cpp" />
-    <ClCompile Include="Tools\EditorToolSelector3D.cpp" />
+    <ClCompile Include="Tools\Editor3DToolDragger.cpp" />
+    <ClCompile Include="Tools\Editor3DToolMover.cpp" />
+    <ClCompile Include="Tools\Editor3DToolRotator.cpp" />
+    <ClCompile Include="Tools\Editor3DToolSelector.cpp" />
     <ClCompile Include="Tools\EditorToolSelectorBase.cpp" />
     <ClCompile Include="Tools\EditorToolsCollection.cpp" />
+    <ClCompile Include="Tools\EditorUIToolBase.cpp" />
+    <ClCompile Include="Tools\RTS\Editor3DToolMoverRTS.cpp" />
+    <ClCompile Include="Tools\RTS\Editor3DToolRotatorRTS.cpp" />
     <ClCompile Include="ZenonWidgets\ZenonCollectionViewer\ZenonCollectionViewerWidget.cpp" />
     <ClCompile Include="ZenonWidgets\ZenonLogViewer\ZenonLogViewer.cpp" />
     <ClCompile Include="ZenonWidgets\ZenonSceneViewer\ZenonSceneViewerWidget.cpp" />
@@ -379,12 +382,15 @@
     <ClInclude Include="PropertyEditor\Core\Auxiliary\PropertyTemplates.h" />
     <ClInclude Include="PropertyEditor\Core\CoreAPI.h" />
     <ClInclude Include="Tools\Editor3DToolBase.h" />
-    <ClInclude Include="Tools\EditorToolDragger.h" />
-    <ClInclude Include="Tools\EditorToolMover.h" />
-    <ClInclude Include="Tools\EditorToolRotator.h" />
-    <ClInclude Include="Tools\EditorToolSelector3D.h" />
+    <ClInclude Include="Tools\Editor3DToolDragger.h" />
+    <ClInclude Include="Tools\Editor3DToolMover.h" />
+    <ClInclude Include="Tools\Editor3DToolRotator.h" />
+    <ClInclude Include="Tools\Editor3DToolSelector.h" />
     <ClInclude Include="Tools\EditorToolSelectorBase.h" />
     <ClInclude Include="Tools\EditorToolsCollection.h" />
+    <ClInclude Include="Tools\EditorUIToolBase.h" />
+    <ClInclude Include="Tools\RTS\Editor3DToolMoverRTS.h" />
+    <ClInclude Include="Tools\RTS\Editor3DToolRotatorRTS.h" />
     <ClInclude Include="_widgetZenonWindowMinimal3D.h" />
     <QtMoc Include="ZenonWidgets\ZenonLogViewer\ZenonLogViewer.h" />
     <QtMoc Include="ZenonWidgets\ZenonSceneViewer\ZenonSceneViewerWidget.h" />

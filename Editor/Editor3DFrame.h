@@ -24,9 +24,6 @@ public:
 	void RemoveChild(const std::shared_ptr<ISceneNode3D>& ParentNode, const std::shared_ptr<ISceneNode3D>& ChildNode) override;
 
 	void RaiseSceneChangeEvent(ESceneChangeType SceneChangeType, const std::shared_ptr<ISceneNode3D>& OwnerNode, const std::shared_ptr<ISceneNode3D>& ChildNode) override;
-	bool OnMouseClickToWorld(const MouseButtonEventArgs & e, const Ray& RayToWorld) override;
-	void OnMouseReleaseToWorld(const MouseButtonEventArgs & e, const Ray& RayToWorld) override;
-	void OnMouseMoveToWorld(const MouseMotionEventArgs & e, const Ray& RayToWorld) override;
 
 	void OnPreRender(RenderEventArgs& e) override;
 
@@ -35,6 +32,10 @@ public:
 	void OnWindowMouseButtonReleased(MouseButtonEventArgs& e) override;
 	bool OnWindowKeyPressed(KeyEventArgs& e) override;
 	void OnWindowKeyReleased(KeyEventArgs& e) override;
+
+	bool OnMousePressed(const MouseButtonEventArgs & e, const Ray& RayToWorld) override;
+	void OnMouseReleased(const MouseButtonEventArgs & e, const Ray& RayToWorld) override;
+	void OnMouseMoved(const MouseMotionEventArgs & e, const Ray& RayToWorld) override;
 
 	// IEditorSharedFrame
 	IEditor_NodesSelector* GetNodesSelector();
@@ -45,13 +46,9 @@ public:
 	IRenderDevice& GetRenderDevice2() const;
 	void LockUpdates() override;
 	void UnlockUpdates() override;
-
-	void EnableSelectorTool();
-	void EnableMoverTool();
-	void EnableDraggerTool();
-
-	std::shared_ptr<IScene> GetRealScene() const override;
-	std::shared_ptr<ISceneNode3D> GetRealRootNode3D() const override;
+	void DoEnableTool(ETool Tool);
+	std::shared_ptr<IScene> GetEditedScene() const override;
+	std::shared_ptr<ISceneNode3D> GetEditedRootNode3D() const override;
 	std::shared_ptr<ISceneNode3D> GetNodeUnderMouse(const glm::ivec2& MousePos) const override;
 	void OnCollectionWidget_ModelSelected(const std::shared_ptr<IModel>& Model) override;
 

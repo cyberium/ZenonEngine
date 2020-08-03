@@ -33,6 +33,7 @@ MainEditor::MainEditor(QWidget* Parent)
 
 	connect(m_UI.editorToolSelectorBtn, SIGNAL(released()), this, SLOT(OnEditorToolSelectorBtn()));
 	connect(m_UI.editorToolMoverBtn, SIGNAL(released()), this, SLOT(OnEditorToolMoverBtn()));
+	connect(m_UI.editorToolRotatorBtn, SIGNAL(released()), this, SLOT(OnEditorToolRotatorBtn()));
 
 	m_MoverValues.insert(std::make_pair("<disabled>", 0.001f));
 	m_MoverValues.insert(std::make_pair("x1.0", 1.0f));
@@ -242,7 +243,7 @@ void MainEditor::OnActionSceneLoad()
 	CXMLManager xml;
 	auto reader = xml.CreateReader(file);
 
-	auto currentRoot = m_Editor3D->GetRealRootNode3D();
+	auto currentRoot = m_Editor3D->GetEditedRootNode3D();
 	while (false == currentRoot->GetChilds().empty())
 		currentRoot->RemoveChild(currentRoot->GetChilds()[0]);
 
@@ -256,7 +257,7 @@ void MainEditor::OnActionSceneSave()
 {
 	CXMLManager manager;
 
-	auto rootWriter = m_Editor3D->GetBaseManager2().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->SaveSceneNode3DXML(m_Editor3D->GetRealRootNode3D());
+	auto rootWriter = m_Editor3D->GetBaseManager2().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->SaveSceneNode3DXML(m_Editor3D->GetEditedRootNode3D());
 
 	auto writer = manager.CreateWriter();
 	writer->AddChild(rootWriter);
@@ -269,6 +270,7 @@ void MainEditor::OnEditorToolSelectorBtn()
 {
 	m_UI.editorToolSelectorBtn->setChecked(true);
 	m_UI.editorToolMoverBtn->setChecked(false);
+	m_UI.editorToolRotatorBtn->setChecked(false);
 	m_Editor3D->EnableSelectorTool();
 }
 
@@ -276,7 +278,16 @@ void MainEditor::OnEditorToolMoverBtn()
 {
 	m_UI.editorToolSelectorBtn->setChecked(false);
 	m_UI.editorToolMoverBtn->setChecked(true);
+	m_UI.editorToolRotatorBtn->setChecked(false);
 	m_Editor3D->EnableMoverTool();
+}
+
+void MainEditor::OnEditorToolRotatorBtn()
+{
+	m_UI.editorToolSelectorBtn->setChecked(false);
+	m_UI.editorToolMoverBtn->setChecked(false);
+	m_UI.editorToolRotatorBtn->setChecked(true);
+	m_Editor3D->EnableRotatorTool();
 }
 
 

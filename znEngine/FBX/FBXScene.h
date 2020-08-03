@@ -17,10 +17,10 @@ public:
 	std::string GetPath() const;
 
 	// IFBXScene
-	std::shared_ptr<IFBXNode> GetRootNode() const override;
-	const std::vector<std::shared_ptr<IFBXModel>>& GetModels() const override;
-	std::shared_ptr<IFBXSkeleton> GetSkeleton() const override;
-	std::shared_ptr<IFBXAnimation> GetAnimation() const override;
+	std::shared_ptr<IFBXNode> GetFBXRootNode() const override;
+	const std::vector<std::shared_ptr<IFBXModel>>& GetFBXModels() const override;
+	std::shared_ptr<IFBXSkeleton> GetFBXSkeleton() const override;
+	std::shared_ptr<IFBXAnimation> GetFBXAnimation() const override;
 
 	// IFBXScenePrivate
 	void AddModel(const std::shared_ptr<IFBXModel>& Model) override;

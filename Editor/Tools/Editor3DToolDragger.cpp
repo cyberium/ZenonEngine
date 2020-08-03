@@ -1,20 +1,20 @@
 #include "stdafx.h"
 
 // General
-#include "EditorToolDragger.h"
+#include "Editor3DToolDragger.h"
 
-CEditorToolDragger::CEditorToolDragger(IEditor3DFrame & EditorFrame)
+CEditor3DToolDragger::CEditor3DToolDragger(IEditor3DFrame & EditorFrame)
 	: CEditor3DToolBase(EditorFrame)
 	, m_IsDraggingEnabled(false)
 	, m_IsDraggingPermanentCreation(false)
 {
 }
 
-CEditorToolDragger::~CEditorToolDragger()
+CEditor3DToolDragger::~CEditor3DToolDragger()
 {
 }
 
-void CEditorToolDragger::Initialize()
+void CEditor3DToolDragger::Initialize()
 {
 	m_DraggedNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, GetScene());
 	m_DraggedNode->SetName("DraggedNodeRoot");
@@ -23,21 +23,21 @@ void CEditorToolDragger::Initialize()
 	m_DraggedNode->SetName("DraggedNodePositionTextUI.");
 }
 
-void CEditorToolDragger::Finalize()
+void CEditor3DToolDragger::Finalize()
 {
 }
 
-void CEditorToolDragger::Enable()
+void CEditor3DToolDragger::Enable()
 {
 	CEditor3DToolBase::Enable();
 }
 
-void CEditorToolDragger::Disable()
+void CEditor3DToolDragger::Disable()
 {
 	CEditor3DToolBase::Disable();
 }
 
-bool CEditorToolDragger::OnMouseClickToWorld(const MouseButtonEventArgs & e, const Ray & RayToWorld)
+bool CEditor3DToolDragger::OnMousePressed(const MouseButtonEventArgs & e, const Ray & RayToWorld)
 {
 	if (!m_IsDraggingEnabled)
 		return false;
@@ -56,12 +56,12 @@ bool CEditorToolDragger::OnMouseClickToWorld(const MouseButtonEventArgs & e, con
 	return false;
 }
 
-void CEditorToolDragger::OnMouseReleaseToWorld(const MouseButtonEventArgs & e, const Ray & RayToWorld)
+void CEditor3DToolDragger::OnMouseReleased(const MouseButtonEventArgs & e, const Ray & RayToWorld)
 {
 	// Do nothing
 }
 
-void CEditorToolDragger::OnMouseMoveToWorld(const MouseMotionEventArgs & e, const Ray & RayToWorld)
+void CEditor3DToolDragger::OnMouseMoved(const MouseMotionEventArgs & e, const Ray & RayToWorld)
 {
 	if (!m_IsDraggingEnabled)
 		return;
@@ -69,7 +69,7 @@ void CEditorToolDragger::OnMouseMoveToWorld(const MouseMotionEventArgs & e, cons
 	DoMoveNode(e.GetPoint());
 }
 
-void CEditorToolDragger::DropEvent(const glm::vec2& Position)
+void CEditor3DToolDragger::DropEvent(const glm::vec2& Position)
 {
 	if (!m_IsDraggingEnabled)
 		return;
@@ -80,25 +80,25 @@ void CEditorToolDragger::DropEvent(const glm::vec2& Position)
 		DragLeaveEvent();
 }
 
-void CEditorToolDragger::DragEnterEvent(const SDragData& Data)
+void CEditor3DToolDragger::DragEnterEvent(const SDragData& Data)
 {
 	m_IsDraggingEnabled = true;
 	m_IsDraggingPermanentCreation = Data.IsCtrl;
 
 	auto ray = GetScene()->GetCameraController()->ScreenToRay(GetScene()->GetRenderWindow()->GetViewport(), Data.Position);
 	auto node = CreateNode(glm::vec3(), Data.Message);
-	auto pos = GetScene()->GetCameraController()->RayToPlane(ray, Plane(glm::vec3(0.0f, 1.0f, 0.0f), node->GetModelsComponent()->GetModels()[0]->GetBounds().getCenter().y));
+	auto pos = GetScene()->GetCameraController()->RayToPlane(ray, Plane(glm::vec3(0.0f, 1.0f, 0.0f), node->GetModelsComponent()->GetModel()->GetBounds().getCenter().y));
 	m_DraggedNode->AddChild(node);
 	m_DraggedNode->SetTranslate(pos);
 }
 
-void CEditorToolDragger::DragMoveEvent(const glm::vec2& Position)
+void CEditor3DToolDragger::DragMoveEvent(const glm::vec2& Position)
 {
 	if (m_IsDraggingEnabled)
 		DoMoveNode(Position);
 }
 
-void CEditorToolDragger::DragLeaveEvent()
+void CEditor3DToolDragger::DragLeaveEvent()
 {
 	m_IsDraggingEnabled = false;
 	m_IsDraggingPermanentCreation = false;
@@ -114,7 +114,7 @@ void CEditorToolDragger::DragLeaveEvent()
 // Protected
 //
 
-void CEditorToolDragger::DoMoveNode(const glm::vec2& MousePos)
+void CEditor3DToolDragger::DoMoveNode(const glm::vec2& MousePos)
 {
 	if (!m_IsDraggingEnabled)
 		return;
@@ -122,7 +122,7 @@ void CEditorToolDragger::DoMoveNode(const glm::vec2& MousePos)
 	//auto posReal = GetCameraController()->ScreenToPlane(GetRenderWindow()->GetViewport(), MousePos, Plane(glm::vec3(0.0f, 1.0f, 0.0f), 0.0f));
 
 	auto ray = GetScene()->GetCameraController()->ScreenToRay(GetScene()->GetRenderWindow()->GetViewport(), MousePos);
-	auto bounds = m_DraggedNode->GetChilds()[0]->GetModelsComponent()->GetModels()[0]->GetBounds();
+	auto bounds = m_DraggedNode->GetChilds()[0]->GetModelsComponent()->GetModel()->GetBounds();
 	auto pos = GetScene()->GetCameraController()->RayToPlane(ray, Plane(glm::vec3(0.0f, 1.0f, 0.0f), bounds.getMax().y / 2.0f));
 	pos -= bounds.getCenter();
 	//pos = m_Mover->FixBoxCoords(pos);
@@ -133,7 +133,7 @@ void CEditorToolDragger::DoMoveNode(const glm::vec2& MousePos)
 	m_DraggerTextUI->SetTranslate(MousePos + glm::vec2(0.0f, -15.0f));
 }
 
-void CEditorToolDragger::DoDropNodeAndCreateIt()
+void CEditor3DToolDragger::DoDropNodeAndCreateIt()
 {
 	if (!m_IsDraggingEnabled)
 		return;
@@ -147,7 +147,7 @@ void CEditorToolDragger::DoDropNodeAndCreateIt()
 	auto copiedNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, GetScene());
 	firstChild->Copy(copiedNode);
 	copiedNode->SetTranslate(m_DraggedNode->GetTranslation());
-	GetEditor3DFrame().GetRealRootNode3D()->AddChild(copiedNode);
+	GetEditor3DFrame().GetEditedRootNode3D()->AddChild(copiedNode);
 
 	if (!m_IsDraggingPermanentCreation)
 	{
@@ -155,9 +155,9 @@ void CEditorToolDragger::DoDropNodeAndCreateIt()
 	}
 }
 
-std::shared_ptr<ISceneNode3D> CEditorToolDragger::CreateNode(const glm::ivec3& Position, const std::string& Type)
+std::shared_ptr<ISceneNode3D> CEditor3DToolDragger::CreateNode(const glm::ivec3& Position, const std::string& Type)
 {
-	auto node = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, GetEditor3DFrame().GetRealScene().get());
+	auto node = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, GetEditor3DFrame().GetEditedScene().get());
 	node->SetName(Type);
 	auto model = GetRenderDevice().GetObjectsFactory().CreateModel();
 	if (auto loadable = std::dynamic_pointer_cast<IObjectLoadSave>(model))
@@ -170,7 +170,7 @@ std::shared_ptr<ISceneNode3D> CEditorToolDragger::CreateNode(const glm::ivec3& P
 		model->SetFileName(fileName);
 	}
 
-	node->GetComponent<IModelsComponent3D>()->AddModel(model);
+	node->GetComponent<IModelsComponent3D>()->SetModel(model);
 	node->GetComponent<IColliderComponent3D>()->SetBounds(model->GetBounds());
 
 	return node;

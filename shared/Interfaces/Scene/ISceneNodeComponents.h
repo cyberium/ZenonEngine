@@ -172,12 +172,11 @@ ZN_INTERFACE __declspec(UUID_ModelsComponent) ZN_API IModelsComponent3D
 
 	virtual ~IModelsComponent3D() {}
 
-	virtual void AddModel(const std::shared_ptr<IModel>& Model) = 0;
-	virtual void RemoveModel(const std::shared_ptr<IModel>& Model) = 0;
-	virtual const ModelsList& GetModels() const = 0;
+	virtual void SetModel(const std::shared_ptr<IModel>& Model) = 0;
+	virtual void ResetModel() = 0;
+	virtual std::shared_ptr<IModel> GetModel() const = 0;
 };
-const ComponentMessageType UUID_OnModelAdded = 30;
-const ComponentMessageType UUID_OnModelRemoved = 30;
+const ComponentMessageType UUID_OnModelSetted = 30;
 
 
 

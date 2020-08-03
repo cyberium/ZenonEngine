@@ -1,25 +1,38 @@
 #include "stdafx.h"
 
 // General
-#include "EditorToolRotator.h"
+#include "Editor3DToolMover.h"
 
-CEditorToolRotator::CEditorToolRotator(IEditor3DFrame & EditorFrame)
+CEditor3DToolMover::CEditor3DToolMover(IEditor3DFrame & EditorFrame)
 	: CEditor3DToolBase(EditorFrame)
+	, m_MoverValue(1.0f)
 	, m_MoverNuber(-1)
-	, m_IsMoverEnable(false)
+	, m_IsMovingNow(false)
 {
 }
 
-CEditorToolRotator::~CEditorToolRotator()
+CEditor3DToolMover::~CEditor3DToolMover()
 {
 }
 
-void CEditorToolRotator::Initialize()
+void CEditor3DToolMover::Initialize()
 {
 	m_MoverRoot = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, GetScene(), GetScene()->GetRootNode3D());
-	m_MoverRoot->SetName("Rotator");
+	m_MoverRoot->SetName("Mover");
 
-	auto geom = GetRenderDevice().GetPrimitivesFactory().CreateTorus();
+	std::shared_ptr<IFBXScene> fbxScene = GetBaseManager().GetManager<IFBXManager>()->LoadFBX("C:\\_engine\\ZenonEngine_gamedata\\arrow.FBX");
+
+	auto fbxModels = fbxScene->GetFBXModels();
+	_ASSERT(fbxModels.size() == 1);
+	auto model = (*fbxModels.begin())->GetModel();
+	auto geom = model->GetConnections().begin()->Geometry;
+	if (auto loadable = std::dynamic_pointer_cast<IObjectLoadSave>(model))
+	{
+		std::shared_ptr<IFile> file = std::make_shared<CFile>("C:\\_engine\\ZenonEngine_gamedata\\arrow.znmdl");
+		loadable->Save(file);
+
+		GetBaseManager().GetManager<IFilesManager>()->GetFilesStorage("PCEveryFileAccess")->SaveFile(file);
+	}
 
 	auto materialX = std::make_shared<MaterialDebug>(GetRenderDevice());
 	materialX->SetDiffuseColor(glm::vec4(1.0f, 0.2f, 0.1f, 1.0f));
@@ -39,41 +52,42 @@ void CEditorToolRotator::Initialize()
 
 	m_MoverX = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, GetScene(), m_MoverRoot);
 	m_MoverX->SetName("Mover_X");
-	m_MoverX->SetRotation(glm::vec3(0.0f, 0.0f, glm::half_pi<float>()));
+	m_MoverX->SetRotation(glm::vec3(0.0f, 0.0f, -glm::half_pi<float>()));
 	//moverX->SetScale(glm::vec3(0.5f, 1.0f, 0.5f));
-	m_MoverX->GetModelsComponent()->AddModel(modelX);
-	m_MoverX->GetColliderComponent()->SetBounds(geom->GetBounds());
+	m_MoverX->GetModelsComponent()->SetModel(modelX);
+	m_MoverX->GetColliderComponent()->SetBounds(model->GetBounds());
 
 	m_MoverY = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, GetScene(), m_MoverRoot);
 	m_MoverY->SetName("Mover_Y");
 	//moverY->SetScale(glm::vec3(0.5f, 1.0f, 0.5f));
-	m_MoverY->GetModelsComponent()->AddModel(modelY);
-	m_MoverY->GetColliderComponent()->SetBounds(geom->GetBounds());
+	m_MoverY->GetModelsComponent()->SetModel(modelY);
+	m_MoverY->GetColliderComponent()->SetBounds(model->GetBounds());
 
 	m_MoverZ = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, GetScene(), m_MoverRoot);
 	m_MoverZ->SetName("Mover_Z");
 	//moverZ->SetScale(glm::vec3(0.5f, 1.0f, 0.5f));
 	m_MoverZ->SetRotation(glm::vec3(glm::half_pi<float>(), 0.0f, 0.0f));
-	m_MoverZ->GetModelsComponent()->AddModel(modelZ);
-	m_MoverZ->GetColliderComponent()->SetBounds(geom->GetBounds());
+	m_MoverZ->GetModelsComponent()->SetModel(modelZ);
+	m_MoverZ->GetColliderComponent()->SetBounds(model->GetBounds());
 }
 
-void CEditorToolRotator::Finalize()
+void CEditor3DToolMover::Finalize()
 {
 }
 
-void CEditorToolRotator::Enable()
+void CEditor3DToolMover::Enable()
 {
 	CEditor3DToolBase::Enable();
 
 	if (auto node = GetEditor3DFrame().GetNodesSelector()->GetFirstSelectedNode())
 	{
 		m_MovingNode = node;
+		m_MoverRoot->SetTranslate(node->GetTranslation());
 		m_MoverRoot->SetScale(glm::vec3(m_MovingNode->GetColliderComponent()->GetBounds().getRadius() * 1.0f / 10.0f));
 	}
 }
 
-void CEditorToolRotator::Disable()
+void CEditor3DToolMover::Disable()
 {
 	CEditor3DToolBase::Disable();
 
@@ -82,7 +96,7 @@ void CEditorToolRotator::Disable()
 	Clear();
 }
 
-bool CEditorToolRotator::OnMouseClickToWorld(const MouseButtonEventArgs & e, const Ray & RayToWorld)
+bool CEditor3DToolMover::OnMousePressed(const MouseButtonEventArgs & e, const Ray & RayToWorld)
 {
 	if (!IsEnabled())
 		return false;
@@ -122,7 +136,7 @@ bool CEditorToolRotator::OnMouseClickToWorld(const MouseButtonEventArgs & e, con
 		if (m_MoverNuber > 0)
 		{
 			m_MovingObjectPos = m_MovingNode->GetTranslation();
-			m_IsMoverEnable = true;
+			m_IsMovingNow = true;
 			return true;
 		}
 	}
@@ -130,21 +144,21 @@ bool CEditorToolRotator::OnMouseClickToWorld(const MouseButtonEventArgs & e, con
 	return false;
 }
 
-void CEditorToolRotator::OnMouseReleaseToWorld(const MouseButtonEventArgs & e, const Ray & RayToWorld)
+void CEditor3DToolMover::OnMouseReleased(const MouseButtonEventArgs & e, const Ray & RayToWorld)
 {
 	if (!IsEnabled())
 		return;
 
-	if (m_IsMoverEnable)
+	if (m_IsMovingNow)
 		Clear();
 }
 
-void CEditorToolRotator::OnMouseMoveToWorld(const MouseMotionEventArgs & e, const Ray & RayToWorld)
+void CEditor3DToolMover::OnMouseMoved(const MouseMotionEventArgs & e, const Ray & RayToWorld)
 {
 	if (!IsEnabled())
 		return;
 
-	if (m_IsMoverEnable)
+	if (m_IsMovingNow)
 	{
 		glm::vec3 oldPos = m_MovingNode->GetTranslation();
 		glm::vec3 newPos = glm::vec3(0.0f);
@@ -170,7 +184,7 @@ void CEditorToolRotator::OnMouseMoveToWorld(const MouseMotionEventArgs & e, cons
 			newPos = glm::vec3(oldPos.x, mousePos.y + m_MoverOffset.y, oldPos.z);
 		}
 
-		m_MovingNode->SetTranslate(newPos);
+		m_MovingNode->SetTranslate(FixBoxCoords(newPos));
 		m_MoverRoot->SetTranslate(m_MovingNode->GetTranslation());
 
 		// Refresh selection bounds
@@ -179,11 +193,29 @@ void CEditorToolRotator::OnMouseMoveToWorld(const MouseMotionEventArgs & e, cons
 	}
 }
 
-void CEditorToolRotator::Clear()
+
+glm::ivec3 CEditor3DToolMover::ToBoxCoords(const glm::vec3 & Position)
+{
+	return glm::round(Position / m_MoverValue);
+}
+
+glm::vec3 CEditor3DToolMover::FixBoxCoords(const glm::vec3 & Position)
+{
+	glm::vec3 newPosition = Position;
+	newPosition /= m_MoverValue;
+	newPosition = glm::round(newPosition);
+	newPosition *= m_MoverValue;
+	return newPosition;
+}
+
+void CEditor3DToolMover::SetMoverValue(float Value)
+{
+	m_MoverValue = Value;
+}
+
+void CEditor3DToolMover::Clear()
 {
 	m_MoverNuber = 0;
-	//m_MoverRoot->SetScale(glm::vec3(0.001f));
-	m_IsMoverEnable = false;
-	m_MovingNode = nullptr;
+	m_IsMovingNow = false;
 	m_MovingObjectPos = glm::vec3(0.0f);
 }

@@ -4,10 +4,25 @@
 // Nodes selector
 //
 
-typedef std::vector<std::shared_ptr<ISceneNode3D>> SelectedNodes;
+ZN_INTERFACE IEditorTools
+{
+}
+
+ZN_INTERFACE IEditorTool
+{
+	virtual ~IEditorTool() {}
+
+	virtual void Initialize() = 0;
+	virtual void Finalize() = 0;
+	virtual void Enable() = 0;
+	virtual void Disable() = 0;
+	virtual bool IsEnabled() const = 0;
+};
 
 ZN_INTERFACE IEditor_NodesSelector
 {
+	typedef std::vector<std::shared_ptr<ISceneNode3D>> SelectedNodes;
+
 	virtual ~IEditor_NodesSelector() {}
 
 	virtual void SelectNode(std::shared_ptr<ISceneNode3D> Node) = 0;
@@ -67,6 +82,17 @@ struct SDragData
 	bool IsCtrl;
 };
 
+enum ETool
+{
+	EToolSelector,
+	EToolMover,
+	EToolRotator,
+	EToolScaler,
+	EToolDragger,
+	EToolMoverRTS,
+	EToolRotatorRTS,
+};
+
 ZN_INTERFACE IEditor3DFrame
 	: public IEditorSharedFrame
 {
@@ -76,12 +102,10 @@ ZN_INTERFACE IEditor3DFrame
 	virtual IRenderDevice& GetRenderDevice2() const = 0;
 	virtual void LockUpdates() = 0;
 	virtual void UnlockUpdates() = 0;
+	virtual void DoEnableTool(ETool Tool) = 0;
 
-	virtual void EnableSelectorTool() = 0;
-	virtual void EnableMoverTool() = 0;
-
-	virtual std::shared_ptr<IScene> GetRealScene() const = 0;
-	virtual std::shared_ptr<ISceneNode3D> GetRealRootNode3D() const = 0;
+	virtual std::shared_ptr<IScene> GetEditedScene() const = 0;
+	virtual std::shared_ptr<ISceneNode3D> GetEditedRootNode3D() const = 0;
 	virtual std::shared_ptr<ISceneNode3D> GetNodeUnderMouse(const glm::ivec2& MousePos) const = 0;
 
 	virtual void OnCollectionWidget_ModelSelected(const std::shared_ptr<IModel>& Model) = 0;

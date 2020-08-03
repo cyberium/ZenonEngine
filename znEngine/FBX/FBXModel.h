@@ -46,10 +46,7 @@ private:
 	void MaterialLoad(fbxsdk::FbxMesh* NativeMesh);
 	void SkeletonLoad(fbxsdk::FbxMesh* NativeMesh);
 	FBXVertex& GetVertexByControlPointIndex(int Index);
-	void FixAllVertices(int ControlPointIndex, std::function<void(CFBXModel::FBXVertex&)> Fix);
 	//void DisplayMaterialMapping(fbxsdk::FbxGeometryElementMaterial* materialElement);
-
-
 
 private:
 	std::vector<FBXVertex> m_Vertices;

@@ -6,7 +6,13 @@
 class ZN_API BoundingBox
 {
 public:
-	BoundingBox();
+	enum EBBoxMode
+	{
+		BBoxMode_Infinite,
+		BBoxMode_Incorrect
+	};
+public:
+	BoundingBox(EBBoxMode BBoxMode = BBoxMode_Infinite);
 	BoundingBox(const glm::vec3& Min, const glm::vec3& Max);
 
 	BoundingBox& operator=(const BoundingBox& _other)
@@ -22,8 +28,9 @@ public:
 	void set(const glm::vec3& Min, const glm::vec3& Max);
 	void calculate(const glm::vec3* _verts, uint32 _count);
 	void calculateCenter();
-	void clear();
-	bool isClear() const;
+	void clear(EBBoxMode BBoxMode = BBoxMode_Infinite);
+	bool IsInfinite() const;
+	bool IsIncorrect() const;
 
 	//
 
