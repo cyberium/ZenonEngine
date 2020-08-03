@@ -14,68 +14,71 @@
     <Filter Include="Common">
       <UniqueIdentifier>{5b6178d0-d9d0-48fa-90ca-9cf2da474f6c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ZenonWidgets">
-      <UniqueIdentifier>{f13764bb-38a6-4dfc-9274-5cd09cff7fd2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ZenonWidgets\ZenonWindow3D">
-      <UniqueIdentifier>{50d6cf7f-674b-41a7-a9e7-9fdb274d15c7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ZenonWidgets\Property editor">
-      <UniqueIdentifier>{f77936a4-99bb-4512-9f80-79d0bac640e2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ZenonWidgets\Property editor\Core">
-      <UniqueIdentifier>{bd0ad106-c7b1-413c-b6ad-e966005a2ab9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ZenonWidgets\Property editor\Core\GUI">
-      <UniqueIdentifier>{68879008-f7e3-480a-9312-4dedf008b0e2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ZenonWidgets\Property editor\Core\Core">
-      <UniqueIdentifier>{5fa78a10-79e1-45f7-80f7-cca460c5e9ac}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ZenonWidgets\Property editor\Core\Auxiliary">
-      <UniqueIdentifier>{b8cdc93a-746a-40d3-9a09-fb0e21ef8c24}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ZenonWidgets\Property editor\Widget">
-      <UniqueIdentifier>{585a9afd-c96d-409c-8ea6-5c4fba011165}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ZenonWidgets\Property editor\Widget\Delegates">
-      <UniqueIdentifier>{1ac0b311-9a79-4262-9241-1d51eead57a1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ZenonWidgets\Property editor\Widget\Delegates\Core">
-      <UniqueIdentifier>{cd32bed0-25ee-4b35-b9ea-d15126cfbfbf}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ZenonWidgets\Property editor\Widget\Delegates\GUI">
-      <UniqueIdentifier>{9a8be9e5-45ee-4c2d-aeeb-d8d0d21e43f4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ZenonWidgets\Property editor\Widget\Delegates\Utils">
-      <UniqueIdentifier>{0f6f97d0-49b2-49cc-b430-b735220f9d9d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ZenonWidgets\Property editor\Widget\Utils">
-      <UniqueIdentifier>{b3a70016-f26c-4bb6-818d-3b5bfd1fe4d4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Editor3D">
-      <UniqueIdentifier>{72c27b49-4bcb-47f0-aec6-118b1a67b28d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ZenonWidgets\ZenonLogViewer">
-      <UniqueIdentifier>{a2567b87-e171-4d4f-939b-a53f0c3bba7c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ZenonWidgets\ZenonSceneViewer">
-      <UniqueIdentifier>{38a607c6-b557-4a38-91a1-db4d748cf3e0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ZenonWidgets\ZenonCollectionViewer">
-      <UniqueIdentifier>{c0c7ada6-3fe4-4119-8fbe-45792247683d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Editor3D\Passes">
-      <UniqueIdentifier>{31ae868f-f71f-445a-b2dd-b32b1b388d09}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ZenonWidgets\ZenonWindowMinimal3D">
-      <UniqueIdentifier>{936459f3-5703-4224-8fff-5490074c0c94}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Editor3D\Tools">
+    <Filter Include="Tools">
       <UniqueIdentifier>{ee500cc7-f176-4ba2-af32-2078f1c9a29f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Editor3D\Tools\RTS">
+    <Filter Include="Tools\RTS">
       <UniqueIdentifier>{6c6065dd-c080-4888-a750-25d3e8433b16}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI">
+      <UniqueIdentifier>{6ed13eb3-1657-450f-84ff-07cd6253e504}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="3D">
+      <UniqueIdentifier>{72c27b49-4bcb-47f0-aec6-118b1a67b28d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="3D\Passes">
+      <UniqueIdentifier>{31ae868f-f71f-445a-b2dd-b32b1b388d09}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\Widgets">
+      <UniqueIdentifier>{f13764bb-38a6-4dfc-9274-5cd09cff7fd2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\Widgets\ZenonWindow3D">
+      <UniqueIdentifier>{50d6cf7f-674b-41a7-a9e7-9fdb274d15c7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\Widgets\Property editor">
+      <UniqueIdentifier>{f77936a4-99bb-4512-9f80-79d0bac640e2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\Widgets\Property editor\Core">
+      <UniqueIdentifier>{bd0ad106-c7b1-413c-b6ad-e966005a2ab9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\Widgets\Property editor\Core\GUI">
+      <UniqueIdentifier>{68879008-f7e3-480a-9312-4dedf008b0e2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\Widgets\Property editor\Core\Core">
+      <UniqueIdentifier>{5fa78a10-79e1-45f7-80f7-cca460c5e9ac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\Widgets\Property editor\Core\Auxiliary">
+      <UniqueIdentifier>{b8cdc93a-746a-40d3-9a09-fb0e21ef8c24}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\Widgets\Property editor\Widget">
+      <UniqueIdentifier>{585a9afd-c96d-409c-8ea6-5c4fba011165}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\Widgets\Property editor\Widget\Delegates">
+      <UniqueIdentifier>{1ac0b311-9a79-4262-9241-1d51eead57a1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\Widgets\Property editor\Widget\Delegates\Core">
+      <UniqueIdentifier>{cd32bed0-25ee-4b35-b9ea-d15126cfbfbf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\Widgets\Property editor\Widget\Delegates\GUI">
+      <UniqueIdentifier>{9a8be9e5-45ee-4c2d-aeeb-d8d0d21e43f4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\Widgets\Property editor\Widget\Delegates\Utils">
+      <UniqueIdentifier>{0f6f97d0-49b2-49cc-b430-b735220f9d9d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\Widgets\Property editor\Widget\Utils">
+      <UniqueIdentifier>{b3a70016-f26c-4bb6-818d-3b5bfd1fe4d4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\Widgets\ZenonLogViewer">
+      <UniqueIdentifier>{a2567b87-e171-4d4f-939b-a53f0c3bba7c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\Widgets\ZenonSceneViewer">
+      <UniqueIdentifier>{38a607c6-b557-4a38-91a1-db4d748cf3e0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\Widgets\ZenonCollectionViewer">
+      <UniqueIdentifier>{c0c7ada6-3fe4-4119-8fbe-45792247683d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\Widgets\ZenonWindowMinimal3D">
+      <UniqueIdentifier>{936459f3-5703-4224-8fff-5490074c0c94}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -83,243 +86,243 @@
       <Filter>Common</Filter>
     </ClCompile>
     <ClCompile Include="PropertyEditor\Core\Enum.cpp">
-      <Filter>ZenonWidgets\Property editor\Core</Filter>
+      <Filter>UI\Widgets\Property editor\Core</Filter>
     </ClCompile>
     <ClCompile Include="PropertyEditor\Core\Property.cpp">
-      <Filter>ZenonWidgets\Property editor\Core</Filter>
+      <Filter>UI\Widgets\Property editor\Core</Filter>
     </ClCompile>
     <ClCompile Include="PropertyEditor\Core\PropertyBase.cpp">
-      <Filter>ZenonWidgets\Property editor\Core</Filter>
+      <Filter>UI\Widgets\Property editor\Core</Filter>
     </ClCompile>
     <ClCompile Include="PropertyEditor\Core\PropertySet.cpp">
-      <Filter>ZenonWidgets\Property editor\Core</Filter>
+      <Filter>UI\Widgets\Property editor\Core</Filter>
     </ClCompile>
     <ClCompile Include="PropertyEditor\Core\QObjectPropertySet.cpp">
-      <Filter>ZenonWidgets\Property editor\Core</Filter>
+      <Filter>UI\Widgets\Property editor\Core</Filter>
     </ClCompile>
     <ClCompile Include="PropertyEditor\Core\Core\PropertyBool.cpp">
-      <Filter>ZenonWidgets\Property editor\Core\Core</Filter>
+      <Filter>UI\Widgets\Property editor\Core\Core</Filter>
     </ClCompile>
     <ClCompile Include="PropertyEditor\Core\Core\PropertyDouble.cpp">
-      <Filter>ZenonWidgets\Property editor\Core\Core</Filter>
+      <Filter>UI\Widgets\Property editor\Core\Core</Filter>
     </ClCompile>
     <ClCompile Include="PropertyEditor\Core\Core\PropertyEnum.cpp">
-      <Filter>ZenonWidgets\Property editor\Core\Core</Filter>
+      <Filter>UI\Widgets\Property editor\Core\Core</Filter>
     </ClCompile>
     <ClCompile Include="PropertyEditor\Core\Core\PropertyEnumFlags.cpp">
-      <Filter>ZenonWidgets\Property editor\Core\Core</Filter>
+      <Filter>UI\Widgets\Property editor\Core\Core</Filter>
     </ClCompile>
     <ClCompile Include="PropertyEditor\Core\Core\PropertyFloat.cpp">
-      <Filter>ZenonWidgets\Property editor\Core\Core</Filter>
+      <Filter>UI\Widgets\Property editor\Core\Core</Filter>
     </ClCompile>
     <ClCompile Include="PropertyEditor\Core\Core\PropertyInt.cpp">
-      <Filter>ZenonWidgets\Property editor\Core\Core</Filter>
+      <Filter>UI\Widgets\Property editor\Core\Core</Filter>
     </ClCompile>
     <ClCompile Include="PropertyEditor\Core\Core\PropertyQPoint.cpp">
-      <Filter>ZenonWidgets\Property editor\Core\Core</Filter>
+      <Filter>UI\Widgets\Property editor\Core\Core</Filter>
     </ClCompile>
     <ClCompile Include="PropertyEditor\Core\Core\PropertyQPointF.cpp">
-      <Filter>ZenonWidgets\Property editor\Core\Core</Filter>
+      <Filter>UI\Widgets\Property editor\Core\Core</Filter>
     </ClCompile>
     <ClCompile Include="PropertyEditor\Core\Core\PropertyQRect.cpp">
-      <Filter>ZenonWidgets\Property editor\Core\Core</Filter>
+      <Filter>UI\Widgets\Property editor\Core\Core</Filter>
     </ClCompile>
     <ClCompile Include="PropertyEditor\Core\Core\PropertyQRectF.cpp">
-      <Filter>ZenonWidgets\Property editor\Core\Core</Filter>
+      <Filter>UI\Widgets\Property editor\Core\Core</Filter>
     </ClCompile>
     <ClCompile Include="PropertyEditor\Core\Core\PropertyQSize.cpp">
-      <Filter>ZenonWidgets\Property editor\Core\Core</Filter>
+      <Filter>UI\Widgets\Property editor\Core\Core</Filter>
     </ClCompile>
     <ClCompile Include="PropertyEditor\Core\Core\PropertyQSizeF.cpp">
-      <Filter>ZenonWidgets\Property editor\Core\Core</Filter>
+      <Filter>UI\Widgets\Property editor\Core\Core</Filter>
     </ClCompile>
     <ClCompile Include="PropertyEditor\Core\Core\PropertyUInt.cpp">
-      <Filter>ZenonWidgets\Property editor\Core\Core</Filter>
+      <Filter>UI\Widgets\Property editor\Core\Core</Filter>
     </ClCompile>
     <ClCompile Include="PropertyEditor\Core\GUI\PropertyButton.cpp">
-      <Filter>ZenonWidgets\Property editor\Core\GUI</Filter>
+      <Filter>UI\Widgets\Property editor\Core\GUI</Filter>
     </ClCompile>
     <ClCompile Include="PropertyEditor\Core\GUI\PropertyQBrush.cpp">
-      <Filter>ZenonWidgets\Property editor\Core\GUI</Filter>
+      <Filter>UI\Widgets\Property editor\Core\GUI</Filter>
     </ClCompile>
     <ClCompile Include="PropertyEditor\Core\GUI\PropertyQColor.cpp">
-      <Filter>ZenonWidgets\Property editor\Core\GUI</Filter>
+      <Filter>UI\Widgets\Property editor\Core\GUI</Filter>
     </ClCompile>
     <ClCompile Include="PropertyEditor\Core\GUI\PropertyQFont.cpp">
-      <Filter>ZenonWidgets\Property editor\Core\GUI</Filter>
+      <Filter>UI\Widgets\Property editor\Core\GUI</Filter>
     </ClCompile>
     <ClCompile Include="PropertyEditor\Core\GUI\PropertyQPen.cpp">
-      <Filter>ZenonWidgets\Property editor\Core\GUI</Filter>
+      <Filter>UI\Widgets\Property editor\Core\GUI</Filter>
     </ClCompile>
     <ClCompile Include="PropertyEditor\PropertyWidget\PropertyView.cpp">
-      <Filter>ZenonWidgets\Property editor\Widget</Filter>
+      <Filter>UI\Widgets\Property editor\Widget</Filter>
     </ClCompile>
     <ClCompile Include="PropertyEditor\PropertyWidget\PropertyWidget.cpp">
-      <Filter>ZenonWidgets\Property editor\Widget</Filter>
+      <Filter>UI\Widgets\Property editor\Widget</Filter>
     </ClCompile>
     <ClCompile Include="PropertyEditor\PropertyWidget\Delegates\PropertyDelegate.cpp">
-      <Filter>ZenonWidgets\Property editor\Widget\Delegates</Filter>
+      <Filter>UI\Widgets\Property editor\Widget\Delegates</Filter>
     </ClCompile>
     <ClCompile Include="PropertyEditor\PropertyWidget\Delegates\PropertyDelegateAux.cpp">
-      <Filter>ZenonWidgets\Property editor\Widget\Delegates</Filter>
+      <Filter>UI\Widgets\Property editor\Widget\Delegates</Filter>
     </ClCompile>
     <ClCompile Include="PropertyEditor\PropertyWidget\Delegates\PropertyDelegateFactory.cpp">
-      <Filter>ZenonWidgets\Property editor\Widget\Delegates</Filter>
+      <Filter>UI\Widgets\Property editor\Widget\Delegates</Filter>
     </ClCompile>
     <ClCompile Include="PropertyEditor\PropertyWidget\Delegates\Core\PropertyDelegateBool.cpp">
-      <Filter>ZenonWidgets\Property editor\Widget\Delegates\Core</Filter>
+      <Filter>UI\Widgets\Property editor\Widget\Delegates\Core</Filter>
     </ClCompile>
     <ClCompile Include="PropertyEditor\PropertyWidget\Delegates\Core\PropertyDelegateDouble.cpp">
-      <Filter>ZenonWidgets\Property editor\Widget\Delegates\Core</Filter>
+      <Filter>UI\Widgets\Property editor\Widget\Delegates\Core</Filter>
     </ClCompile>
     <ClCompile Include="PropertyEditor\PropertyWidget\Delegates\Core\PropertyDelegateEnum.cpp">
-      <Filter>ZenonWidgets\Property editor\Widget\Delegates\Core</Filter>
+      <Filter>UI\Widgets\Property editor\Widget\Delegates\Core</Filter>
     </ClCompile>
     <ClCompile Include="PropertyEditor\PropertyWidget\Delegates\Core\PropertyDelegateEnumFlags.cpp">
-      <Filter>ZenonWidgets\Property editor\Widget\Delegates\Core</Filter>
+      <Filter>UI\Widgets\Property editor\Widget\Delegates\Core</Filter>
     </ClCompile>
     <ClCompile Include="PropertyEditor\PropertyWidget\Delegates\Core\PropertyDelegateFloat.cpp">
-      <Filter>ZenonWidgets\Property editor\Widget\Delegates\Core</Filter>
+      <Filter>UI\Widgets\Property editor\Widget\Delegates\Core</Filter>
     </ClCompile>
     <ClCompile Include="PropertyEditor\PropertyWidget\Delegates\Core\PropertyDelegateInt.cpp">
-      <Filter>ZenonWidgets\Property editor\Widget\Delegates\Core</Filter>
+      <Filter>UI\Widgets\Property editor\Widget\Delegates\Core</Filter>
     </ClCompile>
     <ClCompile Include="PropertyEditor\PropertyWidget\Delegates\Core\PropertyDelegateQPoint.cpp">
-      <Filter>ZenonWidgets\Property editor\Widget\Delegates\Core</Filter>
+      <Filter>UI\Widgets\Property editor\Widget\Delegates\Core</Filter>
     </ClCompile>
     <ClCompile Include="PropertyEditor\PropertyWidget\Delegates\Core\PropertyDelegateQPointF.cpp">
-      <Filter>ZenonWidgets\Property editor\Widget\Delegates\Core</Filter>
+      <Filter>UI\Widgets\Property editor\Widget\Delegates\Core</Filter>
     </ClCompile>
     <ClCompile Include="PropertyEditor\PropertyWidget\Delegates\Core\PropertyDelegateQRect.cpp">
-      <Filter>ZenonWidgets\Property editor\Widget\Delegates\Core</Filter>
+      <Filter>UI\Widgets\Property editor\Widget\Delegates\Core</Filter>
     </ClCompile>
     <ClCompile Include="PropertyEditor\PropertyWidget\Delegates\Core\PropertyDelegateQRectF.cpp">
-      <Filter>ZenonWidgets\Property editor\Widget\Delegates\Core</Filter>
+      <Filter>UI\Widgets\Property editor\Widget\Delegates\Core</Filter>
     </ClCompile>
     <ClCompile Include="PropertyEditor\PropertyWidget\Delegates\Core\PropertyDelegateQSize.cpp">
-      <Filter>ZenonWidgets\Property editor\Widget\Delegates\Core</Filter>
+      <Filter>UI\Widgets\Property editor\Widget\Delegates\Core</Filter>
     </ClCompile>
     <ClCompile Include="PropertyEditor\PropertyWidget\Delegates\Core\PropertyDelegateQSizeF.cpp">
-      <Filter>ZenonWidgets\Property editor\Widget\Delegates\Core</Filter>
+      <Filter>UI\Widgets\Property editor\Widget\Delegates\Core</Filter>
     </ClCompile>
     <ClCompile Include="PropertyEditor\PropertyWidget\Delegates\Core\PropertyDelegateUInt.cpp">
-      <Filter>ZenonWidgets\Property editor\Widget\Delegates\Core</Filter>
+      <Filter>UI\Widgets\Property editor\Widget\Delegates\Core</Filter>
     </ClCompile>
     <ClCompile Include="PropertyEditor\PropertyWidget\Delegates\GUI\PropertyDelegateButton.cpp">
-      <Filter>ZenonWidgets\Property editor\Widget\Delegates\GUI</Filter>
+      <Filter>UI\Widgets\Property editor\Widget\Delegates\GUI</Filter>
     </ClCompile>
     <ClCompile Include="PropertyEditor\PropertyWidget\Delegates\GUI\PropertyDelegateQBrush.cpp">
-      <Filter>ZenonWidgets\Property editor\Widget\Delegates\GUI</Filter>
+      <Filter>UI\Widgets\Property editor\Widget\Delegates\GUI</Filter>
     </ClCompile>
     <ClCompile Include="PropertyEditor\PropertyWidget\Delegates\GUI\PropertyDelegateQColor.cpp">
-      <Filter>ZenonWidgets\Property editor\Widget\Delegates\GUI</Filter>
+      <Filter>UI\Widgets\Property editor\Widget\Delegates\GUI</Filter>
     </ClCompile>
     <ClCompile Include="PropertyEditor\PropertyWidget\Delegates\GUI\PropertyDelegateQFont.cpp">
-      <Filter>ZenonWidgets\Property editor\Widget\Delegates\GUI</Filter>
+      <Filter>UI\Widgets\Property editor\Widget\Delegates\GUI</Filter>
     </ClCompile>
     <ClCompile Include="PropertyEditor\PropertyWidget\Delegates\GUI\PropertyDelegateQPen.cpp">
-      <Filter>ZenonWidgets\Property editor\Widget\Delegates\GUI</Filter>
+      <Filter>UI\Widgets\Property editor\Widget\Delegates\GUI</Filter>
     </ClCompile>
     <ClCompile Include="PropertyEditor\PropertyWidget\Delegates\Utils\PropertyDelegateGeoCoord.cpp">
-      <Filter>ZenonWidgets\Property editor\Widget\Delegates\Utils</Filter>
+      <Filter>UI\Widgets\Property editor\Widget\Delegates\Utils</Filter>
     </ClCompile>
     <ClCompile Include="PropertyEditor\PropertyWidget\Delegates\Utils\PropertyDelegateGeoPoint.cpp">
-      <Filter>ZenonWidgets\Property editor\Widget\Delegates\Utils</Filter>
+      <Filter>UI\Widgets\Property editor\Widget\Delegates\Utils</Filter>
     </ClCompile>
     <ClCompile Include="PropertyEditor\PropertyWidget\Delegates\Utils\PropertyDelegateMisc.cpp">
-      <Filter>ZenonWidgets\Property editor\Widget\Delegates\Utils</Filter>
+      <Filter>UI\Widgets\Property editor\Widget\Delegates\Utils</Filter>
     </ClCompile>
     <ClCompile Include="PropertyEditor\PropertyWidget\Delegates\Utils\PropertyDelegatePropertySet.cpp">
-      <Filter>ZenonWidgets\Property editor\Widget\Delegates\Utils</Filter>
+      <Filter>UI\Widgets\Property editor\Widget\Delegates\Utils</Filter>
     </ClCompile>
     <ClCompile Include="PropertyEditor\PropertyWidget\Delegates\Utils\PropertyDelegateSliderBox.cpp">
-      <Filter>ZenonWidgets\Property editor\Widget\Delegates\Utils</Filter>
+      <Filter>UI\Widgets\Property editor\Widget\Delegates\Utils</Filter>
     </ClCompile>
     <ClCompile Include="PropertyEditor\PropertyWidget\Delegates\Utils\PropertyEditorAux.cpp">
-      <Filter>ZenonWidgets\Property editor\Widget\Delegates\Utils</Filter>
+      <Filter>UI\Widgets\Property editor\Widget\Delegates\Utils</Filter>
     </ClCompile>
     <ClCompile Include="PropertyEditor\PropertyWidget\Delegates\Utils\PropertyEditorHandler.cpp">
-      <Filter>ZenonWidgets\Property editor\Widget\Delegates\Utils</Filter>
+      <Filter>UI\Widgets\Property editor\Widget\Delegates\Utils</Filter>
     </ClCompile>
     <ClCompile Include="PropertyEditor\PropertyWidget\Utils\AccessibilityProxy.cpp">
-      <Filter>ZenonWidgets\Property editor\Widget\Utils</Filter>
+      <Filter>UI\Widgets\Property editor\Widget\Utils</Filter>
     </ClCompile>
     <ClCompile Include="PropertyEditor\PropertyWidget\Utils\InplaceEditing.cpp">
-      <Filter>ZenonWidgets\Property editor\Widget\Utils</Filter>
+      <Filter>UI\Widgets\Property editor\Widget\Utils</Filter>
     </ClCompile>
     <ClCompile Include="PropertyEditor\PropertiesController.cpp">
-      <Filter>ZenonWidgets\Property editor</Filter>
+      <Filter>UI\Widgets\Property editor</Filter>
     </ClCompile>
     <ClCompile Include="PropertyEditor\Core\Core\PropertyVec3.cpp">
-      <Filter>ZenonWidgets\Property editor\Core\Core</Filter>
+      <Filter>UI\Widgets\Property editor\Core\Core</Filter>
     </ClCompile>
     <ClCompile Include="PropertyEditor\PropertyWidget\Delegates\Core\PropertyDelegateVec3.cpp">
-      <Filter>ZenonWidgets\Property editor\Widget\Delegates\Core</Filter>
+      <Filter>UI\Widgets\Property editor\Widget\Delegates\Core</Filter>
     </ClCompile>
     <ClCompile Include="PropertyEditor\Core\Core\PropertyString.cpp">
-      <Filter>ZenonWidgets\Property editor\Core\Core</Filter>
+      <Filter>UI\Widgets\Property editor\Core\Core</Filter>
     </ClCompile>
     <ClCompile Include="PropertyEditor\PropertyWidget\Delegates\Core\PropertyDelegateString.cpp">
-      <Filter>ZenonWidgets\Property editor\Widget\Delegates\Core</Filter>
+      <Filter>UI\Widgets\Property editor\Widget\Delegates\Core</Filter>
     </ClCompile>
     <ClCompile Include="ZenonWidgets\ZenonWindow3D\ZenonWindow3D.cpp">
-      <Filter>ZenonWidgets\ZenonWindow3D</Filter>
+      <Filter>UI\Widgets\ZenonWindow3D</Filter>
     </ClCompile>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Editor3DFrame.cpp">
-      <Filter>Editor3D</Filter>
+      <Filter>3D</Filter>
     </ClCompile>
     <ClCompile Include="ZenonWidgets\ZenonLogViewer\ZenonLogViewer.cpp">
-      <Filter>ZenonWidgets\ZenonLogViewer</Filter>
+      <Filter>UI\Widgets\ZenonLogViewer</Filter>
     </ClCompile>
     <ClCompile Include="ZenonWidgets\ZenonSceneViewer\ZenonSceneViewerWidget.cpp">
-      <Filter>ZenonWidgets\ZenonSceneViewer</Filter>
+      <Filter>UI\Widgets\ZenonSceneViewer</Filter>
     </ClCompile>
     <ClCompile Include="EditedScene.cpp">
-      <Filter>Editor3D</Filter>
+      <Filter>3D</Filter>
     </ClCompile>
     <ClCompile Include="Passes\DrawSelectionPass.cpp">
-      <Filter>Editor3D\Passes</Filter>
+      <Filter>3D\Passes</Filter>
     </ClCompile>
     <ClCompile Include="ZenonWidgets\ZenonCollectionViewer\ZenonCollectionViewerWidget.cpp">
-      <Filter>ZenonWidgets\ZenonCollectionViewer</Filter>
+      <Filter>UI\Widgets\ZenonCollectionViewer</Filter>
     </ClCompile>
     <ClCompile Include="ZenonWidgets\ZenonWindowMinimal3D\ZenonWindowMinimal3D.cpp">
-      <Filter>ZenonWidgets\ZenonWindowMinimal3D</Filter>
+      <Filter>UI\Widgets\ZenonWindowMinimal3D</Filter>
     </ClCompile>
     <ClCompile Include="Editor3DPreviewScene.cpp">
-      <Filter>Editor3D</Filter>
+      <Filter>3D</Filter>
     </ClCompile>
-    <ClCompile Include="MainEditor.cpp" />
     <ClCompile Include="Tools\EditorToolSelectorBase.cpp">
-      <Filter>Editor3D\Tools</Filter>
+      <Filter>Tools</Filter>
     </ClCompile>
     <ClCompile Include="Tools\EditorToolsCollection.cpp">
-      <Filter>Editor3D\Tools</Filter>
+      <Filter>Tools</Filter>
     </ClCompile>
     <ClCompile Include="Tools\Editor3DToolBase.cpp">
-      <Filter>Editor3D\Tools</Filter>
+      <Filter>Tools</Filter>
     </ClCompile>
     <ClCompile Include="Tools\Editor3DToolDragger.cpp">
-      <Filter>Editor3D\Tools</Filter>
+      <Filter>Tools</Filter>
     </ClCompile>
     <ClCompile Include="Tools\Editor3DToolMover.cpp">
-      <Filter>Editor3D\Tools</Filter>
+      <Filter>Tools</Filter>
     </ClCompile>
     <ClCompile Include="Tools\Editor3DToolRotator.cpp">
-      <Filter>Editor3D\Tools</Filter>
+      <Filter>Tools</Filter>
     </ClCompile>
     <ClCompile Include="Tools\Editor3DToolSelector.cpp">
-      <Filter>Editor3D\Tools</Filter>
+      <Filter>Tools</Filter>
     </ClCompile>
     <ClCompile Include="Tools\RTS\Editor3DToolMoverRTS.cpp">
-      <Filter>Editor3D\Tools\RTS</Filter>
+      <Filter>Tools\RTS</Filter>
     </ClCompile>
     <ClCompile Include="Tools\RTS\Editor3DToolRotatorRTS.cpp">
-      <Filter>Editor3D\Tools\RTS</Filter>
+      <Filter>Tools\RTS</Filter>
     </ClCompile>
-    <ClCompile Include="Tools\EditorUIToolBase.cpp">
-      <Filter>Editor3D\Tools</Filter>
+    <ClCompile Include="Editor.cpp" />
+    <ClCompile Include="EditorUIFrame.cpp">
+      <Filter>UI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -327,301 +330,299 @@
       <Filter>Common</Filter>
     </ClInclude>
     <ClInclude Include="PropertyEditor\Core\CoreAPI.h">
-      <Filter>ZenonWidgets\Property editor\Core</Filter>
+      <Filter>UI\Widgets\Property editor\Core</Filter>
     </ClInclude>
     <ClInclude Include="PropertyEditor\Core\Enum.h">
-      <Filter>ZenonWidgets\Property editor\Core</Filter>
+      <Filter>UI\Widgets\Property editor\Core</Filter>
     </ClInclude>
     <ClInclude Include="PropertyEditor\Core\PropertyCore.h">
-      <Filter>ZenonWidgets\Property editor\Core</Filter>
+      <Filter>UI\Widgets\Property editor\Core</Filter>
     </ClInclude>
     <ClInclude Include="PropertyEditor\Core\PropertyGUI.h">
-      <Filter>ZenonWidgets\Property editor\Core</Filter>
+      <Filter>UI\Widgets\Property editor\Core</Filter>
     </ClInclude>
     <ClInclude Include="PropertyEditor\Core\QObjectPropertySet.h">
-      <Filter>ZenonWidgets\Property editor\Core</Filter>
+      <Filter>UI\Widgets\Property editor\Core</Filter>
     </ClInclude>
     <ClInclude Include="PropertyEditor\Core\Auxiliary\PropertyAux.h">
-      <Filter>ZenonWidgets\Property editor\Core\Auxiliary</Filter>
+      <Filter>UI\Widgets\Property editor\Core\Auxiliary</Filter>
     </ClInclude>
     <ClInclude Include="PropertyEditor\Core\Auxiliary\PropertyDelegateInfo.h">
-      <Filter>ZenonWidgets\Property editor\Core\Auxiliary</Filter>
+      <Filter>UI\Widgets\Property editor\Core\Auxiliary</Filter>
     </ClInclude>
     <ClInclude Include="PropertyEditor\Core\Auxiliary\PropertyMacro.h">
-      <Filter>ZenonWidgets\Property editor\Core\Auxiliary</Filter>
+      <Filter>UI\Widgets\Property editor\Core\Auxiliary</Filter>
     </ClInclude>
     <ClInclude Include="PropertyEditor\Core\Auxiliary\PropertyTemplates.h">
-      <Filter>ZenonWidgets\Property editor\Core\Auxiliary</Filter>
+      <Filter>UI\Widgets\Property editor\Core\Auxiliary</Filter>
     </ClInclude>
     <ClInclude Include="PropertyEditor\PropertyWidget\PropertyWidgetAPI.h">
-      <Filter>ZenonWidgets\Property editor\Widget</Filter>
+      <Filter>UI\Widgets\Property editor\Widget</Filter>
     </ClInclude>
     <ClInclude Include="PropertyEditor\PropertyWidget\Delegates\PropertyDelegate.h">
-      <Filter>ZenonWidgets\Property editor\Widget\Delegates</Filter>
+      <Filter>UI\Widgets\Property editor\Widget\Delegates</Filter>
     </ClInclude>
     <ClInclude Include="PropertyEditor\PropertyWidget\Delegates\PropertyDelegateAux.h">
-      <Filter>ZenonWidgets\Property editor\Widget\Delegates</Filter>
+      <Filter>UI\Widgets\Property editor\Widget\Delegates</Filter>
     </ClInclude>
     <ClInclude Include="PropertyEditor\PropertyWidget\Delegates\PropertyDelegateFactory.h">
-      <Filter>ZenonWidgets\Property editor\Widget\Delegates</Filter>
+      <Filter>UI\Widgets\Property editor\Widget\Delegates</Filter>
     </ClInclude>
     <ClInclude Include="PropertyEditor\PropertyWidget\Delegates\Core\PropertyDelegateBool.h">
-      <Filter>ZenonWidgets\Property editor\Widget\Delegates\Core</Filter>
+      <Filter>UI\Widgets\Property editor\Widget\Delegates\Core</Filter>
     </ClInclude>
     <ClInclude Include="PropertyEditor\PropertyWidget\Delegates\Core\PropertyDelegateDouble.h">
-      <Filter>ZenonWidgets\Property editor\Widget\Delegates\Core</Filter>
+      <Filter>UI\Widgets\Property editor\Widget\Delegates\Core</Filter>
     </ClInclude>
     <ClInclude Include="PropertyEditor\PropertyWidget\Delegates\Core\PropertyDelegateEnum.h">
-      <Filter>ZenonWidgets\Property editor\Widget\Delegates\Core</Filter>
+      <Filter>UI\Widgets\Property editor\Widget\Delegates\Core</Filter>
     </ClInclude>
     <ClInclude Include="PropertyEditor\PropertyWidget\Delegates\Core\PropertyDelegateEnumFlags.h">
-      <Filter>ZenonWidgets\Property editor\Widget\Delegates\Core</Filter>
+      <Filter>UI\Widgets\Property editor\Widget\Delegates\Core</Filter>
     </ClInclude>
     <ClInclude Include="PropertyEditor\PropertyWidget\Delegates\Core\PropertyDelegateFloat.h">
-      <Filter>ZenonWidgets\Property editor\Widget\Delegates\Core</Filter>
+      <Filter>UI\Widgets\Property editor\Widget\Delegates\Core</Filter>
     </ClInclude>
     <ClInclude Include="PropertyEditor\PropertyWidget\Delegates\Core\PropertyDelegateInt.h">
-      <Filter>ZenonWidgets\Property editor\Widget\Delegates\Core</Filter>
+      <Filter>UI\Widgets\Property editor\Widget\Delegates\Core</Filter>
     </ClInclude>
     <ClInclude Include="PropertyEditor\PropertyWidget\Delegates\Core\PropertyDelegateQPoint.h">
-      <Filter>ZenonWidgets\Property editor\Widget\Delegates\Core</Filter>
+      <Filter>UI\Widgets\Property editor\Widget\Delegates\Core</Filter>
     </ClInclude>
     <ClInclude Include="PropertyEditor\PropertyWidget\Delegates\Core\PropertyDelegateQPointF.h">
-      <Filter>ZenonWidgets\Property editor\Widget\Delegates\Core</Filter>
+      <Filter>UI\Widgets\Property editor\Widget\Delegates\Core</Filter>
     </ClInclude>
     <ClInclude Include="PropertyEditor\PropertyWidget\Delegates\Core\PropertyDelegateQRect.h">
-      <Filter>ZenonWidgets\Property editor\Widget\Delegates\Core</Filter>
+      <Filter>UI\Widgets\Property editor\Widget\Delegates\Core</Filter>
     </ClInclude>
     <ClInclude Include="PropertyEditor\PropertyWidget\Delegates\Core\PropertyDelegateQRectF.h">
-      <Filter>ZenonWidgets\Property editor\Widget\Delegates\Core</Filter>
+      <Filter>UI\Widgets\Property editor\Widget\Delegates\Core</Filter>
     </ClInclude>
     <ClInclude Include="PropertyEditor\PropertyWidget\Delegates\Core\PropertyDelegateQSize.h">
-      <Filter>ZenonWidgets\Property editor\Widget\Delegates\Core</Filter>
+      <Filter>UI\Widgets\Property editor\Widget\Delegates\Core</Filter>
     </ClInclude>
     <ClInclude Include="PropertyEditor\PropertyWidget\Delegates\Core\PropertyDelegateQSizeF.h">
-      <Filter>ZenonWidgets\Property editor\Widget\Delegates\Core</Filter>
+      <Filter>UI\Widgets\Property editor\Widget\Delegates\Core</Filter>
     </ClInclude>
     <ClInclude Include="PropertyEditor\PropertyWidget\Delegates\Core\PropertyDelegateUInt.h">
-      <Filter>ZenonWidgets\Property editor\Widget\Delegates\Core</Filter>
+      <Filter>UI\Widgets\Property editor\Widget\Delegates\Core</Filter>
     </ClInclude>
     <ClInclude Include="PropertyEditor\PropertyWidget\Delegates\GUI\PropertyDelegateButton.h">
-      <Filter>ZenonWidgets\Property editor\Widget\Delegates\GUI</Filter>
+      <Filter>UI\Widgets\Property editor\Widget\Delegates\GUI</Filter>
     </ClInclude>
     <ClInclude Include="PropertyEditor\PropertyWidget\Delegates\GUI\PropertyDelegateQBrush.h">
-      <Filter>ZenonWidgets\Property editor\Widget\Delegates\GUI</Filter>
+      <Filter>UI\Widgets\Property editor\Widget\Delegates\GUI</Filter>
     </ClInclude>
     <ClInclude Include="PropertyEditor\PropertyWidget\Delegates\GUI\PropertyDelegateQColor.h">
-      <Filter>ZenonWidgets\Property editor\Widget\Delegates\GUI</Filter>
+      <Filter>UI\Widgets\Property editor\Widget\Delegates\GUI</Filter>
     </ClInclude>
     <ClInclude Include="PropertyEditor\PropertyWidget\Delegates\GUI\PropertyDelegateQFont.h">
-      <Filter>ZenonWidgets\Property editor\Widget\Delegates\GUI</Filter>
+      <Filter>UI\Widgets\Property editor\Widget\Delegates\GUI</Filter>
     </ClInclude>
     <ClInclude Include="PropertyEditor\PropertyWidget\Delegates\GUI\PropertyDelegateQPen.h">
-      <Filter>ZenonWidgets\Property editor\Widget\Delegates\GUI</Filter>
+      <Filter>UI\Widgets\Property editor\Widget\Delegates\GUI</Filter>
     </ClInclude>
     <ClInclude Include="PropertyEditor\PropertyWidget\Delegates\Utils\PropertyDelegateGeoCoord.h">
-      <Filter>ZenonWidgets\Property editor\Widget\Delegates\Utils</Filter>
+      <Filter>UI\Widgets\Property editor\Widget\Delegates\Utils</Filter>
     </ClInclude>
     <ClInclude Include="PropertyEditor\PropertyWidget\Delegates\Utils\PropertyDelegateGeoPoint.h">
-      <Filter>ZenonWidgets\Property editor\Widget\Delegates\Utils</Filter>
+      <Filter>UI\Widgets\Property editor\Widget\Delegates\Utils</Filter>
     </ClInclude>
     <ClInclude Include="PropertyEditor\PropertyWidget\Delegates\Utils\PropertyDelegatePropertySet.h">
-      <Filter>ZenonWidgets\Property editor\Widget\Delegates\Utils</Filter>
+      <Filter>UI\Widgets\Property editor\Widget\Delegates\Utils</Filter>
     </ClInclude>
     <ClInclude Include="PropertyEditor\PropertyWidget\Delegates\Utils\PropertyDelegateSliderBox.h">
-      <Filter>ZenonWidgets\Property editor\Widget\Delegates\Utils</Filter>
+      <Filter>UI\Widgets\Property editor\Widget\Delegates\Utils</Filter>
     </ClInclude>
     <ClInclude Include="PropertyEditor\PropertyWidget\Delegates\Utils\PropertyEditorAux.h">
-      <Filter>ZenonWidgets\Property editor\Widget\Delegates\Utils</Filter>
+      <Filter>UI\Widgets\Property editor\Widget\Delegates\Utils</Filter>
     </ClInclude>
     <ClInclude Include="PropertyEditor\PropertyWidget\Delegates\Utils\PropertyEditorHandler.h">
-      <Filter>ZenonWidgets\Property editor\Widget\Delegates\Utils</Filter>
+      <Filter>UI\Widgets\Property editor\Widget\Delegates\Utils</Filter>
     </ClInclude>
     <ClInclude Include="PropertyEditor\PropertyWidget\Utils\InplaceEditing.h">
-      <Filter>ZenonWidgets\Property editor\Widget\Utils</Filter>
+      <Filter>UI\Widgets\Property editor\Widget\Utils</Filter>
     </ClInclude>
     <ClInclude Include="PropertyEditor\PropertyWidget\Delegates\Core\PropertyDelegateVec3.h">
-      <Filter>ZenonWidgets\Property editor\Widget\Delegates\Core</Filter>
+      <Filter>UI\Widgets\Property editor\Widget\Delegates\Core</Filter>
     </ClInclude>
     <ClInclude Include="PropertyEditor\PropertyWidget\Delegates\Core\PropertyDelegateString.h">
-      <Filter>ZenonWidgets\Property editor\Widget\Delegates\Core</Filter>
+      <Filter>UI\Widgets\Property editor\Widget\Delegates\Core</Filter>
     </ClInclude>
     <ClInclude Include="EditorInterfaces.h">
       <Filter>Common</Filter>
     </ClInclude>
     <ClInclude Include="_widgetPropertyEditor.h">
-      <Filter>ZenonWidgets</Filter>
+      <Filter>UI\Widgets</Filter>
     </ClInclude>
     <ClInclude Include="_widgetZenonWindow3D.h">
-      <Filter>ZenonWidgets</Filter>
+      <Filter>UI\Widgets</Filter>
     </ClInclude>
     <ClInclude Include="Editor3DFrame.h">
-      <Filter>Editor3D</Filter>
+      <Filter>3D</Filter>
     </ClInclude>
     <ClInclude Include="_widgetZenonLogViewer.h">
-      <Filter>ZenonWidgets</Filter>
+      <Filter>UI\Widgets</Filter>
     </ClInclude>
     <ClInclude Include="_widgetZenonSceneViewer.h">
-      <Filter>ZenonWidgets</Filter>
+      <Filter>UI\Widgets</Filter>
     </ClInclude>
     <ClInclude Include="EditedScene.h">
-      <Filter>Editor3D</Filter>
+      <Filter>3D</Filter>
     </ClInclude>
     <ClInclude Include="Passes\DrawSelectionPass.h">
-      <Filter>Editor3D\Passes</Filter>
+      <Filter>3D\Passes</Filter>
     </ClInclude>
     <ClInclude Include="ZenonWidgets\TreeItemTemplate.h">
-      <Filter>ZenonWidgets</Filter>
+      <Filter>UI\Widgets</Filter>
     </ClInclude>
     <ClInclude Include="ZenonWidgets\TreeModelTemplate.h">
-      <Filter>ZenonWidgets</Filter>
+      <Filter>UI\Widgets</Filter>
     </ClInclude>
     <ClInclude Include="_widgetZenonCollectionViewer.h">
-      <Filter>ZenonWidgets</Filter>
+      <Filter>UI\Widgets</Filter>
     </ClInclude>
     <ClInclude Include="_widgetZenonWindowMinimal3D.h">
-      <Filter>ZenonWidgets</Filter>
+      <Filter>UI\Widgets</Filter>
     </ClInclude>
     <ClInclude Include="Editor3DPreviewScene.h">
-      <Filter>Editor3D</Filter>
+      <Filter>3D</Filter>
     </ClInclude>
     <ClInclude Include="Tools\EditorToolSelectorBase.h">
-      <Filter>Editor3D\Tools</Filter>
+      <Filter>Tools</Filter>
     </ClInclude>
     <ClInclude Include="Tools\EditorToolsCollection.h">
-      <Filter>Editor3D\Tools</Filter>
+      <Filter>Tools</Filter>
     </ClInclude>
     <ClInclude Include="Tools\Editor3DToolBase.h">
-      <Filter>Editor3D\Tools</Filter>
+      <Filter>Tools</Filter>
     </ClInclude>
     <ClInclude Include="Tools\Editor3DToolDragger.h">
-      <Filter>Editor3D\Tools</Filter>
+      <Filter>Tools</Filter>
     </ClInclude>
     <ClInclude Include="Tools\Editor3DToolMover.h">
-      <Filter>Editor3D\Tools</Filter>
+      <Filter>Tools</Filter>
     </ClInclude>
     <ClInclude Include="Tools\Editor3DToolRotator.h">
-      <Filter>Editor3D\Tools</Filter>
+      <Filter>Tools</Filter>
     </ClInclude>
     <ClInclude Include="Tools\Editor3DToolSelector.h">
-      <Filter>Editor3D\Tools</Filter>
+      <Filter>Tools</Filter>
     </ClInclude>
     <ClInclude Include="Tools\RTS\Editor3DToolMoverRTS.h">
-      <Filter>Editor3D\Tools\RTS</Filter>
+      <Filter>Tools\RTS</Filter>
     </ClInclude>
     <ClInclude Include="Tools\RTS\Editor3DToolRotatorRTS.h">
-      <Filter>Editor3D\Tools\RTS</Filter>
+      <Filter>Tools\RTS</Filter>
     </ClInclude>
-    <ClInclude Include="Tools\EditorUIToolBase.h">
-      <Filter>Editor3D\Tools</Filter>
+    <ClInclude Include="Editor.h" />
+    <ClInclude Include="EditorQtInterfaces.h">
+      <Filter>Common</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="PropertyEditor\Core\Property.h">
-      <Filter>ZenonWidgets\Property editor\Core</Filter>
+      <Filter>UI\Widgets\Property editor\Core</Filter>
     </QtMoc>
     <QtMoc Include="PropertyEditor\Core\PropertySet.h">
-      <Filter>ZenonWidgets\Property editor\Core</Filter>
+      <Filter>UI\Widgets\Property editor\Core</Filter>
     </QtMoc>
     <QtMoc Include="PropertyEditor\Core\Core\PropertyBool.h">
-      <Filter>ZenonWidgets\Property editor\Core\Core</Filter>
+      <Filter>UI\Widgets\Property editor\Core\Core</Filter>
     </QtMoc>
     <QtMoc Include="PropertyEditor\Core\Core\PropertyDouble.h">
-      <Filter>ZenonWidgets\Property editor\Core\Core</Filter>
+      <Filter>UI\Widgets\Property editor\Core\Core</Filter>
     </QtMoc>
     <QtMoc Include="PropertyEditor\Core\Core\PropertyEnum.h">
-      <Filter>ZenonWidgets\Property editor\Core\Core</Filter>
+      <Filter>UI\Widgets\Property editor\Core\Core</Filter>
     </QtMoc>
     <QtMoc Include="PropertyEditor\Core\Core\PropertyEnumFlags.h">
-      <Filter>ZenonWidgets\Property editor\Core\Core</Filter>
+      <Filter>UI\Widgets\Property editor\Core\Core</Filter>
     </QtMoc>
     <QtMoc Include="PropertyEditor\Core\Core\PropertyFloat.h">
-      <Filter>ZenonWidgets\Property editor\Core\Core</Filter>
+      <Filter>UI\Widgets\Property editor\Core\Core</Filter>
     </QtMoc>
     <QtMoc Include="PropertyEditor\Core\Core\PropertyInt.h">
-      <Filter>ZenonWidgets\Property editor\Core\Core</Filter>
+      <Filter>UI\Widgets\Property editor\Core\Core</Filter>
     </QtMoc>
     <QtMoc Include="PropertyEditor\Core\Core\PropertyQPoint.h">
-      <Filter>ZenonWidgets\Property editor\Core\Core</Filter>
+      <Filter>UI\Widgets\Property editor\Core\Core</Filter>
     </QtMoc>
     <QtMoc Include="PropertyEditor\Core\Core\PropertyQPointF.h">
-      <Filter>ZenonWidgets\Property editor\Core\Core</Filter>
+      <Filter>UI\Widgets\Property editor\Core\Core</Filter>
     </QtMoc>
     <QtMoc Include="PropertyEditor\Core\Core\PropertyQRect.h">
-      <Filter>ZenonWidgets\Property editor\Core\Core</Filter>
+      <Filter>UI\Widgets\Property editor\Core\Core</Filter>
     </QtMoc>
     <QtMoc Include="PropertyEditor\Core\Core\PropertyQRectF.h">
-      <Filter>ZenonWidgets\Property editor\Core\Core</Filter>
+      <Filter>UI\Widgets\Property editor\Core\Core</Filter>
     </QtMoc>
     <QtMoc Include="PropertyEditor\Core\Core\PropertyQSize.h">
-      <Filter>ZenonWidgets\Property editor\Core\Core</Filter>
+      <Filter>UI\Widgets\Property editor\Core\Core</Filter>
     </QtMoc>
     <QtMoc Include="PropertyEditor\Core\Core\PropertyQSizeF.h">
-      <Filter>ZenonWidgets\Property editor\Core\Core</Filter>
+      <Filter>UI\Widgets\Property editor\Core\Core</Filter>
     </QtMoc>
     <QtMoc Include="PropertyEditor\Core\Core\PropertyUInt.h">
-      <Filter>ZenonWidgets\Property editor\Core\Core</Filter>
+      <Filter>UI\Widgets\Property editor\Core\Core</Filter>
     </QtMoc>
     <QtMoc Include="PropertyEditor\Core\GUI\PropertyButton.h">
-      <Filter>ZenonWidgets\Property editor\Core\GUI</Filter>
+      <Filter>UI\Widgets\Property editor\Core\GUI</Filter>
     </QtMoc>
     <QtMoc Include="PropertyEditor\Core\GUI\PropertyQBrush.h">
-      <Filter>ZenonWidgets\Property editor\Core\GUI</Filter>
+      <Filter>UI\Widgets\Property editor\Core\GUI</Filter>
     </QtMoc>
     <QtMoc Include="PropertyEditor\Core\GUI\PropertyQColor.h">
-      <Filter>ZenonWidgets\Property editor\Core\GUI</Filter>
+      <Filter>UI\Widgets\Property editor\Core\GUI</Filter>
     </QtMoc>
     <QtMoc Include="PropertyEditor\Core\GUI\PropertyQFont.h">
-      <Filter>ZenonWidgets\Property editor\Core\GUI</Filter>
+      <Filter>UI\Widgets\Property editor\Core\GUI</Filter>
     </QtMoc>
     <QtMoc Include="PropertyEditor\Core\GUI\PropertyQPen.h">
-      <Filter>ZenonWidgets\Property editor\Core\GUI</Filter>
+      <Filter>UI\Widgets\Property editor\Core\GUI</Filter>
     </QtMoc>
     <QtMoc Include="PropertyEditor\PropertyWidget\PropertyView.h">
-      <Filter>ZenonWidgets\Property editor\Widget</Filter>
+      <Filter>UI\Widgets\Property editor\Widget</Filter>
     </QtMoc>
     <QtMoc Include="PropertyEditor\PropertyWidget\PropertyWidget.h">
-      <Filter>ZenonWidgets\Property editor\Widget</Filter>
+      <Filter>UI\Widgets\Property editor\Widget</Filter>
     </QtMoc>
     <QtMoc Include="PropertyEditor\PropertyWidget\Delegates\Utils\PropertyDelegateMisc.h">
-      <Filter>ZenonWidgets\Property editor\Widget\Delegates\Utils</Filter>
+      <Filter>UI\Widgets\Property editor\Widget\Delegates\Utils</Filter>
     </QtMoc>
     <QtMoc Include="PropertyEditor\PropertyWidget\Utils\AccessibilityProxy.h">
-      <Filter>ZenonWidgets\Property editor\Widget\Utils</Filter>
+      <Filter>UI\Widgets\Property editor\Widget\Utils</Filter>
     </QtMoc>
     <QtMoc Include="PropertyEditor\Core\PropertyBase.h">
-      <Filter>ZenonWidgets\Property editor\Core</Filter>
+      <Filter>UI\Widgets\Property editor\Core</Filter>
     </QtMoc>
     <QtMoc Include="PropertyEditor\Core\Core\PropertyVec3.h">
-      <Filter>ZenonWidgets\Property editor\Core\Core</Filter>
+      <Filter>UI\Widgets\Property editor\Core\Core</Filter>
     </QtMoc>
     <QtMoc Include="PropertyEditor\PropertiesController.h">
-      <Filter>ZenonWidgets\Property editor</Filter>
+      <Filter>UI\Widgets\Property editor</Filter>
     </QtMoc>
     <QtMoc Include="PropertyEditor\Core\Core\PropertyString.h">
-      <Filter>ZenonWidgets\Property editor\Core\Core</Filter>
+      <Filter>UI\Widgets\Property editor\Core\Core</Filter>
     </QtMoc>
     <QtMoc Include="ZenonWidgets\ZenonWindow3D\ZenonWindow3D.h">
-      <Filter>ZenonWidgets\ZenonWindow3D</Filter>
+      <Filter>UI\Widgets\ZenonWindow3D</Filter>
     </QtMoc>
     <QtMoc Include="ZenonWidgets\ZenonLogViewer\ZenonLogViewer.h">
-      <Filter>ZenonWidgets\ZenonLogViewer</Filter>
+      <Filter>UI\Widgets\ZenonLogViewer</Filter>
     </QtMoc>
     <QtMoc Include="ZenonWidgets\ZenonSceneViewer\ZenonSceneViewerWidget.h">
-      <Filter>ZenonWidgets\ZenonSceneViewer</Filter>
+      <Filter>UI\Widgets\ZenonSceneViewer</Filter>
     </QtMoc>
     <QtMoc Include="ZenonWidgets\ZenonCollectionViewer\ZenonCollectionViewerWidget.h">
-      <Filter>ZenonWidgets\ZenonCollectionViewer</Filter>
+      <Filter>UI\Widgets\ZenonCollectionViewer</Filter>
     </QtMoc>
     <QtMoc Include="ZenonWidgets\ZenonWindowMinimal3D\ZenonWindowMinimal3D.h">
-      <Filter>ZenonWidgets\ZenonWindowMinimal3D</Filter>
+      <Filter>UI\Widgets\ZenonWindowMinimal3D</Filter>
     </QtMoc>
-    <QtMoc Include="MainEditor.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <QtRcc Include="MainEditor.qrc">
-      <Filter>Resource Files</Filter>
-    </QtRcc>
+    <QtMoc Include="EditorUIFrame.h">
+      <Filter>UI</Filter>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Editor.rc">
@@ -629,6 +630,13 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <QtUic Include="MainEditor.ui" />
+    <QtRcc Include="EditorUIFrame.qrc">
+      <Filter>Resource Files</Filter>
+    </QtRcc>
+  </ItemGroup>
+  <ItemGroup>
+    <QtUic Include="EditorUIFrame.ui">
+      <Filter>UI</Filter>
+    </QtUic>
   </ItemGroup>
 </Project>

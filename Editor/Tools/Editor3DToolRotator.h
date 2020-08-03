@@ -6,7 +6,7 @@ class CEditor3DToolRotator
 	: public CEditor3DToolBase
 {
 public:
-	CEditor3DToolRotator(IEditor3DFrame& EditorFrame);
+	CEditor3DToolRotator(IEditor& Editor);
 	virtual ~CEditor3DToolRotator();
 
 	// IEditorTool
@@ -19,6 +19,9 @@ public:
 	bool OnMousePressed(const MouseButtonEventArgs & e, const Ray& RayToWorld) override;
 	void OnMouseReleased(const MouseButtonEventArgs & e, const Ray& RayToWorld) override;
 	void OnMouseMoved(const MouseMotionEventArgs& e, const Ray& RayToWorld) override;
+
+	// IEditorToolUI
+	void DoInitializeUI(IEditorQtUIFrame& QtUIFrame) override;
 
 protected:
 	void Clear();

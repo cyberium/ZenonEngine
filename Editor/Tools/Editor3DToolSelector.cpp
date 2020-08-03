@@ -3,9 +3,9 @@
 // General
 #include "Editor3DToolSelector.h"
 
-CEditor3DToolSelector::CEditor3DToolSelector(IEditor3DFrame & EditorFrame)
-	: CEditorToolSelector(reinterpret_cast<IEditor_NodesSelectorEventListener&>(EditorFrame))
-	, CEditor3DToolBase(EditorFrame)
+CEditor3DToolSelector::CEditor3DToolSelector(IEditor& Editor)
+	: CEditorToolSelector(dynamic_cast<IEditor_NodesSelectorEventListener&>(Editor))
+	, CEditor3DToolBase(Editor)
 	, m_IsSelecting2D(false)
 {
 }
@@ -28,6 +28,8 @@ void CEditor3DToolSelector::Enable()
 {
 	CEditor3DToolBase::Enable();
 
+	dynamic_cast<IEditorQtUIFrame&>(GetEditor().GetUIFrame()).getUI().editorToolSelectorBtn->setChecked(IsEnabled());
+
 	// Always enabled
 	//m_DrawSelectionPass->SetEnabled(true);
 }
@@ -36,13 +38,23 @@ void CEditor3DToolSelector::Disable()
 {
 	CEditor3DToolBase::Disable();
 
+	dynamic_cast<IEditorQtUIFrame&>(GetEditor().GetUIFrame()).getUI().editorToolSelectorBtn->setChecked(IsEnabled());
+
 	// Always enabled
 	//m_DrawSelectionPass->SetEnabled(false);
 }
 
+
+void CEditor3DToolSelector::AddPasses(RenderTechnique& RenderTechnique, std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport)
+{
+	m_DrawSelectionPass = std::make_shared<CDrawSelectionPass>(GetRenderDevice(), *this);
+	m_DrawSelectionPass->CreatePipeline(RenderTarget, Viewport);
+	RenderTechnique.AddPass(m_DrawSelectionPass);
+}
+
 bool CEditor3DToolSelector::OnMousePressed(const MouseButtonEventArgs & e, const Ray & RayToWorld)
 {
-	auto nodes = GetScene()->FindIntersection(RayToWorld, GetEditor3DFrame().GetEditedRootNode3D());
+	auto nodes = GetScene()->FindIntersection(RayToWorld, GetEditor().Get3DFrame().GetEditedRootNode3D());
 	if (nodes.empty())
 	{
 		if (IsEnabled())
@@ -103,7 +115,7 @@ void CEditor3DToolSelector::OnMouseReleased(const MouseButtonEventArgs & e, cons
 					10000.0f
 				);
 
-				auto nodes = GetScene()->FindIntersections(f, GetEditor3DFrame().GetEditedRootNode3D());
+				auto nodes = GetScene()->FindIntersections(f, GetEditor().Get3DFrame().GetEditedRootNode3D());
 				if (!nodes.empty())
 					SelectNodes(nodes);
 			}
@@ -124,12 +136,18 @@ void CEditor3DToolSelector::OnMouseMoved(const MouseMotionEventArgs & e, const R
 	}
 }
 
-void CEditor3DToolSelector::AddPasses(RenderTechnique& RenderTechnique, std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport)
+
+
+//
+// IEditorToolUI
+//
+void CEditor3DToolSelector::DoInitializeUI(IEditorQtUIFrame& QtUIFrame)
 {
-	m_DrawSelectionPass = std::make_shared<CDrawSelectionPass>(GetRenderDevice(), *this);
-	m_DrawSelectionPass->CreatePipeline(RenderTarget, Viewport);
-	RenderTechnique.AddPass(m_DrawSelectionPass);
+	QtUIFrame.getQObject().connect(QtUIFrame.getUI().editorToolSelectorBtn, &QPushButton::released, [this]() {
+		GetEditor().GetTools().Enable(ETool::EToolSelector);
+	});
 }
+
 
 
 //

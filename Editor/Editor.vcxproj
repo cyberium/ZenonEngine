@@ -118,6 +118,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="EditedScene.cpp" />
+    <ClCompile Include="Editor.cpp" />
     <ClCompile Include="Editor3DFrame.cpp" />
     <ClCompile Include="Editor3DPreviewScene.cpp" />
     <ClCompile Include="main.cpp">
@@ -126,7 +127,7 @@
       <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Release|x64'">input</DynamicSource>
       <QtMocFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">%(Filename).moc</QtMocFileName>
     </ClCompile>
-    <ClCompile Include="MainEditor.cpp" />
+    <ClCompile Include="EditorUIFrame.cpp" />
     <ClCompile Include="Passes\DrawSelectionPass.cpp" />
     <ClCompile Include="PropertyEditor\Core\Core\PropertyBool.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
@@ -361,7 +362,6 @@
     <ClCompile Include="Tools\Editor3DToolSelector.cpp" />
     <ClCompile Include="Tools\EditorToolSelectorBase.cpp" />
     <ClCompile Include="Tools\EditorToolsCollection.cpp" />
-    <ClCompile Include="Tools\EditorUIToolBase.cpp" />
     <ClCompile Include="Tools\RTS\Editor3DToolMoverRTS.cpp" />
     <ClCompile Include="Tools\RTS\Editor3DToolRotatorRTS.cpp" />
     <ClCompile Include="ZenonWidgets\ZenonCollectionViewer\ZenonCollectionViewerWidget.cpp" />
@@ -372,9 +372,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EditedScene.h" />
+    <ClInclude Include="Editor.h" />
     <ClInclude Include="Editor3DFrame.h" />
     <ClInclude Include="Editor3DPreviewScene.h" />
     <ClInclude Include="EditorInterfaces.h" />
+    <ClInclude Include="EditorQtInterfaces.h" />
     <ClInclude Include="Passes\DrawSelectionPass.h" />
     <ClInclude Include="PropertyEditor\Core\Auxiliary\PropertyAux.h" />
     <ClInclude Include="PropertyEditor\Core\Auxiliary\PropertyDelegateInfo.h" />
@@ -388,7 +390,6 @@
     <ClInclude Include="Tools\Editor3DToolSelector.h" />
     <ClInclude Include="Tools\EditorToolSelectorBase.h" />
     <ClInclude Include="Tools\EditorToolsCollection.h" />
-    <ClInclude Include="Tools\EditorUIToolBase.h" />
     <ClInclude Include="Tools\RTS\Editor3DToolMoverRTS.h" />
     <ClInclude Include="Tools\RTS\Editor3DToolRotatorRTS.h" />
     <ClInclude Include="_widgetZenonWindowMinimal3D.h" />
@@ -476,17 +477,17 @@
     <ClInclude Include="PropertyEditor\PropertyWidget\PropertyWidgetAPI.h" />
     <QtMoc Include="PropertyEditor\PropertyWidget\Utils\AccessibilityProxy.h" />
     <ClInclude Include="PropertyEditor\PropertyWidget\Utils\InplaceEditing.h" />
-    <QtMoc Include="MainEditor.h">
+    <QtMoc Include="EditorUIFrame.h">
       <ForceInclude Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">stdafx.h;../../%(Filename)%(Extension)</ForceInclude>
       <ForceInclude Condition="'$(Configuration)|$(Platform)'=='Release|x64'">stdafx.h;../../%(Filename)%(Extension)</ForceInclude>
     </QtMoc>
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <ItemGroup>
-    <QtUic Include="MainEditor.ui" />
+    <QtUic Include="EditorUIFrame.ui" />
   </ItemGroup>
   <ItemGroup>
-    <QtRcc Include="MainEditor.qrc" />
+    <QtRcc Include="EditorUIFrame.qrc" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Editor.rc" />

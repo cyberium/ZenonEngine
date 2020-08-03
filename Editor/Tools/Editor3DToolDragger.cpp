@@ -3,8 +3,8 @@
 // General
 #include "Editor3DToolDragger.h"
 
-CEditor3DToolDragger::CEditor3DToolDragger(IEditor3DFrame & EditorFrame)
-	: CEditor3DToolBase(EditorFrame)
+CEditor3DToolDragger::CEditor3DToolDragger(IEditor& Editor)
+	: CEditor3DToolBase(Editor)
 	, m_IsDraggingEnabled(false)
 	, m_IsDraggingPermanentCreation(false)
 {
@@ -67,6 +67,15 @@ void CEditor3DToolDragger::OnMouseMoved(const MouseMotionEventArgs & e, const Ra
 		return;
 
 	DoMoveNode(e.GetPoint());
+}
+
+
+
+//
+// IEditorToolUI
+//
+void CEditor3DToolDragger::DoInitializeUI(IEditorQtUIFrame & QtUIFrame)
+{
 }
 
 void CEditor3DToolDragger::DropEvent(const glm::vec2& Position)
@@ -147,7 +156,7 @@ void CEditor3DToolDragger::DoDropNodeAndCreateIt()
 	auto copiedNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, GetScene());
 	firstChild->Copy(copiedNode);
 	copiedNode->SetTranslate(m_DraggedNode->GetTranslation());
-	GetEditor3DFrame().GetEditedRootNode3D()->AddChild(copiedNode);
+	GetEditor().Get3DFrame().GetEditedRootNode3D()->AddChild(copiedNode);
 
 	if (!m_IsDraggingPermanentCreation)
 	{
@@ -157,7 +166,7 @@ void CEditor3DToolDragger::DoDropNodeAndCreateIt()
 
 std::shared_ptr<ISceneNode3D> CEditor3DToolDragger::CreateNode(const glm::ivec3& Position, const std::string& Type)
 {
-	auto node = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, GetEditor3DFrame().GetEditedScene().get());
+	auto node = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, GetEditor().Get3DFrame().GetEditedScene().get());
 	node->SetName(Type);
 	auto model = GetRenderDevice().GetObjectsFactory().CreateModel();
 	if (auto loadable = std::dynamic_pointer_cast<IObjectLoadSave>(model))

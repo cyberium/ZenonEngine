@@ -100,24 +100,28 @@ LRESULT ZenonWindowMinimal3DWidget::Windows_ProcessMessage(HWND hwnd, UINT messa
 
 void ZenonWindowMinimal3DWidget::focusInEvent(QFocusEvent * event)
 {
-	m_EventListener->OnWindowInputFocus(EventArgs());
+	if (m_EventListener)
+		m_EventListener->OnWindowInputFocus(EventArgs());
 }
 
 void ZenonWindowMinimal3DWidget::focusOutEvent(QFocusEvent * event)
 {
-	m_EventListener->OnWindowInputBlur(EventArgs());
+	if (m_EventListener)
+		m_EventListener->OnWindowInputBlur(EventArgs());
 }
 
 void ZenonWindowMinimal3DWidget::enterEvent(QEvent * event)
 {
 	setFocus();
 
-	m_EventListener->OnWindowMouseFocus(EventArgs());
+	if (m_EventListener)
+		m_EventListener->OnWindowMouseFocus(EventArgs());
 }
 
 void ZenonWindowMinimal3DWidget::leaveEvent(QEvent * event)
 {
-	m_EventListener->OnWindowMouseLeave(EventArgs());
+	if (m_EventListener)
+		m_EventListener->OnWindowMouseLeave(EventArgs());
 }
 
 void ZenonWindowMinimal3DWidget::paintEvent(QPaintEvent *pEvent)
@@ -138,8 +142,8 @@ void ZenonWindowMinimal3DWidget::resizeEvent(QResizeEvent * event)
 
 void ZenonWindowMinimal3DWidget::closeEvent(QCloseEvent * event)
 {
-	
-	m_EventListener->OnWindowClose(WindowCloseEventArgs());
+	if (m_EventListener)
+		m_EventListener->OnWindowClose(WindowCloseEventArgs());
 }
 
 void ZenonWindowMinimal3DWidget::showEvent(QShowEvent * event)

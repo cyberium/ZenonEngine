@@ -2,7 +2,6 @@
 
 class CEditorToolSelector
 	: public IEditor_NodesSelector
-	, public IEditor_NodesSelectorInternal
 {
 public:
 	CEditorToolSelector(IEditor_NodesSelectorEventListener& NodesSelectorEventListener);
@@ -18,16 +17,10 @@ public:
 	bool IsNodeSelected(std::shared_ptr<ISceneNode3D> Node) override;
 	const SelectedNodes& GetSelectedNodes() override;
 
-	// IEditor_NodesSelectorInternal
-	void SetOtherSelector(IEditor_NodesSelector * OtherSelector) override;
-	void SynchronizeWithOtherSelector(IEditor_NodesSelector * OtherSelector) override;
-
 protected:
 	virtual void RaiseSelectEvent();
-	virtual void DoSynchronizeWithOtherSelector();
 
 private:
 	SelectedNodes m_SelectedNodes;
 	IEditor_NodesSelectorEventListener& m_NodesSelectorEventListener;
-	IEditor_NodesSelector * m_OtherSelector;
 };

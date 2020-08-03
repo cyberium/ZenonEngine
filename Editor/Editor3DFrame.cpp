@@ -3,25 +3,21 @@
 // Gerenal
 #include "Editor3DFrame.h"
 
-CEdtor3DFrame::CEdtor3DFrame(IBaseManager& BaseManager)
-	: SceneBase(BaseManager)
-	, m_EditorUI(nullptr)
-	, m_Tools(*this)
+CEditor3DFrame::CEditor3DFrame(IEditor& Editor)
+	: SceneBase(Editor.GetBaseManager())
+	, m_Editor(Editor)
 {
-	m_EditedScene = std::make_shared<CEditedScene>(BaseManager);
+	dynamic_cast<IEditorPrivate&>(m_Editor).Set3DFrame(this);
+
+	m_EditedScene = std::make_shared<CEditedScene>(Editor.GetBaseManager());
 	m_EditedScene->Initialize();
 }
 
-CEdtor3DFrame::~CEdtor3DFrame()
+CEditor3DFrame::~CEditor3DFrame()
 {
 }
 
-void CEdtor3DFrame::SetEditorUI(IEditorUIFrame * EditorUIFrame)
-{
-	m_EditorUI = EditorUIFrame;
-}
-
-void CEdtor3DFrame::SetPreviewScene(const std::shared_ptr<CEditor3DPreviewScene>& PreviewScene)
+void CEditor3DFrame::SetPreviewScene(const std::shared_ptr<CEditor3DPreviewScene>& PreviewScene)
 {
 	m_PreviewScene = PreviewScene;
 }
@@ -30,7 +26,7 @@ void CEdtor3DFrame::SetPreviewScene(const std::shared_ptr<CEditor3DPreviewScene>
 //
 // IGameState
 //
-void CEdtor3DFrame::Initialize()
+void CEditor3DFrame::Initialize()
 {
 	SceneBase::Initialize();
 
@@ -52,10 +48,11 @@ void CEdtor3DFrame::Initialize()
 
 	m_LightsBuffer = GetRenderDevice().GetObjectsFactory().CreateStructuredBuffer(nullptr, 8, sizeof(SLight), EAccess::CPUWrite);
 
-	m_Tools.Initialize();
-	m_Tools.m_Selector->SetOtherSelector(m_EditorUI->GetNodesSelector());
-
-	Load3D();
+	GetDefaultLight()->SetType(ELightType::Spot);
+	GetDefaultLight()->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
+	GetDefaultLight()->SetRange(99000.0f);
+	GetDefaultLight()->SetIntensity(1.0f);
+	GetDefaultLight()->SetSpotlightAngle(75.0f);
 	
 	//
 	// Passes
@@ -88,9 +85,6 @@ void CEdtor3DFrame::Initialize()
 		// Debug render
 		m_Technique3D.AddPass(GetBaseManager().GetManager<IRenderPassFactory>()->CreateRenderPass("DebugPass", GetRenderDevice(), GetRenderWindow()->GetRenderTarget(), &GetRenderWindow()->GetViewport(), shared_from_this()));
 
-		m_Tools.m_Selector->AddPasses(m_Technique3D, GetRenderWindow()->GetRenderTarget(), &GetRenderWindow()->GetViewport());
-
-
 		m_TechniqueUI.AddPass(std::make_shared<CUIColorPass>(GetRenderDevice(), shared_from_this())->CreatePipeline(GetRenderWindow()->GetRenderTarget(), &GetRenderWindow()->GetViewport()));
 		m_TechniqueUI.AddPass(std::make_shared<CUIFontPass>(GetRenderDevice(), shared_from_this())->CreatePipeline(GetRenderWindow()->GetRenderTarget(), &GetRenderWindow()->GetViewport()));
 	}
@@ -104,210 +98,71 @@ void CEdtor3DFrame::Initialize()
 	GetCameraController()->GetCamera()->SetPitch(-45);
 }
 
-void CEdtor3DFrame::Finalize()
+void CEditor3DFrame::Finalize()
 {
 	SceneBase::Finalize();
 }
 
-void CEdtor3DFrame::AddChild(const std::shared_ptr<ISceneNode3D>& ParentNode, const std::shared_ptr<ISceneNode3D>& ChildNode)
+void CEditor3DFrame::AddChild(const std::shared_ptr<ISceneNode3D>& ParentNode, const std::shared_ptr<ISceneNode3D>& ChildNode)
 {
 	__super::AddChild(ParentNode, ChildNode);
 }
 
-void CEdtor3DFrame::RemoveChild(const std::shared_ptr<ISceneNode3D>& ParentNode, const std::shared_ptr<ISceneNode3D>& ChildNode)
+void CEditor3DFrame::RemoveChild(const std::shared_ptr<ISceneNode3D>& ParentNode, const std::shared_ptr<ISceneNode3D>& ChildNode)
 {
 	__super::RemoveChild(ParentNode, ChildNode);
 }
 
-void CEdtor3DFrame::RaiseSceneChangeEvent(ESceneChangeType SceneChangeType, const std::shared_ptr<ISceneNode3D>& OwnerNode, const std::shared_ptr<ISceneNode3D>& ChildNode)
+void CEditor3DFrame::RaiseSceneChangeEvent(ESceneChangeType SceneChangeType, const std::shared_ptr<ISceneNode3D>& OwnerNode, const std::shared_ptr<ISceneNode3D>& ChildNode)
 {
 	if (SceneChangeType == ESceneChangeType::NodeRemovedFromParent)
 	{
-		for (const auto& node : m_Tools.m_Selector->GetSelectedNodes())
+		auto& selector = reinterpret_cast<IEditor_NodesSelector&>(GetEditor().GetTools().GetTool(ETool::EToolSelector));
+		for (const auto& node : GetEditor().GetSelectedNodes())
 		{
 			if (node == ChildNode)
 			{
-				m_Tools.m_Selector->RemoveNode(ChildNode);
+				selector.RemoveNode(ChildNode);
 			}
 		}
 	}
 
 	if (IsChildOf(GetEditedRootNode3D(), ChildNode) || IsChildOf(GetEditedRootNode3D(), OwnerNode))
-		m_EditorUI->OnSceneChanged();
+		GetEditor().GetUIFrame().OnSceneChanged();
 }
 
 
-void CEdtor3DFrame::OnPreRender(RenderEventArgs& e)
+bool CEditor3DFrame::OnMousePressed(const MouseButtonEventArgs & e, const Ray & RayToWorld)
 {
-	SceneBase::OnPreRender(e);
-}
-
-
-
-void CEdtor3DFrame::OnWindowMouseMoved(MouseMotionEventArgs & e)
-{
-	__super::OnWindowMouseMoved(e);
-}
-
-bool CEdtor3DFrame::OnWindowMouseButtonPressed(MouseButtonEventArgs & e)
-{
-	return __super::OnWindowMouseButtonPressed(e);;
-}
-
-void CEdtor3DFrame::OnWindowMouseButtonReleased(MouseButtonEventArgs & e)
-{
-	__super::OnWindowMouseButtonReleased(e);
-}
-
-bool CEdtor3DFrame::OnWindowKeyPressed(KeyEventArgs & e)
-{
-	return __super::OnWindowKeyPressed(e);
-}
-
-void CEdtor3DFrame::OnWindowKeyReleased(KeyEventArgs & e)
-{
-	__super::OnWindowKeyReleased(e);
-}
-
-
-bool CEdtor3DFrame::OnMousePressed(const MouseButtonEventArgs & e, const Ray & RayToWorld)
-{
-	if (m_Tools.OnMousePressed(e, RayToWorld))
+	if (m_Editor.GetTools().OnMousePressed(e, RayToWorld))
 		return true;
 
 	return false;
 }
 
-void CEdtor3DFrame::OnMouseReleased(const MouseButtonEventArgs & e, const Ray & RayToWorld)
+void CEditor3DFrame::OnMouseReleased(const MouseButtonEventArgs & e, const Ray & RayToWorld)
 {
-	m_Tools.OnMouseReleased(e, RayToWorld);
+	m_Editor.GetTools().OnMouseReleased(e, RayToWorld);
 }
 
-void CEdtor3DFrame::OnMouseMoved(const MouseMotionEventArgs & e, const Ray & RayToWorld)
+void CEditor3DFrame::OnMouseMoved(const MouseMotionEventArgs & e, const Ray & RayToWorld)
 {
-	m_Tools.OnMouseMoved(e, RayToWorld);
+	m_Editor.GetTools().OnMouseMoved(e, RayToWorld);
 }
+
 
 
 
 //
 // IEditorSharedFrame
 //
-IEditor_NodesSelector * CEdtor3DFrame::GetNodesSelector()
+IEditor& CEditor3DFrame::GetEditor() const
 {
-	return m_Tools.m_Selector.get();
+	return m_Editor;
 }
 
-
-
-
-//
-// IEditor3DFrame
-//
-std::shared_ptr<IScene> CEdtor3DFrame::GetScene()
+bool CEditor3DFrame::InitializeEditorFrame()
 {
-	return shared_from_this();
-}
-
-IBaseManager& CEdtor3DFrame::GetBaseManager2() const
-{
-	return GetBaseManager();
-}
-
-IRenderDevice& CEdtor3DFrame::GetRenderDevice2() const
-{
-	return GetRenderDevice();
-}
-
-void CEdtor3DFrame::LockUpdates()
-{
-	Freeze();
-}
-
-void CEdtor3DFrame::UnlockUpdates()
-{
-	Unfreeze();
-}
-
-void CEdtor3DFrame::DoEnableTool(ETool Tool)
-{
-	m_Tools.Enable(Tool);
-}
-
-std::shared_ptr<IScene> CEdtor3DFrame::GetEditedScene() const
-{
-	return m_EditedScene;
-}
-
-std::shared_ptr<ISceneNode3D> CEdtor3DFrame::GetEditedRootNode3D() const
-{
-	return m_EditedScene->GetRootNode3D();
-}
-
-std::shared_ptr<ISceneNode3D> CEdtor3DFrame::GetNodeUnderMouse(const glm::ivec2& MousePos) const
-{
-	auto nodes = FindIntersection(GetCameraController()->ScreenToRay(GetRenderWindow()->GetViewport(), MousePos));
-	if (nodes.empty())
-		return nullptr;
-	return nodes.begin()->second;
-}
-
-void CEdtor3DFrame::OnCollectionWidget_ModelSelected(const std::shared_ptr<IModel>& Model)
-{
-	if (m_PreviewScene)
-		m_PreviewScene->SetModel(Model);
-}
-
-void CEdtor3DFrame::DropEvent(const glm::vec2& Position)
-{
-	m_Tools.m_Drager->DropEvent(Position);
-}
-
-void CEdtor3DFrame::DragEnterEvent(const SDragData& Data)
-{
-	m_Tools.m_Drager->DragEnterEvent(Data);
-}
-
-void CEdtor3DFrame::DragMoveEvent(const glm::vec2& Position)
-{
-	m_Tools.m_Drager->DragMoveEvent(Position);
-}
-
-void CEdtor3DFrame::DragLeaveEvent()
-{
-	m_Tools.m_Drager->DragLeaveEvent();
-}
-
-void CEdtor3DFrame::SetMoverValue(float value)
-{
-	m_Tools.m_Mover->SetMoverValue(value);
-}
-
-
-
-//
-// IEditor_NodesSelectorEventListener
-//
-void CEdtor3DFrame::OnSelectNodes()
-{
-
-	//m_Tools.m_Mover->Disable();
-}
-
-
-
-//
-// Protected
-//
-void CEdtor3DFrame::Load3D()
-{
-	GetDefaultLight()->SetType(ELightType::Spot);
-	GetDefaultLight()->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
-	GetDefaultLight()->SetRange(99000.0f);
-	GetDefaultLight()->SetIntensity(1.0f);
-	GetDefaultLight()->SetSpotlightAngle(75.0f);
-
-
 	{
 		auto node = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, this);
 		node->SetName("Grid node x1.");
@@ -359,10 +214,81 @@ void CEdtor3DFrame::Load3D()
 		node->GetComponent<IModelsComponent3D>()->SetModel(model);
 	}
 
-
+	return true;
 }
 
-void CEdtor3DFrame::SetLights(const std::vector<SLight>& Lights)
+
+//
+// IEditor3DFrame
+//
+void CEditor3DFrame::DoInitializeTools3D()
+{
+	GetEditor().GetTools().AddPasses(m_Technique3D, GetRenderWindow()->GetRenderTarget(), &GetRenderWindow()->GetViewport());
+}
+
+std::shared_ptr<IScene> CEditor3DFrame::GetScene()
+{
+	return shared_from_this();
+}
+
+void CEditor3DFrame::LockUpdates()
+{
+	Freeze();
+}
+
+void CEditor3DFrame::UnlockUpdates()
+{
+	Unfreeze();
+}
+
+void CEditor3DFrame::DoEnableTool(ETool Tool)
+{
+	GetEditor().GetTools().Enable(Tool);
+}
+
+std::shared_ptr<IScene> CEditor3DFrame::GetEditedScene() const
+{
+	return m_EditedScene;
+}
+
+std::shared_ptr<ISceneNode3D> CEditor3DFrame::GetEditedRootNode3D() const
+{
+	return m_EditedScene->GetRootNode3D();
+}
+
+std::shared_ptr<ISceneNode3D> CEditor3DFrame::GetNodeUnderMouse(const glm::ivec2& MousePos) const
+{
+	auto nodes = FindIntersection(GetCameraController()->ScreenToRay(GetRenderWindow()->GetViewport(), MousePos));
+	if (nodes.empty())
+		return nullptr;
+	return nodes.begin()->second;
+}
+
+void CEditor3DFrame::OnCollectionWidget_ModelSelected(const std::shared_ptr<IModel>& Model)
+{
+	if (m_PreviewScene)
+		m_PreviewScene->SetModel(Model);
+}
+
+
+
+
+
+//
+// IEditor_NodesSelectorEventListener
+//
+void CEditor3DFrame::OnSelectNode()
+{
+
+	//m_Tools.m_Mover->Disable();
+}
+
+
+
+//
+// Protected
+//
+void CEditor3DFrame::SetLights(const std::vector<SLight>& Lights)
 {
 	if (Lights.size() > m_LightsBuffer->GetElementCount())
 		m_LightsBuffer = GetRenderDevice().GetObjectsFactory().CreateStructuredBuffer(Lights, EAccess::CPUWrite);

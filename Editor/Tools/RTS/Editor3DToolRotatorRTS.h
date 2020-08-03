@@ -6,7 +6,7 @@ class CEditor3DToolRotatorRTS
 	: public CEditor3DToolBase
 {
 public:
-	CEditor3DToolRotatorRTS(IEditor3DFrame& EditorFrame);
+	CEditor3DToolRotatorRTS(IEditor& Editor);
 	virtual ~CEditor3DToolRotatorRTS();
 
 	void Initialize() override;

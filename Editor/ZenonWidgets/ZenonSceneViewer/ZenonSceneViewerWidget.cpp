@@ -5,8 +5,7 @@
 
 ZenonSceneViewerWidget::ZenonSceneViewerWidget(QWidget * parent)
 	: QTreeView(parent)
-	, m_Editor3D(nullptr)
-	, m_EditorUI(nullptr)
+	, m_Editor(nullptr)
 	, m_LockForSelectionChangedEvent(false)
 {
 	// Add context menu for scene node viewer
@@ -40,13 +39,13 @@ void ZenonSceneViewerWidget::RefreshTreeViewModel()
 	if (m_LockForSelectionChangedEvent)
 		return;
 
-	m_Editor3D->LockUpdates();
+	m_Editor->Get3DFrame().LockUpdates();
 
 	this->reset();
-	m_Model->SetRootItemData(std::make_shared<CSceneNodeModelItem>(m_Editor3D->GetEditedRootNode3D()));
+	m_Model->SetRootItemData(std::make_shared<CSceneNodeModelItem>(m_Editor->Get3DFrame().GetEditedRootNode3D()));
 	this->expandAll();
 
-	m_Editor3D->UnlockUpdates();
+	m_Editor->Get3DFrame().UnlockUpdates();
 }
 
 void ZenonSceneViewerWidget::SelectNode(const std::shared_ptr<ISceneNode3D>& Node)
@@ -101,7 +100,7 @@ void ZenonSceneViewerWidget::onCustomContextMenu(const QPoint& point)
 
 	std::string title;
 	std::vector<std::shared_ptr<IPropertyAction>> actions;
-	if (!m_EditorUI->ExtendContextMenu(std::dynamic_pointer_cast<ISceneNode3D>(item->GetTObject()), &title, &actions))
+	if (!m_Editor->GetUIFrame().ExtendContextMenu(std::dynamic_pointer_cast<ISceneNode3D>(item->GetTObject()), &title, &actions))
 		return;
 
 	/* Create actions to the context menu */
@@ -141,9 +140,10 @@ void ZenonSceneViewerWidget::onSelectionChanged(const QItemSelection& selected, 
 	});
 	indexes.clear();
 
-	m_Editor3D->LockUpdates();
-	m_EditorUI->GetNodesSelector()->SelectNodes(selectedNodes);
-	m_Editor3D->UnlockUpdates();
+	m_Editor->Get3DFrame().LockUpdates();
+	auto& selector = dynamic_cast<IEditor_NodesSelector&>(m_Editor->GetTools().GetTool(ETool::EToolSelector));
+	selector.SelectNodes(selectedNodes);
+	m_Editor->Get3DFrame().UnlockUpdates();
 }
 
 void ZenonSceneViewerWidget::onPressed(const QModelIndex & index)
@@ -158,9 +158,10 @@ void ZenonSceneViewerWidget::onClicked(const QModelIndex & index)
 	auto item = static_cast<CQtToZenonTreeItem*>(index.internalPointer());
 	_ASSERT_EXPR(item != nullptr, L"Item is null.");
 
-	m_Editor3D->LockUpdates();
-	m_EditorUI->GetNodesSelector()->SelectNode(std::static_pointer_cast<ISceneNode3D>(item->GetTObject()));
-	m_Editor3D->UnlockUpdates();
+	m_Editor->Get3DFrame().LockUpdates();
+	auto& selector = dynamic_cast<IEditor_NodesSelector&>(m_Editor->GetTools().GetTool(ETool::EToolSelector));
+	selector.SelectNode(std::static_pointer_cast<ISceneNode3D>(item->GetTObject()));
+	m_Editor->Get3DFrame().UnlockUpdates();
 }
 
 void ZenonSceneViewerWidget::onDoubleClicked(const QModelIndex & index)

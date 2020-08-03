@@ -6,7 +6,7 @@ class CEditor3DToolDragger
 	: public CEditor3DToolBase
 {
 public:
-	CEditor3DToolDragger(IEditor3DFrame& EditorFrame);
+	CEditor3DToolDragger(IEditor& Editor);
 	virtual ~CEditor3DToolDragger();
 
 	// IEditorTool
@@ -15,15 +15,17 @@ public:
 	void Enable() override;
 	void Disable() override;
 
-	// CEditor3DToolBase
+	// 3D
 	bool OnMousePressed(const MouseButtonEventArgs & e, const Ray& RayToWorld) override;
 	void OnMouseReleased(const MouseButtonEventArgs & e, const Ray& RayToWorld) override;
 	void OnMouseMoved(const MouseMotionEventArgs& e, const Ray& RayToWorld) override;
 
-	void DropEvent(const glm::vec2& Position);
-	void DragEnterEvent(const SDragData& Data);
-	void DragMoveEvent(const glm::vec2& Position);
-	void DragLeaveEvent();
+	// IEditorToolUI
+	void DoInitializeUI(IEditorQtUIFrame& QtUIFrame) override;
+	void DropEvent(const glm::vec2& Position) override;
+	void DragEnterEvent(const SDragData& Data) override;
+	void DragMoveEvent(const glm::vec2& Position) override;
+	void DragLeaveEvent() override;
 
 protected: // Editor
 	void DoMoveNode(const glm::vec2& MousePos);

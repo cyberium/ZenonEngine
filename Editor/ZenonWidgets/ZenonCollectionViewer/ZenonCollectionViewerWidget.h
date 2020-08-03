@@ -40,7 +40,7 @@ public:
 	explicit ZenonCollectionViewerWidget(QWidget * parent = nullptr);
 	virtual ~ZenonCollectionViewerWidget();
 
-	void SetEditors(IEditor3DFrame* Editor3DFrame, IEditorUIFrame* EditorUIFrame) { m_Editor3D = Editor3DFrame; m_EditorUI = EditorUIFrame; }
+	void SetEditor(IEditor* Editor) { m_Editor = Editor; }
 	void SetModelsList(const std::vector<std::string>& Nodes);
 
 protected:
@@ -65,6 +65,5 @@ private:
 	glm::vec2 m_PrevioisMousePos;
 
 private:
-	IEditor3DFrame* m_Editor3D;
-	IEditorUIFrame* m_EditorUI;
+	IEditor* m_Editor;
 };

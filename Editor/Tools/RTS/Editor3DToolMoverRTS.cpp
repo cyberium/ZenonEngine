@@ -3,8 +3,8 @@
 // General
 #include "Editor3DToolMoverRTS.h"
 
-CEditor3DToolMoverRTS::CEditor3DToolMoverRTS(IEditor3DFrame & EditorFrame)
-	: CEditor3DToolBase(EditorFrame)
+CEditor3DToolMoverRTS::CEditor3DToolMoverRTS(IEditor& Editor)
+	: CEditor3DToolBase(Editor)
 	, m_MoverValue(1.0f)
 	, m_MoverNuber(-1)
 	, m_IsMovingNow(false)
@@ -73,7 +73,9 @@ void CEditor3DToolMoverRTS::Enable()
 {
 	CEditor3DToolBase::Enable();
 
-	if (auto node = GetEditor3DFrame().GetNodesSelector()->GetFirstSelectedNode())
+	dynamic_cast<IEditorQtUIFrame&>(GetEditor().GetUIFrame()).getUI().editorToolMoverRTSBtn->setChecked(IsEnabled());
+
+	if (auto node = GetEditor().GetFirstSelectedNode())
 	{
 		m_MovingNode = node;
 		m_MoverRoot->SetTranslate(node->GetTranslation());
@@ -84,6 +86,8 @@ void CEditor3DToolMoverRTS::Enable()
 void CEditor3DToolMoverRTS::Disable()
 {
 	CEditor3DToolBase::Disable();
+
+	dynamic_cast<IEditorQtUIFrame&>(GetEditor().GetUIFrame()).getUI().editorToolMoverRTSBtn->setChecked(IsEnabled());
 
 	m_MoverRoot->SetTranslate(glm::vec3(-1000000.0, -10000000.0f, -10000000.0f));
 

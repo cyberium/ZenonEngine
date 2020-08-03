@@ -6,7 +6,7 @@ class CEditor3DToolMover
 	: public CEditor3DToolBase
 {
 public:
-	CEditor3DToolMover(IEditor3DFrame& EditorFrame);
+	CEditor3DToolMover(IEditor& Editor);
 	virtual ~CEditor3DToolMover();
 
 	// IEditorTool
@@ -19,6 +19,9 @@ public:
 	bool OnMousePressed(const MouseButtonEventArgs & e, const Ray& RayToWorld) override;
 	void OnMouseReleased(const MouseButtonEventArgs & e, const Ray& RayToWorld) override;
 	void OnMouseMoved(const MouseMotionEventArgs& e, const Ray& RayToWorld) override;
+
+	// IEditorToolUI
+	void DoInitializeUI(IEditorQtUIFrame& QtUIFrame) override;
 
 	// CEditor3DToolMover
 	glm::ivec3 ToBoxCoords(const glm::vec3 & Position);
@@ -39,4 +42,7 @@ private:
 	std::shared_ptr<ISceneNode3D> m_MoverX;
 	std::shared_ptr<ISceneNode3D> m_MoverY;
 	std::shared_ptr<ISceneNode3D> m_MoverZ;
+
+	// UI
+	std::map<std::string, float> m_MoverValues;
 };

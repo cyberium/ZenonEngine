@@ -5,8 +5,7 @@
 
 ZenonCollectionViewerWidget::ZenonCollectionViewerWidget(QWidget * parent)
 	: QTreeView(parent)
-	, m_Editor3D(nullptr)
-	, m_EditorUI(nullptr)
+	, m_Editor(nullptr)
 	, m_LockForSelectionChangedEvent(false)
 	, m_StartDragging(false)
 {
@@ -44,9 +43,9 @@ void ZenonCollectionViewerWidget::SetModelsList(const std::vector<std::string>& 
 		auto name = CFile(it).Name();
 		name = name.substr(0, name.find_first_of('.'));
 
-		auto model = m_Editor3D->GetRenderDevice2().GetObjectsFactory().CreateModel();
+		auto model = m_Editor->GetRenderDevice().GetObjectsFactory().CreateModel();
 		if (auto loadable = std::dynamic_pointer_cast<IObjectLoadSave>(model))
-			loadable->Load(m_Editor3D->GetBaseManager2().GetManager<IFilesManager>()->Open(it));
+			loadable->Load(m_Editor->GetBaseManager().GetManager<IFilesManager>()->Open(it));
 		model->SetName(name);
 		models.push_back(std::make_shared<C3DModelModelItem>(model));
 	}
@@ -137,7 +136,7 @@ void ZenonCollectionViewerWidget::onCurrentChanged(const QModelIndex& current, c
 	auto item = static_cast<CQtToZenonTreeItem*>(current.internalPointer());
 	_ASSERT_EXPR(item != nullptr, L"Item is null.");
 
-	m_Editor3D->OnCollectionWidget_ModelSelected(std::dynamic_pointer_cast<IModel>(item->GetTObject()));
+	m_Editor->Get3DFrame().OnCollectionWidget_ModelSelected(std::dynamic_pointer_cast<IModel>(item->GetTObject()));
 }
 
 void ZenonCollectionViewerWidget::onSelectionChanged(const QItemSelection& selected, const QItemSelection &deselected)

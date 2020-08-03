@@ -1,5 +1,7 @@
 #pragma once
 
+#include "EditorInterfaces.h"
+
 #include <QList>
 #include <QVector>
 #include <QVariant>
@@ -44,7 +46,7 @@ public:
 	}
 	int childCount() const
 	{
-		return m_Childs.size();
+		return static_cast<int>(m_Childs.size());
 	}
 	CQtToZenonTreeItem* parentItem()
 	{

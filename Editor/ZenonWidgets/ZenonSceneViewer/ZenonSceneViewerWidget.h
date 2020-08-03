@@ -42,7 +42,7 @@ public:
 	explicit ZenonSceneViewerWidget(QWidget * parent = nullptr);
 	virtual ~ZenonSceneViewerWidget();
 
-	void SetEditors(IEditor3DFrame* Editor3DFrame, IEditorUIFrame* EditorUIFrame) { m_Editor3D = Editor3DFrame; m_EditorUI = EditorUIFrame; }
+	void SetEditor(IEditor* Editor) { m_Editor = Editor; }
 
 	void RefreshTreeViewModel();
 	void SelectNode(const std::shared_ptr<ISceneNode3D>& Node);
@@ -65,6 +65,5 @@ private:
 	bool m_LockForSelectionChangedEvent;
 
 private:
-	IEditor3DFrame* m_Editor3D;
-	IEditorUIFrame* m_EditorUI;
+	IEditor* m_Editor;
 };

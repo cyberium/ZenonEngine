@@ -5,8 +5,7 @@
 
 ZenonWindow3D::ZenonWindow3D(QWidget *parent)
 	: ZenonWindowMinimal3DWidget(parent)
-	, m_Editor3D(nullptr)
-	, m_EditorUI(nullptr)
+	, m_Editor(nullptr)
 {
 	this->setContextMenuPolicy(Qt::CustomContextMenu);
 	connect(this, SIGNAL(customContextMenuRequested(const QPoint &)), this, SLOT(onCustomContextMenu(const QPoint &)));
@@ -22,13 +21,13 @@ void ZenonWindow3D::onCustomContextMenu(const QPoint& pos)
 {
 	QMenu * menu = new QMenu(this);
 
-	auto node = m_Editor3D->GetNodeUnderMouse(glm::ivec2(pos.x(), pos.y()));
+	auto node = m_Editor->Get3DFrame().GetNodeUnderMouse(glm::ivec2(pos.x(), pos.y()));
 	if (node == nullptr)
 		return;
 
 	std::string title;
 	std::vector<std::shared_ptr<IPropertyAction>> actions;
-	if (! m_EditorUI->ExtendContextMenu(node, &title, &actions))
+	if (! m_Editor->GetUIFrame().ExtendContextMenu(node, &title, &actions))
 		return;
 
 	/* Create actions to the context menu */
@@ -174,7 +173,7 @@ void ZenonWindow3D::keyReleaseEvent(QKeyEvent * event)
 void ZenonWindow3D::dropEvent(QDropEvent * event)
 {
 	//event->acceptProposedAction();
-	m_Editor3D->DropEvent(glm::vec2(event->pos().x(), event->pos().y()));
+	m_Editor->GetTools().DropEvent(glm::vec2(event->pos().x(), event->pos().y()));
 }
 
 void ZenonWindow3D::dragEnterEvent(QDragEnterEvent * event)
@@ -190,7 +189,7 @@ void ZenonWindow3D::dragEnterEvent(QDragEnterEvent * event)
 		data.IsCtrl = (event->keyboardModifiers() & Qt::KeyboardModifier::ControlModifier) != 0;
 		try
 		{
-			m_Editor3D->DragEnterEvent(data);
+			m_Editor->GetTools().DragEnterEvent(data);
 		}
 		catch (...)
 		{
@@ -210,10 +209,10 @@ void ZenonWindow3D::dragEnterEvent(QDragEnterEvent * event)
 void ZenonWindow3D::dragMoveEvent(QDragMoveEvent * event)
 {
 	//repaint();
-	m_Editor3D->DragMoveEvent(glm::vec2(event->pos().x(), event->pos().y()));
+	m_Editor->GetTools().DragMoveEvent(glm::vec2(event->pos().x(), event->pos().y()));
 }
 
 void ZenonWindow3D::dragLeaveEvent(QDragLeaveEvent * event)
 {
-	m_Editor3D->DragLeaveEvent();
+	m_Editor->GetTools().DragLeaveEvent();
 }

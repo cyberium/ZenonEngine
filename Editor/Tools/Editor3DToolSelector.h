@@ -9,7 +9,7 @@ class CEditor3DToolSelector
 	, public CEditor3DToolBase
 {
 public:
-	CEditor3DToolSelector(IEditor3DFrame& EditorFrame);
+	CEditor3DToolSelector(IEditor& Editor);
 	virtual ~CEditor3DToolSelector();
 
 	// IEditorTool
@@ -19,12 +19,13 @@ public:
 	void Disable() override;
 
 	// CEditor3DToolBase
+	void AddPasses(RenderTechnique& RenderTechnique, std::shared_ptr<IRenderTarget> RenderTarget, const Viewport* Viewport) override;
 	bool OnMousePressed(const MouseButtonEventArgs & e, const Ray& RayToWorld) override;
 	void OnMouseReleased(const MouseButtonEventArgs & e, const Ray& RayToWorld) override;
 	void OnMouseMoved(const MouseMotionEventArgs& e, const Ray& RayToWorld) override;
 
-	// CEditor3DToolSelector
-	void AddPasses(RenderTechnique& RenderTechnique, std::shared_ptr<IRenderTarget> RenderTarget, const Viewport* Viewport);
+	// IEditorToolUI
+	void DoInitializeUI(IEditorQtUIFrame& QtUIFrame) override;
 
 protected:
 	void RaiseSelectEvent();

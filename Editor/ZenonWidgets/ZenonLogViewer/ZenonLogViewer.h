@@ -11,6 +11,11 @@ public:
 	explicit ZenonLogViewer(QWidget * parent = nullptr);
 	virtual ~ZenonLogViewer();
 
+	void SetEditor(IEditor* Editor) { m_Editor = Editor; }
+
 	// IDebugOutput
 	void Print(IDebugOutput::DebugMessageType Type, const std::string& MessageFmt) override;
+
+private:
+	IEditor* m_Editor;
 };

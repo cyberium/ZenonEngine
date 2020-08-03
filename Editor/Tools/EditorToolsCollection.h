@@ -12,18 +12,31 @@
 
 
 class CTools
+	: public IEditorTools
 {
 public:
-	CTools(IEditor3DFrame& Editor3DFrame);
+	CTools(IEditor& Editor);
 	virtual ~CTools();
 
-	void Initialize();
-	void Finalize();
-	void Enable(ETool ToolIndex);
-	void DisableAll();
-	bool OnMousePressed(const MouseButtonEventArgs& e, const Ray& RayToWorld);
-	void OnMouseReleased(const MouseButtonEventArgs& e, const Ray& RayToWorld);
-	void OnMouseMoved(const MouseMotionEventArgs& e, const Ray& RayToWorld);
+	// IEditorTools
+	void Initialize() override;
+	void Finalize() override;
+	void Enable(ETool ToolIndex) override;
+	IEditorTool& GetTool(ETool Tool) override;
+	void DisableAll() override;
+
+	// 3D
+	void AddPasses(RenderTechnique& RenderTechnique, std::shared_ptr<IRenderTarget> RenderTarget, const Viewport* Viewport) override;
+	bool OnMousePressed(const MouseButtonEventArgs& e, const Ray& RayToWorld) override;
+	void OnMouseReleased(const MouseButtonEventArgs& e, const Ray& RayToWorld) override;
+	void OnMouseMoved(const MouseMotionEventArgs& e, const Ray& RayToWorld) override;
+
+	// UI
+	virtual void DoInitializeUI(IEditorQtUIFrame& QtUIFrame) override;
+	virtual void DropEvent(const glm::vec2& Position) override;
+	virtual void DragEnterEvent(const SDragData& Data) override;
+	virtual void DragMoveEvent(const glm::vec2& Position) override;
+	virtual void DragLeaveEvent() override;
 
 public: // Editor
 	std::shared_ptr<CEditor3DToolSelector> m_Selector;
@@ -34,6 +47,6 @@ public: // Editor
 	std::shared_ptr<CEditor3DToolRotatorRTS> m_RotatorRTS;
 
 private:
-	IEditor3DFrame& m_Editor3DFrame;
+	IEditor& m_Editor;
 	std::unordered_map<ETool, std::shared_ptr<CEditor3DToolBase>> m_Tools;
 };

@@ -1,53 +1,14 @@
 #include "stdafx.h"
 
 // Additional
-#include "MainEditor.h"
+#include "EditorUIFrame.h"
 #include <QApplication>
 
+#include "Editor.h"
 #include "Editor3DFrame.h"
 #include "Editor3DPreviewScene.h"
 
 static IBaseManager* BaseManager = nullptr;
-
-class EvtLoopTicker 
-	: public QObject
-{
-	//Q_OBJECT
-public:
-
-	EvtLoopTicker(QObject * parent, Application& App)
-		: QObject(parent)
-		, m_Application(App)
-	{
-		m_Application.DoBeforeRun();
-	}
-
-public slots:
-	void launch()
-	{
-		tickNext();
-	}
-
-private slots:
-	void tick()
-	{
-		m_Application.Run();
-
-		// Continue ticking
-		tickNext();
-	}
-
-private:
-	void tickNext()
-	{
-		// Trigger the tick() invokation when the event loop runs next time
-		QMetaObject::invokeMethod(this, "tick", Qt::QueuedConnection);
-	}
-
-	Application& m_Application;
-
-};
-
 
 void main_internal(int argc, char *argv[])
 {
@@ -57,46 +18,53 @@ void main_internal(int argc, char *argv[])
 	// 3. Create application
 	Application app(*BaseManager, ::GetModuleHandle(NULL));
 
-	QApplication a(argc, argv);
-	MainEditor editorUI;
-	editorUI.showMaximized();
+	CEditor editor(*BaseManager);
 
 	IRenderDevice& renderDevice = app.CreateRenderDevice(RenderDeviceType::RenderDeviceType_DirectX11);
 
 	std::shared_ptr<IFontsManager> fontsManager = std::make_shared<FontsManager>(renderDevice, *BaseManager);
 	BaseManager->AddManager<IFontsManager>(fontsManager);
-
 	BaseManager->GetManager<ILoader>()->Start();
 
-	
-		std::shared_ptr<IRenderWindow> renderWindowForModelPreview = renderDevice.GetObjectsFactory().CreateRenderWindow(*editorUI.getModelPreview(), false);
-		app.AddRenderWindow(renderWindowForModelPreview);
 
-		//std::shared_ptr<IScene> scene = BaseManager->GetManager<IScenesFactory>()->CreateScene("SceneDefault");
-		std::shared_ptr<CEditor3DPreviewScene> sceneForPreview = std::make_shared<CEditor3DPreviewScene>(*BaseManager);
+
+	QApplication a(argc, argv);
+
+
+	CEditorUIFrame editorUI(editor);
+	editorUI.InitializeEditorFrame();
+
+	std::shared_ptr<IRenderWindow> renderWindow;
+	std::shared_ptr<CEditor3DFrame> editorScene;
+	{
+		renderWindow = renderDevice.GetObjectsFactory().CreateRenderWindow(*editorUI.getMainEditor(), false);
+		app.AddRenderWindow(renderWindow);
+
+		editorScene = std::make_shared<CEditor3DFrame>(editor);
+		editorScene->SetRenderWindow(renderWindow);
+		editorScene->ConnectEvents(std::dynamic_pointer_cast<IRenderWindowEvents>(renderWindow));
+		editorScene->Initialize();
+	}
+
+	editorScene->InitializeEditorFrame();
+
+	// Scene for preview
+	std::shared_ptr<CEditor3DPreviewScene> sceneForPreview;
+	std::shared_ptr<IRenderWindow> renderWindowForModelPreview;
+	{
+		renderWindowForModelPreview = renderDevice.GetObjectsFactory().CreateRenderWindow(*editorUI.getModelPreview(), false);
+		app.AddRenderWindow(renderWindowForModelPreview);
+		sceneForPreview = std::make_shared<CEditor3DPreviewScene>(*BaseManager);
 		sceneForPreview->SetRenderWindow(renderWindowForModelPreview);
 		sceneForPreview->ConnectEvents(std::dynamic_pointer_cast<IRenderWindowEvents>(renderWindowForModelPreview));
 		sceneForPreview->Initialize();
-	
 
-		
-			std::shared_ptr<IRenderWindow> renderWindow = renderDevice.GetObjectsFactory().CreateRenderWindow(*editorUI.getMainEditor(), false);
-			app.AddRenderWindow(renderWindow);
+		editorScene->SetPreviewScene(sceneForPreview);
+	}
 
-			//std::shared_ptr<IScene> scene = BaseManager->GetManager<IScenesFactory>()->CreateScene("SceneDefault");
-			std::shared_ptr<CEdtor3DFrame> scene = std::make_shared<CEdtor3DFrame>(*BaseManager);
+	editor.GetTools().Initialize();
 
-			scene->SetEditorUI(&editorUI);
-			scene->SetPreviewScene(sceneForPreview);
-			editorUI.SetEditor3D(scene.get());
-
-			scene->SetRenderWindow(renderWindow);
-			scene->ConnectEvents(std::dynamic_pointer_cast<IRenderWindowEvents>(renderWindow));
-			scene->Initialize();
-		
-	
-
-	editorUI.show();
+	editorUI.showMaximized();
 
 	app.DoBeforeRun();
 

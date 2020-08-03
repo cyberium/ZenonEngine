@@ -6,7 +6,7 @@ class CEditor3DToolMoverRTS
 	: public CEditor3DToolBase
 {
 public:
-	CEditor3DToolMoverRTS(IEditor3DFrame& EditorFrame);
+	CEditor3DToolMoverRTS(IEditor& Editor);
 	virtual ~CEditor3DToolMoverRTS();
 
 	// // CEditor3DToolBase

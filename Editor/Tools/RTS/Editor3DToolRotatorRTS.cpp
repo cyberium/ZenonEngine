@@ -3,8 +3,8 @@
 // General
 #include "Editor3DToolRotatorRTS.h"
 
-CEditor3DToolRotatorRTS::CEditor3DToolRotatorRTS(IEditor3DFrame & EditorFrame)
-	: CEditor3DToolBase(EditorFrame)
+CEditor3DToolRotatorRTS::CEditor3DToolRotatorRTS(IEditor& Editor)
+	: CEditor3DToolBase(Editor)
 	, m_RotatorNuber(-1)
 	, m_IsMoverEnable(false)
 {
@@ -63,7 +63,9 @@ void CEditor3DToolRotatorRTS::Enable()
 {
 	CEditor3DToolBase::Enable();
 
-	if (auto node = GetEditor3DFrame().GetNodesSelector()->GetFirstSelectedNode())
+	dynamic_cast<IEditorQtUIFrame&>(GetEditor().GetUIFrame()).getUI().editorToolRotatorBtn->setChecked(IsEnabled());
+
+	if (auto node = GetEditor().GetFirstSelectedNode())
 	{
 		m_MovingNode = node;
 		m_RotatorRoot->SetTranslate(node->GetTranslation());
@@ -74,6 +76,8 @@ void CEditor3DToolRotatorRTS::Enable()
 void CEditor3DToolRotatorRTS::Disable()
 {
 	CEditor3DToolBase::Disable();
+
+	dynamic_cast<IEditorQtUIFrame&>(GetEditor().GetUIFrame()).getUI().editorToolRotatorBtn->setChecked(IsEnabled());
 
 	m_RotatorRoot->SetTranslate(glm::vec3(-1000000.0, -10000000.0f, -10000000.0f));
 

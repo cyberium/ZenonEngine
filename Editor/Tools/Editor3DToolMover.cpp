@@ -3,8 +3,8 @@
 // General
 #include "Editor3DToolMover.h"
 
-CEditor3DToolMover::CEditor3DToolMover(IEditor3DFrame & EditorFrame)
-	: CEditor3DToolBase(EditorFrame)
+CEditor3DToolMover::CEditor3DToolMover(IEditor& Editor)
+	: CEditor3DToolBase(Editor)
 	, m_MoverValue(1.0f)
 	, m_MoverNuber(-1)
 	, m_IsMovingNow(false)
@@ -79,7 +79,9 @@ void CEditor3DToolMover::Enable()
 {
 	CEditor3DToolBase::Enable();
 
-	if (auto node = GetEditor3DFrame().GetNodesSelector()->GetFirstSelectedNode())
+	dynamic_cast<IEditorQtUIFrame&>(GetEditor().GetUIFrame()).getUI().editorToolMoverBtn->setChecked(IsEnabled());
+
+	if (auto node = GetEditor().GetFirstSelectedNode())
 	{
 		m_MovingNode = node;
 		m_MoverRoot->SetTranslate(node->GetTranslation());
@@ -90,6 +92,8 @@ void CEditor3DToolMover::Enable()
 void CEditor3DToolMover::Disable()
 {
 	CEditor3DToolBase::Disable();
+
+	dynamic_cast<IEditorQtUIFrame&>(GetEditor().GetUIFrame()).getUI().editorToolMoverBtn->setChecked(IsEnabled());
 
 	m_MoverRoot->SetTranslate(glm::vec3(-1000000.0, -10000000.0f, -10000000.0f));
 
@@ -191,6 +195,35 @@ void CEditor3DToolMover::OnMouseMoved(const MouseMotionEventArgs & e, const Ray 
 		//m_DrawSelectionPass->SetNeedRefresh();
 		return;
 	}
+}
+
+
+
+//
+// IEditorToolUI
+//
+void CEditor3DToolMover::DoInitializeUI(IEditorQtUIFrame& QtUIFrame)
+{
+	m_MoverValues.insert(std::make_pair("<disabled>", 0.001f));
+	m_MoverValues.insert(std::make_pair("x1.0", 1.0f));
+	m_MoverValues.insert(std::make_pair("x5.0", 5.0f));
+	m_MoverValues.insert(std::make_pair("x10.0", 10.0f));
+
+	// Add items to Combo Box
+	for (const auto& v : m_MoverValues)
+		QtUIFrame.getUI().Editor3DFrame_MoverStep->addItem(v.first.c_str());
+
+	QtUIFrame.getQObject().connect(QtUIFrame.getUI().editorToolMoverBtn, &QPushButton::released, [this]() {
+		GetEditor().GetTools().Enable(ETool::EToolMover);
+	});
+
+	QtUIFrame.getQObject().connect(QtUIFrame.getUI().Editor3DFrame_MoverStep, qOverload<const QString&>(&QComboBox::currentIndexChanged), [this](const QString& String) {
+		auto it = m_MoverValues.find(String.toStdString());
+		if (it == m_MoverValues.end())
+			_ASSERT(FALSE);
+
+		SetMoverValue(it->second);
+	});
 }
 
 

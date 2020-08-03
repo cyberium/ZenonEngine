@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>MainEditorClass</class>
- <widget class="QMainWindow" name="MainEditorClass">
+ <class>EditorUIFrameClass</class>
+ <widget class="QMainWindow" name="EditorUIFrameClass">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -114,7 +114,7 @@
              <string/>
             </property>
             <property name="icon">
-             <iconset resource="MainEditor.qrc">
+             <iconset resource="EditorUIFrame.qrc">
               <normaloff>:/MainEditor/Resources/Icons/select.png</normaloff>:/MainEditor/Resources/Icons/select.png</iconset>
             </property>
             <property name="iconSize">
@@ -137,7 +137,7 @@
              <string/>
             </property>
             <property name="icon">
-             <iconset resource="MainEditor.qrc">
+             <iconset resource="EditorUIFrame.qrc">
               <normaloff>:/MainEditor/Resources/Icons/translate.png</normaloff>:/MainEditor/Resources/Icons/translate.png</iconset>
             </property>
             <property name="iconSize">
@@ -157,7 +157,7 @@
              <string/>
             </property>
             <property name="icon">
-             <iconset resource="MainEditor.qrc">
+             <iconset resource="EditorUIFrame.qrc">
               <normaloff>:/MainEditor/Resources/Icons/rotate.png</normaloff>:/MainEditor/Resources/Icons/rotate.png</iconset>
             </property>
             <property name="iconSize">
@@ -177,7 +177,7 @@
              <string/>
             </property>
             <property name="icon">
-             <iconset resource="MainEditor.qrc">
+             <iconset resource="EditorUIFrame.qrc">
               <normaloff>:/MainEditor/Resources/Icons/scale.png</normaloff>:/MainEditor/Resources/Icons/scale.png</iconset>
             </property>
             <property name="iconSize">
@@ -197,7 +197,7 @@
              <string/>
             </property>
             <property name="icon">
-             <iconset resource="MainEditor.qrc">
+             <iconset resource="EditorUIFrame.qrc">
               <normaloff>:/MainEditor/Resources/Icons/translateRTS.png</normaloff>:/MainEditor/Resources/Icons/translateRTS.png</iconset>
             </property>
             <property name="iconSize">
@@ -209,12 +209,12 @@
            </widget>
           </item>
           <item>
-           <widget class="QPushButton" name="pushButton">
+           <widget class="QPushButton" name="editorToolRotatorRTSBtn">
             <property name="text">
              <string/>
             </property>
             <property name="icon">
-             <iconset resource="MainEditor.qrc">
+             <iconset resource="EditorUIFrame.qrc">
               <normaloff>:/MainEditor/Resources/Icons/rotateRTS.png</normaloff>:/MainEditor/Resources/Icons/rotateRTS.png</iconset>
             </property>
             <property name="iconSize">
@@ -854,7 +854,7 @@
   </customwidget>
  </customwidgets>
  <resources>
-  <include location="MainEditor.qrc"/>
+  <include location="EditorUIFrame.qrc"/>
  </resources>
  <connections/>
 </ui>

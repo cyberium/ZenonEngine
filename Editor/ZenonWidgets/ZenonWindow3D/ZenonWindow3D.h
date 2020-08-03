@@ -12,7 +12,7 @@ public:
 	ZenonWindow3D(QWidget * parent);
 	virtual ~ZenonWindow3D();
 
-	void SetEditors(IEditor3DFrame* Editor3DFrame, IEditorUIFrame* EditorUIFrame) { m_Editor3D = Editor3DFrame; m_EditorUI = EditorUIFrame; }
+	void SetEditor(IEditor* Editor) { m_Editor = Editor; }
 
 private slots:
 	void onCustomContextMenu(const QPoint& pos);
@@ -32,6 +32,5 @@ private:
 	void dragLeaveEvent(QDragLeaveEvent *event) override;
 
 private:
-	IEditor3DFrame* m_Editor3D;
-	IEditorUIFrame* m_EditorUI;
+	IEditor* m_Editor;
 };
