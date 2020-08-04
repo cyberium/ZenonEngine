@@ -1,13 +1,13 @@
 #pragma once
 
-#include "Editor3DToolBase.h"
+#include "../EditorToolBase.h"
 
-class CEditor3DToolRotator
-	: public CEditor3DToolBase
+class CEditorToolRotatorRTS
+	: public CEditorToolBase
 {
 public:
-	CEditor3DToolRotator(IEditor& Editor);
-	virtual ~CEditor3DToolRotator();
+	CEditorToolRotatorRTS(IEditor& Editor);
+	virtual ~CEditorToolRotatorRTS();
 
 	// IEditorTool
 	void Initialize() override;
@@ -15,7 +15,7 @@ public:
 	void Enable() override;
 	void Disable() override;
 
-	// CEditor3DToolBase
+	// 3D
 	bool OnMousePressed(const MouseButtonEventArgs & e, const Ray& RayToWorld) override;
 	void OnMouseReleased(const MouseButtonEventArgs & e, const Ray& RayToWorld) override;
 	void OnMouseMoved(const MouseMotionEventArgs& e, const Ray& RayToWorld) override;
@@ -27,12 +27,10 @@ protected:
 	void Clear();
 
 private:
-	bool m_IsMoverEnable;
+	bool m_IsRotateNow;
 	int m_RotatorNuber;
 	std::shared_ptr<ISceneNode3D> m_MovingNode;
 	glm::vec3 m_MovingObjectPos;
 	std::shared_ptr<ISceneNode3D> m_RotatorRoot;
-	std::shared_ptr<ISceneNode3D> m_RotatorX;
 	std::shared_ptr<ISceneNode3D> m_RotatorY;
-	std::shared_ptr<ISceneNode3D> m_RotatorZ;
 };

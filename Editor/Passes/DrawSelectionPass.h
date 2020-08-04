@@ -14,7 +14,7 @@ class CDrawSelectionPass
 	: public RenderPassPipelined
 {
 public:
-	CDrawSelectionPass(IRenderDevice& RenderDevice, IEditor_NodesSelector& Selector);
+	CDrawSelectionPass(IRenderDevice& RenderDevice, IEditorToolSelector& Selector);
 	virtual ~CDrawSelectionPass();
 
 	void SetNeedRefresh();
@@ -33,7 +33,7 @@ private:
 	void RefreshInstanceBuffer();
 
 protected:
-	IEditor_NodesSelector&             m_Selector;
+	IEditorToolSelector&             m_Selector;
 	bool                               m_IsDirty;
 
 	std::shared_ptr<IGeometry>         m_QuadGeometry;

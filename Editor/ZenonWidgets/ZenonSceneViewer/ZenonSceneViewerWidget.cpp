@@ -141,7 +141,7 @@ void ZenonSceneViewerWidget::onSelectionChanged(const QItemSelection& selected, 
 	indexes.clear();
 
 	m_Editor->Get3DFrame().LockUpdates();
-	auto& selector = dynamic_cast<IEditor_NodesSelector&>(m_Editor->GetTools().GetTool(ETool::EToolSelector));
+	auto& selector = dynamic_cast<IEditorToolSelector&>(m_Editor->GetTools().GetTool(ETool::EToolSelector));
 	selector.SelectNodes(selectedNodes);
 	m_Editor->Get3DFrame().UnlockUpdates();
 }
@@ -159,7 +159,7 @@ void ZenonSceneViewerWidget::onClicked(const QModelIndex & index)
 	_ASSERT_EXPR(item != nullptr, L"Item is null.");
 
 	m_Editor->Get3DFrame().LockUpdates();
-	auto& selector = dynamic_cast<IEditor_NodesSelector&>(m_Editor->GetTools().GetTool(ETool::EToolSelector));
+	auto& selector = dynamic_cast<IEditorToolSelector&>(m_Editor->GetTools().GetTool(ETool::EToolSelector));
 	selector.SelectNode(std::static_pointer_cast<ISceneNode3D>(item->GetTObject()));
 	m_Editor->Get3DFrame().UnlockUpdates();
 }

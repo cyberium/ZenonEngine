@@ -5,7 +5,7 @@
 
 const float cBBoxSizeIncrement = 0.05f;
 
-CDrawSelectionPass::CDrawSelectionPass(IRenderDevice& RenderDevice, IEditor_NodesSelector& Selector)
+CDrawSelectionPass::CDrawSelectionPass(IRenderDevice& RenderDevice, IEditorToolSelector& Selector)
 	: RenderPassPipelined(RenderDevice)
 	, m_Selector(Selector)
 	, m_IsDirty(false)
@@ -111,19 +111,22 @@ void CDrawSelectionPass::RefreshInstanceBuffer()
 	{
 		std::vector<SSelectorPerObject> instances;
 		instances.reserve(selectedNodes.size());
-		std::for_each(selectedNodes.begin(), selectedNodes.end(), [&instances](const std::shared_ptr<ISceneNode3D>& selectedNode) {
-			const auto& colliderComponent = selectedNode->GetComponent<IColliderComponent3D>();
-			if (colliderComponent)
+		std::for_each(selectedNodes.begin(), selectedNodes.end(), [&instances](const std::weak_ptr<ISceneNode3D>& selectedNode) {
+			if (auto locked = selectedNode.lock())
 			{
-				const BoundingBox& bbox = colliderComponent->GetWorldBounds();
-				const auto size = (bbox.getMax() - bbox.getMin());
-				const auto sizeIncrement = size * cBBoxSizeIncrement;
+				const auto& colliderComponent = locked->GetComponent<IColliderComponent3D>();
+				if (colliderComponent)
+				{
+					const BoundingBox& bbox = colliderComponent->GetWorldBounds();
+					const auto size = (bbox.getMax() - bbox.getMin());
+					const auto sizeIncrement = size * cBBoxSizeIncrement;
 
-				glm::mat4 bboxMatrix = glm::mat4(1.0f);
-				bboxMatrix = glm::translate(bboxMatrix, bbox.getMin() - sizeIncrement);
-				bboxMatrix = glm::scale(bboxMatrix, size + sizeIncrement * 2.0f);
+					glm::mat4 bboxMatrix = glm::mat4(1.0f);
+					bboxMatrix = glm::translate(bboxMatrix, bbox.getMin() - sizeIncrement);
+					bboxMatrix = glm::scale(bboxMatrix, size + sizeIncrement * 2.0f);
 
-				instances.push_back(SSelectorPerObject(bboxMatrix, glm::vec4(0.8f, 0.8f, 0.8f, 0.7f)));
+					instances.push_back(SSelectorPerObject(bboxMatrix, glm::vec4(0.8f, 0.8f, 0.8f, 0.7f)));
+				}
 			}
 		});
 

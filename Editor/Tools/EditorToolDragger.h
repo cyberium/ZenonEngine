@@ -1,13 +1,13 @@
 #pragma once
 
-#include "Editor3DToolBase.h"
+#include "EditorToolBase.h"
 
-class CEditor3DToolDragger
-	: public CEditor3DToolBase
+class CEditorToolDragger
+	: public CEditorToolBase
 {
 public:
-	CEditor3DToolDragger(IEditor& Editor);
-	virtual ~CEditor3DToolDragger();
+	CEditorToolDragger(IEditor& Editor);
+	virtual ~CEditorToolDragger();
 
 	// IEditorTool
 	void Initialize() override;
@@ -28,13 +28,15 @@ public:
 	void DragLeaveEvent() override;
 
 protected: // Editor
-	void DoMoveNode(const glm::vec2& MousePos);
-	void DoDropNodeAndCreateIt();
+	void MoveDraggedNode(const glm::vec2& MousePos);
+	void CreateCopyDraggedNode();
+	void Clear();
+
 	std::shared_ptr<ISceneNode3D> CreateNode(const glm::ivec3& Position, const std::string& Type);
 
 private:
-	bool m_IsDraggingEnabled;
 	bool m_IsDraggingPermanentCreation;
-	std::shared_ptr<ISceneNode3D> m_DraggedNode;
+	std::shared_ptr<ISceneNode3D> m_DraggerNode;
+	std::shared_ptr<ISceneNode3D> m_LastCreatedNode;
 	std::shared_ptr<ISceneNodeUI> m_DraggerTextUI;
 };

@@ -48,18 +48,22 @@ std::shared_ptr<ISceneNode3D> CEditor::GetFirstSelectedNode() const
 	return m_Tools.m_Selector->GetFirstSelectedNode();
 }
 
-const SelectedNodes& CEditor::GetSelectedNodes() const
+std::vector<std::shared_ptr<ISceneNode3D>> CEditor::GetSelectedNodes() const
 {
-	return m_Tools.m_Selector->GetSelectedNodes();
+	std::vector<std::shared_ptr<ISceneNode3D>> nodes;
+	for (const auto& nW : m_Tools.m_Selector->GetSelectedNodes())
+		if (auto locked = nW.lock())
+			nodes.push_back(locked);
+	return nodes;
 }
 
 
 
 //
-// IEditor_NodesSelectorEventListener
+// IEditorToolSelectorEventListener
 //
 void CEditor::OnSelectNode()
 {
-	dynamic_cast<IEditor_NodesSelectorEventListener*>(m_Editor3DFrame)->OnSelectNode();
-	dynamic_cast<IEditor_NodesSelectorEventListener*>(m_EditorUIFrame)->OnSelectNode();
+	dynamic_cast<IEditorToolSelectorEventListener*>(m_Editor3DFrame)->OnSelectNode();
+	dynamic_cast<IEditorToolSelectorEventListener*>(m_EditorUIFrame)->OnSelectNode();
 }

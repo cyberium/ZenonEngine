@@ -4,14 +4,13 @@
 
 #include "EditorQtInterfaces.h"
 
-#include "Tools/EditorToolSelectorBase.h"
 #include "PropertyEditor/PropertiesController.h"
 
 class CEditorUIFrame 
 	: public QMainWindow
 	, public IEditorUIFrame
 	, public IEditorQtUIFrame
-	, public IEditor_NodesSelectorEventListener
+	, public IEditorToolSelectorEventListener
 {
 	Q_OBJECT
 
@@ -35,9 +34,9 @@ public:
 
 	// IEditorQtUIFrame
 	QObject& getQObject() override final;
-	Ui::MainEditorClass& getUI() override final;
+	Ui::EditorUIFrameClass& getUI() override final;
 
-	// IEditor_NodesSelectorEventListener
+	// IEditorToolSelectorEventListener
 	void OnSelectNode() override;
 
 private:
@@ -45,6 +44,5 @@ private:
 	
 private:
 	IEditor& m_Editor;
-	Ui::MainEditorClass m_UI;
-	
+	Ui::EditorUIFrameClass m_UI;
 };

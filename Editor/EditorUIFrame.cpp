@@ -236,7 +236,7 @@ QObject& CEditorUIFrame::getQObject()
 	return *this;
 }
 
-Ui::MainEditorClass& CEditorUIFrame::getUI()
+Ui::EditorUIFrameClass& CEditorUIFrame::getUI()
 {
 	return m_UI;
 }
@@ -244,7 +244,7 @@ Ui::MainEditorClass& CEditorUIFrame::getUI()
 
 
 //
-// IEditor_NodesSelectorEventListener
+// IEditorToolSelectorEventListener
 //
 void CEditorUIFrame::OnSelectNode()
 {

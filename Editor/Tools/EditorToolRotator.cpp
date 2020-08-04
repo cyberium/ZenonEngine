@@ -1,20 +1,20 @@
 #include "stdafx.h"
 
 // General
-#include "Editor3DToolRotatorRTS.h"
+#include "EditorToolRotator.h"
 
-CEditor3DToolRotatorRTS::CEditor3DToolRotatorRTS(IEditor& Editor)
-	: CEditor3DToolBase(Editor)
+CEditorToolRotator::CEditorToolRotator(IEditor& Editor)
+	: CEditorToolBase(Editor)
 	, m_RotatorNuber(-1)
-	, m_IsMoverEnable(false)
+	, m_IsRotateNow(false)
 {
 }
 
-CEditor3DToolRotatorRTS::~CEditor3DToolRotatorRTS()
+CEditorToolRotator::~CEditorToolRotator()
 {
 }
 
-void CEditor3DToolRotatorRTS::Initialize()
+void CEditorToolRotator::Initialize()
 {
 	m_RotatorRoot = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, GetScene(), GetScene()->GetRootNode3D());
 	m_RotatorRoot->SetName("Rotator");
@@ -55,13 +55,13 @@ void CEditor3DToolRotatorRTS::Initialize()
 	m_RotatorZ->GetColliderComponent()->SetBounds(geom->GetBounds());
 }
 
-void CEditor3DToolRotatorRTS::Finalize()
+void CEditorToolRotator::Finalize()
 {
 }
 
-void CEditor3DToolRotatorRTS::Enable()
+void CEditorToolRotator::Enable()
 {
-	CEditor3DToolBase::Enable();
+	CEditorToolBase::Enable();
 
 	dynamic_cast<IEditorQtUIFrame&>(GetEditor().GetUIFrame()).getUI().editorToolRotatorBtn->setChecked(IsEnabled());
 
@@ -73,22 +73,20 @@ void CEditor3DToolRotatorRTS::Enable()
 	}
 }
 
-void CEditor3DToolRotatorRTS::Disable()
+void CEditorToolRotator::Disable()
 {
-	CEditor3DToolBase::Disable();
+	CEditorToolBase::Disable();
 
 	dynamic_cast<IEditorQtUIFrame&>(GetEditor().GetUIFrame()).getUI().editorToolRotatorBtn->setChecked(IsEnabled());
 
 	m_RotatorRoot->SetTranslate(glm::vec3(-1000000.0, -10000000.0f, -10000000.0f));
 
 	Clear();
+	m_MovingNode.reset();
 }
 
-bool CEditor3DToolRotatorRTS::OnMousePressed(const MouseButtonEventArgs & e, const Ray & RayToWorld)
+bool CEditorToolRotator::OnMousePressed(const MouseButtonEventArgs & e, const Ray & RayToWorld)
 {
-	if (!IsEnabled())
-		return false;
-
 	auto nodes = GetScene()->FindIntersection(RayToWorld, m_RotatorRoot);
 	if (nodes.empty())
 		return false;
@@ -108,7 +106,7 @@ bool CEditor3DToolRotatorRTS::OnMousePressed(const MouseButtonEventArgs & e, con
 		if (m_RotatorNuber > 0)
 		{
 			m_MovingObjectPos = m_MovingNode->GetRotation();
-			m_IsMoverEnable = true;
+			m_IsRotateNow = true;
 			return true;
 		}
 	}
@@ -116,21 +114,15 @@ bool CEditor3DToolRotatorRTS::OnMousePressed(const MouseButtonEventArgs & e, con
 	return false;
 }
 
-void CEditor3DToolRotatorRTS::OnMouseReleased(const MouseButtonEventArgs & e, const Ray & RayToWorld)
+void CEditorToolRotator::OnMouseReleased(const MouseButtonEventArgs & e, const Ray & RayToWorld)
 {
-	if (!IsEnabled())
-		return;
-
-	if (m_IsMoverEnable)
+	if (m_IsRotateNow)
 		Clear();
 }
 
-void CEditor3DToolRotatorRTS::OnMouseMoved(const MouseMotionEventArgs & e, const Ray & RayToWorld)
+void CEditorToolRotator::OnMouseMoved(const MouseMotionEventArgs & e, const Ray & RayToWorld)
 {
-	if (!IsEnabled())
-		return;
-
-	if (m_IsMoverEnable)
+	if (m_IsRotateNow)
 	{
 		glm::vec3 newRot = m_MovingNode->GetRotation();
 
@@ -153,9 +145,23 @@ void CEditor3DToolRotatorRTS::OnMouseMoved(const MouseMotionEventArgs & e, const
 	}
 }
 
-void CEditor3DToolRotatorRTS::Clear()
+
+
+//
+// IEditorToolUI
+//
+void CEditorToolRotator::DoInitializeUI(IEditorQtUIFrame& QtUIFrame)
+{
+	QtUIFrame.getQObject().connect(QtUIFrame.getUI().editorToolRotatorBtn, &QPushButton::released, [this]() {
+		GetEditor().GetTools().Enable(ETool::EToolRotator);
+	});
+}
+
+
+
+void CEditorToolRotator::Clear()
 {
 	m_RotatorNuber = 0;
-	m_IsMoverEnable = false;
+	m_IsRotateNow = false;
 	m_MovingObjectPos = glm::vec3(0.0f);
 }

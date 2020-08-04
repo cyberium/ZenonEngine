@@ -117,7 +117,7 @@ void CEditor3DFrame::RaiseSceneChangeEvent(ESceneChangeType SceneChangeType, con
 {
 	if (SceneChangeType == ESceneChangeType::NodeRemovedFromParent)
 	{
-		auto& selector = reinterpret_cast<IEditor_NodesSelector&>(GetEditor().GetTools().GetTool(ETool::EToolSelector));
+		auto& selector = reinterpret_cast<IEditorToolSelector&>(GetEditor().GetTools().GetTool(ETool::EToolSelector));
 		for (const auto& node : GetEditor().GetSelectedNodes())
 		{
 			if (node == ChildNode)
@@ -223,7 +223,7 @@ bool CEditor3DFrame::InitializeEditorFrame()
 //
 void CEditor3DFrame::DoInitializeTools3D()
 {
-	GetEditor().GetTools().AddPasses(m_Technique3D, GetRenderWindow()->GetRenderTarget(), &GetRenderWindow()->GetViewport());
+	GetEditor().GetTools().DoInitialize3D(m_Technique3D, GetRenderWindow()->GetRenderTarget(), &GetRenderWindow()->GetViewport());
 }
 
 std::shared_ptr<IScene> CEditor3DFrame::GetScene()
@@ -275,7 +275,7 @@ void CEditor3DFrame::OnCollectionWidget_ModelSelected(const std::shared_ptr<IMod
 
 
 //
-// IEditor_NodesSelectorEventListener
+// IEditorToolSelectorEventListener
 //
 void CEditor3DFrame::OnSelectNode()
 {

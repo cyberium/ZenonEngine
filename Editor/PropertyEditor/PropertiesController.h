@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ui_MainEditor.h"
+#include "ui_EditorUIFrame.h"
 
 class CPropertiesController
 	: public QObject

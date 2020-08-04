@@ -6,7 +6,7 @@
 class CEditor3DFrame
 	: public SceneBase
 	, public IEditor3DFrame
-	, public IEditor_NodesSelectorEventListener
+	, public IEditorToolSelectorEventListener
 {
 public:
 	CEditor3DFrame(IEditor& Editor);
@@ -41,7 +41,7 @@ public:
 	std::shared_ptr<ISceneNode3D> GetNodeUnderMouse(const glm::ivec2& MousePos) const override;
 	void OnCollectionWidget_ModelSelected(const std::shared_ptr<IModel>& Model) override;
 
-	// IEditor_NodesSelectorEventListener
+	// IEditorToolSelectorEventListener
 	void OnSelectNode() override;
 
 protected:

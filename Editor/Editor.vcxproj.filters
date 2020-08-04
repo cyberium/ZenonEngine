@@ -293,36 +293,33 @@
     <ClCompile Include="Editor3DPreviewScene.cpp">
       <Filter>3D</Filter>
     </ClCompile>
-    <ClCompile Include="Tools\EditorToolSelectorBase.cpp">
-      <Filter>Tools</Filter>
-    </ClCompile>
-    <ClCompile Include="Tools\EditorToolsCollection.cpp">
-      <Filter>Tools</Filter>
-    </ClCompile>
-    <ClCompile Include="Tools\Editor3DToolBase.cpp">
-      <Filter>Tools</Filter>
-    </ClCompile>
-    <ClCompile Include="Tools\Editor3DToolDragger.cpp">
-      <Filter>Tools</Filter>
-    </ClCompile>
-    <ClCompile Include="Tools\Editor3DToolMover.cpp">
-      <Filter>Tools</Filter>
-    </ClCompile>
-    <ClCompile Include="Tools\Editor3DToolRotator.cpp">
-      <Filter>Tools</Filter>
-    </ClCompile>
-    <ClCompile Include="Tools\Editor3DToolSelector.cpp">
-      <Filter>Tools</Filter>
-    </ClCompile>
-    <ClCompile Include="Tools\RTS\Editor3DToolMoverRTS.cpp">
-      <Filter>Tools\RTS</Filter>
-    </ClCompile>
-    <ClCompile Include="Tools\RTS\Editor3DToolRotatorRTS.cpp">
-      <Filter>Tools\RTS</Filter>
-    </ClCompile>
     <ClCompile Include="Editor.cpp" />
     <ClCompile Include="EditorUIFrame.cpp">
       <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Tools\EditorToolBase.cpp">
+      <Filter>Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="Tools\EditorToolDragger.cpp">
+      <Filter>Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="Tools\EditorToolMover.cpp">
+      <Filter>Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="Tools\EditorToolRotator.cpp">
+      <Filter>Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="Tools\EditorToolSelector.cpp">
+      <Filter>Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="Tools\RTS\EditorToolMoverRTS.cpp">
+      <Filter>Tools\RTS</Filter>
+    </ClCompile>
+    <ClCompile Include="Tools\RTS\EditorToolRotatorRTS.cpp">
+      <Filter>Tools\RTS</Filter>
+    </ClCompile>
+    <ClCompile Include="Tools\EditorTools.cpp">
+      <Filter>Tools</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -488,36 +485,33 @@
     <ClInclude Include="Editor3DPreviewScene.h">
       <Filter>3D</Filter>
     </ClInclude>
-    <ClInclude Include="Tools\EditorToolSelectorBase.h">
-      <Filter>Tools</Filter>
-    </ClInclude>
-    <ClInclude Include="Tools\EditorToolsCollection.h">
-      <Filter>Tools</Filter>
-    </ClInclude>
-    <ClInclude Include="Tools\Editor3DToolBase.h">
-      <Filter>Tools</Filter>
-    </ClInclude>
-    <ClInclude Include="Tools\Editor3DToolDragger.h">
-      <Filter>Tools</Filter>
-    </ClInclude>
-    <ClInclude Include="Tools\Editor3DToolMover.h">
-      <Filter>Tools</Filter>
-    </ClInclude>
-    <ClInclude Include="Tools\Editor3DToolRotator.h">
-      <Filter>Tools</Filter>
-    </ClInclude>
-    <ClInclude Include="Tools\Editor3DToolSelector.h">
-      <Filter>Tools</Filter>
-    </ClInclude>
-    <ClInclude Include="Tools\RTS\Editor3DToolMoverRTS.h">
-      <Filter>Tools\RTS</Filter>
-    </ClInclude>
-    <ClInclude Include="Tools\RTS\Editor3DToolRotatorRTS.h">
-      <Filter>Tools\RTS</Filter>
-    </ClInclude>
     <ClInclude Include="Editor.h" />
     <ClInclude Include="EditorQtInterfaces.h">
       <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Tools\EditorToolBase.h">
+      <Filter>Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="Tools\EditorToolDragger.h">
+      <Filter>Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="Tools\EditorToolMover.h">
+      <Filter>Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="Tools\EditorToolRotator.h">
+      <Filter>Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="Tools\EditorToolSelector.h">
+      <Filter>Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="Tools\RTS\EditorToolMoverRTS.h">
+      <Filter>Tools\RTS</Filter>
+    </ClInclude>
+    <ClInclude Include="Tools\RTS\EditorToolRotatorRTS.h">
+      <Filter>Tools\RTS</Filter>
+    </ClInclude>
+    <ClInclude Include="Tools\EditorTools.h">
+      <Filter>Tools</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

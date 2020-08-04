@@ -1,13 +1,13 @@
 #pragma once
 
-#include "Tools/EditorToolsCollection.h"
+#include "Tools/EditorTools.h"
 #include "EditorUIFrame.h"
 #include "Editor3DFrame.h"
 
 class CEditor
 	: public IEditor
 	, public IEditorPrivate
-	, public IEditor_NodesSelectorEventListener
+	, public IEditorToolSelectorEventListener
 {
 public:
 	CEditor(IBaseManager& BaseManager);
@@ -27,11 +27,11 @@ public:
 	// Selection part
 	bool IsNodeSelected(std::shared_ptr<ISceneNode3D> Node) const override;
 	std::shared_ptr<ISceneNode3D> GetFirstSelectedNode() const override;
-	const SelectedNodes& GetSelectedNodes() const override;
+	std::vector<std::shared_ptr<ISceneNode3D>> GetSelectedNodes() const override;
 
 	// Scene change part
 
-	// IEditor_NodesSelectorEventListener
+	// IEditorToolSelectorEventListener
 	void OnSelectNode() override;
 
 private:
@@ -39,5 +39,5 @@ private:
 	IEditorUIFrame* m_EditorUIFrame;
 	IEditor3DFrame* m_Editor3DFrame;
 
-	CTools m_Tools;
+	CEditorTools m_Tools;
 };

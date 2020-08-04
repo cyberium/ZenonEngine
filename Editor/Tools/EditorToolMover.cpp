@@ -1,21 +1,21 @@
 #include "stdafx.h"
 
 // General
-#include "Editor3DToolMover.h"
+#include "EditorToolMover.h"
 
-CEditor3DToolMover::CEditor3DToolMover(IEditor& Editor)
-	: CEditor3DToolBase(Editor)
+CEditorToolMover::CEditorToolMover(IEditor& Editor)
+	: CEditorToolBase(Editor)
 	, m_MoverValue(1.0f)
 	, m_MoverNuber(-1)
 	, m_IsMovingNow(false)
 {
 }
 
-CEditor3DToolMover::~CEditor3DToolMover()
+CEditorToolMover::~CEditorToolMover()
 {
 }
 
-void CEditor3DToolMover::Initialize()
+void CEditorToolMover::Initialize()
 {
 	m_MoverRoot = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, GetScene(), GetScene()->GetRootNode3D());
 	m_MoverRoot->SetName("Mover");
@@ -71,13 +71,13 @@ void CEditor3DToolMover::Initialize()
 	m_MoverZ->GetColliderComponent()->SetBounds(model->GetBounds());
 }
 
-void CEditor3DToolMover::Finalize()
+void CEditorToolMover::Finalize()
 {
 }
 
-void CEditor3DToolMover::Enable()
+void CEditorToolMover::Enable()
 {
-	CEditor3DToolBase::Enable();
+	CEditorToolBase::Enable();
 
 	dynamic_cast<IEditorQtUIFrame&>(GetEditor().GetUIFrame()).getUI().editorToolMoverBtn->setChecked(IsEnabled());
 
@@ -89,22 +89,20 @@ void CEditor3DToolMover::Enable()
 	}
 }
 
-void CEditor3DToolMover::Disable()
+void CEditorToolMover::Disable()
 {
-	CEditor3DToolBase::Disable();
+	CEditorToolBase::Disable();
 
 	dynamic_cast<IEditorQtUIFrame&>(GetEditor().GetUIFrame()).getUI().editorToolMoverBtn->setChecked(IsEnabled());
 
 	m_MoverRoot->SetTranslate(glm::vec3(-1000000.0, -10000000.0f, -10000000.0f));
 
 	Clear();
+	m_MovingNode.reset();
 }
 
-bool CEditor3DToolMover::OnMousePressed(const MouseButtonEventArgs & e, const Ray & RayToWorld)
+bool CEditorToolMover::OnMousePressed(const MouseButtonEventArgs & e, const Ray & RayToWorld)
 {
-	if (!IsEnabled())
-		return false;
-
 	auto nodes = GetScene()->FindIntersection(RayToWorld, m_MoverRoot);
 	if (nodes.empty())
 		return false;
@@ -148,53 +146,46 @@ bool CEditor3DToolMover::OnMousePressed(const MouseButtonEventArgs & e, const Ra
 	return false;
 }
 
-void CEditor3DToolMover::OnMouseReleased(const MouseButtonEventArgs & e, const Ray & RayToWorld)
+void CEditorToolMover::OnMouseReleased(const MouseButtonEventArgs & e, const Ray & RayToWorld)
 {
-	if (!IsEnabled())
-		return;
-
 	if (m_IsMovingNow)
 		Clear();
 }
 
-void CEditor3DToolMover::OnMouseMoved(const MouseMotionEventArgs & e, const Ray & RayToWorld)
+void CEditorToolMover::OnMouseMoved(const MouseMotionEventArgs & e, const Ray & RayToWorld)
 {
-	if (!IsEnabled())
+	if (!m_IsMovingNow)
 		return;
 
-	if (m_IsMovingNow)
+	glm::vec3 oldPos = m_MovingNode->GetTranslation();
+	glm::vec3 newPos = glm::vec3(0.0f);
+
+	if (m_MoverNuber == 1)
 	{
-		glm::vec3 oldPos = m_MovingNode->GetTranslation();
-		glm::vec3 newPos = glm::vec3(0.0f);
-
-		if (m_MoverNuber == 1)
-		{
-			auto mousePos = GetScene()->GetCameraController()->RayToPlane(RayToWorld, Plane(glm::vec3(0.0f, 1.0f, 0.0f), oldPos.y));
-			newPos = glm::vec3(mousePos.x + m_MoverOffset.x, oldPos.y, oldPos.z);
-		}
-		else if (m_MoverNuber == 3)
-		{
-			auto mousePos = GetScene()->GetCameraController()->RayToPlane(RayToWorld, Plane(glm::vec3(0.0f, 1.0f, 0.0f), oldPos.y));
-			newPos = glm::vec3(oldPos.x, oldPos.y, mousePos.z + m_MoverOffset.z);
-		}
-		else if (m_MoverNuber == 2)
-		{
-			auto cameraPosX0Z = GetScene()->GetCameraController()->GetCamera()->GetTranslation();
-			cameraPosX0Z = glm::vec3(cameraPosX0Z.x, 0.0f, cameraPosX0Z.z);
-			auto movedObjectPosX0Z = glm::vec3(oldPos.x, 0.0f, oldPos.z);
-			auto planeNormal = glm::normalize(movedObjectPosX0Z - cameraPosX0Z);
-
-			auto mousePos = GetScene()->GetCameraController()->RayToPlane(RayToWorld, Plane(planeNormal, 0.0f));
-			newPos = glm::vec3(oldPos.x, mousePos.y + m_MoverOffset.y, oldPos.z);
-		}
-
-		m_MovingNode->SetTranslate(FixBoxCoords(newPos));
-		m_MoverRoot->SetTranslate(m_MovingNode->GetTranslation());
-
-		// Refresh selection bounds
-		//m_DrawSelectionPass->SetNeedRefresh();
-		return;
+		auto mousePos = GetScene()->GetCameraController()->RayToPlane(RayToWorld, Plane(glm::vec3(0.0f, 1.0f, 0.0f), oldPos.y));
+		newPos = glm::vec3(mousePos.x + m_MoverOffset.x, oldPos.y, oldPos.z);
 	}
+	else if (m_MoverNuber == 3)
+	{
+		auto mousePos = GetScene()->GetCameraController()->RayToPlane(RayToWorld, Plane(glm::vec3(0.0f, 1.0f, 0.0f), oldPos.y));
+		newPos = glm::vec3(oldPos.x, oldPos.y, mousePos.z + m_MoverOffset.z);
+	}
+	else if (m_MoverNuber == 2)
+	{
+		auto cameraPosX0Z = GetScene()->GetCameraController()->GetCamera()->GetTranslation();
+		cameraPosX0Z = glm::vec3(cameraPosX0Z.x, 0.0f, cameraPosX0Z.z);
+		auto movedObjectPosX0Z = glm::vec3(oldPos.x, 0.0f, oldPos.z);
+		auto planeNormal = glm::normalize(movedObjectPosX0Z - cameraPosX0Z);
+
+		auto mousePos = GetScene()->GetCameraController()->RayToPlane(RayToWorld, Plane(planeNormal, 0.0f));
+		newPos = glm::vec3(oldPos.x, mousePos.y + m_MoverOffset.y, oldPos.z);
+	}
+
+	m_MovingNode->SetTranslate(FixBoxCoords(newPos));
+	m_MoverRoot->SetTranslate(m_MovingNode->GetTranslation());
+
+	// Refresh selection bounds
+	dynamic_cast<IEditorToolSelector&>(GetEditor().GetTools().GetTool(ETool::EToolSelector)).SelectNode(m_MovingNode);
 }
 
 
@@ -202,7 +193,7 @@ void CEditor3DToolMover::OnMouseMoved(const MouseMotionEventArgs & e, const Ray 
 //
 // IEditorToolUI
 //
-void CEditor3DToolMover::DoInitializeUI(IEditorQtUIFrame& QtUIFrame)
+void CEditorToolMover::DoInitializeUI(IEditorQtUIFrame& QtUIFrame)
 {
 	m_MoverValues.insert(std::make_pair("<disabled>", 0.001f));
 	m_MoverValues.insert(std::make_pair("x1.0", 1.0f));
@@ -227,12 +218,12 @@ void CEditor3DToolMover::DoInitializeUI(IEditorQtUIFrame& QtUIFrame)
 }
 
 
-glm::ivec3 CEditor3DToolMover::ToBoxCoords(const glm::vec3 & Position)
+glm::ivec3 CEditorToolMover::ToBoxCoords(const glm::vec3 & Position)
 {
 	return glm::round(Position / m_MoverValue);
 }
 
-glm::vec3 CEditor3DToolMover::FixBoxCoords(const glm::vec3 & Position)
+glm::vec3 CEditorToolMover::FixBoxCoords(const glm::vec3 & Position)
 {
 	glm::vec3 newPosition = Position;
 	newPosition /= m_MoverValue;
@@ -241,12 +232,12 @@ glm::vec3 CEditor3DToolMover::FixBoxCoords(const glm::vec3 & Position)
 	return newPosition;
 }
 
-void CEditor3DToolMover::SetMoverValue(float Value)
+void CEditorToolMover::SetMoverValue(float Value)
 {
 	m_MoverValue = Value;
 }
 
-void CEditor3DToolMover::Clear()
+void CEditorToolMover::Clear()
 {
 	m_MoverNuber = 0;
 	m_IsMovingNow = false;

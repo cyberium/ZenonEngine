@@ -1,13 +1,13 @@
 #pragma once
 
-#include "ui_MainEditor.h"
+#include "ui_EditorUIFrame.h"
 
 ZN_INTERFACE IEditorQtUIFrame
 {
 	virtual ~IEditorQtUIFrame() {}
 
 	virtual QObject& getQObject() = 0;
-	virtual Ui::MainEditorClass& getUI() = 0;
+	virtual Ui::EditorUIFrameClass& getUI() = 0;
 };
 
 

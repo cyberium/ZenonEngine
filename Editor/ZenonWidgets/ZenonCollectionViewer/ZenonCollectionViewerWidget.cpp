@@ -93,6 +93,8 @@ void ZenonCollectionViewerWidget::mouseMoveEvent(QMouseEvent * event)
 		QMimeData *mimeData = new QMimeData;
 		mimeData->setText(item->GetTObject()->GetName().c_str());
 
+		m_Editor->GetTools().Enable(ETool::EToolDragger);
+
 		auto drag = new QDrag(this);
 		drag->setMimeData(mimeData);
 		drag->setHotSpot(event->pos());

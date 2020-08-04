@@ -1,22 +1,27 @@
 #pragma once
 
-#include "../Editor3DToolBase.h"
+#include "../EditorToolBase.h"
 
-class CEditor3DToolMoverRTS
-	: public CEditor3DToolBase
+class CEditorToolMoverRTS
+	: public CEditorToolBase
 {
 public:
-	CEditor3DToolMoverRTS(IEditor& Editor);
-	virtual ~CEditor3DToolMoverRTS();
+	CEditorToolMoverRTS(IEditor& Editor);
+	virtual ~CEditorToolMoverRTS();
 
-	// // CEditor3DToolBase
+	// IEditorTool
 	void Initialize() override;
 	void Finalize() override;
 	void Enable() override;
 	void Disable() override;
+
+	// 3D
 	bool OnMousePressed(const MouseButtonEventArgs & e, const Ray& RayToWorld) override;
 	void OnMouseReleased(const MouseButtonEventArgs & e, const Ray& RayToWorld) override;
 	void OnMouseMoved(const MouseMotionEventArgs& e, const Ray& RayToWorld) override;
+
+	// IEditorToolUI
+	void DoInitializeUI(IEditorQtUIFrame& QtUIFrame) override;
 
 	glm::ivec3 ToBoxCoords(const glm::vec3 & Position);
 	glm::vec3 FixBoxCoords(const glm::vec3 & Position);

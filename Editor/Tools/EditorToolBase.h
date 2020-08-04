@@ -2,13 +2,13 @@
 
 #include "EditorQtInterfaces.h"
 
-class CEditor3DToolBase
+class CEditorToolBase
 	: public IEditorTool
 	, public IEditorToolUI
 {
 public:
-	CEditor3DToolBase(IEditor& Editor);
-	virtual ~CEditor3DToolBase();
+	CEditorToolBase(IEditor& Editor);
+	virtual ~CEditorToolBase();
 
 	// IEditorTool
 	virtual void Initialize() = 0;
@@ -18,7 +18,7 @@ public:
 	bool IsEnabled() const override final;
 
 	// 3D
-	virtual void AddPasses(RenderTechnique& RenderTechnique, std::shared_ptr<IRenderTarget> RenderTarget, const Viewport* Viewport);
+	virtual void DoInitialize3D(RenderTechnique& RenderTechnique, std::shared_ptr<IRenderTarget> RenderTarget, const Viewport* Viewport);
 	virtual bool OnMousePressed(const MouseButtonEventArgs& e, const Ray& RayToWorld) = 0;
 	virtual void OnMouseReleased(const MouseButtonEventArgs& e, const Ray& RayToWorld) = 0;
 	virtual void OnMouseMoved(const MouseMotionEventArgs& e, const Ray& RayToWorld) = 0;
