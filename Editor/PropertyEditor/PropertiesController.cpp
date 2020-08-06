@@ -11,6 +11,7 @@
 
 CPropertiesController::CPropertiesController(QtnPropertyWidget * PropertyWidget)
 	: m_PropertyWidget(PropertyWidget)
+	, m_PropertiesSet(nullptr)
 {
 
 
@@ -20,14 +21,32 @@ CPropertiesController::~CPropertiesController()
 {
 }
 
+void DoRemovePropsFromPropertySet(QtnPropertySet* Set)
+{
+	auto childs = Set->childProperties();
+	for (auto p = childs.begin(); p != childs.end(); )
+	{
+		if (auto childPropsSet = dynamic_cast<QtnPropertySet*>(*p))
+			DoRemovePropsFromPropertySet(childPropsSet);
+
+		if (!Set->removeChildProperty(*p))
+			throw CException("Unable to remove property");
+
+		delete *p;
+
+		p = childs.erase(p);
+	}
+}
+
 void CPropertiesController::OnSceneNodeSelected(ISceneNode3D* SceneNode)
 {
-	if (m_PropertyWidget->propertySet())
+	if (m_PropertiesSet)
 	{
-		delete m_PropertyWidget->propertySet();
+		DoRemovePropsFromPropertySet(m_PropertiesSet);
+		delete m_PropertiesSet;
 	}
 
-	auto m_propertySetRoot = new QtnPropertySet(this);
+	m_PropertiesSet = new QtnPropertySet(this);
 
 	/*
 	auto m_propertySet0 = new QtnPropertySet(this);
@@ -81,32 +100,33 @@ void CPropertiesController::OnSceneNodeSelected(ISceneNode3D* SceneNode)
 
 	if (SceneNode)
 	{
-		CreateProperty(m_propertySetRoot, SceneNode->GetProperties());
+		CreateProperty(m_PropertiesSet, SceneNode->GetProperties());
 
 		for (const auto& c : SceneNode->GetComponents())
 		{
-			CreateProperty(m_propertySetRoot, c.second->GetProperties());
+			CreateProperty(m_PropertiesSet, c.second->GetProperties());
 		}
 	}
 
-	m_PropertyWidget->setPropertySet(m_propertySetRoot);
+	m_PropertyWidget->setPropertySet(m_PropertiesSet);
 }
 
-void CPropertiesController::CreateProperty(QtnPropertySet * PropertiesSet, const std::shared_ptr<IProperty>& Property)
+void CPropertiesController::CreateProperty(QtnPropertySet* PropertiesSet, const std::shared_ptr<IProperty>& Property)
 {
 	if (auto propGroup = std::dynamic_pointer_cast<IPropertiesGroup>(Property))
 	{
-		QtnPropertySet* propertySet = new QtnPropertySet(this);
+		auto propertySet = new QtnPropertySet(this);
+		PropertiesSet->addChildProperty(propertySet);
 		propertySet->setName(propGroup->GetName().c_str());
 		propertySet->setDescription(propGroup->GetDescription().c_str());
-		PropertiesSet->addChildProperty(propertySet);
-
+		
 		for (const auto& prop : propGroup->GetProperties())
 			CreateProperty(propertySet, prop.second);
 	}
 	else if (auto act = std::dynamic_pointer_cast<IPropertyAction>(Property))
 	{
-		QtnPropertyButton* actionProperty = qtnCreateProperty<QtnPropertyButton>(PropertiesSet);
+		auto actionProperty = new QtnPropertyButton(PropertiesSet);
+		PropertiesSet->addChildProperty(actionProperty);
 		actionProperty->setName(act->GetName().c_str());
 		actionProperty->setDescription(act->GetDescription().c_str());
 		actionProperty->setClickHandler([act](const QtnPropertyButton* Button) {
@@ -115,7 +135,9 @@ void CPropertiesController::CreateProperty(QtnPropertySet * PropertiesSet, const
 	}
 	else if (auto propT = std::dynamic_pointer_cast<IPropertyT<std::string>>(Property))
 	{
-		QtnPropertyString* stringProperty = qtnCreateProperty<QtnPropertyString>(PropertiesSet);
+		auto stringProperty = new QtnPropertyString(PropertiesSet);
+		PropertiesSet->addChildProperty(stringProperty);
+
 		stringProperty->setName(propT->GetName().c_str());
 		stringProperty->setDescription(propT->GetDescription().c_str());
 		stringProperty->setValue(propT->Get());
@@ -139,7 +161,9 @@ void CPropertiesController::CreateProperty(QtnPropertySet * PropertiesSet, const
 	}
 	else if (auto propT = std::dynamic_pointer_cast<IPropertyT<float>>(Property))
 	{
-		QtnPropertyFloat* floatProperty = qtnCreateProperty<QtnPropertyFloat>(PropertiesSet);
+		auto floatProperty = new QtnPropertyFloat(PropertiesSet);
+		PropertiesSet->addChildProperty(floatProperty);
+
 		floatProperty->setName(propT->GetName().c_str());
 		floatProperty->setDescription(propT->GetDescription().c_str());
 		floatProperty->setValue(propT->Get());

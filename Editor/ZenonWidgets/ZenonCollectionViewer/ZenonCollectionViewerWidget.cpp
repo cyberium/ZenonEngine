@@ -33,6 +33,7 @@ ZenonCollectionViewerWidget::ZenonCollectionViewerWidget(QWidget * parent)
 
 ZenonCollectionViewerWidget::~ZenonCollectionViewerWidget()
 {
+	Log::Info("Test");
 }
 
 void ZenonCollectionViewerWidget::SetModelsList(const std::vector<std::string>& Nodes)

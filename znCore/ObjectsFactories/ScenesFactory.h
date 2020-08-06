@@ -1,22 +1,17 @@
 #pragma once
 
+#include "ObjectClassFactory.h"
+
 class CScenesFactory
-	: public IScenesFactory
-	, public IznPluginsEventListener
+	: public CObjectClassFactory
+	, public IScenesFactory
 {
 public:
-	CScenesFactory(IBaseManager& BaseManager);
+	CScenesFactory(IBaseManager& BaseManager, const std::string& TypeName, ObjectType Type);
 	virtual ~CScenesFactory();
 
-	// IScenesFactory
-	void AddSceneCreator(std::shared_ptr<ISceneCreator> Creator) override;
-	void RemoveSceneCreator(std::shared_ptr<ISceneCreator> Creator) override;
-	std::shared_ptr<IScene> CreateScene(std::string SceneTypeName) const override;
-
-	// IznPluginsEventListener
-	void OnPluginAdded(std::shared_ptr<IznPlugin> Plugin) override;
-	void OnPluginInitialized(std::shared_ptr<IznPlugin> Plugin) override;
-	void OnPluginFinalized(std::shared_ptr<IznPlugin> Plugin) override;
+	// ISceneNodeUIFactory
+	std::shared_ptr<IScene> CreateScene(ObjectClass ObjectClassKey) override;
 
 private:
 	std::vector<std::shared_ptr<ISceneCreator>> m_Creators;

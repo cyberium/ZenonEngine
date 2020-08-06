@@ -47,6 +47,16 @@ IManager* CBaseManager::GetManager(GUID Type) const
 	return it->Manager.get();
 }
 
+void CBaseManager::RemoveAllManagers()
+{
+	for (auto& it : m_Managers)
+	{
+		_ASSERT(it.Manager.use_count() == 1);
+		_ASSERT(it.Manager);
+		it.Manager.reset();
+	}
+}
+
 const IApplication& CBaseManager::GetApplication() const
 {
 	_ASSERT(m_Application != nullptr);

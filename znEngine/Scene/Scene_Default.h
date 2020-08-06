@@ -46,6 +46,4 @@ private:
 	std::shared_ptr<CDefferedRenderFinal> m_DefferedFinalRenderPass;
 
 	rp3d::DynamicsWorld m_World;
-
-	std::shared_ptr<ISceneNode3D> sceneNodeParentt;
 };

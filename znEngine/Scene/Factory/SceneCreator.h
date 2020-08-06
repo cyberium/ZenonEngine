@@ -1,17 +1,13 @@
 #pragma once
 
-class CSceneDefaultCreator
-	: public ISceneCreator
+class CSceneEngineCreator
+	: public CObjectClassCreator
 {
 public:
-	CSceneDefaultCreator(IBaseManager& BaseManager);
-	virtual ~CSceneDefaultCreator();
+	CSceneEngineCreator(IBaseManager& BaseManager);
+	virtual ~CSceneEngineCreator();
 
-	// ISceneCreator
-	size_t GetScenesCount() const override;
-	std::string GetSceneTypeName(size_t Index) const override;
-	std::shared_ptr<IScene> CreateScene(size_t Index) const override;
+	// IObjectClassCreator
+	virtual std::shared_ptr<IObject> CreateObject(size_t Index, const IObjectCreationArgs* ObjectCreationArgs) override;
 
-private:
-	IBaseManager& m_BaseManager;
 };

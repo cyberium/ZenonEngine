@@ -19,11 +19,6 @@
 #include "../znEngine/Scene/Components/CameraComponent3D.h"
 #include "../znEngine/Scene/Components/ParticlesComponent3D.h"
 
-// Nodes
-#include "../znEngine/Scene/Nodes/UIText.h"
-#include "../znEngine/Scene/Nodes/UIButton.h"
-#include "../znEngine/Scene/Nodes/UITexture.h"
-
 // Materials
 #include "../znEngine/Materials/MaterialDebug.h"
 #include "../znEngine/Materials/MaterialTextured.h"

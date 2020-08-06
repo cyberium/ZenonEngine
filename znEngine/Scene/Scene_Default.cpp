@@ -40,6 +40,7 @@ CSceneDefault::CSceneDefault(IBaseManager& BaseManager)
 
 CSceneDefault::~CSceneDefault()
 {
+	Log::Info("Scene destroyed.");
 }
 
 
@@ -104,7 +105,7 @@ bool CSceneDefault::OnMousePressed(const MouseButtonEventArgs & e, const Ray& Ra
 {
 	if (e.Button == MouseButtonEventArgs::MouseButton::Left)
 	{
-		sceneNodeParentt->SetTranslate(GetCameraController()->RayToPlane(RayToWorld, Plane(glm::vec3(0.0f, 1.0f, 0.0f), 25.0f)));
+		//sceneNodeParentt->SetTranslate(GetCameraController()->RayToPlane(RayToWorld, Plane(glm::vec3(0.0f, 1.0f, 0.0f), 25.0f)));
 		return true;
 	}
 	return false;
@@ -216,10 +217,7 @@ void CSceneDefault::Load3D()
 					bbox.transform(sceneNode->GetWorldTransfom());
 					sceneNode->GetColliderComponent()->SetBounds(bbox);
 
-
-
-
-
+#if 0
 					rp3d::Vector3 initPosition(offset * i + r.NextFloat() / 5.0f, offset * k, offset * j + r.NextFloat() / 5.0f);
 					rp3d::Quaternion initOrientation = rp3d::Quaternion::identity();
 					rp3d::Transform transform(initPosition, initOrientation);
@@ -240,6 +238,7 @@ void CSceneDefault::Load3D()
 
 					std::shared_ptr<CReactPhysicsComponent> component = std::make_shared<CReactPhysicsComponent>(*sceneNode, body);
 					sceneNode->AddComponent(component);
+#endif
 				}
 			}
 		}
@@ -281,6 +280,8 @@ void CSceneDefault::Load3D()
 		rp3d::Transform transform(initPosition, initOrientation);
 
 		// Create a rigid body in the world
+
+#if 0
 		rp3d::RigidBody * body;
 		body = m_World.createRigidBody(transform);
 		body->setType(rp3d::BodyType::STATIC);
@@ -289,17 +290,12 @@ void CSceneDefault::Load3D()
 
 		rp3d::BoxShape * shape = new rp3d::BoxShape(rp3d::Vector3(cPlaneSize, 0.001f, cPlaneSize));
 
-		
-
-
 		rp3d::ProxyShape * proxyShape;
 		proxyShape = body->addCollisionShape(shape, rp3d::Transform::identity(), rp3d::decimal(5.0));
 
-
 		std::shared_ptr<CReactPhysicsComponent> component = std::make_shared<CReactPhysicsComponent>(*sceneNodePlane, body);
 		sceneNodePlane->AddComponent(component);
-
-
+#endif
 	}
 #endif
 
@@ -351,6 +347,8 @@ void CSceneDefault::Load3D()
 
 	//m_World.raycast(reactphysics3d::Ray(), reactphysics3d::RaycastCallback);
 
+#if 0
+
 	std::shared_ptr<ISceneNode3D> sceneNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, this);
 	
 	// Models
@@ -372,7 +370,7 @@ void CSceneDefault::Load3D()
 
 	// Skeleton component
 	sceneNode->AddComponent<ISkeletonComponent3D>(std::make_shared<CSkeletonComponent3D>(*sceneNode, skeletonFromAnim));
-
+#endif
 
 
 

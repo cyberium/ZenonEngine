@@ -48,7 +48,6 @@ ZN_INTERFACE ZN_API IFBXSkeleton
 	virtual CSkeleton& GetSkeletonEditable () = 0;
 };
 
-//const ObjectClass cSceneNode_FBXNode = UINT16_MAX - 101u;
 ZN_INTERFACE ZN_API IFBXNode
 {
 	virtual ~IFBXNode() {}

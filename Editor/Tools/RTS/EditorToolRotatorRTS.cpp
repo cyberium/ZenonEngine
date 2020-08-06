@@ -17,24 +17,14 @@ CEditorToolRotatorRTS::~CEditorToolRotatorRTS()
 void CEditorToolRotatorRTS::Initialize()
 {
 	m_RotatorRoot = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, GetScene(), GetScene()->GetRootNode3D());
-	m_RotatorRoot->SetName("Rotator");
+	m_RotatorRoot->SetName("RotatorRTS");
 
 	auto geom = GetRenderDevice().GetPrimitivesFactory().CreateTorus(1.0f, 0.05f);
-
-	auto materialX = std::make_shared<MaterialDebug>(GetRenderDevice());
-	materialX->SetDiffuseColor(glm::vec4(1.0f, 0.2f, 0.1f, 1.0f));
-	auto modelX = GetRenderDevice().GetObjectsFactory().CreateModel();
-	modelX->AddConnection(materialX, geom);
 
 	auto materialY = std::make_shared<MaterialDebug>(GetRenderDevice());
 	materialY->SetDiffuseColor(glm::vec4(0.1f, 1.0f, 0.1f, 1.0f));
 	auto modelY = GetRenderDevice().GetObjectsFactory().CreateModel();
 	modelY->AddConnection(materialY, geom);
-
-	auto materialZ = std::make_shared<MaterialDebug>(GetRenderDevice());
-	materialZ->SetDiffuseColor(glm::vec4(0.1f, 0.2f, 1.0f, 1.0f));
-	auto modelZ = GetRenderDevice().GetObjectsFactory().CreateModel();
-	modelZ->AddConnection(materialZ, geom);
 
 	m_RotatorY = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, GetScene(), m_RotatorRoot);
 	m_RotatorY->SetName("RotatorRTS_Y");
@@ -50,13 +40,13 @@ void CEditorToolRotatorRTS::Enable()
 {
 	CEditorToolBase::Enable();
 
-	dynamic_cast<IEditorQtUIFrame&>(GetEditor().GetUIFrame()).getUI().editorToolRotatorRTSBtn->setChecked(IsEnabled());
+	auto btn = dynamic_cast<IEditorQtUIFrame&>(GetEditor().GetUIFrame()).getUI().editorToolRotatorRTSBtn;
+	btn->setChecked(IsEnabled());
 
-	if (auto node = GetEditor().GetFirstSelectedNode())
+	if (m_MovingNode = GetEditor().GetFirstSelectedNode())
 	{
-		m_MovingNode = node;
-		m_RotatorRoot->SetTranslate(node->GetTranslation());
-		m_RotatorRoot->SetScale(glm::vec3(m_MovingNode->GetColliderComponent()->GetBounds().getRadius()));
+		m_RotatorRoot->SetTranslate(m_MovingNode->GetTranslation());
+		m_RotatorRoot->SetScale(glm::vec3(m_MovingNode->GetColliderComponent()->GetBounds().getRadius() * 2.0f));
 	}
 }
 
@@ -64,9 +54,10 @@ void CEditorToolRotatorRTS::Disable()
 {
 	CEditorToolBase::Disable();
 
-	dynamic_cast<IEditorQtUIFrame&>(GetEditor().GetUIFrame()).getUI().editorToolRotatorRTSBtn->setChecked(IsEnabled());
+	auto btn = dynamic_cast<IEditorQtUIFrame&>(GetEditor().GetUIFrame()).getUI().editorToolRotatorRTSBtn;
+	btn->setChecked(IsEnabled());
 
-	m_RotatorRoot->SetTranslate(glm::vec3(-1000000.0, -10000000.0f, -10000000.0f));
+	m_RotatorRoot->SetTranslate(glm::vec3(-1000000.0));
 
 	Clear();
 	m_MovingNode.reset();
@@ -84,6 +75,7 @@ bool CEditorToolRotatorRTS::OnMousePressed(const MouseButtonEventArgs & e, const
 	if (nodes.empty())
 		return false;
 
+
 	for (const auto& it : nodes)
 	{
 		if (it.second == m_RotatorY)
@@ -92,7 +84,11 @@ bool CEditorToolRotatorRTS::OnMousePressed(const MouseButtonEventArgs & e, const
 
 	if (m_RotatorNuber > 0)
 	{
-		m_MovingObjectPos = m_MovingNode->GetRotation();
+		auto nodePosition = m_MovingNode->GetTranslation();
+		auto pos = GetScene()->GetCameraController()->RayToPlane(RayToWorld, Plane(glm::vec3(0.0f, 1.0f, 0.0f), nodePosition.y));
+
+		m_RotatorInitialAngle = m_MovingNode->GetRotation().y;//= glm::angle(glm::normalize(pos.xz()), glm::normalize(nodePosition.xz()));
+
 		m_IsRotateNow = true;
 		return true;
 	}
@@ -110,24 +106,20 @@ void CEditorToolRotatorRTS::OnMouseMoved(const MouseMotionEventArgs & e, const R
 {
 	if (m_IsRotateNow)
 	{
-		glm::vec3 newRot = m_MovingNode->GetRotation();
 
-		if (m_RotatorNuber == 1)
+
+		glm::vec3 newRot = m_MovingNode->GetRotation();
+		if (m_RotatorNuber == 2)
 		{
-			newRot.x += e.RelY / 360.0f;
-		}
-		else if (m_RotatorNuber == 2)
-		{
-			newRot.y += e.RelY / 360.0f;
-		}
-		else if (m_RotatorNuber == 3)
-		{
-			newRot.z += e.RelY / 360.0f;
+			auto nodePosition = m_MovingNode->GetTranslation();
+			auto pos = GetScene()->GetCameraController()->RayToPlane(RayToWorld, Plane(glm::vec3(0.0f, 1.0f, 0.0f), nodePosition.y));
+
+			float ang = glm::angle(glm::normalize(pos.xz()), glm::normalize(nodePosition.xz()));
+
+			newRot.y = m_RotatorInitialAngle + ang;
 		}
 
 		m_MovingNode->SetRotation(newRot);
-
-		return;
 	}
 }
 
@@ -144,9 +136,13 @@ void CEditorToolRotatorRTS::DoInitializeUI(IEditorQtUIFrame & QtUIFrame)
 	});
 }
 
+
+
+//
+// Protected
+//
 void CEditorToolRotatorRTS::Clear()
 {
 	m_RotatorNuber = 0;
 	m_IsRotateNow = false;
-	m_MovingObjectPos = glm::vec3(0.0f);
 }

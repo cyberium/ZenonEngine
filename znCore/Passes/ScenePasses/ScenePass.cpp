@@ -22,7 +22,7 @@ void ScenePass::Render(RenderEventArgs & e)
 //
 // Protected
 //
-const std::shared_ptr<IScene>& ScenePass::GetScene() const
+std::shared_ptr<IScene> ScenePass::GetScene() const
 {
-	return m_Scene;
+	return m_Scene.lock();
 }

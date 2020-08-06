@@ -103,6 +103,9 @@ IBaseManager* WINAPI InitializeEngine(std::vector<std::string> Arguments, std::s
 		std::shared_ptr<IObjectsFactory> factory = std::make_shared<CObjectsFactory>(*baseManager);
 		baseManager->AddManager<IObjectsFactory>(factory);
 
+		std::shared_ptr<CScenesFactory> sceneFactory = std::make_shared<CScenesFactory>(*baseManager, "otScene", otScene);
+		sceneFactory->AddClassCreator(std::make_shared<CSceneEngineCreator>(*baseManager));
+
 		std::shared_ptr<CSceneNode3DFactory> sceneNode3DFactory = std::make_shared<CSceneNode3DFactory>(*baseManager, "otSceneNode3D", otSceneNode3D);
 		sceneNode3DFactory->AddClassCreator(std::make_shared<CSceneNode3DEngineCreator>(*baseManager));
 
@@ -112,7 +115,7 @@ IBaseManager* WINAPI InitializeEngine(std::vector<std::string> Arguments, std::s
 		std::shared_ptr<CComponentsFactory> componentFactory = std::make_shared<CComponentsFactory>(*baseManager, "otSceneNodeComponent", otSceneNodeComponent);
 		componentFactory->AddClassCreator(std::make_shared<CComponentsEngineCreator>(*baseManager));
 
-
+		factory->AddClassFactory(sceneFactory);
 		factory->AddClassFactory(sceneNode3DFactory);
 		factory->AddClassFactory(sceneNodeUIFactory);
 		factory->AddClassFactory(componentFactory);
@@ -122,13 +125,6 @@ IBaseManager* WINAPI InitializeEngine(std::vector<std::string> Arguments, std::s
 	{
 		auto fbxManager = std::make_shared<CFBXManager>(*baseManager);
 		baseManager->AddManager<IFBXManager>(fbxManager);
-	}
-
-	// Scene
-	{
-		std::shared_ptr<IScenesFactory> factory = std::make_shared<CScenesFactory>(*baseManager);
-		baseManager->AddManager<IScenesFactory>(factory);
-		pluginsManager->AddPluginEventListener(std::dynamic_pointer_cast<IznPluginsEventListener>(factory));
 	}
 
 	// Passes

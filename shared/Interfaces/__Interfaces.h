@@ -69,6 +69,7 @@ typedef unsigned long long uint64;
 #include <glm/glm/gtx/quaternion.hpp>
 #include <glm/glm/gtx/euler_angles.hpp>
 #include <glm/glm/gtx/norm.hpp>
+#include <glm/glm/gtx/vector_angle.hpp>
 #pragma warning( pop ) 
 
 typedef glm::vec3 ColorRBG;

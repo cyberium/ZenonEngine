@@ -6,47 +6,27 @@
 // Additional
 #include "Scene/Scene_Default.h"
 
-CSceneDefaultCreator::CSceneDefaultCreator(IBaseManager& BaseManager)
-	: m_BaseManager(BaseManager)
-{}
-
-CSceneDefaultCreator::~CSceneDefaultCreator()
-{}
-
-
-
-//
-// ISceneNodeCreator
-//
-size_t CSceneDefaultCreator::GetScenesCount() const
+CSceneEngineCreator::CSceneEngineCreator(IBaseManager& BaseManager)
+	: CObjectClassCreator(BaseManager)
 {
-	return 2;
+	AddKey("SceneBase", cSceneBase);
+	AddKey("SceneDefault", cSceneDefault);
 }
 
-std::string CSceneDefaultCreator::GetSceneTypeName(size_t Index) const
+CSceneEngineCreator::~CSceneEngineCreator()
+{}
+
+std::shared_ptr<IObject> CSceneEngineCreator::CreateObject(size_t Index, const IObjectCreationArgs * ObjectCreationArgs)
 {
 	if (Index == 0)
 	{
-		return "SceneBase";
-	}
-	else if (Index == 1)
-	{
-		return "SceneDefault";
-	}
-
-	return nullptr;
-}
-
-std::shared_ptr<IScene> CSceneDefaultCreator::CreateScene(size_t Index) const
-{
-	if (Index == 0)
-	{
-		std::shared_ptr<IScene> scene = std::make_shared<SceneBase>(m_BaseManager);
+		std::shared_ptr<IScene> scene = std::make_shared<SceneBase>(GetBaseManager());
 		return scene;
 	}
 	else if (Index == 1)
 	{
-		return std::make_shared<CSceneDefault>(m_BaseManager);
+		std::shared_ptr<IScene> scene = std::make_shared<CSceneDefault>(GetBaseManager());
+		return scene;
 	}
 
 	return nullptr;

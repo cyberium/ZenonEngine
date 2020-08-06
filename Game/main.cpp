@@ -8,11 +8,10 @@ void main_internal(int argumentCount, char* arguments[])
 	// 1. Initialize engine and some improtant managers
 	BaseManager = InitializeEngine(Utils::ArgumentsToVector(argumentCount, arguments), "");
 
-	// 3. Create application
-	Application app(*BaseManager, ::GetModuleHandle(NULL));
-
 	try
 	{
+		Application app(*BaseManager, ::GetModuleHandle(NULL));
+
 		CNativeWindowFactory nativeWindowFactory(&app);
 
 		std::unique_ptr<INativeWindow> nativeWindow = nativeWindowFactory.CreateWindowInstance(
@@ -31,7 +30,8 @@ void main_internal(int argumentCount, char* arguments[])
 
 		BaseManager->GetManager<ILoader>()->Start();
 
-		std::shared_ptr<IScene> scene = BaseManager->GetManager<IScenesFactory>()->CreateScene("SceneDefault");
+
+		std::shared_ptr<IScene> scene = BaseManager->GetManager<IObjectsFactory>()->GetClassFactoryCast<IScenesFactory>()->CreateScene(cSceneDefault);
 		scene->SetRenderWindow(firstRenderWindow);
 		scene->ConnectEvents(std::dynamic_pointer_cast<IRenderWindowEvents>(firstRenderWindow));
 		scene->Initialize();
@@ -41,10 +41,12 @@ void main_internal(int argumentCount, char* arguments[])
 	}
 	catch (const CznRenderException& e)
 	{
-		Log::Fatal(e.MessageCStr());
+		Log::Fatal("RenderError: %s", e.MessageCStr());
 	}
-
-	
+	catch (const CException& e)
+	{
+		Log::Fatal("EngienError: %s", e.MessageCStr());
+	}
 }
 
 
@@ -61,7 +63,10 @@ int main(int argumentCount, char* arguments[])
 	main_internal(argumentCount, arguments);		
 
 	if (BaseManager)
+	{
+		BaseManager->RemoveAllManagers();
 		delete BaseManager;
+	}
 
 #ifdef _DEBUG
 	_CrtMemDumpAllObjectsSince(&_ms);

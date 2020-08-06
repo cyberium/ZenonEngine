@@ -8,7 +8,6 @@ class UpdateEventArgs;
 ZN_INTERFACE ISceneNodesFactory;
 // FORWARD END
 
-
 ZN_INTERFACE ZN_API IScene 
 	: public IObject
     , public std::enable_shared_from_this<IScene>
@@ -59,8 +58,7 @@ ZN_INTERFACE ZN_API IScene
 	{
 		static_assert(std::is_convertible<T*, ISceneNode3D*>::value, "T must inherit ISceneNode3D as public.");
 
-		std::shared_ptr<T> node = std::make_shared<T>(std::forward<Args>(_Args)...);
-		node->SetSceneInternal(weak_from_this());
+		std::shared_ptr<T> node = std::make_shared<T>(*this);
 		node->RegisterComponents();
 		node->Initialize();
 
@@ -100,20 +98,16 @@ ZN_INTERFACE ZN_API ISceneCreator
 {
 	virtual ~ISceneCreator() {}
 
-	virtual size_t                                  GetScenesCount() const = 0;
-	virtual std::string                             GetSceneTypeName(size_t Index) const = 0;
-	virtual std::shared_ptr<IScene>					CreateScene(size_t Index) const = 0;
+	virtual size_t GetScenesCount() const = 0;
+	virtual std::string GetSceneTypeName(size_t Index) const = 0;
+	virtual std::shared_ptr<IScene> CreateScene(size_t Index) const = 0;
 };
 
-ZN_INTERFACE ZN_API
-	__declspec(uuid("CCF47DFF-A18F-46F2-B413-F17ABF991C50"))
-	IScenesFactory
-	: public IManager
+ZN_INTERFACE ZN_API	IScenesFactory
 {
+	static ObjectType GetSupportedObjectType() { return otScene; }
+
 	virtual ~IScenesFactory() {}
 
-	virtual void AddSceneCreator(std::shared_ptr<ISceneCreator> Creator) = 0;
-	virtual void RemoveSceneCreator(std::shared_ptr<ISceneCreator> Creator) = 0;
-
-	virtual std::shared_ptr<IScene> CreateScene(std::string SceneTypeName) const = 0;
+	virtual std::shared_ptr<IScene> CreateScene(ObjectClass ObjectClassKey) = 0;
 };

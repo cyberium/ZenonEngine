@@ -22,7 +22,7 @@ void ScenePassPipelined::Render(RenderEventArgs& e)
 //
 // Protected
 //
-const std::shared_ptr<IScene>& ScenePassPipelined::GetScene() const
+std::shared_ptr<IScene> ScenePassPipelined::GetScene() const
 {
-	return m_Scene;
+	return m_Scene.lock();
 }

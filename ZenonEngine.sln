@@ -59,8 +59,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Tests", "Tests\Tests.vcxpro
 		{590C7C79-AE16-4DB2-B61C-BB7B25B76B42} = {590C7C79-AE16-4DB2-B61C-BB7B25B76B42}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "znRenderDX12", "znRenderDX12\znRenderDX12.vcxproj", "{BC19BA9B-8C4B-4546-9362-2092C151BDB3}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -119,10 +117,6 @@ Global
 		{AE3BC0AA-C469-4530-B761-C9777D3BE0D2}.Debug|x64.Build.0 = Debug|x64
 		{AE3BC0AA-C469-4530-B761-C9777D3BE0D2}.Release|x64.ActiveCfg = Release|x64
 		{AE3BC0AA-C469-4530-B761-C9777D3BE0D2}.Release|x64.Build.0 = Release|x64
-		{BC19BA9B-8C4B-4546-9362-2092C151BDB3}.Debug|x64.ActiveCfg = Debug|x64
-		{BC19BA9B-8C4B-4546-9362-2092C151BDB3}.Debug|x64.Build.0 = Debug|x64
-		{BC19BA9B-8C4B-4546-9362-2092C151BDB3}.Release|x64.ActiveCfg = Release|x64
-		{BC19BA9B-8C4B-4546-9362-2092C151BDB3}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

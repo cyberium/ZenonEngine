@@ -15,76 +15,88 @@ void main_internal(int argc, char *argv[])
 	// 1. Initialize engine and some improtant managers
 	BaseManager = InitializeEngine(Utils::ArgumentsToVector(argc, argv), "");
 
-	// 3. Create application
-	Application app(*BaseManager, ::GetModuleHandle(NULL));
-
-	CEditor editor(*BaseManager);
-
-	IRenderDevice& renderDevice = app.CreateRenderDevice(RenderDeviceType::RenderDeviceType_DirectX11);
-
-	std::shared_ptr<IFontsManager> fontsManager = std::make_shared<FontsManager>(renderDevice, *BaseManager);
-	BaseManager->AddManager<IFontsManager>(fontsManager);
-	BaseManager->GetManager<ILoader>()->Start();
-
-
-
-	QApplication a(argc, argv);
-
-
-	CEditorUIFrame editorUI(editor);
-	editorUI.InitializeEditorFrame();
-
-	std::shared_ptr<IRenderWindow> renderWindow;
-	std::shared_ptr<CEditor3DFrame> editorScene;
+	try
 	{
-		renderWindow = renderDevice.GetObjectsFactory().CreateRenderWindow(*editorUI.getMainEditor(), false);
-		app.AddRenderWindow(renderWindow);
+		// 3. Create application
+		Application app(*BaseManager, ::GetModuleHandle(NULL));
 
-		editorScene = std::make_shared<CEditor3DFrame>(editor);
-		editorScene->SetRenderWindow(renderWindow);
-		editorScene->ConnectEvents(std::dynamic_pointer_cast<IRenderWindowEvents>(renderWindow));
-		editorScene->Initialize();
+		CEditor editor(*BaseManager);
+
+		IRenderDevice& renderDevice = app.CreateRenderDevice(RenderDeviceType::RenderDeviceType_DirectX11);
+
+		std::shared_ptr<IFontsManager> fontsManager = std::make_shared<FontsManager>(renderDevice, *BaseManager);
+		BaseManager->AddManager<IFontsManager>(fontsManager);
+		BaseManager->GetManager<ILoader>()->Start();
+
+		QApplication a(argc, argv);
+
+		CEditorUIFrame editorUI(editor);
+		editorUI.InitializeEditorFrame();
+
+		std::shared_ptr<IRenderWindow> renderWindow;
+		std::shared_ptr<CEditor3DFrame> editorScene;
+		{
+			renderWindow = renderDevice.GetObjectsFactory().CreateRenderWindow(*editorUI.getMainEditor(), false);
+			app.AddRenderWindow(renderWindow);
+
+			editorScene = std::make_shared<CEditor3DFrame>(editor);
+			editorScene->SetRenderWindow(renderWindow);
+			editorScene->ConnectEvents(std::dynamic_pointer_cast<IRenderWindowEvents>(renderWindow));
+			editorScene->Initialize();
+		}
+
+		editorScene->InitializeEditorFrame();
+
+		// Scene for preview
+		std::shared_ptr<CEditor3DPreviewScene> sceneForPreview;
+		std::shared_ptr<IRenderWindow> renderWindowForModelPreview;
+		{
+			renderWindowForModelPreview = renderDevice.GetObjectsFactory().CreateRenderWindow(*editorUI.getModelPreview(), false);
+			app.AddRenderWindow(renderWindowForModelPreview);
+			sceneForPreview = std::make_shared<CEditor3DPreviewScene>(*BaseManager);
+			sceneForPreview->SetRenderWindow(renderWindowForModelPreview);
+			sceneForPreview->ConnectEvents(std::dynamic_pointer_cast<IRenderWindowEvents>(renderWindowForModelPreview));
+			sceneForPreview->Initialize();
+
+			editorScene->SetPreviewScene(sceneForPreview);
+		}
+
+		editor.GetTools().Initialize();
+
+		editorUI.showMaximized();
+
+
+		std::shared_ptr<IDebugOutput> debugOutput(editorUI.getUI().LogViewer);
+		BaseManager->GetManager<ILog>()->AddDebugOutput(debugOutput);
+		
+		QTimer *timer = new QTimer(&editorUI);
+		editorUI.connect(timer, &QTimer::timeout, &editorUI, [&app] {
+			app.DoRun();
+		});
+
+		app.DoBeforeRun();
+		{
+			timer->start();
+			{
+				a.exec();
+			}
+			timer->stop();
+
+			a.closeAllWindows();
+		}
+
+		BaseManager->GetManager<ILog>()->DeleteDebugOutput(debugOutput);
+
+		app.DoAfterRun();
 	}
-
-	editorScene->InitializeEditorFrame();
-
-	// Scene for preview
-	std::shared_ptr<CEditor3DPreviewScene> sceneForPreview;
-	std::shared_ptr<IRenderWindow> renderWindowForModelPreview;
+	catch (const CznRenderException& e)
 	{
-		renderWindowForModelPreview = renderDevice.GetObjectsFactory().CreateRenderWindow(*editorUI.getModelPreview(), false);
-		app.AddRenderWindow(renderWindowForModelPreview);
-		sceneForPreview = std::make_shared<CEditor3DPreviewScene>(*BaseManager);
-		sceneForPreview->SetRenderWindow(renderWindowForModelPreview);
-		sceneForPreview->ConnectEvents(std::dynamic_pointer_cast<IRenderWindowEvents>(renderWindowForModelPreview));
-		sceneForPreview->Initialize();
-
-		editorScene->SetPreviewScene(sceneForPreview);
+		Log::Fatal("RenderError: %s", e.MessageCStr());
 	}
-
-	editor.GetTools().Initialize();
-
-	editorUI.showMaximized();
-
-	app.DoBeforeRun();
-
-	QTimer *timer = new QTimer(&editorUI);
-	editorUI.connect(timer, &QTimer::timeout, &editorUI, [&app] {
-		app.DoRun();
-	});
-	timer->start();
-
-	std::shared_ptr<IDebugOutput> debugOutput(editorUI.getUI().LogViewer);
-	BaseManager->GetManager<ILog>()->AddDebugOutput(debugOutput);
-
-	a.exec();
-
-	BaseManager->GetManager<ILog>()->DeleteDebugOutput(debugOutput);
-
-	timer->stop();
-	a.closeAllWindows();
-	
-	app.DoAfterRun();
+	catch (const CException& e)
+	{
+		Log::Fatal("EngienError: %s", e.MessageCStr());
+	}
 }
 
 
@@ -93,11 +105,13 @@ int main(int argumentCount, char* arguments[])
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 	_CrtSetReportMode(_CRT_ERROR, _CRTDBG_MODE_DEBUG);
 
-	_CrtSetBreakAlloc(158);
-
 	main_internal(argumentCount, arguments);		
 
-	delete BaseManager;
+	if (BaseManager)
+	{
+		BaseManager->RemoveAllManagers();
+		delete BaseManager;
+	}
 
 	_CrtMemDumpAllObjectsSince(NULL);
 

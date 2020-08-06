@@ -12,6 +12,8 @@ public:
 	IManager* AddManager(GUID Type, const std::shared_ptr<IManager>& Manager) override;
 	void RemoveManager(GUID Type) override;
 	IManager* GetManager(GUID Type) const override;
+	void RemoveAllManagers() override;
+	
 	const IApplication& GetApplication() const override;
 
 	// IBaseManagerInternal

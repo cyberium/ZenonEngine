@@ -5,8 +5,10 @@
 
 #include "XML/XMLManager.h"
 
-SceneNode3D::SceneNode3D()
-	: m_Translate(0.0f)
+SceneNode3D::SceneNode3D(IScene& Scene)
+	: m_Scene(Scene)
+
+	, m_Translate(0.0f)
 	, m_Rotate(glm::vec3(0.0f))
 	, m_RotateQuat(glm::quat())
 	, m_IsRotateQuat(false)
@@ -179,9 +181,9 @@ std::shared_ptr<IPropertiesGroup> SceneNode3D::GetProperties() const
 	return m_PropertiesGroup;
 }
 
-IScene * SceneNode3D::GetScene() const
+IScene* SceneNode3D::GetScene() const
 {
-	return m_Scene.lock().get();
+	return &m_Scene;
 }
 
 
@@ -493,11 +495,6 @@ void SceneNode3D::Save(const std::shared_ptr<IXMLWriter>& Writer) const
 //
 // ISceneNode3DInternal
 //
-void SceneNode3D::SetSceneInternal(std::weak_ptr<IScene> Scene)
-{
-	m_Scene = Scene;
-}
-
 void SceneNode3D::AddChildInternal(std::shared_ptr<ISceneNode3D> ChildNode)
 {
 	_ASSERT(ChildNode != nullptr);

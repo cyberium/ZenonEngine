@@ -6,6 +6,8 @@
 #include "SceneNodeUI.h"
 #include "../Passes/RenderTechnique.h"
 
+
+const ObjectClass cSceneBase = UINT16_MAX - 300u;
 class ZN_API SceneBase 
 	: public IScene
 	, public INativeWindowEventListener

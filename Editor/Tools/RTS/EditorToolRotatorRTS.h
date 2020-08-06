@@ -30,7 +30,7 @@ private:
 	bool m_IsRotateNow;
 	int m_RotatorNuber;
 	std::shared_ptr<ISceneNode3D> m_MovingNode;
-	glm::vec3 m_MovingObjectPos;
 	std::shared_ptr<ISceneNode3D> m_RotatorRoot;
 	std::shared_ptr<ISceneNode3D> m_RotatorY;
+	float m_RotatorInitialAngle;
 };

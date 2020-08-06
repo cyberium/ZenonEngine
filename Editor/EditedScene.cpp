@@ -10,6 +10,7 @@ CEditedScene::CEditedScene(IBaseManager & BaseManager)
 
 CEditedScene::~CEditedScene()
 {
+	Log::Info("Scene destroyed.");
 }
 
 void CEditedScene::Initialize()

@@ -13,8 +13,8 @@ public:
 	virtual void Render(RenderEventArgs& e) override;
 
 protected:
-	const std::shared_ptr<IScene>& GetScene() const;
+	std::shared_ptr<IScene> GetScene() const;
 	
 private:
-	std::shared_ptr<IScene> m_Scene;
+	std::weak_ptr<IScene> m_Scene;
 };

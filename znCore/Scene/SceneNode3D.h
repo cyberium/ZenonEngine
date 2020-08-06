@@ -9,7 +9,7 @@ class ZN_API SceneNode3D
 {
     friend IScene;
 public:
-	SceneNode3D();
+	SceneNode3D(IScene& Scene);
 	virtual ~SceneNode3D();
 
 	// ISceneNode3D
@@ -79,7 +79,6 @@ public:
 
 private:
 	// ISceneNode3DInternal
-	void                                            SetSceneInternal(std::weak_ptr<IScene> Scene) override;
 	void                                            AddChildInternal(std::shared_ptr<ISceneNode3D> ChildNode) override;
 	void                                            RemoveChildInternal(std::shared_ptr<ISceneNode3D> ChildNode) override;
 	void                                            SetParentInternal(std::weak_ptr<ISceneNode3D> parentNode) override;
@@ -101,7 +100,7 @@ private:
 	std::weak_ptr<ISceneNode3D>                     m_ParentNode;
 
 	std::shared_ptr<IPropertiesGroup>               m_PropertiesGroup;
-	std::weak_ptr<IScene>                           m_Scene;
+	IScene&                                         m_Scene;
 
 	glm::vec3										m_Translate;
 	glm::vec3										m_Rotate;

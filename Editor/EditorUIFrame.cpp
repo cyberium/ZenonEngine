@@ -254,5 +254,5 @@ void CEditorUIFrame::OnSelectNode()
 
 	getSceneViewer()->SelectNodes(selectedNodes);
 
-	m_PropertiesController->OnSceneNodeSelected(GetEditor().GetFirstSelectedNode().get());
+	//m_PropertiesController->OnSceneNodeSelected(GetEditor().GetFirstSelectedNode().get());
 }

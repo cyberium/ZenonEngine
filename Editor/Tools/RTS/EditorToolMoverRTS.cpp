@@ -13,6 +13,7 @@ CEditorToolMoverRTS::CEditorToolMoverRTS(IEditor& Editor)
 
 CEditorToolMoverRTS::~CEditorToolMoverRTS()
 {
+	Log::Info("Deleted");
 }
 
 void CEditorToolMoverRTS::Initialize()

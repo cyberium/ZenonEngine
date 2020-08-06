@@ -39,6 +39,7 @@ ZN_INTERFACE ZN_API __declspec(uuid("BB9FD479-C7AD-4F57-837B-E299A04AF171")) IBa
 	virtual IManager* AddManager(GUID Type, const std::shared_ptr<IManager>& Manager) = 0;
 	virtual void RemoveManager(GUID Type) = 0;
 	virtual IManager* GetManager(GUID Type) const = 0;
+	virtual void RemoveAllManagers() = 0;
 
 	virtual const IApplication& GetApplication() const = 0;
 

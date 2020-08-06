@@ -112,7 +112,6 @@ ZN_INTERFACE ZN_API ISceneNode3DInternal
 {
 	virtual ~ISceneNode3DInternal() {}
 
-	virtual void SetSceneInternal(std::weak_ptr<IScene> Scene) = 0;
 	virtual void AddChildInternal(std::shared_ptr<ISceneNode3D> ChildNode) = 0;
 	virtual void RemoveChildInternal(std::shared_ptr<ISceneNode3D> ChildNode) = 0;
 	virtual void SetParentInternal(std::weak_ptr<ISceneNode3D> parentNode) = 0;

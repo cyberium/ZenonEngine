@@ -17,4 +17,5 @@ public:
 
 private:
 	QtnPropertyWidget * m_PropertyWidget;
+	QtnPropertySet* m_PropertiesSet;
 };
