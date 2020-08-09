@@ -52,7 +52,7 @@ CRenderObjectsFactoryDX11::~CRenderObjectsFactoryDX11()
 //
 std::shared_ptr<IRenderWindow> CRenderObjectsFactoryDX11::CreateRenderWindow(INativeWindow& WindowObject, bool vSync)
 {
-	std::shared_ptr<IRenderWindow> renderWindow = std::make_shared<RenderWindowDX11>(m_RenderDeviceDX11, WindowObject, vSync);
+	std::shared_ptr<IRenderWindow> renderWindow = MakeShared(RenderWindowDX11, m_RenderDeviceDX11, WindowObject, vSync);
 	m_RenderWindows.insert(std::make_pair(GenerateRenderObjectID(), renderWindow));
 	return renderWindow;
 }
@@ -68,7 +68,7 @@ std::shared_ptr<IShader> CRenderObjectsFactoryDX11::CreateShader(EShaderType typ
 			return shader;
 	}
 
-	std::shared_ptr<IShader> object = std::make_shared<ShaderDX11>(m_RenderDeviceDX11);
+	std::shared_ptr<IShader> object = MakeShared(ShaderDX11, m_RenderDeviceDX11);
 	object->LoadShaderFromFile(type, fileName, shaderMacros, entryPoint, profile, _customLayout);
 
 	m_Shaders.insert(std::make_pair(GenerateRenderObjectID(), object));
@@ -81,7 +81,7 @@ std::shared_ptr<IGeometry> CRenderObjectsFactoryDX11::CreateGeometry()
 {
 	std::lock_guard<std::recursive_mutex> locker(m_LockMutex);
 
-	std::shared_ptr<IGeometry> object = std::make_shared<GeometryDX11>(m_RenderDeviceDX11);
+	std::shared_ptr<IGeometry> object = MakeShared(GeometryDX11, m_RenderDeviceDX11);
 	//m_Geometries.insert(std::make_pair(GenerateRenderObjectID(), object));
 	return object;
 }
@@ -90,7 +90,7 @@ std::shared_ptr<IModel> CRenderObjectsFactoryDX11::CreateModel()
 {
 	std::lock_guard<std::recursive_mutex> locker(m_LockMutex);
 
-	std::shared_ptr<IModel> object = std::make_shared<ModelDX11>(m_RenderDeviceDX11);
+	std::shared_ptr<IModel> object = MakeShared(ModelDX11, m_RenderDeviceDX11);
 	//m_Models.insert(std::make_pair(GenerateRenderObjectID(), object));
 	return object;
 }
@@ -99,7 +99,7 @@ std::shared_ptr<ITexture> CRenderObjectsFactoryDX11::CreateEmptyTexture()
 {
 	std::lock_guard<std::recursive_mutex> locker(m_LockMutex);
 
-	std::shared_ptr<ITexture> object = std::make_shared<TextureDX11>(m_RenderDeviceDX11);
+	std::shared_ptr<ITexture> object = MakeShared(TextureDX11, m_RenderDeviceDX11);
 	//m_Textures.insert(std::make_pair(GenerateRenderObjectID(), object));
 	return object;
 }
@@ -108,7 +108,7 @@ std::shared_ptr<ITexture> CRenderObjectsFactoryDX11::CreateTexture2D(size_t widt
 {
 	std::lock_guard<std::recursive_mutex> locker(m_LockMutex);
 
-	std::shared_ptr<ITexture> object = std::make_shared<TextureDX11>(m_RenderDeviceDX11, width, height, slices, format, cpuAccess);
+	std::shared_ptr<ITexture> object = MakeShared(TextureDX11, m_RenderDeviceDX11, width, height, slices, format, cpuAccess);
 	//m_Textures.insert(std::make_pair(GenerateRenderObjectID(), object));
 	return object;
 }
@@ -117,7 +117,7 @@ std::shared_ptr<ITexture> CRenderObjectsFactoryDX11::CreateTextureCube(size_t si
 {
 	std::lock_guard<std::recursive_mutex> locker(m_LockMutex);
 
-	std::shared_ptr<ITexture> object = std::make_shared<TextureDX11>(m_RenderDeviceDX11, size, numCubes, format, cpuAccess);
+	std::shared_ptr<ITexture> object = MakeShared(TextureDX11, m_RenderDeviceDX11, size, numCubes, format, cpuAccess);
 	//m_Textures.insert(std::make_pair(GenerateRenderObjectID(), object));
 	return object;
 }
@@ -139,7 +139,7 @@ std::shared_ptr<ITexture> CRenderObjectsFactoryDX11::LoadTexture2D(const std::st
 		}
 	}
 
-	std::shared_ptr<ITexture> object = std::make_shared<TextureDX11>(m_RenderDeviceDX11);
+	std::shared_ptr<ITexture> object = MakeShared(TextureDX11, m_RenderDeviceDX11);
 	if (!object->LoadTexture2D(fileName))
 		return m_RenderDeviceDX11.GetDefaultTexture();
 
@@ -166,7 +166,7 @@ std::shared_ptr<ITexture> CRenderObjectsFactoryDX11::LoadTextureCube(const std::
 		}
 	}
 
-	std::shared_ptr<ITexture> object = std::make_shared<TextureDX11>(m_RenderDeviceDX11);
+	std::shared_ptr<ITexture> object = MakeShared(TextureDX11, m_RenderDeviceDX11);
 	object->LoadTextureCube(fileName);
 
 	//m_Textures.insert(std::make_pair(GenerateRenderObjectID(), object));
@@ -179,7 +179,7 @@ std::shared_ptr<IMaterial> CRenderObjectsFactoryDX11::CreateMaterial()
 {
 	std::lock_guard<std::recursive_mutex> locker(m_LockMutex);
 
-	std::shared_ptr<IMaterial> object = std::make_shared<MaterialDX11>(m_RenderDeviceDX11);
+	std::shared_ptr<IMaterial> object = MakeShared(MaterialDX11, m_RenderDeviceDX11);
 	//m_Materials.insert(std::make_pair(GenerateRenderObjectID(), object));
 	return object;
 }
@@ -188,7 +188,7 @@ std::shared_ptr<IRenderTarget> CRenderObjectsFactoryDX11::CreateRenderTarget()
 {
 	std::lock_guard<std::recursive_mutex> locker(m_LockMutex);
 
-	std::shared_ptr<IRenderTarget> object = std::make_shared<RenderTargetDX11>(m_RenderDeviceDX11);
+	std::shared_ptr<IRenderTarget> object = MakeShared(RenderTargetDX11, m_RenderDeviceDX11);
 	//m_RenderTargets.insert(std::make_pair(GenerateRenderObjectID(), object));
 	return object;
 }
@@ -197,7 +197,7 @@ std::shared_ptr<IQuery> CRenderObjectsFactoryDX11::CreateQuery(IQuery::QueryType
 {
 	std::lock_guard<std::recursive_mutex> locker(m_LockMutex);
 
-	std::shared_ptr<IQuery> object = std::make_shared<QueryDX11>(m_RenderDeviceDX11, queryType, numBuffers);
+	std::shared_ptr<IQuery> object = MakeShared(QueryDX11, m_RenderDeviceDX11, queryType, numBuffers);
 	//m_Queries.insert(std::make_pair(GenerateRenderObjectID(), object));
 	return object;
 }
@@ -206,7 +206,7 @@ std::shared_ptr<ISamplerState> CRenderObjectsFactoryDX11::CreateSamplerState()
 {
 	std::lock_guard<std::recursive_mutex> locker(m_LockMutex);
 
-	std::shared_ptr<ISamplerState> object = std::make_shared<SamplerStateDX11>(m_RenderDeviceDX11);
+	std::shared_ptr<ISamplerState> object = MakeShared(SamplerStateDX11, m_RenderDeviceDX11);
 	//m_Samplers.insert(std::make_pair(GenerateRenderObjectID(), object));
 	return object;
 }
@@ -215,7 +215,7 @@ std::shared_ptr<IBlendState> CRenderObjectsFactoryDX11::CreateBlendState()
 {
 	std::lock_guard<std::recursive_mutex> locker(m_LockMutex);
 
-	std::shared_ptr<IBlendState> object = std::make_shared<BlendStateDX11>(m_RenderDeviceDX11);
+	std::shared_ptr<IBlendState> object = MakeShared(BlendStateDX11, m_RenderDeviceDX11);
 	//m_BlendStates.insert(std::make_pair(GenerateRenderObjectID(), object));
 	return object;
 }
@@ -224,7 +224,7 @@ std::shared_ptr<IDepthStencilState> CRenderObjectsFactoryDX11::CreateDepthStenci
 {
 	std::lock_guard<std::recursive_mutex> locker(m_LockMutex);
 
-	std::shared_ptr<IDepthStencilState> object = std::make_shared<DepthStencilStateDX11>(m_RenderDeviceDX11);
+	std::shared_ptr<IDepthStencilState> object = MakeShared(DepthStencilStateDX11, m_RenderDeviceDX11);
 	//m_DepthStencilStates.insert(std::make_pair(GenerateRenderObjectID(), object));
 	return object;
 }
@@ -233,7 +233,7 @@ std::shared_ptr<IRasterizerState> CRenderObjectsFactoryDX11::CreateRasterizerSta
 {
 	std::lock_guard<std::recursive_mutex> locker(m_LockMutex);
 
-	std::shared_ptr<IRasterizerState> object = std::make_shared<RasterizerStateDX11>(m_RenderDeviceDX11);
+	std::shared_ptr<IRasterizerState> object = MakeShared(RasterizerStateDX11, m_RenderDeviceDX11);
 	//m_RasterizerStates.insert(std::make_pair(GenerateRenderObjectID(), object));
 	return object;
 }
@@ -242,7 +242,7 @@ std::shared_ptr<IPipelineState> CRenderObjectsFactoryDX11::CreatePipelineState()
 {
 	std::lock_guard<std::recursive_mutex> locker(m_LockMutex);
 
-	std::shared_ptr<IPipelineState> object = std::make_shared<PipelineStateDX11>(m_RenderDeviceDX11);
+	std::shared_ptr<IPipelineState> object = MakeShared(PipelineStateDX11, m_RenderDeviceDX11);
 	//m_Pipelines.insert(std::make_pair(GenerateRenderObjectID(), object));
 	return object;
 }
@@ -251,7 +251,7 @@ std::shared_ptr<IBuffer> CRenderObjectsFactoryDX11::CreateVoidVertexBuffer(const
 {
 	std::lock_guard<std::recursive_mutex> locker(m_LockMutex);
 
-	std::shared_ptr<IBuffer> object = std::make_shared<BufferDX11>(m_RenderDeviceDX11, IBuffer::BufferType::VertexBuffer);
+	std::shared_ptr<IBuffer> object = MakeShared(BufferDX11, m_RenderDeviceDX11, IBuffer::BufferType::VertexBuffer);
 	std::dynamic_pointer_cast<IBufferPrivate>(object)->InitializeBufferBase(data, count, offset, stride);
 	//m_Buffers.insert(std::make_pair(GenerateRenderObjectID(), object));
 	return object;
@@ -261,7 +261,7 @@ std::shared_ptr<IBuffer> CRenderObjectsFactoryDX11::CreateVoidIndexBuffer(const 
 {
 	std::lock_guard<std::recursive_mutex> locker(m_LockMutex);
 
-	std::shared_ptr<IBuffer> object = std::make_shared<BufferDX11>(m_RenderDeviceDX11, IBuffer::BufferType::IndexBuffer);
+	std::shared_ptr<IBuffer> object = MakeShared(BufferDX11, m_RenderDeviceDX11, IBuffer::BufferType::IndexBuffer);
 	std::dynamic_pointer_cast<IBufferPrivate>(object)->InitializeBufferBase(data, count, offset, stride);
 	//m_Buffers.insert(std::make_pair(GenerateRenderObjectID(), object));
 	return object;
@@ -271,7 +271,7 @@ std::shared_ptr<IConstantBuffer> CRenderObjectsFactoryDX11::CreateConstantBuffer
 {
 	std::lock_guard<std::recursive_mutex> locker(m_LockMutex);
 
-	std::shared_ptr<IConstantBuffer> object = std::make_shared<ConstantBufferDX11>(m_RenderDeviceDX11);
+	std::shared_ptr<IConstantBuffer> object = MakeShared(ConstantBufferDX11, m_RenderDeviceDX11);
 	std::dynamic_pointer_cast<IBufferPrivate>(object)->InitializeBufferBase(data, size, 0, 0);
 	if (data)
 		object->Set(data, size);
@@ -285,7 +285,7 @@ std::shared_ptr<IStructuredBuffer> CRenderObjectsFactoryDX11::CreateStructuredBu
 {
 	std::lock_guard<std::recursive_mutex> locker(m_LockMutex);
 
-	std::shared_ptr<IStructuredBuffer> object = std::make_shared<StructuredBufferDX11>(m_RenderDeviceDX11);
+	std::shared_ptr<IStructuredBuffer> object = MakeShared(StructuredBufferDX11, m_RenderDeviceDX11);
 	std::dynamic_pointer_cast<IBufferPrivate>(object)->InitializeBufferBase(data, count, 0, stride);
 	std::dynamic_pointer_cast<IStructuredBufferPrivate>(object)->InitializeStructuredBufferBase(cpuAccess);
 	//m_Buffers.insert(std::make_pair(GenerateRenderObjectID(), object));
@@ -296,7 +296,7 @@ std::shared_ptr<IBuffer> CRenderObjectsFactoryDX11::LoadVoidBuffer(const std::sh
 {
 	std::lock_guard<std::recursive_mutex> locker(m_LockMutex);
 
-	std::shared_ptr<IBuffer> object = std::make_shared<BufferDX11>(m_RenderDeviceDX11, IBuffer::BufferType::Unknown);
+	std::shared_ptr<IBuffer> object = MakeShared(BufferDX11, m_RenderDeviceDX11, IBuffer::BufferType::Unknown);
 	if (const auto& loadableFromFile = std::dynamic_pointer_cast<IObjectLoadSave>(object))
 		loadableFromFile->Load(ByteBuffer);
 
@@ -307,7 +307,7 @@ std::shared_ptr<IConstantBuffer> CRenderObjectsFactoryDX11::LoadConstantBuffer(c
 {
 	std::lock_guard<std::recursive_mutex> locker(m_LockMutex);
 
-	std::shared_ptr<IConstantBuffer> object = std::make_shared<ConstantBufferDX11>(m_RenderDeviceDX11);
+	std::shared_ptr<IConstantBuffer> object = MakeShared(ConstantBufferDX11, m_RenderDeviceDX11);
 	if (const auto& loadableFromFile = std::dynamic_pointer_cast<IObjectLoadSave>(object))
 		loadableFromFile->Load(ByteBuffer);
 
@@ -318,7 +318,7 @@ std::shared_ptr<IStructuredBuffer> CRenderObjectsFactoryDX11::LoadStructuredBuff
 {
 	std::lock_guard<std::recursive_mutex> locker(m_LockMutex);
 
-	std::shared_ptr<IStructuredBuffer> object = std::make_shared<StructuredBufferDX11>(m_RenderDeviceDX11);
+	std::shared_ptr<IStructuredBuffer> object = MakeShared(StructuredBufferDX11, m_RenderDeviceDX11);
 	if (const auto& loadableFromFile = std::dynamic_pointer_cast<IObjectLoadSave>(object))
 		loadableFromFile->Load(ByteBuffer);
 

@@ -10,14 +10,14 @@ ZenonCollectionViewerWidget::ZenonCollectionViewerWidget(QWidget * parent)
 	, m_StartDragging(false)
 {
 	// Add context menu for scene node viewer
-	m_SceneTreeViewerContextMenu = std::make_shared<QMenu>(this);
+	m_SceneTreeViewerContextMenu = MakeShared(QMenu, this);
 	m_SceneTreeViewerContextMenu->setTitle("Some context menu title.");
 
 	this->setContextMenuPolicy(Qt::CustomContextMenu);
 	connect(this, SIGNAL(customContextMenuRequested(const QPoint &)), this, SLOT(onCustomContextMenu(const QPoint &)));
 
 	// SceneNodeTreeView: Main settings
-	m_Model = std::make_shared<CQtToZenonTreeModel>(this);
+	m_Model = MakeShared(CQtToZenonTreeModel, this);
 	this->setModel(m_Model.get());
 
 	// SceneNodeTreeView: Selection settings
@@ -48,7 +48,7 @@ void ZenonCollectionViewerWidget::SetModelsList(const std::vector<std::string>& 
 		if (auto loadable = std::dynamic_pointer_cast<IObjectLoadSave>(model))
 			loadable->Load(m_Editor->GetBaseManager().GetManager<IFilesManager>()->Open(it));
 		model->SetName(name);
-		models.push_back(std::make_shared<C3DModelModelItem>(model));
+		models.push_back(MakeShared(C3DModelModelItem, model));
 	}
 
 	this->reset();

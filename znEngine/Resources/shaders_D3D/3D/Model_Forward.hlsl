@@ -307,8 +307,8 @@ DefferedRenderPSOut PS_main(VertexShaderOutput IN) : SV_TARGET
 		specularLight *= lit.Specular;
 	}
 
-/*
 
+	/*
 	float4 colorResult = float4((ambient + emissive + diffuseLight + specularLight).rgb, 1.0f
 	//alpha * (1.0 - mat.TransparencyFactor)
 	);
@@ -334,15 +334,15 @@ DefferedRenderPSOut PS_main(VertexShaderOutput IN) : SV_TARGET
 		{
 			colorResult *= 0.1f;
 		}
-	}
+	}*/
 
-*/
 
-	float4 colorResult = float4(lit.Ambient.rgb * ambient.rgb * diffuse.rgb + diffuseLight.rgb + specularLight.rgb, 1.0f);
+
+	float4 colorResultt = float4(lit.Ambient.rgb * ambient.rgb * diffuse.rgb + diffuseLight.rgb + specularLight.rgb, 1.0f);
 
 	DefferedRenderPSOut OUT;
 	//OUT.PositionWS = IN.position;
-	OUT.Diffuse = diffuse.rgba;//colorResult;
+	OUT.Diffuse = colorResultt;
 	OUT.Specular = specularLight;
 	OUT.NormalWS = float4(1.0, 1.0, 1.0, 0.0);
 	return OUT;

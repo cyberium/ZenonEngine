@@ -8,7 +8,7 @@
 
 CRenderPassFactory::CRenderPassFactory()
 {
-	AddRenderPassCreator(std::make_shared<CRenderPassDefaultCreator>());
+	AddRenderPassCreator(MakeShared(CRenderPassDefaultCreator));
 }
 
 CRenderPassFactory::~CRenderPassFactory()

@@ -137,7 +137,7 @@ void CFBXSceneNode::LoadChilds(fbxsdk::FbxNode * NativeNode)
 		fbxsdk::FbxNode* fbxNode = NativeNode->GetChild(i);
 		_ASSERT(fbxNode != nullptr);
 
-		std::shared_ptr<CFBXSceneNode> childFbxNode = std::make_shared<CFBXSceneNode>(m_BaseManager, m_FBXScene);
+		std::shared_ptr<CFBXSceneNode> childFbxNode = MakeShared(CFBXSceneNode, m_BaseManager, m_FBXScene);
 		childFbxNode->LoadNode(fbxNode);
 		childFbxNode->m_Parent = weak_from_this();
 		m_Childs.push_back(childFbxNode);
@@ -149,7 +149,7 @@ void CFBXSceneNode::LoadMaterials(fbxsdk::FbxNode * NativeNode)
 	Log::Print("CFBXSceneNode: Materials count '%d'.", NativeNode->GetMaterialCount());
 	for (int i = 0; i < NativeNode->GetMaterialCount(); i++)
 	{
-		std::shared_ptr<CFBXMaterial> znMaterial = std::make_shared<CFBXMaterial>(m_BaseManager, *this);
+		std::shared_ptr<CFBXMaterial> znMaterial = MakeShared(CFBXMaterial, m_BaseManager, *this);
 		znMaterial->Load(NativeNode->GetMaterial(i));
 		m_MaterialsArray.push_back(znMaterial);
 	}
@@ -209,7 +209,7 @@ void CFBXSceneNode::LoadAttributes(fbxsdk::FbxNode * NativeNode)
 
 void CFBXSceneNode::LoadModel(fbxsdk::FbxNode * NativeNode)
 {
-	auto fbxMesh = std::make_shared<CFBXModel>(m_BaseManager, *this);
+	auto fbxMesh = MakeShared(CFBXModel, m_BaseManager, *this);
 	fbxMesh->SetName(NativeNode->GetName());
 	if (fbxMesh->Load(NativeNode->GetMesh()))
 	{
@@ -221,13 +221,13 @@ void CFBXSceneNode::LoadModel(fbxsdk::FbxNode * NativeNode)
 
 void CFBXSceneNode::LoadLight(fbxsdk::FbxNode * NativeNode)
 {
-	std::shared_ptr<CFBXLight> fbxLight = std::make_shared<CFBXLight>(m_BaseManager, *this);
+	std::shared_ptr<CFBXLight> fbxLight = MakeShared(CFBXLight, m_BaseManager, *this);
 	fbxLight->Load(NativeNode->GetLight());
 
 	_ASSERT(m_Light == nullptr);
 	m_Light = fbxLight;
 
-	//std::shared_ptr<MaterialTextured> matDebug = std::make_shared<MaterialTextured>(m_BaseManager.GetApplication().GetRenderDevice());
+	//std::shared_ptr<MaterialTextured> matDebug = MakeShared(MaterialTextured, m_BaseManager.GetApplication().GetRenderDevice());
 	//matDebug->SetTexture(0, m_BaseManager.GetApplication().GetRenderDevice().GetDefaultTexture());
 
 	//auto geometry = m_BaseManager.GetApplication().GetRenderDevice().GetPrimitivesFactory().CreateCone();

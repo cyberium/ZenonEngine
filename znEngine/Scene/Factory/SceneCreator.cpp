@@ -20,12 +20,12 @@ std::shared_ptr<IObject> CSceneEngineCreator::CreateObject(size_t Index, const I
 {
 	if (Index == 0)
 	{
-		std::shared_ptr<IScene> scene = std::make_shared<SceneBase>(GetBaseManager());
+		std::shared_ptr<IScene> scene = MakeShared(SceneBase, GetBaseManager());
 		return scene;
 	}
 	else if (Index == 1)
 	{
-		std::shared_ptr<IScene> scene = std::make_shared<CSceneDefault>(GetBaseManager());
+		std::shared_ptr<IScene> scene = MakeShared(CSceneDefault, GetBaseManager());
 		return scene;
 	}
 

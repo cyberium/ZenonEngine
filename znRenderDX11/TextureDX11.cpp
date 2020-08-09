@@ -201,7 +201,7 @@ bool TextureDX11::IsTransparent() const
 void TextureDX11::Resize2D(uint16_t width, uint16_t height)
 {
 	if (m_TextureWidth == width && m_TextureHeight == height)
-		throw CznRenderException("Unable to resize texture.");
+		return;
 
 	// Release resource before resizing
 	m_pTexture2D.Release();

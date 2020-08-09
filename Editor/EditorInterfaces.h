@@ -51,7 +51,7 @@ ZN_INTERFACE IEditorTools
 	virtual void DisableAll(ETool ExceptOfTool = EToolDefault) = 0;
 
 	// 3D
-	virtual void DoInitialize3D(RenderTechnique& RenderTechnique, std::shared_ptr<IRenderTarget> RenderTarget, const Viewport* Viewport) = 0;
+	virtual void DoInitialize3D(const std::shared_ptr<IRenderer>& Renderer, std::shared_ptr<IRenderTarget> RenderTarget, const Viewport* Viewport) = 0;
 	virtual bool OnMousePressed(const MouseButtonEventArgs& e, const Ray& RayToWorld) = 0;
 	virtual void OnMouseReleased(const MouseButtonEventArgs& e, const Ray& RayToWorld) = 0;
 	virtual void OnMouseMoved(const MouseMotionEventArgs& e, const Ray& RayToWorld) = 0;
@@ -77,7 +77,7 @@ ZN_INTERFACE IEditorToolSelector
 	virtual ~IEditorToolSelector() {}
 
 	virtual void SelectNode(std::shared_ptr<ISceneNode3D> Node) = 0;
-	virtual void SelectNodes(std::vector<std::shared_ptr<ISceneNode3D>> Nodes) = 0;
+	virtual void SelectNodes(const std::vector<std::shared_ptr<ISceneNode3D>>& Nodes) = 0;
 	virtual void ClearSelection() = 0;
 	virtual void AddNode(std::shared_ptr<ISceneNode3D> Node) = 0;
 	virtual void RemoveNode(std::shared_ptr<ISceneNode3D> Node) = 0;
@@ -90,6 +90,17 @@ ZN_INTERFACE IEditorToolSelectorEventListener
 	virtual ~IEditorToolSelectorEventListener() {};
 
 	virtual void OnSelectNode() = 0;
+};
+
+
+ZN_INTERFACE IEditorToolMover
+{
+	virtual ~IEditorToolMover() {}
+
+	virtual	glm::ivec3 ToBoxCoords(const glm::vec3 & Position) = 0;
+	virtual glm::vec3 FixBoxCoords(const glm::vec3 & Position) = 0;
+	virtual void SetMoverValue(float Value) = 0;
+	virtual float GetMoverValue() const = 0;
 };
 
 

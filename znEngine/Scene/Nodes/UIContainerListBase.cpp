@@ -42,31 +42,31 @@ void CUIContainerListBase::CreateDefault()
 {
     const glm::vec2 textOffset = glm::vec2(5.0f, 5.0f);
 
-    std::shared_ptr<CUITextNode> ch1 = std::make_shared<CUITextNode>();
+    std::shared_ptr<CUITextNode> ch1 = MakeShared(CUITextNode);
     ch1->SetText("Some child #1");
     ch1->SetTextColor(vec4(0.0f, 0.0f, 0.0f, 1.0f));
     ch1->SetOffset(textOffset);
     AddChild(ch1);
 
-    std::shared_ptr<CUITextNode> ch2 = std::make_shared<CUITextNode>();
+    std::shared_ptr<CUITextNode> ch2 = MakeShared(CUITextNode);
     ch2->SetText("Some child #2");
     ch2->SetTextColor(vec4(0.0f, 0.0f, 0.0f, 1.0f));
     ch2->SetOffset(textOffset);
     AddChild(ch2);
 
-    std::shared_ptr<CUITextNode> ch3 = std::make_shared<CUITextNode>();
+    std::shared_ptr<CUITextNode> ch3 = MakeShared(CUITextNode);
     ch3->SetText("Some child #3");
     ch3->SetTextColor(vec4(0.0f, 0.0f, 0.0f, 1.0f));
     ch3->SetOffset(textOffset);
     AddChild(ch3);
 
-    std::shared_ptr<CUITextNode> ch4 = std::make_shared<CUITextNode>();
+    std::shared_ptr<CUITextNode> ch4 = MakeShared(CUITextNode);
     ch4->SetText("Some child #4");
     ch4->SetTextColor(vec4(0.0f, 0.0f, 0.0f, 1.0f));
     ch4->SetOffset(textOffset);
     AddChild(ch4);
 
-    std::shared_ptr<CUITextNode> ch5 = std::make_shared<CUITextNode>();
+    std::shared_ptr<CUITextNode> ch5 = MakeShared(CUITextNode);
     ch5->SetText("Some child #5");
     ch5->SetTextColor(vec4(0.0f, 0.0f, 0.0f, 1.0f));
     ch5->SetOffset(textOffset);

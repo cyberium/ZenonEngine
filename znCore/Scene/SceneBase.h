@@ -4,6 +4,7 @@
 
 #include "SceneNode3D.h"
 #include "SceneNodeUI.h"
+#include "SceneFinder.h"
 #include "../Passes/RenderTechnique.h"
 
 
@@ -21,6 +22,7 @@ public:
 	// IScene
 	void                                            SetRenderWindow(const std::shared_ptr<IRenderWindow>& RenderWindow) override;
 	std::shared_ptr<IRenderWindow>                  GetRenderWindow() const;
+
 	void                                            ConnectEvents(const std::shared_ptr<IRenderWindowEvents>& WindowEvents) override;
 	void                                            DisconnectEvents(const std::shared_ptr<IRenderWindowEvents>& WindowEvents) override;
 
@@ -29,14 +31,14 @@ public:
 
 	std::shared_ptr<ISceneNode3D>					GetRootNode3D() const override;
 	std::shared_ptr<ISceneNodeUI>					GetRootNodeUI() const override;
+
+	void                                            SetRenderer(std::shared_ptr<IRenderer> Renderer) override;
+	std::shared_ptr<IRenderer>                      GetRenderer() const override;
+
 	void                                            SetCameraController(std::shared_ptr<ICameraController> CameraController) override;
 	std::shared_ptr<ICameraController>              GetCameraController() const override;
-	std::map<float, std::shared_ptr<ISceneNode3D>>  FindIntersection(const Ray& Ray) const override;
-	std::map<float, std::shared_ptr<ISceneNode3D>>  FindIntersection(const Ray& Ray, std::function<bool(std::shared_ptr<ISceneNode3D>)> Filter) const override;
-	std::map<float, std::shared_ptr<ISceneNode3D>>  FindIntersection(const Ray& Ray, std::shared_ptr<ISceneNode3D> RootForFinder) const override;
-	std::vector<std::shared_ptr<ISceneNode3D>>      FindIntersections(const Frustum& Frustum) const override;
-	std::vector<std::shared_ptr<ISceneNode3D>>      FindIntersections(const Frustum& Frustum, std::function<bool(std::shared_ptr<ISceneNode3D>)> Filter) const override;
-	std::vector<std::shared_ptr<ISceneNode3D>>      FindIntersections(const Frustum& Frustum, std::shared_ptr<ISceneNode3D> RootForFinder) const;
+
+	const ISceneFinder&                             GetFinder() const override;
 
 	// Visit funcitonal
 	void                                            Accept(IVisitor* visitor) override;
@@ -99,7 +101,6 @@ public:
 
 protected:
 	IRenderDevice&                                  GetRenderDevice() const;
-	std::shared_ptr<ILightComponent3D>              GetDefaultLight() const;
 
 
 protected: // Input events process recursive
@@ -113,13 +114,12 @@ protected: // Input events process recursive
 	bool                                            DoMouseWheel_Rec(const std::shared_ptr<ISceneNodeUI>& Node, MouseWheelEventArgs& e);
 
 protected:
-	RenderTechnique                                 m_Technique3D;
-	RenderTechnique                                 m_TechniqueUI;
-
 	std::shared_ptr<ISceneNode3D>                   m_RootNode3D;
 	std::shared_ptr<ISceneNodeUI>                   m_RootNodeUI;
 
-	std::shared_ptr<ISceneNode3D>                   m_LightNode;
+	std::shared_ptr<IRenderer>                      m_Renderer;
+
+	std::unique_ptr<CSceneFinder>                   m_Finder;
 
 	std::shared_ptr<IQuery>                         m_FrameQuery;
 	std::shared_ptr<IQuery>                         m_TestQuery;

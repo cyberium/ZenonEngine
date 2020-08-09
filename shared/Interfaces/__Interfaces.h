@@ -14,32 +14,7 @@
 
 #define _CRT_SECURE_NO_WARNINGS
 
-/*
-#ifdef _DEBUG
-	#define _CRTDBG_MAP_ALLOC
-	#include <stdlib.h>
-	#include <crtdbg.h>
 
-	#define DEBUG_NEW new ( _NORMAL_BLOCK , __FILE__ , __LINE__ )
-
-	inline void* operator new(size_t sz)
-	{
-		if (sz == 32)
-			_errno();
-
-		if (void *ptr = malloc(sz))
-			return ptr;
-
-		return nullptr;
-	}
-
-	inline void operator delete(void* ptr) noexcept
-	{
-		free(ptr);
-	}
-
-	#include <memory>
-#endif*/
 
 
 // General types
@@ -112,6 +87,87 @@ typedef glm::vec3 ColorRBG;
 // Usefull macros
 #define __PACK_BEGIN  "../shared/pack_begin.h"
 #define __PACK_END  "../shared/pack_end.h"
+
+//#ifdef _DEBUG
+//	#define _CRTDBG_MAP_ALLOC
+//	#include <crtdbg.h>	
+
+	//template <typename T, typename... Args>
+	//inline T* ZNAllocate(int _BlockUse, char const* _FileName, int _LineNumber, Args &&... _Args)
+	//{
+	//	if (void* ptr = _malloc_dbg(sizeof(T), _BlockUse, _FileName, _LineNumber))
+	//	{
+	//		*((T*)ptr) = T(std::forward<Args>(_Args)...);
+	//		return (T*)ptr;
+	//	}
+	//
+	//	return nullptr;
+	//}
+
+	/*inline void* operator new(size_t sz, int _BlockUse, char const* _FileName, int _LineNumber)
+	{
+		if (void *ptr = _malloc_dbg(sz, _BlockUse, _FileName, _LineNumber))
+			return ptr;
+		return nullptr;
+	}
+
+	inline void operator delete(void* ptr, int _BlockUse) noexcept
+	{
+		_free_dbg(ptr, _BlockUse);
+	}*/
+
+/*
+	template <class T>
+	struct custom_allocator 
+	{
+		typedef T value_type;
+		int BlockUse;
+		char const* FileName;
+		int LineNumber;
+
+		custom_allocator(int _BlockUse, char const* _FileName, int _LineNumber) noexcept
+			: BlockUse(_BlockUse)
+			, FileName(_FileName)
+			, LineNumber(_LineNumber)
+		{}
+
+		template <class U> 
+		custom_allocator(const custom_allocator<U>& Other) noexcept 
+		{
+			BlockUse = Other.BlockUse;
+			FileName = Other.FileName;
+			LineNumber = Other.LineNumber;
+			//std::cout << "custom_allocator<T>::custom_allocator(const custom_allocator<U>&): "
+			//	<< "\n\tT: " << get_class_name<T>()
+			//	<< "\n\tU: " << get_class_name<U>() << std::endl;
+		}
+
+		T* allocate(std::size_t n) 
+		{
+			//std::cout << "Allocating: " << get_class_name<T>() << std::endl;
+			return (T*)(_malloc_dbg(n, BlockUse, FileName, LineNumber)); //reinterpret_cast<T*>(::operator new(n * sizeof(T)));
+		}
+		void deallocate(T* p, std::size_t n) 
+		{
+			_free_dbg(p, BlockUse);
+			//std::cout << "Deallocating: " << get_class_name<T>() << std::endl;
+			//::operator delete(p);
+		}
+	};
+
+	//#define DEBUG_NEW new(_NORMAL_BLOCK, __FILE__, __LINE__)
+	//#define new DEBUG_NEW
+
+	//#define MakeShared(CLASS, ...) std::shared_ptr<CLASS>(new CLASS(__VA_ARGS__), [=](CLASS* ___Object) { delete ___Object; })
+	//#define MakeShared(CLASS, ...) std::allocate_shared<CLASS>(custom_allocator<CLASS>(_NORMAL_BLOCK, __FILE__, __LINE__), __VA_ARGS__)
+
+	#define MakeShared(CLASS, ...) std::shared_ptr<CLASS>(std::default_delete<CLASS>(), custom_allocator<CLASS>()
+
+	//#undef new
+	*/
+//#else
+	#define MakeShared(CLASS, ...) std::make_shared<CLASS>(__VA_ARGS__)
+//#endif
 
 //---------------------------------------------------------//
 //--                   Base Types                        --//

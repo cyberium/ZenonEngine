@@ -51,69 +51,69 @@ IBaseManager* WINAPI InitializeEngine(std::vector<std::string> Arguments, std::s
 {
 	IBaseManager* baseManager = new CBaseManager();
 
-	std::shared_ptr<IznPluginsManager> pluginsManager = std::make_shared<CznPluginsManager>(*baseManager);
+	std::shared_ptr<IznPluginsManager> pluginsManager = MakeShared(CznPluginsManager, *baseManager);
 	baseManager->AddManager<IznPluginsManager>(pluginsManager);
 
 	// Settings
 	{
-		std::shared_ptr<ISettings> settings = std::make_shared<CSettings>(*baseManager);
+		std::shared_ptr<ISettings> settings = MakeShared(CSettings, *baseManager);
 		baseManager->AddManager<ISettings>(settings);
-		settings->AddGroup("Video", std::make_shared<CGroupVideo>());
+		settings->AddGroup("Video", MakeShared(CGroupVideo));
 	}
 
 	// Files
 	{
-		std::shared_ptr<IFilesManager> filesManager = std::make_shared<CFilesManager>(*baseManager);
+		std::shared_ptr<IFilesManager> filesManager = MakeShared(CFilesManager, *baseManager);
 		baseManager->AddManager<IFilesManager>(filesManager);
-		filesManager->AddFilesStorage("ModuleFS", std::make_shared<CLibraryResourceFileStotage>(GetModuleHandle(L"znEngine.dll")));
-		filesManager->AddFilesStorage("PCEveryFileAccess", std::make_shared<CLocalFilesStorage>(""));
-		filesManager->AddFilesStorage("ZenonGamedata", std::make_shared<CLocalFilesStorage>("C:\\_engine\\ZenonEngine_gamedata\\"));
-		filesManager->AddFilesStorage("OpenWOWGamedata", std::make_shared<CLocalFilesStorage>("C:\\_engine\\OpenWoW\\_gamedata\\"));
+		filesManager->AddFilesStorage("ModuleFS", MakeShared(CLibraryResourceFileStotage, GetModuleHandle(L"znEngine.dll")));
+		filesManager->AddFilesStorage("PCEveryFileAccess", MakeShared(CLocalFilesStorage, ""));
+		filesManager->AddFilesStorage("ZenonGamedata", MakeShared(CLocalFilesStorage, "C:\\_engine\\ZenonEngine_gamedata\\"));
+		filesManager->AddFilesStorage("OpenWOWGamedata", MakeShared(CLocalFilesStorage, "C:\\_engine\\OpenWoW\\_gamedata\\"));
 	}
 
 	// Log & console
 	{
-		std::shared_ptr<CLog> log = std::make_shared<CLog>();
+		std::shared_ptr<CLog> log = MakeShared(CLog);
 		baseManager->AddManager<ILog>(log);
 
-		std::shared_ptr<CConsole> console = std::make_shared<CConsole>(*baseManager);
+		std::shared_ptr<CConsole> console = MakeShared(CConsole, *baseManager);
 		baseManager->AddManager<IConsole>(console);
 		console->AddCommonCommands();
 	}
 
 	// Render stuff
 	{
-		baseManager->AddManager<IImagesFactory>(std::make_shared<CImagesFactory>(*baseManager));
-		baseManager->GetManager<IImagesFactory>()->AddImageLoader(std::make_shared<CImageLoaderT<CImagePNG>>());
-		baseManager->GetManager<IImagesFactory>()->AddImageLoader(std::make_shared<CImageLoaderT<CImageDDS>>());
+		baseManager->AddManager<IImagesFactory>(MakeShared(CImagesFactory, *baseManager));
+		baseManager->GetManager<IImagesFactory>()->AddImageLoader(MakeShared(CImageLoaderT<CImagePNG>));
+		baseManager->GetManager<IImagesFactory>()->AddImageLoader(MakeShared(CImageLoaderT<CImageDDS>));
 
-		auto materialsFactory = std::make_shared<CMaterialsFactory>(*baseManager);
+		auto materialsFactory = MakeShared(CMaterialsFactory, *baseManager);
 		baseManager->AddManager<IMaterialsFactory>(materialsFactory);
 
-		std::shared_ptr<IznRenderDeviceFactory> renderDeviceFactory = std::make_shared<CznRenderDeviceFactory>(*baseManager);
+		std::shared_ptr<IznRenderDeviceFactory> renderDeviceFactory = MakeShared(CznRenderDeviceFactory, *baseManager);
 		baseManager->AddManager<IznRenderDeviceFactory>(renderDeviceFactory);
 		pluginsManager->AddPluginEventListener(std::dynamic_pointer_cast<IznPluginsEventListener>(renderDeviceFactory));
 	}
 
 	// SceneNodes stuff
 	{
-		std::shared_ptr<ILoader> laoder = std::make_shared<CLoader>();
+		std::shared_ptr<ILoader> laoder = MakeShared(CLoader);
 		baseManager->AddManager<ILoader>(laoder);
 
-		std::shared_ptr<IObjectsFactory> factory = std::make_shared<CObjectsFactory>(*baseManager);
+		std::shared_ptr<IObjectsFactory> factory = MakeShared(CObjectsFactory, *baseManager);
 		baseManager->AddManager<IObjectsFactory>(factory);
 
-		std::shared_ptr<CScenesFactory> sceneFactory = std::make_shared<CScenesFactory>(*baseManager, "otScene", otScene);
-		sceneFactory->AddClassCreator(std::make_shared<CSceneEngineCreator>(*baseManager));
+		std::shared_ptr<CScenesFactory> sceneFactory = MakeShared(CScenesFactory, *baseManager, "otScene", otScene);
+		sceneFactory->AddClassCreator(MakeShared(CSceneEngineCreator, *baseManager));
 
-		std::shared_ptr<CSceneNode3DFactory> sceneNode3DFactory = std::make_shared<CSceneNode3DFactory>(*baseManager, "otSceneNode3D", otSceneNode3D);
-		sceneNode3DFactory->AddClassCreator(std::make_shared<CSceneNode3DEngineCreator>(*baseManager));
+		std::shared_ptr<CSceneNode3DFactory> sceneNode3DFactory = MakeShared(CSceneNode3DFactory, *baseManager, "otSceneNode3D", otSceneNode3D);
+		sceneNode3DFactory->AddClassCreator(MakeShared(CSceneNode3DEngineCreator, *baseManager));
 
-		std::shared_ptr<CSceneNodeUIFactory> sceneNodeUIFactory = std::make_shared<CSceneNodeUIFactory>(*baseManager, "otSceneNodeUI", otSceneNodeUI);
-		sceneNodeUIFactory->AddClassCreator(std::make_shared<CSceneNodeUIEngineCreator>(*baseManager));
+		std::shared_ptr<CSceneNodeUIFactory> sceneNodeUIFactory = MakeShared(CSceneNodeUIFactory, *baseManager, "otSceneNodeUI", otSceneNodeUI);
+		sceneNodeUIFactory->AddClassCreator(MakeShared(CSceneNodeUIEngineCreator, *baseManager));
 
-		std::shared_ptr<CComponentsFactory> componentFactory = std::make_shared<CComponentsFactory>(*baseManager, "otSceneNodeComponent", otSceneNodeComponent);
-		componentFactory->AddClassCreator(std::make_shared<CComponentsEngineCreator>(*baseManager));
+		std::shared_ptr<CComponentsFactory> componentFactory = MakeShared(CComponentsFactory, *baseManager, "otSceneNodeComponent", otSceneNodeComponent);
+		componentFactory->AddClassCreator(MakeShared(CComponentsEngineCreator, *baseManager));
 
 		factory->AddClassFactory(sceneFactory);
 		factory->AddClassFactory(sceneNode3DFactory);
@@ -123,13 +123,13 @@ IBaseManager* WINAPI InitializeEngine(std::vector<std::string> Arguments, std::s
 
 	// FBX
 	{
-		auto fbxManager = std::make_shared<CFBXManager>(*baseManager);
+		auto fbxManager = MakeShared(CFBXManager, *baseManager);
 		baseManager->AddManager<IFBXManager>(fbxManager);
 	}
 
 	// Passes
 	{
-		std::shared_ptr<IRenderPassFactory> factory = std::make_shared<CRenderPassFactory>();
+		std::shared_ptr<IRenderPassFactory> factory = MakeShared(CRenderPassFactory);
 		baseManager->AddManager<IRenderPassFactory>(factory);
 		pluginsManager->AddPluginEventListener(std::dynamic_pointer_cast<IznPluginsEventListener>(factory));
 	}

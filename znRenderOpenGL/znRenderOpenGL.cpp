@@ -53,7 +53,7 @@ public:
 	{
 		if (m_CachedRenderDevice == nullptr)
 		{
-			m_CachedRenderDevice = std::make_shared<RenderDeviceOGL>(m_BaseManager);
+			m_CachedRenderDevice = MakeShared(RenderDeviceOGL, m_BaseManager);
 			m_CachedRenderDevice->Initialize();
 		}
 

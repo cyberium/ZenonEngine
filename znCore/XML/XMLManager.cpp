@@ -62,7 +62,7 @@ namespace
 			childs.push_back(std::make_pair(node->ValueStr(), CreateXMLReader(node)));
 		}
 
-		return std::make_shared<CXMLReader>(Name, Value, attributes, childs);
+		return MakeShared(CXMLReader, Name, Value, attributes, childs);
 	}
 }
 
@@ -90,7 +90,7 @@ CXMLManager::~CXMLManager()
 
 std::shared_ptr<IXMLReader> CXMLManager::CreateReader(std::shared_ptr<IFile> File)
 {
-	std::shared_ptr<TiXmlDocument> xmlDocument = std::make_shared<TiXmlDocument>();
+	std::shared_ptr<TiXmlDocument> xmlDocument = MakeShared(TiXmlDocument);
 	bool loadOkay = xmlDocument->LoadFile(File);
 	CheckTinyXMLError(xmlDocument);
 
@@ -102,27 +102,27 @@ std::shared_ptr<IXMLReader> CXMLManager::CreateReader(std::shared_ptr<IFile> Fil
 
 std::shared_ptr<IXMLWriter> CXMLManager::CreateWriter()
 {
-	std::shared_ptr<TiXmlDocument> xmlDocument = std::make_shared<TiXmlDocument>();
+	std::shared_ptr<TiXmlDocument> xmlDocument = MakeShared(TiXmlDocument);
 	TiXmlDeclaration * decl = new TiXmlDeclaration("1.0", "", "");
 	xmlDocument->LinkEndChild(decl);
 
 	TiXmlElement * rootElement = new TiXmlElement(cXMLRootNodeSignature);
 	xmlDocument->LinkEndChild(rootElement);
 
-	return std::make_shared<CXMLWriter>(rootElement->ValueStr());
+	return MakeShared(CXMLWriter, rootElement->ValueStr());
 }
 
 std::shared_ptr<IXMLWriter> CXMLManager::CreateWriter(const std::string & NodeName)
 {
-	return std::make_shared<CXMLWriter>(NodeName);
+	return MakeShared(CXMLWriter, NodeName);
 }
 
 
 std::shared_ptr<IFile> CXMLManager::SaveWriterToFile(const std::shared_ptr<IXMLWriter>& Writer, const std::string& FileName)
 {
-	std::shared_ptr<CFile> file = std::make_shared<CFile>(FileName);
+	std::shared_ptr<CFile> file = MakeShared(CFile, FileName);
 
-	std::shared_ptr<TiXmlDocument> xmlDocument = std::make_shared<TiXmlDocument>();
+	std::shared_ptr<TiXmlDocument> xmlDocument = MakeShared(TiXmlDocument);
 	TiXmlDeclaration * decl = new TiXmlDeclaration("1.0", "", "");
 	xmlDocument->LinkEndChild(decl);
 	xmlDocument->LinkEndChild(CreateTiXMLWriter(Writer));

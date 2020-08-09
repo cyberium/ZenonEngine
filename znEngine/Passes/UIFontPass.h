@@ -4,7 +4,7 @@ class ZN_API CUIFontPass
 	: public BaseUIPass
 {
 public:
-	CUIFontPass(IRenderDevice& RenderDevice, std::shared_ptr<IScene> Scene);
+	CUIFontPass(IRenderDevice& RenderDevice, std::weak_ptr<IScene> Scene);
 	virtual ~CUIFontPass();
 
 	// IRenderPassPipelined

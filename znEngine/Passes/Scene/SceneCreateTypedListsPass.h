@@ -9,7 +9,7 @@ class ZN_API CSceneCreateTypedListsPass
 	: public ScenePass
 {
 public:
-	CSceneCreateTypedListsPass(IRenderDevice& RenderDevice, const std::shared_ptr<IScene>& Scene);
+	CSceneCreateTypedListsPass(IRenderDevice& RenderDevice, const std::weak_ptr<IScene>& Scene);
 	virtual ~CSceneCreateTypedListsPass();
 
 	bool HasNodesList(ObjectClass SceneNodeType) const;

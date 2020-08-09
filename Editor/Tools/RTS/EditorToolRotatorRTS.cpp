@@ -21,7 +21,7 @@ void CEditorToolRotatorRTS::Initialize()
 
 	auto geom = GetRenderDevice().GetPrimitivesFactory().CreateTorus(1.0f, 0.05f);
 
-	auto materialY = std::make_shared<MaterialDebug>(GetRenderDevice());
+	auto materialY = MakeShared(MaterialDebug, GetRenderDevice());
 	materialY->SetDiffuseColor(glm::vec4(0.1f, 1.0f, 0.1f, 1.0f));
 	auto modelY = GetRenderDevice().GetObjectsFactory().CreateModel();
 	modelY->AddConnection(materialY, geom);
@@ -71,7 +71,7 @@ bool CEditorToolRotatorRTS::OnMousePressed(const MouseButtonEventArgs & e, const
 	if (IsChildOf(m_RotatorRoot, m_MovingNode))
 		return false;
 
-	auto nodes = GetScene()->FindIntersection(RayToWorld, m_RotatorRoot);
+	auto nodes = GetScene()->GetFinder().FindIntersection(RayToWorld, nullptr, m_RotatorRoot);
 	if (nodes.empty())
 		return false;
 

@@ -6,7 +6,7 @@
 // Additional
 #include "Scene/Nodes/UIText.h"
 
-CUIFontPass::CUIFontPass(IRenderDevice& RenderDevice, std::shared_ptr<IScene> Scene)
+CUIFontPass::CUIFontPass(IRenderDevice& RenderDevice, std::weak_ptr<IScene> Scene)
 	: BaseUIPass(RenderDevice, Scene)
 {
 }

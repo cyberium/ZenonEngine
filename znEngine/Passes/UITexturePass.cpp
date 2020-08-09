@@ -6,7 +6,7 @@
 // Additional
 #include "Scene/Nodes/UITexture.h"
 
-CUITexturePass::CUITexturePass(IRenderDevice& RenderDevice, std::shared_ptr<IScene> Scene)
+CUITexturePass::CUITexturePass(IRenderDevice& RenderDevice, std::weak_ptr<IScene> Scene)
 	: BaseUIPass(RenderDevice, Scene)
 {}
 

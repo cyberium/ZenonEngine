@@ -24,7 +24,7 @@ void main_internal(int argc, char *argv[])
 
 		IRenderDevice& renderDevice = app.CreateRenderDevice(RenderDeviceType::RenderDeviceType_DirectX11);
 
-		std::shared_ptr<IFontsManager> fontsManager = std::make_shared<FontsManager>(renderDevice, *BaseManager);
+		std::shared_ptr<IFontsManager> fontsManager = MakeShared(FontsManager, renderDevice, *BaseManager);
 		BaseManager->AddManager<IFontsManager>(fontsManager);
 		BaseManager->GetManager<ILoader>()->Start();
 
@@ -39,7 +39,7 @@ void main_internal(int argc, char *argv[])
 			renderWindow = renderDevice.GetObjectsFactory().CreateRenderWindow(*editorUI.getMainEditor(), false);
 			app.AddRenderWindow(renderWindow);
 
-			editorScene = std::make_shared<CEditor3DFrame>(editor);
+			editorScene = MakeShared(CEditor3DFrame, editor);
 			editorScene->SetRenderWindow(renderWindow);
 			editorScene->ConnectEvents(std::dynamic_pointer_cast<IRenderWindowEvents>(renderWindow));
 			editorScene->Initialize();
@@ -53,7 +53,7 @@ void main_internal(int argc, char *argv[])
 		{
 			renderWindowForModelPreview = renderDevice.GetObjectsFactory().CreateRenderWindow(*editorUI.getModelPreview(), false);
 			app.AddRenderWindow(renderWindowForModelPreview);
-			sceneForPreview = std::make_shared<CEditor3DPreviewScene>(*BaseManager);
+			sceneForPreview = MakeShared(CEditor3DPreviewScene, *BaseManager);
 			sceneForPreview->SetRenderWindow(renderWindowForModelPreview);
 			sceneForPreview->ConnectEvents(std::dynamic_pointer_cast<IRenderWindowEvents>(renderWindowForModelPreview));
 			sceneForPreview->Initialize();

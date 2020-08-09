@@ -11,14 +11,7 @@
 
 #include "Scene/Camera/FreeCameraController.h"
 
-#include "Passes/Technical/ClearRenderTargetPass.h"
-#include "Passes/MaterialDebugPass.h"
-#include "Passes/MaterialTexturedPass.h"
-#include "Passes/MaterialParticlePass.h"
-#include "Passes/MaterialModelPass.h"
-#include "Passes/MaterialModelSkeletonPass.h"
-#include "Passes/DrawBonesPass.h"
-#include "Passes/UIFontPass.h"
+
 
 #include "Scene/Components/ReactPhysicsComponent.h"
 #include "Scene/Components/Skeleton/SkeletonComponent.h"
@@ -57,15 +50,15 @@ void CSceneDefault::Initialize()
 	auto cameraComponent = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<IComponentFactory>()->CreateComponentT<ICameraComponent3D>(cSceneNodeCameraComponent, *cameraNode);
 	cameraNode->AddComponent(cameraComponent);
 
-	SetCameraController(std::make_shared<CFreeCameraController>());
+	SetCameraController(MakeShared(CFreeCameraController));
 	GetCameraController()->SetCamera(cameraNode->GetComponent<ICameraComponent3D>());
-	GetCameraController()->GetCamera()->SetPerspectiveProjection(ICameraComponent3D::EPerspectiveProjectionHand::Right, 45.0f, static_cast<float>(GetRenderWindow()->GetWindowWidth()) / static_cast<float>(GetRenderWindow()->GetWindowHeight()), 1.0f, 5000.0f);
+	GetCameraController()->GetCamera()->SetPerspectiveProjection(ICameraComponent3D::EPerspectiveProjectionHand::Right, 75.0f, static_cast<float>(GetRenderWindow()->GetWindowWidth()) / static_cast<float>(GetRenderWindow()->GetWindowHeight()), 1.0f, 5000.0f);
 	
 	cameraNode->SetTranslate(glm::vec3(-50, 160, 170));
 	GetCameraController()->GetCamera()->SetYaw(-51);
 	GetCameraController()->GetCamera()->SetPitch(-38);
 
-	/*auto newRoot = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, this, GetRootNode3D());
+	auto newRoot = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, this, GetRootNode3D());
 	newRoot->SetName("NewRoot3D");
 
 	auto file = GetBaseManager().GetManager<IFilesManager>()->Open("D://Scene.xml");
@@ -82,7 +75,7 @@ void CSceneDefault::Initialize()
 
 		while (false == rootNodeXML->GetChilds().empty())
 			currentRoot->AddChild(rootNodeXML->GetChilds()[0]);
-	}*/
+	}
 
 	rp3d::Vector3 gravity(0.0, -9.81, 0.0);
 	// Create the dynamics world
@@ -91,7 +84,7 @@ void CSceneDefault::Initialize()
 
 	Load3D();
 
-	m_TechniqueUI.AddPass(std::make_shared<CUIFontPass>(GetRenderDevice(), shared_from_this())->CreatePipeline(GetRenderWindow()->GetRenderTarget(), &GetRenderWindow()->GetViewport()));
+	
 }
 
 void CSceneDefault::Finalize()
@@ -156,11 +149,17 @@ void CSceneDefault::Load3D()
 	//--------------------------------------------------------------------------
 
 	{
-		GetDefaultLight()->SetType(ELightType::Spot);
-		GetDefaultLight()->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
-		GetDefaultLight()->SetRange(48000.0f);
-		GetDefaultLight()->SetIntensity(1.0f);
-		GetDefaultLight()->SetSpotlightAngle(55.0f);
+		auto lightNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, this);
+		lightNode->SetName("Light");
+		lightNode->SetTranslate(glm::vec3(1500.0f, 1500.0f, 1500.0f));
+		lightNode->SetRotation(glm::vec3(-0.9f, -0.9f, -0.9f));
+
+		lightNode->AddComponent(GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<IComponentFactory>()->CreateComponentT<ILightComponent3D>(cSceneNodeLightComponent, *lightNode.get()));
+		lightNode->GetComponent<ILightComponent3D>()->SetType(ELightType::Spot);
+		lightNode->GetComponent<ILightComponent3D>()->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
+		lightNode->GetComponent<ILightComponent3D>()->SetRange(99000.0f);
+		lightNode->GetComponent<ILightComponent3D>()->SetIntensity(1.0f);
+		lightNode->GetComponent<ILightComponent3D>()->SetSpotlightAngle(75.0f);
 	}
 
 
@@ -172,11 +171,11 @@ void CSceneDefault::Load3D()
 
 
 	{
-		const int iterCnt = 5;
+		const int iterCnt = 0;
 		const float offset = 13.0f;
 		const float scale = 5.0f;
 
-		std::shared_ptr<MaterialModel> textMaterial = std::make_shared<MaterialModel>(GetBaseManager());
+		std::shared_ptr<MaterialModel> textMaterial = MakeShared(MaterialModel, GetBaseManager());
 		textMaterial->SetDiffuseColor(glm::vec3(1.0f, 1.0f, 1.0f));
 		textMaterial->SetSpecularColor(glm::vec3(1.0f, 1.0f, 1.0f));
 		textMaterial->SetSpecularFactor(4.0f);
@@ -186,7 +185,7 @@ void CSceneDefault::Load3D()
 		textMaterial->SetTexture(MaterialModel::ETextureType::TextureSpecular, GetRenderDevice().GetObjectsFactory().LoadTexture2D("AmazonScene//BuildingTextures//concrete_smooth_03_spec.dds"));
 		textMaterial->SetTexture(MaterialModel::ETextureType::TextureBump, GetRenderDevice().GetObjectsFactory().LoadTexture2D("AmazonScene//BuildingTextures//concrete_smooth_03_ddna.dds"));
 
-		//std::shared_ptr<MaterialTextured> textMaterial = std::make_shared<MaterialTextured>(GetRenderDevice());
+		//std::shared_ptr<MaterialTextured> textMaterial = MakeShared(MaterialTextured, GetRenderDevice());
 		//textMaterial->SetTexture(0, GetRenderDevice().GetObjectsFactory().LoadTexture2D("Sponza_Floor_diffuse.png"));
 
 		auto cubeModel = GetRenderDevice().GetObjectsFactory().CreateModel();
@@ -236,7 +235,7 @@ void CSceneDefault::Load3D()
 					proxyShape = body->addCollisionShape(shape, rp3d::Transform::identity(), rp3d::decimal(5.0));
 
 
-					std::shared_ptr<CReactPhysicsComponent> component = std::make_shared<CReactPhysicsComponent>(*sceneNode, body);
+					std::shared_ptr<CReactPhysicsComponent> component = MakeShared(CReactPhysicsComponent, *sceneNode, body);
 					sceneNode->AddComponent(component);
 #endif
 				}
@@ -248,12 +247,12 @@ void CSceneDefault::Load3D()
 	// Plane
 	//--------------------------------------------------------------------------
 
-#if 1
+#if 0
 	{
 		const float cPlaneSize = 120.0f;
 		const float cPlaneY = -50.0f;
 
-		std::shared_ptr<MaterialModel> textMaterial = std::make_shared<MaterialModel>(GetBaseManager());
+		std::shared_ptr<MaterialModel> textMaterial = MakeShared(MaterialModel, GetBaseManager());
 		textMaterial->SetDiffuseColor(glm::vec3(1.0f, 1.0f, 1.0f));
 		textMaterial->SetSpecularColor(glm::vec3(1.0f, 1.0f, 1.0f));
 		textMaterial->SetSpecularFactor(1.0f);
@@ -263,7 +262,7 @@ void CSceneDefault::Load3D()
 		//textMaterial->SetTexture(MaterialModel::ETextureType::TextureSpecular, GetRenderDevice().GetObjectsFactory().LoadTexture2D("AmazonScene//BuildingTextures//concrete_smooth_03_spec.dds"));
 		//textMaterial->SetTexture(MaterialModel::ETextureType::TextureBump, GetRenderDevice().GetObjectsFactory().LoadTexture2D("AmazonScene//BuildingTextures//concrete_smooth_03_ddna.dds"));
 
-		//std::shared_ptr<MaterialTextured> textMaterial = std::make_shared<MaterialTextured>(GetRenderDevice());
+		//std::shared_ptr<MaterialTextured> textMaterial = MakeShared(MaterialTextured, GetRenderDevice());
 		//textMaterial->SetTexture(0, GetRenderDevice().GetObjectsFactory().LoadTexture2D("idi na huy.png"));
 
 		auto& modelPlane = GetRenderDevice().GetObjectsFactory().CreateModel();
@@ -293,7 +292,7 @@ void CSceneDefault::Load3D()
 		rp3d::ProxyShape * proxyShape;
 		proxyShape = body->addCollisionShape(shape, rp3d::Transform::identity(), rp3d::decimal(5.0));
 
-		std::shared_ptr<CReactPhysicsComponent> component = std::make_shared<CReactPhysicsComponent>(*sceneNodePlane, body);
+		std::shared_ptr<CReactPhysicsComponent> component = MakeShared(CReactPhysicsComponent, *sceneNodePlane, body);
 		sceneNodePlane->AddComponent(component);
 #endif
 	}
@@ -318,13 +317,13 @@ void CSceneDefault::Load3D()
 
 		/*
 
-		auto material = std::make_shared<MaterialParticle>(GetRenderDevice());
+		auto material = MakeShared(MaterialParticle, GetRenderDevice());
 		material->SetTexture(0, GetRenderDevice().GetObjectsFactory().LoadTexture2D("particle.png"));
 
 		auto particlesNode = m_RootForBoxes->CreateSceneNode<SceneNode3D>();
 		particlesNode->SetName("Particles");
 		//particlesNode->GetComponent<IModelsComponent3D>()->AddModel(model);
-		auto particlesComponent = std::make_shared<CParticlesComponent3D>(*particlesNode);
+		auto particlesComponent = MakeShared(CParticlesComponent3D, *particlesNode);
 		particlesComponent->SetMaterial(material);
 		particlesNode->AddComponent(particlesComponent);
 
@@ -356,7 +355,7 @@ void CSceneDefault::Load3D()
 	DoAddModels(sceneNode, fbxSceneModel->GetFBXRootNode());
 
 	// Animator
-	sceneNode->AddComponent<ISkeletonAnimationComponent>(std::make_shared<CAnimatorComponent3D>(*sceneNode));
+	sceneNode->AddComponent<ISkeletonAnimationComponent>(MakeShared(CAnimatorComponent3D, *sceneNode));
 	uint16 cntr = 0;
 	auto fbxSceneAnim = GetBaseManager().GetManager<IFBXManager>()->LoadFBX("C:/Users/Alexander/Downloads/Assets/Toon_RTS/Orcs/animation/shaman/Orc_shaman_01_idle_A.FBX");
 	for (const auto& anim : fbxSceneAnim->GetFBXAnimation()->GetAnimations())
@@ -369,43 +368,19 @@ void CSceneDefault::Load3D()
 	//skeletonFromModel.MergeWithOther(skeletonFromAnim);
 
 	// Skeleton component
-	sceneNode->AddComponent<ISkeletonComponent3D>(std::make_shared<CSkeletonComponent3D>(*sceneNode, skeletonFromAnim));
+	sceneNode->AddComponent<ISkeletonComponent3D>(MakeShared(CSkeletonComponent3D, *sceneNode, skeletonFromAnim));
 #endif
-
-
 
 	//std::shared_ptr<IFBXNode> fbxSceneNode = std::dynamic_pointer_cast<IFBXNode>(sceneNode);
 	//fbxSceneNode->InitializeFromFile("C:/Users/Alexander/Downloads/Assets/Toon_RTS/Orcs/animation/shaman/Orc_shaman_02_walk.FBX");
 	//fbxSceneNode->InitializeFromFile("C:/Users/Alexander/Downloads/Assets/Toon_RTS/Orcs/models/Single_Mesh/Orc_SM_shaman.FBX");
-
-
-	m_SceneCreateTypelessListPass = std::make_shared<CSceneCreateTypelessListPass>(GetRenderDevice(), shared_from_this());
-
-	m_DefferedRenderPass = std::make_shared<CDefferedRender>(GetRenderDevice(), m_SceneCreateTypelessListPass);
-	m_DefferedRenderPass->CreatePipeline(GetRenderWindow()->GetRenderTarget(), &GetRenderWindow()->GetViewport());
-
-	m_DefferedRenderPrepareLights = std::make_shared<CDefferedRenderPrepareLights>(GetRenderDevice(), m_SceneCreateTypelessListPass);
-	m_DefferedRenderPrepareLights->CreatePipeline(nullptr, nullptr);
-
-	m_DefferedFinalRenderPass = std::make_shared<CDefferedRenderFinal>(GetRenderDevice(), m_DefferedRenderPass, m_DefferedRenderPrepareLights);
-	m_DefferedFinalRenderPass->CreatePipeline(GetRenderWindow()->GetRenderTarget(), &GetRenderWindow()->GetViewport());
-
-	glm::vec4 color = glm::vec4(0.0, 0.0f, 0.0f, 1.0f);
-	m_Technique3D.AddPass(std::make_shared<ClearRenderTargetPass>(GetRenderDevice(), GetRenderWindow()->GetRenderTarget(), ClearFlags::All, color /*glm::vec4(0.2f, 0.2f, 0.2f, 0.2f)*/, 1.0f, 0));
 	
-#if 0
-	m_Technique3D.AddPass(m_SceneCreateTypelessListPass);
-	m_Technique3D.AddPass(m_DefferedRenderPass);
-	m_Technique3D.AddPass(m_DefferedRenderPrepareLights);
-	m_Technique3D.AddPass(m_DefferedFinalRenderPass);
-#else
-	m_Technique3D.AddPass(std::make_shared<CMaterialModelPass>(GetRenderDevice(), shared_from_this())->CreatePipeline(GetRenderWindow()->GetRenderTarget(), &GetRenderWindow()->GetViewport()));
-	m_Technique3D.AddPass(std::make_shared<CMaterialModelSkeletonPass>(GetRenderDevice(), shared_from_this())->CreatePipeline(GetRenderWindow()->GetRenderTarget(), &GetRenderWindow()->GetViewport()));
-	m_Technique3D.AddPass(std::make_shared<CDrawBonesPass>(GetRenderDevice(), shared_from_this())->CreatePipeline(GetRenderWindow()->GetRenderTarget(), &GetRenderWindow()->GetViewport()));
-#endif
+	auto defferedRenderer = MakeShared(CRendererDeffered, GetBaseManager(), weak_from_this());
+	defferedRenderer->Initialize(GetRenderWindow()->GetRenderTarget(), &GetRenderWindow()->GetViewport());
+	SetRenderer(defferedRenderer);
 
 	//m_Technique3D.AddPass(GetBaseManager().GetManager<IRenderPassFactory>()->CreateRenderPass("TexturedMaterialPass", GetRenderDevice(), GetRenderWindow()->GetRenderTarget(), &GetRenderWindow()->GetViewport(), shared_from_this()));
-	//m_Technique3D.AddPass(std::make_shared<CMaterialParticlePass>(GetRenderDevice(), shared_from_this())->CreatePipeline(GetRenderWindow()->GetRenderTarget(), &GetRenderWindow()->GetViewport()));
+	//m_Technique3D.AddPass(MakeShared(CMaterialParticlePass, GetRenderDevice(), shared_from_this())->CreatePipeline(GetRenderWindow()->GetRenderTarget(), &GetRenderWindow()->GetViewport()));
 }
 
 void CSceneDefault::GenerateLights(std::shared_ptr<ISceneNode3D> Node, uint32_t numLights)
@@ -482,7 +457,7 @@ void CSceneDefault::GenerateLights(std::shared_ptr<ISceneNode3D> Node, uint32_t 
 			light.Type = (fLightPropability < 0.33f ? ELightType::Point : fLightPropability < 0.66f ? ELightType::Spot : ELightType::Directional);
 		}
 
-		//Node->GetComponent<ILightComponent3D>()->AddLight(std::make_shared<CLight3D>(light));
+		//Node->GetComponent<ILightComponent3D>()->AddLight(MakeShared(CLight3D, light));
 	}
 }
 

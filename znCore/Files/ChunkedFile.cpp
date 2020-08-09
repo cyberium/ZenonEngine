@@ -59,7 +59,7 @@ void CChunkedFile::Open(const std::shared_ptr<IByteBuffer>& ByteBuffer)
 		memcpy_s(&dbgName, 4, link.CHID, 4);
 
 		Log::Info("    Chunk '%s': Offset '%d', size '%d'", dbgName, link.CHOF, link.CHSZ);
-		AddChunk(dbgName, std::make_shared<CByteBufferOnlyPointer>(ByteBuffer->getData() + link.CHOF, link.CHSZ));
+		AddChunk(dbgName, MakeShared(CByteBufferOnlyPointer, ByteBuffer->getData() + link.CHOF, link.CHSZ));
 	}
 
 	Log::Info("Chunks Open END.");
@@ -104,12 +104,12 @@ void CChunkedFile::Save(const std::shared_ptr<IByteBuffer>& ByteBuffer)
 
 void CChunkedFile::AddChunk(const std::string & ChunkName, const void * DataPtr, size_t DataSize)
 {
-	AddChunk(ChunkName, std::make_shared<CByteBuffer>(DataPtr, DataSize));
+	AddChunk(ChunkName, MakeShared(CByteBuffer, DataPtr, DataSize));
 }
 
 void CChunkedFile::AddChunk(const std::string & ChunkName, const std::vector<uint8>& Bytes)
 {
-	AddChunk(ChunkName, std::make_shared<CByteBuffer>(Bytes.data(), Bytes.size()));
+	AddChunk(ChunkName, MakeShared(CByteBuffer, Bytes.data(), Bytes.size()));
 }
 
 void CChunkedFile::AddChunk(const std::string & ChunkName, const std::shared_ptr<IByteBuffer>& ByteBuffer)

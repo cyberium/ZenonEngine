@@ -12,5 +12,5 @@ CGroupVideo::~CGroupVideo()
 
 void CGroupVideo::AddDefaultSettings()
 {
-	AddSetting("WindowSize", std::make_shared<CSettingBase<glm::vec2>>(glm::vec2(1280, 1024)));
+	AddSetting("WindowSize", MakeShared(CSettingBase<glm::vec2>, glm::vec2(1280, 1024)));
 }

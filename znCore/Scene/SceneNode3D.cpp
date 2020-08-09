@@ -20,7 +20,7 @@ SceneNode3D::SceneNode3D(IScene& Scene)
 	, m_WorldTransform(1.0f)
 	, m_InverseWorldTransform(1.0f)
 {
-	m_PropertiesGroup = std::make_shared<CPropertiesGroup>("SceneNodeProperties", "Some important scene node 3d properties.");
+	m_PropertiesGroup = MakeShared(CPropertiesGroup, "SceneNodeProperties", "Some important scene node 3d properties.");
 }
 
 SceneNode3D::~SceneNode3D()
@@ -35,7 +35,7 @@ void SceneNode3D::Initialize()
 {
 	// Name properties
 	{
-		std::shared_ptr<CPropertyWrapped<std::string>> nameProperty = std::make_shared<CPropertyWrapped<std::string>>("Name", "Scene node name.");
+		std::shared_ptr<CPropertyWrapped<std::string>> nameProperty = MakeShared(CPropertyWrapped<std::string>, "Name", "Scene node name.");
 		nameProperty->SetValueSetter(std::bind(&Object::SetName, this, std::placeholders::_1));
 		nameProperty->SetValueGetter(std::bind(&Object::GetName, this));
 		GetProperties()->AddProperty(nameProperty);
@@ -43,19 +43,19 @@ void SceneNode3D::Initialize()
 
 	// Transform properties
 	{
-		std::shared_ptr<IPropertiesGroup> propertiesGroup = std::make_shared<CPropertiesGroup>("Transform", "Transorm of this 3D node. Like translation, rotation and scale.");
+		std::shared_ptr<IPropertiesGroup> propertiesGroup = MakeShared(CPropertiesGroup, "Transform", "Transorm of this 3D node. Like translation, rotation and scale.");
 
-		std::shared_ptr<CPropertyWrapped<glm::vec3>> translateProperty = std::make_shared<CPropertyWrapped<glm::vec3>>("Translate", "Position of this node in world. Relative to parent.");
+		std::shared_ptr<CPropertyWrapped<glm::vec3>> translateProperty = MakeShared(CPropertyWrapped<glm::vec3>, "Translate", "Position of this node in world. Relative to parent.");
 		translateProperty->SetValueSetter(std::bind(&SceneNode3D::SetTranslate, this, std::placeholders::_1));
 		translateProperty->SetValueGetter(std::bind(&SceneNode3D::GetTranslation, this));
 		propertiesGroup->AddProperty(translateProperty);
 
-		std::shared_ptr<CPropertyWrapped<glm::vec3>> rotationProperty = std::make_shared<CPropertyWrapped<glm::vec3>>("Rotate", "Rotation of this node. Relative to parent.");
+		std::shared_ptr<CPropertyWrapped<glm::vec3>> rotationProperty = MakeShared(CPropertyWrapped<glm::vec3>, "Rotate", "Rotation of this node. Relative to parent.");
 		rotationProperty->SetValueSetter(std::bind(&SceneNode3D::SetRotation, this, std::placeholders::_1));
 		rotationProperty->SetValueGetter(std::bind(&SceneNode3D::GetRotation, this));
 		propertiesGroup->AddProperty(rotationProperty);
 
-		std::shared_ptr<CPropertyWrapped<glm::vec3>> scaleProperty = std::make_shared<CPropertyWrapped<glm::vec3>>("Scale", "Scale of this node. Relative to parent.");
+		std::shared_ptr<CPropertyWrapped<glm::vec3>> scaleProperty = MakeShared(CPropertyWrapped<glm::vec3>, "Scale", "Scale of this node. Relative to parent.");
 		scaleProperty->SetValueSetter(std::bind(&SceneNode3D::SetScale, this, std::placeholders::_1));
 		scaleProperty->SetValueGetter(std::bind(&SceneNode3D::GetScale, this));
 		propertiesGroup->AddProperty(scaleProperty);
@@ -65,7 +65,7 @@ void SceneNode3D::Initialize()
 
 	// Actions
 	{
-		std::shared_ptr<CAction> removeAction = std::make_shared<CAction>("Remove", "Remove this node from world. this action affected on childs!");
+		std::shared_ptr<CAction> removeAction = MakeShared(CAction, "Remove", "Remove this node from world. this action affected on childs!");
 		removeAction->SetAction([this]() -> bool {
 			auto sceneNode = this->shared_from_this();
 			if (sceneNode->GetScene() == nullptr)

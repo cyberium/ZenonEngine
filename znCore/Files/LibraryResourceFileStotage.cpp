@@ -28,7 +28,7 @@ std::shared_ptr<IFile> CLibraryResourceFileStotage::OpenFile(std::string Filenam
         {
             LPVOID resourceData = LockResource(hResourceData);
 
-            std::shared_ptr<CFile> file = std::make_shared<CFile>(Filename);
+            std::shared_ptr<CFile> file = MakeShared(CFile, Filename);
             CByteBuffer& byteBuffer = file->GetByteBuffer();
 
 			byteBuffer = std::move(CByteBuffer(resourceData, resourceSize));

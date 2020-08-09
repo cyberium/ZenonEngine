@@ -312,6 +312,9 @@
     <ClCompile Include="Passes\ScenePasses\Pipelined\ScenePassPipelined.cpp">
       <Filter>Passes\ScenePasses</Filter>
     </ClCompile>
+    <ClCompile Include="Scene\SceneFinder.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="common.h">
@@ -760,6 +763,9 @@
     </ClInclude>
     <ClInclude Include="Passes\ScenePasses\Pipelined\BaseUIPass.h">
       <Filter>Passes\ScenePasses</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\SceneFinder.h">
+      <Filter>Scene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

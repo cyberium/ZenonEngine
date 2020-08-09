@@ -118,7 +118,7 @@ bool ShaderOGL::LoadShaderFromFile(EShaderType shaderType, const std::string& fi
 
         GLint loc = glGetUniformLocation(m_GLObj, name);
 
-        IShaderParameter* shaderParameter = std::make_shared<ShaderParameterBase>(name, loc, shared_from_this(), parameterType);
+        IShaderParameter* shaderParameter = MakeShared(ShaderParameterBase, name, loc, shared_from_this(), parameterType);
         m_ShaderParameters.insert(ParameterMap::value_type(name, shaderParameter));
     }*/
 
@@ -152,7 +152,7 @@ bool ShaderOGL::LoadShaderFromFile(EShaderType shaderType, const std::string& fi
         OGLCheckError();
         _ASSERT(index != -1);
 
-        IShaderParameter* shaderParameter = std::make_shared<ShaderParameterBase>(name, binding, shared_from_this(), IShaderParameter::Type::Buffer);
+        IShaderParameter* shaderParameter = MakeShared(ShaderParameterBase, name, binding, shared_from_this(), IShaderParameter::Type::Buffer);
         m_ShaderParameters.insert(ParameterMap::value_type(name, shaderParameter));
     }
 
@@ -164,7 +164,7 @@ bool ShaderOGL::LoadInputLayoutFromReflector()
     if (m_InputLayout)
         return true;
 
-    std::shared_ptr<ShaderInputLayoutOGL> inputLayout = std::make_shared<ShaderInputLayoutOGL>();
+    std::shared_ptr<ShaderInputLayoutOGL> inputLayout = MakeShared(ShaderInputLayoutOGL);
     inputLayout->LoadFromReflector(m_GLObj);
     m_InputLayout = inputLayout;
 
@@ -176,7 +176,7 @@ bool ShaderOGL::LoadInputLayoutFromCustomElements(const std::vector<SCustomVerte
     if (m_InputLayout)
         return true;
 
-    std::shared_ptr<ShaderInputLayoutOGL> inputLayout = std::make_shared<ShaderInputLayoutOGL>();
+    std::shared_ptr<ShaderInputLayoutOGL> inputLayout = MakeShared(ShaderInputLayoutOGL);
 	inputLayout->LoadFromCustomElements(m_GLObj, declIn);
     m_InputLayout = inputLayout;
 

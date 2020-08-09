@@ -6,6 +6,7 @@ ZN_INTERFACE ISceneNodeUI;
 ZN_INTERFACE IVisitor;
 class UpdateEventArgs;
 ZN_INTERFACE ISceneNodesFactory;
+ZN_INTERFACE ISceneFinder;
 // FORWARD END
 
 ZN_INTERFACE ZN_API IScene 
@@ -16,6 +17,10 @@ ZN_INTERFACE ZN_API IScene
 
 	virtual void SetRenderWindow(const std::shared_ptr<IRenderWindow>& RenderWindow) = 0;
 	virtual std::shared_ptr<IRenderWindow> GetRenderWindow() const = 0;
+
+	virtual void SetRenderer(std::shared_ptr<IRenderer> Renderer) = 0;
+	virtual std::shared_ptr<IRenderer> GetRenderer() const = 0;
+
 	virtual void ConnectEvents(const std::shared_ptr<IRenderWindowEvents>& WindowEvents) = 0;
 	virtual void DisconnectEvents(const std::shared_ptr<IRenderWindowEvents>& WindowEvents) = 0;
 
@@ -28,13 +33,7 @@ ZN_INTERFACE ZN_API IScene
 	virtual void SetCameraController(std::shared_ptr<ICameraController> CameraController) = 0;
 	virtual std::shared_ptr<ICameraController> GetCameraController() const = 0;
 
-	virtual std::map<float, std::shared_ptr<ISceneNode3D>> FindIntersection(const Ray& Ray) const = 0;
-	virtual std::map<float, std::shared_ptr<ISceneNode3D>> FindIntersection(const Ray& Ray, std::function<bool(std::shared_ptr<ISceneNode3D>)> Filter) const = 0;
-	virtual std::map<float, std::shared_ptr<ISceneNode3D>> FindIntersection(const Ray& Ray, std::shared_ptr<ISceneNode3D> RootForFinder) const = 0;
-
-	virtual std::vector<std::shared_ptr<ISceneNode3D>> FindIntersections(const Frustum& Frustum) const = 0;
-	virtual std::vector<std::shared_ptr<ISceneNode3D>> FindIntersections(const Frustum& Frustum, std::function<bool(std::shared_ptr<ISceneNode3D>)> Filter) const = 0;
-	virtual std::vector<std::shared_ptr<ISceneNode3D>> FindIntersections(const Frustum& Frustum, std::shared_ptr<ISceneNode3D> RootForFinder) const = 0;
+	virtual const ISceneFinder& GetFinder() const = 0;
 
 	// Passes will go to this
 	virtual void Accept(IVisitor* visitor) = 0;
@@ -58,7 +57,7 @@ ZN_INTERFACE ZN_API IScene
 	{
 		static_assert(std::is_convertible<T*, ISceneNode3D*>::value, "T must inherit ISceneNode3D as public.");
 
-		std::shared_ptr<T> node = std::make_shared<T>(*this);
+		std::shared_ptr<T> node = MakeShared(T, *this);
 		node->RegisterComponents();
 		node->Initialize();
 
@@ -76,7 +75,7 @@ ZN_INTERFACE ZN_API IScene
 	{
 		static_assert(std::is_convertible<T*, ISceneNodeUI*>::value, "T must inherit ISceneNodeUI as public.");
 
-		std::shared_ptr<T> newNode = std::make_shared<T>(std::forward<Args>(_Args)...);
+		std::shared_ptr<T> newNode = MakeShared(T, std::forward<Args>(_Args)...);
 		newNode->SetSceneInternal(weak_from_this());
 		newNode->Initialize();
 
@@ -90,10 +89,6 @@ ZN_INTERFACE ZN_API IScene
 };
 
 
-
-//
-// For plugins
-//
 ZN_INTERFACE ZN_API ISceneCreator
 {
 	virtual ~ISceneCreator() {}
@@ -110,4 +105,35 @@ ZN_INTERFACE ZN_API	IScenesFactory
 	virtual ~IScenesFactory() {}
 
 	virtual std::shared_ptr<IScene> CreateScene(ObjectClass ObjectClassKey) = 0;
+};
+
+
+
+ZN_INTERFACE ZN_API	ISceneFinder
+{
+	virtual ~ISceneFinder() {}
+
+	virtual std::map<float, std::shared_ptr<ISceneNode3D>> FindIntersection (
+		const Ray& Ray,
+		std::function<bool(std::shared_ptr<ISceneNode3D>)> Filter = nullptr, 
+		std::shared_ptr<ISceneNode3D> RootForFinder = nullptr
+	) const = 0;
+	virtual std::vector<std::shared_ptr<ISceneNode3D>> FindIntersections(
+		const Frustum& Frustum, 
+		std::function<bool(std::shared_ptr<ISceneNode3D>)> Filter = nullptr, 
+		std::shared_ptr<ISceneNode3D> RootForFinder = nullptr
+	) const = 0;
+
+	virtual std::map<float, std::shared_ptr<IModel>> FindIntersectionWithModel(
+		const Ray& Ray,
+		std::function<bool(std::shared_ptr<ISceneNode3D>)> FilterForSceneNodes = nullptr,
+		std::function<bool(std::shared_ptr<IModel>)> FilterForModels = nullptr,
+		std::shared_ptr<ISceneNode3D> RootForFinder = nullptr
+	) const = 0;
+	virtual std::vector<std::shared_ptr<IModel>> FindIntersectionsWithModel(
+		const Frustum& Frustum,
+		std::function<bool(std::shared_ptr<ISceneNode3D>)> FilterForSceneNodes = nullptr,
+		std::function<bool(std::shared_ptr<IModel>)> FilterForModels = nullptr,
+		std::shared_ptr<ISceneNode3D> RootForFinder = nullptr
+	) const = 0;
 };

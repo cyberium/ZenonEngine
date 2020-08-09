@@ -3,7 +3,7 @@
 // General
 #include "SceneCreateTypedListsPass.h"
 
-CSceneCreateTypedListsPass::CSceneCreateTypedListsPass(IRenderDevice& RenderDevice, const std::shared_ptr<IScene>& Scene)
+CSceneCreateTypedListsPass::CSceneCreateTypedListsPass(IRenderDevice& RenderDevice, const std::weak_ptr<IScene>& Scene)
 	: ScenePass(RenderDevice, Scene)
 	, m_LastSceneNode(nullptr)
 	, m_LastModel(nullptr)

@@ -47,7 +47,7 @@ CEditorUIFrame::CEditorUIFrame(IEditor& Editor)
 	fsModel->setRootPath("D:\\_programming\\ZenonEngine\\gamedata");
 	m_UI.FSTreeViewer->setModel(fsModel);
 
-	m_PropertiesController = std::make_shared<CPropertiesController>(m_UI.PropertyEditor);
+	m_PropertiesController = MakeShared(CPropertiesController, m_UI.PropertyEditor);
 
 	// Unite file browser and log docker
 	QMainWindow::tabifyDockWidget(m_UI.DockerFileBrowser, m_UI.DockerLogViewer);
@@ -94,7 +94,7 @@ bool CEditorUIFrame::InitializeEditorFrame()
 			auto model = std::dynamic_pointer_cast<IFBXNode>(sceneNode->GetChilds().at(0))->GetModel();
 			if (auto loadable = std::dynamic_pointer_cast<IObjectLoadSave>(model))
 			{
-				std::shared_ptr<IFile> file = std::make_shared<CFile>(zenonFileName);
+				std::shared_ptr<IFile> file = MakeShared(CFile, zenonFileName);
 				loadable->Save(file);
 
 				m_Editor.GetBaseManager().GetManager<IFilesManager>()->GetFilesStorage("PCEveryFileAccess")->SaveFile(file);
@@ -197,7 +197,7 @@ bool CEditorUIFrame::ExtendContextMenu(const std::shared_ptr<ISceneNode3D>& Node
 			if (actionsList.size() > 1)
 				actionName.append(" [" + std::to_string(actionsList.size()) + "]");
 
-			std::shared_ptr<IPropertyAction> complexAction = std::make_shared<CAction>(actionName, "");
+			std::shared_ptr<IPropertyAction> complexAction = MakeShared(CAction, actionName, "");
 			complexAction->SetAction([actionsList] () -> bool {
 				for (const auto& act : actionsList)
 					act->ExecuteAction();

@@ -28,23 +28,23 @@ void CEditorToolMover::Initialize()
 	auto geom = model->GetConnections().begin()->Geometry;
 	if (auto loadable = std::dynamic_pointer_cast<IObjectLoadSave>(model))
 	{
-		std::shared_ptr<IFile> file = std::make_shared<CFile>("C:\\_engine\\ZenonEngine_gamedata\\arrow.znmdl");
+		std::shared_ptr<IFile> file = MakeShared(CFile, "C:\\_engine\\ZenonEngine_gamedata\\arrow.znmdl");
 		loadable->Save(file);
 
 		GetBaseManager().GetManager<IFilesManager>()->GetFilesStorage("PCEveryFileAccess")->SaveFile(file);
 	}
 
-	auto materialX = std::make_shared<MaterialDebug>(GetRenderDevice());
+	auto materialX = MakeShared(MaterialDebug, GetRenderDevice());
 	materialX->SetDiffuseColor(glm::vec4(1.0f, 0.2f, 0.1f, 1.0f));
 	auto modelX = GetRenderDevice().GetObjectsFactory().CreateModel();
 	modelX->AddConnection(materialX, geom);
 
-	auto materialY = std::make_shared<MaterialDebug>(GetRenderDevice());
+	auto materialY = MakeShared(MaterialDebug, GetRenderDevice());
 	materialY->SetDiffuseColor(glm::vec4(0.1f, 1.0f, 0.1f, 1.0f));
 	auto modelY = GetRenderDevice().GetObjectsFactory().CreateModel();
 	modelY->AddConnection(materialY, geom);
 
-	auto materialZ = std::make_shared<MaterialDebug>(GetRenderDevice());
+	auto materialZ = MakeShared(MaterialDebug, GetRenderDevice());
 	materialZ->SetDiffuseColor(glm::vec4(0.1f, 0.2f, 1.0f, 1.0f));
 	auto modelZ = GetRenderDevice().GetObjectsFactory().CreateModel();
 	modelZ->AddConnection(materialZ, geom);
@@ -103,7 +103,7 @@ void CEditorToolMover::Disable()
 
 bool CEditorToolMover::OnMousePressed(const MouseButtonEventArgs & e, const Ray & RayToWorld)
 {
-	auto nodes = GetScene()->FindIntersection(RayToWorld, m_MoverRoot);
+	auto nodes = GetScene()->GetFinder().FindIntersection(RayToWorld, nullptr, m_MoverRoot);
 	if (nodes.empty())
 		return false;
 
@@ -221,6 +221,9 @@ void CEditorToolMover::DoInitializeUI(IEditorQtUIFrame& QtUIFrame)
 }
 
 
+//
+// IEditorToolMover
+//
 glm::ivec3 CEditorToolMover::ToBoxCoords(const glm::vec3 & Position)
 {
 	return glm::round(Position / m_MoverValue);
@@ -238,6 +241,11 @@ glm::vec3 CEditorToolMover::FixBoxCoords(const glm::vec3 & Position)
 void CEditorToolMover::SetMoverValue(float Value)
 {
 	m_MoverValue = Value;
+}
+
+float CEditorToolMover::GetMoverValue() const
+{
+	return m_MoverValue; 
 }
 
 void CEditorToolMover::Clear()

@@ -11,6 +11,7 @@ SceneBase::SceneBase(IBaseManager& BaseManager)
 	: m_BaseManager(BaseManager)
 	, m_RenderDevice(BaseManager.GetApplication().GetRenderDevice())
 	, m_IsFreezed(false)
+	, m_Finder(std::make_unique<CSceneFinder>(*this))
 {
 	
 }
@@ -30,20 +31,6 @@ void SceneBase::Initialize()
 
 	m_RootNodeUI = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeUIFactory>()->CreateSceneNodeUI(this, cSceneNodeUI);
 	m_RootNodeUI->SetName("RootNodeUI");
-
-	{
-		m_LightNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, this);
-		m_LightNode->SetName("Light");
-		m_LightNode->SetTranslate(glm::vec3(1500.0f, 1500.0f, 1500.0f));
-		m_LightNode->SetRotation(glm::vec3(-0.9f, -0.9f, -0.9f));
-
-		m_LightNode->AddComponent(GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<IComponentFactory>()->CreateComponentT<ILightComponent3D>(cSceneNodeLightComponent, *m_LightNode.get()));
-		m_LightNode->GetComponent<ILightComponent3D>()->SetType(ELightType::Spot);
-		m_LightNode->GetComponent<ILightComponent3D>()->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
-		m_LightNode->GetComponent<ILightComponent3D>()->SetRange(99000.0f);
-		m_LightNode->GetComponent<ILightComponent3D>()->SetIntensity(1.0f);
-		m_LightNode->GetComponent<ILightComponent3D>()->SetSpotlightAngle(75.0f);
-	}
 
 	{
 		m_CameraPosText = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeUIFactory>()->CreateSceneNodeUI(this, cSceneNodeUI_Text);
@@ -137,6 +124,16 @@ std::shared_ptr<ISceneNodeUI> SceneBase::GetRootNodeUI() const
 	return m_RootNodeUI;
 }
 
+void SceneBase::SetRenderer(std::shared_ptr<IRenderer> Renderer)
+{
+	m_Renderer = Renderer;
+}
+
+std::shared_ptr<IRenderer> SceneBase::GetRenderer() const
+{
+	return m_Renderer;
+}
+
 void SceneBase::SetCameraController(std::shared_ptr<ICameraController> CameraController)
 {
 	_ASSERT(CameraController != nullptr);
@@ -148,106 +145,13 @@ std::shared_ptr<ICameraController> SceneBase::GetCameraController() const
 	return m_DefaultCameraController;
 }
 
-
-namespace
+const ISceneFinder& SceneBase::GetFinder() const
 {
-	void FillIntersectedList(const std::shared_ptr<ISceneNode3D>& Parent, const Frustum& Frustum, std::vector<std::shared_ptr<ISceneNode3D>> * intersectedNodes)
-	{
-		const auto& childs = Parent->GetChilds();
-		for (const auto& it : childs)
-		{
-			FillIntersectedList(it, Frustum, intersectedNodes);
-
-			if (auto collider = it->GetComponent<IColliderComponent3D>())
-			{
-				if (collider->GetBounds().IsInfinite())
-					continue;
-
-				if (!Frustum.cullBox(collider->GetWorldBounds()))
-					intersectedNodes->push_back(it);
-			}
-		}
-	}
-
-	void FillIntersectedList(const std::shared_ptr<ISceneNode3D>& Parent, const Ray & Ray, std::map<float, std::shared_ptr<ISceneNode3D>> * intersectedNodes)
-	{
-		const auto& childs = Parent->GetChilds();
-		for (const auto& it : childs)
-		{
-			if (auto collider = it->GetComponent<IColliderComponent3D>())
-			{
-				FillIntersectedList(it, Ray, intersectedNodes);
-
-				if (collider->GetBounds().IsInfinite())
-					continue;
-
-				if (!collider->IsRayIntersects(Ray))
-					continue;
-
-				float dist = nearestDistToAABB(Ray.GetOrigin(), collider->GetWorldBounds());
-				intersectedNodes->insert(std::make_pair(dist, it));
-			}
-		}
-	}
+	return *m_Finder.get();
 }
 
-std::map<float, std::shared_ptr<ISceneNode3D>> SceneBase::FindIntersection(const Ray& Ray) const
-{
-	std::map<float, std::shared_ptr<ISceneNode3D>> intersectedNodes;
-	FillIntersectedList(GetRootNode3D(), Ray, &intersectedNodes);
-	return intersectedNodes;
-}
 
-std::map<float, std::shared_ptr<ISceneNode3D>> SceneBase::FindIntersection(const Ray& Ray, std::function<bool(std::shared_ptr<ISceneNode3D>)> Filter) const
-{
-	std::map<float, std::shared_ptr<ISceneNode3D>> intersectedNodes;
-	FillIntersectedList(GetRootNode3D(), Ray, &intersectedNodes);
-	auto it = intersectedNodes.begin();
-	while (it != intersectedNodes.end())
-	{
-		if (Filter(it->second))
-			it++;
-		else
-			it = intersectedNodes.erase(it);
-	}
-	return intersectedNodes;
-}
 
-std::map<float, std::shared_ptr<ISceneNode3D>> SceneBase::FindIntersection(const Ray& Ray, std::shared_ptr<ISceneNode3D> RootForFinder) const
-{
-	std::map<float, std::shared_ptr<ISceneNode3D>> intersectedNodes;
-	FillIntersectedList(RootForFinder, Ray, &intersectedNodes);
-	return intersectedNodes;
-}
-
-std::vector<std::shared_ptr<ISceneNode3D>> SceneBase::FindIntersections(const Frustum & Frustum) const
-{
-	std::vector<std::shared_ptr<ISceneNode3D>> intersectedNodes;
-	FillIntersectedList(GetRootNode3D(), Frustum, &intersectedNodes);
-	return intersectedNodes;
-}
-
-std::vector<std::shared_ptr<ISceneNode3D>> SceneBase::FindIntersections(const Frustum & Frustum, std::function<bool(std::shared_ptr<ISceneNode3D>)> Filter) const
-{
-	std::vector<std::shared_ptr<ISceneNode3D>> intersectedNodes;
-	FillIntersectedList(GetRootNode3D(), Frustum, &intersectedNodes);
-	auto it = intersectedNodes.begin();
-	while (it != intersectedNodes.end())
-	{
-		if (Filter(*it))
-			it++;
-		else
-			it = intersectedNodes.erase(it);
-	}
-	return intersectedNodes;
-}
-
-std::vector<std::shared_ptr<ISceneNode3D>> SceneBase::FindIntersections(const Frustum & Frustum, std::shared_ptr<ISceneNode3D> RootForFinder) const
-{
-	std::vector<std::shared_ptr<ISceneNode3D>> intersectedNodes;
-	FillIntersectedList(RootForFinder, Frustum, &intersectedNodes);
-	return intersectedNodes;
-}
 
 void SceneBase::Accept(IVisitor * visitor)
 {
@@ -394,7 +298,7 @@ void SceneBase::OnRender(RenderEventArgs & e)
 	}
 
 	//Sleep(15);
-	m_Technique3D.Render(e);
+	m_Renderer->Render(e);
 }
 
 void SceneBase::OnPostRender(RenderEventArgs & e)
@@ -416,13 +320,6 @@ void SceneBase::OnPostRender(RenderEventArgs & e)
 
 void SceneBase::OnRenderUI(RenderEventArgs & e)
 {
-	if (GetCameraController())
-		e.Camera = GetCameraController()->GetCamera().get();
-
-
-
-	m_TechniqueUI.Render(e);
-
 	m_End = std::chrono::high_resolution_clock::now();
 
 	{
@@ -454,6 +351,8 @@ void SceneBase::OnWindowResize(ResizeEventArgs & e)
 {
 	if (GetCameraController())
 		GetCameraController()->OnResize(e);
+
+	m_Renderer->Resize(e.Width, e.Height);
 }
 
 
@@ -591,12 +490,6 @@ IRenderDevice& SceneBase::GetRenderDevice() const
 {
 	return m_RenderDevice;
 }
-
-std::shared_ptr<ILightComponent3D> SceneBase::GetDefaultLight() const
-{
-	return m_LightNode->GetComponent<ILightComponent3D>();
-}
-
 
 
 

@@ -6,7 +6,7 @@
 // Additional
 #include "Scene/Nodes/UIButton.h"
 
-CUIButtonPass::CUIButtonPass(IRenderDevice& RenderDevice, std::shared_ptr<IScene> Scene)
+CUIButtonPass::CUIButtonPass(IRenderDevice& RenderDevice, std::weak_ptr<IScene> Scene)
 	: BaseUIPass(RenderDevice, Scene)
 {}
 

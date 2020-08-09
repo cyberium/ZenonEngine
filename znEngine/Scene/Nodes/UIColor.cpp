@@ -14,12 +14,12 @@ CUIColorNode::~CUIColorNode()
 
 void CUIColorNode::Initialize()
 {
-	m_Material = std::make_shared<UI_Color_Material>(GetBaseManager().GetApplication().GetRenderDevice());
+	m_Material = MakeShared(UI_Color_Material, GetBaseManager().GetApplication().GetRenderDevice());
 
 	m_Mesh = GetBaseManager().GetApplication().GetRenderDevice().GetObjectsFactory().CreateModel();
 	m_Mesh->AddConnection(m_Material, GetBaseManager().GetApplication().GetRenderDevice().GetPrimitivesFactory().CreateUIQuad(m_Size.x, m_Size.y));
 
-	m_ColorProperty = std::make_shared<CPropertyWrapped<glm::vec4>>();
+	m_ColorProperty = MakeShared(CPropertyWrapped<glm::vec4>);
 	m_ColorProperty->SetName("Color");
 	m_ColorProperty->SetValueSetter(std::bind(&CUIColorNode::SetColor, this, std::placeholders::_1));
 	m_ColorProperty->SetValueGetter(std::bind(&CUIColorNode::GetColor, this));

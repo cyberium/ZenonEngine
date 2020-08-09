@@ -179,7 +179,7 @@ bool ShaderDX11::LoadShaderFromString(EShaderType shaderType, const std::string&
 		}
 
 		// Create an empty shader parameter that should be filled-in by the application.
-		std::shared_ptr<IShaderParameter> shaderParameter = std::make_shared<ShaderParameterBase>(bindDesc.Name, bindDesc.BindPoint, this, parameterType);
+		std::shared_ptr<IShaderParameter> shaderParameter = MakeShared(ShaderParameterBase, bindDesc.Name, bindDesc.BindPoint, this, parameterType);
 		m_ShaderParameters.insert(ParameterMap::value_type(bindDesc.Name, shaderParameter));
 	}
 
@@ -224,7 +224,7 @@ bool ShaderDX11::LoadInputLayoutFromReflector()
 	ATL::CComPtr<ID3D11ShaderReflection> shaderReflector;
 	CHECK_HR_MSG(D3DReflect(m_pShaderBlob->GetBufferPointer(), m_pShaderBlob->GetBufferSize(), IID_ID3D11ShaderReflection, (void**)&shaderReflector), L"Failed to reflect shader.");
 
-	std::shared_ptr<ShaderInputLayoutDX11> inputLayout = std::make_shared<ShaderInputLayoutDX11>(m_RenderDeviceDX11);
+	std::shared_ptr<ShaderInputLayoutDX11> inputLayout = MakeShared(ShaderInputLayoutDX11, m_RenderDeviceDX11);
     inputLayout->LoadFromReflector(m_pShaderBlob, shaderReflector);
     m_InputLayout = inputLayout;
 
@@ -239,7 +239,7 @@ bool ShaderDX11::LoadInputLayoutFromCustomElements(const std::vector<SCustomVert
 		return true;
 	}
 
-    std::shared_ptr<ShaderInputLayoutDX11> inputLayout = std::make_shared<ShaderInputLayoutDX11>(m_RenderDeviceDX11);
+    std::shared_ptr<ShaderInputLayoutDX11> inputLayout = MakeShared(ShaderInputLayoutDX11, m_RenderDeviceDX11);
     inputLayout->LoadFromCustomElements(m_pShaderBlob, declIn);
     m_InputLayout = inputLayout;
 

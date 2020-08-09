@@ -19,7 +19,7 @@ CUIContainerGarmoshka::~CUIContainerGarmoshka()
 //
 void CUIContainerGarmoshka::Initialize(vec2 Size)
 {
-    m_Background = std::make_shared<CUIColorNode>(Size);
+    m_Background = MakeShared(CUIColorNode, Size);
     m_Background->SetParentInternal(weak_from_this());
     m_Background->SetColor(vec4(1.0f, 1.0f, 1.0f, 1.0f));
 }
@@ -35,7 +35,7 @@ void CUIContainerGarmoshka::CreateDefault()
 
 std::shared_ptr<CUIContainerGarmoshkaCategory> CUIContainerGarmoshka::CreateCategory(const std::string& CategoryName)
 {
-    std::shared_ptr<CUIContainerGarmoshkaCategory> category = std::make_shared<CUIContainerGarmoshkaCategory>(std::dynamic_pointer_cast<CUIContainerGarmoshka>(shared_from_this()));
+    std::shared_ptr<CUIContainerGarmoshkaCategory> category = MakeShared(CUIContainerGarmoshkaCategory>(std::dynamic_pointer_cast<CUIContainerGarmoshka, shared_from_this()));
     category->SetParentInternal(weak_from_this());
     category->Initialize(m_Background->GetSize(), CategoryName);
     m_Categories.push_back(category);

@@ -21,17 +21,17 @@ void CEditorToolRotator::Initialize()
 
 	auto geom = GetRenderDevice().GetPrimitivesFactory().CreateTorus(1.0f, 0.05f);
 
-	auto materialX = std::make_shared<MaterialDebug>(GetRenderDevice());
+	auto materialX = MakeShared(MaterialDebug, GetRenderDevice());
 	materialX->SetDiffuseColor(glm::vec4(1.0f, 0.2f, 0.1f, 1.0f));
 	auto modelX = GetRenderDevice().GetObjectsFactory().CreateModel();
 	modelX->AddConnection(materialX, geom);
 
-	auto materialY = std::make_shared<MaterialDebug>(GetRenderDevice());
+	auto materialY = MakeShared(MaterialDebug, GetRenderDevice());
 	materialY->SetDiffuseColor(glm::vec4(0.1f, 1.0f, 0.1f, 1.0f));
 	auto modelY = GetRenderDevice().GetObjectsFactory().CreateModel();
 	modelY->AddConnection(materialY, geom);
 
-	auto materialZ = std::make_shared<MaterialDebug>(GetRenderDevice());
+	auto materialZ = MakeShared(MaterialDebug, GetRenderDevice());
 	materialZ->SetDiffuseColor(glm::vec4(0.1f, 0.2f, 1.0f, 1.0f));
 	auto modelZ = GetRenderDevice().GetObjectsFactory().CreateModel();
 	modelZ->AddConnection(materialZ, geom);
@@ -87,7 +87,7 @@ void CEditorToolRotator::Disable()
 
 bool CEditorToolRotator::OnMousePressed(const MouseButtonEventArgs & e, const Ray & RayToWorld)
 {
-	auto nodes = GetScene()->FindIntersection(RayToWorld, m_RotatorRoot);
+	auto nodes = GetScene()->GetFinder().FindIntersection(RayToWorld, nullptr, m_RotatorRoot);
 	if (nodes.empty())
 		return false;
 

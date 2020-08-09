@@ -2,7 +2,7 @@
 
 #include "DefferedRender.h"
 
-class CDefferedRenderPrepareLights
+class ZN_API CDefferedRenderPrepareLights
 	: public RenderPass
 {
 public:

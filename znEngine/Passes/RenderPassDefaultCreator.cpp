@@ -58,35 +58,35 @@ std::shared_ptr<IRenderPass> CRenderPassDefaultCreator::CreateRenderPass(size_t 
 	if (Index == 0)
 	{
 		glm::vec4 color = glm::vec4(0.3, 0.3f, 0.3f, 1.0f);
-		return std::make_shared<ClearRenderTargetPass>(RenderDevice, RenderTarget, ClearFlags::All, color /*glm::vec4(0.2f, 0.2f, 0.2f, 0.2f)*/, 1.0f, 0);
+		return MakeShared(ClearRenderTargetPass, RenderDevice, RenderTarget, ClearFlags::All, color /*glm::vec4(0.2f, 0.2f, 0.2f, 0.2f)*/, 1.0f, 0);
 	}
 	else if (Index == 1)
 	{
-		std::shared_ptr<IRenderPassPipelined> passPipelined = std::make_shared<CMaterial_Debug_Pass>(RenderDevice, Scene);
+		std::shared_ptr<IRenderPassPipelined> passPipelined = MakeShared(CMaterial_Debug_Pass, RenderDevice, Scene);
 		passPipelined->CreatePipeline(RenderTarget, Viewport);
 		return passPipelined;
 	}
 	else if (Index == 2)
 	{
-		std::shared_ptr<IRenderPassPipelined> passPipelined = std::make_shared<CMaterial_Textured_Pass>(RenderDevice, Scene);
+		std::shared_ptr<IRenderPassPipelined> passPipelined = MakeShared(CMaterial_Textured_Pass, RenderDevice, Scene);
 		passPipelined->CreatePipeline(RenderTarget, Viewport);
 		return passPipelined;
 	}
 	else if (Index == 3)
 	{
-		std::shared_ptr<IRenderPassPipelined> passPipelined = std::make_shared<BaseUIPass>(RenderDevice, Scene);
+		std::shared_ptr<IRenderPassPipelined> passPipelined = MakeShared(BaseUIPass, RenderDevice, Scene);
 		passPipelined->CreatePipeline(RenderTarget, Viewport);
 		return passPipelined;
 	}
 	else if (Index == 4)
 	{
-		std::shared_ptr<IRenderPassPipelined> passPipelined = std::make_shared<CMaterialModelPass>(RenderDevice, Scene);
+		std::shared_ptr<IRenderPassPipelined> passPipelined = MakeShared(CMaterialModelPass, RenderDevice, Scene);
 		passPipelined->CreatePipeline(RenderTarget, Viewport);
 		return passPipelined;
 	}
 	else if (Index == 5)
 	{
-		std::shared_ptr<IRenderPass> passPipelined = std::make_shared<InvokeFunctionPass>(RenderDevice, nullptr);
+		std::shared_ptr<IRenderPass> passPipelined = MakeShared(InvokeFunctionPass, RenderDevice, nullptr);
 		return passPipelined;
 	}
 

@@ -1,11 +1,7 @@
 #pragma once
 
-
-#include "Passes/DefferedRender.h"
-#include "Passes/DefferedRenderPrepareLights.h"
-#include "Passes/DefferedRenderFinal.h"
-
 #include "Scene/Nodes/UITexture.h"
+#include "Passes/Renderer/RendererDeffered.h"
 
 #include "reactphysics3d.h"
 
@@ -39,11 +35,5 @@ private:
 
 private:
 	std::shared_ptr<ISceneNode3D> m_RootForBoxes;
-
-	std::shared_ptr<CSceneCreateTypelessListPass> m_SceneCreateTypelessListPass;
-	std::shared_ptr<CDefferedRender> m_DefferedRenderPass;
-	std::shared_ptr<CDefferedRenderPrepareLights> m_DefferedRenderPrepareLights;
-	std::shared_ptr<CDefferedRenderFinal> m_DefferedFinalRenderPass;
-
 	rp3d::DynamicsWorld m_World;
 };

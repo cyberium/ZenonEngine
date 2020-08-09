@@ -12,7 +12,7 @@ namespace
 CUIButtonNode::CUIButtonNode(IRenderDevice& RenderDevice)
 	: m_State(Idle)
 {
-	m_Material = std::make_shared<UI_Button_Material>(RenderDevice);
+	m_Material = MakeShared(UI_Button_Material, RenderDevice);
 }
 
 CUIButtonNode::~CUIButtonNode()

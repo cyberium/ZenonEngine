@@ -4,7 +4,7 @@
 #include "SceneCreateTypelessListPass.h"
 
 
-CSceneCreateTypelessListPass::CSceneCreateTypelessListPass(IRenderDevice& RenderDevice, const std::shared_ptr<IScene>& Scene)
+CSceneCreateTypelessListPass::CSceneCreateTypelessListPass(IRenderDevice& RenderDevice, const std::weak_ptr<IScene>& Scene)
 	: ScenePass(RenderDevice, Scene)
 {}
 

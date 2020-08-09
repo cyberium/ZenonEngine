@@ -41,11 +41,11 @@ CUIContainerGarmoshkaCategoryHeader::~CUIContainerGarmoshkaCategoryHeader()
 //
 void CUIContainerGarmoshkaCategoryHeader::Initialize()
 {
-    m_Background = std::make_shared<CUIColorNode>(cDefaultBackgroundSize);
+    m_Background = MakeShared(CUIColorNode, cDefaultBackgroundSize);
     m_Background->SetParentInternal(weak_from_this());
     m_Background->SetColor(cDefaultBackgroundColor);
 
-    m_Text = std::make_shared<CUITextNode>();
+    m_Text = MakeShared(CUITextNode);
     m_Text->SetParentInternal(weak_from_this());
     m_Text->SetText(cDefaultText);
     m_Text->SetTextColor(cDefaultTextColor);

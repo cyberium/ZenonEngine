@@ -10,7 +10,7 @@
 CComponentBase::CComponentBase(const ISceneNode3D& OwnerNode)
     : m_OwnerNode(OwnerNode)
 {
-	m_Properties = std::make_shared<CPropertiesGroup>();
+	m_Properties = MakeShared(CPropertiesGroup);
 }
 
 CComponentBase::~CComponentBase()

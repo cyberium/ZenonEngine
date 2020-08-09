@@ -111,7 +111,7 @@ void BufferDX11::DoInitializeBuffer()
 
 	CHECK_HR_MSG(m_RenderDeviceDX11.GetDeviceD3D11()->CreateBuffer(&bufferDesc, &resourceData, &m_pBuffer), L"Failed to create buffer.");
 
-	//std::shared_ptr<CByteBuffer> bb = std::make_shared<CByteBuffer>();
+	//std::shared_ptr<CByteBuffer> bb = MakeShared(CByteBuffer);
 	//Save(bb);
 	//bb->seek(0);
 	//Load(bb);

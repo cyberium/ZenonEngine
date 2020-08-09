@@ -22,7 +22,7 @@ CLocalFilesStorage::~CLocalFilesStorage()
 //
 std::shared_ptr<IFile> CLocalFilesStorage::OpenFile(std::string FileName, EFileAccessType FileAccessType)
 {
-	std::shared_ptr<CFile> file = std::make_shared<CFile>(FileName);
+	std::shared_ptr<CFile> file = MakeShared(CFile, FileName);
 	CByteBuffer& byteBuffer = file->GetByteBuffer();
 
 	std::ifstream stream;

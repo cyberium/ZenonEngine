@@ -145,7 +145,7 @@ std::shared_ptr<CImagePNG> CImagePNG::CreateImage(std::shared_ptr<IFile> File)
 {
 	_ASSERT(IsFileSupported(File));
 
-	std::shared_ptr<CImagePNG> imagePNG = std::make_shared<CImagePNG>();
+	std::shared_ptr<CImagePNG> imagePNG = MakeShared(CImagePNG);
 	if (!imagePNG->LoadImageData(File))
 	{
 		Log::Error("CImagePNG: Unable to load PNG file '%s'.", File->Name().c_str());

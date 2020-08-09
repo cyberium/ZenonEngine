@@ -160,8 +160,10 @@ void ModelBase::Save(const std::shared_ptr<IByteBuffer>& ByteBuffer) const
 void ModelBase::Load(const std::shared_ptr<IXMLReader>& Reader)
 {
 	std::string fileName;
-	if (auto fileNameReader = Reader->GetChild("FileName"))
-		fileName = fileNameReader->GetValue();
+	
+	if (auto modelReader = Reader->GetChild("Model"))
+		if (auto fileNameReader = modelReader->GetChild("FileName"))
+			fileName = fileNameReader->GetValue();
 
 	// TODO: Replace with models maanger
 	auto modelFile = m_RenderDevice.GetBaseManager().GetManager<IFilesManager>()->Open(fileName);
@@ -175,7 +177,7 @@ void ModelBase::Save(const std::shared_ptr<IXMLWriter>& Writer) const
 	auto file = m_RenderDevice.GetBaseManager().GetManager<IFilesManager>()->Open(m_FileName);
 	if (false == m_FileName.empty() && file == nullptr)
 	{
-		file = std::make_shared<CFile>(m_FileName);
+		file = MakeShared(CFile, m_FileName);
 		Save(file);
 		m_RenderDevice.GetBaseManager().GetManager<IFilesManager>()->GetFilesStorage("PCEveryFileAccess")->SaveFile(file);
 	}

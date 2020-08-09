@@ -7,7 +7,7 @@
 
 CUIBeizerLineNode::CUIBeizerLineNode(IRenderDevice& RenderDevice)
 {
-	m_Material = std::make_shared<UI_Line_Material>(RenderDevice);
+	m_Material = MakeShared(UI_Line_Material, RenderDevice);
 
     m_StartPoint = vec2(0.0f, 0.0f);
     m_EndPoint = vec2(100.0f, 100.0f);

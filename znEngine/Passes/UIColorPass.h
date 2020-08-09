@@ -4,7 +4,7 @@ class ZN_API CUIColorPass
 	: public BaseUIPass
 {
 public:
-	CUIColorPass(IRenderDevice& RenderDevice, std::shared_ptr<IScene> Scene);
+	CUIColorPass(IRenderDevice& RenderDevice, std::weak_ptr<IScene> Scene);
 	virtual ~CUIColorPass();
 
 	// IRenderPassPipelined

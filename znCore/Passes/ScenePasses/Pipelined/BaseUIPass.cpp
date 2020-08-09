@@ -3,7 +3,7 @@
 // General
 #include "BaseUIPass.h"
 
-BaseUIPass::BaseUIPass(IRenderDevice& RenderDevice, const std::shared_ptr<IScene>& Scene)
+BaseUIPass::BaseUIPass(IRenderDevice& RenderDevice, const std::weak_ptr<IScene>& Scene)
 	: ScenePassPipelined(RenderDevice, Scene)
 	, m_PerObjectParameter(nullptr)
 {

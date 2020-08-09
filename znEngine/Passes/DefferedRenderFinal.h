@@ -3,7 +3,7 @@
 #include "DefferedRender.h"
 #include "DefferedRenderPrepareLights.h"
 
-class CDefferedRenderFinal
+class ZN_API CDefferedRenderFinal
 	: public RenderPassPipelined
 {
 public:

@@ -1,7 +1,6 @@
 #pragma once
 
 class ZN_API RenderTechnique
-	: public IRenderTechnique
 {
 public:
 	RenderTechnique();

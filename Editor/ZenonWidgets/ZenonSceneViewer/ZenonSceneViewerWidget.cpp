@@ -9,14 +9,14 @@ ZenonSceneViewerWidget::ZenonSceneViewerWidget(QWidget * parent)
 	, m_LockForSelectionChangedEvent(false)
 {
 	// Add context menu for scene node viewer
-	m_ContextMenu = std::make_shared<QMenu>(this);
+	m_ContextMenu = MakeShared(QMenu, this);
 	m_ContextMenu->setTitle("Some context menu title.");
 
 	this->setContextMenuPolicy(Qt::CustomContextMenu);
 	connect(this, SIGNAL(customContextMenuRequested(const QPoint &)), this, SLOT(onCustomContextMenu(const QPoint &)));
 
 	// SceneNodeTreeView: Main settings
-	m_Model = std::make_shared<CQtToZenonTreeModel>(this);
+	m_Model = MakeShared(CQtToZenonTreeModel, this);
 	this->setModel(m_Model.get());
 
 	// SceneNodeTreeView: Selection settings
@@ -42,7 +42,7 @@ void ZenonSceneViewerWidget::RefreshTreeViewModel()
 	m_Editor->Get3DFrame().LockUpdates();
 
 	this->reset();
-	m_Model->SetRootItemData(std::make_shared<CSceneNodeModelItem>(m_Editor->Get3DFrame().GetEditedRootNode3D()));
+	m_Model->SetRootItemData(MakeShared(CSceneNodeModelItem, m_Editor->Get3DFrame().GetEditedRootNode3D()));
 	this->expandAll();
 
 	m_Editor->Get3DFrame().UnlockUpdates();

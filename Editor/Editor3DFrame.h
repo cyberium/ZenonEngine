@@ -44,14 +44,8 @@ public:
 	// IEditorToolSelectorEventListener
 	void OnSelectNode() override;
 
-protected:
-	void SetLights(const std::vector<SLight>& Lights);
-
-
 private: // Rendering
 	std::shared_ptr<IMaterialModelPass> m_MaterialModelPass;
-	std::shared_ptr<IStructuredBuffer>  m_LightsBuffer;
-	size_t							    m_LightsCnt;
 
 private:
 	IEditor& m_Editor;

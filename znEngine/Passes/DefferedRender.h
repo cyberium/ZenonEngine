@@ -2,7 +2,7 @@
 
 #include "Scene/SceneCreateTypelessListPass.h"
 
-class CDefferedRender
+class ZN_API CDefferedRender
 	: public RenderPassPipelined
 {
 public:

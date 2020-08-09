@@ -14,27 +14,27 @@ CEditorTools::~CEditorTools()
 
 void CEditorTools::Initialize()
 {
-	m_Selector = std::make_shared<CEditorToolSelector>(m_Editor);
+	m_Selector = MakeShared(CEditorToolSelector, m_Editor);
 	m_Selector->Initialize();
 	m_Tools.insert(std::make_pair(ETool::EToolSelector, m_Selector));
 
-	auto mover = std::make_shared<CEditorToolMover>(m_Editor);
+	auto mover = MakeShared(CEditorToolMover, m_Editor);
 	mover->Initialize();
 	m_Tools.insert(std::make_pair(ETool::EToolMover, mover));
 
-	auto rotator = std::make_shared<CEditorToolRotator>(m_Editor);
+	auto rotator = MakeShared(CEditorToolRotator, m_Editor);
 	rotator->Initialize();
 	m_Tools.insert(std::make_pair(ETool::EToolRotator, rotator));
 
-	auto moverRTS = std::make_shared<CEditorToolMoverRTS>(m_Editor);
+	auto moverRTS = MakeShared(CEditorToolMoverRTS, m_Editor);
 	moverRTS->Initialize();
 	m_Tools.insert(std::make_pair(ETool::EToolMoverRTS, moverRTS));
 
-	auto rotatorRTS = std::make_shared<CEditorToolRotatorRTS>(m_Editor);
+	auto rotatorRTS = MakeShared(CEditorToolRotatorRTS, m_Editor);
 	rotatorRTS->Initialize();
 	m_Tools.insert(std::make_pair(ETool::EToolRotatorRTS, rotatorRTS));
 
-	auto drager = std::make_shared<CEditorToolDragger>(m_Editor);
+	auto drager = MakeShared(CEditorToolDragger, m_Editor);
 	drager->Initialize();
 	m_Tools.insert(std::make_pair(ETool::EToolDragger, drager));
 
@@ -77,10 +77,10 @@ void CEditorTools::DisableAll(ETool ExceptOfTool)
 //
 // 3D
 //
-void CEditorTools::DoInitialize3D(RenderTechnique& RenderTechnique, std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport)
+void CEditorTools::DoInitialize3D(const std::shared_ptr<IRenderer>& Renderer, std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport)
 {
 	for (const auto& it : m_Tools)
-		it.second->DoInitialize3D(RenderTechnique, RenderTarget, Viewport);
+		it.second->DoInitialize3D(Renderer, RenderTarget, Viewport);
 }
 
 bool CEditorTools::OnMousePressed(const MouseButtonEventArgs & e, const Ray & RayToWorld)

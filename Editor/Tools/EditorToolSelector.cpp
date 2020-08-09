@@ -56,7 +56,7 @@ void CEditorToolSelector::SelectNode(std::shared_ptr<ISceneNode3D> Node)
 	RaiseSelectEvent();
 }
 
-void CEditorToolSelector::SelectNodes(std::vector<std::shared_ptr<ISceneNode3D>> Nodes)
+void CEditorToolSelector::SelectNodes(const std::vector<std::shared_ptr<ISceneNode3D>>& Nodes)
 {
 	m_SelectedNodes.clear();
 	for (const auto& n : Nodes)
@@ -137,14 +137,14 @@ const SelectedNodes& CEditorToolSelector::GetSelectedNodes()
 //
 // CEditorToolBase
 //
-void CEditorToolSelector::DoInitialize3D(RenderTechnique& RenderTechnique, std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport)
+void CEditorToolSelector::DoInitialize3D(const std::shared_ptr<IRenderer>& Renderer, std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport)
 {
 	m_SelectionTexture = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeUIFactory>()->CreateSceneNodeUI(GetScene(), cSceneNodeUI_Color, GetScene()->GetRootNodeUI());
 	m_SelectionTexture->GetProperties()->GetPropertyT<glm::vec4>("Color")->Set(glm::vec4(0.1f, 0.3f, 1.0f, 0.3f));
 
-	m_DrawSelectionPass = std::make_shared<CDrawSelectionPass>(GetRenderDevice(), *this);
-	m_DrawSelectionPass->CreatePipeline(RenderTarget, Viewport);
-	RenderTechnique.AddPass(m_DrawSelectionPass);
+	m_DrawSelectionPass = MakeShared(CDrawSelectionPass, GetRenderDevice(), *this);
+	m_DrawSelectionPass->CreatePipeline(Renderer->GetRenderTarget(), Viewport);
+	Renderer->AddPass(m_DrawSelectionPass);
 }
 
 bool CEditorToolSelector::OnMousePressed(const MouseButtonEventArgs & e, const Ray & RayToWorld)
@@ -152,7 +152,7 @@ bool CEditorToolSelector::OnMousePressed(const MouseButtonEventArgs & e, const R
 	if (e.Button != MouseButtonEventArgs::MouseButton::Left)
 		return false;
 
-	auto nodes = GetScene()->FindIntersection(RayToWorld, GetEditor().Get3DFrame().GetEditedRootNode3D());
+	auto nodes = GetScene()->GetFinder().FindIntersection(RayToWorld, nullptr, GetEditor().Get3DFrame().GetEditedRootNode3D());
 	if (nodes.empty())
 	{
 		if (IsEnabled())
@@ -211,7 +211,7 @@ void CEditorToolSelector::OnMouseReleased(const MouseButtonEventArgs & e, const 
 				10000.0f
 			);
 
-			auto nodes = GetScene()->FindIntersections(f, GetEditor().Get3DFrame().GetEditedRootNode3D());
+			auto nodes = GetScene()->GetFinder().FindIntersections(f, nullptr, GetEditor().Get3DFrame().GetEditedRootNode3D());
 			if (!nodes.empty())
 				SelectNodes(nodes);
 		}

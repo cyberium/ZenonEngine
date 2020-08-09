@@ -6,7 +6,7 @@ class ZN_API BaseUIPass
 	: public ScenePassPipelined
 {
 public:
-	BaseUIPass(IRenderDevice& RenderDevice, const std::shared_ptr<IScene>& Scene);
+	BaseUIPass(IRenderDevice& RenderDevice, const std::weak_ptr<IScene>& Scene);
 	virtual ~BaseUIPass();
 
 	// IRenderPassPipelined

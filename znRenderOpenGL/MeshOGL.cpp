@@ -8,7 +8,7 @@
 
 MeshOGL::MeshOGL()
 {
-	m_Geometry = std::make_shared<GeometryOGL>();
+	m_Geometry = MakeShared(GeometryOGL);
 }
 
 MeshOGL::~MeshOGL()

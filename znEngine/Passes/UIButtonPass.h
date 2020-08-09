@@ -4,7 +4,7 @@ class ZN_API CUIButtonPass
 	: public BaseUIPass
 {
 public:
-	CUIButtonPass(IRenderDevice& RenderDevice, std::shared_ptr<IScene> Scene);
+	CUIButtonPass(IRenderDevice& RenderDevice, std::weak_ptr<IScene> Scene);
 	virtual ~CUIButtonPass();
 
 	// IRenderPassPipelined

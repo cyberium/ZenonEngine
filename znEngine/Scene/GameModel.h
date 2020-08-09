@@ -1,10 +1,5 @@
 #pragma once
 
-struct SJoint
-{
-
-};
-
 class ZN_API CGameModel
 	: public ModelProxie
 {

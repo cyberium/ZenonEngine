@@ -47,7 +47,7 @@ std::shared_ptr<CImageDDS> CImageDDS::CreateImage(std::shared_ptr<IFile> File)
 {
 	_ASSERT(IsFileSupported(File));
 
-	std::shared_ptr<CImageDDS> imageDDS = std::make_shared<CImageDDS>();
+	std::shared_ptr<CImageDDS> imageDDS = MakeShared(CImageDDS);
 	if (!imageDDS->LoadImageData(File))
 	{
 		Log::Error("CImageDDS: Unable to load DDS file '%s'.", File->Name().c_str());

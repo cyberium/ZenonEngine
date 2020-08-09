@@ -23,4 +23,6 @@ private:
 		std::shared_ptr<ISceneNode3D> SceneNode;
 	};
 	std::vector<SNode> m_Nodes;
+
+	std::shared_ptr<ISceneNode3D> m_LightNode;
 };

@@ -80,6 +80,9 @@
     <Filter Include="UI\Widgets\ZenonWindowMinimal3D">
       <UniqueIdentifier>{936459f3-5703-4224-8fff-5490074c0c94}</UniqueIdentifier>
     </Filter>
+    <Filter Include="RTS">
+      <UniqueIdentifier>{f7a0aa7f-6f60-4e44-bba6-3fae44026bcf}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -321,6 +324,9 @@
     <ClCompile Include="Tools\EditorTools.cpp">
       <Filter>Tools</Filter>
     </ClCompile>
+    <ClCompile Include="RTS\EditorToolRTSGround.cpp">
+      <Filter>RTS</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -512,6 +518,9 @@
     </ClInclude>
     <ClInclude Include="Tools\EditorTools.h">
       <Filter>Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="RTS\EditorToolRTSGround.h">
+      <Filter>RTS</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

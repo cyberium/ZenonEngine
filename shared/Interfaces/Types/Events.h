@@ -22,14 +22,14 @@ public:
     FunctionDecl connect(_Fx&& _Func, _Types&&... _Args)
     {
         // https://stackoverflow.com/questions/20588191/error-with-variadiac-template-parameter-pack-must-be-expanded
-        FunctionDecl ret = std::make_shared<FunctionType>(std::bind(_Func, std::forward<_Types>(_Args)...));
+        FunctionDecl ret = MakeShared(FunctionType, std::bind(_Func, std::forward<_Types>(_Args)...));
         m_Functions.insert(ret);
         return ret;
     }
 
 	FunctionDecl connect(typename const FunctionType& function)
 	{
-		FunctionDecl ret = std::make_shared<FunctionType>(function);
+		FunctionDecl ret = MakeShared(FunctionType, function);
 		m_Functions.insert(ret);
 		return ret;
 	}

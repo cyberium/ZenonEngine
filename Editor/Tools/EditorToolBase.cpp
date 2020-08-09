@@ -38,7 +38,7 @@ bool CEditorToolBase::IsEnabled() const
 //
 // 3D
 //
-void CEditorToolBase::DoInitialize3D(RenderTechnique & RenderTechnique, std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport)
+void CEditorToolBase::DoInitialize3D(const std::shared_ptr<IRenderer>& Renderer, std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport)
 {
 }
 

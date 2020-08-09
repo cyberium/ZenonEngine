@@ -167,15 +167,15 @@ bool CFBXScene::LoadFromFile(std::shared_ptr<IFile> File)
 	//	return false;
 	//}
 
-	auto skeleton = std::make_shared<CFBXSkeleton>(m_BaseManager, *this);
+	auto skeleton = MakeShared(CFBXSkeleton, m_BaseManager, *this);
 	skeleton->Load(m_NativeScene);
 	m_Skeleton = skeleton;
 
-	auto animation = std::make_shared<CFBXAnimation>(m_BaseManager, *this);
+	auto animation = MakeShared(CFBXAnimation, m_BaseManager, *this);
 	animation->Load(m_NativeScene);
 	m_Animation = animation;
 
-	auto root = std::make_shared<CFBXSceneNode>(m_BaseManager, *this);
+	auto root = MakeShared(CFBXSceneNode, m_BaseManager, *this);
 	root->LoadNode(m_NativeScene->GetRootNode());
 	m_RootNode = root;
 
@@ -202,7 +202,7 @@ bool CFBXScene::LoadNodes(IScene* Scene)
 
 std::shared_ptr<IModel> CFBXScene::ExtractModel()
 {
-	m_RootNode = std::make_shared<CFBXSceneNode>(m_BaseManager, weak_from_this(), m_NativeScene->GetRootNode());
+	m_RootNode = MakeShared(CFBXSceneNode, m_BaseManager, weak_from_this(), m_NativeScene->GetRootNode());
 	m_RootNode->LoadNode();
 
 	_ASSERT(m_RootNode->GetChilds().size() == 1);

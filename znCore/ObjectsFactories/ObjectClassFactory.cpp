@@ -141,7 +141,7 @@ Guid CObjectClassFactory::ReadGUID(const std::shared_ptr<IByteBuffer>& Bytes)
 
 std::shared_ptr<IByteBuffer> CObjectClassFactory::WriteGUID(Guid Guid)
 {
-	std::shared_ptr<IByteBuffer> byteBuffer = std::make_shared<CByteBuffer>();
+	std::shared_ptr<IByteBuffer> byteBuffer = MakeShared(CByteBuffer);
 	byteBuffer->write(&cObjectBinarySignatureBegin);
 	byteBuffer->write(&Guid);
 	return byteBuffer;

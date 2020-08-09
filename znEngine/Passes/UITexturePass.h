@@ -4,7 +4,7 @@ class ZN_API CUITexturePass
 	: public BaseUIPass
 {
 public:
-	CUITexturePass(IRenderDevice& RenderDevice, std::shared_ptr<IScene> Scene);
+	CUITexturePass(IRenderDevice& RenderDevice, std::weak_ptr<IScene> Scene);
 	virtual ~CUITexturePass();
 
 	// IRenderPassPipelined

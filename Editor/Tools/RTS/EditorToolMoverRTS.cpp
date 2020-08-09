@@ -29,23 +29,23 @@ void CEditorToolMoverRTS::Initialize()
 	auto geom = model->GetConnections().begin()->Geometry;
 	if (auto loadable = std::dynamic_pointer_cast<IObjectLoadSave>(model))
 	{
-		std::shared_ptr<IFile> file = std::make_shared<CFile>("C:\\_engine\\ZenonEngine_gamedata\\arrow.znmdl");
+		std::shared_ptr<IFile> file = MakeShared(CFile, "C:\\_engine\\ZenonEngine_gamedata\\arrow.znmdl");
 		loadable->Save(file);
 
 		GetBaseManager().GetManager<IFilesManager>()->GetFilesStorage("PCEveryFileAccess")->SaveFile(file);
 	}
 
-	auto materialX = std::make_shared<MaterialDebug>(GetRenderDevice());
+	auto materialX = MakeShared(MaterialDebug, GetRenderDevice());
 	materialX->SetDiffuseColor(glm::vec4(1.0f, 0.2f, 0.1f, 1.0f));
 	auto modelX = GetRenderDevice().GetObjectsFactory().CreateModel();
 	modelX->AddConnection(materialX, geom);
 
-	auto materialY = std::make_shared<MaterialDebug>(GetRenderDevice());
+	auto materialY = MakeShared(MaterialDebug, GetRenderDevice());
 	materialY->SetDiffuseColor(glm::vec4(0.1f, 1.0f, 0.1f, 1.0f));
 	auto modelY = GetRenderDevice().GetObjectsFactory().CreateModel();
 	modelY->AddConnection(materialY, geom);
 
-	auto materialZ = std::make_shared<MaterialDebug>(GetRenderDevice());
+	auto materialZ = MakeShared(MaterialDebug, GetRenderDevice());
 	materialZ->SetDiffuseColor(glm::vec4(0.1f, 0.2f, 1.0f, 1.0f));
 	auto modelZ = GetRenderDevice().GetObjectsFactory().CreateModel();
 	modelZ->AddConnection(materialZ, geom);
@@ -104,7 +104,7 @@ bool CEditorToolMoverRTS::OnMousePressed(const MouseButtonEventArgs & e, const R
 	if (IsChildOf(m_MoverRoot, m_MovingNode))
 		return false;
 
-	auto nodes = GetScene()->FindIntersection(RayToWorld, m_MoverRoot);
+	auto nodes = GetScene()->GetFinder().FindIntersection(RayToWorld, nullptr, m_MoverRoot);
 	if (nodes.empty())
 		return false;
 

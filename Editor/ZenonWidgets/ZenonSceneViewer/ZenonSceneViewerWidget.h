@@ -12,7 +12,7 @@ public:
 		: m_SceneNode(SceneNode)
 	{
 		for (const auto& it : SceneNode->GetChilds())
-			m_Childs.push_back(std::make_shared<CSceneNodeModelItem>(it));
+			m_Childs.push_back(MakeShared(CSceneNodeModelItem, it));
 	}
 
 	std::string GetName() const override

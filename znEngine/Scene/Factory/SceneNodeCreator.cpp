@@ -17,7 +17,7 @@
 CSceneNode3DEngineCreator::CSceneNode3DEngineCreator(IBaseManager& BaseManager)
 	: CObjectClassCreator(BaseManager)
 {
-	//m_FBXManager = std::make_shared<CFBXManager>(GetBaseManager());
+	//m_FBXManager = MakeShared(CFBXManager, GetBaseManager());
 
 	AddKey("SceneNode3D", cSceneNode3D);
 //#ifdef ZN_FBX_SDK_ENABLE

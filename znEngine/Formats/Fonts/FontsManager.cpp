@@ -188,7 +188,7 @@ std::shared_ptr<CFont> FontsManager::Add(IRenderDevice& RenderDevice, const std:
     __geom->AddVertexBuffer(BufferBinding("TEXCOORD", 0), RenderDevice.GetObjectsFactory().CreateVoidVertexBuffer(vertices.data(), vertices.size(), sizeof(glm::vec3), sizeof(VertexPTN)));
 
 	// Font image
-	std::shared_ptr<CImageBase> fontImage = std::make_shared<CImageBase>(imageWidth, imageHeight, 32, true);
+	std::shared_ptr<CImageBase> fontImage = MakeShared(CImageBase, imageWidth, imageHeight, 32, true);
 	std::memcpy(fontImage->GetDataEx(), image, imageHeight * imageWidth * 4);
 	delete[] image;
 
@@ -201,7 +201,7 @@ std::shared_ptr<CFont> FontsManager::Add(IRenderDevice& RenderDevice, const std:
 
 	//
 
-	std::shared_ptr<CFont> font = std::make_shared<CFont>(texture, __geom, charWidth, charHeight);
+	std::shared_ptr<CFont> font = MakeShared(CFont, texture, __geom, charWidth, charHeight);
 
 	Log::Info("FontsManager[%s]: Font loaded. Size [%d].", f->Path_Name().c_str(), fontSize);
 

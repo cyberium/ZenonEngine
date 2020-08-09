@@ -30,7 +30,7 @@ void CUIContainerGarmoshkaCategory::Initialize(glm::vec2 MaxSize, const std::str
 {
     base::Initialize(MaxSize);
 
-    std::shared_ptr<CUIContainerGarmoshkaCategoryHeader> header = std::make_shared<CUIContainerGarmoshkaCategoryHeader>(m_ContainerGarmoshka);
+    std::shared_ptr<CUIContainerGarmoshkaCategoryHeader> header = MakeShared(CUIContainerGarmoshkaCategoryHeader, m_ContainerGarmoshka);
     header->Initialize();
     header->SetText(CategoryName);
 

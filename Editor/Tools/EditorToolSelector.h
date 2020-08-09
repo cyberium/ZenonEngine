@@ -19,7 +19,7 @@ public:
 
 	// IEditorToolSelector
 	void SelectNode(std::shared_ptr<ISceneNode3D> Node) override;
-	void SelectNodes(std::vector<std::shared_ptr<ISceneNode3D>> Nodes) override;
+	void SelectNodes(const std::vector<std::shared_ptr<ISceneNode3D>>& Nodes) override;
 	void ClearSelection() override;
 	void AddNode(std::shared_ptr<ISceneNode3D> Node) override;
 	void RemoveNode(std::shared_ptr<ISceneNode3D> Node) override;
@@ -28,7 +28,7 @@ public:
 	const SelectedNodes& GetSelectedNodes() override;
 
 	// CEditorToolBase
-	void DoInitialize3D(RenderTechnique& RenderTechnique, std::shared_ptr<IRenderTarget> RenderTarget, const Viewport* Viewport) override;
+	void DoInitialize3D(const std::shared_ptr<IRenderer>& Renderer, std::shared_ptr<IRenderTarget> RenderTarget, const Viewport* Viewport) override;
 	bool OnMousePressed(const MouseButtonEventArgs & e, const Ray& RayToWorld) override;
 	void OnMouseReleased(const MouseButtonEventArgs & e, const Ray& RayToWorld) override;
 	void OnMouseMoved(const MouseMotionEventArgs& e, const Ray& RayToWorld) override;

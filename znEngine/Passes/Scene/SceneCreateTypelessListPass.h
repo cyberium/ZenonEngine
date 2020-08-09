@@ -64,7 +64,7 @@ public:
 	};
 
 public:
-	CSceneCreateTypelessListPass(IRenderDevice& RenderDevice, const std::shared_ptr<IScene>& Scene);
+	CSceneCreateTypelessListPass(IRenderDevice& RenderDevice, const std::weak_ptr<IScene>& Scene);
 	virtual ~CSceneCreateTypelessListPass();
 
 	const std::vector<SNodeElement>& GetNodesList() const;

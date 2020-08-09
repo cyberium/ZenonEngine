@@ -40,7 +40,7 @@ std::shared_ptr<IFBXScene> CFBXManager::LoadFBX(const std::string & FileName)
 	if (file == nullptr)
 		throw CException("FBXManager: File '%s' not found.", FileName.c_str());
 
-	auto FBXScene = std::make_shared<CFBXScene>(m_BaseManager, m_FBXManager);
+	auto FBXScene = MakeShared(CFBXScene, m_BaseManager, m_FBXManager);
 	if (!FBXScene->LoadFromFile(file))
 		throw CException("FBXManager: Unable to load '%s'.", FileName.c_str());
 

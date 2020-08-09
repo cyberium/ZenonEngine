@@ -110,7 +110,11 @@ void CEditorToolDragger::MoveDraggedNode(const glm::vec2& MousePos)
 	auto bounds = m_DraggerNode->GetModelsComponent()->GetModel()->GetBounds();
 	auto pos = GetScene()->GetCameraController()->RayToPlane(ray, Plane(glm::vec3(0.0f, 1.0f, 0.0f), bounds.getMax().y / 2.0f));
 	pos -= bounds.getCenter();
-	//pos = m_Mover->FixBoxCoords(pos);
+	//pos = pos / 10.0f;//reinterpret_cast<IEditorToolMover&>(GetEditor().GetTools().GetTool(EToolMover)).FixBoxCoords(pos);
+
+	pos /= 10.0f;
+	pos = glm::round(pos);
+	pos *= 10.0f;
 
 	m_DraggerNode->SetTranslate(pos);
 

@@ -48,7 +48,7 @@ std::shared_ptr<IImage> CImageBase::Convert8To32Bit()
 {
 	_ASSERT_EXPR(m_BitsPerPixel == 8, L"CImageBase::Convert8To32Bit() works only with 8 bit images!");
 
-	std::shared_ptr<CImageBase> newImage = std::make_shared<CImageBase>();
+	std::shared_ptr<CImageBase> newImage = MakeShared(CImageBase);
 	newImage->m_Width = m_Width;
 	newImage->m_Height = m_Height;
 	newImage->m_BitsPerPixel = 32;
@@ -79,7 +79,7 @@ std::shared_ptr<IImage> CImageBase::Convert24To32Bit()
 {
 	_ASSERT_EXPR(m_BitsPerPixel == 24, L"CImageBase::Convert24To32Bit() works only with 24 bit images!");
 
-	std::shared_ptr<CImageBase> newImage = std::make_shared<CImageBase>();
+	std::shared_ptr<CImageBase> newImage = MakeShared(CImageBase);
 	newImage->m_Width = m_Width;
 	newImage->m_Height = m_Height;
 	newImage->m_BitsPerPixel = 32;

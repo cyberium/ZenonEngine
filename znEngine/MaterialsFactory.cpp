@@ -27,7 +27,7 @@ std::shared_ptr<IMaterial> CMaterialsFactory::CreateMaterial(std::string ObjectT
 {
 	if (ObjectType == "MaterialModel")
 	{
-		return std::make_shared<MaterialModel>(m_BaseManager);
+		return MakeShared(MaterialModel, m_BaseManager);
 	}
 
 	return std::shared_ptr<IMaterial>();

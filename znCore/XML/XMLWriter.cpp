@@ -250,7 +250,7 @@ void CXMLWriter::SetVec4(glm::vec4 AttributeValue)
 //
 std::shared_ptr<IXMLWriter> CXMLWriter::CreateChild(const std::string& ChildName)
 {
-	auto child = std::make_shared<CXMLWriter>(ChildName);
+	auto child = MakeShared(CXMLWriter, ChildName);
 	AddChild(child);
 	return child;
 }

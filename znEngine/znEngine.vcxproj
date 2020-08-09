@@ -310,6 +310,7 @@
     <ClCompile Include="Passes\MaterialModelSkeletonPass.cpp" />
     <ClCompile Include="Passes\MaterialParticlePass.cpp" />
     <ClCompile Include="Passes\Pipelined\BaseTypedList3DPass.cpp" />
+    <ClCompile Include="Passes\Renderer\RendererDeffered.cpp" />
     <ClCompile Include="Passes\Scene\SceneCreateTypedListsPass.cpp" />
     <ClCompile Include="Passes\Scene\SceneCreateTypelessListPass.cpp" />
     <ClCompile Include="Passes\Technical\BeginQueryPass.cpp" />
@@ -348,6 +349,7 @@
     <ClCompile Include="Scene\Camera\CameraControllerBase.cpp" />
     <ClCompile Include="Scene\Camera\FreeCameraController.cpp" />
     <ClCompile Include="Scene\Camera\RTSCameraController.cpp" />
+    <ClCompile Include="Scene\GameModelProto.cpp" />
     <ClCompile Include="Scene\Components\CameraComponent3D.cpp" />
     <ClCompile Include="Scene\Components\ColliderComponent3D.cpp" />
     <ClCompile Include="Scene\Components\LightComponent3D.cpp" />
@@ -506,6 +508,7 @@
     <ClInclude Include="Passes\MaterialModelSkeletonPass.h" />
     <ClInclude Include="Passes\MaterialParticlePass.h" />
     <ClInclude Include="Passes\Pipelined\BaseTypedList3DPass.h" />
+    <ClInclude Include="Passes\Renderer\RendererDeffered.h" />
     <ClInclude Include="Passes\Scene\SceneCreateTypedListsPass.h" />
     <ClInclude Include="Passes\Scene\SceneCreateTypelessListPass.h" />
     <ClInclude Include="Passes\Technical\BeginQueryPass.h" />
@@ -546,6 +549,7 @@
     <ClInclude Include="Scene\Camera\CameraControllerBase.h" />
     <ClInclude Include="Scene\Camera\FreeCameraController.h" />
     <ClInclude Include="Scene\Camera\RTSCameraController.h" />
+    <ClInclude Include="Scene\GameModelProto.h" />
     <ClInclude Include="Scene\Components\CameraComponent3D.h" />
     <ClInclude Include="Scene\Components\ColliderComponent3D.h" />
     <ClInclude Include="Scene\Components\LightComponent3D.h" />

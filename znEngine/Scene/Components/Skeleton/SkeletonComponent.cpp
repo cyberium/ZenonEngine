@@ -8,7 +8,7 @@ CSkeletonComponent3D::CSkeletonComponent3D(const ISceneNode3D& OwnerNode, const 
 {
 	for (const auto& b : Skeleton.GetBones())
 	{
-		auto bone = std::make_shared<CSkeletonComponentBone3D>(b);
+		auto bone = MakeShared(CSkeletonComponentBone3D, b);
 		AddBone(bone);
 	}
 

@@ -133,17 +133,17 @@ std::string CPropertiesGroup::GetPropertyTypeName(const IProperty* Property) con
 std::shared_ptr<IProperty> CPropertiesGroup::CreatePropetyByType(std::string TypeName)
 {
 	if (TypeName == "Float")
-		return std::make_shared<CProperty<float>>();
+		return MakeShared(CProperty<float>);
 	else if (TypeName == "Vec2")
-		return std::make_shared<CProperty<glm::vec2>>();
+		return MakeShared(CProperty<glm::vec2>);
 	else if (TypeName == "Vec3")
-		return std::make_shared<CProperty<glm::vec3>>();
+		return MakeShared(CProperty<glm::vec3>);
 	else if (TypeName == "Vec4")
-		return std::make_shared<CProperty<glm::vec4>>();
+		return MakeShared(CProperty<glm::vec4>);
 	else if (TypeName == "String")
-		return std::make_shared<CProperty<std::string>>();
+		return MakeShared(CProperty<std::string>);
 	else if (TypeName == "Group")
-		return std::make_shared<CPropertiesGroup>();
+		return MakeShared(CPropertiesGroup);
 	else if (TypeName == "")
 		return nullptr;
 	else

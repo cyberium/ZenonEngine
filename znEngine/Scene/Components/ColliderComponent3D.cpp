@@ -12,12 +12,12 @@ CColliderComponent3D::CColliderComponent3D(const ISceneNode3D& OwnerNode)
 	GetProperties()->SetName("ColliderComponent");
 
 	{
-		auto minBounds = std::make_shared<CPropertyWrapped<glm::vec3>>("BBoxMin", "");
+		auto minBounds = MakeShared(CPropertyWrapped<glm::vec3>, "BBoxMin", "");
 		minBounds->SetValueSetter(std::bind(&CColliderComponent3D::SetMinBounds, this, std::placeholders::_1));
 		minBounds->SetValueGetter(std::bind(&CColliderComponent3D::GetMinBounds, this));
 		GetProperties()->AddProperty(minBounds);
 
-		auto maxBounds = std::make_shared<CPropertyWrapped<glm::vec3>>("BBoxMax", "");
+		auto maxBounds = MakeShared(CPropertyWrapped<glm::vec3>, "BBoxMax", "");
 		maxBounds->SetValueSetter(std::bind(&CColliderComponent3D::SetMaxBounds, this, std::placeholders::_1));
 		maxBounds->SetValueGetter(std::bind(&CColliderComponent3D::GetMaxBounds, this));
 		GetProperties()->AddProperty(maxBounds);
@@ -25,7 +25,7 @@ CColliderComponent3D::CColliderComponent3D(const ISceneNode3D& OwnerNode)
 
 	// Actions
 	{
-		std::shared_ptr<CAction> clear = std::make_shared<CAction>("Clear", "Clean BBox. (set to infinite).");
+		std::shared_ptr<CAction> clear = MakeShared(CAction, "Clear", "Clean BBox. (set to infinite).");
 		clear->SetAction([this] () -> bool {
 			SetBounds(BoundingBox());
 			return true;

@@ -7,9 +7,9 @@
 
 PipelineStateOGL::PipelineStateOGL()
 {
-	m_BlendState = std::make_shared<BlendStateOGL>();
-	m_RasterizerState = std::make_shared<RasterizerStateOGL>();
-	m_DepthStencilState = std::make_shared<DepthStencilStateOGL>();
+	m_BlendState = MakeShared(BlendStateOGL);
+	m_RasterizerState = MakeShared(RasterizerStateOGL);
+	m_DepthStencilState = MakeShared(DepthStencilStateOGL);
 
 	glGenProgramPipelines(1, &m_GLProgramPipeline);
 }

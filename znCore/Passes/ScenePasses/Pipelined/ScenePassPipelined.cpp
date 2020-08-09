@@ -3,7 +3,7 @@
 // General
 #include "ScenePassPipelined.h"
 
-ScenePassPipelined::ScenePassPipelined(IRenderDevice& RenderDevice, const std::shared_ptr<IScene>& Scene)
+ScenePassPipelined::ScenePassPipelined(IRenderDevice& RenderDevice, const std::weak_ptr<IScene>& Scene)
 	: RenderPassPipelined(RenderDevice)
 	, m_Scene(Scene)
 {}
