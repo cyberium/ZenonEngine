@@ -311,6 +311,7 @@
     <ClCompile Include="Passes\MaterialParticlePass.cpp" />
     <ClCompile Include="Passes\Pipelined\BaseTypedList3DPass.cpp" />
     <ClCompile Include="Passes\Renderer\RendererDeffered.cpp" />
+    <ClCompile Include="Passes\Renderer\RendererForward.cpp" />
     <ClCompile Include="Passes\Scene\SceneCreateTypedListsPass.cpp" />
     <ClCompile Include="Passes\Scene\SceneCreateTypelessListPass.cpp" />
     <ClCompile Include="Passes\Technical\BeginQueryPass.cpp" />
@@ -509,6 +510,7 @@
     <ClInclude Include="Passes\MaterialParticlePass.h" />
     <ClInclude Include="Passes\Pipelined\BaseTypedList3DPass.h" />
     <ClInclude Include="Passes\Renderer\RendererDeffered.h" />
+    <ClInclude Include="Passes\Renderer\RendererForward.h" />
     <ClInclude Include="Passes\Scene\SceneCreateTypedListsPass.h" />
     <ClInclude Include="Passes\Scene\SceneCreateTypelessListPass.h" />
     <ClInclude Include="Passes\Technical\BeginQueryPass.h" />

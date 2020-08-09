@@ -49,6 +49,8 @@ void SceneBase::Initialize()
 		GetRootNodeUI()->AddChild(m_FPSText);
 		m_FPSText->SetTranslate(glm::vec2(5.0f, 65.0f));
 	}
+
+
 }
 
 void SceneBase::Finalize()
@@ -297,12 +299,14 @@ void SceneBase::OnRender(RenderEventArgs & e)
 		e.CameraForCulling = GetCameraController()->GetCamera().get();
 	}
 
-	//Sleep(15);
-	m_Renderer->Render(e);
+	if (m_Renderer)
+		m_Renderer->Render3D(e);
 }
 
 void SceneBase::OnPostRender(RenderEventArgs & e)
 {
+
+
 	//m_TestQuery->End(e.FrameCounter);
 	//m_FrameQuery->End(e.FrameCounter);
 
@@ -321,6 +325,15 @@ void SceneBase::OnPostRender(RenderEventArgs & e)
 void SceneBase::OnRenderUI(RenderEventArgs & e)
 {
 	m_End = std::chrono::high_resolution_clock::now();
+
+	if (GetCameraController())
+	{
+		e.Camera = GetCameraController()->GetCamera().get();
+		e.CameraForCulling = GetCameraController()->GetCamera().get();
+	}
+
+	if (m_Renderer)
+		m_Renderer->RenderUI(e);
 
 	{
 		/*IQuery::QueryResult frameResult = m_FrameQuery->GetQueryResult(e.FrameCounter);
@@ -352,7 +365,8 @@ void SceneBase::OnWindowResize(ResizeEventArgs & e)
 	if (GetCameraController())
 		GetCameraController()->OnResize(e);
 
-	m_Renderer->Resize(e.Width, e.Height);
+	if (m_Renderer)
+		m_Renderer->Resize(e.Width, e.Height);
 }
 
 

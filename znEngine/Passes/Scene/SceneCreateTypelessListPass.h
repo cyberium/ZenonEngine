@@ -83,10 +83,10 @@ public:
 	EVisitResult Visit(const ILight3D* light) override;
 
 private:
-	std::vector<SNodeElement>         m_NodesList;
-	std::vector<SModelElement>        m_ModelsList;
-	std::vector<SGeometryElement>     m_GeometryList;
-	std::vector<SLightElement>        m_LightList;
+	std::vector<SNodeElement> m_NodesList;
+	std::vector<SModelElement> m_ModelsList;
+	std::vector<SGeometryElement> m_GeometryList;
+	std::vector<SLightElement> m_LightList;
 };
 
 

@@ -44,19 +44,43 @@ void CSceneDefault::Initialize()
 {
 	SceneBase::Initialize();
 
-	auto cameraNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, this, GetRootNode3D());
-	cameraNode->SetName("Camera");
-	
-	auto cameraComponent = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<IComponentFactory>()->CreateComponentT<ICameraComponent3D>(cSceneNodeCameraComponent, *cameraNode);
-	cameraNode->AddComponent(cameraComponent);
+	// Light
+	{
+		auto lightNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, this);
+		lightNode->SetName("Light");
+		lightNode->SetTranslate(glm::vec3(1500.0f, 1500.0f, 1500.0f));
+		lightNode->SetRotation(glm::vec3(-0.9f, -0.9f, -0.9f));
 
-	SetCameraController(MakeShared(CFreeCameraController));
-	GetCameraController()->SetCamera(cameraNode->GetComponent<ICameraComponent3D>());
-	GetCameraController()->GetCamera()->SetPerspectiveProjection(ICameraComponent3D::EPerspectiveProjectionHand::Right, 75.0f, static_cast<float>(GetRenderWindow()->GetWindowWidth()) / static_cast<float>(GetRenderWindow()->GetWindowHeight()), 1.0f, 5000.0f);
-	
-	cameraNode->SetTranslate(glm::vec3(-50, 160, 170));
-	GetCameraController()->GetCamera()->SetYaw(-51);
-	GetCameraController()->GetCamera()->SetPitch(-38);
+		lightNode->AddComponent(GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<IComponentFactory>()->CreateComponentT<ILightComponent3D>(cSceneNodeLightComponent, *lightNode.get()));
+		lightNode->GetComponent<ILightComponent3D>()->SetType(ELightType::Spot);
+		lightNode->GetComponent<ILightComponent3D>()->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
+		lightNode->GetComponent<ILightComponent3D>()->SetRange(99000.0f);
+		lightNode->GetComponent<ILightComponent3D>()->SetIntensity(1.0f);
+		lightNode->GetComponent<ILightComponent3D>()->SetSpotlightAngle(75.0f);
+	}
+
+	// Camera
+	{
+		auto cameraNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, this);
+		cameraNode->SetName("Camera");
+		auto geom = GetRenderDevice().GetPrimitivesFactory().CreateBBox();
+		auto mat = MakeShared(MaterialDebug, GetRenderDevice());
+		mat->SetDiffuseColor(glm::vec4(1.0f, 1.0f, 0.3f, 1.0f));
+		auto model = GetRenderDevice().GetObjectsFactory().CreateModel();
+		model->AddConnection(mat, geom);
+		cameraNode->GetComponent<IModelsComponent3D>()->SetModel(model);
+
+		auto cameraComponent = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<IComponentFactory>()->CreateComponentT<ICameraComponent3D>(cSceneNodeCameraComponent, *cameraNode);
+		cameraNode->AddComponent(cameraComponent);
+
+		SetCameraController(MakeShared(CFreeCameraController));
+		GetCameraController()->SetCamera(cameraNode->GetComponent<ICameraComponent3D>());
+		GetCameraController()->GetCamera()->SetPerspectiveProjection(ICameraComponent3D::EPerspectiveProjectionHand::Right, 75.0f, static_cast<float>(GetRenderWindow()->GetWindowWidth()) / static_cast<float>(GetRenderWindow()->GetWindowHeight()), 1.0f, 5000.0f);
+		GetCameraController()->GetCamera()->SetTranslation(glm::vec3(15.0f * 2.0f));
+		GetCameraController()->GetCamera()->SetDirection(glm::vec3(-0.5f));
+		GetCameraController()->GetCamera()->SetYaw(225);
+		GetCameraController()->GetCamera()->SetPitch(-45);
+	}
 
 	auto newRoot = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, this, GetRootNode3D());
 	newRoot->SetName("NewRoot3D");
@@ -144,25 +168,6 @@ void CSceneDefault::OnWindowKeyReleased(KeyEventArgs & e)
 //
 void CSceneDefault::Load3D()
 {
-	//--------------------------------------------------------------------------
-	// Lights
-	//--------------------------------------------------------------------------
-
-	{
-		auto lightNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, this);
-		lightNode->SetName("Light");
-		lightNode->SetTranslate(glm::vec3(1500.0f, 1500.0f, 1500.0f));
-		lightNode->SetRotation(glm::vec3(-0.9f, -0.9f, -0.9f));
-
-		lightNode->AddComponent(GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<IComponentFactory>()->CreateComponentT<ILightComponent3D>(cSceneNodeLightComponent, *lightNode.get()));
-		lightNode->GetComponent<ILightComponent3D>()->SetType(ELightType::Spot);
-		lightNode->GetComponent<ILightComponent3D>()->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
-		lightNode->GetComponent<ILightComponent3D>()->SetRange(99000.0f);
-		lightNode->GetComponent<ILightComponent3D>()->SetIntensity(1.0f);
-		lightNode->GetComponent<ILightComponent3D>()->SetSpotlightAngle(75.0f);
-	}
-
-
 	//--------------------------------------------------------------------------
 	// Cubes & Spheres
 	//--------------------------------------------------------------------------

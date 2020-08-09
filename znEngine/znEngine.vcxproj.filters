@@ -684,6 +684,9 @@
     <ClCompile Include="Passes\Renderer\RendererDeffered.cpp">
       <Filter>Passes\Renderer</Filter>
     </ClCompile>
+    <ClCompile Include="Passes\Renderer\RendererForward.cpp">
+      <Filter>Passes\Renderer</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="common.h">
@@ -1261,6 +1264,9 @@
       <Filter>Scene</Filter>
     </ClInclude>
     <ClInclude Include="Passes\Renderer\RendererDeffered.h">
+      <Filter>Passes\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Passes\Renderer\RendererForward.h">
       <Filter>Passes\Renderer</Filter>
     </ClInclude>
   </ItemGroup>

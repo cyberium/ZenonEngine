@@ -33,6 +33,7 @@
 
 
 #include "../znEngine/Passes/Pipelined/BaseTypedList3DPass.h"
+#include "../znEngine/Passes/Renderer/RendererForward.h"
 #include "../znEngine/Passes/Renderer/RendererDeffered.h"
 
 #include "../znEngine/Passes/DefferedRender.h"

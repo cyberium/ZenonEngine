@@ -61,12 +61,12 @@ std::shared_ptr<IShader> CRenderObjectsFactoryDX11::CreateShader(EShaderType typ
 {
 	std::string fullName = fileName + ShaderMacrosToString(shaderMacros) + entryPoint + profile;
 
-	const auto& iter = m_ShadersByName.find(fullName);
-	if (iter != m_ShadersByName.end())
-	{
-		if (std::shared_ptr<IShader> shader = iter->second.lock())
-			return shader;
-	}
+	//const auto& iter = m_ShadersByName.find(fullName);
+	//if (iter != m_ShadersByName.end())
+	//{
+	//	if (std::shared_ptr<IShader> shader = iter->second.lock())
+	//		return shader;
+	//}
 
 	std::shared_ptr<IShader> object = MakeShared(ShaderDX11, m_RenderDeviceDX11);
 	object->LoadShaderFromFile(type, fileName, shaderMacros, entryPoint, profile, _customLayout);

@@ -15,8 +15,8 @@ void main_internal(int argc, char *argv[])
 	// 1. Initialize engine and some improtant managers
 	BaseManager = InitializeEngine(Utils::ArgumentsToVector(argc, argv), "");
 
-	try
-	{
+	//try
+	//{
 		// 3. Create application
 		Application app(*BaseManager, ::GetModuleHandle(NULL));
 
@@ -88,7 +88,7 @@ void main_internal(int argc, char *argv[])
 		BaseManager->GetManager<ILog>()->DeleteDebugOutput(debugOutput);
 
 		app.DoAfterRun();
-	}
+	/*}
 	catch (const CznRenderException& e)
 	{
 		Log::Fatal("RenderError: %s", e.MessageCStr());
@@ -96,7 +96,7 @@ void main_internal(int argc, char *argv[])
 	catch (const CException& e)
 	{
 		Log::Fatal("EngienError: %s", e.MessageCStr());
-	}
+	}*/
 }
 
 
