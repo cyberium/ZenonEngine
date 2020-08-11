@@ -11,15 +11,15 @@
 CComponentsEngineCreator::CComponentsEngineCreator(IBaseManager& BaseManager)
 	: CObjectClassCreator(BaseManager)
 {
-	AddKey("SceneNodeComponent", cSceneNodeComponent);
-	AddKey("SceneNodeColliderComponent", cSceneNodeColliderComponent);
-	AddKey("SceneNodeModelsComponent", cSceneNodeModelsComponent);
-	AddKey("SceneNodeSkeletonComponent", cSceneNodeSkeletonComponent);
-	AddKey("SceneNodeParticleComponent", cSceneNodeParticleComponent);
-	AddKey("SceneNodePhysicsComponent", cSceneNodePhysicsComponent);
-	AddKey("SceneNodePortalsComponent", cSceneNodePortalsComponent);
-	AddKey("SceneNodeLightComponent", cSceneNodeLightComponent);
-	AddKey("SceneNodeCameraComponent", cSceneNodeCameraComponent);
+	AddKey("Component", cSceneNodeComponent);
+	AddKey("ColliderComponent", cSceneNodeColliderComponent);
+	AddKey("ModelsComponent", cSceneNodeModelsComponent);
+	AddKey("SkeletonComponent", cSceneNodeSkeletonComponent);
+	AddKey("ParticleComponent", cSceneNodeParticleComponent);
+	AddKey("PhysicsComponent", cSceneNodePhysicsComponent);
+	AddKey("PortalsComponent", cSceneNodePortalsComponent);
+	AddKey("LightComponent", cSceneNodeLightComponent);
+	AddKey("CameraComponent", cSceneNodeCameraComponent);
 }
 
 CComponentsEngineCreator::~CComponentsEngineCreator()

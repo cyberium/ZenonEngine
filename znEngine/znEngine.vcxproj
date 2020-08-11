@@ -335,9 +335,9 @@
     <ClCompile Include="Materials\UI_Font_Material.cpp" />
     <ClCompile Include="Materials\UI_Line_Material.cpp" />
     <ClCompile Include="Materials\UI_Texture_Material.cpp" />
-    <ClCompile Include="Passes\DefferedRender.cpp" />
-    <ClCompile Include="Passes\DefferedRenderFinal.cpp" />
-    <ClCompile Include="Passes\DefferedRenderPrepareLights.cpp" />
+    <ClCompile Include="Passes\PassDeffered_DoRenderScene.cpp" />
+    <ClCompile Include="Passes\PassDeffered_RenderUIQuad.cpp" />
+    <ClCompile Include="Passes\PassDeffered_ProcessLights.cpp" />
     <ClCompile Include="Passes\MaterialModelPass.cpp" />
     <ClCompile Include="Passes\RenderPassDefaultCreator.cpp" />
     <ClCompile Include="Passes\RenderPassFactory.cpp" />
@@ -534,9 +534,9 @@
     <ClInclude Include="Materials\UI_Font_Material.h" />
     <ClInclude Include="Materials\UI_Line_Material.h" />
     <ClInclude Include="Materials\UI_Texture_Material.h" />
-    <ClInclude Include="Passes\DefferedRender.h" />
-    <ClInclude Include="Passes\DefferedRenderFinal.h" />
-    <ClInclude Include="Passes\DefferedRenderPrepareLights.h" />
+    <ClInclude Include="Passes\PassDeffered_DoRenderScene.h" />
+    <ClInclude Include="Passes\PassDeffered_RenderUIQuad.h" />
+    <ClInclude Include="Passes\PassDeffered_ProcessLights.h" />
     <ClInclude Include="Passes\MaterialModelPass.h" />
     <ClInclude Include="Passes\RenderPassDefaultCreator.h" />
     <ClInclude Include="Passes\RenderPassFactory.h" />

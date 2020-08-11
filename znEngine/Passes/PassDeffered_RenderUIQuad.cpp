@@ -1,9 +1,9 @@
 #include "stdafx.h"
 
 // General
-#include "DefferedRenderFinal.h"
+#include "PassDeffered_RenderUIQuad.h"
 
-CDefferedRenderFinal::CDefferedRenderFinal(IRenderDevice& RenderDevice, std::shared_ptr<CDefferedRender> DefferedRender, std::shared_ptr<CDefferedRenderPrepareLights> DefferedRenderPrepareLights)
+CPassDeffered_RenderUIQuad::CPassDeffered_RenderUIQuad(IRenderDevice& RenderDevice, std::shared_ptr<CPassDeffered_DoRenderScene> DefferedRender, std::shared_ptr<CPassDeffered_ProcessLights> DefferedRenderPrepareLights)
 	: RenderPassPipelined(RenderDevice)
 	, m_DefferedRender(DefferedRender)
 	, m_DefferedRenderPrepareLights(DefferedRenderPrepareLights)
@@ -12,7 +12,7 @@ CDefferedRenderFinal::CDefferedRenderFinal(IRenderDevice& RenderDevice, std::sha
 	m_LightResultConstantBuffer = GetRenderDevice().GetObjectsFactory().CreateConstantBuffer(SLightResult());
 }
 
-CDefferedRenderFinal::~CDefferedRenderFinal()
+CPassDeffered_RenderUIQuad::~CPassDeffered_RenderUIQuad()
 {
 	_aligned_free(m_LightResultData);
 }
@@ -23,7 +23,7 @@ CDefferedRenderFinal::~CDefferedRenderFinal()
 // IRenderPass
 //
 
-void CDefferedRenderFinal::Render(RenderEventArgs& e)
+void CPassDeffered_RenderUIQuad::Render(RenderEventArgs& e)
 {
 	for (const auto& lightResult : m_DefferedRenderPrepareLights->GetLightResult())
 	{
@@ -34,7 +34,7 @@ void CDefferedRenderFinal::Render(RenderEventArgs& e)
 	}
 }
 
-void CDefferedRenderFinal::PostRender(RenderEventArgs& e)
+void CPassDeffered_RenderUIQuad::PostRender(RenderEventArgs& e)
 {
 	RenderPassPipelined::PostRender(e);
 }
@@ -44,7 +44,7 @@ void CDefferedRenderFinal::PostRender(RenderEventArgs& e)
 //
 // IRenderPassPipelined
 //
-std::shared_ptr<IRenderPassPipelined> CDefferedRenderFinal::CreatePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport)
+std::shared_ptr<IRenderPassPipelined> CPassDeffered_RenderUIQuad::CreatePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport)
 {
 	m_QuadGeometry = GetRenderDevice().GetPrimitivesFactory().CreateQuad();
 
@@ -89,7 +89,7 @@ std::shared_ptr<IRenderPassPipelined> CDefferedRenderFinal::CreatePipeline(std::
 //
 // Protected
 //
-void CDefferedRenderFinal::BindLightParamsForCurrentIteration(const RenderEventArgs& e, const CDefferedRenderPrepareLights::SLightResult& LightResult)
+void CPassDeffered_RenderUIQuad::BindLightParamsForCurrentIteration(const RenderEventArgs& e, const CPassDeffered_ProcessLights::SLightResult& LightResult)
 {
 	const ICameraComponent3D* camera = e.Camera;
 	_ASSERT(camera != nullptr);

@@ -205,15 +205,6 @@
     <ClCompile Include="Materials\MaterialModel.cpp">
       <Filter>Materials</Filter>
     </ClCompile>
-    <ClCompile Include="Passes\DefferedRender.cpp">
-      <Filter>Passes\3D\DefferedLighting</Filter>
-    </ClCompile>
-    <ClCompile Include="Passes\DefferedRenderFinal.cpp">
-      <Filter>Passes\3D\DefferedLighting</Filter>
-    </ClCompile>
-    <ClCompile Include="Passes\DefferedRenderPrepareLights.cpp">
-      <Filter>Passes\3D\DefferedLighting</Filter>
-    </ClCompile>
     <ClCompile Include="FBX\FBXDisplayCache.cpp">
       <Filter>FBX</Filter>
     </ClCompile>
@@ -687,6 +678,15 @@
     <ClCompile Include="Passes\Renderer\RendererForward.cpp">
       <Filter>Passes\Renderer</Filter>
     </ClCompile>
+    <ClCompile Include="Passes\PassDeffered_ProcessLights.cpp">
+      <Filter>Passes\3D\DefferedLighting</Filter>
+    </ClCompile>
+    <ClCompile Include="Passes\PassDeffered_RenderUIQuad.cpp">
+      <Filter>Passes\3D\DefferedLighting</Filter>
+    </ClCompile>
+    <ClCompile Include="Passes\PassDeffered_DoRenderScene.cpp">
+      <Filter>Passes\3D\DefferedLighting</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="common.h">
@@ -722,15 +722,6 @@
     </ClInclude>
     <ClInclude Include="Materials\MaterialModel.h">
       <Filter>Materials</Filter>
-    </ClInclude>
-    <ClInclude Include="Passes\DefferedRender.h">
-      <Filter>Passes\3D\DefferedLighting</Filter>
-    </ClInclude>
-    <ClInclude Include="Passes\DefferedRenderFinal.h">
-      <Filter>Passes\3D\DefferedLighting</Filter>
-    </ClInclude>
-    <ClInclude Include="Passes\DefferedRenderPrepareLights.h">
-      <Filter>Passes\3D\DefferedLighting</Filter>
     </ClInclude>
     <ClInclude Include="FBX\FBXDisplayCache.h">
       <Filter>FBX</Filter>
@@ -1268,6 +1259,15 @@
     </ClInclude>
     <ClInclude Include="Passes\Renderer\RendererForward.h">
       <Filter>Passes\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Passes\PassDeffered_ProcessLights.h">
+      <Filter>Passes\3D\DefferedLighting</Filter>
+    </ClInclude>
+    <ClInclude Include="Passes\PassDeffered_RenderUIQuad.h">
+      <Filter>Passes\3D\DefferedLighting</Filter>
+    </ClInclude>
+    <ClInclude Include="Passes\PassDeffered_DoRenderScene.h">
+      <Filter>Passes\3D\DefferedLighting</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

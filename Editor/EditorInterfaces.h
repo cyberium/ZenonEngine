@@ -1,7 +1,9 @@
 #pragma once
 
+ZN_INTERFACE IEditor;
 ZN_INTERFACE IEditorTool;
 ZN_INTERFACE IEditorTools;
+ZN_INTERFACE IEditorShell;
 ZN_INTERFACE IEditorUIFrame;
 ZN_INTERFACE IEditor3DFrame;
 ZN_INTERFACE IEditorQtUIFrame;
@@ -117,6 +119,7 @@ ZN_INTERFACE IEditor
 	virtual IEditorUIFrame& GetUIFrame() const = 0;
 	virtual IEditor3DFrame& Get3DFrame() const = 0;
 	virtual IEditorTools& GetTools() = 0;
+	virtual IEditorShell& GetShell() = 0;
 
 	virtual bool IsNodeSelected(std::shared_ptr<ISceneNode3D> Node) const = 0;
 	virtual std::shared_ptr<ISceneNode3D> GetFirstSelectedNode() const = 0;
@@ -139,6 +142,13 @@ ZN_INTERFACE IEditorSharedFrame
 	virtual bool InitializeEditorFrame() = 0;
 };
 
+ZN_INTERFACE IEditorShell
+{
+	virtual ~IEditorShell() {}
+
+	virtual std::string ShowLoadFileDialog(std::string DefaultName = "") const = 0;
+	virtual std::string ShowSaveFileDialog(std::string DefaultName = "") const = 0;
+};
 
 
 ZN_INTERFACE IEditor3DFrame

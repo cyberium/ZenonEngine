@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Tools/EditorTools.h"
+#include "EditorWindowsShell.h"
 #include "EditorUIFrame.h"
 #include "Editor3DFrame.h"
 
@@ -23,6 +24,7 @@ public:
 	IEditorUIFrame& GetUIFrame() const override;
 	IEditor3DFrame& Get3DFrame() const override;
 	IEditorTools& GetTools() override;
+	IEditorShell& GetShell() override;
 
 	// Selection part
 	bool IsNodeSelected(std::shared_ptr<ISceneNode3D> Node) const override;
@@ -40,4 +42,5 @@ private:
 	IEditor3DFrame* m_Editor3DFrame;
 
 	CEditorTools m_Tools;
+	CEditorWindowsShell m_EditorShell;
 };

@@ -121,6 +121,7 @@
     <ClCompile Include="Editor.cpp" />
     <ClCompile Include="Editor3DFrame.cpp" />
     <ClCompile Include="Editor3DPreviewScene.cpp" />
+    <ClCompile Include="EditorWindowsShell.cpp" />
     <ClCompile Include="main.cpp">
       <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">input</DynamicSource>
       <QtMocFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(Filename).moc</QtMocFileName>
@@ -377,6 +378,7 @@
     <ClInclude Include="Editor3DPreviewScene.h" />
     <ClInclude Include="EditorInterfaces.h" />
     <ClInclude Include="EditorQtInterfaces.h" />
+    <ClInclude Include="EditorWindowsShell.h" />
     <ClInclude Include="Passes\DrawSelectionPass.h" />
     <ClInclude Include="PropertyEditor\Core\Auxiliary\PropertyAux.h" />
     <ClInclude Include="PropertyEditor\Core\Auxiliary\PropertyDelegateInfo.h" />

@@ -2,6 +2,8 @@
 
 // Forward BEGIN
 ZN_INTERFACE IManager;
+ZN_INTERFACE IProperty;
+template <typename T> ZN_INTERFACE ZN_API IPropertyT;
 // Forward END
 
 
@@ -9,37 +11,9 @@ ZN_INTERFACE ZN_API ISetting
 {
 	virtual ~ISetting() {}
 
-	virtual const std::string& GetName() const = 0;
 	virtual bool IsDefault() const = 0;
-
-	virtual void OnUpdate() = 0;
-};
-template<typename T>
-ZN_INTERFACE ISettingT : public ISetting
-{
-	virtual ~ISettingT() {}
-
-	virtual void Set(T Value) = 0;
-	virtual T Get() const = 0;
-};
-
-
-
-ZN_INTERFACE ZN_API ISettingInternal
-{
-	virtual ~ISettingInternal() {}
-
-	virtual void SetName(const std::string& Name) = 0;
 	virtual void ResetToDefault() = 0;
 };
-template<typename T>
-ZN_INTERFACE ISettingInternalT : public ISettingInternal
-{
-	virtual ~ISettingInternalT() {}
-
-	virtual void SetDefaultValue(T Value) = 0;
-};
-
 
 
 ZN_INTERFACE ZN_API ISettingGroup
@@ -48,16 +22,16 @@ ZN_INTERFACE ZN_API ISettingGroup
 
 	virtual void AddDefaultSettings() = 0;
 
-	virtual void AddSetting(const std::string& SettingName, std::shared_ptr<ISetting> Setting) = 0;
-	virtual std::shared_ptr<ISetting> GetSetting(const std::string& SettingName) = 0;
+	virtual void AddSetting(std::shared_ptr<IProperty> Setting) = 0;
+	virtual std::shared_ptr<IProperty> GetSetting(const std::string& SettingName) = 0;
 
 	virtual bool IsGroupDefault() const = 0;
 	virtual void ResetGroup() = 0;
 
 	template<typename T>
-	inline std::shared_ptr<ISettingT<T>> GetSettingT(const std::string& SettingName)
+	inline std::shared_ptr<IPropertyT<T>> GetSettingT(const std::string& SettingName)
 	{
-		return std::dynamic_pointer_cast<ISettingT<T>>(GetSetting(SettingName));
+		return std::dynamic_pointer_cast<IPropertyT<T>>(GetSetting(SettingName));
 	}
 };
 

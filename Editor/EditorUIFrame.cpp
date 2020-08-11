@@ -15,7 +15,12 @@ CEditorUIFrame::CEditorUIFrame(IEditor& Editor)
 
 	// MENU
 	connect(m_UI.actionOpen_Scene, &QAction::triggered, [this]() {
-		auto file = m_Editor.GetBaseManager().GetManager<IFilesManager>()->Open("D:\\Scene.xml");
+
+		std::string fileName = GetEditor().GetShell().ShowLoadFileDialog("D:\\Scene.xml");
+		if (fileName.empty())
+			return;
+
+		auto file = m_Editor.GetBaseManager().GetManager<IFilesManager>()->Open(fileName);
 		if (file == nullptr)
 			return;
 
@@ -31,7 +36,12 @@ CEditorUIFrame::CEditorUIFrame(IEditor& Editor)
 		while (false == rootNodeXML->GetChilds().empty())
 			currentRoot->AddChild(rootNodeXML->GetChilds()[0]);
 	});
+
 	connect(m_UI.actionSave_Scene, &QAction::triggered, [this]() {
+		std::string fileName = GetEditor().GetShell().ShowSaveFileDialog("D:\\Scene.xml");
+		if (fileName.empty())
+			return;
+
 		CXMLManager manager;
 
 		auto rootWriter = m_Editor.GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->SaveSceneNode3DXML(m_Editor.Get3DFrame().GetEditedRootNode3D());
@@ -39,7 +49,7 @@ CEditorUIFrame::CEditorUIFrame(IEditor& Editor)
 		auto writer = manager.CreateWriter();
 		writer->AddChild(rootWriter);
 
-		auto file = manager.SaveWriterToFile(writer, "D:\\Scene.xml");
+		auto file = manager.SaveWriterToFile(writer, fileName);
 		m_Editor.GetBaseManager().GetManager<IFilesManager>()->GetFilesStorage("PCEveryFileAccess")->SaveFile(file);
 	});
 

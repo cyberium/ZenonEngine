@@ -36,9 +36,9 @@
 #include "../znEngine/Passes/Renderer/RendererForward.h"
 #include "../znEngine/Passes/Renderer/RendererDeffered.h"
 
-#include "../znEngine/Passes/DefferedRender.h"
-#include "../znEngine/Passes/DefferedRenderPrepareLights.h"
-#include "../znEngine/Passes/DefferedRenderFinal.h"
+#include "../znEngine/Passes/PassDeffered_DoRenderScene.h"
+#include "../znEngine/Passes/PassDeffered_ProcessLights.h"
+#include "../znEngine/Passes/PassDeffered_RenderUIQuad.h"
 
 #include "../znEngine/Passes/Scene/SceneCreateTypedListsPass.h"
 #include "../znEngine/Passes/Scene/SceneCreateTypelessListPass.h"

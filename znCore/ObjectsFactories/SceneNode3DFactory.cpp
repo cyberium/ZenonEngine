@@ -34,6 +34,13 @@ std::shared_ptr<ISceneNode3D> CSceneNode3DFactory::LoadSceneNode3DXML(const std:
 	if (auto objectLoadSave = std::dynamic_pointer_cast<IObjectLoadSave>(createdbject))
 		objectLoadSave->Load(Reader);
 
+	auto objectUUID = GenerateGuid(guid.GetObjectClass());
+	if (auto objectPrivate = std::dynamic_pointer_cast<IObjectPrivate>(createdbject))
+	{
+		objectPrivate->SetGUID(&GetBaseManager(), objectUUID);
+		Log::Green("CSceneNode3DFactory: Object [%s] created.", createdbject->GetName().c_str());
+	}
+
 	return std::dynamic_pointer_cast<ISceneNode3D>(createdbject);
 }
 

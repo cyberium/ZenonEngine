@@ -24,14 +24,10 @@ void CModelsComponent3D::Load(const std::shared_ptr<IXMLReader>& Reader)
 {
 	CComponentBase::Load(Reader);
 
-	auto modelReader = Reader->GetChild("Model");
-	if (modelReader)
-	{
-		auto model = GetBaseManager().GetApplication().GetRenderDevice().GetObjectsFactory().CreateModel();
-		if (auto loadable = std::dynamic_pointer_cast<IObjectLoadSave>(model))
-			loadable->Load(modelReader);
-		SetModel(model);
-	}
+	auto model = GetBaseManager().GetApplication().GetRenderDevice().GetObjectsFactory().CreateModel();
+	if (auto loadable = std::dynamic_pointer_cast<IObjectLoadSave>(model))
+		loadable->Load(Reader);
+	SetModel(model);
 }
 
 void CModelsComponent3D::Save(const std::shared_ptr<IXMLWriter>& Writer) const
@@ -41,11 +37,8 @@ void CModelsComponent3D::Save(const std::shared_ptr<IXMLWriter>& Writer) const
 	auto model = GetModel();
 	if (model)
 	{
-		CXMLManager xml;
-		auto modelWriter = xml.CreateWriter("Model");
 		if (auto loadable = std::dynamic_pointer_cast<IObjectLoadSave>(model))
-			loadable->Save(modelWriter);
-		Writer->AddChild(modelWriter);
+			loadable->Save(Writer);
 	}
 }
 

@@ -90,13 +90,13 @@ void CRendererDeffered::Initialize(std::shared_ptr<IRenderTarget> RenderTarget, 
 {
 	m_SceneCreateTypelessListPass = MakeShared(CSceneCreateTypelessListPass, m_RenderDevice, m_Scene);
 
-	m_DefferedRenderPass = MakeShared(CDefferedRender, m_RenderDevice, m_SceneCreateTypelessListPass);
+	m_DefferedRenderPass = MakeShared(CPassDeffered_DoRenderScene, m_RenderDevice, m_SceneCreateTypelessListPass);
 	m_DefferedRenderPass->CreatePipeline(RenderTarget, Viewport);
 
-	m_DefferedRenderPrepareLights = MakeShared(CDefferedRenderPrepareLights, m_RenderDevice, m_SceneCreateTypelessListPass);
+	m_DefferedRenderPrepareLights = MakeShared(CPassDeffered_ProcessLights, m_RenderDevice, m_SceneCreateTypelessListPass);
 	m_DefferedRenderPrepareLights->CreatePipeline(nullptr, nullptr);
 
-	m_DefferedFinalRenderPass = MakeShared(CDefferedRenderFinal, m_RenderDevice, m_DefferedRenderPass, m_DefferedRenderPrepareLights);
+	m_DefferedFinalRenderPass = MakeShared(CPassDeffered_RenderUIQuad, m_RenderDevice, m_DefferedRenderPass, m_DefferedRenderPrepareLights);
 	m_DefferedFinalRenderPass->CreatePipeline(RenderTarget, Viewport);
 
 	m_FinalRenderTarget = m_RenderDevice.GetObjectsFactory().CreateRenderTarget();
@@ -110,11 +110,12 @@ void CRendererDeffered::Initialize(std::shared_ptr<IRenderTarget> RenderTarget, 
 	AddPass(m_SceneCreateTypelessListPass);
 	AddPass(m_DefferedRenderPass);
 	AddPass(m_DefferedRenderPrepareLights);
-	AddPass(m_DefferedFinalRenderPass);
+	AddPass(m_BaseManager.GetManager<IRenderPassFactory>()->CreateRenderPass("DebugPass", m_RenderDevice, m_FinalRenderTarget, Viewport, m_Scene.lock()));
+
+	m_UIPasses.push_back(m_DefferedFinalRenderPass);
 
 	//AddPass(MakeShared(ClearRenderTargetPass, m_RenderDevice, m_FinalRenderTarget, ClearFlags::Color, color, 1.0f, 0));
 	
-	AddPass(m_BaseManager.GetManager<IRenderPassFactory>()->CreateRenderPass("DebugPass", m_RenderDevice, m_FinalRenderTarget, Viewport, m_Scene.lock()));
 
 	m_UIPasses.push_back(MakeShared(CUIFontPass, m_RenderDevice, m_Scene)->CreatePipeline(RenderTarget, Viewport));
 	m_UIPasses.push_back(MakeShared(CUIColorPass, m_RenderDevice, m_Scene)->CreatePipeline(RenderTarget, Viewport));

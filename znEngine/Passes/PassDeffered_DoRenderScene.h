@@ -2,14 +2,14 @@
 
 #include "Scene/SceneCreateTypelessListPass.h"
 
-class ZN_API CDefferedRender
+class ZN_API CPassDeffered_DoRenderScene
 	: public RenderPassPipelined
 {
 public:
-	CDefferedRender(IRenderDevice& RenderDevice, const std::shared_ptr<CSceneCreateTypelessListPass>& SceneCreateTypelessListPass);
-	virtual ~CDefferedRender();
+	CPassDeffered_DoRenderScene(IRenderDevice& RenderDevice, const std::shared_ptr<CSceneCreateTypelessListPass>& SceneCreateTypelessListPass);
+	virtual ~CPassDeffered_DoRenderScene();
 
-	// CDefferedRender
+	// CPassDeffered_DoRenderScene
 	std::shared_ptr<ITexture> GetTexture0() const;
 	std::shared_ptr<ITexture> GetTexture1() const;
 	std::shared_ptr<ITexture> GetTexture2() const;

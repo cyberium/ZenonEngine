@@ -6,7 +6,9 @@
 CEditor::CEditor(IBaseManager & BaseManager)
 	: m_BaseManager(BaseManager)
 	, m_Tools(*this)
+	, m_EditorShell(*this)
 {
+
 }
 
 CEditor::~CEditor()
@@ -36,6 +38,11 @@ IEditor3DFrame & CEditor::Get3DFrame() const
 IEditorTools& CEditor::GetTools()
 {
 	return m_Tools;
+}
+
+IEditorShell & CEditor::GetShell()
+{
+	return m_EditorShell;
 }
 
 bool CEditor::IsNodeSelected(std::shared_ptr<ISceneNode3D> Node) const

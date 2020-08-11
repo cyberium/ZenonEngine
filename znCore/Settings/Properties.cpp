@@ -52,20 +52,16 @@ void CPropertiesGroup::Load(const std::shared_ptr<IXMLReader>& Reader)
 	SetName(Reader->GetName());
 	//SetDescription(Reader->GetStr("Description"));
 
-	auto propertiesReader = Reader->GetChild("Properties");
-	if (propertiesReader != nullptr)
+	for (const auto& childReader : Reader->GetChilds())
 	{
-		for (const auto& childReader : propertiesReader->GetChilds())
-		{
-			std::string name = childReader->GetName();
-			auto prop = GetProperty(name);
-			if (prop == nullptr)
-				prop = CreatePropetyByType(childReader->GetStrAttribute("Type"));
-			if (prop == nullptr)
-				continue;
-			prop->Load(childReader);
-			AddProperty(prop);
-		}
+		std::string name = childReader->GetName();
+		auto prop = GetProperty(name);
+		if (prop == nullptr)
+			prop = CreatePropetyByType(childReader->GetStrAttribute("Type"));
+		if (prop == nullptr)
+			continue;
+		prop->Load(childReader);
+		AddProperty(prop);
 	}
 }
 
@@ -74,13 +70,12 @@ void CPropertiesGroup::Save(const std::shared_ptr<IXMLWriter>& Writer) const
 	Writer->SetName(GetName());
 	//Writer->AddStr(GetDescription(), "Description");
 
-	auto propertiesWriter = Writer->CreateChild("Properties");
 	for (const auto& prop : GetProperties())
 	{
 		std::string typeName = GetPropertyTypeName(prop.second.get());
 		if (typeName.empty())
 			continue;
-		auto propertyWriter = propertiesWriter->CreateChild(prop.first);
+		auto propertyWriter = Writer->CreateChild(prop.first);
 		propertyWriter->SetStrAttribute(typeName, "Type");
 		prop.second->Save(propertyWriter);
 	}
@@ -112,6 +107,11 @@ const std::unordered_map<std::string, std::shared_ptr<IProperty>>& CPropertiesGr
 //
 std::string CPropertiesGroup::GetPropertyTypeName(const IProperty* Property) const
 {
+	if (Property == nullptr)
+	{
+		return "";
+	}
+
 	if (auto prop = dynamic_cast<const CProperty<float>*>(Property))
 		return "Float";
 	else if (auto prop = dynamic_cast<const CProperty<glm::vec2>*>(Property))

@@ -44,12 +44,12 @@ void CEditorToolRotator::Initialize()
 	m_RotatorX->GetColliderComponent()->SetBounds(geom->GetBounds());
 
 	m_RotatorY = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, GetScene(), m_RotatorRoot);
-	m_RotatorY->SetName("Rotator_X");
+	m_RotatorY->SetName("Rotator_Y");
 	m_RotatorY->GetModelsComponent()->SetModel(modelY);
 	m_RotatorY->GetColliderComponent()->SetBounds(geom->GetBounds());
 
 	m_RotatorZ = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, GetScene(), m_RotatorRoot);
-	m_RotatorZ->SetName("Rotator_X");
+	m_RotatorZ->SetName("Rotator_Z");
 	m_RotatorZ->SetRotation(glm::vec3(glm::half_pi<float>(), 0.0f, 0.0f));
 	m_RotatorZ->GetModelsComponent()->SetModel(modelZ);
 	m_RotatorZ->GetColliderComponent()->SetBounds(geom->GetBounds());

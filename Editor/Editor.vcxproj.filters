@@ -83,6 +83,16 @@
     <Filter Include="RTS">
       <UniqueIdentifier>{f7a0aa7f-6f60-4e44-bba6-3fae44026bcf}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+      <ParseFiles>true</ParseFiles>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+      <ParseFiles>true</ParseFiles>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -327,6 +337,7 @@
     <ClCompile Include="RTS\EditorToolRTSGround.cpp">
       <Filter>RTS</Filter>
     </ClCompile>
+    <ClCompile Include="EditorWindowsShell.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -522,6 +533,7 @@
     <ClInclude Include="RTS\EditorToolRTSGround.h">
       <Filter>RTS</Filter>
     </ClInclude>
+    <ClInclude Include="EditorWindowsShell.h" />
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="PropertyEditor\Core\Property.h">

@@ -1,8 +1,6 @@
 #pragma once
 
-#include "../DefferedRender.h"
-#include "../DefferedRenderPrepareLights.h"
-#include "../DefferedRenderFinal.h"
+#include "../Scene/SceneCreateTypelessListPass.h"
 
 class ZN_API CRendererForward
 	: public IRenderer

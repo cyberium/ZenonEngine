@@ -1,8 +1,8 @@
 #pragma once
 
-#include "DefferedRender.h"
+#include "Scene/SceneCreateTypelessListPass.h"
 
-class ZN_API CDefferedRenderPrepareLights
+class ZN_API CPassDeffered_ProcessLights
 	: public RenderPass
 {
 public:
@@ -16,8 +16,8 @@ public:
 	};
 
 public:
-	CDefferedRenderPrepareLights(IRenderDevice& RenderDevice, const std::shared_ptr<CSceneCreateTypelessListPass>& BuildRenderListPass);
-	virtual ~CDefferedRenderPrepareLights();
+	CPassDeffered_ProcessLights(IRenderDevice& RenderDevice, const std::shared_ptr<CSceneCreateTypelessListPass>& BuildRenderListPass);
+	virtual ~CPassDeffered_ProcessLights();
 
 	const std::vector<SLightResult>& GetLightResult() const;
 

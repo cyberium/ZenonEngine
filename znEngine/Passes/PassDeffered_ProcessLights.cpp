@@ -1,9 +1,9 @@
 #include "stdafx.h"
 
 // General
-#include "DefferedRenderPrepareLights.h"
+#include "PassDeffered_ProcessLights.h"
 
-CDefferedRenderPrepareLights::CDefferedRenderPrepareLights(IRenderDevice& RenderDevice, const std::shared_ptr<CSceneCreateTypelessListPass>& SceneCreateTypelessListPass)
+CPassDeffered_ProcessLights::CPassDeffered_ProcessLights(IRenderDevice& RenderDevice, const std::shared_ptr<CSceneCreateTypelessListPass>& SceneCreateTypelessListPass)
 	: RenderPass(RenderDevice)
 	, m_SceneCreateTypelessListPass(SceneCreateTypelessListPass)
 {
@@ -11,11 +11,11 @@ CDefferedRenderPrepareLights::CDefferedRenderPrepareLights(IRenderDevice& Render
 	m_PerFrameConstantBuffer = GetRenderDevice().GetObjectsFactory().CreateConstantBuffer(PerFrame());
 }
 
-CDefferedRenderPrepareLights::~CDefferedRenderPrepareLights()
+CPassDeffered_ProcessLights::~CPassDeffered_ProcessLights()
 {
 }
 
-const std::vector<CDefferedRenderPrepareLights::SLightResult>& CDefferedRenderPrepareLights::GetLightResult() const
+const std::vector<CPassDeffered_ProcessLights::SLightResult>& CPassDeffered_ProcessLights::GetLightResult() const
 {
 	return m_LightResult;
 }
@@ -25,7 +25,7 @@ const std::vector<CDefferedRenderPrepareLights::SLightResult>& CDefferedRenderPr
 //
 // IRenderPass
 //
-void CDefferedRenderPrepareLights::PreRender(RenderEventArgs& e)
+void CPassDeffered_ProcessLights::PreRender(RenderEventArgs& e)
 {
 	RenderPass::PreRender(e);
 
@@ -35,7 +35,7 @@ void CDefferedRenderPrepareLights::PreRender(RenderEventArgs& e)
 	}
 }
 
-void CDefferedRenderPrepareLights::Render(RenderEventArgs& e)
+void CPassDeffered_ProcessLights::Render(RenderEventArgs& e)
 {
 	for (size_t i = 0; i < m_SceneCreateTypelessListPass->GetLightList().size(); i++)
 	{
@@ -82,7 +82,7 @@ void CDefferedRenderPrepareLights::Render(RenderEventArgs& e)
 	}
 }
 
-void CDefferedRenderPrepareLights::PostRender(RenderEventArgs& e)
+void CPassDeffered_ProcessLights::PostRender(RenderEventArgs& e)
 {
 	RenderPass::PostRender(e);
 }
@@ -92,7 +92,7 @@ void CDefferedRenderPrepareLights::PostRender(RenderEventArgs& e)
 //
 // IRenderPassPipelined
 //
-std::shared_ptr<IRenderPassPipelined> CDefferedRenderPrepareLights::CreatePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport)
+std::shared_ptr<IRenderPassPipelined> CPassDeffered_ProcessLights::CreatePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport)
 {
 	m_ShadowViewport.SetWidth(cShadowTextureSize);
 	m_ShadowViewport.SetHeight(cShadowTextureSize);
@@ -136,7 +136,7 @@ std::shared_ptr<IRenderPassPipelined> CDefferedRenderPrepareLights::CreatePipeli
 	//return SetPipeline(shadowPipeline);
 }
 
-void CDefferedRenderPrepareLights::UpdateViewport(const Viewport * _viewport)
+void CPassDeffered_ProcessLights::UpdateViewport(const Viewport * _viewport)
 {
 }
 
@@ -145,7 +145,7 @@ void CDefferedRenderPrepareLights::UpdateViewport(const Viewport * _viewport)
 //
 // Protected
 //
-std::shared_ptr<ITexture> CDefferedRenderPrepareLights::CreateShadowTexture0() const
+std::shared_ptr<ITexture> CPassDeffered_ProcessLights::CreateShadowTexture0() const
 {
 	ITexture::TextureFormat colorTextureFormat
 	(
@@ -157,7 +157,7 @@ std::shared_ptr<ITexture> CDefferedRenderPrepareLights::CreateShadowTexture0() c
 	return GetRenderDevice().GetObjectsFactory().CreateTexture2D(cShadowTextureSize, cShadowTextureSize, 1, colorTextureFormat);
 }
 
-std::shared_ptr<ITexture> CDefferedRenderPrepareLights::CreateShadowTextureDepthStencil() const
+std::shared_ptr<ITexture> CPassDeffered_ProcessLights::CreateShadowTextureDepthStencil() const
 {
 	// Depth/stencil buffer
 	ITexture::TextureFormat depthStencilTextureFormat(
@@ -169,7 +169,7 @@ std::shared_ptr<ITexture> CDefferedRenderPrepareLights::CreateShadowTextureDepth
 	return GetRenderDevice().GetObjectsFactory().CreateTexture2D(cShadowTextureSize, cShadowTextureSize, 1, depthStencilTextureFormat);
 }
 
-void CDefferedRenderPrepareLights::BindPerFrameParamsForCurrentIteration(const ILight3D * Light)
+void CPassDeffered_ProcessLights::BindPerFrameParamsForCurrentIteration(const ILight3D * Light)
 {
 	const Viewport& viewport = GetRenderEventArgs()->PipelineState->GetRenderTarget()->GetViewport();
 
@@ -183,7 +183,7 @@ void CDefferedRenderPrepareLights::BindPerFrameParamsForCurrentIteration(const I
 	m_PerFrameShaderParameter->Bind();
 }
 
-void CDefferedRenderPrepareLights::BindPerObjectParamsForCurrentIteration(const ISceneNode3D * SceneNode)
+void CPassDeffered_ProcessLights::BindPerObjectParamsForCurrentIteration(const ISceneNode3D * SceneNode)
 {
 	PerObject perObject;
 	perObject.Model = SceneNode->GetWorldTransfom();

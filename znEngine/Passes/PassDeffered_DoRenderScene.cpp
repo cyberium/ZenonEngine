@@ -1,44 +1,44 @@
 #include "stdafx.h"
 
 // General
-#include "DefferedRender.h"
+#include "PassDeffered_DoRenderScene.h"
 
-CDefferedRender::CDefferedRender(IRenderDevice& RenderDevice, const std::shared_ptr<CSceneCreateTypelessListPass>& SceneCreateTypelessListPass)
+CPassDeffered_DoRenderScene::CPassDeffered_DoRenderScene(IRenderDevice& RenderDevice, const std::shared_ptr<CSceneCreateTypelessListPass>& SceneCreateTypelessListPass)
 	: RenderPassPipelined(RenderDevice)
 	, m_SceneCreateTypelessListPass(SceneCreateTypelessListPass)
 {
 	m_PerObjectConstantBuffer = GetRenderDevice().GetObjectsFactory().CreateConstantBuffer(PerObject());
 }
 
-CDefferedRender::~CDefferedRender()
+CPassDeffered_DoRenderScene::~CPassDeffered_DoRenderScene()
 {
 }
 
 
 //
-// CDefferedRender
+// CPassDeffered_DoRenderScene
 //
-std::shared_ptr<ITexture> CDefferedRender::GetTexture0() const
+std::shared_ptr<ITexture> CPassDeffered_DoRenderScene::GetTexture0() const
 {
 	return m_Texture0;
 }
 
-std::shared_ptr<ITexture> CDefferedRender::GetTexture1() const
+std::shared_ptr<ITexture> CPassDeffered_DoRenderScene::GetTexture1() const
 {
 	return m_Texture1;
 }
 
-std::shared_ptr<ITexture> CDefferedRender::GetTexture2() const
+std::shared_ptr<ITexture> CPassDeffered_DoRenderScene::GetTexture2() const
 {
 	return m_Texture2;
 }
 
-std::shared_ptr<ITexture> CDefferedRender::GetTexture3() const
+std::shared_ptr<ITexture> CPassDeffered_DoRenderScene::GetTexture3() const
 {
 	return m_Texture3;
 }
 
-std::shared_ptr<ITexture> CDefferedRender::GetTextureDepthStencil() const
+std::shared_ptr<ITexture> CPassDeffered_DoRenderScene::GetTextureDepthStencil() const
 {
 	return m_DepthStencilTexture;
 }
@@ -46,14 +46,14 @@ std::shared_ptr<ITexture> CDefferedRender::GetTextureDepthStencil() const
 //
 // IRenderPass
 //
-void CDefferedRender::PreRender(RenderEventArgs & e)
+void CPassDeffered_DoRenderScene::PreRender(RenderEventArgs & e)
 {
 	__super::PreRender(e);
 
 	GetPipeline().GetRenderTarget()->Clear(ClearFlags::All, glm::vec4(0.0f, 0.0f, 0.0f, 0.0f));
 }
 
-void CDefferedRender::Render(RenderEventArgs& e)
+void CPassDeffered_DoRenderScene::Render(RenderEventArgs& e)
 {
 	for (const auto& it : m_SceneCreateTypelessListPass->GetGeometryList())
 	{
@@ -71,7 +71,7 @@ void CDefferedRender::Render(RenderEventArgs& e)
 //
 // IRenderPassPipelined
 //
-std::shared_ptr<IRenderPassPipelined> CDefferedRender::CreatePipeline(std::shared_ptr<IRenderTarget> /*RenderTarget*/, const Viewport * Viewport)
+std::shared_ptr<IRenderPassPipelined> CPassDeffered_DoRenderScene::CreatePipeline(std::shared_ptr<IRenderTarget> /*RenderTarget*/, const Viewport * Viewport)
 {
 	ITexture::TextureFormat colorTextureFormat
 	(
@@ -145,7 +145,7 @@ std::shared_ptr<IRenderPassPipelined> CDefferedRender::CreatePipeline(std::share
 //
 // IVisitor
 //
-EVisitResult CDefferedRender::Visit(const ISceneNode3D * node)
+EVisitResult CPassDeffered_DoRenderScene::Visit(const ISceneNode3D * node)
 {
 	PerObject perObject;
 	perObject.Model = node->GetWorldTransfom();
@@ -155,7 +155,7 @@ EVisitResult CDefferedRender::Visit(const ISceneNode3D * node)
 	return EVisitResult::AllowAll;
 }
 
-EVisitResult CDefferedRender::Visit(const IGeometry * Geometry, const IMaterial * Material, SGeometryDrawArgs GeometryDrawArgs)
+EVisitResult CPassDeffered_DoRenderScene::Visit(const IGeometry * Geometry, const IMaterial * Material, SGeometryDrawArgs GeometryDrawArgs)
 {
 	const auto& shaders = GetRenderEventArgs().PipelineState->GetShaders();
 
@@ -166,7 +166,7 @@ EVisitResult CDefferedRender::Visit(const IGeometry * Geometry, const IMaterial 
 	return EVisitResult::AllowAll;
 }
 
-EVisitResult CDefferedRender::Visit(const ILight3D * light)
+EVisitResult CPassDeffered_DoRenderScene::Visit(const ILight3D * light)
 {
 	return EVisitResult::AllowAll;
 }

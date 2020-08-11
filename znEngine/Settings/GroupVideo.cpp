@@ -12,5 +12,5 @@ CGroupVideo::~CGroupVideo()
 
 void CGroupVideo::AddDefaultSettings()
 {
-	AddSetting("WindowSize", MakeShared(CSettingBase<glm::vec2>, glm::vec2(1280, 1024)));
+	AddSetting(MakeShared(CSettingBase<glm::vec2>, "WindowSize", "Size of ZenonEngine renderWindow.", glm::vec2(1280, 1024)));
 }

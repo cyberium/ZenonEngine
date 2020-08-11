@@ -20,7 +20,7 @@ SceneNode3D::SceneNode3D(IScene& Scene)
 	, m_WorldTransform(1.0f)
 	, m_InverseWorldTransform(1.0f)
 {
-	m_PropertiesGroup = MakeShared(CPropertiesGroup, "SceneNodeProperties", "Some important scene node 3d properties.");
+	m_PropertiesGroup = MakeShared(CPropertiesGroup, "Properties", "Some important scene node 3d properties.");
 }
 
 SceneNode3D::~SceneNode3D()
@@ -35,10 +35,10 @@ void SceneNode3D::Initialize()
 {
 	// Name properties
 	{
-		std::shared_ptr<CPropertyWrapped<std::string>> nameProperty = MakeShared(CPropertyWrapped<std::string>, "Name", "Scene node name.");
-		nameProperty->SetValueSetter(std::bind(&Object::SetName, this, std::placeholders::_1));
-		nameProperty->SetValueGetter(std::bind(&Object::GetName, this));
-		GetProperties()->AddProperty(nameProperty);
+		//std::shared_ptr<CPropertyWrapped<std::string>> nameProperty = MakeShared(CPropertyWrapped<std::string>, "Name", "Scene node name.");
+		//nameProperty->SetValueSetter(std::bind(&Object::SetName, this, std::placeholders::_1));
+		//nameProperty->SetValueGetter(std::bind(&Object::GetName, this));
+		//GetProperties()->AddProperty(nameProperty);
 	}
 
 	// Transform properties
@@ -387,19 +387,6 @@ void SceneNode3D::Accept(IVisitor* visitor)
 // IObject
 //
 
-namespace
-{
-	std::string ExtractClearName(const std::string& DirtyName)
-	{
-		char buff[256];
-		int num;
-		if (sscanf(DirtyName.c_str(), "%s%d", buff, &num) > 0)
-			return buff;
-
-		return DirtyName;
-	}
-}
-
 void SceneNode3D::SetName(const std::string& Name)
 {
 	std::string resultName = Name;
@@ -412,15 +399,20 @@ void SceneNode3D::SetName(const std::string& Name)
 			auto childIt = childs.end();
 			do
 			{
-				childIt = std::find_if(childs.begin(), childs.end(), [resultName](const std::shared_ptr<ISceneNode3D>& Child) -> bool {
+				childIt = std::find_if(childs.begin(), childs.end(), [this, &resultName](const std::shared_ptr<ISceneNode3D>& Child) -> bool {
+					if (Child.get() == this)
+						return false;
 					return resultName == Child->GetName();
 				});
 				if (childIt != childs.end())
-					resultName = ExtractClearName(resultName) + "" + std::to_string(GetGUID().GetCounter());
-
+				{
+					resultName = GetClearName(resultName).first + "#" + std::to_string(GetGUID().GetCounter() + 1);
+				}
 			} while (childIt != childs.end());
 
-			_ASSERT(std::find_if(childs.begin(), childs.end(), [resultName](const std::shared_ptr<ISceneNode3D>& Child) -> bool {
+			_ASSERT(std::find_if(childs.begin(), childs.end(), [this, &resultName](const std::shared_ptr<ISceneNode3D>& Child) -> bool {
+				if (Child.get() == this)
+					return false;
 				return resultName == Child->GetName();
 			}) == childs.end());
 		}
@@ -606,4 +598,9 @@ void SceneNode3D::DoSaveProperties(const std::shared_ptr<IXMLWriter>& Writer) co
 IBaseManager& SceneNode3D::GetBaseManager() const
 {
 	return dynamic_cast<IBaseManagerHolder*>(GetScene())->GetBaseManager();
+}
+
+IRenderDevice& SceneNode3D::GetRenderDevice() const
+{
+	return dynamic_cast<IBaseManagerHolder*>(GetScene())->GetBaseManager().GetApplication().GetRenderDevice();
 }

@@ -1,8 +1,8 @@
 #pragma once
 
-#include "../DefferedRender.h"
-#include "../DefferedRenderPrepareLights.h"
-#include "../DefferedRenderFinal.h"
+#include "../PassDeffered_DoRenderScene.h"
+#include "../PassDeffered_ProcessLights.h"
+#include "../PassDeffered_RenderUIQuad.h"
 
 class ZN_API CRendererDeffered
 	: public IRenderer
@@ -30,9 +30,9 @@ private:
 
 	std::shared_ptr<CSceneCreateTypelessListPass> m_SceneCreateTypelessListPass;
 
-	std::shared_ptr<CDefferedRender> m_DefferedRenderPass;
-	std::shared_ptr<CDefferedRenderPrepareLights> m_DefferedRenderPrepareLights;
-	std::shared_ptr<CDefferedRenderFinal> m_DefferedFinalRenderPass;
+	std::shared_ptr<CPassDeffered_DoRenderScene> m_DefferedRenderPass;
+	std::shared_ptr<CPassDeffered_ProcessLights> m_DefferedRenderPrepareLights;
+	std::shared_ptr<CPassDeffered_RenderUIQuad> m_DefferedFinalRenderPass;
 
 private:
 	IBaseManager& m_BaseManager;

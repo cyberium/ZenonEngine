@@ -161,9 +161,8 @@ void ModelBase::Load(const std::shared_ptr<IXMLReader>& Reader)
 {
 	std::string fileName;
 	
-	if (auto modelReader = Reader->GetChild("Model"))
-		if (auto fileNameReader = modelReader->GetChild("FileName"))
-			fileName = fileNameReader->GetValue();
+	if (auto fileNameReader = Reader->GetChild("FileName"))
+		fileName = fileNameReader->GetValue();
 
 	// TODO: Replace with models maanger
 	auto modelFile = m_RenderDevice.GetBaseManager().GetManager<IFilesManager>()->Open(fileName);
@@ -183,11 +182,9 @@ void ModelBase::Save(const std::shared_ptr<IXMLWriter>& Writer) const
 	}
 
 	CXMLManager xml;
-	auto modelWriter = xml.CreateWriter("Model");
-
 	auto fileNameWriter = xml.CreateWriter("FileName");
-	fileNameWriter->SetValue(m_FileName);
-	modelWriter->AddChild(fileNameWriter);
 
-	Writer->AddChild(modelWriter);
+	fileNameWriter->SetValue(m_FileName);
+
+	Writer->AddChild(fileNameWriter);
 }

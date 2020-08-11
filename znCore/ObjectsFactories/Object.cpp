@@ -70,23 +70,26 @@ void Object::Save(const std::shared_ptr<IByteBuffer>& Buffer) const
 
 void Object::Load(const std::shared_ptr<IXMLReader>& Reader)
 {
-	ObjectType type = Reader->GetUInt16Attribute("Type");
-	ObjectClass class_ = Reader->GetUInt32Attribute("Class");
-	ObjectCounterType counter = Reader->GetUInt32Attribute("Counter");
-	m_Guid = Guid(type, class_, counter);
+	//ObjectType type = Reader->GetUInt16Attribute("Type");
+	//ObjectClass class_ = Reader->GetUInt32Attribute("Class");
+	//ObjectCounterType counter = Reader->GetUInt32Attribute("Counter");
+	//m_Guid = Guid(type, class_, counter);
 
-	m_Name = Reader->GetStrAttribute("Name");
+	auto name = Reader->GetStrAttribute("Name");
+	if (!name.empty())
+		SetName(GetClearName(name).first);
 }
 
 void Object::Save(const std::shared_ptr<IXMLWriter>& Writer) const
 {
-	Writer->SetUInt16Attribute(m_Guid.GetObjectType(), "Type");
-	Writer->SetUInt32Attribute(m_Guid.GetObjectClass(), "Class");
-	Writer->SetUInt32Attribute(m_Guid.GetCounter(), "Counter");
+	//Writer->SetUInt16Attribute(m_Guid.GetObjectType(), "Type");
+	//Writer->SetUInt32Attribute(m_Guid.GetObjectClass(), "Class");
+	//Writer->SetUInt32Attribute(m_Guid.GetCounter(), "Counter");
 
 	// TODO: save only non defaults names
-	if (!m_Name.empty())
-		Writer->SetStrAttribute(m_Name, "Name");
+	auto name = GetClearName(m_Name).first;
+	if (!name.empty())
+		Writer->SetStrAttribute(name, "Name");
 }
 
 
@@ -96,8 +99,8 @@ void Object::Save(const std::shared_ptr<IXMLWriter>& Writer) const
 //
 void Object::SetGUID(const IBaseManager* BaseManager, const Guid& NewGuid)
 {
-	if (GetGUID().IsEmpty() == false)
-		throw std::exception(("Object " + GetGUID().Str() + " already has Guid.").c_str());
+	//if (GetGUID().IsEmpty() == false)
+	//	throw std::exception(("Object " + GetGUID().Str() + " already has Guid.").c_str());
 
 	if (NewGuid.IsEmpty())
 		throw std::exception("Cannot assign empty GUID for object.");

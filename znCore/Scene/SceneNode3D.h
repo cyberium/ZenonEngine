@@ -91,6 +91,7 @@ protected:
 	void                                            DoSaveProperties(const std::shared_ptr<IXMLWriter>& Writer) const;
 
 	IBaseManager&                                   GetBaseManager() const;
+	IRenderDevice&                                  GetRenderDevice() const;
 
 	std::shared_ptr<IColliderComponent3D>			m_Components_Collider;
 	std::shared_ptr<IModelsComponent3D>				m_Components_Models;
