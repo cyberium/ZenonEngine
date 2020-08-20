@@ -98,13 +98,3 @@ ZN_INTERFACE ZN_API IXMLWriter
 	virtual void AddChild(const std::shared_ptr<IXMLWriter>& Writer) = 0;
 	virtual std::vector<std::pair<std::string, std::shared_ptr<IXMLWriter>>> GetChilds() const = 0;
 };
-
-ZN_INTERFACE ZN_API IXML
-{
-	virtual ~IXML() {}
-
-	virtual std::shared_ptr<IXMLReader> CreateReader(std::shared_ptr<IFile> File) = 0;
-	virtual std::shared_ptr<IXMLWriter> CreateWriter() = 0;
-	virtual std::shared_ptr<IXMLWriter> CreateWriter(const std::string& NodeName) = 0;
-	virtual std::shared_ptr<IFile> SaveWriterToFile(const std::shared_ptr<IXMLWriter>& Writer, const std::string& FileName) = 0;
-};

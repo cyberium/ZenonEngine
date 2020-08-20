@@ -94,7 +94,7 @@ EVisitResult CSceneCreateTypedListsPass::Visit(const ISceneNode3D * SceneNode)
 	if (SceneNode->GetClass() <= 0)
 		return EVisitResult::AllowVisitChilds;
 
-	if (const auto& colliderComponent = SceneNode->GetColliderComponent())
+	if (const auto& colliderComponent = SceneNode->GetComponent<IColliderComponent3D>())
 	{
 		if (colliderComponent->IsCulled(GetRenderEventArgs()->CameraForCulling))
 		{

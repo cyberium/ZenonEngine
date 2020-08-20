@@ -61,8 +61,6 @@ public:
 	const ComponentsMap&                            GetComponents() const override;
 	void                                            RaiseComponentMessage(const ISceneNodeComponent* Component, ComponentMessageType Message) const override;
 	virtual void                                    RegisterComponents() override;
-	const std::shared_ptr<IColliderComponent3D>&    GetColliderComponent() const;
-	const std::shared_ptr<IModelsComponent3D>&      GetModelsComponent() const;
 
 	// Others
 	virtual void                                    Update(const UpdateEventArgs& e) override;
@@ -92,9 +90,6 @@ protected:
 
 	IBaseManager&                                   GetBaseManager() const;
 	IRenderDevice&                                  GetRenderDevice() const;
-
-	std::shared_ptr<IColliderComponent3D>			m_Components_Collider;
-	std::shared_ptr<IModelsComponent3D>				m_Components_Models;
 
 private:
 	Node3DList                                      m_Children;

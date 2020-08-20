@@ -9,7 +9,7 @@ namespace
 {
 	void FillIntersectedModelsMap(const std::shared_ptr<ISceneNode3D>& Owner, const Ray& Ray, std::map<float, std::shared_ptr<IModel>> * intersectedModels)
 	{
-		auto modelsComponent = Owner->GetModelsComponent();
+		auto modelsComponent = Owner->GetComponent<IModelsComponent3D>();
 		if (modelsComponent == nullptr)
 			return;
 
@@ -35,7 +35,7 @@ namespace
 
 	void FillIntersectedModelsList(const std::shared_ptr<ISceneNode3D>& Owner, const Frustum& Frustum, std::vector<std::shared_ptr<IModel>> * intersectedModels)
 	{
-		auto modelsComponent = Owner->GetModelsComponent();
+		auto modelsComponent = Owner->GetComponent<IModelsComponent3D>();
 		if (modelsComponent == nullptr)
 			return;
 

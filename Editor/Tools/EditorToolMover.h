@@ -32,12 +32,13 @@ public:
 
 protected:
 	void Clear();
+	std::shared_ptr<ISceneNode3D> GetMovingNode();
 
 private:
 	float m_MoverValue;
 	bool m_IsMovingNow;
 	int m_MoverNuber;
-	std::shared_ptr<ISceneNode3D> m_MovingNode;
+	std::weak_ptr<ISceneNode3D> m_MovingNode;
 	glm::vec3 m_MovingObjectPos;
 	std::shared_ptr<ISceneNode3D> m_MoverRoot;
 	glm::vec3 m_MoverOffset;

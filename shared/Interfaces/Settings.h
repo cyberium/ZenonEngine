@@ -3,7 +3,9 @@
 // Forward BEGIN
 ZN_INTERFACE IManager;
 ZN_INTERFACE IProperty;
-template <typename T> ZN_INTERFACE ZN_API IPropertyT;
+
+template <typename T> 
+ZN_INTERFACE ZN_API IPropertyT;
 // Forward END
 
 

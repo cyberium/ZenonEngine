@@ -97,7 +97,7 @@ inline void DoAddModels(const std::shared_ptr<ISceneNode3D>& ParentNode, std::sh
 	auto sceneNode = baseManager.GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, ParentNode->GetScene(), ParentNode);
 
 	if (auto fbxModel = Node->GetFBXModel())
-		sceneNode->GetModelsComponent()->SetModel(fbxModel->GetModel());
+		sceneNode->GetComponent<IModelsComponent3D>()->SetModel(fbxModel->GetModel());
 
 	for (const auto& c : Node->GetChilds())
 		DoAddModels(sceneNode, c);

@@ -82,8 +82,6 @@ ZN_INTERFACE ZN_API ISceneNode3D
 	virtual const ComponentsMap& GetComponents() const = 0;
 	virtual void RaiseComponentMessage(const ISceneNodeComponent* Component, ComponentMessageType Message) const = 0;
 	virtual void RegisterComponents() = 0;
-	virtual const std::shared_ptr<IColliderComponent3D>& GetColliderComponent() const = 0;
-	virtual const std::shared_ptr<IModelsComponent3D>& GetModelsComponent() const = 0;
 
 	template<typename T> inline bool IsComponentExists()
 	{

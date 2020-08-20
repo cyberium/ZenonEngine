@@ -55,15 +55,15 @@ void CEditorToolMoverRTS::Initialize()
 	m_MoverX->SetName("MoverRTS_X");
 	m_MoverX->SetRotation(glm::vec3(0.0f, 0.0f, -glm::half_pi<float>()));
 	//moverX->SetScale(glm::vec3(0.5f, 1.0f, 0.5f));
-	m_MoverX->GetModelsComponent()->SetModel(modelX);
-	m_MoverX->GetColliderComponent()->SetBounds(model->GetBounds());
+	m_MoverX->GetComponent<IModelsComponent3D>()->SetModel(modelX);
+	m_MoverX->GetComponent<IColliderComponent3D>()->SetBounds(model->GetBounds());
 
 	m_MoverZ = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, GetScene(), m_MoverRoot);
 	m_MoverZ->SetName("RotatorRTS_Z");
 	//moverZ->SetScale(glm::vec3(0.5f, 1.0f, 0.5f));
 	m_MoverZ->SetRotation(glm::vec3(glm::half_pi<float>(), 0.0f, 0.0f));
-	m_MoverZ->GetModelsComponent()->SetModel(modelZ);
-	m_MoverZ->GetColliderComponent()->SetBounds(model->GetBounds());
+	m_MoverZ->GetComponent<IModelsComponent3D>()->SetModel(modelZ);
+	m_MoverZ->GetComponent<IColliderComponent3D>()->SetBounds(model->GetBounds());
 }
 
 void CEditorToolMoverRTS::Finalize()
@@ -80,7 +80,7 @@ void CEditorToolMoverRTS::Enable()
 	{
 		m_MovingNode = node;
 		m_MoverRoot->SetTranslate(node->GetTranslation());
-		m_MoverRoot->SetScale(glm::vec3(m_MovingNode->GetColliderComponent()->GetBounds().getRadius() * 1.0f / 10.0f));
+		m_MoverRoot->SetScale(glm::vec3(m_MovingNode->GetComponent<IColliderComponent3D>()->GetBounds().getRadius() * 1.0f / 10.0f));
 	}
 }
 

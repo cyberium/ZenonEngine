@@ -326,22 +326,13 @@ void SceneNode3D::RaiseComponentMessage(const ISceneNodeComponent* Component, Co
 }
 void SceneNode3D::RegisterComponents()
 {
-	m_Components_Models = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<IComponentFactory>()->CreateComponentT<IModelsComponent3D>(cSceneNodeModelsComponent, *this);
+	auto m_Components_Models = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<IComponentFactory>()->CreateComponentT<IModelsComponent3D>(cSceneNodeModelsComponent, *this);
 	m_Components_Models = ISceneNode3D::AddComponent(m_Components_Models);
 
-	m_Components_Collider = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<IComponentFactory>()->CreateComponentT<IColliderComponent3D>(cSceneNodeColliderComponent, *this);
-	m_Components_Collider = ISceneNode3D::AddComponent(m_Components_Collider);
+	auto m_Components_Collider = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<IComponentFactory>()->CreateComponentT<IColliderComponent3D>(cSceneNodeColliderComponent, *this);
+	ISceneNode3D::AddComponent(m_Components_Collider);
 }
 
-const std::shared_ptr<IColliderComponent3D>& SceneNode3D::GetColliderComponent() const
-{
-	return m_Components_Collider;
-}
-
-const std::shared_ptr<IModelsComponent3D>& SceneNode3D::GetModelsComponent() const
-{
-	return m_Components_Models;
-}
 
 
 
@@ -439,6 +430,7 @@ void SceneNode3D::Load(const std::shared_ptr<IXMLReader>& Reader)
 		for (const auto& ch : componentsWriter->GetChilds())
 		{
 			auto child = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<IComponentFactory>()->LoadComponentXML(ch, *this);
+			//if (GetComponent(child->GetGUID().GetObjectClass()) == nullptr)
 			AddComponent(child->GetGUID().GetObjectClass(), child);
 		}
 	}

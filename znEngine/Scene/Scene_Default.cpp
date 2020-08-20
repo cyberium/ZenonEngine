@@ -219,7 +219,7 @@ void CSceneDefault::Load3D()
 
 					BoundingBox bbox = BoundingBox(glm::vec3(-1.0f, -1.0f, -1.0f), glm::vec3(1.0f, 1.0f, 1.0f));
 					bbox.transform(sceneNode->GetWorldTransfom());
-					sceneNode->GetColliderComponent()->SetBounds(bbox);
+					sceneNode->GetComponent<IColliderComponent3D>()->SetBounds(bbox);
 
 #if 0
 					rp3d::Vector3 initPosition(offset * i + r.NextFloat() / 5.0f, offset * k, offset * j + r.NextFloat() / 5.0f);

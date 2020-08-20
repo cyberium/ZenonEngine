@@ -54,21 +54,21 @@ void CEditorToolMover::Initialize()
 	m_MoverX->SetName("Mover_X");
 	m_MoverX->SetRotation(glm::vec3(0.0f, 0.0f, -glm::half_pi<float>()));
 	//moverX->SetScale(glm::vec3(0.5f, 1.0f, 0.5f));
-	m_MoverX->GetModelsComponent()->SetModel(modelX);
-	m_MoverX->GetColliderComponent()->SetBounds(model->GetBounds());
+	m_MoverX->GetComponent<IModelsComponent3D>()->SetModel(modelX);
+	m_MoverX->GetComponent<IColliderComponent3D>()->SetBounds(model->GetBounds());
 
 	m_MoverY = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, GetScene(), m_MoverRoot);
 	m_MoverY->SetName("Mover_Y");
 	//moverY->SetScale(glm::vec3(0.5f, 1.0f, 0.5f));
-	m_MoverY->GetModelsComponent()->SetModel(modelY);
-	m_MoverY->GetColliderComponent()->SetBounds(model->GetBounds());
+	m_MoverY->GetComponent<IModelsComponent3D>()->SetModel(modelY);
+	m_MoverY->GetComponent<IColliderComponent3D>()->SetBounds(model->GetBounds());
 
 	m_MoverZ = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, GetScene(), m_MoverRoot);
 	m_MoverZ->SetName("Mover_Z");
 	//moverZ->SetScale(glm::vec3(0.5f, 1.0f, 0.5f));
 	m_MoverZ->SetRotation(glm::vec3(glm::half_pi<float>(), 0.0f, 0.0f));
-	m_MoverZ->GetModelsComponent()->SetModel(modelZ);
-	m_MoverZ->GetColliderComponent()->SetBounds(model->GetBounds());
+	m_MoverZ->GetComponent<IModelsComponent3D>()->SetModel(modelZ);
+	m_MoverZ->GetComponent<IColliderComponent3D>()->SetBounds(model->GetBounds());
 }
 
 void CEditorToolMover::Finalize()
@@ -85,7 +85,7 @@ void CEditorToolMover::Enable()
 	{
 		m_MovingNode = node;
 		m_MoverRoot->SetTranslate(node->GetTranslation());
-		m_MoverRoot->SetScale(glm::vec3(m_MovingNode->GetColliderComponent()->GetBounds().getRadius() * 1.0f / 10.0f));
+		m_MoverRoot->SetScale(glm::vec3(node->GetComponent<IColliderComponent3D>()->GetBounds().getRadius() * 1.0f / 10.0f));
 	}
 }
 
@@ -103,25 +103,25 @@ void CEditorToolMover::Disable()
 
 bool CEditorToolMover::OnMousePressed(const MouseButtonEventArgs & e, const Ray & RayToWorld)
 {
-	auto nodes = GetScene()->GetFinder().FindIntersection(RayToWorld, nullptr, m_MoverRoot);
-	if (nodes.empty())
+	auto movingNode = GetMovingNode();
+	if (movingNode == nullptr)
 		return false;
 
-	
-	if (m_MovingNode == nullptr)
-		return false;
-
-	_ASSERT(!IsChildOf(m_MoverRoot, m_MovingNode));
+	_ASSERT(!IsChildOf(m_MoverRoot, movingNode));
 
 	{
-		auto pos = GetScene()->GetCameraController()->RayToPlane(RayToWorld, Plane(glm::vec3(0.0f, 1.0f, 0.0f), m_MovingNode->GetTranslation().y));
+		auto pos = GetScene()->GetCameraController()->RayToPlane(RayToWorld, Plane(glm::vec3(0.0f, 1.0f, 0.0f), movingNode->GetTranslation().y));
 		auto cameraPosX0Z = GetScene()->GetCameraController()->GetCamera()->GetTranslation();
 		cameraPosX0Z = glm::vec3(cameraPosX0Z.x, 0.0f, cameraPosX0Z.z);
-		auto movedObjectPosX0Z = glm::vec3(m_MovingNode->GetTranslation().x, 0.0f, m_MovingNode->GetTranslation().z);
+		auto movedObjectPosX0Z = glm::vec3(movingNode->GetTranslation().x, 0.0f, movingNode->GetTranslation().z);
 		auto planeNormal = glm::normalize(movedObjectPosX0Z - cameraPosX0Z);
 		auto posYYY = GetScene()->GetCameraController()->RayToPlane(RayToWorld, Plane(planeNormal, 0.0f));
 		m_MoverOffset = m_MoverRoot->GetTranslation() - glm::vec3(pos.x, posYYY.y, pos.z);
 	}
+
+	auto nodes = GetScene()->GetFinder().FindIntersection(RayToWorld, nullptr, m_MoverRoot);
+	if (nodes.empty())
+		return false;
 
 	for (const auto& it : nodes)
 	{
@@ -141,7 +141,7 @@ bool CEditorToolMover::OnMousePressed(const MouseButtonEventArgs & e, const Ray 
 
 	if (m_MoverNuber > 0)
 	{
-		m_MovingObjectPos = m_MovingNode->GetTranslation();
+		m_MovingObjectPos = movingNode->GetTranslation();
 		m_IsMovingNow = true;
 		return true;
 	}
@@ -160,7 +160,11 @@ void CEditorToolMover::OnMouseMoved(const MouseMotionEventArgs & e, const Ray & 
 	if (!m_IsMovingNow)
 		return;
 
-	glm::vec3 oldPos = m_MovingNode->GetTranslation();
+	auto movingNode = GetMovingNode();
+	if (movingNode == nullptr)
+		return;
+
+	glm::vec3 oldPos = movingNode->GetTranslation();
 	glm::vec3 newPos = glm::vec3(0.0f);
 
 	if (m_MoverNuber == 1)
@@ -184,11 +188,11 @@ void CEditorToolMover::OnMouseMoved(const MouseMotionEventArgs & e, const Ray & 
 		newPos = glm::vec3(oldPos.x, mousePos.y + m_MoverOffset.y, oldPos.z);
 	}
 
-	m_MovingNode->SetTranslate(FixBoxCoords(newPos));
-	m_MoverRoot->SetTranslate(m_MovingNode->GetTranslation());
+	movingNode->SetTranslate(FixBoxCoords(newPos));
+	m_MoverRoot->SetTranslate(movingNode->GetTranslation());
 
 	// Refresh selection bounds
-	dynamic_cast<IEditorToolSelector&>(GetEditor().GetTools().GetTool(ETool::EToolSelector)).SelectNode(m_MovingNode);
+	dynamic_cast<IEditorToolSelector&>(GetEditor().GetTools().GetTool(ETool::EToolSelector)).SelectNode(movingNode);
 }
 
 
@@ -253,4 +257,11 @@ void CEditorToolMover::Clear()
 	m_MoverNuber = 0;
 	m_IsMovingNow = false;
 	m_MovingObjectPos = glm::vec3(0.0f);
+}
+
+std::shared_ptr<ISceneNode3D> CEditorToolMover::GetMovingNode()
+{
+	if (m_MovingNode.expired())
+		return nullptr;
+	return m_MovingNode.lock();
 }

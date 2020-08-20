@@ -28,8 +28,8 @@ void CEditorToolRotatorRTS::Initialize()
 
 	m_RotatorY = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, GetScene(), m_RotatorRoot);
 	m_RotatorY->SetName("RotatorRTS_Y");
-	m_RotatorY->GetModelsComponent()->SetModel(modelY);
-	m_RotatorY->GetColliderComponent()->SetBounds(geom->GetBounds());
+	m_RotatorY->GetComponent<IModelsComponent3D>()->SetModel(modelY);
+	m_RotatorY->GetComponent<IColliderComponent3D>()->SetBounds(geom->GetBounds());
 }
 
 void CEditorToolRotatorRTS::Finalize()
@@ -46,7 +46,7 @@ void CEditorToolRotatorRTS::Enable()
 	if (m_MovingNode = GetEditor().GetFirstSelectedNode())
 	{
 		m_RotatorRoot->SetTranslate(m_MovingNode->GetTranslation());
-		m_RotatorRoot->SetScale(glm::vec3(m_MovingNode->GetColliderComponent()->GetBounds().getRadius() * 2.0f));
+		m_RotatorRoot->SetScale(glm::vec3(m_MovingNode->GetComponent<IColliderComponent3D>()->GetBounds().getRadius() * 2.0f));
 	}
 }
 
