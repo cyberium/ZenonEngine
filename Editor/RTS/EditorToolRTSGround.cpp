@@ -69,14 +69,14 @@ void CRTSGround::AddCell(CRTSGround::SRTSCell::ERTSCellType CellType, uint32 Ind
 	}
 
 	auto modelName = "";
-	if (CellType == CRTSGround::SRTSCell::ERTSCellType::ctGround)
+	/*if (CellType == CRTSGround::SRTSCell::ERTSCellType::ctGround)
 	{
 		modelName = "C:\\_engine\\ZenonEngine_gamedata\\models\\ground_dirt.fbx.znmdl";
 	}
 	else if (CellType == CRTSGround::SRTSCell::ERTSCellType::ctWater)
 	{
 		modelName = "C:\\_engine\\ZenonEngine_gamedata\\models\\ground_dirtRiver.fbx.znmdl";
-	}
+	}*/
 	
 	if (modelName == "")
 		return;

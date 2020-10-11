@@ -20,7 +20,7 @@ void CEditorToolMover::Initialize()
 	m_MoverRoot = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, GetScene(), GetScene()->GetRootNode3D());
 	m_MoverRoot->SetName("Mover");
 
-	std::shared_ptr<IFBXScene> fbxScene = GetBaseManager().GetManager<IFBXManager>()->LoadFBX("C:\\_engine\\ZenonEngine_gamedata\\arrow.FBX");
+	std::shared_ptr<IFBXScene> fbxScene = GetBaseManager().GetManager<IFBXManager>()->LoadFBX("arrow.FBX");
 
 	auto fbxModels = fbxScene->GetFBXModels();
 	_ASSERT(fbxModels.size() == 1);
@@ -28,10 +28,10 @@ void CEditorToolMover::Initialize()
 	auto geom = model->GetConnections().begin()->Geometry;
 	if (auto loadable = std::dynamic_pointer_cast<IObjectLoadSave>(model))
 	{
-		std::shared_ptr<IFile> file = MakeShared(CFile, "C:\\_engine\\ZenonEngine_gamedata\\arrow.znmdl");
+		std::shared_ptr<IFile> file = MakeShared(CFile, "arrow.znmdl");
 		loadable->Save(file);
 
-		GetBaseManager().GetManager<IFilesManager>()->GetFilesStorage("PCEveryFileAccess")->SaveFile(file);
+		GetBaseManager().GetManager<IFilesManager>()->GetFilesStorage("ZenonGamedata")->SaveFile(file);
 	}
 
 	auto materialX = MakeShared(MaterialDebug, GetRenderDevice());

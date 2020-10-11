@@ -85,7 +85,7 @@ void CSceneDefault::Initialize()
 	auto newRoot = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, this, GetRootNode3D());
 	newRoot->SetName("NewRoot3D");
 
-	auto file = GetBaseManager().GetManager<IFilesManager>()->Open("D://Scene.xml");
+	auto file = GetBaseManager().GetManager<IFilesManager>()->Open("Scene.xml");
 	if (file != nullptr)
 	{
 		CXMLManager xml;

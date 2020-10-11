@@ -3,8 +3,6 @@
 // General
 #include "EditorUIFrame.h"
 
-#include <qfilesystemmodel.h>
-
 CEditorUIFrame::CEditorUIFrame(IEditor& Editor)
 	: QMainWindow(nullptr)
 	, m_Editor(Editor)
@@ -80,7 +78,7 @@ bool CEditorUIFrame::InitializeEditorFrame()
 
 	std::vector<std::string> realNames;
 
-	auto fileNames = Utils::GetAllFilesInDirectory("C:\\_engine\\ZenonEngine_gamedata\\models", ".fbx");
+	auto fileNames = Utils::GetAllFilesInDirectory("E:\\_programming\\ZenonEngine_gamedata\\models", ".fbx");
 	for (const auto& it : fileNames)
 	{
 		Log::Info(it.c_str());
@@ -94,14 +92,12 @@ bool CEditorUIFrame::InitializeEditorFrame()
 				continue;
 			}
 
-			continue;
+			//continue;
 
-			/*std::shared_ptr<ISceneNode3D> sceneNode = m_Editor.GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode_FBXNode, dynamic_cast<IScene*>(m_Editor3D));
+			std::shared_ptr<IFBXScene> fbxScene = m_Editor.GetBaseManager().GetManager<IFBXManager>()->LoadFBX(it);
+			auto fbxModels = fbxScene->GetFBXModels();
 
-			std::shared_ptr<IFBXNode> fbxSceneNode = std::dynamic_pointer_cast<IFBXNode>(sceneNode);
-			fbxSceneNode->InitializeFromFile(it);
-
-			auto model = std::dynamic_pointer_cast<IFBXNode>(sceneNode->GetChilds().at(0))->GetModel();
+			auto model = fbxModels.at(0)->GetModel();
 			if (auto loadable = std::dynamic_pointer_cast<IObjectLoadSave>(model))
 			{
 				std::shared_ptr<IFile> file = MakeShared(CFile, zenonFileName);
@@ -109,7 +105,7 @@ bool CEditorUIFrame::InitializeEditorFrame()
 
 				m_Editor.GetBaseManager().GetManager<IFilesManager>()->GetFilesStorage("PCEveryFileAccess")->SaveFile(file);
 				realNames.push_back(zenonFileName);
-			}*/
+			}
 		}
 		catch (const CException& e)
 		{
