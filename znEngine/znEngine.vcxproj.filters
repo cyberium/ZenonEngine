@@ -58,12 +58,6 @@
     <Filter Include="FBX\Parts">
       <UniqueIdentifier>{d92e52e1-0d78-44d9-ba88-a6990c61358e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resources\Shaders_D3D\UI\Base">
-      <UniqueIdentifier>{71930268-138d-475c-8c78-cbedd7440462}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resources\Shaders_D3D\3D\Base">
-      <UniqueIdentifier>{f305d0f6-cefa-493d-8527-35571ff021e1}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Passes\UI">
       <UniqueIdentifier>{46e412dd-bb55-422f-9cf7-d860c116b3c4}</UniqueIdentifier>
     </Filter>
@@ -123,12 +117,6 @@
     </Filter>
     <Filter Include="Physics\reactphysics3d\mathematics">
       <UniqueIdentifier>{68519900-aca4-4b7a-affe-1d569eff1075}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resources\Shaders_D3D\3D\Editor">
-      <UniqueIdentifier>{64857836-8989-4f6f-abec-81d619938378}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resources\Shaders_D3D\3D\Deffered">
-      <UniqueIdentifier>{c75d5999-07a7-4693-8635-28690f452353}</UniqueIdentifier>
     </Filter>
     <Filter Include="Passes\Technical">
       <UniqueIdentifier>{ee871fb8-2974-4629-a7f9-72e3b2816735}</UniqueIdentifier>
@@ -1276,75 +1264,13 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="Resources\shaders_D3D\UI\UI_Button.hlsl">
-      <Filter>Resources\shaders_D3D\UI</Filter>
-    </Text>
-    <Text Include="Resources\shaders_D3D\UI\UI_Color.hlsl">
-      <Filter>Resources\shaders_D3D\UI</Filter>
-    </Text>
-    <Text Include="Resources\shaders_D3D\UI\UI_Font.hlsl">
-      <Filter>Resources\shaders_D3D\UI</Filter>
-    </Text>
-    <Text Include="Resources\shaders_D3D\UI\UI_Line.hlsl">
-      <Filter>Resources\shaders_D3D\UI</Filter>
-    </Text>
-    <Text Include="Resources\shaders_D3D\UI\UI_Texture.hlsl">
-      <Filter>Resources\shaders_D3D\UI</Filter>
-    </Text>
-    <Text Include="Resources\shaders_D3D\DeferredRendering.hlsl">
-      <Filter>Resources\shaders_D3D</Filter>
-    </Text>
-    <Text Include="Resources\shaders_D3D\Material.hlsl">
-      <Filter>Resources\shaders_D3D</Filter>
-    </Text>
     <Text Include="Resources\Fonts\consola.ttf">
       <Filter>Resources\Fonts</Filter>
     </Text>
-    <Text Include="Resources\shaders_OGL\UI\UI_Font.vs">
-      <Filter>Resources\Shaders_OGL\UI</Filter>
-    </Text>
-    <Text Include="Resources\shaders_OGL\UI\UI_Font.ps">
-      <Filter>Resources\Shaders_OGL\UI</Filter>
-    </Text>
-    <Text Include="Resources\shaders_OGL\3D\Debug.vs">
-      <Filter>Resources\Shaders_OGL\3D</Filter>
-    </Text>
-    <Text Include="Resources\shaders_OGL\3D\Debug.ps">
-      <Filter>Resources\Shaders_OGL\3D</Filter>
-    </Text>
-    <Text Include="Resources\shaders_OGL\3D\Textured.vs">
-      <Filter>Resources\Shaders_OGL\3D</Filter>
-    </Text>
-    <Text Include="Resources\shaders_OGL\3D\Textured.ps">
-      <Filter>Resources\Shaders_OGL\3D</Filter>
-    </Text>
-    <Text Include="Resources\shaders_D3D\Light.hlsl">
-      <Filter>Resources\Shaders_D3D</Filter>
-    </Text>
-    <Text Include="Resources\shaders_D3D\3D\Model_Forward.hlsl">
-      <Filter>Resources\Shaders_D3D\3D</Filter>
-    </Text>
-    <Text Include="Resources\shaders_D3D\CommonInclude.hlsl">
-      <Filter>Resources\shaders_D3D</Filter>
-    </Text>
-    <Text Include="Resources\shaders_D3D\Types.hlsl">
-      <Filter>Resources\shaders_D3D</Filter>
-    </Text>
-    <Text Include="Resources\shaders_D3D\UI\UI_Common.hlsl">
-      <Filter>Resources\Shaders_D3D\UI\Base</Filter>
-    </Text>
-    <Text Include="Resources\shaders_D3D\UI\UI_VertexBase.hlsl">
-      <Filter>Resources\Shaders_D3D\UI\Base</Filter>
-    </Text>
-    <Text Include="Resources\shaders_D3D\3D\Particle.hlsl">
-      <Filter>Resources\Shaders_D3D\3D\Base</Filter>
-    </Text>
-    <Text Include="Resources\shaders_D3D\3D\Editor\EditorShaders.hlsl">
-      <Filter>Resources\Shaders_D3D\3D\Editor</Filter>
-    </Text>
-    <Text Include="Resources\shaders_D3D\3D\Shadow.hlsl">
-      <Filter>Resources\Shaders_D3D\3D\Deffered</Filter>
-    </Text>
+    <Text Include="..\gamedata\shaders\3D\Debug.hlsl" />
+    <Text Include="..\gamedata\shaders\3D\Deffered.hlsl" />
+    <Text Include="..\gamedata\shaders\3D\Editor\EditorShaders.hlsl" />
+    <Text Include="..\gamedata\shaders\3D\Model_Deffered.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Resources\Textures\default.png">
@@ -1352,20 +1278,61 @@
     </Image>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\shaders_D3D\3D\Textured.hlsl">
-      <Filter>Resources\Shaders_D3D\3D\Base</Filter>
-    </None>
-    <None Include="Resources\shaders_D3D\3D\Debug.hlsl">
-      <Filter>Resources\Shaders_D3D\3D\Base</Filter>
-    </None>
     <None Include="Formats\Images\DDSFormat.inl">
       <Filter>Formats\Images</Filter>
     </None>
-    <None Include="Resources\shaders_D3D\3D\Deffered.hlsl">
-      <Filter>Resources\Shaders_D3D\3D\Deffered</Filter>
-    </None>
-    <None Include="Resources\shaders_D3D\3D\Model_Deffered.hlsl">
-      <Filter>Resources\Shaders_D3D\3D\Deffered</Filter>
-    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="..\gamedata\shaders\CommonInclude.hlsl">
+      <Filter>Resources\Shaders_D3D</Filter>
+    </FxCompile>
+    <FxCompile Include="..\gamedata\shaders\DeferredRendering.hlsl">
+      <Filter>Resources\Shaders_D3D</Filter>
+    </FxCompile>
+    <FxCompile Include="..\gamedata\shaders\ForwardRendering.hlsl">
+      <Filter>Resources\Shaders_D3D</Filter>
+    </FxCompile>
+    <FxCompile Include="..\gamedata\shaders\Light.hlsl">
+      <Filter>Resources\Shaders_D3D</Filter>
+    </FxCompile>
+    <FxCompile Include="..\gamedata\shaders\Material.hlsl">
+      <Filter>Resources\Shaders_D3D</Filter>
+    </FxCompile>
+    <FxCompile Include="..\gamedata\shaders\Types.hlsl">
+      <Filter>Resources\Shaders_D3D</Filter>
+    </FxCompile>
+    <FxCompile Include="..\gamedata\shaders\3D\Model_Forward.hlsl">
+      <Filter>Resources\Shaders_D3D\3D</Filter>
+    </FxCompile>
+    <FxCompile Include="..\gamedata\shaders\3D\Particle.hlsl">
+      <Filter>Resources\Shaders_D3D\3D</Filter>
+    </FxCompile>
+    <FxCompile Include="..\gamedata\shaders\3D\Shadow.hlsl">
+      <Filter>Resources\Shaders_D3D\3D</Filter>
+    </FxCompile>
+    <FxCompile Include="..\gamedata\shaders\3D\Textured.hlsl">
+      <Filter>Resources\Shaders_D3D\3D</Filter>
+    </FxCompile>
+    <FxCompile Include="..\gamedata\shaders\UI\UI_Button.hlsl">
+      <Filter>Resources\Shaders_D3D\UI</Filter>
+    </FxCompile>
+    <FxCompile Include="..\gamedata\shaders\UI\UI_Color.hlsl">
+      <Filter>Resources\Shaders_D3D\UI</Filter>
+    </FxCompile>
+    <FxCompile Include="..\gamedata\shaders\UI\UI_Common.hlsl">
+      <Filter>Resources\Shaders_D3D\UI</Filter>
+    </FxCompile>
+    <FxCompile Include="..\gamedata\shaders\UI\UI_Font.hlsl">
+      <Filter>Resources\Shaders_D3D\UI</Filter>
+    </FxCompile>
+    <FxCompile Include="..\gamedata\shaders\UI\UI_Line.hlsl">
+      <Filter>Resources\Shaders_D3D\UI</Filter>
+    </FxCompile>
+    <FxCompile Include="..\gamedata\shaders\UI\UI_Texture.hlsl">
+      <Filter>Resources\Shaders_D3D\UI</Filter>
+    </FxCompile>
+    <FxCompile Include="..\gamedata\shaders\UI\UI_VertexBase.hlsl">
+      <Filter>Resources\Shaders_D3D\UI</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

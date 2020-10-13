@@ -31,9 +31,9 @@ std::shared_ptr<IRenderPassPipelined> CMaterialParticlePass::CreatePipeline(std:
 
 	if (GetRenderDevice().GetDeviceType() == RenderDeviceType::RenderDeviceType_DirectX11)
 	{
-		vertexShader = GetRenderDevice().GetObjectsFactory().CreateShader(EShaderType::VertexShader, "IDB_SHADER_3D_PARTICLE", "VS_main");
-		geomShader = GetRenderDevice().GetObjectsFactory().CreateShader(EShaderType::GeometryShader, "IDB_SHADER_3D_PARTICLE", "GS_Billboard");
-		pixelShader = GetRenderDevice().GetObjectsFactory().CreateShader(EShaderType::PixelShader, "IDB_SHADER_3D_PARTICLE", "PS_main");
+		vertexShader = GetRenderDevice().GetObjectsFactory().CreateShader(EShaderType::VertexShader, "3D/Particle.hlsl", "VS_main");
+		geomShader = GetRenderDevice().GetObjectsFactory().CreateShader(EShaderType::GeometryShader, "3D/Particle.hlsl", "GS_Billboard");
+		pixelShader = GetRenderDevice().GetObjectsFactory().CreateShader(EShaderType::PixelShader, "3D/Particle.hlsl", "PS_main");
 	}
 	vertexShader->LoadInputLayoutFromReflector();
 

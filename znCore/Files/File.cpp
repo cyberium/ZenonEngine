@@ -20,11 +20,11 @@ void CFile::FixFilePath(std::string& _string)
 	size_t index = 0;
 	while (true)
 	{
-		index = _string.find('/', index);
+		index = _string.find('\\', index);
 		if (index == std::string::npos)
 			break;
 
-		_string.replace(index, 1, "\\");
+		_string.replace(index, 1, "/");
 		index += 3;
 	}
 }

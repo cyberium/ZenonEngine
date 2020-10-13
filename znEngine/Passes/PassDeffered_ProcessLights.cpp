@@ -102,10 +102,10 @@ std::shared_ptr<IRenderPassPipelined> CPassDeffered_ProcessLights::CreatePipelin
 	m_ShadowRenderTarget->AttachTexture(IRenderTarget::AttachmentPoint::DepthStencil, CreateShadowTextureDepthStencil());
 	m_ShadowRenderTarget->SetViewport(m_ShadowViewport);
 
-	auto& vertexShader = GetRenderDevice().GetObjectsFactory().CreateShader(EShaderType::VertexShader, "IDB_SHADER_3D_SHADOW", "VS_Shadow");
+	auto& vertexShader = GetRenderDevice().GetObjectsFactory().CreateShader(EShaderType::VertexShader, "3D/Shadow.hlsl", "VS_Shadow");
 	vertexShader->LoadInputLayoutFromReflector();
 
-	//auto& pixelShader = GetRenderDevice().GetObjectsFactory().CreateShader(EShaderType::PixelShader, "IDB_SHADER_3D_SHADOW", "PS_Shadow", "latest");
+	//auto& pixelShader = GetRenderDevice().GetObjectsFactory().CreateShader(EShaderType::PixelShader, "3D/Shadow.hlsl", "PS_Shadow", "latest");
 
 	IBlendState::BlendMode disableBlending = IBlendState::BlendMode(false);
 	IDepthStencilState::DepthMode enableDepthWrites = IDepthStencilState::DepthMode(true, IDepthStencilState::DepthWrite::Enable);

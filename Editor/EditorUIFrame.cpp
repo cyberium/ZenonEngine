@@ -14,7 +14,7 @@ CEditorUIFrame::CEditorUIFrame(IEditor& Editor)
 	// MENU
 	connect(m_UI.actionOpen_Scene, &QAction::triggered, [this]() {
 
-		std::string fileName = GetEditor().GetShell().ShowLoadFileDialog("D:\\Scene.xml");
+		std::string fileName = GetEditor().GetShell().ShowLoadFileDialog("");
 		if (fileName.empty())
 			return;
 
@@ -36,7 +36,7 @@ CEditorUIFrame::CEditorUIFrame(IEditor& Editor)
 	});
 
 	connect(m_UI.actionSave_Scene, &QAction::triggered, [this]() {
-		std::string fileName = GetEditor().GetShell().ShowSaveFileDialog("D:\\Scene.xml");
+		std::string fileName = GetEditor().GetShell().ShowSaveFileDialog("D:/Scene.xml");
 		if (fileName.empty())
 			return;
 
@@ -86,11 +86,11 @@ bool CEditorUIFrame::InitializeEditorFrame()
 		try
 		{
 			std::string zenonFileName = it + ".znmdl";
-			if (m_Editor.GetBaseManager().GetManager<IFilesManager>()->IsFileExists(zenonFileName))
+			/*if (m_Editor.GetBaseManager().GetManager<IFilesManager>()->IsFileExists(zenonFileName))
 			{
 				realNames.push_back(zenonFileName);
 				continue;
-			}
+			}*/
 
 			//continue;
 

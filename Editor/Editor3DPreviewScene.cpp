@@ -109,9 +109,9 @@ void CEditor3DPreviewScene::Initialize()
 	// Renderer
 	//
 	{
-		auto defferedRenderer = MakeShared(CRendererForward, GetBaseManager(), weak_from_this());
-		defferedRenderer->Initialize(GetRenderWindow()->GetRenderTarget(), &GetRenderWindow()->GetViewport());
-		SetRenderer(defferedRenderer);
+		auto forwardrender = MakeShared(CRendererForward, GetBaseManager(), weak_from_this());
+		forwardrender->Initialize(GetRenderWindow()->GetRenderTarget(), &GetRenderWindow()->GetViewport());
+		SetRenderer(forwardrender);
 
 
 

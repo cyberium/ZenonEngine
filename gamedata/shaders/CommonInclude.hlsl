@@ -2,9 +2,9 @@
 // Common functions
 //
 
-#include "IDB_SHADER_TYPES"
-#include "IDB_SHADER_MATERIAL"
-#include "IDB_SHADER_LIGHT"
+#include "Types.hlsl"
+#include "Material.hlsl"
+#include "Light.hlsl"
 
 
 

@@ -62,8 +62,8 @@ std::shared_ptr<IRenderPassPipelined> CDrawSelectionPass::CreatePipeline(std::sh
 
 	if (GetRenderDevice().GetDeviceType() == RenderDeviceType::RenderDeviceType_DirectX11)
 	{
-		vertexShader = GetRenderDevice().GetObjectsFactory().CreateShader(EShaderType::VertexShader, "IDB_SHADER_3D_EDITOR", "VS_main_Inst");
-		pixelShader = GetRenderDevice().GetObjectsFactory().CreateShader(EShaderType::PixelShader, "IDB_SHADER_3D_EDITOR", "PS_main");
+		vertexShader = GetRenderDevice().GetObjectsFactory().CreateShader(EShaderType::VertexShader, "3D/Editor/EditorShaders.hlsl", "VS_main_Inst");
+		pixelShader = GetRenderDevice().GetObjectsFactory().CreateShader(EShaderType::PixelShader, "3D/Editor/EditorShaders.hlsl", "PS_main");
 	}
 	vertexShader->LoadInputLayoutFromReflector();
 

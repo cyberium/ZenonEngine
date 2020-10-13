@@ -1,4 +1,4 @@
-#include "IDB_SHADER_COMMON_INCLUDE"
+#include "CommonInclude.hlsl"
 
 struct VS_Input
 {

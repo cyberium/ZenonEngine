@@ -1,4 +1,4 @@
-#include "IDB_SHADER_UI_VERTEX_BASE"
+#include "UI/UI_VertexBase.hlsl"
 
 cbuffer Material : register(b1)
 {

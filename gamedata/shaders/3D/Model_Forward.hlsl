@@ -1,4 +1,4 @@
-#include "IDB_SHADER_COMMON_INCLUDE"
+#include "CommonInclude.hlsl"
 
 #define RENDERER_FORWARD 0
 #define RENDERER_DEFFERED 1

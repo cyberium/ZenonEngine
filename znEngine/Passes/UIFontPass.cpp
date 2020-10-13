@@ -31,11 +31,11 @@ std::shared_ptr<IRenderPassPipelined> CUIFontPass::CreatePipeline(std::shared_pt
 	if (GetRenderDevice().GetDeviceType() == RenderDeviceType::RenderDeviceType_DirectX11)
 	{
 		g_pVertexShader = GetRenderDevice().GetObjectsFactory().CreateShader(
-			EShaderType::VertexShader, "IDB_SHADER_UI_FONT", "VS_main"
+			EShaderType::VertexShader, "UI/UI_Font.hlsl", "VS_main"
 		);
 
 		g_pPixelShader = GetRenderDevice().GetObjectsFactory().CreateShader(
-			EShaderType::PixelShader, "IDB_SHADER_UI_FONT", "PS_main"
+			EShaderType::PixelShader, "UI/UI_Font.hlsl", "PS_main"
 		);
 	}
 	else if (GetRenderDevice().GetDeviceType() == RenderDeviceType::RenderDeviceType_OpenGL)

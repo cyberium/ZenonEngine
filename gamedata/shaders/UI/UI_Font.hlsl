@@ -1,4 +1,4 @@
-#include "IDB_SHADER_UI_COMMON"
+#include "UI/UI_Common.hlsl"
 
 cbuffer Material : register(b2)
 {

@@ -1,8 +1,6 @@
 #pragma once
 
 #include "Scene/Nodes/UITexture.h"
-#include "Passes/Renderer/RendererDeffered.h"
-
 #include "reactphysics3d.h"
 
 class ZN_API CSceneDefault 

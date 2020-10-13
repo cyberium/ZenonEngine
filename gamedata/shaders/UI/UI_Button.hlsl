@@ -1,4 +1,4 @@
-#include "IDB_SHADER_UI_VERTEX_BASE"
+#include "UI/UI_VertexBase.hlsl"
 
 #define BUTTON_STATE_IDLE 0
 #define BUTTON_STATE_HOVER 1

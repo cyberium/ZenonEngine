@@ -116,7 +116,6 @@ void CRendererDeffered::Initialize(std::shared_ptr<IRenderTarget> RenderTarget, 
 
 	//AddPass(MakeShared(ClearRenderTargetPass, m_RenderDevice, m_FinalRenderTarget, ClearFlags::Color, color, 1.0f, 0));
 	
-
 	m_UIPasses.push_back(MakeShared(CUIFontPass, m_RenderDevice, m_Scene)->CreatePipeline(RenderTarget, Viewport));
 	m_UIPasses.push_back(MakeShared(CUIColorPass, m_RenderDevice, m_Scene)->CreatePipeline(RenderTarget, Viewport));
 }

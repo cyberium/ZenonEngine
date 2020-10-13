@@ -25,13 +25,13 @@ std::shared_ptr<IRenderPassPipelined> CMaterial_Textured_Pass::CreatePipeline(st
 
 	if (GetRenderDevice().GetDeviceType() == RenderDeviceType::RenderDeviceType_DirectX11)
 	{
-		vertexShader = GetRenderDevice().GetObjectsFactory().CreateShader(EShaderType::VertexShader, "IDB_SHADER_3D_TEXTURED", "VS_main");
-		pixelShader = GetRenderDevice().GetObjectsFactory().CreateShader(EShaderType::PixelShader, "IDB_SHADER_3D_TEXTURED", "PS_main");
+		vertexShader = GetRenderDevice().GetObjectsFactory().CreateShader(EShaderType::VertexShader, "3D/Textures.hlsl", "VS_main");
+		pixelShader = GetRenderDevice().GetObjectsFactory().CreateShader(EShaderType::PixelShader, "3D/Textures.hlsl", "PS_main");
 	}
 	else
 	{
-		vertexShader = GetRenderDevice().GetObjectsFactory().CreateShader(EShaderType::VertexShader, "IDB_SHADER_OGL_3D_TEXTURED_VS", "");
-		pixelShader = GetRenderDevice().GetObjectsFactory().CreateShader(EShaderType::PixelShader, "IDB_SHADER_OGL_3D_TEXTURED_PS", "");
+		//vertexShader = GetRenderDevice().GetObjectsFactory().CreateShader(EShaderType::VertexShader, "IDB_SHADER_OGL_3D_TEXTURED_VS", "");
+		//pixelShader = GetRenderDevice().GetObjectsFactory().CreateShader(EShaderType::PixelShader, "IDB_SHADER_OGL_3D_TEXTURED_PS", "");
 	}
 	vertexShader->LoadInputLayoutFromReflector();
 

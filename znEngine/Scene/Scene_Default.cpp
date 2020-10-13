@@ -9,9 +9,10 @@
 #include "Materials/MaterialParticle.h"
 #include "Materials/MaterialModel.h"
 
+#include "Passes/Renderer/RendererDeffered.h"
+#include "Passes/Renderer/RendererForward.h"
+
 #include "Scene/Camera/FreeCameraController.h"
-
-
 
 #include "Scene/Components/ReactPhysicsComponent.h"
 #include "Scene/Components/Skeleton/SkeletonComponent.h"
@@ -49,12 +50,12 @@ void CSceneDefault::Initialize()
 		auto lightNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, this);
 		lightNode->SetName("Light");
 		lightNode->SetTranslate(glm::vec3(1500.0f, 1500.0f, 1500.0f));
-		lightNode->SetRotation(glm::vec3(-0.9f, -0.9f, -0.9f));
+		lightNode->SetRotation(glm::vec3(0.0f, -0.5f, 0.0f));
 
 		lightNode->AddComponent(GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<IComponentFactory>()->CreateComponentT<ILightComponent3D>(cSceneNodeLightComponent, *lightNode.get()));
-		lightNode->GetComponent<ILightComponent3D>()->SetType(ELightType::Spot);
+		lightNode->GetComponent<ILightComponent3D>()->SetType(ELightType::Point);
 		lightNode->GetComponent<ILightComponent3D>()->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
-		lightNode->GetComponent<ILightComponent3D>()->SetRange(99000.0f);
+		lightNode->GetComponent<ILightComponent3D>()->SetRange(9000.0f);
 		lightNode->GetComponent<ILightComponent3D>()->SetIntensity(1.0f);
 		lightNode->GetComponent<ILightComponent3D>()->SetSpotlightAngle(75.0f);
 	}
@@ -380,9 +381,13 @@ void CSceneDefault::Load3D()
 	//fbxSceneNode->InitializeFromFile("C:/Users/Alexander/Downloads/Assets/Toon_RTS/Orcs/animation/shaman/Orc_shaman_02_walk.FBX");
 	//fbxSceneNode->InitializeFromFile("C:/Users/Alexander/Downloads/Assets/Toon_RTS/Orcs/models/Single_Mesh/Orc_SM_shaman.FBX");
 	
-	auto defferedRenderer = MakeShared(CRendererDeffered, GetBaseManager(), weak_from_this());
-	defferedRenderer->Initialize(GetRenderWindow()->GetRenderTarget(), &GetRenderWindow()->GetViewport());
-	SetRenderer(defferedRenderer);
+	//auto defferedRenderer = MakeShared(CRendererDeffered, GetBaseManager(), weak_from_this());
+	//defferedRenderer->Initialize(GetRenderWindow()->GetRenderTarget(), &GetRenderWindow()->GetViewport());
+	//SetRenderer(defferedRenderer);
+
+	auto forwardRenderer = MakeShared(CRendererForward, GetBaseManager(), weak_from_this());
+	forwardRenderer->Initialize(GetRenderWindow()->GetRenderTarget(), &GetRenderWindow()->GetViewport());
+	SetRenderer(forwardRenderer);
 
 	//m_Technique3D.AddPass(GetBaseManager().GetManager<IRenderPassFactory>()->CreateRenderPass("TexturedMaterialPass", GetRenderDevice(), GetRenderWindow()->GetRenderTarget(), &GetRenderWindow()->GetViewport(), shared_from_this()));
 	//m_Technique3D.AddPass(MakeShared(CMaterialParticlePass, GetRenderDevice(), shared_from_this())->CreatePipeline(GetRenderWindow()->GetRenderTarget(), &GetRenderWindow()->GetViewport()));

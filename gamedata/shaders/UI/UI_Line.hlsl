@@ -1,4 +1,4 @@
-#include "IDB_SHADER_UI_COMMON"
+#include "UI/UI_Common.hlsl"
 
 /* Geometry GLSL shader that demonstrates how to draw basic thick and smooth bezier curves in 3D.
  * This file is a part of shader-3dcurve example (https://github.com/vicrucann/shader-3dcurve).
