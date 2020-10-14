@@ -139,12 +139,12 @@ std::shared_ptr<IRenderer> SceneBase::GetRenderer() const
 void SceneBase::SetCameraController(std::shared_ptr<ICameraController> CameraController)
 {
 	_ASSERT(CameraController != nullptr);
-	m_DefaultCameraController = CameraController;
+	m_CameraController = CameraController;
 }
 
 std::shared_ptr<ICameraController> SceneBase::GetCameraController() const
 {
-	return m_DefaultCameraController;
+	return m_CameraController;
 }
 
 const ISceneFinder& SceneBase::GetFinder() const
@@ -293,14 +293,14 @@ void SceneBase::OnPreRender(RenderEventArgs & e)
 
 void SceneBase::OnRender(RenderEventArgs & e)
 {
-	if (GetCameraController())
+	if (auto cameraController = GetCameraController())
 	{
-		e.Camera = GetCameraController()->GetCamera().get();
-		e.CameraForCulling = GetCameraController()->GetCamera().get();
+		e.Camera = cameraController->GetCamera().get();
+		e.CameraForCulling = cameraController->GetCamera().get();
 	}
 
-	if (m_Renderer)
-		m_Renderer->Render3D(e);
+	if (auto renderer = GetRenderer())
+		renderer->Render3D(e);
 }
 
 void SceneBase::OnPostRender(RenderEventArgs & e)
@@ -311,12 +311,12 @@ void SceneBase::OnPostRender(RenderEventArgs & e)
 	//m_FrameQuery->End(e.FrameCounter);
 
 
-	if (GetCameraController())
+	if (auto cameraController = GetCameraController())
 	{
-		glm::vec3 cameraTrans = GetCameraController()->GetCamera()->GetTranslation();
+		glm::vec3 cameraTrans = cameraController->GetCamera()->GetTranslation();
 		m_CameraPosText->GetProperties()->GetPropertyT<std::string>("Text")->Set("Pos: x = " + std::to_string(cameraTrans.x) + ", y = " + std::to_string(cameraTrans.y) + ", z = " + std::to_string(cameraTrans.z));
-		m_CameraRotText->GetProperties()->GetPropertyT<std::string>("Text")->Set("Rot: yaw = " + std::to_string(GetCameraController()->GetCamera()->GetYaw()) + ", pitch = " + std::to_string(GetCameraController()->GetCamera()->GetPitch()));
-		m_CameraRot2Text->GetProperties()->GetPropertyT<std::string>("Text")->Set("Rot: [" + std::to_string(GetCameraController()->GetCamera()->GetDirection().x) + ", " + std::to_string(GetCameraController()->GetCamera()->GetDirection().y) + ", " + std::to_string(GetCameraController()->GetCamera()->GetDirection().z) + "].");
+		m_CameraRotText->GetProperties()->GetPropertyT<std::string>("Text")->Set("Rot: yaw = " + std::to_string(cameraController->GetCamera()->GetYaw()) + ", pitch = " + std::to_string(cameraController->GetCamera()->GetPitch()));
+		m_CameraRot2Text->GetProperties()->GetPropertyT<std::string>("Text")->Set("Rot: [" + std::to_string(cameraController->GetCamera()->GetDirection().x) + ", " + std::to_string(cameraController->GetCamera()->GetDirection().y) + ", " + std::to_string(GetCameraController()->GetCamera()->GetDirection().z) + "].");
 	}
 
 
@@ -326,14 +326,14 @@ void SceneBase::OnRenderUI(RenderEventArgs & e)
 {
 	m_End = std::chrono::high_resolution_clock::now();
 
-	if (GetCameraController())
+	if (auto cameraController = GetCameraController())
 	{
-		e.Camera = GetCameraController()->GetCamera().get();
-		e.CameraForCulling = GetCameraController()->GetCamera().get();
+		e.Camera = cameraController->GetCamera().get();
+		e.CameraForCulling = cameraController->GetCamera().get();
 	}
 
-	if (m_Renderer)
-		m_Renderer->RenderUI(e);
+	if (auto renderer = GetRenderer())
+		renderer->RenderUI(e);
 
 	{
 		/*IQuery::QueryResult frameResult = m_FrameQuery->GetQueryResult(e.FrameCounter);

@@ -127,13 +127,13 @@ float4 PS_DeferredLighting(VS_Output VSOut) : SV_Target
 		break;
 	}
 
-	float4 colorResult = diffuse * lit.Ambient + (diffuse * lit.Diffuse) + (specular * lit.Specular);
+	float4 colorResult = lit.Ambient + (diffuse * lit.Diffuse) + (specular * lit.Specular);
 	
 	if (IsShadowed(PModel))
-		return diffuse * lit.Ambient;
+		return colorResult * 0.3f;
 	
-	/*
-	const float bias = 0.005;
+	
+	/*const float bias = 0.005;
 
 	const float4x4 mvpl = mul(LightProjectionMatrix, LightViewMatrix);
 	const float4 lightViewPosition = mul(mvpl, PModel);
@@ -145,8 +145,8 @@ float4 PS_DeferredLighting(VS_Output VSOut) : SV_Target
 	if ((saturate(projectTexCoord.x) == projectTexCoord.x) && (saturate(projectTexCoord.y) == projectTexCoord.y))
 	{
 		//float depthValue = TextureShadow.Load(int3(projectTexCoord, 0)).r;
-		float depthValue = Blur(TextureShadow, LinearClampSampler, projectTexCoord);
-		//float depthValue = TextureShadow.Sample(LinearClampSampler, projectTexCoord).r;
+		//float depthValue = Blur(TextureShadow, LinearClampSampler, projectTexCoord);
+		float depthValue = TextureShadow.Sample(LinearClampSampler, projectTexCoord).r;
 
 		float lightDepthValue = (lightViewPosition.z / lightViewPosition.w);
 		lightDepthValue -= bias;

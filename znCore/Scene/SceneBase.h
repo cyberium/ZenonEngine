@@ -127,7 +127,7 @@ protected:
 
 	std::chrono::time_point<std::chrono::high_resolution_clock> m_Start, m_End;
 
-	std::shared_ptr<ICameraController>              m_DefaultCameraController;
+	std::shared_ptr<ICameraController>              m_CameraController;
 	std::shared_ptr<ISettingGroup>                  m_VideoSettings;
 
 	std::shared_ptr<ISceneNodeUI>                   m_CameraPosText;

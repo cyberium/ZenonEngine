@@ -107,7 +107,7 @@ std::shared_ptr<IRenderPassPipelined> CPassDeffered_DoRenderScene::CreatePipelin
 	rt->AttachTexture(IRenderTarget::AttachmentPoint::Color3, m_Texture3);
 	rt->AttachTexture(IRenderTarget::AttachmentPoint::DepthStencil, m_DepthStencilTexture);
 
-	auto vertexShader = GetRenderDevice().GetObjectsFactory().CreateShader(EShaderType::VertexShader, "3D/Model_Deffered.hlsl", "VS_PTN");
+	auto vertexShader = GetRenderDevice().GetObjectsFactory().CreateShader(EShaderType::VertexShader, "3D/Model_Deffered.hlsl", "VS_main");
 	vertexShader->LoadInputLayoutFromReflector();
 
 	m_PerObjectShaderParameter = &vertexShader->GetShaderParameterByName("PerObject");

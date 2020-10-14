@@ -43,11 +43,8 @@ bool CFBXModel::Load(fbxsdk::FbxMesh* NativeMesh)
 	NativeMesh->ComputeBBox();
 	SetBounds(BoundingBox(ToGLMVec3(NativeMesh->BBoxMin), ToGLMVec3(NativeMesh->BBoxMax)));
 
-	/*if (!NativeMesh->GenerateNormals(true, false))
-	{
-		Log::Error("Error while generate normals.");
-		return false;
-	}*/
+	if (!NativeMesh->GenerateNormals(true, true))
+		throw CException("Error while generate normals.");
 
 	/*DisplayMetaDataConnections(NativeMesh);
 	std::vector<glm::vec3> vertices;

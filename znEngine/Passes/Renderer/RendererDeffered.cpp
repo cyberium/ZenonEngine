@@ -110,7 +110,7 @@ void CRendererDeffered::Initialize(std::shared_ptr<IRenderTarget> RenderTarget, 
 	AddPass(m_SceneCreateTypelessListPass);
 	AddPass(m_DefferedRenderPass);
 	AddPass(m_DefferedRenderPrepareLights);
-	AddPass(m_BaseManager.GetManager<IRenderPassFactory>()->CreateRenderPass("DebugPass", m_RenderDevice, m_FinalRenderTarget, Viewport, m_Scene.lock()));
+	//AddPass(m_BaseManager.GetManager<IRenderPassFactory>()->CreateRenderPass("DebugPass", m_RenderDevice, m_FinalRenderTarget, Viewport, m_Scene.lock()));
 
 	m_UIPasses.push_back(m_DefferedFinalRenderPass);
 

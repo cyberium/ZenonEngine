@@ -1,11 +1,11 @@
 #pragma once
 
-struct __declspec(novtable, align(16)) ZN_API PerObject
+struct __declspec(align(16)) ZN_API PerObject
 {
 	glm::mat4 Model;
 };
 
-struct __declspec(novtable, align(16)) ZN_API PerFrame
+struct __declspec(align(16)) ZN_API PerFrame
 {
 	PerFrame()
 		: View(glm::mat4(1.0f))
@@ -15,7 +15,7 @@ struct __declspec(novtable, align(16)) ZN_API PerFrame
 		, InverseProjectionView(glm::mat4(1.0f))
 		, ScreenDimensions(glm::vec2(1.0f))
 	{}
-	PerFrame(const glm::mat4& ViewMatrix, const glm::mat4& ProjectionMatrix, glm::vec2& ScreenDimensions)
+	PerFrame(glm::mat4 ViewMatrix, glm::mat4 ProjectionMatrix, glm::vec2 ScreenDimensions)
 		: View(ViewMatrix)
 		, Projection(ProjectionMatrix)
 		, ScreenDimensions(ScreenDimensions)

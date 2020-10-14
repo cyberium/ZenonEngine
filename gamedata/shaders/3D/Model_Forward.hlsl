@@ -114,6 +114,9 @@ VertexShaderOutput VS_main(VSInputPTNTB IN)
 	return OUT;
 }
 
+
+
+
 VertexShaderOutput VS_PTN(VSInputPTN IN)
 {
 	float3 tangent = (float3)0;
@@ -308,9 +311,9 @@ DefferedRenderPSOut PS_main(VertexShaderOutput IN) : SV_TARGET
 	}
 
 
-	/*
+	
 	float4 colorResult = float4((ambient + emissive + diffuseLight + specularLight).rgb, 1.0f
-	//alpha * (1.0 - mat.TransparencyFactor)
+		//alpha * (1.0 - mat.TransparencyFactor)
 	);
 
 	float bias = 0.00001f;
@@ -334,15 +337,15 @@ DefferedRenderPSOut PS_main(VertexShaderOutput IN) : SV_TARGET
 		{
 			colorResult *= 0.1f;
 		}
-	}*/
+	}
 
 
 
-	float4 colorResultt = float4(lit.Ambient.rgb * ambient.rgb * diffuse.rgb + diffuseLight.rgb + specularLight.rgb, 1.0f);
+	//float4 colorResultt = float4(lit.Ambient.rgb * ambient.rgb * diffuse.rgb + diffuseLight.rgb + specularLight.rgb, 1.0f);
 
 	DefferedRenderPSOut OUT;
 	//OUT.PositionWS = IN.position;
-	OUT.Diffuse = colorResultt;
+	OUT.Diffuse = colorResult;
 	OUT.Specular = specularLight;
 	OUT.NormalWS = float4(1.0, 1.0, 1.0, 0.0);
 	return OUT;

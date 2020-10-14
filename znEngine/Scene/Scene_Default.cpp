@@ -49,15 +49,15 @@ void CSceneDefault::Initialize()
 	{
 		auto lightNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, this);
 		lightNode->SetName("Light");
-		lightNode->SetTranslate(glm::vec3(1500.0f, 1500.0f, 1500.0f));
-		lightNode->SetRotation(glm::vec3(0.0f, -0.5f, 0.0f));
+		lightNode->SetTranslate(glm::vec3(500.0f, 500.0f, 500.0f));
+		lightNode->SetRotation(glm::vec3(-0.5f, -0.5f, -0.5f));
 
 		lightNode->AddComponent(GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<IComponentFactory>()->CreateComponentT<ILightComponent3D>(cSceneNodeLightComponent, *lightNode.get()));
-		lightNode->GetComponent<ILightComponent3D>()->SetType(ELightType::Point);
+		lightNode->GetComponent<ILightComponent3D>()->SetType(ELightType::Spot);
 		lightNode->GetComponent<ILightComponent3D>()->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
-		lightNode->GetComponent<ILightComponent3D>()->SetRange(9000.0f);
+		lightNode->GetComponent<ILightComponent3D>()->SetRange(5000.0f);
 		lightNode->GetComponent<ILightComponent3D>()->SetIntensity(1.0f);
-		lightNode->GetComponent<ILightComponent3D>()->SetSpotlightAngle(75.0f);
+		lightNode->GetComponent<ILightComponent3D>()->SetSpotlightAngle(45.0f);
 	}
 
 	// Camera
@@ -381,97 +381,14 @@ void CSceneDefault::Load3D()
 	//fbxSceneNode->InitializeFromFile("C:/Users/Alexander/Downloads/Assets/Toon_RTS/Orcs/animation/shaman/Orc_shaman_02_walk.FBX");
 	//fbxSceneNode->InitializeFromFile("C:/Users/Alexander/Downloads/Assets/Toon_RTS/Orcs/models/Single_Mesh/Orc_SM_shaman.FBX");
 	
-	//auto defferedRenderer = MakeShared(CRendererDeffered, GetBaseManager(), weak_from_this());
-	//defferedRenderer->Initialize(GetRenderWindow()->GetRenderTarget(), &GetRenderWindow()->GetViewport());
-	//SetRenderer(defferedRenderer);
+	auto defferedRenderer = MakeShared(CRendererDeffered, GetBaseManager(), weak_from_this());
+	defferedRenderer->Initialize(GetRenderWindow()->GetRenderTarget(), &GetRenderWindow()->GetViewport());
+	SetRenderer(defferedRenderer);
 
-	auto forwardRenderer = MakeShared(CRendererForward, GetBaseManager(), weak_from_this());
-	forwardRenderer->Initialize(GetRenderWindow()->GetRenderTarget(), &GetRenderWindow()->GetViewport());
-	SetRenderer(forwardRenderer);
+	//auto forwardRenderer = MakeShared(CRendererForward, GetBaseManager(), weak_from_this());
+	//forwardRenderer->Initialize(GetRenderWindow()->GetRenderTarget(), &GetRenderWindow()->GetViewport());
+	//SetRenderer(forwardRenderer);
 
 	//m_Technique3D.AddPass(GetBaseManager().GetManager<IRenderPassFactory>()->CreateRenderPass("TexturedMaterialPass", GetRenderDevice(), GetRenderWindow()->GetRenderTarget(), &GetRenderWindow()->GetViewport(), shared_from_this()));
 	//m_Technique3D.AddPass(MakeShared(CMaterialParticlePass, GetRenderDevice(), shared_from_this())->CreatePipeline(GetRenderWindow()->GetRenderTarget(), &GetRenderWindow()->GetViewport()));
-}
-
-void CSceneDefault::GenerateLights(std::shared_ptr<ISceneNode3D> Node, uint32_t numLights)
-{
-	float MinRange = 100.1f;
-	float MaxRange = 2000.0f;
-
-	float MinSpotAngle = 1.0f;
-	float MaxSpotAngle = 60.0f;
-
-	glm::vec3 BoundsMin = glm::vec3(-500, -200, -500);
-	glm::vec3 BoundsMax = glm::vec3(500, 200, 500);
-	bool GeneratePointLights = true;
-	bool GenerateSpotLights = false;
-	bool GenerateDirectionalLights = false;
-
-	for (uint32_t i = 0; i < numLights; i++)
-	{
-		SLight light;
-
-		light.PositionWS = glm::vec4(glm::linearRand(BoundsMin, BoundsMax), 1.0f);
-
-		// Choose a color that will never be black.
-		glm::vec2 colorWheel = glm::diskRand(1.0f);
-		float radius = glm::length(colorWheel);
-		light.Color.rgb = glm::lerp(
-			glm::lerp(
-				glm::lerp(glm::vec3(1), glm::vec3(0, 1, 0), radius),
-				glm::lerp(glm::vec3(1), glm::vec3(1, 0, 0), radius),
-				colorWheel.x * 0.5f + 0.5f),
-			glm::lerp(
-				glm::lerp(glm::vec3(1), glm::vec3(0, 0, 1), radius),
-				glm::lerp(glm::vec3(1), glm::vec3(1, 1, 0), radius),
-				colorWheel.y * 0.5f + 0.5f),
-			glm::abs(colorWheel.y));
-
-		light.DirectionWS = glm::vec4(glm::sphericalRand(1.0f), 0.0f);
-		light.Range = glm::linearRand(MinRange, MaxRange);
-		light.Intensity = 50;
-		light.SpotlightAngle = glm::linearRand(MinSpotAngle, MaxSpotAngle);
-
-		float fLightPropability = glm::linearRand(0.0f, 1.0f);
-
-		if (GeneratePointLights && GenerateSpotLights && GenerateDirectionalLights)
-		{
-			light.Type = (fLightPropability < 0.33f ? ELightType::Point : fLightPropability < 0.66f ? ELightType::Spot : ELightType::Directional);
-		}
-		else if (GeneratePointLights && GenerateSpotLights && !GenerateDirectionalLights)
-		{
-			light.Type = (fLightPropability < 0.5f ? ELightType::Point : ELightType::Spot);
-		}
-		else if (GeneratePointLights && !GenerateSpotLights && GenerateDirectionalLights)
-		{
-			light.Type = (fLightPropability < 0.5f ? ELightType::Point : ELightType::Directional);
-		}
-		else if (GeneratePointLights && !GenerateSpotLights && !GenerateDirectionalLights)
-		{
-			light.Type = ELightType::Point;
-		}
-		else if (!GeneratePointLights && GenerateSpotLights && GenerateDirectionalLights)
-		{
-			light.Type = (fLightPropability < 0.5f ? ELightType::Spot : ELightType::Directional);
-		}
-		else if (!GeneratePointLights && GenerateSpotLights && !GenerateDirectionalLights)
-		{
-			light.Type = ELightType::Spot;
-		}
-		else if (!GeneratePointLights && !GenerateSpotLights && GenerateDirectionalLights)
-		{
-			light.Type = ELightType::Directional;
-		}
-		else if (!GeneratePointLights && !GenerateSpotLights && !GenerateDirectionalLights)
-		{
-			light.Type = (fLightPropability < 0.33f ? ELightType::Point : fLightPropability < 0.66f ? ELightType::Spot : ELightType::Directional);
-		}
-
-		//Node->GetComponent<ILightComponent3D>()->AddLight(MakeShared(CLight3D, light));
-	}
-}
-
-void CSceneDefault::UpdateLights()
-{
-
 }
