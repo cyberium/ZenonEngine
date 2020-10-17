@@ -78,7 +78,7 @@ bool CEditorUIFrame::InitializeEditorFrame()
 
 	std::vector<std::string> realNames;
 
-	auto fileNames = Utils::GetAllFilesInDirectory("E:\\_programming\\ZenonEngine_gamedata\\models", ".fbx");
+	auto fileNames = Utils::GetAllFilesInDirectory("O:\\ZenonEngine_gamedata\\models", ".fbx");
 	for (const auto& it : fileNames)
 	{
 		Log::Info(it.c_str());
@@ -86,11 +86,11 @@ bool CEditorUIFrame::InitializeEditorFrame()
 		try
 		{
 			std::string zenonFileName = it + ".znmdl";
-			/*if (m_Editor.GetBaseManager().GetManager<IFilesManager>()->IsFileExists(zenonFileName))
+			if (m_Editor.GetBaseManager().GetManager<IFilesManager>()->IsFileExists(zenonFileName))
 			{
 				realNames.push_back(zenonFileName);
 				continue;
-			}*/
+			}
 
 			//continue;
 

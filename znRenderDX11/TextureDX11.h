@@ -7,26 +7,27 @@ class ZN_API TextureDX11
 {
 public:
 	TextureDX11(IRenderDeviceDX11& RenderDeviceDX11);
-	TextureDX11(IRenderDeviceDX11& RenderDeviceDX11, uint16_t width, uint16_t height, uint16_t slices, const TextureFormat& format, EAccess cpuAccess);
-	TextureDX11(IRenderDeviceDX11& RenderDeviceDX11, uint16_t size, uint16_t count, const TextureFormat& format, EAccess cpuAccess);
+	TextureDX11(IRenderDeviceDX11& RenderDeviceDX11, uint16 width, uint16 height, uint16 slices, const TextureFormat& format, EAccess cpuAccess);
+	TextureDX11(IRenderDeviceDX11& RenderDeviceDX11, uint16 size, const TextureFormat& format, EAccess cpuAccess);
 	virtual ~TextureDX11();
 
-	virtual bool LoadTextureFromImage(const std::shared_ptr<IImage>& Image);
-	virtual bool LoadTexture2D(const std::string& fileName);
-	virtual bool LoadTextureCube(const std::string& fileName);
+	bool LoadTextureFromImage(const std::shared_ptr<IImage>& Image);
+	bool LoadTexture2D(const std::string& fileName);
+	bool LoadTextureCube(const std::string& fileName);
 
-	virtual void GenerateMipMaps();
+	void GenerateMipMaps();
 
-	virtual uint16_t GetWidth() const;
-	virtual uint16_t GetHeight() const;
-	glm::ivec2 GetSize() const;
-	virtual uint16_t GetDepth() const;
-	virtual uint8_t GetBPP() const;
-	virtual bool IsTransparent() const;
+	uint16 GetWidth() const override;
+	uint16 GetHeight() const override;
+	glm::ivec2 GetSize() const override;
+	uint16 GetDepth() const override;
+	uint8 GetBPP() const override;
+	uint8 GetSamplesCount() const override;
+	bool IsTransparent() const override;
 
-	virtual void Resize(uint16_t width, uint16_t height = 0, uint16_t depth = 0);
+	virtual void Resize(uint16 width, uint16 height = 0, uint16 depth = 0);
 	virtual void Copy(const std::shared_ptr<ITexture>& other);
-	virtual void Clear(ClearFlags clearFlags = ClearFlags::All, const glm::vec4& color = glm::vec4(0), float depth = 1.0f, uint8_t stencil = 0);
+	virtual void Clear(ClearFlags clearFlags = ClearFlags::All, const glm::vec4& color = glm::vec4(0), float depth = 1.0f, uint8 stencil = 0);
 
 	virtual void Bind(uint32_t ID, const IShader* shader, IShaderParameter::Type parameterType) const override;
 	virtual void Bind(uint32_t ID, EShaderType _shaderType, IShaderParameter::Type parameterType) const override;
@@ -57,14 +58,14 @@ public:
 protected:
 	void Initialize();
 	
-	virtual void Plot(glm::ivec2 coord, const uint8_t* pixel, size_t size);
-	virtual void FetchPixel(glm::ivec2 coord, uint8_t*& pixel, size_t size);
+	virtual void Plot(glm::ivec2 coord, const uint8* pixel, size_t size);
+	virtual void FetchPixel(glm::ivec2 coord, uint8*& pixel, size_t size);
 
-	virtual void Resize2D(uint16_t width, uint16_t height);
-	virtual void ResizeCube(uint16_t size);
+	virtual void Resize2D(uint16 width, uint16 height);
+	virtual void ResizeCube(uint16 size);
 
 	// Try to choose the best multi-sampling quality level that is supported for the given format.
-	DXGI_SAMPLE_DESC GetSupportedSampleCount(DXGI_FORMAT format, uint8_t numSamples);
+	DXGI_SAMPLE_DESC GetSupportedSampleCount(DXGI_FORMAT format, uint8 numSamples);
 
 private:
 	ATL::CComPtr<ID3D11Texture2D> m_pTexture2D;
@@ -84,10 +85,10 @@ private:
 
 	// 1D, 2D, 3D, or Cube
 	Dimension m_TextureDimension;
-	uint16_t m_TextureWidth;
-	uint16_t m_TextureHeight;
+	uint16 m_TextureWidth;
+	uint16 m_TextureHeight;
 	// For CUBE and 3D textures.
-	uint16_t m_NumSlices;
+	uint16 m_NumSlices;
 	// The requested format for the texture type.
 	TextureFormat m_TextureFormat;
 
@@ -113,14 +114,14 @@ private:
 	bool m_bGenerateMipmaps;
 
 	// Bits-per pixel
-	uint8_t m_BPP; 
+	uint8 m_BPP; 
 
 	// Number of bytes to next scanline.
-	uint16_t m_Pitch;
+	uint16 m_Pitch;
 
 	bool     m_bIsTransparent;
 
-	typedef std::vector<uint8_t> ColorBuffer;
+	typedef std::vector<uint8> ColorBuffer;
 	ColorBuffer m_Buffer;
 
 	std::string m_TextureFileName;

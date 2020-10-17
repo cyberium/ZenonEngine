@@ -3,6 +3,9 @@
 // General
 #include "ByteBuffer.h"
 
+#include "ByteBufferHelper.h"
+
+
 CByteBuffer::CByteBuffer() :
 	m_CurrentPosition(0)
 {}
@@ -49,7 +52,6 @@ const CByteBuffer& CByteBuffer::operator=(const CByteBuffer& _other)
 	m_Data.clear();
 	std::copy(_other.m_Data.begin(), _other.m_Data.end(), m_Data.begin());
 	m_CurrentPosition = _other.m_CurrentPosition;
-
 	return *this;
 }
 
@@ -62,93 +64,54 @@ const CByteBuffer& CByteBuffer::operator=(CByteBuffer&& _other)
 
 //--
 
-void CByteBuffer::seek(size_t AbsoluteOffset)
+bool CByteBuffer::seek(size_t AbsoluteOffset)
 {
 	_ASSERT(AbsoluteOffset >= 0 && AbsoluteOffset <= getSize());
+	if (AbsoluteOffset < 0 || AbsoluteOffset >= getSize())
+		return false;
+
 	m_CurrentPosition = AbsoluteOffset;
+	return true;
 }
 
-void CByteBuffer::seekRelative(intptr_t RelativeOffset)
+bool CByteBuffer::seekRelative(intptr_t RelativeOffset)
 {
-	_ASSERT(m_CurrentPosition + RelativeOffset >= 0 && RelativeOffset <= getSize());
-	m_CurrentPosition += RelativeOffset;
+	size_t newPos = m_CurrentPosition + RelativeOffset;
+
+	_ASSERT(newPos >= 0 && newPos <= getSize());
+	if (newPos < 0 || newPos > getSize())
+		return false;
+
+	m_CurrentPosition = newPos;
+	return true;
 }
 
 //-- READ
 
-bool CByteBuffer::readLine(std::string* _string)
+bool CByteBuffer::readLine(std::string* String)
 {
-	_ASSERT(_string != nullptr);
-
-	if (isEof())
-		return false;
-
-	// Find first incorrect symbol
-	uint64 lineEndPos;
-	for (lineEndPos = m_CurrentPosition; (lineEndPos < getSize()) && (m_Data[lineEndPos] != '\n' && m_Data[lineEndPos] != '\r'); lineEndPos++);
-
-	// Find first correct symbol after incorrects
-	uint64 nextLineBeginPos;
-	for (nextLineBeginPos = lineEndPos; (nextLineBeginPos < getSize()) && (m_Data[nextLineBeginPos] == '\n' || m_Data[nextLineBeginPos] == '\r'); nextLineBeginPos++);
-
-	uint64 charsCount = lineEndPos - m_CurrentPosition;
-
-	char* buff = new char[charsCount + 1];
-	buff[charsCount] = '\0';
-	readBytes(&buff[0], charsCount);
-
-	// Skip \r and \n
-	seekRelative(nextLineBeginPos - lineEndPos);
-
-	std::string line(buff);
-	delete[] buff;
-	//line = Utils::Trim(line);
-
-	(*_string) = line;
-	return true;
+	return Utils::ByteBufferHelper::readLine(this, String);
 }
 
-bool CByteBuffer::readBytes(void* _destination, size_t _size)
+bool CByteBuffer::getText(std::string * String)
 {
-	_ASSERT(_destination != nullptr);
-	if (isEof())
-		return false;
-
-	uint64 posAfterRead = m_CurrentPosition + _size;
-	if (posAfterRead >= getSize())
-	{
-		_size = getSize() - m_CurrentPosition;
-		posAfterRead = getSize();
-	}
-
-	std::memcpy(_destination, &(m_Data[m_CurrentPosition]), _size);
-	m_CurrentPosition = posAfterRead;
-
-	return true;
+	return Utils::ByteBufferHelper::getText(this, String);
 }
 
-void CByteBuffer::readString(std::string* _string)
+bool CByteBuffer::readBytes(void* Destination, size_t Size)
 {
-	_ASSERT(_string != nullptr);
-	_ASSERT(isEof() == false);
+	return Utils::ByteBufferHelper::readBytes(this, Destination, Size);
+}
 
-	(*_string).clear();
-	while (true)
-	{
-		uint8 byte;
-		if (readBytes(&byte, sizeof(uint8)) == false)
-			break;
-
-		(*_string).append(1, static_cast<char>(byte));
-
-		if (byte == '\0')
-			break;
-	}
+bool CByteBuffer::readString(std::string* String)
+{
+	return Utils::ByteBufferHelper::readString(this, String);
 }
 
 
 void CByteBuffer::writeLine(const std::string& String)
 {
+
 }
 
 void CByteBuffer::writeBytes(const void * Source, size_t BytesCount)

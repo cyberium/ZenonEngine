@@ -66,6 +66,11 @@ ZN_INTERFACE ZN_API IRenderTarget
 	virtual void GenerateMipMaps() = 0;
 
 	/**
+	 * Return samples count
+	*/
+	virtual uint8 GetSamplesCount() const = 0;
+
+	/**
 	 * StructuredBuffers can be written to in a shader. StructuredBuffers must be bound to the
 	 * rendering pipeline at the same time as render target textures and depth stencil buffers.
 	 * The maximum number of StructuredBuffers that can be attached to a render target

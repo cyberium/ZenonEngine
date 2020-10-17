@@ -43,7 +43,7 @@ void CPassDeffered_ProcessLights::Render(RenderEventArgs& e)
 
 		m_ShadowPipeline->Bind();
 		{
-			m_ShadowRenderTarget->Clear(ClearFlags::All, glm::vec4(0.0f, 0.0f, 0.0f, 0.0f));
+			m_ShadowRenderTarget->Clear(ClearFlags::All, glm::vec4(0), 1.0f);
 
 			BindPerFrameParamsForCurrentIteration(lightIt.Light);
 
@@ -53,6 +53,7 @@ void CPassDeffered_ProcessLights::Render(RenderEventArgs& e)
 
 				geometryIt.Geometry->Render(e, m_ShadowPipeline->GetShaders().at(EShaderType::VertexShader).get(), geometryIt.GeometryDrawArgs);
 			}
+
 
 			if (i < m_LightResult.size())
 			{
@@ -71,10 +72,6 @@ void CPassDeffered_ProcessLights::Render(RenderEventArgs& e)
 				lightResult.Light = lightIt.Light;
 				lightResult.IsShadowEnable = true;
 				lightResult.ShadowTexture = CreateShadowTextureDepthStencil();
-
-				const auto& ttPtr = m_ShadowRenderTarget->GetTexture(IRenderTarget::AttachmentPoint::DepthStencil);
-
-				//lightResult.ShadowTexture->Copy(ttPtr);
 				m_LightResult.push_back(lightResult);
 			}
 		}
@@ -102,10 +99,10 @@ std::shared_ptr<IRenderPassPipelined> CPassDeffered_ProcessLights::CreatePipelin
 	m_ShadowRenderTarget->AttachTexture(IRenderTarget::AttachmentPoint::DepthStencil, CreateShadowTextureDepthStencil());
 	m_ShadowRenderTarget->SetViewport(m_ShadowViewport);
 
-	auto& vertexShader = GetRenderDevice().GetObjectsFactory().CreateShader(EShaderType::VertexShader, "3D/Shadow.hlsl", "VS_Shadow");
+	auto vertexShader = GetRenderDevice().GetObjectsFactory().CreateShader(EShaderType::VertexShader, "3D/Shadow.hlsl", "VS_Shadow");
 	vertexShader->LoadInputLayoutFromReflector();
 
-	//auto& pixelShader = GetRenderDevice().GetObjectsFactory().CreateShader(EShaderType::PixelShader, "3D/Shadow.hlsl", "PS_Shadow", "latest");
+	//auto pixelShader = GetRenderDevice().GetObjectsFactory().CreateShader(EShaderType::PixelShader, "3D/Shadow.hlsl", "PS_Shadow");
 
 	IBlendState::BlendMode disableBlending = IBlendState::BlendMode(false);
 	IDepthStencilState::DepthMode enableDepthWrites = IDepthStencilState::DepthMode(true, IDepthStencilState::DepthWrite::Enable);
@@ -114,9 +111,11 @@ std::shared_ptr<IRenderPassPipelined> CPassDeffered_ProcessLights::CreatePipelin
 	auto& shadowPipeline = GetRenderDevice().GetObjectsFactory().CreatePipelineState();
 	shadowPipeline->GetBlendState()->SetBlendMode(disableBlending);
 	shadowPipeline->GetDepthStencilState()->SetDepthMode(enableDepthWrites);
-	shadowPipeline->GetRasterizerState()->SetCullMode(IRasterizerState::CullMode::None);
+	//shadowPipeline->GetRasterizerState()->SetDepthBias(1.f);
+	shadowPipeline->GetRasterizerState()->SetCullMode(IRasterizerState::CullMode::Front);
 	shadowPipeline->GetRasterizerState()->SetFillMode(IRasterizerState::FillMode::Solid, IRasterizerState::FillMode::Solid);
-	shadowPipeline->GetRasterizerState()->SetMultisampleEnabled(true);
+	//shadowPipeline->GetRasterizerState()->SetAntialiasedLineEnable(true);
+	//shadowPipeline->GetRasterizerState()->SetMultisampleEnabled(true);
 	shadowPipeline->SetRenderTarget(m_ShadowRenderTarget);
 	shadowPipeline->SetShader(EShaderType::VertexShader, vertexShader);
 	//shadowPipeline->SetShader(EShaderType::PixelShader, pixelShader);
@@ -164,7 +163,7 @@ std::shared_ptr<ITexture> CPassDeffered_ProcessLights::CreateShadowTextureDepthS
 		ITexture::Components::DepthStencil,
 		ITexture::Type::UnsignedNormalized,
 		1,
-		0, 0, 0, 0, 24, 8
+		0, 0, 0, 0, 32, 8
 	);
 	return GetRenderDevice().GetObjectsFactory().CreateTexture2D(cShadowTextureSize, cShadowTextureSize, 1, depthStencilTextureFormat);
 }

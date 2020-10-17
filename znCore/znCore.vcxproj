@@ -96,6 +96,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="Files\ByteBuffer.cpp" />
+    <ClCompile Include="Files\ByteBufferHelper.cpp" />
     <ClCompile Include="Files\ByteBufferOnlyPointer.cpp" />
     <ClCompile Include="Files\ChunkedFile.cpp" />
     <ClCompile Include="Files\File.cpp" />
@@ -195,6 +196,7 @@
     <ClInclude Include="..\shared\Interfaces\XML.h" />
     <ClInclude Include="..\shared\znCore.h" />
     <ClInclude Include="Files\ByteBuffer.h" />
+    <ClInclude Include="Files\ByteBufferHelper.h" />
     <ClInclude Include="Files\ByteBufferOnlyPointer.h" />
     <ClInclude Include="Files\ChunkedFile.h" />
     <ClInclude Include="Files\File.h" />

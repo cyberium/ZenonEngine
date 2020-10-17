@@ -106,7 +106,7 @@ void CCameraControllerBase::OnUpdate(UpdateEventArgs& e)
 //
 void CCameraControllerBase::OnResize(ResizeEventArgs& e)
 {
-	m_Camera->SetPerspectiveProjection(ICameraComponent3D::EPerspectiveProjectionHand::Right, 45.0f, static_cast<float>(e.Width) / static_cast<float>(e.Height), 0.5f, 10000.0f);
+	m_Camera->SetPerspectiveProjection(ICameraComponent3D::EPerspectiveProjectionHand::Right, 45.0f, static_cast<float>(e.Width) / static_cast<float>(e.Height), 1.0f, 10000.0f);
 }
 
 

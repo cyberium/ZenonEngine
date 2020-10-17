@@ -74,11 +74,11 @@ ZN_INTERFACE ZN_API IRenderObjectsFactory
 	virtual std::shared_ptr<IRenderWindow>    CreateRenderWindow(INativeWindow& NativeWindow, bool vSync) = 0;
 	virtual std::shared_ptr<IGeometry>        CreateGeometry() = 0;
 	virtual std::shared_ptr<IModel>           CreateModel() = 0;
-	virtual std::shared_ptr<IShader>          CreateShader(EShaderType type, const std::string& fileName, const std::string& entryPoint, const IShader::ShaderMacros& shaderMacros = IShader::ShaderMacros(), const std::string& profile = "latest", IShaderInputLayout* _customLayout = nullptr) = 0;
+	virtual std::shared_ptr<IShader>          CreateShader(EShaderType type, const std::string& fileName, const std::string& entryPoint, const IShader::ShaderMacros& shaderMacros = IShader::ShaderMacros(), IShaderInputLayout* _customLayout = nullptr) = 0;
 
 	virtual std::shared_ptr<ITexture>         CreateEmptyTexture() = 0;
 	virtual std::shared_ptr<ITexture>         CreateTexture2D(size_t width, size_t height, size_t slices, const ITexture::TextureFormat& format = ITexture::TextureFormat(), EAccess cpuAccess = EAccess::None) = 0;
-	virtual std::shared_ptr<ITexture>         CreateTextureCube(size_t size, size_t numCubes = 1, const ITexture::TextureFormat& format = ITexture::TextureFormat(), EAccess cpuAccess = EAccess::None) = 0;
+	virtual std::shared_ptr<ITexture>         CreateTextureCube(size_t size, const ITexture::TextureFormat& format = ITexture::TextureFormat(), EAccess cpuAccess = EAccess::None) = 0;
 	virtual std::shared_ptr<ITexture>         LoadTexture2D(const std::string& fileName) = 0;
 	virtual std::shared_ptr<ITexture>         LoadTextureCube(const std::string& fileName) = 0;
 

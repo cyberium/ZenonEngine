@@ -121,16 +121,15 @@ void CRendererForward::Initialize(std::shared_ptr<IRenderTarget> RenderTarget, c
 
 	glm::vec4 color = glm::vec4(0.0, 0.0f, 0.0f, 1.0f);
 	AddPass(MakeShared(ClearRenderTargetPass, m_RenderDevice, RenderTarget, ClearFlags::All, color, 1.0f, 0));
-	//AddPass(MakeShared(ClearRenderTargetPass, m_RenderDevice, m_FinalRenderTarget, ClearFlags::All, color, 1.0f, 0));
+	AddPass(MakeShared(ClearRenderTargetPass, m_RenderDevice, m_FinalRenderTarget, ClearFlags::All, color, 1.0f, 0));
 	
 	AddPass(m_SceneCreateTypelessListPass);
 	AddPass(invokePass);
 	AddPass(materialModelPass);
 
-	//AddPass(MakeShared(ClearRenderTargetPass, m_RenderDevice, m_FinalRenderTarget, ClearFlags::Color, color, 1.0f, 0));
-	
 	AddPass(m_BaseManager.GetManager<IRenderPassFactory>()->CreateRenderPass("DebugPass", m_RenderDevice, m_FinalRenderTarget, Viewport, m_Scene.lock()));
-
+	
+	
 	m_UIPasses.push_back(MakeShared(CUIFontPass, m_RenderDevice, m_Scene)->CreatePipeline(RenderTarget, Viewport));
 	m_UIPasses.push_back(MakeShared(CUIColorPass, m_RenderDevice, m_Scene)->CreatePipeline(RenderTarget, Viewport));
 }

@@ -29,7 +29,7 @@ TextureDX11::TextureDX11(IRenderDeviceDX11& RenderDeviceDX11)
 {}
 
 // 2D Texture
-TextureDX11::TextureDX11(IRenderDeviceDX11& RenderDeviceDX11, uint16_t width, uint16_t height, uint16_t slices, const ITexture::TextureFormat& format, EAccess Access)
+TextureDX11::TextureDX11(IRenderDeviceDX11& RenderDeviceDX11, uint16 width, uint16 height, uint16 slices, const ITexture::TextureFormat& format, EAccess Access)
 	: m_RenderDeviceDX11(RenderDeviceDX11)
 	, m_pTexture2D(nullptr)
 	, m_pShaderResourceView(nullptr)
@@ -43,7 +43,7 @@ TextureDX11::TextureDX11(IRenderDeviceDX11& RenderDeviceDX11, uint16_t width, ui
 	, m_bIsTransparent(true)
 	, m_bIsDirty(false)
 {
-	m_NumSlices = glm::max<uint16_t>(slices, 1);
+	m_NumSlices = glm::max<uint16>(slices, 1);
 
 	m_TextureDimension = ITexture::Dimension::Texture2D;
 	if (m_NumSlices > 1)
@@ -97,7 +97,7 @@ TextureDX11::TextureDX11(IRenderDeviceDX11& RenderDeviceDX11, uint16_t width, ui
 }
 
 // CUBE Texture
-TextureDX11::TextureDX11(IRenderDeviceDX11& RenderDeviceDX11, uint16_t size, uint16_t count, const TextureFormat& format, EAccess cpuAccess)
+TextureDX11::TextureDX11(IRenderDeviceDX11& RenderDeviceDX11, uint16 size, const TextureFormat& format, EAccess cpuAccess)
 	: m_RenderDeviceDX11(RenderDeviceDX11)
 {
 	m_TextureDimension = ITexture::Dimension::TextureCube;
@@ -168,12 +168,12 @@ ITexture* TextureDX11::GetSlice(uint32 slice) const
 	return nullptr;
 }*/
 
-uint16_t TextureDX11::GetWidth() const
+uint16 TextureDX11::GetWidth() const
 {
 	return m_TextureWidth;
 }
 
-uint16_t TextureDX11::GetHeight() const
+uint16 TextureDX11::GetHeight() const
 {
 	return m_TextureHeight;
 }
@@ -183,14 +183,19 @@ glm::ivec2 TextureDX11::GetSize() const
 	return glm::ivec2(m_TextureWidth, m_TextureHeight);
 }
 
-uint16_t TextureDX11::GetDepth() const
+uint16 TextureDX11::GetDepth() const
 {
 	return m_NumSlices;
 }
 
-uint8_t TextureDX11::GetBPP() const
+uint8 TextureDX11::GetBPP() const
 {
 	return m_BPP;
+}
+
+uint8 TextureDX11::GetSamplesCount() const
+{
+	return m_SampleDesc.Count;
 }
 
 bool TextureDX11::IsTransparent() const
@@ -198,7 +203,7 @@ bool TextureDX11::IsTransparent() const
 	return m_bIsTransparent;
 }
 
-void TextureDX11::Resize2D(uint16_t width, uint16_t height)
+void TextureDX11::Resize2D(uint16 width, uint16 height)
 {
 	if (m_TextureWidth == width && m_TextureHeight == height)
 		return;
@@ -210,8 +215,8 @@ void TextureDX11::Resize2D(uint16_t width, uint16_t height)
 	m_pShaderResourceView.Release();
 	m_pUnorderedAccessView.Release();
 
-	m_TextureWidth = glm::max<uint16_t>(width, 1);
-	m_TextureHeight = glm::max<uint16_t>(height, 1);
+	m_TextureWidth = glm::max<uint16>(width, 1);
+	m_TextureHeight = glm::max<uint16>(height, 1);
 
 	// Create texture with the dimensions specified.
 	D3D11_TEXTURE2D_DESC textureDesc = { };
@@ -406,12 +411,12 @@ void TextureDX11::Resize2D(uint16_t width, uint16_t height)
 	}
 }
 
-void TextureDX11::ResizeCube(uint16_t size)
+void TextureDX11::ResizeCube(uint16 size)
 {
 	_ASSERT(FALSE);
 }
 
-void TextureDX11::Resize(uint16_t width, uint16_t height, uint16_t depth)
+void TextureDX11::Resize(uint16 width, uint16 height, uint16 depth)
 {
 	switch (m_TextureDimension)
 	{
@@ -432,12 +437,12 @@ void TextureDX11::Initialize()
 
 }
 
-void TextureDX11::Plot(glm::ivec2 coord, const uint8_t* pixel, size_t size)
+void TextureDX11::Plot(glm::ivec2 coord, const uint8* pixel, size_t size)
 {
 	_ASSERT(m_BPP > 0 && m_BPP % 8 == 0);
 	_ASSERT(coord.s < m_TextureWidth && coord.t < m_TextureHeight && size == (m_BPP / 8));
 
-	uint8_t bytesPerPixel = (m_BPP / 8);
+	uint8 bytesPerPixel = (m_BPP / 8);
 	uint32_t stride = m_TextureWidth * bytesPerPixel;
 	uint32_t index = (coord.s * bytesPerPixel) + (coord.t * stride);
 
@@ -449,12 +454,12 @@ void TextureDX11::Plot(glm::ivec2 coord, const uint8_t* pixel, size_t size)
 	m_bIsDirty = true;
 }
 
-void TextureDX11::FetchPixel(glm::ivec2 coord, uint8_t*& pixel, size_t size)
+void TextureDX11::FetchPixel(glm::ivec2 coord, uint8*& pixel, size_t size)
 {
 	_ASSERT(m_BPP > 0 && m_BPP % 8 == 0);
 	_ASSERT(coord.s < m_TextureWidth && coord.t < m_TextureHeight && size == (m_BPP / 8));
 
-	uint8_t bytesPerPixel = (m_BPP / 8);
+	uint8 bytesPerPixel = (m_BPP / 8);
 	uint32_t stride = m_TextureWidth * bytesPerPixel;
 	uint32_t index = (coord.s * bytesPerPixel) + (coord.t * stride);
 	pixel = &m_Buffer[index];
@@ -498,7 +503,7 @@ void TextureDX11::Copy(const std::shared_ptr<ITexture>& other)
 	}
 }
 
-void TextureDX11::Clear(ClearFlags clearFlags, const glm::vec4& color, float depth, uint8_t stencil)
+void TextureDX11::Clear(ClearFlags clearFlags, const glm::vec4& color, float depth, uint8 stencil)
 {
 	if (m_pRenderTargetView)
 	{
@@ -638,7 +643,7 @@ void TextureDX11::UnBind(uint32_t ID, EShaderType _shaderType, IShaderParameter:
 	}
 }
 
-DXGI_SAMPLE_DESC TextureDX11::GetSupportedSampleCount(DXGI_FORMAT format, uint8_t numSamples)
+DXGI_SAMPLE_DESC TextureDX11::GetSupportedSampleCount(DXGI_FORMAT format, uint8 numSamples)
 {
 	DXGI_SAMPLE_DESC sampleDesc = {};
 

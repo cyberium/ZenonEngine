@@ -67,8 +67,8 @@ IBaseManager* WINAPI InitializeEngine(std::vector<std::string> Arguments, std::s
 		baseManager->AddManager<IFilesManager>(filesManager);
 		filesManager->AddFilesStorage("ModuleFS", MakeShared(CLibraryResourceFileStotage, GetModuleHandle(L"znEngine.dll")));
 		filesManager->AddFilesStorage("PCEveryFileAccess", MakeShared(CLocalFilesStorage, ""));
-		filesManager->AddFilesStorage("ZenonGamedata", MakeShared(CLocalFilesStorage, "E:/_programming/ZenonEngine/gamedata/"));
-		filesManager->AddFilesStorage("ZenonGamedata2", MakeShared(CLocalFilesStorage, "E:/_programming/ZenonEngine_gamedata/"));
+		filesManager->AddFilesStorage("ZenonGamedata", MakeShared(CLocalFilesStorage, "O:/ZenonEngine/gamedata/"));
+		filesManager->AddFilesStorage("ZenonGamedata2", MakeShared(CLocalFilesStorage, "O:/ZenonEngine_gamedata/"));
 	}
 
 	// Log & console

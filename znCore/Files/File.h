@@ -46,25 +46,29 @@ public:
 	 { 
 		 return m_ByteBuffer.isEof(); 
 	 }
-	 void seek(size_t _bufferOffsetAbsolute) override
+	 bool seek(size_t _bufferOffsetAbsolute) override
 	 { 
-		 m_ByteBuffer.seek(_bufferOffsetAbsolute); 
+		 return m_ByteBuffer.seek(_bufferOffsetAbsolute);
 	 }
-	 void seekRelative(intptr_t _bufferOffsetRelative) override
+	 bool seekRelative(intptr_t _bufferOffsetRelative) override
 	 { 
-		 m_ByteBuffer.seekRelative(_bufferOffsetRelative); 
+		 return m_ByteBuffer.seekRelative(_bufferOffsetRelative); 
 	 }
 	 bool readLine(std::string* _string) override
 	 { 
 		 return m_ByteBuffer.readLine(_string);
 	 }
+	 bool getText(std::string * String) override
+	 {
+		 return m_ByteBuffer.getText(String);
+	 }
 	 bool readBytes(void* _destination, size_t _size) override
 	 { 
 		 return m_ByteBuffer.readBytes(_destination, _size); 
 	 }
-	 void readString(std::string* _string) override
+	 bool readString(std::string* _string) override
 	 {
-		 m_ByteBuffer.readString(_string);
+		 return m_ByteBuffer.readString(_string);
 	 }
 
 	 void writeLine(const std::string& String) override

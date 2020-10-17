@@ -36,8 +36,8 @@ void CEditor3DFrame::Initialize()
 	{
 		auto lightNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, this);
 		lightNode->SetName("Light");
-		lightNode->SetTranslate(glm::vec3(0.0f, 1500.0f, 0.0f));
-		lightNode->SetRotation(glm::vec3(0.0f, -0.5f, 0.f));
+		lightNode->SetTranslate(glm::vec3(500.0f, 500.0f, 500.0f));
+		lightNode->SetRotation(glm::vec3(-0.5f, -0.5f, -0.5f));
 
 		lightNode->AddComponent(GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<IComponentFactory>()->CreateComponentT<ILightComponent3D>(cSceneNodeLightComponent, *lightNode.get()));
 		lightNode->GetComponent<ILightComponent3D>()->SetType(ELightType::Spot);

@@ -315,6 +315,9 @@
     <ClCompile Include="Scene\SceneFinder.cpp">
       <Filter>Scene</Filter>
     </ClCompile>
+    <ClCompile Include="Files\ByteBufferHelper.cpp">
+      <Filter>Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="common.h">
@@ -766,6 +769,9 @@
     </ClInclude>
     <ClInclude Include="Scene\SceneFinder.h">
       <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Files\ByteBufferHelper.h">
+      <Filter>Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

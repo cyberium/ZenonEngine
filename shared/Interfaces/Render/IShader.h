@@ -24,18 +24,6 @@ ZN_INTERFACE ZN_API IShader
 
 
 	/**
-	 * Load a shader file from a std::string.
-	 * @param type: The type of shader to load.
-	 * @param source: The Shader source code in std::string format.
-	 * @param sourceFileName: The file path of the original file if it exists. This is used to determine include paths.
-	 * @param entryPoint: The name of the entry-point function to be used by this shader.
-	 * @param profile: The shader profile to use to compile this shader.
-	 * To use the latest supported profile, specify "latest" here.
-	 * @return True if the shader was loaded correctly, or False otherwise.
-	 */
-	virtual bool LoadShaderFromString(EShaderType type, const std::string& fileName, const std::string& source, const ShaderMacros& shaderMacros, const std::string& entryPoint, const std::string& profile, IShaderInputLayout* _customLayout) = 0;
-
-	/**
 	 * Load a shader from a file.
 	 * @param type: The type of shader to load.
 	 * @param fileName: The path to the shader file to load.
@@ -44,7 +32,7 @@ ZN_INTERFACE ZN_API IShader
 	 * To use the latest supported profile, specify "latest" here.
 	 * @return True if the shader was loaded correctly, or False otherwise.
 	 */
-	virtual bool LoadShaderFromFile(EShaderType type, const std::string& fileName, const ShaderMacros& shaderMacros, const std::string& entryPoint, const std::string& profile, IShaderInputLayout* _customLayout) = 0;
+	virtual bool LoadFromFile(EShaderType type, const std::string& fileName, const ShaderMacros& shaderMacros, const std::string& entryPoint, IShaderInputLayout* _customLayout) = 0;
 
 	/**
 	 * Calculate shader input layout

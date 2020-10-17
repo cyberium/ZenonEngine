@@ -47,29 +47,29 @@ ZN_INTERFACE ZN_API ITexture
 		// to use for this texture. Valid values are usually in the range [1 .. 16]
 		// depending on hardware support.
 		// A value of 1 will effectively disable multisampling in the texture.
-		uint8_t NumSamples;
+		uint8 NumSamples;
 
 		// Components should commonly be 8, 16, or 32-bits but some texture formats
 		// support 1, 10, 11, 12, or 24-bits per component.
-		uint8_t RedBits;
-		uint8_t GreenBits;
-		uint8_t BlueBits;
-		uint8_t AlphaBits;
-		uint8_t DepthBits;
-		uint8_t StencilBits;
+		uint8 RedBits;
+		uint8 GreenBits;
+		uint8 BlueBits;
+		uint8 AlphaBits;
+		uint8 DepthBits;
+		uint8 StencilBits;
 
 		// By default create a 4-component unsigned normalized texture with 8-bits per component and no multisampling.
 		TextureFormat
 		(
 			ITexture::Components components = Components::RGBA,
 			ITexture::Type type = Type::UnsignedNormalized,
-			uint8_t numSamples = 1,
-			uint8_t redBits = 8,
-			uint8_t greenBits = 8,
-			uint8_t blueBits = 8,
-			uint8_t alphaBits = 8,
-			uint8_t depthBits = 0,
-			uint8_t stencilBits = 0
+			uint8 numSamples = 1,
+			uint8 redBits = 8,
+			uint8 greenBits = 8,
+			uint8 blueBits = 8,
+			uint8 alphaBits = 8,
+			uint8 depthBits = 0,
+			uint8 stencilBits = 0
 		)
 			: Components(components)
 			, Type(type)
@@ -136,12 +136,13 @@ ZN_INTERFACE ZN_API ITexture
 	 */
 	//virtual ITexture* GetSlice(uint32 slice) const = 0;
 
-	virtual uint16_t GetWidth() const = 0;  // Get the width of the textures in texels.
-	virtual uint16_t GetHeight() const = 0; // Get the height of the texture in texles.
-	virtual glm::ivec2 GetSize() const = 0; // Get the 2d size of the texture in texles.
-	virtual uint16_t GetDepth() const = 0;  // Get the cube faces for cubemap textures.
-	virtual uint8_t GetBPP() const = 0;     // Get the bits-per-pixel of the texture.
-	virtual bool IsTransparent() const = 0; // Check to see if this texture has an alpha channel.
+	virtual uint16_t GetWidth() const = 0;      // Get the width of the textures in texels.
+	virtual uint16_t GetHeight() const = 0;     // Get the height of the texture in texles.
+	virtual glm::ivec2 GetSize() const = 0;     // Get the 2d size of the texture in texles.
+	virtual uint16_t GetDepth() const = 0;      // Get the cube faces for cubemap textures.
+	virtual uint8 GetBPP() const = 0;           // Get the bits-per-pixel of the texture.
+	virtual uint8 GetSamplesCount() const = 0;  // Get samples count for this texture
+	virtual bool IsTransparent() const = 0;     // Check to see if this texture has an alpha channel.
 
 	// Resize the texture to the new dimensions.
 	// Resizing a texture will cause the original texture to be discarded.
@@ -157,7 +158,7 @@ ZN_INTERFACE ZN_API ITexture
 	 * @param coord The non-normalized texture coordinate.
 	 * @param color The color to plot (RGBA).
 	 */
-	virtual void Plot(glm::ivec2 coord, const uint8_t* pixel, size_t size) = 0;
+	virtual void Plot(glm::ivec2 coord, const uint8* pixel, size_t size) = 0;
 
 	/**
 	 * Retrieve the pixel at a particular location in the
@@ -166,7 +167,7 @@ ZN_INTERFACE ZN_API ITexture
 	 * @param coord The non-normalized texture coordinate.
 	 * @return The pixel cast to the requested type.
 	 */
-	virtual void FetchPixel(glm::ivec2 coord, uint8_t*& pixel, size_t size) = 0;
+	virtual void FetchPixel(glm::ivec2 coord, uint8*& pixel, size_t size) = 0;
 
 	/**
 	 * Copy the contents of one texture into this one.
@@ -182,7 +183,7 @@ ZN_INTERFACE ZN_API ITexture
 	 * @param depth The depth value to use for depth textures.
 	 * @param stencil The stencil value to use for depth/stencil textures.
 	 */
-	virtual void Clear(ClearFlags clearFlags = ClearFlags::All, const glm::vec4& color = glm::vec4(0), float depth = 1.0f, uint8_t stencil = 0) = 0;
+	virtual void Clear(ClearFlags clearFlags = ClearFlags::All, const glm::vec4& color = glm::vec4(0), float depth = 1.0f, uint8 stencil = 0) = 0;
 
 	/**
 	 * Bind this texture for use by the shaders.
@@ -205,13 +206,13 @@ ZN_INTERFACE ZN_API ITexture
 	template< typename T >
 	inline void Plot(glm::ivec2 coord, const T& color)
 	{
-		Plot(coord, reinterpret_cast<const uint8_t*>(&color), sizeof(T));
+		Plot(coord, reinterpret_cast<const uint8*>(&color), sizeof(T));
 	}
 
 	template< typename T >
 	inline T FetchPixel(glm::ivec2 coord)
 	{
-		uint8_t* pixel = nullptr;
+		uint8* pixel = nullptr;
 		FetchPixel(coord, pixel, sizeof(T));
 
 		return *reinterpret_cast<T*>(pixel);
@@ -219,5 +220,5 @@ ZN_INTERFACE ZN_API ITexture
 };
 
 typedef std::vector<std::shared_ptr<ITexture>> TextureList;
-typedef std::unordered_map<uint8_t, std::shared_ptr<ITexture>> TextureMap;
+typedef std::unordered_map<uint8, std::shared_ptr<ITexture>> TextureMap;
 typedef std::unordered_map<std::string, std::shared_ptr<ITexture>> TextureNameMap;

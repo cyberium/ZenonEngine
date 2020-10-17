@@ -177,7 +177,7 @@ float3 GetCameraUp()
 
 float Blur(Texture2D Texture, sampler Sampler, float2 Coords)
 {
-	float2 shadowBlurStep = float2(1.0f / 2048.0f, 1.0f / 2048.0f);
+	float2 shadowBlurStep = float2(1.0f / 16384.0f, 1.0f / 16384.0f);
 
 	float sum = 0.0;
 	const int FILTER_SIZE = 5;

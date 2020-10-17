@@ -48,18 +48,19 @@ std::shared_ptr<IRenderPassPipelined> CPassDeffered_RenderUIQuad::CreatePipeline
 {
 	m_QuadGeometry = GetRenderDevice().GetPrimitivesFactory().CreateQuad();
 
-	auto vertexShader = GetRenderDevice().GetObjectsFactory().CreateShader(EShaderType::VertexShader, "3D/Deffered.hlsl", "VS_ScreenQuad");
+	auto vertexShader = GetRenderDevice().GetObjectsFactory().CreateShader(EShaderType::VertexShader, "3D/Deffered.hlsl", "VS_ScreenQuad", { {"MULTISAMPLED", "1" } });
 	vertexShader->LoadInputLayoutFromReflector();
 
-	auto pixelShader = GetRenderDevice().GetObjectsFactory().CreateShader(EShaderType::PixelShader, "3D/Deffered.hlsl", "PS_DeferredLighting");
+	auto pixelShader = GetRenderDevice().GetObjectsFactory().CreateShader(EShaderType::PixelShader, "3D/Deffered.hlsl", "PS_DeferredLighting", { {"MULTISAMPLED", "1" }});
 
 	// PIPELINES
-	auto& defferedFinalPipeline = GetRenderDevice().GetObjectsFactory().CreatePipelineState();
+	auto defferedFinalPipeline = GetRenderDevice().GetObjectsFactory().CreatePipelineState();
 	defferedFinalPipeline->GetBlendState()->SetBlendMode(additiveBlending);
 	defferedFinalPipeline->GetDepthStencilState()->SetDepthMode(disableDepthWrites);
-	defferedFinalPipeline->GetRasterizerState()->SetCullMode(IRasterizerState::CullMode::None);
+	defferedFinalPipeline->GetRasterizerState()->SetCullMode(IRasterizerState::CullMode::Front);
 	defferedFinalPipeline->GetRasterizerState()->SetFillMode(IRasterizerState::FillMode::Solid, IRasterizerState::FillMode::Solid);
-	defferedFinalPipeline->GetRasterizerState()->SetMultisampleEnabled(true);
+	//defferedFinalPipeline->GetRasterizerState()->SetAntialiasedLineEnable(true);
+	//defferedFinalPipeline->GetRasterizerState()->SetMultisampleEnabled(true);
 	defferedFinalPipeline->SetRenderTarget(RenderTarget);
 	defferedFinalPipeline->SetShader(EShaderType::VertexShader, vertexShader);
 	defferedFinalPipeline->SetShader(EShaderType::PixelShader, pixelShader);

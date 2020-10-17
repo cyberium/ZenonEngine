@@ -11,8 +11,7 @@ public:
 	virtual ~ShaderDX11();
 
 	// IShader
-	bool LoadShaderFromString(EShaderType type, const std::string& fileName, const std::string& source, const ShaderMacros& shaderMacros, const std::string& entryPoint, const std::string& profile, IShaderInputLayout* _customLayout) override final;
-	bool LoadShaderFromFile(EShaderType type, const std::string& fileName, const ShaderMacros& shaderMacros, const std::string& entryPoint, const std::string& profile, IShaderInputLayout* _customLayout) override final;
+	bool LoadFromFile(EShaderType type, const std::string& fileName, const ShaderMacros& shaderMacros, const std::string& entryPoint, IShaderInputLayout* _customLayout) override final;
 	
 	bool LoadInputLayoutFromReflector() override final;
 	bool LoadInputLayoutFromCustomElements(const std::vector<SCustomVertexElement>& declIn) override final;
@@ -22,10 +21,8 @@ public:
 
 	void Dispatch(const glm::uvec3& numGroups) override final;
 
-protected:
-
-	// Destroy the contents of this shader (in case we are loading a new shader).
-	virtual void Destroy();
+private:
+	void Destroy();
 
 private:
 	ATL::CComPtr<ID3D11VertexShader>   m_pVertexShader;

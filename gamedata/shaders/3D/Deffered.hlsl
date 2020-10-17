@@ -21,14 +21,25 @@ cbuffer LightResult : register(b4)
 	bool     IsShadowEnabled;
 };
 
+#ifdef MULTISAMPLED
+
+Texture2DMS<float4, 8> Texture0            : register(t0); // Diffuse
+Texture2DMS<float4, 8> Texture1            : register(t1); // Specular
+//Texture2DMS<float4, 8> Texture2            : register(t2); // Position
+Texture2DMS<float4, 8> Texture3            : register(t3); // Normal
+Texture2DMS<float4, 8> TextureDepthStencil : register(t4); // DepthStencil
+
+#else
 
 Texture2D Texture0            : register(t0); // Diffuse
 Texture2D Texture1            : register(t1); // Specular
 //Texture2D Texture2            : register(t2); // Position
 Texture2D Texture3            : register(t3); // Normal
 Texture2D TextureDepthStencil : register(t4); // DepthStencil
-Texture2D TextureShadow       : register(t5);
 
+#endif
+
+Texture2D TextureShadow       : register(t5);
 
 VS_Output VS_ScreenQuad(VS_Input IN)
 {
@@ -39,62 +50,98 @@ VS_Output VS_ScreenQuad(VS_Input IN)
 }
 
 [earlydepthstencil]
-float4 PS_ScreenQuad(VS_Output VSOut) : SV_TARGET
+float4 PS_ScreenQuad(VS_Output VSOut
+
+#ifdef MULTISAMPLED
+
+, uint SampleIndex : SV_SampleIndex
+
+#endif
+
+) : SV_TARGET
 {
-	return Texture0.Sample(LinearRepeatSampler, VSOut.texCoord) /** Texture1.Sample(TextureSampler, VSOut.texCoord) * Texture2.Sample(TextureSampler, VSOut.texCoord) * Texture3.Sample(TextureSampler, VSOut.texCoord)*/;
+#ifdef MULTISAMPLED
+	return Texture0.Load(VSOut.texCoord, SampleIndex);
+#else
+	return Texture0.Load(int3(VSOut.texCoord, 0));
+#endif
 }
+
+
+
+float Blur2(Texture2D Texture, sampler Sampler, float2 Coords)
+{
+	float2 shadowBlurStep = float2(1.0f / 16384.0f, 1.0f / 16384.0f);
+
+	float sum = 0.0;
+	for (int i = -1; i <= 1; i++)
+	{
+		for (int j = -1; j <= 1; j++)
+		{
+			float2 offset = shadowBlurStep * float2(i, j);
+			sum += Texture.Sample(Sampler, Coords + offset).r;
+		}
+	}
+	return sum / 9;
+}
+
 
 bool IsShadowed(float4 PModel)
 {
-	const float bias = 0.000005f;
-
 	const float4x4 mvpl = mul(LightProjectionMatrix, LightViewMatrix);
 	const float4 lightViewPosition = mul(mvpl, PModel);
 
 	float2 projectTexCoord = (float2)0;
 	projectTexCoord.x = (lightViewPosition.x / lightViewPosition.w) * 0.5f + 0.5f; // From (-1; 1) to (0-1)
 	projectTexCoord.y = (-lightViewPosition.y / lightViewPosition.w) * 0.5f + 0.5f;
+	float lightDepthValue = (lightViewPosition.z / lightViewPosition.w);
 
-	if ((saturate(projectTexCoord.x) == projectTexCoord.x) && (saturate(projectTexCoord.y) == projectTexCoord.y))
+	if (saturate(projectTexCoord.x) == projectTexCoord.x && saturate(projectTexCoord.y) == projectTexCoord.y)
 	{
-		//float depthValue = TextureShadow.Load(int3(projectTexCoord, 0)).r;
-		//float depthValue = Blur(TextureShadow, LinearClampSampler, projectTexCoord);
-		float depthValue = TextureShadow.Sample(LinearClampSampler, projectTexCoord).r;
+		//float storedDepthValue = TextureShadow.Load(int3(projectTexCoord, 0)).r;
+		//float storedDepthValue = Blur2(TextureShadow, LinearClampSampler, projectTexCoord);
+		float storedDepthValue = TextureShadow.Sample(LinearClampSampler, projectTexCoord).r;
+		//float storedDepthValue = TextureShadow.Load(projectTexCoord, SampleIndex).r;
+		//float storedDepthValue = CalcShadowFactor(lightViewPosition);
 
-		float lightDepthValue = (lightViewPosition.z / lightViewPosition.w);
-		lightDepthValue -= bias;
-
-		if (lightDepthValue < depthValue)
-		{
-			return false;
-		}
-		else
-		{
-			return true;
-		}
+		return lightDepthValue > storedDepthValue;
 	}
 
 	return false;
 }
 
 [earlydepthstencil]
-float4 PS_DeferredLighting(VS_Output VSOut) : SV_Target
+float4 PS_DeferredLighting(VS_Output VSOut
+#ifdef MULTISAMPLED
+, uint SampleIndex : SV_SampleIndex
+#endif
+) : SV_Target
 {
-	const float4 eyePos = { 0.0f, 0.0f, 0.0f, 1.0f }; // Everything is in view space.
-
 	const int2 texCoord = VSOut.position.xy;
-	const float depth = TextureDepthStencil.Load(int3(texCoord, 0)).r;
+
+#ifdef MULTISAMPLED
+	const float4 diffuse        = Texture0.Load(texCoord, SampleIndex);
+	const float4 specular       = Texture1.Load(texCoord, SampleIndex);
+	//const float4 nativePosition = Texture2.Load(texCoord, SampleIndex);
+	const float4 N              = Texture3.Load(texCoord, SampleIndex);
+	const float depth           = TextureDepthStencil.Load(texCoord, SampleIndex).r;
+#else
+	const float4 diffuse        = Texture0.Load(int3(texCoord, 0));
+	const float4 specular       = Texture1.Load(int3(texCoord, 0));
+	//const float4 nativePosition = Texture2.Load(int3(texCoord, 0));
+	const float4 N              = Texture3.Load(int3(texCoord, 0));
+	const float depth           = TextureDepthStencil.Load(int3(texCoord, 0)).r;
+#endif
+
+	// Everything is in view space.
+	const float4 eyePos = { 0.0f, 0.0f, 0.0f, 1.0f }; 
+
 
 	const float4 PView = ScreenToView(float4(texCoord, depth, 1.0f));
 	const float4 PModel = mul(PF.InverseView, PView);
 
 	// View vector
 	float4 V = normalize(eyePos - PView);
-
-	float4 diffuse        = Texture0.Load(int3(texCoord, 0)); // Texture0.Sample(LinearClampSampler, texCoord);
-	float4 specular       = Texture1.Load(int3(texCoord, 0));
-	//float4 nativePosition = Texture2.Load(int3(texCoord, 0));
-	float4 N              = Texture3.Load(int3(texCoord, 0));
 
 	// Unpack the specular power from the alpha component of the specular color.
 	float specularPower = exp2(specular.a * 10.5f);
@@ -127,38 +174,10 @@ float4 PS_DeferredLighting(VS_Output VSOut) : SV_Target
 		break;
 	}
 
-	float4 colorResult = lit.Ambient + (diffuse * lit.Diffuse) + (specular * lit.Specular);
+	float4 colorResult = /*lit.Ambient +*/ (diffuse * lit.Diffuse) + (specular * lit.Specular);
 	
 	if (IsShadowed(PModel))
-		return colorResult * 0.3f;
+		return colorResult * lit.Ambient;
 	
-	
-	/*const float bias = 0.005;
-
-	const float4x4 mvpl = mul(LightProjectionMatrix, LightViewMatrix);
-	const float4 lightViewPosition = mul(mvpl, PModel);
-
-	float2 projectTexCoord = (float2)0;
-	projectTexCoord.x = (lightViewPosition.x / lightViewPosition.w) * 0.5f + 0.5f; // From (-1; 1) to (0-1)
-	projectTexCoord.y = (-lightViewPosition.y / lightViewPosition.w) * 0.5f + 0.5f;
-
-	if ((saturate(projectTexCoord.x) == projectTexCoord.x) && (saturate(projectTexCoord.y) == projectTexCoord.y))
-	{
-		//float depthValue = TextureShadow.Load(int3(projectTexCoord, 0)).r;
-		//float depthValue = Blur(TextureShadow, LinearClampSampler, projectTexCoord);
-		float depthValue = TextureShadow.Sample(LinearClampSampler, projectTexCoord).r;
-
-		float lightDepthValue = (lightViewPosition.z / lightViewPosition.w);
-		lightDepthValue -= bias;
-
-		if (depthValue < lightDepthValue)
-		{
-			colorResult *= 0.1f;
-		}
-
-		//colorResult = float4(lightDepthValue, lightDepthValue, lightDepthValue, 1.0f);
-	}*/
-	
-
 	return colorResult;
 }

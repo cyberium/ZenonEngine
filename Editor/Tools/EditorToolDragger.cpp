@@ -163,7 +163,7 @@ std::shared_ptr<ISceneNode3D> CEditorToolDragger::CreateNode(const glm::ivec3& P
 	auto model = GetRenderDevice().GetObjectsFactory().CreateModel();
 	if (auto loadable = std::dynamic_pointer_cast<IObjectLoadSave>(model))
 	{
-		auto fileName = "C:\\_engine\\ZenonEngine_gamedata\\models\\" + Type + ".fbx.znmdl";
+		auto fileName = Type + ".fbx.znmdl";
 		auto file = GetBaseManager().GetManager<IFilesManager>()->Open(fileName);
 		if (file == nullptr)
 			throw CException("File not found.");

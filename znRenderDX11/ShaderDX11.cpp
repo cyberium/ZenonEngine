@@ -6,6 +6,15 @@
 // Additional
 #include "ShaderDX11Include.h"
 
+UINT flags = D3DCOMPILE_ENABLE_STRICTNESS
+#if defined( _DEBUG )
+| D3DCOMPILE_DEBUG
+#else
+| D3DCOMPILE_OPTIMIZATION_LEVEL3;
+#endif
+;
+
+
 // FORWARD BEGIN
 std::string GetLatestProfile(EShaderType type, const D3D_FEATURE_LEVEL& _featureLevel);
 // FORWARD END
@@ -31,76 +40,39 @@ void ShaderDX11::Destroy()
 	m_ShaderParameters.clear();
 }
 
-bool ShaderDX11::LoadShaderFromString(EShaderType shaderType, const std::string& fileName, const std::string& source, const ShaderMacros& shaderMacros, const std::string& entryPoint, const std::string& profile, IShaderInputLayout* _customLayout)
+bool ShaderDX11::LoadFromFile(EShaderType shaderType, const std::string& fileName, const ShaderMacros& shaderMacros, const std::string& entryPoint, IShaderInputLayout* _customLayout)
 {
 	HRESULT hr;
 	{
-		ATL::CComPtr<ID3DBlob> pShaderBlob;
-		
+		D3D_FEATURE_LEVEL featureLevel = m_RenderDeviceDX11.GetDeviceD3D11()->GetFeatureLevel();
+		std::string profile = GetLatestProfile(shaderType, featureLevel);
+		if (profile.empty())
+			throw CznRenderException("Invalid shader type for feature level.");
 
-		std::string _profile = profile;
-		if (profile == "latest")
-		{
-			D3D_FEATURE_LEVEL featureLevel = m_RenderDeviceDX11.GetDeviceD3D11()->GetFeatureLevel();
-			_profile = GetLatestProfile(shaderType, featureLevel);
-			if (_profile.empty())
-			{
-				throw CznRenderException("Invalid shader type for feature level.");
-			}
-		}
+		std::string fullFileName = "shaders/" + fileName;
+		std::shared_ptr<IFile> file = m_RenderDeviceDX11.GetBaseManager().GetManager<IFilesManager>()->Open(fullFileName);
+		if (file == nullptr)
+			throw CznRenderException("Shader file '%s' not found.", fullFileName.c_str());
 
-        std::shared_ptr<IFile> file = m_RenderDeviceDX11.GetBaseManager().GetManager<IFilesManager>()->Open("shaders/" + fileName);
-        std::string data = RecursionInclude(m_RenderDeviceDX11.GetBaseManager(), file);
-
-		UINT flags = D3DCOMPILE_ENABLE_STRICTNESS;
-#if defined( _DEBUG )
-		flags |= D3DCOMPILE_DEBUG;
-#else
-		flags |= D3DCOMPILE_OPTIMIZATION_LEVEL3;
-#endif
+		std::string data;
+		if (!file->getText(&data))
+			throw CznRenderException("Unable to read text from file '%s'", file->Name().c_str());
 
 		std::vector<D3D_SHADER_MACRO> macros;
 		for (const auto& macro : shaderMacros)
-		{
-			// The macro definitions passed to this function only store temporary std::string objects.
-			// I need to copy the temporary strings into the D3D macro type 
-			// in order for it to persist outside of this for loop.
-			std::string name = macro.first;
-			std::string definition = macro.second;
-
-			char* c_name = new char[name.size() + 1];
-			char* c_definition = new char[definition.size() + 1];
-
-			strncpy_s(c_name, name.size() + 1, name.c_str(), name.size());
-			strncpy_s(c_definition, definition.size() + 1, definition.c_str(), definition.size());
-
-			macros.push_back({ c_name, c_definition });
-		}
+			macros.push_back({ macro.first.c_str(), macro.second.c_str() });
 		macros.push_back({ 0, 0 });
 
-		ATL::CComPtr<ID3DBlob> pErrorBlob;
-
+	
 		CShaderDX11Include shaderInclude(m_RenderDeviceDX11.GetBaseManager());
-
-			hr = D3DCompile(data.c_str(), data.size(), fileName.c_str(), macros.data(), &shaderInclude, entryPoint.c_str(), _profile.c_str(), flags, 0, &pShaderBlob, &pErrorBlob);
-			if (FAILED(hr))
-			{
-				if (pErrorBlob != nullptr)
-				{
-					throw CznRenderException(std::string(static_cast<char*>(pErrorBlob->GetBufferPointer()), pErrorBlob->GetBufferSize()));
-				}
-				return false;
-			}
-
-			// We're done compiling.. Delete the macro definitions.
-			for (D3D_SHADER_MACRO macro : macros)
-			{
-				delete[] macro.Name;
-				delete[] macro.Definition;
-			}
-			macros.clear();
-
-		m_pShaderBlob = pShaderBlob;
+		ATL::CComPtr<ID3DBlob> errorBlob;
+		hr = D3DCompile(data.c_str(), data.size(), fileName.c_str(), macros.data(), &shaderInclude, entryPoint.c_str(), profile.c_str(), flags, 0, &m_pShaderBlob, &errorBlob);
+		if (FAILED(hr))
+		{
+			if (errorBlob != nullptr)
+				throw CznRenderException(std::string(static_cast<char*>(errorBlob->GetBufferPointer()), errorBlob->GetBufferSize()));
+			return false;
+		}
 	}
 
 	// After the shader recompiles, try to restore the shader parameters.
@@ -194,22 +166,6 @@ bool ShaderDX11::LoadShaderFromString(EShaderType shaderType, const std::string&
 	}
 
 	return true;
-}
-
-bool ShaderDX11::LoadShaderFromFile(EShaderType shaderType, const std::string& fileName, const ShaderMacros& shaderMacros, const std::string& entryPoint, const std::string& profile, IShaderInputLayout* _customLayout)
-{
-	std::shared_ptr<IFile> file = m_RenderDeviceDX11.GetBaseManager().GetManager<IFilesManager>()->Open("shaders/" + fileName);
-
-	std::string data = "";
-	while (!file->isEof())
-	{
-		std::string line;
-		file->readLine(&line);
-
-		data += line + '\n';
-	}
-
-	return LoadShaderFromString(shaderType, fileName, data, shaderMacros, entryPoint, profile, _customLayout);
 }
 
 bool ShaderDX11::LoadInputLayoutFromReflector()

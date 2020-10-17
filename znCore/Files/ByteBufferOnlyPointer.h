@@ -19,12 +19,13 @@ public:
 	uint8* getDataFromCurrentEx() override { return nullptr; }
 	bool isEof() const override { return m_CurrentPosition >= m_DataSize; }
 
-	void seek(size_t AbsoluteOffset) override;
-	void seekRelative(intptr_t RelativeOffset) override;
+	bool seek(size_t AbsoluteOffset) override;
+	bool seekRelative(intptr_t RelativeOffset) override;
 
-	bool readLine(std::string* _string) override;
-	bool readBytes(void* _destination, size_t _size) override;
-	void readString(std::string* _string) override;
+	bool readLine(std::string* String) override;
+	bool getText(std::string * String) override;
+	bool readBytes(void* Destination, size_t Size) override;
+	bool readString(std::string* String) override;
 
 	void writeLine(const std::string& String) override;
 	void writeBytes(const void * Source, size_t BytesCount) override;

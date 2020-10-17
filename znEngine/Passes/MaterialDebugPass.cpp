@@ -39,6 +39,8 @@ std::shared_ptr<IRenderPassPipelined> CMaterial_Debug_Pass::CreatePipeline(std::
 	Pipeline->GetRasterizerState()->SetCullMode(IRasterizerState::CullMode::None);
 	Pipeline->GetRasterizerState()->SetFillMode(IRasterizerState::FillMode::Wireframe, IRasterizerState::FillMode::Wireframe);
 	Pipeline->GetRasterizerState()->SetAntialiasedLineEnable(true);
+	Pipeline->GetRasterizerState()->SetMultisampleEnabled(true);
+	//Pipeline->GetRasterizerState()->SetForcedSampleCount(4);
 	Pipeline->SetRenderTarget(RenderTarget);
 	Pipeline->SetShader(EShaderType::VertexShader, vertexShader);
 	//Pipeline->SetShader(EShaderType::GeometryShader, geometryShader);

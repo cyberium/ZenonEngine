@@ -18,10 +18,7 @@ void DoCheckHR(HRESULT hr, const char* file, int line, const char* function, con
 		L"HRESULT : 0x%X\r\n\r\n"
 
 		L"Message : %s\r\n"
-		L"Expression : %s\r\n\r\n"
-
-		L"For information on how your program can cause an assertion\r\n"
-		L"failure, see the Visual C++ documentation on asserts.";
+		L"Expression : %s\r\n";
 
 	throw CznRenderException(format, modulePath, fileUtf16.c_str(), line, functionUtf16.c_str(), hr, Message, Expr);
 

@@ -94,7 +94,7 @@ void CRendererDeffered::Initialize(std::shared_ptr<IRenderTarget> RenderTarget, 
 	m_DefferedRenderPass->CreatePipeline(RenderTarget, Viewport);
 
 	m_DefferedRenderPrepareLights = MakeShared(CPassDeffered_ProcessLights, m_RenderDevice, m_SceneCreateTypelessListPass);
-	m_DefferedRenderPrepareLights->CreatePipeline(nullptr, nullptr);
+	m_DefferedRenderPrepareLights->CreatePipeline(RenderTarget, Viewport);
 
 	m_DefferedFinalRenderPass = MakeShared(CPassDeffered_RenderUIQuad, m_RenderDevice, m_DefferedRenderPass, m_DefferedRenderPrepareLights);
 	m_DefferedFinalRenderPass->CreatePipeline(RenderTarget, Viewport);
@@ -103,7 +103,7 @@ void CRendererDeffered::Initialize(std::shared_ptr<IRenderTarget> RenderTarget, 
 	m_FinalRenderTarget->AttachTexture(IRenderTarget::AttachmentPoint::Color0, RenderTarget->GetTexture(IRenderTarget::AttachmentPoint::Color0));
 	m_FinalRenderTarget->AttachTexture(IRenderTarget::AttachmentPoint::DepthStencil, m_DefferedRenderPass->GetTextureDepthStencil());
 
-	glm::vec4 color = glm::vec4(0.0, 0.0f, 0.0f, 1.0f);
+	glm::vec4 color = glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
 	AddPass(MakeShared(ClearRenderTargetPass, m_RenderDevice, RenderTarget, ClearFlags::All, color, 1.0f, 0));
 	AddPass(MakeShared(ClearRenderTargetPass, m_RenderDevice, m_FinalRenderTarget, ClearFlags::All, color, 1.0f, 0));
 	
@@ -113,9 +113,6 @@ void CRendererDeffered::Initialize(std::shared_ptr<IRenderTarget> RenderTarget, 
 	//AddPass(m_BaseManager.GetManager<IRenderPassFactory>()->CreateRenderPass("DebugPass", m_RenderDevice, m_FinalRenderTarget, Viewport, m_Scene.lock()));
 
 	m_UIPasses.push_back(m_DefferedFinalRenderPass);
-
-	//AddPass(MakeShared(ClearRenderTargetPass, m_RenderDevice, m_FinalRenderTarget, ClearFlags::Color, color, 1.0f, 0));
-	
 	m_UIPasses.push_back(MakeShared(CUIFontPass, m_RenderDevice, m_Scene)->CreatePipeline(RenderTarget, Viewport));
 	m_UIPasses.push_back(MakeShared(CUIColorPass, m_RenderDevice, m_Scene)->CreatePipeline(RenderTarget, Viewport));
 }

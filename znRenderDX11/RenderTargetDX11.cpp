@@ -80,6 +80,12 @@ void RenderTargetDX11::GenerateMipMaps()
 	}
 }
 
+uint8 RenderTargetDX11::GetSamplesCount() const
+{
+	_ASSERT(m_Textures.size() > 0);
+	return m_Textures[0]->GetSamplesCount();
+}
+
 void RenderTargetDX11::Clear(AttachmentPoint attachment, ClearFlags clearFlags, const glm::vec4& color, float depth, uint8_t stencil)
 {
 	const std::shared_ptr<ITexture>& texture = m_Textures[(uint8_t)attachment];

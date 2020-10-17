@@ -108,7 +108,7 @@ glm::mat4 CLightComponent3D::GetViewMatrix() const
 	}
 	else if (m_LightStruct->Type == ELightType::Spot)
 	{
-		return glm::lookAt(m_LightStruct->PositionWS.xyz(), m_LightStruct->PositionWS.xyz() + m_LightStruct->DirectionWS.xyz(), glm::vec3(0.0f, 1.0f, 0.0f));
+		return glm::lookAt(m_LightStruct->PositionWS.xyz(), m_LightStruct->PositionWS.xyz() + m_LightStruct->DirectionWS.xyz() * 100.0f, glm::vec3(0.0f, 1.0f, 0.0f));
 	}
 	else if (m_LightStruct->Type == ELightType::Directional)
 	{
@@ -128,7 +128,7 @@ glm::mat4 CLightComponent3D::GetProjectionMatrix() const
 	}
 	else if (m_LightStruct->Type == ELightType::Spot)
 	{
-		return glm::perspective(glm::radians(m_LightStruct->SpotlightAngle * 2.0f), 1.0f, 0.5f, 10000.0f);
+		return glm::perspective(glm::radians(m_LightStruct->SpotlightAngle * 2.0f), 1.0f, 1.0f, m_LightStruct->Range);
 	}
 	else if (m_LightStruct->Type == ELightType::Directional)
 	{

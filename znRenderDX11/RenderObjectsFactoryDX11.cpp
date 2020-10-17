@@ -57,9 +57,9 @@ std::shared_ptr<IRenderWindow> CRenderObjectsFactoryDX11::CreateRenderWindow(INa
 	return renderWindow;
 }
 
-std::shared_ptr<IShader> CRenderObjectsFactoryDX11::CreateShader(EShaderType type, const std::string& fileName, const std::string& entryPoint, const IShader::ShaderMacros& shaderMacros, const std::string& profile, IShaderInputLayout* _customLayout)
+std::shared_ptr<IShader> CRenderObjectsFactoryDX11::CreateShader(EShaderType type, const std::string& fileName, const std::string& entryPoint, const IShader::ShaderMacros& shaderMacros, IShaderInputLayout* _customLayout)
 {
-	std::string fullName = fileName + ShaderMacrosToString(shaderMacros) + entryPoint + profile;
+	std::string fullName = fileName + ShaderMacrosToString(shaderMacros) + entryPoint;
 
 	//const auto& iter = m_ShadersByName.find(fullName);
 	//if (iter != m_ShadersByName.end())
@@ -69,7 +69,7 @@ std::shared_ptr<IShader> CRenderObjectsFactoryDX11::CreateShader(EShaderType typ
 	//}
 
 	std::shared_ptr<IShader> object = MakeShared(ShaderDX11, m_RenderDeviceDX11);
-	object->LoadShaderFromFile(type, fileName, shaderMacros, entryPoint, profile, _customLayout);
+	object->LoadFromFile(type, fileName, shaderMacros, entryPoint, _customLayout);
 
 	m_Shaders.insert(std::make_pair(GenerateRenderObjectID(), object));
 	m_ShadersByName.insert(std::make_pair(fullName, object));
@@ -113,11 +113,11 @@ std::shared_ptr<ITexture> CRenderObjectsFactoryDX11::CreateTexture2D(size_t widt
 	return object;
 }
 
-std::shared_ptr<ITexture> CRenderObjectsFactoryDX11::CreateTextureCube(size_t size, size_t numCubes, const ITexture::TextureFormat& format, EAccess cpuAccess)
+std::shared_ptr<ITexture> CRenderObjectsFactoryDX11::CreateTextureCube(size_t size, const ITexture::TextureFormat& format, EAccess cpuAccess)
 {
 	std::lock_guard<std::recursive_mutex> locker(m_LockMutex);
 
-	std::shared_ptr<ITexture> object = MakeShared(TextureDX11, m_RenderDeviceDX11, size, numCubes, format, cpuAccess);
+	std::shared_ptr<ITexture> object = MakeShared(TextureDX11, m_RenderDeviceDX11, size, format, cpuAccess);
 	//m_Textures.insert(std::make_pair(GenerateRenderObjectID(), object));
 	return object;
 }

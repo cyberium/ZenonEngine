@@ -71,20 +71,20 @@ void CPassDeffered_DoRenderScene::Render(RenderEventArgs& e)
 //
 // IRenderPassPipelined
 //
-std::shared_ptr<IRenderPassPipelined> CPassDeffered_DoRenderScene::CreatePipeline(std::shared_ptr<IRenderTarget> /*RenderTarget*/, const Viewport * Viewport)
+std::shared_ptr<IRenderPassPipelined> CPassDeffered_DoRenderScene::CreatePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport)
 {
 	ITexture::TextureFormat colorTextureFormat
 	(
 		ITexture::Components::RGBA,
 		ITexture::Type::UnsignedNormalized,
-		1,
+		RenderTarget->GetSamplesCount(),
 		8, 8, 8, 8, 0, 0
 	);
 	ITexture::TextureFormat positionTextureFormat
 	(
 		ITexture::Components::RGBA,
 		ITexture::Type::Float,
-		1,
+		RenderTarget->GetSamplesCount(),
 		32, 32, 32, 32, 0, 0
 	);
 	m_Texture0 = GetRenderDevice().GetObjectsFactory().CreateTexture2D(Viewport->GetWidth(), Viewport->GetHeight(), 1, colorTextureFormat);
@@ -96,8 +96,8 @@ std::shared_ptr<IRenderPassPipelined> CPassDeffered_DoRenderScene::CreatePipelin
 	ITexture::TextureFormat depthStencilTextureFormat(
 		ITexture::Components::DepthStencil,
 		ITexture::Type::UnsignedNormalized,
-		1,
-		0, 0, 0, 0, 24, 8);
+		RenderTarget->GetSamplesCount(),
+		0, 0, 0, 0, 32, 8);
 	m_DepthStencilTexture = GetRenderDevice().GetObjectsFactory().CreateTexture2D(Viewport->GetWidth(), Viewport->GetHeight(), 1, depthStencilTextureFormat);
 
 	auto rt = GetRenderDevice().GetObjectsFactory().CreateRenderTarget();
@@ -122,7 +122,8 @@ std::shared_ptr<IRenderPassPipelined> CPassDeffered_DoRenderScene::CreatePipelin
 	defferedPipeline->GetDepthStencilState()->SetDepthMode(enableDepthWrites);
 	defferedPipeline->GetRasterizerState()->SetCullMode(IRasterizerState::CullMode::Back);
 	defferedPipeline->GetRasterizerState()->SetFillMode(IRasterizerState::FillMode::Solid, IRasterizerState::FillMode::Solid);
-	defferedPipeline->GetRasterizerState()->SetMultisampleEnabled(true);
+	//defferedPipeline->GetRasterizerState()->SetAntialiasedLineEnable(true);
+	//defferedPipeline->GetRasterizerState()->SetMultisampleEnabled(true);
 	defferedPipeline->SetRenderTarget(rt);
 	defferedPipeline->SetShader(EShaderType::VertexShader, vertexShader);
 	defferedPipeline->SetShader(EShaderType::PixelShader, pixelShader);

@@ -110,45 +110,36 @@ void RenderDeviceDX11::InitializeD3D11()
 #endif
 
     // This will be the feature level that is used to create our device and swap chain.
-    D3D_FEATURE_LEVEL featureLevel;
+    ATL::CComPtr<ID3D11Device> device;
+	D3D_FEATURE_LEVEL featureLevel;
+    ATL::CComPtr<ID3D11DeviceContext> deviceContext;
 
-    ATL::CComPtr<ID3D11Device> pDevice;
-    ATL::CComPtr<ID3D11DeviceContext> pDeviceContext;
-
-    // First create a ID3D11Device and ID3D11DeviceContext
-    HRESULT hr = D3D11CreateDevice
-    (
-        nullptr,
-        D3D_DRIVER_TYPE_HARDWARE,
-        nullptr,
-        createDeviceFlags,
-        featureLevels,
-        _countof(featureLevels),
-        D3D11_SDK_VERSION,
-        &pDevice,
-        &featureLevel,
-        &pDeviceContext
-    );
-
-    if (hr == E_INVALIDARG)
-    {
-        hr = D3D11CreateDevice
-        (
-            nullptr,
-            D3D_DRIVER_TYPE_HARDWARE,
-            nullptr, 
+	for (auto i = 0; i < _countof(featureLevels); i++)
+	{
+		HRESULT hr = D3D11CreateDevice(
+			nullptr,
+			D3D_DRIVER_TYPE_HARDWARE,
+			nullptr,
 			createDeviceFlags,
-            &featureLevels[1],
-            _countof(featureLevels) - 1,
-            D3D11_SDK_VERSION,
-            &pDevice,
-            &featureLevel,
-            &pDeviceContext
-        );
-    }
+			&featureLevels[i],
+			_countof(featureLevels) - i,
+			D3D11_SDK_VERSION,
+			&device,
+			&featureLevel,
+			&deviceContext
+		);
 
-	CHECK_HR_MSG(hr, L"Failed to created DirectX 11 Device");
-	CHECK_HR_MSG(pDevice->QueryInterface<ID3D11Device4>(&m_DeviceD3D11), L"Failed to create D3D device.");
+		if SUCCEEDED(hr)
+		{
+			break;
+		}
+		else if (hr == E_INVALIDARG)
+		{
+			continue;
+		}
+		CHECK_HR_MSG(hr, L"Failed to created DirectX 11 Device");
+	}
+	CHECK_HR_MSG(device->QueryInterface<ID3D11Device4>(&m_DeviceD3D11), L"Failed to create D3D device.");
 
     m_DeviceD3D11->GetImmediateContext3(&m_DeviceImmediateContext);
 

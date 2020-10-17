@@ -18,6 +18,8 @@ public:
 
 	void GenerateMipMaps() override;
 
+	uint8 GetSamplesCount() const override;
+
 	void Clear(AttachmentPoint attachemnt, ClearFlags clearFlags = ClearFlags::All, const glm::vec4& color = glm::vec4(0), float depth = 1.0f, uint8_t stencil = 0) override;
 	void Clear(ClearFlags clearFlags = ClearFlags::All, const glm::vec4& color = glm::vec4(0), float depth = 1.0f, uint8_t stencil = 0) override;
 

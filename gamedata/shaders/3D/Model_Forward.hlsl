@@ -316,9 +316,9 @@ DefferedRenderPSOut PS_main(VertexShaderOutput IN) : SV_TARGET
 		//alpha * (1.0 - mat.TransparencyFactor)
 	);
 
-	float bias = 0.00001f;
+	//float bias = 0.00001f;
 
-	float2 projectTexCoord = (float2)0;
+	/*float2 projectTexCoord = (float2)0;
 	projectTexCoord.x = (IN.lightViewPosition.x / IN.lightViewPosition.w) * 0.5f + 0.5f; // From (-1; 1) to (0-1)
 	projectTexCoord.y = (-IN.lightViewPosition.y / IN.lightViewPosition.w) * 0.5f + 0.5f;
 
@@ -327,7 +327,7 @@ DefferedRenderPSOut PS_main(VertexShaderOutput IN) : SV_TARGET
 		float depthValue = Blur(TextureShadow, LinearClampSampler, projectTexCoord);
 
 		float lightDepthValue = (IN.lightViewPosition.z / IN.lightViewPosition.w) ;
-		lightDepthValue -= bias;
+		//lightDepthValue -= bias;
 
 		if (lightDepthValue < depthValue)
 		{
@@ -337,15 +337,15 @@ DefferedRenderPSOut PS_main(VertexShaderOutput IN) : SV_TARGET
 		{
 			colorResult *= 0.1f;
 		}
-	}
+	}*/
 
 
 
-	//float4 colorResultt = float4(lit.Ambient.rgb * ambient.rgb * diffuse.rgb + diffuseLight.rgb + specularLight.rgb, 1.0f);
+	float4 colorResultt = float4(lit.Ambient.rgb * diffuse.rgb + diffuseLight.rgb + specularLight.rgb, 1.0f);
 
 	DefferedRenderPSOut OUT;
 	//OUT.PositionWS = IN.position;
-	OUT.Diffuse = colorResult;
+	OUT.Diffuse = colorResultt;
 	OUT.Specular = specularLight;
 	OUT.NormalWS = float4(1.0, 1.0, 1.0, 0.0);
 	return OUT;

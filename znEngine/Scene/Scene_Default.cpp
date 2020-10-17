@@ -49,27 +49,43 @@ void CSceneDefault::Initialize()
 	{
 		auto lightNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, this);
 		lightNode->SetName("Light");
-		lightNode->SetTranslate(glm::vec3(500.0f, 500.0f, 500.0f));
+		lightNode->SetTranslate(glm::vec3(-300.0f, 500.0f, -500.0f) / 5.0f);
+		lightNode->SetRotation(glm::vec3(0.5f, -0.5f, 0.5f));
+
+		lightNode->AddComponent(GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<IComponentFactory>()->CreateComponentT<ILightComponent3D>(cSceneNodeLightComponent, *lightNode.get()));
+		lightNode->GetComponent<ILightComponent3D>()->SetType(ELightType::Spot);
+		lightNode->GetComponent<ILightComponent3D>()->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
+		lightNode->GetComponent<ILightComponent3D>()->SetRange(1000.0f);
+		lightNode->GetComponent<ILightComponent3D>()->SetIntensity(1.0f);
+		lightNode->GetComponent<ILightComponent3D>()->SetSpotlightAngle(45.0f);
+	}
+
+	// Light
+	/*{
+		auto lightNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, this);
+		lightNode->SetName("Light2");
+		lightNode->SetTranslate(glm::vec3(300.0f, 500.0f, 500.0f) / 5.0f);
 		lightNode->SetRotation(glm::vec3(-0.5f, -0.5f, -0.5f));
 
 		lightNode->AddComponent(GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<IComponentFactory>()->CreateComponentT<ILightComponent3D>(cSceneNodeLightComponent, *lightNode.get()));
 		lightNode->GetComponent<ILightComponent3D>()->SetType(ELightType::Spot);
 		lightNode->GetComponent<ILightComponent3D>()->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
-		lightNode->GetComponent<ILightComponent3D>()->SetRange(5000.0f);
+		lightNode->GetComponent<ILightComponent3D>()->SetRange(1000.0f);
 		lightNode->GetComponent<ILightComponent3D>()->SetIntensity(1.0f);
 		lightNode->GetComponent<ILightComponent3D>()->SetSpotlightAngle(45.0f);
-	}
+	}*/
 
 	// Camera
 	{
 		auto cameraNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, this);
 		cameraNode->SetName("Camera");
 		auto geom = GetRenderDevice().GetPrimitivesFactory().CreateBBox();
-		auto mat = MakeShared(MaterialDebug, GetRenderDevice());
+		
+		/*auto mat = MakeShared(MaterialDebug, GetRenderDevice());
 		mat->SetDiffuseColor(glm::vec4(1.0f, 1.0f, 0.3f, 1.0f));
 		auto model = GetRenderDevice().GetObjectsFactory().CreateModel();
 		model->AddConnection(mat, geom);
-		cameraNode->GetComponent<IModelsComponent3D>()->SetModel(model);
+		cameraNode->GetComponent<IModelsComponent3D>()->SetModel(model);*/
 
 		auto cameraComponent = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<IComponentFactory>()->CreateComponentT<ICameraComponent3D>(cSceneNodeCameraComponent, *cameraNode);
 		cameraNode->AddComponent(cameraComponent);
@@ -107,9 +123,11 @@ void CSceneDefault::Initialize()
 	rp3d::DynamicsWorld world(gravity);
 
 
-	Load3D();
+	//Load3D();
 
-	
+	auto defferedRenderer = MakeShared(CRendererDeffered, GetBaseManager(), weak_from_this());
+	defferedRenderer->Initialize(GetRenderWindow()->GetRenderTarget(), &GetRenderWindow()->GetViewport());
+	SetRenderer(defferedRenderer);
 }
 
 void CSceneDefault::Finalize()
