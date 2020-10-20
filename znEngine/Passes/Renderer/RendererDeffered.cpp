@@ -94,7 +94,7 @@ void CRendererDeffered::Initialize(std::shared_ptr<IRenderTarget> RenderTarget, 
 	m_DefferedRenderPass->CreatePipeline(RenderTarget, Viewport);
 
 	m_DefferedRenderPrepareLights = MakeShared(CPassDeffered_ProcessLights, m_RenderDevice, m_SceneCreateTypelessListPass);
-	m_DefferedRenderPrepareLights->CreatePipeline(RenderTarget, Viewport);
+	m_DefferedRenderPrepareLights->CreateShadowPipeline();
 
 	m_DefferedFinalRenderPass = MakeShared(CPassDeffered_RenderUIQuad, m_RenderDevice, m_DefferedRenderPass, m_DefferedRenderPrepareLights);
 	m_DefferedFinalRenderPass->CreatePipeline(RenderTarget, Viewport);

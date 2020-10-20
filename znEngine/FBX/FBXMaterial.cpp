@@ -30,6 +30,8 @@ void CFBXMaterial::Load(fbxsdk::FbxSurfaceMaterial* NativeMaterial)
 {
 	Log::Print("CFBXSceneNode: Loading material '%s'.", NativeMaterial->GetName());
 
+	SetName(NativeMaterial->GetName());
+
 	_ASSERT_EXPR(NativeMaterial->Is<fbxsdk::FbxSurfacePhong>(), "FBX material must be 'FbxSurfacePhong'.");
 	fbxsdk::FbxSurfacePhong* surfacePhong = fbxsdk::FbxCast<fbxsdk::FbxSurfacePhong>(NativeMaterial);
 

@@ -175,6 +175,8 @@ ZN_INTERFACE __declspec(UUID_ModelsComponent) ZN_API IModelsComponent3D
 	virtual void SetModel(const std::shared_ptr<IModel>& Model) = 0;
 	virtual void ResetModel() = 0;
 	virtual std::shared_ptr<IModel> GetModel() const = 0;
+	virtual void SetCastShadows(bool Value) = 0;
+	virtual bool IsCastShadows() const = 0;
 };
 const ComponentMessageType UUID_OnModelSetted = 30;
 

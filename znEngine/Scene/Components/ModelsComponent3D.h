@@ -16,10 +16,13 @@ public:
     void SetModel(const std::shared_ptr<IModel>& Model) override;
 	void ResetModel() override;
     std::shared_ptr<IModel> GetModel() const override;
+	void SetCastShadows(bool Value) override;
+	bool IsCastShadows() const  override;
 
     // CComponentBase
     virtual void Accept(IVisitor* visitor) override;
 
 private:
 	std::shared_ptr<IModel> m_Model;
+	bool m_IsCastShadows;
 };

@@ -25,11 +25,11 @@ public:
 
 private:
 	void Load3D();
-	void GenerateLights(std::shared_ptr<ISceneNode3D> Node, uint32_t numLights);
-	void UpdateLights();
 
 private:
 	std::shared_ptr<CUITextureNode> m_TextureUI;
+	std::shared_ptr<IRenderer> m_ForwardRenderer;
+	std::shared_ptr<IRenderer> m_DefferedRenderrer;
 
 private:
 	std::shared_ptr<ISceneNode3D> m_RootForBoxes;

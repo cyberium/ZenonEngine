@@ -183,8 +183,11 @@ void ModelBase::Save(const std::shared_ptr<IXMLWriter>& Writer) const
 
 	CXMLManager xml;
 	auto fileNameWriter = xml.CreateWriter("FileName");
-
 	fileNameWriter->SetValue(m_FileName);
-
 	Writer->AddChild(fileNameWriter);
+
+	auto conectionsWriter = xml.CreateWriter("Connections");
+	
+
+	
 }

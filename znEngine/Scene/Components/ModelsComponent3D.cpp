@@ -5,6 +5,7 @@
 
 CModelsComponent3D::CModelsComponent3D(const ISceneNode3D& OwnerNode)
     : CComponentBase(OwnerNode)
+	, m_IsCastShadows(true)
 {
 	GetProperties()->SetName("ModelsComponent");
 	GetProperties()->SetDescription("Contains data about visual model");
@@ -16,8 +17,8 @@ CModelsComponent3D::~CModelsComponent3D()
 void CModelsComponent3D::Copy(std::shared_ptr<ISceneNodeComponent> Destination) const
 {
 	auto destCast = std::static_pointer_cast<CModelsComponent3D>(Destination);
-
 	destCast->m_Model = m_Model;
+	destCast->m_IsCastShadows = m_IsCastShadows;
 }
 
 void CModelsComponent3D::Load(const std::shared_ptr<IXMLReader>& Reader)
@@ -27,6 +28,7 @@ void CModelsComponent3D::Load(const std::shared_ptr<IXMLReader>& Reader)
 	auto model = GetBaseManager().GetApplication().GetRenderDevice().GetObjectsFactory().CreateModel();
 	if (auto loadable = std::dynamic_pointer_cast<IObjectLoadSave>(model))
 		loadable->Load(Reader);
+
 	SetModel(model);
 }
 
@@ -61,6 +63,16 @@ void CModelsComponent3D::ResetModel()
 std::shared_ptr<IModel> CModelsComponent3D::GetModel() const
 {
 	return m_Model;
+}
+
+void CModelsComponent3D::SetCastShadows(bool Value)
+{
+	m_IsCastShadows = Value;
+}
+
+bool CModelsComponent3D::IsCastShadows() const
+{
+	return m_IsCastShadows;
 }
 
 

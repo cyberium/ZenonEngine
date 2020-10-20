@@ -19,6 +19,7 @@ public:
 	CPassDeffered_ProcessLights(IRenderDevice& RenderDevice, const std::shared_ptr<CSceneCreateTypelessListPass>& BuildRenderListPass);
 	virtual ~CPassDeffered_ProcessLights();
 
+	void CreateShadowPipeline();
 	const std::vector<SLightResult>& GetLightResult() const;
 
 	// IRenderPass
@@ -55,5 +56,5 @@ private:
 	std::shared_ptr<CSceneCreateTypelessListPass> m_SceneCreateTypelessListPass;
 
 private: // consts
-	const float cShadowTextureSize = 4096.0f;
+	const float cShadowTextureSize = 4096.0f * 2.0f;
 };

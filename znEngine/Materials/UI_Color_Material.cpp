@@ -4,7 +4,7 @@
 #include "UI_Color_Material.h"
 
 UI_Color_Material::UI_Color_Material(IRenderDevice& RenderDevice) 
-	: MaterialProxieT(RenderDevice)
+	: MaterialProxieT(RenderDevice, "UI_Color_Material")
 {
 
 }

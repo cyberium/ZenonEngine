@@ -4,7 +4,7 @@
 #include "UI_Line_Material.h"
 
 UI_Line_Material::UI_Line_Material(IRenderDevice& RenderDevice) 
-	: MaterialProxieT(RenderDevice)
+	: MaterialProxieT(RenderDevice, "UI_Line_Material")
 {
 }
 

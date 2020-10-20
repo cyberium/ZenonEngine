@@ -10,8 +10,8 @@ namespace Math
 	const unsigned int MinUInt32 = 0x00000000;
 	const unsigned int MaxUInt32 = 0xFFFFFFFF;
 
-	const float MinFloat = 1.175494351e-38F;
-	const float MaxFloat = 3.402823466e+38F;
+	const float MinFloat = -1000000000.0f; // FLT_MIN;
+	const float MaxFloat = 1000000000.0f;
 
 	const float Epsilon = 0.000001f;
 	const float Epsilon100 = 0.0001f;

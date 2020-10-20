@@ -112,9 +112,9 @@ glm::mat4 CLightComponent3D::GetViewMatrix() const
 	}
 	else if (m_LightStruct->Type == ELightType::Directional)
 	{
-		glm::vec3 position = -m_LightStruct->DirectionWS.xyz();
-		position *= 100.0f;
-		return glm::lookAt(position, position + m_LightStruct->DirectionWS.xyz(), glm::vec3(0.0f, 1.0f, 0.0f));
+		//glm::vec3 position = -m_LightStruct->DirectionWS.xyz();
+		//position *= 100.0f;
+		return glm::lookAt(glm::vec3(10.0f), glm::vec3(10.0f) + m_LightStruct->DirectionWS.xyz() * 100.0f, glm::vec3(0.0f, 1.0f, 0.0f));
 	}
 
 	return glm::mat4(1.0f);
@@ -132,8 +132,8 @@ glm::mat4 CLightComponent3D::GetProjectionMatrix() const
 	}
 	else if (m_LightStruct->Type == ELightType::Directional)
 	{
-		const float t = 300.0f;
-		return glm::ortho<float>(-t, t, -t, t, -t, t);
+		const float t = 500.0f;
+		return glm::ortho<float>(-t, t, -t, t, -500, 500);
 	}
 	
 	return glm::mat4(1.0f);

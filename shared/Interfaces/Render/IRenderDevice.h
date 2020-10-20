@@ -82,7 +82,7 @@ ZN_INTERFACE ZN_API IRenderObjectsFactory
 	virtual std::shared_ptr<ITexture>         LoadTexture2D(const std::string& fileName) = 0;
 	virtual std::shared_ptr<ITexture>         LoadTextureCube(const std::string& fileName) = 0;
 
-	virtual std::shared_ptr<IMaterial>        CreateMaterial() = 0;
+	virtual std::shared_ptr<IMaterial>        CreateMaterial(const std::string& MaterialName) = 0;
 	virtual std::shared_ptr<IRenderTarget>    CreateRenderTarget() = 0;
 	virtual std::shared_ptr<IQuery>           CreateQuery(IQuery::QueryType queryType = IQuery::QueryType::Timer, size_t numBuffers = 3) = 0;
 	

@@ -49,13 +49,13 @@ void CSceneDefault::Initialize()
 	{
 		auto lightNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, this);
 		lightNode->SetName("Light");
-		lightNode->SetTranslate(glm::vec3(-300.0f, 500.0f, -500.0f) / 5.0f);
+		lightNode->SetTranslate(glm::vec3(-300.0f, 500.0f, -500.0f) / 3.0f);
 		lightNode->SetRotation(glm::vec3(0.5f, -0.5f, 0.5f));
 
 		lightNode->AddComponent(GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<IComponentFactory>()->CreateComponentT<ILightComponent3D>(cSceneNodeLightComponent, *lightNode.get()));
 		lightNode->GetComponent<ILightComponent3D>()->SetType(ELightType::Spot);
 		lightNode->GetComponent<ILightComponent3D>()->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
-		lightNode->GetComponent<ILightComponent3D>()->SetRange(1000.0f);
+		lightNode->GetComponent<ILightComponent3D>()->SetRange(5000.0f);
 		lightNode->GetComponent<ILightComponent3D>()->SetIntensity(1.0f);
 		lightNode->GetComponent<ILightComponent3D>()->SetSpotlightAngle(45.0f);
 	}
@@ -70,7 +70,7 @@ void CSceneDefault::Initialize()
 		lightNode->AddComponent(GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<IComponentFactory>()->CreateComponentT<ILightComponent3D>(cSceneNodeLightComponent, *lightNode.get()));
 		lightNode->GetComponent<ILightComponent3D>()->SetType(ELightType::Spot);
 		lightNode->GetComponent<ILightComponent3D>()->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
-		lightNode->GetComponent<ILightComponent3D>()->SetRange(1000.0f);
+		lightNode->GetComponent<ILightComponent3D>()->SetRange(3000.0f);
 		lightNode->GetComponent<ILightComponent3D>()->SetIntensity(1.0f);
 		lightNode->GetComponent<ILightComponent3D>()->SetSpotlightAngle(45.0f);
 	}*/
@@ -102,6 +102,10 @@ void CSceneDefault::Initialize()
 	auto newRoot = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, this, GetRootNode3D());
 	newRoot->SetName("NewRoot3D");
 
+
+
+
+
 	auto file = GetBaseManager().GetManager<IFilesManager>()->Open("Scene.xml");
 	if (file != nullptr)
 	{
@@ -114,6 +118,10 @@ void CSceneDefault::Initialize()
 
 		auto rootNodeXML = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->LoadSceneNode3DXML(reader->GetChilds()[0], currentRoot->GetScene(), currentRoot->GetParent().lock());
 
+
+
+
+
 		while (false == rootNodeXML->GetChilds().empty())
 			currentRoot->AddChild(rootNodeXML->GetChilds()[0]);
 	}
@@ -123,10 +131,106 @@ void CSceneDefault::Initialize()
 	rp3d::DynamicsWorld world(gravity);
 
 
+	//--------------------------------------------------------------------------
+	// Plane
+	//--------------------------------------------------------------------------
+
+	{
+		const float cPlaneSize = 240.0f;
+		const float cPlaneY = 0.0f;
+
+		std::shared_ptr<MaterialModel> textMaterial = MakeShared(MaterialModel, GetBaseManager());
+		textMaterial->SetDiffuseColor(glm::vec3(1.0f, 1.0f, 1.0f));
+		textMaterial->SetSpecularColor(glm::vec3(1.0f, 1.0f, 1.0f));
+		//textMaterial->SetSpecularFactor(8.0f);
+		//textMaterial->SetBumpFactor(8.0f);
+		//textMaterial->SetTexture(MaterialModel::ETextureType::TextureDiffuse, GetRenderDevice().GetObjectsFactory().LoadTexture2D("AmazonScene//OtherTextures//Colors//Orange.dds"));
+		//textMaterial->SetTexture(MaterialModel::ETextureType::TextureNormalMap, GetRenderDevice().GetObjectsFactory().LoadTexture2D("Sponza_Ceiling_normal.png"));
+		//textMaterial->SetTexture(MaterialModel::ETextureType::TextureSpecular, GetRenderDevice().GetObjectsFactory().LoadTexture2D("AmazonScene//BuildingTextures//concrete_smooth_03_spec.dds"));
+		//textMaterial->SetTexture(MaterialModel::ETextureType::TextureBump, GetRenderDevice().GetObjectsFactory().LoadTexture2D("AmazonScene//BuildingTextures//concrete_smooth_03_ddna.dds"));
+
+		//std::shared_ptr<MaterialTextured> textMaterial = MakeShared(MaterialTextured, GetRenderDevice());
+		//textMaterial->SetTexture(0, GetRenderDevice().GetObjectsFactory().LoadTexture2D("idi na huy.png"));
+
+		auto& modelPlane = GetRenderDevice().GetObjectsFactory().CreateModel();
+		modelPlane->AddConnection(textMaterial, GetRenderDevice().GetPrimitivesFactory().CreateCube());
+
+		auto sceneNodePlane = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, this, newRoot);
+		sceneNodePlane->SetName("Ground");
+		sceneNodePlane->SetTranslate(glm::vec3(0, -5, 0));
+		sceneNodePlane->SetScale(glm::vec3(cPlaneSize, 5.0f, cPlaneSize));
+		sceneNodePlane->GetComponent<IModelsComponent3D>()->SetModel(modelPlane);
+		//sceneNodePlane->GetComponent<IModelsComponent3D>()->SetCastShadows(false);
+	}
+
+
+
+	//--------------------------------------------------------------------------
+	// Sphere Metal
+	//--------------------------------------------------------------------------
+
+	{
+		std::shared_ptr<MaterialModel> textMaterial = MakeShared(MaterialModel, GetBaseManager());
+		//textMaterial->SetSpecularFactor(8.0f);
+		//textMaterial->SetBumpFactor(8.0f);
+		textMaterial->SetTexture(MaterialModel::ETextureType::TextureDiffuse, GetRenderDevice().GetObjectsFactory().LoadTexture2D("beaten-up-metal1-unity//beaten-up-metal1-albedo.png"));
+		textMaterial->SetTexture(MaterialModel::ETextureType::TextureNormalMap, GetRenderDevice().GetObjectsFactory().LoadTexture2D("beaten-up-metal1-unity//beaten-up-metal1-Normal-ogl.png"));
+		textMaterial->SetTexture(MaterialModel::ETextureType::TextureSpecular, GetRenderDevice().GetObjectsFactory().LoadTexture2D("beaten-up-metal1-unity//beaten-up-metal1-ao.png"));
+		//textMaterial->SetTexture(MaterialModel::ETextureType::TextureBump, GetRenderDevice().GetObjectsFactory().LoadTexture2D("AmazonScene//BuildingTextures//concrete_smooth_03_ddna.dds"));
+
+		//std::shared_ptr<MaterialTextured> textMaterial = MakeShared(MaterialTextured, GetRenderDevice());
+		//textMaterial->SetTexture(0, GetRenderDevice().GetObjectsFactory().LoadTexture2D("idi na huy.png"));
+
+		auto& modelPlane = GetRenderDevice().GetObjectsFactory().CreateModel();
+		modelPlane->AddConnection(textMaterial, GetRenderDevice().GetPrimitivesFactory().CreateSphere());
+
+		auto sceneNodePlane = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, this, newRoot);
+		sceneNodePlane->SetName("Sphere");
+		sceneNodePlane->SetTranslate(glm::vec3(-10, 15, -10));
+		sceneNodePlane->SetScale(glm::vec3(15.0f));
+		sceneNodePlane->GetComponent<IModelsComponent3D>()->SetModel(modelPlane);
+		//sceneNodePlane->GetComponent<IModelsComponent3D>()->SetCastShadows(false);
+	}
+
+	//--------------------------------------------------------------------------
+	// Sphere Gold
+	//--------------------------------------------------------------------------
+
+	{
+		std::shared_ptr<MaterialModel> textMaterial = MakeShared(MaterialModel, GetBaseManager());
+		//textMaterial->SetSpecularFactor(8.0f);
+		//textMaterial->SetBumpFactor(8.0f);
+		textMaterial->SetTexture(MaterialModel::ETextureType::TextureDiffuse, GetRenderDevice().GetObjectsFactory().LoadTexture2D("pirate-gold-unity//pirate-gold_albedo.png"));
+		textMaterial->SetTexture(MaterialModel::ETextureType::TextureNormalMap, GetRenderDevice().GetObjectsFactory().LoadTexture2D("pirate-gold-unity//pirate-gold_normal-ogl.png"));
+		textMaterial->SetTexture(MaterialModel::ETextureType::TextureSpecular, GetRenderDevice().GetObjectsFactory().LoadTexture2D("pirate-gold-unity//pirate-gold_ao.png"));
+		//textMaterial->SetTexture(MaterialModel::ETextureType::TextureBump, GetRenderDevice().GetObjectsFactory().LoadTexture2D("AmazonScene//BuildingTextures//concrete_smooth_03_ddna.dds"));
+
+		//std::shared_ptr<MaterialTextured> textMaterial = MakeShared(MaterialTextured, GetRenderDevice());
+		//textMaterial->SetTexture(0, GetRenderDevice().GetObjectsFactory().LoadTexture2D("idi na huy.png"));
+
+		auto& modelPlane = GetRenderDevice().GetObjectsFactory().CreateModel();
+		modelPlane->AddConnection(textMaterial, GetRenderDevice().GetPrimitivesFactory().CreateCube());
+
+		auto sceneNodePlane = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, this, newRoot);
+		sceneNodePlane->SetName("Sphere");
+		sceneNodePlane->SetTranslate(glm::vec3(-10, 15, 10));
+		sceneNodePlane->SetScale(glm::vec3(15.0f));
+		sceneNodePlane->GetComponent<IModelsComponent3D>()->SetModel(modelPlane);
+		//sceneNodePlane->GetComponent<IModelsComponent3D>()->SetCastShadows(false);
+	}
+
+
 	//Load3D();
+
+	auto forwardRenderer = MakeShared(CRendererForward, GetBaseManager(), weak_from_this());
+	forwardRenderer->Initialize(GetRenderWindow()->GetRenderTarget(), &GetRenderWindow()->GetViewport());
+	m_ForwardRenderer = forwardRenderer;
+	//SetRenderer(forwardRenderer);
 
 	auto defferedRenderer = MakeShared(CRendererDeffered, GetBaseManager(), weak_from_this());
 	defferedRenderer->Initialize(GetRenderWindow()->GetRenderTarget(), &GetRenderWindow()->GetViewport());
+	m_DefferedRenderrer = defferedRenderer;
+
 	SetRenderer(defferedRenderer);
 }
 
@@ -172,6 +276,14 @@ void CSceneDefault::OnPreRender(RenderEventArgs& e)
 //
 bool CSceneDefault::OnWindowKeyPressed(KeyEventArgs & e)
 {
+	if (e.Key == KeyCode::R)
+	{
+		SetRenderer(m_DefferedRenderrer);
+	}
+	else if (e.Key == KeyCode::T)
+	{
+		SetRenderer(m_ForwardRenderer);
+	}
 	return SceneBase::OnWindowKeyPressed(e);
 }
 

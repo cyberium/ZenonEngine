@@ -60,6 +60,7 @@ DefferedRenderPSOut PS_main() : SV_TARGET
 	DefferedRenderPSOut OUT;
 	OUT.Diffuse = DiffuseColor0;
 	OUT.Specular = DiffuseColor0;
-	OUT.NormalWS = float4(1.0f, 1.0f, 1.0f, 0.0f);
+	OUT.PositionVS = float4(0.0f, 0.0f, 0.0f, 0.0f);
+	OUT.NormalVS = float4(0.0f, 0.0f, 0.0f, 0.0f);
 	return OUT;
 }

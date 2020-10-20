@@ -30,6 +30,8 @@ protected:
 	std::unordered_map<std::string,    std::weak_ptr<ITexture>>           m_TexturesByName;
 	
 	std::unordered_map<RenderObjectID, std::weak_ptr<IMaterial>>          m_Materials;
+	std::unordered_map<std::string,    std::weak_ptr<IMaterial>>          m_MaterialsByName;
+
 	std::unordered_map<RenderObjectID, std::weak_ptr<IRenderTarget>>      m_RenderTargets;
 	std::unordered_map<RenderObjectID, std::weak_ptr<IQuery>>             m_Queries;
 	std::unordered_map<RenderObjectID, std::weak_ptr<ISamplerState>>      m_Samplers;

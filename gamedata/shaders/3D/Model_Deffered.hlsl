@@ -3,7 +3,7 @@
 struct VertexShaderOutput
 {
 	float4 position     : SV_POSITION;  // Clip space position.
-	float4 positionVS   : POSITION;    // View space position.
+	float3 positionVS   : POSITION;    // View space position.
 	float2 texCoord     : TEXCOORD0;    // Texture coordinate
 	float3 normalVS     : NORMAL;       // View space normal.
 	float3 tangentVS    : TANGENT;      // View space tangent.
@@ -35,7 +35,7 @@ VertexShaderOutput VS_main(VSInputPTNTB IN)
 
 	VertexShaderOutput OUT;
 	OUT.position = mul(mvp, float4(IN.position, 1.0f));
-	OUT.positionVS = mul(mv, float4(IN.position, 1.0f));
+	OUT.positionVS = mul(mv, float4(IN.position, 1.0f)).xyz;
 
 	//OUT.tangentVS = mul((float3x3)mv, IN.tangent);
 	//OUT.binormalVS = mul((float3x3)mv, IN.binormal);
@@ -78,17 +78,18 @@ VertexShaderOutput VS_PTN(VSInputPTN IN)
 
 	VertexShaderOutput OUT;
 	OUT.position = mul(mvp, float4(IN.position, 1.0f));
-
-	//OUT.positionVS = mul(mv, float4(IN.position, 1.0f)).xyz;
-	OUT.positionVS = mul(PO.Model, float4(IN.position, 1.0f));
-
+	OUT.positionVS = mul(mv, float4(IN.position, 1.0f)).xyz;
+	OUT.texCoord = IN.texCoord;
+	OUT.normalVS = mul(mv, float4(IN.normal, 0.0f)).xyz;
 	OUT.tangentVS = mul(mv, float4(tangent, 0.0f)).xyz;
 	OUT.binormalVS = mul(mv, float4(binormal, 0.0f)).xyz;
-	OUT.normalVS = mul(mv, float4(IN.normal, 0.0f)).xyz;
-	OUT.texCoord = IN.texCoord;
-
 	return OUT;
 }
+
+
+
+
+
 
 DefferedRenderPSOut PS_main(VertexShaderOutput IN) : SV_TARGET
 {
@@ -176,7 +177,7 @@ DefferedRenderPSOut PS_main(VertexShaderOutput IN) : SV_TARGET
 	// Just use the normal from the model.
 	else
 	{
-		N = normalize(float4(IN.normalVS, 0));
+		N = normalize(float4(IN.normalVS, 0.0f));
 	}
 
 
@@ -201,12 +202,11 @@ DefferedRenderPSOut PS_main(VertexShaderOutput IN) : SV_TARGET
 	// Method of packing specular power from "Deferred Rendering in Killzone 2" presentation from Michiel van der Leeuw, Guerrilla (2007)
 	mat.SpecularFactor = log2(mat.SpecularFactor) / 10.5f;
 
-
 	DefferedRenderPSOut OUT;
 	OUT.Diffuse = float4(diffuse.rgb, alpha);
 	OUT.Specular = float4(specular.rgb, mat.SpecularFactor);
-	//OUT.PositionWS = float4(diffuse.rgb, alpha);
-	OUT.NormalWS = float4(N.xyz, 0.0);
+	OUT.PositionVS = float4(IN.positionVS, 1.0f);
+	OUT.NormalVS = float4(N.xyz, 0.0);
 	return OUT;
 }
 

@@ -66,6 +66,68 @@ namespace
 }
 
 
+void DirectX::ComputePlane(VertexCollection & vertices, IndexCollection & indices, const XMFLOAT3 & size, bool rhcoords, bool invertn)
+{
+	vertices.clear();
+	indices.clear();
+
+	// A box has six faces, each one pointing in a different direction.
+	const int FaceCount = 1;
+
+	static const XMVECTORF32 faceNormals[FaceCount] =
+	{
+		{ { {  0,  1,  0, 0 } } }
+	};
+
+	static const XMVECTORF32 textureCoordinates[4] =
+	{
+		{ { { 1, 0, 0, 0 } } },
+		{ { { 1, 1, 0, 0 } } },
+		{ { { 0, 1, 0, 0 } } },
+		{ { { 0, 0, 0, 0 } } }
+	};
+
+	// Create each face in turn.
+	XMVECTOR normal = faceNormals[0];
+
+	// Get two vectors perpendicular both to the face normal and to each other.
+	XMVECTOR basis = g_XMIdentityR2;
+
+	XMVECTOR side1 = XMVector3Cross(normal, basis);
+	XMVECTOR side2 = XMVector3Cross(normal, side1);
+
+	// Six indices (two triangles) per face.
+	size_t vbase = vertices.size();
+	index_push_back(indices, vbase + 0);
+	index_push_back(indices, vbase + 1);
+	index_push_back(indices, vbase + 2);
+
+	index_push_back(indices, vbase + 0);
+	index_push_back(indices, vbase + 2);
+	index_push_back(indices, vbase + 3);
+
+	// Four vertices per face.
+	// (normal - side1 - side2) * tsize // normal // t0
+	vertices.push_back(VertexPositionTextureNormal(XMVectorSubtract(XMVectorSubtract(g_XMZero, side1), side2), normal, textureCoordinates[0]));
+
+	// (normal - side1 + side2) * tsize // normal // t1
+	vertices.push_back(VertexPositionTextureNormal(XMVectorAdd(XMVectorSubtract(g_XMZero, side1), side2), normal, textureCoordinates[1]));
+
+	// (normal + side1 + side2) * tsize // normal // t2
+	vertices.push_back(VertexPositionTextureNormal(XMVectorAdd(g_XMZero, XMVectorAdd(side1, side2)), normal, textureCoordinates[2]));
+
+	// (normal + side1 - side2) * tsize // normal // t3
+	vertices.push_back(VertexPositionTextureNormal(XMVectorSubtract(XMVectorAdd(g_XMZero, side1), side2), normal, textureCoordinates[3]));
+
+	// Build RH above
+	if (!rhcoords)
+		ReverseWinding(indices, vertices);
+
+	if (invertn)
+		InvertNormals(vertices);
+}
+
+
 //--------------------------------------------------------------------------------------
 // Cube (aka a Hexahedron) or Box
 //--------------------------------------------------------------------------------------

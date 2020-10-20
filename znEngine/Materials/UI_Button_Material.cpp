@@ -4,7 +4,7 @@
 #include "UI_Button_Material.h"
 
 UI_Button_Material::UI_Button_Material(IRenderDevice& RenderDevice) :
-	MaterialProxieT(RenderDevice)
+	MaterialProxieT(RenderDevice, "UI_Button_Material")
 {}
 
 UI_Button_Material::~UI_Button_Material()

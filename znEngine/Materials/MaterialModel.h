@@ -9,10 +9,10 @@ namespace
 			, EmissiveFactor(1.0f)
 
 			, Ambient(glm::vec3(0.0f, 0.0f, 0.0f))
-			, AmbientFactor(1.0f)
+			, AmbientFactor(0.0f)
 
-			, Diffuse(glm::vec3(1.0f, 1.0f, 1.0f))
-			, DiffuseFactor(0.8f)
+			, Diffuse(glm::vec3(0.0f, 0.0f, 0.0f))
+			, DiffuseFactor(1.0f)
 
 			, NormalMap(glm::vec3(0.0f, 0.0f, 0.0f))
 			, Shininess(12.0f)
@@ -30,7 +30,7 @@ namespace
 			, VectorDisplacementFactor(0.5f)
 
 			, Specular(glm::vec3(0.0f, 0.0f, 0.0f))
-			, SpecularFactor(1.0f)
+			, SpecularFactor(8.0f)
 
 			, Reflection(glm::vec3(0.0f, 0.0f, 0.0f))
 			, ReflectionFactor(1.0f)

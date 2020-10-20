@@ -79,14 +79,12 @@ VertexShaderOutput VS_main_Bones(VSInputPTNTBBB IN)
 	VertexShaderOutput OUT;
 	OUT.position = mul(mvp, newVertex);
 	OUT.positionVS = mul(mv, newVertex).xyz;
-
 	//OUT.tangentVS = mul((float3x3)mv, IN.tangent);
 	//OUT.binormalVS = mul((float3x3)mv, IN.binormal);
 	//OUT.normalVS = mul((float3x3)mv, IN.normal);
 	OUT.tangentVS = mul(mv, float4(IN.tangent, 0.0f)).xyz;
 	OUT.binormalVS = mul(mv, float4(IN.binormal, 0.0f)).xyz;
 	OUT.normalVS = mul(mv, float4(IN.normal, 0.0f)).xyz;
-
 	OUT.texCoord = IN.texCoord;
 
 	return OUT;
@@ -101,11 +99,9 @@ VertexShaderOutput VS_main(VSInputPTNTB IN)
 	VertexShaderOutput OUT;
 	OUT.position = mul(mvp, float4(IN.position, 1.0f));
 	OUT.positionVS = mul(mv, float4(IN.position, 1.0f)).xyz;
-
 	//OUT.tangentVS = mul((float3x3)mv, IN.tangent);
 	//OUT.binormalVS = mul((float3x3)mv, IN.binormal);
 	//OUT.normalVS = mul((float3x3)mv, IN.normal);
-
 	OUT.tangentVS = mul(mv, float4(IN.tangent, 0.0f)).xyz;
 	OUT.binormalVS = mul(mv, float4(IN.binormal, 0.0f)).xyz;
 	OUT.normalVS = mul(mv, float4(IN.normal, 0.0f)).xyz;
@@ -287,9 +283,15 @@ DefferedRenderPSOut PS_main(VertexShaderOutput IN) : SV_TARGET
 	}
 
 
+
+
 	float4 eyePos = { 0, 0, 0, 1 };
+
 	LightingResult lit = DoLighting(Lights, mat, eyePos, P, N);
+
+
 	float4 diffuseLight = diffuse * float4(lit.Diffuse.rgb, 1.0f); // Discard the alpha value from the lighting calculations.
+	
 
 	float4 specularLight = 0;
 	if (mat.SpecularFactor > 1.0f) // If specular power is too low, don't use it.
@@ -339,15 +341,13 @@ DefferedRenderPSOut PS_main(VertexShaderOutput IN) : SV_TARGET
 		}
 	}*/
 
-
-
 	float4 colorResultt = float4(lit.Ambient.rgb * diffuse.rgb + diffuseLight.rgb + specularLight.rgb, 1.0f);
 
 	DefferedRenderPSOut OUT;
-	//OUT.PositionWS = IN.position;
 	OUT.Diffuse = colorResultt;
 	OUT.Specular = specularLight;
-	OUT.NormalWS = float4(1.0, 1.0, 1.0, 0.0);
+	OUT.PositionVS = float4(IN.positionVS, 1.0f);
+	OUT.NormalVS = float4(N.xyz, 0.0);
 	return OUT;
 }
 

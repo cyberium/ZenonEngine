@@ -175,9 +175,22 @@ std::shared_ptr<ITexture> CRenderObjectsFactoryDX11::LoadTextureCube(const std::
 	return object;
 }
 
-std::shared_ptr<IMaterial> CRenderObjectsFactoryDX11::CreateMaterial()
+std::shared_ptr<IMaterial> CRenderObjectsFactoryDX11::CreateMaterial(const std::string& MaterialName)
 {
 	std::lock_guard<std::recursive_mutex> locker(m_LockMutex);
+
+	//const auto& iter = m_MaterialsByName.find(MaterialName);
+	//if (iter != m_MaterialsByName.end())
+	//{
+	//	if (std::shared_ptr<IMaterial> material = iter->second.lock())
+	//	{
+	//		return material;
+	//	}
+	//	else
+	//	{
+	//		m_MaterialsByName.erase(iter);
+	//	}
+	//}
 
 	std::shared_ptr<IMaterial> object = MakeShared(MaterialDX11, m_RenderDeviceDX11);
 	//m_Materials.insert(std::make_pair(GenerateRenderObjectID(), object));

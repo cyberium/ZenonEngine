@@ -42,7 +42,7 @@ std::shared_ptr<IRenderPassPipelined> CMaterialModelPass::CreatePipeline(std::sh
 	auto Pipeline = GetRenderDevice().GetObjectsFactory().CreatePipelineState();
 	Pipeline->GetBlendState()->SetBlendMode(disableBlending);
 	Pipeline->GetDepthStencilState()->SetDepthMode(enableDepthWrites);
-	Pipeline->GetRasterizerState()->SetCullMode(IRasterizerState::CullMode::None);
+	Pipeline->GetRasterizerState()->SetCullMode(IRasterizerState::CullMode::Back);
 	Pipeline->GetRasterizerState()->SetFillMode(IRasterizerState::FillMode::Solid, IRasterizerState::FillMode::Solid);
 	Pipeline->SetRenderTarget(RenderTarget);
 	Pipeline->SetShader(EShaderType::VertexShader, vertexShader);

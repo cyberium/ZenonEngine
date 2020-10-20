@@ -4,7 +4,7 @@
 #include "MaterialDebug.h"
 
 MaterialDebug::MaterialDebug(IRenderDevice& RenderDevice)
-	: MaterialProxieT(RenderDevice)
+	: MaterialProxieT(RenderDevice, "MaterialDebug")
 {}
 
 MaterialDebug::~MaterialDebug()

@@ -30,8 +30,8 @@ public:
 	void											Load(const std::shared_ptr<IXMLReader>& Reader) override;
 	void											Save(const std::shared_ptr<IXMLWriter>& Writer) const override;
 protected:
-	BoundingBox                                     m_BoundingBox;
-	std::vector<SConnection>				        m_Connections;
+	BoundingBox m_BoundingBox;
+	std::vector<SConnection> m_Connections;
 	std::string m_FileName;
 
 private: // Link to parent d3d11 device

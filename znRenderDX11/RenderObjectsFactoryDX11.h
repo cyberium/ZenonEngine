@@ -19,7 +19,7 @@ public:
 	std::shared_ptr<ITexture>           LoadTexture2D(const std::string& fileName) override;
 	std::shared_ptr<ITexture>           LoadTextureCube(const std::string& fileName) override;
 
-	std::shared_ptr<IMaterial>          CreateMaterial() override;
+	std::shared_ptr<IMaterial>          CreateMaterial(const std::string& MaterialName) override;
 	std::shared_ptr<IRenderTarget>      CreateRenderTarget() override;
 	std::shared_ptr<IQuery>             CreateQuery(IQuery::QueryType queryType, size_t numBuffers) override;
 	std::shared_ptr<ISamplerState>      CreateSamplerState() override;

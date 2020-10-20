@@ -78,7 +78,7 @@ std::shared_ptr<IRenderPassPipelined> CPassDeffered_RenderUIQuad::CreatePipeline
 
 	defferedFinalPipeline->SetTexture(0, m_DefferedRender->GetTexture0());
 	defferedFinalPipeline->SetTexture(1, m_DefferedRender->GetTexture1());
-	//defferedFinalPipeline->SetTexture(2, m_DefferedRender->GetTexture2());
+	defferedFinalPipeline->SetTexture(2, m_DefferedRender->GetTexture2());
 	defferedFinalPipeline->SetTexture(3, m_DefferedRender->GetTexture3());
 	defferedFinalPipeline->SetTexture(4, m_DefferedRender->GetTextureDepthStencil());
 

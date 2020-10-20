@@ -4,7 +4,7 @@
 #include "UI_Font_Material.h"
 
 UI_Font_Material::UI_Font_Material(IRenderDevice& RenderDevice) 
-	: MaterialProxieT(RenderDevice)
+	: MaterialProxieT(RenderDevice, "UI_Font_Material")
 {}
 
 UI_Font_Material::~UI_Font_Material()

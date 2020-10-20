@@ -4,7 +4,7 @@
 #include "MaterialModel.h"
 
 MaterialModel::MaterialModel(const IBaseManager& BaseManager)
-	: MaterialProxieT(BaseManager.GetApplication().GetRenderDevice())
+	: MaterialProxieT(BaseManager.GetApplication().GetRenderDevice(), "MaterialModel")
 	, m_BaseManager(BaseManager)
 {
 }

@@ -7,8 +7,8 @@ class MaterialProxieT
 	: public MaterialProxie
 {
 public:
-	MaterialProxieT(IRenderDevice& RenderDevice)
-		: MaterialProxie(RenderDevice.GetObjectsFactory().CreateMaterial())
+	MaterialProxieT(IRenderDevice& RenderDevice, const std::string& MaterialName)
+		: MaterialProxie(RenderDevice.GetObjectsFactory().CreateMaterial(MaterialName))
 	{
 		InitializeMaterialData(sizeof(T));
 		MaterialData() = T();
