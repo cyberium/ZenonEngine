@@ -1,5 +1,4 @@
 
-
 struct Plane
 {
 	float3 N;   // Plane normal.

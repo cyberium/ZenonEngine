@@ -3,11 +3,6 @@
 //
 
 #include "Types.hlsl"
-#include "Material.hlsl"
-#include "Light.hlsl"
-
-
-
 
 
 // Uniforms

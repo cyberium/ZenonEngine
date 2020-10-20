@@ -1,12 +1,19 @@
 #include "CommonInclude.hlsl"
+#include "Material.hlsl"
+#include "Light.hlsl"
+
+
 
 #define RENDERER_FORWARD 0
 #define RENDERER_DEFFERED 1
+
 
 #ifndef RENDERER_TYPE
 #pragma message( "RENDERER_TYPE undefined. Default to RENDERER_FORWARD.")
 #define RENDERER_TYPE RENDERER_FORWARD
 #endif
+
+
 
 struct VertexShaderOutput
 {
@@ -28,20 +35,13 @@ cbuffer Material : register(b2)
 	MaterialModel Mat;
 };
 
-Texture2D TextureDiffuse                  : register(t0);
-Texture2D TextureEmissive                 : register(t1);
-Texture2D TextureAmbient                  : register(t2);
-Texture2D TextureSpecular                 : register(t3);
-Texture2D TextureShininess                : register(t4);
-Texture2D TextureNormalMap                : register(t5);
-Texture2D TextureBump                     : register(t6);
-Texture2D TextureTransparency             : register(t7);
-Texture2D TextureReflection               : register(t8);
-Texture2D TextureDisplacement             : register(t9);
+
 
 #if RENDERER_TYPE == RENDERER_FORWARD
 StructuredBuffer<Light> Lights  : register(t10);
 #endif
+
+
 
 StructuredBuffer<PerObject> Instances  : register(t11);
 Texture2D TextureShadow : register(t12);
@@ -195,160 +195,31 @@ VertexShaderOutput VS_PTN_Instanced(VSInputPTN IN, uint InstanceID : SV_Instance
 }
 
 
-DefferedRenderPSOut PS_main(VertexShaderOutput IN) : SV_TARGET
+float4 PS_main(VertexShaderOutput IN) : SV_TARGET
 {
 	MaterialModel mat = Mat;
 
-	float4 diffuse = float4(mat.Diffuse * mat.DiffuseFactor, 1.0f);
-	if (mat.HasTextureDiffuse)
-	{
-		float4 diffuseTex = TextureDiffuse.Sample(LinearRepeatSampler, IN.texCoord);
-		if (any(diffuse.rgb))
-		{
-			diffuse *= diffuseTex;
-		}
-		else
-		{
-			diffuse = diffuseTex;
-		}
-	}
-
-	// By default, use the alpha from the diffuse component.
-	float alpha = diffuse.a;
-	if (mat.HasTextureTransparency)
-	{
-		alpha = TextureTransparency.Sample(LinearRepeatSampler, IN.texCoord).r;
-	}
-
-	if (alpha < 0.05)
-	{
+	float4 diffuseAndAlpha = ExtractDuffuseAndAlpha(mat, IN.texCoord);
+	if (diffuseAndAlpha.a < 0.05f)
 		discard;
-	}
-
-	float4 ambient = float4(mat.Ambient, mat.AmbientFactor);
-	if (mat.HasTextureAmbient)
-	{
-		float4 ambientTex = TextureAmbient.Sample(LinearRepeatSampler, IN.texCoord);
-		if (any(ambient.rgb))
-		{
-			ambient *= ambientTex;
-		}
-		else
-		{
-			ambient = ambientTex;
-		}
-	}
-
-	float4 emissive = float4(mat.Emissive * mat.EmissiveFactor, 1.0f);
-	if (mat.HasTextureEmissive)
-	{
-		float4 emissiveTex = TextureEmissive.Sample(LinearRepeatSampler, IN.texCoord);
-		if (any(emissive.rgb))
-		{
-			emissive *= emissiveTex;
-		}
-		else
-		{
-			emissive = emissiveTex;
-		}
-	}
-
-	float4 P = float4(IN.positionVS, 1);
-	float4 N = float4(0.0f, 0.0f, 0.0f, 1.0f);
-
-	// Normal mapping
-	if (mat.HasTextureNormalMap)
-	{
-		// For scense with normal mapping, I don't have to invert the binormal.
-		float3x3 TBN = float3x3(normalize(IN.tangentVS),
-								normalize(IN.binormalVS),
-								normalize(IN.normalVS));
-
-		N = DoNormalMapping(TBN, TextureNormalMap, LinearRepeatSampler, IN.texCoord);
-	}
-	// Bump mapping
-	else if (mat.HasTextureBump)
-	{
-		// For most scenes using bump mapping, I have to invert the binormal.
-		float3x3 TBN = float3x3(normalize(IN.tangentVS),
-								normalize(-IN.binormalVS),
-								normalize(IN.normalVS));
-
-		N = DoBumpMapping(TBN, TextureBump, LinearRepeatSampler, IN.texCoord, mat.BumpFactor);
-	}
-	// Just use the normal from the model.
-	else
-	{
-		N = normalize(float4(IN.normalVS, 0));
-	}
-
-
-
-
-	float4 eyePos = { 0, 0, 0, 1 };
-
-	LightingResult lit = DoLighting(Lights, mat, eyePos, P, N);
-
-
-	float4 diffuseLight = diffuse * float4(lit.Diffuse.rgb, 1.0f); // Discard the alpha value from the lighting calculations.
+		
+	float4 ambient = ExtractAmbient(mat, IN.texCoord);
+	float4 emissive = ExtractEmissive(mat, IN.texCoord);
+	float4 specular = ExtractSpecular(mat, IN.texCoord);
 	
-
-	float4 specularLight = 0;
-	if (mat.SpecularFactor > 1.0f) // If specular power is too low, don't use it.
-	{
-		specularLight = float4(mat.Specular, 1.0);
-		if (mat.HasTextureSpecular)
-		{
-			float4 specularTex = TextureSpecular.Sample(LinearRepeatSampler, IN.texCoord);
-			if (any(specularLight.rgb))
-			{
-				specularLight *= specularTex;
-			}
-			else
-			{
-				specularLight = specularTex;
-			}
-		}
-		specularLight *= lit.Specular;
-	}
-
-
+	float4 eyePos = { 0.0f, 0.0f, 0.0f, 1.0f };
+	float4 vertexPositionVS = float4(IN.positionVS, 1.0f);
+	float4 normalVS = ExtractNormal(mat, IN.texCoord, IN.normalVS, IN.tangentVS, IN.binormalVS);
 	
-	float4 colorResult = float4((ambient + emissive + diffuseLight + specularLight).rgb, 1.0f
-		//alpha * (1.0 - mat.TransparencyFactor)
-	);
+	MaterialForLight matForLight;
+	matForLight.SpecularFactor = specular.a;
+	
+	LightingResult lit = DoLighting(Lights, matForLight, eyePos, vertexPositionVS, normalVS);
 
-	//float bias = 0.00001f;
+	float4 ambientLight  = float4(diffuseAndAlpha.rgb * lit.Ambient.rgb, 1.0f);
+	float4 diffuseLight  = float4(diffuseAndAlpha.rgb * lit.Diffuse.rgb, 1.0f);
+	float4 specularLight = float4(specular.rgb, 1.0f) * lit.Specular;
 
-	/*float2 projectTexCoord = (float2)0;
-	projectTexCoord.x = (IN.lightViewPosition.x / IN.lightViewPosition.w) * 0.5f + 0.5f; // From (-1; 1) to (0-1)
-	projectTexCoord.y = (-IN.lightViewPosition.y / IN.lightViewPosition.w) * 0.5f + 0.5f;
-
-	if ((saturate(projectTexCoord.x) == projectTexCoord.x) && (saturate(projectTexCoord.y) == projectTexCoord.y))
-	{
-		float depthValue = Blur(TextureShadow, LinearClampSampler, projectTexCoord);
-
-		float lightDepthValue = (IN.lightViewPosition.z / IN.lightViewPosition.w) ;
-		//lightDepthValue -= bias;
-
-		if (lightDepthValue < depthValue)
-		{
-			//colorResult = float4(lightDepthValue, lightDepthValue, lightDepthValue, 1.0f);
-		}
-		else
-		{
-			colorResult *= 0.1f;
-		}
-	}*/
-
-	float4 colorResultt = float4(lit.Ambient.rgb * diffuse.rgb + diffuseLight.rgb + specularLight.rgb, 1.0f);
-
-	DefferedRenderPSOut OUT;
-	OUT.Diffuse = colorResultt;
-	OUT.Specular = specularLight;
-	OUT.PositionVS = float4(IN.positionVS, 1.0f);
-	OUT.NormalVS = float4(N.xyz, 0.0);
-	return OUT;
+	float4 colorResultt = float4(ambientLight.rgb + diffuseLight.rgb + specularLight.rgb, 1.0f);
+	return colorResultt;
 }
-
-

@@ -1,4 +1,5 @@
 #include "CommonInclude.hlsl"
+#include "Light.hlsl"
 
 struct VS_Input
 {
@@ -244,27 +245,25 @@ float4 PS_DeferredLighting(VS_Output VSOut
 
 	Light light = L;//Lights[LightIndex];
 
-	MaterialModel mat = (MaterialModel)0;
-	mat.Diffuse = diffuse;
-	mat.Specular = specular;
-	mat.SpecularFactor = specularPower;
+	MaterialForLight matForLight;
+	matForLight.SpecularFactor = specularPower;
 
 	LightingResult lit = (LightingResult)0;
 	switch (light.Type)
 	{
 		case DIRECTIONAL_LIGHT:
 		{
-			lit = DoDirectionalLight(light, mat, V, PView, N);
+			lit = DoDirectionalLight(light, matForLight, V, PView, N);
 		}
 		break;
 		case POINT_LIGHT:
 		{
-			lit = DoPointLight(light, mat, V, PView, N);
+			lit = DoPointLight(light, matForLight, V, PView, N);
 		}
 		break;
 		case SPOT_LIGHT:
 		{
-			lit = DoSpotLight(light, mat, V, PView, N);
+			lit = DoSpotLight(light, matForLight, V, PView, N);
 		}
 		break;
 	}

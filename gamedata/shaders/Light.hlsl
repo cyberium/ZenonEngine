@@ -41,6 +41,12 @@ struct Light
 	//--------------------------------------------------------------( 16 * 6 = 112 bytes )
 };
 
+
+struct MaterialForLight
+{
+	float SpecularFactor;
+};
+
 // This lighting result is returned by the lighting functions for each light type.
 struct LightingResult
 {
@@ -49,42 +55,7 @@ struct LightingResult
 	float4 Specular;
 };
 
-float3 ExpandNormal(float3 n)
-{
-	return n * 2.0f - 1.0f;
-}
 
-float4 DoNormalMapping(float3x3 TBN, Texture2D tex, sampler s, float2 uv)
-{
-	float3 normal = tex.Sample(s, uv).xyz;
-	normal = ExpandNormal(normal);
-
-	// Transform normal from tangent space to view space.
-	normal = mul(normal, TBN);
-	return normalize(float4(normal, 0));
-}
-
-float4 DoBumpMapping(float3x3 TBN, Texture2D tex, sampler s, float2 uv, float bumpScale)
-{
-	// Sample the heightmap at the current texture coordinate.
-	float height_00 = tex.Sample(s, uv).r * bumpScale;
-	// Sample the heightmap in the U texture coordinate direction.
-	float height_10 = tex.Sample(s, uv, int2(1, 0)).r * bumpScale;
-	// Sample the heightmap in the V texture coordinate direction.
-	float height_01 = tex.Sample(s, uv, int2(0, 1)).r * bumpScale;
-
-	float3 p_00 = { 0, 0, height_00 };
-	float3 p_10 = { 1, 0, height_10 };
-	float3 p_01 = { 0, 1, height_01 };
-
-	// normal = tangent x bitangent
-	float3 normal = cross(normalize(p_10 - p_00), normalize(p_01 - p_00));
-
-	// Transform normal from tangent space to view space.
-	normal = mul(normal, TBN);
-
-	return float4(normal, 0);
-}
 
 float4 DoAmbient(Light light)
 {
@@ -97,7 +68,7 @@ float4 DoDiffuse(Light light, float4 L, float4 N)
 	return light.Color * NdotL;
 }
 
-float4 DoSpecular(Light light, MaterialModel mat, float4 V, float4 L, float4 N)
+float4 DoSpecular(Light light, MaterialForLight mat, float4 V, float4 L, float4 N)
 {
 	float4 R = normalize(reflect(-L, N));
 	float RdotV = max(dot(R, V), 0);
@@ -117,16 +88,19 @@ float DoSpotCone(Light light, float4 L)
 	// vector and the vector from the light source to the point being 
 	// shaded is less than minCos, then the spotlight contribution will be 0.
 	float minCos = cos(radians(light.SpotlightAngle));
+	
 	// If the cosine angle of the light's direction vector
 	// and the vector from the light source to the point being shaded
 	// is greater than maxCos, then the spotlight contribution will be 1.
 	float maxCos = lerp(minCos, 1, 0.5f);
+	
 	float cosAngle = dot(light.DirectionVS, -L);
+	
 	// Blend between the maxixmum and minimum cosine angles.
 	return smoothstep(minCos, maxCos, cosAngle);
 }
 
-LightingResult DoPointLight(Light light, MaterialModel mat, float4 V, float4 P, float4 N)
+LightingResult DoPointLight(Light light, MaterialForLight mat, float4 V, float4 P, float4 N)
 {
 	LightingResult result;
 
@@ -143,7 +117,7 @@ LightingResult DoPointLight(Light light, MaterialModel mat, float4 V, float4 P, 
 	return result;
 }
 
-LightingResult DoDirectionalLight(Light light, MaterialModel mat, float4 V, float4 P, float4 N)
+LightingResult DoDirectionalLight(Light light, MaterialForLight mat, float4 V, float4 P, float4 N)
 {
 	LightingResult result;
 
@@ -156,7 +130,7 @@ LightingResult DoDirectionalLight(Light light, MaterialModel mat, float4 V, floa
 	return result;
 }
 
-LightingResult DoSpotLight(Light light, MaterialModel mat, float4 V, float4 P, float4 N)
+LightingResult DoSpotLight(Light light, MaterialForLight mat, float4 V, float4 P, float4 N)
 {
 	LightingResult result;
 
@@ -174,7 +148,7 @@ LightingResult DoSpotLight(Light light, MaterialModel mat, float4 V, float4 P, f
 	return result;
 }
 
-LightingResult DoLighting(StructuredBuffer<Light> lights, MaterialModel mat, float4 eyePos, float4 P, float4 N)
+LightingResult DoLighting(StructuredBuffer<Light> lights, MaterialForLight mat, float4 eyePos, float4 P, float4 N)
 {
 	float4 V = normalize(eyePos - P);
 
