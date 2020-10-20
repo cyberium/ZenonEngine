@@ -1,15 +1,21 @@
 
+//----------------------------------------------------------------------
+//-- Primitives & utils
+//----------------------------------------------------------------------
+
 struct Plane
 {
 	float3 N;   // Plane normal.
 	float  d;   // Distance to origin.
 };
 
+
 struct Sphere
 {
 	float3 c;   // Center point.
 	float  r;   // Radius.
 };
+
 
 struct Cone
 {
@@ -19,17 +25,20 @@ struct Cone
 	float  r;   // bottom radius of the cone.
 };
 
-// Four planes of a view frustum (in view space).
-// The planes are: * Left, * Right, * Top, * Bottom.
-// The back and/or front planes can be computed from depth values in the light culling compute shader.
+
 struct Frustum
 {
-	Plane planes[4];   // left, right, top, bottom frustum planes.
+	// Four planes of a view frustum (in view space).
+	// The planes are: * Left, * Right, * Top, * Bottom.
+	// The back and/or front planes can be computed from depth values in the light culling compute shader.
+	Plane planes[4];
 };
 
-// ----------------------------------------------------------------------
-// -- Bindings resiures for shaders
-// ----------------------------------------------------------------------
+
+
+//----------------------------------------------------------------------
+//-- Bindings resources for shaders
+//----------------------------------------------------------------------
 
 struct PerObject
 {
@@ -46,9 +55,11 @@ struct PerFrame
 	float2   ScreenDimensions;
 };
 
-// ----------------------------------------------------------------------
-// -- Vertex input types
-// ----------------------------------------------------------------------
+
+
+//----------------------------------------------------------------------
+//-- Vertex input types
+//----------------------------------------------------------------------
 
 struct VSInputP
 {
@@ -96,12 +107,16 @@ struct VSInputPTNTBBB
 	float3 unused : COLOR1;
 };
 
-// ----------------------------------------------------------------------
+
+
+//----------------------------------------------------------------------
+//-- Deffered render types
+//----------------------------------------------------------------------
 
 struct DefferedRenderPSOut
 {
-    float4 Diffuse              : SV_Target0;   // Diffuse Albedo (R8G8B8_UNORM) Unused (A8_UNORM)
-    float4 Specular             : SV_Target1;   // Specular Color (R8G8B8_UNROM) Specular Power(A8_UNORM)
-	float4 PositionVS           : SV_Target2;   // Position in View space (R8G8B8_UNORM) MaterialType (A8_UNORM)   
-    float4 NormalVS             : SV_Target3;   // View space normal (R32G32B32_FLOAT) Unused (A32_FLOAT)
+    float4 Diffuse              : SV_Target0;   // Diffuse Albedo         (R8G8B8_UNORM)     Unused          (A8_UNORM)
+    float4 Specular             : SV_Target1;   // Specular Color         (R8G8B8_UNROM)     Specular Power  (A8_UNORM)
+	float4 NormalVS             : SV_Target2;   // View space normal      (R32G32B32_FLOAT)  Unused          (A32_FLOAT)
+	float4 PositionVS           : SV_Target3;   // Position in View space (R32G32B32_FLOAT)  MaterialType    (A32_FLOAT)
 };

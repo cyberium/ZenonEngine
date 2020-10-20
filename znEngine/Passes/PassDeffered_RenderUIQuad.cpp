@@ -48,10 +48,10 @@ std::shared_ptr<IRenderPassPipelined> CPassDeffered_RenderUIQuad::CreatePipeline
 {
 	m_QuadGeometry = GetRenderDevice().GetPrimitivesFactory().CreateQuad();
 
-	auto vertexShader = GetRenderDevice().GetObjectsFactory().CreateShader(EShaderType::VertexShader, "3D/Deffered.hlsl", "VS_ScreenQuad", { {"MULTISAMPLED", "1" } });
+	auto vertexShader = GetRenderDevice().GetObjectsFactory().CreateShader(EShaderType::VertexShader, "3D/Deffered_UIQuad.hlsl", "VS_ScreenQuad", { {"MULTISAMPLED", "1" } });
 	vertexShader->LoadInputLayoutFromReflector();
 
-	auto pixelShader = GetRenderDevice().GetObjectsFactory().CreateShader(EShaderType::PixelShader, "3D/Deffered.hlsl", "PS_DeferredLighting", { {"MULTISAMPLED", "1" }});
+	auto pixelShader = GetRenderDevice().GetObjectsFactory().CreateShader(EShaderType::PixelShader, "3D/Deffered_UIQuad.hlsl", "PS_DeferredLighting", { {"MULTISAMPLED", "1" }});
 
 	// PIPELINES
 	auto defferedFinalPipeline = GetRenderDevice().GetObjectsFactory().CreatePipelineState();

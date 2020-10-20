@@ -80,6 +80,13 @@ std::shared_ptr<IRenderPassPipelined> CPassDeffered_DoRenderScene::CreatePipelin
 		RenderTarget->GetSamplesCount(),
 		8, 8, 8, 8, 0, 0
 	);
+	ITexture::TextureFormat normalTextureFormat
+	(
+		ITexture::Components::RGBA,
+		ITexture::Type::Float,
+		RenderTarget->GetSamplesCount(),
+		32, 32, 32, 32, 0, 0
+	);
 	ITexture::TextureFormat positionTextureFormat
 	(
 		ITexture::Components::RGBA,
@@ -87,17 +94,10 @@ std::shared_ptr<IRenderPassPipelined> CPassDeffered_DoRenderScene::CreatePipelin
 		RenderTarget->GetSamplesCount(),
 		32, 32, 32, 32, 0, 0
 	);
-	ITexture::TextureFormat normalTextureFormat
-	(
-		ITexture::Components::RGBA,
-		ITexture::Type::SignedNormalized,
-		RenderTarget->GetSamplesCount(),
-		8, 8, 8, 8, 0, 0
-	);
 	m_Texture0 = GetRenderDevice().GetObjectsFactory().CreateTexture2D(Viewport->GetWidth(), Viewport->GetHeight(), 1, colorTextureFormat);
 	m_Texture1 = GetRenderDevice().GetObjectsFactory().CreateTexture2D(Viewport->GetWidth(), Viewport->GetHeight(), 1, colorTextureFormat);
-	m_Texture2 = GetRenderDevice().GetObjectsFactory().CreateTexture2D(Viewport->GetWidth(), Viewport->GetHeight(), 1, positionTextureFormat);
-	m_Texture3 = GetRenderDevice().GetObjectsFactory().CreateTexture2D(Viewport->GetWidth(), Viewport->GetHeight(), 1, normalTextureFormat);
+	m_Texture2 = GetRenderDevice().GetObjectsFactory().CreateTexture2D(Viewport->GetWidth(), Viewport->GetHeight(), 1, normalTextureFormat);
+	m_Texture3 = GetRenderDevice().GetObjectsFactory().CreateTexture2D(Viewport->GetWidth(), Viewport->GetHeight(), 1, positionTextureFormat);
 
 	// Depth/stencil buffer
 	ITexture::TextureFormat depthStencilTextureFormat(

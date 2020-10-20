@@ -3,7 +3,7 @@
 //
 
 #ifndef NUM_LIGHTS
-#pragma message( "NUM_LIGHTS undefined. Default to 8.")
+#pragma message( "NUM_LIGHTS undefined. Default to 1.")
 #define NUM_LIGHTS 1
 #endif
 
@@ -148,50 +148,42 @@ LightingResult DoSpotLight(Light light, MaterialForLight mat, float4 V, float4 P
 	return result;
 }
 
-LightingResult DoLighting(StructuredBuffer<Light> lights, MaterialForLight mat, float4 eyePos, float4 P, float4 N)
+LightingResult DoLightingSingle(Light light, MaterialForLight mat, float4 eyePos, float4 P, float4 N)
 {
+	LightingResult lightingResult = (LightingResult)0;
+	if (light.Type == UNKNOWN)
+		return lightingResult;
+
+	if (light.Type != DIRECTIONAL_LIGHT && length(light.PositionVS - P) > light.Range)
+		return lightingResult; // Skip point and spot lights that are out of range of the point being shaded.
+
+
 	float4 V = normalize(eyePos - P);
-
-	LightingResult totalResult = (LightingResult)0;
-
-	for (int i = 0; i < NUM_LIGHTS; ++i)
+	
+	switch (light.Type)
 	{
-		LightingResult result = (LightingResult)0;
-
-		if (lights[i].Type == UNKNOWN)
-		{
-			continue;
-		}
-
-		// Skip point and spot lights that are out of range of the point being shaded.
-		if (lights[i].Type != DIRECTIONAL_LIGHT && length(lights[i].PositionVS - P) > lights[i].Range)
-		{
-			continue;
-		}
-
-		switch (lights[i].Type)
-		{
-			case DIRECTIONAL_LIGHT:
-			{
-				result = DoDirectionalLight(lights[i], mat, V, P, N);
-			}
-			break;
-			case POINT_LIGHT:
-			{
-				result = DoPointLight(lights[i], mat, V, P, N);
-			}
-			break;
-			case SPOT_LIGHT:
-			{
-				result = DoSpotLight(lights[i], mat, V, P, N);
-			}
-			break;
-		}
-
-		totalResult.Ambient += result.Ambient;
-		totalResult.Diffuse += result.Diffuse;
-		totalResult.Specular += result.Specular;
+		case DIRECTIONAL_LIGHT:
+			return DoDirectionalLight(light, mat, V, P, N);
+			
+		case POINT_LIGHT:
+			return DoPointLight(light, mat, V, P, N);
+		
+		case SPOT_LIGHT:
+			return DoSpotLight(light, mat, V, P, N);
 	}
 
-	return totalResult;
+	return lightingResult;
+}
+
+LightingResult DoLighting(StructuredBuffer<Light> lights, MaterialForLight mat, float4 eyePos, float4 P, float4 N)
+{
+	LightingResult totalLightingResult = (LightingResult)0;
+	for (int i = 0; i < NUM_LIGHTS; ++i)
+	{
+		LightingResult lightingResult = DoLightingSingle(lights[i], mat, eyePos, P, N);
+		totalLightingResult.Ambient += lightingResult.Ambient;
+		totalLightingResult.Diffuse += lightingResult.Diffuse;
+		totalLightingResult.Specular += lightingResult.Specular;
+	}
+	return totalLightingResult;
 }

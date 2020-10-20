@@ -73,9 +73,10 @@ Texture2D TextureDisplacement             : register(t9);
 
 
 
-//
-// Helpers
-//
+//----------------------------------------------------------------------
+//-- Bump & Normal mapping
+//----------------------------------------------------------------------
+
 float3 ExpandNormal(float3 n)
 {
 	return n * 2.0f - 1.0f;
@@ -117,6 +118,9 @@ float4 DoBumpMapping(float3x3 TBN, Texture2D tex, sampler s, float2 uv, float bu
 
 
 
+//----------------------------------------------------------------------
+//-- Work with material
+//----------------------------------------------------------------------
 
 float4 ExtractDuffuseAndAlpha(MaterialModel mat, float2 TexCoord)
 {

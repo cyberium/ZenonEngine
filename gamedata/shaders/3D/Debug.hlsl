@@ -6,11 +6,13 @@ struct VertexShaderOutput
 	float3 color          : COLOR;
 };
 
-// Uniforms
+
 cbuffer Material : register(b2)
 {
 	float4 DiffuseColor0;
 };
+
+
 
 struct M2PerObject
 {
@@ -29,6 +31,7 @@ float4 VS_main(VSInputP IN) : SV_POSITION
 	return mul(mvp, float4(IN.position.xyz, 1.0f));
 }
 
+
 float4 VS_main_Inst(VSInputP IN, uint InstanceID : SV_InstanceID) : SV_POSITION
 {
 	const float4x4 mv = mul(PF.View, Instances[InstanceID].Model);
@@ -36,6 +39,7 @@ float4 VS_main_Inst(VSInputP IN, uint InstanceID : SV_InstanceID) : SV_POSITION
 
 	return mul(mvp, float4(IN.position.xyz, 1.0f));
 }
+
 
 /*[maxvertexcount(2)]
 void GS_main(point VertexShaderOutput vertices[1], inout LineStream<VertexShaderOutput> lineStream)
@@ -55,12 +59,8 @@ void GS_main(point VertexShaderOutput vertices[1], inout LineStream<VertexShader
 	lineStream.Append(v1);
 }*/
 
-DefferedRenderPSOut PS_main() : SV_TARGET
+
+float4 PS_main() : SV_TARGET
 {
-	DefferedRenderPSOut OUT;
-	OUT.Diffuse = DiffuseColor0;
-	OUT.Specular = DiffuseColor0;
-	OUT.PositionVS = float4(0.0f, 0.0f, 0.0f, 0.0f);
-	OUT.NormalVS = float4(0.0f, 0.0f, 0.0f, 0.0f);
-	return OUT;
+	return DiffuseColor0;
 }

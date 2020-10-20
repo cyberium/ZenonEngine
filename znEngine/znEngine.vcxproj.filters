@@ -163,6 +163,9 @@
     <Filter Include="Resources\Shaders_D3D\3D\Editor">
       <UniqueIdentifier>{00ac689d-c860-46b3-914f-57b3ff6e03a2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Passes\3D\ForwardLRendering">
+      <UniqueIdentifier>{ab8ee8c9-ff60-4ae2-9e88-1054a76849c1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -495,9 +498,6 @@
     <ClCompile Include="Passes\UIColorPass.cpp">
       <Filter>Passes\UI</Filter>
     </ClCompile>
-    <ClCompile Include="Passes\MaterialModelPass.cpp">
-      <Filter>Passes\3D</Filter>
-    </ClCompile>
     <ClCompile Include="FBX\FBXDisplayAnimation.cpp">
       <Filter>FBX</Filter>
     </ClCompile>
@@ -677,6 +677,9 @@
     </ClCompile>
     <ClCompile Include="Passes\PassDeffered_DoRenderScene.cpp">
       <Filter>Passes\3D\DefferedLighting</Filter>
+    </ClCompile>
+    <ClCompile Include="Passes\MaterialModelPass.cpp">
+      <Filter>Passes\3D\ForwardLRendering</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1074,9 +1077,6 @@
     <ClInclude Include="Passes\UIColorPass.h">
       <Filter>Passes\UI</Filter>
     </ClInclude>
-    <ClInclude Include="Passes\MaterialModelPass.h">
-      <Filter>Passes\3D</Filter>
-    </ClInclude>
     <ClInclude Include="FBX\FBXDisplayAnimation.h">
       <Filter>FBX</Filter>
     </ClInclude>
@@ -1260,6 +1260,9 @@
     <ClInclude Include="Passes\PassDeffered_DoRenderScene.h">
       <Filter>Passes\3D\DefferedLighting</Filter>
     </ClInclude>
+    <ClInclude Include="Passes\MaterialModelPass.h">
+      <Filter>Passes\3D\ForwardLRendering</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="znEngine.rc">
@@ -1271,9 +1274,6 @@
       <Filter>Resources\Fonts</Filter>
     </Text>
     <Text Include="..\gamedata\shaders\3D\Debug.hlsl">
-      <Filter>Resources\Shaders_D3D\3D</Filter>
-    </Text>
-    <Text Include="..\gamedata\shaders\3D\Deffered.hlsl">
       <Filter>Resources\Shaders_D3D\3D</Filter>
     </Text>
     <Text Include="..\gamedata\shaders\3D\Model_Deffered.hlsl">
@@ -1312,6 +1312,9 @@
     <Text Include="..\gamedata\shaders\3D\Editor\EditorShaders.hlsl">
       <Filter>Resources\Shaders_D3D\3D\Editor</Filter>
     </Text>
+    <Text Include="..\gamedata\shaders\3D\Deffered_UIQuad.hlsl">
+      <Filter>Resources\Shaders_D3D\3D</Filter>
+    </Text>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Resources\Textures\default.png">
@@ -1344,6 +1347,9 @@
     </FxCompile>
     <FxCompile Include="..\gamedata\shaders\UI\UI_VertexBase.hlsl">
       <Filter>Resources\Shaders_D3D\UI</Filter>
+    </FxCompile>
+    <FxCompile Include="..\gamedata\shaders\3D\ShadowsUtils.hlsl">
+      <Filter>Resources\Shaders_D3D\3D</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>

@@ -1,11 +1,10 @@
-//
-// Common functions
-//
-
 #include "Types.hlsl"
 
 
-// Uniforms
+//----------------------------------------------------------------------
+//-- Global objects
+//----------------------------------------------------------------------
+
 cbuffer PerObject : register(b0)
 {
 	PerObject PO;
@@ -16,13 +15,14 @@ cbuffer PerFrame : register(b1)
 	PerFrame PF;
 }
 
+sampler LinearRepeatSampler : register(s0);
 
-sampler LinearRepeatSampler     : register(s0);
-sampler LinearClampSampler      : register(s1);
+sampler LinearClampSampler : register(s1);
 
 
-// Convert clip space coordinates to view space
-float4 ClipToView(float4 clip)
+
+
+float4 ClipToView(float4 clip)       // Convert clip space coordinates to view space
 {
 	// View space position.
 	float4 view = mul(PF.InverseProjection, clip);
@@ -34,8 +34,8 @@ float4 ClipToView(float4 clip)
 }
 
 
-// Convert screen space coordinates to view space.
-float4 ScreenToView(float4 screen)
+
+float4 ScreenToView(float4 screen)   // Convert screen space coordinates to view space.
 {
 	// Convert to normalized texture coordinates
 	float2 texCoord = screen.xy / PF.ScreenDimensions;
@@ -47,8 +47,8 @@ float4 ScreenToView(float4 screen)
 }
 
 
-// Convert screen space coordinates to view space.
-float4 ScreenToViewOtrho(float4 screen)
+
+float4 ScreenToViewOtrho(float4 screen)  // Convert screen space coordinates to view space.
 {
 	// Convert to normalized texture coordinates
 	float2 texCoord = screen.xy / PF.ScreenDimensions;
@@ -57,6 +57,28 @@ float4 ScreenToViewOtrho(float4 screen)
 	float4 clip = float4(float2(texCoord.x, 1.0f - texCoord.y) * 2.0f - 1.0f, screen.z, screen.w);
 
 	return mul(PF.InverseProjection, clip);
+}
+
+
+
+float3 ComputeTangent(float3 Normal)
+{
+	float3 c1 = cross(Normal, float3(0.0f, 0.0f, 1.0f));
+	float3 c2 = cross(Normal, float3(0.0f, 1.0f, 0.0f));
+
+	float3 tangent = (float3)0;
+	if (length(c1) > length(c2))
+		tangent = c1;
+	else
+		tangent = c2;
+	return normalize(tangent);
+}
+
+
+
+float3 ComputeBinormal(float3 Normal, float3 Tangent)
+{
+	return normalize(cross(Normal, Tangent));
 }
 
 
@@ -95,7 +117,6 @@ bool PointInsidePlane(float3 p, Plane plane)
 
 
 // Check to see if a cone if fully behind (inside the negative halfspace of) a plane.
-// Source: Real-time collision detection, Christer Ericson (2005)
 bool ConeInsidePlane(Cone cone, Plane plane)
 {
 	// Compute the farthest point on the end of the cone to the positive space of the plane.
@@ -160,6 +181,9 @@ bool ConeInsideFrustum(Cone cone, Frustum frustum, float zNear, float zFar)
 	return result;
 }
 
+
+
+
 float3 GetCameraPosition()
 {
 	return float3(PF.InverseView[0][3], PF.InverseView[1][3], PF.InverseView[2][3]);
@@ -168,23 +192,4 @@ float3 GetCameraPosition()
 float3 GetCameraUp()
 {
 	return float3(PF.InverseView[0][1], PF.InverseView[1][1], PF.InverseView[2][1]);
-}
-
-float Blur(Texture2D Texture, sampler Sampler, float2 Coords)
-{
-	float2 shadowBlurStep = float2(1.0f / 16384.0f, 1.0f / 16384.0f);
-
-	float sum = 0.0;
-	const int FILTER_SIZE = 5;
-	const float HALF_FILTER_SIZE = 0.5 * float(FILTER_SIZE);
-
-	for (int i = 0; i < FILTER_SIZE; i++)
-	{
-		for (int j = 0; j < FILTER_SIZE; j++)
-		{
-			float2 offset = float2(shadowBlurStep * (float2(i, j) - HALF_FILTER_SIZE) / HALF_FILTER_SIZE);
-			sum += Texture.Sample(Sampler, Coords + offset).r;
-		}
-	}
-	return sum / (FILTER_SIZE * FILTER_SIZE);
 }
