@@ -107,7 +107,7 @@ void CSceneDefault::Initialize()
 
 
 	auto file = GetBaseManager().GetManager<IFilesManager>()->Open("Scene.xml");
-	if (file != nullptr)
+	if (file == nullptr)
 	{
 		CXMLManager xml;
 		auto reader = xml.CreateReader(file);
@@ -176,6 +176,7 @@ void CSceneDefault::Initialize()
 		textMaterial->SetTexture(MaterialModel::ETextureType::TextureDiffuse, GetRenderDevice().GetObjectsFactory().LoadTexture2D("beaten-up-metal1-unity//beaten-up-metal1-albedo.png"));
 		textMaterial->SetTexture(MaterialModel::ETextureType::TextureNormalMap, GetRenderDevice().GetObjectsFactory().LoadTexture2D("beaten-up-metal1-unity//beaten-up-metal1-Normal-ogl.png"));
 		textMaterial->SetTexture(MaterialModel::ETextureType::TextureSpecular, GetRenderDevice().GetObjectsFactory().LoadTexture2D("beaten-up-metal1-unity//beaten-up-metal1-ao.png"));
+		textMaterial->SetTexture(MaterialModel::ETextureType::TextureDisplacement, GetRenderDevice().GetObjectsFactory().LoadTexture2D("beaten-up-metal1-unity//beaten-up-metal1-Height.png"));
 		//textMaterial->SetTexture(MaterialModel::ETextureType::TextureBump, GetRenderDevice().GetObjectsFactory().LoadTexture2D("AmazonScene//BuildingTextures//concrete_smooth_03_ddna.dds"));
 
 		//std::shared_ptr<MaterialTextured> textMaterial = MakeShared(MaterialTextured, GetRenderDevice());
@@ -193,17 +194,23 @@ void CSceneDefault::Initialize()
 	}
 
 	//--------------------------------------------------------------------------
-	// Sphere Gold
+	// Cube Gold
 	//--------------------------------------------------------------------------
 
 	{
 		std::shared_ptr<MaterialModel> textMaterial = MakeShared(MaterialModel, GetBaseManager());
 		//textMaterial->SetSpecularFactor(8.0f);
-		//textMaterial->SetBumpFactor(8.0f);
+		//textMaterial->SetBumpFactor(16.0f);
+		
+		//textMaterial->SetTexture(MaterialModel::ETextureType::TextureDiffuse, GetRenderDevice().GetObjectsFactory().LoadTexture2D("oglTutor//bricks2.png"));
+		//textMaterial->SetTexture(MaterialModel::ETextureType::TextureNormalMap, GetRenderDevice().GetObjectsFactory().LoadTexture2D("oglTutor//bricks2_normal.png"));
+		//textMaterial->SetTexture(MaterialModel::ETextureType::TextureSpecular, GetRenderDevice().GetObjectsFactory().LoadTexture2D("pirate-gold-unity//pirate-gold_ao.png"));
+		//textMaterial->SetTexture(MaterialModel::ETextureType::TextureDisplacement, GetRenderDevice().GetObjectsFactory().LoadTexture2D("oglTutor//bricks2_disp.png"));
+
 		textMaterial->SetTexture(MaterialModel::ETextureType::TextureDiffuse, GetRenderDevice().GetObjectsFactory().LoadTexture2D("pirate-gold-unity//pirate-gold_albedo.png"));
 		textMaterial->SetTexture(MaterialModel::ETextureType::TextureNormalMap, GetRenderDevice().GetObjectsFactory().LoadTexture2D("pirate-gold-unity//pirate-gold_normal-ogl.png"));
 		textMaterial->SetTexture(MaterialModel::ETextureType::TextureSpecular, GetRenderDevice().GetObjectsFactory().LoadTexture2D("pirate-gold-unity//pirate-gold_ao.png"));
-		//textMaterial->SetTexture(MaterialModel::ETextureType::TextureBump, GetRenderDevice().GetObjectsFactory().LoadTexture2D("AmazonScene//BuildingTextures//concrete_smooth_03_ddna.dds"));
+		textMaterial->SetTexture(MaterialModel::ETextureType::TextureDisplacement, GetRenderDevice().GetObjectsFactory().LoadTexture2D("pirate-gold-unity//pirate-gold_height.png"));
 
 		//std::shared_ptr<MaterialTextured> textMaterial = MakeShared(MaterialTextured, GetRenderDevice());
 		//textMaterial->SetTexture(0, GetRenderDevice().GetObjectsFactory().LoadTexture2D("idi na huy.png"));

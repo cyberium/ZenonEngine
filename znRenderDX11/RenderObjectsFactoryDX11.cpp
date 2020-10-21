@@ -35,7 +35,7 @@ namespace
 
 
 CRenderObjectsFactoryDX11::CRenderObjectsFactoryDX11(IRenderDeviceDX11& RenderDeviceDX11)
-	: CRenderObjectsFactory()
+	: CRenderObjectsFactory(RenderDeviceDX11)
 	, m_RenderDeviceDX11(RenderDeviceDX11)
 {
 	std::lock_guard<std::recursive_mutex> locker(m_LockMutex);
@@ -57,7 +57,7 @@ std::shared_ptr<IRenderWindow> CRenderObjectsFactoryDX11::CreateRenderWindow(INa
 	return renderWindow;
 }
 
-std::shared_ptr<IShader> CRenderObjectsFactoryDX11::CreateShader(EShaderType type, const std::string& fileName, const std::string& entryPoint, const IShader::ShaderMacros& shaderMacros, IShaderInputLayout* _customLayout)
+std::shared_ptr<IShader> CRenderObjectsFactoryDX11::LoadShader(EShaderType type, const std::string& fileName, const std::string& entryPoint, const IShader::ShaderMacros& shaderMacros, IShaderInputLayout* _customLayout)
 {
 	std::string fullName = fileName + ShaderMacrosToString(shaderMacros) + entryPoint;
 
@@ -119,59 +119,6 @@ std::shared_ptr<ITexture> CRenderObjectsFactoryDX11::CreateTextureCube(size_t si
 
 	std::shared_ptr<ITexture> object = MakeShared(TextureDX11, m_RenderDeviceDX11, size, format, cpuAccess);
 	//m_Textures.insert(std::make_pair(GenerateRenderObjectID(), object));
-	return object;
-}
-
-std::shared_ptr<ITexture> CRenderObjectsFactoryDX11::LoadTexture2D(const std::string& fileName)
-{
-	std::lock_guard<std::recursive_mutex> locker(m_LockMutex);
-
-	const auto& iter = m_TexturesByName.find(fileName);
-	if (iter != m_TexturesByName.end())
-	{
-		if (std::shared_ptr<ITexture> texture = iter->second.lock())
-		{
-			return texture;
-		}
-		else
-		{
-			m_TexturesByName.erase(iter);
-		}
-	}
-
-	std::shared_ptr<ITexture> object = MakeShared(TextureDX11, m_RenderDeviceDX11);
-	if (!object->LoadTexture2D(fileName))
-		return m_RenderDeviceDX11.GetDefaultTexture();
-
-	//m_Textures[GenerateRenderObjectID()] = object;
-	m_TexturesByName[fileName] = object;
-
-	return object;
-}
-
-std::shared_ptr<ITexture> CRenderObjectsFactoryDX11::LoadTextureCube(const std::string& fileName)
-{
-	std::lock_guard<std::recursive_mutex> locker(m_LockMutex);
-
-	const auto& iter = m_TexturesByName.find(fileName);
-	if (iter != m_TexturesByName.end())
-	{
-		if (std::shared_ptr<ITexture> texture = iter->second.lock())
-		{
-			return texture;
-		}
-		else
-		{
-			m_TexturesByName.erase(iter);
-		}
-	}
-
-	std::shared_ptr<ITexture> object = MakeShared(TextureDX11, m_RenderDeviceDX11);
-	object->LoadTextureCube(fileName);
-
-	//m_Textures.insert(std::make_pair(GenerateRenderObjectID(), object));
-	m_TexturesByName[fileName] = object;
-
 	return object;
 }
 

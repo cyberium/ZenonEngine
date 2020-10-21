@@ -117,6 +117,54 @@ float4 DoBumpMapping(float3x3 TBN, Texture2D tex, sampler s, float2 uv, float bu
 }
 
 
+float2 DoDisplacementMapping(float3x3 TBN, Texture2D tex, sampler s, float2 uv, float3 viewPosVS, float3 fragPosVS)
+{
+	float height_scale = 0.035f;
+	
+	float3 viewDirW = normalize(viewPosVS - fragPosVS);
+	float3 viewDir = mul(TBN, viewDirW);
+	
+		
+	//const float minLayers = 8.0;
+	//const float maxLayers = 32.0;
+	//const float numLayers = lerp(maxLayers, minLayers, abs(dot(float3(0.0f, 1.0f, 0.0f), viewDir)));
+
+	const float numLayers = 32;
+	
+    const float layerDepth = 1.0f / numLayers;
+		
+    // величина шага смещения текстурных координат на каждом слое расчитывается на основе вектора P
+    float2 P = viewDir.xy * height_scale; 
+    float2 deltaTexCoords = P / numLayers;
+	
+	float2 currentTexCoords = uv;
+	float currentDepthMapValue = (1.0f - tex.Sample(s, currentTexCoords).r);
+	
+	int iter = 0;
+	float currentLayerDepth = 0.0f;
+	while(currentLayerDepth < currentDepthMapValue)
+	{
+		currentTexCoords -= deltaTexCoords;
+		currentDepthMapValue = (1.0f - tex.Sample(s, currentTexCoords).r);
+		currentLayerDepth += layerDepth;
+		
+		if (iter++ > 32)
+			break;
+	}
+
+	// находим текстурные координаты перед найденной точкой пересечения, т.е. делаем "шаг назад"
+	float2 prevTexCoords = currentTexCoords + deltaTexCoords;
+
+	// находим значения глубин до и после нахождения пересечения для использования в линейной интерполяции
+	float afterDepth  = currentDepthMapValue - currentLayerDepth;
+	float beforeDepth = (1.0f - tex.Sample(s, prevTexCoords).r) - currentLayerDepth + layerDepth;
+	 
+	// интерполяция текстурных координат 
+	float weight = afterDepth / (afterDepth - beforeDepth);
+	float2 finalTexCoords = prevTexCoords * weight + currentTexCoords * (1.0 - weight);
+	return finalTexCoords;   
+}
+
 
 //----------------------------------------------------------------------
 //-- Work with material
@@ -211,4 +259,19 @@ float4 ExtractNormal(MaterialModel mat, float2 TexCoord, float3 normalVS, float3
 	}
 
 	return normalize(float4(normalVS, 0.0f));
+}
+
+float2 ExtractDisplacement(MaterialModel mat, float2 TexCoord, float3 normalVS, float3 tangentVS, float3 binormalVS, float3 viewPosVS, float3 fragPosVS)
+{
+	if (mat.HasTextureDisplacement)
+	{
+		// For most scenes using bump mapping, I have to invert the binormal.
+		float3x3 TBN = float3x3(normalize( tangentVS),
+								normalize( binormalVS),
+								normalize( normalVS));
+
+		return DoDisplacementMapping(TBN, TextureDisplacement, LinearRepeatSampler, TexCoord, viewPosVS, fragPosVS);
+	}
+	
+	return TexCoord;
 }

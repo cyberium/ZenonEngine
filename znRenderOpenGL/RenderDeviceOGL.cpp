@@ -273,7 +273,7 @@ void RenderDeviceOGL::DestroyMesh(IModel* mesh)
 }
 
 
-IShader* RenderDeviceOGL::CreateShader(EShaderType type, const std::string& fileName, const IShader::ShaderMacros& shaderMacros, const std::string& entryPoint, const std::string& profile, IShaderInputLayout* _customLayout)
+IShader* RenderDeviceOGL::LoadShader(EShaderType type, const std::string& fileName, const IShader::ShaderMacros& shaderMacros, const std::string& entryPoint, const std::string& profile, IShaderInputLayout* _customLayout)
 {
 	std::string fullName = fileName + entryPoint + profile;
 

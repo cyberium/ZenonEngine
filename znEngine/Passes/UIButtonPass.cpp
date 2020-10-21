@@ -21,10 +21,10 @@ std::shared_ptr<IRenderPassPipelined> CUIButtonPass::CreatePipeline(std::shared_
 {
 	BaseUIPass::CreatePipeline(RenderTarget, Viewport);
 	
-	std::shared_ptr<IShader> vertexShader = GetRenderDevice().GetObjectsFactory().CreateShader(EShaderType::VertexShader, "UI/UI_Button.hlsl", "VS_main");
+	std::shared_ptr<IShader> vertexShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::VertexShader, "UI/UI_Button.hlsl", "VS_main");
 	vertexShader->LoadInputLayoutFromReflector();
 
-	std::shared_ptr<IShader> pixelShader = GetRenderDevice().GetObjectsFactory().CreateShader(EShaderType::PixelShader, "UI/UI_Button.hlsl", "PS_main");
+	std::shared_ptr<IShader> pixelShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::PixelShader, "UI/UI_Button.hlsl", "PS_main");
 
 	// Create samplers
 	std::shared_ptr<ISamplerState> sampler = GetRenderDevice().GetObjectsFactory().CreateSamplerState();

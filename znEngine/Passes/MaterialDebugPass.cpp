@@ -26,9 +26,9 @@ std::shared_ptr<IRenderPassPipelined> CMaterial_Debug_Pass::CreatePipeline(std::
 
 	if (GetRenderDevice().GetDeviceType() == RenderDeviceType::RenderDeviceType_DirectX11)
 	{
-		vertexShader = GetRenderDevice().GetObjectsFactory().CreateShader(EShaderType::VertexShader, "3D/Debug.hlsl", "VS_main");
-		//geometryShader = GetRenderDevice().GetObjectsFactory().CreateShader(EShaderType::GeometryShader, "IDB_SHADER_3D_DEBUG", "GS_main");
-		pixelShader = GetRenderDevice().GetObjectsFactory().CreateShader(EShaderType::PixelShader, "3D/Debug.hlsl", "PS_main");
+		vertexShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::VertexShader, "3D/Debug.hlsl", "VS_main");
+		//geometryShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::GeometryShader, "IDB_SHADER_3D_DEBUG", "GS_main");
+		pixelShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::PixelShader, "3D/Debug.hlsl", "PS_main");
 	}
 	vertexShader->LoadInputLayoutFromReflector();
 
@@ -38,9 +38,6 @@ std::shared_ptr<IRenderPassPipelined> CMaterial_Debug_Pass::CreatePipeline(std::
 	Pipeline->GetDepthStencilState()->SetDepthMode(enableDepthWrites);
 	Pipeline->GetRasterizerState()->SetCullMode(IRasterizerState::CullMode::None);
 	Pipeline->GetRasterizerState()->SetFillMode(IRasterizerState::FillMode::Wireframe, IRasterizerState::FillMode::Wireframe);
-	Pipeline->GetRasterizerState()->SetAntialiasedLineEnable(true);
-	Pipeline->GetRasterizerState()->SetMultisampleEnabled(true);
-	//Pipeline->GetRasterizerState()->SetForcedSampleCount(4);
 	Pipeline->SetRenderTarget(RenderTarget);
 	Pipeline->SetShader(EShaderType::VertexShader, vertexShader);
 	//Pipeline->SetShader(EShaderType::GeometryShader, geometryShader);

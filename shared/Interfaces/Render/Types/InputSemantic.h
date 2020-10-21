@@ -3,38 +3,43 @@
 struct ZN_API InputSemantic
 {
 	InputSemantic()
-		: Index(0)
-		, GLType(0)
-		, GLSize(0)
+		: Index()
 	{}
 
-	InputSemantic(const std::string& name, uint32 index)
-		: Name(name)
-		, Index(index)
-		, GLType(0)
-		, GLSize(0)
-	{}
-
-	// TODO: Delete me!!!
-	InputSemantic(const std::string& name, uint32 index, uint32 GLtype, uint32 GLsize)
-		: Name(name)
-		, Index(index)
-		, GLType(GLtype)
-		, GLSize(GLsize)
+	InputSemantic(const std::string& Name, uint32 Index)
+		: Name(Name)
+		, Index(Index)
 	{}
 
 	inline bool operator==(const InputSemantic& rhs) const
 	{
-		return (Name == rhs.Name) && (Index == rhs.Index) && (GLType == rhs.GLType) && (GLSize == rhs.GLSize);
+		return (Name == rhs.Name) && (Index == rhs.Index);
 	}
 
 	std::string Name;
 	uint32 Index;
+};
+
+
+struct InputSemanticOpenGL
+	: InputSemantic
+{
+	InputSemanticOpenGL(const std::string& Name, uint32 Index, uint32 GLtype, uint32 GLsize)
+		: InputSemantic(Name, Index)
+		, GLType(GLtype)
+		, GLSize(GLsize)
+	{}
+
+	inline bool operator==(const InputSemanticOpenGL& rhs) const
+	{
+		return __super::operator==(rhs) && (GLType == rhs.GLType) && (GLSize == rhs.GLSize);
+	}
+
 	uint32 GLType;
 	uint32 GLSize;
 };
 
-
+/*
 namespace std
 {
 	template<>
@@ -46,4 +51,4 @@ namespace std
 			return hash(buffer.Name + std::to_string(buffer.Index));
 		}
 	};
-}
+}*/

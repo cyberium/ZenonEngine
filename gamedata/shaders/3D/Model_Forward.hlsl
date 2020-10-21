@@ -135,6 +135,19 @@ VertexShaderOutput VS_PTN_Instanced(VSInputPTN IN, uint InstanceID : SV_Instance
 
 float4 PS_main(VertexShaderOutput IN) : SV_TARGET
 {
+	float3 normalWS = mul(PF.InverseView, float4(IN.normalVS.xyz, 0.0f));
+	float3 tangentWS = mul(PF.InverseView, float4(IN.tangentVS.xyz, 0.0f));
+	float3 binormalWS = mul(PF.InverseView, float4(IN.binormalVS.xyz, 0.0f));
+
+	float3 posCam = mul(PF.InverseView, float4(0.0f, 0.0f, 0.0f, 1.0f));
+	float3 posFrag = mul(PF.InverseView, float4(IN.positionVS.xyz, 1.0f));
+
+	float2 newTexCoords = ExtractDisplacement(Mat, IN.texCoord, normalWS, tangentWS, binormalWS,  posCam, posFrag);
+	if(newTexCoords.x > 1.0 || newTexCoords.y > 1.0 || newTexCoords.x < 0.0 || newTexCoords.y < 0.0)
+		discard; 
+	
+	IN.texCoord = newTexCoords;
+	
 	float4 diffuseAndAlpha = ExtractDuffuseAndAlpha(Mat, IN.texCoord);
 	if (diffuseAndAlpha.a < 0.05f)
 		discard;

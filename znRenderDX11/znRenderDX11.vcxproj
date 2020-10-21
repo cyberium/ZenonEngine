@@ -86,7 +86,7 @@
     <ClCompile Include="BlendStateDX11.cpp" />
     <ClCompile Include="BufferDX11.cpp" />
     <ClCompile Include="ConstantBufferDX11.cpp" />
-    <ClCompile Include="D3D9_To_D3D11.cpp" />
+    <ClCompile Include="CustomElementsToDX11.cpp" />
     <ClCompile Include="DepthStencilStateDX11.cpp" />
     <ClCompile Include="GeometryDX11.cpp" />
     <ClCompile Include="MaterialDX11.cpp" />
@@ -115,7 +115,7 @@
     <ClInclude Include="BlendStateDX11.h" />
     <ClInclude Include="BufferDX11.h" />
     <ClInclude Include="ConstantBufferDX11.h" />
-    <ClInclude Include="D3D9_To_D3D11.h" />
+    <ClInclude Include="CustomElementsToDX11.h" />
     <ClInclude Include="DepthStencilStateDX11.h" />
     <ClInclude Include="GeometryDX11.h" />
     <ClInclude Include="MaterialDX11.h" />

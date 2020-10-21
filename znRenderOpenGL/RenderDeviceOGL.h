@@ -34,7 +34,7 @@ public:
 	virtual void Lock();
 	virtual void Unlock();
 
-	virtual IShader* CreateShader(EShaderType type, const std::string& fileName, const IShader::ShaderMacros& shaderMacros, const std::string& entryPoint, const std::string& profile, IShaderInputLayout* _customLayout);
+	virtual IShader* LoadShader(EShaderType type, const std::string& fileName, const IShader::ShaderMacros& shaderMacros, const std::string& entryPoint, const std::string& profile, IShaderInputLayout* _customLayout);
 	virtual void DestroyShader(IShader* shader);
 	
 	virtual IModel* CreateMesh();

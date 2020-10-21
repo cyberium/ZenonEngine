@@ -74,13 +74,11 @@ ZN_INTERFACE ZN_API IRenderObjectsFactory
 	virtual std::shared_ptr<IRenderWindow>    CreateRenderWindow(INativeWindow& NativeWindow, bool vSync) = 0;
 	virtual std::shared_ptr<IGeometry>        CreateGeometry() = 0;
 	virtual std::shared_ptr<IModel>           CreateModel() = 0;
-	virtual std::shared_ptr<IShader>          CreateShader(EShaderType type, const std::string& fileName, const std::string& entryPoint, const IShader::ShaderMacros& shaderMacros = IShader::ShaderMacros(), IShaderInputLayout* _customLayout = nullptr) = 0;
 
 	virtual std::shared_ptr<ITexture>         CreateEmptyTexture() = 0;
 	virtual std::shared_ptr<ITexture>         CreateTexture2D(size_t width, size_t height, size_t slices, const ITexture::TextureFormat& format = ITexture::TextureFormat(), EAccess cpuAccess = EAccess::None) = 0;
 	virtual std::shared_ptr<ITexture>         CreateTextureCube(size_t size, const ITexture::TextureFormat& format = ITexture::TextureFormat(), EAccess cpuAccess = EAccess::None) = 0;
-	virtual std::shared_ptr<ITexture>         LoadTexture2D(const std::string& fileName) = 0;
-	virtual std::shared_ptr<ITexture>         LoadTextureCube(const std::string& fileName) = 0;
+
 
 	virtual std::shared_ptr<IMaterial>        CreateMaterial(const std::string& MaterialName) = 0;
 	virtual std::shared_ptr<IRenderTarget>    CreateRenderTarget() = 0;
@@ -95,6 +93,11 @@ ZN_INTERFACE ZN_API IRenderObjectsFactory
 	virtual std::shared_ptr<IBuffer>          CreateVoidIndexBuffer(const void* data, size_t count, size_t offset, size_t stride) = 0;
 	virtual std::shared_ptr<IConstantBuffer>  CreateConstantBuffer(const void* data, size_t size) = 0;
 	virtual std::shared_ptr<IStructuredBuffer> CreateStructuredBuffer(void* data, size_t count, size_t stride, EAccess cpuAccess = EAccess::None) = 0;
+
+	virtual std::shared_ptr<IShader>            LoadShader(EShaderType type, const std::string& fileName, const std::string& entryPoint, const IShader::ShaderMacros& shaderMacros = IShader::ShaderMacros(), IShaderInputLayout* CustomLayout = nullptr) = 0;
+	virtual std::shared_ptr<IModel>             LoadModel(const std::string& fileName) = 0;
+	virtual std::shared_ptr<ITexture>           LoadTexture2D(const std::string& fileName) = 0;
+	virtual std::shared_ptr<ITexture>           LoadTextureCube(const std::string& fileName) = 0;
 
 	virtual std::shared_ptr<IBuffer>            LoadVoidBuffer(const std::shared_ptr<IByteBuffer>& ByteBuffer) = 0;
 	virtual std::shared_ptr<IConstantBuffer>    LoadConstantBuffer(const std::shared_ptr<IByteBuffer>& ByteBuffer) = 0;

@@ -38,7 +38,7 @@ ZN_INTERFACE ZN_API IShader
 	 * Calculate shader input layout
 	 */
 	virtual bool LoadInputLayoutFromReflector() = 0;
-	virtual bool LoadInputLayoutFromCustomElements(const std::vector<SCustomVertexElement>& declIn) = 0;
+	virtual bool LoadInputLayoutFromCustomElements(const std::vector<SCustomInputElement>& declIn) = 0;
 
 	/**
 	 * Get a shader input layout description

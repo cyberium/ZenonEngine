@@ -7,7 +7,7 @@ struct VertexShaderOutput
 };
 
 
-cbuffer Material : register(b2)
+cbuffer Material : register(b4)
 {
 	float4 DiffuseColor0;
 };

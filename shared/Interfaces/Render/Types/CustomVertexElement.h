@@ -8,8 +8,8 @@ enum class ZN_API ECustomVertexElementType : uint8_t
 	FLOAT1 = 0,
 	FLOAT2 = 1,
 	FLOAT3 = 2,
-	FLOAT4 = 3,
-	D3DCOLOR = 4,
+	FLOAT4 = 4,
+	D3DCOLOR = 5,
 	UBYTE4 = 5,
 	SHORT2 = 6,
 	SHORT4 = 7,
@@ -22,7 +22,13 @@ enum class ZN_API ECustomVertexElementType : uint8_t
 	DEC3N = 14,
 	FLOAT16_2 = 15,
 	FLOAT16_4 = 16,
-	UNUSED = 17
+	UNUSED = 17,
+
+	// Custom
+	BYTE4 = 20,
+	BYTE4N = 21,
+	USHORT2 = 22,
+	USHORT4 = 23
 };
 
 enum class ZN_API ECustomVertexElementUsage : uint8_t
@@ -38,19 +44,20 @@ enum class ZN_API ECustomVertexElementUsage : uint8_t
 	TESSFACTOR = 8,
 	POSITIONT = 9,
 	COLOR = 10,
+
 	FOG = 11,
 	DEPTH = 12,
 	SAMPLE = 13
 };
 
-struct ZN_API SCustomVertexElement
+struct ZN_API SCustomInputElement
 {
-	WORD                      Stream;     // Stream index
-	WORD                      Offset;     // Offset in the stream in bytes
+	UINT                      Slot;
+	UINT                      Offset;
 	ECustomVertexElementType  Type;       // Data type
 	ECustomVertexElementUsage Usage;      // Semantics
 	BYTE                      UsageIndex; // Semantic index
 };
 
-//size_t ZN_API CustomElementsLength(SCustomVertexElement * elements);
-//size_t ZN_API CustomElementsVertexSize(SCustomVertexElement * elements, size_t Cnt, DWORD Stream);
+//size_t ZN_API CustomElementsLength(SCustomInputElement * elements);
+//size_t ZN_API CustomElementsVertexSize(SCustomInputElement * elements, size_t Cnt, DWORD Stream);

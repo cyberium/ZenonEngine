@@ -87,6 +87,9 @@ void CRendererForward::Resize(uint32 NewWidth, uint32 NewHeight)
 
 void CRendererForward::Initialize(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport)
 {
+	m_FinalRenderTarget = RenderTarget;
+
+
 	m_SceneCreateTypelessListPass = MakeShared(CSceneCreateTypelessListPass, m_RenderDevice, m_Scene);
 
 	m_LightsBuffer = m_RenderDevice.GetObjectsFactory().CreateStructuredBuffer(nullptr, 8, sizeof(SLight), EAccess::CPUWrite);
@@ -117,7 +120,7 @@ void CRendererForward::Initialize(std::shared_ptr<IRenderTarget> RenderTarget, c
 		m_MaterialModelPass->GetLightsShaderParameter()->Set(m_LightsBuffer);
 	});
 
-	m_FinalRenderTarget = RenderTarget;
+	
 
 	glm::vec4 color = glm::vec4(0.0, 0.0f, 0.0f, 1.0f);
 	AddPass(MakeShared(ClearRenderTargetPass, m_RenderDevice, RenderTarget, ClearFlags::All, color, 1.0f, 0));
@@ -127,7 +130,7 @@ void CRendererForward::Initialize(std::shared_ptr<IRenderTarget> RenderTarget, c
 	AddPass(invokePass);
 	AddPass(materialModelPass);
 
-	AddPass(m_BaseManager.GetManager<IRenderPassFactory>()->CreateRenderPass("DebugPass", m_RenderDevice, m_FinalRenderTarget, Viewport, m_Scene.lock()));
+	AddPass(m_BaseManager.GetManager<IRenderPassFactory>()->CreateRenderPass("DebugPass", m_RenderDevice, GetRenderTarget(), Viewport, m_Scene.lock()));
 	
 	
 	m_UIPasses.push_back(MakeShared(CUIFontPass, m_RenderDevice, m_Scene)->CreatePipeline(RenderTarget, Viewport));

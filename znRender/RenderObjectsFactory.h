@@ -4,14 +4,18 @@ class ZN_API CRenderObjectsFactory
 	: public IRenderObjectsFactory
 {
 public:
-	CRenderObjectsFactory();
+	CRenderObjectsFactory(IRenderDevice& RenderDevice);
 	virtual ~CRenderObjectsFactory();
 
 	// IRenderObjectsFactory
-	bool                              HoldRenderObject(RenderObjectID ID) const;
-	bool                              UnholdRenderObject(RenderObjectID ID) const;
-	std::shared_ptr<IRenderObject>    GetRenderObject(RenderObjectID ID) const;
+	bool                              HoldRenderObject(RenderObjectID ID) const override;
+	bool                              UnholdRenderObject(RenderObjectID ID) const override;
+	std::shared_ptr<IRenderObject>    GetRenderObject(RenderObjectID ID) const override;
 	void                              ClearCache() override;
+
+	std::shared_ptr<IModel>           LoadModel(const std::string& fileName) override final;
+	std::shared_ptr<ITexture>         LoadTexture2D(const std::string& fileName) override final;
+	std::shared_ptr<ITexture>         LoadTextureCube(const std::string& fileName) override final;
 
 protected:
 	RenderObjectID                    GenerateRenderObjectID();
@@ -42,5 +46,6 @@ protected:
 	std::unordered_map<RenderObjectID, std::weak_ptr<IBuffer>>            m_Buffers;
 
 private:
+	IRenderDevice& m_RenderDevice;
 	RenderObjectID m_RenderObjectIDCntr;
 };

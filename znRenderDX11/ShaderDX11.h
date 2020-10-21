@@ -14,7 +14,7 @@ public:
 	bool LoadFromFile(EShaderType type, const std::string& fileName, const ShaderMacros& shaderMacros, const std::string& entryPoint, IShaderInputLayout* _customLayout) override final;
 	
 	bool LoadInputLayoutFromReflector() override final;
-	bool LoadInputLayoutFromCustomElements(const std::vector<SCustomVertexElement>& declIn) override final;
+	bool LoadInputLayoutFromCustomElements(const std::vector<SCustomInputElement>& declIn) override final;
 
 	void Bind() const override final;
 	void UnBind() const override final;

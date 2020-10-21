@@ -97,13 +97,13 @@ void CEditor3DFrame::Initialize()
 		m_Technique3D.AddPass(materialModelPass);
 		*/
 
-		auto forwardRenderer = MakeShared(CRendererForward, GetBaseManager(), weak_from_this());
-		forwardRenderer->Initialize(GetRenderWindow()->GetRenderTarget(), &GetRenderWindow()->GetViewport());
-		SetRenderer(forwardRenderer);
+		//auto forwardRenderer = MakeShared(CRendererForward, GetBaseManager(), weak_from_this());
+		//forwardRenderer->Initialize(GetRenderWindow()->GetRenderTarget(), &GetRenderWindow()->GetViewport());
+		//SetRenderer(forwardRenderer);
 
-		//auto defferedRenderer = MakeShared(CRendererForward, GetBaseManager(), weak_from_this());
-		//defferedRenderer->Initialize(GetRenderWindow()->GetRenderTarget(), &GetRenderWindow()->GetViewport());
-		//SetRenderer(defferedRenderer);
+		auto defferedRenderer = MakeShared(CRendererDeffered, GetBaseManager(), weak_from_this());
+		defferedRenderer->Initialize(GetRenderWindow()->GetRenderTarget(), &GetRenderWindow()->GetViewport());
+		SetRenderer(defferedRenderer);
 
 		// Debug render
 		//GetRenderer()->AddPass(GetBaseManager().GetManager<IRenderPassFactory>()->CreateRenderPass("DebugPass", GetRenderDevice(), defferedRenderer->GetRenderTarget(), &GetRenderWindow()->GetViewport(), shared_from_this()));

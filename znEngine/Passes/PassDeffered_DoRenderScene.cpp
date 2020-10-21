@@ -3,6 +3,9 @@
 // General
 #include "PassDeffered_DoRenderScene.h"
 
+// Additional
+#include "Materials/MaterialModel.h"
+
 CPassDeffered_DoRenderScene::CPassDeffered_DoRenderScene(IRenderDevice& RenderDevice, const std::shared_ptr<CSceneCreateTypelessListPass>& SceneCreateTypelessListPass)
 	: RenderPassPipelined(RenderDevice)
 	, m_SceneCreateTypelessListPass(SceneCreateTypelessListPass)
@@ -57,8 +60,11 @@ void CPassDeffered_DoRenderScene::Render(RenderEventArgs& e)
 {
 	for (const auto& it : m_SceneCreateTypelessListPass->GetGeometryList())
 	{
-		Visit(it.Node);
-		Visit(it.Geometry, it.Material, it.GeometryDrawArgs);
+		if (dynamic_cast<const MaterialModel*>(it.Material))
+		{
+			Visit(it.Node);
+			Visit(it.Geometry, it.Material, it.GeometryDrawArgs);
+		}
 	}
 
 	for (const auto& it : m_SceneCreateTypelessListPass->GetLightList())
@@ -114,14 +120,14 @@ std::shared_ptr<IRenderPassPipelined> CPassDeffered_DoRenderScene::CreatePipelin
 	rt->AttachTexture(IRenderTarget::AttachmentPoint::Color3, m_Texture3);
 	rt->AttachTexture(IRenderTarget::AttachmentPoint::DepthStencil, m_DepthStencilTexture);
 
-	auto vertexShader = GetRenderDevice().GetObjectsFactory().CreateShader(EShaderType::VertexShader, "3D/Model_Deffered.hlsl", "VS_PTN");
+	auto vertexShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::VertexShader, "3D/Model_Deffered.hlsl", "VS_PTN");
 	vertexShader->LoadInputLayoutFromReflector();
 
 	m_PerObjectShaderParameter = &vertexShader->GetShaderParameterByName("PerObject");
 	_ASSERT(m_PerObjectShaderParameter->IsValid());
 	m_PerObjectShaderParameter->SetConstantBuffer(m_PerObjectConstantBuffer);
 
-	auto pixelShader = GetRenderDevice().GetObjectsFactory().CreateShader(EShaderType::PixelShader, "3D/Model_Deffered.hlsl", "PS_main");
+	auto pixelShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::PixelShader, "3D/Model_Deffered.hlsl", "PS_main");
 
 	// PIPELINES
 	auto p = GetRenderDevice().GetObjectsFactory().CreatePipelineState();

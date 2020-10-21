@@ -6,10 +6,4 @@ class ZN_API ShaderInputLayoutBase
 public:
     ShaderInputLayoutBase();
 	virtual ~ShaderInputLayoutBase();
-
-    // IShaderInputLayout
-    const SemanticMap& GetSemantics() const override final;
-
-protected:
-	SemanticMap m_InputSemantics;
 };

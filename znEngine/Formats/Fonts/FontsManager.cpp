@@ -32,19 +32,17 @@ std::shared_ptr<CFont> FontsManager::GetMainFont() const
 }
 
 
-struct VertexPTN
+struct VertexPT
 {
-	VertexPTN(const glm::vec3& P, const glm::vec2& T, const glm::vec3& N)
+	VertexPT(const glm::vec2& P, const glm::vec2& T)
 		: p(P)
 		, t(T)
-		, n(N)
 	{}
 
-	glm::vec3 p;
+	glm::vec2 p;
 	glm::vec2 t;
-	glm::vec3 n;
 };
-typedef std::vector<VertexPTN> VertexesPTN;
+typedef std::vector<VertexPT> VertexesPT;
 
 std::shared_ptr<CFont> FontsManager::Add(IRenderDevice& RenderDevice, const std::string& _fontFileName, uint32 _fontSize)
 {
@@ -135,7 +133,7 @@ std::shared_ptr<CFont> FontsManager::Add(IRenderDevice& RenderDevice, const std:
 	uint32 y = maxAscent;
 
 
-	VertexesPTN vertices;
+	VertexesPT vertices;
 
 	for (uint32 ch = 0; ch < CFont::NUM_CHARS; ++ch)
 	{
@@ -159,13 +157,13 @@ std::shared_ptr<CFont> FontsManager::Add(IRenderDevice& RenderDevice, const std:
 		float texY1 = float(y - maxAscent) / float(imageHeight);
 		float texY2 = texY1 + float(charHeight) / float(imageHeight);
 
-		vertices.push_back(VertexPTN(glm::vec3(charWidth[ch],  charHeight,  0.0f), glm::vec2(texX2, texY2),  glm::vec3(0.0f, 0.0f, 1.0f)));
-		vertices.push_back(VertexPTN(glm::vec3(0.0f,           charHeight,  0.0f), glm::vec2(texX1, texY2),  glm::vec3(0.0f, 0.0f, 1.0f)));
-		vertices.push_back(VertexPTN(glm::vec3(0.0f,           0.0f,        0.0f), glm::vec2(texX1, texY1),  glm::vec3(0.0f, 0.0f, 1.0f)));
+		vertices.push_back(VertexPT(glm::vec3(charWidth[ch],  charHeight,  0.0f), glm::vec2(texX2, texY2)));
+		vertices.push_back(VertexPT(glm::vec3(0.0f,           charHeight,  0.0f), glm::vec2(texX1, texY2)));
+		vertices.push_back(VertexPT(glm::vec3(0.0f,           0.0f,        0.0f), glm::vec2(texX1, texY1)));
 		
-		vertices.push_back(VertexPTN(glm::vec3(0.0f,           0.0f,        0.0f), glm::vec2(texX1, texY1),  glm::vec3(0.0f, 0.0f, 1.0f)));
-		vertices.push_back(VertexPTN(glm::vec3(charWidth[ch],  charHeight,  0.0f), glm::vec2(texX2, texY2),  glm::vec3(0.0f, 0.0f, 1.0f)));
-		vertices.push_back(VertexPTN(glm::vec3(charWidth[ch],  0.0f,        0.0f), glm::vec2(texX2, texY1),  glm::vec3(0.0f, 0.0f, 1.0f)));
+		vertices.push_back(VertexPT(glm::vec3(0.0f,           0.0f,        0.0f), glm::vec2(texX1, texY1)));
+		vertices.push_back(VertexPT(glm::vec3(charWidth[ch],  charHeight,  0.0f), glm::vec2(texX2, texY2)));
+		vertices.push_back(VertexPT(glm::vec3(charWidth[ch],  0.0f,        0.0f), glm::vec2(texX2, texY1)));
 		
 		for (uint32 row = 0; row < glyphSlot->bitmap.rows; ++row)
 		{
@@ -184,8 +182,9 @@ std::shared_ptr<CFont> FontsManager::Add(IRenderDevice& RenderDevice, const std:
 
 
 	std::shared_ptr<IGeometry> __geom = RenderDevice.GetObjectsFactory().CreateGeometry();
-	__geom->AddVertexBuffer(BufferBinding("POSITION", 0), RenderDevice.GetObjectsFactory().CreateVoidVertexBuffer(vertices.data(), vertices.size(), 0,            sizeof(VertexPTN)));
-    __geom->AddVertexBuffer(BufferBinding("TEXCOORD", 0), RenderDevice.GetObjectsFactory().CreateVoidVertexBuffer(vertices.data(), vertices.size(), sizeof(glm::vec3), sizeof(VertexPTN)));
+	//__geom->AddVertexBuffer(BufferBinding("POSITION", 0), RenderDevice.GetObjectsFactory().CreateVoidVertexBuffer(vertices.data(), vertices.size(), 0,            sizeof(VertexPT)));
+    //__geom->AddVertexBuffer(BufferBinding("TEXCOORD", 0), RenderDevice.GetObjectsFactory().CreateVoidVertexBuffer(vertices.data(), vertices.size(), sizeof(glm::vec2), sizeof(VertexPT)));
+	__geom->SetVertexBuffer(RenderDevice.GetObjectsFactory().CreateVoidVertexBuffer(vertices.data(), vertices.size(), 0, sizeof(VertexPT)));
 
 	// Font image
 	std::shared_ptr<CImageBase> fontImage = MakeShared(CImageBase, imageWidth, imageHeight, 32, true);

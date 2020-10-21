@@ -10,9 +10,3 @@ ShaderInputLayoutBase::ShaderInputLayoutBase()
 
 ShaderInputLayoutBase::~ShaderInputLayoutBase()
 {}
-
-// ShaderInputLayoutBase
-const IShaderInputLayout::SemanticMap& ShaderInputLayoutBase::GetSemantics() const
-{
-    return m_InputSemantics;
-}

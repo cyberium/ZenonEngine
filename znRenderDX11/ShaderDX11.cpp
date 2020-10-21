@@ -187,7 +187,7 @@ bool ShaderDX11::LoadInputLayoutFromReflector()
 	return true;
 }
 
-bool ShaderDX11::LoadInputLayoutFromCustomElements(const std::vector<SCustomVertexElement>& declIn)
+bool ShaderDX11::LoadInputLayoutFromCustomElements(const std::vector<SCustomInputElement>& declIn)
 {
 	if (m_InputLayout != nullptr)
 	{

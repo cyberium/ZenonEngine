@@ -33,9 +33,6 @@
     <ClCompile Include="SamplerStateDX11.cpp" />
     <ClCompile Include="MaterialDX11.cpp" />
     <ClCompile Include="ShaderInputLayoutDX11.cpp" />
-    <ClCompile Include="D3D9_To_D3D11.cpp">
-      <Filter>Converters</Filter>
-    </ClCompile>
     <ClCompile Include="znRenderDX11.cpp">
       <Filter>Common</Filter>
     </ClCompile>
@@ -49,6 +46,9 @@
     </ClCompile>
     <ClCompile Include="ModelDX11.cpp" />
     <ClCompile Include="ShaderDX11Include.cpp" />
+    <ClCompile Include="CustomElementsToDX11.cpp">
+      <Filter>Converters</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -84,9 +84,6 @@
     <ClInclude Include="SamplerStateDX11.h" />
     <ClInclude Include="MaterialDX11.h" />
     <ClInclude Include="ShaderInputLayoutDX11.h" />
-    <ClInclude Include="D3D9_To_D3D11.h">
-      <Filter>Converters</Filter>
-    </ClInclude>
     <ClInclude Include="GeometryDX11.h" />
     <ClInclude Include="RenderDeviceDX11.h">
       <Filter>RenderDevice</Filter>
@@ -96,6 +93,9 @@
     </ClInclude>
     <ClInclude Include="ModelDX11.h" />
     <ClInclude Include="ShaderDX11Include.h" />
+    <ClInclude Include="CustomElementsToDX11.h">
+      <Filter>Converters</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Common">
