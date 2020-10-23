@@ -133,7 +133,7 @@ std::shared_ptr<IRenderPassPipelined> CPassDeffered_DoRenderScene::CreatePipelin
 	auto p = GetRenderDevice().GetObjectsFactory().CreatePipelineState();
 	p->GetBlendState()->SetBlendMode(disableBlending);
 	p->GetDepthStencilState()->SetDepthMode(enableDepthWrites);
-	p->GetRasterizerState()->SetCullMode(IRasterizerState::CullMode::Back);
+	p->GetRasterizerState()->SetCullMode(IRasterizerState::CullMode::None);
 	p->GetRasterizerState()->SetFillMode(IRasterizerState::FillMode::Solid, IRasterizerState::FillMode::Solid);
 	//p->GetRasterizerState()->SetAntialiasedLineEnable(true);
 	//p->GetRasterizerState()->SetMultisampleEnabled(true);

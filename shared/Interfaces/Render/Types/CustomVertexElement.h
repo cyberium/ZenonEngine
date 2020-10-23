@@ -37,16 +37,18 @@ enum class ZN_API ECustomVertexElementType : uint8_t
 enum class ZN_API ECustomVertexElementUsage : uint8_t
 {
 	POSITION = 0,
-	BLENDWEIGHT = 1,
-	BLENDINDICES = 2,
-	NORMAL = 3,
-	PSIZE = 4,
-	TEXCOORD = 5,
-	TANGENT = 6,
-	BINORMAL = 7,
-	TESSFACTOR = 8,
-	POSITIONT = 9,
-	COLOR = 10
+	BLENDWEIGHT,
+	BLENDINDICES,
+	NORMAL,
+	PSIZE,
+	TEXCOORD,
+	TANGENT,
+	BINORMAL,
+	TESSFACTOR,
+	POSITIONT,
+	COLOR ,
+
+	InstanceID
 };
 
 struct ZN_API SCustomInputElement

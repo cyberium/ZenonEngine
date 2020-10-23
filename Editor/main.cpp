@@ -24,8 +24,8 @@ void main_internal(int argc, char *argv[])
 
 		IRenderDevice& renderDevice = app.CreateRenderDevice(RenderDeviceType::RenderDeviceType_DirectX11);
 
-		std::shared_ptr<IFontsManager> fontsManager = MakeShared(FontsManager, renderDevice, *BaseManager);
-		BaseManager->AddManager<IFontsManager>(fontsManager);
+		std::shared_ptr<IznFontsManager> fontsManager = MakeShared(FontsManager, renderDevice, *BaseManager);
+		BaseManager->AddManager<IznFontsManager>(fontsManager);
 		BaseManager->GetManager<ILoader>()->Start();
 
 		QApplication a(argc, argv);

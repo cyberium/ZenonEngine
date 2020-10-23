@@ -9,7 +9,7 @@
 static ShaderParameterBase gs_InvalidShaderParameter;
 
 ShaderBase::ShaderBase() :
-	m_ShaderType(EShaderType::UnknownShaderType)
+	m_Type(EShaderType::UnknownShaderType)
 {
 }
 
@@ -18,7 +18,7 @@ ShaderBase::~ShaderBase()
 
 EShaderType ShaderBase::GetShaderType() const
 {
-	return m_ShaderType;
+	return m_Type;
 }
 
 IShaderInputLayout& ShaderBase::GetInputLayout() const

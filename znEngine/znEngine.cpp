@@ -14,13 +14,17 @@
 #include "Scene/Factory/SceneCreator.h"
 #include "Scene/Factory/ComponentsCreator.h"
 #include "Scene/Factory/SceneNodeCreator.h"
-#include "FBX/FBXManager.h"
 
 // Additional (Images)
 #include "Formats/Images/ImagesFactory.h"
 #include "Formats/Images/ImageLoaderTemplate.h"
 #include "Formats/Images/ImagePNG.h"
 #include "Formats/Images/ImageDDS.h"
+
+// Additional (Models)
+#include "Formats/Models/ModelsManager.h"
+#include "Formats/Models/EngineModelsLoader.h"
+#include "Formats/Models/FBXModelsLoader.h"
 
 #include "Settings/GroupVideo.h"
 
@@ -95,6 +99,13 @@ IBaseManager* WINAPI InitializeEngine(std::vector<std::string> Arguments, std::s
 		pluginsManager->AddPluginEventListener(std::dynamic_pointer_cast<IznPluginsEventListener>(renderDeviceFactory));
 	}
 
+	// Models
+	{
+		baseManager->AddManager<IznModelsManager>(MakeShared(CznModelsManager, *baseManager));
+		baseManager->GetManager<IznModelsManager>()->AddModelsLoader(MakeShared(CznEngineModelsLoader, *baseManager));
+		baseManager->GetManager<IznModelsManager>()->AddModelsLoader(MakeShared(CznFBXModelsLoader, *baseManager));
+	}
+
 	// SceneNodes stuff
 	{
 		std::shared_ptr<ILoader> laoder = MakeShared(CLoader);
@@ -119,12 +130,6 @@ IBaseManager* WINAPI InitializeEngine(std::vector<std::string> Arguments, std::s
 		factory->AddClassFactory(sceneNode3DFactory);
 		factory->AddClassFactory(sceneNodeUIFactory);
 		factory->AddClassFactory(componentFactory);
-	}
-
-	// FBX
-	{
-		auto fbxManager = MakeShared(CFBXManager, *baseManager);
-		baseManager->AddManager<IFBXManager>(fbxManager);
 	}
 
 	// Passes

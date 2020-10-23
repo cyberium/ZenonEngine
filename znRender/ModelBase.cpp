@@ -157,37 +157,3 @@ void ModelBase::Save(const std::shared_ptr<IByteBuffer>& ByteBuffer) const
 	}
 }
 
-void ModelBase::Load(const std::shared_ptr<IXMLReader>& Reader)
-{
-	std::string fileName;
-	
-	if (auto fileNameReader = Reader->GetChild("FileName"))
-		fileName = fileNameReader->GetValue();
-
-	// TODO: Replace with models maanger
-	auto modelFile = m_RenderDevice.GetBaseManager().GetManager<IFilesManager>()->Open(fileName);
-	if (modelFile)
-		Load(modelFile);
-}
-
-void ModelBase::Save(const std::shared_ptr<IXMLWriter>& Writer) const
-{
-	// TODO: Replace with models maanger
-	auto file = m_RenderDevice.GetBaseManager().GetManager<IFilesManager>()->Open(m_FileName);
-	if (false == m_FileName.empty() && file == nullptr)
-	{
-		file = MakeShared(CFile, m_FileName);
-		Save(file);
-		m_RenderDevice.GetBaseManager().GetManager<IFilesManager>()->GetFilesStorage("PCEveryFileAccess")->SaveFile(file);
-	}
-
-	CXMLManager xml;
-	auto fileNameWriter = xml.CreateWriter("FileName");
-	fileNameWriter->SetValue(m_FileName);
-	Writer->AddChild(fileNameWriter);
-
-	auto conectionsWriter = xml.CreateWriter("Connections");
-	
-
-	
-}

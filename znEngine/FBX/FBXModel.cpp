@@ -346,8 +346,8 @@ bool CFBXModel::Load(fbxsdk::FbxMesh* NativeMesh)
 	m_Geometry->AddVertexBuffer(BufferBinding("POSITION", 0), renderDevice.GetObjectsFactory().CreateVoidVertexBuffer(m_Vertices.data(), m_Vertices.size(), 0, sizeof(FBXVertex)));
 	m_Geometry->AddVertexBuffer(BufferBinding("TEXCOORD", 0), renderDevice.GetObjectsFactory().CreateVoidVertexBuffer(m_Vertices.data(), m_Vertices.size(), 12, sizeof(FBXVertex)));
 	m_Geometry->AddVertexBuffer(BufferBinding("NORMAL", 0), renderDevice.GetObjectsFactory().CreateVoidVertexBuffer(m_Vertices.data(), m_Vertices.size(), 12 + 8, sizeof(FBXVertex)));
-	m_Geometry->AddVertexBuffer(BufferBinding("BLENDWEIGHT", 0), renderDevice.GetObjectsFactory().CreateVoidVertexBuffer(m_Vertices.data(), m_Vertices.size(), 12 + 8 + 12 + 12 + 12, sizeof(FBXVertex)));
-	m_Geometry->AddVertexBuffer(BufferBinding("BLENDINDICES", 0), renderDevice.GetObjectsFactory().CreateVoidVertexBuffer(m_Vertices.data(), m_Vertices.size(), 12 + 8 + 12 + 12 + 12 + 16, sizeof(FBXVertex)));
+	//m_Geometry->AddVertexBuffer(BufferBinding("BLENDWEIGHT", 0), renderDevice.GetObjectsFactory().CreateVoidVertexBuffer(m_Vertices.data(), m_Vertices.size(), 12 + 8 + 12 + 12 + 12, sizeof(FBXVertex)));
+	//m_Geometry->AddVertexBuffer(BufferBinding("BLENDINDICES", 0), renderDevice.GetObjectsFactory().CreateVoidVertexBuffer(m_Vertices.data(), m_Vertices.size(), 12 + 8 + 12 + 12 + 12 + 16, sizeof(FBXVertex)));
 
 	MaterialLoad(NativeMesh);
 

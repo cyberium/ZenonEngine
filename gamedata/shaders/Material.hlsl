@@ -270,7 +270,10 @@ float2 ExtractDisplacement(MaterialModel mat, float2 TexCoord, float3 normalVS, 
 								normalize( binormalVS),
 								normalize( normalVS));
 
-		return DoDisplacementMapping(TBN, TextureDisplacement, LinearRepeatSampler, TexCoord, viewPosVS, fragPosVS);
+		float2 newTexCoords = DoDisplacementMapping(TBN, TextureDisplacement, LinearRepeatSampler, TexCoord, viewPosVS, fragPosVS);
+		if(newTexCoords.x > 1.0 || newTexCoords.y > 1.0 || newTexCoords.x < 0.0 || newTexCoords.y < 0.0)
+			discard; 
+		return newTexCoords;
 	}
 	
 	return TexCoord;

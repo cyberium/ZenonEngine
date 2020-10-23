@@ -62,6 +62,17 @@ void GeometryDX11::Render_BindAllBuffers(const RenderEventArgs & RenderEventArgs
 	}
 	else
 	{
+		/*size_t inputSemanticsCount = VertexShader->GetInputLayout().GetSemanticsCount();
+		for (auto i = 0; i < inputSemanticsCount; i++)
+		{
+			const auto& s = VertexShader->GetInputLayout().GetSemantic(i);
+
+
+			const auto& sSlot = VertexShader->GetInputLayout().GetSemanticSlot(i);
+			_ASSERT(s != UINT_MAX);
+
+		}*/
+
 		for (const auto& buffer : m_VertexBuffers)
 		{
 			UINT slotID = VertexShader->GetInputLayout().GetSemanticSlot(buffer.first);
@@ -120,6 +131,8 @@ void GeometryDX11::Render_UnbindAllBuffers(const RenderEventArgs & RenderEventAr
 			UINT slotID = VertexShader->GetInputLayout().GetSemanticSlot(buffer.first);
 			if (slotID != UINT_MAX)
 				buffer.second->UnBind(slotID, VertexShader, IShaderParameter::Type::Buffer);
+			//else
+			//	_ASSERT(false);
 		}
 	}
 }

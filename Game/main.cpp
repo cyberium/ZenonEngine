@@ -8,8 +8,8 @@ void main_internal(int argumentCount, char* arguments[])
 	// 1. Initialize engine and some improtant managers
 	BaseManager = InitializeEngine(Utils::ArgumentsToVector(argumentCount, arguments), "");
 
-	try
-	{
+	//try
+	//{
 		Application app(*BaseManager, ::GetModuleHandle(NULL));
 
 		CNativeWindowFactory nativeWindowFactory(&app);
@@ -38,15 +38,15 @@ void main_internal(int argumentCount, char* arguments[])
 
 		app.Run();
 
-	}
-	catch (const CznRenderException& e)
-	{
-		Log::Fatal("RenderError: %s", e.MessageCStr());
-	}
-	catch (const CException& e)
-	{
-		Log::Fatal("EngienError: %s", e.MessageCStr());
-	}
+	//}
+	//catch (const CznRenderException& e)
+	//{
+	//	Log::Fatal("RenderError: %s", e.MessageCStr());
+	//}
+	//catch (const CException& e)
+	//{
+	//	Log::Fatal("EngienError: %s", e.MessageCStr());
+	//}
 }
 
 

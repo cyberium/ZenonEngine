@@ -101,6 +101,7 @@ VertexSemanticPairs	VertexSemanticList[] =
 	{ ECustomVertexElementUsage::BINORMAL,		"BINORMAL" },		// 7
 	{ ECustomVertexElementUsage::POSITIONT,		"POSITIONT" },		// 8
 	{ ECustomVertexElementUsage::COLOR,			"COLOR" },			// 9
+	{ ECustomVertexElementUsage::InstanceID,	"SV_InstanceID"}
 };
 
 const auto cVertexSemanticListLength = sizeof(VertexSemanticList) / sizeof(VertexSemanticList[0]);

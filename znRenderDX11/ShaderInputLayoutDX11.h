@@ -29,6 +29,9 @@ public:
     bool HasSemantic(const BufferBinding& binding) const override;
     const InputSemantic& GetSemantic(const BufferBinding& binding) const override;
     UINT GetSemanticSlot(const BufferBinding& binding) const override;
+	size_t GetSemanticsCount() const override;
+	const InputSemantic& GetSemantic(size_t Index) const override;
+	UINT GetSemanticSlot(size_t Index) const override;
 
 	// ShaderInputLayoutDX11
 	bool LoadFromReflector(ID3DBlob * pShaderBlob, ID3D11ShaderReflection * pReflector);

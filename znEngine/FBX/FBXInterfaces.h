@@ -80,16 +80,6 @@ ZN_INTERFACE ZN_API IFBXScenePrivate
 };
 
 
-ZN_INTERFACE ZN_API __declspec(uuid("653A8D4D-5E21-4734-8296-91A2E99AE767")) IFBXManager
-	: public IManager
-{
-#ifdef ZN_FBX_SDK_ENABLE
-	virtual std::shared_ptr<IFBXScene> LoadFBX(const std::string& FileName) = 0;
-#endif
-};
-
-
-
 inline void DoAddModels(const std::shared_ptr<ISceneNode3D>& ParentNode, std::shared_ptr<IFBXNode> Node)
 {
 	auto baseManagerHolder = dynamic_cast<IBaseManagerHolder*>(ParentNode->GetScene());

@@ -58,13 +58,8 @@ DefferedRenderPSOut PS_main(VertexShaderOutput IN) : SV_TARGET
 
 	float3 posCam = mul(PF.InverseView, float4(0.0f, 0.0f, 0.0f, 1.0f));
 	float3 posFrag = mul(PF.InverseView, float4(IN.positionVS.xyz, 1.0f));
-
-	float2 newTexCoords = ExtractDisplacement(Mat, IN.texCoord, normalWS, tangentWS, binormalWS, posCam, posFrag);
-	if(newTexCoords.x > 1.0 || newTexCoords.y > 1.0 || newTexCoords.x < 0.0 || newTexCoords.y < 0.0)
-		discard; 
 	
-	//IN.texCoord = newTexCoords;
-	
+	IN.texCoord = ExtractDisplacement(Mat, IN.texCoord, normalWS, tangentWS, binormalWS, posCam, posFrag);
 	
 	float4 diffuseAndAlpha = ExtractDuffuseAndAlpha(Mat, IN.texCoord);
 	if (diffuseAndAlpha.a < 0.05f)

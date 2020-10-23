@@ -289,7 +289,6 @@
     <ClCompile Include="FBX\FBXDisplayLink.cpp" />
     <ClCompile Include="FBX\FBXDisplayShape.cpp" />
     <ClCompile Include="FBX\FBXLight.cpp" />
-    <ClCompile Include="FBX\FBXManager.cpp" />
     <ClCompile Include="FBX\FBXMaterial.cpp" />
     <ClCompile Include="FBX\FBXModel.cpp" />
     <ClCompile Include="FBX\FBXScene.cpp" />
@@ -303,6 +302,9 @@
     <ClCompile Include="Formats\Images\ImageLoaderTemplate.cpp" />
     <ClCompile Include="Formats\Images\ImagePNG.cpp" />
     <ClCompile Include="Formats\Images\ImagesFactory.cpp" />
+    <ClCompile Include="Formats\Models\EngineModelsLoader.cpp" />
+    <ClCompile Include="Formats\Models\FBXModelsLoader.cpp" />
+    <ClCompile Include="Formats\Models\ModelsManager.cpp" />
     <ClCompile Include="MaterialsFactory.cpp" />
     <ClCompile Include="Materials\MaterialParticle.cpp" />
     <ClCompile Include="Passes\DrawBonesPass.cpp" />
@@ -488,7 +490,6 @@
     <ClInclude Include="FBX\FBXDisplayShape.h" />
     <ClInclude Include="FBX\FBXInterfaces.h" />
     <ClInclude Include="FBX\FBXLight.h" />
-    <ClInclude Include="FBX\FBXManager.h" />
     <ClInclude Include="FBX\FBXMaterial.h" />
     <ClInclude Include="FBX\FBXModel.h" />
     <ClInclude Include="FBX\FBXScene.h" />
@@ -502,6 +503,9 @@
     <ClInclude Include="Formats\Images\ImageLoaderTemplate.h" />
     <ClInclude Include="Formats\Images\ImagePNG.h" />
     <ClInclude Include="Formats\Images\ImagesFactory.h" />
+    <ClInclude Include="Formats\Models\EngineModelsLoader.h" />
+    <ClInclude Include="Formats\Models\FBXModelsLoader.h" />
+    <ClInclude Include="Formats\Models\ModelsManager.h" />
     <ClInclude Include="MaterialsFactory.h" />
     <ClInclude Include="Materials\MaterialParticle.h" />
     <ClInclude Include="Passes\DrawBonesPass.h" />

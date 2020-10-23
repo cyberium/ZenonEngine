@@ -166,6 +166,9 @@
     <Filter Include="Passes\3D\ForwardLRendering">
       <UniqueIdentifier>{ab8ee8c9-ff60-4ae2-9e88-1054a76849c1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Formats\Models">
+      <UniqueIdentifier>{79414a40-821a-439e-9cf4-85619b390ebb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -206,9 +209,6 @@
       <Filter>FBX</Filter>
     </ClCompile>
     <ClCompile Include="FBX\FBXDisplayShape.cpp">
-      <Filter>FBX</Filter>
-    </ClCompile>
-    <ClCompile Include="FBX\FBXManager.cpp">
       <Filter>FBX</Filter>
     </ClCompile>
     <ClCompile Include="FBX\FBXScene.cpp">
@@ -681,6 +681,15 @@
     <ClCompile Include="Settings.cpp">
       <Filter>Managers</Filter>
     </ClCompile>
+    <ClCompile Include="Formats\Models\ModelsManager.cpp">
+      <Filter>Formats\Models</Filter>
+    </ClCompile>
+    <ClCompile Include="Formats\Models\EngineModelsLoader.cpp">
+      <Filter>Formats\Models</Filter>
+    </ClCompile>
+    <ClCompile Include="Formats\Models\FBXModelsLoader.cpp">
+      <Filter>Formats\Models</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="common.h">
@@ -724,9 +733,6 @@
       <Filter>FBX</Filter>
     </ClInclude>
     <ClInclude Include="FBX\FBXDisplayShape.h">
-      <Filter>FBX</Filter>
-    </ClInclude>
-    <ClInclude Include="FBX\FBXManager.h">
       <Filter>FBX</Filter>
     </ClInclude>
     <ClInclude Include="FBX\FBXScene.h">
@@ -1262,6 +1268,15 @@
     </ClInclude>
     <ClInclude Include="Settings.h">
       <Filter>Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="Formats\Models\ModelsManager.h">
+      <Filter>Formats\Models</Filter>
+    </ClInclude>
+    <ClInclude Include="Formats\Models\EngineModelsLoader.h">
+      <Filter>Formats\Models</Filter>
+    </ClInclude>
+    <ClInclude Include="Formats\Models\FBXModelsLoader.h">
+      <Filter>Formats\Models</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

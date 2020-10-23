@@ -44,7 +44,6 @@ const InputSemantic& ShaderInputLayoutDX11::GetSemantic(const BufferBinding & bi
 	for (auto& it : m_InputSemanticsDX11)
 		if (it.second.Name == binding.Name && it.second.Index == binding.Index)
 			return it.second;
-
 	return gs_InvalidShaderSemantic;
 }
 
@@ -53,7 +52,29 @@ UINT ShaderInputLayoutDX11::GetSemanticSlot(const BufferBinding & binding) const
 	for (auto& it : m_InputSemanticsDX11)
 		if ((::strcmp(it.second.Name.c_str(), binding.Name.c_str()) == 0) && it.second.Index == binding.Index)
 			return it.first;
+	return UINT_MAX;
+}
 
+size_t ShaderInputLayoutDX11::GetSemanticsCount() const
+{
+	return m_InputSemanticsDX11.size();
+}
+
+const InputSemantic & ShaderInputLayoutDX11::GetSemantic(size_t Index) const
+{
+	auto iter = m_InputSemanticsDX11.begin();
+	std::advance(iter, Index);
+	if (iter != m_InputSemanticsDX11.end())
+		return iter->second;
+	return gs_InvalidShaderSemantic;
+}
+
+UINT ShaderInputLayoutDX11::GetSemanticSlot(size_t Index) const
+{
+	auto iter = m_InputSemanticsDX11.begin();
+	std::advance(iter, Index);
+	if (iter != m_InputSemanticsDX11.end())
+		return iter->first;
 	return UINT_MAX;
 }
 

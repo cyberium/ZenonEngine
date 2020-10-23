@@ -7,6 +7,7 @@ ZN_INTERFACE ITexture;
 ZN_INTERFACE IGeometry;
 // FORWARD END
 
+
 ZN_INTERFACE ZN_API IznFont
 {
 	virtual ~IznFont() {}
@@ -18,6 +19,7 @@ ZN_INTERFACE ZN_API IznFont
 	virtual uint32 GetHeight() const = 0;
 };
 
+
 ZN_INTERFACE ZN_API
 	__declspec(uuid("1427E242-CCB8-4AEC-ABC8-17DE58A96B05"))
 	IznFontsManager : public IManager
@@ -25,5 +27,5 @@ ZN_INTERFACE ZN_API
 	virtual ~IznFontsManager() {};
 
 	virtual std::shared_ptr<IznFont> GetMainFont() const = 0;
-	virtual std::shared_ptr<IznFont> Add(IRenderDevice& RenderDevice, const std::string& _fontFileName, uint32 _fontSize) = 0;
+	virtual std::shared_ptr<IznFont> Add(IRenderDevice& RenderDevice, const std::string& FontFileName, uint32 FontSize) = 0;
 };

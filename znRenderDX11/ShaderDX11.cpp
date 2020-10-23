@@ -42,6 +42,7 @@ void ShaderDX11::Destroy()
 
 bool ShaderDX11::LoadFromFile(EShaderType shaderType, const std::string& fileName, const ShaderMacros& shaderMacros, const std::string& entryPoint, IShaderInputLayout* _customLayout)
 {
+
 	HRESULT hr;
 	{
 		D3D_FEATURE_LEVEL featureLevel = m_RenderDeviceDX11.GetDeviceD3D11()->GetFeatureLevel();
@@ -81,9 +82,12 @@ bool ShaderDX11::LoadFromFile(EShaderType shaderType, const std::string& fileNam
 	// Destroy the last shader as we are now loading a new one.
 	Destroy();
 
-	m_ShaderType = shaderType;
+	m_Type = shaderType;
+	m_FileName = fileName;
+	m_EntryPoint = entryPoint;
+	m_Macros = shaderMacros;
 
-	switch (m_ShaderType)
+	switch (m_Type)
 	{
 	case EShaderType::VertexShader:
 		hr = m_RenderDeviceDX11.GetDeviceD3D11()->CreateVertexShader(m_pShaderBlob->GetBufferPointer(), m_pShaderBlob->GetBufferSize(), nullptr, &m_pVertexShader);

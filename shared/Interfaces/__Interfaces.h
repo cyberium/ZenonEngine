@@ -197,6 +197,7 @@ class Rect;
 #include "Interfaces/FontsManager.h"
 #include "Interfaces/Loader.h"
 #include "Interfaces/Log.h"
+#include "Interfaces/ModelsManager.h"
 #include "Interfaces/Networking.h"
 #include "Interfaces/Types/Object.h"
 #include "Interfaces/Types/ObjectsFactory.h"

@@ -7,13 +7,6 @@
 #include "Scene/Nodes/UIText.h"
 #include "Scene/Nodes/UIColor.h"
 
-#ifdef ZN_FBX_SDK_ENABLE
-#include "FBX/FBXManager.h"
-#pragma comment(lib, "libfbxsdk-md.lib")
-#pragma comment(lib, "libxml2-md.lib")
-#pragma comment(lib, "zlib-md.lib")
-#endif
-
 CSceneNode3DEngineCreator::CSceneNode3DEngineCreator(IBaseManager& BaseManager)
 	: CObjectClassCreator(BaseManager)
 {

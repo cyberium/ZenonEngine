@@ -185,6 +185,7 @@
     <ClInclude Include="..\Externals\sockets\UdpSocket.h" />
     <ClInclude Include="..\Externals\sockets\Utility.h" />
     <ClInclude Include="..\shared\Interfaces\FontsManager.h" />
+    <ClInclude Include="..\shared\Interfaces\ModelsManager.h" />
     <ClInclude Include="..\shared\Interfaces\Render\IGeometry.h" />
     <ClInclude Include="..\shared\Interfaces\Render\IImageLoader.h" />
     <ClInclude Include="..\shared\Interfaces\Render\IRenderTechnique.h" />

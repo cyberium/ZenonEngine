@@ -94,10 +94,7 @@ bool CEditorUIFrame::InitializeEditorFrame()
 
 			//continue;
 
-			std::shared_ptr<IFBXScene> fbxScene = m_Editor.GetBaseManager().GetManager<IFBXManager>()->LoadFBX(it);
-			auto fbxModels = fbxScene->GetFBXModels();
-
-			auto model = fbxModels.at(0)->GetModel();
+			auto model = m_Editor.GetBaseManager().GetManager<IznModelsManager>()->LoadModel("arrow.FBX");
 			if (auto loadable = std::dynamic_pointer_cast<IObjectLoadSave>(model))
 			{
 				std::shared_ptr<IFile> file = MakeShared(CFile, zenonFileName);
