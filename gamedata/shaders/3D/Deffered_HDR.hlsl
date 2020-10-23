@@ -37,8 +37,26 @@ float4 PS_ScreenQuad(float4 position : SV_POSITION
 	const int2 texCoord = position.xy;
 
 #ifdef MULTISAMPLED
-	return Texture0.Load(texCoord, SampleIndex) * 2.0f;
+	float4 sourceColor = Texture0.Load(texCoord, SampleIndex) * 2.0f;
 #else
-	return Texture0.Load(int3(texCoord, 0));
+	float4 sourceColor = Texture0.Load(int3(texCoord, 0));
 #endif
+
+    const float gamma = 1.0f;
+	const float exposure = 1.0f;
+
+	/*
+    // тональная компрессия с экспозицией
+    float3 mapped = float3(1.0f, 1.0f, 1.0f) - exp(-sourceColor.rgb * exposure);
+    // гамма-коррекция
+    mapped = pow(mapped, float3(1.0f, 1.0f, 1.0f) / gamma);
+	*/
+	
+
+    // тональная компрессия
+    float3 mapped = sourceColor.rgb / (sourceColor.rgb + float3(1.0f, 1.0f, 1.0f));
+    // гамма-коррекция
+    mapped = pow(mapped, float3(1.0f, 1.0f, 1.0f) / gamma);
+
+	return float4(mapped, 1.0f);
 }

@@ -26,7 +26,7 @@ IShaderParameter * CMaterialModelPass::GetLightsShaderParameter() const
 //
 // IRenderPassPipelined
 //
-std::shared_ptr<IRenderPassPipelined> CMaterialModelPass::CreatePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport)
+std::shared_ptr<IRenderPassPipelined> CMaterialModelPass::ConfigurePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport)
 {
 	std::shared_ptr<IShader> vertexShader;
 	std::shared_ptr<IShader> pixelShader;
@@ -39,29 +39,28 @@ std::shared_ptr<IRenderPassPipelined> CMaterialModelPass::CreatePipeline(std::sh
 	vertexShader->LoadInputLayoutFromReflector();
 
 	// PIPELINES
-	auto Pipeline = GetRenderDevice().GetObjectsFactory().CreatePipelineState();
-	Pipeline->GetBlendState()->SetBlendMode(disableBlending);
-	Pipeline->GetDepthStencilState()->SetDepthMode(enableDepthWrites);
-	Pipeline->GetRasterizerState()->SetCullMode(IRasterizerState::CullMode::Back);
-	Pipeline->GetRasterizerState()->SetFillMode(IRasterizerState::FillMode::Solid, IRasterizerState::FillMode::Solid);
-	Pipeline->SetRenderTarget(RenderTarget);
-	Pipeline->SetShader(EShaderType::VertexShader, vertexShader);
-	Pipeline->SetShader(EShaderType::PixelShader, pixelShader);
+	GetPipeline().GetBlendState()->SetBlendMode(disableBlending);
+	GetPipeline().GetDepthStencilState()->SetDepthMode(enableDepthWrites);
+	GetPipeline().GetRasterizerState()->SetCullMode(IRasterizerState::CullMode::Back);
+	GetPipeline().GetRasterizerState()->SetFillMode(IRasterizerState::FillMode::Solid, IRasterizerState::FillMode::Solid);
+	GetPipeline().SetRenderTarget(RenderTarget);
+	GetPipeline().SetShader(EShaderType::VertexShader, vertexShader);
+	GetPipeline().SetShader(EShaderType::PixelShader, pixelShader);
 
 	auto sampler = GetRenderDevice().GetObjectsFactory().CreateSamplerState();
 	sampler->SetFilter(ISamplerState::MinFilter::MinLinear, ISamplerState::MagFilter::MagLinear, ISamplerState::MipFilter::MipLinear);
 	sampler->SetWrapMode(ISamplerState::WrapMode::Repeat, ISamplerState::WrapMode::Repeat);
-	Pipeline->SetSampler(0, sampler);
+	GetPipeline().SetSampler(0, sampler);
 
 	auto samplerClamp = GetRenderDevice().GetObjectsFactory().CreateSamplerState();
 	samplerClamp->SetFilter(ISamplerState::MinFilter::MinLinear, ISamplerState::MagFilter::MagLinear, ISamplerState::MipFilter::MipLinear);
 	samplerClamp->SetWrapMode(ISamplerState::WrapMode::Clamp, ISamplerState::WrapMode::Clamp);
-	Pipeline->SetSampler(1, samplerClamp);
+	GetPipeline().SetSampler(1, samplerClamp);
 
 	m_ShaderLightsBufferParameter = &pixelShader->GetShaderParameterByName("Lights");
 	_ASSERT(m_ShaderLightsBufferParameter->IsValid());
 
-	return SetPipeline(Pipeline);
+	return shared_from_this();
 }
 
 

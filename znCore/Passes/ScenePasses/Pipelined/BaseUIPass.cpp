@@ -19,18 +19,16 @@ BaseUIPass::~BaseUIPass()
 //
 // IRenderPassPipelined
 //
-std::shared_ptr<IRenderPassPipelined> BaseUIPass::CreatePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport)
+std::shared_ptr<IRenderPassPipelined> BaseUIPass::ConfigurePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport)
 {
-	std::shared_ptr<IPipelineState> UIPipeline = GetRenderDevice().GetObjectsFactory().CreatePipelineState();
-	UIPipeline->GetBlendState()->SetBlendMode(alphaBlending);
-	UIPipeline->GetDepthStencilState()->SetDepthMode(disableDepthWrites);
-	UIPipeline->GetRasterizerState()->SetCullMode(IRasterizerState::CullMode::None);
-	UIPipeline->GetRasterizerState()->SetFillMode(IRasterizerState::FillMode::Solid, IRasterizerState::FillMode::Solid);
-	UIPipeline->GetRasterizerState()->SetAntialiasedLineEnable(false);
-	UIPipeline->GetRasterizerState()->SetMultisampleEnabled(false);
-	UIPipeline->SetRenderTarget(RenderTarget);
-
-	return SetPipeline(UIPipeline);
+	GetPipeline().GetBlendState()->SetBlendMode(alphaBlending);
+	GetPipeline().GetDepthStencilState()->SetDepthMode(disableDepthWrites);
+	GetPipeline().GetRasterizerState()->SetCullMode(IRasterizerState::CullMode::None);
+	GetPipeline().GetRasterizerState()->SetFillMode(IRasterizerState::FillMode::Solid, IRasterizerState::FillMode::Solid);
+	GetPipeline().GetRasterizerState()->SetAntialiasedLineEnable(false);
+	GetPipeline().GetRasterizerState()->SetMultisampleEnabled(false);
+	GetPipeline().SetRenderTarget(RenderTarget);
+	return shared_from_this();
 }
 
 

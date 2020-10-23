@@ -17,9 +17,9 @@ CUIColorPass::~CUIColorPass()
 //
 // IRenderPassPipelined
 //
-std::shared_ptr<IRenderPassPipelined> CUIColorPass::CreatePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport)
+std::shared_ptr<IRenderPassPipelined> CUIColorPass::ConfigurePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport)
 {
-	BaseUIPass::CreatePipeline(RenderTarget, Viewport);
+	BaseUIPass::ConfigurePipeline(RenderTarget, Viewport);
 	
 	std::shared_ptr<IShader> vertexShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::VertexShader, "UI/UI_Color.hlsl", "VS_main");
 	vertexShader->LoadInputLayoutFromReflector();

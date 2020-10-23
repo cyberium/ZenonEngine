@@ -18,7 +18,7 @@ CMaterial_Debug_Pass::~CMaterial_Debug_Pass()
 //
 // IRenderPassPipelined
 //
-std::shared_ptr<IRenderPassPipelined> CMaterial_Debug_Pass::CreatePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport)
+std::shared_ptr<IRenderPassPipelined> CMaterial_Debug_Pass::ConfigurePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport)
 {
 	std::shared_ptr<IShader> vertexShader;
 	std::shared_ptr<IShader> geometryShader;
@@ -33,17 +33,16 @@ std::shared_ptr<IRenderPassPipelined> CMaterial_Debug_Pass::CreatePipeline(std::
 	vertexShader->LoadInputLayoutFromReflector();
 
 	// PIPELINES
-	auto Pipeline = GetRenderDevice().GetObjectsFactory().CreatePipelineState();
-	Pipeline->GetBlendState()->SetBlendMode(disableBlending);
-	Pipeline->GetDepthStencilState()->SetDepthMode(enableDepthWrites);
-	Pipeline->GetRasterizerState()->SetCullMode(IRasterizerState::CullMode::None);
-	Pipeline->GetRasterizerState()->SetFillMode(IRasterizerState::FillMode::Wireframe, IRasterizerState::FillMode::Wireframe);
-	Pipeline->SetRenderTarget(RenderTarget);
-	Pipeline->SetShader(EShaderType::VertexShader, vertexShader);
-	//Pipeline->SetShader(EShaderType::GeometryShader, geometryShader);
-	Pipeline->SetShader(EShaderType::PixelShader, pixelShader);
+	GetPipeline().GetBlendState()->SetBlendMode(disableBlending);
+	GetPipeline().GetDepthStencilState()->SetDepthMode(enableDepthWrites);
+	GetPipeline().GetRasterizerState()->SetCullMode(IRasterizerState::CullMode::None);
+	GetPipeline().GetRasterizerState()->SetFillMode(IRasterizerState::FillMode::Wireframe, IRasterizerState::FillMode::Wireframe);
+	GetPipeline().SetRenderTarget(RenderTarget);
+	GetPipeline().SetShader(EShaderType::VertexShader, vertexShader);
+	//GetPipeline().SetShader(EShaderType::GeometryShader, geometryShader);
+	GetPipeline().SetShader(EShaderType::PixelShader, pixelShader);
 
-	return SetPipeline(Pipeline);
+	return shared_from_this();
 }
 
 

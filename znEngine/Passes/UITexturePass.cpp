@@ -17,9 +17,9 @@ CUITexturePass::~CUITexturePass()
 //
 // IRenderPassPipelined
 //
-std::shared_ptr<IRenderPassPipelined> CUITexturePass::CreatePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport)
+std::shared_ptr<IRenderPassPipelined> CUITexturePass::ConfigurePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport)
 {
-	BaseUIPass::CreatePipeline(RenderTarget, Viewport);
+	BaseUIPass::ConfigurePipeline(RenderTarget, Viewport);
 	
 	std::shared_ptr<IShader> vertexShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::VertexShader, "UI/UI_Texture.hlsl", "VS_main");
 	vertexShader->LoadInputLayoutFromReflector();

@@ -90,7 +90,7 @@ void CRendererDeffered::Initialize(std::shared_ptr<IRenderTarget> OutputRenderTa
 	m_SceneCreateTypelessListPass = MakeShared(CSceneCreateTypelessListPass, m_RenderDevice, m_Scene);
 
 	m_Deffered_ScenePass = MakeShared(CPassDeffered_DoRenderScene, m_RenderDevice, m_SceneCreateTypelessListPass);
-	m_Deffered_ScenePass->CreatePipeline(OutputRenderTarget, Viewport);
+	m_Deffered_ScenePass->ConfigurePipeline(OutputRenderTarget, Viewport);
 
 	// GBuffer contains Depth and Stencil buffer with object. We may use this data.
 	auto outputRenderTargetWithCustomDepth = m_RenderDevice.GetObjectsFactory().CreateRenderTarget();
@@ -103,10 +103,10 @@ void CRendererDeffered::Initialize(std::shared_ptr<IRenderTarget> OutputRenderTa
 
 	auto HDRRenderTarget = CreateHDRRenderTarget(OutputRenderTarget, Viewport);
 	m_Deffered_HDR = MakeShared(CPassDeffered_HDR, m_RenderDevice, HDRRenderTarget);
-	m_Deffered_HDR->CreatePipeline(OutputRenderTarget, Viewport);
+	m_Deffered_HDR->ConfigurePipeline(OutputRenderTarget, Viewport);
 
 	m_Deffered_UIQuadPass = MakeShared(CPassDeffered_RenderUIQuad, m_RenderDevice, m_Deffered_ScenePass, m_Deffered_Lights);
-	m_Deffered_UIQuadPass->CreatePipeline(HDRRenderTarget, Viewport);
+	m_Deffered_UIQuadPass->ConfigurePipeline(HDRRenderTarget, Viewport);
 
 
 
@@ -122,8 +122,8 @@ void CRendererDeffered::Initialize(std::shared_ptr<IRenderTarget> OutputRenderTa
 	AddPass(MakeShared(ClearRenderTargetPass, m_RenderDevice, HDRRenderTarget, ClearFlags::All, clearColor, 1.0f, 0));
 	m_UIPasses.push_back(m_Deffered_HDR);
 
-	m_UIPasses.push_back(MakeShared(CUIFontPass, m_RenderDevice, m_Scene)->CreatePipeline(OutputRenderTarget, Viewport));
-	m_UIPasses.push_back(MakeShared(CUIColorPass, m_RenderDevice, m_Scene)->CreatePipeline(OutputRenderTarget, Viewport));
+	m_UIPasses.push_back(MakeShared(CUIFontPass, m_RenderDevice, m_Scene)->ConfigurePipeline(OutputRenderTarget, Viewport));
+	m_UIPasses.push_back(MakeShared(CUIColorPass, m_RenderDevice, m_Scene)->ConfigurePipeline(OutputRenderTarget, Viewport));
 }
 
 
@@ -136,9 +136,9 @@ std::shared_ptr<IRenderTarget> CRendererDeffered::CreateHDRRenderTarget(std::sha
 	ITexture::TextureFormat colorTextureFormat
 	(
 		ITexture::Components::RGBA,
-		ITexture::Type::UnsignedNormalized,
+		ITexture::Type::Float,
 		OutputRenderTarget->GetSamplesCount(),
-		8, 8, 8, 8, 0, 0
+		32, 32, 32, 32, 0, 0
 	);
 	auto texture = m_RenderDevice.GetObjectsFactory().CreateTexture2D(Viewport->GetWidth(), Viewport->GetHeight(), 1, colorTextureFormat);
 

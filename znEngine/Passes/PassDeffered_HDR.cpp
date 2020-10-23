@@ -34,7 +34,7 @@ void CPassDeffered_HDR::Render(RenderEventArgs& e)
 //
 // IRenderPassPipelined
 //
-std::shared_ptr<IRenderPassPipelined> CPassDeffered_HDR::CreatePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport)
+std::shared_ptr<IRenderPassPipelined> CPassDeffered_HDR::ConfigurePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport)
 {
 	m_QuadGeometry = GetRenderDevice().GetPrimitivesFactory().CreateQuad();
 
@@ -44,30 +44,29 @@ std::shared_ptr<IRenderPassPipelined> CPassDeffered_HDR::CreatePipeline(std::sha
 	auto pixelShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::PixelShader, "3D/Deffered_HDR.hlsl", "PS_ScreenQuad", { {"MULTISAMPLED", "1" }});
 
 	// PIPELINES
-	auto defferedFinalPipeline = GetRenderDevice().GetObjectsFactory().CreatePipelineState();
-	defferedFinalPipeline->GetBlendState()->SetBlendMode(additiveBlending);
-	defferedFinalPipeline->GetDepthStencilState()->SetDepthMode(disableDepthWrites);
-	defferedFinalPipeline->GetRasterizerState()->SetCullMode(IRasterizerState::CullMode::None);
-	defferedFinalPipeline->GetRasterizerState()->SetFillMode(IRasterizerState::FillMode::Solid, IRasterizerState::FillMode::Solid);
-	defferedFinalPipeline->SetRenderTarget(RenderTarget);
-	defferedFinalPipeline->SetShader(EShaderType::VertexShader, vertexShader);
-	defferedFinalPipeline->SetShader(EShaderType::PixelShader, pixelShader);
+	GetPipeline().GetBlendState()->SetBlendMode(additiveBlending);
+	GetPipeline().GetDepthStencilState()->SetDepthMode(disableDepthWrites);
+	GetPipeline().GetRasterizerState()->SetCullMode(IRasterizerState::CullMode::None);
+	GetPipeline().GetRasterizerState()->SetFillMode(IRasterizerState::FillMode::Solid, IRasterizerState::FillMode::Solid);
+	GetPipeline().SetRenderTarget(RenderTarget);
+	GetPipeline().SetShader(EShaderType::VertexShader, vertexShader);
+	GetPipeline().SetShader(EShaderType::PixelShader, pixelShader);
 	
 
 	auto& sampler = GetRenderDevice().GetObjectsFactory().CreateSamplerState();
 	sampler->SetFilter(ISamplerState::MinFilter::MinLinear, ISamplerState::MagFilter::MagLinear, ISamplerState::MipFilter::MipLinear);
 	sampler->SetWrapMode(ISamplerState::WrapMode::Repeat, ISamplerState::WrapMode::Repeat);
-	defferedFinalPipeline->SetSampler(0, sampler);
+	GetPipeline().SetSampler(0, sampler);
 
 	auto& samplerClamp = GetRenderDevice().GetObjectsFactory().CreateSamplerState();
 	samplerClamp->SetFilter(ISamplerState::MinFilter::MinLinear, ISamplerState::MagFilter::MagLinear, ISamplerState::MipFilter::MipLinear);
 	samplerClamp->SetWrapMode(ISamplerState::WrapMode::Clamp, ISamplerState::WrapMode::Clamp);
-	defferedFinalPipeline->SetSampler(1, samplerClamp);
+	GetPipeline().SetSampler(1, samplerClamp);
 
-	defferedFinalPipeline->SetTexture(0, m_HDRRenderTarget->GetTexture(IRenderTarget::AttachmentPoint::Color0));
-	//defferedFinalPipeline->SetTexture(1, m_HDRRenderTarget->GetTexture(IRenderTarget::AttachmentPoint::DepthStencil));
+	GetPipeline().SetTexture(0, m_HDRRenderTarget->GetTexture(IRenderTarget::AttachmentPoint::Color0));
+	//GetPipeline().SetTexture(1, m_HDRRenderTarget->GetTexture(IRenderTarget::AttachmentPoint::DepthStencil));
 
-	return SetPipeline(defferedFinalPipeline);
+	return shared_from_this();
 }
 
 

@@ -23,7 +23,7 @@ CMaterialParticlePass::~CMaterialParticlePass()
 //
 // IRenderPassPipelined
 //
-std::shared_ptr<IRenderPassPipelined> CMaterialParticlePass::CreatePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport)
+std::shared_ptr<IRenderPassPipelined> CMaterialParticlePass::ConfigurePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport)
 {
 	std::shared_ptr<IShader> vertexShader;
 	std::shared_ptr<IShader> geomShader;
@@ -44,20 +44,19 @@ std::shared_ptr<IRenderPassPipelined> CMaterialParticlePass::CreatePipeline(std:
 	//g_pVertexShader->LoadInputLayoutFromCustomElements(elements);
 
 	// PIPELINES
-	auto Pipeline = GetRenderDevice().GetObjectsFactory().CreatePipelineState();
-	Pipeline->GetBlendState()->SetBlendMode(alphaBlending
+	GetPipeline().GetBlendState()->SetBlendMode(alphaBlending
 		/*IBlendState::BlendMode(true, false,
 		IBlendState::BlendFactor::SrcAlpha, IBlendState::BlendFactor::One,
 		IBlendState::BlendOperation::Add,
 		IBlendState::BlendFactor::SrcAlpha, IBlendState::BlendFactor::One)*/
 	);
-	Pipeline->GetDepthStencilState()->SetDepthMode(enableTestDisableWrites);
-	Pipeline->GetRasterizerState()->SetCullMode(IRasterizerState::CullMode::Back);
-	Pipeline->GetRasterizerState()->SetFillMode(IRasterizerState::FillMode::Solid, IRasterizerState::FillMode::Solid);
-	Pipeline->SetRenderTarget(RenderTarget);
-	Pipeline->SetShader(EShaderType::VertexShader, vertexShader);
-	Pipeline->SetShader(EShaderType::GeometryShader, geomShader);
-	Pipeline->SetShader(EShaderType::PixelShader, pixelShader);
+	GetPipeline().GetDepthStencilState()->SetDepthMode(enableTestDisableWrites);
+	GetPipeline().GetRasterizerState()->SetCullMode(IRasterizerState::CullMode::Back);
+	GetPipeline().GetRasterizerState()->SetFillMode(IRasterizerState::FillMode::Solid, IRasterizerState::FillMode::Solid);
+	GetPipeline().SetRenderTarget(RenderTarget);
+	GetPipeline().SetShader(EShaderType::VertexShader, vertexShader);
+	GetPipeline().SetShader(EShaderType::GeometryShader, geomShader);
+	GetPipeline().SetShader(EShaderType::PixelShader, pixelShader);
 
 	// 'PerObject' in geom shader
 	m_GeomShaderPerObjectParameter = &geomShader->GetShaderParameterByName("PerObject");
@@ -70,9 +69,9 @@ std::shared_ptr<IRenderPassPipelined> CMaterialParticlePass::CreatePipeline(std:
 	auto sampler = GetRenderDevice().GetObjectsFactory().CreateSamplerState();
 	sampler->SetFilter(ISamplerState::MinFilter::MinLinear, ISamplerState::MagFilter::MagLinear, ISamplerState::MipFilter::MipLinear);
 	sampler->SetWrapMode(ISamplerState::WrapMode::Clamp, ISamplerState::WrapMode::Clamp);
-	Pipeline->SetSampler(0, sampler);
+	GetPipeline().SetSampler(0, sampler);
 
-	return SetPipeline(Pipeline);
+	return shared_from_this();
 }
 
 

@@ -49,8 +49,7 @@ public:
 	virtual void PostRender(RenderEventArgs& e);
     
 	// IRenderPassPipelined
-	virtual std::shared_ptr<IRenderPassPipelined> CreatePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport* Viewport) override;
-	virtual std::shared_ptr<IRenderPassPipelined> SetPipeline(std::shared_ptr<IPipelineState> Pipeline) override;
+	virtual std::shared_ptr<IRenderPassPipelined> ConfigurePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport* Viewport) override;
 	virtual IPipelineState& GetPipeline() const override;
 
 	// IVisitor

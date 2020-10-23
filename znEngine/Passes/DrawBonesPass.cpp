@@ -21,7 +21,7 @@ CDrawBonesPass::~CDrawBonesPass()
 //
 // IRenderPassPipelined
 //
-std::shared_ptr<IRenderPassPipelined> CDrawBonesPass::CreatePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport)
+std::shared_ptr<IRenderPassPipelined> CDrawBonesPass::ConfigurePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport)
 {
 	m_QuadGeometry = GetRenderDevice().GetPrimitivesFactory().CreateCone();
 	m_SphereGeometry = GetRenderDevice().GetPrimitivesFactory().CreateSphere();
@@ -37,21 +37,20 @@ std::shared_ptr<IRenderPassPipelined> CDrawBonesPass::CreatePipeline(std::shared
 	vertexShader->LoadInputLayoutFromReflector();
 
 	// PIPELINES
-	auto Pipeline = GetRenderDevice().GetObjectsFactory().CreatePipelineState();
-	Pipeline->GetBlendState()->SetBlendMode(disableBlending);
-	Pipeline->GetDepthStencilState()->SetDepthMode(enableDepthWrites);
-	Pipeline->GetRasterizerState()->SetCullMode(IRasterizerState::CullMode::None);
-	Pipeline->GetRasterizerState()->SetFillMode(IRasterizerState::FillMode::Wireframe, IRasterizerState::FillMode::Solid);
-	Pipeline->GetRasterizerState()->SetMultisampleEnabled(true);
-	Pipeline->GetRasterizerState()->SetAntialiasedLineEnable(true);
-	Pipeline->SetRenderTarget(RenderTarget);
-	Pipeline->SetShader(EShaderType::VertexShader, vertexShader);
-	Pipeline->SetShader(EShaderType::PixelShader, pixelShader);
+	GetPipeline().GetBlendState()->SetBlendMode(disableBlending);
+	GetPipeline().GetDepthStencilState()->SetDepthMode(enableDepthWrites);
+	GetPipeline().GetRasterizerState()->SetCullMode(IRasterizerState::CullMode::None);
+	GetPipeline().GetRasterizerState()->SetFillMode(IRasterizerState::FillMode::Wireframe, IRasterizerState::FillMode::Solid);
+	GetPipeline().GetRasterizerState()->SetMultisampleEnabled(true);
+	GetPipeline().GetRasterizerState()->SetAntialiasedLineEnable(true);
+	GetPipeline().SetRenderTarget(RenderTarget);
+	GetPipeline().SetShader(EShaderType::VertexShader, vertexShader);
+	GetPipeline().SetShader(EShaderType::PixelShader, pixelShader);
 
 	m_MaterialParameter = &(pixelShader->GetShaderParameterByName("Material"));
 	_ASSERT(m_MaterialParameter->IsValid());
 
-	return SetPipeline(Pipeline);
+	return shared_from_this();
 }
 
 

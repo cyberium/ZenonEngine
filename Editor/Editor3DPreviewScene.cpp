@@ -115,8 +115,8 @@ void CEditor3DPreviewScene::Initialize()
 
 
 
-		//GetRenderer()->AddPass(MakeShared(CUIColorPass, GetRenderDevice(), shared_from_this())->CreatePipeline(GetRenderWindow()->GetRenderTarget(), &GetRenderWindow()->GetViewport()));
-		//GetRenderer()->AddPass(MakeShared(CUIFontPass, GetRenderDevice(), shared_from_this())->CreatePipeline(GetRenderWindow()->GetRenderTarget(), &GetRenderWindow()->GetViewport()));
+		//GetRenderer()->AddPass(MakeShared(CUIColorPass, GetRenderDevice(), shared_from_this())->ConfigurePipeline(GetRenderWindow()->GetRenderTarget(), &GetRenderWindow()->GetViewport()));
+		//GetRenderer()->AddPass(MakeShared(CUIFontPass, GetRenderDevice(), shared_from_this())->ConfigurePipeline(GetRenderWindow()->GetRenderTarget(), &GetRenderWindow()->GetViewport()));
 	}
 }
 

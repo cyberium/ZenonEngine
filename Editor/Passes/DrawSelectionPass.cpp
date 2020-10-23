@@ -53,7 +53,7 @@ void CDrawSelectionPass::Render(RenderEventArgs& e)
 //
 // IRenderPassPipelined
 //
-std::shared_ptr<IRenderPassPipelined> CDrawSelectionPass::CreatePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport)
+std::shared_ptr<IRenderPassPipelined> CDrawSelectionPass::ConfigurePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport)
 {
 	m_QuadGeometry = GetRenderDevice().GetPrimitivesFactory().CreateBBox();
 
@@ -71,18 +71,16 @@ std::shared_ptr<IRenderPassPipelined> CDrawSelectionPass::CreatePipeline(std::sh
 	_ASSERT(m_ShaderInstancesBufferParameter->IsValid());
 
 	// PIPELINES
-	auto Pipeline = GetRenderDevice().GetObjectsFactory().CreatePipelineState();
-	Pipeline->GetBlendState()->SetBlendMode(disableBlending);
-	Pipeline->GetDepthStencilState()->SetDepthMode(enableDepthWrites);
-	Pipeline->GetRasterizerState()->SetCullMode(IRasterizerState::CullMode::None);
-	Pipeline->GetRasterizerState()->SetFillMode(IRasterizerState::FillMode::Solid, IRasterizerState::FillMode::Solid);
-	Pipeline->GetRasterizerState()->SetMultisampleEnabled(true);
-	Pipeline->GetRasterizerState()->SetAntialiasedLineEnable(true);
-	Pipeline->SetRenderTarget(RenderTarget);
-	Pipeline->SetShader(EShaderType::VertexShader, vertexShader);
-	Pipeline->SetShader(EShaderType::PixelShader, pixelShader);
-
-	return SetPipeline(Pipeline);
+	GetPipeline().GetBlendState()->SetBlendMode(disableBlending);
+	GetPipeline().GetDepthStencilState()->SetDepthMode(enableDepthWrites);
+	GetPipeline().GetRasterizerState()->SetCullMode(IRasterizerState::CullMode::None);
+	GetPipeline().GetRasterizerState()->SetFillMode(IRasterizerState::FillMode::Solid, IRasterizerState::FillMode::Solid);
+	GetPipeline().GetRasterizerState()->SetMultisampleEnabled(true);
+	GetPipeline().GetRasterizerState()->SetAntialiasedLineEnable(true);
+	GetPipeline().SetRenderTarget(RenderTarget);
+	GetPipeline().SetShader(EShaderType::VertexShader, vertexShader);
+	GetPipeline().SetShader(EShaderType::PixelShader, pixelShader);
+	return shared_from_this();
 }
 
 EVisitResult CDrawSelectionPass::Visit(const ISceneNode3D * node)

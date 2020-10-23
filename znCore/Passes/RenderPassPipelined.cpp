@@ -14,10 +14,10 @@ IDepthStencilState::DepthMode RenderPassPipelined::disableDepthWrites = IDepthSt
 RenderPassPipelined::RenderPassPipelined(IRenderDevice& RenderDevice)
     : m_Enabled(true)
     , m_RenderEventArgs(nullptr)
-    , m_Pipeline(nullptr)
     , m_RenderDevice(RenderDevice)
 	, m_BaseManager(RenderDevice.GetBaseManager())
 {
+	m_Pipeline = GetRenderDevice().GetObjectsFactory().CreatePipelineState();
 	m_PerFrameConstantBuffer = GetRenderDevice().GetObjectsFactory().CreateConstantBuffer(PerFrame());
 }
 
@@ -66,20 +66,8 @@ void RenderPassPipelined::PostRender(RenderEventArgs& e)
 //
 // IRenderPassPipelined
 //
-std::shared_ptr<IRenderPassPipelined> RenderPassPipelined::CreatePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport)
+std::shared_ptr<IRenderPassPipelined> RenderPassPipelined::ConfigurePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport)
 {
-	return shared_from_this();
-}
-
-std::shared_ptr<IRenderPassPipelined> RenderPassPipelined::SetPipeline(std::shared_ptr<IPipelineState> Pipeline)
-{
-	_ASSERT(Pipeline);
-
-	if (m_Pipeline != nullptr)
-		Log::Warn("RenderPassPipelined::SetPipeline: Pipeline already exists. Are you sure to do this ?");
-
-	m_Pipeline = Pipeline;
-
 	return shared_from_this();
 }
 

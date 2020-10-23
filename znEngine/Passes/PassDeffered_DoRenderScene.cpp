@@ -77,7 +77,7 @@ void CPassDeffered_DoRenderScene::Render(RenderEventArgs& e)
 //
 // IRenderPassPipelined
 //
-std::shared_ptr<IRenderPassPipelined> CPassDeffered_DoRenderScene::CreatePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport)
+std::shared_ptr<IRenderPassPipelined> CPassDeffered_DoRenderScene::ConfigurePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport)
 {
 	auto vertexShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::VertexShader, "3D/Model_Deffered.hlsl", "VS_PTN");
 	vertexShader->LoadInputLayoutFromReflector();
@@ -89,28 +89,27 @@ std::shared_ptr<IRenderPassPipelined> CPassDeffered_DoRenderScene::CreatePipelin
 	auto pixelShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::PixelShader, "3D/Model_Deffered.hlsl", "PS_main");
 
 	// PIPELINES
-	auto p = GetRenderDevice().GetObjectsFactory().CreatePipelineState();
-	p->GetBlendState()->SetBlendMode(disableBlending);
-	p->GetDepthStencilState()->SetDepthMode(enableDepthWrites);
-	p->GetRasterizerState()->SetCullMode(IRasterizerState::CullMode::Back);
-	p->GetRasterizerState()->SetFillMode(IRasterizerState::FillMode::Solid, IRasterizerState::FillMode::Solid);
-	//p->GetRasterizerState()->SetAntialiasedLineEnable(true);
-	//p->GetRasterizerState()->SetMultisampleEnabled(true);
-	p->SetRenderTarget(CreateGBuffer(RenderTarget, Viewport));
-	p->SetShader(EShaderType::VertexShader, vertexShader);
-	p->SetShader(EShaderType::PixelShader, pixelShader);
+	GetPipeline().GetBlendState()->SetBlendMode(disableBlending);
+	GetPipeline().GetDepthStencilState()->SetDepthMode(enableDepthWrites);
+	GetPipeline().GetRasterizerState()->SetCullMode(IRasterizerState::CullMode::Back);
+	GetPipeline().GetRasterizerState()->SetFillMode(IRasterizerState::FillMode::Solid, IRasterizerState::FillMode::Solid);
+	//GetPipeline().GetRasterizerState()->SetAntialiasedLineEnable(true);
+	//GetPipeline().GetRasterizerState()->SetMultisampleEnabled(true);
+	GetPipeline().SetRenderTarget(CreateGBuffer(RenderTarget, Viewport));
+	GetPipeline().SetShader(EShaderType::VertexShader, vertexShader);
+	GetPipeline().SetShader(EShaderType::PixelShader, pixelShader);
 
 	auto sampler = GetRenderDevice().GetObjectsFactory().CreateSamplerState();
 	sampler->SetFilter(ISamplerState::MinFilter::MinLinear, ISamplerState::MagFilter::MagLinear, ISamplerState::MipFilter::MipLinear);
 	sampler->SetWrapMode(ISamplerState::WrapMode::Repeat, ISamplerState::WrapMode::Repeat);
-	p->SetSampler(0, sampler);
+	GetPipeline().SetSampler(0, sampler);
 
 	auto samplerClamp = GetRenderDevice().GetObjectsFactory().CreateSamplerState();
 	samplerClamp->SetFilter(ISamplerState::MinFilter::MinLinear, ISamplerState::MagFilter::MagLinear, ISamplerState::MipFilter::MipLinear);
 	samplerClamp->SetWrapMode(ISamplerState::WrapMode::Clamp, ISamplerState::WrapMode::Clamp);
-	p->SetSampler(1, samplerClamp);
+	GetPipeline().SetSampler(1, samplerClamp);
 
-	return SetPipeline(p);
+	return shared_from_this();
 }
 
 

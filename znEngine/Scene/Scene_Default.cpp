@@ -519,5 +519,5 @@ void CSceneDefault::Load3D()
 	//SetRenderer(forwardRenderer);
 
 	//m_Technique3D.AddPass(GetBaseManager().GetManager<IRenderPassFactory>()->CreateRenderPass("TexturedMaterialPass", GetRenderDevice(), GetRenderWindow()->GetRenderTarget(), &GetRenderWindow()->GetViewport(), shared_from_this()));
-	//m_Technique3D.AddPass(MakeShared(CMaterialParticlePass, GetRenderDevice(), shared_from_this())->CreatePipeline(GetRenderWindow()->GetRenderTarget(), &GetRenderWindow()->GetViewport()));
+	//m_Technique3D.AddPass(MakeShared(CMaterialParticlePass, GetRenderDevice(), shared_from_this())->ConfigurePipeline(GetRenderWindow()->GetRenderTarget(), &GetRenderWindow()->GetViewport()));
 }

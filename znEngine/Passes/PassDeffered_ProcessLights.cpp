@@ -28,7 +28,7 @@ void CPassDeffered_ProcessLights::CreateShadowPipeline()
 	IDepthStencilState::DepthMode enableDepthWrites = IDepthStencilState::DepthMode(true, IDepthStencilState::DepthWrite::Enable);
 
 	// PIPELINES
-	auto& shadowPipeline = GetRenderDevice().GetObjectsFactory().CreatePipelineState();
+	auto shadowPipeline = GetRenderDevice().GetObjectsFactory().CreatePipelineState();
 	shadowPipeline->GetBlendState()->SetBlendMode(disableBlending);
 	shadowPipeline->GetDepthStencilState()->SetDepthMode(enableDepthWrites);
 	//shadowPipeline->GetRasterizerState()->SetDepthBias(10.f);

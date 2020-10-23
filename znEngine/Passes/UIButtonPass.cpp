@@ -17,9 +17,9 @@ CUIButtonPass::~CUIButtonPass()
 //
 // IRenderPassPipelined
 //
-std::shared_ptr<IRenderPassPipelined> CUIButtonPass::CreatePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport)
+std::shared_ptr<IRenderPassPipelined> CUIButtonPass::ConfigurePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport)
 {
-	BaseUIPass::CreatePipeline(RenderTarget, Viewport);
+	BaseUIPass::ConfigurePipeline(RenderTarget, Viewport);
 	
 	std::shared_ptr<IShader> vertexShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::VertexShader, "UI/UI_Button.hlsl", "VS_main");
 	vertexShader->LoadInputLayoutFromReflector();

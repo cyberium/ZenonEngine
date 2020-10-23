@@ -10,7 +10,7 @@ public:
 	virtual ~BaseUIPass();
 
 	// IRenderPassPipelined
-	virtual std::shared_ptr<IRenderPassPipelined> CreatePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport* Viewport) override;
+	virtual std::shared_ptr<IRenderPassPipelined> ConfigurePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport* Viewport) override;
 
 	// IVisitor
 	virtual EVisitResult Visit(const ISceneNodeUI* node) override;

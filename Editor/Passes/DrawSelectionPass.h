@@ -23,7 +23,7 @@ public:
 	void Render(RenderEventArgs& e) override;
 
 	// IRenderPassPipelined
-	std::shared_ptr<IRenderPassPipelined> CreatePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport* Viewport) override final;
+	std::shared_ptr<IRenderPassPipelined> ConfigurePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport* Viewport) override final;
 
 	// IVisitor
 	EVisitResult Visit(const ISceneNode3D* node) override final;
