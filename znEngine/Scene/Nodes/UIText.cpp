@@ -30,7 +30,7 @@ void CUITextNode::Initialize()
 	m_OffsetProperty->Set(cDefaultOffset);
 	GetProperties()->AddProperty(m_OffsetProperty);
 
-	m_Font = GetBaseManager().GetManager<IFontsManager>()->GetMainFont();
+	m_Font = GetBaseManager().GetManager<IznFontsManager>()->GetMainFont();
 
 	m_Material = MakeShared(UI_Font_Material, GetBaseManager().GetApplication().GetRenderDevice());
 	m_Material->SetTexture(0, m_Font->GetTexture());
@@ -42,7 +42,7 @@ void CUITextNode::Initialize()
 //
 // CUITextNode
 //
-void CUITextNode::SetFont(std::shared_ptr<CFont> _font)
+void CUITextNode::SetFont(std::shared_ptr<IznFont> _font)
 {
     _ASSERT(_font != nullptr);
 
@@ -50,7 +50,7 @@ void CUITextNode::SetFont(std::shared_ptr<CFont> _font)
     m_Material->SetTexture(0, m_Font->GetTexture());
 }
 
-std::shared_ptr<CFont> CUITextNode::GetFont() const
+std::shared_ptr<IznFont> CUITextNode::GetFont() const
 {
     return m_Font;
 }

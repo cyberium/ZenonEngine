@@ -26,7 +26,7 @@ FontsManager::~FontsManager()
 //
 // IFontsManager
 //
-std::shared_ptr<CFont> FontsManager::GetMainFont() const
+std::shared_ptr<IznFont> FontsManager::GetMainFont() const
 {
 	return m_MainFont;
 }
@@ -44,7 +44,7 @@ struct VertexPT
 };
 typedef std::vector<VertexPT> VertexesPT;
 
-std::shared_ptr<CFont> FontsManager::Add(IRenderDevice& RenderDevice, const std::string& _fontFileName, uint32 _fontSize)
+std::shared_ptr<IznFont> FontsManager::Add(IRenderDevice& RenderDevice, const std::string& _fontFileName, uint32 _fontSize)
 {
 	uint32 fontSize = _fontSize;
 
@@ -200,7 +200,7 @@ std::shared_ptr<CFont> FontsManager::Add(IRenderDevice& RenderDevice, const std:
 
 	//
 
-	std::shared_ptr<CFont> font = MakeShared(CFont, texture, __geom, charWidth, charHeight);
+	std::shared_ptr<IznFont> font = MakeShared(CFont, texture, __geom, charWidth, charHeight);
 
 	Log::Info("FontsManager[%s]: Font loaded. Size [%d].", f->Path_Name().c_str(), fontSize);
 

@@ -14,25 +14,28 @@ namespace
 
 	const VertexFormatPairs VertexFormatList[] =
 	{
-		{ ECustomVertexElementType::FLOAT1,	   4, DXGI_FORMAT_R32_FLOAT },
+		{ ECustomVertexElementType::FLOAT1,	   4, DXGI_FORMAT_R32_UINT },
 		{ ECustomVertexElementType::FLOAT2,	   8, DXGI_FORMAT_R32G32_FLOAT },
 		{ ECustomVertexElementType::FLOAT3,	  12, DXGI_FORMAT_R32G32B32_FLOAT },
 		{ ECustomVertexElementType::FLOAT4,	  16, DXGI_FORMAT_R32G32B32A32_FLOAT },
 
+		{ ECustomVertexElementType::UINT1,	   4, DXGI_FORMAT_R32_UINT },
+		{ ECustomVertexElementType::UINT2,	   8, DXGI_FORMAT_R32G32_UINT },
+		{ ECustomVertexElementType::UINT3,	  12, DXGI_FORMAT_R32G32B32_UINT },
+		{ ECustomVertexElementType::UINT4,	  16, DXGI_FORMAT_R32G32B32A32_UINT },
+
 		{ ECustomVertexElementType::BYTE4,	   4, DXGI_FORMAT_R8G8B8A8_SINT },
 		{ ECustomVertexElementType::BYTE4N,    4, DXGI_FORMAT_R8G8B8A8_SNORM },
-
 		{ ECustomVertexElementType::UBYTE4,	   4, DXGI_FORMAT_R8G8B8A8_UINT },
 		{ ECustomVertexElementType::UBYTE4N,   4, DXGI_FORMAT_R8G8B8A8_UNORM },
-		{ ECustomVertexElementType::D3DCOLOR,  4, DXGI_FORMAT_R8G8B8A8_UNORM },
 
 		{ ECustomVertexElementType::SHORT2,	   4, DXGI_FORMAT_R16G16_SINT },
 		{ ECustomVertexElementType::SHORT2N,   4, DXGI_FORMAT_R16G16_SNORM },
-		{ ECustomVertexElementType::SHORT4,	   8, DXGI_FORMAT_R16G16B16A16_SINT },
-		{ ECustomVertexElementType::SHORT4N,   4, DXGI_FORMAT_R16G16B16A16_SNORM },
-
 		{ ECustomVertexElementType::USHORT2,   4, DXGI_FORMAT_R16G16_UINT },
 		{ ECustomVertexElementType::USHORT2N,  4, DXGI_FORMAT_R16G16_UNORM },
+
+		{ ECustomVertexElementType::SHORT4,	   8, DXGI_FORMAT_R16G16B16A16_SINT },
+		{ ECustomVertexElementType::SHORT4N,   8, DXGI_FORMAT_R16G16B16A16_SNORM },		
 		{ ECustomVertexElementType::USHORT4,   8, DXGI_FORMAT_R16G16B16A16_UINT },
 		{ ECustomVertexElementType::USHORT4N,  8, DXGI_FORMAT_R16G16B16A16_UNORM },
 
@@ -100,7 +103,7 @@ VertexSemanticPairs	VertexSemanticList[] =
 	{ ECustomVertexElementUsage::COLOR,			"COLOR" },			// 9
 };
 
-const auto cVertexSemanticListLength = sizeof(VertexFormatList) / sizeof(VertexFormatList[0]);
+const auto cVertexSemanticListLength = sizeof(VertexSemanticList) / sizeof(VertexSemanticList[0]);
 
 ECustomVertexElementUsage DX11ToCustom_InputElementUsage(LPCSTR Semantic)
 {

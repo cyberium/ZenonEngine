@@ -1,17 +1,18 @@
 #pragma once
 
 class ZN_API CFont
+	: public IznFont
 {
 public:
-	CFont(std::shared_ptr<ITexture> _texture, std::shared_ptr<IGeometry> _fontGeometry, std::vector<uint32> _widthArray, uint32 _height);
+	CFont(std::shared_ptr<ITexture> Texture, std::shared_ptr<IGeometry> FontGeometry, std::vector<uint32> WidthArray, uint32 Height);
 	virtual ~CFont();
 
-	// Getters
-	std::shared_ptr<ITexture> GetTexture() const;
-	std::shared_ptr<IGeometry>GetGeometry() const;
-	uint32                    GetCharWidth(char _char) const;
-	uint32                    GetStringWidth(const std::string& _string) const;
-	uint32                    GetHeight() const;
+	// IznFont
+	std::shared_ptr<ITexture>  GetTexture() const override;
+	std::shared_ptr<IGeometry> GetGeometry() const override;
+	uint32                     GetCharWidth(char Char) const override;
+	uint32                     GetStringWidth(const std::string& String) const override;
+	uint32                     GetHeight() const override;
 	 
 public:
 	static const uint32 SPACE = 32;

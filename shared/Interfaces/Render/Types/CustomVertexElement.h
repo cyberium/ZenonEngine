@@ -6,29 +6,32 @@
 enum class ZN_API ECustomVertexElementType : uint8_t
 {
 	FLOAT1 = 0,
-	FLOAT2 = 1,
-	FLOAT3 = 2,
-	FLOAT4 = 4,
-	D3DCOLOR = 5,
-	UBYTE4 = 5,
-	SHORT2 = 6,
-	SHORT4 = 7,
-	UBYTE4N = 8,
-	SHORT2N = 9,
-	SHORT4N = 10,
-	USHORT2N = 11,
-	USHORT4N = 12,
-	UDEC3 = 13,
-	DEC3N = 14,
-	FLOAT16_2 = 15,
-	FLOAT16_4 = 16,
-	UNUSED = 17,
+	FLOAT2,
+	FLOAT3,
+	FLOAT4,
 
-	// Custom
-	BYTE4 = 20,
-	BYTE4N = 21,
-	USHORT2 = 22,
-	USHORT4 = 23
+	UINT1,
+	UINT2,
+	UINT3,
+	UINT4,
+
+	BYTE4,
+	BYTE4N,
+	UBYTE4,
+	UBYTE4N,
+
+	SHORT2,
+	SHORT2N,
+	SHORT4,
+	SHORT4N,
+
+	USHORT2,
+	USHORT2N,
+	USHORT4,
+	USHORT4N,
+
+	FLOAT16_2,
+	FLOAT16_4,	
 };
 
 enum class ZN_API ECustomVertexElementUsage : uint8_t
@@ -43,11 +46,7 @@ enum class ZN_API ECustomVertexElementUsage : uint8_t
 	BINORMAL = 7,
 	TESSFACTOR = 8,
 	POSITIONT = 9,
-	COLOR = 10,
-
-	FOG = 11,
-	DEPTH = 12,
-	SAMPLE = 13
+	COLOR = 10
 };
 
 struct ZN_API SCustomInputElement

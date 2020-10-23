@@ -151,8 +151,6 @@ void Frustum::buildBoxFrustum(const glm::mat4& transMat, float left, float right
 
 void Frustum::buildBoxFrustum(Ray LT, Ray LB, Ray RT, Ray RB, float depth)
 {
-	glm::vec3 lt, lb, rt, rb;
-
 	// Get points on front plane
 	m_Corners[0] = LB.GetOrigin();
 	m_Corners[1] = RB.GetOrigin();

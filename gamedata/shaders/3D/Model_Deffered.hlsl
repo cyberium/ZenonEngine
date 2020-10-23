@@ -63,7 +63,7 @@ DefferedRenderPSOut PS_main(VertexShaderOutput IN) : SV_TARGET
 	if(newTexCoords.x > 1.0 || newTexCoords.y > 1.0 || newTexCoords.x < 0.0 || newTexCoords.y < 0.0)
 		discard; 
 	
-	IN.texCoord = newTexCoords;
+	//IN.texCoord = newTexCoords;
 	
 	
 	float4 diffuseAndAlpha = ExtractDuffuseAndAlpha(Mat, IN.texCoord);

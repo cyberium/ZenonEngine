@@ -773,6 +773,9 @@
     <ClInclude Include="Files\ByteBufferHelper.h">
       <Filter>Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\shared\Interfaces\FontsManager.h">
+      <Filter>__Interfaces</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Scene\ComponentBase.inl">

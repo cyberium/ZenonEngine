@@ -1,6 +1,5 @@
 #pragma once
 
-#include "../../Formats/Fonts/Font.h"
 #include "../../Materials/UI_Font_Material.h"
 
 class ZN_API CUITextNode
@@ -13,8 +12,8 @@ public:
 	void						Initialize() override;
 
 	// CUITextNode
-	void                        SetFont(std::shared_ptr<CFont> _font);
-	std::shared_ptr<CFont>      GetFont() const;
+	void                        SetFont(std::shared_ptr<IznFont> _font);
+	std::shared_ptr<IznFont>      GetFont() const;
 	const std::shared_ptr<UI_Font_Material>& GetMaterial() const;
 	void                        SetTextColor(const glm::vec4& _color);
 	glm::vec2                   GetTextSize() const;
@@ -26,7 +25,7 @@ public:
 	virtual glm::vec2           GetSize() const override;
 
 private:
-	std::shared_ptr<CFont>             m_Font;
+	std::shared_ptr<IznFont>           m_Font;
 	std::shared_ptr<UI_Font_Material>  m_Material;
 
 	std::shared_ptr<IPropertyT<std::string>> m_TextProperty;

@@ -3,11 +3,11 @@
 // General
 #include "Font.h"
 
-CFont::CFont(std::shared_ptr<ITexture> _texture, std::shared_ptr<IGeometry> _fontGeometry, std::vector<uint32> _widthArray, uint32 _height)
-	: m_Texture(_texture)
-	, m_Geometry(_fontGeometry)
-	, m_WidthArray(_widthArray)
-	, m_Height(_height)
+CFont::CFont(std::shared_ptr<ITexture> Texture, std::shared_ptr<IGeometry> FontGeometry, std::vector<uint32> WidthArray, uint32 Height)
+	: m_Texture(Texture)
+	, m_Geometry(FontGeometry)
+	, m_WidthArray(WidthArray)
+	, m_Height(Height)
 {
 }
 
@@ -17,6 +17,10 @@ CFont::~CFont()
 }
 
 
+
+//
+// IznFont
+//
 std::shared_ptr<ITexture> CFont::GetTexture() const
 {
 	return m_Texture;

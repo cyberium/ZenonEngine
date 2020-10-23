@@ -142,15 +142,6 @@ void CSceneDefault::Initialize()
 		std::shared_ptr<MaterialModel> textMaterial = MakeShared(MaterialModel, GetBaseManager());
 		textMaterial->SetDiffuseColor(glm::vec3(1.0f, 1.0f, 1.0f));
 		textMaterial->SetSpecularColor(glm::vec3(1.0f, 1.0f, 1.0f));
-		//textMaterial->SetSpecularFactor(8.0f);
-		//textMaterial->SetBumpFactor(8.0f);
-		//textMaterial->SetTexture(MaterialModel::ETextureType::TextureDiffuse, GetRenderDevice().GetObjectsFactory().LoadTexture2D("AmazonScene//OtherTextures//Colors//Orange.dds"));
-		//textMaterial->SetTexture(MaterialModel::ETextureType::TextureNormalMap, GetRenderDevice().GetObjectsFactory().LoadTexture2D("Sponza_Ceiling_normal.png"));
-		//textMaterial->SetTexture(MaterialModel::ETextureType::TextureSpecular, GetRenderDevice().GetObjectsFactory().LoadTexture2D("AmazonScene//BuildingTextures//concrete_smooth_03_spec.dds"));
-		//textMaterial->SetTexture(MaterialModel::ETextureType::TextureBump, GetRenderDevice().GetObjectsFactory().LoadTexture2D("AmazonScene//BuildingTextures//concrete_smooth_03_ddna.dds"));
-
-		//std::shared_ptr<MaterialTextured> textMaterial = MakeShared(MaterialTextured, GetRenderDevice());
-		//textMaterial->SetTexture(0, GetRenderDevice().GetObjectsFactory().LoadTexture2D("idi na huy.png"));
 
 		auto& modelPlane = GetRenderDevice().GetObjectsFactory().CreateModel();
 		modelPlane->AddConnection(textMaterial, GetRenderDevice().GetPrimitivesFactory().CreateCube());
@@ -197,6 +188,7 @@ void CSceneDefault::Initialize()
 	// Cube Gold
 	//--------------------------------------------------------------------------
 
+	for (int i = 0; i < 5; i++)
 	{
 		std::shared_ptr<MaterialModel> textMaterial = MakeShared(MaterialModel, GetBaseManager());
 		//textMaterial->SetSpecularFactor(8.0f);
@@ -219,8 +211,8 @@ void CSceneDefault::Initialize()
 		modelPlane->AddConnection(textMaterial, GetRenderDevice().GetPrimitivesFactory().CreateCube());
 
 		auto sceneNodePlane = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, this, newRoot);
-		sceneNodePlane->SetName("Sphere");
-		sceneNodePlane->SetTranslate(glm::vec3(-10, 15, 10));
+		sceneNodePlane->SetName("Sphere2");
+		sceneNodePlane->SetTranslate(glm::vec3(-10, 15, 16 * i));
 		sceneNodePlane->SetScale(glm::vec3(15.0f));
 		sceneNodePlane->GetComponent<IModelsComponent3D>()->SetModel(modelPlane);
 		//sceneNodePlane->GetComponent<IModelsComponent3D>()->SetCastShadows(false);

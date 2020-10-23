@@ -193,9 +193,6 @@
     <ClCompile Include="BaseManager.cpp">
       <Filter>Managers</Filter>
     </ClCompile>
-    <ClCompile Include="Settings.cpp">
-      <Filter>Managers</Filter>
-    </ClCompile>
     <ClCompile Include="Materials\MaterialModel.cpp">
       <Filter>Materials</Filter>
     </ClCompile>
@@ -681,6 +678,9 @@
     <ClCompile Include="Passes\MaterialModelPass.cpp">
       <Filter>Passes\3D\ForwardLRendering</Filter>
     </ClCompile>
+    <ClCompile Include="Settings.cpp">
+      <Filter>Managers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="common.h">
@@ -709,9 +709,6 @@
       <Filter>Managers</Filter>
     </ClInclude>
     <ClInclude Include="BaseManager.h">
-      <Filter>Managers</Filter>
-    </ClInclude>
-    <ClInclude Include="Settings.h">
       <Filter>Managers</Filter>
     </ClInclude>
     <ClInclude Include="Materials\MaterialModel.h">
@@ -1263,6 +1260,9 @@
     <ClInclude Include="Passes\MaterialModelPass.h">
       <Filter>Passes\3D\ForwardLRendering</Filter>
     </ClInclude>
+    <ClInclude Include="Settings.h">
+      <Filter>Managers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="znEngine.rc">
@@ -1315,6 +1315,7 @@
     <Text Include="..\gamedata\shaders\3D\Deffered_UIQuad.hlsl">
       <Filter>Resources\Shaders_D3D\3D</Filter>
     </Text>
+    <Text Include="..\gamedata\shaders\3D\ShadowsUtils.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Resources\Textures\default.png">
@@ -1347,9 +1348,6 @@
     </FxCompile>
     <FxCompile Include="..\gamedata\shaders\UI\UI_VertexBase.hlsl">
       <Filter>Resources\Shaders_D3D\UI</Filter>
-    </FxCompile>
-    <FxCompile Include="..\gamedata\shaders\3D\ShadowsUtils.hlsl">
-      <Filter>Resources\Shaders_D3D\3D</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>

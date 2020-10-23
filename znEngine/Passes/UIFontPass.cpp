@@ -63,7 +63,7 @@ std::shared_ptr<IRenderPassPipelined> CUIFontPass::CreatePipeline(std::shared_pt
 	GetPipeline().SetShader(EShaderType::PixelShader, g_pPixelShader);
 
 	// Diryy hack!
-	GetPipeline().SetTexture(0, GetBaseManager().GetManager<IFontsManager>()->GetMainFont()->GetTexture());
+	GetPipeline().SetTexture(0, GetBaseManager().GetManager<IznFontsManager>()->GetMainFont()->GetTexture());
 
 	return shared_from_this();
 }
@@ -79,7 +79,7 @@ EVisitResult CUIFontPass::Visit(const ISceneNodeUI * node)
 	{
 		BaseUIPass::Visit(node);
 
-		const std::shared_ptr<CFont>& font = textNode->GetFont();
+		const std::shared_ptr<IznFont>& font = textNode->GetFont();
 		const std::shared_ptr<UI_Font_Material>& mat = textNode->GetMaterial();
 
 		mat->Bind(GetPipeline().GetShaders());
