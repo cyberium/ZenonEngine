@@ -76,9 +76,7 @@ std::shared_ptr<IRenderPassPipelined> RenderPassPipelined::SetPipeline(std::shar
 	_ASSERT(Pipeline);
 
 	if (m_Pipeline != nullptr)
-	{
 		Log::Warn("RenderPassPipelined::SetPipeline: Pipeline already exists. Are you sure to do this ?");
-	}
 
 	m_Pipeline = Pipeline;
 
@@ -143,10 +141,7 @@ void RenderPassPipelined::FillPerFrameData()
 	PerFrame perFrame(
 		m_RenderEventArgs->Camera->GetViewMatrix(), 
 		m_RenderEventArgs->Camera->GetProjectionMatrix(), 
-		glm::vec2(
-			m_RenderEventArgs->PipelineState->GetRenderTarget()->GetViewport().GetWidth(), 
-			m_RenderEventArgs->PipelineState->GetRenderTarget()->GetViewport().GetHeight()
-		)
+		m_RenderEventArgs->PipelineState->GetRenderTarget()->GetViewport().GetSize()
 	);
 	m_PerFrameConstantBuffer->Set(perFrame);
 }

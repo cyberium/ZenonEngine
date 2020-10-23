@@ -3,12 +3,12 @@
 #include "PassDeffered_DoRenderScene.h"
 #include "PassDeffered_ProcessLights.h"
 
-class ZN_API CPassDeffered_RenderUIQuad
+class ZN_API CPassDeffered_HDR
 	: public RenderPassPipelined
 {
 public:
-	CPassDeffered_RenderUIQuad(IRenderDevice& RenderDevice, std::shared_ptr<CPassDeffered_DoRenderScene> DefferedRender, std::shared_ptr<CPassDeffered_ProcessLights> DefferedRenderPrepareLights);
-	virtual ~CPassDeffered_RenderUIQuad();
+	CPassDeffered_HDR(IRenderDevice& RenderDevice, std::shared_ptr<IRenderTarget> HDRRenderTarget);
+	virtual ~CPassDeffered_HDR();
 
 	// IRenderPass
 	void Render(RenderEventArgs& e) override;
@@ -17,7 +17,7 @@ public:
 	std::shared_ptr<IRenderPassPipelined> CreatePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport* Viewport) override;
 
 protected:
-	void BindLightParamsForCurrentIteration(const RenderEventArgs& e, const CPassDeffered_ProcessLights::SLightResult& LightResult);
+	void BindParamsForCurrentIteration(const RenderEventArgs& e);
 
 private: // Pass light params
 	struct __declspec(novtable, align(16)) SLightResult
@@ -32,8 +32,6 @@ private: // Pass light params
 	std::shared_ptr<IConstantBuffer> m_LightResultConstantBuffer;
 
 private:
-	std::shared_ptr<CPassDeffered_DoRenderScene> m_DefferedRender;
-	std::shared_ptr<CPassDeffered_ProcessLights> m_Deffered_Lights;
-
+	std::shared_ptr<IRenderTarget> m_HDRRenderTarget;
 	std::shared_ptr<IGeometry> m_QuadGeometry;
 };

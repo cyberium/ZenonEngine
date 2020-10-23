@@ -1,18 +1,17 @@
 #include "stdafx.h"
 
 // General
-#include "PassDeffered_RenderUIQuad.h"
+#include "PassDeffered_HDR.h"
 
-CPassDeffered_RenderUIQuad::CPassDeffered_RenderUIQuad(IRenderDevice& RenderDevice, std::shared_ptr<CPassDeffered_DoRenderScene> DefferedRender, std::shared_ptr<CPassDeffered_ProcessLights> DefferedRenderPrepareLights)
+CPassDeffered_HDR::CPassDeffered_HDR(IRenderDevice& RenderDevice, std::shared_ptr<IRenderTarget> HDRRenderTarget)
 	: RenderPassPipelined(RenderDevice)
-	, m_DefferedRender(DefferedRender)
-	, m_Deffered_Lights(DefferedRenderPrepareLights)
+	, m_HDRRenderTarget(HDRRenderTarget)
 {
 	m_LightResultData = (SLightResult*)_aligned_malloc(sizeof(SLightResult), 16);
 	m_LightResultConstantBuffer = GetRenderDevice().GetObjectsFactory().CreateConstantBuffer(SLightResult());
 }
 
-CPassDeffered_RenderUIQuad::~CPassDeffered_RenderUIQuad()
+CPassDeffered_HDR::~CPassDeffered_HDR()
 {
 	_aligned_free(m_LightResultData);
 }
@@ -23,15 +22,11 @@ CPassDeffered_RenderUIQuad::~CPassDeffered_RenderUIQuad()
 // IRenderPass
 //
 
-void CPassDeffered_RenderUIQuad::Render(RenderEventArgs& e)
+void CPassDeffered_HDR::Render(RenderEventArgs& e)
 {
-	for (const auto& lightResult : m_Deffered_Lights->GetLightResult())
-	{
-		// Once per light
-		BindLightParamsForCurrentIteration(e, lightResult);
+	BindParamsForCurrentIteration(e);
 
-		m_QuadGeometry->Render(e, GetPipeline().GetShaders().at(EShaderType::VertexShader).get());
-	}
+	m_QuadGeometry->Render(e, GetPipeline().GetShaders().at(EShaderType::VertexShader).get());
 }
 
 
@@ -39,14 +34,14 @@ void CPassDeffered_RenderUIQuad::Render(RenderEventArgs& e)
 //
 // IRenderPassPipelined
 //
-std::shared_ptr<IRenderPassPipelined> CPassDeffered_RenderUIQuad::CreatePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport)
+std::shared_ptr<IRenderPassPipelined> CPassDeffered_HDR::CreatePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport)
 {
 	m_QuadGeometry = GetRenderDevice().GetPrimitivesFactory().CreateQuad();
 
-	auto vertexShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::VertexShader, "3D/Deffered_UIQuad.hlsl", "VS_ScreenQuad", { {"MULTISAMPLED", "1" } });
+	auto vertexShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::VertexShader, "3D/Deffered_HDR.hlsl", "VS_ScreenQuad", { {"MULTISAMPLED", "1" } });
 	vertexShader->LoadInputLayoutFromReflector();
 
-	auto pixelShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::PixelShader, "3D/Deffered_UIQuad.hlsl", "PS_DeferredLighting", { {"MULTISAMPLED", "1" }});
+	auto pixelShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::PixelShader, "3D/Deffered_HDR.hlsl", "PS_ScreenQuad", { {"MULTISAMPLED", "1" }});
 
 	// PIPELINES
 	auto defferedFinalPipeline = GetRenderDevice().GetObjectsFactory().CreatePipelineState();
@@ -54,12 +49,11 @@ std::shared_ptr<IRenderPassPipelined> CPassDeffered_RenderUIQuad::CreatePipeline
 	defferedFinalPipeline->GetDepthStencilState()->SetDepthMode(disableDepthWrites);
 	defferedFinalPipeline->GetRasterizerState()->SetCullMode(IRasterizerState::CullMode::None);
 	defferedFinalPipeline->GetRasterizerState()->SetFillMode(IRasterizerState::FillMode::Solid, IRasterizerState::FillMode::Solid);
-	//defferedFinalPipeline->GetRasterizerState()->SetAntialiasedLineEnable(true);
-	//defferedFinalPipeline->GetRasterizerState()->SetMultisampleEnabled(true);
 	defferedFinalPipeline->SetRenderTarget(RenderTarget);
 	defferedFinalPipeline->SetShader(EShaderType::VertexShader, vertexShader);
 	defferedFinalPipeline->SetShader(EShaderType::PixelShader, pixelShader);
 	
+
 	auto& sampler = GetRenderDevice().GetObjectsFactory().CreateSamplerState();
 	sampler->SetFilter(ISamplerState::MinFilter::MinLinear, ISamplerState::MagFilter::MagLinear, ISamplerState::MipFilter::MipLinear);
 	sampler->SetWrapMode(ISamplerState::WrapMode::Repeat, ISamplerState::WrapMode::Repeat);
@@ -70,11 +64,8 @@ std::shared_ptr<IRenderPassPipelined> CPassDeffered_RenderUIQuad::CreatePipeline
 	samplerClamp->SetWrapMode(ISamplerState::WrapMode::Clamp, ISamplerState::WrapMode::Clamp);
 	defferedFinalPipeline->SetSampler(1, samplerClamp);
 
-	defferedFinalPipeline->SetTexture(0, m_DefferedRender->GetTexture0());
-	defferedFinalPipeline->SetTexture(1, m_DefferedRender->GetTexture1());
-	defferedFinalPipeline->SetTexture(2, m_DefferedRender->GetTexture2());
-	defferedFinalPipeline->SetTexture(3, m_DefferedRender->GetTexture3());
-	defferedFinalPipeline->SetTexture(4, m_DefferedRender->GetTextureDepthStencil());
+	defferedFinalPipeline->SetTexture(0, m_HDRRenderTarget->GetTexture(IRenderTarget::AttachmentPoint::Color0));
+	//defferedFinalPipeline->SetTexture(1, m_HDRRenderTarget->GetTexture(IRenderTarget::AttachmentPoint::DepthStencil));
 
 	return SetPipeline(defferedFinalPipeline);
 }
@@ -84,8 +75,9 @@ std::shared_ptr<IRenderPassPipelined> CPassDeffered_RenderUIQuad::CreatePipeline
 //
 // Protected
 //
-void CPassDeffered_RenderUIQuad::BindLightParamsForCurrentIteration(const RenderEventArgs& e, const CPassDeffered_ProcessLights::SLightResult& LightResult)
+void CPassDeffered_HDR::BindParamsForCurrentIteration(const RenderEventArgs& e)
 {
+	/*
 	const ICameraComponent3D* camera = e.Camera;
 	_ASSERT(camera != nullptr);
 
@@ -125,4 +117,5 @@ void CPassDeffered_RenderUIQuad::BindLightParamsForCurrentIteration(const Render
 			//_ASSERT(false);
 		}
 	}
+	*/
 }

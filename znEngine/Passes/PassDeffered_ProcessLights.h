@@ -27,11 +27,8 @@ public:
 	void Render(RenderEventArgs& e) override;
 	void PostRender(RenderEventArgs& e) override;
 
-	// IRenderPassPipelined
-	std::shared_ptr<IRenderPassPipelined> CreatePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport* Viewport);
-	void UpdateViewport(const Viewport* _viewport);
-
 protected:
+	std::shared_ptr<IRenderTarget> CreateShadowRT();
 	std::shared_ptr<ITexture> CreateShadowTexture0() const;
 	std::shared_ptr<ITexture> CreateShadowTextureDepthStencil() const;
 	
@@ -49,7 +46,6 @@ protected:
 private: // For shadow rendering
 	std::shared_ptr<IPipelineState> m_ShadowPipeline;
 	std::shared_ptr<IRenderTarget> m_ShadowRenderTarget;
-	Viewport m_ShadowViewport;
 	std::vector<SLightResult> m_LightResult;
 
 private:

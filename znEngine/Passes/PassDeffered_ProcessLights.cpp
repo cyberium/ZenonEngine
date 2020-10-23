@@ -17,13 +17,7 @@ CPassDeffered_ProcessLights::~CPassDeffered_ProcessLights()
 
 void CPassDeffered_ProcessLights::CreateShadowPipeline()
 {
-	m_ShadowViewport.SetWidth(cShadowTextureSize);
-	m_ShadowViewport.SetHeight(cShadowTextureSize);
-
-	m_ShadowRenderTarget = GetRenderDevice().GetObjectsFactory().CreateRenderTarget();
-	//m_ShadowRenderTarget->AttachTexture(IRenderTarget::AttachmentPoint::Color0, CreateShadowTexture0());
-	m_ShadowRenderTarget->AttachTexture(IRenderTarget::AttachmentPoint::DepthStencil, CreateShadowTextureDepthStencil());
-	m_ShadowRenderTarget->SetViewport(m_ShadowViewport);
+	m_ShadowRenderTarget = CreateShadowRT();
 
 	auto vertexShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::VertexShader, "3D/Shadow.hlsl", "VS_Shadow");
 	vertexShader->LoadInputLayoutFromReflector();
@@ -47,7 +41,6 @@ void CPassDeffered_ProcessLights::CreateShadowPipeline()
 	//shadowPipeline->SetShader(EShaderType::PixelShader, pixelShader);
 
 	m_ShadowPipeline = shadowPipeline;
-
 
 	m_PerObjectShaderParameter = &vertexShader->GetShaderParameterByName("PerObject");
 	_ASSERT(m_PerObjectShaderParameter->IsValid());
@@ -86,7 +79,7 @@ void CPassDeffered_ProcessLights::Render(RenderEventArgs& e)
 
 		m_ShadowPipeline->Bind();
 		{
-			m_ShadowRenderTarget->Clear(ClearFlags::All, glm::vec4(0), 1.0f);
+			m_ShadowRenderTarget->Clear(ClearFlags::All, glm::vec4(0.0f), 1.0f);
 
 			BindPerFrameParamsForCurrentIteration(lightIt.Light);
 
@@ -132,21 +125,17 @@ void CPassDeffered_ProcessLights::PostRender(RenderEventArgs& e)
 
 
 //
-// IRenderPassPipelined
-//
-std::shared_ptr<IRenderPassPipelined> CPassDeffered_ProcessLights::CreatePipeline(std::shared_ptr<IRenderTarget> /*RenderTarget*/, const Viewport * /*Viewport*/)
-{
-	return nullptr;
-}
-
-void CPassDeffered_ProcessLights::UpdateViewport(const Viewport * /*Viewport*/)
-{}
-
-
-
-//
 // Protected
 //
+std::shared_ptr<IRenderTarget> CPassDeffered_ProcessLights::CreateShadowRT()
+{
+	std::shared_ptr<IRenderTarget> rt = GetRenderDevice().GetObjectsFactory().CreateRenderTarget();
+	//rt->AttachTexture(IRenderTarget::AttachmentPoint::Color0, CreateShadowTexture0());
+	rt->AttachTexture(IRenderTarget::AttachmentPoint::DepthStencil, CreateShadowTextureDepthStencil());
+	rt->SetViewport(Viewport(cShadowTextureSize, cShadowTextureSize));
+	return rt;
+}
+
 std::shared_ptr<ITexture> CPassDeffered_ProcessLights::CreateShadowTexture0() const
 {
 	ITexture::TextureFormat colorTextureFormat

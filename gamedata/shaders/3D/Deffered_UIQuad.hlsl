@@ -11,7 +11,6 @@ struct VS_Input
 struct VS_Output
 {
 	float4 position : SV_POSITION;
-	float2 texCoord : TEXCOORD0;
 };
 
 
@@ -50,7 +49,6 @@ VS_Output VS_ScreenQuad(VS_Input IN)
 {
 	VS_Output VSOut;
 	VSOut.position = float4(IN.position, 0.0f, 1.0f);
-	VSOut.texCoord = IN.texCoord;
 	return VSOut;
 }
 
@@ -63,10 +61,12 @@ float4 PS_ScreenQuad(VS_Output VSOut
 #endif
 ) : SV_TARGET
 {
+	const int2 texCoord = VSOut.position.xy;
+
 #ifdef MULTISAMPLED
-	return Texture0.Load(VSOut.texCoord, SampleIndex);
+	return Texture0.Load(texCoord, SampleIndex);
 #else
-	return Texture0.Load(int3(VSOut.texCoord, 0));
+	return Texture0.Load(int3(texCoord, 0));
 #endif
 }
 

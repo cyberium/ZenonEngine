@@ -107,7 +107,7 @@ void CSceneDefault::Initialize()
 
 
 	auto file = GetBaseManager().GetManager<IFilesManager>()->Open("SceneFBX.xml");
-	if (file != nullptr)
+	if (file == nullptr)
 	{
 		CXMLManager xml;
 		auto reader = xml.CreateReader(file);

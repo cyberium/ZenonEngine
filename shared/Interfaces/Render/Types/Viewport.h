@@ -13,7 +13,17 @@ public:
 	{
 		UpdateOrthoMatrix();
 	}
-    Viewport(size_t x, size_t y, size_t width, size_t height, float minDepth, float maxDepth)
+	Viewport(uint32 width, uint32 height)
+		: X(0)
+		, Y(0)
+		, Width(width)
+		, Height(height)
+		, MinDepth(0.0f)
+		, MaxDepth(1.0f)
+	{
+		UpdateOrthoMatrix();
+	}
+    Viewport(uint32 x, uint32 y, uint32 width, uint32 height, float minDepth, float maxDepth)
 		: X(x)
 		, Y(y)
 		, Width(width)
@@ -35,28 +45,28 @@ public:
 		OrthoMatrix = glm::ortho<float>(static_cast<float>(X), static_cast<float>(Width), static_cast<float>(Height), static_cast<float>(Y), MinDepth - 1.0f, MaxDepth);
 	}
 
-	size_t GetX() const
+	uint32 GetX() const
 	{
 		return X;
 	}
-	size_t GetY() const
+	uint32 GetY() const
 	{
 		return Y;
 	}
-	size_t GetWidth() const
+	uint32 GetWidth() const
 	{
 		return Width;
 	}
-	void SetWidth(size_t Value)
+	void SetWidth(uint32 Value)
 	{
 		Width = Value;
 		UpdateOrthoMatrix();
 	}
-	size_t GetHeight() const
+	uint32 GetHeight() const
 	{
 		return Height;
 	}
-	void SetHeight(size_t Value)
+	void SetHeight(uint32 Value)
 	{
 		Height = Value;
 		UpdateOrthoMatrix();
@@ -70,11 +80,16 @@ public:
 		return MaxDepth;
 	}
 
+	glm::ivec2 GetSize() const 
+	{
+		return glm::ivec2(Width, Height);
+	}
+
 private:
-	size_t X;
-	size_t Y;
-	size_t Width;
-	size_t Height;
+	uint32 X;
+	uint32 Y;
+	uint32 Width;
+	uint32 Height;
 	float MinDepth;
 	float MaxDepth;
 

@@ -47,11 +47,6 @@ IRenderPass * CRendererForward::GetPass(uint32 ID) const
 	return nullptr;
 }
 
-std::shared_ptr<IRenderTarget> CRendererForward::GetRenderTarget() const
-{
-	return m_FinalRenderTarget;
-}
-
 void CRendererForward::Render3D(RenderEventArgs & renderEventArgs)
 {
 	for (auto pass : m_Passes)
@@ -82,23 +77,23 @@ void CRendererForward::Resize(uint32 NewWidth, uint32 NewHeight)
 {
 	std::dynamic_pointer_cast<IRenderPassPipelined>(m_MaterialModelPass)->GetPipeline().GetRenderTarget()->Resize(NewWidth, NewHeight);
 
-	m_FinalRenderTarget->Resize(NewWidth, NewHeight);
+	//m_FinalRenderTarget->Resize(NewWidth, NewHeight);
 }
 
-void CRendererForward::Initialize(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport)
+void CRendererForward::Initialize(std::shared_ptr<IRenderTarget> OutputRenderTarget, const Viewport * Viewport)
 {
-	m_FinalRenderTarget = RenderTarget;
+	//m_FinalRenderTarget = OutputRenderTarget;
 
 
 	m_SceneCreateTypelessListPass = MakeShared(CSceneCreateTypelessListPass, m_RenderDevice, m_Scene);
 
 	m_LightsBuffer = m_RenderDevice.GetObjectsFactory().CreateStructuredBuffer(nullptr, 8, sizeof(SLight), EAccess::CPUWrite);
 
-	auto materialModelPass = m_BaseManager.GetManager<IRenderPassFactory>()->CreateRenderPass("MaterialModelPass", m_RenderDevice, RenderTarget, Viewport, m_Scene.lock());
+	auto materialModelPass = m_BaseManager.GetManager<IRenderPassFactory>()->CreateRenderPass("MaterialModelPass", m_RenderDevice, OutputRenderTarget, Viewport, m_Scene.lock());
 	m_MaterialModelPass = std::dynamic_pointer_cast<IMaterialModelPass>(materialModelPass);
 
 	
-	auto invokePass = m_BaseManager.GetManager<IRenderPassFactory>()->CreateRenderPass("InvokePass", m_RenderDevice, RenderTarget, Viewport, m_Scene.lock());
+	auto invokePass = m_BaseManager.GetManager<IRenderPassFactory>()->CreateRenderPass("InvokePass", m_RenderDevice, OutputRenderTarget, Viewport, m_Scene.lock());
 	std::dynamic_pointer_cast<IInvokeFunctionPass>(invokePass)->SetFunc([this]() {
 
 		std::vector<SLight> lights;
@@ -123,16 +118,13 @@ void CRendererForward::Initialize(std::shared_ptr<IRenderTarget> RenderTarget, c
 	
 
 	glm::vec4 color = glm::vec4(0.0, 0.0f, 0.0f, 1.0f);
-	AddPass(MakeShared(ClearRenderTargetPass, m_RenderDevice, RenderTarget, ClearFlags::All, color, 1.0f, 0));
-	AddPass(MakeShared(ClearRenderTargetPass, m_RenderDevice, m_FinalRenderTarget, ClearFlags::All, color, 1.0f, 0));
-	
+	AddPass(MakeShared(ClearRenderTargetPass, m_RenderDevice, OutputRenderTarget, ClearFlags::All, color, 1.0f, 0));	
 	AddPass(m_SceneCreateTypelessListPass);
 	AddPass(invokePass);
 	AddPass(materialModelPass);
 
-	AddPass(m_BaseManager.GetManager<IRenderPassFactory>()->CreateRenderPass("DebugPass", m_RenderDevice, GetRenderTarget(), Viewport, m_Scene.lock()));
+	AddPass(m_BaseManager.GetManager<IRenderPassFactory>()->CreateRenderPass("DebugPass", m_RenderDevice, OutputRenderTarget, Viewport, m_Scene.lock()));
 	
-	
-	m_UIPasses.push_back(MakeShared(CUIFontPass, m_RenderDevice, m_Scene)->CreatePipeline(RenderTarget, Viewport));
-	m_UIPasses.push_back(MakeShared(CUIColorPass, m_RenderDevice, m_Scene)->CreatePipeline(RenderTarget, Viewport));
+	m_UIPasses.push_back(MakeShared(CUIFontPass, m_RenderDevice, m_Scene)->CreatePipeline(OutputRenderTarget, Viewport));
+	m_UIPasses.push_back(MakeShared(CUIColorPass, m_RenderDevice, m_Scene)->CreatePipeline(OutputRenderTarget, Viewport));
 }

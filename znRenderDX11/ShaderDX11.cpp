@@ -71,7 +71,10 @@ bool ShaderDX11::LoadFromFile(EShaderType shaderType, const std::string& fileNam
 		if (FAILED(hr))
 		{
 			if (errorBlob != nullptr)
+			{
+				Log::Error(std::string(static_cast<char*>(errorBlob->GetBufferPointer()), errorBlob->GetBufferSize()).c_str());
 				throw CznRenderException(std::string(static_cast<char*>(errorBlob->GetBufferPointer()), errorBlob->GetBufferSize()));
+			}
 			return false;
 		}
 	}

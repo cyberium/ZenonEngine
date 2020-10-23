@@ -45,11 +45,6 @@ IRenderPass * CRendererDeffered::GetPass(uint32 ID) const
 	return nullptr;
 }
 
-std::shared_ptr<IRenderTarget> CRendererDeffered::GetRenderTarget() const
-{
-	return m_FinalRenderTarget;
-}
-
 void CRendererDeffered::Render3D(RenderEventArgs & renderEventArgs)
 {
 	for (auto pass : m_Passes)
@@ -78,42 +73,78 @@ void CRendererDeffered::RenderUI(RenderEventArgs & renderEventArgs)
 
 void CRendererDeffered::Resize(uint32 NewWidth, uint32 NewHeight)
 {
-	m_DefferedRenderPass->GetPipeline().GetRenderTarget()->Resize(NewWidth, NewHeight);
-	m_DefferedFinalRenderPass->GetPipeline().GetRenderTarget()->Resize(NewWidth, NewHeight);
+	m_Deffered_ScenePass->GetPipeline().GetRenderTarget()->Resize(NewWidth, NewHeight);
+	m_Deffered_UIQuadPass->GetPipeline().GetRenderTarget()->Resize(NewWidth, NewHeight);
+	m_Deffered_HDR->GetPipeline().GetRenderTarget()->Resize(NewWidth, NewHeight);
 
-	m_FinalRenderTarget->Resize(NewWidth, NewHeight);
+	//m_FinalRenderTarget->Resize(NewWidth, NewHeight);
 }
 
 
 
-void CRendererDeffered::Initialize(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport)
+void CRendererDeffered::Initialize(std::shared_ptr<IRenderTarget> OutputRenderTarget, const Viewport * Viewport)
 {
+	glm::vec4 clearColor = glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
+	AddPass(MakeShared(ClearRenderTargetPass, m_RenderDevice, OutputRenderTarget, ClearFlags::All, clearColor, 1.0f, 0));
+	
 	m_SceneCreateTypelessListPass = MakeShared(CSceneCreateTypelessListPass, m_RenderDevice, m_Scene);
 
-	m_DefferedRenderPass = MakeShared(CPassDeffered_DoRenderScene, m_RenderDevice, m_SceneCreateTypelessListPass);
-	m_DefferedRenderPass->CreatePipeline(RenderTarget, Viewport);
+	m_Deffered_ScenePass = MakeShared(CPassDeffered_DoRenderScene, m_RenderDevice, m_SceneCreateTypelessListPass);
+	m_Deffered_ScenePass->CreatePipeline(OutputRenderTarget, Viewport);
 
-	m_DefferedRenderPrepareLights = MakeShared(CPassDeffered_ProcessLights, m_RenderDevice, m_SceneCreateTypelessListPass);
-	m_DefferedRenderPrepareLights->CreateShadowPipeline();
+	// GBuffer contains Depth and Stencil buffer with object. We may use this data.
+	auto outputRenderTargetWithCustomDepth = m_RenderDevice.GetObjectsFactory().CreateRenderTarget();
+	outputRenderTargetWithCustomDepth->AttachTexture(IRenderTarget::AttachmentPoint::Color0, OutputRenderTarget->GetTexture(IRenderTarget::AttachmentPoint::Color0));
+	outputRenderTargetWithCustomDepth->AttachTexture(IRenderTarget::AttachmentPoint::DepthStencil, m_Deffered_ScenePass->GetTextureDepthStencil());
 
-	m_DefferedFinalRenderPass = MakeShared(CPassDeffered_RenderUIQuad, m_RenderDevice, m_DefferedRenderPass, m_DefferedRenderPrepareLights);
-	m_DefferedFinalRenderPass->CreatePipeline(RenderTarget, Viewport);
 
-	m_FinalRenderTarget = m_RenderDevice.GetObjectsFactory().CreateRenderTarget();
-	m_FinalRenderTarget->AttachTexture(IRenderTarget::AttachmentPoint::Color0, RenderTarget->GetTexture(IRenderTarget::AttachmentPoint::Color0));
-	m_FinalRenderTarget->AttachTexture(IRenderTarget::AttachmentPoint::DepthStencil, m_DefferedRenderPass->GetTextureDepthStencil());
+	m_Deffered_Lights = MakeShared(CPassDeffered_ProcessLights, m_RenderDevice, m_SceneCreateTypelessListPass);
+	m_Deffered_Lights->CreateShadowPipeline();
 
-	glm::vec4 color = glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
-	AddPass(MakeShared(ClearRenderTargetPass, m_RenderDevice, RenderTarget, ClearFlags::All, color, 1.0f, 0));
-	AddPass(MakeShared(ClearRenderTargetPass, m_RenderDevice, m_FinalRenderTarget, ClearFlags::All, color, 1.0f, 0));
-	
+	auto HDRRenderTarget = CreateHDRRenderTarget(OutputRenderTarget, Viewport);
+	m_Deffered_HDR = MakeShared(CPassDeffered_HDR, m_RenderDevice, HDRRenderTarget);
+	m_Deffered_HDR->CreatePipeline(OutputRenderTarget, Viewport);
+
+	m_Deffered_UIQuadPass = MakeShared(CPassDeffered_RenderUIQuad, m_RenderDevice, m_Deffered_ScenePass, m_Deffered_Lights);
+	m_Deffered_UIQuadPass->CreatePipeline(HDRRenderTarget, Viewport);
+
+
+
 	AddPass(m_SceneCreateTypelessListPass);
-	AddPass(m_DefferedRenderPass);
-	AddPass(m_DefferedRenderPrepareLights);
+	AddPass(m_Deffered_ScenePass);
+	AddPass(m_Deffered_Lights);
+	//AddPass(m_BaseManager.GetManager<IRenderPassFactory>()->CreateRenderPass("DebugPass", m_RenderDevice, outputRenderTargetWithCustomDepth, Viewport, m_Scene.lock()));
 
-	AddPass(m_BaseManager.GetManager<IRenderPassFactory>()->CreateRenderPass("DebugPass", m_RenderDevice, GetRenderTarget(), Viewport, m_Scene.lock()));
+	// Final UI Pass
+	m_UIPasses.push_back(m_Deffered_UIQuadPass);
 
-	m_UIPasses.push_back(m_DefferedFinalRenderPass);
-	m_UIPasses.push_back(MakeShared(CUIFontPass, m_RenderDevice, m_Scene)->CreatePipeline(RenderTarget, Viewport));
-	m_UIPasses.push_back(MakeShared(CUIColorPass, m_RenderDevice, m_Scene)->CreatePipeline(RenderTarget, Viewport));
+	// HDR
+	AddPass(MakeShared(ClearRenderTargetPass, m_RenderDevice, HDRRenderTarget, ClearFlags::All, clearColor, 1.0f, 0));
+	m_UIPasses.push_back(m_Deffered_HDR);
+
+	m_UIPasses.push_back(MakeShared(CUIFontPass, m_RenderDevice, m_Scene)->CreatePipeline(OutputRenderTarget, Viewport));
+	m_UIPasses.push_back(MakeShared(CUIColorPass, m_RenderDevice, m_Scene)->CreatePipeline(OutputRenderTarget, Viewport));
+}
+
+
+
+//
+// Private
+//
+std::shared_ptr<IRenderTarget> CRendererDeffered::CreateHDRRenderTarget(std::shared_ptr<IRenderTarget> OutputRenderTarget, const Viewport * Viewport)
+{
+	ITexture::TextureFormat colorTextureFormat
+	(
+		ITexture::Components::RGBA,
+		ITexture::Type::UnsignedNormalized,
+		OutputRenderTarget->GetSamplesCount(),
+		8, 8, 8, 8, 0, 0
+	);
+	auto texture = m_RenderDevice.GetObjectsFactory().CreateTexture2D(Viewport->GetWidth(), Viewport->GetHeight(), 1, colorTextureFormat);
+
+	// GBuffer contains Depth and Stencil buffer with object. We may use this data.
+	auto outputRenderTargetWithCustomDepth = m_RenderDevice.GetObjectsFactory().CreateRenderTarget();
+	outputRenderTargetWithCustomDepth->AttachTexture(IRenderTarget::AttachmentPoint::Color0, texture);
+	outputRenderTargetWithCustomDepth->AttachTexture(IRenderTarget::AttachmentPoint::DepthStencil, OutputRenderTarget->GetTexture(IRenderTarget::AttachmentPoint::DepthStencil));
+	return outputRenderTargetWithCustomDepth;
 }

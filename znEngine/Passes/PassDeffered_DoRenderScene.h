@@ -29,6 +29,9 @@ public:
 	EVisitResult Visit(const ILight3D* light) override;
 
 private:
+	std::shared_ptr<IRenderTarget> CreateGBuffer(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport);
+
+private:
 	std::shared_ptr<CSceneCreateTypelessListPass> m_SceneCreateTypelessListPass;
 
 private:

@@ -12,21 +12,15 @@ public:
 	// IRenderer
 	uint32 AddPass(std::shared_ptr<IRenderPass> pass) override;
 	IRenderPass* GetPass(uint32 ID) const override;
-	std::shared_ptr<IRenderTarget> GetRenderTarget() const;
-
 	void Render3D(RenderEventArgs& renderEventArgs) override;
 	void RenderUI(RenderEventArgs& renderEventArgs) override;
-
 	void Resize(uint32 NewWidth, uint32 NewHeight) override;
 
-
-	void Initialize(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport);
+	void Initialize(std::shared_ptr<IRenderTarget> OutputRenderTarget, const Viewport * Viewport);
 
 private:
 	std::vector<std::shared_ptr<IRenderPass>> m_Passes;
 	std::vector<std::shared_ptr<IRenderPass>> m_UIPasses;
-
-	std::shared_ptr<IRenderTarget> m_FinalRenderTarget;
 
 	std::shared_ptr<CSceneCreateTypelessListPass> m_SceneCreateTypelessListPass;
 	std::shared_ptr<IMaterialModelPass> m_MaterialModelPass;

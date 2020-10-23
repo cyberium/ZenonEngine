@@ -311,6 +311,7 @@
     <ClCompile Include="Passes\DrawBoundingBoxPass.cpp" />
     <ClCompile Include="Passes\MaterialModelSkeletonPass.cpp" />
     <ClCompile Include="Passes\MaterialParticlePass.cpp" />
+    <ClCompile Include="Passes\PassDeffered_HDR.cpp" />
     <ClCompile Include="Passes\Pipelined\BaseTypedList3DPass.cpp" />
     <ClCompile Include="Passes\Renderer\RendererDeffered.cpp" />
     <ClCompile Include="Passes\Renderer\RendererForward.cpp" />
@@ -512,6 +513,7 @@
     <ClInclude Include="Passes\DrawBoundingBoxPass.h" />
     <ClInclude Include="Passes\MaterialModelSkeletonPass.h" />
     <ClInclude Include="Passes\MaterialParticlePass.h" />
+    <ClInclude Include="Passes\PassDeffered_HDR.h" />
     <ClInclude Include="Passes\Pipelined\BaseTypedList3DPass.h" />
     <ClInclude Include="Passes\Renderer\RendererDeffered.h" />
     <ClInclude Include="Passes\Renderer\RendererForward.h" />

@@ -169,6 +169,9 @@
     <Filter Include="Formats\Models">
       <UniqueIdentifier>{79414a40-821a-439e-9cf4-85619b390ebb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Passes\3D\HDR">
+      <UniqueIdentifier>{8de667f2-5bea-4474-83be-ccf5b2a060e0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -689,6 +692,9 @@
     </ClCompile>
     <ClCompile Include="Formats\Models\FBXModelsLoader.cpp">
       <Filter>Formats\Models</Filter>
+    </ClCompile>
+    <ClCompile Include="Passes\PassDeffered_HDR.cpp">
+      <Filter>Passes\3D\HDR</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1277,6 +1283,9 @@
     </ClInclude>
     <ClInclude Include="Formats\Models\FBXModelsLoader.h">
       <Filter>Formats\Models</Filter>
+    </ClInclude>
+    <ClInclude Include="Passes\PassDeffered_HDR.h">
+      <Filter>Passes\3D\HDR</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
