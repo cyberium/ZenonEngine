@@ -68,6 +68,22 @@ namespace Utils
 		return argumnets;
 	}
 
+	ZN_API std::string FixFilePath(const std::string& FilePath)
+	{
+		size_t index = 0;
+		std::string newFilePath = FilePath;
+		while (true)
+		{
+			index = newFilePath.find('\\', index);
+			if (index == std::string::npos)
+				break;
+
+			newFilePath.replace(index, 1, "/");
+			index += 3;
+		}
+		return newFilePath;
+	}
+
 	std::vector<std::string> GetAllFilesInDirectory(const std::string& Directory, const std::string& FileExtention, const std::vector<std::string> DirSkipList)
 	{
 		std::vector<std::string> listOfFiles;

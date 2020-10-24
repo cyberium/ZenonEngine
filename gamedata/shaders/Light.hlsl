@@ -110,7 +110,7 @@ LightingResult DoPointLight(Light light, MaterialForLight mat, float4 V, float4 
 
 	float attenuation = DoAttenuation(light, distance);
 
-	result.Ambient = DoAmbient(light) * attenuation * light.Intensity;
+	result.Ambient = DoAmbient(light) * attenuation /** light.Intensity*/;
 	result.Diffuse = DoDiffuse(light, L, N) * attenuation * light.Intensity;
 	result.Specular = DoSpecular(light, mat, V, L, N) * attenuation * light.Intensity;
 

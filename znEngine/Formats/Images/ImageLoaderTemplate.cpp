@@ -22,7 +22,7 @@ CImageBase::CImageBase(uint32 Width, uint32 Height, uint32 BitsPerPixel, bool Is
 	, m_Data(nullptr)
 {
 	m_Stride = GetWidth() * (GetBitsPerPixel() / 8);
-	m_Data = new uint8[m_Height * GetStride()];	
+	m_Data = DEBUG_NEW uint8[m_Height * GetStride()];	
 	std::memset(m_Data, 0x00, m_Height * GetStride());
 }
 
@@ -54,7 +54,7 @@ std::shared_ptr<IImage> CImageBase::Convert8To32Bit()
 	newImage->m_BitsPerPixel = 32;
 	newImage->m_Stride = newImage->GetWidth() * (newImage->m_BitsPerPixel / 8);
 	newImage->m_IsTransperent = false;
-	newImage->m_Data = new uint8[m_Height * newImage->GetStride()];
+	newImage->m_Data = DEBUG_NEW uint8[m_Height * newImage->GetStride()];
 
 	for (int rows = 0; rows < m_Height; rows++)
 	{
@@ -85,7 +85,7 @@ std::shared_ptr<IImage> CImageBase::Convert24To32Bit()
 	newImage->m_BitsPerPixel = 32;
 	newImage->m_Stride = newImage->GetWidth() * 4;
 	newImage->m_IsTransperent = false;
-	newImage->m_Data = new uint8[m_Height * newImage->GetStride()];
+	newImage->m_Data = DEBUG_NEW uint8[m_Height * newImage->GetStride()];
 
 	for (int rows = 0; rows < m_Height; rows++)
 	{
@@ -144,7 +144,7 @@ const uint8* CImageBase::GetData() const
 void CImageBase::Resize(uint32 NewWidth, uint32 NewHeight)
 {
 	size_t bytesPerPixel = m_BitsPerPixel / 8;
-	uint8* newData = new uint8[NewWidth * NewHeight * bytesPerPixel];
+	uint8* newData = DEBUG_NEW uint8[NewWidth * NewHeight * bytesPerPixel];
 
 	size_t cntr = 0;
 	for (uint32 j = 0; j < NewHeight; ++j)

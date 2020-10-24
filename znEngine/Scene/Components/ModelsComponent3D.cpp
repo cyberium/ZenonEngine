@@ -61,7 +61,7 @@ void CModelsComponent3D::Save(const std::shared_ptr<IXMLWriter>& Writer) const
 		return;
 	}
 
-	CXMLManager xml;
+	CXMLManager xml(GetBaseManager());
 	auto fileNameWriter = xml.CreateWriter("FileName");
 
 	auto fileName = model->GetFileName();

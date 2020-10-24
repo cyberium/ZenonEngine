@@ -46,7 +46,7 @@ void CSceneDefault::Initialize()
 	SceneBase::Initialize();
 
 	// Light
-	/*{
+	{
 		auto lightNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, this);
 		lightNode->SetName("Light");
 		lightNode->SetTranslate(glm::vec3(-300.0f, 500.0f, -500.0f) / 3.0f);
@@ -55,10 +55,10 @@ void CSceneDefault::Initialize()
 		lightNode->AddComponent(GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<IComponentFactory>()->CreateComponentT<ILightComponent3D>(cSceneNodeLightComponent, *lightNode.get()));
 		lightNode->GetComponent<ILightComponent3D>()->SetType(ELightType::Spot);
 		lightNode->GetComponent<ILightComponent3D>()->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
-		lightNode->GetComponent<ILightComponent3D>()->SetRange(5000.0f);
-		lightNode->GetComponent<ILightComponent3D>()->SetIntensity(1.0f);
+		lightNode->GetComponent<ILightComponent3D>()->SetRange(500.0f);
+		lightNode->GetComponent<ILightComponent3D>()->SetIntensity(1.1f);
 		lightNode->GetComponent<ILightComponent3D>()->SetSpotlightAngle(45.0f);
-	}*/
+	}
 
 	// Light
 	{
@@ -70,8 +70,8 @@ void CSceneDefault::Initialize()
 		lightNode->AddComponent(GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<IComponentFactory>()->CreateComponentT<ILightComponent3D>(cSceneNodeLightComponent, *lightNode.get()));
 		lightNode->GetComponent<ILightComponent3D>()->SetType(ELightType::Spot);
 		lightNode->GetComponent<ILightComponent3D>()->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
-		lightNode->GetComponent<ILightComponent3D>()->SetRange(5000.0f);
-		lightNode->GetComponent<ILightComponent3D>()->SetIntensity(1.0f);
+		lightNode->GetComponent<ILightComponent3D>()->SetRange(1500.0f);
+		lightNode->GetComponent<ILightComponent3D>()->SetIntensity(1.5f);
 		lightNode->GetComponent<ILightComponent3D>()->SetSpotlightAngle(45.0f);
 	}
 
@@ -109,7 +109,7 @@ void CSceneDefault::Initialize()
 	auto file = GetBaseManager().GetManager<IFilesManager>()->Open("SceneFBX.xml");
 	if (file == nullptr)
 	{
-		CXMLManager xml;
+		CXMLManager xml(GetBaseManager());
 		auto reader = xml.CreateReader(file);
 
 		auto currentRoot = newRoot;
@@ -127,6 +127,7 @@ void CSceneDefault::Initialize()
 	}
 
 	rp3d::Vector3 gravity(0.0, -9.81, 0.0);
+	
 	// Create the dynamics world
 	rp3d::DynamicsWorld world(gravity);
 
@@ -138,13 +139,18 @@ void CSceneDefault::Initialize()
 	{
 		if (false == GetBaseManager().GetManager<IFilesManager>()->IsFileExists("Sponza/Sponza.znmdl"))
 		{
-			auto fbxModel = GetBaseManager().GetManager<IznModelsManager>()->LoadModel("Sponza/Sponza.fbx", "Sponza");
+			std::shared_ptr<CznFBXLoaderParams> fbxLoaderParams = MakeShared(CznFBXLoaderParams);
+			fbxLoaderParams->TexturesPathRoot = "Sponza";
+			//fbxLoaderParams->TexturesTypeChange.insert(std::make_pair((uint8)MaterialModel::ETextureType::TextureAmbient, (uint8)MaterialModel::ETextureType::TextureSpecular));
+			fbxLoaderParams->TexturesTypeChange.insert(std::make_pair((uint8)MaterialModel::ETextureType::TextureBump, (uint8)MaterialModel::ETextureType::TextureNormalMap));
+
+			auto fbxModel = GetBaseManager().GetManager<IznModelsManager>()->LoadModel("Sponza/Sponza.fbx", fbxLoaderParams);
 			auto znMdlFile = GetBaseManager().GetManager<IznModelsManager>()->SaveModel(fbxModel, "Sponza/Sponza.znmdl");
-			GetBaseManager().GetManager<IFilesManager>()->GetFilesStorage("ZenonGamedata2")->SaveFile(znMdlFile);
+			znMdlFile->Save();
 		}
 
 
-		auto znModel = GetBaseManager().GetManager<IznModelsManager>()->LoadModel("Sponza/Sponza.znmdl", "Sponza");
+		auto znModel = GetBaseManager().GetManager<IznModelsManager>()->LoadModel("Sponza/Sponza.znmdl");
 
 		auto sceneNodePlane = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, this, newRoot);
 		sceneNodePlane->SetName("Sponza");
@@ -154,6 +160,31 @@ void CSceneDefault::Initialize()
 	}
 
 
+	//--------------------------------------------------------------------------
+	// Bistro
+	//--------------------------------------------------------------------------
+	/*{
+		if (false == GetBaseManager().GetManager<IFilesManager>()->IsFileExists("Bistro_v4/Bistro v4 Update/Bistro_v4/Bistro_Exterior.znmdl"))
+		{
+			std::shared_ptr<CznFBXLoaderParams> fbxLoaderParams = MakeShared(CznFBXLoaderParams);
+			fbxLoaderParams->TexturesPathRoot = "Bistro_v4/Bistro v4 Update/Bistro_v4/";
+			//fbxLoaderParams->TexturesTypeChange.insert(std::make_pair((uint8)MaterialModel::ETextureType::TextureAmbient, (uint8)MaterialModel::ETextureType::TextureSpecular));
+			//fbxLoaderParams->TexturesTypeChange.insert(std::make_pair((uint8)MaterialModel::ETextureType::TextureBump, (uint8)MaterialModel::ETextureType::TextureNormalMap));
+
+			auto fbxModel = GetBaseManager().GetManager<IznModelsManager>()->LoadModel("Bistro_v4/Bistro v4 Update/Bistro_v4/Bistro_Exterior.fbx", fbxLoaderParams);
+			auto znMdlFile = GetBaseManager().GetManager<IznModelsManager>()->SaveModel(fbxModel, "Bistro_v4/Bistro v4 Update/Bistro_v4/Bistro_Exterior.znmdl");
+			GetBaseManager().GetManager<IFilesManager>()->GetFilesStorage("ZenonGamedata2")->SaveFile(znMdlFile);
+		}
+
+
+		auto znModel = GetBaseManager().GetManager<IznModelsManager>()->LoadModel("Bistro_v4/Bistro v4 Update/Bistro_v4/Bistro_Exterior.znmdl");
+
+		auto sceneNodePlane = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, this, newRoot);
+		sceneNodePlane->SetName("Bistro");
+		sceneNodePlane->SetTranslate(glm::vec3(0, 0, 0));
+		sceneNodePlane->SetScale(glm::vec3(1.0f));
+		sceneNodePlane->GetComponent<IModelsComponent3D>()->SetModel(znModel);
+	}*/
 
 	
 
@@ -203,6 +234,7 @@ void CSceneDefault::Initialize()
 		sceneNodePlane->SetScale(glm::vec3(15.0f));
 		sceneNodePlane->GetComponent<IModelsComponent3D>()->SetModel(modelPlane);
 	}
+	*/
 
 	//--------------------------------------------------------------------------
 	// Cube Gold
@@ -236,8 +268,6 @@ void CSceneDefault::Initialize()
 		sceneNodePlane->GetComponent<IModelsComponent3D>()->SetModel(modelPlane);
 		//sceneNodePlane->GetComponent<IModelsComponent3D>()->SetCastShadows(false);
 	}
-
-	*/
 
 	auto forwardRenderer = MakeShared(CRendererForward, GetBaseManager(), weak_from_this());
 	forwardRenderer->Initialize(GetRenderWindow()->GetRenderTarget(), &GetRenderWindow()->GetViewport());

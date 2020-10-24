@@ -5,7 +5,6 @@
 
 // Additional
 #include "tinyxml.h"
-#include "Files/File.h"
 #include "XMLReader.h"
 #include "XMLWriter.h"
 
@@ -13,7 +12,7 @@ namespace
 {
 	TiXmlElement * CreateTiXMLWriter(const std::shared_ptr<IXMLWriter>& Writer)
 	{
-		TiXmlElement * element = new TiXmlElement(Writer->GetName());
+		TiXmlElement * element = DEBUG_NEW TiXmlElement(Writer->GetName());
 
 		// Name
 		element->SetValue(Writer->GetName());
@@ -21,7 +20,7 @@ namespace
 		// Value
 		if (false == Writer->GetValue().empty())
 		{
-			TiXmlText * text = new TiXmlText(Writer->GetValue());
+			TiXmlText * text = DEBUG_NEW TiXmlText(Writer->GetValue());
 			element->LinkEndChild(text);
 		}
 
@@ -80,7 +79,8 @@ void CheckTinyXMLError(const std::shared_ptr<TiXmlDocument>& TiniXMLDocument)
 const char* cXMLRootNodeSignature = "xml";
 // CONST END
 
-CXMLManager::CXMLManager()
+CXMLManager::CXMLManager(IBaseManager& BaseManager)
+	: m_BaseManager(BaseManager)
 {
 }
 
@@ -103,10 +103,10 @@ std::shared_ptr<IXMLReader> CXMLManager::CreateReader(std::shared_ptr<IFile> Fil
 std::shared_ptr<IXMLWriter> CXMLManager::CreateWriter()
 {
 	std::shared_ptr<TiXmlDocument> xmlDocument = MakeShared(TiXmlDocument);
-	TiXmlDeclaration * decl = new TiXmlDeclaration("1.0", "", "");
+	TiXmlDeclaration * decl = DEBUG_NEW TiXmlDeclaration("1.0", "", "");
 	xmlDocument->LinkEndChild(decl);
 
-	TiXmlElement * rootElement = new TiXmlElement(cXMLRootNodeSignature);
+	TiXmlElement * rootElement = DEBUG_NEW TiXmlElement(cXMLRootNodeSignature);
 	xmlDocument->LinkEndChild(rootElement);
 
 	return MakeShared(CXMLWriter, rootElement->ValueStr());
@@ -120,10 +120,10 @@ std::shared_ptr<IXMLWriter> CXMLManager::CreateWriter(const std::string & NodeNa
 
 std::shared_ptr<IFile> CXMLManager::SaveWriterToFile(const std::shared_ptr<IXMLWriter>& Writer, const std::string& FileName)
 {
-	std::shared_ptr<CFile> file = MakeShared(CFile, FileName);
+	std::shared_ptr<IFile> file = m_BaseManager.GetManager<IFilesManager>()->Create(FileName);
 
 	std::shared_ptr<TiXmlDocument> xmlDocument = MakeShared(TiXmlDocument);
-	TiXmlDeclaration * decl = new TiXmlDeclaration("1.0", "", "");
+	TiXmlDeclaration * decl = DEBUG_NEW TiXmlDeclaration("1.0", "", "");
 	xmlDocument->LinkEndChild(decl);
 	xmlDocument->LinkEndChild(CreateTiXMLWriter(Writer));
 

@@ -125,7 +125,7 @@ std::shared_ptr<IznFont> FontsManager::Add(IRenderDevice& RenderDevice, const st
 
 	// Step 3: Generation of the actual texture //
 
-	uint32* image = new uint32[imageHeight * imageWidth];
+	uint32* image = DEBUG_NEW uint32[imageHeight * imageWidth];
 	memset(image, 0x00, imageHeight * imageWidth * sizeof(uint32));
 
 	// These are the cameraPosition at which to draw the next glyph

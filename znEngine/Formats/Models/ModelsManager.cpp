@@ -33,8 +33,9 @@ void CznModelsManager::RemoveModelsLoader(const std::shared_ptr<IznModelsLoader>
 	m_ModelsLoaders.erase(it);
 }
 
-std::shared_ptr<IModel> CznModelsManager::LoadModel(const std::string& ModelFileName, const std::string & TexturesPath)
+std::shared_ptr<IModel> CznModelsManager::LoadModel(const std::string& ModelFileName, const std::shared_ptr<IznLoaderParams>& LoaderParams)
 {
+	// Find existsing cached
 	const auto& iter = m_ModelsByName.find(ModelFileName);
 	if (iter != m_ModelsByName.end())
 	{
@@ -48,8 +49,6 @@ std::shared_ptr<IModel> CznModelsManager::LoadModel(const std::string& ModelFile
 		}
 	}
 
-	std::shared_ptr<IModel> model = nullptr;
-
 	auto file = m_BaseManager.GetManager<IFilesManager>()->Open(ModelFileName);
 	if (file == nullptr)
 		throw CException("Model file '%s' not found.", ModelFileName.c_str());
@@ -58,16 +57,13 @@ std::shared_ptr<IModel> CznModelsManager::LoadModel(const std::string& ModelFile
 	{
 		if (loader->IsSupportedFormat(file))
 		{
-			model = loader->LoadModel(file, TexturesPath);
-			break;
+			std::shared_ptr<IModel> model = loader->LoadModel(file, LoaderParams);
+			m_ModelsByName[ModelFileName] = model;
+			return model;
 		}
 	}
 
-	if (model == nullptr)
-		throw CException("The loader for model '%s' doesn't exists.", ModelFileName.c_str());
-
-	m_ModelsByName[ModelFileName] = model;
-	return model;
+	throw CException("The loader for model '%s' doesn't exists.", ModelFileName.c_str());
 }
 
 std::shared_ptr<IFile> CznModelsManager::SaveModel(const std::shared_ptr<IModel>& Model, const std::string& FileName)
@@ -75,11 +71,15 @@ std::shared_ptr<IFile> CznModelsManager::SaveModel(const std::shared_ptr<IModel>
 	_ASSERT(Model != nullptr);
 	_ASSERT(FileName.size() > 0);
 	
-	auto file = MakeShared(CFile, FileName);
-	auto loadable = std::dynamic_pointer_cast<IObjectLoadSave>(Model);
-	if (loadable == nullptr)
-		throw CException("Model not supports IObjectLoadSave.");
+	auto file = m_BaseManager.GetManager<IFilesManager>()->Create(FileName);
 
-	loadable->Save(file);
-	return file;
+	for (const auto& loader : m_ModelsLoaders)
+	{
+		if (loader->IsSupportedFormat(file))
+		{
+			return loader->SaveModel(Model, FileName);
+		}
+	}
+
+	throw CException("The loader for model '%s' doesn't exists.", FileName.c_str());
 }

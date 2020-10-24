@@ -12,7 +12,7 @@ public:
 	CQtToZenonTreeModel(QObject *parent = nullptr)
 		: QAbstractItemModel(parent)
 	{
-		m_RootItem = new CQtToZenonTreeItem();
+		m_RootItem = DEBUG_NEW CQtToZenonTreeItem();
 	}
 	virtual ~CQtToZenonTreeModel()
 	{
@@ -22,7 +22,7 @@ public:
 	// CQtToZenonTreeModel
 	void SetRootItemData(const std::shared_ptr<IModelCollectionItem>& Item)
 	{
-		m_RootItem = new CQtToZenonTreeItem();
+		m_RootItem = DEBUG_NEW CQtToZenonTreeItem();
 		m_RootItem->SetRoot(Item);
 
 		//if (oldRootItem)
@@ -31,7 +31,7 @@ public:
 	void SetChildRootItemsData(const std::vector<std::shared_ptr<IModelCollectionItem>>& Items)
 	{
 		for (const auto& item : Items)
-			m_RootItem->addChild(new CQtToZenonTreeItem(item, m_RootItem));
+			m_RootItem->addChild(DEBUG_NEW CQtToZenonTreeItem(item, m_RootItem));
 	}
 	std::shared_ptr<IObject> Find(const QModelIndex& ModelIdnex)
 	{

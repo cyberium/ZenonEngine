@@ -14,7 +14,8 @@ ZN_INTERFACE ZN_API IMaterial
 
 	virtual void SetTexture(uint8 ID, const std::shared_ptr<ITexture> texture) = 0;
 	virtual const std::shared_ptr<ITexture>& GetTexture(uint8 ID) const = 0;
-	
+	virtual std::string GetTextureTypeName(uint8 ID) const = 0;
+
 	virtual void SetSampler(uint8 ID, const std::shared_ptr<ISamplerState> samplerState) = 0;
 	virtual const std::shared_ptr<ISamplerState>& GetSampler(uint8 ID) const = 0;
 	

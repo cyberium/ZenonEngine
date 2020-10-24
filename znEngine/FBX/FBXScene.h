@@ -10,7 +10,7 @@ class CFBXScene
 	, public std::enable_shared_from_this<CFBXScene>
 {
 public:
-	CFBXScene(const IBaseManager& BaseManager, fbxsdk::FbxManager* FBXManager, const std::string& TexturePath);
+	CFBXScene(const IBaseManager& BaseManager, fbxsdk::FbxManager* FBXManager, const std::shared_ptr<IznLoaderParams>& LoaderParams);
 	virtual ~CFBXScene();
 
 	bool LoadFromFile(std::shared_ptr<IFile> File);
@@ -21,8 +21,7 @@ public:
 	const std::vector<std::shared_ptr<IFBXModel>>& GetFBXModels() const override;
 	std::shared_ptr<IFBXSkeleton> GetFBXSkeleton() const override;
 	std::shared_ptr<IFBXAnimation> GetFBXAnimation() const override;
-
-	virtual const std::string& GetTexturesPath() const override;
+	const std::shared_ptr<IznLoaderParams>& GetLoaderParams() const override;
 
 	std::shared_ptr<IModel> MergeModels() override;
 
@@ -40,7 +39,7 @@ private:
 private:
 	const IBaseManager& m_BaseManager;
 	fbxsdk::FbxScene* m_NativeScene;
-	std::string m_TexturesPath;
+	std::shared_ptr<IznLoaderParams> m_LoaderParams;
 };
 
 #endif

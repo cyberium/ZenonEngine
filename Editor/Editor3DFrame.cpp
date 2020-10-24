@@ -236,7 +236,7 @@ bool CEditor3DFrame::InitializeEditorFrame()
 //
 void CEditor3DFrame::DoInitializeTools3D()
 {
-	GetEditor().GetTools().DoInitialize3D(m_Renderer, GetRenderer()->GetRenderTarget(), &GetRenderWindow()->GetViewport());
+	GetEditor().GetTools().DoInitialize3D(m_Renderer, GetRenderWindow()->GetRenderTarget(), &GetRenderWindow()->GetViewport());
 }
 
 std::shared_ptr<IScene> CEditor3DFrame::GetScene()

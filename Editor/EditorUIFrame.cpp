@@ -51,7 +51,7 @@ CEditorUIFrame::CEditorUIFrame(IEditor& Editor)
 		m_Editor.GetBaseManager().GetManager<IFilesManager>()->GetFilesStorage("PCEveryFileAccess")->SaveFile(file);
 	});
 
-	QFileSystemModel* fsModel = new QFileSystemModel(this);
+	QFileSystemModel* fsModel = DEBUG_NEW QFileSystemModel(this);
 	fsModel->setRootPath("D:\\_programming\\ZenonEngine\\gamedata");
 	m_UI.FSTreeViewer->setModel(fsModel);
 
@@ -85,16 +85,19 @@ bool CEditorUIFrame::InitializeEditorFrame()
 
 		try
 		{
-			std::string zenonFileName = it + ".znmdl";
-			if (m_Editor.GetBaseManager().GetManager<IFilesManager>()->IsFileExists(zenonFileName))
+			auto modelFile = MakeShared(CFile, it);
+			if (m_Editor.GetBaseManager().GetManager<IFilesManager>()->IsFileExists(modelFile->Path_Name()));
 			{
-				realNames.push_back(zenonFileName);
+				realNames.push_back(modelFile->Path_Name());
 				continue;
 			}
 
 			//continue;
 
 			auto model = m_Editor.GetBaseManager().GetManager<IznModelsManager>()->LoadModel("arrow.FBX");
+			auto file = m_Editor.GetBaseManager().GetManager<IznModelsManager>()->SaveModel(model, )
+
+
 			if (auto loadable = std::dynamic_pointer_cast<IObjectLoadSave>(model))
 			{
 				std::shared_ptr<IFile> file = MakeShared(CFile, zenonFileName);

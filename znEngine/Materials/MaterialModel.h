@@ -102,15 +102,15 @@ public:
 	enum class ZN_API ETextureType: uint32
 	{
 		TextureDiffuse = 0,
-		TextureEmissive,
-		TextureAmbient,
-		TextureSpecular,
-		TextureShininess,
-		TextureNormalMap,
-		TextureBump,
-		TextureTransparency,
-		TextureReflection,
-		TextureDisplacement
+		TextureEmissive = 1,
+		TextureAmbient = 2,
+		TextureSpecular = 3,
+		TextureShininess = 4,
+		TextureNormalMap = 5,
+		TextureBump = 6,
+		TextureTransparency = 7,
+		TextureReflection = 8,
+		TextureDisplacement = 9
 	};
 
 public:
@@ -132,6 +132,9 @@ public:
 
 	virtual void SetTexture(ETextureType TextureType, std::shared_ptr<ITexture> texture);
 	virtual const std::shared_ptr<ITexture>& GetTexture(ETextureType TextureType) const;
+
+	// IMaterial
+	virtual std::string GetTextureTypeName(uint8 ID) const override;
 	
 protected:
 	void PrintInfo();

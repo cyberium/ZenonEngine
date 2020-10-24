@@ -69,7 +69,7 @@ void main_internal(int argc, char *argv[])
 		std::shared_ptr<IDebugOutput> debugOutput(editorUI.getUI().LogViewer);
 		BaseManager->GetManager<ILog>()->AddDebugOutput(debugOutput);
 		
-		QTimer *timer = new QTimer(&editorUI);
+		QTimer *timer = DEBUG_NEW QTimer(&editorUI);
 		editorUI.connect(timer, &QTimer::timeout, &editorUI, [&app] {
 			app.DoRun();
 		});

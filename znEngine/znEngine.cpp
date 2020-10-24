@@ -53,7 +53,7 @@ std::string GetDLLPath()
 
 IBaseManager* WINAPI InitializeEngine(std::vector<std::string> Arguments, std::string PathToPlugins)
 {
-	IBaseManager* baseManager = new CBaseManager();
+	IBaseManager* baseManager = DEBUG_NEW CBaseManager();
 
 	std::shared_ptr<IznPluginsManager> pluginsManager = MakeShared(CznPluginsManager, *baseManager);
 	baseManager->AddManager<IznPluginsManager>(pluginsManager);
@@ -69,17 +69,18 @@ IBaseManager* WINAPI InitializeEngine(std::vector<std::string> Arguments, std::s
 	{
 		std::shared_ptr<IFilesManager> filesManager = MakeShared(CFilesManager, *baseManager);
 		baseManager->AddManager<IFilesManager>(filesManager);
-		filesManager->AddFilesStorage("ModuleFS", MakeShared(CLibraryResourceFileStotage, GetModuleHandle(L"znEngine.dll")));
-		filesManager->AddFilesStorage("PCEveryFileAccess", MakeShared(CLocalFilesStorage, ""));
-		filesManager->AddFilesStorage("ZenonGamedata", MakeShared(CLocalFilesStorage, "O:/ZenonEngine/gamedata/"));
-		filesManager->AddFilesStorage("ZenonGamedata2", MakeShared(CLocalFilesStorage, "O:/ZenonEngine_gamedata/"));
+		filesManager->AddStorage(EFilesStorageType::GAMEDATA, MakeShared(CLocalFilesStorage, "O:/ZenonEngine_gamedata/"));
+		filesManager->AddStorage(EFilesStorageType::ADDITIONAL, MakeShared(CLibraryResourceFileStotage, GetModuleHandle(L"znEngine.dll")));
+		filesManager->AddStorage(EFilesStorageType::ADDITIONAL, MakeShared(CLocalFilesStorage, ""));
+		filesManager->AddStorage(EFilesStorageType::ADDITIONAL, MakeShared(CLocalFilesStorage, "O:/ZenonEngine/gamedata/"));
+		
 	}
 
 	// Log & console
 	{
 		std::shared_ptr<CLog> log = MakeShared(CLog);
 		baseManager->AddManager<ILog>(log);
-
+		 
 		std::shared_ptr<CConsole> console = MakeShared(CConsole, *baseManager);
 		baseManager->AddManager<IConsole>(console);
 		console->AddCommonCommands();

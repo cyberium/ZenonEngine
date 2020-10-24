@@ -7,6 +7,37 @@ void main_internal(int argumentCount, char* arguments[])
 {
 	// 1. Initialize engine and some improtant managers
 	BaseManager = InitializeEngine(Utils::ArgumentsToVector(argumentCount, arguments), "");
+	
+
+	class CTestClass
+	{
+	public:
+		CTestClass()
+		{
+			OutputDebugStringA("TestCreated!");
+		}
+
+		~CTestClass()
+		{
+			OutputDebugStringA("TestDeleted!");
+		}
+
+
+
+		
+
+
+	};
+
+	{
+		DEBUG_NEW CTestClass();
+		//std::shared_ptr<CTestClass> ptr();
+
+
+
+
+
+	}
 
 	//try
 	//{
@@ -56,8 +87,6 @@ int main(int argumentCount, char* arguments[])
 	_CrtMemState _ms;
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 	_CrtSetReportMode(_CRT_ERROR, _CRTDBG_MODE_DEBUG);
-
-	//_CrtSetBreakAlloc(158);
 #endif
 
 	main_internal(argumentCount, arguments);		
@@ -69,7 +98,7 @@ int main(int argumentCount, char* arguments[])
 	}
 
 #ifdef _DEBUG
-	_CrtMemDumpAllObjectsSince(&_ms);
+	//_CrtMemDumpAllObjectsSince(&_ms);
 #endif
 	return 0;
 }

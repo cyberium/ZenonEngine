@@ -64,9 +64,7 @@ ZN_INTERFACE ZN_API IFBXScene
 	virtual const std::vector<std::shared_ptr<IFBXModel>>& GetFBXModels() const = 0;
 	virtual std::shared_ptr<IFBXSkeleton> GetFBXSkeleton() const = 0;
 	virtual std::shared_ptr<IFBXAnimation> GetFBXAnimation() const = 0;
-
-	virtual const std::string& GetTexturesPath() const = 0;
-
+	virtual const std::shared_ptr<IznLoaderParams>& GetLoaderParams() const = 0;
 	virtual std::shared_ptr<IModel> MergeModels() = 0;
 };
 
@@ -78,6 +76,13 @@ ZN_INTERFACE ZN_API IFBXScenePrivate
 };
 
 
+class CznFBXLoaderParams
+	: public IznLoaderParams
+{
+public:
+	std::string TexturesPathRoot;
+	std::unordered_map<uint8, uint8> TexturesTypeChange;
+};
 
 
 

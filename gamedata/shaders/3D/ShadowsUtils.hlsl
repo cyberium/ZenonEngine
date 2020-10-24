@@ -24,7 +24,7 @@ float IsShadowed(float4x4 LightProjectionMatrix, float4x4 LightViewMatrix, Textu
 		);
 	const float lightDepthValue = (lightViewPosition.z / lightViewPosition.w);
 
-	const int textureSize = 4096.0f * 2.0f;
+	const int textureSize = 4096.0f;
 	const float2 shadowBlurStep = float2(1.0f, 1.0f) / textureSize;
 	const int cBlurFrom = 1;
 	const float cBlurFromPow2 = ((cBlurFrom * 2) + 1) * ((cBlurFrom * 2) + 1);

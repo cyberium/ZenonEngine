@@ -91,12 +91,12 @@ void ZenonCollectionViewerWidget::mouseMoveEvent(QMouseEvent * event)
 
 		m_StartDragging = true;
 
-		QMimeData *mimeData = new QMimeData;
+		QMimeData *mimeData = DEBUG_NEW QMimeData;
 		mimeData->setText(item->GetTObject()->GetName().c_str());
 
 		m_Editor->GetTools().Enable(ETool::EToolDragger);
 
-		auto drag = new QDrag(this);
+		auto drag = DEBUG_NEW QDrag(this);
 		drag->setMimeData(mimeData);
 		drag->setHotSpot(event->pos());
 		Qt::DropAction dropAction = drag->exec();

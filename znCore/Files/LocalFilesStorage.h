@@ -1,21 +1,19 @@
 #pragma once
 
-class ZN_API CLocalFilesStorage : public IFilesStorage, public IFilesStorageEx
+class ZN_API CLocalFilesStorage 
+	: public IFilesStorage
 {
 public:
-	CLocalFilesStorage(std::string _path, Priority _priority = Priority::PRIOR_NORMAL);
+	CLocalFilesStorage(std::string _path);
 	virtual ~CLocalFilesStorage();
 
 	// IFilesStorage
+	std::shared_ptr<IFile>  Create(std::string FileName) override;
 	std::shared_ptr<IFile>  OpenFile(std::string FileName, EFileAccessType FileAccessType = EFileAccessType::Read) override;
 	bool                    SaveFile(std::shared_ptr<IFile> File) override;
-	size_t                  GetFileSize(std::string FileName) override;
-	bool                    IsFileExists(std::string FileName) override;
-
-	// IFilesStorageEx
-	Priority GetPriority() const;
+	size_t                  GetFileSize(std::string FileName) const override;
+	bool                    IsFileExists(std::string FileName) const override;
 
 private:
 	const std::string       m_Path;
-	const Priority          m_Priority;
 };

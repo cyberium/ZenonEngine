@@ -3,6 +3,20 @@
 // General
 #include "MaterialModel.h"
 
+const char* cTextureTypeNames[] =
+{
+	"Diffuse",
+	"Emissive",
+	"Ambient",
+	"Specular",
+	"Shininess",
+	"NormalMap",
+	"Bump",
+	"Transparency",
+	"Reflection",
+	"Displacement"
+};
+
 MaterialModel::MaterialModel(const IBaseManager& BaseManager)
 	: MaterialProxieT(BaseManager.GetApplication().GetRenderDevice(), "MaterialModel")
 	, m_BaseManager(BaseManager)
@@ -144,10 +158,21 @@ const std::shared_ptr<ITexture>& MaterialModel::GetTexture(ETextureType TextureT
 	return MaterialProxie::GetTexture((uint32)TextureType);
 }
 
+
+
+//
+// IMaterial
+//
+std::string MaterialModel::GetTextureTypeName(uint8 ID) const
+{
+	return cTextureTypeNames[ID];
+}
+
+
+
 //
 // Protected
 //
-
 void MaterialModel::PrintInfo()
 {
 	Log::Info("--------------------------------------------------");

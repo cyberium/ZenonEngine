@@ -6,16 +6,23 @@ class ZN_API CFile
 	: public IFile
 {
 public:
-	 CFile(const std::string& _fullFileName);
+	 CFile(const std::string& FullFileName, const std::shared_ptr<IFilesStorage>& OwnerFileStorage);
 	 virtual ~CFile();
 
 	 CByteBuffer& GetByteBuffer() { return m_ByteBuffer; }
 
 	 // IFile
-	 std::string Name() const override { return m_Name; }
-	 std::string Path() const override { return m_Path; }
-	 std::string Extension() const override { return m_Extension; }
-	 std::string Path_Name() const override { return std::string(m_Path + m_Name); }
+	 void ChangeExtension(const std::string& NewExtension) override;
+	 bool Save() override;
+	 bool SaveAs(const std::string& FileName) override;
+
+	 std::string Name() const override;
+	 std::string Path() const override;
+	 std::string Extension() const override;
+
+	 std::string Path_Name() const override;
+	 std::string Name_NoExtension() const override;
+
 
 	 // IByteBuffer
 	 size_t getSize() const override
@@ -92,17 +99,17 @@ public:
 		 m_ByteBuffer.writeString(String);
 	 }
 
-public:
-	static void FixFilePath(std::string& _string);
-
 private:
-	void ParsePathAndExtension();
+	void ParsePathAndExtension(const std::string& FullPath);
+	void RebuildFullName();
 
 protected:
 	CByteBuffer m_ByteBuffer;
 
 private: // IFile
 	std::string m_Name;
+	std::string m_NameWithoutExtension;
 	std::string m_Path;
 	std::string m_Extension;
+	std::shared_ptr<IFilesStorage> m_OwnerFilesStorage;
 };

@@ -16,6 +16,9 @@ public:
 
 	void Load(fbxsdk::FbxSurfaceMaterial* NativeMaterial);
 
+	// MaterialModel
+	void SetTexture(ETextureType TextureType, std::shared_ptr<ITexture> texture) override;
+
 	// IFBXMaterial
 	std::shared_ptr<IMaterial> GetMaterial() override;
 

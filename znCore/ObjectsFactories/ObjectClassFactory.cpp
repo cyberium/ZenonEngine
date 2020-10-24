@@ -116,7 +116,7 @@ Guid CObjectClassFactory::ReadGUIDXML(const std::shared_ptr<IXMLReader>& Reader)
 
 std::shared_ptr<IXMLWriter> CObjectClassFactory::WriteGUIDXML(Guid Guid)
 {
-	CXMLManager xmlManager;
+	CXMLManager xmlManager(m_BaseManager);
 	return xmlManager.CreateWriter(GetBaseManager().GetManager<IObjectsFactory>()->GetObjectClassNameByObjectClass(Guid.GetObjectClass()));
 }
 

@@ -44,7 +44,6 @@ private:
 private:
 	const IBaseManager& m_BaseManager;
 	IFBXScene& m_FBXScene;
-	std::string m_TexturePath;
 };
 
 #endif

@@ -12,10 +12,10 @@
 #include "FBXSkeleton.h"
 #include "FBXAnimation.h"
 
-CFBXScene::CFBXScene(const IBaseManager& BaseManager, fbxsdk::FbxManager* FBXManager, const std::string& TexturePath)
+CFBXScene::CFBXScene(const IBaseManager& BaseManager, fbxsdk::FbxManager* FBXManager, const std::shared_ptr<IznLoaderParams>& LoaderParams)
 	: m_BaseManager(BaseManager)
 	, m_NativeScene(nullptr)
-	, m_TexturesPath(TexturePath)
+	, m_LoaderParams(LoaderParams)
 {
 	FbxScene* fbxScene = FbxScene::Create(FBXManager, "Default FBX scene.");
 	if (fbxScene == nullptr)
@@ -238,9 +238,9 @@ std::shared_ptr<IFBXAnimation> CFBXScene::GetFBXAnimation() const
 	return m_Animation;
 }
 
-const std::string& CFBXScene::GetTexturesPath() const
+const std::shared_ptr<IznLoaderParams>& CFBXScene::GetLoaderParams() const const
 {
-	return m_TexturesPath;
+	return m_LoaderParams;
 }
 
 std::shared_ptr<IModel> CFBXScene::MergeModels()

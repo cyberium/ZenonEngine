@@ -19,7 +19,7 @@ ZenonWindow3D::~ZenonWindow3D()
 //
 void ZenonWindow3D::onCustomContextMenu(const QPoint& pos)
 {
-	QMenu * menu = new QMenu(this);
+	QMenu * menu = DEBUG_NEW QMenu(this);
 
 	auto node = m_Editor->Get3DFrame().GetNodeUnderMouse(glm::ivec2(pos.x(), pos.y()));
 	if (node == nullptr)
@@ -31,7 +31,7 @@ void ZenonWindow3D::onCustomContextMenu(const QPoint& pos)
 		return;
 
 	/* Create actions to the context menu */
-	QAction* nameAction = new QAction(title.c_str(), this);
+	QAction* nameAction = DEBUG_NEW QAction(title.c_str(), this);
 	nameAction->setEnabled(false);
 
 	/* Set the actions to the menu */
@@ -39,7 +39,7 @@ void ZenonWindow3D::onCustomContextMenu(const QPoint& pos)
 	menu->addSeparator();
 	for (const auto& act : actions)
 	{
-		QAction * action = new QAction(act->GetName().c_str(), this);
+		QAction * action = DEBUG_NEW QAction(act->GetName().c_str(), this);
 		connect(action, &QAction::triggered, this, [act] {
 			act->ExecuteAction();
 		});

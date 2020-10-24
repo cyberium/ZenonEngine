@@ -104,7 +104,7 @@ void ZenonSceneViewerWidget::onCustomContextMenu(const QPoint& point)
 		return;
 
 	/* Create actions to the context menu */
-	QAction* nameAction = new QAction(title.c_str(), this);
+	QAction* nameAction = DEBUG_NEW QAction(title.c_str(), this);
 	nameAction->setEnabled(false);
 
 	/* Set the actions to the menu */
@@ -112,7 +112,7 @@ void ZenonSceneViewerWidget::onCustomContextMenu(const QPoint& point)
 	m_ContextMenu->addSeparator();
 	for (const auto& act : actions)
 	{
-		QAction * action = new QAction(act->GetName().c_str(), this);
+		QAction * action = DEBUG_NEW QAction(act->GetName().c_str(), this);
 		connect(action, &QAction::triggered, this, [act] {
 			act->ExecuteAction();
 		});

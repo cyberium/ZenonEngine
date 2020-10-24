@@ -31,7 +31,7 @@ void CPassDeffered_ProcessLights::CreateShadowPipeline()
 	auto shadowPipeline = GetRenderDevice().GetObjectsFactory().CreatePipelineState();
 	shadowPipeline->GetBlendState()->SetBlendMode(disableBlending);
 	shadowPipeline->GetDepthStencilState()->SetDepthMode(enableDepthWrites);
-	//shadowPipeline->GetRasterizerState()->SetDepthBias(10.f);
+	shadowPipeline->GetRasterizerState()->SetDepthBias(-5.f);
 	shadowPipeline->GetRasterizerState()->SetCullMode(IRasterizerState::CullMode::Front);
 	shadowPipeline->GetRasterizerState()->SetFillMode(IRasterizerState::FillMode::Solid, IRasterizerState::FillMode::Solid);
 	//shadowPipeline->GetRasterizerState()->SetAntialiasedLineEnable(true);

@@ -14,8 +14,8 @@ public:
 	// IznModelsLoader
 	std::string GetName() const override;
 	bool IsSupportedFormat(const std::shared_ptr<IFile>& ModelFile) const override;
-	std::shared_ptr<IModel> LoadModel(const std::shared_ptr<IFile>& ModelFile, const std::string& TexturesPath = "") const override;
-
+	std::shared_ptr<IModel> LoadModel(const std::shared_ptr<IFile>& ModelFile, const std::shared_ptr<IznLoaderParams>& LoaderParams) const override;
+	std::shared_ptr<IFile> SaveModel(const std::shared_ptr<IModel>& Model, const std::string& FileName) const override;
 
 private:
 	fbxsdk::FbxManager* m_FBXManager;

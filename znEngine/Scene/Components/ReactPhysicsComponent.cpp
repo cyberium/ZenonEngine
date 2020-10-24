@@ -37,7 +37,7 @@ void Test()
 	indices[20] = 0; indices[21] = 4; indices[22] = 7; indices[23] = 3;
 
 	// Description of the six faces of the convex mesh
-	PolygonVertexArray::PolygonFace* polygonFaces = new PolygonVertexArray::PolygonFace[6];
+	PolygonVertexArray::PolygonFace* polygonFaces = DEBUG_NEW PolygonVertexArray::PolygonFace[6];
 	PolygonVertexArray::PolygonFace * face = polygonFaces;
 	for (int f = 0; f < 6; f++) 
 	{
@@ -49,7 +49,7 @@ void Test()
 	}
 
 	// Create the polygon vertex array
-	PolygonVertexArray * polygonVertexArray = new PolygonVertexArray(8, vertices, 3 * sizeof(float), indices, sizeof(int), 6, polygonFaces, PolygonVertexArray::VertexDataType::VERTEX_FLOAT_TYPE, PolygonVertexArray::IndexDataType::INDEX_INTEGER_TYPE);
+	PolygonVertexArray * polygonVertexArray = DEBUG_NEW PolygonVertexArray(8, vertices, 3 * sizeof(float), indices, sizeof(int), 6, polygonFaces, PolygonVertexArray::VertexDataType::VERTEX_FLOAT_TYPE, PolygonVertexArray::IndexDataType::INDEX_INTEGER_TYPE);
 	// Create the polyhedron mesh
 	//PolyhedronMesh * polyhedronMesh = physicsCommon.createPolyhedronMesh(polygonVertexArray);
 	// Create the convex mesh collision shape

@@ -13,6 +13,7 @@ namespace Utils
 	ZN_API glm::vec4 ToVec4(const std::string& _string);
 
 	ZN_API std::vector<std::string> ArgumentsToVector(int argumentsCount, char* arguments[]);
+	ZN_API std::string FixFilePath(const std::string& FilePath);
 	ZN_API std::vector<std::string> GetAllFilesInDirectory(const std::string& Directory, const std::string& FileExtention, const std::vector<std::string> DirSkipList = { });
 };
 

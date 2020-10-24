@@ -88,21 +88,9 @@ typedef glm::vec3 ColorRBG;
 #define __PACK_BEGIN  "../shared/pack_begin.h"
 #define __PACK_END  "../shared/pack_end.h"
 
-//#ifdef _DEBUG
-//	#define _CRTDBG_MAP_ALLOC
-//	#include <crtdbg.h>	
-
-	//template <typename T, typename... Args>
-	//inline T* ZNAllocate(int _BlockUse, char const* _FileName, int _LineNumber, Args &&... _Args)
-	//{
-	//	if (void* ptr = _malloc_dbg(sizeof(T), _BlockUse, _FileName, _LineNumber))
-	//	{
-	//		*((T*)ptr) = T(std::forward<Args>(_Args)...);
-	//		return (T*)ptr;
-	//	}
-	//
-	//	return nullptr;
-	//}
+#ifdef _DEBUG
+	#define _CRTDBG_MAP_ALLOC
+	#include <crtdbg.h>	
 
 	/*inline void* operator new(size_t sz, int _BlockUse, char const* _FileName, int _LineNumber)
 	{
@@ -116,58 +104,14 @@ typedef glm::vec3 ColorRBG;
 		_free_dbg(ptr, _BlockUse);
 	}*/
 
-/*
-	template <class T>
-	struct custom_allocator 
-	{
-		typedef T value_type;
-		int BlockUse;
-		char const* FileName;
-		int LineNumber;
 
-		custom_allocator(int _BlockUse, char const* _FileName, int _LineNumber) noexcept
-			: BlockUse(_BlockUse)
-			, FileName(_FileName)
-			, LineNumber(_LineNumber)
-		{}
+	#define DEBUG_NEW new(_NORMAL_BLOCK, __FILE__, __LINE__)
 
-		template <class U> 
-		custom_allocator(const custom_allocator<U>& Other) noexcept 
-		{
-			BlockUse = Other.BlockUse;
-			FileName = Other.FileName;
-			LineNumber = Other.LineNumber;
-			//std::cout << "custom_allocator<T>::custom_allocator(const custom_allocator<U>&): "
-			//	<< "\n\tT: " << get_class_name<T>()
-			//	<< "\n\tU: " << get_class_name<U>() << std::endl;
-		}
+	#define MakeShared(CLASS, ...) std::shared_ptr<CLASS>(DEBUG_NEW CLASS(__VA_ARGS__))
 
-		T* allocate(std::size_t n) 
-		{
-			//std::cout << "Allocating: " << get_class_name<T>() << std::endl;
-			return (T*)(_malloc_dbg(n, BlockUse, FileName, LineNumber)); //reinterpret_cast<T*>(::operator new(n * sizeof(T)));
-		}
-		void deallocate(T* p, std::size_t n) 
-		{
-			_free_dbg(p, BlockUse);
-			//std::cout << "Deallocating: " << get_class_name<T>() << std::endl;
-			//::operator delete(p);
-		}
-	};
-
-	//#define DEBUG_NEW new(_NORMAL_BLOCK, __FILE__, __LINE__)
-	//#define new DEBUG_NEW
-
-	//#define MakeShared(CLASS, ...) std::shared_ptr<CLASS>(new CLASS(__VA_ARGS__), [=](CLASS* ___Object) { delete ___Object; })
-	//#define MakeShared(CLASS, ...) std::allocate_shared<CLASS>(custom_allocator<CLASS>(_NORMAL_BLOCK, __FILE__, __LINE__), __VA_ARGS__)
-
-	#define MakeShared(CLASS, ...) std::shared_ptr<CLASS>(std::default_delete<CLASS>(), custom_allocator<CLASS>()
-
-	//#undef new
-	*/
-//#else
+#else
 	#define MakeShared(CLASS, ...) std::make_shared<CLASS>(__VA_ARGS__)
-//#endif
+#endif
 
 //---------------------------------------------------------//
 //--                   Base Types                        --//

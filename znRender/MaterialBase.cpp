@@ -25,7 +25,6 @@ MaterialBase::~MaterialBase()
 //
 // IMaterial
 //
-
 void MaterialBase::SetTexture(uint8 ID, const std::shared_ptr<ITexture> texture)
 {
 	m_Textures[ID] = texture;
@@ -39,6 +38,11 @@ const std::shared_ptr<ITexture>& MaterialBase::GetTexture(uint8 ID) const
 		throw CznRenderException("MaterialBase: Texture with index '%d' not found in material '%s'.", ID, GetName().c_str());
 
 	return iter->second;
+}
+
+std::string MaterialBase::GetTextureTypeName(uint8 ID) const
+{
+	return "Type" + std::to_string(ID);
 }
 
 void MaterialBase::SetSampler(uint8 ID, const std::shared_ptr<ISamplerState> samplerState)
@@ -127,6 +131,7 @@ void MaterialBase::Load(const std::shared_ptr<IByteBuffer>& ByteBuffer)
 
 	size_t texturesCount;
 	ByteBuffer->read(&texturesCount);
+	Log::Info("Material: Load '%d' textures.", texturesCount);
 	for (size_t i = 0; i < texturesCount; i++)
 	{
 		uint8 textureIndex;
@@ -145,9 +150,11 @@ void MaterialBase::Load(const std::shared_ptr<IByteBuffer>& ByteBuffer)
 		if (m_Textures.find(textureIndex) != m_Textures.end())
 		{
 			Log::Error("MaterialBase: Texture with index '%d' already set.", textureIndex);
+			continue;
 		}
 
 		m_Textures.insert(std::make_pair(textureIndex, texture));
+		Log::Info("Material: Load '%s' texture '%s'.", GetTextureTypeName(textureIndex).c_str(), textureFileName.c_str());
 	}
 }
 
@@ -161,6 +168,7 @@ void MaterialBase::Save(const std::shared_ptr<IByteBuffer>& ByteBuffer) const
 	// Textures
 	size_t texturesCount = m_Textures.size();
 	ByteBuffer->write(&texturesCount);
+	Log::Info("Material: Saving '%d' textures.", texturesCount);
 	for (const auto& it : m_Textures)
 	{
 		if (it.second == nullptr)
@@ -177,6 +185,7 @@ void MaterialBase::Save(const std::shared_ptr<IByteBuffer>& ByteBuffer) const
 
 			ByteBuffer->write(&it.first);
 			ByteBuffer->writeString(fileNameOwner->GetFileName());
+			Log::Info("Material: Save '%s' texture '%s'.", GetTextureTypeName(it.first).c_str(), fileNameOwner->GetFileName().c_str());
 		}
 		else
 			throw CException("Texture [%d] don't support 'IFileNameOwner'.");

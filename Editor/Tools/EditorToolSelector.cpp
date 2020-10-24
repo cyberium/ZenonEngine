@@ -143,7 +143,7 @@ void CEditorToolSelector::DoInitialize3D(const std::shared_ptr<IRenderer>& Rende
 	m_SelectionTexture->GetProperties()->GetPropertyT<glm::vec4>("Color")->Set(glm::vec4(0.1f, 0.3f, 1.0f, 0.3f));
 
 	m_DrawSelectionPass = MakeShared(CDrawSelectionPass, GetRenderDevice(), *this);
-	m_DrawSelectionPass->ConfigurePipeline(Renderer->GetRenderTarget(), Viewport);
+	m_DrawSelectionPass->ConfigurePipeline(RenderTarget, Viewport);
 	Renderer->AddPass(m_DrawSelectionPass);
 }
 

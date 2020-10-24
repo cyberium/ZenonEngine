@@ -51,9 +51,9 @@ bool CznFBXModelsLoader::IsSupportedFormat(const std::shared_ptr<IFile>& ModelFi
 	return ModelFile->Extension() == "fbx";
 }
 
-std::shared_ptr<IModel> CznFBXModelsLoader::LoadModel(const std::shared_ptr<IFile>& ModelFile, const std::string & TexturesPath) const
+std::shared_ptr<IModel> CznFBXModelsLoader::LoadModel(const std::shared_ptr<IFile>& ModelFile, const std::shared_ptr<IznLoaderParams>& LoaderParams) const
 {
-	auto FBXScene = MakeShared(CFBXScene, m_BaseManager, m_FBXManager, TexturesPath);
+	auto FBXScene = MakeShared(CFBXScene, m_BaseManager, m_FBXManager, LoaderParams);
 	if (!FBXScene->LoadFromFile(ModelFile))
 		throw CException("FBXModelsLoade: Unable to load '%s'", ModelFile->Name().c_str());
 
@@ -64,6 +64,11 @@ std::shared_ptr<IModel> CznFBXModelsLoader::LoadModel(const std::shared_ptr<IFil
 	//const auto& firstModel = models[0];
 	//return firstModel->GetModel();
 	return FBXScene->MergeModels();
+}
+
+std::shared_ptr<IFile> CznFBXModelsLoader::SaveModel(const std::shared_ptr<IModel>& Model, const std::string & FileName) const
+{
+	throw CException("Operation not supported.");
 }
 
 #endif

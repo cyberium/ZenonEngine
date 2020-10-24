@@ -60,18 +60,19 @@ void CFBXMaterial::Load(fbxsdk::FbxSurfaceMaterial* NativeMaterial)
 	MaterialData().VectorDisplacementFactor = ToFloat(surfacePhong->VectorDisplacementFactor);
 
 	MaterialData().Specular = ToGLMVec3(surfacePhong->Specular);
-	MaterialData().SpecularFactor = ToFloat(surfacePhong->SpecularFactor);
+	MaterialData().SpecularFactor = /*ToFloat(surfacePhong->SpecularFactor) **/ 16.0f;
 
 	MaterialData().Reflection = ToGLMVec3(surfacePhong->Reflection);
 	MaterialData().ReflectionFactor = ToFloat(surfacePhong->ReflectionFactor);
 
 	MarkMaterialDataDirty();
 
-	//PrintInfo();
+	PrintInfo();
 
 	for (int j = 0; j < fbxsdk::FbxLayerElement::sTypeTextureCount; j++)
 	{
-		fbxsdk::FbxProperty lProperty = surfacePhong->FindProperty(fbxsdk::FbxLayerElement::sTextureChannelNames[j]);
+		volatile auto channelName = fbxsdk::FbxLayerElement::sTextureChannelNames[j];
+		fbxsdk::FbxProperty lProperty = surfacePhong->FindProperty(channelName);
 		if (!lProperty.IsValid())
 		{
 			continue;
@@ -184,6 +185,26 @@ void CFBXMaterial::Load(fbxsdk::FbxSurfaceMaterial* NativeMaterial)
 
 
 //
+// MaterialModel
+//
+void CFBXMaterial::SetTexture(ETextureType TextureType, std::shared_ptr<ITexture> texture)
+{
+	ETextureType textureType = TextureType;
+
+	auto loaderParams = m_FBXNode.GetFBXScene().GetLoaderParams();
+	if (auto loaderFBXParams = std::dynamic_pointer_cast<CznFBXLoaderParams>(loaderParams))
+	{
+		const auto& it = loaderFBXParams->TexturesTypeChange.find((uint8)textureType);
+		if (it != loaderFBXParams->TexturesTypeChange.end())
+			textureType = (ETextureType)it->second;
+	}
+
+	__super::SetTexture(textureType, texture);
+}
+
+
+
+//
 // IFBXMaterial
 //
 std::shared_ptr<IMaterial> CFBXMaterial::GetMaterial()
@@ -198,7 +219,7 @@ std::shared_ptr<IMaterial> CFBXMaterial::GetMaterial()
 //
 std::shared_ptr<ITexture> CFBXMaterial::LoadTexture(fbxsdk::FbxTexture * Texture)
 {
-	Log::Print("FBXMaterial: Loading texture '%s' with.", Texture->GetName());
+	Log::Print("FBXMaterial: Loading '%s' texture '%s'.", Texture->GetTextureType().Buffer(), Texture->GetName());
 
 	_ASSERT_EXPR(Texture->Is<fbxsdk::FbxFileTexture>(), "FBX texture must be 'FbxFileTexture'.");
 	fbxsdk::FbxFileTexture* fileTexture = fbxsdk::FbxCast<fbxsdk::FbxFileTexture>(Texture);
@@ -208,9 +229,13 @@ std::shared_ptr<ITexture> CFBXMaterial::LoadTexture(fbxsdk::FbxTexture * Texture
 
 	std::string fileName = fileTexture->GetRelativeFileName();
 
-	std::string texturesPath = m_FBXNode.GetFBXScene().GetTexturesPath();
-	if (texturesPath.size() > 0)
-		fileName = texturesPath + "/" + fileName;
+	auto loaderParams = m_FBXNode.GetFBXScene().GetLoaderParams();
+	if (auto loaderFBXParams = std::dynamic_pointer_cast<CznFBXLoaderParams>(loaderParams))
+	{
+		std::string texturesRoot = loaderFBXParams->TexturesPathRoot;
+		if (texturesRoot.size() > 0)
+			fileName = texturesRoot + "/" + fileName;
+	}
 
 	//fileName = "C:/_engine/ZenonEngine_gamedata/Toon_RTS/Orcs/models/Materials/textures/ORC_StandardUnits.png";
 

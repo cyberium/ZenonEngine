@@ -6,66 +6,55 @@
 // Additional
 #include "File.h"
 
-CLocalFilesStorage::CLocalFilesStorage(std::string _path, Priority _priority)
+CLocalFilesStorage::CLocalFilesStorage(std::string _path)
 	: m_Path(_path)
-	, m_Priority(_priority)
-{
-}
+{}
 
 CLocalFilesStorage::~CLocalFilesStorage()
-{
-}
+{}
+
 
 
 //
 // IFilesStorage
 //
+std::shared_ptr<IFile> CLocalFilesStorage::Create(std::string FileName)
+{
+	if (IsFileExists(FileName))
+		throw CException("File '%s' already exists.", FileName.c_str());
+	return MakeShared(CFile, FileName, shared_from_this());
+}
+
 std::shared_ptr<IFile> CLocalFilesStorage::OpenFile(std::string FileName, EFileAccessType FileAccessType)
 {
-	std::shared_ptr<CFile> file = MakeShared(CFile, FileName);
-	CByteBuffer& byteBuffer = file->GetByteBuffer();
-
 	std::ifstream stream;
-	stream.open(std::string(m_Path + file->Path_Name()), std::ios::binary);
+	stream.open(std::string(m_Path + FileName), std::ios::binary);
 
-	if (stream.is_open())
-	{
-		// Filesize
-		stream.seekg(0, stream.end);
-		uint32_t fileSize = uint32_t(stream.tellg());
-		stream.seekg(0, stream.beg);
+	if (false == stream.is_open())
+		throw CException("Unable to open file '%s'.", FileName.c_str());
 
-		// Check filesize
-		if (fileSize == 0)
-		{
-			char buff[256];
-			sprintf_s(buff, "File[%s]: Is empty!", file->Path_Name().c_str());
-			_ASSERT_EXPR(false, buff);
-			return nullptr;
-		}
+	// Filesize
+	stream.seekg(0, stream.end);
+	uint32_t fileSize = uint32_t(stream.tellg());
+	stream.seekg(0, stream.beg);
 
-		// Read data
-		std::vector<uint8> buffer;
-		buffer.resize(fileSize);
-		stream.read(reinterpret_cast<char*>(&buffer[0]), fileSize);
+	// Check filesize
+	if (fileSize == 0)
+		throw CException("File '%s' is empty.", FileName.c_str());
 
-		byteBuffer = std::move(CByteBuffer(std::move(buffer)));
+	// Read data
+	std::vector<uint8> buffer;
+	buffer.resize(fileSize);
+	stream.read(reinterpret_cast<char*>(&buffer[0]), fileSize);
+
+	std::shared_ptr<CFile> file = MakeShared(CFile, FileName, shared_from_this());
+	CByteBuffer& byteBuffer = file->GetByteBuffer();
+	byteBuffer = std::move(CByteBuffer(std::move(buffer)));
 		
-		std::streamsize readedBytes = stream.gcount();
-		if (readedBytes < fileSize)
-		{
-			char buff[256];
-			sprintf_s(buff, "File[%s]: Stream reading error. Readed [%d], filesize [%d]", file->Path_Name().c_str(), static_cast<int64>(readedBytes), fileSize);
-			_ASSERT_EXPR(false, buff);
-			return nullptr;
-		}
-
-	}
-	else
-	{
-		_ASSERT_EXPR(false, L"Unable to open file.");
-	}
-
+	std::streamsize readedBytes = stream.gcount();
+	if (readedBytes < fileSize)
+		throw CException("File '%s' stream reading error. Readed [%d]. Filesize [%d]", file->Path_Name().c_str(), static_cast<int64>(readedBytes), fileSize);
+	
 	// Close stream
 	stream.close();
 	stream.clear();
@@ -84,16 +73,14 @@ bool CLocalFilesStorage::SaveFile(std::shared_ptr<IFile> File)
 		stream.flush();
 	}
 	else
-	{
-		throw CException("Unable to open file.");
-	}
+		throw CException("Unable to open file '%s'.", File->Path_Name().c_str());
 
 	stream.close();
 
 	return true;
 }
 
-size_t CLocalFilesStorage::GetFileSize(std::string FileName)
+size_t CLocalFilesStorage::GetFileSize(std::string FileName) const
 {
 	std::ifstream stream;
 	stream.open(std::string(m_Path + FileName), std::ios::binary);
@@ -106,9 +93,7 @@ size_t CLocalFilesStorage::GetFileSize(std::string FileName)
 		stream.seekg(0, stream.beg);
 	}
 	else
-	{
-		_ASSERT_EXPR(false, L"Unable to open file.");
-	}
+		throw CException("Unable to open file '%s'.", FileName.c_str());
 
 	stream.clear();
 	stream.close();
@@ -116,7 +101,7 @@ size_t CLocalFilesStorage::GetFileSize(std::string FileName)
 	return fileSize;
 }
 
-bool CLocalFilesStorage::IsFileExists(std::string FileName)
+bool CLocalFilesStorage::IsFileExists(std::string FileName) const
 {
 	std::ifstream stream;
 	stream.open(std::string(m_Path + FileName), std::ios::binary);
@@ -127,14 +112,4 @@ bool CLocalFilesStorage::IsFileExists(std::string FileName)
 	stream.close();
 
 	return isOpen;
-}
-
-
-
-//
-// IFilesStorageEx
-//
-IFilesStorageEx::Priority CLocalFilesStorage::GetPriority() const
-{
-	return m_Priority;
 }

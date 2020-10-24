@@ -5,7 +5,6 @@
 // Files
 #include "../znCore/Files/ByteBuffer.h"
 #include "../znCore/Files/ByteBufferOnlyPointer.h"
-#include "../znCore/Files/File.h"
 #include "../znCore/Files/ChunkedFile.h"
 #include "../znCore/Files/LocalFilesStorage.h"
 #include "../znCore/Files/LibraryResourceFileStotage.h"

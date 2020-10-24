@@ -182,11 +182,11 @@ void CEditorToolMoverRTS::DoInitializeUI(IEditorQtUIFrame & QtUIFrame)
 	btn->setContextMenuPolicy(Qt::CustomContextMenu);
 	btn->connect(btn, &QPushButton::customContextMenuRequested, [this, btn](const QPoint& Point) {
 		// Add context menu for scene node viewer
-		auto contextMenu = new QMenu(btn);
+		auto contextMenu = DEBUG_NEW QMenu(btn);
 		contextMenu->setTitle("Some context menu title.");
 		contextMenu->clear();
 
-		QAction* nameAction = new QAction("Test", btn);
+		QAction* nameAction = DEBUG_NEW QAction("Test", btn);
 		nameAction->setEnabled(false);
 
 		contextMenu->addAction(nameAction);

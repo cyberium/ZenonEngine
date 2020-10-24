@@ -580,7 +580,7 @@ void SceneNode3D::DoLoadProperties(const std::shared_ptr<IXMLReader>& Reader) co
 
 void SceneNode3D::DoSaveProperties(const std::shared_ptr<IXMLWriter>& Writer) const
 {
-	CXMLManager xml;
+	CXMLManager xml(GetBaseManager());
 	auto propertiesWriter = xml.CreateWriter(GetProperties()->GetName());
 	GetProperties()->Save(propertiesWriter);
 	

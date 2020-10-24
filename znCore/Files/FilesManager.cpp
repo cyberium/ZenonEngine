@@ -3,42 +3,48 @@
 // General
 #include "FilesManager.h"
 
+// Additional
+#include "File.h"
 
 CFilesManager::CFilesManager(IBaseManager& BaseManager)
 	: m_BaseManager(BaseManager)
-{
-}
+{}
 
 CFilesManager::~CFilesManager()
 {
 	m_BaseManager.RemoveManager<IFilesManager>();
 }
 
-std::shared_ptr<IFile> CFilesManager::Open(std::string FileName, EFileAccessType FileAccessType)
+
+
+//
+// IFilesManager
+//
+std::shared_ptr<IFile> CFilesManager::Create(std::string FileName) const
+{
+	return GetGamedataStorage()->Create(FileName);
+}
+
+std::shared_ptr<IFile> CFilesManager::Open(std::string FileName, EFileAccessType FileAccessType) const
 {
 	for (const auto& fs : m_Storages)
-	{
 		if (fs.second->IsFileExists(FileName))
 			return fs.second->OpenFile(FileName);
-	}
 
-	Log::Error("[CFilesManager]: File '%s' not found.", FileName.c_str());
+	Log::Warn("FilesManager: File '%s' not found.", FileName.c_str());
 	return nullptr;
 }
 
-size_t CFilesManager::GetFileSize(std::string FileName)
+size_t CFilesManager::GetFileSize(std::string FileName) const
 {
 	for (const auto& fs : m_Storages)
-	{
-		size_t fileSize = fs.second->GetFileSize(FileName);
-		if (fileSize != 0)
-			return fileSize;
-	}
+		if (fs.second->IsFileExists(FileName))
+			return fs.second->GetFileSize(FileName);
 
 	return 0;
 }
 
-bool CFilesManager::IsFileExists(std::string FileName)
+bool CFilesManager::IsFileExists(std::string FileName) const
 {
 	for (const auto& fs : m_Storages)
 		if (fs.second->IsFileExists(FileName))
@@ -47,28 +53,47 @@ bool CFilesManager::IsFileExists(std::string FileName)
 	return false;
 }
 
-void CFilesManager::AddFilesStorage(std::string StorageName, std::shared_ptr<IFilesStorage> Storage)
+void CFilesManager::AddStorage(EFilesStorageType FilesStorageType, std::shared_ptr<IFilesStorage> Storage)
 {
-	_ASSERT(std::dynamic_pointer_cast<IFilesStorageEx>(Storage));
+	if (FilesStorageType == EFilesStorageType::GAMEDATA)
+		if (auto gameDataStorage = GetStorage(EFilesStorageType::GAMEDATA))
+			throw CException("FilesManager: Unable to register second GAMEDATA storage.");
 
-	m_Storages.insert(std::make_pair(StorageName, Storage));
-
-	/*std::sort(m_Storages.begin(), m_Storages.end(),
-		[](const std::pair<std::string, std::shared_ptr<IFilesStorage>>& a, const std::pair<std::string, std::shared_ptr<IFilesStorage>>& b)
-		{
-			std::shared_ptr<const IFilesStorageEx> aEx = std::dynamic_pointer_cast<const IFilesStorageEx>(a.second);
-			std::shared_ptr<const IFilesStorageEx> bEx = std::dynamic_pointer_cast<const IFilesStorageEx>(b.second);
-			return aEx->GetPriority() > bEx->GetPriority();
-		}
-	);*/
+	m_Storages.push_back(std::make_pair(FilesStorageType, Storage));
 }
 
-void CFilesManager::RemoveFilesStorage(std::shared_ptr<IFilesStorage> Storage)
+void CFilesManager::RemoveStorage(std::shared_ptr<IFilesStorage> Storage)
 {
-	_ASSERT(false);
+	const auto& it = std::find_if(m_Storages.begin(), m_Storages.end(), [Storage](const std::pair<EFilesStorageType, std::shared_ptr<IFilesStorage>>& StoragePair) -> bool {
+		return StoragePair.second == Storage;
+	});
+	if (it == m_Storages.end())
+	{
+		Log::Warn("FilesManager: Unable to remove file storage, because not found.");
+		return;
+	}
+	m_Storages.erase(it);
 }
 
-std::shared_ptr<IFilesStorage> CFilesManager::GetFilesStorage(std::string StorageName) const
+std::shared_ptr<IFilesStorage> CFilesManager::GetStorage(EFilesStorageType FilesStorageType) const
 {
-	return m_Storages.at(StorageName);
+	const auto& it = std::find_if(m_Storages.begin(), m_Storages.end(), [FilesStorageType](const std::pair<EFilesStorageType, std::shared_ptr<IFilesStorage>>& StoragePair) -> bool {
+		return StoragePair.first == FilesStorageType;
+	});
+	if (it == m_Storages.end())
+		return nullptr;
+	return it->second;
+}
+
+
+
+//
+// Private
+//
+std::shared_ptr<IFilesStorage> CFilesManager::GetGamedataStorage() const
+{
+	auto gamedataStorage = GetStorage(EFilesStorageType::GAMEDATA);
+	if (gamedataStorage == nullptr)
+		throw CException("FilesManager: GAMEDATA storage doen't found.");
+	return gamedataStorage;
 }

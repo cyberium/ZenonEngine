@@ -19,7 +19,7 @@ public:
 		, m_Parent(Parent)
 	{
 		for (const auto& ch : m_TObject->GetChilds())
-			addChild(new CQtToZenonTreeItem(ch, this));
+			addChild(DEBUG_NEW CQtToZenonTreeItem(ch, this));
 	}
 	virtual ~CQtToZenonTreeItem()
 	{
@@ -30,7 +30,7 @@ public:
 	{
 		m_TObject = TObject;
 		for (const auto& ch : m_TObject->GetChilds())
-			addChild(new CQtToZenonTreeItem(ch, this));
+			addChild(DEBUG_NEW CQtToZenonTreeItem(ch, this));
 	}
 
 	void addChild(CQtToZenonTreeItem * child)

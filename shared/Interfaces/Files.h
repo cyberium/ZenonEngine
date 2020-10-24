@@ -63,57 +63,55 @@ ZN_INTERFACE ZN_API IByteBufferEx
 
 ZN_INTERFACE ZN_API IFile 
 	: public IByteBuffer
+	, public std::enable_shared_from_this<IFile>
 {
 	virtual ~IFile() {}
+
+	virtual void ChangeExtension(const std::string& NewExtension) = 0;
+	virtual bool Save() = 0;
+	virtual bool SaveAs(const std::string& FileName) = 0;
 
 	virtual std::string  Name() const = 0;
 	virtual std::string  Path() const = 0;
 	virtual std::string  Extension() const = 0;
+
 	virtual std::string  Path_Name() const = 0;
+	virtual std::string  Name_NoExtension() const = 0;
 };
 
 //--
 
 ZN_INTERFACE ZN_API IFilesStorage
+	: public std::enable_shared_from_this<IFilesStorage>
 {
 	virtual ~IFilesStorage() {};
 
+	virtual std::shared_ptr<IFile>  Create(std::string FileName) = 0;
 	virtual std::shared_ptr<IFile>  OpenFile(std::string FileName, EFileAccessType FileAccessType = EFileAccessType::Read) = 0;
 	virtual bool                    SaveFile(std::shared_ptr<IFile> File) = 0;
-	virtual size_t                  GetFileSize(std::string FileName) = 0;
-	virtual bool                    IsFileExists(std::string FileName) = 0;
+	virtual size_t                  GetFileSize(std::string FileName) const = 0;
+	virtual bool                    IsFileExists(std::string FileName) const = 0;
 };
 
 //--
 
-ZN_INTERFACE ZN_API	IFilesStorageEx
+enum class ZN_API EFilesStorageType
 {
-	enum class ZN_API Priority
-	{
-		PRIOR_LOWEST = 0,
-		PRIOR_LOW,
-		PRIOR_NORMAL,
-		PRIOR_HIGH,
-		PRIOR_HIGHEST
-	};
-
-	virtual ~IFilesStorageEx() {};
-
-	virtual Priority GetPriority() const = 0;
+	GAMEDATA = 0,
+	ADDITIONAL
 };
-
-//--
 
 ZN_INTERFACE ZN_API __declspec(uuid("5DC32EB8-9A63-4FAD-A4BF-81916B8EF86A")) IFilesManager 
 	: public IManager
 {
 	virtual ~IFilesManager() {}
 
-	virtual std::shared_ptr<IFile> Open(std::string FileName, EFileAccessType FileAccessType = EFileAccessType::Read) = 0;
-	virtual size_t GetFileSize(std::string FileName) = 0;
-	virtual bool IsFileExists(std::string FileName) = 0;
+	virtual std::shared_ptr<IFile> Create(std::string FileName) const = 0;
+	virtual std::shared_ptr<IFile> Open(std::string FileName, EFileAccessType FileAccessType = EFileAccessType::Read) const = 0;
+	virtual size_t GetFileSize(std::string FileName) const = 0;
+	virtual bool IsFileExists(std::string FileName) const = 0;
 
-	virtual void AddFilesStorage(std::string StorageName, std::shared_ptr<IFilesStorage> Storage) = 0;
-	virtual void RemoveFilesStorage(std::shared_ptr<IFilesStorage> Storage) = 0;
-	virtual std::shared_ptr<IFilesStorage> GetFilesStorage(std::string StorageName) const = 0;
+	virtual void AddStorage(EFilesStorageType FilesStorageType, std::shared_ptr<IFilesStorage> Storage) = 0;
+	virtual void RemoveStorage(std::shared_ptr<IFilesStorage> Storage) = 0;
+	virtual std::shared_ptr<IFilesStorage> GetStorage(EFilesStorageType FilesStorageType) const = 0;
 };

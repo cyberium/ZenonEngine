@@ -85,6 +85,9 @@
     <Filter Include="Objects\Typed creators">
       <UniqueIdentifier>{97c61480-573e-483c-83a4-9732e99153ea}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Files\Storages">
+      <UniqueIdentifier>{a7fc127f-95ba-42bf-a7ad-dea6aec0eb7a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -127,12 +130,6 @@
       <Filter>Files</Filter>
     </ClCompile>
     <ClCompile Include="Files\FilesManager.cpp">
-      <Filter>Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Files\LibraryResourceFileStotage.cpp">
-      <Filter>Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Files\LocalFilesStorage.cpp">
       <Filter>Files</Filter>
     </ClCompile>
     <ClCompile Include="Passes\RenderPass.cpp">
@@ -318,6 +315,12 @@
     <ClCompile Include="Files\ByteBufferHelper.cpp">
       <Filter>Files</Filter>
     </ClCompile>
+    <ClCompile Include="Files\LocalFilesStorage.cpp">
+      <Filter>Files\Storages</Filter>
+    </ClCompile>
+    <ClCompile Include="Files\LibraryResourceFileStotage.cpp">
+      <Filter>Files\Storages</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="common.h">
@@ -495,12 +498,6 @@
       <Filter>Files</Filter>
     </ClInclude>
     <ClInclude Include="Files\FilesManager.h">
-      <Filter>Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Files\LibraryResourceFileStotage.h">
-      <Filter>Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Files\LocalFilesStorage.h">
       <Filter>Files</Filter>
     </ClInclude>
     <ClInclude Include="..\shared\Interfaces\Render\IImageLoader.h">
@@ -778,6 +775,12 @@
     </ClInclude>
     <ClInclude Include="..\shared\Interfaces\ModelsManager.h">
       <Filter>__Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="Files\LocalFilesStorage.h">
+      <Filter>Files\Storages</Filter>
+    </ClInclude>
+    <ClInclude Include="Files\LibraryResourceFileStotage.h">
+      <Filter>Files\Storages</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

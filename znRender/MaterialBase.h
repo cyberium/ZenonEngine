@@ -12,6 +12,7 @@ public:
 	// IMaterial
 	virtual void  SetTexture(uint8 ID, const std::shared_ptr<ITexture> texture) override;
 	virtual const std::shared_ptr<ITexture>& GetTexture(uint8 ID) const override;
+	virtual std::string GetTextureTypeName(uint8 ID) const override;
 	
 	virtual void  SetSampler(uint8 ID, const std::shared_ptr<ISamplerState> samplerState) override;
     virtual const std::shared_ptr<ISamplerState>& GetSampler(uint8 ID) const override;
@@ -26,9 +27,7 @@ public:
 	void         MarkMaterialDataDirty() override;
 
 	// IObject
-	Guid GetGUID() const override final { return Object::GetGUID(); };
-	std::string GetName() const override final { return Object::GetName(); };
-	void SetName(const std::string& Name) override final { Object::SetName(Name); };
+	OBJECT_IMPLEMENT_BASE
 
 	// IObjectLoadSave
 	void Load(const std::shared_ptr<IByteBuffer>& ByteBuffer) override;

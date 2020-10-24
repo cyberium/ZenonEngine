@@ -20,13 +20,7 @@ public:
 	virtual void                                    Accept(IVisitor* visitor) override;
 
 	// IObject
-	Guid                                            GetGUID() const override final { return Object::GetGUID(); };
-	std::string                                     GetName() const override final { return Object::GetName(); };
-	void                                            SetName(const std::string& Name) override final { Object::SetName(Name); };
-
-	// IObjectLoadSave
-	void											Load(const std::shared_ptr<IByteBuffer>& ByteBuffer) override;
-	void											Save(const std::shared_ptr<IByteBuffer>& ByteBuffer) const override;
+	OBJECT_IMPLEMENT_BASE
 
 protected:
 	void                                            UpdateBounds(const std::shared_ptr<IGeometry>& Geometry);

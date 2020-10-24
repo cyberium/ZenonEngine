@@ -105,11 +105,11 @@ float4 PS_DeferredLighting(VS_Output VSOut
 
 	LightingResult lit = DoLightingSingle(CurrentLight, matForLight, eyePos, PView, normal);
 	
-	float4 ambientLight  = float4(diffuseAndAlpha.rgb * lit.Ambient.rgb, 1.0f);
-	float4 diffuseLight  = float4(diffuseAndAlpha.rgb * lit.Diffuse.rgb, 1.0f);
-	float4 specularLight = float4(specular.rgb, 1.0f) * lit.Specular;
+	float3 ambientLight  = diffuseAndAlpha.rgb * lit.Ambient.rgb;
+	float3 diffuseLight  = diffuseAndAlpha.rgb * lit.Diffuse.rgb;
+	float3 specularLight = specular.rgb        * lit.Specular.rgb;
 	
-	float4 colorResult = float4(ambientLight.rgb + diffuseLight.rgb + specularLight.rgb, 1.0f);
+	float3 colorResult = ambientLight.rgb + diffuseLight.rgb + specularLight.rgb;
 	
 	const float4 PModel = mul(PF.InverseView, PView);
 	float shadowFactor = IsShadowed(LightProjectionMatrix, LightViewMatrix, TextureShadow, PModel);
@@ -117,7 +117,7 @@ float4 PS_DeferredLighting(VS_Output VSOut
 	shadowFactor = saturate(shadowFactor);
 	
 	if (shadowFactor > 0.0f)
-		return ambientLight + diffuseLight * (1.0f - shadowFactor);
+		return float4(ambientLight + diffuseLight * (1.0f - shadowFactor), 1.0f);
 		
-	return colorResult;
+	return float4(colorResult, 1.0f);
 }
