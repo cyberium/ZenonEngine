@@ -3,12 +3,12 @@
 #include "PassDeffered_DoRenderScene.h"
 #include "PassDeffered_ProcessLights.h"
 
-class ZN_API CPassDeffered_HDR
+class ZN_API CPassPostprocess_HDR
 	: public RenderPassPipelined
 {
 public:
-	CPassDeffered_HDR(IRenderDevice& RenderDevice, std::shared_ptr<IRenderTarget> HDRRenderTarget);
-	virtual ~CPassDeffered_HDR();
+	CPassPostprocess_HDR(IRenderDevice& RenderDevice, std::shared_ptr<IRenderTarget> HDRRenderTarget);
+	virtual ~CPassPostprocess_HDR();
 
 	// IRenderPass
 	void Render(RenderEventArgs& e) override;

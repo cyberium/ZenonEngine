@@ -29,6 +29,9 @@ public:
 	void											Save(const std::shared_ptr<IByteBuffer>& ByteBuffer) const override;
 
 protected:
+	void                                            UpdateBounds(const std::shared_ptr<IGeometry>& Geometry);
+
+protected:
 	BoundingBox m_BoundingBox;
 	std::vector<SConnection> m_Connections;
 	std::string m_FileName;

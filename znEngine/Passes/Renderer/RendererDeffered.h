@@ -3,7 +3,7 @@
 #include "../PassDeffered_DoRenderScene.h"
 #include "../PassDeffered_ProcessLights.h"
 #include "../PassDeffered_RenderUIQuad.h"
-#include "../PassDeffered_HDR.h"
+#include "../Postprocess_HDR.h"
 
 class ZN_API CRendererDeffered
 	: public IRenderer
@@ -33,7 +33,7 @@ private:
 	std::shared_ptr<CPassDeffered_DoRenderScene> m_Deffered_ScenePass;
 	std::shared_ptr<CPassDeffered_ProcessLights> m_Deffered_Lights;
 	std::shared_ptr<CPassDeffered_RenderUIQuad> m_Deffered_UIQuadPass;
-	std::shared_ptr<CPassDeffered_HDR> m_Deffered_HDR;
+	std::shared_ptr<CPassPostprocess_HDR> m_Deffered_HDR;
 
 private:
 	IBaseManager& m_BaseManager;

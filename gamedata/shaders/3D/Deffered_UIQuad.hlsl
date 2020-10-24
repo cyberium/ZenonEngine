@@ -2,6 +2,11 @@
 #include "Light.hlsl"
 #include "3D/ShadowsUtils.hlsl"
 
+#ifndef MULTISAMPLED
+#pragma message( "MULTISAMPLED undefined. Default to 1.")
+#define MULTISAMPLED 1
+#endif
+
 struct VS_Input
 {
 	float2 position : POSITION;
@@ -23,24 +28,19 @@ cbuffer LightResult : register(b4)
 };
 
 
-#ifdef MULTISAMPLED
-
-Texture2DMS<float4, 8>            Texture0            : register(t0); // Diffuse
-Texture2DMS<float4, 8>            Texture1            : register(t1); // Specular
-Texture2DMS<float4, 8>            Texture3            : register(t2); // Normal
-Texture2DMS<float4, 8>            Texture2            : register(t3); // Position
-Texture2DMS<float4, 8>            TextureDepthStencil : register(t4);
-
+#if MULTISAMPLED > 1
+Texture2DMS<float4, MULTISAMPLED> Texture0            : register(t0); // Diffuse
+Texture2DMS<float4, MULTISAMPLED> Texture1            : register(t1); // Specular
+Texture2DMS<float4, MULTISAMPLED> Texture3            : register(t2); // Normal
+Texture2DMS<float4, MULTISAMPLED> Texture2            : register(t3); // Position
+Texture2DMS<float4, MULTISAMPLED> TextureDepthStencil : register(t4);
 #else
-
 Texture2D                         Texture0            : register(t0); // Diffuse
 Texture2D                         Texture1            : register(t1); // Specular
 Texture2D                         Texture3            : register(t2); // Normal
 Texture2D                         Texture2            : register(t3); // Position
 Texture2D                         TextureDepthStencil : register(t4);
-
 #endif
-
 
 Texture2D                         TextureShadow       : register(t5);
 
@@ -56,14 +56,14 @@ VS_Output VS_ScreenQuad(VS_Input IN)
 
 [earlydepthstencil]
 float4 PS_ScreenQuad(VS_Output VSOut
-#ifdef MULTISAMPLED
+#if MULTISAMPLED > 1
 , uint SampleIndex : SV_SampleIndex
 #endif
 ) : SV_TARGET
 {
 	const int2 texCoord = VSOut.position.xy;
 
-#ifdef MULTISAMPLED
+#if MULTISAMPLED > 1
 	return Texture0.Load(texCoord, SampleIndex);
 #else
 	return Texture0.Load(int3(texCoord, 0));
@@ -75,14 +75,14 @@ float4 PS_ScreenQuad(VS_Output VSOut
 
 [earlydepthstencil]
 float4 PS_DeferredLighting(VS_Output VSOut
-#ifdef MULTISAMPLED
+#if MULTISAMPLED > 1
 , uint SampleIndex : SV_SampleIndex
 #endif
 ) : SV_Target
 {
 	const int2 texCoord = VSOut.position.xy;
 
-#ifdef MULTISAMPLED
+#if MULTISAMPLED > 1
     const float4 diffuseAndAlpha= Texture0.Load(texCoord, SampleIndex);
     const float4 specular       = Texture1.Load(texCoord, SampleIndex);
 	const float4 positionVS     = Texture2.Load(texCoord, SampleIndex);

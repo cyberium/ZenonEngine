@@ -53,16 +53,17 @@ bool CznFBXModelsLoader::IsSupportedFormat(const std::shared_ptr<IFile>& ModelFi
 
 std::shared_ptr<IModel> CznFBXModelsLoader::LoadModel(const std::shared_ptr<IFile>& ModelFile, const std::string & TexturesPath) const
 {
-	auto FBXScene = MakeShared(CFBXScene, m_BaseManager, m_FBXManager);
+	auto FBXScene = MakeShared(CFBXScene, m_BaseManager, m_FBXManager, TexturesPath);
 	if (!FBXScene->LoadFromFile(ModelFile))
 		throw CException("FBXModelsLoade: Unable to load '%s'", ModelFile->Name().c_str());
 
-	const auto& models = FBXScene->GetFBXModels();
-	if (models.empty())
-		throw CException("FBXModelsLoader: Model '%s' doesn't contains models.", ModelFile->Name().c_str());
+	//const auto& models = FBXScene->GetFBXModels();
+	//if (models.empty())
+	//	throw CException("FBXModelsLoader: Model '%s' doesn't contains models.", ModelFile->Name().c_str());
 
-	const auto& firstModel = models[0];
-	return firstModel->GetModel();
+	//const auto& firstModel = models[0];
+	//return firstModel->GetModel();
+	return FBXScene->MergeModels();
 }
 
 #endif

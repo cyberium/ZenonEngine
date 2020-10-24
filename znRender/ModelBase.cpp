@@ -4,7 +4,7 @@
 #include "ModelBase.h"
 
 ModelBase::ModelBase(IRenderDevice& RenderDevice)
-    : m_RenderDevice(RenderDevice)
+	: m_RenderDevice(RenderDevice)
 {
 	SetName("ModelBase");
 }
@@ -51,14 +51,8 @@ void ModelBase::AddConnection(const std::shared_ptr<IMaterial>& Material, const 
 	connection.Geometry = Geometry;
 	connection.GeometryDrawArgs = GeometryDrawArgs;
 
-	auto geomBounds = Geometry->GetBounds();
-	if (!geomBounds.IsInfinite())
-	{
-		if (m_BoundingBox.IsInfinite())
-			m_BoundingBox = BoundingBox(glm::vec3(Math::MaxFloat), glm::vec3(Math::MinFloat));
-		m_BoundingBox.makeUnion(geomBounds);
-	}
-	
+	UpdateBounds(Geometry);
+
 	m_Connections.push_back(connection);
 }
 
@@ -155,5 +149,25 @@ void ModelBase::Save(const std::shared_ptr<IByteBuffer>& ByteBuffer) const
 
 		ByteBuffer->write(&it.GeometryDrawArgs);
 	}
+}
+
+
+
+//
+// Private
+//
+void ModelBase::UpdateBounds(const std::shared_ptr<IGeometry>& Geometry)
+{
+	auto geomBounds = Geometry->GetBounds();
+	if (geomBounds.IsInfinite())
+	{
+		Log::Warn("ModelBase: UpdateBounds: Geometry bounds is empty.");
+		return;
+	}
+
+	if (m_BoundingBox.IsInfinite())
+		m_BoundingBox = BoundingBox(glm::vec3(Math::MaxFloat), glm::vec3(Math::MinFloat));
+
+	m_BoundingBox.makeUnion(geomBounds);
 }
 

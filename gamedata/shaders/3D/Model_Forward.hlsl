@@ -135,26 +135,19 @@ VertexShaderOutput VS_PTN_Instanced(VSInputPTN IN, uint InstanceID : SV_Instance
 
 float4 PS_main(VertexShaderOutput IN) : SV_TARGET
 {
-	float3 normalWS = mul(PF.InverseView, float4(IN.normalVS.xyz, 0.0f));
-	float3 tangentWS = mul(PF.InverseView, float4(IN.tangentVS.xyz, 0.0f));
-	float3 binormalWS = mul(PF.InverseView, float4(IN.binormalVS.xyz, 0.0f));
-
-	float3 posCam = mul(PF.InverseView, float4(0.0f, 0.0f, 0.0f, 1.0f));
-	float3 posFrag = mul(PF.InverseView, float4(IN.positionVS.xyz, 1.0f));
-
-	//IN.texCoord = ExtractDisplacement(Mat, IN.texCoord, normalWS, tangentWS, binormalWS, posCam, posFrag);
+	float2 displacedTexCoord = ExtractDisplacement(Mat, IN.texCoord, IN.normalVS.xyz, IN.tangentVS.xyz, IN.binormalVS.xyz, float3(0.0f, 0.0f, 0.0f), IN.positionVS.xyz);
 	
-	float4 diffuseAndAlpha = ExtractDuffuseAndAlpha(Mat, IN.texCoord);
+	float4 diffuseAndAlpha = ExtractDuffuseAndAlpha(Mat, displacedTexCoord);
 	if (diffuseAndAlpha.a < 0.05f)
 		discard;
 		
-	float4 ambient = ExtractAmbient(Mat, IN.texCoord);
-	float4 emissive = ExtractEmissive(Mat, IN.texCoord);
-	float4 specular = ExtractSpecular(Mat, IN.texCoord);
+	float4 ambient = ExtractAmbient(Mat, displacedTexCoord);
+	float4 emissive = ExtractEmissive(Mat, displacedTexCoord);
+	float4 specular = ExtractSpecular(Mat, displacedTexCoord);
 	
 	float4 eyePos = { 0.0f, 0.0f, 0.0f, 1.0f };
 	float4 positionVS = float4(IN.positionVS, 1.0f);
-	float4 normalVS = ExtractNormal(Mat, IN.texCoord, IN.normalVS, IN.tangentVS, IN.binormalVS);
+	float4 normalVS = ExtractNormal(Mat, displacedTexCoord, IN.normalVS, IN.tangentVS, IN.binormalVS);
 	
 	MaterialForLight matForLight;
 	matForLight.SpecularFactor = specular.a;

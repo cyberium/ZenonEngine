@@ -12,9 +12,10 @@
 #include "FBXSkeleton.h"
 #include "FBXAnimation.h"
 
-CFBXScene::CFBXScene(const IBaseManager& BaseManager, fbxsdk::FbxManager* FBXManager)
+CFBXScene::CFBXScene(const IBaseManager& BaseManager, fbxsdk::FbxManager* FBXManager, const std::string& TexturePath)
 	: m_BaseManager(BaseManager)
 	, m_NativeScene(nullptr)
+	, m_TexturesPath(TexturePath)
 {
 	FbxScene* fbxScene = FbxScene::Create(FBXManager, "Default FBX scene.");
 	if (fbxScene == nullptr)
@@ -152,14 +153,10 @@ bool CFBXScene::LoadFromFile(std::shared_ptr<IFile> File)
 
 	FbxGeometryConverter converter(m_NativeScene->GetFbxManager());
 
-	Log::Info("CFBXScene: Triangulation started.");
 	Timer t;
 	if (!converter.Triangulate(fbxsdk::FbxCast<fbxsdk::FbxScene>(m_NativeScene), true))
-	{
-		Log::Error("CFBXScene: Error while FbxGeometryConverter::Triangulate.");
-		return false;
-	}
-	Log::Info("CFBXScene: Triangulation finished in '%f' ms.", t.GetElapsedTime());
+		throw CException("FBXScene: Error while FbxGeometryConverter::Triangulate.");
+	Log::Info("FBXScene: Triangulation finished in '%f' ms.", t.GetElapsedTime());
 
 	//if (!converter.SplitMeshesPerMaterial(fbxsdk::FbxCast<fbxsdk::FbxScene>(m_NativeScene), true))
 	//{
@@ -239,6 +236,32 @@ std::shared_ptr<IFBXSkeleton> CFBXScene::GetFBXSkeleton() const
 std::shared_ptr<IFBXAnimation> CFBXScene::GetFBXAnimation() const
 {
 	return m_Animation;
+}
+
+const std::string& CFBXScene::GetTexturesPath() const
+{
+	return m_TexturesPath;
+}
+
+std::shared_ptr<IModel> CFBXScene::MergeModels()
+{
+	if (m_MergedModel == nullptr)
+	{
+		IRenderDevice& renderDevice = m_BaseManager.GetApplication().GetRenderDevice();
+		auto mergedModel = renderDevice.GetObjectsFactory().CreateModel();
+
+		for (const auto& m : m_Models)
+		{
+			auto model = m->GetModel();
+			for (const auto& c : model->GetConnections())
+			{
+				mergedModel->AddConnection(c.Material, c.Geometry, c.GeometryDrawArgs);
+			}
+		}
+
+		m_MergedModel = mergedModel;
+	}
+	return m_MergedModel;
 }
 
 

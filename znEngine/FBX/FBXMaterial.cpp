@@ -198,7 +198,7 @@ std::shared_ptr<IMaterial> CFBXMaterial::GetMaterial()
 //
 std::shared_ptr<ITexture> CFBXMaterial::LoadTexture(fbxsdk::FbxTexture * Texture)
 {
-	Log::Print("CFBXMaterial: Loading texture '%s'.", Texture->GetName());
+	Log::Print("FBXMaterial: Loading texture '%s' with.", Texture->GetName());
 
 	_ASSERT_EXPR(Texture->Is<fbxsdk::FbxFileTexture>(), "FBX texture must be 'FbxFileTexture'.");
 	fbxsdk::FbxFileTexture* fileTexture = fbxsdk::FbxCast<fbxsdk::FbxFileTexture>(Texture);
@@ -207,7 +207,12 @@ std::shared_ptr<ITexture> CFBXMaterial::LoadTexture(fbxsdk::FbxTexture * Texture
 	//fileTexture->SetFileName(fileTexture->GetRelativeFileName());
 
 	std::string fileName = fileTexture->GetRelativeFileName();
-	fileName = "C:/_engine/ZenonEngine_gamedata/Toon_RTS/Orcs/models/Materials/textures/ORC_StandardUnits.png";
+
+	std::string texturesPath = m_FBXNode.GetFBXScene().GetTexturesPath();
+	if (texturesPath.size() > 0)
+		fileName = texturesPath + "/" + fileName;
+
+	//fileName = "C:/_engine/ZenonEngine_gamedata/Toon_RTS/Orcs/models/Materials/textures/ORC_StandardUnits.png";
 
 	return m_BaseManager.GetApplication().GetRenderDevice().GetObjectsFactory().LoadTexture2D(fileName);
 }

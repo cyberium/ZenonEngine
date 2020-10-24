@@ -58,7 +58,7 @@ std::shared_ptr<IModel> CznModelsManager::LoadModel(const std::string& ModelFile
 	{
 		if (loader->IsSupportedFormat(file))
 		{
-			model = loader->LoadModel(file);
+			model = loader->LoadModel(file, TexturesPath);
 			break;
 		}
 	}

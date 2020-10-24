@@ -1,11 +1,5 @@
 #pragma once
 
-namespace fbxsdk
-{
-	class FbxManager;
-}
-
-
 ZN_INTERFACE IFBXScene;
 ZN_INTERFACE IFBXNode;
 
@@ -70,6 +64,10 @@ ZN_INTERFACE ZN_API IFBXScene
 	virtual const std::vector<std::shared_ptr<IFBXModel>>& GetFBXModels() const = 0;
 	virtual std::shared_ptr<IFBXSkeleton> GetFBXSkeleton() const = 0;
 	virtual std::shared_ptr<IFBXAnimation> GetFBXAnimation() const = 0;
+
+	virtual const std::string& GetTexturesPath() const = 0;
+
+	virtual std::shared_ptr<IModel> MergeModels() = 0;
 };
 
 ZN_INTERFACE ZN_API IFBXScenePrivate
@@ -78,6 +76,9 @@ ZN_INTERFACE ZN_API IFBXScenePrivate
 
 	virtual void AddModel(const std::shared_ptr<IFBXModel>& Model) = 0;
 };
+
+
+
 
 
 inline void DoAddModels(const std::shared_ptr<ISceneNode3D>& ParentNode, std::shared_ptr<IFBXNode> Node)

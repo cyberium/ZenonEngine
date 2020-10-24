@@ -35,7 +35,7 @@ void CFile::ParsePathAndExtension()
 	FixFilePath(m_Name);
 
 	// Find name and path
-	auto lastSlashPos = m_Name.find_last_of('\\');
+	auto lastSlashPos = m_Name.find_last_of('/');
 	if (lastSlashPos != std::string::npos)
 	{
 		m_Path += m_Name.substr(0, lastSlashPos + 1);

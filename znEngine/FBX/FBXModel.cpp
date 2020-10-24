@@ -28,15 +28,14 @@ CFBXModel::~CFBXModel()
 
 bool CFBXModel::Load(fbxsdk::FbxMesh* NativeMesh)
 {
-	if (NativeMesh == nullptr)
-		return false;
+	_ASSERT(NativeMesh != nullptr);
 
 	SetName(NativeMesh->GetName());
 
 	FbxVector4* lControlPoints = NativeMesh->GetControlPoints();
 	if (lControlPoints == nullptr)
 	{
-		Log::Error("FBXMesh doesn't containt control points.");
+		Log::Error("FBXModel: There is no control points.");
 		return false;
 	}
 
@@ -58,7 +57,10 @@ bool CFBXModel::Load(fbxsdk::FbxMesh* NativeMesh)
 	{
 		int lPolygonSize = NativeMesh->GetPolygonSize(p);
 		if (lPolygonSize > 3)
+		{
+			Log::Warn("FBXModel: Model '%s' has polygon with size '%d' insted of '3'.", GetName().c_str(), lPolygonSize);
 			lPolygonSize = 3;
+		}
 
 		for (int j = 0; j < lPolygonSize; j++)
 		{
@@ -209,8 +211,7 @@ bool CFBXModel::Load(fbxsdk::FbxMesh* NativeMesh)
 			// Binormal
 			//
 			cnt = NativeMesh->GetElementBinormalCount();
-			if (cnt > 1)
-				cnt = 1;
+			if (cnt > 1) cnt = 1;
 			for (int l = 0; l < cnt; ++l)
 			{
 				fbxsdk::FbxGeometryElementBinormal* elem = NativeMesh->GetElementBinormal(l);
@@ -275,8 +276,7 @@ bool CFBXModel::Load(fbxsdk::FbxMesh* NativeMesh)
 			// Tangent
 			//
 			cnt = NativeMesh->GetElementTangentCount();
-			if (cnt > 1)
-				cnt = 1;
+			if (cnt > 1) cnt = 1;
 			for (int l = 0; l < cnt; ++l)
 			{
 				fbxsdk::FbxGeometryElementTangent* elem = NativeMesh->GetElementTangent(l);
@@ -346,8 +346,8 @@ bool CFBXModel::Load(fbxsdk::FbxMesh* NativeMesh)
 	m_Geometry->AddVertexBuffer(BufferBinding("POSITION", 0), renderDevice.GetObjectsFactory().CreateVoidVertexBuffer(m_Vertices.data(), m_Vertices.size(), 0, sizeof(FBXVertex)));
 	m_Geometry->AddVertexBuffer(BufferBinding("TEXCOORD", 0), renderDevice.GetObjectsFactory().CreateVoidVertexBuffer(m_Vertices.data(), m_Vertices.size(), 12, sizeof(FBXVertex)));
 	m_Geometry->AddVertexBuffer(BufferBinding("NORMAL", 0), renderDevice.GetObjectsFactory().CreateVoidVertexBuffer(m_Vertices.data(), m_Vertices.size(), 12 + 8, sizeof(FBXVertex)));
-	//m_Geometry->AddVertexBuffer(BufferBinding("BLENDWEIGHT", 0), renderDevice.GetObjectsFactory().CreateVoidVertexBuffer(m_Vertices.data(), m_Vertices.size(), 12 + 8 + 12 + 12 + 12, sizeof(FBXVertex)));
-	//m_Geometry->AddVertexBuffer(BufferBinding("BLENDINDICES", 0), renderDevice.GetObjectsFactory().CreateVoidVertexBuffer(m_Vertices.data(), m_Vertices.size(), 12 + 8 + 12 + 12 + 12 + 16, sizeof(FBXVertex)));
+	m_Geometry->AddVertexBuffer(BufferBinding("BLENDWEIGHT", 0), renderDevice.GetObjectsFactory().CreateVoidVertexBuffer(m_Vertices.data(), m_Vertices.size(), 12 + 8 + 12 + 12 + 12, sizeof(FBXVertex)));
+	m_Geometry->AddVertexBuffer(BufferBinding("BLENDINDICES", 0), renderDevice.GetObjectsFactory().CreateVoidVertexBuffer(m_Vertices.data(), m_Vertices.size(), 12 + 8 + 12 + 12 + 12 + 16, sizeof(FBXVertex)));
 
 	MaterialLoad(NativeMesh);
 
@@ -361,7 +361,7 @@ bool CFBXModel::Load(fbxsdk::FbxMesh* NativeMesh)
 		m_Geometry->AddVertexBuffer(BufferBinding("TANGENT", 0), renderDevice.GetObjectsFactory().CreateVoidVertexBuffer(tangent));
 #endif
 
-	Log::Info("CFBXModel: Mesh '%s' loaded. Polygons count = '%d'.", NativeMesh->GetName(), NativeMesh->GetPolygonCount());
+	Log::Info("FBXModel: Mesh '%s' loaded. Polygons count = '%d'.", NativeMesh->GetName(), NativeMesh->GetPolygonCount());
 
 	return true;
 }

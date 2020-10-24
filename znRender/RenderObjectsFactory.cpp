@@ -4,7 +4,7 @@
 #include "RenderObjectsFactory.h"
 
 CRenderObjectsFactory::CRenderObjectsFactory(IRenderDevice& RenderDevice)
-	: m_RenderDevice(m_RenderDevice)
+	: m_RenderDevice(RenderDevice)
 	, m_RenderObjectIDCntr(0)
 {
 }

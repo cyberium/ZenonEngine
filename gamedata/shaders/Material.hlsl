@@ -261,16 +261,22 @@ float4 ExtractNormal(MaterialModel mat, float2 TexCoord, float3 normalVS, float3
 	return normalize(float4(normalVS, 0.0f));
 }
 
-float2 ExtractDisplacement(MaterialModel mat, float2 TexCoord, float3 normalVS, float3 tangentVS, float3 binormalVS, float3 viewPosVS, float3 fragPosVS)
+float2 ExtractDisplacement(MaterialModel mat, float2 TexCoord, float3 normalVS, float3 tangentVS, float3 binormalVS, float3 cameraPosVS, float3 positionVS)
 {
 	if (mat.HasTextureDisplacement)
 	{
+		float3 normalWS = mul(PF.InverseView, float4(normalVS.xyz, 0.0f));
+		float3 tangentWS = mul(PF.InverseView, float4(tangentVS.xyz, 0.0f));
+		float3 binormalWS = mul(PF.InverseView, float4(binormalVS.xyz, 0.0f));
+		float3 viewPosWS = mul(PF.InverseView, float4(cameraPosVS.xyz, 1.0f));
+		float3 positionWS = mul(PF.InverseView, float4(positionVS.xyz, 1.0f));
+	
 		// For most scenes using bump mapping, I have to invert the binormal.
-		float3x3 TBN = float3x3(normalize( tangentVS),
-								normalize( binormalVS),
-								normalize( normalVS));
+		float3x3 TBN = float3x3(normalize( tangentWS),
+								normalize( binormalWS),
+								normalize( normalWS));
 
-		float2 newTexCoords = DoDisplacementMapping(TBN, TextureDisplacement, LinearRepeatSampler, TexCoord, viewPosVS, fragPosVS);
+		float2 newTexCoords = DoDisplacementMapping(TBN, TextureDisplacement, LinearRepeatSampler, TexCoord, viewPosWS, positionWS);
 		if(newTexCoords.x > 1.0 || newTexCoords.y > 1.0 || newTexCoords.x < 0.0 || newTexCoords.y < 0.0)
 			discard; 
 		return newTexCoords;

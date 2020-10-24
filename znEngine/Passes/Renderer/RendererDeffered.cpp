@@ -102,11 +102,11 @@ void CRendererDeffered::Initialize(std::shared_ptr<IRenderTarget> OutputRenderTa
 	m_Deffered_Lights->CreateShadowPipeline();
 
 	auto HDRRenderTarget = CreateHDRRenderTarget(OutputRenderTarget, Viewport);
-	m_Deffered_HDR = MakeShared(CPassDeffered_HDR, m_RenderDevice, HDRRenderTarget);
+	m_Deffered_HDR = MakeShared(CPassPostprocess_HDR, m_RenderDevice, HDRRenderTarget);
 	m_Deffered_HDR->ConfigurePipeline(OutputRenderTarget, Viewport);
 
 	m_Deffered_UIQuadPass = MakeShared(CPassDeffered_RenderUIQuad, m_RenderDevice, m_Deffered_ScenePass, m_Deffered_Lights);
-	m_Deffered_UIQuadPass->ConfigurePipeline(HDRRenderTarget, Viewport);
+	m_Deffered_UIQuadPass->ConfigurePipeline(/*HDRRenderTarget*/OutputRenderTarget, Viewport);
 
 
 
@@ -119,8 +119,8 @@ void CRendererDeffered::Initialize(std::shared_ptr<IRenderTarget> OutputRenderTa
 	m_UIPasses.push_back(m_Deffered_UIQuadPass);
 
 	// HDR
-	AddPass(MakeShared(ClearRenderTargetPass, m_RenderDevice, HDRRenderTarget, ClearFlags::All, clearColor, 1.0f, 0));
-	m_UIPasses.push_back(m_Deffered_HDR);
+	//AddPass(MakeShared(ClearRenderTargetPass, m_RenderDevice, HDRRenderTarget, ClearFlags::All, clearColor, 1.0f, 0));
+	//m_UIPasses.push_back(m_Deffered_HDR);
 
 	m_UIPasses.push_back(MakeShared(CUIFontPass, m_RenderDevice, m_Scene)->ConfigurePipeline(OutputRenderTarget, Viewport));
 	m_UIPasses.push_back(MakeShared(CUIColorPass, m_RenderDevice, m_Scene)->ConfigurePipeline(OutputRenderTarget, Viewport));

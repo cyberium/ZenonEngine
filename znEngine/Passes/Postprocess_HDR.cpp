@@ -1,9 +1,9 @@
 #include "stdafx.h"
 
 // General
-#include "PassDeffered_HDR.h"
+#include "Postprocess_HDR.h"
 
-CPassDeffered_HDR::CPassDeffered_HDR(IRenderDevice& RenderDevice, std::shared_ptr<IRenderTarget> HDRRenderTarget)
+CPassPostprocess_HDR::CPassPostprocess_HDR(IRenderDevice& RenderDevice, std::shared_ptr<IRenderTarget> HDRRenderTarget)
 	: RenderPassPipelined(RenderDevice)
 	, m_HDRRenderTarget(HDRRenderTarget)
 {
@@ -11,7 +11,7 @@ CPassDeffered_HDR::CPassDeffered_HDR(IRenderDevice& RenderDevice, std::shared_pt
 	m_LightResultConstantBuffer = GetRenderDevice().GetObjectsFactory().CreateConstantBuffer(SLightResult());
 }
 
-CPassDeffered_HDR::~CPassDeffered_HDR()
+CPassPostprocess_HDR::~CPassPostprocess_HDR()
 {
 	_aligned_free(m_LightResultData);
 }
@@ -22,7 +22,7 @@ CPassDeffered_HDR::~CPassDeffered_HDR()
 // IRenderPass
 //
 
-void CPassDeffered_HDR::Render(RenderEventArgs& e)
+void CPassPostprocess_HDR::Render(RenderEventArgs& e)
 {
 	BindParamsForCurrentIteration(e);
 
@@ -34,7 +34,7 @@ void CPassDeffered_HDR::Render(RenderEventArgs& e)
 //
 // IRenderPassPipelined
 //
-std::shared_ptr<IRenderPassPipelined> CPassDeffered_HDR::ConfigurePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport)
+std::shared_ptr<IRenderPassPipelined> CPassPostprocess_HDR::ConfigurePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport)
 {
 	m_QuadGeometry = GetRenderDevice().GetPrimitivesFactory().CreateQuad();
 
@@ -74,7 +74,7 @@ std::shared_ptr<IRenderPassPipelined> CPassDeffered_HDR::ConfigurePipeline(std::
 //
 // Protected
 //
-void CPassDeffered_HDR::BindParamsForCurrentIteration(const RenderEventArgs& e)
+void CPassPostprocess_HDR::BindParamsForCurrentIteration(const RenderEventArgs& e)
 {
 	/*
 	const ICameraComponent3D* camera = e.Camera;
