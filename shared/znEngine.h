@@ -13,11 +13,17 @@
 #include "../znEngine/Scene/Camera/FreeCameraController.h"
 #include "../znEngine/Scene/Camera/RTSCameraController.h"
 
+// Scene nodes components
 #include "../znEngine/Scene/Components/ColliderComponent3D.h"
 #include "../znEngine/Scene/Components/LightComponent3D.h"
 #include "../znEngine/Scene/Components/ModelsComponent3D.h"
 #include "../znEngine/Scene/Components/CameraComponent3D.h"
 #include "../znEngine/Scene/Components/ParticlesComponent3D.h"
+
+// SceneNodes
+#include "../znEngine/Scene/Nodes/UITexture.h"
+#include "../znEngine/Scene/Nodes/UIColor.h"
+#include "../znEngine/Scene/Nodes/UIText.h"
 
 // Materials
 #include "../znEngine/Materials/MaterialDebug.h"

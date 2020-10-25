@@ -124,6 +124,7 @@ void CRendererForward::Initialize(std::shared_ptr<IRenderTarget> OutputRenderTar
 	AddPass(materialModelPass);
 
 	AddPass(m_BaseManager.GetManager<IRenderPassFactory>()->CreateRenderPass("DebugPass", m_RenderDevice, OutputRenderTarget, Viewport, m_Scene.lock()));
+	AddPass(MakeShared(CDrawBonesPass, m_RenderDevice, m_Scene.lock())->ConfigurePipeline(OutputRenderTarget, Viewport));
 	
 	m_UIPasses.push_back(MakeShared(CUIFontPass, m_RenderDevice, m_Scene)->ConfigurePipeline(OutputRenderTarget, Viewport));
 	m_UIPasses.push_back(MakeShared(CUIColorPass, m_RenderDevice, m_Scene)->ConfigurePipeline(OutputRenderTarget, Viewport));

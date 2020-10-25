@@ -3,32 +3,14 @@
 // Gerenal
 #include "Scene_Default.h"
 
-// Additional
-#include "Materials/MaterialDebug.h"
-#include "Materials/MaterialTextured.h"
-#include "Materials/MaterialParticle.h"
-#include "Materials/MaterialModel.h"
-
-#include "Passes/Renderer/RendererDeffered.h"
-#include "Passes/Renderer/RendererForward.h"
-
-#include "Scene/Camera/FreeCameraController.h"
-
-#include "Scene/Components/ReactPhysicsComponent.h"
-#include "Scene/Components/Skeleton/SkeletonComponent.h"
-#include "Scene/Components/Skeleton/AnimatorComponent.h"
-
-#include "FBX/FBXInterfaces.h"
-
 CSceneDefault::CSceneDefault(IBaseManager& BaseManager)
 	: SceneBase(BaseManager)
-	, m_World(rp3d::Vector3(0.0f, -9.81f, 0.0f))
+	//, m_World(rp3d::Vector3(0.0f, -9.81f, 0.0f))
 {
 	// Change the number of iterations of the velocity solver
-	m_World.setNbIterationsVelocitySolver(15);
-
+	//m_World.setNbIterationsVelocitySolver(15);
 	// Change the number of iterations of the position solver
-	m_World.setNbIterationsPositionSolver(8);
+	//m_World.setNbIterationsPositionSolver(8);
 
 }
 
@@ -46,7 +28,7 @@ void CSceneDefault::Initialize()
 	SceneBase::Initialize();
 
 	// Light
-	{
+	/*{
 		auto lightNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, this);
 		lightNode->SetName("Light");
 		lightNode->SetTranslate(glm::vec3(-300.0f, 500.0f, -500.0f) / 3.0f);
@@ -58,19 +40,19 @@ void CSceneDefault::Initialize()
 		lightNode->GetComponent<ILightComponent3D>()->SetRange(500.0f);
 		lightNode->GetComponent<ILightComponent3D>()->SetIntensity(1.1f);
 		lightNode->GetComponent<ILightComponent3D>()->SetSpotlightAngle(45.0f);
-	}
+	}*/
 
 	// Light
 	{
 		auto lightNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, this);
 		lightNode->SetName("Light2");
-		lightNode->SetTranslate(glm::vec3(650.0f, 1200.0f, 0.0f));
-		lightNode->SetRotation(glm::vec3(-0.6f, -0.8f, 0.0f));
+		lightNode->SetTranslate(glm::vec3(150.0f, 150.0f, 150.0f));
+		lightNode->SetRotation(glm::vec3(-0.5f, -0.5f, -0.5f));
 
 		lightNode->AddComponent(GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<IComponentFactory>()->CreateComponentT<ILightComponent3D>(cSceneNodeLightComponent, *lightNode.get()));
 		lightNode->GetComponent<ILightComponent3D>()->SetType(ELightType::Spot);
 		lightNode->GetComponent<ILightComponent3D>()->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
-		lightNode->GetComponent<ILightComponent3D>()->SetRange(1500.0f);
+		lightNode->GetComponent<ILightComponent3D>()->SetRange(3500.0f);
 		lightNode->GetComponent<ILightComponent3D>()->SetIntensity(1.5f);
 		lightNode->GetComponent<ILightComponent3D>()->SetSpotlightAngle(45.0f);
 	}
@@ -102,12 +84,10 @@ void CSceneDefault::Initialize()
 	auto newRoot = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, this, GetRootNode3D());
 	newRoot->SetName("NewRoot3D");
 
-
-
-
-
-	auto file = GetBaseManager().GetManager<IFilesManager>()->Open("SceneFBX.xml");
-	if (file == nullptr)
+	//--------------------------------------------------------------------------
+	// XML
+	//--------------------------------------------------------------------------
+	/*if (auto file = GetBaseManager().GetManager<IFilesManager>()->Open("SceneFBX.xml"))
 	{
 		CXMLManager xml(GetBaseManager());
 		auto reader = xml.CreateReader(file);
@@ -117,25 +97,15 @@ void CSceneDefault::Initialize()
 			currentRoot->RemoveChild(currentRoot->GetChilds()[0]);
 
 		auto rootNodeXML = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->LoadSceneNode3DXML(reader->GetChilds()[0], currentRoot->GetScene(), currentRoot->GetParent().lock());
-
-
-
-
-
 		while (false == rootNodeXML->GetChilds().empty())
 			currentRoot->AddChild(rootNodeXML->GetChilds()[0]);
-	}
+	}*/
 
-	rp3d::Vector3 gravity(0.0, -9.81, 0.0);
-	
-	// Create the dynamics world
-	rp3d::DynamicsWorld world(gravity);
 
-	
 	//--------------------------------------------------------------------------
 	// Sponza
 	//--------------------------------------------------------------------------
-	{
+	/*{
 		if (false == GetBaseManager().GetManager<IFilesManager>()->IsFileExists("Sponza/Sponza.znmdl"))
 		{
 			std::shared_ptr<CznFBXLoaderParams> fbxLoaderParams = MakeShared(CznFBXLoaderParams);
@@ -156,7 +126,7 @@ void CSceneDefault::Initialize()
 		sceneNodePlane->SetTranslate(glm::vec3(0, 0, 0));
 		sceneNodePlane->SetScale(glm::vec3(1.0f));
 		sceneNodePlane->GetComponent<IModelsComponent3D>()->SetModel(znModel);
-	}
+	}*/
 
 
 	//--------------------------------------------------------------------------
@@ -187,7 +157,7 @@ void CSceneDefault::Initialize()
 
 	
 
-	/*
+	
 	//--------------------------------------------------------------------------
 	// Plane
 	//--------------------------------------------------------------------------
@@ -204,7 +174,7 @@ void CSceneDefault::Initialize()
 
 		auto sceneNodePlane = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, this, newRoot);
 		sceneNodePlane->SetName("Ground");
-		sceneNodePlane->SetTranslate(glm::vec3(0, -5, 0));
+		sceneNodePlane->SetTranslate(glm::vec3(0, 0, 0));
 		sceneNodePlane->SetScale(glm::vec3(cPlaneSize, 5.0f, cPlaneSize));
 		sceneNodePlane->GetComponent<IModelsComponent3D>()->SetModel(modelPlane);
 		//sceneNodePlane->GetComponent<IModelsComponent3D>()->SetCastShadows(false);
@@ -215,7 +185,7 @@ void CSceneDefault::Initialize()
 	//--------------------------------------------------------------------------
 	// Sphere Metal
 	//--------------------------------------------------------------------------
-	{
+	/*{
 		std::shared_ptr<MaterialModel> textMaterial = MakeShared(MaterialModel, GetBaseManager());
 		//textMaterial->SetSpecularFactor(8.0f);
 		//textMaterial->SetBumpFactor(8.0f);
@@ -231,30 +201,23 @@ void CSceneDefault::Initialize()
 		sceneNodePlane->SetTranslate(glm::vec3(-10, 15, -10));
 		sceneNodePlane->SetScale(glm::vec3(15.0f));
 		sceneNodePlane->GetComponent<IModelsComponent3D>()->SetModel(modelPlane);
-	}
-	*/
+	}*/
+
+
 
 	//--------------------------------------------------------------------------
 	// Cube Gold
 	//--------------------------------------------------------------------------
-	for (int i = 0; i < 5; i++)
+	/*for (int i = 0; i < 5; i++)
 	{
 		std::shared_ptr<MaterialModel> textMaterial = MakeShared(MaterialModel, GetBaseManager());
 		//textMaterial->SetSpecularFactor(8.0f);
 		//textMaterial->SetBumpFactor(16.0f);
 		
-		//textMaterial->SetTexture(MaterialModel::ETextureType::TextureDiffuse, GetRenderDevice().GetObjectsFactory().LoadTexture2D("oglTutor//bricks2.png"));
-		//textMaterial->SetTexture(MaterialModel::ETextureType::TextureNormalMap, GetRenderDevice().GetObjectsFactory().LoadTexture2D("oglTutor//bricks2_normal.png"));
-		//textMaterial->SetTexture(MaterialModel::ETextureType::TextureSpecular, GetRenderDevice().GetObjectsFactory().LoadTexture2D("pirate-gold-unity//pirate-gold_ao.png"));
-		//textMaterial->SetTexture(MaterialModel::ETextureType::TextureDisplacement, GetRenderDevice().GetObjectsFactory().LoadTexture2D("oglTutor//bricks2_disp.png"));
-
 		textMaterial->SetTexture(MaterialModel::ETextureType::TextureDiffuse, GetRenderDevice().GetObjectsFactory().LoadTexture2D("pirate-gold-unity//pirate-gold_albedo.png"));
 		textMaterial->SetTexture(MaterialModel::ETextureType::TextureNormalMap, GetRenderDevice().GetObjectsFactory().LoadTexture2D("pirate-gold-unity//pirate-gold_normal-ogl.png"));
 		textMaterial->SetTexture(MaterialModel::ETextureType::TextureSpecular, GetRenderDevice().GetObjectsFactory().LoadTexture2D("pirate-gold-unity//pirate-gold_ao.png"));
 		textMaterial->SetTexture(MaterialModel::ETextureType::TextureDisplacement, GetRenderDevice().GetObjectsFactory().LoadTexture2D("pirate-gold-unity//pirate-gold_height.png"));
-
-		//std::shared_ptr<MaterialTextured> textMaterial = MakeShared(MaterialTextured, GetRenderDevice());
-		//textMaterial->SetTexture(0, GetRenderDevice().GetObjectsFactory().LoadTexture2D("idi na huy.png"));
 
 		auto& modelPlane = GetRenderDevice().GetObjectsFactory().CreateModel();
 		modelPlane->AddConnection(textMaterial, GetRenderDevice().GetPrimitivesFactory().CreateCube());
@@ -265,8 +228,32 @@ void CSceneDefault::Initialize()
 		sceneNodePlane->SetScale(glm::vec3(15.0f));
 		sceneNodePlane->GetComponent<IModelsComponent3D>()->SetModel(modelPlane);
 		//sceneNodePlane->GetComponent<IModelsComponent3D>()->SetCastShadows(false);
+	}*/
+
+
+	//--------------------------------------------------------------------------
+	// Orc with anims
+	//--------------------------------------------------------------------------
+	{
+		std::shared_ptr<CznFBXLoaderParams> fbxLoaderParams = MakeShared(CznFBXLoaderParams);
+		fbxLoaderParams->TexturesPathRoot = "Toon_RTS/models/textures/";
+		fbxLoaderParams->OverrideTexture = "WK_StandardUnits_generic.png";
+
+		auto znModel = GetBaseManager().GetManager<IznModelsManager>()->LoadModel("Toon_RTS/models/WK_archer.FBX", fbxLoaderParams);
+
+		auto sceneNodePlane = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, this, newRoot);
+		sceneNodePlane->SetName("Orc");
+		sceneNodePlane->SetTranslate(glm::vec3(0.0f, 0.0f, 0.0f));
+		sceneNodePlane->SetRotation(- glm::vec3(glm::half_pi<float>(), 0.0f, 0.0f));
+		sceneNodePlane->SetScale(glm::vec3(0.5f));
+		sceneNodePlane->GetComponent<IModelsComponent3D>()->SetModel(znModel);
 	}
 
+
+
+	//--------------------------------------------------------------------------
+	// RENDERERS
+	//--------------------------------------------------------------------------
 	auto forwardRenderer = MakeShared(CRendererForward, GetBaseManager(), weak_from_this());
 	forwardRenderer->Initialize(GetRenderWindow()->GetRenderTarget(), &GetRenderWindow()->GetViewport());
 	m_ForwardRenderer = forwardRenderer;
@@ -275,7 +262,7 @@ void CSceneDefault::Initialize()
 	defferedRenderer->Initialize(GetRenderWindow()->GetRenderTarget(), &GetRenderWindow()->GetViewport());
 	m_DefferedRenderrer = defferedRenderer;
 
-	SetRenderer(defferedRenderer);
+	SetRenderer(forwardRenderer);
 }
 
 void CSceneDefault::Finalize()
@@ -306,7 +293,7 @@ void CSceneDefault::OnMouseMoved(const MouseMotionEventArgs & e, const Ray & Ray
 //
 void CSceneDefault::OnPreRender(RenderEventArgs& e)
 {
-	m_World.update(e.DeltaTime / 1000.0f * 2.0f);
+	//m_World.update(e.DeltaTime / 1000.0f * 2.0f);
 
 	//m_RootForBoxes->SetRotation(glm::vec3(m_RootForBoxes->GetRotation().x, m_RootForBoxes->GetRotation().y + 0.01, 0.0f));
 

@@ -22,6 +22,13 @@ std::string CznEngineModelsLoader::GetName() const
 	return "EngineModelsLoader";
 }
 
+bool CznEngineModelsLoader::IsSupportedFormat(const std::string & ModelFileName) const
+{
+	std::string lowerFileName = Utils::ToLower(ModelFileName);
+	std::string extension = lowerFileName.substr(lowerFileName.length() - 5);
+	return extension == "znmdl";
+}
+
 bool CznEngineModelsLoader::IsSupportedFormat(const std::shared_ptr<IFile>& ModelFile) const
 {
 	return ModelFile->Extension() == "znmdl";
@@ -57,7 +64,13 @@ namespace
 	}
 }
 
-
+std::shared_ptr<IModel> CznEngineModelsLoader::LoadModel(const std::string& ModelFileName, const std::shared_ptr<IznLoaderParams>& LoaderParams) const
+{
+	auto modelFile = m_BaseManager.GetManager<IFilesManager>()->Open(ModelFileName);
+	if (modelFile == nullptr)
+		throw CException("Model file '%s' not found.", ModelFileName.c_str());
+	return LoadModel(modelFile, LoaderParams);
+}
 
 std::shared_ptr<IModel> CznEngineModelsLoader::LoadModel(const std::shared_ptr<IFile>& ModelFile, const std::shared_ptr<IznLoaderParams>& LoaderParams) const
 {

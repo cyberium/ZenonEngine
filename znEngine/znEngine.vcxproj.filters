@@ -567,9 +567,6 @@
     <ClCompile Include="Scene\GameModel.cpp">
       <Filter>Scene</Filter>
     </ClCompile>
-    <ClCompile Include="Scene\Scene_Default.cpp">
-      <Filter>Scene</Filter>
-    </ClCompile>
     <ClCompile Include="Scene\Nodes\UIBeizerLine.cpp">
       <Filter>Scene\Nodes</Filter>
     </ClCompile>
@@ -1156,9 +1153,6 @@
       <Filter>Passes\Factory</Filter>
     </ClInclude>
     <ClInclude Include="Scene\GameModel.h">
-      <Filter>Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="Scene\Scene_Default.h">
       <Filter>Scene</Filter>
     </ClInclude>
     <ClInclude Include="Scene\Nodes\UIBeizerLine.h">

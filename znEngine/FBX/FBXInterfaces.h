@@ -5,6 +5,7 @@ ZN_INTERFACE IFBXNode;
 
 #include "Scene/Skeleton.h"
 
+
 ZN_INTERFACE ZN_API IFBXAnimation
 {
 	virtual ~IFBXAnimation() {}
@@ -75,12 +76,21 @@ ZN_INTERFACE ZN_API IFBXScenePrivate
 	virtual void AddModel(const std::shared_ptr<IFBXModel>& Model) = 0;
 };
 
+ZN_INTERFACE ZN_API IFBXSceneLoader
+{
+	virtual ~IFBXSceneLoader() {}
+
+	virtual std::shared_ptr<IFBXScene> LoadScene(const std::string& ModelFileName, const std::shared_ptr<IznLoaderParams>& LoaderParams) const = 0;
+	virtual std::shared_ptr<IFBXScene> LoadScene(const std::shared_ptr<IFile>& ModelFile, const std::shared_ptr<IznLoaderParams>& LoaderParams) const = 0;
+};
+
 
 class CznFBXLoaderParams
 	: public IznLoaderParams
 {
 public:
 	std::string TexturesPathRoot;
+	std::string OverrideTexture;
 	std::unordered_map<uint8, uint8> TexturesTypeChange;
 };
 

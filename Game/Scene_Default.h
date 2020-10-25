@@ -1,9 +1,6 @@
 #pragma once
 
-#include "Scene/Nodes/UITexture.h"
-#include "reactphysics3d.h"
-
-class ZN_API CSceneDefault 
+class CSceneDefault 
 	: public SceneBase
 {
 public:
@@ -33,5 +30,4 @@ private:
 
 private:
 	std::shared_ptr<ISceneNode3D> m_RootForBoxes;
-	rp3d::DynamicsWorld m_World;
 };

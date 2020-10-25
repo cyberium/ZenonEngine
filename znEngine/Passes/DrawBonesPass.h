@@ -16,7 +16,7 @@ public:
 	EVisitResult Visit(const IGeometry* Geometry, const IMaterial* Material, SGeometryDrawArgs GeometryDrawArgs = SGeometryDrawArgs()) override;
 
 private:
-	std::shared_ptr<IGeometry> m_QuadGeometry;
+	std::shared_ptr<IGeometry> m_ConeGeometry;
 	std::shared_ptr<IGeometry> m_SphereGeometry;
 	std::shared_ptr<IConstantBuffer> m_MaterialConstantBuffer;
 	IShaderParameter* m_MaterialParameter;

@@ -1,5 +1,8 @@
 #include "stdafx.h"
 
+// Additional
+#include "Scene_Default.h"
+
 static IBaseManager* BaseManager = nullptr;
 
 
@@ -8,37 +11,6 @@ void main_internal(int argumentCount, char* arguments[])
 	// 1. Initialize engine and some improtant managers
 	BaseManager = InitializeEngine(Utils::ArgumentsToVector(argumentCount, arguments), "");
 	
-
-	class CTestClass
-	{
-	public:
-		CTestClass()
-		{
-			OutputDebugStringA("TestCreated!");
-		}
-
-		~CTestClass()
-		{
-			OutputDebugStringA("TestDeleted!");
-		}
-
-
-
-		
-
-
-	};
-
-	{
-		DEBUG_NEW CTestClass();
-		//std::shared_ptr<CTestClass> ptr();
-
-
-
-
-
-	}
-
 	//try
 	//{
 		Application app(*BaseManager, ::GetModuleHandle(NULL));
@@ -62,7 +34,7 @@ void main_internal(int argumentCount, char* arguments[])
 		BaseManager->GetManager<ILoader>()->Start();
 
 
-		std::shared_ptr<IScene> scene = BaseManager->GetManager<IObjectsFactory>()->GetClassFactoryCast<IScenesFactory>()->CreateScene(cSceneDefault);
+		std::shared_ptr<IScene> scene = MakeShared(CSceneDefault, *BaseManager);//BaseManager->GetManager<IObjectsFactory>()->GetClassFactoryCast<IScenesFactory>()->CreateScene(cSceneDefault);
 		scene->SetRenderWindow(firstRenderWindow);
 		scene->ConnectEvents(std::dynamic_pointer_cast<IRenderWindowEvents>(firstRenderWindow));
 		scene->Initialize();

@@ -33,6 +33,11 @@ void CznModelsManager::RemoveModelsLoader(const std::shared_ptr<IznModelsLoader>
 	m_ModelsLoaders.erase(it);
 }
 
+const std::shared_ptr<IznModelsLoader> CznModelsManager::GetLoaderForModel(const std::string & ModelFileName)
+{
+	return std::shared_ptr<IznModelsLoader>();
+}
+
 std::shared_ptr<IModel> CznModelsManager::LoadModel(const std::string& ModelFileName, const std::shared_ptr<IznLoaderParams>& LoaderParams)
 {
 	// Find existsing cached
@@ -49,15 +54,11 @@ std::shared_ptr<IModel> CznModelsManager::LoadModel(const std::string& ModelFile
 		}
 	}
 
-	auto file = m_BaseManager.GetManager<IFilesManager>()->Open(ModelFileName);
-	if (file == nullptr)
-		throw CException("Model file '%s' not found.", ModelFileName.c_str());
-
 	for (const auto& loader : m_ModelsLoaders)
 	{
-		if (loader->IsSupportedFormat(file))
+		if (loader->IsSupportedFormat(ModelFileName))
 		{
-			std::shared_ptr<IModel> model = loader->LoadModel(file, LoaderParams);
+			std::shared_ptr<IModel> model = loader->LoadModel(ModelFileName, LoaderParams);
 			m_ModelsByName[ModelFileName] = model;
 			return model;
 		}

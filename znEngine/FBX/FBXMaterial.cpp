@@ -225,12 +225,14 @@ std::shared_ptr<ITexture> CFBXMaterial::LoadTexture(fbxsdk::FbxTexture * Texture
 	auto loaderParams = m_FBXNode.GetFBXScene().GetLoaderParams();
 	if (auto loaderFBXParams = std::dynamic_pointer_cast<CznFBXLoaderParams>(loaderParams))
 	{
+		std::string overrridenTexture = loaderFBXParams->OverrideTexture;
+		if (overrridenTexture.size() > 0)
+			fileName = overrridenTexture;
+
 		std::string texturesRoot = loaderFBXParams->TexturesPathRoot;
 		if (texturesRoot.size() > 0)
 			fileName = texturesRoot + "/" + fileName;
 	}
-
-	//fileName = "C:/_engine/ZenonEngine_gamedata/Toon_RTS/Orcs/models/Materials/textures/ORC_StandardUnits.png";
 
 	return m_BaseManager.GetApplication().GetRenderDevice().GetObjectsFactory().LoadTexture2D(fileName);
 }

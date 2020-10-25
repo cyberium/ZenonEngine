@@ -23,7 +23,7 @@ CDrawBonesPass::~CDrawBonesPass()
 //
 std::shared_ptr<IRenderPassPipelined> CDrawBonesPass::ConfigurePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport)
 {
-	m_QuadGeometry = GetRenderDevice().GetPrimitivesFactory().CreateCone();
+	m_ConeGeometry = GetRenderDevice().GetPrimitivesFactory().CreateCone();
 	m_SphereGeometry = GetRenderDevice().GetPrimitivesFactory().CreateSphere();
 
 	std::shared_ptr<IShader> vertexShader;
@@ -82,7 +82,7 @@ glm::quat LookAt(glm::vec3 Position, glm::vec3 LookAt)
 //
 EVisitResult CDrawBonesPass::Visit(const ISceneNode3D * SceneNode3D)
 {
-	const std::shared_ptr<ISkeletonComponent3D>& skeletonComponent = SceneNode3D->GetComponent<ISkeletonComponent3D>();
+	std::shared_ptr<ISkeletonComponent3D> skeletonComponent = SceneNode3D->GetComponent<ISkeletonComponent3D>();
 	if (skeletonComponent == nullptr)
 		return EVisitResult::AllowVisitChilds;
 
@@ -137,7 +137,7 @@ EVisitResult CDrawBonesPass::Visit(const ISceneNode3D * SceneNode3D)
 			m_PerObjectParameter->Bind();
 		}
 
-		m_QuadGeometry->Render(GetRenderEventArgs(), vertexShader);
+		m_ConeGeometry->Render(GetRenderEventArgs(), vertexShader);
 
 
 

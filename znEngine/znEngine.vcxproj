@@ -380,7 +380,6 @@
     <ClCompile Include="Scene\Nodes\UITexture.cpp" />
     <ClCompile Include="Scene\Nodes\UIUtils.cpp" />
     <ClCompile Include="Scene\Nodes\UIWindow.cpp" />
-    <ClCompile Include="Scene\Scene_Default.cpp" />
     <ClCompile Include="Scene\Skeleton.cpp" />
     <ClCompile Include="Scene\SkeletonBone.cpp" />
     <ClCompile Include="Settings.cpp" />
@@ -585,7 +584,6 @@
     <ClInclude Include="Scene\Nodes\UITexture.h" />
     <ClInclude Include="Scene\Nodes\UIUtils.h" />
     <ClInclude Include="Scene\Nodes\UIWindow.h" />
-    <ClInclude Include="Scene\Scene_Default.h" />
     <ClInclude Include="Scene\Skeleton.h" />
     <ClInclude Include="Scene\SkeletonBone.h" />
     <ClInclude Include="Settings.h" />
