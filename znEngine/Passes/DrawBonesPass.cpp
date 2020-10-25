@@ -106,6 +106,9 @@ EVisitResult CDrawBonesPass::Visit(const ISceneNode3D * SceneNode3D)
 	for (const auto& b : bones)
 	{
 		glm::mat4 m = b->GetPivotMatrix();
+		
+		
+		/*
 		glm::vec3 mPos = glm::vec3(m[3][0], m[3][1], m[3][2]);
 
 		if (b->GetParentBone().lock())
@@ -139,8 +142,8 @@ EVisitResult CDrawBonesPass::Visit(const ISceneNode3D * SceneNode3D)
 
 		m_ConeGeometry->Render(GetRenderEventArgs(), vertexShader);
 
-
-
+		*/
+		
 
 
 

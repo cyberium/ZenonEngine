@@ -22,7 +22,7 @@ public:
 
 private:
 	void Load3D();
-
+	void Load3DOld();
 private:
 	std::shared_ptr<CUITextureNode> m_TextureUI;
 	std::shared_ptr<IRenderer> m_ForwardRenderer;

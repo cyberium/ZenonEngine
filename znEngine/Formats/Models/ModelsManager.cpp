@@ -35,7 +35,10 @@ void CznModelsManager::RemoveModelsLoader(const std::shared_ptr<IznModelsLoader>
 
 const std::shared_ptr<IznModelsLoader> CznModelsManager::GetLoaderForModel(const std::string & ModelFileName)
 {
-	return std::shared_ptr<IznModelsLoader>();
+	for (const auto& loader : m_ModelsLoaders)
+		if (loader->IsSupportedFormat(ModelFileName))
+			return loader;
+	return nullptr;
 }
 
 std::shared_ptr<IModel> CznModelsManager::LoadModel(const std::string& ModelFileName, const std::shared_ptr<IznLoaderParams>& LoaderParams)

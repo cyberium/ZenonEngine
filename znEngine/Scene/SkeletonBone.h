@@ -2,7 +2,7 @@
 
 #include "AnimatedValue.h"
 
-struct CSkeletonBone
+struct ZN_API CSkeletonBone
 {
 	CSkeletonBone(const std::string& Name, int32 ParentIndex);
 	virtual ~CSkeletonBone();
@@ -11,15 +11,17 @@ struct CSkeletonBone
 
 	bool operator==(const CSkeletonBone& other) const;
 
-	glm::vec3 CalcTranslate(const ISceneNode3D& Instance) const;
 	glm::mat4 CalcMatrix(const ISceneNode3D& Instance) const;
+	glm::vec3 CalcTranslate(const ISceneNode3D& Instance) const;
+	glm::mat4 CalcRotate(const ISceneNode3D& Instance) const;
 
 	std::string          Name;
 	int32                ParentIndex;
-	glm::mat4            GlobalInverse;
+	glm::mat4            GlobalTransform;
+	glm::mat4            LocalTransform;
 
-	AnimatedValue<glm::mat4> mM;
 	AnimatedValue<float> pX, pY, pZ;
 	AnimatedValue<float> rX, rY, rZ;
 	AnimatedValue<float> sX, sY, sZ;
+	AnimatedValue<glm::mat4> mM;
 };

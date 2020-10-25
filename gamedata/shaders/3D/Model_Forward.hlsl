@@ -141,6 +141,8 @@ float4 PS_main(VertexShaderOutput IN) : SV_TARGET
 	if (diffuseAndAlpha.a < 0.05f)
 		discard;
 		
+	
+		
 	float4 ambient = ExtractAmbient(Mat, displacedTexCoord);
 	float4 emissive = ExtractEmissive(Mat, displacedTexCoord);
 	float4 specular = ExtractSpecular(Mat, displacedTexCoord);
@@ -157,6 +159,8 @@ float4 PS_main(VertexShaderOutput IN) : SV_TARGET
 	float4 ambientLight  = float4(diffuseAndAlpha.rgb * lit.Ambient.rgb, 1.0f);
 	float4 diffuseLight  = float4(diffuseAndAlpha.rgb * lit.Diffuse.rgb, 1.0f);
 	float4 specularLight = float4(specular.rgb, 1.0f) * lit.Specular;
+
+	return diffuseAndAlpha;
 
 	float4 colorResult = float4(ambientLight.rgb + diffuseLight.rgb + specularLight.rgb, 1.0f);
 	return colorResult;

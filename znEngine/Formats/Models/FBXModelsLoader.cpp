@@ -14,6 +14,10 @@
 #pragma comment(lib, "libxml2-md.lib")
 #pragma comment(lib, "zlib-md.lib")
 
+namespace
+{
+	const char * cLoaderSupportedExtension = "fbx";
+}
 
 CznFBXModelsLoader::CznFBXModelsLoader(IBaseManager& BaseManager)
 	: m_BaseManager(BaseManager)
@@ -49,13 +53,15 @@ std::string CznFBXModelsLoader::GetName() const
 bool CznFBXModelsLoader::IsSupportedFormat(const std::string& ModelFileName) const
 {
 	std::string lowerFileName = Utils::ToLower(ModelFileName);
-	std::string extension = lowerFileName.substr(lowerFileName.length() - 3);
-	return extension == "fbx";
+	std::string extension = lowerFileName;
+	if (ModelFileName.length() > strlen(cLoaderSupportedExtension))
+		extension = extension.substr(extension.length() - strlen(cLoaderSupportedExtension));
+	return extension == cLoaderSupportedExtension;
 }
 
 bool CznFBXModelsLoader::IsSupportedFormat(const std::shared_ptr<IFile>& ModelFile) const
 {
-	return ModelFile->Extension() == "fbx";
+	return ModelFile->Extension() == cLoaderSupportedExtension;
 }
 
 std::shared_ptr<IModel> CznFBXModelsLoader::LoadModel(const std::string& ModelFileName, const std::shared_ptr<IznLoaderParams>& LoaderParams) const
@@ -86,7 +92,7 @@ std::shared_ptr<IFBXScene> CznFBXModelsLoader::LoadScene(const std::string& Mode
 	auto fbxSceneFile = m_BaseManager.GetManager<IFilesManager>()->Open(ModelFileName);
 	if (fbxSceneFile == nullptr)
 		throw CException("FBXScene file '%s' not found.", ModelFileName.c_str());
-	return LoadScene(ModelFileName, LoaderParams);
+	return LoadScene(fbxSceneFile, LoaderParams);
 }
 
 std::shared_ptr<IFBXScene> CznFBXModelsLoader::LoadScene(const std::shared_ptr<IFile>& ModelFile, const std::shared_ptr<IznLoaderParams>& LoaderParams) const

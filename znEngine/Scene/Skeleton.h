@@ -2,7 +2,7 @@
 
 #include "SkeletonBone.h"
 
-class CSkeleton
+class ZN_API CSkeleton
 {
 public:
 	void MergeWithOther(const CSkeleton& other);

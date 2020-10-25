@@ -58,7 +58,7 @@ std::shared_ptr<IRenderPassPipelined> CMaterialModelPass::ConfigurePipeline(std:
 	GetPipeline().SetSampler(1, samplerClamp);
 
 	m_ShaderLightsBufferParameter = &pixelShader->GetShaderParameterByName("Lights");
-	_ASSERT(m_ShaderLightsBufferParameter->IsValid());
+	//_ASSERT(m_ShaderLightsBufferParameter->IsValid());
 
 	return shared_from_this();
 }
@@ -67,8 +67,8 @@ std::shared_ptr<IRenderPassPipelined> CMaterialModelPass::ConfigurePipeline(std:
 
 EVisitResult CMaterialModelPass::Visit(const ISceneNode3D * SceneNode)
 {
-	if (SceneNode->GetComponent<ISkeletonComponent3D>())
-		return EVisitResult::AllowVisitChilds;
+	//if (SceneNode->GetComponent<ISkeletonComponent3D>())
+	//	return EVisitResult::AllowVisitChilds;
 	return Base3DPass::Visit(SceneNode);
 }
 
@@ -91,11 +91,13 @@ EVisitResult CMaterialModelPass::Visit(const IGeometry * Geometry, const IMateri
 	if (Material)
 		Material->Bind(GetRenderEventArgs().PipelineState->GetShaders());
 
-	m_ShaderLightsBufferParameter->Bind();
+	if (m_ShaderLightsBufferParameter->IsValid())
+		m_ShaderLightsBufferParameter->Bind();
 
 	Geometry->Render(GetRenderEventArgs(), GetRenderEventArgs().PipelineState->GetShaders().at(EShaderType::VertexShader).get(), GeometryDrawArgs);
 
-	m_ShaderLightsBufferParameter->Unbind();
+	if (m_ShaderLightsBufferParameter->IsValid())
+		m_ShaderLightsBufferParameter->Unbind();
 
 	if (Material)
 		Material->Unbind(GetRenderEventArgs().PipelineState->GetShaders());

@@ -37,7 +37,7 @@ glm::vec3 CSkeletonComponentBone3D::GetPivotPoint() const
 
 const glm::mat4 & CSkeletonComponentBone3D::GetPivotMatrix() const
 {
-	return m_Bone.GlobalInverse;
+	return m_Bone.LocalTransform;
 }
 
 const glm::vec3 & CSkeletonComponentBone3D::GetTranslate() const
@@ -85,15 +85,16 @@ void CSkeletonComponentBone3D::Calculate(const ISceneNode3D& Instance, const ICa
 	if (parentBone)
 		std::dynamic_pointer_cast<ISkeletonComponentBoneInternal3D>(parentBone)->Calculate(Instance, Camera);
 
-	m_Translate = m_Bone.CalcTranslate(Instance);
+	//m_Translate = m_Bone.CalcTranslate(Instance);
 
+	m_RotateMatrix = m_Bone.CalcRotate(Instance);
 	m_Matrix = m_Bone.CalcMatrix(Instance);
-	//m_RotateMatrix = m_Bone.calcRotationMatrix(Instance, GlobalTime);
+	
 
 	if (parentBone)
 	{
-		m_Matrix = parentBone->GetMatrix() * m_Matrix;
 		//m_RotateMatrix = parentBone->GetRotateMatrix() * m_RotateMatrix;
+		m_Matrix = parentBone->GetMatrix() * m_Matrix;
 	}
 
 	//if (m_Bone.IsBillboard())

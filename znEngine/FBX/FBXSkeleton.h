@@ -20,7 +20,7 @@ public:
 	CSkeleton& GetSkeletonEditable() override;
 
 protected:
-	void ProcessSkeletonHeirarchyre(FbxNode * node, int depth, int index, int parentindex);
+	void ProcessSkeletonHeirarchyre(fbxsdk::FbxNode * node, int depth, int index, int parentindex);
 
 private:
 	CSkeleton           m_Skeleton;

@@ -40,15 +40,16 @@ CSkeleton & CFBXSkeleton::GetSkeletonEditable()
 //
 // Private
 //
-void CFBXSkeleton::ProcessSkeletonHeirarchyre(FbxNode * node, int depth, int index, int parentindex)
+void CFBXSkeleton::ProcessSkeletonHeirarchyre(fbxsdk::FbxNode * node, int depth, int index, int parentindex)
 {
-	if (node->GetNodeAttribute() && node->GetNodeAttribute()->GetAttributeType() && node->GetNodeAttribute()->GetAttributeType() == FbxNodeAttribute::eSkeleton)
+	if (node->GetNodeAttribute() && node->GetNodeAttribute()->GetAttributeType() && node->GetNodeAttribute()->GetAttributeType() == fbxsdk::FbxNodeAttribute::eSkeleton)
 	{
-		CSkeletonBone bone(node->GetName(), parentindex);
-		
-		fbxsdk::FbxAMatrix globalBindposeInverseMatrix = node->EvaluateGlobalTransform();
-		bone.GlobalInverse = ToGLMMat4(globalBindposeInverseMatrix);
+		fbxsdk::FbxSkeleton* skeletonNode = node->GetSkeleton();
 
+
+		CSkeletonBone bone(node->GetName(), parentindex);
+		bone.GlobalTransform = ToGLMMat4(node->EvaluateGlobalTransform());
+		bone.LocalTransform = ToGLMMat4(node->EvaluateLocalTransform());
 		m_Skeleton.AddBone(bone);
 	}
 

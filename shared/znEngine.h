@@ -19,6 +19,8 @@
 #include "../znEngine/Scene/Components/ModelsComponent3D.h"
 #include "../znEngine/Scene/Components/CameraComponent3D.h"
 #include "../znEngine/Scene/Components/ParticlesComponent3D.h"
+#include "../znEngine/Scene/Components/Skeleton/AnimatorComponent.h"
+#include "../znEngine/Scene/Components/Skeleton/SkeletonComponent.h"
 
 // SceneNodes
 #include "../znEngine/Scene/Nodes/UITexture.h"

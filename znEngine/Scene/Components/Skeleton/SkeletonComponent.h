@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Scene/Skeleton.h"
+#include "../../Skeleton.h"
 #include "SkeletonComponentBone.h"
 
 class __declspec(UUID_SkeletonComponent) ZN_API CSkeletonComponent3D

@@ -53,7 +53,7 @@ void CFBXMaterial::Load(fbxsdk::FbxSurfaceMaterial* NativeMaterial)
 	MaterialData().VectorDisplacementFactor = ToFloat(surfacePhong->VectorDisplacementFactor);
 
 	MaterialData().Specular = ToGLMVec3(surfacePhong->Specular);
-	MaterialData().SpecularFactor = /*ToFloat(surfacePhong->SpecularFactor) **/ 16.0f;
+	MaterialData().SpecularFactor = ToFloat(surfacePhong->SpecularFactor) /** 16.0f*/;
 
 	MaterialData().Reflection = ToGLMVec3(surfacePhong->Reflection);
 	MaterialData().ReflectionFactor = ToFloat(surfacePhong->ReflectionFactor);

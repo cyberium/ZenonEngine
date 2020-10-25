@@ -64,9 +64,10 @@ void CAnimatorComponent3D::Update(const UpdateEventArgs & e)
 	if (m_IsStopped)
 		return;
 
-	// 37 кадров
+	//if (m_CurrentAnimation == nullptr)
+	//	return;
 
-	float fpsMultiplier = (e.DeltaTime) / 1000.0f * 60.0;
+	float fpsMultiplier = (e.DeltaTime) / (1000.0f / 60.0f);
 
 	animtime += fpsMultiplier;
 	m_CurrentTime = static_cast<uint32>(m_CurrentAnimation->FrameStart + animtime);

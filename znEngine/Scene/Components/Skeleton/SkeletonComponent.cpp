@@ -30,7 +30,8 @@ CSkeletonComponent3D::~CSkeletonComponent3D()
 //
 std::shared_ptr<ISkeletonComponentBone3D> CSkeletonComponent3D::GetBone(size_t Index) const
 {
-	_ASSERT(Index < m_Bones.size());
+	if (Index >= m_Bones.size())
+		return nullptr;
 	return m_Bones.at(Index);
 }
 

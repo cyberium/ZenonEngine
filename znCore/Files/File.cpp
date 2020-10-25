@@ -27,6 +27,7 @@ CFile::~CFile()
 void CFile::ChangeExtension(const std::string& NewExtension)
 {
 	m_Extension = NewExtension;
+	m_Extension = Utils::ToLower(m_Extension);
 	RebuildFullName();
 }
 
@@ -104,7 +105,8 @@ void CFile::ParsePathAndExtension(const std::string& FullPath)
 	if (lastPointPos != std::string::npos)
 	{
 		m_NameWithoutExtension = m_Name.substr(0, lastPointPos /*+ 1*/);
-		m_Extension = Utils::ToLower(m_Name.substr(lastPointPos + 1));
+		m_Extension = m_Name.substr(lastPointPos + 1);
+		m_Extension = Utils::ToLower(m_Extension);
 	}
 }
 

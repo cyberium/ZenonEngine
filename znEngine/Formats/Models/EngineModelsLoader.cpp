@@ -3,6 +3,12 @@
 // General
 #include "EngineModelsLoader.h"
 
+
+namespace
+{
+	const char * cLoaderSupportedExtension = "znmdl";
+}
+
 CznEngineModelsLoader::CznEngineModelsLoader(IBaseManager& BaseManager)
 	: m_BaseManager(BaseManager)
 {
@@ -25,13 +31,15 @@ std::string CznEngineModelsLoader::GetName() const
 bool CznEngineModelsLoader::IsSupportedFormat(const std::string & ModelFileName) const
 {
 	std::string lowerFileName = Utils::ToLower(ModelFileName);
-	std::string extension = lowerFileName.substr(lowerFileName.length() - 5);
-	return extension == "znmdl";
+	std::string extension = lowerFileName;
+	if (ModelFileName.length() > strlen(cLoaderSupportedExtension))
+		extension = extension.substr(extension.length() - strlen(cLoaderSupportedExtension));
+	return extension == cLoaderSupportedExtension;
 }
 
 bool CznEngineModelsLoader::IsSupportedFormat(const std::shared_ptr<IFile>& ModelFile) const
 {
-	return ModelFile->Extension() == "znmdl";
+	return ModelFile->Extension() == cLoaderSupportedExtension;
 }
 
 

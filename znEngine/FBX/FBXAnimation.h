@@ -19,9 +19,9 @@ public:
 	const std::vector<SAnimation>& GetAnimations() const override;
 
 private:
-	void DisplayAnimationRec(fbxsdk::FbxAnimLayer* pAnimLayer, FbxNode* pNode, size_t AnimationIndex);
-	void DisplayChannels(FbxNode* pNode, FbxAnimLayer* pAnimLayer, size_t AnimationIndex);
-	void DisplayCurveKeys(FbxNode* pNode, FbxAnimCurve* pCurve, AnimatedValue<float>& valueInt, size_t AnimationIndex);
+	void DisplayAnimationRec(fbxsdk::FbxAnimLayer* pAnimLayer, fbxsdk::FbxNode* pNode, size_t AnimationIndex);
+	void DisplayChannels(fbxsdk::FbxNode* pNode, fbxsdk::FbxAnimLayer* pAnimLayer, size_t AnimationIndex);
+	void DisplayCurveKeys(fbxsdk::FbxNode* pNode, fbxsdk::FbxAnimCurve* pCurve, AnimatedValue<float>& valueInt, size_t AnimationIndex);
 
 private:
 	std::vector<SAnimation> m_Animations;

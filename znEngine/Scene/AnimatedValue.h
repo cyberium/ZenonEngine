@@ -203,7 +203,7 @@ public:
 			case Interpolations::INTERPOLATION_NONE:
 				return interpolateNone(r, pData.at(pos), pData.at(pos + 1));
 			case Interpolations::INTERPOLATION_LINEAR:
-				return interpolateLinear<T>(r, pData.at(pos), pData.at(pos + 1));
+				return interpolateNone<T>(r, pData.at(pos), pData.at(pos + 1));
 			case Interpolations::INTERPOLATION_HERMITE:
 				return interpolateHermite<T>(r, pData.at(pos), pData.at(pos + 1), m_ValuesHermiteIn[SequenceIndex].at(pos), m_ValuesHermiteOut[SequenceIndex].at(pos));
 			default:
@@ -221,11 +221,19 @@ public:
 
 	void MergeWithOther(const AnimatedValue<T>& other)
 	{
+		m_Type = other.m_Type;
+
 		for (const auto& t : other.m_Times)
 			m_Times.push_back(t);
 
 		for (const auto& v : other.m_Values)
 			m_Values.push_back(v);
+
+		for (const auto& v : other.m_ValuesHermiteIn)
+			m_ValuesHermiteIn.push_back(v);
+
+		for (const auto& v : other.m_ValuesHermiteOut)
+			m_ValuesHermiteOut.push_back(v);
 	}
 
 private:
