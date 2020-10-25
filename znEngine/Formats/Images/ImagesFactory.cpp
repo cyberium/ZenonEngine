@@ -25,19 +25,16 @@ void CImagesFactory::AddImageLoader(const std::shared_ptr<IImageLoader>& ImageLo
 
 void CImagesFactory::RemoveImageLoader(const std::shared_ptr<IImageLoader>& ImageLoader)
 {
-	auto it = std::find(m_ImageLoaders.begin(), m_ImageLoaders.end(), ImageLoader);
+	const auto& it = std::find(m_ImageLoaders.begin(), m_ImageLoaders.end(), ImageLoader);
 	if (it == m_ImageLoaders.end())
 		return;
 
 	m_ImageLoaders.erase(it);
 }
 
-std::shared_ptr<IImage> CImagesFactory::CreateImage(const std::string & FileName)
+std::shared_ptr<IImage> CImagesFactory::CreateImage(const std::string& FileName)
 {
-	auto filesManager = m_BaseManager.GetManager<IFilesManager>();
-	_ASSERT(filesManager);
-	auto file = filesManager->Open(FileName);
-	return CreateImage(file);
+	return CreateImage(m_BaseManager.GetManager<IFilesManager>()->Open(FileName));
 }
 
 std::shared_ptr<IImage> CImagesFactory::CreateImage(const std::shared_ptr<IFile>& File)
@@ -48,9 +45,9 @@ std::shared_ptr<IImage> CImagesFactory::CreateImage(const std::shared_ptr<IFile>
 	const auto& iter = m_ImagesByName.find(File->Path_Name());
 	if (iter != m_ImagesByName.end())
 	{
-		if (auto texture = iter->second.lock())
+		if (auto image = iter->second.lock())
 		{
-			return texture;
+			return image;
 		}
 		else
 		{

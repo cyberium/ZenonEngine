@@ -86,11 +86,12 @@ ZN_INTERFACE ZN_API IFilesStorage
 {
 	virtual ~IFilesStorage() {};
 
-	virtual std::shared_ptr<IFile>  Create(std::string FileName) = 0;
-	virtual std::shared_ptr<IFile>  OpenFile(std::string FileName, EFileAccessType FileAccessType = EFileAccessType::Read) = 0;
-	virtual bool                    SaveFile(std::shared_ptr<IFile> File) = 0;
-	virtual size_t                  GetFileSize(std::string FileName) const = 0;
-	virtual bool                    IsFileExists(std::string FileName) const = 0;
+	virtual std::shared_ptr<IFile>                  Create(std::string FileName) = 0;
+	virtual std::shared_ptr<IFile>                  OpenFile(std::string FileName, EFileAccessType FileAccessType = EFileAccessType::Read) = 0;
+	virtual bool                                    SaveFile(std::shared_ptr<IFile> File) = 0;
+	virtual size_t                                  GetFileSize(std::string FileName) const = 0;
+	virtual bool                                    IsFileExists(std::string FileName) const = 0;
+	virtual std::vector<std::string>                GetAllFilesInFolder(std::string Directory, std::string Extension = "") const = 0;
 };
 
 //--

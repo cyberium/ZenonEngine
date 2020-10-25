@@ -172,6 +172,9 @@
     <Filter Include="Passes\3D\Postprocess">
       <UniqueIdentifier>{8de667f2-5bea-4474-83be-ccf5b2a060e0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Formats\Models\Loaders">
+      <UniqueIdentifier>{dce1f577-a935-4948-bb3c-cf3bd2f2b474}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -215,9 +218,6 @@
       <Filter>FBX</Filter>
     </ClCompile>
     <ClCompile Include="FBX\FBXScene.cpp">
-      <Filter>FBX</Filter>
-    </ClCompile>
-    <ClCompile Include="FBX\FBXSceneNode.cpp">
       <Filter>FBX</Filter>
     </ClCompile>
     <ClCompile Include="FBX\FBXStream.cpp">
@@ -687,14 +687,20 @@
     <ClCompile Include="Formats\Models\ModelsManager.cpp">
       <Filter>Formats\Models</Filter>
     </ClCompile>
-    <ClCompile Include="Formats\Models\EngineModelsLoader.cpp">
-      <Filter>Formats\Models</Filter>
-    </ClCompile>
-    <ClCompile Include="Formats\Models\FBXModelsLoader.cpp">
-      <Filter>Formats\Models</Filter>
-    </ClCompile>
     <ClCompile Include="Passes\Postprocess_HDR.cpp">
       <Filter>Passes\3D\Postprocess</Filter>
+    </ClCompile>
+    <ClCompile Include="Formats\Models\EngineModelsLoader.cpp">
+      <Filter>Formats\Models\Loaders</Filter>
+    </ClCompile>
+    <ClCompile Include="Formats\Models\FBXModelsLoader.cpp">
+      <Filter>Formats\Models\Loaders</Filter>
+    </ClCompile>
+    <ClCompile Include="FBX\FBXUtils.cpp">
+      <Filter>FBX\Helpers</Filter>
+    </ClCompile>
+    <ClCompile Include="FBX\FBXNode.cpp">
+      <Filter>FBX</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -742,9 +748,6 @@
       <Filter>FBX</Filter>
     </ClInclude>
     <ClInclude Include="FBX\FBXScene.h">
-      <Filter>FBX</Filter>
-    </ClInclude>
-    <ClInclude Include="FBX\FBXSceneNode.h">
       <Filter>FBX</Filter>
     </ClInclude>
     <ClInclude Include="FBX\FBXStream.h">
@@ -1278,14 +1281,20 @@
     <ClInclude Include="Formats\Models\ModelsManager.h">
       <Filter>Formats\Models</Filter>
     </ClInclude>
-    <ClInclude Include="Formats\Models\EngineModelsLoader.h">
-      <Filter>Formats\Models</Filter>
-    </ClInclude>
-    <ClInclude Include="Formats\Models\FBXModelsLoader.h">
-      <Filter>Formats\Models</Filter>
-    </ClInclude>
     <ClInclude Include="Passes\Postprocess_HDR.h">
       <Filter>Passes\3D\Postprocess</Filter>
+    </ClInclude>
+    <ClInclude Include="Formats\Models\FBXModelsLoader.h">
+      <Filter>Formats\Models\Loaders</Filter>
+    </ClInclude>
+    <ClInclude Include="Formats\Models\EngineModelsLoader.h">
+      <Filter>Formats\Models\Loaders</Filter>
+    </ClInclude>
+    <ClInclude Include="FBX\FBXUtils.h">
+      <Filter>FBX\Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="FBX\FBXNode.h">
+      <Filter>FBX</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -108,16 +108,9 @@ void CEditor3DPreviewScene::Initialize()
 	//
 	// Renderer
 	//
-	{
-		auto forwardrender = MakeShared(CRendererForward, GetBaseManager(), weak_from_this());
-		forwardrender->Initialize(GetRenderWindow()->GetRenderTarget(), &GetRenderWindow()->GetViewport());
-		SetRenderer(forwardrender);
-
-
-
-		//GetRenderer()->AddPass(MakeShared(CUIColorPass, GetRenderDevice(), shared_from_this())->ConfigurePipeline(GetRenderWindow()->GetRenderTarget(), &GetRenderWindow()->GetViewport()));
-		//GetRenderer()->AddPass(MakeShared(CUIFontPass, GetRenderDevice(), shared_from_this())->ConfigurePipeline(GetRenderWindow()->GetRenderTarget(), &GetRenderWindow()->GetViewport()));
-	}
+	auto forwardrender = MakeShared(CRendererForward, GetBaseManager(), weak_from_this());
+	forwardrender->Initialize(GetRenderWindow()->GetRenderTarget(), &GetRenderWindow()->GetViewport());
+	SetRenderer(forwardrender);
 }
 
 void CEditor3DPreviewScene::Finalize()

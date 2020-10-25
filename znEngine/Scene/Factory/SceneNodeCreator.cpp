@@ -38,7 +38,7 @@ std::shared_ptr<IObject> CSceneNode3DEngineCreator::CreateObject(size_t Index, c
 //#ifdef ZN_FBX_SDK_ENABLE
 //	else if (Index == 1)
 //	{
-//		createdNode = scene->CreateSceneNode3DInternal<CFBXSceneNode>(GetBaseManager(), m_FBXManager->GetFBXManager());
+//		createdNode = scene->CreateSceneNode3DInternal<CFBXNode>(GetBaseManager(), m_FBXManager->GetFBXManager());
 //	}
 //#endif
 

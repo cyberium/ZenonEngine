@@ -66,6 +66,35 @@ std::shared_ptr<IModel> CznModelsManager::LoadModel(const std::string& ModelFile
 	throw CException("The loader for model '%s' doesn't exists.", ModelFileName.c_str());
 }
 
+std::shared_ptr<IModel> CznModelsManager::LoadModel(const std::shared_ptr<IFile>& ModelFile, const std::shared_ptr<IznLoaderParams>& LoaderParams)
+{
+	// Find existsing cached
+	const auto& iter = m_ModelsByName.find(ModelFile->Path_Name());
+	if (iter != m_ModelsByName.end())
+	{
+		if (auto model = iter->second.lock())
+		{
+			return model;
+		}
+		else
+		{
+			m_ModelsByName.erase(iter);
+		}
+	}
+
+	for (const auto& loader : m_ModelsLoaders)
+	{
+		if (loader->IsSupportedFormat(ModelFile))
+		{
+			std::shared_ptr<IModel> model = loader->LoadModel(ModelFile, LoaderParams);
+			m_ModelsByName[ModelFile->Path_Name()] = model;
+			return model;
+		}
+	}
+
+	throw CException("The loader for model '%s' doesn't exists.", ModelFile->Path_Name().c_str());
+}
+
 std::shared_ptr<IFile> CznModelsManager::SaveModel(const std::shared_ptr<IModel>& Model, const std::string& FileName)
 {
 	_ASSERT(Model != nullptr);

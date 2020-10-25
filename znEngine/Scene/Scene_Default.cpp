@@ -135,7 +135,6 @@ void CSceneDefault::Initialize()
 	//--------------------------------------------------------------------------
 	// Sponza
 	//--------------------------------------------------------------------------
-
 	{
 		if (false == GetBaseManager().GetManager<IFilesManager>()->IsFileExists("Sponza/Sponza.znmdl"))
 		{
@@ -192,7 +191,6 @@ void CSceneDefault::Initialize()
 	//--------------------------------------------------------------------------
 	// Plane
 	//--------------------------------------------------------------------------
-
 	{
 		const float cPlaneSize = 240.0f;
 		const float cPlaneY = 0.0f;
@@ -557,14 +555,6 @@ void CSceneDefault::Load3D()
 	//fbxSceneNode->InitializeFromFile("C:/Users/Alexander/Downloads/Assets/Toon_RTS/Orcs/animation/shaman/Orc_shaman_02_walk.FBX");
 	//fbxSceneNode->InitializeFromFile("C:/Users/Alexander/Downloads/Assets/Toon_RTS/Orcs/models/Single_Mesh/Orc_SM_shaman.FBX");
 	
-	auto defferedRenderer = MakeShared(CRendererDeffered, GetBaseManager(), weak_from_this());
-	defferedRenderer->Initialize(GetRenderWindow()->GetRenderTarget(), &GetRenderWindow()->GetViewport());
-	SetRenderer(defferedRenderer);
-
-	//auto forwardRenderer = MakeShared(CRendererForward, GetBaseManager(), weak_from_this());
-	//forwardRenderer->Initialize(GetRenderWindow()->GetRenderTarget(), &GetRenderWindow()->GetViewport());
-	//SetRenderer(forwardRenderer);
-
 	//m_Technique3D.AddPass(GetBaseManager().GetManager<IRenderPassFactory>()->CreateRenderPass("TexturedMaterialPass", GetRenderDevice(), GetRenderWindow()->GetRenderTarget(), &GetRenderWindow()->GetViewport(), shared_from_this()));
 	//m_Technique3D.AddPass(MakeShared(CMaterialParticlePass, GetRenderDevice(), shared_from_this())->ConfigurePipeline(GetRenderWindow()->GetRenderTarget(), &GetRenderWindow()->GetViewport()));
 }

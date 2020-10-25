@@ -7,13 +7,7 @@
 
 // Additional
 #include "FBXDisplayCommon.h"
-
-
-inline glm::vec3 ToGLMVec3(const FbxPropertyT<FbxDouble3>& FBXVec3)
-{
-	return glm::vec3(FBXVec3.Get()[0], FBXVec3.Get()[1], FBXVec3.Get()[2]);
-}
-
+#include "FBXUtils.h"
 
 CFBXModel::CFBXModel(const IBaseManager& BaseManager, const IFBXNode& FBXNode)
 	: ModelProxie(BaseManager.GetApplication().GetRenderDevice().GetObjectsFactory().CreateModel())

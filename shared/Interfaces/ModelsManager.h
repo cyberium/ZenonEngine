@@ -32,5 +32,6 @@ ZN_INTERFACE ZN_API
 	virtual void AddModelsLoader(const std::shared_ptr<IznModelsLoader>& ModelsLaoder) = 0;
 	virtual void RemoveModelsLoader(const std::shared_ptr<IznModelsLoader>& ModelsLaoder) = 0;
 	virtual std::shared_ptr<IModel> LoadModel(const std::string& ModelFileName, const std::shared_ptr<IznLoaderParams>& LoaderParams = nullptr) = 0;
+	virtual std::shared_ptr<IModel> LoadModel(const std::shared_ptr<IFile>& ModelFile, const std::shared_ptr<IznLoaderParams>& LoaderParams = nullptr) = 0;
 	virtual std::shared_ptr<IFile> SaveModel(const std::shared_ptr<IModel>& Model, const std::string& FileName) = 0;
 };

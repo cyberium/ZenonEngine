@@ -3,7 +3,7 @@
 #ifdef ZN_FBX_SDK_ENABLE
 
 // General
-#include "FBXSceneNode.h"
+#include "FBXNode.h"
 
 // Additional
 #include "FBXDisplayCommon.h"
@@ -16,7 +16,7 @@
 #include "Materials/MaterialDebug.h"
 #include "Materials/MaterialTextured.h"
 
-CFBXSceneNode::CFBXSceneNode(const IBaseManager& BaseManager, IFBXScene& FBXScene)
+CFBXNode::CFBXNode(const IBaseManager& BaseManager, IFBXScene& FBXScene)
 	: m_BaseManager(BaseManager)
 	, m_FBXScene(FBXScene)
 	, m_Transform(glm::mat4(1.0f))
@@ -24,12 +24,12 @@ CFBXSceneNode::CFBXSceneNode(const IBaseManager& BaseManager, IFBXScene& FBXScen
 
 }
 
-CFBXSceneNode::~CFBXSceneNode()
+CFBXNode::~CFBXNode()
 {}
 
 
 
-void CFBXSceneNode::LoadNode(fbxsdk::FbxNode * NativeNode)
+void CFBXNode::LoadNode(fbxsdk::FbxNode * NativeNode)
 {
 	//if (m_FBXScene != nullptr)
 	//	throw CException("FBXSceneNode: Node '%s' already initialized.", GetName().c_str());
@@ -46,12 +46,12 @@ void CFBXSceneNode::LoadNode(fbxsdk::FbxNode * NativeNode)
 //
 // IFBXNode
 //
-const IFBXScene & CFBXSceneNode::GetFBXScene() const
+const IFBXScene & CFBXNode::GetFBXScene() const
 {
 	return m_FBXScene;
 }
 
-glm::mat4 CFBXSceneNode::GetTransform() const
+glm::mat4 CFBXNode::GetTransform() const
 {
 	return m_Transform;
 }
@@ -65,34 +65,34 @@ glm::mat4 GetParentWorldTransformRec(const IFBXNode* node)
 	return transform;
 }
 
-glm::mat4 CFBXSceneNode::GetParentWorldTransform() const
+glm::mat4 CFBXNode::GetParentWorldTransform() const
 {
 	if (auto parent = GetParent().lock())
 		return GetParentWorldTransformRec(parent.get());
 	return glm::mat4(1.0f);
 }
 
-std::weak_ptr<IFBXNode> CFBXSceneNode::GetParent() const
+std::weak_ptr<IFBXNode> CFBXNode::GetParent() const
 {
 	return m_Parent;
 }
 
-const std::vector<std::shared_ptr<IFBXNode>>& CFBXSceneNode::GetChilds() const
+const std::vector<std::shared_ptr<IFBXNode>>& CFBXNode::GetChilds() const
 {
 	return m_Childs;
 }
 
-std::shared_ptr<IFBXMaterial> CFBXSceneNode::GetFBXMaterial(int Index) const
+std::shared_ptr<IFBXMaterial> CFBXNode::GetFBXMaterial(int Index) const
 {
 	return m_MaterialsArray.at(Index);
 }
 
-std::shared_ptr<IFBXModel> CFBXSceneNode::GetFBXModel() const
+std::shared_ptr<IFBXModel> CFBXNode::GetFBXModel() const
 {
 	return m_Model;
 }
 
-std::shared_ptr<IFBXLight> CFBXSceneNode::GetFBXLight() const
+std::shared_ptr<IFBXLight> CFBXNode::GetFBXLight() const
 {
 	return m_Light;
 }
@@ -100,7 +100,7 @@ std::shared_ptr<IFBXLight> CFBXSceneNode::GetFBXLight() const
 //
 // Protected
 //
-void CFBXSceneNode::LoadParams(fbxsdk::FbxNode * NativeNode)
+void CFBXNode::LoadParams(fbxsdk::FbxNode * NativeNode)
 {
 	fbxsdk::FbxAMatrix& lGlobalTransform = NativeNode->EvaluateLocalTransform();
 	glm::mat4 globalTransform;
@@ -130,23 +130,23 @@ void CFBXSceneNode::LoadParams(fbxsdk::FbxNode * NativeNode)
 	//SetLocalTransform(globalTransform);
 }
 
-void CFBXSceneNode::LoadChilds(fbxsdk::FbxNode * NativeNode)
+void CFBXNode::LoadChilds(fbxsdk::FbxNode * NativeNode)
 {
 	for (int i = 0; i < NativeNode->GetChildCount(); i++)
 	{
 		fbxsdk::FbxNode* fbxNode = NativeNode->GetChild(i);
 		_ASSERT(fbxNode != nullptr);
 
-		std::shared_ptr<CFBXSceneNode> childFbxNode = MakeShared(CFBXSceneNode, m_BaseManager, m_FBXScene);
+		std::shared_ptr<CFBXNode> childFbxNode = MakeShared(CFBXNode, m_BaseManager, m_FBXScene);
 		childFbxNode->LoadNode(fbxNode);
 		childFbxNode->m_Parent = weak_from_this();
 		m_Childs.push_back(childFbxNode);
 	}
 }
 
-void CFBXSceneNode::LoadMaterials(fbxsdk::FbxNode * NativeNode)
+void CFBXNode::LoadMaterials(fbxsdk::FbxNode * NativeNode)
 {
-	Log::Print("CFBXSceneNode: Materials count '%d'.", NativeNode->GetMaterialCount());
+	Log::Print("FBXNode: Materials count '%d'.", NativeNode->GetMaterialCount());
 	for (int i = 0; i < NativeNode->GetMaterialCount(); i++)
 	{
 		std::shared_ptr<CFBXMaterial> znMaterial = MakeShared(CFBXMaterial, m_BaseManager, *this);
@@ -155,7 +155,7 @@ void CFBXSceneNode::LoadMaterials(fbxsdk::FbxNode * NativeNode)
 	}
 }
 
-void CFBXSceneNode::LoadAttributes(fbxsdk::FbxNode * NativeNode)
+void CFBXNode::LoadAttributes(fbxsdk::FbxNode * NativeNode)
 {
 	if (NativeNode->GetNodeAttribute() == nullptr)
 		return;
@@ -201,13 +201,13 @@ void CFBXSceneNode::LoadAttributes(fbxsdk::FbxNode * NativeNode)
 		break;
 		default:
 		{
-			_ASSERT_EXPR(false, "CFBXSceneNode: Unknown FbxNodeAttribute type.");
+			_ASSERT_EXPR(false, "CFBXNode: Unknown FbxNodeAttribute type.");
 		}
 		break;
 	}
 }
 
-void CFBXSceneNode::LoadModel(fbxsdk::FbxNode * NativeNode)
+void CFBXNode::LoadModel(fbxsdk::FbxNode * NativeNode)
 {
 	auto fbxMesh = MakeShared(CFBXModel, m_BaseManager, *this);
 	fbxMesh->SetName(NativeNode->GetName());
@@ -219,7 +219,7 @@ void CFBXSceneNode::LoadModel(fbxsdk::FbxNode * NativeNode)
 	}
 }
 
-void CFBXSceneNode::LoadLight(fbxsdk::FbxNode * NativeNode)
+void CFBXNode::LoadLight(fbxsdk::FbxNode * NativeNode)
 {
 	std::shared_ptr<CFBXLight> fbxLight = MakeShared(CFBXLight, m_BaseManager, *this);
 	fbxLight->Load(NativeNode->GetLight());

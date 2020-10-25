@@ -147,12 +147,7 @@ IBaseManager* WINAPI InitializeEngine(std::vector<std::string> Arguments, std::s
 			if (PathToPlugins.empty())
 				PathToPlugins = GetExePath();
 
-			std::vector<std::string> fileNamesInWorkDirectory = Utils::GetAllFilesInDirectory(PathToPlugins, ".dll");
-			for (const auto& it : fileNamesInWorkDirectory)
-			{
-				//if (it.find("znRender") != std::string::npos)
-					pluginsManager->AddPlugin(it);
-			}
+			pluginsManager->AddPlugin(PathToPlugins + "\\" + "znRenderDX11.dll");
 		}
 		catch (const std::exception& e)
 		{

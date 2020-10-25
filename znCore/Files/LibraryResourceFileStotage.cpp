@@ -65,3 +65,8 @@ bool CLibraryResourceFileStotage::IsFileExists(std::string Filename) const
 {
     return FindResource(m_HModule, Resources::utf8_to_utf16(Filename).c_str(), RT_RCDATA) != NULL;
 }
+
+std::vector<std::string> CLibraryResourceFileStotage::GetAllFilesInFolder(std::string FileName, std::string Extension) const
+{
+	throw CException("Operation not supported.");
+}

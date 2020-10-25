@@ -86,6 +86,9 @@ void CFile::ParsePathAndExtension(const std::string& FullPath)
 {
 	// Replace slahes
 	m_Name = Utils::FixFilePath(FullPath);
+	m_Path = "";
+	m_NameWithoutExtension = "";
+	m_Extension = "";
 
 	// Find name and path
 	auto lastSlashPos = m_Name.find_last_of('/');

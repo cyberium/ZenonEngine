@@ -5,6 +5,8 @@
 
 // Additional
 #include "File.h"
+#include <filesystem>
+namespace fs = std::experimental::filesystem;
 
 CLocalFilesStorage::CLocalFilesStorage(std::string _path)
 	: m_Path(_path)
@@ -112,4 +114,54 @@ bool CLocalFilesStorage::IsFileExists(std::string FileName) const
 	stream.close();
 
 	return isOpen;
+}
+
+std::vector<std::string> CLocalFilesStorage::GetAllFilesInFolder(std::string Directory, std::string Extension) const
+{
+	std::string fullDirPath = m_Path + Directory;
+	bool isExists = fs::exists(fullDirPath);
+	if (false == isExists)
+		throw CException("Unable to get all files. '%s' is not exists.", fullDirPath.c_str());
+
+	bool isDir = fs::is_directory(fullDirPath);
+	if (false == isDir)
+		throw CException("Unable to get all files. '%s' is not a directory.", fullDirPath.c_str());
+
+
+	std::vector<std::string> listOfFiles;
+
+	try
+	{
+		fs::recursive_directory_iterator iter(fullDirPath), end;
+
+		// Iterate till end
+		while (iter != end)
+		{
+			bool isExtensionAccepted = true;
+			if (iter->path().has_extension() && Extension.size() > 0)
+			{
+				isExtensionAccepted = Utils::ToLower(iter->path().extension().string()) == Utils::ToLower(Extension);
+			}
+
+			if (false == fs::is_directory(iter->path()) && isExtensionAccepted)
+			{
+				listOfFiles.push_back(iter->path().string().substr(m_Path.size()));
+			}
+			else
+			{
+				iter.disable_recursion_pending();
+			}
+
+			std::error_code ec;
+			iter.increment(ec);
+			if (ec)
+				throw CException("Error while accessing '%s'. Error: '%s'.", iter->path().string().c_str(), ec.message().c_str());
+		}
+	}
+	catch (const std::system_error& e)
+	{
+		throw CException("Exception '%s'", e.what());
+	}
+
+	return listOfFiles;
 }

@@ -3,6 +3,9 @@
 // General
 #include "FBXSkeleton.h"
 
+// Additional
+#include "FBXUtils.h"
+
 CFBXSkeleton::CFBXSkeleton(const IBaseManager & BaseManager, const IFBXScene& FBXScene)
 	: m_BaseManager(BaseManager)
 	, m_FBXScene(FBXScene)
@@ -44,16 +47,7 @@ void CFBXSkeleton::ProcessSkeletonHeirarchyre(FbxNode * node, int depth, int ind
 		CSkeletonBone bone(node->GetName(), parentindex);
 		
 		fbxsdk::FbxAMatrix globalBindposeInverseMatrix = node->EvaluateGlobalTransform();
-
-		glm::mat4 globalBindposeInverseMatrixGLM;
-		for (uint32 i = 0; i < 4; i++)
-		{
-			for (uint32 j = 0; j < 4; j++)
-			{
-				globalBindposeInverseMatrixGLM[i][j] = globalBindposeInverseMatrix[i][j];
-			}
-		}
-		bone.GlobalInverse = globalBindposeInverseMatrixGLM;
+		bone.GlobalInverse = ToGLMMat4(globalBindposeInverseMatrix);
 
 		m_Skeleton.AddBone(bone);
 	}

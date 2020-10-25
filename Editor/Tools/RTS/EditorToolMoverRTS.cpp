@@ -23,13 +23,13 @@ void CEditorToolMoverRTS::Initialize()
 
 	auto model = GetBaseManager().GetManager<IznModelsManager>()->LoadModel("arrow.FBX");
 	auto geom = model->GetConnections().begin()->Geometry;
-	if (auto loadable = std::dynamic_pointer_cast<IObjectLoadSave>(model))
+	/*if (auto loadable = std::dynamic_pointer_cast<IObjectLoadSave>(model))
 	{
 		std::shared_ptr<IFile> file = MakeShared(CFile, "arrow.znmdl");
 		loadable->Save(file);
 
 		GetBaseManager().GetManager<IFilesManager>()->GetFilesStorage("ZenonGamedata")->SaveFile(file);
-	}
+	}*/
 
 	auto materialX = MakeShared(MaterialDebug, GetRenderDevice());
 	materialX->SetDiffuseColor(glm::vec4(1.0f, 0.2f, 0.1f, 1.0f));

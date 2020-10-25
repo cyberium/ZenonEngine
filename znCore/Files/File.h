@@ -10,6 +10,7 @@ public:
 	 virtual ~CFile();
 
 	 CByteBuffer& GetByteBuffer() { return m_ByteBuffer; }
+	 const CByteBuffer& GetByteBuffer() const { return m_ByteBuffer; }
 
 	 // IFile
 	 void ChangeExtension(const std::string& NewExtension) override;
@@ -27,76 +28,76 @@ public:
 	 // IByteBuffer
 	 size_t getSize() const override
 	 { 
-		 return m_ByteBuffer.getSize(); 
+		 return GetByteBuffer().getSize(); 
 	 }
 	 size_t getPos() const override
 	 { 
-		 return m_ByteBuffer.getPos(); 
+		 return GetByteBuffer().getPos(); 
 	 }
 	 const uint8* getData() const override 
 	 { 
-		 return m_ByteBuffer.getData(); 
+		 return GetByteBuffer().getData(); 
 	 }
 	 const uint8* getDataFromCurrent() const override 
 	 { 
-		 return m_ByteBuffer.getDataFromCurrent(); 
+		 return GetByteBuffer().getDataFromCurrent(); 
 	 }
 	 uint8* getDataEx() override
 	 {
-		 return m_ByteBuffer.getDataEx();
+		 return GetByteBuffer().getDataEx();
 	 }
 	 uint8* getDataFromCurrentEx() override
 	 {
-		 return m_ByteBuffer.getDataFromCurrentEx();
+		 return GetByteBuffer().getDataFromCurrentEx();
 	 }
 	 bool isEof() const override 
 	 { 
-		 return m_ByteBuffer.isEof(); 
+		 return GetByteBuffer().isEof(); 
 	 }
 	 bool seek(size_t _bufferOffsetAbsolute) override
 	 { 
-		 return m_ByteBuffer.seek(_bufferOffsetAbsolute);
+		 return GetByteBuffer().seek(_bufferOffsetAbsolute);
 	 }
 	 bool seekRelative(intptr_t _bufferOffsetRelative) override
 	 { 
-		 return m_ByteBuffer.seekRelative(_bufferOffsetRelative); 
+		 return GetByteBuffer().seekRelative(_bufferOffsetRelative); 
 	 }
 	 bool readLine(std::string* _string) override
 	 { 
-		 return m_ByteBuffer.readLine(_string);
+		 return GetByteBuffer().readLine(_string);
 	 }
 	 bool getText(std::string * String) override
 	 {
-		 return m_ByteBuffer.getText(String);
+		 return GetByteBuffer().getText(String);
 	 }
 	 bool readBytes(void* _destination, size_t _size) override
 	 { 
-		 return m_ByteBuffer.readBytes(_destination, _size); 
+		 return GetByteBuffer().readBytes(_destination, _size); 
 	 }
 	 bool readString(std::string* _string) override
 	 {
-		 return m_ByteBuffer.readString(_string);
+		 return GetByteBuffer().readString(_string);
 	 }
 
 	 void writeLine(const std::string& String) override
 	 {
-		 m_ByteBuffer.writeLine(String);
+		 GetByteBuffer().writeLine(String);
 	 }
 	 void writeBytes(const void * Source, size_t BytesCount) override
 	 {
-		 m_ByteBuffer.writeBytes(Source, BytesCount);
+		 GetByteBuffer().writeBytes(Source, BytesCount);
 	 }
 	 void writeDummy(size_t BytesCount) override
 	 {
-		 m_ByteBuffer.writeDummy(BytesCount);
+		 GetByteBuffer().writeDummy(BytesCount);
 	 }
 	 void insert(size_t Position, const void * DataPtr, size_t DataSize)
 	 {
-		 m_ByteBuffer.insert(Position, DataPtr, DataSize);
+		 GetByteBuffer().insert(Position, DataPtr, DataSize);
 	 }
 	 void writeString(const std::string& String) override
 	 {
-		 m_ByteBuffer.writeString(String);
+		 GetByteBuffer().writeString(String);
 	 }
 
 private:

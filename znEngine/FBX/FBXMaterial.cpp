@@ -5,15 +5,8 @@
 // General
 #include "FBXMaterial.h"
 
-inline float ToFloat(const FbxPropertyT<FbxDouble>& FBXDouble)
-{
-	return FBXDouble.Get();
-}
-
-inline glm::vec3 ToGLMVec3(const FbxPropertyT<FbxDouble3>& FBXVec3)
-{
-	return glm::vec3(FBXVec3.Get()[0], FBXVec3.Get()[1], FBXVec3.Get()[2]);
-}
+// Additional
+#include "FBXUtils.h"
 
 CFBXMaterial::CFBXMaterial(const IBaseManager& BaseManager, const IFBXNode & FBXNode)
 	: MaterialModel(BaseManager)
@@ -28,7 +21,7 @@ CFBXMaterial::~CFBXMaterial()
 
 void CFBXMaterial::Load(fbxsdk::FbxSurfaceMaterial* NativeMaterial)
 {
-	Log::Print("CFBXSceneNode: Loading material '%s'.", NativeMaterial->GetName());
+	Log::Print("CFBXNode: Loading material '%s'.", NativeMaterial->GetName());
 
 	SetName(NativeMaterial->GetName());
 

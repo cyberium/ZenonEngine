@@ -8,7 +8,7 @@
 // Additional
 #include "FBXStream.h"
 #include "FBXDisplayCommon.h"
-#include "FBXSceneNode.h"
+#include "FBXNode.h"
 #include "FBXSkeleton.h"
 #include "FBXAnimation.h"
 
@@ -172,7 +172,7 @@ bool CFBXScene::LoadFromFile(std::shared_ptr<IFile> File)
 	animation->Load(m_NativeScene);
 	m_Animation = animation;
 
-	auto root = MakeShared(CFBXSceneNode, m_BaseManager, *this);
+	auto root = MakeShared(CFBXNode, m_BaseManager, *this);
 	root->LoadNode(m_NativeScene->GetRootNode());
 	m_RootNode = root;
 
@@ -199,12 +199,12 @@ bool CFBXScene::LoadNodes(IScene* Scene)
 
 std::shared_ptr<IModel> CFBXScene::ExtractModel()
 {
-	m_RootNode = MakeShared(CFBXSceneNode, m_BaseManager, weak_from_this(), m_NativeScene->GetRootNode());
+	m_RootNode = MakeShared(CFBXNode, m_BaseManager, weak_from_this(), m_NativeScene->GetRootNode());
 	m_RootNode->LoadNode();
 
 	_ASSERT(m_RootNode->GetChilds().size() == 1);
 
-	auto modelsChild = std::dynamic_pointer_cast<CFBXSceneNode>(m_RootNode->GetChilds().at(0));
+	auto modelsChild = std::dynamic_pointer_cast<CFBXNode>(m_RootNode->GetChilds().at(0));
 	_ASSERT(modelsChild->GetModel() != nullptr);
 
 	return modelsChild->GetModel();

@@ -4,13 +4,13 @@
 #include <fbxsdk.h>
 #include "FBXInterfaces.h"
 
-class ZN_API CFBXSceneNode
+class ZN_API CFBXNode
 	: public IFBXNode
-	, public std::enable_shared_from_this<CFBXSceneNode>
+	, public std::enable_shared_from_this<CFBXNode>
 {
 public:
-	CFBXSceneNode(const IBaseManager& BaseManager, IFBXScene& FBXScene);
-	virtual ~CFBXSceneNode();
+	CFBXNode(const IBaseManager& BaseManager, IFBXScene& FBXScene);
+	virtual ~CFBXNode();
 
 	void LoadNode(fbxsdk::FbxNode * NativeNode);
 	
@@ -34,7 +34,7 @@ protected:
 
 private:
 	glm::mat4 m_Transform;
-	std::weak_ptr<CFBXSceneNode> m_Parent;
+	std::weak_ptr<CFBXNode> m_Parent;
 	std::vector<std::shared_ptr<IFBXNode>> m_Childs;
 
 	std::vector<std::shared_ptr<IFBXMaterial>> m_MaterialsArray;

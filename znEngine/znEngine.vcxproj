@@ -292,9 +292,10 @@
     <ClCompile Include="FBX\FBXMaterial.cpp" />
     <ClCompile Include="FBX\FBXModel.cpp" />
     <ClCompile Include="FBX\FBXScene.cpp" />
-    <ClCompile Include="FBX\FBXSceneNode.cpp" />
+    <ClCompile Include="FBX\FBXNode.cpp" />
     <ClCompile Include="FBX\FBXSkeleton.cpp" />
     <ClCompile Include="FBX\FBXStream.cpp" />
+    <ClCompile Include="FBX\FBXUtils.cpp" />
     <ClCompile Include="Formats\Fonts\Font.cpp" />
     <ClCompile Include="Formats\Fonts\FontsManager.cpp" />
     <ClCompile Include="Formats\Images\DDSFormat.cpp" />
@@ -494,9 +495,10 @@
     <ClInclude Include="FBX\FBXMaterial.h" />
     <ClInclude Include="FBX\FBXModel.h" />
     <ClInclude Include="FBX\FBXScene.h" />
-    <ClInclude Include="FBX\FBXSceneNode.h" />
+    <ClInclude Include="FBX\FBXNode.h" />
     <ClInclude Include="FBX\FBXSkeleton.h" />
     <ClInclude Include="FBX\FBXStream.h" />
+    <ClInclude Include="FBX\FBXUtils.h" />
     <ClInclude Include="Formats\Fonts\Font.h" />
     <ClInclude Include="Formats\Fonts\FontsManager.h" />
     <ClInclude Include="Formats\Images\DDSFormat.h" />

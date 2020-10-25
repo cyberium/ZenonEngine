@@ -22,7 +22,7 @@ CEditorUIFrame::CEditorUIFrame(IEditor& Editor)
 		if (file == nullptr)
 			return;
 
-		CXMLManager xml;
+		CXMLManager xml(m_Editor.GetBaseManager());
 		auto reader = xml.CreateReader(file);
 
 		auto currentRoot = m_Editor.Get3DFrame().GetEditedRootNode3D();
@@ -40,7 +40,7 @@ CEditorUIFrame::CEditorUIFrame(IEditor& Editor)
 		if (fileName.empty())
 			return;
 
-		CXMLManager manager;
+		CXMLManager manager(m_Editor.GetBaseManager());
 
 		auto rootWriter = m_Editor.GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->SaveSceneNode3DXML(m_Editor.Get3DFrame().GetEditedRootNode3D());
 
@@ -48,11 +48,11 @@ CEditorUIFrame::CEditorUIFrame(IEditor& Editor)
 		writer->AddChild(rootWriter);
 
 		auto file = manager.SaveWriterToFile(writer, fileName);
-		m_Editor.GetBaseManager().GetManager<IFilesManager>()->GetFilesStorage("PCEveryFileAccess")->SaveFile(file);
+		file->Save();
 	});
 
 	QFileSystemModel* fsModel = DEBUG_NEW QFileSystemModel(this);
-	fsModel->setRootPath("D:\\_programming\\ZenonEngine\\gamedata");
+	fsModel->setRootPath("O:\\ZenonEngine\\gamedata");
 	m_UI.FSTreeViewer->setModel(fsModel);
 
 	m_PropertiesController = MakeShared(CPropertiesController, m_UI.PropertyEditor);
@@ -78,34 +78,25 @@ bool CEditorUIFrame::InitializeEditorFrame()
 
 	std::vector<std::string> realNames;
 
-	auto fileNames = Utils::GetAllFilesInDirectory("O:\\ZenonEngine_gamedata\\models", ".fbx");
-	for (const auto& it : fileNames)
+	auto gameDataStorage = m_Editor.GetBaseManager().GetManager<IFilesManager>()->GetStorage(EFilesStorageType::GAMEDATA);
+	auto fileNames = gameDataStorage->GetAllFilesInFolder("models", ".fbx");
+	for (const auto& fbxFileName : fileNames)
 	{
-		Log::Info(it.c_str());
-
 		try
 		{
-			auto modelFile = MakeShared(CFile, it);
-			if (m_Editor.GetBaseManager().GetManager<IFilesManager>()->IsFileExists(modelFile->Path_Name()));
+			auto filePtr = gameDataStorage->OpenFile(fbxFileName);
+			filePtr->ChangeExtension("znmdl");
+
+			if (m_Editor.GetBaseManager().GetManager<IFilesManager>()->IsFileExists(filePtr->Path_Name()))
 			{
-				realNames.push_back(modelFile->Path_Name());
+				realNames.push_back(filePtr->Path_Name());
 				continue;
 			}
 
-			//continue;
-
-			auto model = m_Editor.GetBaseManager().GetManager<IznModelsManager>()->LoadModel("arrow.FBX");
-			auto file = m_Editor.GetBaseManager().GetManager<IznModelsManager>()->SaveModel(model, )
-
-
-			if (auto loadable = std::dynamic_pointer_cast<IObjectLoadSave>(model))
-			{
-				std::shared_ptr<IFile> file = MakeShared(CFile, zenonFileName);
-				loadable->Save(file);
-
-				m_Editor.GetBaseManager().GetManager<IFilesManager>()->GetFilesStorage("PCEveryFileAccess")->SaveFile(file);
-				realNames.push_back(zenonFileName);
-			}
+			auto fbxModel = m_Editor.GetBaseManager().GetManager<IznModelsManager>()->LoadModel(fbxFileName);
+			auto znModelFile = m_Editor.GetBaseManager().GetManager<IznModelsManager>()->SaveModel(fbxModel, filePtr->Path_Name());
+			znModelFile->Save();
+			realNames.push_back(znModelFile->Path_Name());
 		}
 		catch (const CException& e)
 		{

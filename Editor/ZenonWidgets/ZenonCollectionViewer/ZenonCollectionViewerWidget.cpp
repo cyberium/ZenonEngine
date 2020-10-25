@@ -41,13 +41,9 @@ void ZenonCollectionViewerWidget::SetModelsList(const std::vector<std::string>& 
 	std::vector<std::shared_ptr<IModelCollectionItem>> models;
 	for (const auto& it : Nodes)
 	{
-		auto name = CFile(it).Name();
-		name = name.substr(0, name.find_first_of('.'));
-
-		auto model = m_Editor->GetRenderDevice().GetObjectsFactory().CreateModel();
-		if (auto loadable = std::dynamic_pointer_cast<IObjectLoadSave>(model))
-			loadable->Load(m_Editor->GetBaseManager().GetManager<IFilesManager>()->Open(it));
-		model->SetName(name);
+		auto file = m_Editor->GetBaseManager().GetManager<IFilesManager>()->Open(it);
+		auto model = m_Editor->GetBaseManager().GetManager<IznModelsManager>()->LoadModel(file);
+		model->SetName(file->Name_NoExtension());
 		models.push_back(MakeShared(C3DModelModelItem, model));
 	}
 

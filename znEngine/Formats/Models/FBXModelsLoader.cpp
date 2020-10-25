@@ -6,7 +6,7 @@
 // Additional
 #include "FBX/FBXStream.h"
 #include "FBX/FBXScene.h"
-#include "FBX/FBXSceneNode.h"
+#include "FBX/FBXNode.h"
 
 #ifdef ZN_FBX_SDK_ENABLE
 

@@ -160,17 +160,8 @@ std::shared_ptr<ISceneNode3D> CEditorToolDragger::CreateNode(const glm::ivec3& P
 {
 	auto node = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, GetEditor().Get3DFrame().GetEditedScene().get());
 	node->SetName(Type);
-	auto model = GetRenderDevice().GetObjectsFactory().CreateModel();
-	if (auto loadable = std::dynamic_pointer_cast<IObjectLoadSave>(model))
-	{
-		auto fileName = Type + ".fbx.znmdl";
-		auto file = GetBaseManager().GetManager<IFilesManager>()->Open(fileName);
-		if (file == nullptr)
-			throw CException("File not found.");
-		loadable->Load(file);
-		model->SetFileName(fileName);
-	}
 
+	auto model = GetBaseManager().GetManager<IznModelsManager>()->LoadModel("models/" + Type + ".znmdl");
 	node->GetComponent<IModelsComponent3D>()->SetModel(model);
 	node->GetComponent<IColliderComponent3D>()->SetBounds(model->GetBounds());
 

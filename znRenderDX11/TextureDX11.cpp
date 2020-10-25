@@ -146,7 +146,10 @@ TextureDX11::TextureDX11(IRenderDeviceDX11& RenderDeviceDX11, uint16 size, const
 }
 
 TextureDX11::~TextureDX11()
-{}
+{
+	// TODO: Change m_Buffer!!!
+	//_ASSERT(m_Buffer.empty());
+}
 
 
 
