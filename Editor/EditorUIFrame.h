@@ -34,6 +34,7 @@ public:
 
 	// IEditorQtUIFrame
 	QObject& getQObject() override final;
+	HWND getHWND() override;
 	Ui::EditorUIFrameClass& getUI() override final;
 
 	// IEditorToolSelectorEventListener

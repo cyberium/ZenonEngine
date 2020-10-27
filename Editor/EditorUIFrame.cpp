@@ -11,7 +11,7 @@ CEditorUIFrame::CEditorUIFrame(IEditor& Editor)
 
 	m_UI.setupUi(this);
 
-	// MENU
+	// Quit
 	connect(m_UI.actionOpen_Scene, &QAction::triggered, [this]() {
 
 		std::string fileName = GetEditor().GetShell().ShowLoadFileDialog("");
@@ -35,6 +35,7 @@ CEditorUIFrame::CEditorUIFrame(IEditor& Editor)
 			currentRoot->AddChild(rootNodeXML->GetChilds()[0]);
 	});
 
+	// Save action
 	connect(m_UI.actionSave_Scene, &QAction::triggered, [this]() {
 		std::string fileName = GetEditor().GetShell().ShowSaveFileDialog("D:/Scene.xml");
 		if (fileName.empty())
@@ -51,8 +52,8 @@ CEditorUIFrame::CEditorUIFrame(IEditor& Editor)
 		file->Save();
 	});
 
-	QFileSystemModel* fsModel = DEBUG_NEW QFileSystemModel(this);
-	fsModel->setRootPath("O:\\ZenonEngine\\gamedata");
+	QFileSystemModel* fsModel = ZN_NEW QFileSystemModel(this);
+	fsModel->setRootPath("O:\\ZenonEngine_gamedata\\");
 	m_UI.FSTreeViewer->setModel(fsModel);
 
 	m_PropertiesController = MakeShared(CPropertiesController, m_UI.PropertyEditor);
@@ -231,6 +232,11 @@ void CEditorUIFrame::OnSceneChanged()
 QObject& CEditorUIFrame::getQObject()
 {
 	return *this;
+}
+
+HWND CEditorUIFrame::getHWND()
+{
+	return (HWND)winId();;
 }
 
 Ui::EditorUIFrameClass& CEditorUIFrame::getUI()

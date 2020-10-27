@@ -22,7 +22,7 @@ HRESULT CShaderDX11Include::Open(D3D_INCLUDE_TYPE IncludeType, LPCSTR pFileName,
 		size_t fileSize = file->getSize();
 		if (fileSize > 0)
 		{
-			char* buf = DEBUG_NEW char[fileSize];
+			char* buf = ZN_NEW char[fileSize];
 			memcpy_s(buf, fileSize, file->getData(), fileSize);
 
 			*ppData = buf;

@@ -7,6 +7,7 @@ ZN_INTERFACE IEditorQtUIFrame
 	virtual ~IEditorQtUIFrame() {}
 
 	virtual QObject& getQObject() = 0;
+	virtual HWND getHWND() = 0;
 	virtual Ui::EditorUIFrameClass& getUI() = 0;
 };
 

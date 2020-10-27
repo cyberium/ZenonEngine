@@ -105,7 +105,7 @@ bool CImageDDS::LoadRGB(const DDSURFACEDESC2& desc, std::shared_ptr<IFile> io)
 	m_BitsPerPixel = (uint32)desc.ddpfPixelFormat.dwRGBBitCount;
 	m_Stride = m_Width * (m_BitsPerPixel / 8);
 	m_IsTransperent = (desc.ddpfPixelFormat.dwFlags & DDPF_ALPHAPIXELS) == 1;
-	m_Data = DEBUG_NEW uint8[m_Height * m_Stride];
+	m_Data = ZN_NEW uint8[m_Height * m_Stride];
 
 	// read the file
 	int filePitch = (desc.dwFlags & DDSD_PITCH) ? (int)desc.dwPitchOrLinearSize : m_Stride;
@@ -126,7 +126,7 @@ bool CImageDDS::LoadDXT(int type, const DDSURFACEDESC2& desc, std::shared_ptr<IF
 	m_BitsPerPixel = 32;
 	m_Stride = m_Width * (m_BitsPerPixel / 8);
 	m_IsTransperent = (desc.ddpfPixelFormat.dwFlags & DDPF_ALPHAPIXELS) == 1;
-	m_Data = DEBUG_NEW uint8[m_Height * m_Stride];
+	m_Data = ZN_NEW uint8[m_Height * m_Stride];
 
 	switch (type)
 	{
@@ -150,7 +150,7 @@ bool CImageDDS::LoadDXT_Helper(std::shared_ptr<IFile> io)
 	typedef typename DECODER::INFO INFO;
 	typedef typename INFO::Block Block;
 
-	Block *input_buffer = DEBUG_NEW Block[(m_Width + 3) / 4];
+	Block *input_buffer = ZN_NEW Block[(m_Width + 3) / 4];
 	if (!input_buffer)
 	{
 		Log::Error("CImageDDS: LoadDXT_Helper: Unable to create 'Block' array with size '%d'.", (m_Width + 3) / 4);

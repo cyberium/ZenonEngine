@@ -125,7 +125,7 @@ std::shared_ptr<IznFont> FontsManager::Add(IRenderDevice& RenderDevice, const st
 
 	// Step 3: Generation of the actual texture //
 
-	uint32* image = DEBUG_NEW uint32[imageHeight * imageWidth];
+	uint32* image = ZN_NEW uint32[imageHeight * imageWidth];
 	memset(image, 0x00, imageHeight * imageWidth * sizeof(uint32));
 
 	// These are the cameraPosition at which to draw the next glyph
@@ -182,9 +182,9 @@ std::shared_ptr<IznFont> FontsManager::Add(IRenderDevice& RenderDevice, const st
 
 
 	std::shared_ptr<IGeometry> __geom = RenderDevice.GetObjectsFactory().CreateGeometry();
-	//__geom->AddVertexBuffer(BufferBinding("POSITION", 0), RenderDevice.GetObjectsFactory().CreateVoidVertexBuffer(vertices.data(), vertices.size(), 0,            sizeof(VertexPT)));
-    //__geom->AddVertexBuffer(BufferBinding("TEXCOORD", 0), RenderDevice.GetObjectsFactory().CreateVoidVertexBuffer(vertices.data(), vertices.size(), sizeof(glm::vec2), sizeof(VertexPT)));
-	__geom->SetVertexBuffer(RenderDevice.GetObjectsFactory().CreateVoidVertexBuffer(vertices.data(), vertices.size(), 0, sizeof(VertexPT)));
+	__geom->AddVertexBuffer(BufferBinding("POSITION", 0), RenderDevice.GetObjectsFactory().CreateVoidVertexBuffer(vertices.data(), vertices.size(), 0,            sizeof(VertexPT)));
+    __geom->AddVertexBuffer(BufferBinding("TEXCOORD", 0), RenderDevice.GetObjectsFactory().CreateVoidVertexBuffer(vertices.data(), vertices.size(), sizeof(glm::vec2), sizeof(VertexPT)));
+	//__geom->SetVertexBuffer(RenderDevice.GetObjectsFactory().CreateVoidVertexBuffer(vertices.data(), vertices.size(), 0, sizeof(VertexPT)));
 
 	// Font image
 	std::shared_ptr<CImageBase> fontImage = MakeShared(CImageBase, imageWidth, imageHeight, 32, true);

@@ -44,14 +44,6 @@ ZN_INTERFACE ZN_API
 	virtual void AddToDeleteQueue(const std::shared_ptr<ILoadable>& LoadableItem) = 0;
 };
 
-
-ZN_INTERFACE ZN_API IFileNameOwner
-{
-	virtual ~IFileNameOwner() {}
-
-	virtual std::string GetFileName() const = 0;
-};
-
 const uint32 cBufferBindingSignature = 0x00100000;
 const uint32 cInputSemanticSignature = 0x00100001;
 

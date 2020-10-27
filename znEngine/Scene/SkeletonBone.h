@@ -13,12 +13,13 @@ struct ZN_API CSkeletonBone
 
 	glm::mat4 CalcMatrix(const ISceneNode3D& Instance) const;
 	glm::vec3 CalcTranslate(const ISceneNode3D& Instance) const;
-	glm::mat4 CalcRotate(const ISceneNode3D& Instance) const;
+	glm::vec3 CalcRotate(const ISceneNode3D& Instance) const;
 
 	std::string          Name;
 	int32                ParentIndex;
 	glm::mat4            GlobalTransform;
 	glm::mat4            LocalTransform;
+	glm::mat4            LocalTransform222;
 
 	AnimatedValue<float> pX, pY, pZ;
 	AnimatedValue<float> rX, rY, rZ;

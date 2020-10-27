@@ -21,14 +21,14 @@ public:
 		glm::vec3 pos;
 		glm::vec2 uv;
 		glm::vec3 normal;
-		glm::vec3 tangent;
-		glm::vec3 binormal;
+		//glm::vec3 tangent;
+		//glm::vec3 binormal;
 		float weights[4];
 		uint32 indexes[4];
 
 		// Engine part
 		uint32 controlPointIndex;
-		glm::vec3 _unused;
+		//glm::vec3 _unused;
 	};
 
 public:

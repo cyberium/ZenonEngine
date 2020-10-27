@@ -129,7 +129,9 @@
       <QtMocFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">%(Filename).moc</QtMocFileName>
     </ClCompile>
     <ClCompile Include="EditorUIFrame.cpp" />
+    <ClCompile Include="Materials\MaterialEditorTool.cpp" />
     <ClCompile Include="Passes\DrawSelectionPass.cpp" />
+    <ClCompile Include="Passes\DrawToolsPass.cpp" />
     <ClCompile Include="PropertyEditor\Core\Core\PropertyBool.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
@@ -365,6 +367,8 @@
     <ClCompile Include="Tools\EditorTools.cpp" />
     <ClCompile Include="Tools\RTS\EditorToolMoverRTS.cpp" />
     <ClCompile Include="Tools\RTS\EditorToolRotatorRTS.cpp" />
+    <ClCompile Include="ZenonWidgets\TreeItemTemplate.cpp" />
+    <ClCompile Include="ZenonWidgets\TreeModelTemplate.cpp" />
     <ClCompile Include="ZenonWidgets\ZenonCollectionViewer\ZenonCollectionViewerWidget.cpp" />
     <ClCompile Include="ZenonWidgets\ZenonLogViewer\ZenonLogViewer.cpp" />
     <ClCompile Include="ZenonWidgets\ZenonSceneViewer\ZenonSceneViewerWidget.cpp" />
@@ -379,7 +383,9 @@
     <ClInclude Include="EditorInterfaces.h" />
     <ClInclude Include="EditorQtInterfaces.h" />
     <ClInclude Include="EditorWindowsShell.h" />
+    <ClInclude Include="Materials\MaterialEditorTool.h" />
     <ClInclude Include="Passes\DrawSelectionPass.h" />
+    <ClInclude Include="Passes\DrawToolsPass.h" />
     <ClInclude Include="PropertyEditor\Core\Auxiliary\PropertyAux.h" />
     <ClInclude Include="PropertyEditor\Core\Auxiliary\PropertyDelegateInfo.h" />
     <ClInclude Include="PropertyEditor\Core\Auxiliary\PropertyMacro.h" />

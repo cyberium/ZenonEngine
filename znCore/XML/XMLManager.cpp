@@ -12,7 +12,7 @@ namespace
 {
 	TiXmlElement * CreateTiXMLWriter(const std::shared_ptr<IXMLWriter>& Writer)
 	{
-		TiXmlElement * element = DEBUG_NEW TiXmlElement(Writer->GetName());
+		TiXmlElement * element = ZN_NEW TiXmlElement(Writer->GetName());
 
 		// Name
 		element->SetValue(Writer->GetName());
@@ -20,7 +20,7 @@ namespace
 		// Value
 		if (false == Writer->GetValue().empty())
 		{
-			TiXmlText * text = DEBUG_NEW TiXmlText(Writer->GetValue());
+			TiXmlText * text = ZN_NEW TiXmlText(Writer->GetValue());
 			element->LinkEndChild(text);
 		}
 
@@ -103,10 +103,10 @@ std::shared_ptr<IXMLReader> CXMLManager::CreateReader(std::shared_ptr<IFile> Fil
 std::shared_ptr<IXMLWriter> CXMLManager::CreateWriter()
 {
 	std::shared_ptr<TiXmlDocument> xmlDocument = MakeShared(TiXmlDocument);
-	TiXmlDeclaration * decl = DEBUG_NEW TiXmlDeclaration("1.0", "", "");
+	TiXmlDeclaration * decl = ZN_NEW TiXmlDeclaration("1.0", "", "");
 	xmlDocument->LinkEndChild(decl);
 
-	TiXmlElement * rootElement = DEBUG_NEW TiXmlElement(cXMLRootNodeSignature);
+	TiXmlElement * rootElement = ZN_NEW TiXmlElement(cXMLRootNodeSignature);
 	xmlDocument->LinkEndChild(rootElement);
 
 	return MakeShared(CXMLWriter, rootElement->ValueStr());
@@ -123,7 +123,7 @@ std::shared_ptr<IFile> CXMLManager::SaveWriterToFile(const std::shared_ptr<IXMLW
 	std::shared_ptr<IFile> file = m_BaseManager.GetManager<IFilesManager>()->Create(FileName);
 
 	std::shared_ptr<TiXmlDocument> xmlDocument = MakeShared(TiXmlDocument);
-	TiXmlDeclaration * decl = DEBUG_NEW TiXmlDeclaration("1.0", "", "");
+	TiXmlDeclaration * decl = ZN_NEW TiXmlDeclaration("1.0", "", "");
 	xmlDocument->LinkEndChild(decl);
 	xmlDocument->LinkEndChild(CreateTiXMLWriter(Writer));
 

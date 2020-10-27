@@ -11,7 +11,6 @@
 #include "Passes/MaterialTexturedPass.h"
 #include "Passes/MaterialParticlePass.h"
 #include "Passes/MaterialModelPass.h"
-#include "Passes/MaterialModelSkeletonPass.h"
 #include "Passes/DrawBonesPass.h"
 #include "Passes/UIFontPass.h"
 #include "Passes/UIColorPass.h"
@@ -82,9 +81,6 @@ void CRendererForward::Resize(uint32 NewWidth, uint32 NewHeight)
 
 void CRendererForward::Initialize(std::shared_ptr<IRenderTarget> OutputRenderTarget, const Viewport * Viewport)
 {
-	//m_FinalRenderTarget = OutputRenderTarget;
-
-
 	m_SceneCreateTypelessListPass = MakeShared(CSceneCreateTypelessListPass, m_RenderDevice, m_Scene);
 
 	m_LightsBuffer = m_RenderDevice.GetObjectsFactory().CreateStructuredBuffer(nullptr, 8, sizeof(SLight), EAccess::CPUWrite);
@@ -115,8 +111,6 @@ void CRendererForward::Initialize(std::shared_ptr<IRenderTarget> OutputRenderTar
 		m_MaterialModelPass->GetLightsShaderParameter()->Set(m_LightsBuffer);
 	});
 
-	
-
 	glm::vec4 color = glm::vec4(0.0, 0.0f, 0.0f, 1.0f);
 	AddPass(MakeShared(ClearRenderTargetPass, m_RenderDevice, OutputRenderTarget, ClearFlags::All, color, 1.0f, 0));	
 	AddPass(m_SceneCreateTypelessListPass);
@@ -124,7 +118,7 @@ void CRendererForward::Initialize(std::shared_ptr<IRenderTarget> OutputRenderTar
 	AddPass(materialModelPass);
 
 	AddPass(m_BaseManager.GetManager<IRenderPassFactory>()->CreateRenderPass("DebugPass", m_RenderDevice, OutputRenderTarget, Viewport, m_Scene.lock()));
-	AddPass(MakeShared(CDrawBonesPass, m_RenderDevice, m_Scene.lock())->ConfigurePipeline(OutputRenderTarget, Viewport));
+	//AddPass(MakeShared(CDrawBonesPass, m_RenderDevice, m_Scene.lock())->ConfigurePipeline(OutputRenderTarget, Viewport));
 	
 	m_UIPasses.push_back(MakeShared(CUIFontPass, m_RenderDevice, m_Scene)->ConfigurePipeline(OutputRenderTarget, Viewport));
 	m_UIPasses.push_back(MakeShared(CUIColorPass, m_RenderDevice, m_Scene)->ConfigurePipeline(OutputRenderTarget, Viewport));

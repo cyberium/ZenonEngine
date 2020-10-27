@@ -109,7 +109,7 @@ float4 PS_DeferredLighting(VS_Output VSOut
 	float3 diffuseLight  = diffuseAndAlpha.rgb * lit.Diffuse.rgb;
 	float3 specularLight = specular.rgb        * lit.Specular.rgb;
 	
-	float3 colorResult = ambientLight.rgb + diffuseLight.rgb + specularLight.rgb;
+	float3 colorResult = ambientLight + diffuseLight + specularLight;
 	
 	const float4 PModel = mul(PF.InverseView, PView);
 	float shadowFactor = IsShadowed(LightProjectionMatrix, LightViewMatrix, TextureShadow, PModel);
@@ -117,7 +117,7 @@ float4 PS_DeferredLighting(VS_Output VSOut
 	shadowFactor = saturate(shadowFactor);
 	
 	if (shadowFactor > 0.0f)
-		return float4(ambientLight + diffuseLight * (1.0f - shadowFactor), 1.0f);
+		return float4(ambientLight + (diffuseLight + specularLight) * (1.0f - shadowFactor), 1.0f);
 		
 	return float4(colorResult, 1.0f);
 }

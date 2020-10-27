@@ -102,7 +102,7 @@ void CSceneDefault::Load3D()
 
 		auto node = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, this, newRoot);
 		node->SetName("Ground");
-		node->SetTranslate(glm::vec3(0, -3, 0));
+		node->SetTranslate(glm::vec3(0, -25, 0));
 		node->SetScale(glm::vec3(cPlaneSize, 5.0f, cPlaneSize));
 		node->GetComponent<IModelsComponent3D>()->SetModel(modelPlane);
 		//node->GetComponent<IModelsComponent3D>()->SetCastShadows(false);
@@ -136,10 +136,10 @@ void CSceneDefault::Load3D()
 	//--------------------------------------------------------------------------
 	// Cube Gold
 	//--------------------------------------------------------------------------
-	/*for (int i = 0; i < 5; i++)
+	for (int i = 0; i < 5; i++)
 	{
 		std::shared_ptr<MaterialModel> textMaterial = MakeShared(MaterialModel, GetBaseManager());
-		//textMaterial->SetSpecularFactor(8.0f);
+		textMaterial->SetSpecularFactor(32.0f);
 		//textMaterial->SetBumpFactor(16.0f);
 
 		textMaterial->SetTexture(MaterialModel::ETextureType::TextureDiffuse, GetRenderDevice().GetObjectsFactory().LoadTexture2D("pirate-gold-unity//pirate-gold_albedo.png"));
@@ -156,7 +156,7 @@ void CSceneDefault::Load3D()
 		node->SetScale(glm::vec3(15.0f));
 		node->GetComponent<IModelsComponent3D>()->SetModel(modelPlane);
 		//node->GetComponent<IModelsComponent3D>()->SetCastShadows(false);
-	}*/
+	}
 
 
 	//--------------------------------------------------------------------------
@@ -180,7 +180,7 @@ void CSceneDefault::Load3D()
 	//--------------------------------------------------------------------------
 	// Orc with anims
 	//--------------------------------------------------------------------------
-	{
+	/*{
 		auto node = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, this, newRoot);
 		node->SetName("OrcAnimation");
 		node->SetTranslate(glm::vec3(0.0f, 0.0f, 0.0f));
@@ -198,10 +198,10 @@ void CSceneDefault::Load3D()
 		
 		// Original skeleton
 		auto originalSkeletonScene = fbxSceneLoader->LoadScene("Toon_RTS/models/WK_archer.FBX", fbxLoaderParams);
-		node->GetComponent<IModelsComponent3D>()->SetModel(originalSkeletonScene->MergeModels());
+		//node->GetComponent<IModelsComponent3D>()->SetModel(originalSkeletonScene->MergeModels());
 
 		// Animated skeleton
-		auto animatedSkeletonScene = fbxSceneLoader->LoadScene("Toon_RTS/animation/archer/WK_archer_03_run.FBX", fbxLoaderParams);
+		auto animatedSkeletonScene = fbxSceneLoader->LoadScene("Toon_RTS/animation/archer/WK_archer_03_run2.FBX", fbxLoaderParams);
 		auto animatedSkeleton = animatedSkeletonScene->GetFBXSkeleton()->GetSkeleton();
 
 		auto originalSkeleton = originalSkeletonScene->GetFBXSkeleton()->GetSkeleton();
@@ -214,7 +214,43 @@ void CSceneDefault::Load3D()
 		auto animationComponent = node->AddComponent<ISkeletonAnimationComponent>(MakeShared(CAnimatorComponent3D, *node));
 		for (const auto& anim : animatedSkeletonScene->GetFBXAnimation()->GetAnimations())
 			animationComponent->AddAnimation(cntr++, anim);
-	}
+	}*/
+
+	/*{
+		auto node = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, this, newRoot);
+		node->SetName("OrcAnimation");
+		node->SetTranslate(glm::vec3(0.0f, 0.0f, 0.0f));
+		node->SetRotation(-glm::vec3(glm::half_pi<float>(), 0.0f, 0.0f));
+		node->SetScale(glm::vec3(15.5f));
+
+		std::shared_ptr<CznFBXLoaderParams> fbxLoaderParams = MakeShared(CznFBXLoaderParams);
+		fbxLoaderParams->TexturesPathRoot = "Toon_RTS/models/textures/";
+		fbxLoaderParams->OverrideTexture = "WK_StandardUnits_generic.png";
+
+		auto fbxModelsLoader = GetBaseManager().GetManager<IznModelsManager>()->GetLoaderForModel("fbx");
+		_ASSERT(fbxModelsLoader != nullptr);
+		auto fbxSceneLoader = std::dynamic_pointer_cast<IFBXSceneLoader>(fbxModelsLoader);
+		_ASSERT(fbxSceneLoader != nullptr);
+
+		// Original skeleton
+		auto originalSkeletonScene = fbxSceneLoader->LoadScene("Kenney Game Assets 3 version 23/3D assets/Animated Characters 2/Model/characterMedium.fbx", fbxLoaderParams);
+		node->GetComponent<IModelsComponent3D>()->SetModel(originalSkeletonScene->MergeModels());
+
+		// Animated skeleton
+		auto animatedSkeletonScene = fbxSceneLoader->LoadScene("Kenney Game Assets 3 version 23/3D assets/Animated Characters 2/Animations/run.fbx", fbxLoaderParams);
+		auto animatedSkeleton = animatedSkeletonScene->GetFBXSkeleton()->GetSkeleton();
+
+		auto originalSkeleton = originalSkeletonScene->GetFBXSkeleton()->GetSkeleton();
+		originalSkeleton.MergeWithOther(animatedSkeleton);
+		node->AddComponent<ISkeletonComponent3D>(MakeShared(CSkeletonComponent3D, *node, originalSkeleton));
+
+
+		// Animations
+		uint16 cntr = 0;
+		auto animationComponent = node->AddComponent<ISkeletonAnimationComponent>(MakeShared(CAnimatorComponent3D, *node));
+		for (const auto& anim : animatedSkeletonScene->GetFBXAnimation()->GetAnimations())
+			animationComponent->AddAnimation(cntr++, anim);
+	}*/
 }
 
 

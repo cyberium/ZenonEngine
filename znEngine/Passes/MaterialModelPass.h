@@ -19,5 +19,6 @@ public:
 	EVisitResult Visit(const IGeometry* Geometry, const IMaterial* Material, SGeometryDrawArgs GeometryDrawArgs = SGeometryDrawArgs()) override;
 
 private:
+	IShaderParameter* m_ShaderBonesBufferParameter;
 	IShaderParameter* m_ShaderLightsBufferParameter;
 };

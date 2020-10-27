@@ -98,9 +98,10 @@ void GS_Billboard(point GeometryShaderInput input[1], inout TriangleStream<Pixel
 	rightVector *= (p.Size.x / 2.0f);
 	upVector *= (p.Size.y / 2.0f);
 
-	float scale = length(ExtractScaleMatrix(PO.Model));
-	rightVector *= ExtractScaleMatrix(PO.Model).x * scale.x;
-	upVector *= ExtractScaleMatrix(PO.Model).y * scale.x;
+	float3 scale = ExtractScaleMatrix(PO.Model);
+	float scaleLength = length(scale);
+	rightVector *= scale.x * scaleLength.x;
+	upVector *= scale.y * scaleLength.x;
 
 	// Create the billboards quad
 	float3 vert[4];

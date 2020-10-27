@@ -33,7 +33,7 @@ ZenonCollectionViewerWidget::ZenonCollectionViewerWidget(QWidget * parent)
 
 ZenonCollectionViewerWidget::~ZenonCollectionViewerWidget()
 {
-	Log::Info("Test");
+	Log::Info("~ZenonCollectionViewerWidget");
 }
 
 void ZenonCollectionViewerWidget::SetModelsList(const std::vector<std::string>& Nodes)
@@ -87,12 +87,12 @@ void ZenonCollectionViewerWidget::mouseMoveEvent(QMouseEvent * event)
 
 		m_StartDragging = true;
 
-		QMimeData *mimeData = DEBUG_NEW QMimeData;
+		QMimeData *mimeData = ZN_NEW QMimeData;
 		mimeData->setText(item->GetTObject()->GetName().c_str());
 
 		m_Editor->GetTools().Enable(ETool::EToolDragger);
 
-		auto drag = DEBUG_NEW QDrag(this);
+		auto drag = ZN_NEW QDrag(this);
 		drag->setMimeData(mimeData);
 		drag->setHotSpot(event->pos());
 		Qt::DropAction dropAction = drag->exec();

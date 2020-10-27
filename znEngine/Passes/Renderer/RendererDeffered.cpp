@@ -9,7 +9,6 @@
 #include "Passes/MaterialTexturedPass.h"
 #include "Passes/MaterialParticlePass.h"
 #include "Passes/MaterialModelPass.h"
-#include "Passes/MaterialModelSkeletonPass.h"
 #include "Passes/DrawBonesPass.h"
 #include "Passes/UIFontPass.h"
 #include "Passes/UIColorPass.h"

@@ -105,9 +105,9 @@ typedef glm::vec3 ColorRBG;
 	}*/
 
 
-	#define DEBUG_NEW new(_NORMAL_BLOCK, __FILE__, __LINE__)
+	#define ZN_NEW new(_NORMAL_BLOCK, __FILE__, __LINE__)
 
-	#define MakeShared(CLASS, ...) std::shared_ptr<CLASS>(DEBUG_NEW CLASS(__VA_ARGS__))
+	#define MakeShared(CLASS, ...) std::shared_ptr<CLASS>(ZN_NEW CLASS(__VA_ARGS__))
 
 #else
 	#define MakeShared(CLASS, ...) std::make_shared<CLASS>(__VA_ARGS__)

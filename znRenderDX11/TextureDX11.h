@@ -2,7 +2,6 @@
 
 class ZN_API TextureDX11 
 	: public ITexture
-	, public IFileNameOwner
 	, public std::enable_shared_from_this<TextureDX11>
 {
 public:
@@ -11,6 +10,8 @@ public:
 	TextureDX11(IRenderDeviceDX11& RenderDeviceDX11, uint16 size, const TextureFormat& format, EAccess cpuAccess);
 	virtual ~TextureDX11();
 
+	// ITexture
+	const std::string& GetFilename() const override;
 	bool LoadTextureFromImage(const std::shared_ptr<IImage>& Image);
 	bool LoadTexture2D(const std::string& fileName);
 	bool LoadTextureCube(const std::string& fileName);
@@ -39,25 +40,12 @@ public:
 
 	// Gets the texture resource associated to this texture
 	ID3D11Resource* GetTextureResource() const;
-
-	// Gets the shader resource view for this texture so that it can be bound to a shader parameter.
-	ID3D11ShaderResourceView* GetShaderResourceView() const;
-
-	// Gets the depth stencil view if this is a depth/stencil texture. Otherwise, this function will return null
-	ID3D11DepthStencilView* GetDepthStencilView() const;
-
-	// Get the render target view so the texture can be attached to a render target.
-	ID3D11RenderTargetView* GetRenderTargetView() const;
-
-	// Get the unordered access view so it can be bound to compute shaders and pixel shaders as a RWTexture
-	ID3D11UnorderedAccessView* GetUnorderedAccessView() const;
-
-	// IFileNameOwner
-	std::string GetFileName() const override;
+	ID3D11ShaderResourceView* GetShaderResourceView() const; // Gets the shader resource view for this texture so that it can be bound to a shader parameter.
+	ID3D11DepthStencilView* GetDepthStencilView() const; // Gets the depth stencil view if this is a depth/stencil texture. Otherwise, this function will return null
+	ID3D11RenderTargetView* GetRenderTargetView() const; // Get the render target view so the texture can be attached to a render target.
+	ID3D11UnorderedAccessView* GetUnorderedAccessView() const; // Get the unordered access view so it can be bound to compute shaders and pixel shaders as a RWTexture
 
 protected:
-	void Initialize();
-	
 	virtual void Plot(glm::ivec2 coord, const uint8* pixel, size_t size);
 	virtual void FetchPixel(glm::ivec2 coord, uint8*& pixel, size_t size);
 
@@ -68,20 +56,20 @@ protected:
 	DXGI_SAMPLE_DESC GetSupportedSampleCount(DXGI_FORMAT format, uint8 numSamples);
 
 private:
-	ATL::CComPtr<ID3D11Texture2D> m_pTexture2D;
-	ATL::CComPtr<ID3D11Texture3D> m_pTexture3D;
+	ATL::CComPtr<ID3D11Texture2D> m_DX11Texture2D;
+	ATL::CComPtr<ID3D11Texture3D> m_DX11Texture3D;
 
 	// Use this to map the texture to a shader for reading.
-	ATL::CComPtr<ID3D11ShaderResourceView> m_pShaderResourceView;
+	ATL::CComPtr<ID3D11ShaderResourceView> m_DX11ShaderResourceView;
 
 	// Use this to map the texture to a render target for writing.
-	ATL::CComPtr<ID3D11RenderTargetView> m_pRenderTargetView;
+	ATL::CComPtr<ID3D11RenderTargetView> m_DX11RenderTargetView;
 
 	// Use this texture as the depth/stencil buffer of a render target.
-	ATL::CComPtr<ID3D11DepthStencilView> m_pDepthStencilView;
+	ATL::CComPtr<ID3D11DepthStencilView> m_DX11DepthStencilView;
 
 	// Use this texture as a Unordered Acccess View (RWTexture)
-	ATL::CComPtr<ID3D11UnorderedAccessView> m_pUnorderedAccessView;
+	ATL::CComPtr<ID3D11UnorderedAccessView> m_DX11UnorderedAccessView;
 
 	// 1D, 2D, 3D, or Cube
 	Dimension m_TextureDimension;
@@ -111,7 +99,7 @@ private:
 
 	DXGI_SAMPLE_DESC m_SampleDesc;
 	// TRUE if mipmaps are supported on the given texture type.
-	bool m_bGenerateMipmaps;
+	bool m_NeedGenerateMipmaps;
 
 	// Bits-per pixel
 	uint8 m_BPP; 

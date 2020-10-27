@@ -58,8 +58,7 @@ bool CFBXModel::Load(fbxsdk::FbxMesh* NativeMesh)
 
 		for (int j = 0; j < lPolygonSize; j++)
 		{
-			FBXVertex v;
-			ZeroMemory(&v, sizeof(FBXVertex));
+			FBXVertex v = {};
 			
 			int lControlPointIndex = NativeMesh->GetPolygonVertex(p, j);
 			v.controlPointIndex = lControlPointIndex;
@@ -204,7 +203,7 @@ bool CFBXModel::Load(fbxsdk::FbxMesh* NativeMesh)
 			//
 			// Binormal
 			//
-			cnt = NativeMesh->GetElementBinormalCount();
+			/*cnt = NativeMesh->GetElementBinormalCount();
 			if (cnt > 1) cnt = 1;
 			for (int l = 0; l < cnt; ++l)
 			{
@@ -262,14 +261,14 @@ bool CFBXModel::Load(fbxsdk::FbxMesh* NativeMesh)
 					_ASSERT(false);
 					break;
 				}
-			}
+			}*/
 
 
 
 			//
 			// Tangent
 			//
-			cnt = NativeMesh->GetElementTangentCount();
+			/*cnt = NativeMesh->GetElementTangentCount();
 			if (cnt > 1) cnt = 1;
 			for (int l = 0; l < cnt; ++l)
 			{
@@ -327,7 +326,7 @@ bool CFBXModel::Load(fbxsdk::FbxMesh* NativeMesh)
 					_ASSERT(false);
 					break;
 				}
-			}
+			}*/
 
 			m_Vertices.push_back(v);
 		}
@@ -403,27 +402,30 @@ void CFBXModel::MaterialLoad(fbxsdk::FbxMesh* NativeMesh)
 
 	if (lIsAllSame)
 	{
-		_ASSERT(NativeMesh->GetElementMaterialCount() == 1);
-		for (int l = 0; l < NativeMesh->GetElementMaterialCount(); l++)
+		if (NativeMesh->GetElementMaterialCount() == 0)
 		{
-			FbxGeometryElementMaterial* lMaterialElement = NativeMesh->GetElementMaterial(l);
-			if (lMaterialElement->GetMappingMode() == FbxGeometryElement::eAllSame)
+			AddConnection(nullptr, m_Geometry);
+		}
+		else
+		{
+			//_ASSERT(NativeMesh->GetElementMaterialCount() == 1);
+			for (int l = 0; l < NativeMesh->GetElementMaterialCount(); l++)
 			{
-				int lMatId = lMaterialElement->GetIndexArray().GetAt(0);
-				_ASSERT(lMatId >= 0);
+				FbxGeometryElementMaterial* lMaterialElement = NativeMesh->GetElementMaterial(l);
+				if (lMaterialElement->GetMappingMode() == FbxGeometryElement::eAllSame)
+				{
+					int lMatId = lMaterialElement->GetIndexArray().GetAt(0);
+					_ASSERT(lMatId >= 0);
 
-				//FbxSurfaceMaterial* lMaterial = NativeMesh->GetNode()->GetMaterial(lMatId);
-				AddConnection(m_FBXNode.GetFBXMaterial(lMatId)->GetMaterial(), m_Geometry);
-			}
-			else
-			{
-				_ASSERT(false);
+					//FbxSurfaceMaterial* lMaterial = NativeMesh->GetNode()->GetMaterial(lMatId);
+					AddConnection(m_FBXNode.GetFBXMaterial(lMatId)->GetMaterial(), m_Geometry);
+				}
+				else
+				{
+					_ASSERT(false);
+				}
 			}
 		}
-
-		//no material
-		if (NativeMesh->GetElementMaterialCount() == 0)
-			DisplayString("        no material applied");
 	}
 	else
 	{
@@ -457,6 +459,20 @@ void CFBXModel::MaterialLoad(fbxsdk::FbxMesh* NativeMesh)
 			AddConnection(m_FBXNode.GetFBXMaterial(it.first)->GetMaterial(), m_Geometry, GeometryDrawArgs);
 
 			//Log::Info("Material with id '%d' added for (%d to %d)", it.first, GeometryDrawArgs.VertexStartLocation, GeometryDrawArgs.VertexCnt);
+		}
+	}
+}
+
+// Scale all the elements of a matrix.
+void MatrixScale(fbxsdk::FbxAMatrix& pMatrix, double pValue)
+{
+	int i, j;
+
+	for (i = 0; i < 4; i++)
+	{
+		for (j = 0; j < 4; j++)
+		{
+			pMatrix[i][j] *= pValue;
 		}
 	}
 }
@@ -505,7 +521,7 @@ void CFBXModel::SkeletonLoad(fbxsdk::FbxMesh* NativeMesh)
 			auto& skeleton = m_FBXNode.GetFBXScene().GetFBXSkeleton()->GetSkeletonEditable();
 			size_t jointIndex = skeleton.GetBoneIndexByName(jointname);
 			auto& joint = skeleton.GetBoneByNameEditable(jointname);
-			//joint.GlobalInverse = globalBindposeInverseMatrixGLM;
+			joint.LocalTransform222 = globalBindposeInverseMatrixGLM;
 			//joint->Node = cluster->GetLink();
 			//joint->Mesh = NativeMesh;
 
@@ -515,6 +531,8 @@ void CFBXModel::SkeletonLoad(fbxsdk::FbxMesh* NativeMesh)
 				auto it = weightIndexes.find(i);
 				if (it == weightIndexes.end())
 				{
+					auto weight = cluster->GetControlPointWeights()[i];
+
 					weightIndexes.insert(std::make_pair(i, std::vector<std::pair<float, size_t>>({ std::make_pair(static_cast<float>(cluster->GetControlPointWeights()[i]), jointIndex) })));
 					continue;
 				}

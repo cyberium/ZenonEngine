@@ -49,10 +49,35 @@ glm::mat4 CSkeletonBone::CalcMatrix(const ISceneNode3D& Instance) const
 	{
 		//m *= glm::inverse(GlobalTransform);
 
-		//m *= glm::translate(CalcTranslate(Instance));
+		//m = LocalTransform;
+
+		glm::vec3 tr = glm::vec3(LocalTransform[3][0], LocalTransform[3][1], LocalTransform[3][2]);
+
+		//m = glm::translate(m, tr);
 
 
-		
+		//if (ParentIndex == -1)
+		//{
+		//	glm::mat4 newMatrix = glm::inverse(LocalTransform) * glm::translate(CalcTranslate(Instance));
+		//	m = m * newMatrix;
+		//}
+		//else
+			m = m * glm::translate(CalcTranslate(Instance));
+
+
+
+
+
+		//if (ParentIndex == -1)
+		//{
+		//	glm::mat4 newMatrix = glm::inverse(glm::toMat4(glm::quat(LocalTransform))) * CalcRotate(Instance);
+		//	m = m * newMatrix;
+		//}
+		//else
+		//glm::vec3 orig = glm::radians(CalcRotate(Instance));
+		//m = m * glm::toMat4(glm::quat(orig));
+
+
 		//m *= CalcRotate(Instance);
 		
 		/*if (sX.IsUsesBySequence(animator->getSequenceIndex()))
@@ -65,14 +90,12 @@ glm::mat4 CSkeletonBone::CalcMatrix(const ISceneNode3D& Instance) const
 			m = glm::scale(m, s);
 		}*/
 		
-		//m *= glm::inverse(LocalTransform);
+		//m = glm::translate(m, tr);
 
-		/*if (mM.IsUsesBySequence(animator->getSequenceIndex()))
-		{
-			m *= mM.GetValue(animator->getSequenceIndex(), animator->getCurrentTime());
-		}*/
-
-		m *= LocalTransform;
+		
+			//if (mM.IsUsesBySequence(animator->getSequenceIndex()))
+			//	m = m * mM.GetValue(animator->getSequenceIndex(), animator->getCurrentTime());
+		
 	}
 	
 
@@ -86,42 +109,30 @@ glm::vec3 CSkeletonBone::CalcTranslate(const ISceneNode3D & Instance) const
 	if (const auto& animator = Instance.GetComponent<ISkeletonAnimationComponent>())
 	{
 		if (pX.IsUsesBySequence(animator->getSequenceIndex()))
-		{
-			p = glm::vec3(
-				pX.GetValue(animator->getSequenceIndex(), animator->getCurrentTime()),
-				pY.GetValue(animator->getSequenceIndex(), animator->getCurrentTime()),
-				pZ.GetValue(animator->getSequenceIndex(), animator->getCurrentTime())
-			);
-		}
+			p.x = pX.GetValue(animator->getSequenceIndex(), animator->getCurrentTime());
+
+		if (pY.IsUsesBySequence(animator->getSequenceIndex()))
+			p.y = pY.GetValue(animator->getSequenceIndex(), animator->getCurrentTime());
+
+		if (pZ.IsUsesBySequence(animator->getSequenceIndex()))
+			p.z = pZ.GetValue(animator->getSequenceIndex(), animator->getCurrentTime());
 	}
 	return p;
 }
 
-glm::mat4 CSkeletonBone::CalcRotate(const ISceneNode3D & Instance) const
+glm::vec3 CSkeletonBone::CalcRotate(const ISceneNode3D & Instance) const
 {
-	glm::mat4 m(1.0f);
+	glm::vec3 p(0.0f);
 	if (const auto& animator = Instance.GetComponent<ISkeletonAnimationComponent>())
 	{
 		if (rX.IsUsesBySequence(animator->getSequenceIndex()))
-		{
-			float r = glm::radians(rX.GetValue(animator->getSequenceIndex(), animator->getCurrentTime()));
-			glm::mat4 rot = glm::rotate(r, glm::vec3(1, 0, 0));
-			m *= rot;
-		}
+			p.x = rX.GetValue(animator->getSequenceIndex(), animator->getCurrentTime());
 
 		if (rY.IsUsesBySequence(animator->getSequenceIndex()))
-		{
-			float r = glm::radians(rY.GetValue(animator->getSequenceIndex(), animator->getCurrentTime()));
-			glm::mat4 rot = glm::rotate(r, glm::vec3(0, 1, 0));
-			m *= rot;
-		}
+			p.y = rY.GetValue(animator->getSequenceIndex(), animator->getCurrentTime());
 
 		if (rZ.IsUsesBySequence(animator->getSequenceIndex()))
-		{
-			float r = glm::radians(rZ.GetValue(animator->getSequenceIndex(), animator->getCurrentTime()));
-			glm::mat4 rot = glm::rotate(r, glm::vec3(0, 0, 1));
-			m *= rot;
-		}
+			p.z = rZ.GetValue(animator->getSequenceIndex(), animator->getCurrentTime());
 	}
-	return m;
+	return p;
 }

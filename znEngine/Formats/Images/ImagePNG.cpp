@@ -103,9 +103,9 @@ bool CImagePNG::LoadImageData(std::shared_ptr<IFile> File)
 	//Alocate a buffer with enough space.
 	//(Don't use the stack, these blocks get big easilly)
 	//This pointer was also defined in the error handling section, so we can clean it up on error.
-	m_Data = DEBUG_NEW png_byte[m_Height * m_Stride];
+	m_Data = ZN_NEW png_byte[m_Height * m_Stride];
 
-	png_bytep* rowPtrs = DEBUG_NEW png_bytep[m_Height];
+	png_bytep* rowPtrs = ZN_NEW png_bytep[m_Height];
 	for (uint32 i = 0; i < m_Height; i++)
 		rowPtrs[i] = GetLine(i);
 

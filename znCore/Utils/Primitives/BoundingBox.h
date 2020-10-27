@@ -6,72 +6,45 @@
 class ZN_API BoundingBox
 {
 public:
-	enum EBBoxMode
-	{
-		BBoxMode_Infinite,
-		BBoxMode_Incorrect
-	};
-public:
-	BoundingBox(EBBoxMode BBoxMode = BBoxMode_Infinite);
+	BoundingBox();
 	BoundingBox(const glm::vec3& Min, const glm::vec3& Max);
 
-	BoundingBox& operator=(const BoundingBox& _other)
-	{
-		m_Min = _other.m_Min;
-		m_Max = _other.m_Max;
-		m_Center = _other.m_Center;
-		m_Radius = _other.m_Radius;
-		m_IsCenterCalc = _other.m_IsCenterCalc;
-		return *this;
-	}
+	BoundingBox& operator=(const BoundingBox& Other);
 
 	void set(const glm::vec3& Min, const glm::vec3& Max);
 	void calculate(const glm::vec3* _verts, uint32 _count);
-	void calculateCenter();
-	void clear(EBBoxMode BBoxMode = BBoxMode_Infinite);
+	void clear();
 	bool IsInfinite() const;
-	bool IsIncorrect() const;
 
 	//
 
-	void setMin(const glm::vec3& _min) { m_Min = _min; m_IsCenterCalc = false; }
-	void setMinY(float value) { m_Min.y = value; m_IsCenterCalc = false; }
-	const glm::vec3& getMin() const { return m_Min; }
+	void setMin(const glm::vec3& _min);
+	const glm::vec3& getMin() const;
 
-	void setMax(const glm::vec3& _max) { m_Max = _max; m_IsCenterCalc = false; }
-	void setMaxY(float value) { m_Max.y = value; m_IsCenterCalc = false; }
-	const glm::vec3& getMax() const { return m_Max; }
+	void setMax(const glm::vec3& _max);
+	const glm::vec3& getMax() const;
 
-	const glm::vec3& getCenter() const { _ASSERT(m_IsCenterCalc); return m_Center; }
-	float getRadius() const { _ASSERT(m_IsCenterCalc); return m_Radius; }
+	const glm::vec3& getCenter() const;
+	float getRadius() const;
 
 	glm::vec3 getCorner(uint32 index) const;
 	void transform(const glm::mat4& m);
 	bool makeUnion(const BoundingBox& b);
 	bool isPointInside(const glm::vec3& _point) const;
 
-	inline void Load(const std::shared_ptr<IByteBuffer>& ByteBuffer)
-	{
-		ByteBuffer->read(&m_Min);
-		ByteBuffer->read(&m_Max);
-		calculateCenter();
-	}
+	void Load(const std::shared_ptr<IByteBuffer>& ByteBuffer);
+	void Save(const std::shared_ptr<IByteBuffer>& ByteBuffer) const;
 
-	inline void Save(const std::shared_ptr<IByteBuffer>& ByteBuffer) const
-	{
-		ByteBuffer->write(&m_Min);
-		ByteBuffer->write(&m_Max);
-	}
+private:
+	bool IsCenterCalculated() const;
+	void CalculateCenter();
+	void ResetCenter();
 
 private:
 	glm::vec3 m_Min;
 	glm::vec3 m_Max;
 	glm::vec3 m_Center;
 	float m_Radius;
-	bool m_IsCenterCalc;
-
-private:
-
 };
 
 

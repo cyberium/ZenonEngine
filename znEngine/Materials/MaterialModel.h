@@ -29,8 +29,8 @@ namespace
 			, VectorDisplacementColor(glm::vec3(0.0f, 0.0f, 0.0f))
 			, VectorDisplacementFactor(0.5f)
 
-			, Specular(glm::vec3(0.0f, 0.0f, 0.0f))
-			, SpecularFactor(8.0f)
+			, Specular(glm::vec3(1.0f, 1.0f, 1.0f))
+			, SpecularFactor(1.0f)
 
 			, Reflection(glm::vec3(0.0f, 0.0f, 0.0f))
 			, ReflectionFactor(1.0f)

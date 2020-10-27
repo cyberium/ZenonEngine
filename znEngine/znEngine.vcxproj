@@ -310,7 +310,6 @@
     <ClCompile Include="Materials\MaterialParticle.cpp" />
     <ClCompile Include="Passes\DrawBonesPass.cpp" />
     <ClCompile Include="Passes\DrawBoundingBoxPass.cpp" />
-    <ClCompile Include="Passes\MaterialModelSkeletonPass.cpp" />
     <ClCompile Include="Passes\MaterialParticlePass.cpp" />
     <ClCompile Include="Passes\Postprocess_HDR.cpp" />
     <ClCompile Include="Passes\Pipelined\BaseTypedList3DPass.cpp" />
@@ -512,7 +511,6 @@
     <ClInclude Include="Materials\MaterialParticle.h" />
     <ClInclude Include="Passes\DrawBonesPass.h" />
     <ClInclude Include="Passes\DrawBoundingBoxPass.h" />
-    <ClInclude Include="Passes\MaterialModelSkeletonPass.h" />
     <ClInclude Include="Passes\MaterialParticlePass.h" />
     <ClInclude Include="Passes\Postprocess_HDR.h" />
     <ClInclude Include="Passes\Pipelined\BaseTypedList3DPass.h" />

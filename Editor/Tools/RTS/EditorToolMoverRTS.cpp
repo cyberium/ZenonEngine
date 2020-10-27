@@ -3,6 +3,9 @@
 // General
 #include "EditorToolMoverRTS.h"
 
+// Additional
+#include "Materials/MaterialEditorTool.h"
+
 CEditorToolMoverRTS::CEditorToolMoverRTS(IEditor& Editor)
 	: CEditorToolBase(Editor)
 	, m_MoverValue(1.0f)
@@ -31,18 +34,18 @@ void CEditorToolMoverRTS::Initialize()
 		GetBaseManager().GetManager<IFilesManager>()->GetFilesStorage("ZenonGamedata")->SaveFile(file);
 	}*/
 
-	auto materialX = MakeShared(MaterialDebug, GetRenderDevice());
-	materialX->SetDiffuseColor(glm::vec4(1.0f, 0.2f, 0.1f, 1.0f));
+	auto materialX = MakeShared(MaterialEditorTool, GetRenderDevice());
+	materialX->SetColor(glm::vec4(1.0f, 0.2f, 0.1f, 1.0f));
 	auto modelX = GetRenderDevice().GetObjectsFactory().CreateModel();
 	modelX->AddConnection(materialX, geom);
 
-	auto materialY = MakeShared(MaterialDebug, GetRenderDevice());
-	materialY->SetDiffuseColor(glm::vec4(0.1f, 1.0f, 0.1f, 1.0f));
+	auto materialY = MakeShared(MaterialEditorTool, GetRenderDevice());
+	materialY->SetColor(glm::vec4(0.1f, 1.0f, 0.1f, 1.0f));
 	auto modelY = GetRenderDevice().GetObjectsFactory().CreateModel();
 	modelY->AddConnection(materialY, geom);
 
-	auto materialZ = MakeShared(MaterialDebug, GetRenderDevice());
-	materialZ->SetDiffuseColor(glm::vec4(0.1f, 0.2f, 1.0f, 1.0f));
+	auto materialZ = MakeShared(MaterialEditorTool, GetRenderDevice());
+	materialZ->SetColor(glm::vec4(0.1f, 0.2f, 1.0f, 1.0f));
 	auto modelZ = GetRenderDevice().GetObjectsFactory().CreateModel();
 	modelZ->AddConnection(materialZ, geom);
 
@@ -182,11 +185,11 @@ void CEditorToolMoverRTS::DoInitializeUI(IEditorQtUIFrame & QtUIFrame)
 	btn->setContextMenuPolicy(Qt::CustomContextMenu);
 	btn->connect(btn, &QPushButton::customContextMenuRequested, [this, btn](const QPoint& Point) {
 		// Add context menu for scene node viewer
-		auto contextMenu = DEBUG_NEW QMenu(btn);
+		auto contextMenu = ZN_NEW QMenu(btn);
 		contextMenu->setTitle("Some context menu title.");
 		contextMenu->clear();
 
-		QAction* nameAction = DEBUG_NEW QAction("Test", btn);
+		QAction* nameAction = ZN_NEW QAction("Test", btn);
 		nameAction->setEnabled(false);
 
 		contextMenu->addAction(nameAction);

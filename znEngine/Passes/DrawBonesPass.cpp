@@ -154,7 +154,10 @@ EVisitResult CDrawBonesPass::Visit(const ISceneNode3D * SceneNode3D)
 			//m = glm::scale(m, glm::vec3(4.0f));
 
 			PerObject perObject;
-			perObject.Model = b->GetMatrix();
+			perObject.Model = SceneNode3D->GetWorldTransfom() * b->GetMatrix();
+
+			//perObject.Model = glm::scale(perObject.Model, 1.0f / extractScale(perObject.Model));
+
 			m_PerObjectConstantBuffer->Set(perObject);
 
 			if (m_PerObjectParameter->IsValid() && m_PerObjectConstantBuffer != nullptr)

@@ -57,6 +57,9 @@ std::shared_ptr<IRenderPassPipelined> CMaterialModelPass::ConfigurePipeline(std:
 	samplerClamp->SetWrapMode(ISamplerState::WrapMode::Clamp, ISamplerState::WrapMode::Clamp);
 	GetPipeline().SetSampler(1, samplerClamp);
 
+	m_ShaderBonesBufferParameter = &vertexShader->GetShaderParameterByName("Bones");
+	//_ASSERT(m_ShaderBonesBufferParameter->IsValid());
+
 	m_ShaderLightsBufferParameter = &pixelShader->GetShaderParameterByName("Lights");
 	//_ASSERT(m_ShaderLightsBufferParameter->IsValid());
 
@@ -67,8 +70,11 @@ std::shared_ptr<IRenderPassPipelined> CMaterialModelPass::ConfigurePipeline(std:
 
 EVisitResult CMaterialModelPass::Visit(const ISceneNode3D * SceneNode)
 {
-	//if (SceneNode->GetComponent<ISkeletonComponent3D>())
-	//	return EVisitResult::AllowVisitChilds;
+	auto skeletonComponent = SceneNode->GetComponent<ISkeletonComponent3D>();
+	if (skeletonComponent != nullptr)
+		if (m_ShaderBonesBufferParameter->IsValid())
+			m_ShaderBonesBufferParameter->Set(skeletonComponent->GetBonesBuffer());
+
 	return Base3DPass::Visit(SceneNode);
 }
 
@@ -91,6 +97,9 @@ EVisitResult CMaterialModelPass::Visit(const IGeometry * Geometry, const IMateri
 	if (Material)
 		Material->Bind(GetRenderEventArgs().PipelineState->GetShaders());
 
+
+	if (m_ShaderBonesBufferParameter->IsValid())
+		m_ShaderBonesBufferParameter->Bind();
 	if (m_ShaderLightsBufferParameter->IsValid())
 		m_ShaderLightsBufferParameter->Bind();
 
@@ -98,6 +107,8 @@ EVisitResult CMaterialModelPass::Visit(const IGeometry * Geometry, const IMateri
 
 	if (m_ShaderLightsBufferParameter->IsValid())
 		m_ShaderLightsBufferParameter->Unbind();
+	if (m_ShaderBonesBufferParameter->IsValid())
+		m_ShaderBonesBufferParameter->Unbind();
 
 	if (Material)
 		Material->Unbind(GetRenderEventArgs().PipelineState->GetShaders());

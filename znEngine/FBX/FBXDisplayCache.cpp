@@ -81,13 +81,13 @@ void DisplayCache(FbxGeometry* pGeometry)
 				lCache->GetChannelPointCount(lChannelIndex, t, lDataCount);
 				if (lBuffer == NULL)
 				{
-					lBuffer = DEBUG_NEW float[lDataCount * 3];
+					lBuffer = ZN_NEW float[lDataCount * 3];
 					lBufferSize = lDataCount * 3;
 				}
 				else if (lBufferSize < lDataCount * 3)
 				{
 					delete[] lBuffer;
-					lBuffer = DEBUG_NEW float[lDataCount * 3];
+					lBuffer = ZN_NEW float[lDataCount * 3];
 					lBufferSize = lDataCount * 3;
 				}
 				else

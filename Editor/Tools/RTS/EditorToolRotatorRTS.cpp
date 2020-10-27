@@ -3,6 +3,9 @@
 // General
 #include "EditorToolRotatorRTS.h"
 
+// Additional
+#include "Materials/MaterialEditorTool.h"
+
 CEditorToolRotatorRTS::CEditorToolRotatorRTS(IEditor& Editor)
 	: CEditorToolBase(Editor)
 	, m_RotatorNuber(-1)
@@ -21,8 +24,8 @@ void CEditorToolRotatorRTS::Initialize()
 
 	auto geom = GetRenderDevice().GetPrimitivesFactory().CreateTorus(1.0f, 0.05f);
 
-	auto materialY = MakeShared(MaterialDebug, GetRenderDevice());
-	materialY->SetDiffuseColor(glm::vec4(0.1f, 1.0f, 0.1f, 1.0f));
+	auto materialY = MakeShared(MaterialEditorTool, GetRenderDevice());
+	materialY->SetColor(glm::vec4(0.1f, 1.0f, 0.1f, 1.0f));
 	auto modelY = GetRenderDevice().GetObjectsFactory().CreateModel();
 	modelY->AddConnection(materialY, geom);
 

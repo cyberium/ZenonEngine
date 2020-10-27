@@ -99,6 +99,11 @@ ZN_INTERFACE ZN_API ITexture
 	virtual ~ITexture() {}
 
 	/**
+	 * Get texture Filename (if presented)
+	 */
+	virtual const std::string& GetFilename() const = 0;
+
+	/**
 	 * Load a 2D custom texture
 	 */
 	virtual bool LoadTextureFromImage(const std::shared_ptr<IImage>& Image) = 0;
@@ -196,6 +201,7 @@ ZN_INTERFACE ZN_API ITexture
 	 */
 	virtual void UnBind(uint32_t ID, const IShader* shader, IShaderParameter::Type parameterType) const = 0;
 	virtual void UnBind(uint32_t ID, EShaderType _shaderType, IShaderParameter::Type parameterType) const = 0;
+
 	/**
 	 * Get texture data
 	 */

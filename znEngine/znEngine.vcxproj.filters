@@ -510,9 +510,6 @@
     <ClCompile Include="FBX\FBXModel.cpp">
       <Filter>FBX\Parts</Filter>
     </ClCompile>
-    <ClCompile Include="Passes\MaterialModelSkeletonPass.cpp">
-      <Filter>Passes\3D</Filter>
-    </ClCompile>
     <ClCompile Include="Passes\DrawBonesPass.cpp">
       <Filter>Passes\3D</Filter>
     </ClCompile>
@@ -1097,9 +1094,6 @@
     </ClInclude>
     <ClInclude Include="FBX\FBXModel.h">
       <Filter>FBX\Parts</Filter>
-    </ClInclude>
-    <ClInclude Include="Passes\MaterialModelSkeletonPass.h">
-      <Filter>Passes\3D</Filter>
     </ClInclude>
     <ClInclude Include="Passes\DrawBonesPass.h">
       <Filter>Passes\3D</Filter>

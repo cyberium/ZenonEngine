@@ -93,9 +93,6 @@ void ModelBase::UpdateBounds(const std::shared_ptr<IGeometry>& Geometry)
 		return;
 	}
 
-	if (m_BoundingBox.IsInfinite())
-		m_BoundingBox = BoundingBox(glm::vec3(Math::MaxFloat), glm::vec3(Math::MinFloat));
-
 	m_BoundingBox.makeUnion(geomBounds);
 }
 

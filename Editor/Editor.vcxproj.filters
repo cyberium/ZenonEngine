@@ -93,6 +93,9 @@
       <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
       <ParseFiles>true</ParseFiles>
     </Filter>
+    <Filter Include="3D\Materials">
+      <UniqueIdentifier>{343a6465-19c2-49c5-971e-aca91ad1d194}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -338,6 +341,18 @@
       <Filter>RTS</Filter>
     </ClCompile>
     <ClCompile Include="EditorWindowsShell.cpp" />
+    <ClCompile Include="Passes\DrawToolsPass.cpp">
+      <Filter>3D\Passes</Filter>
+    </ClCompile>
+    <ClCompile Include="Materials\MaterialEditorTool.cpp">
+      <Filter>3D\Materials</Filter>
+    </ClCompile>
+    <ClCompile Include="ZenonWidgets\TreeItemTemplate.cpp">
+      <Filter>UI\Widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="ZenonWidgets\TreeModelTemplate.cpp">
+      <Filter>UI\Widgets</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -534,6 +549,12 @@
       <Filter>RTS</Filter>
     </ClInclude>
     <ClInclude Include="EditorWindowsShell.h" />
+    <ClInclude Include="Passes\DrawToolsPass.h">
+      <Filter>3D\Passes</Filter>
+    </ClInclude>
+    <ClInclude Include="Materials\MaterialEditorTool.h">
+      <Filter>3D\Materials</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="PropertyEditor\Core\Property.h">

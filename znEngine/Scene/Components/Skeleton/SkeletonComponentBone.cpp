@@ -37,7 +37,7 @@ glm::vec3 CSkeletonComponentBone3D::GetPivotPoint() const
 
 const glm::mat4 & CSkeletonComponentBone3D::GetPivotMatrix() const
 {
-	return m_Bone.LocalTransform;
+	return m_Bone.GlobalTransform;
 }
 
 const glm::vec3 & CSkeletonComponentBone3D::GetTranslate() const
@@ -87,7 +87,7 @@ void CSkeletonComponentBone3D::Calculate(const ISceneNode3D& Instance, const ICa
 
 	//m_Translate = m_Bone.CalcTranslate(Instance);
 
-	m_RotateMatrix = m_Bone.CalcRotate(Instance);
+	//m_RotateMatrix = m_Bone.CalcRotate(Instance);
 	m_Matrix = m_Bone.CalcMatrix(Instance);
 	
 

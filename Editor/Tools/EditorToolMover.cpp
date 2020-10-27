@@ -3,6 +3,9 @@
 // General
 #include "EditorToolMover.h"
 
+// Additional
+#include "Materials/MaterialEditorTool.h"
+
 CEditorToolMover::CEditorToolMover(IEditor& Editor)
 	: CEditorToolBase(Editor)
 	, m_MoverValue(1.0f)
@@ -22,47 +25,41 @@ void CEditorToolMover::Initialize()
 
 	auto model = GetBaseManager().GetManager<IznModelsManager>()->LoadModel("arrow.FBX");
 	auto geom = model->GetConnections().begin()->Geometry;
-	/*if (auto loadable = std::dynamic_pointer_cast<IObjectLoadSave>(model))
-	{
-		std::shared_ptr<IFile> file = MakeShared(CFile, "arrow.znmdl");
-		loadable->Save(file);
 
-		GetBaseManager().GetManager<IFilesManager>()->GetFilesStorage("ZenonGamedata")->SaveFile(file);
-	}*/
-
-	auto materialX = MakeShared(MaterialDebug, GetRenderDevice());
-	materialX->SetDiffuseColor(glm::vec4(1.0f, 0.2f, 0.1f, 1.0f));
+	auto materialX = MakeShared(MaterialEditorTool, GetRenderDevice());
+	materialX->SetColor(glm::vec4(0.8f, 0.2f, 0.1f, 1.0f));
 	auto modelX = GetRenderDevice().GetObjectsFactory().CreateModel();
 	modelX->AddConnection(materialX, geom);
 
-	auto materialY = MakeShared(MaterialDebug, GetRenderDevice());
-	materialY->SetDiffuseColor(glm::vec4(0.1f, 1.0f, 0.1f, 1.0f));
+	auto materialY = MakeShared(MaterialEditorTool, GetRenderDevice());
+	materialY->SetColor(glm::vec4(0.1f, 0.8f, 0.1f, 1.0f));
 	auto modelY = GetRenderDevice().GetObjectsFactory().CreateModel();
 	modelY->AddConnection(materialY, geom);
 
-	auto materialZ = MakeShared(MaterialDebug, GetRenderDevice());
-	materialZ->SetDiffuseColor(glm::vec4(0.1f, 0.2f, 1.0f, 1.0f));
+	auto materialZ = MakeShared(MaterialEditorTool, GetRenderDevice());
+	materialZ->SetColor(glm::vec4(0.1f, 0.2f, 0.8f, 1.0f));
 	auto modelZ = GetRenderDevice().GetObjectsFactory().CreateModel();
 	modelZ->AddConnection(materialZ, geom);
 
 
 	m_MoverX = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, GetScene(), m_MoverRoot);
 	m_MoverX->SetName("Mover_X");
-	m_MoverX->SetRotation(glm::vec3(0.0f, 0.0f, -glm::half_pi<float>()));
-	//moverX->SetScale(glm::vec3(0.5f, 1.0f, 0.5f));
+	m_MoverX->SetTranslate(glm::vec3(1.0f, 0.0f, 0.0f));
+	m_MoverX->SetRotation(glm::vec3(0.0f, glm::half_pi<float>(), 0.0f));
 	m_MoverX->GetComponent<IModelsComponent3D>()->SetModel(modelX);
 	m_MoverX->GetComponent<IColliderComponent3D>()->SetBounds(model->GetBounds());
 
 	m_MoverY = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, GetScene(), m_MoverRoot);
 	m_MoverY->SetName("Mover_Y");
-	//moverY->SetScale(glm::vec3(0.5f, 1.0f, 0.5f));
+	m_MoverY->SetTranslate(glm::vec3(0.0f, 1.0f, 0.0f));
+	m_MoverY->SetRotation(glm::vec3(-glm::half_pi<float>(), 0.0f, 0.0f));
 	m_MoverY->GetComponent<IModelsComponent3D>()->SetModel(modelY);
 	m_MoverY->GetComponent<IColliderComponent3D>()->SetBounds(model->GetBounds());
 
 	m_MoverZ = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, GetScene(), m_MoverRoot);
 	m_MoverZ->SetName("Mover_Z");
-	//moverZ->SetScale(glm::vec3(0.5f, 1.0f, 0.5f));
-	m_MoverZ->SetRotation(glm::vec3(glm::half_pi<float>(), 0.0f, 0.0f));
+	m_MoverZ->SetTranslate(glm::vec3(0.0f, 0.0f, 1.0f));
+	m_MoverZ->SetRotation(glm::vec3(0.0f, 0.0f, 0.0f));
 	m_MoverZ->GetComponent<IModelsComponent3D>()->SetModel(modelZ);
 	m_MoverZ->GetComponent<IColliderComponent3D>()->SetBounds(model->GetBounds());
 }
@@ -81,7 +78,7 @@ void CEditorToolMover::Enable()
 	{
 		m_MovingNode = node;
 		m_MoverRoot->SetTranslate(node->GetTranslation());
-		m_MoverRoot->SetScale(glm::vec3(node->GetComponent<IColliderComponent3D>()->GetBounds().getRadius() * 1.0f / 10.0f));
+		m_MoverRoot->SetScale(glm::vec3(node->GetComponent<IColliderComponent3D>()->GetBounds().getRadius() * 1.0f / 50.0f));
 	}
 }
 

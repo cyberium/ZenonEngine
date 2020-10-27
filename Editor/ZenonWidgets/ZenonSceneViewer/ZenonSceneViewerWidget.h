@@ -33,6 +33,9 @@ private:
 	std::vector<std::shared_ptr<IModelCollectionItem>> m_Childs;
 };
 
+
+
+
 class ZenonSceneViewerWidget
 	: public QTreeView
 {

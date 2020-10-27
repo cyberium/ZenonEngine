@@ -165,7 +165,7 @@ static DXGI_RATIONAL QueryRefreshRate(UINT screenWidth, UINT screenHeight, BOOL 
         UINT numDisplayModes = 0;
 		CHECK_HR_MSG(adapterOutput->GetDisplayModeList(DXGI_FORMAT_R8G8B8A8_UNORM, DXGI_ENUM_MODES_INTERLACED, &numDisplayModes, NULL), L"Failed to query display modes.");
 
-		DXGI_MODE_DESC* displayModeList = DEBUG_NEW DXGI_MODE_DESC[numDisplayModes];
+		DXGI_MODE_DESC* displayModeList = ZN_NEW DXGI_MODE_DESC[numDisplayModes];
         _ASSERT(displayModeList != nullptr);
 
 		CHECK_HR_MSG(adapterOutput->GetDisplayModeList(DXGI_FORMAT_R8G8B8A8_UNORM, DXGI_ENUM_MODES_INTERLACED, &numDisplayModes, displayModeList), L"Failed to query dispaly mode list.");

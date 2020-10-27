@@ -8,6 +8,25 @@
 #include "PropertyEditor/Core/PropertyCore.h"
 #include "PropertyEditor/Core/PropertyGUI.h"
 
+namespace
+{
+	void DoRemovePropsFromPropertySet(QtnPropertySet* Set)
+	{
+		auto childs = Set->childProperties();
+		for (auto p = childs.begin(); p != childs.end(); )
+		{
+			if (auto childPropsSet = dynamic_cast<QtnPropertySet*>(*p))
+				DoRemovePropsFromPropertySet(childPropsSet);
+
+			if (!Set->removeChildProperty(*p))
+				throw CException("Unable to remove property");
+
+			delete *p;
+
+			p = childs.erase(p);
+		}
+	}
+}
 
 CPropertiesController::CPropertiesController(QtnPropertyWidget * PropertyWidget)
 	: m_PropertyWidget(PropertyWidget)
@@ -19,22 +38,10 @@ CPropertiesController::CPropertiesController(QtnPropertyWidget * PropertyWidget)
 
 CPropertiesController::~CPropertiesController()
 {
-}
-
-void DoRemovePropsFromPropertySet(QtnPropertySet* Set)
-{
-	auto childs = Set->childProperties();
-	for (auto p = childs.begin(); p != childs.end(); )
+	if (m_PropertiesSet)
 	{
-		if (auto childPropsSet = dynamic_cast<QtnPropertySet*>(*p))
-			DoRemovePropsFromPropertySet(childPropsSet);
-
-		if (!Set->removeChildProperty(*p))
-			throw CException("Unable to remove property");
-
-		delete *p;
-
-		p = childs.erase(p);
+		DoRemovePropsFromPropertySet(m_PropertiesSet);
+		delete m_PropertiesSet;
 	}
 }
 

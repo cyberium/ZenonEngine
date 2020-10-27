@@ -31,14 +31,14 @@ bool TextureDX11::LoadTextureFromImage(const std::shared_ptr<IImage>& Image)
 	m_ShaderResourceViewFormatSupport = m_RenderTargetViewFormatSupport = m_TextureResourceFormatSupport;
 
 	// Can mipmaps be automatically generated for this texture format?
-	m_bGenerateMipmaps = !m_bDynamic && (m_ShaderResourceViewFormatSupport & D3D11_FORMAT_SUPPORT_MIP_AUTOGEN) != 0;
+	m_NeedGenerateMipmaps = !m_bDynamic && (m_ShaderResourceViewFormatSupport & D3D11_FORMAT_SUPPORT_MIP_AUTOGEN) != 0;
 
 
 	// Load the texture data into a GPU texture.
 	D3D11_TEXTURE2D_DESC textureDesc = { };
 	textureDesc.Width = m_TextureWidth;
 	textureDesc.Height = m_TextureHeight;
-	textureDesc.MipLevels = m_bGenerateMipmaps ? 0 : 1;
+	textureDesc.MipLevels = m_NeedGenerateMipmaps ? 0 : 1;
 	textureDesc.ArraySize = m_NumSlices;
 	textureDesc.Format = m_TextureResourceFormat;
 	textureDesc.SampleDesc.Count = 1;
@@ -53,11 +53,11 @@ bool TextureDX11::LoadTextureFromImage(const std::shared_ptr<IImage>& Image)
 		textureDesc.BindFlags |= D3D11_BIND_RENDER_TARGET;
 	}
 	textureDesc.CPUAccessFlags = 0;
-	textureDesc.MiscFlags = m_bGenerateMipmaps ? D3D11_RESOURCE_MISC_GENERATE_MIPS : 0;
+	textureDesc.MiscFlags = m_NeedGenerateMipmaps ? D3D11_RESOURCE_MISC_GENERATE_MIPS : 0;
 
-	if (m_bGenerateMipmaps)
+	if (m_NeedGenerateMipmaps)
 	{
-		CHECK_HR_MSG(m_RenderDeviceDX11.GetDeviceD3D11()->CreateTexture2D(&textureDesc, NULL, &m_pTexture2D), L"Failed to create texture with mipmaps.");
+		CHECK_HR_MSG(m_RenderDeviceDX11.GetDeviceD3D11()->CreateTexture2D(&textureDesc, NULL, &m_DX11Texture2D), L"Failed to create texture with mipmaps.");
 	}
 	else
 	{
@@ -65,8 +65,7 @@ bool TextureDX11::LoadTextureFromImage(const std::shared_ptr<IImage>& Image)
 		subresourceData.pSysMem = Image->GetData();
 		subresourceData.SysMemPitch = Image->GetStride();
 		subresourceData.SysMemSlicePitch = 0;
-
-		CHECK_HR_MSG(m_RenderDeviceDX11.GetDeviceD3D11()->CreateTexture2D(&textureDesc, &subresourceData, &m_pTexture2D), L"Failed to create texture.");
+		CHECK_HR_MSG(m_RenderDeviceDX11.GetDeviceD3D11()->CreateTexture2D(&textureDesc, &subresourceData, &m_DX11Texture2D), L"Failed to create texture.");
 	}
 
 	// Create a Shader resource view for the texture.
@@ -74,10 +73,10 @@ bool TextureDX11::LoadTextureFromImage(const std::shared_ptr<IImage>& Image)
 		D3D11_SHADER_RESOURCE_VIEW_DESC resourceViewDesc = {};
 		resourceViewDesc.Format = m_ShaderResourceViewFormat;
 		resourceViewDesc.ViewDimension = D3D_SRV_DIMENSION_TEXTURE2D;
-		resourceViewDesc.Texture2D.MipLevels = m_bGenerateMipmaps ? -1 : 1;
+		resourceViewDesc.Texture2D.MipLevels = m_NeedGenerateMipmaps ? -1 : 1;
 		resourceViewDesc.Texture2D.MostDetailedMip = 0;
 
-		CHECK_HR_MSG(m_RenderDeviceDX11.GetDeviceD3D11()->CreateShaderResourceView(m_pTexture2D, &resourceViewDesc, &m_pShaderResourceView), L"Failed to create texture resource view.");
+		CHECK_HR_MSG(m_RenderDeviceDX11.GetDeviceD3D11()->CreateShaderResourceView(m_DX11Texture2D, &resourceViewDesc, &m_DX11ShaderResourceView), L"Failed to create texture resource view.");
 	}
 
 	m_Buffer.resize(Image->GetHeight() * Image->GetStride());
@@ -251,13 +250,13 @@ bool TextureDX11::LoadTexture2D(const std::string& fileName)
 	m_ShaderResourceViewFormatSupport = m_RenderTargetViewFormatSupport = m_TextureResourceFormatSupport;
 
 	// Can mipmaps be automatically generated for this texture format?
-	m_bGenerateMipmaps = !m_bDynamic && (m_ShaderResourceViewFormatSupport & D3D11_FORMAT_SUPPORT_MIP_AUTOGEN) != 0;
+	m_NeedGenerateMipmaps = !m_bDynamic && (m_ShaderResourceViewFormatSupport & D3D11_FORMAT_SUPPORT_MIP_AUTOGEN) != 0;
 
 	// Load the texture data into a GPU texture.
 	D3D11_TEXTURE2D_DESC textureDesc = { 0 };
 	textureDesc.Width = m_TextureWidth;
 	textureDesc.Height = m_TextureHeight;
-	textureDesc.MipLevels = m_bGenerateMipmaps ? 0 : 1;
+	textureDesc.MipLevels = m_NeedGenerateMipmaps ? 0 : 1;
 	textureDesc.ArraySize = m_NumSlices;
 	textureDesc.Format = m_TextureResourceFormat;
 	textureDesc.SampleDesc.Count = 1;
@@ -272,7 +271,7 @@ bool TextureDX11::LoadTexture2D(const std::string& fileName)
 		textureDesc.BindFlags |= D3D11_BIND_RENDER_TARGET;
 	}
 	textureDesc.CPUAccessFlags = 0;
-	textureDesc.MiscFlags = m_bGenerateMipmaps ? D3D11_RESOURCE_MISC_GENERATE_MIPS : 0;
+	textureDesc.MiscFlags = m_NeedGenerateMipmaps ? D3D11_RESOURCE_MISC_GENERATE_MIPS : 0;
 
 	BYTE* textureData = FreeImage_GetBits(dib);
 
@@ -281,7 +280,7 @@ bool TextureDX11::LoadTexture2D(const std::string& fileName)
 	subresourceData.SysMemPitch = m_Pitch;
 	subresourceData.SysMemSlicePitch = 0;
 
-	if (FAILED(m_RenderDeviceDX11.GetDeviceD3D11()->CreateTexture2D(&textureDesc, m_bGenerateMipmaps ? nullptr : &subresourceData, &m_pTexture2D)))
+	if (FAILED(m_RenderDeviceDX11.GetDeviceD3D11()->CreateTexture2D(&textureDesc, m_NeedGenerateMipmaps ? nullptr : &subresourceData, &m_DX11Texture2D)))
 	{
 		_ASSERT_EXPR(false, "Failed to create texture.");
 		return false;
@@ -292,20 +291,20 @@ bool TextureDX11::LoadTexture2D(const std::string& fileName)
 
 	resourceViewDesc.Format = m_ShaderResourceViewFormat;
 	resourceViewDesc.ViewDimension = D3D_SRV_DIMENSION_TEXTURE2D;
-	resourceViewDesc.Texture2D.MipLevels = m_bGenerateMipmaps ? -1 : 1;
+	resourceViewDesc.Texture2D.MipLevels = m_NeedGenerateMipmaps ? -1 : 1;
 	resourceViewDesc.Texture2D.MostDetailedMip = 0;
 
-	if (FAILED(m_RenderDeviceDX11.GetDeviceD3D11()->CreateShaderResourceView(m_pTexture2D, &resourceViewDesc, &m_pShaderResourceView)))
+	if (FAILED(m_RenderDeviceDX11.GetDeviceD3D11()->CreateShaderResourceView(m_DX11Texture2D, &resourceViewDesc, &m_DX11ShaderResourceView)))
 	{
 		_ASSERT_EXPR(false, "Failed to create texture resource view.");
 		return false;
 	}
 
 	// From DirectXTK (28/05/2015) @see https://directxtk.codeplex.com/
-	if (m_bGenerateMipmaps)
+	if (m_NeedGenerateMipmaps)
 	{
-		m_RenderDeviceDX11.GetDeviceContextD3D11()->UpdateSubresource(m_pTexture2D, 0, nullptr, textureData, m_Pitch, 0);
-		m_RenderDeviceDX11.GetDeviceContextD3D11()->GenerateMips(m_pShaderResourceView);
+		m_RenderDeviceDX11.GetDeviceContextD3D11()->UpdateSubresource(m_DX11Texture2D, 0, nullptr, textureData, m_Pitch, 0);
+		m_RenderDeviceDX11.GetDeviceContextD3D11()->GenerateMips(m_DX11ShaderResourceView);
 	}
 
 	m_bIsDirty = false;

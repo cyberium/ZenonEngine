@@ -113,11 +113,11 @@ bool ShaderInputLayoutDX11::LoadFromReflector(ID3DBlob * pShaderBlob, ID3D11Shad
 	_ASSERT(inputElements.size() > 0);
 
 
-	std::vector<SCustomInputElement> customInputElements = CustomElements::DX11::DX11ToCustom(inputElements);
-	CustomElements::DX11::MergeCustom(customInputElements);
-	std::vector<D3D11_INPUT_ELEMENT_DESC> dx11InputElements = CustomElements::DX11::CustomToDX11(customInputElements);
+	//std::vector<SCustomInputElement> customInputElements = CustomElements::DX11::DX11ToCustom(inputElements);
+	//CustomElements::DX11::MergeCustom(customInputElements);
+	//std::vector<D3D11_INPUT_ELEMENT_DESC> dx11InputElements = CustomElements::DX11::CustomToDX11(customInputElements);
 
-	CHECK_HR_MSG(m_RenderDeviceDX11.GetDeviceD3D11()->CreateInputLayout(dx11InputElements.data(), (UINT)dx11InputElements.size(), pShaderBlob->GetBufferPointer(), pShaderBlob->GetBufferSize(), &m_pInputLayout), L"Failed to create input layout.");
+	CHECK_HR_MSG(m_RenderDeviceDX11.GetDeviceD3D11()->CreateInputLayout(inputElements.data(), (UINT)inputElements.size(), pShaderBlob->GetBufferPointer(), pShaderBlob->GetBufferSize(), &m_pInputLayout), L"Failed to create input layout.");
 
 	return true;
 }

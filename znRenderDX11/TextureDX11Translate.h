@@ -1353,50 +1353,44 @@ static ITexture::TextureFormat DX11TranslateFormat(DXGI_FORMAT format, uint8_t n
 
 static DXGI_FORMAT DX11GetTextureFormat(DXGI_FORMAT format)
 {
-	DXGI_FORMAT result = format;
-
 	switch (format)
 	{
-	case DXGI_FORMAT_D16_UNORM:
-		result = DXGI_FORMAT_R16_TYPELESS;
-		break;
-	case DXGI_FORMAT_D24_UNORM_S8_UINT:
-		result = DXGI_FORMAT_R24G8_TYPELESS;
-		break;
-	case DXGI_FORMAT_D32_FLOAT:
-		result = DXGI_FORMAT_R32_TYPELESS;
-		break;
-	case DXGI_FORMAT_D32_FLOAT_S8X24_UINT:
-		result = DXGI_FORMAT_R32G8X24_TYPELESS;
-		break;
+		case DXGI_FORMAT_D16_UNORM:
+			return DXGI_FORMAT_R16_TYPELESS;
+
+		case DXGI_FORMAT_D24_UNORM_S8_UINT:
+			return DXGI_FORMAT_R24G8_TYPELESS;
+
+		case DXGI_FORMAT_D32_FLOAT:
+			return DXGI_FORMAT_R32_TYPELESS;
+
+		case DXGI_FORMAT_D32_FLOAT_S8X24_UINT:
+			return DXGI_FORMAT_R32G8X24_TYPELESS;
 	}
 
-	return result;
+	return format;
 }
 
 static DXGI_FORMAT DX11GetDSVFormat(DXGI_FORMAT format)
 {
-	DXGI_FORMAT result = format;
-
 	switch (format)
 	{
-	case DXGI_FORMAT_R16_TYPELESS:
-		result = DXGI_FORMAT_D16_UNORM;
-		break;
-	case DXGI_FORMAT_R24G8_TYPELESS:
-	case DXGI_FORMAT_R24_UNORM_X8_TYPELESS:
-		result = DXGI_FORMAT_D24_UNORM_S8_UINT;
-		break;
-	case DXGI_FORMAT_R32_TYPELESS:
-		result = DXGI_FORMAT_D32_FLOAT;
-		break;
-	case DXGI_FORMAT_R32G8X24_TYPELESS:
-	case DXGI_FORMAT_R32_FLOAT_X8X24_TYPELESS:
-		result = DXGI_FORMAT_D32_FLOAT_S8X24_UINT;
-		break;
+		case DXGI_FORMAT_R16_TYPELESS:
+			return DXGI_FORMAT_D16_UNORM;
+
+		case DXGI_FORMAT_R24G8_TYPELESS:
+		case DXGI_FORMAT_R24_UNORM_X8_TYPELESS:
+			return DXGI_FORMAT_D24_UNORM_S8_UINT;
+
+		case DXGI_FORMAT_R32_TYPELESS:
+			return DXGI_FORMAT_D32_FLOAT;
+
+		case DXGI_FORMAT_R32G8X24_TYPELESS:
+		case DXGI_FORMAT_R32_FLOAT_X8X24_TYPELESS:
+			return DXGI_FORMAT_D32_FLOAT_S8X24_UINT;
 	}
 
-	return result;
+	return format;
 }
 
 static DXGI_FORMAT DX11GetSRVFormat(DXGI_FORMAT format)

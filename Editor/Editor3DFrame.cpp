@@ -3,6 +3,9 @@
 // Gerenal
 #include "Editor3DFrame.h"
 
+// Additional
+#include "Passes/DrawToolsPass.h"
+
 CEditor3DFrame::CEditor3DFrame(IEditor& Editor)
 	: SceneBase(Editor.GetBaseManager())
 	, m_Editor(Editor)
@@ -15,6 +18,7 @@ CEditor3DFrame::CEditor3DFrame(IEditor& Editor)
 
 CEditor3DFrame::~CEditor3DFrame()
 {
+	Log::Info("CEditor3DFrame deleted.");
 }
 
 void CEditor3DFrame::SetPreviewScene(const std::shared_ptr<CEditor3DPreviewScene>& PreviewScene)
@@ -97,16 +101,36 @@ void CEditor3DFrame::Initialize()
 		m_Technique3D.AddPass(materialModelPass);
 		*/
 
+
+		//--------------------------------------------------------------------------
+		// Cube Gold
+		//--------------------------------------------------------------------------
+		/*for (int i = 0; i < 5; i++)
+		{
+			std::shared_ptr<MaterialModel> textMaterial = MakeShared(MaterialModel, GetBaseManager());
+			textMaterial->SetSpecularFactor(32.0f);
+			//textMaterial->SetBumpFactor(16.0f);
+
+			textMaterial->SetTexture(MaterialModel::ETextureType::TextureDiffuse, GetRenderDevice().GetObjectsFactory().LoadTexture2D("pirate-gold-unity//pirate-gold_albedo.png"));
+			textMaterial->SetTexture(MaterialModel::ETextureType::TextureNormalMap, GetRenderDevice().GetObjectsFactory().LoadTexture2D("pirate-gold-unity//pirate-gold_normal-ogl.png"));
+			textMaterial->SetTexture(MaterialModel::ETextureType::TextureSpecular, GetRenderDevice().GetObjectsFactory().LoadTexture2D("pirate-gold-unity//pirate-gold_ao.png"));
+			textMaterial->SetTexture(MaterialModel::ETextureType::TextureDisplacement, GetRenderDevice().GetObjectsFactory().LoadTexture2D("pirate-gold-unity//pirate-gold_height.png"));
+
+			auto& modelPlane = GetRenderDevice().GetObjectsFactory().CreateModel();
+			modelPlane->AddConnection(textMaterial, GetRenderDevice().GetPrimitivesFactory().CreateCube());
+
+			auto node = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, this, GetRootNode3D());
+			node->SetName("Sphere2");
+			node->SetTranslate(glm::vec3(-10, 15, 16 * i));
+			node->SetScale(glm::vec3(15.0f));
+			node->GetComponent<IModelsComponent3D>()->SetModel(modelPlane);
+			//node->GetComponent<IModelsComponent3D>()->SetCastShadows(false);
+		}*/
+
 		auto forwardRenderer = MakeShared(CRendererForward, GetBaseManager(), weak_from_this());
 		forwardRenderer->Initialize(GetRenderWindow()->GetRenderTarget(), &GetRenderWindow()->GetViewport());
+		forwardRenderer->AddPass(MakeShared(CDrawToolsPass, GetRenderDevice(), shared_from_this())->ConfigurePipeline(GetRenderWindow()->GetRenderTarget(), &GetRenderWindow()->GetViewport()));
 		SetRenderer(forwardRenderer);
-
-		//auto defferedRenderer = MakeShared(CRendererDeffered, GetBaseManager(), weak_from_this());
-		//defferedRenderer->Initialize(GetRenderWindow()->GetRenderTarget(), &GetRenderWindow()->GetViewport());
-		//SetRenderer(defferedRenderer);
-
-		// Debug render
-		//GetRenderer()->AddPass(GetBaseManager().GetManager<IRenderPassFactory>()->CreateRenderPass("DebugPass", GetRenderDevice(), defferedRenderer->GetRenderTarget(), &GetRenderWindow()->GetViewport(), shared_from_this()));
 	}
 
 }

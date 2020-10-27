@@ -3,9 +3,9 @@
 // General
 #include "BoundingBox.h"
 
-BoundingBox::BoundingBox(EBBoxMode BBoxMode)
+BoundingBox::BoundingBox()
 {
-	clear(BBoxMode);
+	clear();
 }
 
 BoundingBox::BoundingBox(const glm::vec3& Min, const glm::vec3& Max)
@@ -13,29 +13,27 @@ BoundingBox::BoundingBox(const glm::vec3& Min, const glm::vec3& Max)
 	set(Min, Max);
 }
 
+BoundingBox& BoundingBox::operator=(const BoundingBox& Other)
+{
+	m_Min = Other.m_Min;
+	m_Max = Other.m_Max;
+	m_Center = Other.m_Center;
+	m_Radius = Other.m_Radius;
+	return *this;
+}
+
 void BoundingBox::set(const glm::vec3& Min, const glm::vec3& Max)
 {
 	m_Min = Min;
 	m_Max = Max;
-
-	// Fix bounding box
-	/*if (_needConvert)
-	{
-		m_Min = Fix_XZmY(m_Min);
-		m_Max = Fix_XZmY(m_Max);
-		std::swap(m_Min.z, m_Max.z);
-	}*/
-
-	//_ASSERT(min.x < max.x && min.y < max.y && min.z < max.z);
-
-	calculateCenter();
+	CalculateCenter();
 }
 
 void BoundingBox::calculate(const glm::vec3* _verts, uint32 _count)
 {
 	for (uint32 i = 0; i < _count; i++)
 	{
-		const glm::vec3 v =/*(_needConvert) ? (Fix_XZmY(_verts[i])) :*/ _verts[i];
+		const glm::vec3 v = _verts[i];
 
 		if (v.x < m_Min.x) m_Min.x = v.x;
 		if (v.y < m_Min.y) m_Min.y = v.y;
@@ -46,46 +44,54 @@ void BoundingBox::calculate(const glm::vec3* _verts, uint32 _count)
 		if (v.z > m_Max.z) m_Max.z = v.z;
 	}
 
-	calculateCenter();
+	CalculateCenter();
 }
 
-void BoundingBox::calculateCenter()
+void BoundingBox::clear()
 {
-	m_Center = (m_Min + m_Max) * 0.5f;
-	m_Radius = glm::length(m_Max - m_Center);
-	m_IsCenterCalc = true;
-}
-
-void BoundingBox::clear(EBBoxMode BBoxMode)
-{
-	if (BBoxMode == BBoxMode_Infinite)
-	{
-		m_Min = glm::vec3(Math::MinFloat);
-		m_Max = glm::vec3(Math::MaxFloat);
-	}
-	else if (BBoxMode == BBoxMode_Incorrect)
-	{
-		m_Min = glm::vec3(Math::MaxFloat);
-		m_Max = glm::vec3(Math::MinFloat);
-	}
-	else
-		_ASSERT(false);
-
-	m_Center = glm::vec3(0.0f, 0.0f, 0.0f);
-	m_Radius = Math::MaxFloat / 2.0f;
-	m_IsCenterCalc = true;
+	m_Min = glm::vec3(Math::MinFloat);
+	m_Max = glm::vec3(Math::MaxFloat);
+	ResetCenter();
 }
 
 bool BoundingBox::IsInfinite() const
 {
-	return (m_Min.x == Math::MinFloat) || (m_Min.y == Math::MinFloat) || (m_Min.z == Math::MinFloat) || 
+	return (m_Min.x == Math::MinFloat) || (m_Min.y == Math::MinFloat) || (m_Min.z == Math::MinFloat) ||
 		   (m_Max.x == Math::MaxFloat) || (m_Max.y == Math::MaxFloat) || (m_Max.z == Math::MaxFloat);
 }
 
-bool BoundingBox::IsIncorrect() const
+void BoundingBox::setMin(const glm::vec3& _min)
 {
-	return (m_Min.x == Math::MaxFloat) || (m_Min.y == Math::MaxFloat) || (m_Min.z == Math::MaxFloat) ||
-		   (m_Max.x == Math::MinFloat) || (m_Max.y == Math::MinFloat) || (m_Max.z == Math::MinFloat);
+	m_Min = _min;
+	CalculateCenter();
+}
+
+const glm::vec3& BoundingBox::getMin() const
+{
+	return m_Min;
+}
+
+void BoundingBox::setMax(const glm::vec3& _max)
+{
+	m_Max = _max; 
+	CalculateCenter();
+}
+
+const glm::vec3& BoundingBox::getMax() const
+{
+	return m_Max;
+}
+
+const glm::vec3& BoundingBox::getCenter() const
+{
+	_ASSERT(IsCenterCalculated());
+	return m_Center;
+}
+
+float BoundingBox::getRadius() const
+{
+	_ASSERT(IsCenterCalculated()); 
+	return m_Radius;
 }
 
 //
@@ -141,11 +147,18 @@ void BoundingBox::transform(const glm::mat4& m)
 	m_Min = glm::vec3(minB[0], minB[1], minB[2]);
 	m_Max = glm::vec3(maxB[0], maxB[1], maxB[2]);
 
-	calculateCenter();
+	CalculateCenter();
 }
 
 bool BoundingBox::makeUnion(const BoundingBox& b)
 {
+	if (IsInfinite())
+	{
+		m_Min = glm::vec3(Math::MaxFloat);
+		m_Max = glm::vec3(Math::MinFloat);
+		ResetCenter();
+	}
+
 	bool changed = false;
 
 	// Ignore zero-size boxes
@@ -166,15 +179,15 @@ bool BoundingBox::makeUnion(const BoundingBox& b)
 		if (b.m_Max.z > m_Max.z) { changed = true; m_Max.z = b.m_Max.z; }
 	}
 
-	calculateCenter();
+	CalculateCenter();
 
 	return changed;
 }
 
-bool BoundingBox::isPointInside(const glm::vec3& _point) const
+bool BoundingBox::isPointInside(const glm::vec3& Point) const
 {
-	if (_point.x < m_Min.x || _point.y < m_Min.y ||	_point.z < m_Min.z ||
-		_point.x > m_Max.x || _point.y > m_Max.y ||	_point.z > m_Max.z)
+	if (Point.x < m_Min.x || Point.y < m_Min.y || Point.z < m_Min.z ||
+		Point.x > m_Max.x || Point.y > m_Max.y || Point.z > m_Max.z)
 	{
 		return false;
 	}
@@ -182,3 +195,39 @@ bool BoundingBox::isPointInside(const glm::vec3& _point) const
 	return true;
 }
 
+
+inline void BoundingBox::Load(const std::shared_ptr<IByteBuffer>& ByteBuffer)
+{
+	ByteBuffer->read(&m_Min);
+	ByteBuffer->read(&m_Max);
+	CalculateCenter();
+}
+
+inline void BoundingBox::Save(const std::shared_ptr<IByteBuffer>& ByteBuffer) const
+{
+	ByteBuffer->write(&m_Min);
+	ByteBuffer->write(&m_Max);
+}
+
+
+//
+// Private
+//
+bool BoundingBox::IsCenterCalculated() const
+{
+	return (m_Center.x != Math::MaxFloat) && (m_Center.y != Math::MaxFloat) && (m_Center.z != Math::MaxFloat) && (m_Radius != Math::MaxFloat);
+}
+
+void BoundingBox::CalculateCenter()
+{
+	if (IsInfinite())
+		return;
+	m_Center = (m_Min + m_Max) * 0.5f;
+	m_Radius = glm::length(m_Max - m_Center);
+}
+
+void BoundingBox::ResetCenter()
+{
+	m_Center = glm::vec3(Math::MaxFloat);
+	m_Radius = Math::MaxFloat;
+}

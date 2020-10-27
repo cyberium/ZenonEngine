@@ -250,13 +250,17 @@ std::shared_ptr<IModel> CFBXScene::MergeModels()
 		IRenderDevice& renderDevice = m_BaseManager.GetApplication().GetRenderDevice();
 		auto mergedModel = renderDevice.GetObjectsFactory().CreateModel();
 
-		for (const auto& m : m_Models)
+		for (const auto& fbxModel : m_Models)
 		{
-			auto model = m->GetModel();
+			auto model = fbxModel->GetModel();
 			for (const auto& c : model->GetConnections())
 			{
 				mergedModel->AddConnection(c.Material, c.Geometry, c.GeometryDrawArgs);
 			}
+
+			auto bbox = mergedModel->GetBounds();
+			bbox.makeUnion(model->GetBounds());
+			mergedModel->SetBounds(bbox);
 		}
 
 		m_MergedModel = mergedModel;

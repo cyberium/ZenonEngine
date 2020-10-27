@@ -13,11 +13,7 @@ MaterialBase::MaterialBase(IRenderDevice& RenderDevice)
 
 MaterialBase::~MaterialBase()
 {
-	if (m_MaterialData)
-	{
-		_aligned_free(m_MaterialData);
-		m_MaterialData = nullptr;
-	}
+	FinalizeMaterialData();
 }
 
 
@@ -153,9 +149,11 @@ void MaterialBase::Load(const std::shared_ptr<IByteBuffer>& ByteBuffer)
 			continue;
 		}
 
-		m_Textures.insert(std::make_pair(textureIndex, texture));
+		SetTexture(textureIndex, texture);
 		Log::Info("Material: Load '%s' texture '%s'.", GetTextureTypeName(textureIndex).c_str(), textureFileName.c_str());
 	}
+
+	MarkMaterialDataDirty();
 }
 
 void MaterialBase::Save(const std::shared_ptr<IByteBuffer>& ByteBuffer) const
@@ -169,26 +167,22 @@ void MaterialBase::Save(const std::shared_ptr<IByteBuffer>& ByteBuffer) const
 	size_t texturesCount = m_Textures.size();
 	ByteBuffer->write(&texturesCount);
 	Log::Info("Material: Saving '%d' textures.", texturesCount);
-	for (const auto& it : m_Textures)
+
+	for (const auto& texture : m_Textures)
 	{
-		if (it.second == nullptr)
-			throw CException("NullPtr texture for m_Texture[%d].", it.first);
+		if (texture.second == nullptr)
+			throw CException("NullPtr texture for m_Texture[%d].", texture.first);
 
-		if (auto fileNameOwner = std::dynamic_pointer_cast<IFileNameOwner>(it.second))
-		{
-			const auto fileName = fileNameOwner->GetFileName();
-			if (fileName.empty())
-				throw CException("Empty filename for m_Texture[%d].", it.first);
+		const auto fileName = texture.second->GetFilename();
+		if (fileName.empty())
+			throw CException("Empty filename for m_Texture[%d].", texture.first);
 
-			// Тупая проверка. Но для меня сейчас это надежда найти всякую хуйню с менеджером тексутр.
-			_ASSERT(m_RenderDevice.GetObjectsFactory().LoadTexture2D(fileName) == it.second);
+		// Тупая проверка. Но для меня сейчас это надежда найти всякую хуйню с менеджером тексутр.
+		_ASSERT(m_RenderDevice.GetObjectsFactory().LoadTexture2D(fileName) == texture.second);
 
-			ByteBuffer->write(&it.first);
-			ByteBuffer->writeString(fileNameOwner->GetFileName());
-			Log::Info("Material: Save '%s' texture '%s'.", GetTextureTypeName(it.first).c_str(), fileNameOwner->GetFileName().c_str());
-		}
-		else
-			throw CException("Texture [%d] don't support 'IFileNameOwner'.");
+		ByteBuffer->write(&texture.first);
+		ByteBuffer->writeString(fileName);
+		Log::Info("Material: Save '%s' texture '%s'.", GetTextureTypeName(texture.first).c_str(), fileName.c_str());
 	}
 }
 
@@ -210,11 +204,11 @@ void MaterialBase::Save(const std::shared_ptr<IXMLWriter>& Writer) const
 //
 void MaterialBase::FinalizeMaterialData()
 {
-	if (m_MaterialData == nullptr)
-		return;
-	
-	_aligned_free(m_MaterialData);
-	m_MaterialData = nullptr;
+	if (m_MaterialData != nullptr)
+	{
+		_aligned_free(m_MaterialData);
+		m_MaterialData = nullptr;
+	}
 
 	m_ConstantBuffer.reset();
 }

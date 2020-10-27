@@ -53,7 +53,7 @@ std::string GetDLLPath()
 
 IBaseManager* WINAPI InitializeEngine(std::vector<std::string> Arguments, std::string PathToPlugins)
 {
-	IBaseManager* baseManager = DEBUG_NEW CBaseManager();
+	IBaseManager* baseManager = ZN_NEW CBaseManager();
 
 	std::shared_ptr<IznPluginsManager> pluginsManager = MakeShared(CznPluginsManager, *baseManager);
 	baseManager->AddManager<IznPluginsManager>(pluginsManager);

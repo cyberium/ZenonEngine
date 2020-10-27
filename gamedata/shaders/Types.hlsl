@@ -85,6 +85,15 @@ struct VSInputPTN
 	float3 normal   : NORMAL;
 };
 
+struct VSInputPTNBB
+{
+	float3 position : POSITION;
+	float2 texCoord : TEXCOORD0;
+	float3 normal   : NORMAL;
+	float4 boneWeight: BLENDWEIGHT0;
+	uint4  boneIndex : BLENDINDICES0;
+};
+
 struct VSInputPTNTB
 {
 	float3 position : POSITION;
@@ -103,8 +112,6 @@ struct VSInputPTNTBBB
 	float3 binormal : BINORMAL;
 	float4 boneWeight: BLENDWEIGHT0;
 	uint4  boneIndex : BLENDINDICES0;
-	float value: COLOR0;
-	float3 unused : COLOR1;
 };
 
 

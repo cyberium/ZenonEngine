@@ -98,16 +98,16 @@ void CFBXAnimation::DisplayChannels(fbxsdk::FbxNode* pNode, fbxsdk::FbxAnimLayer
 	{
 		auto& bone = m_FBXScene.GetFBXSkeleton()->GetSkeletonEditable().GetBoneByNameEditable(pNode->GetName());
 
-		/*FbxTimeSpan interval;   
+		fbxsdk::FbxTimeSpan interval;
 		bool bResult = pNode->GetAnimationInterval(interval);
-		FbxTime start = interval.GetStart();
-		FbxTime end = interval.GetStop();
-		FbxLongLong longstart = start.GetFrameCount();
-		FbxLongLong longend = end.GetFrameCount();
+		fbxsdk::FbxTime start = interval.GetStart();
+		fbxsdk::FbxTime end = interval.GetStop();
+		fbxsdk::FbxLongLong longstart = start.GetFrameCount();
+		fbxsdk::FbxLongLong longend = end.GetFrameCount();
 
 		for (unsigned int i = 0; i < longend; i++)
 		{
-			FbxTime keyTime;
+			fbxsdk::FbxTime keyTime;
 			keyTime.SetFrame(i);
 
 			fbxsdk::FbxLongLong keyTimeFrames = keyTime.GetFrameCount(fbxsdk::FbxTime::eFrames30);
@@ -118,14 +118,15 @@ void CFBXAnimation::DisplayChannels(fbxsdk::FbxNode* pNode, fbxsdk::FbxAnimLayer
 				bone.mM.m_Times.resize(AnimationIndex + 1);
 			bone.mM.m_Times[AnimationIndex].push_back(keyTimeFrames);
 
-			FbxAMatrix matGlobal = pNode->EvaluateGlobalTransform(keyTime);
+			FbxAMatrix matGlobal = pNode->EvaluateLocalTransform(keyTime);
 			glm::mat4 glmMat = ToGLMMat4(matGlobal);
 
 			if (AnimationIndex + 1 >= bone.mM.m_Values.size())
 				bone.mM.m_Values.resize(AnimationIndex + 1);
 			bone.mM.m_Values[AnimationIndex].push_back(glmMat);
-		}*/
+		}
 
+		
 		
 		fbxsdk::FbxAnimCurve* curve = nullptr;
 
@@ -161,9 +162,12 @@ void CFBXAnimation::DisplayCurveKeys(fbxsdk::FbxNode* pNode, fbxsdk::FbxAnimCurv
 	int keysCount = pCurve->KeyGetCount();
 	for (int i = 0; i < keysCount; i++)
 	{
+		//if (i != 16)
+		//	continue;
+
 		fbxsdk::FbxAnimCurveKey key = pCurve->KeyGet(i);
 		fbxsdk::FbxTime keyTime = key.GetTime();
-		fbxsdk::FbxLongLong keyTimeFrames = keyTime.GetFrameCount(fbxsdk::FbxTime::eFrames60);
+		fbxsdk::FbxLongLong keyTimeFrames = keyTime.GetFrameCount(fbxsdk::FbxTime::eFrames30);
 
 		if (AnimationIndex + 1 >= valueInt.m_Times.size())
 			valueInt.m_Times.resize(AnimationIndex + 1);
@@ -184,6 +188,11 @@ void CFBXAnimation::DisplayCurveKeys(fbxsdk::FbxNode* pNode, fbxsdk::FbxAnimCurv
 
 		//valueInt.m_Values[AnimationIndex].push_back(keyOOO.GetValue());
 		valueInt.m_Values[AnimationIndex].push_back(pCurve->EvaluateIndex(i));
+
+		float val0 = key.GetValue();
+		float val1 = pCurve->Evaluate(keyTime);
+		float val2 = pCurve->EvaluateIndex(i);
+
 
 		valueInt.m_Type = Interpolations::INTERPOLATION_LINEAR;
 

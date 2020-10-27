@@ -69,18 +69,18 @@ void main_internal(int argc, char *argv[])
 		std::shared_ptr<IDebugOutput> debugOutput(editorUI.getUI().LogViewer);
 		BaseManager->GetManager<ILog>()->AddDebugOutput(debugOutput);
 		
-		QTimer *timer = DEBUG_NEW QTimer(&editorUI);
-		editorUI.connect(timer, &QTimer::timeout, &editorUI, [&app] {
+		QTimer timer(&editorUI);
+		editorUI.connect(&timer, &QTimer::timeout, &editorUI, [&app] {
 			app.DoRun();
 		});
 
 		app.DoBeforeRun();
 		{
-			timer->start();
+			timer.start();
 			{
 				a.exec();
 			}
-			timer->stop();
+			timer.stop();
 
 			a.closeAllWindows();
 		}
@@ -104,6 +104,7 @@ int main(int argumentCount, char* arguments[])
 {
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 	_CrtSetReportMode(_CRT_ERROR, _CRTDBG_MODE_DEBUG);
+	_CrtSetBreakAlloc(416);
 
 	main_internal(argumentCount, arguments);		
 
@@ -113,7 +114,7 @@ int main(int argumentCount, char* arguments[])
 		delete BaseManager;
 	}
 
-	_CrtMemDumpAllObjectsSince(NULL);
+	//_CrtMemDumpAllObjectsSince(NULL);
 
 	return 0;
 }
