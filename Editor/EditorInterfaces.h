@@ -176,7 +176,7 @@ ZN_INTERFACE IEditorUIFrame
 
 	virtual void DoInitializeToolsUI() = 0;
 	virtual bool ExtendContextMenu(const std::shared_ptr<ISceneNode3D>& Node, std::string * Title, std::vector<std::shared_ptr<IPropertyAction>> * Actions) = 0;
-	virtual void OnSceneChanged() = 0;
+	virtual void OnSceneChanged(ESceneChangeType SceneChangeType, const std::shared_ptr<ISceneNode3D>& ParentNode, const std::shared_ptr<ISceneNode3D>& ChildNode) = 0;
 };
 
 

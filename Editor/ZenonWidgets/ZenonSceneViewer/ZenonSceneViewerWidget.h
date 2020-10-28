@@ -2,7 +2,8 @@
 
 #include <QtWidgets/QTreeView>
 
-#include "../TreeModelTemplate.h"
+//#include "../TreeModelTemplate.h"
+#include "SceneBrowser/SceneBrowserTreeModel.h"
 
 class CSceneNodeModelItem
 	: public IModelCollectionItem
@@ -45,9 +46,9 @@ public:
 	explicit ZenonSceneViewerWidget(QWidget * parent = nullptr);
 	virtual ~ZenonSceneViewerWidget();
 
-	void SetEditor(IEditor* Editor) { m_Editor = Editor; }
+	void SetEditor(IEditor* Editor);
 
-	void RefreshTreeViewModel();
+	void RefreshTreeViewModel(ESceneChangeType SceneChangeType, const std::shared_ptr<ISceneNode3D>& ParentNode, const std::shared_ptr<ISceneNode3D>& ChildNode);
 	void SelectNode(const std::shared_ptr<ISceneNode3D>& Node);
 	void SelectNodes(const std::vector<std::shared_ptr<ISceneNode3D>>& Nodes);
 
@@ -63,7 +64,8 @@ private slots:
 	void onDoubleClicked(const QModelIndex &index);
 
 private:
-	std::shared_ptr<CQtToZenonTreeModel> m_Model;
+	//std::shared_ptr<CQtToZenonTreeModel> m_Model;
+	std::shared_ptr<CSceneBrowserTreeModel> m_Model;
 	std::shared_ptr<QMenu> m_ContextMenu;
 	bool m_LockForSelectionChangedEvent;
 

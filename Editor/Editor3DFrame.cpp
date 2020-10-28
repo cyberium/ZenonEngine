@@ -150,7 +150,7 @@ void CEditor3DFrame::RemoveChild(const std::shared_ptr<ISceneNode3D>& ParentNode
 	__super::RemoveChild(ParentNode, ChildNode);
 }
 
-void CEditor3DFrame::RaiseSceneChangeEvent(ESceneChangeType SceneChangeType, const std::shared_ptr<ISceneNode3D>& OwnerNode, const std::shared_ptr<ISceneNode3D>& ChildNode)
+void CEditor3DFrame::RaiseSceneChangeEvent(ESceneChangeType SceneChangeType, const std::shared_ptr<ISceneNode3D>& ParentNode, const std::shared_ptr<ISceneNode3D>& ChildNode)
 {
 	if (SceneChangeType == ESceneChangeType::NodeRemovedFromParent)
 	{
@@ -164,8 +164,8 @@ void CEditor3DFrame::RaiseSceneChangeEvent(ESceneChangeType SceneChangeType, con
 		}
 	}
 
-	if (IsChildOf(GetEditedRootNode3D(), ChildNode) || IsChildOf(GetEditedRootNode3D(), OwnerNode))
-		GetEditor().GetUIFrame().OnSceneChanged();
+	if (IsChildOf(GetEditedRootNode3D(), ChildNode) || IsChildOf(GetEditedRootNode3D(), ParentNode))
+		GetEditor().GetUIFrame().OnSceneChanged(SceneChangeType, ParentNode, ChildNode);
 }
 
 

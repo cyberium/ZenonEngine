@@ -36,7 +36,8 @@ void main_internal(int argumentCount, char* arguments[])
 
 		std::shared_ptr<IScene> scene = MakeShared(CSceneDefault, *BaseManager);//BaseManager->GetManager<IObjectsFactory>()->GetClassFactoryCast<IScenesFactory>()->CreateScene(cSceneDefault);
 		scene->SetRenderWindow(firstRenderWindow);
-		scene->ConnectEvents(std::dynamic_pointer_cast<IRenderWindowEvents>(firstRenderWindow));
+		firstRenderWindow->SetRenderWindowEventListener(std::dynamic_pointer_cast<IRenderWindowEventListener>(scene));
+		firstRenderWindow->SetNativeWindowEventListener(std::dynamic_pointer_cast<INativeWindowEventListener>(scene));
 		scene->Initialize();
 
 		app.Run();

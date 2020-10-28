@@ -6,15 +6,22 @@
 
 
 
+CznSceneBrowserNode::CznSceneBrowserNode(std::shared_ptr<IObject> Object)
+	: m_Object(Object)
+{
+}
+
+
+
 //
 // IznSceneBrowserNode
 //
 Guid CznSceneBrowserNode::GetId() const
 {
-	return Guid(1231ull);
+	return m_Object->GetGUID();
 }
 
 std::string CznSceneBrowserNode::GetText() const
 {
-	return std::string();
+	return m_Object->GetName();
 }

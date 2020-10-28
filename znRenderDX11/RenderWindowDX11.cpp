@@ -12,6 +12,7 @@ RenderWindowDX11::RenderWindowDX11(IRenderDeviceDX11& RenderDeviceDX11, INativeW
     , m_RenderDeviceDX11(RenderDeviceDX11)
 	, m_pSwapChain(nullptr)
 	, m_pBackBuffer(nullptr)
+	, m_vSync(vSync)
 {
 	WindowObject.SetEventsListener(this);
 
@@ -29,6 +30,15 @@ RenderWindowDX11::~RenderWindowDX11()
 	m_NativeWindow.ResetEventsListener();
 }
 
+
+
+//
+// IRenderWindow
+//
+bool RenderWindowDX11::IsVSync() const
+{
+	return m_vSync;
+}
 
 void RenderWindowDX11::Present()
 {

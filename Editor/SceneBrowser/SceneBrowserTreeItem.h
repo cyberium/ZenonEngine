@@ -9,7 +9,7 @@ class CSceneBrowserTreeItem
 {
 public:
 	CSceneBrowserTreeItem();
-	CSceneBrowserTreeItem(const std::shared_ptr<IznSceneBrowserNode>& Node, std::weak_ptr<CSceneBrowserTreeItem> Parent);
+	CSceneBrowserTreeItem(const std::shared_ptr<IznSceneBrowserNode>& Node, CSceneBrowserTreeItem* Parent);
 	virtual ~CSceneBrowserTreeItem();
 
 	void AddChild(std::shared_ptr<IznSceneBrowserNode> ChildNode);
@@ -19,13 +19,13 @@ public:
 	std::shared_ptr<CSceneBrowserTreeItem> GetChild(size_t Index) const;
 	size_t GetChildIndex(const std::shared_ptr<const CSceneBrowserTreeItem>& Child) const;
 	int GetMyIndexInParent() const;
-	std::shared_ptr<CSceneBrowserTreeItem> GetParent() const;
+	CSceneBrowserTreeItem* GetParent() const;
 
 	std::string GetText() const;
 	std::shared_ptr<IznSceneBrowserNode> GetNode() const;
 
 private:
-	std::weak_ptr<CSceneBrowserTreeItem>                m_Parent;
+	CSceneBrowserTreeItem*                              m_Parent;
 	std::vector<std::shared_ptr<CSceneBrowserTreeItem>> m_Childs;
 	std::shared_ptr<IznSceneBrowserNode>                m_Node;
 };

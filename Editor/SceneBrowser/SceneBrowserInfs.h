@@ -5,9 +5,6 @@ ZN_INTERFACE IznSceneBrowserNode
 {
 	virtual Guid                                  GetId() const = 0;
 	virtual std::string                           GetText() const = 0;
-	virtual size_t                                GetChildsCount() const = 0;
-	virtual std::shared_ptr<IznSceneBrowserNode>  GetChild(size_t Index) const = 0;
-	virtual std::shared_ptr<IznSceneBrowserNode>  GetParent() const = 0;
 };
 
 

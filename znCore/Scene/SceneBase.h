@@ -11,6 +11,8 @@
 const ObjectClass cSceneBase = UINT16_MAX - 300u;
 class ZN_API SceneBase 
 	: public IScene
+	, public ISceneInternal
+	, public IRenderWindowEventListener
 	, public INativeWindowEventListener
 	, public IBaseManagerHolder
 	, public Object
@@ -23,8 +25,8 @@ public:
 	void                                            SetRenderWindow(const std::shared_ptr<IRenderWindow>& RenderWindow) override;
 	std::shared_ptr<IRenderWindow>                  GetRenderWindow() const;
 
-	void                                            ConnectEvents(const std::shared_ptr<IRenderWindowEvents>& WindowEvents) override;
-	void                                            DisconnectEvents(const std::shared_ptr<IRenderWindowEvents>& WindowEvents) override;
+	void                                            AddEventListener(std::shared_ptr<ISceneEventsListener> Listener) override;
+	void                                            RemoveEventListener(std::shared_ptr<ISceneEventsListener> Listener) override;
 
 	virtual void                                    Initialize() override;
 	virtual void                                    Finalize() override;
@@ -47,16 +49,18 @@ public:
 	void                                            AddChild(const std::shared_ptr<ISceneNode3D>& ParentNode, const std::shared_ptr<ISceneNode3D>& ChildNode) override;
 	void                                            RemoveChild(const std::shared_ptr<ISceneNode3D>& ParentNode, const std::shared_ptr<ISceneNode3D>& ChildNode) override;
 
-	// Scene events
-	Delegate<SceneChangeEventArgs>&					SceneChangeEvent() override;
+
+	// ISceneInternal
 	void                                            RaiseSceneChangeEvent(ESceneChangeType SceneChangeType, const std::shared_ptr<ISceneNode3D>& OwnerNode, const std::shared_ptr<ISceneNode3D>& ChildNode) override;
 
-	// Engine events
-	virtual void                                    OnUpdate(UpdateEventArgs& e) ;
-	virtual void                                    OnPreRender(RenderEventArgs& e);
-	virtual void                                    OnRender(RenderEventArgs& e);
-	virtual void                                    OnPostRender(RenderEventArgs& e);
-	virtual void                                    OnRenderUI(RenderEventArgs& e);
+
+	// IRenderWindowEventListener
+	virtual void                                    OnUpdate(UpdateEventArgs& e) override;
+	virtual void                                    OnPreRender(RenderEventArgs& e) override;
+	virtual void                                    OnRender(RenderEventArgs& e) override;
+	virtual void                                    OnPostRender(RenderEventArgs& e) override;
+	virtual void                                    OnRenderUI(RenderEventArgs& e) override;
+
 
 	// INativeWindowEventListener
 	// Window events
@@ -66,13 +70,11 @@ public:
 	virtual void                                    OnWindowRestore(EventArgs& Args) override {}    // Window is restored.
 	virtual void                                    OnWindowResize(ResizeEventArgs& Args) override;
 	virtual void                                    OnWindowClose(WindowCloseEventArgs& Args) override {}
-
 	// Keyboard events
 	virtual bool                                    OnWindowKeyPressed(KeyEventArgs& e) override;
 	virtual void                                    OnWindowKeyReleased(KeyEventArgs& e) override;
 	virtual void                                    OnWindowKeyboardFocus(EventArgs& Args) override {}
 	virtual void                                    OnWindowKeyboardBlur(EventArgs& Args) override {}
-
 	// Mouse events
 	virtual void                                    OnWindowMouseMoved(MouseMotionEventArgs& e) override;
 	virtual bool                                    OnWindowMouseButtonPressed(MouseButtonEventArgs& e) override;
@@ -81,23 +83,26 @@ public:
 	virtual void                                    OnWindowMouseLeave(EventArgs& e) override {}
 	virtual void                                    OnWindowMouseFocus(EventArgs& e) override {}
 	virtual void                                    OnWindowMouseBlur(EventArgs& e) override {}
-
 	// Mouse in world events
 	virtual bool                                    OnMousePressed(const MouseButtonEventArgs & e, const Ray& RayToWorld);
 	virtual void                                    OnMouseReleased(const MouseButtonEventArgs & e, const Ray& RayToWorld);
 	virtual void                                    OnMouseMoved(const MouseMotionEventArgs & e, const Ray& RayToWorld);
 
+
 	// IBaseManagerHolder
 	IBaseManager&                                   GetBaseManager() const override final;
+
 
 	// IObject
 	Guid                                            GetGUID() const override final { return Object::GetGUID(); };
 	std::string                                     GetName() const override final { return Object::GetName(); };
 	void                                            SetName(const std::string& Name) override final { Object::SetName(Name); };
 
+
 	// IObjectSaveLoad
 	virtual void									Load(const std::shared_ptr<IXMLReader>& Reader) override;
 	virtual void									Save(const std::shared_ptr<IXMLWriter>& Writer) const override;
+
 
 protected:
 	IRenderDevice&                                  GetRenderDevice() const;
@@ -156,14 +161,13 @@ private: // Mouse events connections
 	Delegate<MouseMotionEventArgs>::FunctionDecl    m_OnMouseMovedConnection;
 	Delegate<MouseWheelEventArgs>::FunctionDecl     m_OnMouseWheelConnection;
 
-private:
-	Delegate<SceneChangeEventArgs>					m_SceneChangeEvent;
-
 protected: // Функционал по отложенному добавлению нод
 	std::vector<std::pair<std::shared_ptr<ISceneNode3D>, std::shared_ptr<ISceneNode3D>>> m_AddChildList;
 	std::vector<std::pair<std::shared_ptr<ISceneNode3D>, std::shared_ptr<ISceneNode3D>>> m_RemoveChildList;
 	std::mutex                                                                           m_ListsAreBusy;
 	std::mutex                                                                           m_SceneIsBusy;
+
+	std::vector<std::shared_ptr<ISceneEventsListener>> m_EventListeners;
 
 private: // Quick access
 	IBaseManager&                                   m_BaseManager;

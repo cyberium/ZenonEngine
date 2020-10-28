@@ -365,6 +365,9 @@
     <ClCompile Include="SceneBrowser\SceneBrowser.cpp">
       <Filter>SceneBrowser</Filter>
     </ClCompile>
+    <ClCompile Include="SceneBrowser\SceneBrowserFolder.cpp">
+      <Filter>SceneBrowser</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -583,6 +586,9 @@
       <Filter>SceneBrowser</Filter>
     </ClInclude>
     <ClInclude Include="SceneBrowser\SceneBrowser.h">
+      <Filter>SceneBrowser</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneBrowser\SceneBrowserFolder.h">
       <Filter>SceneBrowser</Filter>
     </ClInclude>
   </ItemGroup>

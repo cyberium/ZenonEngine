@@ -6,12 +6,12 @@ class CznSceneBrowserNode
 	: public IznSceneBrowserNode
 {
 public:
+	CznSceneBrowserNode(std::shared_ptr<IObject> Object);
 
 	// IznSceneBrowserNode
-	virtual Guid                                  GetId() const override;
-	virtual std::string                           GetText() const override;
+	virtual Guid          GetId() const override;
+	virtual std::string   GetText() const override;
 
 private:
-	std::weak_ptr<IznSceneBrowserNode>                 m_Parent;
-    std::vector<std::shared_ptr<IznSceneBrowserNode>>  m_Childs;
+	std::shared_ptr<IObject> m_Object;
 };

@@ -2,12 +2,11 @@
 
 class ZN_API RenderWindowBase 
 	: public IRenderWindow
-	, public IRenderWindowEvents
 	, public INativeWindowEventListener
 	, public IApplicationEventsConnection
 {
 public:
-	RenderWindowBase(INativeWindow& WindowObject, bool vSync = false);
+	RenderWindowBase(INativeWindow& WindowObject, bool vSync);
 	virtual ~RenderWindowBase();
 
 	virtual void OnUpdate(UpdateEventArgs& e);
@@ -15,7 +14,6 @@ public:
 	virtual void OnRender(RenderEventArgs& e);
 	virtual void OnPostRender(RenderEventArgs& e);
 	virtual void OnRenderUI(RenderEventArgs& e);
-
 
 	// INativeWindow
 	void SetWindowTitle(const std::string& WindowName) override;
@@ -32,48 +30,13 @@ public:
 
 
 	// IRenderWindow
-	bool                                            IsVSync() const override;
-	virtual void                                    Present() = 0;
-	const std::shared_ptr<IRenderTarget>&           GetRenderTarget() const override;
-	const Viewport&									GetViewport() const override;
+	void SetRenderWindowEventListener(std::shared_ptr<IRenderWindowEventListener> RenderWindowEventListener) override;
+	void SetNativeWindowEventListener(std::shared_ptr<INativeWindowEventListener> NativeWindowEventListener) override;
+	const std::shared_ptr<IRenderTarget>& GetRenderTarget() const override;
+	const Viewport& GetViewport() const override;
 
 
-	//
-	// IRenderWindowEvents
-	//
-	UpdateEvent&        Update() override;
-	RenderEvent&        PreRender() override;
-	RenderEvent&        Render() override;
-	RenderEvent&        PostRender() override;
-	RenderEvent&        RenderUI() override;
-
-	// Window events
-	Event&				WindowInputFocus() override; // Window gets input focus
-	Event&				WindowInputBlur() override;  // Window loses input focus
-	Event&				WindowMinimize() override;   // Window is minimized.
-	Event&				WindowRestore() override;    // Window is restored.
-	ResizeEvent&        WindowResize() override;
-	WindowCloseEvent&   WindowClose() override;
-
-	// Keyboard events
-	KeyboardEvent&      WindowKeyPressed() override;
-	KeyboardEvent&      WindowKeyReleased() override;
-	Event&              WindowKeyboardFocus() override;
-	Event&              WindowKeyboardBlur() override;
-
-	// Mouse events
-	MouseMotionEvent&   WindowMouseMoved() override;
-	MouseButtonEvent&   WindowMouseButtonPressed() override;
-	MouseButtonEvent&   WindowMouseButtonReleased() override;
-	MouseWheelEvent&    WindowMouseWheel() override;
-	Event&              WindowMouseLeave() override;
-	Event&              WindowMouseFocus() override;
-	Event&              WindowMouseBlur() override;
-
-
-	//
 	// INativeWindowEventListener
-	//
 	// Window events
 	void OnWindowInputFocus(EventArgs& Args) override; // Window gets input focus
 	void OnWindowInputBlur(EventArgs& Args) override;  // Window loses input focus
@@ -81,13 +44,11 @@ public:
 	void OnWindowRestore(EventArgs& Args) override;    // Window is restored.
 	void OnWindowResize(ResizeEventArgs& Args) override;
 	void OnWindowClose(WindowCloseEventArgs& Args) override;
-
 	// Keyboard events
 	bool OnWindowKeyPressed(KeyEventArgs& Args) override;
 	void OnWindowKeyReleased(KeyEventArgs& Args) override;
 	void OnWindowKeyboardFocus(EventArgs& Args) override;
 	void OnWindowKeyboardBlur(EventArgs& Args) override;
-
 	// Mouse events
 	void OnWindowMouseMoved(MouseMotionEventArgs& Args) override;
 	bool OnWindowMouseButtonPressed(MouseButtonEventArgs& Args) override;
@@ -99,8 +60,8 @@ public:
 
 
 	// IApplicationEventsConnection
-	void											Connect(IApplicationEvents* ApplicationEvents) override;
-	void											Disconnect(IApplicationEvents* ApplicationEvents) override;
+	void Connect(IApplicationEvents* ApplicationEvents) override;
+	void Disconnect(IApplicationEvents* ApplicationEvents) override;
 
 protected:
 	virtual IRenderDevice&                          GetRenderDevice() const = 0;
@@ -109,7 +70,10 @@ protected:
 
 protected:
 	INativeWindow&                                  m_NativeWindow;
-	bool                                            m_vSync;
+
+
+	std::shared_ptr<IRenderWindowEventListener>     m_RenderWindowEventListener;
+	std::shared_ptr<INativeWindowEventListener>     m_NativeWindowEventListener;
 	std::shared_ptr<IRenderTarget>                  m_RenderTarget;
 	Viewport                                        m_Viewport;
 	
@@ -118,37 +82,4 @@ protected:
 
 private: // IApplicationEventsConnection
 	Delegate<UpdateEventArgs>::FunctionDecl         m_UpdateConnection;
-
-private:
-	// IRenderWindowEvents
-	UpdateEvent			m_Update;
-	RenderEvent         m_PreRender;
-	RenderEvent         m_Render;
-	RenderEvent         m_PostRender;
-	RenderEvent         m_RenderUI;
-
-	// Window events
-	Event				m_InputFocus; // Window gets input focus
-	Event				m_InputBlur;  // Window loses input focus
-	Event				m_Minimize;   // Window is minimized.
-	Event				m_Restore;    // Window is restored.
-	ResizeEvent         m_Resize;
-
-	// Window is closing
-	WindowCloseEvent    m_Close;
-
-	// Keyboard events
-	KeyboardEvent       m_KeyPressed;
-	KeyboardEvent       m_KeyReleased;
-	Event               m_KeyboardFocus;
-	Event               m_KeyboardBlur;
-
-	// Mouse events
-	MouseMotionEvent    m_MouseMoved;
-	MouseButtonEvent    m_MouseButtonPressed;
-	MouseButtonEvent    m_MouseButtonReleased;
-	MouseWheelEvent     m_MouseWheel;
-	Event               m_MouseLeave;
-	Event               m_MouseFocus;
-	Event               m_MouseBlur;
 };

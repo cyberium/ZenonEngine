@@ -9,6 +9,23 @@ ZN_INTERFACE ISceneNodesFactory;
 ZN_INTERFACE ISceneFinder;
 // FORWARD END
 
+
+ZN_INTERFACE ZN_API ISceneEventsListener
+{
+	virtual ~ISceneEventsListener() {};
+
+	virtual void OnSceneNodeAdded(std::shared_ptr<ISceneNode3D> ChildNode, std::shared_ptr<ISceneNode3D> ParentNode) = 0;
+	virtual void OnSceneNodeRemoved(std::shared_ptr<ISceneNode3D> ChildNode, std::shared_ptr<ISceneNode3D> ParentNode) = 0;
+};
+
+ZN_INTERFACE ZN_API ISceneInternal
+{
+	virtual ~ISceneInternal() {};
+
+	virtual void RaiseSceneChangeEvent(ESceneChangeType SceneChangeType, const std::shared_ptr<ISceneNode3D>& OwnerNode, const std::shared_ptr<ISceneNode3D>& ChildNode) = 0;
+};
+
+
 ZN_INTERFACE ZN_API IScene 
 	: public IObject
     , public std::enable_shared_from_this<IScene>
@@ -21,8 +38,8 @@ ZN_INTERFACE ZN_API IScene
 	virtual void SetRenderer(std::shared_ptr<IRenderer> Renderer) = 0;
 	virtual std::shared_ptr<IRenderer> GetRenderer() const = 0;
 
-	virtual void ConnectEvents(const std::shared_ptr<IRenderWindowEvents>& WindowEvents) = 0;
-	virtual void DisconnectEvents(const std::shared_ptr<IRenderWindowEvents>& WindowEvents) = 0;
+	virtual void AddEventListener(std::shared_ptr<ISceneEventsListener> Listener) = 0;
+	virtual void RemoveEventListener(std::shared_ptr<ISceneEventsListener> Listener) = 0;
 
 	virtual void Initialize() = 0;
 	virtual void Finalize() = 0;
@@ -43,10 +60,6 @@ ZN_INTERFACE ZN_API IScene
 	virtual void Unfreeze() = 0;
 	virtual void AddChild(const std::shared_ptr<ISceneNode3D>& ParentNode, const std::shared_ptr<ISceneNode3D>& ChildNode) = 0;
 	virtual void RemoveChild(const std::shared_ptr<ISceneNode3D>& ParentNode, const std::shared_ptr<ISceneNode3D>& ChildNode) = 0;
-
-	// Events
-	virtual SceneChangeEvent& SceneChangeEvent() = 0;
-	virtual void RaiseSceneChangeEvent(ESceneChangeType SceneChangeType, const std::shared_ptr<ISceneNode3D>& OwnerNode, const std::shared_ptr<ISceneNode3D>& ChildNode) = 0;
 
 
 	// Templates

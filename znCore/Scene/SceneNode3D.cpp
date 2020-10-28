@@ -496,7 +496,8 @@ void SceneNode3D::AddChildInternal(std::shared_ptr<ISceneNode3D> ChildNode)
 
 	// TODO: Какой ивент посылать первым?
 	ChildNode->RaiseOnParentChanged();
-	GetScene()->RaiseSceneChangeEvent(ESceneChangeType::NodeAddedToParent, shared_from_this(), ChildNode);
+	
+	dynamic_cast<ISceneInternal*>(GetScene())->RaiseSceneChangeEvent(ESceneChangeType::NodeAddedToParent, shared_from_this(), ChildNode);
 }
 
 void SceneNode3D::RemoveChildInternal(std::shared_ptr<ISceneNode3D> ChildNode)
@@ -515,7 +516,7 @@ void SceneNode3D::RemoveChildInternal(std::shared_ptr<ISceneNode3D> ChildNode)
 
 	// TODO: Какой ивент посылать первым?
 	ChildNode->RaiseOnParentChanged();
-	GetScene()->RaiseSceneChangeEvent(ESceneChangeType::NodeRemovedFromParent, shared_from_this(), ChildNode);
+	dynamic_cast<ISceneInternal*>(GetScene())->RaiseSceneChangeEvent(ESceneChangeType::NodeRemovedFromParent, shared_from_this(), ChildNode);
 }
 
 void SceneNode3D::SetParentInternal(std::weak_ptr<ISceneNode3D> parentNode)

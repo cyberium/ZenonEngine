@@ -16,6 +16,7 @@ public:
 
 	// Creators
 	IRenderDevice&                  CreateRenderDevice(RenderDeviceType DeviceType);
+
 	void                            AddRenderWindow(std::shared_ptr<IRenderWindow> RenderWindow);
 	void                            DeleleRenderWindow(IRenderWindow* RenderWindow);
 

@@ -7,9 +7,10 @@ const size_t cIncorrectChildIndex = std::numeric_limits<std::size_t>::max();
 
 CSceneBrowserTreeItem::CSceneBrowserTreeItem()
 	: m_Node(nullptr)
+	, m_Parent(nullptr)
 {}
 
-CSceneBrowserTreeItem::CSceneBrowserTreeItem(const std::shared_ptr<IznSceneBrowserNode>& TObject, std::weak_ptr<CSceneBrowserTreeItem> Parent)
+CSceneBrowserTreeItem::CSceneBrowserTreeItem(const std::shared_ptr<IznSceneBrowserNode>& TObject, CSceneBrowserTreeItem* Parent)
 	: m_Node(TObject)
 	, m_Parent(Parent)
 {
@@ -17,7 +18,7 @@ CSceneBrowserTreeItem::CSceneBrowserTreeItem(const std::shared_ptr<IznSceneBrows
 
 CSceneBrowserTreeItem::~CSceneBrowserTreeItem()
 {
-	printf("Test");
+	printf("~CSceneBrowserTreeItem");
 }
 
 
@@ -33,7 +34,7 @@ void CSceneBrowserTreeItem::AddChild(std::shared_ptr<IznSceneBrowserNode> ChildN
 		Log::Error("CSceneBrowserTreeItem: Child '%s' already exists in parent '%s'.", ChildNode->GetText().c_str(), GetText().c_str());
 		return;
 	}
-	m_Childs.push_back(MakeShared(CSceneBrowserTreeItem, ChildNode, weak_from_this()));
+	m_Childs.push_back(MakeShared(CSceneBrowserTreeItem, ChildNode, this));
 }
 
 void CSceneBrowserTreeItem::RemoveChild(std::shared_ptr<IznSceneBrowserNode> ChildNode)
@@ -69,11 +70,9 @@ size_t CSceneBrowserTreeItem::GetChildIndex(const std::shared_ptr<const CSceneBr
 	return cIncorrectChildIndex;
 }
 
-std::shared_ptr<CSceneBrowserTreeItem> CSceneBrowserTreeItem::GetParent() const
+CSceneBrowserTreeItem* CSceneBrowserTreeItem::GetParent() const
 {
-	if (auto parent = m_Parent.lock())
-		return parent;
-	return nullptr;
+	return m_Parent;
 }
 
 int CSceneBrowserTreeItem::GetMyIndexInParent() const

@@ -10,18 +10,22 @@ public:
 	RenderWindowDX11(IRenderDeviceDX11& RenderDeviceDX11, INativeWindow& WindowObject, bool vSync);
 	virtual ~RenderWindowDX11();
 
-	void                                            Present() override final;
+	// IRenderWindow
+	bool IsVSync() const override;
+	void Present() override;
 
 protected:
-	IRenderDevice&									GetRenderDevice() const override final;
-    void                                            CreateSwapChain() override final;
-	void                                            ResizeSwapChainBuffers(uint32_t width, uint32_t height) override final;
+	IRenderDevice& GetRenderDevice() const override final;
+    void CreateSwapChain() override final;
+	void ResizeSwapChainBuffers(uint32_t width, uint32_t height) override final;
 
 private:
-	ATL::CComPtr<IDXGISwapChain4>                   m_pSwapChain;
-	ATL::CComPtr<ID3D11Texture2D>                   m_pBackBuffer;
+	ATL::CComPtr<IDXGISwapChain4> m_pSwapChain;
+	ATL::CComPtr<ID3D11Texture2D> m_pBackBuffer;
 
 	DXGI_SAMPLE_DESC m_SampleDesc;      // Used to enable multisampling AA
+
+	bool m_vSync;
 
 private: // Link to parent d3d11 device
 	IRenderDeviceDX11& m_RenderDeviceDX11;

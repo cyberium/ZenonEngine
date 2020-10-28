@@ -31,10 +31,10 @@ namespace
 
 
 
-CSceneBrowserTreeModel::CSceneBrowserTreeModel(const std::shared_ptr<IznSceneBrowserNode>& RootNode, QObject *parent)
+CSceneBrowserTreeModel::CSceneBrowserTreeModel(const std::shared_ptr<IznSceneBrowserNode>& ChildNode, QObject *parent)
 	: QAbstractItemModel(parent)
 {
-	m_RootNode = MakeShared(CSceneBrowserTreeItem, RootNode, std::weak_ptr<CSceneBrowserTreeItem>());
+	m_RootNode = ZN_NEW CSceneBrowserTreeItem(ChildNode, nullptr);
 }
 
 CSceneBrowserTreeModel::~CSceneBrowserTreeModel()
@@ -60,11 +60,19 @@ QModelIndex CSceneBrowserTreeModel::Find(const std::shared_ptr<IznSceneBrowserNo
 
 
 
+std::shared_ptr<IznSceneBrowserNode> CSceneBrowserTreeModel::GetRoot() const
+{
+	return std::shared_ptr<IznSceneBrowserNode>();
+}
+
 void CSceneBrowserTreeModel::AddChildToParent(const std::shared_ptr<IznSceneBrowserNode>& ChildNode, std::shared_ptr<IznSceneBrowserNode> ParentNode)
 {
 	auto parentTreeItem = FindTreeItem(ParentNode);
 	if (parentTreeItem == nullptr)
+	{
 		Log::Error("SceneBrowserTreeModel: Unable to find child '%s'.", ChildNode->GetText().c_str());
+		return;
+	}
 	parentTreeItem->AddChild(ChildNode);
 }
 
@@ -72,7 +80,10 @@ void CSceneBrowserTreeModel::RemoveChildFromParent(const std::shared_ptr<IznScen
 {
 	auto parentTreeItem = FindTreeItem(ParentNode);
 	if (parentTreeItem == nullptr)
+	{
 		Log::Error("SceneBrowserTreeModel: Unable to find child '%s'.", ChildNode->GetText().c_str());
+		return;
+	}
 	parentTreeItem->RemoveChild(ChildNode);
 }
 
@@ -80,7 +91,10 @@ size_t CSceneBrowserTreeModel::GetChildsCount(const std::shared_ptr<IznSceneBrow
 {
 	auto treeItem = FindTreeItem(Node);
 	if (treeItem == nullptr)
+	{
 		Log::Error("SceneBrowserTreeModel: Unable to find node '%s'.", Node->GetText().c_str());
+		return 0;
+	}
 	return treeItem->GetChildsCount();
 }
 
@@ -88,7 +102,10 @@ std::shared_ptr<IznSceneBrowserNode> CSceneBrowserTreeModel::GetChild(const std:
 {
 	auto treeItem = FindTreeItem(Node);
 	if (treeItem == nullptr)
+	{
 		Log::Error("SceneBrowserTreeModel: Unable to find node '%s'.", Node->GetText().c_str());
+		return GetRoot();
+	}
 	return treeItem->GetChild(Index)->GetNode();
 }
 
@@ -96,7 +113,10 @@ std::shared_ptr<IznSceneBrowserNode> CSceneBrowserTreeModel::GetParent(const std
 {
 	auto treeItem = FindTreeItem(Node);
 	if (treeItem == nullptr)
+	{
 		Log::Error("SceneBrowserTreeModel: Unable to find node '%s'.", Node->GetText().c_str());
+		return GetRoot();
+	}
 	return treeItem->GetParent()->GetNode();
 }
 
@@ -151,13 +171,13 @@ QModelIndex CSceneBrowserTreeModel::index(int row, int column, const QModelIndex
 QModelIndex CSceneBrowserTreeModel::parent(const QModelIndex& QTIndex) const
 {
 	auto parentItem = GetTreeItemFromQTIndex(QTIndex)->GetParent();
-	if (parentItem == nullptr)
-		return QModelIndex();
+	//if (parentItem == nullptr)
+	//	return QModelIndex();
 
 	if (parentItem == m_RootNode)
 		return QModelIndex();
 
-	return createIndex(parentItem->GetMyIndexInParent(), 0, parentItem.get());
+	return createIndex(parentItem->GetMyIndexInParent(), 0, parentItem);
 }
 
 int CSceneBrowserTreeModel::rowCount(const QModelIndex& QTIndex) const
@@ -178,32 +198,32 @@ int CSceneBrowserTreeModel::columnCount(const QModelIndex& QTIndex) const
 CSceneBrowserTreeItem* CSceneBrowserTreeModel::GetTreeItemFromQTIndex(const QModelIndex& QTIndex) const
 {
 	if (false == QTIndex.isValid())
-		return m_RootNode.get();
+		return m_RootNode;
 
 	CSceneBrowserTreeItem* item = static_cast<CSceneBrowserTreeItem*>(QTIndex.internalPointer());
 	if (item == nullptr)
-		return m_RootNode.get();
+		return m_RootNode;
 
 	return item;
 }
 
 namespace
 {
-	std::shared_ptr<CSceneBrowserTreeItem> FindChildRec(const std::shared_ptr<CSceneBrowserTreeItem>& From, const std::shared_ptr<IznSceneBrowserNode>& ElementToFind)
+	CSceneBrowserTreeItem* FindChildRec(CSceneBrowserTreeItem* From, const std::shared_ptr<IznSceneBrowserNode>& ElementToFind)
 	{
 		_ASSERT(From != nullptr);
 
-		if (From->GetNode() == ElementToFind)
+		if (From->GetNode()->GetId() == ElementToFind->GetId())
 			return From;
 
 		for (size_t i = 0; i < From->GetChildsCount(); i++)
-			return FindChildRec(From->GetChild(i), ElementToFind);
+			return FindChildRec(From->GetChild(i).get(), ElementToFind);
 
 		return nullptr;
 	}	
 }
 
-std::shared_ptr<CSceneBrowserTreeItem> CSceneBrowserTreeModel::FindTreeItem(const std::shared_ptr<IznSceneBrowserNode>& ChildNode)
+CSceneBrowserTreeItem* CSceneBrowserTreeModel::FindTreeItem(const std::shared_ptr<IznSceneBrowserNode>& ChildNode)
 {
 	return FindChildRec(m_RootNode, ChildNode);
 }

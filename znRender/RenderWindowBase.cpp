@@ -5,8 +5,6 @@
 
 RenderWindowBase::RenderWindowBase(INativeWindow& WindowObject, bool vSync)
 	: m_NativeWindow(WindowObject)
-	, m_vSync(vSync)
-
     , m_bResizePending(false)
 {
 	m_Viewport.SetWidth(WindowObject.GetWindowWidth());
@@ -25,7 +23,7 @@ RenderWindowBase::~RenderWindowBase()
 void RenderWindowBase::OnUpdate(UpdateEventArgs& e)
 {
 	UpdateEventArgs updateArgs(e);
-	m_Update(updateArgs);
+	m_RenderWindowEventListener->OnUpdate(updateArgs);
 
 	//GetRenderDevice()->Lock();
 	{
@@ -55,22 +53,22 @@ void RenderWindowBase::OnUpdate(UpdateEventArgs& e)
 
 void RenderWindowBase::OnPreRender(RenderEventArgs & e)
 {
-	m_PreRender(e);
+	m_RenderWindowEventListener->OnPreRender(e);
 }
 
 void RenderWindowBase::OnRender(RenderEventArgs & e)
 {
-	m_Render(e);
+	m_RenderWindowEventListener->OnRender(e);
 }
 
 void RenderWindowBase::OnPostRender(RenderEventArgs & e)
 {
-	m_PostRender(e);
+	m_RenderWindowEventListener->OnPostRender(e);
 }
 
 void RenderWindowBase::OnRenderUI(RenderEventArgs & e)
 {
-	m_RenderUI(e);
+	m_RenderWindowEventListener->OnRenderUI(e);
 }
 
 
@@ -139,9 +137,16 @@ void RenderWindowBase::ResetEventsListener()
 //
 // IRenderWindow
 //
-bool RenderWindowBase::IsVSync() const
+void RenderWindowBase::SetRenderWindowEventListener(std::shared_ptr<IRenderWindowEventListener> RenderWindowEventListener)
 {
-	return m_vSync;
+	_ASSERT(m_RenderWindowEventListener == nullptr);
+	m_RenderWindowEventListener = RenderWindowEventListener;
+}
+
+void RenderWindowBase::SetNativeWindowEventListener(std::shared_ptr<INativeWindowEventListener> NativeWindowEventListener)
+{
+	_ASSERT(m_NativeWindowEventListener == nullptr);
+	m_NativeWindowEventListener = NativeWindowEventListener;
 }
 
 const std::shared_ptr<IRenderTarget>& RenderWindowBase::GetRenderTarget() const
@@ -157,214 +162,95 @@ const Viewport& RenderWindowBase::GetViewport() const
 
 
 //
-// IRenderWindowEvents
-//
-UpdateEvent& RenderWindowBase::Update()
-{
-	return m_Update;
-}
-
-RenderEvent& RenderWindowBase::PreRender()
-{
-	return m_PreRender;
-}
-
-RenderEvent& RenderWindowBase::Render()
-{
-	return m_Render;
-}
-
-RenderEvent& RenderWindowBase::PostRender()
-{
-	return m_PostRender;
-}
-
-RenderEvent& RenderWindowBase::RenderUI()
-{
-	return m_RenderUI;
-}
-
-Event& RenderWindowBase::WindowInputFocus()
-{
-	return m_InputFocus;
-}
-
-Event& RenderWindowBase::WindowInputBlur()
-{
-	return m_InputBlur;
-}
-
-Event& RenderWindowBase::WindowMinimize()
-{
-	return m_Minimize;
-}
-
-Event& RenderWindowBase::WindowRestore()
-{
-	return m_Restore;
-}
-
-ResizeEvent& RenderWindowBase::WindowResize()
-{
-	return m_Resize;
-}
-
-WindowCloseEvent& RenderWindowBase::WindowClose()
-{
-	return m_Close;
-}
-
-KeyboardEvent& RenderWindowBase::WindowKeyPressed()
-{
-	return m_KeyPressed;
-}
-
-KeyboardEvent& RenderWindowBase::WindowKeyReleased()
-{
-	return m_KeyReleased;
-}
-
-Event& RenderWindowBase::WindowKeyboardFocus()
-{
-	return m_KeyboardFocus;
-}
-
-Event& RenderWindowBase::WindowKeyboardBlur()
-{
-	return m_KeyboardBlur;
-}
-
-MouseMotionEvent& RenderWindowBase::WindowMouseMoved()
-{
-	return m_MouseMoved;
-}
-
-MouseButtonEvent& RenderWindowBase::WindowMouseButtonPressed()
-{
-	return m_MouseButtonPressed;
-}
-
-MouseButtonEvent& RenderWindowBase::WindowMouseButtonReleased()
-{
-	return m_MouseButtonReleased;
-}
-
-MouseWheelEvent& RenderWindowBase::WindowMouseWheel()
-{
-	return m_MouseWheel;
-}
-
-Event& RenderWindowBase::WindowMouseLeave()
-{
-	return m_MouseLeave;
-}
-
-Event& RenderWindowBase::WindowMouseFocus()
-{
-	return m_MouseFocus;
-}
-
-Event& RenderWindowBase::WindowMouseBlur()
-{
-	return m_MouseBlur;
-}
-
-
-
-//
 // INativeWindowEventListener
 //
 void RenderWindowBase::OnWindowInputFocus(EventArgs & Args)
 {
-	m_InputFocus(Args);
+	m_NativeWindowEventListener->OnWindowInputFocus(Args);
 }
 
 void RenderWindowBase::OnWindowInputBlur(EventArgs & Args)
 {
-	m_InputBlur(Args);
+	m_NativeWindowEventListener->OnWindowInputBlur(Args);
 }
 
 void RenderWindowBase::OnWindowMinimize(EventArgs & Args)
 {
-	m_Minimize(Args);
+	m_NativeWindowEventListener->OnWindowMinimize(Args);
 }
 
 void RenderWindowBase::OnWindowRestore(EventArgs & Args)
 {
-	m_Restore(Args);
+	m_NativeWindowEventListener->OnWindowRestore(Args);
 }
 
 void RenderWindowBase::OnWindowResize(ResizeEventArgs& Args) // The RenderWindowBase window has be resized
 {
 	m_Viewport.SetWidth(Args.Width);
 	m_Viewport.SetHeight(Args.Height);
-
 	m_bResizePending = true;
 
-	m_Resize(Args);
+	m_NativeWindowEventListener->OnWindowResize(Args);
 }
 
 void RenderWindowBase::OnWindowClose(WindowCloseEventArgs& Args)
 {
-	m_Close(Args);
+	m_NativeWindowEventListener->OnWindowClose(Args);
 }
 
 bool RenderWindowBase::OnWindowKeyPressed(KeyEventArgs & Args)
 {
-	m_KeyPressed(Args);
-	return true;
+	return m_NativeWindowEventListener->OnWindowKeyPressed(Args);
 }
 
 void RenderWindowBase::OnWindowKeyReleased(KeyEventArgs & Args)
 {
-	m_KeyReleased(Args);
+	m_NativeWindowEventListener->OnWindowKeyReleased(Args);
 }
 
 void RenderWindowBase::OnWindowKeyboardFocus(EventArgs & Args)
 {
-	m_KeyboardFocus(Args);
+	m_NativeWindowEventListener->OnWindowKeyboardFocus(Args);
 }
 
 void RenderWindowBase::OnWindowKeyboardBlur(EventArgs & Args)
 {
-	m_KeyboardBlur(Args);
+	m_NativeWindowEventListener->OnWindowKeyboardBlur(Args);
 }
 
 void RenderWindowBase::OnWindowMouseMoved(MouseMotionEventArgs & Args)
 {
-	m_MouseMoved(Args);
+	m_NativeWindowEventListener->OnWindowMouseMoved(Args);
 }
 
 bool RenderWindowBase::OnWindowMouseButtonPressed(MouseButtonEventArgs & Args)
 {
-	m_MouseButtonPressed(Args);
-	return true;
+	return m_NativeWindowEventListener->OnWindowMouseButtonPressed(Args);
 }
 
 void RenderWindowBase::OnWindowMouseButtonReleased(MouseButtonEventArgs & Args)
 {
-	m_MouseButtonReleased(Args);
+	m_NativeWindowEventListener->OnWindowMouseButtonReleased(Args);
 }
 
 bool RenderWindowBase::OnWindowMouseWheel(MouseWheelEventArgs & Args)
 {
-	m_MouseWheel(Args);
-	return true;
+	return m_NativeWindowEventListener->OnWindowMouseWheel(Args);
 }
 
 void RenderWindowBase::OnWindowMouseLeave(EventArgs & Args)
 {
-	m_MouseLeave(Args);
+	m_NativeWindowEventListener->OnWindowMouseLeave(Args);
 }
 
 void RenderWindowBase::OnWindowMouseFocus(EventArgs & Args)
 {
-	m_MouseFocus(Args);
+	m_NativeWindowEventListener->OnWindowMouseFocus(Args);
 }
 
 void RenderWindowBase::OnWindowMouseBlur(EventArgs & Args)
 {
-	m_MouseBlur(Args);
+	m_NativeWindowEventListener->OnWindowMouseBlur(Args);
 }
 
 

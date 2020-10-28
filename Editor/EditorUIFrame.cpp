@@ -219,9 +219,9 @@ bool CEditorUIFrame::ExtendContextMenu(const std::shared_ptr<ISceneNode3D>& Node
 	return true;
 }
 
-void CEditorUIFrame::OnSceneChanged()
+void CEditorUIFrame::OnSceneChanged(ESceneChangeType SceneChangeType, const std::shared_ptr<ISceneNode3D>& ParentNode, const std::shared_ptr<ISceneNode3D>& ChildNode)
 {
-	getSceneViewer()->RefreshTreeViewModel();
+	getSceneViewer()->RefreshTreeViewModel(SceneChangeType, ParentNode, ChildNode);
 }
 
 

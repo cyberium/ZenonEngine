@@ -10,7 +10,7 @@ class CSceneBrowserTreeModel
 	: public QAbstractItemModel
 {
 public:
-	CSceneBrowserTreeModel(const std::shared_ptr<IznSceneBrowserNode>& RootNode, QObject * parent = nullptr);
+	CSceneBrowserTreeModel(const std::shared_ptr<IznSceneBrowserNode>& ChildNode, QObject * parent = nullptr);
 	virtual ~CSceneBrowserTreeModel();
 
 	// CQtToZenonTreeModel
@@ -18,6 +18,7 @@ public:
 	QModelIndex                          Find(const std::shared_ptr<IznSceneBrowserNode>& Node);
 
 	// 
+	std::shared_ptr<IznSceneBrowserNode> GetRoot() const;
 	void                                 AddChildToParent(const std::shared_ptr<IznSceneBrowserNode>& ChildNode, std::shared_ptr<IznSceneBrowserNode> Parent);
 	void                                 RemoveChildFromParent(const std::shared_ptr<IznSceneBrowserNode>& ChildNode, std::shared_ptr<IznSceneBrowserNode> Parent);
 	size_t                               GetChildsCount(const std::shared_ptr<IznSceneBrowserNode>& Node);
@@ -35,8 +36,8 @@ public:
 
 private:
 	CSceneBrowserTreeItem* GetTreeItemFromQTIndex(const QModelIndex& index) const;
-	std::shared_ptr<CSceneBrowserTreeItem> FindTreeItem(const std::shared_ptr<IznSceneBrowserNode>& ChildNode);
+	CSceneBrowserTreeItem* FindTreeItem(const std::shared_ptr<IznSceneBrowserNode>& ChildNode);
 
 private:
-	std::shared_ptr<CSceneBrowserTreeItem> m_RootNode;
+	CSceneBrowserTreeItem* m_RootNode;
 };

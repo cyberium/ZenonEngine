@@ -29,7 +29,7 @@ public:
 	void SetChildRootItemsData(const std::vector<std::shared_ptr<IModelCollectionItem>>& Items)
 	{
 		for (const auto& item : Items)
-			m_RootItem->addChild(ZN_NEW CQtToZenonTreeItem(item, m_RootItem));
+			m_RootItem->addChild(MakeShared(CQtToZenonTreeItem, item, m_RootItem));
 	}
 
 	std::shared_ptr<IObject> Find(const QModelIndex& ModelIdnex)
@@ -99,13 +99,9 @@ public:
 		}
 		else if (role == Qt::DecorationRole)
 		{
-			//if (index.column() == 0)
-			//{
 			QPixmap pixmap(QSize(18, 18));
 			pixmap.fill(QColor(88, 255, 88));
-			return QVariant(pixmap); //# √де self.icon это QPixma
-		//}
-		//return QColor(255, 88, 88);
+			return QVariant(pixmap);
 		}
 
 		return QVariant();
@@ -123,9 +119,9 @@ public:
 			return QModelIndex();
 
 		CQtToZenonTreeItem* parentItem = getItem(parent);
-		CQtToZenonTreeItem* childItem = parentItem->child(row);
+		auto childItem = parentItem->child(row);
 		if (childItem)
-			return createIndex(row, column, childItem);
+			return createIndex(row, column, childItem.get());
 		else
 			return QModelIndex();
 	}

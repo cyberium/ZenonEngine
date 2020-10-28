@@ -356,6 +356,7 @@
     </ClCompile>
     <ClCompile Include="RTS\EditorToolRTSGround.cpp" />
     <ClCompile Include="SceneBrowser\SceneBrowser.cpp" />
+    <ClCompile Include="SceneBrowser\SceneBrowserFolder.cpp" />
     <ClCompile Include="SceneBrowser\SceneBrowserNode.cpp" />
     <ClCompile Include="SceneBrowser\SceneBrowserTreeItem.cpp" />
     <ClCompile Include="SceneBrowser\SceneBrowserTreeModel.cpp" />
@@ -395,6 +396,7 @@
     <ClInclude Include="PropertyEditor\Core\Auxiliary\PropertyTemplates.h" />
     <ClInclude Include="PropertyEditor\Core\CoreAPI.h" />
     <ClInclude Include="RTS\EditorToolRTSGround.h" />
+    <ClInclude Include="SceneBrowser\SceneBrowserFolder.h" />
     <ClInclude Include="SceneBrowser\SceneBrowserInfs.h" />
     <ClInclude Include="SceneBrowser\SceneBrowser.h" />
     <ClInclude Include="SceneBrowser\SceneBrowserNode.h" />

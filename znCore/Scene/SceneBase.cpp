@@ -19,6 +19,50 @@ SceneBase::SceneBase(IBaseManager& BaseManager)
 SceneBase::~SceneBase()
 {}
 
+
+
+
+
+
+
+void SceneBase::SetRenderWindow(const std::shared_ptr<IRenderWindow>& RenderWindow)
+{
+	m_RenderWindow = RenderWindow;
+}
+
+std::shared_ptr<IRenderWindow> SceneBase::GetRenderWindow() const
+{
+	std::shared_ptr<IRenderWindow> renderWindow = m_RenderWindow.lock();
+	_ASSERT(renderWindow);
+	return std::move(renderWindow);
+}
+
+void SceneBase::AddEventListener(std::shared_ptr<ISceneEventsListener> Listener)
+{
+	const auto& it = std::find(m_EventListeners.begin(), m_EventListeners.end(), Listener);
+	if (it != m_EventListeners.end())
+	{
+		Log::Error("Scene: Unable to add 'ISceneEventsListener' because already exists.");
+		return;
+	}
+	m_EventListeners.push_back(Listener);
+}
+
+void SceneBase::RemoveEventListener(std::shared_ptr<ISceneEventsListener> Listener)
+{
+	const auto& it = std::find(m_EventListeners.begin(), m_EventListeners.end(), Listener);
+	if (it == m_EventListeners.end())
+	{
+		Log::Error("Scene: Unable to remove 'ISceneEventsListener' because non exists.");
+		return;
+	}
+	m_EventListeners.erase(it);
+}
+
+
+
+
+
 void SceneBase::Initialize()
 {
 	m_VideoSettings = GetBaseManager().GetManager<ISettings>()->GetGroup("Video");
@@ -57,59 +101,8 @@ void SceneBase::Finalize()
 {
 }
 
-void SceneBase::SetRenderWindow(const std::shared_ptr<IRenderWindow>& RenderWindow)
-{
-	m_RenderWindow = RenderWindow;
-}
 
-std::shared_ptr<IRenderWindow> SceneBase::GetRenderWindow() const
-{
-	std::shared_ptr<IRenderWindow> renderWindow = m_RenderWindow.lock();
-	_ASSERT(renderWindow);
-	return std::move(renderWindow);
-}
 
-void SceneBase::ConnectEvents(const std::shared_ptr<IRenderWindowEvents>& WindowEvents)
-{
-	// RenderWindowEvents
-	m_OnUpdateConnection = WindowEvents->Update().connect(&SceneBase::OnUpdate, this, std::placeholders::_1);
-	m_OnPreRenderConnection = WindowEvents->PreRender().connect(&SceneBase::OnPreRender, this, std::placeholders::_1);
-	m_OnRenderConnection = WindowEvents->Render().connect(&SceneBase::OnRender, this, std::placeholders::_1);
-	m_OnPostRenderConnection = WindowEvents->PostRender().connect(&SceneBase::OnPostRender, this, std::placeholders::_1);
-	m_OnRenderUIConnection = WindowEvents->RenderUI().connect(&SceneBase::OnRenderUI, this, std::placeholders::_1);
-
-	// Window events connections
-	m_OnResizeConnection = WindowEvents->WindowResize().connect(&SceneBase::OnWindowResize, this, std::placeholders::_1);
-
-	// Keyboard
-	m_OnKeyPressedConnection = WindowEvents->WindowKeyPressed().connect(&SceneBase::OnWindowKeyPressed, this, std::placeholders::_1);
-	m_OnKeyReleasedConnection = WindowEvents->WindowKeyReleased().connect(&SceneBase::OnWindowKeyReleased, this, std::placeholders::_1);
-
-	// Mouse
-	m_OnMouseButtonPressedConnection = WindowEvents->WindowMouseButtonPressed().connect(&SceneBase::OnWindowMouseButtonPressed, this, std::placeholders::_1);
-	m_OnMouseButtonReleasedConnection = WindowEvents->WindowMouseButtonReleased().connect(&SceneBase::OnWindowMouseButtonReleased, this, std::placeholders::_1);
-	m_OnMouseMovedConnection = WindowEvents->WindowMouseMoved().connect(&SceneBase::OnWindowMouseMoved, this, std::placeholders::_1);
-	m_OnMouseWheelConnection = WindowEvents->WindowMouseWheel().connect(&SceneBase::OnWindowMouseWheel, this, std::placeholders::_1);
-}
-
-void SceneBase::DisconnectEvents(const std::shared_ptr<IRenderWindowEvents>& WindowEvents)
-{
-	WindowEvents->Update().disconnect(m_OnUpdateConnection);
-	WindowEvents->PreRender().disconnect(m_OnPreRenderConnection);
-	WindowEvents->Render().disconnect(m_OnRenderConnection);
-	WindowEvents->PostRender().disconnect(m_OnPostRenderConnection);
-	WindowEvents->RenderUI().disconnect(m_OnRenderUIConnection);
-
-	WindowEvents->WindowKeyPressed().disconnect(m_OnKeyPressedConnection);
-	WindowEvents->WindowKeyReleased().disconnect(m_OnKeyReleasedConnection);
-
-	WindowEvents->WindowMouseButtonPressed().disconnect(m_OnMouseButtonPressedConnection);
-	WindowEvents->WindowMouseButtonReleased().disconnect(m_OnMouseButtonReleasedConnection);
-	WindowEvents->WindowMouseMoved().disconnect(m_OnMouseMovedConnection);
-	WindowEvents->WindowMouseWheel().disconnect(m_OnMouseWheelConnection);
-
-	SetRenderWindow(nullptr);
-}
 
 
 
@@ -241,22 +234,17 @@ void SceneBase::RemoveChild(const std::shared_ptr<ISceneNode3D>& ParentNode, con
 
 
 //
-// Scene events
+// ISceneInternal
 //
-Delegate<SceneChangeEventArgs>& SceneBase::SceneChangeEvent()
-{
-	return m_SceneChangeEvent;
-}
-
 void SceneBase::RaiseSceneChangeEvent(ESceneChangeType SceneChangeType, const std::shared_ptr<ISceneNode3D>& OwnerNode, const std::shared_ptr<ISceneNode3D>& ChildNode)
 {
-	m_SceneChangeEvent(SceneChangeEventArgs(this, SceneChangeType, OwnerNode, ChildNode));
+	//m_SceneChangeEvent(SceneChangeEventArgs(this, SceneChangeType, OwnerNode, ChildNode));
 }
 
 
 
 //
-// RenderWindow events
+// IRenderWindowEventListener
 //
 void SceneBase::OnUpdate(UpdateEventArgs& e)
 {
@@ -305,12 +293,6 @@ void SceneBase::OnRender(RenderEventArgs & e)
 
 void SceneBase::OnPostRender(RenderEventArgs & e)
 {
-
-
-	//m_TestQuery->End(e.FrameCounter);
-	//m_FrameQuery->End(e.FrameCounter);
-
-
 	if (auto cameraController = GetCameraController())
 	{
 		glm::vec3 cameraTrans = cameraController->GetCamera()->GetTranslation();
@@ -318,8 +300,6 @@ void SceneBase::OnPostRender(RenderEventArgs & e)
 		m_CameraRotText->GetProperties()->GetPropertyT<std::string>("Text")->Set("Rot: yaw = " + std::to_string(cameraController->GetCamera()->GetYaw()) + ", pitch = " + std::to_string(cameraController->GetCamera()->GetPitch()));
 		m_CameraRot2Text->GetProperties()->GetPropertyT<std::string>("Text")->Set("Rot: [" + std::to_string(cameraController->GetCamera()->GetDirection().x) + ", " + std::to_string(cameraController->GetCamera()->GetDirection().y) + ", " + std::to_string(GetCameraController()->GetCamera()->GetDirection().z) + "].");
 	}
-
-
 }
 
 void SceneBase::OnRenderUI(RenderEventArgs & e)
@@ -358,7 +338,7 @@ void SceneBase::OnRenderUI(RenderEventArgs & e)
 
 
 //
-// Window events
+// INativeWindowEventListener
 //
 void SceneBase::OnWindowResize(ResizeEventArgs & e)
 {
@@ -369,11 +349,8 @@ void SceneBase::OnWindowResize(ResizeEventArgs & e)
 		m_Renderer->Resize(e.Width, e.Height);
 }
 
-
-
-//
 // Keyboard events
-//
+
 bool SceneBase::OnWindowKeyPressed(KeyEventArgs & e)
 {
 	if (GetCameraController())
@@ -394,11 +371,8 @@ void SceneBase::OnWindowKeyReleased(KeyEventArgs & e)
 		DoKeyReleased_Rec(GetRootNodeUI(), e);
 }
 
-
-
-//
 // Mouse events
-//
+
 void SceneBase::OnWindowMouseMoved(MouseMotionEventArgs & e)
 {
 	if (GetCameraController() == nullptr)
@@ -452,11 +426,8 @@ bool SceneBase::OnWindowMouseWheel(MouseWheelEventArgs & e)
 	return false;
 }
 
-
-
-//
 // Mouse in world events
-//
+
 bool SceneBase::OnMousePressed(const MouseButtonEventArgs & e, const Ray& RayToWorld)
 {
 	return false;
@@ -470,6 +441,7 @@ void SceneBase::OnMouseMoved(const MouseMotionEventArgs & e, const Ray& RayToWor
 {
 
 }
+
 
 
 //

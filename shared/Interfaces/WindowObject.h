@@ -28,6 +28,7 @@ ZN_INTERFACE ZN_API INativeWindow
 };
 
 
+// Windows only
 ZN_INTERFACE ZN_API INativeWindow_WindowsSpecific // WINDOWS only but in my engine only Windows avaliable... :(
 {
 	virtual ~INativeWindow_WindowsSpecific() {}

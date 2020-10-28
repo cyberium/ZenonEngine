@@ -7,6 +7,7 @@
 #include <QVariant>
 
 class CQtToZenonTreeItem
+	: public std::enable_shared_from_this<CQtToZenonTreeItem>
 {
 public:
 	CQtToZenonTreeItem()
@@ -19,7 +20,7 @@ public:
 		, m_Parent(Parent)
 	{
 		for (const auto& ch : m_TObject->GetChilds())
-			addChild(ZN_NEW CQtToZenonTreeItem(ch, this));
+			addChild(MakeShared(CQtToZenonTreeItem, ch, this));
 	}
 	virtual ~CQtToZenonTreeItem()
 	{
@@ -30,15 +31,15 @@ public:
 	{
 		m_TObject = TObject;
 		for (const auto& ch : m_TObject->GetChilds())
-			addChild(ZN_NEW CQtToZenonTreeItem(ch, this));
+			addChild(MakeShared(CQtToZenonTreeItem, ch, this));
 	}
 
-	void addChild(CQtToZenonTreeItem * child)
+	void addChild(std::shared_ptr<CQtToZenonTreeItem> child)
 	{
 		m_Childs.push_back(child);
 	}
 
-	CQtToZenonTreeItem* child(int row)
+	std::shared_ptr<CQtToZenonTreeItem> child(int row)
 	{
 		if (row < 0 || row >= m_Childs.size())
 			return nullptr;
@@ -66,12 +67,12 @@ public:
 	{
 		if (m_Parent)
 		{
-			const auto& it = std::find(m_Parent->m_Childs.begin(), m_Parent->m_Childs.end(), this);
+			const auto& it = std::find(m_Parent->m_Childs.begin(), m_Parent->m_Childs.end(), shared_from_this());
 			if (it != m_Parent->m_Childs.end())
 				return std::distance(m_Parent->m_Childs.begin(), it);
 		}
 
-		return 0;
+		throw CException("Child not found in parent.");
 	}
 
 	std::shared_ptr<IObject> GetTObject() const
@@ -80,7 +81,7 @@ public:
 	}
 
 private:
-	CQtToZenonTreeItem*			          m_Parent;
-	std::vector<CQtToZenonTreeItem*>	  m_Childs;
-	std::shared_ptr<IModelCollectionItem> m_TObject;
+	CQtToZenonTreeItem*                               m_Parent;
+	std::vector<std::shared_ptr<CQtToZenonTreeItem>>  m_Childs;
+	std::shared_ptr<IModelCollectionItem>             m_TObject;
 };

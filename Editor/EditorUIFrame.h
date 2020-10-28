@@ -30,7 +30,7 @@ public:
 	// IEditorUIFrame
 	void DoInitializeToolsUI() override;
 	bool ExtendContextMenu(const std::shared_ptr<ISceneNode3D>& Node, std::string * Title, std::vector<std::shared_ptr<IPropertyAction>> * Actions) override;
-	void OnSceneChanged();
+	void OnSceneChanged(ESceneChangeType SceneChangeType, const std::shared_ptr<ISceneNode3D>& ParentNode, const std::shared_ptr<ISceneNode3D>& ChildNode) override;
 
 	// IEditorQtUIFrame
 	QObject& getQObject() override final;
