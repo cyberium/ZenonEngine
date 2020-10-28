@@ -4,14 +4,19 @@
 #include "Timer.h"
 
 Timer::Timer()
-	: m_fPrevious(std::clock())
-{}
+{
+	Reset();
+}
+
+void Timer::Reset()
+{
+	m_Previous = std::clock();
+}
 
 float Timer::GetElapsedTime() const
 {
-	float fCurrentTime = std::clock();
-	float fDeltaTime = fCurrentTime - m_fPrevious;
-	m_fPrevious = fCurrentTime;
-
-	return fDeltaTime;
+	float currentTime = std::clock();
+	float deltaTime = currentTime - m_Previous;
+	m_Previous = currentTime;
+	return deltaTime;
 }

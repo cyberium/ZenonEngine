@@ -35,4 +35,11 @@ ZN_INTERFACE ZN_API IRenderWindow
 	virtual void SetNativeWindowEventListener(std::shared_ptr<INativeWindowEventListener> NativeWindowEventListener) = 0;
 	virtual const std::shared_ptr<IRenderTarget>& GetRenderTarget() const = 0;
 	virtual const Viewport& GetViewport() const = 0;
+
+	virtual float GetUpdateDeltaTime() const = 0;
+	virtual float GetPreRenderDeltaTime() const = 0;
+	virtual float GetRenderDeltaTime() const = 0;
+	virtual float GetPostRenderDeltaTime() const = 0;
+	virtual float GetRenderUIDeltaTime() const = 0;
+	virtual float GetSummaDeltaTime() const = 0;
 };

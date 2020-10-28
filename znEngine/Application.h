@@ -30,11 +30,16 @@ public:
 	HINSTANCE                       GetHInstance() const override;
 
 private:
-	bool m_bIsInitialized;
-	bool m_bIsRunning;
+	bool m_IsInitialized;
+	bool m_IsRunning;
+
+	Timer m_GameTimer;
+	float m_GameDeltaTime;
+	float m_GameTime;
+	int64_t m_FrameCounter;
 
 	IBaseManager& m_BaseManager;
-	std::unique_ptr<IRenderDevice> m_pRenderDevice;
+	std::unique_ptr<IRenderDevice> m_RenderDevice;
 	std::vector<std::shared_ptr<IRenderWindow>> m_Windows;
 
 	HINSTANCE m_HInstance;

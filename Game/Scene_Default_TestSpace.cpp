@@ -15,7 +15,7 @@ void CSceneDefault::Load3D()
 	//--------------------------------------------------------------------------
 	// XML
 	//--------------------------------------------------------------------------
-	/*if (auto file = GetBaseManager().GetManager<IFilesManager>()->Open("SceneFBX.xml"))
+	if (auto file = GetBaseManager().GetManager<IFilesManager>()->Open("SceneFBX.xml"))
 	{
 		CXMLManager xml(GetBaseManager());
 		auto reader = xml.CreateReader(file);
@@ -27,7 +27,7 @@ void CSceneDefault::Load3D()
 		auto rootNodeXML = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->LoadSceneNode3DXML(reader->GetChilds()[0], currentRoot->GetScene(), currentRoot->GetParent().lock());
 		while (false == rootNodeXML->GetChilds().empty())
 			currentRoot->AddChild(rootNodeXML->GetChilds()[0]);
-	}*/
+	}
 
 
 	//--------------------------------------------------------------------------

@@ -3,14 +3,13 @@
 // Genreal
 #include "Application.h"
 
-float g_GameDeltaTime = 0.0f;
-float g_ApplicationTime = 0.0f;
-int64_t g_FrameCounter = 0L;
-
 Application::Application(IBaseManager& BaseManager)
 	: m_BaseManager(BaseManager)
-	, m_bIsInitialized(false)
-	, m_bIsRunning(false)
+	, m_IsInitialized(false)
+	, m_IsRunning(false)
+	, m_GameDeltaTime(0.0f)
+    , m_GameTime(0.0f)
+    , m_FrameCounter(0L)
 {
 	m_HInstance = ::GetModuleHandle(NULL);
 
@@ -19,8 +18,8 @@ Application::Application(IBaseManager& BaseManager)
 
 Application::Application(IBaseManager& BaseManager, HINSTANCE hInstance)
 	: m_BaseManager(BaseManager)
-	, m_bIsInitialized(false)
-	, m_bIsRunning(false)
+	, m_IsInitialized(false)
+	, m_IsRunning(false)
 {
 	m_HInstance = hInstance;
 
@@ -38,7 +37,7 @@ int Application::Run()
 	DoBeforeRun();
 
 	int runResult = -1;
-	while (m_bIsRunning)
+	while (m_IsRunning)
 	{
 		runResult = DoRun();
 	}
@@ -56,15 +55,13 @@ void Application::Stop()
 
 IRenderDevice& Application::CreateRenderDevice(RenderDeviceType DeviceType)
 {
-	m_pRenderDevice = m_BaseManager.GetManager<IznRenderDeviceFactory>()->GetRenderDeviceCreator(DeviceType).CreateRenderDevice();
+	m_RenderDevice = m_BaseManager.GetManager<IznRenderDeviceFactory>()->GetRenderDeviceCreator(DeviceType).CreateRenderDevice();
 	return GetRenderDevice();
 }
 
 void Application::AddRenderWindow(std::shared_ptr<IRenderWindow> RenderWindow)
 {
-	const auto& it = std::find_if(m_Windows.begin(), m_Windows.end(), [&RenderWindow](const std::shared_ptr<IRenderWindow>& Value) -> bool {
-		return Value/*.lock()*/ == RenderWindow;
-	});
+	const auto& it = std::find(m_Windows.begin(), m_Windows.end(), RenderWindow);
 	if (it != m_Windows.end())
 	{
 		Log::Error("Application: RenderWindow already exists.");
@@ -75,9 +72,7 @@ void Application::AddRenderWindow(std::shared_ptr<IRenderWindow> RenderWindow)
 
 void Application::CloseRenderWindow(std::shared_ptr<IRenderWindow> RenderWindow)
 {
-	const auto& it = std::find_if(m_Windows.begin(), m_Windows.end(), [&RenderWindow](const std::shared_ptr<IRenderWindow>& Value) -> bool {
-		return Value/*.lock()*/ == RenderWindow;
-	});
+	const auto& it = std::find(m_Windows.begin(), m_Windows.end(), RenderWindow);
 	if (it == m_Windows.end())
 	{
 		Log::Error("Application: Unable find RenderWindow.");
@@ -93,55 +88,39 @@ void Application::CloseRenderWindow(std::shared_ptr<IRenderWindow> RenderWindow)
 //
 void Application::DoBeforeRun()
 {
-	if (m_bIsInitialized)
+	if (m_IsInitialized)
 		return;
 
 	for (const auto& w : m_Windows)
-		//if (auto wLocked = w.lock())
-			if (auto applicationEventsListener = std::dynamic_pointer_cast<IApplicationEventsListener>(w))
-				applicationEventsListener->OnInitialize(EventArgs());
+		if (auto applicationEventsListener = std::dynamic_pointer_cast<IApplicationEventsListener>(w))
+			applicationEventsListener->OnInitialize(EventArgs());
 
-	m_bIsInitialized = true;
-	m_bIsRunning = true;
+	m_IsInitialized = true;
+	m_IsRunning = true;
 }
 
 int Application::DoRun()
 {
-	static Timer elapsedTime;
-
 	MSG msg = { 0 };
 	while (PeekMessageW(&msg, NULL, 0, 0, PM_REMOVE))
 	{
 		if (msg.message == WM_QUIT)
 		{
-			// Destroy any windows that are still hanging around.
-			//for (const auto& it : m_Windows)
-			//	it->Close();
-
-			// Setting this to false will cause the main application's message pump to stop.
-			m_bIsRunning = false;
+			m_IsRunning = false;
 		}
 
 		TranslateMessage(&msg);
 		DispatchMessageW(&msg);
 	}
 
-	g_GameDeltaTime = elapsedTime.GetElapsedTime();
-	g_ApplicationTime += g_GameDeltaTime;
-	g_FrameCounter++;
+	m_GameDeltaTime = m_GameTimer.GetElapsedTime();
+	m_GameTime += m_GameDeltaTime;
+	m_FrameCounter++;
 
-	try
-	{
-		UpdateEventArgs updateArgs(g_GameDeltaTime, g_ApplicationTime, g_FrameCounter, nullptr, nullptr);
-		for (const auto& w : m_Windows)
-			//if (auto wLocked = w.lock())
-				if (auto applicationEventsListener = std::dynamic_pointer_cast<IApplicationEventsListener>(w))
-					applicationEventsListener->OnUpdate(updateArgs);
-	}
-	catch (const CznRenderException& e)
-	{
-		Log::Fatal("Exception: '%s'", e.MessageCStr());
-	}
+	UpdateEventArgs updateArgs(m_GameDeltaTime, m_GameTime, m_FrameCounter, nullptr, nullptr);
+	for (const auto& w : m_Windows)
+		if (auto applicationEventsListener = std::dynamic_pointer_cast<IApplicationEventsListener>(w))
+			applicationEventsListener->OnUpdate(updateArgs);
 
 	return static_cast<int>(msg.wParam);
 }
@@ -149,9 +128,8 @@ int Application::DoRun()
 void Application::DoAfterRun()
 {
 	for (const auto& w : m_Windows)
-		//if (auto wLocked = w.lock())
-			if (auto applicationEventsListener = std::dynamic_pointer_cast<IApplicationEventsListener>(w))
-				applicationEventsListener->OnExit(EventArgs());
+		if (auto applicationEventsListener = std::dynamic_pointer_cast<IApplicationEventsListener>(w))
+			applicationEventsListener->OnExit(EventArgs());
 	m_Windows.clear();
 }
 
@@ -162,8 +140,8 @@ IBaseManager& Application::GetBaseManager() const
 
 IRenderDevice& Application::GetRenderDevice() const
 {
-	_ASSERT(m_pRenderDevice != nullptr);
-	return *m_pRenderDevice;
+	_ASSERT(m_RenderDevice != nullptr);
+	return *m_RenderDevice;
 }
 
 

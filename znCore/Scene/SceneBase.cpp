@@ -93,6 +93,31 @@ void SceneBase::Initialize()
 		m_FPSText = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeUIFactory>()->CreateSceneNodeUI(this, cSceneNodeUI_Text);
 		GetRootNodeUI()->AddChild(m_FPSText);
 		m_FPSText->SetTranslate(glm::vec2(5.0f, 65.0f));
+
+
+		m_StatisticUpdateText = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeUIFactory>()->CreateSceneNodeUI(this, cSceneNodeUI_Text);
+		GetRootNodeUI()->AddChild(m_StatisticUpdateText);
+		m_StatisticUpdateText->SetTranslate(glm::vec2(5.0f, 85.0f));
+		
+		m_StatisticPreRenderText = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeUIFactory>()->CreateSceneNodeUI(this, cSceneNodeUI_Text);
+		GetRootNodeUI()->AddChild(m_StatisticPreRenderText);
+		m_StatisticPreRenderText->SetTranslate(glm::vec2(5.0f, 105.0f));
+		
+		m_StatisticRenderText = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeUIFactory>()->CreateSceneNodeUI(this, cSceneNodeUI_Text);
+		GetRootNodeUI()->AddChild(m_StatisticRenderText);
+		m_StatisticRenderText->SetTranslate(glm::vec2(5.0f, 125.0f));
+		
+		m_StatisticPostRenderText = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeUIFactory>()->CreateSceneNodeUI(this, cSceneNodeUI_Text);
+		GetRootNodeUI()->AddChild(m_StatisticPostRenderText);
+		m_StatisticPostRenderText->SetTranslate(glm::vec2(5.0f, 145.0f));
+		
+		m_StatisticRenderUIText = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeUIFactory>()->CreateSceneNodeUI(this, cSceneNodeUI_Text);
+		GetRootNodeUI()->AddChild(m_StatisticRenderUIText);
+		m_StatisticRenderUIText->SetTranslate(glm::vec2(5.0f, 165.0f));
+
+		m_StatisticSummaText = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeUIFactory>()->CreateSceneNodeUI(this, cSceneNodeUI_Text);
+		GetRootNodeUI()->AddChild(m_StatisticSummaText);
+		m_StatisticSummaText->SetTranslate(glm::vec2(5.0f, 185.0f));
 	}
 
 
@@ -333,6 +358,15 @@ void SceneBase::OnRenderUI(RenderEventArgs & e)
 		//int elapsed_microseconds = std::chrono::duration_cast<std::chrono::microseconds>(m_End - m_Start).count();
 		double fpsValue = 1000.0 / double(e.DeltaTime);
 		m_FPSText->GetProperties()->GetPropertyT<std::string>("Text")->Set("FPS: " + std::to_string(uint64(fpsValue)));
+
+
+		auto renderWindow = GetRenderWindow();
+		m_StatisticUpdateText->GetProperties()    ->GetPropertyT<std::string>("Text")->Set("W Update   : " + std::to_string(renderWindow->GetUpdateDeltaTime()));
+		m_StatisticPreRenderText->GetProperties() ->GetPropertyT<std::string>("Text")->Set("W PreRender: " + std::to_string(renderWindow->GetPreRenderDeltaTime()));
+		m_StatisticRenderText->GetProperties()    ->GetPropertyT<std::string>("Text")->Set("W Render   : " + std::to_string(renderWindow->GetRenderDeltaTime()));
+		m_StatisticPostRenderText->GetProperties()->GetPropertyT<std::string>("Text")->Set("W PostRen  : " + std::to_string(renderWindow->GetPostRenderDeltaTime()));
+		m_StatisticRenderUIText->GetProperties()  ->GetPropertyT<std::string>("Text")->Set("W RenderUI : " + std::to_string(renderWindow->GetRenderUIDeltaTime()));
+		m_StatisticSummaText->GetProperties()     ->GetPropertyT<std::string>("Text")->Set("W          : " + std::to_string(renderWindow->GetSummaDeltaTime()));
 	}
 }
 

@@ -140,6 +140,12 @@ protected:
 	std::shared_ptr<ISceneNodeUI>                   m_CameraRot2Text;
 	std::shared_ptr<ISceneNodeUI>                   m_FPSText;
 
+	std::shared_ptr<ISceneNodeUI>                   m_StatisticUpdateText;
+	std::shared_ptr<ISceneNodeUI>                   m_StatisticPreRenderText;
+	std::shared_ptr<ISceneNodeUI>                   m_StatisticRenderText;
+	std::shared_ptr<ISceneNodeUI>                   m_StatisticPostRenderText;
+	std::shared_ptr<ISceneNodeUI>                   m_StatisticRenderUIText;
+	std::shared_ptr<ISceneNodeUI>                   m_StatisticSummaText;
 
 protected: // Функционал по отложенному добавлению нод
 	std::vector<std::pair<std::shared_ptr<ISceneNode3D>, std::shared_ptr<ISceneNode3D>>> m_AddChildList;

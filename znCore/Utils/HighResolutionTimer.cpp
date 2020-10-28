@@ -2,70 +2,17 @@
 
 #include "HighResolutionTimer.h"
 
-class HighResolutionTimerImpl
+HighResolutionTimer::HighResolutionTimer()
 {
-public:
-	HighResolutionTimerImpl();
-
-	void Tick();
-
-	double GetElapsedTimeInMicroSeconds();
-
-private:
-	LARGE_INTEGER t0, t1;
-	LARGE_INTEGER frequency;
-	double elapsedTime;
-};
-
-HighResolutionTimerImpl::HighResolutionTimerImpl()
-	: elapsedTime(0)
-{
-	QueryPerformanceFrequency(&frequency);
-	QueryPerformanceCounter(&t0);
+	m_Start = std::chrono::high_resolution_clock::now();
 }
 
-void HighResolutionTimerImpl::Tick()
+float HighResolutionTimer::GetElapsedMilliSeconds() const
 {
-	QueryPerformanceCounter(&t1);
-	// Compute the value in microseconds (1 second = 1,000,000 microseconds)
-	elapsedTime = (t1.QuadPart - t0.QuadPart) * (1000000.0 / frequency.QuadPart);
-
-	t0 = t1;
+	return std::chrono::duration<float, std::milli>(std::chrono::high_resolution_clock::now() - m_Start).count();
 }
 
-double HighResolutionTimerImpl::GetElapsedTimeInMicroSeconds()
+float HighResolutionTimer::GetElapsedMicroSeconds() const
 {
-	return elapsedTime;
-}
-
-//----------
-
-HighResolutionTimer::HighResolutionTimer(void)
-{
-	pImpl = new HighResolutionTimerImpl();
-}
-
-HighResolutionTimer::~HighResolutionTimer(void)
-{
-	delete pImpl;
-}
-
-void HighResolutionTimer::Tick()
-{
-	pImpl->Tick();
-}
-
-double HighResolutionTimer::ElapsedSeconds() const
-{
-	return pImpl->GetElapsedTimeInMicroSeconds() * 0.000001;
-}
-
-double HighResolutionTimer::ElapsedMilliSeconds() const
-{
-	return pImpl->GetElapsedTimeInMicroSeconds() * 0.001;
-}
-
-double HighResolutionTimer::ElapsedMicroSeconds() const
-{
-	return pImpl->GetElapsedTimeInMicroSeconds();
+	return std::chrono::duration<float, std::micro>(std::chrono::high_resolution_clock::now() - m_Start).count();
 }

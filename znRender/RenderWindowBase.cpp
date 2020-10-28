@@ -104,6 +104,36 @@ const Viewport& RenderWindowBase::GetViewport() const
 	return m_Viewport;
 }
 
+float RenderWindowBase::GetUpdateDeltaTime() const
+{
+	return m_UpdateDeltaTime;
+}
+
+float RenderWindowBase::GetPreRenderDeltaTime() const
+{
+	return m_PreRenderDeltaTime;
+}
+
+float RenderWindowBase::GetRenderDeltaTime() const
+{
+	return m_RenderDeltaTime;
+}
+
+float RenderWindowBase::GetPostRenderDeltaTime() const
+{
+	return m_PostRenderDeltaTime;
+}
+
+float RenderWindowBase::GetRenderUIDeltaTime() const
+{
+	return m_RenderUIDeltaTime;
+}
+
+float RenderWindowBase::GetSummaDeltaTime() const
+{
+	return m_SummaDeltaTime;
+}
+
 
 
 //
@@ -209,6 +239,8 @@ void RenderWindowBase::OnInitialize(EventArgs & Args)
 
 void RenderWindowBase::OnUpdate(UpdateEventArgs& Args)
 {
+	HighResolutionTimer timer;
+
 	UpdateEventArgs updateArgs(Args);
 	RaiseUpdate(updateArgs);
 
@@ -235,6 +267,8 @@ void RenderWindowBase::OnUpdate(UpdateEventArgs& Args)
 		//m_RenderTarget->UnBind();
 	}
 	//GetRenderDevice()->Unlock();
+
+	m_SummaDeltaTime = timer.GetElapsedMilliSeconds();
 }
 
 void RenderWindowBase::OnExit(EventArgs & Args)
@@ -255,27 +289,37 @@ void RenderWindowBase::OnUserEvent(UserEventArgs & Args)
 //
 void RenderWindowBase::RaiseUpdate(UpdateEventArgs& e)
 {
+	HighResolutionTimer timer;
 	m_RenderWindowEventListener->OnUpdate(e);
+	m_UpdateDeltaTime = timer.GetElapsedMilliSeconds();
 }
 
 void RenderWindowBase::RaisePreRender(RenderEventArgs & e)
 {
+	HighResolutionTimer timer;
 	m_RenderWindowEventListener->OnPreRender(e);
+	m_PreRenderDeltaTime = timer.GetElapsedMilliSeconds();
 }
 
 void RenderWindowBase::RaiseRender(RenderEventArgs & e)
 {
+	HighResolutionTimer timer;
 	m_RenderWindowEventListener->OnRender(e);
+	m_RenderDeltaTime = timer.GetElapsedMilliSeconds();
 }
 
 void RenderWindowBase::RaisePostRender(RenderEventArgs & e)
 {
+	HighResolutionTimer timer;
 	m_RenderWindowEventListener->OnPostRender(e);
+	m_PostRenderDeltaTime = timer.GetElapsedMilliSeconds();
 }
 
 void RenderWindowBase::RaiseRenderUI(RenderEventArgs & e)
 {
+	HighResolutionTimer timer;
 	m_RenderWindowEventListener->OnRenderUI(e);
+	m_RenderUIDeltaTime = timer.GetElapsedMilliSeconds();
 }
 
 void RenderWindowBase::CreateSwapChain()

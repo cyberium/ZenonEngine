@@ -29,7 +29,12 @@ public:
 	void SetNativeWindowEventListener(std::shared_ptr<INativeWindowEventListener> NativeWindowEventListener) override;
 	const std::shared_ptr<IRenderTarget>& GetRenderTarget() const override;
 	const Viewport& GetViewport() const override;
-
+	float GetUpdateDeltaTime() const override;
+	float GetPreRenderDeltaTime() const override;
+	float GetRenderDeltaTime() const override;
+	float GetPostRenderDeltaTime() const override;
+	float GetRenderUIDeltaTime() const override;
+	float GetSummaDeltaTime() const override;
 
 	// INativeWindowEventListener
 	// Window events
@@ -53,6 +58,7 @@ public:
 	void OnWindowMouseFocus(EventArgs& Args) override;
 	void OnWindowMouseBlur(EventArgs& Args) override;
 
+
 	// IApplicationEventsListener
 	void OnInitialize(EventArgs& Args) override;
 	void OnUpdate(UpdateEventArgs& Args) override;
@@ -67,6 +73,7 @@ protected:
 	void RaisePostRender(RenderEventArgs& e);
 	void RaiseRenderUI(RenderEventArgs& e);
 
+
 	virtual IRenderDevice& GetRenderDevice() const = 0;
     virtual void CreateSwapChain();
     virtual void ResizeSwapChainBuffers(uint32_t width, uint32_t height) = 0;
@@ -74,6 +81,13 @@ protected:
 
 protected:
 	INativeWindow&                                  m_NativeWindow;
+
+	float                                           m_UpdateDeltaTime;
+	float                                           m_PreRenderDeltaTime;
+	float                                           m_RenderDeltaTime;
+	float                                           m_PostRenderDeltaTime;
+	float                                           m_RenderUIDeltaTime;
+	float                                           m_SummaDeltaTime;
 
 	std::shared_ptr<IRenderWindowEventListener>     m_RenderWindowEventListener;
 	std::shared_ptr<INativeWindowEventListener>     m_NativeWindowEventListener;
