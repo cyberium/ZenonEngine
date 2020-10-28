@@ -25,7 +25,7 @@ SceneBase::~SceneBase()
 
 
 
-void SceneBase::SetRenderWindow(const std::shared_ptr<IRenderWindow>& RenderWindow)
+void SceneBase::SetRenderWindow(const std::weak_ptr<IRenderWindow>& RenderWindow)
 {
 	m_RenderWindow = RenderWindow;
 }
@@ -33,8 +33,9 @@ void SceneBase::SetRenderWindow(const std::shared_ptr<IRenderWindow>& RenderWind
 std::shared_ptr<IRenderWindow> SceneBase::GetRenderWindow() const
 {
 	std::shared_ptr<IRenderWindow> renderWindow = m_RenderWindow.lock();
-	_ASSERT(renderWindow);
-	return std::move(renderWindow);
+	if (renderWindow == nullptr)
+		return nullptr;
+	return renderWindow;
 }
 
 void SceneBase::AddEventListener(std::shared_ptr<ISceneEventsListener> Listener)

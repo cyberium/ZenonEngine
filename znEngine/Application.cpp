@@ -62,14 +62,28 @@ IRenderDevice& Application::CreateRenderDevice(RenderDeviceType DeviceType)
 
 void Application::AddRenderWindow(std::shared_ptr<IRenderWindow> RenderWindow)
 {
-	std::dynamic_pointer_cast<IApplicationEventsConnection>(RenderWindow)->Connect(this);
-
+	const auto& it = std::find_if(m_Windows.begin(), m_Windows.end(), [&RenderWindow](const std::shared_ptr<IRenderWindow>& Value) -> bool {
+		return Value/*.lock()*/ == RenderWindow;
+	});
+	if (it != m_Windows.end())
+	{
+		Log::Error("Application: RenderWindow already exists.");
+		return;
+	}
 	m_Windows.push_back(RenderWindow);
 }
 
-void Application::DeleleRenderWindow(IRenderWindow* RenderWindow)
+void Application::CloseRenderWindow(std::shared_ptr<IRenderWindow> RenderWindow)
 {
-	m_Windows.clear();
+	const auto& it = std::find_if(m_Windows.begin(), m_Windows.end(), [&RenderWindow](const std::shared_ptr<IRenderWindow>& Value) -> bool {
+		return Value/*.lock()*/ == RenderWindow;
+	});
+	if (it == m_Windows.end())
+	{
+		Log::Error("Application: Unable find RenderWindow.");
+		return;
+	}
+	m_Windows.erase(it);
 }
 
 
@@ -82,7 +96,10 @@ void Application::DoBeforeRun()
 	if (m_bIsInitialized)
 		return;
 
-	m_Initialize(EventArgs());
+	for (const auto& w : m_Windows)
+		//if (auto wLocked = w.lock())
+			if (auto applicationEventsListener = std::dynamic_pointer_cast<IApplicationEventsListener>(w))
+				applicationEventsListener->OnInitialize(EventArgs());
 
 	m_bIsInitialized = true;
 	m_bIsRunning = true;
@@ -97,13 +114,9 @@ int Application::DoRun()
 	{
 		if (msg.message == WM_QUIT)
 		{
-			m_Exit(EventArgs());
-
 			// Destroy any windows that are still hanging around.
-			for (const auto& it : m_Windows)
-			{
-				it.lock()->Close();
-			}
+			//for (const auto& it : m_Windows)
+			//	it->Close();
 
 			// Setting this to false will cause the main application's message pump to stop.
 			m_bIsRunning = false;
@@ -120,7 +133,10 @@ int Application::DoRun()
 	try
 	{
 		UpdateEventArgs updateArgs(g_GameDeltaTime, g_ApplicationTime, g_FrameCounter, nullptr, nullptr);
-		m_Update(updateArgs);
+		for (const auto& w : m_Windows)
+			//if (auto wLocked = w.lock())
+				if (auto applicationEventsListener = std::dynamic_pointer_cast<IApplicationEventsListener>(w))
+					applicationEventsListener->OnUpdate(updateArgs);
 	}
 	catch (const CznRenderException& e)
 	{
@@ -132,8 +148,11 @@ int Application::DoRun()
 
 void Application::DoAfterRun()
 {
-	m_Terminate(EventArgs());
-	m_Terminated(EventArgs());
+	for (const auto& w : m_Windows)
+		//if (auto wLocked = w.lock())
+			if (auto applicationEventsListener = std::dynamic_pointer_cast<IApplicationEventsListener>(w))
+				applicationEventsListener->OnExit(EventArgs());
+	m_Windows.clear();
 }
 
 IBaseManager& Application::GetBaseManager() const
@@ -155,39 +174,4 @@ IRenderDevice& Application::GetRenderDevice() const
 HINSTANCE Application::GetHInstance() const
 {
 	return m_HInstance;
-}
-
-
-
-//
-// IApplicationEvents
-//
-Event& Application::ApplicationInitialize()
-{
-	return m_Initialize;
-}
-
-UpdateEvent& Application::ApplicationUpdate()
-{
-	return m_Update;
-}
-
-Event& Application::ApplicationTerminate()
-{
-	return m_Terminate;
-}
-
-Event& Application::ApplicationTerminated()
-{
-	return m_Terminated;
-}
-
-Event& Application::ApplicationExit()
-{
-	return m_Exit;
-}
-
-UserEvent& Application::ApplicationUserEvent()
-{
-	return m_UserEvent;
 }

@@ -27,23 +27,12 @@ ZN_INTERFACE ZN_API IApplication_WindowsSpecific
 	virtual HINSTANCE GetHInstance() const = 0;
 };
 
-
-ZN_INTERFACE ZN_API IApplicationEvents
+ZN_INTERFACE ZN_API IApplicationEventsListener
 {
-	virtual ~IApplicationEvents() {}
+	virtual ~IApplicationEventsListener() {}
 
-	virtual Event&                          ApplicationInitialize() = 0;
-	virtual UpdateEvent&                    ApplicationUpdate() = 0;
-	virtual Event&			                ApplicationTerminate() = 0;
-	virtual Event&                          ApplicationTerminated() = 0;
-	virtual Event&                          ApplicationExit() = 0;
-	virtual UserEvent&                      ApplicationUserEvent() = 0;
-};
-
-ZN_INTERFACE ZN_API IApplicationEventsConnection
-{
-	virtual ~IApplicationEventsConnection() {}
-
-	virtual void Connect(IApplicationEvents* ApplicationEvents) = 0;
-	virtual void Disconnect(IApplicationEvents* ApplicationEvents) = 0;
+	virtual void OnInitialize(EventArgs& Args) = 0;
+	virtual void OnUpdate(UpdateEventArgs& Args) = 0;
+	virtual void OnExit(EventArgs& Args) = 0;
+	virtual void OnUserEvent(UserEventArgs& Args) = 0;
 };

@@ -12,63 +12,8 @@ RenderWindowBase::RenderWindowBase(INativeWindow& WindowObject, bool vSync)
 }
 
 RenderWindowBase::~RenderWindowBase()
-{}
-
-
-
-
-//
-// RenderWindowBase
-//
-void RenderWindowBase::OnUpdate(UpdateEventArgs& e)
 {
-	UpdateEventArgs updateArgs(e);
-	m_RenderWindowEventListener->OnUpdate(updateArgs);
-
-	//GetRenderDevice()->Lock();
-	{
-		if (m_bResizePending)
-		{
-			m_RenderTarget->Resize(GetWindowWidth(), GetWindowHeight());
-			ResizeSwapChainBuffers(GetWindowWidth(), GetWindowHeight());
-			m_bResizePending = false;
-		}
-
-		RenderEventArgs renderArgs(e, nullptr);
-
-		m_RenderTarget->Bind();
-		{
-			OnPreRender(renderArgs);
-			OnRender(renderArgs);
-			OnPostRender(renderArgs);
-			OnRenderUI(renderArgs);
-		}
-		
-
-		Present();
-		//m_RenderTarget->UnBind();
-	}
-	//GetRenderDevice()->Unlock();
-}
-
-void RenderWindowBase::OnPreRender(RenderEventArgs & e)
-{
-	m_RenderWindowEventListener->OnPreRender(e);
-}
-
-void RenderWindowBase::OnRender(RenderEventArgs & e)
-{
-	m_RenderWindowEventListener->OnRender(e);
-}
-
-void RenderWindowBase::OnPostRender(RenderEventArgs & e)
-{
-	m_RenderWindowEventListener->OnPostRender(e);
-}
-
-void RenderWindowBase::OnRenderUI(RenderEventArgs & e)
-{
-	m_RenderWindowEventListener->OnRenderUI(e);
+	printf("~RenderWindowBase");
 }
 
 
@@ -255,21 +200,52 @@ void RenderWindowBase::OnWindowMouseBlur(EventArgs & Args)
 
 
 
-
-
-
-
 //
-// IApplicationEventsConnection
+// IApplicationEventsListener
 //
-void RenderWindowBase::Connect(IApplicationEvents * ApplicationEvents)
+void RenderWindowBase::OnInitialize(EventArgs & Args)
 {
-	m_UpdateConnection = ApplicationEvents->ApplicationUpdate().connect(&RenderWindowBase::OnUpdate, this, std::placeholders::_1);
 }
 
-void RenderWindowBase::Disconnect(IApplicationEvents * ApplicationEvents)
+void RenderWindowBase::OnUpdate(UpdateEventArgs& Args)
 {
-	ApplicationEvents->ApplicationUpdate().disconnect(m_UpdateConnection);
+	UpdateEventArgs updateArgs(Args);
+	RaiseUpdate(updateArgs);
+
+	//GetRenderDevice()->Lock();
+	{
+		if (m_bResizePending)
+		{
+			m_RenderTarget->Resize(GetWindowWidth(), GetWindowHeight());
+			ResizeSwapChainBuffers(GetWindowWidth(), GetWindowHeight());
+			m_bResizePending = false;
+		}
+
+		RenderEventArgs renderArgs(Args, nullptr);
+
+		m_RenderTarget->Bind();
+		{
+			RaisePreRender(renderArgs);
+			RaiseRender(renderArgs);
+			RaisePostRender(renderArgs);
+			RaiseRenderUI(renderArgs);
+
+			Present();
+		}
+		//m_RenderTarget->UnBind();
+	}
+	//GetRenderDevice()->Unlock();
+}
+
+void RenderWindowBase::OnExit(EventArgs & Args)
+{
+	Close();
+	m_RenderWindowEventListener.reset();
+	m_NativeWindowEventListener.reset();
+}
+
+void RenderWindowBase::OnUserEvent(UserEventArgs & Args)
+{
 }
 
 
@@ -277,6 +253,31 @@ void RenderWindowBase::Disconnect(IApplicationEvents * ApplicationEvents)
 //
 // Protected
 //
+void RenderWindowBase::RaiseUpdate(UpdateEventArgs& e)
+{
+	m_RenderWindowEventListener->OnUpdate(e);
+}
+
+void RenderWindowBase::RaisePreRender(RenderEventArgs & e)
+{
+	m_RenderWindowEventListener->OnPreRender(e);
+}
+
+void RenderWindowBase::RaiseRender(RenderEventArgs & e)
+{
+	m_RenderWindowEventListener->OnRender(e);
+}
+
+void RenderWindowBase::RaisePostRender(RenderEventArgs & e)
+{
+	m_RenderWindowEventListener->OnPostRender(e);
+}
+
+void RenderWindowBase::RaiseRenderUI(RenderEventArgs & e)
+{
+	m_RenderWindowEventListener->OnRenderUI(e);
+}
+
 void RenderWindowBase::CreateSwapChain()
 {
 	m_RenderTarget = GetRenderDevice().GetObjectsFactory().CreateRenderTarget();

@@ -3,17 +3,12 @@
 class ZN_API RenderWindowBase 
 	: public IRenderWindow
 	, public INativeWindowEventListener
-	, public IApplicationEventsConnection
+	, public IApplicationEventsListener
 {
 public:
 	RenderWindowBase(INativeWindow& WindowObject, bool vSync);
 	virtual ~RenderWindowBase();
 
-	virtual void OnUpdate(UpdateEventArgs& e);
-	virtual void OnPreRender(RenderEventArgs& e);
-	virtual void OnRender(RenderEventArgs& e);
-	virtual void OnPostRender(RenderEventArgs& e);
-	virtual void OnRenderUI(RenderEventArgs& e);
 
 	// INativeWindow
 	void SetWindowTitle(const std::string& WindowName) override;
@@ -58,19 +53,27 @@ public:
 	void OnWindowMouseFocus(EventArgs& Args) override;
 	void OnWindowMouseBlur(EventArgs& Args) override;
 
+	// IApplicationEventsListener
+	void OnInitialize(EventArgs& Args) override;
+	void OnUpdate(UpdateEventArgs& Args) override;
+	void OnExit(EventArgs& Args) override;
+	void OnUserEvent(UserEventArgs& Args) override;
 
-	// IApplicationEventsConnection
-	void Connect(IApplicationEvents* ApplicationEvents) override;
-	void Disconnect(IApplicationEvents* ApplicationEvents) override;
 
 protected:
-	virtual IRenderDevice&                          GetRenderDevice() const = 0;
-    virtual void                                    CreateSwapChain();
-    virtual void                                    ResizeSwapChainBuffers(uint32_t width, uint32_t height) = 0;
+	void RaiseUpdate(UpdateEventArgs& e);
+	void RaisePreRender(RenderEventArgs& e);
+	void RaiseRender(RenderEventArgs& e);
+	void RaisePostRender(RenderEventArgs& e);
+	void RaiseRenderUI(RenderEventArgs& e);
+
+	virtual IRenderDevice& GetRenderDevice() const = 0;
+    virtual void CreateSwapChain();
+    virtual void ResizeSwapChainBuffers(uint32_t width, uint32_t height) = 0;
+
 
 protected:
 	INativeWindow&                                  m_NativeWindow;
-
 
 	std::shared_ptr<IRenderWindowEventListener>     m_RenderWindowEventListener;
 	std::shared_ptr<INativeWindowEventListener>     m_NativeWindowEventListener;
@@ -78,8 +81,4 @@ protected:
 	Viewport                                        m_Viewport;
 	
     bool                                            m_bResizePending;  
-
-
-private: // IApplicationEventsConnection
-	Delegate<UpdateEventArgs>::FunctionDecl         m_UpdateConnection;
 };

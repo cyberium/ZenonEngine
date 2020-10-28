@@ -22,7 +22,7 @@ public:
 	virtual ~SceneBase();
 
 	// IScene
-	void                                            SetRenderWindow(const std::shared_ptr<IRenderWindow>& RenderWindow) override;
+	void                                            SetRenderWindow(const std::weak_ptr<IRenderWindow>& RenderWindow) override;
 	std::shared_ptr<IRenderWindow>                  GetRenderWindow() const;
 
 	void                                            AddEventListener(std::shared_ptr<ISceneEventsListener> Listener) override;
@@ -141,33 +141,14 @@ protected:
 	std::shared_ptr<ISceneNodeUI>                   m_FPSText;
 
 
-private: // IRenderWindowEvents
-	Delegate<UpdateEventArgs>::FunctionDecl         m_OnUpdateConnection;
-	Delegate<RenderEventArgs>::FunctionDecl         m_OnPreRenderConnection;
-	Delegate<RenderEventArgs>::FunctionDecl         m_OnRenderConnection;
-	Delegate<RenderEventArgs>::FunctionDecl         m_OnPostRenderConnection;
-	Delegate<RenderEventArgs>::FunctionDecl         m_OnRenderUIConnection;
-
-private: // Windows events connection
-	Delegate<ResizeEventArgs>::FunctionDecl         m_OnResizeConnection;
-
-private: // Keyboard events connections
-	Delegate<KeyEventArgs>::FunctionDecl            m_OnKeyPressedConnection;
-	Delegate<KeyEventArgs>::FunctionDecl            m_OnKeyReleasedConnection;
-
-private: // Mouse events connections
-	Delegate<MouseButtonEventArgs>::FunctionDecl    m_OnMouseButtonPressedConnection;
-	Delegate<MouseButtonEventArgs>::FunctionDecl    m_OnMouseButtonReleasedConnection;
-	Delegate<MouseMotionEventArgs>::FunctionDecl    m_OnMouseMovedConnection;
-	Delegate<MouseWheelEventArgs>::FunctionDecl     m_OnMouseWheelConnection;
-
 protected: // Функционал по отложенному добавлению нод
 	std::vector<std::pair<std::shared_ptr<ISceneNode3D>, std::shared_ptr<ISceneNode3D>>> m_AddChildList;
 	std::vector<std::pair<std::shared_ptr<ISceneNode3D>, std::shared_ptr<ISceneNode3D>>> m_RemoveChildList;
 	std::mutex                                                                           m_ListsAreBusy;
 	std::mutex                                                                           m_SceneIsBusy;
 
-	std::vector<std::shared_ptr<ISceneEventsListener>> m_EventListeners;
+	std::vector<std::shared_ptr<ISceneEventsListener>>                                   m_EventListeners;
+
 
 private: // Quick access
 	IBaseManager&                                   m_BaseManager;

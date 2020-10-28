@@ -26,12 +26,16 @@ void CEditedScene::Finalize()
 void CEditedScene::RaiseSceneChangeEvent(ESceneChangeType SceneChangeType, const std::shared_ptr<ISceneNode3D>& OwnerNode, const std::shared_ptr<ISceneNode3D>& ChildNode)
 {
 	auto root = GetRootNode3D();
-	if (root == nullptr)
-		return;
+	_ASSERT(root != nullptr);
 
 	auto parent = root->GetParent().lock();
-	if (parent == nullptr)
-		return;
+	_ASSERT(parent != nullptr);
 
-	root->GetParent().lock()->GetScene()->RaiseSceneChangeEvent(SceneChangeType, OwnerNode, ChildNode);
+	auto realScene = parent->GetScene();
+	_ASSERT(realScene != nullptr);
+
+	auto realSceneInternal = dynamic_cast<ISceneInternal*>(realScene);
+	_ASSERT(realSceneInternal != nullptr);
+
+	realSceneInternal->RaiseSceneChangeEvent(SceneChangeType, OwnerNode, ChildNode);
 }

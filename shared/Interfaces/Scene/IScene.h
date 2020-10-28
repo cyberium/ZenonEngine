@@ -32,7 +32,7 @@ ZN_INTERFACE ZN_API IScene
 {
 	virtual ~IScene() {}
 
-	virtual void SetRenderWindow(const std::shared_ptr<IRenderWindow>& RenderWindow) = 0;
+	virtual void SetRenderWindow(const std::weak_ptr<IRenderWindow>& RenderWindow) = 0;
 	virtual std::shared_ptr<IRenderWindow> GetRenderWindow() const = 0;
 
 	virtual void SetRenderer(std::shared_ptr<IRenderer> Renderer) = 0;

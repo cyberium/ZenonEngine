@@ -33,35 +33,43 @@ void main_internal(int argc, char *argv[])
 		CEditorUIFrame editorUI(editor);
 		editorUI.InitializeEditorFrame();
 
-		std::shared_ptr<IRenderWindow> renderWindow;
-		std::shared_ptr<CEditor3DFrame> editorScene;
 		{
-			renderWindow = renderDevice.GetObjectsFactory().CreateRenderWindow(*editorUI.getMainEditor(), false);
-			app.AddRenderWindow(renderWindow);
+			std::shared_ptr<IRenderWindow> renderWindow;
+			std::shared_ptr<CEditor3DFrame> editorScene;
+			{
+				renderWindow = renderDevice.GetObjectsFactory().CreateRenderWindow(*editorUI.getMainEditor(), false);
+				app.AddRenderWindow(renderWindow);
 
-			editorScene = MakeShared(CEditor3DFrame, editor);
-			editorScene->SetRenderWindow(renderWindow);
-			editorScene->ConnectEvents(std::dynamic_pointer_cast<IRenderWindowEvents>(renderWindow));
-			editorScene->Initialize();
+				editorScene = MakeShared(CEditor3DFrame, editor);
+				editorScene->SetRenderWindow(renderWindow);
+				renderWindow->SetRenderWindowEventListener(std::dynamic_pointer_cast<IRenderWindowEventListener>(editorScene));
+				renderWindow->SetNativeWindowEventListener(std::dynamic_pointer_cast<INativeWindowEventListener>(editorScene));
+				editorScene->Initialize();
+			}
+
+			editorScene->InitializeEditorFrame();
+
+			// Scene for preview
+			std::shared_ptr<CEditor3DPreviewScene> sceneForPreview;
+			std::shared_ptr<IRenderWindow> renderWindowForModelPreview;
+			{
+				renderWindowForModelPreview = renderDevice.GetObjectsFactory().CreateRenderWindow(*editorUI.getModelPreview(), false);
+				app.AddRenderWindow(renderWindowForModelPreview);
+				sceneForPreview = MakeShared(CEditor3DPreviewScene, *BaseManager);
+				sceneForPreview->SetRenderWindow(renderWindowForModelPreview);
+				renderWindowForModelPreview->SetRenderWindowEventListener(std::dynamic_pointer_cast<IRenderWindowEventListener>(sceneForPreview));
+				renderWindowForModelPreview->SetNativeWindowEventListener(std::dynamic_pointer_cast<INativeWindowEventListener>(sceneForPreview));
+				sceneForPreview->Initialize();
+
+				editorScene->SetPreviewScene(sceneForPreview);
+			}
 		}
 
-		editorScene->InitializeEditorFrame();
 
-		// Scene for preview
-		std::shared_ptr<CEditor3DPreviewScene> sceneForPreview;
-		std::shared_ptr<IRenderWindow> renderWindowForModelPreview;
-		{
-			renderWindowForModelPreview = renderDevice.GetObjectsFactory().CreateRenderWindow(*editorUI.getModelPreview(), false);
-			app.AddRenderWindow(renderWindowForModelPreview);
-			sceneForPreview = MakeShared(CEditor3DPreviewScene, *BaseManager);
-			sceneForPreview->SetRenderWindow(renderWindowForModelPreview);
-			sceneForPreview->ConnectEvents(std::dynamic_pointer_cast<IRenderWindowEvents>(renderWindowForModelPreview));
-			sceneForPreview->Initialize();
-
-			editorScene->SetPreviewScene(sceneForPreview);
-		}
 
 		editor.GetTools().Initialize();
+
+
 
 		editorUI.showMaximized();
 

@@ -67,11 +67,11 @@ void ZenonSceneViewerWidget::RefreshTreeViewModel(ESceneChangeType SceneChangeTy
 
 	m_Editor->Get3DFrame().LockUpdates();
 
-	m_Model = MakeShared(CSceneBrowserTreeModel, MakeShared(CznSceneBrowserNode, m_Editor->Get3DFrame().GetEditedRootNode3D()), nullptr);
-	this->setModel(m_Model.get());
+	//m_Model = MakeShared(CSceneBrowserTreeModel, MakeShared(CznSceneBrowserNode, m_Editor->Get3DFrame().GetEditedRootNode3D()), nullptr);
+	//this->setModel(m_Model.get());
 
 	this->reset();
-	FillWithChilds(m_Model, m_Editor->Get3DFrame().GetEditedRootNode3D());
+	//FillWithChilds(m_Model, m_Editor->Get3DFrame().GetEditedRootNode3D());
 	//m_Model->SetRootItemData(MakeShared(CSceneNodeModelItem, m_Editor->Get3DFrame().GetEditedRootNode3D()));
 	this->expandAll();
 

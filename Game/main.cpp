@@ -28,17 +28,19 @@ void main_internal(int argumentCount, char* arguments[])
 		std::shared_ptr<IznFontsManager> fontsManager = MakeShared(FontsManager, renderDevice, *BaseManager);
 		BaseManager->AddManager<IznFontsManager>(fontsManager);
 
-		const auto& firstRenderWindow = renderDevice.GetObjectsFactory().CreateRenderWindow(*nativeWindow, false);
-		app.AddRenderWindow(firstRenderWindow);
+		{
+			const auto& firstRenderWindow = renderDevice.GetObjectsFactory().CreateRenderWindow(*nativeWindow, false);
+			app.AddRenderWindow(firstRenderWindow);
 
-		BaseManager->GetManager<ILoader>()->Start();
+			BaseManager->GetManager<ILoader>()->Start();
 
 
-		std::shared_ptr<IScene> scene = MakeShared(CSceneDefault, *BaseManager);//BaseManager->GetManager<IObjectsFactory>()->GetClassFactoryCast<IScenesFactory>()->CreateScene(cSceneDefault);
-		scene->SetRenderWindow(firstRenderWindow);
-		firstRenderWindow->SetRenderWindowEventListener(std::dynamic_pointer_cast<IRenderWindowEventListener>(scene));
-		firstRenderWindow->SetNativeWindowEventListener(std::dynamic_pointer_cast<INativeWindowEventListener>(scene));
-		scene->Initialize();
+			std::shared_ptr<IScene> scene = MakeShared(CSceneDefault, *BaseManager);//BaseManager->GetManager<IObjectsFactory>()->GetClassFactoryCast<IScenesFactory>()->CreateScene(cSceneDefault);
+			scene->SetRenderWindow(firstRenderWindow);
+			firstRenderWindow->SetRenderWindowEventListener(std::dynamic_pointer_cast<IRenderWindowEventListener>(scene));
+			firstRenderWindow->SetNativeWindowEventListener(std::dynamic_pointer_cast<INativeWindowEventListener>(scene));
+			scene->Initialize();
+		}
 
 		app.Run();
 
