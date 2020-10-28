@@ -355,6 +355,11 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="RTS\EditorToolRTSGround.cpp" />
+    <ClCompile Include="SceneBrowser\SceneBrowser.cpp" />
+    <ClCompile Include="SceneBrowser\SceneBrowserNode.cpp" />
+    <ClCompile Include="SceneBrowser\SceneBrowserTreeItem.cpp" />
+    <ClCompile Include="SceneBrowser\SceneBrowserTreeModel.cpp" />
+    <ClCompile Include="SceneBrowser\SourceBrowser_SceneNode3DBuilder.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
@@ -367,8 +372,6 @@
     <ClCompile Include="Tools\EditorTools.cpp" />
     <ClCompile Include="Tools\RTS\EditorToolMoverRTS.cpp" />
     <ClCompile Include="Tools\RTS\EditorToolRotatorRTS.cpp" />
-    <ClCompile Include="ZenonWidgets\TreeItemTemplate.cpp" />
-    <ClCompile Include="ZenonWidgets\TreeModelTemplate.cpp" />
     <ClCompile Include="ZenonWidgets\ZenonCollectionViewer\ZenonCollectionViewerWidget.cpp" />
     <ClCompile Include="ZenonWidgets\ZenonLogViewer\ZenonLogViewer.cpp" />
     <ClCompile Include="ZenonWidgets\ZenonSceneViewer\ZenonSceneViewerWidget.cpp" />
@@ -392,6 +395,12 @@
     <ClInclude Include="PropertyEditor\Core\Auxiliary\PropertyTemplates.h" />
     <ClInclude Include="PropertyEditor\Core\CoreAPI.h" />
     <ClInclude Include="RTS\EditorToolRTSGround.h" />
+    <ClInclude Include="SceneBrowser\SceneBrowserInfs.h" />
+    <ClInclude Include="SceneBrowser\SceneBrowser.h" />
+    <ClInclude Include="SceneBrowser\SceneBrowserNode.h" />
+    <ClInclude Include="SceneBrowser\SceneBrowserTreeItem.h" />
+    <ClInclude Include="SceneBrowser\SceneBrowserTreeModel.h" />
+    <ClInclude Include="SceneBrowser\SourceBrowser_SceneNode3DBuilder.h" />
     <ClInclude Include="Tools\EditorToolBase.h" />
     <ClInclude Include="Tools\EditorToolDragger.h" />
     <ClInclude Include="Tools\EditorToolMover.h" />
