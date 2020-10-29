@@ -16,20 +16,14 @@ public:
 	// IRenderPassPipelined
 	std::shared_ptr<IRenderPassPipelined> ConfigurePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport* Viewport) override;
 
+
 protected:
 	void BindLightParamsForCurrentIteration(const RenderEventArgs& e, const CPassDeffered_ProcessLights::SLightResult& LightResult);
 
+
 private: // Pass light params
-	struct __declspec(novtable, align(16)) SLightResult
-	{
-		SLight Light;
-		glm::mat4 LightViewMatrix;
-		glm::mat4 LightProjectionMatrix;
-		uint32 IsShadowEnabled;
-		// 12 bytes padding
-	};
-	SLightResult* m_LightResultData;
 	std::shared_ptr<IConstantBuffer> m_LightResultConstantBuffer;
+
 
 private:
 	std::shared_ptr<CPassDeffered_DoRenderScene> m_DefferedRender;

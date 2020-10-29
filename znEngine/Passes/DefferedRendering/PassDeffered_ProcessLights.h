@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Scene/SceneCreateTypelessListPass.h"
+#include "../Scene/SceneCreateTypelessListPass.h"
 
 class ZN_API CPassDeffered_ProcessLights
 	: public RenderPass
@@ -8,11 +8,11 @@ class ZN_API CPassDeffered_ProcessLights
 public:
 	struct SLightResult
 	{
-		bool IsEnabled;
-		const ISceneNode3D* SceneNode;
-		const ILight3D* Light;
-		bool IsShadowEnable;
-		std::shared_ptr<ITexture> ShadowTexture;
+		const ISceneNode3D*        SceneNode;
+		const ILight3D*            LightNode;
+		bool                       IsLightEnabled;
+		bool                       IsCastShadow;
+		std::shared_ptr<ITexture>  ShadowTexture;
 	};
 
 public:

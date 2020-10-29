@@ -14,16 +14,10 @@
 
 struct Light
 {
-	float4 PositionWS;    // Position for point and spot lights (World space).
+	float4 Position;      // Position for point and spot lights (World space).
 	//--------------------------------------------------------------( 16 bytes )
 	
-	float4 DirectionWS;   // Direction for spot and directional lights (World space).
-	//--------------------------------------------------------------( 16 bytes )
-	
-	float4 PositionVS;    // Position for point and spot lights (View space).
-	//--------------------------------------------------------------( 16 bytes )
-	
-	float4 DirectionVS;   // Direction for spot and directional lights (View space).
+	float4 Direction;     // Direction for spot and directional lights (World space).
 	//--------------------------------------------------------------( 16 bytes )
 
 	float4 AmbientColor;  // Ambient color of the light.
@@ -37,8 +31,14 @@ struct Light
 	float Intensity;      // The intensity of the light.
 	float SpotlightAngle; // The half angle of the spotlight cone.
 	//--------------------------------------------------------------(16 bytes )
+};
 
-	//--------------------------------------------------------------( 16 * 6 = 112 bytes )
+
+struct LightVS
+{
+	Light  Struct;
+	float4 LightPositionVS;
+	float4 LightDirectionVS;
 };
 
 
@@ -46,6 +46,7 @@ struct MaterialForLight
 {
 	float SpecularFactor;
 };
+
 
 // This lighting result is returned by the lighting functions for each light type.
 struct LightingResult
@@ -57,115 +58,115 @@ struct LightingResult
 
 
 
-float4 DoAmbient(Light light)
+float4 DoAmbient(LightVS light)
 {
-	return light.AmbientColor;
+	return light.Struct.AmbientColor;
 }
 
-float4 DoDiffuse(Light light, float4 L, float4 N)
+float4 DoDiffuse(LightVS light, float4 L, float4 N)
 {
 	float NdotL = max(dot(N, L), 0);
-	return light.Color * NdotL;
+	return light.Struct.Color * NdotL;
 }
 
-float4 DoSpecular(Light light, MaterialForLight mat, float4 V, float4 L, float4 N)
+float4 DoSpecular(LightVS light, MaterialForLight mat, float4 V, float4 L, float4 N)
 {
 	if (mat.SpecularFactor > 1.0f)
 	{
 		float4 R = normalize(reflect(-L, N));
 		float RdotV = max(dot(R, V), 0);
 
-		return light.Color * pow(RdotV, mat.SpecularFactor);
+		return light.Struct.Color * pow(RdotV, mat.SpecularFactor);
 	}
 	
 	return float4(0.0f, 0.0f, 0.0f, 0.0f);
 }
 
 // Compute the attenuation based on the range of the light.
-float DoAttenuation(Light light, float d)
+float DoAttenuation(LightVS light, float d)
 {
-	return 1.0f - smoothstep(light.Range * 0.75f, light.Range, d);
+	return 1.0f - smoothstep(light.Struct.Range * 0.75f, light.Struct.Range, d);
 }
 
-float DoSpotCone(Light light, float4 L)
+float DoSpotCone(LightVS light, float4 L)
 {
 	// If the cosine angle of the light's direction 
 	// vector and the vector from the light source to the point being 
 	// shaded is less than minCos, then the spotlight contribution will be 0.
-	float minCos = cos(radians(light.SpotlightAngle));
+	float minCos = cos(radians(light.Struct.SpotlightAngle));
 	
 	// If the cosine angle of the light's direction vector
 	// and the vector from the light source to the point being shaded
 	// is greater than maxCos, then the spotlight contribution will be 1.
 	float maxCos = lerp(minCos, 1, 0.5f);
 	
-	float cosAngle = dot(light.DirectionVS, -L);
+	float cosAngle = dot(light.LightDirectionVS, -L);
 	
 	// Blend between the maxixmum and minimum cosine angles.
 	return smoothstep(minCos, maxCos, cosAngle);
 }
 
-LightingResult DoPointLight(Light light, MaterialForLight mat, float4 V, float4 P, float4 N)
+LightingResult DoPointLight(LightVS light, MaterialForLight mat, float4 V, float4 P, float4 N)
 {
 	LightingResult result;
 
-	float4 L = light.PositionVS - P;
+	float4 L = light.LightPositionVS - P;
 	float distance = length(L);
 	L = L / distance;
 
 	float attenuation = DoAttenuation(light, distance);
 
-	result.Ambient = DoAmbient(light) * attenuation /** light.Intensity*/;
-	result.Diffuse = DoDiffuse(light, L, N) * attenuation * light.Intensity;
-	result.Specular = DoSpecular(light, mat, V, L, N) * attenuation * light.Intensity;
+	result.Ambient  = DoAmbient(light)                 * attenuation * light.Struct.Intensity;
+	result.Diffuse  = DoDiffuse(light, L, N)           * attenuation * light.Struct.Intensity;
+	result.Specular = DoSpecular(light, mat, V, L, N)  * attenuation * light.Struct.Intensity;
 
 	return result;
 }
 
-LightingResult DoDirectionalLight(Light light, MaterialForLight mat, float4 V, float4 P, float4 N)
+LightingResult DoDirectionalLight(LightVS light, MaterialForLight mat, float4 V, float4 P, float4 N)
 {
 	LightingResult result;
 
-	float4 L = normalize(-light.DirectionVS);
+	float4 L = normalize(-light.LightDirectionVS);
 
-	result.Ambient = DoAmbient(light) * light.Intensity;
-	result.Diffuse = DoDiffuse(light, L, N) * light.Intensity;
-	result.Specular = DoSpecular(light, mat, V, L, N) * light.Intensity;
+	result.Ambient  = DoAmbient(light)                 * light.Struct.Intensity;
+	result.Diffuse  = DoDiffuse(light, L, N)           * light.Struct.Intensity;
+	result.Specular = DoSpecular(light, mat, V, L, N)  * light.Struct.Intensity;
 
 	return result;
 }
 
-LightingResult DoSpotLight(Light light, MaterialForLight mat, float4 V, float4 P, float4 N)
+LightingResult DoSpotLight(LightVS light, MaterialForLight mat, float4 V, float4 P, float4 N)
 {
 	LightingResult result;
 
-	float4 L = light.PositionVS - P;
+	float4 L = light.LightPositionVS - P;
 	float distance = length(L);
 	L = L / distance;
 
 	float attenuation = DoAttenuation(light, distance);
 	float spotIntensity = DoSpotCone(light, L);
 
-	result.Ambient = DoAmbient(light) * attenuation * light.Intensity;
-	result.Diffuse = DoDiffuse(light, L, N) * attenuation * spotIntensity * light.Intensity;
-	result.Specular = DoSpecular(light, mat, V, L, N) * attenuation * spotIntensity * light.Intensity;
+	result.Ambient  = DoAmbient(light)                 * attenuation *                 light.Struct.Intensity;
+	result.Diffuse  = DoDiffuse(light, L, N)           * attenuation * spotIntensity * light.Struct.Intensity;
+	result.Specular = DoSpecular(light, mat, V, L, N)  * attenuation * spotIntensity * light.Struct.Intensity;
 
 	return result;
 }
 
-LightingResult DoLightingSingle(Light light, MaterialForLight mat, float4 eyePos, float4 P, float4 N)
+LightingResult DoLightingSingle(LightVS light, MaterialForLight mat, float4 eyePos, float4 P, float4 N)
 {
 	LightingResult lightingResult = (LightingResult)0;
-	if (light.Type == UNKNOWN)
+	if (light.Struct.Type == UNKNOWN)
 		return lightingResult;
 
-	if (light.Type != DIRECTIONAL_LIGHT && length(light.PositionVS - P) > light.Range)
+	if (light.Struct.Type != DIRECTIONAL_LIGHT && length(light.LightPositionVS - P) > light.Struct.Range)
 		return lightingResult; // Skip point and spot lights that are out of range of the point being shaded.
 
 
 	float4 V = normalize(eyePos - P);
 	
-	switch (light.Type)
+	switch (light.Struct.Type)
 	{
 		case DIRECTIONAL_LIGHT:
 			return DoDirectionalLight(light, mat, V, P, N);
@@ -180,7 +181,7 @@ LightingResult DoLightingSingle(Light light, MaterialForLight mat, float4 eyePos
 	return lightingResult;
 }
 
-LightingResult DoLighting(StructuredBuffer<Light> lights, MaterialForLight mat, float4 eyePos, float4 P, float4 N)
+LightingResult DoLighting(StructuredBuffer<LightVS> lights, MaterialForLight mat, float4 eyePos, float4 P, float4 N)
 {
 	LightingResult totalLightingResult = (LightingResult)0;
 	for (int i = 0; i < NUM_LIGHTS; ++i)

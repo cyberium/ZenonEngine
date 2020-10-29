@@ -31,8 +31,8 @@
 #include "../znCore/ObjectsFactories/ComponentsFactory.h"
 
 // Scene
-#include "../znCore/Scene/SceneBase.h"
 #include "../znCore/Scene/ComponentBase.h"
+#include "../znCore/Scene/SceneFinder.h"
 #include "../znCore/Scene/SceneNode3D.h"
 #include "../znCore/Scene/SceneNodeUI.h"
 

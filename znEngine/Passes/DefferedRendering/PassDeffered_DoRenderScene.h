@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Scene/SceneCreateTypelessListPass.h"
+#include "../Scene/SceneCreateTypelessListPass.h"
 
 class ZN_API CPassDeffered_DoRenderScene
 	: public RenderPassPipelined

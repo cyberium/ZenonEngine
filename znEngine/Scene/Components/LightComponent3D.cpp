@@ -108,13 +108,13 @@ glm::mat4 CLightComponent3D::GetViewMatrix() const
 	}
 	else if (m_LightStruct->Type == ELightType::Spot)
 	{
-		return glm::lookAt(m_LightStruct->PositionWS.xyz(), m_LightStruct->PositionWS.xyz() + m_LightStruct->DirectionWS.xyz() * 100.0f, glm::vec3(0.0f, 1.0f, 0.0f));
+		return glm::lookAt(m_LightStruct->Position.xyz(), m_LightStruct->Position.xyz() + m_LightStruct->Direction.xyz() * 100.0f, glm::vec3(0.0f, 1.0f, 0.0f));
 	}
 	else if (m_LightStruct->Type == ELightType::Directional)
 	{
 		//glm::vec3 position = -m_LightStruct->DirectionWS.xyz();
 		//position *= 100.0f;
-		return glm::lookAt(glm::vec3(10.0f), glm::vec3(10.0f) + m_LightStruct->DirectionWS.xyz() * 100.0f, glm::vec3(0.0f, 1.0f, 0.0f));
+		return glm::lookAt(glm::vec3(10.0f), glm::vec3(10.0f) + m_LightStruct->Direction.xyz() * 100.0f, glm::vec3(0.0f, 1.0f, 0.0f));
 	}
 
 	return glm::mat4(1.0f);
@@ -151,8 +151,8 @@ const SLight& CLightComponent3D::GetLightStruct() const
 //
 void CLightComponent3D::Update(const UpdateEventArgs & e)
 {
-	m_LightStruct->PositionWS = glm::vec4(GetOwnerNode().GetTranslation(), 1.0f);
-	m_LightStruct->DirectionWS = glm::vec4(GetOwnerNode().GetRotation(), 0.0f);
+	m_LightStruct->Position = glm::vec4(GetOwnerNode().GetTranslation(), 1.0f);
+	m_LightStruct->Direction = glm::vec4(GetOwnerNode().GetRotation(), 0.0f);
 }
 
 void CLightComponent3D::Accept(IVisitor* visitor)

@@ -44,9 +44,6 @@ public:
 	// IEditorToolSelectorEventListener
 	void OnSelectNode() override;
 
-private: // Rendering
-	std::shared_ptr<IMaterialModelPass> m_MaterialModelPass;
-
 private:
 	IEditor& m_Editor;
 	std::shared_ptr<CEditor3DPreviewScene> m_PreviewScene;

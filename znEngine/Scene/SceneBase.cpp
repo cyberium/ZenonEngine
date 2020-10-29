@@ -3,10 +3,6 @@
 // General
 #include "SceneBase.h"
 
-// Additonal
-#include "SceneNode3D.h"
-#include "SceneNodeUI.h"
-
 SceneBase::SceneBase(IBaseManager& BaseManager, IRenderWindow& RenderWindow)
 	: m_BaseManager(BaseManager)
 	, m_RenderDevice(BaseManager.GetApplication().GetRenderDevice())

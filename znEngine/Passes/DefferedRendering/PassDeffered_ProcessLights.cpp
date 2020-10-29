@@ -51,6 +51,8 @@ void CPassDeffered_ProcessLights::CreateShadowPipeline()
 	m_PerFrameShaderParameter->SetConstantBuffer(m_PerFrameConstantBuffer);
 }
 
+
+
 const std::vector<CPassDeffered_ProcessLights::SLightResult>& CPassDeffered_ProcessLights::GetLightResult() const
 {
 	return m_LightResult;
@@ -67,7 +69,7 @@ void CPassDeffered_ProcessLights::PreRender(RenderEventArgs& e)
 
 	for (auto& it : m_LightResult)
 	{
-		it.IsEnabled = false;
+		it.IsLightEnabled = false;
 	}
 }
 
@@ -96,19 +98,19 @@ void CPassDeffered_ProcessLights::Render(RenderEventArgs& e)
 			if (i < m_LightResult.size())
 			{
 				SLightResult& lightResult = m_LightResult.at(i);
-				lightResult.IsEnabled = true;
 				lightResult.SceneNode = lightIt.SceneNode;
-				lightResult.Light = lightIt.Light;
-				lightResult.IsShadowEnable = true;
+				lightResult.LightNode = lightIt.Light;
+				lightResult.IsLightEnabled = true;
+				lightResult.IsCastShadow = true;
 				lightResult.ShadowTexture->Copy(m_ShadowRenderTarget->GetTexture(IRenderTarget::AttachmentPoint::DepthStencil));
 			}
 			else
 			{
 				SLightResult lightResult;
-				lightResult.IsEnabled = true;
 				lightResult.SceneNode = lightIt.SceneNode;
-				lightResult.Light = lightIt.Light;
-				lightResult.IsShadowEnable = true;
+				lightResult.LightNode = lightIt.Light;
+				lightResult.IsLightEnabled = true;
+				lightResult.IsCastShadow = true;
 				lightResult.ShadowTexture = CreateShadowTextureDepthStencil();
 				m_LightResult.push_back(lightResult);
 			}
@@ -138,8 +140,7 @@ std::shared_ptr<IRenderTarget> CPassDeffered_ProcessLights::CreateShadowRT()
 
 std::shared_ptr<ITexture> CPassDeffered_ProcessLights::CreateShadowTexture0() const
 {
-	ITexture::TextureFormat colorTextureFormat
-	(
+	ITexture::TextureFormat colorTextureFormat(
 		ITexture::Components::R,
 		ITexture::Type::Float,
 		1,

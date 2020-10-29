@@ -1,22 +1,22 @@
 #include "stdafx.h"
 
 // General
-#include "MaterialModelPass.h"
+#include "PassForward_DoRenderScene.h"
 
 // Additional
 #include "Materials/MaterialModel.h"
 
-CMaterialModelPass::CMaterialModelPass(IRenderDevice& RenderDevice, std::shared_ptr<IScene> Scene)
+CPassForward_DoRenderScene::CPassForward_DoRenderScene(IRenderDevice& RenderDevice, std::weak_ptr<IScene> Scene)
 	: Base3DPass(RenderDevice, Scene)
 {
 	
 }
 
-CMaterialModelPass::~CMaterialModelPass()
+CPassForward_DoRenderScene::~CPassForward_DoRenderScene()
 {}
 
 
-IShaderParameter * CMaterialModelPass::GetLightsShaderParameter() const
+IShaderParameter * CPassForward_DoRenderScene::GetLightsShaderParameter() const
 {
 	return m_ShaderLightsBufferParameter;
 }
@@ -26,7 +26,7 @@ IShaderParameter * CMaterialModelPass::GetLightsShaderParameter() const
 //
 // IRenderPassPipelined
 //
-std::shared_ptr<IRenderPassPipelined> CMaterialModelPass::ConfigurePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport)
+std::shared_ptr<IRenderPassPipelined> CPassForward_DoRenderScene::ConfigurePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport)
 {
 	std::shared_ptr<IShader> vertexShader;
 	std::shared_ptr<IShader> pixelShader;
@@ -60,7 +60,7 @@ std::shared_ptr<IRenderPassPipelined> CMaterialModelPass::ConfigurePipeline(std:
 	m_ShaderBonesBufferParameter = &vertexShader->GetShaderParameterByName("Bones");
 	//_ASSERT(m_ShaderBonesBufferParameter->IsValid());
 
-	m_ShaderLightsBufferParameter = &pixelShader->GetShaderParameterByName("Lights");
+	m_ShaderLightsBufferParameter = &pixelShader->GetShaderParameterByName("LightsVS");
 	//_ASSERT(m_ShaderLightsBufferParameter->IsValid());
 
 	return shared_from_this();
@@ -68,7 +68,7 @@ std::shared_ptr<IRenderPassPipelined> CMaterialModelPass::ConfigurePipeline(std:
 
 
 
-EVisitResult CMaterialModelPass::Visit(const ISceneNode3D * SceneNode)
+EVisitResult CPassForward_DoRenderScene::Visit(const ISceneNode3D * SceneNode)
 {
 	auto skeletonComponent = SceneNode->GetComponent<ISkeletonComponent3D>();
 	if (skeletonComponent != nullptr)
@@ -81,12 +81,12 @@ EVisitResult CMaterialModelPass::Visit(const ISceneNode3D * SceneNode)
 //
 // IVisitor
 //
-EVisitResult CMaterialModelPass::Visit(const IModel * Model)
+EVisitResult CPassForward_DoRenderScene::Visit(const IModel * Model)
 {
 	return Base3DPass::Visit(Model);
 }
 
-EVisitResult CMaterialModelPass::Visit(const IGeometry * Geometry, const IMaterial* Material, SGeometryDrawArgs GeometryDrawArgs)
+EVisitResult CPassForward_DoRenderScene::Visit(const IGeometry * Geometry, const IMaterial* Material, SGeometryDrawArgs GeometryDrawArgs)
 {
 	const MaterialModel* objMaterial = dynamic_cast<const MaterialModel*>(Material);
 	if (objMaterial == nullptr)

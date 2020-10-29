@@ -30,6 +30,7 @@ ZN_INTERFACE ZN_API IRenderPassPipelined
 	virtual const IPipelineState& GetPipeline() const = 0;
 };
 
+/*
 
 //
 // For plugins
@@ -56,3 +57,5 @@ ZN_INTERFACE ZN_API
 
 	virtual std::shared_ptr<IRenderPass> CreateRenderPass(std::string RenderPassName, IRenderDevice& RenderDevice, std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport, std::shared_ptr<IScene> Scene) const = 0;
 };
+
+*/

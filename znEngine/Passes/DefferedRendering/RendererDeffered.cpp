@@ -8,7 +8,6 @@
 #include "Passes/MaterialDebugPass.h"
 #include "Passes/MaterialTexturedPass.h"
 #include "Passes/MaterialParticlePass.h"
-#include "Passes/MaterialModelPass.h"
 #include "Passes/DrawBonesPass.h"
 
 #include "Passes/UI/UIFontPass.h"
@@ -84,8 +83,7 @@ void CRendererDeffered::Resize(uint32 NewWidth, uint32 NewHeight)
 
 void CRendererDeffered::Initialize(std::shared_ptr<IRenderTarget> OutputRenderTarget, const Viewport * Viewport)
 {
-	glm::vec4 clearColor = glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
-	AddPass(MakeShared(ClearRenderTargetPass, m_RenderDevice, OutputRenderTarget, ClearFlags::All, clearColor, 1.0f, 0));
+	AddPass(MakeShared(ClearRenderTargetPass, m_RenderDevice, OutputRenderTarget));
 	
 	m_SceneCreateTypelessListPass = MakeShared(CSceneCreateTypelessListPass, m_RenderDevice, m_Scene);
 
@@ -101,9 +99,9 @@ void CRendererDeffered::Initialize(std::shared_ptr<IRenderTarget> OutputRenderTa
 	m_Deffered_Lights = MakeShared(CPassDeffered_ProcessLights, m_RenderDevice, m_SceneCreateTypelessListPass);
 	m_Deffered_Lights->CreateShadowPipeline();
 
-	auto HDRRenderTarget = CreateHDRRenderTarget(OutputRenderTarget, Viewport);
-	m_Deffered_HDR = MakeShared(CPassPostprocess_HDR, m_RenderDevice, HDRRenderTarget);
-	m_Deffered_HDR->ConfigurePipeline(OutputRenderTarget, Viewport);
+	//auto HDRRenderTarget = CreateHDRRenderTarget(OutputRenderTarget, Viewport);
+	//m_Deffered_HDR = MakeShared(CPassPostprocess_HDR, m_RenderDevice, HDRRenderTarget);
+	//m_Deffered_HDR->ConfigurePipeline(OutputRenderTarget, Viewport);
 
 	m_Deffered_UIQuadPass = MakeShared(CPassDeffered_RenderUIQuad, m_RenderDevice, m_Deffered_ScenePass, m_Deffered_Lights);
 	m_Deffered_UIQuadPass->ConfigurePipeline(/*HDRRenderTarget*/OutputRenderTarget, Viewport);
@@ -119,7 +117,7 @@ void CRendererDeffered::Initialize(std::shared_ptr<IRenderTarget> OutputRenderTa
 	m_UIPasses.push_back(m_Deffered_UIQuadPass);
 
 	// HDR
-	//AddPass(MakeShared(ClearRenderTargetPass, m_RenderDevice, HDRRenderTarget, ClearFlags::All, clearColor, 1.0f, 0));
+	//AddPass(MakeShared(ClearRenderTargetPass, m_RenderDevice, HDRRenderTarget));
 	//m_UIPasses.push_back(m_Deffered_HDR);
 
 	m_UIPasses.push_back(MakeShared(CUIFontPass, m_RenderDevice, m_Scene)->ConfigurePipeline(OutputRenderTarget, Viewport));

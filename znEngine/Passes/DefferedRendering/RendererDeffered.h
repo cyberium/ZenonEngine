@@ -1,9 +1,12 @@
 #pragma once
 
-#include "../PassDeffered_DoRenderScene.h"
-#include "../PassDeffered_ProcessLights.h"
-#include "../PassDeffered_RenderUIQuad.h"
-#include "../Postprocess_HDR.h"
+#include "../Scene/SceneCreateTypelessListPass.h"
+
+#include "PassDeffered_DoRenderScene.h"
+#include "PassDeffered_ProcessLights.h"
+#include "PassDeffered_RenderUIQuad.h"
+
+#include "../PostprocessRendering/Postprocess_HDR.h"
 
 class ZN_API CRendererDeffered
 	: public IRenderer

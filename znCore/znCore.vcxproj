@@ -128,7 +128,6 @@
     <ClCompile Include="Proxies\ModelProxie.cpp" />
     <ClCompile Include="Proxies\SceneNodeProxie.cpp" />
     <ClCompile Include="Scene\ComponentBase.cpp" />
-    <ClCompile Include="Scene\SceneBase.cpp" />
     <ClCompile Include="Scene\SceneFinder.cpp" />
     <ClCompile Include="Scene\SceneNode3D.cpp" />
     <ClCompile Include="Scene\SceneNodeUI.cpp" />
@@ -282,7 +281,6 @@
     <ClInclude Include="Proxies\SceneNodeProxie.h" />
     <ClInclude Include="Proxies\__Proxies.h" />
     <ClInclude Include="Scene\ComponentBase.h" />
-    <ClInclude Include="Scene\SceneBase.h" />
     <ClInclude Include="Scene\SceneFinder.h" />
     <ClInclude Include="Scene\SceneNode3D.h" />
     <ClInclude Include="Scene\SceneNodeUI.h" />

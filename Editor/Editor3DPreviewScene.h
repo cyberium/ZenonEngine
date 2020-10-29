@@ -15,5 +15,4 @@ public:
 
 private: // Rendering
 	std::shared_ptr<ISceneNode3D> m_Node;
-	std::shared_ptr<IMaterialModelPass> m_MaterialModelPass;
 };

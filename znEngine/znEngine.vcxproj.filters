@@ -25,9 +25,6 @@
     <Filter Include="Passes">
       <UniqueIdentifier>{14ca4580-6528-4597-9243-e173cc9a12f1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Passes\3D">
-      <UniqueIdentifier>{ce8acf99-2f08-4e83-bc28-d859c1558a54}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Resources\Shaders_OGL">
       <UniqueIdentifier>{c03fdd3f-3bd9-46ee-abb7-91fb10c738f9}</UniqueIdentifier>
     </Filter>
@@ -45,9 +42,6 @@
     </Filter>
     <Filter Include="Resources\Textures">
       <UniqueIdentifier>{f841afa5-fa24-4948-a5bb-cc5e7cd3ea2a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Passes\3D\DefferedLighting">
-      <UniqueIdentifier>{10098261-ebbf-4465-8c32-402b36a51158}</UniqueIdentifier>
     </Filter>
     <Filter Include="FBX">
       <UniqueIdentifier>{e7ba6856-f133-4afb-afe5-2b1fd89762b0}</UniqueIdentifier>
@@ -133,9 +127,6 @@
     <Filter Include="Tools\AssyncLoader">
       <UniqueIdentifier>{e514f7a9-fea4-480c-9491-3e243067c92c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Passes\Factory">
-      <UniqueIdentifier>{5640c233-c8f6-4a2c-b454-7e6d9952af01}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Scene">
       <UniqueIdentifier>{eedc56cc-1ee4-4cd6-b409-af2ed914884c}</UniqueIdentifier>
     </Filter>
@@ -154,20 +145,11 @@
     <Filter Include="Scene\Components\Skeleton">
       <UniqueIdentifier>{601eab62-08ec-461d-a53f-7a7ca845dfa0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Passes\Renderer">
-      <UniqueIdentifier>{644b7b8f-b706-4787-b8e7-bdc94a5ef696}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Resources\Shaders_D3D\3D\Editor">
       <UniqueIdentifier>{00ac689d-c860-46b3-914f-57b3ff6e03a2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Passes\3D\ForwardLRendering">
-      <UniqueIdentifier>{ab8ee8c9-ff60-4ae2-9e88-1054a76849c1}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Formats\Models">
       <UniqueIdentifier>{79414a40-821a-439e-9cf4-85619b390ebb}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Passes\3D\Postprocess">
-      <UniqueIdentifier>{8de667f2-5bea-4474-83be-ccf5b2a060e0}</UniqueIdentifier>
     </Filter>
     <Filter Include="Formats\Models\Loaders">
       <UniqueIdentifier>{dce1f577-a935-4948-bb3c-cf3bd2f2b474}</UniqueIdentifier>
@@ -186,6 +168,15 @@
     </Filter>
     <Filter Include="Formats\Images\PNG">
       <UniqueIdentifier>{1b699a96-fcb3-433e-bb7d-1950e0c53c66}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Passes\DefferedRendering">
+      <UniqueIdentifier>{10098261-ebbf-4465-8c32-402b36a51158}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Passes\ForwardRendering">
+      <UniqueIdentifier>{ab8ee8c9-ff60-4ae2-9e88-1054a76849c1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Passes\PostprocessRendering">
+      <UniqueIdentifier>{8de667f2-5bea-4474-83be-ccf5b2a060e0}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -254,18 +245,6 @@
     </ClCompile>
     <ClCompile Include="Formats\Fonts\FontsManager.cpp">
       <Filter>Formats\Fonts</Filter>
-    </ClCompile>
-    <ClCompile Include="Passes\DrawBoundingBoxPass.cpp">
-      <Filter>Passes\3D</Filter>
-    </ClCompile>
-    <ClCompile Include="Passes\MaterialDebugPass.cpp">
-      <Filter>Passes\3D</Filter>
-    </ClCompile>
-    <ClCompile Include="Passes\MaterialTexturedPass.cpp">
-      <Filter>Passes\3D</Filter>
-    </ClCompile>
-    <ClCompile Include="Passes\MaterialParticlePass.cpp">
-      <Filter>Passes\3D</Filter>
     </ClCompile>
     <ClCompile Include="Materials\UI_Button_Material.cpp">
       <Filter>Materials\UI materials</Filter>
@@ -498,9 +477,6 @@
     <ClCompile Include="FBX\FBXModel.cpp">
       <Filter>FBX\Parts</Filter>
     </ClCompile>
-    <ClCompile Include="Passes\DrawBonesPass.cpp">
-      <Filter>Passes\3D</Filter>
-    </ClCompile>
     <ClCompile Include="Passes\Technical\BeginQueryPass.cpp">
       <Filter>Passes\Technical</Filter>
     </ClCompile>
@@ -624,29 +600,8 @@
     <ClCompile Include="Scene\Components\ReactPhysicsComponent.cpp">
       <Filter>Scene\Components</Filter>
     </ClCompile>
-    <ClCompile Include="Passes\Renderer\RendererDeffered.cpp">
-      <Filter>Passes\Renderer</Filter>
-    </ClCompile>
-    <ClCompile Include="Passes\Renderer\RendererForward.cpp">
-      <Filter>Passes\Renderer</Filter>
-    </ClCompile>
-    <ClCompile Include="Passes\PassDeffered_ProcessLights.cpp">
-      <Filter>Passes\3D\DefferedLighting</Filter>
-    </ClCompile>
-    <ClCompile Include="Passes\PassDeffered_RenderUIQuad.cpp">
-      <Filter>Passes\3D\DefferedLighting</Filter>
-    </ClCompile>
-    <ClCompile Include="Passes\PassDeffered_DoRenderScene.cpp">
-      <Filter>Passes\3D\DefferedLighting</Filter>
-    </ClCompile>
-    <ClCompile Include="Passes\MaterialModelPass.cpp">
-      <Filter>Passes\3D\ForwardLRendering</Filter>
-    </ClCompile>
     <ClCompile Include="Settings.cpp">
       <Filter>Managers</Filter>
-    </ClCompile>
-    <ClCompile Include="Passes\Postprocess_HDR.cpp">
-      <Filter>Passes\3D\Postprocess</Filter>
     </ClCompile>
     <ClCompile Include="Formats\Models\EngineModelsLoader.cpp">
       <Filter>Formats\Models\Loaders</Filter>
@@ -696,14 +651,47 @@
     <ClCompile Include="Passes\UI\UITexturePass.cpp">
       <Filter>Passes\UI</Filter>
     </ClCompile>
-    <ClCompile Include="Passes\RenderPassDefaultCreator.cpp">
-      <Filter>Passes\Factory</Filter>
-    </ClCompile>
-    <ClCompile Include="Passes\RenderPassFactory.cpp">
-      <Filter>Passes\Factory</Filter>
-    </ClCompile>
     <ClCompile Include="Formats\Textures\TexturesFactory.cpp">
       <Filter>Formats\Textures</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\SceneBase.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Passes\DefferedRendering\PassDeffered_DoRenderScene.cpp">
+      <Filter>Passes\DefferedRendering</Filter>
+    </ClCompile>
+    <ClCompile Include="Passes\DefferedRendering\PassDeffered_ProcessLights.cpp">
+      <Filter>Passes\DefferedRendering</Filter>
+    </ClCompile>
+    <ClCompile Include="Passes\DefferedRendering\PassDeffered_RenderUIQuad.cpp">
+      <Filter>Passes\DefferedRendering</Filter>
+    </ClCompile>
+    <ClCompile Include="Passes\ForwardRendering\PassForward_DoRenderScene.cpp">
+      <Filter>Passes\ForwardRendering</Filter>
+    </ClCompile>
+    <ClCompile Include="Passes\DefferedRendering\RendererDeffered.cpp">
+      <Filter>Passes\DefferedRendering</Filter>
+    </ClCompile>
+    <ClCompile Include="Passes\ForwardRendering\RendererForward.cpp">
+      <Filter>Passes\ForwardRendering</Filter>
+    </ClCompile>
+    <ClCompile Include="Passes\PostprocessRendering\Postprocess_HDR.cpp">
+      <Filter>Passes\PostprocessRendering</Filter>
+    </ClCompile>
+    <ClCompile Include="Passes\DrawBonesPass.cpp">
+      <Filter>Passes</Filter>
+    </ClCompile>
+    <ClCompile Include="Passes\DrawBoundingBoxPass.cpp">
+      <Filter>Passes</Filter>
+    </ClCompile>
+    <ClCompile Include="Passes\MaterialDebugPass.cpp">
+      <Filter>Passes</Filter>
+    </ClCompile>
+    <ClCompile Include="Passes\MaterialParticlePass.cpp">
+      <Filter>Passes</Filter>
+    </ClCompile>
+    <ClCompile Include="Passes\MaterialTexturedPass.cpp">
+      <Filter>Passes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -776,18 +764,6 @@
     </ClInclude>
     <ClInclude Include="Formats\Fonts\FontsManager.h">
       <Filter>Formats\Fonts</Filter>
-    </ClInclude>
-    <ClInclude Include="Passes\DrawBoundingBoxPass.h">
-      <Filter>Passes\3D</Filter>
-    </ClInclude>
-    <ClInclude Include="Passes\MaterialDebugPass.h">
-      <Filter>Passes\3D</Filter>
-    </ClInclude>
-    <ClInclude Include="Passes\MaterialTexturedPass.h">
-      <Filter>Passes\3D</Filter>
-    </ClInclude>
-    <ClInclude Include="Passes\MaterialParticlePass.h">
-      <Filter>Passes\3D</Filter>
     </ClInclude>
     <ClInclude Include="Materials\UI_Button_Material.h">
       <Filter>Materials\UI materials</Filter>
@@ -1080,9 +1056,6 @@
     <ClInclude Include="FBX\FBXModel.h">
       <Filter>FBX\Parts</Filter>
     </ClInclude>
-    <ClInclude Include="Passes\DrawBonesPass.h">
-      <Filter>Passes\3D</Filter>
-    </ClInclude>
     <ClInclude Include="Passes\Technical\BeginQueryPass.h">
       <Filter>Passes\Technical</Filter>
     </ClInclude>
@@ -1206,29 +1179,8 @@
     <ClInclude Include="Scene\Components\ReactPhysicsComponent.h">
       <Filter>Scene\Components</Filter>
     </ClInclude>
-    <ClInclude Include="Passes\Renderer\RendererDeffered.h">
-      <Filter>Passes\Renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="Passes\Renderer\RendererForward.h">
-      <Filter>Passes\Renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="Passes\PassDeffered_ProcessLights.h">
-      <Filter>Passes\3D\DefferedLighting</Filter>
-    </ClInclude>
-    <ClInclude Include="Passes\PassDeffered_RenderUIQuad.h">
-      <Filter>Passes\3D\DefferedLighting</Filter>
-    </ClInclude>
-    <ClInclude Include="Passes\PassDeffered_DoRenderScene.h">
-      <Filter>Passes\3D\DefferedLighting</Filter>
-    </ClInclude>
-    <ClInclude Include="Passes\MaterialModelPass.h">
-      <Filter>Passes\3D\ForwardLRendering</Filter>
-    </ClInclude>
     <ClInclude Include="Settings.h">
       <Filter>Managers</Filter>
-    </ClInclude>
-    <ClInclude Include="Passes\Postprocess_HDR.h">
-      <Filter>Passes\3D\Postprocess</Filter>
     </ClInclude>
     <ClInclude Include="Formats\Models\FBXModelsLoader.h">
       <Filter>Formats\Models\Loaders</Filter>
@@ -1281,14 +1233,47 @@
     <ClInclude Include="Passes\UI\UITexturePass.h">
       <Filter>Passes\UI</Filter>
     </ClInclude>
-    <ClInclude Include="Passes\RenderPassDefaultCreator.h">
-      <Filter>Passes\Factory</Filter>
-    </ClInclude>
-    <ClInclude Include="Passes\RenderPassFactory.h">
-      <Filter>Passes\Factory</Filter>
-    </ClInclude>
     <ClInclude Include="Formats\Textures\TexturesFactory.h">
       <Filter>Formats\Textures</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\SceneBase.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Passes\DefferedRendering\PassDeffered_DoRenderScene.h">
+      <Filter>Passes\DefferedRendering</Filter>
+    </ClInclude>
+    <ClInclude Include="Passes\DefferedRendering\PassDeffered_ProcessLights.h">
+      <Filter>Passes\DefferedRendering</Filter>
+    </ClInclude>
+    <ClInclude Include="Passes\DefferedRendering\PassDeffered_RenderUIQuad.h">
+      <Filter>Passes\DefferedRendering</Filter>
+    </ClInclude>
+    <ClInclude Include="Passes\ForwardRendering\PassForward_DoRenderScene.h">
+      <Filter>Passes\ForwardRendering</Filter>
+    </ClInclude>
+    <ClInclude Include="Passes\DefferedRendering\RendererDeffered.h">
+      <Filter>Passes\DefferedRendering</Filter>
+    </ClInclude>
+    <ClInclude Include="Passes\ForwardRendering\RendererForward.h">
+      <Filter>Passes\ForwardRendering</Filter>
+    </ClInclude>
+    <ClInclude Include="Passes\PostprocessRendering\Postprocess_HDR.h">
+      <Filter>Passes\PostprocessRendering</Filter>
+    </ClInclude>
+    <ClInclude Include="Passes\MaterialTexturedPass.h">
+      <Filter>Passes</Filter>
+    </ClInclude>
+    <ClInclude Include="Passes\DrawBonesPass.h">
+      <Filter>Passes</Filter>
+    </ClInclude>
+    <ClInclude Include="Passes\DrawBoundingBoxPass.h">
+      <Filter>Passes</Filter>
+    </ClInclude>
+    <ClInclude Include="Passes\MaterialDebugPass.h">
+      <Filter>Passes</Filter>
+    </ClInclude>
+    <ClInclude Include="Passes\MaterialParticlePass.h">
+      <Filter>Passes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

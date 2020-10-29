@@ -29,6 +29,7 @@
 
 
 // SceneNodes
+#include "../znEngine/Scene/SceneBase.h"
 #include "../znEngine/Scene/Nodes/UITexture.h"
 #include "../znEngine/Scene/Nodes/UIColor.h"
 #include "../znEngine/Scene/Nodes/UIText.h"
@@ -49,12 +50,8 @@
 
 
 #include "../znEngine/Passes/Pipelined/BaseTypedList3DPass.h"
-#include "../znEngine/Passes/Renderer/RendererForward.h"
-#include "../znEngine/Passes/Renderer/RendererDeffered.h"
-
-#include "../znEngine/Passes/PassDeffered_DoRenderScene.h"
-#include "../znEngine/Passes/PassDeffered_ProcessLights.h"
-#include "../znEngine/Passes/PassDeffered_RenderUIQuad.h"
+#include "../znEngine/Passes/ForwardRendering/RendererForward.h"
+#include "../znEngine/Passes/DefferedRendering/RendererDeffered.h"
 
 #include "../znEngine/Passes/Scene/SceneCreateTypedListsPass.h"
 #include "../znEngine/Passes/Scene/SceneCreateTypelessListPass.h"

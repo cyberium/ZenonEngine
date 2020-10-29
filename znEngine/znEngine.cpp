@@ -9,7 +9,7 @@
 #include "Settings.h"
 #include "RenderDeviceFactory.h"
 #include "AssyncLoader/Loader.h"
-#include "Passes/RenderPassFactory.h"
+
 #include "Scene/Factory/SceneCreator.h"
 #include "Scene/Factory/ComponentsCreator.h"
 #include "Scene/Factory/SceneNodeCreator.h"
@@ -159,13 +159,6 @@ IBaseManager* WINAPI InitializeEngine(std::vector<std::string> Arguments, std::s
 		std::shared_ptr<CComponentsFactory> componentFactory = MakeShared(CComponentsFactory, *baseManager, "otSceneNodeComponent", otSceneNodeComponent);
 		componentFactory->AddClassCreator(MakeShared(CComponentsEngineCreator, *baseManager));
 		factory->AddClassFactory(componentFactory);
-	}
-
-	// Passes
-	{
-		std::shared_ptr<IRenderPassFactory> factory = MakeShared(CRenderPassFactory);
-		baseManager->AddManager<IRenderPassFactory>(factory);
-		pluginsManager->AddPluginEventListener(std::dynamic_pointer_cast<IznPluginsEventListener>(factory));
 	}
 
 	// Plugins

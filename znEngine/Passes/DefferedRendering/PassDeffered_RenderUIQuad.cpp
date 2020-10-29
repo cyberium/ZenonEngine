@@ -3,18 +3,27 @@
 // General
 #include "PassDeffered_RenderUIQuad.h"
 
+
+struct __declspec(align(16)) SDefferedLightResult
+{
+	SLight     Light;
+	glm::vec4  LightPositionVS;
+	glm::vec4  LightDirectionVS;
+	glm::mat4  LightViewMatrix;
+	glm::mat4  LightProjectionMatrix;
+};
+
+
 CPassDeffered_RenderUIQuad::CPassDeffered_RenderUIQuad(IRenderDevice& RenderDevice, std::shared_ptr<CPassDeffered_DoRenderScene> DefferedRender, std::shared_ptr<CPassDeffered_ProcessLights> DefferedRenderPrepareLights)
 	: RenderPassPipelined(RenderDevice)
 	, m_DefferedRender(DefferedRender)
 	, m_Deffered_Lights(DefferedRenderPrepareLights)
 {
-	m_LightResultData = (SLightResult*)_aligned_malloc(sizeof(SLightResult), 16);
-	m_LightResultConstantBuffer = GetRenderDevice().GetObjectsFactory().CreateConstantBuffer(SLightResult());
+	m_LightResultConstantBuffer = GetRenderDevice().GetObjectsFactory().CreateConstantBuffer(SDefferedLightResult());
 }
 
 CPassDeffered_RenderUIQuad::~CPassDeffered_RenderUIQuad()
 {
-	_aligned_free(m_LightResultData);
 }
 
 
@@ -90,20 +99,21 @@ void CPassDeffered_RenderUIQuad::BindLightParamsForCurrentIteration(const Render
 	const ICameraComponent3D* camera = e.Camera;
 	_ASSERT(camera != nullptr);
 
-	SLightResult lightResult;
-	lightResult.Light = LightResult.Light->GetLightStruct();
-	lightResult.Light.PositionVS = camera->GetViewMatrix() * glm::vec4(lightResult.Light.PositionWS.xyz(), 1.0f);
-	lightResult.Light.DirectionVS = glm::normalize(camera->GetViewMatrix() * glm::vec4(lightResult.Light.DirectionWS.xyz(), 0.0f));
-	lightResult.LightViewMatrix = LightResult.Light->GetViewMatrix();
-	lightResult.LightProjectionMatrix = LightResult.Light->GetProjectionMatrix();
-	lightResult.IsShadowEnabled = LightResult.IsShadowEnable;
+	SDefferedLightResult lightResult;
+	lightResult.Light                  = LightResult.LightNode->GetLightStruct();
+	// From World space to camera space
+	lightResult.LightPositionVS        = camera->GetViewMatrix() * glm::vec4(lightResult.Light.Position.xyz(),  1.0f);
+	lightResult.LightDirectionVS       = glm::normalize(camera->GetViewMatrix() * glm::vec4(lightResult.Light.Direction.xyz(), 0.0f));
+	lightResult.LightViewMatrix        = LightResult.LightNode->GetViewMatrix();
+	lightResult.LightProjectionMatrix  = LightResult.LightNode->GetProjectionMatrix();
+
+
 
 	{
-	    *m_LightResultData = lightResult;
-		m_LightResultConstantBuffer->Set(*m_LightResultData);
+		m_LightResultConstantBuffer->Set(lightResult);
 
 		auto& lightParam = GetPipeline().GetShader(EShaderType::PixelShader)->GetShaderParameterByName("LightResult");
-		if (lightParam.IsValid() && m_LightResultConstantBuffer != nullptr)
+		if (lightParam.IsValid())
 		{
 			lightParam.SetConstantBuffer(m_LightResultConstantBuffer);
 			lightParam.Bind();
@@ -114,9 +124,11 @@ void CPassDeffered_RenderUIQuad::BindLightParamsForCurrentIteration(const Render
 		}
 	}
 
+
+
 	{
 		auto& shadowTexture = GetPipeline().GetShader(EShaderType::PixelShader)->GetShaderParameterByName("TextureShadow");
-		if (shadowTexture.IsValid() && LightResult.IsShadowEnable && LightResult.ShadowTexture != nullptr)
+		if (shadowTexture.IsValid() && LightResult.IsCastShadow && LightResult.ShadowTexture != nullptr)
 		{
 			shadowTexture.SetTexture(LightResult.ShadowTexture);
 			shadowTexture.Bind();

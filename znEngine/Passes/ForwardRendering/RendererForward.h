@@ -2,6 +2,8 @@
 
 #include "../Scene/SceneCreateTypelessListPass.h"
 
+#include "PassForward_DoRenderScene.h"
+
 class ZN_API CRendererForward
 	: public IRenderer
 {
@@ -23,7 +25,7 @@ private:
 	std::vector<std::shared_ptr<IRenderPass>> m_UIPasses;
 
 	std::shared_ptr<CSceneCreateTypelessListPass> m_SceneCreateTypelessListPass;
-	std::shared_ptr<IMaterialModelPass> m_MaterialModelPass;
+	std::shared_ptr<CPassForward_DoRenderScene> m_MaterialModelPass;
 	std::shared_ptr<IStructuredBuffer>  m_LightsBuffer;
 	size_t							    m_LightsCnt;
 

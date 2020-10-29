@@ -6,7 +6,7 @@ class ZN_API Base3DPass
 	: public ScenePassPipelined
 {
 public:
-	Base3DPass(IRenderDevice& RenderDevice, const std::shared_ptr<IScene>& scene);
+	Base3DPass(IRenderDevice& RenderDevice, const std::weak_ptr<IScene>& scene);
 	virtual ~Base3DPass();
 
 	// IVisitor

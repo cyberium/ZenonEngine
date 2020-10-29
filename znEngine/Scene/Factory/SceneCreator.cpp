@@ -3,6 +3,9 @@
 // General
 #include "SceneCreator.h"
 
+// Additonal
+#include "Scene/SceneBase.h"
+
 CSceneEngineCreator::CSceneEngineCreator(IBaseManager& BaseManager)
 	: CObjectClassCreator(BaseManager)
 {

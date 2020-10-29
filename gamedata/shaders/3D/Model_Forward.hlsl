@@ -18,8 +18,6 @@ struct VertexShaderOutput
 //OUT.tangentVS = mul((float3x3)mv, IN.tangent);
 //OUT.binormalVS = mul((float3x3)mv, IN.binormal);
 //OUT.normalVS = mul((float3x3)mv, IN.normal);
-
-
 //const float4x4 mvl = mul(PL.LightView, PO.Model);
 //const float4x4 mvpl = mul(PL.LightProjection, mvl);
 //OUT.lightViewPosition = mul(mvpl, float4(IN.position, 1.0f));
@@ -31,11 +29,10 @@ cbuffer Material : register(b2)
 };
 
 
-
-StructuredBuffer<Light>           Lights              : register(t10);
-StructuredBuffer<PerObject>       Instances           : register(t11);
-Texture2D                         TextureShadow       : register(t12);
-StructuredBuffer<float4x4>        Bones               : register(t13);
+StructuredBuffer<LightVS>            LightsVS            : register(t10);
+StructuredBuffer<PerObject>          Instances           : register(t11);
+Texture2D                            TextureShadow       : register(t12);
+StructuredBuffer<float4x4>           Bones               : register(t13);
 
 
 VertexShaderOutput VS_PTNTBBB(VSInputPTNTBBB IN)
@@ -171,7 +168,7 @@ float4 PS_main(VertexShaderOutput IN) : SV_TARGET
 	MaterialForLight matForLight;
 	matForLight.SpecularFactor = specular.a;
 	
-	LightingResult lit = DoLighting(Lights, matForLight, eyePos, positionVS, normalVS);
+	LightingResult lit = DoLighting(LightsVS, matForLight, eyePos, positionVS, normalVS);
 
 	float3 ambientLight  = diffuseAndAlpha.rgb * lit.Ambient.rgb;
 	float3 diffuseLight  = diffuseAndAlpha.rgb * lit.Diffuse.rgb;

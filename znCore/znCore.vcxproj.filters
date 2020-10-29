@@ -108,9 +108,6 @@
     <ClCompile Include="Scene\ComponentBase.cpp">
       <Filter>Scene</Filter>
     </ClCompile>
-    <ClCompile Include="Scene\SceneBase.cpp">
-      <Filter>Scene</Filter>
-    </ClCompile>
     <ClCompile Include="XML\XMLManager.cpp">
       <Filter>XML</Filter>
     </ClCompile>
@@ -474,9 +471,6 @@
       <Filter>Passes</Filter>
     </ClInclude>
     <ClInclude Include="Scene\ComponentBase.h">
-      <Filter>Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="Scene\SceneBase.h">
       <Filter>Scene</Filter>
     </ClInclude>
     <ClInclude Include="..\shared\Interfaces\Scene\IActions.h">

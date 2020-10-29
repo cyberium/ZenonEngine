@@ -1,12 +1,11 @@
 #pragma once
 
-class CMaterialModelPass
+class CPassForward_DoRenderScene
 	: public Base3DPass
-	, public IMaterialModelPass
 {
 public:
-	CMaterialModelPass(IRenderDevice& RenderDevice, std::shared_ptr<IScene> Scene);
-	virtual ~CMaterialModelPass();
+	CPassForward_DoRenderScene(IRenderDevice& RenderDevice, std::weak_ptr<IScene> Scene);
+	virtual ~CPassForward_DoRenderScene();
 
 	IShaderParameter* GetLightsShaderParameter() const;
 
