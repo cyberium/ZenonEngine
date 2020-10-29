@@ -307,6 +307,7 @@
     <ClCompile Include="Formats\Models\EngineModelsLoader.cpp" />
     <ClCompile Include="Formats\Models\FBXModelsLoader.cpp" />
     <ClCompile Include="Formats\Models\ModelsFactory.cpp" />
+    <ClCompile Include="Formats\Textures\TexturesFactory.cpp" />
     <ClCompile Include="Materials\MaterialParticle.cpp" />
     <ClCompile Include="Passes\DrawBonesPass.cpp" />
     <ClCompile Include="Passes\DrawBoundingBoxPass.cpp" />
@@ -506,6 +507,7 @@
     <ClInclude Include="Formats\Models\EngineModelsLoader.h" />
     <ClInclude Include="Formats\Models\FBXModelsLoader.h" />
     <ClInclude Include="Formats\Models\ModelsFactory.h" />
+    <ClInclude Include="Formats\Textures\TexturesFactory.h" />
     <ClInclude Include="Materials\MaterialParticle.h" />
     <ClInclude Include="Passes\DrawBonesPass.h" />
     <ClInclude Include="Passes\DrawBoundingBoxPass.h" />

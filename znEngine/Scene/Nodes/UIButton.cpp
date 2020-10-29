@@ -25,10 +25,10 @@ CUIButtonNode::~CUIButtonNode()
 //
 void CUIButtonNode::CreateDefault()
 {
-	m_Material->SetIdleTexture(GetBaseManager().GetApplication().GetRenderDevice().GetObjectsFactory().LoadTexture2D("btn_idle.png"));
-	m_Material->SetHoverTexture(GetBaseManager().GetApplication().GetRenderDevice().GetObjectsFactory().LoadTexture2D("btn_hover.png"));
-	m_Material->SetClickedTexture(GetBaseManager().GetApplication().GetRenderDevice().GetObjectsFactory().LoadTexture2D("btn_clicked.png"));
-	m_Material->SetDisabledTexture(GetBaseManager().GetApplication().GetRenderDevice().GetObjectsFactory().LoadTexture2D("btn_idle.png"));
+	m_Material->SetIdleTexture(GetBaseManager().GetManager<IznTexturesFactory>()->LoadTexture2D("btn_idle.png"));
+	m_Material->SetHoverTexture(GetBaseManager().GetManager<IznTexturesFactory>()->LoadTexture2D("btn_hover.png"));
+	m_Material->SetClickedTexture(GetBaseManager().GetManager<IznTexturesFactory>()->LoadTexture2D("btn_clicked.png"));
+	m_Material->SetDisabledTexture(GetBaseManager().GetManager<IznTexturesFactory>()->LoadTexture2D("btn_idle.png"));
 
 	const auto& idleTexture = m_Material->GetTexture(0);
     m_Size = idleTexture->GetSize();

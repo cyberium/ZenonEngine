@@ -72,6 +72,9 @@ std::shared_ptr<IModel> CznModelsFactory::LoadModel(const std::string& ModelFile
 
 std::shared_ptr<IModel> CznModelsFactory::LoadModel(const std::shared_ptr<IFile>& ModelFile, const std::shared_ptr<IznLoaderParams>& LoaderParams)
 {
+	if (ModelFile == nullptr)
+		throw CException("Can't load nullptr file.");
+
 	// Find existsing cached
 	const auto& iter = m_ModelsByName.find(ModelFile->Path_Name());
 	if (iter != m_ModelsByName.end())

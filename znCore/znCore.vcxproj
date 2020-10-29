@@ -186,8 +186,9 @@
     <ClInclude Include="..\Externals\sockets\Utility.h" />
     <ClInclude Include="..\shared\Interfaces\FontsManager.h" />
     <ClInclude Include="..\shared\Interfaces\Managers\FontsManager.h" />
-    <ClInclude Include="..\shared\Interfaces\Managers\ImageLoader.h" />
-    <ClInclude Include="..\shared\Interfaces\Managers\ModelsManager.h" />
+    <ClInclude Include="..\shared\Interfaces\Managers\ImagesFactory.h" />
+    <ClInclude Include="..\shared\Interfaces\Managers\ModelsFactory.h" />
+    <ClInclude Include="..\shared\Interfaces\Managers\TexturesFactory.h" />
     <ClInclude Include="..\shared\Interfaces\ModelsManager.h" />
     <ClInclude Include="..\shared\Interfaces\Render\IGeometry.h" />
     <ClInclude Include="..\shared\Interfaces\Render\IRenderTechnique.h" />

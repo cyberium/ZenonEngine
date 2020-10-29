@@ -21,7 +21,7 @@
 #include "PipelineStateDX11.h"
 #include "QueryDX11.h"
 
-namespace
+/*namespace
 {
 	std::string ShaderMacrosToString(const IShader::ShaderMacros& _shaderMacros)
 	{
@@ -30,7 +30,7 @@ namespace
 			value += it.first + "_" + it.second;
 		return value;
 	}
-}
+}*/
 
 
 
@@ -55,26 +55,6 @@ std::shared_ptr<IRenderWindow> CRenderObjectsFactoryDX11::CreateRenderWindow(INa
 	std::shared_ptr<IRenderWindow> renderWindow = MakeShared(RenderWindowDX11, m_RenderDeviceDX11, WindowObject, vSync);
 	m_RenderWindows.insert(std::make_pair(GenerateRenderObjectID(), renderWindow));
 	return renderWindow;
-}
-
-std::shared_ptr<IShader> CRenderObjectsFactoryDX11::LoadShader(EShaderType type, const std::string& fileName, const std::string& entryPoint, const IShader::ShaderMacros& shaderMacros, IShaderInputLayout* _customLayout)
-{
-	std::string fullName = fileName + ShaderMacrosToString(shaderMacros) + entryPoint;
-
-	//const auto& iter = m_ShadersByName.find(fullName);
-	//if (iter != m_ShadersByName.end())
-	//{
-	//	if (std::shared_ptr<IShader> shader = iter->second.lock())
-	//		return shader;
-	//}
-
-	std::shared_ptr<IShader> object = MakeShared(ShaderDX11, m_RenderDeviceDX11);
-	object->LoadFromFile(type, fileName, shaderMacros, entryPoint, _customLayout);
-
-	m_Shaders.insert(std::make_pair(GenerateRenderObjectID(), object));
-	m_ShadersByName.insert(std::make_pair(fullName, object));
-
-	return object;
 }
 
 std::shared_ptr<IGeometry> CRenderObjectsFactoryDX11::CreateGeometry()
@@ -251,6 +231,19 @@ std::shared_ptr<IStructuredBuffer> CRenderObjectsFactoryDX11::CreateStructuredBu
 	//m_Buffers.insert(std::make_pair(GenerateRenderObjectID(), object));
 	return object;
 }
+
+
+
+std::shared_ptr<IShader> CRenderObjectsFactoryDX11::LoadShader(EShaderType type, const std::string& fileName, const std::string& entryPoint, const IShader::ShaderMacros& shaderMacros, IShaderInputLayout* _customLayout)
+{
+	std::lock_guard<std::recursive_mutex> locker(m_LockMutex);
+
+	std::shared_ptr<IShader> object = MakeShared(ShaderDX11, m_RenderDeviceDX11);
+	object->LoadFromFile(type, fileName, shaderMacros, entryPoint, _customLayout);
+	m_Shaders.insert(std::make_pair(GenerateRenderObjectID(), object));
+	return object;
+}
+
 
 std::shared_ptr<IBuffer> CRenderObjectsFactoryDX11::LoadVoidBuffer(const std::shared_ptr<IByteBuffer>& ByteBuffer)
 {

@@ -117,10 +117,7 @@ int main(int argumentCount, char* arguments[])
 	main_internal(argumentCount, arguments);		
 
 	if (BaseManager)
-	{
-		BaseManager->RemoveAllManagers();
 		delete BaseManager;
-	}
 
 	//_CrtMemDumpAllObjectsSince(NULL);
 

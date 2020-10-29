@@ -136,11 +136,11 @@ void MaterialBase::Load(const std::shared_ptr<IByteBuffer>& ByteBuffer)
 		std::string textureFileName;
 		ByteBuffer->readString(&textureFileName);
 
-		auto texture = m_RenderDevice.GetObjectsFactory().LoadTexture2D(textureFileName);
+		auto texture = m_RenderDevice.GetBaseManager().GetManager<IznTexturesFactory>()->LoadTexture2D(textureFileName);
 		if (texture == nullptr)
 		{
 			Log::Error("MaterialBase: Unable load texture: '%s' with index '%d' for material '%s'.", textureFileName.c_str(), textureIndex, GetName().c_str());
-			texture = m_RenderDevice.GetDefaultTexture();
+			texture = m_RenderDevice.GetBaseManager().GetManager<IznTexturesFactory>()->GetDefaultTexture();
 		}
 
 		if (m_Textures.find(textureIndex) != m_Textures.end())
@@ -178,7 +178,7 @@ void MaterialBase::Save(const std::shared_ptr<IByteBuffer>& ByteBuffer) const
 			throw CException("Empty filename for m_Texture[%d].", texture.first);
 
 		// Тупая проверка. Но для меня сейчас это надежда найти всякую хуйню с менеджером тексутр.
-		_ASSERT(m_RenderDevice.GetObjectsFactory().LoadTexture2D(fileName) == texture.second);
+		_ASSERT(m_RenderDevice.GetBaseManager().GetManager<IznTexturesFactory>()->LoadTexture2D(fileName) == texture.second);
 
 		ByteBuffer->write(&texture.first);
 		ByteBuffer->writeString(fileName);

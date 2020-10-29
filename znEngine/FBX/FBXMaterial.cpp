@@ -234,7 +234,7 @@ std::shared_ptr<ITexture> CFBXMaterial::LoadTexture(fbxsdk::FbxTexture * Texture
 			fileName = texturesRoot + "/" + fileName;
 	}
 
-	return m_BaseManager.GetApplication().GetRenderDevice().GetObjectsFactory().LoadTexture2D(fileName);
+	return m_BaseManager.GetManager<IznTexturesFactory>()->LoadTexture2D(fileName);
 }
 
 #endif

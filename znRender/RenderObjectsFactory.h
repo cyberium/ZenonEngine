@@ -13,29 +13,17 @@ public:
 	std::shared_ptr<IRenderObject>    GetRenderObject(RenderObjectID ID) const override;
 	void                              ClearCache() override;
 
-	std::shared_ptr<IModel>           LoadModel(const std::string& fileName) override final;
-	std::shared_ptr<ITexture>         LoadTexture2D(const std::string& fileName) override final;
-	std::shared_ptr<ITexture>         LoadTextureCube(const std::string& fileName) override final;
-
 protected:
 	RenderObjectID                    GenerateRenderObjectID();
 
 
 protected:
 	std::unordered_map<RenderObjectID, std::weak_ptr<IRenderWindow>>      m_RenderWindows;
-
 	std::unordered_map<RenderObjectID, std::weak_ptr<IShader>>            m_Shaders;
-	std::unordered_map<std::string,    std::weak_ptr<IShader>>            m_ShadersByName;
-
 	std::unordered_map<RenderObjectID, std::weak_ptr<IGeometry>>          m_Geometries;
 	std::unordered_map<RenderObjectID, std::weak_ptr<IModel>>             m_Models;
-
 	std::unordered_map<RenderObjectID, std::weak_ptr<ITexture>>           m_Textures;
-	std::unordered_map<std::string,    std::weak_ptr<ITexture>>           m_TexturesByName;
-	
 	std::unordered_map<RenderObjectID, std::weak_ptr<IMaterial>>          m_Materials;
-	std::unordered_map<std::string,    std::weak_ptr<IMaterial>>          m_MaterialsByName;
-
 	std::unordered_map<RenderObjectID, std::weak_ptr<IRenderTarget>>      m_RenderTargets;
 	std::unordered_map<RenderObjectID, std::weak_ptr<IQuery>>             m_Queries;
 	std::unordered_map<RenderObjectID, std::weak_ptr<ISamplerState>>      m_Samplers;

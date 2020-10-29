@@ -150,8 +150,9 @@ class Rect;
 #include "Interfaces/XML.h"
 
 #include "Interfaces/Managers/FontsManager.h"
-#include "Interfaces/Managers/ModelsManager.h"
-#include "Interfaces/Managers/ImageLoader.h"
+#include "Interfaces/Managers/ModelsFactory.h"
+#include "Interfaces/Managers/ImagesFactory.h"
+#include "Interfaces/Managers/TexturesFactory.h"
 
 
 //---------------------------------------------------------//

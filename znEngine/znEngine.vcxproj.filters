@@ -702,6 +702,9 @@
     <ClCompile Include="Passes\RenderPassFactory.cpp">
       <Filter>Passes\Factory</Filter>
     </ClCompile>
+    <ClCompile Include="Formats\Textures\TexturesFactory.cpp">
+      <Filter>Formats\Textures</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="common.h">
@@ -1283,6 +1286,9 @@
     </ClInclude>
     <ClInclude Include="Passes\RenderPassFactory.h">
       <Filter>Passes\Factory</Filter>
+    </ClInclude>
+    <ClInclude Include="Formats\Textures\TexturesFactory.h">
+      <Filter>Formats\Textures</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

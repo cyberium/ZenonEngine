@@ -117,9 +117,9 @@ void CSceneDefault::Load3D()
 		std::shared_ptr<MaterialModel> textMaterial = MakeShared(MaterialModel, GetBaseManager());
 		//textMaterial->SetSpecularFactor(8.0f);
 		//textMaterial->SetBumpFactor(8.0f);
-		textMaterial->SetTexture(MaterialModel::ETextureType::TextureDiffuse, GetRenderDevice().GetObjectsFactory().LoadTexture2D("beaten-up-metal1-unity//beaten-up-metal1-albedo.png"));
-		textMaterial->SetTexture(MaterialModel::ETextureType::TextureNormalMap, GetRenderDevice().GetObjectsFactory().LoadTexture2D("beaten-up-metal1-unity//beaten-up-metal1-Normal-ogl.png"));
-		textMaterial->SetTexture(MaterialModel::ETextureType::TextureSpecular, GetRenderDevice().GetObjectsFactory().LoadTexture2D("beaten-up-metal1-unity//beaten-up-metal1-ao.png"));
+		textMaterial->SetTexture(MaterialModel::ETextureType::TextureDiffuse, GetBaseManager().GetManager<IznTexturesFactory>()->LoadTexture2D("beaten-up-metal1-unity//beaten-up-metal1-albedo.png"));
+		textMaterial->SetTexture(MaterialModel::ETextureType::TextureNormalMap, GetBaseManager().GetManager<IznTexturesFactory>()->LoadTexture2D("beaten-up-metal1-unity//beaten-up-metal1-Normal-ogl.png"));
+		textMaterial->SetTexture(MaterialModel::ETextureType::TextureSpecular, GetBaseManager().GetManager<IznTexturesFactory>()->LoadTexture2D("beaten-up-metal1-unity//beaten-up-metal1-ao.png"));
 
 		auto& modelPlane = GetRenderDevice().GetObjectsFactory().CreateModel();
 		modelPlane->AddConnection(textMaterial, GetRenderDevice().GetPrimitivesFactory().CreateSphere());
@@ -142,10 +142,10 @@ void CSceneDefault::Load3D()
 		textMaterial->SetSpecularFactor(32.0f);
 		//textMaterial->SetBumpFactor(16.0f);
 
-		textMaterial->SetTexture(MaterialModel::ETextureType::TextureDiffuse, GetRenderDevice().GetObjectsFactory().LoadTexture2D("pirate-gold-unity//pirate-gold_albedo.png"));
-		textMaterial->SetTexture(MaterialModel::ETextureType::TextureNormalMap, GetRenderDevice().GetObjectsFactory().LoadTexture2D("pirate-gold-unity//pirate-gold_normal-ogl.png"));
-		textMaterial->SetTexture(MaterialModel::ETextureType::TextureSpecular, GetRenderDevice().GetObjectsFactory().LoadTexture2D("pirate-gold-unity//pirate-gold_ao.png"));
-		textMaterial->SetTexture(MaterialModel::ETextureType::TextureDisplacement, GetRenderDevice().GetObjectsFactory().LoadTexture2D("pirate-gold-unity//pirate-gold_height.png"));
+		textMaterial->SetTexture(MaterialModel::ETextureType::TextureDiffuse, GetBaseManager().GetManager<IznTexturesFactory>()->LoadTexture2D("pirate-gold-unity//pirate-gold_albedo.png"));
+		textMaterial->SetTexture(MaterialModel::ETextureType::TextureNormalMap, GetBaseManager().GetManager<IznTexturesFactory>()->LoadTexture2D("pirate-gold-unity//pirate-gold_normal-ogl.png"));
+		textMaterial->SetTexture(MaterialModel::ETextureType::TextureSpecular, GetBaseManager().GetManager<IznTexturesFactory>()->LoadTexture2D("pirate-gold-unity//pirate-gold_ao.png"));
+		textMaterial->SetTexture(MaterialModel::ETextureType::TextureDisplacement, GetBaseManager().GetManager<IznTexturesFactory>()->LoadTexture2D("pirate-gold-unity//pirate-gold_height.png"));
 
 		auto& modelPlane = GetRenderDevice().GetObjectsFactory().CreateModel();
 		modelPlane->AddConnection(textMaterial, GetRenderDevice().GetPrimitivesFactory().CreateCube());
@@ -280,13 +280,13 @@ void CSceneDefault::Load3DOld()
 		textMaterial->SetSpecularColor(glm::vec3(1.0f, 1.0f, 1.0f));
 		textMaterial->SetSpecularFactor(4.0f);
 		textMaterial->SetBumpFactor(8.0f);
-		textMaterial->SetTexture(MaterialModel::ETextureType::TextureDiffuse, GetRenderDevice().GetObjectsFactory().LoadTexture2D("AmazonScene//BuildingTextures//concrete_smooth_03_diff.dds"));
-		//textMaterial->SetTexture(MaterialModel::ETextureType::TextureNormalMap, GetRenderDevice().GetObjectsFactory().LoadTexture2D("Sponza_Ceiling_normal.png"));
-		textMaterial->SetTexture(MaterialModel::ETextureType::TextureSpecular, GetRenderDevice().GetObjectsFactory().LoadTexture2D("AmazonScene//BuildingTextures//concrete_smooth_03_spec.dds"));
-		textMaterial->SetTexture(MaterialModel::ETextureType::TextureBump, GetRenderDevice().GetObjectsFactory().LoadTexture2D("AmazonScene//BuildingTextures//concrete_smooth_03_ddna.dds"));
+		textMaterial->SetTexture(MaterialModel::ETextureType::TextureDiffuse, GetBaseManager().GetManager<IznTexturesFactory>()->LoadTexture2D("AmazonScene//BuildingTextures//concrete_smooth_03_diff.dds"));
+		//textMaterial->SetTexture(MaterialModel::ETextureType::TextureNormalMap, GetBaseManager().GetManager<IznTexturesFactory>()->LoadTexture2D("Sponza_Ceiling_normal.png"));
+		textMaterial->SetTexture(MaterialModel::ETextureType::TextureSpecular, GetBaseManager().GetManager<IznTexturesFactory>()->LoadTexture2D("AmazonScene//BuildingTextures//concrete_smooth_03_spec.dds"));
+		textMaterial->SetTexture(MaterialModel::ETextureType::TextureBump, GetBaseManager().GetManager<IznTexturesFactory>()->LoadTexture2D("AmazonScene//BuildingTextures//concrete_smooth_03_ddna.dds"));
 
 		//std::shared_ptr<MaterialTextured> textMaterial = MakeShared(MaterialTextured, GetRenderDevice());
-		//textMaterial->SetTexture(0, GetRenderDevice().GetObjectsFactory().LoadTexture2D("Sponza_Floor_diffuse.png"));
+		//textMaterial->SetTexture(0, GetBaseManager().GetManager<IznTexturesFactory>()->LoadTexture2D("Sponza_Floor_diffuse.png"));
 
 		auto cubeModel = GetRenderDevice().GetObjectsFactory().CreateModel();
 		cubeModel->AddConnection(textMaterial, GetRenderDevice().GetPrimitivesFactory().CreateCube());
@@ -357,13 +357,13 @@ void CSceneDefault::Load3DOld()
 		textMaterial->SetSpecularColor(glm::vec3(1.0f, 1.0f, 1.0f));
 		textMaterial->SetSpecularFactor(1.0f);
 		textMaterial->SetBumpFactor(8.0f);
-		textMaterial->SetTexture(MaterialModel::ETextureType::TextureDiffuse, GetRenderDevice().GetObjectsFactory().LoadTexture2D("AmazonScene//OtherTextures//Colors//Orange.dds"));
-		//textMaterial->SetTexture(MaterialModel::ETextureType::TextureNormalMap, GetRenderDevice().GetObjectsFactory().LoadTexture2D("Sponza_Ceiling_normal.png"));
-		//textMaterial->SetTexture(MaterialModel::ETextureType::TextureSpecular, GetRenderDevice().GetObjectsFactory().LoadTexture2D("AmazonScene//BuildingTextures//concrete_smooth_03_spec.dds"));
-		//textMaterial->SetTexture(MaterialModel::ETextureType::TextureBump, GetRenderDevice().GetObjectsFactory().LoadTexture2D("AmazonScene//BuildingTextures//concrete_smooth_03_ddna.dds"));
+		textMaterial->SetTexture(MaterialModel::ETextureType::TextureDiffuse, GetBaseManager().GetManager<IznTexturesFactory>()->LoadTexture2D("AmazonScene//OtherTextures//Colors//Orange.dds"));
+		//textMaterial->SetTexture(MaterialModel::ETextureType::TextureNormalMap, GetBaseManager().GetManager<IznTexturesFactory>()->LoadTexture2D("Sponza_Ceiling_normal.png"));
+		//textMaterial->SetTexture(MaterialModel::ETextureType::TextureSpecular, GetBaseManager().GetManager<IznTexturesFactory>()->LoadTexture2D("AmazonScene//BuildingTextures//concrete_smooth_03_spec.dds"));
+		//textMaterial->SetTexture(MaterialModel::ETextureType::TextureBump, GetBaseManager().GetManager<IznTexturesFactory>()->LoadTexture2D("AmazonScene//BuildingTextures//concrete_smooth_03_ddna.dds"));
 
 		//std::shared_ptr<MaterialTextured> textMaterial = MakeShared(MaterialTextured, GetRenderDevice());
-		//textMaterial->SetTexture(0, GetRenderDevice().GetObjectsFactory().LoadTexture2D("idi na huy.png"));
+		//textMaterial->SetTexture(0, GetBaseManager().GetManager<IznTexturesFactory>()->LoadTexture2D("idi na huy.png"));
 
 		auto& modelPlane = GetRenderDevice().GetObjectsFactory().CreateModel();
 		modelPlane->AddConnection(textMaterial, GetRenderDevice().GetPrimitivesFactory().CreatePlane());
@@ -418,7 +418,7 @@ void CSceneDefault::Load3DOld()
 		/*
 
 		auto material = MakeShared(MaterialParticle, GetRenderDevice());
-		material->SetTexture(0, GetRenderDevice().GetObjectsFactory().LoadTexture2D("particle.png"));
+		material->SetTexture(0, GetBaseManager().GetManager<IznTexturesFactory>()->LoadTexture2D("particle.png"));
 
 		auto particlesNode = m_RootForBoxes->CreateSceneNode<SceneNode3D>();
 		particlesNode->SetName("Particles");

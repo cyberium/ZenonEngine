@@ -28,8 +28,6 @@ bool RenderDeviceDX11::Initialize()
 {
 	InitializeD3D11();
 
-	LoadDefaultResources();
-
 	return true;
 }
 
@@ -66,11 +64,6 @@ IRenderPrimitivesFactory & RenderDeviceDX11::GetPrimitivesFactory() const
 IRenderObjectsFactory & RenderDeviceDX11::GetObjectsFactory() const
 {
 	return __super::GetObjectsFactory();
-}
-
-std::shared_ptr<ITexture> RenderDeviceDX11::GetDefaultTexture() const
-{
-	return __super::GetDefaultTexture();
 }
 
 

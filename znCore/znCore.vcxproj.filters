@@ -785,10 +785,13 @@
     <ClInclude Include="..\shared\Interfaces\Managers\FontsManager.h">
       <Filter>__Interfaces\Managers</Filter>
     </ClInclude>
-    <ClInclude Include="..\shared\Interfaces\Managers\ImageLoader.h">
+    <ClInclude Include="..\shared\Interfaces\Managers\ImagesFactory.h">
       <Filter>__Interfaces\Managers</Filter>
     </ClInclude>
-    <ClInclude Include="..\shared\Interfaces\Managers\ModelsManager.h">
+    <ClInclude Include="..\shared\Interfaces\Managers\ModelsFactory.h">
+      <Filter>__Interfaces\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\Interfaces\Managers\TexturesFactory.h">
       <Filter>__Interfaces\Managers</Filter>
     </ClInclude>
   </ItemGroup>

@@ -16,7 +16,6 @@ public:
 	IBaseManager&                                   GetBaseManager() const;
 	IRenderPrimitivesFactory&                       GetPrimitivesFactory() const override;
 	IRenderObjectsFactory&                          GetObjectsFactory() const override;
-	std::shared_ptr<ITexture>                       GetDefaultTexture() const override;
 	
 
 	// RenderDeviceDX11

@@ -29,18 +29,3 @@ IRenderObjectsFactory& CRenderDeviceBase::GetObjectsFactory() const
 {
 	return *m_RenderObjectsFactory;
 }
-
-std::shared_ptr<ITexture> CRenderDeviceBase::GetDefaultTexture() const
-{
-	return m_DefaultTexture;
-}
-
-
-
-//
-// Protected
-//
-void CRenderDeviceBase::LoadDefaultResources()
-{
-	m_DefaultTexture = GetObjectsFactory().LoadTexture2D("IDB_DEFAULT_TEXTURE");
-}

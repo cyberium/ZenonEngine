@@ -40,7 +40,7 @@ std::shared_ptr<IImage> CImagesFactory::CreateImage(const std::string& FileName)
 std::shared_ptr<IImage> CImagesFactory::CreateImage(const std::shared_ptr<IFile>& File)
 {
 	if (File == nullptr)
-		throw CException("CImagesFactory: Can't load null file.");
+		throw CException("ImagesFactory: Can't load null file.");
 
 	const auto& iter = m_ImagesByName.find(File->Path_Name());
 	if (iter != m_ImagesByName.end())

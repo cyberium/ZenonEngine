@@ -95,9 +95,6 @@ ZN_INTERFACE ZN_API IRenderObjectsFactory
 	virtual std::shared_ptr<IStructuredBuffer> CreateStructuredBuffer(void* data, size_t count, size_t stride, EAccess cpuAccess = EAccess::None) = 0;
 
 	virtual std::shared_ptr<IShader>            LoadShader(EShaderType type, const std::string& fileName, const std::string& entryPoint, const IShader::ShaderMacros& shaderMacros = IShader::ShaderMacros(), IShaderInputLayout* CustomLayout = nullptr) = 0;
-	virtual std::shared_ptr<IModel>             LoadModel(const std::string& fileName) = 0;
-	virtual std::shared_ptr<ITexture>           LoadTexture2D(const std::string& fileName) = 0;
-	virtual std::shared_ptr<ITexture>           LoadTextureCube(const std::string& fileName) = 0;
 
 	virtual std::shared_ptr<IBuffer>            LoadVoidBuffer(const std::shared_ptr<IByteBuffer>& ByteBuffer) = 0;
 	virtual std::shared_ptr<IConstantBuffer>    LoadConstantBuffer(const std::shared_ptr<IByteBuffer>& ByteBuffer) = 0;
@@ -164,6 +161,4 @@ ZN_INTERFACE ZN_API IRenderDevice
 
 	virtual IRenderPrimitivesFactory&  GetPrimitivesFactory() const = 0;
 	virtual IRenderObjectsFactory&     GetObjectsFactory() const = 0;
-
-	virtual std::shared_ptr<ITexture>  GetDefaultTexture() const = 0;
 };
