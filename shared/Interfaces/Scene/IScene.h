@@ -1,6 +1,7 @@
 #pragma once
 
 // FORWARD BEGIN
+ZN_INTERFACE IRenderWindow;
 ZN_INTERFACE ISceneNode3D;
 ZN_INTERFACE ISceneNodeUI;
 ZN_INTERFACE IVisitor;
@@ -32,8 +33,7 @@ ZN_INTERFACE ZN_API IScene
 {
 	virtual ~IScene() {}
 
-	virtual void SetRenderWindow(const std::weak_ptr<IRenderWindow>& RenderWindow) = 0;
-	virtual std::shared_ptr<IRenderWindow> GetRenderWindow() const = 0;
+	virtual IRenderWindow& GetRenderWindow() const = 0;
 
 	virtual void SetRenderer(std::shared_ptr<IRenderer> Renderer) = 0;
 	virtual std::shared_ptr<IRenderer> GetRenderer() const = 0;

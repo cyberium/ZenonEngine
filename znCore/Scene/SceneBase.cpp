@@ -7,9 +7,10 @@
 #include "SceneNode3D.h"
 #include "SceneNodeUI.h"
 
-SceneBase::SceneBase(IBaseManager& BaseManager)
+SceneBase::SceneBase(IBaseManager& BaseManager, IRenderWindow& RenderWindow)
 	: m_BaseManager(BaseManager)
 	, m_RenderDevice(BaseManager.GetApplication().GetRenderDevice())
+	, m_RenderWindow(RenderWindow)
 	, m_IsFreezed(false)
 	, m_Finder(std::make_unique<CSceneFinder>(*this))
 {
@@ -24,18 +25,9 @@ SceneBase::~SceneBase()
 
 
 
-
-void SceneBase::SetRenderWindow(const std::weak_ptr<IRenderWindow>& RenderWindow)
+IRenderWindow& SceneBase::GetRenderWindow() const
 {
-	m_RenderWindow = RenderWindow;
-}
-
-std::shared_ptr<IRenderWindow> SceneBase::GetRenderWindow() const
-{
-	std::shared_ptr<IRenderWindow> renderWindow = m_RenderWindow.lock();
-	if (renderWindow == nullptr)
-		return nullptr;
-	return renderWindow;
+	return m_RenderWindow;
 }
 
 void SceneBase::AddEventListener(std::shared_ptr<ISceneEventsListener> Listener)
@@ -360,13 +352,12 @@ void SceneBase::OnRenderUI(RenderEventArgs & e)
 		m_FPSText->GetProperties()->GetPropertyT<std::string>("Text")->Set("FPS: " + std::to_string(uint64(fpsValue)));
 
 
-		auto renderWindow = GetRenderWindow();
-		m_StatisticUpdateText->GetProperties()    ->GetPropertyT<std::string>("Text")->Set("W Update   : " + std::to_string(renderWindow->GetUpdateDeltaTime()));
-		m_StatisticPreRenderText->GetProperties() ->GetPropertyT<std::string>("Text")->Set("W PreRender: " + std::to_string(renderWindow->GetPreRenderDeltaTime()));
-		m_StatisticRenderText->GetProperties()    ->GetPropertyT<std::string>("Text")->Set("W Render   : " + std::to_string(renderWindow->GetRenderDeltaTime()));
-		m_StatisticPostRenderText->GetProperties()->GetPropertyT<std::string>("Text")->Set("W PostRen  : " + std::to_string(renderWindow->GetPostRenderDeltaTime()));
-		m_StatisticRenderUIText->GetProperties()  ->GetPropertyT<std::string>("Text")->Set("W RenderUI : " + std::to_string(renderWindow->GetRenderUIDeltaTime()));
-		m_StatisticSummaText->GetProperties()     ->GetPropertyT<std::string>("Text")->Set("W          : " + std::to_string(renderWindow->GetSummaDeltaTime()));
+		m_StatisticUpdateText->GetProperties()    ->GetPropertyT<std::string>("Text")->Set("W Update   : " + std::to_string(GetRenderWindow().GetUpdateDeltaTime()));
+		m_StatisticPreRenderText->GetProperties() ->GetPropertyT<std::string>("Text")->Set("W PreRender: " + std::to_string(GetRenderWindow().GetPreRenderDeltaTime()));
+		m_StatisticRenderText->GetProperties()    ->GetPropertyT<std::string>("Text")->Set("W Render   : " + std::to_string(GetRenderWindow().GetRenderDeltaTime()));
+		m_StatisticPostRenderText->GetProperties()->GetPropertyT<std::string>("Text")->Set("W PostRen  : " + std::to_string(GetRenderWindow().GetPostRenderDeltaTime()));
+		m_StatisticRenderUIText->GetProperties()  ->GetPropertyT<std::string>("Text")->Set("W RenderUI : " + std::to_string(GetRenderWindow().GetRenderUIDeltaTime()));
+		m_StatisticSummaText->GetProperties()     ->GetPropertyT<std::string>("Text")->Set("W          : " + std::to_string(GetRenderWindow().GetSummaDeltaTime()));
 	}
 }
 
@@ -415,7 +406,7 @@ void SceneBase::OnWindowMouseMoved(MouseMotionEventArgs & e)
 		
 	GetCameraController()->OnMouseMoved(e);
 
-	OnMouseMoved(e, GetCameraController()->ScreenToRay(GetRenderWindow()->GetViewport(), e.GetPoint()));
+	OnMouseMoved(e, GetCameraController()->ScreenToRay(GetRenderWindow().GetViewport(), e.GetPoint()));
 
 	if (GetRootNodeUI())
 		DoMouseMoved_Rec(GetRootNodeUI(), e);
@@ -428,7 +419,7 @@ bool SceneBase::OnWindowMouseButtonPressed(MouseButtonEventArgs & e)
 
 	GetCameraController()->OnMouseButtonPressed(e);
 
-	if (OnMousePressed(e, GetCameraController()->ScreenToRay(GetRenderWindow()->GetViewport(), e.GetPoint())))
+	if (OnMousePressed(e, GetCameraController()->ScreenToRay(GetRenderWindow().GetViewport(), e.GetPoint())))
 		return true;
 
 	if (GetRootNodeUI())
@@ -444,7 +435,7 @@ void SceneBase::OnWindowMouseButtonReleased(MouseButtonEventArgs & e)
 		
 	GetCameraController()->OnMouseButtonReleased(e);
 
-	OnMouseReleased(e, GetCameraController()->ScreenToRay(GetRenderWindow()->GetViewport(), e.GetPoint()));
+	OnMouseReleased(e, GetCameraController()->ScreenToRay(GetRenderWindow().GetViewport(), e.GetPoint()));
 
 	if (GetRootNodeUI())
 		DoMouseButtonReleased_Rec(GetRootNodeUI(), e);

@@ -3,8 +3,8 @@
 // General
 #include "EditedScene.h"
 
-CEditedScene::CEditedScene(IBaseManager & BaseManager)
-	: SceneBase(BaseManager)
+CEditedScene::CEditedScene(IBaseManager & BaseManager, IRenderWindow& RenderWindow)
+	: SceneBase(BaseManager, RenderWindow)
 {
 }
 

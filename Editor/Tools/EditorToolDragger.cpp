@@ -81,7 +81,7 @@ void CEditorToolDragger::DragEnterEvent(const SDragData& Data)
 	m_IsDraggingPermanentCreation = Data.IsCtrl;
 	m_DraggerNode = CreateNode(glm::vec3(), Data.Message);
 
-	auto ray = GetScene()->GetCameraController()->ScreenToRay(GetScene()->GetRenderWindow()->GetViewport(), Data.Position);
+	auto ray = GetScene()->GetCameraController()->ScreenToRay(GetScene()->GetRenderWindow().GetViewport(), Data.Position);
 	auto pos = GetScene()->GetCameraController()->RayToPlane(ray, Plane(glm::vec3(0.0f, 1.0f, 0.0f), m_DraggerNode->GetComponent<IModelsComponent3D>()->GetModel()->GetBounds().getCenter().y));
 	m_DraggerNode->SetTranslate(pos);
 }
@@ -109,7 +109,7 @@ void CEditorToolDragger::MoveDraggedNode(const glm::vec2& MousePos)
 
 	//auto posReal = GetCameraController()->ScreenToPlane(GetRenderWindow()->GetViewport(), MousePos, Plane(glm::vec3(0.0f, 1.0f, 0.0f), 0.0f));
 
-	auto ray = GetScene()->GetCameraController()->ScreenToRay(GetScene()->GetRenderWindow()->GetViewport(), MousePos);
+	auto ray = GetScene()->GetCameraController()->ScreenToRay(GetScene()->GetRenderWindow().GetViewport(), MousePos);
 	auto bounds = m_DraggerNode->GetComponent<IModelsComponent3D>()->GetModel()->GetBounds();
 	_ASSERT(false == bounds.IsInfinite());
 	auto pos = GetScene()->GetCameraController()->RayToPlane(ray, Plane(glm::vec3(0.0f, 1.0f, 0.0f), bounds.getMax().y / 2.0f));

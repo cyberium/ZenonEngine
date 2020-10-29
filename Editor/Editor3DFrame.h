@@ -9,7 +9,7 @@ class CEditor3DFrame
 	, public IEditorToolSelectorEventListener
 {
 public:
-	CEditor3DFrame(IEditor& Editor);
+	CEditor3DFrame(IEditor& Editor, IRenderWindow& RenderWindow);
 	virtual ~CEditor3DFrame();
 
 	void SetPreviewScene(const std::shared_ptr<CEditor3DPreviewScene>& PreviewScene);

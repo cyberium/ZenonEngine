@@ -18,12 +18,11 @@ class ZN_API SceneBase
 	, public Object
 {
 public:
-	SceneBase(IBaseManager& BaseManager);
+	SceneBase(IBaseManager& BaseManager, IRenderWindow& RenderWindow);
 	virtual ~SceneBase();
 
 	// IScene
-	void                                            SetRenderWindow(const std::weak_ptr<IRenderWindow>& RenderWindow) override;
-	std::shared_ptr<IRenderWindow>                  GetRenderWindow() const;
+	IRenderWindow&                                  GetRenderWindow() const override;
 
 	void                                            AddEventListener(std::shared_ptr<ISceneEventsListener> Listener) override;
 	void                                            RemoveEventListener(std::shared_ptr<ISceneEventsListener> Listener) override;
@@ -159,7 +158,7 @@ protected: // Функционал по отложенному добавлению нод
 private: // Quick access
 	IBaseManager&                                   m_BaseManager;
 	IRenderDevice&                                  m_RenderDevice;
-	std::weak_ptr<IRenderWindow>                    m_RenderWindow;
+	IRenderWindow&                                  m_RenderWindow;
 	std::mutex                                      m_SceneMutex;
 	std::atomic_bool                                m_IsFreezed;
 };

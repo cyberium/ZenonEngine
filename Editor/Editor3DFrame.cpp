@@ -6,13 +6,13 @@
 // Additional
 #include "Passes/DrawToolsPass.h"
 
-CEditor3DFrame::CEditor3DFrame(IEditor& Editor)
-	: SceneBase(Editor.GetBaseManager())
+CEditor3DFrame::CEditor3DFrame(IEditor& Editor, IRenderWindow& RenderWindow)
+	: SceneBase(Editor.GetBaseManager(), RenderWindow)
 	, m_Editor(Editor)
 {
 	dynamic_cast<IEditorPrivate&>(m_Editor).Set3DFrame(this);
 
-	m_EditedScene = MakeShared(CEditedScene, Editor.GetBaseManager());
+	m_EditedScene = MakeShared(CEditedScene, Editor.GetBaseManager(), RenderWindow);
 	m_EditedScene->Initialize();
 }
 
@@ -67,7 +67,7 @@ void CEditor3DFrame::Initialize()
 
 		SetCameraController(MakeShared(CFreeCameraController));
 		GetCameraController()->SetCamera(cameraNode->GetComponent<ICameraComponent3D>());
-		GetCameraController()->GetCamera()->SetPerspectiveProjection(ICameraComponent3D::EPerspectiveProjectionHand::Right, 75.0f, static_cast<float>(GetRenderWindow()->GetWindowWidth()) / static_cast<float>(GetRenderWindow()->GetWindowHeight()), 1.0f, 5000.0f);
+		GetCameraController()->GetCamera()->SetPerspectiveProjection(ICameraComponent3D::EPerspectiveProjectionHand::Right, 75.0f, static_cast<float>(GetRenderWindow().GetWindowWidth()) / static_cast<float>(GetRenderWindow().GetWindowHeight()), 1.0f, 5000.0f);
 		GetCameraController()->GetCamera()->SetTranslation(glm::vec3(15.0f * 2.0f));
 		GetCameraController()->GetCamera()->SetDirection(glm::vec3(-0.5f));
 		GetCameraController()->GetCamera()->SetYaw(225);
@@ -128,8 +128,8 @@ void CEditor3DFrame::Initialize()
 		}*/
 
 		auto forwardRenderer = MakeShared(CRendererForward, GetBaseManager(), weak_from_this());
-		forwardRenderer->Initialize(GetRenderWindow()->GetRenderTarget(), &GetRenderWindow()->GetViewport());
-		forwardRenderer->AddPass(MakeShared(CDrawToolsPass, GetRenderDevice(), shared_from_this())->ConfigurePipeline(GetRenderWindow()->GetRenderTarget(), &GetRenderWindow()->GetViewport()));
+		forwardRenderer->Initialize(GetRenderWindow().GetRenderTarget(), &GetRenderWindow().GetViewport());
+		forwardRenderer->AddPass(MakeShared(CDrawToolsPass, GetRenderDevice(), shared_from_this())->ConfigurePipeline(GetRenderWindow().GetRenderTarget(), &GetRenderWindow().GetViewport()));
 		SetRenderer(forwardRenderer);
 	}
 
@@ -260,7 +260,7 @@ bool CEditor3DFrame::InitializeEditorFrame()
 //
 void CEditor3DFrame::DoInitializeTools3D()
 {
-	GetEditor().GetTools().DoInitialize3D(m_Renderer, GetRenderWindow()->GetRenderTarget(), &GetRenderWindow()->GetViewport());
+	GetEditor().GetTools().DoInitialize3D(m_Renderer, GetRenderWindow().GetRenderTarget(), &GetRenderWindow().GetViewport());
 }
 
 std::shared_ptr<IScene> CEditor3DFrame::GetScene()
@@ -295,7 +295,7 @@ std::shared_ptr<ISceneNode3D> CEditor3DFrame::GetEditedRootNode3D() const
 
 std::shared_ptr<ISceneNode3D> CEditor3DFrame::GetNodeUnderMouse(const glm::ivec2& MousePos) const
 {
-	auto nodes = GetFinder().FindIntersection(GetCameraController()->ScreenToRay(GetRenderWindow()->GetViewport(), MousePos));
+	auto nodes = GetFinder().FindIntersection(GetCameraController()->ScreenToRay(GetRenderWindow().GetViewport(), MousePos));
 	if (nodes.empty())
 		return nullptr;
 	return nodes.begin()->second;

@@ -3,8 +3,8 @@
 // Gerenal
 #include "Scene_Default.h"
 
-CSceneDefault::CSceneDefault(IBaseManager& BaseManager)
-	: SceneBase(BaseManager)
+CSceneDefault::CSceneDefault(IBaseManager& BaseManager, IRenderWindow& RenderWindow)
+	: SceneBase(BaseManager, RenderWindow)
 	//, m_World(rp3d::Vector3(0.0f, -9.81f, 0.0f))
 {
 	// Change the number of iterations of the velocity solver
@@ -74,7 +74,7 @@ void CSceneDefault::Initialize()
 
 		SetCameraController(MakeShared(CFreeCameraController));
 		GetCameraController()->SetCamera(cameraNode->GetComponent<ICameraComponent3D>());
-		GetCameraController()->GetCamera()->SetPerspectiveProjection(ICameraComponent3D::EPerspectiveProjectionHand::Right, 75.0f, static_cast<float>(GetRenderWindow()->GetWindowWidth()) / static_cast<float>(GetRenderWindow()->GetWindowHeight()), 1.0f, 5000.0f);
+		GetCameraController()->GetCamera()->SetPerspectiveProjection(ICameraComponent3D::EPerspectiveProjectionHand::Right, 75.0f, static_cast<float>(GetRenderWindow().GetWindowWidth()) / static_cast<float>(GetRenderWindow().GetWindowHeight()), 1.0f, 5000.0f);
 		GetCameraController()->GetCamera()->SetTranslation(glm::vec3(15.0f * 2.0f));
 		GetCameraController()->GetCamera()->SetDirection(glm::vec3(-0.5f));
 		GetCameraController()->GetCamera()->SetYaw(225);
@@ -87,11 +87,11 @@ void CSceneDefault::Initialize()
 	// RENDERERS
 	//--------------------------------------------------------------------------
 	auto forwardRenderer = MakeShared(CRendererForward, GetBaseManager(), weak_from_this());
-	forwardRenderer->Initialize(GetRenderWindow()->GetRenderTarget(), &GetRenderWindow()->GetViewport());
+	forwardRenderer->Initialize(GetRenderWindow().GetRenderTarget(), &GetRenderWindow().GetViewport());
 	m_ForwardRenderer = forwardRenderer;
 
 	auto defferedRenderer = MakeShared(CRendererDeffered, GetBaseManager(), weak_from_this());
-	defferedRenderer->Initialize(GetRenderWindow()->GetRenderTarget(), &GetRenderWindow()->GetViewport());
+	defferedRenderer->Initialize(GetRenderWindow().GetRenderTarget(), &GetRenderWindow().GetViewport());
 	m_DefferedRenderrer = defferedRenderer;
 
 	SetRenderer(forwardRenderer);

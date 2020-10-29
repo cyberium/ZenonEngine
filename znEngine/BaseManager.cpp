@@ -13,7 +13,10 @@ CBaseManager::CBaseManager()
 CBaseManager::~CBaseManager()
 {
 	for (auto rit = m_Managers.rbegin(); rit != m_Managers.rend(); rit++)
+	{
+		//_ASSERT(rit->Manager.use_count() == 1);
 		rit->Manager.reset();
+	}
 
 	OutputDebugString(L"BaseManager destroyed.\n");
 }
@@ -34,11 +37,13 @@ IManager* CBaseManager::AddManager(GUID Type, const std::shared_ptr<IManager>& _
 
 void CBaseManager::RemoveManager(GUID Type)
 {
+	/*
 	const auto& it = std::find_if(m_Managers.begin(), m_Managers.end(), [&Type](const SManagerInfo& ManagerInfo) -> bool {return ManagerInfo.Key == Type; });
 	if (it == m_Managers.end())
 		throw CException("BaseManager: Unable to remove existing manager, becasuse not found.");
-	_ASSERT(it->Manager.use_count() == 1);
+	//_ASSERT(it->Manager.use_count() == 1);
 	m_Managers.erase(it);
+	*/
 }
 
 IManager* CBaseManager::GetManager(GUID Type) const

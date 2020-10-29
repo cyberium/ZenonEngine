@@ -4,7 +4,7 @@ class CSceneDefault
 	: public SceneBase
 {
 public:
-	CSceneDefault(IBaseManager& BaseManager);
+	CSceneDefault(IBaseManager& BaseManager, IRenderWindow& RenderWindow);
 	virtual ~CSceneDefault();
 
 	// IGameState

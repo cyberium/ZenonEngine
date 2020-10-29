@@ -4,7 +4,7 @@ class CEditedScene
 	: public SceneBase
 {
 public:
-	CEditedScene(IBaseManager& BaseManager);
+	CEditedScene(IBaseManager& BaseManager, IRenderWindow& RenderWindow);
 	virtual ~CEditedScene();
 
 	// SceneBase

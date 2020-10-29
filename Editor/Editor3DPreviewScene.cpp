@@ -3,8 +3,8 @@
 // Gerenal
 #include "Editor3DPreviewScene.h"
 
-CEditor3DPreviewScene::CEditor3DPreviewScene(IBaseManager& BaseManager)
-	: SceneBase(BaseManager)
+CEditor3DPreviewScene::CEditor3DPreviewScene(IBaseManager& BaseManager, IRenderWindow& RenderWindow)
+	: SceneBase(BaseManager, RenderWindow)
 {
 
 }
@@ -74,7 +74,7 @@ void CEditor3DPreviewScene::Initialize()
 
 		SetCameraController(MakeShared(CFreeCameraController));
 		GetCameraController()->SetCamera(cameraNode->GetComponent<ICameraComponent3D>());
-		GetCameraController()->GetCamera()->SetPerspectiveProjection(ICameraComponent3D::EPerspectiveProjectionHand::Right, 75.0f, static_cast<float>(GetRenderWindow()->GetWindowWidth()) / static_cast<float>(GetRenderWindow()->GetWindowHeight()), 1.0f, 5000.0f);
+		GetCameraController()->GetCamera()->SetPerspectiveProjection(ICameraComponent3D::EPerspectiveProjectionHand::Right, 75.0f, static_cast<float>(GetRenderWindow().GetWindowWidth()) / static_cast<float>(GetRenderWindow().GetWindowHeight()), 1.0f, 5000.0f);
 		GetCameraController()->GetCamera()->SetTranslation(glm::vec3(15.0f * 2.0f));
 		GetCameraController()->GetCamera()->SetDirection(glm::vec3(-0.5f));
 		GetCameraController()->GetCamera()->SetYaw(225);
@@ -109,7 +109,7 @@ void CEditor3DPreviewScene::Initialize()
 	// Renderer
 	//
 	auto forwardrender = MakeShared(CRendererForward, GetBaseManager(), weak_from_this());
-	forwardrender->Initialize(GetRenderWindow()->GetRenderTarget(), &GetRenderWindow()->GetViewport());
+	forwardrender->Initialize(GetRenderWindow().GetRenderTarget(), &GetRenderWindow().GetViewport());
 	SetRenderer(forwardrender);
 }
 

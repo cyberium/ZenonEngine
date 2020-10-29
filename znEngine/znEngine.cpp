@@ -32,6 +32,10 @@
 #include "Formats/Materials/MaterialsFactory.h"
 
 
+// Additional (Textures)
+#include "Formats/Textures/TexturesFactory.h"
+
+
 #include "Settings/GroupVideo.h"
 
 #include "ThreadPool.h"
@@ -84,27 +88,39 @@ IBaseManager* WINAPI InitializeEngine(std::vector<std::string> Arguments, std::s
 
 	// Log & console
 	{
-		std::shared_ptr<CLog> log = MakeShared(CLog);
-		baseManager->AddManager<ILog>(log);
+		baseManager->AddManager<ILog>(MakeShared(CLog));
 		 
 		std::shared_ptr<CConsole> console = MakeShared(CConsole, *baseManager);
 		baseManager->AddManager<IConsole>(console);
 		console->AddCommonCommands();
 	}
 
+
+
 	// Render stuff
 	{
-		baseManager->AddManager<IImagesFactory>(MakeShared(CImagesFactory, *baseManager));
-		baseManager->GetManager<IImagesFactory>()->AddImageLoader(MakeShared(CImageLoaderT<CImagePNG>));
-		baseManager->GetManager<IImagesFactory>()->AddImageLoader(MakeShared(CImageLoaderT<CImageDDS>));
-
-		auto materialsFactory = MakeShared(CMaterialsFactory, *baseManager);
-		baseManager->AddManager<IMaterialsFactory>(materialsFactory);
-
 		std::shared_ptr<IznRenderDeviceFactory> renderDeviceFactory = MakeShared(CznRenderDeviceFactory, *baseManager);
 		baseManager->AddManager<IznRenderDeviceFactory>(renderDeviceFactory);
 		pluginsManager->AddPluginEventListener(std::dynamic_pointer_cast<IznPluginsEventListener>(renderDeviceFactory));
 	}
+
+
+
+	// Images
+	{
+		baseManager->AddManager<IImagesFactory>(MakeShared(CImagesFactory, *baseManager));
+		baseManager->GetManager<IImagesFactory>()->AddImageLoader(MakeShared(CImageLoaderT<CImagePNG>));
+		baseManager->GetManager<IImagesFactory>()->AddImageLoader(MakeShared(CImageLoaderT<CImageDDS>));
+	}
+
+
+
+	// Materials
+	{
+		baseManager->AddManager<IMaterialsFactory>(MakeShared(CMaterialsFactory, *baseManager));
+	}
+
+
 
 	// Models
 	{
@@ -113,29 +129,35 @@ IBaseManager* WINAPI InitializeEngine(std::vector<std::string> Arguments, std::s
 		baseManager->GetManager<IznModelsFactory>()->AddModelsLoader(MakeShared(CznFBXModelsLoader, *baseManager));
 	}
 
+
+
+	// Textures
+	{
+		baseManager->AddManager<IznTexturesFactory>(MakeShared(CznTexturesFactory, *baseManager));
+	}
+
+
 	// SceneNodes stuff
 	{
-		std::shared_ptr<ILoader> laoder = MakeShared(CLoader);
-		baseManager->AddManager<ILoader>(laoder);
+		baseManager->AddManager<ILoader>(MakeShared(CLoader));
 
 		std::shared_ptr<IObjectsFactory> factory = MakeShared(CObjectsFactory, *baseManager);
 		baseManager->AddManager<IObjectsFactory>(factory);
 
 		std::shared_ptr<CScenesFactory> sceneFactory = MakeShared(CScenesFactory, *baseManager, "otScene", otScene);
 		sceneFactory->AddClassCreator(MakeShared(CSceneEngineCreator, *baseManager));
+		factory->AddClassFactory(sceneFactory);
 
 		std::shared_ptr<CSceneNode3DFactory> sceneNode3DFactory = MakeShared(CSceneNode3DFactory, *baseManager, "otSceneNode3D", otSceneNode3D);
 		sceneNode3DFactory->AddClassCreator(MakeShared(CSceneNode3DEngineCreator, *baseManager));
+		factory->AddClassFactory(sceneNode3DFactory);
 
 		std::shared_ptr<CSceneNodeUIFactory> sceneNodeUIFactory = MakeShared(CSceneNodeUIFactory, *baseManager, "otSceneNodeUI", otSceneNodeUI);
 		sceneNodeUIFactory->AddClassCreator(MakeShared(CSceneNodeUIEngineCreator, *baseManager));
+		factory->AddClassFactory(sceneNodeUIFactory);
 
 		std::shared_ptr<CComponentsFactory> componentFactory = MakeShared(CComponentsFactory, *baseManager, "otSceneNodeComponent", otSceneNodeComponent);
 		componentFactory->AddClassCreator(MakeShared(CComponentsEngineCreator, *baseManager));
-
-		factory->AddClassFactory(sceneFactory);
-		factory->AddClassFactory(sceneNode3DFactory);
-		factory->AddClassFactory(sceneNodeUIFactory);
 		factory->AddClassFactory(componentFactory);
 	}
 
