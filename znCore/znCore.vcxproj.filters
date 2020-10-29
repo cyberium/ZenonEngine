@@ -88,6 +88,9 @@
     <Filter Include="Files\Storages">
       <UniqueIdentifier>{a7fc127f-95ba-42bf-a7ad-dea6aec0eb7a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="__Interfaces\Managers">
+      <UniqueIdentifier>{a1b8f907-e42a-4a76-838d-0f07d9b66144}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -500,9 +503,6 @@
     <ClInclude Include="Files\FilesManager.h">
       <Filter>Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\shared\Interfaces\Render\IImageLoader.h">
-      <Filter>__Interfaces\Render</Filter>
-    </ClInclude>
     <ClInclude Include="..\shared\Interfaces\Render\IGeometry.h">
       <Filter>__Interfaces\Render</Filter>
     </ClInclude>
@@ -781,6 +781,15 @@
     </ClInclude>
     <ClInclude Include="Files\LibraryResourceFileStotage.h">
       <Filter>Files\Storages</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\Interfaces\Managers\FontsManager.h">
+      <Filter>__Interfaces\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\Interfaces\Managers\ImageLoader.h">
+      <Filter>__Interfaces\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\Interfaces\Managers\ModelsManager.h">
+      <Filter>__Interfaces\Managers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

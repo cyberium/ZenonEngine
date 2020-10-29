@@ -1,11 +1,13 @@
 #pragma once
 
 // FORWARD BEGIN
-ZN_INTERFACE IFile;
 ZN_INTERFACE IManager;
+ZN_INTERFACE IFile;
 // FORWARD END
 
+
 ZN_INTERFACE ZN_API IImage
+	: public std::enable_shared_from_this<IImage>
 {
 	virtual ~IImage() {}
 
@@ -18,6 +20,7 @@ ZN_INTERFACE ZN_API IImage
 	virtual void Resize(uint32 NewWidth, uint32 NewHeight) = 0;
 };
 
+
 ZN_INTERFACE ZN_API IImageLoader
 {
 	virtual ~IImageLoader() {}
@@ -25,6 +28,7 @@ ZN_INTERFACE ZN_API IImageLoader
 	virtual bool IsFileSupported(std::shared_ptr<IFile> File) const = 0;
 	virtual std::shared_ptr<IImage> CreateImage(std::shared_ptr<IFile> File) const = 0;
 };
+
 
 ZN_INTERFACE ZN_API 
 	__declspec(uuid("6D65A347-1C79-472E-BFAB-0C1C04597FAE"))

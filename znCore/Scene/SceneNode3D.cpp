@@ -355,7 +355,7 @@ void SceneNode3D::Accept(IVisitor* visitor)
 	if (visitResult & EVisitResult::AllowVisitContent)
 	{
 		const auto& components = GetComponents();
-		std::for_each(components.begin(), components.end(), [&visitor](const std::pair<ObjectClass, std::shared_ptr<ISceneNodeComponent>>& Component) {
+		std::for_each(components.begin(), components.end(), [visitor](const std::pair<ObjectClass, std::shared_ptr<ISceneNodeComponent>>& Component) {
 			if (Component.second)
 				Component.second->Accept(visitor);
 		});
@@ -364,7 +364,7 @@ void SceneNode3D::Accept(IVisitor* visitor)
 	if (visitResult & EVisitResult::AllowVisitChilds)
 	{
 		const auto& childs = GetChilds();
-		std::for_each(childs.begin(), childs.end(), [&visitor](const std::shared_ptr<ISceneNode3D>& Child) {
+		std::for_each(childs.begin(), childs.end(), [visitor](const std::shared_ptr<ISceneNode3D>& Child) {
 			if (Child != nullptr)
 				Child->Accept(visitor);
 		});

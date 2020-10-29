@@ -30,23 +30,13 @@ std::shared_ptr<IRenderPassPipelined> CUIFontPass::ConfigurePipeline(std::shared
 
 	if (GetRenderDevice().GetDeviceType() == RenderDeviceType::RenderDeviceType_DirectX11)
 	{
-		g_pVertexShader = GetRenderDevice().GetObjectsFactory().LoadShader(
-			EShaderType::VertexShader, "UI/UI_Font.hlsl", "VS_main"
-		);
-
-		g_pPixelShader = GetRenderDevice().GetObjectsFactory().LoadShader(
-			EShaderType::PixelShader, "UI/UI_Font.hlsl", "PS_main"
-		);
+		g_pVertexShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::VertexShader, "UI/UI_Font.hlsl", "VS_main");
+		g_pPixelShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::PixelShader, "UI/UI_Font.hlsl", "PS_main");
 	}
 	else if (GetRenderDevice().GetDeviceType() == RenderDeviceType::RenderDeviceType_OpenGL)
 	{
-		g_pVertexShader = GetRenderDevice().GetObjectsFactory().LoadShader(
-			EShaderType::VertexShader, "IDB_SHADER_OGL__UI_FONT_VS", ""
-		);
-
-		g_pPixelShader = GetRenderDevice().GetObjectsFactory().LoadShader(
-			EShaderType::PixelShader, "IDB_SHADER_OGL__UI_FONT_PS", ""
-		);
+		g_pVertexShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::VertexShader, "IDB_SHADER_OGL__UI_FONT_VS", "");
+		g_pPixelShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::PixelShader, "IDB_SHADER_OGL__UI_FONT_PS", "");
 	}
 
 	g_pVertexShader->LoadInputLayoutFromReflector();

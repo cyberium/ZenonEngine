@@ -15,7 +15,7 @@ void CSceneDefault::Load3D()
 	//--------------------------------------------------------------------------
 	// XML
 	//--------------------------------------------------------------------------
-	if (auto file = GetBaseManager().GetManager<IFilesManager>()->Open("SceneFBX.xml"))
+	if (auto file = GetBaseManager().GetManager<IFilesManager>()->Open("Scene.xml"))
 	{
 		CXMLManager xml(GetBaseManager());
 		auto reader = xml.CreateReader(file);
@@ -41,13 +41,13 @@ void CSceneDefault::Load3D()
 			//fbxLoaderParams->TexturesTypeChange.insert(std::make_pair((uint8)MaterialModel::ETextureType::TextureAmbient, (uint8)MaterialModel::ETextureType::TextureSpecular));
 			fbxLoaderParams->TexturesTypeChange.insert(std::make_pair((uint8)MaterialModel::ETextureType::TextureBump, (uint8)MaterialModel::ETextureType::TextureNormalMap));
 
-			auto fbxModel = GetBaseManager().GetManager<IznModelsManager>()->LoadModel("Sponza/Sponza.fbx", fbxLoaderParams);
-			auto znMdlFile = GetBaseManager().GetManager<IznModelsManager>()->SaveModel(fbxModel, "Sponza/Sponza.znmdl");
+			auto fbxModel = GetBaseManager().GetManager<IznModelsFactory>()->LoadModel("Sponza/Sponza.fbx", fbxLoaderParams);
+			auto znMdlFile = GetBaseManager().GetManager<IznModelsFactory>()->SaveModel(fbxModel, "Sponza/Sponza.znmdl");
 			znMdlFile->Save();
 		}
 
 
-		auto znModel = GetBaseManager().GetManager<IznModelsManager>()->LoadModel("Sponza/Sponza.znmdl");
+		auto znModel = GetBaseManager().GetManager<IznModelsFactory>()->LoadModel("Sponza/Sponza.znmdl");
 
 		auto node = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, this, newRoot);
 		node->SetName("Sponza");
@@ -68,13 +68,13 @@ void CSceneDefault::Load3D()
 			//fbxLoaderParams->TexturesTypeChange.insert(std::make_pair((uint8)MaterialModel::ETextureType::TextureAmbient, (uint8)MaterialModel::ETextureType::TextureSpecular));
 			//fbxLoaderParams->TexturesTypeChange.insert(std::make_pair((uint8)MaterialModel::ETextureType::TextureBump, (uint8)MaterialModel::ETextureType::TextureNormalMap));
 
-			auto fbxModel = GetBaseManager().GetManager<IznModelsManager>()->LoadModel("Bistro_v4/Bistro v4 Update/Bistro_v4/Bistro_Exterior.fbx", fbxLoaderParams);
-			auto znMdlFile = GetBaseManager().GetManager<IznModelsManager>()->SaveModel(fbxModel, "Bistro_v4/Bistro v4 Update/Bistro_v4/Bistro_Exterior.znmdl");
+			auto fbxModel = GetBaseManager().GetManager<IznModelsFactory>()->LoadModel("Bistro_v4/Bistro v4 Update/Bistro_v4/Bistro_Exterior.fbx", fbxLoaderParams);
+			auto znMdlFile = GetBaseManager().GetManager<IznModelsFactory>()->SaveModel(fbxModel, "Bistro_v4/Bistro v4 Update/Bistro_v4/Bistro_Exterior.znmdl");
 			GetBaseManager().GetManager<IFilesManager>()->GetFilesStorage("ZenonGamedata2")->SaveFile(znMdlFile);
 		}
 
 
-		auto znModel = GetBaseManager().GetManager<IznModelsManager>()->LoadModel("Bistro_v4/Bistro v4 Update/Bistro_v4/Bistro_Exterior.znmdl");
+		auto znModel = GetBaseManager().GetManager<IznModelsFactory>()->LoadModel("Bistro_v4/Bistro v4 Update/Bistro_v4/Bistro_Exterior.znmdl");
 
 		auto node = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, this, newRoot);
 		node->SetName("Bistro");
@@ -167,7 +167,7 @@ void CSceneDefault::Load3D()
 		fbxLoaderParams->TexturesPathRoot = "Toon_RTS/models/textures/";
 		fbxLoaderParams->OverrideTexture = "WK_StandardUnits_generic.png";
 
-		auto znModel = GetBaseManager().GetManager<IznModelsManager>()->LoadModel("Toon_RTS/models/WK_archer.FBX", fbxLoaderParams);
+		auto znModel = GetBaseManager().GetManager<IznModelsFactory>()->LoadModel("Toon_RTS/models/WK_archer.FBX", fbxLoaderParams);
 
 		auto node = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, this, newRoot);
 		node->SetName("Orc");
@@ -191,7 +191,7 @@ void CSceneDefault::Load3D()
 		fbxLoaderParams->TexturesPathRoot = "Toon_RTS/models/textures/";
 		fbxLoaderParams->OverrideTexture = "WK_StandardUnits_generic.png";
 
-		auto fbxModelsLoader = GetBaseManager().GetManager<IznModelsManager>()->GetLoaderForModel("fbx");
+		auto fbxModelsLoader = GetBaseManager().GetManager<IznModelsFactory>()->GetLoaderForModel("fbx");
 		_ASSERT(fbxModelsLoader != nullptr);
 		auto fbxSceneLoader = std::dynamic_pointer_cast<IFBXSceneLoader>(fbxModelsLoader);
 		_ASSERT(fbxSceneLoader != nullptr);
@@ -227,7 +227,7 @@ void CSceneDefault::Load3D()
 		fbxLoaderParams->TexturesPathRoot = "Toon_RTS/models/textures/";
 		fbxLoaderParams->OverrideTexture = "WK_StandardUnits_generic.png";
 
-		auto fbxModelsLoader = GetBaseManager().GetManager<IznModelsManager>()->GetLoaderForModel("fbx");
+		auto fbxModelsLoader = GetBaseManager().GetManager<IznModelsFactory>()->GetLoaderForModel("fbx");
 		_ASSERT(fbxModelsLoader != nullptr);
 		auto fbxSceneLoader = std::dynamic_pointer_cast<IFBXSceneLoader>(fbxModelsLoader);
 		_ASSERT(fbxSceneLoader != nullptr);

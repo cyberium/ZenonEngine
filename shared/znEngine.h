@@ -7,25 +7,32 @@
 #include "../znEngine/NativeWindow_WindowsSpecific.h"
 
 
+// Loader
+#include "../znEngine/AssyncLoader/LoadableObject.h"
+
+
 // Camera controllers
 #include "../znEngine/Scene/Camera/CameraControllerBase.h"
 #include "../znEngine/Scene/Camera/ArcBallCameraController.h"
 #include "../znEngine/Scene/Camera/FreeCameraController.h"
 #include "../znEngine/Scene/Camera/RTSCameraController.h"
 
+
 // Scene nodes components
+#include "../znEngine/Scene/Components/Animation/AnimationComponent.h"
+#include "../znEngine/Scene/Components/Skeleton/SkeletonComponent.h"
 #include "../znEngine/Scene/Components/ColliderComponent3D.h"
 #include "../znEngine/Scene/Components/LightComponent3D.h"
 #include "../znEngine/Scene/Components/ModelsComponent3D.h"
 #include "../znEngine/Scene/Components/CameraComponent3D.h"
 #include "../znEngine/Scene/Components/ParticlesComponent3D.h"
-#include "../znEngine/Scene/Components/Skeleton/AnimatorComponent.h"
-#include "../znEngine/Scene/Components/Skeleton/SkeletonComponent.h"
+
 
 // SceneNodes
 #include "../znEngine/Scene/Nodes/UITexture.h"
 #include "../znEngine/Scene/Nodes/UIColor.h"
 #include "../znEngine/Scene/Nodes/UIText.h"
+
 
 // Materials
 #include "../znEngine/Materials/MaterialDebug.h"
@@ -33,11 +40,12 @@
 #include "../znEngine/Materials/MaterialModel.h"
 #include "../znEngine/Materials/MaterialParticle.h"
 
+
 // Passes
-#include "../znEngine/Passes/UIFontPass.h"
-#include "../znEngine/Passes/UIButtonPass.h"
-#include "../znEngine/Passes/UIColorPass.h"
-#include "../znEngine/Passes/UITexturePass.h"
+#include "../znEngine/Passes/UI/UIFontPass.h"
+#include "../znEngine/Passes/UI/UIButtonPass.h"
+#include "../znEngine/Passes/UI/UIColorPass.h"
+#include "../znEngine/Passes/UI/UITexturePass.h"
 
 
 #include "../znEngine/Passes/Pipelined/BaseTypedList3DPass.h"

@@ -15,6 +15,11 @@ CMaterialsFactory::~CMaterialsFactory()
 {
 }
 
+
+
+//
+// IMaterialsFactory
+//
 void CMaterialsFactory::AddMaterialsCreator(std::shared_ptr<IMaterialsCreator> Creator)
 {
 }

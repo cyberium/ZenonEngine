@@ -42,7 +42,7 @@ void ZenonCollectionViewerWidget::SetModelsList(const std::vector<std::string>& 
 	for (const auto& it : Nodes)
 	{
 		auto file = m_Editor->GetBaseManager().GetManager<IFilesManager>()->Open(it);
-		auto model = m_Editor->GetBaseManager().GetManager<IznModelsManager>()->LoadModel(file);
+		auto model = m_Editor->GetBaseManager().GetManager<IznModelsFactory>()->LoadModel(file);
 		model->SetName(file->Name_NoExtension());
 		models.push_back(MakeShared(C3DModelModelItem, model));
 	}

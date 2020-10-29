@@ -24,7 +24,7 @@ void CEditorToolMoverRTS::Initialize()
 	m_MoverRoot = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, GetScene(), GetScene()->GetRootNode3D());
 	m_MoverRoot->SetName("MoverRTS");
 
-	auto model = GetBaseManager().GetManager<IznModelsManager>()->LoadModel("arrow.FBX");
+	auto model = GetBaseManager().GetManager<IznModelsFactory>()->LoadModel("arrow.FBX");
 	auto geom = model->GetConnections().begin()->Geometry;
 	/*if (auto loadable = std::dynamic_pointer_cast<IObjectLoadSave>(model))
 	{

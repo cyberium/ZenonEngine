@@ -157,7 +157,7 @@ void CFBXAnimation::DisplayChannels(fbxsdk::FbxNode* pNode, fbxsdk::FbxAnimLayer
 	}
 }
 
-void CFBXAnimation::DisplayCurveKeys(fbxsdk::FbxNode* pNode, fbxsdk::FbxAnimCurve* pCurve, AnimatedValue<float>& valueInt, size_t AnimationIndex)
+void CFBXAnimation::DisplayCurveKeys(fbxsdk::FbxNode* pNode, fbxsdk::FbxAnimCurve* pCurve, CznAnimatedValue<float>& valueInt, size_t AnimationIndex)
 {
 	int keysCount = pCurve->KeyGetCount();
 	for (int i = 0; i < keysCount; i++)

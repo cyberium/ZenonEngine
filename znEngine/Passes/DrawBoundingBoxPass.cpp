@@ -19,7 +19,7 @@ CDrawBoundingBoxPass::~CDrawBoundingBoxPass()
 //
 std::shared_ptr<IRenderPassPipelined> CDrawBoundingBoxPass::ConfigurePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport)
 {
-	m_QuadGeometry = GetRenderDevice().GetPrimitivesFactory().CreateBBox();
+	m_BBoxGeometry = GetRenderDevice().GetPrimitivesFactory().CreateBBox();
 
 	std::shared_ptr<IShader> vertexShader;
 	std::shared_ptr<IShader> pixelShader;
@@ -36,8 +36,6 @@ std::shared_ptr<IRenderPassPipelined> CDrawBoundingBoxPass::ConfigurePipeline(st
 	GetPipeline().GetDepthStencilState()->SetDepthMode(enableDepthWrites);
 	GetPipeline().GetRasterizerState()->SetCullMode(IRasterizerState::CullMode::None);
 	GetPipeline().GetRasterizerState()->SetFillMode(IRasterizerState::FillMode::Wireframe, IRasterizerState::FillMode::Solid);
-	GetPipeline().GetRasterizerState()->SetMultisampleEnabled(true);
-	GetPipeline().GetRasterizerState()->SetAntialiasedLineEnable(true);
 	GetPipeline().SetRenderTarget(RenderTarget);
 	GetPipeline().SetShader(EShaderType::VertexShader, vertexShader);
 	GetPipeline().SetShader(EShaderType::PixelShader, pixelShader);
@@ -80,7 +78,7 @@ EVisitResult CDrawBoundingBoxPass::Visit(const ISceneNode3D * SceneNode3D)
 		m_PerObjectParameter->Bind();
 	}
 
-	m_QuadGeometry->Render(GetRenderEventArgs(), vertexShader);
+	m_BBoxGeometry->Render(GetRenderEventArgs(), vertexShader);
 
 	return EVisitResult::AllowAll;
 }

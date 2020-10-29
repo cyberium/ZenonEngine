@@ -19,7 +19,7 @@ const ObjectClass cSceneNodePhysicsComponent = UINT16_MAX - 505u;
 const ObjectClass cSceneNodePortalsComponent = UINT16_MAX - 506u;
 const ObjectClass cSceneNodeLightComponent = UINT16_MAX - 507u;
 const ObjectClass cSceneNodeCameraComponent = UINT16_MAX - 508u;
-const ObjectClass cSceneNodeSkeletonAnimationComponent = UINT16_MAX - 509u;
+const ObjectClass cSceneNodeAnimationComponent = UINT16_MAX - 509u;
 
 ZN_INTERFACE ZN_API ISceneNodeComponent 
 	: public IObject
@@ -245,6 +245,7 @@ ZN_INTERFACE ZN_API ILight3D
 
 	virtual glm::mat4 GetViewMatrix() const = 0;
 	virtual glm::mat4 GetProjectionMatrix() const = 0;
+
 	virtual const SLight& GetLightStruct() const = 0;
 };
 
@@ -456,10 +457,10 @@ struct SAnimation
 };
 
 
-#define UUID_SkeletonAnimationComponent uuid("9F9EB54A-9DC3-4C9D-B2BE-715D6EB38068")
-ZN_INTERFACE __declspec(UUID_SkeletonAnimationComponent) ZN_API ISkeletonAnimationComponent
+#define UUID_AnimationComponent uuid("9F9EB54A-9DC3-4C9D-B2BE-715D6EB38068")
+ZN_INTERFACE __declspec(UUID_AnimationComponent) ZN_API ISkeletonAnimationComponent
 {
-	static ObjectClass GetClassT() { return cSceneNodeSkeletonAnimationComponent; }
+	static ObjectClass GetClassT() { return cSceneNodeAnimationComponent; }
 
 	virtual ~ISkeletonAnimationComponent() {}
 

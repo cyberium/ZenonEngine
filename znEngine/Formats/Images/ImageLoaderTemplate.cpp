@@ -23,7 +23,7 @@ CImageBase::CImageBase(uint32 Width, uint32 Height, uint32 BitsPerPixel, bool Is
 {
 	m_Stride = GetWidth() * (GetBitsPerPixel() / 8);
 	m_Data = ZN_NEW uint8[m_Height * GetStride()];	
-	std::memset(m_Data, 0x00, m_Height * GetStride());
+	//std::memset(m_Data, 0x00, m_Height * GetStride());
 }
 
 CImageBase::~CImageBase()
@@ -39,71 +39,46 @@ uint8* CImageBase::GetDataEx()
 	return m_Data;
 }
 
+
+
 #define FI_RGBA_RED				0
 #define FI_RGBA_GREEN			1
 #define FI_RGBA_BLUE			2
 #define FI_RGBA_ALPHA			3
 
-std::shared_ptr<IImage> CImageBase::Convert8To32Bit()
+std::shared_ptr<IImage> CImageBase::ConvertAnyTo32Bit()
 {
-	_ASSERT_EXPR(m_BitsPerPixel == 8, L"CImageBase::Convert8To32Bit() works only with 8 bit images!");
+	if (GetBitsPerPixel() == 32)
+		return shared_from_this();
 
-	std::shared_ptr<CImageBase> newImage = MakeShared(CImageBase);
-	newImage->m_Width = m_Width;
-	newImage->m_Height = m_Height;
-	newImage->m_BitsPerPixel = 32;
-	newImage->m_Stride = newImage->GetWidth() * (newImage->m_BitsPerPixel / 8);
-	newImage->m_IsTransperent = false;
-	newImage->m_Data = ZN_NEW uint8[m_Height * newImage->GetStride()];
+	uint32 sourceBytesCnt = GetBitsPerPixel() / 8;
 
-	for (int rows = 0; rows < m_Height; rows++)
+	std::shared_ptr<CImageBase> destImage = MakeShared(CImageBase, m_Width, m_Height, 32, false);
+
+	for (uint32 rows = 0; rows < m_Height; rows++)
 	{
-		const uint8* line = GetLine(rows);
-		uint8* lineNew = newImage->GetLine(rows);
+		const uint8* sourceLine = GetLine(rows);
+		uint8* destLine = destImage->GetLine(rows);
 
-		for (int cols = 0; cols < m_Width; cols++)
+		for (uint32 cols = 0; cols < m_Width; cols++)
 		{
-			lineNew[FI_RGBA_RED] = line[FI_RGBA_RED];
-			lineNew[FI_RGBA_GREEN] = line[FI_RGBA_RED];
-			lineNew[FI_RGBA_BLUE] = line[FI_RGBA_RED];
-			lineNew[FI_RGBA_ALPHA] = 0xFF;
-			lineNew += 4;
-			line += 1;
+			for (uint32 ch = 0; ch < 4; ch++)
+			{
+				uint32 sourceIndexOffset = std::min(ch, sourceBytesCnt - 1u);
+				destLine[FI_RGBA_RED + ch] = sourceLine[FI_RGBA_RED + sourceIndexOffset];
+			}
+
+			//destLine[FI_RGBA_RED] = sourceLine[FI_RGBA_RED];
+			//destLine[FI_RGBA_GREEN] = sourceLine[FI_RGBA_RED];
+			//destLine[FI_RGBA_BLUE] = sourceLine[FI_RGBA_RED];
+			//destLine[FI_RGBA_ALPHA] = 0xFF;
+
+			destLine += destImage->GetBitsPerPixel() / 8;
+			sourceLine += GetBitsPerPixel() / 8;
 		}
 	}
 
-	return newImage;
-}
-
-std::shared_ptr<IImage> CImageBase::Convert24To32Bit()
-{
-	_ASSERT_EXPR(m_BitsPerPixel == 24, L"CImageBase::Convert24To32Bit() works only with 24 bit images!");
-
-	std::shared_ptr<CImageBase> newImage = MakeShared(CImageBase);
-	newImage->m_Width = m_Width;
-	newImage->m_Height = m_Height;
-	newImage->m_BitsPerPixel = 32;
-	newImage->m_Stride = newImage->GetWidth() * 4;
-	newImage->m_IsTransperent = false;
-	newImage->m_Data = ZN_NEW uint8[m_Height * newImage->GetStride()];
-
-	for (int rows = 0; rows < m_Height; rows++)
-	{
-		const uint8* line = GetLine(rows);
-		uint8* lineNew = newImage->GetLine(rows);
-
-		for (int cols = 0; cols < m_Width; cols++)
-		{
-			lineNew[FI_RGBA_RED] = line[FI_RGBA_RED];
-			lineNew[FI_RGBA_GREEN] = line[FI_RGBA_GREEN];
-			lineNew[FI_RGBA_BLUE] = line[FI_RGBA_BLUE];
-			lineNew[FI_RGBA_ALPHA] = 0xFF;
-			lineNew += 4;
-			line += 3;
-		}
-	}
-
-	return newImage;
+	return destImage;
 }
 
 

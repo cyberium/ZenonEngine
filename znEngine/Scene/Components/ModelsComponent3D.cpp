@@ -41,7 +41,7 @@ void CModelsComponent3D::Load(const std::shared_ptr<IXMLReader>& Reader)
 
 	try
 	{
-		auto model = GetBaseManager().GetManager<IznModelsManager>()->LoadModel(fileName);
+		auto model = GetBaseManager().GetManager<IznModelsFactory>()->LoadModel(fileName);
 		SetModel(model);
 	}
 	catch (const CException& e)

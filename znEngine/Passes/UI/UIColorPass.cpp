@@ -30,10 +30,8 @@ std::shared_ptr<IRenderPassPipelined> CUIColorPass::ConfigurePipeline(std::share
 	std::shared_ptr<ISamplerState> sampler = GetRenderDevice().GetObjectsFactory().CreateSamplerState();
 	sampler->SetFilter(ISamplerState::MinFilter::MinLinear, ISamplerState::MagFilter::MagLinear, ISamplerState::MipFilter::MipLinear);
 	sampler->SetWrapMode(ISamplerState::WrapMode::Clamp, ISamplerState::WrapMode::Clamp, ISamplerState::WrapMode::Clamp);
-
 	GetPipeline().SetSampler(0, sampler);
 
-	// Material
 	GetPipeline().SetShader(EShaderType::VertexShader, vertexShader);
 	GetPipeline().SetShader(EShaderType::PixelShader, pixelShader);
 
@@ -46,9 +44,7 @@ std::shared_ptr<IRenderPassPipelined> CUIColorPass::ConfigurePipeline(std::share
 EVisitResult CUIColorPass::Visit(const ISceneNodeUI * node)
 {
 	if (const CUIColorNode* textNode = dynamic_cast<const CUIColorNode*>(node))
-	{
 		return BaseUIPass::Visit(node);
-	}
 
 	return EVisitResult::AllowVisitChilds;
 }

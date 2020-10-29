@@ -3,7 +3,7 @@
 ZN_INTERFACE IFBXScene;
 ZN_INTERFACE IFBXNode;
 
-#include "Scene/Skeleton.h"
+#include "Scene/Components/Skeleton/Skeleton.h"
 
 
 ZN_INTERFACE ZN_API IFBXAnimation

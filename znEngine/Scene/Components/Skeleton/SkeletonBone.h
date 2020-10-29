@@ -1,6 +1,6 @@
 #pragma once
 
-#include "AnimatedValue.h"
+#include "../Animation/AnimatedValue.h"
 
 struct ZN_API CSkeletonBone
 {
@@ -21,8 +21,8 @@ struct ZN_API CSkeletonBone
 	glm::mat4            LocalTransform;
 	glm::mat4            LocalTransform222;
 
-	AnimatedValue<float> pX, pY, pZ;
-	AnimatedValue<float> rX, rY, rZ;
-	AnimatedValue<float> sX, sY, sZ;
-	AnimatedValue<glm::mat4> mM;
+	CznAnimatedValue<float> pX, pY, pZ;
+	CznAnimatedValue<float> rX, rY, rZ;
+	CznAnimatedValue<float> sX, sY, sZ;
+	CznAnimatedValue<glm::mat4> mM;
 };

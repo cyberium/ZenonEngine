@@ -1,8 +1,7 @@
 #pragma once
 
-#include "BaseManager.h"
-
 // FORWARD BEGIN
+ZN_INTERFACE IManager;
 ZN_INTERFACE ITexture;
 ZN_INTERFACE IGeometry;
 // FORWARD END

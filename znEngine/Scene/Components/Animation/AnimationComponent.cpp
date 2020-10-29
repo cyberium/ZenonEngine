@@ -1,9 +1,9 @@
 #include "stdafx.h"
 
 // General
-#include "AnimatorComponent.h"
+#include "AnimationComponent.h"
 
-CAnimatorComponent3D::CAnimatorComponent3D(const ISceneNode3D & Owner)
+CAnimationComponent3D::CAnimationComponent3D(const ISceneNode3D & Owner)
 	: CComponentBase(Owner)
 	, m_IsLoop(false)
 	, m_IsStopped(false)
@@ -14,11 +14,11 @@ CAnimatorComponent3D::CAnimatorComponent3D(const ISceneNode3D & Owner)
 {
 }
 
-CAnimatorComponent3D::~CAnimatorComponent3D()
+CAnimationComponent3D::~CAnimationComponent3D()
 {
 }
 
-void CAnimatorComponent3D::AddAnimation(uint16 AnimationId, const SAnimation & Animation)
+void CAnimationComponent3D::AddAnimation(uint16 AnimationId, const SAnimation & Animation)
 {
 	m_Animations.insert(std::make_pair(AnimationId, Animation));
 
@@ -26,7 +26,7 @@ void CAnimatorComponent3D::AddAnimation(uint16 AnimationId, const SAnimation & A
 		PlayAnimation(AnimationId, true);
 }
 
-void CAnimatorComponent3D::PlayAnimation(uint16 AnimationId, bool Loop)
+void CAnimationComponent3D::PlayAnimation(uint16 AnimationId, bool Loop)
 {
 	m_IsLoop = Loop;
 
@@ -49,17 +49,17 @@ void CAnimatorComponent3D::PlayAnimation(uint16 AnimationId, bool Loop)
 	animtime = 0.0;
 }
 
-uint16 CAnimatorComponent3D::getSequenceIndex() const
+uint16 CAnimationComponent3D::getSequenceIndex() const
 {
 	return m_CurrentAnimationIndex;
 }
 
-uint32 CAnimatorComponent3D::getCurrentTime() const
+uint32 CAnimationComponent3D::getCurrentTime() const
 {
 	return m_CurrentTime;
 }
 
-void CAnimatorComponent3D::Update(const UpdateEventArgs & e)
+void CAnimationComponent3D::Update(const UpdateEventArgs & e)
 {
 	if (m_IsStopped)
 		return;

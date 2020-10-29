@@ -8,7 +8,8 @@
 
 CFilesManager::CFilesManager(IBaseManager& BaseManager)
 	: m_BaseManager(BaseManager)
-{}
+{
+}
 
 CFilesManager::~CFilesManager()
 {

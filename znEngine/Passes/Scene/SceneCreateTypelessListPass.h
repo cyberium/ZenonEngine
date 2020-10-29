@@ -4,6 +4,26 @@ class ZN_API CSceneCreateTypelessListPass
 	: public ScenePass
 {
 public:
+	struct ZN_API SNodeElement
+	{
+		SNodeElement(const ISceneNode3D* SceneNode)
+			: SceneNode(SceneNode)
+		{}
+
+		const ISceneNode3D* SceneNode;
+	};
+
+	struct ZN_API SModelElement
+	{
+		SModelElement(const ISceneNode3D* SceneNode, const IModel* Model)
+			: SceneNode(SceneNode)
+			, Model(Model)
+		{}
+
+		const ISceneNode3D* SceneNode;
+		const IModel* Model;
+	};
+
 	struct ZN_API SGeometryElement
 	{
 		SGeometryElement(const ISceneNode3D* Node, const IModel* Model, const IGeometry* Geometry, const IMaterial* Material, const SGeometryDrawArgs GeometryDrawArgs)
@@ -19,17 +39,6 @@ public:
 		const IGeometry* Geometry;
 		const IMaterial* Material;
 		const SGeometryDrawArgs GeometryDrawArgs;
-	};
-
-	struct ZN_API SModelElement
-	{
-		SModelElement(const ISceneNode3D* SceneNode, const IModel* Model)
-			: SceneNode(SceneNode)
-			, Model(Model)
-		{}
-
-		const ISceneNode3D* SceneNode;
-		const IModel* Model;
 	};
 
 	struct ZN_API SLightElement
@@ -54,14 +63,7 @@ public:
 		const IParticleSystem* ParticleSystem;
 	};
 
-	struct ZN_API SNodeElement
-	{
-		SNodeElement(const ISceneNode3D* SceneNode)
-			: SceneNode(SceneNode)
-		{}
 
-		const ISceneNode3D* SceneNode;
-	};
 
 public:
 	CSceneCreateTypelessListPass(IRenderDevice& RenderDevice, const std::weak_ptr<IScene>& Scene);

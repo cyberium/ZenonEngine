@@ -1,8 +1,7 @@
 #pragma once
 
-#include "BaseManager.h"
-
 // FORWARD BEGIN
+ZN_INTERFACE IManager;
 ZN_INTERFACE IModel;
 // FORWARD END
 
@@ -11,6 +10,7 @@ ZN_INTERFACE ZN_API IznLoaderParams
 {
 	virtual ~IznLoaderParams() {}
 };
+
 
 ZN_INTERFACE ZN_API IznModelsLoader
 {
@@ -27,9 +27,9 @@ ZN_INTERFACE ZN_API IznModelsLoader
 
 ZN_INTERFACE ZN_API
 	__declspec(uuid("ED37C829-7EC4-4EB9-9B62-524855EF8CFE"))
-	IznModelsManager : public IManager
+	IznModelsFactory : public IManager
 {
-	virtual ~IznModelsManager() {};
+	virtual ~IznModelsFactory() {};
 
 	virtual void AddModelsLoader(const std::shared_ptr<IznModelsLoader>& ModelsLaoder) = 0;
 	virtual void RemoveModelsLoader(const std::shared_ptr<IznModelsLoader>& ModelsLaoder) = 0;

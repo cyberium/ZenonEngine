@@ -6,11 +6,6 @@
       <Extensions>qrc;*</Extensions>
       <ParseFiles>false</ParseFiles>
     </Filter>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{D9D6E242-F8AF-46E4-B9FD-80ECBC20BA3E}</UniqueIdentifier>
-      <Extensions>qrc;*</Extensions>
-      <ParseFiles>false</ParseFiles>
-    </Filter>
     <Filter Include="Common">
       <UniqueIdentifier>{5b6178d0-d9d0-48fa-90ca-9cf2da474f6c}</UniqueIdentifier>
     </Filter>
@@ -83,21 +78,16 @@
     <Filter Include="RTS">
       <UniqueIdentifier>{f7a0aa7f-6f60-4e44-bba6-3fae44026bcf}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-      <ParseFiles>true</ParseFiles>
-    </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
-      <ParseFiles>true</ParseFiles>
-    </Filter>
     <Filter Include="3D\Materials">
       <UniqueIdentifier>{343a6465-19c2-49c5-971e-aca91ad1d194}</UniqueIdentifier>
     </Filter>
     <Filter Include="SceneBrowser">
       <UniqueIdentifier>{3374dd66-8d28-41dd-98bd-05ce9c7e139b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common\Resource Files">
+      <UniqueIdentifier>{D9D6E242-F8AF-46E4-B9FD-80ECBC20BA3E}</UniqueIdentifier>
+      <Extensions>qrc;*</Extensions>
+      <ParseFiles>false</ParseFiles>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -698,12 +688,12 @@
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Editor.rc">
-      <Filter>Resource Files</Filter>
+      <Filter>Common\Resource Files</Filter>
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="EditorUIFrame.qrc">
-      <Filter>Resource Files</Filter>
+      <Filter>Common\Resource Files</Filter>
     </QtRcc>
   </ItemGroup>
   <ItemGroup>

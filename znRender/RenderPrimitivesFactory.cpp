@@ -145,14 +145,14 @@ std::shared_ptr<IGeometry> CRenderPrimitivesFactory::CreateSphere()
 	DirectX::ComputeSphere(vertices, indices, 1.0f, 32, false, false);
 
 	std::shared_ptr<IGeometry> geometry = m_RenderDevice.GetObjectsFactory().CreateGeometry();
-	/*std::shared_ptr<IBuffer> __vb = m_RenderDevice.GetObjectsFactory().CreateVoidVertexBuffer(vertices.data(), vertices.size(), 0, sizeof(DirectX::VertexPositionTextureNormal));
+	std::shared_ptr<IBuffer> __vb = m_RenderDevice.GetObjectsFactory().CreateVoidVertexBuffer(vertices.data(), vertices.size(), 0, sizeof(DirectX::VertexPositionTextureNormal));
 	geometry->AddVertexBuffer(BufferBinding("POSITION", 0), __vb);
 	std::shared_ptr<IBuffer> __tb = m_RenderDevice.GetObjectsFactory().CreateVoidVertexBuffer(vertices.data(), vertices.size(), sizeof(glm::vec3), sizeof(DirectX::VertexPositionTextureNormal));
 	geometry->AddVertexBuffer(BufferBinding("TEXCOORD", 0), __tb);
 	std::shared_ptr<IBuffer> __nb = m_RenderDevice.GetObjectsFactory().CreateVoidVertexBuffer(vertices.data(), vertices.size(), sizeof(glm::vec3) + sizeof(glm::vec2), sizeof(DirectX::VertexPositionTextureNormal));
-	geometry->AddVertexBuffer(BufferBinding("NORMAL", 0), __nb);*/
+	geometry->AddVertexBuffer(BufferBinding("NORMAL", 0), __nb);
 	
-	geometry->SetVertexBuffer(m_RenderDevice.GetObjectsFactory().CreateVoidVertexBuffer(vertices.data(), vertices.size(), 0, sizeof(DirectX::VertexPositionTextureNormal)));
+	//geometry->SetVertexBuffer(m_RenderDevice.GetObjectsFactory().CreateVoidVertexBuffer(vertices.data(), vertices.size(), 0, sizeof(DirectX::VertexPositionTextureNormal)));
 	geometry->SetIndexBuffer(m_RenderDevice.GetObjectsFactory().CreateIndexBuffer(indices));
 	geometry->SetBounds(CalculateBounds(vertices));
 	return geometry;

@@ -3,8 +3,9 @@
 #ifdef ZN_FBX_SDK_ENABLE
 #include <fbxsdk.h>
 
-#include "Scene/AnimatedValue.h"
-#include "Scene/Components/Skeleton/AnimatorComponent.h"
+#include "Scene/Components/Animation/AnimationComponent.h"
+#include "Scene/Components/Animation/AnimatedValue.h"
+
 
 class ZN_API CFBXAnimation
 	: public IFBXAnimation
@@ -21,7 +22,7 @@ public:
 private:
 	void DisplayAnimationRec(fbxsdk::FbxAnimLayer* pAnimLayer, fbxsdk::FbxNode* pNode, size_t AnimationIndex);
 	void DisplayChannels(fbxsdk::FbxNode* pNode, fbxsdk::FbxAnimLayer* pAnimLayer, size_t AnimationIndex);
-	void DisplayCurveKeys(fbxsdk::FbxNode* pNode, fbxsdk::FbxAnimCurve* pCurve, AnimatedValue<float>& valueInt, size_t AnimationIndex);
+	void DisplayCurveKeys(fbxsdk::FbxNode* pNode, fbxsdk::FbxAnimCurve* pCurve, CznAnimatedValue<float>& valueInt, size_t AnimationIndex);
 
 private:
 	std::vector<SAnimation> m_Animations;

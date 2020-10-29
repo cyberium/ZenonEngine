@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../SkeletonBone.h"
+#include "SkeletonBone.h"
 
 class ZN_API CSkeletonComponentBone3D
 	: public ISkeletonComponentBone3D

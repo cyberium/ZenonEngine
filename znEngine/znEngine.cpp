@@ -8,12 +8,12 @@
 #include "PluginsManager.h"
 #include "Settings.h"
 #include "RenderDeviceFactory.h"
-#include "MaterialsFactory.h"
 #include "AssyncLoader/Loader.h"
 #include "Passes/RenderPassFactory.h"
 #include "Scene/Factory/SceneCreator.h"
 #include "Scene/Factory/ComponentsCreator.h"
 #include "Scene/Factory/SceneNodeCreator.h"
+
 
 // Additional (Images)
 #include "Formats/Images/ImagesFactory.h"
@@ -21,10 +21,16 @@
 #include "Formats/Images/ImagePNG.h"
 #include "Formats/Images/ImageDDS.h"
 
+
 // Additional (Models)
-#include "Formats/Models/ModelsManager.h"
+#include "Formats/Models/ModelsFactory.h"
 #include "Formats/Models/EngineModelsLoader.h"
 #include "Formats/Models/FBXModelsLoader.h"
+
+
+// Additional (Materials)
+#include "Formats/Materials/MaterialsFactory.h"
+
 
 #include "Settings/GroupVideo.h"
 
@@ -102,9 +108,9 @@ IBaseManager* WINAPI InitializeEngine(std::vector<std::string> Arguments, std::s
 
 	// Models
 	{
-		baseManager->AddManager<IznModelsManager>(MakeShared(CznModelsManager, *baseManager));
-		baseManager->GetManager<IznModelsManager>()->AddModelsLoader(MakeShared(CznEngineModelsLoader, *baseManager));
-		baseManager->GetManager<IznModelsManager>()->AddModelsLoader(MakeShared(CznFBXModelsLoader, *baseManager));
+		baseManager->AddManager<IznModelsFactory>(MakeShared(CznModelsFactory, *baseManager));
+		baseManager->GetManager<IznModelsFactory>()->AddModelsLoader(MakeShared(CznEngineModelsLoader, *baseManager));
+		baseManager->GetManager<IznModelsFactory>()->AddModelsLoader(MakeShared(CznFBXModelsLoader, *baseManager));
 	}
 
 	// SceneNodes stuff

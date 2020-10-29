@@ -10,8 +10,9 @@
 #include "Passes/MaterialParticlePass.h"
 #include "Passes/MaterialModelPass.h"
 #include "Passes/DrawBonesPass.h"
-#include "Passes/UIFontPass.h"
-#include "Passes/UIColorPass.h"
+
+#include "Passes/UI/UIFontPass.h"
+#include "Passes/UI/UIColorPass.h"
 
 CRendererDeffered::CRendererDeffered(IBaseManager& BaseManager, const std::weak_ptr<IScene>& Scene)
 	: m_BaseManager(BaseManager)

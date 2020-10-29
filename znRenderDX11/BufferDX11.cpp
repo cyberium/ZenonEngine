@@ -109,10 +109,6 @@ void BufferDX11::DoInitializeBuffer()
 	resourceData.SysMemPitch = 0;
 	resourceData.SysMemSlicePitch = 0;
 
-	CHECK_HR_MSG(m_RenderDeviceDX11.GetDeviceD3D11()->CreateBuffer(&bufferDesc, &resourceData, &m_pBuffer), L"Failed to create buffer.");
 
-	//std::shared_ptr<CByteBuffer> bb = MakeShared(CByteBuffer);
-	//Save(bb);
-	//bb->seek(0);
-	//Load(bb);
+	CHECK_HR_MSG(m_RenderDeviceDX11.GetDeviceD3D11()->CreateBuffer(&bufferDesc, &resourceData, &m_pBuffer), L"Failed to create buffer.");
 }

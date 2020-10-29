@@ -154,9 +154,6 @@
     <Filter Include="Scene\Components\Skeleton">
       <UniqueIdentifier>{601eab62-08ec-461d-a53f-7a7ca845dfa0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Scene\Skeleton">
-      <UniqueIdentifier>{050ad0ec-7772-4709-87d3-0e6eed05d274}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Passes\Renderer">
       <UniqueIdentifier>{644b7b8f-b706-4787-b8e7-bdc94a5ef696}</UniqueIdentifier>
     </Filter>
@@ -174,6 +171,21 @@
     </Filter>
     <Filter Include="Formats\Models\Loaders">
       <UniqueIdentifier>{dce1f577-a935-4948-bb3c-cf3bd2f2b474}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scene\Components\Animation">
+      <UniqueIdentifier>{d9a0290d-57dd-4ca4-b9fe-98a84cef49af}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Formats\Textures">
+      <UniqueIdentifier>{764bb252-60db-4a7e-a0eb-109925bacd6e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Formats\Materials">
+      <UniqueIdentifier>{172b0664-d6a2-4e56-a67c-1350556aafbd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Formats\Images\DDS">
+      <UniqueIdentifier>{532c90e3-fdcf-42a8-a06f-7d2b0eac0ddb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Formats\Images\PNG">
+      <UniqueIdentifier>{1b699a96-fcb3-433e-bb7d-1950e0c53c66}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -230,20 +242,8 @@
       <Filter>FBX\Parts</Filter>
     </ClCompile>
     <ClCompile Include="NativeWindowFactory.cpp" />
-    <ClCompile Include="Passes\UIFontPass.cpp">
-      <Filter>Passes\UI</Filter>
-    </ClCompile>
     <ClCompile Include="NativeWindow_WindowsSpecific.cpp" />
-    <ClCompile Include="Formats\Images\DDSFormat.cpp">
-      <Filter>Formats\Images</Filter>
-    </ClCompile>
-    <ClCompile Include="Formats\Images\ImageDDS.cpp">
-      <Filter>Formats\Images</Filter>
-    </ClCompile>
     <ClCompile Include="Formats\Images\ImageLoaderTemplate.cpp">
-      <Filter>Formats\Images</Filter>
-    </ClCompile>
-    <ClCompile Include="Formats\Images\ImagePNG.cpp">
       <Filter>Formats\Images</Filter>
     </ClCompile>
     <ClCompile Include="Formats\Images\ImagesFactory.cpp">
@@ -284,12 +284,6 @@
     </ClCompile>
     <ClCompile Include="Materials\MaterialParticle.cpp">
       <Filter>Materials</Filter>
-    </ClCompile>
-    <ClCompile Include="Passes\UIButtonPass.cpp">
-      <Filter>Passes\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="Passes\UITexturePass.cpp">
-      <Filter>Passes\UI</Filter>
     </ClCompile>
     <ClCompile Include="..\Externals\reactphysics3d-0.7.1\src\body\Body.cpp">
       <Filter>Physics\reactphysics3d\body</Filter>
@@ -492,12 +486,6 @@
     <ClCompile Include="..\Externals\reactphysics3d-0.7.1\src\utils\Profiler.cpp">
       <Filter>Physics\reactphysics3d\utils</Filter>
     </ClCompile>
-    <ClCompile Include="MaterialsFactory.cpp">
-      <Filter>Materials</Filter>
-    </ClCompile>
-    <ClCompile Include="Passes\UIColorPass.cpp">
-      <Filter>Passes\UI</Filter>
-    </ClCompile>
     <ClCompile Include="FBX\FBXDisplayAnimation.cpp">
       <Filter>FBX</Filter>
     </ClCompile>
@@ -554,15 +542,6 @@
     </ClCompile>
     <ClCompile Include="AssyncLoader\Loader.cpp">
       <Filter>Tools\AssyncLoader</Filter>
-    </ClCompile>
-    <ClCompile Include="Passes\RenderPassDefaultCreator.cpp">
-      <Filter>Passes\Factory</Filter>
-    </ClCompile>
-    <ClCompile Include="Passes\RenderPassFactory.cpp">
-      <Filter>Passes\Factory</Filter>
-    </ClCompile>
-    <ClCompile Include="Scene\GameModel.cpp">
-      <Filter>Scene</Filter>
     </ClCompile>
     <ClCompile Include="Scene\Nodes\UIBeizerLine.cpp">
       <Filter>Scene\Nodes</Filter>
@@ -624,9 +603,6 @@
     <ClCompile Include="Scene\Components\ParticlesComponent3D.cpp">
       <Filter>Scene\Components</Filter>
     </ClCompile>
-    <ClCompile Include="Scene\Components\Skeleton\AnimatorComponent.cpp">
-      <Filter>Scene\Components\Skeleton</Filter>
-    </ClCompile>
     <ClCompile Include="Scene\Components\Skeleton\SkeletonComponent.cpp">
       <Filter>Scene\Components\Skeleton</Filter>
     </ClCompile>
@@ -647,15 +623,6 @@
     </ClCompile>
     <ClCompile Include="Scene\Components\ReactPhysicsComponent.cpp">
       <Filter>Scene\Components</Filter>
-    </ClCompile>
-    <ClCompile Include="Scene\Skeleton.cpp">
-      <Filter>Scene\Skeleton</Filter>
-    </ClCompile>
-    <ClCompile Include="Scene\SkeletonBone.cpp">
-      <Filter>Scene\Skeleton</Filter>
-    </ClCompile>
-    <ClCompile Include="Scene\GameModelProto.cpp">
-      <Filter>Scene</Filter>
     </ClCompile>
     <ClCompile Include="Passes\Renderer\RendererDeffered.cpp">
       <Filter>Passes\Renderer</Filter>
@@ -678,9 +645,6 @@
     <ClCompile Include="Settings.cpp">
       <Filter>Managers</Filter>
     </ClCompile>
-    <ClCompile Include="Formats\Models\ModelsManager.cpp">
-      <Filter>Formats\Models</Filter>
-    </ClCompile>
     <ClCompile Include="Passes\Postprocess_HDR.cpp">
       <Filter>Passes\3D\Postprocess</Filter>
     </ClCompile>
@@ -695,6 +659,48 @@
     </ClCompile>
     <ClCompile Include="FBX\FBXNode.cpp">
       <Filter>FBX</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\Components\Skeleton\Skeleton.cpp">
+      <Filter>Scene\Components\Skeleton</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\Components\Skeleton\SkeletonBone.cpp">
+      <Filter>Scene\Components\Skeleton</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\Components\Animation\AnimationComponent.cpp">
+      <Filter>Scene\Components\Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="Formats\Models\ModelsFactory.cpp">
+      <Filter>Formats\Models</Filter>
+    </ClCompile>
+    <ClCompile Include="Formats\Materials\MaterialsFactory.cpp">
+      <Filter>Formats\Materials</Filter>
+    </ClCompile>
+    <ClCompile Include="Formats\Images\ImageDDS.cpp">
+      <Filter>Formats\Images\DDS</Filter>
+    </ClCompile>
+    <ClCompile Include="Formats\Images\DDSFormat.cpp">
+      <Filter>Formats\Images\DDS</Filter>
+    </ClCompile>
+    <ClCompile Include="Formats\Images\ImagePNG.cpp">
+      <Filter>Formats\Images\PNG</Filter>
+    </ClCompile>
+    <ClCompile Include="Passes\UI\UIButtonPass.cpp">
+      <Filter>Passes\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Passes\UI\UIColorPass.cpp">
+      <Filter>Passes\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Passes\UI\UIFontPass.cpp">
+      <Filter>Passes\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Passes\UI\UITexturePass.cpp">
+      <Filter>Passes\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Passes\RenderPassDefaultCreator.cpp">
+      <Filter>Passes\Factory</Filter>
+    </ClCompile>
+    <ClCompile Include="Passes\RenderPassFactory.cpp">
+      <Filter>Passes\Factory</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -755,20 +761,8 @@
     </ClInclude>
     <ClInclude Include="ThreadPool.h" />
     <ClInclude Include="NativeWindowFactory.h" />
-    <ClInclude Include="Passes\UIFontPass.h">
-      <Filter>Passes\UI</Filter>
-    </ClInclude>
     <ClInclude Include="NativeWindow_WindowsSpecific.h" />
-    <ClInclude Include="Formats\Images\DDSFormat.h">
-      <Filter>Formats\Images</Filter>
-    </ClInclude>
-    <ClInclude Include="Formats\Images\ImageDDS.h">
-      <Filter>Formats\Images</Filter>
-    </ClInclude>
     <ClInclude Include="Formats\Images\ImageLoaderTemplate.h">
-      <Filter>Formats\Images</Filter>
-    </ClInclude>
-    <ClInclude Include="Formats\Images\ImagePNG.h">
       <Filter>Formats\Images</Filter>
     </ClInclude>
     <ClInclude Include="Formats\Images\ImagesFactory.h">
@@ -809,12 +803,6 @@
     </ClInclude>
     <ClInclude Include="Materials\MaterialParticle.h">
       <Filter>Materials</Filter>
-    </ClInclude>
-    <ClInclude Include="Passes\UIButtonPass.h">
-      <Filter>Passes\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="Passes\UITexturePass.h">
-      <Filter>Passes\UI</Filter>
     </ClInclude>
     <ClInclude Include="..\Externals\reactphysics3d-0.7.1\src\body\Body.h">
       <Filter>Physics\reactphysics3d\body</Filter>
@@ -1074,14 +1062,8 @@
     <ClInclude Include="..\Externals\reactphysics3d-0.7.1\src\reactphysics3d.h">
       <Filter>Physics\reactphysics3d</Filter>
     </ClInclude>
-    <ClInclude Include="MaterialsFactory.h">
-      <Filter>Materials</Filter>
-    </ClInclude>
     <ClInclude Include="FBX\FBXInterfaces.h">
       <Filter>FBX</Filter>
-    </ClInclude>
-    <ClInclude Include="Passes\UIColorPass.h">
-      <Filter>Passes\UI</Filter>
     </ClInclude>
     <ClInclude Include="FBX\FBXDisplayAnimation.h">
       <Filter>FBX</Filter>
@@ -1139,15 +1121,6 @@
     </ClInclude>
     <ClInclude Include="AssyncLoader\Loader.h">
       <Filter>Tools\AssyncLoader</Filter>
-    </ClInclude>
-    <ClInclude Include="Passes\RenderPassDefaultCreator.h">
-      <Filter>Passes\Factory</Filter>
-    </ClInclude>
-    <ClInclude Include="Passes\RenderPassFactory.h">
-      <Filter>Passes\Factory</Filter>
-    </ClInclude>
-    <ClInclude Include="Scene\GameModel.h">
-      <Filter>Scene</Filter>
     </ClInclude>
     <ClInclude Include="Scene\Nodes\UIBeizerLine.h">
       <Filter>Scene\Nodes</Filter>
@@ -1209,9 +1182,6 @@
     <ClInclude Include="Scene\Components\ParticlesComponent3D.h">
       <Filter>Scene\Components</Filter>
     </ClInclude>
-    <ClInclude Include="Scene\Components\Skeleton\AnimatorComponent.h">
-      <Filter>Scene\Components\Skeleton</Filter>
-    </ClInclude>
     <ClInclude Include="Scene\Components\Skeleton\SkeletonComponent.h">
       <Filter>Scene\Components\Skeleton</Filter>
     </ClInclude>
@@ -1232,18 +1202,6 @@
     </ClInclude>
     <ClInclude Include="Scene\Components\ReactPhysicsComponent.h">
       <Filter>Scene\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="Scene\SkeletonBone.h">
-      <Filter>Scene\Skeleton</Filter>
-    </ClInclude>
-    <ClInclude Include="Scene\Skeleton.h">
-      <Filter>Scene\Skeleton</Filter>
-    </ClInclude>
-    <ClInclude Include="Scene\AnimatedValue.h">
-      <Filter>Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="Scene\GameModelProto.h">
-      <Filter>Scene</Filter>
     </ClInclude>
     <ClInclude Include="Passes\Renderer\RendererDeffered.h">
       <Filter>Passes\Renderer</Filter>
@@ -1266,9 +1224,6 @@
     <ClInclude Include="Settings.h">
       <Filter>Managers</Filter>
     </ClInclude>
-    <ClInclude Include="Formats\Models\ModelsManager.h">
-      <Filter>Formats\Models</Filter>
-    </ClInclude>
     <ClInclude Include="Passes\Postprocess_HDR.h">
       <Filter>Passes\3D\Postprocess</Filter>
     </ClInclude>
@@ -1283,6 +1238,51 @@
     </ClInclude>
     <ClInclude Include="FBX\FBXNode.h">
       <Filter>FBX</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\Components\Skeleton\Skeleton.h">
+      <Filter>Scene\Components\Skeleton</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\Components\Skeleton\SkeletonBone.h">
+      <Filter>Scene\Components\Skeleton</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\Components\Animation\AnimatedValue.h">
+      <Filter>Scene\Components\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\Components\Animation\AnimationComponent.h">
+      <Filter>Scene\Components\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="Formats\Models\ModelsFactory.h">
+      <Filter>Formats\Models</Filter>
+    </ClInclude>
+    <ClInclude Include="Formats\Materials\MaterialsFactory.h">
+      <Filter>Formats\Materials</Filter>
+    </ClInclude>
+    <ClInclude Include="Formats\Images\ImageDDS.h">
+      <Filter>Formats\Images\DDS</Filter>
+    </ClInclude>
+    <ClInclude Include="Formats\Images\DDSFormat.h">
+      <Filter>Formats\Images\DDS</Filter>
+    </ClInclude>
+    <ClInclude Include="Formats\Images\ImagePNG.h">
+      <Filter>Formats\Images\PNG</Filter>
+    </ClInclude>
+    <ClInclude Include="Passes\UI\UIButtonPass.h">
+      <Filter>Passes\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Passes\UI\UIColorPass.h">
+      <Filter>Passes\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Passes\UI\UIFontPass.h">
+      <Filter>Passes\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Passes\UI\UITexturePass.h">
+      <Filter>Passes\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Passes\RenderPassDefaultCreator.h">
+      <Filter>Passes\Factory</Filter>
+    </ClInclude>
+    <ClInclude Include="Passes\RenderPassFactory.h">
+      <Filter>Passes\Factory</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1346,11 +1346,6 @@
     </Image>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Formats\Images\DDSFormat.inl">
-      <Filter>Formats\Images</Filter>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
     <FxCompile Include="..\gamedata\shaders\UI\UI_Button.hlsl">
       <Filter>Resources\Shaders_D3D\UI</Filter>
     </FxCompile>
@@ -1372,5 +1367,10 @@
     <FxCompile Include="..\gamedata\shaders\UI\UI_VertexBase.hlsl">
       <Filter>Resources\Shaders_D3D\UI</Filter>
     </FxCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Formats\Images\DDSFormat.inl">
+      <Filter>Formats\Images\DDS</Filter>
+    </None>
   </ItemGroup>
 </Project>

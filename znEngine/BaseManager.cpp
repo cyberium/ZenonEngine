@@ -28,14 +28,17 @@ IManager* CBaseManager::AddManager(GUID Type, const std::shared_ptr<IManager>& _
 	const auto& it = std::find_if(m_Managers.begin(), m_Managers.end(), [&Type](const SManagerInfo& ManagerInfo) -> bool {return ManagerInfo.Key == Type; });
 	if (it != m_Managers.end())
 		throw CException("BaseManager: Unable to add new manager, becasuse already exists.");
-
 	m_Managers.push_back(SManagerInfo(Type, _manager));
 	return _manager.get();
 }
 
 void CBaseManager::RemoveManager(GUID Type)
 {
-	//m_Managers.erase(std::remove(m_Managers.begin(), m_Managers.end(), Type), m_Managers.end());
+	const auto& it = std::find_if(m_Managers.begin(), m_Managers.end(), [&Type](const SManagerInfo& ManagerInfo) -> bool {return ManagerInfo.Key == Type; });
+	if (it == m_Managers.end())
+		throw CException("BaseManager: Unable to remove existing manager, becasuse not found.");
+	_ASSERT(it->Manager.use_count() == 1);
+	m_Managers.erase(it);
 }
 
 IManager* CBaseManager::GetManager(GUID Type) const
@@ -45,16 +48,6 @@ IManager* CBaseManager::GetManager(GUID Type) const
 		return nullptr;
 
 	return it->Manager.get();
-}
-
-void CBaseManager::RemoveAllManagers()
-{
-	for (auto& it : m_Managers)
-	{
-		_ASSERT(it.Manager.use_count() == 1);
-		_ASSERT(it.Manager);
-		it.Manager.reset();
-	}
 }
 
 const IApplication& CBaseManager::GetApplication() const

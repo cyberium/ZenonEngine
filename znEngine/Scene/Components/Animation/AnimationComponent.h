@@ -2,16 +2,16 @@
 
 
 
-class __declspec(UUID_SkeletonAnimationComponent) ZN_API CAnimatorComponent3D
+class __declspec(UUID_AnimationComponent) ZN_API CAnimationComponent3D
 	: public CComponentBase
 	, public ISkeletonAnimationComponent
 {
 public:
-	static ObjectClass GetClassT() { return UINT16_MAX - 559u; }
+	static ObjectClass GetClassT() { return cSceneNodeAnimationComponent; }
 
 public:
-	CAnimatorComponent3D(const ISceneNode3D& Owner);
-	virtual ~CAnimatorComponent3D();
+	CAnimationComponent3D(const ISceneNode3D& Owner);
+	virtual ~CAnimationComponent3D();
 
 	void AddAnimation(uint16 AnimationId, const SAnimation& Animation);
 	void PlayAnimation(uint16 AnimationId, bool Loop);

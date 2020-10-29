@@ -106,10 +106,10 @@ typedef glm::vec3 ColorRBG;
 
 
 	#define ZN_NEW new(_NORMAL_BLOCK, __FILE__, __LINE__)
-
 	#define MakeShared(CLASS, ...) std::shared_ptr<CLASS>(ZN_NEW CLASS(__VA_ARGS__))
 
 #else
+	#define ZN_NEW new
 	#define MakeShared(CLASS, ...) std::make_shared<CLASS>(__VA_ARGS__)
 #endif
 
@@ -138,10 +138,8 @@ class Rect;
 #include "Interfaces/Console.h"
 #include "Interfaces/DebugOutput.h"
 #include "Interfaces/Files.h"
-#include "Interfaces/FontsManager.h"
 #include "Interfaces/Loader.h"
 #include "Interfaces/Log.h"
-#include "Interfaces/ModelsManager.h"
 #include "Interfaces/Networking.h"
 #include "Interfaces/Types/Object.h"
 #include "Interfaces/Types/ObjectsFactory.h"
@@ -150,6 +148,10 @@ class Rect;
 #include "Interfaces/Visitor.h"
 #include "Interfaces/WindowObject.h"
 #include "Interfaces/XML.h"
+
+#include "Interfaces/Managers/FontsManager.h"
+#include "Interfaces/Managers/ModelsManager.h"
+#include "Interfaces/Managers/ImageLoader.h"
 
 
 //---------------------------------------------------------//
@@ -187,7 +189,7 @@ class Rect;
 #include "Interfaces/Render/ICamera.h"
 #include "Interfaces/Render/IRenderPass.h"
 #include "Interfaces/Render/IRenderTechnique.h"
-#include "Interfaces/Render/IImageLoader.h"
+
 
 
 //---------------------------------------------------------//

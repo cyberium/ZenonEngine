@@ -90,10 +90,10 @@ inline T interpolateBezier(const float r, const T& v1, const T& v2, const T& in,
 */
 
 template <class T, class D = T>
-class AnimatedValue
+class CznAnimatedValue
 {
 public:
-	AnimatedValue()
+	CznAnimatedValue()
 		: m_Type(Interpolations::INTERPOLATION_LINEAR)
 	{}
 
@@ -219,7 +219,7 @@ public:
 		return T();
 	}
 
-	void MergeWithOther(const AnimatedValue<T>& other)
+	void MergeWithOther(const CznAnimatedValue<T>& other)
 	{
 		m_Type = other.m_Type;
 

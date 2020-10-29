@@ -94,8 +94,8 @@ bool CEditorUIFrame::InitializeEditorFrame()
 				continue;
 			}
 
-			auto fbxModel = m_Editor.GetBaseManager().GetManager<IznModelsManager>()->LoadModel(fbxFileName);
-			auto znModelFile = m_Editor.GetBaseManager().GetManager<IznModelsManager>()->SaveModel(fbxModel, filePtr->Path_Name());
+			auto fbxModel = m_Editor.GetBaseManager().GetManager<IznModelsFactory>()->LoadModel(fbxFileName);
+			auto znModelFile = m_Editor.GetBaseManager().GetManager<IznModelsFactory>()->SaveModel(fbxModel, filePtr->Path_Name());
 			znModelFile->Save();
 			realNames.push_back(znModelFile->Path_Name());
 		}

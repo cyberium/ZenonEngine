@@ -11,7 +11,8 @@ public:
 	std::shared_ptr<ISettingGroup> GetGroup(const std::string& GroupName);
 
 private:
-	IBaseManager& m_BaseManager;
-
 	std::unordered_map<std::string, std::shared_ptr<ISettingGroup>> m_Groups;
+
+private:
+	IBaseManager& m_BaseManager;
 };

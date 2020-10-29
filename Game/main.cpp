@@ -67,10 +67,7 @@ int main(int argumentCount, char* arguments[])
 	main_internal(argumentCount, arguments);		
 
 	if (BaseManager)
-	{
-		BaseManager->RemoveAllManagers();
 		delete BaseManager;
-	}
 
 #ifdef _DEBUG
 	//_CrtMemDumpAllObjectsSince(&_ms);
