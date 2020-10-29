@@ -185,7 +185,7 @@ void CFBXMaterial::SetTexture(ETextureType TextureType, std::shared_ptr<ITexture
 	ETextureType textureType = TextureType;
 
 	auto loaderParams = m_FBXNode.GetFBXScene().GetLoaderParams();
-	if (auto loaderFBXParams = std::dynamic_pointer_cast<CznFBXLoaderParams>(loaderParams))
+	if (auto loaderFBXParams = dynamic_cast<const CznFBXLoaderParams*>(loaderParams))
 	{
 		const auto& it = loaderFBXParams->TexturesTypeChange.find((uint8)textureType);
 		if (it != loaderFBXParams->TexturesTypeChange.end())
@@ -223,7 +223,7 @@ std::shared_ptr<ITexture> CFBXMaterial::LoadTexture(fbxsdk::FbxTexture * Texture
 	std::string fileName = fileTexture->GetRelativeFileName();
 
 	auto loaderParams = m_FBXNode.GetFBXScene().GetLoaderParams();
-	if (auto loaderFBXParams = std::dynamic_pointer_cast<CznFBXLoaderParams>(loaderParams))
+	if (auto loaderFBXParams = dynamic_cast<const CznFBXLoaderParams*>(loaderParams))
 	{
 		std::string overrridenTexture = loaderFBXParams->OverrideTexture;
 		if (overrridenTexture.size() > 0)

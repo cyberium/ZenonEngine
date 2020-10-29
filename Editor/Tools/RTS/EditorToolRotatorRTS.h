@@ -25,11 +25,12 @@ public:
 
 protected:
 	void Clear();
+	std::shared_ptr<ISceneNode3D> GetRotatingNode();
 
 private:
 	bool m_IsRotateNow;
 	int m_RotatorNuber;
-	std::shared_ptr<ISceneNode3D> m_MovingNode;
+	std::weak_ptr<ISceneNode3D> m_MovingNode;
 	std::shared_ptr<ISceneNode3D> m_RotatorRoot;
 	std::shared_ptr<ISceneNode3D> m_RotatorY;
 	float m_RotatorInitialAngle;

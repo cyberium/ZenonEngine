@@ -64,7 +64,7 @@ bool CznFBXModelsLoader::IsSupportedFormat(const std::shared_ptr<IFile>& ModelFi
 	return ModelFile->Extension() == cLoaderSupportedExtension;
 }
 
-std::shared_ptr<IModel> CznFBXModelsLoader::LoadModel(const std::string& ModelFileName, const std::shared_ptr<IznLoaderParams>& LoaderParams) const
+std::shared_ptr<IModel> CznFBXModelsLoader::LoadModel(const std::string& ModelFileName, const IznLoaderParams* LoaderParams) const
 {
 	auto modelFile = m_BaseManager.GetManager<IFilesManager>()->Open(ModelFileName);
 	if (modelFile == nullptr)
@@ -72,7 +72,7 @@ std::shared_ptr<IModel> CznFBXModelsLoader::LoadModel(const std::string& ModelFi
 	return LoadModel(modelFile, LoaderParams);
 }
 
-std::shared_ptr<IModel> CznFBXModelsLoader::LoadModel(const std::shared_ptr<IFile>& ModelFile, const std::shared_ptr<IznLoaderParams>& LoaderParams) const
+std::shared_ptr<IModel> CznFBXModelsLoader::LoadModel(const std::shared_ptr<IFile>& ModelFile, const IznLoaderParams* LoaderParams) const
 {
 	return LoadScene(ModelFile, LoaderParams)->MergeModels();
 }
@@ -87,7 +87,7 @@ std::shared_ptr<IFile> CznFBXModelsLoader::SaveModel(const std::shared_ptr<IMode
 //
 // IFBXSceneLoader
 //
-std::shared_ptr<IFBXScene> CznFBXModelsLoader::LoadScene(const std::string& ModelFileName, const std::shared_ptr<IznLoaderParams>& LoaderParams) const
+std::shared_ptr<IFBXScene> CznFBXModelsLoader::LoadScene(const std::string& ModelFileName, const IznLoaderParams* LoaderParams) const
 {
 	auto fbxSceneFile = m_BaseManager.GetManager<IFilesManager>()->Open(ModelFileName);
 	if (fbxSceneFile == nullptr)
@@ -95,7 +95,7 @@ std::shared_ptr<IFBXScene> CznFBXModelsLoader::LoadScene(const std::string& Mode
 	return LoadScene(fbxSceneFile, LoaderParams);
 }
 
-std::shared_ptr<IFBXScene> CznFBXModelsLoader::LoadScene(const std::shared_ptr<IFile>& ModelFile, const std::shared_ptr<IznLoaderParams>& LoaderParams) const
+std::shared_ptr<IFBXScene> CznFBXModelsLoader::LoadScene(const std::shared_ptr<IFile>& ModelFile, const IznLoaderParams* LoaderParams) const
 {
 	auto fbxScene = MakeShared(CFBXScene, m_BaseManager, m_FBXManager, LoaderParams);
 	if (!fbxScene->LoadFromFile(ModelFile))

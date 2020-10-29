@@ -194,7 +194,6 @@ void StructuredBufferDX11::Commit() const
 //
 void StructuredBufferDX11::DoInitializeStructuredBuffer()
 {
-	// Create a GPU buffer to store the data.
 	D3D11_BUFFER_DESC bufferDesc = {};
 	bufferDesc.ByteWidth = GetElementCount() * GetElementStride();
 	bufferDesc.MiscFlags = D3D11_RESOURCE_MISC_BUFFER_STRUCTURED;
@@ -216,6 +215,7 @@ void StructuredBufferDX11::DoInitializeStructuredBuffer()
 		bufferDesc.Usage = D3D11_USAGE_DEFAULT;
 		bufferDesc.CPUAccessFlags = 0;
 		bufferDesc.BindFlags = D3D11_BIND_SHADER_RESOURCE;
+
 		if ((((uint32)GetAccess() & (uint32)EAccess::GPUWrite) != 0) && !IsDynamic()) // UAV can't be CPU writable buffer
 		{
 			bufferDesc.BindFlags |= D3D11_BIND_UNORDERED_ACCESS;

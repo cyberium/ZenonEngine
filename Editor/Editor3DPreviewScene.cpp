@@ -43,7 +43,7 @@ void CEditor3DPreviewScene::Initialize()
 	SceneBase::Initialize();
 
 	// Light
-	/*{
+	{
 		auto lightNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, this);
 		lightNode->SetName("Light");
 		lightNode->SetTranslate(glm::vec3(1500.0f, 1500.0f, 1500.0f));
@@ -55,22 +55,13 @@ void CEditor3DPreviewScene::Initialize()
 		lightNode->GetComponent<ILightComponent3D>()->SetRange(99000.0f);
 		lightNode->GetComponent<ILightComponent3D>()->SetIntensity(1.0f);
 		lightNode->GetComponent<ILightComponent3D>()->SetSpotlightAngle(75.0f);
-	}*/
+	}
 
-	// Camera
+
 	{
 		auto cameraNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, this);
 		cameraNode->SetName("Camera");
-		
-		/*auto geom = GetRenderDevice().GetPrimitivesFactory().CreateBBox();
-		auto mat = MakeShared(MaterialDebug, GetRenderDevice());
-		mat->SetDiffuseColor(glm::vec4(1.0f, 1.0f, 0.3f, 1.0f));
-		auto model = GetRenderDevice().GetObjectsFactory().CreateModel();
-		model->AddConnection(mat, geom);
-		cameraNode->GetComponent<IModelsComponent3D>()->SetModel(model);*/
-
-		auto cameraComponent = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<IComponentFactory>()->CreateComponentT<ICameraComponent3D>(cSceneNodeCameraComponent, *cameraNode);
-		cameraNode->AddComponent(cameraComponent);
+		cameraNode->AddComponent(GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<IComponentFactory>()->CreateComponentT<ICameraComponent3D>(cSceneNodeCameraComponent, *cameraNode));
 
 		SetCameraController(MakeShared(CFreeCameraController));
 		GetCameraController()->SetCamera(cameraNode->GetComponent<ICameraComponent3D>());
@@ -81,10 +72,12 @@ void CEditor3DPreviewScene::Initialize()
 		GetCameraController()->GetCamera()->SetPitch(-45);
 	}
 
+
 	{
 		m_Node = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, this);
 		m_Node->SetName("Node model preview.");
 	}
+
 
 	{
 		auto node = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, this);

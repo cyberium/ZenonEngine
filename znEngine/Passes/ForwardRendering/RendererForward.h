@@ -21,6 +21,9 @@ public:
 	void Initialize(std::shared_ptr<IRenderTarget> OutputRenderTarget, const Viewport * Viewport);
 
 private:
+	void DoUpdateLights();
+
+private:
 	std::vector<std::shared_ptr<IRenderPass>> m_Passes;
 	std::vector<std::shared_ptr<IRenderPass>> m_UIPasses;
 

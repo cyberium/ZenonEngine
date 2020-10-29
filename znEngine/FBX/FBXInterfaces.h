@@ -65,7 +65,7 @@ ZN_INTERFACE ZN_API IFBXScene
 	virtual const std::vector<std::shared_ptr<IFBXModel>>& GetFBXModels() const = 0;
 	virtual std::shared_ptr<IFBXSkeleton> GetFBXSkeleton() const = 0;
 	virtual std::shared_ptr<IFBXAnimation> GetFBXAnimation() const = 0;
-	virtual const std::shared_ptr<IznLoaderParams>& GetLoaderParams() const = 0;
+	virtual const IznLoaderParams* GetLoaderParams() const = 0;
 	virtual std::shared_ptr<IModel> MergeModels() = 0;
 };
 
@@ -80,8 +80,8 @@ ZN_INTERFACE ZN_API IFBXSceneLoader
 {
 	virtual ~IFBXSceneLoader() {}
 
-	virtual std::shared_ptr<IFBXScene> LoadScene(const std::string& ModelFileName, const std::shared_ptr<IznLoaderParams>& LoaderParams) const = 0;
-	virtual std::shared_ptr<IFBXScene> LoadScene(const std::shared_ptr<IFile>& ModelFile, const std::shared_ptr<IznLoaderParams>& LoaderParams) const = 0;
+	virtual std::shared_ptr<IFBXScene> LoadScene(const std::string& ModelFileName, const IznLoaderParams* LoaderParams) const = 0;
+	virtual std::shared_ptr<IFBXScene> LoadScene(const std::shared_ptr<IFile>& ModelFile, const IznLoaderParams* LoaderParams) const = 0;
 };
 
 
@@ -89,9 +89,14 @@ class CznFBXLoaderParams
 	: public IznLoaderParams
 {
 public:
+	CznFBXLoaderParams()
+		: MakeCenterIsX0Z(false)
+	{}
+
 	std::string TexturesPathRoot;
 	std::string OverrideTexture;
 	std::unordered_map<uint8, uint8> TexturesTypeChange;
+	bool MakeCenterIsX0Z;
 };
 
 

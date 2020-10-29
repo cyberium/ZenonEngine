@@ -46,10 +46,11 @@ void CEditorToolRotatorRTS::Enable()
 	auto btn = dynamic_cast<IEditorQtUIFrame&>(GetEditor().GetUIFrame()).getUI().editorToolRotatorRTSBtn;
 	btn->setChecked(IsEnabled());
 
-	if (m_MovingNode = GetEditor().GetFirstSelectedNode())
+	if (auto node = GetEditor().GetFirstSelectedNode())
 	{
-		m_RotatorRoot->SetTranslate(m_MovingNode->GetTranslation());
-		m_RotatorRoot->SetScale(glm::vec3(m_MovingNode->GetComponent<IColliderComponent3D>()->GetBounds().getRadius() * 2.0f));
+		m_MovingNode = node;
+		m_RotatorRoot->SetTranslate(node->GetTranslation());
+		m_RotatorRoot->SetScale(glm::vec3(node->GetComponent<IColliderComponent3D>()->GetBounds().getRadius()));
 	}
 }
 
@@ -68,10 +69,11 @@ void CEditorToolRotatorRTS::Disable()
 
 bool CEditorToolRotatorRTS::OnMousePressed(const MouseButtonEventArgs & e, const Ray & RayToWorld)
 {
-	if (m_MovingNode == nullptr)
+	auto rotatingNode = GetRotatingNode();
+	if (rotatingNode == nullptr)
 		return false;
 
-	if (IsChildOf(m_RotatorRoot, m_MovingNode))
+	if (IsChildOf(m_RotatorRoot, rotatingNode))
 		return false;
 
 	auto nodes = GetScene()->GetFinder().FindIntersection(RayToWorld, nullptr, m_RotatorRoot);
@@ -87,10 +89,10 @@ bool CEditorToolRotatorRTS::OnMousePressed(const MouseButtonEventArgs & e, const
 
 	if (m_RotatorNuber > 0)
 	{
-		auto nodePosition = m_MovingNode->GetTranslation();
+		auto nodePosition = GetRotatingNode()->GetTranslation();
 		auto pos = GetScene()->GetCameraController()->RayToPlane(RayToWorld, Plane(glm::vec3(0.0f, 1.0f, 0.0f), nodePosition.y));
 
-		m_RotatorInitialAngle = m_MovingNode->GetRotation().y;//= glm::angle(glm::normalize(pos.xz()), glm::normalize(nodePosition.xz()));
+		m_RotatorInitialAngle = GetRotatingNode()->GetRotation().y;//= glm::angle(glm::normalize(pos.xz()), glm::normalize(nodePosition.xz()));
 
 		m_IsRotateNow = true;
 		return true;
@@ -107,23 +109,19 @@ void CEditorToolRotatorRTS::OnMouseReleased(const MouseButtonEventArgs & e, cons
 
 void CEditorToolRotatorRTS::OnMouseMoved(const MouseMotionEventArgs & e, const Ray & RayToWorld)
 {
-	if (m_IsRotateNow)
-	{
+	if (false == m_IsRotateNow)
+		return;
+	
+	auto rotatingNode = GetRotatingNode();
+	if (rotatingNode == nullptr)
+		return;
 
+	glm::vec3 newRot = rotatingNode->GetRotation();
+	if (m_RotatorNuber == 2)
+		newRot.y += e.RelY / 360.0f;
 
-		glm::vec3 newRot = m_MovingNode->GetRotation();
-		if (m_RotatorNuber == 2)
-		{
-			auto nodePosition = m_MovingNode->GetTranslation();
-			auto pos = GetScene()->GetCameraController()->RayToPlane(RayToWorld, Plane(glm::vec3(0.0f, 1.0f, 0.0f), nodePosition.y));
-
-			float ang = glm::angle(glm::normalize(pos.xz()), glm::normalize(nodePosition.xz()));
-
-			newRot.y = m_RotatorInitialAngle + ang;
-		}
-
-		m_MovingNode->SetRotation(newRot);
-	}
+	rotatingNode->SetRotation(newRot);
+	
 }
 
 
@@ -148,4 +146,9 @@ void CEditorToolRotatorRTS::Clear()
 {
 	m_RotatorNuber = 0;
 	m_IsRotateNow = false;
+}
+
+std::shared_ptr<ISceneNode3D> CEditorToolRotatorRTS::GetRotatingNode()
+{
+	return m_MovingNode.lock();
 }

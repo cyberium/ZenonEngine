@@ -34,7 +34,8 @@ bool CFBXModel::Load(fbxsdk::FbxMesh* NativeMesh)
 	}
 
 	NativeMesh->ComputeBBox();
-	SetBounds(BoundingBox(ToGLMVec3(NativeMesh->BBoxMin), ToGLMVec3(NativeMesh->BBoxMax)));
+	BoundingBox bbox(ToGLMVec3(NativeMesh->BBoxMin), ToGLMVec3(NativeMesh->BBoxMax));
+	SetBounds(bbox);
 
 	if (!NativeMesh->GenerateNormals(true, true))
 		throw CException("Error while generate normals.");
@@ -333,6 +334,21 @@ bool CFBXModel::Load(fbxsdk::FbxMesh* NativeMesh)
 	}
 
 	SkeletonLoad(NativeMesh);
+
+	auto loaderParams = m_FBXNode.GetFBXScene().GetLoaderParams();
+	if (auto loaderFBXParams = dynamic_cast<const CznFBXLoaderParams*>(loaderParams))
+	{
+		if (loaderFBXParams->MakeCenterIsX0Z)
+		{
+			glm::vec3 offset = bbox.getCenter();
+			offset.y = 0.0f;
+			
+			for (auto& verts : m_Vertices)
+				verts.pos -= offset;
+
+			SetBounds(BoundingBox(bbox.getMin() - offset, bbox.getMax() - offset));
+		}
+	}
 
 	IRenderDevice& renderDevice = m_BaseManager.GetApplication().GetRenderDevice();
 	m_Geometry = renderDevice.GetObjectsFactory().CreateGeometry();

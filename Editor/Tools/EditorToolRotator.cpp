@@ -129,31 +129,29 @@ void CEditorToolRotator::OnMouseReleased(const MouseButtonEventArgs & e, const R
 
 void CEditorToolRotator::OnMouseMoved(const MouseMotionEventArgs & e, const Ray & RayToWorld)
 {
-	if (m_IsRotateNow)
-	{
-		auto rotatingNode = GetRotatingNode();
-		if (rotatingNode == nullptr)
-			return;
-
-		glm::vec3 newRot = rotatingNode->GetRotation();
-
-		if (m_RotatorNuber == 1)
-		{
-			newRot.x += e.RelY / 360.0f;
-		}
-		else if (m_RotatorNuber == 2)
-		{
-			newRot.y += e.RelY / 360.0f;
-		}
-		else if (m_RotatorNuber == 3)
-		{
-			newRot.z += e.RelY / 360.0f;
-		}
-
-		rotatingNode->SetRotation(newRot);
-
+	if (false == m_IsRotateNow)
 		return;
+
+	auto rotatingNode = GetRotatingNode();
+	if (rotatingNode == nullptr)
+		return;
+
+	glm::vec3 newRot = rotatingNode->GetRotation();
+
+	if (m_RotatorNuber == 1)
+	{
+		newRot.x += e.RelY / 360.0f;
 	}
+	else if (m_RotatorNuber == 2)
+	{
+		newRot.y += e.RelY / 360.0f;
+	}
+	else if (m_RotatorNuber == 3)
+	{
+		newRot.z += e.RelY / 360.0f;
+	}
+
+	rotatingNode->SetRotation(newRot);
 }
 
 
@@ -179,7 +177,5 @@ void CEditorToolRotator::Clear()
 
 std::shared_ptr<ISceneNode3D> CEditorToolRotator::GetRotatingNode()
 {
-	if (m_MovingNode.expired())
-		return nullptr;
 	return m_MovingNode.lock();
 }

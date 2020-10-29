@@ -12,7 +12,7 @@
 #include "FBXSkeleton.h"
 #include "FBXAnimation.h"
 
-CFBXScene::CFBXScene(const IBaseManager& BaseManager, fbxsdk::FbxManager* FBXManager, const std::shared_ptr<IznLoaderParams>& LoaderParams)
+CFBXScene::CFBXScene(const IBaseManager& BaseManager, fbxsdk::FbxManager* FBXManager, const IznLoaderParams* LoaderParams)
 	: m_BaseManager(BaseManager)
 	, m_NativeScene(nullptr)
 	, m_LoaderParams(LoaderParams)
@@ -238,7 +238,7 @@ std::shared_ptr<IFBXAnimation> CFBXScene::GetFBXAnimation() const
 	return m_Animation;
 }
 
-const std::shared_ptr<IznLoaderParams>& CFBXScene::GetLoaderParams() const const
+const IznLoaderParams* CFBXScene::GetLoaderParams() const const
 {
 	return m_LoaderParams;
 }

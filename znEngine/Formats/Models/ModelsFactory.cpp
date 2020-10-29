@@ -41,7 +41,7 @@ const std::shared_ptr<IznModelsLoader> CznModelsFactory::GetLoaderForModel(const
 	return nullptr;
 }
 
-std::shared_ptr<IModel> CznModelsFactory::LoadModel(const std::string& ModelFileName, const std::shared_ptr<IznLoaderParams>& LoaderParams)
+std::shared_ptr<IModel> CznModelsFactory::LoadModel(const std::string& ModelFileName, const IznLoaderParams* LoaderParams)
 {
 	// Find existsing cached
 	const auto& iter = m_ModelsByName.find(ModelFileName);
@@ -70,7 +70,7 @@ std::shared_ptr<IModel> CznModelsFactory::LoadModel(const std::string& ModelFile
 	throw CException("The loader for model '%s' doesn't exists.", ModelFileName.c_str());
 }
 
-std::shared_ptr<IModel> CznModelsFactory::LoadModel(const std::shared_ptr<IFile>& ModelFile, const std::shared_ptr<IznLoaderParams>& LoaderParams)
+std::shared_ptr<IModel> CznModelsFactory::LoadModel(const std::shared_ptr<IFile>& ModelFile, const IznLoaderParams* LoaderParams)
 {
 	if (ModelFile == nullptr)
 		throw CException("Can't load nullptr file.");

@@ -20,7 +20,7 @@
 #include "Passes/UI/UIColorPass.h"
 
 
-struct __declspec(align(16)) SForwardLightResult
+struct __declspec(align(16)) SLightVS
 {
 	SLight Light;
 	glm::vec4 LightPositionVS;
@@ -33,7 +33,7 @@ CRendererForward::CRendererForward(IBaseManager& BaseManager, const std::weak_pt
 	, m_RenderDevice(BaseManager.GetApplication().GetRenderDevice())
 	, m_Scene(Scene)
 {
-	m_LightsBuffer = m_RenderDevice.GetObjectsFactory().CreateStructuredBuffer(nullptr, 8, sizeof(SForwardLightResult), EAccess::CPUWrite);
+	m_LightsBuffer = m_RenderDevice.GetObjectsFactory().CreateStructuredBuffer(nullptr, 1, sizeof(SLightVS), EAccess::CPUWrite);
 }
 
 CRendererForward::~CRendererForward()
@@ -105,30 +105,7 @@ void CRendererForward::Initialize(std::shared_ptr<IRenderTarget> OutputRenderTar
 
 	
 
-	std::shared_ptr<InvokeFunctionPass> invokePass = MakeShared(InvokeFunctionPass, m_RenderDevice, [this]() 
-	{
-		std::vector<SForwardLightResult> lights;
-
-		for (auto light : m_SceneCreateTypelessListPass->GetLightList())
-		{
-			const SLight& lightStruct = light.Light->GetLightStruct();
-
-			SForwardLightResult lightResult;
-			lightResult.Light = lightStruct;
-			lightResult.LightPositionVS = m_Scene.lock()->GetCameraController()->GetCamera()->GetViewMatrix() * glm::vec4(lightStruct.Position.xyz(), 1.0f);
-			lightResult.LightDirectionVS = glm::normalize(m_Scene.lock()->GetCameraController()->GetCamera()->GetViewMatrix() * glm::vec4(lightStruct.Direction.xyz(), 0.0f));
-
-			lights.push_back(lightResult);
-		}
-
-		if (lights.size() > m_LightsBuffer->GetElementCount())
-			m_LightsBuffer = m_RenderDevice.GetObjectsFactory().CreateStructuredBuffer(lights, EAccess::CPUWrite);
-		else
-			m_LightsBuffer->Set(lights);
-		m_LightsCnt = lights.size();
-
-		m_MaterialModelPass->GetLightsShaderParameter()->Set(m_LightsBuffer);
-	});
+	std::shared_ptr<InvokeFunctionPass> invokePass = MakeShared(InvokeFunctionPass, m_RenderDevice, std::bind(&CRendererForward::DoUpdateLights, this));
 
 	
 	AddPass(m_SceneCreateTypelessListPass);
@@ -140,4 +117,30 @@ void CRendererForward::Initialize(std::shared_ptr<IRenderTarget> OutputRenderTar
 	
 	m_UIPasses.push_back(MakeShared(CUIFontPass, m_RenderDevice, m_Scene)->ConfigurePipeline(OutputRenderTarget, Viewport));
 	m_UIPasses.push_back(MakeShared(CUIColorPass, m_RenderDevice, m_Scene)->ConfigurePipeline(OutputRenderTarget, Viewport));
+}
+
+void CRendererForward::DoUpdateLights()
+{
+	std::vector<SLightVS> lightsVS;
+	for (const auto& light : m_SceneCreateTypelessListPass->GetLightList())
+	{
+		const SLight& lightStruct = light.Light->GetLightStruct();
+
+		SLightVS lightVS;
+		lightVS.Light = lightStruct;
+		lightVS.LightPositionVS = m_Scene.lock()->GetCameraController()->GetCamera()->GetViewMatrix() * glm::vec4(lightStruct.Position.xyz(), 1.0f);
+		lightVS.LightDirectionVS = glm::normalize(m_Scene.lock()->GetCameraController()->GetCamera()->GetViewMatrix() * glm::vec4(lightStruct.Direction.xyz(), 0.0f));
+		lightsVS.push_back(lightVS);
+	}
+
+	m_LightsCnt = lightsVS.size();
+	if (m_LightsCnt == 0)
+		return;
+
+	if (lightsVS.size() > m_LightsBuffer->GetElementCount())
+		m_LightsBuffer = m_RenderDevice.GetObjectsFactory().CreateStructuredBuffer(lightsVS, EAccess::CPUWrite);
+	else
+		m_LightsBuffer->Set(lightsVS);
+
+	m_MaterialModelPass->GetLightsShaderParameter()->Set(m_LightsBuffer);
 }

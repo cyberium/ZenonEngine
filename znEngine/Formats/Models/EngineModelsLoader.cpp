@@ -72,7 +72,7 @@ namespace
 	}
 }
 
-std::shared_ptr<IModel> CznEngineModelsLoader::LoadModel(const std::string& ModelFileName, const std::shared_ptr<IznLoaderParams>& LoaderParams) const
+std::shared_ptr<IModel> CznEngineModelsLoader::LoadModel(const std::string& ModelFileName, const IznLoaderParams* LoaderParams) const
 {
 	auto modelFile = m_BaseManager.GetManager<IFilesManager>()->Open(ModelFileName);
 	if (modelFile == nullptr)
@@ -80,7 +80,7 @@ std::shared_ptr<IModel> CznEngineModelsLoader::LoadModel(const std::string& Mode
 	return LoadModel(modelFile, LoaderParams);
 }
 
-std::shared_ptr<IModel> CznEngineModelsLoader::LoadModel(const std::shared_ptr<IFile>& ModelFile, const std::shared_ptr<IznLoaderParams>& LoaderParams) const
+std::shared_ptr<IModel> CznEngineModelsLoader::LoadModel(const std::shared_ptr<IFile>& ModelFile, const IznLoaderParams* LoaderParams) const
 {
 	IRenderDevice& renderDevice = m_BaseManager.GetApplication().GetRenderDevice();
 	

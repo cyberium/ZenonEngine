@@ -82,7 +82,6 @@ void SceneBase::Initialize()
 		GetRootNodeUI()->AddChild(m_FPSText);
 		m_FPSText->SetTranslate(glm::vec2(5.0f, 65.0f));
 
-
 		m_StatisticUpdateText = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeUIFactory>()->CreateSceneNodeUI(this, cSceneNodeUI_Text);
 		GetRootNodeUI()->AddChild(m_StatisticUpdateText);
 		m_StatisticUpdateText->SetTranslate(glm::vec2(5.0f, 85.0f));
@@ -265,7 +264,8 @@ void SceneBase::OnUpdate(UpdateEventArgs& e)
 	if (GetCameraController())
 	{
 		GetCameraController()->OnUpdate(e);
-		e.Camera = GetCameraController()->GetCamera().get();
+
+		e.Camera           = GetCameraController()->GetCamera().get();
 		e.CameraForCulling = GetCameraController()->GetCamera().get();
 	}
 
@@ -300,6 +300,8 @@ void SceneBase::OnRender(RenderEventArgs & e)
 		e.Camera = cameraController->GetCamera().get();
 		e.CameraForCulling = cameraController->GetCamera().get();
 	}
+	else
+		_ASSERT(false);
 
 	if (auto renderer = GetRenderer())
 		renderer->Render3D(e);
@@ -314,6 +316,9 @@ void SceneBase::OnPostRender(RenderEventArgs & e)
 		m_CameraRotText->GetProperties()->GetPropertyT<std::string>("Text")->Set("Rot: yaw = " + std::to_string(cameraController->GetCamera()->GetYaw()) + ", pitch = " + std::to_string(cameraController->GetCamera()->GetPitch()));
 		m_CameraRot2Text->GetProperties()->GetPropertyT<std::string>("Text")->Set("Rot: [" + std::to_string(cameraController->GetCamera()->GetDirection().x) + ", " + std::to_string(cameraController->GetCamera()->GetDirection().y) + ", " + std::to_string(GetCameraController()->GetCamera()->GetDirection().z) + "].");
 	}
+
+	e.Camera = nullptr;
+	e.CameraForCulling = nullptr;
 }
 
 void SceneBase::OnRenderUI(RenderEventArgs & e)
