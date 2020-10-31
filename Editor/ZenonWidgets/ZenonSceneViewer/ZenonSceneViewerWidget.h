@@ -5,34 +5,7 @@
 #include "../TreeModelTemplate.h"
 //#include "SceneBrowser/SceneBrowserTreeModel.h"
 
-class CSceneNodeModelItem
-	: public IModelCollectionItem
-{
-public:
-	CSceneNodeModelItem(const std::shared_ptr<ISceneNode3D>& SceneNode)
-		: m_SceneNode(SceneNode)
-	{
-		for (const auto& it : SceneNode->GetChilds())
-			m_Childs.push_back(MakeShared(CSceneNodeModelItem, it));
-	}
 
-	std::string GetName() const override
-	{
-		return m_SceneNode->GetName();
-	}
-	const std::vector<std::shared_ptr<IModelCollectionItem>>& GetChilds() override
-	{
-		return m_Childs;
-	}
-	std::shared_ptr<IObject> Object() const
-	{
-		return m_SceneNode;
-	}
-
-private:
-	std::shared_ptr<ISceneNode3D> m_SceneNode;
-	std::vector<std::shared_ptr<IModelCollectionItem>> m_Childs;
-};
 
 
 

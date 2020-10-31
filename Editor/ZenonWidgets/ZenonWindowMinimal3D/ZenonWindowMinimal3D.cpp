@@ -25,11 +25,12 @@ ZenonWindowMinimal3DWidget::~ZenonWindowMinimal3DWidget()
 //
 void ZenonWindowMinimal3DWidget::SetWindowTitle(const std::string& WindowName)
 {
+	_ASSERT(false);
 }
 
 std::string ZenonWindowMinimal3DWidget::GetWindowTitle() const
 {
-	return std::string();
+	return "ZenonWindowMinimal3DWidget";
 }
 
 size_t ZenonWindowMinimal3DWidget::GetWindowWidth() const

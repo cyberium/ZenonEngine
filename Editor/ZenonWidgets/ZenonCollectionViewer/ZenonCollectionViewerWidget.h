@@ -4,32 +4,7 @@
 
 #include "../TreeModelTemplate.h"
 
-class C3DModelModelItem
-	: public IModelCollectionItem
-{
-public:
-	C3DModelModelItem(const std::shared_ptr<IModel>& Model)
-		: m_Model(Model)
-	{
-	}
 
-	std::string GetName() const override
-	{
-		return m_Model->GetName();
-	}
-	const std::vector<std::shared_ptr<IModelCollectionItem>>& GetChilds() override
-	{
-		return m_Childs;
-	}
-	std::shared_ptr<IObject> Object() const
-	{
-		return m_Model;
-	}
-
-private:
-	std::shared_ptr<IModel> m_Model;
-	std::vector<std::shared_ptr<IModelCollectionItem>> m_Childs;
-};
 
 class ZenonCollectionViewerWidget
 	: public QTreeView

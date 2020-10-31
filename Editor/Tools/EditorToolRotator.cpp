@@ -152,6 +152,9 @@ void CEditorToolRotator::OnMouseMoved(const MouseMotionEventArgs & e, const Ray 
 	}
 
 	rotatingNode->SetRotation(newRot);
+
+	// Refresh selection bounds
+	dynamic_cast<IEditorToolSelector&>(GetEditor().GetTools().GetTool(ETool::EToolSelector)).SelectNode(rotatingNode);
 }
 
 

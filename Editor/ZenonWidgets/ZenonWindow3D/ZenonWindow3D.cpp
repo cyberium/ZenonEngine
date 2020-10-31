@@ -27,7 +27,7 @@ void ZenonWindow3D::onCustomContextMenu(const QPoint& pos)
 
 	std::string title;
 	std::vector<std::shared_ptr<IPropertyAction>> actions;
-	if (! m_Editor->GetUIFrame().ExtendContextMenu(node, &title, &actions))
+	if (false == m_Editor->GetUIFrame().ExtendContextMenu(node, &title, &actions))
 		return;
 
 	// Create actions to the context menu 
@@ -49,24 +49,29 @@ void ZenonWindow3D::onCustomContextMenu(const QPoint& pos)
 	menu->popup(mapToGlobal(pos));
 }
 
+
+
 //
 // Events
 //
-MouseButton QtToZenonMouseBotton(Qt::MouseButton qtState)
+namespace
 {
-	switch (qtState)
+	MouseButton QtToZenonMouseBotton(Qt::MouseButton qtState)
 	{
-	case Qt::MouseButton::LeftButton:
-		return MouseButton::Left;
+		switch (qtState)
+		{
+		case Qt::MouseButton::LeftButton:
+			return MouseButton::Left;
 
-	case Qt::MouseButton::RightButton:
-		return MouseButton::Right;
+		case Qt::MouseButton::RightButton:
+			return MouseButton::Right;
 
-	case Qt::MouseButton::MiddleButton:
-		return MouseButton::Middel;
+		case Qt::MouseButton::MiddleButton:
+			return MouseButton::Middel;
+		}
+
+		return MouseButton::None;
 	}
-
-	return MouseButton::None;
 }
 
 void ZenonWindow3D::mousePressEvent(QMouseEvent * event)
@@ -180,7 +185,10 @@ void ZenonWindow3D::dropEvent(QDropEvent * event)
 
 void ZenonWindow3D::dragEnterEvent(QDragEnterEvent * event)
 {
-	const QMimeData *mimeData = event->mimeData();
+	const QMimeData * mimeData = event->mimeData();
+	if (mimeData == nullptr)
+		return;
+
 	if (mimeData->hasText()) 
 	{
 		std::string text = mimeData->text().toStdString();
@@ -197,7 +205,6 @@ void ZenonWindow3D::dragEnterEvent(QDragEnterEvent * event)
 		{
 			Log::Error("Error!");
 		}
-
 	}
 	else 
 	{

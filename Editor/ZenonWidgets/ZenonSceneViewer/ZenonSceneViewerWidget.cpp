@@ -8,6 +8,8 @@ ZenonSceneViewerWidget::ZenonSceneViewerWidget(QWidget * parent)
 	, m_Editor(nullptr)
 	, m_LockForSelectionChangedEvent(false)
 {
+
+
 	// Add context menu for scene node viewer
 	m_ContextMenu = MakeShared(QMenu, this);
 	m_ContextMenu->setTitle("Some context menu title.");
@@ -18,8 +20,6 @@ ZenonSceneViewerWidget::ZenonSceneViewerWidget(QWidget * parent)
 	// SceneNodeTreeView: Main settings
 	m_Model = MakeShared(CQtToZenonTreeModel, this);
 	this->setModel(m_Model.get());
-
-
 
 	// SceneNodeTreeView: Selection settings
 	this->setSelectionMode(QAbstractItemView::ExtendedSelection);

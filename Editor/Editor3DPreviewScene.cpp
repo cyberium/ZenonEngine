@@ -30,7 +30,7 @@ void CEditor3DPreviewScene::SetModel(const std::shared_ptr<IModel>& Model)
 	float radius = modelBBox.getRadius();
 
 	m_Node->SetTranslate(- modelBBox.getCenter());
-	GetCameraController()->GetCamera()->SetTranslation(glm::vec3(radius * 1.75f));
+	GetCameraController()->GetCamera()->SetTranslation(glm::vec3(radius * 1.5f));
 	GetCameraController()->GetCamera()->SetDirection(glm::vec3(-0.5f));
 }
 
@@ -46,15 +46,15 @@ void CEditor3DPreviewScene::Initialize()
 	{
 		auto lightNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, this);
 		lightNode->SetName("Light");
-		lightNode->SetTranslate(glm::vec3(1500.0f, 1500.0f, 1500.0f));
+		lightNode->SetTranslate(glm::vec3(250.0f, 250.0f, 250.0f));
 		lightNode->SetRotation(glm::vec3(-0.9f, -0.9f, -0.9f));
 
 		lightNode->AddComponent(GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<IComponentFactory>()->CreateComponentT<ILightComponent3D>(cSceneNodeLightComponent, *lightNode.get()));
 		lightNode->GetComponent<ILightComponent3D>()->SetType(ELightType::Spot);
 		lightNode->GetComponent<ILightComponent3D>()->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
-		lightNode->GetComponent<ILightComponent3D>()->SetRange(99000.0f);
-		lightNode->GetComponent<ILightComponent3D>()->SetIntensity(1.0f);
-		lightNode->GetComponent<ILightComponent3D>()->SetSpotlightAngle(75.0f);
+		lightNode->GetComponent<ILightComponent3D>()->SetRange(1000.0f);
+		lightNode->GetComponent<ILightComponent3D>()->SetIntensity(1.2f);
+		lightNode->GetComponent<ILightComponent3D>()->SetSpotlightAngle(45.0f);
 	}
 
 

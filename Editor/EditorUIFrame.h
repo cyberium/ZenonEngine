@@ -20,8 +20,8 @@ public:
 
 	inline ZenonWindow3D * getMainEditor() const { return m_UI.MainEditor3D; }
 	inline ZenonWindowMinimal3DWidget * getModelPreview() const { return m_UI.ModelPreview; }
-	inline ZenonSceneViewerWidget * getSceneViewer() const { return m_UI.SceneViewer; }
-	inline ZenonCollectionViewerWidget * getCollectionViewer() const { return m_UI.CollectionViewer; }
+	inline ZenonTreeViewWidget * getSceneViewer() const { return m_UI.SceneViewer; }
+	inline ZenonTreeViewWidget * getCollectionViewer() const { return m_UI.CollectionViewer; }
 
 	// IEditorSharedFrame
 	IEditor& GetEditor() const override;

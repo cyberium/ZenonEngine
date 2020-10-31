@@ -3,6 +3,69 @@
 // General
 #include "EditorUIFrame.h"
 
+
+namespace
+{
+	class CSceneNodeModelItem
+		: public IModelCollectionItem
+	{
+	public:
+		CSceneNodeModelItem(const std::shared_ptr<ISceneNode3D>& SceneNode)
+			: m_SceneNode(SceneNode)
+		{
+			for (const auto& it : SceneNode->GetChilds())
+				m_Childs.push_back(MakeShared(CSceneNodeModelItem, it));
+		}
+
+		std::string GetName() const override
+		{
+			return m_SceneNode->GetName();
+		}
+		const std::vector<std::shared_ptr<IModelCollectionItem>>& GetChilds() override
+		{
+			return m_Childs;
+		}
+		std::shared_ptr<IObject> Object() const
+		{
+			return m_SceneNode;
+		}
+
+	private:
+		std::shared_ptr<ISceneNode3D> m_SceneNode;
+		std::vector<std::shared_ptr<IModelCollectionItem>> m_Childs;
+	};
+
+
+	class C3DModelModelItem
+		: public IModelCollectionItem
+	{
+	public:
+		C3DModelModelItem(const std::shared_ptr<IModel>& Model)
+			: m_Model(Model)
+		{
+		}
+
+		std::string GetName() const override
+		{
+			return m_Model->GetName();
+		}
+		const std::vector<std::shared_ptr<IModelCollectionItem>>& GetChilds() override
+		{
+			return m_Childs;
+		}
+		std::shared_ptr<IObject> Object() const
+		{
+			return m_Model;
+		}
+
+	private:
+		std::shared_ptr<IModel> m_Model;
+		std::vector<std::shared_ptr<IModelCollectionItem>> m_Childs;
+	};
+}
+
+
+
 CEditorUIFrame::CEditorUIFrame(IEditor& Editor)
 	: QMainWindow(nullptr)
 	, m_Editor(Editor)
@@ -40,8 +103,13 @@ bool CEditorUIFrame::InitializeEditorFrame()
 	getSceneViewer()->SetEditor(&m_Editor);
 	getCollectionViewer()->SetEditor(&m_Editor);
 
-	std::vector<std::string> realNames;
 
+
+	//
+	// Models viewer
+	//
+#pragma region Models viewer
+	std::vector<std::shared_ptr<IModelCollectionItem>> models;
 	auto gameDataStorage = m_Editor.GetBaseManager().GetManager<IFilesManager>()->GetStorage(EFilesStorageType::GAMEDATA);
 	auto fileNames = gameDataStorage->GetAllFilesInFolder("models", ".fbx");
 	for (const auto& fbxFileName : fileNames)
@@ -53,12 +121,13 @@ bool CEditorUIFrame::InitializeEditorFrame()
 
 			if (m_Editor.GetBaseManager().GetManager<IFilesManager>()->IsFileExists(filePtr->Path_Name()))
 			{
-				realNames.push_back(filePtr->Path_Name());
+				IModelPtr model = m_Editor.GetBaseManager().GetManager<IznModelsFactory>()->LoadModel(filePtr->Path_Name());
+				model->SetName(filePtr->Name_NoExtension());
+				models.push_back(MakeShared(C3DModelModelItem, model));
 				continue;
 			}
 
 			CznFBXLoaderParams loader;
-
 			if (fbxFileName.find_first_of("ground_dirt") != std::string::npos)
 				loader.MakeCenterIsX0Z = true;
 			if (fbxFileName.find_first_of("cliffGrey") != std::string::npos)
@@ -69,7 +138,8 @@ bool CEditorUIFrame::InitializeEditorFrame()
 			auto fbxModel = m_Editor.GetBaseManager().GetManager<IznModelsFactory>()->LoadModel(fbxFileName, &loader);
 			auto znModelFile = m_Editor.GetBaseManager().GetManager<IznModelsFactory>()->SaveModel(fbxModel, filePtr->Path_Name());
 			znModelFile->Save();
-			realNames.push_back(znModelFile->Path_Name());
+
+			models.push_back(MakeShared(C3DModelModelItem, m_Editor.GetBaseManager().GetManager<IznModelsFactory>()->LoadModel(znModelFile)));
 		}
 		catch (const CException& e)
 		{
@@ -77,7 +147,43 @@ bool CEditorUIFrame::InitializeEditorFrame()
 		}
 	}
 
-	getCollectionViewer()->SetModelsList(realNames);
+	getCollectionViewer()->SetRootItems(models);
+
+	getCollectionViewer()->SetrOnSelectedItemChange([this](const CQtToZenonTreeItem * Item) -> bool {
+		m_Editor.Get3DFrame().OnCollectionWidget_ModelSelected(std::dynamic_pointer_cast<IModel>(Item->GetTObject()));
+		return true;
+	});
+
+	getCollectionViewer()->SetOnStartDragging([this](const CQtToZenonTreeItem * Item, std::string * Value) -> bool {
+		_ASSERT(Value != nullptr && Value->empty());
+		Value->assign(Item->GetTObject()->GetName().c_str());
+		m_Editor.GetTools().Enable(ETool::EToolDragger);
+		return true;
+	});
+#pragma endregion
+
+
+	//
+	// SceneNode viewer
+	//
+	getSceneViewer()->SetRootItems(models);
+
+	getSceneViewer()->SetrOnSelectedItemChange([this](const CQtToZenonTreeItem * Item) -> bool {
+		m_Editor.Get3DFrame().LockUpdates();
+		auto& selector = dynamic_cast<IEditorToolSelector&>(m_Editor.GetTools().GetTool(ETool::EToolSelector));
+		selector.SelectNode(std::static_pointer_cast<ISceneNode3D>(Item->GetTObject()));
+		m_Editor.Get3DFrame().UnlockUpdates();
+		return true;
+	});
+
+	/*getSceneViewer()->SetOnStartDragging([this](const CQtToZenonTreeItem * Item, std::string * Value) -> bool {
+		_ASSERT(Value != nullptr && Value->empty());
+		Value->assign(Item->GetTObject()->GetName().c_str());
+		m_Editor.GetTools().Enable(ETool::EToolDragger);
+		return true;
+	});*/
+
+
 
 	return false;
 }
@@ -193,7 +299,7 @@ bool CEditorUIFrame::ExtendContextMenu(const std::shared_ptr<ISceneNode3D>& Node
 
 void CEditorUIFrame::OnSceneChanged(ESceneChangeType SceneChangeType, const std::shared_ptr<ISceneNode3D>& ParentNode, const std::shared_ptr<ISceneNode3D>& ChildNode)
 {
-	getSceneViewer()->RefreshTreeViewModel(SceneChangeType, ParentNode, ChildNode);
+	getSceneViewer()->SetRootItem(MakeShared(CSceneNodeModelItem, m_Editor.Get3DFrame().GetEditedRootNode3D()));
 }
 
 
@@ -208,7 +314,7 @@ QObject& CEditorUIFrame::getQObject()
 
 HWND CEditorUIFrame::getHWND()
 {
-	return (HWND)winId();;
+	return (HWND)winId();
 }
 
 Ui::EditorUIFrameClass& CEditorUIFrame::getUI()
@@ -224,10 +330,20 @@ Ui::EditorUIFrameClass& CEditorUIFrame::getUI()
 void CEditorUIFrame::OnSelectNode()
 {
 	const auto& selectedNodes = GetEditor().GetSelectedNodes();
+	if (selectedNodes.empty())
+	{
+		getSceneViewer()->ClearSelection();
+	}
 	if (selectedNodes.size() == 1)
-		getSceneViewer()->SelectNode(GetEditor().GetFirstSelectedNode());
-
-	getSceneViewer()->SelectNodes(selectedNodes);
+	{
+		getSceneViewer()->SelectItem(GetEditor().GetFirstSelectedNode());
+	}
+	else
+	{
+		getSceneViewer()->ClearSelection();
+		for (const auto& selectedNode : selectedNodes)
+			getSceneViewer()->SelectItem(selectedNode, false);
+	}
 
 	//m_PropertiesController->OnSceneNodeSelected(GetEditor().GetFirstSelectedNode().get());
 }

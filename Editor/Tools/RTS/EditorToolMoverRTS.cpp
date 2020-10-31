@@ -136,27 +136,29 @@ void CEditorToolMoverRTS::OnMouseReleased(const MouseButtonEventArgs & e, const 
 
 void CEditorToolMoverRTS::OnMouseMoved(const MouseMotionEventArgs & e, const Ray & RayToWorld)
 {
-	if (m_IsMovingNow)
-	{
-		glm::vec3 oldPos = m_MovingNode->GetTranslation();
-		glm::vec3 newPos = glm::vec3(0.0f);
-
-		auto mousePos = GetScene()->GetCameraController()->RayToPlane(RayToWorld, Plane(glm::vec3(0.0f, 1.0f, 0.0f), oldPos.y));
-		if (m_MoverNuber == 1)
-		{
-			newPos = glm::vec3(mousePos.x + m_MoverOffset.x, oldPos.y, oldPos.z);
-		}
-		else if (m_MoverNuber == 3)
-		{
-			newPos = glm::vec3(oldPos.x, oldPos.y, mousePos.z + m_MoverOffset.z);
-		}
-
-		glm::vec2 fixedTranslate = glm::vec2(FixBoxCoords(newPos.xz));
-		m_MovingNode->SetTranslate(glm::vec3(fixedTranslate.x, 0.0f, fixedTranslate.y));
-		m_MoverRoot->SetTranslate(m_MovingNode->GetTranslation());
-
+	if (false == m_IsMovingNow)
 		return;
+
+
+	glm::vec3 oldPos = m_MovingNode->GetTranslation();
+	glm::vec3 newPos = glm::vec3(0.0f);
+
+	auto mousePos = GetScene()->GetCameraController()->RayToPlane(RayToWorld, Plane(glm::vec3(0.0f, 1.0f, 0.0f), oldPos.y));
+	if (m_MoverNuber == 1)
+	{
+		newPos = glm::vec3(mousePos.x + m_MoverOffset.x, oldPos.y, oldPos.z);
 	}
+	else if (m_MoverNuber == 3)
+	{
+		newPos = glm::vec3(oldPos.x, oldPos.y, mousePos.z + m_MoverOffset.z);
+	}
+
+	glm::vec2 fixedTranslate = glm::vec2(FixBoxCoords(newPos.xz));
+	m_MovingNode->SetTranslate(glm::vec3(fixedTranslate.x, 0.0f, fixedTranslate.y));
+	m_MoverRoot->SetTranslate(m_MovingNode->GetTranslation());
+
+	// Refresh selection bounds
+	dynamic_cast<IEditorToolSelector&>(GetEditor().GetTools().GetTool(ETool::EToolSelector)).SelectNode(m_MovingNode);
 }
 
 
@@ -204,5 +206,4 @@ void CEditorToolMoverRTS::Clear()
 {
 	m_MoverNuber = 0;
 	m_IsMovingNow = false;
-	m_MovingObjectPos = glm::vec3(0.0f);
 }

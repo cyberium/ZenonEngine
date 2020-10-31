@@ -127,6 +127,9 @@ void CEditorToolRotatorRTS::OnMouseMoved(const MouseMotionEventArgs & e, const R
 	rotatorInitialAngleDegrees = glm::radians(rotatorInitialAngleDegrees);
 
 	rotatingNode->SetRotation(glm::vec3(0.0f, rotatorInitialAngleDegrees, 0.0f));
+
+	// Refresh selection bounds
+	dynamic_cast<IEditorToolSelector&>(GetEditor().GetTools().GetTool(ETool::EToolSelector)).SelectNode(rotatingNode);
 	
 }
 

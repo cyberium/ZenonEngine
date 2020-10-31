@@ -373,9 +373,16 @@
     <ClCompile Include="Tools\EditorTools.cpp" />
     <ClCompile Include="Tools\RTS\EditorToolMoverRTS.cpp" />
     <ClCompile Include="Tools\RTS\EditorToolRotatorRTS.cpp" />
-    <ClCompile Include="ZenonWidgets\ZenonCollectionViewer\ZenonCollectionViewerWidget.cpp" />
+    <ClCompile Include="ZenonWidgets\ZenonCollectionViewer\ZenonCollectionViewerWidget.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="ZenonWidgets\ZenonLogViewer\ZenonLogViewer.cpp" />
-    <ClCompile Include="ZenonWidgets\ZenonSceneViewer\ZenonSceneViewerWidget.cpp" />
+    <ClCompile Include="ZenonWidgets\ZenonSceneViewer\ZenonSceneViewerWidget.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="ZenonWidgets\ZenonTreeView\ZenonTreeViewWidget.cpp" />
     <ClCompile Include="ZenonWidgets\ZenonWindow3D\ZenonWindow3D.cpp" />
     <ClCompile Include="ZenonWidgets\ZenonWindowMinimal3D\ZenonWindowMinimal3D.cpp" />
   </ItemGroup>
@@ -411,12 +418,19 @@
     <ClInclude Include="Tools\EditorTools.h" />
     <ClInclude Include="Tools\RTS\EditorToolMoverRTS.h" />
     <ClInclude Include="Tools\RTS\EditorToolRotatorRTS.h" />
+    <QtMoc Include="ZenonWidgets\ZenonTreeView\ZenonTreeViewWidget.h" />
     <ClInclude Include="_widgetZenonWindowMinimal3D.h" />
     <QtMoc Include="ZenonWidgets\ZenonLogViewer\ZenonLogViewer.h" />
-    <QtMoc Include="ZenonWidgets\ZenonSceneViewer\ZenonSceneViewerWidget.h" />
+    <QtMoc Include="ZenonWidgets\ZenonSceneViewer\ZenonSceneViewerWidget.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </QtMoc>
     <ClInclude Include="ZenonWidgets\TreeItemTemplate.h" />
     <ClInclude Include="ZenonWidgets\TreeModelTemplate.h" />
-    <QtMoc Include="ZenonWidgets\ZenonCollectionViewer\ZenonCollectionViewerWidget.h" />
+    <QtMoc Include="ZenonWidgets\ZenonCollectionViewer\ZenonCollectionViewerWidget.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </QtMoc>
     <QtMoc Include="ZenonWidgets\ZenonWindowMinimal3D\ZenonWindowMinimal3D.h" />
     <ClInclude Include="_widgetPropertyEditor.h" />
     <ClInclude Include="_widgetZenonCollectionViewer.h" />

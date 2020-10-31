@@ -94,6 +94,9 @@
       <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
       <ParseFiles>true</ParseFiles>
     </Filter>
+    <Filter Include="UI\Widgets\ZenonTreeView">
+      <UniqueIdentifier>{6e20963d-5916-415d-9605-d216cd05d491}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -363,6 +366,9 @@
       <Filter>SceneBrowser</Filter>
     </ClCompile>
     <ClCompile Include="EditorWindowsShell.cpp" />
+    <ClCompile Include="ZenonWidgets\ZenonTreeView\ZenonTreeViewWidget.cpp">
+      <Filter>UI\Widgets\ZenonTreeView</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -689,6 +695,9 @@
     </QtMoc>
     <QtMoc Include="EditorUIFrame.h">
       <Filter>UI</Filter>
+    </QtMoc>
+    <QtMoc Include="ZenonWidgets\ZenonTreeView\ZenonTreeViewWidget.h">
+      <Filter>UI\Widgets\ZenonTreeView</Filter>
     </QtMoc>
   </ItemGroup>
   <ItemGroup>
