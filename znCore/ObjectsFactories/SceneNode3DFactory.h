@@ -16,14 +16,16 @@ public:
 			, m_Parent(Parent)
 		{}
 
-		IScene* GetScene() override
+		IScene* GetScene() const override
 		{
 			return m_Scene;
 		}
+
 		std::shared_ptr<ISceneNode3D> GetParent() const
 		{
 			return m_Parent;
 		}
+
 	private:
 		IScene* m_Scene;
 		std::shared_ptr<ISceneNode3D> m_Parent;

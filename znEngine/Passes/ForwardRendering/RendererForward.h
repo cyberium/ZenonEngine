@@ -3,6 +3,8 @@
 #include "../Scene/SceneCreateTypelessListPass.h"
 
 #include "PassForward_DoRenderScene.h"
+#include "PassForward_DoRenderSceneInstanced.h"
+#include "../RTSGround_Pass.h"
 
 class ZN_API CRendererForward
 	: public IRenderer
@@ -27,10 +29,13 @@ private:
 	std::vector<std::shared_ptr<IRenderPass>> m_Passes;
 	std::vector<std::shared_ptr<IRenderPass>> m_UIPasses;
 
-	std::shared_ptr<CSceneCreateTypelessListPass> m_SceneCreateTypelessListPass;
-	std::shared_ptr<CPassForward_DoRenderScene> m_MaterialModelPass;
-	std::shared_ptr<IStructuredBuffer>  m_LightsBuffer;
-	size_t							    m_LightsCnt;
+	std::shared_ptr<CSceneCreateTypelessListPass>         m_SceneCreateTypelessListPass;
+	std::shared_ptr<CPassForward_DoRenderScene>           m_MaterialModelPass;
+	std::shared_ptr<CPassForward_DoRenderSceneInstanced>  m_MaterialModelPassInstanced;
+	std::shared_ptr<CRTSGround_Pass>                      m_RTSGroundPassInstanced;
+
+	std::shared_ptr<IStructuredBuffer>                    m_LightsBuffer;
+	size_t                                                m_LightsCnt;
 
 private:
 	IBaseManager& m_BaseManager;

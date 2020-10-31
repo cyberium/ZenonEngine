@@ -106,7 +106,7 @@ void CSceneDefault::Finalize()
 
 bool CSceneDefault::OnMousePressed(const MouseButtonEventArgs & e, const Ray& RayToWorld)
 {
-	if (e.Button == MouseButtonEventArgs::MouseButton::Left)
+	if (e.Button == MouseButton::Left)
 	{
 		//sceneNodeParentt->SetTranslate(GetCameraController()->RayToPlane(RayToWorld, Plane(glm::vec3(0.0f, 1.0f, 0.0f), 25.0f)));
 		return true;

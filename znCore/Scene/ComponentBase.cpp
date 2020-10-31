@@ -8,7 +8,8 @@
 #include "Settings/Actions.h"
 
 CComponentBase::CComponentBase(const ISceneNode3D& OwnerNode)
-    : m_OwnerNode(OwnerNode)
+    : Object(OwnerNode.GetScene()->GetBaseManager())
+	, m_OwnerNode(OwnerNode)
 {
 	m_Properties = MakeShared(CPropertiesGroup);
 }
@@ -79,9 +80,9 @@ const ISceneNode3D& CComponentBase::GetOwnerNode() const
 	return m_OwnerNode;
 }
 
-IBaseManager & CComponentBase::GetBaseManager() const
+IBaseManager& CComponentBase::GetBaseManager() const
 {
-	return dynamic_cast<IBaseManagerHolder*>(GetOwnerNode().GetScene())->GetBaseManager();
+	return GetOwnerNode().GetScene()->GetBaseManager();
 }
 
 void CComponentBase::RaiseComponentMessage(ComponentMessageType Message)

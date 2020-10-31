@@ -9,7 +9,7 @@
 #include "Scene/Components/ParticlesComponent3D.h"
 
 CComponentsEngineCreator::CComponentsEngineCreator(IBaseManager& BaseManager)
-	: CObjectClassCreator(BaseManager)
+	: CObjectClassCreatorBase(BaseManager)
 {
 	AddKey("Component", cSceneNodeComponent);
 	AddKey("ColliderComponent", cSceneNodeColliderComponent);

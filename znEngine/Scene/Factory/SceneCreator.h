@@ -1,7 +1,7 @@
 #pragma once
 
 class CSceneEngineCreator
-	: public CObjectClassCreator
+	: public CObjectClassCreatorBase
 {
 public:
 	CSceneEngineCreator(IBaseManager& BaseManager);

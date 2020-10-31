@@ -5,6 +5,7 @@
 
 CCameraControllerBase::CCameraControllerBase()
 	: m_Camera(nullptr)
+	, m_IsMousePressed(false)
 	, m_PreviousMousePosition(glm::vec2(0.0f))
 {
 }
@@ -114,8 +115,9 @@ void CCameraControllerBase::OnResize(ResizeEventArgs& e)
 //
 // Keyboard event
 //
-void CCameraControllerBase::OnKeyPressed(KeyEventArgs& e)
+bool CCameraControllerBase::OnKeyPressed(KeyEventArgs& e)
 {
+	return false;
 }
 
 void CCameraControllerBase::OnKeyReleased(KeyEventArgs& e)
@@ -127,20 +129,27 @@ void CCameraControllerBase::OnKeyReleased(KeyEventArgs& e)
 //
 // Mouse event
 //
-void CCameraControllerBase::OnMouseButtonPressed(MouseButtonEventArgs& e)
+bool CCameraControllerBase::OnMouseButtonPressed(MouseButtonEventArgs& e)
 {
+	if (e.Button != MouseButton::Right)
+		return false;
+
 	m_PreviousMousePosition = glm::vec2(e.X, e.Y);
+	m_IsMousePressed = true;
+	return true;
 }
 
 void CCameraControllerBase::OnMouseButtonReleased(MouseButtonEventArgs& e)
 {
 	m_PreviousMousePosition = glm::vec2(0.0f, 0.0f);
+	m_IsMousePressed = false;
 }
 
 void CCameraControllerBase::OnMouseMoved(MouseMotionEventArgs& e)
 {
 }
 
-void CCameraControllerBase::OnMouseWheel(MouseWheelEventArgs& e)
+bool CCameraControllerBase::OnMouseWheel(MouseWheelEventArgs& e)
 {
+	return false;
 }

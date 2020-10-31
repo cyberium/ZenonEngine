@@ -63,6 +63,9 @@ std::shared_ptr<IRenderPassPipelined> CPassForward_DoRenderScene::ConfigurePipel
 	m_ShaderLightsBufferParameter = &pixelShader->GetShaderParameterByName("LightsVS");
 	//_ASSERT(m_ShaderLightsBufferParameter->IsValid());
 
+	m_ShaderInstancesBufferParameter = &vertexShader->GetShaderParameterByName("Instances");
+	//_ASSERT(m_ShaderInstancesBufferParameter->IsValid());
+
 	return shared_from_this();
 }
 
@@ -70,6 +73,9 @@ std::shared_ptr<IRenderPassPipelined> CPassForward_DoRenderScene::ConfigurePipel
 
 EVisitResult CPassForward_DoRenderScene::Visit(const ISceneNode3D * SceneNode)
 {
+	if (SceneNode->GetClass() != cSceneNode3D)
+		return EVisitResult::AllowVisitChilds;
+
 	auto skeletonComponent = SceneNode->GetComponent<ISkeletonComponent3D>();
 	if (skeletonComponent != nullptr)
 		if (m_ShaderBonesBufferParameter->IsValid())

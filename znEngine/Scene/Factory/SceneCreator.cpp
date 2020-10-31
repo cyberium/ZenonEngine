@@ -7,7 +7,7 @@
 #include "Scene/SceneBase.h"
 
 CSceneEngineCreator::CSceneEngineCreator(IBaseManager& BaseManager)
-	: CObjectClassCreator(BaseManager)
+	: CObjectClassCreatorBase(BaseManager)
 {
 	AddKey("SceneBase", cSceneBase);
 }

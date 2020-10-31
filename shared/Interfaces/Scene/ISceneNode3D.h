@@ -27,23 +27,19 @@ ZN_INTERFACE ZN_API ISceneNode3D
 	, public std::enable_shared_from_this<ISceneNode3D>
 {
 	typedef std::vector<std::shared_ptr<ISceneNode3D>>                Node3DList;
-	typedef std::multimap<std::string, std::shared_ptr<ISceneNode3D>> Node3DNameMap;
-
-	//static ObjectType GetType() { return otSceneNode3D; }
-	//static ObjectClass GetClass() { return cSceneNode3D; }
 
 	virtual ~ISceneNode3D() {}
 
 	virtual void Initialize() = 0;
 	virtual void Finalize() = 0;
-	virtual void Copy(std::shared_ptr<ISceneNode3D> Destination) const = 0;
+	virtual void CopyTo(std::shared_ptr<ISceneNode3D> Destination) const = 0;
 
 	virtual void AddChild(std::shared_ptr<ISceneNode3D> childNode) = 0;
 	virtual void RemoveChild(std::shared_ptr<ISceneNode3D> childNode) = 0;
 	virtual std::weak_ptr<ISceneNode3D> GetParent() const = 0;
 	virtual const Node3DList& GetChilds() const = 0;
-	virtual void ClearChilds() = 0;
-	virtual void RaiseOnParentChanged() = 0;
+	virtual std::shared_ptr<ISceneNode3D> GetChild(std::string Name) const = 0;
+	virtual bool IsPersistance() const = 0; // Means this node can't be deleted from parent and any parent may contains only one instance of this node (by Name)
 
 	virtual std::shared_ptr<IPropertiesGroup> GetProperties() const = 0;
 	virtual IScene* GetScene() const = 0;
@@ -113,4 +109,6 @@ ZN_INTERFACE ZN_API ISceneNode3DInternal
 	virtual void AddChildInternal(std::shared_ptr<ISceneNode3D> ChildNode) = 0;
 	virtual void RemoveChildInternal(std::shared_ptr<ISceneNode3D> ChildNode) = 0;
 	virtual void SetParentInternal(std::weak_ptr<ISceneNode3D> parentNode) = 0;
+	virtual void SetPersistanceInternal(bool Value) = 0;
+	virtual void RaiseOnParentChangedInternal() = 0;
 };

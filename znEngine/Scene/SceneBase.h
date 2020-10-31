@@ -7,7 +7,6 @@ class ZN_API SceneBase
 	, public ISceneInternal
 	, public IRenderWindowEventListener
 	, public INativeWindowEventListener
-	, public IBaseManagerHolder
 	, public Object
 {
 public:
@@ -15,6 +14,8 @@ public:
 	virtual ~SceneBase();
 
 	// IScene
+	IBaseManager&                                   GetBaseManager() const override;
+	IRenderDevice&                                  GetRenderDevice() const override;
 	IRenderWindow&                                  GetRenderWindow() const override;
 
 	void                                            AddEventListener(std::shared_ptr<ISceneEventsListener> Listener) override;
@@ -80,11 +81,6 @@ public:
 	virtual void                                    OnMouseReleased(const MouseButtonEventArgs & e, const Ray& RayToWorld);
 	virtual void                                    OnMouseMoved(const MouseMotionEventArgs & e, const Ray& RayToWorld);
 
-
-	// IBaseManagerHolder
-	IBaseManager&                                   GetBaseManager() const override final;
-
-
 	// IObject
 	Guid                                            GetGUID() const override final { return Object::GetGUID(); };
 	std::string                                     GetName() const override final { return Object::GetName(); };
@@ -95,12 +91,10 @@ public:
 	virtual void									Load(const std::shared_ptr<IXMLReader>& Reader) override;
 	virtual void									Save(const std::shared_ptr<IXMLWriter>& Writer) const override;
 
-
 protected:
-	IRenderDevice&                                  GetRenderDevice() const;
+	
 
-
-protected: // Input events process recursive
+private: // Input events process recursive
 	void                                            DoUpdate_Rec(const std::shared_ptr<ISceneNode3D>& Node, const UpdateEventArgs& e);
 
 	bool                                            DoKeyPressed_Rec(const std::shared_ptr<ISceneNodeUI>& Node, KeyEventArgs& e);

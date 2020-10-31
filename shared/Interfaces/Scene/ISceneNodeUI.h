@@ -21,9 +21,6 @@ ZN_INTERFACE ZN_API ISceneNodeUI
 	typedef std::vector<std::shared_ptr<ISceneNodeUI>>                NodeUIList;
 	typedef std::multimap<std::string, std::shared_ptr<ISceneNodeUI>> NodeUINameMap;
 
-	//static ObjectType GetType() { return otSceneNodeUI; }
-	//static ObjectClass GetClass() { return cSceneNodeUI; }
-
 	virtual ~ISceneNodeUI() {}
 
 	virtual void Initialize() = 0;

@@ -115,9 +115,6 @@
     <Filter Include="Passes\Technical">
       <UniqueIdentifier>{ee871fb8-2974-4629-a7f9-72e3b2816735}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Passes\Pipelined">
-      <UniqueIdentifier>{e32fd233-b0f1-49c7-874c-516da23d4b9f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Passes\Scene">
       <UniqueIdentifier>{fd4fe218-d1f4-4227-85f0-ddee57019a42}</UniqueIdentifier>
     </Filter>
@@ -504,9 +501,6 @@
     <ClCompile Include="Passes\Technical\SetShaderParameterPass.cpp">
       <Filter>Passes\Technical</Filter>
     </ClCompile>
-    <ClCompile Include="Passes\Pipelined\BaseTypedList3DPass.cpp">
-      <Filter>Passes\Pipelined</Filter>
-    </ClCompile>
     <ClCompile Include="Passes\Scene\SceneCreateTypedListsPass.cpp">
       <Filter>Passes\Scene</Filter>
     </ClCompile>
@@ -691,6 +685,18 @@
       <Filter>Passes</Filter>
     </ClCompile>
     <ClCompile Include="Passes\MaterialTexturedPass.cpp">
+      <Filter>Passes</Filter>
+    </ClCompile>
+    <ClCompile Include="Passes\ForwardRendering\PassForward_DoRenderSceneInstanced.cpp">
+      <Filter>Passes\ForwardRendering</Filter>
+    </ClCompile>
+    <ClCompile Include="Passes\Scene\BaseTypedList3DPass.cpp">
+      <Filter>Passes\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\RTSSceneNodeGround.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Passes\RTSGround_Pass.cpp">
       <Filter>Passes</Filter>
     </ClCompile>
   </ItemGroup>
@@ -1083,9 +1089,6 @@
     <ClInclude Include="Passes\Technical\SetShaderParameterPass.h">
       <Filter>Passes\Technical</Filter>
     </ClInclude>
-    <ClInclude Include="Passes\Pipelined\BaseTypedList3DPass.h">
-      <Filter>Passes\Pipelined</Filter>
-    </ClInclude>
     <ClInclude Include="Passes\Scene\SceneCreateTypedListsPass.h">
       <Filter>Passes\Scene</Filter>
     </ClInclude>
@@ -1273,6 +1276,21 @@
       <Filter>Passes</Filter>
     </ClInclude>
     <ClInclude Include="Passes\MaterialParticlePass.h">
+      <Filter>Passes</Filter>
+    </ClInclude>
+    <ClInclude Include="Passes\ForwardRendering\PassForward_DoRenderSceneInstanced.h">
+      <Filter>Passes\ForwardRendering</Filter>
+    </ClInclude>
+    <ClInclude Include="Passes\Scene\BaseTypedList3DPass.h">
+      <Filter>Passes\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\RTSSceneNodeGround.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\EngineSceneIntfs.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Passes\RTSGround_Pass.h">
       <Filter>Passes</Filter>
     </ClInclude>
   </ItemGroup>

@@ -1,11 +1,11 @@
 #pragma once
 
-class ZN_API CObjectClassCreator
+class ZN_API CObjectClassCreatorBase
 	: public IObjectClassCreator
 {
 public:
-	CObjectClassCreator(IBaseManager& BaseManager);
-	virtual ~CObjectClassCreator();
+	CObjectClassCreatorBase(IBaseManager& BaseManager);
+	virtual ~CObjectClassCreatorBase();
 
 	// IObjectClassCreator
 	virtual size_t GetSupportedClassCount() const override final;

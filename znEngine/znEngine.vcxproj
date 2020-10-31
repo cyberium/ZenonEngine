@@ -316,10 +316,12 @@
     <ClCompile Include="Passes\DrawBonesPass.cpp" />
     <ClCompile Include="Passes\DrawBoundingBoxPass.cpp" />
     <ClCompile Include="Passes\ForwardRendering\PassForward_DoRenderScene.cpp" />
+    <ClCompile Include="Passes\ForwardRendering\PassForward_DoRenderSceneInstanced.cpp" />
     <ClCompile Include="Passes\ForwardRendering\RendererForward.cpp" />
     <ClCompile Include="Passes\MaterialParticlePass.cpp" />
-    <ClCompile Include="Passes\Pipelined\BaseTypedList3DPass.cpp" />
     <ClCompile Include="Passes\PostprocessRendering\Postprocess_HDR.cpp" />
+    <ClCompile Include="Passes\RTSGround_Pass.cpp" />
+    <ClCompile Include="Passes\Scene\BaseTypedList3DPass.cpp" />
     <ClCompile Include="Passes\Scene\SceneCreateTypedListsPass.cpp" />
     <ClCompile Include="Passes\Scene\SceneCreateTypelessListPass.cpp" />
     <ClCompile Include="Passes\Technical\BeginQueryPass.cpp" />
@@ -378,6 +380,7 @@
     <ClCompile Include="Scene\Nodes\UITexture.cpp" />
     <ClCompile Include="Scene\Nodes\UIUtils.cpp" />
     <ClCompile Include="Scene\Nodes\UIWindow.cpp" />
+    <ClCompile Include="Scene\RTSSceneNodeGround.cpp" />
     <ClCompile Include="Scene\SceneBase.cpp" />
     <ClCompile Include="Settings.cpp" />
     <ClCompile Include="Settings\GroupVideo.cpp" />
@@ -515,10 +518,12 @@
     <ClInclude Include="Passes\DrawBonesPass.h" />
     <ClInclude Include="Passes\DrawBoundingBoxPass.h" />
     <ClInclude Include="Passes\ForwardRendering\PassForward_DoRenderScene.h" />
+    <ClInclude Include="Passes\ForwardRendering\PassForward_DoRenderSceneInstanced.h" />
     <ClInclude Include="Passes\ForwardRendering\RendererForward.h" />
     <ClInclude Include="Passes\MaterialParticlePass.h" />
-    <ClInclude Include="Passes\Pipelined\BaseTypedList3DPass.h" />
     <ClInclude Include="Passes\PostprocessRendering\Postprocess_HDR.h" />
+    <ClInclude Include="Passes\RTSGround_Pass.h" />
+    <ClInclude Include="Passes\Scene\BaseTypedList3DPass.h" />
     <ClInclude Include="Passes\Scene\SceneCreateTypedListsPass.h" />
     <ClInclude Include="Passes\Scene\SceneCreateTypelessListPass.h" />
     <ClInclude Include="Passes\Technical\BeginQueryPass.h" />
@@ -564,6 +569,7 @@
     <ClInclude Include="Scene\Components\ReactPhysicsComponent.h" />
     <ClInclude Include="Scene\Components\Skeleton\SkeletonComponent.h" />
     <ClInclude Include="Scene\Components\Skeleton\SkeletonComponentBone.h" />
+    <ClInclude Include="Scene\EngineSceneIntfs.h" />
     <ClInclude Include="Scene\Factory\ComponentsCreator.h" />
     <ClInclude Include="Scene\Factory\SceneCreator.h" />
     <ClInclude Include="Scene\Factory\SceneNodeCreator.h" />
@@ -579,6 +585,7 @@
     <ClInclude Include="Scene\Nodes\UITexture.h" />
     <ClInclude Include="Scene\Nodes\UIUtils.h" />
     <ClInclude Include="Scene\Nodes\UIWindow.h" />
+    <ClInclude Include="Scene\RTSSceneNodeGround.h" />
     <ClInclude Include="Scene\SceneBase.h" />
     <ClInclude Include="Settings.h" />
     <ClInclude Include="Settings\GroupVideo.h" />

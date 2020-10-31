@@ -33,31 +33,31 @@ std::shared_ptr<IObjectClassFactory> CObjectsFactory::GetClassFactory(ObjectType
 	return it->second;
 }
 
-void CObjectsFactory::AddClassFactory(std::shared_ptr<IObjectClassFactory> Creator)
+void CObjectsFactory::AddClassFactory(std::shared_ptr<IObjectClassFactory> Factory)
 {
-	auto creatorType = Creator->GetType();
+	auto creatorType = Factory->GetType();
 	const auto& it = m_ClassFactories.find(creatorType);
 	if (it != m_ClassFactories.end())
 		throw CException("ObjectsFactory: ClassFactory '%d' already exists!", creatorType);
-	m_ClassFactories.insert(std::make_pair(creatorType, Creator));
+	m_ClassFactories.insert(std::make_pair(creatorType, Factory));
 }
 
-void CObjectsFactory::RemoveClassFactory(std::shared_ptr<IObjectClassFactory> Creator)
+void CObjectsFactory::RemoveClassFactory(std::shared_ptr<IObjectClassFactory> Factory)
 {
-	auto creatorType = Creator->GetType();
+	auto creatorType = Factory->GetType();
 	const auto& it = m_ClassFactories.find(creatorType);
 	if (it == m_ClassFactories.end())
 		throw CException("ObjectsFactory: Unable to remove ClassFactory '%d' because not found in ObjectFactory.", creatorType);
 	m_ClassFactories.erase(it);
 }
 
-std::shared_ptr<IObject> CObjectsFactory::CreateObject(ObjectType ObjectFactoryKey, ObjectClass ObjectClassKey, const IObjectCreationArgs* ObjectCreationArgs)
+std::shared_ptr<IObject> CObjectsFactory::CreateObject(ObjectType ObjectTypeKey, ObjectClass ObjectClassKey, const IObjectCreationArgs* ObjectCreationArgs)
 {
-	Guid objectUUID(ObjectFactoryKey, ObjectClassKey, 0u);
+	Guid objectUUID(ObjectTypeKey, ObjectClassKey, 0u);
 
 	try
 	{
-		return GetClassFactory(ObjectFactoryKey)->CreateObject(ObjectClassKey, ObjectCreationArgs);
+		return GetClassFactory(ObjectTypeKey)->CreateObject(ObjectClassKey, ObjectCreationArgs);
 	}
 	catch (const CException& e)
 	{

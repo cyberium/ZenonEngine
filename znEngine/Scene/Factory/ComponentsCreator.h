@@ -1,7 +1,7 @@
 #pragma once
 
 class CComponentsEngineCreator
-	: public CObjectClassCreator
+	: public CObjectClassCreatorBase
 {
 public:
 	CComponentsEngineCreator(IBaseManager& BaseManager);

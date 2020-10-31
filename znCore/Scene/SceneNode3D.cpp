@@ -6,7 +6,11 @@
 #include "XML/XMLManager.h"
 
 SceneNode3D::SceneNode3D(IScene& Scene)
-	: m_Scene(Scene)
+	: Object(Scene.GetBaseManager())
+	
+	, m_Scene(Scene)
+
+	, m_IsPersistance(false)
 
 	, m_Translate(0.0f)
 	, m_Rotate(glm::vec3(0.0f))
@@ -82,17 +86,13 @@ void SceneNode3D::Initialize()
 void SceneNode3D::Finalize()
 {}
 
-void SceneNode3D::Copy(std::shared_ptr<ISceneNode3D> Destination) const
+void SceneNode3D::CopyTo(std::shared_ptr<ISceneNode3D> Destination) const
 {
 	Object::Copy(Destination);
 
 	auto destCast = std::dynamic_pointer_cast<SceneNode3D>(Destination);
 
-	destCast->m_Children.clear();
-	destCast->m_ParentNode;
-
-	destCast->m_PropertiesGroup;
-	destCast->m_Scene = m_Scene;
+	destCast->m_IsPersistance = m_IsPersistance;
 
 	destCast->m_Translate = m_Translate;
 	destCast->m_Rotate = m_Rotate;
@@ -104,11 +104,19 @@ void SceneNode3D::Copy(std::shared_ptr<ISceneNode3D> Destination) const
 	destCast->m_WorldTransform = m_WorldTransform;
 	destCast->m_InverseWorldTransform = m_InverseWorldTransform;
 
+	destCast->m_PropertiesGroup;// TODO
+
 	for (const auto& c : GetComponents())
 	{
 		const auto& compInOther = destCast->m_Components.find(c.first);
 		_ASSERT(compInOther != destCast->m_Components.end());
 		c.second->Copy(compInOther->second);
+	}
+
+	for (const auto& ch : GetChilds())
+	{
+		std::shared_ptr<ISceneNode3D> childCopy = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(ch->GetType(), Destination->GetScene(), Destination);
+		ch->CopyTo(childCopy);
 	}
 }
 
@@ -161,20 +169,24 @@ const SceneNode3D::Node3DList& SceneNode3D::GetChilds() const
 	return m_Children;
 }
 
-void SceneNode3D::ClearChilds()
+std::shared_ptr<ISceneNode3D> SceneNode3D::GetChild(std::string Name) const
 {
-}
+	std::string currClearName = GetClearName(Name).first;
 
-void SceneNode3D::RaiseOnParentChanged()
-{
-	// Don't forget about update world transform
-	UpdateWorldTransform();
-
-	for (auto c : m_Components)
+	for (const auto& ch : GetChilds())
 	{
-		c.second->OnMessage(nullptr, UUID_OnParentChanged);
+		std::string childClearName = GetClearName(ch->GetName()).first;
+		if (childClearName == currClearName)
+			return ch;
 	}
+	return nullptr;
 }
+
+bool SceneNode3D::IsPersistance() const
+{
+	return m_IsPersistance;
+}
+
 
 std::shared_ptr<IPropertiesGroup> SceneNode3D::GetProperties() const
 {
@@ -492,11 +504,11 @@ void SceneNode3D::AddChildInternal(std::shared_ptr<ISceneNode3D> ChildNode)
 
 	std::dynamic_pointer_cast<SceneNode3D>(ChildNode)->SetParentInternal(weak_from_this());
 
+	// Update name (to resolve dublicates)
 	ChildNode->SetName(ChildNode->GetName());
 
 	// TODO: Какой ивент посылать первым?
-	ChildNode->RaiseOnParentChanged();
-	
+	std::dynamic_pointer_cast<ISceneNode3DInternal>(ChildNode)->RaiseOnParentChangedInternal();
 	dynamic_cast<ISceneInternal*>(GetScene())->RaiseSceneChangeEvent(ESceneChangeType::NodeAddedToParent, shared_from_this(), ChildNode);
 }
 
@@ -515,7 +527,7 @@ void SceneNode3D::RemoveChildInternal(std::shared_ptr<ISceneNode3D> ChildNode)
 	std::dynamic_pointer_cast<SceneNode3D>(ChildNode)->SetParentInternal(std::weak_ptr<ISceneNode3D>());
 
 	// TODO: Какой ивент посылать первым?
-	ChildNode->RaiseOnParentChanged();
+	std::dynamic_pointer_cast<ISceneNode3DInternal>(ChildNode)->RaiseOnParentChangedInternal();
 	dynamic_cast<ISceneInternal*>(GetScene())->RaiseSceneChangeEvent(ESceneChangeType::NodeRemovedFromParent, shared_from_this(), ChildNode);
 }
 
@@ -524,8 +536,27 @@ void SceneNode3D::SetParentInternal(std::weak_ptr<ISceneNode3D> parentNode)
 	m_ParentNode = parentNode;
 }
 
+void SceneNode3D::SetPersistanceInternal(bool Value)
+{
+	m_IsPersistance = Value;
+}
+
+void SceneNode3D::RaiseOnParentChangedInternal()
+{
+	// Don't forget about update world transform
+	UpdateWorldTransform();
+
+	for (auto c : m_Components)
+	{
+		c.second->OnMessage(nullptr, UUID_OnParentChanged);
+	}
+}
 
 
+
+//
+// Protected
+//
 glm::mat4 SceneNode3D::CalculateLocalTransform() const
 {
 	glm::mat4 localTransform(1.0f);
@@ -590,10 +621,10 @@ void SceneNode3D::DoSaveProperties(const std::shared_ptr<IXMLWriter>& Writer) co
 
 IBaseManager& SceneNode3D::GetBaseManager() const
 {
-	return dynamic_cast<IBaseManagerHolder*>(GetScene())->GetBaseManager();
+	return GetScene()->GetBaseManager();
 }
 
 IRenderDevice& SceneNode3D::GetRenderDevice() const
 {
-	return dynamic_cast<IBaseManagerHolder*>(GetScene())->GetBaseManager().GetApplication().GetRenderDevice();
+	return GetScene()->GetRenderDevice();
 }

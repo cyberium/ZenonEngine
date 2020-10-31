@@ -50,6 +50,8 @@ void CDrawSelectionPass::Render(RenderEventArgs& e)
 	}
 }
 
+
+
 //
 // IRenderPassPipelined
 //

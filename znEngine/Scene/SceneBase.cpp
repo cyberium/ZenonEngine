@@ -19,7 +19,18 @@ SceneBase::~SceneBase()
 
 
 
+//
+// IScene
+//
+IBaseManager& SceneBase::GetBaseManager() const
+{
+	return m_BaseManager;
+}
 
+IRenderDevice& SceneBase::GetRenderDevice() const
+{
+	return m_RenderDevice;
+}
 
 IRenderWindow& SceneBase::GetRenderWindow() const
 {
@@ -402,12 +413,11 @@ void SceneBase::OnWindowKeyReleased(KeyEventArgs & e)
 
 void SceneBase::OnWindowMouseMoved(MouseMotionEventArgs & e)
 {
+	OnMouseMoved(e, GetCameraController()->ScreenToRay(GetRenderWindow().GetViewport(), e.GetPoint()));
+
 	if (GetCameraController() == nullptr)
 		throw CException("You must set CameraController to scene!");
-		
 	GetCameraController()->OnMouseMoved(e);
-
-	OnMouseMoved(e, GetCameraController()->ScreenToRay(GetRenderWindow().GetViewport(), e.GetPoint()));
 
 	if (GetRootNodeUI())
 		DoMouseMoved_Rec(GetRootNodeUI(), e);
@@ -415,13 +425,12 @@ void SceneBase::OnWindowMouseMoved(MouseMotionEventArgs & e)
 
 bool SceneBase::OnWindowMouseButtonPressed(MouseButtonEventArgs & e)
 {	
-	if (GetCameraController() == nullptr)
-		throw CException("You must set CameraController to scene!");
-
-	GetCameraController()->OnMouseButtonPressed(e);
-
 	if (OnMousePressed(e, GetCameraController()->ScreenToRay(GetRenderWindow().GetViewport(), e.GetPoint())))
 		return true;
+
+	if (GetCameraController() == nullptr)
+		throw CException("You must set CameraController to scene!");
+	GetCameraController()->OnMouseButtonPressed(e);
 
 	if (GetRootNodeUI())
 		return DoMouseButtonPressed_Rec(GetRootNodeUI(), e);
@@ -431,12 +440,11 @@ bool SceneBase::OnWindowMouseButtonPressed(MouseButtonEventArgs & e)
 
 void SceneBase::OnWindowMouseButtonReleased(MouseButtonEventArgs & e)
 {
+	OnMouseReleased(e, GetCameraController()->ScreenToRay(GetRenderWindow().GetViewport(), e.GetPoint()));
+
 	if (GetCameraController() == nullptr)
 		throw CException("You must set CameraController to scene!");
-		
 	GetCameraController()->OnMouseButtonReleased(e);
-
-	OnMouseReleased(e, GetCameraController()->ScreenToRay(GetRenderWindow().GetViewport(), e.GetPoint()));
 
 	if (GetRootNodeUI())
 		DoMouseButtonReleased_Rec(GetRootNodeUI(), e);
@@ -445,10 +453,12 @@ void SceneBase::OnWindowMouseButtonReleased(MouseButtonEventArgs & e)
 bool SceneBase::OnWindowMouseWheel(MouseWheelEventArgs & e)
 {
 	if (GetCameraController())
-		GetCameraController()->OnMouseWheel(e);
+		if (GetCameraController()->OnMouseWheel(e))
+			return true;
 
 	if (GetRootNodeUI())
-		return DoMouseWheel_Rec(GetRootNodeUI(), e);
+		if (DoMouseWheel_Rec(GetRootNodeUI(), e))
+			return true;
 
 	return false;
 }
@@ -472,15 +482,6 @@ void SceneBase::OnMouseMoved(const MouseMotionEventArgs & e, const Ray& RayToWor
 
 
 //
-// IBaseManagerHolder
-//
-IBaseManager& SceneBase::GetBaseManager() const
-{
-	return m_BaseManager;
-}
-
-
-//
 // IObjectSaveLoad
 //
 void SceneBase::Load(const std::shared_ptr<IXMLReader>& Reader)
@@ -499,10 +500,7 @@ void SceneBase::Save(const std::shared_ptr<IXMLWriter>& Writer) const
 // Protected
 //
 
-IRenderDevice& SceneBase::GetRenderDevice() const
-{
-	return m_RenderDevice;
-}
+
 
 
 

@@ -19,6 +19,7 @@ enum ETool
 	// RTS
 	EToolMoverRTS = 20,
 	EToolRotatorRTS = 21,
+	EToolEditorRTS = 22,
 
 	EToolDefault = EToolSelector
 };
@@ -99,10 +100,17 @@ ZN_INTERFACE IEditorToolMover
 {
 	virtual ~IEditorToolMover() {}
 
-	virtual	glm::ivec3 ToBoxCoords(const glm::vec3 & Position) = 0;
 	virtual glm::vec3 FixBoxCoords(const glm::vec3 & Position) = 0;
 	virtual void SetMoverValue(float Value) = 0;
 	virtual float GetMoverValue() const = 0;
+};
+
+
+ZN_INTERFACE IEditorToolMoverRTS
+{
+	virtual ~IEditorToolMoverRTS() {}
+
+	virtual glm::vec2 FixBoxCoords(const glm::vec2& Position) = 0;
 };
 
 

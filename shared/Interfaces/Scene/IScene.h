@@ -33,6 +33,8 @@ ZN_INTERFACE ZN_API IScene
 {
 	virtual ~IScene() {}
 
+	virtual IBaseManager& GetBaseManager() const = 0;
+	virtual IRenderDevice& GetRenderDevice() const = 0;
 	virtual IRenderWindow& GetRenderWindow() const = 0;
 
 	virtual void SetRenderer(std::shared_ptr<IRenderer> Renderer) = 0;
@@ -131,11 +133,13 @@ ZN_INTERFACE ZN_API	ISceneFinder
 		std::function<bool(std::shared_ptr<ISceneNode3D>)> Filter = nullptr, 
 		std::shared_ptr<ISceneNode3D> RootForFinder = nullptr
 	) const = 0;
+
 	virtual std::vector<std::shared_ptr<ISceneNode3D>> FindIntersections(
 		const Frustum& Frustum, 
 		std::function<bool(std::shared_ptr<ISceneNode3D>)> Filter = nullptr, 
 		std::shared_ptr<ISceneNode3D> RootForFinder = nullptr
 	) const = 0;
+
 
 	virtual std::map<float, std::shared_ptr<IModel>> FindIntersectionWithModel(
 		const Ray& Ray,
@@ -143,6 +147,7 @@ ZN_INTERFACE ZN_API	ISceneFinder
 		std::function<bool(std::shared_ptr<IModel>)> FilterForModels = nullptr,
 		std::shared_ptr<ISceneNode3D> RootForFinder = nullptr
 	) const = 0;
+
 	virtual std::vector<std::shared_ptr<IModel>> FindIntersectionsWithModel(
 		const Frustum& Frustum,
 		std::function<bool(std::shared_ptr<ISceneNode3D>)> FilterForSceneNodes = nullptr,

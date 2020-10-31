@@ -23,7 +23,7 @@ public:
 
     // Mouse events
 	void                                            OnMouseMoved(MouseMotionEventArgs& e) override;
-	void                                            OnMouseWheel(MouseWheelEventArgs& e) override;
+	bool                                            OnMouseWheel(MouseWheelEventArgs& e) override;
 
 private:
 	void                                            AddX(float Value);

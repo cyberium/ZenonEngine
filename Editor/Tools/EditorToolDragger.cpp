@@ -35,12 +35,12 @@ void CEditorToolDragger::Disable()
 
 bool CEditorToolDragger::OnMousePressed(const MouseButtonEventArgs & e, const Ray & RayToWorld)
 {
-	if (e.Button == MouseButtonEventArgs::MouseButton::Left)
+	if (e.Button == MouseButton::Left)
 	{
 		CreateCopyDraggedNode();
 		return true;
 	}
-	else if (e.Button == MouseButtonEventArgs::MouseButton::Right)
+	else if (e.Button == MouseButton::Right)
 	{
 		Clear();
 		return true;
@@ -132,7 +132,7 @@ void CEditorToolDragger::MoveDraggedNode(const glm::vec2& MousePos)
 void CEditorToolDragger::CreateCopyDraggedNode()
 {
 	auto copiedNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, GetScene());
-	m_DraggerNode->Copy(copiedNode);
+	m_DraggerNode->CopyTo(copiedNode);
 	copiedNode->SetTranslate(m_DraggerNode->GetTranslation());
 	GetEditor().Get3DFrame().GetEditedRootNode3D()->AddChild(copiedNode);
 

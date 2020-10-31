@@ -103,7 +103,7 @@ public:
 
 inline void DoAddModels(const std::shared_ptr<ISceneNode3D>& ParentNode, std::shared_ptr<IFBXNode> Node)
 {
-	auto baseManagerHolder = dynamic_cast<IBaseManagerHolder*>(ParentNode->GetScene());
+	auto baseManagerHolder = ParentNode->GetScene();
 	const auto& baseManager = baseManagerHolder->GetBaseManager();
 	auto sceneNode = baseManager.GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, ParentNode->GetScene(), ParentNode);
 

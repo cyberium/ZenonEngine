@@ -6,27 +6,26 @@
 // Additional
 #include "Scene/Nodes/UIText.h"
 #include "Scene/Nodes/UIColor.h"
+#include "Scene/RTSSceneNodeGround.h"
 
 CSceneNode3DEngineCreator::CSceneNode3DEngineCreator(IBaseManager& BaseManager)
-	: CObjectClassCreator(BaseManager)
+	: CObjectClassCreatorBase(BaseManager)
 {
-	//m_FBXManager = MakeShared(CFBXManager, GetBaseManager());
-
 	AddKey("SceneNode3D", cSceneNode3D);
-//#ifdef ZN_FBX_SDK_ENABLE
-//	AddKey("SceneNodeFBX", cSceneNode_FBXNode);
-//#endif
+	AddKey("RTSSceneNodeGround", cCRTSSceneNodeGround);
 }
 
 CSceneNode3DEngineCreator::~CSceneNode3DEngineCreator()
 {}
+
+
 
 //
 // IObjectClassCreator
 //
 std::shared_ptr<IObject> CSceneNode3DEngineCreator::CreateObject(size_t Index, const IObjectCreationArgs* ObjectCreationArgs)
 {
-	auto sceneNodeCreationArgs = static_cast<ISceneNode3DCreationArgs*>(const_cast<IObjectCreationArgs*>(ObjectCreationArgs));
+	auto sceneNodeCreationArgs = static_cast<const ISceneNode3DCreationArgs*>(ObjectCreationArgs);
 	auto scene = sceneNodeCreationArgs->GetScene();
 	auto parent = sceneNodeCreationArgs->GetParent();
 	std::shared_ptr<ISceneNode3D> createdNode = nullptr;
@@ -35,12 +34,10 @@ std::shared_ptr<IObject> CSceneNode3DEngineCreator::CreateObject(size_t Index, c
 	{
 		createdNode = sceneNodeCreationArgs->GetScene()->CreateSceneNode3DInternal<SceneNode3D>();
 	}
-//#ifdef ZN_FBX_SDK_ENABLE
-//	else if (Index == 1)
-//	{
-//		createdNode = scene->CreateSceneNode3DInternal<CFBXNode>(GetBaseManager(), m_FBXManager->GetFBXManager());
-//	}
-//#endif
+	else if (Index == 1)
+	{
+		createdNode = sceneNodeCreationArgs->GetScene()->CreateSceneNode3DInternal<CRTSSceneNodeGround>();
+	}
 
 	if (createdNode == nullptr)
 		throw CException("CSceneNode3DEngineCreator: CreateObject: Unable to create object with index %d.", Index);
@@ -53,8 +50,13 @@ std::shared_ptr<IObject> CSceneNode3DEngineCreator::CreateObject(size_t Index, c
 	return createdNode;
 }
 
+
+
+//
+// CSceneNodeUIEngineCreator
+//
 CSceneNodeUIEngineCreator::CSceneNodeUIEngineCreator(IBaseManager & BaseManager)
-	: CObjectClassCreator(BaseManager)
+	: CObjectClassCreatorBase(BaseManager)
 {
 	AddKey("SceneNodeUI", cSceneNodeUI);
 	AddKey("SceneNodeUIText", cSceneNodeUI_Text);
@@ -64,12 +66,14 @@ CSceneNodeUIEngineCreator::CSceneNodeUIEngineCreator(IBaseManager & BaseManager)
 CSceneNodeUIEngineCreator::~CSceneNodeUIEngineCreator()
 {}
 
+
+
 //
 // IObjectClassCreator
 //
 std::shared_ptr<IObject> CSceneNodeUIEngineCreator::CreateObject(size_t Index, const IObjectCreationArgs* ObjectCreationArgs)
 {
-	auto sceneNodeCreationArgs = static_cast<ISceneNodeUICreationArgs*>(const_cast<IObjectCreationArgs*>(ObjectCreationArgs));
+	auto sceneNodeCreationArgs = static_cast<const ISceneNodeUICreationArgs*>(ObjectCreationArgs);
 	auto scene = sceneNodeCreationArgs->GetScene();
 	auto parent = sceneNodeCreationArgs->GetParent();
 	std::shared_ptr<ISceneNodeUI> createdNode = nullptr;

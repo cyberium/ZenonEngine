@@ -59,11 +59,3 @@ ZN_INTERFACE ZN_API IBaseManagerInternal
 
 	virtual void SetApplicationInternal(const IApplication* Application) = 0;
 };
-
-
-ZN_INTERFACE ZN_API IBaseManagerHolder
-{
-	virtual ~IBaseManagerHolder() {}
-
-	virtual IBaseManager& GetBaseManager() const = 0;
-};

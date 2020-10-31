@@ -119,6 +119,9 @@ std::shared_ptr<IRenderPassPipelined> CPassDeffered_DoRenderScene::ConfigurePipe
 //
 EVisitResult CPassDeffered_DoRenderScene::Visit(const ISceneNode3D * node)
 {
+	if (node->GetType() != cSceneNode3D)
+		return EVisitResult::AllowVisitChilds;
+
 	PerObject perObject;
 	perObject.Model = node->GetWorldTransfom();
 	m_PerObjectConstantBuffer->Set(perObject);

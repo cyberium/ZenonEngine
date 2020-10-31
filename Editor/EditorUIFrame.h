@@ -40,6 +40,10 @@ public:
 	// IEditorToolSelectorEventListener
 	void OnSelectNode() override;
 
+protected:
+	void OnSceneLoadFromFile();
+	void OnSceneSaveToFile();
+
 private:
 	std::shared_ptr<CPropertiesController> m_PropertiesController;
 	

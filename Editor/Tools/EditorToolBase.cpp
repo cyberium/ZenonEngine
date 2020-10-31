@@ -84,17 +84,17 @@ IScene * CEditorToolBase::GetScene() const
 	return nullptr;
 }
 
-IBaseManager & CEditorToolBase::GetBaseManager() const
+IBaseManager& CEditorToolBase::GetBaseManager() const
 {
 	if (auto scene = m_Editor.Get3DFrame().GetScene())
-		return std::dynamic_pointer_cast<IBaseManagerHolder>(scene)->GetBaseManager();
+		return scene->GetBaseManager();
 	throw CException("Scene is expired.");
 }
 
-IRenderDevice & CEditorToolBase::GetRenderDevice() const
+IRenderDevice& CEditorToolBase::GetRenderDevice() const
 {
 	if (auto scene = m_Editor.Get3DFrame().GetScene())
-		return std::dynamic_pointer_cast<IBaseManagerHolder>(scene)->GetBaseManager().GetApplication().GetRenderDevice();
+		return scene->GetRenderDevice();
 	throw CException("Scene is expired.");
 }
 

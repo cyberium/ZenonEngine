@@ -10,9 +10,9 @@ public:
 	// IObjectsFactory
 	const std::unordered_map<ObjectType, std::shared_ptr<IObjectClassFactory>>& GetClassFactories() const override;
 	std::shared_ptr<IObjectClassFactory> GetClassFactory(ObjectType ObjectFactoryKey) const override;
-	void AddClassFactory(std::shared_ptr<IObjectClassFactory> Creator) override;
-	void RemoveClassFactory(std::shared_ptr<IObjectClassFactory> Creator) override;
-	std::shared_ptr<IObject> CreateObject(ObjectType ObjectFactoryKey, ObjectClass ObjectClassKey, const IObjectCreationArgs* ObjectCreationArgs);
+	void AddClassFactory(std::shared_ptr<IObjectClassFactory> Factory) override;
+	void RemoveClassFactory(std::shared_ptr<IObjectClassFactory> Factory) override;
+	std::shared_ptr<IObject> CreateObject(ObjectType ObjectTypeKey, ObjectClass ObjectClassKey, const IObjectCreationArgs* ObjectCreationArgs);
 	
 	ObjectType GetObjectTypeByObjectClass(ObjectClass Class) override;
 

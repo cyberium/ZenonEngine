@@ -66,8 +66,25 @@ std::shared_ptr<IFile> CLocalFilesStorage::OpenFile(std::string FileName, EFileA
 
 bool CLocalFilesStorage::SaveFile(std::shared_ptr<IFile> File)
 {
+	std::string savedPath = m_Path + File->Path_Name();
+
 	std::ofstream stream;
-	stream.open(std::string(m_Path + File->Path_Name()), std::ios::binary);
+	stream.open(savedPath, std::ios::binary);
+	if (false == stream.is_open())
+	{
+		auto pos = File->Path_Name().find(m_Path);
+		if (pos != std::string::npos)
+		{
+			savedPath = File->Path_Name();
+		}
+		else
+		{
+			savedPath = m_Path + File->Name();
+			Log::Warn("Unable to save '%s' to '%s'. File will be saved to '%s'.", File->Path_Name().c_str(), m_Path.c_str(), savedPath.c_str());
+		}
+
+		stream.open(std::string(savedPath), std::ios::binary);
+	}
 
 	if (stream.is_open())
 	{

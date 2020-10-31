@@ -13,7 +13,7 @@ public:
 	void                                            OnUpdate(UpdateEventArgs& e) override;
 
     // Keyboard events
-	void                                            OnKeyPressed(KeyEventArgs& e) override;
+	bool                                            OnKeyPressed(KeyEventArgs& e) override;
 	void                                            OnKeyReleased(KeyEventArgs& e) override;
 
     // Mouse events

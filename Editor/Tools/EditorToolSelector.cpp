@@ -149,29 +149,28 @@ void CEditorToolSelector::DoInitialize3D(const std::shared_ptr<IRenderer>& Rende
 
 bool CEditorToolSelector::OnMousePressed(const MouseButtonEventArgs & e, const Ray & RayToWorld)
 {
-	if (e.Button != MouseButtonEventArgs::MouseButton::Left)
+	if (e.Button != MouseButton::Left)
 		return false;
 
 	auto nodes = GetScene()->GetFinder().FindIntersection(RayToWorld, nullptr, GetEditor().Get3DFrame().GetEditedRootNode3D());
+	
 	if (nodes.empty())
 	{
-		if (IsEnabled())
+		if (e.Shift)
 		{
 			m_SelectionPrevPos = e.GetPoint();
 			m_SelectionTexture->SetTranslate(e.GetPoint());
 			m_IsSelecting2D = true;
 			return true;
 		}
-
 		return false;
 	}
-
-	auto node = nodes.begin()->second;
-	_ASSERT(node != nullptr);
-
-	if (IsEnabled())
+	else
 	{
-		if (e.Control)
+		auto node = nodes.begin()->second;
+		_ASSERT(node != nullptr);
+
+		if (e.Shift)
 		{
 			if (IsNodeSelected(node))
 				RemoveNode(node);
@@ -180,16 +179,17 @@ bool CEditorToolSelector::OnMousePressed(const MouseButtonEventArgs & e, const R
 
 			return true;
 		}
+
+		SelectNode(node);
+		return true;
 	}
 
-	SelectNode(node);
-
-	return true;
+	return false;
 }
 
 void CEditorToolSelector::OnMouseReleased(const MouseButtonEventArgs & e, const Ray & RayToWorld)
 {
-	if (e.Button != MouseButtonEventArgs::MouseButton::Left)
+	if (e.Button != MouseButton::Left)
 		return;
 
 	auto cachedSelectionPrevPos = m_SelectionPrevPos;

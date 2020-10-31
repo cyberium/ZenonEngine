@@ -10,6 +10,7 @@ ZN_INTERFACE ISceneNode3D;
 ZN_INTERFACE ISceneNodeUI;
 // FORWARD END
 
+/*
 template<class ArgumentType>
 class Delegate
 {
@@ -53,21 +54,21 @@ public:
 		}
 
 
-		/*std::for_each(
-			m_Functions.begin(),
-			m_Functions.end(),
-			[&argument](const FunctionDecl& _decl) 
-			{ 
-				(*_decl)(argument); 
-			}
-		);*/
+		//std::for_each(
+		//	m_Functions.begin(),
+		//	m_Functions.end(),
+		//	[&argument](const FunctionDecl& _decl) 
+		//	{ 
+		//		(*_decl)(argument); 
+		//	}
+		//);
 
 		return !m_Functions.empty();
 	}
 
 private:
 	FunctionsSet m_Functions;
-};
+};*/
 
 
 class ZN_API EventArgs
@@ -75,7 +76,7 @@ class ZN_API EventArgs
 public:
 	EventArgs()	{}
 };
-typedef Delegate<EventArgs> Event;
+//typedef Delegate<EventArgs> Event;
 
 
 class ZN_API WindowCloseEventArgs : public EventArgs
@@ -92,18 +93,17 @@ public:
 	// By default, the window will be destoryed if the Window::Close even is not handled.
 	bool ConfirmClose;
 };
-typedef Delegate<WindowCloseEventArgs> WindowCloseEvent;
+//typedef Delegate<WindowCloseEventArgs> WindowCloseEvent;
 
+enum class ZN_API KeyState
+{
+	Released = 0,
+	Pressed = 1
+};
 
 class ZN_API KeyEventArgs : public EventArgs
 {
 public:
-	enum KeyState
-	{
-		Released = 0,
-		Pressed = 1
-	};
-
 	KeyEventArgs(KeyCode key, uint32 c, KeyState state, bool control, bool shift, bool alt)
 		: Key(key)
 		, Char(c)
@@ -120,7 +120,7 @@ public:
 	bool            Shift;  // Is the Shift modifier pressed
 	bool            Alt;    // Is the Alt modifier pressed
 };
-typedef Delegate<KeyEventArgs> KeyboardEvent;
+//typedef Delegate<KeyEventArgs> KeyboardEvent;
 
 
 class ZN_API MouseMotionEventArgs : public EventArgs
@@ -149,26 +149,25 @@ public:
 
 	glm::vec2 GetPoint() const { return glm::vec2(X, Y); }
 };
-typedef Delegate<MouseMotionEventArgs> MouseMotionEvent;
+//typedef Delegate<MouseMotionEventArgs> MouseMotionEvent;
 
+enum class ZN_API MouseButton
+{
+	None = 0,
+	Left = 1,
+	Right = 2,
+	Middel = 3
+};
+enum class ZN_API ButtonState
+{
+	Released = 0,
+	Pressed = 1
+};
 
 class ZN_API MouseButtonEventArgs : public EventArgs
 {
 public:
-	enum class ZN_API MouseButton
-	{
-		None = 0,
-		Left = 1,
-		Right = 2,
-		Middel = 3
-	};
-	enum class ZN_API ButtonState
-	{
-		Released = 0,
-		Pressed = 1
-	};
-
-	MouseButtonEventArgs(MouseButton buttonID, ButtonState state, bool leftButton, bool middleButton, bool rightButton, bool control, bool shift, int x, int y)
+	MouseButtonEventArgs(MouseButton buttonID, ButtonState state, bool leftButton, bool middleButton, bool rightButton, bool control, bool shift, bool alt, int x, int y)
 		: Button(buttonID)
 		, State(state)
 		//, LeftButton(leftButton)
@@ -176,6 +175,7 @@ public:
 		//, RightButton(rightButton)
 		, Control(control)
 		, Shift(shift)
+		, Alt(alt)
 		, X(x)
 		, Y(y)
 	{}
@@ -187,13 +187,14 @@ public:
 	//bool RightButton;   // Is the right mouse button down?
 	bool Control;       // Is the CTRL key down?
 	bool Shift;         // Is the Shift key down?
+	bool Alt;         // Is the Shift key down?
 
 	int X;              // The X-position of the cursor relative to the upper-left corner of the client area.
 	int Y;              // The Y-position of the cursor relative to the upper-left corner of the client area.
 
 	glm::vec2 GetPoint() const { return glm::vec2(X, Y); }
 };
-typedef Delegate<MouseButtonEventArgs> MouseButtonEvent;
+//typedef Delegate<MouseButtonEventArgs> MouseButtonEvent;
 
 
 class ZN_API MouseWheelEventArgs : public EventArgs
@@ -223,7 +224,7 @@ public:
 	glm::vec2 GetPoint() const { return glm::vec2(X, Y); }
 
 };
-typedef Delegate<MouseWheelEventArgs> MouseWheelEvent;
+//typedef Delegate<MouseWheelEventArgs> MouseWheelEvent;
 
 
 class ZN_API ResizeEventArgs : public EventArgs
@@ -237,7 +238,7 @@ public:
 	int Width;
 	int Height;
 };
-typedef Delegate<ResizeEventArgs> ResizeEvent;
+//typedef Delegate<ResizeEventArgs> ResizeEvent;
 
 
 class ZN_API UpdateEventArgs 
@@ -267,7 +268,7 @@ public:
 	const ICameraComponent3D*                       Camera;
 	const ICameraComponent3D*                       CameraForCulling;
 };
-typedef Delegate<UpdateEventArgs> UpdateEvent;
+//typedef Delegate<UpdateEventArgs> UpdateEvent;
 
 
 class ZN_API RenderEventArgs 
@@ -286,7 +287,7 @@ public:
 	// Engine specific. TODO: Replace me!
 	const IPipelineState*                           PipelineState;
 };
-typedef Delegate<RenderEventArgs> RenderEvent;
+//typedef Delegate<RenderEventArgs> RenderEvent;
 
 
 class ZN_API UserEventArgs : public EventArgs
@@ -302,11 +303,12 @@ public:
 	void*   Data1;
 	void*   Data2;
 };
-typedef Delegate<UserEventArgs> UserEvent;
+//typedef Delegate<UserEventArgs> UserEvent;
 
 
-
+// FORWARD BEGIN
 ZN_INTERFACE IScene;
+// FORWARD END
 
 class ZN_API SceneEventArgs : public EventArgs
 {
@@ -317,7 +319,7 @@ public:
 
 	const IScene* Scene;
 };
-typedef Delegate<SceneEventArgs> SceneEvent;
+//typedef Delegate<SceneEventArgs> SceneEvent;
 
 
 
@@ -341,4 +343,4 @@ public:
 	std::shared_ptr<ISceneNode3D> OwnerNode;
 	std::shared_ptr<ISceneNode3D> ChildNode;
 };
-typedef Delegate<SceneChangeEventArgs> SceneChangeEvent;
+//typedef Delegate<SceneChangeEventArgs> SceneChangeEvent;

@@ -8,7 +8,7 @@
 
 #include "RTS/EditorToolMoverRTS.h"
 #include "RTS/EditorToolRotatorRTS.h"
-
+#include "RTS/EditorToolRTSGround.h"
 
 
 class CEditorTools

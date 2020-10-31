@@ -65,13 +65,13 @@ void CEditor3DFrame::Initialize()
 		auto cameraComponent = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<IComponentFactory>()->CreateComponentT<ICameraComponent3D>(cSceneNodeCameraComponent, *cameraNode);
 		cameraNode->AddComponent(cameraComponent);
 
-		SetCameraController(MakeShared(CFreeCameraController));
+		SetCameraController(MakeShared(CRTSCameraController));
 		GetCameraController()->SetCamera(cameraNode->GetComponent<ICameraComponent3D>());
 		GetCameraController()->GetCamera()->SetPerspectiveProjection(ICameraComponent3D::EPerspectiveProjectionHand::Right, 75.0f, static_cast<float>(GetRenderWindow().GetWindowWidth()) / static_cast<float>(GetRenderWindow().GetWindowHeight()), 1.0f, 5000.0f);
 		GetCameraController()->GetCamera()->SetTranslation(glm::vec3(15.0f * 2.0f));
-		GetCameraController()->GetCamera()->SetDirection(glm::vec3(-0.5f));
-		GetCameraController()->GetCamera()->SetYaw(225);
-		GetCameraController()->GetCamera()->SetPitch(-45);
+		//GetCameraController()->GetCamera()->SetDirection(glm::vec3(-0.5f));
+		//GetCameraController()->GetCamera()->SetYaw(225);
+		//GetCameraController()->GetCamera()->SetPitch(-45);
 	}
 
 	{

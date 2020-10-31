@@ -52,21 +52,21 @@ void ZenonWindow3D::onCustomContextMenu(const QPoint& pos)
 //
 // Events
 //
-MouseButtonEventArgs::MouseButton QtToZenonMouseBotton(Qt::MouseButton qtState)
+MouseButton QtToZenonMouseBotton(Qt::MouseButton qtState)
 {
 	switch (qtState)
 	{
 	case Qt::MouseButton::LeftButton:
-		return MouseButtonEventArgs::MouseButton::Left;
+		return MouseButton::Left;
 
 	case Qt::MouseButton::RightButton:
-		return MouseButtonEventArgs::MouseButton::Right;
+		return MouseButton::Right;
 
 	case Qt::MouseButton::MiddleButton:
-		return MouseButtonEventArgs::MouseButton::Middel;
+		return MouseButton::Middel;
 	}
 
-	return MouseButtonEventArgs::MouseButton::None;
+	return MouseButton::None;
 }
 
 void ZenonWindow3D::mousePressEvent(QMouseEvent * event)
@@ -74,12 +74,13 @@ void ZenonWindow3D::mousePressEvent(QMouseEvent * event)
 	MouseButtonEventArgs args
 	(
 		QtToZenonMouseBotton(event->button()),
-		MouseButtonEventArgs::ButtonState::Pressed,
+		ButtonState::Pressed,
 		event->buttons() == Qt::MouseButton::LeftButton,
 		event->buttons() == Qt::MouseButton::MiddleButton,
 		event->buttons() == Qt::MouseButton::RightButton,
 		event->modifiers() == Qt::KeyboardModifier::ControlModifier,
 		event->modifiers() == Qt::KeyboardModifier::ShiftModifier,
+		event->modifiers() == Qt::KeyboardModifier::AltModifier,
 		event->x(),
 		event->y()
 	);
@@ -91,12 +92,13 @@ void ZenonWindow3D::mouseReleaseEvent(QMouseEvent * event)
 	MouseButtonEventArgs args
 	(
 		QtToZenonMouseBotton(event->button()),
-		MouseButtonEventArgs::ButtonState::Released,
+		ButtonState::Released,
 		event->buttons() == Qt::MouseButton::LeftButton,
 		event->buttons() == Qt::MouseButton::MiddleButton,
 		event->buttons() == Qt::MouseButton::RightButton,
 		event->modifiers() == Qt::KeyboardModifier::ControlModifier,
 		event->modifiers() == Qt::KeyboardModifier::ShiftModifier,
+		event->modifiers() == Qt::KeyboardModifier::AltModifier,
 		event->x(),
 		event->y()
 	);
@@ -148,7 +150,7 @@ void ZenonWindow3D::keyPressEvent(QKeyEvent * event)
 	(
 		(KeyCode)event->nativeVirtualKey(),
 		event->key(),
-		KeyEventArgs::KeyState::Pressed,
+		KeyState::Pressed,
 		event->modifiers() == Qt::KeyboardModifier::ControlModifier,
 		event->modifiers() == Qt::KeyboardModifier::ShiftModifier,
 		event->modifiers() == Qt::KeyboardModifier::AltModifier
@@ -162,7 +164,7 @@ void ZenonWindow3D::keyReleaseEvent(QKeyEvent * event)
 	(
 		(KeyCode)event->nativeVirtualKey(),
 		event->key(),
-		KeyEventArgs::KeyState::Released,
+		KeyState::Released,
 		event->modifiers() == Qt::KeyboardModifier::ControlModifier,
 		event->modifiers() == Qt::KeyboardModifier::ShiftModifier,
 		event->modifiers() == Qt::KeyboardModifier::AltModifier

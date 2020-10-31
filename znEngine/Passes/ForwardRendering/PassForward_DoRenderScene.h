@@ -20,4 +20,5 @@ public:
 private:
 	IShaderParameter* m_ShaderBonesBufferParameter;
 	IShaderParameter* m_ShaderLightsBufferParameter;
+	IShaderParameter* m_ShaderInstancesBufferParameter;
 };

@@ -218,14 +218,10 @@ void CEditorToolMover::DoInitializeUI(IEditorQtUIFrame& QtUIFrame)
 }
 
 
+
 //
 // IEditorToolMover
 //
-glm::ivec3 CEditorToolMover::ToBoxCoords(const glm::vec3 & Position)
-{
-	return glm::round(Position / m_MoverValue);
-}
-
 glm::vec3 CEditorToolMover::FixBoxCoords(const glm::vec3 & Position)
 {
 	glm::vec3 newPosition = Position;
@@ -245,6 +241,11 @@ float CEditorToolMover::GetMoverValue() const
 	return m_MoverValue; 
 }
 
+
+
+//
+// Protected
+// 
 void CEditorToolMover::Clear()
 {
 	m_MoverNuber = 0;

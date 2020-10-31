@@ -38,6 +38,10 @@ void CEditorTools::Initialize()
 	drager->Initialize();
 	m_Tools.insert(std::make_pair(ETool::EToolDragger, drager));
 
+	auto RTSEditor = MakeShared(CRTSGround, m_Editor);
+	RTSEditor->Initialize();
+	m_Tools.insert(std::make_pair(ETool::EToolEditorRTS, RTSEditor));
+
 	m_Editor.GetUIFrame().DoInitializeToolsUI();
 	m_Editor.Get3DFrame().DoInitializeTools3D();
 

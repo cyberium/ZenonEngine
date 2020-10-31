@@ -386,7 +386,7 @@ void SceneNodeUI::UpdateWorldTransform()
 
 IBaseManager& SceneNodeUI::GetBaseManager() const
 {
-	return dynamic_cast<IBaseManagerHolder*>(GetScene())->GetBaseManager();
+	return GetScene()->GetBaseManager();
 }
 
 

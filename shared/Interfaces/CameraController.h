@@ -28,12 +28,12 @@ ZN_INTERFACE ZN_API ICameraController
 	virtual glm::vec3 RayToPlane(const Ray& Ray, const Plane& Plane) const = 0;
 
 	// Input events
-	virtual void OnKeyPressed(KeyEventArgs& e) = 0;
+	virtual bool OnKeyPressed(KeyEventArgs& e) = 0;
 	virtual void OnKeyReleased(KeyEventArgs& e) = 0;
-	virtual void OnMouseButtonPressed(MouseButtonEventArgs& e) = 0;
+	virtual bool OnMouseButtonPressed(MouseButtonEventArgs& e) = 0;
 	virtual void OnMouseButtonReleased(MouseButtonEventArgs& e) = 0;
 	virtual void OnMouseMoved(MouseMotionEventArgs& e) = 0;
-	virtual void OnMouseWheel(MouseWheelEventArgs& e) = 0;
+	virtual bool OnMouseWheel(MouseWheelEventArgs& e) = 0;
 
 	// Window events
 	virtual void OnResize(ResizeEventArgs& e) = 0;

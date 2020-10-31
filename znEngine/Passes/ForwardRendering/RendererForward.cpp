@@ -89,6 +89,8 @@ void CRendererForward::RenderUI(RenderEventArgs & renderEventArgs)
 void CRendererForward::Resize(uint32 NewWidth, uint32 NewHeight)
 {
 	std::dynamic_pointer_cast<IRenderPassPipelined>(m_MaterialModelPass)->GetPipeline().GetRenderTarget()->Resize(NewWidth, NewHeight);
+	//std::dynamic_pointer_cast<IRenderPassPipelined>(m_MaterialModelPassInstanced)->GetPipeline().GetRenderTarget()->Resize(NewWidth, NewHeight);
+	std::dynamic_pointer_cast<IRenderPassPipelined>(m_RTSGroundPassInstanced)->GetPipeline().GetRenderTarget()->Resize(NewWidth, NewHeight);
 
 	//m_FinalRenderTarget->Resize(NewWidth, NewHeight);
 }
@@ -103,7 +105,11 @@ void CRendererForward::Initialize(std::shared_ptr<IRenderTarget> OutputRenderTar
 	m_MaterialModelPass = MakeShared(CPassForward_DoRenderScene, m_RenderDevice, m_Scene);
 	m_MaterialModelPass->ConfigurePipeline(OutputRenderTarget, Viewport);
 
-	
+	//m_MaterialModelPassInstanced = MakeShared(CPassForward_DoRenderSceneInstanced, m_RenderDevice, m_SceneCreateTypelessListPass);
+	//m_MaterialModelPassInstanced->ConfigurePipeline(OutputRenderTarget, Viewport);
+
+	m_RTSGroundPassInstanced = MakeShared(CRTSGround_Pass, m_RenderDevice, m_Scene);
+	m_RTSGroundPassInstanced->ConfigurePipeline(OutputRenderTarget, Viewport);
 
 	std::shared_ptr<InvokeFunctionPass> invokePass = MakeShared(InvokeFunctionPass, m_RenderDevice, std::bind(&CRendererForward::DoUpdateLights, this));
 
@@ -111,6 +117,8 @@ void CRendererForward::Initialize(std::shared_ptr<IRenderTarget> OutputRenderTar
 	AddPass(m_SceneCreateTypelessListPass);
 	AddPass(invokePass);
 	AddPass(m_MaterialModelPass);
+	//AddPass(m_MaterialModelPassInstanced);
+	AddPass(m_RTSGroundPassInstanced);
 
 	AddPass(MakeShared(CMaterial_Debug_Pass, m_RenderDevice, m_Scene)->ConfigurePipeline(OutputRenderTarget, Viewport));
 	//AddPass(MakeShared(CDrawBonesPass, m_RenderDevice, m_Scene.lock())->ConfigurePipeline(OutputRenderTarget, Viewport));
@@ -143,4 +151,5 @@ void CRendererForward::DoUpdateLights()
 		m_LightsBuffer->Set(lightsVS);
 
 	m_MaterialModelPass->GetLightsShaderParameter()->Set(m_LightsBuffer);
+	//m_MaterialModelPassInstanced->GetLightsShaderParameter()->Set(m_LightsBuffer);
 }

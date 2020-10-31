@@ -93,6 +93,7 @@ bool CEditorToolRotatorRTS::OnMousePressed(const MouseButtonEventArgs & e, const
 		auto pos = GetScene()->GetCameraController()->RayToPlane(RayToWorld, Plane(glm::vec3(0.0f, 1.0f, 0.0f), nodePosition.y));
 
 		m_RotatorInitialAngle = GetRotatingNode()->GetRotation().y;//= glm::angle(glm::normalize(pos.xz()), glm::normalize(nodePosition.xz()));
+		m_LastAbs = e.Y;
 
 		m_IsRotateNow = true;
 		return true;
@@ -116,11 +117,16 @@ void CEditorToolRotatorRTS::OnMouseMoved(const MouseMotionEventArgs & e, const R
 	if (rotatingNode == nullptr)
 		return;
 
-	glm::vec3 newRot = rotatingNode->GetRotation();
-	if (m_RotatorNuber == 2)
-		newRot.y += e.RelY / 360.0f;
+	float rotatorInitialAngleDegrees = glm::degrees(m_RotatorInitialAngle);
+	rotatorInitialAngleDegrees += (m_LastAbs - e.Y) / 2.0f ;
 
-	rotatingNode->SetRotation(newRot);
+	rotatorInitialAngleDegrees /= 45.0f;
+	rotatorInitialAngleDegrees = glm::round(rotatorInitialAngleDegrees);
+	rotatorInitialAngleDegrees *= 45.0f;
+
+	rotatorInitialAngleDegrees = glm::radians(rotatorInitialAngleDegrees);
+
+	rotatingNode->SetRotation(glm::vec3(0.0f, rotatorInitialAngleDegrees, 0.0f));
 	
 }
 

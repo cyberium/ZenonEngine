@@ -63,6 +63,14 @@ std::shared_ptr<IRenderPassPipelined> CMaterial_Textured_Pass::ConfigurePipeline
 //
 // IVisitor
 //
+
+EVisitResult CMaterial_Textured_Pass::Visit(const ISceneNode3D * SceneNode)
+{
+	if (SceneNode->GetClass() != cSceneNode3D)
+		return EVisitResult::AllowVisitChilds;
+	return Base3DPass::Visit(SceneNode);
+}
+
 EVisitResult CMaterial_Textured_Pass::Visit(const IModel * Model)
 {
 	return Base3DPass::Visit(Model);

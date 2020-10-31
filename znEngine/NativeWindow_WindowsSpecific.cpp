@@ -5,27 +5,27 @@
 
 namespace
 {
-	MouseButtonEventArgs::MouseButton DecodeMouseButton(UINT messageID)
+	MouseButton DecodeMouseButton(UINT messageID)
 	{
 		switch (messageID)
 		{
 		case WM_LBUTTONDOWN:
 		case WM_LBUTTONUP:
 		case WM_LBUTTONDBLCLK:
-			return MouseButtonEventArgs::MouseButton::Left;
+			return MouseButton::Left;
 
 		case WM_RBUTTONDOWN:
 		case WM_RBUTTONUP:
 		case WM_RBUTTONDBLCLK:
-			return MouseButtonEventArgs::MouseButton::Right;
+			return MouseButton::Right;
 
 		case WM_MBUTTONDOWN:
 		case WM_MBUTTONUP:
 		case WM_MBUTTONDBLCLK:
-			return MouseButtonEventArgs::MouseButton::Middel;
+			return MouseButton::Middel;
 		}
 
-		return MouseButtonEventArgs::MouseButton::None;
+		return MouseButton::None;
 	}
 }
 
@@ -194,7 +194,7 @@ LRESULT CNativeWindow_WindowsSpecific::Windows_ProcessMessage(HWND hwnd, UINT me
 		unsigned int scanCode = (lParam & 0x00FF0000) >> 16;
 
 		if (m_EventListener)
-			m_EventListener->OnWindowKeyPressed(KeyEventArgs(key, c, KeyEventArgs::Pressed, control, shift, alt));
+			m_EventListener->OnWindowKeyPressed(KeyEventArgs(key, c, KeyState::Pressed, control, shift, alt));
 	}
 	break;
 	case WM_KEYUP:
@@ -220,7 +220,7 @@ LRESULT CNativeWindow_WindowsSpecific::Windows_ProcessMessage(HWND hwnd, UINT me
 		}
 
 		if (m_EventListener)
-			m_EventListener->OnWindowKeyReleased(KeyEventArgs(key, c, KeyEventArgs::Released, control, shift, alt));
+			m_EventListener->OnWindowKeyReleased(KeyEventArgs(key, c, KeyState::Released, control, shift, alt));
 	}
 	break;
 	case WM_SETFOCUS:
@@ -300,7 +300,7 @@ LRESULT CNativeWindow_WindowsSpecific::Windows_ProcessMessage(HWND hwnd, UINT me
 		int y = ((int)(short)HIWORD(lParam));
 
 		if (m_EventListener)
-			m_EventListener->OnWindowMouseButtonPressed(MouseButtonEventArgs(DecodeMouseButton(message), MouseButtonEventArgs::ButtonState::Pressed, lButton, mButton, rButton, control, shift, x, y));
+			m_EventListener->OnWindowMouseButtonPressed(MouseButtonEventArgs(DecodeMouseButton(message), ButtonState::Pressed, lButton, mButton, rButton, control, shift, false, x, y));
 	}
 	break;
 	case WM_LBUTTONUP:
@@ -317,7 +317,7 @@ LRESULT CNativeWindow_WindowsSpecific::Windows_ProcessMessage(HWND hwnd, UINT me
 		int y = ((int)(short)HIWORD(lParam));
 
 		if (m_EventListener)
-			m_EventListener->OnWindowMouseButtonReleased(MouseButtonEventArgs(DecodeMouseButton(message), MouseButtonEventArgs::ButtonState::Released, lButton, mButton, rButton, control, shift, x, y));
+			m_EventListener->OnWindowMouseButtonReleased(MouseButtonEventArgs(DecodeMouseButton(message), ButtonState::Released, lButton, mButton, rButton, control, shift, false, x, y));
 	}
 	break;
 	case WM_MOUSEWHEEL:

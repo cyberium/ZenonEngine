@@ -1,9 +1,7 @@
 #pragma once
 
-#include "FBX/FBXInterfaces.h"
-
 class CSceneNode3DEngineCreator
-	: public CObjectClassCreator
+	: public CObjectClassCreatorBase
 {
 public:
 	CSceneNode3DEngineCreator(IBaseManager& BaseManager);
@@ -15,7 +13,7 @@ public:
 
 
 class CSceneNodeUIEngineCreator
-	: public CObjectClassCreator
+	: public CObjectClassCreatorBase
 {
 public:
 	CSceneNodeUIEngineCreator(IBaseManager& BaseManager);

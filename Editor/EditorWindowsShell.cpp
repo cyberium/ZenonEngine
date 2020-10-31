@@ -21,6 +21,8 @@ std::string CEditorWindowsShell::ShowLoadFileDialog(std::string DefaultName) con
 	char szFile[256];
 	strcpy_s(szFile, sizeof(szFile), DefaultName.c_str());
 
+	std::string title = "Load ZenonEngine scene";
+
 	OPENFILENAMEA ofn = { 0 };
 	ofn.lStructSize = sizeof(OPENFILENAMEA);
 	ofn.hwndOwner = reinterpret_cast<IEditorQtUIFrame&>(m_Editor.GetUIFrame()).getHWND();
@@ -54,7 +56,7 @@ std::string CEditorWindowsShell::ShowSaveFileDialog(std::string DefaultName) con
 	ofn.nFilterIndex = 0;
 	ofn.lpstrFileTitle = NULL;
 	ofn.nMaxFileTitle = 0;
-	ofn.lpstrInitialDir = "D:\\";
+	ofn.lpstrInitialDir = "";
 	ofn.Flags = OFN_PATHMUSTEXIST;
 
 	if (FALSE == GetSaveFileNameA(&ofn))

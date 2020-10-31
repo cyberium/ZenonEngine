@@ -30,49 +30,30 @@ cbuffer Material : register(b2)
 
 
 StructuredBuffer<LightVS>            LightsVS            : register(t10);
+#ifdef INSTANCED
 StructuredBuffer<PerObject>          Instances           : register(t11);
+#endif
 Texture2D                            TextureShadow       : register(t12);
 StructuredBuffer<float4x4>           Bones               : register(t13);
 
 
-VertexShaderOutput VS_PTNTBBB(VSInputPTNTBBB IN)
-{
-	float4 newVertex = float4(0.0f, 0.0f, 0.0f, 0.0f);
-
-	uint alLeastOne = 0;
-	for (uint i = 0; i < 4; i++)
-	{
-		if (IN.boneWeight[i] > 0.0f)
-		{
-			alLeastOne = 1;
-			newVertex += mul(Bones[(IN.boneIndex[i])], float4(IN.position, 1.0f) * IN.boneWeight[i]);
-		}
-	}
-	
-	if (alLeastOne == 0)
-	{
-		newVertex = float4(IN.position, 1.0f);
-	}
-
-	const float4x4 mv = mul(PF.View, PO.Model);
-	const float4x4 mvp = mul(PF.Projection, mv);
-
-	VertexShaderOutput OUT;
-	OUT.position = mul(mvp, newVertex);
-	OUT.positionVS = mul(mv, newVertex).xyz;
-	OUT.texCoord = IN.texCoord;
-	OUT.normalVS = mul(mv, float4(IN.normal, 0.0f)).xyz;
-	OUT.tangentVS = mul(mv, float4(IN.tangent, 0.0f)).xyz;
-	OUT.binormalVS = mul(mv, float4(IN.binormal, 0.0f)).xyz;
-	return OUT;
-}
-
-VertexShaderOutput VS_PTN(VSInputPTN IN)
+VertexShaderOutput VS_PTN(VSInputPTN IN
+#ifdef INSTANCED
+	, uint InstanceID : SV_InstanceID
+#endif
+)
 {
 	const float3 tangent = ComputeTangent(IN.normal);
 	const float3 binormal = ComputeBinormal(IN.normal, tangent);
 
-	const float4x4 mv = mul(PF.View, PO.Model);
+#ifdef INSTANCED
+	const PerObject instance = Instances[InstanceID];
+	const float4x4 m = instance.Model;
+#else
+	const float4x4 m = PO.Model;
+#endif
+
+	const float4x4 mv = mul(PF.View, m);
 	const float4x4 mvp = mul(PF.Projection, mv);
 
 	VertexShaderOutput OUT;
@@ -126,25 +107,7 @@ VertexShaderOutput VS_PTNBB(VSInputPTNBB IN)
 	return OUT;
 }
 
-VertexShaderOutput VS_PTN_Instanced(VSInputPTN IN, uint InstanceID : SV_InstanceID)
-{
-	const float3 tangent = ComputeTangent(IN.normal);
-	const float3 binormal = ComputeBinormal(IN.normal, tangent);
 
-	PerObject po = Instances[InstanceID];
-
-	const float4x4 mv = mul(PF.View, po.Model);
-	const float4x4 mvp = mul(PF.Projection, mv);
-
-	VertexShaderOutput OUT;
-	OUT.position = mul(mvp, float4(IN.position, 1.0f));
-	OUT.positionVS = mul(mv, float4(IN.position, 1.0f)).xyz;
-	OUT.tangentVS = mul(mv, float4(tangent, 0.0f)).xyz;
-	OUT.binormalVS = mul(mv, float4(binormal, 0.0f)).xyz;
-	OUT.normalVS = mul(mv, float4(IN.normal, 0.0f)).xyz;
-	OUT.texCoord = IN.texCoord;
-	return OUT;
-}
 
 
 float4 PS_main(VertexShaderOutput IN) : SV_TARGET
@@ -155,7 +118,7 @@ float4 PS_main(VertexShaderOutput IN) : SV_TARGET
 	if (diffuseAndAlpha.a < 0.05f)
 		discard;
 		
-	
+	return diffuseAndAlpha;
 		
 	float4 ambient = ExtractAmbient(Mat, displacedTexCoord);
 	float4 emissive = ExtractEmissive(Mat, displacedTexCoord);

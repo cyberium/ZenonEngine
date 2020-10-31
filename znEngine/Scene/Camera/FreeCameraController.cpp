@@ -39,104 +39,109 @@ void CFreeCameraController::OnUpdate(UpdateEventArgs& e)
 	GetCamera()->DoMoveRight(Right * moveMultiplier * fpsMultiplier);
 }
 
-void CFreeCameraController::OnKeyPressed(KeyEventArgs& e)
+bool CFreeCameraController::OnKeyPressed(KeyEventArgs& e)
 {
 	switch (e.Key)
 	{
-	case KeyCode::W:
-	{
-		Forward = 1.0f;
-	}
-	break;
-	case KeyCode::A:
-	{
-		Left = 1.0f;
-	}
-	break;
-	case KeyCode::S:
-	{
-		Back = 1.0f;
-	}
-	break;
-	case KeyCode::D:
-	{
-		Right = 1.0f;
-	}
-	break;
-	case KeyCode::Q:
-	{
-		Down = 1.0f;
-	}
-	break;
-	case KeyCode::E:
-	{
-		Up = 1.0f;
-	}
-	break;
-	case KeyCode::ShiftKey:
-	{
-		TranslateFaster = true;
-		RotateFaster = true;
-	}
-	break;
+		case KeyCode::W:
+		{
+			Forward = 1.0f;
+		}
+		break;
+		case KeyCode::A:
+		{
+			Left = 1.0f;
+		}
+		break;
+		case KeyCode::S:
+		{
+			Back = 1.0f;
+		}
+		break;
+		case KeyCode::D:
+		{
+			Right = 1.0f;
+		}
+		break;
+		case KeyCode::Q:
+		{
+			Down = 1.0f;
+		}
+		break;
+		case KeyCode::E:
+		{
+			Up = 1.0f;
+		}
+		break;
+		case KeyCode::ShiftKey:
+		{
+			TranslateFaster = true;
+			RotateFaster = true;
+		}
+		break;
+		default:
+			return false;
 	}
 
+	return true;
 }
 
 void CFreeCameraController::OnKeyReleased(KeyEventArgs& e)
 {
 	switch (e.Key)
 	{
-	case KeyCode::W:
-	{
-		Forward = 0.0f;
-	}
-	break;
-	case KeyCode::A:
-	{
-		Left = 0.0f;
-	}
-	break;
-	case KeyCode::S:
-	{
-		Back = 0.0f;
-	}
-	break;
-	case KeyCode::D:
-	{
-		Right = 0.0f;
-	}
-	break;
-	case KeyCode::Q:
-	{
-		Down = 0.0f;
-	}
-	break;
-	case KeyCode::E:
-	{
-		Up = 0.0f;
-	}
-	break;
-	case KeyCode::ShiftKey:
-	{
-		TranslateFaster = false;
-		RotateFaster = false;
-	}
-	break;
+		case KeyCode::W:
+		{
+			Forward = 0.0f;
+		}
+		break;
+		case KeyCode::A:
+		{
+			Left = 0.0f;
+		}
+		break;
+		case KeyCode::S:
+		{
+			Back = 0.0f;
+		}
+		break;
+		case KeyCode::D:
+		{
+			Right = 0.0f;
+		}
+		break;
+		case KeyCode::Q:
+		{
+			Down = 0.0f;
+		}
+		break;
+		case KeyCode::E:
+		{
+			Up = 0.0f;
+		}
+		break;
+		case KeyCode::ShiftKey:
+		{
+			TranslateFaster = false;
+			RotateFaster = false;
+		}
+		break;
 	}
 }
 
 void CFreeCameraController::OnMouseMoved(MouseMotionEventArgs& e)
 {
-	if (e.RightButton)
-	{
-        glm::vec2 newPoint = m_PreviousMousePosition - e.GetPoint();
+	if (false == m_IsMousePressed)
+		return;
 
-        newPoint *= 0.33f;
+	if (false == e.RightButton)
+		return;
 
-        GetCamera()->AddYaw(-newPoint.x);
-		GetCamera()->AddPitch(newPoint.y);
+	glm::vec2 newPoint = m_PreviousMousePosition - e.GetPoint();
+	newPoint *= 0.33f;
 
-        m_PreviousMousePosition = e.GetPoint();
-	}
+	GetCamera()->AddYaw(-newPoint.x);
+	GetCamera()->AddPitch(newPoint.y);
+
+	m_PreviousMousePosition = e.GetPoint();
 }

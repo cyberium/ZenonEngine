@@ -162,7 +162,8 @@ void CEditorToolMoverRTS::OnMouseMoved(const MouseMotionEventArgs & e, const Ray
 			newPos = glm::vec3(oldPos.x, oldPos.y, mousePos.z + m_MoverOffset.z);
 		}
 
-		m_MovingNode->SetTranslate(FixBoxCoords(newPos));
+		glm::vec2 fixedTranslate = glm::vec2(FixBoxCoords(newPos.xz));
+		m_MovingNode->SetTranslate(glm::vec3(fixedTranslate.x, 0.0f, fixedTranslate.y));
 		m_MoverRoot->SetTranslate(m_MovingNode->GetTranslation());
 
 		return;
@@ -199,24 +200,16 @@ void CEditorToolMoverRTS::DoInitializeUI(IEditorQtUIFrame & QtUIFrame)
 	});
 }
 
-glm::ivec3 CEditorToolMoverRTS::ToBoxCoords(const glm::vec3 & Position)
+glm::vec2 CEditorToolMoverRTS::FixBoxCoords(const glm::vec2 & Position)
 {
-	return glm::round(Position / m_MoverValue);
-}
-
-glm::vec3 CEditorToolMoverRTS::FixBoxCoords(const glm::vec3 & Position)
-{
-	glm::vec3 newPosition = Position;
+	glm::vec2 newPosition = Position;
 	newPosition /= m_MoverValue;
 	newPosition = glm::round(newPosition);
 	newPosition *= m_MoverValue;
 	return newPosition;
 }
 
-void CEditorToolMoverRTS::SetMoverValue(float Value)
-{
-	m_MoverValue = Value;
-}
+
 
 void CEditorToolMoverRTS::Clear()
 {

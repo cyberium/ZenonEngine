@@ -2,8 +2,8 @@
 
 #include <QtWidgets/QTreeView>
 
-//#include "../TreeModelTemplate.h"
-#include "SceneBrowser/SceneBrowserTreeModel.h"
+#include "../TreeModelTemplate.h"
+//#include "SceneBrowser/SceneBrowserTreeModel.h"
 
 class CSceneNodeModelItem
 	: public IModelCollectionItem
@@ -64,8 +64,8 @@ private slots:
 	void onDoubleClicked(const QModelIndex &index);
 
 private:
-	//std::shared_ptr<CQtToZenonTreeModel> m_Model;
-	std::shared_ptr<CSceneBrowserTreeModel> m_Model;
+	std::shared_ptr<CQtToZenonTreeModel> m_Model;
+	//std::shared_ptr<CSceneBrowserTreeModel> m_Model;
 	std::shared_ptr<QMenu> m_ContextMenu;
 	bool m_LockForSelectionChangedEvent;
 

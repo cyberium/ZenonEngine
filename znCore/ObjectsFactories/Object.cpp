@@ -45,12 +45,12 @@ void Object::SetName(const std::string& Name)
 
 void Object::Copy(std::shared_ptr<IObject> Destination) const
 {
-	auto object = std::dynamic_pointer_cast<Object>(Destination);
+	auto destinationObject = std::dynamic_pointer_cast<Object>(Destination);
 
-	if (GetGUID().GetObjectClass() != object->GetGUID().GetObjectClass() || GetGUID().GetObjectType() != object->GetGUID().GetObjectType())
-		throw std::exception(("Unable to copy object with different type and class. Source: " + GetGUID().Str() + ", Destination: " + object->GetGUID().Str()).c_str());
+	if (GetGUID().GetObjectClass() != destinationObject->GetGUID().GetObjectClass() || GetGUID().GetObjectType() != destinationObject->GetGUID().GetObjectType())
+		throw std::exception(("Unable to copy object with different type and class. Source: " + GetGUID().Str() + ", Destination: " + destinationObject->GetGUID().Str()).c_str());
 
-	object->m_Name = m_Name;
+	destinationObject->m_Name = m_Name;
 }
 
 
@@ -87,9 +87,9 @@ void Object::Save(const std::shared_ptr<IXMLWriter>& Writer) const
 	//Writer->SetUInt32Attribute(m_Guid.GetCounter(), "Counter");
 
 	// TODO: save only non defaults names
-	auto name = GetClearName(m_Name).first;
-	if (!name.empty())
-		Writer->SetStrAttribute(name, "Name");
+	auto clearName = GetClearName(m_Name).first;
+	if (!clearName.empty())
+		Writer->SetStrAttribute(clearName, "Name");
 }
 
 
@@ -111,7 +111,7 @@ void Object::SetGUID(const IBaseManager* BaseManager, const Guid& NewGuid)
 	m_Guid = Guid(NewGuid.GetRawValue());
 
 	if (m_Name.empty())
-		m_Name = GetClassNameW() + std::to_string(GetGUID().GetCounter());
+		m_Name = GetClassNameW() + "#" + std::to_string(GetGUID().GetCounter());
 }
 
 
@@ -120,6 +120,11 @@ Object::Object()
 	: m_Guid(0ull)
 	, m_BaseManager(nullptr)
 {}
+Object::Object(const IBaseManager& BaseManager)
+	: m_Guid(0ull)
+	, m_BaseManager(&BaseManager)
+{
+}
 Object::Object(ObjectType Factory, ObjectClass Class)
 	: m_Guid(0ull)
 	, m_BaseManager(nullptr)

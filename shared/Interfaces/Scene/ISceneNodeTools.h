@@ -11,7 +11,7 @@ ZN_INTERFACE ZN_API ISceneNode3DCreationArgs
 {
 	virtual ~ISceneNode3DCreationArgs() {}
 
-	virtual IScene* GetScene() = 0;
+	virtual IScene* GetScene() const = 0;
 	virtual std::shared_ptr<ISceneNode3D> GetParent() const = 0;
 };
 

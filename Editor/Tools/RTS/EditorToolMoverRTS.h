@@ -4,6 +4,7 @@
 
 class CEditorToolMoverRTS
 	: public CEditorToolBase
+	, public IEditorToolMoverRTS
 {
 public:
 	CEditorToolMoverRTS(IEditor& Editor);
@@ -23,9 +24,8 @@ public:
 	// IEditorToolUI
 	void DoInitializeUI(IEditorQtUIFrame& QtUIFrame) override;
 
-	glm::ivec3 ToBoxCoords(const glm::vec3 & Position);
-	glm::vec3 FixBoxCoords(const glm::vec3 & Position);
-	void SetMoverValue(float Value);
+	// IEditorToolMoverRTS
+	glm::vec2 FixBoxCoords(const glm::vec2& Position) override;
 
 protected:
 	void Clear();

@@ -68,48 +68,51 @@ void CArcBallCameraController::OnUpdate(UpdateEventArgs& e)
 //
 // Keyboards events
 //
-void CArcBallCameraController::OnKeyPressed(KeyEventArgs& e)
+bool CArcBallCameraController::OnKeyPressed(KeyEventArgs& e)
 {
 	switch (e.Key)
 	{
-	case KeyCode::W:
-	{
-		Forward = 1.0f;
-	}
-	break;
-	case KeyCode::A:
-	{
-		Left = 1.0f;
-	}
-	break;
-	case KeyCode::S:
-	{
-		Back = 1.0f;
-	}
-	break;
-	case KeyCode::D:
-	{
-		Right = 1.0f;
-	}
-	break;
-	case KeyCode::Q:
-	{
-		Down = 1.0f;
-	}
-	break;
-	case KeyCode::E:
-	{
-		Up = 1.0f;
-	}
-	break;
-	case KeyCode::ShiftKey:
-	{
-		TranslateFaster = true;
-		RotateFaster = true;
-	}
-	break;
+		case KeyCode::W:
+		{
+			Forward = 1.0f;
+		}
+		break;
+		case KeyCode::A:
+		{
+			Left = 1.0f;
+		}
+		break;
+		case KeyCode::S:
+		{
+			Back = 1.0f;
+		}
+		break;
+		case KeyCode::D:
+		{
+			Right = 1.0f;
+		}
+		break;
+		case KeyCode::Q:
+		{
+			Down = 1.0f;
+		}
+		break;
+		case KeyCode::E:
+		{
+			Up = 1.0f;
+		}
+		break;
+		case KeyCode::ShiftKey:
+		{
+			TranslateFaster = true;
+			RotateFaster = true;
+		}
+		break;
+		default:
+			return false;
 	}
 
+	return true;
 }
 
 void CArcBallCameraController::OnKeyReleased(KeyEventArgs& e)
@@ -165,12 +168,14 @@ void CArcBallCameraController::OnKeyReleased(KeyEventArgs& e)
 	}
 }
 
-void CArcBallCameraController::OnMouseButtonPressed(MouseButtonEventArgs& e)
+bool CArcBallCameraController::OnMouseButtonPressed(MouseButtonEventArgs& e)
 {
 	//m_PreviousPoint = glm::ivec2(e.X, e.Y);
 	m_PreviousPoint = ProjectOntoUnitSphere(glm::ivec2(e.X, e.Y));
 
 	m_PreviousMousePosition = glm::vec2(e.X, e.Y);
+
+	return true;
 }
 
 void CArcBallCameraController::OnMouseButtonReleased(MouseButtonEventArgs& e)

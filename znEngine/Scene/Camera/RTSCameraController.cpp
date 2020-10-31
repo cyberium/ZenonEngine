@@ -5,7 +5,7 @@
 
 CRTSCameraController::CRTSCameraController()
 {
-	SetBounds(BoundingBox(glm::vec3(-100.0f), glm::vec3(100.0f)));
+	SetBounds(BoundingBox(glm::vec3(0.0f), glm::vec3(10.0f * 64.0f)));
 }
 
 CRTSCameraController::~CRTSCameraController()
@@ -67,29 +67,35 @@ void CRTSCameraController::OnUpdate(UpdateEventArgs& e)
 //
 void CRTSCameraController::OnMouseMoved(MouseMotionEventArgs& e)
 {
-	if (e.LeftButton)
-	{
-		glm::vec2 currPoint = glm::vec2(e.X, e.Y);
-		glm::vec2 diff = currPoint - m_PreviousMousePosition;
-		diff *= m_MouseMoveMultiplier;
+	if (false == m_IsMousePressed)
+		return;
 
-		AddX(diff.y);
-		AddZ(-diff.x);
+	if (false == e.RightButton)
+		return;
 
-		m_PreviousMousePosition = currPoint;
+	glm::vec2 currPoint = glm::vec2(e.X, e.Y);
+	glm::vec2 diff = currPoint - m_PreviousMousePosition;
+	diff *= m_MouseMoveMultiplier;
 
-		GetCamera()->SetTranslation(m_CameraPosition);
-	}
-}
+	AddX(diff.y);
+	AddZ(-diff.x);
 
-void CRTSCameraController::OnMouseWheel(MouseWheelEventArgs& e)
-{
-	float value = e.WheelDelta;
-	value *= m_MouseWheelMultiplier;
-
-	AddY(value);
+	m_PreviousMousePosition = currPoint;
 
 	GetCamera()->SetTranslation(m_CameraPosition);
+}
+
+bool CRTSCameraController::OnMouseWheel(MouseWheelEventArgs& e)
+{
+	if (false == m_IsMousePressed)
+		return false;
+
+	float value = e.WheelDelta / 100.0f;
+	value *= m_MouseWheelMultiplier;
+	AddY(value);
+	GetCamera()->SetTranslation(m_CameraPosition);
+
+	return true;
 }
 
 

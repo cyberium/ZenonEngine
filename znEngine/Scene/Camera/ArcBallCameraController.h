@@ -18,11 +18,11 @@ public:
 	void                                            OnUpdate(UpdateEventArgs& e);
 
     // Keyboard events
-	void                                            OnKeyPressed(KeyEventArgs& e);
+	bool                                            OnKeyPressed(KeyEventArgs& e);
 	void                                            OnKeyReleased(KeyEventArgs& e);
 
     // Mouse events
-	void                                            OnMouseButtonPressed(MouseButtonEventArgs& e);
+	bool                                            OnMouseButtonPressed(MouseButtonEventArgs& e);
 	void                                            OnMouseButtonReleased(MouseButtonEventArgs& e);
 	void                                            OnMouseMoved(MouseMotionEventArgs& e);
 

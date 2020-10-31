@@ -24,18 +24,19 @@ public:
     virtual void                                    OnResize(ResizeEventArgs& e) override;
 
 	// Keyboard event
-	virtual void                                    OnKeyPressed(KeyEventArgs& e) override;
+	virtual bool                                    OnKeyPressed(KeyEventArgs& e) override;
 	virtual void                                    OnKeyReleased(KeyEventArgs& e) override;
 
     // Mouse event
-	virtual void                                    OnMouseButtonPressed(MouseButtonEventArgs& e) override;
+	virtual bool                                    OnMouseButtonPressed(MouseButtonEventArgs& e) override;
 	virtual void                                    OnMouseButtonReleased(MouseButtonEventArgs& e) override;
 	virtual void                                    OnMouseMoved(MouseMotionEventArgs& e) override;
-	virtual void                                    OnMouseWheel(MouseWheelEventArgs& e) override;
+	virtual bool                                    OnMouseWheel(MouseWheelEventArgs& e) override;
 	
 
 protected:
 	std::shared_ptr<ICameraComponent3D>				m_Camera;
 	
+	bool                                            m_IsMousePressed;
 	glm::vec2                                       m_PreviousMousePosition;
 };

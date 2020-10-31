@@ -34,4 +34,5 @@ private:
 	std::shared_ptr<ISceneNode3D> m_RotatorRoot;
 	std::shared_ptr<ISceneNode3D> m_RotatorY;
 	float m_RotatorInitialAngle;
+	int m_LastAbs;
 };

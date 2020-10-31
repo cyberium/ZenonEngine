@@ -15,15 +15,15 @@ public:
 	// ISceneNode3D
 	virtual void                                    Initialize() override;
 	virtual void                                    Finalize() override;
-	virtual void                                    Copy(std::shared_ptr<ISceneNode3D> Destination) const override;
+	virtual void                                    CopyTo(std::shared_ptr<ISceneNode3D> Destination) const override;
 
 	// Childs functional
 	virtual void                                    AddChild(std::shared_ptr<ISceneNode3D> childNode) override final;
 	virtual void                                    RemoveChild(std::shared_ptr<ISceneNode3D> childNode) override final;
 	virtual std::weak_ptr<ISceneNode3D>             GetParent() const override final;
 	virtual const Node3DList&                       GetChilds() const override final;
-	void											ClearChilds() override;
-	void                                            RaiseOnParentChanged() override final;
+	virtual std::shared_ptr<ISceneNode3D>           GetChild(std::string Name) const override;
+	bool                                            IsPersistance() const override;
 
 	// Actions & Properties
 	std::shared_ptr<IPropertiesGroup>				GetProperties() const override final;
@@ -75,11 +75,13 @@ public:
 	virtual void									Load(const std::shared_ptr<IXMLReader>& Reader) override;
 	virtual void									Save(const std::shared_ptr<IXMLWriter>& Writer) const override;
 
-private:
+protected:
 	// ISceneNode3DInternal
 	void                                            AddChildInternal(std::shared_ptr<ISceneNode3D> ChildNode) override;
 	void                                            RemoveChildInternal(std::shared_ptr<ISceneNode3D> ChildNode) override;
 	void                                            SetParentInternal(std::weak_ptr<ISceneNode3D> parentNode) override;
+	void                                            SetPersistanceInternal(bool Value) override;
+	void                                            RaiseOnParentChangedInternal() override;
 
 protected:
 	virtual glm::mat4                               CalculateLocalTransform() const;
@@ -92,10 +94,6 @@ protected:
 	IRenderDevice&                                  GetRenderDevice() const;
 
 private:
-	Node3DList                                      m_Children;
-	std::weak_ptr<ISceneNode3D>                     m_ParentNode;
-
-	std::shared_ptr<IPropertiesGroup>               m_PropertiesGroup;
 	IScene&                                         m_Scene;
 
 	glm::vec3										m_Translate;
@@ -108,7 +106,13 @@ private:
 	glm::mat4										m_WorldTransform;
 	glm::mat4										m_InverseWorldTransform;
 
+	std::shared_ptr<IPropertiesGroup>               m_PropertiesGroup;
+
 	ComponentsMap                                   m_Components;
+
+	std::weak_ptr<ISceneNode3D>                     m_ParentNode;
+	Node3DList                                      m_Children;
+	bool                                            m_IsPersistance;
 };
 
 inline bool IsChildOf(const std::shared_ptr<ISceneNode3D>& Parent, const std::shared_ptr<ISceneNode3D>& Child)

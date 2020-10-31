@@ -7,12 +7,15 @@ public:
 	CSceneFinder(const IScene& Scene);
 	virtual ~CSceneFinder();
 
+	// ISceneFinder
 	std::map<float, std::shared_ptr<ISceneNode3D>> FindIntersection(
-		const Ray& Ray, std::function<bool(std::shared_ptr<ISceneNode3D>)> Filter, 
+		const Ray& Ray, 
+		std::function<bool(std::shared_ptr<ISceneNode3D>)> Filter, 
 		std::shared_ptr<ISceneNode3D> RootForFinder
 	) const override;
 	std::vector<std::shared_ptr<ISceneNode3D>> FindIntersections(
-		const Frustum& Frustum, std::function<bool(std::shared_ptr<ISceneNode3D>)> Filter, 
+		const Frustum& Frustum, 
+		std::function<bool(std::shared_ptr<ISceneNode3D>)> Filter, 
 		std::shared_ptr<ISceneNode3D> RootForFinder
 	) const override;
 

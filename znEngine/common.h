@@ -5,4 +5,4 @@
 
 #include "FBX/FBXInterfaces.h"
 
-const ObjectClass cSceneDefault = UINT16_MAX - 301u;
+const ObjectClass cCRTSSceneNodeGround = UINT16_MAX - 101u;

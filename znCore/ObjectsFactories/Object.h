@@ -51,6 +51,7 @@ private:
 
 protected:
 	Object();
+	Object(const IBaseManager& BaseManager);
 	Object(ObjectType Factory, ObjectClass Class);
 	virtual ~Object();
 

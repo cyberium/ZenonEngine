@@ -25,7 +25,6 @@ public:
 	void DoInitializeUI(IEditorQtUIFrame& QtUIFrame) override;
 
 	// IEditorToolMover
-	glm::ivec3 ToBoxCoords(const glm::vec3 & Position) override;
 	glm::vec3 FixBoxCoords(const glm::vec3 & Position) override;
 	void SetMoverValue(float Value) override;
 	float GetMoverValue() const override;
