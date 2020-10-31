@@ -21,7 +21,7 @@ public:
 	SRTSCell& GetCell(SRTSCellCoords Coords) override;
 	const SRTSCell& GetCellConst(SRTSCellCoords Coords) const override;
 	SRTSCellCoords PositionToCoords(const glm::vec3& Position) override;
-	glm::vec3 PositionToPosition(const glm::vec3& Position) override;
+	glm::vec3 PositionToPosition(const glm::vec3& Position, float Height = 0.0f) override;
 
 	// Others
 	void Update(const UpdateEventArgs& e) override;
@@ -31,11 +31,9 @@ public:
 	void Load(const std::shared_ptr<IXMLReader>& Reader) override;
 	void Save(const std::shared_ptr<IXMLWriter>& Writer) const override;
 
-
-
-private: // Consts
-
-
+private:
+	void DoProcessNodesNear(SRTSCellCoords Coords);
+	
 private:
 	SRTSCell*** m_Cells;
 };

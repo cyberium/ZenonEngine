@@ -13,6 +13,8 @@
 #include "FBXModel.h"
 #include "FBXLight.h"
 
+#include "FBXUtils.h"
+
 #include "Materials/MaterialDebug.h"
 #include "Materials/MaterialTextured.h"
 
@@ -102,32 +104,9 @@ std::shared_ptr<IFBXLight> CFBXNode::GetFBXLight() const
 //
 void CFBXNode::LoadParams(fbxsdk::FbxNode * NativeNode)
 {
-	fbxsdk::FbxAMatrix& lGlobalTransform = NativeNode->EvaluateLocalTransform();
-	glm::mat4 globalTransform;
-	for (uint32 i = 0; i < 4; i++)
-	{
-		for (uint32 j = 0; j < 4; j++)
-		{
-			globalTransform[i][j] = lGlobalTransform[i][j];
-		}
-	}
-
-#if 0
-
-	// Get the node�s default TRS properties
-	fbxsdk::FbxDouble3 lTranslation = NativeNode->LclTranslation.Get();
-	Display4DVector("Translation: ", lTranslation, "");
-
-	fbxsdk::FbxDouble3 lRotation = NativeNode->EvaluateLocalRotation();
-	Display4DVector("Rotation: ", lRotation, "");
-
-	fbxsdk::FbxDouble3 lScaling = NativeNode->LclScaling.Get();
-	Display4DVector("Scaling: ", lScaling, "");
-#endif
-
-	//SetRotation(glm::vec3(lRotation[0], lRotation[1], lRotation[2]));
-
-	//SetLocalTransform(globalTransform);
+	glm::mat4 globalTransform = ToGLMMat4(NativeNode->EvaluateGlobalTransform());
+	glm::vec3 scale = extractScale(globalTransform);
+	m_Transform = glm::scale(scale);
 }
 
 void CFBXNode::LoadChilds(fbxsdk::FbxNode * NativeNode)

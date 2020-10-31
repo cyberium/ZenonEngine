@@ -9,6 +9,7 @@
 #include "FBXDisplayCommon.h"
 #include "FBXUtils.h"
 
+
 CFBXModel::CFBXModel(const IBaseManager& BaseManager, const IFBXNode& FBXNode)
 	: ModelProxie(BaseManager.GetApplication().GetRenderDevice().GetObjectsFactory().CreateModel())
 	, m_BaseManager(BaseManager)
@@ -34,9 +35,6 @@ bool CFBXModel::Load(fbxsdk::FbxMesh* NativeMesh)
 	}
 
 	NativeMesh->ComputeBBox();
-	BoundingBox bbox(ToGLMVec3(NativeMesh->BBoxMin), ToGLMVec3(NativeMesh->BBoxMax));
-	SetBounds(bbox);
-
 	if (!NativeMesh->GenerateNormals(true, true))
 		throw CException("Error while generate normals.");
 
@@ -334,6 +332,29 @@ bool CFBXModel::Load(fbxsdk::FbxMesh* NativeMesh)
 	}
 
 	SkeletonLoad(NativeMesh);
+
+	glm::vec3 bboxMin = glm::vec3(Math::MaxFloat), bboxMax = glm::vec3(Math::MinFloat);
+	for (auto& verts : m_Vertices)
+	{
+		verts.pos = m_FBXNode.GetTransform() * glm::vec4(verts.pos, 1.0f);
+
+		if (verts.pos.x < bboxMin.x)
+			bboxMin.x = verts.pos.x;
+		if (verts.pos.y < bboxMin.y)
+			bboxMin.y = verts.pos.y;
+		if (verts.pos.z < bboxMin.z)
+			bboxMin.z = verts.pos.z;
+
+		if (verts.pos.x > bboxMax.x)
+			bboxMax.x = verts.pos.x;
+		if (verts.pos.y > bboxMax.y)
+			bboxMax.y = verts.pos.y;
+		if (verts.pos.z > bboxMax.z)
+			bboxMax.z = verts.pos.z;
+	}
+
+	BoundingBox bbox(bboxMin, bboxMax);
+	SetBounds(bbox);
 
 	auto loaderParams = m_FBXNode.GetFBXScene().GetLoaderParams();
 	if (auto loaderFBXParams = dynamic_cast<const CznFBXLoaderParams*>(loaderParams))

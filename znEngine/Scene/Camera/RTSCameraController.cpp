@@ -5,7 +5,7 @@
 
 CRTSCameraController::CRTSCameraController()
 {
-	SetBounds(BoundingBox(glm::vec3(0.0f), glm::vec3(10.0f * 64.0f)));
+	SetBounds(BoundingBox(glm::vec3(-5.0f * 64.0f), glm::vec3(15.0f * 64.0f)));
 }
 
 CRTSCameraController::~CRTSCameraController()

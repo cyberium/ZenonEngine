@@ -58,7 +58,13 @@ bool CEditorUIFrame::InitializeEditorFrame()
 			}
 
 			CznFBXLoaderParams loader;
-			loader.MakeCenterIsX0Z = true;
+
+			if (fbxFileName.find_first_of("ground_dirt") != std::string::npos)
+				loader.MakeCenterIsX0Z = true;
+			if (fbxFileName.find_first_of("cliffGrey") != std::string::npos)
+				loader.MakeCenterIsX0Z = true;
+			if (fbxFileName.find_first_of("cliffBrown") != std::string::npos)
+				loader.MakeCenterIsX0Z = true;
 
 			auto fbxModel = m_Editor.GetBaseManager().GetManager<IznModelsFactory>()->LoadModel(fbxFileName, &loader);
 			auto znModelFile = m_Editor.GetBaseManager().GetManager<IznModelsFactory>()->SaveModel(fbxModel, filePtr->Path_Name());

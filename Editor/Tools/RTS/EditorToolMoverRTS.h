@@ -32,12 +32,14 @@ protected:
 
 private:
 	float m_MoverValue;
-	bool m_IsMovingNow;
-	int m_MoverNuber;
+	
 	std::shared_ptr<ISceneNode3D> m_MovingNode;
-	glm::vec3 m_MovingObjectPos;
+
 	std::shared_ptr<ISceneNode3D> m_MoverRoot;
-	glm::vec3 m_MoverOffset;
 	std::shared_ptr<ISceneNode3D> m_MoverX;
 	std::shared_ptr<ISceneNode3D> m_MoverZ;
+
+	bool m_IsMovingNow;
+	int m_MoverNuber;
+	glm::vec3 m_MoverOffset;
 };

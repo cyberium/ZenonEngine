@@ -6,9 +6,22 @@
 // Additional
 #include "Materials/MaterialEditorTool.h"
 
+
+struct SRTSProto
+{
+	const char* MiddleTile;
+	ERTSCellType Left, Right, Top, Bottom;
+};
+
+SRTSProto protos[] = 
+{
+	SRTSProto {"ground_dirt", ERTSCellType::ctGround, ERTSCellType::ctGround, ERTSCellType::ctGround, ERTSCellType::ctGround }
+};
+
+
 /*
 ground_dirt
-ground_dirtRiverTile
+ground_dirtRiverTile // вода в середине, земля по кругу
 -z g
 +z g
 -x g
@@ -67,7 +80,7 @@ CRTSGround::CRTSGround(IEditor& Editor)
 	: CEditorToolBase(Editor)
 	, m_BaseManager(Editor.GetBaseManager())
 	, m_Scene(Editor.Get3DFrame().GetEditedScene())
-	, m_CellType(ERTSCellType::ctEmpty)
+	, m_CellType(ERTSCellType::ctGround)
 {
 	
 }
@@ -116,7 +129,9 @@ void CRTSGround::Disable()
 {
 	CEditorToolBase::Disable();
 
-	SetNodeType(ERTSCellType::ctEmpty);
+	m_GroundSelectorNode->SetTranslate(glm::vec3(Math::MinFloat));
+
+	SetNodeType(ERTSCellType::ctGround);
 	//dynamic_cast<IEditorQtUIFrame&>(GetEditor().GetUIFrame()).getUI().RTSEditor_GroundBtn->setChecked(IsEnabled());
 }
 
@@ -145,7 +160,10 @@ void CRTSGround::DoInitializeUI(IEditorQtUIFrame & QtUIFrame)
 //
 bool CRTSGround::OnMousePressed(const MouseButtonEventArgs & e, const Ray & RayToWorld)
 {
-	auto mousePos = GetScene()->GetCameraController()->RayToPlane(RayToWorld, Plane(glm::vec3(0.0f, 1.0f, 0.0f), 0.0f));
+	if (m_GroundRoot == nullptr)
+		return false;
+
+	auto mousePos = GetScene()->GetCameraController()->RayToPlane(RayToWorld, Plane(glm::vec3(0.0f, 1.0f, 0.0f), 10.0f));
 
 	SRTSCellCoords coords = m_GroundRoot->PositionToCoords(mousePos);
 	if (false == coords.IsCorrect())
@@ -158,8 +176,8 @@ bool CRTSGround::OnMousePressed(const MouseButtonEventArgs & e, const Ray & RayT
 	}
 	else if (e.Button == MouseButton::Right)
 	{
-		if (m_GroundRoot->AddCell(ERTSCellType::ctEmpty, coords))
-			return true;
+		//if (m_GroundRoot->AddCell(ERTSCellType::ctEmpty, coords))
+		//	return true;
 	}
 
 	return false;
@@ -171,10 +189,16 @@ void CRTSGround::OnMouseReleased(const MouseButtonEventArgs & e, const Ray & Ray
 
 void CRTSGround::OnMouseMoved(const MouseMotionEventArgs & e, const Ray & RayToWorld)
 {
-	auto mousePos = GetScene()->GetCameraController()->RayToPlane(RayToWorld, Plane(glm::vec3(0.0f, 1.0f, 0.0f), 0.0f));
+	if (m_GroundRoot == nullptr)
+		return;
+
+	auto mousePos = GetScene()->GetCameraController()->RayToPlane(RayToWorld, Plane(glm::vec3(0.0f, 1.0f, 0.0f), 10.0f));
 
 	if (m_GroundSelectorNode)
-		m_GroundSelectorNode->SetTranslate(m_GroundRoot->PositionToPosition(mousePos));
+	{
+
+		m_GroundSelectorNode->SetTranslate(m_GroundRoot->PositionToPosition(mousePos, 10.0f));
+	}
 
 	if (e.LeftButton)
 	{
@@ -186,11 +210,11 @@ void CRTSGround::OnMouseMoved(const MouseMotionEventArgs & e, const Ray & RayToW
 	}
 	else if (e.RightButton)
 	{
-		auto coords = m_GroundRoot->PositionToCoords(mousePos);
-		if (false == coords.IsCorrect())
-			return;
+		//auto coords = m_GroundRoot->PositionToCoords(mousePos);
+		//if (false == coords.IsCorrect())
+		//	return;
 
-		m_GroundRoot->AddCell(ERTSCellType::ctEmpty, coords);
+		//m_GroundRoot->AddCell(ERTSCellType::ctEmpty, coords);
 	}
 }
 

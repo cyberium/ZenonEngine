@@ -15,6 +15,7 @@ CRTSSceneNodeGround::CRTSSceneNodeGround(IScene& Scene)
 		for (size_t z = 0; z < cCellsCount; z++)
 		{
 			m_Cells[x][z] = ZN_NEW SRTSCell(SRTSCellCoords(x, z));
+			AddCell(ERTSCellType::ctGround, m_Cells[x][z]->Coords);
 		}
 	}
 }
@@ -59,18 +60,18 @@ bool CRTSSceneNodeGround::AddCell(ERTSCellType CellType, SRTSCellCoords Coords)
 		return false;
 
 	SRTSCell& cell = GetCell(Coords);
-	if (cell.Type == CellType)
-		return false;
+	//if (cell.Type == CellType)
+	//	return false;
 
 	cell.Type = CellType;
 
 	IModelPtr model = nullptr;
-	if (CellType == ERTSCellType::ctEmpty)
+	/*if (CellType == ERTSCellType::ctEmpty)
 	{
 		cell.Model = nullptr;
 		return true;
 	}
-	else if (CellType == ERTSCellType::ctGround)
+	else */if (CellType == ERTSCellType::ctGround)
 	{
 		model = GetBaseManager().GetManager<IznModelsFactory>()->LoadModel("models/ground_dirt.znmdl");
 	}
@@ -108,12 +109,13 @@ SRTSCellCoords CRTSSceneNodeGround::PositionToCoords(const glm::vec3& Position)
 	return SRTSCellCoords(newPosition.x, newPosition.y);
 }
 
-glm::vec3 CRTSSceneNodeGround::PositionToPosition(const glm::vec3& Position)
+glm::vec3 CRTSSceneNodeGround::PositionToPosition(const glm::vec3& Position, float Height)
 {
-	glm::vec3 newPosition = glm::vec3(Position.x, 0.0f, Position.z);
+	glm::vec3 newPosition = glm::vec3(Position.x, Height, Position.z);
 	newPosition /= static_cast<float>(cCellSize);
 	newPosition = glm::round(newPosition);
 	newPosition *= static_cast<float>(cCellSize);
+	newPosition.y = Height;
 	return newPosition;
 }
 
@@ -186,6 +188,19 @@ void CRTSSceneNodeGround::Save(const std::shared_ptr<IXMLWriter>& Writer) const
 			cellWriter->SetUInt8Attribute((int8)(*cellPtr).Type, "Type");
 
 			rtsCellsWriter->AddChild(cellWriter);
+		}
+	}
+}
+
+void CRTSSceneNodeGround::DoProcessNodesNear(SRTSCellCoords Coords)
+{
+	for (int32 x = -1; x <= 1; x++)
+	{
+		for (int32 z = -1; z <= 1; z++)
+		{
+			SRTSCellCoords coords(x, z);
+			if (false == coords.IsCorrect())
+				continue;
 		}
 	}
 }

@@ -116,9 +116,7 @@ void CEditorToolDragger::MoveDraggedNode(const glm::vec2& MousePos)
 	pos -= bounds.getCenter();
 	//pos = pos / 10.0f;//reinterpret_cast<IEditorToolMover&>(GetEditor().GetTools().GetTool(EToolMover)).FixBoxCoords(pos);
 
-	pos /= 10.0f;
-	pos = glm::round(pos);
-	pos *= 10.0f;
+	pos = dynamic_cast<IEditorToolMover&>(GetEditor().GetTools().GetTool(ETool::EToolMover)).FixBoxCoords(pos);
 
 	m_DraggerNode->SetTranslate(pos);
 

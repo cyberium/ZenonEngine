@@ -152,4 +152,5 @@ void CRendererForward::DoUpdateLights()
 
 	m_MaterialModelPass->GetLightsShaderParameter()->Set(m_LightsBuffer);
 	//m_MaterialModelPassInstanced->GetLightsShaderParameter()->Set(m_LightsBuffer);
+	m_RTSGroundPassInstanced->GetLightsShaderParameter()->Set(m_LightsBuffer);
 }

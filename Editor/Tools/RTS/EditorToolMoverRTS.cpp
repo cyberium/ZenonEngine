@@ -16,7 +16,6 @@ CEditorToolMoverRTS::CEditorToolMoverRTS(IEditor& Editor)
 
 CEditorToolMoverRTS::~CEditorToolMoverRTS()
 {
-	Log::Info("Deleted");
 }
 
 void CEditorToolMoverRTS::Initialize()
@@ -26,13 +25,6 @@ void CEditorToolMoverRTS::Initialize()
 
 	auto model = GetBaseManager().GetManager<IznModelsFactory>()->LoadModel("arrow.FBX");
 	auto geom = model->GetConnections().begin()->Geometry;
-	/*if (auto loadable = std::dynamic_pointer_cast<IObjectLoadSave>(model))
-	{
-		std::shared_ptr<IFile> file = MakeShared(CFile, "arrow.znmdl");
-		loadable->Save(file);
-
-		GetBaseManager().GetManager<IFilesManager>()->GetFilesStorage("ZenonGamedata")->SaveFile(file);
-	}*/
 
 	auto materialX = MakeShared(MaterialEditorTool, GetRenderDevice());
 	materialX->SetColor(glm::vec4(1.0f, 0.2f, 0.1f, 1.0f));
@@ -53,13 +45,11 @@ void CEditorToolMoverRTS::Initialize()
 	m_MoverX = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, GetScene(), m_MoverRoot);
 	m_MoverX->SetName("MoverRTS_X");
 	m_MoverX->SetRotation(glm::vec3(0.0f, glm::half_pi<float>(), 0.0f));
-	//moverX->SetScale(glm::vec3(0.5f, 1.0f, 0.5f));
 	m_MoverX->GetComponent<IModelsComponent3D>()->SetModel(modelX);
 	m_MoverX->GetComponent<IColliderComponent3D>()->SetBounds(model->GetBounds());
 
 	m_MoverZ = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, GetScene(), m_MoverRoot);
 	m_MoverZ->SetName("RotatorRTS_Z");
-	//moverZ->SetScale(glm::vec3(0.5f, 1.0f, 0.5f));
 	m_MoverZ->SetRotation(glm::vec3(0.0f, 0.0f, 0.0f));
 	m_MoverZ->GetComponent<IModelsComponent3D>()->SetModel(modelZ);
 	m_MoverZ->GetComponent<IColliderComponent3D>()->SetBounds(model->GetBounds());
@@ -131,7 +121,6 @@ bool CEditorToolMoverRTS::OnMousePressed(const MouseButtonEventArgs & e, const R
 
 	if (m_MoverNuber > 0)
 	{
-		m_MovingObjectPos = m_MovingNode->GetTranslation();
 		m_IsMovingNow = true;
 		return true;
 	}
@@ -215,6 +204,5 @@ void CEditorToolMoverRTS::Clear()
 {
 	m_MoverNuber = 0;
 	m_IsMovingNow = false;
-	//m_MovingNode.reset();
 	m_MovingObjectPos = glm::vec3(0.0f);
 }

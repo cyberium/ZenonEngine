@@ -1,14 +1,13 @@
 #pragma once
 
-const int32 cCellsCount = 64;
+const int32 cCellsCount = 32;
 const int32 cCellsHalfCount = cCellsCount / 2;
 const float cCellSize = 10.0f;
 const float cCellHalfSize = cCellSize / 2.0f;
 
 enum class ERTSCellType : uint8
 {
-	ctEmpty = 0,
-	ctGround = 1,
+	ctGround = 0,
 	ctWater = 2
 };
 
@@ -43,7 +42,7 @@ struct SRTSCellCoords
 
 	glm::vec3 ToPosition() const
 	{
-		return glm::vec3(cCellSize * GetX(), 0.0f, cCellSize * GetZ());
+		return glm::vec3(cCellSize * GetX(), 7.5f, cCellSize * GetZ());
 	}
 
 	std::string ToString() const
@@ -61,7 +60,7 @@ private:
 struct SRTSCell
 {
 	SRTSCell(SRTSCellCoords Coords_)
-		: Type(ERTSCellType::ctEmpty)
+		: Type(ERTSCellType::ctGround)
 		, Coords(Coords_)
 	{}
 
@@ -78,5 +77,5 @@ ZN_INTERFACE ZN_API IRTSGround
 	virtual SRTSCell& GetCell(SRTSCellCoords Coords) = 0;
 	virtual const SRTSCell& GetCellConst(SRTSCellCoords Coords) const = 0;
 	virtual SRTSCellCoords PositionToCoords(const glm::vec3& Position) = 0;
-	virtual glm::vec3 PositionToPosition(const glm::vec3& Position) = 0;
+	virtual glm::vec3 PositionToPosition(const glm::vec3& Position, float Height = 0.0f) = 0;
 };

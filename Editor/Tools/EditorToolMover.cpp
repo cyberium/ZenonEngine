@@ -196,6 +196,8 @@ void CEditorToolMover::OnMouseMoved(const MouseMotionEventArgs & e, const Ray & 
 void CEditorToolMover::DoInitializeUI(IEditorQtUIFrame& QtUIFrame)
 {
 	m_MoverValues.insert(std::make_pair("<disabled>", 0.001f));
+	m_MoverValues.insert(std::make_pair("x0.25", 0.25f));
+	m_MoverValues.insert(std::make_pair("x0.5", 0.5f));
 	m_MoverValues.insert(std::make_pair("x1.0", 1.0f));
 	m_MoverValues.insert(std::make_pair("x5.0", 5.0f));
 	m_MoverValues.insert(std::make_pair("x10.0", 10.0f));
