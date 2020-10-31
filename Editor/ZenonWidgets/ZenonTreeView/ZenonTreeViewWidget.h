@@ -2,7 +2,7 @@
 
 #include <QtWidgets/QTreeView>
 
-#include "../TreeModelTemplate.h"
+#include "TreeModelTemplate.h"
 //#include "SceneBrowser/SceneBrowserTreeModel.h"
 
 typedef std::function<bool(const CQtToZenonTreeItem*, std::string *, std::vector<std::shared_ptr<IPropertyAction>> *)> OnContextMenuCallback;
@@ -31,7 +31,7 @@ public:
 	void SetOnContexMenu(OnContextMenuCallback Callback);
 	void SetOnStartDragging(OnDragStartCallback Callback);
 	void SetOnSelectionChange(OnSelectionChangeCallback Callback);
-	void SetrOnSelectedItemChange(OnSelectedItemChangeCallback Callback);
+	void SetOnSelectedItemChange(OnSelectedItemChangeCallback Callback);
 
 protected:
 	void mousePressEvent(QMouseEvent* event) override;
@@ -42,8 +42,8 @@ private slots:
 	void onCustomContextMenu(const QPoint& point);
 	void onCurrentChanged(const QModelIndex& current, const QModelIndex& previous);
 	void onSelectionChanged(const QItemSelection &selected, const QItemSelection &deselected);
-	void onPressed(const QModelIndex &index);
-	void onClicked(const QModelIndex &index);
+	void onPressed(const QModelIndex &index); // This signal is emitted when a mouse button is pressed. The item the mouse was pressed on is specified by index. The signal is only emitted when the index is valid.
+	void onClicked(const QModelIndex &index); // This signal is emitted when a mouse button is clicked. The item the mouse was clicked on is specified by index. The signal is only emitted when the index is valid.
 	void onDoubleClicked(const QModelIndex &index);
 
 protected:

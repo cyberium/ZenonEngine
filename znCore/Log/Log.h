@@ -15,7 +15,6 @@ public:
 
 private:
     void PushMessageToAllDebugOutputs(IDebugOutput::DebugMessageType Type, const char* Message, va_list& _vaList);
-	void PushMessageToDebugOutput(const std::shared_ptr<IDebugOutput>& DebugOutput, IDebugOutput::DebugMessageType Type, const std::string& Message);
 
 private:
 	std::vector<std::pair<IDebugOutput::DebugMessageType, std::string>> m_Messages;

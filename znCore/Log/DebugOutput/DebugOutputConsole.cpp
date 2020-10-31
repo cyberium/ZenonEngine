@@ -18,46 +18,35 @@ DebugOutput_ConsoleWindows::~DebugOutput_ConsoleWindows()
 
 //
 
-void DebugOutput_ConsoleWindows::Print(IDebugOutput::DebugMessageType Type, const std::string& FormattedMessage)
+void DebugOutput_ConsoleWindows::Print(IDebugOutput::DebugMessageType Type, const std::string& Message)
 {
 	// Set color
 	unsigned short color;
 	switch (Type)
 	{
 		case IDebugOutput::DebugMessageType::TYPE_INFO:
-		{
 			color = ConsoleWindowsColor::GRAY;
-		}
-		break;
+			break;
 		case IDebugOutput::DebugMessageType::TYPE_PRINT:
-		{
 			color = ConsoleWindowsColor::WHITE;
-		}
-		break;
+			break;
 		case IDebugOutput::DebugMessageType::TYPE_GREEN:
-		{
 			color = ConsoleWindowsColor::GREEN;
-		}
-		break;
+			break;
 		case IDebugOutput::DebugMessageType::TYPE_WARNING:
-		{
 			color = ConsoleWindowsColor::YELLOW;
-		}
-		break;
+			break;
 		case IDebugOutput::DebugMessageType::TYPE_ERROR:
-		case IDebugOutput::DebugMessageType::TYPE_FATAL:
-		{
 			color = ConsoleWindowsColor::RED;
-		}
-		break;
+			break;
 	}
 
 	// To VisualStudio debug
-	OutputDebugStringA(FormattedMessage.c_str());
+	OutputDebugStringA(Message.c_str());
 	OutputDebugStringA("\n");
 
 	// To console
 	SetConsoleTextAttribute(m_ConsoleHandle, color);
-	std::cout << FormattedMessage << std::endl;
+	std::cout << Message << std::endl;
 	SetConsoleTextAttribute(m_ConsoleHandle, m_DefaultConsoleColor);
 }

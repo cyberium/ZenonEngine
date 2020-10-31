@@ -8,11 +8,10 @@ ZN_INTERFACE ZN_API __declspec(uuid("DBB1D38E-CE3F-4C05-8625-313BFC524C5A")) IDe
 		TYPE_PRINT,
 		TYPE_GREEN,
 		TYPE_WARNING,
-		TYPE_ERROR,
-		TYPE_FATAL
+		TYPE_ERROR
 	};
 
 	virtual ~IDebugOutput() {};
 
-	virtual void Print(IDebugOutput::DebugMessageType Type, const std::string& FormattedMessage) = 0;
+	virtual void Print(IDebugOutput::DebugMessageType Type, const std::string& Message) = 0;
 };

@@ -38,12 +38,9 @@ bool CLog::AddDebugOutput(std::shared_ptr<IDebugOutput> _debugOutput)
 		return false;
 
 	for (const auto& messagePair : m_Messages)
-	{
-		PushMessageToDebugOutput(_debugOutput, messagePair.first, messagePair.second);
-	}
+		_debugOutput->Print(messagePair.first, messagePair.second);
 
 	m_DebugOutputs.push_back(_debugOutput);
-
 	return true;
 }
 
@@ -79,40 +76,8 @@ void CLog::PushMessageToAllDebugOutputs(IDebugOutput::DebugMessageType _type, co
 		m_Messages.push_back(std::make_pair(_type, buff));
 
 		for (const auto& it : m_DebugOutputs)
-		{
-			PushMessageToDebugOutput(it, _type, buff);
-		}
+			it->Print(_type, buff);
 	}
-}
-
-void CLog::PushMessageToDebugOutput(const std::shared_ptr<IDebugOutput>& DebugOutput, IDebugOutput::DebugMessageType Type, const std::string& Message)
-{
-	std::string formattedMessage;
-
-	// Set Prefix
-	switch (Type)
-	{
-	case IDebugOutput::DebugMessageType::TYPE_INFO:
-		formattedMessage = "~" + std::string(Message);
-		break;
-	case IDebugOutput::DebugMessageType::TYPE_PRINT:
-		formattedMessage = " " + std::string(Message);
-		break;
-	case IDebugOutput::DebugMessageType::TYPE_GREEN:
-		formattedMessage = "^" + std::string(Message);
-		break;
-	case IDebugOutput::DebugMessageType::TYPE_WARNING:
-		formattedMessage = "@" + std::string(Message);
-		break;
-	case IDebugOutput::DebugMessageType::TYPE_ERROR:
-		formattedMessage = "!" + std::string(Message);
-		break;
-	case IDebugOutput::DebugMessageType::TYPE_FATAL:
-		formattedMessage = "FATAL ERROR: " + std::string(Message);
-		break;
-	}
-
-	DebugOutput->Print(Type, formattedMessage);
 }
 
 

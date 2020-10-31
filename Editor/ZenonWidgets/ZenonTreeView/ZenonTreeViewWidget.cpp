@@ -6,7 +6,6 @@
 ZenonTreeViewWidget::ZenonTreeViewWidget(QWidget * parent)
 	: QTreeView(parent)
 	, m_Editor(nullptr)
-
 	, m_LockForSelectionChangedEvent(false)
 	, m_StartDragging(false)
 {
@@ -117,7 +116,7 @@ void ZenonTreeViewWidget::SetOnSelectionChange(OnSelectionChangeCallback Callbac
 	m_OnSelectionChange = Callback;
 }
 
-void ZenonTreeViewWidget::SetrOnSelectedItemChange(OnSelectedItemChangeCallback Callback)
+void ZenonTreeViewWidget::SetOnSelectedItemChange(OnSelectedItemChangeCallback Callback)
 {
 	m_OnSelectedItemChange = Callback;
 }

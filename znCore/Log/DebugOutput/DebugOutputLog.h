@@ -7,7 +7,7 @@ public:
 	virtual ~DebugOutput_Log();
 
 	// IDebugOutput
-	void Print(IDebugOutput::DebugMessageType Type, const std::string& FormattedMessage);
+	void Print(IDebugOutput::DebugMessageType Type, const std::string& Message);
 
 private:
 	std::ofstream m_LogStream;

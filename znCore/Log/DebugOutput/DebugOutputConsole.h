@@ -7,7 +7,7 @@ public:
 	virtual ~DebugOutput_ConsoleWindows();
 
 	// IDebugOutput
-	void Print(IDebugOutput::DebugMessageType Type, const std::string& FormattedMessage) override;
+	void Print(IDebugOutput::DebugMessageType Type, const std::string& Message) override;
 
 private:
 	enum ConsoleWindowsColor

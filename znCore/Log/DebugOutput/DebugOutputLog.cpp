@@ -33,8 +33,29 @@ DebugOutput_Log::~DebugOutput_Log()
 
 //
 
-void DebugOutput_Log::Print(IDebugOutput::DebugMessageType Type, const std::string& FormattedMessage)
+void DebugOutput_Log::Print(IDebugOutput::DebugMessageType Type, const std::string& Message)
 {
-	m_LogStream << FormattedMessage << std::endl;
+	std::string formattedMessage;
+
+	switch (Type)
+	{
+	case IDebugOutput::DebugMessageType::TYPE_INFO:
+		formattedMessage = "~" + std::string(Message);
+		break;
+	case IDebugOutput::DebugMessageType::TYPE_PRINT:
+		formattedMessage = " " + std::string(Message);
+		break;
+	case IDebugOutput::DebugMessageType::TYPE_GREEN:
+		formattedMessage = "^" + std::string(Message);
+		break;
+	case IDebugOutput::DebugMessageType::TYPE_WARNING:
+		formattedMessage = "@" + std::string(Message);
+		break;
+	case IDebugOutput::DebugMessageType::TYPE_ERROR:
+		formattedMessage = "!" + std::string(Message);
+		break;
+	}
+
+	m_LogStream << formattedMessage << std::endl;
 	m_LogStream.flush();
 }

@@ -105,9 +105,7 @@ bool CEditorUIFrame::InitializeEditorFrame()
 
 
 
-	//
 	// Models viewer
-	//
 #pragma region Models viewer
 	std::vector<std::shared_ptr<IModelCollectionItem>> models;
 	auto gameDataStorage = m_Editor.GetBaseManager().GetManager<IFilesManager>()->GetStorage(EFilesStorageType::GAMEDATA);
@@ -149,7 +147,7 @@ bool CEditorUIFrame::InitializeEditorFrame()
 
 	getCollectionViewer()->SetRootItems(models);
 
-	getCollectionViewer()->SetrOnSelectedItemChange([this](const CQtToZenonTreeItem * Item) -> bool {
+	getCollectionViewer()->SetOnSelectedItemChange([this](const CQtToZenonTreeItem * Item) -> bool {
 		m_Editor.Get3DFrame().OnCollectionWidget_ModelSelected(std::dynamic_pointer_cast<IModel>(Item->GetTObject()));
 		return true;
 	});
@@ -163,12 +161,12 @@ bool CEditorUIFrame::InitializeEditorFrame()
 #pragma endregion
 
 
-	//
+
 	// SceneNode viewer
-	//
+#pragma region SceneNode viewer
 	getSceneViewer()->SetRootItems(models);
 
-	getSceneViewer()->SetrOnSelectedItemChange([this](const CQtToZenonTreeItem * Item) -> bool {
+	getSceneViewer()->SetOnSelectedItemChange([this](const CQtToZenonTreeItem * Item) -> bool {
 		m_Editor.Get3DFrame().LockUpdates();
 		auto& selector = dynamic_cast<IEditorToolSelector&>(m_Editor.GetTools().GetTool(ETool::EToolSelector));
 		selector.SelectNode(std::static_pointer_cast<ISceneNode3D>(Item->GetTObject()));
@@ -176,13 +174,12 @@ bool CEditorUIFrame::InitializeEditorFrame()
 		return true;
 	});
 
-	/*getSceneViewer()->SetOnStartDragging([this](const CQtToZenonTreeItem * Item, std::string * Value) -> bool {
-		_ASSERT(Value != nullptr && Value->empty());
-		Value->assign(Item->GetTObject()->GetName().c_str());
-		m_Editor.GetTools().Enable(ETool::EToolDragger);
+	getSceneViewer()->SetOnContexMenu([this](const CQtToZenonTreeItem* Item, std::string * Title, std::vector<std::shared_ptr<IPropertyAction>> * Actions) -> bool {
+		if (false == m_Editor.GetUIFrame().ExtendContextMenu(std::dynamic_pointer_cast<ISceneNode3D>(Item->GetTObject()), Title, Actions))
+			return false;
 		return true;
-	});*/
-
+	});
+#pragma endregion
 
 
 	return false;

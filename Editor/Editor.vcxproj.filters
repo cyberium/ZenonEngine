@@ -66,12 +66,6 @@
     <Filter Include="UI\Widgets\ZenonLogViewer">
       <UniqueIdentifier>{a2567b87-e171-4d4f-939b-a53f0c3bba7c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="UI\Widgets\ZenonSceneViewer">
-      <UniqueIdentifier>{38a607c6-b557-4a38-91a1-db4d748cf3e0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="UI\Widgets\ZenonCollectionViewer">
-      <UniqueIdentifier>{c0c7ada6-3fe4-4119-8fbe-45792247683d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="UI\Widgets\ZenonWindowMinimal3D">
       <UniqueIdentifier>{936459f3-5703-4224-8fff-5490074c0c94}</UniqueIdentifier>
     </Filter>
@@ -292,17 +286,11 @@
     <ClCompile Include="ZenonWidgets\ZenonLogViewer\ZenonLogViewer.cpp">
       <Filter>UI\Widgets\ZenonLogViewer</Filter>
     </ClCompile>
-    <ClCompile Include="ZenonWidgets\ZenonSceneViewer\ZenonSceneViewerWidget.cpp">
-      <Filter>UI\Widgets\ZenonSceneViewer</Filter>
-    </ClCompile>
     <ClCompile Include="EditedScene.cpp">
       <Filter>3D</Filter>
     </ClCompile>
     <ClCompile Include="Passes\DrawSelectionPass.cpp">
       <Filter>3D\Passes</Filter>
-    </ClCompile>
-    <ClCompile Include="ZenonWidgets\ZenonCollectionViewer\ZenonCollectionViewerWidget.cpp">
-      <Filter>UI\Widgets\ZenonCollectionViewer</Filter>
     </ClCompile>
     <ClCompile Include="ZenonWidgets\ZenonWindowMinimal3D\ZenonWindowMinimal3D.cpp">
       <Filter>UI\Widgets\ZenonWindowMinimal3D</Filter>
@@ -509,23 +497,11 @@
     <ClInclude Include="_widgetZenonLogViewer.h">
       <Filter>UI\Widgets</Filter>
     </ClInclude>
-    <ClInclude Include="_widgetZenonSceneViewer.h">
-      <Filter>UI\Widgets</Filter>
-    </ClInclude>
     <ClInclude Include="EditedScene.h">
       <Filter>3D</Filter>
     </ClInclude>
     <ClInclude Include="Passes\DrawSelectionPass.h">
       <Filter>3D\Passes</Filter>
-    </ClInclude>
-    <ClInclude Include="ZenonWidgets\TreeItemTemplate.h">
-      <Filter>UI\Widgets</Filter>
-    </ClInclude>
-    <ClInclude Include="ZenonWidgets\TreeModelTemplate.h">
-      <Filter>UI\Widgets</Filter>
-    </ClInclude>
-    <ClInclude Include="_widgetZenonCollectionViewer.h">
-      <Filter>UI\Widgets</Filter>
     </ClInclude>
     <ClInclude Include="_widgetZenonWindowMinimal3D.h">
       <Filter>UI\Widgets</Filter>
@@ -591,6 +567,15 @@
     </ClInclude>
     <ClInclude Include="SceneBrowser\SceneBrowserFolder.h">
       <Filter>SceneBrowser</Filter>
+    </ClInclude>
+    <ClInclude Include="_widgetZenonTreeView.h">
+      <Filter>UI\Widgets</Filter>
+    </ClInclude>
+    <ClInclude Include="ZenonWidgets\ZenonTreeView\TreeItemTemplate.h">
+      <Filter>UI\Widgets\ZenonTreeView</Filter>
+    </ClInclude>
+    <ClInclude Include="ZenonWidgets\ZenonTreeView\TreeModelTemplate.h">
+      <Filter>UI\Widgets\ZenonTreeView</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -683,12 +668,6 @@
     </QtMoc>
     <QtMoc Include="ZenonWidgets\ZenonLogViewer\ZenonLogViewer.h">
       <Filter>UI\Widgets\ZenonLogViewer</Filter>
-    </QtMoc>
-    <QtMoc Include="ZenonWidgets\ZenonSceneViewer\ZenonSceneViewerWidget.h">
-      <Filter>UI\Widgets\ZenonSceneViewer</Filter>
-    </QtMoc>
-    <QtMoc Include="ZenonWidgets\ZenonCollectionViewer\ZenonCollectionViewerWidget.h">
-      <Filter>UI\Widgets\ZenonCollectionViewer</Filter>
     </QtMoc>
     <QtMoc Include="ZenonWidgets\ZenonWindowMinimal3D\ZenonWindowMinimal3D.h">
       <Filter>UI\Widgets\ZenonWindowMinimal3D</Filter>
