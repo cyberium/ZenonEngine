@@ -31,23 +31,19 @@ std::shared_ptr<IGeometry> CFont::GetGeometry() const
 	return m_Geometry;
 }
 
-uint32 CFont::GetCharWidth(char _char) const
+uint32 CFont::GetCharWidth(char Char) const
 {
-	unsigned char uChar = static_cast<unsigned char>(_char);
+	unsigned char uChar = static_cast<unsigned char>(Char);
 	_ASSERT(uChar < m_WidthArray.size());
 	return m_WidthArray[uChar];
 }
 
-uint32 CFont::GetStringWidth(const std::string& _string) const
+uint32 CFont::GetStringWidth(const std::string& String) const
 {
 	uint32 width = 0;
-
-	for (uint32 i = 0; i < _string.length(); i++)
-	{
-		uint8 ch = _string.c_str()[i];
-		width += m_WidthArray[ch];
-	}
-
+	std::for_each(String.begin(), String.end(), [this, &width](const char& Ch) {
+		width += m_WidthArray[static_cast<uint8>(Ch)];
+	});
 	return width;
 }
 

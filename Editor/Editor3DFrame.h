@@ -26,11 +26,9 @@ public:
 	void OnMouseReleased(const MouseButtonEventArgs & e, const Ray& RayToWorld) override;
 	void OnMouseMoved(const MouseMotionEventArgs & e, const Ray& RayToWorld) override;
 
-	// IEditorSharedFrame
+	// IEditor3DFrame
 	IEditor& GetEditor() const override;
 	bool InitializeEditorFrame() override;
-
-	// IEditor3DFrame
 	void DoInitializeTools3D() override;
 	std::shared_ptr<IScene> GetScene() override;
 	void LockUpdates() override;

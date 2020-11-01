@@ -357,6 +357,12 @@
     <ClCompile Include="ZenonWidgets\ZenonTreeView\ZenonTreeViewWidget.cpp">
       <Filter>UI\Widgets\ZenonTreeView</Filter>
     </ClCompile>
+    <ClCompile Include="ZenonWidgets\ZenonTreeView\TreeViewItem.cpp">
+      <Filter>UI\Widgets\ZenonTreeView</Filter>
+    </ClCompile>
+    <ClCompile Include="ZenonWidgets\ZenonTreeView\TreeViewModel.cpp">
+      <Filter>UI\Widgets\ZenonTreeView</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -571,10 +577,13 @@
     <ClInclude Include="_widgetZenonTreeView.h">
       <Filter>UI\Widgets</Filter>
     </ClInclude>
-    <ClInclude Include="ZenonWidgets\ZenonTreeView\TreeItemTemplate.h">
+    <ClInclude Include="ZenonWidgets\ZenonTreeView\TreeViewIntfs.h">
       <Filter>UI\Widgets\ZenonTreeView</Filter>
     </ClInclude>
-    <ClInclude Include="ZenonWidgets\ZenonTreeView\TreeModelTemplate.h">
+    <ClInclude Include="ZenonWidgets\ZenonTreeView\TreeViewModel.h">
+      <Filter>UI\Widgets\ZenonTreeView</Filter>
+    </ClInclude>
+    <ClInclude Include="ZenonWidgets\ZenonTreeView\TreeViewItem.h">
       <Filter>UI\Widgets\ZenonTreeView</Filter>
     </ClInclude>
   </ItemGroup>

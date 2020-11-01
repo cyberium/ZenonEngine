@@ -28,7 +28,7 @@ void CEditedScene::RaiseSceneChangeEvent(ESceneChangeType SceneChangeType, const
 	auto root = GetRootNode3D();
 	_ASSERT(root != nullptr);
 
-	auto parent = root->GetParent().lock();
+	auto parent = root->GetParent();
 	_ASSERT(parent != nullptr);
 
 	auto realScene = parent->GetScene();

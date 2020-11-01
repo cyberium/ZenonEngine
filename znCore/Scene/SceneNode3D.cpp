@@ -75,7 +75,7 @@ void SceneNode3D::Initialize()
 			if (sceneNode->GetScene() == nullptr)
 				return false;
 
-			sceneNode->GetScene()->RemoveChild(sceneNode->GetParent().lock(), sceneNode);
+			sceneNode->GetScene()->RemoveChild(sceneNode->GetParent(), sceneNode);
 			return true;
 		});
 
@@ -131,16 +131,13 @@ void SceneNode3D::AddChild(std::shared_ptr<ISceneNode3D> childNode)
 		throw CException(L"SceneNode3D: Child node must not be NULL.");
 
 	// 1. Удаляем чилда у текущего родителя (возможно нужно его об этом нотифицировать, например для перерасчета BoundingBox)
-	if (!childNode->GetParent().expired())
+	if (auto currentChildParent = childNode->GetParent())
 	{
-		if (auto currentChildParent = childNode->GetParent().lock())
+		if (currentChildParent != shared_from_this())
 		{
-			if (currentChildParent != shared_from_this())
-			{
-				std::dynamic_pointer_cast<SceneNode3D>(currentChildParent)->RemoveChildInternal(childNode);
-				//Log::Warn("SceneNode3D: Failed to add child to his current parent.");
-				//return;
-			}
+			std::dynamic_pointer_cast<ISceneNode3DInternal>(currentChildParent)->RemoveChildInternal(childNode);
+			//Log::Warn("SceneNode3D: Failed to add child to his current parent.");
+			//return;
 		}
 	}
 
@@ -151,17 +148,14 @@ void SceneNode3D::AddChild(std::shared_ptr<ISceneNode3D> childNode)
 void SceneNode3D::RemoveChild(std::shared_ptr<ISceneNode3D> childNode)
 {
 	if (childNode == nullptr)
-	{
-		Log::Warn("SceneNode3D: Child node must not be NULL.");
-		return;
-	}
+		throw CException("SceneNode3D: Child node must not be NULL.");
 
 	this->RemoveChildInternal(childNode);
 }
 
-std::weak_ptr<ISceneNode3D> SceneNode3D::GetParent() const
+std::shared_ptr<ISceneNode3D> SceneNode3D::GetParent() const
 {
-	return m_ParentNode;
+	return m_ParentNode.lock();
 }
 
 const SceneNode3D::Node3DList& SceneNode3D::GetChilds() const
@@ -284,7 +278,7 @@ glm::mat4 SceneNode3D::GetInverseWorldTransform() const
 glm::mat4 SceneNode3D::GetParentWorldTransform() const
 {
 	glm::mat4 parentTransform(1.0f);
-	if (auto parent = GetParent().lock())
+	if (auto parent = GetParent())
 		parentTransform = parent->GetWorldTransfom();
 
 	return parentTransform;
@@ -396,7 +390,7 @@ void SceneNode3D::SetName(const std::string& Name)
 
 	if (!GetGUID().IsEmpty())
 	{
-		if (auto parent = GetParent().lock())
+		if (auto parent = GetParent())
 		{
 			auto childs = parent->GetChilds();
 			auto childIt = childs.end();

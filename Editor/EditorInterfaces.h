@@ -142,14 +142,6 @@ ZN_INTERFACE IEditorPrivate
 	virtual void Set3DFrame(IEditor3DFrame* Editor3DFrame) = 0;
 };
 
-ZN_INTERFACE IEditorSharedFrame
-{
-	virtual ~IEditorSharedFrame() {}
-
-	virtual IEditor& GetEditor() const = 0;
-	virtual bool InitializeEditorFrame() = 0;
-};
-
 ZN_INTERFACE IEditorShell
 {
 	virtual ~IEditorShell() {}
@@ -160,9 +152,11 @@ ZN_INTERFACE IEditorShell
 
 
 ZN_INTERFACE IEditor3DFrame
-	: public IEditorSharedFrame
 {
 	virtual ~IEditor3DFrame() {}
+
+	virtual IEditor& GetEditor() const = 0;
+	virtual bool InitializeEditorFrame() = 0;
 
 	virtual void DoInitializeTools3D() = 0;
 	virtual std::shared_ptr<IScene> GetScene() = 0;
@@ -177,34 +171,15 @@ ZN_INTERFACE IEditor3DFrame
 	virtual void OnCollectionWidget_ModelSelected(const std::shared_ptr<IModel>& Model) = 0;
 };
 
+
 ZN_INTERFACE IEditorUIFrame
-	: public IEditorSharedFrame
 {
 	virtual ~IEditorUIFrame() {}
+
+	virtual IEditor& GetEditor() const = 0;
+	virtual bool InitializeEditorFrame() = 0;
 
 	virtual void DoInitializeToolsUI() = 0;
 	virtual bool ExtendContextMenu(const std::shared_ptr<ISceneNode3D>& Node, std::string * Title, std::vector<std::shared_ptr<IPropertyAction>> * Actions) = 0;
 	virtual void OnSceneChanged(ESceneChangeType SceneChangeType, const std::shared_ptr<ISceneNode3D>& ParentNode, const std::shared_ptr<ISceneNode3D>& ChildNode) = 0;
-};
-
-
-
-
-
-
-
-ZN_INTERFACE IModelCollectionItem
-{
-	virtual ~IModelCollectionItem() {}
-
-	virtual std::string GetName() const = 0;
-	virtual const std::vector<std::shared_ptr<IModelCollectionItem>>& GetChilds() = 0;
-	virtual std::shared_ptr<IObject> Object() const = 0;
-};
-
-ZN_INTERFACE IModelCollection
-{
-	virtual ~IModelCollection() {}
-
-	virtual std::shared_ptr<IModelCollectionItem> GetRootItem() const = 0;
 };

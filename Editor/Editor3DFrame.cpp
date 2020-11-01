@@ -191,9 +191,8 @@ void CEditor3DFrame::OnMouseMoved(const MouseMotionEventArgs & e, const Ray & Ra
 
 
 
-
 //
-// IEditorSharedFrame
+// IEditor3DFrame
 //
 IEditor& CEditor3DFrame::GetEditor() const
 {
@@ -256,10 +255,6 @@ bool CEditor3DFrame::InitializeEditorFrame()
 	return true;
 }
 
-
-//
-// IEditor3DFrame
-//
 void CEditor3DFrame::DoInitializeTools3D()
 {
 	GetEditor().GetTools().DoInitialize3D(m_Renderer, GetRenderWindow().GetRenderTarget(), &GetRenderWindow().GetViewport());

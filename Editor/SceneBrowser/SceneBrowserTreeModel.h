@@ -13,7 +13,7 @@ public:
 	CSceneBrowserTreeModel(const std::shared_ptr<IznSceneBrowserNode>& ChildNode, QObject * parent = nullptr);
 	virtual ~CSceneBrowserTreeModel();
 
-	// CQtToZenonTreeModel
+	// CznQTTreeViewModel
 	std::shared_ptr<IznSceneBrowserNode> Find(const QModelIndex& ModelIdnex);
 	QModelIndex                          Find(const std::shared_ptr<IznSceneBrowserNode>& Node);
 

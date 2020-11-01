@@ -15,13 +15,13 @@ CLog::CLog()
 	AddDebugOutput(MakeShared(DebugOutput_Log));
 	gLogInstance = this;
 
-	OutputDebugString(L"Log created.\n");
+	OutputDebugString(L"Log created\n");
+	Log::Green("Log created");
 }
 
 CLog::~CLog()
 {
 	gLogInstance = nullptr;
-
 	OutputDebugString(L"Log destroyed.\n");
 }
 

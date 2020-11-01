@@ -96,7 +96,7 @@ std::shared_ptr<IObject> CObjectClassFactory::CreateObject(ObjectClass ObjectCla
 	if (auto objectPrivate = std::dynamic_pointer_cast<IObjectPrivate>(createdObject))
 	{
 		objectPrivate->SetGUID(&m_BaseManager, objectUUID);
-		Log::Green("ClassFactory: Object [%s] created.", createdObject->GetName().c_str());
+		//Log::Green("ClassFactory: Object [%s] created.", createdObject->GetName().c_str());
 	}
 	else
 		throw CException("ClassFactory: Object [%s] not support IObjectInternal.", objectUUID.CStr());

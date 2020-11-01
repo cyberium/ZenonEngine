@@ -7,24 +7,44 @@
 namespace
 {
 	class CSceneNodeModelItem
-		: public IModelCollectionItem
+		: public IznTreeViewItemSource
 	{
 	public:
 		CSceneNodeModelItem(const std::shared_ptr<ISceneNode3D>& SceneNode)
 			: m_SceneNode(SceneNode)
 		{
-			for (const auto& it : SceneNode->GetChilds())
-				m_Childs.push_back(MakeShared(CSceneNodeModelItem, it));
+			//for (const auto& it : SceneNode->GetChilds())
+			//	m_Childs.push_back(MakeShared(CSceneNodeModelItem, it));
+		}
+
+		ETreeViewItemType GetType() const
+		{
+			return ETreeViewItemType::SceneNode3D;
 		}
 
 		std::string GetName() const override
 		{
 			return m_SceneNode->GetName();
 		}
-		const std::vector<std::shared_ptr<IModelCollectionItem>>& GetChilds() override
+
+		size_t GetChildsCount() const
 		{
-			return m_Childs;
+			return m_SceneNode->GetChilds().size();
 		}
+
+		std::shared_ptr<IznTreeViewItemSource> GetChild(size_t Index) const 
+		{
+			const auto& childs = m_SceneNode->GetChilds();
+			_ASSERT(Index < childs.size());
+			const auto& child = m_SceneNode->GetChilds().at(Index);
+			return MakeShared(CSceneNodeModelItem, child);
+		}
+
+		//const std::vector<std::shared_ptr<IznTreeViewItemSource>>& GetChilds() override
+		//{
+		//	return m_Childs;
+		//}
+
 		std::shared_ptr<IObject> Object() const
 		{
 			return m_SceneNode;
@@ -32,12 +52,12 @@ namespace
 
 	private:
 		std::shared_ptr<ISceneNode3D> m_SceneNode;
-		std::vector<std::shared_ptr<IModelCollectionItem>> m_Childs;
+		//std::vector<std::shared_ptr<IznTreeViewItemSource>> m_Childs;
 	};
 
 
 	class C3DModelModelItem
-		: public IModelCollectionItem
+		: public IznTreeViewItemSource
 	{
 	public:
 		C3DModelModelItem(const std::shared_ptr<IModel>& Model)
@@ -45,14 +65,32 @@ namespace
 		{
 		}
 
+		ETreeViewItemType GetType() const
+		{
+			return ETreeViewItemType::Model;
+		}
+
 		std::string GetName() const override
 		{
 			return m_Model->GetName();
 		}
-		const std::vector<std::shared_ptr<IModelCollectionItem>>& GetChilds() override
+
+		size_t GetChildsCount() const
 		{
-			return m_Childs;
+			return 0;
 		}
+
+		std::shared_ptr<IznTreeViewItemSource> GetChild(size_t Index) const
+		{
+			_ASSERT(false);
+			return nullptr;
+		}
+
+		//const std::vector<std::shared_ptr<IznTreeViewItemSource>>& GetChilds() override
+		//{
+		//	return m_Childs;
+		//}
+
 		std::shared_ptr<IObject> Object() const
 		{
 			return m_Model;
@@ -60,7 +98,7 @@ namespace
 
 	private:
 		std::shared_ptr<IModel> m_Model;
-		std::vector<std::shared_ptr<IModelCollectionItem>> m_Childs;
+		//std::vector<std::shared_ptr<IznTreeViewItemSource>> m_Childs;
 	};
 }
 
@@ -107,7 +145,7 @@ bool CEditorUIFrame::InitializeEditorFrame()
 
 	// Models viewer
 #pragma region Models viewer
-	std::vector<std::shared_ptr<IModelCollectionItem>> models;
+	std::vector<std::shared_ptr<IznTreeViewItemSource>> models;
 	auto gameDataStorage = m_Editor.GetBaseManager().GetManager<IFilesManager>()->GetStorage(EFilesStorageType::GAMEDATA);
 	auto fileNames = gameDataStorage->GetAllFilesInFolder("models", ".fbx");
 	for (const auto& fbxFileName : fileNames)
@@ -147,12 +185,12 @@ bool CEditorUIFrame::InitializeEditorFrame()
 
 	getCollectionViewer()->SetRootItems(models);
 
-	getCollectionViewer()->SetOnSelectedItemChange([this](const CQtToZenonTreeItem * Item) -> bool {
+	getCollectionViewer()->SetOnSelectedItemChange([this](const CznTreeViewItem * Item) -> bool {
 		m_Editor.Get3DFrame().OnCollectionWidget_ModelSelected(std::dynamic_pointer_cast<IModel>(Item->GetTObject()));
 		return true;
 	});
 
-	getCollectionViewer()->SetOnStartDragging([this](const CQtToZenonTreeItem * Item, std::string * Value) -> bool {
+	getCollectionViewer()->SetOnStartDragging([this](const CznTreeViewItem * Item, std::string * Value) -> bool {
 		_ASSERT(Value != nullptr && Value->empty());
 		Value->assign(Item->GetTObject()->GetName().c_str());
 		m_Editor.GetTools().Enable(ETool::EToolDragger);
@@ -166,7 +204,7 @@ bool CEditorUIFrame::InitializeEditorFrame()
 #pragma region SceneNode viewer
 	getSceneViewer()->SetRootItems(models);
 
-	getSceneViewer()->SetOnSelectedItemChange([this](const CQtToZenonTreeItem * Item) -> bool {
+	getSceneViewer()->SetOnSelectedItemChange([this](const CznTreeViewItem * Item) -> bool {
 		m_Editor.Get3DFrame().LockUpdates();
 		auto& selector = dynamic_cast<IEditorToolSelector&>(m_Editor.GetTools().GetTool(ETool::EToolSelector));
 		selector.SelectNode(std::static_pointer_cast<ISceneNode3D>(Item->GetTObject()));
@@ -174,7 +212,7 @@ bool CEditorUIFrame::InitializeEditorFrame()
 		return true;
 	});
 
-	getSceneViewer()->SetOnContexMenu([this](const CQtToZenonTreeItem* Item, std::string * Title, std::vector<std::shared_ptr<IPropertyAction>> * Actions) -> bool {
+	getSceneViewer()->SetOnContexMenu([this](const CznTreeViewItem* Item, std::string * Title, std::vector<std::shared_ptr<IPropertyAction>> * Actions) -> bool {
 		if (false == m_Editor.GetUIFrame().ExtendContextMenu(std::dynamic_pointer_cast<ISceneNode3D>(Item->GetTObject()), Title, Actions))
 			return false;
 		return true;
@@ -342,7 +380,7 @@ void CEditorUIFrame::OnSelectNode()
 			getSceneViewer()->SelectItem(selectedNode, false);
 	}
 
-	//m_PropertiesController->OnSceneNodeSelected(GetEditor().GetFirstSelectedNode().get());
+	m_PropertiesController->OnSceneNodeSelected(GetEditor().GetFirstSelectedNode().get());
 }
 
 
@@ -384,7 +422,7 @@ void CEditorUIFrame::OnSceneLoadFromFile()
 
 
 
-	auto realRoot = editorRoot->GetParent().lock(); // Temporary we add nodes to real root
+	auto realRoot = editorRoot->GetParent(); // Temporary we add nodes to real root
 	auto xmlRoot = m_Editor.GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->LoadSceneNode3DXML(reader->GetChilds()[0], editorRoot->GetScene(), realRoot);
 
 

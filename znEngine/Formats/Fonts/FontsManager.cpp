@@ -202,7 +202,7 @@ std::shared_ptr<IznFont> FontsManager::Add(IRenderDevice& RenderDevice, const st
 
 	std::shared_ptr<IznFont> font = MakeShared(CFont, texture, __geom, charWidth, charHeight);
 
-	Log::Info("FontsManager[%s]: Font loaded. Size [%d].", f->Path_Name().c_str(), fontSize);
+	Log::Info("FontsManager: Font '%s' loaded. Size [%d].", f->Path_Name().c_str(), fontSize);
 
 	return font;
 }

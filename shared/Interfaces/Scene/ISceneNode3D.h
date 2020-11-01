@@ -36,7 +36,7 @@ ZN_INTERFACE ZN_API ISceneNode3D
 
 	virtual void AddChild(std::shared_ptr<ISceneNode3D> childNode) = 0;
 	virtual void RemoveChild(std::shared_ptr<ISceneNode3D> childNode) = 0;
-	virtual std::weak_ptr<ISceneNode3D> GetParent() const = 0;
+	virtual std::shared_ptr<ISceneNode3D> GetParent() const = 0;
 	virtual const Node3DList& GetChilds() const = 0;
 	virtual std::shared_ptr<ISceneNode3D> GetChild(std::string Name) const = 0;
 	virtual bool IsPersistance() const = 0; // Means this node can't be deleted from parent and any parent may contains only one instance of this node (by Name)

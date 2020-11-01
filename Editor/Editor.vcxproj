@@ -374,6 +374,8 @@
     <ClCompile Include="Tools\RTS\EditorToolMoverRTS.cpp" />
     <ClCompile Include="Tools\RTS\EditorToolRotatorRTS.cpp" />
     <ClCompile Include="ZenonWidgets\ZenonLogViewer\ZenonLogViewer.cpp" />
+    <ClCompile Include="ZenonWidgets\ZenonTreeView\TreeViewItem.cpp" />
+    <ClCompile Include="ZenonWidgets\ZenonTreeView\TreeViewModel.cpp" />
     <ClCompile Include="ZenonWidgets\ZenonTreeView\ZenonTreeViewWidget.cpp" />
     <ClCompile Include="ZenonWidgets\ZenonWindow3D\ZenonWindow3D.cpp" />
     <ClCompile Include="ZenonWidgets\ZenonWindowMinimal3D\ZenonWindowMinimal3D.cpp" />
@@ -411,8 +413,9 @@
     <ClInclude Include="Tools\RTS\EditorToolMoverRTS.h" />
     <ClInclude Include="Tools\RTS\EditorToolRotatorRTS.h" />
     <QtMoc Include="ZenonWidgets\ZenonTreeView\ZenonTreeViewWidget.h" />
-    <ClInclude Include="ZenonWidgets\ZenonTreeView\TreeItemTemplate.h" />
-    <ClInclude Include="ZenonWidgets\ZenonTreeView\TreeModelTemplate.h" />
+    <ClInclude Include="ZenonWidgets\ZenonTreeView\TreeViewItem.h" />
+    <ClInclude Include="ZenonWidgets\ZenonTreeView\TreeViewModel.h" />
+    <ClInclude Include="ZenonWidgets\ZenonTreeView\TreeViewIntfs.h" />
     <ClInclude Include="_widgetZenonTreeView.h" />
     <ClInclude Include="_widgetZenonWindowMinimal3D.h" />
     <QtMoc Include="ZenonWidgets\ZenonLogViewer\ZenonLogViewer.h" />

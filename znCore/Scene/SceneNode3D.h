@@ -20,7 +20,7 @@ public:
 	// Childs functional
 	virtual void                                    AddChild(std::shared_ptr<ISceneNode3D> childNode) override final;
 	virtual void                                    RemoveChild(std::shared_ptr<ISceneNode3D> childNode) override final;
-	virtual std::weak_ptr<ISceneNode3D>             GetParent() const override final;
+	virtual std::shared_ptr<ISceneNode3D>           GetParent() const override final;
 	virtual const Node3DList&                       GetChilds() const override final;
 	virtual std::shared_ptr<ISceneNode3D>           GetChild(std::string Name) const override;
 	bool                                            IsPersistance() const override;

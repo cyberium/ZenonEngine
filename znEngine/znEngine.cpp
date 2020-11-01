@@ -65,6 +65,15 @@ IBaseManager* WINAPI InitializeEngine(std::vector<std::string> Arguments, std::s
 {
 	IBaseManager* baseManager = ZN_NEW CBaseManager();
 
+	// Log & console
+	{
+		baseManager->AddManager<ILog>(MakeShared(CLog));
+
+		std::shared_ptr<CConsole> console = MakeShared(CConsole, *baseManager);
+		baseManager->AddManager<IConsole>(console);
+		console->AddCommonCommands();
+	}
+
 	std::shared_ptr<IznPluginsManager> pluginsManager = MakeShared(CznPluginsManager, *baseManager);
 	baseManager->AddManager<IznPluginsManager>(pluginsManager);
 
@@ -84,15 +93,6 @@ IBaseManager* WINAPI InitializeEngine(std::vector<std::string> Arguments, std::s
 		filesManager->AddStorage(EFilesStorageType::ADDITIONAL, MakeShared(CLocalFilesStorage, ""));
 		filesManager->AddStorage(EFilesStorageType::ADDITIONAL, MakeShared(CLocalFilesStorage, "O:/ZenonEngine/gamedata/"));
 		
-	}
-
-	// Log & console
-	{
-		baseManager->AddManager<ILog>(MakeShared(CLog));
-		 
-		std::shared_ptr<CConsole> console = MakeShared(CConsole, *baseManager);
-		baseManager->AddManager<IConsole>(console);
-		console->AddCommonCommands();
 	}
 
 

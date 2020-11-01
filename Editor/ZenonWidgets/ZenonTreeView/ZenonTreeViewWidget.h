@@ -1,14 +1,14 @@
 #pragma once
 
-#include <QtWidgets/QTreeView>
-
-#include "TreeModelTemplate.h"
+#include "TreeViewModel.h"
 //#include "SceneBrowser/SceneBrowserTreeModel.h"
 
-typedef std::function<bool(const CQtToZenonTreeItem*, std::string *, std::vector<std::shared_ptr<IPropertyAction>> *)> OnContextMenuCallback;
-typedef std::function<bool(const CQtToZenonTreeItem*, std::string * MimeData)> OnDragStartCallback;
-typedef std::function<bool(const std::vector<const CQtToZenonTreeItem*>& Selection)> OnSelectionChangeCallback;
-typedef std::function<bool(const CQtToZenonTreeItem*)> OnSelectedItemChangeCallback;
+#include <QtWidgets/QTreeView>
+
+typedef std::function<bool(const CznTreeViewItem*, std::string *, std::vector<std::shared_ptr<IPropertyAction>> *)> OnContextMenuCallback;
+typedef std::function<bool(const CznTreeViewItem*, std::string * MimeData)> OnDragStartCallback;
+typedef std::function<bool(const std::vector<const CznTreeViewItem*>& Selection)> OnSelectionChangeCallback;
+typedef std::function<bool(const CznTreeViewItem*)> OnSelectedItemChangeCallback;
 
 class ZenonTreeViewWidget
 	: public QTreeView
@@ -21,8 +21,8 @@ public:
 
 	void SetEditor(IEditor* Editor) { m_Editor = Editor; }
 
-	void SetRootItem(const std::shared_ptr<IModelCollectionItem>& RootItem);
-	void SetRootItems(const std::vector<std::shared_ptr<IModelCollectionItem>>& RootItems);
+	void SetRootItem(const std::shared_ptr<IznTreeViewItemSource>& RootItem);
+	void SetRootItems(const std::vector<std::shared_ptr<IznTreeViewItemSource>>& RootItems);
 
 	void ClearSelection();
 	void SelectItem(const std::shared_ptr<IObject>& Item, bool NeedClear = true);
@@ -52,7 +52,7 @@ protected:
 	void mouseMoveEventInternal(QMouseEvent* event);
 
 private:
-	std::shared_ptr<CQtToZenonTreeModel> m_Model;
+	std::shared_ptr<CznQTTreeViewModel> m_Model;
 	//std::shared_ptr<CSceneBrowserTreeModel> m_Model;
 	std::shared_ptr<QMenu> m_ContextMenu;
 	bool m_LockForSelectionChangedEvent;

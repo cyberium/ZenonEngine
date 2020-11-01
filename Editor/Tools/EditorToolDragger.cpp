@@ -143,7 +143,7 @@ void CEditorToolDragger::Clear()
 	m_IsDraggingPermanentCreation = false;
 	if (m_DraggerNode)
 	{
-		if (auto parent = m_DraggerNode->GetParent().lock())
+		if (auto parent = m_DraggerNode->GetParent())
 			parent->RemoveChild(m_DraggerNode);
 		m_DraggerNode = nullptr;
 	}
