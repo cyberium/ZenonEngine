@@ -366,7 +366,6 @@
     <ClCompile Include="Scene\Components\Skeleton\SkeletonComponent.cpp" />
     <ClCompile Include="Scene\Components\Skeleton\SkeletonComponentBone.cpp" />
     <ClCompile Include="Scene\Factory\ComponentsCreator.cpp" />
-    <ClCompile Include="Scene\Factory\SceneCreator.cpp" />
     <ClCompile Include="Scene\Factory\SceneNodeCreator.cpp" />
     <ClCompile Include="Scene\Nodes\UIBeizerLine.cpp" />
     <ClCompile Include="Scene\Nodes\UIButton.cpp" />
@@ -571,7 +570,6 @@
     <ClInclude Include="Scene\Components\Skeleton\SkeletonComponentBone.h" />
     <ClInclude Include="Scene\EngineSceneIntfs.h" />
     <ClInclude Include="Scene\Factory\ComponentsCreator.h" />
-    <ClInclude Include="Scene\Factory\SceneCreator.h" />
     <ClInclude Include="Scene\Factory\SceneNodeCreator.h" />
     <ClInclude Include="Scene\Nodes\UIBeizerLine.h" />
     <ClInclude Include="Scene\Nodes\UIButton.h" />

@@ -36,18 +36,25 @@ ZenonTreeViewWidget::~ZenonTreeViewWidget()
 
 
 
+void ZenonTreeViewWidget::Refresh()
+{
+	this->reset();
+	m_Model->ClearRootCache();
+	this->expandAll();
+}
+
 void ZenonTreeViewWidget::AddToRoot(const std::shared_ptr<IznTreeViewItemSource>& RootItem, bool DeleteExisting)
 {
 	m_LockForSelectionChangedEvent = true;
 
-	this->reset();
 	{
 		if (DeleteExisting)
 			m_Model->ClearRoot();
 
 		m_Model->AddToRoot(RootItem);
 	}
-	this->expandAll();
+
+	Refresh();
 
 	m_LockForSelectionChangedEvent = false;
 }
@@ -56,7 +63,6 @@ void ZenonTreeViewWidget::AddToRoot(const std::vector<std::shared_ptr<IznTreeVie
 {
 	m_LockForSelectionChangedEvent = true;
 	
-	this->reset();
 	{
 		if (DeleteExisting)
 			m_Model->ClearRoot();
@@ -64,7 +70,8 @@ void ZenonTreeViewWidget::AddToRoot(const std::vector<std::shared_ptr<IznTreeVie
 		for (const auto& item : RootItems)
 			m_Model->AddToRoot(item);
 	}
-	this->expandAll();
+
+	Refresh();
 
 	m_LockForSelectionChangedEvent = false;
 }

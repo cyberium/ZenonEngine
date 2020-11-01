@@ -19,16 +19,14 @@ public:
 	virtual ~CRTSGround();
 
 	// IEditorTool
-	void Initialize() override;
-	void Finalize() override;
 	void Enable() override;
 	void Disable() override;
-
 
 	// IEditorToolUI
 	void DoInitializeUI(IEditorQtUIFrame& QtUIFrame) override;
 
 	// 3D
+	void DoInitialize3D(const std::shared_ptr<IRenderer>& Renderer, std::shared_ptr<IRenderTarget> RenderTarget, const Viewport* Viewport) override;
 	bool OnMousePressed(const MouseButtonEventArgs & e, const Ray& RayToWorld) override;
 	void OnMouseReleased(const MouseButtonEventArgs & e, const Ray& RayToWorld) override;
 	void OnMouseMoved(const MouseMotionEventArgs& e, const Ray& RayToWorld) override;

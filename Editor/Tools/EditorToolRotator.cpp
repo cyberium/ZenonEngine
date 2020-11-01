@@ -17,7 +17,33 @@ CEditorToolRotator::~CEditorToolRotator()
 {
 }
 
-void CEditorToolRotator::Initialize()
+void CEditorToolRotator::Enable()
+{
+	CEditorToolBase::Enable();
+
+	dynamic_cast<IEditorQtUIFrame&>(GetEditor().GetUIFrame()).getUI().editorToolRotatorBtn->setChecked(IsEnabled());
+
+	if (auto node = GetEditor().GetFirstSelectedNode())
+	{
+		m_MovingNode = node;
+		m_RotatorRoot->SetTranslate(node->GetTranslation());
+		m_RotatorRoot->SetScale(glm::vec3(node->GetComponent<IColliderComponent3D>()->GetBounds().getRadius()));
+	}
+}
+
+void CEditorToolRotator::Disable()
+{
+	CEditorToolBase::Disable();
+
+	dynamic_cast<IEditorQtUIFrame&>(GetEditor().GetUIFrame()).getUI().editorToolRotatorBtn->setChecked(IsEnabled());
+
+	m_RotatorRoot->SetTranslate(glm::vec3(-1000000.0, -10000000.0f, -10000000.0f));
+
+	Clear();
+	m_MovingNode.reset();
+}
+
+void CEditorToolRotator::DoInitialize3D(const std::shared_ptr<IRenderer>& Renderer, std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport)
 {
 	m_RotatorRoot = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, GetScene(), GetScene()->GetRootNode3D());
 	m_RotatorRoot->SetName("Rotator");
@@ -56,36 +82,6 @@ void CEditorToolRotator::Initialize()
 	m_RotatorZ->SetRotation(glm::vec3(glm::half_pi<float>(), 0.0f, 0.0f));
 	m_RotatorZ->GetComponent<IModelsComponent3D>()->SetModel(modelZ);
 	m_RotatorZ->GetComponent<IColliderComponent3D>()->SetBounds(geom->GetBounds());
-}
-
-void CEditorToolRotator::Finalize()
-{
-}
-
-void CEditorToolRotator::Enable()
-{
-	CEditorToolBase::Enable();
-
-	dynamic_cast<IEditorQtUIFrame&>(GetEditor().GetUIFrame()).getUI().editorToolRotatorBtn->setChecked(IsEnabled());
-
-	if (auto node = GetEditor().GetFirstSelectedNode())
-	{
-		m_MovingNode = node;
-		m_RotatorRoot->SetTranslate(node->GetTranslation());
-		m_RotatorRoot->SetScale(glm::vec3(node->GetComponent<IColliderComponent3D>()->GetBounds().getRadius()));
-	}
-}
-
-void CEditorToolRotator::Disable()
-{
-	CEditorToolBase::Disable();
-
-	dynamic_cast<IEditorQtUIFrame&>(GetEditor().GetUIFrame()).getUI().editorToolRotatorBtn->setChecked(IsEnabled());
-
-	m_RotatorRoot->SetTranslate(glm::vec3(-1000000.0, -10000000.0f, -10000000.0f));
-
-	Clear();
-	m_MovingNode.reset();
 }
 
 bool CEditorToolRotator::OnMousePressed(const MouseButtonEventArgs & e, const Ray & RayToWorld)

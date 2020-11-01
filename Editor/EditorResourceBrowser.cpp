@@ -4,7 +4,7 @@
 #include "EditorResourceBrowser.h"
 
 
-
+#include "ZenonWidgets/ZenonTreeView/TreeViewItemVirtualFolder.h"
 
 
 
@@ -17,6 +17,10 @@ namespace
 		CznSceneNode3DTreeViewItemSource(const std::shared_ptr<ISceneNode3D>& SceneNode)
 			: m_SceneNode(SceneNode)
 		{}
+		virtual ~CznSceneNode3DTreeViewItemSource()
+		{
+			Log::Warn("TreeViewSceneNode3DSource: Destroed source of object with name '%s'", m_SceneNode->GetName().c_str());
+		}
 
 		// IznTreeViewItemSource
 		ETreeViewItemType GetType() const
@@ -34,9 +38,12 @@ namespace
 		std::shared_ptr<IznTreeViewItemSource> GetChild(size_t Index) const
 		{
 			const auto& childs = m_SceneNode->GetChilds();
-			_ASSERT(Index < childs.size());
+			//_ASSERT(Index < childs.size());
+			if (Index >= childs.size())
+				return nullptr;
+
 			const auto& child = m_SceneNode->GetChilds().at(Index);
-			return MakeShared(CznSceneNode3DTreeViewItemSource, child);
+			return GetChildInternal(child);
 		}
 		std::shared_ptr<IObject> Object() const
 		{
@@ -44,7 +51,36 @@ namespace
 		}
 
 	private:
+		std::shared_ptr<IznTreeViewItemSource> GetChildInternal(const std::shared_ptr<ISceneNode3D>& Object) const
+		{
+			if (Object == nullptr)
+				return nullptr;
+
+			const auto& it = std::find_if(m_CachedChilds.begin(), m_CachedChilds.end(), [Object](const std::shared_ptr<CznSceneNode3DTreeViewItemSource>& SourceObject)->bool
+			{
+				auto object = SourceObject->Object();
+				if (object == nullptr)
+					return false;
+				return object == Object;
+			});
+
+			// Retrieve from cahce
+			if (it != m_CachedChilds.end())
+			{
+				return *it;
+			}
+
+			// Add new item to cache
+			auto newChild = MakeShared(CznSceneNode3DTreeViewItemSource, Object);
+			Log::Info("TreeViewSceneNode3DSource: Created for object with name '%s'", Object->GetName().c_str());
+			m_CachedChilds.push_back(newChild);
+			return newChild;
+		}
+
+	private:
 		std::shared_ptr<ISceneNode3D> m_SceneNode;
+
+		mutable std::vector<std::shared_ptr<CznSceneNode3DTreeViewItemSource>> m_CachedChilds;
 	};
 
 
@@ -82,17 +118,12 @@ namespace
 			_ASSERT(false);
 			return nullptr;
 		}
-		//const std::vector<std::shared_ptr<IznTreeViewItemSource>>& GetChilds() override
-		//{
-		//	return m_Childs;
-		//}
 		std::shared_ptr<IObject> Object() const
 		{
 			return m_Model;
 		}
 	private:
 		std::shared_ptr<IModel> m_Model;
-		//std::vector<std::shared_ptr<IznTreeViewItemSource>> m_Childs;
 	};
 
 
@@ -103,6 +134,7 @@ namespace
 
 CEditorResourceBrowser::CEditorResourceBrowser(IEditor& Editor)
 	: m_Editor(Editor)
+	, IsAttachedTest(false)
 {
 }
 
@@ -155,18 +187,39 @@ void CEditorResourceBrowser::Initialize()
 		}
 	}
 
-	GetEditorQtUIFrame().getCollectionViewer()->AddToRoot(models);
+	auto modelsFolders = MakeShared(CznTreeViewItemVirtualFolder, "models");
+	for (const auto& m : models)
+		modelsFolders->AddChild(m);
+
+
+	GetEditorQtUIFrame().getCollectionViewer()->AddToRoot(modelsFolders);
 
 	GetEditorQtUIFrame().getCollectionViewer()->SetOnSelectedItemChange([this](const CznTreeViewItem * Item) -> bool 
 	{
-		m_Editor.Get3DFrame().OnCollectionWidget_ModelSelected(std::dynamic_pointer_cast<IModel>(Item->GetTObject()));
+		auto sourceObject = Item->GetSourceObject();
+		if (sourceObject->GetType() != ETreeViewItemType::Model)
+			return false;
+
+		auto object = sourceObject->Object();
+		if (object == nullptr)
+			return false;
+
+		auto modelObject = std::dynamic_pointer_cast<IModel>(object);
+		if (modelObject == nullptr)
+			return false;
+
+		m_Editor.Get3DFrame().OnCollectionWidget_ModelSelected(modelObject);
 		return true;
 	});
 
 	GetEditorQtUIFrame().getCollectionViewer()->SetOnStartDragging([this](const CznTreeViewItem * Item, std::string * Value) -> bool 
 	{
 		_ASSERT(Value != nullptr && Value->empty());
-		Value->assign(Item->GetTObject()->GetName().c_str());
+		auto sourceObject = Item->GetSourceObject();
+		if (sourceObject->GetType() != ETreeViewItemType::Model)
+			return false;
+		auto object = sourceObject->Object();
+		Value->assign(object->GetName().c_str());
 		m_Editor.GetTools().Enable(ETool::EToolDragger);
 		return true;
 	});
@@ -178,17 +231,39 @@ void CEditorResourceBrowser::Initialize()
 void CEditorResourceBrowser::InitializeSceneBrowser()
 {
 	GetEditorQtUIFrame().getSceneViewer()->SetOnSelectedItemChange([this](const CznTreeViewItem * Item) -> bool {
+		auto sourceObject = Item->GetSourceObject();
+		if (sourceObject->GetType() != ETreeViewItemType::SceneNode3D)
+			return false;
+
+		auto object = sourceObject->Object();
+		if (object == nullptr)
+			return false;
+
+		auto sceneNode3DObject = std::dynamic_pointer_cast<ISceneNode3D>(object);
+		if (sceneNode3DObject == nullptr)
+			return false;
+
 		m_Editor.Get3DFrame().LockUpdates();
-		{
-			auto& selector = dynamic_cast<IEditorToolSelector&>(m_Editor.GetTools().GetTool(ETool::EToolSelector));
-			selector.SelectNode(std::static_pointer_cast<ISceneNode3D>(Item->GetTObject()));
-		}
+		m_Editor.GetTools().GetToolT<IEditorToolSelector>(ETool::EToolSelector).SelectNode(sceneNode3DObject);
 		m_Editor.Get3DFrame().UnlockUpdates();
+		
 		return true;
 	});
 
 	GetEditorQtUIFrame().getSceneViewer()->SetOnContexMenu([this](const CznTreeViewItem* Item, std::string * Title, std::vector<std::shared_ptr<IPropertyAction>> * Actions) -> bool {
-		if (false == GetEditorUIFrame().ExtendContextMenu(std::dynamic_pointer_cast<ISceneNode3D>(Item->GetTObject()), Title, Actions))
+		auto sourceObject = Item->GetSourceObject();
+		if (sourceObject->GetType() != ETreeViewItemType::SceneNode3D)
+			return false;
+
+		auto object = sourceObject->Object();
+		if (object == nullptr)
+			return false;
+
+		auto sceneNode3DObject = std::dynamic_pointer_cast<ISceneNode3D>(object);
+		if (sceneNode3DObject == nullptr)
+			return false;
+		
+		if (false == GetEditorUIFrame().ExtendContextMenu(sceneNode3DObject, Title, Actions))
 			return false;
 		return true;
 	});
@@ -198,8 +273,16 @@ void CEditorResourceBrowser::InitializeSceneBrowser()
 
 void CEditorResourceBrowser::UpdateSceneBrowser()
 {
-	auto sceneNode3DSource = MakeShared(CznSceneNode3DTreeViewItemSource, m_Editor.Get3DFrame().GetEditedRootNode3D());
-	GetEditorQtUIFrame().getSceneViewer()->AddToRoot(sceneNode3DSource, true);
+	if (false == IsAttachedTest)
+	{
+		auto sceneNode3DSource = MakeShared(CznSceneNode3DTreeViewItemSource, m_Editor.Get3DFrame().GetEditedRootNode3D());
+		GetEditorQtUIFrame().getSceneViewer()->AddToRoot(sceneNode3DSource, true);
+		IsAttachedTest = true;
+	}
+	else
+	{
+		GetEditorQtUIFrame().getSceneViewer()->Refresh();
+	}
 }
 
 

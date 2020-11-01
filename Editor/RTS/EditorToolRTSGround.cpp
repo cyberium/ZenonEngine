@@ -95,29 +95,6 @@ CRTSGround::~CRTSGround()
 //
 // IEditorTool
 //
-void CRTSGround::Initialize()
-{
-	auto groundRootSceneNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cCRTSSceneNodeGround, GetScene(), GetEditor().Get3DFrame().GetEditedRootNode3D());
-	groundRootSceneNode->SetName("GroundRoot");
-	m_GroundRoot = std::dynamic_pointer_cast<IRTSGround>(groundRootSceneNode);
-
-	auto geom = GetRenderDevice().GetPrimitivesFactory().CreateTorus(5.0f, 0.25f);
-
-	auto materialY = MakeShared(MaterialEditorTool, GetRenderDevice());
-	materialY->SetColor(glm::vec4(0.3f, 1.0f, 0.3f, 1.0f));
-	auto modelY = GetRenderDevice().GetObjectsFactory().CreateModel();
-	modelY->AddConnection(materialY, geom);
-
-	m_GroundSelectorNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, GetScene());
-	m_GroundSelectorNode->SetName("GroundSelectedNode");
-	m_GroundSelectorNode->GetComponent<IModelsComponent3D>()->SetModel(modelY);
-	m_GroundSelectorNode->GetComponent<IColliderComponent3D>()->SetBounds(geom->GetBounds());
-}
-
-void CRTSGround::Finalize()
-{
-}
-
 void CRTSGround::Enable()
 {
 	CEditorToolBase::Enable();
@@ -158,6 +135,25 @@ void CRTSGround::DoInitializeUI(IEditorQtUIFrame & QtUIFrame)
 //
 // 3D
 //
+void CRTSGround::DoInitialize3D(const std::shared_ptr<IRenderer>& Renderer, std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport)
+{
+	auto groundRootSceneNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cCRTSSceneNodeGround, GetScene(), GetEditor().Get3DFrame().GetEditedRootNode3D());
+	groundRootSceneNode->SetName("GroundRoot");
+	m_GroundRoot = std::dynamic_pointer_cast<IRTSGround>(groundRootSceneNode);
+
+	auto geom = GetRenderDevice().GetPrimitivesFactory().CreateTorus(5.0f, 0.25f);
+
+	auto materialY = MakeShared(MaterialEditorTool, GetRenderDevice());
+	materialY->SetColor(glm::vec4(0.3f, 1.0f, 0.3f, 1.0f));
+	auto modelY = GetRenderDevice().GetObjectsFactory().CreateModel();
+	modelY->AddConnection(materialY, geom);
+
+	m_GroundSelectorNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, GetScene());
+	m_GroundSelectorNode->SetName("GroundSelectedNode");
+	m_GroundSelectorNode->GetComponent<IModelsComponent3D>()->SetModel(modelY);
+	m_GroundSelectorNode->GetComponent<IColliderComponent3D>()->SetBounds(geom->GetBounds());
+}
+
 bool CRTSGround::OnMousePressed(const MouseButtonEventArgs & e, const Ray & RayToWorld)
 {
 	if (m_GroundRoot == nullptr)

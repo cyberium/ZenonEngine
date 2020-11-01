@@ -72,6 +72,7 @@ void SceneBase::Initialize()
 
 	m_RootNode3D = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, this);
 	m_RootNode3D->SetName("RootNode3D");
+	std::dynamic_pointer_cast<ISceneNode3DInternal>(m_RootNode3D)->SetPersistanceInternal(true);
 
 	m_RootNodeUI = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeUIFactory>()->CreateSceneNodeUI(this, cSceneNodeUI);
 	m_RootNodeUI->SetName("RootNodeUI");

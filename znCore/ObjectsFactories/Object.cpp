@@ -97,7 +97,7 @@ void Object::Save(const std::shared_ptr<IXMLWriter>& Writer) const
 //
 // IObjectPrivate
 //
-void Object::SetGUID(const IBaseManager* BaseManager, const Guid& NewGuid)
+void Object::SetGUID(const Guid& NewGuid)
 {
 	//if (GetGUID().IsEmpty() == false)
 	//	throw std::exception(("Object " + GetGUID().Str() + " already has Guid.").c_str());

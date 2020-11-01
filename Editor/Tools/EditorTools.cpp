@@ -15,31 +15,24 @@ CEditorTools::~CEditorTools()
 void CEditorTools::Initialize()
 {
 	m_Selector = MakeShared(CEditorToolSelector, m_Editor);
-	m_Selector->Initialize();
 	m_Tools.insert(std::make_pair(ETool::EToolSelector, m_Selector));
 
 	auto mover = MakeShared(CEditorToolMover, m_Editor);
-	mover->Initialize();
 	m_Tools.insert(std::make_pair(ETool::EToolMover, mover));
 
 	auto rotator = MakeShared(CEditorToolRotator, m_Editor);
-	rotator->Initialize();
 	m_Tools.insert(std::make_pair(ETool::EToolRotator, rotator));
 
 	auto moverRTS = MakeShared(CEditorToolMoverRTS, m_Editor);
-	moverRTS->Initialize();
 	m_Tools.insert(std::make_pair(ETool::EToolMoverRTS, moverRTS));
 
 	auto rotatorRTS = MakeShared(CEditorToolRotatorRTS, m_Editor);
-	rotatorRTS->Initialize();
 	m_Tools.insert(std::make_pair(ETool::EToolRotatorRTS, rotatorRTS));
 
 	auto drager = MakeShared(CEditorToolDragger, m_Editor);
-	drager->Initialize();
 	m_Tools.insert(std::make_pair(ETool::EToolDragger, drager));
 
 	auto RTSEditor = MakeShared(CRTSGround, m_Editor);
-	RTSEditor->Initialize();
 	m_Tools.insert(std::make_pair(ETool::EToolEditorRTS, RTSEditor));
 
 	m_Editor.GetUIFrame().DoInitializeToolsUI();
@@ -63,8 +56,7 @@ IEditorTool& CEditorTools::GetTool(ETool Tool)
 {
 	auto tool = m_Tools.find(Tool);
 	if (tool == m_Tools.end())
-		throw CException("Tool %d not found.");
-
+		throw CException("Tool %d not found.", (int)Tool);
 	return *m_Tools[Tool];
 }
 
@@ -72,7 +64,7 @@ void CEditorTools::DisableAll(ETool ExceptOfTool)
 {
 	ETool tool = ExceptOfTool;
 	for (const auto& t : m_Tools)
-		if (t.first != ExceptOfTool)
+		if (t.first != tool)
 			t.second->Disable();
 }
 

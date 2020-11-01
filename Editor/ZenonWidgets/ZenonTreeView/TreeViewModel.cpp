@@ -16,7 +16,7 @@ namespace
 			_ASSERT(index.isValid());
 
 			CznTreeViewItem* item = static_cast<CznTreeViewItem*>(index.internalPointer());
-			if (item->GetTObject() == Node)
+			if (item->GetSourceObject()->Object() == Node)
 			{
 				*FindedPosition = index;
 				return true;
@@ -64,6 +64,13 @@ void CznQTTreeViewModel::ClearRoot() const
 	if (rootVirtualFolderSource == nullptr)
 		_ASSERT(false);
 	rootVirtualFolderSource->ClearChilds();
+	
+	ClearRootCache();
+}
+
+void CznQTTreeViewModel::ClearRootCache() const
+{
+	m_RootItem->ClearCache();
 }
 
 std::shared_ptr<IObject> CznQTTreeViewModel::Find(const QModelIndex& ModelIdnex) const
@@ -72,10 +79,8 @@ std::shared_ptr<IObject> CznQTTreeViewModel::Find(const QModelIndex& ModelIdnex)
 		return nullptr;
 
 	auto item = static_cast<CznTreeViewItem*>(ModelIdnex.internalPointer());
-	if (item == nullptr)
-		return nullptr;
 
-	return item->GetTObject();
+	return item->GetSourceObject()->Object();
 }
 
 QModelIndex CznQTTreeViewModel::Find(const std::shared_ptr<IObject>& Node) const
@@ -94,7 +99,7 @@ QVariant CznQTTreeViewModel::headerData(int section, Qt::Orientation orientation
 {
 	if (orientation == Qt::Horizontal && role == Qt::DisplayRole)
 	{
-		return m_RootItem->data();
+		return m_RootItem->GetData();
 	}
 
 	return QVariant();
@@ -109,7 +114,7 @@ QVariant CznQTTreeViewModel::data(const QModelIndex& index, int role) const
 
 	if (role == Qt::DisplayRole)
 	{
-		return item->data();
+		return item->GetData();
 	}
 	else if (role == Qt::DecorationRole)
 	{
@@ -134,7 +139,7 @@ QModelIndex CznQTTreeViewModel::index(int row, int column, const QModelIndex& pa
 		return QModelIndex();
 
 	CznTreeViewItem* parentItem = getItem(parent);
-	auto childItem = parentItem->child(row);
+	auto childItem = parentItem->GetChildByIndex(row);
 	if (childItem)
 	{
 		return createIndex(row, column, childItem.get());
@@ -151,21 +156,25 @@ QModelIndex CznQTTreeViewModel::parent(const QModelIndex& index) const
 		return QModelIndex();
 
 	CznTreeViewItem* childItem = static_cast<CznTreeViewItem*>(index.internalPointer());
+	_ASSERT(childItem != nullptr);
 
-	auto parentItem = childItem->parentItem();
+	auto parentItem = childItem->GetParent();
 	if (parentItem == nullptr)
+	{
+		_ASSERT(childItem == m_RootItem.get());
 		return QModelIndex();
+	}
 
 	if (parentItem == m_RootItem.get())
 		return QModelIndex();
 
-	return createIndex(parentItem->childNumberInParent(), 0, parentItem);
+	return createIndex(parentItem->GetMyIndexInParent(), 0, parentItem);
 }
 
 int CznQTTreeViewModel::rowCount(const QModelIndex& parent) const
 {
 	const CznTreeViewItem* item = getItem(parent);
-	return static_cast<int>(item->childCount());
+	return static_cast<int>(item->GetChildsCount());
 }
 
 int CznQTTreeViewModel::columnCount(const QModelIndex& parent) const
@@ -176,7 +185,7 @@ int CznQTTreeViewModel::columnCount(const QModelIndex& parent) const
 bool CznQTTreeViewModel::hasChildren(const QModelIndex & parent) const
 {
 	const CznTreeViewItem* item = getItem(parent);
-	return item->childCount() > 0;
+	return item->GetChildsCount() > 0;
 }
 
 

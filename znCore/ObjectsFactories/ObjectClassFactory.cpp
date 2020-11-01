@@ -91,17 +91,7 @@ std::shared_ptr<IObject> CObjectClassFactory::CreateObject(ObjectClass ObjectCla
 	
 	size_t creatorIndex = it->second.first;
 	auto creatorObject = it->second.second;
-
-	auto createdObject = creatorObject->CreateObject(creatorIndex, ObjectCreationArgs);
-	if (auto objectPrivate = std::dynamic_pointer_cast<IObjectPrivate>(createdObject))
-	{
-		objectPrivate->SetGUID(&m_BaseManager, objectUUID);
-		//Log::Green("ClassFactory: Object [%s] created.", createdObject->GetName().c_str());
-	}
-	else
-		throw CException("ClassFactory: Object [%s] not support IObjectInternal.", objectUUID.CStr());
-
-	return createdObject;
+	return creatorObject->CreateObject(creatorIndex, objectUUID, ObjectCreationArgs);
 }
 
 
@@ -111,13 +101,19 @@ std::shared_ptr<IObject> CObjectClassFactory::CreateObject(ObjectClass ObjectCla
 //
 Guid CObjectClassFactory::ReadGUIDXML(const std::shared_ptr<IXMLReader>& Reader)
 {
-	return GenerateGuid(GetBaseManager().GetManager<IObjectsFactory>()->GetObjectClassByObjectClassName(Reader->GetName()));
+	std::string objectClassName = Reader->GetName();
+	_ASSERT(false == objectClassName.empty());
+
+	ObjectClass objectClass = GetBaseManager().GetManager<IObjectsFactory>()->GetObjectClassByObjectClassName(objectClassName);
+	return GenerateGuid(objectClass);
 }
 
 std::shared_ptr<IXMLWriter> CObjectClassFactory::WriteGUIDXML(Guid Guid)
 {
-	CXMLManager xmlManager(m_BaseManager);
-	return xmlManager.CreateWriter(GetBaseManager().GetManager<IObjectsFactory>()->GetObjectClassNameByObjectClass(Guid.GetObjectClass()));
+	CXMLManager xmlManager(GetBaseManager());
+	std::string objectClassName = GetBaseManager().GetManager<IObjectsFactory>()->GetObjectClassNameByObjectClass(Guid.GetObjectClass());
+	_ASSERT(false == objectClassName.empty());
+	return xmlManager.CreateWriter(objectClassName);
 }
 
 Guid CObjectClassFactory::ReadGUID(const std::shared_ptr<IByteBuffer>& Bytes)

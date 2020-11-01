@@ -115,7 +115,6 @@
     <ClCompile Include="ObjectsFactories\ObjectsFactory.cpp" />
     <ClCompile Include="ObjectsFactories\SceneNode3DFactory.cpp" />
     <ClCompile Include="ObjectsFactories\SceneNodeUIFactory.cpp" />
-    <ClCompile Include="ObjectsFactories\ScenesFactory.cpp" />
     <ClCompile Include="Passes\RenderPass.cpp" />
     <ClCompile Include="Passes\RenderPassPipelined.cpp" />
     <ClCompile Include="Passes\RenderTechnique.cpp" />
@@ -266,7 +265,6 @@
     <ClInclude Include="ObjectsFactories\ObjectsFactory.h" />
     <ClInclude Include="ObjectsFactories\SceneNode3DFactory.h" />
     <ClInclude Include="ObjectsFactories\SceneNodeUIFactory.h" />
-    <ClInclude Include="ObjectsFactories\ScenesFactory.h" />
     <ClInclude Include="Passes\RenderPass.h" />
     <ClInclude Include="Passes\RenderPassPipelined.h" />
     <ClInclude Include="Passes\RenderTechnique.h" />

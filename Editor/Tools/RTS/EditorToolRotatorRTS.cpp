@@ -17,27 +17,6 @@ CEditorToolRotatorRTS::~CEditorToolRotatorRTS()
 {
 }
 
-void CEditorToolRotatorRTS::Initialize()
-{
-	m_RotatorRoot = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, GetScene(), GetScene()->GetRootNode3D());
-	m_RotatorRoot->SetName("RotatorRTS");
-
-	auto geom = GetRenderDevice().GetPrimitivesFactory().CreateTorus(1.0f, 0.05f);
-
-	auto materialY = MakeShared(MaterialEditorTool, GetRenderDevice());
-	materialY->SetColor(glm::vec4(0.1f, 1.0f, 0.1f, 1.0f));
-	auto modelY = GetRenderDevice().GetObjectsFactory().CreateModel();
-	modelY->AddConnection(materialY, geom);
-
-	m_RotatorY = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, GetScene(), m_RotatorRoot);
-	m_RotatorY->SetName("RotatorRTS_Y");
-	m_RotatorY->GetComponent<IModelsComponent3D>()->SetModel(modelY);
-	m_RotatorY->GetComponent<IColliderComponent3D>()->SetBounds(geom->GetBounds());
-}
-
-void CEditorToolRotatorRTS::Finalize()
-{
-}
 
 void CEditorToolRotatorRTS::Enable()
 {
@@ -65,6 +44,24 @@ void CEditorToolRotatorRTS::Disable()
 
 	Clear();
 	m_MovingNode.reset();
+}
+
+void CEditorToolRotatorRTS::DoInitialize3D(const std::shared_ptr<IRenderer>& Renderer, std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport)
+{
+	m_RotatorRoot = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, GetScene(), GetScene()->GetRootNode3D());
+	m_RotatorRoot->SetName("RotatorRTS");
+
+	auto geom = GetRenderDevice().GetPrimitivesFactory().CreateTorus(1.0f, 0.05f);
+
+	auto materialY = MakeShared(MaterialEditorTool, GetRenderDevice());
+	materialY->SetColor(glm::vec4(0.1f, 1.0f, 0.1f, 1.0f));
+	auto modelY = GetRenderDevice().GetObjectsFactory().CreateModel();
+	modelY->AddConnection(materialY, geom);
+
+	m_RotatorY = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, GetScene(), m_RotatorRoot);
+	m_RotatorY->SetName("RotatorRTS_Y");
+	m_RotatorY->GetComponent<IModelsComponent3D>()->SetModel(modelY);
+	m_RotatorY->GetComponent<IColliderComponent3D>()->SetBounds(geom->GetBounds());
 }
 
 bool CEditorToolRotatorRTS::OnMousePressed(const MouseButtonEventArgs & e, const Ray & RayToWorld)
@@ -129,7 +126,7 @@ void CEditorToolRotatorRTS::OnMouseMoved(const MouseMotionEventArgs & e, const R
 	rotatingNode->SetRotation(glm::vec3(0.0f, rotatorInitialAngleDegrees, 0.0f));
 
 	// Refresh selection bounds
-	dynamic_cast<IEditorToolSelector&>(GetEditor().GetTools().GetTool(ETool::EToolSelector)).SelectNode(rotatingNode);
+	GetEditor().GetTools().GetToolT<IEditorToolSelector>(ETool::EToolSelector).SelectNode(rotatingNode);
 	
 }
 

@@ -28,7 +28,7 @@ void main_internal(int argc, char *argv[])
 		BaseManager->AddManager<IznFontsManager>(fontsManager);
 		BaseManager->GetManager<ILoader>()->Start();
 
-		QApplication a(argc, argv);
+		QApplication qtApplication(argc, argv);
 
 		CEditorUIFrame editorUI(editor);
 		editorUI.InitializeEditorFrame();
@@ -83,16 +83,16 @@ void main_internal(int argc, char *argv[])
 		{
 			timer.start();
 			{
-				a.exec();
+				QApplication::exec();
 			}
 			timer.stop();
-
-			a.closeAllWindows();
 		}
+		app.DoAfterRun();
 
 		BaseManager->GetManager<ILog>()->DeleteDebugOutput(debugOutput);
 
-		app.DoAfterRun();
+		QApplication::closeAllWindows();
+
 	/*}
 	catch (const CznRenderException& e)
 	{

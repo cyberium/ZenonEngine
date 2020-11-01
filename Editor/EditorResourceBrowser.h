@@ -21,4 +21,5 @@ private:
 
 private:
 	IEditor& m_Editor;
+	bool IsAttachedTest;
 };

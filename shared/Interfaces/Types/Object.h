@@ -38,7 +38,7 @@ ZN_INTERFACE ZN_API IObjectPrivate
 {
 	virtual ~IObjectPrivate() {}
 
-	virtual void SetGUID(const IBaseManager* BaseManager,const Guid& NewGuid) = 0;
+	virtual void SetGUID(const Guid& NewGuid) = 0;
 };
 
 ZN_INTERFACE ZN_API	IObjectLoadSave

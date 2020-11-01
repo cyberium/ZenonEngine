@@ -16,6 +16,7 @@ public:
 	//void ReplaceRoot(const std::shared_ptr<IznTreeViewItemSource>& Item);
 	void AddToRoot(const std::shared_ptr<IznTreeViewItemSource>& Item) const;
 	void ClearRoot() const;
+	void ClearRootCache() const;
 
 	std::shared_ptr<IObject> Find(const QModelIndex& ModelIdnex) const;
 	QModelIndex Find(const std::shared_ptr<IObject>& Node) const;

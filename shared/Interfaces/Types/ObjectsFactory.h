@@ -12,7 +12,7 @@ ZN_INTERFACE ZN_API IObjectClassCreator
 	virtual size_t GetSupportedClassCount() const = 0;
 	virtual ObjectClass GetSupportedClassKey(size_t Index) const = 0;
 	virtual std::string GetSupportedClassName(size_t Index) const = 0;
-	virtual std::shared_ptr<IObject> CreateObject(size_t Index, const IObjectCreationArgs* ObjectCreationArgs) = 0;
+	virtual std::shared_ptr<IObject> CreateObject(size_t Index, const Guid& AssignedGuid, const IObjectCreationArgs* ObjectCreationArgs) = 0;
 };
 
 ZN_INTERFACE ZN_API __declspec(uuid("5455FD09-C8F2-4E6C-855A-C1E5E7377F3F")) IObjectClassFactory

@@ -552,9 +552,6 @@
     <ClCompile Include="Scene\Factory\ComponentsCreator.cpp">
       <Filter>Scene\Factory</Filter>
     </ClCompile>
-    <ClCompile Include="Scene\Factory\SceneCreator.cpp">
-      <Filter>Scene\Factory</Filter>
-    </ClCompile>
     <ClCompile Include="Scene\Factory\SceneNodeCreator.cpp">
       <Filter>Scene\Factory</Filter>
     </ClCompile>
@@ -1138,9 +1135,6 @@
       <Filter>Scene\Nodes</Filter>
     </ClInclude>
     <ClInclude Include="Scene\Factory\ComponentsCreator.h">
-      <Filter>Scene\Factory</Filter>
-    </ClInclude>
-    <ClInclude Include="Scene\Factory\SceneCreator.h">
       <Filter>Scene\Factory</Filter>
     </ClInclude>
     <ClInclude Include="Scene\Factory\SceneNodeCreator.h">

@@ -148,7 +148,10 @@ void SceneNode3D::AddChild(std::shared_ptr<ISceneNode3D> childNode)
 void SceneNode3D::RemoveChild(std::shared_ptr<ISceneNode3D> childNode)
 {
 	if (childNode == nullptr)
-		throw CException("SceneNode3D: Child node must not be NULL.");
+		throw CException("Unable to remove nullptr node.");
+
+	if (childNode->IsPersistance())
+		throw CException("Unable to remove persistan node '%s'.", childNode->GetName());
 
 	this->RemoveChildInternal(childNode);
 }

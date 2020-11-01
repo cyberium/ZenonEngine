@@ -18,7 +18,33 @@ CEditorToolMover::~CEditorToolMover()
 {
 }
 
-void CEditorToolMover::Initialize()
+void CEditorToolMover::Enable()
+{
+	CEditorToolBase::Enable();
+
+	dynamic_cast<IEditorQtUIFrame&>(GetEditor().GetUIFrame()).getUI().editorToolMoverBtn->setChecked(IsEnabled());
+
+	if (auto node = GetEditor().GetFirstSelectedNode())
+	{
+		m_MovingNode = node;
+		m_MoverRoot->SetTranslate(node->GetTranslation());
+		m_MoverRoot->SetScale(glm::vec3(node->GetComponent<IColliderComponent3D>()->GetBounds().getRadius() * 1.0f / 50.0f));
+	}
+}
+
+void CEditorToolMover::Disable()
+{
+	CEditorToolBase::Disable();
+
+	dynamic_cast<IEditorQtUIFrame&>(GetEditor().GetUIFrame()).getUI().editorToolMoverBtn->setChecked(IsEnabled());
+
+	m_MoverRoot->SetTranslate(glm::vec3(-1000000.0, -10000000.0f, -10000000.0f));
+
+	Clear();
+	m_MovingNode.reset();
+}
+
+void CEditorToolMover::DoInitialize3D(const std::shared_ptr<IRenderer>& Renderer, std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport)
 {
 	m_MoverRoot = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, GetScene(), GetScene()->GetRootNode3D());
 	m_MoverRoot->SetName("Mover");
@@ -62,36 +88,6 @@ void CEditorToolMover::Initialize()
 	m_MoverZ->SetRotation(glm::vec3(0.0f, 0.0f, 0.0f));
 	m_MoverZ->GetComponent<IModelsComponent3D>()->SetModel(modelZ);
 	m_MoverZ->GetComponent<IColliderComponent3D>()->SetBounds(model->GetBounds());
-}
-
-void CEditorToolMover::Finalize()
-{
-}
-
-void CEditorToolMover::Enable()
-{
-	CEditorToolBase::Enable();
-
-	dynamic_cast<IEditorQtUIFrame&>(GetEditor().GetUIFrame()).getUI().editorToolMoverBtn->setChecked(IsEnabled());
-
-	if (auto node = GetEditor().GetFirstSelectedNode())
-	{
-		m_MovingNode = node;
-		m_MoverRoot->SetTranslate(node->GetTranslation());
-		m_MoverRoot->SetScale(glm::vec3(node->GetComponent<IColliderComponent3D>()->GetBounds().getRadius() * 1.0f / 50.0f));
-	}
-}
-
-void CEditorToolMover::Disable()
-{
-	CEditorToolBase::Disable();
-
-	dynamic_cast<IEditorQtUIFrame&>(GetEditor().GetUIFrame()).getUI().editorToolMoverBtn->setChecked(IsEnabled());
-
-	m_MoverRoot->SetTranslate(glm::vec3(-1000000.0, -10000000.0f, -10000000.0f));
-
-	Clear();
-	m_MovingNode.reset();
 }
 
 bool CEditorToolMover::OnMousePressed(const MouseButtonEventArgs & e, const Ray & RayToWorld)
@@ -185,7 +181,7 @@ void CEditorToolMover::OnMouseMoved(const MouseMotionEventArgs & e, const Ray & 
 	m_MoverRoot->SetTranslate(movingNode->GetTranslation());
 
 	// Refresh selection bounds
-	dynamic_cast<IEditorToolSelector&>(GetEditor().GetTools().GetTool(ETool::EToolSelector)).SelectNode(movingNode);
+	GetEditor().GetTools().GetToolT<IEditorToolSelector>(ETool::EToolSelector).SelectNode(movingNode);
 }
 
 

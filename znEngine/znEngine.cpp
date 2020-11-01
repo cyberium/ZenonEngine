@@ -7,10 +7,11 @@
 #include "BaseManager.h"
 #include "PluginsManager.h"
 #include "Settings.h"
-#include "RenderDeviceFactory.h"
 #include "AssyncLoader/Loader.h"
 
-#include "Scene/Factory/SceneCreator.h"
+
+// Factories
+#include "RenderDeviceFactory.h"
 #include "Scene/Factory/ComponentsCreator.h"
 #include "Scene/Factory/SceneNodeCreator.h"
 
@@ -143,10 +144,6 @@ IBaseManager* WINAPI InitializeEngine(std::vector<std::string> Arguments, std::s
 
 		std::shared_ptr<IObjectsFactory> factory = MakeShared(CObjectsFactory, *baseManager);
 		baseManager->AddManager<IObjectsFactory>(factory);
-
-		std::shared_ptr<CScenesFactory> sceneFactory = MakeShared(CScenesFactory, *baseManager, "otScene", otScene);
-		sceneFactory->AddClassCreator(MakeShared(CSceneEngineCreator, *baseManager));
-		factory->AddClassFactory(sceneFactory);
 
 		std::shared_ptr<CSceneNode3DFactory> sceneNode3DFactory = MakeShared(CSceneNode3DFactory, *baseManager, "otSceneNode3D", otSceneNode3D);
 		sceneNode3DFactory->AddClassCreator(MakeShared(CSceneNode3DEngineCreator, *baseManager));

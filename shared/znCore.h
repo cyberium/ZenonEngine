@@ -25,7 +25,6 @@
 #include "../znCore/ObjectsFactories/ObjectsFactory.h"
 #include "../znCore/ObjectsFactories/ObjectClassFactory.h"
 #include "../znCore/ObjectsFactories/ObjectClassCreator.h"
-#include "../znCore/ObjectsFactories/ScenesFactory.h"
 #include "../znCore/ObjectsFactories/SceneNode3DFactory.h"
 #include "../znCore/ObjectsFactories/SceneNodeUIFactory.h"
 #include "../znCore/ObjectsFactories/ComponentsFactory.h"

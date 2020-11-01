@@ -28,7 +28,7 @@ CComponentsEngineCreator::~CComponentsEngineCreator()
 //
 // IObjectClassCreator
 //
-std::shared_ptr<IObject> CComponentsEngineCreator::CreateObject(size_t Index, const IObjectCreationArgs* ObjectCreationArgs)
+std::shared_ptr<IObject> CComponentsEngineCreator::CreateObject(size_t Index, const Guid& AssignedGuid, const IObjectCreationArgs* ObjectCreationArgs)
 {
 	auto componentCreationArgs = static_cast<IComponentCreationArgs*>(const_cast<IObjectCreationArgs*>(ObjectCreationArgs));
 	std::shared_ptr<ISceneNodeComponent> createdComponent = nullptr;
@@ -71,7 +71,12 @@ std::shared_ptr<IObject> CComponentsEngineCreator::CreateObject(size_t Index, co
 	}
 
 	if (createdComponent == nullptr)
-		throw CException("CComponentsEngineCreator: CreateObject: Unable to create object with index %d.", Index);
+		throw CException("ComponentsEngineCreator: CreateObject: Unable to create object with index %d.", Index);
+
+	if (auto objectPrivate = std::dynamic_pointer_cast<IObjectPrivate>(createdComponent))
+		objectPrivate->SetGUID(AssignedGuid);
+	else
+		throw CException("ComponentsEngineCreator: Object [%s] not support IObjectInternal.", AssignedGuid.CStr());
 
 	return createdComponent;
 }

@@ -6,80 +6,59 @@
 CznTreeViewItem::CznTreeViewItem(const std::shared_ptr<IznTreeViewItemSource>& TObject, CznTreeViewItem * Parent)
 	: m_SourceObject(TObject)
 	, m_Parent(Parent)
-{
-	//size_t childsCnt = m_SourceObject->GetChildsCount();
-	//for (size_t i = 0; i < childsCnt; i++)
-	//	addChild(MakeShared(CznTreeViewItem, m_SourceObject->GetChild(i), this));
-}
+{}
+
 CznTreeViewItem::~CznTreeViewItem()
 {
-
+	Log::Warn("TreeViewItem: Destroed TreeView of source with name '%s'", m_SourceObject->GetName().c_str());
 }
 
-/*
-void CznTreeViewItem::SetRoot(const std::shared_ptr<IznTreeViewItemSource>& TObject)
+void CznTreeViewItem::ClearCache()
 {
-	m_SourceObject = TObject;
-	size_t childsCnt = m_SourceObject->GetChildsCount();
-	for (size_t i = 0; i < childsCnt; i++)
-		addChild(MakeShared(CznTreeViewItem, m_SourceObject->GetChild(i), this));
+	// TODO: Create great cache system
+	//m_CachedChilds.clear();
+	
+	/*for (auto& it = m_CachedChilds.begin(); it != m_CachedChilds.end(); )
+	{
+		auto& sourceObject = (*it)->GetSourceObject();
+
+		if (sourceObject.use_count() > 2)
+		{
+			it++;
+			continue;
+		}
+
+		it = m_CachedChilds.erase(it);
+	}*/
 }
 
-void CznTreeViewItem::addChild(std::shared_ptr<CznTreeViewItem> child)
+std::shared_ptr<CznTreeViewItem> CznTreeViewItem::GetChildByIndex(size_t row)
 {
-	//m_Childs.push_back(child);
-}*/
-
-std::shared_ptr<CznTreeViewItem> CznTreeViewItem::child(size_t row)
-{
-	auto childObject = m_SourceObject->GetChild(row)->Object();
-
-	const auto& it = std::find_if(m_CachedChilds.begin(), m_CachedChilds.end(), [&childObject](const std::shared_ptr<CznTreeViewItem>& ChildTreeViewItem)->bool {
-		return ChildTreeViewItem->GetTObject() == childObject;
-	});
-	if (it != m_CachedChilds.end())
-		return *it;
-
-	auto newChild = MakeShared(CznTreeViewItem, m_SourceObject->GetChild(row), this);
-	m_CachedChilds.push_back(newChild);
-	return newChild;
-
-	//if (row >= m_Childs.size())
-	//	return nullptr;
-	//return m_Childs.at(row);
+	return GetChildInternal(m_SourceObject->GetChild(row));
 }
 
-size_t CznTreeViewItem::childCount() const
+size_t CznTreeViewItem::GetChildsCount() const
 {
 	return m_SourceObject->GetChildsCount();
-	//return m_Childs.size();
 }
 
-CznTreeViewItem* CznTreeViewItem::parentItem()
+CznTreeViewItem* CznTreeViewItem::GetParent()
 {
 	return m_Parent;
 }
 
-QVariant CznTreeViewItem::data() const
+QVariant CznTreeViewItem::GetData() const
 {
 	return QVariant(m_SourceObject->GetName().c_str());
 }
 
-int CznTreeViewItem::childNumberInParent() const
+size_t CznTreeViewItem::GetMyIndexInParent() const
 {
-	/*if (m_Parent)
-	{
-		const auto& childs = m_Parent->m_Childs;
-		const auto& it = std::find(childs.begin(), childs.end(), shared_from_this());
-		if (it != m_Parent->m_Childs.end())
-			return std::distance(childs.begin(), it);
-	}*/
-
 	if (m_Parent)
 	{
-		for (size_t i = 0; i < m_Parent->childCount(); i++)
+		for (size_t i = 0; i < m_Parent->GetChildsCount(); i++)
 		{
-			const auto& ch = m_Parent->child(i);
+			const auto& ch = m_Parent->GetChildByIndex(i);
 			if (ch == shared_from_this())
 				return i;
 		}
@@ -93,7 +72,62 @@ std::shared_ptr<IznTreeViewItemSource> CznTreeViewItem::GetSourceObject() const
 	return m_SourceObject;
 }
 
-std::shared_ptr<IObject> CznTreeViewItem::GetTObject() const
+
+
+//
+// Private
+//
+std::shared_ptr<CznTreeViewItem> CznTreeViewItem::GetChildInternal(const std::shared_ptr<IznTreeViewItemSource>& SourceItem)
 {
-	return m_SourceObject->Object();
+	if (SourceItem == nullptr)
+		return nullptr;
+
+	const auto& sourceName = SourceItem->GetName();
+
+	/*const auto& it = m_CachedChilds.find(sourceName);
+	if (it != m_CachedChilds.end())
+	{
+		auto cachedTreeView = it->second;
+
+		auto cachedSourceObject = cachedTreeView->GetSourceObject();
+		_ASSERT(cachedSourceObject != nullptr);
+
+		auto cachedObject = cachedSourceObject->Object();
+		if ((cachedObject != nullptr) && (SourceItem->Object() != nullptr))
+		{
+			if (cachedObject->GetGUID() == SourceItem->Object()->GetGUID())
+				return cachedTreeView; // Both sources has objects
+		}
+		else if ((cachedObject == nullptr) && (SourceItem->Object() == nullptr))
+		{
+			return cachedTreeView; // Object not contains source
+		}
+	}*/
+
+	const auto& it = std::find_if(m_CachedChilds.begin(), m_CachedChilds.end(), [sourceName](const std::shared_ptr<CznTreeViewItem>& ChildTreeViewItem)->bool
+	{
+		auto sourceObject = ChildTreeViewItem->GetSourceObject();
+		if (sourceObject == nullptr)
+			return false;
+
+		//auto object = sourceObject->Object();
+		//if (object == nullptr)
+		//	return false;
+
+		//return object == SourceItem->Object();
+		return sourceObject->GetName() == sourceName;
+	});
+
+	// Retrieve from cahce
+	if (it != m_CachedChilds.end())
+	{
+		return *it;
+	}
+
+	// Add new item to cache
+	auto newChild = MakeShared(CznTreeViewItem, SourceItem, this);
+	Log::Info("TreeViewItem: Created for source with name '%s'", SourceItem->GetName().c_str());
+	//m_CachedChilds.insert(std::make_pair(sourceName, newChild));
+	m_CachedChilds.push_back(newChild);
+	return newChild;
 }

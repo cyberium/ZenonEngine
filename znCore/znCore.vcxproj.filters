@@ -297,9 +297,6 @@
     <ClCompile Include="Scene\SceneNodeUI.cpp">
       <Filter>Scene</Filter>
     </ClCompile>
-    <ClCompile Include="ObjectsFactories\ScenesFactory.cpp">
-      <Filter>Objects\Typed creators</Filter>
-    </ClCompile>
     <ClCompile Include="Passes\ScenePasses\Pipelined\Base3DPass.cpp">
       <Filter>Passes\ScenePasses</Filter>
     </ClCompile>
@@ -745,9 +742,6 @@
     </ClInclude>
     <ClInclude Include="Scene\SceneNodeUI.h">
       <Filter>Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="ObjectsFactories\ScenesFactory.h">
-      <Filter>Objects\Typed creators</Filter>
     </ClInclude>
     <ClInclude Include="Passes\ScenePasses\Pipelined\ScenePassPipelined.h">
       <Filter>Passes\ScenePasses</Filter>

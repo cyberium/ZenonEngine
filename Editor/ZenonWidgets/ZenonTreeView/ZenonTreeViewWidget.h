@@ -19,6 +19,7 @@ public:
 	explicit ZenonTreeViewWidget(QWidget * parent = nullptr);
 	virtual ~ZenonTreeViewWidget();
 
+	void Refresh();
 	void AddToRoot(const std::shared_ptr<IznTreeViewItemSource>& RootItem, bool DeleteExisting = false);
 	void AddToRoot(const std::vector<std::shared_ptr<IznTreeViewItemSource>>& RootItems, bool DeleteExisting = false);
 	//void SetRootItems(const std::vector<std::shared_ptr<IznTreeViewItemSource>>& RootItems);

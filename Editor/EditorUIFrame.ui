@@ -588,7 +588,7 @@
    <property name="minimumSize">
     <size>
      <width>250</width>
-     <height>100</height>
+     <height>113</height>
     </size>
    </property>
    <property name="features">
@@ -651,8 +651,8 @@
    </property>
    <property name="minimumSize">
     <size>
-     <width>250</width>
-     <height>300</height>
+     <width>300</width>
+     <height>376</height>
     </size>
    </property>
    <property name="features">
@@ -731,11 +731,14 @@
        <property name="horizontalScrollMode">
         <enum>QAbstractItemView::ScrollPerPixel</enum>
        </property>
+       <property name="indentation">
+        <number>20</number>
+       </property>
        <property name="rootIsDecorated">
         <bool>false</bool>
        </property>
        <property name="itemsExpandable">
-        <bool>false</bool>
+        <bool>true</bool>
        </property>
        <attribute name="headerVisible">
         <bool>false</bool>
@@ -853,33 +856,28 @@
    <header location="global">_widgetZenonWindow3D.h</header>
    <container>1</container>
   </customwidget>
-  
   <customwidget>
    <class>QtnPropertyWidget</class>
    <extends>QWidget</extends>
    <header location="global">_widgetPropertyEditor.h</header>
    <container>1</container>
   </customwidget>
-    
   <customwidget>
    <class>ZenonLogViewer</class>
    <extends>QPlainTextEdit</extends>
    <header location="global">_widgetZenonLogViewer.h</header>
   </customwidget>
-
   <customwidget>
    <class>ZenonWindowMinimal3DWidget</class>
    <extends>QWidget</extends>
    <header location="global">_widgetZenonWindowMinimal3D.h</header>
    <container>1</container>
   </customwidget>
-  
   <customwidget>
    <class>ZenonTreeViewWidget</class>
    <extends>QTreeView</extends>
    <header location="global">_widgetZenonTreeView.h</header>
   </customwidget>
-  
  </customwidgets>
  <resources>
   <include location="EditorUIFrame.qrc"/>

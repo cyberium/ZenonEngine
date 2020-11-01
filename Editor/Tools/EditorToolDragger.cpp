@@ -13,16 +13,6 @@ CEditorToolDragger::~CEditorToolDragger()
 {
 }
 
-void CEditorToolDragger::Initialize()
-{
-	m_DraggerTextUI = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeUIFactory>()->CreateSceneNodeUI(GetScene(), cSceneNodeUI_Text, GetScene()->GetRootNodeUI());
-	m_DraggerTextUI->SetName("DraggedNodePositionTextUI.");
-}
-
-void CEditorToolDragger::Finalize()
-{
-}
-
 void CEditorToolDragger::Enable()
 {
 	CEditorToolBase::Enable();
@@ -31,6 +21,14 @@ void CEditorToolDragger::Enable()
 void CEditorToolDragger::Disable()
 {
 	CEditorToolBase::Disable();
+}
+
+
+void CEditorToolDragger::DoInitialize3D(const std::shared_ptr<IRenderer>& Renderer, std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport)
+{
+	m_DraggerTextUI = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeUIFactory>()->CreateSceneNodeUI(GetScene(), cSceneNodeUI_Text, GetScene()->GetRootNodeUI());
+	m_DraggerTextUI->SetName("DraggedNodePositionTextUI.");
+
 }
 
 bool CEditorToolDragger::OnMousePressed(const MouseButtonEventArgs & e, const Ray & RayToWorld)
@@ -121,7 +119,7 @@ void CEditorToolDragger::MoveDraggedNode(const glm::vec2& MousePos)
 	m_DraggerNode->SetTranslate(pos);
 
 	// Refresh dragged bounds
-	dynamic_cast<IEditorToolSelector&>(GetEditor().GetTools().GetTool(ETool::EToolSelector)).SelectNode(m_DraggerNode);
+	GetEditor().GetTools().GetToolT<IEditorToolSelector>(ETool::EToolSelector).SelectNode(m_DraggerNode);
 
 	m_DraggerTextUI->GetProperties()->GetPropertyT<std::string>("Text")->Set("Pos: " + std::to_string(pos.x) + ", " + std::to_string(pos.y) + ", " + std::to_string(pos.z));
 	m_DraggerTextUI->SetTranslate(MousePos + glm::vec2(0.0f, -15.0f));
@@ -135,7 +133,7 @@ void CEditorToolDragger::CreateCopyDraggedNode()
 	GetEditor().Get3DFrame().GetEditedRootNode3D()->AddChild(copiedNode);
 
 	m_LastCreatedNode = copiedNode;
-	dynamic_cast<IEditorToolSelector&>(GetEditor().GetTools().GetTool(ETool::EToolSelector)).SelectNode(copiedNode);
+	GetEditor().GetTools().GetToolT<IEditorToolSelector>(ETool::EToolSelector).SelectNode(copiedNode);
 }
 
 void CEditorToolDragger::Clear()
@@ -150,7 +148,7 @@ void CEditorToolDragger::Clear()
 
 	// Select last created node
 	if (m_LastCreatedNode)
-		dynamic_cast<IEditorToolSelector&>(GetEditor().GetTools().GetTool(ETool::EToolSelector)).SelectNode(m_LastCreatedNode);
+		GetEditor().GetTools().GetToolT<IEditorToolSelector>(ETool::EToolSelector).SelectNode(m_LastCreatedNode);
 
 	m_LastCreatedNode = nullptr;
 	m_DraggerTextUI->GetProperties()->GetPropertyT<std::string>("Text")->Set("");

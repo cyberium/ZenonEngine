@@ -47,7 +47,7 @@ public:
 
 private:
 	// IObjectPrivate
-	void SetGUID(const IBaseManager* BaseManager, const Guid& NewGuid) override;
+	void SetGUID(const Guid& NewGuid) override;
 
 protected:
 	Object();

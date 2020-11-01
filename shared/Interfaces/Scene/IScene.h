@@ -104,26 +104,6 @@ ZN_INTERFACE ZN_API IScene
 };
 
 
-ZN_INTERFACE ZN_API ISceneCreator
-{
-	virtual ~ISceneCreator() {}
-
-	virtual size_t GetScenesCount() const = 0;
-	virtual std::string GetSceneTypeName(size_t Index) const = 0;
-	virtual std::shared_ptr<IScene> CreateScene(size_t Index) const = 0;
-};
-
-ZN_INTERFACE ZN_API	IScenesFactory
-{
-	static ObjectType GetSupportedObjectType() { return otScene; }
-
-	virtual ~IScenesFactory() {}
-
-	virtual std::shared_ptr<IScene> CreateScene(ObjectClass ObjectClassKey) = 0;
-};
-
-
-
 ZN_INTERFACE ZN_API	ISceneFinder
 {
 	virtual ~ISceneFinder() {}

@@ -243,6 +243,9 @@ void CEditorUIFrame::OnSceneLoadFromFile()
 			if (xmlChild != nullptr)
 			{
 				xmlChild->CopyTo(editorChild);
+
+				// To delete persistance node, we must clear this flag
+				std::dynamic_pointer_cast<ISceneNode3DInternal>(xmlChild)->SetPersistanceInternal(false);
 				xmlRoot->RemoveChild(xmlChild);
 			}
 		}

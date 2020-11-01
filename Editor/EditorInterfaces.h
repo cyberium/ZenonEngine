@@ -36,8 +36,6 @@ ZN_INTERFACE IEditorTool
 {
 	virtual ~IEditorTool() {}
 
-	virtual void Initialize() = 0;
-	virtual void Finalize() = 0;
 	virtual void Enable() = 0;
 	virtual void Disable() = 0;
 	virtual bool IsEnabled() const = 0;
@@ -66,7 +64,11 @@ ZN_INTERFACE IEditorTools
 	virtual void DragMoveEvent(const glm::vec2& Position) = 0;
 	virtual void DragLeaveEvent() = 0;
 
-
+	template<typename T>
+	inline T& GetToolT(ETool Tool)
+	{
+		return dynamic_cast<T&>(GetTool(Tool));
+	}
 };
 
 

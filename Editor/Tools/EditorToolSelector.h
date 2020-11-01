@@ -12,8 +12,6 @@ public:
 	virtual ~CEditorToolSelector();
 
 	// IEditorTool
-	void Initialize() override;
-	void Finalize() override;
 	void Enable() override;
 	void Disable() override;
 

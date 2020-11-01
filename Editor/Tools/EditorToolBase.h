@@ -11,8 +11,6 @@ public:
 	virtual ~CEditorToolBase();
 
 	// IEditorTool
-	virtual void Initialize() = 0;
-	virtual void Finalize() = 0;
 	virtual void Enable() override;
 	virtual void Disable() override;
 	bool IsEnabled() const override final;

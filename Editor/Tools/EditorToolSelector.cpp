@@ -14,14 +14,6 @@ CEditorToolSelector::~CEditorToolSelector()
 {
 }
 
-void CEditorToolSelector::Initialize()
-{
-}
-
-void CEditorToolSelector::Finalize()
-{
-}
-
 void CEditorToolSelector::Enable()
 {
 	CEditorToolBase::Enable();
