@@ -19,10 +19,9 @@ public:
 	explicit ZenonTreeViewWidget(QWidget * parent = nullptr);
 	virtual ~ZenonTreeViewWidget();
 
-	void SetEditor(IEditor* Editor) { m_Editor = Editor; }
-
-	void SetRootItem(const std::shared_ptr<IznTreeViewItemSource>& RootItem);
-	void SetRootItems(const std::vector<std::shared_ptr<IznTreeViewItemSource>>& RootItems);
+	void AddToRoot(const std::shared_ptr<IznTreeViewItemSource>& RootItem, bool DeleteExisting = false);
+	void AddToRoot(const std::vector<std::shared_ptr<IznTreeViewItemSource>>& RootItems, bool DeleteExisting = false);
+	//void SetRootItems(const std::vector<std::shared_ptr<IznTreeViewItemSource>>& RootItems);
 
 	void ClearSelection();
 	void SelectItem(const std::shared_ptr<IObject>& Item, bool NeedClear = true);
@@ -63,7 +62,4 @@ private:
 	OnDragStartCallback m_OnDragStart;
 	OnSelectionChangeCallback m_OnSelectionChange;
 	OnSelectedItemChangeCallback m_OnSelectedItemChange;
-
-private:
-	IEditor* m_Editor;
 };

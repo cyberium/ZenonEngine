@@ -1,9 +1,9 @@
 #pragma once
 
-#include <QMainWindow>
-
 #include "EditorQtInterfaces.h"
+#include "EditorResourceBrowser.h"
 
+#include <QMainWindow>
 #include "PropertyEditor/PropertiesController.h"
 
 class CEditorUIFrame 
@@ -18,24 +18,21 @@ public:
 	CEditorUIFrame(IEditor& Editor);
 	virtual ~CEditorUIFrame();
 
-	inline ZenonWindow3D * getMainEditor() const { return m_UI.MainEditor3D; }
-	inline ZenonWindowMinimal3DWidget * getModelPreview() const { return m_UI.ModelPreview; }
-	inline ZenonTreeViewWidget * getSceneViewer() const { return m_UI.SceneViewer; }
-	inline ZenonTreeViewWidget * getCollectionViewer() const { return m_UI.CollectionViewer; }
-
-	// IEditorSharedFrame
+	// IEditorUIFrame
 	IEditor& GetEditor() const override;
 	bool InitializeEditorFrame() override;
-
-	// IEditorUIFrame
 	void DoInitializeToolsUI() override;
 	bool ExtendContextMenu(const std::shared_ptr<ISceneNode3D>& Node, std::string * Title, std::vector<std::shared_ptr<IPropertyAction>> * Actions) override;
 	void OnSceneChanged(ESceneChangeType SceneChangeType, const std::shared_ptr<ISceneNode3D>& ParentNode, const std::shared_ptr<ISceneNode3D>& ChildNode) override;
 
 	// IEditorQtUIFrame
-	QObject& getQObject() override final;
+	QObject& getQObject() override;
 	HWND getHWND() override;
-	Ui::EditorUIFrameClass& getUI() override final;
+	Ui::EditorUIFrameClass& getUI() override;
+	inline ZenonWindow3D * getMainEditor() const override { return m_UI.MainEditor3D; }
+	inline ZenonWindowMinimal3DWidget * getModelPreview() const override { return m_UI.ModelPreview; }
+	inline ZenonTreeViewWidget * getSceneViewer() const override { return m_UI.SceneViewer; }
+	inline ZenonTreeViewWidget * getCollectionViewer() const override { return m_UI.CollectionViewer; }
 
 	// IEditorToolSelectorEventListener
 	void OnSelectNode() override;
@@ -46,6 +43,7 @@ protected:
 	void OnSceneClose();
 
 private:
+	CEditorResourceBrowser m_EditorResourceBrowser;
 	std::shared_ptr<CPropertiesController> m_PropertiesController;
 	
 private:

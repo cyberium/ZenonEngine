@@ -121,6 +121,7 @@
     <ClCompile Include="Editor.cpp" />
     <ClCompile Include="Editor3DFrame.cpp" />
     <ClCompile Include="Editor3DPreviewScene.cpp" />
+    <ClCompile Include="EditorResourceBrowser.cpp" />
     <ClCompile Include="EditorWindowsShell.cpp" />
     <ClCompile Include="main.cpp">
       <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">input</DynamicSource>
@@ -375,6 +376,7 @@
     <ClCompile Include="Tools\RTS\EditorToolRotatorRTS.cpp" />
     <ClCompile Include="ZenonWidgets\ZenonLogViewer\ZenonLogViewer.cpp" />
     <ClCompile Include="ZenonWidgets\ZenonTreeView\TreeViewItem.cpp" />
+    <ClCompile Include="ZenonWidgets\ZenonTreeView\TreeViewItemVirtualFolder.cpp" />
     <ClCompile Include="ZenonWidgets\ZenonTreeView\TreeViewModel.cpp" />
     <ClCompile Include="ZenonWidgets\ZenonTreeView\ZenonTreeViewWidget.cpp" />
     <ClCompile Include="ZenonWidgets\ZenonWindow3D\ZenonWindow3D.cpp" />
@@ -387,6 +389,7 @@
     <ClInclude Include="Editor3DPreviewScene.h" />
     <ClInclude Include="EditorInterfaces.h" />
     <ClInclude Include="EditorQtInterfaces.h" />
+    <ClInclude Include="EditorResourceBrowser.h" />
     <ClInclude Include="EditorWindowsShell.h" />
     <ClInclude Include="Materials\MaterialEditorTool.h" />
     <ClInclude Include="Passes\DrawSelectionPass.h" />
@@ -414,6 +417,7 @@
     <ClInclude Include="Tools\RTS\EditorToolRotatorRTS.h" />
     <QtMoc Include="ZenonWidgets\ZenonTreeView\ZenonTreeViewWidget.h" />
     <ClInclude Include="ZenonWidgets\ZenonTreeView\TreeViewItem.h" />
+    <ClInclude Include="ZenonWidgets\ZenonTreeView\TreeViewItemVirtualFolder.h" />
     <ClInclude Include="ZenonWidgets\ZenonTreeView\TreeViewModel.h" />
     <ClInclude Include="ZenonWidgets\ZenonTreeView\TreeViewIntfs.h" />
     <ClInclude Include="_widgetZenonTreeView.h" />

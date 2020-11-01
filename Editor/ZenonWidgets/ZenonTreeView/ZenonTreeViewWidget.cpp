@@ -5,7 +5,6 @@
 
 ZenonTreeViewWidget::ZenonTreeViewWidget(QWidget * parent)
 	: QTreeView(parent)
-	, m_Editor(nullptr)
 	, m_LockForSelectionChangedEvent(false)
 	, m_StartDragging(false)
 {
@@ -37,19 +36,40 @@ ZenonTreeViewWidget::~ZenonTreeViewWidget()
 
 
 
-
-void ZenonTreeViewWidget::SetRootItem(const std::shared_ptr<IznTreeViewItemSource>& RootItem)
+void ZenonTreeViewWidget::AddToRoot(const std::shared_ptr<IznTreeViewItemSource>& RootItem, bool DeleteExisting)
 {
 	m_LockForSelectionChangedEvent = true;
 
 	this->reset();
-	m_Model->SetRootItemData(RootItem);
+	{
+		if (DeleteExisting)
+			m_Model->ClearRoot();
+
+		m_Model->AddToRoot(RootItem);
+	}
 	this->expandAll();
 
 	m_LockForSelectionChangedEvent = false;
 }
 
-void ZenonTreeViewWidget::SetRootItems(const std::vector<std::shared_ptr<IznTreeViewItemSource>>& RootItems)
+void ZenonTreeViewWidget::AddToRoot(const std::vector<std::shared_ptr<IznTreeViewItemSource>>& RootItems, bool DeleteExisting)
+{
+	m_LockForSelectionChangedEvent = true;
+	
+	this->reset();
+	{
+		if (DeleteExisting)
+			m_Model->ClearRoot();
+
+		for (const auto& item : RootItems)
+			m_Model->AddToRoot(item);
+	}
+	this->expandAll();
+
+	m_LockForSelectionChangedEvent = false;
+}
+
+/*void ZenonTreeViewWidget::SetRootItems(const std::vector<std::shared_ptr<IznTreeViewItemSource>>& RootItems)
 {
 	m_LockForSelectionChangedEvent = true;
 
@@ -58,7 +78,7 @@ void ZenonTreeViewWidget::SetRootItems(const std::vector<std::shared_ptr<IznTree
 	this->expandAll();
 
 	m_LockForSelectionChangedEvent = false;
-}
+}*/
 
 void ZenonTreeViewWidget::ClearSelection()
 {

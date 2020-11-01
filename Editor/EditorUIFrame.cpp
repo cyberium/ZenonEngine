@@ -4,109 +4,10 @@
 #include "EditorUIFrame.h"
 
 
-namespace
-{
-	class CSceneNodeModelItem
-		: public IznTreeViewItemSource
-	{
-	public:
-		CSceneNodeModelItem(const std::shared_ptr<ISceneNode3D>& SceneNode)
-			: m_SceneNode(SceneNode)
-		{
-			//for (const auto& it : SceneNode->GetChilds())
-			//	m_Childs.push_back(MakeShared(CSceneNodeModelItem, it));
-		}
-
-		ETreeViewItemType GetType() const
-		{
-			return ETreeViewItemType::SceneNode3D;
-		}
-
-		std::string GetName() const override
-		{
-			return m_SceneNode->GetName();
-		}
-
-		size_t GetChildsCount() const
-		{
-			return m_SceneNode->GetChilds().size();
-		}
-
-		std::shared_ptr<IznTreeViewItemSource> GetChild(size_t Index) const 
-		{
-			const auto& childs = m_SceneNode->GetChilds();
-			_ASSERT(Index < childs.size());
-			const auto& child = m_SceneNode->GetChilds().at(Index);
-			return MakeShared(CSceneNodeModelItem, child);
-		}
-
-		//const std::vector<std::shared_ptr<IznTreeViewItemSource>>& GetChilds() override
-		//{
-		//	return m_Childs;
-		//}
-
-		std::shared_ptr<IObject> Object() const
-		{
-			return m_SceneNode;
-		}
-
-	private:
-		std::shared_ptr<ISceneNode3D> m_SceneNode;
-		//std::vector<std::shared_ptr<IznTreeViewItemSource>> m_Childs;
-	};
-
-
-	class C3DModelModelItem
-		: public IznTreeViewItemSource
-	{
-	public:
-		C3DModelModelItem(const std::shared_ptr<IModel>& Model)
-			: m_Model(Model)
-		{
-		}
-
-		ETreeViewItemType GetType() const
-		{
-			return ETreeViewItemType::Model;
-		}
-
-		std::string GetName() const override
-		{
-			return m_Model->GetName();
-		}
-
-		size_t GetChildsCount() const
-		{
-			return 0;
-		}
-
-		std::shared_ptr<IznTreeViewItemSource> GetChild(size_t Index) const
-		{
-			_ASSERT(false);
-			return nullptr;
-		}
-
-		//const std::vector<std::shared_ptr<IznTreeViewItemSource>>& GetChilds() override
-		//{
-		//	return m_Childs;
-		//}
-
-		std::shared_ptr<IObject> Object() const
-		{
-			return m_Model;
-		}
-
-	private:
-		std::shared_ptr<IModel> m_Model;
-		//std::vector<std::shared_ptr<IznTreeViewItemSource>> m_Childs;
-	};
-}
-
-
-
 CEditorUIFrame::CEditorUIFrame(IEditor& Editor)
 	: QMainWindow(nullptr)
 	, m_Editor(Editor)
+	, m_EditorResourceBrowser(Editor)
 {
 	dynamic_cast<IEditorPrivate&>(m_Editor).SetUIFrame(this);
 
@@ -131,98 +32,7 @@ CEditorUIFrame::~CEditorUIFrame()
 {
 }
 
-IEditor& CEditorUIFrame::GetEditor() const
-{
-	return m_Editor;
-}
 
-bool CEditorUIFrame::InitializeEditorFrame()
-{
-	getMainEditor()->SetEditor(&m_Editor);
-	getSceneViewer()->SetEditor(&m_Editor);
-	getCollectionViewer()->SetEditor(&m_Editor);
-
-
-
-	// Models viewer
-#pragma region Models viewer
-	std::vector<std::shared_ptr<IznTreeViewItemSource>> models;
-	auto gameDataStorage = m_Editor.GetBaseManager().GetManager<IFilesManager>()->GetStorage(EFilesStorageType::GAMEDATA);
-	auto fileNames = gameDataStorage->GetAllFilesInFolder("models", ".fbx");
-	for (const auto& fbxFileName : fileNames)
-	{
-		try
-		{
-			auto filePtr = gameDataStorage->OpenFile(fbxFileName);
-			filePtr->ChangeExtension("znmdl");
-
-			if (m_Editor.GetBaseManager().GetManager<IFilesManager>()->IsFileExists(filePtr->Path_Name()))
-			{
-				IModelPtr model = m_Editor.GetBaseManager().GetManager<IznModelsFactory>()->LoadModel(filePtr->Path_Name());
-				model->SetName(filePtr->Name_NoExtension());
-				models.push_back(MakeShared(C3DModelModelItem, model));
-				continue;
-			}
-
-			CznFBXLoaderParams loader;
-			if (fbxFileName.find_first_of("ground_dirt") != std::string::npos)
-				loader.MakeCenterIsX0Z = true;
-			if (fbxFileName.find_first_of("cliffGrey") != std::string::npos)
-				loader.MakeCenterIsX0Z = true;
-			if (fbxFileName.find_first_of("cliffBrown") != std::string::npos)
-				loader.MakeCenterIsX0Z = true;
-
-			auto fbxModel = m_Editor.GetBaseManager().GetManager<IznModelsFactory>()->LoadModel(fbxFileName, &loader);
-			auto znModelFile = m_Editor.GetBaseManager().GetManager<IznModelsFactory>()->SaveModel(fbxModel, filePtr->Path_Name());
-			znModelFile->Save();
-
-			models.push_back(MakeShared(C3DModelModelItem, m_Editor.GetBaseManager().GetManager<IznModelsFactory>()->LoadModel(znModelFile)));
-		}
-		catch (const CException& e)
-		{
-			Log::Error(e.MessageCStr());
-		}
-	}
-
-	getCollectionViewer()->SetRootItems(models);
-
-	getCollectionViewer()->SetOnSelectedItemChange([this](const CznTreeViewItem * Item) -> bool {
-		m_Editor.Get3DFrame().OnCollectionWidget_ModelSelected(std::dynamic_pointer_cast<IModel>(Item->GetTObject()));
-		return true;
-	});
-
-	getCollectionViewer()->SetOnStartDragging([this](const CznTreeViewItem * Item, std::string * Value) -> bool {
-		_ASSERT(Value != nullptr && Value->empty());
-		Value->assign(Item->GetTObject()->GetName().c_str());
-		m_Editor.GetTools().Enable(ETool::EToolDragger);
-		return true;
-	});
-#pragma endregion
-
-
-
-	// SceneNode viewer
-#pragma region SceneNode viewer
-	getSceneViewer()->SetRootItems(models);
-
-	getSceneViewer()->SetOnSelectedItemChange([this](const CznTreeViewItem * Item) -> bool {
-		m_Editor.Get3DFrame().LockUpdates();
-		auto& selector = dynamic_cast<IEditorToolSelector&>(m_Editor.GetTools().GetTool(ETool::EToolSelector));
-		selector.SelectNode(std::static_pointer_cast<ISceneNode3D>(Item->GetTObject()));
-		m_Editor.Get3DFrame().UnlockUpdates();
-		return true;
-	});
-
-	getSceneViewer()->SetOnContexMenu([this](const CznTreeViewItem* Item, std::string * Title, std::vector<std::shared_ptr<IPropertyAction>> * Actions) -> bool {
-		if (false == m_Editor.GetUIFrame().ExtendContextMenu(std::dynamic_pointer_cast<ISceneNode3D>(Item->GetTObject()), Title, Actions))
-			return false;
-		return true;
-	});
-#pragma endregion
-
-
-	return false;
-}
 
 
 namespace
@@ -256,6 +66,22 @@ namespace
 //
 // IEditorUIFrame
 //
+
+IEditor& CEditorUIFrame::GetEditor() const
+{
+	return m_Editor;
+}
+
+bool CEditorUIFrame::InitializeEditorFrame()
+{
+	getMainEditor()->SetEditor(&m_Editor);
+
+	m_EditorResourceBrowser.Initialize();
+	m_EditorResourceBrowser.InitializeSceneBrowser();
+
+	return true;
+}
+
 void CEditorUIFrame::DoInitializeToolsUI()
 {
 	GetEditor().GetTools().DoInitializeUI(*this);
@@ -335,7 +161,7 @@ bool CEditorUIFrame::ExtendContextMenu(const std::shared_ptr<ISceneNode3D>& Node
 
 void CEditorUIFrame::OnSceneChanged(ESceneChangeType SceneChangeType, const std::shared_ptr<ISceneNode3D>& ParentNode, const std::shared_ptr<ISceneNode3D>& ChildNode)
 {
-	getSceneViewer()->SetRootItem(MakeShared(CSceneNodeModelItem, m_Editor.Get3DFrame().GetEditedRootNode3D()));
+	m_EditorResourceBrowser.UpdateSceneBrowser();
 }
 
 

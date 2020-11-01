@@ -9,6 +9,10 @@ ZN_INTERFACE IEditorQtUIFrame
 	virtual QObject& getQObject() = 0;
 	virtual HWND getHWND() = 0;
 	virtual Ui::EditorUIFrameClass& getUI() = 0;
+	virtual ZenonWindow3D * getMainEditor() const = 0;
+	virtual ZenonWindowMinimal3DWidget * getModelPreview() const = 0;
+	virtual ZenonTreeViewWidget * getSceneViewer() const = 0;
+	virtual ZenonTreeViewWidget * getCollectionViewer() const = 0;
 };
 
 
