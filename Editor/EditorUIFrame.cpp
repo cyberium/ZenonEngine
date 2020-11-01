@@ -115,6 +115,7 @@ CEditorUIFrame::CEditorUIFrame(IEditor& Editor)
 	// Load & Save
 	connect(m_UI.actionOpen_Scene, &QAction::triggered, std::bind(&CEditorUIFrame::OnSceneLoadFromFile, this));
 	connect(m_UI.actionSave_Scene, &QAction::triggered, std::bind(&CEditorUIFrame::OnSceneSaveToFile, this));
+	connect(m_UI.actionClose_Scene, &QAction::triggered, std::bind(&CEditorUIFrame::OnSceneClose, this));
 
 	QFileSystemModel* fsModel = ZN_NEW QFileSystemModel(this);
 	fsModel->setRootPath("O:\\ZenonEngine_gamedata\\");
@@ -398,34 +399,14 @@ void CEditorUIFrame::OnSceneLoadFromFile()
 	if (file == nullptr)
 		return;
 
-	CXMLManager xml(m_Editor.GetBaseManager());
-	auto reader = xml.CreateReader(file);
+	OnSceneClose();
 
 	auto editorRoot = m_Editor.Get3DFrame().GetEditedRootNode3D();
-
-	// Remove existing childs
-	Log::Info("SceneLoad: Root contains '%d' childs BEFORE load scene.", editorRoot->GetChilds().size());
-	size_t mustLeaveExisting = 0;
-	while (editorRoot->GetChilds().size() > mustLeaveExisting)
-	{
-		auto editorChild = *(editorRoot->GetChilds().begin() + mustLeaveExisting);
-		if (editorChild->IsPersistance())
-		{
-			mustLeaveExisting++;
-			Log::Info("SceneLoad: Child '%s' was not removed, because is persistat", editorChild->GetName().c_str());
-			continue;
-		}
-
-		editorRoot->RemoveChild(editorChild);
-	}
-	Log::Info("SceneLoad: Root contains '%d' childs AFTER load scene.", editorRoot->GetChilds().size());
-
-
-
 	auto realRoot = editorRoot->GetParent(); // Temporary we add nodes to real root
+
+	CXMLManager xml(m_Editor.GetBaseManager());
+	auto reader = xml.CreateReader(file);
 	auto xmlRoot = m_Editor.GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->LoadSceneNode3DXML(reader->GetChilds()[0], editorRoot->GetScene(), realRoot);
-
-
 
 	// Update persistance nodes
 	for (const auto& editorChild : editorRoot->GetChilds())
@@ -433,9 +414,11 @@ void CEditorUIFrame::OnSceneLoadFromFile()
 		if (editorChild->IsPersistance())
 		{
 			auto xmlChild = xmlRoot->GetChild(editorChild->GetName());
-			_ASSERT(xmlChild != nullptr);
-			xmlChild->CopyTo(editorChild);
-			xmlRoot->RemoveChild(xmlChild);
+			if (xmlChild != nullptr)
+			{
+				xmlChild->CopyTo(editorChild);
+				xmlRoot->RemoveChild(xmlChild);
+			}
 		}
 	}
 
@@ -462,4 +445,26 @@ void CEditorUIFrame::OnSceneSaveToFile()
 
 	auto file = manager.SaveWriterToFile(writer, fileName);
 	file->Save();
+}
+
+void CEditorUIFrame::OnSceneClose()
+{
+	auto editorRoot = m_Editor.Get3DFrame().GetEditedRootNode3D();
+
+	// Remove existing childs
+	Log::Info("OnSceneClose: Root contains '%d' childs BEFORE load scene.", editorRoot->GetChilds().size());
+	size_t mustLeaveExisting = 0;
+	while (editorRoot->GetChilds().size() > mustLeaveExisting)
+	{
+		auto editorChild = *(editorRoot->GetChilds().begin() + mustLeaveExisting);
+		if (editorChild->IsPersistance())
+		{
+			mustLeaveExisting++;
+			Log::Info("OnSceneClose: Child '%s' was not removed, because is persistat", editorChild->GetName().c_str());
+			continue;
+		}
+
+		editorRoot->RemoveChild(editorChild);
+	}
+	Log::Info("OnSceneClose: Root contains '%d' childs AFTER load scene.", editorRoot->GetChilds().size());
 }
