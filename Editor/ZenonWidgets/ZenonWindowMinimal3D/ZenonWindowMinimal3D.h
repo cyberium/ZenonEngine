@@ -28,6 +28,7 @@ public:
 	// INativeWindow_WindowsSpecific
 	HWND GetHWnd() const override;
 	LRESULT Windows_ProcessMessage(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam) override;
+	virtual std::shared_ptr<IImage> TakeScreenshot(IBaseManager& BaseManager);
 
 protected:
 	QPaintEngine* paintEngine() const override { return nullptr; } // don't touch this magic!!!

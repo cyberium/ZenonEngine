@@ -94,6 +94,88 @@ LRESULT ZenonWindowMinimal3DWidget::Windows_ProcessMessage(HWND hwnd, UINT messa
 	return 0;
 }
 
+std::shared_ptr<IImage> ZenonWindowMinimal3DWidget::TakeScreenshot(IBaseManager& BaseManager)
+{
+
+
+
+	
+	{
+		RECT rc;
+		HWND hwnd = GetParent(GetParent(GetHWnd()));    //the window can't be min
+		if (hwnd == NULL)
+		{
+			//std::cout << "it can't find any 'note' window" << std::endl;
+			//return 0;
+		}
+		GetClientRect(hwnd, &rc);
+
+		//create
+		HDC hdcScreen = GetDC(NULL);
+		HDC hdc = CreateCompatibleDC(hdcScreen);
+		HBITMAP hbmp = CreateCompatibleBitmap(hdcScreen, rc.right - rc.left, rc.bottom - rc.top);
+		SelectObject(hdc, hbmp);
+
+		//Print to memory hdc
+		PrintWindow(hwnd, hdc, PW_CLIENTONLY);
+
+		//copy to clipboard
+		OpenClipboard(NULL);
+		EmptyClipboard();
+		SetClipboardData(CF_BITMAP, hbmp);
+		CloseClipboard();
+
+		//release
+		DeleteDC(hdc);
+		DeleteObject(hbmp);
+		ReleaseDC(NULL, hdcScreen);
+
+		//std::cout << "success copy to clipboard, please paste it to the 'mspaint'" << std::endl;
+	}
+
+
+
+	HWND hwnd = GetParent(GetParent(GetHWnd()));
+
+	HDC hdcScreen = GetDC(hwnd);
+	HDC hdc = CreateCompatibleDC(hdcScreen);
+	
+	HBITMAP hBitmap = CreateCompatibleBitmap(hdcScreen, GetWindowWidth(), GetWindowHeight());
+	SelectObject(hdc, hBitmap);
+
+	if (FALSE == PrintWindow(hwnd, hdc, PW_CLIENTONLY))
+		_ASSERT(false);
+
+	//HBITMAP prevBitmap = (HBITMAP)SelectObject(hdc, hBitmap);
+
+	BITMAP bitmap = { };
+	if (false == GetObjectA(hBitmap, sizeof(BITMAP), &bitmap))
+		_ASSERT(false);
+
+	BITMAPINFO bitmapInfo = { };
+	bitmapInfo.bmiHeader.biSize = sizeof(BITMAPINFOHEADER);
+	if (false == GetDIBits(hdc, hBitmap, 0, 0, NULL, &bitmapInfo, DIB_RGB_COLORS))
+		_ASSERT(false);
+
+	bitmapInfo.bmiHeader.biBitCount = 32;
+	bitmapInfo.bmiHeader.biCompression = BI_RGB;
+
+	std::shared_ptr<IImage> image = BaseManager.GetManager<IImagesFactory>()->CreateEmptyImage("screenshoot.png", GetWindowWidth(), GetWindowHeight(), 32);
+	uint8* imageDataEx = image->GetDataEx();
+
+	for (LONG i = 0; i < bitmap.bmHeight; i++)
+		if (false == GetDIBits(hdc, hBitmap, i, 1, &imageDataEx[(bitmap.bmHeight - 1 - i) * GetWindowWidth() * 4], &bitmapInfo, DIB_RGB_COLORS))
+			_ASSERT(false);
+
+	//SelectObject(hdc, prevBitmap);
+
+	DeleteDC(hdc);
+	DeleteObject(hBitmap);
+	ReleaseDC(hwnd, hdcScreen);
+
+	return image;
+}
+
 
 //
 // Events

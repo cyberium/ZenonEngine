@@ -14,6 +14,10 @@ CImageDDS::CImageDDS()
 {
 }
 
+CImageDDS::CImageDDS(uint32 Width, uint32 Height, uint32 BitsPerPixel)
+	: CImageBase(Width, Height, BitsPerPixel, false)
+{}
+
 CImageDDS::~CImageDDS()
 {
 }
@@ -22,6 +26,19 @@ CImageDDS::~CImageDDS()
 //
 // Static
 //
+bool CImageDDS::IsFilenameSupported(const std::string& Filename)
+{
+	auto lastPointPos = Filename.find_last_of('.');
+	if (lastPointPos != std::string::npos)
+	{
+		std::string extension = Filename.substr(lastPointPos + 1);
+		extension = Utils::ToLower(extension);
+		return extension == "dds";
+	}
+
+	return false;
+}
+
 bool CImageDDS::IsFileSupported(std::shared_ptr<IFile> File)
 {
 	if (!File->Extension().empty())
@@ -41,6 +58,11 @@ bool CImageDDS::IsFileSupported(std::shared_ptr<IFile> File)
 		return false;
 
 	return true;
+}
+
+std::shared_ptr<CImageDDS> CImageDDS::CreateEmptyImage(uint32 Width, uint32 Height, uint32 BitsPerPixel)
+{
+	return std::shared_ptr<CImageDDS>();
 }
 
 std::shared_ptr<CImageDDS> CImageDDS::CreateImage(std::shared_ptr<IFile> File)
@@ -104,7 +126,7 @@ bool CImageDDS::LoadRGB(const DDSURFACEDESC2& desc, std::shared_ptr<IFile> io)
 	m_Height = (uint32)desc.dwHeight;
 	m_BitsPerPixel = (uint32)desc.ddpfPixelFormat.dwRGBBitCount;
 	m_Stride = m_Width * (m_BitsPerPixel / 8);
-	m_IsTransperent = (desc.ddpfPixelFormat.dwFlags & DDPF_ALPHAPIXELS) == 1;
+	m_IsTransperent = (desc.ddpfPixelFormat.dwFlags & DDPF_ALPHAPIXELS) == 1; // TODO: Fixme
 	m_Data = ZN_NEW uint8[m_Height * m_Stride];
 
 	// read the file
@@ -125,7 +147,7 @@ bool CImageDDS::LoadDXT(int type, const DDSURFACEDESC2& desc, std::shared_ptr<IF
 	m_Height = (uint32)desc.dwHeight & ~3;
 	m_BitsPerPixel = 32;
 	m_Stride = m_Width * (m_BitsPerPixel / 8);
-	m_IsTransperent = (desc.ddpfPixelFormat.dwFlags & DDPF_ALPHAPIXELS) == 1;
+	m_IsTransperent = (desc.ddpfPixelFormat.dwFlags & DDPF_ALPHAPIXELS) == 1; // TODO: Fixme
 	m_Data = ZN_NEW uint8[m_Height * m_Stride];
 
 	switch (type)

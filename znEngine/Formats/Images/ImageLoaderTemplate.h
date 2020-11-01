@@ -14,9 +14,6 @@ public:
 		return *((T*)((uint8*)m_Data + y * m_Stride + x * (m_BitsPerPixel / 8)));
 	}
 
-	uint8*                  GetDataEx();
-	std::shared_ptr<IImage> ConvertAnyTo32Bit();
-
 	// IImage
 	uint32 GetWidth() const override;
 	uint32 GetHeight() const override;
@@ -25,6 +22,9 @@ public:
 	bool IsTransperent() const override;
 	const uint8* GetData() const override;
 	void Resize(uint32 NewWidth, uint32 NewHeight) override;
+	uint8* GetDataEx() override;
+	std::shared_ptr<IImage> ConvertAnyTo32Bit() override;
+	std::shared_ptr<IByteBuffer> SaveToMemory() override;
 
 protected:
 	uint8* GetLine(uint32 Line) const;
@@ -50,9 +50,17 @@ public:
 	{}
 
 	// IImageLoader
+	inline bool IsFilenameSupported(const std::string& Filename) const override
+	{
+		return TIMAGE::IsFilenameSupported(Filename);
+	}
 	inline bool IsFileSupported(std::shared_ptr<IFile> File) const override
 	{
 		return TIMAGE::IsFileSupported(File);
+	}
+	inline std::shared_ptr<IImage> CreateEmptyImage(uint32 Width, uint32 Height, uint32 BitsPerPixel) const override
+	{
+		return TIMAGE::CreateEmptyImage(Width, Height, BitsPerPixel);
 	}
 	inline std::shared_ptr<IImage> CreateImage(std::shared_ptr<IFile> File) const override
 	{

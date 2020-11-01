@@ -13,7 +13,7 @@ public:
 	virtual ~ZenonWindow3D();
 
 	void SetEditor(IEditor* Editor) { m_Editor = Editor; }
-
+	
 private slots:
 	void onCustomContextMenu(const QPoint& pos);
 

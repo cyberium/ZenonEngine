@@ -38,3 +38,5 @@ private:
 	HWND				m_HWnd;
 	INativeWindowEventListener* m_EventListener;
 };
+
+

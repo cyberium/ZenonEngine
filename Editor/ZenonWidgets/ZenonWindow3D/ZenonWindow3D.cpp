@@ -14,6 +14,7 @@ ZenonWindow3D::ZenonWindow3D(QWidget *parent)
 ZenonWindow3D::~ZenonWindow3D()
 {}
 
+
 //
 // Slots
 //
@@ -161,6 +162,15 @@ void ZenonWindow3D::keyPressEvent(QKeyEvent * event)
 		event->modifiers() == Qt::KeyboardModifier::AltModifier
 	);
 	m_EventListener->OnWindowKeyPressed(args);
+
+	if (args.Key == KeyCode::F11 && args.State == KeyState::Pressed)
+	{
+		auto image = TakeScreenshot(m_Editor->GetBaseManager());
+		auto buffer = image->SaveToMemory();
+		auto file = m_Editor->GetBaseManager().GetManager<IFilesManager>()->Create("screenshot.png");
+		file->writeBytes(buffer->getData(), buffer->getSize());
+		file->Save();
+	}
 }
 
 void ZenonWindow3D::keyReleaseEvent(QKeyEvent * event)

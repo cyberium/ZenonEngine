@@ -8,6 +8,7 @@ class CImageDDS
 {
 public:
 	CImageDDS();
+	CImageDDS(uint32 Width, uint32 Height, uint32 BitsPerPixel);
 	virtual ~CImageDDS();
 
 protected:
@@ -19,6 +20,8 @@ protected:
 	bool LoadDXT_Helper(std::shared_ptr<IFile> io);
 
 public: // Static
+	static bool IsFilenameSupported(const std::string& Filename);
 	static bool IsFileSupported(std::shared_ptr<IFile> File);
+	static std::shared_ptr<CImageDDS> CreateEmptyImage(uint32 Width, uint32 Height, uint32 BitsPerPixel);
 	static std::shared_ptr<CImageDDS> CreateImage(std::shared_ptr<IFile> File);
 };

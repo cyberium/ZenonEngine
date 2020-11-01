@@ -10,6 +10,7 @@ public:
 	// IImagesFactory
 	void AddImageLoader(const std::shared_ptr<IImageLoader>& ImageLoader) override;
 	void RemoveImageLoader(const std::shared_ptr<IImageLoader>& ImageLoader) override;
+	std::shared_ptr<IImage> CreateEmptyImage(const std::string& FileName, uint32 Width, uint32 Height, uint32 BitsPerPixel) override;
 	std::shared_ptr<IImage> CreateImage(const std::string& FileName) override;
 	std::shared_ptr<IImage> CreateImage(const std::shared_ptr<IFile>& File) override;
 

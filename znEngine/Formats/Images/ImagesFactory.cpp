@@ -32,6 +32,20 @@ void CImagesFactory::RemoveImageLoader(const std::shared_ptr<IImageLoader>& Imag
 	m_ImageLoaders.erase(it);
 }
 
+std::shared_ptr<IImage> CImagesFactory::CreateEmptyImage(const std::string & FileName, uint32 Width, uint32 Height, uint32 BitsPerPixel)
+{
+	for (const auto& loader : m_ImageLoaders)
+	{
+		if (loader->IsFilenameSupported(FileName))
+		{
+			return loader->CreateEmptyImage(Width, Height, BitsPerPixel);
+		}
+	}
+
+	Log::Error("CImagesFactory: Image '%s' not supported.", FileName.c_str());
+	return nullptr;
+}
+
 std::shared_ptr<IImage> CImagesFactory::CreateImage(const std::string& FileName)
 {
 	return CreateImage(m_BaseManager.GetManager<IFilesManager>()->Open(FileName));

@@ -34,53 +34,6 @@ CImageBase::~CImageBase()
 	}
 }
 
-uint8* CImageBase::GetDataEx()
-{
-	return m_Data;
-}
-
-
-
-#define FI_RGBA_RED				0
-#define FI_RGBA_GREEN			1
-#define FI_RGBA_BLUE			2
-#define FI_RGBA_ALPHA			3
-
-std::shared_ptr<IImage> CImageBase::ConvertAnyTo32Bit()
-{
-	if (GetBitsPerPixel() == 32)
-		return shared_from_this();
-
-	uint32 sourceBytesCnt = GetBitsPerPixel() / 8;
-
-	std::shared_ptr<CImageBase> destImage = MakeShared(CImageBase, m_Width, m_Height, 32, false);
-
-	for (uint32 rows = 0; rows < m_Height; rows++)
-	{
-		const uint8* sourceLine = GetLine(rows);
-		uint8* destLine = destImage->GetLine(rows);
-
-		for (uint32 cols = 0; cols < m_Width; cols++)
-		{
-			for (uint32 ch = 0; ch < 4; ch++)
-			{
-				uint32 sourceIndexOffset = std::min(ch, sourceBytesCnt - 1u);
-				destLine[FI_RGBA_RED + ch] = sourceLine[FI_RGBA_RED + sourceIndexOffset];
-			}
-
-			//destLine[FI_RGBA_RED] = sourceLine[FI_RGBA_RED];
-			//destLine[FI_RGBA_GREEN] = sourceLine[FI_RGBA_RED];
-			//destLine[FI_RGBA_BLUE] = sourceLine[FI_RGBA_RED];
-			//destLine[FI_RGBA_ALPHA] = 0xFF;
-
-			destLine += destImage->GetBitsPerPixel() / 8;
-			sourceLine += GetBitsPerPixel() / 8;
-		}
-	}
-
-	return destImage;
-}
-
 
 
 //
@@ -168,9 +121,65 @@ void CImageBase::Resize(uint32 NewWidth, uint32 NewHeight)
 
 }
 
+uint8* CImageBase::GetDataEx()
+{
+	return m_Data;
+}
+
+#define FI_RGBA_RED				0
+#define FI_RGBA_GREEN			1
+#define FI_RGBA_BLUE			2
+#define FI_RGBA_ALPHA			3
+
+std::shared_ptr<IImage> CImageBase::ConvertAnyTo32Bit()
+{
+	if (GetBitsPerPixel() == 32)
+		return shared_from_this();
+
+	uint32 sourceBytesCnt = GetBitsPerPixel() / 8;
+
+	std::shared_ptr<CImageBase> destImage = MakeShared(CImageBase, m_Width, m_Height, 32, false);
+
+	for (uint32 rows = 0; rows < m_Height; rows++)
+	{
+		const uint8* sourceLine = GetLine(rows);
+		uint8* destLine = destImage->GetLine(rows);
+
+		for (uint32 cols = 0; cols < m_Width; cols++)
+		{
+			for (uint32 ch = 0; ch < 4; ch++)
+			{
+				uint32 sourceIndexOffset = std::min(ch, sourceBytesCnt - 1u);
+				destLine[FI_RGBA_RED + ch] = sourceLine[FI_RGBA_RED + sourceIndexOffset];
+			}
+
+			//destLine[FI_RGBA_RED] = sourceLine[FI_RGBA_RED];
+			//destLine[FI_RGBA_GREEN] = sourceLine[FI_RGBA_RED];
+			//destLine[FI_RGBA_BLUE] = sourceLine[FI_RGBA_RED];
+			//destLine[FI_RGBA_ALPHA] = 0xFF;
+
+			destLine += destImage->GetBitsPerPixel() / 8;
+			sourceLine += GetBitsPerPixel() / 8;
+		}
+	}
+
+	return destImage;
+}
+
+std::shared_ptr<IByteBuffer> CImageBase::SaveToMemory()
+{
+	throw CException("Not implemented.");
+}
+
+
+
+//
+// Protected
+//
 uint8* CImageBase::GetLine(uint32 Line) const
 {
 	_ASSERT(m_Data != nullptr);
 	_ASSERT(Line < m_Height);
 	return (uint8*)m_Data + ((m_Height - Line - 1) * m_Stride);
 }
+
