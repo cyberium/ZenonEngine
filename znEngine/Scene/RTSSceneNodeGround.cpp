@@ -8,7 +8,7 @@ CRTSSceneNodeGround::CRTSSceneNodeGround(IScene& Scene)
 {
 	SetPersistanceInternal(true);
 
-	m_Cells = ZN_NEW SRTSCell**[cCellsCount];
+	/*m_Cells = ZN_NEW SRTSCell**[cCellsCount];
 	for (size_t x = 0; x < cCellsCount; x++)
 	{
 		m_Cells[x] = ZN_NEW SRTSCell*[cCellsCount];
@@ -17,12 +17,21 @@ CRTSSceneNodeGround::CRTSSceneNodeGround(IScene& Scene)
 			m_Cells[x][z] = ZN_NEW SRTSCell(SRTSCellCoords(x, z));
 			AddCell(ERTSCellType::ctGround, m_Cells[x][z]->Coords);
 		}
+	}*/
+
+	for (size_t x = 0; x < cCellsCount; x++)
+	{
+		for (size_t z = 0; z < cCellsCount; z++)
+		{
+			m_Cells[x][z].Coords = SRTSCellCoords(x, z);
+			AddCell(ERTSCellType::ctGround, m_Cells[x][z].Coords);
+		}
 	}
 }
 
 CRTSSceneNodeGround::~CRTSSceneNodeGround()
 {
-	for (size_t x = 0; x < cCellsCount; x++)
+	/*for (size_t x = 0; x < cCellsCount; x++)
 	{
 		for (size_t z = 0; z < cCellsCount; z++)
 		{
@@ -30,7 +39,7 @@ CRTSSceneNodeGround::~CRTSSceneNodeGround()
 		}
 		delete[] m_Cells[x];
 	}
-	delete[] m_Cells;
+	delete[] m_Cells;*/
 }
 
 
@@ -91,13 +100,13 @@ bool CRTSSceneNodeGround::AddCell(ERTSCellType CellType, SRTSCellCoords Coords)
 SRTSCell& CRTSSceneNodeGround::GetCell(SRTSCellCoords Coords)
 {
 	_ASSERT(Coords.IsCorrect());
-	return *m_Cells[Coords.GetX()][Coords.GetZ()];
+	return m_Cells[Coords.GetX()][Coords.GetZ()];
 }
 
 const SRTSCell& CRTSSceneNodeGround::GetCellConst(SRTSCellCoords Coords) const
 {
 	_ASSERT(Coords.IsCorrect());
-	return *m_Cells[Coords.GetX()][Coords.GetZ()];
+	return m_Cells[Coords.GetX()][Coords.GetZ()];
 }
 
 SRTSCellCoords CRTSSceneNodeGround::PositionToCoords(const glm::vec3& Position)
@@ -184,8 +193,7 @@ void CRTSSceneNodeGround::Save(const std::shared_ptr<IXMLWriter>& Writer) const
 			cellWriter->SetInt32Attribute(x, "X");
 			cellWriter->SetInt32Attribute(z, "Z");
 
-			auto& cellPtr = m_Cells[x][z];
-			cellWriter->SetUInt8Attribute((int8)(*cellPtr).Type, "Type");
+			cellWriter->SetUInt8Attribute((int8)m_Cells[x][z].Type, "Type");
 
 			rtsCellsWriter->AddChild(cellWriter);
 		}

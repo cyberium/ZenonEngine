@@ -91,6 +91,7 @@ EVisitResult CRTSGround_Pass::Visit(const ISceneNode3D * SceneNode)
 			const SRTSCell& cell = rtsGround->GetCellConst(SRTSCellCoords(x, z));
 			if (cell.Model == nullptr)
 				continue;
+			_ASSERT(cell.Model.use_count() > 1);
 			modelPriorMap[cell.Model.get()].push_back(PerObject{ glm::translate(cell.Coords.ToPosition()) });
 		}
 	}

@@ -32,5 +32,5 @@ private:
 	CznTreeViewItem* getItem(const QModelIndex& index) const;
 
 private:
-	CznTreeViewItem* m_RootItem;
+	std::shared_ptr<CznTreeViewItem> m_RootItem;
 };

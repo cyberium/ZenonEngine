@@ -33,26 +33,23 @@ namespace
 CznQTTreeViewModel::CznQTTreeViewModel(QObject * parent)
 	: QAbstractItemModel(parent)
 {
-	m_RootItem = ZN_NEW(CznTreeViewItem);
+	m_RootItem = MakeShared(CznTreeViewItem);
 }
 
 CznQTTreeViewModel::~CznQTTreeViewModel()
 {
-	delete m_RootItem;
 }
 
 // CznQTTreeViewModel
 void CznQTTreeViewModel::SetRootItemData(const std::shared_ptr<IznTreeViewItemSource>& Item)
 {
-	auto oldRoot = m_RootItem;
-	m_RootItem = ZN_NEW CznTreeViewItem(Item, nullptr);
-	delete oldRoot;
+	m_RootItem = MakeShared(CznTreeViewItem, Item, nullptr);
 }
 
 void CznQTTreeViewModel::SetChildRootItemsData(const std::vector<std::shared_ptr<IznTreeViewItemSource>>& Items)
 {
 	for (const auto& item : Items)
-		m_RootItem->addChild(MakeShared(CznTreeViewItem, item, m_RootItem));
+		m_RootItem->addChild(MakeShared(CznTreeViewItem, item, m_RootItem.get()));
 }
 
 std::shared_ptr<IObject> CznQTTreeViewModel::Find(const QModelIndex& ModelIdnex)
@@ -141,7 +138,7 @@ QModelIndex CznQTTreeViewModel::parent(const QModelIndex& index) const
 	if (parentItem == nullptr)
 		return QModelIndex();
 
-	if (parentItem == m_RootItem)
+	if (parentItem == m_RootItem.get())
 		return QModelIndex();
 
 	return createIndex(parentItem->childNumberInParent(), 0, parentItem);
@@ -166,10 +163,10 @@ int CznQTTreeViewModel::columnCount(const QModelIndex& parent) const
 CznTreeViewItem* CznQTTreeViewModel::getItem(const QModelIndex& index) const
 {
 	if (false == index.isValid())
-		return m_RootItem;
+		return m_RootItem.get();
 
 	if (auto item = static_cast<CznTreeViewItem*>(index.internalPointer()))
 		return item;
 
-	return m_RootItem;
+	return m_RootItem.get();
 }

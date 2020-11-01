@@ -35,5 +35,5 @@ private:
 	void DoProcessNodesNear(SRTSCellCoords Coords);
 	
 private:
-	SRTSCell*** m_Cells;
+	SRTSCell m_Cells[cCellsCount][cCellsCount];
 };

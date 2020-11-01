@@ -43,6 +43,7 @@ public:
 protected:
 	void OnSceneLoadFromFile();
 	void OnSceneSaveToFile();
+	void OnSceneClose();
 
 private:
 	std::shared_ptr<CPropertiesController> m_PropertiesController;

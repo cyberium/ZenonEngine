@@ -8,7 +8,7 @@ const float cCellHalfSize = cCellSize / 2.0f;
 enum class ERTSCellType : uint8
 {
 	ctGround = 0,
-	ctWater = 2
+	ctWater = 1
 };
 
 
@@ -59,12 +59,12 @@ private:
 
 struct SRTSCell
 {
-	SRTSCell(SRTSCellCoords Coords_)
+	SRTSCell()
 		: Type(ERTSCellType::ctGround)
-		, Coords(Coords_)
+		, Coords(-1, -1)
 	{}
 
-	const SRTSCellCoords Coords;
+	SRTSCellCoords Coords;
 	ERTSCellType Type;
 	std::shared_ptr<IModel> Model;
 };

@@ -25,7 +25,7 @@ std::string CEditorWindowsShell::ShowLoadFileDialog(std::string DefaultName) con
 
 	OPENFILENAMEA ofn = { 0 };
 	ofn.lStructSize = sizeof(OPENFILENAMEA);
-	ofn.hwndOwner = reinterpret_cast<IEditorQtUIFrame&>(m_Editor.GetUIFrame()).getHWND();
+	ofn.hwndOwner = dynamic_cast<IEditorQtUIFrame&>(m_Editor.GetUIFrame()).getHWND();
 	ofn.lpstrFile = szFile;
 	ofn.nMaxFile = sizeof(szFile);
 	ofn.lpstrFilter = "All\0*.*\0Text\0*.TXT\0";
@@ -49,7 +49,7 @@ std::string CEditorWindowsShell::ShowSaveFileDialog(std::string DefaultName) con
 	// open a file name
 	OPENFILENAMEA ofn = { 0 };
 	ofn.lStructSize = sizeof(OPENFILENAMEA);
-	ofn.hwndOwner = reinterpret_cast<IEditorQtUIFrame&>(m_Editor.GetUIFrame()).getHWND();
+	ofn.hwndOwner = dynamic_cast<IEditorQtUIFrame&>(m_Editor.GetUIFrame()).getHWND();
 	ofn.lpstrFile = szFile;
 	ofn.nMaxFile = sizeof(szFile);
 	ofn.lpstrFilter = "All\0*.*\0Text\0*.TXT\0";
