@@ -91,6 +91,11 @@
     <Filter Include="UI\Widgets\ZenonTreeView">
       <UniqueIdentifier>{6e20963d-5916-415d-9605-d216cd05d491}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+      <ParseFiles>true</ParseFiles>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -369,6 +374,9 @@
     <ClCompile Include="ZenonWidgets\ZenonTreeView\TreeViewItemVirtualFolder.cpp">
       <Filter>UI\Widgets\ZenonTreeView</Filter>
     </ClCompile>
+    <ClCompile Include="DragUtils.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -597,6 +605,9 @@
     </ClInclude>
     <ClInclude Include="ZenonWidgets\ZenonTreeView\TreeViewItemVirtualFolder.h">
       <Filter>UI\Widgets\ZenonTreeView</Filter>
+    </ClInclude>
+    <ClInclude Include="DragUtils.h">
+      <Filter>UI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

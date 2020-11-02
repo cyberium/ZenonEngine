@@ -307,14 +307,17 @@ void ZenonTreeViewWidget::mouseMoveEventInternal(QMouseEvent * event)
 	if (m_OnDragStart == nullptr)
 		return;
 
-	std::string mimeDataText;
-	if (false == m_OnDragStart(item, &mimeDataText))
+	CByteBuffer byteBuffer;
+	if (false == m_OnDragStart(item, &byteBuffer))
 		return;
 
 	m_StartDragging = true;
 
-	QMimeData *mimeData = ZN_NEW QMimeData;
-	mimeData->setText(mimeDataText.c_str());
+	QByteArray qtByteBuffer;
+	qtByteBuffer.setRawData((const char*)byteBuffer.getData(), byteBuffer.getSize());
+
+	QMimeData * mimeData = ZN_NEW QMimeData;
+	mimeData->setData("ZenonEngineMimeData", qtByteBuffer);
 
 	auto drag = ZN_NEW QDrag(this);
 	drag->setMimeData(mimeData);

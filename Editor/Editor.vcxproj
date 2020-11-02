@@ -117,6 +117,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="DragUtils.cpp" />
     <ClCompile Include="EditedScene.cpp" />
     <ClCompile Include="Editor.cpp" />
     <ClCompile Include="Editor3DFrame.cpp" />
@@ -383,6 +384,7 @@
     <ClCompile Include="ZenonWidgets\ZenonWindowMinimal3D\ZenonWindowMinimal3D.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="DragUtils.h" />
     <ClInclude Include="EditedScene.h" />
     <ClInclude Include="Editor.h" />
     <ClInclude Include="Editor3DFrame.h" />

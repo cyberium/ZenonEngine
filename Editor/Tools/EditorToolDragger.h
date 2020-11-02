@@ -31,8 +31,6 @@ protected: // Editor
 	void CreateCopyDraggedNode();
 	void Clear();
 
-	std::shared_ptr<ISceneNode3D> CreateNode(const glm::ivec3& Position, const std::string& Type);
-
 private:
 	bool m_IsDraggingPermanentCreation;
 	std::shared_ptr<ISceneNode3D> m_DraggerNode;

@@ -24,10 +24,11 @@ enum ETool
 	EToolDefault = EToolSelector
 };
 
+
 struct SDragData
 {
-	std::string Message;
-	glm::vec2 Position;
+	CByteBuffer Buffer;
+	glm::vec2 ScreenPosition;
 	bool IsCtrl;
 };
 

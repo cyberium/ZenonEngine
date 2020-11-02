@@ -1,0 +1,95 @@
+#include "stdafx.h"
+
+// General
+#include "DragUtils.h"
+
+void CreateDragDataFromSceneNode(const std::shared_ptr<ISceneNode3D>& Node, CByteBuffer * ByteBuffer)
+{
+	if (Node == nullptr)
+		throw CException("Unable create drag data from ISceneNode, because ISceneNode is nullptr.");
+
+	if (ByteBuffer == nullptr || ByteBuffer->getSize() > 0 || ByteBuffer->getPos() > 0)
+		throw CException("Unable create drag data from '%s' ISceneNode, because ByteBuffer is not empty.", Node->GetName().c_str());
+
+	// 4 bytes - sourceType
+	EDragDataSourceType sourceType = EDragDataSourceType::SceneNode;
+	ByteBuffer->write(&sourceType);
+
+	// string - SceneNode guid
+	ByteBuffer->AppendPackedUInt64(Node->GetGUID());
+}
+
+void CreateDragDataFromModel(const IModelPtr& Model, CByteBuffer * ByteBuffer)
+{
+	if (Model == nullptr)
+		throw CException("Unable create drag data from IModel, because IModel is nullptr.");
+
+	if (ByteBuffer == nullptr || ByteBuffer->getSize() > 0 || ByteBuffer->getPos() > 0)
+		throw CException("Unable create drag data from '%s' IModel, because ByteBuffer is not empty.", Model->GetName().c_str());
+
+	// 4 bytes - sourceType
+	EDragDataSourceType sourceType = EDragDataSourceType::Model;
+	ByteBuffer->write(&sourceType);
+
+	// Model name
+	ByteBuffer->writeString(Model->GetName());
+
+	// Model filename
+	ByteBuffer->writeString(Model->GetFileName());
+}
+
+EDragDataSourceType GetDragDataSourceType(const CByteBuffer & ByteBuffer)
+{
+	if (ByteBuffer.getSize() == 0 || ByteBuffer.getPos() > 0)
+		throw CException("Incorrect drag data ByteBuffer.");
+
+	CByteBuffer byteBufferCopy(ByteBuffer);
+
+	uint32 sourceTypeInt;
+	if (false == byteBufferCopy.read(&sourceTypeInt))
+		throw CException("Incorrect drag data ByteBuffer.");
+
+	return static_cast<EDragDataSourceType>(sourceTypeInt);
+}
+
+std::shared_ptr<ISceneNode3D> GetSceneNodeFromDragData(IBaseManager& BaseManager, IScene& Scene, const CByteBuffer& ByteBuffer)
+{
+	return std::shared_ptr<ISceneNode3D>();
+}
+
+std::shared_ptr<IModel> GetModelFromDragData(IBaseManager& BaseManager, const CByteBuffer& ByteBuffer)
+{
+	if (ByteBuffer.getSize() == 0 || ByteBuffer.getPos() > 0)
+		throw CException("Incorrect drag data ByteBuffer.");
+
+	CByteBuffer byteBufferCopy(ByteBuffer);
+
+	uint32 sourceTypeInt;
+	if (false == byteBufferCopy.read(&sourceTypeInt))
+		throw CException("Incorrect drag data Buffer for model.");
+	EDragDataSourceType sourceType = static_cast<EDragDataSourceType>(sourceTypeInt);
+	if (sourceType != EDragDataSourceType::Model)
+		throw CException("Drag data type '%d' is not IModel drag data.", sourceTypeInt);
+
+	std::string modelName;
+	if (false == byteBufferCopy.readString(&modelName))
+		throw CException("Incorrect drag data ByteBuffer.");
+
+	std::string modelFileName;
+	if (false == byteBufferCopy.readString(&modelFileName))
+		throw CException("Incorrect drag data ByteBuffer.");
+
+	try
+	{
+		IModelPtr model = BaseManager.GetManager<IznModelsFactory>()->LoadModel(modelFileName);
+		model->SetName(modelName);
+		return model;
+	}
+	catch (const CException& e)
+	{
+		Log::Error("Unable to create IModel with name '%s' and filename '%s' from drag data.", modelName.c_str(), modelFileName.c_str());
+		Log::Error("--->%s", e.MessageCStr());
+	}
+
+	return nullptr;
+}

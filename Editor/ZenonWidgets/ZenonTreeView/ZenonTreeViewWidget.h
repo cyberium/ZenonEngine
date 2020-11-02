@@ -6,7 +6,7 @@
 #include <QtWidgets/QTreeView>
 
 typedef std::function<bool(const CznTreeViewItem*, std::string *, std::vector<std::shared_ptr<IPropertyAction>> *)> OnContextMenuCallback;
-typedef std::function<bool(const CznTreeViewItem*, std::string * MimeData)> OnDragStartCallback;
+typedef std::function<bool(const CznTreeViewItem*, CByteBuffer * Bytes)> OnDragStartCallback;
 typedef std::function<bool(const std::vector<const CznTreeViewItem*>& Selection)> OnSelectionChangeCallback;
 typedef std::function<bool(const CznTreeViewItem*)> OnSelectedItemChangeCallback;
 

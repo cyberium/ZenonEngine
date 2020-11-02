@@ -3,7 +3,7 @@
 // General
 #include "EditorResourceBrowser.h"
 
-
+#include "DragUtils.h"
 #include "ZenonWidgets/ZenonTreeView/TreeViewItemVirtualFolder.h"
 
 
@@ -167,14 +167,37 @@ void CEditorResourceBrowser::Initialize()
 		return true;
 	});
 
-	GetEditorQtUIFrame().getCollectionViewer()->SetOnStartDragging([this](const CznTreeViewItem * Item, std::string * Value) -> bool 
+
+
+	GetEditorQtUIFrame().getCollectionViewer()->SetOnStartDragging([this](const CznTreeViewItem * Item, CByteBuffer * Value) -> bool 
 	{
-		_ASSERT(Value != nullptr && Value->empty());
+		if (Value == nullptr || Value->getSize() > 0 || Value->getPos() > 0)
+		{
+			Log::Error("Unable to start drag model event, because ByteBuffer is not empty.");
+			return false;
+		}
+
 		auto sourceObject = Item->GetSourceObject();
 		if (sourceObject->GetType() != ETreeViewItemType::Model)
 			return false;
 		auto object = sourceObject->Object();
-		Value->assign(object->GetName().c_str());
+		if (object == nullptr)
+			return false;
+		IModelPtr objectAsModel = std::dynamic_pointer_cast<IModel>(object);
+		if (objectAsModel == nullptr)
+			return false;
+		
+		EDragDataSourceType sourceType = EDragDataSourceType::Model;
+
+		// 4 bytes - sourceType
+		Value->write(&sourceType);
+
+		// Model name
+		Value->writeString(objectAsModel->GetName());
+
+		// Model filename
+		Value->writeString(objectAsModel->GetFileName());
+
 		m_Editor.GetTools().Enable(ETool::EToolDragger);
 		return true;
 	});

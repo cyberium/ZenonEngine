@@ -87,9 +87,9 @@ bool Utils::ByteBufferHelper::readString(IByteBuffer * ByteBuffer, std::string* 
 		uint8 byte;
 		if (false == ByteBuffer->readBytes(&byte, sizeof(uint8)))
 			return false;
-		String->append(1, static_cast<char>(byte));
 		if (byte == '\0')
 			break;
+		String->append(1, static_cast<char>(byte));
 	}
 	return true;
 }

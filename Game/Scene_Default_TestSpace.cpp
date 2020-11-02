@@ -24,7 +24,7 @@ void CSceneDefault::Load3D()
 		while (false == currentRoot->GetChilds().empty())
 			currentRoot->RemoveChild(currentRoot->GetChilds()[0]);
 
-		auto rootNodeXML = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->LoadSceneNode3DXML(reader->GetChilds()[0], currentRoot->GetScene(), currentRoot->GetParent().lock());
+		auto rootNodeXML = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->LoadSceneNode3DXML(reader->GetChilds()[0], currentRoot->GetScene(), currentRoot->GetParent());
 		while (false == rootNodeXML->GetChilds().empty())
 			currentRoot->AddChild(rootNodeXML->GetChilds()[0]);
 	}

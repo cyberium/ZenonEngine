@@ -204,30 +204,31 @@ void ZenonWindow3D::dragEnterEvent(QDragEnterEvent * event)
 	if (mimeData == nullptr)
 		return;
 
-	if (mimeData->hasText()) 
+	QByteArray qtByteBuffer = mimeData->data("ZenonEngineMimeData");
+	if (false == qtByteBuffer.isEmpty())
 	{
-		std::string text = mimeData->text().toStdString();
-
-		SDragData data;
-		data.Message = text;
-		data.Position = glm::vec2(event->pos().x(), event->pos().y());
-		data.IsCtrl = (event->keyboardModifiers() & Qt::KeyboardModifier::ControlModifier) != 0;
 		try
 		{
-			m_Editor->GetTools().DragEnterEvent(data);
+			SDragData dragData;
+			dragData.Buffer = CByteBuffer(qtByteBuffer.data(), qtByteBuffer.size());
+			dragData.ScreenPosition = glm::vec2(event->pos().x(), event->pos().y());
+			dragData.IsCtrl = (event->keyboardModifiers() & Qt::KeyboardModifier::ControlModifier) != 0;
+
+			m_Editor->GetTools().DragEnterEvent(dragData);
+
+			event->setDropAction(Qt::DropAction::MoveAction);
+			event->acceptProposedAction();
+		}
+		catch (const CException& e)
+		{
+			Log::Error("ZenonWindow3D: Exception while drag enter event.");
+			Log::Error("--->%s", e.MessageCStr());
 		}
 		catch (...)
 		{
-			Log::Error("Error!");
+			Log::Error("ZenonWindow3D: Unknown exception while drag enter event.");
 		}
 	}
-	else 
-	{
-	//	_ASSERT(false);
-	}
-
-	event->setDropAction(Qt::DropAction::MoveAction);
-	event->acceptProposedAction();
 }
 
 void ZenonWindow3D::dragMoveEvent(QDragMoveEvent * event)

@@ -3,6 +3,9 @@
 // General
 #include "EditorToolDragger.h"
 
+// Additional
+#include "DragUtils.h"
+
 CEditorToolDragger::CEditorToolDragger(IEditor& Editor)
 	: CEditorToolBase(Editor)
 	, m_IsDraggingPermanentCreation(false)
@@ -77,10 +80,26 @@ void CEditorToolDragger::DropEvent(const glm::vec2& Position)
 void CEditorToolDragger::DragEnterEvent(const SDragData& Data)
 {
 	m_IsDraggingPermanentCreation = Data.IsCtrl;
-	m_DraggerNode = CreateNode(glm::vec3(), Data.Message);
 
-	auto ray = GetScene()->GetCameraController()->ScreenToRay(GetScene()->GetRenderWindow().GetViewport(), Data.Position);
-	auto pos = GetScene()->GetCameraController()->RayToPlane(ray, Plane(glm::vec3(0.0f, 1.0f, 0.0f), m_DraggerNode->GetComponent<IModelsComponent3D>()->GetModel()->GetBounds().getCenter().y));
+	EDragDataSourceType dragDataSourceType = GetDragDataSourceType(Data.Buffer);
+	if (dragDataSourceType == EDragDataSourceType::Model)
+	{
+		IModelPtr model = GetModelFromDragData(GetBaseManager(), Data.Buffer);
+		if (model == nullptr)
+			return;
+
+		m_DraggerNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, GetEditor().Get3DFrame().GetEditedScene().get());
+		m_DraggerNode->SetName(model->GetName());
+		m_DraggerNode->GetComponent<IModelsComponent3D>()->SetModel(model);
+	}
+	else
+	{
+		Log::Warn("EditorToolDragger don't support '%d' drag data source type.", dragDataSourceType);
+		return;
+	}
+
+	auto ray = GetScene()->GetCameraController()->ScreenToRay(GetScene()->GetRenderWindow().GetViewport(), Data.ScreenPosition);
+	auto pos = GetScene()->GetCameraController()->RayToPlane(ray, Plane(glm::vec3(0.0f, 1.0f, 0.0f), m_DraggerNode->GetComponent<IColliderComponent3D>()->GetBounds().getCenter().y));
 	m_DraggerNode->SetTranslate(pos);
 }
 
@@ -126,18 +145,25 @@ void CEditorToolDragger::MoveDraggedNode(const glm::vec2& MousePos)
 
 void CEditorToolDragger::CreateCopyDraggedNode()
 {
+	if (m_DraggerNode == nullptr)
+		return;
+
 	auto copiedNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, GetScene());
 	m_DraggerNode->CopyTo(copiedNode);
+
 	copiedNode->SetTranslate(m_DraggerNode->GetTranslation());
+
+	// TODO: Maybe to selected node?
 	GetEditor().Get3DFrame().GetEditedRootNode3D()->AddChild(copiedNode);
+	GetEditor().GetTools().GetToolT<IEditorToolSelector>(ETool::EToolSelector).SelectNode(copiedNode);
 
 	m_LastCreatedNode = copiedNode;
-	GetEditor().GetTools().GetToolT<IEditorToolSelector>(ETool::EToolSelector).SelectNode(copiedNode);
 }
 
 void CEditorToolDragger::Clear()
 {
 	m_IsDraggingPermanentCreation = false;
+
 	if (m_DraggerNode)
 	{
 		if (auto parent = m_DraggerNode->GetParent())
@@ -153,15 +179,4 @@ void CEditorToolDragger::Clear()
 	m_DraggerTextUI->GetProperties()->GetPropertyT<std::string>("Text")->Set("");
 
 	GetEditor().GetTools().Enable(ETool::EToolDefault);
-}
-
-std::shared_ptr<ISceneNode3D> CEditorToolDragger::CreateNode(const glm::ivec3& Position, const std::string& Type)
-{
-	auto node = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, GetEditor().Get3DFrame().GetEditedScene().get());
-	node->SetName(Type);
-
-	auto model = GetBaseManager().GetManager<IznModelsFactory>()->LoadModel("models_td/" + Type + ".znmdl");
-	node->GetComponent<IModelsComponent3D>()->SetModel(model);
-
-	return node;
 }
