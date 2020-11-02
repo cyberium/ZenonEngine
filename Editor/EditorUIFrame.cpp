@@ -18,14 +18,14 @@ CEditorUIFrame::CEditorUIFrame(IEditor& Editor)
 	connect(m_UI.actionSave_Scene, &QAction::triggered, std::bind(&CEditorUIFrame::OnSceneSaveToFile, this));
 	connect(m_UI.actionClose_Scene, &QAction::triggered, std::bind(&CEditorUIFrame::OnSceneClose, this));
 
-	QFileSystemModel* fsModel = ZN_NEW QFileSystemModel(this);
-	fsModel->setRootPath("O:\\ZenonEngine_gamedata\\");
-	m_UI.FSTreeViewer->setModel(fsModel);
+	//QFileSystemModel* fsModel = ZN_NEW QFileSystemModel(this);
+	//fsModel->setRootPath("O:\\ZenonEngine_gamedata\\");
+	//m_UI.FSTreeViewer->setModel(fsModel);
 
 	m_PropertiesController = MakeShared(CPropertiesController, m_UI.PropertyEditor);
 
 	// Unite file browser and log docker
-	QMainWindow::tabifyDockWidget(m_UI.DockerFileBrowser, m_UI.DockerLogViewer);
+	//QMainWindow::tabifyDockWidget(m_UI.DockerFileBrowser, m_UI.DockerLogViewer);
 }
 
 CEditorUIFrame::~CEditorUIFrame()
