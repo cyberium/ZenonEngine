@@ -420,7 +420,7 @@ void CSceneDefault::Load3DOld()
 		auto material = MakeShared(MaterialParticle, GetRenderDevice());
 		material->SetTexture(0, GetBaseManager().GetManager<IznTexturesFactory>()->LoadTexture2D("particle.png"));
 
-		auto particlesNode = m_RootForBoxes->CreateSceneNode<SceneNode3D>();
+		auto particlesNode = m_RootForBoxes->CreateSceneNode<CSceneNode>();
 		particlesNode->SetName("Particles");
 		//particlesNode->GetComponent<IModelsComponent3D>()->AddModel(model);
 		auto particlesComponent = MakeShared(CParticlesComponent3D, *particlesNode);
@@ -448,7 +448,7 @@ void CSceneDefault::Load3DOld()
 
 #if 0
 
-	std::shared_ptr<ISceneNode3D> sceneNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, this);
+	std::shared_ptr<ISceneNode> sceneNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, this);
 
 	// Models
 	auto fbxSceneModel = GetBaseManager().GetManager<IFBXManager>()->LoadFBX("C:/Users/Alexander/Downloads/Assets/Toon_RTS/Orcs/models/Single_Mesh/Orc_SM_shaman.FBX");

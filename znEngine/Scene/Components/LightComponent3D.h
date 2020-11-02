@@ -6,7 +6,7 @@ class __declspec(UUID_LightComponent) ZN_API CLightComponent3D
 	, public CComponentBase
 {
 public:
-    CLightComponent3D(const ISceneNode3D& OwnerNode);
+    CLightComponent3D(const ISceneNode& OwnerNode);
     virtual ~CLightComponent3D();
 
 	// ILightComponent3D

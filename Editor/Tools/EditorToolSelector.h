@@ -16,13 +16,13 @@ public:
 	void Disable() override;
 
 	// IEditorToolSelector
-	void SelectNode(std::shared_ptr<ISceneNode3D> Node) override;
-	void SelectNodes(const std::vector<std::shared_ptr<ISceneNode3D>>& Nodes) override;
+	void SelectNode(std::shared_ptr<ISceneNode> Node) override;
+	void SelectNodes(const std::vector<std::shared_ptr<ISceneNode>>& Nodes) override;
 	void ClearSelection() override;
-	void AddNode(std::shared_ptr<ISceneNode3D> Node) override;
-	void RemoveNode(std::shared_ptr<ISceneNode3D> Node) override;
-	std::shared_ptr<ISceneNode3D> GetFirstSelectedNode() const override;
-	bool IsNodeSelected(std::shared_ptr<ISceneNode3D> Node) const override;
+	void AddNode(std::shared_ptr<ISceneNode> Node) override;
+	void RemoveNode(std::shared_ptr<ISceneNode> Node) override;
+	std::shared_ptr<ISceneNode> GetFirstSelectedNode() const override;
+	bool IsNodeSelected(std::shared_ptr<ISceneNode> Node) const override;
 	const SelectedNodes& GetSelectedNodes() const override;
 
 	// CEditorToolBase

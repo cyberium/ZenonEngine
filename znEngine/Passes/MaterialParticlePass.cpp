@@ -79,7 +79,7 @@ std::shared_ptr<IRenderPassPipelined> CMaterialParticlePass::ConfigurePipeline(s
 //
 // IVisitor
 //
-EVisitResult CMaterialParticlePass::Visit(const ISceneNode3D * SceneNode)
+EVisitResult CMaterialParticlePass::Visit(const ISceneNode * SceneNode)
 {
 	EVisitResult visitResult = Base3DPass::Visit(SceneNode);
 

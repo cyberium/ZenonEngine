@@ -32,7 +32,7 @@
 // Scene
 #include "../znCore/Scene/ComponentBase.h"
 #include "../znCore/Scene/SceneFinder.h"
-#include "../znCore/Scene/SceneNode3D.h"
-#include "../znCore/Scene/SceneNodeUI.h"
+#include "../znCore/Scene/SceneNode.h"
+#include "../znCore/Scene/UIControl.h"
 
 #include "../znCore/XML/XMLManager.h"

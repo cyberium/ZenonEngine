@@ -7,8 +7,8 @@
 #include "Settings/Properties.h"
 #include "Settings/Actions.h"
 
-CComponentBase::CComponentBase(const ISceneNode3D& OwnerNode)
-    : Object(OwnerNode.GetScene()->GetBaseManager())
+CComponentBase::CComponentBase(const ISceneNode& OwnerNode)
+    : Object(OwnerNode.GetScene().GetBaseManager())
 	, m_OwnerNode(OwnerNode)
 {
 	m_Properties = MakeShared(CPropertiesGroup);
@@ -66,17 +66,17 @@ void CComponentBase::Save(const std::shared_ptr<IXMLWriter>& Writer) const
 //
 // Protected
 //
-const ISceneNode3D& CComponentBase::GetOwnerNode() const
+const ISceneNode& CComponentBase::GetOwnerNode() const
 {
 	return m_OwnerNode;
 }
 
 IBaseManager& CComponentBase::GetBaseManager() const
 {
-	return GetOwnerNode().GetScene()->GetBaseManager();
+	return GetOwnerNode().GetScene().GetBaseManager();
 }
 
 void CComponentBase::RaiseComponentMessage(ComponentMessageType Message)
 {
-	m_OwnerNode.RaiseComponentMessage(this, Message);
+	GetOwnerNode().RaiseComponentMessage(this, Message);
 }

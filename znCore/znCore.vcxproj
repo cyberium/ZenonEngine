@@ -128,8 +128,8 @@
     <ClCompile Include="Proxies\SceneNodeProxie.cpp" />
     <ClCompile Include="Scene\ComponentBase.cpp" />
     <ClCompile Include="Scene\SceneFinder.cpp" />
-    <ClCompile Include="Scene\SceneNode3D.cpp" />
-    <ClCompile Include="Scene\SceneNodeUI.cpp" />
+    <ClCompile Include="Scene\SceneNode.cpp" />
+    <ClCompile Include="Scene\UIControl.cpp" />
     <ClCompile Include="Settings\Actions.cpp" />
     <ClCompile Include="Settings\Properties.cpp" />
     <ClCompile Include="Settings\SettingsGroupBase.cpp" />
@@ -280,8 +280,8 @@
     <ClInclude Include="Proxies\__Proxies.h" />
     <ClInclude Include="Scene\ComponentBase.h" />
     <ClInclude Include="Scene\SceneFinder.h" />
-    <ClInclude Include="Scene\SceneNode3D.h" />
-    <ClInclude Include="Scene\SceneNodeUI.h" />
+    <ClInclude Include="Scene\SceneNode.h" />
+    <ClInclude Include="Scene\UIControl.h" />
     <ClInclude Include="Settings\Actions.h" />
     <ClInclude Include="Settings\Properties.h" />
     <ClInclude Include="Settings\SettingBase.h" />

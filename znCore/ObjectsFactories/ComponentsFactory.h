@@ -11,16 +11,16 @@ public:
 		: public IComponentCreationArgs
 	{
 	public:
-		CComponentCreationArgs(ISceneNode3D& ISceneNode3D)
-			: m_SceneNode(ISceneNode3D)
+		CComponentCreationArgs(ISceneNode& ISceneNode)
+			: m_SceneNode(ISceneNode)
 		{}
 
-		ISceneNode3D& GetSceneNode() override
+		ISceneNode& GetSceneNode() override
 		{
 			return m_SceneNode;
 		}
 	private:
-		ISceneNode3D& m_SceneNode;
+		ISceneNode& m_SceneNode;
 	};
 
 public:
@@ -28,7 +28,7 @@ public:
 	virtual ~CComponentsFactory();
 
 	// IComponentFactory
-	virtual std::shared_ptr<ISceneNodeComponent> CreateComponent(ObjectClass ObjectClassKey, ISceneNode3D& SceneNode) override;
-	virtual std::shared_ptr<ISceneNodeComponent> LoadComponentXML(const std::shared_ptr<IXMLReader>& Reader, ISceneNode3D& SceneNode) override;
+	virtual std::shared_ptr<ISceneNodeComponent> CreateComponent(ObjectClass ObjectClassKey, ISceneNode& SceneNode) override;
+	virtual std::shared_ptr<ISceneNodeComponent> LoadComponentXML(const std::shared_ptr<IXMLReader>& Reader, ISceneNode& SceneNode) override;
 	virtual std::shared_ptr<IXMLWriter> SaveComponentXML(std::shared_ptr<ISceneNodeComponent> Object) override;
 };

@@ -5,7 +5,7 @@ class __declspec(UUID_ModelsComponent) ZN_API CModelsComponent3D
 	, public CComponentBase
 {
 public:
-	CModelsComponent3D(const ISceneNode3D& OwnerNode);
+	CModelsComponent3D(const ISceneNode& OwnerNode);
     virtual ~CModelsComponent3D();
 
 	void Copy(std::shared_ptr<ISceneNodeComponent> Destination) const override;

@@ -4,7 +4,7 @@
 #include "RTSSceneNodeGround.h"
 
 CRTSSceneNodeGround::CRTSSceneNodeGround(IScene& Scene)
-	: SceneNode3D(Scene)
+	: CSceneNode(Scene)
 {
 	SetPersistanceInternal(true);
 
@@ -44,9 +44,9 @@ CRTSSceneNodeGround::~CRTSSceneNodeGround()
 
 
 //
-// ISceneNode3D
+// ISceneNode
 //
-void CRTSSceneNodeGround::CopyTo(std::shared_ptr<ISceneNode3D> Destination) const
+void CRTSSceneNodeGround::CopyTo(std::shared_ptr<ISceneNode> Destination) const
 {
 	Object::Copy(Destination);
 
@@ -134,7 +134,7 @@ void CRTSSceneNodeGround::Update(const UpdateEventArgs & e)
 
 void CRTSSceneNodeGround::Accept(IVisitor * visitor)
 {
-	SceneNode3D::Accept(visitor);
+	CSceneNode::Accept(visitor);
 }
 
 

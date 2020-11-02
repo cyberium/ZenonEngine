@@ -37,7 +37,7 @@ CEditorUIFrame::~CEditorUIFrame()
 
 namespace
 {
-	void FillActionsList(const std::shared_ptr<ISceneNode3D>& Node, std::map<std::string, std::vector<std::shared_ptr<IPropertyAction>>> * actionsNames)
+	void FillActionsList(const std::shared_ptr<ISceneNode>& Node, std::map<std::string, std::vector<std::shared_ptr<IPropertyAction>>> * actionsNames)
 	{
 		for (const auto& it : Node->GetProperties()->GetProperties())
 		{
@@ -50,7 +50,7 @@ namespace
 		}
 	}
 
-	void FillActionsMap(const std::shared_ptr<ISceneNode3D>& Node, std::map<std::string, std::shared_ptr<IPropertyAction>> * actionsNames)
+	void FillActionsMap(const std::shared_ptr<ISceneNode>& Node, std::map<std::string, std::shared_ptr<IPropertyAction>> * actionsNames)
 	{
 		for (const auto& it : Node->GetProperties()->GetProperties())
 		{
@@ -87,7 +87,7 @@ void CEditorUIFrame::DoInitializeToolsUI()
 	GetEditor().GetTools().DoInitializeUI(*this);
 }
 
-bool CEditorUIFrame::ExtendContextMenu(const std::shared_ptr<ISceneNode3D>& Node, std::string * Title, std::vector<std::shared_ptr<IPropertyAction>> * Actions)
+bool CEditorUIFrame::ExtendContextMenu(const std::shared_ptr<ISceneNode>& Node, std::string * Title, std::vector<std::shared_ptr<IPropertyAction>> * Actions)
 {
 	_ASSERT(Title != NULL);
 	_ASSERT(Actions != NULL);
@@ -159,7 +159,7 @@ bool CEditorUIFrame::ExtendContextMenu(const std::shared_ptr<ISceneNode3D>& Node
 	return true;
 }
 
-void CEditorUIFrame::OnSceneChanged(ESceneChangeType SceneChangeType, const std::shared_ptr<ISceneNode3D>& ParentNode, const std::shared_ptr<ISceneNode3D>& ChildNode)
+void CEditorUIFrame::OnSceneChanged(ESceneChangeType SceneChangeType, const std::shared_ptr<ISceneNode>& ParentNode, const std::shared_ptr<ISceneNode>& ChildNode)
 {
 	if (SceneChangeType == ESceneChangeType::NodeRemovedFromParent)
 	{
@@ -250,7 +250,7 @@ void CEditorUIFrame::OnSceneLoadFromFile()
 				xmlChild->CopyTo(editorChild);
 
 				// To delete persistance node, we must clear this flag
-				std::dynamic_pointer_cast<ISceneNode3DInternal>(xmlChild)->SetPersistanceInternal(false);
+				std::dynamic_pointer_cast<ISceneNodeInternal>(xmlChild)->SetPersistanceInternal(false);
 				xmlRoot->RemoveChild(xmlChild);
 			}
 		}

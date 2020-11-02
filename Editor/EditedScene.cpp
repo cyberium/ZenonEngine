@@ -23,7 +23,7 @@ void CEditedScene::Finalize()
 	SceneBase::Finalize();
 }
 
-void CEditedScene::RaiseSceneChangeEvent(ESceneChangeType SceneChangeType, const std::shared_ptr<ISceneNode3D>& OwnerNode, const std::shared_ptr<ISceneNode3D>& ChildNode)
+void CEditedScene::RaiseSceneChangeEvent(ESceneChangeType SceneChangeType, const std::shared_ptr<ISceneNode>& OwnerNode, const std::shared_ptr<ISceneNode>& ChildNode)
 {
 	auto root = GetRootNode3D();
 	_ASSERT(root != nullptr);
@@ -31,11 +31,7 @@ void CEditedScene::RaiseSceneChangeEvent(ESceneChangeType SceneChangeType, const
 	auto parent = root->GetParent();
 	_ASSERT(parent != nullptr);
 
-	auto realScene = parent->GetScene();
-	_ASSERT(realScene != nullptr);
-
-	auto realSceneInternal = dynamic_cast<ISceneInternal*>(realScene);
-	_ASSERT(realSceneInternal != nullptr);
-
-	realSceneInternal->RaiseSceneChangeEvent(SceneChangeType, OwnerNode, ChildNode);
+	auto& realScene = parent->GetScene();
+	auto& realSceneInternal = dynamic_cast<ISceneInternal&>(realScene);
+	realSceneInternal.RaiseSceneChangeEvent(SceneChangeType, OwnerNode, ChildNode);
 }

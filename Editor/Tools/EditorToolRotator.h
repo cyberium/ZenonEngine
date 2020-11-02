@@ -30,15 +30,15 @@ public:
 
 protected:
 	void Clear();
-	std::shared_ptr<ISceneNode3D> GetRotatingNode();
+	std::shared_ptr<ISceneNode> GetRotatingNode();
 
 private:	
-	std::shared_ptr<ISceneNode3D> m_RotatorRoot;
-	std::shared_ptr<ISceneNode3D> m_RotatorX;
-	std::shared_ptr<ISceneNode3D> m_RotatorY;
-	std::shared_ptr<ISceneNode3D> m_RotatorZ;
+	std::shared_ptr<ISceneNode> m_RotatorRoot;
+	std::shared_ptr<ISceneNode> m_RotatorX;
+	std::shared_ptr<ISceneNode> m_RotatorY;
+	std::shared_ptr<ISceneNode> m_RotatorZ;
 
-	std::weak_ptr<ISceneNode3D> m_RotatingNode;
+	std::weak_ptr<ISceneNode> m_RotatingNode;
 
 	EMoverDirection m_RotatorNumber;
 

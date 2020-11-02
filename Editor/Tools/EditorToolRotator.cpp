@@ -43,7 +43,7 @@ void CEditorToolRotator::Disable()
 
 void CEditorToolRotator::DoInitialize3D(const std::shared_ptr<IRenderer>& Renderer, std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport)
 {
-	m_RotatorRoot = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, GetScene(), GetScene()->GetRootNode3D());
+	m_RotatorRoot = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, GetScene(), GetScene().GetRootNode3D());
 	m_RotatorRoot->SetName("RotatorRoot");
 
 
@@ -98,7 +98,7 @@ bool CEditorToolRotator::OnMousePressed(const MouseButtonEventArgs & e, const Ra
 
 	_ASSERT(false == IsChildOf(m_RotatorRoot, rotatingNode));
 
-	auto nodes = GetScene()->GetFinder().FindIntersection(RayToWorld, nullptr, m_RotatorRoot);
+	auto nodes = GetScene().GetFinder().FindIntersection(RayToWorld, nullptr, m_RotatorRoot);
 	if (nodes.empty())
 		return false;
 
@@ -234,7 +234,7 @@ void CEditorToolRotator::Clear()
 	m_RotatorNumber = EMoverDirection::None;
 }
 
-std::shared_ptr<ISceneNode3D> CEditorToolRotator::GetRotatingNode()
+std::shared_ptr<ISceneNode> CEditorToolRotator::GetRotatingNode()
 {
 	return m_RotatingNode.lock();
 }

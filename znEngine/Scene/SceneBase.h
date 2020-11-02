@@ -24,7 +24,7 @@ public:
 	virtual void                                    Initialize() override;
 	virtual void                                    Finalize() override;
 
-	std::shared_ptr<ISceneNode3D>					GetRootNode3D() const override;
+	std::shared_ptr<ISceneNode>					GetRootNode3D() const override;
 	std::shared_ptr<ISceneNodeUI>					GetRootNodeUI() const override;
 
 	void                                            SetRenderer(std::shared_ptr<IRenderer> Renderer) override;
@@ -39,12 +39,12 @@ public:
 	void                                            Accept(IVisitor* visitor) override;
 	void											Freeze() override;
 	void											Unfreeze() override;
-	void                                            AddChild(const std::shared_ptr<ISceneNode3D>& ParentNode, const std::shared_ptr<ISceneNode3D>& ChildNode) override;
-	void                                            RemoveChild(const std::shared_ptr<ISceneNode3D>& ParentNode, const std::shared_ptr<ISceneNode3D>& ChildNode) override;
+	void                                            AddChild(const std::shared_ptr<ISceneNode>& ParentNode, const std::shared_ptr<ISceneNode>& ChildNode) override;
+	void                                            RemoveChild(const std::shared_ptr<ISceneNode>& ParentNode, const std::shared_ptr<ISceneNode>& ChildNode) override;
 
 
 	// ISceneInternal
-	void                                            RaiseSceneChangeEvent(ESceneChangeType SceneChangeType, const std::shared_ptr<ISceneNode3D>& OwnerNode, const std::shared_ptr<ISceneNode3D>& ChildNode) override;
+	void                                            RaiseSceneChangeEvent(ESceneChangeType SceneChangeType, const std::shared_ptr<ISceneNode>& OwnerNode, const std::shared_ptr<ISceneNode>& ChildNode) override;
 
 
 	// IRenderWindowEventListener
@@ -95,7 +95,7 @@ protected:
 	
 
 private: // Input events process recursive
-	void                                            DoUpdate_Rec(const std::shared_ptr<ISceneNode3D>& Node, const UpdateEventArgs& e);
+	void                                            DoUpdate_Rec(const std::shared_ptr<ISceneNode>& Node, const UpdateEventArgs& e);
 
 	bool                                            DoKeyPressed_Rec(const std::shared_ptr<ISceneNodeUI>& Node, KeyEventArgs& e);
 	void                                            DoKeyReleased_Rec(const std::shared_ptr<ISceneNodeUI>& Node, KeyEventArgs& e);
@@ -105,7 +105,7 @@ private: // Input events process recursive
 	bool                                            DoMouseWheel_Rec(const std::shared_ptr<ISceneNodeUI>& Node, MouseWheelEventArgs& e);
 
 protected:
-	std::shared_ptr<ISceneNode3D>                   m_RootNode3D;
+	std::shared_ptr<ISceneNode>                   m_RootNode3D;
 	std::shared_ptr<ISceneNodeUI>                   m_RootNodeUI;
 
 	std::shared_ptr<IRenderer>                      m_Renderer;
@@ -134,8 +134,8 @@ protected:
 	std::shared_ptr<ISceneNodeUI>                   m_StatisticSummaText;
 
 protected: // Функционал по отложенному добавлению нод
-	std::vector<std::pair<std::shared_ptr<ISceneNode3D>, std::shared_ptr<ISceneNode3D>>> m_AddChildList;
-	std::vector<std::pair<std::shared_ptr<ISceneNode3D>, std::shared_ptr<ISceneNode3D>>> m_RemoveChildList;
+	std::vector<std::pair<std::shared_ptr<ISceneNode>, std::shared_ptr<ISceneNode>>> m_AddChildList;
+	std::vector<std::pair<std::shared_ptr<ISceneNode>, std::shared_ptr<ISceneNode>>> m_RemoveChildList;
 	std::mutex                                                                           m_ListsAreBusy;
 	std::mutex                                                                           m_SceneIsBusy;
 

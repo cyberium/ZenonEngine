@@ -1,7 +1,7 @@
 #pragma once
 
 // FORWARD BEGIN
-ZN_INTERFACE ISceneNode3D;
+ZN_INTERFACE ISceneNode;
 // FORWARD END
 
 ZN_INTERFACE ZN_API IProperty

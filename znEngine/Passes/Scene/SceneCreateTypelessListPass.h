@@ -6,27 +6,27 @@ class ZN_API CSceneCreateTypelessListPass
 public:
 	struct ZN_API SNodeElement
 	{
-		SNodeElement(const ISceneNode3D* SceneNode)
+		SNodeElement(const ISceneNode* SceneNode)
 			: SceneNode(SceneNode)
 		{}
 
-		const ISceneNode3D* SceneNode;
+		const ISceneNode* SceneNode;
 	};
 
 	struct ZN_API SModelElement
 	{
-		SModelElement(const ISceneNode3D* SceneNode, const IModel* Model)
+		SModelElement(const ISceneNode* SceneNode, const IModel* Model)
 			: SceneNode(SceneNode)
 			, Model(Model)
 		{}
 
-		const ISceneNode3D* SceneNode;
+		const ISceneNode* SceneNode;
 		const IModel* Model;
 	};
 
 	struct ZN_API SGeometryElement
 	{
-		SGeometryElement(const ISceneNode3D* Node, const IModel* Model, const IGeometry* Geometry, const IMaterial* Material, const SGeometryDrawArgs GeometryDrawArgs)
+		SGeometryElement(const ISceneNode* Node, const IModel* Model, const IGeometry* Geometry, const IMaterial* Material, const SGeometryDrawArgs GeometryDrawArgs)
 			: Node(Node)
 			, Model(Model)
 			, Geometry(Geometry)
@@ -34,7 +34,7 @@ public:
 			, GeometryDrawArgs(GeometryDrawArgs)
 		{}
 
-		const ISceneNode3D* Node;
+		const ISceneNode* Node;
 		const IModel* Model;
 		const IGeometry* Geometry;
 		const IMaterial* Material;
@@ -43,23 +43,23 @@ public:
 
 	struct ZN_API SLightElement
 	{
-		SLightElement(const ISceneNode3D* SceneNode, const ILight3D* Light)
+		SLightElement(const ISceneNode* SceneNode, const ILight3D* Light)
 			: SceneNode(SceneNode)
 			, Light(Light)
 		{}
 
-		const ISceneNode3D* SceneNode;
+		const ISceneNode* SceneNode;
 		const ILight3D* Light;
 	};
 
 	struct ZN_API SParticleSystemElement
 	{
-		SParticleSystemElement(const ISceneNode3D* SceneNode, const IParticleSystem* ParticleSystem)
+		SParticleSystemElement(const ISceneNode* SceneNode, const IParticleSystem* ParticleSystem)
 			: SceneNode(SceneNode)
 			, ParticleSystem(ParticleSystem)
 		{}
 
-		const ISceneNode3D* SceneNode;
+		const ISceneNode* SceneNode;
 		const IParticleSystem* ParticleSystem;
 	};
 
@@ -79,7 +79,7 @@ public:
 	void Render(RenderEventArgs& e) override;
 
 	// IVisitor
-	EVisitResult Visit(const ISceneNode3D* SceneNode) override;
+	EVisitResult Visit(const ISceneNode* SceneNode) override;
 	EVisitResult Visit(const IModel* Model) override;
 	EVisitResult Visit(const IGeometry* Geometry, const IMaterial* Material, SGeometryDrawArgs GeometryDrawArgs = SGeometryDrawArgs()) override;
 	EVisitResult Visit(const ILight3D* light) override;
@@ -96,7 +96,7 @@ private:
 //
 // Templated
 //
-template <typename TNode = ISceneNode3D, typename TModel = IModel, typename TGeometry = IGeometry>
+template <typename TNode = ISceneNode, typename TModel = IModel, typename TGeometry = IGeometry>
 class CSceneCreateTypelessListPassTemplated
 	: public CSceneCreateTypelessListPass
 {
@@ -108,7 +108,7 @@ public:
 	{}
 
 	// IVisitor
-	EVisitResult Visit(const ISceneNode3D* SceneNode) override
+	EVisitResult Visit(const ISceneNode* SceneNode) override
 	{
 		if (const TNode* SceneNodeT = dynamic_cast<const TNode*>(SceneNode))
 			return CSceneCreateTypelessListPass::Visit(SceneNodeT);

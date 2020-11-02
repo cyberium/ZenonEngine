@@ -45,19 +45,19 @@ IEditorShell & CEditor::GetShell()
 	return m_EditorShell;
 }
 
-bool CEditor::IsNodeSelected(std::shared_ptr<ISceneNode3D> Node) const
+bool CEditor::IsNodeSelected(std::shared_ptr<ISceneNode> Node) const
 {
 	return m_Tools.GetToolTConst<IEditorToolSelector>(ETool::EToolSelector).IsNodeSelected(Node);
 }
 
-std::shared_ptr<ISceneNode3D> CEditor::GetFirstSelectedNode() const
+std::shared_ptr<ISceneNode> CEditor::GetFirstSelectedNode() const
 {
 	return m_Tools.GetToolTConst<IEditorToolSelector>(ETool::EToolSelector).GetFirstSelectedNode();
 }
 
-std::vector<std::shared_ptr<ISceneNode3D>> CEditor::GetSelectedNodes() const
+std::vector<std::shared_ptr<ISceneNode>> CEditor::GetSelectedNodes() const
 {
-	std::vector<std::shared_ptr<ISceneNode3D>> nodes;
+	std::vector<std::shared_ptr<ISceneNode>> nodes;
 	for (const auto& nW : m_Tools.GetToolTConst<IEditorToolSelector>(ETool::EToolSelector).GetSelectedNodes())
 		if (auto locked = nW.lock())
 			nodes.push_back(locked);

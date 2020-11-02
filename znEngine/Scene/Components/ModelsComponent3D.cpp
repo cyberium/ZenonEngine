@@ -3,7 +3,7 @@
 // General
 #include "ModelsComponent3D.h"
 
-CModelsComponent3D::CModelsComponent3D(const ISceneNode3D& OwnerNode)
+CModelsComponent3D::CModelsComponent3D(const ISceneNode& OwnerNode)
     : CComponentBase(OwnerNode)
 	, m_IsCastShadows(true)
 {

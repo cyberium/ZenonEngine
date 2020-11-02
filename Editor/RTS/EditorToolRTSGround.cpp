@@ -159,7 +159,7 @@ bool CRTSGround::OnMousePressed(const MouseButtonEventArgs & e, const Ray & RayT
 	if (m_GroundRoot == nullptr)
 		return false;
 
-	auto mousePos = GetScene()->GetCameraController()->RayToPlane(RayToWorld, Plane(glm::vec3(0.0f, 1.0f, 0.0f), 10.0f));
+	auto mousePos = GetScene().GetCameraController()->RayToPlane(RayToWorld, Plane(glm::vec3(0.0f, 1.0f, 0.0f), 10.0f));
 
 	SRTSCellCoords coords = m_GroundRoot->PositionToCoords(mousePos);
 	if (false == coords.IsCorrect())
@@ -188,7 +188,7 @@ void CRTSGround::OnMouseMoved(const MouseMotionEventArgs & e, const Ray & RayToW
 	if (m_GroundRoot == nullptr)
 		return;
 
-	auto mousePos = GetScene()->GetCameraController()->RayToPlane(RayToWorld, Plane(glm::vec3(0.0f, 1.0f, 0.0f), 10.0f));
+	auto mousePos = GetScene().GetCameraController()->RayToPlane(RayToWorld, Plane(glm::vec3(0.0f, 1.0f, 0.0f), 10.0f));
 
 	if (m_GroundSelectorNode)
 	{

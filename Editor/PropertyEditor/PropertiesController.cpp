@@ -45,7 +45,7 @@ CPropertiesController::~CPropertiesController()
 	}
 }
 
-void CPropertiesController::OnSceneNodeSelected(ISceneNode3D* SceneNode)
+void CPropertiesController::OnSceneNodeSelected(ISceneNode* SceneNode)
 {
 	if (m_PropertiesSet)
 	{

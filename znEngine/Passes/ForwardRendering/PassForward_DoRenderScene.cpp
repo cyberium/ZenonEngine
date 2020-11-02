@@ -71,7 +71,7 @@ std::shared_ptr<IRenderPassPipelined> CPassForward_DoRenderScene::ConfigurePipel
 
 
 
-EVisitResult CPassForward_DoRenderScene::Visit(const ISceneNode3D * SceneNode)
+EVisitResult CPassForward_DoRenderScene::Visit(const ISceneNode * SceneNode)
 {
 	if (SceneNode->GetClass() != cSceneNode3D)
 		return EVisitResult::AllowVisitChilds;

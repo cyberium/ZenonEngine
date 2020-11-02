@@ -1,7 +1,7 @@
 #include "stdafx.h"
 
 // General
-#include "SceneNodeUI.h"
+#include "UIControl.h"
 
 SceneNodeUI::SceneNodeUI()
 	: m_IsMouseOnNode(false)

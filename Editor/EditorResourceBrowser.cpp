@@ -14,7 +14,7 @@ namespace
 		: public IznTreeViewItemSource
 	{
 	public:
-		CznSceneNode3DTreeViewItemSource(const std::shared_ptr<ISceneNode3D>& SceneNode)
+		CznSceneNode3DTreeViewItemSource(const std::shared_ptr<ISceneNode>& SceneNode)
 			: m_SceneNode(SceneNode)
 		{}
 		virtual ~CznSceneNode3DTreeViewItemSource()
@@ -25,7 +25,7 @@ namespace
 		// IznTreeViewItemSource
 		ETreeViewItemType GetType() const
 		{
-			return ETreeViewItemType::SceneNode3D;
+			return ETreeViewItemType::CSceneNode;
 		}
 		std::string GetName() const override
 		{
@@ -51,7 +51,7 @@ namespace
 		}
 
 	private:
-		std::shared_ptr<IznTreeViewItemSource> GetChildInternal(const std::shared_ptr<ISceneNode3D>& Object) const
+		std::shared_ptr<IznTreeViewItemSource> GetChildInternal(const std::shared_ptr<ISceneNode>& Object) const
 		{
 			if (Object == nullptr)
 				return nullptr;
@@ -78,7 +78,7 @@ namespace
 		}
 
 	private:
-		std::shared_ptr<ISceneNode3D> m_SceneNode;
+		std::shared_ptr<ISceneNode> m_SceneNode;
 
 		mutable std::vector<std::shared_ptr<CznSceneNode3DTreeViewItemSource>> m_CachedChilds;
 	};
@@ -266,14 +266,14 @@ void CEditorResourceBrowser::InitializeSceneBrowser()
 {
 	GetEditorQtUIFrame().getSceneViewer()->SetOnSelectedItemChange([this](const CznTreeViewItem * Item) -> bool {
 		auto sourceObject = Item->GetSourceObject();
-		if (sourceObject->GetType() != ETreeViewItemType::SceneNode3D)
+		if (sourceObject->GetType() != ETreeViewItemType::CSceneNode)
 			return false;
 
 		auto object = sourceObject->Object();
 		if (object == nullptr)
 			return false;
 
-		auto sceneNode3DObject = std::dynamic_pointer_cast<ISceneNode3D>(object);
+		auto sceneNode3DObject = std::dynamic_pointer_cast<ISceneNode>(object);
 		if (sceneNode3DObject == nullptr)
 			return false;
 
@@ -286,14 +286,14 @@ void CEditorResourceBrowser::InitializeSceneBrowser()
 
 	GetEditorQtUIFrame().getSceneViewer()->SetOnContexMenu([this](const CznTreeViewItem* Item, std::string * Title, std::vector<std::shared_ptr<IPropertyAction>> * Actions) -> bool {
 		auto sourceObject = Item->GetSourceObject();
-		if (sourceObject->GetType() != ETreeViewItemType::SceneNode3D)
+		if (sourceObject->GetType() != ETreeViewItemType::CSceneNode)
 			return false;
 
 		auto object = sourceObject->Object();
 		if (object == nullptr)
 			return false;
 
-		auto sceneNode3DObject = std::dynamic_pointer_cast<ISceneNode3D>(object);
+		auto sceneNode3DObject = std::dynamic_pointer_cast<ISceneNode>(object);
 		if (sceneNode3DObject == nullptr)
 			return false;
 		

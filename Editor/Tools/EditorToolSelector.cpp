@@ -40,7 +40,7 @@ void CEditorToolSelector::Disable()
 //
 // IEditorToolSelector
 //
-void CEditorToolSelector::SelectNode(std::shared_ptr<ISceneNode3D> Node)
+void CEditorToolSelector::SelectNode(std::shared_ptr<ISceneNode> Node)
 {
 	m_SelectedNodes.clear();
 	m_SelectedNodes.push_back(Node);
@@ -48,7 +48,7 @@ void CEditorToolSelector::SelectNode(std::shared_ptr<ISceneNode3D> Node)
 	RaiseSelectEvent();
 }
 
-void CEditorToolSelector::SelectNodes(const std::vector<std::shared_ptr<ISceneNode3D>>& Nodes)
+void CEditorToolSelector::SelectNodes(const std::vector<std::shared_ptr<ISceneNode>>& Nodes)
 {
 	m_SelectedNodes.clear();
 	for (const auto& n : Nodes)
@@ -64,9 +64,9 @@ void CEditorToolSelector::ClearSelection()
 	RaiseSelectEvent();
 }
 
-void CEditorToolSelector::AddNode(std::shared_ptr<ISceneNode3D> Node)
+void CEditorToolSelector::AddNode(std::shared_ptr<ISceneNode> Node)
 {
-	auto it = std::find_if(m_SelectedNodes.begin(), m_SelectedNodes.end(), [Node](const std::weak_ptr<ISceneNode3D>& NodeW) -> bool {
+	auto it = std::find_if(m_SelectedNodes.begin(), m_SelectedNodes.end(), [Node](const std::weak_ptr<ISceneNode>& NodeW) -> bool {
 		if (auto locked = NodeW.lock())
 			return locked == Node;
 		return false;
@@ -80,9 +80,9 @@ void CEditorToolSelector::AddNode(std::shared_ptr<ISceneNode3D> Node)
 	RaiseSelectEvent();
 }
 
-void CEditorToolSelector::RemoveNode(std::shared_ptr<ISceneNode3D> Node)
+void CEditorToolSelector::RemoveNode(std::shared_ptr<ISceneNode> Node)
 {
-	auto it = std::find_if(m_SelectedNodes.begin(), m_SelectedNodes.end(), [Node] (const std::weak_ptr<ISceneNode3D>& NodeW) -> bool {
+	auto it = std::find_if(m_SelectedNodes.begin(), m_SelectedNodes.end(), [Node] (const std::weak_ptr<ISceneNode>& NodeW) -> bool {
 		if (auto locked = NodeW.lock())
 			return locked == Node;
 		return false;
@@ -96,7 +96,7 @@ void CEditorToolSelector::RemoveNode(std::shared_ptr<ISceneNode3D> Node)
 	RaiseSelectEvent();
 }
 
-std::shared_ptr<ISceneNode3D> CEditorToolSelector::GetFirstSelectedNode() const
+std::shared_ptr<ISceneNode> CEditorToolSelector::GetFirstSelectedNode() const
 {
 	auto first = m_SelectedNodes.begin();
 	if (first == m_SelectedNodes.end())
@@ -108,9 +108,9 @@ std::shared_ptr<ISceneNode3D> CEditorToolSelector::GetFirstSelectedNode() const
 	return nullptr;
 }
 
-bool CEditorToolSelector::IsNodeSelected(std::shared_ptr<ISceneNode3D> Node) const
+bool CEditorToolSelector::IsNodeSelected(std::shared_ptr<ISceneNode> Node) const
 {
-	const auto& it = std::find_if(m_SelectedNodes.begin(), m_SelectedNodes.end(), [Node](const std::weak_ptr<ISceneNode3D>& NodeW) -> bool {
+	const auto& it = std::find_if(m_SelectedNodes.begin(), m_SelectedNodes.end(), [Node](const std::weak_ptr<ISceneNode>& NodeW) -> bool {
 		if (auto locked = NodeW.lock())
 			return locked == Node;
 		return false;
@@ -131,7 +131,7 @@ const SelectedNodes& CEditorToolSelector::GetSelectedNodes() const
 //
 void CEditorToolSelector::DoInitialize3D(const std::shared_ptr<IRenderer>& Renderer, std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport)
 {
-	m_SelectionTexture = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeUIFactory>()->CreateSceneNodeUI(GetScene(), cSceneNodeUI_Color, GetScene()->GetRootNodeUI());
+	m_SelectionTexture = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeUIFactory>()->CreateSceneNodeUI(&GetScene(), cSceneNodeUI_Color, GetScene().GetRootNodeUI());
 	m_SelectionTexture->GetProperties()->GetPropertyT<glm::vec4>("Color")->Set(glm::vec4(0.1f, 0.3f, 1.0f, 0.3f));
 
 	m_DrawSelectionPass = MakeShared(CDrawSelectionPass, GetRenderDevice(), *this);
@@ -144,7 +144,7 @@ bool CEditorToolSelector::OnMousePressed(const MouseButtonEventArgs & e, const R
 	if (e.Button != MouseButton::Left)
 		return false;
 
-	auto nodes = GetScene()->GetFinder().FindIntersection(RayToWorld, nullptr, GetEditor().Get3DFrame().GetEditedRootNode3D());
+	auto nodes = GetScene().GetFinder().FindIntersection(RayToWorld, nullptr, GetEditor().Get3DFrame().GetEditedRootNode3D());
 	if (nodes.empty())
 	{
 		if (e.Shift)
@@ -197,14 +197,14 @@ void CEditorToolSelector::OnMouseReleased(const MouseButtonEventArgs & e, const 
 		{
 			Frustum f;
 			f.buildBoxFrustum(
-				GetScene()->GetCameraController()->ScreenToRay(GetScene()->GetRenderWindow().GetViewport(), glm::vec2(glm::min(cachedSelectionPrevPos.x, e.GetPoint().x), glm::min(cachedSelectionPrevPos.y, e.GetPoint().y))),
-				GetScene()->GetCameraController()->ScreenToRay(GetScene()->GetRenderWindow().GetViewport(), glm::vec2(glm::min(cachedSelectionPrevPos.x, e.GetPoint().x), glm::max(cachedSelectionPrevPos.y, e.GetPoint().y))),
-				GetScene()->GetCameraController()->ScreenToRay(GetScene()->GetRenderWindow().GetViewport(), glm::vec2(glm::max(cachedSelectionPrevPos.x, e.GetPoint().x), glm::min(cachedSelectionPrevPos.y, e.GetPoint().y))),
-				GetScene()->GetCameraController()->ScreenToRay(GetScene()->GetRenderWindow().GetViewport(), glm::vec2(glm::max(cachedSelectionPrevPos.x, e.GetPoint().x), glm::max(cachedSelectionPrevPos.y, e.GetPoint().y))),
+				GetScene().GetCameraController()->ScreenToRay(GetScene().GetRenderWindow().GetViewport(), glm::vec2(glm::min(cachedSelectionPrevPos.x, e.GetPoint().x), glm::min(cachedSelectionPrevPos.y, e.GetPoint().y))),
+				GetScene().GetCameraController()->ScreenToRay(GetScene().GetRenderWindow().GetViewport(), glm::vec2(glm::min(cachedSelectionPrevPos.x, e.GetPoint().x), glm::max(cachedSelectionPrevPos.y, e.GetPoint().y))),
+				GetScene().GetCameraController()->ScreenToRay(GetScene().GetRenderWindow().GetViewport(), glm::vec2(glm::max(cachedSelectionPrevPos.x, e.GetPoint().x), glm::min(cachedSelectionPrevPos.y, e.GetPoint().y))),
+				GetScene().GetCameraController()->ScreenToRay(GetScene().GetRenderWindow().GetViewport(), glm::vec2(glm::max(cachedSelectionPrevPos.x, e.GetPoint().x), glm::max(cachedSelectionPrevPos.y, e.GetPoint().y))),
 				10000.0f
 			);
 
-			auto nodes = GetScene()->GetFinder().FindIntersections(f, nullptr, GetEditor().Get3DFrame().GetEditedRootNode3D());
+			auto nodes = GetScene().GetFinder().FindIntersections(f, nullptr, GetEditor().Get3DFrame().GetEditedRootNode3D());
 			if (!nodes.empty())
 				SelectNodes(nodes);
 		}

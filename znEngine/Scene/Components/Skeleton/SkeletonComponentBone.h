@@ -24,7 +24,7 @@ public:
 	// ISkeletonComponentBoneInternal3D
 	void AddChildInternal(const std::shared_ptr<ISkeletonComponentBone3D>& Child) override;
 	void SetParentAndChildsInternals(const std::vector<std::shared_ptr<ISkeletonComponentBone3D>>& Bones) override;
-	void Calculate(const ISceneNode3D& Instance, const ICameraComponent3D* Camera) override;
+	void Calculate(const ISceneNode& Instance, const ICameraComponent3D* Camera) override;
 	void Reset() override;
 
 private:

@@ -3,7 +3,7 @@
 // General
 #include "ColliderComponent3D.h"
 
-CColliderComponent3D::CColliderComponent3D(const ISceneNode3D& OwnerNode)
+CColliderComponent3D::CColliderComponent3D(const ISceneNode& OwnerNode)
 	: CComponentBase(OwnerNode)
 	, m_CullStrategy(ECullStrategy::None)
 	, m_CullDistance(99999.0f) // Don't use FloatMax

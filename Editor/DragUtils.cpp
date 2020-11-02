@@ -3,7 +3,7 @@
 // General
 #include "DragUtils.h"
 
-void CreateDragDataFromSceneNode(const std::shared_ptr<ISceneNode3D>& Node, CByteBuffer * ByteBuffer)
+void CreateDragDataFromSceneNode(const std::shared_ptr<ISceneNode>& Node, CByteBuffer * ByteBuffer)
 {
 	if (Node == nullptr)
 		throw CException("Unable create drag data from ISceneNode, because ISceneNode is nullptr.");
@@ -52,9 +52,9 @@ EDragDataSourceType GetDragDataSourceType(const CByteBuffer & ByteBuffer)
 	return static_cast<EDragDataSourceType>(sourceTypeInt);
 }
 
-std::shared_ptr<ISceneNode3D> GetSceneNodeFromDragData(IBaseManager& BaseManager, IScene& Scene, const CByteBuffer& ByteBuffer)
+std::shared_ptr<ISceneNode> GetSceneNodeFromDragData(IBaseManager& BaseManager, IScene& Scene, const CByteBuffer& ByteBuffer)
 {
-	return std::shared_ptr<ISceneNode3D>();
+	return std::shared_ptr<ISceneNode>();
 }
 
 std::shared_ptr<IModel> GetModelFromDragData(IBaseManager& BaseManager, const CByteBuffer& ByteBuffer)

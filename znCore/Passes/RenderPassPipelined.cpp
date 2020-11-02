@@ -82,7 +82,7 @@ IPipelineState& RenderPassPipelined::GetPipeline() const
 //
 // IVisitor
 //
-EVisitResult RenderPassPipelined::Visit(const ISceneNode3D* node)
+EVisitResult RenderPassPipelined::Visit(const ISceneNode* node)
 {
 	return EVisitResult::Block;
 }

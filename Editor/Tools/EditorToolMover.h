@@ -30,15 +30,15 @@ public:
 
 protected:
 	void Clear();
-	std::shared_ptr<ISceneNode3D> GetMovingNode();
+	std::shared_ptr<ISceneNode> GetMovingNode();
 
 private:
-	std::shared_ptr<ISceneNode3D> m_MoverRoot;
-	std::shared_ptr<ISceneNode3D> m_MoverX;
-	std::shared_ptr<ISceneNode3D> m_MoverY;
-	std::shared_ptr<ISceneNode3D> m_MoverZ;
+	std::shared_ptr<ISceneNode> m_MoverRoot;
+	std::shared_ptr<ISceneNode> m_MoverX;
+	std::shared_ptr<ISceneNode> m_MoverY;
+	std::shared_ptr<ISceneNode> m_MoverZ;
 
-	std::weak_ptr<ISceneNode3D> m_MovingNode;
+	std::weak_ptr<ISceneNode> m_MovingNode;
 
 	EMoverDirection m_MoverNumber;
 	glm::vec3 m_MoverOffset;

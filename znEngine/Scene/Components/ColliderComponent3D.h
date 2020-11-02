@@ -5,7 +5,7 @@ class __declspec(UUID_ColliderComponent) ZN_API CColliderComponent3D
 	, public CComponentBase
 {
 public:
-	CColliderComponent3D(const ISceneNode3D& OwnerNode);
+	CColliderComponent3D(const ISceneNode& OwnerNode);
     virtual ~CColliderComponent3D();
 
 	void Copy(std::shared_ptr<ISceneNodeComponent> Destination) const override;

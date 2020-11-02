@@ -3,7 +3,7 @@
 // General
 #include "LightComponent3D.h"
 
-CLightComponent3D::CLightComponent3D(const ISceneNode3D& OwnerNode)
+CLightComponent3D::CLightComponent3D(const ISceneNode& OwnerNode)
     : CComponentBase(OwnerNode)
 {
 	GetProperties()->SetName("LightComponent");

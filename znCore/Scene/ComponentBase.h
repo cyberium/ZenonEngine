@@ -7,7 +7,7 @@ class ZN_API CComponentBase
 	, public Object
 {
 public:
-    CComponentBase(const ISceneNode3D& OwnerNode);
+    CComponentBase(const ISceneNode& OwnerNode);
     virtual ~CComponentBase();
 
     // Components engine template access
@@ -34,12 +34,12 @@ public:
 	virtual void									Save(const std::shared_ptr<IXMLWriter>& Writer) const override;
 
 protected:
-	const ISceneNode3D&								GetOwnerNode() const;
+	const ISceneNode&								GetOwnerNode() const;
 	IBaseManager&									GetBaseManager() const;
     void                                            RaiseComponentMessage(ComponentMessageType Message);
 
 private:
-    const ISceneNode3D&								m_OwnerNode;
+    const ISceneNode&								m_OwnerNode;
 	std::shared_ptr<IPropertiesGroup>               m_Properties;
 };
 

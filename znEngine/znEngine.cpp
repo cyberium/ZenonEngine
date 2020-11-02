@@ -148,7 +148,7 @@ IBaseManager* WINAPI InitializeEngine(std::vector<std::string> Arguments, std::s
 		baseManager->AddManager<IObjectsFactory>(factory);
 
 		std::shared_ptr<CSceneNode3DFactory> sceneNode3DFactory = MakeShared(CSceneNode3DFactory, *baseManager, "otSceneNode3D", otSceneNode3D);
-		sceneNode3DFactory->AddClassCreator(MakeShared(CSceneNode3DEngineCreator, *baseManager));
+		sceneNode3DFactory->AddClassCreator(MakeShared(CSceneNodeEngineCreator, *baseManager));
 		factory->AddClassFactory(sceneNode3DFactory);
 
 		std::shared_ptr<CSceneNodeUIFactory> sceneNodeUIFactory = MakeShared(CSceneNodeUIFactory, *baseManager, "otSceneNodeUI", otSceneNodeUI);

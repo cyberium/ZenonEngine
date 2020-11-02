@@ -8,7 +8,7 @@ class __declspec(UUID_SkeletonComponent) ZN_API CSkeletonComponent3D
 	, public CComponentBase
 {
 public:
-	CSkeletonComponent3D(const ISceneNode3D& OwnerNode, const CSkeleton& Skeleton);
+	CSkeletonComponent3D(const ISceneNode& OwnerNode, const CSkeleton& Skeleton);
 	virtual ~CSkeletonComponent3D();
 
 	// ISkeletonComponent3D

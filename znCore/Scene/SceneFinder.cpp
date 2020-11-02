@@ -7,7 +7,7 @@
 
 namespace
 {
-	void FillIntersectedModelsMap(const std::shared_ptr<ISceneNode3D>& Owner, const Ray& Ray, std::map<float, std::shared_ptr<IModel>> * intersectedModels)
+	void FillIntersectedModelsMap(const std::shared_ptr<ISceneNode>& Owner, const Ray& Ray, std::map<float, std::shared_ptr<IModel>> * intersectedModels)
 	{
 		auto modelsComponent = Owner->GetComponent<IModelsComponent3D>();
 		if (modelsComponent == nullptr)
@@ -33,7 +33,7 @@ namespace
 		}
 	}
 
-	void FillIntersectedModelsList(const std::shared_ptr<ISceneNode3D>& Owner, const Frustum& Frustum, std::vector<std::shared_ptr<IModel>> * intersectedModels)
+	void FillIntersectedModelsList(const std::shared_ptr<ISceneNode>& Owner, const Frustum& Frustum, std::vector<std::shared_ptr<IModel>> * intersectedModels)
 	{
 		auto modelsComponent = Owner->GetComponent<IModelsComponent3D>();
 		if (modelsComponent == nullptr)
@@ -52,7 +52,7 @@ namespace
 			intersectedModels->push_back(modelsComponent->GetModel());
 	}
 
-	void FillIntersectedSceneNodesList(const std::shared_ptr<ISceneNode3D>& Parent, const Frustum& Frustum, std::vector<std::shared_ptr<ISceneNode3D>> * intersectedNodes)
+	void FillIntersectedSceneNodesList(const std::shared_ptr<ISceneNode>& Parent, const Frustum& Frustum, std::vector<std::shared_ptr<ISceneNode>> * intersectedNodes)
 	{
 		const auto& childs = Parent->GetChilds();
 		for (const auto& it : childs)
@@ -70,7 +70,7 @@ namespace
 		}
 	}
 
-	void FillIntersectedSceneNodesMap(const std::shared_ptr<ISceneNode3D>& Parent, const Ray & Ray, std::map<float, std::shared_ptr<ISceneNode3D>> * intersectedNodes)
+	void FillIntersectedSceneNodesMap(const std::shared_ptr<ISceneNode>& Parent, const Ray & Ray, std::map<float, std::shared_ptr<ISceneNode>> * intersectedNodes)
 	{
 		const auto& childs = Parent->GetChilds();
 		for (const auto& it : childs)
@@ -101,9 +101,9 @@ CSceneFinder::~CSceneFinder()
 {
 }
 
-std::map<float, std::shared_ptr<ISceneNode3D>> CSceneFinder::FindIntersection(const Ray& Ray, std::function<bool(std::shared_ptr<ISceneNode3D>)> Filter, std::shared_ptr<ISceneNode3D> RootForFinder) const
+std::map<float, std::shared_ptr<ISceneNode>> CSceneFinder::FindIntersection(const Ray& Ray, std::function<bool(std::shared_ptr<ISceneNode>)> Filter, std::shared_ptr<ISceneNode> RootForFinder) const
 {
-	std::map<float, std::shared_ptr<ISceneNode3D>> intersectedNodes;
+	std::map<float, std::shared_ptr<ISceneNode>> intersectedNodes;
 	FillIntersectedSceneNodesMap(RootForFinder ? RootForFinder : m_Scene.GetRootNode3D(), Ray, &intersectedNodes);
 
 	if (Filter)
@@ -121,9 +121,9 @@ std::map<float, std::shared_ptr<ISceneNode3D>> CSceneFinder::FindIntersection(co
 	return intersectedNodes;
 }
 
-std::vector<std::shared_ptr<ISceneNode3D>> CSceneFinder::FindIntersections(const Frustum & Frustum, std::function<bool(std::shared_ptr<ISceneNode3D>)> Filter, std::shared_ptr<ISceneNode3D> RootForFinder) const
+std::vector<std::shared_ptr<ISceneNode>> CSceneFinder::FindIntersections(const Frustum & Frustum, std::function<bool(std::shared_ptr<ISceneNode>)> Filter, std::shared_ptr<ISceneNode> RootForFinder) const
 {
-	std::vector<std::shared_ptr<ISceneNode3D>> intersectedNodes;
+	std::vector<std::shared_ptr<ISceneNode>> intersectedNodes;
 	FillIntersectedSceneNodesList(RootForFinder ? RootForFinder : m_Scene.GetRootNode3D(), Frustum, &intersectedNodes);
 	
 	if (Filter)
@@ -140,7 +140,7 @@ std::vector<std::shared_ptr<ISceneNode3D>> CSceneFinder::FindIntersections(const
 	return intersectedNodes;
 }
 
-std::map<float, std::shared_ptr<IModel>> CSceneFinder::FindIntersectionWithModel(const Ray & Ray, std::function<bool(std::shared_ptr<ISceneNode3D>)> FilterForSceneNodes, std::function<bool(std::shared_ptr<IModel>)> FilterForModels, std::shared_ptr<ISceneNode3D> RootForFinder) const
+std::map<float, std::shared_ptr<IModel>> CSceneFinder::FindIntersectionWithModel(const Ray & Ray, std::function<bool(std::shared_ptr<ISceneNode>)> FilterForSceneNodes, std::function<bool(std::shared_ptr<IModel>)> FilterForModels, std::shared_ptr<ISceneNode> RootForFinder) const
 {
 	auto intersectedNodes = FindIntersection(Ray, FilterForSceneNodes, RootForFinder);
 	if (intersectedNodes.empty())
@@ -165,7 +165,7 @@ std::map<float, std::shared_ptr<IModel>> CSceneFinder::FindIntersectionWithModel
 	return intersectedModels;
 }
 
-std::vector<std::shared_ptr<IModel>> CSceneFinder::FindIntersectionsWithModel(const Frustum & Frustum, std::function<bool(std::shared_ptr<ISceneNode3D>)> FilterForSceneNodes, std::function<bool(std::shared_ptr<IModel>)> FilterForModels, std::shared_ptr<ISceneNode3D> RootForFinder) const
+std::vector<std::shared_ptr<IModel>> CSceneFinder::FindIntersectionsWithModel(const Frustum & Frustum, std::function<bool(std::shared_ptr<ISceneNode>)> FilterForSceneNodes, std::function<bool(std::shared_ptr<IModel>)> FilterForModels, std::shared_ptr<ISceneNode> RootForFinder) const
 {
 	auto intersectedNodes = FindIntersections(Frustum, FilterForSceneNodes, RootForFinder);
 	if (intersectedNodes.empty())

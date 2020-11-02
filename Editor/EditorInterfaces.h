@@ -80,7 +80,7 @@ ZN_INTERFACE IEditorTools
 };
 
 
-typedef std::vector<std::weak_ptr<ISceneNode3D>> SelectedNodes;
+typedef std::vector<std::weak_ptr<ISceneNode>> SelectedNodes;
 
 //
 // Nodes selector
@@ -89,13 +89,13 @@ ZN_INTERFACE IEditorToolSelector
 {
 	virtual ~IEditorToolSelector() {}
 
-	virtual void SelectNode(std::shared_ptr<ISceneNode3D> Node) = 0;
-	virtual void SelectNodes(const std::vector<std::shared_ptr<ISceneNode3D>>& Nodes) = 0;
+	virtual void SelectNode(std::shared_ptr<ISceneNode> Node) = 0;
+	virtual void SelectNodes(const std::vector<std::shared_ptr<ISceneNode>>& Nodes) = 0;
 	virtual void ClearSelection() = 0;
-	virtual void AddNode(std::shared_ptr<ISceneNode3D> Node) = 0;
-	virtual void RemoveNode(std::shared_ptr<ISceneNode3D> Node) = 0;
-	virtual std::shared_ptr<ISceneNode3D> GetFirstSelectedNode() const = 0;
-	virtual bool IsNodeSelected(std::shared_ptr<ISceneNode3D> Node) const = 0;
+	virtual void AddNode(std::shared_ptr<ISceneNode> Node) = 0;
+	virtual void RemoveNode(std::shared_ptr<ISceneNode> Node) = 0;
+	virtual std::shared_ptr<ISceneNode> GetFirstSelectedNode() const = 0;
+	virtual bool IsNodeSelected(std::shared_ptr<ISceneNode> Node) const = 0;
 	virtual const SelectedNodes& GetSelectedNodes() const = 0;
 };
 ZN_INTERFACE IEditorToolSelectorEventListener
@@ -148,9 +148,9 @@ ZN_INTERFACE IEditor
 	virtual IEditorTools& GetTools() = 0;
 	virtual IEditorShell& GetShell() = 0;
 
-	virtual bool IsNodeSelected(std::shared_ptr<ISceneNode3D> Node) const = 0;
-	virtual std::shared_ptr<ISceneNode3D> GetFirstSelectedNode() const = 0;
-	virtual std::vector<std::shared_ptr<ISceneNode3D>> GetSelectedNodes() const = 0;
+	virtual bool IsNodeSelected(std::shared_ptr<ISceneNode> Node) const = 0;
+	virtual std::shared_ptr<ISceneNode> GetFirstSelectedNode() const = 0;
+	virtual std::vector<std::shared_ptr<ISceneNode>> GetSelectedNodes() const = 0;
 };
 
 ZN_INTERFACE IEditorPrivate
@@ -178,14 +178,14 @@ ZN_INTERFACE IEditor3DFrame
 	virtual bool InitializeEditorFrame() = 0;
 
 	virtual void DoInitializeTools3D() = 0;
-	virtual std::shared_ptr<IScene> GetScene() = 0;
+	virtual IScene& GetScene() = 0;
 	virtual void LockUpdates() = 0;
 	virtual void UnlockUpdates() = 0;
 	virtual void DoEnableTool(ETool Tool) = 0;
 
 	virtual std::shared_ptr<IScene> GetEditedScene() const = 0;
-	virtual std::shared_ptr<ISceneNode3D> GetEditedRootNode3D() const = 0;
-	virtual std::shared_ptr<ISceneNode3D> GetEditedNodeUnderMouse(const glm::ivec2& MousePos) const = 0;
+	virtual std::shared_ptr<ISceneNode> GetEditedRootNode3D() const = 0;
+	virtual std::shared_ptr<ISceneNode> GetEditedNodeUnderMouse(const glm::ivec2& MousePos) const = 0;
 
 	virtual void OnCollectionWidget_ModelSelected(const std::shared_ptr<IModel>& Model) = 0;
 };
@@ -199,6 +199,6 @@ ZN_INTERFACE IEditorUIFrame
 	virtual bool InitializeEditorFrame() = 0;
 
 	virtual void DoInitializeToolsUI() = 0;
-	virtual bool ExtendContextMenu(const std::shared_ptr<ISceneNode3D>& Node, std::string * Title, std::vector<std::shared_ptr<IPropertyAction>> * Actions) = 0;
-	virtual void OnSceneChanged(ESceneChangeType SceneChangeType, const std::shared_ptr<ISceneNode3D>& ParentNode, const std::shared_ptr<ISceneNode3D>& ChildNode) = 0;
+	virtual bool ExtendContextMenu(const std::shared_ptr<ISceneNode>& Node, std::string * Title, std::vector<std::shared_ptr<IPropertyAction>> * Actions) = 0;
+	virtual void OnSceneChanged(ESceneChangeType SceneChangeType, const std::shared_ptr<ISceneNode>& ParentNode, const std::shared_ptr<ISceneNode>& ChildNode) = 0;
 };

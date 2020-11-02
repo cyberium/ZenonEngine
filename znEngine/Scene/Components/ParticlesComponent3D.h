@@ -6,7 +6,7 @@ class __declspec(UUID_ParticleComponent) ZN_API CParticlesComponent3D
 	, public CComponentBase
 {
 public:
-	CParticlesComponent3D(const ISceneNode3D& SceneNode);
+	CParticlesComponent3D(const ISceneNode& SceneNode);
 	virtual ~CParticlesComponent3D();
 
 	// IParticleComponent3D

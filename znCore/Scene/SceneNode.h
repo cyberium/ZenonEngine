@@ -2,32 +2,32 @@
 
 #include "../ObjectsFactories/Object.h"
 
-class ZN_API SceneNode3D
-	: public ISceneNode3D
-	, public ISceneNode3DInternal
+class ZN_API CSceneNode
+	: public ISceneNode
+	, public ISceneNodeInternal
 	, public Object
 {
     friend IScene;
 public:
-	SceneNode3D(IScene& Scene);
-	virtual ~SceneNode3D();
+	CSceneNode(IScene& Scene);
+	virtual ~CSceneNode();
 
-	// ISceneNode3D
+	// ISceneNode
 	virtual void                                    Initialize() override;
 	virtual void                                    Finalize() override;
-	virtual void                                    CopyTo(std::shared_ptr<ISceneNode3D> Destination) const override;
+	virtual void                                    CopyTo(std::shared_ptr<ISceneNode> Destination) const override;
 
 	// Childs functional
-	virtual void                                    AddChild(std::shared_ptr<ISceneNode3D> childNode) override final;
-	virtual void                                    RemoveChild(std::shared_ptr<ISceneNode3D> childNode) override final;
-	virtual std::shared_ptr<ISceneNode3D>           GetParent() const override final;
+	virtual void                                    AddChild(std::shared_ptr<ISceneNode> childNode) override final;
+	virtual void                                    RemoveChild(std::shared_ptr<ISceneNode> childNode) override final;
+	virtual std::shared_ptr<ISceneNode>             GetParent() const override final;
 	virtual const Node3DList&                       GetChilds() const override final;
-	virtual std::shared_ptr<ISceneNode3D>           GetChild(std::string Name) const override;
+	virtual std::shared_ptr<ISceneNode>             GetChild(std::string Name) const override;
 	bool                                            IsPersistance() const override;
 
 	// Actions & Properties
 	std::shared_ptr<IPropertiesGroup>				GetProperties() const override final;
-	IScene*											GetScene() const override final;
+	IScene&											GetScene() const override final;
 
 	//
 	// Transform functional
@@ -76,10 +76,10 @@ public:
 	virtual void									Save(const std::shared_ptr<IXMLWriter>& Writer) const override;
 
 protected:
-	// ISceneNode3DInternal
-	void                                            AddChildInternal(std::shared_ptr<ISceneNode3D> ChildNode) override;
-	void                                            RemoveChildInternal(std::shared_ptr<ISceneNode3D> ChildNode) override;
-	void                                            SetParentInternal(std::weak_ptr<ISceneNode3D> parentNode) override;
+	// ISceneNodeInternal
+	void                                            AddChildInternal(std::shared_ptr<ISceneNode> ChildNode) override;
+	void                                            RemoveChildInternal(std::shared_ptr<ISceneNode> ChildNode) override;
+	void                                            SetParentInternal(std::weak_ptr<ISceneNode> parentNode) override;
 	void                                            SetPersistanceInternal(bool Value) override;
 	void                                            RaiseOnParentChangedInternal() override;
 
@@ -110,12 +110,12 @@ private:
 
 	ComponentsMap                                   m_Components;
 
-	std::weak_ptr<ISceneNode3D>                     m_ParentNode;
+	std::weak_ptr<ISceneNode>                     m_ParentNode;
 	Node3DList                                      m_Children;
 	bool                                            m_IsPersistance;
 };
 
-inline bool IsChildOf(const std::shared_ptr<ISceneNode3D>& Parent, const std::shared_ptr<ISceneNode3D>& Child)
+inline bool IsChildOf(const std::shared_ptr<ISceneNode>& Parent, const std::shared_ptr<ISceneNode>& Child)
 {
 	if (Parent == nullptr || Child == nullptr)
 		return false;

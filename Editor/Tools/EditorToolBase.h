@@ -30,7 +30,7 @@ public:
 
 protected:
 	IEditor& GetEditor() const;
-	IScene* GetScene() const;
+	IScene& GetScene() const;
 	IBaseManager& GetBaseManager() const;
 	IRenderDevice& GetRenderDevice() const;
 

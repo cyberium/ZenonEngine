@@ -8,7 +8,7 @@ class ZN_API CPassDeffered_ProcessLights
 public:
 	struct SLightResult
 	{
-		const ISceneNode3D*        SceneNode;
+		const ISceneNode*        SceneNode;
 		const ILight3D*            LightNode;
 		bool                       IsLightEnabled;
 		bool                       IsCastShadow;
@@ -33,7 +33,7 @@ protected:
 	std::shared_ptr<ITexture> CreateShadowTextureDepthStencil() const;
 	
 	void BindPerFrameParamsForCurrentIteration(const ILight3D * Light);
-	void BindPerObjectParamsForCurrentIteration(const ISceneNode3D* SceneNode);
+	void BindPerObjectParamsForCurrentIteration(const ISceneNode* SceneNode);
 
 private: // Pass light params
 	std::shared_ptr<IConstantBuffer> m_PerObjectConstantBuffer;

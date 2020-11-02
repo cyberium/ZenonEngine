@@ -149,11 +149,11 @@ void CLoader::SorterThread(std::future<void> _promiseExiter)
 
 bool CLoader::sortFunctor::operator()(const ILoadable* first, const ILoadable* second)
 {
-	const SceneNode3D* node3DFirst = dynamic_cast<const SceneNode3D*>(first);
+	const CSceneNode* node3DFirst = dynamic_cast<const CSceneNode*>(first);
 	if (node3DFirst == nullptr)
 		return false;
 
-	const SceneNode3D* node3DSecond = dynamic_cast<const SceneNode3D*>(second);
+	const CSceneNode* node3DSecond = dynamic_cast<const CSceneNode*>(second);
 	if (node3DSecond == nullptr)
 		return true;
 

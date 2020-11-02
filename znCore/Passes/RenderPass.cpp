@@ -41,7 +41,7 @@ void RenderPass::PostRender(RenderEventArgs& e)
 //
 // IVisitor
 //
-EVisitResult RenderPass::Visit(const ISceneNode3D* node)
+EVisitResult RenderPass::Visit(const ISceneNode* node)
 {
 	return EVisitResult::Block;
 }

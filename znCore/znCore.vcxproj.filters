@@ -76,9 +76,6 @@
     <Filter Include="Scene">
       <UniqueIdentifier>{8c8be4ea-0256-49e9-87bf-26a6e295f7ef}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Settings">
-      <UniqueIdentifier>{bc1f0964-30fc-4288-a8ea-cb5bd992e806}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Objects">
       <UniqueIdentifier>{15e421b3-d1fd-4098-91e6-1d5660a87fc3}</UniqueIdentifier>
     </Filter>
@@ -90,6 +87,9 @@
     </Filter>
     <Filter Include="__Interfaces\Managers">
       <UniqueIdentifier>{a1b8f907-e42a-4a76-838d-0f07d9b66144}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Settings">
+      <UniqueIdentifier>{bc1f0964-30fc-4288-a8ea-cb5bd992e806}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -291,12 +291,6 @@
     <ClCompile Include="Log\Log.cpp">
       <Filter>Log</Filter>
     </ClCompile>
-    <ClCompile Include="Scene\SceneNode3D.cpp">
-      <Filter>Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="Scene\SceneNodeUI.cpp">
-      <Filter>Scene</Filter>
-    </ClCompile>
     <ClCompile Include="Passes\ScenePasses\Pipelined\Base3DPass.cpp">
       <Filter>Passes\ScenePasses</Filter>
     </ClCompile>
@@ -317,6 +311,12 @@
     </ClCompile>
     <ClCompile Include="Files\LibraryResourceFileStotage.cpp">
       <Filter>Files\Storages</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\SceneNode.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\UIControl.cpp">
+      <Filter>Scene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -737,12 +737,6 @@
     <ClInclude Include="Log\Log.h">
       <Filter>Log</Filter>
     </ClInclude>
-    <ClInclude Include="Scene\SceneNode3D.h">
-      <Filter>Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="Scene\SceneNodeUI.h">
-      <Filter>Scene</Filter>
-    </ClInclude>
     <ClInclude Include="Passes\ScenePasses\Pipelined\ScenePassPipelined.h">
       <Filter>Passes\ScenePasses</Filter>
     </ClInclude>
@@ -781,6 +775,12 @@
     </ClInclude>
     <ClInclude Include="..\shared\Interfaces\Managers\TexturesFactory.h">
       <Filter>__Interfaces\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\SceneNode.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\UIControl.h">
+      <Filter>Scene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -3,7 +3,7 @@
 // General
 #include "ParticlesComponent3D.h"
 
-CParticlesComponent3D::CParticlesComponent3D(const ISceneNode3D & SceneNode)
+CParticlesComponent3D::CParticlesComponent3D(const ISceneNode & SceneNode)
 	: CComponentBase(SceneNode)
 {
 	GetProperties()->SetName("ParticlesComponent");

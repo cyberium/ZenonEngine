@@ -3,7 +3,7 @@
 #include "EngineSceneIntfs.h"
 
 class CRTSSceneNodeGround
-	: public SceneNode3D
+	: public CSceneNode
 	, public IRTSGround
 {
 public:
@@ -13,8 +13,8 @@ public:
 	CRTSSceneNodeGround(IScene& Scene);
 	virtual ~CRTSSceneNodeGround();
 
-	// ISceneNode3D
-	void CopyTo(std::shared_ptr<ISceneNode3D> Destination) const override;
+	// ISceneNode
+	void CopyTo(std::shared_ptr<ISceneNode> Destination) const override;
 
 	// IRTSGround
 	bool AddCell(ERTSCellType CellType, SRTSCellCoords Coords) override;

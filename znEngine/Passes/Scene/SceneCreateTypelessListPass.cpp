@@ -54,7 +54,7 @@ void CSceneCreateTypelessListPass::Render(RenderEventArgs & e)
 //
 // IVisitor
 //
-EVisitResult CSceneCreateTypelessListPass::Visit(const ISceneNode3D * SceneNode)
+EVisitResult CSceneCreateTypelessListPass::Visit(const ISceneNode * SceneNode)
 {
 	m_NodesList.push_back(SNodeElement(SceneNode));
 	return EVisitResult::AllowAll;

@@ -29,5 +29,5 @@ private:
 	std::shared_ptr<IRenderer> m_DefferedRenderrer;
 
 private:
-	std::shared_ptr<ISceneNode3D> m_RootForBoxes;
+	std::shared_ptr<ISceneNode> m_RootForBoxes;
 };

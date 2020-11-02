@@ -11,9 +11,9 @@ struct ZN_API CSkeletonBone
 
 	bool operator==(const CSkeletonBone& other) const;
 
-	glm::mat4 CalcMatrix(const ISceneNode3D& Instance) const;
-	glm::vec3 CalcTranslate(const ISceneNode3D& Instance) const;
-	glm::vec3 CalcRotate(const ISceneNode3D& Instance) const;
+	glm::mat4 CalcMatrix(const ISceneNode& Instance) const;
+	glm::vec3 CalcTranslate(const ISceneNode& Instance) const;
+	glm::vec3 CalcRotate(const ISceneNode& Instance) const;
 
 	std::string          Name;
 	int32                ParentIndex;

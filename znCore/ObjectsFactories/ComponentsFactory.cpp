@@ -4,8 +4,6 @@
 #include "ComponentsFactory.h"
 
 // Additional
-#include "Scene/SceneNode3D.h"
-#include "Scene/SceneNodeUI.h"
 #include "Files/File.h"
 #include "XML/XMLManager.h"
 
@@ -16,13 +14,13 @@ CComponentsFactory::CComponentsFactory(IBaseManager& BaseManager, const std::str
 CComponentsFactory::~CComponentsFactory()
 {}
 
-std::shared_ptr<ISceneNodeComponent> CComponentsFactory::CreateComponent(ObjectClass ObjectClassKey, ISceneNode3D & SceneNode)
+std::shared_ptr<ISceneNodeComponent> CComponentsFactory::CreateComponent(ObjectClass ObjectClassKey, ISceneNode & SceneNode)
 {
 	CComponentCreationArgs creationArgs(SceneNode);
 	return std::dynamic_pointer_cast<ISceneNodeComponent>(CreateObject(ObjectClassKey, &creationArgs));
 }
 
-std::shared_ptr<ISceneNodeComponent> CComponentsFactory::LoadComponentXML(const std::shared_ptr<IXMLReader>& Reader, ISceneNode3D & SceneNode)
+std::shared_ptr<ISceneNodeComponent> CComponentsFactory::LoadComponentXML(const std::shared_ptr<IXMLReader>& Reader, ISceneNode & SceneNode)
 {
 	Guid guid = ReadGUIDXML(Reader);
 

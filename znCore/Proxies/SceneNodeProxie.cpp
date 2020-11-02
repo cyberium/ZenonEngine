@@ -14,7 +14,7 @@ CSceneNodeProxie::~CSceneNodeProxie()
 
 
 //
-// ISceneNode3D
+// ISceneNode
 //
 void CSceneNodeProxie::Initialize()
 {
@@ -77,27 +77,27 @@ std::shared_ptr<IScene> CSceneNodeProxie::GetScene() const
 	return m_SceneNode->GetScene();
 }
 
-void CSceneNodeProxie::AddChild(std::shared_ptr<ISceneNode3D> childNode)
+void CSceneNodeProxie::AddChild(std::shared_ptr<ISceneNode> childNode)
 {
 	m_SceneNode->AddChild(childNode);
 }
 
-void CSceneNodeProxie::RemoveChild(std::shared_ptr<ISceneNode3D> childNode)
+void CSceneNodeProxie::RemoveChild(std::shared_ptr<ISceneNode> childNode)
 {
 	m_SceneNode->RemoveChild(childNode);
 }
 
-void CSceneNodeProxie::SetParent(std::weak_ptr<ISceneNode3D> parentNode)
+void CSceneNodeProxie::SetParent(std::weak_ptr<ISceneNode> parentNode)
 {
 	m_SceneNode->SetParent(parentNode);
 }
 
-std::shared_ptr<ISceneNode3D> CSceneNodeProxie::GetParent() const
+std::shared_ptr<ISceneNode> CSceneNodeProxie::GetParent() const
 {
 	return m_SceneNode->GetParent();
 }
 
-std::vector<std::shared_ptr<ISceneNode3D>> CSceneNodeProxie::GetChilds()
+std::vector<std::shared_ptr<ISceneNode>> CSceneNodeProxie::GetChilds()
 {
 	return m_SceneNode->GetChilds();
 }
@@ -116,7 +116,7 @@ bool CSceneNodeProxie::Accept(IVisitor * visitor)
 {
 	bool visitResult = false;
 
-	if (ISceneNode3D* ss_3d = dynamic_cast<ISceneNode3D*>(m_SceneNode))
+	if (ISceneNode* ss_3d = dynamic_cast<ISceneNode*>(m_SceneNode))
 	{
 		visitResult = visitor->Visit3D(this);
 	}
@@ -143,14 +143,14 @@ std::shared_ptr<ISettingGroup> CSceneNodeProxie::GetProperties() const
 //
 // ISceneNodeWrapper
 //
-void CSceneNodeProxie::SetWrappedNode(std::shared_ptr<ISceneNode3D> ThisNode)
+void CSceneNodeProxie::SetWrappedNode(std::shared_ptr<ISceneNode> ThisNode)
 {
 	_ASSERT(m_SceneNode == nullptr);
 	m_SceneNode = ThisNode;
 	_ASSERT(m_SceneNode != nullptr);
 }
 
-std::shared_ptr<ISceneNode3D> CSceneNodeProxie::GetWrappedNode() const
+std::shared_ptr<ISceneNode> CSceneNodeProxie::GetWrappedNode() const
 {
 	return m_SceneNode;
 }

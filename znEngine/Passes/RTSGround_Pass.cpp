@@ -72,7 +72,7 @@ std::shared_ptr<IRenderPassPipelined> CRTSGround_Pass::ConfigurePipeline(std::sh
 //
 // IVisitor
 //
-EVisitResult CRTSGround_Pass::Visit(const ISceneNode3D * SceneNode)
+EVisitResult CRTSGround_Pass::Visit(const ISceneNode * SceneNode)
 {
 	if (Object::GetClearName(SceneNode->GetName()).first == "GroundRoot")
 		printf("Asd");

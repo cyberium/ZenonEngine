@@ -15,7 +15,7 @@ public:
 	std::shared_ptr<IRenderPassPipelined> ConfigurePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport* Viewport) override;
 
 	// IVisitor
-	EVisitResult Visit(const ISceneNode3D* SceneNode) override;
+	EVisitResult Visit(const ISceneNode* SceneNode) override;
 
 private:
 	IShaderParameter* m_ShaderLightsBufferParameter;

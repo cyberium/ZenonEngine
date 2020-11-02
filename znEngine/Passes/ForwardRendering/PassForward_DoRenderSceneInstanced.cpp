@@ -29,7 +29,7 @@ IShaderParameter * CPassForward_DoRenderSceneInstanced::GetLightsShaderParameter
 //
 void CPassForward_DoRenderSceneInstanced::Render(RenderEventArgs & e)
 {
-	std::unordered_map<const IModel*, std::vector<const ISceneNode3D*>> modelPriorMap;
+	std::unordered_map<const IModel*, std::vector<const ISceneNode*>> modelPriorMap;
 	for (const auto& it : m_SceneCreateTypelessListPass->GetModelsList())
 	{
 		if (it.SceneNode->GetClass() != cSceneNode3D)
@@ -41,7 +41,7 @@ void CPassForward_DoRenderSceneInstanced::Render(RenderEventArgs & e)
 	{
 		std::vector<PerObject> instances;
 		instances.reserve(it.second.size());
-		std::for_each(it.second.begin(), it.second.end(), [&instances](const ISceneNode3D* sceneNode) {
+		std::for_each(it.second.begin(), it.second.end(), [&instances](const ISceneNode* sceneNode) {
 			instances.push_back(PerObject{ sceneNode->GetWorldTransfom() });
 		});
 
@@ -126,7 +126,7 @@ std::shared_ptr<IRenderPassPipelined> CPassForward_DoRenderSceneInstanced::Confi
 //
 // IVisitor
 //
-EVisitResult CPassForward_DoRenderSceneInstanced::Visit(const ISceneNode3D * SceneNode)
+EVisitResult CPassForward_DoRenderSceneInstanced::Visit(const ISceneNode * SceneNode)
 {
 	_ASSERT(false);
 	return EVisitResult::Block;

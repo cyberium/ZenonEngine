@@ -5,7 +5,7 @@
 
 using namespace rp3d;
 
-CReactPhysicsComponent::CReactPhysicsComponent(const ISceneNode3D& OwnerNode, rp3d::RigidBody * RPRigidBody)
+CReactPhysicsComponent::CReactPhysicsComponent(const ISceneNode& OwnerNode, rp3d::RigidBody * RPRigidBody)
 	: CComponentBase(OwnerNode)
 	, m_RPRigidBody(RPRigidBody)
 {
@@ -58,7 +58,7 @@ void Test()
 
 void CReactPhysicsComponent::Update(const UpdateEventArgs & e)
 {
-	ISceneNode3D& sceneNode3D = const_cast<ISceneNode3D&>(GetOwnerNode());
+	ISceneNode& sceneNode3D = const_cast<ISceneNode&>(GetOwnerNode());
 	sceneNode3D.SetTranslate(GetPhysicsPosition());
 
 	const auto& rot = m_RPRigidBody->getTransform().getOrientation();

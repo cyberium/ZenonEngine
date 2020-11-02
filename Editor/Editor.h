@@ -27,9 +27,9 @@ public:
 	IEditorShell& GetShell() override;
 
 	// Selection part
-	bool IsNodeSelected(std::shared_ptr<ISceneNode3D> Node) const override;
-	std::shared_ptr<ISceneNode3D> GetFirstSelectedNode() const override;
-	std::vector<std::shared_ptr<ISceneNode3D>> GetSelectedNodes() const override;
+	bool IsNodeSelected(std::shared_ptr<ISceneNode> Node) const override;
+	std::shared_ptr<ISceneNode> GetFirstSelectedNode() const override;
+	std::vector<std::shared_ptr<ISceneNode>> GetSelectedNodes() const override;
 
 	// Scene change part
 

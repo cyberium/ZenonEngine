@@ -175,7 +175,7 @@ void CPassDeffered_ProcessLights::BindPerFrameParamsForCurrentIteration(const IL
 	m_PerFrameShaderParameter->Bind();
 }
 
-void CPassDeffered_ProcessLights::BindPerObjectParamsForCurrentIteration(const ISceneNode3D * SceneNode)
+void CPassDeffered_ProcessLights::BindPerObjectParamsForCurrentIteration(const ISceneNode * SceneNode)
 {
 	PerObject perObject;
 	perObject.Model = SceneNode->GetWorldTransfom();

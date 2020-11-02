@@ -70,7 +70,7 @@ void CBaseList3DPass::Render(RenderEventArgs & e)
 //
 // IVisitor
 //
-EVisitResult CBaseList3DPass::Visit(const ISceneNode3D * SceneNode)
+EVisitResult CBaseList3DPass::Visit(const ISceneNode * SceneNode)
 {
 	PerObject perObject;
 	perObject.Model = SceneNode->GetWorldTransfom();

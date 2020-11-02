@@ -44,7 +44,7 @@ void CEditor3DPreviewScene::Initialize()
 
 	// Light
 	{
-		auto lightNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, this);
+		auto lightNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, *this);
 		lightNode->SetName("Light");
 		lightNode->SetTranslate(glm::vec3(250.0f, 250.0f, 250.0f));
 		lightNode->SetRotation(glm::vec3(-0.9f, -0.9f, -0.9f));
@@ -59,7 +59,7 @@ void CEditor3DPreviewScene::Initialize()
 
 
 	{
-		auto cameraNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, this);
+		auto cameraNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, *this);
 		cameraNode->SetName("Camera");
 		cameraNode->AddComponent(GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<IComponentFactory>()->CreateComponentT<ICameraComponent3D>(cSceneNodeCameraComponent, *cameraNode));
 
@@ -74,13 +74,13 @@ void CEditor3DPreviewScene::Initialize()
 
 
 	{
-		m_Node = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, this);
+		m_Node = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, *this);
 		m_Node->SetName("Node model preview.");
 	}
 
 
 	{
-		auto node = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, this);
+		auto node = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, *this);
 		node->SetName("Grid node x10.");
 		node->SetTranslate(glm::vec3(0.0f, 0.03f, 0.0f));
 		node->SetScale(glm::vec3(10.0f));

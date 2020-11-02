@@ -14,5 +14,5 @@ public:
 	void Finalize() override;
 
 private: // Rendering
-	std::shared_ptr<ISceneNode3D> m_Node;
+	std::shared_ptr<ISceneNode> m_Node;
 };

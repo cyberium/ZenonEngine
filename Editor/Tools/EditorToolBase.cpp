@@ -77,25 +77,19 @@ IEditor& CEditorToolBase::GetEditor() const
 	return m_Editor;
 }
 
-IScene * CEditorToolBase::GetScene() const
+IScene& CEditorToolBase::GetScene() const
 {
-	if (auto scene = m_Editor.Get3DFrame().GetScene())
-		return scene.get();
-	return nullptr;
+	return m_Editor.Get3DFrame().GetScene();
 }
 
 IBaseManager& CEditorToolBase::GetBaseManager() const
 {
-	if (auto scene = m_Editor.Get3DFrame().GetScene())
-		return scene->GetBaseManager();
-	throw CException("Scene is expired.");
+	return m_Editor.Get3DFrame().GetScene().GetBaseManager();
 }
 
 IRenderDevice& CEditorToolBase::GetRenderDevice() const
 {
-	if (auto scene = m_Editor.Get3DFrame().GetScene())
-		return scene->GetRenderDevice();
-	throw CException("Scene is expired.");
+	return m_Editor.Get3DFrame().GetScene().GetRenderDevice();
 }
 
 

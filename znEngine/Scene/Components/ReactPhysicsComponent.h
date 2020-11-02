@@ -7,7 +7,7 @@ class __declspec(UUID_PhysicsComponent) CReactPhysicsComponent
 	, public IPhysicsComponent
 {
 public:
-	CReactPhysicsComponent(const ISceneNode3D& OwnerNode, rp3d::RigidBody * RPRigidBody);
+	CReactPhysicsComponent(const ISceneNode& OwnerNode, rp3d::RigidBody * RPRigidBody);
 	virtual ~CReactPhysicsComponent();
 
 	// CComponentBase

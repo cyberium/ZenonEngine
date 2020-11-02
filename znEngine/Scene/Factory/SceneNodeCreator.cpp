@@ -8,14 +8,14 @@
 #include "Scene/Nodes/UIColor.h"
 #include "Scene/RTSSceneNodeGround.h"
 
-CSceneNode3DEngineCreator::CSceneNode3DEngineCreator(IBaseManager& BaseManager)
+CSceneNodeEngineCreator::CSceneNodeEngineCreator(IBaseManager& BaseManager)
 	: CObjectClassCreatorBase(BaseManager)
 {
-	AddKey("SceneNode3D", cSceneNode3D);
+	AddKey("CSceneNode", cSceneNode3D);
 	AddKey("RTSSceneNodeGround", cCRTSSceneNodeGround);
 }
 
-CSceneNode3DEngineCreator::~CSceneNode3DEngineCreator()
+CSceneNodeEngineCreator::~CSceneNodeEngineCreator()
 {}
 
 
@@ -23,26 +23,24 @@ CSceneNode3DEngineCreator::~CSceneNode3DEngineCreator()
 //
 // IObjectClassCreator
 //
-std::shared_ptr<IObject> CSceneNode3DEngineCreator::CreateObject(size_t Index, const Guid& AssignedGuid, const IObjectCreationArgs* ObjectCreationArgs)
+std::shared_ptr<IObject> CSceneNodeEngineCreator::CreateObject(size_t Index, const Guid& AssignedGuid, const IObjectCreationArgs* ObjectCreationArgs)
 {
 	auto sceneNodeCreationArgs = static_cast<const ISceneNode3DCreationArgs*>(ObjectCreationArgs);
-	auto scene = sceneNodeCreationArgs->GetScene();
-	auto parent = sceneNodeCreationArgs->GetParent();
-	std::shared_ptr<ISceneNode3D> createdNode = nullptr;
-
+	
 	// 1. Create object
+	std::shared_ptr<ISceneNode> createdNode = nullptr;
 	if (Index == 0)
 	{
-		createdNode = sceneNodeCreationArgs->GetScene()->CreateSceneNode3DInternal<SceneNode3D>();
+		createdNode = sceneNodeCreationArgs->GetScene().CreateSceneNode3DInternal<CSceneNode>();
 	}
 	else if (Index == 1)
 	{
-		createdNode = sceneNodeCreationArgs->GetScene()->CreateSceneNode3DInternal<CRTSSceneNodeGround>();
+		createdNode = sceneNodeCreationArgs->GetScene().CreateSceneNode3DInternal<CRTSSceneNodeGround>();
 	}
 
 	// 2. Check
 	if (createdNode == nullptr)
-		throw CException("CSceneNode3DEngineCreator: CreateObject: Unable to create object with index %d.", Index);
+		throw CException("CSceneNodeEngineCreator: CreateObject: Unable to create object with index %d.", Index);
 
 	// 3. Assign GUID
 	if (auto objectPrivate = std::dynamic_pointer_cast<IObjectPrivate>(createdNode))
@@ -51,10 +49,12 @@ std::shared_ptr<IObject> CSceneNode3DEngineCreator::CreateObject(size_t Index, c
 		throw CException("SceneNode3DEngineCreator: Object [%s] not support IObjectInternal.", AssignedGuid.CStr());
 
 	// 4. SceneNode specific
+	auto& scene = sceneNodeCreationArgs->GetScene();
+	auto parent = sceneNodeCreationArgs->GetParent();
 	if (parent)
-		scene->AddChild(parent, createdNode);
-	else if (scene->GetRootNode3D())
-		scene->AddChild(scene->GetRootNode3D(), createdNode);
+		scene.AddChild(parent, createdNode);
+	else if (scene.GetRootNode3D())
+		scene.AddChild(scene.GetRootNode3D(), createdNode);
 
 	return createdNode;
 }

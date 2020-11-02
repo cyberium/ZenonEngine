@@ -10,7 +10,7 @@ public:
 	virtual ~Base3DPass();
 
 	// IVisitor
-	virtual EVisitResult Visit(const ISceneNode3D* SceneNode) override;
+	virtual EVisitResult Visit(const ISceneNode* SceneNode) override;
 	virtual EVisitResult Visit(const IModel* Model) override;
 	virtual EVisitResult Visit(const IGeometry* Geometry, const IMaterial* Material, SGeometryDrawArgs GeometryDrawArgs = SGeometryDrawArgs()) override;
 

@@ -50,7 +50,7 @@ std::shared_ptr<IRenderPassPipelined> CMaterial_Debug_Pass::ConfigurePipeline(st
 //
 // IVisitor
 //
-EVisitResult CMaterial_Debug_Pass::Visit(const ISceneNode3D * SceneNode)
+EVisitResult CMaterial_Debug_Pass::Visit(const ISceneNode * SceneNode)
 {
 	if (SceneNode->GetClass() != cSceneNode3D)
 		return EVisitResult::AllowVisitChilds;

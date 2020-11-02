@@ -17,7 +17,7 @@ Base3DPass::~Base3DPass()
 //
 // IVisitor
 //
-EVisitResult Base3DPass::Visit(const ISceneNode3D* SceneNode)
+EVisitResult Base3DPass::Visit(const ISceneNode* SceneNode)
 {
 	PerObject perObject;
 	perObject.Model = SceneNode->GetWorldTransfom();

@@ -80,9 +80,9 @@ glm::quat LookAt(glm::vec3 Position, glm::vec3 LookAt)
 //
 // IVisitor
 //
-EVisitResult CDrawBonesPass::Visit(const ISceneNode3D * SceneNode3D)
+EVisitResult CDrawBonesPass::Visit(const ISceneNode * CSceneNode)
 {
-	std::shared_ptr<ISkeletonComponent3D> skeletonComponent = SceneNode3D->GetComponent<ISkeletonComponent3D>();
+	std::shared_ptr<ISkeletonComponent3D> skeletonComponent = CSceneNode->GetComponent<ISkeletonComponent3D>();
 	if (skeletonComponent == nullptr)
 		return EVisitResult::AllowVisitChilds;
 
@@ -154,7 +154,7 @@ EVisitResult CDrawBonesPass::Visit(const ISceneNode3D * SceneNode3D)
 			//m = glm::scale(m, glm::vec3(4.0f));
 
 			PerObject perObject;
-			perObject.Model = SceneNode3D->GetWorldTransfom() * b->GetMatrix();
+			perObject.Model = CSceneNode->GetWorldTransfom() * b->GetMatrix();
 
 			//perObject.Model = glm::scale(perObject.Model, 1.0f / extractScale(perObject.Model));
 

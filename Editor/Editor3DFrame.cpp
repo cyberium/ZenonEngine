@@ -40,7 +40,7 @@ void CEditor3DFrame::Initialize()
 
 	// Light
 	{
-		auto lightNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, this);
+		auto lightNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, *this);
 		lightNode->SetName("Light");
 		lightNode->SetTranslate(rtsCenter);
 		lightNode->SetRotation(glm::vec3(0.f, -0.01f, 0.0f));
@@ -55,7 +55,7 @@ void CEditor3DFrame::Initialize()
 
 	// Camera
 	{
-		auto cameraNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, this);
+		auto cameraNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, *this);
 		cameraNode->SetName("Camera");
 		auto geom = GetRenderDevice().GetPrimitivesFactory().CreateBBox();
 		auto mat = MakeShared(MaterialDebug, GetRenderDevice());
@@ -142,17 +142,17 @@ void CEditor3DFrame::Finalize()
 	SceneBase::Finalize();
 }
 
-void CEditor3DFrame::AddChild(const std::shared_ptr<ISceneNode3D>& ParentNode, const std::shared_ptr<ISceneNode3D>& ChildNode)
+void CEditor3DFrame::AddChild(const std::shared_ptr<ISceneNode>& ParentNode, const std::shared_ptr<ISceneNode>& ChildNode)
 {
 	__super::AddChild(ParentNode, ChildNode);
 }
 
-void CEditor3DFrame::RemoveChild(const std::shared_ptr<ISceneNode3D>& ParentNode, const std::shared_ptr<ISceneNode3D>& ChildNode)
+void CEditor3DFrame::RemoveChild(const std::shared_ptr<ISceneNode>& ParentNode, const std::shared_ptr<ISceneNode>& ChildNode)
 {
 	__super::RemoveChild(ParentNode, ChildNode);
 }
 
-void CEditor3DFrame::RaiseSceneChangeEvent(ESceneChangeType SceneChangeType, const std::shared_ptr<ISceneNode3D>& ParentNode, const std::shared_ptr<ISceneNode3D>& ChildNode)
+void CEditor3DFrame::RaiseSceneChangeEvent(ESceneChangeType SceneChangeType, const std::shared_ptr<ISceneNode>& ParentNode, const std::shared_ptr<ISceneNode>& ChildNode)
 {
 	if (IsChildOf(GetEditedRootNode3D(), ChildNode) || IsChildOf(GetEditedRootNode3D(), ParentNode))
 		GetEditor().GetUIFrame().OnSceneChanged(SceneChangeType, ParentNode, ChildNode);
@@ -190,7 +190,7 @@ IEditor& CEditor3DFrame::GetEditor() const
 bool CEditor3DFrame::InitializeEditorFrame()
 {
 	{
-		auto node = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, this);
+		auto node = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, *this);
 		node->SetName("Grid node x1.");
 		node->SetTranslate(glm::vec3(0.0f));
 		node->SetScale(glm::vec3(1.0f));
@@ -207,7 +207,7 @@ bool CEditor3DFrame::InitializeEditorFrame()
 	}
 
 	{
-		auto node = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, this);
+		auto node = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, *this);
 		node->SetName("Grid node x10.");
 		node->SetTranslate(glm::vec3(0.0f, 0.00f, 0.0f));
 		node->SetScale(glm::vec3(10.0f));
@@ -224,7 +224,7 @@ bool CEditor3DFrame::InitializeEditorFrame()
 	}
 
 	{
-		auto node = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, this);
+		auto node = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, *this);
 		node->SetName("Grid node x100.");
 		node->SetTranslate(glm::vec3(0.0f, 0.00f, 0.0f));
 		node->SetScale(glm::vec3(100.0f));
@@ -248,9 +248,9 @@ void CEditor3DFrame::DoInitializeTools3D()
 	GetEditor().GetTools().DoInitialize3D(m_Renderer, GetRenderWindow().GetRenderTarget(), &GetRenderWindow().GetViewport());
 }
 
-std::shared_ptr<IScene> CEditor3DFrame::GetScene()
+IScene& CEditor3DFrame::GetScene()
 {
-	return shared_from_this();
+	return *this;
 }
 
 void CEditor3DFrame::LockUpdates()
@@ -273,12 +273,12 @@ std::shared_ptr<IScene> CEditor3DFrame::GetEditedScene() const
 	return m_EditedScene;
 }
 
-std::shared_ptr<ISceneNode3D> CEditor3DFrame::GetEditedRootNode3D() const
+std::shared_ptr<ISceneNode> CEditor3DFrame::GetEditedRootNode3D() const
 {
 	return m_EditedScene->GetRootNode3D();
 }
 
-std::shared_ptr<ISceneNode3D> CEditor3DFrame::GetEditedNodeUnderMouse(const glm::ivec2& MousePos) const
+std::shared_ptr<ISceneNode> CEditor3DFrame::GetEditedNodeUnderMouse(const glm::ivec2& MousePos) const
 {
 	auto ray = GetCameraController()->ScreenToRay(GetRenderWindow().GetViewport(), MousePos);
 	auto nodes = GetFinder().FindIntersection(ray, nullptr, GetEditedRootNode3D());

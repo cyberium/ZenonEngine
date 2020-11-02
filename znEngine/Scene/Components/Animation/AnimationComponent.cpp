@@ -3,7 +3,7 @@
 // General
 #include "AnimationComponent.h"
 
-CAnimationComponent3D::CAnimationComponent3D(const ISceneNode3D & Owner)
+CAnimationComponent3D::CAnimationComponent3D(const ISceneNode & Owner)
 	: CComponentBase(Owner)
 	, m_IsLoop(false)
 	, m_IsStopped(false)

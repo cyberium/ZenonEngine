@@ -70,9 +70,9 @@ void SceneBase::Initialize()
 	m_FrameQuery = GetRenderDevice().GetObjectsFactory().CreateQuery(IQuery::QueryType::Timer, 1);
 	m_TestQuery = GetRenderDevice().GetObjectsFactory().CreateQuery(IQuery::QueryType::CountSamples, 1);
 
-	m_RootNode3D = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, this);
+	m_RootNode3D = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, *this);
 	m_RootNode3D->SetName("RootNode3D");
-	std::dynamic_pointer_cast<ISceneNode3DInternal>(m_RootNode3D)->SetPersistanceInternal(true);
+	std::dynamic_pointer_cast<ISceneNodeInternal>(m_RootNode3D)->SetPersistanceInternal(true);
 
 	m_RootNodeUI = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeUIFactory>()->CreateSceneNodeUI(this, cSceneNodeUI);
 	m_RootNodeUI->SetName("RootNodeUI");
@@ -134,7 +134,7 @@ void SceneBase::Finalize()
 //
 // IScene
 //
-std::shared_ptr<ISceneNode3D> SceneBase::GetRootNode3D() const
+std::shared_ptr<ISceneNode> SceneBase::GetRootNode3D() const
 {
 	return m_RootNode3D;
 }
@@ -198,7 +198,7 @@ void SceneBase::Unfreeze()
 	m_IsFreezed = false;
 }
 
-void SceneBase::AddChild(const std::shared_ptr<ISceneNode3D>& ParentNode, const std::shared_ptr<ISceneNode3D>& ChildNode)
+void SceneBase::AddChild(const std::shared_ptr<ISceneNode>& ParentNode, const std::shared_ptr<ISceneNode>& ChildNode)
 {
 	if (ParentNode == nullptr)
 	{
@@ -227,7 +227,7 @@ void SceneBase::AddChild(const std::shared_ptr<ISceneNode3D>& ParentNode, const 
 	}
 }
 
-void SceneBase::RemoveChild(const std::shared_ptr<ISceneNode3D>& ParentNode, const std::shared_ptr<ISceneNode3D>& ChildNode)
+void SceneBase::RemoveChild(const std::shared_ptr<ISceneNode>& ParentNode, const std::shared_ptr<ISceneNode>& ChildNode)
 {
 	if (ParentNode == nullptr)
 	{
@@ -261,7 +261,7 @@ void SceneBase::RemoveChild(const std::shared_ptr<ISceneNode3D>& ParentNode, con
 //
 // ISceneInternal
 //
-void SceneBase::RaiseSceneChangeEvent(ESceneChangeType SceneChangeType, const std::shared_ptr<ISceneNode3D>& OwnerNode, const std::shared_ptr<ISceneNode3D>& ChildNode)
+void SceneBase::RaiseSceneChangeEvent(ESceneChangeType SceneChangeType, const std::shared_ptr<ISceneNode>& OwnerNode, const std::shared_ptr<ISceneNode>& ChildNode)
 {
 	//m_SceneChangeEvent(SceneChangeEventArgs(this, SceneChangeType, OwnerNode, ChildNode));
 }
@@ -505,7 +505,7 @@ void SceneBase::Save(const std::shared_ptr<IXMLWriter>& Writer) const
 
 
 
-void SceneBase::DoUpdate_Rec(const std::shared_ptr<ISceneNode3D>& Node, const UpdateEventArgs & e)
+void SceneBase::DoUpdate_Rec(const std::shared_ptr<ISceneNode>& Node, const UpdateEventArgs & e)
 {
 	Node->Update(e);
 
@@ -517,7 +517,7 @@ void SceneBase::DoUpdate_Rec(const std::shared_ptr<ISceneNode3D>& Node, const Up
 	});
 
 	const auto& childs = Node->GetChilds();
-	std::for_each(childs.begin(), childs.end(), [this, &e](const std::shared_ptr<ISceneNode3D>& Child)
+	std::for_each(childs.begin(), childs.end(), [this, &e](const std::shared_ptr<ISceneNode>& Child)
 	{
 		if (Child != nullptr)
 			DoUpdate_Rec(Child, e);

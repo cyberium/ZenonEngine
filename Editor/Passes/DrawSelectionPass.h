@@ -26,7 +26,7 @@ public:
 	std::shared_ptr<IRenderPassPipelined> ConfigurePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport* Viewport) override final;
 
 	// IVisitor
-	EVisitResult Visit(const ISceneNode3D* node) override final;
+	EVisitResult Visit(const ISceneNode* node) override final;
 	EVisitResult Visit(const IModel* Model) override final;
 
 private:

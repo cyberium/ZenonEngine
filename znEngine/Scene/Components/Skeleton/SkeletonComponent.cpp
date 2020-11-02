@@ -3,7 +3,7 @@
 // General
 #include "SkeletonComponent.h"
 
-CSkeletonComponent3D::CSkeletonComponent3D(const ISceneNode3D& OwnerNode, const CSkeleton& Skeleton)
+CSkeletonComponent3D::CSkeletonComponent3D(const ISceneNode& OwnerNode, const CSkeleton& Skeleton)
 	: CComponentBase(OwnerNode)
 {
 	for (const auto& b : Skeleton.GetBones())

@@ -3,7 +3,7 @@
 #include "Interfaces/Render/Types/RenderTypes.h"
 
 // FORWARD BEGIN
-ZN_INTERFACE ISceneNode3D;
+ZN_INTERFACE ISceneNode;
 ZN_INTERFACE ISceneNodeUI;
 ZN_INTERFACE IModel;
 ZN_INTERFACE IGeometry;
@@ -25,16 +25,16 @@ enum ZN_API EVisitResult : size_t
   * Паттерн посетитель используется в ZenonEngine в частности для отрисовки сцены.
   *
   * Пример для 3D:
-  *   1) Посетитель вызывает Accept(IVisitor*) у ISceneNode3D
-  *   2) ISceneNode3D вызывает или не вызывает (в случае отсутствия необходимости) Visit(ISceneNode3D*) у посетителя и передает в него себя
-  *   3) Посетитель сообщает ISceneNode3D что "визит" прошел либо успешно либо нет
+  *   1) Посетитель вызывает Accept(IVisitor*) у ISceneNode
+  *   2) ISceneNode вызывает или не вызывает (в случае отсутствия необходимости) Visit(ISceneNode*) у посетителя и передает в него себя
+  *   3) Посетитель сообщает ISceneNode что "визит" прошел либо успешно либо нет
   *   4 Успех) В случае если визит ноды был одобрен посетителем, то нода    
 */
 ZN_INTERFACE ZN_API IVisitor 
 {
 	virtual ~IVisitor() {}
 
-	virtual EVisitResult Visit(const ISceneNode3D* SceneNode) = 0;
+	virtual EVisitResult Visit(const ISceneNode* SceneNode) = 0;
 	virtual EVisitResult Visit(const ISceneNodeUI* SceneNode) = 0;
 	virtual EVisitResult Visit(const IModel* Model) = 0;
 	virtual EVisitResult Visit(const IGeometry* Geometry, const IMaterial* Material, SGeometryDrawArgs GeometryDrawArgs = SGeometryDrawArgs()) = 0;

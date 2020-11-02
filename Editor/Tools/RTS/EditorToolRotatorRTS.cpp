@@ -47,7 +47,7 @@ void CEditorToolRotatorRTS::Disable()
 
 void CEditorToolRotatorRTS::DoInitialize3D(const std::shared_ptr<IRenderer>& Renderer, std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport)
 {
-	m_RotatorRoot = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, GetScene(), GetScene()->GetRootNode3D());
+	m_RotatorRoot = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, GetScene(), GetScene().GetRootNode3D());
 	m_RotatorRoot->SetName("RotatorRTSRoot");
 
 	auto geom = GetRenderDevice().GetPrimitivesFactory().CreateTorus(1.0f, 0.05f);
@@ -73,7 +73,7 @@ bool CEditorToolRotatorRTS::OnMousePressed(const MouseButtonEventArgs & e, const
 
 	_ASSERT(false == IsChildOf(m_RotatorRoot, rotatingNode));
 
-	auto nodes = GetScene()->GetFinder().FindIntersection(RayToWorld, nullptr, m_RotatorRoot);
+	auto nodes = GetScene().GetFinder().FindIntersection(RayToWorld, nullptr, m_RotatorRoot);
 	if (nodes.empty())
 		return false;
 
@@ -87,7 +87,7 @@ bool CEditorToolRotatorRTS::OnMousePressed(const MouseButtonEventArgs & e, const
 	if (m_RotatorNumber != EMoverDirection::None)
 	{
 		auto nodePosition = rotatingNode->GetTranslation();
-		auto pos = GetScene()->GetCameraController()->RayToPlane(RayToWorld, Plane(glm::vec3(0.0f, 1.0f, 0.0f), nodePosition.y));
+		auto pos = GetScene().GetCameraController()->RayToPlane(RayToWorld, Plane(glm::vec3(0.0f, 1.0f, 0.0f), nodePosition.y));
 
 		m_InitialRotationRadians = rotatingNode->GetRotation().y;
 		m_StartMousePosY = e.Y;
@@ -150,7 +150,7 @@ void CEditorToolRotatorRTS::Clear()
 	m_RotatorNumber = EMoverDirection::None;
 }
 
-std::shared_ptr<ISceneNode3D> CEditorToolRotatorRTS::GetRotatingNode()
+std::shared_ptr<ISceneNode> CEditorToolRotatorRTS::GetRotatingNode()
 {
 	return m_RotatingNode.lock();
 }

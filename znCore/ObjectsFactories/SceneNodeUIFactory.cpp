@@ -3,10 +3,6 @@
 // General
 #include "SceneNodeUIFactory.h"
 
-// Additional
-#include "Scene/SceneNodeUI.h"
-
-
 CSceneNodeUIFactory::CSceneNodeUIFactory(IBaseManager& BaseManager, const std::string& TypeName, ObjectType Type)
 	: CObjectClassFactory(BaseManager, TypeName, Type)
 {

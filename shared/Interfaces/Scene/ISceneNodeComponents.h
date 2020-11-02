@@ -343,7 +343,7 @@ ZN_INTERFACE ZN_API ISkeletonComponentBoneInternal3D
 	// Static data
 	virtual void AddChildInternal(const std::shared_ptr<ISkeletonComponentBone3D>& Child) = 0;
 	virtual void SetParentAndChildsInternals(const std::vector<std::shared_ptr<ISkeletonComponentBone3D>>& Bones) = 0;
-	virtual void Calculate(const ISceneNode3D& Instance, const ICameraComponent3D* Camera) = 0;
+	virtual void Calculate(const ISceneNode& Instance, const ICameraComponent3D* Camera) = 0;
 	virtual void Reset() = 0;
 };
 

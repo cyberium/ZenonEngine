@@ -41,7 +41,7 @@ protected:
 private:
 	std::shared_ptr<IRTSGround> m_GroundRoot;
 
-	std::shared_ptr<ISceneNode3D> m_GroundSelectorNode;
+	std::shared_ptr<ISceneNode> m_GroundSelectorNode;
 	CRTSGround::ERTSCellType m_CellType;
 
 private:

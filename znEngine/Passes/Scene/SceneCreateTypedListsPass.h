@@ -26,7 +26,7 @@ public:
 	virtual void Render(RenderEventArgs& e) override;
 
 	// IVisitor
-	EVisitResult Visit(const ISceneNode3D* SceneNode) override;
+	EVisitResult Visit(const ISceneNode* SceneNode) override;
 	EVisitResult Visit(const IModel* Model) override;
 	EVisitResult Visit(const IGeometry* Geometry, const IMaterial* Material, SGeometryDrawArgs GeometryDrawArgs = SGeometryDrawArgs()) override;
 	EVisitResult Visit(const ILight3D* light) override;
@@ -39,7 +39,7 @@ private:
 	std::unordered_map<ObjectClass, std::vector<CSceneCreateTypelessListPass::SLightElement>>     m_LightList;
 	std::unordered_map<ObjectClass, std::vector<CSceneCreateTypelessListPass::SParticleSystemElement>>     m_ParticleSystemList;
 
-	const ISceneNode3D*       m_LastSceneNode;
+	const ISceneNode*       m_LastSceneNode;
 	const IModel*             m_LastModel;
 	const IGeometry*          m_LastGeometry;
 	const ILight3D*           m_LastLight;

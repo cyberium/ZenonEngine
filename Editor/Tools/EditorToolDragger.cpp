@@ -29,7 +29,7 @@ void CEditorToolDragger::Disable()
 
 void CEditorToolDragger::DoInitialize3D(const std::shared_ptr<IRenderer>& Renderer, std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport)
 {
-	m_DraggerTextUI = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeUIFactory>()->CreateSceneNodeUI(GetScene(), cSceneNodeUI_Text, GetScene()->GetRootNodeUI());
+	m_DraggerTextUI = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeUIFactory>()->CreateSceneNodeUI(&GetScene(), cSceneNodeUI_Text, GetScene().GetRootNodeUI());
 	m_DraggerTextUI->SetName("DraggedNodePositionTextUI.");
 
 }
@@ -88,7 +88,7 @@ void CEditorToolDragger::DragEnterEvent(const SDragData& Data)
 		if (model == nullptr)
 			return;
 
-		m_DraggerNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, GetEditor().Get3DFrame().GetEditedScene().get());
+		m_DraggerNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, *GetEditor().Get3DFrame().GetEditedScene());
 		m_DraggerNode->SetName(model->GetName());
 		m_DraggerNode->GetComponent<IModelsComponent3D>()->SetModel(model);
 	}
@@ -98,8 +98,8 @@ void CEditorToolDragger::DragEnterEvent(const SDragData& Data)
 		return;
 	}
 
-	auto ray = GetScene()->GetCameraController()->ScreenToRay(GetScene()->GetRenderWindow().GetViewport(), Data.ScreenPosition);
-	auto pos = GetScene()->GetCameraController()->RayToPlane(ray, Plane(glm::vec3(0.0f, 1.0f, 0.0f), m_DraggerNode->GetComponent<IColliderComponent3D>()->GetBounds().getCenter().y));
+	auto ray = GetScene().GetCameraController()->ScreenToRay(GetScene().GetRenderWindow().GetViewport(), Data.ScreenPosition);
+	auto pos = GetScene().GetCameraController()->RayToPlane(ray, Plane(glm::vec3(0.0f, 1.0f, 0.0f), m_DraggerNode->GetComponent<IColliderComponent3D>()->GetBounds().getCenter().y));
 	m_DraggerNode->SetTranslate(pos);
 }
 
@@ -126,10 +126,10 @@ void CEditorToolDragger::MoveDraggedNode(const glm::vec2& MousePos)
 
 	//auto posReal = GetCameraController()->ScreenToPlane(GetRenderWindow()->GetViewport(), MousePos, Plane(glm::vec3(0.0f, 1.0f, 0.0f), 0.0f));
 
-	auto ray = GetScene()->GetCameraController()->ScreenToRay(GetScene()->GetRenderWindow().GetViewport(), MousePos);
+	auto ray = GetScene().GetCameraController()->ScreenToRay(GetScene().GetRenderWindow().GetViewport(), MousePos);
 	auto bounds = m_DraggerNode->GetComponent<IModelsComponent3D>()->GetModel()->GetBounds();
 	_ASSERT(false == bounds.IsInfinite());
-	auto pos = GetScene()->GetCameraController()->RayToPlane(ray, Plane(glm::vec3(0.0f, 1.0f, 0.0f), bounds.getMax().y / 2.0f));
+	auto pos = GetScene().GetCameraController()->RayToPlane(ray, Plane(glm::vec3(0.0f, 1.0f, 0.0f), bounds.getMax().y / 2.0f));
 	pos -= bounds.getCenter();
 
 	pos = dynamic_cast<IEditorToolMover&>(GetEditor().GetTools().GetTool(ETool::EToolMover)).FixBoxCoords(pos);

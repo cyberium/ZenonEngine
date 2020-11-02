@@ -42,7 +42,7 @@ bool CSkeletonBone::operator==(const CSkeletonBone & other) const
 
 
 
-glm::mat4 CSkeletonBone::CalcMatrix(const ISceneNode3D& Instance) const
+glm::mat4 CSkeletonBone::CalcMatrix(const ISceneNode& Instance) const
 {
 	glm::mat4 m(1.0f);
 	if (const auto& animator = Instance.GetComponent<ISkeletonAnimationComponent>())
@@ -103,7 +103,7 @@ glm::mat4 CSkeletonBone::CalcMatrix(const ISceneNode3D& Instance) const
 }
 
 
-glm::vec3 CSkeletonBone::CalcTranslate(const ISceneNode3D & Instance) const
+glm::vec3 CSkeletonBone::CalcTranslate(const ISceneNode & Instance) const
 {
 	glm::vec3 p(0.0f);
 	if (const auto& animator = Instance.GetComponent<ISkeletonAnimationComponent>())
@@ -120,7 +120,7 @@ glm::vec3 CSkeletonBone::CalcTranslate(const ISceneNode3D & Instance) const
 	return p;
 }
 
-glm::vec3 CSkeletonBone::CalcRotate(const ISceneNode3D & Instance) const
+glm::vec3 CSkeletonBone::CalcRotate(const ISceneNode & Instance) const
 {
 	glm::vec3 p(0.0f);
 	if (const auto& animator = Instance.GetComponent<ISkeletonAnimationComponent>())

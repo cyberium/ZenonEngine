@@ -85,7 +85,7 @@ std::shared_ptr<IRenderPassPipelined> CDrawSelectionPass::ConfigurePipeline(std:
 	return shared_from_this();
 }
 
-EVisitResult CDrawSelectionPass::Visit(const ISceneNode3D * node)
+EVisitResult CDrawSelectionPass::Visit(const ISceneNode * node)
 {
 	_ASSERT(false);
 	return EVisitResult::Block;
@@ -111,7 +111,7 @@ void CDrawSelectionPass::RefreshInstanceBuffer()
 	{
 		std::vector<SSelectorPerObject> instances;
 		instances.reserve(selectedNodes.size());
-		std::for_each(selectedNodes.begin(), selectedNodes.end(), [&instances](const std::weak_ptr<ISceneNode3D>& selectedNode) {
+		std::for_each(selectedNodes.begin(), selectedNodes.end(), [&instances](const std::weak_ptr<ISceneNode>& selectedNode) {
 			if (auto locked = selectedNode.lock())
 			{
 				const auto& colliderComponent = locked->GetComponent<IColliderComponent3D>();

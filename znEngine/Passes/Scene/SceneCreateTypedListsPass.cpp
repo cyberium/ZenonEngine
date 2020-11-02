@@ -89,7 +89,7 @@ void CSceneCreateTypedListsPass::Render(RenderEventArgs & e)
 //
 // IVisitor
 //
-EVisitResult CSceneCreateTypedListsPass::Visit(const ISceneNode3D * SceneNode)
+EVisitResult CSceneCreateTypedListsPass::Visit(const ISceneNode * SceneNode)
 {
 	if (SceneNode->GetClass() <= 0)
 		return EVisitResult::AllowVisitChilds;

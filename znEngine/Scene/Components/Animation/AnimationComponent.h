@@ -10,7 +10,7 @@ public:
 	static ObjectClass GetClassT() { return cSceneNodeAnimationComponent; }
 
 public:
-	CAnimationComponent3D(const ISceneNode3D& Owner);
+	CAnimationComponent3D(const ISceneNode& Owner);
 	virtual ~CAnimationComponent3D();
 
 	void AddAnimation(uint16 AnimationId, const SAnimation& Animation);

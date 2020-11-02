@@ -18,9 +18,9 @@ public:
 	void Initialize() override;
 	void Finalize() override;
 
-	void AddChild(const std::shared_ptr<ISceneNode3D>& ParentNode, const std::shared_ptr<ISceneNode3D>& ChildNode) override;
-	void RemoveChild(const std::shared_ptr<ISceneNode3D>& ParentNode, const std::shared_ptr<ISceneNode3D>& ChildNode) override;
-	void RaiseSceneChangeEvent(ESceneChangeType SceneChangeType, const std::shared_ptr<ISceneNode3D>& ParentNode, const std::shared_ptr<ISceneNode3D>& ChildNode) override;
+	void AddChild(const std::shared_ptr<ISceneNode>& ParentNode, const std::shared_ptr<ISceneNode>& ChildNode) override;
+	void RemoveChild(const std::shared_ptr<ISceneNode>& ParentNode, const std::shared_ptr<ISceneNode>& ChildNode) override;
+	void RaiseSceneChangeEvent(ESceneChangeType SceneChangeType, const std::shared_ptr<ISceneNode>& ParentNode, const std::shared_ptr<ISceneNode>& ChildNode) override;
 
 	bool OnMousePressed(const MouseButtonEventArgs & e, const Ray& RayToWorld) override;
 	void OnMouseReleased(const MouseButtonEventArgs & e, const Ray& RayToWorld) override;
@@ -30,13 +30,13 @@ public:
 	IEditor& GetEditor() const override;
 	bool InitializeEditorFrame() override;
 	void DoInitializeTools3D() override;
-	std::shared_ptr<IScene> GetScene() override;
+	IScene& GetScene() override;
 	void LockUpdates() override;
 	void UnlockUpdates() override;
 	void DoEnableTool(ETool Tool);
 	std::shared_ptr<IScene> GetEditedScene() const override;
-	std::shared_ptr<ISceneNode3D> GetEditedRootNode3D() const override;
-	std::shared_ptr<ISceneNode3D> GetEditedNodeUnderMouse(const glm::ivec2& MousePos) const override;
+	std::shared_ptr<ISceneNode> GetEditedRootNode3D() const override;
+	std::shared_ptr<ISceneNode> GetEditedNodeUnderMouse(const glm::ivec2& MousePos) const override;
 	void OnCollectionWidget_ModelSelected(const std::shared_ptr<IModel>& Model) override;
 
 	// IEditorToolSelectorEventListener
