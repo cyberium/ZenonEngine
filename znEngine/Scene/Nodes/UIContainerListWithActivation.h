@@ -3,7 +3,7 @@
 #ifndef ONLY_SIMPLE_UI
 
 // Common UI
-#include "SceneFunctional/UI/SceneNodeUI.h"
+#include "SceneFunctional/UI/CUIControl.h"
 #include "UIContainerListBase.h"
 
 // ContainerGarmoshka
@@ -23,22 +23,22 @@ public:
     // CUIContainerListWithActivation
     void Initialize(glm::vec2 MaxSize);
 
-    void SetHeader(std::shared_ptr<SceneNodeUI> Header);
-    std::shared_ptr<SceneNodeUI> GetHeader() const;
+    void SetHeader(std::shared_ptr<CUIControl> Header);
+    std::shared_ptr<CUIControl> GetHeader() const;
 
-    void AddChild(std::shared_ptr<SceneNodeUI> Child, bool IsNeedCalculate = true) override;
+    void AddChild(std::shared_ptr<CUIControl> Child, bool IsNeedCalculate = true) override;
 
     void SetActive(bool Active);
     bool IsActive() const;
 
-    // SceneNodeUI
-    virtual std::vector<std::shared_ptr<SceneNodeUI>> GetChilds() const override final;
+    // CUIControl
+    virtual std::vector<std::shared_ptr<CUIControl>> GetChilds() const override final;
 
 protected:
-    virtual std::vector<std::shared_ptr<SceneNodeUI>> GetNodesUsingMaxSize() const override;
+    virtual std::vector<std::shared_ptr<CUIControl>> GetNodesUsingMaxSize() const override;
 
 private:
-    std::shared_ptr<SceneNodeUI>    m_Header;
+    std::shared_ptr<CUIControl>    m_Header;
     bool                            m_IsActive;
 };
 

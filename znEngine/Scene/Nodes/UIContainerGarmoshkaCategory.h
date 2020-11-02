@@ -3,7 +3,7 @@
 #ifndef ONLY_SIMPLE_UI
 
 // Common UI
-#include "SceneFunctional/UI/SceneNodeUI.h"
+#include "SceneFunctional/UI/CUIControl.h"
 #include "UIContainerListWithActivation.h"
 
 // ContainerGarmoshka

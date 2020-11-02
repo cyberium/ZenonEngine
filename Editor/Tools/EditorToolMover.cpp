@@ -43,7 +43,7 @@ void CEditorToolMover::Disable()
 
 void CEditorToolMover::DoInitialize3D(const std::shared_ptr<IRenderer>& Renderer, std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport)
 {
-	m_MoverRoot = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeFactory>()->CreateSceneNode3D(cSceneNode3D, GetScene(), GetScene().GetRootNode3D());
+	m_MoverRoot = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeFactory>()->CreateSceneNode3D(cSceneNode3D, GetScene(), GetScene().GetRootSceneNode());
 	m_MoverRoot->SetName("Mover");
 
 	auto model = GetBaseManager().GetManager<IznModelsFactory>()->LoadModel("arrow.FBX");

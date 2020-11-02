@@ -49,13 +49,14 @@ std::shared_ptr<IObject> CSceneNodeEngineCreator::CreateObject(size_t Index, con
 		throw CException("SceneNode3DEngineCreator: Object [%s] not support IObjectInternal.", AssignedGuid.CStr());
 
 	// 4. SceneNode specific
-	auto& scene = sceneNodeCreationArgs->GetScene();
-	auto parent = sceneNodeCreationArgs->GetParent();
-	if (parent)
-		scene.AddChild(parent, createdNode);
-	else if (scene.GetRootNode3D())
-		scene.AddChild(scene.GetRootNode3D(), createdNode);
-
+	if (auto parent = sceneNodeCreationArgs->GetParent())
+	{
+		parent->AddChild(createdNode);
+	}
+	else if (auto sceneRoot = sceneNodeCreationArgs->GetScene().GetRootSceneNode())
+	{
+		sceneRoot->AddChild(createdNode);
+	}
 	return createdNode;
 }
 
@@ -67,7 +68,7 @@ std::shared_ptr<IObject> CSceneNodeEngineCreator::CreateObject(size_t Index, con
 CSceneNodeUIEngineCreator::CSceneNodeUIEngineCreator(IBaseManager & BaseManager)
 	: CObjectClassCreatorBase(BaseManager)
 {
-	AddKey("SceneNodeUI", cSceneNodeUI);
+	AddKey("CUIControl", cSceneNodeUI);
 	AddKey("SceneNodeUIText", cSceneNodeUI_Text);
 	AddKey("SceneNodeUIColor", cSceneNodeUI_Color);
 }
@@ -87,7 +88,7 @@ std::shared_ptr<IObject> CSceneNodeUIEngineCreator::CreateObject(size_t Index, c
 	std::shared_ptr<IUIControl> createdNode = nullptr;
 	if (Index == 0)
 	{
-		createdNode = sceneNodeCreationArgs->GetScene().CreateSceneNodeUIInternal<SceneNodeUI>();
+		createdNode = sceneNodeCreationArgs->GetScene().CreateSceneNodeUIInternal<CUIControl>();
 	}
 	else if (Index == 1)
 	{
@@ -106,12 +107,14 @@ std::shared_ptr<IObject> CSceneNodeUIEngineCreator::CreateObject(size_t Index, c
 	else
 		throw CException("SceneNodeUIEngineCreator: Object [%s] not support IObjectInternal.", AssignedGuid.CStr());
 
-	auto& scene = sceneNodeCreationArgs->GetScene();
-	auto parent = sceneNodeCreationArgs->GetParent();
-	if (parent)
+	if (auto parent = sceneNodeCreationArgs->GetParent())
+	{
 		parent->AddChild(createdNode);
-	else if (scene.GetRootNodeUI())
-		scene.GetRootNodeUI()->AddChild(createdNode);
+	}
+	else if (auto sceneRoot = sceneNodeCreationArgs->GetScene().GetRootUIControl())
+	{
+		sceneRoot->AddChild(createdNode);
+	}
 	else
 		_ASSERT(true); // RootNode
 

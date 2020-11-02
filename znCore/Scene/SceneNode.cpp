@@ -71,7 +71,7 @@ void CSceneNode::Initialize()
 	{
 		std::shared_ptr<CAction> removeAction = MakeShared(CAction, "Remove", "Remove this node from world. this action affected on childs!");
 		removeAction->SetAction([this]() -> bool {
-			GetScene().RemoveChild(GetParent(), shared_from_this());
+			GetParent()->RemoveChild(shared_from_this());
 			return true;
 		});
 
@@ -127,33 +127,12 @@ void CSceneNode::CopyTo(std::shared_ptr<ISceneNode> Destination) const
 //
 void CSceneNode::AddChild(std::shared_ptr<ISceneNode> childNode)
 {
-	if (childNode == nullptr)
-		throw CException(L"CSceneNode: Child node must not be NULL.");
-
-	// 1. Удаляем чилда у текущего родителя (возможно нужно его об этом нотифицировать, например для перерасчета BoundingBox)
-	if (auto currentChildParent = childNode->GetParent())
-	{
-		if (currentChildParent != shared_from_this())
-		{
-			std::dynamic_pointer_cast<ISceneNodeInternal>(currentChildParent)->RemoveChildInternal(childNode);
-			//Log::Warn("CSceneNode: Failed to add child to his current parent.");
-			//return;
-		}
-	}
-
-	// 2. Добавляем чилда в нового парента (возможно нужно его об этом нотифицировать, например для перерасчета BoundingBox)
-	this->AddChildInternal(childNode);
+	dynamic_cast<ISceneInternal&>(GetScene()).AddChildInternal(shared_from_this(), childNode);
 }
 
 void CSceneNode::RemoveChild(std::shared_ptr<ISceneNode> childNode)
 {
-	if (childNode == nullptr)
-		throw CException("Unable to remove nullptr node.");
-
-	if (childNode->IsPersistance())
-		throw CException("Unable to remove persistan node '%s'.", childNode->GetName());
-
-	this->RemoveChildInternal(childNode);
+	dynamic_cast<ISceneInternal&>(GetScene()).RemoveChildInternal(shared_from_this(), childNode);
 }
 
 std::shared_ptr<ISceneNode> CSceneNode::GetParent() const
@@ -514,52 +493,40 @@ void CSceneNode::Save(const std::shared_ptr<IXMLWriter>& Writer) const
 }
 
 
+
 //
 // ISceneNodeInternal
 //
-void CSceneNode::AddChildInternal(std::shared_ptr<ISceneNode> ChildNode)
+
+void CSceneNode::AddChildInternal(std::shared_ptr<ISceneNode> childNode)
 {
-	_ASSERT(ChildNode != nullptr);
+	if (childNode == nullptr)
+		throw CException(L"Unable to add nullptr child node to '%s'.", GetName().c_str());
 
-	const auto& iter = std::find(m_Children.begin(), m_Children.end(), ChildNode);
-	if (iter != m_Children.end())
-		throw CException(L"This parent already has this child.");
+	// 1. Удаляем чилда у текущего родителя (возможно нужно его об этом нотифицировать, например для перерасчета BoundingBox)
+	if (auto currentChildParent = childNode->GetParent())
+	{
+		if (currentChildParent != shared_from_this())
+		{
+			std::dynamic_pointer_cast<CSceneNode>(currentChildParent)->RemoveChildPrivate(childNode);
+			//Log::Warn("CSceneNode: Failed to add child to his current parent.");
+			//return;
+		}
+	}
 
-	// Add to common list
-	m_Children.push_back(ChildNode);
-
-	std::dynamic_pointer_cast<CSceneNode>(ChildNode)->SetParentInternal(weak_from_this());
-
-	// Update name (to resolve dublicates)
-	ChildNode->SetName(ChildNode->GetName());
-
-	// TODO: Какой ивент посылать первым?
-	std::dynamic_pointer_cast<ISceneNodeInternal>(ChildNode)->RaiseOnParentChangedInternal();
-	dynamic_cast<ISceneInternal&>(GetScene()).RaiseSceneChangeEvent(ESceneChangeType::NodeAddedToParent, shared_from_this(), ChildNode);
+	// 2. Добавляем чилда в нового парента (возможно нужно его об этом нотифицировать, например для перерасчета BoundingBox)
+	this->AddChildPrivate(childNode);
 }
 
-void CSceneNode::RemoveChildInternal(std::shared_ptr<ISceneNode> ChildNode)
+void CSceneNode::RemoveChildInternal(std::shared_ptr<ISceneNode> childNode)
 {
-	const auto& childListIter = std::find(m_Children.begin(), m_Children.end(), ChildNode);
-	if (childListIter == m_Children.end())
-		//throw CException(L"Can't remove child because don't found.");
-		return;
+	if (childNode == nullptr)
+		throw CException("Unable to remove nullptr node from '%s'.", GetName().c_str());
 
-	// Delete from list
-	m_Children.erase(childListIter);
+	if (childNode->IsPersistance())
+		throw CException("Unable to remove persistan node '%s' from '%s'.", childNode->GetName(), GetName().c_str());
 
-	// TODO: Если единственная ссылка на чилда осталась в списке чилдов, то всё взорвется?
-
-	std::dynamic_pointer_cast<CSceneNode>(ChildNode)->SetParentInternal(std::weak_ptr<ISceneNode>());
-
-	// TODO: Какой ивент посылать первым?
-	std::dynamic_pointer_cast<ISceneNodeInternal>(ChildNode)->RaiseOnParentChangedInternal();
-	dynamic_cast<ISceneInternal&>(GetScene()).RaiseSceneChangeEvent(ESceneChangeType::NodeRemovedFromParent, shared_from_this(), ChildNode);
-}
-
-void CSceneNode::SetParentInternal(std::weak_ptr<ISceneNode> parentNode)
-{
-	m_ParentNode = parentNode;
+	this->RemoveChildPrivate(childNode);
 }
 
 void CSceneNode::SetPersistanceInternal(bool Value)
@@ -648,4 +615,52 @@ IBaseManager& CSceneNode::GetBaseManager() const
 IRenderDevice& CSceneNode::GetRenderDevice() const
 {
 	return GetScene().GetRenderDevice();
+}
+
+
+
+//
+// Private
+//
+//
+// ISceneNodeInternal
+//
+void CSceneNode::AddChildPrivate(std::shared_ptr<ISceneNode> ChildNode)
+{
+	_ASSERT(ChildNode != nullptr);
+
+	const auto& iter = std::find(m_Children.begin(), m_Children.end(), ChildNode);
+	if (iter != m_Children.end())
+		throw CException(L"This parent already has this child.");
+
+	// Add to common list
+	m_Children.push_back(ChildNode);
+
+	std::dynamic_pointer_cast<CSceneNode>(ChildNode)->SetParentPrivate(weak_from_this());
+
+	// Update name (to resolve dublicates)
+	ChildNode->SetName(ChildNode->GetName());
+
+	std::dynamic_pointer_cast<ISceneNodeInternal>(ChildNode)->RaiseOnParentChangedInternal();
+	dynamic_cast<ISceneInternal&>(GetScene()).RaiseSceneChangeEvent(ESceneChangeType::NodeAddedToParent, shared_from_this(), ChildNode);
+}
+
+void CSceneNode::RemoveChildPrivate(std::shared_ptr<ISceneNode> ChildNode)
+{
+	const auto& childListIter = std::find(m_Children.begin(), m_Children.end(), ChildNode);
+	if (childListIter == m_Children.end())
+		throw CException(L"Can't remove child because don't found.");
+
+	// Delete from list
+	m_Children.erase(childListIter);
+
+	std::dynamic_pointer_cast<CSceneNode>(ChildNode)->SetParentPrivate(std::weak_ptr<ISceneNode>());
+
+	std::dynamic_pointer_cast<ISceneNodeInternal>(ChildNode)->RaiseOnParentChangedInternal();
+	dynamic_cast<ISceneInternal&>(GetScene()).RaiseSceneChangeEvent(ESceneChangeType::NodeRemovedFromParent, shared_from_this(), ChildNode);
+}
+
+void CSceneNode::SetParentPrivate(std::weak_ptr<ISceneNode> parentNode)
+{
+	m_ParentNode = parentNode;
 }

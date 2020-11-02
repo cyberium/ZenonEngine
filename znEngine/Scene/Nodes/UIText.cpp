@@ -86,7 +86,7 @@ const glm::vec2 CUITextNode::GetOffset() const
 
 
 //
-// SceneNodeUI
+// CUIControl
 //
 glm::vec2 CUITextNode::GetSize() const
 {

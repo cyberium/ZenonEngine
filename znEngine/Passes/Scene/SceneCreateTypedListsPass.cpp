@@ -73,14 +73,14 @@ void CSceneCreateTypedListsPass::PreRender(RenderEventArgs & e)
 
 void CSceneCreateTypedListsPass::Render(RenderEventArgs & e)
 {
-	/*if (Visit(GetScene()->GetRootNode3D().get()))
+	/*if (Visit(GetScene()->GetRootSceneNode().get()))
 	{
-		const auto& components = GetScene()->GetRootNode3D()->GetComponents();
+		const auto& components = GetScene()->GetRootSceneNode()->GetComponents();
 		std::for_each(components.begin(), components.end(), [this](const std::pair<GUID, std::shared_ptr<ISceneNodeComponent>>& Component) {
 			Component.second->Accept(this);
 		});
 
-		const auto& childs = GetScene()->GetRootNode3D()->Get
+		const auto& childs = GetScene()->GetRootSceneNode()->Get
 	}*/
 
 	ScenePass::Render(e);

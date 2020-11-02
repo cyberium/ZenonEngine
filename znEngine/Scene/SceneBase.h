@@ -16,15 +16,16 @@ public:
 	IBaseManager&                                   GetBaseManager() const override;
 	IRenderDevice&                                  GetRenderDevice() const override;
 	IRenderWindow&                                  GetRenderWindow() const override;
-
-	void                                            AddEventListener(std::shared_ptr<ISceneEventsListener> Listener) override;
-	void                                            RemoveEventListener(std::shared_ptr<ISceneEventsListener> Listener) override;
+	const ISceneFinder&                             GetFinder() const override;
 
 	virtual void                                    Initialize() override;
 	virtual void                                    Finalize() override;
 
-	std::shared_ptr<ISceneNode>					    GetRootNode3D() const override;
-	std::shared_ptr<IUIControl>					    GetRootNodeUI() const override;
+	void                                            AddEventListener(std::shared_ptr<ISceneEventsListener> Listener) override;
+	void                                            RemoveEventListener(std::shared_ptr<ISceneEventsListener> Listener) override;
+
+	std::shared_ptr<ISceneNode>					    GetRootSceneNode() const override;
+	std::shared_ptr<IUIControl>					    GetRootUIControl() const override;
 
 	void                                            SetRenderer(std::shared_ptr<IRenderer> Renderer) override;
 	std::shared_ptr<IRenderer>                      GetRenderer() const override;
@@ -32,19 +33,13 @@ public:
 	void                                            SetCameraController(std::shared_ptr<ICameraController> CameraController) override;
 	std::shared_ptr<ICameraController>              GetCameraController() const override;
 
-	const ISceneFinder&                             GetFinder() const override;
-
 	// Visit funcitonal
 	void                                            Accept(IVisitor* visitor) override;
-	void											Freeze() override;
-	void											Unfreeze() override;
-	void                                            AddChild(const std::shared_ptr<ISceneNode>& ParentNode, const std::shared_ptr<ISceneNode>& ChildNode) override;
-	void                                            RemoveChild(const std::shared_ptr<ISceneNode>& ParentNode, const std::shared_ptr<ISceneNode>& ChildNode) override;
-
 
 	// ISceneInternal
+	void                                            AddChildInternal(const std::shared_ptr<ISceneNode>& ParentNode, const std::shared_ptr<ISceneNode>& ChildNode) override;
+	void                                            RemoveChildInternal(const std::shared_ptr<ISceneNode>& ParentNode, const std::shared_ptr<ISceneNode>& ChildNode) override;
 	void                                            RaiseSceneChangeEvent(ESceneChangeType SceneChangeType, const std::shared_ptr<ISceneNode>& OwnerNode, const std::shared_ptr<ISceneNode>& ChildNode) override;
-
 
 	// IRenderWindowEventListener
 	virtual void                                    OnUpdate(UpdateEventArgs& e) override;
@@ -91,12 +86,12 @@ private: // Input events process recursive
 	bool                                            DoMouseWheel_Rec(const std::shared_ptr<IUIControl>& Node, MouseWheelEventArgs& e);
 
 protected:
-	std::shared_ptr<ISceneNode>                     m_RootNode3D;
-	std::shared_ptr<IUIControl>                     m_RootNodeUI;
+	std::shared_ptr<ISceneNode>                     m_RootSceneNode;
+	std::shared_ptr<IUIControl>                     m_RootUIControl;
 
 	std::shared_ptr<IRenderer>                      m_Renderer;
 
-	std::unique_ptr<CSceneFinder>                   m_Finder;
+	CSceneFinder                                    m_Finder;
 
 	std::shared_ptr<IQuery>                         m_FrameQuery;
 	std::shared_ptr<IQuery>                         m_TestQuery;
@@ -123,7 +118,7 @@ protected: // Функционал по отложенному добавлению нод
 	std::vector<std::pair<std::shared_ptr<ISceneNode>, std::shared_ptr<ISceneNode>>> m_AddChildList;
 	std::vector<std::pair<std::shared_ptr<ISceneNode>, std::shared_ptr<ISceneNode>>> m_RemoveChildList;
 	std::mutex                                                                           m_ListsAreBusy;
-	std::mutex                                                                           m_SceneIsBusy;
+	std::mutex                                                                           m_ChildModifyLock;
 
 	std::vector<std::shared_ptr<ISceneEventsListener>>                                   m_EventListeners;
 
@@ -133,5 +128,4 @@ private: // Quick access
 	IRenderDevice&                                  m_RenderDevice;
 	IRenderWindow&                                  m_RenderWindow;
 	std::mutex                                      m_SceneMutex;
-	std::atomic_bool                                m_IsFreezed;
 };

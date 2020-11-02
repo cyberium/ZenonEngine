@@ -59,7 +59,7 @@ void CUIBeizerLineNode::SetThickness(float Thickness)
 
 
 //
-// SceneNodeUI
+// CUIControl
 //
 glm::vec2 CUIBeizerLineNode::GetSize()
 {

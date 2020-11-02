@@ -25,7 +25,7 @@ void CEditedScene::Finalize()
 
 void CEditedScene::RaiseSceneChangeEvent(ESceneChangeType SceneChangeType, const std::shared_ptr<ISceneNode>& OwnerNode, const std::shared_ptr<ISceneNode>& ChildNode)
 {
-	auto root = GetRootNode3D(); // Edited parent
+	auto root = GetRootSceneNode(); // Edited parent
 	_ASSERT(root != nullptr);
 
 	auto realParent = root->GetParent(); // Real parent

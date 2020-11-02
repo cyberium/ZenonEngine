@@ -5,7 +5,7 @@
 
 
 class ZN_API CUIButtonNode 
-	: public SceneNodeUI
+	: public CUIControl
 {
 public:
 	enum ButtonState : uint32
@@ -31,7 +31,7 @@ public:
 	virtual void OnMouseEntered() override;
 	virtual void OnMouseLeaved() override;
 
-	// SceneNodeUI
+	// CUIControl
     virtual glm::vec2 GetSize() const override;
 
 	virtual void Accept(IVisitor* visitor) override;

@@ -18,8 +18,6 @@ public:
 	void Initialize() override;
 	void Finalize() override;
 
-	void AddChild(const std::shared_ptr<ISceneNode>& ParentNode, const std::shared_ptr<ISceneNode>& ChildNode) override;
-	void RemoveChild(const std::shared_ptr<ISceneNode>& ParentNode, const std::shared_ptr<ISceneNode>& ChildNode) override;
 	void RaiseSceneChangeEvent(ESceneChangeType SceneChangeType, const std::shared_ptr<ISceneNode>& ParentNode, const std::shared_ptr<ISceneNode>& ChildNode) override;
 
 	bool OnMousePressed(const MouseButtonEventArgs & e, const Ray& RayToWorld) override;

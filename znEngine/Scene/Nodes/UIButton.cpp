@@ -92,7 +92,7 @@ void CUIButtonNode::OnMouseLeaved()
 
 
 //
-// SceneNodeUI
+// CUIControl
 //
 glm::vec2 CUIButtonNode::GetSize() const
 {
@@ -101,7 +101,7 @@ glm::vec2 CUIButtonNode::GetSize() const
 
 void CUIButtonNode::Accept(IVisitor* visitor)
 {
-	SceneNodeUI::Accept(visitor);
+	CUIControl::Accept(visitor);
 }
 
 void CUIButtonNode::AcceptMesh(IVisitor* visitor)

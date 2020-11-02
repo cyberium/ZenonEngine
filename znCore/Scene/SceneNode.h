@@ -77,9 +77,8 @@ public:
 
 protected:
 	// ISceneNodeInternal
-	void                                            AddChildInternal(std::shared_ptr<ISceneNode> ChildNode) override;
-	void                                            RemoveChildInternal(std::shared_ptr<ISceneNode> ChildNode) override;
-	void                                            SetParentInternal(std::weak_ptr<ISceneNode> parentNode) override;
+	void                                            AddChildInternal(std::shared_ptr<ISceneNode> ChildNode) override;     // Called from scene
+	void                                            RemoveChildInternal(std::shared_ptr<ISceneNode> ChildNode) override;  // Called from scene
 	void                                            SetPersistanceInternal(bool Value) override;
 	void                                            RaiseOnParentChangedInternal() override;
 
@@ -92,6 +91,11 @@ protected:
 
 	IBaseManager&                                   GetBaseManager() const;
 	IRenderDevice&                                  GetRenderDevice() const;
+
+private:
+	void                                            AddChildPrivate(std::shared_ptr<ISceneNode> ChildNode);
+	void                                            RemoveChildPrivate(std::shared_ptr<ISceneNode> ChildNode);
+	void                                            SetParentPrivate(std::weak_ptr<ISceneNode> parentNode);
 
 private:
 	IScene&                                         m_Scene;

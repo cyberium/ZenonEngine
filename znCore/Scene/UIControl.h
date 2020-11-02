@@ -2,14 +2,14 @@
 
 #include "../ObjectsFactories/Object.h"
 
-class ZN_API SceneNodeUI 
+class ZN_API CUIControl 
 	: public IUIControl
 	, public Object
 {
 	friend IScene;
 public:
-	SceneNodeUI();
-	virtual ~SceneNodeUI();
+	CUIControl();
+	virtual ~CUIControl();
 
 	virtual void                                    Initialize() override;
 	virtual void                                    Finalize() override;

@@ -63,11 +63,11 @@ glm::vec2 CUIContainerGarmoshka::GetSize() const
 }
 
 //
-// SceneNodeUI
+// CUIControl
 //
-std::vector<std::shared_ptr<SceneNodeUI>> CUIContainerGarmoshka::GetChilds() const
+std::vector<std::shared_ptr<CUIControl>> CUIContainerGarmoshka::GetChilds() const
 {
-    std::vector<std::shared_ptr<SceneNodeUI>> childs;
+    std::vector<std::shared_ptr<CUIControl>> childs;
 
     if (m_Background)
         childs.push_back(m_Background);

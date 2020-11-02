@@ -2,5 +2,5 @@
 
 namespace owUIUtils
 {
-    glm::vec2 CalculateChildsVerticalSize(const std::vector<std::shared_ptr<SceneNodeUI>>& Childs, float HorizontalSpace = 0.0f);
+    glm::vec2 CalculateChildsVerticalSize(const std::vector<std::shared_ptr<CUIControl>>& Childs, float HorizontalSpace = 0.0f);
 }

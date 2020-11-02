@@ -3,7 +3,7 @@
 // General
 #include "UIControl.h"
 
-SceneNodeUI::SceneNodeUI()
+CUIControl::CUIControl()
 	: m_IsMouseOnNode(false)
 	, m_Translate(glm::vec2(0.0f))
 	, m_Rotate(glm::vec3(0.0f))
@@ -26,7 +26,7 @@ SceneNodeUI::SceneNodeUI()
 	}
 }
 
-SceneNodeUI::~SceneNodeUI()
+CUIControl::~CUIControl()
 {
 }
 
@@ -37,12 +37,12 @@ SceneNodeUI::~SceneNodeUI()
 //
 // IUIControl
 //
-void SceneNodeUI::Initialize()
+void CUIControl::Initialize()
 {
 
 }
 
-void SceneNodeUI::Finalize()
+void CUIControl::Finalize()
 {
 
 }
@@ -52,21 +52,21 @@ void SceneNodeUI::Finalize()
 //
 // Childs functional
 //
-void SceneNodeUI::AddChild(const std::shared_ptr<IUIControl>& childNode)
+void CUIControl::AddChild(const std::shared_ptr<IUIControl>& childNode)
 {
 	if (childNode == nullptr)
-		throw CException(L"SceneNodeUI: Child node must not be NULL.");
+		throw CException(L"CUIControl: Child node must not be NULL.");
 
 	// 1. Удаляем чилда у текущего родителя (возможно нужно его об этом нотифицировать, например для перерасчета BoundingBox)
 	if (auto currentChildParent = childNode->GetParent().lock())
 	{
 		if (currentChildParent == shared_from_this())
 		{
-			Log::Warn("SceneNodeUI: Failed to add child to his current parent.");
+			Log::Warn("CUIControl: Failed to add child to his current parent.");
 			return;
 		}
 
-		std::dynamic_pointer_cast<SceneNodeUI>(currentChildParent)->RemoveChildInternal(childNode);
+		std::dynamic_pointer_cast<CUIControl>(currentChildParent)->RemoveChildInternal(childNode);
 	}
 
 	// 2. Добавляем чилда в нового парента (возможно нужно его об этом нотифицировать, например для перерасчета BoundingBox)
@@ -74,28 +74,28 @@ void SceneNodeUI::AddChild(const std::shared_ptr<IUIControl>& childNode)
 
 }
 
-void SceneNodeUI::RemoveChild(const std::shared_ptr<IUIControl>& childNode)
+void CUIControl::RemoveChild(const std::shared_ptr<IUIControl>& childNode)
 {
 	if (childNode == nullptr)
 	{
-		Log::Warn("SceneNodeUI: Child node must not be NULL.");
+		Log::Warn("CUIControl: Child node must not be NULL.");
 		return;
 	}
 
 	this->RemoveChildInternal(childNode);
 }
 
-std::weak_ptr<IUIControl> SceneNodeUI::GetParent() const
+std::weak_ptr<IUIControl> CUIControl::GetParent() const
 {
 	return m_ParentNode;
 }
 
-const SceneNodeUI::NodeUIList& SceneNodeUI::GetChilds()
+const CUIControl::NodeUIList& CUIControl::GetChilds()
 {
 	return m_Children;
 }
 
-void SceneNodeUI::RaiseOnParentChanged()
+void CUIControl::RaiseOnParentChanged()
 {
 	UpdateWorldTransform();
 }
@@ -106,26 +106,26 @@ void SceneNodeUI::RaiseOnParentChanged()
 // Actions & Properties
 //
 
-std::shared_ptr<IPropertiesGroup> SceneNodeUI::GetProperties() const
+std::shared_ptr<IPropertiesGroup> CUIControl::GetProperties() const
 {
 	return m_PropertiesGroup;
 }
 
-IScene& SceneNodeUI::GetScene() const
+IScene& CUIControl::GetScene() const
 {
 	return *m_Scene;
 }
 
-void SceneNodeUI::SetTranslate(const glm::vec2& _translate)
+void CUIControl::SetTranslate(const glm::vec2& _translate)
 {
 	m_Translate = _translate;
 	UpdateLocalTransform();
 }
-const glm::vec2& SceneNodeUI::GetTranslation() const
+const glm::vec2& CUIControl::GetTranslation() const
 {
 	return m_Translate;
 }
-glm::vec2 SceneNodeUI::GetTranslationAbs() const
+glm::vec2 CUIControl::GetTranslationAbs() const
 {
 	glm::vec2 parentTranslate = glm::vec2(0.0f, 0.0f);
 	if (auto parent = GetParent().lock())
@@ -133,28 +133,28 @@ glm::vec2 SceneNodeUI::GetTranslationAbs() const
 	return parentTranslate + GetTranslation();
 }
 
-void SceneNodeUI::SetRotation(const glm::vec3& _rotate)
+void CUIControl::SetRotation(const glm::vec3& _rotate)
 {
 	m_Rotate = _rotate;
 
 	UpdateLocalTransform();
 }
-const glm::vec3& SceneNodeUI::GetRotation() const
+const glm::vec3& CUIControl::GetRotation() const
 {
 	return m_Rotate;
 }
 
-void SceneNodeUI::SetScale(const glm::vec2& _scale)
+void CUIControl::SetScale(const glm::vec2& _scale)
 {
 	m_Scale = _scale;
 
 	UpdateLocalTransform();
 }
-const glm::vec2& SceneNodeUI::GetScale() const
+const glm::vec2& CUIControl::GetScale() const
 {
 	return m_Scale;
 }
-glm::vec2 SceneNodeUI::GetScaleAbs() const
+glm::vec2 CUIControl::GetScaleAbs() const
 {
 	glm::vec2 parentScale = glm::vec2(1.0f);
 	if (auto parent = GetParent().lock())
@@ -162,12 +162,12 @@ glm::vec2 SceneNodeUI::GetScaleAbs() const
 	return parentScale * GetScale();
 }
 
-glm::mat4 SceneNodeUI::GetLocalTransform() const
+glm::mat4 CUIControl::GetLocalTransform() const
 {
 	return m_LocalTransform;
 }
 
-glm::mat4 SceneNodeUI::GetWorldTransfom() const
+glm::mat4 CUIControl::GetWorldTransfom() const
 {
 	return m_WorldTransform;
 }
@@ -178,12 +178,12 @@ glm::mat4 SceneNodeUI::GetWorldTransfom() const
 // Size & bounds
 //
 
-glm::vec2 SceneNodeUI::GetSize() const
+glm::vec2 CUIControl::GetSize() const
 {
     return glm::vec2(99999.0f, 999999.0f);
 }
 
-BoundingRect SceneNodeUI::GetBoundsAbs()
+BoundingRect CUIControl::GetBoundsAbs()
 {
     BoundingRect boundRect = BoundingRect(GetTranslationAbs(), GetTranslationAbs() + GetSize() * GetScaleAbs());
 
@@ -193,7 +193,7 @@ BoundingRect SceneNodeUI::GetBoundsAbs()
     return boundRect;
 }
 
-bool SceneNodeUI::IsPointInBoundsAbs(const glm::vec2& Point)
+bool CUIControl::IsPointInBoundsAbs(const glm::vec2& Point)
 {
     return GetBoundsAbs().isPointInside(Point);
 }
@@ -203,7 +203,7 @@ bool SceneNodeUI::IsPointInBoundsAbs(const glm::vec2& Point)
 //
 // Render functional
 //
-void SceneNodeUI::Accept(IVisitor* visitor)
+void CUIControl::Accept(IVisitor* visitor)
 {
 	EVisitResult visitResult = visitor->Visit(this);
 	
@@ -221,7 +221,7 @@ void SceneNodeUI::Accept(IVisitor* visitor)
 	}
 }
 
-void SceneNodeUI::AcceptMesh(IVisitor* visitor)
+void CUIControl::AcceptMesh(IVisitor* visitor)
 {
 
 }
@@ -231,7 +231,7 @@ void SceneNodeUI::AcceptMesh(IVisitor* visitor)
 //
 // UI events
 //
-void SceneNodeUI::SetOnClickCallback(std::function<void(const IUIControl* Node, glm::vec2)> OnClickCallback)
+void CUIControl::SetOnClickCallback(std::function<void(const IUIControl* Node, glm::vec2)> OnClickCallback)
 {
 	m_OnClickCallback = OnClickCallback;
 }
@@ -241,22 +241,22 @@ void SceneNodeUI::SetOnClickCallback(std::function<void(const IUIControl* Node, 
 //
 // Input events
 //
-bool SceneNodeUI::OnKeyPressed(KeyEventArgs & e)
+bool CUIControl::OnKeyPressed(KeyEventArgs & e)
 {
 	return false;
 }
 
-void SceneNodeUI::OnKeyReleased(KeyEventArgs & e)
+void CUIControl::OnKeyReleased(KeyEventArgs & e)
 {
 	// Do nothing
 }
 
-void SceneNodeUI::OnMouseMoved(MouseMotionEventArgs& e)
+void CUIControl::OnMouseMoved(MouseMotionEventArgs& e)
 {
 	// Do nothing
 }
 
-bool SceneNodeUI::OnMouseButtonPressed(MouseButtonEventArgs & e)
+bool CUIControl::OnMouseButtonPressed(MouseButtonEventArgs & e)
 {
 	// Raise event
 	if (m_OnClickCallback)
@@ -268,12 +268,12 @@ bool SceneNodeUI::OnMouseButtonPressed(MouseButtonEventArgs & e)
 	return false;
 }
 
-void SceneNodeUI::OnMouseButtonReleased(MouseButtonEventArgs & e)
+void CUIControl::OnMouseButtonReleased(MouseButtonEventArgs & e)
 {
 	// Do nothing
 }
 
-bool SceneNodeUI::OnMouseWheel(MouseWheelEventArgs & e)
+bool CUIControl::OnMouseWheel(MouseWheelEventArgs & e)
 {
 	return false;
 }
@@ -283,12 +283,12 @@ bool SceneNodeUI::OnMouseWheel(MouseWheelEventArgs & e)
 //
 // Syntetic events
 //
-void SceneNodeUI::OnMouseEntered()
+void CUIControl::OnMouseEntered()
 {
 	// Do nothing
 }
 
-void SceneNodeUI::OnMouseLeaved()
+void CUIControl::OnMouseLeaved()
 {
 	// Do nothing
 }
@@ -298,12 +298,12 @@ void SceneNodeUI::OnMouseLeaved()
 //
 // Private
 //
-void SceneNodeUI::SetSceneInternal(IScene* Scene)
+void CUIControl::SetSceneInternal(IScene* Scene)
 {
 	m_Scene = Scene;
 }
 
-void SceneNodeUI::AddChildInternal(const std::shared_ptr<IUIControl>& ChildNode)
+void CUIControl::AddChildInternal(const std::shared_ptr<IUIControl>& ChildNode)
 {
 	_ASSERT(ChildNode != nullptr);
 
@@ -318,12 +318,12 @@ void SceneNodeUI::AddChildInternal(const std::shared_ptr<IUIControl>& ChildNode)
 	if (!ChildNode->GetName().empty())
 		m_ChildrenByName.insert(NodeUINameMap::value_type(ChildNode->GetName(), ChildNode));
 
-	std::dynamic_pointer_cast<SceneNodeUI>(ChildNode)->SetParentInternal(weak_from_this());
+	std::dynamic_pointer_cast<CUIControl>(ChildNode)->SetParentInternal(weak_from_this());
 
 	ChildNode->RaiseOnParentChanged();
 }
 
-void SceneNodeUI::RemoveChildInternal(const std::shared_ptr<IUIControl>& ChildNode)
+void CUIControl::RemoveChildInternal(const std::shared_ptr<IUIControl>& ChildNode)
 {
 	const auto& childListIter = std::find(m_Children.begin(), m_Children.end(), ChildNode);
 	if (childListIter == m_Children.end())
@@ -340,12 +340,12 @@ void SceneNodeUI::RemoveChildInternal(const std::shared_ptr<IUIControl>& ChildNo
 	if (childNameMapIter != m_ChildrenByName.end())
 		m_ChildrenByName.erase(childNameMapIter);
 
-	std::dynamic_pointer_cast<SceneNodeUI>(ChildNode)->SetParentInternal(std::weak_ptr<IUIControl>());
+	std::dynamic_pointer_cast<CUIControl>(ChildNode)->SetParentInternal(std::weak_ptr<IUIControl>());
 
 	ChildNode->RaiseOnParentChanged();
 }
 
-void SceneNodeUI::SetParentInternal(const std::weak_ptr<IUIControl>& parentNode)
+void CUIControl::SetParentInternal(const std::weak_ptr<IUIControl>& parentNode)
 {
 	m_ParentNode = parentNode;
 }
@@ -355,7 +355,7 @@ void SceneNodeUI::SetParentInternal(const std::weak_ptr<IUIControl>& parentNode)
 //
 // Protected
 //
-void SceneNodeUI::UpdateLocalTransform()
+void CUIControl::UpdateLocalTransform()
 {
 	m_LocalTransform = glm::mat4(1.0f);
 
@@ -370,7 +370,7 @@ void SceneNodeUI::UpdateLocalTransform()
 	UpdateWorldTransform();
 }
 
-void SceneNodeUI::UpdateWorldTransform()
+void CUIControl::UpdateWorldTransform()
 {
 	glm::mat4 parentTransform(1.0f);
 	if (auto parent = GetParent().lock())
@@ -381,10 +381,10 @@ void SceneNodeUI::UpdateWorldTransform()
 
 	// After world updated, we can update all childs
 	for (const auto& it : GetChilds())
-		std::dynamic_pointer_cast<SceneNodeUI>(it)->UpdateWorldTransform();
+		std::dynamic_pointer_cast<CUIControl>(it)->UpdateWorldTransform();
 }
 
-IBaseManager& SceneNodeUI::GetBaseManager() const
+IBaseManager& CUIControl::GetBaseManager() const
 {
 	return GetScene().GetBaseManager();
 }
@@ -394,17 +394,17 @@ IBaseManager& SceneNodeUI::GetBaseManager() const
 //
 // Syntetic events PRIVATE
 //
-bool SceneNodeUI::IsMouseOnNode() const
+bool CUIControl::IsMouseOnNode() const
 {
 	return m_IsMouseOnNode;
 }
 
-void SceneNodeUI::DoMouseEntered()
+void CUIControl::DoMouseEntered()
 {
 	m_IsMouseOnNode = true;
 }
 
-void SceneNodeUI::DoMouseLeaved()
+void CUIControl::DoMouseLeaved()
 {
 	m_IsMouseOnNode = false;
 }

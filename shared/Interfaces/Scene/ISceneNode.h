@@ -106,9 +106,8 @@ ZN_INTERFACE ZN_API ISceneNodeInternal
 {
 	virtual ~ISceneNodeInternal() {}
 
-	virtual void AddChildInternal(std::shared_ptr<ISceneNode> ChildNode) = 0;
-	virtual void RemoveChildInternal(std::shared_ptr<ISceneNode> ChildNode) = 0;
-	virtual void SetParentInternal(std::weak_ptr<ISceneNode> parentNode) = 0;
+	virtual void AddChildInternal(std::shared_ptr<ISceneNode> ChildNode) = 0;     // Called from scene
+	virtual void RemoveChildInternal(std::shared_ptr<ISceneNode> ChildNode) = 0;  // Called from scene
 	virtual void SetPersistanceInternal(bool Value) = 0;
 	virtual void RaiseOnParentChangedInternal() = 0;
 };

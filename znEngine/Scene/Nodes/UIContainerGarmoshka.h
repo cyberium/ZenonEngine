@@ -3,12 +3,12 @@
 #ifndef ONLY_SIMPLE_UI
 
 // Common UI
-#include "SceneFunctional/UI/SceneNodeUI.h"
+#include "SceneFunctional/UI/CUIControl.h"
 
 // ContainerGarmoshka
 #include "UIContainerGarmoshkaCategory.h"
 
-class CUIContainerGarmoshka : public SceneNodeUI
+class CUIContainerGarmoshka : public CUIControl
 {
 public:
     CUIContainerGarmoshka();
@@ -27,10 +27,10 @@ public:
 
 
     //
-    // SceneNodeUI
+    // CUIControl
     //
     glm::vec2 GetSize() const override final;
-    std::vector<std::shared_ptr<SceneNodeUI>> GetChilds() const override;
+    std::vector<std::shared_ptr<CUIControl>> GetChilds() const override;
 
 protected:
     void CalculateActiveCategory();

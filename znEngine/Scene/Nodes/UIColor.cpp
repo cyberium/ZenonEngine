@@ -47,7 +47,7 @@ glm::vec4 CUIColorNode::GetColor() const
 
 
 //
-// SceneNodeUI
+// CUIControl
 //
 glm::vec2 CUIColorNode::GetSize() const
 {

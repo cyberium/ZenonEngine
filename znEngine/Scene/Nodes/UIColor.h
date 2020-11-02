@@ -3,7 +3,7 @@
 #include "../../Materials/UI_Color_Material.h"
 
 class ZN_API CUIColorNode 
-	: public SceneNodeUI
+	: public CUIControl
 {
 public:
 	CUIColorNode(glm::vec2 Size = glm::vec2(1.0f, 1.0f));
@@ -15,7 +15,7 @@ public:
 	void SetColor(glm::vec4 _color);
 	glm::vec4 GetColor() const;
 
-	// SceneNodeUI
+	// CUIControl
     virtual glm::vec2 GetSize() const override;
 
 	virtual void AcceptMesh(IVisitor* visitor) override;

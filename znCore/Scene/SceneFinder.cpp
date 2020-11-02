@@ -104,7 +104,7 @@ CSceneFinder::~CSceneFinder()
 std::map<float, std::shared_ptr<ISceneNode>> CSceneFinder::FindIntersection(const Ray& Ray, std::function<bool(std::shared_ptr<ISceneNode>)> Filter, std::shared_ptr<ISceneNode> RootForFinder) const
 {
 	std::map<float, std::shared_ptr<ISceneNode>> intersectedNodes;
-	FillIntersectedSceneNodesMap(RootForFinder ? RootForFinder : m_Scene.GetRootNode3D(), Ray, &intersectedNodes);
+	FillIntersectedSceneNodesMap(RootForFinder ? RootForFinder : m_Scene.GetRootSceneNode(), Ray, &intersectedNodes);
 
 	if (Filter)
 	{
@@ -124,7 +124,7 @@ std::map<float, std::shared_ptr<ISceneNode>> CSceneFinder::FindIntersection(cons
 std::vector<std::shared_ptr<ISceneNode>> CSceneFinder::FindIntersections(const Frustum & Frustum, std::function<bool(std::shared_ptr<ISceneNode>)> Filter, std::shared_ptr<ISceneNode> RootForFinder) const
 {
 	std::vector<std::shared_ptr<ISceneNode>> intersectedNodes;
-	FillIntersectedSceneNodesList(RootForFinder ? RootForFinder : m_Scene.GetRootNode3D(), Frustum, &intersectedNodes);
+	FillIntersectedSceneNodesList(RootForFinder ? RootForFinder : m_Scene.GetRootSceneNode(), Frustum, &intersectedNodes);
 	
 	if (Filter)
 	{

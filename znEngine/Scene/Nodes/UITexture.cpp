@@ -40,7 +40,7 @@ void CUITextureNode::SetColor(glm::vec4 _color)
 
 
 //
-// SceneNodeUI
+// CUIControl
 //
 glm::vec2 CUITextureNode::GetSize() const
 {

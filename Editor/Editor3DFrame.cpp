@@ -34,7 +34,7 @@ void CEditor3DFrame::Initialize()
 {
 	SceneBase::Initialize();
 
-	GetRootNode3D()->AddChild(m_EditedScene->GetRootNode3D());
+	GetRootSceneNode()->AddChild(m_EditedScene->GetRootSceneNode());
 
 	glm::vec3 rtsCenter = glm::vec3(cCellSize * cCellsCount) / 2.0f;
 
@@ -121,7 +121,7 @@ void CEditor3DFrame::Initialize()
 			auto& modelPlane = GetRenderDevice().GetObjectsFactory().CreateModel();
 			modelPlane->AddConnection(textMaterial, GetRenderDevice().GetPrimitivesFactory().CreateCube());
 
-			auto node = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeFactory>()->CreateSceneNode3D(cSceneNode3D, this, GetRootNode3D());
+			auto node = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeFactory>()->CreateSceneNode3D(cSceneNode3D, this, GetRootSceneNode());
 			node->SetName("Sphere2");
 			node->SetTranslate(glm::vec3(-10, 15, 16 * i));
 			node->SetScale(glm::vec3(15.0f));
@@ -142,21 +142,17 @@ void CEditor3DFrame::Finalize()
 	SceneBase::Finalize();
 }
 
-void CEditor3DFrame::AddChild(const std::shared_ptr<ISceneNode>& ParentNode, const std::shared_ptr<ISceneNode>& ChildNode)
-{
-	__super::AddChild(ParentNode, ChildNode);
-}
 
-void CEditor3DFrame::RemoveChild(const std::shared_ptr<ISceneNode>& ParentNode, const std::shared_ptr<ISceneNode>& ChildNode)
-{
-	__super::RemoveChild(ParentNode, ChildNode);
-}
 
+//
+// ISceneInternal
+//
 void CEditor3DFrame::RaiseSceneChangeEvent(ESceneChangeType SceneChangeType, const std::shared_ptr<ISceneNode>& ParentNode, const std::shared_ptr<ISceneNode>& ChildNode)
 {
 	if (IsChildOf(GetEditedRootNode3D(), ChildNode) || IsChildOf(GetEditedRootNode3D(), ParentNode))
 		GetEditor().GetUIFrame().OnSceneChanged(SceneChangeType, ParentNode, ChildNode);
 }
+
 
 
 bool CEditor3DFrame::OnMousePressed(const MouseButtonEventArgs & e, const Ray & RayToWorld)
@@ -275,7 +271,7 @@ std::shared_ptr<IScene> CEditor3DFrame::GetEditedScene() const
 
 std::shared_ptr<ISceneNode> CEditor3DFrame::GetEditedRootNode3D() const
 {
-	return m_EditedScene->GetRootNode3D();
+	return m_EditedScene->GetRootSceneNode();
 }
 
 std::shared_ptr<ISceneNode> CEditor3DFrame::GetEditedNodeUnderMouse(const glm::ivec2& MousePos) const

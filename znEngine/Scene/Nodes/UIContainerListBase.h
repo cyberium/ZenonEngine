@@ -2,9 +2,9 @@
 
 #ifndef ONLY_SIMPLE_UI
 
-#include "SceneFunctional/UI/SceneNodeUI.h"
+#include "SceneFunctional/UI/CUIControl.h"
 
-class CUIContainerListBase : public SceneNodeUI
+class CUIContainerListBase : public CUIControl
 {
 public:
     CUIContainerListBase();
@@ -14,16 +14,16 @@ public:
     void Initialize(glm::vec2 MaxSize);
     void CreateDefault();
 
-    virtual void AddChild(std::shared_ptr<SceneNodeUI> Child, bool IsNeedCalculate = true);
+    virtual void AddChild(std::shared_ptr<CUIControl> Child, bool IsNeedCalculate = true);
     void IncStartNodeIndex();
     void DecStartNodeIndex();
 
-    // SceneNodeUI
+    // CUIControl
     virtual glm::vec2 GetSize() override;
-    virtual std::vector<std::shared_ptr<SceneNodeUI>> GetChilds() override;
+    virtual std::vector<std::shared_ptr<CUIControl>> GetChilds() override;
 
 protected:
-    virtual std::vector<std::shared_ptr<SceneNodeUI>> GetNodesUsingMaxSize() const;
+    virtual std::vector<std::shared_ptr<CUIControl>> GetNodesUsingMaxSize() const;
     void CalculateChildsTranslate(glm::vec2 StartPoint = glm::vec2(0.0f, 0.0f));
 
 private:
@@ -34,7 +34,7 @@ private:
     glm::vec2                                 m_c_ChildsOffset;
     float                                     m_c_ChildsVerticalPadding;
 
-    std::vector<std::shared_ptr<SceneNodeUI>> m_Nodes;
+    std::vector<std::shared_ptr<CUIControl>> m_Nodes;
 };
 
 #endif

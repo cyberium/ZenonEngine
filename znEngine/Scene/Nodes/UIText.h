@@ -3,7 +3,7 @@
 #include "../../Materials/UI_Font_Material.h"
 
 class ZN_API CUITextNode
-	: public SceneNodeUI
+	: public CUIControl
 {
 public:
 	CUITextNode();
@@ -21,7 +21,7 @@ public:
 	const std::string         GetText() const;
 	const glm::vec2           GetOffset() const;
 
-	// SceneNodeUI
+	// CUIControl
 	virtual glm::vec2           GetSize() const override;
 
 private:

@@ -277,9 +277,9 @@ void CEditorResourceBrowser::InitializeSceneBrowser()
 		if (sceneNode3DObject == nullptr)
 			return false;
 
-		m_Editor.Get3DFrame().LockUpdates();
+		//m_Editor.Get3DFrame().LockUpdates();
 		m_Editor.GetTools().GetToolT<IEditorToolSelector>(ETool::EToolSelector).SelectNode(sceneNode3DObject);
-		m_Editor.Get3DFrame().UnlockUpdates();
+		//m_Editor.Get3DFrame().UnlockUpdates();
 		
 		return true;
 	});

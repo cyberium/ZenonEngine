@@ -43,7 +43,7 @@ void CEditorToolRotator::Disable()
 
 void CEditorToolRotator::DoInitialize3D(const std::shared_ptr<IRenderer>& Renderer, std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport)
 {
-	m_RotatorRoot = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeFactory>()->CreateSceneNode3D(cSceneNode3D, GetScene(), GetScene().GetRootNode3D());
+	m_RotatorRoot = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeFactory>()->CreateSceneNode3D(cSceneNode3D, GetScene(), GetScene().GetRootSceneNode());
 	m_RotatorRoot->SetName("RotatorRoot");
 
 

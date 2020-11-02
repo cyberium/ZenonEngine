@@ -3,7 +3,7 @@
 #ifndef ONLY_SIMPLE_UI
 
 // Common UI
-#include "SceneFunctional/UI/SceneNodeUI.h"
+#include "SceneFunctional/UI/CUIControl.h"
 #include "UIColor.h"
 #include "UIText.h"
 
@@ -13,7 +13,7 @@
 class CUIContainerGarmoshka;
 // FORWARD END
 
-class CUIContainerGarmoshkaCategoryHeader : public SceneNodeUI
+class CUIContainerGarmoshkaCategoryHeader : public CUIControl
 {
 public:
     CUIContainerGarmoshkaCategoryHeader(std::weak_ptr<CUIContainerGarmoshka> ContainerGarmoshka);
@@ -23,9 +23,9 @@ public:
     void Initialize();
     void SetText(const std::string& Text);
 
-    // SceneNodeUI
+    // CUIControl
     glm::vec2 GetSize() const override final;
-    std::vector<std::shared_ptr<SceneNodeUI>> GetChilds() const override final;
+    std::vector<std::shared_ptr<CUIControl>> GetChilds() const override final;
 
     // Input events
     virtual bool OnMouseButtonPressed(MouseButtonEventArgs& e) override final;

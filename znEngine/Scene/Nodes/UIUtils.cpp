@@ -3,7 +3,7 @@
 // General
 #include "UIUtils.h"
 
-glm::vec2 owUIUtils::CalculateChildsVerticalSize(const std::vector<std::shared_ptr<SceneNodeUI>>& Childs, float HorizontalSpace)
+glm::vec2 owUIUtils::CalculateChildsVerticalSize(const std::vector<std::shared_ptr<CUIControl>>& Childs, float HorizontalSpace)
 {
     glm::vec2 size = glm::vec2(0.0f, 0.0f);
 
