@@ -57,13 +57,22 @@ bool Utils::ByteBufferHelper::readBytes(IByteBuffer * ByteBuffer, void* Destinat
 	_ASSERT(Size > 0);
 
 	if (Size == 0)
+	{
+		//_ASSERT(false);
 		return false;
+	}
 
 	if (ByteBuffer->isEof())
+	{
+		//_ASSERT(false);
 		return false;
+	}
 
 	if ((ByteBuffer->getPos() + Size) > ByteBuffer->getSize())
+	{
+		//_ASSERT(false);
 		return false;
+	}
 
 	std::memcpy(Destination, &(ByteBuffer->getData()[ByteBuffer->getPos()]), Size);
 	ByteBuffer->seekRelative(Size);

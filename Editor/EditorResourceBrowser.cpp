@@ -149,51 +149,6 @@ CEditorResourceBrowser::~CEditorResourceBrowser()
 //
 void CEditorResourceBrowser::Initialize()
 {
-	std::vector<std::shared_ptr<IznTreeViewItemSource>> models;
-	auto gameDataStorage = GetBaseManager().GetManager<IFilesManager>()->GetStorage(EFilesStorageType::GAMEDATA);
-	auto fileNames = gameDataStorage->GetAllFilesInFolder("models", ".fbx");
-	for (const auto& fbxFileName : fileNames)
-	{
-		try
-		{
-			auto filePtr = gameDataStorage->OpenFile(fbxFileName);
-			filePtr->ChangeExtension("znmdl");
-
-			if (GetBaseManager().GetManager<IFilesManager>()->IsFileExists(filePtr->Path_Name()))
-			{
-				IModelPtr model = GetBaseManager().GetManager<IznModelsFactory>()->LoadModel(filePtr->Path_Name());
-				model->SetName(filePtr->Name_NoExtension());
-				models.push_back(MakeShared(CznModel3DTreeViewItemSource, model));
-				continue;
-			}
-
-			CznFBXLoaderParams loader;
-			if (fbxFileName.find_first_of("ground_dirt") != std::string::npos)
-				loader.MakeCenterIsX0Z = true;
-			if (fbxFileName.find_first_of("cliffGrey") != std::string::npos)
-				loader.MakeCenterIsX0Z = true;
-			if (fbxFileName.find_first_of("cliffBrown") != std::string::npos)
-				loader.MakeCenterIsX0Z = true;
-
-			auto fbxModel = GetBaseManager().GetManager<IznModelsFactory>()->LoadModel(fbxFileName, &loader);
-			auto znModelFile = GetBaseManager().GetManager<IznModelsFactory>()->SaveModel(fbxModel, filePtr->Path_Name());
-			znModelFile->Save();
-
-			models.push_back(MakeShared(CznModel3DTreeViewItemSource, GetBaseManager().GetManager<IznModelsFactory>()->LoadModel(znModelFile)));
-		}
-		catch (const CException& e)
-		{
-			Log::Error(e.MessageCStr());
-		}
-	}
-
-	auto modelsFolders = MakeShared(CznTreeViewItemVirtualFolder, "models");
-	for (const auto& m : models)
-		modelsFolders->AddChild(m);
-
-
-	GetEditorQtUIFrame().getCollectionViewer()->AddToRoot(modelsFolders);
-
 	GetEditorQtUIFrame().getCollectionViewer()->SetOnSelectedItemChange([this](const CznTreeViewItem * Item) -> bool 
 	{
 		auto sourceObject = Item->GetSourceObject();
@@ -223,6 +178,62 @@ void CEditorResourceBrowser::Initialize()
 		m_Editor.GetTools().Enable(ETool::EToolDragger);
 		return true;
 	});
+
+	GetEditorQtUIFrame().getCollectionViewer()->AddToRoot(CreateModelsFromFolder("models"));
+	GetEditorQtUIFrame().getCollectionViewer()->AddToRoot(CreateModelsFromFolder("models_td"));
+}
+
+std::shared_ptr<IznTreeViewItemSource> CEditorResourceBrowser::CreateModelsFromFolder(const std::string & FolderName)
+{
+	std::vector<std::shared_ptr<IznTreeViewItemSource>> models;
+	auto gameDataStorage = GetBaseManager().GetManager<IFilesManager>()->GetStorage(EFilesStorageType::GAMEDATA);
+	auto fileNames = gameDataStorage->GetAllFilesInFolder(FolderName, ".fbx");
+	for (const auto& fbxFileName : fileNames)
+	{
+		try
+		{
+			auto filePtr = gameDataStorage->OpenFile(fbxFileName);
+			filePtr->ChangeExtension("znmdl");
+
+			if (GetBaseManager().GetManager<IFilesManager>()->IsFileExists(filePtr->Path_Name()))
+			{
+				IModelPtr model = GetBaseManager().GetManager<IznModelsFactory>()->LoadModel(filePtr->Path_Name());
+				model->SetName(filePtr->Name_NoExtension());
+				models.push_back(MakeShared(CznModel3DTreeViewItemSource, model));
+				continue;
+			}
+
+			CznFBXLoaderParams loader;
+			if (fbxFileName.find("ground_dirt") != std::string::npos)
+				loader.MakeCenterIsX0Z = true;
+			if (fbxFileName.find("cliffGrey") != std::string::npos)
+				loader.MakeCenterIsX0Z = true;
+			if (fbxFileName.find("cliffBrown") != std::string::npos)
+				loader.MakeCenterIsX0Z = true;
+
+			loader.ApplyFullTransform = true;
+
+			IModelPtr fbxModel = GetBaseManager().GetManager<IznModelsFactory>()->LoadModel(fbxFileName, &loader);
+
+			auto znModelFile = GetBaseManager().GetManager<IznModelsFactory>()->SaveModel(fbxModel, filePtr->Path_Name());
+			znModelFile->Save();
+
+			znModelFile->seek(0);
+
+			auto znModel = GetBaseManager().GetManager<IznModelsFactory>()->LoadModel(znModelFile);
+			znModel->SetName(filePtr->Name_NoExtension());
+			models.push_back(MakeShared(CznModel3DTreeViewItemSource, znModel));
+		}
+		catch (const CException& e)
+		{
+			Log::Error(e.MessageCStr());
+		}
+	}
+
+	auto modelsFolders = MakeShared(CznTreeViewItemVirtualFolder, FolderName);
+	for (const auto& m : models)
+		modelsFolders->AddChild(m);
+	return modelsFolders;
 }
 
 

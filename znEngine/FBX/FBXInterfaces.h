@@ -91,12 +91,14 @@ class CznFBXLoaderParams
 public:
 	CznFBXLoaderParams()
 		: MakeCenterIsX0Z(false)
+		, ApplyFullTransform(false)
 	{}
 
 	std::string TexturesPathRoot;
 	std::string OverrideTexture;
 	std::unordered_map<uint8, uint8> TexturesTypeChange;
 	bool MakeCenterIsX0Z;
+	bool ApplyFullTransform;
 };
 
 

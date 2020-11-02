@@ -161,7 +161,7 @@ std::shared_ptr<ISceneNode3D> CEditorToolDragger::CreateNode(const glm::ivec3& P
 	auto node = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, GetEditor().Get3DFrame().GetEditedScene().get());
 	node->SetName(Type);
 
-	auto model = GetBaseManager().GetManager<IznModelsFactory>()->LoadModel("models/" + Type + ".znmdl");
+	auto model = GetBaseManager().GetManager<IznModelsFactory>()->LoadModel("models_td/" + Type + ".znmdl");
 	node->GetComponent<IModelsComponent3D>()->SetModel(model);
 	node->GetComponent<IColliderComponent3D>()->SetBounds(model->GetBounds());
 

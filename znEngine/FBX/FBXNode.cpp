@@ -105,6 +105,17 @@ std::shared_ptr<IFBXLight> CFBXNode::GetFBXLight() const
 void CFBXNode::LoadParams(fbxsdk::FbxNode * NativeNode)
 {
 	glm::mat4 globalTransform = ToGLMMat4(NativeNode->EvaluateGlobalTransform());
+
+	auto loaderParams = GetFBXScene().GetLoaderParams();
+	if (auto loaderFBXParams = dynamic_cast<const CznFBXLoaderParams*>(loaderParams))
+	{
+		if (loaderFBXParams->ApplyFullTransform)
+		{
+			m_Transform = globalTransform;
+			return;
+		}
+	}
+
 	glm::vec3 scale = extractScale(globalTransform);
 	m_Transform = glm::scale(scale);
 }

@@ -11,6 +11,8 @@ public:
 	// CEditorResourceBrowser
 	void Initialize();
 
+	std::shared_ptr<IznTreeViewItemSource> CreateModelsFromFolder(const std::string& FolderName);
+
 	void InitializeSceneBrowser();
 	void UpdateSceneBrowser();
 
