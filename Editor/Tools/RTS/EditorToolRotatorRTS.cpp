@@ -8,8 +8,7 @@
 
 CEditorToolRotatorRTS::CEditorToolRotatorRTS(IEditor& Editor)
 	: CEditorToolBase(Editor)
-	, m_RotatorNuber(-1)
-	, m_IsRotateNow(false)
+	, m_RotatorNumber(EMoverDirection::None)
 {
 }
 
@@ -27,7 +26,7 @@ void CEditorToolRotatorRTS::Enable()
 
 	if (auto node = GetEditor().GetFirstSelectedNode())
 	{
-		m_MovingNode = node;
+		m_RotatingNode = node;
 		m_RotatorRoot->SetTranslate(node->GetTranslation());
 		m_RotatorRoot->SetScale(glm::vec3(node->GetComponent<IColliderComponent3D>()->GetBounds().getRadius()));
 	}
@@ -40,10 +39,9 @@ void CEditorToolRotatorRTS::Disable()
 	auto btn = dynamic_cast<IEditorQtUIFrame&>(GetEditor().GetUIFrame()).getUI().editorToolRotatorRTSBtn;
 	btn->setChecked(IsEnabled());
 
-	m_RotatorRoot->SetTranslate(glm::vec3(-1000000.0));
-
 	Clear();
-	m_MovingNode.reset();
+	m_RotatingNode.reset();
+	m_RotatorRoot->SetTranslate(glm::vec3(Math::MinFloat));
 }
 
 void CEditorToolRotatorRTS::DoInitialize3D(const std::shared_ptr<IRenderer>& Renderer, std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport)
@@ -68,10 +66,12 @@ bool CEditorToolRotatorRTS::OnMousePressed(const MouseButtonEventArgs & e, const
 {
 	auto rotatingNode = GetRotatingNode();
 	if (rotatingNode == nullptr)
+	{
+		Clear();
 		return false;
+	}
 
-	if (IsChildOf(m_RotatorRoot, rotatingNode))
-		return false;
+	_ASSERT(false == IsChildOf(m_RotatorRoot, rotatingNode));
 
 	auto nodes = GetScene()->GetFinder().FindIntersection(RayToWorld, nullptr, m_RotatorRoot);
 	if (nodes.empty())
@@ -81,18 +81,16 @@ bool CEditorToolRotatorRTS::OnMousePressed(const MouseButtonEventArgs & e, const
 	for (const auto& it : nodes)
 	{
 		if (it.second == m_RotatorY)
-			m_RotatorNuber = 2;
+			m_RotatorNumber = EMoverDirection::Y;
 	}
 
-	if (m_RotatorNuber > 0)
+	if (m_RotatorNumber != EMoverDirection::None)
 	{
-		auto nodePosition = GetRotatingNode()->GetTranslation();
+		auto nodePosition = rotatingNode->GetTranslation();
 		auto pos = GetScene()->GetCameraController()->RayToPlane(RayToWorld, Plane(glm::vec3(0.0f, 1.0f, 0.0f), nodePosition.y));
 
-		m_RotatorInitialAngle = GetRotatingNode()->GetRotation().y;//= glm::angle(glm::normalize(pos.xz()), glm::normalize(nodePosition.xz()));
+		m_RotatorInitialAngle = rotatingNode->GetRotation().y;//= glm::angle(glm::normalize(pos.xz()), glm::normalize(nodePosition.xz()));
 		m_LastAbs = e.Y;
-
-		m_IsRotateNow = true;
 		return true;
 	}
 
@@ -101,25 +99,27 @@ bool CEditorToolRotatorRTS::OnMousePressed(const MouseButtonEventArgs & e, const
 
 void CEditorToolRotatorRTS::OnMouseReleased(const MouseButtonEventArgs & e, const Ray & RayToWorld)
 {
-	if (m_IsRotateNow)
-		Clear();
+	if (m_RotatorNumber == EMoverDirection::None)
+		return;
+	Clear();
 }
 
 void CEditorToolRotatorRTS::OnMouseMoved(const MouseMotionEventArgs & e, const Ray & RayToWorld)
 {
-	if (false == m_IsRotateNow)
+	if (m_RotatorNumber == EMoverDirection::None)
 		return;
 	
 	auto rotatingNode = GetRotatingNode();
 	if (rotatingNode == nullptr)
+	{
+		Clear();
 		return;
+	}
 
 	float rotatorInitialAngleDegrees = glm::degrees(m_RotatorInitialAngle);
 	rotatorInitialAngleDegrees += (m_LastAbs - e.Y) / 2.0f ;
 
-	rotatorInitialAngleDegrees /= 45.0f;
-	rotatorInitialAngleDegrees = glm::round(rotatorInitialAngleDegrees);
-	rotatorInitialAngleDegrees *= 45.0f;
+	rotatorInitialAngleDegrees = GetEditor().GetTools().GetToolT<IEditorToolRotator>(ETool::EToolRotator).FixAngle(rotatorInitialAngleDegrees);
 
 	rotatorInitialAngleDegrees = glm::radians(rotatorInitialAngleDegrees);
 
@@ -150,11 +150,10 @@ void CEditorToolRotatorRTS::DoInitializeUI(IEditorQtUIFrame & QtUIFrame)
 //
 void CEditorToolRotatorRTS::Clear()
 {
-	m_RotatorNuber = 0;
-	m_IsRotateNow = false;
+	m_RotatorNumber = EMoverDirection::None;
 }
 
 std::shared_ptr<ISceneNode3D> CEditorToolRotatorRTS::GetRotatingNode()
 {
-	return m_MovingNode.lock();
+	return m_RotatingNode.lock();
 }

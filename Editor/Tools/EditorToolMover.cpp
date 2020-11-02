@@ -8,9 +8,8 @@
 
 CEditorToolMover::CEditorToolMover(IEditor& Editor)
 	: CEditorToolBase(Editor)
-	, m_MoverValue(1.0f)
-	, m_MoverNuber(-1)
-	, m_IsMovingNow(false)
+	, m_MoverValue(5.0f)
+	, m_MoverNumber(EMoverDirection::None)
 {
 }
 
@@ -38,10 +37,9 @@ void CEditorToolMover::Disable()
 
 	dynamic_cast<IEditorQtUIFrame&>(GetEditor().GetUIFrame()).getUI().editorToolMoverBtn->setChecked(IsEnabled());
 
-	m_MoverRoot->SetTranslate(glm::vec3(-1000000.0, -10000000.0f, -10000000.0f));
-
 	Clear();
 	m_MovingNode.reset();
+	m_MoverRoot->SetTranslate(glm::vec3(Math::MinFloat));
 }
 
 void CEditorToolMover::DoInitialize3D(const std::shared_ptr<IRenderer>& Renderer, std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport)
@@ -67,36 +65,38 @@ void CEditorToolMover::DoInitialize3D(const std::shared_ptr<IRenderer>& Renderer
 	auto modelZ = GetRenderDevice().GetObjectsFactory().CreateModel();
 	modelZ->AddConnection(materialZ, geom);
 
-
 	m_MoverX = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, GetScene(), m_MoverRoot);
 	m_MoverX->SetName("Mover_X");
 	m_MoverX->SetTranslate(glm::vec3(1.0f, 0.0f, 0.0f));
 	m_MoverX->SetRotation(glm::vec3(0.0f, glm::half_pi<float>(), 0.0f));
 	m_MoverX->GetComponent<IModelsComponent3D>()->SetModel(modelX);
-	m_MoverX->GetComponent<IColliderComponent3D>()->SetBounds(model->GetBounds());
+	//m_MoverX->GetComponent<IColliderComponent3D>()->SetBounds(model->GetBounds());
 
 	m_MoverY = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, GetScene(), m_MoverRoot);
 	m_MoverY->SetName("Mover_Y");
 	m_MoverY->SetTranslate(glm::vec3(0.0f, 1.0f, 0.0f));
 	m_MoverY->SetRotation(glm::vec3(-glm::half_pi<float>(), 0.0f, 0.0f));
 	m_MoverY->GetComponent<IModelsComponent3D>()->SetModel(modelY);
-	m_MoverY->GetComponent<IColliderComponent3D>()->SetBounds(model->GetBounds());
+	//m_MoverY->GetComponent<IColliderComponent3D>()->SetBounds(model->GetBounds());
 
 	m_MoverZ = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, GetScene(), m_MoverRoot);
 	m_MoverZ->SetName("Mover_Z");
 	m_MoverZ->SetTranslate(glm::vec3(0.0f, 0.0f, 1.0f));
 	m_MoverZ->SetRotation(glm::vec3(0.0f, 0.0f, 0.0f));
 	m_MoverZ->GetComponent<IModelsComponent3D>()->SetModel(modelZ);
-	m_MoverZ->GetComponent<IColliderComponent3D>()->SetBounds(model->GetBounds());
+	//m_MoverZ->GetComponent<IColliderComponent3D>()->SetBounds(model->GetBounds());
 }
 
 bool CEditorToolMover::OnMousePressed(const MouseButtonEventArgs & e, const Ray & RayToWorld)
 {
 	auto movingNode = GetMovingNode();
 	if (movingNode == nullptr)
+	{
+		Clear();
 		return false;
+	}
 
-	_ASSERT(!IsChildOf(m_MoverRoot, movingNode));
+	_ASSERT(false == IsChildOf(m_MoverRoot, movingNode));
 
 	{
 		auto pos = GetScene()->GetCameraController()->RayToPlane(RayToWorld, Plane(glm::vec3(0.0f, 1.0f, 0.0f), movingNode->GetTranslation().y));
@@ -115,58 +115,53 @@ bool CEditorToolMover::OnMousePressed(const MouseButtonEventArgs & e, const Ray 
 	for (const auto& it : nodes)
 	{
 		if (it.second == m_MoverX)
-		{
-			m_MoverNuber = 1;
-		}
+			m_MoverNumber = EMoverDirection::X;
 		else if (it.second == m_MoverY)
-		{
-			m_MoverNuber = 2;
-		}
+			m_MoverNumber = EMoverDirection::Y;
 		else if (it.second == m_MoverZ)
-		{
-			m_MoverNuber = 3;
-		}
+			m_MoverNumber = EMoverDirection::Z;
 	}
 
-	if (m_MoverNuber > 0)
-	{
-		m_MovingObjectPos = movingNode->GetTranslation();
-		m_IsMovingNow = true;
+	if (m_MoverNumber != EMoverDirection::None)
 		return true;
-	}
 
 	return false;
 }
 
 void CEditorToolMover::OnMouseReleased(const MouseButtonEventArgs & e, const Ray & RayToWorld)
 {
-	if (m_IsMovingNow)
-		Clear();
+	if (m_MoverNumber == EMoverDirection::None)
+		return;
+
+	Clear();
 }
 
 void CEditorToolMover::OnMouseMoved(const MouseMotionEventArgs & e, const Ray & RayToWorld)
 {
-	if (!m_IsMovingNow)
+	if (m_MoverNumber == EMoverDirection::None)
 		return;
 
 	auto movingNode = GetMovingNode();
 	if (movingNode == nullptr)
+	{
+		Clear();
 		return;
+	}
 
 	glm::vec3 oldPos = movingNode->GetTranslation();
-	glm::vec3 newPos = glm::vec3(0.0f);
+	glm::vec3 newPos = oldPos;
 
-	if (m_MoverNuber == 1)
+	if (m_MoverNumber == EMoverDirection::X)
 	{
 		auto mousePos = GetScene()->GetCameraController()->RayToPlane(RayToWorld, Plane(glm::vec3(0.0f, 1.0f, 0.0f), oldPos.y));
 		newPos = glm::vec3(mousePos.x + m_MoverOffset.x, oldPos.y, oldPos.z);
 	}
-	else if (m_MoverNuber == 3)
+	else if (m_MoverNumber == EMoverDirection::Z)
 	{
 		auto mousePos = GetScene()->GetCameraController()->RayToPlane(RayToWorld, Plane(glm::vec3(0.0f, 1.0f, 0.0f), oldPos.y));
 		newPos = glm::vec3(oldPos.x, oldPos.y, mousePos.z + m_MoverOffset.z);
 	}
-	else if (m_MoverNuber == 2)
+	else if (m_MoverNumber == EMoverDirection::Y)
 	{
 		auto cameraPosX0Z = GetScene()->GetCameraController()->GetCamera()->GetTranslation();
 		cameraPosX0Z = glm::vec3(cameraPosX0Z.x, 0.0f, cameraPosX0Z.z);
@@ -200,18 +195,28 @@ void CEditorToolMover::DoInitializeUI(IEditorQtUIFrame& QtUIFrame)
 
 	// Add items to Combo Box
 	for (const auto& v : m_MoverValues)
-		QtUIFrame.getUI().Editor3DFrame_MoverStep->addItem(v.first.c_str());
+		QtUIFrame.getUI().MoverStepComboBox->addItem(v.first.c_str());
+
+	// Select default item
+	int index = QtUIFrame.getUI().MoverStepComboBox->findText("x5.0");
+	//int index = QtUIFrame.getUI().Editor3DFrame_MoverStep->findData("x5.0");
+	if (index != -1)
+		QtUIFrame.getUI().MoverStepComboBox->setCurrentIndex(index);
+	else
+		_ASSERT(false);
+
+	QtUIFrame.getQObject().connect(QtUIFrame.getUI().MoverStepComboBox, qOverload<const QString&>(&QComboBox::currentIndexChanged), [this](const QString& String) {
+		auto it = m_MoverValues.find(String.toStdString());
+		if (it == m_MoverValues.end())
+			_ASSERT(false);
+
+		SetMoverValue(it->second);
+	});
+
+
 
 	QtUIFrame.getQObject().connect(QtUIFrame.getUI().editorToolMoverBtn, &QPushButton::released, [this]() {
 		GetEditor().GetTools().Enable(ETool::EToolMover);
-	});
-
-	QtUIFrame.getQObject().connect(QtUIFrame.getUI().Editor3DFrame_MoverStep, qOverload<const QString&>(&QComboBox::currentIndexChanged), [this](const QString& String) {
-		auto it = m_MoverValues.find(String.toStdString());
-		if (it == m_MoverValues.end())
-			_ASSERT(FALSE);
-
-		SetMoverValue(it->second);
 	});
 }
 
@@ -246,14 +251,10 @@ float CEditorToolMover::GetMoverValue() const
 // 
 void CEditorToolMover::Clear()
 {
-	m_MoverNuber = 0;
-	m_IsMovingNow = false;
-	m_MovingObjectPos = glm::vec3(0.0f);
+	m_MoverNumber = EMoverDirection::None;
 }
 
 std::shared_ptr<ISceneNode3D> CEditorToolMover::GetMovingNode()
 {
-	if (m_MovingNode.expired())
-		return nullptr;
 	return m_MovingNode.lock();
 }

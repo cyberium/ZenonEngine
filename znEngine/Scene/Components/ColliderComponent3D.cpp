@@ -74,9 +74,16 @@ float CColliderComponent3D::GetCullDistance() const
 	return m_CullDistance;
 }
 
-void CColliderComponent3D::SetBounds(BoundingBox _bbox)
+void CColliderComponent3D::SetBounds(BoundingBox Bounds)
 {
-	m_Bounds = _bbox;
+	if (Bounds.IsInfinite())
+		throw CException("Unable to set infinity bounds to node '%s'.", GetOwnerNode().GetName().c_str());
+
+	if (m_Bounds.IsInfinite())
+		m_Bounds = Bounds;
+	else
+		m_Bounds.makeUnion(Bounds);
+
 	RaiseComponentMessage(UUID_OnBoundsChanget);
 }
 cbbox CColliderComponent3D::GetBounds() const

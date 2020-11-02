@@ -8,9 +8,7 @@
 
 CEditorToolMoverRTS::CEditorToolMoverRTS(IEditor& Editor)
 	: CEditorToolBase(Editor)
-	, m_MoverValue(1.0f)
-	, m_MoverNuber(-1)
-	, m_IsMovingNow(false)
+	, m_MoverNumber(EMoverDirection::None)
 {
 }
 
@@ -28,7 +26,7 @@ void CEditorToolMoverRTS::Enable()
 	{
 		m_MovingNode = node;
 		m_MoverRoot->SetTranslate(node->GetTranslation());
-		m_MoverRoot->SetScale(glm::vec3(m_MovingNode->GetComponent<IColliderComponent3D>()->GetBounds().getRadius() * 1.0f / 50.0f));
+		m_MoverRoot->SetScale(glm::vec3(node->GetComponent<IColliderComponent3D>()->GetBounds().getRadius() * 1.0f / 50.0f));
 	}
 }
 
@@ -38,10 +36,10 @@ void CEditorToolMoverRTS::Disable()
 
 	dynamic_cast<IEditorQtUIFrame&>(GetEditor().GetUIFrame()).getUI().editorToolMoverRTSBtn->setChecked(IsEnabled());
 
-	m_MoverRoot->SetTranslate(glm::vec3(-1000000.0, -10000000.0f, -10000000.0f));
-
 	Clear();
+
 	m_MovingNode.reset();
+	m_MoverRoot->SetTranslate(glm::vec3(Math::MinFloat));
 }
 
 void CEditorToolMoverRTS::DoInitialize3D(const std::shared_ptr<IRenderer>& Renderer, std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport)
@@ -83,21 +81,21 @@ void CEditorToolMoverRTS::DoInitialize3D(const std::shared_ptr<IRenderer>& Rende
 
 bool CEditorToolMoverRTS::OnMousePressed(const MouseButtonEventArgs & e, const Ray & RayToWorld)
 {
-	if (m_MovingNode == nullptr)
+	auto movingNode = GetMovingNode();
+	if (movingNode == nullptr)
 		return false;
 
-	if (IsChildOf(m_MoverRoot, m_MovingNode))
-		return false;
+	_ASSERT(!IsChildOf(m_MoverRoot, movingNode));
 
 	auto nodes = GetScene()->GetFinder().FindIntersection(RayToWorld, nullptr, m_MoverRoot);
 	if (nodes.empty())
 		return false;
 
 	{
-		auto pos = GetScene()->GetCameraController()->RayToPlane(RayToWorld, Plane(glm::vec3(0.0f, 1.0f, 0.0f), m_MovingNode->GetTranslation().y));
+		auto pos = GetScene()->GetCameraController()->RayToPlane(RayToWorld, Plane(glm::vec3(0.0f, 1.0f, 0.0f), movingNode->GetTranslation().y));
 		auto cameraPosX0Z = GetScene()->GetCameraController()->GetCamera()->GetTranslation();
 		cameraPosX0Z = glm::vec3(cameraPosX0Z.x, 0.0f, cameraPosX0Z.z);
-		auto movedObjectPosX0Z = glm::vec3(m_MovingNode->GetTranslation().x, 0.0f, m_MovingNode->GetTranslation().z);
+		auto movedObjectPosX0Z = glm::vec3(movingNode->GetTranslation().x, 0.0f, movingNode->GetTranslation().z);
 		auto planeNormal = glm::normalize(movedObjectPosX0Z - cameraPosX0Z);
 		auto posYYY = GetScene()->GetCameraController()->RayToPlane(RayToWorld, Plane(planeNormal, 0.0f));
 		m_MoverOffset = m_MoverRoot->GetTranslation() - glm::vec3(pos.x, posYYY.y, pos.z);
@@ -107,54 +105,58 @@ bool CEditorToolMoverRTS::OnMousePressed(const MouseButtonEventArgs & e, const R
 	{
 		if (it.second == m_MoverX)
 		{
-			m_MoverNuber = 1;
+			m_MoverNumber = EMoverDirection::X;
 		}
 		else if (it.second == m_MoverZ)
 		{
-			m_MoverNuber = 3;
+			m_MoverNumber = EMoverDirection::Z;
 		}
 	}
 
-	if (m_MoverNuber > 0)
-	{
-		m_IsMovingNow = true;
+	if (m_MoverNumber != EMoverDirection::None)
 		return true;
-	}
 
 	return false;
 }
 
 void CEditorToolMoverRTS::OnMouseReleased(const MouseButtonEventArgs & e, const Ray & RayToWorld)
 {
-	if (m_IsMovingNow)
-		Clear();
+	if (m_MoverNumber == EMoverDirection::None)
+		return;
+
+	Clear();
 }
 
 void CEditorToolMoverRTS::OnMouseMoved(const MouseMotionEventArgs & e, const Ray & RayToWorld)
 {
-	if (false == m_IsMovingNow)
+	if (m_MoverNumber == EMoverDirection::None)
 		return;
 
+	auto movingNode = GetMovingNode();
+	if (movingNode == nullptr)
+		return;
 
-	glm::vec3 oldPos = m_MovingNode->GetTranslation();
+	glm::vec3 oldPos = movingNode->GetTranslation();
 	glm::vec3 newPos = glm::vec3(0.0f);
 
 	auto mousePos = GetScene()->GetCameraController()->RayToPlane(RayToWorld, Plane(glm::vec3(0.0f, 1.0f, 0.0f), oldPos.y));
-	if (m_MoverNuber == 1)
+	if (m_MoverNumber == EMoverDirection::X)
 	{
 		newPos = glm::vec3(mousePos.x + m_MoverOffset.x, oldPos.y, oldPos.z);
 	}
-	else if (m_MoverNuber == 3)
+	else if (m_MoverNumber == EMoverDirection::Z)
 	{
 		newPos = glm::vec3(oldPos.x, oldPos.y, mousePos.z + m_MoverOffset.z);
 	}
 
-	glm::vec2 fixedTranslate = glm::vec2(FixBoxCoords(newPos.xz));
-	m_MovingNode->SetTranslate(glm::vec3(fixedTranslate.x, 0.0f, fixedTranslate.y));
-	m_MoverRoot->SetTranslate(m_MovingNode->GetTranslation());
+	glm::vec3 fixed3DTranslate = GetEditor().GetTools().GetToolT<IEditorToolMover>(ETool::EToolMover).FixBoxCoords(newPos);
+
+	glm::vec2 fixed2DTranslate = glm::vec2(fixed3DTranslate.xz);
+	movingNode->SetTranslate(glm::vec3(fixed2DTranslate.x, oldPos.y, fixed2DTranslate.y));
+	m_MoverRoot->SetTranslate(movingNode->GetTranslation());
 
 	// Refresh selection bounds
-	GetEditor().GetTools().GetToolT<IEditorToolSelector>(ETool::EToolSelector).SelectNode(m_MovingNode);
+	GetEditor().GetTools().GetToolT<IEditorToolSelector>(ETool::EToolSelector).SelectNode(movingNode);
 }
 
 
@@ -169,37 +171,17 @@ void CEditorToolMoverRTS::DoInitializeUI(IEditorQtUIFrame & QtUIFrame)
 	btn->connect(btn, &QPushButton::released, [this]() {
 		GetEditor().GetTools().Enable(ETool::EToolMoverRTS);
 	});
-
-	btn->setContextMenuPolicy(Qt::CustomContextMenu);
-	btn->connect(btn, &QPushButton::customContextMenuRequested, [this, btn](const QPoint& Point) {
-		// Add context menu for scene node viewer
-		auto contextMenu = ZN_NEW QMenu(btn);
-		contextMenu->setTitle("Some context menu title.");
-		contextMenu->clear();
-
-		QAction* nameAction = ZN_NEW QAction("Test", btn);
-		nameAction->setEnabled(false);
-
-		contextMenu->addAction(nameAction);
-		contextMenu->addSeparator();
-
-		contextMenu->popup(btn->mapToGlobal(Point));
-	});
 }
 
-glm::vec2 CEditorToolMoverRTS::FixBoxCoords(const glm::vec2 & Position)
-{
-	glm::vec2 newPosition = Position;
-	newPosition /= m_MoverValue;
-	newPosition = glm::round(newPosition);
-	newPosition *= m_MoverValue;
-	return newPosition;
-}
 
 
 
 void CEditorToolMoverRTS::Clear()
 {
-	m_MoverNuber = 0;
-	m_IsMovingNow = false;
+	m_MoverNumber = EMoverDirection::None;
+}
+
+std::shared_ptr<ISceneNode3D> CEditorToolMoverRTS::GetMovingNode()
+{
+	return m_MovingNode.lock();
 }

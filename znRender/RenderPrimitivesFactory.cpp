@@ -8,27 +8,37 @@
 
 namespace
 {
+	BoundingBox CalculateBounds(const std::vector<glm::vec3>& vertices)
+	{
+		glm::vec3 min(Math::MaxFloat), max(Math::MinFloat);
+		for (const auto& v : vertices)
+		{
+			if (v.x < min.x) min.x = v.x;
+			if (v.x > max.x) max.x = v.x;
+
+			if (v.y < min.y) min.y = v.y;
+			if (v.y > max.y) max.y = v.y;
+
+			if (v.z < min.z) min.z = v.z;
+			if (v.z > max.z) max.z = v.z;
+		}
+		return BoundingBox(min, max);
+	}
+
 	BoundingBox CalculateBounds(const DirectX::VertexCollection& vertices)
 	{
 		glm::vec3 min(Math::MaxFloat), max(Math::MinFloat);
 		for (const auto& v : vertices)
 		{
-			if (v.position.x < min.x) 
-				min.x = v.position.x;
-			if (v.position.x > max.x) 
-				max.x = v.position.x;
+			if (v.position.x < min.x) min.x = v.position.x;
+			if (v.position.x > max.x) max.x = v.position.x;
 
-			if (v.position.y < min.y) 
-				min.y = v.position.y;
-			if (v.position.y > max.y) 
-				max.y = v.position.y;
+			if (v.position.y < min.y) min.y = v.position.y;
+			if (v.position.y > max.y) max.y = v.position.y;
 
-			if (v.position.z < min.z) 
-				min.z = v.position.z;
-			if (v.position.z > max.z) 
-				max.z = v.position.z;
+			if (v.position.z < min.z) min.z = v.position.z;
+			if (v.position.z > max.z) max.z = v.position.z;
 		}
-
 		return BoundingBox(min, max);
 	}
 }
@@ -89,6 +99,8 @@ std::shared_ptr<IGeometry> CRenderPrimitivesFactory::CreateLines(size_t count)
 	std::shared_ptr<IBuffer> __vb = m_RenderDevice.GetObjectsFactory().CreateVertexBuffer(points.data(), points.size());
 	geometry->AddVertexBuffer(BufferBinding("POSITION", 0), __vb);
 
+	geometry->SetBounds(CalculateBounds(points));
+
 	return geometry;
 }
 
@@ -138,11 +150,11 @@ std::shared_ptr<IGeometry> CRenderPrimitivesFactory::CreateScreenQuad(float left
 	return geometry;
 }
 
-std::shared_ptr<IGeometry> CRenderPrimitivesFactory::CreateSphere()
+std::shared_ptr<IGeometry> CRenderPrimitivesFactory::CreateSphere(float Radius)
 {
 	DirectX::VertexCollection vertices;
 	DirectX::IndexCollection indices;
-	DirectX::ComputeSphere(vertices, indices, 1.0f, 32, false, false);
+	DirectX::ComputeSphere(vertices, indices, Radius, 32, false, false);
 
 	std::shared_ptr<IGeometry> geometry = m_RenderDevice.GetObjectsFactory().CreateGeometry();
 	std::shared_ptr<IBuffer> __vb = m_RenderDevice.GetObjectsFactory().CreateVoidVertexBuffer(vertices.data(), vertices.size(), 0, sizeof(DirectX::VertexPositionTextureNormal));
@@ -217,6 +229,8 @@ std::shared_ptr<IGeometry> CRenderPrimitivesFactory::CreateBBox()
 
 	std::shared_ptr<IBuffer> __vb = m_RenderDevice.GetObjectsFactory().CreateVertexBuffer(points.data(), points.size());
 	geometry->AddVertexBuffer(BufferBinding("POSITION", 0), __vb);
+
+	geometry->SetBounds(CalculateBounds(points));
 
 	/*DirectX::VertexCollection vertices;
 	DirectX::IndexCollection indices;

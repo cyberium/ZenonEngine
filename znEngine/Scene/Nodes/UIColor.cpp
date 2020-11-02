@@ -16,8 +16,11 @@ void CUIColorNode::Initialize()
 {
 	m_Material = MakeShared(UI_Color_Material, GetBaseManager().GetApplication().GetRenderDevice());
 
+	auto geom = GetBaseManager().GetApplication().GetRenderDevice().GetPrimitivesFactory().CreateUIQuad(m_Size.x, m_Size.y);
+	geom->SetBounds(BoundingBox(glm::vec3(-100.0f), glm::vec3(100.0f)));
+
 	m_Mesh = GetBaseManager().GetApplication().GetRenderDevice().GetObjectsFactory().CreateModel();
-	m_Mesh->AddConnection(m_Material, GetBaseManager().GetApplication().GetRenderDevice().GetPrimitivesFactory().CreateUIQuad(m_Size.x, m_Size.y));
+	m_Mesh->AddConnection(m_Material, geom);
 
 	m_ColorProperty = MakeShared(CPropertyWrapped<glm::vec4>);
 	m_ColorProperty->SetName("Color");

@@ -4,11 +4,8 @@
 #include <fbxsdk.h>
 #include "FBXInterfaces.h"
 
-class ZN_API CFBXModel
-	: public ModelProxie
-	, public IFBXModel
+namespace
 {
-public:
 	struct FBXVertex
 	{
 		FBXVertex()
@@ -30,7 +27,12 @@ public:
 		uint32 controlPointIndex;
 		//glm::vec3 _unused;
 	};
+}
 
+class ZN_API CFBXModel
+	: public ModelProxie
+	, public IFBXModel
+{
 public:
 	CFBXModel(const IBaseManager& BaseManager, const IFBXNode& FBXNode);
 	virtual ~CFBXModel();

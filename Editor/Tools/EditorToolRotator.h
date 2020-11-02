@@ -4,6 +4,7 @@
 
 class CEditorToolRotator
 	: public CEditorToolBase
+	, public IEditorToolRotator
 {
 public:
 	CEditorToolRotator(IEditor& Editor);
@@ -22,17 +23,26 @@ public:
 	// IEditorToolUI
 	void DoInitializeUI(IEditorQtUIFrame& QtUIFrame) override;
 
+	// IEditorToolRotator
+	float FixAngle(float Angle) override;
+	void SetRotatorValue(float Value) override;
+	float GetRotatorValue() const override;
+
 protected:
 	void Clear();
 	std::shared_ptr<ISceneNode3D> GetRotatingNode();
 
-private:
-	bool m_IsRotateNow;
-	int m_RotatorNuber;
-	std::weak_ptr<ISceneNode3D> m_MovingNode;
-	glm::vec3 m_MovingObjectPos;
+private:	
 	std::shared_ptr<ISceneNode3D> m_RotatorRoot;
 	std::shared_ptr<ISceneNode3D> m_RotatorX;
 	std::shared_ptr<ISceneNode3D> m_RotatorY;
 	std::shared_ptr<ISceneNode3D> m_RotatorZ;
+
+	std::weak_ptr<ISceneNode3D> m_RotatingNode;
+
+	EMoverDirection m_RotatorNumber;
+
+	// UI
+	std::unordered_map<std::string, float> m_RotatorsValues;
+	float m_RotatorValue;
 };

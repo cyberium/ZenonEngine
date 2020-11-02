@@ -10,6 +10,42 @@
 #include "FBXUtils.h"
 
 
+namespace
+{
+	BoundingBox CalculateBounds(const SGeometryDrawArgs& DrawArgs, const std::vector<FBXVertex>& Vertices)
+	{
+		glm::vec3 min(Math::MaxFloat);
+		glm::vec3 max(Math::MinFloat);
+
+		size_t from = 0;
+		size_t to = Vertices.size();
+		if (DrawArgs.VertexCnt != UINT_MAX)
+		{
+			from = DrawArgs.VertexStartLocation;
+			_ASSERT(from < Vertices.size());
+
+			to = DrawArgs.VertexStartLocation + DrawArgs.VertexCnt;
+			_ASSERT(to < Vertices.size());
+		}
+
+		for (size_t i = from; i < to; i++)
+		{
+			const auto& v = Vertices.at(i).pos;
+
+			if (v.x < min.x) min.x = v.x;
+			if (v.x > max.x) max.x = v.x;
+
+			if (v.y < min.y) min.y = v.y;
+			if (v.y > max.y) max.y = v.y;
+			
+			if (v.z < min.z) min.z = v.z;
+			if (v.z > max.z) max.z = v.z;
+		}
+		
+		return BoundingBox(min, max);
+	}
+}
+
 CFBXModel::CFBXModel(const IBaseManager& BaseManager, const IFBXNode& FBXNode)
 	: ModelProxie(BaseManager.GetApplication().GetRenderDevice().GetObjectsFactory().CreateModel())
 	, m_BaseManager(BaseManager)
@@ -371,6 +407,7 @@ bool CFBXModel::Load(fbxsdk::FbxMesh* NativeMesh)
 	m_Geometry->AddVertexBuffer(BufferBinding("POSITION", 0), renderDevice.GetObjectsFactory().CreateVoidVertexBuffer(m_Vertices.data(), m_Vertices.size(), 0, sizeof(FBXVertex)));
 	m_Geometry->AddVertexBuffer(BufferBinding("TEXCOORD", 0), renderDevice.GetObjectsFactory().CreateVoidVertexBuffer(m_Vertices.data(), m_Vertices.size(), 12, sizeof(FBXVertex)));
 	m_Geometry->AddVertexBuffer(BufferBinding("NORMAL", 0), renderDevice.GetObjectsFactory().CreateVoidVertexBuffer(m_Vertices.data(), m_Vertices.size(), 12 + 8, sizeof(FBXVertex)));
+	m_Geometry->SetBounds(CalculateBounds(SGeometryDrawArgs(), m_Vertices)); // TODO: Fixme
 
 	MaterialLoad(NativeMesh);
 
@@ -487,22 +524,6 @@ void CFBXModel::MaterialLoad(fbxsdk::FbxMesh* NativeMesh)
 			GeometryDrawArgs.VertexStartLocation = it.second.PolygonBegin * 3;
 			GeometryDrawArgs.VertexCnt = it.second.PolygonEnd * 3 - GeometryDrawArgs.VertexStartLocation + 3;
 
-			/*
-			std::vector<FBXVertex> vertices;
-			vertices.resize(GeometryDrawArgs.VertexCnt);
-			for (size_t v = 0; v < GeometryDrawArgs.VertexCnt; v++)
-				vertices[v] = m_Vertices[v + GeometryDrawArgs.VertexStartLocation];
-
-			IRenderDevice& renderDevice = m_BaseManager.GetApplication().GetRenderDevice();
-			auto geom = renderDevice.GetObjectsFactory().CreateGeometry();
-			geom->AddVertexBuffer(BufferBinding("POSITION", 0), renderDevice.GetObjectsFactory().CreateVoidVertexBuffer(vertices.data(), vertices.size(), 0, sizeof(FBXVertex)));
-			geom->AddVertexBuffer(BufferBinding("TEXCOORD", 0), renderDevice.GetObjectsFactory().CreateVoidVertexBuffer(vertices.data(), vertices.size(), 12, sizeof(FBXVertex)));
-			geom->AddVertexBuffer(BufferBinding("NORMAL", 0), renderDevice.GetObjectsFactory().CreateVoidVertexBuffer(vertices.data(), vertices.size(), 12 + 8, sizeof(FBXVertex)));
-			//m_Geometry->AddVertexBuffer(BufferBinding("BLENDWEIGHT", 0), renderDevice.GetObjectsFactory().CreateVoidVertexBuffer(vertices.data(), vertices.size(), 12 + 8 + 12 + 12 + 12, sizeof(FBXVertex)));
-			//m_Geometry->AddVertexBuffer(BufferBinding("BLENDINDICES", 0), renderDevice.GetObjectsFactory().CreateVoidVertexBuffer(vertices.data(), vertices.size(), 12 + 8 + 12 + 12 + 12 + 16, sizeof(FBXVertex)));
-			*/
-
-
 			AddConnection(m_FBXNode.GetFBXMaterial(it.first)->GetMaterial(), m_Geometry, GeometryDrawArgs);
 
 			//Log::Info("Material with id '%d' added for (%d to %d)", it.first, GeometryDrawArgs.VertexStartLocation, GeometryDrawArgs.VertexCnt);
@@ -606,7 +627,7 @@ void CFBXModel::SkeletonLoad(fbxsdk::FbxMesh* NativeMesh)
 #endif
 }
 
-CFBXModel::FBXVertex& CFBXModel::GetVertexByControlPointIndex(int Index)
+FBXVertex& CFBXModel::GetVertexByControlPointIndex(int Index)
 {
 	for (auto& v : m_Vertices)
 		if (v.controlPointIndex == Index)

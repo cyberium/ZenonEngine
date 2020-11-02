@@ -33,17 +33,17 @@ protected:
 	std::shared_ptr<ISceneNode3D> GetMovingNode();
 
 private:
-	float m_MoverValue;
-	bool m_IsMovingNow;
-	int m_MoverNuber;
-	std::weak_ptr<ISceneNode3D> m_MovingNode;
-	glm::vec3 m_MovingObjectPos;
 	std::shared_ptr<ISceneNode3D> m_MoverRoot;
-	glm::vec3 m_MoverOffset;
 	std::shared_ptr<ISceneNode3D> m_MoverX;
 	std::shared_ptr<ISceneNode3D> m_MoverY;
 	std::shared_ptr<ISceneNode3D> m_MoverZ;
 
+	std::weak_ptr<ISceneNode3D> m_MovingNode;
+
+	EMoverDirection m_MoverNumber;
+	glm::vec3 m_MoverOffset;
+	
 	// UI
-	std::map<std::string, float> m_MoverValues;
+	std::unordered_map<std::string, float> m_MoverValues;
+	float m_MoverValue;
 };

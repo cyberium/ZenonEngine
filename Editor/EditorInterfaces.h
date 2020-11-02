@@ -97,6 +97,13 @@ ZN_INTERFACE IEditorToolSelectorEventListener
 	virtual void OnSelectNode() = 0;
 };
 
+enum class EMoverDirection
+{
+	None = 0,
+	X,
+	Y,
+	Z
+};
 
 ZN_INTERFACE IEditorToolMover
 {
@@ -107,13 +114,15 @@ ZN_INTERFACE IEditorToolMover
 	virtual float GetMoverValue() const = 0;
 };
 
-
-ZN_INTERFACE IEditorToolMoverRTS
+ZN_INTERFACE IEditorToolRotator
 {
-	virtual ~IEditorToolMoverRTS() {}
+	virtual ~IEditorToolRotator() {}
 
-	virtual glm::vec2 FixBoxCoords(const glm::vec2& Position) = 0;
+	virtual float FixAngle(float Angle) = 0;
+	virtual void SetRotatorValue(float Value) = 0;
+	virtual float GetRotatorValue() const = 0;
 };
+
 
 
 //

@@ -88,10 +88,7 @@ void ModelBase::UpdateBounds(const std::shared_ptr<IGeometry>& Geometry)
 {
 	auto geomBounds = Geometry->GetBounds();
 	if (geomBounds.IsInfinite())
-	{
-		Log::Warn("ModelBase: UpdateBounds: Geometry bounds is empty.");
-		return;
-	}
+		throw CException("ModelBase: UpdateBounds: Geometry bounds is empty.");
 
 	m_BoundingBox.makeUnion(geomBounds);
 }

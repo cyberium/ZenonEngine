@@ -84,6 +84,8 @@ void CModelsComponent3D::SetModel(const std::shared_ptr<IModel>& Model)
 {
 	_ASSERT(m_Model == nullptr);
 	m_Model = Model;
+	_ASSERT(false == m_Model->GetBounds().IsInfinite());
+	//GetOwnerNode().GetComponent<IColliderComponent3D>()->SetBounds();
 }
 
 void CModelsComponent3D::ResetModel()

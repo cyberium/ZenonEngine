@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1145</width>
+    <width>1374</width>
     <height>1058</height>
    </rect>
   </property>
@@ -245,14 +245,14 @@
            </spacer>
           </item>
           <item>
-           <widget class="QLabel" name="label">
+           <widget class="QLabel" name="MoverStepLabel">
             <property name="text">
              <string>Mover step: </string>
             </property>
            </widget>
           </item>
           <item>
-           <widget class="QComboBox" name="Editor3DFrame_MoverStep">
+           <widget class="QComboBox" name="MoverStepComboBox">
             <property name="maxCount">
              <number>10</number>
             </property>
@@ -260,6 +260,32 @@
           </item>
           <item>
            <spacer name="horizontalSpacer_2">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeType">
+             <enum>QSizePolicy::Fixed</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>10</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QLabel" name="RotatorStepLabel">
+            <property name="text">
+             <string>Rotator step:</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QComboBox" name="RotatorStepComboBox"/>
+          </item>
+          <item>
+           <spacer name="horizontalSpacer">
             <property name="orientation">
              <enum>Qt::Horizontal</enum>
             </property>
@@ -363,7 +389,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1145</width>
+     <width>1374</width>
      <height>26</height>
     </rect>
    </property>
@@ -771,6 +797,9 @@
    </widget>
   </widget>
   <widget class="QDockWidget" name="DockerRTSEditor">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="sizePolicy">
     <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
      <horstretch>0</horstretch>

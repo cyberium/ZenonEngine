@@ -8,8 +8,8 @@
 
 CEditorToolRotator::CEditorToolRotator(IEditor& Editor)
 	: CEditorToolBase(Editor)
-	, m_RotatorNuber(-1)
-	, m_IsRotateNow(false)
+	, m_RotatorNumber(EMoverDirection::None)
+	, m_RotatorValue(45.0f)
 {
 }
 
@@ -25,7 +25,7 @@ void CEditorToolRotator::Enable()
 
 	if (auto node = GetEditor().GetFirstSelectedNode())
 	{
-		m_MovingNode = node;
+		m_RotatingNode = node;
 		m_RotatorRoot->SetTranslate(node->GetTranslation());
 		m_RotatorRoot->SetScale(glm::vec3(node->GetComponent<IColliderComponent3D>()->GetBounds().getRadius()));
 	}
@@ -37,16 +37,28 @@ void CEditorToolRotator::Disable()
 
 	dynamic_cast<IEditorQtUIFrame&>(GetEditor().GetUIFrame()).getUI().editorToolRotatorBtn->setChecked(IsEnabled());
 
-	m_RotatorRoot->SetTranslate(glm::vec3(-1000000.0, -10000000.0f, -10000000.0f));
-
 	Clear();
-	m_MovingNode.reset();
+	m_RotatingNode.reset();
+	m_RotatorRoot->SetTranslate(glm::vec3(Math::MinFloat));
 }
 
 void CEditorToolRotator::DoInitialize3D(const std::shared_ptr<IRenderer>& Renderer, std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport)
 {
 	m_RotatorRoot = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, GetScene(), GetScene()->GetRootNode3D());
-	m_RotatorRoot->SetName("Rotator");
+	m_RotatorRoot->SetName("RotatorRoot");
+
+
+	auto materialSphere = MakeShared(MaterialEditorTool, GetRenderDevice());
+	materialSphere->SetColor(glm::vec4(0.8f, 0.8f, 0.8f, 0.5f));
+	auto modelSphere = GetRenderDevice().GetObjectsFactory().CreateModel();
+	modelSphere->AddConnection(materialSphere, GetRenderDevice().GetPrimitivesFactory().CreateSphere(2.0f));
+
+	auto rotatorSphere = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, GetScene(), m_RotatorRoot);
+	rotatorSphere->SetName("RotatorSphere");
+	rotatorSphere->GetComponent<IModelsComponent3D>()->SetModel(modelSphere);
+	rotatorSphere->GetComponent<IColliderComponent3D>()->SetBounds(modelSphere->GetBounds());
+
+
 
 	auto geom = GetRenderDevice().GetPrimitivesFactory().CreateTorus(1.0f, 0.05f);
 
@@ -67,18 +79,18 @@ void CEditorToolRotator::DoInitialize3D(const std::shared_ptr<IRenderer>& Render
 
 
 	m_RotatorX = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, GetScene(), m_RotatorRoot);
-	m_RotatorX->SetName("Rotator_X");
+	m_RotatorX->SetName("RotatorX");
 	m_RotatorX->SetRotation(glm::vec3(0.0f, 0.0f, glm::half_pi<float>()));
 	m_RotatorX->GetComponent<IModelsComponent3D>()->SetModel(modelX);
 	m_RotatorX->GetComponent<IColliderComponent3D>()->SetBounds(geom->GetBounds());
 
 	m_RotatorY = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, GetScene(), m_RotatorRoot);
-	m_RotatorY->SetName("Rotator_Y");
+	m_RotatorY->SetName("RotatorY");
 	m_RotatorY->GetComponent<IModelsComponent3D>()->SetModel(modelY);
 	m_RotatorY->GetComponent<IColliderComponent3D>()->SetBounds(geom->GetBounds());
 
 	m_RotatorZ = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, GetScene(), m_RotatorRoot);
-	m_RotatorZ->SetName("Rotator_Z");
+	m_RotatorZ->SetName("RotatorZ");
 	m_RotatorZ->SetRotation(glm::vec3(glm::half_pi<float>(), 0.0f, 0.0f));
 	m_RotatorZ->GetComponent<IModelsComponent3D>()->SetModel(modelZ);
 	m_RotatorZ->GetComponent<IColliderComponent3D>()->SetBounds(geom->GetBounds());
@@ -90,42 +102,39 @@ bool CEditorToolRotator::OnMousePressed(const MouseButtonEventArgs & e, const Ra
 	if (rotatingNode == nullptr)
 		return false;
 
-	if (rotatingNode != nullptr && !IsChildOf(m_RotatorRoot, rotatingNode))
-	{	
-		auto nodes = GetScene()->GetFinder().FindIntersection(RayToWorld, nullptr, m_RotatorRoot);
-		if (nodes.empty())
-			return false;
+	_ASSERT(false == IsChildOf(m_RotatorRoot, rotatingNode));
 
-		for (const auto& it : nodes)
-		{
-			if (it.second == m_RotatorX)
-				m_RotatorNuber = 1;
-			else if (it.second == m_RotatorY)
-				m_RotatorNuber = 2;
-			else if (it.second == m_RotatorZ)
-				m_RotatorNuber = 3;
-		}
+	auto nodes = GetScene()->GetFinder().FindIntersection(RayToWorld, nullptr, m_RotatorRoot);
+	if (nodes.empty())
+		return false;
 
-		if (m_RotatorNuber > 0)
-		{
-			m_MovingObjectPos = rotatingNode->GetRotation();
-			m_IsRotateNow = true;
-			return true;
-		}
+	for (const auto& it : nodes)
+	{
+		if (it.second == m_RotatorX)
+			m_RotatorNumber = EMoverDirection::X;
+		else if (it.second == m_RotatorY)
+			m_RotatorNumber = EMoverDirection::Y;
+		else if (it.second == m_RotatorZ)
+			m_RotatorNumber = EMoverDirection::Z;
 	}
+
+	if (m_RotatorNumber != EMoverDirection::None)
+		return true;
+
 
 	return false;
 }
 
 void CEditorToolRotator::OnMouseReleased(const MouseButtonEventArgs & e, const Ray & RayToWorld)
 {
-	if (m_IsRotateNow)
-		Clear();
+	if (m_RotatorNumber == EMoverDirection::None)
+		return;
+	Clear();
 }
 
 void CEditorToolRotator::OnMouseMoved(const MouseMotionEventArgs & e, const Ray & RayToWorld)
 {
-	if (false == m_IsRotateNow)
+	if (m_RotatorNumber == EMoverDirection::None)
 		return;
 
 	auto rotatingNode = GetRotatingNode();
@@ -134,15 +143,15 @@ void CEditorToolRotator::OnMouseMoved(const MouseMotionEventArgs & e, const Ray 
 
 	glm::vec3 newRot = rotatingNode->GetRotation();
 
-	if (m_RotatorNuber == 1)
+	if (m_RotatorNumber == EMoverDirection::X)
 	{
 		newRot.x += e.RelY / 360.0f;
 	}
-	else if (m_RotatorNuber == 2)
+	else if (m_RotatorNumber == EMoverDirection::Y)
 	{
 		newRot.y += e.RelY / 360.0f;
 	}
-	else if (m_RotatorNuber == 3)
+	else if (m_RotatorNumber == EMoverDirection::Z)
 	{
 		newRot.z += e.RelY / 360.0f;
 	}
@@ -160,6 +169,35 @@ void CEditorToolRotator::OnMouseMoved(const MouseMotionEventArgs & e, const Ray 
 //
 void CEditorToolRotator::DoInitializeUI(IEditorQtUIFrame& QtUIFrame)
 {
+	m_RotatorsValues.insert(std::make_pair("<disabled>", 0.001f));
+	m_RotatorsValues.insert(std::make_pair("5 deg", 5.0f));
+	m_RotatorsValues.insert(std::make_pair("10 deg", 10.0f));
+	m_RotatorsValues.insert(std::make_pair("15 deg", 15.0f));
+	m_RotatorsValues.insert(std::make_pair("30 deg", 30.0f));
+	m_RotatorsValues.insert(std::make_pair("45 deg", 45.0f));
+	
+
+	// Add items to Combo Box
+	for (const auto& v : m_RotatorsValues)
+		QtUIFrame.getUI().RotatorStepComboBox->addItem(v.first.c_str());
+
+	// Select default item
+	int index = QtUIFrame.getUI().RotatorStepComboBox->findText("45 deg");
+	//int index = QtUIFrame.getUI().Editor3DFrame_MoverStep->findData("x5.0");
+	if (index != -1)
+		QtUIFrame.getUI().RotatorStepComboBox->setCurrentIndex(index);
+	else
+		_ASSERT(false);
+
+	QtUIFrame.getQObject().connect(QtUIFrame.getUI().RotatorStepComboBox, qOverload<const QString&>(&QComboBox::currentIndexChanged), [this](const QString& String) {
+		auto it = m_RotatorsValues.find(String.toStdString());
+		if (it == m_RotatorsValues.end())
+			_ASSERT(false);
+
+		SetRotatorValue(it->second);
+	});
+
+
 	QtUIFrame.getQObject().connect(QtUIFrame.getUI().editorToolRotatorBtn, &QPushButton::released, [this]() {
 		GetEditor().GetTools().Enable(ETool::EToolRotator);
 	});
@@ -167,14 +205,36 @@ void CEditorToolRotator::DoInitializeUI(IEditorQtUIFrame& QtUIFrame)
 
 
 
+//
+// IEditorToolRotator
+//
+float CEditorToolRotator::FixAngle(float Angle)
+{
+	float rotatorInitialAngleDegrees = Angle;
+	rotatorInitialAngleDegrees /= m_RotatorValue;
+	rotatorInitialAngleDegrees = glm::round(rotatorInitialAngleDegrees);
+	rotatorInitialAngleDegrees *= m_RotatorValue;
+	return rotatorInitialAngleDegrees;
+}
+
+void CEditorToolRotator::SetRotatorValue(float Value)
+{
+	m_RotatorValue = Value;
+}
+
+float CEditorToolRotator::GetRotatorValue() const
+{
+	return m_RotatorValue;
+}
+
+
+
 void CEditorToolRotator::Clear()
 {
-	m_RotatorNuber = 0;
-	m_IsRotateNow = false;
-	m_MovingObjectPos = glm::vec3(0.0f);
+	m_RotatorNumber = EMoverDirection::None;
 }
 
 std::shared_ptr<ISceneNode3D> CEditorToolRotator::GetRotatingNode()
 {
-	return m_MovingNode.lock();
+	return m_RotatingNode.lock();
 }

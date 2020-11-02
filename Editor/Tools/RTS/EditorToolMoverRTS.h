@@ -4,7 +4,6 @@
 
 class CEditorToolMoverRTS
 	: public CEditorToolBase
-	, public IEditorToolMoverRTS
 {
 public:
 	CEditorToolMoverRTS(IEditor& Editor);
@@ -23,22 +22,17 @@ public:
 	// IEditorToolUI
 	void DoInitializeUI(IEditorQtUIFrame& QtUIFrame) override;
 
-	// IEditorToolMoverRTS
-	glm::vec2 FixBoxCoords(const glm::vec2& Position) override;
-
 protected:
 	void Clear();
+	std::shared_ptr<ISceneNode3D> GetMovingNode();
 
 private:
-	float m_MoverValue;
-	
-	std::shared_ptr<ISceneNode3D> m_MovingNode;
-
 	std::shared_ptr<ISceneNode3D> m_MoverRoot;
 	std::shared_ptr<ISceneNode3D> m_MoverX;
 	std::shared_ptr<ISceneNode3D> m_MoverZ;
 
-	bool m_IsMovingNow;
-	int m_MoverNuber;
-	glm::vec3 m_MoverOffset;
+	std::weak_ptr<ISceneNode3D>   m_MovingNode;
+
+	EMoverDirection               m_MoverNumber;
+	glm::vec3                     m_MoverOffset;
 };

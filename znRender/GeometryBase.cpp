@@ -58,6 +58,10 @@ void GeometryBase::Accept(IVisitor * visitor, const IMaterial* Material, SGeomet
 
 void GeometryBase::Load(const std::shared_ptr<IByteBuffer>& ByteBuffer)
 {
+	BoundingBox bounds;
+	bounds.Load(ByteBuffer);
+	SetBounds(bounds);
+
 	PrimitiveTopology primitiveTopology;
 	ByteBuffer->read(&primitiveTopology);
 	SetPrimitiveTopology(primitiveTopology);
@@ -92,6 +96,9 @@ void GeometryBase::Load(const std::shared_ptr<IByteBuffer>& ByteBuffer)
 
 void GeometryBase::Save(const std::shared_ptr<IByteBuffer>& ByteBuffer) const
 {
+	BoundingBox modelBBox = GetBounds();
+	modelBBox.Save(ByteBuffer);
+
 	ByteBuffer->write(&m_PrimitiveTopology);
 
 	uint32 vertexBuffersCnt = m_VertexBuffers.size();
