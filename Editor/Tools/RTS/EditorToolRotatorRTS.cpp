@@ -9,6 +9,7 @@
 CEditorToolRotatorRTS::CEditorToolRotatorRTS(IEditor& Editor)
 	: CEditorToolBase(Editor)
 	, m_RotatorNumber(EMoverDirection::None)
+	, m_InitialRotationRadians(false)
 {
 }
 
@@ -47,7 +48,7 @@ void CEditorToolRotatorRTS::Disable()
 void CEditorToolRotatorRTS::DoInitialize3D(const std::shared_ptr<IRenderer>& Renderer, std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport)
 {
 	m_RotatorRoot = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, GetScene(), GetScene()->GetRootNode3D());
-	m_RotatorRoot->SetName("RotatorRTS");
+	m_RotatorRoot->SetName("RotatorRTSRoot");
 
 	auto geom = GetRenderDevice().GetPrimitivesFactory().CreateTorus(1.0f, 0.05f);
 
@@ -57,7 +58,7 @@ void CEditorToolRotatorRTS::DoInitialize3D(const std::shared_ptr<IRenderer>& Ren
 	modelY->AddConnection(materialY, geom);
 
 	m_RotatorY = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, GetScene(), m_RotatorRoot);
-	m_RotatorY->SetName("RotatorRTS_Y");
+	m_RotatorY->SetName("RotatorRTSY");
 	m_RotatorY->GetComponent<IModelsComponent3D>()->SetModel(modelY);
 }
 
@@ -88,8 +89,8 @@ bool CEditorToolRotatorRTS::OnMousePressed(const MouseButtonEventArgs & e, const
 		auto nodePosition = rotatingNode->GetTranslation();
 		auto pos = GetScene()->GetCameraController()->RayToPlane(RayToWorld, Plane(glm::vec3(0.0f, 1.0f, 0.0f), nodePosition.y));
 
-		m_RotatorInitialAngle = rotatingNode->GetRotation().y;//= glm::angle(glm::normalize(pos.xz()), glm::normalize(nodePosition.xz()));
-		m_LastAbs = e.Y;
+		m_InitialRotationRadians = rotatingNode->GetRotation().y;
+		m_StartMousePosY = e.Y;
 		return true;
 	}
 
@@ -115,12 +116,9 @@ void CEditorToolRotatorRTS::OnMouseMoved(const MouseMotionEventArgs & e, const R
 		return;
 	}
 
-	float rotatorInitialAngleDegrees = glm::degrees(m_RotatorInitialAngle);
-	rotatorInitialAngleDegrees += (m_LastAbs - e.Y) / 2.0f ;
+	float rotatorInitialAngleDegrees = m_InitialRotationRadians + float(m_StartMousePosY - e.Y) / glm::degrees(glm::pi<float>());
 
 	rotatorInitialAngleDegrees = GetEditor().GetTools().GetToolT<IEditorToolRotator>(ETool::EToolRotator).FixAngle(rotatorInitialAngleDegrees);
-
-	rotatorInitialAngleDegrees = glm::radians(rotatorInitialAngleDegrees);
 
 	rotatingNode->SetRotation(glm::vec3(0.0f, rotatorInitialAngleDegrees, 0.0f));
 

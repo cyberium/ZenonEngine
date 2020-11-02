@@ -44,6 +44,5 @@ private:
 	glm::vec3 m_MoverOffset;
 	
 	// UI
-	std::unordered_map<std::string, float> m_MoverValues;
 	float m_MoverValue;
 };

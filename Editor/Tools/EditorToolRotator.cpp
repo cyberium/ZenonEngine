@@ -9,7 +9,6 @@
 CEditorToolRotator::CEditorToolRotator(IEditor& Editor)
 	: CEditorToolBase(Editor)
 	, m_RotatorNumber(EMoverDirection::None)
-	, m_RotatorValue(45.0f)
 {
 }
 
@@ -56,7 +55,6 @@ void CEditorToolRotator::DoInitialize3D(const std::shared_ptr<IRenderer>& Render
 	auto rotatorSphere = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, GetScene(), m_RotatorRoot);
 	rotatorSphere->SetName("RotatorSphere");
 	rotatorSphere->GetComponent<IModelsComponent3D>()->SetModel(modelSphere);
-
 
 
 	auto geom = GetRenderDevice().GetPrimitivesFactory().CreateTorus(1.0f, 0.05f);
@@ -165,32 +163,35 @@ void CEditorToolRotator::OnMouseMoved(const MouseMotionEventArgs & e, const Ray 
 //
 void CEditorToolRotator::DoInitializeUI(IEditorQtUIFrame& QtUIFrame)
 {
-	m_RotatorsValues.insert(std::make_pair("<disabled>", 0.001f));
-	m_RotatorsValues.insert(std::make_pair("5 deg", 5.0f));
-	m_RotatorsValues.insert(std::make_pair("10 deg", 10.0f));
-	m_RotatorsValues.insert(std::make_pair("15 deg", 15.0f));
-	m_RotatorsValues.insert(std::make_pair("30 deg", 30.0f));
-	m_RotatorsValues.insert(std::make_pair("45 deg", 45.0f));
-	
+	std::unordered_map<std::string, float> rotatorsValues;
+	rotatorsValues.insert(std::make_pair("<disabled>", 0.01f));
+	rotatorsValues.insert(std::make_pair("5 deg", 5.0f));
+	rotatorsValues.insert(std::make_pair("10 deg", 10.0f));
+	rotatorsValues.insert(std::make_pair("15 deg", 15.0f));
+	rotatorsValues.insert(std::make_pair("30 deg", 30.0f));
+	rotatorsValues.insert(std::make_pair("45 deg", 45.0f));
+
+	m_RotatorValue = 45.0f;
+
+	QComboBox * comboBox = QtUIFrame.getUI().RotatorStepComboBox;
 
 	// Add items to Combo Box
-	for (const auto& v : m_RotatorsValues)
-		QtUIFrame.getUI().RotatorStepComboBox->addItem(v.first.c_str());
+	for (const auto& v : rotatorsValues)
+		comboBox->addItem(v.first.c_str(), v.second);
 
 	// Select default item
-	int index = QtUIFrame.getUI().RotatorStepComboBox->findText("45 deg");
-	//int index = QtUIFrame.getUI().Editor3DFrame_MoverStep->findData("x5.0");
+	int index = comboBox->findData(QVariant(m_RotatorValue));
 	if (index != -1)
-		QtUIFrame.getUI().RotatorStepComboBox->setCurrentIndex(index);
+		comboBox->setCurrentIndex(index);
 	else
 		_ASSERT(false);
 
-	QtUIFrame.getQObject().connect(QtUIFrame.getUI().RotatorStepComboBox, qOverload<const QString&>(&QComboBox::currentIndexChanged), [this](const QString& String) {
-		auto it = m_RotatorsValues.find(String.toStdString());
-		if (it == m_RotatorsValues.end())
+	QtUIFrame.getQObject().connect(comboBox, qOverload<const QString&>(&QComboBox::currentIndexChanged), [this, comboBox](const QString& String) {
+		int index = comboBox->findText(String);
+		if (index != -1)
+			SetRotatorValue(comboBox->itemData(index).toFloat());
+		else
 			_ASSERT(false);
-
-		SetRotatorValue(it->second);
 	});
 
 
@@ -206,11 +207,11 @@ void CEditorToolRotator::DoInitializeUI(IEditorQtUIFrame& QtUIFrame)
 //
 float CEditorToolRotator::FixAngle(float Angle)
 {
-	float rotatorInitialAngleDegrees = Angle;
+	float rotatorInitialAngleDegrees = glm::degrees(Angle);
 	rotatorInitialAngleDegrees /= m_RotatorValue;
 	rotatorInitialAngleDegrees = glm::round(rotatorInitialAngleDegrees);
 	rotatorInitialAngleDegrees *= m_RotatorValue;
-	return rotatorInitialAngleDegrees;
+	return glm::radians(rotatorInitialAngleDegrees);
 }
 
 void CEditorToolRotator::SetRotatorValue(float Value)
@@ -225,6 +226,9 @@ float CEditorToolRotator::GetRotatorValue() const
 
 
 
+//
+// Protected
+//
 void CEditorToolRotator::Clear()
 {
 	m_RotatorNumber = EMoverDirection::None;

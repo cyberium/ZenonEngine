@@ -66,6 +66,7 @@ IBaseManager* WINAPI InitializeEngine(std::vector<std::string> Arguments, std::s
 {
 	IBaseManager* baseManager = ZN_NEW CBaseManager();
 
+
 	// Log & console
 	{
 		baseManager->AddManager<ILog>(MakeShared(CLog));
@@ -75,8 +76,10 @@ IBaseManager* WINAPI InitializeEngine(std::vector<std::string> Arguments, std::s
 		console->AddCommonCommands();
 	}
 
+
 	std::shared_ptr<IznPluginsManager> pluginsManager = MakeShared(CznPluginsManager, *baseManager);
 	baseManager->AddManager<IznPluginsManager>(pluginsManager);
+
 
 	// Settings
 	{
@@ -85,15 +88,14 @@ IBaseManager* WINAPI InitializeEngine(std::vector<std::string> Arguments, std::s
 		settings->AddGroup("Video", MakeShared(CGroupVideo));
 	}
 
+
 	// Files
 	{
 		std::shared_ptr<IFilesManager> filesManager = MakeShared(CFilesManager, *baseManager);
 		baseManager->AddManager<IFilesManager>(filesManager);
-		filesManager->AddStorage(EFilesStorageType::GAMEDATA, MakeShared(CLocalFilesStorage, "O:/ZenonEngine_gamedata/"));
+		filesManager->AddStorage(EFilesStorageType::GAMEDATA,   MakeShared(CLocalFilesStorage, "O:/ZenonEngine_gamedata/"));
 		filesManager->AddStorage(EFilesStorageType::ADDITIONAL, MakeShared(CLibraryResourceFileStotage, GetModuleHandle(L"znEngine.dll")));
-		filesManager->AddStorage(EFilesStorageType::ADDITIONAL, MakeShared(CLocalFilesStorage, ""));
 		filesManager->AddStorage(EFilesStorageType::ADDITIONAL, MakeShared(CLocalFilesStorage, "gamedata/"));
-		
 	}
 
 

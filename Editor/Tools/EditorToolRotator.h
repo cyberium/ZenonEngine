@@ -43,6 +43,5 @@ private:
 	EMoverDirection m_RotatorNumber;
 
 	// UI
-	std::unordered_map<std::string, float> m_RotatorsValues;
 	float m_RotatorValue;
 };

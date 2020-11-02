@@ -34,6 +34,6 @@ private:
 
 	EMoverDirection               m_RotatorNumber;
 
-	float                         m_RotatorInitialAngle;
-	int                           m_LastAbs;
+	float                         m_InitialRotationRadians;
+	int                           m_StartMousePosY;
 };

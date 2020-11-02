@@ -198,7 +198,7 @@ bool CEditor3DFrame::InitializeEditorFrame()
 		auto geom = GetRenderDevice().GetPrimitivesFactory().CreateLines();
 
 		auto mat = MakeShared(MaterialDebug, GetRenderDevice());
-		mat->SetDiffuseColor(glm::vec4(0.5f, 0.5f, 0.5f, 1.0f));
+		mat->SetDiffuseColor(glm::vec4(0.5f, 0.5f, 0.5f, 0.3f));
 
 		auto model = GetRenderDevice().GetObjectsFactory().CreateModel();
 		model->AddConnection(mat, geom);
@@ -209,13 +209,13 @@ bool CEditor3DFrame::InitializeEditorFrame()
 	{
 		auto node = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, this);
 		node->SetName("Grid node x10.");
-		node->SetTranslate(glm::vec3(0.0f, 0.03f, 0.0f));
+		node->SetTranslate(glm::vec3(0.0f, 0.00f, 0.0f));
 		node->SetScale(glm::vec3(10.0f));
 
 		auto geom = GetRenderDevice().GetPrimitivesFactory().CreateLines();
 
 		auto mat = MakeShared(MaterialDebug, GetRenderDevice());
-		mat->SetDiffuseColor(glm::vec4(0.6f, 0.6f, 0.6f, 1.0f));
+		mat->SetDiffuseColor(glm::vec4(0.6f, 0.6f, 0.6f, 0.5f));
 
 		auto model = GetRenderDevice().GetObjectsFactory().CreateModel();
 		model->AddConnection(mat, geom);
@@ -226,13 +226,13 @@ bool CEditor3DFrame::InitializeEditorFrame()
 	{
 		auto node = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, this);
 		node->SetName("Grid node x100.");
-		node->SetTranslate(glm::vec3(0.0f, 0.06f, 0.0f));
+		node->SetTranslate(glm::vec3(0.0f, 0.00f, 0.0f));
 		node->SetScale(glm::vec3(100.0f));
 
 		auto geom = GetRenderDevice().GetPrimitivesFactory().CreateLines(10);
 
 		auto mat = MakeShared(MaterialDebug, GetRenderDevice());
-		mat->SetDiffuseColor(glm::vec4(0.7f, 0.7f, 0.7f, 1.0f));
+		mat->SetDiffuseColor(glm::vec4(0.7f, 0.7f, 0.7f, 0.7f));
 
 		auto model = GetRenderDevice().GetObjectsFactory().CreateModel();
 		model->AddConnection(mat, geom);

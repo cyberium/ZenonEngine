@@ -33,8 +33,8 @@ std::shared_ptr<IRenderPassPipelined> CMaterial_Debug_Pass::ConfigurePipeline(st
 	vertexShader->LoadInputLayoutFromReflector();
 
 	// PIPELINES
-	GetPipeline().GetBlendState()->SetBlendMode(disableBlending);
-	GetPipeline().GetDepthStencilState()->SetDepthMode(enableDepthWrites);
+	GetPipeline().GetBlendState()->SetBlendMode(alphaBlending);
+	GetPipeline().GetDepthStencilState()->SetDepthMode(enableTestDisableWrites);
 	GetPipeline().GetRasterizerState()->SetCullMode(IRasterizerState::CullMode::None);
 	GetPipeline().GetRasterizerState()->SetFillMode(IRasterizerState::FillMode::Wireframe, IRasterizerState::FillMode::Wireframe);
 	GetPipeline().SetRenderTarget(RenderTarget);

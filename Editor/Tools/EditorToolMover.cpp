@@ -8,7 +8,6 @@
 
 CEditorToolMover::CEditorToolMover(IEditor& Editor)
 	: CEditorToolBase(Editor)
-	, m_MoverValue(5.0f)
 	, m_MoverNumber(EMoverDirection::None)
 {
 }
@@ -183,31 +182,35 @@ void CEditorToolMover::OnMouseMoved(const MouseMotionEventArgs & e, const Ray & 
 //
 void CEditorToolMover::DoInitializeUI(IEditorQtUIFrame& QtUIFrame)
 {
-	m_MoverValues.insert(std::make_pair("<disabled>", 0.001f));
-	m_MoverValues.insert(std::make_pair("x0.25", 0.25f));
-	m_MoverValues.insert(std::make_pair("x0.5", 0.5f));
-	m_MoverValues.insert(std::make_pair("x1.0", 1.0f));
-	m_MoverValues.insert(std::make_pair("x5.0", 5.0f));
-	m_MoverValues.insert(std::make_pair("x10.0", 10.0f));
+	std::unordered_map<std::string, float> moverValues;
+	moverValues.insert(std::make_pair("<disabled>", 0.001f));
+	moverValues.insert(std::make_pair("0.25 unit", 0.25f));
+	moverValues.insert(std::make_pair("0.5 unit", 0.5f));
+	moverValues.insert(std::make_pair("1.0 unit", 1.0f));
+	moverValues.insert(std::make_pair("5.0 unit", 5.0f));
+	moverValues.insert(std::make_pair("10.0 unit", 10.0f));
+
+	m_MoverValue = 5.0f;
+
+	QComboBox * comboBox = QtUIFrame.getUI().MoverStepComboBox;
 
 	// Add items to Combo Box
-	for (const auto& v : m_MoverValues)
-		QtUIFrame.getUI().MoverStepComboBox->addItem(v.first.c_str());
+	for (const auto& v : moverValues)
+		comboBox->addItem(v.first.c_str(), QVariant(v.second));
 
 	// Select default item
-	int index = QtUIFrame.getUI().MoverStepComboBox->findText("x5.0");
-	//int index = QtUIFrame.getUI().Editor3DFrame_MoverStep->findData("x5.0");
+	int index = QtUIFrame.getUI().MoverStepComboBox->findData(QVariant(m_MoverValue));
 	if (index != -1)
-		QtUIFrame.getUI().MoverStepComboBox->setCurrentIndex(index);
+		comboBox->setCurrentIndex(index);
 	else
 		_ASSERT(false);
 
-	QtUIFrame.getQObject().connect(QtUIFrame.getUI().MoverStepComboBox, qOverload<const QString&>(&QComboBox::currentIndexChanged), [this](const QString& String) {
-		auto it = m_MoverValues.find(String.toStdString());
-		if (it == m_MoverValues.end())
+	QtUIFrame.getQObject().connect(comboBox, qOverload<const QString&>(&QComboBox::currentIndexChanged), [this, comboBox](const QString& String) {
+		int index = comboBox->findText(String);
+		if (index != -1)
+			SetMoverValue(comboBox->itemData(index).toFloat());
+		else
 			_ASSERT(false);
-
-		SetMoverValue(it->second);
 	});
 
 
