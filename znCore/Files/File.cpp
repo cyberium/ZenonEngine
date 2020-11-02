@@ -40,7 +40,8 @@ bool CFile::Save()
 	}
 	catch (const CException& e)
 	{
-		Log::Error("Error '%s' while saving file '%s'", e.MessageCStr(), Path_Name().c_str());
+		Log::Error("Error while saving file '%s'.", Path_Name().c_str());
+		Log::Error("---> '%s'", e.MessageCStr());
 		return false;
 	}
 

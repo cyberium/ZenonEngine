@@ -71,12 +71,14 @@ void SceneNode3D::Initialize()
 	{
 		std::shared_ptr<CAction> removeAction = MakeShared(CAction, "Remove", "Remove this node from world. this action affected on childs!");
 		removeAction->SetAction([this]() -> bool {
-			auto sceneNode = this->shared_from_this();
-			if (sceneNode->GetScene() == nullptr)
+			if (GetScene() == nullptr)
 				return false;
-
-			sceneNode->GetScene()->RemoveChild(sceneNode->GetParent(), sceneNode);
+			GetScene()->RemoveChild(GetParent(), shared_from_this());
 			return true;
+		});
+
+		removeAction->SetActionPrecondition([this]() -> bool {
+			return false == IsPersistance();
 		});
 
 		GetProperties()->AddProperty(removeAction);
@@ -311,7 +313,6 @@ std::shared_ptr<ISceneNodeComponent> SceneNode3D::GetComponent(ObjectClass Compo
 	const auto& component = components.find(ComponentID);
 	if (component == components.end())
 		return nullptr;
-
 	return component->second;
 }
 
@@ -433,24 +434,38 @@ void SceneNode3D::Load(const std::shared_ptr<IXMLReader>& Reader)
 
 	DoLoadProperties(Reader);
 
-	if (Reader->IsChildExists("Components"))
+	if (auto componentsWriter = Reader->GetChild("Components"))
 	{
-		auto componentsWriter = Reader->GetChild("Components");
 		for (const auto& ch : componentsWriter->GetChilds())
 		{
-			auto child = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<IComponentFactory>()->LoadComponentXML(ch, *this);
-			//if (GetComponent(child->GetGUID().GetObjectClass()) == nullptr)
-			AddComponent(child->GetGUID().GetObjectClass(), child);
+			try
+			{
+				auto child = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<IComponentFactory>()->LoadComponentXML(ch, *this);
+				//if (GetComponent(child->GetGUID().GetObjectClass()) == nullptr)
+				AddComponent(child->GetGUID().GetObjectClass(), child);
+			}
+			catch (const CException& e)
+			{
+				Log::Error("Unable to load node '%s' component '%s'.", GetName().c_str(), ch->GetName().c_str());
+				Log::Error("---> '%s'", e.MessageCStr());
+			}
 		}
 	}
 
-	if (Reader->IsChildExists("Childs"))
+	if (auto childsWriter = Reader->GetChild("Childs"))
 	{
-		auto childsWriter = Reader->GetChild("Childs");
 		for (const auto& ch : childsWriter->GetChilds())
 		{
-			auto child = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->LoadSceneNode3DXML(ch, GetScene());
-			AddChild(child);
+			try
+			{
+				auto child = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->LoadSceneNode3DXML(ch, GetScene());
+				AddChild(child);
+			}
+			catch (const CException& e)
+			{
+				Log::Error("Unable to load node '%s' child '%s'.", GetName().c_str(), ch->GetName().c_str());
+				Log::Error("---> '%s'", e.MessageCStr());
+			}
 		}
 	}
 }
@@ -467,8 +482,16 @@ void SceneNode3D::Save(const std::shared_ptr<IXMLWriter>& Writer) const
 		auto componentsWriter = Writer->CreateChild("Components");
 		for (const auto& ch : components)
 		{
-			auto childWriter = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<IComponentFactory>()->SaveComponentXML(ch.second);
-			componentsWriter->AddChild(childWriter);
+			try
+			{
+				auto childWriter = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<IComponentFactory>()->SaveComponentXML(ch.second);
+				componentsWriter->AddChild(childWriter);
+			}
+			catch (const CException& e)
+			{
+				Log::Error("Unable to save node '%s' component '%s'.", GetName().c_str(), ch.second->GetName().c_str());
+				Log::Error("---> '%s'", e.MessageCStr());
+			}
 		}
 	}
 
@@ -478,8 +501,16 @@ void SceneNode3D::Save(const std::shared_ptr<IXMLWriter>& Writer) const
 		auto childsWriter = Writer->CreateChild("Childs");
 		for (const auto& ch : childs)
 		{
-			auto childWriter = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->SaveSceneNode3DXML(ch);
-			childsWriter->AddChild(childWriter);
+			try
+			{
+				auto childWriter = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->SaveSceneNode3DXML(ch);
+				childsWriter->AddChild(childWriter);
+			}
+			catch (const CException& e)
+			{
+				Log::Error("Unable to save node '%s' child '%s'.", GetName().c_str(), ch->GetName().c_str());
+				Log::Error("---> '%s'", e.MessageCStr());
+			}
 		}
 	}
 }
@@ -593,11 +624,6 @@ void SceneNode3D::UpdateWorldTransform()
 		std::dynamic_pointer_cast<SceneNode3D>(it)->UpdateWorldTransform();
 
 	RaiseComponentMessage(nullptr, UUID_OnWorldTransformChanged);
-}
-
-namespace
-{
-
 }
 
 void SceneNode3D::DoLoadProperties(const std::shared_ptr<IXMLReader>& Reader) const

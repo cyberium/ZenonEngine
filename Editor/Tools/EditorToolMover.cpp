@@ -70,21 +70,18 @@ void CEditorToolMover::DoInitialize3D(const std::shared_ptr<IRenderer>& Renderer
 	m_MoverX->SetTranslate(glm::vec3(1.0f, 0.0f, 0.0f));
 	m_MoverX->SetRotation(glm::vec3(0.0f, glm::half_pi<float>(), 0.0f));
 	m_MoverX->GetComponent<IModelsComponent3D>()->SetModel(modelX);
-	//m_MoverX->GetComponent<IColliderComponent3D>()->SetBounds(model->GetBounds());
 
 	m_MoverY = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, GetScene(), m_MoverRoot);
 	m_MoverY->SetName("Mover_Y");
 	m_MoverY->SetTranslate(glm::vec3(0.0f, 1.0f, 0.0f));
 	m_MoverY->SetRotation(glm::vec3(-glm::half_pi<float>(), 0.0f, 0.0f));
 	m_MoverY->GetComponent<IModelsComponent3D>()->SetModel(modelY);
-	//m_MoverY->GetComponent<IColliderComponent3D>()->SetBounds(model->GetBounds());
 
 	m_MoverZ = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, GetScene(), m_MoverRoot);
 	m_MoverZ->SetName("Mover_Z");
 	m_MoverZ->SetTranslate(glm::vec3(0.0f, 0.0f, 1.0f));
 	m_MoverZ->SetRotation(glm::vec3(0.0f, 0.0f, 0.0f));
 	m_MoverZ->GetComponent<IModelsComponent3D>()->SetModel(modelZ);
-	//m_MoverZ->GetComponent<IColliderComponent3D>()->SetBounds(model->GetBounds());
 }
 
 bool CEditorToolMover::OnMousePressed(const MouseButtonEventArgs & e, const Ray & RayToWorld)

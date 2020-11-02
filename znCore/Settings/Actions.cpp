@@ -61,8 +61,25 @@ void CAction::SetAction(std::function<bool(void)> Action)
 	m_Action = Action;
 }
 
-void CAction::ExecuteAction()
+void CAction::SetActionPrecondition(std::function<bool(void)> ActionPrecondition)
 {
-	_ASSERT(m_Action != nullptr);
-	m_Action();
+	m_ActionPrecondition = ActionPrecondition;
+}
+
+bool CAction::ExecuteAction()
+{
+	if (m_Action == nullptr)
+		throw CException("Action functor for '%s' action in nullptr.", GetName().c_str());
+
+	if (false == ExecutePrecondition())
+		throw CException("Action precondition for '%s' action is false.", GetName().c_str());
+
+	return m_Action();
+}
+
+bool CAction::ExecutePrecondition()
+{
+	if (m_ActionPrecondition)
+		return m_ActionPrecondition();
+	return true;
 }

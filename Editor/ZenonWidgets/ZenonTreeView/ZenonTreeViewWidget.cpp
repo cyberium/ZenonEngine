@@ -209,6 +209,9 @@ void ZenonTreeViewWidget::onCustomContextMenu(const QPoint& point)
 	for (const auto& act : actions)
 	{
 		QAction * action = ZN_NEW QAction(act->GetName().c_str(), this);
+		if (false == act->ExecutePrecondition())
+			action->setEnabled(false);
+
 		connect(action, &QAction::triggered, this, [act] {
 			act->ExecuteAction();
 		});

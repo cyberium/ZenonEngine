@@ -96,7 +96,7 @@ void CEditorToolSelector::RemoveNode(std::shared_ptr<ISceneNode3D> Node)
 	RaiseSelectEvent();
 }
 
-std::shared_ptr<ISceneNode3D> CEditorToolSelector::GetFirstSelectedNode()
+std::shared_ptr<ISceneNode3D> CEditorToolSelector::GetFirstSelectedNode() const
 {
 	auto first = m_SelectedNodes.begin();
 	if (first == m_SelectedNodes.end())
@@ -108,9 +108,9 @@ std::shared_ptr<ISceneNode3D> CEditorToolSelector::GetFirstSelectedNode()
 	return nullptr;
 }
 
-bool CEditorToolSelector::IsNodeSelected(std::shared_ptr<ISceneNode3D> Node)
+bool CEditorToolSelector::IsNodeSelected(std::shared_ptr<ISceneNode3D> Node) const
 {
-	auto it = std::find_if(m_SelectedNodes.begin(), m_SelectedNodes.end(), [Node](const std::weak_ptr<ISceneNode3D>& NodeW) -> bool {
+	const auto& it = std::find_if(m_SelectedNodes.begin(), m_SelectedNodes.end(), [Node](const std::weak_ptr<ISceneNode3D>& NodeW) -> bool {
 		if (auto locked = NodeW.lock())
 			return locked == Node;
 		return false;
@@ -119,7 +119,7 @@ bool CEditorToolSelector::IsNodeSelected(std::shared_ptr<ISceneNode3D> Node)
 	return it != m_SelectedNodes.end();
 }
 
-const SelectedNodes& CEditorToolSelector::GetSelectedNodes()
+const SelectedNodes& CEditorToolSelector::GetSelectedNodes() const
 {
 	return m_SelectedNodes;
 }
@@ -145,7 +145,6 @@ bool CEditorToolSelector::OnMousePressed(const MouseButtonEventArgs & e, const R
 		return false;
 
 	auto nodes = GetScene()->GetFinder().FindIntersection(RayToWorld, nullptr, GetEditor().Get3DFrame().GetEditedRootNode3D());
-	
 	if (nodes.empty())
 	{
 		if (e.Shift)
@@ -192,6 +191,8 @@ void CEditorToolSelector::OnMouseReleased(const MouseButtonEventArgs & e, const 
 
 	if (m_IsSelecting2D)
 	{
+		m_IsSelecting2D = false;
+
 		if (glm::length(glm::abs(cachedSelectionPrevPos - e.GetPoint())) > 10.0f)
 		{
 			Frustum f;
@@ -207,7 +208,6 @@ void CEditorToolSelector::OnMouseReleased(const MouseButtonEventArgs & e, const 
 			if (!nodes.empty())
 				SelectNodes(nodes);
 		}
-		m_IsSelecting2D = false;
 	}
 }
 

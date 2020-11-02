@@ -21,9 +21,9 @@ public:
 	void ClearSelection() override;
 	void AddNode(std::shared_ptr<ISceneNode3D> Node) override;
 	void RemoveNode(std::shared_ptr<ISceneNode3D> Node) override;
-	std::shared_ptr<ISceneNode3D> GetFirstSelectedNode() override;
-	bool IsNodeSelected(std::shared_ptr<ISceneNode3D> Node) override;
-	const SelectedNodes& GetSelectedNodes() override;
+	std::shared_ptr<ISceneNode3D> GetFirstSelectedNode() const override;
+	bool IsNodeSelected(std::shared_ptr<ISceneNode3D> Node) const override;
+	const SelectedNodes& GetSelectedNodes() const override;
 
 	// CEditorToolBase
 	void DoInitialize3D(const std::shared_ptr<IRenderer>& Renderer, std::shared_ptr<IRenderTarget> RenderTarget, const Viewport* Viewport) override;

@@ -41,13 +41,12 @@ CColliderComponent3D::~CColliderComponent3D()
 
 void CColliderComponent3D::Copy(std::shared_ptr<ISceneNodeComponent> Destination) const
 {
-	auto destCast = std::static_pointer_cast<CColliderComponent3D>(Destination);
+	auto destCast = std::dynamic_pointer_cast<IColliderComponent3D>(Destination);
 
-	destCast->m_CullStrategy = m_CullStrategy;
-	destCast->m_CullDistance = m_CullDistance;
-	destCast->m_Bounds = m_Bounds;
-	destCast->m_WorldBounds = m_WorldBounds;
-	destCast->m_DebugDraw = m_DebugDraw;
+	destCast->SetCullStrategy(m_CullStrategy);
+	destCast->SetCullDistance(m_CullDistance);
+	destCast->SetBounds(m_Bounds);
+	destCast->SetDebugDrawMode(m_DebugDraw);
 }
 
 
@@ -79,6 +78,16 @@ void CColliderComponent3D::SetBounds(BoundingBox Bounds)
 	if (Bounds.IsInfinite())
 		throw CException("Unable to set infinity bounds to node '%s'.", GetOwnerNode().GetName().c_str());
 
+	m_Bounds = Bounds;
+
+	RaiseComponentMessage(UUID_OnBoundsChanget);
+}
+
+void CColliderComponent3D::ExtendBounds(BoundingBox Bounds)
+{
+	if (Bounds.IsInfinite())
+		throw CException("Unable to extend infinity bounds to node '%s'.", GetOwnerNode().GetName().c_str());
+	
 	if (m_Bounds.IsInfinite())
 		m_Bounds = Bounds;
 	else
@@ -86,6 +95,7 @@ void CColliderComponent3D::SetBounds(BoundingBox Bounds)
 
 	RaiseComponentMessage(UUID_OnBoundsChanget);
 }
+
 cbbox CColliderComponent3D::GetBounds() const
 {
 	if (m_Bounds.IsInfinite())

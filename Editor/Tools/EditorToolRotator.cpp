@@ -56,7 +56,6 @@ void CEditorToolRotator::DoInitialize3D(const std::shared_ptr<IRenderer>& Render
 	auto rotatorSphere = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, GetScene(), m_RotatorRoot);
 	rotatorSphere->SetName("RotatorSphere");
 	rotatorSphere->GetComponent<IModelsComponent3D>()->SetModel(modelSphere);
-	rotatorSphere->GetComponent<IColliderComponent3D>()->SetBounds(modelSphere->GetBounds());
 
 
 
@@ -82,18 +81,15 @@ void CEditorToolRotator::DoInitialize3D(const std::shared_ptr<IRenderer>& Render
 	m_RotatorX->SetName("RotatorX");
 	m_RotatorX->SetRotation(glm::vec3(0.0f, 0.0f, glm::half_pi<float>()));
 	m_RotatorX->GetComponent<IModelsComponent3D>()->SetModel(modelX);
-	m_RotatorX->GetComponent<IColliderComponent3D>()->SetBounds(geom->GetBounds());
 
 	m_RotatorY = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, GetScene(), m_RotatorRoot);
 	m_RotatorY->SetName("RotatorY");
 	m_RotatorY->GetComponent<IModelsComponent3D>()->SetModel(modelY);
-	m_RotatorY->GetComponent<IColliderComponent3D>()->SetBounds(geom->GetBounds());
 
 	m_RotatorZ = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, GetScene(), m_RotatorRoot);
 	m_RotatorZ->SetName("RotatorZ");
 	m_RotatorZ->SetRotation(glm::vec3(glm::half_pi<float>(), 0.0f, 0.0f));
 	m_RotatorZ->GetComponent<IModelsComponent3D>()->SetModel(modelZ);
-	m_RotatorZ->GetComponent<IColliderComponent3D>()->SetBounds(geom->GetBounds());
 }
 
 bool CEditorToolRotator::OnMousePressed(const MouseButtonEventArgs & e, const Ray & RayToWorld)

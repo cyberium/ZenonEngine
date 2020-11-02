@@ -71,7 +71,8 @@ ZN_INTERFACE __declspec(UUID_ColliderComponent) ZN_API IColliderComponent3D
 	virtual ECullStrategy GetCullStrategy() const = 0;
 	virtual void SetCullDistance(float Distance) = 0;
 	virtual float GetCullDistance() const = 0;
-	virtual void SetBounds(BoundingBox _bbox) = 0;
+	virtual void SetBounds(BoundingBox Bounds) = 0;
+	virtual void ExtendBounds(BoundingBox Bounds) = 0;
 	virtual cbbox GetBounds() const = 0;
 	virtual cbbox GetWorldBounds() const = 0;
 	virtual void SetDebugDrawMode(bool Value) = 0;

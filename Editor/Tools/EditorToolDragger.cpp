@@ -112,7 +112,6 @@ void CEditorToolDragger::MoveDraggedNode(const glm::vec2& MousePos)
 	_ASSERT(false == bounds.IsInfinite());
 	auto pos = GetScene()->GetCameraController()->RayToPlane(ray, Plane(glm::vec3(0.0f, 1.0f, 0.0f), bounds.getMax().y / 2.0f));
 	pos -= bounds.getCenter();
-	//pos = pos / 10.0f;//reinterpret_cast<IEditorToolMover&>(GetEditor().GetTools().GetTool(EToolMover)).FixBoxCoords(pos);
 
 	pos = dynamic_cast<IEditorToolMover&>(GetEditor().GetTools().GetTool(ETool::EToolMover)).FixBoxCoords(pos);
 
@@ -163,7 +162,6 @@ std::shared_ptr<ISceneNode3D> CEditorToolDragger::CreateNode(const glm::ivec3& P
 
 	auto model = GetBaseManager().GetManager<IznModelsFactory>()->LoadModel("models_td/" + Type + ".znmdl");
 	node->GetComponent<IModelsComponent3D>()->SetModel(model);
-	node->GetComponent<IColliderComponent3D>()->SetBounds(model->GetBounds());
 
 	return node;
 }

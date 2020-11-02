@@ -16,6 +16,7 @@ public:
 	void SetCullDistance(float Distance) override;
 	float GetCullDistance() const override;
     void SetBounds(BoundingBox Bounds) override;
+	void ExtendBounds(BoundingBox Bounds) override;
     cbbox GetBounds() const override;
 	cbbox GetWorldBounds() const override;
 	void SetDebugDrawMode(bool Value) override;

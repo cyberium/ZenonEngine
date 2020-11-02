@@ -59,7 +59,6 @@ void CEditorToolRotatorRTS::DoInitialize3D(const std::shared_ptr<IRenderer>& Ren
 	m_RotatorY = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, GetScene(), m_RotatorRoot);
 	m_RotatorY->SetName("RotatorRTS_Y");
 	m_RotatorY->GetComponent<IModelsComponent3D>()->SetModel(modelY);
-	m_RotatorY->GetComponent<IColliderComponent3D>()->SetBounds(geom->GetBounds());
 }
 
 bool CEditorToolRotatorRTS::OnMousePressed(const MouseButtonEventArgs & e, const Ray & RayToWorld)

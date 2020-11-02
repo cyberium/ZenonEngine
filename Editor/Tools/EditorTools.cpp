@@ -14,8 +14,8 @@ CEditorTools::~CEditorTools()
 
 void CEditorTools::Initialize()
 {
-	m_Selector = MakeShared(CEditorToolSelector, m_Editor);
-	m_Tools.insert(std::make_pair(ETool::EToolSelector, m_Selector));
+	auto selector = MakeShared(CEditorToolSelector, m_Editor);
+	m_Tools.insert(std::make_pair(ETool::EToolSelector, selector));
 
 	auto mover = MakeShared(CEditorToolMover, m_Editor);
 	m_Tools.insert(std::make_pair(ETool::EToolMover, mover));
@@ -54,10 +54,18 @@ void CEditorTools::Enable(ETool ToolIndex)
 
 IEditorTool& CEditorTools::GetTool(ETool Tool)
 {
-	auto tool = m_Tools.find(Tool);
+	const auto& tool = m_Tools.find(Tool);
 	if (tool == m_Tools.end())
 		throw CException("Tool %d not found.", (int)Tool);
-	return *m_Tools[Tool];
+	return *(tool->second);
+}
+
+const IEditorTool& CEditorTools::GetTool(ETool Tool) const
+{
+	const auto tool = m_Tools.find(Tool);
+	if (tool == m_Tools.end())
+		throw CException("Tool %d not found.", (int)Tool);
+	return *(tool->second);
 }
 
 void CEditorTools::DisableAll(ETool ExceptOfTool)

@@ -154,18 +154,6 @@ void CEditor3DFrame::RemoveChild(const std::shared_ptr<ISceneNode3D>& ParentNode
 
 void CEditor3DFrame::RaiseSceneChangeEvent(ESceneChangeType SceneChangeType, const std::shared_ptr<ISceneNode3D>& ParentNode, const std::shared_ptr<ISceneNode3D>& ChildNode)
 {
-	if (SceneChangeType == ESceneChangeType::NodeRemovedFromParent)
-	{
-		auto& selector = reinterpret_cast<IEditorToolSelector&>(GetEditor().GetTools().GetTool(ETool::EToolSelector));
-		for (const auto& node : GetEditor().GetSelectedNodes())
-		{
-			if (node == ChildNode)
-			{
-				selector.RemoveNode(ChildNode);
-			}
-		}
-	}
-
 	if (IsChildOf(GetEditedRootNode3D(), ChildNode) || IsChildOf(GetEditedRootNode3D(), ParentNode))
 		GetEditor().GetUIFrame().OnSceneChanged(SceneChangeType, ParentNode, ChildNode);
 }
@@ -290,9 +278,10 @@ std::shared_ptr<ISceneNode3D> CEditor3DFrame::GetEditedRootNode3D() const
 	return m_EditedScene->GetRootNode3D();
 }
 
-std::shared_ptr<ISceneNode3D> CEditor3DFrame::GetNodeUnderMouse(const glm::ivec2& MousePos) const
+std::shared_ptr<ISceneNode3D> CEditor3DFrame::GetEditedNodeUnderMouse(const glm::ivec2& MousePos) const
 {
-	auto nodes = GetFinder().FindIntersection(GetCameraController()->ScreenToRay(GetRenderWindow().GetViewport(), MousePos));
+	auto ray = GetCameraController()->ScreenToRay(GetRenderWindow().GetViewport(), MousePos);
+	auto nodes = GetFinder().FindIntersection(ray, nullptr, GetEditedRootNode3D());
 	if (nodes.empty())
 		return nullptr;
 	return nodes.begin()->second;

@@ -161,6 +161,11 @@ bool CEditorUIFrame::ExtendContextMenu(const std::shared_ptr<ISceneNode3D>& Node
 
 void CEditorUIFrame::OnSceneChanged(ESceneChangeType SceneChangeType, const std::shared_ptr<ISceneNode3D>& ParentNode, const std::shared_ptr<ISceneNode3D>& ChildNode)
 {
+	if (SceneChangeType == ESceneChangeType::NodeRemovedFromParent)
+	{
+		m_Editor.GetTools().GetToolT<IEditorToolSelector>(ETool::EToolSelector).RemoveNode(ChildNode);
+	}
+
 	m_EditorResourceBrowser.UpdateSceneBrowser();
 }
 

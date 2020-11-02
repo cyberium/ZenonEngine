@@ -23,6 +23,7 @@ public:
 	void Finalize() override;
 	void Enable(ETool ToolIndex) override;
 	IEditorTool& GetTool(ETool Tool) override;
+	const IEditorTool& GetTool(ETool Tool) const override;
 	void DisableAll(ETool ExceptOfTool = EToolDefault) override;
 
 	// 3D
@@ -37,9 +38,6 @@ public:
 	virtual void DragEnterEvent(const SDragData& Data) override;
 	virtual void DragMoveEvent(const glm::vec2& Position) override;
 	virtual void DragLeaveEvent() override;
-
-public: // Editor
-	std::shared_ptr<CEditorToolSelector> m_Selector;
 
 private:
 	IEditor& m_Editor;

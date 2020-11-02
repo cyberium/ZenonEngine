@@ -21,8 +21,10 @@ ZN_INTERFACE ZN_API IPropertyAction
 {
 	virtual ~IPropertyAction() {}
 
-	virtual void        SetAction(std::function<bool(void)> Action) = 0;
-	virtual void        ExecuteAction() = 0;
+	virtual void SetAction(std::function<bool(void)> Action) = 0;
+	virtual void SetActionPrecondition(std::function<bool(void)> ActionPrecondition) = 0;
+	virtual bool ExecuteAction() = 0;
+	virtual bool ExecutePrecondition() = 0;
 };
 
 template <typename T>

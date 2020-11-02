@@ -16,9 +16,10 @@ CModelsComponent3D::~CModelsComponent3D()
 
 void CModelsComponent3D::Copy(std::shared_ptr<ISceneNodeComponent> Destination) const
 {
-	auto destCast = std::static_pointer_cast<CModelsComponent3D>(Destination);
-	destCast->m_Model = m_Model;
-	destCast->m_IsCastShadows = m_IsCastShadows;
+	auto destCast = std::dynamic_pointer_cast<IModelsComponent3D>(Destination);
+
+	destCast->SetModel(m_Model);
+	destCast->SetCastShadows(m_IsCastShadows);
 }
 
 void CModelsComponent3D::Load(const std::shared_ptr<IXMLReader>& Reader)
@@ -27,17 +28,11 @@ void CModelsComponent3D::Load(const std::shared_ptr<IXMLReader>& Reader)
 
 	auto fileNameReader = Reader->GetChild("FileName");
 	if (fileNameReader == nullptr)
-	{
-		Log::Error("ModelsComponent3D: Reader '%s' don't contains 'FileName' child.", Reader->GetName().c_str());
-		return;
-	}
+		throw CException("Model XML doesn't contains 'FileName' section. Node '%s'.", GetOwnerNode().GetName().c_str());
 
 	std::string fileName = fileNameReader->GetValue();
 	if (false == GetBaseManager().GetManager<IFilesManager>()->IsFileExists(fileName))
-	{
-		Log::Error("ModelsComponent3D: File '%s' don't exists.", fileName.c_str());
-		return;
-	}
+		throw CException("Model file '%s' doesn't exists. Node '%s'.", fileName.c_str(), GetOwnerNode().GetName().c_str());
 
 	try
 	{
@@ -46,7 +41,7 @@ void CModelsComponent3D::Load(const std::shared_ptr<IXMLReader>& Reader)
 	}
 	catch (const CException& e)
 	{
-		Log::Error("ModelsComponent3D: Error while loading model '%s'. Message: '%s'", fileName.c_str(), e.MessageCStr());
+		throw CException("Error occurs while loading '%s' model. Node '%s'. Error '%s'.", fileName.c_str(), GetOwnerNode().GetName().c_str(), e.MessageCStr());
 	}
 }
 
@@ -56,20 +51,17 @@ void CModelsComponent3D::Save(const std::shared_ptr<IXMLWriter>& Writer) const
 
 	auto model = GetModel();
 	if (model == nullptr)
-	{
-		Log::Error("ModelsComponent3D: No model presented.");
-		return;
-	}
+		throw CException("Unable to save nullptr model. Node '%s'", GetOwnerNode().GetName().c_str());
 
 	CXMLManager xml(GetBaseManager());
 	auto fileNameWriter = xml.CreateWriter("FileName");
 
 	auto fileName = model->GetFileName();
 	if (fileName.empty())
-	{
-		Log::Error("ModelsComponent3D: FileName is empty.");
-		return;
-	}
+		throw CException("Unable to save model with empty filename. Node '%s'", GetOwnerNode().GetName().c_str());
+
+	if (false == GetBaseManager().GetManager<IFilesManager>()->IsFileExists(fileName))
+		throw CException("Model file '%s' doesn't exists. Node '%s'.", fileName.c_str(), GetOwnerNode().GetName().c_str());
 
 	fileNameWriter->SetValue(model->GetFileName());
 	Writer->AddChild(fileNameWriter);
@@ -82,10 +74,18 @@ void CModelsComponent3D::Save(const std::shared_ptr<IXMLWriter>& Writer) const
 //
 void CModelsComponent3D::SetModel(const std::shared_ptr<IModel>& Model)
 {
-	_ASSERT(m_Model == nullptr);
+	if (Model == nullptr)
+		throw CException("Nullptr model can't be assigned to node '%s'.", GetOwnerNode().GetName().c_str());
+
+	if (m_Model != nullptr)
+		Log::Warn("Node '%s' already has model '%s'. Do you really want to replace it with '%s'?", m_Model->GetFileName().c_str(), Model->GetFileName().c_str());
+
 	m_Model = Model;
-	_ASSERT(false == m_Model->GetBounds().IsInfinite());
-	//GetOwnerNode().GetComponent<IColliderComponent3D>()->SetBounds();
+	const auto& modelBounds = GetModel()->GetBounds();
+	if (modelBounds.IsInfinite())
+		throw CException("Model '%s' with inifinity bounds can't be assigned to node '%s'.", Model->GetFileName().c_str(), GetOwnerNode().GetName().c_str());
+
+	GetComponent<IColliderComponent3D>()->ExtendBounds(modelBounds);
 }
 
 void CModelsComponent3D::ResetModel()

@@ -16,8 +16,6 @@ public:
     template<class T>
     std::shared_ptr<T>                              GetComponent() const;
 
-	void											Copy(std::shared_ptr<ISceneNodeComponent> Destination) const override;
-
 	// ISceneNodeComponent
 	virtual void                                    OnMessage(const ISceneNodeComponent* Component, ComponentMessageType Message) override;
 	virtual std::shared_ptr<IPropertiesGroup>       GetProperties() const override;
@@ -31,8 +29,7 @@ public:
 	void                                            SetName(const std::string& Name) override final { Object::SetName(Name); };
 
 	// IObjectLoadSave
-	virtual void									Load(const std::shared_ptr<IByteBuffer>& Buffer) override;
-	virtual void									Save(const std::shared_ptr<IByteBuffer>& Buffer) const override;
+	void											Copy(std::shared_ptr<ISceneNodeComponent> Destination) const override;
 	virtual void									Load(const std::shared_ptr<IXMLReader>& Reader) override;
 	virtual void									Save(const std::shared_ptr<IXMLWriter>& Writer) const override;
 

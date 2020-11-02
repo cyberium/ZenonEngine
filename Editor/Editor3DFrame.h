@@ -36,7 +36,7 @@ public:
 	void DoEnableTool(ETool Tool);
 	std::shared_ptr<IScene> GetEditedScene() const override;
 	std::shared_ptr<ISceneNode3D> GetEditedRootNode3D() const override;
-	std::shared_ptr<ISceneNode3D> GetNodeUnderMouse(const glm::ivec2& MousePos) const override;
+	std::shared_ptr<ISceneNode3D> GetEditedNodeUnderMouse(const glm::ivec2& MousePos) const override;
 	void OnCollectionWidget_ModelSelected(const std::shared_ptr<IModel>& Model) override;
 
 	// IEditorToolSelectorEventListener

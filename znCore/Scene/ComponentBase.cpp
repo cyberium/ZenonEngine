@@ -20,10 +20,6 @@ CComponentBase::~CComponentBase()
 
 
 
-void CComponentBase::Copy(std::shared_ptr<ISceneNodeComponent> Destination) const
-{
-}
-
 //
 // ISceneNodeComponent
 //
@@ -52,13 +48,8 @@ void CComponentBase::Accept(IVisitor* visitor)
 //
 // IObjectLoadSave
 //
-void CComponentBase::Load(const std::shared_ptr<IByteBuffer>& Buffer)
+void CComponentBase::Copy(std::shared_ptr<ISceneNodeComponent> Destination) const
 {
-}
-
-void CComponentBase::Save(const std::shared_ptr<IByteBuffer>& Buffer) const
-{
-
 }
 
 void CComponentBase::Load(const std::shared_ptr<IXMLReader>& Reader)

@@ -49,6 +49,7 @@ ZN_INTERFACE IEditorTools
 	virtual void Finalize() = 0;
 	virtual void Enable(ETool Tool) = 0;
 	virtual IEditorTool& GetTool(ETool Tool) = 0;
+	virtual const IEditorTool& GetTool(ETool Tool) const = 0;
 	virtual void DisableAll(ETool ExceptOfTool = EToolDefault) = 0;
 
 	// 3D
@@ -69,6 +70,12 @@ ZN_INTERFACE IEditorTools
 	{
 		return dynamic_cast<T&>(GetTool(Tool));
 	}
+
+	template<typename T>
+	inline const T& GetToolTConst(ETool Tool) const
+	{
+		return dynamic_cast<const T&>(GetTool(Tool));
+	}
 };
 
 
@@ -86,9 +93,9 @@ ZN_INTERFACE IEditorToolSelector
 	virtual void ClearSelection() = 0;
 	virtual void AddNode(std::shared_ptr<ISceneNode3D> Node) = 0;
 	virtual void RemoveNode(std::shared_ptr<ISceneNode3D> Node) = 0;
-	virtual std::shared_ptr<ISceneNode3D> GetFirstSelectedNode() = 0;
-	virtual bool IsNodeSelected(std::shared_ptr<ISceneNode3D> Node) = 0;
-	virtual const SelectedNodes& GetSelectedNodes() = 0;
+	virtual std::shared_ptr<ISceneNode3D> GetFirstSelectedNode() const = 0;
+	virtual bool IsNodeSelected(std::shared_ptr<ISceneNode3D> Node) const = 0;
+	virtual const SelectedNodes& GetSelectedNodes() const = 0;
 };
 ZN_INTERFACE IEditorToolSelectorEventListener
 {
@@ -177,7 +184,7 @@ ZN_INTERFACE IEditor3DFrame
 
 	virtual std::shared_ptr<IScene> GetEditedScene() const = 0;
 	virtual std::shared_ptr<ISceneNode3D> GetEditedRootNode3D() const = 0;
-	virtual std::shared_ptr<ISceneNode3D> GetNodeUnderMouse(const glm::ivec2& MousePos) const = 0;
+	virtual std::shared_ptr<ISceneNode3D> GetEditedNodeUnderMouse(const glm::ivec2& MousePos) const = 0;
 
 	virtual void OnCollectionWidget_ModelSelected(const std::shared_ptr<IModel>& Model) = 0;
 };

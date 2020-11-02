@@ -22,7 +22,7 @@ void ZenonWindow3D::onCustomContextMenu(const QPoint& pos)
 {
 	QMenu * menu = ZN_NEW QMenu(this);
 
-	auto node = m_Editor->Get3DFrame().GetNodeUnderMouse(glm::ivec2(pos.x(), pos.y()));
+	auto node = m_Editor->Get3DFrame().GetEditedNodeUnderMouse(glm::ivec2(pos.x(), pos.y()));
 	if (node == nullptr)
 		return;
 
@@ -41,9 +41,14 @@ void ZenonWindow3D::onCustomContextMenu(const QPoint& pos)
 	for (const auto& act : actions)
 	{
 		QAction * action = ZN_NEW QAction(act->GetName().c_str(), this);
+
+		if (false == act->ExecutePrecondition())
+			action->setEnabled(false);
+
 		connect(action, &QAction::triggered, this, [act] {
 			act->ExecuteAction();
 		});
+
 		menu->addAction(action);
 	}
 
