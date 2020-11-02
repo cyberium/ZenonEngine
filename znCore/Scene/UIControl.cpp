@@ -35,7 +35,7 @@ SceneNodeUI::~SceneNodeUI()
 
 
 //
-// ISceneNodeUI
+// IUIControl
 //
 void SceneNodeUI::Initialize()
 {
@@ -52,7 +52,7 @@ void SceneNodeUI::Finalize()
 //
 // Childs functional
 //
-void SceneNodeUI::AddChild(const std::shared_ptr<ISceneNodeUI>& childNode)
+void SceneNodeUI::AddChild(const std::shared_ptr<IUIControl>& childNode)
 {
 	if (childNode == nullptr)
 		throw CException(L"SceneNodeUI: Child node must not be NULL.");
@@ -74,7 +74,7 @@ void SceneNodeUI::AddChild(const std::shared_ptr<ISceneNodeUI>& childNode)
 
 }
 
-void SceneNodeUI::RemoveChild(const std::shared_ptr<ISceneNodeUI>& childNode)
+void SceneNodeUI::RemoveChild(const std::shared_ptr<IUIControl>& childNode)
 {
 	if (childNode == nullptr)
 	{
@@ -85,7 +85,7 @@ void SceneNodeUI::RemoveChild(const std::shared_ptr<ISceneNodeUI>& childNode)
 	this->RemoveChildInternal(childNode);
 }
 
-std::weak_ptr<ISceneNodeUI> SceneNodeUI::GetParent() const
+std::weak_ptr<IUIControl> SceneNodeUI::GetParent() const
 {
 	return m_ParentNode;
 }
@@ -111,9 +111,9 @@ std::shared_ptr<IPropertiesGroup> SceneNodeUI::GetProperties() const
 	return m_PropertiesGroup;
 }
 
-IScene * SceneNodeUI::GetScene() const
+IScene& SceneNodeUI::GetScene() const
 {
-	return m_Scene.lock().get();
+	return *m_Scene;
 }
 
 void SceneNodeUI::SetTranslate(const glm::vec2& _translate)
@@ -215,7 +215,7 @@ void SceneNodeUI::Accept(IVisitor* visitor)
 	if (visitResult & EVisitResult::AllowVisitChilds)
 	{
 		const auto& childs = GetChilds();
-		std::for_each(childs.begin(), childs.end(), [&visitor](const std::shared_ptr<ISceneNodeUI>& Child) {
+		std::for_each(childs.begin(), childs.end(), [&visitor](const std::shared_ptr<IUIControl>& Child) {
 			Child->Accept(visitor);
 		});
 	}
@@ -231,7 +231,7 @@ void SceneNodeUI::AcceptMesh(IVisitor* visitor)
 //
 // UI events
 //
-void SceneNodeUI::SetOnClickCallback(std::function<void(const ISceneNodeUI* Node, glm::vec2)> OnClickCallback)
+void SceneNodeUI::SetOnClickCallback(std::function<void(const IUIControl* Node, glm::vec2)> OnClickCallback)
 {
 	m_OnClickCallback = OnClickCallback;
 }
@@ -298,12 +298,12 @@ void SceneNodeUI::OnMouseLeaved()
 //
 // Private
 //
-void SceneNodeUI::SetSceneInternal(const std::weak_ptr<IScene>& Scene)
+void SceneNodeUI::SetSceneInternal(IScene* Scene)
 {
 	m_Scene = Scene;
 }
 
-void SceneNodeUI::AddChildInternal(const std::shared_ptr<ISceneNodeUI>& ChildNode)
+void SceneNodeUI::AddChildInternal(const std::shared_ptr<IUIControl>& ChildNode)
 {
 	_ASSERT(ChildNode != nullptr);
 
@@ -323,7 +323,7 @@ void SceneNodeUI::AddChildInternal(const std::shared_ptr<ISceneNodeUI>& ChildNod
 	ChildNode->RaiseOnParentChanged();
 }
 
-void SceneNodeUI::RemoveChildInternal(const std::shared_ptr<ISceneNodeUI>& ChildNode)
+void SceneNodeUI::RemoveChildInternal(const std::shared_ptr<IUIControl>& ChildNode)
 {
 	const auto& childListIter = std::find(m_Children.begin(), m_Children.end(), ChildNode);
 	if (childListIter == m_Children.end())
@@ -340,12 +340,12 @@ void SceneNodeUI::RemoveChildInternal(const std::shared_ptr<ISceneNodeUI>& Child
 	if (childNameMapIter != m_ChildrenByName.end())
 		m_ChildrenByName.erase(childNameMapIter);
 
-	std::dynamic_pointer_cast<SceneNodeUI>(ChildNode)->SetParentInternal(std::weak_ptr<ISceneNodeUI>());
+	std::dynamic_pointer_cast<SceneNodeUI>(ChildNode)->SetParentInternal(std::weak_ptr<IUIControl>());
 
 	ChildNode->RaiseOnParentChanged();
 }
 
-void SceneNodeUI::SetParentInternal(const std::weak_ptr<ISceneNodeUI>& parentNode)
+void SceneNodeUI::SetParentInternal(const std::weak_ptr<IUIControl>& parentNode)
 {
 	m_ParentNode = parentNode;
 }
@@ -386,7 +386,7 @@ void SceneNodeUI::UpdateWorldTransform()
 
 IBaseManager& SceneNodeUI::GetBaseManager() const
 {
-	return GetScene()->GetBaseManager();
+	return GetScene().GetBaseManager();
 }
 
 

@@ -6,7 +6,7 @@
 // Additional
 #include "Scene/Nodes/UIColor.h"
 
-CUIColorPass::CUIColorPass(IRenderDevice& RenderDevice, std::weak_ptr<IScene> Scene)
+CUIColorPass::CUIColorPass(IRenderDevice& RenderDevice, IScene& Scene)
 	: BaseUIPass(RenderDevice, Scene)
 {}
 
@@ -41,7 +41,7 @@ std::shared_ptr<IRenderPassPipelined> CUIColorPass::ConfigurePipeline(std::share
 //
 // IVisitor
 //
-EVisitResult CUIColorPass::Visit(const ISceneNodeUI * node)
+EVisitResult CUIColorPass::Visit(const IUIControl * node)
 {
 	if (const CUIColorNode* textNode = dynamic_cast<const CUIColorNode*>(node))
 		return BaseUIPass::Visit(node);

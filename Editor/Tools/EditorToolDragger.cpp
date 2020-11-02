@@ -29,7 +29,7 @@ void CEditorToolDragger::Disable()
 
 void CEditorToolDragger::DoInitialize3D(const std::shared_ptr<IRenderer>& Renderer, std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport)
 {
-	m_DraggerTextUI = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeUIFactory>()->CreateSceneNodeUI(&GetScene(), cSceneNodeUI_Text, GetScene().GetRootNodeUI());
+	m_DraggerTextUI = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<IUIControlFactory>()->CreateSceneNodeUI(cSceneNodeUI_Text, GetScene(), GetScene().GetRootNodeUI());
 	m_DraggerTextUI->SetName("DraggedNodePositionTextUI.");
 
 }
@@ -88,7 +88,7 @@ void CEditorToolDragger::DragEnterEvent(const SDragData& Data)
 		if (model == nullptr)
 			return;
 
-		m_DraggerNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, *GetEditor().Get3DFrame().GetEditedScene());
+		m_DraggerNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeFactory>()->CreateSceneNode3D(cSceneNode3D, *GetEditor().Get3DFrame().GetEditedScene());
 		m_DraggerNode->SetName(model->GetName());
 		m_DraggerNode->GetComponent<IModelsComponent3D>()->SetModel(model);
 	}
@@ -148,7 +148,7 @@ void CEditorToolDragger::CreateCopyDraggedNode()
 	if (m_DraggerNode == nullptr)
 		return;
 
-	auto copiedNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, GetScene());
+	auto copiedNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeFactory>()->CreateSceneNode3D(cSceneNode3D, GetScene());
 	m_DraggerNode->CopyTo(copiedNode);
 
 	copiedNode->SetTranslate(m_DraggerNode->GetTranslation());

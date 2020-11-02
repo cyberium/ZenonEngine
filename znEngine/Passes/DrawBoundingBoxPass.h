@@ -4,7 +4,7 @@ class ZN_API CDrawBoundingBoxPass
 	: public Base3DPass
 {
 public:
-	CDrawBoundingBoxPass(IRenderDevice& RenderDevice, std::shared_ptr<IScene> scene);
+	CDrawBoundingBoxPass(IRenderDevice& RenderDevice, IScene& scene);
 	virtual ~CDrawBoundingBoxPass();
 
 	// IRenderPassPipelined

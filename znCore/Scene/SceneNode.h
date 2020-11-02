@@ -21,7 +21,7 @@ public:
 	virtual void                                    AddChild(std::shared_ptr<ISceneNode> childNode) override final;
 	virtual void                                    RemoveChild(std::shared_ptr<ISceneNode> childNode) override final;
 	virtual std::shared_ptr<ISceneNode>             GetParent() const override final;
-	virtual const Node3DList&                       GetChilds() const override final;
+	virtual const SceneNodesList&                   GetChilds() const override final;
 	virtual std::shared_ptr<ISceneNode>             GetChild(std::string Name) const override;
 	bool                                            IsPersistance() const override;
 
@@ -110,8 +110,8 @@ private:
 
 	ComponentsMap                                   m_Components;
 
-	std::weak_ptr<ISceneNode>                     m_ParentNode;
-	Node3DList                                      m_Children;
+	std::weak_ptr<ISceneNode>                       m_ParentNode;
+	SceneNodesList                                  m_Children;
 	bool                                            m_IsPersistance;
 };
 

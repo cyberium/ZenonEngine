@@ -6,7 +6,7 @@
 // Additional
 #include "Materials/MaterialEditorTool.h"
 
-CDrawToolsPass::CDrawToolsPass(IRenderDevice& RenderDevice, std::shared_ptr<IScene> Scene)
+CDrawToolsPass::CDrawToolsPass(IRenderDevice& RenderDevice, IScene& Scene)
 	: Base3DPass(RenderDevice, Scene)
 {}
 

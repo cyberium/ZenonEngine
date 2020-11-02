@@ -43,6 +43,6 @@ private:
 
 	bool m_IsSelecting2D;
 	glm::vec2 m_SelectionPrevPos;
-	std::shared_ptr<ISceneNodeUI> m_SelectionTexture;
+	std::shared_ptr<IUIControl> m_SelectionTexture;
 	std::shared_ptr<CDrawSelectionPass> m_DrawSelectionPass;
 };

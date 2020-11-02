@@ -7,7 +7,6 @@ class ZN_API SceneBase
 	, public ISceneInternal
 	, public IRenderWindowEventListener
 	, public INativeWindowEventListener
-	, public Object
 {
 public:
 	SceneBase(IBaseManager& BaseManager, IRenderWindow& RenderWindow);
@@ -24,8 +23,8 @@ public:
 	virtual void                                    Initialize() override;
 	virtual void                                    Finalize() override;
 
-	std::shared_ptr<ISceneNode>					GetRootNode3D() const override;
-	std::shared_ptr<ISceneNodeUI>					GetRootNodeUI() const override;
+	std::shared_ptr<ISceneNode>					    GetRootNode3D() const override;
+	std::shared_ptr<IUIControl>					    GetRootNodeUI() const override;
 
 	void                                            SetRenderer(std::shared_ptr<IRenderer> Renderer) override;
 	std::shared_ptr<IRenderer>                      GetRenderer() const override;
@@ -81,32 +80,19 @@ public:
 	virtual void                                    OnMouseReleased(const MouseButtonEventArgs & e, const Ray& RayToWorld);
 	virtual void                                    OnMouseMoved(const MouseMotionEventArgs & e, const Ray& RayToWorld);
 
-	// IObject
-	Guid                                            GetGUID() const override final { return Object::GetGUID(); };
-	std::string                                     GetName() const override final { return Object::GetName(); };
-	void                                            SetName(const std::string& Name) override final { Object::SetName(Name); };
-
-
-	// IObjectSaveLoad
-	virtual void									Load(const std::shared_ptr<IXMLReader>& Reader) override;
-	virtual void									Save(const std::shared_ptr<IXMLWriter>& Writer) const override;
-
-protected:
-	
-
 private: // Input events process recursive
 	void                                            DoUpdate_Rec(const std::shared_ptr<ISceneNode>& Node, const UpdateEventArgs& e);
 
-	bool                                            DoKeyPressed_Rec(const std::shared_ptr<ISceneNodeUI>& Node, KeyEventArgs& e);
-	void                                            DoKeyReleased_Rec(const std::shared_ptr<ISceneNodeUI>& Node, KeyEventArgs& e);
-	void                                            DoMouseMoved_Rec(const std::shared_ptr<ISceneNodeUI>& Node, MouseMotionEventArgs& e);
-	bool                                            DoMouseButtonPressed_Rec(const std::shared_ptr<ISceneNodeUI>& Node, MouseButtonEventArgs& e);
-	void                                            DoMouseButtonReleased_Rec(const std::shared_ptr<ISceneNodeUI>& Node, MouseButtonEventArgs& e);
-	bool                                            DoMouseWheel_Rec(const std::shared_ptr<ISceneNodeUI>& Node, MouseWheelEventArgs& e);
+	bool                                            DoKeyPressed_Rec(const std::shared_ptr<IUIControl>& Node, KeyEventArgs& e);
+	void                                            DoKeyReleased_Rec(const std::shared_ptr<IUIControl>& Node, KeyEventArgs& e);
+	void                                            DoMouseMoved_Rec(const std::shared_ptr<IUIControl>& Node, MouseMotionEventArgs& e);
+	bool                                            DoMouseButtonPressed_Rec(const std::shared_ptr<IUIControl>& Node, MouseButtonEventArgs& e);
+	void                                            DoMouseButtonReleased_Rec(const std::shared_ptr<IUIControl>& Node, MouseButtonEventArgs& e);
+	bool                                            DoMouseWheel_Rec(const std::shared_ptr<IUIControl>& Node, MouseWheelEventArgs& e);
 
 protected:
-	std::shared_ptr<ISceneNode>                   m_RootNode3D;
-	std::shared_ptr<ISceneNodeUI>                   m_RootNodeUI;
+	std::shared_ptr<ISceneNode>                     m_RootNode3D;
+	std::shared_ptr<IUIControl>                     m_RootNodeUI;
 
 	std::shared_ptr<IRenderer>                      m_Renderer;
 
@@ -121,17 +107,17 @@ protected:
 	std::shared_ptr<ICameraController>              m_CameraController;
 	std::shared_ptr<ISettingGroup>                  m_VideoSettings;
 
-	std::shared_ptr<ISceneNodeUI>                   m_CameraPosText;
-	std::shared_ptr<ISceneNodeUI>                   m_CameraRotText;
-	std::shared_ptr<ISceneNodeUI>                   m_CameraRot2Text;
-	std::shared_ptr<ISceneNodeUI>                   m_FPSText;
+	std::shared_ptr<IUIControl>                   m_CameraPosText;
+	std::shared_ptr<IUIControl>                   m_CameraRotText;
+	std::shared_ptr<IUIControl>                   m_CameraRot2Text;
+	std::shared_ptr<IUIControl>                   m_FPSText;
 
-	std::shared_ptr<ISceneNodeUI>                   m_StatisticUpdateText;
-	std::shared_ptr<ISceneNodeUI>                   m_StatisticPreRenderText;
-	std::shared_ptr<ISceneNodeUI>                   m_StatisticRenderText;
-	std::shared_ptr<ISceneNodeUI>                   m_StatisticPostRenderText;
-	std::shared_ptr<ISceneNodeUI>                   m_StatisticRenderUIText;
-	std::shared_ptr<ISceneNodeUI>                   m_StatisticSummaText;
+	std::shared_ptr<IUIControl>                   m_StatisticUpdateText;
+	std::shared_ptr<IUIControl>                   m_StatisticPreRenderText;
+	std::shared_ptr<IUIControl>                   m_StatisticRenderText;
+	std::shared_ptr<IUIControl>                   m_StatisticPostRenderText;
+	std::shared_ptr<IUIControl>                   m_StatisticRenderUIText;
+	std::shared_ptr<IUIControl>                   m_StatisticSummaText;
 
 protected: // Функционал по отложенному добавлению нод
 	std::vector<std::pair<std::shared_ptr<ISceneNode>, std::shared_ptr<ISceneNode>>> m_AddChildList;

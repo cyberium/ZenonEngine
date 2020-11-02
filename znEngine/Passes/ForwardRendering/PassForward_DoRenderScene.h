@@ -4,7 +4,7 @@ class CPassForward_DoRenderScene
 	: public Base3DPass
 {
 public:
-	CPassForward_DoRenderScene(IRenderDevice& RenderDevice, std::weak_ptr<IScene> Scene);
+	CPassForward_DoRenderScene(IRenderDevice& RenderDevice, IScene& Scene);
 	virtual ~CPassForward_DoRenderScene();
 
 	IShaderParameter* GetLightsShaderParameter() const;

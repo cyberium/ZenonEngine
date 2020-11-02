@@ -32,9 +32,7 @@ protected:
 	void DoInitializeStructuredBuffer() = 0;
 
 	// IObject
-	Guid GetGUID() const override { return Object::GetGUID(); };
-	std::string GetName() const override { return Object::GetName(); };
-	void SetName(const std::string& Name) override { Object::SetName(Name); };
+	OBJECT_IMPLEMENT_BASE
 
 	// IObjectLoadSave
 	void Load(const std::shared_ptr<IByteBuffer>& ByteBuffer) override;

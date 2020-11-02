@@ -6,7 +6,7 @@
 // Additional
 #include "Materials/MaterialModel.h"
 
-CPassForward_DoRenderScene::CPassForward_DoRenderScene(IRenderDevice& RenderDevice, std::weak_ptr<IScene> Scene)
+CPassForward_DoRenderScene::CPassForward_DoRenderScene(IRenderDevice& RenderDevice, IScene& Scene)
 	: Base3DPass(RenderDevice, Scene)
 {
 	

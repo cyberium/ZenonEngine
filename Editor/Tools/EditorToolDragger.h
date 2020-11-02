@@ -35,5 +35,5 @@ private:
 	bool m_IsDraggingPermanentCreation;
 	std::shared_ptr<ISceneNode> m_DraggerNode;
 	std::shared_ptr<ISceneNode> m_LastCreatedNode;
-	std::shared_ptr<ISceneNodeUI> m_DraggerTextUI;
+	std::shared_ptr<IUIControl> m_DraggerTextUI;
 };

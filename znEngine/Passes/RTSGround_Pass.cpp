@@ -7,7 +7,7 @@
 #include "Scene/EngineSceneIntfs.h"
 #include "Materials/MaterialModel.h"
 
-CRTSGround_Pass::CRTSGround_Pass(IRenderDevice& RenderDevice, const std::weak_ptr<IScene>& scene)
+CRTSGround_Pass::CRTSGround_Pass(IRenderDevice& RenderDevice, IScene& scene)
 	: Base3DPass(RenderDevice, scene)
 {
 	

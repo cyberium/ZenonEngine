@@ -4,7 +4,7 @@ class CMaterial_Debug_Pass
 	: public Base3DPass
 {
 public:
-	CMaterial_Debug_Pass(IRenderDevice& RenderDevice, std::weak_ptr<IScene> Scene);
+	CMaterial_Debug_Pass(IRenderDevice& RenderDevice, IScene& Scene);
 	virtual ~CMaterial_Debug_Pass();
 
 	// IRenderPassPipelined

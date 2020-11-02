@@ -26,7 +26,7 @@ ZN_INTERFACE ZN_API ISceneNode
 	: public IObject
 	, public std::enable_shared_from_this<ISceneNode>
 {
-	typedef std::vector<std::shared_ptr<ISceneNode>>                Node3DList;
+	typedef std::vector<std::shared_ptr<ISceneNode>>                SceneNodesList;
 
 	virtual ~ISceneNode() {}
 
@@ -37,7 +37,7 @@ ZN_INTERFACE ZN_API ISceneNode
 	virtual void AddChild(std::shared_ptr<ISceneNode> childNode) = 0;
 	virtual void RemoveChild(std::shared_ptr<ISceneNode> childNode) = 0;
 	virtual std::shared_ptr<ISceneNode> GetParent() const = 0;
-	virtual const Node3DList& GetChilds() const = 0;
+	virtual const SceneNodesList& GetChilds() const = 0;
 	virtual std::shared_ptr<ISceneNode> GetChild(std::string Name) const = 0;
 	virtual bool IsPersistance() const = 0; // Means this node can't be deleted from parent and any parent may contains only one instance of this node (by Name)
 

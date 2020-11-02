@@ -26,9 +26,7 @@ protected:
 	void Set(const void* data, size_t size) override;
 
 	// IObject
-	Guid GetGUID() const override { return Object::GetGUID(); };
-	std::string GetName() const override { return Object::GetName(); };
-	void SetName(const std::string& Name) override final { Object::SetName(Name); };
+	OBJECT_IMPLEMENT_BASE
 
 private:
 	void Commit() const;

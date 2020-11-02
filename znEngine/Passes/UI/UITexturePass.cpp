@@ -6,7 +6,7 @@
 // Additional
 #include "Scene/Nodes/UITexture.h"
 
-CUITexturePass::CUITexturePass(IRenderDevice& RenderDevice, std::weak_ptr<IScene> Scene)
+CUITexturePass::CUITexturePass(IRenderDevice& RenderDevice, IScene& Scene)
 	: BaseUIPass(RenderDevice, Scene)
 {}
 
@@ -43,7 +43,7 @@ std::shared_ptr<IRenderPassPipelined> CUITexturePass::ConfigurePipeline(std::sha
 //
 // IVisitor
 //
-EVisitResult CUITexturePass::Visit(const ISceneNodeUI * node)
+EVisitResult CUITexturePass::Visit(const IUIControl * node)
 {
 	if (const CUITextureNode* textNode = dynamic_cast<const CUITextureNode*>(node))
 	{

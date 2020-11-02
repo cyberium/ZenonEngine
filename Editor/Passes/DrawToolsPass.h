@@ -4,7 +4,7 @@ class CDrawToolsPass
 	: public Base3DPass
 {
 public:
-	CDrawToolsPass(IRenderDevice& RenderDevice, std::shared_ptr<IScene> Scene);
+	CDrawToolsPass(IRenderDevice& RenderDevice, IScene& Scene);
 	virtual ~CDrawToolsPass();
 
 	// IRenderPassPipelined

@@ -120,7 +120,7 @@ bool CSceneNodeProxie::Accept(IVisitor * visitor)
 	{
 		visitResult = visitor->Visit3D(this);
 	}
-	else if (ISceneNodeUI* ss_ui = dynamic_cast<ISceneNodeUI*>(m_SceneNode))
+	else if (IUIControl* ss_ui = dynamic_cast<IUIControl*>(m_SceneNode))
 	{
 		visitResult = visitor->VisitUI(this);
 	}

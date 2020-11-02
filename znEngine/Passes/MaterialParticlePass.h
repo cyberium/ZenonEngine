@@ -4,7 +4,7 @@ class ZN_API CMaterialParticlePass
 	: public Base3DPass
 {
 public:
-	CMaterialParticlePass(IRenderDevice& RenderDevice, std::shared_ptr<IScene> Scene);
+	CMaterialParticlePass(IRenderDevice& RenderDevice, IScene& Scene);
 	virtual ~CMaterialParticlePass();
 
 	// IRenderPassPipelined

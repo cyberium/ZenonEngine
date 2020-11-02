@@ -31,7 +31,7 @@ ZN_INTERFACE ZN_API IObject
 #define OBJECT_IMPLEMENT_BASE \
 	Guid GetGUID() const override { return Object::GetGUID(); }; \
 	std::string GetName() const override { return Object::GetName(); }; \
-	void SetName(const std::string& Name) override final { Object::SetName(Name); };
+	void SetName(const std::string& Name) override { Object::SetName(Name); };
 
 
 ZN_INTERFACE ZN_API IObjectPrivate

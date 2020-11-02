@@ -23,9 +23,7 @@ public:
 	virtual void Unbind(const ShaderMap& shaders) const override;
 
 	// IObject
-	Guid GetGUID() const override final { return Object::GetGUID(); };
-	std::string GetName() const override final { return Object::GetName(); };
-	void SetName(const std::string& Name) override final { Object::SetName(Name); };
+	OBJECT_IMPLEMENT_BASE
 
 	// IObjectLoadSave
 	void Load(const std::shared_ptr<IByteBuffer>& Buffer) override;

@@ -6,7 +6,7 @@
 // Additional
 #include "Materials/MaterialParticle.h"
 
-CMaterialParticlePass::CMaterialParticlePass(IRenderDevice& RenderDevice, std::shared_ptr<IScene> Scene)
+CMaterialParticlePass::CMaterialParticlePass(IRenderDevice& RenderDevice, IScene& Scene)
 	: Base3DPass(RenderDevice, Scene)
 {
 	m_Geometry = GetRenderDevice().GetObjectsFactory().CreateGeometry();

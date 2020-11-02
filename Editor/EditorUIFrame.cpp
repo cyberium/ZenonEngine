@@ -237,7 +237,7 @@ void CEditorUIFrame::OnSceneLoadFromFile()
 
 	CXMLManager xml(m_Editor.GetBaseManager());
 	auto reader = xml.CreateReader(file);
-	auto xmlRoot = m_Editor.GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->LoadSceneNode3DXML(reader->GetChilds()[0], editorRoot->GetScene(), realRoot);
+	auto xmlRoot = m_Editor.GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeFactory>()->LoadSceneNode3DXML(reader->GetChilds()[0], editorRoot->GetScene(), realRoot);
 
 	// Update persistance nodes
 	for (const auto& editorChild : editorRoot->GetChilds())
@@ -272,7 +272,7 @@ void CEditorUIFrame::OnSceneSaveToFile()
 
 	CXMLManager manager(m_Editor.GetBaseManager());
 
-	auto rootWriter = m_Editor.GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->SaveSceneNode3DXML(m_Editor.Get3DFrame().GetEditedRootNode3D());
+	auto rootWriter = m_Editor.GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeFactory>()->SaveSceneNode3DXML(m_Editor.Get3DFrame().GetEditedRootNode3D());
 
 	auto writer = manager.CreateWriter();
 	writer->AddChild(rootWriter);

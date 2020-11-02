@@ -2,24 +2,24 @@
 
 // FORWARD BEGIN
 ZN_INTERFACE ISceneNode;
-ZN_INTERFACE ISceneNodeUI;
+ZN_INTERFACE IUIControl;
 // FORWARD END
 
 
-ZN_INTERFACE ZN_API ISceneNode3DCreationArgs
+ZN_INTERFACE ZN_API ISceneNodeCreationArgs
 	: public IObjectCreationArgs
 {
-	virtual ~ISceneNode3DCreationArgs() {}
+	virtual ~ISceneNodeCreationArgs() {}
 
 	virtual IScene& GetScene() const = 0;
 	virtual std::shared_ptr<ISceneNode> GetParent() const = 0;
 };
 
-ZN_INTERFACE ZN_API ISceneNode3DFactory
+ZN_INTERFACE ZN_API ISceneNodeFactory
 {
-	static ObjectType GetSupportedObjectType() { return otSceneNode3D; }
+	static ObjectType GetSupportedObjectType() { return otSceneNode; }
 
-	virtual ~ISceneNode3DFactory() {}
+	virtual ~ISceneNodeFactory() {}
 
 	virtual std::shared_ptr<ISceneNode> CreateSceneNode3D(ObjectClass ObjectClassKey, IScene& Scene, const std::shared_ptr<ISceneNode>& Parent = nullptr) = 0;
 	virtual std::shared_ptr<ISceneNode> LoadSceneNode3DXML(const std::shared_ptr<IXMLReader>& Reader, IScene& Scene, const std::shared_ptr<ISceneNode>& Parent = nullptr) = 0;
@@ -30,22 +30,22 @@ ZN_INTERFACE ZN_API ISceneNode3DFactory
 
 // ==================================================================
 
-ZN_INTERFACE ZN_API ISceneNodeUICreationArgs
+ZN_INTERFACE ZN_API IUIControlCreationArgs
 	: public IObjectCreationArgs
 {
-	virtual ~ISceneNodeUICreationArgs() {}
+	virtual ~IUIControlCreationArgs() {}
 
-	virtual IScene* GetScene() const = 0;
-	virtual std::shared_ptr<ISceneNodeUI> GetParent() const = 0;
+	virtual IScene& GetScene() const = 0;
+	virtual std::shared_ptr<IUIControl> GetParent() const = 0;
 };
 
-ZN_INTERFACE ZN_API ISceneNodeUIFactory
+ZN_INTERFACE ZN_API IUIControlFactory
 {
-	static ObjectType GetSupportedObjectType() { return otSceneNodeUI; }
+	static ObjectType GetSupportedObjectType() { return otUIControl; }
 
-	virtual ~ISceneNodeUIFactory() {}
+	virtual ~IUIControlFactory() {}
 
-	virtual std::shared_ptr<ISceneNodeUI> CreateSceneNodeUI(IScene* Scene, ObjectClass ObjectClassKey, const std::shared_ptr<ISceneNodeUI>& Parent = nullptr) = 0;
+	virtual std::shared_ptr<IUIControl> CreateSceneNodeUI(ObjectClass ObjectClassKey, IScene& Scene, const std::shared_ptr<IUIControl>& Parent = nullptr) = 0;
 };
 
 

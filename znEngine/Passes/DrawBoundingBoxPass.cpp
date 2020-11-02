@@ -3,7 +3,7 @@
 // General
 #include "DrawBoundingBoxPass.h"
 
-CDrawBoundingBoxPass::CDrawBoundingBoxPass(IRenderDevice& RenderDevice, std::shared_ptr<IScene> scene)
+CDrawBoundingBoxPass::CDrawBoundingBoxPass(IRenderDevice& RenderDevice, IScene& scene)
 	: Base3DPass(RenderDevice, scene)
 {
 }

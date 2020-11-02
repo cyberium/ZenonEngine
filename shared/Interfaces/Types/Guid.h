@@ -10,8 +10,8 @@ enum ObjectTypes : ObjectType // Interfaces
 {
 	otObject = 0,
 
-	otSceneNode3D,
-	otSceneNodeUI,
+	otSceneNode,
+	otUIControl,
 	otSceneNodeComponent,
 
 	otMaterial,

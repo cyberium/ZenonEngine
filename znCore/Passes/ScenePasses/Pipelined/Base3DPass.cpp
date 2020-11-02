@@ -3,7 +3,7 @@
 // General
 #include "Base3DPass.h"
 
-Base3DPass::Base3DPass(IRenderDevice& RenderDevice, const std::weak_ptr<IScene>& scene)
+Base3DPass::Base3DPass(IRenderDevice& RenderDevice, IScene& scene)
     : ScenePassPipelined(RenderDevice, scene)
 	, m_PerObjectParameter(nullptr)
 {

@@ -3,7 +3,7 @@
 // General
 #include "BaseUIPass.h"
 
-BaseUIPass::BaseUIPass(IRenderDevice& RenderDevice, const std::weak_ptr<IScene>& Scene)
+BaseUIPass::BaseUIPass(IRenderDevice& RenderDevice, IScene& Scene)
 	: ScenePassPipelined(RenderDevice, Scene)
 	, m_PerObjectParameter(nullptr)
 {
@@ -36,7 +36,7 @@ std::shared_ptr<IRenderPassPipelined> BaseUIPass::ConfigurePipeline(std::shared_
 //
 // IVisitor
 //
-EVisitResult BaseUIPass::Visit(const ISceneNodeUI* sceneNode)
+EVisitResult BaseUIPass::Visit(const IUIControl* sceneNode)
 {
 	PerObject perObject;
 	perObject.Model = sceneNode->GetWorldTransfom();

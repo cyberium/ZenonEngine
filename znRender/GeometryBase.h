@@ -22,9 +22,7 @@ public:
 	virtual void         Accept(IVisitor* visitor, const IMaterial* Material, SGeometryDrawArgs GeometryDrawArgs = SGeometryDrawArgs()) override;
 
 	// IObject
-	Guid                 GetGUID() const override final { return Object::GetGUID(); };
-	std::string          GetName() const override final { return Object::GetName(); };
-	void                 SetName(const std::string& Name) override final { Object::SetName(Name); };
+	OBJECT_IMPLEMENT_BASE
 
 	// IObjectLoadSave
 	void                 Load(const std::shared_ptr<IByteBuffer>& ByteBuffer) override;

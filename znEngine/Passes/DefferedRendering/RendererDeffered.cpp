@@ -13,7 +13,7 @@
 #include "Passes/UI/UIFontPass.h"
 #include "Passes/UI/UIColorPass.h"
 
-CRendererDeffered::CRendererDeffered(IBaseManager& BaseManager, const std::weak_ptr<IScene>& Scene)
+CRendererDeffered::CRendererDeffered(IBaseManager& BaseManager, IScene& Scene)
 	: m_BaseManager(BaseManager)
 	, m_RenderDevice(BaseManager.GetApplication().GetRenderDevice())
 	, m_Scene(Scene)

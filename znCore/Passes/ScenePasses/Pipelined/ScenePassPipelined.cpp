@@ -3,7 +3,7 @@
 // General
 #include "ScenePassPipelined.h"
 
-ScenePassPipelined::ScenePassPipelined(IRenderDevice& RenderDevice, const std::weak_ptr<IScene>& Scene)
+ScenePassPipelined::ScenePassPipelined(IRenderDevice& RenderDevice, IScene& Scene)
 	: RenderPassPipelined(RenderDevice)
 	, m_Scene(Scene)
 {}
@@ -16,13 +16,13 @@ ScenePassPipelined::~ScenePassPipelined()
 //
 void ScenePassPipelined::Render(RenderEventArgs& e)
 {
-	GetScene()->Accept(this);
+	GetScene().Accept(this);
 }
 
 //
 // Protected
 //
-std::shared_ptr<IScene> ScenePassPipelined::GetScene() const
+IScene& ScenePassPipelined::GetScene() const
 {
-	return m_Scene.lock();
+	return m_Scene;
 }

@@ -4,7 +4,7 @@ class CMaterial_Textured_Pass
 	: public Base3DPass
 {
 public:
-	CMaterial_Textured_Pass(IRenderDevice& RenderDevice, std::shared_ptr<IScene> Scene);
+	CMaterial_Textured_Pass(IRenderDevice& RenderDevice, IScene& Scene);
 	virtual ~CMaterial_Textured_Pass();
 
 	// IRenderPassPipelined

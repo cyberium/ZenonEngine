@@ -40,7 +40,7 @@ void CEditor3DFrame::Initialize()
 
 	// Light
 	{
-		auto lightNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, *this);
+		auto lightNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeFactory>()->CreateSceneNode3D(cSceneNode3D, *this);
 		lightNode->SetName("Light");
 		lightNode->SetTranslate(rtsCenter);
 		lightNode->SetRotation(glm::vec3(0.f, -0.01f, 0.0f));
@@ -55,7 +55,7 @@ void CEditor3DFrame::Initialize()
 
 	// Camera
 	{
-		auto cameraNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, *this);
+		auto cameraNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeFactory>()->CreateSceneNode3D(cSceneNode3D, *this);
 		cameraNode->SetName("Camera");
 		auto geom = GetRenderDevice().GetPrimitivesFactory().CreateBBox();
 		auto mat = MakeShared(MaterialDebug, GetRenderDevice());
@@ -121,7 +121,7 @@ void CEditor3DFrame::Initialize()
 			auto& modelPlane = GetRenderDevice().GetObjectsFactory().CreateModel();
 			modelPlane->AddConnection(textMaterial, GetRenderDevice().GetPrimitivesFactory().CreateCube());
 
-			auto node = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, this, GetRootNode3D());
+			auto node = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeFactory>()->CreateSceneNode3D(cSceneNode3D, this, GetRootNode3D());
 			node->SetName("Sphere2");
 			node->SetTranslate(glm::vec3(-10, 15, 16 * i));
 			node->SetScale(glm::vec3(15.0f));
@@ -129,9 +129,9 @@ void CEditor3DFrame::Initialize()
 			//node->GetComponent<IModelsComponent3D>()->SetCastShadows(false);
 		}*/
 
-		auto forwardRenderer = MakeShared(CRendererForward, GetBaseManager(), weak_from_this());
+		auto forwardRenderer = MakeShared(CRendererForward, GetBaseManager(), *this);
 		forwardRenderer->Initialize(GetRenderWindow().GetRenderTarget(), &GetRenderWindow().GetViewport());
-		forwardRenderer->AddPass(MakeShared(CDrawToolsPass, GetRenderDevice(), shared_from_this())->ConfigurePipeline(GetRenderWindow().GetRenderTarget(), &GetRenderWindow().GetViewport()));
+		forwardRenderer->AddPass(MakeShared(CDrawToolsPass, GetRenderDevice(), *this)->ConfigurePipeline(GetRenderWindow().GetRenderTarget(), &GetRenderWindow().GetViewport()));
 		SetRenderer(forwardRenderer);
 	}
 
@@ -190,7 +190,7 @@ IEditor& CEditor3DFrame::GetEditor() const
 bool CEditor3DFrame::InitializeEditorFrame()
 {
 	{
-		auto node = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, *this);
+		auto node = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeFactory>()->CreateSceneNode3D(cSceneNode3D, *this);
 		node->SetName("Grid node x1.");
 		node->SetTranslate(glm::vec3(0.0f));
 		node->SetScale(glm::vec3(1.0f));
@@ -207,7 +207,7 @@ bool CEditor3DFrame::InitializeEditorFrame()
 	}
 
 	{
-		auto node = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, *this);
+		auto node = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeFactory>()->CreateSceneNode3D(cSceneNode3D, *this);
 		node->SetName("Grid node x10.");
 		node->SetTranslate(glm::vec3(0.0f, 0.00f, 0.0f));
 		node->SetScale(glm::vec3(10.0f));
@@ -224,7 +224,7 @@ bool CEditor3DFrame::InitializeEditorFrame()
 	}
 
 	{
-		auto node = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, *this);
+		auto node = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeFactory>()->CreateSceneNode3D(cSceneNode3D, *this);
 		node->SetName("Grid node x100.");
 		node->SetTranslate(glm::vec3(0.0f, 0.00f, 0.0f));
 		node->SetScale(glm::vec3(100.0f));

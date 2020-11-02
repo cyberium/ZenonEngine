@@ -14,33 +14,29 @@ const ObjectClass cSceneNodeUI = UINT16_MAX - 200u;
 const ObjectClass cSceneNodeUI_Text = UINT16_MAX - 201u;
 const ObjectClass cSceneNodeUI_Color = UINT16_MAX - 202u;
 
-ZN_INTERFACE ZN_API ISceneNodeUI
+ZN_INTERFACE ZN_API IUIControl
 	: public IObject
-    , public std::enable_shared_from_this<ISceneNodeUI>
+    , public std::enable_shared_from_this<IUIControl>
 {
-	typedef std::vector<std::shared_ptr<ISceneNodeUI>>                NodeUIList;
-	typedef std::multimap<std::string, std::shared_ptr<ISceneNodeUI>> NodeUINameMap;
+	typedef std::vector<std::shared_ptr<IUIControl>>                NodeUIList;
+	typedef std::multimap<std::string, std::shared_ptr<IUIControl>> NodeUINameMap;
 
-	virtual ~ISceneNodeUI() {}
+	virtual ~IUIControl() {}
 
 	virtual void Initialize() = 0;
 	virtual void Finalize() = 0;
 	
 	// Childs functional
-	virtual void AddChild(const std::shared_ptr<ISceneNodeUI>& childNode) = 0;
-	virtual void RemoveChild(const std::shared_ptr<ISceneNodeUI>& childNode) = 0;
-	virtual std::weak_ptr<ISceneNodeUI> GetParent() const = 0;
+	virtual void AddChild(const std::shared_ptr<IUIControl>& childNode) = 0;
+	virtual void RemoveChild(const std::shared_ptr<IUIControl>& childNode) = 0;
+	virtual std::weak_ptr<IUIControl> GetParent() const = 0;
 	virtual const NodeUIList& GetChilds() = 0;
 	virtual void RaiseOnParentChanged() = 0;
 
-	//template<typename T, typename... Args> inline std::shared_ptr<T> CreateSceneNode(Args &&... _Args)
-	//{
-	//	return GetScene()->CreateSceneNodeUI<T>(shared_from_this(), std::forward<Args>(_Args)...);
-	//}
 
 	// Actions & Properties
 	virtual std::shared_ptr<IPropertiesGroup> GetProperties() const = 0;
-	virtual IScene* GetScene() const = 0;
+	virtual IScene& GetScene() const = 0;
 
 	//
 	// Transform functional

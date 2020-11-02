@@ -115,7 +115,7 @@ void CSceneNode::CopyTo(std::shared_ptr<ISceneNode> Destination) const
 
 	for (const auto& ch : GetChilds())
 	{
-		std::shared_ptr<ISceneNode> childCopy = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(ch->GetType(), Destination->GetScene(), Destination);
+		std::shared_ptr<ISceneNode> childCopy = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeFactory>()->CreateSceneNode3D(ch->GetType(), Destination->GetScene(), Destination);
 		ch->CopyTo(childCopy);
 	}
 }
@@ -161,7 +161,7 @@ std::shared_ptr<ISceneNode> CSceneNode::GetParent() const
 	return m_ParentNode.lock();
 }
 
-const CSceneNode::Node3DList& CSceneNode::GetChilds() const
+const CSceneNode::SceneNodesList& CSceneNode::GetChilds() const
 {
 	return m_Children;
 }
@@ -456,7 +456,7 @@ void CSceneNode::Load(const std::shared_ptr<IXMLReader>& Reader)
 		{
 			try
 			{
-				auto child = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->LoadSceneNode3DXML(ch, GetScene());
+				auto child = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeFactory>()->LoadSceneNode3DXML(ch, GetScene());
 				AddChild(child);
 			}
 			catch (const CException& e)
@@ -501,7 +501,7 @@ void CSceneNode::Save(const std::shared_ptr<IXMLWriter>& Writer) const
 		{
 			try
 			{
-				auto childWriter = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->SaveSceneNode3DXML(ch);
+				auto childWriter = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeFactory>()->SaveSceneNode3DXML(ch);
 				childsWriter->AddChild(childWriter);
 			}
 			catch (const CException& e)

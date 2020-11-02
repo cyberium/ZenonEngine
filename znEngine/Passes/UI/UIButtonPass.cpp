@@ -6,7 +6,7 @@
 // Additional
 #include "Scene/Nodes/UIButton.h"
 
-CUIButtonPass::CUIButtonPass(IRenderDevice& RenderDevice, std::weak_ptr<IScene> Scene)
+CUIButtonPass::CUIButtonPass(IRenderDevice& RenderDevice, IScene& Scene)
 	: BaseUIPass(RenderDevice, Scene)
 {}
 
@@ -43,7 +43,7 @@ std::shared_ptr<IRenderPassPipelined> CUIButtonPass::ConfigurePipeline(std::shar
 //
 // IVisitor
 //
-EVisitResult CUIButtonPass::Visit(const ISceneNodeUI * node)
+EVisitResult CUIButtonPass::Visit(const IUIControl * node)
 {
 	if (const CUIButtonNode* textNode = dynamic_cast<const CUIButtonNode*>(node))
 	{

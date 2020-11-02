@@ -6,7 +6,7 @@
 // Additional
 #include "Materials/MaterialDebug.h"
 
-CMaterial_Debug_Pass::CMaterial_Debug_Pass(IRenderDevice& RenderDevice, std::weak_ptr<IScene> Scene)
+CMaterial_Debug_Pass::CMaterial_Debug_Pass(IRenderDevice& RenderDevice, IScene& Scene)
 	: Base3DPass(RenderDevice, Scene)
 {}
 

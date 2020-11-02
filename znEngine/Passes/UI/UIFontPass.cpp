@@ -6,7 +6,7 @@
 // Additional
 #include "Scene/Nodes/UIText.h"
 
-CUIFontPass::CUIFontPass(IRenderDevice& RenderDevice, std::weak_ptr<IScene> Scene)
+CUIFontPass::CUIFontPass(IRenderDevice& RenderDevice, IScene& Scene)
 	: BaseUIPass(RenderDevice, Scene)
 {
 }
@@ -63,7 +63,7 @@ std::shared_ptr<IRenderPassPipelined> CUIFontPass::ConfigurePipeline(std::shared
 //
 // IVisitor
 //
-EVisitResult CUIFontPass::Visit(const ISceneNodeUI * node)
+EVisitResult CUIFontPass::Visit(const IUIControl * node)
 {
 	if (const CUITextNode* textNode = dynamic_cast<const CUITextNode*>(node))
 	{

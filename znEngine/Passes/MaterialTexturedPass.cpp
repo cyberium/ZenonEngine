@@ -6,7 +6,7 @@
 // Additional
 #include "Materials/MaterialTextured.h"
 
-CMaterial_Textured_Pass::CMaterial_Textured_Pass(IRenderDevice& RenderDevice, std::shared_ptr<IScene> Scene)
+CMaterial_Textured_Pass::CMaterial_Textured_Pass(IRenderDevice& RenderDevice, IScene& Scene)
 	: Base3DPass(RenderDevice, Scene)
 {}
 

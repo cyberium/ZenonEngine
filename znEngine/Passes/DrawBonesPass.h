@@ -4,7 +4,7 @@ class ZN_API CDrawBonesPass
 	: public Base3DPass
 {
 public:
-	CDrawBonesPass(IRenderDevice& RenderDevice, std::shared_ptr<IScene> scene);
+	CDrawBonesPass(IRenderDevice& RenderDevice, IScene& scene);
 	virtual ~CDrawBonesPass();
 
 	// IRenderPassPipelined

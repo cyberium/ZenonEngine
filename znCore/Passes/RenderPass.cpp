@@ -46,7 +46,7 @@ EVisitResult RenderPass::Visit(const ISceneNode* node)
 	return EVisitResult::Block;
 }
 
-EVisitResult RenderPass::Visit(const ISceneNodeUI* node)
+EVisitResult RenderPass::Visit(const IUIControl* node)
 {
 	return EVisitResult::Block;
 }

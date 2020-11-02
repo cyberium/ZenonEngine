@@ -6,15 +6,15 @@ class ZN_API ScenePass
 	: public RenderPass
 {
 public:
-	ScenePass(IRenderDevice& RenderDevice, const std::weak_ptr<IScene>& Scene);
+	ScenePass(IRenderDevice& RenderDevice, IScene& Scene);
 	virtual ~ScenePass();
 
 	// IRenderPass
 	virtual void Render(RenderEventArgs& e) override;
 
 protected:
-	std::shared_ptr<IScene> GetScene() const;
+	IScene& GetScene() const;
 	
 private:
-	std::weak_ptr<IScene> m_Scene;
+	IScene& m_Scene;
 };

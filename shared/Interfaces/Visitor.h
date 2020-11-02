@@ -4,7 +4,7 @@
 
 // FORWARD BEGIN
 ZN_INTERFACE ISceneNode;
-ZN_INTERFACE ISceneNodeUI;
+ZN_INTERFACE IUIControl;
 ZN_INTERFACE IModel;
 ZN_INTERFACE IGeometry;
 ZN_INTERFACE IMaterial;
@@ -35,7 +35,7 @@ ZN_INTERFACE ZN_API IVisitor
 	virtual ~IVisitor() {}
 
 	virtual EVisitResult Visit(const ISceneNode* SceneNode) = 0;
-	virtual EVisitResult Visit(const ISceneNodeUI* SceneNode) = 0;
+	virtual EVisitResult Visit(const IUIControl* SceneNode) = 0;
 	virtual EVisitResult Visit(const IModel* Model) = 0;
 	virtual EVisitResult Visit(const IGeometry* Geometry, const IMaterial* Material, SGeometryDrawArgs GeometryDrawArgs = SGeometryDrawArgs()) = 0;
 	virtual EVisitResult Visit(const ISceneNodeComponent* Component) = 0;

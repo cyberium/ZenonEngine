@@ -12,7 +12,7 @@ class ZN_API CRendererDeffered
 	: public IRenderer
 {
 public:
-	CRendererDeffered(IBaseManager& BaseManagerl, const std::weak_ptr<IScene>& Scene);
+	CRendererDeffered(IBaseManager& BaseManagerl, IScene& Scene);
 	virtual ~CRendererDeffered();
 
 	// IRenderer
@@ -41,5 +41,5 @@ private:
 private:
 	IBaseManager& m_BaseManager;
 	IRenderDevice& m_RenderDevice;
-	std::weak_ptr<IScene> m_Scene;
+	IScene& m_Scene;
 };

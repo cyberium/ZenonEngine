@@ -70,51 +70,51 @@ void SceneBase::Initialize()
 	m_FrameQuery = GetRenderDevice().GetObjectsFactory().CreateQuery(IQuery::QueryType::Timer, 1);
 	m_TestQuery = GetRenderDevice().GetObjectsFactory().CreateQuery(IQuery::QueryType::CountSamples, 1);
 
-	m_RootNode3D = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, *this);
+	m_RootNode3D = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeFactory>()->CreateSceneNode3D(cSceneNode3D, *this);
 	m_RootNode3D->SetName("RootNode3D");
 	std::dynamic_pointer_cast<ISceneNodeInternal>(m_RootNode3D)->SetPersistanceInternal(true);
 
-	m_RootNodeUI = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeUIFactory>()->CreateSceneNodeUI(this, cSceneNodeUI);
+	m_RootNodeUI = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<IUIControlFactory>()->CreateSceneNodeUI(cSceneNodeUI, *this);
 	m_RootNodeUI->SetName("RootNodeUI");
 
 	{
-		m_CameraPosText = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeUIFactory>()->CreateSceneNodeUI(this, cSceneNodeUI_Text);
+		m_CameraPosText = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<IUIControlFactory>()->CreateSceneNodeUI(cSceneNodeUI_Text, *this);
 		GetRootNodeUI()->AddChild(m_CameraPosText);
 		m_CameraPosText->SetTranslate(glm::vec2(5.0f, 5.0f));
 
-		m_CameraRotText = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeUIFactory>()->CreateSceneNodeUI(this, cSceneNodeUI_Text);
+		m_CameraRotText = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<IUIControlFactory>()->CreateSceneNodeUI(cSceneNodeUI_Text, *this);
 		GetRootNodeUI()->AddChild(m_CameraRotText);
 		m_CameraRotText->SetTranslate(glm::vec2(5.0f, 25.0f));
 
-		m_CameraRot2Text = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeUIFactory>()->CreateSceneNodeUI(this, cSceneNodeUI_Text);
+		m_CameraRot2Text = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<IUIControlFactory>()->CreateSceneNodeUI(cSceneNodeUI_Text, *this);
 		GetRootNodeUI()->AddChild(m_CameraRot2Text);
 		m_CameraRot2Text->SetTranslate(glm::vec2(5.0f, 45.0f));
 
-		m_FPSText = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeUIFactory>()->CreateSceneNodeUI(this, cSceneNodeUI_Text);
+		m_FPSText = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<IUIControlFactory>()->CreateSceneNodeUI(cSceneNodeUI_Text, *this);
 		GetRootNodeUI()->AddChild(m_FPSText);
 		m_FPSText->SetTranslate(glm::vec2(5.0f, 65.0f));
 
-		m_StatisticUpdateText = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeUIFactory>()->CreateSceneNodeUI(this, cSceneNodeUI_Text);
+		m_StatisticUpdateText = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<IUIControlFactory>()->CreateSceneNodeUI(cSceneNodeUI_Text, *this);
 		GetRootNodeUI()->AddChild(m_StatisticUpdateText);
 		m_StatisticUpdateText->SetTranslate(glm::vec2(5.0f, 85.0f));
 		
-		m_StatisticPreRenderText = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeUIFactory>()->CreateSceneNodeUI(this, cSceneNodeUI_Text);
+		m_StatisticPreRenderText = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<IUIControlFactory>()->CreateSceneNodeUI(cSceneNodeUI_Text, *this);
 		GetRootNodeUI()->AddChild(m_StatisticPreRenderText);
 		m_StatisticPreRenderText->SetTranslate(glm::vec2(5.0f, 105.0f));
 		
-		m_StatisticRenderText = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeUIFactory>()->CreateSceneNodeUI(this, cSceneNodeUI_Text);
+		m_StatisticRenderText = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<IUIControlFactory>()->CreateSceneNodeUI(cSceneNodeUI_Text, *this);
 		GetRootNodeUI()->AddChild(m_StatisticRenderText);
 		m_StatisticRenderText->SetTranslate(glm::vec2(5.0f, 125.0f));
 		
-		m_StatisticPostRenderText = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeUIFactory>()->CreateSceneNodeUI(this, cSceneNodeUI_Text);
+		m_StatisticPostRenderText = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<IUIControlFactory>()->CreateSceneNodeUI(cSceneNodeUI_Text, *this);
 		GetRootNodeUI()->AddChild(m_StatisticPostRenderText);
 		m_StatisticPostRenderText->SetTranslate(glm::vec2(5.0f, 145.0f));
 		
-		m_StatisticRenderUIText = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeUIFactory>()->CreateSceneNodeUI(this, cSceneNodeUI_Text);
+		m_StatisticRenderUIText = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<IUIControlFactory>()->CreateSceneNodeUI(cSceneNodeUI_Text, *this);
 		GetRootNodeUI()->AddChild(m_StatisticRenderUIText);
 		m_StatisticRenderUIText->SetTranslate(glm::vec2(5.0f, 165.0f));
 
-		m_StatisticSummaText = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeUIFactory>()->CreateSceneNodeUI(this, cSceneNodeUI_Text);
+		m_StatisticSummaText = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<IUIControlFactory>()->CreateSceneNodeUI(cSceneNodeUI_Text, *this);
 		GetRootNodeUI()->AddChild(m_StatisticSummaText);
 		m_StatisticSummaText->SetTranslate(glm::vec2(5.0f, 185.0f));
 	}
@@ -139,7 +139,7 @@ std::shared_ptr<ISceneNode> SceneBase::GetRootNode3D() const
 	return m_RootNode3D;
 }
 
-std::shared_ptr<ISceneNodeUI> SceneBase::GetRootNodeUI() const
+std::shared_ptr<IUIControl> SceneBase::GetRootNodeUI() const
 {
 	return m_RootNodeUI;
 }
@@ -483,28 +483,8 @@ void SceneBase::OnMouseMoved(const MouseMotionEventArgs & e, const Ray& RayToWor
 
 
 //
-// IObjectSaveLoad
-//
-void SceneBase::Load(const std::shared_ptr<IXMLReader>& Reader)
-{
-	_ASSERT(FALSE);
-}
-
-void SceneBase::Save(const std::shared_ptr<IXMLWriter>& Writer) const
-{
-	_ASSERT(FALSE);
-}
-
-
-
-//
 // Protected
 //
-
-
-
-
-
 void SceneBase::DoUpdate_Rec(const std::shared_ptr<ISceneNode>& Node, const UpdateEventArgs & e)
 {
 	Node->Update(e);
@@ -527,7 +507,7 @@ void SceneBase::DoUpdate_Rec(const std::shared_ptr<ISceneNode>& Node, const Upda
 //
 // Input events process recursive
 //
-bool SceneBase::DoKeyPressed_Rec(const std::shared_ptr<ISceneNodeUI>& Node, KeyEventArgs & e)
+bool SceneBase::DoKeyPressed_Rec(const std::shared_ptr<IUIControl>& Node, KeyEventArgs & e)
 {
 	std::shared_ptr<SceneNodeUI> NodeAsUINode = std::dynamic_pointer_cast<SceneNodeUI>(Node);
 	if (NodeAsUINode != nullptr)
@@ -543,7 +523,7 @@ bool SceneBase::DoKeyPressed_Rec(const std::shared_ptr<ISceneNodeUI>& Node, KeyE
 	return false;
 }
 
-void SceneBase::DoKeyReleased_Rec(const std::shared_ptr<ISceneNodeUI>& Node, KeyEventArgs & e)
+void SceneBase::DoKeyReleased_Rec(const std::shared_ptr<IUIControl>& Node, KeyEventArgs & e)
 {
 	std::shared_ptr<SceneNodeUI> NodeAsUINode = std::dynamic_pointer_cast<SceneNodeUI>(Node);
 	if (NodeAsUINode != nullptr)
@@ -558,7 +538,7 @@ void SceneBase::DoKeyReleased_Rec(const std::shared_ptr<ISceneNodeUI>& Node, Key
 	}
 }
 
-void SceneBase::DoMouseMoved_Rec(const std::shared_ptr<ISceneNodeUI>& Node, MouseMotionEventArgs & e)
+void SceneBase::DoMouseMoved_Rec(const std::shared_ptr<IUIControl>& Node, MouseMotionEventArgs & e)
 {
 	std::shared_ptr<SceneNodeUI> NodeAsUINode = std::dynamic_pointer_cast<SceneNodeUI>(Node);
 	if (NodeAsUINode != nullptr)
@@ -590,7 +570,7 @@ void SceneBase::DoMouseMoved_Rec(const std::shared_ptr<ISceneNodeUI>& Node, Mous
 	}
 }
 
-bool SceneBase::DoMouseButtonPressed_Rec(const std::shared_ptr<ISceneNodeUI>& Node, MouseButtonEventArgs & e)
+bool SceneBase::DoMouseButtonPressed_Rec(const std::shared_ptr<IUIControl>& Node, MouseButtonEventArgs & e)
 {
 	std::shared_ptr<SceneNodeUI> NodeAsUINode = std::dynamic_pointer_cast<SceneNodeUI>(Node);
 	if (NodeAsUINode != nullptr)
@@ -607,7 +587,7 @@ bool SceneBase::DoMouseButtonPressed_Rec(const std::shared_ptr<ISceneNodeUI>& No
 	return false;
 }
 
-void SceneBase::DoMouseButtonReleased_Rec(const std::shared_ptr<ISceneNodeUI>& Node, MouseButtonEventArgs & e)
+void SceneBase::DoMouseButtonReleased_Rec(const std::shared_ptr<IUIControl>& Node, MouseButtonEventArgs & e)
 {
 	std::shared_ptr<SceneNodeUI> NodeAsUINode = std::dynamic_pointer_cast<SceneNodeUI>(Node);
 	if (NodeAsUINode != nullptr)
@@ -619,7 +599,7 @@ void SceneBase::DoMouseButtonReleased_Rec(const std::shared_ptr<ISceneNodeUI>& N
 	}
 }
 
-bool SceneBase::DoMouseWheel_Rec(const std::shared_ptr<ISceneNodeUI>& Node, MouseWheelEventArgs & e)
+bool SceneBase::DoMouseWheel_Rec(const std::shared_ptr<IUIControl>& Node, MouseWheelEventArgs & e)
 {
 	std::shared_ptr<SceneNodeUI> NodeAsUINode = std::dynamic_pointer_cast<SceneNodeUI>(Node);
 	if (NodeAsUINode != nullptr)

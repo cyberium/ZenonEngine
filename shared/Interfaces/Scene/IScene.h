@@ -3,7 +3,7 @@
 // FORWARD BEGIN
 ZN_INTERFACE IRenderWindow;
 ZN_INTERFACE ISceneNode;
-ZN_INTERFACE ISceneNodeUI;
+ZN_INTERFACE IUIControl;
 ZN_INTERFACE IVisitor;
 class UpdateEventArgs;
 ZN_INTERFACE ISceneNodesFactory;
@@ -27,9 +27,7 @@ ZN_INTERFACE ZN_API ISceneInternal
 };
 
 
-ZN_INTERFACE ZN_API IScene 
-	: public IObject
-    , public std::enable_shared_from_this<IScene>
+ZN_INTERFACE ZN_API IScene
 {
 	virtual ~IScene() {}
 
@@ -47,7 +45,7 @@ ZN_INTERFACE ZN_API IScene
 	virtual void Finalize() = 0;
 
 	virtual std::shared_ptr<ISceneNode> GetRootNode3D() const = 0;
-	virtual std::shared_ptr<ISceneNodeUI> GetRootNodeUI() const = 0;
+	virtual std::shared_ptr<IUIControl> GetRootNodeUI() const = 0;
 
 	virtual void SetCameraController(std::shared_ptr<ICameraController> CameraController) = 0;
 	virtual std::shared_ptr<ICameraController> GetCameraController() const = 0;
@@ -88,10 +86,10 @@ ZN_INTERFACE ZN_API IScene
 	template<class T, typename... Args>
 	inline std::shared_ptr<T> CreateSceneNodeUIInternal(Args &&... _Args)
 	{
-		static_assert(std::is_convertible<T*, ISceneNodeUI*>::value, "T must inherit ISceneNodeUI as public.");
+		static_assert(std::is_convertible<T*, IUIControl*>::value, "T must inherit IUIControl as public.");
 
 		std::shared_ptr<T> newNode = MakeShared(T, std::forward<Args>(_Args)...);
-		newNode->SetSceneInternal(weak_from_this());
+		newNode->SetSceneInternal(this);
 		newNode->Initialize();
 
 		//if (Parent)

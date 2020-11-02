@@ -87,7 +87,7 @@ EVisitResult RenderPassPipelined::Visit(const ISceneNode* node)
 	return EVisitResult::Block;
 }
 
-EVisitResult RenderPassPipelined::Visit(const ISceneNodeUI* node)
+EVisitResult RenderPassPipelined::Visit(const IUIControl* node)
 {
 	return EVisitResult::Block;
 }

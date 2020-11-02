@@ -10,7 +10,7 @@ class ZN_API CRendererForward
 	: public IRenderer
 {
 public:
-	CRendererForward(IBaseManager& BaseManagerl, const std::weak_ptr<IScene>& Scene);
+	CRendererForward(IBaseManager& BaseManagerl, IScene& Scene);
 	virtual ~CRendererForward();
 
 	// IRenderer
@@ -40,5 +40,5 @@ private:
 private:
 	IBaseManager& m_BaseManager;
 	IRenderDevice& m_RenderDevice;
-	std::weak_ptr<IScene> m_Scene;
+	IScene& m_Scene;
 };

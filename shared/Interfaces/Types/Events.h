@@ -7,7 +7,7 @@ ZN_INTERFACE IPipelineState;
 ZN_INTERFACE ICameraComponent3D;
 
 ZN_INTERFACE ISceneNode;
-ZN_INTERFACE ISceneNodeUI;
+ZN_INTERFACE IUIControl;
 // FORWARD END
 
 /*

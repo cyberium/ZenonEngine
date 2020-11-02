@@ -3,7 +3,7 @@
 // General
 #include "ScenePass.h"
 
-ScenePass::ScenePass(IRenderDevice& RenderDevice, const std::weak_ptr<IScene>& Scene)
+ScenePass::ScenePass(IRenderDevice& RenderDevice, IScene& Scene)
 	: RenderPass(RenderDevice)
 	, m_Scene(Scene)
 {}
@@ -16,13 +16,13 @@ ScenePass::~ScenePass()
 //
 void ScenePass::Render(RenderEventArgs & e)
 {
-	GetScene()->Accept(this);
+	GetScene().Accept(this);
 }
 
 //
 // Protected
 //
-std::shared_ptr<IScene> ScenePass::GetScene() const
+IScene& ScenePass::GetScene() const
 {
-	return m_Scene.lock();
+	return m_Scene;
 }

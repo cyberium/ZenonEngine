@@ -42,5 +42,5 @@ private:
 	uint32                               m_State;
 	std::shared_ptr<IModel>              m_Mesh;
 	std::shared_ptr<UI_Button_Material>  m_Material;
-	std::shared_ptr<ISceneNodeUI>        m_TextNode;
+	std::shared_ptr<IUIControl>        m_TextNode;
 };

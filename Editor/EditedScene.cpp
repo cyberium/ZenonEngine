@@ -10,7 +10,7 @@ CEditedScene::CEditedScene(IBaseManager & BaseManager, IRenderWindow& RenderWind
 
 CEditedScene::~CEditedScene()
 {
-	Log::Info("Scene destroyed.");
+	Log::Info("Edited scene destroyed.");
 }
 
 void CEditedScene::Initialize()
@@ -25,13 +25,13 @@ void CEditedScene::Finalize()
 
 void CEditedScene::RaiseSceneChangeEvent(ESceneChangeType SceneChangeType, const std::shared_ptr<ISceneNode>& OwnerNode, const std::shared_ptr<ISceneNode>& ChildNode)
 {
-	auto root = GetRootNode3D();
+	auto root = GetRootNode3D(); // Edited parent
 	_ASSERT(root != nullptr);
 
-	auto parent = root->GetParent();
-	_ASSERT(parent != nullptr);
+	auto realParent = root->GetParent(); // Real parent
+	_ASSERT(realParent != nullptr);
 
-	auto& realScene = parent->GetScene();
+	auto& realScene = realParent->GetScene();
 	auto& realSceneInternal = dynamic_cast<ISceneInternal&>(realScene);
 	realSceneInternal.RaiseSceneChangeEvent(SceneChangeType, OwnerNode, ChildNode);
 }

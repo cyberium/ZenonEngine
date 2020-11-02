@@ -33,9 +33,7 @@ public:
 	void Render_UnbindAllBuffers(const RenderEventArgs& RenderEventArgs, const IShader* VertexShader) const override final;
 
 	// IObject
-	Guid GetGUID() const override final { return Object::GetGUID(); };
-	std::string GetName() const override final { return Object::GetName(); };
-	void SetName(const std::string& Name) override final { Object::SetName(Name); };
+	OBJECT_IMPLEMENT_BASE
 
 	// IObjectLoadSave
 	void Load(const std::shared_ptr<IByteBuffer>& ByteBuffer) override;

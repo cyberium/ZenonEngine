@@ -4,11 +4,11 @@
 
 class ZN_API CSceneNode3DFactory
 	: public CObjectClassFactory
-	, public ISceneNode3DFactory
+	, public ISceneNodeFactory
 {
 public:
 	class CSceneNode3DCreationArgs
-		: public ISceneNode3DCreationArgs
+		: public ISceneNodeCreationArgs
 	{
 	public:
 		CSceneNode3DCreationArgs(IScene& Scene, const std::shared_ptr<ISceneNode>& Parent)
@@ -35,7 +35,7 @@ public:
 	CSceneNode3DFactory(IBaseManager& BaseManager, const std::string& TypeName, ObjectType Type);
 	virtual ~CSceneNode3DFactory();
 
-	// ISceneNode3DFactory
+	// ISceneNodeFactory
 	std::shared_ptr<ISceneNode>   CreateSceneNode3D(ObjectClass ObjectClassKey, IScene& Scene, const std::shared_ptr<ISceneNode>& Parent) override;
 	std::shared_ptr<ISceneNode>   LoadSceneNode3DXML(const std::shared_ptr<IXMLReader>& Reader, IScene& Scene, const std::shared_ptr<ISceneNode>& Parent = nullptr) override;
 	std::shared_ptr<IXMLWriter>   SaveSceneNode3DXML(std::shared_ptr<ISceneNode> Object) override;

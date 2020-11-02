@@ -54,7 +54,7 @@ public:
 
 	// IVisitor
 	virtual EVisitResult Visit(const ISceneNode* node) override;
-	virtual EVisitResult Visit(const ISceneNodeUI* node) override;
+	virtual EVisitResult Visit(const IUIControl* node) override;
 	virtual EVisitResult Visit(const IModel* Model) override;
 	virtual EVisitResult Visit(const IGeometry* Geometry, const IMaterial* Material, SGeometryDrawArgs GeometryDrawArgs = SGeometryDrawArgs()) override;
 	virtual EVisitResult Visit(const ISceneNodeComponent* Component) override;

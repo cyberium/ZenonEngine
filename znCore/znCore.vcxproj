@@ -190,9 +190,9 @@
     <ClInclude Include="..\shared\Interfaces\ModelsManager.h" />
     <ClInclude Include="..\shared\Interfaces\Render\IGeometry.h" />
     <ClInclude Include="..\shared\Interfaces\Render\IRenderTechnique.h" />
-    <ClInclude Include="..\shared\Interfaces\Scene\ISceneNode3D.h" />
+    <ClInclude Include="..\shared\Interfaces\Scene\ISceneNode.h" />
     <ClInclude Include="..\shared\Interfaces\Scene\ISceneNodeBase.h" />
-    <ClInclude Include="..\shared\Interfaces\Scene\ISceneNodeUI.h" />
+    <ClInclude Include="..\shared\Interfaces\Scene\IUIControl.h" />
     <ClInclude Include="..\shared\Interfaces\Scene\Types\Light.h" />
     <ClInclude Include="..\shared\Interfaces\Types\Guid.h" />
     <ClInclude Include="..\shared\Interfaces\Types\ObjectsFactory.h" />

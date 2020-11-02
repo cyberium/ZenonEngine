@@ -3,7 +3,7 @@
 #include "../ObjectsFactories/Object.h"
 
 class ZN_API SceneNodeUI 
-	: public ISceneNodeUI
+	: public IUIControl
 	, public Object
 {
 	friend IScene;
@@ -15,15 +15,15 @@ public:
 	virtual void                                    Finalize() override;
 	
 	// Childs functional
-	virtual void                                    AddChild(const std::shared_ptr<ISceneNodeUI>& childNode) override final;
-	virtual void                                    RemoveChild(const std::shared_ptr<ISceneNodeUI>& childNode) override final;
-	virtual std::weak_ptr<ISceneNodeUI>             GetParent() const override final;
+	virtual void                                    AddChild(const std::shared_ptr<IUIControl>& childNode) override final;
+	virtual void                                    RemoveChild(const std::shared_ptr<IUIControl>& childNode) override final;
+	virtual std::weak_ptr<IUIControl>               GetParent() const override final;
 	virtual const NodeUIList&                       GetChilds() override final;
 	void                                            RaiseOnParentChanged() override final;
 
 	// Actions & Properties
 	virtual std::shared_ptr<IPropertiesGroup>       GetProperties() const final;
-	virtual IScene*                                 GetScene() const final;
+	virtual IScene&                                 GetScene() const final;
 
 	void											SetTranslate(const glm::vec2& _translate) override;
 	const glm::vec2&								GetTranslation() const override;
@@ -49,7 +49,7 @@ public:
 	void                                            SetName(const std::string& Name) override final { Object::SetName(Name); };
 
 	// UI events
-	void                                            SetOnClickCallback(std::function<void(const ISceneNodeUI* Node, glm::vec2)> OnClickCallback);
+	void                                            SetOnClickCallback(std::function<void(const IUIControl* Node, glm::vec2)> OnClickCallback);
 
 	// Input events
 	virtual bool                                    OnKeyPressed(KeyEventArgs& e);
@@ -64,10 +64,10 @@ public:
 	virtual void                                    OnMouseLeaved();
 
 private:
-	void                                            SetSceneInternal(const std::weak_ptr<IScene>& Scene);
-	void                                            AddChildInternal(const std::shared_ptr<ISceneNodeUI>& ChildNode);
-	void                                            RemoveChildInternal(const std::shared_ptr<ISceneNodeUI>& ChildNode);
-	void                                            SetParentInternal(const std::weak_ptr<ISceneNodeUI>& parentNode);
+	void                                            SetSceneInternal(IScene* Scene);
+	void                                            AddChildInternal(const std::shared_ptr<IUIControl>& ChildNode);
+	void                                            RemoveChildInternal(const std::shared_ptr<IUIControl>& ChildNode);
+	void                                            SetParentInternal(const std::weak_ptr<IUIControl>& parentNode);
 
 protected:
 	virtual void									UpdateLocalTransform();
@@ -83,10 +83,10 @@ public: // Syntetic events // TODO: Make private
 private:
 	NodeUIList                                      m_Children;
 	NodeUINameMap                                   m_ChildrenByName;
-	std::weak_ptr<ISceneNodeUI>                     m_ParentNode;
+	std::weak_ptr<IUIControl>                       m_ParentNode;
 
 	std::shared_ptr<IPropertiesGroup>               m_PropertiesGroup;
-	std::weak_ptr<IScene>                           m_Scene;
+	IScene*                                         m_Scene;
 
 private:
 	glm::vec2										m_Translate;
@@ -98,6 +98,6 @@ private:
 	glm::mat4										m_InverseWorldTransform;
 
 private:
-	std::function<void(const ISceneNodeUI* Node, glm::vec2)> m_OnClickCallback;
+	std::function<void(const IUIControl* Node, glm::vec2)> m_OnClickCallback;
 };
 

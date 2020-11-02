@@ -7,7 +7,7 @@
 
 void CSceneDefault::Load3D()
 {
-	auto newRoot = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, this, GetRootNode3D());
+	auto newRoot = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeFactory>()->CreateSceneNode3D(cSceneNode3D, *this, GetRootNode3D());
 	newRoot->SetName("NewRoot3D");
 
 
@@ -24,7 +24,7 @@ void CSceneDefault::Load3D()
 		while (false == currentRoot->GetChilds().empty())
 			currentRoot->RemoveChild(currentRoot->GetChilds()[0]);
 
-		auto rootNodeXML = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->LoadSceneNode3DXML(reader->GetChilds()[0], currentRoot->GetScene(), currentRoot->GetParent());
+		auto rootNodeXML = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeFactory>()->LoadSceneNode3DXML(reader->GetChilds()[0], currentRoot->GetScene(), currentRoot->GetParent());
 		while (false == rootNodeXML->GetChilds().empty())
 			currentRoot->AddChild(rootNodeXML->GetChilds()[0]);
 	}
@@ -49,7 +49,7 @@ void CSceneDefault::Load3D()
 
 		auto znModel = GetBaseManager().GetManager<IznModelsFactory>()->LoadModel("Sponza/Sponza.znmdl");
 
-		auto node = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, this, newRoot);
+		auto node = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeFactory>()->CreateSceneNode3D(cSceneNode3D, this, newRoot);
 		node->SetName("Sponza");
 		node->SetTranslate(glm::vec3(0, 0, 0));
 		node->SetScale(glm::vec3(1.0f));
@@ -76,7 +76,7 @@ void CSceneDefault::Load3D()
 
 		auto znModel = GetBaseManager().GetManager<IznModelsFactory>()->LoadModel("Bistro_v4/Bistro v4 Update/Bistro_v4/Bistro_Exterior.znmdl");
 
-		auto node = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, this, newRoot);
+		auto node = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeFactory>()->CreateSceneNode3D(cSceneNode3D, this, newRoot);
 		node->SetName("Bistro");
 		node->SetTranslate(glm::vec3(0, 0, 0));
 		node->SetScale(glm::vec3(1.0f));
@@ -100,7 +100,7 @@ void CSceneDefault::Load3D()
 		auto& modelPlane = GetRenderDevice().GetObjectsFactory().CreateModel();
 		modelPlane->AddConnection(textMaterial, GetRenderDevice().GetPrimitivesFactory().CreateCube());
 
-		auto node = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, this, newRoot);
+		auto node = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeFactory>()->CreateSceneNode3D(cSceneNode3D, *this, newRoot);
 		node->SetName("Ground");
 		node->SetTranslate(glm::vec3(0, -25, 0));
 		node->SetScale(glm::vec3(cPlaneSize, 5.0f, cPlaneSize));
@@ -124,7 +124,7 @@ void CSceneDefault::Load3D()
 		auto& modelPlane = GetRenderDevice().GetObjectsFactory().CreateModel();
 		modelPlane->AddConnection(textMaterial, GetRenderDevice().GetPrimitivesFactory().CreateSphere());
 
-		auto node = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, this, newRoot);
+		auto node = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeFactory>()->CreateSceneNode3D(cSceneNode3D, this, newRoot);
 		node->SetName("Sphere");
 		node->SetTranslate(glm::vec3(-10, 15, -10));
 		node->SetScale(glm::vec3(15.0f));
@@ -150,7 +150,7 @@ void CSceneDefault::Load3D()
 		auto& modelPlane = GetRenderDevice().GetObjectsFactory().CreateModel();
 		modelPlane->AddConnection(textMaterial, GetRenderDevice().GetPrimitivesFactory().CreateCube());
 
-		auto node = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, this, newRoot);
+		auto node = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeFactory>()->CreateSceneNode3D(cSceneNode3D, *this, newRoot);
 		node->SetName("Sphere2");
 		node->SetTranslate(glm::vec3(-10, 15, 16 * i));
 		node->SetScale(glm::vec3(15.0f));
@@ -169,7 +169,7 @@ void CSceneDefault::Load3D()
 
 		auto znModel = GetBaseManager().GetManager<IznModelsFactory>()->LoadModel("Toon_RTS/models/WK_archer.FBX", fbxLoaderParams);
 
-		auto node = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, this, newRoot);
+		auto node = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeFactory>()->CreateSceneNode3D(cSceneNode3D, this, newRoot);
 		node->SetName("Orc");
 		node->SetTranslate(glm::vec3(0.0f, 0.0f, 0.0f));
 		node->SetRotation(-glm::vec3(glm::half_pi<float>(), 0.0f, 0.0f));
@@ -181,7 +181,7 @@ void CSceneDefault::Load3D()
 	// Orc with anims
 	//--------------------------------------------------------------------------
 	/*{
-		auto node = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, this, newRoot);
+		auto node = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeFactory>()->CreateSceneNode3D(cSceneNode3D, this, newRoot);
 		node->SetName("OrcAnimation");
 		node->SetTranslate(glm::vec3(0.0f, 0.0f, 0.0f));
 		//node->SetRotation(-glm::vec3(glm::half_pi<float>(), 0.0f, 0.0f));
@@ -217,7 +217,7 @@ void CSceneDefault::Load3D()
 	}*/
 
 	/*{
-		auto node = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, this, newRoot);
+		auto node = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeFactory>()->CreateSceneNode3D(cSceneNode3D, this, newRoot);
 		node->SetName("OrcAnimation");
 		node->SetTranslate(glm::vec3(0.0f, 0.0f, 0.0f));
 		node->SetRotation(-glm::vec3(glm::half_pi<float>(), 0.0f, 0.0f));
@@ -295,7 +295,7 @@ void CSceneDefault::Load3DOld()
 		sphereModel->AddConnection(textMaterial, GetRenderDevice().GetPrimitivesFactory().CreateSphere());
 
 
-		m_RootForBoxes = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, this, GetRootNode3D());
+		m_RootForBoxes = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeFactory>()->CreateSceneNode3D(cSceneNode3D, *this, GetRootNode3D());
 		//m_RootForBoxes->SetTranslate(glm::vec3(150, 0, 150));
 
 
@@ -305,7 +305,7 @@ void CSceneDefault::Load3DOld()
 			{
 				for (int k = 0; k < iterCnt; k++)
 				{
-					auto sceneNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, this, m_RootForBoxes);
+					auto sceneNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeFactory>()->CreateSceneNode3D(cSceneNode3D, *this, m_RootForBoxes);
 					sceneNode->SetName("Ball [" + std::to_string(i) + ", " + std::to_string(j) + ", " + std::to_string(k) + "]");
 					sceneNode->SetTranslate(glm::vec3(offset * i, offset * k, offset * j));
 					sceneNode->SetScale(glm::vec3(scale));
@@ -368,7 +368,7 @@ void CSceneDefault::Load3DOld()
 		auto& modelPlane = GetRenderDevice().GetObjectsFactory().CreateModel();
 		modelPlane->AddConnection(textMaterial, GetRenderDevice().GetPrimitivesFactory().CreatePlane());
 
-		auto node = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, this);
+		auto node = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeFactory>()->CreateSceneNode3D(cSceneNode3D, this);
 		node->SetName("Ground");
 		node->SetTranslate(glm::vec3(0, cPlaneY, 0));
 		node->SetScale(glm::vec3(cPlaneSize));
@@ -448,7 +448,7 @@ void CSceneDefault::Load3DOld()
 
 #if 0
 
-	std::shared_ptr<ISceneNode> sceneNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, this);
+	std::shared_ptr<ISceneNode> sceneNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeFactory>()->CreateSceneNode3D(cSceneNode3D, this);
 
 	// Models
 	auto fbxSceneModel = GetBaseManager().GetManager<IFBXManager>()->LoadFBX("C:/Users/Alexander/Downloads/Assets/Toon_RTS/Orcs/models/Single_Mesh/Orc_SM_shaman.FBX");

@@ -17,7 +17,7 @@ CSceneNode3DFactory::~CSceneNode3DFactory()
 
 
 //
-// ISceneNode3DFactory
+// ISceneNodeFactory
 //
 std::shared_ptr<ISceneNode> CSceneNode3DFactory::CreateSceneNode3D(ObjectClass ObjectClassKey, IScene& Scene, const std::shared_ptr<ISceneNode>& Parent)
 {

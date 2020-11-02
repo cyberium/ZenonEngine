@@ -29,7 +29,7 @@ void CSceneDefault::Initialize()
 
 	// Light
 	/*{
-		auto lightNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, this);
+		auto lightNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeFactory>()->CreateSceneNode3D(cSceneNode3D, this);
 		lightNode->SetName("Light");
 		lightNode->SetTranslate(glm::vec3(-300.0f, 500.0f, -500.0f) / 3.0f);
 		lightNode->SetRotation(glm::vec3(0.5f, -0.5f, 0.5f));
@@ -44,7 +44,7 @@ void CSceneDefault::Initialize()
 
 	// Light
 	{
-		auto lightNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, this);
+		auto lightNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeFactory>()->CreateSceneNode3D(cSceneNode3D, *this);
 		lightNode->SetName("Light2");
 		lightNode->SetTranslate(glm::vec3(150.0f, 150.0f, 150.0f));
 		lightNode->SetRotation(glm::vec3(-0.5f, -0.5f, -0.5f));
@@ -59,7 +59,7 @@ void CSceneDefault::Initialize()
 
 	// Camera
 	{
-		auto cameraNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNode3DFactory>()->CreateSceneNode3D(cSceneNode3D, this);
+		auto cameraNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeFactory>()->CreateSceneNode3D(cSceneNode3D, *this);
 		cameraNode->SetName("Camera");
 		auto geom = GetRenderDevice().GetPrimitivesFactory().CreateBBox();
 		
@@ -86,11 +86,11 @@ void CSceneDefault::Initialize()
 	//--------------------------------------------------------------------------
 	// RENDERERS
 	//--------------------------------------------------------------------------
-	auto forwardRenderer = MakeShared(CRendererForward, GetBaseManager(), weak_from_this());
+	auto forwardRenderer = MakeShared(CRendererForward, GetBaseManager(), *this);
 	forwardRenderer->Initialize(GetRenderWindow().GetRenderTarget(), &GetRenderWindow().GetViewport());
 	m_ForwardRenderer = forwardRenderer;
 
-	auto defferedRenderer = MakeShared(CRendererDeffered, GetBaseManager(), weak_from_this());
+	auto defferedRenderer = MakeShared(CRendererDeffered, GetBaseManager(), *this);
 	defferedRenderer->Initialize(GetRenderWindow().GetRenderTarget(), &GetRenderWindow().GetViewport());
 	m_DefferedRenderrer = defferedRenderer;
 

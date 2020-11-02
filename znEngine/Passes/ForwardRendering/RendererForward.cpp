@@ -28,7 +28,7 @@ struct __declspec(align(16)) SLightVS
 };
 
 
-CRendererForward::CRendererForward(IBaseManager& BaseManager, const std::weak_ptr<IScene>& Scene)
+CRendererForward::CRendererForward(IBaseManager& BaseManager, IScene& Scene)
 	: m_BaseManager(BaseManager)
 	, m_RenderDevice(BaseManager.GetApplication().GetRenderDevice())
 	, m_Scene(Scene)
@@ -136,8 +136,8 @@ void CRendererForward::DoUpdateLights()
 
 		SLightVS lightVS;
 		lightVS.Light = lightStruct;
-		lightVS.LightPositionVS = m_Scene.lock()->GetCameraController()->GetCamera()->GetViewMatrix() * glm::vec4(lightStruct.Position.xyz(), 1.0f);
-		lightVS.LightDirectionVS = glm::normalize(m_Scene.lock()->GetCameraController()->GetCamera()->GetViewMatrix() * glm::vec4(lightStruct.Direction.xyz(), 0.0f));
+		lightVS.LightPositionVS = m_Scene.GetCameraController()->GetCamera()->GetViewMatrix() * glm::vec4(lightStruct.Position.xyz(), 1.0f);
+		lightVS.LightDirectionVS = glm::normalize(m_Scene.GetCameraController()->GetCamera()->GetViewMatrix() * glm::vec4(lightStruct.Direction.xyz(), 0.0f));
 		lightsVS.push_back(lightVS);
 	}
 
