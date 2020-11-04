@@ -63,16 +63,17 @@ namespace
 
 		return MakeShared(CXMLReader, Name, Value, attributes, childs);
 	}
+
+
+	void CheckTinyXMLError(const std::shared_ptr<TiXmlDocument>& TiniXMLDocument)
+	{
+		if (!TiniXMLDocument->Error())
+			return;
+		throw CException(L"TinyXMLError: %s. ID: '%d', Row: '%d', Col: '%d'.", Resources::utf8_to_utf16(TiniXMLDocument->ErrorDesc()), TiniXMLDocument->ErrorId(), TiniXMLDocument->ErrorRow(), TiniXMLDocument->ErrorCol());
+	}
 }
 
 
-void CheckTinyXMLError(const std::shared_ptr<TiXmlDocument>& TiniXMLDocument)
-{
-	if (!TiniXMLDocument->Error())
-		return;
-
-	throw CException(L"TinyXMLError: %s. ID: '%d', Row: '%d', Col: '%d'.", Resources::utf8_to_utf16(TiniXMLDocument->ErrorDesc()), TiniXMLDocument->ErrorId(), TiniXMLDocument->ErrorRow(), TiniXMLDocument->ErrorCol());
-}
 
 
 // CONST BEGIN

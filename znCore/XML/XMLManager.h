@@ -1,10 +1,5 @@
 #pragma once
 
-// FORWARD BEGIN
-class TiXmlDocument;
-class TiXmlElement;
-// FORWARD END
-
 class ZN_API CXMLManager
 {
 public:
@@ -22,4 +17,3 @@ private:
 	IBaseManager& m_BaseManager;
 };
 
-void CheckTinyXMLError(const std::shared_ptr<TiXmlDocument>& TiniXMLDocument);
