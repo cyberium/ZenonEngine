@@ -355,7 +355,7 @@ void SceneBase::OnRenderUI(RenderEventArgs & e)
 
 
 //
-// INativeWindowEventListener
+// IznNativeWindowEventListener
 //
 void SceneBase::OnWindowResize(ResizeEventArgs & e)
 {

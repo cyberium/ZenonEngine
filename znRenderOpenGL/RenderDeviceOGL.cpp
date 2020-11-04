@@ -172,7 +172,7 @@ IBaseManager* RenderDeviceOGL::GetBaseManager() const
 	return m_BaseManager;
 }
 
-IRenderWindow* RenderDeviceOGL::CreateRenderWindow(INativeWindow * WindowObject, bool vSync)
+IRenderWindow* RenderDeviceOGL::CreateRenderWindow(IznNativeWindow * WindowObject, bool vSync)
 {
 	return MakeShared(RenderWindowOGL, shared_from_this(), WindowObject, vSync);
 }

@@ -16,7 +16,7 @@ namespace
 		_ASSERT((*file) != nullptr);
 
 		if (!(*file)->readBytes(data, length))
-			_ASSERT_EXPR(false, L"CImagePNG: Error while reading PNG file.");
+			throw CException("Error while reading PNG file.");
 	}
 
 	void my_png_write_data(png_structp pngPtr, png_bytep data, png_size_t length)
@@ -48,16 +48,20 @@ bool CImagePNG::LoadImageData(std::shared_ptr<IFile> File)
 	png_structp pngPtr = png_create_read_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
 	if (pngPtr == NULL)
 	{
-		Log::Error("ImagePNG: png_create_read_struct error.");
-		return false;
+		throw CException("ImagePNG: png_create_read_struct error.");
 	}
 
 	png_infop pngInfoPtr = png_create_info_struct(pngPtr);
 	if (pngInfoPtr == NULL)
 	{
-		Log::Error("ImagePNG: png_create_info_struct error.");
 		png_destroy_read_struct(&pngPtr, NULL, NULL);
-		return false;
+		throw CException("ImagePNG: png_create_info_struct error.");
+	}
+
+	if (setjmp(png_jmpbuf(pngPtr)))
+	{
+		png_destroy_read_struct(&pngPtr, &pngInfoPtr, NULL);
+		throw CException("ImagePNG: Error while reading PNG file '%s'.", File->Path_Name().c_str());
 	}
 
 	// Custom reader
@@ -200,16 +204,20 @@ std::shared_ptr<IByteBuffer> CImagePNG::SaveToMemory()
 	png_structp pngPtr = png_create_write_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
 	if (pngPtr == NULL)
 	{
-		Log::Error("ImagePNG: png_create_read_struct error.");
-		return nullptr;
+		throw CException("ImagePNG: png_create_write_struct error.");
 	}
 
 	png_infop pngInfoPtr = png_create_info_struct(pngPtr);
 	if (pngInfoPtr == NULL)
 	{
-		Log::Error("ImagePNG: png_create_info_struct error.");
 		png_destroy_write_struct(&pngPtr, NULL);
-		return nullptr;
+		throw CException("ImagePNG: png_create_info_struct error.");
+	}
+
+	if (setjmp(png_jmpbuf(pngPtr)))
+	{
+		png_destroy_write_struct(&pngPtr, &pngInfoPtr);
+		throw CException("ImagePNG: Error while saving PNG file.");
 	}
 
 	png_set_write_fn(pngPtr, (png_voidp)&buffer, my_png_write_data, my_png_flush);
@@ -234,9 +242,6 @@ std::shared_ptr<IByteBuffer> CImagePNG::SaveToMemory()
 	// To remove the alpha channel for PNG_COLOR_TYPE_RGB format,
 	// Use png_set_filler().
 	//png_set_filler(pngPtr, 0, PNG_FILLER_AFTER);
-
-	//if (!row_pointers) 
-	//	abort();
 
 	png_bytep* rowPtrs = ZN_NEW png_bytep[image->GetHeight()];
 	for (uint32 i = 0; i < image->GetHeight(); i++)

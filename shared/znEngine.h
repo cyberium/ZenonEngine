@@ -3,8 +3,7 @@
 #include "../znEngine/common.h"
 
 #include "../znEngine/Application.h"
-#include "../znEngine/NativeWindowFactory.h"
-#include "../znEngine/NativeWindow_WindowsSpecific.h"
+#include "../znEngine/NativeWindows/NativeWindowFactory.h"
 
 
 // Loader

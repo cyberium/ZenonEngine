@@ -4,7 +4,7 @@ class RenderWindowOGL
 	: public RenderWindowBase
 {
 public:
-	                                                RenderWindowOGL(IRenderDevice* RenderDevice, INativeWindow * WindowObject, bool vSync);
+	                                                RenderWindowOGL(IRenderDevice* RenderDevice, IznNativeWindow * WindowObject, bool vSync);
 	virtual                                         ~RenderWindowOGL();
 
 	void                                            Present() override final;

@@ -2,15 +2,15 @@
 
 class ZN_API RenderWindowBase 
 	: public IRenderWindow
-	, public INativeWindowEventListener
+	, public IznNativeWindowEventListener
 	, public IApplicationEventsListener
 {
 public:
-	RenderWindowBase(INativeWindow& WindowObject, bool vSync);
+	RenderWindowBase(std::unique_ptr<IznNativeWindow> WindowObject, bool vSync);
 	virtual ~RenderWindowBase();
 
 
-	// INativeWindow
+	// IznNativeWindow
 	void SetWindowTitle(const std::string& WindowName) override;
 	std::string GetWindowTitle() const override;
 	size_t GetWindowWidth() const override;
@@ -20,13 +20,13 @@ public:
 	void ShowCursor() override;
 	void HideCursor() override;
 	void Close() override;
-	void SetEventsListener(INativeWindowEventListener* WindowEventsListener) override;
+	void SetEventsListener(IznNativeWindowEventListener* WindowEventsListener) override;
 	void ResetEventsListener() override;
 
 
 	// IRenderWindow
 	void SetRenderWindowEventListener(std::shared_ptr<IRenderWindowEventListener> RenderWindowEventListener) override;
-	void SetNativeWindowEventListener(std::shared_ptr<INativeWindowEventListener> NativeWindowEventListener) override;
+	void SetNativeWindowEventListener(std::shared_ptr<IznNativeWindowEventListener> NativeWindowEventListener) override;
 	const std::shared_ptr<IRenderTarget>& GetRenderTarget() const override;
 	const Viewport& GetViewport() const override;
 	float GetUpdateDeltaTime() const override;
@@ -36,7 +36,7 @@ public:
 	float GetRenderUIDeltaTime() const override;
 	float GetSummaDeltaTime() const override;
 
-	// INativeWindowEventListener
+	// IznNativeWindowEventListener
 	// Window events
 	void OnWindowInputFocus(EventArgs& Args) override; // Window gets input focus
 	void OnWindowInputBlur(EventArgs& Args) override;  // Window loses input focus
@@ -73,14 +73,14 @@ protected:
 	void RaisePostRender(RenderEventArgs& e);
 	void RaiseRenderUI(RenderEventArgs& e);
 
-
+	virtual IznNativeWindow& GetNativeWindow();
 	virtual IRenderDevice& GetRenderDevice() const = 0;
     virtual void CreateSwapChain();
     virtual void ResizeSwapChainBuffers(uint32_t width, uint32_t height) = 0;
 
 
-protected:
-	INativeWindow&                                  m_NativeWindow;
+private:
+	std::unique_ptr<IznNativeWindow>                  m_NativeWindow;
 
 	float                                           m_UpdateDeltaTime;
 	float                                           m_PreRenderDeltaTime;
@@ -90,7 +90,7 @@ protected:
 	float                                           m_SummaDeltaTime;
 
 	std::shared_ptr<IRenderWindowEventListener>     m_RenderWindowEventListener;
-	std::shared_ptr<INativeWindowEventListener>     m_NativeWindowEventListener;
+	std::shared_ptr<IznNativeWindowEventListener>     m_NativeWindowEventListener;
 	std::shared_ptr<IRenderTarget>                  m_RenderTarget;
 	Viewport                                        m_Viewport;
 	

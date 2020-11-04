@@ -4,15 +4,15 @@
 
 class ZenonWindowMinimal3DWidget
 	: public QWidget
-	, public INativeWindow
-	, public INativeWindow_WindowsSpecific
+	, public IznNativeWindow
+	, public IznNativeWindow_WindowsSpecific
 {
 	Q_OBJECT
 public:
 	ZenonWindowMinimal3DWidget(QWidget * parent);
 	virtual ~ZenonWindowMinimal3DWidget();
 
-	// INativeWindow
+	// IznNativeWindow
 	void SetWindowTitle(const std::string& WindowName) override;
 	std::string GetWindowTitle() const override;
 	size_t GetWindowWidth() const override;
@@ -22,12 +22,14 @@ public:
 	void ShowCursor();
 	void HideCursor();
 	void Close();
-	void SetEventsListener(INativeWindowEventListener* WindowEventsListener);
+	void SetEventsListener(IznNativeWindowEventListener* WindowEventsListener);
 	void ResetEventsListener();
 
-	// INativeWindow_WindowsSpecific
+	// IznNativeWindow_WindowsSpecific
 	HWND GetHWnd() const override;
-	LRESULT Windows_ProcessMessage(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam) override;
+
+
+
 	virtual std::shared_ptr<IImage> TakeScreenshot(IBaseManager& BaseManager);
 
 protected:
@@ -46,5 +48,5 @@ protected:
 
 protected:
 	glm::ivec2 m_PreviousMousePosition;
-	INativeWindowEventListener* m_EventListener;
+	IznNativeWindowEventListener* m_EventListener;
 };

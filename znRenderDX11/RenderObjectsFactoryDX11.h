@@ -8,7 +8,7 @@ public:
 	virtual ~CRenderObjectsFactoryDX11();
 
 	// IRenderObjectsFactory
-	std::shared_ptr<IRenderWindow>      CreateRenderWindow(INativeWindow& WindowObject, bool vSync) override;
+	std::shared_ptr<IRenderWindow>      CreateRenderWindow(std::unique_ptr<IznNativeWindow> WindowObject, bool vSync) override;
 	std::shared_ptr<IGeometry>          CreateGeometry() override;
 	std::shared_ptr<IModel>             CreateModel() override;
 

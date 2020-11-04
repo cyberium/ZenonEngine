@@ -13,7 +13,7 @@ Application::Application(IBaseManager& BaseManager)
 {
 	m_HInstance = ::GetModuleHandle(NULL);
 
-	dynamic_cast<IBaseManagerInternal*>(&m_BaseManager)->SetApplicationInternal(this);
+	dynamic_cast<IBaseManagerInternal&>(m_BaseManager).SetApplicationInternal(this);
 }
 
 Application::Application(IBaseManager& BaseManager, HINSTANCE hInstance)
@@ -23,12 +23,12 @@ Application::Application(IBaseManager& BaseManager, HINSTANCE hInstance)
 {
 	m_HInstance = hInstance;
 
-	dynamic_cast<IBaseManagerInternal*>(&m_BaseManager)->SetApplicationInternal(this);
+	dynamic_cast<IBaseManagerInternal&>(m_BaseManager).SetApplicationInternal(this);
 }
 
 Application::~Application()
 {
-	dynamic_cast<IBaseManagerInternal*>(&m_BaseManager)->SetApplicationInternal(nullptr);
+	dynamic_cast<IBaseManagerInternal&>(m_BaseManager).SetApplicationInternal(nullptr);
 }
 
 
@@ -107,6 +107,7 @@ int Application::DoRun()
 		if (msg.message == WM_QUIT)
 		{
 			m_IsRunning = false;
+			return static_cast<int>(msg.wParam);
 		}
 
 		TranslateMessage(&msg);

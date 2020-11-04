@@ -7,14 +7,14 @@
 static DXGI_RATIONAL QueryRefreshRate(UINT screenWidth, UINT screenHeight, BOOL vsync);
 // FORWARD END
 
-RenderWindowDX11::RenderWindowDX11(IRenderDeviceDX11& RenderDeviceDX11, INativeWindow& WindowObject, bool vSync)
-	: RenderWindowBase(WindowObject, vSync)
+RenderWindowDX11::RenderWindowDX11(IRenderDeviceDX11& RenderDeviceDX11, std::unique_ptr<IznNativeWindow> WindowObject, bool vSync)
+	: RenderWindowBase(std::move(WindowObject), vSync)
     , m_RenderDeviceDX11(RenderDeviceDX11)
 	, m_pSwapChain(nullptr)
 	, m_pBackBuffer(nullptr)
 	, m_vSync(vSync)
 {
-	WindowObject.SetEventsListener(this);
+	GetNativeWindow().SetEventsListener(this);
 
 	CreateSwapChain();
 }
@@ -27,7 +27,7 @@ RenderWindowDX11::~RenderWindowDX11()
 		CHECK_HR(m_pSwapChain->SetFullscreenState(false, NULL));
 	}
 
-	m_NativeWindow.ResetEventsListener();
+	GetNativeWindow().ResetEventsListener();
 }
 
 
@@ -42,10 +42,10 @@ bool RenderWindowDX11::IsVSync() const
 
 void RenderWindowDX11::Present()
 {
-	m_RenderTarget->Bind();
+	GetRenderTarget()->Bind();
 
 	// Copy the render target's color buffer to the swap chain's back buffer.
-	std::shared_ptr<ITexture> colorTexture = m_RenderTarget->GetTexture(IRenderTarget::AttachmentPoint::Color0);
+	std::shared_ptr<ITexture> colorTexture = GetRenderTarget()->GetTexture(IRenderTarget::AttachmentPoint::Color0);
 	std::shared_ptr<TextureDX11> colorTextureDX11 = std::dynamic_pointer_cast<TextureDX11>(colorTexture);
 	m_RenderDeviceDX11.GetDeviceContextD3D11()->CopyResource(m_pBackBuffer, colorTextureDX11->GetTextureResource());
 
@@ -102,7 +102,7 @@ void RenderWindowDX11::CreateSwapChain()
     swapChainFullScreenDesc.RefreshRate = QueryRefreshRate(windowWidth, windowHeight, vSync);
     swapChainFullScreenDesc.Windowed = true;
 
-	INativeWindow_WindowsSpecific& nativeWindow_WindowsSpecific = dynamic_cast<INativeWindow_WindowsSpecific&>(m_NativeWindow);
+	IznNativeWindow_WindowsSpecific& nativeWindow_WindowsSpecific = dynamic_cast<IznNativeWindow_WindowsSpecific&>(GetNativeWindow());
 
     // First create a DXGISwapChain1
     ATL::CComPtr<IDXGISwapChain1> pSwapChain;
@@ -131,9 +131,9 @@ void RenderWindowDX11::CreateSwapChain()
         0, 0, 0, 0, 24, 8);
 	std::shared_ptr<ITexture> depthStencilTexture = m_RenderDeviceDX11.GetObjectsFactory().CreateTexture2D(windowWidth, windowHeight, 1, depthStencilTextureFormat);
 
-    m_RenderTarget->AttachTexture(IRenderTarget::AttachmentPoint::Color0, colorTexture);
-	m_RenderTarget->AttachTexture(IRenderTarget::AttachmentPoint::DepthStencil, depthStencilTexture);
-	m_RenderTarget->SetViewport(GetViewport());
+    GetRenderTarget()->AttachTexture(IRenderTarget::AttachmentPoint::Color0, colorTexture);
+	GetRenderTarget()->AttachTexture(IRenderTarget::AttachmentPoint::DepthStencil, depthStencilTexture);
+	GetRenderTarget()->SetViewport(GetViewport());
 	//m_RenderTarget->Resize(windowWidth, windowHeight);
 }
 

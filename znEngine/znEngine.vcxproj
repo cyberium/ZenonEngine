@@ -309,6 +309,9 @@
     <ClCompile Include="Formats\Models\ModelsFactory.cpp" />
     <ClCompile Include="Formats\Textures\TexturesFactory.cpp" />
     <ClCompile Include="Materials\MaterialParticle.cpp" />
+    <ClCompile Include="NativeWindows\NativeWindowFactory.cpp" />
+    <ClCompile Include="NativeWindows\NativeWindow_Proxy.cpp" />
+    <ClCompile Include="NativeWindows\NativeWindow_WindowsSpecific.cpp" />
     <ClCompile Include="Passes\DefferedRendering\PassDeffered_DoRenderScene.cpp" />
     <ClCompile Include="Passes\DefferedRendering\PassDeffered_ProcessLights.cpp" />
     <ClCompile Include="Passes\DefferedRendering\PassDeffered_RenderUIQuad.cpp" />
@@ -387,8 +390,6 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="NativeWindowFactory.cpp" />
-    <ClCompile Include="NativeWindow_WindowsSpecific.cpp" />
     <ClCompile Include="znEngine.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -510,6 +511,9 @@
     <ClInclude Include="Formats\Models\ModelsFactory.h" />
     <ClInclude Include="Formats\Textures\TexturesFactory.h" />
     <ClInclude Include="Materials\MaterialParticle.h" />
+    <ClInclude Include="NativeWindows\NativeWindowFactory.h" />
+    <ClInclude Include="NativeWindows\NativeWindow_Proxy.h" />
+    <ClInclude Include="NativeWindows\NativeWindow_WindowsSpecific.h" />
     <ClInclude Include="Passes\DefferedRendering\PassDeffered_DoRenderScene.h" />
     <ClInclude Include="Passes\DefferedRendering\PassDeffered_ProcessLights.h" />
     <ClInclude Include="Passes\DefferedRendering\PassDeffered_RenderUIQuad.h" />
@@ -589,8 +593,6 @@
     <ClInclude Include="Settings\GroupVideo.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="ThreadPool.h" />
-    <ClInclude Include="NativeWindowFactory.h" />
-    <ClInclude Include="NativeWindow_WindowsSpecific.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="znEngine.rc" />

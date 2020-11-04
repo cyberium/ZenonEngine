@@ -71,7 +71,7 @@ ZN_INTERFACE ZN_API IRenderObjectsFactory
 	virtual std::shared_ptr<IRenderObject>    GetRenderObject(RenderObjectID ID) const = 0;
 	virtual void                              ClearCache() = 0;
 
-	virtual std::shared_ptr<IRenderWindow>    CreateRenderWindow(INativeWindow& NativeWindow, bool vSync) = 0;
+	virtual std::shared_ptr<IRenderWindow>    CreateRenderWindow(std::unique_ptr<IznNativeWindow> NativeWindow, bool vSync) = 0;
 	virtual std::shared_ptr<IGeometry>        CreateGeometry() = 0;
 	virtual std::shared_ptr<IModel>           CreateModel() = 0;
 

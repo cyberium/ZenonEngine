@@ -72,7 +72,7 @@ namespace
 
 			// Add new item to cache
 			auto newChild = MakeShared(CznSceneNode3DTreeViewItemSource, Object);
-			Log::Info("TreeViewSceneNode3DSource: Created for object with name '%s'", Object->GetName().c_str());
+			//Log::Info("TreeViewSceneNode3DSource: Created for object with name '%s'", Object->GetName().c_str());
 			m_CachedChilds.push_back(newChild);
 			return newChild;
 		}

@@ -1,14 +1,15 @@
 #pragma once
 
 class ZN_API CNativeWindow_WindowsSpecific
-	: public INativeWindow
-	, public INativeWindow_WindowsSpecific
+	: public IznNativeWindow
+	, public IznNativeWindow_WindowsSpecific
+	, public INativeWindow_WindowsSpecificEx
 {
 public:
 	CNativeWindow_WindowsSpecific(HWND HWnd);
 	virtual ~CNativeWindow_WindowsSpecific();
 
-	// INativeWindow
+	// IznNativeWindow
 	void SetWindowTitle(const std::string& WindowName) override;
 	std::string GetWindowTitle() const override;
 	size_t GetWindowWidth() const override;
@@ -18,12 +19,14 @@ public:
 	void ShowCursor() override;
 	void HideCursor() override;
 	void Close() override;
-	void SetEventsListener(INativeWindowEventListener* WindowEventsListener) override;
+	void SetEventsListener(IznNativeWindowEventListener* WindowEventsListener) override;
 	void ResetEventsListener() override;
 
-	// INativeWindow_WindowsSpecific
+	// IznNativeWindow_WindowsSpecific
 	HWND GetHWnd() const override;
-	LRESULT Windows_ProcessMessage(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam) override;
+
+	// INativeWindow_WindowsSpecificEx
+	LRESULT ProcessMessage(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam) override;
 
 private:
 	// For mouse events
@@ -36,7 +39,7 @@ private:
 
 private:
 	HWND				m_HWnd;
-	INativeWindowEventListener* m_EventListener;
+	IznNativeWindowEventListener* m_EventListener;
 };
 
 

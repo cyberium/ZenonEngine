@@ -21,7 +21,7 @@ ZenonWindowMinimal3DWidget::~ZenonWindowMinimal3DWidget()
 
 
 //
-// INativeWindow
+// IznNativeWindow
 //
 void ZenonWindowMinimal3DWidget::SetWindowTitle(const std::string& WindowName)
 {
@@ -45,30 +45,30 @@ size_t ZenonWindowMinimal3DWidget::GetWindowHeight() const
 
 void ZenonWindowMinimal3DWidget::SetCursorPosition(const glm::ivec2 & CursorPosition)
 {
-	_ASSERT(false);
+	throw CException("Not implemented");
 }
 
 glm::ivec2 ZenonWindowMinimal3DWidget::GetCursorPosition() const
 {
-	_ASSERT(false);
-	return glm::ivec2();
+	throw CException("Not implemented");
 }
 
 void ZenonWindowMinimal3DWidget::ShowCursor()
 {
-	_ASSERT(false);
+	throw CException("Not implemented");
 }
 
 void ZenonWindowMinimal3DWidget::HideCursor()
 {
-	_ASSERT(false);
+	throw CException("Not implemented");
 }
 
 void ZenonWindowMinimal3DWidget::Close()
 {
+	// Do nothing
 }
 
-void ZenonWindowMinimal3DWidget::SetEventsListener(INativeWindowEventListener * WindowEventsListener)
+void ZenonWindowMinimal3DWidget::SetEventsListener(IznNativeWindowEventListener * WindowEventsListener)
 {
 	m_EventListener = WindowEventsListener;
 }
@@ -81,17 +81,11 @@ void ZenonWindowMinimal3DWidget::ResetEventsListener()
 
 
 //
-// INativeWindow_WindowsSpecific
+// IznNativeWindow_WindowsSpecific
 //
 HWND ZenonWindowMinimal3DWidget::GetHWnd() const
 {
 	return (HWND)winId();
-}
-
-LRESULT ZenonWindowMinimal3DWidget::Windows_ProcessMessage(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
-{
-	_ASSERT(FALSE);
-	return 0;
 }
 
 std::shared_ptr<IImage> ZenonWindowMinimal3DWidget::TakeScreenshot(IBaseManager& BaseManager)
@@ -99,7 +93,6 @@ std::shared_ptr<IImage> ZenonWindowMinimal3DWidget::TakeScreenshot(IBaseManager&
 
 
 
-	
 	{
 		RECT rc;
 		HWND hwnd = GetParent(GetParent(GetHWnd()));    //the window can't be min

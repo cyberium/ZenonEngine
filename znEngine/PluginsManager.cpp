@@ -95,7 +95,7 @@ void CznPluginsManager::RemovePlugin(const std::string& PluginDLLName)
 	iter->Plugin.reset();
 
 	if (::FreeLibrary(iter->HModule) == FALSE)
-		_ASSERT_EXPR(false, L"CznPluginsManager: Failed to '::FreeLibrary()'.");
+		throw CException("CznPluginsManager: Failed to '::FreeLibrary()' for plugin '%s'.", iter->Path.c_str());
 }
 
 void CznPluginsManager::InitializeAllPlugins()

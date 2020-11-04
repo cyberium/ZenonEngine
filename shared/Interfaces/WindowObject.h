@@ -1,13 +1,13 @@
 #pragma once
 
 // FORWARD BEGIN
-ZN_INTERFACE INativeWindowEventListener;
+ZN_INTERFACE IznNativeWindowEventListener;
 // FORWARD END
 
 
-ZN_INTERFACE ZN_API INativeWindow
+ZN_INTERFACE ZN_API IznNativeWindow
 {
-	virtual ~INativeWindow() {}
+	virtual ~IznNativeWindow() {}
 
 	virtual void SetWindowTitle(const std::string& WindowName) = 0;
 	virtual std::string GetWindowTitle() const = 0;
@@ -23,24 +23,30 @@ ZN_INTERFACE ZN_API INativeWindow
 
 	virtual void Close() = 0;
 
-	virtual void SetEventsListener(INativeWindowEventListener* WindowEventsListener) = 0;
+	virtual void SetEventsListener(IznNativeWindowEventListener* WindowEventsListener) = 0;
 	virtual void ResetEventsListener() = 0;
 };
 
 
 // Windows only
-ZN_INTERFACE ZN_API INativeWindow_WindowsSpecific // WINDOWS only but in my engine only Windows avaliable... :(
+ZN_INTERFACE ZN_API IznNativeWindow_WindowsSpecific // WINDOWS only but in my engine only Windows avaliable... :(
 {
-	virtual ~INativeWindow_WindowsSpecific() {}
+	virtual ~IznNativeWindow_WindowsSpecific() {}
 
 	virtual HWND GetHWnd() const = 0;
-	virtual LRESULT Windows_ProcessMessage(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam) = 0;
+};
+
+ZN_INTERFACE ZN_API INativeWindow_WindowsSpecificEx // WINDOWS only but in my engine only Windows avaliable... :(
+{
+	virtual ~INativeWindow_WindowsSpecificEx() {}
+
+	virtual LRESULT ProcessMessage(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam) = 0;
 };
 
 
-ZN_INTERFACE ZN_API INativeWindowEventListener
+ZN_INTERFACE ZN_API IznNativeWindowEventListener
 {
-	virtual ~INativeWindowEventListener() {}
+	virtual ~IznNativeWindowEventListener() {}
 
 	// Window events
 	virtual void OnWindowInputFocus(EventArgs& Args) = 0; // Window gets input focus
@@ -67,9 +73,10 @@ ZN_INTERFACE ZN_API INativeWindowEventListener
 };
 
 
-ZN_INTERFACE ZN_API INativeWindowFactory
+ZN_INTERFACE ZN_API IznNativeWindowFactory
 {
-	virtual ~INativeWindowFactory() {}
+	virtual ~IznNativeWindowFactory() {}
 
-	virtual std::unique_ptr<INativeWindow> CreateWindowInstance(LPCWSTR WindowName, LONG Width, LONG Height) = 0;
+	virtual std::unique_ptr<IznNativeWindow> CreateWindowInstance(LPCWSTR WindowName, LONG Width, LONG Height) const = 0;
+	virtual std::unique_ptr<IznNativeWindow> CreateWindowProxy(IznNativeWindow& SourceNativeWindow) const = 0;
 };

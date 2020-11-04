@@ -127,7 +127,7 @@ void MaterialBase::Load(const std::shared_ptr<IByteBuffer>& ByteBuffer)
 
 	size_t texturesCount;
 	ByteBuffer->read(&texturesCount);
-	Log::Info("Material: Load '%d' textures.", texturesCount);
+	//Log::Info("Material: Load '%d' textures.", texturesCount);
 	for (size_t i = 0; i < texturesCount; i++)
 	{
 		uint8 textureIndex;
@@ -150,7 +150,7 @@ void MaterialBase::Load(const std::shared_ptr<IByteBuffer>& ByteBuffer)
 		}
 
 		SetTexture(textureIndex, texture);
-		Log::Info("Material: Load '%s' texture '%s'.", GetTextureTypeName(textureIndex).c_str(), textureFileName.c_str());
+		//Log::Info("Material: Load '%s' texture '%s'.", GetTextureTypeName(textureIndex).c_str(), textureFileName.c_str());
 	}
 
 	MarkMaterialDataDirty();
@@ -166,7 +166,7 @@ void MaterialBase::Save(const std::shared_ptr<IByteBuffer>& ByteBuffer) const
 	// Textures
 	size_t texturesCount = m_Textures.size();
 	ByteBuffer->write(&texturesCount);
-	Log::Info("Material: Saving '%d' textures.", texturesCount);
+	//Log::Info("Material: Saving '%d' textures.", texturesCount);
 
 	for (const auto& texture : m_Textures)
 	{
@@ -182,7 +182,7 @@ void MaterialBase::Save(const std::shared_ptr<IByteBuffer>& ByteBuffer) const
 
 		ByteBuffer->write(&texture.first);
 		ByteBuffer->writeString(fileName);
-		Log::Info("Material: Save '%s' texture '%s'.", GetTextureTypeName(texture.first).c_str(), fileName.c_str());
+		//Log::Info("Material: Save '%s' texture '%s'.", GetTextureTypeName(texture.first).c_str(), fileName.c_str());
 	}
 }
 

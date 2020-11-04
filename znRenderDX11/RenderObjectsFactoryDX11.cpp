@@ -50,9 +50,9 @@ CRenderObjectsFactoryDX11::~CRenderObjectsFactoryDX11()
 //
 // IRenderObjectsFactory
 //
-std::shared_ptr<IRenderWindow> CRenderObjectsFactoryDX11::CreateRenderWindow(INativeWindow& WindowObject, bool vSync)
+std::shared_ptr<IRenderWindow> CRenderObjectsFactoryDX11::CreateRenderWindow(std::unique_ptr<IznNativeWindow> WindowObject, bool vSync)
 {
-	std::shared_ptr<IRenderWindow> renderWindow = MakeShared(RenderWindowDX11, m_RenderDeviceDX11, WindowObject, vSync);
+	std::shared_ptr<IRenderWindow> renderWindow = MakeShared(RenderWindowDX11, m_RenderDeviceDX11, std::move(WindowObject), vSync);
 	m_RenderWindows.insert(std::make_pair(GenerateRenderObjectID(), renderWindow));
 	return renderWindow;
 }

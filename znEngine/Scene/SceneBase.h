@@ -7,7 +7,7 @@ class ZN_API SceneBase
 	, public ISceneInternal
 	, public ISceneLoadSave
 	, public IRenderWindowEventListener
-	, public INativeWindowEventListener
+	, public IznNativeWindowEventListener
 {
 public:
 	SceneBase(IBaseManager& BaseManager, IRenderWindow& RenderWindow);
@@ -50,7 +50,7 @@ public:
 	virtual void                                    OnRenderUI(RenderEventArgs& e) override;
 
 
-	// INativeWindowEventListener
+	// IznNativeWindowEventListener
 	// Window events
 	virtual void                                    OnWindowInputFocus(EventArgs& Args) override {} // Window gets input focus
 	virtual void                                    OnWindowInputBlur(EventArgs& Args) override {}  // Window loses input focus

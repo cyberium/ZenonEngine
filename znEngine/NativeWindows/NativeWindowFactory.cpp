@@ -4,6 +4,7 @@
 #include "NativeWindowFactory.h"
 
 // Additional
+#include "NativeWindow_Proxy.h"
 #include "NativeWindow_WindowsSpecific.h"
 
 namespace
@@ -32,10 +33,10 @@ namespace
 		}
 
 
-		INativeWindow_WindowsSpecific* nativeWindow = (INativeWindow_WindowsSpecific*)::GetWindowLongPtrW(hwnd, GWLP_USERDATA);
+		INativeWindow_WindowsSpecificEx* nativeWindow = (INativeWindow_WindowsSpecificEx*)::GetWindowLongPtrW(hwnd, GWLP_USERDATA);
 		if (nativeWindow != nullptr)
 		{
-			return nativeWindow->Windows_ProcessMessage(hwnd, message, wParam, lParam);
+			return nativeWindow->ProcessMessage(hwnd, message, wParam, lParam);
 		}
 
 		return DefWindowProc(hwnd, message, wParam, lParam);
@@ -44,8 +45,8 @@ namespace
 
 
 
-CNativeWindowFactory::CNativeWindowFactory(IApplication_WindowsSpecific * Application)
-	: m_Application(Application)
+CNativeWindowFactory::CNativeWindowFactory(IApplication_WindowsSpecific * Application_WindowsSpecific)
+	: m_Application_WindowsSpecific(Application_WindowsSpecific)
 {
 	//
 	// Register window class
@@ -59,7 +60,7 @@ CNativeWindowFactory::CNativeWindowFactory(IApplication_WindowsSpecific * Applic
 	renderWindowClass.lpfnWndProc = &ZenonWndProc;
 	renderWindowClass.cbClsExtra = 0;
 	renderWindowClass.cbWndExtra = 0;
-	renderWindowClass.hInstance = m_Application->GetHInstance();
+	renderWindowClass.hInstance = m_Application_WindowsSpecific->GetHInstance();
 	renderWindowClass.hIcon = LoadIcon(hDll, MAKEINTRESOURCE(2));
 	renderWindowClass.hCursor = LoadCursor(NULL, IDC_ARROW);
 	renderWindowClass.hbrBackground = (HBRUSH)(COLOR_WINDOW + 1);
@@ -68,27 +69,28 @@ CNativeWindowFactory::CNativeWindowFactory(IApplication_WindowsSpecific * Applic
 	renderWindowClass.hIconSm = LoadIcon(hDll, MAKEINTRESOURCE(2));
 
 	if (::RegisterClassExW(&renderWindowClass) == FALSE)
-		_ASSERT_EXPR(false, "CNativeWindowFactory: Failed to register the render window class.");
+		throw CException("CNativeWindowFactory: Failed to register the render window class.");
 }
 
 CNativeWindowFactory::~CNativeWindowFactory()
 {
-	if (::UnregisterClassW(cZenonWindowClassName, m_Application->GetHInstance()) == FALSE)
-		_ASSERT_EXPR(false, "CNativeWindowFactory: Failed to unregister render window class.");
+	if (::UnregisterClassW(cZenonWindowClassName, m_Application_WindowsSpecific->GetHInstance()) == FALSE)
+		throw CException("CNativeWindowFactory: Failed to unregister render window class.");
 }
+
 
 
 //
 // IWindowCreator
 //
-std::unique_ptr<INativeWindow> CNativeWindowFactory::CreateWindowInstance(LPCWSTR WindowName, LONG Width, LONG Height)
+std::unique_ptr<IznNativeWindow> CNativeWindowFactory::CreateWindowInstance(LPCWSTR WindowName, LONG Width, LONG Height) const
 {
 	int screenWidth = ::GetSystemMetrics(SM_CXSCREEN);
 	int screenHeight = ::GetSystemMetrics(SM_CYSCREEN);
 
 	RECT windowRect = { 0, 0, Width, Height };
 	if (::AdjustWindowRect(&windowRect, WS_OVERLAPPEDWINDOW, FALSE) == FALSE)
-		_ASSERT_EXPR(false, "CNativeWindowFactory: Failed to AdjustWindowRect.");
+		throw CException("CNativeWindowFactory: Failed to AdjustWindowRect.");
 
 	int windowWidth = windowRect.right - windowRect.left;
 	int windowHeight = windowRect.bottom - windowRect.top;
@@ -105,24 +107,31 @@ std::unique_ptr<INativeWindow> CNativeWindowFactory::CreateWindowInstance(LPCWST
 		windowX, windowY, windowWidth, windowHeight,
 		NULL,
 		NULL,
-		m_Application->GetHInstance(),
+		m_Application_WindowsSpecific->GetHInstance(),
 		NULL
 	);
 
 	if (hWnd == NULL)
-		_ASSERT_EXPR(false, L"CNativeWindowFactory: Failed to create render window.");
+		throw CException("CNativeWindowFactory: Failed to create render window.");
 
 	if (::ShowWindow(hWnd, SW_SHOWDEFAULT) == FALSE)
 	{
-	//	_ASSERT_EXPR(false, L"CNativeWindowFactory: Failed to show window.");
+	//	throw CException("CNativeWindowFactory: Failed to show window.");
 	}
 
 	if (::BringWindowToTop(hWnd))
 	{
-	//	_ASSERT_EXPR(false, "CNativeWindowFactory: Failed to bring window to top.");
+	//	throw CException("CNativeWindowFactory: Failed to bring window to top.");
 	}
 
-	std::unique_ptr<INativeWindow> nativeWindow = std::make_unique<CNativeWindow_WindowsSpecific>(hWnd);
-	SetWindowLongPtrW(hWnd, GWLP_USERDATA, (LONG_PTR)(dynamic_cast<INativeWindow_WindowsSpecific*>(nativeWindow.get())));
+	std::unique_ptr<IznNativeWindow> nativeWindow = std::make_unique<CNativeWindow_WindowsSpecific>(hWnd);
+	SetWindowLongPtrW(hWnd, GWLP_USERDATA, (LONG_PTR)(dynamic_cast<INativeWindow_WindowsSpecificEx*>(nativeWindow.get())));
     return std::move(nativeWindow);
+}
+
+std::unique_ptr<IznNativeWindow> CNativeWindowFactory::CreateWindowProxy(IznNativeWindow& SourceNativeWindow) const
+{
+	std::unique_ptr<IznNativeWindow> nativeWindow = std::make_unique<CNativeWindow_Proxy>(SourceNativeWindow);
+	//SetWindowLongPtrW(hWnd, GWLP_USERDATA, (LONG_PTR)(dynamic_cast<INativeWindow_WindowsSpecificEx*>(nativeWindow.get())));
+	return std::move(nativeWindow);
 }

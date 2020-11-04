@@ -3,77 +3,77 @@
 // General
 #include "RenderWindowBase.h"
 
-RenderWindowBase::RenderWindowBase(INativeWindow& WindowObject, bool vSync)
-	: m_NativeWindow(WindowObject)
+RenderWindowBase::RenderWindowBase(std::unique_ptr<IznNativeWindow> WindowObject, bool vSync)
+	: m_NativeWindow(std::move(WindowObject))
     , m_bResizePending(false)
 {
-	m_Viewport.SetWidth(WindowObject.GetWindowWidth());
-	m_Viewport.SetHeight(WindowObject.GetWindowHeight());
+	m_Viewport.SetWidth(m_NativeWindow->GetWindowWidth());
+	m_Viewport.SetHeight(m_NativeWindow->GetWindowHeight());
 }
 
 RenderWindowBase::~RenderWindowBase()
 {
-	printf("~RenderWindowBase");
+	Log::Info("~RenderWindowBase");
 }
 
 
 
 //
-// INativeWindow
+// IznNativeWindow
 //
 void RenderWindowBase::SetWindowTitle(const std::string& WindowName)
 {
-	m_NativeWindow.SetWindowTitle(WindowName);
+	m_NativeWindow->SetWindowTitle(WindowName);
 }
 
 std::string RenderWindowBase::GetWindowTitle() const
 {
-	return m_NativeWindow.GetWindowTitle();
+	return m_NativeWindow->GetWindowTitle();
 }
 
 size_t RenderWindowBase::GetWindowWidth() const
 {
-	return m_NativeWindow.GetWindowWidth();
+	return m_NativeWindow->GetWindowWidth();
 }
 
 size_t RenderWindowBase::GetWindowHeight() const
 {
-    return m_NativeWindow.GetWindowHeight();
+    return m_NativeWindow->GetWindowHeight();
 }
 
 void RenderWindowBase::SetCursorPosition(const glm::ivec2 & CursorPosition)
 {
-	m_NativeWindow.SetCursorPosition(CursorPosition);
+	m_NativeWindow->SetCursorPosition(CursorPosition);
 }
 
 glm::ivec2 RenderWindowBase::GetCursorPosition() const
 {
-	return m_NativeWindow.GetCursorPosition();
+	return m_NativeWindow->GetCursorPosition();
 }
 
 void RenderWindowBase::ShowCursor()
 {
-	m_NativeWindow.ShowCursor();
+	m_NativeWindow->ShowCursor();
 }
 
 void RenderWindowBase::HideCursor()
 {
-	m_NativeWindow.HideCursor();
+	m_NativeWindow->HideCursor();
 }
 
 void RenderWindowBase::Close()
 {
-	m_NativeWindow.Close();
+	m_NativeWindow->Close();
 }
 
-void RenderWindowBase::SetEventsListener(INativeWindowEventListener* WindowEventsListener)
+void RenderWindowBase::SetEventsListener(IznNativeWindowEventListener* WindowEventsListener)
 {
-	_ASSERT_EXPR(false, L"Not implemented!");
+	throw CException("Not implemented!");
 }
 
 void RenderWindowBase::ResetEventsListener()
 {
-	_ASSERT_EXPR(false, L"Not implemented!");
+	throw CException("Not implemented!");
 }
 
 
@@ -88,7 +88,7 @@ void RenderWindowBase::SetRenderWindowEventListener(std::shared_ptr<IRenderWindo
 	m_RenderWindowEventListener = RenderWindowEventListener;
 }
 
-void RenderWindowBase::SetNativeWindowEventListener(std::shared_ptr<INativeWindowEventListener> NativeWindowEventListener)
+void RenderWindowBase::SetNativeWindowEventListener(std::shared_ptr<IznNativeWindowEventListener> NativeWindowEventListener)
 {
 	_ASSERT(m_NativeWindowEventListener == nullptr);
 	m_NativeWindowEventListener = NativeWindowEventListener;
@@ -137,7 +137,7 @@ float RenderWindowBase::GetSummaDeltaTime() const
 
 
 //
-// INativeWindowEventListener
+// IznNativeWindowEventListener
 //
 void RenderWindowBase::OnWindowInputFocus(EventArgs & Args)
 {
@@ -320,6 +320,11 @@ void RenderWindowBase::RaiseRenderUI(RenderEventArgs & e)
 	HighResolutionTimer timer;
 	m_RenderWindowEventListener->OnRenderUI(e);
 	m_RenderUIDeltaTime = timer.GetElapsedMilliSeconds();
+}
+
+IznNativeWindow & RenderWindowBase::GetNativeWindow()
+{
+	return *m_NativeWindow.get();
 }
 
 void RenderWindowBase::CreateSwapChain()

@@ -10,7 +10,7 @@
 #include "RenderTargetOGL.h"
 #include "TextureOGL.h"
 
-RenderWindowOGL::RenderWindowOGL(IRenderDevice* RenderDevice, INativeWindow * WindowObject, bool vSync)
+RenderWindowOGL::RenderWindowOGL(IRenderDevice* RenderDevice, IznNativeWindow * WindowObject, bool vSync)
 	: RenderWindowBase(RenderDevice, WindowObject, vSync)
 {
 	m_HDC = GetDC(GetWindowObject()->GetHWnd());

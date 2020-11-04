@@ -16,7 +16,7 @@ public:
 	std::string GetDeviceName() const;
     const RenderDeviceType GetDeviceType() const;
 	IBaseManager* GetBaseManager() const;
-	IRenderWindow* CreateRenderWindow(INativeWindow * WindowObject, bool vSync);
+	IRenderWindow* CreateRenderWindow(IznNativeWindow * WindowObject, bool vSync);
 
 	// Inherited from IRenderDevice
 	virtual IBuffer* CreateVoidVertexBuffer(const void* data, uint32 count, uint32 offset, uint32 stride) override;

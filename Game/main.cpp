@@ -18,31 +18,41 @@ void main_internal(int argumentCount, char* arguments[])
 	//try
 	//{
 		Application app(*BaseManager, ::GetModuleHandle(NULL));
-
 		CNativeWindowFactory nativeWindowFactory(&app);
 
-		std::unique_ptr<INativeWindow> nativeWindow = nativeWindowFactory.CreateWindowInstance(
-			L"Zenon Engine",
-			BaseManager->GetManager<ISettings>()->GetGroup("Video")->GetSettingT<glm::vec2>("WindowSize")->Get().x,
-			BaseManager->GetManager<ISettings>()->GetGroup("Video")->GetSettingT<glm::vec2>("WindowSize")->Get().y
-		);
+		ULONG windowWidth = BaseManager->GetManager<ISettings>()->GetGroup("Video")->GetSettingT<glm::vec2>("WindowSize")->Get().x;
+		ULONG windowHeight = BaseManager->GetManager<ISettings>()->GetGroup("Video")->GetSettingT<glm::vec2>("WindowSize")->Get().y;
 
 		IRenderDevice& renderDevice = app.CreateRenderDevice(RenderDeviceType::RenderDeviceType_DirectX11);
 
-		std::shared_ptr<IznFontsManager> fontsManager = MakeShared(FontsManager, renderDevice, *BaseManager);
-		BaseManager->AddManager<IznFontsManager>(fontsManager);
+		BaseManager->AddManager<IznFontsManager>(MakeShared(FontsManager, renderDevice, *BaseManager));
 
 		{
-			const auto& firstRenderWindow = renderDevice.GetObjectsFactory().CreateRenderWindow(*nativeWindow, false);
-			app.AddRenderWindow(firstRenderWindow);
-
 			BaseManager->GetManager<ILoader>()->Start();
 
+			{
+				std::unique_ptr<IznNativeWindow> nativeWindow = nativeWindowFactory.CreateWindowInstance(L"Zenon Engine", windowWidth, windowHeight);
 
-			std::shared_ptr<IScene> scene = MakeShared(CSceneDefault, *BaseManager, *firstRenderWindow);
-			firstRenderWindow->SetRenderWindowEventListener(std::dynamic_pointer_cast<IRenderWindowEventListener>(scene));
-			firstRenderWindow->SetNativeWindowEventListener(std::dynamic_pointer_cast<INativeWindowEventListener>(scene));
-			scene->Initialize();
+				const auto& renderWindow = renderDevice.GetObjectsFactory().CreateRenderWindow(std::move(nativeWindow), false);
+				app.AddRenderWindow(renderWindow);
+
+				std::shared_ptr<IScene> scene = MakeShared(CSceneDefault, *BaseManager, *renderWindow);
+				renderWindow->SetRenderWindowEventListener(std::dynamic_pointer_cast<IRenderWindowEventListener>(scene));
+				renderWindow->SetNativeWindowEventListener(std::dynamic_pointer_cast<IznNativeWindowEventListener>(scene));
+				scene->Initialize();
+			}
+
+			/*{
+				std::unique_ptr<IznNativeWindow> nativeWindow2 = nativeWindowFactory.CreateWindowInstance(L"Zenon Engine", windowWidth, windowHeight);
+
+				const auto& renderWindow2 = renderDevice.GetObjectsFactory().CreateRenderWindow(std::move(nativeWindow2), false);
+				app.AddRenderWindow(renderWindow2);
+
+				std::shared_ptr<IScene> scene2 = MakeShared(CSceneDefault, *BaseManager, *renderWindow2);
+				renderWindow2->SetRenderWindowEventListener(std::dynamic_pointer_cast<IRenderWindowEventListener>(scene2));
+				renderWindow2->SetNativeWindowEventListener(std::dynamic_pointer_cast<IznNativeWindowEventListener>(scene2));
+				scene2->Initialize();
+			}*/
 		}
 
 		app.Run();

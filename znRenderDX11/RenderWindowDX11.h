@@ -7,7 +7,7 @@ class ZN_API RenderWindowDX11
 	: public RenderWindowBase
 {
 public:
-	RenderWindowDX11(IRenderDeviceDX11& RenderDeviceDX11, INativeWindow& WindowObject, bool vSync);
+	RenderWindowDX11(IRenderDeviceDX11& RenderDeviceDX11, std::unique_ptr<IznNativeWindow> WindowObject, bool vSync);
 	virtual ~RenderWindowDX11();
 
 	// IRenderWindow
