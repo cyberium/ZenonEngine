@@ -23,6 +23,9 @@
     </ClCompile>
     <ClCompile Include="main.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Game.rc" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{24037B59-E2A0-4432-9A22-888691117321}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>

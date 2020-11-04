@@ -7,28 +7,15 @@
 
 DebugOutput_Log::DebugOutput_Log()
 {
-	std::string fileName = std::string(LOGFILENAME);
-
-	if (fileName.empty())
-	{
-		Log::Error("LogFile[%s]: No such file or directory!", fileName.c_str());
-		_ASSERT(false);
-	}
-
-	m_LogStream.open(fileName.c_str(), std::ios::out);
-	if (!m_LogStream.is_open())
-	{
-		Log::Error("LogFile[%s]: Can not open file!", fileName.c_str());
-		m_LogStream.clear();
-		_ASSERT(false);
-	}
+	m_LogStream.open(LOGFILENAME, std::ios::out);
+	if (false == m_LogStream.is_open())
+		throw CException("Unable create log file in Application directory.");
 }
 
 DebugOutput_Log::~DebugOutput_Log()
 {
 	m_LogStream.flush();
 	m_LogStream.close();
-	m_LogStream.clear();
 }
 
 //

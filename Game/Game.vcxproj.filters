@@ -19,4 +19,7 @@
       <UniqueIdentifier>{d8c5527d-4092-4dba-af1a-a3b1f7a57e92}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Game.rc" />
+  </ItemGroup>
 </Project>
