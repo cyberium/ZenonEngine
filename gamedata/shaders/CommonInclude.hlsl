@@ -15,8 +15,9 @@ cbuffer PerFrame : register(b1)
 	PerFrame PF;
 }
 
-sampler LinearRepeatSampler : register(s0);
+// b2 reserved for material
 
+sampler LinearRepeatSampler : register(s0);
 sampler LinearClampSampler : register(s1);
 
 

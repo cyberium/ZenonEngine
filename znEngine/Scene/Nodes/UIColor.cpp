@@ -3,17 +3,19 @@
 // General
 #include "UIColor.h"
 
-CUIColorNode::CUIColorNode(glm::vec2 Size)
-	: m_Size(Size)
-{
-
-}
+CUIColorNode::CUIColorNode(IScene& Scene)
+	: CUIControl(Scene)
+{}
 
 CUIColorNode::~CUIColorNode()
 {}
 
+
+
 void CUIColorNode::Initialize()
 {
+	__super::Initialize();
+
 	m_Material = MakeShared(UI_Color_Material, GetBaseManager().GetApplication().GetRenderDevice());
 
 	auto geom = GetBaseManager().GetApplication().GetRenderDevice().GetPrimitivesFactory().CreateUIQuad(m_Size.x, m_Size.y);

@@ -1,6 +1,6 @@
 #pragma once
 
-class __declspec(UUID_ParticleComponent) ZN_API CParticlesComponent3D
+class ZN_API CParticlesComponent3D
 	: public IParticleComponent3D
 	, public IParticleSystem
 	, public CComponentBase

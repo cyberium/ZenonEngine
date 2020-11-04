@@ -7,7 +7,6 @@
 
 CSceneNode::CSceneNode(IScene& Scene)
 	: Object(Scene.GetBaseManager())
-	
 	, m_Scene(Scene)
 
 	, m_IsPersistance(false)
@@ -18,7 +17,6 @@ CSceneNode::CSceneNode(IScene& Scene)
 	, m_IsRotateQuat(false)
 	, m_Scale(1.0f)
 
-	// Transform functinal
 	, m_LocalTransform(1.0f)
 	, m_InverseLocalTransform(1.0f)	// This is the inverse of the local -> world transform.
 	, m_WorldTransform(1.0f)
@@ -39,10 +37,10 @@ void CSceneNode::Initialize()
 {
 	// Name properties
 	{
-		//std::shared_ptr<CPropertyWrapped<std::string>> nameProperty = MakeShared(CPropertyWrapped<std::string>, "Name", "Scene node name.");
-		//nameProperty->SetValueSetter(std::bind(&Object::SetName, this, std::placeholders::_1));
-		//nameProperty->SetValueGetter(std::bind(&Object::GetName, this));
-		//GetProperties()->AddProperty(nameProperty);
+		std::shared_ptr<CPropertyWrapped<std::string>> nameProperty = MakeShared(CPropertyWrapped<std::string>, "Name", "Scene node name.");
+		nameProperty->SetValueSetter(std::bind(&Object::SetName, this, std::placeholders::_1));
+		nameProperty->SetValueGetter(std::bind(&Object::GetName, this));
+		GetProperties()->AddProperty(nameProperty);
 	}
 
 	// Transform properties
@@ -153,7 +151,6 @@ const CSceneNode::SceneNodesList& CSceneNode::GetChilds() const
 std::shared_ptr<ISceneNode> CSceneNode::GetChild(std::string Name) const
 {
 	std::string currClearName = GetClearName(Name).first;
-
 	for (const auto& ch : GetChilds())
 	{
 		std::string childClearName = GetClearName(ch->GetName()).first;
@@ -267,7 +264,6 @@ glm::mat4 CSceneNode::GetParentWorldTransform() const
 	glm::mat4 parentTransform(1.0f);
 	if (auto parent = GetParent())
 		parentTransform = parent->GetWorldTransfom();
-
 	return parentTransform;
 }
 
@@ -502,24 +498,19 @@ void CSceneNode::Save(const std::shared_ptr<IXMLWriter>& Writer) const
 //
 // ISceneNodeInternal
 //
-
 void CSceneNode::AddChildInternal(std::shared_ptr<ISceneNode> childNode)
 {
 	if (childNode == nullptr)
 		throw CException(L"Unable to add nullptr child node to '%s'.", GetName().c_str());
 
-	// 1. Удаляем чилда у текущего родителя (возможно нужно его об этом нотифицировать, например для перерасчета BoundingBox)
 	if (auto currentChildParent = childNode->GetParent())
 	{
 		if (currentChildParent != shared_from_this())
 		{
 			std::dynamic_pointer_cast<CSceneNode>(currentChildParent)->RemoveChildPrivate(childNode);
-			//Log::Warn("CSceneNode: Failed to add child to his current parent.");
-			//return;
 		}
 	}
 
-	// 2. Добавляем чилда в нового парента (возможно нужно его об этом нотифицировать, например для перерасчета BoundingBox)
 	this->AddChildPrivate(childNode);
 }
 
@@ -541,13 +532,10 @@ void CSceneNode::SetPersistanceInternal(bool Value)
 
 void CSceneNode::RaiseOnParentChangedInternal()
 {
-	// Don't forget about update world transform
 	UpdateWorldTransform();
 
 	for (auto c : m_Components)
-	{
 		c.second->OnMessage(nullptr, UUID_OnParentChanged);
-	}
 }
 
 
@@ -627,9 +615,6 @@ IRenderDevice& CSceneNode::GetRenderDevice() const
 //
 // Private
 //
-//
-// ISceneNodeInternal
-//
 void CSceneNode::AddChildPrivate(std::shared_ptr<ISceneNode> ChildNode)
 {
 	_ASSERT(ChildNode != nullptr);
@@ -638,14 +623,10 @@ void CSceneNode::AddChildPrivate(std::shared_ptr<ISceneNode> ChildNode)
 	if (iter != m_Children.end())
 		throw CException(L"This parent already has this child.");
 
-	// Add to common list
 	m_Children.push_back(ChildNode);
 
 	std::dynamic_pointer_cast<CSceneNode>(ChildNode)->SetParentPrivate(weak_from_this());
-
-	// Update name (to resolve dublicates)
 	ChildNode->SetName(ChildNode->GetName());
-
 	std::dynamic_pointer_cast<ISceneNodeInternal>(ChildNode)->RaiseOnParentChangedInternal();
 }
 
@@ -655,11 +636,9 @@ void CSceneNode::RemoveChildPrivate(std::shared_ptr<ISceneNode> ChildNode)
 	if (childListIter == m_Children.end())
 		throw CException(L"Can't remove child because don't found.");
 
-	// Delete from list
 	m_Children.erase(childListIter);
 
 	std::dynamic_pointer_cast<CSceneNode>(ChildNode)->SetParentPrivate(std::weak_ptr<ISceneNode>());
-
 	std::dynamic_pointer_cast<ISceneNodeInternal>(ChildNode)->RaiseOnParentChangedInternal();
 }
 

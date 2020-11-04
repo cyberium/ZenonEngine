@@ -1,6 +1,6 @@
 #pragma once
 
-class __declspec(UUID_CameraComponent) ZN_API CCameraComponent3D
+class ZN_API CCameraComponent3D
 	: public ICameraComponent3D
 	, public CComponentBase
 {

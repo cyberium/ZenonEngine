@@ -9,41 +9,44 @@ namespace
 	const glm::vec4  cDefaultColor = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
 }
 
-CUIButtonNode::CUIButtonNode(IRenderDevice& RenderDevice)
-	: m_State(Idle)
-{
-	m_Material = MakeShared(UI_Button_Material, RenderDevice);
-}
+CUIButtonNode::CUIButtonNode(IScene& Scene)
+	: CUIControl(Scene)
+{}
 
 CUIButtonNode::~CUIButtonNode()
 {}
 
 
 
-//
-// CUIButtonNode
-//
-void CUIButtonNode::CreateDefault()
+void CUIButtonNode::Initialize()
 {
+	__super::Initialize();
+	m_Material = MakeShared(UI_Button_Material, GetRenderDevice());
+
 	m_Material->SetIdleTexture(GetBaseManager().GetManager<IznTexturesFactory>()->LoadTexture2D("btn_idle.png"));
 	m_Material->SetHoverTexture(GetBaseManager().GetManager<IznTexturesFactory>()->LoadTexture2D("btn_hover.png"));
 	m_Material->SetClickedTexture(GetBaseManager().GetManager<IznTexturesFactory>()->LoadTexture2D("btn_clicked.png"));
 	m_Material->SetDisabledTexture(GetBaseManager().GetManager<IznTexturesFactory>()->LoadTexture2D("btn_idle.png"));
 
 	const auto& idleTexture = m_Material->GetTexture(0);
-    m_Size = idleTexture->GetSize();
+	m_Size = idleTexture->GetSize();
 
 	auto geometry = GetBaseManager().GetApplication().GetRenderDevice().GetPrimitivesFactory().CreateUIQuad(idleTexture->GetWidth(), idleTexture->GetHeight());
-	
+
 	m_Mesh = GetBaseManager().GetApplication().GetRenderDevice().GetObjectsFactory().CreateModel();
 	m_Mesh->AddConnection(m_Material, geometry);
 
-    m_TextNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<IUIControlFactory>()->CreateSceneNodeUI( cSceneNodeUI_Text,GetScene(), shared_from_this());
+	m_TextNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<IUIControlFactory>()->CreateSceneNodeUI(cSceneNodeUI_Text, GetScene(), shared_from_this());
 	m_TextNode->GetProperties()->GetPropertyT<std::string>("Text")->Set(cDefaultText);
 	m_TextNode->SetTranslate(glm::vec2(10.0f, 10.0f));
 	std::static_pointer_cast<CUITextNode>(m_TextNode)->SetTextColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
 }
 
+
+
+//
+// CUIButtonNode
+//
 void CUIButtonNode::SetText(const std::string& Text)
 {
 	m_TextNode->GetProperties()->GetPropertyT<std::string>("Text")->Set(Text);

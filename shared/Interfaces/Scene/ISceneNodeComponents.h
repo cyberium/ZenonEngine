@@ -21,23 +21,23 @@ const ObjectClass cSceneNodeLightComponent = UINT16_MAX - 507u;
 const ObjectClass cSceneNodeCameraComponent = UINT16_MAX - 508u;
 const ObjectClass cSceneNodeAnimationComponent = UINT16_MAX - 509u;
 
-ZN_INTERFACE ZN_API ISceneNodeComponent 
+ZN_INTERFACE ZN_API ISceneNodeComponent
 	: public IObject
-    , public std::enable_shared_from_this<ISceneNodeComponent>
+	, public std::enable_shared_from_this<ISceneNodeComponent>
 {
-	//static ObjectClass GetClassT() { return cSceneNodeComponent; }
+	ZN_OBJECTCLASS(cSceneNodeComponent);
 
 	virtual ~ISceneNodeComponent() {}
 
 	virtual void Copy(std::shared_ptr<ISceneNodeComponent> Destination) const = 0;
 
-    // Callbacks
-    virtual void OnMessage(const ISceneNodeComponent* Component, ComponentMessageType Message) = 0;
+	// Callbacks
+	virtual void OnMessage(const ISceneNodeComponent* Component, ComponentMessageType Message) = 0;
 	virtual std::shared_ptr<IPropertiesGroup> GetProperties() const = 0;
 
 	// Visit functional
 	virtual void Update(const UpdateEventArgs& e) = 0;
-    virtual void Accept(IVisitor* visitor) = 0;
+	virtual void Accept(IVisitor* visitor) = 0;
 };
 typedef std::unordered_map<ObjectClass, std::shared_ptr<ISceneNodeComponent>> ComponentsMap;
 
@@ -50,8 +50,7 @@ const ComponentMessageType UUID_OnWorldTransformChanged = 3;
 //
 // COLLIDER COMPONENT 3D
 //
-#define UUID_ColliderComponent uuid("78BD7168-51CB-4760-ADD2-218CF4E88CE2")
-ZN_INTERFACE __declspec(UUID_ColliderComponent) ZN_API IColliderComponent3D
+ZN_INTERFACE ZN_API IColliderComponent3D
 {
 	enum class ZN_API ECullStrategy
 	{
@@ -63,7 +62,7 @@ ZN_INTERFACE __declspec(UUID_ColliderComponent) ZN_API IColliderComponent3D
 		ByFrustrumAndDistance
 	};
 
-	static ObjectClass GetClassT() { return cSceneNodeColliderComponent; }
+	ZN_OBJECTCLASS(cSceneNodeColliderComponent);
 
 	virtual ~IColliderComponent3D() {}
 
@@ -133,8 +132,8 @@ ZN_INTERFACE ZN_API IPortalRoomObject
 
 
 /**
-  * Комната в которой содержаться объекты и которые отделены 
-  * друг от друга и от внешнего мира порталами. 
+  * Комната в которой содержаться объекты и которые отделены
+  * друг от друга и от внешнего мира порталами.
   * Внутри комнаты могут быть и другие комнаты.
 */
 ZN_INTERFACE ZN_API IPortalRoom
@@ -153,10 +152,9 @@ ZN_INTERFACE ZN_API IPortalRoom
 	virtual bool IsCalculated() const = 0;
 };
 
-#define UUID_PortalsComponent uuid("C4B0195E-B6E4-458E-A371-C0698335A5A7")
-ZN_INTERFACE __declspec(UUID_PortalsComponent) ZN_API IPortalsComponent3D
+ZN_INTERFACE ZN_API IPortalsComponent3D
 {
-	static ObjectClass GetClassT() { return cSceneNodePortalsComponent; }
+	ZN_OBJECTCLASS(cSceneNodePortalsComponent);
 
 	virtual ~IPortalsComponent3D() {}
 };
@@ -166,10 +164,9 @@ ZN_INTERFACE __declspec(UUID_PortalsComponent) ZN_API IPortalsComponent3D
 //
 // MODELS COMPONENT 3D
 //
-#define UUID_ModelsComponent uuid("403E886D-7BD7-438B-868D-AC4380830716")
-ZN_INTERFACE __declspec(UUID_ModelsComponent) ZN_API IModelsComponent3D
+ZN_INTERFACE ZN_API IModelsComponent3D
 {
-	static ObjectClass GetClassT() { return cSceneNodeModelsComponent; }
+	ZN_OBJECTCLASS(cSceneNodeModelsComponent);
 
 	virtual ~IModelsComponent3D() {}
 
@@ -236,10 +233,9 @@ ZN_INTERFACE ZN_API ILight3D
 	virtual const SLight& GetLightStruct() const = 0;
 };
 
-#define UUID_LightComponent uuid("2198326E-A00F-43C8-9EF5-4F60A8ABBBAE")
-ZN_INTERFACE __declspec(UUID_LightComponent) ZN_API ILightComponent3D
+ZN_INTERFACE ZN_API ILightComponent3D
 {
-	static ObjectClass GetClassT() { return cSceneNodeLightComponent; }
+	ZN_OBJECTCLASS(cSceneNodeLightComponent);
 
 	virtual ~ILightComponent3D() {}
 
@@ -267,8 +263,7 @@ ZN_INTERFACE __declspec(UUID_LightComponent) ZN_API ILightComponent3D
 //
 // CAMERA COMPONENT 3D
 //
-#define UUID_CameraComponent uuid("1F7DED3C-7622-46FA-BA17-4E405BA982DC")
-ZN_INTERFACE __declspec(UUID_CameraComponent) ZN_API ICameraComponent3D
+ZN_INTERFACE ZN_API ICameraComponent3D
 {
 	enum class ZN_API EPerspectiveProjectionHand
 	{
@@ -276,7 +271,7 @@ ZN_INTERFACE __declspec(UUID_CameraComponent) ZN_API ICameraComponent3D
 		Right
 	};
 
-	static ObjectClass GetClassT() { return cSceneNodeCameraComponent; }
+	ZN_OBJECTCLASS(cSceneNodeCameraComponent);
 
 	virtual ~ICameraComponent3D() {}
 
@@ -347,10 +342,9 @@ ZN_INTERFACE ZN_API ISkeletonComponentBoneInternal3D
 	virtual void Reset() = 0;
 };
 
-#define UUID_SkeletonComponent uuid("6A913E4D-B4E9-4E7C-8A09-F606D7A85CD5")
-ZN_INTERFACE __declspec(UUID_SkeletonComponent) ZN_API ISkeletonComponent3D
+ZN_INTERFACE ZN_API ISkeletonComponent3D
 {
-	static ObjectClass GetClassT() { return cSceneNodeSkeletonComponent; }
+	ZN_OBJECTCLASS(cSceneNodeSkeletonComponent);
 
 	virtual ~ISkeletonComponent3D() {}
 
@@ -361,10 +355,14 @@ ZN_INTERFACE __declspec(UUID_SkeletonComponent) ZN_API ISkeletonComponent3D
 };
 
 
+
+
+
+
+
 //
 // PARTICLE COMPONENT 3D
 //
-
 struct __declspec(novtable, align(16)) ZN_API SParticle
 {
 	SParticle()
@@ -405,13 +403,18 @@ ZN_INTERFACE ZN_API IParticleSystem
 	virtual std::shared_ptr<IBlendState> GetBlendState() const = 0;
 };
 
-#define UUID_ParticleComponent uuid("B0168C5F-60C0-4210-B3EF-740FEB89FFDD")
-ZN_INTERFACE __declspec(UUID_ParticleComponent) ZN_API IParticleComponent3D
+ZN_INTERFACE ZN_API IParticleComponent3D
 {
-	static ObjectClass GetClassT() { return cSceneNodeParticleComponent; }
+	ZN_OBJECTCLASS(cSceneNodeParticleComponent);
 
 	virtual ~IParticleComponent3D() {}
 };
+
+
+
+
+
+
 
 
 
@@ -426,15 +429,19 @@ ZN_INTERFACE ZN_API IPhysicsBody
 	virtual glm::vec3 GetPosition() const = 0;
 };
 
-#define UUID_PhysicsComponent uuid("678B0AA5-0CD4-4C87-874A-20CD2AC82D2D")
-ZN_INTERFACE __declspec(UUID_PhysicsComponent)ZN_API IPhysicsComponent
+ZN_INTERFACE ZN_API IPhysicsComponent
 {
-	static ObjectClass GetClassT() { return cSceneNodePhysicsComponent; }
+	ZN_OBJECTCLASS(cSceneNodePhysicsComponent);
 
 	virtual ~IPhysicsComponent() {}
 
 	virtual glm::vec3 GetPhysicsPosition() const = 0;
 };
+
+
+
+
+
 
 struct SAnimation
 {
@@ -444,10 +451,9 @@ struct SAnimation
 };
 
 
-#define UUID_AnimationComponent uuid("9F9EB54A-9DC3-4C9D-B2BE-715D6EB38068")
-ZN_INTERFACE __declspec(UUID_AnimationComponent) ZN_API ISkeletonAnimationComponent
+ZN_INTERFACE ZN_API ISkeletonAnimationComponent
 {
-	static ObjectClass GetClassT() { return cSceneNodeAnimationComponent; }
+	ZN_OBJECTCLASS(cSceneNodeAnimationComponent);
 
 	virtual ~ISkeletonAnimationComponent() {}
 

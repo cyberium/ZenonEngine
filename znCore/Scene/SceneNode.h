@@ -7,7 +7,6 @@ class ZN_API CSceneNode
 	, public ISceneNodeInternal
 	, public Object
 {
-    friend IScene;
 public:
 	CSceneNode(IScene& Scene);
 	virtual ~CSceneNode();
@@ -30,9 +29,7 @@ public:
 	std::shared_ptr<IPropertiesGroup>				GetProperties() const override final;
 	IScene&											GetScene() const override final;
 
-	//
 	// Transform functional
-	//
 	void											SetTranslate(const glm::vec3& Translate) override;
 	void                                            AddTranslate(const glm::vec3& Translate) override;
 	const glm::vec3&								GetTranslation() const override;
@@ -52,10 +49,7 @@ public:
 	virtual glm::mat4								GetParentWorldTransform() const;
 	virtual void									SetWorldTransform(const glm::mat4& worldTransform);
 
-
-	//
 	// Components engine
-	//
 	bool                                            IsComponentExists(ObjectClass ComponentID) const override;
 	std::shared_ptr<ISceneNodeComponent>            GetComponent(ObjectClass ComponentID) const override;
 	std::shared_ptr<ISceneNodeComponent>            AddComponent(ObjectClass ComponentID, std::shared_ptr<ISceneNodeComponent> Component) override;
@@ -76,7 +70,6 @@ public:
 	virtual void									Load(const std::shared_ptr<IXMLReader>& Reader) override;
 	virtual void									Save(const std::shared_ptr<IXMLWriter>& Writer) const override;
 
-protected:
 	// ISceneNodeInternal
 	void                                            AddChildInternal(std::shared_ptr<ISceneNode> ChildNode) override;     // Called from scene
 	void                                            RemoveChildInternal(std::shared_ptr<ISceneNode> ChildNode) override;  // Called from scene
@@ -89,7 +82,6 @@ protected:
 	void											UpdateWorldTransform();
 	void                                            DoLoadProperties(const std::shared_ptr<IXMLReader>& Reader) const;
 	void                                            DoSaveProperties(const std::shared_ptr<IXMLWriter>& Writer) const;
-
 	IBaseManager&                                   GetBaseManager() const;
 	IRenderDevice&                                  GetRenderDevice() const;
 
@@ -112,7 +104,6 @@ private:
 	glm::mat4										m_InverseWorldTransform;
 
 	std::shared_ptr<IPropertiesGroup>               m_PropertiesGroup;
-
 	ComponentsMap                                   m_Components;
 
 	std::weak_ptr<ISceneNode>                       m_ParentNode;

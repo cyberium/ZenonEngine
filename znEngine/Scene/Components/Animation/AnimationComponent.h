@@ -2,7 +2,7 @@
 
 
 
-class __declspec(UUID_AnimationComponent) ZN_API CAnimationComponent3D
+class ZN_API CAnimationComponent3D
 	: public CComponentBase
 	, public ISkeletonAnimationComponent
 {

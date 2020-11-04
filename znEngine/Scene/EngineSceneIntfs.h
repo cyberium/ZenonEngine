@@ -71,6 +71,8 @@ struct SRTSCell
 
 ZN_INTERFACE ZN_API IRTSGround
 {
+	ZN_OBJECTCLASS(cCRTSSceneNodeGround);
+
 	virtual ~IRTSGround() {}
 
 	virtual bool AddCell(ERTSCellType CellType, SRTSCellCoords Coords) = 0;

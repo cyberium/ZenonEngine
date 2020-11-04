@@ -1,6 +1,6 @@
 #pragma once
 
-class __declspec(UUID_ColliderComponent) ZN_API CColliderComponent3D
+class /*__declspec(UUID_ColliderComponent)*/ ZN_API CColliderComponent3D
 	: public IColliderComponent3D
 	, public CComponentBase
 {

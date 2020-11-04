@@ -5,7 +5,7 @@
 #define BUTTON_STATE_CLICKED 2
 #define BUTTON_STATE_DISABLED 3
 
-cbuffer Material : register(b1)
+cbuffer Material : register(b2)
 {
     float4 Color;
 	uint   State;
@@ -15,9 +15,8 @@ Texture2D IdleTexture     : register(t0);
 Texture2D HoverTexture    : register(t1);
 Texture2D ClickedTexture  : register(t2);
 Texture2D DisabledTexture : register(t3);
-sampler   DiffuseTextureSampler  : register(s0);
 
-float4 PS_main(VertexShaderOutput IN) : SV_TARGET
+float4 PS_main(VSOutputUI IN) : SV_TARGET
 {
 	if (State == BUTTON_STATE_IDLE)
 	{

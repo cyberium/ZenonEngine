@@ -10,7 +10,8 @@ namespace
 	const glm::vec4  cDefaultColor = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
 }
 
-CUITextNode::CUITextNode()
+CUITextNode::CUITextNode(IScene& Scene)
+	: CUIControl(Scene)
 {}
 
 CUITextNode::~CUITextNode()
@@ -20,6 +21,8 @@ CUITextNode::~CUITextNode()
 
 void CUITextNode::Initialize()
 {
+	__super::Initialize();
+
 	m_TextProperty = MakeShared(CProperty<std::string>);
 	m_TextProperty->SetName("Text");
 	m_TextProperty->Set(cDefaultText);

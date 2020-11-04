@@ -8,18 +8,28 @@ namespace
 	const glm::vec4 cDefaultColor = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
 }
 
-CUITextureNode::CUITextureNode(IRenderDevice& RenderDevice, glm::vec2 Size)
-	: m_Size(Size)
+CUITextureNode::CUITextureNode(IScene& Scene)
+	: CUIControl(Scene)
 {
-	m_Material = MakeShared(UI_Texture_Material, RenderDevice);
-	m_Material->SetColor(cDefaultColor);
 
-	m_Mesh = RenderDevice.GetObjectsFactory().CreateModel();
-	m_Mesh->AddConnection(m_Material, RenderDevice.GetPrimitivesFactory().CreateUIQuad(Size.x, Size.y));
 }
 
 CUITextureNode::~CUITextureNode()
 {}
+
+
+void CUITextureNode::Initialize()
+{
+	__super::Initialize();
+
+	m_Material = MakeShared(UI_Texture_Material, GetRenderDevice());
+	m_Material->SetColor(cDefaultColor);
+
+	m_Size = glm::vec2(50.0f, 50.0f);
+
+	m_Mesh = GetRenderDevice().GetObjectsFactory().CreateModel();
+	m_Mesh->AddConnection(m_Material, GetRenderDevice().GetPrimitivesFactory().CreateUIQuad(m_Size.x, m_Size.y));
+}
 
 
 
@@ -35,7 +45,6 @@ void CUITextureNode::SetColor(glm::vec4 _color)
 {
 	m_Material->SetColor(_color);
 }
-
 
 
 

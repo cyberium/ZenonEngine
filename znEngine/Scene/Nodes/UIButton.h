@@ -16,11 +16,12 @@ public:
 		Disabled = 3
 	};
 
-	CUIButtonNode(IRenderDevice& RenderDevice);
+	CUIButtonNode(IScene& Scene);
 	virtual ~CUIButtonNode();
 
+	void Initialize() override;
+
 	// CUIButtonNode
-	void CreateDefault();
 	void SetText(const std::string& Text);
 
 	// Input events

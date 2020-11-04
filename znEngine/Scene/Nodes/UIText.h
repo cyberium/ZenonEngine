@@ -6,7 +6,7 @@ class ZN_API CUITextNode
 	: public CUIControl
 {
 public:
-	CUITextNode();
+	CUITextNode(IScene& Scene);
 	virtual ~CUITextNode();
 
 	void						Initialize() override;

@@ -13,25 +13,21 @@ UI_Button_Material::~UI_Button_Material()
 void UI_Button_Material::SetIdleTexture(std::shared_ptr<ITexture> _texture)
 {
 	__super::SetTexture(0, _texture);
-	MarkMaterialDataDirty();
 }
 
 void UI_Button_Material::SetHoverTexture(std::shared_ptr<ITexture> _texture)
 {
 	__super::SetTexture(1, _texture);
-	MarkMaterialDataDirty();
 }
 
 void UI_Button_Material::SetClickedTexture(std::shared_ptr<ITexture> _texture)
 {
 	__super::SetTexture(2, _texture);
-	MarkMaterialDataDirty();
 }
 
 void UI_Button_Material::SetDisabledTexture(std::shared_ptr<ITexture> _texture)
 {
 	__super::SetTexture(3, _texture);
-	MarkMaterialDataDirty();
 }
 
 void UI_Button_Material::SetColor(glm::vec4 color)

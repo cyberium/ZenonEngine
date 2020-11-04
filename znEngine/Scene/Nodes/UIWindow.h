@@ -4,6 +4,6 @@ class ZN_API CUIWindowNode
 	: public CUIControl
 {
 public:
-	CUIWindowNode();
+	CUIWindowNode(IScene& Scene);
 	virtual ~CUIWindowNode();
 };

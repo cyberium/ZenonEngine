@@ -3,7 +3,7 @@
 #include "Skeleton.h"
 #include "SkeletonComponentBone.h"
 
-class __declspec(UUID_SkeletonComponent) ZN_API CSkeletonComponent3D
+class ZN_API CSkeletonComponent3D
 	: public ISkeletonComponent3D
 	, public CComponentBase
 {

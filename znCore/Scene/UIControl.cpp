@@ -3,13 +3,16 @@
 // General
 #include "UIControl.h"
 
-CUIControl::CUIControl()
-	: m_IsMouseOnNode(false)
+CUIControl::CUIControl(IScene& Scene)
+	: Object(Scene.GetBaseManager())
+	, m_Scene(Scene)
+
+	, m_IsMouseOnNode(false)
+
 	, m_Translate(glm::vec2(0.0f))
 	, m_Rotate(glm::vec3(0.0f))
 	, m_Scale(1.0f, 1.0f)
 
-	// Transform functinal
 	, m_LocalTransform(1.0f)
 	, m_InverseLocalTransform(1.0f)	// This is the inverse of the local -> world transform.
 	, m_WorldTransform(1.0f)
@@ -17,13 +20,7 @@ CUIControl::CUIControl()
 {
 	m_PropertiesGroup = MakeShared(CPropertiesGroup, "SceneNodeProperties", "Some important scene node UI properties.");
 
-	// Name properties
-	{
-		std::shared_ptr<CPropertyWrapped<std::string>> nameProperty = MakeShared(CPropertyWrapped<std::string>, "Name", "Scene node name.");
-		nameProperty->SetValueSetter(std::bind(&Object::SetName, this, std::placeholders::_1));
-		nameProperty->SetValueGetter(std::bind(&Object::GetName, this));
-		GetProperties()->AddProperty(nameProperty);
-	}
+
 }
 
 CUIControl::~CUIControl()
@@ -39,7 +36,13 @@ CUIControl::~CUIControl()
 //
 void CUIControl::Initialize()
 {
-
+	// Name properties
+	{
+		std::shared_ptr<CPropertyWrapped<std::string>> nameProperty = MakeShared(CPropertyWrapped<std::string>, "Name", "Scene node name.");
+		nameProperty->SetValueSetter(std::bind(&Object::SetName, this, std::placeholders::_1));
+		nameProperty->SetValueGetter(std::bind(&Object::GetName, this));
+		GetProperties()->AddProperty(nameProperty);
+	}
 }
 
 void CUIControl::Finalize()
@@ -54,50 +57,42 @@ void CUIControl::Finalize()
 //
 void CUIControl::AddChild(const std::shared_ptr<IUIControl>& childNode)
 {
-	if (childNode == nullptr)
-		throw CException(L"CUIControl: Child node must not be NULL.");
-
-	// 1. Удаляем чилда у текущего родителя (возможно нужно его об этом нотифицировать, например для перерасчета BoundingBox)
-	if (auto currentChildParent = childNode->GetParent().lock())
-	{
-		if (currentChildParent == shared_from_this())
-		{
-			Log::Warn("CUIControl: Failed to add child to his current parent.");
-			return;
-		}
-
-		std::dynamic_pointer_cast<CUIControl>(currentChildParent)->RemoveChildInternal(childNode);
-	}
-
-	// 2. Добавляем чилда в нового парента (возможно нужно его об этом нотифицировать, например для перерасчета BoundingBox)
-	this->AddChildInternal(childNode);
-
+	AddChildInternal(childNode);
+	//dynamic_cast<ISceneInternal&>(GetScene()).AddChildInternal(shared_from_this(), childNode);
 }
 
 void CUIControl::RemoveChild(const std::shared_ptr<IUIControl>& childNode)
 {
-	if (childNode == nullptr)
-	{
-		Log::Warn("CUIControl: Child node must not be NULL.");
-		return;
-	}
-
-	this->RemoveChildInternal(childNode);
+	RemoveChildInternal(childNode);
+	//dynamic_cast<ISceneInternal&>(GetScene()).RemoveChildInternal(shared_from_this(), childNode);
 }
 
-std::weak_ptr<IUIControl> CUIControl::GetParent() const
+void CUIControl::MakeMeOrphan()
 {
-	return m_ParentNode;
+	if (auto parent = GetParent())
+		std::dynamic_pointer_cast<IUIControlInternal>(parent)->RemoveChildInternal(shared_from_this());
 }
 
-const CUIControl::NodeUIList& CUIControl::GetChilds()
+std::shared_ptr<IUIControl> CUIControl::GetParent() const
+{
+	return m_ParentNode.lock();
+}
+
+const CUIControl::ControlsList& CUIControl::GetChilds() const
 {
 	return m_Children;
 }
 
-void CUIControl::RaiseOnParentChanged()
+std::shared_ptr<IUIControl> CUIControl::GetChild(std::string Name) const
 {
-	UpdateWorldTransform();
+	std::string currClearName = GetClearName(Name).first;
+	for (const auto& ch : GetChilds())
+	{
+		std::string childClearName = GetClearName(ch->GetName()).first;
+		if (childClearName == currClearName)
+			return ch;
+	}
+	return nullptr;
 }
 
 
@@ -105,7 +100,6 @@ void CUIControl::RaiseOnParentChanged()
 //
 // Actions & Properties
 //
-
 std::shared_ptr<IPropertiesGroup> CUIControl::GetProperties() const
 {
 	return m_PropertiesGroup;
@@ -113,7 +107,7 @@ std::shared_ptr<IPropertiesGroup> CUIControl::GetProperties() const
 
 IScene& CUIControl::GetScene() const
 {
-	return *m_Scene;
+	return m_Scene;
 }
 
 void CUIControl::SetTranslate(const glm::vec2& _translate)
@@ -121,14 +115,16 @@ void CUIControl::SetTranslate(const glm::vec2& _translate)
 	m_Translate = _translate;
 	UpdateLocalTransform();
 }
+
 const glm::vec2& CUIControl::GetTranslation() const
 {
 	return m_Translate;
 }
+
 glm::vec2 CUIControl::GetTranslationAbs() const
 {
 	glm::vec2 parentTranslate = glm::vec2(0.0f, 0.0f);
-	if (auto parent = GetParent().lock())
+	if (auto parent = GetParent())
 		parentTranslate = parent->GetTranslationAbs();
 	return parentTranslate + GetTranslation();
 }
@@ -150,14 +146,16 @@ void CUIControl::SetScale(const glm::vec2& _scale)
 
 	UpdateLocalTransform();
 }
+
 const glm::vec2& CUIControl::GetScale() const
 {
 	return m_Scale;
 }
+
 glm::vec2 CUIControl::GetScaleAbs() const
 {
 	glm::vec2 parentScale = glm::vec2(1.0f);
-	if (auto parent = GetParent().lock())
+	if (auto parent = GetParent())
 		parentScale = parent->GetScaleAbs();
 	return parentScale * GetScale();
 }
@@ -170,6 +168,14 @@ glm::mat4 CUIControl::GetLocalTransform() const
 glm::mat4 CUIControl::GetWorldTransfom() const
 {
 	return m_WorldTransform;
+}
+
+glm::mat4 CUIControl::GetParentWorldTransform() const
+{
+	glm::mat4 parentTransform(1.0f);
+	if (auto parent = GetParent())
+		parentTransform = parent->GetWorldTransfom();
+	return parentTransform;
 }
 
 
@@ -296,58 +302,35 @@ void CUIControl::OnMouseLeaved()
 
 
 //
-// Private
+// IUIControlInternal
 //
-void CUIControl::SetSceneInternal(IScene* Scene)
+void CUIControl::AddChildInternal(std::shared_ptr<IUIControl> ChildNode)
 {
-	m_Scene = Scene;
+	if (ChildNode == nullptr)
+		throw CException(L"Unable to add nullptr child node to '%s'.", GetName().c_str());
+
+	if (auto currentChildParent = ChildNode->GetParent())
+	{
+		if (currentChildParent != shared_from_this())
+		{
+			std::dynamic_pointer_cast<CUIControl>(currentChildParent)->RemoveChildPrivate(ChildNode);
+		}
+	}
+
+	this->AddChildPrivate(ChildNode);
 }
 
-void CUIControl::AddChildInternal(const std::shared_ptr<IUIControl>& ChildNode)
+void CUIControl::RemoveChildInternal(std::shared_ptr<IUIControl> ChildNode)
 {
-	_ASSERT(ChildNode != nullptr);
+	if (ChildNode == nullptr)
+		throw CException("Unable to remove nullptr node from '%s'.", GetName().c_str());
 
-	const auto& iter = std::find(m_Children.begin(), m_Children.end(), ChildNode);
-	if (iter != m_Children.end())
-		throw CException(L"This parent already has this child.");
-
-	// Add to common list
-	m_Children.push_back(ChildNode);
-
-	// And add child to named list
-	if (!ChildNode->GetName().empty())
-		m_ChildrenByName.insert(NodeUINameMap::value_type(ChildNode->GetName(), ChildNode));
-
-	std::dynamic_pointer_cast<CUIControl>(ChildNode)->SetParentInternal(weak_from_this());
-
-	ChildNode->RaiseOnParentChanged();
+	this->RemoveChildPrivate(ChildNode);
 }
 
-void CUIControl::RemoveChildInternal(const std::shared_ptr<IUIControl>& ChildNode)
+void CUIControl::RaiseOnParentChangedInternal()
 {
-	const auto& childListIter = std::find(m_Children.begin(), m_Children.end(), ChildNode);
-	if (childListIter == m_Children.end())
-		//throw CException(L"Can't remove child because don't found.");
-		return;
-
-	// Delete from list
-	m_Children.erase(childListIter);
-
-	// TODO: Если единственная ссылка на чилда осталась в списке чилдов, то всё взорвется?
-
-	// Delete from name map
-	const auto& childNameMapIter = m_ChildrenByName.find(ChildNode->GetName());
-	if (childNameMapIter != m_ChildrenByName.end())
-		m_ChildrenByName.erase(childNameMapIter);
-
-	std::dynamic_pointer_cast<CUIControl>(ChildNode)->SetParentInternal(std::weak_ptr<IUIControl>());
-
-	ChildNode->RaiseOnParentChanged();
-}
-
-void CUIControl::SetParentInternal(const std::weak_ptr<IUIControl>& parentNode)
-{
-	m_ParentNode = parentNode;
+	UpdateWorldTransform();
 }
 
 
@@ -355,38 +338,43 @@ void CUIControl::SetParentInternal(const std::weak_ptr<IUIControl>& parentNode)
 //
 // Protected
 //
+IBaseManager& CUIControl::GetBaseManager() const
+{
+	return GetScene().GetBaseManager();
+}
+
+IRenderDevice & CUIControl::GetRenderDevice() const
+{
+	return GetScene().GetRenderDevice();
+}
+
+glm::mat4 CUIControl::CalculateLocalTransform() const
+{
+	glm::mat4 localTransform(1.0f);
+	localTransform = glm::translate(localTransform, glm::vec3(m_Translate, 0.0f));
+	localTransform = glm::rotate(localTransform, m_Rotate.x, glm::vec3(1, 0, 0));
+	localTransform = glm::rotate(localTransform, m_Rotate.y, glm::vec3(0, 1, 0));
+	localTransform = glm::rotate(localTransform, m_Rotate.z, glm::vec3(0, 0, 1));
+	localTransform = glm::scale(localTransform, glm::vec3(m_Scale, 1.0f));
+	return localTransform;
+}
+
 void CUIControl::UpdateLocalTransform()
 {
-	m_LocalTransform = glm::mat4(1.0f);
-
-	m_LocalTransform = glm::translate(m_LocalTransform, glm::vec3(m_Translate, 0.0f));
-	m_LocalTransform = glm::rotate(m_LocalTransform, m_Rotate.x, glm::vec3(1, 0, 0));
-	m_LocalTransform = glm::rotate(m_LocalTransform, m_Rotate.y, glm::vec3(0, 1, 0));
-	m_LocalTransform = glm::rotate(m_LocalTransform, m_Rotate.z, glm::vec3(0, 0, 1));
-	m_LocalTransform = glm::scale(m_LocalTransform, glm::vec3(m_Scale, 1.0f));
+	m_LocalTransform = CalculateLocalTransform();
 	m_InverseLocalTransform = glm::inverse(m_LocalTransform);
 
-	// Don't forget to update world transform
 	UpdateWorldTransform();
 }
 
 void CUIControl::UpdateWorldTransform()
 {
-	glm::mat4 parentTransform(1.0f);
-	if (auto parent = GetParent().lock())
-		parentTransform = parent->GetWorldTransfom();
-
-	m_WorldTransform = parentTransform * m_LocalTransform;
+	m_WorldTransform = GetParentWorldTransform() * m_LocalTransform;
 	m_InverseWorldTransform = glm::inverse(m_WorldTransform);
 
 	// After world updated, we can update all childs
 	for (const auto& it : GetChilds())
 		std::dynamic_pointer_cast<CUIControl>(it)->UpdateWorldTransform();
-}
-
-IBaseManager& CUIControl::GetBaseManager() const
-{
-	return GetScene().GetBaseManager();
 }
 
 
@@ -407,4 +395,40 @@ void CUIControl::DoMouseEntered()
 void CUIControl::DoMouseLeaved()
 {
 	m_IsMouseOnNode = false;
+}
+
+
+
+//
+// Private
+//
+void CUIControl::AddChildPrivate(std::shared_ptr<IUIControl> ChildNode)
+{
+	_ASSERT(ChildNode != nullptr);
+
+	const auto& iter = std::find(m_Children.begin(), m_Children.end(), ChildNode);
+	if (iter != m_Children.end())
+		throw CException(L"This parent already has this child.");
+
+	m_Children.push_back(ChildNode);
+
+	std::dynamic_pointer_cast<CUIControl>(ChildNode)->SetParentPrivate(weak_from_this());
+	std::dynamic_pointer_cast<IUIControlInternal>(ChildNode)->RaiseOnParentChangedInternal();
+}
+
+void CUIControl::RemoveChildPrivate(std::shared_ptr<IUIControl> ChildNode)
+{
+	const auto& childListIter = std::find(m_Children.begin(), m_Children.end(), ChildNode);
+	if (childListIter == m_Children.end())
+		throw CException(L"Can't remove child because don't found.");
+
+	m_Children.erase(childListIter);
+
+	std::dynamic_pointer_cast<CUIControl>(ChildNode)->SetParentPrivate(std::weak_ptr<IUIControl>());
+	std::dynamic_pointer_cast<IUIControlInternal>(ChildNode)->RaiseOnParentChangedInternal();
+}
+
+void CUIControl::SetParentPrivate(std::weak_ptr<IUIControl> parentNode)
+{
+	m_ParentNode = parentNode;
 }

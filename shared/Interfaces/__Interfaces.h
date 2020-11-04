@@ -11,10 +11,10 @@
 #endif
 
 #define ZN_INTERFACE struct __declspec(novtable)
+#define ZN_OBJECTCLASS(x) static ObjectClass GetClassT() { return x; }
+
 
 #define _CRT_SECURE_NO_WARNINGS
-
-
 
 
 // General types

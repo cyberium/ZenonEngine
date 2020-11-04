@@ -31,11 +31,17 @@ std::shared_ptr<IObject> CSceneNodeEngineCreator::CreateObject(size_t Index, con
 	std::shared_ptr<ISceneNode> createdNode = nullptr;
 	if (Index == 0)
 	{
-		createdNode = sceneNodeCreationArgs->GetScene().CreateSceneNode3DInternal<CSceneNode>();
+		std::shared_ptr<CSceneNode> node = MakeShared(CSceneNode, sceneNodeCreationArgs->GetScene());
+		node->RegisterComponents();
+		node->Initialize();
+		createdNode = node;
 	}
 	else if (Index == 1)
 	{
-		createdNode = sceneNodeCreationArgs->GetScene().CreateSceneNode3DInternal<CRTSSceneNodeGround>();
+		std::shared_ptr<CRTSSceneNodeGround> node = MakeShared(CRTSSceneNodeGround, sceneNodeCreationArgs->GetScene());
+		node->RegisterComponents();
+		node->Initialize();
+		createdNode = node;
 	}
 
 	// 2. Check
@@ -88,15 +94,21 @@ std::shared_ptr<IObject> CSceneNodeUIEngineCreator::CreateObject(size_t Index, c
 	std::shared_ptr<IUIControl> createdNode = nullptr;
 	if (Index == 0)
 	{
-		createdNode = sceneNodeCreationArgs->GetScene().CreateSceneNodeUIInternal<CUIControl>();
+		std::shared_ptr<CUIControl> newNode = MakeShared(CUIControl, sceneNodeCreationArgs->GetScene());
+		newNode->Initialize();
+		createdNode = newNode;
 	}
 	else if (Index == 1)
 	{
-		createdNode = sceneNodeCreationArgs->GetScene().CreateSceneNodeUIInternal<CUITextNode>();
+		std::shared_ptr<CUIControl> newNode = MakeShared(CUITextNode, sceneNodeCreationArgs->GetScene());
+		newNode->Initialize();
+		createdNode = newNode;
 	}
 	else if (Index == 2)
 	{
-		createdNode = sceneNodeCreationArgs->GetScene().CreateSceneNodeUIInternal<CUIColorNode>();
+		std::shared_ptr<CUIControl> newNode = MakeShared(CUIColorNode, sceneNodeCreationArgs->GetScene());
+		newNode->Initialize();
+		createdNode = newNode;
 	}
 
 	if (createdNode == nullptr)

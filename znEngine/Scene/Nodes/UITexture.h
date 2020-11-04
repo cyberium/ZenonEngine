@@ -6,8 +6,10 @@ class ZN_API CUITextureNode
 	: public CUIControl
 {
 public:
-	CUITextureNode(IRenderDevice& RenderDevice, glm::vec2 Size = glm::vec2(1.0f, 1.0f));
+	CUITextureNode(IScene& Scene);
 	virtual ~CUITextureNode();
+
+	void Initialize() override;
 
 	// CUITextureNode
 	void SetTexture(std::shared_ptr<ITexture> _texture);
@@ -20,6 +22,6 @@ public:
 
 private:
     glm::vec2                               m_Size;
-	std::shared_ptr<IModel>                  m_Mesh;
+	std::shared_ptr<IModel>                 m_Mesh;
 	std::shared_ptr<UI_Texture_Material>    m_Material;
 };

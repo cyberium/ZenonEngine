@@ -1,4 +1,4 @@
-#include "UI/UI_Common.hlsl"
+#include "UI/UI_VertexBase.hlsl"
 
 /* Geometry GLSL shader that demonstrates how to draw basic thick and smooth bezier curves in 3D.
  * This file is a part of shader-3dcurve example (https://github.com/vicrucann/shader-3dcurve).
@@ -17,7 +17,7 @@ struct GeometryShaderOutput
 	float2 texCoord : TEXCOORD;
 };
 
-cbuffer Material : register(b1)
+cbuffer Material : register(b2)
 {
     float4  Color;
 	float   Thickness;
@@ -164,7 +164,7 @@ void drawSegment(float2 points[4], float zValues[4], inout TriangleStream<Geomet
 }
 
 [maxvertexcount(124)]
-void GS_main(lineadj VertexShaderOutput points[4], inout TriangleStream<GeometryShaderOutput> output)
+void GS_main(lineadj VSOutputUI points[4], inout TriangleStream<GeometryShaderOutput> output)
 {
     // cut segments number if larger or smaller than allowed
     uint nSegments = (Segments > SegmentsMax)? SegmentsMax : Segments;

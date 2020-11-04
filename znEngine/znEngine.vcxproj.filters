@@ -136,9 +136,6 @@
     <Filter Include="Scene\Factory">
       <UniqueIdentifier>{42288e4e-a3cc-44e7-b889-8854e3ea2090}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Scene\Nodes">
-      <UniqueIdentifier>{534c42f8-3515-4f60-9bd4-92b1ed91c63d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Scene\Components\Skeleton">
       <UniqueIdentifier>{601eab62-08ec-461d-a53f-7a7ca845dfa0}</UniqueIdentifier>
     </Filter>
@@ -177,6 +174,9 @@
     </Filter>
     <Filter Include="NativeWindows">
       <UniqueIdentifier>{cfe67249-b3e6-463f-a7cd-5770ee4ab305}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scene\UI">
+      <UniqueIdentifier>{534c42f8-3515-4f60-9bd4-92b1ed91c63d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -515,40 +515,40 @@
       <Filter>Tools\AssyncLoader</Filter>
     </ClCompile>
     <ClCompile Include="Scene\Nodes\UIBeizerLine.cpp">
-      <Filter>Scene\Nodes</Filter>
+      <Filter>Scene\UI</Filter>
     </ClCompile>
     <ClCompile Include="Scene\Nodes\UIButton.cpp">
-      <Filter>Scene\Nodes</Filter>
+      <Filter>Scene\UI</Filter>
     </ClCompile>
     <ClCompile Include="Scene\Nodes\UIColor.cpp">
-      <Filter>Scene\Nodes</Filter>
+      <Filter>Scene\UI</Filter>
     </ClCompile>
     <ClCompile Include="Scene\Nodes\UIContainerGarmoshka.cpp">
-      <Filter>Scene\Nodes</Filter>
+      <Filter>Scene\UI</Filter>
     </ClCompile>
     <ClCompile Include="Scene\Nodes\UIContainerGarmoshkaCategory.cpp">
-      <Filter>Scene\Nodes</Filter>
+      <Filter>Scene\UI</Filter>
     </ClCompile>
     <ClCompile Include="Scene\Nodes\UIContainerGarmoshkaCategoryHeader.cpp">
-      <Filter>Scene\Nodes</Filter>
+      <Filter>Scene\UI</Filter>
     </ClCompile>
     <ClCompile Include="Scene\Nodes\UIContainerListBase.cpp">
-      <Filter>Scene\Nodes</Filter>
+      <Filter>Scene\UI</Filter>
     </ClCompile>
     <ClCompile Include="Scene\Nodes\UIContainerListWithActivation.cpp">
-      <Filter>Scene\Nodes</Filter>
+      <Filter>Scene\UI</Filter>
     </ClCompile>
     <ClCompile Include="Scene\Nodes\UIText.cpp">
-      <Filter>Scene\Nodes</Filter>
+      <Filter>Scene\UI</Filter>
     </ClCompile>
     <ClCompile Include="Scene\Nodes\UITexture.cpp">
-      <Filter>Scene\Nodes</Filter>
+      <Filter>Scene\UI</Filter>
     </ClCompile>
     <ClCompile Include="Scene\Nodes\UIUtils.cpp">
-      <Filter>Scene\Nodes</Filter>
+      <Filter>Scene\UI</Filter>
     </ClCompile>
     <ClCompile Include="Scene\Nodes\UIWindow.cpp">
-      <Filter>Scene\Nodes</Filter>
+      <Filter>Scene\UI</Filter>
     </ClCompile>
     <ClCompile Include="Scene\Factory\ComponentsCreator.cpp">
       <Filter>Scene\Factory</Filter>
@@ -1107,40 +1107,40 @@
       <Filter>Tools\AssyncLoader</Filter>
     </ClInclude>
     <ClInclude Include="Scene\Nodes\UIBeizerLine.h">
-      <Filter>Scene\Nodes</Filter>
+      <Filter>Scene\UI</Filter>
     </ClInclude>
     <ClInclude Include="Scene\Nodes\UIButton.h">
-      <Filter>Scene\Nodes</Filter>
+      <Filter>Scene\UI</Filter>
     </ClInclude>
     <ClInclude Include="Scene\Nodes\UIColor.h">
-      <Filter>Scene\Nodes</Filter>
+      <Filter>Scene\UI</Filter>
     </ClInclude>
     <ClInclude Include="Scene\Nodes\UIContainerGarmoshka.h">
-      <Filter>Scene\Nodes</Filter>
+      <Filter>Scene\UI</Filter>
     </ClInclude>
     <ClInclude Include="Scene\Nodes\UIContainerGarmoshkaCategory.h">
-      <Filter>Scene\Nodes</Filter>
+      <Filter>Scene\UI</Filter>
     </ClInclude>
     <ClInclude Include="Scene\Nodes\UIContainerGarmoshkaCategoryHeader.h">
-      <Filter>Scene\Nodes</Filter>
+      <Filter>Scene\UI</Filter>
     </ClInclude>
     <ClInclude Include="Scene\Nodes\UIContainerListBase.h">
-      <Filter>Scene\Nodes</Filter>
+      <Filter>Scene\UI</Filter>
     </ClInclude>
     <ClInclude Include="Scene\Nodes\UIContainerListWithActivation.h">
-      <Filter>Scene\Nodes</Filter>
+      <Filter>Scene\UI</Filter>
     </ClInclude>
     <ClInclude Include="Scene\Nodes\UIText.h">
-      <Filter>Scene\Nodes</Filter>
+      <Filter>Scene\UI</Filter>
     </ClInclude>
     <ClInclude Include="Scene\Nodes\UITexture.h">
-      <Filter>Scene\Nodes</Filter>
+      <Filter>Scene\UI</Filter>
     </ClInclude>
     <ClInclude Include="Scene\Nodes\UIUtils.h">
-      <Filter>Scene\Nodes</Filter>
+      <Filter>Scene\UI</Filter>
     </ClInclude>
     <ClInclude Include="Scene\Nodes\UIWindow.h">
-      <Filter>Scene\Nodes</Filter>
+      <Filter>Scene\UI</Filter>
     </ClInclude>
     <ClInclude Include="Scene\Factory\ComponentsCreator.h">
       <Filter>Scene\Factory</Filter>

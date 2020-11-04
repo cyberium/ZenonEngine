@@ -6,7 +6,7 @@ class ZN_API CUIColorNode
 	: public CUIControl
 {
 public:
-	CUIColorNode(glm::vec2 Size = glm::vec2(1.0f, 1.0f));
+	CUIColorNode(IScene& Scene);
 	virtual ~CUIColorNode();
 
 	void Initialize() override;

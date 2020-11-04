@@ -2,7 +2,7 @@
 
 #include <reactphysics3d.h>
 
-class __declspec(UUID_PhysicsComponent) CReactPhysicsComponent
+class CReactPhysicsComponent
 	: public CComponentBase
 	, public IPhysicsComponent
 {

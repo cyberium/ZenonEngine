@@ -1,6 +1,6 @@
 #pragma once
 
-class __declspec(UUID_ModelsComponent) ZN_API CModelsComponent3D
+class /*__declspec(UUID_ModelsComponent)*/ ZN_API CModelsComponent3D
 	: public IModelsComponent3D
 	, public CComponentBase
 {

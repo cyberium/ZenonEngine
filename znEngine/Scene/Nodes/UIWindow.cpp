@@ -4,7 +4,8 @@
 #include "UIWindow.h"
 
 
-CUIWindowNode::CUIWindowNode()
+CUIWindowNode::CUIWindowNode(IScene& Scene)
+	: CUIControl(Scene)
 {
 }
 

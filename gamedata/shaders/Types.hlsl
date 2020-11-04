@@ -58,7 +58,7 @@ struct PerFrame
 
 
 //----------------------------------------------------------------------
-//-- Vertex input types
+//-- Vertex input types (for 3D)
 //----------------------------------------------------------------------
 
 struct VSInputP
@@ -114,6 +114,21 @@ struct VSInputPTNTBBB
 	uint4  boneIndex : BLENDINDICES0;
 };
 
+//----------------------------------------------------------------------
+//-- Vertex input types (for UI)
+//----------------------------------------------------------------------
+
+struct VSInputUI
+{
+	float2 position : POSITION;
+    float2 texCoord : TEXCOORD0;
+};
+
+struct VSOutputUI
+{
+	float4 position : SV_POSITION;
+	float2 texCoord : TEXCOORD0;
+};
 
 
 //----------------------------------------------------------------------

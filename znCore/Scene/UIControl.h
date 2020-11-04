@@ -4,11 +4,11 @@
 
 class ZN_API CUIControl 
 	: public IUIControl
+	, public IUIControlInternal
 	, public Object
 {
-	friend IScene;
 public:
-	CUIControl();
+	CUIControl(IScene& Scene);
 	virtual ~CUIControl();
 
 	virtual void                                    Initialize() override;
@@ -17,9 +17,10 @@ public:
 	// Childs functional
 	virtual void                                    AddChild(const std::shared_ptr<IUIControl>& childNode) override final;
 	virtual void                                    RemoveChild(const std::shared_ptr<IUIControl>& childNode) override final;
-	virtual std::weak_ptr<IUIControl>               GetParent() const override final;
-	virtual const NodeUIList&                       GetChilds() override final;
-	void                                            RaiseOnParentChanged() override final;
+	virtual void                                    MakeMeOrphan() override final;
+	virtual std::shared_ptr<IUIControl>             GetParent() const override final;
+	virtual const ControlsList&                     GetChilds() const override final;
+	virtual std::shared_ptr<IUIControl>             GetChild(std::string Name) const override;
 
 	// Actions & Properties
 	virtual std::shared_ptr<IPropertiesGroup>       GetProperties() const final;
@@ -35,6 +36,7 @@ public:
 	glm::vec2										GetScaleAbs() const override;
 	virtual glm::mat4								GetLocalTransform() const override;
 	virtual glm::mat4								GetWorldTransfom() const override;
+	virtual glm::mat4								GetParentWorldTransform() const;
 
     virtual glm::vec2                               GetSize() const override;
     virtual BoundingRect                            GetBoundsAbs() override;
@@ -63,16 +65,17 @@ public:
 	virtual void                                    OnMouseEntered();
 	virtual void                                    OnMouseLeaved();
 
-private:
-	void                                            SetSceneInternal(IScene* Scene);
-	void                                            AddChildInternal(const std::shared_ptr<IUIControl>& ChildNode);
-	void                                            RemoveChildInternal(const std::shared_ptr<IUIControl>& ChildNode);
-	void                                            SetParentInternal(const std::weak_ptr<IUIControl>& parentNode);
+	// IUIControlInternal
+	void                                            AddChildInternal(std::shared_ptr<IUIControl> ChildNode) override;
+	void                                            RemoveChildInternal(std::shared_ptr<IUIControl> ChildNode) override;
+	void                                            RaiseOnParentChangedInternal() override;
 
 protected:
+	IBaseManager&                                   GetBaseManager() const;
+	IRenderDevice&                                  GetRenderDevice() const;
+	virtual glm::mat4                               CalculateLocalTransform() const;
 	virtual void									UpdateLocalTransform();
 	virtual void									UpdateWorldTransform();
-	IBaseManager&                                   GetBaseManager() const;
 
 public: // Syntetic events // TODO: Make private
 	bool                                            IsMouseOnNode() const;
@@ -81,12 +84,16 @@ public: // Syntetic events // TODO: Make private
 	bool                                            m_IsMouseOnNode;
 
 private:
-	NodeUIList                                      m_Children;
-	NodeUINameMap                                   m_ChildrenByName;
+	void                                            AddChildPrivate(std::shared_ptr<IUIControl> ChildNode);
+	void                                            RemoveChildPrivate(std::shared_ptr<IUIControl> ChildNode);
+	void                                            SetParentPrivate(std::weak_ptr<IUIControl> parentNode);
+
+private:
+	ControlsList                                    m_Children;
 	std::weak_ptr<IUIControl>                       m_ParentNode;
 
 	std::shared_ptr<IPropertiesGroup>               m_PropertiesGroup;
-	IScene*                                         m_Scene;
+	IScene&                                         m_Scene;
 
 private:
 	glm::vec2										m_Translate;

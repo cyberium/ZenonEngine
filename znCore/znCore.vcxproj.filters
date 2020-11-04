@@ -611,9 +611,6 @@
     <ClInclude Include="..\shared\Interfaces\Render\Types\RenderTypes.h">
       <Filter>__Interfaces\Render\Types</Filter>
     </ClInclude>
-    <ClInclude Include="..\shared\Interfaces\Scene\ISceneNodeBase.h">
-      <Filter>__Interfaces\Scene</Filter>
-    </ClInclude>
     <ClInclude Include="Files\ChunkedFile.h">
       <Filter>Files</Filter>
     </ClInclude>

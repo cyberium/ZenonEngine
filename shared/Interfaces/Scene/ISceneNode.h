@@ -7,7 +7,6 @@ ZN_INTERFACE ICameraComponent3D;
 class Viewport;
 ZN_INTERFACE IVisitor;
 class UpdateEventArgs;
-ZN_INTERFACE IManager;
 ZN_INTERFACE IColliderComponent3D;
 ZN_INTERFACE IColliderComponent3D;
 // FORWARD END
@@ -26,7 +25,7 @@ ZN_INTERFACE ZN_API ISceneNode
 	: public IObject
 	, public std::enable_shared_from_this<ISceneNode>
 {
-	typedef std::vector<std::shared_ptr<ISceneNode>>                SceneNodesList;
+	typedef std::vector<std::shared_ptr<ISceneNode>> SceneNodesList;
 
 	virtual ~ISceneNode() {}
 
@@ -45,21 +44,14 @@ ZN_INTERFACE ZN_API ISceneNode
 	virtual std::shared_ptr<IPropertiesGroup> GetProperties() const = 0;
 	virtual IScene& GetScene() const = 0;
 
-
-
-	//
 	// Transform functional
-	//
 	virtual void SetTranslate(const glm::vec3& Translate) = 0;
 	virtual void AddTranslate(const glm::vec3& Translate) = 0;
 	virtual const glm::vec3& GetTranslation() const = 0;
-
 	virtual void SetRotation(const glm::vec3& _rotate) = 0;
 	virtual const glm::vec3& GetRotation() const = 0;
-
 	virtual void SetRotationQuaternion(const glm::quat& _rotate) = 0;
 	virtual const glm::quat& GetRotationQuaternion() const = 0;
-
 	virtual void SetScale(const glm::vec3& _scale) = 0;
 	virtual const glm::vec3& GetScale() const = 0;
 

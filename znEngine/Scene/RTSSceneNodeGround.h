@@ -7,9 +7,6 @@ class CRTSSceneNodeGround
 	, public IRTSGround
 {
 public:
-
-
-public:
 	CRTSSceneNodeGround(IScene& Scene);
 	virtual ~CRTSSceneNodeGround();
 
