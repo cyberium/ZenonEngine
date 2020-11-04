@@ -23,58 +23,47 @@ void main_internal(int argc, char *argv[])
 		Application app(*BaseManager, ::GetModuleHandle(NULL));
 		CNativeWindowFactory nativeWindowFactory(&app);
 
-		CEditor editor(*BaseManager);
-
 		IRenderDevice& renderDevice = app.CreateRenderDevice(RenderDeviceType::RenderDeviceType_DirectX11);
+		BaseManager->AddManager<IznFontsManager>(MakeShared(FontsManager, renderDevice, *BaseManager));
 
-		std::shared_ptr<IznFontsManager> fontsManager = MakeShared(FontsManager, renderDevice, *BaseManager);
-		BaseManager->AddManager<IznFontsManager>(fontsManager);
 		BaseManager->GetManager<ILoader>()->Start();
 
 		QApplication qtApplication(argc, argv);
-
+		CEditor editor(*BaseManager);
 		CEditorUIFrame editorUI(editor);
-		editorUI.InitializeEditorFrame();
-
+		
+		// 'Editor3D' scene
 		{
-			// 'Editor' scene
-			{
-				auto nativeWindow = nativeWindowFactory.CreateWindowProxy(*editorUI.getMainEditor());
-				auto renderWindow = renderDevice.GetObjectsFactory().CreateRenderWindow(std::move(nativeWindow), false);
+			auto nativeWindow = nativeWindowFactory.CreateWindowProxy(*editorUI.getMainEditor());
+			auto renderWindow = renderDevice.GetObjectsFactory().CreateRenderWindow(std::move(nativeWindow), false);
 
-				app.AddRenderWindow(renderWindow);
+			app.AddRenderWindow(renderWindow);
 
-				std::shared_ptr<CEditor3DFrame> editorScene = MakeShared(CEditor3DFrame, editor, *renderWindow);
-				editorScene->AddSceneEventsListener(&editorUI);
-				editorScene->Initialize();
+			std::shared_ptr<CEditor3DFrame> editorScene = MakeShared(CEditor3DFrame, editor, *renderWindow);
+			editorScene->AddSceneEventsListener(&editorUI);
+			editorScene->Initialize();
 
-				editorScene->InitializeEditorFrame();
-
-				renderWindow->SetRenderWindowEventListener(std::dynamic_pointer_cast<IRenderWindowEventListener>(editorScene));
-				renderWindow->SetNativeWindowEventListener(std::dynamic_pointer_cast<IznNativeWindowEventListener>(editorScene));
-			}
-
-			
-
-			// 'Preview' scene
-			{
-				auto nativeWindow = nativeWindowFactory.CreateWindowProxy(*editorUI.getModelPreview());
-				auto renderWindow = renderDevice.GetObjectsFactory().CreateRenderWindow(std::move(nativeWindow), false);
-
-				app.AddRenderWindow(renderWindow);
-
-				std::shared_ptr<CEditor3DPreviewScene> sceneForPreview = MakeShared(CEditor3DPreviewScene, editor, *renderWindow);
-				sceneForPreview->Initialize();
-
-				renderWindow->SetRenderWindowEventListener(std::dynamic_pointer_cast<IRenderWindowEventListener>(sceneForPreview));
-				renderWindow->SetNativeWindowEventListener(std::dynamic_pointer_cast<IznNativeWindowEventListener>(sceneForPreview));
-			}
+			renderWindow->SetRenderWindowEventListener(std::dynamic_pointer_cast<IRenderWindowEventListener>(editorScene));
+			renderWindow->SetNativeWindowEventListener(std::dynamic_pointer_cast<IznNativeWindowEventListener>(editorScene));
 		}
 
+		// 'Preview' scene
+		{
+			auto nativeWindow = nativeWindowFactory.CreateWindowProxy(*editorUI.getModelPreview());
+			auto renderWindow = renderDevice.GetObjectsFactory().CreateRenderWindow(std::move(nativeWindow), false);
 
+			app.AddRenderWindow(renderWindow);
 
+			std::shared_ptr<CEditor3DPreviewScene> sceneForPreview = MakeShared(CEditor3DPreviewScene, editor, *renderWindow);
+			sceneForPreview->Initialize();
+
+			renderWindow->SetRenderWindowEventListener(std::dynamic_pointer_cast<IRenderWindowEventListener>(sceneForPreview));
+			renderWindow->SetNativeWindowEventListener(std::dynamic_pointer_cast<IznNativeWindowEventListener>(sceneForPreview));
+		}
+
+		editor.GetUIFrame().InitializeEditorFrame();
+		editor.Get3DFrame().InitializeEditorFrame();
 		editor.GetTools().Initialize();
-
 
 
 		editorUI.showMaximized();

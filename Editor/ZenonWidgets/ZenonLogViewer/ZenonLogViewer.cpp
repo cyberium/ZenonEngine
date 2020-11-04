@@ -5,11 +5,13 @@
 
 ZenonLogViewer::ZenonLogViewer(QWidget * parent)
 	: QPlainTextEdit(parent)
+	, m_Editor(nullptr)
 {
 }
 
 ZenonLogViewer::~ZenonLogViewer()
 {
+
 }
 
 
