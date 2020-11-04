@@ -101,7 +101,7 @@ class CSceneCreateTypelessListPassTemplated
 	: public CSceneCreateTypelessListPass
 {
 public:
-	CSceneCreateTypelessListPassTemplated(IRenderDevice& RenderDevice, const std::shared_ptr<IScene>& scene)
+	CSceneCreateTypelessListPassTemplated(IRenderDevice& RenderDevice, IScene& scene)
 		: CSceneCreateTypelessListPass(RenderDevice, scene)
 	{}
 	virtual ~CSceneCreateTypelessListPassTemplated()

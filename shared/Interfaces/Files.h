@@ -81,17 +81,25 @@ ZN_INTERFACE ZN_API IFile
 
 //--
 
-ZN_INTERFACE ZN_API IFilesStorage
-	: public std::enable_shared_from_this<IFilesStorage>
+ZN_INTERFACE ZN_API IznFilesStorage
+	: public std::enable_shared_from_this<IznFilesStorage>
 {
-	virtual ~IFilesStorage() {};
+	virtual ~IznFilesStorage() {};
 
-	virtual std::shared_ptr<IFile>                  Create(std::string FileName) = 0;
-	virtual std::shared_ptr<IFile>                  OpenFile(std::string FileName, EFileAccessType FileAccessType = EFileAccessType::Read) = 0;
-	virtual bool                                    SaveFile(std::shared_ptr<IFile> File) = 0;
-	virtual size_t                                  GetFileSize(std::string FileName) const = 0;
-	virtual bool                                    IsFileExists(std::string FileName) const = 0;
-	virtual std::vector<std::string>                GetAllFilesInFolder(std::string Directory, std::string Extension = "") const = 0;
+	virtual std::shared_ptr<IFile>   Open(std::string FileName) = 0;
+	virtual size_t                   GetSize(std::string FileName) const = 0;
+	virtual bool                     IsExists(std::string FileName) const = 0;
+};
+
+
+ZN_INTERFACE ZN_API IznFilesStorageExtended
+{
+	virtual ~IznFilesStorageExtended() {};
+
+	virtual std::shared_ptr<IFile>    Create(std::string FileName) = 0;
+	virtual void                      Delete(std::string FileName) const = 0;
+	virtual void                      Save(std::shared_ptr<IFile> File) = 0;
+	virtual std::vector<std::string>  GetAllFilesInFolder(std::string Directory, std::string Extension = "") const = 0;
 };
 
 //--
@@ -99,6 +107,7 @@ ZN_INTERFACE ZN_API IFilesStorage
 enum class ZN_API EFilesStorageType
 {
 	GAMEDATA = 0,
+	USERDATA,
 	ADDITIONAL
 };
 
@@ -109,10 +118,11 @@ ZN_INTERFACE ZN_API __declspec(uuid("5DC32EB8-9A63-4FAD-A4BF-81916B8EF86A")) IFi
 
 	virtual std::shared_ptr<IFile> Create(std::string FileName) const = 0;
 	virtual std::shared_ptr<IFile> Open(std::string FileName, EFileAccessType FileAccessType = EFileAccessType::Read) const = 0;
+	virtual void Delete(std::string FileName) const = 0;
 	virtual size_t GetFileSize(std::string FileName) const = 0;
 	virtual bool IsFileExists(std::string FileName) const = 0;
 
-	virtual void AddStorage(EFilesStorageType FilesStorageType, std::shared_ptr<IFilesStorage> Storage) = 0;
-	virtual void RemoveStorage(std::shared_ptr<IFilesStorage> Storage) = 0;
-	virtual std::shared_ptr<IFilesStorage> GetStorage(EFilesStorageType FilesStorageType) const = 0;
+	virtual void AddStorage(EFilesStorageType FilesStorageType, std::shared_ptr<IznFilesStorage> Storage) = 0;
+	virtual void RemoveStorage(std::shared_ptr<IznFilesStorage> Storage) = 0;
+	virtual std::shared_ptr<IznFilesStorage> GetStorage(EFilesStorageType FilesStorageType) const = 0;
 };

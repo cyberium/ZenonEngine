@@ -20,7 +20,6 @@ public:
 
 	// IEditorTools
 	void Initialize() override;
-	void Finalize() override;
 	void Enable(ETool ToolIndex) override;
 	IEditorTool& GetTool(ETool Tool) override;
 	const IEditorTool& GetTool(ETool Tool) const override;

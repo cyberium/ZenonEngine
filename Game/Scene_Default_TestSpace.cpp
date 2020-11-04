@@ -15,7 +15,7 @@ void CSceneDefault::Load3D()
 	//--------------------------------------------------------------------------
 	// XML
 	//--------------------------------------------------------------------------
-	if (auto file = GetBaseManager().GetManager<IFilesManager>()->Open("Scene.xml"))
+	if (auto file = GetBaseManager().GetManager<IFilesManager>()->Open("RTS2.xml"))
 	{
 		CXMLManager xml(GetBaseManager());
 		auto reader = xml.CreateReader(file);

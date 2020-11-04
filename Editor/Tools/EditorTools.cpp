@@ -42,10 +42,6 @@ void CEditorTools::Initialize()
 	Enable(ETool::EToolDefault);
 }
 
-void CEditorTools::Finalize()
-{
-}
-
 void CEditorTools::Enable(ETool ToolIndex)
 {
 	DisableAll(ToolIndex);

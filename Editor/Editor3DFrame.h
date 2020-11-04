@@ -29,8 +29,6 @@ public:
 	bool InitializeEditorFrame() override;
 	void DoInitializeTools3D() override;
 	IScene& GetScene() override;
-	void LockUpdates() override;
-	void UnlockUpdates() override;
 	void DoEnableTool(ETool Tool);
 	std::shared_ptr<IScene> GetEditedScene() const override;
 	std::shared_ptr<ISceneNode> GetEditedRootNode3D() const override;

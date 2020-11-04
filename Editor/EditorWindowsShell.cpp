@@ -16,8 +16,31 @@ CEditorWindowsShell::~CEditorWindowsShell()
 {
 }
 
+CEditorWindowsShell::EDialogResult CEditorWindowsShell::ShowYesNoCancelDialog(const std::string& Text, const std::string& Title) const
+{
+	auto& qtUIFrame = dynamic_cast<IEditorQtUIFrame&>(m_Editor.GetUIFrame());
+
+	std::string title = Title;
+	if (title.empty())
+		title = "ZenonEngine Editor";
+
+	switch (MessageBoxA(qtUIFrame.getHWND(), Text.c_str(), title.c_str(), MB_YESNOCANCEL | MB_ICONINFORMATION))
+	{
+	case IDYES:
+		return EDialogResult::Yes;
+	case IDNO: //кнопка NO ?
+		return EDialogResult::No;
+	case IDCANCEL:
+		return EDialogResult::Cancel;
+	}
+	
+	throw CException("ShowYesNoCancelDialog unexpected result.");
+}
+
 std::string CEditorWindowsShell::ShowLoadFileDialog(std::string DefaultName) const
 {
+	auto& qtUIFrame = dynamic_cast<IEditorQtUIFrame&>(m_Editor.GetUIFrame());
+
 	char szFile[256];
 	strcpy_s(szFile, sizeof(szFile), DefaultName.c_str());
 
@@ -25,7 +48,7 @@ std::string CEditorWindowsShell::ShowLoadFileDialog(std::string DefaultName) con
 
 	OPENFILENAMEA ofn = { 0 };
 	ofn.lStructSize = sizeof(OPENFILENAMEA);
-	ofn.hwndOwner = dynamic_cast<IEditorQtUIFrame&>(m_Editor.GetUIFrame()).getHWND();
+	ofn.hwndOwner = qtUIFrame.getHWND();
 	ofn.lpstrFile = szFile;
 	ofn.nMaxFile = sizeof(szFile);
 	ofn.lpstrFilter = "All\0*.*\0Text\0*.TXT\0";

@@ -210,12 +210,15 @@ std::shared_ptr<IznTreeViewItemSource> CEditorResourceBrowser::CreateModelsFromF
 {
 	std::vector<std::shared_ptr<IznTreeViewItemSource>> models;
 	auto gameDataStorage = GetBaseManager().GetManager<IFilesManager>()->GetStorage(EFilesStorageType::GAMEDATA);
-	auto fileNames = gameDataStorage->GetAllFilesInFolder(FolderName, ".fbx");
+	auto gameDataStorageEx = std::dynamic_pointer_cast<IznFilesStorageExtended>(gameDataStorage);
+	_ASSERT(gameDataStorageEx != nullptr);
+
+	auto fileNames = gameDataStorageEx->GetAllFilesInFolder(FolderName, ".fbx");
 	for (const auto& fbxFileName : fileNames)
 	{
 		try
 		{
-			auto filePtr = gameDataStorage->OpenFile(fbxFileName);
+			auto filePtr = gameDataStorage->Open(fbxFileName);
 			filePtr->ChangeExtension("znmdl");
 
 			if (GetBaseManager().GetManager<IFilesManager>()->IsFileExists(filePtr->Path_Name()))

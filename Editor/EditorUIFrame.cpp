@@ -222,6 +222,9 @@ void CEditorUIFrame::OnSelectNode()
 //
 void CEditorUIFrame::OnSceneLoadFromFile()
 {
+
+	GetEditor().GetShell().ShowYesNoCancelDialog("Do you want to load scene?");
+
 	std::string fileName = GetEditor().GetShell().ShowLoadFileDialog("");
 	if (fileName.empty())
 		return;

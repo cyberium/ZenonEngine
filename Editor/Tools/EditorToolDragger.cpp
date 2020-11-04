@@ -73,7 +73,7 @@ void CEditorToolDragger::DropEvent(const glm::vec2& Position)
 {
 	CreateCopyDraggedNode();
 
-	if (!m_IsDraggingPermanentCreation)
+	if (false == m_IsDraggingPermanentCreation)
 		Clear();
 }
 
@@ -88,7 +88,7 @@ void CEditorToolDragger::DragEnterEvent(const SDragData& Data)
 		if (model == nullptr)
 			return;
 
-		m_DraggerNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeFactory>()->CreateSceneNode3D(cSceneNode3D, *GetEditor().Get3DFrame().GetEditedScene());
+		m_DraggerNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeFactory>()->CreateSceneNode3D(cSceneNode3D, GetScene());
 		m_DraggerNode->SetName(model->GetName());
 		m_DraggerNode->GetComponent<IModelsComponent3D>()->SetModel(model);
 	}

@@ -9,7 +9,8 @@
 CEditorToolRotatorRTS::CEditorToolRotatorRTS(IEditor& Editor)
 	: CEditorToolBase(Editor)
 	, m_RotatorNumber(EMoverDirection::None)
-	, m_InitialRotationRadians(false)
+	, m_InitialRotationRadians(0.0f)
+	, m_StartMousePosY(0)
 {
 }
 

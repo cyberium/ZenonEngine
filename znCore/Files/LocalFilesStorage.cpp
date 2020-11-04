@@ -18,16 +18,9 @@ CLocalFilesStorage::~CLocalFilesStorage()
 
 
 //
-// IFilesStorage
+// IznFilesStorage
 //
-std::shared_ptr<IFile> CLocalFilesStorage::Create(std::string FileName)
-{
-	if (IsFileExists(FileName))
-		throw CException("File '%s' already exists.", FileName.c_str());
-	return MakeShared(CFile, FileName, shared_from_this());
-}
-
-std::shared_ptr<IFile> CLocalFilesStorage::OpenFile(std::string FileName, EFileAccessType FileAccessType)
+std::shared_ptr<IFile> CLocalFilesStorage::Open(std::string FileName)
 {
 	std::ifstream stream;
 	stream.open(std::string(m_Path + FileName), std::ios::binary);
@@ -55,7 +48,7 @@ std::shared_ptr<IFile> CLocalFilesStorage::OpenFile(std::string FileName, EFileA
 		
 	std::streamsize readedBytes = stream.gcount();
 	if (readedBytes < fileSize)
-		throw CException("File '%s' stream reading error. Readed [%d]. Filesize [%d]", file->Path_Name().c_str(), static_cast<int64>(readedBytes), fileSize);
+		throw CException("File '%s' stream reading error. Readed '%d' of '%d'.", file->Path_Name().c_str(), static_cast<int64>(readedBytes), fileSize);
 	
 	// Close stream
 	stream.close();
@@ -64,7 +57,62 @@ std::shared_ptr<IFile> CLocalFilesStorage::OpenFile(std::string FileName, EFileA
 	return file;
 }
 
-bool CLocalFilesStorage::SaveFile(std::shared_ptr<IFile> File)
+size_t CLocalFilesStorage::GetSize(std::string FileName) const
+{
+	std::ifstream stream;
+	stream.open(std::string(m_Path + FileName), std::ios::binary);
+
+	size_t fileSize = 0;
+	if (stream.is_open())
+	{
+		stream.seekg(0, stream.end);
+		fileSize = static_cast<size_t>(stream.tellg());
+		stream.seekg(0, stream.beg);
+	}
+	else
+		throw CException("Unable to open file '%s'.", FileName.c_str());
+
+	stream.clear();
+	stream.close();
+
+	return fileSize;
+}
+
+bool CLocalFilesStorage::IsExists(std::string FileName) const
+{
+	std::ifstream stream;
+	stream.open(std::string(m_Path + FileName), std::ios::binary);
+
+	bool isOpen = stream.is_open();
+
+	stream.clear();
+	stream.close();
+
+	return isOpen;
+}
+
+
+
+//
+// IznFilesStorageExtended
+//
+std::shared_ptr<IFile> CLocalFilesStorage::Create(std::string FileName)
+{
+	if (IsExists(FileName))
+		throw CException("File '%s' already exists.", FileName.c_str());
+	return MakeShared(CFile, FileName, shared_from_this());
+}
+
+void CLocalFilesStorage::Delete(std::string FileName) const
+{
+	if (false == IsExists(FileName))
+		throw CException("File '%s' doen't exists in this FileStorage.", FileName.c_str());
+
+	if (std::remove((m_Path + FileName).c_str()) != 0)
+		throw CException("Error while deleting file '%s'.", FileName.c_str());
+}
+
+void CLocalFilesStorage::Save(std::shared_ptr<IFile> File)
 {
 	std::string savedPath = m_Path + File->Path_Name();
 
@@ -95,42 +143,6 @@ bool CLocalFilesStorage::SaveFile(std::shared_ptr<IFile> File)
 		throw CException("Unable to open file '%s'.", File->Path_Name().c_str());
 
 	stream.close();
-
-	return true;
-}
-
-size_t CLocalFilesStorage::GetFileSize(std::string FileName) const
-{
-	std::ifstream stream;
-	stream.open(std::string(m_Path + FileName), std::ios::binary);
-
-	size_t fileSize = 0;
-	if (stream.is_open())
-	{
-		stream.seekg(0, stream.end);
-		fileSize = static_cast<size_t>(stream.tellg());
-		stream.seekg(0, stream.beg);
-	}
-	else
-		throw CException("Unable to open file '%s'.", FileName.c_str());
-
-	stream.clear();
-	stream.close();
-
-	return fileSize;
-}
-
-bool CLocalFilesStorage::IsFileExists(std::string FileName) const
-{
-	std::ifstream stream;
-	stream.open(std::string(m_Path + FileName), std::ios::binary);
-
-	bool isOpen = stream.is_open();
-
-	stream.clear();
-	stream.close();
-
-	return isOpen;
 }
 
 std::vector<std::string> CLocalFilesStorage::GetAllFilesInFolder(std::string Directory, std::string Extension) const

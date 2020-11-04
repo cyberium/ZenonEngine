@@ -263,7 +263,7 @@ void SceneBase::OnUpdate(UpdateEventArgs& e)
 
 
 	std::lock_guard<std::mutex> lock(m_ChildModifyLock);
-	std::lock_guard<std::mutex> lock(m_ListsAreBusy);
+	std::lock_guard<std::mutex> lock2(m_ListsAreBusy);
 
 	for (const auto& it : m_AddChildList)
 		it.first->AddChild(it.second);

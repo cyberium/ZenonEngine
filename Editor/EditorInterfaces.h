@@ -47,7 +47,6 @@ ZN_INTERFACE IEditorTools
 	virtual ~IEditorTools() {}
 
 	virtual void Initialize() = 0;
-	virtual void Finalize() = 0;
 	virtual void Enable(ETool Tool) = 0;
 	virtual IEditorTool& GetTool(ETool Tool) = 0;
 	virtual const IEditorTool& GetTool(ETool Tool) const = 0;
@@ -165,8 +164,16 @@ ZN_INTERFACE IEditorShell
 {
 	virtual ~IEditorShell() {}
 
-	virtual std::string ShowLoadFileDialog(std::string DefaultName = "") const = 0;
-	virtual std::string ShowSaveFileDialog(std::string DefaultName = "") const = 0;
+	enum EDialogResult
+	{
+		Yes,
+		No,
+		Cancel
+	};
+
+	virtual EDialogResult ShowYesNoCancelDialog(const std::string& Text, const std::string& Title = "") const = 0;
+	virtual std::string   ShowLoadFileDialog(std::string DefaultPathAndName) const = 0;
+	virtual std::string   ShowSaveFileDialog(std::string DefaultPath) const = 0;
 };
 
 
@@ -179,11 +186,9 @@ ZN_INTERFACE IEditor3DFrame
 
 	virtual void DoInitializeTools3D() = 0;
 	virtual IScene& GetScene() = 0;
-	virtual void LockUpdates() = 0;
-	virtual void UnlockUpdates() = 0;
 	virtual void DoEnableTool(ETool Tool) = 0;
 
-	virtual std::shared_ptr<IScene> GetEditedScene() const = 0;
+	virtual std::shared_ptr<IScene>     GetEditedScene() const = 0;
 	virtual std::shared_ptr<ISceneNode> GetEditedRootNode3D() const = 0;
 	virtual std::shared_ptr<ISceneNode> GetEditedNodeUnderMouse(const glm::ivec2& MousePos) const = 0;
 

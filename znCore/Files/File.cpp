@@ -6,7 +6,7 @@
 // Additional
 #include "Utils/Utils.h"
 
-CFile::CFile(const std::string& FullFileName, const std::shared_ptr<IFilesStorage>& OwnerFileStorage)
+CFile::CFile(const std::string& FullFileName, const std::shared_ptr<IznFilesStorage>& OwnerFileStorage)
 	: m_Name(FullFileName)
 	, m_Path("")
 	, m_OwnerFilesStorage(OwnerFileStorage)
@@ -35,7 +35,7 @@ bool CFile::Save()
 {
 	try
 	{
-		m_OwnerFilesStorage->SaveFile(shared_from_this());
+		std::dynamic_pointer_cast<IznFilesStorageExtended>(m_OwnerFilesStorage)->Save(shared_from_this());
 		return true;
 	}
 	catch (const CException& e)

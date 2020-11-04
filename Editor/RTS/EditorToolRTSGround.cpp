@@ -79,7 +79,6 @@ ground_dirtRiverT
 CRTSGround::CRTSGround(IEditor& Editor)
 	: CEditorToolBase(Editor)
 	, m_BaseManager(Editor.GetBaseManager())
-	, m_Scene(Editor.Get3DFrame().GetEditedScene())
 	, m_CellType(ERTSCellType::ctGround)
 {
 	

@@ -6,7 +6,7 @@ class ZN_API CFile
 	: public IFile
 {
 public:
-	 CFile(const std::string& FullFileName, const std::shared_ptr<IFilesStorage>& OwnerFileStorage);
+	 CFile(const std::string& FullFileName, const std::shared_ptr<IznFilesStorage>& OwnerFileStorage);
 	 virtual ~CFile();
 
 	 CByteBuffer& GetByteBuffer() { return m_ByteBuffer; }
@@ -112,5 +112,5 @@ private: // IFile
 	std::string m_NameWithoutExtension;
 	std::string m_Path;
 	std::string m_Extension;
-	std::shared_ptr<IFilesStorage> m_OwnerFilesStorage;
+	std::shared_ptr<IznFilesStorage> m_OwnerFilesStorage;
 };

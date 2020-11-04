@@ -249,16 +249,6 @@ IScene& CEditor3DFrame::GetScene()
 	return *this;
 }
 
-void CEditor3DFrame::LockUpdates()
-{
-	Freeze();
-}
-
-void CEditor3DFrame::UnlockUpdates()
-{
-	Unfreeze();
-}
-
 void CEditor3DFrame::DoEnableTool(ETool Tool)
 {
 	GetEditor().GetTools().Enable(Tool);

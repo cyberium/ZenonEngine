@@ -46,5 +46,4 @@ private:
 
 private:
 	IBaseManager& m_BaseManager;
-	std::weak_ptr<IScene> m_Scene;
 };

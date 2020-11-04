@@ -23,62 +23,107 @@ CFilesManager::~CFilesManager()
 //
 std::shared_ptr<IFile> CFilesManager::Create(std::string FileName) const
 {
-	return GetGamedataStorage()->Create(FileName);
+	if (FileName.empty())
+		throw CException("Filename is empty.");
+
+	auto filesStorageEx = std::dynamic_pointer_cast<IznFilesStorageExtended>(GetGamedataStorage());
+	if (filesStorageEx == nullptr)
+		throw CException("For 'Create' operation GAMEDATA must supports IznFilesStorageExtended. Filename '%s'.", FileName.c_str());
+
+	try
+	{
+		return filesStorageEx->Create(FileName);
+	}
+	catch (const CException& e)
+	{
+		Log::Error("Error while creating file '%s'.", FileName.c_str());
+		Log::Error("--->'%s'", e.MessageCStr());
+	}
 }
 
 std::shared_ptr<IFile> CFilesManager::Open(std::string FileName, EFileAccessType FileAccessType) const
 {
-	for (const auto& fs : m_Storages)
-		if (fs.second->IsFileExists(FileName))
-			return fs.second->OpenFile(FileName);
+	if (FileName.empty())
+		throw CException("Filename is empty.");
 
-	Log::Warn("FilesManager: File '%s' not found.", FileName.c_str());
+	for (const auto& fs : m_Storages)
+		if (fs.second->IsExists(FileName))
+			return fs.second->Open(FileName);
+
+	Log::Warn("File '%s' not exists.", FileName.c_str());
 	return nullptr;
+}
+
+void CFilesManager::Delete(std::string FileName) const
+{
+	if (FileName.empty())
+		throw CException("Filename is empty.");
+
+	auto filesStorageEx = std::dynamic_pointer_cast<IznFilesStorageExtended>(GetGamedataStorage());
+	if (filesStorageEx == nullptr)
+		throw CException("For 'Delete' operation GAMEDATA must supports IznFilesStorageExtended. Filename '%s'.", FileName.c_str());
+
+	try
+	{
+		filesStorageEx->Delete(FileName);
+	}
+	catch (const CException& e)
+	{
+		Log::Error("Error while deleting file '%s'.", FileName.c_str());
+		Log::Error("--->'%s'", e.MessageCStr());
+	}
 }
 
 size_t CFilesManager::GetFileSize(std::string FileName) const
 {
-	for (const auto& fs : m_Storages)
-		if (fs.second->IsFileExists(FileName))
-			return fs.second->GetFileSize(FileName);
+	if (FileName.empty())
+		throw CException("Filename is empty.");
 
+	for (const auto& fs : m_Storages)
+		if (fs.second->IsExists(FileName))
+			return fs.second->GetSize(FileName);
+
+	Log::Warn("File '%s' not exists.", FileName.c_str());
 	return 0;
 }
 
 bool CFilesManager::IsFileExists(std::string FileName) const
 {
+	if (FileName.empty())
+		throw CException("Filename is empty.");
+
 	for (const auto& fs : m_Storages)
-		if (fs.second->IsFileExists(FileName))
+		if (fs.second->IsExists(FileName))
 			return true;
 
 	return false;
 }
 
-void CFilesManager::AddStorage(EFilesStorageType FilesStorageType, std::shared_ptr<IFilesStorage> Storage)
+void CFilesManager::AddStorage(EFilesStorageType FilesStorageType, std::shared_ptr<IznFilesStorage> Storage)
 {
 	if (FilesStorageType == EFilesStorageType::GAMEDATA)
 		if (auto gameDataStorage = GetStorage(EFilesStorageType::GAMEDATA))
-			throw CException("FilesManager: Unable to register second GAMEDATA storage.");
+			throw CException("Unable to register second GAMEDATA storage.");
 
 	m_Storages.push_back(std::make_pair(FilesStorageType, Storage));
 }
 
-void CFilesManager::RemoveStorage(std::shared_ptr<IFilesStorage> Storage)
+void CFilesManager::RemoveStorage(std::shared_ptr<IznFilesStorage> Storage)
 {
-	const auto& it = std::find_if(m_Storages.begin(), m_Storages.end(), [Storage](const std::pair<EFilesStorageType, std::shared_ptr<IFilesStorage>>& StoragePair) -> bool {
+	const auto& it = std::find_if(m_Storages.begin(), m_Storages.end(), [Storage](const std::pair<EFilesStorageType, std::shared_ptr<IznFilesStorage>>& StoragePair) -> bool {
 		return StoragePair.second == Storage;
 	});
 	if (it == m_Storages.end())
 	{
-		Log::Warn("FilesManager: Unable to remove file storage, because not found.");
+		Log::Warn("Unable to remove file storage, because not found.");
 		return;
 	}
 	m_Storages.erase(it);
 }
 
-std::shared_ptr<IFilesStorage> CFilesManager::GetStorage(EFilesStorageType FilesStorageType) const
+std::shared_ptr<IznFilesStorage> CFilesManager::GetStorage(EFilesStorageType FilesStorageType) const
 {
-	const auto& it = std::find_if(m_Storages.begin(), m_Storages.end(), [FilesStorageType](const std::pair<EFilesStorageType, std::shared_ptr<IFilesStorage>>& StoragePair) -> bool {
+	const auto& it = std::find_if(m_Storages.begin(), m_Storages.end(), [FilesStorageType](const std::pair<EFilesStorageType, std::shared_ptr<IznFilesStorage>>& StoragePair) -> bool {
 		return StoragePair.first == FilesStorageType;
 	});
 	if (it == m_Storages.end())
@@ -91,10 +136,10 @@ std::shared_ptr<IFilesStorage> CFilesManager::GetStorage(EFilesStorageType Files
 //
 // Private
 //
-std::shared_ptr<IFilesStorage> CFilesManager::GetGamedataStorage() const
+std::shared_ptr<IznFilesStorage> CFilesManager::GetGamedataStorage() const
 {
 	auto gamedataStorage = GetStorage(EFilesStorageType::GAMEDATA);
 	if (gamedataStorage == nullptr)
-		throw CException("FilesManager: GAMEDATA storage doen't found.");
+		throw CException("GAMEDATA storage doen't found.");
 	return gamedataStorage;
 }

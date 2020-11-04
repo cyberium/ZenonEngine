@@ -17,14 +17,11 @@ CLibraryResourceFileStotage::~CLibraryResourceFileStotage()
 
 
 //
-// IFilesStorage
+// IznFilesStorage
 //
-std::shared_ptr<IFile> CLibraryResourceFileStotage::Create(std::string FileName)
-{
-	throw CException("Operation not supported.");
-}
 
-std::shared_ptr<IFile> CLibraryResourceFileStotage::OpenFile(std::string Filename, EFileAccessType FileAccessType)
+
+std::shared_ptr<IFile> CLibraryResourceFileStotage::Open(std::string Filename)
 {
     HRSRC hResource = FindResource(m_HModule, Resources::utf8_to_utf16(Filename).c_str(), RT_RCDATA);
     if (hResource == NULL)
@@ -47,12 +44,7 @@ std::shared_ptr<IFile> CLibraryResourceFileStotage::OpenFile(std::string Filenam
     return file;
 }
 
-bool CLibraryResourceFileStotage::SaveFile(std::shared_ptr<IFile> File)
-{
-	throw CException("Operation not supported.");
-}
-
-size_t CLibraryResourceFileStotage::GetFileSize(std::string Filename) const
+size_t CLibraryResourceFileStotage::GetSize(std::string Filename) const
 {
     HRSRC hResource = FindResource(m_HModule, Resources::utf8_to_utf16(Filename).c_str(), RT_RCDATA);
     if (hResource == NULL)
@@ -61,12 +53,7 @@ size_t CLibraryResourceFileStotage::GetFileSize(std::string Filename) const
 	return static_cast<size_t>(SizeofResource(m_HModule, hResource));
 }
 
-bool CLibraryResourceFileStotage::IsFileExists(std::string Filename) const
+bool CLibraryResourceFileStotage::IsExists(std::string Filename) const
 {
     return FindResource(m_HModule, Resources::utf8_to_utf16(Filename).c_str(), RT_RCDATA) != NULL;
-}
-
-std::vector<std::string> CLibraryResourceFileStotage::GetAllFilesInFolder(std::string FileName, std::string Extension) const
-{
-	throw CException("Operation not supported.");
 }
