@@ -4,6 +4,8 @@
 #include "EditorUIFrame.h"
 #include <QApplication>
 
+#include "BugTrap/BugTrap.h"
+
 #include "Editor.h"
 #include "Editor3DFrame.h"
 #include "Editor3DPreviewScene.h"
@@ -107,9 +109,18 @@ void main_internal(int argc, char *argv[])
 
 int main(int argumentCount, char* arguments[])
 {
+#ifdef _DEBUG
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 	_CrtSetReportMode(_CRT_ERROR, _CRTDBG_MODE_DEBUG);
-	_CrtSetBreakAlloc(416);
+#endif
+
+	BT_InstallSehFilter(); 
+	BT_SetAppName(L"ZenonEngine Editor"); 
+	//BT_SetSupportEMail(L"your@email.com");
+	BT_SetFlags(BTF_DETAILEDMODE /*| BTF_EDITMAIL*/); 
+	//BT_SetSupportServer(L"localhost", 9999);
+	//BT_SetSupportURL(L"http://www.your-web-site.com");
+
 
 	main_internal(argumentCount, arguments);		
 
