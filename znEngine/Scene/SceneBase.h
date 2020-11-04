@@ -5,6 +5,7 @@ const ObjectClass cSceneBase = UINT16_MAX - 300u;
 class ZN_API SceneBase 
 	: public IScene
 	, public ISceneInternal
+	, public ISceneLoadSave
 	, public IRenderWindowEventListener
 	, public INativeWindowEventListener
 {
@@ -70,12 +71,20 @@ public:
 	virtual void                                    OnWindowMouseLeave(EventArgs& e) override {}
 	virtual void                                    OnWindowMouseFocus(EventArgs& e) override {}
 	virtual void                                    OnWindowMouseBlur(EventArgs& e) override {}
-	// Mouse in world events
+	
+	// ISceneLoadSave
+	void                                            LoadFromFile(const std::string& FileName) override;
+	void                                            SaveToFile(const std::string& FileName) const override;
+	void                                            ResetScene() override;
+
+
+protected:
 	virtual bool                                    OnMousePressed(const MouseButtonEventArgs & e, const Ray& RayToWorld);
 	virtual void                                    OnMouseReleased(const MouseButtonEventArgs & e, const Ray& RayToWorld);
 	virtual void                                    OnMouseMoved(const MouseMotionEventArgs & e, const Ray& RayToWorld);
 
-private: // Input events process recursive
+
+private:
 	void                                            DoUpdate_Rec(const std::shared_ptr<ISceneNode>& Node, const UpdateEventArgs& e);
 
 	bool                                            DoKeyPressed_Rec(const std::shared_ptr<IUIControl>& Node, KeyEventArgs& e);
@@ -84,6 +93,7 @@ private: // Input events process recursive
 	bool                                            DoMouseButtonPressed_Rec(const std::shared_ptr<IUIControl>& Node, MouseButtonEventArgs& e);
 	void                                            DoMouseButtonReleased_Rec(const std::shared_ptr<IUIControl>& Node, MouseButtonEventArgs& e);
 	bool                                            DoMouseWheel_Rec(const std::shared_ptr<IUIControl>& Node, MouseWheelEventArgs& e);
+
 
 protected:
 	std::shared_ptr<ISceneNode>                     m_RootSceneNode;
@@ -117,10 +127,10 @@ protected:
 protected: // Функционал по отложенному добавлению нод
 	std::vector<std::pair<std::shared_ptr<ISceneNode>, std::shared_ptr<ISceneNode>>> m_AddChildList;
 	std::vector<std::pair<std::shared_ptr<ISceneNode>, std::shared_ptr<ISceneNode>>> m_RemoveChildList;
-	std::mutex                                                                           m_ListsAreBusy;
-	std::mutex                                                                           m_ChildModifyLock;
+	std::mutex                                                                       m_ListsAreBusy;
+	std::mutex                                                                       m_ChildModifyLock;
 
-	std::vector<std::shared_ptr<ISceneEventsListener>>                                   m_EventListeners;
+	std::vector<std::shared_ptr<ISceneEventsListener>>                               m_EventListeners;
 
 
 private: // Quick access

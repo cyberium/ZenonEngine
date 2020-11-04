@@ -13,6 +13,11 @@ CEditedScene::~CEditedScene()
 	Log::Info("Edited scene destroyed.");
 }
 
+
+
+//
+// IScene
+//
 void CEditedScene::Initialize()
 {
 	SceneBase::Initialize();

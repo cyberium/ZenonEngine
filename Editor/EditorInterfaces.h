@@ -171,7 +171,8 @@ ZN_INTERFACE IEditorShell
 		Cancel
 	};
 
-	virtual EDialogResult ShowYesNoCancelDialog(const std::string& Text, const std::string& Title = "") const = 0;
+	virtual EDialogResult ShowYesNoCancelDialog(const char* Text, ...) const = 0;
+	virtual void          ShowErrorDialog(const char*, ...) const = 0;
 	virtual std::string   ShowLoadFileDialog(std::string DefaultPathAndName) const = 0;
 	virtual std::string   ShowSaveFileDialog(std::string DefaultPath) const = 0;
 };

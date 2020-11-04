@@ -8,7 +8,8 @@ public:
 	virtual ~CEditorWindowsShell();
 
 	// IEditorShell
-	EDialogResult ShowYesNoCancelDialog(const std::string& Text, const std::string& Title = "") const override;
+	EDialogResult ShowYesNoCancelDialog(const char* Text, ...) const override;
+	void          ShowErrorDialog(const char* Text, ...) const override;
 	std::string   ShowLoadFileDialog(std::string DefaultPathAndName) const;
 	std::string   ShowSaveFileDialog(std::string DefaultPath) const;
 

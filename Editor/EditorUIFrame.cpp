@@ -222,86 +222,56 @@ void CEditorUIFrame::OnSelectNode()
 //
 void CEditorUIFrame::OnSceneLoadFromFile()
 {
-
-	GetEditor().GetShell().ShowYesNoCancelDialog("Do you want to load scene?");
-
-	std::string fileName = GetEditor().GetShell().ShowLoadFileDialog("");
-	if (fileName.empty())
-		return;
-
-	auto file = m_Editor.GetBaseManager().GetManager<IFilesManager>()->Open(fileName);
-	if (file == nullptr)
-		return;
-
-	OnSceneClose();
-
-	auto editorRoot = m_Editor.Get3DFrame().GetEditedRootNode3D();
-	auto realRoot = editorRoot->GetParent(); // Temporary we add nodes to real root
-
-	CXMLManager xml(m_Editor.GetBaseManager());
-	auto reader = xml.CreateReader(file);
-	auto xmlRoot = m_Editor.GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeFactory>()->LoadSceneNode3DXML(reader->GetChilds()[0], editorRoot->GetScene(), realRoot);
-
-	// Update persistance nodes
-	for (const auto& editorChild : editorRoot->GetChilds())
+	try
 	{
-		if (editorChild->IsPersistance())
-		{
-			auto xmlChild = xmlRoot->GetChild(editorChild->GetName());
-			if (xmlChild != nullptr)
-			{
-				xmlChild->CopyTo(editorChild);
+		std::string fileName = GetEditor().GetShell().ShowLoadFileDialog("");
+		if (fileName.empty())
+			throw CException("Filename is empty.");
 
-				// To delete persistance node, we must clear this flag
-				std::dynamic_pointer_cast<ISceneNodeInternal>(xmlChild)->SetPersistanceInternal(false);
-				xmlRoot->RemoveChild(xmlChild);
-			}
-		}
+		auto sceneLoadSave = std::dynamic_pointer_cast<ISceneLoadSave>(GetEditor().Get3DFrame().GetEditedScene());
+		if (sceneLoadSave == nullptr)
+			throw CException("Edited scene don't supports 'ISceneLoadSave'.");
+
+		sceneLoadSave->LoadFromFile(fileName);
 	}
-
-	// Add new childs
-	while (false == xmlRoot->GetChilds().empty())
+	catch (const CException& e)
 	{
-		auto xmlChild = *(xmlRoot->GetChilds().begin());
-		editorRoot->AddChild(xmlChild);
+		GetEditor().GetShell().ShowErrorDialog("Error while load scene from file.\r\n%s", e.MessageCStr());
 	}
 }
 
 void CEditorUIFrame::OnSceneSaveToFile()
 {
-	std::string fileName = GetEditor().GetShell().ShowSaveFileDialog("");
-	if (fileName.empty())
-		return;
+	try
+	{
+		std::string fileName = GetEditor().GetShell().ShowSaveFileDialog("");
+		if (fileName.empty())
+			throw CException("Filename is empty.");
 
-	CXMLManager manager(m_Editor.GetBaseManager());
+		auto sceneLoadSave = std::dynamic_pointer_cast<ISceneLoadSave>(GetEditor().Get3DFrame().GetEditedScene());
+		if (sceneLoadSave == nullptr)
+			throw CException("Edited scene don't supports 'ISceneLoadSave'.");
 
-	auto rootWriter = m_Editor.GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeFactory>()->SaveSceneNode3DXML(m_Editor.Get3DFrame().GetEditedRootNode3D());
-
-	auto writer = manager.CreateWriter();
-	writer->AddChild(rootWriter);
-
-	auto file = manager.SaveWriterToFile(writer, fileName);
-	file->Save();
+		sceneLoadSave->SaveToFile(fileName);
+	}
+	catch (const CException& e)
+	{
+		GetEditor().GetShell().ShowErrorDialog("Error while save scene to file.\r\n%s", e.MessageCStr());
+	}
 }
 
 void CEditorUIFrame::OnSceneClose()
 {
-	auto editorRoot = m_Editor.Get3DFrame().GetEditedRootNode3D();
-
-	// Remove existing childs
-	Log::Info("OnSceneClose: Root contains '%d' childs BEFORE load scene.", editorRoot->GetChilds().size());
-	size_t mustLeaveExisting = 0;
-	while (editorRoot->GetChilds().size() > mustLeaveExisting)
+	try
 	{
-		auto editorChild = *(editorRoot->GetChilds().begin() + mustLeaveExisting);
-		if (editorChild->IsPersistance())
-		{
-			mustLeaveExisting++;
-			Log::Info("OnSceneClose: Child '%s' was not removed, because is persistat", editorChild->GetName().c_str());
-			continue;
-		}
+		auto sceneLoadSave = std::dynamic_pointer_cast<ISceneLoadSave>(GetEditor().Get3DFrame().GetEditedScene());
+		if (sceneLoadSave == nullptr)
+			throw CException("Edited scene don't supports 'ISceneLoadSave'.");
 
-		editorRoot->RemoveChild(editorChild);
+		sceneLoadSave->ResetScene();
 	}
-	Log::Info("OnSceneClose: Root contains '%d' childs AFTER load scene.", editorRoot->GetChilds().size());
+	catch (const CException& e)
+	{
+		GetEditor().GetShell().ShowErrorDialog("Error while close scene.\r\n%s", e.MessageCStr());
+	}
 }

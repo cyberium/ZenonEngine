@@ -135,6 +135,11 @@ void CSceneNode::RemoveChild(std::shared_ptr<ISceneNode> childNode)
 	dynamic_cast<ISceneInternal&>(GetScene()).RemoveChildInternal(shared_from_this(), childNode);
 }
 
+void CSceneNode::MakeMeOrphan()
+{
+	dynamic_cast<ISceneInternal&>(GetScene()).RemoveChildInternal(GetParent(), shared_from_this());
+}
+
 std::shared_ptr<ISceneNode> CSceneNode::GetParent() const
 {
 	return m_ParentNode.lock();

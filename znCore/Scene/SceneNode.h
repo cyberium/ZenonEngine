@@ -20,6 +20,7 @@ public:
 	// Childs functional
 	virtual void                                    AddChild(std::shared_ptr<ISceneNode> childNode) override final;
 	virtual void                                    RemoveChild(std::shared_ptr<ISceneNode> childNode) override final;
+	virtual void                                    MakeMeOrphan() override final;
 	virtual std::shared_ptr<ISceneNode>             GetParent() const override final;
 	virtual const SceneNodesList&                   GetChilds() const override final;
 	virtual std::shared_ptr<ISceneNode>             GetChild(std::string Name) const override;

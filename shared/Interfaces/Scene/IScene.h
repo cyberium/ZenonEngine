@@ -15,9 +15,10 @@ ZN_INTERFACE ZN_API ISceneEventsListener
 {
 	virtual ~ISceneEventsListener() {};
 
-	virtual void OnSceneNodeAdded(std::shared_ptr<ISceneNode> ChildNode, std::shared_ptr<ISceneNode> ParentNode) = 0;
-	virtual void OnSceneNodeRemoved(std::shared_ptr<ISceneNode> ChildNode, std::shared_ptr<ISceneNode> ParentNode) = 0;
+	virtual void OnSceneNodeAdded(std::shared_ptr<ISceneNode> ParentNode, std::shared_ptr<ISceneNode> ChildNode) = 0;
+	virtual void OnSceneNodeRemoved(std::shared_ptr<ISceneNode> ParentNode, std::shared_ptr<ISceneNode> ChildNode) = 0;
 };
+
 
 ZN_INTERFACE ZN_API ISceneInternal
 {
@@ -25,7 +26,16 @@ ZN_INTERFACE ZN_API ISceneInternal
 
 	virtual void AddChildInternal(const std::shared_ptr<ISceneNode>& ParentNode, const std::shared_ptr<ISceneNode>& ChildNode) = 0;
 	virtual void RemoveChildInternal(const std::shared_ptr<ISceneNode>& ParentNode, const std::shared_ptr<ISceneNode>& ChildNode) = 0;
-	virtual void RaiseSceneChangeEvent(ESceneChangeType SceneChangeType, const std::shared_ptr<ISceneNode>& OwnerNode, const std::shared_ptr<ISceneNode>& ChildNode) = 0;
+	virtual void RaiseSceneChangeEvent(ESceneChangeType SceneChangeType, const std::shared_ptr<ISceneNode>& ParentNode, const std::shared_ptr<ISceneNode>& ChildNode) = 0;
+};
+
+ZN_INTERFACE ZN_API ISceneLoadSave
+{
+	virtual ~ISceneLoadSave() {};
+
+	virtual void LoadFromFile(const std::string& FileName) = 0;
+	virtual void SaveToFile(const std::string& FileName) const = 0;
+	virtual void ResetScene() = 0;
 };
 
 

@@ -216,7 +216,7 @@ void SceneBase::RemoveChildInternal(const std::shared_ptr<ISceneNode>& ParentNod
 {
 	if (ParentNode == nullptr)
 	{
-		Log::Warn("Can't remove child instanse from nullptr parent.");
+		Log::Error("Can't remove child node '%s' from nullptr parent.", ChildNode->GetName().c_str());
 		return;
 	}
 
@@ -442,8 +442,99 @@ bool SceneBase::OnWindowMouseWheel(MouseWheelEventArgs & e)
 	return false;
 }
 
-// Mouse in world events
 
+
+//
+//
+//
+void SceneBase::LoadFromFile(const std::string& FileName)
+{
+	auto file = GetBaseManager().GetManager<IFilesManager>()->Open(FileName);
+	if (file == nullptr)
+		throw CException("Scene file '%s' not found.", FileName.c_str());
+
+	ResetScene();
+
+	auto root = GetRootSceneNode();
+
+	CXMLManager xml(GetBaseManager());
+	auto xmlReader = xml.CreateReader(file);
+	auto xmlRootChild = xmlReader->GetChilds()[0];
+
+	auto tempFakeRoot = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeFactory>()->CreateSceneNode3D(cSceneNode3D, *this, root);
+	tempFakeRoot->SetName("TempFakeRoot");
+
+	auto newRootNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeFactory>()->LoadSceneNode3DXML(xmlRootChild, *this, tempFakeRoot);
+
+
+	// Update persistance nodes
+	for (const auto& existingRootChild : root->GetChilds())
+	{
+		if (existingRootChild->IsPersistance())
+		{
+			auto xmlChild = newRootNode->GetChild(existingRootChild->GetName());
+			if (xmlChild != nullptr)
+			{
+				xmlChild->CopyTo(existingRootChild);
+
+				// To delete persistance node, we must clear this flag
+				std::dynamic_pointer_cast<ISceneNodeInternal>(xmlChild)->SetPersistanceInternal(false);
+				newRootNode->RemoveChild(xmlChild);
+			}
+		}
+	}
+
+	// Add new childs
+	while (false == newRootNode->GetChilds().empty())
+	{
+		auto newRootChild = *(newRootNode->GetChilds().begin());
+		root->AddChild(newRootChild);
+	}
+
+	tempFakeRoot->MakeMeOrphan();
+}
+
+void SceneBase::SaveToFile(const std::string& FileName) const
+{
+	CXMLManager manager(GetBaseManager());
+
+	auto rootWriter = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeFactory>()->SaveSceneNode3DXML(GetRootSceneNode());
+
+	auto xml = manager.CreateWriter();
+	xml->AddChild(rootWriter);
+
+	auto file = manager.SaveWriterToFile(xml, FileName);
+	file->Save();
+}
+
+void SceneBase::ResetScene()
+{
+	auto root = GetRootSceneNode();
+
+	// Remove existing childs
+	Log::Info("ResetScene: Root contains '%d' childs BEFORE reset.", root->GetChilds().size());
+	size_t mustLeaveExisting = 0;
+	while (root->GetChilds().size() > mustLeaveExisting)
+	{
+		auto editorChild = *(root->GetChilds().begin() + mustLeaveExisting);
+		if (editorChild->IsPersistance())
+		{
+			mustLeaveExisting++;
+			Log::Info("ResetScene: Child '%s' was not removed, because is persistant.", editorChild->GetName().c_str());
+			continue;
+		}
+
+		root->RemoveChild(editorChild);
+	}
+	Log::Info("ResetScene: Root contains '%d' childs AFTER reset.", root->GetChilds().size());
+}
+
+
+
+
+//
+// Protected
+//
 bool SceneBase::OnMousePressed(const MouseButtonEventArgs & e, const Ray& RayToWorld)
 {
 	return false;
@@ -482,9 +573,6 @@ void SceneBase::DoUpdate_Rec(const std::shared_ptr<ISceneNode>& Node, const Upda
 	});
 }
 
-//
-// Input events process recursive
-//
 bool SceneBase::DoKeyPressed_Rec(const std::shared_ptr<IUIControl>& Node, KeyEventArgs & e)
 {
 	std::shared_ptr<CUIControl> NodeAsUINode = std::dynamic_pointer_cast<CUIControl>(Node);

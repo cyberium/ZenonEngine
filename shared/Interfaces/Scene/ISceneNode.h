@@ -36,6 +36,7 @@ ZN_INTERFACE ZN_API ISceneNode
 
 	virtual void AddChild(std::shared_ptr<ISceneNode> childNode) = 0;
 	virtual void RemoveChild(std::shared_ptr<ISceneNode> childNode) = 0;
+	virtual void MakeMeOrphan() = 0;
 	virtual std::shared_ptr<ISceneNode> GetParent() const = 0;
 	virtual const SceneNodesList& GetChilds() const = 0;
 	virtual std::shared_ptr<ISceneNode> GetChild(std::string Name) const = 0;
