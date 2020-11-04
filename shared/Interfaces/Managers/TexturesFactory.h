@@ -7,10 +7,11 @@ ZN_INTERFACE ITexture;
 
 
 
-ZN_INTERFACE ZN_API
-	__declspec(uuid("9A06D177-5FE8-4090-B1E1-EC24BE5ADF92"))
-	IznTexturesFactory : public IManager
+ZN_INTERFACE ZN_API	IznTexturesFactory 
+	: public IManager
 {
+	ZN_OBJECTCLASS(cTexturesFactory)
+
 	virtual ~IznTexturesFactory() {};
 
 	virtual std::shared_ptr<ITexture> LoadTexture2D(const std::string& TextureFileName) = 0;

@@ -1,7 +1,5 @@
 #pragma once
 
-const ObjectClass cSceneBase = UINT16_MAX - 300u;
-
 class ZN_API SceneBase 
 	: public IScene
 	, public ISceneInternal

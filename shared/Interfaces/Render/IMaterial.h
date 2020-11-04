@@ -49,9 +49,11 @@ ZN_INTERFACE ZN_API IMaterialsCreator
 };
 
 
-ZN_INTERFACE ZN_API __declspec(uuid("BA11EAC5-26D2-4F3C-A171-7A216257424C")) IMaterialsFactory
+ZN_INTERFACE ZN_API IMaterialsFactory 
 	: public IManager
 {
+	ZN_OBJECTCLASS(cMaterialsFactory)
+
 	virtual ~IMaterialsFactory() {}
 
 	virtual void AddMaterialsCreator(std::shared_ptr<IMaterialsCreator> Creator) = 0;

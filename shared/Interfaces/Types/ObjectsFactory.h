@@ -15,8 +15,10 @@ ZN_INTERFACE ZN_API IObjectClassCreator
 	virtual std::shared_ptr<IObject> CreateObject(size_t Index, const Guid& AssignedGuid, const IObjectCreationArgs* ObjectCreationArgs) = 0;
 };
 
-ZN_INTERFACE ZN_API __declspec(uuid("5455FD09-C8F2-4E6C-855A-C1E5E7377F3F")) IObjectClassFactory
+ZN_INTERFACE ZN_API IObjectClassFactory
 {
+	ZN_OBJECTCLASS(cObjectClassFactory)
+
 	virtual ~IObjectClassFactory() {}
 
 	virtual std::unordered_map<ObjectClass, std::shared_ptr<IObjectClassCreator>> GetClassCreators() const = 0;
@@ -30,9 +32,11 @@ ZN_INTERFACE ZN_API __declspec(uuid("5455FD09-C8F2-4E6C-855A-C1E5E7377F3F")) IOb
 	virtual std::shared_ptr<IObject> CreateObject(ObjectClass ObjectClassKey, const IObjectCreationArgs* ObjectCreationArgs) = 0;
 };
 
-ZN_INTERFACE ZN_API __declspec(uuid("F2E660BC-4074-48D2-9786-67041B41E97E")) IObjectsFactory
+ZN_INTERFACE ZN_API IObjectsFactory 
 	: public IManager
 {
+	ZN_OBJECTCLASS(cObjectsFactory)
+
 	virtual ~IObjectsFactory() {}
 
 	virtual const std::unordered_map<ObjectType, std::shared_ptr<IObjectClassFactory>>& GetClassFactories() const = 0;

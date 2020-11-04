@@ -26,16 +26,16 @@ CBaseManager::~CBaseManager()
 //
 // IBaseManager
 //
-IManager* CBaseManager::AddManager(GUID Type, const std::shared_ptr<IManager>& _manager)
+IManager* CBaseManager::AddManager(ObjectClass Class, const std::shared_ptr<IManager>& _manager)
 {
-	const auto& it = std::find_if(m_Managers.begin(), m_Managers.end(), [&Type](const SManagerInfo& ManagerInfo) -> bool {return ManagerInfo.Key == Type; });
+	const auto& it = std::find_if(m_Managers.begin(), m_Managers.end(), [Class](const SManagerInfo& ManagerInfo) -> bool {return ManagerInfo.Class == Class; });
 	if (it != m_Managers.end())
 		throw CException("BaseManager: Unable to add new manager, becasuse already exists.");
-	m_Managers.push_back(SManagerInfo(Type, _manager));
+	m_Managers.push_back(SManagerInfo(Class, _manager));
 	return _manager.get();
 }
 
-void CBaseManager::RemoveManager(GUID Type)
+void CBaseManager::RemoveManager(ObjectClass Type)
 {
 	/*
 	const auto& it = std::find_if(m_Managers.begin(), m_Managers.end(), [&Type](const SManagerInfo& ManagerInfo) -> bool {return ManagerInfo.Key == Type; });
@@ -46,9 +46,9 @@ void CBaseManager::RemoveManager(GUID Type)
 	*/
 }
 
-IManager* CBaseManager::GetManager(GUID Type) const
+IManager* CBaseManager::GetManager(ObjectClass Class) const
 {
-	const auto& it = std::find_if(m_Managers.begin(), m_Managers.end(), [&Type](const SManagerInfo& ManagerInfo) -> bool {return ManagerInfo.Key == Type; });
+	const auto& it = std::find_if(m_Managers.begin(), m_Managers.end(), [Class](const SManagerInfo& ManagerInfo) -> bool {return ManagerInfo.Class == Class; });
 	if (it == m_Managers.end())
 		return nullptr;
 

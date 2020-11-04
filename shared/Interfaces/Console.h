@@ -16,10 +16,11 @@ struct IManager;
 
 typedef std::vector<IConsoleCommand*> ConsoleCommands;
 
-struct ZN_API
-	__declspec(uuid("1CB48B2B-357E-4B11-8587-3D6A8385A436"))
-	IConsole : public IManager
+struct ZN_API IConsole 
+	: public IManager
 {
+	ZN_OBJECTCLASS(cConsole)
+
 	virtual ~IConsole() = 0 {};
 
 	virtual bool AddConsoleCommand(IConsoleCommand* _command) = 0;

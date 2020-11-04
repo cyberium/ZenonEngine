@@ -19,10 +19,11 @@ ZN_INTERFACE ZN_API IznFont
 };
 
 
-ZN_INTERFACE ZN_API
-	__declspec(uuid("1427E242-CCB8-4AEC-ABC8-17DE58A96B05"))
-	IznFontsManager : public IManager
+ZN_INTERFACE ZN_API	IznFontsManager 
+	: public IManager
 {
+	ZN_OBJECTCLASS(cFontsManager)
+
 	virtual ~IznFontsManager() {};
 
 	virtual std::shared_ptr<IznFont> GetMainFont() const = 0;

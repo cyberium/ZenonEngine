@@ -39,5 +39,3 @@ namespace std
 		}
 	};
 }
-
-//#define USE_STL_FOREACH

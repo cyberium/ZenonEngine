@@ -35,10 +35,11 @@ ZN_INTERFACE ZN_API IImageLoader
 };
 
 
-ZN_INTERFACE ZN_API 
-	__declspec(uuid("6D65A347-1C79-472E-BFAB-0C1C04597FAE"))
-	IImagesFactory : public IManager
+ZN_INTERFACE ZN_API IImagesFactory 
+	: public IManager
 {
+	ZN_OBJECTCLASS(cImagesFactory)
+
 	virtual ~IImagesFactory() {}
 
 	virtual void AddImageLoader(const std::shared_ptr<IImageLoader>& ImageLoader) = 0;

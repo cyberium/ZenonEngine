@@ -9,9 +9,9 @@ public:
 	virtual ~CBaseManager();
 
 	// IBaseManager
-	IManager* AddManager(GUID Type, const std::shared_ptr<IManager>& Manager) override;
-	void RemoveManager(GUID Type) override;
-	IManager* GetManager(GUID Type) const override;
+	IManager* AddManager(ObjectClass Type, const std::shared_ptr<IManager>& Manager) override;
+	void RemoveManager(ObjectClass Type) override;
+	IManager* GetManager(ObjectClass Type) const override;
 	
 	const IApplication& GetApplication() const override;
 
@@ -22,12 +22,12 @@ public:
 private:
 	struct SManagerInfo
 	{
-		SManagerInfo(const GUID& Key, const std::shared_ptr<IManager>& Manager)
-			: Key(Key)
+		SManagerInfo(const ObjectClass& Class, const std::shared_ptr<IManager>& Manager)
+			: Class(Class)
 			, Manager(Manager)
 		{}
 
-		GUID Key;
+		ObjectClass Class;
 		std::shared_ptr<IManager> Manager;
 	};
 

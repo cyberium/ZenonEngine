@@ -10,16 +10,6 @@ ZN_INTERFACE IXMLWriter;
 
 typedef uint32 ComponentMessageType;
 
-const ObjectClass cSceneNodeComponent = UINT16_MAX - 500u;
-const ObjectClass cSceneNodeColliderComponent = UINT16_MAX - 501u;
-const ObjectClass cSceneNodeModelsComponent = UINT16_MAX - 502u;
-const ObjectClass cSceneNodeSkeletonComponent = UINT16_MAX - 503u;
-const ObjectClass cSceneNodeParticleComponent = UINT16_MAX - 504u;
-const ObjectClass cSceneNodePhysicsComponent = UINT16_MAX - 505u;
-const ObjectClass cSceneNodePortalsComponent = UINT16_MAX - 506u;
-const ObjectClass cSceneNodeLightComponent = UINT16_MAX - 507u;
-const ObjectClass cSceneNodeCameraComponent = UINT16_MAX - 508u;
-const ObjectClass cSceneNodeAnimationComponent = UINT16_MAX - 509u;
 
 ZN_INTERFACE ZN_API ISceneNodeComponent
 	: public IObject

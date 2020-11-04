@@ -29,10 +29,11 @@ ZN_INTERFACE ZN_API ILoadable
 	virtual std::weak_ptr<ILoadable>                GetDependense() const = 0;
 };
 
-ZN_INTERFACE ZN_API
-	__declspec(uuid("18A045EF-D291-45E5-8F61-E223C4AFEF83"))
-	ILoader : public IManager
+ZN_INTERFACE ZN_API	ILoader 
+	: public IManager
 {
+	ZN_OBJECTCLASS(cLoader)
+
 	virtual ~ILoader() {}
 
 	virtual void Start() = 0;

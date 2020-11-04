@@ -111,9 +111,11 @@ enum class ZN_API EFilesStorageType
 	ADDITIONAL
 };
 
-ZN_INTERFACE ZN_API __declspec(uuid("5DC32EB8-9A63-4FAD-A4BF-81916B8EF86A")) IFilesManager 
+ZN_INTERFACE ZN_API IFilesManager 
 	: public IManager
 {
+	ZN_OBJECTCLASS(cFilesManager)
+
 	virtual ~IFilesManager() {}
 
 	virtual std::shared_ptr<IFile> Create(std::string FileName) const = 0;

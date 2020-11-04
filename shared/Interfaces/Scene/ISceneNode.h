@@ -19,7 +19,6 @@ ZN_INTERFACE IColliderComponent3D;
   * 3) 
 */
 
-const ObjectClass cSceneNode3D = UINT16_MAX - 100u;
 
 ZN_INTERFACE ZN_API ISceneNode
 	: public IObject

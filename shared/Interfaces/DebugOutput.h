@@ -1,6 +1,6 @@
 #pragma once
 
-ZN_INTERFACE ZN_API __declspec(uuid("DBB1D38E-CE3F-4C05-8625-313BFC524C5A")) IDebugOutput
+ZN_INTERFACE ZN_API IDebugOutput
 {
 	enum class ZN_API DebugMessageType
 	{

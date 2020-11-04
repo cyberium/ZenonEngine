@@ -7,9 +7,6 @@ class ZN_API CAnimationComponent3D
 	, public ISkeletonAnimationComponent
 {
 public:
-	static ObjectClass GetClassT() { return cSceneNodeAnimationComponent; }
-
-public:
 	CAnimationComponent3D(const ISceneNode& Owner);
 	virtual ~CAnimationComponent3D();
 

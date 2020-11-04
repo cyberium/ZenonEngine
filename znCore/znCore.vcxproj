@@ -194,6 +194,7 @@
     <ClInclude Include="..\shared\Interfaces\Scene\IUIControl.h" />
     <ClInclude Include="..\shared\Interfaces\Scene\Types\Light.h" />
     <ClInclude Include="..\shared\Interfaces\Types\Guid.h" />
+    <ClInclude Include="..\shared\Interfaces\Types\ObjectClasses.h" />
     <ClInclude Include="..\shared\Interfaces\Types\ObjectsFactory.h" />
     <ClInclude Include="..\shared\Interfaces\XML.h" />
     <ClInclude Include="..\shared\znCore.h" />

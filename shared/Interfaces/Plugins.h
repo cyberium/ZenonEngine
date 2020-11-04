@@ -30,10 +30,11 @@ ZN_INTERFACE ZN_API IznPluginsEventListener
 
 
 
-ZN_INTERFACE ZN_API
-	__declspec(uuid("439F9EB6-D1F1-461C-B63B-A0D8CCAE0E58"))
-	IznPluginsManager : public IManager
+ZN_INTERFACE ZN_API	IznPluginsManager 
+	: public IManager
 {
+	ZN_OBJECTCLASS(cPluginsManager)
+
 	virtual ~IznPluginsManager() {}
 
 	virtual bool									AddPlugin(const std::string& PluginDLLName) = 0;

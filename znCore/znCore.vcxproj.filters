@@ -779,6 +779,9 @@
     <ClInclude Include="..\shared\Interfaces\Scene\IUIControl.h">
       <Filter>__Interfaces\Scene</Filter>
     </ClInclude>
+    <ClInclude Include="..\shared\Interfaces\Types\ObjectClasses.h">
+      <Filter>__Interfaces\Types</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Scene\ComponentBase.inl">

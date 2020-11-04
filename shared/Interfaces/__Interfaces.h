@@ -11,8 +11,10 @@
 #endif
 
 #define ZN_INTERFACE struct __declspec(novtable)
-#define ZN_OBJECTCLASS(x) static ObjectClass GetClassT() { return x; }
 
+
+#define ZN_MAKE_OBJECTCLASS(x, y) const ObjectClass x = UINT16_MAX - y##u;
+#define ZN_OBJECTCLASS(x) static ObjectClass GetClassT() { return x; }
 
 #define _CRT_SECURE_NO_WARNINGS
 
@@ -92,19 +94,6 @@ typedef glm::vec3 ColorRBG;
 	#define _CRTDBG_MAP_ALLOC
 	#include <crtdbg.h>	
 
-	/*inline void* operator new(size_t sz, int _BlockUse, char const* _FileName, int _LineNumber)
-	{
-		if (void *ptr = _malloc_dbg(sz, _BlockUse, _FileName, _LineNumber))
-			return ptr;
-		return nullptr;
-	}
-
-	inline void operator delete(void* ptr, int _BlockUse) noexcept
-	{
-		_free_dbg(ptr, _BlockUse);
-	}*/
-
-
 	#define ZN_NEW new(_NORMAL_BLOCK, __FILE__, __LINE__)
 	#define MakeShared(CLASS, ...) std::shared_ptr<CLASS>(ZN_NEW CLASS(__VA_ARGS__))
 
@@ -125,9 +114,13 @@ class Frustum;
 class Plane;
 class Rect;
 
+
 #include "Interfaces/Types/KeyCodes.h"
 #include "Interfaces/Types/Object.h"
 #include "Interfaces/Types/Events.h"
+#include "Interfaces/Types/ObjectClasses.h"
+
+
 
 //---------------------------------------------------------//
 //--                Base Interfaces                      --//

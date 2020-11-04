@@ -10,10 +10,6 @@ class UpdateEventArgs;
 ZN_INTERFACE IManager;
 // FORWARD END
 
-const ObjectClass cSceneNodeUI = UINT16_MAX - 200u;
-const ObjectClass cSceneNodeUI_Text = UINT16_MAX - 201u;
-const ObjectClass cSceneNodeUI_Color = UINT16_MAX - 202u;
-
 ZN_INTERFACE ZN_API IUIControl
 	: public IObject
     , public std::enable_shared_from_this<IUIControl>

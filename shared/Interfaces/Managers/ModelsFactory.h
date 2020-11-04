@@ -25,10 +25,11 @@ ZN_INTERFACE ZN_API IznModelsLoader
 };
 
 
-ZN_INTERFACE ZN_API
-	__declspec(uuid("ED37C829-7EC4-4EB9-9B62-524855EF8CFE"))
-	IznModelsFactory : public IManager
+ZN_INTERFACE ZN_API	IznModelsFactory 
+	: public IManager
 {
+	ZN_OBJECTCLASS(cModelsFactory)
+
 	virtual ~IznModelsFactory() {};
 
 	virtual void AddModelsLoader(const std::shared_ptr<IznModelsLoader>& ModelsLaoder) = 0;

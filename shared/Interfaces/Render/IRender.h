@@ -16,9 +16,11 @@ ZN_INTERFACE ZN_API IznRenderDeviceCreator
 	virtual std::unique_ptr<IRenderDevice> CreateRenderDevice() const = 0;
 };
 
-ZN_INTERFACE ZN_API __declspec(uuid("E0313DD4-A169-4369-BA8C-2F10323832CB")) IznRenderDeviceFactory 
+ZN_INTERFACE ZN_API IznRenderDeviceFactory 
 	: public IManager
 {
+	ZN_OBJECTCLASS(cRenderDeviceFactory)
+
 	virtual ~IznRenderDeviceFactory() {}
 
 	virtual void RegisterRenderDeviceCreator(std::shared_ptr<IznRenderDeviceCreator> RenderDeviceCreator) = 0;
