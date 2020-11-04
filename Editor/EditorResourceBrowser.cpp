@@ -163,7 +163,7 @@ void CEditorResourceBrowser::Initialize()
 		if (modelObject == nullptr)
 			return false;
 
-		m_Editor.Get3DFrame().OnCollectionWidget_ModelSelected(modelObject);
+		m_Editor.Get3DPreviewFrame().SetModel(modelObject);
 		return true;
 	});
 

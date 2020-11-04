@@ -143,7 +143,7 @@ public:
 					break;
 
 				default:
-					_ASSERT_EXPR(false, "M2_Animated: Unknown interpolation type.");
+					throw CException("Unknown interpolation type.");
 				}
 			}
 		}

@@ -10,6 +10,4 @@ public:
 	// SceneBase
 	void Initialize() override;
 	void Finalize() override;
-
-	void RaiseSceneChangeEvent(ESceneChangeType SceneChangeType, const std::shared_ptr<ISceneNode>& OwnerNode, const std::shared_ptr<ISceneNode>& ChildNode) override;
 };

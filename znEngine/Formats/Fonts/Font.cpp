@@ -31,14 +31,15 @@ std::shared_ptr<IGeometry> CFont::GetGeometry() const
 	return m_Geometry;
 }
 
-uint32 CFont::GetCharWidth(char Char) const
+uint32 CFont::GetWidth(char Char) const
 {
 	unsigned char uChar = static_cast<unsigned char>(Char);
-	_ASSERT(uChar < m_WidthArray.size());
+	if (uChar >= m_WidthArray.size())
+		throw CException("Character '%c' out of bounds.", Char);
 	return m_WidthArray[uChar];
 }
 
-uint32 CFont::GetStringWidth(const std::string& String) const
+uint32 CFont::GetWidth(const std::string& String) const
 {
 	uint32 width = 0;
 	std::for_each(String.begin(), String.end(), [this, &width](const char& Ch) {

@@ -5,7 +5,7 @@
 
 RenderWindowBase::RenderWindowBase(std::unique_ptr<IznNativeWindow> WindowObject, bool vSync)
 	: m_NativeWindow(std::move(WindowObject))
-    , m_bResizePending(false)
+    , m_ResizePending(false)
 {
 	m_Viewport.SetWidth(m_NativeWindow->GetWindowWidth());
 	m_Viewport.SetHeight(m_NativeWindow->GetWindowHeight());
@@ -109,24 +109,9 @@ float RenderWindowBase::GetUpdateDeltaTime() const
 	return m_UpdateDeltaTime;
 }
 
-float RenderWindowBase::GetPreRenderDeltaTime() const
-{
-	return m_PreRenderDeltaTime;
-}
-
 float RenderWindowBase::GetRenderDeltaTime() const
 {
 	return m_RenderDeltaTime;
-}
-
-float RenderWindowBase::GetPostRenderDeltaTime() const
-{
-	return m_PostRenderDeltaTime;
-}
-
-float RenderWindowBase::GetRenderUIDeltaTime() const
-{
-	return m_RenderUIDeltaTime;
 }
 
 float RenderWindowBase::GetSummaDeltaTime() const
@@ -163,7 +148,7 @@ void RenderWindowBase::OnWindowResize(ResizeEventArgs& Args) // The RenderWindow
 {
 	m_Viewport.SetWidth(Args.Width);
 	m_Viewport.SetHeight(Args.Height);
-	m_bResizePending = true;
+	m_ResizePending = true;
 
 	m_NativeWindowEventListener->OnWindowResize(Args);
 }
@@ -246,22 +231,18 @@ void RenderWindowBase::OnUpdate(UpdateEventArgs& Args)
 
 	//GetRenderDevice()->Lock();
 	{
-		if (m_bResizePending)
+		if (m_ResizePending)
 		{
 			m_RenderTarget->Resize(GetWindowWidth(), GetWindowHeight());
 			ResizeSwapChainBuffers(GetWindowWidth(), GetWindowHeight());
-			m_bResizePending = false;
+			m_ResizePending = false;
 		}
 
 		RenderEventArgs renderArgs(Args, nullptr);
 
 		m_RenderTarget->Bind();
 		{
-			RaisePreRender(renderArgs);
 			RaiseRender(renderArgs);
-			RaisePostRender(renderArgs);
-			RaiseRenderUI(renderArgs);
-
 			Present();
 		}
 		//m_RenderTarget->UnBind();
@@ -294,32 +275,11 @@ void RenderWindowBase::RaiseUpdate(UpdateEventArgs& e)
 	m_UpdateDeltaTime = timer.GetElapsedMilliSeconds();
 }
 
-void RenderWindowBase::RaisePreRender(RenderEventArgs & e)
-{
-	HighResolutionTimer timer;
-	m_RenderWindowEventListener->OnPreRender(e);
-	m_PreRenderDeltaTime = timer.GetElapsedMilliSeconds();
-}
-
 void RenderWindowBase::RaiseRender(RenderEventArgs & e)
 {
 	HighResolutionTimer timer;
 	m_RenderWindowEventListener->OnRender(e);
 	m_RenderDeltaTime = timer.GetElapsedMilliSeconds();
-}
-
-void RenderWindowBase::RaisePostRender(RenderEventArgs & e)
-{
-	HighResolutionTimer timer;
-	m_RenderWindowEventListener->OnPostRender(e);
-	m_PostRenderDeltaTime = timer.GetElapsedMilliSeconds();
-}
-
-void RenderWindowBase::RaiseRenderUI(RenderEventArgs & e)
-{
-	HighResolutionTimer timer;
-	m_RenderWindowEventListener->OnRenderUI(e);
-	m_RenderUIDeltaTime = timer.GetElapsedMilliSeconds();
 }
 
 IznNativeWindow & RenderWindowBase::GetNativeWindow()

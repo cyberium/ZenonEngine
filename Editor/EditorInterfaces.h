@@ -6,6 +6,7 @@ ZN_INTERFACE IEditorTools;
 ZN_INTERFACE IEditorShell;
 ZN_INTERFACE IEditorUIFrame;
 ZN_INTERFACE IEditor3DFrame;
+ZN_INTERFACE IEditor3DPreviewFrame;
 ZN_INTERFACE IEditorQtUIFrame;
 
 enum ETool
@@ -142,8 +143,11 @@ ZN_INTERFACE IEditor
 
 	virtual IBaseManager& GetBaseManager() const = 0;
 	virtual IRenderDevice& GetRenderDevice() const = 0;
+
 	virtual IEditorUIFrame& GetUIFrame() const = 0;
 	virtual IEditor3DFrame& Get3DFrame() const = 0;
+	virtual IEditor3DPreviewFrame& Get3DPreviewFrame() const = 0;
+
 	virtual IEditorTools& GetTools() = 0;
 	virtual IEditorShell& GetShell() = 0;
 
@@ -158,6 +162,7 @@ ZN_INTERFACE IEditorPrivate
 
 	virtual void SetUIFrame(IEditorUIFrame* EditorUIFrame) = 0;
 	virtual void Set3DFrame(IEditor3DFrame* Editor3DFrame) = 0;
+	virtual void Set3DPreviewFrame(IEditor3DPreviewFrame* Editor3DPreviewFrame) = 0;
 };
 
 ZN_INTERFACE IEditorShell
@@ -192,8 +197,14 @@ ZN_INTERFACE IEditor3DFrame
 	virtual std::shared_ptr<IScene>     GetEditedScene() const = 0;
 	virtual std::shared_ptr<ISceneNode> GetEditedRootNode3D() const = 0;
 	virtual std::shared_ptr<ISceneNode> GetEditedNodeUnderMouse(const glm::ivec2& MousePos) const = 0;
+};
 
-	virtual void OnCollectionWidget_ModelSelected(const std::shared_ptr<IModel>& Model) = 0;
+
+ZN_INTERFACE IEditor3DPreviewFrame
+{
+	virtual ~IEditor3DPreviewFrame() {}
+
+	virtual void SetModel(IModelPtr Model) = 0;
 };
 
 
@@ -206,5 +217,4 @@ ZN_INTERFACE IEditorUIFrame
 
 	virtual void DoInitializeToolsUI() = 0;
 	virtual bool ExtendContextMenu(const std::shared_ptr<ISceneNode>& Node, std::string * Title, std::vector<std::shared_ptr<IPropertyAction>> * Actions) = 0;
-	virtual void OnSceneChanged(ESceneChangeType SceneChangeType, const std::shared_ptr<ISceneNode>& ParentNode, const std::shared_ptr<ISceneNode>& ChildNode) = 0;
 };

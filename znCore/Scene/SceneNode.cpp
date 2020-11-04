@@ -647,7 +647,6 @@ void CSceneNode::AddChildPrivate(std::shared_ptr<ISceneNode> ChildNode)
 	ChildNode->SetName(ChildNode->GetName());
 
 	std::dynamic_pointer_cast<ISceneNodeInternal>(ChildNode)->RaiseOnParentChangedInternal();
-	dynamic_cast<ISceneInternal&>(GetScene()).RaiseSceneChangeEvent(ESceneChangeType::NodeAddedToParent, shared_from_this(), ChildNode);
 }
 
 void CSceneNode::RemoveChildPrivate(std::shared_ptr<ISceneNode> ChildNode)
@@ -662,7 +661,6 @@ void CSceneNode::RemoveChildPrivate(std::shared_ptr<ISceneNode> ChildNode)
 	std::dynamic_pointer_cast<CSceneNode>(ChildNode)->SetParentPrivate(std::weak_ptr<ISceneNode>());
 
 	std::dynamic_pointer_cast<ISceneNodeInternal>(ChildNode)->RaiseOnParentChangedInternal();
-	dynamic_cast<ISceneInternal&>(GetScene()).RaiseSceneChangeEvent(ESceneChangeType::NodeRemovedFromParent, shared_from_this(), ChildNode);
 }
 
 void CSceneNode::SetParentPrivate(std::weak_ptr<ISceneNode> parentNode)

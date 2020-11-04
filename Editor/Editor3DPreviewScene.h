@@ -2,12 +2,14 @@
 
 class CEditor3DPreviewScene
 	: public SceneBase
+	, public IEditor3DPreviewFrame
 {
 public:
-	CEditor3DPreviewScene(IBaseManager& BaseManager, IRenderWindow& RenderWindow);
+	CEditor3DPreviewScene(IEditor& Editor, IRenderWindow& RenderWindow);
 	virtual ~CEditor3DPreviewScene();
 
-	void SetModel(const std::shared_ptr<IModel>& Model);
+	// IEditor3DPreviewFrame
+	void SetModel(IModelPtr Model) override;
 
 	// SceneBase
 	void Initialize() override;

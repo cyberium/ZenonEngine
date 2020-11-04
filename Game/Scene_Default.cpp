@@ -121,19 +121,6 @@ void CSceneDefault::OnMouseMoved(const MouseMotionEventArgs & e, const Ray & Ray
 
 
 //
-//
-//
-void CSceneDefault::OnPreRender(RenderEventArgs& e)
-{
-	//m_World.update(e.DeltaTime / 1000.0f * 2.0f);
-	//m_RootForBoxes->SetRotation(glm::vec3(m_RootForBoxes->GetRotation().x, m_RootForBoxes->GetRotation().y + 0.01, 0.0f));
-
-	SceneBase::OnPreRender(e);
-}
-
-
-
-//
 // Keyboard events
 //
 bool CSceneDefault::OnWindowKeyPressed(KeyEventArgs & e)

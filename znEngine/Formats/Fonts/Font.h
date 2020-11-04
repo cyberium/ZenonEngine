@@ -10,8 +10,8 @@ public:
 	// IznFont
 	std::shared_ptr<ITexture>  GetTexture() const override;
 	std::shared_ptr<IGeometry> GetGeometry() const override;
-	uint32                     GetCharWidth(char Char) const override;
-	uint32                     GetStringWidth(const std::string& String) const override;
+	uint32                     GetWidth(char Char) const override;
+	uint32                     GetWidth(const std::string& String) const override;
 	uint32                     GetHeight() const override;
 	 
 public:

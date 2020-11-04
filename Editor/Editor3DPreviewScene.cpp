@@ -3,17 +3,22 @@
 // Gerenal
 #include "Editor3DPreviewScene.h"
 
-CEditor3DPreviewScene::CEditor3DPreviewScene(IBaseManager& BaseManager, IRenderWindow& RenderWindow)
-	: SceneBase(BaseManager, RenderWindow)
+CEditor3DPreviewScene::CEditor3DPreviewScene(IEditor& Editor, IRenderWindow& RenderWindow)
+	: SceneBase(Editor.GetBaseManager(), RenderWindow)
 {
-
+	dynamic_cast<IEditorPrivate&>(Editor).Set3DPreviewFrame(this);
 }
 
 CEditor3DPreviewScene::~CEditor3DPreviewScene()
 {
 }
 
-void CEditor3DPreviewScene::SetModel(const std::shared_ptr<IModel>& Model)
+
+
+//
+// IEditor3DPreviewFrame
+//
+void CEditor3DPreviewScene::SetModel(IModelPtr Model)
 {
 	_ASSERT(Model != nullptr);
 
@@ -33,6 +38,7 @@ void CEditor3DPreviewScene::SetModel(const std::shared_ptr<IModel>& Model)
 	GetCameraController()->GetCamera()->SetTranslation(glm::vec3(radius * 1.5f));
 	GetCameraController()->GetCamera()->SetDirection(glm::vec3(-0.5f));
 }
+
 
 
 //

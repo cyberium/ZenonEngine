@@ -13,8 +13,8 @@ ZN_INTERFACE ZN_API IznFont
 
 	virtual std::shared_ptr<ITexture> GetTexture() const = 0;
 	virtual std::shared_ptr<IGeometry> GetGeometry() const = 0;
-	virtual uint32 GetCharWidth(char Char) const = 0;
-	virtual uint32 GetStringWidth(const std::string& String) const = 0;
+	virtual uint32 GetWidth(char Char) const = 0;
+	virtual uint32 GetWidth(const std::string& String) const = 0;
 	virtual uint32 GetHeight() const = 0;
 };
 

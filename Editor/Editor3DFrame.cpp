@@ -13,18 +13,18 @@ CEditor3DFrame::CEditor3DFrame(IEditor& Editor, IRenderWindow& RenderWindow)
 	dynamic_cast<IEditorPrivate&>(m_Editor).Set3DFrame(this);
 
 	m_EditedScene = MakeShared(CEditedScene, Editor.GetBaseManager(), RenderWindow);
+	m_EditedScene->AddSceneEventsListener(this);
 	m_EditedScene->Initialize();
 }
 
 CEditor3DFrame::~CEditor3DFrame()
 {
+	m_EditedScene->RemoveSceneEventsListener(this);
+
 	Log::Info("CEditor3DFrame deleted.");
 }
 
-void CEditor3DFrame::SetPreviewScene(const std::shared_ptr<CEditor3DPreviewScene>& PreviewScene)
-{
-	m_PreviewScene = PreviewScene;
-}
+
 
 
 //
@@ -147,14 +147,6 @@ void CEditor3DFrame::Finalize()
 //
 // ISceneInternal
 //
-void CEditor3DFrame::RaiseSceneChangeEvent(ESceneChangeType SceneChangeType, const std::shared_ptr<ISceneNode>& ParentNode, const std::shared_ptr<ISceneNode>& ChildNode)
-{
-	if (IsChildOf(GetEditedRootNode3D(), ChildNode) || IsChildOf(GetEditedRootNode3D(), ParentNode))
-		GetEditor().GetUIFrame().OnSceneChanged(SceneChangeType, ParentNode, ChildNode);
-}
-
-
-
 bool CEditor3DFrame::OnMousePressed(const MouseButtonEventArgs & e, const Ray & RayToWorld)
 {
 	if (m_Editor.GetTools().OnMousePressed(e, RayToWorld))
@@ -273,14 +265,6 @@ std::shared_ptr<ISceneNode> CEditor3DFrame::GetEditedNodeUnderMouse(const glm::i
 	return nodes.begin()->second;
 }
 
-void CEditor3DFrame::OnCollectionWidget_ModelSelected(const std::shared_ptr<IModel>& Model)
-{
-	if (m_PreviewScene)
-		m_PreviewScene->SetModel(Model);
-}
-
-
-
 
 
 //
@@ -290,4 +274,19 @@ void CEditor3DFrame::OnSelectNode()
 {
 
 	//m_Tools.m_Mover->Disable();
+}
+
+
+
+//
+// ISceneEventsListener
+//
+void CEditor3DFrame::OnSceneNodeAdded(std::shared_ptr<ISceneNode> ParentNode, std::shared_ptr<ISceneNode> ChildNode)
+{
+	RaiseSceneChangeEvent(ESceneChangeType::NodeAddedToParent, ParentNode, ChildNode);
+}
+
+void CEditor3DFrame::OnSceneNodeRemoved(std::shared_ptr<ISceneNode> ParentNode, std::shared_ptr<ISceneNode> ChildNode)
+{
+	RaiseSceneChangeEvent(ESceneChangeType::NodeRemovedFromParent, ParentNode, ChildNode);
 }

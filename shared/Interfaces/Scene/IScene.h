@@ -26,7 +26,6 @@ ZN_INTERFACE ZN_API ISceneInternal
 
 	virtual void AddChildInternal(const std::shared_ptr<ISceneNode>& ParentNode, const std::shared_ptr<ISceneNode>& ChildNode) = 0;
 	virtual void RemoveChildInternal(const std::shared_ptr<ISceneNode>& ParentNode, const std::shared_ptr<ISceneNode>& ChildNode) = 0;
-	virtual void RaiseSceneChangeEvent(ESceneChangeType SceneChangeType, const std::shared_ptr<ISceneNode>& ParentNode, const std::shared_ptr<ISceneNode>& ChildNode) = 0;
 };
 
 ZN_INTERFACE ZN_API ISceneLoadSave
@@ -54,8 +53,8 @@ ZN_INTERFACE ZN_API IScene
 	virtual void SetRenderer(std::shared_ptr<IRenderer> Renderer) = 0;
 	virtual std::shared_ptr<IRenderer> GetRenderer() const = 0;
 
-	virtual void AddEventListener(std::shared_ptr<ISceneEventsListener> Listener) = 0;
-	virtual void RemoveEventListener(std::shared_ptr<ISceneEventsListener> Listener) = 0;
+	virtual void AddSceneEventsListener(ISceneEventsListener* Listener) = 0;
+	virtual void RemoveSceneEventsListener(ISceneEventsListener* Listener) = 0;
 
 	virtual std::shared_ptr<ISceneNode> GetRootSceneNode() const = 0;
 	virtual std::shared_ptr<IUIControl> GetRootUIControl() const = 0;

@@ -14,10 +14,7 @@ ZN_INTERFACE ZN_API IRenderWindowEventListener
 	virtual ~IRenderWindowEventListener() {}
 
 	virtual void OnUpdate(UpdateEventArgs& e) = 0;
-	virtual void OnPreRender(RenderEventArgs& e) = 0;
 	virtual void OnRender(RenderEventArgs& e) = 0;
-	virtual void OnPostRender(RenderEventArgs& e) = 0;
-	virtual void OnRenderUI(RenderEventArgs& e) = 0;
 };
 
 
@@ -37,9 +34,6 @@ ZN_INTERFACE ZN_API IRenderWindow
 	virtual const Viewport& GetViewport() const = 0;
 
 	virtual float GetUpdateDeltaTime() const = 0;
-	virtual float GetPreRenderDeltaTime() const = 0;
 	virtual float GetRenderDeltaTime() const = 0;
-	virtual float GetPostRenderDeltaTime() const = 0;
-	virtual float GetRenderUIDeltaTime() const = 0;
 	virtual float GetSummaDeltaTime() const = 0;
 };

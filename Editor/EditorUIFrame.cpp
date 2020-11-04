@@ -159,16 +159,6 @@ bool CEditorUIFrame::ExtendContextMenu(const std::shared_ptr<ISceneNode>& Node, 
 	return true;
 }
 
-void CEditorUIFrame::OnSceneChanged(ESceneChangeType SceneChangeType, const std::shared_ptr<ISceneNode>& ParentNode, const std::shared_ptr<ISceneNode>& ChildNode)
-{
-	if (SceneChangeType == ESceneChangeType::NodeRemovedFromParent)
-	{
-		m_Editor.GetTools().GetToolT<IEditorToolSelector>(ETool::EToolSelector).RemoveNode(ChildNode);
-	}
-
-	m_EditorResourceBrowser.UpdateSceneBrowser();
-}
-
 
 
 //
@@ -214,6 +204,26 @@ void CEditorUIFrame::OnSelectNode()
 
 	m_PropertiesController->OnSceneNodeSelected(GetEditor().GetFirstSelectedNode().get());
 }
+
+
+
+
+//
+// ISceneEventsListener
+//
+void CEditorUIFrame::OnSceneNodeAdded(std::shared_ptr<ISceneNode> ParentNode, std::shared_ptr<ISceneNode> ChildNode)
+{
+	m_EditorResourceBrowser.UpdateSceneBrowser();
+}
+
+void CEditorUIFrame::OnSceneNodeRemoved(std::shared_ptr<ISceneNode> ParentNode, std::shared_ptr<ISceneNode> ChildNode)
+{
+	if (IsChildOf(GetEditor().Get3DFrame().GetEditedRootNode3D(), ChildNode) || IsChildOf(GetEditor().Get3DFrame().GetEditedRootNode3D(), ParentNode))
+		m_Editor.GetTools().GetToolT<IEditorToolSelector>(ETool::EToolSelector).RemoveNode(ChildNode);
+
+	m_EditorResourceBrowser.UpdateSceneBrowser();
+}
+
 
 
 

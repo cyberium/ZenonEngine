@@ -5,6 +5,9 @@
 
 CEditor::CEditor(IBaseManager & BaseManager)
 	: m_BaseManager(BaseManager)
+	, m_EditorUIFrame(nullptr)
+	, m_Editor3DFrame(nullptr)
+	, m_Editor3DPreviewFrame(nullptr)
 	, m_Tools(*this)
 	, m_EditorShell(*this)
 {
@@ -27,12 +30,20 @@ IRenderDevice & CEditor::GetRenderDevice() const
 
 IEditorUIFrame& CEditor::GetUIFrame() const
 {
+	_ASSERT(m_EditorUIFrame != nullptr);
 	return *m_EditorUIFrame;
 }
 
 IEditor3DFrame & CEditor::Get3DFrame() const
 {
+	_ASSERT(m_Editor3DFrame != nullptr);
 	return *m_Editor3DFrame;
+}
+
+IEditor3DPreviewFrame & CEditor::Get3DPreviewFrame() const
+{
+	_ASSERT(m_Editor3DPreviewFrame != nullptr);
+	return *m_Editor3DPreviewFrame;
 }
 
 IEditorTools& CEditor::GetTools()

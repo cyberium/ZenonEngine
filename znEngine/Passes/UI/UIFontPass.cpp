@@ -23,7 +23,7 @@ CUIFontPass::~CUIFontPass()
 std::shared_ptr<IRenderPassPipelined> CUIFontPass::ConfigurePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport)
 {
 	BaseUIPass::ConfigurePipeline(RenderTarget, Viewport);
-	
+
 	// CreateShaders
 	std::shared_ptr<IShader> g_pVertexShader;
 	std::shared_ptr<IShader> g_pPixelShader;
@@ -65,34 +65,48 @@ std::shared_ptr<IRenderPassPipelined> CUIFontPass::ConfigurePipeline(std::shared
 //
 EVisitResult CUIFontPass::Visit(const IUIControl * node)
 {
-	if (const CUITextNode* textNode = dynamic_cast<const CUITextNode*>(node))
+	const CUITextNode* textNode = dynamic_cast<const CUITextNode*>(node);
+	if (textNode == nullptr)
+		return EVisitResult::AllowVisitChilds;
+
+	BaseUIPass::Visit(node);
+
+	const auto& font = textNode->GetFont();
+	const auto& fontMaterial = textNode->GetMaterial();
+	const auto& fontGeometry = font->GetGeometry();
+	const auto& fontGeometryInternal = std::dynamic_pointer_cast<IGeometryInternal>(fontGeometry);
+
+	auto vertexShader = GetRenderEventArgs().PipelineState->GetShaders().at(EShaderType::VertexShader).get();
+
+	fontGeometryInternal->Render_BindAllBuffers(GetRenderEventArgs(), vertexShader);
 	{
-		BaseUIPass::Visit(node);
+		const std::string textToRender = textNode->GetText();
+		glm::vec2 currentCharOffset = textNode->GetOffset();
 
-		const std::shared_ptr<IznFont>& font = textNode->GetFont();
-		const std::shared_ptr<UI_Font_Material>& mat = textNode->GetMaterial();
-
-		mat->Bind(GetPipeline().GetShaders());
+		for (uint32 i = 0; i < textToRender.length(); i++)
 		{
-			const std::string _text = textNode->GetText();
-			glm::vec2 _offset = textNode->GetOffset();
-
-			for (uint32 i = 0; i < _text.length(); i++)
+			const uint8 ch = static_cast<uint8>(textToRender.c_str()[i]);
+			if (ch == '\n')
 			{
-				uint8 ch = _text.c_str()[i];
-				mat->SetOffset(_offset);
-				mat->Bind(GetPipeline().GetShaders());
-				_offset.x += static_cast<float>(font->GetCharWidth(ch)) + 0.01f;
+				currentCharOffset.x = textNode->GetOffset().x;
+				currentCharOffset.y += static_cast<float>(font->GetHeight()) + 0.01f;
+				continue;
+			}
 
+			fontMaterial->SetOffset(currentCharOffset);
+			fontMaterial->Bind(GetPipeline().GetShaders());
+			{
 				SGeometryDrawArgs GeometryDrawArgs;
 				GeometryDrawArgs.VertexStartLocation = (ch) * 6;
 				GeometryDrawArgs.VertexCnt = 6;
-
-				font->GetGeometry()->Render(GetRenderEventArgs(), GetRenderEventArgs().PipelineState->GetShaders().at(EShaderType::VertexShader).get(), GeometryDrawArgs);
+				fontGeometryInternal->Render_Draw(GeometryDrawArgs);
 			}
+			fontMaterial->Unbind(GetPipeline().GetShaders());
+
+			currentCharOffset.x += static_cast<float>(font->GetWidth(ch)) + 0.01f;
 		}
-		mat->Unbind(GetPipeline().GetShaders());
 	}
+	fontGeometryInternal->Render_UnbindAllBuffers(GetRenderEventArgs(), vertexShader);
 
 	return EVisitResult::AllowVisitChilds;
 }

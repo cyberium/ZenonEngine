@@ -22,8 +22,8 @@ public:
 	virtual void                                    Initialize() override;
 	virtual void                                    Finalize() override;
 
-	void                                            AddEventListener(std::shared_ptr<ISceneEventsListener> Listener) override;
-	void                                            RemoveEventListener(std::shared_ptr<ISceneEventsListener> Listener) override;
+	void                                            AddSceneEventsListener(ISceneEventsListener* Listener) override;
+	void                                            RemoveSceneEventsListener(ISceneEventsListener* Listener) override;
 
 	std::shared_ptr<ISceneNode>					    GetRootSceneNode() const override;
 	std::shared_ptr<IUIControl>					    GetRootUIControl() const override;
@@ -40,14 +40,10 @@ public:
 	// ISceneInternal
 	void                                            AddChildInternal(const std::shared_ptr<ISceneNode>& ParentNode, const std::shared_ptr<ISceneNode>& ChildNode) override;
 	void                                            RemoveChildInternal(const std::shared_ptr<ISceneNode>& ParentNode, const std::shared_ptr<ISceneNode>& ChildNode) override;
-	void                                            RaiseSceneChangeEvent(ESceneChangeType SceneChangeType, const std::shared_ptr<ISceneNode>& OwnerNode, const std::shared_ptr<ISceneNode>& ChildNode) override;
 
 	// IRenderWindowEventListener
 	virtual void                                    OnUpdate(UpdateEventArgs& e) override;
-	virtual void                                    OnPreRender(RenderEventArgs& e) override;
 	virtual void                                    OnRender(RenderEventArgs& e) override;
-	virtual void                                    OnPostRender(RenderEventArgs& e) override;
-	virtual void                                    OnRenderUI(RenderEventArgs& e) override;
 
 
 	// IznNativeWindowEventListener
@@ -82,6 +78,8 @@ protected:
 	virtual bool                                    OnMousePressed(const MouseButtonEventArgs & e, const Ray& RayToWorld);
 	virtual void                                    OnMouseReleased(const MouseButtonEventArgs & e, const Ray& RayToWorld);
 	virtual void                                    OnMouseMoved(const MouseMotionEventArgs & e, const Ray& RayToWorld);
+	
+	void                                            RaiseSceneChangeEvent(ESceneChangeType SceneChangeType, const std::shared_ptr<ISceneNode>& ParentNode, const std::shared_ptr<ISceneNode>& ChildNode);
 
 
 private:
@@ -93,7 +91,6 @@ private:
 	bool                                            DoMouseButtonPressed_Rec(const std::shared_ptr<IUIControl>& Node, MouseButtonEventArgs& e);
 	void                                            DoMouseButtonReleased_Rec(const std::shared_ptr<IUIControl>& Node, MouseButtonEventArgs& e);
 	bool                                            DoMouseWheel_Rec(const std::shared_ptr<IUIControl>& Node, MouseWheelEventArgs& e);
-
 
 protected:
 	std::shared_ptr<ISceneNode>                     m_RootSceneNode;
@@ -107,30 +104,27 @@ protected:
 	std::shared_ptr<IQuery>                         m_TestQuery;
 	double                                          m_FrameTime;
 
-	std::chrono::time_point<std::chrono::high_resolution_clock> m_Start, m_End;
-
 	std::shared_ptr<ICameraController>              m_CameraController;
 	std::shared_ptr<ISettingGroup>                  m_VideoSettings;
 
-	std::shared_ptr<IUIControl>                   m_CameraPosText;
-	std::shared_ptr<IUIControl>                   m_CameraRotText;
-	std::shared_ptr<IUIControl>                   m_CameraRot2Text;
-	std::shared_ptr<IUIControl>                   m_FPSText;
-
-	std::shared_ptr<IUIControl>                   m_StatisticUpdateText;
-	std::shared_ptr<IUIControl>                   m_StatisticPreRenderText;
-	std::shared_ptr<IUIControl>                   m_StatisticRenderText;
-	std::shared_ptr<IUIControl>                   m_StatisticPostRenderText;
-	std::shared_ptr<IUIControl>                   m_StatisticRenderUIText;
-	std::shared_ptr<IUIControl>                   m_StatisticSummaText;
+	std::shared_ptr<IUIControl>                     m_StatisticText;
 
 protected: // Функционал по отложенному добавлению нод
+	struct SSceneChangeDelayEvent
+	{
+		ESceneChangeType EventType;
+		std::shared_ptr<ISceneNode> Parent;
+		std::shared_ptr<ISceneNode> Child;
+	};
+	std::mutex m_SceneChangeDelayEventsLock;
+	std::vector<SSceneChangeDelayEvent> m_SceneChangeDelayEvents;
+
 	std::vector<std::pair<std::shared_ptr<ISceneNode>, std::shared_ptr<ISceneNode>>> m_AddChildList;
 	std::vector<std::pair<std::shared_ptr<ISceneNode>, std::shared_ptr<ISceneNode>>> m_RemoveChildList;
 	std::mutex                                                                       m_ListsAreBusy;
 	std::mutex                                                                       m_ChildModifyLock;
 
-	std::vector<std::shared_ptr<ISceneEventsListener>>                               m_EventListeners;
+	std::vector<ISceneEventsListener*> m_EventListeners;
 
 
 private: // Quick access

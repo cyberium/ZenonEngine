@@ -67,7 +67,7 @@ void CUITextNode::SetTextColor(const glm::vec4& _color)
 
 glm::vec2 CUITextNode::GetTextSize() const
 {
-    float width = m_Font->GetStringWidth(m_TextProperty->Get());
+    float width = m_Font->GetWidth(m_TextProperty->Get());
     float height = m_Font->GetHeight();
 
     return glm::vec2(width, height);

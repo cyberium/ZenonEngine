@@ -31,6 +31,7 @@ void CEditorToolDragger::DoInitialize3D(const std::shared_ptr<IRenderer>& Render
 {
 	m_DraggerTextUI = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<IUIControlFactory>()->CreateSceneNodeUI(cSceneNodeUI_Text, GetScene(), GetScene().GetRootUIControl());
 	m_DraggerTextUI->SetName("DraggedNodePositionTextUI.");
+	m_DraggerTextUI->GetProperties()->GetPropertyT<std::string>("Text")->Set("");
 
 }
 

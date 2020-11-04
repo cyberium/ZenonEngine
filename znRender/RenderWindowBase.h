@@ -9,7 +9,6 @@ public:
 	RenderWindowBase(std::unique_ptr<IznNativeWindow> WindowObject, bool vSync);
 	virtual ~RenderWindowBase();
 
-
 	// IznNativeWindow
 	void SetWindowTitle(const std::string& WindowName) override;
 	std::string GetWindowTitle() const override;
@@ -30,10 +29,7 @@ public:
 	const std::shared_ptr<IRenderTarget>& GetRenderTarget() const override;
 	const Viewport& GetViewport() const override;
 	float GetUpdateDeltaTime() const override;
-	float GetPreRenderDeltaTime() const override;
 	float GetRenderDeltaTime() const override;
-	float GetPostRenderDeltaTime() const override;
-	float GetRenderUIDeltaTime() const override;
 	float GetSummaDeltaTime() const override;
 
 	// IznNativeWindowEventListener
@@ -68,31 +64,24 @@ public:
 
 protected:
 	void RaiseUpdate(UpdateEventArgs& e);
-	void RaisePreRender(RenderEventArgs& e);
 	void RaiseRender(RenderEventArgs& e);
-	void RaisePostRender(RenderEventArgs& e);
-	void RaiseRenderUI(RenderEventArgs& e);
 
 	virtual IznNativeWindow& GetNativeWindow();
 	virtual IRenderDevice& GetRenderDevice() const = 0;
     virtual void CreateSwapChain();
     virtual void ResizeSwapChainBuffers(uint32_t width, uint32_t height) = 0;
 
-
 private:
-	std::unique_ptr<IznNativeWindow>                  m_NativeWindow;
+	std::unique_ptr<IznNativeWindow>                m_NativeWindow;
 
 	float                                           m_UpdateDeltaTime;
-	float                                           m_PreRenderDeltaTime;
 	float                                           m_RenderDeltaTime;
-	float                                           m_PostRenderDeltaTime;
-	float                                           m_RenderUIDeltaTime;
 	float                                           m_SummaDeltaTime;
 
 	std::shared_ptr<IRenderWindowEventListener>     m_RenderWindowEventListener;
-	std::shared_ptr<IznNativeWindowEventListener>     m_NativeWindowEventListener;
+	std::shared_ptr<IznNativeWindowEventListener>   m_NativeWindowEventListener;
 	std::shared_ptr<IRenderTarget>                  m_RenderTarget;
 	Viewport                                        m_Viewport;
 	
-    bool                                            m_bResizePending;  
+    bool                                            m_ResizePending;  
 };

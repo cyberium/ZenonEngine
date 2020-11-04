@@ -14,8 +14,6 @@ public:
 	virtual bool OnMousePressed(const MouseButtonEventArgs & e, const Ray& RayToWorld) override;
 	virtual void OnMouseMoved(const MouseMotionEventArgs & e, const Ray& RayToWorld) override;
 
-	virtual void OnPreRender(RenderEventArgs& e) override;
-
 	// Keyboard events
 	virtual bool OnWindowKeyPressed(KeyEventArgs& e) override;
 	virtual void OnWindowKeyReleased(KeyEventArgs& e) override;

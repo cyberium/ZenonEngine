@@ -37,35 +37,37 @@ void main_internal(int argc, char *argv[])
 		editorUI.InitializeEditorFrame();
 
 		{
-			std::shared_ptr<IRenderWindow> renderWindow;
-			std::shared_ptr<CEditor3DFrame> editorScene;
+			// 'Editor' scene
 			{
 				auto nativeWindow = nativeWindowFactory.CreateWindowProxy(*editorUI.getMainEditor());
+				auto renderWindow = renderDevice.GetObjectsFactory().CreateRenderWindow(std::move(nativeWindow), false);
 
-				renderWindow = renderDevice.GetObjectsFactory().CreateRenderWindow(std::move(nativeWindow), false);
 				app.AddRenderWindow(renderWindow);
 
-				editorScene = MakeShared(CEditor3DFrame, editor, *renderWindow);
+				std::shared_ptr<CEditor3DFrame> editorScene = MakeShared(CEditor3DFrame, editor, *renderWindow);
+				editorScene->AddSceneEventsListener(&editorUI);
+				editorScene->Initialize();
+
+				editorScene->InitializeEditorFrame();
+
 				renderWindow->SetRenderWindowEventListener(std::dynamic_pointer_cast<IRenderWindowEventListener>(editorScene));
 				renderWindow->SetNativeWindowEventListener(std::dynamic_pointer_cast<IznNativeWindowEventListener>(editorScene));
-				editorScene->Initialize();
 			}
 
-			editorScene->InitializeEditorFrame();
+			
 
-			// Scene for preview
+			// 'Preview' scene
 			{
 				auto nativeWindow = nativeWindowFactory.CreateWindowProxy(*editorUI.getModelPreview());
+				auto renderWindow = renderDevice.GetObjectsFactory().CreateRenderWindow(std::move(nativeWindow), false);
 
-				std::shared_ptr<IRenderWindow> renderWindowForModelPreview = renderDevice.GetObjectsFactory().CreateRenderWindow(std::move(nativeWindow), false);
-				app.AddRenderWindow(renderWindowForModelPreview);
+				app.AddRenderWindow(renderWindow);
 
-				std::shared_ptr<CEditor3DPreviewScene> sceneForPreview = MakeShared(CEditor3DPreviewScene, *BaseManager, *renderWindowForModelPreview);
-				renderWindowForModelPreview->SetRenderWindowEventListener(std::dynamic_pointer_cast<IRenderWindowEventListener>(sceneForPreview));
-				renderWindowForModelPreview->SetNativeWindowEventListener(std::dynamic_pointer_cast<IznNativeWindowEventListener>(sceneForPreview));
+				std::shared_ptr<CEditor3DPreviewScene> sceneForPreview = MakeShared(CEditor3DPreviewScene, editor, *renderWindow);
 				sceneForPreview->Initialize();
 
-				editorScene->SetPreviewScene(sceneForPreview);
+				renderWindow->SetRenderWindowEventListener(std::dynamic_pointer_cast<IRenderWindowEventListener>(sceneForPreview));
+				renderWindow->SetNativeWindowEventListener(std::dynamic_pointer_cast<IznNativeWindowEventListener>(sceneForPreview));
 			}
 		}
 

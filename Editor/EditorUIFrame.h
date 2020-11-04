@@ -11,6 +11,7 @@ class CEditorUIFrame
 	, public IEditorUIFrame
 	, public IEditorQtUIFrame
 	, public IEditorToolSelectorEventListener
+	, public ISceneEventsListener
 {
 	Q_OBJECT
 
@@ -23,7 +24,6 @@ public:
 	bool InitializeEditorFrame() override;
 	void DoInitializeToolsUI() override;
 	bool ExtendContextMenu(const std::shared_ptr<ISceneNode>& Node, std::string * Title, std::vector<std::shared_ptr<IPropertyAction>> * Actions) override;
-	void OnSceneChanged(ESceneChangeType SceneChangeType, const std::shared_ptr<ISceneNode>& ParentNode, const std::shared_ptr<ISceneNode>& ChildNode) override;
 
 	// IEditorQtUIFrame
 	QObject& getQObject() override;
@@ -36,6 +36,10 @@ public:
 
 	// IEditorToolSelectorEventListener
 	void OnSelectNode() override;
+
+	// ISceneEventsListener
+	void OnSceneNodeAdded(std::shared_ptr<ISceneNode> ParentNode, std::shared_ptr<ISceneNode> ChildNode) override;
+	void OnSceneNodeRemoved(std::shared_ptr<ISceneNode> ParentNode, std::shared_ptr<ISceneNode> ChildNode) override;
 
 protected:
 	void OnSceneLoadFromFile();
