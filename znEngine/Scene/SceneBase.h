@@ -77,6 +77,13 @@ protected:
 	virtual void                                    OnMouseReleased(const MouseButtonEventArgs & e, const Ray& RayToWorld);
 	virtual void                                    OnMouseMoved(const MouseMotionEventArgs & e, const Ray& RayToWorld);
 	
+	struct SSceneChangeDelayEvent
+	{
+		ESceneChangeType EventType;
+		std::shared_ptr<ISceneNode> Parent;
+		std::shared_ptr<ISceneNode> Child;
+	};
+
 	void                                            RaiseSceneChangeEvent(ESceneChangeType SceneChangeType, const std::shared_ptr<ISceneNode>& ParentNode, const std::shared_ptr<ISceneNode>& ChildNode);
 
 
@@ -90,7 +97,7 @@ private:
 	void                                            DoMouseButtonReleased_Rec(const std::shared_ptr<IUIControl>& Node, MouseButtonEventArgs& e);
 	bool                                            DoMouseWheel_Rec(const std::shared_ptr<IUIControl>& Node, MouseWheelEventArgs& e);
 
-protected:
+private:
 	std::shared_ptr<ISceneNode>                     m_RootSceneNode;
 	std::shared_ptr<IUIControl>                     m_RootUIControl;
 
@@ -107,23 +114,13 @@ protected:
 
 	std::shared_ptr<IUIControl>                     m_StatisticText;
 
-protected: // Функционал по отложенному добавлению нод
-	struct SSceneChangeDelayEvent
-	{
-		ESceneChangeType EventType;
-		std::shared_ptr<ISceneNode> Parent;
-		std::shared_ptr<ISceneNode> Child;
-	};
+private: // Функционал по отложенному добавлению нод
 	std::mutex m_SceneChangeDelayEventsLock;
 	std::vector<SSceneChangeDelayEvent> m_SceneChangeDelayEvents;
 
-	std::vector<std::pair<std::shared_ptr<ISceneNode>, std::shared_ptr<ISceneNode>>> m_AddChildList;
-	std::vector<std::pair<std::shared_ptr<ISceneNode>, std::shared_ptr<ISceneNode>>> m_RemoveChildList;
-	std::mutex                                                                       m_ListsAreBusy;
-	std::mutex                                                                       m_ChildModifyLock;
+	std::mutex m_ChildModifyLock;
 
 	std::vector<ISceneEventsListener*> m_EventListeners;
-
 
 private: // Quick access
 	IBaseManager&                                   m_BaseManager;

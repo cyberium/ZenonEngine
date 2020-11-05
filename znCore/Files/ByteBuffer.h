@@ -1,7 +1,7 @@
 #pragma once
 
 class ZN_API CByteBuffer 
-	: public IByteBuffer
+	: virtual public IByteBuffer
 {
 public:
 	CByteBuffer();

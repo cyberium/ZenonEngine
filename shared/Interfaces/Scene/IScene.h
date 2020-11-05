@@ -6,7 +6,7 @@ ZN_INTERFACE ISceneNode;
 ZN_INTERFACE IUIControl;
 ZN_INTERFACE IVisitor;
 class UpdateEventArgs;
-ZN_INTERFACE ISceneNodesFactory;
+ZN_INTERFACE ISceneNodeFactory;
 ZN_INTERFACE ISceneFinder;
 // FORWARD END
 
@@ -67,28 +67,24 @@ ZN_INTERFACE ZN_API IScene
 
 
 	// Templates
+	//inline std::shared_ptr<ISceneNode> CreateSceneNode(ObjectClass Class, std::shared_ptr<ISceneNode> Parent = nullptr)
+	//{
+	//	return GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeFactory>()->CreateSceneNode3D(Class, *this, Parent);
+	//}
 
-
-	template<class T, typename... Args>
-	inline std::shared_ptr<T> CreateSceneNode3DInternal(Args &&... _Args)
+	template<class T>
+	inline std::shared_ptr<ISceneNode> CreateSceneNode(std::shared_ptr<ISceneNode> Parent = nullptr)
 	{
-		static_assert(std::is_convertible<T*, ISceneNode*>::value, "T must inherit ISceneNode as public.");
-
-		std::shared_ptr<T> node = MakeShared(T, *this);
-		node->RegisterComponents();
-		node->Initialize();
-		return node;
+		//static_assert(std::is_convertible<T*, ISceneNode*>::value, "T must inherit ISceneNode as public.");
+		return GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeFactory>()->CreateSceneNode3D(T::GetClassT(), *this, Parent);
 	}
 
-	template<class T, typename... Args>
-	inline std::shared_ptr<T> CreateSceneNodeUIInternal(Args &&... _Args)
+	template<class T>
+	inline std::shared_ptr<T> CreateSceneNodeT(std::shared_ptr<ISceneNode> Parent = nullptr)
 	{
-		static_assert(std::is_convertible<T*, IUIControl*>::value, "T must inherit IUIControl as public.");
-
-		std::shared_ptr<T> newNode = MakeShared(T, std::forward<Args>(_Args)...);
-		newNode->SetSceneInternal(this);
-		newNode->Initialize();
-		return newNode;
+		//static_assert(std::is_convertible<T*, ISceneNode*>::value, "T must inherit ISceneNode as public.");
+		auto createdNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeFactory>()->CreateSceneNode3D(T::GetClassT(), *this, Parent);
+		return std::dynamic_pointer_cast<T>(createdNode);
 	}
 };
 

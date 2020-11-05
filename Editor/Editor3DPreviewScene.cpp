@@ -50,7 +50,7 @@ void CEditor3DPreviewScene::Initialize()
 
 	// Light
 	{
-		auto lightNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeFactory>()->CreateSceneNode3D(cSceneNode3D, *this);
+		auto lightNode = CreateSceneNode<ISceneNode>();
 		lightNode->SetName("Light");
 		lightNode->SetTranslate(glm::vec3(250.0f, 250.0f, 250.0f));
 		lightNode->SetRotation(glm::vec3(-0.9f, -0.9f, -0.9f));
@@ -65,7 +65,7 @@ void CEditor3DPreviewScene::Initialize()
 
 
 	{
-		auto cameraNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeFactory>()->CreateSceneNode3D(cSceneNode3D, *this);
+		auto cameraNode = CreateSceneNode<ISceneNode>();
 		cameraNode->SetName("Camera");
 		cameraNode->AddComponent(GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<IComponentFactory>()->CreateComponentT<ICameraComponent3D>(cSceneNodeCameraComponent, *cameraNode));
 

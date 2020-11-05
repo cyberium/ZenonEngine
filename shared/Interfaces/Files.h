@@ -62,7 +62,7 @@ ZN_INTERFACE ZN_API IByteBufferEx
 //--
 
 ZN_INTERFACE ZN_API IFile 
-	: public IByteBuffer
+	: public virtual IByteBuffer
 	, public std::enable_shared_from_this<IFile>
 {
 	virtual ~IFile() {}

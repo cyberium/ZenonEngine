@@ -70,6 +70,7 @@ struct SRTSCell
 };
 
 ZN_INTERFACE ZN_API IRTSGround
+	: public virtual ISceneNode
 {
 	ZN_OBJECTCLASS(cCRTSSceneNodeGround);
 

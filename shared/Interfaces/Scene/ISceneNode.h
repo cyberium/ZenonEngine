@@ -21,10 +21,12 @@ ZN_INTERFACE IColliderComponent3D;
 
 
 ZN_INTERFACE ZN_API ISceneNode
-	: public IObject
+	: public virtual IObject
 	, public std::enable_shared_from_this<ISceneNode>
 {
 	typedef std::vector<std::shared_ptr<ISceneNode>> SceneNodesList;
+
+	ZN_OBJECTCLASS(cSceneNode3D)
 
 	virtual ~ISceneNode() {}
 

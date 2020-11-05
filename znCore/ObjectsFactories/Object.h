@@ -1,7 +1,7 @@
 #pragma once
 
 class ZN_API Object
-	: public IObject
+	: virtual public IObject
 	, public IObjectPrivate
 	, public IObjectLoadSave
 {

@@ -40,7 +40,7 @@ void CEditor3DFrame::Initialize()
 
 	// Light
 	{
-		auto lightNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeFactory>()->CreateSceneNode3D(cSceneNode3D, *this);
+		auto lightNode = CreateSceneNode<ISceneNode>();
 		lightNode->SetName("Light");
 		lightNode->SetTranslate(rtsCenter);
 		lightNode->SetRotation(glm::vec3(0.f, -0.01f, 0.0f));
@@ -55,7 +55,7 @@ void CEditor3DFrame::Initialize()
 
 	// Camera
 	{
-		auto cameraNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeFactory>()->CreateSceneNode3D(cSceneNode3D, *this);
+		auto cameraNode = CreateSceneNode<ISceneNode>();
 		cameraNode->SetName("Camera");
 		auto geom = GetRenderDevice().GetPrimitivesFactory().CreateBBox();
 		auto mat = MakeShared(MaterialDebug, GetRenderDevice());
@@ -178,7 +178,7 @@ IEditor& CEditor3DFrame::GetEditor() const
 bool CEditor3DFrame::InitializeEditorFrame()
 {
 	{
-		auto node = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeFactory>()->CreateSceneNode3D(cSceneNode3D, *this);
+		auto node = CreateSceneNode<ISceneNode>();
 		node->SetName("Grid node x1.");
 		node->SetTranslate(glm::vec3(0.0f));
 		node->SetScale(glm::vec3(1.0f));
@@ -195,7 +195,7 @@ bool CEditor3DFrame::InitializeEditorFrame()
 	}
 
 	{
-		auto node = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeFactory>()->CreateSceneNode3D(cSceneNode3D, *this);
+		auto node = CreateSceneNode<ISceneNode>();
 		node->SetName("Grid node x10.");
 		node->SetTranslate(glm::vec3(0.0f, 0.00f, 0.0f));
 		node->SetScale(glm::vec3(10.0f));
@@ -212,7 +212,7 @@ bool CEditor3DFrame::InitializeEditorFrame()
 	}
 
 	{
-		auto node = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeFactory>()->CreateSceneNode3D(cSceneNode3D, *this);
+		auto node = CreateSceneNode<ISceneNode>();
 		node->SetName("Grid node x100.");
 		node->SetTranslate(glm::vec3(0.0f, 0.00f, 0.0f));
 		node->SetScale(glm::vec3(100.0f));
@@ -233,7 +233,7 @@ bool CEditor3DFrame::InitializeEditorFrame()
 
 void CEditor3DFrame::DoInitializeTools3D()
 {
-	GetEditor().GetTools().DoInitialize3D(m_Renderer, GetRenderWindow().GetRenderTarget(), &GetRenderWindow().GetViewport());
+	GetEditor().GetTools().DoInitialize3D(GetRenderer(), GetRenderWindow().GetRenderTarget(), &GetRenderWindow().GetViewport());
 }
 
 IScene& CEditor3DFrame::GetScene()

@@ -75,7 +75,7 @@
       <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
       <PrecompiledHeaderOutputFile>$(IntDir)$(TargetName).pch</PrecompiledHeaderOutputFile>
       <AdditionalIncludeDirectories>..\shared\;..\Externals\;..\Editor\;.\PropertyEditor\Core;$(Qt_INCLUDEPATH_);$(ZN_QT_PATH)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <DisableSpecificWarnings>4251</DisableSpecificWarnings>
+      <DisableSpecificWarnings>4251;4250</DisableSpecificWarnings>
       <TreatSpecificWarningsAsErrors>4172</TreatSpecificWarningsAsErrors>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;$(Qt_DEFINES_);%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <Optimization>Disabled</Optimization>
@@ -103,7 +103,7 @@
       <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
       <PrecompiledHeaderOutputFile>$(IntDir)$(TargetName).pch</PrecompiledHeaderOutputFile>
       <AdditionalIncludeDirectories>..\shared\;..\Externals\;..\Editor\;.\PropertyEditor\Core;$(Qt_INCLUDEPATH_);$(ZN_QT_PATH)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <DisableSpecificWarnings>4251</DisableSpecificWarnings>
+      <DisableSpecificWarnings>4251;4250</DisableSpecificWarnings>
       <TreatSpecificWarningsAsErrors>4172</TreatSpecificWarningsAsErrors>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <WholeProgramOptimization>true</WholeProgramOptimization>

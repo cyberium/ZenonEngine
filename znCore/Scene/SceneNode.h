@@ -3,7 +3,7 @@
 #include "../ObjectsFactories/Object.h"
 
 class ZN_API CSceneNode
-	: public ISceneNode
+	: virtual public ISceneNode
 	, public ISceneNodeInternal
 	, public Object
 {
@@ -62,8 +62,6 @@ public:
 	virtual void                                    Accept(IVisitor* visitor) override;
 
 	// IObject
-	Guid                                            GetGUID() const override final { return Object::GetGUID(); };
-	std::string                                     GetName() const override { return Object::GetName(); };
 	void                                            SetName(const std::string& Name) override;
 
 	// IObjectLoadSave

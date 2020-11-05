@@ -29,7 +29,7 @@ void CSceneDefault::Initialize()
 
 	// Light
 	/*{
-		auto lightNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeFactory>()->CreateSceneNode3D(cSceneNode3D, this);
+		auto lightNode = CreateSceneNode<ISceneNode>();
 		lightNode->SetName("Light");
 		lightNode->SetTranslate(glm::vec3(-300.0f, 500.0f, -500.0f) / 3.0f);
 		lightNode->SetRotation(glm::vec3(0.5f, -0.5f, 0.5f));
@@ -44,7 +44,7 @@ void CSceneDefault::Initialize()
 
 	// Light
 	{
-		auto lightNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeFactory>()->CreateSceneNode3D(cSceneNode3D, *this);
+		auto lightNode = CreateSceneNode<ISceneNode>();
 		lightNode->SetName("Light2");
 		lightNode->SetTranslate(glm::vec3(150.0f, 150.0f, 150.0f));
 		lightNode->SetRotation(glm::vec3(-0.5f, -0.5f, -0.5f));
@@ -59,7 +59,7 @@ void CSceneDefault::Initialize()
 
 	// Camera
 	{
-		auto cameraNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeFactory>()->CreateSceneNode3D(cSceneNode3D, *this);
+		auto cameraNode = CreateSceneNode<ISceneNode>();
 		cameraNode->SetName("Camera");
 		auto geom = GetRenderDevice().GetPrimitivesFactory().CreateBBox();
 		

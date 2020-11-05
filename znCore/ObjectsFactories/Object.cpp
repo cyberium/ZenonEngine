@@ -34,10 +34,12 @@ Guid Object::GetGUID() const
 {
 	return m_Guid;
 }
+
 std::string Object::GetName() const
 {
 	return m_Name;
 }
+
 void Object::SetName(const std::string& Name)
 {
 	m_Name = Name;
@@ -48,7 +50,7 @@ void Object::Copy(std::shared_ptr<IObject> Destination) const
 	auto destinationObject = std::dynamic_pointer_cast<Object>(Destination);
 
 	if (GetGUID().GetObjectClass() != destinationObject->GetGUID().GetObjectClass() || GetGUID().GetObjectType() != destinationObject->GetGUID().GetObjectType())
-		throw std::exception(("Unable to copy object with different type and class. Source: " + GetGUID().Str() + ", Destination: " + destinationObject->GetGUID().Str()).c_str());
+		throw CException(("Unable to copy object with different type and class. Source: " + GetGUID().Str() + ", Destination: " + destinationObject->GetGUID().Str()).c_str());
 
 	destinationObject->m_Name = m_Name;
 }
@@ -60,12 +62,12 @@ void Object::Copy(std::shared_ptr<IObject> Destination) const
 //
 void Object::Load(const std::shared_ptr<IByteBuffer>& Buffer)
 {
-	_ASSERT(FALSE);
+	throw CException("Not implemented");
 }
 
 void Object::Save(const std::shared_ptr<IByteBuffer>& Buffer) const
 {
-	_ASSERT(FALSE);
+	throw CException("Not implemented");
 }
 
 void Object::Load(const std::shared_ptr<IXMLReader>& Reader)
@@ -103,10 +105,10 @@ void Object::SetGUID(const Guid& NewGuid)
 	//	throw std::exception(("Object " + GetGUID().Str() + " already has Guid.").c_str());
 
 	if (NewGuid.IsEmpty())
-		throw std::exception("Cannot assign empty GUID for object.");
+		throw CException("Cannot assign empty GUID for object.");
 
 	if (NewGuid.GetCounter() == 0)
-		throw std::exception(("Guid " + NewGuid.Str() + " not fully initialized.").c_str());
+		throw CException(("Guid " + NewGuid.Str() + " not fully initialized.").c_str());
 
 	m_Guid = Guid(NewGuid.GetRawValue());
 

@@ -89,7 +89,7 @@ void CEditorToolDragger::DragEnterEvent(const SDragData& Data)
 		if (model == nullptr)
 			return;
 
-		m_DraggerNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeFactory>()->CreateSceneNode3D(cSceneNode3D, GetScene());
+		m_DraggerNode = GetScene().CreateSceneNode<ISceneNode>();
 		m_DraggerNode->SetName(model->GetName());
 		m_DraggerNode->GetComponent<IModelsComponent3D>()->SetModel(model);
 	}
@@ -149,7 +149,7 @@ void CEditorToolDragger::CreateCopyDraggedNode()
 	if (m_DraggerNode == nullptr)
 		return;
 
-	auto copiedNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeFactory>()->CreateSceneNode3D(cSceneNode3D, GetScene());
+	auto copiedNode = GetScene().CreateSceneNode<ISceneNode>();
 	m_DraggerNode->CopyTo(copiedNode);
 
 	copiedNode->SetTranslate(m_DraggerNode->GetTranslation());

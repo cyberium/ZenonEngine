@@ -43,18 +43,19 @@ void CEditorToolRotator::Disable()
 
 void CEditorToolRotator::DoInitialize3D(const std::shared_ptr<IRenderer>& Renderer, std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport)
 {
-	m_RotatorRoot = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeFactory>()->CreateSceneNode3D(cSceneNode3D, GetScene(), GetScene().GetRootSceneNode());
+	m_RotatorRoot = GetScene().CreateSceneNode<ISceneNode>();
 	m_RotatorRoot->SetName("RotatorRoot");
 
+	{
+		auto materialSphere = MakeShared(MaterialEditorTool, GetRenderDevice());
+		materialSphere->SetColor(glm::vec4(0.8f, 0.8f, 0.8f, 0.5f));
+		auto modelSphere = GetRenderDevice().GetObjectsFactory().CreateModel();
+		modelSphere->AddConnection(materialSphere, GetRenderDevice().GetPrimitivesFactory().CreateSphere(2.0f));
 
-	auto materialSphere = MakeShared(MaterialEditorTool, GetRenderDevice());
-	materialSphere->SetColor(glm::vec4(0.8f, 0.8f, 0.8f, 0.5f));
-	auto modelSphere = GetRenderDevice().GetObjectsFactory().CreateModel();
-	modelSphere->AddConnection(materialSphere, GetRenderDevice().GetPrimitivesFactory().CreateSphere(2.0f));
-
-	auto rotatorSphere = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeFactory>()->CreateSceneNode3D(cSceneNode3D, GetScene(), m_RotatorRoot);
-	rotatorSphere->SetName("RotatorSphere");
-	rotatorSphere->GetComponent<IModelsComponent3D>()->SetModel(modelSphere);
+		auto rotatorSphere = GetScene().CreateSceneNode<ISceneNode>(m_RotatorRoot);
+		rotatorSphere->SetName("RotatorSphere");
+		rotatorSphere->GetComponent<IModelsComponent3D>()->SetModel(modelSphere);
+	}
 
 
 	auto geom = GetRenderDevice().GetPrimitivesFactory().CreateTorus(1.0f, 0.05f);
@@ -75,16 +76,16 @@ void CEditorToolRotator::DoInitialize3D(const std::shared_ptr<IRenderer>& Render
 	modelZ->AddConnection(materialZ, geom);
 
 
-	m_RotatorX = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeFactory>()->CreateSceneNode3D(cSceneNode3D, GetScene(), m_RotatorRoot);
+	m_RotatorX = GetScene().CreateSceneNode<ISceneNode>(m_RotatorRoot);
 	m_RotatorX->SetName("RotatorX");
 	m_RotatorX->SetRotation(glm::vec3(0.0f, 0.0f, glm::half_pi<float>()));
 	m_RotatorX->GetComponent<IModelsComponent3D>()->SetModel(modelX);
 
-	m_RotatorY = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeFactory>()->CreateSceneNode3D(cSceneNode3D, GetScene(), m_RotatorRoot);
+	m_RotatorY = GetScene().CreateSceneNode<ISceneNode>(m_RotatorRoot);
 	m_RotatorY->SetName("RotatorY");
 	m_RotatorY->GetComponent<IModelsComponent3D>()->SetModel(modelY);
 
-	m_RotatorZ = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeFactory>()->CreateSceneNode3D(cSceneNode3D, GetScene(), m_RotatorRoot);
+	m_RotatorZ = GetScene().CreateSceneNode<ISceneNode>(m_RotatorRoot);
 	m_RotatorZ->SetName("RotatorZ");
 	m_RotatorZ->SetRotation(glm::vec3(glm::half_pi<float>(), 0.0f, 0.0f));
 	m_RotatorZ->GetComponent<IModelsComponent3D>()->SetModel(modelZ);

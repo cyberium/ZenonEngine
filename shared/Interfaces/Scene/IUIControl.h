@@ -11,7 +11,7 @@ ZN_INTERFACE IManager;
 // FORWARD END
 
 ZN_INTERFACE ZN_API IUIControl
-	: public IObject
+	: public virtual IObject
     , public std::enable_shared_from_this<IUIControl>
 {
 	typedef std::vector<std::shared_ptr<IUIControl>> ControlsList;

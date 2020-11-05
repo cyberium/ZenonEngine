@@ -1,15 +1,3 @@
-; example2.nsi
-;
-; This script is based on example1.nsi, but it remember the directory, 
-; has uninstall support and (optionally) installs start menu shortcuts.
-;
-; It will install example2.nsi into a directory that the user selects.
-;
-; See install-shared.nsi for a more robust way of checking for administrator rights.
-; See install-per-user.nsi for a file association example.
-
-;--------------------------------
-
 ; The name of the installer
 Name "ZenonEngineInstaller"
 
@@ -71,8 +59,9 @@ Section "Start Menu Shortcuts"
 
   CreateDirectory "$SMPROGRAMS\Zenon Engine"
   CreateShortcut "$SMPROGRAMS\Zenon Engine\Uninstall.lnk" "$INSTDIR\uninstall.exe"
-  CreateShortcut "$SMPROGRAMS\Zenon Engine\ZenonEngine.lnk" "$INSTDIR\ZenonEngine.sln"
-
+  CreateShortcut "$SMPROGRAMS\Zenon Engine\Editor.lnk" "$INSTDIR\Editor.exe"
+  CreateShortcut "$SMPROGRAMS\Zenon Engine\Game.lnk" "$INSTDIR\Game.exe"
+  
 SectionEnd
 
 ;--------------------------------
@@ -88,7 +77,8 @@ Section "Uninstall"
   ; Remove files and uninstaller
   Delete $INSTDIR\*.exe
   Delete $INSTDIR\*.dll
-  RMDir /r $INSTDIR\gamedata*
+  Delete $INSTDIR\*.txt
+  RMDir /r $INSTDIR\gamedata
   Delete $INSTDIR\uninstall.exe
 
   ; Remove shortcuts, if any

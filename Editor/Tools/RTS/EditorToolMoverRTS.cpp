@@ -44,7 +44,7 @@ void CEditorToolMoverRTS::Disable()
 
 void CEditorToolMoverRTS::DoInitialize3D(const std::shared_ptr<IRenderer>& Renderer, std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport)
 {
-	m_MoverRoot = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeFactory>()->CreateSceneNode3D(cSceneNode3D, GetScene(), GetScene().GetRootSceneNode());
+	m_MoverRoot = GetScene().CreateSceneNode<ISceneNode>();
 	m_MoverRoot->SetName("MoverRTSRoot");
 
 	auto model = GetBaseManager().GetManager<IznModelsFactory>()->LoadModel("arrow.FBX");
@@ -66,12 +66,12 @@ void CEditorToolMoverRTS::DoInitialize3D(const std::shared_ptr<IRenderer>& Rende
 	modelZ->AddConnection(materialZ, geom);
 
 
-	m_MoverX = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeFactory>()->CreateSceneNode3D(cSceneNode3D, GetScene(), m_MoverRoot);
+	m_MoverX = GetScene().CreateSceneNode<ISceneNode>(m_MoverRoot);
 	m_MoverX->SetName("MoverRTSX");
 	m_MoverX->SetRotation(glm::vec3(0.0f, glm::half_pi<float>(), 0.0f));
 	m_MoverX->GetComponent<IModelsComponent3D>()->SetModel(modelX);
 
-	m_MoverZ = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeFactory>()->CreateSceneNode3D(cSceneNode3D, GetScene(), m_MoverRoot);
+	m_MoverZ = GetScene().CreateSceneNode<ISceneNode>(m_MoverRoot);
 	m_MoverZ->SetName("RotatorRTSZ");
 	m_MoverZ->SetRotation(glm::vec3(0.0f, 0.0f, 0.0f));
 	m_MoverZ->GetComponent<IModelsComponent3D>()->SetModel(modelZ);

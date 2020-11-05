@@ -3,7 +3,7 @@
 #include "../ObjectsFactories/Object.h"
 
 class ZN_API CUIControl 
-	: public IUIControl
+	: virtual public IUIControl
 	, public IUIControlInternal
 	, public Object
 {
@@ -46,8 +46,6 @@ public:
 	virtual void                                    AcceptMesh(IVisitor* visitor) override;
 
 	// IObject
-	Guid                                            GetGUID() const override final { return Object::GetGUID(); };
-	std::string                                     GetName() const override final { return Object::GetName(); };
 	void                                            SetName(const std::string& Name) override final { Object::SetName(Name); };
 
 	// UI events

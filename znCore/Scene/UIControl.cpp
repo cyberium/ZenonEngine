@@ -11,7 +11,7 @@ CUIControl::CUIControl(IScene& Scene)
 
 	, m_Translate(glm::vec2(0.0f))
 	, m_Rotate(glm::vec3(0.0f))
-	, m_Scale(1.0f, 1.0f)
+	, m_Scale(glm::vec2(1.0f))
 
 	, m_LocalTransform(1.0f)
 	, m_InverseLocalTransform(1.0f)	// This is the inverse of the local -> world transform.
@@ -186,7 +186,7 @@ glm::mat4 CUIControl::GetParentWorldTransform() const
 
 glm::vec2 CUIControl::GetSize() const
 {
-    return glm::vec2(99999.0f, 999999.0f);
+    return glm::vec2(Math::MaxFloat);
 }
 
 BoundingRect CUIControl::GetBoundsAbs()

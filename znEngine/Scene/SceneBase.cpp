@@ -72,7 +72,7 @@ void SceneBase::Initialize()
 	m_FrameQuery = GetRenderDevice().GetObjectsFactory().CreateQuery(IQuery::QueryType::Timer, 1);
 	m_TestQuery = GetRenderDevice().GetObjectsFactory().CreateQuery(IQuery::QueryType::CountSamples, 1);
 
-	m_RootSceneNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeFactory>()->CreateSceneNode3D(cSceneNode3D, *this);
+	m_RootSceneNode = CreateSceneNode<ISceneNode>();
 	m_RootSceneNode->SetName("RootSceneNode");
 	std::dynamic_pointer_cast<ISceneNodeInternal>(m_RootSceneNode)->SetPersistanceInternal(true);
 
@@ -273,34 +273,37 @@ void SceneBase::OnRender(RenderEventArgs & e)
 	if (cameraController == nullptr)
 		throw CException("You must set CameraController to scene!");
 
-
-	e.Camera = cameraController->GetCamera().get();
-	e.CameraForCulling = cameraController->GetCamera().get();
-
-
 	auto renderer = GetRenderer();
 	if (renderer == nullptr)
 		throw CException("You must set Renderer to scene!");
 
-	renderer->Render3D(e);
+	// 3D render
+	{
+		e.Camera = cameraController->GetCamera().get();
+		e.CameraForCulling = cameraController->GetCamera().get();
 
+		renderer->Render3D(e);
+	}
 
-	glm::vec3 cameraPos = e.Camera->GetTranslation();
-	glm::vec3 cameraRot = e.Camera->GetDirection();
+	// UI render
+	{
+		glm::vec3 cameraPos = e.Camera->GetTranslation();
+		glm::vec3 cameraRot = e.Camera->GetDirection();
 
-	double fpsValue = 1000.0 / double(GetRenderWindow().GetSummaDeltaTime());
+		double fpsValue = 1000.0 / double(GetRenderWindow().GetSummaDeltaTime());
 
-	std::string fullText = "FPS: " + toStringPrec(uint64(fpsValue)) + "\n";
-	fullText += "CamPos: (" + toStringPrec(cameraPos.x) + ", " + toStringPrec(cameraPos.y) + ", " + toStringPrec(cameraPos.z) + ")\n";
-	fullText += "CamRot: yaw " + toStringPrec(e.Camera->GetYaw()) + ", pitch " + toStringPrec(e.Camera->GetPitch()) + "\n";
-	fullText += "CamRot: (" + toStringPrec(cameraRot.x) + ", " + toStringPrec(cameraRot.y) + ", " + toStringPrec(cameraRot.z) + ")\n";
-	fullText += "Frame Update: " + toStringPrec(GetRenderWindow().GetUpdateDeltaTime()) + " ms\n";
-	fullText += "Frame Render: " + toStringPrec(GetRenderWindow().GetRenderDeltaTime()) + " ms\n";
-	fullText += "Frame Total : " + toStringPrec(GetRenderWindow().GetSummaDeltaTime()) + " ms\n";
+		std::string fullText = "FPS: " + toStringPrec(uint64(fpsValue)) + "\n";
+		fullText += "CamPos: (" + toStringPrec(cameraPos.x) + ", " + toStringPrec(cameraPos.y) + ", " + toStringPrec(cameraPos.z) + ")\n";
+		fullText += "CamRot: yaw " + toStringPrec(e.Camera->GetYaw()) + ", pitch " + toStringPrec(e.Camera->GetPitch()) + "\n";
+		fullText += "CamRot: (" + toStringPrec(cameraRot.x) + ", " + toStringPrec(cameraRot.y) + ", " + toStringPrec(cameraRot.z) + ")\n";
+		fullText += "Frame Update: " + toStringPrec(GetRenderWindow().GetUpdateDeltaTime()) + " ms\n";
+		fullText += "Frame Render: " + toStringPrec(GetRenderWindow().GetRenderDeltaTime()) + " ms\n";
+		fullText += "Frame Total : " + toStringPrec(GetRenderWindow().GetSummaDeltaTime()) + " ms\n";
 
-	m_StatisticText->GetProperties()->GetPropertyT<std::string>("Text")->Set(fullText);
+		m_StatisticText->GetProperties()->GetPropertyT<std::string>("Text")->Set(fullText);
 
-	renderer->RenderUI(e);
+		renderer->RenderUI(e);
+	}
 }
 
 
@@ -412,7 +415,7 @@ void SceneBase::LoadFromFile(const std::string& FileName)
 	auto xmlReader = xml.CreateReader(file);
 	auto xmlRootChild = xmlReader->GetChilds()[0];
 
-	auto tempFakeRoot = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeFactory>()->CreateSceneNode3D(cSceneNode3D, *this, root);
+	auto tempFakeRoot = CreateSceneNode<ISceneNode>(root);
 	tempFakeRoot->SetName("TempFakeRoot");
 
 	auto newRootNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeFactory>()->LoadSceneNode3DXML(xmlRootChild, *this, tempFakeRoot);
