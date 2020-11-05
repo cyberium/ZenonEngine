@@ -8,7 +8,7 @@ class ZN_API CPassDeffered_ProcessLights
 public:
 	struct SLightResult
 	{
-		const ISceneNode*        SceneNode;
+		const ISceneNode*          SceneNode;
 		const ILight3D*            LightNode;
 		bool                       IsLightEnabled;
 		bool                       IsCastShadow;

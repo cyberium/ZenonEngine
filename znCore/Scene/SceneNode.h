@@ -14,7 +14,6 @@ public:
 	// ISceneNode
 	virtual void                                    Initialize() override;
 	virtual void                                    Finalize() override;
-	virtual void                                    CopyTo(std::shared_ptr<ISceneNode> Destination) const override;
 
 	// Childs functional
 	virtual void                                    AddChild(std::shared_ptr<ISceneNode> childNode) override final;
@@ -65,6 +64,7 @@ public:
 	void                                            SetName(const std::string& Name) override;
 
 	// IObjectLoadSave
+	virtual void                                    CopyTo(std::shared_ptr<IObject> Destination) const override;
 	virtual void									Load(const std::shared_ptr<IXMLReader>& Reader) override;
 	virtual void									Save(const std::shared_ptr<IXMLWriter>& Writer) const override;
 

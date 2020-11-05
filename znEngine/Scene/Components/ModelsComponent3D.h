@@ -8,10 +8,6 @@ public:
 	CModelsComponent3D(const ISceneNode& OwnerNode);
     virtual ~CModelsComponent3D();
 
-	void Copy(std::shared_ptr<ISceneNodeComponent> Destination) const override;
-	void Load(const std::shared_ptr<IXMLReader>& Reader) override;
-	void Save(const std::shared_ptr<IXMLWriter>& Writer) const override;
-
 	// IModelsComponent3D
     void SetModel(const std::shared_ptr<IModel>& Model) override;
 	void ResetModel() override;
@@ -19,8 +15,13 @@ public:
 	void SetCastShadows(bool Value) override;
 	bool IsCastShadows() const  override;
 
-    // CComponentBase
+    // ISceneNodeComponent
     virtual void Accept(IVisitor* visitor) override;
+
+	// IObjectLoadSave
+	void CopyTo(std::shared_ptr<IObject> Destination) const override;
+	void Load(const std::shared_ptr<IXMLReader>& Reader) override;
+	void Save(const std::shared_ptr<IXMLWriter>& Writer) const override;
 
 private:
 	std::shared_ptr<IModel> m_Model;

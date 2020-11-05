@@ -186,6 +186,7 @@
     <ClInclude Include="..\shared\Interfaces\Managers\FontsManager.h" />
     <ClInclude Include="..\shared\Interfaces\Managers\ImagesFactory.h" />
     <ClInclude Include="..\shared\Interfaces\Managers\ModelsFactory.h" />
+    <ClInclude Include="..\shared\Interfaces\Managers\SettingsManager.h" />
     <ClInclude Include="..\shared\Interfaces\Managers\TexturesFactory.h" />
     <ClInclude Include="..\shared\Interfaces\ModelsManager.h" />
     <ClInclude Include="..\shared\Interfaces\Render\IGeometry.h" />
@@ -245,7 +246,6 @@
     <ClInclude Include="..\shared\Interfaces\Scene\IScene.h" />
     <ClInclude Include="..\shared\Interfaces\Scene\ISceneNodeComponents.h" />
     <ClInclude Include="..\shared\Interfaces\Scene\ISceneNodeTools.h" />
-    <ClInclude Include="..\shared\Interfaces\Settings.h" />
     <ClInclude Include="..\shared\Interfaces\Types\Events.h" />
     <ClInclude Include="..\shared\Interfaces\Types\KeyCodes.h" />
     <ClInclude Include="..\shared\Interfaces\Types\Object.h" />
@@ -308,9 +308,6 @@
     <ClInclude Include="XML\XMLManager.h" />
     <ClInclude Include="XML\XMLReader.h" />
     <ClInclude Include="XML\XMLWriter.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Scene\ComponentBase.inl" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="Files\FormatsDescription.txt" />

@@ -3,15 +3,6 @@
 // General
 #include "Object.h"
 
-bool Object::operator==(const Object& rhs) const
-{
-	return m_Guid == rhs.m_Guid;
-}
-bool Object::operator!=(const Object& rhs) const
-{
-	return m_Guid != rhs.m_Guid;
-}
-
 std::string Object::GetTypeName() const
 {
 	if (m_BaseManager != nullptr)
@@ -45,21 +36,18 @@ void Object::SetName(const std::string& Name)
 	m_Name = Name;
 }
 
-void Object::Copy(std::shared_ptr<IObject> Destination) const
-{
-	auto destinationObject = std::dynamic_pointer_cast<Object>(Destination);
-
-	if (GetGUID().GetObjectClass() != destinationObject->GetGUID().GetObjectClass() || GetGUID().GetObjectType() != destinationObject->GetGUID().GetObjectType())
-		throw CException(("Unable to copy object with different type and class. Source: " + GetGUID().Str() + ", Destination: " + destinationObject->GetGUID().Str()).c_str());
-
-	destinationObject->m_Name = m_Name;
-}
-
 
 
 //
 // IObjectLoadSave
 //
+void Object::CopyTo(std::shared_ptr<IObject> Destination) const
+{
+	if (GetGUID().GetObjectClass() != Destination->GetGUID().GetObjectClass() || GetGUID().GetObjectType() != Destination->GetGUID().GetObjectType())
+		throw CException(("Unable to copy object with different type and class. Source: " + GetGUID().Str() + ", Destination: " + Destination->GetGUID().Str()).c_str());
+	Destination->SetName(m_Name);
+}
+
 void Object::Load(const std::shared_ptr<IByteBuffer>& Buffer)
 {
 	throw CException("Not implemented");

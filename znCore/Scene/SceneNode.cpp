@@ -84,40 +84,6 @@ void CSceneNode::Initialize()
 void CSceneNode::Finalize()
 {}
 
-void CSceneNode::CopyTo(std::shared_ptr<ISceneNode> Destination) const
-{
-	Object::Copy(Destination);
-
-	auto destCast = std::dynamic_pointer_cast<CSceneNode>(Destination);
-
-	destCast->m_IsPersistance = m_IsPersistance;
-
-	destCast->m_Translate = m_Translate;
-	destCast->m_Rotate = m_Rotate;
-	destCast->m_RotateQuat = m_RotateQuat;
-	destCast->m_IsRotateQuat = m_IsRotateQuat;
-	destCast->m_Scale = m_Scale;
-	destCast->m_LocalTransform = m_LocalTransform;
-	destCast->m_InverseLocalTransform = m_InverseLocalTransform;
-	destCast->m_WorldTransform = m_WorldTransform;
-	destCast->m_InverseWorldTransform = m_InverseWorldTransform;
-
-	destCast->m_PropertiesGroup;// TODO
-
-	for (const auto& c : GetComponents())
-	{
-		const auto& compInOther = destCast->m_Components.find(c.first);
-		_ASSERT(compInOther != destCast->m_Components.end());
-		c.second->Copy(compInOther->second);
-	}
-
-	for (const auto& ch : GetChilds())
-	{
-		std::shared_ptr<ISceneNode> childCopy = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeFactory>()->CreateSceneNode3D(ch->GetType(), Destination->GetScene(), Destination);
-		ch->CopyTo(childCopy);
-	}
-}
-
 
 
 //
@@ -314,11 +280,8 @@ void CSceneNode::RaiseComponentMessage(const ISceneNodeComponent* Component, Com
 }
 void CSceneNode::RegisterComponents()
 {
-	auto m_Components_Models = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<IComponentFactory>()->CreateComponentT<IModelsComponent3D>(cSceneNodeModelsComponent, *this);
-	m_Components_Models = ISceneNode::AddComponent(m_Components_Models);
-
-	auto m_Components_Collider = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<IComponentFactory>()->CreateComponentT<IColliderComponent3D>(cSceneNodeColliderComponent, *this);
-	ISceneNode::AddComponent(m_Components_Collider);
+	AddComponentT(GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<IComponentFactory>()->CreateComponentT<IModelsComponent3D>(cSceneNodeModelsComponent, *this));
+	AddComponentT(GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<IComponentFactory>()->CreateComponentT<IColliderComponent3D>(cSceneNodeColliderComponent, *this));
 }
 
 
@@ -406,32 +369,82 @@ void CSceneNode::SetName(const std::string& Name)
 //
 // IObjectLoadSave
 //
+void CSceneNode::CopyTo(std::shared_ptr<IObject> Destination) const
+{
+	Object::CopyTo(Destination);
+
+	auto destCast = std::dynamic_pointer_cast<CSceneNode>(Destination);
+
+	destCast->m_IsPersistance = m_IsPersistance;
+
+	destCast->m_Translate = m_Translate;
+	destCast->m_Rotate = m_Rotate;
+	destCast->m_RotateQuat = m_RotateQuat;
+	destCast->m_IsRotateQuat = m_IsRotateQuat;
+	destCast->m_Scale = m_Scale;
+	destCast->m_LocalTransform = m_LocalTransform;
+	destCast->m_InverseLocalTransform = m_InverseLocalTransform;
+	destCast->m_WorldTransform = m_WorldTransform;
+	destCast->m_InverseWorldTransform = m_InverseWorldTransform;
+
+	destCast->m_PropertiesGroup;// TODO
+
+	for (const auto& c : GetComponents())
+	{
+		const auto& compInOther = destCast->m_Components.find(c.first);
+		_ASSERT(compInOther != destCast->m_Components.end());
+		if (auto loadSave = std::dynamic_pointer_cast<IObjectLoadSave>(c.second))
+			loadSave->CopyTo(compInOther->second);
+	}
+
+	for (const auto& ch : GetChilds())
+	{
+		std::shared_ptr<ISceneNode> childCopy = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeFactory>()->CreateSceneNode3D(ch->GetType(), destCast->GetScene(), destCast);
+		if (auto loadSave = std::dynamic_pointer_cast<IObjectLoadSave>(ch))
+			loadSave->CopyTo(childCopy);
+	}
+}
+
 void CSceneNode::Load(const std::shared_ptr<IXMLReader>& Reader)
 {
 	Object::Load(Reader);
 
 	DoLoadProperties(Reader);
 
-	if (auto componentsWriter = Reader->GetChild("Components"))
+	if (Reader->IsChildExists("Components"))
 	{
-		for (const auto& ch : componentsWriter->GetChilds())
+		auto componentsWriter = Reader->GetChild("Components");
+		for (const auto& readerChild : componentsWriter->GetChilds())
 		{
 			try
 			{
-				auto child = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<IComponentFactory>()->LoadComponentXML(ch, *this);
-				//if (GetComponent(child->GetGUID().GetObjectClass()) == nullptr)
+				std::string objectClassName = readerChild->GetName();
+				_ASSERT(false == objectClassName.empty());
+				ObjectClass objectClass = GetBaseManager().GetManager<IObjectsFactory>()->GetObjectClassByObjectClassName(objectClassName);
+				const auto& component = GetComponent(objectClass);
+				if (component != nullptr)
+				{
+					if (auto objectLoadSave = std::dynamic_pointer_cast<IObjectLoadSave>(component))
+					{
+						objectLoadSave->Load(readerChild);
+						continue;
+					}
+				}
+
+				auto child = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<IComponentFactory>()->LoadComponentXML(readerChild, *this);
 				AddComponent(child->GetGUID().GetObjectClass(), child);
 			}
 			catch (const CException& e)
 			{
-				Log::Error("Unable to load node '%s' component '%s'.", GetName().c_str(), ch->GetName().c_str());
+				Log::Error("Unable to load node '%s' component '%s'.", GetName().c_str(), readerChild->GetName().c_str());
 				Log::Error("---> '%s'", e.MessageCStr());
 			}
 		}
 	}
 
-	if (auto childsWriter = Reader->GetChild("Childs"))
+	if (Reader->IsChildExists("Childs"))
 	{
+		auto childsWriter = Reader->GetChild("Childs");
 		for (const auto& ch : childsWriter->GetChilds())
 		{
 			try

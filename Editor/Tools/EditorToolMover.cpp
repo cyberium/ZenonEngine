@@ -97,9 +97,9 @@ bool CEditorToolMover::OnMousePressed(const MouseButtonEventArgs & e, const Ray 
 	{
 		auto pos = GetScene().GetCameraController()->RayToPlane(RayToWorld, Plane(glm::vec3(0.0f, 1.0f, 0.0f), movingNode->GetTranslation().y));
 		auto cameraPosX0Z = GetScene().GetCameraController()->GetCamera()->GetTranslation();
-		cameraPosX0Z = glm::vec3(cameraPosX0Z.x, 0.0f, cameraPosX0Z.z);
-		auto movedObjectPosX0Z = glm::vec3(movingNode->GetTranslation().x, 0.0f, movingNode->GetTranslation().z);
-		auto planeNormal = glm::normalize(movedObjectPosX0Z - cameraPosX0Z);
+		//cameraPosX0Z = glm::vec3(cameraPosX0Z.x, 0.0f, cameraPosX0Z.z);
+		//auto movedObjectPosX0Z = glm::vec3(movingNode->GetTranslation().x, 0.0f, movingNode->GetTranslation().z);
+		auto planeNormal = glm::normalize(movingNode->GetTranslation() - cameraPosX0Z);
 		auto posYYY = GetScene().GetCameraController()->RayToPlane(RayToWorld, Plane(planeNormal, 0.0f));
 		m_MoverOffset = m_MoverRoot->GetTranslation() - glm::vec3(pos.x, posYYY.y, pos.z);
 	}
@@ -160,9 +160,9 @@ void CEditorToolMover::OnMouseMoved(const MouseMotionEventArgs & e, const Ray & 
 	else if (m_MoverNumber == EMoverDirection::Y)
 	{
 		auto cameraPosX0Z = GetScene().GetCameraController()->GetCamera()->GetTranslation();
-		cameraPosX0Z = glm::vec3(cameraPosX0Z.x, 0.0f, cameraPosX0Z.z);
-		auto movedObjectPosX0Z = glm::vec3(oldPos.x, 0.0f, oldPos.z);
-		auto planeNormal = glm::normalize(movedObjectPosX0Z - cameraPosX0Z);
+		//cameraPosX0Z = glm::vec3(cameraPosX0Z.x, 0.0f, cameraPosX0Z.z);
+		//auto movedObjectPosX0Z = glm::vec3(oldPos.x, 0.0f, oldPos.z);
+		auto planeNormal = glm::normalize(oldPos - cameraPosX0Z);
 
 		auto mousePos = GetScene().GetCameraController()->RayToPlane(RayToWorld, Plane(planeNormal, 0.0f));
 		newPos = glm::vec3(oldPos.x, mousePos.y + m_MoverOffset.y, oldPos.z);

@@ -3,33 +3,44 @@
 #include "../ObjectsFactories/Object.h"
 
 class ZN_API CComponentBase 
-	: public ISceneNodeComponent
+	: virtual public ISceneNodeComponent
 	, public Object
 {
 public:
     CComponentBase(const ISceneNode& OwnerNode);
     virtual ~CComponentBase();
 
-    // Components engine template access
-    template<class T>
-    std::shared_ptr<T>                              IsComponentExists() const;
-    template<class T>
-    std::shared_ptr<T>                              GetComponent() const;
-
 	// ISceneNodeComponent
-	virtual void                                    OnMessage(const ISceneNodeComponent* Component, ComponentMessageType Message) override;
+	virtual void                                    OnMessage(const ISceneNodeComponent* FromComponent, ComponentMessageType Message) override;
 	virtual std::shared_ptr<IPropertiesGroup>       GetProperties() const override;
     // Accept from SceneNode
 	virtual void                                    Update(const UpdateEventArgs& e) override;
     virtual void                                    Accept(IVisitor* visitor) override;
 
-	// IObject
-	OBJECT_IMPLEMENT_BASE
-
 	// IObjectLoadSave
-	void											Copy(std::shared_ptr<ISceneNodeComponent> Destination) const override;
+	void											CopyTo(std::shared_ptr<IObject> Destination) const override;
 	virtual void									Load(const std::shared_ptr<IXMLReader>& Reader) override;
 	virtual void									Save(const std::shared_ptr<IXMLWriter>& Writer) const override;
+
+
+
+	//
+	// Templates
+	//
+
+	template<class T>
+	inline std::shared_ptr<T> IsComponentExistsT() const
+	{
+		return GetOwnerNode().IsComponentExists(T::GetClassT());
+	}
+
+	template<class T>
+	inline std::shared_ptr<T> GetComponentT() const
+	{
+		if (auto component = GetOwnerNode().GetComponent(T::GetClassT()))
+			return std::dynamic_pointer_cast<T, ISceneNodeComponent>(component);
+		return nullptr;
+	}
 
 protected:
 	const ISceneNode&								GetOwnerNode() const;
@@ -40,5 +51,3 @@ private:
     const ISceneNode&								m_OwnerNode;
 	std::shared_ptr<IPropertiesGroup>               m_Properties;
 };
-
-#include "ComponentBase.inl"

@@ -7,12 +7,15 @@
 #include "Scene/Nodes/UIText.h"
 #include "Scene/Nodes/UIColor.h"
 #include "Scene/RTSSceneNodeGround.h"
+#include "Scene/SceneNodeWaypoints.h"
 
 CSceneNodeEngineCreator::CSceneNodeEngineCreator(IBaseManager& BaseManager)
 	: CObjectClassCreatorBase(BaseManager)
 {
 	AddKey("CSceneNode", cSceneNode3D);
 	AddKey("RTSSceneNodeGround", cCRTSSceneNodeGround);
+	AddKey("SceneNodePath", cSceneNodePath);
+	AddKey("SceneNodePoint", cSceneNodePoint);
 }
 
 CSceneNodeEngineCreator::~CSceneNodeEngineCreator()
@@ -43,6 +46,19 @@ std::shared_ptr<IObject> CSceneNodeEngineCreator::CreateObject(size_t Index, con
 		node->Initialize();
 		createdNode = node;
 	}
+	else if (Index == 2)
+	{
+		std::shared_ptr<CSceneNodePath> node = MakeShared(CSceneNodePath, sceneNodeCreationArgs->GetScene());
+		node->Initialize();
+		createdNode = node;
+	}
+	else if (Index == 3)
+	{
+		std::shared_ptr<CSceneNodePoint> node = MakeShared(CSceneNodePoint, sceneNodeCreationArgs->GetScene());
+		node->AddComponentT(GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<IComponentFactory>()->CreateComponentT<IColliderComponent3D>(cSceneNodeColliderComponent, *node));
+		node->Initialize();
+		createdNode = node;
+	}
 
 	// 2. Check
 	if (createdNode == nullptr)
@@ -63,6 +79,7 @@ std::shared_ptr<IObject> CSceneNodeEngineCreator::CreateObject(size_t Index, con
 	{
 		sceneRoot->AddChild(createdNode);
 	}
+
 	return createdNode;
 }
 
@@ -127,8 +144,6 @@ std::shared_ptr<IObject> CSceneNodeUIEngineCreator::CreateObject(size_t Index, c
 	{
 		sceneRoot->AddChild(createdNode);
 	}
-	else
-		_ASSERT(true); // RootNode
 
 	return createdNode;
 }

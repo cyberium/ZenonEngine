@@ -12,17 +12,15 @@ typedef uint32 ComponentMessageType;
 
 
 ZN_INTERFACE ZN_API ISceneNodeComponent
-	: public IObject
+	: public virtual IObject
 	, public std::enable_shared_from_this<ISceneNodeComponent>
 {
 	ZN_OBJECTCLASS(cSceneNodeComponent);
 
 	virtual ~ISceneNodeComponent() {}
 
-	virtual void Copy(std::shared_ptr<ISceneNodeComponent> Destination) const = 0;
-
 	// Callbacks
-	virtual void OnMessage(const ISceneNodeComponent* Component, ComponentMessageType Message) = 0;
+	virtual void OnMessage(const ISceneNodeComponent* FromComponent, ComponentMessageType Message) = 0;
 	virtual std::shared_ptr<IPropertiesGroup> GetProperties() const = 0;
 
 	// Visit functional
@@ -62,8 +60,8 @@ ZN_INTERFACE ZN_API IColliderComponent3D
 	virtual float GetCullDistance() const = 0;
 	virtual void SetBounds(BoundingBox Bounds) = 0;
 	virtual void ExtendBounds(BoundingBox Bounds) = 0;
-	virtual cbbox GetBounds() const = 0;
-	virtual cbbox GetWorldBounds() const = 0;
+	virtual const BoundingBox& GetBounds() const = 0;
+	virtual const BoundingBox& GetWorldBounds() const = 0;
 	virtual void SetDebugDrawMode(bool Value) = 0;
 	virtual bool GetDebugDrawMode() const = 0;
 
@@ -188,9 +186,7 @@ enum class ZN_API ELightType : uint32_t // Don't delete uint32_t becouse mapped 
 struct __declspec(align(16)) ZN_API SLight
 {
 	SLight()
-		: Position(0, 0, 0, 1)
-		, Direction(0, -1, 0, 0)
-		, AmbientColor(0.1f, 0.1f, 0.1f, 1.0f)
+		: AmbientColor(0.1f, 0.1f, 0.1f, 1.0f)
 		, Color(1.0f, 1.0f, 1.0f, 1.0f)
 		, Type(ELightType::Unknown)
 		, Range(5000.0f)
@@ -198,14 +194,8 @@ struct __declspec(align(16)) ZN_API SLight
 		, SpotlightAngle(45.0f)
 	{}
 
-	glm::vec4 Position;  // Position for point and spot lights (World space).
-	//--------------------------------------------------------------( 16 bytes )
-	glm::vec4 Direction; // Direction for spot and directional lights (World space).
-	//--------------------------------------------------------------( 16 bytes )
 	glm::vec4 AmbientColor;// Ambient color of the light.
-	//--------------------------------------------------------------( 16 bytes )
 	glm::vec4 Color;       // Color of the light. Diffuse and specular colors are not separated.
-	//--------------------------------------------------------------( 16 bytes )
 	ELightType Type; // The type of the light.
 	float Range; // The range of the light.
 	float Intensity; // The intensity of the light.

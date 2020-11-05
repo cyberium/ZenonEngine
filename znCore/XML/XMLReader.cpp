@@ -130,12 +130,12 @@ uint64 CXMLReader::GetUInt64Attribute(const std::string & AttributeName) const
 
 float CXMLReader::GetFloatAttribute(const std::string & AttributeName) const
 {
-	return GetNumericAttribute<float>(GetStrAttribute(AttributeName), "%f", 0.0f);
+	return GetNumericAttribute<float>(GetStrAttribute(AttributeName), "f", 0.0f);
 }
 
 double CXMLReader::GetDoubleAttribute(const std::string & AttributeName) const
 {
-	return GetNumericAttribute<double>(GetStrAttribute(AttributeName), "%lf", 0.0);
+	return GetNumericAttribute<double>(GetStrAttribute(AttributeName), "lf", 0.0);
 }
 
 glm::vec2 CXMLReader::GetVec2Attribute(const std::string & AttributeName) const

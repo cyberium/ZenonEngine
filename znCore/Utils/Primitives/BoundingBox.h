@@ -34,6 +34,8 @@ public:
 
 	void Load(const std::shared_ptr<IByteBuffer>& ByteBuffer);
 	void Save(const std::shared_ptr<IByteBuffer>& ByteBuffer) const;
+	void Load(const std::shared_ptr<IXMLReader>& Reader);
+	void Save(const std::shared_ptr<IXMLWriter>& Writer) const;
 
 private:
 	bool IsCenterCalculated() const;

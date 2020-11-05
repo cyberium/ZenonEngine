@@ -23,7 +23,7 @@ CComponentBase::~CComponentBase()
 //
 // ISceneNodeComponent
 //
-void CComponentBase::OnMessage(const ISceneNodeComponent* Component, ComponentMessageType Message)
+void CComponentBase::OnMessage(const ISceneNodeComponent* FromComponent, ComponentMessageType Message)
 {
 	// do nothing
 }
@@ -45,22 +45,22 @@ void CComponentBase::Accept(IVisitor* visitor)
 }
 
 
+
 //
 // IObjectLoadSave
 //
-void CComponentBase::Copy(std::shared_ptr<ISceneNodeComponent> Destination) const
+void CComponentBase::CopyTo(std::shared_ptr<IObject> Destination) const
 {
 }
 
 void CComponentBase::Load(const std::shared_ptr<IXMLReader>& Reader)
 {
-	Object::Load(Reader);
 }
 
 void CComponentBase::Save(const std::shared_ptr<IXMLWriter>& Writer) const
 {
-	Object::Save(Writer);
 }
+
 
 
 //

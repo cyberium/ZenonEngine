@@ -99,11 +99,13 @@ void CPassDeffered_RenderUIQuad::BindLightParamsForCurrentIteration(const Render
 	const ICameraComponent3D* camera = e.Camera;
 	_ASSERT(camera != nullptr);
 
+	const ISceneNode* lightOwner = LightResult.SceneNode;
+
 	SDefferedLightResult lightResult;
-	lightResult.Light                  = LightResult.LightNode->GetLightStruct();
+	lightResult.Light = LightResult.LightNode->GetLightStruct();
 	// From World space to camera space
-	lightResult.LightPositionVS        = camera->GetViewMatrix() * glm::vec4(lightResult.Light.Position.xyz(),  1.0f);
-	lightResult.LightDirectionVS       = glm::normalize(camera->GetViewMatrix() * glm::vec4(lightResult.Light.Direction.xyz(), 0.0f));
+	lightResult.LightPositionVS        = camera->GetViewMatrix() * glm::vec4(lightOwner->GetTranslation(),  1.0f);
+	lightResult.LightDirectionVS       = glm::normalize(camera->GetViewMatrix() * glm::vec4(lightOwner->GetRotation(), 0.0f));
 	lightResult.LightViewMatrix        = LightResult.LightNode->GetViewMatrix();
 	lightResult.LightProjectionMatrix  = LightResult.LightNode->GetProjectionMatrix();
 

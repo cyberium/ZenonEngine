@@ -45,7 +45,7 @@ void CEditor3DFrame::Initialize()
 		lightNode->SetTranslate(rtsCenter);
 		lightNode->SetRotation(glm::vec3(0.f, -0.01f, 0.0f));
 
-		lightNode->AddComponent(GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<IComponentFactory>()->CreateComponentT<ILightComponent3D>(cSceneNodeLightComponent, *lightNode.get()));
+		lightNode->AddComponentT(GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<IComponentFactory>()->CreateComponentT<ILightComponent3D>(cSceneNodeLightComponent, *lightNode.get()));
 		lightNode->GetComponent<ILightComponent3D>()->SetType(ELightType::Spot);
 		lightNode->GetComponent<ILightComponent3D>()->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
 		lightNode->GetComponent<ILightComponent3D>()->SetRange(5000.0f);
@@ -57,23 +57,13 @@ void CEditor3DFrame::Initialize()
 	{
 		auto cameraNode = CreateSceneNode<ISceneNode>();
 		cameraNode->SetName("Camera");
-		auto geom = GetRenderDevice().GetPrimitivesFactory().CreateBBox();
-		auto mat = MakeShared(MaterialDebug, GetRenderDevice());
-		mat->SetDiffuseColor(glm::vec4(1.0f, 1.0f, 0.3f, 1.0f));
-		auto model = GetRenderDevice().GetObjectsFactory().CreateModel();
-		model->AddConnection(mat, geom);
-		cameraNode->GetComponent<IModelsComponent3D>()->SetModel(model);
-
-		auto cameraComponent = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<IComponentFactory>()->CreateComponentT<ICameraComponent3D>(cSceneNodeCameraComponent, *cameraNode);
-		cameraNode->AddComponent(cameraComponent);
+		cameraNode->AddComponentT(GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<IComponentFactory>()->CreateComponentT<ICameraComponent3D>(cSceneNodeCameraComponent, *cameraNode));
 
 		SetCameraController(MakeShared(CFreeCameraController));
 		GetCameraController()->SetCamera(cameraNode->GetComponent<ICameraComponent3D>());
 		GetCameraController()->GetCamera()->SetPerspectiveProjection(ICameraComponent3D::EPerspectiveProjectionHand::Right, 75.0f, static_cast<float>(GetRenderWindow().GetWindowWidth()) / static_cast<float>(GetRenderWindow().GetWindowHeight()), 1.0f, 5000.0f);
 		GetCameraController()->GetCamera()->SetTranslation(glm::vec3(15.0f * 2.0f));
-		//GetCameraController()->GetCamera()->SetDirection(glm::vec3(-0.5f));
-		//GetCameraController()->GetCamera()->SetYaw(225);
-		//GetCameraController()->GetCamera()->SetPitch(-45);
+		GetCameraController()->GetCamera()->SetDirection(glm::vec3(-0.5f));
 	}
 
 	{

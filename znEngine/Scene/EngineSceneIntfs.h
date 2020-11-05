@@ -82,3 +82,27 @@ ZN_INTERFACE ZN_API IRTSGround
 	virtual SRTSCellCoords PositionToCoords(const glm::vec3& Position) = 0;
 	virtual glm::vec3 PositionToPosition(const glm::vec3& Position, float Height = 0.0f) = 0;
 };
+
+
+
+ZN_INTERFACE ZN_API ISceneNodePoint
+	: public virtual ISceneNode
+{
+	ZN_OBJECTCLASS(cSceneNodePoint);
+	virtual ~ISceneNodePoint() {}
+
+};
+
+
+
+ZN_INTERFACE ZN_API ISceneNodePath
+	: public virtual ISceneNode
+{
+	ZN_OBJECTCLASS(cSceneNodePath);
+	virtual ~ISceneNodePath() {}
+
+	virtual std::shared_ptr<ISceneNodePoint> AddPoint(glm::vec3 XYZ) = 0;
+	virtual std::shared_ptr<ISceneNodePoint> InsertPoint(glm::vec3 XYZ, size_t AfterIndex) = 0;
+	virtual std::shared_ptr<ISceneNodePoint> GetLastPoint() = 0;
+	virtual std::vector<std::shared_ptr<ISceneNodePoint>> GetPoints() const = 0;
+};

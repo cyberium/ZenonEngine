@@ -429,11 +429,14 @@ void SceneBase::LoadFromFile(const std::string& FileName)
 			auto xmlChild = newRootNode->GetChild(existingRootChild->GetName());
 			if (xmlChild != nullptr)
 			{
-				xmlChild->CopyTo(existingRootChild);
+				if (auto loadSave = std::dynamic_pointer_cast<IObjectLoadSave>(xmlChild))
+				{
+					loadSave->CopyTo(existingRootChild);
 
-				// To delete persistance node, we must clear this flag
-				std::dynamic_pointer_cast<ISceneNodeInternal>(xmlChild)->SetPersistanceInternal(false);
-				newRootNode->RemoveChild(xmlChild);
+					// To delete persistance node, we must clear this flag
+					std::dynamic_pointer_cast<ISceneNodeInternal>(xmlChild)->SetPersistanceInternal(false);
+					newRootNode->RemoveChild(xmlChild);
+				}
 			}
 		}
 	}

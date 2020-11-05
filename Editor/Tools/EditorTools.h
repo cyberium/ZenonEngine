@@ -9,6 +9,7 @@
 #include "RTS/EditorToolMoverRTS.h"
 #include "RTS/EditorToolRotatorRTS.h"
 #include "RTS/EditorToolRTSGround.h"
+#include "RTS/EditorToolWaypoints.h"
 
 
 class CEditorTools

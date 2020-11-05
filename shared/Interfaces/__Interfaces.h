@@ -106,9 +106,7 @@ typedef glm::vec3 ColorRBG;
 //--                   Base Types                        --//
 //---------------------------------------------------------//
 class BoundingBox;
-typedef const BoundingBox& cbbox;
 class BoundingRect;
-typedef const BoundingRect& cbrect;
 class BoundingSphere;
 class Frustum;
 class Plane;
@@ -137,7 +135,6 @@ class Rect;
 #include "Interfaces/Types/Object.h"
 #include "Interfaces/Types/ObjectsFactory.h"
 #include "Interfaces/Plugins.h"
-#include "Interfaces/SettingsManager.h"
 #include "Interfaces/Visitor.h"
 #include "Interfaces/WindowObject.h"
 #include "Interfaces/XML.h"
@@ -146,6 +143,7 @@ class Rect;
 #include "Interfaces/Managers/ModelsFactory.h"
 #include "Interfaces/Managers/ImagesFactory.h"
 #include "Interfaces/Managers/TexturesFactory.h"
+#include "Interfaces/Managers/SettingsManager.h"
 
 
 //---------------------------------------------------------//

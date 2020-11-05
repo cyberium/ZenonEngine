@@ -204,6 +204,7 @@ void CEditorResourceBrowser::Initialize()
 
 	GetEditorQtUIFrame().getCollectionViewer()->AddToRoot(CreateModelsFromFolder("models"));
 	GetEditorQtUIFrame().getCollectionViewer()->AddToRoot(CreateModelsFromFolder("models_td"));
+	GetEditorQtUIFrame().getCollectionViewer()->AddToRoot(CreateModelsFromFolder("models_food"));
 }
 
 std::shared_ptr<IznTreeViewItemSource> CEditorResourceBrowser::CreateModelsFromFolder(const std::string & FolderName)
@@ -237,7 +238,7 @@ std::shared_ptr<IznTreeViewItemSource> CEditorResourceBrowser::CreateModelsFromF
 			if (fbxFileName.find("cliffBrown") != std::string::npos)
 				loader.MakeCenterIsX0Z = true;
 
-			loader.ApplyFullTransform = true;
+			//loader.ApplyFullTransform = true;
 
 			IModelPtr fbxModel = GetBaseManager().GetManager<IznModelsFactory>()->LoadModel(fbxFileName, &loader);
 

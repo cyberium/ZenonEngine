@@ -21,6 +21,7 @@ enum ETool
 	EToolMoverRTS = 20,
 	EToolRotatorRTS = 21,
 	EToolEditorRTS = 22,
+	EToolEditorRTSWaypoints = 23,
 
 	EToolDefault = EToolSelector
 };

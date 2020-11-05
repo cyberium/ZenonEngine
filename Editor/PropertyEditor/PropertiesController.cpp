@@ -130,16 +130,23 @@ void CPropertiesController::CreateProperty(QtnPropertySet* PropertiesSet, const 
 		for (const auto& prop : propGroup->GetProperties())
 			CreateProperty(propertySet, prop.second);
 	}
-	else if (auto act = std::dynamic_pointer_cast<IPropertyAction>(Property))
+	/*else if (auto act = std::dynamic_pointer_cast<IPropertyAction>(Property))
 	{
 		auto actionProperty = new QtnPropertyButton(PropertiesSet);
 		PropertiesSet->addChildProperty(actionProperty);
 		actionProperty->setName(act->GetName().c_str());
 		actionProperty->setDescription(act->GetDescription().c_str());
 		actionProperty->setClickHandler([act](const QtnPropertyButton* Button) {
-			act->ExecuteAction();
+			try
+			{
+				act->ExecuteAction();
+			}
+			catch (const CException& e)
+			{
+				MessageBoxA(NULL, "adsw", "asdasd", 0);
+			}
 		});
-	}
+	}*/
 	else if (auto propT = std::dynamic_pointer_cast<IPropertyT<std::string>>(Property))
 	{
 		auto stringProperty = new QtnPropertyString(PropertiesSet);
@@ -160,9 +167,19 @@ void CPropertiesController::CreateProperty(QtnPropertySet* PropertiesSet, const 
 		QObject::connect(
 			stringProperty, 
 			&QtnProperty::propertyDidChange, 
-			[stringProperty, propT](const QtnPropertyBase* changedProperty, const QtnPropertyBase* firedProperty, QtnPropertyChangeReason reason) {
+			[stringProperty, propT](const QtnPropertyBase* changedProperty, const QtnPropertyBase* firedProperty, QtnPropertyChangeReason reason) 
+			{
 				if (reason & QtnPropertyChangeReasonValue)
-					propT->Set(stringProperty->value(), true);
+				{
+					try
+					{
+						propT->Set(stringProperty->value(), true);
+					}
+					catch (const CException& e)
+					{
+						MessageBoxA(NULL, "adsw", "asdasd", 0);
+					}
+				}
 			}
 		);
 	}
@@ -195,7 +212,8 @@ void CPropertiesController::CreateProperty(QtnPropertySet* PropertiesSet, const 
 	}
 	else if (auto propT = std::dynamic_pointer_cast<CPropertyWrappedColor>(Property))
 	{
-		QtnPropertyQColor* colorProperty = qtnCreateProperty<QtnPropertyQColor>(PropertiesSet);
+		QtnPropertyQColor* colorProperty = new QtnPropertyQColor(PropertiesSet);
+		PropertiesSet->addChildProperty(colorProperty);
 		colorProperty->setName(propT->GetName().c_str());
 		colorProperty->setDescription(propT->GetDescription().c_str());
 
@@ -203,29 +221,25 @@ void CPropertiesController::CreateProperty(QtnPropertySet* PropertiesSet, const 
 		color.setRgbF(propT->Get().r, propT->Get().g, propT->Get().b);
 		colorProperty->setValue(color);
 
+		/*
 		// From engine to editor
-		propT->SetValueChangedCallback(
-			[colorProperty](const glm::vec3& value) {
+		propT->SetValueChangedCallback([colorProperty](const glm::vec3& value) {
 
 			QColor color;
 			color.setRgbF(value.r, value.g, value.b);
 			colorProperty->setValue(color);
-		}
-		);
+		});
 
 		// From editor to engine
-		QObject::connect(
-			colorProperty,
-			&QtnProperty::propertyDidChange,
-			[colorProperty, propT](const QtnPropertyBase* changedProperty, const QtnPropertyBase* firedProperty, QtnPropertyChangeReason reason) {
+		QObject::connect(colorProperty,
+			&QtnProperty::propertyDidChange, [colorProperty, propT] (const QtnPropertyBase* changedProperty, const QtnPropertyBase* firedProperty, QtnPropertyChangeReason reason) {
 			if (reason & QtnPropertyChangeReasonValue)
 			{
 				double r, g, b;
 				colorProperty->value().getRgbF(&r, &g, &b);
 				propT->Set(glm::vec3(r, g, b), true);
 			}
-		}
-		);
+		});*/
 	}
 	else if (auto propT = std::dynamic_pointer_cast<IPropertyT<glm::vec3>>(Property))
 	{

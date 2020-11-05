@@ -35,6 +35,9 @@ void CEditorTools::Initialize()
 	auto RTSEditor = MakeShared(CRTSGround, m_Editor);
 	m_Tools.insert(std::make_pair(ETool::EToolEditorRTS, RTSEditor));
 
+	auto editorToolWaypoints = MakeShared(CEditorToolWaypoints, m_Editor);
+	m_Tools.insert(std::make_pair(ETool::EToolEditorRTSWaypoints, editorToolWaypoints));
+
 	m_Editor.GetUIFrame().DoInitializeToolsUI();
 	m_Editor.Get3DFrame().DoInitializeTools3D();
 

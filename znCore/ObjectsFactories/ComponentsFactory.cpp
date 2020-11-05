@@ -14,6 +14,11 @@ CComponentsFactory::CComponentsFactory(IBaseManager& BaseManager, const std::str
 CComponentsFactory::~CComponentsFactory()
 {}
 
+
+
+//
+// IComponentFactory
+//
 std::shared_ptr<ISceneNodeComponent> CComponentsFactory::CreateComponent(ObjectClass ObjectClassKey, ISceneNode & SceneNode)
 {
 	CComponentCreationArgs creationArgs(SceneNode);

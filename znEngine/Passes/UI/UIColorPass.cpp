@@ -44,7 +44,7 @@ std::shared_ptr<IRenderPassPipelined> CUIColorPass::ConfigurePipeline(std::share
 EVisitResult CUIColorPass::Visit(const IUIControl * node)
 {
 	if (const CUIColorNode* textNode = dynamic_cast<const CUIColorNode*>(node))
-		return BaseUIPass::Visit(node);
+		return BaseUIPass::Visit(textNode);
 
 	return EVisitResult::AllowVisitChilds;
 }

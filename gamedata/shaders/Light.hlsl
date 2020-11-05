@@ -14,18 +14,10 @@
 
 struct Light
 {
-	float4 Position;      // Position for point and spot lights (World space).
-	//--------------------------------------------------------------( 16 bytes )
-	
-	float4 Direction;     // Direction for spot and directional lights (World space).
-	//--------------------------------------------------------------( 16 bytes )
-
 	float4 AmbientColor;  // Ambient color of the light.
 	//--------------------------------------------------------------( 16 bytes )
-
 	float4 Color;         // Color of the light. Diffuse and specular colors are not separated.
 	//--------------------------------------------------------------( 16 bytes )
-	
 	uint Type;            // Disable or enable the light.
 	float Range;          // The range of the light.
 	float Intensity;      // The intensity of the light.

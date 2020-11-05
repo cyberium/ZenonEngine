@@ -131,7 +131,7 @@ const SelectedNodes& CEditorToolSelector::GetSelectedNodes() const
 //
 void CEditorToolSelector::DoInitialize3D(const std::shared_ptr<IRenderer>& Renderer, std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport)
 {
-	m_SelectionTexture = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<IUIControlFactory>()->CreateSceneNodeUI(cSceneNodeUI_Color, GetScene(), GetScene().GetRootUIControl());
+	m_SelectionTexture = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<IUIControlFactory>()->CreateSceneNodeUI(cSceneNodeUI_Color, GetScene());
 	m_SelectionTexture->GetProperties()->GetPropertyT<glm::vec4>("Color")->Set(glm::vec4(0.1f, 0.3f, 1.0f, 0.3f));
 
 	m_DrawSelectionPass = MakeShared(CDrawSelectionPass, GetRenderDevice(), *this);
@@ -186,7 +186,7 @@ void CEditorToolSelector::OnMouseReleased(const MouseButtonEventArgs & e, const 
 	auto cachedSelectionPrevPos = m_SelectionPrevPos;
 
 	// Clear
-	m_SelectionTexture->SetScale(glm::vec3(0.001f));
+	m_SelectionTexture->SetScale(glm::vec3(0.01f));
 	m_SelectionPrevPos = e.GetPoint();
 
 	if (m_IsSelecting2D)

@@ -132,12 +132,13 @@ void CRendererForward::DoUpdateLights()
 	std::vector<SLightVS> lightsVS;
 	for (const auto& light : m_SceneCreateTypelessListPass->GetLightList())
 	{
+		const ISceneNode* lightOwner = light.SceneNode;
 		const SLight& lightStruct = light.Light->GetLightStruct();
 
 		SLightVS lightVS;
 		lightVS.Light = lightStruct;
-		lightVS.LightPositionVS = m_Scene.GetCameraController()->GetCamera()->GetViewMatrix() * glm::vec4(lightStruct.Position.xyz(), 1.0f);
-		lightVS.LightDirectionVS = glm::normalize(m_Scene.GetCameraController()->GetCamera()->GetViewMatrix() * glm::vec4(lightStruct.Direction.xyz(), 0.0f));
+		lightVS.LightPositionVS = m_Scene.GetCameraController()->GetCamera()->GetViewMatrix() * glm::vec4(lightOwner->GetTranslation(), 1.0f);
+		lightVS.LightDirectionVS = glm::normalize(m_Scene.GetCameraController()->GetCamera()->GetViewMatrix() * glm::vec4(lightOwner->GetRotation(), 0.0f));
 		lightsVS.push_back(lightVS);
 	}
 

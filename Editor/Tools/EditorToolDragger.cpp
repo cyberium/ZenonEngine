@@ -128,8 +128,10 @@ void CEditorToolDragger::MoveDraggedNode(const glm::vec2& MousePos)
 	//auto posReal = GetCameraController()->ScreenToPlane(GetRenderWindow()->GetViewport(), MousePos, Plane(glm::vec3(0.0f, 1.0f, 0.0f), 0.0f));
 
 	auto ray = GetScene().GetCameraController()->ScreenToRay(GetScene().GetRenderWindow().GetViewport(), MousePos);
+
 	auto bounds = m_DraggerNode->GetComponent<IModelsComponent3D>()->GetModel()->GetBounds();
 	_ASSERT(false == bounds.IsInfinite());
+
 	auto pos = GetScene().GetCameraController()->RayToPlane(ray, Plane(glm::vec3(0.0f, 1.0f, 0.0f), bounds.getMax().y / 2.0f));
 	pos -= bounds.getCenter();
 
@@ -150,7 +152,8 @@ void CEditorToolDragger::CreateCopyDraggedNode()
 		return;
 
 	auto copiedNode = GetScene().CreateSceneNode<ISceneNode>();
-	m_DraggerNode->CopyTo(copiedNode);
+	if (auto loadSave = std::dynamic_pointer_cast<IObjectLoadSave>(m_DraggerNode))
+		loadSave->CopyTo(copiedNode);
 
 	copiedNode->SetTranslate(m_DraggerNode->GetTranslation());
 

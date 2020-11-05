@@ -32,7 +32,6 @@ ZN_INTERFACE ZN_API ISceneNode
 
 	virtual void Initialize() = 0;
 	virtual void Finalize() = 0;
-	virtual void CopyTo(std::shared_ptr<ISceneNode> Destination) const = 0;
 
 	virtual void AddChild(std::shared_ptr<ISceneNode> childNode) = 0;
 	virtual void RemoveChild(std::shared_ptr<ISceneNode> childNode) = 0;
@@ -83,7 +82,7 @@ ZN_INTERFACE ZN_API ISceneNode
 			return std::dynamic_pointer_cast<T>(component);
 		return nullptr;
 	}
-	template<typename T> inline std::shared_ptr<T> AddComponent(std::shared_ptr<T> Component)
+	template<typename T> inline std::shared_ptr<T> AddComponentT(std::shared_ptr<T> Component)
 	{
 		if (std::shared_ptr<ISceneNodeComponent> component = AddComponent(T::GetClassT(), std::dynamic_pointer_cast<ISceneNodeComponent>(Component)))
 			return std::dynamic_pointer_cast<T>(component);

@@ -43,25 +43,6 @@ CRTSSceneNodeGround::~CRTSSceneNodeGround()
 }
 
 
-//
-// ISceneNode
-//
-void CRTSSceneNodeGround::CopyTo(std::shared_ptr<ISceneNode> Destination) const
-{
-	Object::Copy(Destination);
-
-	auto destCast = std::dynamic_pointer_cast<CRTSSceneNodeGround>(Destination);
-
-	for (int32 x = 0; x < cCellsCount; x++)
-	{
-		for (int32 z = 0; z < cCellsCount; z++)
-		{
-			destCast->m_Cells[x][z] = m_Cells[x][z];
-		}
-	}
-}
-
-
 
 bool CRTSSceneNodeGround::AddCell(ERTSCellType CellType, SRTSCellCoords Coords)
 {
@@ -142,6 +123,21 @@ void CRTSSceneNodeGround::Accept(IVisitor * visitor)
 //
 // IObjectLoadSave
 //
+void CRTSSceneNodeGround::CopyTo(std::shared_ptr<IObject> Destination) const
+{
+	Object::CopyTo(Destination);
+
+	auto destCast = std::dynamic_pointer_cast<CRTSSceneNodeGround>(Destination);
+
+	for (int32 x = 0; x < cCellsCount; x++)
+	{
+		for (int32 z = 0; z < cCellsCount; z++)
+		{
+			destCast->m_Cells[x][z] = m_Cells[x][z];
+		}
+	}
+}
+
 void CRTSSceneNodeGround::Load(const std::shared_ptr<IXMLReader>& Reader)
 {
 	Object::Load(Reader);

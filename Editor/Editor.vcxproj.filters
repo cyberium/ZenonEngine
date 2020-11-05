@@ -69,14 +69,8 @@
     <Filter Include="UI\Widgets\ZenonWindowMinimal3D">
       <UniqueIdentifier>{936459f3-5703-4224-8fff-5490074c0c94}</UniqueIdentifier>
     </Filter>
-    <Filter Include="RTS">
-      <UniqueIdentifier>{f7a0aa7f-6f60-4e44-bba6-3fae44026bcf}</UniqueIdentifier>
-    </Filter>
     <Filter Include="3D\Materials">
       <UniqueIdentifier>{343a6465-19c2-49c5-971e-aca91ad1d194}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SceneBrowser">
-      <UniqueIdentifier>{3374dd66-8d28-41dd-98bd-05ce9c7e139b}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files">
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
@@ -326,32 +320,11 @@
     <ClCompile Include="Tools\EditorTools.cpp">
       <Filter>Tools</Filter>
     </ClCompile>
-    <ClCompile Include="RTS\EditorToolRTSGround.cpp">
-      <Filter>RTS</Filter>
-    </ClCompile>
     <ClCompile Include="Passes\DrawToolsPass.cpp">
       <Filter>3D\Passes</Filter>
     </ClCompile>
     <ClCompile Include="Materials\MaterialEditorTool.cpp">
       <Filter>3D\Materials</Filter>
-    </ClCompile>
-    <ClCompile Include="SceneBrowser\SceneBrowserNode.cpp">
-      <Filter>SceneBrowser</Filter>
-    </ClCompile>
-    <ClCompile Include="SceneBrowser\SourceBrowser_SceneNode3DBuilder.cpp">
-      <Filter>SceneBrowser</Filter>
-    </ClCompile>
-    <ClCompile Include="SceneBrowser\SceneBrowserTreeItem.cpp">
-      <Filter>SceneBrowser</Filter>
-    </ClCompile>
-    <ClCompile Include="SceneBrowser\SceneBrowserTreeModel.cpp">
-      <Filter>SceneBrowser</Filter>
-    </ClCompile>
-    <ClCompile Include="SceneBrowser\SceneBrowser.cpp">
-      <Filter>SceneBrowser</Filter>
-    </ClCompile>
-    <ClCompile Include="SceneBrowser\SceneBrowserFolder.cpp">
-      <Filter>SceneBrowser</Filter>
     </ClCompile>
     <ClCompile Include="EditorWindowsShell.cpp" />
     <ClCompile Include="ZenonWidgets\ZenonTreeView\ZenonTreeViewWidget.cpp">
@@ -371,6 +344,15 @@
     </ClCompile>
     <ClCompile Include="DragUtils.cpp">
       <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Tools\RTS\EditorToolRTSGround.cpp">
+      <Filter>Tools\RTS</Filter>
+    </ClCompile>
+    <ClCompile Include="Passes\DrawWaypointsPass.cpp">
+      <Filter>3D\Passes</Filter>
+    </ClCompile>
+    <ClCompile Include="Tools\RTS\EditorToolWaypoints.cpp">
+      <Filter>Tools\RTS</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -552,36 +534,12 @@
     <ClInclude Include="Tools\EditorTools.h">
       <Filter>Tools</Filter>
     </ClInclude>
-    <ClInclude Include="RTS\EditorToolRTSGround.h">
-      <Filter>RTS</Filter>
-    </ClInclude>
     <ClInclude Include="EditorWindowsShell.h" />
     <ClInclude Include="Passes\DrawToolsPass.h">
       <Filter>3D\Passes</Filter>
     </ClInclude>
     <ClInclude Include="Materials\MaterialEditorTool.h">
       <Filter>3D\Materials</Filter>
-    </ClInclude>
-    <ClInclude Include="SceneBrowser\SceneBrowserNode.h">
-      <Filter>SceneBrowser</Filter>
-    </ClInclude>
-    <ClInclude Include="SceneBrowser\SceneBrowserInfs.h">
-      <Filter>SceneBrowser</Filter>
-    </ClInclude>
-    <ClInclude Include="SceneBrowser\SourceBrowser_SceneNode3DBuilder.h">
-      <Filter>SceneBrowser</Filter>
-    </ClInclude>
-    <ClInclude Include="SceneBrowser\SceneBrowserTreeItem.h">
-      <Filter>SceneBrowser</Filter>
-    </ClInclude>
-    <ClInclude Include="SceneBrowser\SceneBrowserTreeModel.h">
-      <Filter>SceneBrowser</Filter>
-    </ClInclude>
-    <ClInclude Include="SceneBrowser\SceneBrowser.h">
-      <Filter>SceneBrowser</Filter>
-    </ClInclude>
-    <ClInclude Include="SceneBrowser\SceneBrowserFolder.h">
-      <Filter>SceneBrowser</Filter>
     </ClInclude>
     <ClInclude Include="_widgetZenonTreeView.h">
       <Filter>UI\Widgets</Filter>
@@ -603,6 +561,15 @@
     </ClInclude>
     <ClInclude Include="DragUtils.h">
       <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Tools\RTS\EditorToolRTSGround.h">
+      <Filter>Tools\RTS</Filter>
+    </ClInclude>
+    <ClInclude Include="Passes\DrawWaypointsPass.h">
+      <Filter>3D\Passes</Filter>
+    </ClInclude>
+    <ClInclude Include="Tools\RTS\EditorToolWaypoints.h">
+      <Filter>Tools\RTS</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

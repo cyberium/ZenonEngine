@@ -39,15 +39,6 @@ CColliderComponent3D::~CColliderComponent3D()
 {
 }
 
-void CColliderComponent3D::Copy(std::shared_ptr<ISceneNodeComponent> Destination) const
-{
-	auto destCast = std::dynamic_pointer_cast<IColliderComponent3D>(Destination);
-
-	destCast->SetCullStrategy(m_CullStrategy);
-	destCast->SetCullDistance(m_CullDistance);
-	destCast->SetBounds(m_Bounds);
-	destCast->SetDebugDrawMode(m_DebugDraw);
-}
 
 
 //
@@ -96,27 +87,12 @@ void CColliderComponent3D::ExtendBounds(BoundingBox Bounds)
 	RaiseComponentMessage(UUID_OnBoundsChanget);
 }
 
-cbbox CColliderComponent3D::GetBounds() const
+const BoundingBox& CColliderComponent3D::GetBounds() const
 {
-	if (m_Bounds.IsInfinite())
-	{
-		if (auto models = GetComponent<IModelsComponent3D>())
-		{
-			glm::vec3 floatMin(Math::MinFloat);
-			glm::vec3 floatMax(Math::MaxFloat);
-
-			BoundingBox newBBox(floatMax, floatMin);
-			if (auto model = models->GetModel())
-				newBBox.makeUnion(model->GetBounds());
-
-			if (newBBox.getMin() != floatMax && newBBox.getMax() != floatMin)
-				const_cast<CColliderComponent3D*>(this)->SetBounds(newBBox);
-		}
-	}
 	return m_Bounds;
 }
 
-cbbox CColliderComponent3D::GetWorldBounds() const
+const BoundingBox& CColliderComponent3D::GetWorldBounds() const
 {
 	return m_WorldBounds;
 }
@@ -147,12 +123,9 @@ bool CColliderComponent3D::IsCulled(const ICameraComponent3D * Camera) const
 			return IsCulledByDistance(Camera) || IsCulledByFrustum(Camera);
 		case ECullStrategy::ByFrustrumAndDistance2D:
 			return IsCulledByDistance2D(Camera) || IsCulledByFrustum(Camera);
-		default:
-			_ASSERT(false);
 	}
 
-	_ASSERT(false);
-	return false;
+	throw CException("Unknown culling strategy.");
 }
 
 bool CColliderComponent3D::IsCulledByFrustum(const ICameraComponent3D* Camera) const
@@ -188,6 +161,11 @@ bool CColliderComponent3D::IsRayIntersects(const Ray & Ray) const
 	return HitBoundingBox(GetWorldBounds().getMin(), GetWorldBounds().getMax(), Ray.GetOrigin(), Ray.GetDirection());
 }
 
+
+
+//
+// ISceneNodeComponent
+//
 void CColliderComponent3D::OnMessage(const ISceneNodeComponent* Component, ComponentMessageType Message)
 {
 	switch (Message)
@@ -210,16 +188,49 @@ void CColliderComponent3D::OnMessage(const ISceneNodeComponent* Component, Compo
 
 
 //
+// IObjectSaveLoad
+//
+void CColliderComponent3D::CopyTo(std::shared_ptr<IObject> Destination) const
+{
+	CComponentBase::CopyTo(Destination);
+
+	auto destCast = std::dynamic_pointer_cast<CColliderComponent3D>(Destination);
+
+	destCast->SetCullStrategy(m_CullStrategy);
+	destCast->SetCullDistance(m_CullDistance);
+	destCast->SetBounds(m_Bounds);
+	destCast->SetDebugDrawMode(m_DebugDraw);
+}
+
+void CColliderComponent3D::Load(const std::shared_ptr<IXMLReader>& Reader)
+{
+	CComponentBase::Load(Reader);
+
+	BoundingBox bbox;
+	bbox.Load(Reader);
+	SetBounds(bbox);
+}
+
+void CColliderComponent3D::Save(const std::shared_ptr<IXMLWriter>& Writer) const
+{
+	CComponentBase::Save(Writer);
+
+	GetBounds().Save(Writer);
+}
+
+
+
+//
 // Protected
 //
 void CColliderComponent3D::UpdateBounds()
 {
-	BoundingBox bounds = m_Bounds;
+	BoundingBox bounds = GetBounds();
 	bounds.transform(GetOwnerNode().GetWorldTransfom());
 	m_WorldBounds = bounds;
 }
 
-void CColliderComponent3D::SetMinBounds(const glm::vec3 & Min)
+void CColliderComponent3D::SetMinBounds(const glm::vec3& Min)
 {
 	m_Bounds.setMin(Min);
 }

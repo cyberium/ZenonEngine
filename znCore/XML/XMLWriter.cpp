@@ -215,12 +215,12 @@ void CXMLWriter::SetUInt64(uint64 Value)
 
 void CXMLWriter::SetFloat(float Value)
 {
-	SetValue(SetNumericAttribute<float>("%f", Value));
+	SetValue(SetNumericAttribute<float>("f", Value));
 }
 
 void CXMLWriter::SetDouble(double Value)
 {
-	SetValue(SetNumericAttribute<double>("%lf", Value));
+	SetValue(SetNumericAttribute<double>("lf", Value));
 }
 
 void CXMLWriter::SetVec2(glm::vec2 Value)

@@ -196,18 +196,38 @@ bool BoundingBox::isPointInside(const glm::vec3& Point) const
 }
 
 
-inline void BoundingBox::Load(const std::shared_ptr<IByteBuffer>& ByteBuffer)
+void BoundingBox::Load(const std::shared_ptr<IByteBuffer>& ByteBuffer)
 {
 	ByteBuffer->read(&m_Min);
 	ByteBuffer->read(&m_Max);
 	CalculateCenter();
 }
 
-inline void BoundingBox::Save(const std::shared_ptr<IByteBuffer>& ByteBuffer) const
+void BoundingBox::Save(const std::shared_ptr<IByteBuffer>& ByteBuffer) const
 {
 	ByteBuffer->write(&m_Min);
 	ByteBuffer->write(&m_Max);
 }
+
+void BoundingBox::Load(const std::shared_ptr<IXMLReader>& Reader)
+{
+	if (false == Reader->IsAttributeExists("Min") || false == Reader->IsAttributeExists("Max"))
+		return;
+
+	m_Min = Reader->GetVec3Attribute("Min");
+	m_Max = Reader->GetVec3Attribute("Max");
+	CalculateCenter();
+}
+
+void BoundingBox::Save(const std::shared_ptr<IXMLWriter>& Writer) const
+{
+	if (IsInfinite())
+		return;
+
+	Writer->SetVec3Attribute(m_Min, "Min");
+	Writer->SetVec3Attribute(m_Max, "Max");
+}
+
 
 
 //

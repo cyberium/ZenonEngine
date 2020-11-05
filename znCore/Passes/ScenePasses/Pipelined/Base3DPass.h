@@ -15,6 +15,9 @@ public:
 	virtual EVisitResult Visit(const IGeometry* Geometry, const IMaterial* Material, SGeometryDrawArgs GeometryDrawArgs = SGeometryDrawArgs()) override;
 
 protected:
+	void BindPerObjectParameter(const glm::mat4& PerObjectMatrix);
+
+protected:
 	std::shared_ptr<IConstantBuffer> m_PerObjectConstantBuffer;
 	IShaderParameter* m_PerObjectParameter;
 };

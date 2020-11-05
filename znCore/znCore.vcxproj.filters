@@ -359,9 +359,6 @@
     <ClInclude Include="..\shared\Interfaces\Plugins.h">
       <Filter>__Interfaces</Filter>
     </ClInclude>
-    <ClInclude Include="..\shared\Interfaces\Settings.h">
-      <Filter>__Interfaces</Filter>
-    </ClInclude>
     <ClInclude Include="..\shared\Interfaces\Visitor.h">
       <Filter>__Interfaces</Filter>
     </ClInclude>
@@ -782,11 +779,9 @@
     <ClInclude Include="..\shared\Interfaces\Types\ObjectClasses.h">
       <Filter>__Interfaces\Types</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Scene\ComponentBase.inl">
-      <Filter>Scene</Filter>
-    </None>
+    <ClInclude Include="..\shared\Interfaces\Managers\SettingsManager.h">
+      <Filter>__Interfaces\Managers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="Files\FormatsDescription.txt">

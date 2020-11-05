@@ -33,8 +33,6 @@ public:
 	std::shared_ptr<ISceneNode> GetFirstSelectedNode() const override;
 	std::vector<std::shared_ptr<ISceneNode>> GetSelectedNodes() const override;
 
-	// Scene change part
-
 	// IEditorToolSelectorEventListener
 	void OnSelectNode() override;
 

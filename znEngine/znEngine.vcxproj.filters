@@ -706,6 +706,9 @@
     <ClCompile Include="NativeWindows\NativeWindowFactory.cpp">
       <Filter>NativeWindows</Filter>
     </ClCompile>
+    <ClCompile Include="Scene\SceneNodeWaypoints.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="common.h">
@@ -1303,6 +1306,9 @@
     </ClInclude>
     <ClInclude Include="NativeWindows\NativeWindowFactory.h">
       <Filter>NativeWindows</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\SceneNodeWaypoints.h">
+      <Filter>Scene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

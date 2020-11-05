@@ -6,6 +6,12 @@ class ZN_API Object
 	, public IObjectLoadSave
 {
 public:
+
+	static std::string ConvertInputName(const std::string& OriginalName)
+	{
+		return OriginalName;
+	}
+
 	static std::pair<std::string, ObjectCounterType> GetClearName(std::string DirtyName)
 	{
 		auto chIt = DirtyName.find_last_of('#');
@@ -16,9 +22,7 @@ public:
 
 			int num;
 			if (sscanf(idNumber.c_str(), "%d", &num) == 1)
-			{
 				return std::make_pair(clearName, num);
-			}
 
 			return std::make_pair(clearName, 0);
 		}
@@ -27,9 +31,6 @@ public:
 	}
 
 public:
-	bool operator==(const Object& rhs) const;
-	bool operator!=(const Object& rhs) const;
-
 	virtual std::string GetTypeName() const;
 	virtual std::string GetClassNameW() const;
 
@@ -37,9 +38,9 @@ public:
 	virtual Guid GetGUID() const override;
 	virtual std::string GetName() const override;
 	virtual void SetName(const std::string& Name) override;
-	virtual void Copy(std::shared_ptr<IObject> Destination) const;
 
 	// IObjectLoadSave
+	virtual void CopyTo(std::shared_ptr<IObject> Destination) const override;
 	virtual void Load(const std::shared_ptr<IByteBuffer>& Buffer) override;
 	virtual void Save(const std::shared_ptr<IByteBuffer>& Buffer) const override;
 	virtual void Load(const std::shared_ptr<IXMLReader>& Reader) override;

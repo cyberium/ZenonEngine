@@ -384,6 +384,7 @@
     <ClCompile Include="Scene\Nodes\UIWindow.cpp" />
     <ClCompile Include="Scene\RTSSceneNodeGround.cpp" />
     <ClCompile Include="Scene\SceneBase.cpp" />
+    <ClCompile Include="Scene\SceneNodeWaypoints.cpp" />
     <ClCompile Include="Settings.cpp" />
     <ClCompile Include="Settings\GroupVideo.cpp" />
     <ClCompile Include="stdafx.cpp">
@@ -589,6 +590,7 @@
     <ClInclude Include="Scene\Nodes\UIWindow.h" />
     <ClInclude Include="Scene\RTSSceneNodeGround.h" />
     <ClInclude Include="Scene\SceneBase.h" />
+    <ClInclude Include="Scene\SceneNodeWaypoints.h" />
     <ClInclude Include="Settings.h" />
     <ClInclude Include="Settings\GroupVideo.h" />
     <ClInclude Include="stdafx.h" />

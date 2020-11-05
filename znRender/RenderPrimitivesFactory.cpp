@@ -104,6 +104,30 @@ std::shared_ptr<IGeometry> CRenderPrimitivesFactory::CreateLines(size_t count)
 	return geometry;
 }
 
+std::shared_ptr<IGeometry> CRenderPrimitivesFactory::CreateLines(const std::vector<glm::vec3>& Points)
+{
+	std::vector<glm::vec3> points2;
+
+	if (Points.size() < 2)
+		throw CException("Unable to build points geometry from '%d' points.", Points.size());
+
+	for (size_t i = 0; i < Points.size() - 1; i++)
+	{
+		points2.push_back(Points[i]);
+		points2.push_back(Points[i + 1]);
+	}
+
+	std::shared_ptr<IGeometry> geometry = m_RenderDevice.GetObjectsFactory().CreateGeometry();
+	geometry->SetPrimitiveTopology(PrimitiveTopology::LineList);
+
+	std::shared_ptr<IBuffer> __vb = m_RenderDevice.GetObjectsFactory().CreateVertexBuffer(points2.data(), points2.size());
+	geometry->AddVertexBuffer(BufferBinding("POSITION", 0), __vb);
+
+	geometry->SetBounds(CalculateBounds(points2));
+
+	return geometry;
+}
+
 std::shared_ptr<IGeometry> CRenderPrimitivesFactory::CreatePlane(const glm::vec3& N)
 {
 	DirectX::VertexCollection vertices;

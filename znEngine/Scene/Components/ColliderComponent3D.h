@@ -8,8 +8,6 @@ public:
 	CColliderComponent3D(const ISceneNode& OwnerNode);
     virtual ~CColliderComponent3D();
 
-	void Copy(std::shared_ptr<ISceneNodeComponent> Destination) const override;
-
     // IColliderComponent3D
 	void SetCullStrategy(ECullStrategy CullStrategy) override;
 	ECullStrategy GetCullStrategy() const override;
@@ -17,8 +15,8 @@ public:
 	float GetCullDistance() const override;
     void SetBounds(BoundingBox Bounds) override;
 	void ExtendBounds(BoundingBox Bounds) override;
-    cbbox GetBounds() const override;
-	cbbox GetWorldBounds() const override;
+    const BoundingBox& GetBounds() const override;
+	const BoundingBox& GetWorldBounds() const override;
 	void SetDebugDrawMode(bool Value) override;
 	bool GetDebugDrawMode() const override;
 
@@ -28,8 +26,13 @@ public:
 	bool IsCulledByDistance(const ICameraComponent3D* Camera) const override;
 	bool IsRayIntersects(const Ray& Ray) const override;
 
-    // CComponentBase
+    // ISceneNodeComponent
     void OnMessage(const ISceneNodeComponent* Component, ComponentMessageType Message) override;
+
+	// IObjectSaveLoad
+	void CopyTo(std::shared_ptr<IObject> Destination) const override;
+	void Load(const std::shared_ptr<IXMLReader>& Reader) override;
+	void Save(const std::shared_ptr<IXMLWriter>& Writer) const override;
 
 protected:
     virtual void UpdateBounds();

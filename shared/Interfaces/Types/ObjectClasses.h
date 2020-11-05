@@ -19,12 +19,15 @@ const ObjectClass cFilesManager                 = UINT16_MAX - 12u;
 const ObjectClass cLoader                       = UINT16_MAX - 13u;
 const ObjectClass cLog                          = UINT16_MAX - 14u;
 const ObjectClass cPluginsManager               = UINT16_MAX - 15u;
-
+const ObjectClass cSettingsManager              = UINT16_MAX - 16u;
 
 //
 // 3D
 //
 ZN_MAKE_OBJECTCLASS(cSceneNode3D, 100);
+ZN_MAKE_OBJECTCLASS(cCRTSSceneNodeGround, 101);
+ZN_MAKE_OBJECTCLASS(cSceneNodePoint, 102);
+ZN_MAKE_OBJECTCLASS(cSceneNodePath, 103);
 
 
 

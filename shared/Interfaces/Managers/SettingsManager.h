@@ -39,12 +39,20 @@ ZN_INTERFACE ZN_API ISettingGroup
 
 
 
-ZN_INTERFACE ZN_API
-	__declspec(uuid("9FB1EEC3-16B7-4983-84C5-DDF47B203C6D"))
-	ISettings : public IManager
+ZN_INTERFACE ZN_API	ISettings 
+	: public IManager
 {
+	ZN_OBJECTCLASS(cSettingsManager);
+
 	virtual ~ISettings() {}
 
 	virtual void AddGroup(const std::string& GroupName, std::shared_ptr<ISettingGroup> Group) = 0;
 	virtual std::shared_ptr<ISettingGroup> GetGroup(const std::string& GroupName) = 0;
+
+
+	template <typename T>
+	inline T GetSetting(const std::string& GroupName, const std::string& SettingName)
+	{
+		GetBaseManager().GetManager<ISettings>()->GetGroup("Video")->GetSettingT<glm::vec2>("WindowSize")->Get().x;
+	}
 };

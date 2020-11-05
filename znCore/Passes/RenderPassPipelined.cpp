@@ -122,6 +122,16 @@ EVisitResult RenderPassPipelined::Visit(const IParticleSystem * ParticleSystem)
 //
 // Protected
 //
+IBaseManager& RenderPassPipelined::GetBaseManager() const
+{
+	return m_BaseManager;
+}
+
+IRenderDevice& RenderPassPipelined::GetRenderDevice() const
+{
+	return m_RenderDevice;
+}
+
 void RenderPassPipelined::FillPerFrameData()
 {
 	_ASSERT(m_RenderEventArgs->Camera != nullptr);
@@ -138,16 +148,6 @@ const RenderEventArgs& RenderPassPipelined::GetRenderEventArgs() const
 {
 	_ASSERT(m_RenderEventArgs != nullptr);
 	return *m_RenderEventArgs;
-}
-
-const IRenderDevice& RenderPassPipelined::GetRenderDevice() const
-{
-    return m_RenderDevice;
-}
-
-const IBaseManager& RenderPassPipelined::GetBaseManager() const
-{
-	return m_BaseManager;
 }
 
 

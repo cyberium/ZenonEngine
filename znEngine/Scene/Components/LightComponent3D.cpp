@@ -29,7 +29,8 @@ CLightComponent3D::CLightComponent3D(const ISceneNode& OwnerNode)
 
 CLightComponent3D::~CLightComponent3D()
 {
-	_aligned_free(m_LightStruct);
+	if (m_LightStruct != nullptr)
+		_aligned_free(m_LightStruct);
 }
 
 
@@ -97,24 +98,29 @@ float CLightComponent3D::GetSpotlightAngle() const
 	return m_LightStruct->SpotlightAngle;
 }
 
+
+
 //
 // ILight3D
 //
 glm::mat4 CLightComponent3D::GetViewMatrix() const
 {
+	const glm::vec3& ownerTranslate = GetOwnerNode().GetTranslation();
+	const glm::vec3& ownerRotation = GetOwnerNode().GetRotation();
+
 	if (m_LightStruct->Type == ELightType::Point)
 	{
 		return glm::mat4(1.0f);
 	}
 	else if (m_LightStruct->Type == ELightType::Spot)
 	{
-		return glm::lookAt(m_LightStruct->Position.xyz(), m_LightStruct->Position.xyz() + m_LightStruct->Direction.xyz() * 100.0f, glm::vec3(0.0f, 1.0f, 0.0f));
+		return glm::lookAt(ownerTranslate, ownerTranslate + ownerRotation * 100.0f, glm::vec3(0.0f, 1.0f, 0.0f));
 	}
 	else if (m_LightStruct->Type == ELightType::Directional)
 	{
 		//glm::vec3 position = -m_LightStruct->DirectionWS.xyz();
 		//position *= 100.0f;
-		return glm::lookAt(glm::vec3(10.0f), glm::vec3(10.0f) + m_LightStruct->Direction.xyz() * 100.0f, glm::vec3(0.0f, 1.0f, 0.0f));
+		return glm::lookAt(glm::vec3(10.0f), glm::vec3(10.0f) + ownerRotation * 100.0f, glm::vec3(0.0f, 1.0f, 0.0f));
 	}
 
 	return glm::mat4(1.0f);
@@ -149,16 +155,145 @@ const SLight& CLightComponent3D::GetLightStruct() const
 //
 // ISceneNodeComponent
 //
-void CLightComponent3D::Update(const UpdateEventArgs & e)
-{
-	m_LightStruct->Position = glm::vec4(GetOwnerNode().GetTranslation(), 1.0f);
-	m_LightStruct->Direction = glm::vec4(GetOwnerNode().GetRotation(), 0.0f);
-}
-
 void CLightComponent3D::Accept(IVisitor* visitor)
 {
 	if (GetType() == ELightType::Unknown)
 		return;
-
 	visitor->Visit((const ILight3D*) this);
+}
+
+
+
+//
+// IObjectSaveLoad
+//
+
+namespace
+{
+	std::string LightTypeToString(ELightType Type)
+	{
+		switch (Type)
+		{
+			case ELightType::Point:
+				return "Point";
+			case ELightType::Spot:
+				return "Spot";
+			case ELightType::Directional:
+				return "Directional";
+		}
+		throw CException("Unknown LightType '%d'", (int)Type);
+	}
+
+	ELightType LightTypeFromString(std::string Type)
+	{
+		if (Type == "Point")
+			return ELightType::Point;
+		else if (Type == "Spot")
+			return ELightType::Spot;
+		else if (Type == "Directional")
+			return ELightType::Directional;
+		throw CException("Unknown LightType '%s'", Type.c_str());
+	}
+}
+
+void CLightComponent3D::CopyTo(std::shared_ptr<IObject> Destination) const
+{
+	CComponentBase::CopyTo(Destination);
+
+	auto destCast = std::dynamic_pointer_cast<CLightComponent3D>(Destination);
+
+	destCast->SetAmbientColor(GetAmbientColor());
+	destCast->SetColor(GetColor());
+	destCast->SetType(GetType());
+	destCast->SetRange(GetRange());
+	destCast->SetIntensity(GetIntensity());
+	destCast->SetSpotlightAngle(GetSpotlightAngle());
+}
+
+void CLightComponent3D::Load(const std::shared_ptr<IXMLReader>& Reader)
+{
+	CComponentBase::Load(Reader);
+
+	auto lightStruct = Reader->GetChild("LightStruct");
+	if (lightStruct == nullptr)
+		throw CException("Unable to find 'LightStruct' xml child.");
+
+	{
+		auto ambientColor = lightStruct->GetChild("AmbientColor");
+		if (ambientColor == nullptr)
+			throw CException("Unable to find 'AmbientColor' xml child.");
+		SetAmbientColor(ambientColor->GetVec3());
+	}
+
+	{
+		auto color = lightStruct->GetChild("Color");
+		if (color == nullptr)
+			throw CException("Unable to find 'Color' xml child.");
+		SetColor(color->GetVec3());
+	}
+
+	{
+		auto type = lightStruct->GetChild("Type");
+		if (type == nullptr)
+			throw CException("Unable to find 'Type' xml child.");
+		SetType(LightTypeFromString(type->GetValue()));
+	}
+
+	{
+		auto range = lightStruct->GetChild("Range");
+		if (range == nullptr)
+			throw CException("Unable to find 'Range' xml child.");
+		SetRange(range->GetFloat());
+	}
+
+	{
+		auto intensity = lightStruct->GetChild("Intensity");
+		if (intensity == nullptr)
+			throw CException("Unable to find 'Intensity' xml child.");
+		SetIntensity(intensity->GetFloat());
+	}
+
+	{
+		auto spotlightAngle = lightStruct->GetChild("SpotlightAngle");
+		if (spotlightAngle == nullptr)
+			throw CException("Unable to find 'SpotlightAngle' xml child.");
+		SetSpotlightAngle(spotlightAngle->GetFloat());
+	}
+}
+
+void CLightComponent3D::Save(const std::shared_ptr<IXMLWriter>& Writer) const
+{
+	CComponentBase::Save(Writer);
+
+	auto lightStruct = Writer->CreateChild("LightStruct");
+
+	{
+		auto ambientColor = lightStruct->CreateChild("AmbientColor");
+		ambientColor->SetVec3(GetAmbientColor());
+	}
+
+	{
+		auto color = lightStruct->CreateChild("Color");
+		color->SetVec3(GetColor());
+	}
+
+	{
+		auto type = lightStruct->CreateChild("Type");
+		type->SetValue(LightTypeToString(GetType()));
+	}
+
+	{
+		auto range = lightStruct->CreateChild("Range");
+		range->SetFloat(GetRange());
+	}
+
+	{
+		auto intensity = lightStruct->CreateChild("Intensity");
+		intensity->SetFloat(GetIntensity());
+	}
+
+	{
+		auto spotlightAngle = lightStruct->CreateChild("SpotlightAngle");
+		spotlightAngle->SetFloat(GetSpotlightAngle());
+	}
 }
