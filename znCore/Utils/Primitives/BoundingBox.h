@@ -33,9 +33,9 @@ public:
 	bool isPointInside(const glm::vec3& _point) const;
 
 	void Load(const std::shared_ptr<IByteBuffer>& ByteBuffer);
-	void Save(const std::shared_ptr<IByteBuffer>& ByteBuffer) const;
+	bool Save(const std::shared_ptr<IByteBuffer>& ByteBuffer) const;
 	void Load(const std::shared_ptr<IXMLReader>& Reader);
-	void Save(const std::shared_ptr<IXMLWriter>& Writer) const;
+	bool Save(const std::shared_ptr<IXMLWriter>& Writer) const;
 
 private:
 	bool IsCenterCalculated() const;

@@ -453,9 +453,14 @@ void SceneBase::LoadFromFile(const std::string& FileName)
 
 void SceneBase::SaveToFile(const std::string& FileName) const
 {
+	std::shared_ptr<IFile> file = m_BaseManager.GetManager<IFilesManager>()->Create(FileName);
+
 	CXMLManager manager(GetBaseManager());
 
-	auto rootWriter = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeFactory>()->SaveSceneNode3DXML(GetRootSceneNode());
+	auto rootNode = GetRootSceneNode();
+	rootNode->SetName(file->Name_NoExtension());
+
+	auto rootWriter = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeFactory>()->SaveSceneNode3DXML(rootNode);
 
 	auto xml = manager.CreateWriter();
 	xml->AddChild(rootWriter);

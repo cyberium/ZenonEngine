@@ -209,7 +209,7 @@ ZN_INTERFACE ZN_API ILight3D
 
 	virtual glm::mat4 GetViewMatrix() const = 0;
 	virtual glm::mat4 GetProjectionMatrix() const = 0;
-
+	virtual Frustum GetFrustum() const = 0;
 	virtual const SLight& GetLightStruct() const = 0;
 };
 

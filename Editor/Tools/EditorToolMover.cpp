@@ -24,9 +24,7 @@ void CEditorToolMover::Enable()
 
 	if (auto node = GetEditor().GetFirstSelectedNode())
 	{
-		m_MovingNode = node;
-		m_MoverRoot->SetTranslate(node->GetTranslation());
-		m_MoverRoot->SetScale(glm::vec3(node->GetComponent<IColliderComponent3D>()->GetBounds().getRadius() * 1.0f / 50.0f));
+		OnNodeSelected(node);
 	}
 }
 
@@ -173,6 +171,22 @@ void CEditorToolMover::OnMouseMoved(const MouseMotionEventArgs & e, const Ray & 
 
 	// Refresh selection bounds
 	GetEditor().GetTools().GetToolT<IEditorToolSelector>(ETool::EToolSelector).SelectNode(movingNode);
+}
+
+void CEditorToolMover::OnNodeSelected(const std::shared_ptr<ISceneNode> SelectedNode)
+{
+	m_MovingNode = SelectedNode;
+	m_MoverRoot->SetTranslate(SelectedNode->GetTranslation());
+
+	float scaleForMoverTool = 1.0f / 50.0f;
+	if (auto colliderComponent = SelectedNode->GetComponent<IColliderComponent3D>())
+	{
+		scaleForMoverTool *= SelectedNode->GetComponent<IColliderComponent3D>()->GetBounds().getRadius();
+		if (SelectedNode->GetClass() == cSceneNodePoint)
+			scaleForMoverTool *= 5.0f;
+	}
+
+	m_MoverRoot->SetScale(glm::vec3(scaleForMoverTool));
 }
 
 

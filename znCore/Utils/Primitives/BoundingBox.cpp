@@ -203,10 +203,14 @@ void BoundingBox::Load(const std::shared_ptr<IByteBuffer>& ByteBuffer)
 	CalculateCenter();
 }
 
-void BoundingBox::Save(const std::shared_ptr<IByteBuffer>& ByteBuffer) const
+bool BoundingBox::Save(const std::shared_ptr<IByteBuffer>& ByteBuffer) const
 {
+	if (IsInfinite())
+		return false;
+
 	ByteBuffer->write(&m_Min);
 	ByteBuffer->write(&m_Max);
+	return true;
 }
 
 void BoundingBox::Load(const std::shared_ptr<IXMLReader>& Reader)
@@ -219,13 +223,14 @@ void BoundingBox::Load(const std::shared_ptr<IXMLReader>& Reader)
 	CalculateCenter();
 }
 
-void BoundingBox::Save(const std::shared_ptr<IXMLWriter>& Writer) const
+bool BoundingBox::Save(const std::shared_ptr<IXMLWriter>& Writer) const
 {
 	if (IsInfinite())
-		return;
+		return false;
 
 	Writer->SetVec3Attribute(m_Min, "Min");
 	Writer->SetVec3Attribute(m_Max, "Max");
+	return true;
 }
 
 

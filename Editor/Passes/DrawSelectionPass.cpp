@@ -77,8 +77,6 @@ std::shared_ptr<IRenderPassPipelined> CDrawSelectionPass::ConfigurePipeline(std:
 	GetPipeline().GetDepthStencilState()->SetDepthMode(enableDepthWrites);
 	GetPipeline().GetRasterizerState()->SetCullMode(IRasterizerState::CullMode::None);
 	GetPipeline().GetRasterizerState()->SetFillMode(IRasterizerState::FillMode::Solid, IRasterizerState::FillMode::Solid);
-	GetPipeline().GetRasterizerState()->SetMultisampleEnabled(true);
-	GetPipeline().GetRasterizerState()->SetAntialiasedLineEnable(true);
 	GetPipeline().SetRenderTarget(RenderTarget);
 	GetPipeline().SetShader(EShaderType::VertexShader, vertexShader);
 	GetPipeline().SetShader(EShaderType::PixelShader, pixelShader);

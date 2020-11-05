@@ -109,6 +109,13 @@ void CEditorTools::OnMouseMoved(const MouseMotionEventArgs & e, const Ray & RayT
 			it.second->OnMouseMoved(e, RayToWorld);
 }
 
+void CEditorTools::OnNodeSelected(const std::shared_ptr<ISceneNode> SelectedNode)
+{
+	for (const auto& it : m_Tools)
+		if (it.second->IsEnabled())
+			it.second->OnNodeSelected(SelectedNode);
+}
+
 
 
 //

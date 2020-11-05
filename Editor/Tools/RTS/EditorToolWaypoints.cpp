@@ -84,7 +84,8 @@ bool CEditorToolWaypoints::OnMousePressed(const MouseButtonEventArgs & e, const 
 	}
 	else if (e.Button == MouseButton::Right)
 	{
-		m_CurrectWaypointsNode->RemoveChild(m_LastCreatedPoint);
+		if (m_LastCreatedPoint != nullptr)
+			m_CurrectWaypointsNode->RemoveChild(m_LastCreatedPoint);
 
 		m_IsActivated = false;
 		m_CurrectWaypointsNode = nullptr;
@@ -106,10 +107,10 @@ void CEditorToolWaypoints::OnMouseMoved(const MouseMotionEventArgs & e, const Ra
 	if (m_LastCreatedPoint == nullptr)
 		return;
 
-	auto bounds = m_LastCreatedPoint->GetComponent<IModelsComponent3D>()->GetModel()->GetBounds();
+	auto bounds = m_LastCreatedPoint->GetComponent<IColliderComponent3D>()->GetBounds();
 	_ASSERT(false == bounds.IsInfinite());
 
-	auto pos = GetScene().GetCameraController()->RayToPlane(RayToWorld, Plane(glm::vec3(0.0f, 1.0f, 0.0f), bounds.getMax().y / 2.0f));
+	auto pos = GetScene().GetCameraController()->RayToPlane(RayToWorld, Plane(glm::vec3(0.0f, 1.0f, 0.0f), bounds.getMax().y / 2.0f + 5.0f));
 	pos -= bounds.getCenter();
 
 	//pos = dynamic_cast<IEditorToolMover&>(GetEditor().GetTools().GetTool(ETool::EToolMover)).FixBoxCoords(pos);
@@ -118,6 +119,15 @@ void CEditorToolWaypoints::OnMouseMoved(const MouseMotionEventArgs & e, const Ra
 	lastPoint->SetTranslate(pos);
 
 	m_LastCreatedPoint->SetTranslate(pos);
+}
+
+void CEditorToolWaypoints::OnNodeSelected(const std::shared_ptr<ISceneNode> SelectedNode)
+{
+	if (SelectedNode->GetClass() != cSceneNodePath)
+		return;
+
+	m_IsActivated = true;
+	m_CurrectWaypointsNode = std::dynamic_pointer_cast<ISceneNodePath>(SelectedNode);
 }
 
 

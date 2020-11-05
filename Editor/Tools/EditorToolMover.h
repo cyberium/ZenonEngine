@@ -19,6 +19,7 @@ public:
 	bool OnMousePressed(const MouseButtonEventArgs & e, const Ray& RayToWorld) override;
 	void OnMouseReleased(const MouseButtonEventArgs & e, const Ray& RayToWorld) override;
 	void OnMouseMoved(const MouseMotionEventArgs& e, const Ray& RayToWorld) override;
+	void OnNodeSelected(const std::shared_ptr<ISceneNode> SelectedNode) override;
 
 	// IEditorToolUI
 	void DoInitializeUI(IEditorQtUIFrame& QtUIFrame) override;

@@ -399,7 +399,7 @@ void CSceneNode::CopyTo(std::shared_ptr<IObject> Destination) const
 
 	for (const auto& ch : GetChilds())
 	{
-		std::shared_ptr<ISceneNode> childCopy = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeFactory>()->CreateSceneNode3D(ch->GetType(), destCast->GetScene(), destCast);
+		std::shared_ptr<ISceneNode> childCopy = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeFactory>()->CreateSceneNode3D(ch->GetClass(), destCast->GetScene(), destCast);
 		if (auto loadSave = std::dynamic_pointer_cast<IObjectLoadSave>(ch))
 			loadSave->CopyTo(childCopy);
 	}

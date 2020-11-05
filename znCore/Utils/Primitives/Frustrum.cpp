@@ -133,11 +133,9 @@ void Frustum::buildBoxFrustum(const glm::mat4& transMat, float left, float right
 	m_Corners[7] = glm::vec3(left, top, back);
 
 	// Transform points to fit camera position and rotation
-	m_Origin = transMat * glm::vec4(0);
+	m_Origin = transMat * glm::vec4(0.0f);
 	for (uint32 i = 0; i < 8; ++i)
-	{
-		m_Corners[i] = transMat * glm::vec4(m_Corners[i], 0);
-	}
+		m_Corners[i] = transMat * glm::vec4(m_Corners[i], 0.0f);
 
 	// Build planes
 	m_Planes.resize(6);

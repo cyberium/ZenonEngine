@@ -5,6 +5,7 @@
 
 // Additional
 #include "Passes/DrawToolsPass.h"
+#include "Passes/DrawLightFrustumPass.h"
 
 CEditor3DFrame::CEditor3DFrame(IEditor& Editor, IRenderWindow& RenderWindow)
 	: SceneBase(Editor.GetBaseManager(), RenderWindow)
@@ -43,14 +44,14 @@ void CEditor3DFrame::Initialize()
 		auto lightNode = CreateSceneNode<ISceneNode>();
 		lightNode->SetName("Light");
 		lightNode->SetTranslate(rtsCenter);
-		lightNode->SetRotation(glm::vec3(0.f, -0.01f, 0.0f));
+		lightNode->SetRotation(glm::vec3(-0.5f));
 
 		lightNode->AddComponentT(GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<IComponentFactory>()->CreateComponentT<ILightComponent3D>(cSceneNodeLightComponent, *lightNode.get()));
 		lightNode->GetComponent<ILightComponent3D>()->SetType(ELightType::Spot);
 		lightNode->GetComponent<ILightComponent3D>()->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
-		lightNode->GetComponent<ILightComponent3D>()->SetRange(5000.0f);
+		lightNode->GetComponent<ILightComponent3D>()->SetRange(500.0f);
 		lightNode->GetComponent<ILightComponent3D>()->SetIntensity(1.0f);
-		lightNode->GetComponent<ILightComponent3D>()->SetSpotlightAngle(75.0f);
+		lightNode->GetComponent<ILightComponent3D>()->SetSpotlightAngle(35.0f);
 	}
 
 	// Camera
@@ -67,61 +68,10 @@ void CEditor3DFrame::Initialize()
 	}
 
 	{
-		/*
-		glm::vec4 color = glm::vec4(0.33f, 0.33f, 0.33f, 1.0f);
-		m_Technique3D.AddPass(MakeShared(ClearRenderTargetPass, GetRenderDevice(), GetRenderWindow()->GetRenderTarget(), ClearFlags::All, color, 1.0f, 0));
-
-		auto materialModelPass = GetBaseManager().GetManager<IRenderPassFactory>()->CreateRenderPass("MaterialModelPass", GetRenderDevice(), GetRenderWindow()->GetRenderTarget(), &GetRenderWindow()->GetViewport(), shared_from_this());
-		m_MaterialModelPass = std::dynamic_pointer_cast<IMaterialModelPass>(materialModelPass);
-
-		{
-			auto invokePass = GetBaseManager().GetManager<IRenderPassFactory>()->CreateRenderPass("InvokePass", GetRenderDevice(), GetRenderWindow()->GetRenderTarget(), &GetRenderWindow()->GetViewport(), shared_from_this());
-			std::dynamic_pointer_cast<IInvokeFunctionPass>(invokePass)->SetFunc([this]() {
-
-				std::vector<SLight> lights;
-				auto lightStruct = std::dynamic_pointer_cast<ILight3D>(GetDefaultLight())->GetLightStruct();
-				lightStruct.PositionVS = GetCameraController()->GetCamera()->GetViewMatrix() * glm::vec4(lightStruct.PositionWS.xyz(), 1.0f);
-				lightStruct.DirectionVS = glm::normalize(GetCameraController()->GetCamera()->GetViewMatrix() * glm::vec4(lightStruct.DirectionWS.xyz(), 0.0f));
-				lights.push_back(lightStruct);
-				SetLights(lights);
-
-				m_MaterialModelPass->GetLightsShaderParameter()->Set(m_LightsBuffer);
-			});
-			m_Technique3D.AddPass(invokePass);
-		}
-
-		m_Technique3D.AddPass(materialModelPass);
-		*/
-
-
-		//--------------------------------------------------------------------------
-		// Cube Gold
-		//--------------------------------------------------------------------------
-		/*for (int i = 0; i < 5; i++)
-		{
-			std::shared_ptr<MaterialModel> textMaterial = MakeShared(MaterialModel, GetBaseManager());
-			textMaterial->SetSpecularFactor(32.0f);
-			//textMaterial->SetBumpFactor(16.0f);
-
-			textMaterial->SetTexture(MaterialModel::ETextureType::TextureDiffuse, GetRenderDevice().GetObjectsFactory().LoadTexture2D("pirate-gold-unity//pirate-gold_albedo.png"));
-			textMaterial->SetTexture(MaterialModel::ETextureType::TextureNormalMap, GetRenderDevice().GetObjectsFactory().LoadTexture2D("pirate-gold-unity//pirate-gold_normal-ogl.png"));
-			textMaterial->SetTexture(MaterialModel::ETextureType::TextureSpecular, GetRenderDevice().GetObjectsFactory().LoadTexture2D("pirate-gold-unity//pirate-gold_ao.png"));
-			textMaterial->SetTexture(MaterialModel::ETextureType::TextureDisplacement, GetRenderDevice().GetObjectsFactory().LoadTexture2D("pirate-gold-unity//pirate-gold_height.png"));
-
-			auto& modelPlane = GetRenderDevice().GetObjectsFactory().CreateModel();
-			modelPlane->AddConnection(textMaterial, GetRenderDevice().GetPrimitivesFactory().CreateCube());
-
-			auto node = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeFactory>()->CreateSceneNode3D(cSceneNode3D, this, GetRootSceneNode());
-			node->SetName("Sphere2");
-			node->SetTranslate(glm::vec3(-10, 15, 16 * i));
-			node->SetScale(glm::vec3(15.0f));
-			node->GetComponent<IModelsComponent3D>()->SetModel(modelPlane);
-			//node->GetComponent<IModelsComponent3D>()->SetCastShadows(false);
-		}*/
-
 		auto forwardRenderer = MakeShared(CRendererForward, GetBaseManager(), *this);
 		forwardRenderer->Initialize(GetRenderWindow().GetRenderTarget(), &GetRenderWindow().GetViewport());
 		forwardRenderer->AddPass(MakeShared(CDrawToolsPass, GetRenderDevice(), *this)->ConfigurePipeline(GetRenderWindow().GetRenderTarget(), &GetRenderWindow().GetViewport()));
+		forwardRenderer->AddPass(MakeShared(CDrawLightFrustumPass, GetRenderDevice(), *this)->ConfigurePipeline(GetRenderWindow().GetRenderTarget(), &GetRenderWindow().GetViewport()));
 		SetRenderer(forwardRenderer);
 	}
 

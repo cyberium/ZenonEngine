@@ -134,7 +134,7 @@ glm::mat4 CLightComponent3D::GetProjectionMatrix() const
 	}
 	else if (m_LightStruct->Type == ELightType::Spot)
 	{
-		return glm::perspective(glm::radians(m_LightStruct->SpotlightAngle * 2.0f), 1.0f, 1.0f, m_LightStruct->Range);
+		return glm::perspective(glm::radians(m_LightStruct->SpotlightAngle), 1.0f, 1.0f, m_LightStruct->Range);
 	}
 	else if (m_LightStruct->Type == ELightType::Directional)
 	{
@@ -143,6 +143,13 @@ glm::mat4 CLightComponent3D::GetProjectionMatrix() const
 	}
 	
 	return glm::mat4(1.0f);
+}
+
+Frustum CLightComponent3D::GetFrustum() const
+{
+	Frustum frustum;
+	frustum.buildViewFrustum(GetViewMatrix(), GetProjectionMatrix());
+	return frustum;
 }
 
 const SLight& CLightComponent3D::GetLightStruct() const

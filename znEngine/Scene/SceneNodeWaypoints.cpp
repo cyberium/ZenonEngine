@@ -33,7 +33,7 @@ std::shared_ptr<ISceneNodePoint> CSceneNodePath::AddPoint(glm::vec3 XYZ)
 	auto point = GetScene().CreateSceneNodeT<ISceneNodePoint>(shared_from_this());
 	point->SetName("Point");
 	point->SetTranslate(XYZ);
-	point->GetComponent<IColliderComponent3D>()->SetBounds(BoundingBox(glm::vec3(-0.5f), glm::vec3(0.5f)));
+	point->GetComponent<IColliderComponent3D>()->SetBounds(BoundingBox(glm::vec3(-2.5f), glm::vec3(2.5f)));
 	return point;
 }
 

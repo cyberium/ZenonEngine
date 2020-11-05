@@ -134,6 +134,7 @@
     </ClCompile>
     <ClCompile Include="EditorUIFrame.cpp" />
     <ClCompile Include="Materials\MaterialEditorTool.cpp" />
+    <ClCompile Include="Passes\DrawLightFrustumPass.cpp" />
     <ClCompile Include="Passes\DrawSelectionPass.cpp" />
     <ClCompile Include="Passes\DrawToolsPass.cpp" />
     <ClCompile Include="Passes\DrawWaypointsPass.cpp" />
@@ -392,6 +393,7 @@
     <ClInclude Include="EditorResourceBrowser.h" />
     <ClInclude Include="EditorWindowsShell.h" />
     <ClInclude Include="Materials\MaterialEditorTool.h" />
+    <ClInclude Include="Passes\DrawLightFrustumPass.h" />
     <ClInclude Include="Passes\DrawSelectionPass.h" />
     <ClInclude Include="Passes\DrawToolsPass.h" />
     <ClInclude Include="Passes\DrawWaypointsPass.h" />

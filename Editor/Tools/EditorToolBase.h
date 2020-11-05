@@ -20,6 +20,7 @@ public:
 	virtual bool OnMousePressed(const MouseButtonEventArgs& e, const Ray& RayToWorld) = 0;
 	virtual void OnMouseReleased(const MouseButtonEventArgs& e, const Ray& RayToWorld) = 0;
 	virtual void OnMouseMoved(const MouseMotionEventArgs& e, const Ray& RayToWorld) = 0;
+	virtual void OnNodeSelected(const std::shared_ptr<ISceneNode> SelectedNode) {}
 
 	// IEditorToolUI
 	virtual void DoInitializeUI(IEditorQtUIFrame& QtUIFrame) override;

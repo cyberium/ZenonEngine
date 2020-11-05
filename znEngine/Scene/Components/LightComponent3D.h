@@ -26,6 +26,7 @@ public:
 	// ILight3D
 	glm::mat4 GetViewMatrix() const override;
 	glm::mat4 GetProjectionMatrix() const override;
+	Frustum GetFrustum() const override;
 	const SLight& GetLightStruct() const override;
 
     // ISceneNodeComponent

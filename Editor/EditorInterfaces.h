@@ -59,6 +59,7 @@ ZN_INTERFACE IEditorTools
 	virtual bool OnMousePressed(const MouseButtonEventArgs& e, const Ray& RayToWorld) = 0;
 	virtual void OnMouseReleased(const MouseButtonEventArgs& e, const Ray& RayToWorld) = 0;
 	virtual void OnMouseMoved(const MouseMotionEventArgs& e, const Ray& RayToWorld) = 0;
+	virtual void OnNodeSelected(const std::shared_ptr<ISceneNode> SelectedNode) = 0;
 
 	// UI
 	virtual void DoInitializeUI(IEditorQtUIFrame& QtUIFrame) = 0;
@@ -205,6 +206,7 @@ ZN_INTERFACE IEditor3DPreviewFrame
 {
 	virtual ~IEditor3DPreviewFrame() {}
 
+	virtual void SetSceneNode(std::shared_ptr<ISceneNode> SceneNode) = 0;
 	virtual void SetModel(IModelPtr Model) = 0;
 };
 

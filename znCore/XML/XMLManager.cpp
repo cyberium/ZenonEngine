@@ -122,7 +122,11 @@ std::shared_ptr<IXMLWriter> CXMLManager::CreateWriter(const std::string & NodeNa
 std::shared_ptr<IFile> CXMLManager::SaveWriterToFile(const std::shared_ptr<IXMLWriter>& Writer, const std::string& FileName)
 {
 	std::shared_ptr<IFile> file = m_BaseManager.GetManager<IFilesManager>()->Create(FileName);
+	return SaveWriterToFile(Writer, file);
+}
 
+std::shared_ptr<IFile> CXMLManager::SaveWriterToFile(const std::shared_ptr<IXMLWriter>& Writer, const std::shared_ptr<IFile>& File)
+{
 	std::shared_ptr<TiXmlDocument> xmlDocument = MakeShared(TiXmlDocument);
 	TiXmlDeclaration * decl = ZN_NEW TiXmlDeclaration("1.0", "", "");
 	xmlDocument->LinkEndChild(decl);
@@ -133,7 +137,7 @@ std::shared_ptr<IFile> CXMLManager::SaveWriterToFile(const std::shared_ptr<IXMLW
 	xmlDocument->Accept(&printer);
 	CheckTinyXMLError(xmlDocument);
 
-	file->writeBytes(printer.CStr(), printer.Size());
+	File->writeBytes(printer.CStr(), printer.Size());
 
-	return file;
+	return File;
 }

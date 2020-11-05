@@ -256,31 +256,64 @@ std::shared_ptr<IGeometry> CRenderPrimitivesFactory::CreateBBox()
 
 	geometry->SetBounds(CalculateBounds(points));
 
-	/*DirectX::VertexCollection vertices;
-	DirectX::IndexCollection indices;
-	DirectX::ComputeBox(vertices, indices, DirectX::XMFLOAT3(1.0f, 1.0f, 1.0f), false, false);
+	return geometry;
+}
 
-	for (auto& v : vertices)
-		v.position += 0.5f;
+std::shared_ptr<IGeometry> CRenderPrimitivesFactory::CreateFrustum(const Frustum & Frustum)
+{
+	std::vector<glm::vec3> points;
+	points.push_back(Frustum.getCorner(0));
+	points.push_back(Frustum.getCorner(3));
+	points.push_back(Frustum.getCorner(3));
+	points.push_back(Frustum.getCorner(2));
+	points.push_back(Frustum.getCorner(2));
+	points.push_back(Frustum.getCorner(1));
+	points.push_back(Frustum.getCorner(1));
+	points.push_back(Frustum.getCorner(0));
+
+
+	points.push_back(Frustum.getCorner(4 + 0));
+	points.push_back(Frustum.getCorner(4 + 3));
+	points.push_back(Frustum.getCorner(4 + 3));
+	points.push_back(Frustum.getCorner(4 + 2));
+	points.push_back(Frustum.getCorner(4 + 2));
+	points.push_back(Frustum.getCorner(4 + 1));
+	points.push_back(Frustum.getCorner(4 + 1));
+	points.push_back(Frustum.getCorner(4 + 0));
+
+	for (size_t i = 0; i < 4; i++)
+	{
+		points.push_back(Frustum.getCorner(i));
+		points.push_back(Frustum.getCorner(4 + i));
+	}
 
 	std::shared_ptr<IGeometry> geometry = m_RenderDevice.GetObjectsFactory().CreateGeometry();
-	geometry->SetPrimitiveTopology(PrimitiveTopology::TriangleList);
+	geometry->SetPrimitiveTopology(PrimitiveTopology::LineList);
 
-	std::shared_ptr<IBuffer> __vbPos = m_RenderDevice.GetObjectsFactory().CreateVoidVertexBuffer(vertices.data(), vertices.size(), 0, sizeof(DirectX::VertexPositionTextureNormal));
-	geometry->AddVertexBuffer(BufferBinding("POSITION", 0), __vbPos);
+	std::shared_ptr<IBuffer> __vb = m_RenderDevice.GetObjectsFactory().CreateVertexBuffer(points.data(), points.size());
+	geometry->AddVertexBuffer(BufferBinding("POSITION", 0), __vb);
 
-	std::shared_ptr<IBuffer> __ib = m_RenderDevice.GetObjectsFactory().CreateIndexBuffer(indices);
-	geometry->SetIndexBuffer(__ib);*/
+	geometry->SetBounds(CalculateBounds(points));
 
 	return geometry;
 }
 
 
-std::shared_ptr<IGeometry> CRenderPrimitivesFactory::CreateCone()
+void Test()
+{
+	Frustum f;
+
+
+
+
+}
+
+
+std::shared_ptr<IGeometry> CRenderPrimitivesFactory::CreateCone(float diameter, float height)
 {
 	DirectX::VertexCollection vertices;
 	DirectX::IndexCollection indices;
-	DirectX::ComputeCone(vertices, indices, 0.5f, 1.0f, 8, false);
+	DirectX::ComputeCone(vertices, indices, diameter, height, 32, false);
 
 	std::shared_ptr<IGeometry> geometry = m_RenderDevice.GetObjectsFactory().CreateGeometry();
 	std::shared_ptr<IBuffer> __vb = m_RenderDevice.GetObjectsFactory().CreateVoidVertexBuffer(vertices.data(), vertices.size(), 0, sizeof(DirectX::VertexPositionTextureNormal));

@@ -16,7 +16,8 @@ public:
 	std::shared_ptr<IGeometry> CreateSphere(float Radius = 1.0f) override;
 	std::shared_ptr<IGeometry> CreateCube() override;
 	std::shared_ptr<IGeometry> CreateBBox() override;
-	std::shared_ptr<IGeometry> CreateCone() override;
+	std::shared_ptr<IGeometry> CreateFrustum(const Frustum& Frustum) override;
+	std::shared_ptr<IGeometry> CreateCone(float diameter, float height) override;
 	std::shared_ptr<IGeometry> CreateTorus(float Radius, float Thickness) override;
 	std::shared_ptr<IGeometry> CreateQuad() override;
 

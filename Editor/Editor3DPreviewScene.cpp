@@ -18,14 +18,20 @@ CEditor3DPreviewScene::~CEditor3DPreviewScene()
 //
 // IEditor3DPreviewFrame
 //
+void CEditor3DPreviewScene::SetSceneNode(std::shared_ptr<ISceneNode> SceneNode)
+{
+	auto copy = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<CSceneNode3DFactory>()->CreateSceneNode3D(SceneNode->GetClass(), *this, m_SceneNode);
+	std::dynamic_pointer_cast<IObjectLoadSave>(SceneNode)->CopyTo(copy);
+}
+
 void CEditor3DPreviewScene::SetModel(IModelPtr Model)
 {
 	_ASSERT(Model != nullptr);
 
-	if (m_Node == nullptr)
+	if (m_ModelNode == nullptr)
 		return;
 
-	auto modelComponent = m_Node->GetComponent<IModelsComponent3D>();
+	auto modelComponent = m_ModelNode->GetComponent<IModelsComponent3D>();
 	if (modelComponent->GetModel())
 		modelComponent->ResetModel();
 
@@ -34,7 +40,7 @@ void CEditor3DPreviewScene::SetModel(IModelPtr Model)
 	const auto& modelBBox = Model->GetBounds();
 	float radius = modelBBox.getRadius();
 
-	m_Node->SetTranslate(- modelBBox.getCenter());
+	m_ModelNode->SetTranslate(- modelBBox.getCenter());
 	GetCameraController()->GetCamera()->SetTranslation(glm::vec3(radius * 1.5f));
 	GetCameraController()->GetCamera()->SetDirection(glm::vec3(-0.5f));
 }
@@ -80,8 +86,13 @@ void CEditor3DPreviewScene::Initialize()
 
 
 	{
-		m_Node = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeFactory>()->CreateSceneNode3D(cSceneNode3D, *this);
-		m_Node->SetName("NodeModelPreview");
+		m_SceneNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeFactory>()->CreateSceneNode3D(cSceneNode3D, *this);
+		m_SceneNode->SetName("SceneNodeProtoPreview");
+	}
+
+	{
+		m_ModelNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeFactory>()->CreateSceneNode3D(cSceneNode3D, *this);
+		m_ModelNode->SetName("NodeModelPreview");
 	}
 
 

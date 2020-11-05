@@ -12,6 +12,7 @@ public:
 	std::shared_ptr<IXMLWriter> CreateWriter(const std::string& NodeName);
 
 	std::shared_ptr<IFile> SaveWriterToFile(const std::shared_ptr<IXMLWriter>& Writer, const std::string& FileName);
+	std::shared_ptr<IFile> SaveWriterToFile(const std::shared_ptr<IXMLWriter>& Writer, const std::shared_ptr<IFile>& File);
 
 private:
 	IBaseManager& m_BaseManager;

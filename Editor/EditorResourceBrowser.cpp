@@ -128,6 +128,45 @@ namespace
 
 
 
+
+	class CznSceneNodePrototypeTreeViewItemSource
+		: public IznTreeViewItemSource
+	{
+	public:
+		CznSceneNodePrototypeTreeViewItemSource(const std::shared_ptr<ISceneNode>& SceneNode)
+			: m_SceneNode(SceneNode)
+		{}
+
+		// IznTreeViewItemSource
+		ETreeViewItemType GetType() const
+		{
+			return ETreeViewItemType::SceneNodeProto;
+		}
+		std::string GetName() const override
+		{
+			return m_SceneNode->GetName();
+		}
+		size_t GetChildsCount() const
+		{
+			return 0;
+		}
+		std::shared_ptr<IznTreeViewItemSource> GetChild(size_t Index) const
+		{
+			_ASSERT(false);
+			return nullptr;
+		}
+		std::shared_ptr<IObject> Object() const
+		{
+			return m_SceneNode;
+		}
+	private:
+		std::shared_ptr<ISceneNode> m_SceneNode;
+	};
+
+
+
+
+
 }
 
 
@@ -152,18 +191,29 @@ void CEditorResourceBrowser::Initialize()
 	GetEditorQtUIFrame().getCollectionViewer()->SetOnSelectedItemChange([this](const CznTreeViewItem * Item) -> bool 
 	{
 		auto sourceObject = Item->GetSourceObject();
-		if (sourceObject->GetType() != ETreeViewItemType::Model)
-			return false;
-
 		auto object = sourceObject->Object();
 		if (object == nullptr)
 			return false;
 
-		auto modelObject = std::dynamic_pointer_cast<IModel>(object);
-		if (modelObject == nullptr)
-			return false;
+		if (sourceObject->GetType() == ETreeViewItemType::Model)
+		{
+			auto modelObject = std::dynamic_pointer_cast<IModel>(object);
+			if (modelObject == nullptr)
+				return false;
 
-		m_Editor.Get3DPreviewFrame().SetModel(modelObject);
+			m_Editor.Get3DPreviewFrame().SetModel(modelObject);
+			return true;
+		}
+		else if (sourceObject->GetType() == ETreeViewItemType::SceneNodeProto)
+		{
+			auto sceneNodeProto = std::dynamic_pointer_cast<ISceneNode>(object);
+			if (sceneNodeProto == nullptr)
+				return false;
+
+			m_Editor.Get3DPreviewFrame().SetSceneNode(sceneNodeProto);
+			return true;
+		}
+
 		return true;
 	});
 
@@ -205,6 +255,43 @@ void CEditorResourceBrowser::Initialize()
 	GetEditorQtUIFrame().getCollectionViewer()->AddToRoot(CreateModelsFromFolder("models"));
 	GetEditorQtUIFrame().getCollectionViewer()->AddToRoot(CreateModelsFromFolder("models_td"));
 	GetEditorQtUIFrame().getCollectionViewer()->AddToRoot(CreateModelsFromFolder("models_food"));
+	GetEditorQtUIFrame().getCollectionViewer()->AddToRoot(CreateSceneNodeProtosFromFolder("sceneNodesProtos"));
+}
+
+std::shared_ptr<IznTreeViewItemSource> CEditorResourceBrowser::CreateSceneNodeProtosFromFolder(const std::string & FolderName)
+{
+	std::vector<std::shared_ptr<IznTreeViewItemSource>> sceneNodes;
+
+	auto gameDataStorage = GetBaseManager().GetManager<IFilesManager>()->GetStorage(EFilesStorageType::GAMEDATA);
+	auto gameDataStorageEx = std::dynamic_pointer_cast<IznFilesStorageExtended>(gameDataStorage);
+	_ASSERT(gameDataStorageEx != nullptr);
+
+	auto fileNames = gameDataStorageEx->GetAllFilesInFolder(FolderName, ".xml");
+	for (const auto& fileName : fileNames)
+	{
+		try
+		{
+			auto file = GetBaseManager().GetManager<IFilesManager>()->Open(fileName);
+
+			CXMLManager xmlManager(GetBaseManager());
+			auto reader = xmlManager.CreateReader(file);
+			_ASSERT(false == reader->GetChilds().empty());
+			auto firstXMLChild = reader->GetChilds()[0];
+
+			auto sceneNodeProtoRoot = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<CSceneNode3DFactory>()->LoadSceneNode3DXML(firstXMLChild, m_Editor.Get3DFrame().GetScene());
+			sceneNodeProtoRoot->MakeMeOrphan();
+			sceneNodes.push_back(MakeShared(CznSceneNodePrototypeTreeViewItemSource, sceneNodeProtoRoot));
+		}
+		catch (const CException& e)
+		{
+			Log::Error(e.MessageCStr());
+		}
+	}
+
+	auto modelsFolders = MakeShared(CznTreeViewItemVirtualFolder, FolderName);
+	for (const auto& m : sceneNodes)
+		modelsFolders->AddChild(m);
+	return modelsFolders;
 }
 
 std::shared_ptr<IznTreeViewItemSource> CEditorResourceBrowser::CreateModelsFromFolder(const std::string & FolderName)

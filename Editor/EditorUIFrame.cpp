@@ -194,6 +194,7 @@ void CEditorUIFrame::OnSelectNode()
 	if (selectedNodes.size() == 1)
 	{
 		getSceneViewer()->SelectItem(GetEditor().GetFirstSelectedNode());
+		GetEditor().GetTools().OnNodeSelected(GetEditor().GetFirstSelectedNode());
 	}
 	else
 	{

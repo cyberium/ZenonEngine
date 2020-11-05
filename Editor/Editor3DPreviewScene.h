@@ -9,6 +9,7 @@ public:
 	virtual ~CEditor3DPreviewScene();
 
 	// IEditor3DPreviewFrame
+	void SetSceneNode(std::shared_ptr<ISceneNode> SceneNode) override;
 	void SetModel(IModelPtr Model) override;
 
 	// SceneBase
@@ -16,5 +17,6 @@ public:
 	void Finalize() override;
 
 private: // Rendering
-	std::shared_ptr<ISceneNode> m_Node;
+	std::shared_ptr<ISceneNode> m_SceneNode;
+	std::shared_ptr<ISceneNode> m_ModelNode;
 };

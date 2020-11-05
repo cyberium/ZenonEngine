@@ -31,8 +31,8 @@ public:
 	}
 
 public:
-	virtual std::string GetTypeName() const;
-	virtual std::string GetClassNameW() const;
+	virtual std::string GetObjectTypeName() const;
+	virtual std::string GetObjectClassName() const;
 
 	// IObject
 	virtual Guid GetGUID() const override;
@@ -53,7 +53,6 @@ private:
 protected:
 	Object();
 	Object(const IBaseManager& BaseManager);
-	Object(ObjectType Factory, ObjectClass Class);
 	virtual ~Object();
 
 private:

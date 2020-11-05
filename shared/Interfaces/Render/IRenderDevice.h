@@ -28,7 +28,8 @@ ZN_INTERFACE ZN_API IRenderPrimitivesFactory
 	virtual std::shared_ptr<IGeometry> CreateSphere(float Radius = 1.0f) = 0;
 	virtual std::shared_ptr<IGeometry> CreateCube() = 0;
 	virtual std::shared_ptr<IGeometry> CreateBBox() = 0;
-	virtual std::shared_ptr<IGeometry> CreateCone() = 0;
+	virtual std::shared_ptr<IGeometry> CreateFrustum(const Frustum& Frustum) = 0;
+	virtual std::shared_ptr<IGeometry> CreateCone(float diameter = 0.5f, float height = 1.0f) = 0;
 	virtual std::shared_ptr<IGeometry> CreateTorus(float Radius = 5.0f, float Thickness = 1.0f) = 0;
 	virtual std::shared_ptr<IGeometry> CreateQuad() = 0;
 
