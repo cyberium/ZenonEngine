@@ -10,6 +10,7 @@
 #include "Scene/SceneNodeRTSGround.h"
 #include "Scene/SceneNodeRTSPathAndPoint.h"
 #include "Scene/SceneNodeRTSUnit.h"
+#include "Scene/SceneNodeRTSTower.h"
 
 CSceneNodeEngineCreator::CSceneNodeEngineCreator(IBaseManager& BaseManager)
 	: CObjectClassCreatorBase(BaseManager)
@@ -19,6 +20,8 @@ CSceneNodeEngineCreator::CSceneNodeEngineCreator(IBaseManager& BaseManager)
 	AddKey("SceneNodeRTSPath", cSceneNodeRTSPath);
 	AddKey("SceneNodeRTSPoint", cSceneNodeRTSPoint);
 	AddKey("SceneNodeRTSUnit", cSceneNodeRTSUnit);
+	AddKey("SceneNodeRTSBullet", cSceneNodeRTSBullet);
+	AddKey("SceneNodeRTSTower", cSceneNodeRTSTower);
 }
 
 CSceneNodeEngineCreator::~CSceneNodeEngineCreator()
@@ -65,6 +68,20 @@ std::shared_ptr<IObject> CSceneNodeEngineCreator::CreateObject(size_t Index, con
 	else if (Index == 4)
 	{
 		std::shared_ptr<CSceneNodeRTSUnit> node = MakeShared(CSceneNodeRTSUnit, sceneNodeCreationArgs->GetScene());
+		node->RegisterComponents();
+		node->Initialize();
+		createdNode = node;
+	}
+	else if (Index == 5)
+	{
+		std::shared_ptr<CSceneNodeRTSBullet> node = MakeShared(CSceneNodeRTSBullet, sceneNodeCreationArgs->GetScene());
+		node->RegisterComponents();
+		node->Initialize();
+		createdNode = node;
+	}
+	else if (Index == 6)
+	{
+		std::shared_ptr<CSceneNodeRTSTower> node = MakeShared(CSceneNodeRTSTower, sceneNodeCreationArgs->GetScene());
 		node->RegisterComponents();
 		node->Initialize();
 		createdNode = node;

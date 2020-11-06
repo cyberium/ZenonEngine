@@ -64,7 +64,8 @@ void CEditor3DFrame::Initialize()
 		GetCameraController()->SetCamera(cameraNode->GetComponentT<ICameraComponent3D>());
 		GetCameraController()->GetCamera()->SetPerspectiveProjection(ICameraComponent3D::EPerspectiveProjectionHand::Right, 75.0f, static_cast<float>(GetRenderWindow().GetWindowWidth()) / static_cast<float>(GetRenderWindow().GetWindowHeight()), 1.0f, 5000.0f);
 		GetCameraController()->GetCamera()->SetTranslation(glm::vec3(15.0f * 2.0f));
-		GetCameraController()->GetCamera()->SetDirection(glm::vec3(-0.5f));
+		GetCameraController()->GetCamera()->SetYaw(225);
+		GetCameraController()->GetCamera()->SetPitch(-45);
 	}
 
 	{
@@ -119,7 +120,7 @@ bool CEditor3DFrame::InitializeEditorFrame()
 {
 	{
 		auto node = CreateSceneNode<ISceneNode>();
-		node->SetName("Grid node x1.");
+		node->SetName("GridNodeX1");
 		node->SetTranslate(glm::vec3(0.0f));
 		node->SetScale(glm::vec3(1.0f));
 
@@ -136,7 +137,7 @@ bool CEditor3DFrame::InitializeEditorFrame()
 
 	{
 		auto node = CreateSceneNode<ISceneNode>();
-		node->SetName("Grid node x10.");
+		node->SetName("GridNodeX10");
 		node->SetTranslate(glm::vec3(0.0f, 0.00f, 0.0f));
 		node->SetScale(glm::vec3(10.0f));
 
@@ -153,7 +154,7 @@ bool CEditor3DFrame::InitializeEditorFrame()
 
 	{
 		auto node = CreateSceneNode<ISceneNode>();
-		node->SetName("Grid node x100.");
+		node->SetName("GridNodeX100");
 		node->SetTranslate(glm::vec3(0.0f, 0.00f, 0.0f));
 		node->SetScale(glm::vec3(100.0f));
 

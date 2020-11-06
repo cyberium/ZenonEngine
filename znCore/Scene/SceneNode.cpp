@@ -26,7 +26,9 @@ CSceneNode::CSceneNode(IScene& Scene)
 }
 
 CSceneNode::~CSceneNode()
-{}
+{
+	Log::Info("SceneNode '%s' deleted.", GetName().c_str());
+}
 
 
 

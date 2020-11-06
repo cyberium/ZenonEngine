@@ -8,6 +8,13 @@ public:
 	virtual ~CSceneFinder();
 
 	// ISceneFinder
+	std::map<float, std::shared_ptr<ISceneNode>> FindNearestNodes(
+		glm::vec3 Position, 
+		float Distance,
+		std::function<bool(std::shared_ptr<ISceneNode>)> Filter,
+		std::shared_ptr<ISceneNode> RootForFinder
+	) const override;
+
 	std::map<float, std::shared_ptr<ISceneNode>> FindIntersection(
 		const Ray& Ray, 
 		std::function<bool(std::shared_ptr<ISceneNode>)> Filter, 

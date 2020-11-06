@@ -21,10 +21,8 @@ namespace
 		if (bounds.IsInfinite())
 			return;
 
-		auto worldMatrix = Owner->GetWorldTransfom();
-
 		BoundingBox worldBounds = bounds;
-		bounds.transform(worldMatrix);
+		worldBounds.transform(Owner->GetWorldTransfom());
 
 		if (HitBoundingBox(worldBounds.getMin(), worldBounds.getMax(), Ray.GetOrigin(), Ray.GetDirection()))
 		{
@@ -46,9 +44,9 @@ namespace
 		auto worldMatrix = Owner->GetWorldTransfom();
 
 		BoundingBox worldBounds = bounds;
-		bounds.transform(worldMatrix);
+		worldBounds.transform(worldMatrix);
 
-		if (!Frustum.cullBox(worldBounds))
+		if (false == Frustum.cullBox(worldBounds))
 			intersectedModels->push_back(modelsComponent->GetModel());
 	}
 
@@ -64,9 +62,42 @@ namespace
 				if (collider->GetBounds().IsInfinite())
 					continue;
 
-				if (!Frustum.cullBox(collider->GetWorldBounds()))
+				if (false == Frustum.cullBox(collider->GetWorldBounds()))
 					intersectedNodes->push_back(it);
 			}
+		}
+	}
+
+	void FillNearestSceneNodesMap(const std::shared_ptr<ISceneNode>& Parent, glm::vec3 Position, float Distance, std::map<float, std::shared_ptr<ISceneNode>> * NearestSceneNodes)
+	{
+		const auto& childs = Parent->GetChilds();
+		for (const auto& it : childs)
+		{
+			FillNearestSceneNodesMap(it, Position, Distance, NearestSceneNodes);
+
+			glm::vec3 nodeTranslate = it->GetTranslation();
+			nodeTranslate = (Parent->GetWorldTransfom() * glm::vec4(nodeTranslate, 1.0f)).xyz;
+
+			const float distanceToPoint = glm::length(Position - nodeTranslate);
+			if (distanceToPoint >= Distance)
+				continue;
+			NearestSceneNodes->insert(std::make_pair(distanceToPoint, it));
+		}
+	}
+	void FillNearestSceneNodesMap2D(const std::shared_ptr<ISceneNode>& Parent, glm::vec3 Position, float Distance, std::map<float, std::shared_ptr<ISceneNode>> * NearestSceneNodes)
+	{
+		const auto& childs = Parent->GetChilds();
+		for (const auto& it : childs)
+		{
+			FillNearestSceneNodesMap(it, Position, Distance, NearestSceneNodes);
+
+			glm::vec3 nodeTranslate = it->GetTranslation();
+			nodeTranslate = (Parent->GetWorldTransfom() * glm::vec4(nodeTranslate, 1.0f)).xyz;
+
+			const float distanceToPoint = glm::length(glm::vec2(Position.x, Position.z) - glm::vec2(nodeTranslate.x, nodeTranslate.z));
+			if (distanceToPoint >= Distance)
+				continue;
+			NearestSceneNodes->insert(std::make_pair(distanceToPoint, it));
 		}
 	}
 
@@ -99,6 +130,27 @@ CSceneFinder::CSceneFinder(const IScene& Scene)
 
 CSceneFinder::~CSceneFinder()
 {
+}
+
+std::map<float, std::shared_ptr<ISceneNode>> CSceneFinder::FindNearestNodes(glm::vec3 Position, float Distance, std::function<bool(std::shared_ptr<ISceneNode>)> Filter, std::shared_ptr<ISceneNode> RootForFinder) const
+{
+	std::map<float, std::shared_ptr<ISceneNode>> intersectedNodes;
+	FillNearestSceneNodesMap2D(RootForFinder ? RootForFinder : m_Scene.GetRootSceneNode(), Position, Distance, &intersectedNodes);
+	//FillNearestSceneNodesMap(RootForFinder ? RootForFinder : m_Scene.GetRootSceneNode(), Position, Distance, &intersectedNodes);
+
+	if (Filter)
+	{
+		auto it = intersectedNodes.begin();
+		while (it != intersectedNodes.end())
+		{
+			if (Filter(it->second))
+				it++;
+			else
+				it = intersectedNodes.erase(it);
+		}
+	}
+
+	return intersectedNodes;
 }
 
 std::map<float, std::shared_ptr<ISceneNode>> CSceneFinder::FindIntersection(const Ray& Ray, std::function<bool(std::shared_ptr<ISceneNode>)> Filter, std::shared_ptr<ISceneNode> RootForFinder) const

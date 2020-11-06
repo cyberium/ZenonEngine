@@ -86,10 +86,9 @@ ZN_INTERFACE ZN_API ISceneNodeRTSGround
 
 
 ZN_INTERFACE ISceneNodeRTSUnit;
+ZN_INTERFACE ISceneNodeRTSTower;
 ZN_INTERFACE ISceneNodeRTSPath;
 ZN_INTERFACE ISceneNodeRTSPoint;
-
-
 
 
 ZN_INTERFACE ZN_API ISceneNodeRTSUnit
@@ -98,11 +97,45 @@ ZN_INTERFACE ZN_API ISceneNodeRTSUnit
 	ZN_OBJECTCLASS(cSceneNodeRTSUnit);
 	virtual ~ISceneNodeRTSUnit() {}
 
-	virtual void SetPath(std::shared_ptr<ISceneNodeRTSPath> Path) = 0;
+	virtual void SetHealth(float Health) = 0;
+	virtual void SetMaxHealth(float MaxHealth) = 0;
+	virtual float GetHealth() const = 0;
+	virtual void SetSpeed(float Speed) = 0;
+	virtual float GetSpeed() const = 0;
 
+	virtual void DealDamage(float Damage) = 0;
+
+	virtual void SetPath(std::shared_ptr<ISceneNodeRTSPath> Path) = 0;
 };
 
 
+ZN_INTERFACE ZN_API ISceneNodeRTSBullet
+	: public virtual ISceneNode
+{
+	ZN_OBJECTCLASS(cSceneNodeRTSBullet);
+	virtual ~ISceneNodeRTSBullet() {}
+
+	virtual void SetTarget(std::shared_ptr<ISceneNodeRTSUnit> Target) = 0;
+	virtual std::shared_ptr<ISceneNode> GetTarget() const = 0;
+	virtual void SetDamage(float Damage) = 0;
+	virtual float GetDamage() const = 0;
+	virtual void SetSpeed(float Speed) = 0;
+	virtual float GetSpeed() const = 0;
+};
+
+
+ZN_INTERFACE ZN_API ISceneNodeRTSTower
+	: public virtual ISceneNode
+{
+	virtual ~ISceneNodeRTSTower() {}
+
+	virtual void SetAttackDamage(float Value) = 0;
+	virtual float GetAttackDamage() const = 0;
+	virtual void SetAttackInterval(float Value) = 0;
+	virtual float GetAttackInterval() const = 0;
+	virtual void SetAttackRange(float Value) = 0;
+	virtual float GetAttackRange() const = 0;
+};
 
 
 ZN_INTERFACE ZN_API ISceneNodeRTSPoint
@@ -112,10 +145,6 @@ ZN_INTERFACE ZN_API ISceneNodeRTSPoint
 	virtual ~ISceneNodeRTSPoint() {}
 
 };
-
-
-
-
 
 
 ZN_INTERFACE ZN_API ISceneNodeRTSPath

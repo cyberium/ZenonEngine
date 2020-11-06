@@ -36,8 +36,8 @@ Section "Zenon Engine"
   SetOutPath $INSTDIR
   
   ; Put file there
-  File "bin_x64\Debug\*.dll"
-  File "bin_x64\Debug\*.exe"
+  File "bin_x64\Release\*.dll"
+  File "bin_x64\Release\*.exe"
   
   SetOutPath $INSTDIR\gamedata
   File /nonfatal /r "gamedata\"

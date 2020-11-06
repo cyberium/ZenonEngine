@@ -177,11 +177,9 @@ void Frustum::buildBoxFrustum(Ray LT, Ray LB, Ray RT, Ray RB, float depth)
 
 bool Frustum::cullSphere(glm::vec3 pos, float rad) const
 {
-	// Check the distance of the center to the planes
 	for (size_t i = 0; i < m_Planes.size(); ++i)
-	{
-		if (m_Planes[i].distToPoint(pos) > rad) return true;
-	}
+		if (m_Planes[i].distToPoint(pos) > rad) 
+			return true;
 
 	return false;
 }
@@ -206,7 +204,8 @@ bool Frustum::cullFrustum(const Frustum& frust) const
 			}
 		}
 
-		if (allOut) return true;
+		if (allOut) 
+			return true;
 	}
 
 	return false;

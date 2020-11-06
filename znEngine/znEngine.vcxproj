@@ -385,6 +385,7 @@
     <ClCompile Include="Scene\SceneNodeRTSGround.cpp" />
     <ClCompile Include="Scene\SceneBase.cpp" />
     <ClCompile Include="Scene\SceneNodeRTSPathAndPoint.cpp" />
+    <ClCompile Include="Scene\SceneNodeRTSTower.cpp" />
     <ClCompile Include="Scene\SceneNodeRTSUnit.cpp" />
     <ClCompile Include="Settings.cpp" />
     <ClCompile Include="Settings\GroupVideo.cpp" />
@@ -592,6 +593,7 @@
     <ClInclude Include="Scene\SceneNodeRTSGround.h" />
     <ClInclude Include="Scene\SceneBase.h" />
     <ClInclude Include="Scene\SceneNodeRTSPathAndPoint.h" />
+    <ClInclude Include="Scene\SceneNodeRTSTower.h" />
     <ClInclude Include="Scene\SceneNodeRTSUnit.h" />
     <ClInclude Include="Settings.h" />
     <ClInclude Include="Settings\GroupVideo.h" />

@@ -715,6 +715,9 @@
     <ClCompile Include="Scene\SceneNodeRTSUnit.cpp">
       <Filter>Scene\RTS</Filter>
     </ClCompile>
+    <ClCompile Include="Scene\SceneNodeRTSTower.cpp">
+      <Filter>Scene\RTS</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="common.h">
@@ -1317,6 +1320,9 @@
       <Filter>Scene\RTS</Filter>
     </ClInclude>
     <ClInclude Include="Scene\SceneNodeRTSUnit.h">
+      <Filter>Scene\RTS</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\SceneNodeRTSTower.h">
       <Filter>Scene\RTS</Filter>
     </ClInclude>
   </ItemGroup>

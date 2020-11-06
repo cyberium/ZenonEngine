@@ -237,36 +237,36 @@ void SceneBase::OnUpdate(UpdateEventArgs& e)
 		e.Camera = GetCameraController()->GetCamera().get();
 		e.CameraForCulling = GetCameraController()->GetCamera().get();
 	}
-
-	std::lock_guard<std::mutex> lock(m_ChildModifyLock);
+	
 	{
 		std::lock_guard<std::mutex> sceneChangeDelayEventsLockGuard(m_SceneChangeDelayEventsLock);
 
-		for (const auto& it : m_SceneChangeDelayEvents)
+		auto it = m_SceneChangeDelayEvents.begin();
+		while (false == m_SceneChangeDelayEvents.empty())
 		{
-			auto parent = it.Parent;
-			auto child = it.Child;
+			auto eventType = it->EventType;
+			auto parent = it->Parent;
+			auto child = it->Child;
 
-			if (it.EventType == ESceneChangeType::NodeAddedToParent)
-			{
-				parent->AddChild(child);
-			}
-			else if (it.EventType == ESceneChangeType::NodeRemovedFromParent)
-			{
-				parent->RemoveChild(child);
-			}
+			if (eventType == ESceneChangeType::NodeAddedToParent)
+				std::dynamic_pointer_cast<ISceneNodeInternal>(parent)->AddChildInternal(child);
+			else if (eventType == ESceneChangeType::NodeRemovedFromParent)
+				std::dynamic_pointer_cast<ISceneNodeInternal>(parent)->RemoveChildInternal(child);
 			else
-			{
-				throw CException("Unknown SceneChangeType '%d'.", it.EventType);
-			}
+				throw CException("Unknown SceneChangeType '%d'.", eventType);
 
-			RaiseSceneChangeEvent(it.EventType, parent, child);
+			RaiseSceneChangeEvent(eventType, parent, child);
+
+			it = m_SceneChangeDelayEvents.erase(it);
 		}
-		m_SceneChangeDelayEvents.clear();
 	}
 
-	if (GetRootSceneNode())
-		DoUpdate_Rec(GetRootSceneNode(), e);
+	{
+		std::lock_guard<std::mutex> lock(m_ChildModifyLock);
+
+		if (GetRootSceneNode())
+			DoUpdate_Rec(GetRootSceneNode(), e);
+	}
 }
 
 void SceneBase::OnRender(RenderEventArgs & e)

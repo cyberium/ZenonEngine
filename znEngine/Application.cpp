@@ -20,6 +20,9 @@ Application::Application(IBaseManager& BaseManager, HINSTANCE hInstance)
 	: m_BaseManager(BaseManager)
 	, m_IsInitialized(false)
 	, m_IsRunning(false)
+	, m_GameDeltaTime(0.0f)
+	, m_GameTime(0.0f)
+	, m_FrameCounter(0L)
 {
 	m_HInstance = hInstance;
 

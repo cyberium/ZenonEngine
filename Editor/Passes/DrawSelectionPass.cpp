@@ -3,7 +3,7 @@
 // General
 #include "DrawSelectionPass.h"
 
-const float cBBoxSizeIncrement = 0.05f;
+const float cBBoxSizeIncrement = 0.02f;
 
 CDrawSelectionPass::CDrawSelectionPass(IRenderDevice& RenderDevice, IEditorToolSelector& Selector)
 	: RenderPassPipelined(RenderDevice)

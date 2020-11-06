@@ -119,7 +119,7 @@ std::shared_ptr<IRenderPassPipelined> CPassDeffered_DoRenderScene::ConfigurePipe
 //
 EVisitResult CPassDeffered_DoRenderScene::Visit(const ISceneNode * node)
 {
-	if (node->GetClass() != cSceneNode3D && node->GetClass() != cSceneNodeRTSUnit)
+	if (node->GetClass() != cSceneNode3D && node->GetClass() != cSceneNodeRTSUnit && node->GetClass() != cSceneNodeRTSBullet)
 		return EVisitResult::AllowVisitChilds;
 
 	PerObject perObject;

@@ -93,6 +93,13 @@ ZN_INTERFACE ZN_API	ISceneFinder
 {
 	virtual ~ISceneFinder() {}
 
+	virtual std::map<float, std::shared_ptr<ISceneNode>> FindNearestNodes(
+		glm::vec3 Position,
+		float Distance,
+		std::function<bool(std::shared_ptr<ISceneNode>)> Filter = nullptr,
+		std::shared_ptr<ISceneNode> RootForFinder = nullptr
+	) const = 0;
+
 	virtual std::map<float, std::shared_ptr<ISceneNode>> FindIntersection (
 		const Ray& Ray,
 		std::function<bool(std::shared_ptr<ISceneNode>)> Filter = nullptr, 
