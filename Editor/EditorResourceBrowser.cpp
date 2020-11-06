@@ -195,26 +195,24 @@ void CEditorResourceBrowser::Initialize()
 		if (object == nullptr)
 			return false;
 
-		if (sourceObject->GetType() == ETreeViewItemType::Model)
-		{
-			auto modelObject = std::dynamic_pointer_cast<IModel>(object);
-			if (modelObject == nullptr)
-				return false;
-
-			m_Editor.Get3DPreviewFrame().SetModel(modelObject);
-			return true;
-		}
-		else if (sourceObject->GetType() == ETreeViewItemType::SceneNodeProto)
+		if (sourceObject->GetType() == ETreeViewItemType::SceneNodeProto)
 		{
 			auto sceneNodeProto = std::dynamic_pointer_cast<ISceneNode>(object);
 			if (sceneNodeProto == nullptr)
 				return false;
-
 			m_Editor.Get3DPreviewFrame().SetSceneNode(sceneNodeProto);
 			return true;
 		}
-
-		return true;
+		else if (sourceObject->GetType() == ETreeViewItemType::Model)
+		{
+			auto modelObject = std::dynamic_pointer_cast<IModel>(object);
+			if (modelObject == nullptr)
+				return false;
+			m_Editor.Get3DPreviewFrame().SetModel(modelObject);
+			return true;
+		}
+		
+		return false;
 	});
 
 
@@ -228,28 +226,32 @@ void CEditorResourceBrowser::Initialize()
 		}
 
 		auto sourceObject = Item->GetSourceObject();
-		if (sourceObject->GetType() != ETreeViewItemType::Model)
-			return false;
 		auto object = sourceObject->Object();
 		if (object == nullptr)
 			return false;
-		IModelPtr objectAsModel = std::dynamic_pointer_cast<IModel>(object);
-		if (objectAsModel == nullptr)
-			return false;
-		
-		EDragDataSourceType sourceType = EDragDataSourceType::Model;
 
-		// 4 bytes - sourceType
-		Value->write(&sourceType);
+		if (sourceObject->GetType() == ETreeViewItemType::SceneNodeProto)
+		{
+			auto objectAsModelAsSceneNodeProto = std::dynamic_pointer_cast<ISceneNode>(object);
+			if (objectAsModelAsSceneNodeProto == nullptr)
+				return false;
 
-		// Model name
-		Value->writeString(objectAsModel->GetName());
+			CreateDragDataFromSceneNode(objectAsModelAsSceneNodeProto, Value);
+			m_Editor.GetTools().Enable(ETool::EToolDragger);
+			return true;
+		}
+		else if (sourceObject->GetType() == ETreeViewItemType::Model)
+		{
+			IModelPtr objectAsModel = std::dynamic_pointer_cast<IModel>(object);
+			if (objectAsModel == nullptr)
+				return false;
 
-		// Model filename
-		Value->writeString(objectAsModel->GetFileName());
+			CreateDragDataFromModel(objectAsModel, Value);
+			m_Editor.GetTools().Enable(ETool::EToolDragger);
+			return true;
+		}
 
-		m_Editor.GetTools().Enable(ETool::EToolDragger);
-		return true;
+		return false;
 	});
 
 	GetEditorQtUIFrame().getCollectionViewer()->AddToRoot(CreateModelsFromFolder("models"));

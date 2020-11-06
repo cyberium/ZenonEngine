@@ -77,7 +77,9 @@ void CModelsComponent3D::CopyTo(std::shared_ptr<IObject> Destination) const
 
 	auto destCast = std::dynamic_pointer_cast<CModelsComponent3D>(Destination);
 
-	destCast->SetModel(m_Model);
+	if (m_Model != nullptr)
+		destCast->SetModel(m_Model);
+
 	destCast->SetCastShadows(m_IsCastShadows);
 }
 

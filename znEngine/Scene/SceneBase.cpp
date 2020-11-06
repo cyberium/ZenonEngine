@@ -465,8 +465,7 @@ void SceneBase::SaveToFile(const std::string& FileName) const
 	auto xml = manager.CreateWriter();
 	xml->AddChild(rootWriter);
 
-	auto file = manager.SaveWriterToFile(xml, FileName);
-	file->Save();
+	manager.SaveWriterToFile(xml, file)->Save();
 }
 
 void SceneBase::ResetScene()

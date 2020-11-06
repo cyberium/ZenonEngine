@@ -195,9 +195,13 @@ void CColliderComponent3D::CopyTo(std::shared_ptr<IObject> Destination) const
 	CComponentBase::CopyTo(Destination);
 
 	auto destCast = std::dynamic_pointer_cast<CColliderComponent3D>(Destination);
+
 	destCast->SetCullStrategy(m_CullStrategy);
 	destCast->SetCullDistance(m_CullDistance);
-	destCast->SetBounds(m_Bounds);
+
+	if (false == m_Bounds.IsInfinite())
+		destCast->SetBounds(m_Bounds);
+
 	destCast->SetDebugDrawMode(m_DebugDraw);
 }
 

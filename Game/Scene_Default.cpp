@@ -52,9 +52,9 @@ void CSceneDefault::Initialize()
 		lightNode->AddComponentT(GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<IComponentFactory>()->CreateComponentT<ILightComponent3D>(cSceneNodeLightComponent, *lightNode.get()));
 		lightNode->GetComponent<ILightComponent3D>()->SetType(ELightType::Spot);
 		lightNode->GetComponent<ILightComponent3D>()->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
-		lightNode->GetComponent<ILightComponent3D>()->SetRange(1500.0f);
+		lightNode->GetComponent<ILightComponent3D>()->SetRange(350.0f);
 		lightNode->GetComponent<ILightComponent3D>()->SetIntensity(1.0f);
-		lightNode->GetComponent<ILightComponent3D>()->SetSpotlightAngle(45.0f);
+		lightNode->GetComponent<ILightComponent3D>()->SetSpotlightAngle(30.0f);
 	}
 
 	// Camera

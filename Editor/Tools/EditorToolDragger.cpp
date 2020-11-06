@@ -83,7 +83,13 @@ void CEditorToolDragger::DragEnterEvent(const SDragData& Data)
 	m_IsDraggingPermanentCreation = Data.IsCtrl;
 
 	EDragDataSourceType dragDataSourceType = GetDragDataSourceType(Data.Buffer);
-	if (dragDataSourceType == EDragDataSourceType::Model)
+	if (dragDataSourceType == EDragDataSourceType::SceneNodeProto)
+	{
+		std::shared_ptr<ISceneNode> sceneNode = GetSceneNodeFromDragData(GetBaseManager(), GetScene(), Data.Buffer);
+		
+		m_DraggerNode = sceneNode;
+	}
+	else if (dragDataSourceType == EDragDataSourceType::Model)
 	{
 		IModelPtr model = GetModelFromDragData(GetBaseManager(), Data.Buffer);
 		if (model == nullptr)
@@ -100,7 +106,18 @@ void CEditorToolDragger::DragEnterEvent(const SDragData& Data)
 	}
 
 	auto ray = GetScene().GetCameraController()->ScreenToRay(GetScene().GetRenderWindow().GetViewport(), Data.ScreenPosition);
-	auto pos = GetScene().GetCameraController()->RayToPlane(ray, Plane(glm::vec3(0.0f, 1.0f, 0.0f), m_DraggerNode->GetComponent<IColliderComponent3D>()->GetBounds().getCenter().y));
+	if (auto collider = m_DraggerNode->GetComponent<IColliderComponent3D>())
+	{
+		const auto& colliderBounds = collider->GetBounds();
+		if (false == colliderBounds.IsInfinite())
+		{
+			auto pos = GetScene().GetCameraController()->RayToPlane(ray, Plane(glm::vec3(0.0f, 1.0f, 0.0f), m_DraggerNode->GetComponent<IColliderComponent3D>()->GetBounds().getCenter().y));
+			m_DraggerNode->SetTranslate(pos);
+			return;
+		}
+	}
+
+	auto pos = GetScene().GetCameraController()->RayToPlane(ray, Plane(glm::vec3(0.0f, 1.0f, 0.0f), 0.0f));
 	m_DraggerNode->SetTranslate(pos);
 }
 
@@ -129,8 +146,13 @@ void CEditorToolDragger::MoveDraggedNode(const glm::vec2& MousePos)
 
 	auto ray = GetScene().GetCameraController()->ScreenToRay(GetScene().GetRenderWindow().GetViewport(), MousePos);
 
-	auto bounds = m_DraggerNode->GetComponent<IModelsComponent3D>()->GetModel()->GetBounds();
-	_ASSERT(false == bounds.IsInfinite());
+	BoundingBox bounds(glm::vec3(-1.0f), glm::vec3(1.0f));
+	if (auto collider = m_DraggerNode->GetComponent<IColliderComponent3D>())
+	{
+		const auto& colliderBounds = collider->GetBounds();
+		if (false == colliderBounds.IsInfinite())
+			bounds = collider->GetBounds();
+	}
 
 	auto pos = GetScene().GetCameraController()->RayToPlane(ray, Plane(glm::vec3(0.0f, 1.0f, 0.0f), bounds.getMax().y / 2.0f));
 	pos -= bounds.getCenter();

@@ -3,6 +3,26 @@
 // Gerenal
 #include "Editor3DPreviewScene.h"
 
+
+namespace
+{
+	void ExtendsBoundsRecursive(BoundingBox& Bounds, std::shared_ptr<ISceneNode> SceneNode)
+	{
+		if (auto collider = SceneNode->GetComponent<IColliderComponent3D>())
+		{
+			const auto& colliderBounds = collider->GetBounds();
+			if (false == colliderBounds.IsInfinite())
+			{
+				Bounds.makeUnion(colliderBounds);
+			}
+		}
+
+		for (const auto& ch : SceneNode->GetChilds())
+			ExtendsBoundsRecursive(Bounds, ch);
+	}
+}
+
+
 CEditor3DPreviewScene::CEditor3DPreviewScene(IEditor& Editor, IRenderWindow& RenderWindow)
 	: SceneBase(Editor.GetBaseManager(), RenderWindow)
 {
@@ -20,16 +40,29 @@ CEditor3DPreviewScene::~CEditor3DPreviewScene()
 //
 void CEditor3DPreviewScene::SetSceneNode(std::shared_ptr<ISceneNode> SceneNode)
 {
+	_ASSERT(SceneNode != nullptr);
+
+	Clean();
+
 	auto copy = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<CSceneNode3DFactory>()->CreateSceneNode3D(SceneNode->GetClass(), *this, m_SceneNode);
 	std::dynamic_pointer_cast<IObjectLoadSave>(SceneNode)->CopyTo(copy);
+
+	BoundingBox bbox;
+	ExtendsBoundsRecursive(bbox, copy);
+
+	float radius = bbox.getRadius();
+
+	m_SceneNode->SetTranslate(-bbox.getCenter());
+	GetCameraController()->GetCamera()->SetTranslation(glm::vec3(radius * 1.5f));
+	GetCameraController()->GetCamera()->SetDirection(glm::vec3(-0.5f));
+
 }
 
 void CEditor3DPreviewScene::SetModel(IModelPtr Model)
 {
 	_ASSERT(Model != nullptr);
 
-	if (m_ModelNode == nullptr)
-		return;
+	Clean();
 
 	auto modelComponent = m_ModelNode->GetComponent<IModelsComponent3D>();
 	if (modelComponent->GetModel())
@@ -128,4 +161,28 @@ void CEditor3DPreviewScene::Finalize()
 	// Insert code here
 
 	SceneBase::Finalize();
+}
+
+
+
+//
+// Private
+//
+void CEditor3DPreviewScene::Clean()
+{
+	if (m_SceneNode != nullptr)
+	{
+		while (m_SceneNode->GetChilds().size() > 0)
+		{
+			auto editorChild = *(m_SceneNode->GetChilds().begin());
+			m_SceneNode->RemoveChild(editorChild);
+		}
+	}
+
+	if (m_ModelNode != nullptr)
+	{
+		auto modelComponent = m_ModelNode->GetComponent<IModelsComponent3D>();
+		if (modelComponent->GetModel())
+			modelComponent->ResetModel();
+	}
 }

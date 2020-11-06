@@ -16,6 +16,9 @@ public:
 	void Initialize() override;
 	void Finalize() override;
 
+private:
+	void Clean();
+
 private: // Rendering
 	std::shared_ptr<ISceneNode> m_SceneNode;
 	std::shared_ptr<ISceneNode> m_ModelNode;

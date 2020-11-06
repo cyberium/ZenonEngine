@@ -6,7 +6,7 @@ enum class EDragDataSourceType : uint32
 	Material,
 	Geometry,
 	Model,
-	SceneNode
+	SceneNodeProto
 };
 
 void CreateDragDataFromSceneNode(const std::shared_ptr<ISceneNode>& Node, CByteBuffer * ByteBuffer);

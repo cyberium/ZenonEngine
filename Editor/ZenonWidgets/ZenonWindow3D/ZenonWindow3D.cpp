@@ -207,8 +207,8 @@ void ZenonWindow3D::dragEnterEvent(QDragEnterEvent * event)
 	QByteArray qtByteBuffer = mimeData->data("ZenonEngineMimeData");
 	if (false == qtByteBuffer.isEmpty())
 	{
-		try
-		{
+		//try
+		//{
 			SDragData dragData;
 			dragData.Buffer = CByteBuffer(qtByteBuffer.data(), qtByteBuffer.size());
 			dragData.ScreenPosition = glm::vec2(event->pos().x(), event->pos().y());
@@ -218,16 +218,16 @@ void ZenonWindow3D::dragEnterEvent(QDragEnterEvent * event)
 
 			event->setDropAction(Qt::DropAction::MoveAction);
 			event->acceptProposedAction();
-		}
-		catch (const CException& e)
-		{
-			Log::Error("ZenonWindow3D: Exception while drag enter event.");
-			Log::Error("--->%s", e.MessageCStr());
-		}
-		catch (...)
-		{
-			Log::Error("ZenonWindow3D: Unknown exception while drag enter event.");
-		}
+		//}
+		//catch (const CException& e)
+		//{
+		//	Log::Error("ZenonWindow3D: Exception while drag enter event.");
+		//	Log::Error("--->%s", e.MessageCStr());
+		//}
+		//catch (...)
+		//{
+		//	Log::Error("ZenonWindow3D: Unknown exception while drag enter event.");
+		//}
 	}
 }
 

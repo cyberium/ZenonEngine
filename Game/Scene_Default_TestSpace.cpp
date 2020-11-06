@@ -15,7 +15,7 @@ void CSceneDefault::Load3D()
 	//--------------------------------------------------------------------------
 	// XML
 	//--------------------------------------------------------------------------
-	if (auto file = GetBaseManager().GetManager<IFilesManager>()->Open("RTS2.xml"))
+	if (auto file = GetBaseManager().GetManager<IFilesManager>()->Open("RTS22"))
 	{
 		CXMLManager xml(GetBaseManager());
 		auto reader = xml.CreateReader(file);
@@ -89,7 +89,7 @@ void CSceneDefault::Load3D()
 	//--------------------------------------------------------------------------
 	// Plane
 	//--------------------------------------------------------------------------
-	{
+	/*{
 		const float cPlaneSize = 240.0f;
 		const float cPlaneY = 0.0f;
 
@@ -106,7 +106,7 @@ void CSceneDefault::Load3D()
 		node->SetScale(glm::vec3(cPlaneSize, 5.0f, cPlaneSize));
 		node->GetComponent<IModelsComponent3D>()->SetModel(modelPlane);
 		//node->GetComponent<IModelsComponent3D>()->SetCastShadows(false);
-	}
+	}*/
 
 
 
@@ -136,7 +136,7 @@ void CSceneDefault::Load3D()
 	//--------------------------------------------------------------------------
 	// Cube Gold
 	//--------------------------------------------------------------------------
-	for (int i = 0; i < 5; i++)
+	/*for (int i = 0; i < 5; i++)
 	{
 		std::shared_ptr<MaterialModel> textMaterial = MakeShared(MaterialModel, GetBaseManager());
 		textMaterial->SetSpecularFactor(32.0f);
@@ -156,7 +156,7 @@ void CSceneDefault::Load3D()
 		node->SetScale(glm::vec3(15.0f));
 		node->GetComponent<IModelsComponent3D>()->SetModel(modelPlane);
 		//node->GetComponent<IModelsComponent3D>()->SetCastShadows(false);
-	}
+	}*/
 
 
 	//--------------------------------------------------------------------------
