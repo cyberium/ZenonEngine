@@ -33,7 +33,7 @@ ZN_INTERFACE ZN_API ISceneLoadSave
 	virtual ~ISceneLoadSave() {};
 
 	virtual void LoadFromFile(const std::string& FileName) = 0;
-	virtual void SaveToFile(const std::string& FileName) const = 0;
+	virtual void SaveToFile(const std::string& FileName) = 0;
 	virtual void ResetScene() = 0;
 };
 

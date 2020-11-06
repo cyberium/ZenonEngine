@@ -30,7 +30,7 @@ void CEditorToolRotatorRTS::Enable()
 	{
 		m_RotatingNode = node;
 		m_RotatorRoot->SetTranslate(node->GetTranslation());
-		m_RotatorRoot->SetScale(glm::vec3(node->GetComponent<IColliderComponent3D>()->GetBounds().getRadius()));
+		m_RotatorRoot->SetScale(glm::vec3(node->GetComponentT<IColliderComponent3D>()->GetBounds().getRadius()));
 	}
 }
 
@@ -60,7 +60,7 @@ void CEditorToolRotatorRTS::DoInitialize3D(const std::shared_ptr<IRenderer>& Ren
 
 	m_RotatorY = GetScene().CreateSceneNode<ISceneNode>(m_RotatorRoot);
 	m_RotatorY->SetName("RotatorRTSY");
-	m_RotatorY->GetComponent<IModelsComponent3D>()->SetModel(modelY);
+	m_RotatorY->GetComponentT<IModelsComponent3D>()->SetModel(modelY);
 }
 
 bool CEditorToolRotatorRTS::OnMousePressed(const MouseButtonEventArgs & e, const Ray & RayToWorld)

@@ -83,6 +83,7 @@ void CEditorToolDragger::DragEnterEvent(const SDragData& Data)
 	m_IsDraggingPermanentCreation = Data.IsCtrl;
 
 	EDragDataSourceType dragDataSourceType = GetDragDataSourceType(Data.Buffer);
+
 	if (dragDataSourceType == EDragDataSourceType::SceneNodeProto)
 	{
 		std::shared_ptr<ISceneNode> sceneNode = GetSceneNodeFromDragData(GetBaseManager(), GetScene(), Data.Buffer);
@@ -97,7 +98,7 @@ void CEditorToolDragger::DragEnterEvent(const SDragData& Data)
 
 		m_DraggerNode = GetScene().CreateSceneNode<ISceneNode>();
 		m_DraggerNode->SetName(model->GetName());
-		m_DraggerNode->GetComponent<IModelsComponent3D>()->SetModel(model);
+		m_DraggerNode->GetComponentT<IModelsComponent3D>()->SetModel(model);
 	}
 	else
 	{
@@ -106,12 +107,12 @@ void CEditorToolDragger::DragEnterEvent(const SDragData& Data)
 	}
 
 	auto ray = GetScene().GetCameraController()->ScreenToRay(GetScene().GetRenderWindow().GetViewport(), Data.ScreenPosition);
-	if (auto collider = m_DraggerNode->GetComponent<IColliderComponent3D>())
+	if (auto collider = m_DraggerNode->GetComponentT<IColliderComponent3D>())
 	{
 		const auto& colliderBounds = collider->GetBounds();
 		if (false == colliderBounds.IsInfinite())
 		{
-			auto pos = GetScene().GetCameraController()->RayToPlane(ray, Plane(glm::vec3(0.0f, 1.0f, 0.0f), m_DraggerNode->GetComponent<IColliderComponent3D>()->GetBounds().getCenter().y));
+			auto pos = GetScene().GetCameraController()->RayToPlane(ray, Plane(glm::vec3(0.0f, 1.0f, 0.0f), m_DraggerNode->GetComponentT<IColliderComponent3D>()->GetBounds().getCenter().y));
 			m_DraggerNode->SetTranslate(pos);
 			return;
 		}
@@ -147,7 +148,7 @@ void CEditorToolDragger::MoveDraggedNode(const glm::vec2& MousePos)
 	auto ray = GetScene().GetCameraController()->ScreenToRay(GetScene().GetRenderWindow().GetViewport(), MousePos);
 
 	BoundingBox bounds(glm::vec3(-1.0f), glm::vec3(1.0f));
-	if (auto collider = m_DraggerNode->GetComponent<IColliderComponent3D>())
+	if (auto collider = m_DraggerNode->GetComponentT<IColliderComponent3D>())
 	{
 		const auto& colliderBounds = collider->GetBounds();
 		if (false == colliderBounds.IsInfinite())
@@ -174,8 +175,7 @@ void CEditorToolDragger::CreateCopyDraggedNode()
 		return;
 
 	auto copiedNode = GetScene().CreateSceneNode<ISceneNode>();
-	if (auto loadSave = std::dynamic_pointer_cast<IObjectLoadSave>(m_DraggerNode))
-		loadSave->CopyTo(copiedNode);
+	m_DraggerNode->CopyTo(copiedNode);
 
 	copiedNode->SetTranslate(m_DraggerNode->GetTranslation());
 

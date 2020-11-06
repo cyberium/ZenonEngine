@@ -6,16 +6,19 @@
 // Additional
 #include "Scene/Nodes/UIText.h"
 #include "Scene/Nodes/UIColor.h"
-#include "Scene/RTSSceneNodeGround.h"
-#include "Scene/SceneNodeWaypoints.h"
+
+#include "Scene/SceneNodeRTSGround.h"
+#include "Scene/SceneNodeRTSPathAndPoint.h"
+#include "Scene/SceneNodeRTSUnit.h"
 
 CSceneNodeEngineCreator::CSceneNodeEngineCreator(IBaseManager& BaseManager)
 	: CObjectClassCreatorBase(BaseManager)
 {
-	AddKey("CSceneNode", cSceneNode3D);
-	AddKey("RTSSceneNodeGround", cCRTSSceneNodeGround);
-	AddKey("SceneNodePath", cSceneNodePath);
-	AddKey("SceneNodePoint", cSceneNodePoint);
+	AddKey("SceneNode", cSceneNode3D);
+	AddKey("SceneNodeRTSGround", cSceneNodeRTSGround);
+	AddKey("SceneNodeRTSPath", cSceneNodeRTSPath);
+	AddKey("SceneNodeRTSPoint", cSceneNodeRTSPoint);
+	AddKey("SceneNodeRTSUnit", cSceneNodeRTSUnit);
 }
 
 CSceneNodeEngineCreator::~CSceneNodeEngineCreator()
@@ -41,21 +44,28 @@ std::shared_ptr<IObject> CSceneNodeEngineCreator::CreateObject(size_t Index, con
 	}
 	else if (Index == 1)
 	{
-		std::shared_ptr<CRTSSceneNodeGround> node = MakeShared(CRTSSceneNodeGround, sceneNodeCreationArgs->GetScene());
+		std::shared_ptr<CSceneNodeRTSGround> node = MakeShared(CSceneNodeRTSGround, sceneNodeCreationArgs->GetScene());
 		node->RegisterComponents();
 		node->Initialize();
 		createdNode = node;
 	}
 	else if (Index == 2)
 	{
-		std::shared_ptr<CSceneNodePath> node = MakeShared(CSceneNodePath, sceneNodeCreationArgs->GetScene());
+		std::shared_ptr<CSceneNodeRTSPath> node = MakeShared(CSceneNodeRTSPath, sceneNodeCreationArgs->GetScene());
 		node->Initialize();
 		createdNode = node;
 	}
 	else if (Index == 3)
 	{
-		std::shared_ptr<CSceneNodePoint> node = MakeShared(CSceneNodePoint, sceneNodeCreationArgs->GetScene());
+		std::shared_ptr<CSceneNodeRTSPoint> node = MakeShared(CSceneNodeRTSPoint, sceneNodeCreationArgs->GetScene());
 		node->AddComponentT(GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<IComponentFactory>()->CreateComponentT<IColliderComponent3D>(cSceneNodeColliderComponent, *node));
+		node->Initialize();
+		createdNode = node;
+	}
+	else if (Index == 4)
+	{
+		std::shared_ptr<CSceneNodeRTSUnit> node = MakeShared(CSceneNodeRTSUnit, sceneNodeCreationArgs->GetScene());
+		node->RegisterComponents();
 		node->Initialize();
 		createdNode = node;
 	}
@@ -108,6 +118,7 @@ std::shared_ptr<IObject> CSceneNodeUIEngineCreator::CreateObject(size_t Index, c
 {
 	auto sceneNodeCreationArgs = static_cast<const IUIControlCreationArgs*>(ObjectCreationArgs);
 
+	// 1. Create object
 	std::shared_ptr<IUIControl> createdNode = nullptr;
 	if (Index == 0)
 	{
@@ -128,14 +139,17 @@ std::shared_ptr<IObject> CSceneNodeUIEngineCreator::CreateObject(size_t Index, c
 		createdNode = newNode;
 	}
 
+	// 2. Check
 	if (createdNode == nullptr)
 		throw CException("SceneNodeUIEngineCreator: CreateObject: Unable to create object with index %d.", Index);
 
+	// 3. Assign GUID
 	if (auto objectPrivate = std::dynamic_pointer_cast<IObjectPrivate>(createdNode))
 		objectPrivate->SetGUID(AssignedGuid);
 	else
 		throw CException("SceneNodeUIEngineCreator: Object [%s] not support IObjectInternal.", AssignedGuid.CStr());
 
+	// 4. Control specific
 	if (auto parent = sceneNodeCreationArgs->GetParent())
 	{
 		parent->AddChild(createdNode);

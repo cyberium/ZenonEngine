@@ -76,7 +76,7 @@ EVisitResult CPassForward_DoRenderScene::Visit(const ISceneNode * SceneNode)
 	if (SceneNode->GetClass() != cSceneNode3D)
 		return EVisitResult::AllowVisitChilds;
 
-	auto skeletonComponent = SceneNode->GetComponent<ISkeletonComponent3D>();
+	auto skeletonComponent = SceneNode->GetComponentT<ISkeletonComponent3D>();
 	if (skeletonComponent != nullptr)
 		if (m_ShaderBonesBufferParameter->IsValid())
 			m_ShaderBonesBufferParameter->Set(skeletonComponent->GetBonesBuffer());

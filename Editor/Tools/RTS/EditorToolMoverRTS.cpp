@@ -26,7 +26,7 @@ void CEditorToolMoverRTS::Enable()
 	{
 		m_MovingNode = node;
 		m_MoverRoot->SetTranslate(node->GetTranslation());
-		m_MoverRoot->SetScale(glm::vec3(node->GetComponent<IColliderComponent3D>()->GetBounds().getRadius() * 1.0f / 50.0f));
+		m_MoverRoot->SetScale(glm::vec3(node->GetComponentT<IColliderComponent3D>()->GetBounds().getRadius() * 1.0f / 50.0f));
 	}
 }
 
@@ -69,12 +69,12 @@ void CEditorToolMoverRTS::DoInitialize3D(const std::shared_ptr<IRenderer>& Rende
 	m_MoverX = GetScene().CreateSceneNode<ISceneNode>(m_MoverRoot);
 	m_MoverX->SetName("MoverRTSX");
 	m_MoverX->SetRotation(glm::vec3(0.0f, glm::half_pi<float>(), 0.0f));
-	m_MoverX->GetComponent<IModelsComponent3D>()->SetModel(modelX);
+	m_MoverX->GetComponentT<IModelsComponent3D>()->SetModel(modelX);
 
 	m_MoverZ = GetScene().CreateSceneNode<ISceneNode>(m_MoverRoot);
 	m_MoverZ->SetName("RotatorRTSZ");
 	m_MoverZ->SetRotation(glm::vec3(0.0f, 0.0f, 0.0f));
-	m_MoverZ->GetComponent<IModelsComponent3D>()->SetModel(modelZ);
+	m_MoverZ->GetComponentT<IModelsComponent3D>()->SetModel(modelZ);
 }
 
 bool CEditorToolMoverRTS::OnMousePressed(const MouseButtonEventArgs & e, const Ray & RayToWorld)

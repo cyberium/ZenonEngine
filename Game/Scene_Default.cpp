@@ -50,11 +50,11 @@ void CSceneDefault::Initialize()
 		lightNode->SetRotation(glm::vec3(-0.5f, -0.5f, -0.5f));
 
 		lightNode->AddComponentT(GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<IComponentFactory>()->CreateComponentT<ILightComponent3D>(cSceneNodeLightComponent, *lightNode.get()));
-		lightNode->GetComponent<ILightComponent3D>()->SetType(ELightType::Spot);
-		lightNode->GetComponent<ILightComponent3D>()->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
-		lightNode->GetComponent<ILightComponent3D>()->SetRange(350.0f);
-		lightNode->GetComponent<ILightComponent3D>()->SetIntensity(1.0f);
-		lightNode->GetComponent<ILightComponent3D>()->SetSpotlightAngle(30.0f);
+		lightNode->GetComponentT<ILightComponent3D>()->SetType(ELightType::Spot);
+		lightNode->GetComponentT<ILightComponent3D>()->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
+		lightNode->GetComponentT<ILightComponent3D>()->SetRange(350.0f);
+		lightNode->GetComponentT<ILightComponent3D>()->SetIntensity(1.0f);
+		lightNode->GetComponentT<ILightComponent3D>()->SetSpotlightAngle(30.0f);
 	}
 
 	// Camera
@@ -64,13 +64,29 @@ void CSceneDefault::Initialize()
 		cameraNode->AddComponentT(GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<IComponentFactory>()->CreateComponentT<ICameraComponent3D>(cSceneNodeCameraComponent, *cameraNode));
 
 		SetCameraController(MakeShared(CFreeCameraController));
-		GetCameraController()->SetCamera(cameraNode->GetComponent<ICameraComponent3D>());
+		GetCameraController()->SetCamera(cameraNode->GetComponentT<ICameraComponent3D>());
 		GetCameraController()->GetCamera()->SetPerspectiveProjection(ICameraComponent3D::EPerspectiveProjectionHand::Right, 75.0f, static_cast<float>(GetRenderWindow().GetWindowWidth()) / static_cast<float>(GetRenderWindow().GetWindowHeight()), 1.0f, 5000.0f);
 		GetCameraController()->GetCamera()->SetTranslation(glm::vec3(15.0f * 2.0f));
 		GetCameraController()->GetCamera()->SetDirection(glm::vec3(-0.5f));
 	}
 
 	Load3D();
+
+	//--------------------------------------------------------------------------
+	// XML
+	//--------------------------------------------------------------------------
+	if (auto file = GetBaseManager().GetManager<IFilesManager>()->Open("RTS22656"))
+	{
+		CXMLManager xml(GetBaseManager());
+		auto reader = xml.CreateReader(file);
+		auto rootNodeXML = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeFactory>()->LoadSceneNode3DXML(reader->GetChilds()[0], *this);
+
+		m_RTSUnitsPath = std::dynamic_pointer_cast<ISceneNodeRTSPath>(rootNodeXML->GetChild("Waypoint"));
+		_ASSERT(m_RTSUnitsPath != nullptr);
+
+		auto sceneNodeRTSUnit = CreateSceneNodeT<ISceneNodeRTSUnit>();
+		sceneNodeRTSUnit->SetPath(m_RTSUnitsPath);
+	}
 
 	//--------------------------------------------------------------------------
 	// RENDERERS
@@ -83,7 +99,7 @@ void CSceneDefault::Initialize()
 	defferedRenderer->Initialize(GetRenderWindow().GetRenderTarget(), &GetRenderWindow().GetViewport());
 	m_DefferedRenderrer = defferedRenderer;
 
-	SetRenderer(forwardRenderer);
+	SetRenderer(defferedRenderer);
 }
 
 void CSceneDefault::Finalize()
@@ -91,6 +107,13 @@ void CSceneDefault::Finalize()
 	// Insert code here
 
 	SceneBase::Finalize();
+}
+
+void CSceneDefault::OnUpdate(UpdateEventArgs & e)
+{
+
+
+	__super::OnUpdate(e);
 }
 
 bool CSceneDefault::OnMousePressed(const MouseButtonEventArgs & e, const Ray& RayToWorld)

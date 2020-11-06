@@ -8,7 +8,7 @@ namespace
 {
 	void ExtendsBoundsRecursive(BoundingBox& Bounds, std::shared_ptr<ISceneNode> SceneNode)
 	{
-		if (auto collider = SceneNode->GetComponent<IColliderComponent3D>())
+		if (auto collider = SceneNode->GetComponentT<IColliderComponent3D>())
 		{
 			const auto& colliderBounds = collider->GetBounds();
 			if (false == colliderBounds.IsInfinite())
@@ -45,7 +45,7 @@ void CEditor3DPreviewScene::SetSceneNode(std::shared_ptr<ISceneNode> SceneNode)
 	Clean();
 
 	auto copy = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<CSceneNode3DFactory>()->CreateSceneNode3D(SceneNode->GetClass(), *this, m_SceneNode);
-	std::dynamic_pointer_cast<IObjectLoadSave>(SceneNode)->CopyTo(copy);
+	SceneNode->CopyTo(copy);
 
 	BoundingBox bbox;
 	ExtendsBoundsRecursive(bbox, copy);
@@ -64,7 +64,7 @@ void CEditor3DPreviewScene::SetModel(IModelPtr Model)
 
 	Clean();
 
-	auto modelComponent = m_ModelNode->GetComponent<IModelsComponent3D>();
+	auto modelComponent = m_ModelNode->GetComponentT<IModelsComponent3D>();
 	if (modelComponent->GetModel())
 		modelComponent->ResetModel();
 
@@ -95,11 +95,11 @@ void CEditor3DPreviewScene::Initialize()
 		lightNode->SetRotation(glm::vec3(-0.9f, -0.9f, -0.9f));
 
 		lightNode->AddComponentT(GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<IComponentFactory>()->CreateComponentT<ILightComponent3D>(cSceneNodeLightComponent, *lightNode.get()));
-		lightNode->GetComponent<ILightComponent3D>()->SetType(ELightType::Spot);
-		lightNode->GetComponent<ILightComponent3D>()->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
-		lightNode->GetComponent<ILightComponent3D>()->SetRange(1000.0f);
-		lightNode->GetComponent<ILightComponent3D>()->SetIntensity(1.2f);
-		lightNode->GetComponent<ILightComponent3D>()->SetSpotlightAngle(45.0f);
+		lightNode->GetComponentT<ILightComponent3D>()->SetType(ELightType::Spot);
+		lightNode->GetComponentT<ILightComponent3D>()->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
+		lightNode->GetComponentT<ILightComponent3D>()->SetRange(1000.0f);
+		lightNode->GetComponentT<ILightComponent3D>()->SetIntensity(1.2f);
+		lightNode->GetComponentT<ILightComponent3D>()->SetSpotlightAngle(45.0f);
 	}
 
 
@@ -109,7 +109,7 @@ void CEditor3DPreviewScene::Initialize()
 		cameraNode->AddComponentT(GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<IComponentFactory>()->CreateComponentT<ICameraComponent3D>(cSceneNodeCameraComponent, *cameraNode));
 
 		SetCameraController(MakeShared(CFreeCameraController));
-		GetCameraController()->SetCamera(cameraNode->GetComponent<ICameraComponent3D>());
+		GetCameraController()->SetCamera(cameraNode->GetComponentT<ICameraComponent3D>());
 		GetCameraController()->GetCamera()->SetPerspectiveProjection(ICameraComponent3D::EPerspectiveProjectionHand::Right, 75.0f, static_cast<float>(GetRenderWindow().GetWindowWidth()) / static_cast<float>(GetRenderWindow().GetWindowHeight()), 1.0f, 5000.0f);
 		GetCameraController()->GetCamera()->SetTranslation(glm::vec3(15.0f * 2.0f));
 		GetCameraController()->GetCamera()->SetDirection(glm::vec3(-0.5f));
@@ -143,7 +143,7 @@ void CEditor3DPreviewScene::Initialize()
 		auto model = GetRenderDevice().GetObjectsFactory().CreateModel();
 		model->AddConnection(mat, geom);
 
-		node->GetComponent<IModelsComponent3D>()->SetModel(model);
+		node->GetComponentT<IModelsComponent3D>()->SetModel(model);
 	}
 
 
@@ -181,7 +181,7 @@ void CEditor3DPreviewScene::Clean()
 
 	if (m_ModelNode != nullptr)
 	{
-		auto modelComponent = m_ModelNode->GetComponent<IModelsComponent3D>();
+		auto modelComponent = m_ModelNode->GetComponentT<IModelsComponent3D>();
 		if (modelComponent->GetModel())
 			modelComponent->ResetModel();
 	}

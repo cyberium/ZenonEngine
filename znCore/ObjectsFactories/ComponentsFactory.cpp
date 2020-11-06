@@ -30,18 +30,14 @@ std::shared_ptr<ISceneNodeComponent> CComponentsFactory::LoadComponentXML(const 
 	Guid guid = ReadGUIDXML(Reader);
 
 	CComponentCreationArgs creationArgs(SceneNode);
-	auto createdbject = CreateObject(guid.GetObjectClass(), &creationArgs);
-	if (auto objectLoadSave = std::dynamic_pointer_cast<IObjectLoadSave>(createdbject))
-		objectLoadSave->Load(Reader);
-
-	return std::dynamic_pointer_cast<ISceneNodeComponent>(createdbject);
+	auto sceneNodeComponent = std::dynamic_pointer_cast<ISceneNodeComponent>(CreateObject(guid.GetObjectClass(), &creationArgs));
+	sceneNodeComponent->Load(Reader);
+	return sceneNodeComponent;
 }
 
-std::shared_ptr<IXMLWriter> CComponentsFactory::SaveComponentXML(std::shared_ptr<ISceneNodeComponent> Object)
+std::shared_ptr<IXMLWriter> CComponentsFactory::SaveComponentXML(std::shared_ptr<ISceneNodeComponent> SceneNodeComponent)
 {
-	auto writer = WriteGUIDXML(Object->GetGUID());
-	if (auto objectLoadSave = std::dynamic_pointer_cast<IObjectLoadSave>(Object))
-		objectLoadSave->Save(writer);
-
+	auto writer = WriteGUIDXML(SceneNodeComponent->GetGUID());
+	SceneNodeComponent->Save(writer);
 	return writer;
 }

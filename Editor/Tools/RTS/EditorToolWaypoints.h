@@ -29,8 +29,8 @@ protected:
 	void AddPoint(glm::vec3 XYZ);
 
 private:
-	std::shared_ptr<ISceneNodePath> m_CurrectWaypointsNode;
-	std::shared_ptr<ISceneNodePoint> m_LastCreatedPoint;
+	std::shared_ptr<ISceneNodeRTSPath> m_CurrectWaypointsNode;
+	std::shared_ptr<ISceneNodeRTSPoint> m_LastCreatedPoint;
 	bool m_IsActivated;
 
 private:

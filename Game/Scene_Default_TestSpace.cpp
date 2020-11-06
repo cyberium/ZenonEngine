@@ -7,27 +7,7 @@
 
 void CSceneDefault::Load3D()
 {
-	auto newRoot = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeFactory>()->CreateSceneNode3D(cSceneNode3D, *this, GetRootSceneNode());
-	newRoot->SetName("NewRoot3D");
 
-
-
-	//--------------------------------------------------------------------------
-	// XML
-	//--------------------------------------------------------------------------
-	if (auto file = GetBaseManager().GetManager<IFilesManager>()->Open("RTS22"))
-	{
-		CXMLManager xml(GetBaseManager());
-		auto reader = xml.CreateReader(file);
-
-		auto currentRoot = newRoot;
-		while (false == currentRoot->GetChilds().empty())
-			currentRoot->RemoveChild(currentRoot->GetChilds()[0]);
-
-		auto rootNodeXML = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeFactory>()->LoadSceneNode3DXML(reader->GetChilds()[0], currentRoot->GetScene(), currentRoot->GetParent());
-		while (false == rootNodeXML->GetChilds().empty())
-			currentRoot->AddChild(rootNodeXML->GetChilds()[0]);
-	}
 
 
 	//--------------------------------------------------------------------------
@@ -310,11 +290,11 @@ void CSceneDefault::Load3DOld()
 					sceneNode->SetTranslate(glm::vec3(offset * i, offset * k, offset * j));
 					sceneNode->SetScale(glm::vec3(scale));
 					//sceneNode->GetComponent<IModelsComponent3D>()->AddModel(((i % 2 == 0) || (j % 2 == 0) && (k % 2 == 0)) ? cubeModel : sphereModel);
-					sceneNode->GetComponent<IModelsComponent3D>()->SetModel(sphereModel);
+					sceneNode->GetComponentT<IModelsComponent3D>()->SetModel(sphereModel);
 
 					BoundingBox bbox = BoundingBox(glm::vec3(-1.0f, -1.0f, -1.0f), glm::vec3(1.0f, 1.0f, 1.0f));
 					bbox.transform(sceneNode->GetWorldTransfom());
-					sceneNode->GetComponent<IColliderComponent3D>()->SetBounds(bbox);
+					sceneNode->GetComponentT<IColliderComponent3D>()->SetBounds(bbox);
 
 #if 0
 					rp3d::Vector3 initPosition(offset * i + r.NextFloat() / 5.0f, offset * k, offset * j + r.NextFloat() / 5.0f);

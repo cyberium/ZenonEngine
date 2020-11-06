@@ -68,7 +68,7 @@ public:
 	
 	// ISceneLoadSave
 	void                                            LoadFromFile(const std::string& FileName) override;
-	void                                            SaveToFile(const std::string& FileName) const override;
+	void                                            SaveToFile(const std::string& FileName) override;
 	void                                            ResetScene() override;
 
 
@@ -84,6 +84,8 @@ protected:
 		std::shared_ptr<ISceneNode> Child;
 	};
 
+	void                                            BlockSceneEvents();
+	void                                            UnblockSceneEvents();
 	void                                            RaiseSceneChangeEvent(ESceneChangeType SceneChangeType, const std::shared_ptr<ISceneNode>& ParentNode, const std::shared_ptr<ISceneNode>& ChildNode);
 
 
@@ -120,6 +122,7 @@ private: // Функционал по отложенному добавлению нод
 
 	std::mutex m_ChildModifyLock;
 
+	bool m_SceneEventsBlocked;
 	std::vector<ISceneEventsListener*> m_EventListeners;
 
 private: // Quick access

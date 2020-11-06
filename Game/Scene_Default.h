@@ -11,6 +11,8 @@ public:
 	void Initialize() override;
 	void Finalize() override;
 
+	virtual void OnUpdate(UpdateEventArgs& e) override;
+
 	virtual bool OnMousePressed(const MouseButtonEventArgs & e, const Ray& RayToWorld) override;
 	virtual void OnMouseMoved(const MouseMotionEventArgs & e, const Ray& RayToWorld) override;
 
@@ -28,4 +30,5 @@ private:
 
 private:
 	std::shared_ptr<ISceneNode> m_RootForBoxes;
+	std::shared_ptr<ISceneNodeRTSPath> m_RTSUnitsPath;
 };

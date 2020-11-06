@@ -69,12 +69,12 @@ struct SRTSCell
 	std::shared_ptr<IModel> Model;
 };
 
-ZN_INTERFACE ZN_API IRTSGround
+ZN_INTERFACE ZN_API ISceneNodeRTSGround
 	: public virtual ISceneNode
 {
-	ZN_OBJECTCLASS(cCRTSSceneNodeGround);
+	ZN_OBJECTCLASS(cSceneNodeRTSGround);
 
-	virtual ~IRTSGround() {}
+	virtual ~ISceneNodeRTSGround() {}
 
 	virtual bool AddCell(ERTSCellType CellType, SRTSCellCoords Coords) = 0;
 	virtual SRTSCell& GetCell(SRTSCellCoords Coords) = 0;
@@ -85,24 +85,48 @@ ZN_INTERFACE ZN_API IRTSGround
 
 
 
-ZN_INTERFACE ZN_API ISceneNodePoint
+ZN_INTERFACE ISceneNodeRTSUnit;
+ZN_INTERFACE ISceneNodeRTSPath;
+ZN_INTERFACE ISceneNodeRTSPoint;
+
+
+
+
+ZN_INTERFACE ZN_API ISceneNodeRTSUnit
 	: public virtual ISceneNode
 {
-	ZN_OBJECTCLASS(cSceneNodePoint);
-	virtual ~ISceneNodePoint() {}
+	ZN_OBJECTCLASS(cSceneNodeRTSUnit);
+	virtual ~ISceneNodeRTSUnit() {}
+
+	virtual void SetPath(std::shared_ptr<ISceneNodeRTSPath> Path) = 0;
 
 };
 
 
 
-ZN_INTERFACE ZN_API ISceneNodePath
+
+ZN_INTERFACE ZN_API ISceneNodeRTSPoint
 	: public virtual ISceneNode
 {
-	ZN_OBJECTCLASS(cSceneNodePath);
-	virtual ~ISceneNodePath() {}
+	ZN_OBJECTCLASS(cSceneNodeRTSPoint);
+	virtual ~ISceneNodeRTSPoint() {}
 
-	virtual std::shared_ptr<ISceneNodePoint> AddPoint(glm::vec3 XYZ) = 0;
-	virtual std::shared_ptr<ISceneNodePoint> InsertPoint(glm::vec3 XYZ, size_t AfterIndex) = 0;
-	virtual std::shared_ptr<ISceneNodePoint> GetLastPoint() = 0;
-	virtual std::vector<std::shared_ptr<ISceneNodePoint>> GetPoints() const = 0;
+};
+
+
+
+
+
+
+ZN_INTERFACE ZN_API ISceneNodeRTSPath
+	: public virtual ISceneNode
+{
+	ZN_OBJECTCLASS(cSceneNodeRTSPath);
+	virtual ~ISceneNodeRTSPath() {}
+
+	virtual std::shared_ptr<ISceneNodeRTSPoint> AddPoint(glm::vec3 XYZ) = 0;
+	virtual std::shared_ptr<ISceneNodeRTSPoint> InsertPoint(glm::vec3 XYZ, size_t AfterIndex) = 0;
+	virtual std::shared_ptr<ISceneNodeRTSPoint> GetLastPoint() = 0;
+	virtual std::vector<std::shared_ptr<ISceneNodeRTSPoint>> GetPoints() const = 0;
+	virtual std::shared_ptr<ISceneNodeRTSPoint> GetPoint(size_t Index) const = 0;
 };

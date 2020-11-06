@@ -13,6 +13,7 @@ typedef uint32 ComponentMessageType;
 
 ZN_INTERFACE ZN_API ISceneNodeComponent
 	: public virtual IObject
+	, public virtual IObjectLoadSave
 	, public std::enable_shared_from_this<ISceneNodeComponent>
 {
 	ZN_OBJECTCLASS(cSceneNodeComponent);

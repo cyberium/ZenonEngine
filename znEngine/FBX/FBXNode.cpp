@@ -223,7 +223,7 @@ void CFBXNode::LoadLight(fbxsdk::FbxNode * NativeNode)
 	//auto geometry = m_BaseManager.GetApplication().GetRenderDevice().GetPrimitivesFactory().CreateCone();
 	//auto model = m_BaseManager.GetApplication().GetRenderDevice().GetObjectsFactory().CreateModel();
 	//model->AddConnection(matDebug, geometry);
-	//GetComponent<IModelsComponent3D>()->AddModel(model);
+	//GetComponentT<IModelsComponent3D>()->AddModel(model);
 }
 
 #endif

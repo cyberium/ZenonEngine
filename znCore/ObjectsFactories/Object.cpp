@@ -60,24 +60,16 @@ void Object::Save(const std::shared_ptr<IByteBuffer>& Buffer) const
 
 void Object::Load(const std::shared_ptr<IXMLReader>& Reader)
 {
-	if (Reader->IsAttributeExists("Name"))
-	{
+	if (false == Reader->IsAttributeExists("Name"))
 		return;
-	}
 
 	auto name = Reader->GetStrAttribute("Name");
 	if (name.empty())
-	{
-		_ASSERT(false);
-		return;
-	}
+		throw CException("XML node '%s' contains 'Name' attribute, but this attribute is empty.", Reader->GetName().c_str());
 
 	auto clearName = GetClearName(name).first;
 	if (clearName.empty())
-	{
-		_ASSERT(false);
-		return;
-	}
+		throw CException("XML node '%s' contains 'Name' attribute with value '%s', but this value is not correct name.", Reader->GetName().c_str(), name.c_str());
 
 	SetName(clearName);
 }

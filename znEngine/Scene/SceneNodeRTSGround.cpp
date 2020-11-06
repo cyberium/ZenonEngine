@@ -1,23 +1,12 @@
 #include "stdafx.h"
 
 // General
-#include "RTSSceneNodeGround.h"
+#include "SceneNodeRTSGround.h"
 
-CRTSSceneNodeGround::CRTSSceneNodeGround(IScene& Scene)
+CSceneNodeRTSGround::CSceneNodeRTSGround(IScene& Scene)
 	: CSceneNode(Scene)
 {
 	SetPersistanceInternal(true);
-
-	/*m_Cells = ZN_NEW SRTSCell**[cCellsCount];
-	for (size_t x = 0; x < cCellsCount; x++)
-	{
-		m_Cells[x] = ZN_NEW SRTSCell*[cCellsCount];
-		for (size_t z = 0; z < cCellsCount; z++)
-		{
-			m_Cells[x][z] = ZN_NEW SRTSCell(SRTSCellCoords(x, z));
-			AddCell(ERTSCellType::ctGround, m_Cells[x][z]->Coords);
-		}
-	}*/
 
 	for (size_t x = 0; x < cCellsCount; x++)
 	{
@@ -29,7 +18,7 @@ CRTSSceneNodeGround::CRTSSceneNodeGround(IScene& Scene)
 	}
 }
 
-CRTSSceneNodeGround::~CRTSSceneNodeGround()
+CSceneNodeRTSGround::~CSceneNodeRTSGround()
 {
 	/*for (size_t x = 0; x < cCellsCount; x++)
 	{
@@ -44,7 +33,7 @@ CRTSSceneNodeGround::~CRTSSceneNodeGround()
 
 
 
-bool CRTSSceneNodeGround::AddCell(ERTSCellType CellType, SRTSCellCoords Coords)
+bool CSceneNodeRTSGround::AddCell(ERTSCellType CellType, SRTSCellCoords Coords)
 {
 	if (false == Coords.IsCorrect())
 		return false;
@@ -78,19 +67,19 @@ bool CRTSSceneNodeGround::AddCell(ERTSCellType CellType, SRTSCellCoords Coords)
 	return true;
 }
 
-SRTSCell& CRTSSceneNodeGround::GetCell(SRTSCellCoords Coords)
+SRTSCell& CSceneNodeRTSGround::GetCell(SRTSCellCoords Coords)
 {
 	_ASSERT(Coords.IsCorrect());
 	return m_Cells[Coords.GetX()][Coords.GetZ()];
 }
 
-const SRTSCell& CRTSSceneNodeGround::GetCellConst(SRTSCellCoords Coords) const
+const SRTSCell& CSceneNodeRTSGround::GetCellConst(SRTSCellCoords Coords) const
 {
 	_ASSERT(Coords.IsCorrect());
 	return m_Cells[Coords.GetX()][Coords.GetZ()];
 }
 
-SRTSCellCoords CRTSSceneNodeGround::PositionToCoords(const glm::vec3& Position)
+SRTSCellCoords CSceneNodeRTSGround::PositionToCoords(const glm::vec3& Position)
 {
 	glm::vec3 mousePosWithOffset = Position + glm::vec3(cCellSize, 0.0f, cCellSize) / 2.0f;
 
@@ -99,7 +88,7 @@ SRTSCellCoords CRTSSceneNodeGround::PositionToCoords(const glm::vec3& Position)
 	return SRTSCellCoords(newPosition.x, newPosition.y);
 }
 
-glm::vec3 CRTSSceneNodeGround::PositionToPosition(const glm::vec3& Position, float Height)
+glm::vec3 CSceneNodeRTSGround::PositionToPosition(const glm::vec3& Position, float Height)
 {
 	glm::vec3 newPosition = glm::vec3(Position.x, Height, Position.z);
 	newPosition /= static_cast<float>(cCellSize);
@@ -109,11 +98,11 @@ glm::vec3 CRTSSceneNodeGround::PositionToPosition(const glm::vec3& Position, flo
 	return newPosition;
 }
 
-void CRTSSceneNodeGround::Update(const UpdateEventArgs & e)
+void CSceneNodeRTSGround::Update(const UpdateEventArgs & e)
 {
 }
 
-void CRTSSceneNodeGround::Accept(IVisitor * visitor)
+void CSceneNodeRTSGround::Accept(IVisitor * visitor)
 {
 	CSceneNode::Accept(visitor);
 }
@@ -123,11 +112,11 @@ void CRTSSceneNodeGround::Accept(IVisitor * visitor)
 //
 // IObjectLoadSave
 //
-void CRTSSceneNodeGround::CopyTo(std::shared_ptr<IObject> Destination) const
+void CSceneNodeRTSGround::CopyTo(std::shared_ptr<IObject> Destination) const
 {
 	Object::CopyTo(Destination);
 
-	auto destCast = std::dynamic_pointer_cast<CRTSSceneNodeGround>(Destination);
+	auto destCast = std::dynamic_pointer_cast<CSceneNodeRTSGround>(Destination);
 
 	for (int32 x = 0; x < cCellsCount; x++)
 	{
@@ -138,7 +127,7 @@ void CRTSSceneNodeGround::CopyTo(std::shared_ptr<IObject> Destination) const
 	}
 }
 
-void CRTSSceneNodeGround::Load(const std::shared_ptr<IXMLReader>& Reader)
+void CSceneNodeRTSGround::Load(const std::shared_ptr<IXMLReader>& Reader)
 {
 	Object::Load(Reader);
 
@@ -175,7 +164,7 @@ void CRTSSceneNodeGround::Load(const std::shared_ptr<IXMLReader>& Reader)
 	}
 }
 
-void CRTSSceneNodeGround::Save(const std::shared_ptr<IXMLWriter>& Writer) const
+void CSceneNodeRTSGround::Save(const std::shared_ptr<IXMLWriter>& Writer) const
 {
 	Object::Save(Writer);
 
@@ -196,7 +185,7 @@ void CRTSSceneNodeGround::Save(const std::shared_ptr<IXMLWriter>& Writer) const
 	}
 }
 
-void CRTSSceneNodeGround::DoProcessNodesNear(SRTSCellCoords Coords)
+void CSceneNodeRTSGround::DoProcessNodesNear(SRTSCellCoords Coords)
 {
 	for (int32 x = -1; x <= 1; x++)
 	{

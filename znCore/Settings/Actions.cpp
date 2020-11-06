@@ -44,6 +44,16 @@ void CAction::SetDescription(const std::string & Description)
 	m_Description = Description;
 }
 
+void CAction::SetSyntetic(bool Value)
+{
+	Log::Warn("Actions in always syntetic properties.");
+}
+
+bool CAction::IsSyntetic() const
+{
+	return true;
+}
+
 void CAction::Load(const std::shared_ptr<IXMLReader>& Reader)
 {
 	SetName(Reader->GetName());

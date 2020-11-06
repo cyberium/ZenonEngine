@@ -77,10 +77,10 @@ EVisitResult CRTSGround_Pass::Visit(const ISceneNode * SceneNode)
 	if (Object::GetClearName(SceneNode->GetName()).first == "GroundRoot")
 		printf("Asd");
 
-	if (SceneNode->GetClass() != cCRTSSceneNodeGround)
+	if (SceneNode->GetClass() != cSceneNodeRTSGround)
 		return EVisitResult::AllowVisitChilds;
 
-	const IRTSGround* rtsGround = dynamic_cast<const IRTSGround*>(SceneNode);
+	const ISceneNodeRTSGround* rtsGround = dynamic_cast<const ISceneNodeRTSGround*>(SceneNode);
 	_ASSERT(rtsGround != nullptr);
 
 	std::unordered_map<const IModel*, std::vector<PerObject>> modelPriorMap;

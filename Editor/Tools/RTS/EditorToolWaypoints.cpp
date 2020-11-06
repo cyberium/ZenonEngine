@@ -67,13 +67,13 @@ bool CEditorToolWaypoints::OnMousePressed(const MouseButtonEventArgs & e, const 
 	if (false == m_IsActivated)
 		return false;
 
-	auto mousePos = GetScene().GetCameraController()->RayToPlane(RayToWorld, Plane(glm::vec3(0.0f, 1.0f, 0.0f), 5.0f));
+	auto mousePos = GetScene().GetCameraController()->RayToPlane(RayToWorld, Plane(glm::vec3(0.0f, 1.0f, 0.0f), 2.0f));
 
 	if (e.Button == MouseButton::Left)
 	{
 		if (m_CurrectWaypointsNode == nullptr)
 		{
-			m_CurrectWaypointsNode = GetScene().CreateSceneNodeT<ISceneNodePath>(GetEditor().Get3DFrame().GetEditedRootNode3D());
+			m_CurrectWaypointsNode = GetScene().CreateSceneNodeT<ISceneNodeRTSPath>(GetEditor().Get3DFrame().GetEditedRootNode3D());
 			m_CurrectWaypointsNode->SetName("Waypoint");
 			AddPoint(mousePos);
 		}
@@ -107,10 +107,10 @@ void CEditorToolWaypoints::OnMouseMoved(const MouseMotionEventArgs & e, const Ra
 	if (m_LastCreatedPoint == nullptr)
 		return;
 
-	auto bounds = m_LastCreatedPoint->GetComponent<IColliderComponent3D>()->GetBounds();
+	auto bounds = m_LastCreatedPoint->GetComponentT<IColliderComponent3D>()->GetBounds();
 	_ASSERT(false == bounds.IsInfinite());
 
-	auto pos = GetScene().GetCameraController()->RayToPlane(RayToWorld, Plane(glm::vec3(0.0f, 1.0f, 0.0f), bounds.getMax().y / 2.0f + 5.0f));
+	auto pos = GetScene().GetCameraController()->RayToPlane(RayToWorld, Plane(glm::vec3(0.0f, 1.0f, 0.0f), bounds.getMax().y / 2.0f + 2.0f));
 	pos -= bounds.getCenter();
 
 	//pos = dynamic_cast<IEditorToolMover&>(GetEditor().GetTools().GetTool(ETool::EToolMover)).FixBoxCoords(pos);
@@ -123,11 +123,11 @@ void CEditorToolWaypoints::OnMouseMoved(const MouseMotionEventArgs & e, const Ra
 
 void CEditorToolWaypoints::OnNodeSelected(const std::shared_ptr<ISceneNode> SelectedNode)
 {
-	if (SelectedNode->GetClass() != cSceneNodePath)
+	if (SelectedNode->GetClass() != cSceneNodeRTSPath)
 		return;
 
 	m_IsActivated = true;
-	m_CurrectWaypointsNode = std::dynamic_pointer_cast<ISceneNodePath>(SelectedNode);
+	m_CurrectWaypointsNode = std::dynamic_pointer_cast<ISceneNodeRTSPath>(SelectedNode);
 }
 
 

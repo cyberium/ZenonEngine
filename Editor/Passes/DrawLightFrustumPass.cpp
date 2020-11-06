@@ -54,7 +54,7 @@ const ISceneNode* n;
 
 EVisitResult CDrawLightFrustumPass::Visit(const ISceneNode * node)
 {
-	if (auto lightComp = node->GetComponent<ILightComponent3D>())
+	if (auto lightComp = node->GetComponentT<ILightComponent3D>())
 	{
 		n = node;
 		return EVisitResult::AllowVisitContent;

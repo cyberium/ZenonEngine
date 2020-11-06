@@ -214,15 +214,19 @@ void CEditorUIFrame::OnSelectNode()
 //
 void CEditorUIFrame::OnSceneNodeAdded(std::shared_ptr<ISceneNode> ParentNode, std::shared_ptr<ISceneNode> ChildNode)
 {
-	m_EditorResourceBrowser.UpdateSceneBrowser();
+	if (IsChildOf(GetEditor().Get3DFrame().GetEditedRootNode3D(), ChildNode) || IsChildOf(GetEditor().Get3DFrame().GetEditedRootNode3D(), ParentNode))
+	{
+		m_EditorResourceBrowser.UpdateSceneBrowser();
+	}
 }
 
 void CEditorUIFrame::OnSceneNodeRemoved(std::shared_ptr<ISceneNode> ParentNode, std::shared_ptr<ISceneNode> ChildNode)
 {
 	if (IsChildOf(GetEditor().Get3DFrame().GetEditedRootNode3D(), ChildNode) || IsChildOf(GetEditor().Get3DFrame().GetEditedRootNode3D(), ParentNode))
+	{
 		m_Editor.GetTools().GetToolT<IEditorToolSelector>(ETool::EToolSelector).RemoveNode(ChildNode);
-
-	m_EditorResourceBrowser.UpdateSceneBrowser();
+		m_EditorResourceBrowser.UpdateSceneBrowser();
+	}
 }
 
 

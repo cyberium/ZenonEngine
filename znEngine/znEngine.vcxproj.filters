@@ -178,6 +178,9 @@
     <Filter Include="Scene\UI">
       <UniqueIdentifier>{534c42f8-3515-4f60-9bd4-92b1ed91c63d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Scene\RTS">
+      <UniqueIdentifier>{9dc540cd-9f2d-49f0-a48a-2b158e64ef39}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -691,9 +694,6 @@
     <ClCompile Include="Passes\Scene\BaseTypedList3DPass.cpp">
       <Filter>Passes\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="Scene\RTSSceneNodeGround.cpp">
-      <Filter>Scene</Filter>
-    </ClCompile>
     <ClCompile Include="Passes\RTSGround_Pass.cpp">
       <Filter>Passes</Filter>
     </ClCompile>
@@ -706,8 +706,14 @@
     <ClCompile Include="NativeWindows\NativeWindowFactory.cpp">
       <Filter>NativeWindows</Filter>
     </ClCompile>
-    <ClCompile Include="Scene\SceneNodeWaypoints.cpp">
-      <Filter>Scene</Filter>
+    <ClCompile Include="Scene\SceneNodeRTSPathAndPoint.cpp">
+      <Filter>Scene\RTS</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\SceneNodeRTSGround.cpp">
+      <Filter>Scene\RTS</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\SceneNodeRTSUnit.cpp">
+      <Filter>Scene\RTS</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1289,9 +1295,6 @@
     <ClInclude Include="Passes\Scene\BaseTypedList3DPass.h">
       <Filter>Passes\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="Scene\RTSSceneNodeGround.h">
-      <Filter>Scene</Filter>
-    </ClInclude>
     <ClInclude Include="Scene\EngineSceneIntfs.h">
       <Filter>Scene</Filter>
     </ClInclude>
@@ -1307,8 +1310,14 @@
     <ClInclude Include="NativeWindows\NativeWindowFactory.h">
       <Filter>NativeWindows</Filter>
     </ClInclude>
-    <ClInclude Include="Scene\SceneNodeWaypoints.h">
-      <Filter>Scene</Filter>
+    <ClInclude Include="Scene\SceneNodeRTSPathAndPoint.h">
+      <Filter>Scene\RTS</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\SceneNodeRTSGround.h">
+      <Filter>Scene\RTS</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\SceneNodeRTSUnit.h">
+      <Filter>Scene\RTS</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

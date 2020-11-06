@@ -136,9 +136,9 @@ void CRTSGround::DoInitializeUI(IEditorQtUIFrame & QtUIFrame)
 //
 void CRTSGround::DoInitialize3D(const std::shared_ptr<IRenderer>& Renderer, std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport)
 {
-	//auto groundRootSceneNode = GetScene().CreateSceneNode<IRTSGround>(GetEditor().Get3DFrame().GetEditedRootNode3D());
+	//auto groundRootSceneNode = GetScene().CreateSceneNode<ISceneNodeRTSGround>(GetEditor().Get3DFrame().GetEditedRootNode3D());
 	//groundRootSceneNode->SetName("GroundRoot");
-	//m_GroundRoot = std::dynamic_pointer_cast<IRTSGround>(groundRootSceneNode);
+	//m_GroundRoot = std::dynamic_pointer_cast<ISceneNodeRTSGround>(groundRootSceneNode);
 
 	auto geom = GetRenderDevice().GetPrimitivesFactory().CreateTorus(5.0f, 0.25f);
 
@@ -149,8 +149,8 @@ void CRTSGround::DoInitialize3D(const std::shared_ptr<IRenderer>& Renderer, std:
 
 	m_GroundSelectorNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeFactory>()->CreateSceneNode3D(cSceneNode3D, GetScene());
 	m_GroundSelectorNode->SetName("GroundSelectedNode");
-	m_GroundSelectorNode->GetComponent<IModelsComponent3D>()->SetModel(modelY);
-	m_GroundSelectorNode->GetComponent<IColliderComponent3D>()->SetBounds(geom->GetBounds());
+	m_GroundSelectorNode->GetComponentT<IModelsComponent3D>()->SetModel(modelY);
+	m_GroundSelectorNode->GetComponentT<IColliderComponent3D>()->SetBounds(geom->GetBounds());
 }
 
 bool CRTSGround::OnMousePressed(const MouseButtonEventArgs & e, const Ray & RayToWorld)

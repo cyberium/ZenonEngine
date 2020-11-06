@@ -13,6 +13,8 @@ public:
 	void SetName(const std::string& Name) override;
 	std::string GetDescription() const override;
 	void SetDescription(const std::string& Description) override;
+	void SetSyntetic(bool Value) override;
+	bool IsSyntetic() const override;
 	void Load(const std::shared_ptr<IXMLReader>& Reader) override;
 	void Save(const std::shared_ptr<IXMLWriter>& Writer) const override;
 	void SetAction(std::function<bool(void)> Action) override;

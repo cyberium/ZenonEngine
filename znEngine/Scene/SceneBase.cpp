@@ -31,6 +31,8 @@ SceneBase::SceneBase(IBaseManager& BaseManager, IRenderWindow& RenderWindow)
 	, m_RenderDevice(BaseManager.GetApplication().GetRenderDevice())
 	, m_RenderWindow(RenderWindow)
 	, m_Finder(*this)
+
+	, m_SceneEventsBlocked(false)
 {
 
 }
@@ -429,14 +431,11 @@ void SceneBase::LoadFromFile(const std::string& FileName)
 			auto xmlChild = newRootNode->GetChild(existingRootChild->GetName());
 			if (xmlChild != nullptr)
 			{
-				if (auto loadSave = std::dynamic_pointer_cast<IObjectLoadSave>(xmlChild))
-				{
-					loadSave->CopyTo(existingRootChild);
+				xmlChild->CopyTo(existingRootChild);
 
-					// To delete persistance node, we must clear this flag
-					std::dynamic_pointer_cast<ISceneNodeInternal>(xmlChild)->SetPersistanceInternal(false);
-					newRootNode->RemoveChild(xmlChild);
-				}
+				// To delete persistance node, we must clear this flag
+				std::dynamic_pointer_cast<ISceneNodeInternal>(xmlChild)->SetPersistanceInternal(false);
+				newRootNode->RemoveChild(xmlChild);
 			}
 		}
 	}
@@ -451,21 +450,39 @@ void SceneBase::LoadFromFile(const std::string& FileName)
 	tempFakeRoot->MakeMeOrphan();
 }
 
-void SceneBase::SaveToFile(const std::string& FileName) const
+void SceneBase::SaveToFile(const std::string& FileName)
 {
-	std::shared_ptr<IFile> file = m_BaseManager.GetManager<IFilesManager>()->Create(FileName);
+	try
+	{
+		BlockSceneEvents();
 
-	CXMLManager manager(GetBaseManager());
+		std::shared_ptr<IFile> file = m_BaseManager.GetManager<IFilesManager>()->Create(FileName);
 
-	auto rootNode = GetRootSceneNode();
-	rootNode->SetName(file->Name_NoExtension());
+		auto rootNode = GetRootSceneNode();
+		rootNode->SetName(file->Name_NoExtension());
 
-	auto rootWriter = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeFactory>()->SaveSceneNode3DXML(rootNode);
+		/*
+		auto copyOfRoot = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeFactory>()->CreateSceneNode3D(rootNode->GetClass(), *this);
+		std::dynamic_pointer_cast<IObjectLoadSave>(rootNode)->CopyTo(copyOfRoot);
 
-	auto xml = manager.CreateWriter();
-	xml->AddChild(rootWriter);
+		std::dynamic_pointer_cast<ISceneNodeInternal>(copyOfRoot)->SetPersistanceInternal(false);
+		copyOfRoot->SetName(file->Name_NoExtension());
+		copyOfRoot->MakeMeOrphan();
+		*/
 
-	manager.SaveWriterToFile(xml, file)->Save();
+		auto rootWriter = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeFactory>()->SaveSceneNode3DXML(rootNode);
+
+		CXMLManager manager(GetBaseManager());
+		auto xml = manager.CreateWriter();
+		xml->AddChild(rootWriter);
+
+		manager.SaveWriterToFile(xml, file)->Save();
+	}
+	catch (...)
+	{
+		UnblockSceneEvents();
+		throw;
+	}
 }
 
 void SceneBase::ResetScene()
@@ -510,8 +527,24 @@ void SceneBase::OnMouseMoved(const MouseMotionEventArgs & e, const Ray& RayToWor
 
 }
 
+void SceneBase::BlockSceneEvents()
+{
+	m_SceneEventsBlocked = true;
+}
+
+void SceneBase::UnblockSceneEvents()
+{
+	m_SceneEventsBlocked = false;
+}
+
 void SceneBase::RaiseSceneChangeEvent(ESceneChangeType SceneChangeType, const std::shared_ptr<ISceneNode>& ParentNode, const std::shared_ptr<ISceneNode>& ChildNode)
 {
+	if (m_SceneEventsBlocked)
+	{
+		Log::Info("SceneEvent '%d' blocked. Parent '%s', Child '%s'.", SceneChangeType, ParentNode->GetName().c_str(), ChildNode->GetName().c_str());
+		return;
+	}
+
 	if (SceneChangeType == ESceneChangeType::NodeAddedToParent)
 	{
 		for (const auto& el : m_EventListeners)

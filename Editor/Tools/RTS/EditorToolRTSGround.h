@@ -39,7 +39,7 @@ protected:
 	IRenderDevice& GetRenderDevice() const;
 
 private:
-	std::shared_ptr<IRTSGround> m_GroundRoot;
+	std::shared_ptr<ISceneNodeRTSGround> m_GroundRoot;
 
 	std::shared_ptr<ISceneNode> m_GroundSelectorNode;
 	CRTSGround::ERTSCellType m_CellType;

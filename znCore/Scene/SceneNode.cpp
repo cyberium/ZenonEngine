@@ -38,6 +38,7 @@ void CSceneNode::Initialize()
 	// Name properties
 	{
 		std::shared_ptr<CPropertyWrapped<std::string>> nameProperty = MakeShared(CPropertyWrapped<std::string>, "Name", "Scene node name.");
+		nameProperty->SetSyntetic(true);
 		nameProperty->SetValueSetter(std::bind(&Object::SetName, this, std::placeholders::_1));
 		nameProperty->SetValueGetter(std::bind(&Object::GetName, this));
 		GetProperties()->AddProperty(nameProperty);
@@ -393,15 +394,16 @@ void CSceneNode::CopyTo(std::shared_ptr<IObject> Destination) const
 	{
 		const auto& compInOther = destCast->m_Components.find(c.first);
 		_ASSERT(compInOther != destCast->m_Components.end());
-		if (auto loadSave = std::dynamic_pointer_cast<IObjectLoadSave>(c.second))
-			loadSave->CopyTo(compInOther->second);
+		c.second->CopyTo(compInOther->second);
+		Log::Info("SceneNode::CopyTo: Component '%s' of node '%s' copied.", c.second->GetName().c_str(), GetName().c_str());
 	}
 
 	for (const auto& ch : GetChilds())
 	{
-		std::shared_ptr<ISceneNode> childCopy = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeFactory>()->CreateSceneNode3D(ch->GetClass(), destCast->GetScene(), destCast);
-		if (auto loadSave = std::dynamic_pointer_cast<IObjectLoadSave>(ch))
-			loadSave->CopyTo(childCopy);
+		std::shared_ptr<ISceneNode> childCopy = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeFactory>()->CreateSceneNode3D(ch->GetClass(), destCast->GetScene());
+		ch->CopyTo(childCopy);
+		destCast->AddChild(childCopy);
+		Log::Info("SceneNode::CopyTo: Child '%s' of parent '%s' copied.", ch->GetName().c_str(), GetName().c_str());
 	}
 }
 
@@ -424,11 +426,8 @@ void CSceneNode::Load(const std::shared_ptr<IXMLReader>& Reader)
 				const auto& component = GetComponent(objectClass);
 				if (component != nullptr)
 				{
-					if (auto objectLoadSave = std::dynamic_pointer_cast<IObjectLoadSave>(component))
-					{
-						objectLoadSave->Load(readerChild);
-						continue;
-					}
+					component->Load(readerChild);
+					continue;
 				}
 
 				auto child = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<IComponentFactory>()->LoadComponentXML(readerChild, *this);

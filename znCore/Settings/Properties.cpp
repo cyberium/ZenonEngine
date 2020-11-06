@@ -9,12 +9,14 @@
 CPropertiesGroup::CPropertiesGroup()
 	: m_Name("CPropertiesGroupName")
 	, m_Description("CPropertiesGroupDescription")
+	, m_IsSyntetic(false)
 {
 }
 
 CPropertiesGroup::CPropertiesGroup(std::string Name, std::string Description)
 	: m_Name(Name)
 	, m_Description(Description)
+	, m_IsSyntetic(false)
 {
 }
 
@@ -47,6 +49,16 @@ void CPropertiesGroup::SetDescription(const std::string& Description)
 	m_Description = Description;
 }
 
+void CPropertiesGroup::SetSyntetic(bool Value)
+{
+	m_IsSyntetic = Value;
+}
+
+bool CPropertiesGroup::IsSyntetic() const
+{
+	return m_IsSyntetic;
+}
+
 void CPropertiesGroup::Load(const std::shared_ptr<IXMLReader>& Reader)
 {
 	SetName(Reader->GetName());
@@ -56,11 +68,13 @@ void CPropertiesGroup::Load(const std::shared_ptr<IXMLReader>& Reader)
 	{
 		std::string name = childReader->GetName();
 		auto prop = GetProperty(name);
+
 		if (prop == nullptr)
+		{
 			prop = CreatePropetyByType(childReader->GetStrAttribute("Type"));
-		if (prop == nullptr)
-			continue;
+		}
 		prop->Load(childReader);
+
 		AddProperty(prop);
 	}
 }
@@ -72,12 +86,13 @@ void CPropertiesGroup::Save(const std::shared_ptr<IXMLWriter>& Writer) const
 
 	for (const auto& prop : GetProperties())
 	{
-		std::string typeName = GetPropertyTypeName(prop.second.get());
-		if (typeName.empty())
+		const auto& propObjet = prop.second;
+		if (propObjet->IsSyntetic())
 			continue;
-		auto propertyWriter = Writer->CreateChild(prop.first);
-		propertyWriter->SetStrAttribute(typeName, "Type");
-		prop.second->Save(propertyWriter);
+
+		auto propertyWriter = Writer->CreateChild(propObjet->GetName());
+		propertyWriter->SetStrAttribute(GetPropertyTypeName(propObjet.get()), "Type");
+		propObjet->Save(propertyWriter);
 	}
 }
 
@@ -124,8 +139,6 @@ std::string CPropertiesGroup::GetPropertyTypeName(const IProperty* Property) con
 		return "String";
 	else if (auto prop = dynamic_cast<const CPropertiesGroup*>(Property))
 		return "Group";
-	else if (auto action = dynamic_cast<const CAction*>(Property))
-		return "";
 	else
 		throw CException("Unknown property type '%s'", GetName().c_str());
 }
@@ -144,8 +157,6 @@ std::shared_ptr<IProperty> CPropertiesGroup::CreatePropetyByType(std::string Typ
 		return MakeShared(CProperty<std::string>);
 	else if (TypeName == "Group")
 		return MakeShared(CPropertiesGroup);
-	else if (TypeName == "")
-		return nullptr;
 	else
 		throw CException("Unknown property type '%s'", TypeName);
 }

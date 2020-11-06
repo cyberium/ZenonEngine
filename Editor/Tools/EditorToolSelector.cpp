@@ -19,9 +19,6 @@ void CEditorToolSelector::Enable()
 	CEditorToolBase::Enable();
 
 	dynamic_cast<IEditorQtUIFrame&>(GetEditor().GetUIFrame()).getUI().editorToolSelectorBtn->setChecked(IsEnabled());
-
-	// Always enabled
-	//m_DrawSelectionPass->SetEnabled(true);
 }
 
 void CEditorToolSelector::Disable()
@@ -30,8 +27,6 @@ void CEditorToolSelector::Disable()
 
 	dynamic_cast<IEditorQtUIFrame&>(GetEditor().GetUIFrame()).getUI().editorToolSelectorBtn->setChecked(IsEnabled());
 
-	// Always enabled
-	//m_DrawSelectionPass->SetEnabled(false);
 	m_IsSelecting2D = false;
 }
 
@@ -195,17 +190,20 @@ void CEditorToolSelector::OnMouseReleased(const MouseButtonEventArgs & e, const 
 
 		if (glm::length(glm::abs(cachedSelectionPrevPos - e.GetPoint())) > 10.0f)
 		{
+			const auto& cameraController = GetScene().GetCameraController();
+			const auto& viewport = GetScene().GetRenderWindow().GetViewport();
+
 			Frustum f;
 			f.buildBoxFrustum(
-				GetScene().GetCameraController()->ScreenToRay(GetScene().GetRenderWindow().GetViewport(), glm::vec2(glm::min(cachedSelectionPrevPos.x, e.GetPoint().x), glm::min(cachedSelectionPrevPos.y, e.GetPoint().y))),
-				GetScene().GetCameraController()->ScreenToRay(GetScene().GetRenderWindow().GetViewport(), glm::vec2(glm::min(cachedSelectionPrevPos.x, e.GetPoint().x), glm::max(cachedSelectionPrevPos.y, e.GetPoint().y))),
-				GetScene().GetCameraController()->ScreenToRay(GetScene().GetRenderWindow().GetViewport(), glm::vec2(glm::max(cachedSelectionPrevPos.x, e.GetPoint().x), glm::min(cachedSelectionPrevPos.y, e.GetPoint().y))),
-				GetScene().GetCameraController()->ScreenToRay(GetScene().GetRenderWindow().GetViewport(), glm::vec2(glm::max(cachedSelectionPrevPos.x, e.GetPoint().x), glm::max(cachedSelectionPrevPos.y, e.GetPoint().y))),
+				cameraController->ScreenToRay(viewport, glm::vec2(glm::min(cachedSelectionPrevPos.x, e.GetPoint().x), glm::min(cachedSelectionPrevPos.y, e.GetPoint().y))),
+				cameraController->ScreenToRay(viewport, glm::vec2(glm::min(cachedSelectionPrevPos.x, e.GetPoint().x), glm::max(cachedSelectionPrevPos.y, e.GetPoint().y))),
+				cameraController->ScreenToRay(viewport, glm::vec2(glm::max(cachedSelectionPrevPos.x, e.GetPoint().x), glm::min(cachedSelectionPrevPos.y, e.GetPoint().y))),
+				cameraController->ScreenToRay(viewport, glm::vec2(glm::max(cachedSelectionPrevPos.x, e.GetPoint().x), glm::max(cachedSelectionPrevPos.y, e.GetPoint().y))),
 				10000.0f
 			);
 
 			auto nodes = GetScene().GetFinder().FindIntersections(f, nullptr, GetEditor().Get3DFrame().GetEditedRootNode3D());
-			if (!nodes.empty())
+			if (false == nodes.empty())
 				SelectNodes(nodes);
 		}
 	}

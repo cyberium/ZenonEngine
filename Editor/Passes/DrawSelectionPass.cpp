@@ -105,14 +105,14 @@ void CDrawSelectionPass::RefreshInstanceBuffer()
 	m_InstancesCnt = 0;
 
 	auto selectedNodes = m_Selector.GetSelectedNodes();
-	if (!selectedNodes.empty())
+	if (false == selectedNodes.empty())
 	{
 		std::vector<SSelectorPerObject> instances;
 		instances.reserve(selectedNodes.size());
 		std::for_each(selectedNodes.begin(), selectedNodes.end(), [&instances](const std::weak_ptr<ISceneNode>& selectedNode) {
 			if (auto locked = selectedNode.lock())
 			{
-				const auto& colliderComponent = locked->GetComponent<IColliderComponent3D>();
+				const auto& colliderComponent = locked->GetComponentT<IColliderComponent3D>();
 				if (colliderComponent)
 				{
 					const BoundingBox& bbox = colliderComponent->GetWorldBounds();

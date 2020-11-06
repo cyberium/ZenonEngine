@@ -45,7 +45,7 @@ bool CSkeletonBone::operator==(const CSkeletonBone & other) const
 glm::mat4 CSkeletonBone::CalcMatrix(const ISceneNode& Instance) const
 {
 	glm::mat4 m(1.0f);
-	if (const auto& animator = Instance.GetComponent<ISkeletonAnimationComponent>())
+	if (const auto& animator = Instance.GetComponentT<ISkeletonAnimationComponent>())
 	{
 		//m *= glm::inverse(GlobalTransform);
 
@@ -106,7 +106,7 @@ glm::mat4 CSkeletonBone::CalcMatrix(const ISceneNode& Instance) const
 glm::vec3 CSkeletonBone::CalcTranslate(const ISceneNode & Instance) const
 {
 	glm::vec3 p(0.0f);
-	if (const auto& animator = Instance.GetComponent<ISkeletonAnimationComponent>())
+	if (const auto& animator = Instance.GetComponentT<ISkeletonAnimationComponent>())
 	{
 		if (pX.IsUsesBySequence(animator->getSequenceIndex()))
 			p.x = pX.GetValue(animator->getSequenceIndex(), animator->getCurrentTime());
@@ -123,7 +123,7 @@ glm::vec3 CSkeletonBone::CalcTranslate(const ISceneNode & Instance) const
 glm::vec3 CSkeletonBone::CalcRotate(const ISceneNode & Instance) const
 {
 	glm::vec3 p(0.0f);
-	if (const auto& animator = Instance.GetComponent<ISkeletonAnimationComponent>())
+	if (const auto& animator = Instance.GetComponentT<ISkeletonAnimationComponent>())
 	{
 		if (rX.IsUsesBySequence(animator->getSequenceIndex()))
 			p.x = rX.GetValue(animator->getSequenceIndex(), animator->getCurrentTime());

@@ -30,5 +30,5 @@ public:
 	// IComponentFactory
 	virtual std::shared_ptr<ISceneNodeComponent> CreateComponent(ObjectClass ObjectClassKey, ISceneNode& SceneNode) override;
 	virtual std::shared_ptr<ISceneNodeComponent> LoadComponentXML(const std::shared_ptr<IXMLReader>& Reader, ISceneNode& SceneNode) override;
-	virtual std::shared_ptr<IXMLWriter> SaveComponentXML(std::shared_ptr<ISceneNodeComponent> Object) override;
+	virtual std::shared_ptr<IXMLWriter>          SaveComponentXML(std::shared_ptr<ISceneNodeComponent> SceneNodeComponent) override;
 };

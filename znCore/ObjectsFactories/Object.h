@@ -2,8 +2,8 @@
 
 class ZN_API Object
 	: virtual public IObject
+	, virtual public IObjectLoadSave
 	, public IObjectPrivate
-	, public IObjectLoadSave
 {
 public:
 

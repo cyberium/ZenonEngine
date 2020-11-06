@@ -50,11 +50,11 @@ std::shared_ptr<IRenderPassPipelined> CDrawBoundingBoxPass::ConfigurePipeline(st
 //
 EVisitResult CDrawBoundingBoxPass::Visit(const ISceneNode * CSceneNode)
 {
-	const std::shared_ptr<IColliderComponent3D>& colliderComponent = CSceneNode->GetComponent<IColliderComponent3D>();
+	const std::shared_ptr<IColliderComponent3D>& colliderComponent = CSceneNode->GetComponentT<IColliderComponent3D>();
 	if (colliderComponent == nullptr)
 		return EVisitResult::AllowVisitChilds;
 
-	if (! colliderComponent->GetDebugDrawMode())
+	if (false == colliderComponent->GetDebugDrawMode())
 		return EVisitResult::AllowVisitChilds;
 
 	BoundingBox bbox = colliderComponent->GetWorldBounds();
@@ -63,21 +63,9 @@ EVisitResult CDrawBoundingBoxPass::Visit(const ISceneNode * CSceneNode)
 	bboxMatrix = glm::translate(bboxMatrix, bbox.getMin());
 	bboxMatrix = glm::scale(bboxMatrix, bbox.getMax() - bbox.getMin());
 
-	PerObject perObject;
-	perObject.Model = bboxMatrix;
-	m_PerObjectConstantBuffer->Set(perObject);
+	BindPerObjectParameter(bboxMatrix);
 
 	const IShader* vertexShader = GetPipeline().GetShaders().at(EShaderType::VertexShader).get();
-
-	if (m_PerObjectParameter == nullptr)
-		m_PerObjectParameter = &(vertexShader->GetShaderParameterByName("PerObject"));
-
-	if (m_PerObjectParameter->IsValid() && m_PerObjectConstantBuffer != nullptr)
-	{
-		m_PerObjectParameter->SetConstantBuffer(m_PerObjectConstantBuffer);
-		m_PerObjectParameter->Bind();
-	}
-
 	m_BBoxGeometry->Render(GetRenderEventArgs(), vertexShader);
 
 	return EVisitResult::AllowAll;

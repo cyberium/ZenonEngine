@@ -2,15 +2,15 @@
 
 #include "EngineSceneIntfs.h"
 
-class CRTSSceneNodeGround
+class CSceneNodeRTSGround
 	: public CSceneNode
-	, public IRTSGround
+	, public ISceneNodeRTSGround
 {
 public:
-	CRTSSceneNodeGround(IScene& Scene);
-	virtual ~CRTSSceneNodeGround();
+	CSceneNodeRTSGround(IScene& Scene);
+	virtual ~CSceneNodeRTSGround();
 
-	// IRTSGround
+	// ISceneNodeRTSGround
 	bool AddCell(ERTSCellType CellType, SRTSCellCoords Coords) override;
 	SRTSCell& GetCell(SRTSCellCoords Coords) override;
 	const SRTSCell& GetCellConst(SRTSCellCoords Coords) const override;

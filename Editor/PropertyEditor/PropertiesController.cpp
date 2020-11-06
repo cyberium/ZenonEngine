@@ -130,9 +130,9 @@ void CPropertiesController::CreateProperty(QtnPropertySet* PropertiesSet, const 
 		for (const auto& prop : propGroup->GetProperties())
 			CreateProperty(propertySet, prop.second);
 	}
-	/*else if (auto act = std::dynamic_pointer_cast<IPropertyAction>(Property))
+	else if (auto act = std::dynamic_pointer_cast<IPropertyAction>(Property))
 	{
-		auto actionProperty = new QtnPropertyButton(PropertiesSet);
+		/*auto actionProperty = new QtnPropertyButton(PropertiesSet);
 		PropertiesSet->addChildProperty(actionProperty);
 		actionProperty->setName(act->GetName().c_str());
 		actionProperty->setDescription(act->GetDescription().c_str());
@@ -145,8 +145,8 @@ void CPropertiesController::CreateProperty(QtnPropertySet* PropertiesSet, const 
 			{
 				MessageBoxA(NULL, "adsw", "asdasd", 0);
 			}
-		});
-	}*/
+		});*/
+	}
 	else if (auto propT = std::dynamic_pointer_cast<IPropertyT<std::string>>(Property))
 	{
 		auto stringProperty = new QtnPropertyString(PropertiesSet);

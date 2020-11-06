@@ -82,7 +82,7 @@ glm::quat LookAt(glm::vec3 Position, glm::vec3 LookAt)
 //
 EVisitResult CDrawBonesPass::Visit(const ISceneNode * CSceneNode)
 {
-	std::shared_ptr<ISkeletonComponent3D> skeletonComponent = CSceneNode->GetComponent<ISkeletonComponent3D>();
+	std::shared_ptr<ISkeletonComponent3D> skeletonComponent = CSceneNode->GetComponentT<ISkeletonComponent3D>();
 	if (skeletonComponent == nullptr)
 		return EVisitResult::AllowVisitChilds;
 

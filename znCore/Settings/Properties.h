@@ -92,14 +92,17 @@ public:
 	CProperty()
 		: m_Name("CPropertyName")
 		, m_Description("CPropertyDescription")
+		, m_IsSyntetic(false)
 	{}
 	CProperty(std::string Name, std::string Description)
 		: m_Name(Name)
 		, m_Description(Description)
+		, m_IsSyntetic(false)
 	{}
 	CProperty(std::string Name, std::string Description, T Value)
 		: m_Name(Name)
 		, m_Description(Description)
+		, m_IsSyntetic(false)
 		, m_Value(Value)
 	{}
 	virtual ~CProperty()
@@ -123,17 +126,30 @@ public:
 	{
 		m_Description = Description;
 	}
+	void SetSyntetic(bool Value) override
+	{
+		m_IsSyntetic = Value;
+	}
+	bool IsSyntetic() const 
+	{
+		return m_IsSyntetic;
+	}
 	void Load(const std::shared_ptr<IXMLReader>& Reader)
 	{
 		SetName(Reader->GetName());
 		//SetDescription(Reader->GetStr("Description"));
+
 		T value = DoLoadProperty<T>(Reader, GetName());
 		Set(value);
 	}
 	void Save(const std::shared_ptr<IXMLWriter>& Writer) const 
 	{
+		if (m_IsSyntetic)
+			return;
+
 		Writer->SetName(GetName());
 		//Writer->AddStr(GetDescription(), "Description");
+
 		DoSaveProperty<T>(Writer, GetName(), Get());
 	}
 
@@ -161,6 +177,7 @@ public:
 protected:
 	std::string m_Name;
 	std::string m_Description;
+	bool        m_IsSyntetic;
 	T           m_Value;
 	std::function<void(const T&)> m_ValueChangedCallback;
 };
@@ -255,6 +272,8 @@ public:
 	void SetName(const std::string& Name) override;
 	std::string GetDescription() const override;
 	void SetDescription(const std::string& Description) override;
+	void SetSyntetic(bool Value) override;
+	bool IsSyntetic() const;
 	void Load(const std::shared_ptr<IXMLReader>& Reader) override;
 	void Save(const std::shared_ptr<IXMLWriter>& Writer) const override;
 
@@ -270,5 +289,6 @@ private:
 private:
 	std::string m_Name;
 	std::string m_Description;
+	bool m_IsSyntetic;
 	std::unordered_map<std::string, std::shared_ptr<IProperty>> m_Properties;
 };

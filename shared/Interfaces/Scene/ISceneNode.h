@@ -22,6 +22,7 @@ ZN_INTERFACE IColliderComponent3D;
 
 ZN_INTERFACE ZN_API ISceneNode
 	: public virtual IObject
+	, public virtual IObjectLoadSave
 	, public std::enable_shared_from_this<ISceneNode>
 {
 	typedef std::vector<std::shared_ptr<ISceneNode>> SceneNodesList;
@@ -72,11 +73,11 @@ ZN_INTERFACE ZN_API ISceneNode
 	virtual void RaiseComponentMessage(const ISceneNodeComponent* Component, ComponentMessageType Message) const = 0;
 	virtual void RegisterComponents() = 0;
 
-	template<typename T> inline bool IsComponentExists()
+	template<typename T> inline bool IsComponentExistsT()
 	{
 		return IsComponentExists(T::GetClassT());
 	}
-	template<typename T> inline std::shared_ptr<T> GetComponent() const
+	template<typename T> inline std::shared_ptr<T> GetComponentT() const
 	{
 		if (std::shared_ptr<ISceneNodeComponent> component = GetComponent(T::GetClassT()))
 			return std::dynamic_pointer_cast<T>(component);

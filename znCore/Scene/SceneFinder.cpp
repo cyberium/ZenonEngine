@@ -9,7 +9,7 @@ namespace
 {
 	void FillIntersectedModelsMap(const std::shared_ptr<ISceneNode>& Owner, const Ray& Ray, std::map<float, std::shared_ptr<IModel>> * intersectedModels)
 	{
-		auto modelsComponent = Owner->GetComponent<IModelsComponent3D>();
+		auto modelsComponent = Owner->GetComponentT<IModelsComponent3D>();
 		if (modelsComponent == nullptr)
 			return;
 
@@ -35,7 +35,7 @@ namespace
 
 	void FillIntersectedModelsList(const std::shared_ptr<ISceneNode>& Owner, const Frustum& Frustum, std::vector<std::shared_ptr<IModel>> * intersectedModels)
 	{
-		auto modelsComponent = Owner->GetComponent<IModelsComponent3D>();
+		auto modelsComponent = Owner->GetComponentT<IModelsComponent3D>();
 		if (modelsComponent == nullptr)
 			return;
 
@@ -59,7 +59,7 @@ namespace
 		{
 			FillIntersectedSceneNodesList(it, Frustum, intersectedNodes);
 
-			if (auto collider = it->GetComponent<IColliderComponent3D>())
+			if (auto collider = it->GetComponentT<IColliderComponent3D>())
 			{
 				if (collider->GetBounds().IsInfinite())
 					continue;
@@ -77,12 +77,12 @@ namespace
 		{
 			FillIntersectedSceneNodesMap(it, Ray, intersectedNodes);
 
-			if (auto collider = it->GetComponent<IColliderComponent3D>())
+			if (auto collider = it->GetComponentT<IColliderComponent3D>())
 			{
 				if (collider->GetBounds().IsInfinite())
 					continue;
 
-				if (!collider->IsRayIntersects(Ray))
+				if (false == collider->IsRayIntersects(Ray))
 					continue;
 
 				float dist = nearestDistToAABB(Ray.GetOrigin(), collider->GetWorldBounds());

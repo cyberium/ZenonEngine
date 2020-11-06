@@ -25,10 +25,10 @@ const ObjectClass cSettingsManager              = UINT16_MAX - 16u;
 // 3D
 //
 ZN_MAKE_OBJECTCLASS(cSceneNode3D, 100);
-ZN_MAKE_OBJECTCLASS(cCRTSSceneNodeGround, 101);
-ZN_MAKE_OBJECTCLASS(cSceneNodePoint, 102);
-ZN_MAKE_OBJECTCLASS(cSceneNodePath, 103);
-
+ZN_MAKE_OBJECTCLASS(cSceneNodeRTSGround, 101);
+ZN_MAKE_OBJECTCLASS(cSceneNodeRTSPoint, 102);
+ZN_MAKE_OBJECTCLASS(cSceneNodeRTSPath, 103);
+ZN_MAKE_OBJECTCLASS(cSceneNodeRTSUnit, 104);
 
 
 //
