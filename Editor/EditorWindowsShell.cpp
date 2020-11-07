@@ -21,6 +21,7 @@ namespace
 			std::string buff;
 			buff.resize(len + 1);
 			vsnprintf(&buff[0], len + 1, Text, Args);
+			buff.resize(len);
 			return buff;
 		}
 		throw CException("ArgsToString format error.");

@@ -138,228 +138,6 @@
     <ClCompile Include="Passes\DrawSelectionPass.cpp" />
     <ClCompile Include="Passes\DrawToolsPass.cpp" />
     <ClCompile Include="Passes\DrawWaypointsPass.cpp" />
-    <ClCompile Include="PropertyEditor\Core\Core\PropertyBool.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="PropertyEditor\Core\Core\PropertyDouble.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="PropertyEditor\Core\Core\PropertyEnum.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="PropertyEditor\Core\Core\PropertyEnumFlags.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="PropertyEditor\Core\Core\PropertyFloat.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="PropertyEditor\Core\Core\PropertyInt.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="PropertyEditor\Core\Core\PropertyQPoint.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="PropertyEditor\Core\Core\PropertyQPointF.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="PropertyEditor\Core\Core\PropertyQRect.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="PropertyEditor\Core\Core\PropertyQRectF.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="PropertyEditor\Core\Core\PropertyQSize.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="PropertyEditor\Core\Core\PropertyQSizeF.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="PropertyEditor\Core\Core\PropertyString.cpp" />
-    <ClCompile Include="PropertyEditor\Core\Core\PropertyUInt.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="PropertyEditor\Core\Core\PropertyVec3.cpp" />
-    <ClCompile Include="PropertyEditor\Core\Enum.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="PropertyEditor\Core\GUI\PropertyButton.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="PropertyEditor\Core\GUI\PropertyQBrush.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="PropertyEditor\Core\GUI\PropertyQColor.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="PropertyEditor\Core\GUI\PropertyQFont.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="PropertyEditor\Core\GUI\PropertyQPen.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="PropertyEditor\Core\Property.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="PropertyEditor\Core\PropertyBase.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="PropertyEditor\Core\PropertySet.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="PropertyEditor\Core\QObjectPropertySet.cpp" />
-    <ClCompile Include="PropertyEditor\PropertiesController.cpp" />
-    <ClCompile Include="PropertyEditor\PropertyWidget\Delegates\Core\PropertyDelegateBool.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="PropertyEditor\PropertyWidget\Delegates\Core\PropertyDelegateDouble.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="PropertyEditor\PropertyWidget\Delegates\Core\PropertyDelegateEnum.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="PropertyEditor\PropertyWidget\Delegates\Core\PropertyDelegateEnumFlags.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="PropertyEditor\PropertyWidget\Delegates\Core\PropertyDelegateFloat.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="PropertyEditor\PropertyWidget\Delegates\Core\PropertyDelegateInt.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="PropertyEditor\PropertyWidget\Delegates\Core\PropertyDelegateQPoint.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="PropertyEditor\PropertyWidget\Delegates\Core\PropertyDelegateQPointF.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="PropertyEditor\PropertyWidget\Delegates\Core\PropertyDelegateQRect.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="PropertyEditor\PropertyWidget\Delegates\Core\PropertyDelegateQRectF.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="PropertyEditor\PropertyWidget\Delegates\Core\PropertyDelegateQSize.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="PropertyEditor\PropertyWidget\Delegates\Core\PropertyDelegateQSizeF.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="PropertyEditor\PropertyWidget\Delegates\Core\PropertyDelegateString.cpp" />
-    <ClCompile Include="PropertyEditor\PropertyWidget\Delegates\Core\PropertyDelegateUInt.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="PropertyEditor\PropertyWidget\Delegates\Core\PropertyDelegateVec3.cpp" />
-    <ClCompile Include="PropertyEditor\PropertyWidget\Delegates\GUI\PropertyDelegateButton.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="PropertyEditor\PropertyWidget\Delegates\GUI\PropertyDelegateQBrush.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="PropertyEditor\PropertyWidget\Delegates\GUI\PropertyDelegateQColor.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="PropertyEditor\PropertyWidget\Delegates\GUI\PropertyDelegateQFont.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="PropertyEditor\PropertyWidget\Delegates\GUI\PropertyDelegateQPen.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="PropertyEditor\PropertyWidget\Delegates\PropertyDelegate.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="PropertyEditor\PropertyWidget\Delegates\PropertyDelegateAux.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="PropertyEditor\PropertyWidget\Delegates\PropertyDelegateFactory.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="PropertyEditor\PropertyWidget\Delegates\Utils\PropertyDelegateGeoCoord.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="PropertyEditor\PropertyWidget\Delegates\Utils\PropertyDelegateGeoPoint.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="PropertyEditor\PropertyWidget\Delegates\Utils\PropertyDelegateMisc.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="PropertyEditor\PropertyWidget\Delegates\Utils\PropertyDelegatePropertySet.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="PropertyEditor\PropertyWidget\Delegates\Utils\PropertyDelegateSliderBox.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="PropertyEditor\PropertyWidget\Delegates\Utils\PropertyEditorAux.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="PropertyEditor\PropertyWidget\Delegates\Utils\PropertyEditorHandler.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="PropertyEditor\PropertyWidget\PropertyView.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="PropertyEditor\PropertyWidget\PropertyWidget.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="PropertyEditor\PropertyWidget\Utils\AccessibilityProxy.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="PropertyEditor\PropertyWidget\Utils\InplaceEditing.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
@@ -375,36 +153,36 @@
     <ClCompile Include="Tools\RTS\EditorToolRTSGround.cpp" />
     <ClCompile Include="Tools\RTS\EditorToolWaypoints.cpp" />
     <ClCompile Include="ZenonWidgets\ZenonLogViewer\ZenonLogViewer.cpp" />
-    <QtMoc Include="ZenonWidgets\ZenonPropertiesEditor\QT\qtbuttonpropertybrowser.cpp">
+    <ClCompile Include="ZenonWidgets\ZenonPropertiesEditor\QT\qtbuttonpropertybrowser.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
       <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</DynamicSource>
       <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</DynamicSource>
-    </QtMoc>
+    </ClCompile>
     <QtMoc Include="ZenonWidgets\ZenonPropertiesEditor\QT\qteditorfactory.cpp">
       <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">input</DynamicSource>
       <QtMocFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(Filename).moc</QtMocFileName>
       <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Release|x64'">input</DynamicSource>
       <QtMocFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">%(Filename).moc</QtMocFileName>
     </QtMoc>
-    <QtMoc Include="ZenonWidgets\ZenonPropertiesEditor\QT\qtgroupboxpropertybrowser.cpp">
+    <ClCompile Include="ZenonWidgets\ZenonPropertiesEditor\QT\qtgroupboxpropertybrowser.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
       <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</DynamicSource>
       <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</DynamicSource>
-    </QtMoc>
+    </ClCompile>
     <ClCompile Include="ZenonWidgets\ZenonPropertiesEditor\QT\qtpropertybrowser.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
       <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</DynamicSource>
       <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</DynamicSource>
     </ClCompile>
-    <QtMoc Include="ZenonWidgets\ZenonPropertiesEditor\QT\qtpropertybrowserutils.cpp">
+    <ClCompile Include="ZenonWidgets\ZenonPropertiesEditor\QT\qtpropertybrowserutils.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
       <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">input</DynamicSource>
       <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Release|x64'">input</DynamicSource>
-    </QtMoc>
+    </ClCompile>
     <QtMoc Include="ZenonWidgets\ZenonPropertiesEditor\QT\qtpropertymanager.cpp">
       <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">input</DynamicSource>
       <QtMocFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(Filename).moc</QtMocFileName>
@@ -448,11 +226,6 @@
     <ClInclude Include="Passes\DrawSelectionPass.h" />
     <ClInclude Include="Passes\DrawToolsPass.h" />
     <ClInclude Include="Passes\DrawWaypointsPass.h" />
-    <ClInclude Include="PropertyEditor\Core\Auxiliary\PropertyAux.h" />
-    <ClInclude Include="PropertyEditor\Core\Auxiliary\PropertyDelegateInfo.h" />
-    <ClInclude Include="PropertyEditor\Core\Auxiliary\PropertyMacro.h" />
-    <ClInclude Include="PropertyEditor\Core\Auxiliary\PropertyTemplates.h" />
-    <ClInclude Include="PropertyEditor\Core\CoreAPI.h" />
     <ClInclude Include="Tools\EditorToolBase.h" />
     <ClInclude Include="Tools\EditorToolDragger.h" />
     <ClInclude Include="Tools\EditorToolMover.h" />
@@ -506,78 +279,6 @@
     <ClInclude Include="_widgetZenonLogViewer.h" />
     <ClInclude Include="_widgetZenonWindow3D.h" />
     <QtMoc Include="ZenonWidgets\ZenonWindow3D\ZenonWindow3D.h" />
-    <QtMoc Include="PropertyEditor\Core\Core\PropertyBool.h" />
-    <QtMoc Include="PropertyEditor\Core\Core\PropertyDouble.h" />
-    <QtMoc Include="PropertyEditor\Core\Core\PropertyEnum.h" />
-    <QtMoc Include="PropertyEditor\Core\Core\PropertyEnumFlags.h" />
-    <QtMoc Include="PropertyEditor\Core\Core\PropertyFloat.h" />
-    <QtMoc Include="PropertyEditor\Core\Core\PropertyInt.h" />
-    <QtMoc Include="PropertyEditor\Core\Core\PropertyQPoint.h" />
-    <QtMoc Include="PropertyEditor\Core\Core\PropertyQPointF.h" />
-    <QtMoc Include="PropertyEditor\Core\Core\PropertyQRect.h" />
-    <QtMoc Include="PropertyEditor\Core\Core\PropertyQRectF.h" />
-    <QtMoc Include="PropertyEditor\Core\Core\PropertyQSize.h" />
-    <QtMoc Include="PropertyEditor\Core\Core\PropertyQSizeF.h" />
-    <QtMoc Include="PropertyEditor\Core\Core\PropertyString.h">
-      <ForceInclude Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">stdafx.h;../../PropertyEditor/Core/Core/%(Filename)%(Extension)</ForceInclude>
-      <ForceInclude Condition="'$(Configuration)|$(Platform)'=='Release|x64'">stdafx.h;../../PropertyEditor/Core/Core/%(Filename)%(Extension)</ForceInclude>
-    </QtMoc>
-    <QtMoc Include="PropertyEditor\Core\Core\PropertyUInt.h" />
-    <QtMoc Include="PropertyEditor\Core\Core\PropertyVec3.h">
-      <ForceInclude Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">stdafx.h;../../PropertyEditor/Core/Core/%(Filename)%(Extension)</ForceInclude>
-      <ForceInclude Condition="'$(Configuration)|$(Platform)'=='Release|x64'">stdafx.h;../../PropertyEditor/Core/Core/%(Filename)%(Extension)</ForceInclude>
-    </QtMoc>
-    <ClInclude Include="PropertyEditor\Core\Enum.h" />
-    <QtMoc Include="PropertyEditor\Core\Property.h" />
-    <QtMoc Include="PropertyEditor\Core\PropertyBase.h" />
-    <QtMoc Include="PropertyEditor\Core\GUI\PropertyButton.h" />
-    <QtMoc Include="PropertyEditor\Core\GUI\PropertyQBrush.h" />
-    <QtMoc Include="PropertyEditor\Core\GUI\PropertyQColor.h" />
-    <QtMoc Include="PropertyEditor\Core\GUI\PropertyQFont.h" />
-    <QtMoc Include="PropertyEditor\Core\GUI\PropertyQPen.h" />
-    <ClInclude Include="PropertyEditor\Core\PropertyCore.h" />
-    <ClInclude Include="PropertyEditor\Core\PropertyGUI.h" />
-    <QtMoc Include="PropertyEditor\Core\PropertySet.h" />
-    <ClInclude Include="PropertyEditor\Core\QObjectPropertySet.h" />
-    <QtMoc Include="PropertyEditor\PropertyWidget\PropertyView.h" />
-    <QtMoc Include="PropertyEditor\PropertyWidget\PropertyWidget.h" />
-    <ClInclude Include="PropertyEditor\PropertiesController.h">
-      <ForceInclude Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">stdafx.h;../../PropertyEditor/%(Filename)%(Extension)</ForceInclude>
-      <ForceInclude Condition="'$(Configuration)|$(Platform)'=='Release|x64'">stdafx.h;../../PropertyEditor/%(Filename)%(Extension)</ForceInclude>
-    </ClInclude>
-    <ClInclude Include="PropertyEditor\PropertyWidget\Delegates\Core\PropertyDelegateBool.h" />
-    <ClInclude Include="PropertyEditor\PropertyWidget\Delegates\Core\PropertyDelegateDouble.h" />
-    <ClInclude Include="PropertyEditor\PropertyWidget\Delegates\Core\PropertyDelegateEnum.h" />
-    <ClInclude Include="PropertyEditor\PropertyWidget\Delegates\Core\PropertyDelegateEnumFlags.h" />
-    <ClInclude Include="PropertyEditor\PropertyWidget\Delegates\Core\PropertyDelegateFloat.h" />
-    <ClInclude Include="PropertyEditor\PropertyWidget\Delegates\Core\PropertyDelegateInt.h" />
-    <ClInclude Include="PropertyEditor\PropertyWidget\Delegates\Core\PropertyDelegateQPoint.h" />
-    <ClInclude Include="PropertyEditor\PropertyWidget\Delegates\Core\PropertyDelegateQPointF.h" />
-    <ClInclude Include="PropertyEditor\PropertyWidget\Delegates\Core\PropertyDelegateQRect.h" />
-    <ClInclude Include="PropertyEditor\PropertyWidget\Delegates\Core\PropertyDelegateQRectF.h" />
-    <ClInclude Include="PropertyEditor\PropertyWidget\Delegates\Core\PropertyDelegateQSize.h" />
-    <ClInclude Include="PropertyEditor\PropertyWidget\Delegates\Core\PropertyDelegateQSizeF.h" />
-    <ClInclude Include="PropertyEditor\PropertyWidget\Delegates\Core\PropertyDelegateString.h" />
-    <ClInclude Include="PropertyEditor\PropertyWidget\Delegates\Core\PropertyDelegateUInt.h" />
-    <ClInclude Include="PropertyEditor\PropertyWidget\Delegates\Core\PropertyDelegateVec3.h" />
-    <ClInclude Include="PropertyEditor\PropertyWidget\Delegates\GUI\PropertyDelegateButton.h" />
-    <ClInclude Include="PropertyEditor\PropertyWidget\Delegates\GUI\PropertyDelegateQBrush.h" />
-    <ClInclude Include="PropertyEditor\PropertyWidget\Delegates\GUI\PropertyDelegateQColor.h" />
-    <ClInclude Include="PropertyEditor\PropertyWidget\Delegates\GUI\PropertyDelegateQFont.h" />
-    <ClInclude Include="PropertyEditor\PropertyWidget\Delegates\GUI\PropertyDelegateQPen.h" />
-    <ClInclude Include="PropertyEditor\PropertyWidget\Delegates\PropertyDelegate.h" />
-    <ClInclude Include="PropertyEditor\PropertyWidget\Delegates\PropertyDelegateAux.h" />
-    <ClInclude Include="PropertyEditor\PropertyWidget\Delegates\PropertyDelegateFactory.h" />
-    <ClInclude Include="PropertyEditor\PropertyWidget\Delegates\Utils\PropertyDelegateGeoCoord.h" />
-    <ClInclude Include="PropertyEditor\PropertyWidget\Delegates\Utils\PropertyDelegateGeoPoint.h" />
-    <QtMoc Include="PropertyEditor\PropertyWidget\Delegates\Utils\PropertyDelegateMisc.h" />
-    <ClInclude Include="PropertyEditor\PropertyWidget\Delegates\Utils\PropertyDelegatePropertySet.h" />
-    <ClInclude Include="PropertyEditor\PropertyWidget\Delegates\Utils\PropertyDelegateSliderBox.h" />
-    <ClInclude Include="PropertyEditor\PropertyWidget\Delegates\Utils\PropertyEditorAux.h" />
-    <ClInclude Include="PropertyEditor\PropertyWidget\Delegates\Utils\PropertyEditorHandler.h" />
-    <ClInclude Include="PropertyEditor\PropertyWidget\PropertyWidgetAPI.h" />
-    <QtMoc Include="PropertyEditor\PropertyWidget\Utils\AccessibilityProxy.h" />
-    <ClInclude Include="PropertyEditor\PropertyWidget\Utils\InplaceEditing.h" />
     <QtMoc Include="EditorUIFrame.h">
       <ForceInclude Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">stdafx.h;../../%(Filename)%(Extension)</ForceInclude>
       <ForceInclude Condition="'$(Configuration)|$(Platform)'=='Release|x64'">stdafx.h;../../%(Filename)%(Extension)</ForceInclude>

@@ -71,9 +71,10 @@ void CLog::PushMessageToAllDebugOutputs(IDebugOutput::DebugMessageType _type, co
 		std::string buff;
 		buff.resize(len + 1);
 		vsnprintf(&buff[0], len + 1, _message, _vaList);
+		buff.resize(len);
 
 		// Add to log history
-		m_Messages.push_back(std::make_pair(_type, buff));
+		m_Messages.push_back(std::make_pair(_type, buff.c_str()));
 
 		for (const auto& it : m_DebugOutputs)
 			it->Print(_type, buff);

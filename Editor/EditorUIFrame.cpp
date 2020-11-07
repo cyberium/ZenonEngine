@@ -76,7 +76,7 @@ bool CEditorUIFrame::InitializeEditorFrame()
 {
 	getMainEditor()->SetEditor(&m_Editor);
 
-	getUI().NewPropsWidget->setActiveObject(getSceneViewer());
+	//getUI().NewPropsWidget->setActiveObject(getSceneViewer());
 
 	m_EditorResourceBrowser.Initialize();
 	m_EditorResourceBrowser.InitializeSceneBrowser();
@@ -205,7 +205,7 @@ void CEditorUIFrame::OnSelectNode()
 			getSceneViewer()->SelectItem(selectedNode, false);
 	}
 
-	//m_PropertiesController->OnSceneNodeSelected(GetEditor().GetFirstSelectedNode().get());
+	getUI().NewPropsWidget->setTest(GetEditor().GetFirstSelectedNode());
 }
 
 

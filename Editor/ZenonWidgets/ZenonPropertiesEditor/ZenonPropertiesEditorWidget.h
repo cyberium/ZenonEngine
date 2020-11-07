@@ -5,6 +5,7 @@
 #include <QMap>
 #include <QMetaProperty>
 
+#include "QT\qtpropertymanager.h"
 #include "QT\qtvariantproperty.h"
 #include "QT\qttreepropertybrowser.h"
 
@@ -16,6 +17,7 @@ public:
 	ZenonPropertiesEditorWidget(QWidget *parent = 0);
 	virtual ~ZenonPropertiesEditorWidget();
 
+	void setTest(std::shared_ptr<ISceneNode> SceneNode);
 	void setActiveObject(QObject *obj);
 
 private slots:
@@ -26,6 +28,8 @@ public slots:
 
 private:
 	QtVariantPropertyManager *       m_VariantManager;
+	QtGroupPropertyManager * m_GroupPropertyManager;
+
 	QObject *                        m_CurrentlyConnectedObject;
 	std::map<QtProperty *, std::string> m_PropertiesMap;
 };

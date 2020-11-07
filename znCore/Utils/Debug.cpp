@@ -13,6 +13,7 @@ CException::CException(const char * Message, ...)
 	{
 		m_Message.resize(len);
 		vsnprintf(&m_Message[0], len, Message, args);
+		m_Message.resize(len);
 	}
 
 	va_end(args);
@@ -32,9 +33,11 @@ CException::CException(const wchar_t * WMessage, ...)
 	if (len > 0)
 	{
 		std::wstring wMessage;
+		wMessage.resize(len + 1);
+		vswprintf(&wMessage[0], len + 1, WMessage, args);
 		wMessage.resize(len);
-		vswprintf(&wMessage[0], len, WMessage, args);
-		m_Message = Resources::utf16_to_utf8(wMessage);
+
+		m_Message = Resources::utf16_to_utf8(std::wstring(wMessage, len));
 	}
 
 	va_end(args);

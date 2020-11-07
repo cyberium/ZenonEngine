@@ -4,7 +4,6 @@
 #include "EditorResourceBrowser.h"
 
 #include <QMainWindow>
-#include "PropertyEditor/PropertiesController.h"
 
 class CEditorUIFrame 
 	: public QMainWindow
