@@ -53,7 +53,8 @@ void Test()
 	// Create the polyhedron mesh
 	//PolyhedronMesh * polyhedronMesh = physicsCommon.createPolyhedronMesh(polygonVertexArray);
 	// Create the convex mesh collision shape
-	//ConvexMeshShape * convexMeshShape = physicsCommon.createConvexMeshShape(polyhedronMesh);
+	//ConvexMeshShape * convexMeshShape = physicsCommon.createConvexMeshShape(polyhedronMesh);
+
 }
 
 void CReactPhysicsComponent::Update(const UpdateEventArgs & e)

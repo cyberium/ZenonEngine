@@ -7,8 +7,14 @@ CModelsComponent3D::CModelsComponent3D(const ISceneNode& OwnerNode)
     : CComponentBase(OwnerNode)
 	, m_IsCastShadows(true)
 {
-	GetProperties()->SetName("ModelsComponent");
-	GetProperties()->SetDescription("Contains data about visual model");
+	GetProperties()->SetName("ModelsComponent"); // TODO: ObjectClassName
+
+	{
+		auto minBounds = MakeShared(CPropertyWrapped<bool>, "CastShadows");
+		minBounds->SetValueSetter(std::bind(&CModelsComponent3D::SetCastShadows, this, std::placeholders::_1));
+		minBounds->SetValueGetter(std::bind(&CModelsComponent3D::IsCastShadows, this));
+		GetProperties()->AddProperty(minBounds);
+	}
 }
 
 CModelsComponent3D::~CModelsComponent3D()

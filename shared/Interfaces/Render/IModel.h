@@ -15,7 +15,7 @@ class RenderEventArgs;
   *
 */
 ZN_INTERFACE ZN_API IModel 
-	: public IObject
+	: public virtual IObject
     , public std::enable_shared_from_this<IModel>
 {
 	struct ZN_API SConnection

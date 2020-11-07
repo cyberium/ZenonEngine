@@ -1,6 +1,6 @@
 #pragma once
 
-class CPropertyBase
+class ZN_API CPropertyBase
 	: virtual public IProperty
 {
 public:
@@ -15,6 +15,8 @@ public:
 	void SetDescription(const std::string& Description) override;
 	void SetSyntetic(bool Value) override;
 	bool IsSyntetic() const override;
+	void Load(const std::shared_ptr<IXMLReader>& Reader) override;
+	void Save(const std::shared_ptr<IXMLWriter>& Writer) const override;
 
 private:
 	std::string m_Name;

@@ -20,7 +20,7 @@ class RenderEventArgs;
   *   для передачи в него данных о каждой вершине.
 */
 ZN_INTERFACE ZN_API IGeometry 
-	: public IObject
+	: public virtual IObject
 	, public std::enable_shared_from_this<IGeometry>
 {
 	typedef std::unordered_map<BufferBinding, std::shared_ptr<IBuffer>> BuffersMap;

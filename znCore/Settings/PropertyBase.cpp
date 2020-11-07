@@ -57,3 +57,15 @@ bool CPropertyBase::IsSyntetic() const
 {
 	return m_IsSyntetic;
 }
+
+void CPropertyBase::Load(const std::shared_ptr<IXMLReader>& Reader)
+{
+	std::string propertyName = Reader->GetName();
+	SetName(Reader->GetName());
+}
+
+void CPropertyBase::Save(const std::shared_ptr<IXMLWriter>& Writer) const
+{
+	std::string propertyName = GetName();
+	Writer->SetName(propertyName);
+}

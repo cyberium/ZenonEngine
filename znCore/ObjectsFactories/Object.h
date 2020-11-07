@@ -31,11 +31,10 @@ public:
 	}
 
 public:
-	virtual std::string GetObjectTypeName() const;
-	virtual std::string GetObjectClassName() const;
-
 	// IObject
 	virtual Guid GetGUID() const override;
+	virtual std::string GetObjectTypeName() const;
+	virtual std::string GetObjectClassName() const;
 	virtual std::string GetName() const override;
 	virtual void SetName(const std::string& Name) override;
 

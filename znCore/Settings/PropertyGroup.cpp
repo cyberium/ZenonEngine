@@ -22,10 +22,19 @@ CPropertiesGroup::~CPropertiesGroup()
 //
 // IProperty
 //
+void CPropertiesGroup::FromString(const std::string & String)
+{
+	throw CException("Incorrect behaviour");
+}
+
+std::string CPropertiesGroup::ToString() const
+{
+	throw CException("Incorrect behaviour");
+}
+
 void CPropertiesGroup::Load(const std::shared_ptr<IXMLReader>& Reader)
 {
-	SetName(Reader->GetName());
-	//SetDescription(Reader->GetStr("Description"));
+	__super::Load(Reader);
 
 	for (const auto& childReader : Reader->GetChilds())
 	{
@@ -44,8 +53,7 @@ void CPropertiesGroup::Load(const std::shared_ptr<IXMLReader>& Reader)
 
 void CPropertiesGroup::Save(const std::shared_ptr<IXMLWriter>& Writer) const
 {
-	Writer->SetName(GetName());
-	//Writer->AddStr(GetDescription(), "Description");
+	__super::Save(Writer);
 
 	for (const auto& prop : GetProperties())
 	{
@@ -66,12 +74,16 @@ void CPropertiesGroup::Save(const std::shared_ptr<IXMLWriter>& Writer) const
 //
 void CPropertiesGroup::AddProperty(std::shared_ptr<IProperty> Property)
 {
+	_ASSERT(Property != nullptr);
 	m_Properties.insert(std::make_pair(Property->GetName(), Property));
 }
 
 std::shared_ptr<IProperty> CPropertiesGroup::GetProperty(const std::string& PropertyName)
 {
-	return m_Properties[PropertyName];
+	const auto& it = m_Properties.find(PropertyName);
+	if (it == m_Properties.end())
+		return nullptr;
+	return it->second;
 }
 
 const std::unordered_map<std::string, std::shared_ptr<IProperty>>& CPropertiesGroup::GetProperties() const

@@ -6,6 +6,8 @@
 CSkeletonComponent3D::CSkeletonComponent3D(const ISceneNode& OwnerNode, const CSkeleton& Skeleton)
 	: CComponentBase(OwnerNode)
 {
+	GetProperties()->SetName("SkeletonComponent"); // TODO: ObjectClassName
+
 	for (const auto& b : Skeleton.GetBones())
 	{
 		auto bone = MakeShared(CSkeletonComponentBone3D, b);

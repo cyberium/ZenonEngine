@@ -9,15 +9,15 @@ CColliderComponent3D::CColliderComponent3D(const ISceneNode& OwnerNode)
 	, m_CullDistance(99999.0f) // Don't use FloatMax
 	, m_DebugDraw(true)
 {
-	GetProperties()->SetName("ColliderComponent");
+	GetProperties()->SetName("ColliderComponent"); // TODO: ObjectClassName
 
 	{
-		auto minBounds = MakeShared(CPropertyWrapped<glm::vec3>, "BBoxMin", "");
+		auto minBounds = MakeShared(CPropertyWrappedVec3, "BBoxMin", "");
 		minBounds->SetValueSetter(std::bind(&CColliderComponent3D::SetMinBounds, this, std::placeholders::_1));
 		minBounds->SetValueGetter(std::bind(&CColliderComponent3D::GetMinBounds, this));
 		GetProperties()->AddProperty(minBounds);
 
-		auto maxBounds = MakeShared(CPropertyWrapped<glm::vec3>, "BBoxMax", "");
+		auto maxBounds = MakeShared(CPropertyWrappedVec3, "BBoxMax", "");
 		maxBounds->SetValueSetter(std::bind(&CColliderComponent3D::SetMaxBounds, this, std::placeholders::_1));
 		maxBounds->SetValueGetter(std::bind(&CColliderComponent3D::GetMaxBounds, this));
 		GetProperties()->AddProperty(maxBounds);

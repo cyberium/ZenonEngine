@@ -39,6 +39,8 @@ std::shared_ptr<IFile> CFilesManager::Create(std::string FileName) const
 		Log::Error("Error while creating file '%s'.", FileName.c_str());
 		Log::Error("--->'%s'", e.MessageCStr());
 	}
+
+	return nullptr;
 }
 
 std::shared_ptr<IFile> CFilesManager::Open(std::string FileName, EFileAccessType FileAccessType) const

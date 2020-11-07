@@ -2,7 +2,7 @@
 
 #include "PropertyBase.h"
 
-class CPropertiesGroup
+class ZN_API CPropertiesGroup
 	: public CPropertyBase
 	, public IPropertiesGroup
 {
@@ -12,6 +12,8 @@ public:
 	virtual ~CPropertiesGroup();
 
 	// IProperty
+	void FromString(const std::string& String) override;
+	std::string ToString() const override;
 	void Load(const std::shared_ptr<IXMLReader>& Reader) override;
 	void Save(const std::shared_ptr<IXMLWriter>& Writer) const override;
 

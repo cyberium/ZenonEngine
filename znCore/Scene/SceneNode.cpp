@@ -22,7 +22,7 @@ CSceneNode::CSceneNode(IScene& Scene)
 	, m_WorldTransform(1.0f)
 	, m_InverseWorldTransform(1.0f)
 {
-	m_PropertiesGroup = MakeShared(CPropertiesGroup, "Properties", "Some important scene node 3d properties.");
+	m_PropertiesGroup = MakeShared(CPropertiesGroup, "SceneNode", "Some important scene node 3d properties.");
 }
 
 CSceneNode::~CSceneNode()
@@ -50,17 +50,17 @@ void CSceneNode::Initialize()
 	{
 		std::shared_ptr<IPropertiesGroup> propertiesGroup = MakeShared(CPropertiesGroup, "Transform", "Transorm of this 3D node. Like translation, rotation and scale.");
 
-		std::shared_ptr<CPropertyWrapped<glm::vec3>> translateProperty = MakeShared(CPropertyWrapped<glm::vec3>, "Translate", "Position of this node in world. Relative to parent.");
+		std::shared_ptr<CPropertyWrappedVec3> translateProperty = MakeShared(CPropertyWrappedVec3, "Translate", "Position of this node in world. Relative to parent.");
 		translateProperty->SetValueSetter(std::bind(&CSceneNode::SetTranslate, this, std::placeholders::_1));
 		translateProperty->SetValueGetter(std::bind(&CSceneNode::GetTranslation, this));
 		propertiesGroup->AddProperty(translateProperty);
 
-		std::shared_ptr<CPropertyWrapped<glm::vec3>> rotationProperty = MakeShared(CPropertyWrapped<glm::vec3>, "Rotate", "Rotation of this node. Relative to parent.");
+		std::shared_ptr<CPropertyWrappedVec3> rotationProperty = MakeShared(CPropertyWrappedVec3, "Rotate", "Rotation of this node. Relative to parent.");
 		rotationProperty->SetValueSetter(std::bind(&CSceneNode::SetRotation, this, std::placeholders::_1));
 		rotationProperty->SetValueGetter(std::bind(&CSceneNode::GetRotation, this));
 		propertiesGroup->AddProperty(rotationProperty);
 
-		std::shared_ptr<CPropertyWrapped<glm::vec3>> scaleProperty = MakeShared(CPropertyWrapped<glm::vec3>, "Scale", "Scale of this node. Relative to parent.");
+		std::shared_ptr<CPropertyWrappedVec3> scaleProperty = MakeShared(CPropertyWrappedVec3, "Scale", "Scale of this node. Relative to parent.");
 		scaleProperty->SetValueSetter(std::bind(&CSceneNode::SetScale, this, std::placeholders::_1));
 		scaleProperty->SetValueGetter(std::bind(&CSceneNode::GetScale, this));
 		propertiesGroup->AddProperty(scaleProperty);

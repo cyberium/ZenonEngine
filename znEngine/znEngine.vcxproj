@@ -765,7 +765,7 @@
       <AdditionalIncludeDirectories>..\shared\;..\Externals\;..\Externals\FreeImage-3.17.0\LibPNG\;..\Externals\freetype-2.9.1\include\;..\Externals\reactphysics3d-0.7.1\src\;..\znEngine\;$(ZN_FBX_SDK_PATH)include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatSpecificWarningsAsErrors>4172</TreatSpecificWarningsAsErrors>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <DisableSpecificWarnings>4251;4250</DisableSpecificWarnings>
+      <DisableSpecificWarnings>4251;4250;4715</DisableSpecificWarnings>
     </ClCompile>
     <ResourceCompile>
       <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -790,7 +790,7 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <TreatSpecificWarningsAsErrors>4172</TreatSpecificWarningsAsErrors>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <DisableSpecificWarnings>4251;4250</DisableSpecificWarnings>
+      <DisableSpecificWarnings>4251;4250;4715</DisableSpecificWarnings>
     </ClCompile>
     <ResourceCompile>
       <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
