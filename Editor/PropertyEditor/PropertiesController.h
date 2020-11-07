@@ -2,6 +2,7 @@
 
 #include "ui_EditorUIFrame.h"
 
+/*
 class CPropertiesController
 	: public QObject
 {
@@ -19,3 +20,4 @@ private:
 	QtnPropertyWidget * m_PropertyWidget;
 	QtnPropertySet* m_PropertiesSet;
 };
+*/

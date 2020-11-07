@@ -48,7 +48,7 @@ protected:
 
 private:
 	CEditorResourceBrowser m_EditorResourceBrowser;
-	std::shared_ptr<CPropertiesController> m_PropertiesController;
+	//std::shared_ptr<CPropertiesController> m_PropertiesController;
 	
 private:
 	IEditor& m_Editor;

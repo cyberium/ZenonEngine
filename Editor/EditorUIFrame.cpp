@@ -22,7 +22,7 @@ CEditorUIFrame::CEditorUIFrame(IEditor& Editor)
 	//fsModel->setRootPath("O:\\ZenonEngine_gamedata\\");
 	//m_UI.FSTreeViewer->setModel(fsModel);
 
-	m_PropertiesController = MakeShared(CPropertiesController, m_UI.PropertyEditor);
+	//m_PropertiesController = MakeShared(CPropertiesController, m_UI.PropertyEditor);
 
 	// Unite file browser and log docker
 	//QMainWindow::tabifyDockWidget(m_UI.DockerFileBrowser, m_UI.DockerLogViewer);
@@ -75,6 +75,8 @@ IEditor& CEditorUIFrame::GetEditor() const
 bool CEditorUIFrame::InitializeEditorFrame()
 {
 	getMainEditor()->SetEditor(&m_Editor);
+
+	getUI().NewPropsWidget->setActiveObject(getSceneViewer());
 
 	m_EditorResourceBrowser.Initialize();
 	m_EditorResourceBrowser.InitializeSceneBrowser();
@@ -203,7 +205,7 @@ void CEditorUIFrame::OnSelectNode()
 			getSceneViewer()->SelectItem(selectedNode, false);
 	}
 
-	m_PropertiesController->OnSceneNodeSelected(GetEditor().GetFirstSelectedNode().get());
+	//m_PropertiesController->OnSceneNodeSelected(GetEditor().GetFirstSelectedNode().get());
 }
 
 

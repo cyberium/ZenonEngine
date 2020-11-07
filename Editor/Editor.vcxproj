@@ -74,7 +74,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
       <PrecompiledHeaderOutputFile>$(IntDir)$(TargetName).pch</PrecompiledHeaderOutputFile>
-      <AdditionalIncludeDirectories>..\shared\;..\Externals\;..\Editor\;.\PropertyEditor\Core;$(Qt_INCLUDEPATH_);$(ZN_QT_PATH)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\shared\;..\Externals\;..\Editor\;.\Editor\;.\Editor\ZenonWidgets\ZenonPropertiesEditor\QT\;.\PropertyEditor\Core;$(Qt_INCLUDEPATH_);$(ZN_QT_PATH)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>4251;4250</DisableSpecificWarnings>
       <TreatSpecificWarningsAsErrors>4172</TreatSpecificWarningsAsErrors>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;$(Qt_DEFINES_);%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -102,7 +102,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
       <PrecompiledHeaderOutputFile>$(IntDir)$(TargetName).pch</PrecompiledHeaderOutputFile>
-      <AdditionalIncludeDirectories>..\shared\;..\Externals\;..\Editor\;.\PropertyEditor\Core;$(Qt_INCLUDEPATH_);$(ZN_QT_PATH)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\shared\;..\Externals\;..\Editor\;.\Editor\;.\Editor\ZenonWidgets\ZenonPropertiesEditor\QT\;.\PropertyEditor\Core;$(Qt_INCLUDEPATH_);$(ZN_QT_PATH)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>4251;4250</DisableSpecificWarnings>
       <TreatSpecificWarningsAsErrors>4172</TreatSpecificWarningsAsErrors>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
@@ -375,6 +375,57 @@
     <ClCompile Include="Tools\RTS\EditorToolRTSGround.cpp" />
     <ClCompile Include="Tools\RTS\EditorToolWaypoints.cpp" />
     <ClCompile Include="ZenonWidgets\ZenonLogViewer\ZenonLogViewer.cpp" />
+    <QtMoc Include="ZenonWidgets\ZenonPropertiesEditor\QT\qtbuttonpropertybrowser.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</DynamicSource>
+      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</DynamicSource>
+    </QtMoc>
+    <QtMoc Include="ZenonWidgets\ZenonPropertiesEditor\QT\qteditorfactory.cpp">
+      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">input</DynamicSource>
+      <QtMocFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(Filename).moc</QtMocFileName>
+      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Release|x64'">input</DynamicSource>
+      <QtMocFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">%(Filename).moc</QtMocFileName>
+    </QtMoc>
+    <QtMoc Include="ZenonWidgets\ZenonPropertiesEditor\QT\qtgroupboxpropertybrowser.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</DynamicSource>
+      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</DynamicSource>
+    </QtMoc>
+    <ClCompile Include="ZenonWidgets\ZenonPropertiesEditor\QT\qtpropertybrowser.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</DynamicSource>
+      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</DynamicSource>
+    </ClCompile>
+    <QtMoc Include="ZenonWidgets\ZenonPropertiesEditor\QT\qtpropertybrowserutils.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">input</DynamicSource>
+      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Release|x64'">input</DynamicSource>
+    </QtMoc>
+    <QtMoc Include="ZenonWidgets\ZenonPropertiesEditor\QT\qtpropertymanager.cpp">
+      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">input</DynamicSource>
+      <QtMocFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(Filename).moc</QtMocFileName>
+      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Release|x64'">input</DynamicSource>
+      <QtMocFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">%(Filename).moc</QtMocFileName>
+    </QtMoc>
+    <QtMoc Include="ZenonWidgets\ZenonPropertiesEditor\QT\qttreepropertybrowser.cpp">
+      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">input</DynamicSource>
+      <QtMocFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(Filename).moc</QtMocFileName>
+      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Release|x64'">input</DynamicSource>
+      <QtMocFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">%(Filename).moc</QtMocFileName>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </QtMoc>
+    <ClCompile Include="ZenonWidgets\ZenonPropertiesEditor\QT\qtvariantproperty.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</DynamicSource>
+      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</DynamicSource>
+    </ClCompile>
+    <ClCompile Include="ZenonWidgets\ZenonPropertiesEditor\ZenonPropertiesEditorWidget.cpp" />
     <ClCompile Include="ZenonWidgets\ZenonTreeView\TreeViewItem.cpp" />
     <ClCompile Include="ZenonWidgets\ZenonTreeView\TreeViewItemVirtualFolder.cpp" />
     <ClCompile Include="ZenonWidgets\ZenonTreeView\TreeViewModel.cpp" />
@@ -413,6 +464,36 @@
     <QtMoc Include="ZenonWidgets\ZenonTreeView\ZenonTreeViewWidget.h" />
     <ClInclude Include="Tools\RTS\EditorToolRTSGround.h" />
     <ClInclude Include="Tools\RTS\EditorToolWaypoints.h" />
+    <QtMoc Include="ZenonWidgets\ZenonPropertiesEditor\ZenonPropertiesEditorWidget.h" />
+    <QtMoc Include="ZenonWidgets\ZenonPropertiesEditor\QT\qtbuttonpropertybrowser.h">
+      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</DynamicSource>
+      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</DynamicSource>
+    </QtMoc>
+    <QtMoc Include="ZenonWidgets\ZenonPropertiesEditor\QT\qteditorfactory.h">
+      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</DynamicSource>
+      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</DynamicSource>
+    </QtMoc>
+    <QtMoc Include="ZenonWidgets\ZenonPropertiesEditor\QT\qtgroupboxpropertybrowser.h">
+      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</DynamicSource>
+      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</DynamicSource>
+    </QtMoc>
+    <QtMoc Include="ZenonWidgets\ZenonPropertiesEditor\QT\qtpropertybrowser.h">
+      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</DynamicSource>
+      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</DynamicSource>
+    </QtMoc>
+    <QtMoc Include="ZenonWidgets\ZenonPropertiesEditor\QT\qtpropertybrowserutils_p.h" />
+    <QtMoc Include="ZenonWidgets\ZenonPropertiesEditor\QT\qtpropertymanager.h">
+      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</DynamicSource>
+      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</DynamicSource>
+    </QtMoc>
+    <QtMoc Include="ZenonWidgets\ZenonPropertiesEditor\QT\qttreepropertybrowser.h">
+      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</DynamicSource>
+      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</DynamicSource>
+    </QtMoc>
+    <QtMoc Include="ZenonWidgets\ZenonPropertiesEditor\QT\qtvariantproperty.h">
+      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</DynamicSource>
+      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</DynamicSource>
+    </QtMoc>
     <ClInclude Include="ZenonWidgets\ZenonTreeView\TreeViewItem.h" />
     <ClInclude Include="ZenonWidgets\ZenonTreeView\TreeViewItemVirtualFolder.h" />
     <ClInclude Include="ZenonWidgets\ZenonTreeView\TreeViewModel.h" />
@@ -460,10 +541,10 @@
     <ClInclude Include="PropertyEditor\Core\QObjectPropertySet.h" />
     <QtMoc Include="PropertyEditor\PropertyWidget\PropertyView.h" />
     <QtMoc Include="PropertyEditor\PropertyWidget\PropertyWidget.h" />
-    <QtMoc Include="PropertyEditor\PropertiesController.h">
+    <ClInclude Include="PropertyEditor\PropertiesController.h">
       <ForceInclude Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">stdafx.h;../../PropertyEditor/%(Filename)%(Extension)</ForceInclude>
       <ForceInclude Condition="'$(Configuration)|$(Platform)'=='Release|x64'">stdafx.h;../../PropertyEditor/%(Filename)%(Extension)</ForceInclude>
-    </QtMoc>
+    </ClInclude>
     <ClInclude Include="PropertyEditor\PropertyWidget\Delegates\Core\PropertyDelegateBool.h" />
     <ClInclude Include="PropertyEditor\PropertyWidget\Delegates\Core\PropertyDelegateDouble.h" />
     <ClInclude Include="PropertyEditor\PropertyWidget\Delegates\Core\PropertyDelegateEnum.h" />
@@ -508,6 +589,7 @@
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="EditorUIFrame.qrc" />
+    <QtRcc Include="ZenonWidgets\ZenonPropertiesEditor\QT\qtpropertybrowser.qrc" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Editor.rc" />

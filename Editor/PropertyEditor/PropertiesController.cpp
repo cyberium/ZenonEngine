@@ -1,5 +1,7 @@
 #include "stdafx.h"
 
+/*
+
 // General
 #include "PropertiesController.h"
 
@@ -55,7 +57,7 @@ void CPropertiesController::OnSceneNodeSelected(ISceneNode* SceneNode)
 
 	m_PropertiesSet = new QtnPropertySet(this);
 
-	/*
+
 	auto m_propertySet0 = new QtnPropertySet(this);
 	m_propertySet0->setName("SomePropsGroup");
 	m_propertySet0->setDescription("Property group description");
@@ -103,7 +105,7 @@ void CPropertiesController::OnSceneNodeSelected(ISceneNode* SceneNode)
 	textColor->setName("TextColor");
 	textColor->setDescription("Foreground text color");
 	textColor->setValue(QColor(0, 0, 0));
-	*/
+
 
 	if (SceneNode)
 	{
@@ -132,7 +134,7 @@ void CPropertiesController::CreateProperty(QtnPropertySet* PropertiesSet, const 
 	}
 	else if (auto act = std::dynamic_pointer_cast<IPropertyAction>(Property))
 	{
-		/*auto actionProperty = new QtnPropertyButton(PropertiesSet);
+		auto actionProperty = new QtnPropertyButton(PropertiesSet);
 		PropertiesSet->addChildProperty(actionProperty);
 		actionProperty->setName(act->GetName().c_str());
 		actionProperty->setDescription(act->GetDescription().c_str());
@@ -145,7 +147,7 @@ void CPropertiesController::CreateProperty(QtnPropertySet* PropertiesSet, const 
 			{
 				MessageBoxA(NULL, "adsw", "asdasd", 0);
 			}
-		});*/
+		});
 	}
 	else if (auto propT = std::dynamic_pointer_cast<IPropertyT<std::string>>(Property))
 	{
@@ -221,7 +223,7 @@ void CPropertiesController::CreateProperty(QtnPropertySet* PropertiesSet, const 
 		color.setRgbF(propT->Get().r, propT->Get().g, propT->Get().b);
 		colorProperty->setValue(color);
 
-		/*
+		
 		// From engine to editor
 		propT->SetValueChangedCallback([colorProperty](const glm::vec3& value) {
 
@@ -239,7 +241,7 @@ void CPropertiesController::CreateProperty(QtnPropertySet* PropertiesSet, const 
 				colorProperty->value().getRgbF(&r, &g, &b);
 				propT->Set(glm::vec3(r, g, b), true);
 			}
-		});*/
+		});
 	}
 	else if (auto propT = std::dynamic_pointer_cast<IPropertyT<glm::vec3>>(Property))
 	{
@@ -270,4 +272,4 @@ void CPropertiesController::CreateProperty(QtnPropertySet* PropertiesSet, const 
 		Log::Error("Unsupported property [%s] type.", Property->GetName().c_str());
 	}
 }
-
+*/

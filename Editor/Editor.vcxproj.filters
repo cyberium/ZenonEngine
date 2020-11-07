@@ -85,6 +85,12 @@
       <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
       <ParseFiles>true</ParseFiles>
     </Filter>
+    <Filter Include="UI\Widgets\ZenonPropertiesEditor">
+      <UniqueIdentifier>{023f7a72-9cc2-45e9-8217-29dc479b6c18}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\Widgets\ZenonPropertiesEditor\QT">
+      <UniqueIdentifier>{67639afc-5567-4dd3-b56e-299bddc2a66b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -357,6 +363,21 @@
     <ClCompile Include="Passes\DrawLightFrustumPass.cpp">
       <Filter>3D\Passes</Filter>
     </ClCompile>
+    <ClCompile Include="ZenonWidgets\ZenonPropertiesEditor\QT\qtbuttonpropertybrowser.cpp">
+      <Filter>UI\Widgets\ZenonPropertiesEditor\QT</Filter>
+    </ClCompile>
+    <ClCompile Include="ZenonWidgets\ZenonPropertiesEditor\QT\qtgroupboxpropertybrowser.cpp">
+      <Filter>UI\Widgets\ZenonPropertiesEditor\QT</Filter>
+    </ClCompile>
+    <ClCompile Include="ZenonWidgets\ZenonPropertiesEditor\QT\qtpropertybrowser.cpp">
+      <Filter>UI\Widgets\ZenonPropertiesEditor\QT</Filter>
+    </ClCompile>
+    <ClCompile Include="ZenonWidgets\ZenonPropertiesEditor\ZenonPropertiesEditorWidget.cpp">
+      <Filter>UI\Widgets\ZenonPropertiesEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="ZenonWidgets\ZenonPropertiesEditor\QT\qtvariantproperty.cpp">
+      <Filter>UI\Widgets\ZenonPropertiesEditor\QT</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -577,6 +598,9 @@
     <ClInclude Include="Passes\DrawLightFrustumPass.h">
       <Filter>3D\Passes</Filter>
     </ClInclude>
+    <ClInclude Include="PropertyEditor\PropertiesController.h">
+      <Filter>UI\Widgets\Property editor</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="PropertyEditor\Core\Property.h">
@@ -657,9 +681,6 @@
     <QtMoc Include="PropertyEditor\Core\Core\PropertyVec3.h">
       <Filter>UI\Widgets\Property editor\Core\Core</Filter>
     </QtMoc>
-    <QtMoc Include="PropertyEditor\PropertiesController.h">
-      <Filter>UI\Widgets\Property editor</Filter>
-    </QtMoc>
     <QtMoc Include="PropertyEditor\Core\Core\PropertyString.h">
       <Filter>UI\Widgets\Property editor\Core\Core</Filter>
     </QtMoc>
@@ -678,6 +699,45 @@
     <QtMoc Include="ZenonWidgets\ZenonTreeView\ZenonTreeViewWidget.h">
       <Filter>UI\Widgets\ZenonTreeView</Filter>
     </QtMoc>
+    <QtMoc Include="ZenonWidgets\ZenonPropertiesEditor\QT\qtbuttonpropertybrowser.h">
+      <Filter>UI\Widgets\ZenonPropertiesEditor\QT</Filter>
+    </QtMoc>
+    <QtMoc Include="ZenonWidgets\ZenonPropertiesEditor\QT\qteditorfactory.cpp">
+      <Filter>UI\Widgets\ZenonPropertiesEditor\QT</Filter>
+    </QtMoc>
+    <QtMoc Include="ZenonWidgets\ZenonPropertiesEditor\QT\qteditorfactory.h">
+      <Filter>UI\Widgets\ZenonPropertiesEditor\QT</Filter>
+    </QtMoc>
+    <QtMoc Include="ZenonWidgets\ZenonPropertiesEditor\QT\qtgroupboxpropertybrowser.h">
+      <Filter>UI\Widgets\ZenonPropertiesEditor\QT</Filter>
+    </QtMoc>
+    <QtMoc Include="ZenonWidgets\ZenonPropertiesEditor\QT\qtpropertybrowser.h">
+      <Filter>UI\Widgets\ZenonPropertiesEditor\QT</Filter>
+    </QtMoc>
+    <QtMoc Include="ZenonWidgets\ZenonPropertiesEditor\QT\qtpropertybrowserutils_p.h">
+      <Filter>UI\Widgets\ZenonPropertiesEditor\QT</Filter>
+    </QtMoc>
+    <QtMoc Include="ZenonWidgets\ZenonPropertiesEditor\QT\qtpropertymanager.cpp">
+      <Filter>UI\Widgets\ZenonPropertiesEditor\QT</Filter>
+    </QtMoc>
+    <QtMoc Include="ZenonWidgets\ZenonPropertiesEditor\QT\qtpropertymanager.h">
+      <Filter>UI\Widgets\ZenonPropertiesEditor\QT</Filter>
+    </QtMoc>
+    <QtMoc Include="ZenonWidgets\ZenonPropertiesEditor\QT\qttreepropertybrowser.h">
+      <Filter>UI\Widgets\ZenonPropertiesEditor\QT</Filter>
+    </QtMoc>
+    <QtMoc Include="ZenonWidgets\ZenonPropertiesEditor\QT\qtvariantproperty.h">
+      <Filter>UI\Widgets\ZenonPropertiesEditor\QT</Filter>
+    </QtMoc>
+    <QtMoc Include="ZenonWidgets\ZenonPropertiesEditor\QT\qtpropertybrowserutils.cpp">
+      <Filter>UI\Widgets\ZenonPropertiesEditor\QT</Filter>
+    </QtMoc>
+    <QtMoc Include="ZenonWidgets\ZenonPropertiesEditor\QT\qttreepropertybrowser.cpp">
+      <Filter>UI\Widgets\ZenonPropertiesEditor\QT</Filter>
+    </QtMoc>
+    <QtMoc Include="ZenonWidgets\ZenonPropertiesEditor\ZenonPropertiesEditorWidget.h">
+      <Filter>UI\Widgets\ZenonPropertiesEditor</Filter>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="EditorUIFrame.ui">
@@ -695,6 +755,9 @@
   <ItemGroup>
     <QtRcc Include="EditorUIFrame.qrc">
       <Filter>Resource Files</Filter>
+    </QtRcc>
+    <QtRcc Include="ZenonWidgets\ZenonPropertiesEditor\QT\qtpropertybrowser.qrc">
+      <Filter>UI\Widgets\ZenonPropertiesEditor\QT</Filter>
     </QtRcc>
   </ItemGroup>
 </Project>
