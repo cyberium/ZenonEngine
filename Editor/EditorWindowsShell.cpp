@@ -69,6 +69,8 @@ void CEditorWindowsShell::ShowErrorDialog(const char* Text, ...) const
 	std::string formattedText = ArgsToString(Text, args);
 	va_end(args);
 
+	Log::Error(formattedText.c_str());
+
 	MessageBoxA(qtUIFrame.getHWND(), formattedText.c_str(), cDialogTitle, MB_ICONERROR);
 }
 

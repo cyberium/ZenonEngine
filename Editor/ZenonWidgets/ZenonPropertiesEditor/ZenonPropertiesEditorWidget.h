@@ -22,13 +22,16 @@ public:
 
 private slots:
 	void valueChanged(QtProperty *property, const QVariant &value);
-
-public slots:
 	void objectUpdated();
 
 private:
-	QtVariantPropertyManager *       m_VariantManager;
-	QtGroupPropertyManager * m_GroupPropertyManager;
+	QtVariantProperty * ZenonPropertiesEditorWidget::CreateVariantProperty(QVariant::Type PropType, std::string Name, std::string Description = "");
+	QtVariantProperty * ZenonPropertiesEditorWidget::CreateVariantProperty(QVariant::Type PropType, std::shared_ptr<IProperty> Property);
+	QtProperty* CreateProperty(const std::string& ParentPropsPath, std::shared_ptr<IProperty> Property);
+
+private:
+	std::shared_ptr<QtVariantPropertyManager> m_VariantManager;
+	std::shared_ptr<QtGroupPropertyManager> m_GroupPropertyManager;
 
 	QObject *                        m_CurrentlyConnectedObject;
 	std::map<QtProperty *, std::string> m_PropertiesMap;

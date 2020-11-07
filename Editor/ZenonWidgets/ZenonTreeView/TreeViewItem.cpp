@@ -126,7 +126,7 @@ std::shared_ptr<CznTreeViewItem> CznTreeViewItem::GetChildInternal(const std::sh
 
 	// Add new item to cache
 	auto newChild = MakeShared(CznTreeViewItem, SourceItem, this);
-	//Log::Info("TreeViewItem: Created for source with name '%s'", SourceItem->GetName().c_str());
+	Log::Info("TreeViewItem: Created for source with name '%s'", SourceItem->GetName().c_str());
 	//m_CachedChilds.insert(std::make_pair(sourceName, newChild));
 	m_CachedChilds.push_back(newChild);
 	return newChild;

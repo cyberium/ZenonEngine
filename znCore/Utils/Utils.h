@@ -9,9 +9,6 @@ namespace Utils
 	ZN_API std::string ToLower(const std::string& _string);
 	ZN_API std::string ToUpper(const std::string& _string);
 
-	ZN_API glm::vec3 ToVec3(const std::string& _string);
-	ZN_API glm::vec4 ToVec4(const std::string& _string);
-
 	ZN_API std::vector<std::string> ArgumentsToVector(int argumentsCount, char* arguments[]);
 	ZN_API std::string FixFilePath(const std::string& FilePath);
 };
@@ -42,24 +39,4 @@ inline bool getBitL2H(uint8* data, uint32 bit)
     mask <<= (bit % 8);
 
     return ((data[bit / 8]) & mask) == mask;
-}
-
-template<typename T>
-inline void SafeDelete(T& ptr)
-{
-	if (ptr != NULL)
-	{
-		delete ptr;
-		ptr = NULL;
-	}
-}
-
-template<typename T>
-inline void SafeDeleteArray(T& ptr)
-{
-	if (ptr != NULL)
-	{
-		delete[] ptr;
-		ptr = NULL;
-	}
 }

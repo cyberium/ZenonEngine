@@ -7,20 +7,7 @@
 #include "tinyxml.h"
 #include "Files/File.h"
 #include "XMLManager.h"
-
-namespace
-{
-#include <inttypes.h>
-
-	template <typename T>
-	inline T GetNumericAttribute(const std::string& FullString, const std::string& Pattern, T DefaultValue)
-	{
-		T value(DefaultValue);
-		sscanf_s(FullString.c_str(), (std::string("%") + Pattern).c_str(), &value);
-		return value;
-	}
-}
-
+#include "Utils/Convert.h"
 
 CXMLReader::CXMLReader(const std::string& Name, const std::string& Value, const std::vector<std::pair<std::string, std::string>>& Attributes, const std::vector<std::pair<std::string, std::shared_ptr<IXMLReader>>>& Childs)
 	: m_Name(Name)
@@ -90,76 +77,67 @@ std::string CXMLReader::GetStrAttribute(const std::string & AttributeName) const
 
 int8 CXMLReader::GetInt8Attribute(const std::string & AttributeName) const
 {
-	return GetNumericAttribute<int8>(GetStrAttribute(AttributeName), PRId8, 0);
+	return StringToValue<int8>(GetStrAttribute(AttributeName));
 }
 
 uint8 CXMLReader::GetUInt8Attribute(const std::string & AttributeName) const
 {
-	return GetNumericAttribute<uint8>(GetStrAttribute(AttributeName), PRIu8, 0u);
+	return StringToValue<uint8>(GetStrAttribute(AttributeName));
 }
 
 int16 CXMLReader::GetInt16Attribute(const std::string & AttributeName) const
 {
-	return GetNumericAttribute<int16>(GetStrAttribute(AttributeName), PRId16, 0);
+	return StringToValue<int16>(GetStrAttribute(AttributeName));
 }
 
 uint16 CXMLReader::GetUInt16Attribute(const std::string & AttributeName) const
 {
-	return GetNumericAttribute<uint16>(GetStrAttribute(AttributeName), PRIu16, 0u);
+	return StringToValue<uint16>(GetStrAttribute(AttributeName));
 }
 
 int32 CXMLReader::GetInt32Attribute(const std::string & AttributeName) const
 {
-	return GetNumericAttribute<int32>(GetStrAttribute(AttributeName), PRId32, 0);
+	return StringToValue<int32>(GetStrAttribute(AttributeName));
 }
 
 uint32 CXMLReader::GetUInt32Attribute(const std::string & AttributeName) const
 {
-	return GetNumericAttribute<uint32>(GetStrAttribute(AttributeName), PRIu32, 0u);
+	return StringToValue<uint32>(GetStrAttribute(AttributeName));
 }
 
 int64 CXMLReader::GetInt64Attribute(const std::string & AttributeName) const
 {
-	return GetNumericAttribute<int64>(GetStrAttribute(AttributeName), PRId64, 0l);
+	return StringToValue<int64>(GetStrAttribute(AttributeName));
 }
 
 uint64 CXMLReader::GetUInt64Attribute(const std::string & AttributeName) const
 {
-	return GetNumericAttribute<uint64>(GetStrAttribute(AttributeName), PRIu64, 0ul);
+	return StringToValue<uint64>(GetStrAttribute(AttributeName));
 }
 
 float CXMLReader::GetFloatAttribute(const std::string & AttributeName) const
 {
-	return GetNumericAttribute<float>(GetStrAttribute(AttributeName), "f", 0.0f);
+	return StringToValue<float>(GetStrAttribute(AttributeName));
 }
 
 double CXMLReader::GetDoubleAttribute(const std::string & AttributeName) const
 {
-	return GetNumericAttribute<double>(GetStrAttribute(AttributeName), "lf", 0.0);
+	return StringToValue<double>(GetStrAttribute(AttributeName));
 }
 
 glm::vec2 CXMLReader::GetVec2Attribute(const std::string & AttributeName) const
 {
-	auto attributeString = GetStrAttribute(AttributeName);
-	glm::vec2 value(0.0f);
-	sscanf_s(attributeString.c_str(), "%f, %f", &value.x, &value.y);
-	return value;
+	return StringToValue<glm::vec2>(GetStrAttribute(AttributeName));
 }
 
 glm::vec3 CXMLReader::GetVec3Attribute(const std::string& AttributeName) const
 {
-	auto attributeString = GetStrAttribute(AttributeName);
-	glm::vec3 value(0.0f);
-	sscanf_s(attributeString.c_str(), "%f, %f, %f", &value.x, &value.y, &value.z);
-	return value;
+	return StringToValue<glm::vec3>(GetStrAttribute(AttributeName));
 }
 
 glm::vec4 CXMLReader::GetVec4Attribute(const std::string & AttributeName) const
 {
-	auto attributeString = GetStrAttribute(AttributeName);
-	glm::vec4 value(0.0f);
-	sscanf_s(attributeString.c_str(), "%f, %f, %f, %f", &value.x, &value.y, &value.z, &value.w);
-	return value;
+	return StringToValue<glm::vec4>(GetStrAttribute(AttributeName));
 }
 
 
@@ -169,76 +147,67 @@ glm::vec4 CXMLReader::GetVec4Attribute(const std::string & AttributeName) const
 //
 int8 CXMLReader::GetInt8() const
 {
-	return GetNumericAttribute<int8>(GetValue(), PRId8, 0);
+	return StringToValue<int8>(GetValue());
 }
 
 uint8 CXMLReader::GetUInt8() const
 {
-	return GetNumericAttribute<uint8>(GetValue(), PRIu8, 0u);
+	return StringToValue<uint8>(GetValue());
 }
 
 int16 CXMLReader::GetInt16() const
 {
-	return GetNumericAttribute<int16>(GetValue(), PRId16, 0);
+	return StringToValue<int16>(GetValue());
 }
 
 uint16 CXMLReader::GetUInt16() const
 {
-	return GetNumericAttribute<uint16>(GetValue(), PRIu16, 0u);
+	return StringToValue<uint16>(GetValue());
 }
 
 int32 CXMLReader::GetInt32() const
 {
-	return GetNumericAttribute<int32>(GetValue(), PRId32, 0);
+	return StringToValue<int32>(GetValue());
 }
 
 uint32 CXMLReader::GetUInt32() const
 {
-	return GetNumericAttribute<uint32>(GetValue(), PRIu32, 0u);
+	return StringToValue<uint32>(GetValue());
 }
 
 int64 CXMLReader::GetInt64() const
 {
-	return GetNumericAttribute<int64>(GetValue(), PRId64, 0l);
+	return StringToValue<int64>(GetValue());
 }
 
 uint64 CXMLReader::GetUInt64() const
 {
-	return GetNumericAttribute<uint64>(GetValue(), PRIu64, 0ul);
+	return StringToValue<uint64>(GetValue());
 }
 
 float CXMLReader::GetFloat() const
 {
-	return GetNumericAttribute<float>(GetValue(), "%f", 0.0f);
+	return StringToValue<float>(GetValue());
 }
 
 double CXMLReader::GetDouble() const
 {
-	return GetNumericAttribute<double>(GetValue(), "%lf", 0.0);
+	return StringToValue<double>(GetValue());
 }
 
 glm::vec2 CXMLReader::GetVec2() const
 {
-	auto attributeString = GetValue();
-	glm::vec2 value(0.0f);
-	sscanf_s(attributeString.c_str(), "%f, %f", &value.x, &value.y);
-	return value;
+	return StringToValue<glm::vec2>(GetValue());
 }
 
 glm::vec3 CXMLReader::GetVec3() const
 {
-	auto attributeString = GetValue();
-	glm::vec3 value(0.0f);
-	sscanf_s(attributeString.c_str(), "%f, %f, %f", &value.x, &value.y, &value.z);
-	return value;
+	return StringToValue<glm::vec3>(GetValue());
 }
 
 glm::vec4 CXMLReader::GetVec4() const
 {
-	auto attributeString = GetValue();
-	glm::vec4 value(0.0f);
-	sscanf_s(attributeString.c_str(), "%f, %f, %f, %f", &value.x, &value.y, &value.z, &value.w);
-	return value;
+	return StringToValue<glm::vec4>(GetValue());
 }
 
 std::vector<std::string> CXMLReader::GetAttributes() const

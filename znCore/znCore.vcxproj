@@ -137,6 +137,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="Utils\Convert.cpp" />
     <ClCompile Include="Utils\Debug.cpp" />
     <ClCompile Include="Utils\HighResolutionTimer.cpp" />
     <ClCompile Include="Utils\Primitives\BoundingBox.cpp" />
@@ -287,6 +288,7 @@
     <ClInclude Include="Settings\SettingBase.h" />
     <ClInclude Include="Settings\SettingsGroupBase.h" />
     <ClInclude Include="stdafx.h" />
+    <ClInclude Include="Utils\Convert.h" />
     <ClInclude Include="Utils\Debug.h" />
     <ClInclude Include="Utils\HighResolutionTimer.h" />
     <ClInclude Include="Utils\LockedQueue.h" />

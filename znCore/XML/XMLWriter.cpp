@@ -7,32 +7,15 @@
 #include "tinyxml.h"
 #include "Files/File.h"
 #include "XMLManager.h"
-
-
-namespace
-{
-#include <inttypes.h>
-
-	template <typename T>
-	inline std::string SetNumericAttribute(std::string Pattern, T Value)
-	{
-		T value(Value);
-
-		char buff[256];
-		sprintf_s(buff, 256, (std::string("%") + Pattern).c_str(), value);
-		return buff;
-	}
-}
+#include "Utils/Convert.h"
 
 
 CXMLWriter::CXMLWriter(const std::string& Name)
 	: m_Name(Name)
-{
-}
+{}
 
 CXMLWriter::~CXMLWriter()
-{
-}
+{}
 
 
 
@@ -87,75 +70,69 @@ void CXMLWriter::SetStrAttribute(std::string AttributeValue, const std::string& 
 	m_Attributes.push_back(std::make_pair(AttributeName, AttributeValue));
 }
 
-void CXMLWriter::SetInt8Attribute(int8 Value, const std::string & AttributeName)
+void CXMLWriter::SetInt8Attribute(int8 AttributeValue, const std::string & AttributeName)
 {
-	SetStrAttribute(SetNumericAttribute<int8>(PRId8, Value), AttributeName);
+	SetStrAttribute(ValueToString(AttributeValue), AttributeName);
 }
 
-void CXMLWriter::SetUInt8Attribute(uint8 Value, const std::string & AttributeName)
+void CXMLWriter::SetUInt8Attribute(uint8 AttributeValue, const std::string & AttributeName)
 {
-	SetStrAttribute(SetNumericAttribute<uint8>(PRIu8, Value), AttributeName);
+	SetStrAttribute(ValueToString(AttributeValue), AttributeName);
 }
 
-void CXMLWriter::SetInt16Attribute(int16 Value, const std::string & AttributeName)
+void CXMLWriter::SetInt16Attribute(int16 AttributeValue, const std::string & AttributeName)
 {
-	SetStrAttribute(SetNumericAttribute<int16>(PRId16, Value), AttributeName);
+	SetStrAttribute(ValueToString(AttributeValue), AttributeName);
 }
 
-void CXMLWriter::SetUInt16Attribute(uint16 Value, const std::string & AttributeName)
+void CXMLWriter::SetUInt16Attribute(uint16 AttributeValue, const std::string & AttributeName)
 {
-	SetStrAttribute(SetNumericAttribute<uint16>(PRIu16, Value), AttributeName);
+	SetStrAttribute(ValueToString(AttributeValue), AttributeName);
 }
 
-void CXMLWriter::SetInt32Attribute(int32 Value, const std::string & AttributeName)
+void CXMLWriter::SetInt32Attribute(int32 AttributeValue, const std::string & AttributeName)
 {
-	SetStrAttribute(SetNumericAttribute<int32>(PRId32, Value), AttributeName);
+	SetStrAttribute(ValueToString(AttributeValue), AttributeName);
 }
 
-void CXMLWriter::SetUInt32Attribute(uint32 Value, const std::string & AttributeName)
+void CXMLWriter::SetUInt32Attribute(uint32 AttributeValue, const std::string & AttributeName)
 {
-	SetStrAttribute(SetNumericAttribute<uint32>(PRIu32, Value), AttributeName);
+	SetStrAttribute(ValueToString(AttributeValue), AttributeName);
 }
 
-void CXMLWriter::SetInt64Attribute(int64 Value, const std::string & AttributeName)
+void CXMLWriter::SetInt64Attribute(int64 AttributeValue, const std::string & AttributeName)
 {
-	SetStrAttribute(SetNumericAttribute<int64>(PRId64, Value), AttributeName);
+	SetStrAttribute(ValueToString(AttributeValue), AttributeName);
 }
 
-void CXMLWriter::SetUInt64Attribute(uint64 Value, const std::string & AttributeName)
+void CXMLWriter::SetUInt64Attribute(uint64 AttributeValue, const std::string & AttributeName)
 {
-	SetStrAttribute(SetNumericAttribute<uint64>(PRIu64, Value), AttributeName);
+	SetStrAttribute(ValueToString(AttributeValue), AttributeName);
 }
 
-void CXMLWriter::SetFloatAttribute(float Value, const std::string & AttributeName)
+void CXMLWriter::SetFloatAttribute(float AttributeValue, const std::string & AttributeName)
 {
-	SetStrAttribute(SetNumericAttribute<float>("%f", Value), AttributeName);
+	SetStrAttribute(ValueToString(AttributeValue), AttributeName);
 }
 
-void CXMLWriter::SetDoubleAttribute(double Value, const std::string & AttributeName)
+void CXMLWriter::SetDoubleAttribute(double AttributeValue, const std::string & AttributeName)
 {
-	SetStrAttribute(SetNumericAttribute<double>("%lf", Value), AttributeName);
+	SetStrAttribute(ValueToString(AttributeValue), AttributeName);
 }
 
-void CXMLWriter::SetVec2Attribute(glm::vec2 Value, const std::string & AttributeName)
+void CXMLWriter::SetVec2Attribute(glm::vec2 AttributeValue, const std::string & AttributeName)
 {
-	char buff[256];
-	sprintf_s(buff, 256, "%f, %f", Value.x, Value.y);
-	SetStrAttribute(buff, AttributeName);
+	SetStrAttribute(ValueToString(AttributeValue), AttributeName);
 }
 
 void CXMLWriter::SetVec3Attribute(glm::vec3 AttributeValue, const std::string& AttributeName)
 {
-	char buff[256];
-	sprintf_s(buff, 256, "%f, %f, %f", AttributeValue.x, AttributeValue.y, AttributeValue.z);
-	SetStrAttribute(buff, AttributeName);
+	SetStrAttribute(ValueToString(AttributeValue), AttributeName);
 }
 
 void CXMLWriter::SetVec4Attribute(glm::vec4 AttributeValue, const std::string& AttributeName)
 {
-	char buff[256];
-	sprintf_s(buff, 256, "%f, %f, %f, %f", AttributeValue.x, AttributeValue.y, AttributeValue.z, AttributeValue.w);
-	SetStrAttribute(buff, AttributeName);
+	SetStrAttribute(ValueToString(AttributeValue), AttributeName);
 }
 
 std::vector< std::pair<std::string, std::string>> CXMLWriter::GetAttributes() const
@@ -175,73 +152,67 @@ void CXMLWriter::SetValue(const std::string& Value)
 
 void CXMLWriter::SetInt8(int8 Value)
 {
-	SetValue(SetNumericAttribute<int8>(PRId8, Value));
+	SetValue(ValueToString(Value));
 }
 
 void CXMLWriter::SetUInt8(uint8 Value)
 {
-	SetValue(SetNumericAttribute<uint8>(PRIu8, Value));
+	SetValue(ValueToString(Value));
 }
 
 void CXMLWriter::SetInt16(int16 Value)
 {
-	SetValue(SetNumericAttribute<int16>(PRId16, Value));
+	SetValue(ValueToString(Value));
 }
 
 void CXMLWriter::SetUInt16(uint16 Value)
 {
-	SetValue(SetNumericAttribute<uint16>(PRIu16, Value));
+	SetValue(ValueToString(Value));
 }
 
 void CXMLWriter::SetInt32(int32 Value)
 {
-	SetValue(SetNumericAttribute<int32>(PRId32, Value));
+	SetValue(ValueToString(Value));
 }
 
 void CXMLWriter::SetUInt32(uint32 Value)
 {
-	SetValue(SetNumericAttribute<uint32>(PRIu32, Value));
+	SetValue(ValueToString(Value));
 }
 
 void CXMLWriter::SetInt64(int64 Value)
 {
-	SetValue(SetNumericAttribute<int64>(PRId64, Value));
+	SetValue(ValueToString(Value));
 }
 
 void CXMLWriter::SetUInt64(uint64 Value)
 {
-	SetValue(SetNumericAttribute<uint64>(PRIu64, Value));
+	SetValue(ValueToString(Value));
 }
 
 void CXMLWriter::SetFloat(float Value)
 {
-	SetValue(SetNumericAttribute<float>("f", Value));
+	SetValue(ValueToString(Value));
 }
 
 void CXMLWriter::SetDouble(double Value)
 {
-	SetValue(SetNumericAttribute<double>("lf", Value));
+	SetValue(ValueToString(Value));
 }
 
 void CXMLWriter::SetVec2(glm::vec2 Value)
 {
-	char buff[256];
-	sprintf_s(buff, 256, "%f, %f", Value.x, Value.y);
-	SetValue(buff);
+	SetValue(ValueToString(Value));
 }
 
-void CXMLWriter::SetVec3(glm::vec3 AttributeValue)
+void CXMLWriter::SetVec3(glm::vec3 Value)
 {
-	char buff[256];
-	sprintf_s(buff, 256, "%f, %f, %f", AttributeValue.x, AttributeValue.y, AttributeValue.z);
-	SetValue(buff);
+	SetValue(ValueToString(Value));
 }
 
-void CXMLWriter::SetVec4(glm::vec4 AttributeValue)
+void CXMLWriter::SetVec4(glm::vec4 Value)
 {
-	char buff[256];
-	sprintf_s(buff, 256, "%f, %f, %f, %f", AttributeValue.x, AttributeValue.y, AttributeValue.z, AttributeValue.w);
-	SetValue(buff);
+	SetValue(ValueToString(Value));
 }
 
 

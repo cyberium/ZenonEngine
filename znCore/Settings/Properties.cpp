@@ -123,9 +123,7 @@ const std::unordered_map<std::string, std::shared_ptr<IProperty>>& CPropertiesGr
 std::string CPropertiesGroup::GetPropertyTypeName(const IProperty* Property) const
 {
 	if (Property == nullptr)
-	{
-		return "";
-	}
+		throw CException("Property is nullptr.");
 
 	if (auto prop = dynamic_cast<const CProperty<float>*>(Property))
 		return "Float";

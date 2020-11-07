@@ -14,7 +14,7 @@
 CSceneNodeRTSBullet::CSceneNodeRTSBullet(IScene & Scene)
 	: CSceneNode(Scene)
 	, m_Damage(1.0f)
-	, m_Speed(0.3f)
+	, m_Speed(1.3f)
 {}
 
 CSceneNodeRTSBullet::~CSceneNodeRTSBullet()
@@ -73,6 +73,8 @@ void CSceneNodeRTSBullet::Update(const UpdateEventArgs & e)
 		MakeMeOrphan();
 
 	float fpsMultiplier = (e.DeltaTime) / (1000.0f / 60.0f);
+	if (e.DeltaTime == e.TotalTime)
+		fpsMultiplier = 1.0f; // First frame
 
 	glm::vec3 destinationPoint = GetDestinationPoint();
 	glm::vec3 direction = glm::normalize(destinationPoint - GetTranslation());
@@ -111,7 +113,6 @@ CSceneNodeRTSTower::CSceneNodeRTSTower(IScene & Scene)
 	: CSceneNode(Scene)
 	, m_AttackDamage(1.0f)
 	, m_AttackInterval(666.0f)
-	//, m_AttackInterval(4.0f)
 	, m_AttackRange(50.0f)
 
 	, m_LastAttackTime(0.0f)

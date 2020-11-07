@@ -250,6 +250,8 @@ void CEditorUIFrame::OnSceneLoadFromFile()
 			throw CException("Edited scene don't supports 'ISceneLoadSave'.");
 
 		sceneLoadSave->LoadFromFile(fileName);
+
+		m_EditorResourceBrowser.UpdateSceneBrowser();
 	}
 	catch (const CException& e)
 	{
@@ -270,6 +272,8 @@ void CEditorUIFrame::OnSceneSaveToFile()
 			throw CException("Edited scene don't supports 'ISceneLoadSave'.");
 
 		sceneLoadSave->SaveToFile(fileName);
+
+		m_EditorResourceBrowser.UpdateSceneBrowser();
 	}
 	catch (const CException& e)
 	{
@@ -286,6 +290,8 @@ void CEditorUIFrame::OnSceneClose()
 			throw CException("Edited scene don't supports 'ISceneLoadSave'.");
 
 		sceneLoadSave->ResetScene();
+
+		m_EditorResourceBrowser.UpdateSceneBrowser();
 	}
 	catch (const CException& e)
 	{

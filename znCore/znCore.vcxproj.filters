@@ -318,6 +318,9 @@
     <ClCompile Include="Scene\UIControl.cpp">
       <Filter>Scene</Filter>
     </ClCompile>
+    <ClCompile Include="Utils\Convert.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="common.h">
@@ -781,6 +784,9 @@
     </ClInclude>
     <ClInclude Include="..\shared\Interfaces\Managers\SettingsManager.h">
       <Filter>__Interfaces\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils\Convert.h">
+      <Filter>Utils</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

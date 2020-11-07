@@ -36,24 +36,6 @@ namespace Utils
 		return str;
 	}
 
-	glm::vec3 ToVec3(const std::string & _string)
-	{
-		float x = Math::MaxFloat, y = Math::MaxFloat, z = Math::MaxFloat;
-		auto result = sscanf_s(_string.c_str(), "%f, %f, %f", &x, &y, &z);
-		if (result <= 0)
-			throw CException("Utils::ToVec3(%s) error.", _string.c_str());
-		return glm::vec3(x, y, z);
-	}
-
-	glm::vec4 ToVec4(const std::string & _string)
-	{
-		float x = Math::MaxFloat, y = Math::MaxFloat, z = Math::MaxFloat, w = Math::MaxFloat;
-		auto result = sscanf_s(_string.c_str(), "%f, %f, %f, %f", &x, &y, &z, &w);
-		if (result <= 0)
-			throw CException("Utils::ToVec4(%s) error.", _string.c_str());
-		return glm::vec4(x, y, z, w);
-	}
-
 	std::vector<std::string> ArgumentsToVector(int argumentsCount, char * arguments[])
 	{
 		std::vector<std::string> argumnets;
@@ -64,7 +46,7 @@ namespace Utils
 		return argumnets;
 	}
 
-	ZN_API std::string FixFilePath(const std::string& FilePath)
+	std::string FixFilePath(const std::string& FilePath)
 	{
 		size_t index = 0;
 		std::string newFilePath = FilePath;

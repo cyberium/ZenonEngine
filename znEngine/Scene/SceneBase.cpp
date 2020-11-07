@@ -237,7 +237,7 @@ void SceneBase::OnUpdate(UpdateEventArgs& e)
 		e.Camera = GetCameraController()->GetCamera().get();
 		e.CameraForCulling = GetCameraController()->GetCamera().get();
 	}
-	
+
 	{
 		std::lock_guard<std::mutex> sceneChangeDelayEventsLockGuard(m_SceneChangeDelayEventsLock);
 
@@ -405,49 +405,58 @@ bool SceneBase::OnWindowMouseWheel(MouseWheelEventArgs & e)
 //
 void SceneBase::LoadFromFile(const std::string& FileName)
 {
-	auto file = GetBaseManager().GetManager<IFilesManager>()->Open(FileName);
-	if (file == nullptr)
-		throw CException("Scene file '%s' not found.", FileName.c_str());
-
-	ResetScene();
-
-	auto root = GetRootSceneNode();
-
-	CXMLManager xml(GetBaseManager());
-	auto xmlReader = xml.CreateReader(file);
-	auto xmlRootChild = xmlReader->GetChilds()[0];
-
-	auto tempFakeRoot = CreateSceneNode<ISceneNode>(root);
-	tempFakeRoot->SetName("TempFakeRoot");
-
-	auto newRootNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeFactory>()->LoadSceneNode3DXML(xmlRootChild, *this, tempFakeRoot);
-
-
-	// Update persistance nodes
-	for (const auto& existingRootChild : root->GetChilds())
+	try
 	{
-		if (existingRootChild->IsPersistance())
-		{
-			auto xmlChild = newRootNode->GetChild(existingRootChild->GetName());
-			if (xmlChild != nullptr)
-			{
-				xmlChild->CopyTo(existingRootChild);
+		//BlockSceneEvents();
 
-				// To delete persistance node, we must clear this flag
-				std::dynamic_pointer_cast<ISceneNodeInternal>(xmlChild)->SetPersistanceInternal(false);
-				newRootNode->RemoveChild(xmlChild);
+		auto file = GetBaseManager().GetManager<IFilesManager>()->Open(FileName);
+		if (file == nullptr)
+			throw CException("Scene file '%s' not found.", FileName.c_str());
+
+		CXMLManager xml(GetBaseManager());
+		auto xmlReader = xml.CreateReader(file);
+		auto xmlRootChild = xmlReader->GetChilds()[0];
+
+		ResetScene();
+
+		auto root = GetRootSceneNode();
+		auto tempFakeRoot = CreateSceneNode<ISceneNode>(root);
+		tempFakeRoot->SetName("TempFakeRoot");
+
+		auto newRootNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeFactory>()->LoadSceneNode3DXML(xmlRootChild, *this, tempFakeRoot);
+
+		// Update persistance nodes
+		for (const auto& existingRootChild : root->GetChilds())
+		{
+			if (existingRootChild->IsPersistance())
+			{
+				auto xmlChild = newRootNode->GetChild(existingRootChild->GetName());
+				if (xmlChild != nullptr)
+				{
+					xmlChild->CopyTo(existingRootChild);
+
+					// To delete persistance node, we must clear this flag
+					std::dynamic_pointer_cast<ISceneNodeInternal>(xmlChild)->SetPersistanceInternal(false);
+					newRootNode->RemoveChild(xmlChild);
+				}
 			}
 		}
-	}
 
-	// Add new childs
-	while (false == newRootNode->GetChilds().empty())
+		// Add new childs
+		while (false == newRootNode->GetChilds().empty())
+		{
+			auto newRootChild = *(newRootNode->GetChilds().begin());
+			root->AddChild(newRootChild);
+		}
+
+
+		newRootNode->MakeMeOrphan();
+	}
+	catch (...)
 	{
-		auto newRootChild = *(newRootNode->GetChilds().begin());
-		root->AddChild(newRootChild);
+		//UnblockSceneEvents();
+		throw;
 	}
-
-	tempFakeRoot->MakeMeOrphan();
 }
 
 void SceneBase::SaveToFile(const std::string& FileName)

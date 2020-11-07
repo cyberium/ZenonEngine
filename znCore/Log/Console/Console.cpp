@@ -33,7 +33,7 @@ CConsole::CConsole(IBaseManager& BaseManager)
 
 CConsole::~CConsole()
 {
-	ERASE_VECTOR(m_ConsoleCommands);
+	//ERASE_VECTOR(m_ConsoleCommands);
 
 	m_BaseManager.RemoveManager<IConsole>();
 }
