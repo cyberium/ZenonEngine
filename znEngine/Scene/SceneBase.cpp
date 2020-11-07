@@ -450,7 +450,7 @@ void SceneBase::LoadFromFile(const std::string& FileName)
 		}
 
 
-		newRootNode->MakeMeOrphan();
+		tempFakeRoot->MakeMeOrphan();
 	}
 	catch (...)
 	{

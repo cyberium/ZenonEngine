@@ -5,6 +5,7 @@
 
 // Additional
 #include "Settings/Properties.h"
+#include "Settings/PropertyGroup.h"
 #include "Settings/Actions.h"
 
 CComponentBase::CComponentBase(const ISceneNode& OwnerNode)

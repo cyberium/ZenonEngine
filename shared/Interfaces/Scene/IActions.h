@@ -31,7 +31,7 @@ ZN_INTERFACE ZN_API IPropertyAction
 
 template <typename T>
 ZN_INTERFACE ZN_API IPropertyT
-	: public IProperty
+	: public virtual IProperty
 {
 	virtual ~IPropertyT() {}
 
@@ -42,7 +42,7 @@ ZN_INTERFACE ZN_API IPropertyT
 };
 
 ZN_INTERFACE ZN_API IPropertiesGroup
-	: public IProperty
+	: public virtual IProperty
 {
 	virtual ~IPropertiesGroup() {}
 

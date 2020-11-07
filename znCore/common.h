@@ -22,7 +22,9 @@
 #include "Utils/Primitives/Plane.h"
 #include "Utils/Primitives/Rect.h"
 
+#include "Settings/PropertyBase.h"
 #include "Settings/Properties.h"
+#include "Settings/PropertyGroup.h"
 #include "Settings/Actions.h"
 #include "Settings/SettingsGroupBase.h"
 #include "Settings/SettingBase.h"

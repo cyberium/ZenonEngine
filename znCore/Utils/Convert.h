@@ -2,14 +2,15 @@
 
 #include <inttypes.h>
 
+const size_t cBufferSize = 64;
+
 namespace
 {
 	template <typename T>
 	inline std::string ValueToStringInternal(const char* Pattern, T Value)
 	{
-		std::string buff;
-		buff.resize(256);
-		if (sprintf_s(&buff[0], buff.length(), (std::string("%") + Pattern).c_str(), Value) != 1)
+		char buff[cBufferSize];
+		if (sprintf_s(&buff[0], cBufferSize, (std::string("%") + Pattern).c_str(), Value) != 1)
 			throw CException("ValueToStringInternal: Unable to write '%s' value.", typeid(T).name());
 		return buff;
 	}
@@ -35,14 +36,14 @@ template<> inline std::string ValueToString(const int32& Value)  { return ValueT
 template<> inline std::string ValueToString(const uint32& Value) { return ValueToStringInternal<uint32>(PRIu32, Value); }
 template<> inline std::string ValueToString(const int64& Value)  { return ValueToStringInternal<int64> (PRId64, Value); }
 template<> inline std::string ValueToString(const uint64& Value) { return ValueToStringInternal<uint64>(PRIu64, Value); }
-template<> inline std::string ValueToString(const float& Value)  { return ValueToStringInternal<float> ("%f",   Value); }
-template<> inline std::string ValueToString(const double& Value) { return ValueToStringInternal<double>("%lf",  Value); }
+template<> inline std::string ValueToString(const float& Value)  { return ValueToStringInternal<float> ("f",   Value); }
+template<> inline std::string ValueToString(const double& Value) { return ValueToStringInternal<double>("lf",  Value); }
 
 template<>
 inline std::string ValueToString(const glm::vec2& Value)
 {
-	std::string buff;
-	if (sprintf_s(&buff[0], buff.length(), "%f, %f", Value.x, Value.y) <= 0)
+	char buff[cBufferSize];
+	if (sprintf_s(&buff[0], cBufferSize, "%f, %f", Value.x, Value.y) <= 0)
 		throw CException("Unable to write glm::vec2 value.");
 	return buff;
 }
@@ -50,8 +51,8 @@ inline std::string ValueToString(const glm::vec2& Value)
 template<>
 inline std::string ValueToString(const glm::vec3& Value)
 {
-	std::string buff;
-	if (sprintf_s(&buff[0], buff.length(), "%f, %f, %f", Value.x, Value.y, Value.z) <= 0)
+	char buff[cBufferSize];
+	if (sprintf_s(&buff[0], cBufferSize, "%f, %f, %f", Value.x, Value.y, Value.z) <= 0)
 		throw CException("Unable to write glm::vec3 value.");
 	return buff;
 }
@@ -59,8 +60,8 @@ inline std::string ValueToString(const glm::vec3& Value)
 template<>
 inline std::string ValueToString(const glm::vec4& Value)
 {
-	std::string buff;
-	if (sprintf_s(&buff[0], buff.length(), "%f, %f, %f, %f", Value.x, Value.y, Value.z, Value.w) <= 0)
+	char buff[cBufferSize];
+	if (sprintf_s(&buff[0], cBufferSize, "%f, %f, %f, %f", Value.x, Value.y, Value.z, Value.w) <= 0)
 		throw CException("Unable to write glm::vec4 value.");
 	return buff;
 }
@@ -102,8 +103,8 @@ template<> inline int32  StringToValue(const std::string& String) { return Strin
 template<> inline uint32 StringToValue(const std::string& String) { return StringToValueInternal<uint32>(String, PRIu32, 0); }
 template<> inline int64  StringToValue(const std::string& String) { return StringToValueInternal<int64>(String,  PRId64, 0); }
 template<> inline uint64 StringToValue(const std::string& String) { return StringToValueInternal<uint64>(String, PRIu64, 0); }
-template<> inline float  StringToValue(const std::string& String) { return StringToValueInternal<float>(String,  "%f",   0); }
-template<> inline double StringToValue(const std::string& String) { return StringToValueInternal<double>(String, "%lf",  0); }
+template<> inline float  StringToValue(const std::string& String) { return StringToValueInternal<float>(String,  "f",   0); }
+template<> inline double StringToValue(const std::string& String) { return StringToValueInternal<double>(String, "lf",  0); }
 
 template<>
 inline glm::vec2 StringToValue(const std::string& String)

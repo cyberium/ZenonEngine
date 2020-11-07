@@ -321,6 +321,12 @@
     <ClCompile Include="Utils\Convert.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
+    <ClCompile Include="Settings\PropertyBase.cpp">
+      <Filter>Settings</Filter>
+    </ClCompile>
+    <ClCompile Include="Settings\PropertyGroup.cpp">
+      <Filter>Settings</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="common.h">
@@ -787,6 +793,12 @@
     </ClInclude>
     <ClInclude Include="Utils\Convert.h">
       <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Settings\PropertyBase.h">
+      <Filter>Settings</Filter>
+    </ClInclude>
+    <ClInclude Include="Settings\PropertyGroup.h">
+      <Filter>Settings</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
