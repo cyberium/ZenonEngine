@@ -21,9 +21,6 @@ public:
 	virtual bool Render() const override;
 	virtual void Accept(IVisitor* visitor) override;
 
-	// IObject
-	OBJECT_IMPLEMENT_BASE
-
 	// IObjectLoadSave
 	void Load(const std::shared_ptr<IByteBuffer>& Buffer) override;
 	void Save(const std::shared_ptr<IByteBuffer>& Buffer) const override;

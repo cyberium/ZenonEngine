@@ -8,7 +8,7 @@ class ZN_API CPropertiesGroup
 {
 public:
 	CPropertiesGroup();
-	CPropertiesGroup(std::string Name, std::string Description);
+	CPropertiesGroup(std::string Name, std::string Description = "");
 	virtual ~CPropertiesGroup();
 
 	// IProperty

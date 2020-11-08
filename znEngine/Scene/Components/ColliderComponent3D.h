@@ -9,14 +9,14 @@ public:
     virtual ~CColliderComponent3D();
 
     // IColliderComponent3D
+	void SetBounds(BoundingBox Bounds) override;
+	void ExtendBounds(BoundingBox Bounds) override;
+	const BoundingBox& GetBounds() const override;
+	const BoundingBox& GetWorldBounds() const override;
 	void SetCullStrategy(ECullStrategy CullStrategy) override;
 	ECullStrategy GetCullStrategy() const override;
 	void SetCullDistance(float Distance) override;
 	float GetCullDistance() const override;
-    void SetBounds(BoundingBox Bounds) override;
-	void ExtendBounds(BoundingBox Bounds) override;
-    const BoundingBox& GetBounds() const override;
-	const BoundingBox& GetWorldBounds() const override;
 	void SetDebugDrawMode(bool Value) override;
 	bool GetDebugDrawMode() const override;
 

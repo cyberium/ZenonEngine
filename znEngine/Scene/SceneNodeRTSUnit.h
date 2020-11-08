@@ -12,12 +12,13 @@ public:
 
 	// ISceneNodeRTSUnit 
 	void SetHealth(float Health) override;
-	void SetMaxHealth(float MaxHealth) override;
 	float GetHealth() const override;
-	void SetPath(std::shared_ptr<ISceneNodeRTSPath> Path) override;
-	void SetSpeed(float Speed) override;
-	float GetSpeed() const override;
+	void SetMaxHealth(float MaxHealth) override;
+	float GetMaxHealth() const override;
+	void SetMovementSpeed(float Speed) override;
+	float GetMovementSpeed() const override;
 
+	void SetPath(std::shared_ptr<ISceneNodeRTSPath> Path) override;
 	void DealDamage(float Damage) override;
 
 	// ISceneNode

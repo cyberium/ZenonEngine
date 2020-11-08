@@ -174,7 +174,7 @@ void CEditorToolDragger::CreateCopyDraggedNode()
 	if (m_DraggerNode == nullptr)
 		return;
 
-	auto copiedNode = GetScene().CreateSceneNode<ISceneNode>();
+	auto copiedNode = GetScene().GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeFactory>()->CreateSceneNode3D(m_DraggerNode->GetClass(), GetScene());
 	m_DraggerNode->CopyTo(copiedNode);
 
 	copiedNode->SetTranslate(m_DraggerNode->GetTranslation());

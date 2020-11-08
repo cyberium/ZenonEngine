@@ -49,6 +49,11 @@ void CEditor3DPreviewScene::SetSceneNode(std::shared_ptr<ISceneNode> SceneNode)
 
 	BoundingBox bbox;
 	ExtendsBoundsRecursive(bbox, copy);
+	if (bbox.IsInfinite())
+	{
+		bbox.setMin(glm::vec3(-0.5f));
+		bbox.setMax(glm::vec3(0.5f));
+	}
 
 	float radius = bbox.getRadius();
 

@@ -9,7 +9,7 @@ CColliderComponent3D::CColliderComponent3D(const ISceneNode& OwnerNode)
 	, m_CullDistance(99999.0f) // Don't use FloatMax
 	, m_DebugDraw(true)
 {
-	GetProperties()->SetName("ColliderComponent"); // TODO: ObjectClassName
+	GetProperties()->SetName("ColliderComponent");
 
 	{
 		auto minBounds = MakeShared(CPropertyWrappedVec3, "BBoxMin", "");
@@ -44,6 +44,40 @@ CColliderComponent3D::~CColliderComponent3D()
 //
 // IColliderComponent3D
 //
+
+void CColliderComponent3D::SetBounds(BoundingBox Bounds)
+{
+	if (Bounds.IsInfinite())
+		throw CException("Unable to set infinity bounds to node '%s'.", GetOwnerNode().GetName().c_str());
+
+	m_Bounds = Bounds;
+
+	RaiseComponentMessage(UUID_OnBoundsChanget);
+}
+
+void CColliderComponent3D::ExtendBounds(BoundingBox Bounds)
+{
+	if (Bounds.IsInfinite())
+		throw CException("Unable to extend infinity bounds to node '%s'.", GetOwnerNode().GetName().c_str());
+
+	if (m_Bounds.IsInfinite())
+		m_Bounds = Bounds;
+	else
+		m_Bounds.makeUnion(Bounds);
+
+	RaiseComponentMessage(UUID_OnBoundsChanget);
+}
+
+const BoundingBox& CColliderComponent3D::GetBounds() const
+{
+	return m_Bounds;
+}
+
+const BoundingBox& CColliderComponent3D::GetWorldBounds() const
+{
+	return m_WorldBounds;
+}
+
 void CColliderComponent3D::SetCullStrategy(ECullStrategy CullStrategy)
 {
 	m_CullStrategy = CullStrategy;
@@ -64,39 +98,6 @@ float CColliderComponent3D::GetCullDistance() const
 	return m_CullDistance;
 }
 
-void CColliderComponent3D::SetBounds(BoundingBox Bounds)
-{
-	if (Bounds.IsInfinite())
-		throw CException("Unable to set infinity bounds to node '%s'.", GetOwnerNode().GetName().c_str());
-
-	m_Bounds = Bounds;
-
-	RaiseComponentMessage(UUID_OnBoundsChanget);
-}
-
-void CColliderComponent3D::ExtendBounds(BoundingBox Bounds)
-{
-	if (Bounds.IsInfinite())
-		throw CException("Unable to extend infinity bounds to node '%s'.", GetOwnerNode().GetName().c_str());
-	
-	if (m_Bounds.IsInfinite())
-		m_Bounds = Bounds;
-	else
-		m_Bounds.makeUnion(Bounds);
-
-	RaiseComponentMessage(UUID_OnBoundsChanget);
-}
-
-const BoundingBox& CColliderComponent3D::GetBounds() const
-{
-	return m_Bounds;
-}
-
-const BoundingBox& CColliderComponent3D::GetWorldBounds() const
-{
-	return m_WorldBounds;
-}
-
 void CColliderComponent3D::SetDebugDrawMode(bool Value)
 {
 	m_DebugDraw = Value;
@@ -109,6 +110,9 @@ bool CColliderComponent3D::GetDebugDrawMode() const
 
 bool CColliderComponent3D::IsCulled(const ICameraComponent3D * Camera) const
 {
+	if (GetBounds().IsInfinite())
+		return false;
+
 	switch (m_CullStrategy)
 	{
 		case ECullStrategy::None:
@@ -132,12 +136,18 @@ bool CColliderComponent3D::IsCulledByFrustum(const ICameraComponent3D* Camera) c
 {
 	_ASSERT(Camera != nullptr);
 
+	if (GetBounds().IsInfinite())
+		return false;
+
 	return Camera->GetFrustum().cullBox(GetWorldBounds());
 }
 
 bool CColliderComponent3D::IsCulledByDistance2D(const ICameraComponent3D* Camera) const
 {
 	_ASSERT(Camera != nullptr);
+
+	if (GetBounds().IsInfinite())
+		return false;
 
 	const glm::vec3 cameraPosition = Camera->GetTranslation();
 	const float distToCamera2D = glm::length(Fix_X0Z(cameraPosition) - Fix_X0Z(GetWorldBounds().getCenter())) - GetWorldBounds().getRadius();
@@ -147,6 +157,9 @@ bool CColliderComponent3D::IsCulledByDistance2D(const ICameraComponent3D* Camera
 bool CColliderComponent3D::IsCulledByDistance(const ICameraComponent3D* Camera) const
 {
 	_ASSERT(Camera != nullptr);
+
+	if (GetBounds().IsInfinite())
+		return false;
 
 	const glm::vec3 cameraPosition = Camera->GetTranslation();
 	const float distToCamera = glm::length(cameraPosition - GetWorldBounds().getCenter()) - GetWorldBounds().getRadius();
@@ -196,8 +209,8 @@ void CColliderComponent3D::CopyTo(std::shared_ptr<IObject> Destination) const
 
 	auto destCast = std::dynamic_pointer_cast<CColliderComponent3D>(Destination);
 
-	destCast->SetCullStrategy(m_CullStrategy);
-	destCast->SetCullDistance(m_CullDistance);
+	destCast->SetCullStrategy(GetCullStrategy());
+	destCast->SetCullDistance(GetCullDistance());
 
 	if (false == m_Bounds.IsInfinite())
 		destCast->SetBounds(m_Bounds);
@@ -228,6 +241,9 @@ void CColliderComponent3D::Save(const std::shared_ptr<IXMLWriter>& Writer) const
 //
 void CColliderComponent3D::UpdateBounds()
 {
+	if (GetBounds().IsInfinite())
+		return;
+
 	BoundingBox bounds = GetBounds();
 	bounds.transform(GetOwnerNode().GetWorldTransfom());
 	m_WorldBounds = bounds;

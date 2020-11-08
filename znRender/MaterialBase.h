@@ -26,9 +26,6 @@ public:
 	void*        GetMaterialDataEx() override;
 	void         MarkMaterialDataDirty() override;
 
-	// IObject
-	OBJECT_IMPLEMENT_BASE
-
 	// IObjectLoadSave
 	void Load(const std::shared_ptr<IByteBuffer>& ByteBuffer) override;
 	void Save(const std::shared_ptr<IByteBuffer>& ByteBuffer) const override;

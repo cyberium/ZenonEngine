@@ -29,9 +29,6 @@ protected:
 	void InitializeBufferBase(const void* data, uint32 count, uint32 offset, uint32 stride) override final;
 	virtual void DoInitializeBuffer() = 0;
 
-	// IObject
-	OBJECT_IMPLEMENT_BASE
-
 	// IObjectLoadSave
 	void Load(const std::shared_ptr<IByteBuffer>& ByteBuffer) override;
 	void Save(const std::shared_ptr<IByteBuffer>& ByteBuffer) const override;

@@ -183,30 +183,18 @@ public:
 		xProperty->SetSyntetic(true);
 		xProperty->SetValueSetter(std::bind(&CPropertyWrappedVec3::SetT, this, 0, std::placeholders::_1));
 		xProperty->SetValueGetter(std::bind(&CPropertyWrappedVec3::GetT, this, 0));
-		//xProperty->SetValueChangedCallback([this](const float& Value) {
-		//	this->RaiseValueChangedCallback();
-		//});
 		AddProperty(xProperty);
 
 		auto yProperty = MakeShared(CPropertyWrapped<float>, "Y");
 		yProperty->SetSyntetic(true);
 		yProperty->SetValueSetter(std::bind(&CPropertyWrappedVec3::SetT, this, 1, std::placeholders::_1));
 		yProperty->SetValueGetter(std::bind(&CPropertyWrappedVec3::GetT, this, 1));
-		//yProperty->SetValueChangedCallback([this](const float& Value) {
-		//	this->RaiseValueChangedCallback();
-		//});
 		AddProperty(yProperty);
 
 		auto zProperty = MakeShared(CPropertyWrapped<float>, "Z");
 		zProperty->SetSyntetic(true);
 		zProperty->SetValueSetter(std::bind(&CPropertyWrappedVec3::SetT, this, 2, std::placeholders::_1));
 		zProperty->SetValueGetter(std::bind(&CPropertyWrappedVec3::GetT, this, 2));
-		//zProperty->SetValueChangedCallback([this](const float& Value) {
-			/*
-				When subProperty changed, we must notify owner property, but don't notify childs
-			*/
-		//	this->RaiseValueChangedCallback();
-		//});
 		AddProperty(zProperty);
 	}
 

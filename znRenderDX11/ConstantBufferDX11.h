@@ -25,9 +25,6 @@ protected:
 	void Copy(const IConstantBuffer* other) const override;
 	void Set(const void* data, size_t size) override;
 
-	// IObject
-	OBJECT_IMPLEMENT_BASE
-
 private:
 	void Commit() const;
 

@@ -55,14 +55,15 @@ ZN_INTERFACE ZN_API IColliderComponent3D
 
 	virtual ~IColliderComponent3D() {}
 
-	virtual void SetCullStrategy(ECullStrategy CullStrategy) = 0;
-	virtual ECullStrategy GetCullStrategy() const = 0;
-	virtual void SetCullDistance(float Distance) = 0;
-	virtual float GetCullDistance() const = 0;
 	virtual void SetBounds(BoundingBox Bounds) = 0;
 	virtual void ExtendBounds(BoundingBox Bounds) = 0;
 	virtual const BoundingBox& GetBounds() const = 0;
 	virtual const BoundingBox& GetWorldBounds() const = 0;
+
+	virtual void SetCullStrategy(ECullStrategy CullStrategy) = 0;
+	virtual ECullStrategy GetCullStrategy() const = 0;
+	virtual void SetCullDistance(float Distance) = 0;
+	virtual float GetCullDistance() const = 0;
 	virtual void SetDebugDrawMode(bool Value) = 0;
 	virtual bool GetDebugDrawMode() const = 0;
 

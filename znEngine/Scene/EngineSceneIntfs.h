@@ -98,13 +98,13 @@ ZN_INTERFACE ZN_API ISceneNodeRTSUnit
 	virtual ~ISceneNodeRTSUnit() {}
 
 	virtual void SetHealth(float Health) = 0;
-	virtual void SetMaxHealth(float MaxHealth) = 0;
 	virtual float GetHealth() const = 0;
-	virtual void SetSpeed(float Speed) = 0;
-	virtual float GetSpeed() const = 0;
+	virtual void SetMaxHealth(float MaxHealth) = 0;
+	virtual float GetMaxHealth() const = 0;
+	virtual void SetMovementSpeed(float Speed) = 0;
+	virtual float GetMovementSpeed() const = 0;
 
 	virtual void DealDamage(float Damage) = 0;
-
 	virtual void SetPath(std::shared_ptr<ISceneNodeRTSPath> Path) = 0;
 };
 

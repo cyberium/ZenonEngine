@@ -19,9 +19,6 @@ public:
 
 	virtual void                                    Accept(IVisitor* visitor) override;
 
-	// IObject
-	OBJECT_IMPLEMENT_BASE
-
 protected:
 	void                                            UpdateBounds(const std::shared_ptr<IGeometry>& Geometry);
 

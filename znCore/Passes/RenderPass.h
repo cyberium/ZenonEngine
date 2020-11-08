@@ -1,13 +1,5 @@
 #pragma once
 
-// TODO: Move me
-extern IBlendState::BlendMode alphaBlending;
-extern IBlendState::BlendMode additiveBlending;
-extern IBlendState::BlendMode disableBlending;
-extern IDepthStencilState::DepthMode enableDepthWrites;
-extern IDepthStencilState::DepthMode enableTestDisableWrites;
-extern IDepthStencilState::DepthMode disableDepthWrites;
-
 struct __declspec(align(16)) ZN_API PerObject
 {
 	glm::mat4 Model;
@@ -54,6 +46,14 @@ public:
 	virtual bool IsEnabled() const override final;
 	virtual void PreRender(RenderEventArgs& e) override;
 	virtual void PostRender(RenderEventArgs& e) override;
+
+protected:
+	static IBlendState::BlendMode alphaBlending;
+	static IBlendState::BlendMode additiveBlending;
+	static IBlendState::BlendMode disableBlending;
+	static IDepthStencilState::DepthMode enableDepthWrites;
+	static IDepthStencilState::DepthMode enableTestDisableWrites;
+	static IDepthStencilState::DepthMode disableDepthWrites;
 
 protected:
 	IBaseManager& GetBaseManager() const;

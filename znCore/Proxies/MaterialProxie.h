@@ -22,9 +22,6 @@ public:
 	virtual void Bind(const ShaderMap& shaders) const override;
 	virtual void Unbind(const ShaderMap& shaders) const override;
 
-	// IObject
-	OBJECT_IMPLEMENT_BASE
-
 	// IObjectLoadSave
 	void Load(const std::shared_ptr<IByteBuffer>& Buffer) override;
 	void Save(const std::shared_ptr<IByteBuffer>& Buffer) const override;

@@ -32,9 +32,6 @@ public:
 	void Render_Draw(const SGeometryDrawArgs GeometryDrawArgs = SGeometryDrawArgs()) const override final;
 	void Render_UnbindAllBuffers(const IShader* VertexShader) const override final;
 
-	// IObject
-	OBJECT_IMPLEMENT_BASE
-
 	// IObjectLoadSave
 	void Load(const std::shared_ptr<IByteBuffer>& ByteBuffer) override;
 	void Save(const std::shared_ptr<IByteBuffer>& ByteBuffer) const override;

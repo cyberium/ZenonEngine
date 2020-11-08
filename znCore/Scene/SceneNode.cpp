@@ -23,20 +23,7 @@ CSceneNode::CSceneNode(IScene& Scene)
 	, m_InverseWorldTransform(1.0f)
 {
 	m_PropertiesGroup = MakeShared(CPropertiesGroup, "Properties", "Some important scene node 3d properties.");
-}
 
-CSceneNode::~CSceneNode()
-{
-	Log::Info("SceneNode '%s' deleted.", GetName().c_str());
-}
-
-
-
-//
-// ISceneNode
-//
-void CSceneNode::Initialize()
-{
 	// Name properties
 	{
 		std::shared_ptr<CPropertyWrapped<std::string>> nameProperty = MakeShared(CPropertyWrapped<std::string>, "Name", "Scene node name.");
@@ -72,6 +59,21 @@ void CSceneNode::Initialize()
 
 		GetProperties()->AddProperty(propertiesGroup);
 	}
+}
+
+CSceneNode::~CSceneNode()
+{
+	Log::Info("SceneNode '%s' deleted.", GetName().c_str());
+}
+
+
+
+//
+// ISceneNode
+//
+void CSceneNode::Initialize()
+{
+
 
 	// Actions
 	{
