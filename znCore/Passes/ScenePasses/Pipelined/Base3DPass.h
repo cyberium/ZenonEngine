@@ -9,6 +9,9 @@ public:
 	Base3DPass(IScene& scene);
 	virtual ~Base3DPass();
 
+	// IRenderPassPipelined
+	virtual std::shared_ptr<IRenderPassPipelined> ConfigurePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport* Viewport) override;
+
 	// IVisitor
 	virtual EVisitResult Visit(const ISceneNode* SceneNode) override;
 	virtual EVisitResult Visit(const IModel* Model) override;

@@ -163,7 +163,7 @@ std::shared_ptr<ITexture> CPassDeffered_ProcessLights::CreateShadowTextureDepthS
 
 void CPassDeffered_ProcessLights::BindPerFrameParamsForCurrentIteration(const ILight3D * Light)
 {
-	const Viewport& viewport = GetRenderEventArgs().PipelineState->GetRenderTarget()->GetViewport();
+	const Viewport& viewport = m_ShadowPipeline->GetRenderTarget()->GetViewport();
 
 	PerFrame perFrame(
 		Light->GetViewMatrix(), 

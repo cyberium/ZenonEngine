@@ -12,6 +12,7 @@
 
 #include "Passes/UI/UIFontPass.h"
 #include "Passes/UI/UIColorPass.h"
+#include "Passes/UI/UIControlConsolePass.h"
 
 CRendererDeffered::CRendererDeffered(IBaseManager& BaseManager, IScene& Scene)
 	: m_BaseManager(BaseManager)
@@ -122,6 +123,7 @@ void CRendererDeffered::Initialize(std::shared_ptr<IRenderTarget> OutputRenderTa
 
 	m_UIPasses.push_back(MakeShared(CUIFontPass, m_RenderDevice, m_Scene)->ConfigurePipeline(OutputRenderTarget, Viewport));
 	m_UIPasses.push_back(MakeShared(CUIColorPass, m_RenderDevice, m_Scene)->ConfigurePipeline(OutputRenderTarget, Viewport));
+	m_UIPasses.push_back(MakeShared(CUIControlConsolePass, m_RenderDevice)->ConfigurePipeline(OutputRenderTarget, Viewport));
 }
 
 

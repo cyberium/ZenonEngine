@@ -25,8 +25,6 @@ std::shared_ptr<IRenderPassPipelined> BaseUIPass::ConfigurePipeline(std::shared_
 	GetPipeline().GetDepthStencilState()->SetDepthMode(disableDepthWrites);
 	GetPipeline().GetRasterizerState()->SetCullMode(IRasterizerState::CullMode::None);
 	GetPipeline().GetRasterizerState()->SetFillMode(IRasterizerState::FillMode::Solid, IRasterizerState::FillMode::Solid);
-	GetPipeline().GetRasterizerState()->SetAntialiasedLineEnable(false);
-	GetPipeline().GetRasterizerState()->SetMultisampleEnabled(false);
 	GetPipeline().SetRenderTarget(RenderTarget);
 	return shared_from_this();
 }
@@ -62,9 +60,12 @@ EVisitResult BaseUIPass::Visit(const IModel * Model)
 
 EVisitResult BaseUIPass::Visit(const IGeometry* Geometry, const IMaterial* Material, SGeometryDrawArgs GeometryDrawArgs)
 {
-	Material->Bind(GetRenderEventArgs().PipelineState->GetShaders());
-	Geometry->Render(GetRenderEventArgs().PipelineState->GetShaders().at(EShaderType::VertexShader).get(), GeometryDrawArgs);
-	Material->Unbind(GetRenderEventArgs().PipelineState->GetShaders());
+	const auto& shaders = GetPipeline().GetShaders();
+	const auto& vertexShader = shaders.at(EShaderType::VertexShader).get();
+
+	Material->Bind(shaders);
+	Geometry->Render(vertexShader, GeometryDrawArgs);
+	Material->Unbind(shaders);
 
 	return EVisitResult::AllowAll;
 }

@@ -47,6 +47,7 @@ void RenderPassPipelined::PostRender(RenderEventArgs& e)
 	_ASSERT_EXPR(m_Pipeline != nullptr, L"RenderPassPipelined: Pipeline is null. Don't use this class without pipeline.");
 	m_Pipeline->UnBind();
 
+	e.PipelineState = nullptr;
 	__super::PostRender(e);
 }
 
@@ -57,6 +58,11 @@ void RenderPassPipelined::PostRender(RenderEventArgs& e)
 //
 std::shared_ptr<IRenderPassPipelined> RenderPassPipelined::ConfigurePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport)
 {
+	GetPipeline().GetBlendState()->SetBlendMode(disableBlending);
+	GetPipeline().GetDepthStencilState()->SetDepthMode(enableDepthWrites);
+	GetPipeline().GetRasterizerState()->SetCullMode(IRasterizerState::CullMode::None);
+	GetPipeline().GetRasterizerState()->SetFillMode(IRasterizerState::FillMode::Solid, IRasterizerState::FillMode::Solid);
+	GetPipeline().SetRenderTarget(RenderTarget);
 	return shared_from_this();
 }
 
@@ -87,11 +93,6 @@ void RenderPassPipelined::FillPerFrameData()
 	m_PerFrameConstantBuffer->Set(perFrame);
 }
 
-
-
-//
-// Protected
-//
 void RenderPassPipelined::SetPerFrameData(const PerFrame& PerFrame)
 {
 	m_PerFrameConstantBuffer->Set(PerFrame);
@@ -102,7 +103,7 @@ void RenderPassPipelined::BindPerFrameData(const IShader * Shader) const
 	_ASSERT(Shader != nullptr);
 
 	auto& perFrameParam = Shader->GetShaderParameterByName("PerFrame");
-	if (perFrameParam.IsValid() && m_PerFrameConstantBuffer != nullptr)
+	if (perFrameParam.IsValid())
 	{
 		perFrameParam.SetConstantBuffer(m_PerFrameConstantBuffer);
 		perFrameParam.Bind();

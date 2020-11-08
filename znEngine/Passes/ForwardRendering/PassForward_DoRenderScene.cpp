@@ -76,15 +76,17 @@ std::shared_ptr<IRenderPassPipelined> CPassForward_DoRenderScene::ConfigurePipel
 //
 EVisitResult CPassForward_DoRenderScene::Visit(const ISceneNode * SceneNode)
 {
-	if (SceneNode->GetClass() != cSceneNode3D)
-		return EVisitResult::AllowVisitChilds;
+	if (SceneNode->GetClass() == cSceneNode3D || SceneNode->GetClass() == cSceneNodeRTSUnit || SceneNode->GetClass() == cSceneNodeRTSBullet)
+	{
+		auto skeletonComponent = SceneNode->GetComponentT<ISkeletonComponent3D>();
+		if (skeletonComponent != nullptr)
+			if (m_ShaderBonesBufferParameter->IsValid())
+				m_ShaderBonesBufferParameter->Set(skeletonComponent->GetBonesBuffer());
 
-	auto skeletonComponent = SceneNode->GetComponentT<ISkeletonComponent3D>();
-	if (skeletonComponent != nullptr)
-		if (m_ShaderBonesBufferParameter->IsValid())
-			m_ShaderBonesBufferParameter->Set(skeletonComponent->GetBonesBuffer());
+		return Base3DPass::Visit(SceneNode);
+	}
 
-	return Base3DPass::Visit(SceneNode);
+	return EVisitResult::AllowVisitChilds;
 }
 
 EVisitResult CPassForward_DoRenderScene::Visit(const IModel * Model)

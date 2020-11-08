@@ -76,7 +76,8 @@ EVisitResult CUIFontPass::Visit(const IUIControl * node)
 	const auto& fontGeometry = font->GetGeometry();
 	const auto& fontGeometryInternal = std::dynamic_pointer_cast<IGeometryInternal>(fontGeometry);
 
-	auto vertexShader = GetRenderEventArgs().PipelineState->GetShaders().at(EShaderType::VertexShader).get();
+	const auto& shaders = GetPipeline().GetShaders();
+	auto vertexShader = shaders.at(EShaderType::VertexShader).get();
 
 	fontGeometryInternal->Render_BindAllBuffers(vertexShader);
 	{
@@ -94,14 +95,14 @@ EVisitResult CUIFontPass::Visit(const IUIControl * node)
 			}
 
 			fontMaterial->SetOffset(currentCharOffset);
-			fontMaterial->Bind(GetPipeline().GetShaders());
+			fontMaterial->Bind(shaders);
 			{
 				SGeometryDrawArgs GeometryDrawArgs;
 				GeometryDrawArgs.VertexStartLocation = (ch) * 6;
 				GeometryDrawArgs.VertexCnt = 6;
 				fontGeometryInternal->Render_Draw(GeometryDrawArgs);
 			}
-			fontMaterial->Unbind(GetPipeline().GetShaders());
+			fontMaterial->Unbind(shaders);
 
 			currentCharOffset.x += static_cast<float>(font->GetWidth(ch)) + 0.01f;
 		}

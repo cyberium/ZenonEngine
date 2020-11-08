@@ -14,6 +14,23 @@ Base3DPass::~Base3DPass()
 {
 }
 
+
+
+//
+// IRenderPassPipelined
+//
+std::shared_ptr<IRenderPassPipelined> Base3DPass::ConfigurePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport)
+{
+	GetPipeline().GetBlendState()->SetBlendMode(alphaBlending);
+	GetPipeline().GetDepthStencilState()->SetDepthMode(enableDepthWrites);
+	GetPipeline().GetRasterizerState()->SetCullMode(IRasterizerState::CullMode::Back);
+	GetPipeline().GetRasterizerState()->SetFillMode(IRasterizerState::FillMode::Solid, IRasterizerState::FillMode::Solid);
+	GetPipeline().SetRenderTarget(RenderTarget);
+	return shared_from_this();
+}
+
+
+
 //
 // IVisitor
 //
@@ -31,11 +48,12 @@ EVisitResult Base3DPass::Visit(const IModel * Model)
 
 EVisitResult Base3DPass::Visit(const IGeometry* Geometry, const IMaterial* Material, SGeometryDrawArgs GeometryDrawArgs)
 {
-	if (Material)
-		Material->Bind(GetRenderEventArgs().PipelineState->GetShaders());
-	Geometry->Render(GetRenderEventArgs().PipelineState->GetShaders().at(EShaderType::VertexShader).get(), GeometryDrawArgs);
-	if (Material)
-		Material->Unbind(GetRenderEventArgs().PipelineState->GetShaders());
+	const auto& shaders = GetPipeline().GetShaders();
+	const auto& vertexShader = shaders.at(EShaderType::VertexShader).get();
+
+	Material->Bind(shaders);
+	Geometry->Render(vertexShader, GeometryDrawArgs);
+	Material->Unbind(shaders);
 	return EVisitResult::AllowAll;
 }
 

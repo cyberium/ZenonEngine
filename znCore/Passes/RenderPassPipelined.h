@@ -54,6 +54,8 @@ public:
 
 protected:
 	virtual void FillPerFrameData();
+	void SetPerFrameData(const PerFrame& PerFrame);
+	void BindPerFrameData(const IShader* Shader) const;
 
 protected:
 	static IBlendState::BlendMode alphaBlending;
@@ -63,11 +65,7 @@ protected:
 	static IDepthStencilState::DepthMode enableTestDisableWrites;
 	static IDepthStencilState::DepthMode disableDepthWrites;
 
-protected:
-	std::shared_ptr<IConstantBuffer> m_PerFrameConstantBuffer;
-	void SetPerFrameData(const PerFrame& PerFrame);
-	void BindPerFrameData(const IShader* Shader) const;
-
 private:
 	std::shared_ptr<IPipelineState> m_Pipeline;
+	std::shared_ptr<IConstantBuffer> m_PerFrameConstantBuffer;
 };

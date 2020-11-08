@@ -106,6 +106,7 @@ const std::shared_ptr<IDepthStencilState>& PipelineStateBase::GetDepthStencilSta
 
 void PipelineStateBase::SetRenderTarget(const std::shared_ptr<IRenderTarget> renderTarget)
 {
+	_ASSERT(renderTarget != nullptr);
 	m_RenderTarget = renderTarget;
 }
 
