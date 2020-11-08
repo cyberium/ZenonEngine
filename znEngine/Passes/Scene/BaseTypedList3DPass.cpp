@@ -49,7 +49,7 @@ void CBaseList3DPass::Render(RenderEventArgs & e)
 
 	for (const auto& acceptableNodeType : GetAcceptableNodeTypes())
 	{
-		if (GetSceneNodeListPass()->HasNodesList(acceptableNodeType))
+		if (GetSceneNodeListPass()->HasGeometriesList(acceptableNodeType))
 		{
 			for (const auto& SceneNodeElement : GetSceneNodeListPass()->GetGeometriesList(acceptableNodeType))
 			{
@@ -81,7 +81,7 @@ void CBaseList3DPass::DoRenderSceneNode(const ISceneNode * SceneNode)
 
 void CBaseList3DPass::DoRenderModel(const IModel * Model)
 {
-	Model->Render(GetRenderEventArgs());
+	Model->Render();
 }
 
 void CBaseList3DPass::DoRenderGeometry(const IGeometry * Geometry, const IMaterial * Material, SGeometryDrawArgs GeometryDrawArgs)
@@ -89,7 +89,7 @@ void CBaseList3DPass::DoRenderGeometry(const IGeometry * Geometry, const IMateri
 	if (Material)
 		Material->Bind(GetRenderEventArgs().PipelineState->GetShaders());
 
-	Geometry->Render(GetRenderEventArgs(), GetRenderEventArgs().PipelineState->GetShaders().at(EShaderType::VertexShader).get(), GeometryDrawArgs);
+	Geometry->Render(GetRenderEventArgs().PipelineState->GetShaders().at(EShaderType::VertexShader).get(), GeometryDrawArgs);
 
 	if (Material)
 		Material->Unbind(GetRenderEventArgs().PipelineState->GetShaders());

@@ -62,7 +62,7 @@ void CPassForward_DoRenderSceneInstanced::Render(RenderEventArgs & e)
 
 			SGeometryDrawArgs args = c.GeometryDrawArgs;
 			args.InstanceCnt = instances.size();
-			c.Geometry->Render(GetRenderEventArgs(), vertexShader, args);
+			c.Geometry->Render(vertexShader, args);
 
 			if (c.Material)
 				c.Material->Unbind(GetRenderEventArgs().PipelineState->GetShaders());

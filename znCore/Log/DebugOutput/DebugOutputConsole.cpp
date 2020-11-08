@@ -39,6 +39,8 @@ void DebugOutput_ConsoleWindows::Print(IDebugOutput::DebugMessageType Type, cons
 		case IDebugOutput::DebugMessageType::TYPE_ERROR:
 			color = ConsoleWindowsColor::RED;
 			break;
+		default:
+			_ASSERT(false);
 	}
 
 	// To VisualStudio debug

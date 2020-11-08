@@ -18,7 +18,7 @@ public:
 	void AddConnection(const std::shared_ptr<IMaterial>& Material, const std::shared_ptr<IGeometry>& Geometry, SGeometryDrawArgs GeometryDrawArgs = SGeometryDrawArgs()) override final;
 	const std::vector<SConnection>& GetConnections() const override final;
 
-	virtual bool Render(const RenderEventArgs& renderEventArgs) const override;
+	virtual bool Render() const override;
 	virtual void Accept(IVisitor* visitor) override;
 
 	// IObject

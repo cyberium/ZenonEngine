@@ -39,7 +39,7 @@ void CPassDeffered_RenderUIQuad::Render(RenderEventArgs& e)
 		// Once per light
 		BindLightParamsForCurrentIteration(e, lightResult);
 
-		m_QuadGeometry->Render(e, GetPipeline().GetShaders().at(EShaderType::VertexShader).get());
+		m_QuadGeometry->Render(GetPipeline().GetShaders().at(EShaderType::VertexShader).get());
 	}
 }
 

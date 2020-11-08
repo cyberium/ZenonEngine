@@ -54,9 +54,9 @@ PrimitiveTopology GeometryProxie::GetPrimitiveTopology() const
 	return m_Geometry->GetPrimitiveTopology();
 }
 
-void GeometryProxie::Render(const RenderEventArgs & RenderEventArgs, const IShader * VertexShader, const SGeometryDrawArgs GeometryDrawArgs) const
+void GeometryProxie::Render(const IShader * VertexShader, const SGeometryDrawArgs GeometryDrawArgs) const
 {
-	m_Geometry->Render(RenderEventArgs, VertexShader, GeometryDrawArgs);
+	m_Geometry->Render(VertexShader, GeometryDrawArgs);
 }
 
 void GeometryProxie::Accept(IVisitor * visitor, const IMaterial * Material, SGeometryDrawArgs GeometryDrawArgs)
@@ -68,9 +68,9 @@ void GeometryProxie::Accept(IVisitor * visitor, const IMaterial * Material, SGeo
 //
 // IGeometryInternal
 //
-void GeometryProxie::Render_BindAllBuffers(const RenderEventArgs & RenderEventArgs, const IShader * VertexShader) const
+void GeometryProxie::Render_BindAllBuffers(const IShader * VertexShader) const
 {
-	m_GeometryInternal->Render_BindAllBuffers(RenderEventArgs, VertexShader);
+	m_GeometryInternal->Render_BindAllBuffers(VertexShader);
 }
 
 void GeometryProxie::Render_Draw(const SGeometryDrawArgs GeometryDrawArgs) const
@@ -78,9 +78,9 @@ void GeometryProxie::Render_Draw(const SGeometryDrawArgs GeometryDrawArgs) const
 	m_GeometryInternal->Render_Draw(GeometryDrawArgs);
 }
 
-void GeometryProxie::Render_UnbindAllBuffers(const RenderEventArgs & RenderEventArgs, const IShader * VertexShader) const
+void GeometryProxie::Render_UnbindAllBuffers(const IShader * VertexShader) const
 {
-	m_GeometryInternal->Render_UnbindAllBuffers(RenderEventArgs, VertexShader);
+	m_GeometryInternal->Render_UnbindAllBuffers(VertexShader);
 }
 
 

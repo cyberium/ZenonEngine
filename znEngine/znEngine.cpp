@@ -73,7 +73,6 @@ IBaseManager* WINAPI InitializeEngine(std::vector<std::string> Arguments, std::s
 
 		std::shared_ptr<CConsole> console = MakeShared(CConsole, *baseManager);
 		baseManager->AddManager<IConsole>(console);
-		console->AddCommonCommands();
 	}
 
 

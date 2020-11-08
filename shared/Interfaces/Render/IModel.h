@@ -39,7 +39,7 @@ ZN_INTERFACE ZN_API IModel
 	virtual void									AddConnection(const std::shared_ptr<IMaterial>& Material, const std::shared_ptr<IGeometry>& Geometry, SGeometryDrawArgs GeometryDrawArgs = SGeometryDrawArgs()) = 0;
 	virtual const std::vector<SConnection>&         GetConnections() const = 0;
 
-	virtual bool                                    Render(const RenderEventArgs& renderEventArgs) const = 0;
+	virtual bool                                    Render() const = 0;
 
 	// For IVisitor
 

@@ -125,9 +125,10 @@ void CPassDeffered_DoRenderScene::DoRenderSceneNode(const ISceneNode * node)
 void CPassDeffered_DoRenderScene::DoRenderGeometry(const IGeometry * Geometry, const IMaterial * Material, SGeometryDrawArgs GeometryDrawArgs)
 {
 	const auto& shaders = GetRenderEventArgs().PipelineState->GetShaders();
+	const auto& vertexShader = shaders.at(EShaderType::VertexShader).get();
 
 	Material->Bind(shaders);
-	Geometry->Render(GetRenderEventArgs(), shaders.at(EShaderType::VertexShader).get(), GeometryDrawArgs);
+	Geometry->Render(vertexShader, GeometryDrawArgs);
 	Material->Unbind(shaders);
 }
 

@@ -43,7 +43,7 @@ void CDrawSelectionPass::Render(RenderEventArgs& e)
 
 			SGeometryDrawArgs args;
 			args.InstanceCnt = m_InstancesCnt;
-			m_QuadGeometry->Render(GetRenderEventArgs(), vertexShader, args);
+			m_QuadGeometry->Render(vertexShader, args);
 
 		}
 		m_ShaderInstancesBufferParameter->Unbind();

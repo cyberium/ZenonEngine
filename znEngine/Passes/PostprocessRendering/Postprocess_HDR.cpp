@@ -18,7 +18,7 @@ CPassPostprocess_HDR::~CPassPostprocess_HDR()
 //
 void CPassPostprocess_HDR::Render(RenderEventArgs& e)
 {
-	m_QuadGeometry->Render(e, GetPipeline().GetShaders().at(EShaderType::VertexShader).get());
+	m_QuadGeometry->Render(GetPipeline().GetShaders().at(EShaderType::VertexShader).get());
 }
 
 

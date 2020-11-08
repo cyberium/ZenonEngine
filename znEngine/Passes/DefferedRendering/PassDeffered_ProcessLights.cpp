@@ -91,7 +91,7 @@ void CPassDeffered_ProcessLights::Render(RenderEventArgs& e)
 				if (false == geometryIt.Node->GetComponentT<IModelsComponent3D>()->IsCastShadows())
 					continue;
 
-				geometryIt.Geometry->Render(e, m_ShadowPipeline->GetShaders().at(EShaderType::VertexShader).get(), geometryIt.GeometryDrawArgs);
+				geometryIt.Geometry->Render(m_ShadowPipeline->GetShaders().at(EShaderType::VertexShader).get(), geometryIt.GeometryDrawArgs);
 			}
 
 

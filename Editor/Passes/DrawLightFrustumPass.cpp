@@ -73,7 +73,7 @@ EVisitResult CDrawLightFrustumPass::Visit(const ILight3D * Light)
 		m_MaterialDebug->Bind(GetPipeline().GetShaders());
 		{
 			const IShader* vertexShader = GetPipeline().GetShader(EShaderType::VertexShader).get();
-			geom->Render(GetRenderEventArgs(), vertexShader);
+			geom->Render(vertexShader);
 		}
 		m_MaterialDebug->Unbind(GetPipeline().GetShaders());
 	}

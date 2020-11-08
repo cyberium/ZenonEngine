@@ -25,7 +25,7 @@ EVisitResult Base3DPass::Visit(const ISceneNode* SceneNode)
 
 EVisitResult Base3DPass::Visit(const IModel * Model)
 {
-	Model->Render(GetRenderEventArgs());
+	Model->Render();
 	return EVisitResult::AllowAll;
 }
 
@@ -33,7 +33,7 @@ EVisitResult Base3DPass::Visit(const IGeometry* Geometry, const IMaterial* Mater
 {
 	if (Material)
 		Material->Bind(GetRenderEventArgs().PipelineState->GetShaders());
-	Geometry->Render(GetRenderEventArgs(), GetRenderEventArgs().PipelineState->GetShaders().at(EShaderType::VertexShader).get(), GeometryDrawArgs);
+	Geometry->Render(GetRenderEventArgs().PipelineState->GetShaders().at(EShaderType::VertexShader).get(), GeometryDrawArgs);
 	if (Material)
 		Material->Unbind(GetRenderEventArgs().PipelineState->GetShaders());
 	return EVisitResult::AllowAll;

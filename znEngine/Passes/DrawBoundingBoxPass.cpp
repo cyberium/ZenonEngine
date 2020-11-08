@@ -66,7 +66,7 @@ EVisitResult CDrawBoundingBoxPass::Visit(const ISceneNode * CSceneNode)
 	BindPerObjectParameter(bboxMatrix);
 
 	const IShader* vertexShader = GetPipeline().GetShaders().at(EShaderType::VertexShader).get();
-	m_BBoxGeometry->Render(GetRenderEventArgs(), vertexShader);
+	m_BBoxGeometry->Render(vertexShader);
 
 	return EVisitResult::AllowAll;
 }

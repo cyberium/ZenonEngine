@@ -73,16 +73,6 @@ void CSceneCreateTypedListsPass::PreRender(RenderEventArgs & e)
 
 void CSceneCreateTypedListsPass::Render(RenderEventArgs & e)
 {
-	/*if (Visit(GetScene()->GetRootSceneNode().get()))
-	{
-		const auto& components = GetScene()->GetRootSceneNode()->GetComponents();
-		std::for_each(components.begin(), components.end(), [this](const std::pair<GUID, std::shared_ptr<ISceneNodeComponent>>& Component) {
-			Component.second->Accept(this);
-		});
-
-		const auto& childs = GetScene()->GetRootSceneNode()->Get
-	}*/
-
 	ScenePass::Render(e);
 }
 
@@ -91,9 +81,13 @@ void CSceneCreateTypedListsPass::Render(RenderEventArgs & e)
 //
 EVisitResult CSceneCreateTypedListsPass::Visit(const ISceneNode * SceneNode)
 {
-	if (SceneNode->GetClass() <= 0)
+	_ASSERT(SceneNode != nullptr);
+
+	ObjectClass sceneNodeClass = SceneNode->GetClass();
+	if (sceneNodeClass <= 0)
 		return EVisitResult::AllowVisitChilds;
 
+	// TODO Here?
 	if (const auto& colliderComponent = SceneNode->GetComponentT<IColliderComponent3D>())
 	{
 		if (colliderComponent->IsCulled(GetRenderEventArgs().CameraForCulling))
@@ -103,7 +97,7 @@ EVisitResult CSceneCreateTypedListsPass::Visit(const ISceneNode * SceneNode)
 	}
 
 	m_LastSceneNode = SceneNode;
-	m_NodesList[SceneNode->GetClass()].push_back(CSceneCreateTypelessListPass::SNodeElement(SceneNode));
+	m_NodesList[sceneNodeClass].push_back(CSceneCreateTypelessListPass::SNodeElement(SceneNode));
 	return EVisitResult::AllowAll;
 }
 

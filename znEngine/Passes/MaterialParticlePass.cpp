@@ -131,7 +131,7 @@ EVisitResult CMaterialParticlePass::Visit(const IParticleSystem * ParticlesSyste
 	// Draw geom
 	SGeometryDrawArgs args;
 	args.VertexCnt = partilces.size();
-	m_Geometry->Render(GetRenderEventArgs(), GetRenderEventArgs().PipelineState->GetShaders().at(EShaderType::VertexShader).get(), args);
+	m_Geometry->Render(GetRenderEventArgs().PipelineState->GetShaders().at(EShaderType::VertexShader).get(), args);
 
 	return EVisitResult::AllowAll;
 }

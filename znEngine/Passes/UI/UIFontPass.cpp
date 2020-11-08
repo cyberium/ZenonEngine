@@ -78,7 +78,7 @@ EVisitResult CUIFontPass::Visit(const IUIControl * node)
 
 	auto vertexShader = GetRenderEventArgs().PipelineState->GetShaders().at(EShaderType::VertexShader).get();
 
-	fontGeometryInternal->Render_BindAllBuffers(GetRenderEventArgs(), vertexShader);
+	fontGeometryInternal->Render_BindAllBuffers(vertexShader);
 	{
 		const std::string textToRender = textNode->GetText();
 		glm::vec2 currentCharOffset = textNode->GetOffset();
@@ -106,7 +106,7 @@ EVisitResult CUIFontPass::Visit(const IUIControl * node)
 			currentCharOffset.x += static_cast<float>(font->GetWidth(ch)) + 0.01f;
 		}
 	}
-	fontGeometryInternal->Render_UnbindAllBuffers(GetRenderEventArgs(), vertexShader);
+	fontGeometryInternal->Render_UnbindAllBuffers(vertexShader);
 
 	return EVisitResult::AllowVisitChilds;
 }

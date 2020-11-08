@@ -22,12 +22,12 @@ bool ConsoleCommand::HasArgs() const
 	return m_HasArgs; 
 }
 
-void ConsoleCommand::Execute()
+void ConsoleCommand::Execute() const
 {
 	m_Function();
 }
 
-void ConsoleCommand::Execute(const std::string& _args)
+void ConsoleCommand::Execute(const std::string& Args) const
 {
 	_ASSERT_EXPR(false, "Unable to call ConsoleCommand::Execute(const std::string& _args) in base class!");
 }

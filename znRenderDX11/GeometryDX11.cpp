@@ -42,11 +42,11 @@ GeometryDX11::~GeometryDX11()
 //
 // IGeometry
 //
-void GeometryDX11::Render(const RenderEventArgs& RenderEventArgs, const IShader* VertexShader, const SGeometryDrawArgs GeometryDrawArgs) const
+void GeometryDX11::Render(const IShader* VertexShader, const SGeometryDrawArgs GeometryDrawArgs) const
 {
-	Render_BindAllBuffers(RenderEventArgs, VertexShader);
+	Render_BindAllBuffers(VertexShader);
 	Render_Draw(GeometryDrawArgs);
-	Render_UnbindAllBuffers(RenderEventArgs, VertexShader);
+	Render_UnbindAllBuffers(VertexShader);
 }
 
 
@@ -54,7 +54,7 @@ void GeometryDX11::Render(const RenderEventArgs& RenderEventArgs, const IShader*
 //
 // IGeometryInternal
 //
-void GeometryDX11::Render_BindAllBuffers(const RenderEventArgs & RenderEventArgs, const IShader * VertexShader) const
+void GeometryDX11::Render_BindAllBuffers(const IShader * VertexShader) const
 {
 	if (m_VertexBuffer != nullptr)
 	{
@@ -115,7 +115,7 @@ void GeometryDX11::Render_Draw(const SGeometryDrawArgs GeometryDrawArgs) const
 	}
 }
 
-void GeometryDX11::Render_UnbindAllBuffers(const RenderEventArgs & RenderEventArgs, const IShader * VertexShader) const
+void GeometryDX11::Render_UnbindAllBuffers(const IShader * VertexShader) const
 {
 	if (m_pIndexBuffer != NULL)
 		m_pIndexBuffer->UnBind(0, VertexShader, IShaderParameter::Type::Buffer);

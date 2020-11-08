@@ -23,14 +23,14 @@ public:
 	void SetPrimitiveTopology(PrimitiveTopology Topology) override final;
 	PrimitiveTopology GetPrimitiveTopology() const override final;
 
-	virtual void Render(const RenderEventArgs& RenderEventArgs, const IShader* VertexShader, const SGeometryDrawArgs GeometryDrawArgs = SGeometryDrawArgs()) const override;
+	virtual void Render(const IShader* VertexShader, const SGeometryDrawArgs GeometryDrawArgs = SGeometryDrawArgs()) const override;
 
 	virtual void Accept(IVisitor* visitor, const IMaterial* Material, SGeometryDrawArgs GeometryDrawArgs = SGeometryDrawArgs()) override;
 
 	// IGeometryInternal
-	void Render_BindAllBuffers(const RenderEventArgs& RenderEventArgs, const IShader* VertexShader) const override final;
+	void Render_BindAllBuffers(const IShader* VertexShader) const override final;
 	void Render_Draw(const SGeometryDrawArgs GeometryDrawArgs = SGeometryDrawArgs()) const override final;
-	void Render_UnbindAllBuffers(const RenderEventArgs& RenderEventArgs, const IShader* VertexShader) const override final;
+	void Render_UnbindAllBuffers(const IShader* VertexShader) const override final;
 
 	// IObject
 	OBJECT_IMPLEMENT_BASE

@@ -167,7 +167,7 @@ EVisitResult CDrawBonesPass::Visit(const ISceneNode * CSceneNode)
 			}
 
 
-			m_SphereGeometry->Render(GetRenderEventArgs(), vertexShader);
+			m_SphereGeometry->Render(vertexShader);
 		}
 	}
 

@@ -47,9 +47,9 @@ const std::vector<ModelProxie::SConnection>& ModelProxie::GetConnections() const
 	return m_Model->GetConnections();
 }
 
-bool ModelProxie::Render(const RenderEventArgs& renderEventArgs) const
+bool ModelProxie::Render() const
 {
-	return m_Model->Render(renderEventArgs);
+	return m_Model->Render();
 }
 
 void ModelProxie::Accept(IVisitor* visitor)

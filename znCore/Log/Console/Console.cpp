@@ -33,46 +33,31 @@ CConsole::CConsole(IBaseManager& BaseManager)
 
 CConsole::~CConsole()
 {
-	//ERASE_VECTOR(m_ConsoleCommands);
-
 	m_BaseManager.RemoveManager<IConsole>();
 }
 
-void CConsole::AddCommonCommands()
+bool CConsole::AddConsoleCommand(std::shared_ptr<IConsoleCommand> Command)
 {
-	//ADDCONSOLECOMMAND_WITHARGS("test1_with_1", Test1, int32);
-	//ADDCONSOLECOMMAND_WITHARGS("test11_with_1", Test11, uint32);
-	//ADDCONSOLECOMMAND("test2_with_0", Test2);
-}
-
-bool CConsole::AddConsoleCommand(IConsoleCommand* _command)
-{
-	_ASSERT(_command != nullptr);
-
-	// Name is empty
-	if (_command->GetName().empty())
-	{
-		Log::Error("Command name is empty.");
-		return false;
-	}
+	_ASSERT(Command != nullptr);
+	_ASSERT(false == Command->GetName().empty());
 
 	// Already exists
 	for (auto it : m_ConsoleCommands)
 	{
-		if (it->GetName() == _command->GetName())
+		if (it->GetName() == Command->GetName())
 		{
-			Log::Error("Command [%s] already exists.", _command->GetName().c_str());
+			Log::Error("Command [%s] already exists.", Command->GetName().c_str());
 			return false;
 		}
 	}
 
-	m_ConsoleCommands.push_back(_command);
-	Log::Print("Command [%s] added.", _command->GetName().c_str());
+	m_ConsoleCommands.push_back(Command);
+	Log::Print("Command [%s] added.", Command->GetName().c_str());
 
 	return true;
 }
 
-IConsoleCommand* CConsole::GetConsoleCommandByName(const std::string& _commandName)
+std::shared_ptr<IConsoleCommand> CConsole::GetConsoleCommandByName(const std::string& _commandName)
 {
 	if (_commandName.empty())
 	{
@@ -92,23 +77,21 @@ IConsoleCommand* CConsole::GetConsoleCommandByName(const std::string& _commandNa
 
 //--
 
-ConsoleCommands CConsole::GetConsoleCommandHelp(std::string _input)
+ConsoleCommands CConsole::GetConsoleCommandHelp(std::string Line)
 {
-	Utils::ToLower(_input);
+	Line = Utils::ToLower(Line);
 
-	if (_input.empty())
-	{
+	if (Line.empty())
 		return ConsoleCommands();
-	}
 
 	ConsoleCommands commands;
 	for (auto& it : m_ConsoleCommands)
 	{
 		auto consoleCommandName = it->GetName();
 
-		consoleCommandName = consoleCommandName.substr(0, _input.length());
+		consoleCommandName = consoleCommandName.substr(0, Line.length());
 
-		if (consoleCommandName == _input)
+		if (consoleCommandName == Line)
 		{
 			commands.push_back(it);
 		}
@@ -127,9 +110,7 @@ bool CConsole::ProcessConsoleCommand(std::string _line)
 	Utils::ToLower(_line);
 
 	if (_line.empty())
-	{
 		return false;
-	}
 
 	std::string command;
 	std::string args;
@@ -148,11 +129,10 @@ bool CConsole::ProcessConsoleCommand(std::string _line)
 	}
 
 	// Find command in array
-	IConsoleCommand* consoleCommand = GetConsoleCommandByName(command);
-
+	auto consoleCommand = GetConsoleCommandByName(command);
 	if (consoleCommand == nullptr)
 	{
-		Log::Warn("Command [%s] not found.", command.c_str());
+		Log::Warn("Command '%s' not found.", command.c_str());
 		return false;
 	}
 

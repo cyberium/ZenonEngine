@@ -71,6 +71,9 @@ std::shared_ptr<IRenderPassPipelined> CPassForward_DoRenderScene::ConfigurePipel
 
 
 
+//
+// IVisitor
+//
 EVisitResult CPassForward_DoRenderScene::Visit(const ISceneNode * SceneNode)
 {
 	if (SceneNode->GetClass() != cSceneNode3D)
@@ -84,9 +87,6 @@ EVisitResult CPassForward_DoRenderScene::Visit(const ISceneNode * SceneNode)
 	return Base3DPass::Visit(SceneNode);
 }
 
-//
-// IVisitor
-//
 EVisitResult CPassForward_DoRenderScene::Visit(const IModel * Model)
 {
 	return Base3DPass::Visit(Model);
@@ -109,7 +109,7 @@ EVisitResult CPassForward_DoRenderScene::Visit(const IGeometry * Geometry, const
 	if (m_ShaderLightsBufferParameter->IsValid())
 		m_ShaderLightsBufferParameter->Bind();
 
-	Geometry->Render(GetRenderEventArgs(), GetRenderEventArgs().PipelineState->GetShaders().at(EShaderType::VertexShader).get(), GeometryDrawArgs);
+	Geometry->Render(GetRenderEventArgs().PipelineState->GetShaders().at(EShaderType::VertexShader).get(), GeometryDrawArgs);
 
 	if (m_ShaderLightsBufferParameter->IsValid())
 		m_ShaderLightsBufferParameter->Unbind();

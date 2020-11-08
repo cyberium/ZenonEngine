@@ -56,14 +56,14 @@ EVisitResult BaseUIPass::Visit(const IUIControl* sceneNode)
 
 EVisitResult BaseUIPass::Visit(const IModel * Model)
 {
-	Model->Render(GetRenderEventArgs());
+	Model->Render();
 	return EVisitResult::AllowAll;
 }
 
 EVisitResult BaseUIPass::Visit(const IGeometry* Geometry, const IMaterial* Material, SGeometryDrawArgs GeometryDrawArgs)
 {
 	Material->Bind(GetRenderEventArgs().PipelineState->GetShaders());
-	Geometry->Render(GetRenderEventArgs(), GetRenderEventArgs().PipelineState->GetShaders().at(EShaderType::VertexShader).get(), GeometryDrawArgs);
+	Geometry->Render(GetRenderEventArgs().PipelineState->GetShaders().at(EShaderType::VertexShader).get(), GeometryDrawArgs);
 	Material->Unbind(GetRenderEventArgs().PipelineState->GetShaders());
 
 	return EVisitResult::AllowAll;

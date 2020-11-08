@@ -71,7 +71,7 @@ EVisitResult CDrawWaypointsPass::Visit(const ISceneNode * node)
 	m_MaterialDebug->Bind(GetPipeline().GetShaders());
 	{
 		const IShader* vertexShader = GetPipeline().GetShader(EShaderType::VertexShader).get();
-		m_WaypointGeometry->Render(GetRenderEventArgs(), vertexShader);
+		m_WaypointGeometry->Render(vertexShader);
 	}
 	m_MaterialDebug->Unbind(GetPipeline().GetShaders());
 

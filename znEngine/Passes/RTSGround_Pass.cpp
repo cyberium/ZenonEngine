@@ -117,7 +117,7 @@ EVisitResult CRTSGround_Pass::Visit(const ISceneNode * SceneNode)
 
 			SGeometryDrawArgs args = c.GeometryDrawArgs;
 			args.InstanceCnt = instances.size();
-			c.Geometry->Render(GetRenderEventArgs(), vertexShader, args);
+			c.Geometry->Render(vertexShader, args);
 
 			if (c.Material)
 				c.Material->Unbind(GetRenderEventArgs().PipelineState->GetShaders());
