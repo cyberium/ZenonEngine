@@ -116,6 +116,7 @@
     <ClCompile Include="ObjectsFactories\SceneNode3DFactory.cpp" />
     <ClCompile Include="ObjectsFactories\SceneNodeUIFactory.cpp" />
     <ClCompile Include="Passes\RenderPass.cpp" />
+    <ClCompile Include="Passes\RenderPassMultipipelined.cpp" />
     <ClCompile Include="Passes\RenderPassPipelined.cpp" />
     <ClCompile Include="Passes\RenderTechnique.cpp" />
     <ClCompile Include="Passes\ScenePasses\Pipelined\Base3DPass.cpp" />
@@ -269,6 +270,7 @@
     <ClInclude Include="ObjectsFactories\SceneNode3DFactory.h" />
     <ClInclude Include="ObjectsFactories\SceneNodeUIFactory.h" />
     <ClInclude Include="Passes\RenderPass.h" />
+    <ClInclude Include="Passes\RenderPassMultipipelined.h" />
     <ClInclude Include="Passes\RenderPassPipelined.h" />
     <ClInclude Include="Passes\RenderTechnique.h" />
     <ClInclude Include="Passes\ScenePasses\Pipelined\Base3DPass.h" />

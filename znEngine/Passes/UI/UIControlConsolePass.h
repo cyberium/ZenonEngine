@@ -16,7 +16,7 @@ public:
 	virtual std::shared_ptr<IRenderPassPipelined> ConfigurePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport* Viewport) override;
 
 protected:
-	virtual void FillPerFrameData() override;
+	PerFrame GetPerFrameData() const override final;
 
 private:
 	std::string m_Text;

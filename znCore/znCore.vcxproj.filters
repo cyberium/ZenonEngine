@@ -327,6 +327,9 @@
     <ClCompile Include="Settings\PropertyGroup.cpp">
       <Filter>Settings</Filter>
     </ClCompile>
+    <ClCompile Include="Passes\RenderPassMultipipelined.cpp">
+      <Filter>Passes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="common.h">
@@ -799,6 +802,9 @@
     </ClInclude>
     <ClInclude Include="Settings\PropertyGroup.h">
       <Filter>Settings</Filter>
+    </ClInclude>
+    <ClInclude Include="Passes\RenderPassMultipipelined.h">
+      <Filter>Passes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

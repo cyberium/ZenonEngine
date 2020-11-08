@@ -3,13 +3,6 @@
 // General
 #include "RenderPassPipelined.h"
 
-IBlendState::BlendMode RenderPassPipelined::alphaBlending = IBlendState::BlendMode(true, false, IBlendState::BlendFactor::SrcAlpha, IBlendState::BlendFactor::OneMinusSrcAlpha, IBlendState::BlendOperation::Add, IBlendState::BlendFactor::SrcAlpha, IBlendState::BlendFactor::OneMinusSrcAlpha);
-IBlendState::BlendMode RenderPassPipelined::additiveBlending = IBlendState::BlendMode(true, false, IBlendState::BlendFactor::One, IBlendState::BlendFactor::One);
-IBlendState::BlendMode RenderPassPipelined::disableBlending = IBlendState::BlendMode(false);
-IDepthStencilState::DepthMode RenderPassPipelined::enableDepthWrites = IDepthStencilState::DepthMode(true, IDepthStencilState::DepthWrite::Enable);
-IDepthStencilState::DepthMode RenderPassPipelined::enableTestDisableWrites = IDepthStencilState::DepthMode(true, IDepthStencilState::DepthWrite::Disable);
-IDepthStencilState::DepthMode RenderPassPipelined::disableDepthWrites = IDepthStencilState::DepthMode(false, IDepthStencilState::DepthWrite::Disable);
-
 
 RenderPassPipelined::RenderPassPipelined(IRenderDevice& RenderDevice)
     : RenderPass(RenderDevice)
@@ -36,10 +29,7 @@ void RenderPassPipelined::PreRender(RenderEventArgs& e)
 
 	m_Pipeline->Bind();
 
-	FillPerFrameData();
-
-	for (const auto& shaderIt : m_Pipeline->GetShaders())
-		BindPerFrameData(shaderIt.second.get());
+	BindPerFrameData();
 }
 
 void RenderPassPipelined::PostRender(RenderEventArgs& e)
@@ -77,7 +67,7 @@ IPipelineState& RenderPassPipelined::GetPipeline() const
 //
 // Protected
 //
-void RenderPassPipelined::FillPerFrameData()
+PerFrame RenderPassPipelined::GetPerFrameData() const
 {
 	const ICameraComponent3D* camera = GetRenderEventArgs().Camera;
 	_ASSERT(camera != nullptr);
@@ -90,22 +80,20 @@ void RenderPassPipelined::FillPerFrameData()
 		camera->GetProjectionMatrix(),
 		pipeline->GetRenderTarget()->GetViewport().GetSize()
 	);
-	m_PerFrameConstantBuffer->Set(perFrame);
+	return perFrame;
 }
 
-void RenderPassPipelined::SetPerFrameData(const PerFrame& PerFrame)
+void RenderPassPipelined::BindPerFrameData() const
 {
-	m_PerFrameConstantBuffer->Set(PerFrame);
-}
+	m_PerFrameConstantBuffer->Set(GetPerFrameData());
 
-void RenderPassPipelined::BindPerFrameData(const IShader * Shader) const
-{
-	_ASSERT(Shader != nullptr);
-
-	auto& perFrameParam = Shader->GetShaderParameterByName("PerFrame");
-	if (perFrameParam.IsValid())
+	for (const auto& shaderIt : GetPipeline().GetShaders())
 	{
-		perFrameParam.SetConstantBuffer(m_PerFrameConstantBuffer);
-		perFrameParam.Bind();
+		auto& perFrameParam = shaderIt.second->GetShaderParameterByName("PerFrame");
+		if (perFrameParam.IsValid())
+		{
+			perFrameParam.SetConstantBuffer(m_PerFrameConstantBuffer);
+			perFrameParam.Bind();
+		}
 	}
 }

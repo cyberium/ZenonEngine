@@ -23,17 +23,16 @@ std::shared_ptr<IRenderPassPipelined> CUIColorPass::ConfigurePipeline(std::share
 	
 	std::shared_ptr<IShader> vertexShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::VertexShader, "UI/UI_Color.hlsl", "VS_main");
 	vertexShader->LoadInputLayoutFromReflector();
+	GetPipeline().SetShader(EShaderType::VertexShader, vertexShader);
 
 	std::shared_ptr<IShader> pixelShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::PixelShader, "UI/UI_Color.hlsl", "PS_main");
+	GetPipeline().SetShader(EShaderType::PixelShader, pixelShader);
 
 	// Create samplers
 	std::shared_ptr<ISamplerState> sampler = GetRenderDevice().GetObjectsFactory().CreateSamplerState();
 	sampler->SetFilter(ISamplerState::MinFilter::MinLinear, ISamplerState::MagFilter::MagLinear, ISamplerState::MipFilter::MipLinear);
 	sampler->SetWrapMode(ISamplerState::WrapMode::Clamp, ISamplerState::WrapMode::Clamp, ISamplerState::WrapMode::Clamp);
 	GetPipeline().SetSampler(0, sampler);
-
-	GetPipeline().SetShader(EShaderType::VertexShader, vertexShader);
-	GetPipeline().SetShader(EShaderType::PixelShader, pixelShader);
 
 	return shared_from_this();
 }

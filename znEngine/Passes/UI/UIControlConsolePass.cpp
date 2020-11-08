@@ -123,7 +123,7 @@ std::shared_ptr<IRenderPassPipelined> CUIControlConsolePass::ConfigurePipeline(s
 //
 // Protected
 //
-void CUIControlConsolePass::FillPerFrameData()
+PerFrame CUIControlConsolePass::GetPerFrameData() const
 {
 	const Viewport& viewport = GetPipeline().GetRenderTarget()->GetViewport();
 
@@ -132,7 +132,7 @@ void CUIControlConsolePass::FillPerFrameData()
 		viewport.GetOrthoMatix(),
 		glm::vec2(viewport.GetSize())
 	);
-	SetPerFrameData(perFrame);
+	return perFrame;
 }
 
 /*

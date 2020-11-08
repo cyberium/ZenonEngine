@@ -75,7 +75,8 @@ void CRendererDeffered::Resize(uint32 NewWidth, uint32 NewHeight)
 {
 	m_Deffered_ScenePass->GetPipeline().GetRenderTarget()->Resize(NewWidth, NewHeight);
 	m_Deffered_UIQuadPass->GetPipeline().GetRenderTarget()->Resize(NewWidth, NewHeight);
-	m_Deffered_HDR->GetPipeline().GetRenderTarget()->Resize(NewWidth, NewHeight);
+	if (m_Deffered_HDR)
+		m_Deffered_HDR->GetPipeline().GetRenderTarget()->Resize(NewWidth, NewHeight);
 
 	//m_FinalRenderTarget->Resize(NewWidth, NewHeight);
 }

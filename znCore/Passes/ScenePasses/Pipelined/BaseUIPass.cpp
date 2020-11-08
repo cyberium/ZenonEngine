@@ -75,14 +75,14 @@ EVisitResult BaseUIPass::Visit(const IGeometry* Geometry, const IMaterial* Mater
 //
 // Protected
 //
-void BaseUIPass::FillPerFrameData()
+PerFrame BaseUIPass::GetPerFrameData() const
 {
-	const Viewport& viewport = GetRenderEventArgs().PipelineState->GetRenderTarget()->GetViewport();
+	const Viewport& viewport = GetPipeline().GetRenderTarget()->GetViewport();
 
 	PerFrame perFrame(
-		glm::mat4(1.0f), 
+		glm::mat4(1.0f),
 		viewport.GetOrthoMatix(), 
 		glm::vec2(viewport.GetSize())
 	);
-	SetPerFrameData(perFrame);
+	return perFrame;
 }

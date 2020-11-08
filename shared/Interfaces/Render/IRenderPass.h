@@ -29,6 +29,20 @@ ZN_INTERFACE ZN_API IRenderPassPipelined
 	virtual const IPipelineState& GetPipeline() const = 0;
 };
 
+
+
+ZN_INTERFACE ZN_API IRenderPassMultipipelinded
+	: public virtual IRenderPass
+{
+	virtual ~IRenderPassMultipipelinded() {}
+
+	virtual void Configure(std::shared_ptr<IRenderTarget> OutputRenderTarget) = 0;
+	virtual const std::vector<std::shared_ptr<IPipelineState>>& GetPipelines() const = 0;
+};
+
+
+
+
 /*
 
 //

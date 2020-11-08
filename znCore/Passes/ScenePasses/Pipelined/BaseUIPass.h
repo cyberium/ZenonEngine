@@ -18,7 +18,7 @@ public:
 	virtual EVisitResult Visit(const IGeometry* Geometry, const IMaterial* Material, SGeometryDrawArgs GeometryDrawArgs = SGeometryDrawArgs()) override;
 
 protected:
-	virtual void FillPerFrameData() override;
+	PerFrame GetPerFrameData() const override final;
 
 protected:
 	std::shared_ptr<IConstantBuffer> m_PerObjectConstantBuffer;
