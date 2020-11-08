@@ -14,7 +14,7 @@ ZN_INTERFACE ZN_API IProperty
 	virtual void        SetDescription(const std::string& Description) = 0;
 	virtual void        SetSyntetic(bool Value) = 0;
 	virtual bool        IsSyntetic() const = 0;
-	virtual void        FromString(const std::string& String) = 0;
+	virtual void        FromString(const std::string& String, bool BlockCallback = false) = 0;
 	virtual std::string ToString() const = 0;
 	virtual void        Load(const std::shared_ptr<IXMLReader>& Reader) = 0;
 	virtual void        Save(const std::shared_ptr<IXMLWriter>& Writer) const = 0;
@@ -31,6 +31,7 @@ ZN_INTERFACE ZN_API IPropertyAction
 	virtual bool ExecutePrecondition() = 0;
 };
 
+
 template <typename T>
 ZN_INTERFACE ZN_API IPropertyT
 	: public virtual IProperty
@@ -42,6 +43,15 @@ ZN_INTERFACE ZN_API IPropertyT
 
 	virtual void SetValueChangedCallback(std::function<void(const T&)> ValueChangedCallback) = 0;
 };
+
+ZN_INTERFACE ZN_API IPropertyValueChangedCallback
+{
+	virtual ~IPropertyValueChangedCallback() {}
+
+	virtual void RaiseValueChangedCallback() = 0;
+	virtual void ResetChangedCallback() = 0;
+};
+
 
 ZN_INTERFACE ZN_API IPropertiesGroup
 	: public virtual IProperty

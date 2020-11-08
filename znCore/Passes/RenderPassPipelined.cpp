@@ -12,10 +12,7 @@ IDepthStencilState::DepthMode RenderPassPipelined::disableDepthWrites = IDepthSt
 
 
 RenderPassPipelined::RenderPassPipelined(IRenderDevice& RenderDevice)
-    : m_Enabled(true)
-    , m_RenderEventArgs(nullptr)
-    , m_RenderDevice(RenderDevice)
-	, m_BaseManager(RenderDevice.GetBaseManager())
+    : RenderPass(RenderDevice)
 {
 	m_Pipeline = GetRenderDevice().GetObjectsFactory().CreatePipelineState();
 	m_PerFrameConstantBuffer = GetRenderDevice().GetObjectsFactory().CreateConstantBuffer(PerFrame());
@@ -30,19 +27,9 @@ RenderPassPipelined::~RenderPassPipelined()
 //
 // IRenderPass
 //
-void RenderPassPipelined::SetEnabled(bool Value)
-{
-	m_Enabled = Value;
-}
-
-bool RenderPassPipelined::IsEnabled() const
-{
-	return m_Enabled;
-}
-
 void RenderPassPipelined::PreRender(RenderEventArgs& e)
 {
-	m_RenderEventArgs = &e;
+	__super::PreRender(e);
 
 	_ASSERT_EXPR(m_Pipeline != nullptr, L"RenderPassPipelined: Pipeline is null. Don't use this class without pipeline.");
     e.PipelineState = m_Pipeline.get();
@@ -59,6 +46,8 @@ void RenderPassPipelined::PostRender(RenderEventArgs& e)
 {
 	_ASSERT_EXPR(m_Pipeline != nullptr, L"RenderPassPipelined: Pipeline is null. Don't use this class without pipeline.");
 	m_Pipeline->UnBind();
+
+	__super::PostRender(e);
 }
 
 
@@ -80,74 +69,22 @@ IPipelineState& RenderPassPipelined::GetPipeline() const
 
 
 //
-// IVisitor
-//
-EVisitResult RenderPassPipelined::Visit(const ISceneNode* node)
-{
-	return EVisitResult::Block;
-}
-
-EVisitResult RenderPassPipelined::Visit(const IUIControl* node)
-{
-	return EVisitResult::Block;
-}
-
-EVisitResult RenderPassPipelined::Visit(const IModel* Model)
-{
-    return EVisitResult::Block;
-}
-
-EVisitResult RenderPassPipelined::Visit(const IGeometry * Geometry, const IMaterial* Material, SGeometryDrawArgs GeometryDrawArgs)
-{
-	return EVisitResult::Block;
-}
-
-EVisitResult RenderPassPipelined::Visit(const ISceneNodeComponent * Component)
-{
-	return EVisitResult::Block;
-}
-
-EVisitResult RenderPassPipelined::Visit(const ILight3D* light)
-{
-	return EVisitResult::Block;
-}
-
-EVisitResult RenderPassPipelined::Visit(const IParticleSystem * ParticleSystem)
-{
-	return EVisitResult::Block;
-}
-
-
-
-//
 // Protected
 //
-IBaseManager& RenderPassPipelined::GetBaseManager() const
-{
-	return m_BaseManager;
-}
-
-IRenderDevice& RenderPassPipelined::GetRenderDevice() const
-{
-	return m_RenderDevice;
-}
-
 void RenderPassPipelined::FillPerFrameData()
 {
-	_ASSERT(m_RenderEventArgs->Camera != nullptr);
+	const ICameraComponent3D* camera = GetRenderEventArgs().Camera;
+	_ASSERT(camera != nullptr);
+
+	const IPipelineState* pipeline = GetRenderEventArgs().PipelineState;
+	_ASSERT(pipeline != nullptr && pipeline == m_Pipeline.get());
 
 	PerFrame perFrame(
-		m_RenderEventArgs->Camera->GetViewMatrix(), 
-		m_RenderEventArgs->Camera->GetProjectionMatrix(), 
-		m_RenderEventArgs->PipelineState->GetRenderTarget()->GetViewport().GetSize()
+		camera->GetViewMatrix(),
+		camera->GetProjectionMatrix(),
+		pipeline->GetRenderTarget()->GetViewport().GetSize()
 	);
 	m_PerFrameConstantBuffer->Set(perFrame);
-}
-
-const RenderEventArgs& RenderPassPipelined::GetRenderEventArgs() const
-{
-	_ASSERT(m_RenderEventArgs != nullptr);
-	return *m_RenderEventArgs;
 }
 
 

@@ -60,17 +60,14 @@ void CPassDeffered_DoRenderScene::Render(RenderEventArgs& e)
 {
 	for (const auto& it : m_SceneCreateTypelessListPass->GetGeometryList())
 	{
-		if (dynamic_cast<const MaterialModel*>(it.Material))
+		if (auto materialModel = dynamic_cast<const MaterialModel*>(it.Material))
 		{
-			Visit(it.Node);
-			Visit(it.Geometry, it.Material, it.GeometryDrawArgs);
+			if (it.Node->GetClass() == cSceneNode3D || it.Node->GetClass() == cSceneNodeRTSUnit || it.Node->GetClass() == cSceneNodeRTSBullet)
+			{
+				DoRenderSceneNode(it.Node);
+				DoRenderGeometry(it.Geometry, materialModel, it.GeometryDrawArgs);
+			}
 		}
-	}
-
-	for (const auto& it : m_SceneCreateTypelessListPass->GetLightList())
-	{
-		Visit(it.SceneNode);
-		Visit(it.Light);
 	}
 }
 
@@ -117,33 +114,21 @@ std::shared_ptr<IRenderPassPipelined> CPassDeffered_DoRenderScene::ConfigurePipe
 //
 // IVisitor
 //
-EVisitResult CPassDeffered_DoRenderScene::Visit(const ISceneNode * node)
+void CPassDeffered_DoRenderScene::DoRenderSceneNode(const ISceneNode * node)
 {
-	if (node->GetClass() != cSceneNode3D && node->GetClass() != cSceneNodeRTSUnit && node->GetClass() != cSceneNodeRTSBullet)
-		return EVisitResult::AllowVisitChilds;
-
 	PerObject perObject;
 	perObject.Model = node->GetWorldTransfom();
 	m_PerObjectConstantBuffer->Set(perObject);
 	m_PerObjectShaderParameter->Bind();
-
-	return EVisitResult::AllowAll;
 }
 
-EVisitResult CPassDeffered_DoRenderScene::Visit(const IGeometry * Geometry, const IMaterial * Material, SGeometryDrawArgs GeometryDrawArgs)
+void CPassDeffered_DoRenderScene::DoRenderGeometry(const IGeometry * Geometry, const IMaterial * Material, SGeometryDrawArgs GeometryDrawArgs)
 {
 	const auto& shaders = GetRenderEventArgs().PipelineState->GetShaders();
 
 	Material->Bind(shaders);
 	Geometry->Render(GetRenderEventArgs(), shaders.at(EShaderType::VertexShader).get(), GeometryDrawArgs);
 	Material->Unbind(shaders);
-
-	return EVisitResult::AllowAll;
-}
-
-EVisitResult CPassDeffered_DoRenderScene::Visit(const ILight3D * light)
-{
-	return EVisitResult::AllowAll;
 }
 
 

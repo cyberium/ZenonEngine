@@ -51,17 +51,10 @@ void CBaseList3DPass::Render(RenderEventArgs & e)
 	{
 		if (GetSceneNodeListPass()->HasNodesList(acceptableNodeType))
 		{
-			for (const auto& SceneNodeElement : GetSceneNodeListPass()->GetNodesList(acceptableNodeType))
+			for (const auto& SceneNodeElement : GetSceneNodeListPass()->GetGeometriesList(acceptableNodeType))
 			{
-				EVisitResult visitResult = Visit(SceneNodeElement.SceneNode);
-
-				if (visitResult & EVisitResult::AllowVisitContent)
-				{
-					const auto& components = SceneNodeElement.SceneNode->GetComponents();
-					std::for_each(components.begin(), components.end(), [this](const std::pair<ObjectClass, std::shared_ptr<ISceneNodeComponent>>& Component) {
-						Component.second->Accept(this);
-					});
-				}
+				DoRenderSceneNode(SceneNodeElement.Node);
+				DoRenderGeometry(SceneNodeElement.Geometry, SceneNodeElement.Material , SceneNodeElement.GeometryDrawArgs);
 			}
 		}
 	}
@@ -70,7 +63,7 @@ void CBaseList3DPass::Render(RenderEventArgs & e)
 //
 // IVisitor
 //
-EVisitResult CBaseList3DPass::Visit(const ISceneNode * SceneNode)
+void CBaseList3DPass::DoRenderSceneNode(const ISceneNode * SceneNode)
 {
 	PerObject perObject;
 	perObject.Model = SceneNode->GetWorldTransfom();
@@ -84,24 +77,22 @@ EVisitResult CBaseList3DPass::Visit(const ISceneNode * SceneNode)
 		m_PerObjectParameter->SetConstantBuffer(m_PerObjectConstantBuffer);
 		m_PerObjectParameter->Bind();
 	}
-
-	return EVisitResult::AllowAll;
 }
 
-EVisitResult CBaseList3DPass::Visit(const IModel * Model)
+void CBaseList3DPass::DoRenderModel(const IModel * Model)
 {
 	Model->Render(GetRenderEventArgs());
-	return EVisitResult::AllowAll;
 }
 
-EVisitResult CBaseList3DPass::Visit(const IGeometry * Geometry, const IMaterial * Material, SGeometryDrawArgs GeometryDrawArgs)
+void CBaseList3DPass::DoRenderGeometry(const IGeometry * Geometry, const IMaterial * Material, SGeometryDrawArgs GeometryDrawArgs)
 {
 	if (Material)
 		Material->Bind(GetRenderEventArgs().PipelineState->GetShaders());
+
 	Geometry->Render(GetRenderEventArgs(), GetRenderEventArgs().PipelineState->GetShaders().at(EShaderType::VertexShader).get(), GeometryDrawArgs);
+
 	if (Material)
 		Material->Unbind(GetRenderEventArgs().PipelineState->GetShaders());
-	return EVisitResult::AllowAll;
 }
 
 

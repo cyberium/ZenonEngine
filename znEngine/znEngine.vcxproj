@@ -348,6 +348,7 @@
     <ClCompile Include="Passes\MaterialTexturedPass.cpp" />
     <ClCompile Include="Passes\UI\UIButtonPass.cpp" />
     <ClCompile Include="Passes\UI\UIColorPass.cpp" />
+    <ClCompile Include="Passes\UI\UIControlConsolePass.cpp" />
     <ClCompile Include="Passes\UI\UIFontPass.cpp" />
     <ClCompile Include="Passes\UI\UITexturePass.cpp" />
     <ClCompile Include="PluginsManager.cpp" />
@@ -378,6 +379,7 @@
     <ClCompile Include="Scene\Nodes\UIContainerGarmoshkaCategoryHeader.cpp" />
     <ClCompile Include="Scene\Nodes\UIContainerListBase.cpp" />
     <ClCompile Include="Scene\Nodes\UIContainerListWithActivation.cpp" />
+    <ClCompile Include="Scene\Nodes\UIControlConsole.cpp" />
     <ClCompile Include="Scene\Nodes\UIText.cpp" />
     <ClCompile Include="Scene\Nodes\UITexture.cpp" />
     <ClCompile Include="Scene\Nodes\UIUtils.cpp" />
@@ -553,6 +555,7 @@
     <ClInclude Include="Passes\MaterialTexturedPass.h" />
     <ClInclude Include="Passes\UI\UIButtonPass.h" />
     <ClInclude Include="Passes\UI\UIColorPass.h" />
+    <ClInclude Include="Passes\UI\UIControlConsolePass.h" />
     <ClInclude Include="Passes\UI\UIFontPass.h" />
     <ClInclude Include="Passes\UI\UITexturePass.h" />
     <ClInclude Include="PluginsManager.h" />
@@ -586,6 +589,7 @@
     <ClInclude Include="Scene\Nodes\UIContainerGarmoshkaCategoryHeader.h" />
     <ClInclude Include="Scene\Nodes\UIContainerListBase.h" />
     <ClInclude Include="Scene\Nodes\UIContainerListWithActivation.h" />
+    <ClInclude Include="Scene\Nodes\UIControlConsole.h" />
     <ClInclude Include="Scene\Nodes\UIText.h" />
     <ClInclude Include="Scene\Nodes\UITexture.h" />
     <ClInclude Include="Scene\Nodes\UIUtils.h" />

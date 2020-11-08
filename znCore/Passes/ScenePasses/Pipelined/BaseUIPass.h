@@ -6,7 +6,7 @@ class ZN_API BaseUIPass
 	: public ScenePassPipelined
 {
 public:
-	BaseUIPass(IRenderDevice& RenderDevice, IScene& Scene);
+	BaseUIPass(IScene& Scene);
 	virtual ~BaseUIPass();
 
 	// IRenderPassPipelined

@@ -19,7 +19,7 @@ CAction::~CAction()
 //
 // IProperty
 //
-void CAction::FromString(const std::string & String)
+void CAction::FromString(const std::string& String, bool BlockCallback)
 {
 	throw CException("Incorrect behaviour");
 }

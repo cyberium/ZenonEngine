@@ -48,13 +48,19 @@ ZN_INTERFACE ZN_API ISceneNode
 	// Transform functional
 	virtual void SetTranslate(const glm::vec3& Translate) = 0;
 	virtual void AddTranslate(const glm::vec3& Translate) = 0;
-	virtual const glm::vec3& GetTranslation() const = 0;
+	virtual glm::vec3 GetTranslation() const = 0;
+
+	virtual void SetTranslateAbs(const glm::vec3& Translate) = 0;
+	virtual glm::vec3 GetTranslationAbs() const = 0;
+
 	virtual void SetRotation(const glm::vec3& _rotate) = 0;
-	virtual const glm::vec3& GetRotation() const = 0;
+	virtual glm::vec3 GetRotation() const = 0;
+
 	virtual void SetRotationQuaternion(const glm::quat& _rotate) = 0;
-	virtual const glm::quat& GetRotationQuaternion() const = 0;
+	virtual glm::quat GetRotationQuaternion() const = 0;
+
 	virtual void SetScale(const glm::vec3& _scale) = 0;
-	virtual const glm::vec3& GetScale() const = 0;
+	virtual glm::vec3 GetScale() const = 0;
 
 	virtual glm::mat4 GetLocalTransform() const = 0;
 	virtual glm::mat4 GetInverseLocalTransform() const = 0;

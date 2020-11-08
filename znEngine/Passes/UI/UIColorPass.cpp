@@ -7,7 +7,7 @@
 #include "Scene/Nodes/UIColor.h"
 
 CUIColorPass::CUIColorPass(IRenderDevice& RenderDevice, IScene& Scene)
-	: BaseUIPass(RenderDevice, Scene)
+	: BaseUIPass(Scene)
 {}
 
 CUIColorPass::~CUIColorPass()

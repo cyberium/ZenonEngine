@@ -7,7 +7,7 @@
 #include "Scene/Nodes/UITexture.h"
 
 CUITexturePass::CUITexturePass(IRenderDevice& RenderDevice, IScene& Scene)
-	: BaseUIPass(RenderDevice, Scene)
+	: BaseUIPass(Scene)
 {}
 
 CUITexturePass::~CUITexturePass()

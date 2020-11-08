@@ -6,8 +6,8 @@
 // Include 
 #include "Materials/MaterialDebug.h"
 
-CDrawBonesPass::CDrawBonesPass(IRenderDevice& RenderDevice, IScene& scene)
-	: Base3DPass(RenderDevice, scene)
+CDrawBonesPass::CDrawBonesPass(IScene& scene)
+	: Base3DPass(scene)
 {
 	m_MaterialConstantBuffer = GetRenderDevice().GetObjectsFactory().CreateConstantBuffer(SMaterialDebugProperties());
 }

@@ -83,18 +83,6 @@ std::shared_ptr<IRenderPassPipelined> CDrawSelectionPass::ConfigurePipeline(std:
 	return shared_from_this();
 }
 
-EVisitResult CDrawSelectionPass::Visit(const ISceneNode * node)
-{
-	_ASSERT(false);
-	return EVisitResult::Block;
-}
-
-EVisitResult CDrawSelectionPass::Visit(const IModel * Model)
-{
-	_ASSERT(false);
-	return EVisitResult::Block;
-}
-
 
 
 //

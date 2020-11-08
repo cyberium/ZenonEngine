@@ -5,7 +5,7 @@
 
 
 CSceneCreateTypelessListPass::CSceneCreateTypelessListPass(IRenderDevice& RenderDevice, IScene& Scene)
-	: ScenePass(RenderDevice, Scene)
+	: ScenePass(Scene)
 {}
 
 CSceneCreateTypelessListPass::~CSceneCreateTypelessListPass()

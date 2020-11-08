@@ -6,7 +6,7 @@ class ZN_API Base3DPass
 	: public ScenePassPipelined
 {
 public:
-	Base3DPass(IRenderDevice& RenderDevice, IScene& scene);
+	Base3DPass(IScene& scene);
 	virtual ~Base3DPass();
 
 	// IVisitor

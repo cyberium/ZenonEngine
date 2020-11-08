@@ -39,6 +39,12 @@ template<> inline std::string ValueToString(const uint64& Value) { return ValueT
 template<> inline std::string ValueToString(const float& Value)  { return ValueToStringInternal<float> ("f",   Value); }
 template<> inline std::string ValueToString(const double& Value) { return ValueToStringInternal<double>("lf",  Value); }
 
+template<> inline 
+std::string ValueToString(const bool& Value) 
+{ 
+	return Value ? "true" : "false";
+}
+
 template<>
 inline std::string ValueToString(const glm::vec2& Value)
 {
@@ -105,6 +111,14 @@ template<> inline int64  StringToValue(const std::string& String) { return Strin
 template<> inline uint64 StringToValue(const std::string& String) { return StringToValueInternal<uint64>(String, PRIu64, 0); }
 template<> inline float  StringToValue(const std::string& String) { return StringToValueInternal<float>(String,  "f",   0); }
 template<> inline double StringToValue(const std::string& String) { return StringToValueInternal<double>(String, "lf",  0); }
+
+template<> inline 
+bool StringToValue(const std::string& String)
+{
+	if (String == "True" || String == "true" || String == "1")
+		return true;
+	return false;
+}
 
 template<>
 inline glm::vec2 StringToValue(const std::string& String)

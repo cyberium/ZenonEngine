@@ -8,7 +8,7 @@
 #include "Materials/MaterialModel.h"
 
 CRTSGround_Pass::CRTSGround_Pass(IRenderDevice& RenderDevice, IScene& scene)
-	: Base3DPass(RenderDevice, scene)
+	: Base3DPass(scene)
 {
 	
 }

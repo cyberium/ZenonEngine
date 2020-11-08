@@ -120,26 +120,3 @@ std::shared_ptr<IRenderPassPipelined> CPassForward_DoRenderSceneInstanced::Confi
 
 	return shared_from_this();
 }
-
-
-
-//
-// IVisitor
-//
-EVisitResult CPassForward_DoRenderSceneInstanced::Visit(const ISceneNode * SceneNode)
-{
-	_ASSERT(false);
-	return EVisitResult::Block;
-}
-
-EVisitResult CPassForward_DoRenderSceneInstanced::Visit(const IModel * Model)
-{
-	_ASSERT(false);
-	return EVisitResult::Block;
-}
-
-EVisitResult CPassForward_DoRenderSceneInstanced::Visit(const IGeometry * Geometry, const IMaterial* Material, SGeometryDrawArgs GeometryDrawArgs)
-{
-	_ASSERT(false);
-	return EVisitResult::Block;
-}

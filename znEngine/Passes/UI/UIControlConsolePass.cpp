@@ -1,17 +1,17 @@
 #include "stdafx.h"
 
 // General
-#include "UIFontPass.h"
+#include "UIControlConsolePass.h"
 
 // Additional
 #include "Scene/Nodes/UIText.h"
 
-CUIFontPass::CUIFontPass(IRenderDevice& RenderDevice, IScene& Scene)
-	: BaseUIPass(Scene)
+CUIControlConsolePass::CUIControlConsolePass(IRenderDevice& RenderDevice)
+	: RenderPassPipelined(RenderDevice)
 {
 }
 
-CUIFontPass::~CUIFontPass()
+CUIControlConsolePass::~CUIControlConsolePass()
 {
 }
 
@@ -20,26 +20,17 @@ CUIFontPass::~CUIFontPass()
 //
 // IRenderPassPipelined
 //
-std::shared_ptr<IRenderPassPipelined> CUIFontPass::ConfigurePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport)
+std::shared_ptr<IRenderPassPipelined> CUIControlConsolePass::ConfigurePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport)
 {
-	BaseUIPass::ConfigurePipeline(RenderTarget, Viewport);
+	RenderPassPipelined::ConfigurePipeline(RenderTarget, Viewport);
 
 	// CreateShaders
-	std::shared_ptr<IShader> g_pVertexShader;
-	std::shared_ptr<IShader> g_pPixelShader;
+	std::shared_ptr<IShader> vertexShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::VertexShader, "UI/UI_Font.hlsl", "VS_main");
+	vertexShader->LoadInputLayoutFromReflector();
+	GetPipeline().SetShader(EShaderType::VertexShader, vertexShader);
 
-	if (GetRenderDevice().GetDeviceType() == RenderDeviceType::RenderDeviceType_DirectX11)
-	{
-		g_pVertexShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::VertexShader, "UI/UI_Font.hlsl", "VS_main");
-		g_pPixelShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::PixelShader, "UI/UI_Font.hlsl", "PS_main");
-	}
-	else if (GetRenderDevice().GetDeviceType() == RenderDeviceType::RenderDeviceType_OpenGL)
-	{
-		g_pVertexShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::VertexShader, "IDB_SHADER_OGL__UI_FONT_VS", "");
-		g_pPixelShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::PixelShader, "IDB_SHADER_OGL__UI_FONT_PS", "");
-	}
-
-	g_pVertexShader->LoadInputLayoutFromReflector();
+	std::shared_ptr<IShader> pixelShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::PixelShader, "UI/UI_Font.hlsl", "PS_main");
+	GetPipeline().SetShader(EShaderType::PixelShader, pixelShader);
 
 	// Create samplers
 	std::shared_ptr<ISamplerState> g_LinearClampSampler = GetRenderDevice().GetObjectsFactory().CreateSamplerState();
@@ -48,10 +39,6 @@ std::shared_ptr<IRenderPassPipelined> CUIFontPass::ConfigurePipeline(std::shared
 
 	GetPipeline().SetSampler(0, g_LinearClampSampler);
 
-	// Material
-	GetPipeline().SetShader(EShaderType::VertexShader, g_pVertexShader);
-	GetPipeline().SetShader(EShaderType::PixelShader, g_pPixelShader);
-
 	// Diryy hack!
 	GetPipeline().SetTexture(0, GetBaseManager().GetManager<IznFontsManager>()->GetMainFont()->GetTexture());
 
@@ -59,17 +46,17 @@ std::shared_ptr<IRenderPassPipelined> CUIFontPass::ConfigurePipeline(std::shared
 }
 
 
-
+/*
 //
 // IVisitor
 //
-EVisitResult CUIFontPass::Visit(const IUIControl * node)
+EVisitResult CUIControlConsolePass::Visit(const IUIControl * node)
 {
 	const CUITextNode* textNode = dynamic_cast<const CUITextNode*>(node);
 	if (textNode == nullptr)
 		return EVisitResult::AllowVisitChilds;
 
-	BaseUIPass::Visit(node);
+	RenderPassPipelined::Visit(node);
 
 	const auto& font = textNode->GetFont();
 	const auto& fontMaterial = textNode->GetMaterial();
@@ -111,8 +98,9 @@ EVisitResult CUIFontPass::Visit(const IUIControl * node)
 	return EVisitResult::AllowVisitChilds;
 }
 
-EVisitResult CUIFontPass::Visit(const IModel * Model)
+EVisitResult CUIControlConsolePass::Visit(const IModel * Model)
 {
 	_ASSERT(false);
 	return EVisitResult::Block;
 }
+*/

@@ -4,7 +4,7 @@
 #include "DrawBoundingBoxPass.h"
 
 CDrawBoundingBoxPass::CDrawBoundingBoxPass(IRenderDevice& RenderDevice, IScene& scene)
-	: Base3DPass(RenderDevice, scene)
+	: Base3DPass(scene)
 {
 }
 

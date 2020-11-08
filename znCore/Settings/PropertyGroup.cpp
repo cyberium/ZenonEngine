@@ -22,7 +22,7 @@ CPropertiesGroup::~CPropertiesGroup()
 //
 // IProperty
 //
-void CPropertiesGroup::FromString(const std::string & String)
+void CPropertiesGroup::FromString(const std::string & String, bool BlockCallback)
 {
 	throw CException("Incorrect behaviour");
 }

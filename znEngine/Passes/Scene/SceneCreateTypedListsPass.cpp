@@ -4,7 +4,7 @@
 #include "SceneCreateTypedListsPass.h"
 
 CSceneCreateTypedListsPass::CSceneCreateTypedListsPass(IRenderDevice& RenderDevice, IScene& Scene)
-	: ScenePass(RenderDevice, Scene)
+	: ScenePass(Scene)
 	, m_LastSceneNode(nullptr)
 	, m_LastModel(nullptr)
 	, m_LastGeometry(nullptr)
@@ -96,7 +96,7 @@ EVisitResult CSceneCreateTypedListsPass::Visit(const ISceneNode * SceneNode)
 
 	if (const auto& colliderComponent = SceneNode->GetComponentT<IColliderComponent3D>())
 	{
-		if (colliderComponent->IsCulled(GetRenderEventArgs()->CameraForCulling))
+		if (colliderComponent->IsCulled(GetRenderEventArgs().CameraForCulling))
 		{
 			return EVisitResult::Block;
 		}

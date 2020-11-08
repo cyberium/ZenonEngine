@@ -18,16 +18,16 @@ public:
 	virtual ~ZenonPropertiesEditorWidget();
 
 	void setTest(std::shared_ptr<ISceneNode> SceneNode);
-	void setActiveObject(QObject *obj);
 
 private slots:
 	void valueChanged(QtProperty *property, const QVariant &value);
-	void objectUpdated();
+	
 
 private:
-	QtVariantProperty * CreateVariantProperty(QVariant::Type PropType, std::string Name, std::string Description = "");
 	QtVariantProperty * CreateVariantProperty(QVariant::Type PropType, std::shared_ptr<IProperty> Property);
 	QtProperty*         CreateProperty(std::shared_ptr<IProperty> Property, std::string ParentPropsPath = "");
+	void                DisconnectEvents(std::shared_ptr<IProperty> Root);
+	void                UpdatePropertyValue(QtProperty* Property, QVariant Value);
 
 private:
 	std::shared_ptr<QtVariantPropertyManager>  m_VariantManager;

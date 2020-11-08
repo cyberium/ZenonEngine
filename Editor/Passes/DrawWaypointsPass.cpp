@@ -6,7 +6,7 @@
 const float cBBoxSizeIncrement = 0.05f;
 
 CDrawWaypointsPass::CDrawWaypointsPass(IRenderDevice& RenderDevice, IScene& Scene)
-	: Base3DPass(RenderDevice, Scene)
+	: Base3DPass(Scene)
 	, m_IsDirty(false)
 {
 }

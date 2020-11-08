@@ -3,8 +3,8 @@
 // General
 #include "BaseUIPass.h"
 
-BaseUIPass::BaseUIPass(IRenderDevice& RenderDevice, IScene& Scene)
-	: ScenePassPipelined(RenderDevice, Scene)
+BaseUIPass::BaseUIPass(IScene& Scene)
+	: ScenePassPipelined(Scene)
 	, m_PerObjectParameter(nullptr)
 {
 	m_PerObjectConstantBuffer = GetRenderDevice().GetObjectsFactory().CreateConstantBuffer(PerObject());

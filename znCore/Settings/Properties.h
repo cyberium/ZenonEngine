@@ -9,6 +9,7 @@ template <typename T>
 class CProperty
 	: public CPropertiesGroup
 	, public IPropertyT<T>
+	, public IPropertyValueChangedCallback
 {
 public:
 	CProperty()
@@ -26,19 +27,19 @@ public:
 	//
 	// IProperty
 	//
-	void FromString(const std::string& String)
+	void FromString(const std::string& String, bool BlockCallback) override
 	{
 		T propertyValue = StringToValue<T>(String);
-		Set(propertyValue);
+		Set(propertyValue, BlockCallback);
 	}
 
-	std::string ToString() const
+	std::string ToString() const override
 	{
 		T value = Get();
 		return ValueToString<T>(value);
 	}
 
-	void Load(const std::shared_ptr<IXMLReader>& Reader)
+	void Load(const std::shared_ptr<IXMLReader>& Reader) override
 	{
 		if (IsSyntetic())
 			return;
@@ -46,10 +47,10 @@ public:
 		__super::Load(Reader);
 
 		std::string propertyValueAsString = Reader->GetValue();
-		FromString(propertyValueAsString);
+		FromString(propertyValueAsString, true);
 	}
 
-	void Save(const std::shared_ptr<IXMLWriter>& Writer) const 
+	void Save(const std::shared_ptr<IXMLWriter>& Writer) const override
 	{
 		if (IsSyntetic())
 			return;
@@ -67,11 +68,11 @@ public:
 	{
 		m_Value = Value;
 
-		if (BlockCallback)
-			return;
-
-		if (m_ValueChangedCallback)
-			m_ValueChangedCallback(Value);
+		if (false == BlockCallback)
+		{
+			if (m_ValueChangedCallback)
+				m_ValueChangedCallback(Value);
+		}
 	}
 
 	T Get() const override
@@ -82,6 +83,19 @@ public:
 	void SetValueChangedCallback(std::function<void(const T&)> ValueChangedCallback) override
 	{
 		m_ValueChangedCallback = ValueChangedCallback;
+	}
+
+	//
+	// IPropertyValueChangedCallback
+	//
+	void RaiseValueChangedCallback() override
+	{
+		if (m_ValueChangedCallback)
+			m_ValueChangedCallback(Get());
+	}
+	void ResetChangedCallback() override
+	{
+		m_ValueChangedCallback = nullptr;
 	}
 
 protected:
@@ -140,11 +154,6 @@ public:
 		return m_FuncGetter();
 	}
 
-	void SetValueChangedCallback(std::function<void(const T&)> ValueChangedCallback) override
-	{
-		m_ValueChangedCallback = ValueChangedCallback;
-	}
-
 public:
 	void SetValueSetter(std::function<void(const T&)> Function)
 	{
@@ -156,17 +165,9 @@ public:
 		m_FuncGetter = Function;
 	}
 
-	void RaiseValueChangedCallback()
-	{
-		if (m_ValueChangedCallback)
-			m_ValueChangedCallback(Get());
-	}
-
-
 private:
 	std::function<void(const T&)> m_FuncSetter;
 	std::function<T(void)> m_FuncGetter;
-	std::function<void(const T&)> m_ValueChangedCallback;
 };
 
 
@@ -182,19 +183,43 @@ public:
 		xProperty->SetSyntetic(true);
 		xProperty->SetValueSetter(std::bind(&CPropertyWrappedVec3::SetT, this, 0, std::placeholders::_1));
 		xProperty->SetValueGetter(std::bind(&CPropertyWrappedVec3::GetT, this, 0));
+		//xProperty->SetValueChangedCallback([this](const float& Value) {
+		//	this->RaiseValueChangedCallback();
+		//});
 		AddProperty(xProperty);
 
 		auto yProperty = MakeShared(CPropertyWrapped<float>, "Y");
 		yProperty->SetSyntetic(true);
 		yProperty->SetValueSetter(std::bind(&CPropertyWrappedVec3::SetT, this, 1, std::placeholders::_1));
 		yProperty->SetValueGetter(std::bind(&CPropertyWrappedVec3::GetT, this, 1));
+		//yProperty->SetValueChangedCallback([this](const float& Value) {
+		//	this->RaiseValueChangedCallback();
+		//});
 		AddProperty(yProperty);
 
 		auto zProperty = MakeShared(CPropertyWrapped<float>, "Z");
 		zProperty->SetSyntetic(true);
 		zProperty->SetValueSetter(std::bind(&CPropertyWrappedVec3::SetT, this, 2, std::placeholders::_1));
 		zProperty->SetValueGetter(std::bind(&CPropertyWrappedVec3::GetT, this, 2));
+		//zProperty->SetValueChangedCallback([this](const float& Value) {
+			/*
+				When subProperty changed, we must notify owner property, but don't notify childs
+			*/
+		//	this->RaiseValueChangedCallback();
+		//});
 		AddProperty(zProperty);
+	}
+
+	//
+	// IPropertyValueChangedCallback
+	//
+	void RaiseValueChangedCallback() override
+	{
+		__super::RaiseValueChangedCallback();
+
+		for (const auto& subPropIt : GetProperties())
+			if (auto valueChangedCallback = std::dynamic_pointer_cast<IPropertyValueChangedCallback>(subPropIt.second))
+				valueChangedCallback->RaiseValueChangedCallback();
 	}
 
 private:

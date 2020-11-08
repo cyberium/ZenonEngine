@@ -7,7 +7,7 @@
 #include "Materials/MaterialModel.h"
 
 CPassForward_DoRenderScene::CPassForward_DoRenderScene(IRenderDevice& RenderDevice, IScene& Scene)
-	: Base3DPass(RenderDevice, Scene)
+	: Base3DPass(Scene)
 {
 	
 }

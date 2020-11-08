@@ -39,60 +39,20 @@ void RenderPass::PostRender(RenderEventArgs& e)
 
 
 //
-// IVisitor
-//
-EVisitResult RenderPass::Visit(const ISceneNode* node)
-{
-	return EVisitResult::Block;
-}
-
-EVisitResult RenderPass::Visit(const IUIControl* node)
-{
-	return EVisitResult::Block;
-}
-
-EVisitResult RenderPass::Visit(const IModel* Model)
-{
-    return EVisitResult::Block;
-}
-
-EVisitResult RenderPass::Visit(const IGeometry * Geometry, const IMaterial* Material, SGeometryDrawArgs GeometryDrawArgs)
-{
-	return EVisitResult::Block;
-}
-
-EVisitResult RenderPass::Visit(const ISceneNodeComponent * Component)
-{
-	return EVisitResult::Block;
-}
-
-EVisitResult RenderPass::Visit(const ILight3D* light)
-{
-	return EVisitResult::Block;
-}
-
-EVisitResult RenderPass::Visit(const IParticleSystem * ParticleSystem)
-{
-	return EVisitResult::Block;
-}
-
-
-
-//
 // Protected
 //
-const RenderEventArgs* RenderPass::GetRenderEventArgs() const
+IBaseManager& RenderPass::GetBaseManager() const
 {
-    _ASSERT(m_RenderEventArgs != nullptr);
-    return m_RenderEventArgs;
+	return m_BaseManager;
 }
 
 IRenderDevice& RenderPass::GetRenderDevice() const
 {
-    return m_RenderDevice;
+	return m_RenderDevice;
 }
 
-const IBaseManager& RenderPass::GetBaseManager() const
+const RenderEventArgs& RenderPass::GetRenderEventArgs() const
 {
-	return m_BaseManager;
+    _ASSERT(m_RenderEventArgs != nullptr);
+    return *m_RenderEventArgs;
 }

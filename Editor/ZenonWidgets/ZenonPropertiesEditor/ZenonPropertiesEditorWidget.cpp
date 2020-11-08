@@ -23,6 +23,9 @@ ZenonPropertiesEditorWidget::~ZenonPropertiesEditorWidget()
 
 void ZenonPropertiesEditorWidget::setTest(std::shared_ptr<ISceneNode> SceneNode)
 {
+	if (m_SceneNode == SceneNode)
+		return;
+
 	m_SceneNode.reset();
 	clear();
 	m_VariantManager->clear();
@@ -31,56 +34,28 @@ void ZenonPropertiesEditorWidget::setTest(std::shared_ptr<ISceneNode> SceneNode)
 
 	disconnect(m_VariantManager.get(), SIGNAL(valueChanged(QtProperty*, QVariant)), this, SLOT(valueChanged(QtProperty*, QVariant)));
 
-	if (SceneNode)
-	{
-		m_SceneNode = SceneNode;
-
-		auto prop = CreateProperty(m_SceneNode->GetProperties());
-		if (prop)
-			addProperty(prop);
-
-		for (const auto& c : m_SceneNode->GetComponents())
-		{
-			auto prop = CreateProperty(c.second->GetProperties());
-			if (prop)
-				addProperty(prop);
-		}
-	}
-
-	connect(m_VariantManager.get(), SIGNAL(valueChanged(QtProperty*, QVariant)), this, SLOT(valueChanged(QtProperty*, QVariant)));
-
-	//connect(obj, SIGNAL(propertyChanged()), this, SLOT(objectUpdated()));
-	//objectUpdated();
-
-}
-
-void ZenonPropertiesEditorWidget::setActiveObject(QObject *obj)
-{
-	clear();
-	m_VariantManager->clear();
-	m_PropertiesMap.clear();
-
-	//if (m_CurrentlyConnectedObject)
-	//	m_CurrentlyConnectedObject->disconnect(this);
-	//m_CurrentlyConnectedObject = obj;
-
-	if (obj == nullptr) 
+	if (SceneNode == nullptr)
 		return;
 
-	for (int i = 1; i < obj->metaObject()->propertyCount(); i++) 
+	if (m_SceneNode != nullptr)
 	{
-		QMetaProperty mp = obj->metaObject()->property(i);
-		QtVariantProperty * property = m_VariantManager->addProperty(mp.type(), mp.name());
-		if (property == NULL)
-			continue;
+		DisconnectEvents(m_SceneNode->GetProperties());
 
-		property->setEnabled(mp.isWritable());
-
-		m_PropertiesMap[property] = mp.name();
-		addProperty(property);
+		for (const auto& c : m_SceneNode->GetComponents())
+			DisconnectEvents(c.second->GetProperties());
 	}
-	connect(obj, SIGNAL(propertyChanged()), this, SLOT(objectUpdated()));
-	objectUpdated();
+
+
+	m_SceneNode = SceneNode;
+
+	if (auto prop = CreateProperty(m_SceneNode->GetProperties()))
+		addProperty(prop);
+
+	for (const auto& c : m_SceneNode->GetComponents())
+		if (auto prop = CreateProperty(c.second->GetProperties()))
+			addProperty(prop);
+
+	connect(m_VariantManager.get(), SIGNAL(valueChanged(QtProperty*, QVariant)), this, SLOT(valueChanged(QtProperty*, QVariant)));
 }
 
 std::pair<std::string, std::string> FirstToken(const std::string& PropertyPath)
@@ -93,18 +68,15 @@ std::pair<std::string, std::string> FirstToken(const std::string& PropertyPath)
 
 std::shared_ptr<IProperty> FindProperty(std::shared_ptr<IProperty> Property, const std::string& PropertyPath)
 {
-	Log::Info("FindProperty: Property: '%s'. Path: '%s'.", Property->GetName().c_str(), PropertyPath.c_str());
+	//Log::Info("FindProperty: Property: '%s'. Path: '%s'.", Property->GetName().c_str(), PropertyPath.c_str());
 	if (PropertyPath.empty())
 		return Property;
 
 	auto token = FirstToken(PropertyPath);
 
 	if (auto propertiesGroup = std::dynamic_pointer_cast<IPropertiesGroup>(Property))
-	{
-		auto propertyInGroup = propertiesGroup->GetProperty(token.first);
-		if (propertyInGroup != nullptr)
+		if (auto propertyInGroup = propertiesGroup->GetProperty(token.first))
 			return FindProperty(propertyInGroup, token.second);
-	}
 
 	return nullptr;
 }
@@ -125,7 +97,7 @@ void ZenonPropertiesEditorWidget::valueChanged(QtProperty * Property, const QVar
 	std::string tokenFirst = token.first;
 	std::string tokenSecond = token.second;
 
-	if (tokenFirst == "SceneNode")
+	if (tokenFirst == "Properties")
 	{
 		auto property = FindProperty(m_SceneNode->GetProperties(), tokenSecond);
 		if (property == nullptr)
@@ -146,28 +118,6 @@ void ZenonPropertiesEditorWidget::valueChanged(QtProperty * Property, const QVar
 			throw CException("Property path '%s' not found.", fullPropertyPath.c_str());
 		componentProperty->FromString(propertyStringValue);
 	}
-
-	//if (m_CurrentlyConnectedObject)
-	//	m_CurrentlyConnectedObject->setProperty(m_PropertiesMap[property].c_str(), value);
-
-	//objectUpdated();
-}
-
-void ZenonPropertiesEditorWidget::objectUpdated()
-{
-	//disconnect(m_VariantManager, SIGNAL(valueChanged(QtProperty*, QVariant)), this, SLOT(valueChanged(QtProperty*, QVariant)));
-
-	//for (const auto& it : m_PropertiesMap)
-	//	m_VariantManager->setValue(it.first, m_CurrentlyConnectedObject->property(it.second.c_str()));
-
-	//connect(m_VariantManager, SIGNAL(valueChanged(QtProperty*, QVariant)), this, SLOT(valueChanged(QtProperty*, QVariant)));
-}
-
-
-
-namespace
-{
-
 }
 
 
@@ -175,14 +125,6 @@ namespace
 //
 // Private
 //
-
-QtVariantProperty * ZenonPropertiesEditorWidget::CreateVariantProperty(QVariant::Type PropType, std::string Name, std::string Description)
-{
-	QtVariantProperty * vartiantProp = m_VariantManager->addProperty(PropType, Name.c_str());
-	vartiantProp->setWhatsThis(Name.c_str());
-	vartiantProp->setToolTip(Description.c_str());
-	return vartiantProp;
-}
 
 QtVariantProperty * ZenonPropertiesEditorWidget::CreateVariantProperty(QVariant::Type PropType, std::shared_ptr<IProperty> Property)
 {
@@ -198,18 +140,27 @@ QtProperty* ZenonPropertiesEditorWidget::CreateProperty(std::shared_ptr<IPropert
 	{
 		QtVariantProperty * vartiantProp = CreateVariantProperty(QVariant::Type::String, propT);
 		vartiantProp->setValue(propT->Get().c_str());
+		propT->SetValueChangedCallback([this, vartiantProp](const std::string& Value) {
+			UpdatePropertyValue(vartiantProp, QVariant(Value.c_str()));
+		});
 		return vartiantProp;
 	}
 	else if (auto propT = std::dynamic_pointer_cast<IPropertyT<bool>>(Property))
 	{
 		QtVariantProperty * vartiantProp = CreateVariantProperty(QVariant::Type::Bool, propT);
 		vartiantProp->setValue(propT->Get());
+		propT->SetValueChangedCallback([this, vartiantProp](const bool& Value) {
+			UpdatePropertyValue(vartiantProp, QVariant(Value));
+		});
 		return vartiantProp;
 	}
 	else if (auto propT = std::dynamic_pointer_cast<IPropertyT<float>>(Property))
 	{
 		QtVariantProperty * vartiantProp = CreateVariantProperty(QVariant::Type::Double, propT);
 		vartiantProp->setValue(propT->Get());
+		propT->SetValueChangedCallback([this, vartiantProp](const float& Value) {
+			UpdatePropertyValue(vartiantProp, QVariant(Value));
+		});
 		return vartiantProp;
 	}
 	else if (auto propGroup = std::dynamic_pointer_cast<IPropertiesGroup>(Property))
@@ -243,4 +194,23 @@ QtProperty* ZenonPropertiesEditorWidget::CreateProperty(std::shared_ptr<IPropert
 
 	Log::Warn("Unsupported property [%s] type.", Property->GetName().c_str());
 	return nullptr;
+}
+
+void ZenonPropertiesEditorWidget::DisconnectEvents(std::shared_ptr<IProperty> Root)
+{
+	if (auto disconnectPropertyCallback = std::dynamic_pointer_cast<IPropertyValueChangedCallback>(Root))
+		disconnectPropertyCallback->ResetChangedCallback();
+
+	if (auto propertyGroup = std::dynamic_pointer_cast<IPropertiesGroup>(Root))
+		for (const auto& it : propertyGroup->GetProperties())
+			DisconnectEvents(it.second);
+}
+
+void ZenonPropertiesEditorWidget::UpdatePropertyValue(QtProperty * Property, QVariant Value)
+{
+	disconnect(m_VariantManager.get(), SIGNAL(valueChanged(QtProperty*, QVariant)), this, SLOT(valueChanged(QtProperty*, QVariant)));
+
+	m_VariantManager->setValue(Property, Value);
+
+	connect(m_VariantManager.get(), SIGNAL(valueChanged(QtProperty*, QVariant)), this, SLOT(valueChanged(QtProperty*, QVariant)));
 }

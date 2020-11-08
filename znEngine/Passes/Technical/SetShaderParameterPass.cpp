@@ -15,6 +15,11 @@ CSetShaderParameterPass::CSetShaderParameterPass(IRenderDevice& RenderDevice, IS
 CSetShaderParameterPass::~CSetShaderParameterPass()
 {}
 
+
+
+//
+// IRenderPass
+//
 void CSetShaderParameterPass::Render(RenderEventArgs& e)
 {
 	if (m_Source != nullptr)

@@ -7,7 +7,7 @@
 #include "Scene/Nodes/UIButton.h"
 
 CUIButtonPass::CUIButtonPass(IRenderDevice& RenderDevice, IScene& Scene)
-	: BaseUIPass(RenderDevice, Scene)
+	: BaseUIPass(Scene)
 {}
 
 CUIButtonPass::~CUIButtonPass()

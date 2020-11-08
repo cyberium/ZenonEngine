@@ -7,7 +7,7 @@
 #include "Materials/MaterialParticle.h"
 
 CMaterialParticlePass::CMaterialParticlePass(IRenderDevice& RenderDevice, IScene& Scene)
-	: Base3DPass(RenderDevice, Scene)
+	: Base3DPass(Scene)
 {
 	m_Geometry = GetRenderDevice().GetObjectsFactory().CreateGeometry();
 	m_Geometry->SetPrimitiveTopology(PrimitiveTopology::PointList);

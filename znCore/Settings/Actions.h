@@ -12,7 +12,7 @@ public:
 	virtual ~CAction();
 
 	// IProperty
-	void FromString(const std::string& String) override;
+	void FromString(const std::string& String, bool BlockCallback = false) override;
 	std::string ToString() const override;
 	
 	// IPropertyAction

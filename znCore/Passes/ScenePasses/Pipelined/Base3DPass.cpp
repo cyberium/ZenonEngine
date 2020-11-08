@@ -3,8 +3,8 @@
 // General
 #include "Base3DPass.h"
 
-Base3DPass::Base3DPass(IRenderDevice& RenderDevice, IScene& scene)
-    : ScenePassPipelined(RenderDevice, scene)
+Base3DPass::Base3DPass(IScene& scene)
+    : ScenePassPipelined(scene)
 	, m_PerObjectParameter(nullptr)
 {
 	m_PerObjectConstantBuffer = GetRenderDevice().GetObjectsFactory().CreateConstantBuffer(PerObject());

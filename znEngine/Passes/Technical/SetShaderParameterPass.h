@@ -7,6 +7,7 @@ public:
 	CSetShaderParameterPass(IRenderDevice& RenderDevice, IShaderParameter* Destination, std::shared_ptr<IShaderParameterSource> Source);
 	virtual ~CSetShaderParameterPass();
 
+	// IRenderPass
 	void Render(RenderEventArgs& e) override;
 
 private:

@@ -7,7 +7,7 @@ public:
 	InvokeFunctionPass(IRenderDevice& RenderDevice, std::function<void(void)> func);
 	virtual ~InvokeFunctionPass();
 
-	// RenderPass
+	// IRenderPass
 	virtual void Render(RenderEventArgs& e) override;
 
 private:

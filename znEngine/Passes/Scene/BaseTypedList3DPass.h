@@ -15,9 +15,9 @@ public:
 	void Render(RenderEventArgs& e);
 
 	// IVisitor
-	virtual EVisitResult Visit(const ISceneNode* SceneNode) override;
-	virtual EVisitResult Visit(const IModel* Model) override;
-	virtual EVisitResult Visit(const IGeometry* Geometry, const IMaterial* Material, SGeometryDrawArgs GeometryDrawArgs = SGeometryDrawArgs()) override;
+	virtual void DoRenderSceneNode(const ISceneNode* SceneNode);
+	virtual void DoRenderModel(const IModel* Model);
+	virtual void DoRenderGeometry(const IGeometry* Geometry, const IMaterial* Material, SGeometryDrawArgs GeometryDrawArgs);
 
 protected:
 	const std::shared_ptr<CSceneCreateTypedListsPass>& GetSceneNodeListPass() const;

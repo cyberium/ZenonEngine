@@ -7,7 +7,7 @@
 #include "Materials/MaterialDebug.h"
 
 CMaterial_Debug_Pass::CMaterial_Debug_Pass(IRenderDevice& RenderDevice, IScene& Scene)
-	: Base3DPass(RenderDevice, Scene)
+	: Base3DPass(Scene)
 {}
 
 CMaterial_Debug_Pass::~CMaterial_Debug_Pass()

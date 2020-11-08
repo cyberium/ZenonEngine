@@ -8,7 +8,6 @@ class Viewport;
 // FORWARD END
 
 ZN_INTERFACE ZN_API IRenderPass 
-	: public IVisitor
 {
 	virtual ~IRenderPass() {}
 
@@ -22,7 +21,7 @@ ZN_INTERFACE ZN_API IRenderPass
 
 
 ZN_INTERFACE ZN_API IRenderPassPipelined 
-	: public IRenderPass
+	: public virtual IRenderPass
 {
 	virtual ~IRenderPassPipelined() {}
 

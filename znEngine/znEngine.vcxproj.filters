@@ -718,6 +718,12 @@
     <ClCompile Include="Scene\SceneNodeRTSTower.cpp">
       <Filter>Scene\RTS</Filter>
     </ClCompile>
+    <ClCompile Include="Scene\Nodes\UIControlConsole.cpp">
+      <Filter>Scene\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Passes\UI\UIControlConsolePass.cpp">
+      <Filter>Passes\UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="common.h">
@@ -1324,6 +1330,12 @@
     </ClInclude>
     <ClInclude Include="Scene\SceneNodeRTSTower.h">
       <Filter>Scene\RTS</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\Nodes\UIControlConsole.h">
+      <Filter>Scene\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Passes\UI\UIControlConsolePass.h">
+      <Filter>Passes\UI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

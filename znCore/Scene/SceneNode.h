@@ -31,13 +31,15 @@ public:
 	// Transform functional
 	void											SetTranslate(const glm::vec3& Translate) override;
 	void                                            AddTranslate(const glm::vec3& Translate) override;
-	const glm::vec3&								GetTranslation() const override;
+	glm::vec3								        GetTranslation() const override;
+	void                                            SetTranslateAbs(const glm::vec3& Translate) override;
+	glm::vec3                                       GetTranslationAbs() const override;
 	void											SetRotation(const glm::vec3& _rotate) override;
-	const glm::vec3&                                GetRotation() const override;
+	glm::vec3                                       GetRotation() const override;
 	void											SetRotationQuaternion(const glm::quat& _rotate) override;
-	const glm::quat&								GetRotationQuaternion() const override;
+	glm::quat								        GetRotationQuaternion() const override;
 	void											SetScale(const glm::vec3& _scale) override;
-	const glm::vec3&								GetScale() const override;
+	glm::vec3								        GetScale() const override;
 
 	virtual glm::mat4								GetLocalTransform() const;
 	virtual glm::mat4								GetInverseLocalTransform() const;
@@ -91,7 +93,8 @@ private:
 private:
 	IScene&                                         m_Scene;
 
-	glm::vec3										m_Translate;
+	glm::vec3										m_TranslateLocal;
+	std::shared_ptr<CPropertyWrappedVec3>           m_TranslateProperty;
 	glm::vec3										m_Rotate;
 	glm::quat										m_RotateQuat;
 	bool											m_IsRotateQuat;

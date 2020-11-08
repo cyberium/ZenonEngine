@@ -1,5 +1,7 @@
 #pragma once
 
+#include "RenderPass.h"
+
 struct __declspec(align(16)) ZN_API PerObject
 {
 	glm::mat4 Model;
@@ -15,7 +17,7 @@ struct __declspec(align(16)) ZN_API PerFrame
 		, InverseProjectionView(glm::mat4(1.0f))
 		, ScreenDimensions(glm::vec2(1.0f))
 	{}
-	PerFrame(glm::mat4 ViewMatrix, glm::mat4 ProjectionMatrix, glm::vec2 ScreenDimensions)
+	explicit PerFrame(glm::mat4 ViewMatrix, glm::mat4 ProjectionMatrix, glm::vec2 ScreenDimensions)
 		: View(ViewMatrix)
 		, Projection(ProjectionMatrix)
 		, ScreenDimensions(ScreenDimensions)
@@ -34,7 +36,8 @@ struct __declspec(align(16)) ZN_API PerFrame
 };
 
 class ZN_API RenderPassPipelined
-	: public IRenderPassPipelined
+	: public RenderPass
+	, public IRenderPassPipelined
 	, public std::enable_shared_from_this<IRenderPassPipelined>
 {
 public:
@@ -42,31 +45,15 @@ public:
 	virtual ~RenderPassPipelined();
 
 	// IRenderPass
-	void SetEnabled(bool Value) override final;
-	bool IsEnabled() const override final;
 	virtual void PreRender(RenderEventArgs& e);
-	virtual void Render(RenderEventArgs& e) = 0;
 	virtual void PostRender(RenderEventArgs& e);
     
 	// IRenderPassPipelined
 	virtual std::shared_ptr<IRenderPassPipelined> ConfigurePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport* Viewport) override;
 	virtual IPipelineState& GetPipeline() const override;
 
-	// IVisitor
-	virtual EVisitResult Visit(const ISceneNode* node) override;
-	virtual EVisitResult Visit(const IUIControl* node) override;
-	virtual EVisitResult Visit(const IModel* Model) override;
-	virtual EVisitResult Visit(const IGeometry* Geometry, const IMaterial* Material, SGeometryDrawArgs GeometryDrawArgs = SGeometryDrawArgs()) override;
-	virtual EVisitResult Visit(const ISceneNodeComponent* Component) override;
-	virtual EVisitResult Visit(const ILight3D* light) override;
-	virtual EVisitResult Visit(const IParticleSystem* ParticleSystem) override;
-
 protected:
 	virtual void FillPerFrameData();
-
-	IBaseManager& GetBaseManager() const;
-    IRenderDevice& GetRenderDevice() const;
-	const RenderEventArgs& GetRenderEventArgs() const;
 
 protected:
 	static IBlendState::BlendMode alphaBlending;
@@ -82,10 +69,5 @@ protected:
 	void BindPerFrameData(const IShader* Shader) const;
 
 private:
-	bool											m_Enabled;
-	std::shared_ptr<IPipelineState>					m_Pipeline;
-    const RenderEventArgs*							m_RenderEventArgs;
-   
-	IBaseManager&                             m_BaseManager;
-	IRenderDevice&							m_RenderDevice;
+	std::shared_ptr<IPipelineState> m_Pipeline;
 };

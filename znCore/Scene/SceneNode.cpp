@@ -11,7 +11,7 @@ CSceneNode::CSceneNode(IScene& Scene)
 
 	, m_IsPersistance(false)
 
-	, m_Translate(0.0f)
+	, m_TranslateLocal(0.0f)
 	, m_Rotate(glm::vec3(0.0f))
 	, m_RotateQuat(glm::quat())
 	, m_IsRotateQuat(false)
@@ -22,7 +22,7 @@ CSceneNode::CSceneNode(IScene& Scene)
 	, m_WorldTransform(1.0f)
 	, m_InverseWorldTransform(1.0f)
 {
-	m_PropertiesGroup = MakeShared(CPropertiesGroup, "SceneNode", "Some important scene node 3d properties.");
+	m_PropertiesGroup = MakeShared(CPropertiesGroup, "Properties", "Some important scene node 3d properties.");
 }
 
 CSceneNode::~CSceneNode()
@@ -50,10 +50,15 @@ void CSceneNode::Initialize()
 	{
 		std::shared_ptr<IPropertiesGroup> propertiesGroup = MakeShared(CPropertiesGroup, "Transform", "Transorm of this 3D node. Like translation, rotation and scale.");
 
-		std::shared_ptr<CPropertyWrappedVec3> translateProperty = MakeShared(CPropertyWrappedVec3, "Translate", "Position of this node in world. Relative to parent.");
-		translateProperty->SetValueSetter(std::bind(&CSceneNode::SetTranslate, this, std::placeholders::_1));
-		translateProperty->SetValueGetter(std::bind(&CSceneNode::GetTranslation, this));
-		propertiesGroup->AddProperty(translateProperty);
+		m_TranslateProperty = MakeShared(CPropertyWrappedVec3, "Translate", "Position of this node in world. Relative to parent.");
+		m_TranslateProperty->SetValueSetter(std::bind(&CSceneNode::SetTranslate, this, std::placeholders::_1));
+		m_TranslateProperty->SetValueGetter(std::bind(&CSceneNode::GetTranslation, this));
+		propertiesGroup->AddProperty(m_TranslateProperty);
+
+		std::shared_ptr<CPropertyWrappedVec3> translateAbsProperty = MakeShared(CPropertyWrappedVec3, "Translate absolute", "Position of this node in world. Relative to world zero.");
+		translateAbsProperty->SetValueSetter(std::bind(&CSceneNode::SetTranslateAbs, this, std::placeholders::_1));
+		translateAbsProperty->SetValueGetter(std::bind(&CSceneNode::GetTranslationAbs, this));
+		propertiesGroup->AddProperty(translateAbsProperty);
 
 		std::shared_ptr<CPropertyWrappedVec3> rotationProperty = MakeShared(CPropertyWrappedVec3, "Rotate", "Rotation of this node. Relative to parent.");
 		rotationProperty->SetValueSetter(std::bind(&CSceneNode::SetRotation, this, std::placeholders::_1));
@@ -152,7 +157,8 @@ IScene& CSceneNode::GetScene() const
 //
 void CSceneNode::SetTranslate(const glm::vec3& _translate)
 {
-	m_Translate = _translate;
+	m_TranslateLocal = _translate;
+	m_TranslateProperty->RaiseValueChangedCallback();
 	UpdateLocalTransform();
 }
 
@@ -161,9 +167,20 @@ void CSceneNode::AddTranslate(const glm::vec3& Translate)
 	SetTranslate(GetTranslation() + Translate);
 }
 
-const glm::vec3& CSceneNode::GetTranslation() const
+glm::vec3 CSceneNode::GetTranslation() const
 {
-	return m_Translate;
+	return m_TranslateLocal;
+}
+
+void CSceneNode::SetTranslateAbs(const glm::vec3& Translate)
+{
+	glm::mat4 inverseWorld = glm::inverse(GetParentWorldTransform());
+	SetTranslate(inverseWorld * glm::vec4(Translate, 1.0f));
+}
+
+glm::vec3 CSceneNode::GetTranslationAbs() const
+{
+	return GetParentWorldTransform() * glm::vec4(GetTranslation(), 1.0f);
 }
 
 void CSceneNode::SetRotation(const glm::vec3& _rotate)
@@ -172,7 +189,7 @@ void CSceneNode::SetRotation(const glm::vec3& _rotate)
 	UpdateLocalTransform();
 }
 
-const glm::vec3& CSceneNode::GetRotation() const
+glm::vec3 CSceneNode::GetRotation() const
 {
 	return m_Rotate;
 }
@@ -184,7 +201,7 @@ void CSceneNode::SetRotationQuaternion(const glm::quat& _rotate)
 	UpdateLocalTransform();
 }
 
-const glm::quat& CSceneNode::GetRotationQuaternion() const
+glm::quat CSceneNode::GetRotationQuaternion() const
 {
 	return m_RotateQuat;
 }
@@ -195,7 +212,7 @@ void CSceneNode::SetScale(const glm::vec3& _scale)
 	UpdateLocalTransform();
 }
 
-const glm::vec3& CSceneNode::GetScale() const
+glm::vec3 CSceneNode::GetScale() const
 {
 	return m_Scale;
 }
@@ -380,7 +397,7 @@ void CSceneNode::CopyTo(std::shared_ptr<IObject> Destination) const
 
 	destCast->m_IsPersistance = m_IsPersistance;
 
-	destCast->m_Translate = m_Translate;
+	destCast->m_TranslateLocal = m_TranslateLocal;
 	destCast->m_Rotate = m_Rotate;
 	destCast->m_RotateQuat = m_RotateQuat;
 	destCast->m_IsRotateQuat = m_IsRotateQuat;
@@ -561,7 +578,7 @@ glm::mat4 CSceneNode::CalculateLocalTransform() const
 {
 	glm::mat4 localTransform(1.0f);
 
-	localTransform = glm::translate(localTransform, m_Translate);
+	localTransform = glm::translate(localTransform, m_TranslateLocal);
 	if (m_IsRotateQuat)
 	{
 		localTransform *= glm::toMat4(m_RotateQuat);

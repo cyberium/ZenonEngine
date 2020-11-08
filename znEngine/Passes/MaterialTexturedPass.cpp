@@ -7,7 +7,7 @@
 #include "Materials/MaterialTextured.h"
 
 CMaterial_Textured_Pass::CMaterial_Textured_Pass(IRenderDevice& RenderDevice, IScene& Scene)
-	: Base3DPass(RenderDevice, Scene)
+	: Base3DPass(Scene)
 {}
 
 CMaterial_Textured_Pass::~CMaterial_Textured_Pass()
