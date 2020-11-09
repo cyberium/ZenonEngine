@@ -4,170 +4,10 @@
 #include "EditorResourceBrowser.h"
 
 #include "DragUtils.h"
-#include "ZenonWidgets/ZenonTreeView/TreeViewItemVirtualFolder.h"
-
-
-
-namespace
-{
-	class CznSceneNode3DTreeViewItemSource
-		: public IznTreeViewItemSource
-	{
-	public:
-		CznSceneNode3DTreeViewItemSource(const std::shared_ptr<ISceneNode>& SceneNode)
-			: m_SceneNode(SceneNode)
-		{}
-		virtual ~CznSceneNode3DTreeViewItemSource()
-		{
-			Log::Warn("TreeViewSceneNode3DSource: Destroed source of object with name '%s'", m_SceneNode->GetName().c_str());
-		}
-
-		// IznTreeViewItemSource
-		ETreeViewItemType GetType() const
-		{
-			return ETreeViewItemType::CSceneNode;
-		}
-		std::string GetName() const override
-		{
-			return m_SceneNode->GetName();
-		}
-		size_t GetChildsCount() const
-		{
-			return m_SceneNode->GetChilds().size();
-		}
-		std::shared_ptr<IznTreeViewItemSource> GetChild(size_t Index) const
-		{
-			const auto& childs = m_SceneNode->GetChilds();
-			//_ASSERT(Index < childs.size());
-			if (Index >= childs.size())
-				return nullptr;
-
-			const auto& child = m_SceneNode->GetChilds().at(Index);
-			return GetChildInternal(child);
-		}
-		std::shared_ptr<IObject> Object() const
-		{
-			return m_SceneNode;
-		}
-
-	private:
-		std::shared_ptr<IznTreeViewItemSource> GetChildInternal(const std::shared_ptr<ISceneNode>& Object) const
-		{
-			if (Object == nullptr)
-				return nullptr;
-
-			const auto& it = std::find_if(m_CachedChilds.begin(), m_CachedChilds.end(), [Object](const std::shared_ptr<CznSceneNode3DTreeViewItemSource>& SourceObject)->bool
-			{
-				auto object = SourceObject->Object();
-				if (object == nullptr)
-					return false;
-				return object == Object;
-			});
-
-			// Retrieve from cahce
-			if (it != m_CachedChilds.end())
-			{
-				return *it;
-			}
-
-			// Add new item to cache
-			auto newChild = MakeShared(CznSceneNode3DTreeViewItemSource, Object);
-			//Log::Info("TreeViewSceneNode3DSource: Created for object with name '%s'", Object->GetName().c_str());
-			m_CachedChilds.push_back(newChild);
-			return newChild;
-		}
-
-	private:
-		std::shared_ptr<ISceneNode> m_SceneNode;
-
-		mutable std::vector<std::shared_ptr<CznSceneNode3DTreeViewItemSource>> m_CachedChilds;
-	};
-
-
-
-
-
-
-
-
-
-
-	class CznModel3DTreeViewItemSource
-		: public IznTreeViewItemSource
-	{
-	public:
-		CznModel3DTreeViewItemSource(const std::shared_ptr<IModel>& Model)
-			: m_Model(Model)
-		{}
-
-		// IznTreeViewItemSource
-		ETreeViewItemType GetType() const
-		{
-			return ETreeViewItemType::Model;
-		}
-		std::string GetName() const override
-		{
-			return m_Model->GetName();
-		}
-		size_t GetChildsCount() const
-		{
-			return 0;
-		}
-		std::shared_ptr<IznTreeViewItemSource> GetChild(size_t Index) const
-		{
-			_ASSERT(false);
-			return nullptr;
-		}
-		std::shared_ptr<IObject> Object() const
-		{
-			return m_Model;
-		}
-	private:
-		std::shared_ptr<IModel> m_Model;
-	};
-
-
-
-
-	class CznSceneNodePrototypeTreeViewItemSource
-		: public IznTreeViewItemSource
-	{
-	public:
-		CznSceneNodePrototypeTreeViewItemSource(const std::shared_ptr<ISceneNode>& SceneNode)
-			: m_SceneNode(SceneNode)
-		{}
-
-		// IznTreeViewItemSource
-		ETreeViewItemType GetType() const
-		{
-			return ETreeViewItemType::SceneNodeProto;
-		}
-		std::string GetName() const override
-		{
-			return m_SceneNode->GetName();
-		}
-		size_t GetChildsCount() const
-		{
-			return 0;
-		}
-		std::shared_ptr<IznTreeViewItemSource> GetChild(size_t Index) const
-		{
-			_ASSERT(false);
-			return nullptr;
-		}
-		std::shared_ptr<IObject> Object() const
-		{
-			return m_SceneNode;
-		}
-	private:
-		std::shared_ptr<ISceneNode> m_SceneNode;
-	};
-
-
-
-
-
-}
+#include "ResourcesBrowser/VirtualFolderTreeViewItemSource.h"
+#include "ResourcesBrowser/Model3DTreeViewItemSource.h"
+#include "ResourcesBrowser/NodeProtoTreeViewItemSource.h"
+#include "ResourcesBrowser/SceneNodeTreeViewItemSource.h"
 
 
 
@@ -282,15 +122,16 @@ std::shared_ptr<IznTreeViewItemSource> CEditorResourceBrowser::CreateSceneNodePr
 
 			auto sceneNodeProtoRoot = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<CSceneNode3DFactory>()->LoadSceneNode3DXML(firstXMLChild, m_Editor.Get3DFrame().GetScene());
 			sceneNodeProtoRoot->MakeMeOrphan();
-			sceneNodes.push_back(MakeShared(CznSceneNodePrototypeTreeViewItemSource, sceneNodeProtoRoot));
+			sceneNodes.push_back(MakeShared(CzNodeProtoTreeViewItemSource, sceneNodeProtoRoot));
 		}
 		catch (const CException& e)
 		{
+			Log::Error("Error while loading '%s' SceneNodeProto.", fileName.c_str());
 			Log::Error(e.MessageCStr());
 		}
 	}
 
-	auto modelsFolders = MakeShared(CznTreeViewItemVirtualFolder, FolderName);
+	auto modelsFolders = MakeShared(CznVirtualFolderTreeViewItemSource, FolderName);
 	for (const auto& m : sceneNodes)
 		modelsFolders->AddChild(m);
 	return modelsFolders;
@@ -306,49 +147,19 @@ std::shared_ptr<IznTreeViewItemSource> CEditorResourceBrowser::CreateModelsFromF
 	auto fileNames = gameDataStorageEx->GetAllFilesInFolder(FolderName, ".fbx");
 	for (const auto& fbxFileName : fileNames)
 	{
-		try
-		{
-			auto filePtr = gameDataStorage->Open(fbxFileName);
-			filePtr->ChangeExtension("znmdl");
-
-			if (GetBaseManager().GetManager<IFilesManager>()->IsFileExists(filePtr->Path_Name()))
-			{
-				IModelPtr model = GetBaseManager().GetManager<IznModelsFactory>()->LoadModel(filePtr->Path_Name());
-				model->SetName(filePtr->Name_NoExtension());
-				models.push_back(MakeShared(CznModel3DTreeViewItemSource, model));
-				continue;
-			}
-
-			CznFBXLoaderParams loader;
-			if (fbxFileName.find("ground_dirt") != std::string::npos)
-				loader.MakeCenterIsX0Z = true;
-			if (fbxFileName.find("cliffGrey") != std::string::npos)
-				loader.MakeCenterIsX0Z = true;
-			if (fbxFileName.find("cliffBrown") != std::string::npos)
-				loader.MakeCenterIsX0Z = true;
-
-			//loader.ApplyFullTransform = true;
-
-			IModelPtr fbxModel = GetBaseManager().GetManager<IznModelsFactory>()->LoadModel(fbxFileName, &loader);
-
-			auto znModelFile = GetBaseManager().GetManager<IznModelsFactory>()->SaveModel(fbxModel, filePtr->Path_Name());
-			znModelFile->Save();
-
-			znModelFile->seek(0);
-
-			auto znModel = GetBaseManager().GetManager<IznModelsFactory>()->LoadModel(znModelFile);
-			znModel->SetName(filePtr->Name_NoExtension());
-			models.push_back(MakeShared(CznModel3DTreeViewItemSource, znModel));
-		}
-		catch (const CException& e)
-		{
-			Log::Error(e.MessageCStr());
-		}
+		auto t = MakeShared(CznModel3DTreeViewItemSource, GetBaseManager(), fbxFileName);
+		m_Editor.GetBaseManager().GetManager<ILoader>()->AddToLoadQueue(t);
+		//t->Load();
+		//t->SetState(ILoadable::ELoadableState::Loaded);
+		models.push_back(t);
 	}
 
-	auto modelsFolders = MakeShared(CznTreeViewItemVirtualFolder, FolderName);
+	auto modelsFolders = MakeShared(CznVirtualFolderTreeViewItemSource, FolderName);
 	for (const auto& m : models)
 		modelsFolders->AddChild(m);
+
+	Log::Error("Resource Browser: All models from '%s' loaded.", FolderName.c_str());
+
 	return modelsFolders;
 }
 
@@ -394,6 +205,11 @@ void CEditorResourceBrowser::InitializeSceneBrowser()
 
 	//UpdateSceneBrowser();
 }
+
+
+
+
+
 
 void CEditorResourceBrowser::UpdateSceneBrowser()
 {

@@ -7,14 +7,13 @@ public:
 	CLoadableObject(std::weak_ptr<ILoadable> Depends = std::weak_ptr<ILoadable>());
 	virtual ~CLoadableObject();
 
-	virtual bool									Load();
-	virtual bool									Delete();
-
-	virtual void                                    SetState(ELoadableState State) override;
-	virtual ELoadableState                          GetState() const override;
-
-	void                                            AddDependense(const std::weak_ptr<ILoadable>& Loadable) override final;
-	std::weak_ptr<ILoadable>                        GetDependense() const override final;
+	// ILoadable
+	virtual bool									Load() = 0;
+	virtual bool									Delete() = 0;
+	void                                            SetState(ELoadableState State) override final;
+	ELoadableState                                  GetState() const override final;
+	void                                            AddDependense(std::shared_ptr<ILoadable> Loadable) override final;
+	std::shared_ptr<ILoadable>                      GetDependense() const override final;
 
 private:
 	std::atomic<ELoadableState>                     m_State;

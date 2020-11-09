@@ -69,7 +69,7 @@ namespace
 	{
 		if (!TiniXMLDocument->Error())
 			return;
-		throw CException(L"TinyXMLError: %s. ID: '%d', Row: '%d', Col: '%d'.", Resources::utf8_to_utf16(TiniXMLDocument->ErrorDesc()), TiniXMLDocument->ErrorId(), TiniXMLDocument->ErrorRow(), TiniXMLDocument->ErrorCol());
+		throw CException("TinyXMLError: %s. ID: '%d', Row: '%d', Col: '%d'.", TiniXMLDocument->ErrorDesc(), TiniXMLDocument->ErrorId(), TiniXMLDocument->ErrorRow(), TiniXMLDocument->ErrorCol());
 	}
 }
 

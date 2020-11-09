@@ -30,8 +30,8 @@ private:
 	void                UpdatePropertyValue(QtProperty* Property, QVariant Value);
 
 private:
+	std::shared_ptr<QtVariantEditorFactory>    m_VariantEditorFactory;
 	std::shared_ptr<QtVariantPropertyManager>  m_VariantManager;
 	std::shared_ptr<QtGroupPropertyManager>    m_GroupPropertyManager;
 	std::shared_ptr<ISceneNode>                m_SceneNode;
-	std::map<QtProperty *, std::string>        m_PropertiesMap;
 };

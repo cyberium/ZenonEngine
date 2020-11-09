@@ -84,6 +84,8 @@ std::shared_ptr<IModel> CznEngineModelsLoader::LoadModel(const std::shared_ptr<I
 {
 	IRenderDevice& renderDevice = m_BaseManager.GetApplication().GetRenderDevice();
 	
+	ModelFile->seek(0);
+
 	auto model = renderDevice.GetObjectsFactory().CreateModel();
 	model->SetFileName(ModelFile->Path_Name());
 

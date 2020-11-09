@@ -8,17 +8,18 @@
 ZenonPropertiesEditorWidget::ZenonPropertiesEditorWidget(QWidget * parent)
 	: QtTreePropertyBrowser(parent)
 {
+	m_VariantEditorFactory = MakeShared(QtVariantEditorFactory);
 	m_VariantManager = MakeShared(QtVariantPropertyManager, this);
 	m_GroupPropertyManager = MakeShared(QtGroupPropertyManager, this);
 
 	setHeaderVisible(false);
-	setFactoryForManager(m_VariantManager.get(), new QtVariantEditorFactory);
-
-	connect(m_VariantManager.get(), SIGNAL(valueChanged(QtProperty*, QVariant)), this, SLOT(valueChanged(QtProperty*, QVariant)));
+	
+	setFactoryForManager(m_VariantManager.get(), m_VariantEditorFactory.get());
 }
 
 ZenonPropertiesEditorWidget::~ZenonPropertiesEditorWidget()
 {
+	unsetFactoryForManager(m_VariantManager.get());
 }
 
 void ZenonPropertiesEditorWidget::setTest(std::shared_ptr<ISceneNode> SceneNode)
@@ -27,9 +28,9 @@ void ZenonPropertiesEditorWidget::setTest(std::shared_ptr<ISceneNode> SceneNode)
 		return;
 
 	m_SceneNode.reset();
-	clear();
+	this->clear();
 	m_VariantManager->clear();
-	m_PropertiesMap.clear();
+	m_GroupPropertyManager->clear();
 
 
 	disconnect(m_VariantManager.get(), SIGNAL(valueChanged(QtProperty*, QVariant)), this, SLOT(valueChanged(QtProperty*, QVariant)));

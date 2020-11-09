@@ -1,13 +1,13 @@
 #pragma once
 
-#include "TreeViewIntfs.h"
+#include "ZenonWidgets/ZenonTreeView/TreeViewIntfs.h"
 
-class CznTreeViewItemVirtualFolder
+class CznVirtualFolderTreeViewItemSource
 	: public IznTreeViewItemSource
 {
 public:
-	CznTreeViewItemVirtualFolder(const std::string& VirtualFolderName);
-	virtual ~CznTreeViewItemVirtualFolder();
+	CznVirtualFolderTreeViewItemSource(const std::string& VirtualFolderName);
+	virtual ~CznVirtualFolderTreeViewItemSource();
 
 	// CznVirtualFolderTreeViewItemSource
 	void AddChild(const std::shared_ptr<IznTreeViewItemSource>& Child);

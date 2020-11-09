@@ -47,9 +47,9 @@ CznTreeViewItem* CznTreeViewItem::GetParent()
 	return m_Parent;
 }
 
-QVariant CznTreeViewItem::GetData() const
+std::string CznTreeViewItem::GetText() const
 {
-	return QVariant(m_SourceObject->GetName().c_str());
+	return m_SourceObject->GetName();
 }
 
 size_t CznTreeViewItem::GetMyIndexInParent() const
@@ -126,7 +126,7 @@ std::shared_ptr<CznTreeViewItem> CznTreeViewItem::GetChildInternal(const std::sh
 
 	// Add new item to cache
 	auto newChild = MakeShared(CznTreeViewItem, SourceItem, this);
-	Log::Info("TreeViewItem: Created for source with name '%s'", SourceItem->GetName().c_str());
+	//Log::Info("TreeViewItem: Created for source with name '%s'", SourceItem->GetName().c_str());
 	//m_CachedChilds.insert(std::make_pair(sourceName, newChild));
 	m_CachedChilds.push_back(newChild);
 	return newChild;

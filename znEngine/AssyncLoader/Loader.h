@@ -18,15 +18,12 @@ public:
 		m_Queue.push_back(item);
 	}
 
-	inline bool GetNextItem(std::shared_ptr<ILoadable> * Result)
+	inline std::shared_ptr<ILoadable> GetNextItem()
 	{
-		_ASSERT(Result != NULL);
-		_ASSERT(*Result == NULL);
-
 		std::lock_guard<std::mutex> lock(m_Lock);
 
 		if (m_Queue.empty())
-			return false;
+			return nullptr;
 
 		auto loadableWPtr = m_Queue.front();
 		m_Queue.pop_front();
@@ -34,26 +31,26 @@ public:
 		// Объект уже кто-то удалил, загружать не будем
 		auto loadable = loadableWPtr.lock();
 		if (loadable == nullptr)
-			return false;
+			return nullptr;
 
 		// Загружать можно только созданные объекты
 		if (loadable->GetState() != ILoadable::ELoadableState::Created)
-			return false;
+			return nullptr;
 
 		//if (loadable->GetDependense().expired())
 		//	return false;
 
-		if (auto depends = loadable->GetDependense().lock())
+		if (auto depends = loadable->GetDependense())
 		{
 			if (depends->GetState() != ILoadable::ELoadableState::Loaded)
 			{
+				// Если у загружаемого объекта есть зависимости, то откладываем его загрузку
 				m_Queue.push_back(loadable);
-				return false;
+				return nullptr;
 			}
 		}
-		
-		(*Result) = loadable;
-		return true;
+
+		return loadable;
 	}
 
 	inline bool IsEmpty()
@@ -176,7 +173,7 @@ public:
 #endif
 
 private:
-	const static uint32                    c_PoolSize = 4;
+	const static uint32                    c_PoolSize = 8;
 
 private:
 #ifdef LOADER_ENABLED

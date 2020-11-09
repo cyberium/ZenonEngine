@@ -224,7 +224,8 @@ void CColliderComponent3D::Load(const std::shared_ptr<IXMLReader>& Reader)
 
 	BoundingBox bbox;
 	bbox.Load(Reader);
-	SetBounds(bbox);
+	if (false == bbox.IsInfinite())
+		SetBounds(bbox);
 }
 
 void CColliderComponent3D::Save(const std::shared_ptr<IXMLWriter>& Writer) const

@@ -17,7 +17,7 @@ CFBXScene::CFBXScene(const IBaseManager& BaseManager, fbxsdk::FbxManager* FBXMan
 	, m_NativeScene(nullptr)
 	, m_LoaderParams(LoaderParams)
 {
-	FbxScene* fbxScene = FbxScene::Create(FBXManager, "Default FBX scene.");
+	fbxsdk::FbxScene* fbxScene = fbxsdk::FbxScene::Create(FBXManager, "Default FBX scene.");
 	if (fbxScene == nullptr)
 		throw CException("FBXManager: Unable to create FBX scene.");
 

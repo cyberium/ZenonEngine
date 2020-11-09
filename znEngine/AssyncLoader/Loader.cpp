@@ -100,13 +100,26 @@ void CLoader::LoaderThread(std::future<void> _promiseExiter)
 			continue;
 		}
 
-		std::shared_ptr<ILoadable> objectToLoad = nullptr;
-		if (!m_QueueLoad.GetNextItem(&objectToLoad))
+		std::shared_ptr<ILoadable> objectToLoad = m_QueueLoad.GetNextItem();
+		if (objectToLoad == nullptr)
 			continue;
 
-		objectToLoad->SetState(ILoadable::ELoadableState::Loading);
-		objectToLoad->Load();
-		objectToLoad->SetState(ILoadable::ELoadableState::Loaded);
+		try
+		{
+			objectToLoad->SetState(ILoadable::ELoadableState::Loading);
+			objectToLoad->Load();
+			objectToLoad->SetState(ILoadable::ELoadableState::Loaded);
+		}
+		catch (const CException& e)
+		{
+			Log::Error("Error in loader thread.");
+			Log::Error("--->%s", e.MessageCStr());
+		}
+		catch (...)
+		{
+			Log::Error("Error in loader thread.");
+		}
+
 	}
 
 	Log::Green("Loader thread stopped.");

@@ -61,6 +61,38 @@ namespace Utils
 		}
 		return newFilePath;
 	}
+
+	std::pair<std::string, std::string> GetFilenamePathAndNameExtension(const std::string & FilePath)
+	{
+		std::string fixedFilename = FixFilePath(FilePath);
+
+		auto lastSlashPos = fixedFilename.find_last_of('/');
+		if (lastSlashPos != std::string::npos)
+		{
+			std::string path = fixedFilename.substr(0, lastSlashPos + 1);
+			std::string name = fixedFilename.substr(lastSlashPos + 1);
+			return std::make_pair(path, name);
+		}
+
+		return std::make_pair("", fixedFilename);
+	}
+
+	std::pair<std::string, std::string> GetFilenamePathNameAndExtension(const std::string& FilePath)
+	{
+		std::string fixedFilename = FixFilePath(FilePath);
+
+		auto lastPointPos = fixedFilename.find_last_of('.');
+		if (lastPointPos != std::string::npos)
+		{
+			std::string nameWithoutExtension = fixedFilename.substr(0, lastPointPos);
+			std::string extension = fixedFilename.substr(lastPointPos + 1);
+			extension = Utils::ToLower(extension);
+
+			return std::make_pair(nameWithoutExtension, extension);
+		}
+
+		return std::make_pair(fixedFilename, "");
+	}
 }
 
 namespace Resources

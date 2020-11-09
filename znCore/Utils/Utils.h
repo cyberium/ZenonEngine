@@ -11,6 +11,8 @@ namespace Utils
 
 	ZN_API std::vector<std::string> ArgumentsToVector(int argumentsCount, char* arguments[]);
 	ZN_API std::string FixFilePath(const std::string& FilePath);
+	ZN_API std::pair<std::string, std::string> GetFilenamePathAndNameExtension(const std::string& FilePath);
+	ZN_API std::pair<std::string, std::string> GetFilenamePathNameAndExtension(const std::string& FilePath);
 };
 
 

@@ -25,6 +25,7 @@ public:
 	std::shared_ptr<IFBXScene> LoadScene(const std::shared_ptr<IFile>& ModelFile, const IznLoaderParams* LoaderParams) const override;
 
 private:
+	mutable std::mutex m_FBXManagerLock;
 	fbxsdk::FbxManager* m_FBXManager;
 
 private:

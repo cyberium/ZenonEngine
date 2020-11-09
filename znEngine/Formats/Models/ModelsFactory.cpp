@@ -44,7 +44,7 @@ const std::shared_ptr<IznModelsLoader> CznModelsFactory::GetLoaderForModel(const
 std::shared_ptr<IModel> CznModelsFactory::LoadModel(const std::string& ModelFileName, const IznLoaderParams* LoaderParams)
 {
 	// Find existsing cached
-	const auto& iter = m_ModelsByName.find(ModelFileName);
+	/*const auto& iter = m_ModelsByName.find(ModelFileName);
 	if (iter != m_ModelsByName.end())
 	{
 		if (auto model = iter->second.lock())
@@ -55,14 +55,14 @@ std::shared_ptr<IModel> CznModelsFactory::LoadModel(const std::string& ModelFile
 		{
 			m_ModelsByName.erase(iter);
 		}
-	}
+	}*/
 
 	for (const auto& loader : m_ModelsLoaders)
 	{
 		if (loader->IsSupportedFormat(ModelFileName))
 		{
 			std::shared_ptr<IModel> model = loader->LoadModel(ModelFileName, LoaderParams);
-			m_ModelsByName[ModelFileName] = model;
+			//m_ModelsByName[ModelFileName] = model;
 			return model;
 		}
 	}

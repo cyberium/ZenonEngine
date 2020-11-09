@@ -110,6 +110,9 @@ void CSceneNodeRTSUnit::Update(const UpdateEventArgs & e)
 	if (e.DeltaTime == e.TotalTime)
 		fpsMultiplier = 1.0f; // First frame
 
+	if (m_Path == nullptr)
+		return;
+
 	auto nextPoint = m_Path->GetPoint(m_PathCurrentPoint + 1);
 	if (nextPoint == nullptr)
 	{

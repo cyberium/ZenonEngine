@@ -12,16 +12,11 @@ CLoadableObject::~CLoadableObject()
 {
 }
 
-bool CLoadableObject::Load()
-{
-	return false;
-}
 
-bool CLoadableObject::Delete()
-{
-	return false;
-}
 
+//
+// ILoadable
+//
 void CLoadableObject::SetState(ELoadableState State)
 {
 	m_State = State;
@@ -32,13 +27,12 @@ ILoadable::ELoadableState CLoadableObject::GetState() const
 	return m_State;
 }
 
-void CLoadableObject::AddDependense(const std::weak_ptr<ILoadable>& Loadable)
+void CLoadableObject::AddDependense(std::shared_ptr<ILoadable> Loadable)
 {
-	_ASSERT(m_Depends.lock() == nullptr);
 	m_Depends = Loadable;
 }
 
-std::weak_ptr<ILoadable> CLoadableObject::GetDependense() const
+std::shared_ptr<ILoadable> CLoadableObject::GetDependense() const
 {
-	return m_Depends;
+	return m_Depends.lock();
 }

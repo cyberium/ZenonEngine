@@ -4,7 +4,7 @@
 #include "TreeViewModel.h"
 
 // Additional
-#include "TreeViewItemVirtualFolder.h"
+#include "ResourcesBrowser/VirtualFolderTreeViewItemSource.h"
 
 namespace
 {
@@ -36,7 +36,7 @@ namespace
 CznQTTreeViewModel::CznQTTreeViewModel(QObject * parent)
 	: QAbstractItemModel(parent)
 {
-	m_RootItem = MakeShared(CznTreeViewItem, MakeShared(CznTreeViewItemVirtualFolder, "InvisibleRootFolder"), nullptr);
+	m_RootItem = MakeShared(CznTreeViewItem, MakeShared(CznVirtualFolderTreeViewItemSource, "InvisibleRootFolder"), nullptr);
 }
 
 CznQTTreeViewModel::~CznQTTreeViewModel()
@@ -51,7 +51,7 @@ CznQTTreeViewModel::~CznQTTreeViewModel()
 void CznQTTreeViewModel::AddToRoot(const std::shared_ptr<IznTreeViewItemSource>& Item) const
 {
 	_ASSERT(m_RootItem != nullptr);
-	auto rootVirtualFolderSource = std::dynamic_pointer_cast<CznTreeViewItemVirtualFolder>(m_RootItem->GetSourceObject());
+	auto rootVirtualFolderSource = std::dynamic_pointer_cast<CznVirtualFolderTreeViewItemSource>(m_RootItem->GetSourceObject());
 	if (rootVirtualFolderSource == nullptr)
 		_ASSERT(false);
 	rootVirtualFolderSource->AddChild(Item);
@@ -60,7 +60,7 @@ void CznQTTreeViewModel::AddToRoot(const std::shared_ptr<IznTreeViewItemSource>&
 void CznQTTreeViewModel::ClearRoot() const
 {
 	_ASSERT(m_RootItem != nullptr);
-	auto rootVirtualFolderSource = std::dynamic_pointer_cast<CznTreeViewItemVirtualFolder>(m_RootItem->GetSourceObject());
+	auto rootVirtualFolderSource = std::dynamic_pointer_cast<CznVirtualFolderTreeViewItemSource>(m_RootItem->GetSourceObject());
 	if (rootVirtualFolderSource == nullptr)
 		_ASSERT(false);
 	rootVirtualFolderSource->ClearChilds();
@@ -71,6 +71,11 @@ void CznQTTreeViewModel::ClearRoot() const
 void CznQTTreeViewModel::ClearRootCache() const
 {
 	m_RootItem->ClearCache();
+}
+
+std::shared_ptr<CznTreeViewItem> CznQTTreeViewModel::GetRootTreeViewItem() const
+{
+	return m_RootItem;
 }
 
 std::shared_ptr<IObject> CznQTTreeViewModel::Find(const QModelIndex& ModelIdnex) const
