@@ -5,10 +5,10 @@
 
 #include <QtWidgets/QTreeView>
 
-typedef std::function<bool(const CznTreeViewItem*, std::string *, std::vector<std::shared_ptr<IPropertyAction>> *)> OnContextMenuCallback;
-typedef std::function<bool(const CznTreeViewItem*, CByteBuffer * Bytes)> OnDragStartCallback;
-typedef std::function<bool(const std::vector<const CznTreeViewItem*>& Selection)> OnSelectionChangeCallback;
-typedef std::function<bool(const CznTreeViewItem*)> OnSelectedItemChangeCallback;
+typedef std::function<bool(const IznTreeViewItem*, std::string *, std::vector<std::shared_ptr<IPropertyAction>> *)> OnContextMenuCallback;
+typedef std::function<bool(const IznTreeViewItem*, CByteBuffer * Bytes)> OnDragStartCallback;
+typedef std::function<bool(const std::vector<const IznTreeViewItem*>& Selection)> OnSelectionChangeCallback;
+typedef std::function<bool(const IznTreeViewItem*)> OnSelectedItemChangeCallback;
 
 class ZenonTreeViewWidget
 	: public QTreeView
@@ -20,8 +20,8 @@ public:
 	virtual ~ZenonTreeViewWidget();
 
 	void Refresh();
-	void AddToRoot(const std::shared_ptr<IznTreeViewItemSource>& RootItem, bool DeleteExisting = false);
-	void AddToRoot(const std::vector<std::shared_ptr<IznTreeViewItemSource>>& RootItems, bool DeleteExisting = false);
+	void AddToRoot(const std::shared_ptr<IznTreeViewItem>& RootItem, bool DeleteExisting = false);
+	void AddToRoot(const std::vector<std::shared_ptr<IznTreeViewItem>>& RootItems, bool DeleteExisting = false);
 	//void SetRootItems(const std::vector<std::shared_ptr<IznTreeViewItemSource>>& RootItems);
 
 	void ClearSelection();

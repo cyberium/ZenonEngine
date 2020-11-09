@@ -43,7 +43,7 @@ void ZenonTreeViewWidget::Refresh()
 	this->expandAll();
 }
 
-void ZenonTreeViewWidget::AddToRoot(const std::shared_ptr<IznTreeViewItemSource>& RootItem, bool DeleteExisting)
+void ZenonTreeViewWidget::AddToRoot(const std::shared_ptr<IznTreeViewItem>& RootItem, bool DeleteExisting)
 {
 	m_LockForSelectionChangedEvent = true;
 
@@ -59,7 +59,7 @@ void ZenonTreeViewWidget::AddToRoot(const std::shared_ptr<IznTreeViewItemSource>
 	m_LockForSelectionChangedEvent = false;
 }
 
-void ZenonTreeViewWidget::AddToRoot(const std::vector<std::shared_ptr<IznTreeViewItemSource>>& RootItems, bool DeleteExisting)
+void ZenonTreeViewWidget::AddToRoot(const std::vector<std::shared_ptr<IznTreeViewItem>>& RootItems, bool DeleteExisting)
 {
 	m_LockForSelectionChangedEvent = true;
 	
@@ -186,7 +186,7 @@ void ZenonTreeViewWidget::onCustomContextMenu(const QPoint& point)
 	if (!index.isValid())
 		return;
 
-	auto item = static_cast<CznTreeViewItem*>(index.internalPointer());
+	auto item = static_cast<IznTreeViewItem*>(index.internalPointer());
 	_ASSERT_EXPR(item != nullptr, L"Item is null.");
 
 	m_ContextMenu->clear();
@@ -229,7 +229,7 @@ void ZenonTreeViewWidget::onCurrentChanged(const QModelIndex& current, const QMo
 	if (m_OnSelectedItemChange == nullptr)
 		return;
 
-	m_OnSelectedItemChange(static_cast<CznTreeViewItem*>(current.internalPointer()));
+	m_OnSelectedItemChange(static_cast<IznTreeViewItem*>(current.internalPointer()));
 }
 
 void ZenonTreeViewWidget::onSelectionChanged(const QItemSelection& selected, const QItemSelection& deselected)
@@ -240,10 +240,10 @@ void ZenonTreeViewWidget::onSelectionChanged(const QItemSelection& selected, con
 	if (m_OnSelectionChange == nullptr)
 		return;
 
-	std::vector<const CznTreeViewItem*> selectedNodes;
+	std::vector<const IznTreeViewItem*> selectedNodes;
 	auto indexes = selectionModel()->selectedIndexes();
 	std::for_each(indexes.begin(), indexes.end(), [&selectedNodes](const QModelIndex& Index) {
-		selectedNodes.push_back(static_cast<CznTreeViewItem*>(Index.internalPointer()));
+		selectedNodes.push_back(static_cast<IznTreeViewItem*>(Index.internalPointer()));
 	});
 
 	m_OnSelectionChange(selectedNodes);
@@ -300,7 +300,7 @@ void ZenonTreeViewWidget::mouseMoveEventInternal(QMouseEvent * event)
 	if (false == index.isValid())
 		return;
 
-	auto item = static_cast<CznTreeViewItem*>(index.internalPointer());
+	auto item = static_cast<IznTreeViewItem*>(index.internalPointer());
 	if (item == nullptr)
 		return;
 

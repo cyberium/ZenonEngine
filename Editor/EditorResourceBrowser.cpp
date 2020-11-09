@@ -28,10 +28,10 @@ CEditorResourceBrowser::~CEditorResourceBrowser()
 //
 void CEditorResourceBrowser::Initialize()
 {
-	GetEditorQtUIFrame().getCollectionViewer()->SetOnSelectedItemChange([this](const CznTreeViewItem * Item) -> bool 
+	GetEditorQtUIFrame().getCollectionViewer()->SetOnSelectedItemChange([this](const IznTreeViewItem * Item) -> bool 
 	{
-		auto sourceObject = Item->GetSourceObject();
-		auto object = sourceObject->Object();
+		auto sourceObject = Item;
+		auto object = sourceObject->GetObject_();
 		if (object == nullptr)
 			return false;
 
@@ -57,7 +57,7 @@ void CEditorResourceBrowser::Initialize()
 
 
 
-	GetEditorQtUIFrame().getCollectionViewer()->SetOnStartDragging([this](const CznTreeViewItem * Item, CByteBuffer * Value) -> bool 
+	GetEditorQtUIFrame().getCollectionViewer()->SetOnStartDragging([this](const IznTreeViewItem * Item, CByteBuffer * Value) -> bool
 	{
 		if (Value == nullptr || Value->getSize() > 0 || Value->getPos() > 0)
 		{
@@ -65,8 +65,8 @@ void CEditorResourceBrowser::Initialize()
 			return false;
 		}
 
-		auto sourceObject = Item->GetSourceObject();
-		auto object = sourceObject->Object();
+		auto sourceObject = Item;
+		auto object = sourceObject->GetObject_();
 		if (object == nullptr)
 			return false;
 
@@ -100,9 +100,9 @@ void CEditorResourceBrowser::Initialize()
 	GetEditorQtUIFrame().getCollectionViewer()->AddToRoot(CreateSceneNodeProtosFromFolder("sceneNodesProtos"));
 }
 
-std::shared_ptr<IznTreeViewItemSource> CEditorResourceBrowser::CreateSceneNodeProtosFromFolder(const std::string & FolderName)
+std::shared_ptr<IznTreeViewItem> CEditorResourceBrowser::CreateSceneNodeProtosFromFolder(const std::string & FolderName)
 {
-	std::vector<std::shared_ptr<IznTreeViewItemSource>> sceneNodes;
+	std::vector<std::shared_ptr<IznTreeViewItem>> sceneNodes;
 
 	auto gameDataStorage = GetBaseManager().GetManager<IFilesManager>()->GetStorage(EFilesStorageType::GAMEDATA);
 	auto gameDataStorageEx = std::dynamic_pointer_cast<IznFilesStorageExtended>(gameDataStorage);
@@ -137,9 +137,9 @@ std::shared_ptr<IznTreeViewItemSource> CEditorResourceBrowser::CreateSceneNodePr
 	return modelsFolders;
 }
 
-std::shared_ptr<IznTreeViewItemSource> CEditorResourceBrowser::CreateModelsFromFolder(const std::string & FolderName)
+std::shared_ptr<IznTreeViewItem> CEditorResourceBrowser::CreateModelsFromFolder(const std::string & FolderName)
 {
-	std::vector<std::shared_ptr<IznTreeViewItemSource>> models;
+	std::vector<std::shared_ptr<IznTreeViewItem>> models;
 	auto gameDataStorage = GetBaseManager().GetManager<IFilesManager>()->GetStorage(EFilesStorageType::GAMEDATA);
 	auto gameDataStorageEx = std::dynamic_pointer_cast<IznFilesStorageExtended>(gameDataStorage);
 	_ASSERT(gameDataStorageEx != nullptr);
@@ -168,12 +168,12 @@ std::shared_ptr<IznTreeViewItemSource> CEditorResourceBrowser::CreateModelsFromF
 
 void CEditorResourceBrowser::InitializeSceneBrowser()
 {
-	GetEditorQtUIFrame().getSceneViewer()->SetOnSelectedItemChange([this](const CznTreeViewItem * Item) -> bool {
-		auto sourceObject = Item->GetSourceObject();
+	GetEditorQtUIFrame().getSceneViewer()->SetOnSelectedItemChange([this](const IznTreeViewItem * Item) -> bool {
+		auto sourceObject = Item;
 		if (sourceObject->GetType() != ETreeViewItemType::CSceneNode)
 			return false;
 
-		auto object = sourceObject->Object();
+		auto object = sourceObject->GetObject_();
 		if (object == nullptr)
 			return false;
 
@@ -185,12 +185,12 @@ void CEditorResourceBrowser::InitializeSceneBrowser()
 		return true;
 	});
 
-	GetEditorQtUIFrame().getSceneViewer()->SetOnContexMenu([this](const CznTreeViewItem* Item, std::string * Title, std::vector<std::shared_ptr<IPropertyAction>> * Actions) -> bool {
-		auto sourceObject = Item->GetSourceObject();
+	GetEditorQtUIFrame().getSceneViewer()->SetOnContexMenu([this](const IznTreeViewItem* Item, std::string * Title, std::vector<std::shared_ptr<IPropertyAction>> * Actions) -> bool {
+		auto sourceObject = Item;
 		if (sourceObject->GetType() != ETreeViewItemType::CSceneNode)
 			return false;
 
-		auto object = sourceObject->Object();
+		auto object = sourceObject->GetObject_();
 		if (object == nullptr)
 			return false;
 
@@ -215,7 +215,7 @@ void CEditorResourceBrowser::UpdateSceneBrowser()
 {
 	if (false == IsAttachedTest)
 	{
-		auto sceneNode3DSource = MakeShared(CznSceneNode3DTreeViewItemSource, m_Editor.Get3DFrame().GetEditedRootNode3D());
+		auto sceneNode3DSource = MakeShared(CznSceneNode3DTreeViewItemSource, m_Editor.Get3DFrame().GetEditedRootNode3D(), nullptr);
 		GetEditorQtUIFrame().getSceneViewer()->AddToRoot(sceneNode3DSource, true);
 		IsAttachedTest = true;
 	}

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "TreeViewItem.h"
+#include "TreeViewIntfs.h"
 
 #include <QAbstractItemModel>
 #include <QModelIndex>
@@ -13,11 +13,10 @@ public:
 	virtual ~CznQTTreeViewModel();
 
 	// CznQTTreeViewModel
-	//void ReplaceRoot(const std::shared_ptr<IznTreeViewItemSource>& Item);
-	void AddToRoot(const std::shared_ptr<IznTreeViewItemSource>& Item) const;
+	void AddToRoot(std::shared_ptr<IznTreeViewItem> Item) const;
 	void ClearRoot() const;
 	void ClearRootCache() const;
-	std::shared_ptr<CznTreeViewItem> GetRootTreeViewItem() const;
+	std::shared_ptr<IznTreeViewItem> GetRootTreeViewItem() const;
 
 	std::shared_ptr<IObject> Find(const QModelIndex& ModelIdnex) const;
 	QModelIndex Find(const std::shared_ptr<IObject>& Node) const;
@@ -33,8 +32,8 @@ public:
 	bool hasChildren(const QModelIndex& parent) const override;
 
 private:
-	CznTreeViewItem* getItem(const QModelIndex& index) const;
+	IznTreeViewItem* getItem(const QModelIndex& index) const;
 
 private:
-	std::shared_ptr<CznTreeViewItem> m_RootItem;
+	std::shared_ptr<IznTreeViewItem> m_RootItem;
 };

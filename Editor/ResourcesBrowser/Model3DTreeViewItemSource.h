@@ -1,22 +1,19 @@
 #pragma once
 
-#include "EditorInterfaces.h"
-#include "ZenonWidgets/ZenonTreeView/TreeViewIntfs.h"
+#include "ZenonWidgets/ZenonTreeView/TreeViewItem.h"
 
 class CznModel3DTreeViewItemSource
-	: public IznTreeViewItemSource
+	: public CznTreeViewItem
 	, public CLoadableObject
 {
 public:
 	CznModel3DTreeViewItemSource(IBaseManager& BaseManager, std::string FileName);
 	virtual ~CznModel3DTreeViewItemSource();
 
-	// IznTreeViewItemSource
-	ETreeViewItemType GetType() const;
-	std::string GetName() const override;
-	size_t GetChildsCount() const;
-	std::shared_ptr<IznTreeViewItemSource> GetChild(size_t Index) const;
-	std::shared_ptr<IObject> Object() const;
+	// IznTreeViewItem
+	ETreeViewItemType GetType() const override;
+	std::string GetText() const override;
+	std::shared_ptr<IObject> GetObject_() const override;
 
 	// ILoadableObject
 	bool Load() override;

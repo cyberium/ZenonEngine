@@ -17,8 +17,9 @@ CznVirtualFolderTreeViewItemSource::~CznVirtualFolderTreeViewItemSource()
 //
 // CznVirtualFolderTreeViewItemSource
 //
-void CznVirtualFolderTreeViewItemSource::AddChild(const std::shared_ptr<IznTreeViewItemSource>& Child)
+void CznVirtualFolderTreeViewItemSource::AddChild(std::shared_ptr<IznTreeViewItem> Child)
 {
+	std::dynamic_pointer_cast<IznTreeViewItemInternal>(Child)->SetParent(this);
 	m_Childs.push_back(Child);
 }
 
@@ -37,7 +38,7 @@ ETreeViewItemType CznVirtualFolderTreeViewItemSource::GetType() const
 	return ETreeViewItemType::VirtualFolder;
 }
 
-std::string CznVirtualFolderTreeViewItemSource::GetName() const
+std::string CznVirtualFolderTreeViewItemSource::GetText() const
 {
 	return m_VirtualFolderName;
 }
@@ -47,13 +48,13 @@ size_t CznVirtualFolderTreeViewItemSource::GetChildsCount() const
 	return m_Childs.size();
 }
 
-std::shared_ptr<IznTreeViewItemSource> CznVirtualFolderTreeViewItemSource::GetChild(size_t Index) const
+std::shared_ptr<IznTreeViewItem> CznVirtualFolderTreeViewItemSource::GetChild(size_t Index) const
 {
 	_ASSERT(Index < m_Childs.size());
 	return m_Childs.at(Index);
 }
 
-std::shared_ptr<IObject> CznVirtualFolderTreeViewItemSource::Object() const
+std::shared_ptr<IObject> CznVirtualFolderTreeViewItemSource::GetObject_() const
 {
 	return nullptr;
 }

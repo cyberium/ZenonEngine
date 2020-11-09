@@ -1,30 +1,35 @@
 #pragma once
 
+#include "EditorInterfaces.h"
 #include "TreeViewIntfs.h"
 
 class CznTreeViewItem
-	: public std::enable_shared_from_this<CznTreeViewItem>
+	: public IznTreeViewItem
+	, public IznTreeViewItemInternal
+	, public std::enable_shared_from_this<CznTreeViewItem>
 {
 public:
-	CznTreeViewItem(const std::shared_ptr<IznTreeViewItemSource>& TObject, CznTreeViewItem * Parent);
+	CznTreeViewItem(const IznTreeViewItem * Parent = nullptr);
 	virtual ~CznTreeViewItem();
 
-	void ClearCache();
+	// IznTreeViewItem
+	ETreeViewItemType                               GetType() const override;
+	std::string                                     GetText() const override;
+	size_t                                          GetChildsCount() const override;
+	std::shared_ptr<IznTreeViewItem>                GetChild(size_t Index) const override;
+	const IznTreeViewItem*                          GetParent() const override;
+	size_t                                          GetMyIndexInParent() const override;
+	std::shared_ptr<IObject>                        GetObject_() const override;
 
-	std::shared_ptr<CznTreeViewItem>  GetChildByIndex(size_t row);
-	size_t                            GetChildsCount() const;
-	CznTreeViewItem*                  GetParent();
-	std::string                       GetText() const;
-	size_t                            GetMyIndexInParent() const;
+	// IznTreeViewItemInternal
+	void                                            SetParent(IznTreeViewItem * Parent) override;
+	void                                            ClearCache() override;
 
-	std::shared_ptr<IznTreeViewItemSource> GetSourceObject() const;
+protected:
+	virtual std::shared_ptr<IznTreeViewItem>        CreateChild(std::shared_ptr<IObject> Object) const;
+	virtual std::shared_ptr<IznTreeViewItem>        GetChildInternal(std::shared_ptr<IObject> Child) const;
 
 private:
-	std::shared_ptr<CznTreeViewItem> GetChildInternal(const std::shared_ptr<IznTreeViewItemSource>& SourceItem);
-
-private:
-	CznTreeViewItem*                                         m_Parent;
-	std::shared_ptr<IznTreeViewItemSource>                   m_SourceObject;
-
-	mutable std::map<Guid, std::shared_ptr<CznTreeViewItem>> m_CachedChildMap;
+	const IznTreeViewItem*                                   m_Parent;
+	mutable std::map<Guid, std::shared_ptr<IznTreeViewItem>> m_CachedChildMap;
 };

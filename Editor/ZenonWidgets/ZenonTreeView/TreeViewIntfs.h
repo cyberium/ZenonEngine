@@ -17,7 +17,31 @@ enum class ETreeViewItemType
 };
 
 
-ZN_INTERFACE IznTreeViewItemSource
+ZN_INTERFACE IznTreeViewItem
+{
+	virtual ~IznTreeViewItem() {}
+
+	virtual ETreeViewItemType                      GetType() const = 0;
+	virtual std::string                            GetText() const = 0;
+	virtual size_t                                 GetChildsCount() const = 0;
+	virtual std::shared_ptr<IznTreeViewItem>       GetChild(size_t Index) const = 0;
+	virtual const IznTreeViewItem*                 GetParent() const = 0;
+	virtual size_t                                 GetMyIndexInParent() const = 0;
+	virtual std::shared_ptr<IObject>               GetObject_() const = 0;
+};
+
+
+ZN_INTERFACE IznTreeViewItemInternal
+{
+	virtual ~IznTreeViewItemInternal() {}
+
+	virtual void                                   SetParent(IznTreeViewItem * Parent) = 0;
+	virtual void                                   ClearCache() = 0;
+};
+
+
+
+/*ZN_INTERFACE IznTreeViewItemSource
 {
 	virtual ~IznTreeViewItemSource() {}
 
@@ -26,4 +50,4 @@ ZN_INTERFACE IznTreeViewItemSource
 	virtual size_t                                 GetChildsCount() const = 0;
 	virtual std::shared_ptr<IznTreeViewItemSource> GetChild(size_t Index) const = 0;
 	virtual std::shared_ptr<IObject>               Object() const = 0;
-};
+};*/

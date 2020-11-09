@@ -22,28 +22,12 @@ ETreeViewItemType CzNodeProtoTreeViewItemSource::GetType() const
 	return ETreeViewItemType::SceneNodeProto;
 }
 
-std::string CzNodeProtoTreeViewItemSource::GetName() const
+std::string CzNodeProtoTreeViewItemSource::GetText() const
 {
 	return m_SceneNode->GetName();
 }
 
-size_t CzNodeProtoTreeViewItemSource::GetChildsCount() const
-{
-	return 0;
-}
-
-std::shared_ptr<IznTreeViewItemSource> CzNodeProtoTreeViewItemSource::GetChild(size_t Index) const
-{
-	_ASSERT(false);
-	return nullptr;
-}
-
-bool CzNodeProtoTreeViewItemSource::IsEqual(const std::shared_ptr<IznTreeViewItemSource>& Other) const
-{
-	return false;
-}
-
-std::shared_ptr<IObject> CzNodeProtoTreeViewItemSource::Object() const
+std::shared_ptr<IObject> CzNodeProtoTreeViewItemSource::GetObject_() const
 {
 	return m_SceneNode;
 }

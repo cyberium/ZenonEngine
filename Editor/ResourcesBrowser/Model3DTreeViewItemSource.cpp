@@ -24,7 +24,7 @@ ETreeViewItemType CznModel3DTreeViewItemSource::GetType() const
 	return ETreeViewItemType::Model;
 }
 
-std::string CznModel3DTreeViewItemSource::GetName() const
+std::string CznModel3DTreeViewItemSource::GetText() const
 {
 	if (GetState() != ILoadable::ELoadableState::Loaded)
 		return m_FileName;
@@ -33,18 +33,7 @@ std::string CznModel3DTreeViewItemSource::GetName() const
 	return m_Model->GetName();
 }
 
-size_t CznModel3DTreeViewItemSource::GetChildsCount() const
-{
-	return 0;
-}
-
-std::shared_ptr<IznTreeViewItemSource> CznModel3DTreeViewItemSource::GetChild(size_t Index) const
-{
-	_ASSERT(false);
-	return nullptr;
-}
-
-std::shared_ptr<IObject> CznModel3DTreeViewItemSource::Object() const
+std::shared_ptr<IObject> CznModel3DTreeViewItemSource::GetObject_() const
 {
 	if (GetState() != ILoadable::ELoadableState::Loaded)
 		return nullptr;
