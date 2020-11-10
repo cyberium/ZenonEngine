@@ -31,12 +31,11 @@ CFreeCameraController::~CFreeCameraController()
 void CFreeCameraController::OnUpdate(UpdateEventArgs& e)
 {
 	float moveMultiplier = (TranslateFaster) ? 10.2f : 0.2f;
-	float fpsMultiplier = (e.DeltaTime) / (1000.0f / 60.0f);
 
-	GetCamera()->DoMoveFront(Forward * moveMultiplier * fpsMultiplier);
-	GetCamera()->DoMoveBack(Back * moveMultiplier * fpsMultiplier);
-	GetCamera()->DoMoveLeft(Left * moveMultiplier * fpsMultiplier);
-	GetCamera()->DoMoveRight(Right * moveMultiplier * fpsMultiplier);
+	GetCamera()->DoMoveFront(Forward * moveMultiplier * e.DeltaTimeMultiplier);
+	GetCamera()->DoMoveBack(Back * moveMultiplier * e.DeltaTimeMultiplier);
+	GetCamera()->DoMoveLeft(Left * moveMultiplier * e.DeltaTimeMultiplier);
+	GetCamera()->DoMoveRight(Right * moveMultiplier * e.DeltaTimeMultiplier);
 }
 
 bool CFreeCameraController::OnKeyPressed(KeyEventArgs& e)

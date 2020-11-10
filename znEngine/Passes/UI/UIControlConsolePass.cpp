@@ -6,6 +6,8 @@
 // Additional
 #include "Scene/Nodes/UIText.h"
 
+#if 0
+
 CUIControlConsolePass::CUIControlConsolePass(IRenderDevice& RenderDevice)
 	: RenderPassPipelined(RenderDevice)
 	, m_PerObjectParameter(nullptr)
@@ -14,11 +16,9 @@ CUIControlConsolePass::CUIControlConsolePass(IRenderDevice& RenderDevice)
 
 	m_Font = GetBaseManager().GetManager<IznFontsManager>()->GetMainFont();
 
-	m_Material = MakeShared(UI_Font_Material, GetBaseManager().GetApplication().GetRenderDevice());
-	m_Material->SetTexture(0, m_Font->GetTexture());
-	m_Material->SetColor(glm::vec4(1.0f));
-
 	m_PerObjectConstantBuffer = GetRenderDevice().GetObjectsFactory().CreateConstantBuffer(PerObject());
+
+	m_FontBuffer = GetRenderDevice().GetObjectsFactory().CreateConstantBuffer(SMaterialFontProperties());
 }
 
 CUIControlConsolePass::~CUIControlConsolePass()
@@ -46,7 +46,6 @@ void CUIControlConsolePass::Render(RenderEventArgs & e)
 
 	{
 		const auto& font = m_Font;
-		const auto& fontMaterial = m_Material;
 		const auto& fontGeometry = font->GetGeometry();
 		const auto& fontGeometryInternal = std::dynamic_pointer_cast<IGeometryInternal>(fontGeometry);
 
@@ -68,7 +67,13 @@ void CUIControlConsolePass::Render(RenderEventArgs & e)
 					continue;
 				}
 
-				fontMaterial->SetOffset(currentCharOffset);
+				{
+					SMaterialFontProperties fontProperties;
+					fontProperties.Color = color;
+					fontProperties.Offset = currentCharOffset;
+					m_FontBuffer->Set(fontProperties);
+				}
+
 				fontMaterial->Bind(shaders);
 				{
 					SGeometryDrawArgs GeometryDrawArgs;
@@ -105,6 +110,10 @@ std::shared_ptr<IRenderPassPipelined> CUIControlConsolePass::ConfigurePipeline(s
 
 	std::shared_ptr<IShader> pixelShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::PixelShader, "UI/UI_Font.hlsl", "PS_main");
 	GetPipeline().SetShader(EShaderType::PixelShader, pixelShader);
+
+	m_FontBufferParameter = &(vertexShader->GetShaderParameterByName("Material"));
+	_ASSERT(m_FontBufferParameter->IsValid());
+	m_FontBufferParameter->SetConstantBuffer(m_FontBuffer);
 
 	// Create samplers
 	std::shared_ptr<ISamplerState> g_LinearClampSampler = GetRenderDevice().GetObjectsFactory().CreateSamplerState();
@@ -193,3 +202,5 @@ EVisitResult CUIControlConsolePass::Visit(const IModel * Model)
 	return EVisitResult::Block;
 }
 */
+
+#endif

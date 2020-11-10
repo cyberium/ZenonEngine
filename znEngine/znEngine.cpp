@@ -66,6 +66,7 @@ IBaseManager* WINAPI InitializeEngine(std::vector<std::string> Arguments, std::s
 {
 	IBaseManager* baseManager = ZN_NEW CBaseManager();
 
+	Random::Initialize();
 
 	// Log & console
 	{

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Materials/UI_Font_Material.h"
+#if 0 
 
 class ZN_API CUIControlConsolePass
 	: public RenderPassPipelined
@@ -21,7 +21,12 @@ protected:
 private:
 	std::string m_Text;
 	std::shared_ptr<IznFont> m_Font;
-	std::shared_ptr<UI_Font_Material> m_Material;
 	std::shared_ptr<IConstantBuffer> m_PerObjectConstantBuffer;
 	IShaderParameter* m_PerObjectParameter;
+
+private:
+	std::shared_ptr<IConstantBuffer>   m_FontBuffer;
+	IShaderParameter*                  m_FontBufferParameter;
 };
+
+#endif

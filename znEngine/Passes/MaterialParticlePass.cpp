@@ -9,7 +9,7 @@ CMaterialParticlePass::CMaterialParticlePass(IRenderDevice& RenderDevice, IScene
 	m_Geometry = GetRenderDevice().GetObjectsFactory().CreateGeometry();
 	m_Geometry->SetPrimitiveTopology(PrimitiveTopology::PointList);
 
-	m_GeomParticlesBuffer = GetRenderDevice().GetObjectsFactory().CreateStructuredBuffer(nullptr, 1000, sizeof(SParticle), EAccess::CPUWrite);
+	m_GeomParticlesBuffer = GetRenderDevice().GetObjectsFactory().CreateStructuredBuffer(nullptr, 1000, sizeof(SGPUParticle), EAccess::CPUWrite);
 }
 
 CMaterialParticlePass::~CMaterialParticlePass()
@@ -76,7 +76,8 @@ EVisitResult CMaterialParticlePass::Visit(const ISceneNode * SceneNode)
 {
 	if (false == SceneNode->IsComponentExistsT<IParticleComponent3D>())
 		return EVisitResult::AllowVisitChilds;
-	return Base3DPass::Visit(SceneNode);
+	BindPerObjectData(PerObject());
+	return EVisitResult::AllowAll;
 }
 
 EVisitResult CMaterialParticlePass::Visit(const IModel * Model)
@@ -91,7 +92,7 @@ EVisitResult CMaterialParticlePass::Visit(const IGeometry * Geometry, const IMat
 
 EVisitResult CMaterialParticlePass::Visit(const IParticleSystem * ParticlesSystem)
 {
-	const auto& partilces = ParticlesSystem->GetParticles();
+	const auto& partilces = ParticlesSystem->GetGPUParticles();
 	if (partilces.empty())
 		return EVisitResult::Block;
 

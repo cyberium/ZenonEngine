@@ -23,6 +23,8 @@ void CUITextNode::Initialize()
 {
 	__super::Initialize();
 
+	m_Font = GetBaseManager().GetManager<IznFontsManager>()->GetMainFont();
+
 	m_TextProperty = MakeShared(CProperty<std::string>);
 	m_TextProperty->SetName("Text");
 	m_TextProperty->Set(cDefaultText);
@@ -33,11 +35,10 @@ void CUITextNode::Initialize()
 	m_OffsetProperty->Set(cDefaultOffset);
 	GetProperties()->AddProperty(m_OffsetProperty);
 
-	m_Font = GetBaseManager().GetManager<IznFontsManager>()->GetMainFont();
-
-	m_Material = MakeShared(UI_Font_Material, GetBaseManager().GetApplication().GetRenderDevice());
-	m_Material->SetTexture(0, m_Font->GetTexture());
-	m_Material->SetColor(cDefaultColor);
+	m_ColorProperty = MakeShared(CProperty<glm::vec4>);
+	m_ColorProperty->SetName("Color");
+	m_ColorProperty->Set(cDefaultColor);
+	GetProperties()->AddProperty(m_ColorProperty);
 }
 
 
@@ -45,45 +46,24 @@ void CUITextNode::Initialize()
 //
 // CUITextNode
 //
-void CUITextNode::SetFont(std::shared_ptr<IznFont> _font)
-{
-    _ASSERT(_font != nullptr);
-
-    m_Font = _font;
-    m_Material->SetTexture(0, m_Font->GetTexture());
-}
-
 std::shared_ptr<IznFont> CUITextNode::GetFont() const
 {
     return m_Font;
 }
 
-const std::shared_ptr<UI_Font_Material>& CUITextNode::GetMaterial() const
-{
-	return m_Material;
-}
-
-void CUITextNode::SetTextColor(const glm::vec4& _color)
-{
-    m_Material->SetColor(_color);
-}
-
-glm::vec2 CUITextNode::GetTextSize() const
-{
-    float width = m_Font->GetWidth(m_TextProperty->Get());
-    float height = m_Font->GetHeight();
-
-    return glm::vec2(width, height);
-}
-
-const std::string CUITextNode::GetText() const
+std::string CUITextNode::GetText() const
 {
 	return m_TextProperty->Get();
 }
 
-const glm::vec2 CUITextNode::GetOffset() const
+glm::vec2 CUITextNode::GetOffset() const
 {
 	return m_OffsetProperty->Get();
+}
+
+glm::vec4 CUITextNode::GetColor() const
+{
+	return m_ColorProperty->Get();
 }
 
 
@@ -93,5 +73,7 @@ const glm::vec2 CUITextNode::GetOffset() const
 //
 glm::vec2 CUITextNode::GetSize() const
 {
-    return GetTextSize() + 2.0f * m_OffsetProperty->Get();
+	float width = m_Font->GetWidth(GetText());
+	float height = m_Font->GetHeight();
+    return glm::vec2(width, height) + 2.0f * m_OffsetProperty->Get();
 }

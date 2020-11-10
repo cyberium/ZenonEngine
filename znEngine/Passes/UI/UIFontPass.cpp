@@ -6,9 +6,11 @@
 // Additional
 #include "Scene/Nodes/UIText.h"
 
+
 CUIFontPass::CUIFontPass(IRenderDevice& RenderDevice, IScene& Scene)
 	: BaseUIPass(Scene)
 {
+	m_FontBuffer = GetRenderDevice().GetObjectsFactory().CreateConstantBuffer(SFontPerCharacterData());
 }
 
 CUIFontPass::~CUIFontPass()
@@ -25,35 +27,31 @@ std::shared_ptr<IRenderPassPipelined> CUIFontPass::ConfigurePipeline(std::shared
 	BaseUIPass::ConfigurePipeline(RenderTarget, Viewport);
 
 	// CreateShaders
-	std::shared_ptr<IShader> g_pVertexShader;
-	std::shared_ptr<IShader> g_pPixelShader;
+	std::shared_ptr<IShader> vertexShader;
+	std::shared_ptr<IShader> pixelShader;
 
 	if (GetRenderDevice().GetDeviceType() == RenderDeviceType::RenderDeviceType_DirectX11)
 	{
-		g_pVertexShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::VertexShader, "UI/UI_Font.hlsl", "VS_main");
-		g_pPixelShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::PixelShader, "UI/UI_Font.hlsl", "PS_main");
+		vertexShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::VertexShader, "UI/UI_Font.hlsl", "VS_main");
+		pixelShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::PixelShader, "UI/UI_Font.hlsl", "PS_main");
 	}
 	else if (GetRenderDevice().GetDeviceType() == RenderDeviceType::RenderDeviceType_OpenGL)
 	{
-		g_pVertexShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::VertexShader, "IDB_SHADER_OGL__UI_FONT_VS", "");
-		g_pPixelShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::PixelShader, "IDB_SHADER_OGL__UI_FONT_PS", "");
+		vertexShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::VertexShader, "IDB_SHADER_OGL__UI_FONT_VS", "");
+		pixelShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::PixelShader, "IDB_SHADER_OGL__UI_FONT_PS", "");
 	}
 
-	g_pVertexShader->LoadInputLayoutFromReflector();
+	vertexShader->LoadInputLayoutFromReflector();
 
 	// Create samplers
-	std::shared_ptr<ISamplerState> g_LinearClampSampler = GetRenderDevice().GetObjectsFactory().CreateSamplerState();
-	g_LinearClampSampler->SetFilter(ISamplerState::MinFilter::MinLinear, ISamplerState::MagFilter::MagLinear, ISamplerState::MipFilter::MipLinear);
-	g_LinearClampSampler->SetWrapMode(ISamplerState::WrapMode::Clamp, ISamplerState::WrapMode::Clamp, ISamplerState::WrapMode::Clamp);
-
-	GetPipeline().SetSampler(0, g_LinearClampSampler);
+	std::shared_ptr<ISamplerState> linearClampSampler = GetRenderDevice().GetObjectsFactory().CreateSamplerState();
+	linearClampSampler->SetFilter(ISamplerState::MinFilter::MinLinear, ISamplerState::MagFilter::MagLinear, ISamplerState::MipFilter::MipLinear);
+	linearClampSampler->SetWrapMode(ISamplerState::WrapMode::Clamp, ISamplerState::WrapMode::Clamp, ISamplerState::WrapMode::Clamp);
+	GetPipeline().SetSampler(0, linearClampSampler);
 
 	// Material
-	GetPipeline().SetShader(EShaderType::VertexShader, g_pVertexShader);
-	GetPipeline().SetShader(EShaderType::PixelShader, g_pPixelShader);
-
-	// Diryy hack!
-	GetPipeline().SetTexture(0, GetBaseManager().GetManager<IznFontsManager>()->GetMainFont()->GetTexture());
+	GetPipeline().SetShader(EShaderType::VertexShader, vertexShader);
+	GetPipeline().SetShader(EShaderType::PixelShader, pixelShader);
 
 	return shared_from_this();
 }
@@ -71,20 +69,24 @@ EVisitResult CUIFontPass::Visit(const IUIControl * node)
 
 	BaseUIPass::Visit(node);
 
+	const auto& textToRender = textNode->GetText();
+	const auto& color = textNode->GetColor();
 	const auto& font = textNode->GetFont();
-	const auto& fontMaterial = textNode->GetMaterial();
+
 	const auto& fontGeometry = font->GetGeometry();
 	const auto& fontGeometryInternal = std::dynamic_pointer_cast<IGeometryInternal>(fontGeometry);
 
 	const auto& shaders = GetPipeline().GetShaders();
 	auto vertexShader = shaders.at(EShaderType::VertexShader).get();
+	auto pixelShader = shaders.at(EShaderType::PixelShader).get();
+
+	GetPipeline().SetTexture(0, font->GetTexture());
 
 	fontGeometryInternal->Render_BindAllBuffers(vertexShader);
 	{
-		const std::string textToRender = textNode->GetText();
-		glm::vec2 currentCharOffset = textNode->GetOffset();
+		auto currentCharOffset = textNode->GetOffset();
 
-		for (uint32 i = 0; i < textToRender.length(); i++)
+		for (size_t i = 0; i < textToRender.length(); i++)
 		{
 			const uint8 ch = static_cast<uint8>(textToRender.c_str()[i]);
 			if (ch == '\n')
@@ -94,15 +96,20 @@ EVisitResult CUIFontPass::Visit(const IUIControl * node)
 				continue;
 			}
 
-			fontMaterial->SetOffset(currentCharOffset);
-			fontMaterial->Bind(shaders);
+			{
+				SFontPerCharacterData fontProperties;
+				fontProperties.Color = color;
+				fontProperties.Offset = currentCharOffset;
+			
+				BindPerCharacterData(fontProperties);
+			}
+
 			{
 				SGeometryDrawArgs GeometryDrawArgs;
 				GeometryDrawArgs.VertexStartLocation = (ch) * 6;
 				GeometryDrawArgs.VertexCnt = 6;
 				fontGeometryInternal->Render_Draw(GeometryDrawArgs);
 			}
-			fontMaterial->Unbind(shaders);
 
 			currentCharOffset.x += static_cast<float>(font->GetWidth(ch)) + 0.01f;
 		}
@@ -112,8 +119,22 @@ EVisitResult CUIFontPass::Visit(const IUIControl * node)
 	return EVisitResult::AllowVisitChilds;
 }
 
-EVisitResult CUIFontPass::Visit(const IModel * Model)
+
+
+//
+// Private
+//
+void CUIFontPass::BindPerCharacterData(const SFontPerCharacterData& PerCharacterData)
 {
-	_ASSERT(false);
-	return EVisitResult::Block;
+	m_FontBuffer->Set(PerCharacterData);
+
+	for (const auto& shaderIt : GetPipeline().GetShaders())
+	{
+		auto& perFrameParam = shaderIt.second->GetShaderParameterByName("PerCharacterData");
+		if (perFrameParam.IsValid())
+		{
+			perFrameParam.SetConstantBuffer(m_FontBuffer);
+			perFrameParam.Bind();
+		}
+	}
 }

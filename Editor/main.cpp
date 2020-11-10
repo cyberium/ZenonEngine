@@ -35,7 +35,7 @@ void main_internal(int argc, char *argv[])
 		// 'Editor3D' scene
 		{
 			auto nativeWindow = nativeWindowFactory.CreateWindowProxy(*editorUI.getMainEditor());
-			auto renderWindow = renderDevice.GetObjectsFactory().CreateRenderWindow(std::move(nativeWindow), false);
+			auto renderWindow = renderDevice.GetObjectsFactory().CreateRenderWindow(std::move(nativeWindow), true);
 
 			app.AddRenderWindow(renderWindow);
 
@@ -50,7 +50,7 @@ void main_internal(int argc, char *argv[])
 		// 'Preview' scene
 		{
 			auto nativeWindow = nativeWindowFactory.CreateWindowProxy(*editorUI.getModelPreview());
-			auto renderWindow = renderDevice.GetObjectsFactory().CreateRenderWindow(std::move(nativeWindow), false);
+			auto renderWindow = renderDevice.GetObjectsFactory().CreateRenderWindow(std::move(nativeWindow), true);
 
 			app.AddRenderWindow(renderWindow);
 

@@ -5,6 +5,8 @@ ZN_INTERFACE ZN_API IObjectCreationArgs
 	virtual ~IObjectCreationArgs() {}
 };
 
+typedef std::function<std::shared_ptr<IObject>(const IObjectCreationArgs* ObjectCreationArgs)> CreationFunction_t;
+
 ZN_INTERFACE ZN_API IObjectClassCreator
 {
 	virtual ~IObjectClassCreator() {}
@@ -12,6 +14,7 @@ ZN_INTERFACE ZN_API IObjectClassCreator
 	virtual size_t GetSupportedClassCount() const = 0;
 	virtual ObjectClass GetSupportedClassKey(size_t Index) const = 0;
 	virtual std::string GetSupportedClassName(size_t Index) const = 0;
+	virtual CreationFunction_t GetSupportedClassFunction(size_t Index) const = 0;
 	virtual std::shared_ptr<IObject> CreateObject(size_t Index, const Guid& AssignedGuid, const IObjectCreationArgs* ObjectCreationArgs) = 0;
 };
 

@@ -247,8 +247,6 @@ void CSceneDefault::Load3DOld()
 	// Cubes & Spheres
 	//--------------------------------------------------------------------------
 
-	Random r(0);
-
 
 	{
 		const int iterCnt = 0;

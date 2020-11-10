@@ -15,7 +15,7 @@ public:
 			: m_SceneNode(ISceneNode)
 		{}
 
-		ISceneNode& GetSceneNode() override
+		ISceneNode& GetSceneNode() const override
 		{
 			return m_SceneNode;
 		}

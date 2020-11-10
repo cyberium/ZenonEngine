@@ -7,12 +7,12 @@ HighResolutionTimer::HighResolutionTimer()
 	m_Start = std::chrono::high_resolution_clock::now();
 }
 
-float HighResolutionTimer::GetElapsedMilliSeconds() const
+double HighResolutionTimer::GetElapsedMilliSeconds() const
 {
-	return std::chrono::duration<float, std::milli>(std::chrono::high_resolution_clock::now() - m_Start).count();
+	return std::chrono::duration<double, std::milli>(std::chrono::high_resolution_clock::now() - m_Start).count();
 }
 
-float HighResolutionTimer::GetElapsedMicroSeconds() const
+double HighResolutionTimer::GetElapsedMicroSeconds() const
 {
-	return std::chrono::duration<float, std::micro>(std::chrono::high_resolution_clock::now() - m_Start).count();
+	return std::chrono::duration<double, std::micro>(std::chrono::high_resolution_clock::now() - m_Start).count();
 }

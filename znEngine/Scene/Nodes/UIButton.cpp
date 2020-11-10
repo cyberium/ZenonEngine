@@ -39,7 +39,6 @@ void CUIButtonNode::Initialize()
 	m_TextNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<IUIControlFactory>()->CreateSceneNodeUI(cSceneNodeUI_Text, GetScene(), shared_from_this());
 	m_TextNode->GetProperties()->GetPropertyT<std::string>("Text")->Set(cDefaultText);
 	m_TextNode->SetTranslate(glm::vec2(10.0f, 10.0f));
-	std::dynamic_pointer_cast<CUITextNode>(m_TextNode)->SetTextColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
 }
 
 

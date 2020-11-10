@@ -57,7 +57,7 @@ ZN_INTERFACE ZN_API IComponentCreationArgs
 {
 	virtual ~IComponentCreationArgs() {}
 
-	virtual ISceneNode& GetSceneNode() = 0;
+	virtual ISceneNode& GetSceneNode() const = 0;
 };
 
 ZN_INTERFACE ZN_API IComponentFactory

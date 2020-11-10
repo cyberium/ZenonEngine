@@ -1,6 +1,6 @@
 #include "CommonInclude.hlsl"
 
-cbuffer Material : register(b2)
+cbuffer PerCharacterData : register(b2)
 {
     float4 Color;
 	float2 Offset;

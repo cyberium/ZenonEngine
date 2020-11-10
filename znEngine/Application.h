@@ -33,10 +33,9 @@ private:
 	bool m_IsInitialized;
 	bool m_IsRunning;
 
-	Timer m_GameTimer;
-	float m_GameDeltaTime;
-	float m_GameTime;
-	int64_t m_FrameCounter;
+	double m_GameDeltaTime;
+	double m_GameTime;
+	size_t m_FrameCounter;
 
 	IBaseManager& m_BaseManager;
 	std::unique_ptr<IRenderDevice> m_RenderDevice;

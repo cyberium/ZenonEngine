@@ -211,9 +211,6 @@
     <ClCompile Include="Materials\UI_Color_Material.cpp">
       <Filter>Materials\UI materials</Filter>
     </ClCompile>
-    <ClCompile Include="Materials\UI_Font_Material.cpp">
-      <Filter>Materials\UI materials</Filter>
-    </ClCompile>
     <ClCompile Include="Materials\UI_Line_Material.cpp">
       <Filter>Materials\UI materials</Filter>
     </ClCompile>
@@ -555,9 +552,6 @@
       <Filter>Materials\UI materials</Filter>
     </ClInclude>
     <ClInclude Include="Materials\UI_Color_Material.h">
-      <Filter>Materials\UI materials</Filter>
-    </ClInclude>
-    <ClInclude Include="Materials\UI_Font_Material.h">
       <Filter>Materials\UI materials</Filter>
     </ClInclude>
     <ClInclude Include="Materials\UI_Line_Material.h">

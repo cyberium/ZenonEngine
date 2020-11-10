@@ -10,73 +10,12 @@ ZN_INTERFACE ISceneNode;
 ZN_INTERFACE IUIControl;
 // FORWARD END
 
-/*
-template<class ArgumentType>
-class Delegate
-{
-public:
-	typedef std::function<void(ArgumentType&)> FunctionType;
-	typedef std::shared_ptr<FunctionType> FunctionDecl;
-	typedef std::set<FunctionDecl> FunctionsSet;
-	
-	template<class _Fx,  class... _Types>
-    FunctionDecl connect(_Fx&& _Func, _Types&&... _Args)
-    {
-        // https://stackoverflow.com/questions/20588191/error-with-variadiac-template-parameter-pack-must-be-expanded
-        FunctionDecl ret = MakeShared(FunctionType, std::bind(_Func, std::forward<_Types>(_Args)...));
-        m_Functions.insert(ret);
-        return ret;
-    }
-
-	FunctionDecl connect(typename const FunctionType& function)
-	{
-		FunctionDecl ret = MakeShared(FunctionType, function);
-		m_Functions.insert(ret);
-		return ret;
-	}
-
-	void disconnect(typename const FunctionDecl& function)
-	{
-		_ASSERT(function);
-
-		FunctionsSet::const_iterator cit = m_Functions.find(function);
-		if (cit != m_Functions.end())
-		{
-			m_Functions.erase(cit);
-		}
-	}
-
-	bool operator()(typename ArgumentType& argument)
-	{
-		for (const auto& it : m_Functions)
-		{
-			(*it)(argument);
-		}
-
-
-		//std::for_each(
-		//	m_Functions.begin(),
-		//	m_Functions.end(),
-		//	[&argument](const FunctionDecl& _decl) 
-		//	{ 
-		//		(*_decl)(argument); 
-		//	}
-		//);
-
-		return !m_Functions.empty();
-	}
-
-private:
-	FunctionsSet m_Functions;
-};*/
-
 
 class ZN_API EventArgs
 {
 public:
 	EventArgs()	{}
 };
-//typedef Delegate<EventArgs> Event;
 
 
 class ZN_API WindowCloseEventArgs : public EventArgs
@@ -93,7 +32,6 @@ public:
 	// By default, the window will be destoryed if the Window::Close even is not handled.
 	bool ConfirmClose;
 };
-//typedef Delegate<WindowCloseEventArgs> WindowCloseEvent;
 
 enum class ZN_API KeyState
 {
@@ -120,7 +58,6 @@ public:
 	bool            Shift;  // Is the Shift modifier pressed
 	bool            Alt;    // Is the Alt modifier pressed
 };
-//typedef Delegate<KeyEventArgs> KeyboardEvent;
 
 
 class ZN_API MouseMotionEventArgs : public EventArgs
@@ -149,7 +86,6 @@ public:
 
 	glm::vec2 GetPoint() const { return glm::vec2(X, Y); }
 };
-//typedef Delegate<MouseMotionEventArgs> MouseMotionEvent;
 
 enum class ZN_API MouseButton
 {
@@ -170,9 +106,9 @@ public:
 	MouseButtonEventArgs(MouseButton buttonID, ButtonState state, bool leftButton, bool middleButton, bool rightButton, bool control, bool shift, bool alt, int x, int y)
 		: Button(buttonID)
 		, State(state)
-		//, LeftButton(leftButton)
-		//, MiddleButton(middleButton)
-		//, RightButton(rightButton)
+		, LeftButton(leftButton)
+		, MiddleButton(middleButton)
+		, RightButton(rightButton)
 		, Control(control)
 		, Shift(shift)
 		, Alt(alt)
@@ -182,19 +118,18 @@ public:
 
 	MouseButton Button; // The mouse button that was pressed or released.
 	ButtonState State;  // Was the button pressed or released?
-	//bool LeftButton;    // Is the left mouse button down?
-	//bool MiddleButton;  // Is the middle mouse button down?
-	//bool RightButton;   // Is the right mouse button down?
+	bool LeftButton;    // Is the left mouse button down?
+	bool MiddleButton;  // Is the middle mouse button down?
+	bool RightButton;   // Is the right mouse button down?
 	bool Control;       // Is the CTRL key down?
 	bool Shift;         // Is the Shift key down?
-	bool Alt;         // Is the Shift key down?
+	bool Alt;           // Is the Alt key down?
 
 	int X;              // The X-position of the cursor relative to the upper-left corner of the client area.
 	int Y;              // The Y-position of the cursor relative to the upper-left corner of the client area.
 
 	glm::vec2 GetPoint() const { return glm::vec2(X, Y); }
 };
-//typedef Delegate<MouseButtonEventArgs> MouseButtonEvent;
 
 
 class ZN_API MouseWheelEventArgs : public EventArgs
@@ -224,7 +159,6 @@ public:
 	glm::vec2 GetPoint() const { return glm::vec2(X, Y); }
 
 };
-//typedef Delegate<MouseWheelEventArgs> MouseWheelEvent;
 
 
 class ZN_API ResizeEventArgs : public EventArgs
@@ -238,7 +172,6 @@ public:
 	int Width;
 	int Height;
 };
-//typedef Delegate<ResizeEventArgs> ResizeEvent;
 
 
 class ZN_API UpdateEventArgs 
@@ -247,28 +180,30 @@ class ZN_API UpdateEventArgs
 public:
 	UpdateEventArgs
 	(
-		float DeltaTime,
-		float TotalTime,
-		uint64_t FrameCounter,
-		const ICameraComponent3D* Camera,
-		const ICameraComponent3D* CameraForCulling
+		double DeltaTime,
+		double TotalTime,
+		uint64_t FrameCounter
 	)
 		: DeltaTime(DeltaTime)
 		, TotalTime(TotalTime)
 		, FrameCounter(FrameCounter)
 		, Camera(Camera)
 		, CameraForCulling(CameraForCulling)
-	{}
+	{
+		DeltaTimeMultiplier = DeltaTime / 16.6666666667;
+		if (DeltaTime == TotalTime)
+			DeltaTimeMultiplier = 1.0; // First frame
+	}
 
-	float                                           DeltaTime;
-	float                                           TotalTime;
+	double                                          DeltaTime;
+	double                                          DeltaTimeMultiplier;
+	double                                          TotalTime;
 	int64_t                                         FrameCounter;
 
 	// Engine specific. TODO: Replace me!
 	const ICameraComponent3D*                       Camera;
 	const ICameraComponent3D*                       CameraForCulling;
 };
-//typedef Delegate<UpdateEventArgs> UpdateEvent;
 
 
 class ZN_API RenderEventArgs 
@@ -287,7 +222,6 @@ public:
 	// Engine specific. TODO: Replace me!
 	const IPipelineState*                           PipelineState;
 };
-//typedef Delegate<RenderEventArgs> RenderEvent;
 
 
 class ZN_API UserEventArgs : public EventArgs
@@ -303,7 +237,6 @@ public:
 	void*   Data1;
 	void*   Data2;
 };
-//typedef Delegate<UserEventArgs> UserEvent;
 
 
 // FORWARD BEGIN
@@ -319,8 +252,6 @@ public:
 
 	const IScene* Scene;
 };
-//typedef Delegate<SceneEventArgs> SceneEvent;
-
 
 
 enum class ZN_API ESceneChangeType
@@ -343,4 +274,3 @@ public:
 	std::shared_ptr<ISceneNode> OwnerNode;
 	std::shared_ptr<ISceneNode> ChildNode;
 };
-//typedef Delegate<SceneChangeEventArgs> SceneChangeEvent;

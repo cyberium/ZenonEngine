@@ -3,6 +3,9 @@
 // General
 #include "SceneNodeRTSUnit.h"
 
+// Additional
+#include "Scene/Components/Particles/ParticlesComponent.h"
+
 CSceneNodeRTSUnit::CSceneNodeRTSUnit(IScene & Scene)
 	: CSceneNode(Scene)
 	, m_Health(75.0f)
@@ -100,15 +103,14 @@ void CSceneNodeRTSUnit::Initialize()
 
 	auto model = GetBaseManager().GetManager<IznModelsFactory>()->LoadModel("models/cactus_tall.znmdl");
 	GetComponentT<IModelsComponent3D>()->SetModel(model);
+
+	std::shared_ptr<IParticleComponent3D> particlesComponent = MakeShared(CParticlesComponent, *this);
+	AddComponentT(particlesComponent);
 }
 
 void CSceneNodeRTSUnit::Update(const UpdateEventArgs & e)
 {
 	__super::Update(e);
-
-	float fpsMultiplier = (e.DeltaTime) / (1000.0f / 60.0f);
-	if (e.DeltaTime == e.TotalTime)
-		fpsMultiplier = 1.0f; // First frame
 
 	if (m_Path == nullptr)
 		return;
@@ -124,7 +126,7 @@ void CSceneNodeRTSUnit::Update(const UpdateEventArgs & e)
 	glm::vec3 direction = glm::normalize(nextPoint->GetTranslation() - GetTranslation());
 
 	glm::vec3 newPosition = GetTranslation();
-	newPosition += direction * GetMovementSpeed() * fpsMultiplier;
+	newPosition += direction * GetMovementSpeed() * float(e.DeltaTimeMultiplier);
 
 	SetTranslate(newPosition);
 	SetRotationQuaternion(glm::conjugate(glm::toQuat(glm::lookAt(GetTranslation(), GetTranslation() + direction, glm::vec3(0.0f, 1.0f, 0.0f)))));

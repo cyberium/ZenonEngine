@@ -14,7 +14,7 @@
 CSceneNodeRTSBullet::CSceneNodeRTSBullet(IScene & Scene)
 	: CSceneNode(Scene)
 	, m_Damage(1.0f)
-	, m_Speed(0.3f)
+	, m_Speed(1.0f)
 {}
 
 CSceneNodeRTSBullet::~CSceneNodeRTSBullet()
@@ -72,15 +72,12 @@ void CSceneNodeRTSBullet::Update(const UpdateEventArgs & e)
 	if (m_Target == nullptr)
 		MakeMeOrphan();
 
-	float fpsMultiplier = (e.DeltaTime) / (1000.0f / 60.0f);
-	if (e.DeltaTime == e.TotalTime)
-		fpsMultiplier = 1.0f; // First frame
 
 	glm::vec3 destinationPoint = GetDestinationPoint();
 	glm::vec3 direction = glm::normalize(destinationPoint - GetTranslation());
 
 	glm::vec3 newPosition = GetTranslation();
-	newPosition += direction * GetSpeed() * fpsMultiplier;
+	newPosition += direction * GetSpeed() * float(e.DeltaTimeMultiplier);
 	SetTranslate(newPosition);
 
 	if (glm::distance(GetTranslation(), destinationPoint) < GetSpeed() * 2.0f)
@@ -88,8 +85,6 @@ void CSceneNodeRTSBullet::Update(const UpdateEventArgs & e)
 		m_Target->DealDamage(GetDamage());
 		MakeMeOrphan();
 	}
-
-
 }
 
 glm::vec3 CSceneNodeRTSBullet::GetDestinationPoint() const
@@ -119,7 +114,7 @@ CSceneNodeRTSTower::CSceneNodeRTSTower(IScene & Scene)
 {
 	// Unit properties
 	{
-		auto towerPropsGroup = MakeShared(CPropertiesGroup, "Tower");
+		/*auto towerPropsGroup = MakeShared(CPropertiesGroup, "Tower");
 
 		auto AttackDamage = MakeShared(CPropertyWrapped<float>, "AttackDamage");
 		AttackDamage->SetValueSetter(std::bind(&CSceneNodeRTSTower::SetAttackDamage, this, std::placeholders::_1));
@@ -136,7 +131,7 @@ CSceneNodeRTSTower::CSceneNodeRTSTower(IScene & Scene)
 		AttackRange->SetValueGetter(std::bind(&CSceneNodeRTSTower::GetAttackRange, this));
 		towerPropsGroup->AddProperty(AttackRange);
 
-		GetProperties()->AddProperty(towerPropsGroup);
+		GetProperties()->AddProperty(towerPropsGroup);*/
 	}
 }
 
@@ -220,20 +215,7 @@ void CSceneNodeRTSTower::Update(const UpdateEventArgs & e)
 	
 	{
 		std::shared_ptr<IParticleComponent3D> particlesComponent = MakeShared(CParticlesComponent, *bullet);
-		std::dynamic_pointer_cast<IParticleSystem>(particlesComponent)->SetTexture(GetBaseManager().GetManager<IznTexturesFactory>()->LoadTexture2D("star_01.png"));
 		bullet->AddComponentT(particlesComponent);
-
-		float areaSize = 40.0f;
-		Random r(time(0));
-		for (size_t i = 0; i < 1650; i++)
-		{
-			SParticle particle;
-			particle.Position = r.UnitVector3f() * areaSize;
-			float size = r.NextFloat() * 1.0f + 1.0f;
-			particle.Size = glm::vec2(size, size);
-			particle.Color = glm::vec4(r.NextFloat(), r.NextFloat(), r.NextFloat(), 1.0f);
-			std::dynamic_pointer_cast<IParticleSystem>(particlesComponent)->AddParticle(particle);
-		}
 	}
 
 	m_LastAttackTime = e.TotalTime;

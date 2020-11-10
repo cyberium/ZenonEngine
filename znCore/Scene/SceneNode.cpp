@@ -42,7 +42,8 @@ CSceneNode::CSceneNode(IScene& Scene)
 		m_TranslateProperty->SetValueGetter(std::bind(&CSceneNode::GetTranslation, this));
 		propertiesGroup->AddProperty(m_TranslateProperty);
 
-		std::shared_ptr<CPropertyWrappedVec3> translateAbsProperty = MakeShared(CPropertyWrappedVec3, "Translate absolute", "Position of this node in world. Relative to world zero.");
+		std::shared_ptr<CPropertyWrappedVec3> translateAbsProperty = MakeShared(CPropertyWrappedVec3, "TranslateAbsolute", "Position of this node in world. Relative to world zero.");
+		translateAbsProperty->SetSyntetic(true);
 		translateAbsProperty->SetValueSetter(std::bind(&CSceneNode::SetTranslateAbs, this, std::placeholders::_1));
 		translateAbsProperty->SetValueGetter(std::bind(&CSceneNode::GetTranslationAbs, this));
 		propertiesGroup->AddProperty(translateAbsProperty);

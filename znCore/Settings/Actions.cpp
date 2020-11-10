@@ -5,11 +5,15 @@
 
 CAction::CAction()
 	: CPropertyBase()
-{}
+{
+	SetSyntetic(true);
+}
 
 CAction::CAction(std::string Name, std::string Description)
 	: CPropertyBase(Name, Description)
-{}
+{
+	SetSyntetic(true);
+}
 
 CAction::~CAction()
 {}

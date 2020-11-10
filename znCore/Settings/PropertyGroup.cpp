@@ -100,17 +100,17 @@ std::string CPropertiesGroup::GetPropertyTypeName(const IProperty* Property) con
 	if (Property == nullptr)
 		throw CException("Property is nullptr.");
 
-	if (auto prop = dynamic_cast<const CProperty<float>*>(Property))
+	if (dynamic_cast<const CProperty<float>*>(Property))
 		return "Float";
-	else if (auto prop = dynamic_cast<const CProperty<glm::vec2>*>(Property))
+	else if (dynamic_cast<const CProperty<glm::vec2>*>(Property))
 		return "Vec2";
-	else if (auto prop = dynamic_cast<const CProperty<glm::vec3>*>(Property))
+	else if (dynamic_cast<const CProperty<glm::vec3>*>(Property) || dynamic_cast<const CPropertyWrapped<glm::vec3>*>(Property))
 		return "Vec3";
-	else if (auto prop = dynamic_cast<const CProperty<glm::vec4>*>(Property))
+	else if (dynamic_cast<const CProperty<glm::vec4>*>(Property))
 		return "Vec4";
-	else if (auto prop = dynamic_cast<const CProperty<std::string>*>(Property))
+	else if (dynamic_cast<const CProperty<std::string>*>(Property))
 		return "String";
-	else if (auto prop = dynamic_cast<const CPropertiesGroup*>(Property))
+	else if (dynamic_cast<const CPropertiesGroup*>(Property))
 		return "Group";
 	else
 		throw CException("Unknown property type '%s'", GetName().c_str());

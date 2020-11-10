@@ -7,8 +7,8 @@ Application::Application(IBaseManager& BaseManager)
 	: m_BaseManager(BaseManager)
 	, m_IsInitialized(false)
 	, m_IsRunning(false)
-	, m_GameDeltaTime(0.0f)
-    , m_GameTime(0.0f)
+	, m_GameDeltaTime(0.0)
+    , m_GameTime(0.0)
     , m_FrameCounter(0L)
 {
 	m_HInstance = ::GetModuleHandle(NULL);
@@ -20,8 +20,8 @@ Application::Application(IBaseManager& BaseManager, HINSTANCE hInstance)
 	: m_BaseManager(BaseManager)
 	, m_IsInitialized(false)
 	, m_IsRunning(false)
-	, m_GameDeltaTime(0.0f)
-	, m_GameTime(0.0f)
+	, m_GameDeltaTime(0.0)
+	, m_GameTime(0.0)
 	, m_FrameCounter(0L)
 {
 	m_HInstance = hInstance;
@@ -104,6 +104,8 @@ void Application::DoBeforeRun()
 
 int Application::DoRun()
 {
+	HighResolutionTimer gameTimer;
+
 	MSG msg = { 0 };
 	while (PeekMessageW(&msg, NULL, 0, 0, PM_REMOVE))
 	{
@@ -119,14 +121,14 @@ int Application::DoRun()
 
 	m_BaseManager.GetManager<ILog>()->PushAllMessages();
 
-	m_GameDeltaTime = m_GameTimer.GetElapsedTime();
-	m_GameTime += m_GameDeltaTime;
-	m_FrameCounter++;
-
-	UpdateEventArgs updateArgs(m_GameDeltaTime, m_GameTime, m_FrameCounter, nullptr, nullptr);
+	UpdateEventArgs updateArgs(m_GameDeltaTime, m_GameTime, m_FrameCounter);
 	for (const auto& w : m_Windows)
 		if (auto applicationEventsListener = std::dynamic_pointer_cast<IApplicationEventsListener>(w))
 			applicationEventsListener->OnUpdate(updateArgs);
+
+	m_GameDeltaTime = gameTimer.GetElapsedMilliSeconds();
+	m_GameTime += m_GameDeltaTime;
+	m_FrameCounter++;
 
 	return static_cast<int>(msg.wParam);
 }

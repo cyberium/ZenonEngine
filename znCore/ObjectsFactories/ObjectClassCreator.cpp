@@ -23,22 +23,28 @@ size_t CObjectClassCreatorBase::GetSupportedClassCount() const
 ObjectClass CObjectClassCreatorBase::GetSupportedClassKey(size_t Index) const
 {
 	_ASSERT(Index < GetSupportedClassCount());
-	return m_Keys.at(Index).second;
+	return std::get<1>(m_Keys.at(Index));
 }
 
 std::string CObjectClassCreatorBase::GetSupportedClassName(size_t Index) const
 {
 	_ASSERT(Index < GetSupportedClassCount());
-	return m_Keys.at(Index).first;
+	return std::get<0>(m_Keys.at(Index));
+}
+
+CreationFunction_t CObjectClassCreatorBase::GetSupportedClassFunction(size_t Index) const
+{
+	_ASSERT(Index < GetSupportedClassCount());
+	return std::get<2>(m_Keys.at(Index));
 }
 
 
 //
 // Protected
 //
-void CObjectClassCreatorBase::AddKey(std::string ObjectName, ObjectClass ObjectClassKey)
+void CObjectClassCreatorBase::AddKey(std::string ObjectName, ObjectClass ObjectClassKey, CreationFunction_t Func)
 {
-	m_Keys.push_back(std::make_pair(ObjectName, ObjectClassKey));
+	m_Keys.push_back(std::make_tuple(ObjectName, ObjectClassKey, Func));
 }
 
 IBaseManager & CObjectClassCreatorBase::GetBaseManager()

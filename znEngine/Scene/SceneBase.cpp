@@ -292,9 +292,8 @@ void SceneBase::OnRender(RenderEventArgs & e)
 		glm::vec3 cameraPos = e.Camera->GetTranslation();
 		glm::vec3 cameraRot = e.Camera->GetDirection();
 
-		double fpsValue = 1000.0 / double(GetRenderWindow().GetSummaDeltaTime());
-
-		std::string fullText = "FPS: " + toStringPrec(uint64(fpsValue)) + "\n";
+		std::string fullText = "FPS Engine: " + toStringPrec(uint64(1000.0 / e.DeltaTime)) + "\n";
+		fullText += "FPS Window: " + toStringPrec(uint64(1000.0 / double(GetRenderWindow().GetSummaDeltaTime()))) + "\n";
 		fullText += "CamPos: (" + toStringPrec(cameraPos.x) + ", " + toStringPrec(cameraPos.y) + ", " + toStringPrec(cameraPos.z) + ")\n";
 		fullText += "CamRot: yaw " + toStringPrec(e.Camera->GetYaw()) + ", pitch " + toStringPrec(e.Camera->GetPitch()) + "\n";
 		fullText += "CamRot: (" + toStringPrec(cameraRot.x) + ", " + toStringPrec(cameraRot.y) + ", " + toStringPrec(cameraRot.z) + ")\n";

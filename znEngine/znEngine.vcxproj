@@ -72,7 +72,6 @@
     <ClCompile Include="Materials\MaterialModel.cpp" />
     <ClCompile Include="Materials\UI_Button_Material.cpp" />
     <ClCompile Include="Materials\UI_Color_Material.cpp" />
-    <ClCompile Include="Materials\UI_Font_Material.cpp" />
     <ClCompile Include="Materials\UI_Line_Material.cpp" />
     <ClCompile Include="Materials\UI_Texture_Material.cpp" />
     <ClCompile Include="Passes\MaterialDebugPass.cpp" />
@@ -193,7 +192,6 @@
     <ClInclude Include="Materials\MaterialModel.h" />
     <ClInclude Include="Materials\UI_Button_Material.h" />
     <ClInclude Include="Materials\UI_Color_Material.h" />
-    <ClInclude Include="Materials\UI_Font_Material.h" />
     <ClInclude Include="Materials\UI_Line_Material.h" />
     <ClInclude Include="Materials\UI_Texture_Material.h" />
     <ClInclude Include="Passes\MaterialDebugPass.h" />
