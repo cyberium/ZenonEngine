@@ -62,7 +62,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <OmitFramePointers>true</OmitFramePointers>
-      <AdditionalIncludeDirectories>zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\zlib\;.\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;_CRT_SECURE_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
@@ -89,7 +89,7 @@
     </Midl>
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\zlib\;.\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;_CRT_SECURE_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -110,30 +110,30 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="libpng\png.c" />
-    <ClCompile Include="libpng\pngerror.c" />
-    <ClCompile Include="libpng\pngget.c" />
-    <ClCompile Include="libpng\pngmem.c" />
-    <ClCompile Include="libpng\pngpread.c" />
-    <ClCompile Include="libpng\pngread.c" />
-    <ClCompile Include="libpng\pngrio.c" />
-    <ClCompile Include="libpng\pngrtran.c" />
-    <ClCompile Include="libpng\pngrutil.c" />
-    <ClCompile Include="libpng\pngset.c" />
-    <ClCompile Include="libpng\pngtrans.c" />
-    <ClCompile Include="libpng\pngwio.c" />
-    <ClCompile Include="libpng\pngwrite.c" />
-    <ClCompile Include="libpng\pngwtran.c" />
-    <ClCompile Include="libpng\pngwutil.c" />
+    <ClCompile Include="source\png.c" />
+    <ClCompile Include="source\pngerror.c" />
+    <ClCompile Include="source\pngget.c" />
+    <ClCompile Include="source\pngmem.c" />
+    <ClCompile Include="source\pngpread.c" />
+    <ClCompile Include="source\pngread.c" />
+    <ClCompile Include="source\pngrio.c" />
+    <ClCompile Include="source\pngrtran.c" />
+    <ClCompile Include="source\pngrutil.c" />
+    <ClCompile Include="source\pngset.c" />
+    <ClCompile Include="source\pngtrans.c" />
+    <ClCompile Include="source\pngwio.c" />
+    <ClCompile Include="source\pngwrite.c" />
+    <ClCompile Include="source\pngwtran.c" />
+    <ClCompile Include="source\pngwutil.c" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="libpng\png.h" />
-    <ClInclude Include="libpng\pngconf.h" />
-    <ClInclude Include="libpng\pngdebug.h" />
-    <ClInclude Include="libpng\pnginfo.h" />
-    <ClInclude Include="libpng\pnglibconf.h" />
-    <ClInclude Include="libpng\pngpriv.h" />
-    <ClInclude Include="libpng\pngstruct.h" />
+    <ClInclude Include="source\png.h" />
+    <ClInclude Include="source\pngconf.h" />
+    <ClInclude Include="source\pngdebug.h" />
+    <ClInclude Include="source\pnginfo.h" />
+    <ClInclude Include="source\pnglibconf.h" />
+    <ClInclude Include="source\pngpriv.h" />
+    <ClInclude Include="source\pngstruct.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="zlib\zlib.vcxproj">

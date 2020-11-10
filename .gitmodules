@@ -11,3 +11,7 @@
 [submodule "Externals/luabind-deboostified"]
 	path = Externals/luabind-deboostified
 	url = https://github.com/decimad/luabind-deboostified
+[submodule "Externals/libpng/source"]
+	path = Externals/libpng/source
+	url = https://github.com/glennrp/libpng
+	branch = master

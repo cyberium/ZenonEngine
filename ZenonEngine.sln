@@ -56,7 +56,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Tests", "Tests\Tests.vcxpro
 		{590C7C79-AE16-4DB2-B61C-BB7B25B76B42} = {590C7C79-AE16-4DB2-B61C-BB7B25B76B42}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libpng", "Externals\libpng.vcxproj", "{7DB10B50-CE00-447A-B322-6844F05D2FCB}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libpng", "Externals\libpng\libpng.vcxproj", "{7DB10B50-CE00-447A-B322-6844F05D2FCB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
