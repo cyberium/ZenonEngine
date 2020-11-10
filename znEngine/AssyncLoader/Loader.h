@@ -56,7 +56,6 @@ public:
 	inline bool IsEmpty()
 	{
 		std::lock_guard<std::mutex> lock(m_Lock);
-
 		return m_Queue.empty();
 	}
 

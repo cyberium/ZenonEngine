@@ -117,6 +117,8 @@ int Application::DoRun()
 		DispatchMessageW(&msg);
 	}
 
+	m_BaseManager.GetManager<ILog>()->PushAllMessages();
+
 	m_GameDeltaTime = m_GameTimer.GetElapsedTime();
 	m_GameTime += m_GameDeltaTime;
 	m_FrameCounter++;

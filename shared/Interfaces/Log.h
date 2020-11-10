@@ -14,4 +14,5 @@ ZN_INTERFACE ZN_API ILog
 
 	virtual bool AddDebugOutput(std::shared_ptr<IDebugOutput> DebugOutput) = 0;
 	virtual bool DeleteDebugOutput(std::shared_ptr<IDebugOutput> DebugOutput) = 0;
+	virtual void PushAllMessages() = 0;
 };

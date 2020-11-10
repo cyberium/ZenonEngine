@@ -2,7 +2,8 @@
 
 #include <mutex>
 
-class ZN_API CLog : public ILog
+class ZN_API CLog 
+	: public ILog
 {
 	friend class Log;
 public:
@@ -10,14 +11,16 @@ public:
 	virtual ~CLog();
 
 	// ILog
-	bool AddDebugOutput(std::shared_ptr<IDebugOutput> _debugOutput) override;
-	bool DeleteDebugOutput(std::shared_ptr<IDebugOutput> _debugOutput) override;
+	bool AddDebugOutput(std::shared_ptr<IDebugOutput> DebugOutput) override;
+	bool DeleteDebugOutput(std::shared_ptr<IDebugOutput> DebugOutput) override;
+	void PushAllMessages() override;
 
 private:
-    void PushMessageToAllDebugOutputs(IDebugOutput::DebugMessageType Type, const char* Message, va_list& _vaList);
+    void PushMessageToAllDebugOutputs(IDebugOutput::DebugMessageType Type, const char* Message, va_list& VaList);
 
 private:
 	std::vector<std::pair<IDebugOutput::DebugMessageType, std::string>> m_Messages;
+	size_t m_LastPushedMessageIndex;
 	std::vector<std::shared_ptr<IDebugOutput>> m_DebugOutputs;
 	std::mutex m_Mutex;
 };

@@ -10,6 +10,7 @@
 CLog* gLogInstance = nullptr;
 
 CLog::CLog()
+	: m_LastPushedMessageIndex(0)
 {
 	AddDebugOutput(MakeShared(DebugOutput_ConsoleWindows));
 	AddDebugOutput(MakeShared(DebugOutput_Log));
@@ -30,54 +31,72 @@ CLog::~CLog()
 //
 // ILog
 //
-bool CLog::AddDebugOutput(std::shared_ptr<IDebugOutput> _debugOutput)
+bool CLog::AddDebugOutput(std::shared_ptr<IDebugOutput> DebugOutput)
 {
-	_ASSERT(_debugOutput != nullptr);
+	_ASSERT(DebugOutput != nullptr);
 
-	if (std::find(m_DebugOutputs.begin(), m_DebugOutputs.end(), _debugOutput) != m_DebugOutputs.end())
+	if (std::find(m_DebugOutputs.begin(), m_DebugOutputs.end(), DebugOutput) != m_DebugOutputs.end())
 		return false;
 
-	for (const auto& messagePair : m_Messages)
-		_debugOutput->Print(messagePair.first, messagePair.second);
+	{
+		std::lock_guard<std::mutex> lck(m_Mutex);
+		if (m_LastPushedMessageIndex < m_Messages.size())
+		{
+			for (size_t i = 0; i < m_LastPushedMessageIndex; i++)
+			{
+				const auto& msg = m_Messages.at(i);
+				DebugOutput->Print(msg.first, msg.second);
+			}
+		}
+	}
 
-	m_DebugOutputs.push_back(_debugOutput);
+	m_DebugOutputs.push_back(DebugOutput);
 	return true;
 }
 
-bool CLog::DeleteDebugOutput(std::shared_ptr<IDebugOutput> _debugOutput)
+bool CLog::DeleteDebugOutput(std::shared_ptr<IDebugOutput> DebugOutput)
 {
-	_ASSERT(_debugOutput != nullptr);
+	_ASSERT(DebugOutput != nullptr);
 
-	const auto& _debugOutputsIt = std::find(m_DebugOutputs.begin(), m_DebugOutputs.end(), _debugOutput);
-	if (_debugOutputsIt == m_DebugOutputs.end())
+	const auto& it = std::find(m_DebugOutputs.begin(), m_DebugOutputs.end(), DebugOutput);
+	if (it == m_DebugOutputs.end())
 		return false;
 
-	m_DebugOutputs.erase(_debugOutputsIt);
-
+	m_DebugOutputs.erase(it);
 	return true;
+}
+
+void CLog::PushAllMessages()
+{
+	std::lock_guard<std::mutex> lck(m_Mutex);
+
+	for (size_t i = m_LastPushedMessageIndex; i < m_Messages.size(); i++)
+	{
+		const auto& msg = m_Messages.at(i);
+		for (const auto& it : m_DebugOutputs)
+			it->Print(msg.first, msg.second);
+		m_LastPushedMessageIndex++;
+	}
 }
 
 
 //
 // Private
 //
-void CLog::PushMessageToAllDebugOutputs(IDebugOutput::DebugMessageType _type, const char* _message, va_list& _vaList)
+void CLog::PushMessageToAllDebugOutputs(IDebugOutput::DebugMessageType _type, const char* _message, va_list& VaList)
 {
 	std::lock_guard<std::mutex> lck(m_Mutex);
 
-	int len = vsnprintf(NULL, 0, _message, _vaList);
+	int len = vsnprintf(NULL, 0, _message, VaList);
 	if (len > 0)
 	{
 		std::string buff;
 		buff.resize(len + 1);
-		vsnprintf(&buff[0], len + 1, _message, _vaList);
+		vsnprintf(&buff[0], len + 1, _message, VaList);
 		buff.resize(len);
 
 		// Add to log history
 		m_Messages.push_back(std::make_pair(_type, buff.c_str()));
-
-		for (const auto& it : m_DebugOutputs)
-			it->Print(_type, buff);
 	}
 }
 

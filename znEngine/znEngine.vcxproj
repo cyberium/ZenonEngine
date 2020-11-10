@@ -775,7 +775,8 @@
       <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <PostBuildEvent>
-      <Command>copy /Y "$(Platform)\$(Configuration)\$(ProjectName).res" "$(SolutionDir)bin_$(PlatformShortName)\$(Configuration)\$(ProjectName).res" </Command>
+      <Command>copy /Y "$(Platform)\$(Configuration)\$(ProjectName).res" "$(SolutionDir)bin_$(PlatformShortName)\$(Configuration)\$(ProjectName).res" 
+copy /Y "$(SolutionDir)Externals\BugTrap\BugTrapUD-x64.dll" "$(SolutionDir)bin_$(PlatformShortName)\$(Configuration)\BugTrapUD-x64.dll" </Command>
     </PostBuildEvent>
     <Link>
       <AdditionalLibraryDirectories>$(SolutionDir)\bin_$(PlatformShortName)\$(Configuration)\;$(ZN_FBX_SDK_PATH)lib\vs2017\$(PlatformShortName)\$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -800,7 +801,8 @@
       <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <PostBuildEvent>
-      <Command>copy /Y "$(Platform)\$(Configuration)\$(ProjectName).res" "$(SolutionDir)bin_$(PlatformShortName)\$(Configuration)\$(ProjectName).res" </Command>
+      <Command>copy /Y "$(Platform)\$(Configuration)\$(ProjectName).res" "$(SolutionDir)bin_$(PlatformShortName)\$(Configuration)\$(ProjectName).res" 
+copy /Y "$(SolutionDir)Externals\BugTrap\BugTrapU-x64.dll" "$(SolutionDir)bin_$(PlatformShortName)\$(Configuration)\BugTrapU-x64.dll" </Command>
     </PostBuildEvent>
     <Link>
       <AdditionalLibraryDirectories>$(SolutionDir)\bin_$(PlatformShortName)\$(Configuration)\;$(ZN_FBX_SDK_PATH)lib\vs2017\$(PlatformShortName)\$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
