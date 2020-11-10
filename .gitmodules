@@ -16,3 +16,7 @@
 	path = Externals/freetype/source
 	url = https://github.com/freetype/freetype2
 	branch = master
+[submodule "Externals/zlib/source"]
+	path = Externals/zlib/source
+	url = https://github.com/madler/zlib
+	branch = master
