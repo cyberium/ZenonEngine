@@ -99,9 +99,6 @@ EVisitResult CDrawBonesPass::Visit(const ISceneNode * CSceneNode)
 	m_MaterialParameter->SetConstantBuffer(m_MaterialConstantBuffer);
 	m_MaterialParameter->Bind();
 
-	const IShader* vertexShader = GetPipeline().GetShaders().at(EShaderType::VertexShader).get();
-	if (m_PerObjectParameter == nullptr)
-		m_PerObjectParameter = &(vertexShader->GetShaderParameterByName("PerObject"));
 
 	for (const auto& b : bones)
 	{
@@ -153,20 +150,9 @@ EVisitResult CDrawBonesPass::Visit(const ISceneNode * CSceneNode)
 			//glm::mat4 m = b->GetPivotMatrix();
 			//m = glm::scale(m, glm::vec3(4.0f));
 
-			PerObject perObject;
-			perObject.Model = CSceneNode->GetWorldTransfom() * b->GetMatrix();
+			BindPerObjectData(PerObject(CSceneNode->GetWorldTransfom() * b->GetMatrix()));
 
-			//perObject.Model = glm::scale(perObject.Model, 1.0f / extractScale(perObject.Model));
-
-			m_PerObjectConstantBuffer->Set(perObject);
-
-			if (m_PerObjectParameter->IsValid() && m_PerObjectConstantBuffer != nullptr)
-			{
-				m_PerObjectParameter->SetConstantBuffer(m_PerObjectConstantBuffer);
-				m_PerObjectParameter->Bind();
-			}
-
-
+			const IShader* vertexShader = GetPipeline().GetShaders().at(EShaderType::VertexShader).get();
 			m_SphereGeometry->Render(vertexShader);
 		}
 	}

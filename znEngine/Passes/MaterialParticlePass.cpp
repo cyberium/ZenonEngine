@@ -3,9 +3,6 @@
 // General
 #include "MaterialParticlePass.h"
 
-// Additional
-#include "Materials/MaterialParticle.h"
-
 CMaterialParticlePass::CMaterialParticlePass(IRenderDevice& RenderDevice, IScene& Scene)
 	: Base3DPass(Scene)
 {
@@ -58,10 +55,6 @@ std::shared_ptr<IRenderPassPipelined> CMaterialParticlePass::ConfigurePipeline(s
 	GetPipeline().SetShader(EShaderType::GeometryShader, geomShader);
 	GetPipeline().SetShader(EShaderType::PixelShader, pixelShader);
 
-	// 'PerObject' in geom shader
-	m_GeomShaderPerObjectParameter = &geomShader->GetShaderParameterByName("PerObject");
-	_ASSERT(m_GeomShaderPerObjectParameter->IsValid());
-
 	// 'Particles' in geom shader
 	m_GeomShaderParticlesBufferParameter = &geomShader->GetShaderParameterByName("Particles");
 	_ASSERT(m_GeomShaderParticlesBufferParameter->IsValid());
@@ -81,34 +74,24 @@ std::shared_ptr<IRenderPassPipelined> CMaterialParticlePass::ConfigurePipeline(s
 //
 EVisitResult CMaterialParticlePass::Visit(const ISceneNode * SceneNode)
 {
-	EVisitResult visitResult = Base3DPass::Visit(SceneNode);
-
-	if (m_GeomShaderPerObjectParameter->IsValid() && m_PerObjectConstantBuffer != nullptr)
-	{
-		m_GeomShaderPerObjectParameter->SetConstantBuffer(m_PerObjectConstantBuffer);
-		m_GeomShaderPerObjectParameter->Bind();
-	}
-
-	return visitResult;
+	if (false == SceneNode->IsComponentExistsT<IParticleComponent3D>())
+		return EVisitResult::AllowVisitChilds;
+	return Base3DPass::Visit(SceneNode);
 }
 
 EVisitResult CMaterialParticlePass::Visit(const IModel * Model)
 {
-	return Base3DPass::Visit(Model);
+	return EVisitResult::Block;
 }
 
 EVisitResult CMaterialParticlePass::Visit(const IGeometry * Geometry, const IMaterial* Material, SGeometryDrawArgs GeometryDrawArgs)
 {
-	const MaterialParticle* objMaterial = dynamic_cast<const MaterialParticle*>(Material);
-	if (objMaterial != nullptr)
-		return Base3DPass::Visit(Geometry, Material, GeometryDrawArgs);
-	
 	return EVisitResult::Block;
 }
 
 EVisitResult CMaterialParticlePass::Visit(const IParticleSystem * ParticlesSystem)
 {
-	const std::vector<SParticle>& partilces = ParticlesSystem->GetParticles();
+	const auto& partilces = ParticlesSystem->GetParticles();
 	if (partilces.empty())
 		return EVisitResult::Block;
 
@@ -124,14 +107,16 @@ EVisitResult CMaterialParticlePass::Visit(const IParticleSystem * ParticlesSyste
 	if (ParticlesSystem->GetBlendState())
 		ParticlesSystem->GetBlendState()->Bind();
 
+	const auto& shaders = GetPipeline().GetShaders();
+
 	// Bind material
-	if (ParticlesSystem->GetMaterial())
-		ParticlesSystem->GetMaterial()->Bind(GetRenderEventArgs().PipelineState->GetShaders());
+	if (ParticlesSystem->GetTexture())
+		ParticlesSystem->GetTexture()->Bind(0, shaders.at(EShaderType::PixelShader).get(), IShaderParameter::Type::Texture);
 
 	// Draw geom
 	SGeometryDrawArgs args;
 	args.VertexCnt = partilces.size();
-	m_Geometry->Render(GetRenderEventArgs().PipelineState->GetShaders().at(EShaderType::VertexShader).get(), args);
+	m_Geometry->Render(shaders.at(EShaderType::VertexShader).get(), args);
 
 	return EVisitResult::AllowAll;
 }

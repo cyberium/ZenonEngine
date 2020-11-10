@@ -308,7 +308,6 @@
     <ClCompile Include="Formats\Models\FBXModelsLoader.cpp" />
     <ClCompile Include="Formats\Models\ModelsFactory.cpp" />
     <ClCompile Include="Formats\Textures\TexturesFactory.cpp" />
-    <ClCompile Include="Materials\MaterialParticle.cpp" />
     <ClCompile Include="NativeWindows\NativeWindowFactory.cpp" />
     <ClCompile Include="NativeWindows\NativeWindow_Proxy.cpp" />
     <ClCompile Include="NativeWindows\NativeWindow_WindowsSpecific.cpp" />
@@ -359,13 +358,13 @@
     <ClCompile Include="Scene\Camera\FreeCameraController.cpp" />
     <ClCompile Include="Scene\Camera\RTSCameraController.cpp" />
     <ClCompile Include="Scene\Components\Animation\AnimationComponent.cpp" />
+    <ClCompile Include="Scene\Components\Particles\ParticlesComponent.cpp" />
     <ClCompile Include="Scene\Components\Skeleton\Skeleton.cpp" />
     <ClCompile Include="Scene\Components\Skeleton\SkeletonBone.cpp" />
     <ClCompile Include="Scene\Components\CameraComponent3D.cpp" />
     <ClCompile Include="Scene\Components\ColliderComponent3D.cpp" />
     <ClCompile Include="Scene\Components\LightComponent3D.cpp" />
     <ClCompile Include="Scene\Components\ModelsComponent3D.cpp" />
-    <ClCompile Include="Scene\Components\ParticlesComponent3D.cpp" />
     <ClCompile Include="Scene\Components\ReactPhysicsComponent.cpp" />
     <ClCompile Include="Scene\Components\Skeleton\SkeletonComponent.cpp" />
     <ClCompile Include="Scene\Components\Skeleton\SkeletonComponentBone.cpp" />
@@ -515,7 +514,6 @@
     <ClInclude Include="Formats\Models\FBXModelsLoader.h" />
     <ClInclude Include="Formats\Models\ModelsFactory.h" />
     <ClInclude Include="Formats\Textures\TexturesFactory.h" />
-    <ClInclude Include="Materials\MaterialParticle.h" />
     <ClInclude Include="NativeWindows\NativeWindowFactory.h" />
     <ClInclude Include="NativeWindows\NativeWindow_Proxy.h" />
     <ClInclude Include="NativeWindows\NativeWindow_WindowsSpecific.h" />
@@ -568,13 +566,13 @@
     <ClInclude Include="Scene\Camera\RTSCameraController.h" />
     <ClInclude Include="Scene\Components\Animation\AnimatedValue.h" />
     <ClInclude Include="Scene\Components\Animation\AnimationComponent.h" />
+    <ClInclude Include="Scene\Components\Particles\ParticlesComponent.h" />
     <ClInclude Include="Scene\Components\Skeleton\Skeleton.h" />
     <ClInclude Include="Scene\Components\Skeleton\SkeletonBone.h" />
     <ClInclude Include="Scene\Components\CameraComponent3D.h" />
     <ClInclude Include="Scene\Components\ColliderComponent3D.h" />
     <ClInclude Include="Scene\Components\LightComponent3D.h" />
     <ClInclude Include="Scene\Components\ModelsComponent3D.h" />
-    <ClInclude Include="Scene\Components\ParticlesComponent3D.h" />
     <ClInclude Include="Scene\Components\ReactPhysicsComponent.h" />
     <ClInclude Include="Scene\Components\Skeleton\SkeletonComponent.h" />
     <ClInclude Include="Scene\Components\Skeleton\SkeletonComponentBone.h" />

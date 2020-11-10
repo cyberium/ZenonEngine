@@ -1,13 +1,13 @@
 #pragma once
 
-class ZN_API CParticlesComponent3D
+class ZN_API CParticlesComponent
 	: public IParticleComponent3D
 	, public IParticleSystem
 	, public CComponentBase
 {
 public:
-	CParticlesComponent3D(const ISceneNode& SceneNode);
-	virtual ~CParticlesComponent3D();
+	CParticlesComponent(const ISceneNode& SceneNode);
+	virtual ~CParticlesComponent();
 
 	// IParticleComponent3D
 
@@ -15,8 +15,8 @@ public:
 	void AddParticle(const SParticle& Particle) override;
 	void ClearParticles() override;
 	const std::vector<SParticle>& GetParticles() const override;
-	void SetMaterial(const std::shared_ptr<IMaterial>& Material) override;
-	std::shared_ptr<IMaterial> GetMaterial() const override;
+	void SetTexture(const std::shared_ptr<ITexture>& Texture) override;
+	std::shared_ptr<ITexture> GetTexture() const override;
 	std::shared_ptr<IBlendState> GetBlendState() const override;
 
 	// ISceneNodeComponent
@@ -25,5 +25,7 @@ public:
 
 private:
 	std::vector<SParticle> m_Particles;
-	std::shared_ptr<IMaterial> m_Material;
+	std::shared_ptr<ITexture> m_Texture;
+	float m_LastParticleTime;
+	float m_ParticleInterval;
 };

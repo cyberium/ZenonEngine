@@ -31,7 +31,7 @@ void CModelsComponent3D::SetModel(const std::shared_ptr<IModel>& Model)
 		throw CException("Nullptr model can't be assigned to node '%s'.", GetOwnerNode().GetName().c_str());
 
 	if (m_Model != nullptr)
-		Log::Warn("Node '%s' already has model '%s'. Do you really want to replace it with '%s'?", m_Model->GetFileName().c_str(), Model->GetFileName().c_str());
+		Log::Warn("Node '%s' already has model '%s'. Do you really want to replace it with '%s'?", GetOwnerNode().GetName().c_str(), m_Model->GetFileName().c_str(), Model->GetFileName().c_str());
 
 	m_Model = Model;
 	const auto& modelBounds = GetModel()->GetBounds();

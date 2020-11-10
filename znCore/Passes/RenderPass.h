@@ -3,6 +3,13 @@
 struct __declspec(align(16)) ZN_API PerObject
 {
 	glm::mat4 Model;
+
+	PerObject()
+		: Model(glm::mat4(1.0f))
+	{}
+	explicit PerObject(const glm::mat4& Matrix)
+		: Model(Matrix)
+	{}
 };
 
 struct __declspec(align(16)) ZN_API PerFrame

@@ -6,9 +6,9 @@
 #include "Scene/Components/ColliderComponent3D.h"
 #include "Scene/Components/LightComponent3D.h"
 #include "Scene/Components/ModelsComponent3D.h"
-#include "Scene/Components/ParticlesComponent3D.h"
+#include "Scene/Components/Particles/ParticlesComponent.h"
 
-CComponentsEngineCreator::CComponentsEngineCreator(IBaseManager& BaseManager)
+CComponentsCreator::CComponentsCreator(IBaseManager& BaseManager)
 	: CObjectClassCreatorBase(BaseManager)
 {
 	AddKey("Component", cSceneNodeComponent);
@@ -22,13 +22,13 @@ CComponentsEngineCreator::CComponentsEngineCreator(IBaseManager& BaseManager)
 	AddKey("CameraComponent", cSceneNodeCameraComponent);
 }
 
-CComponentsEngineCreator::~CComponentsEngineCreator()
+CComponentsCreator::~CComponentsCreator()
 {}
 
 //
 // IObjectClassCreator
 //
-std::shared_ptr<IObject> CComponentsEngineCreator::CreateObject(size_t Index, const Guid& AssignedGuid, const IObjectCreationArgs* ObjectCreationArgs)
+std::shared_ptr<IObject> CComponentsCreator::CreateObject(size_t Index, const Guid& AssignedGuid, const IObjectCreationArgs* ObjectCreationArgs)
 {
 	auto componentCreationArgs = static_cast<IComponentCreationArgs*>(const_cast<IObjectCreationArgs*>(ObjectCreationArgs));
 	std::shared_ptr<ISceneNodeComponent> createdComponent = nullptr;
@@ -51,7 +51,7 @@ std::shared_ptr<IObject> CComponentsEngineCreator::CreateObject(size_t Index, co
 	}
 	else if (Index == 4)
 	{
-		createdComponent = MakeShared(CParticlesComponent3D, componentCreationArgs->GetSceneNode());
+		createdComponent = MakeShared(CParticlesComponent, componentCreationArgs->GetSceneNode());
 	}
 	else if (Index == 5)
 	{

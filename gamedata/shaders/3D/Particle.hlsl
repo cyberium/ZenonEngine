@@ -132,15 +132,11 @@ void GS_Billboard(point GeometryShaderInput input[1], inout TriangleStream<Pixel
 	}
 }
 
-DefferedRenderPSOut PS_main(PixelShaderInput input) : SV_TARGET
+float4 PS_main(PixelShaderInput input) : SV_TARGET
 {
 	float4 DiffuseColor = DiffuseTexture.Sample(LinearClampSampler, float2(input.texcoord.x, 1.0f - input.texcoord.y));
 	//if (DiffuseColor.a < 0.01)
 	//	DiffuseColor = float4(0.0f, 0.0f, 0.0f, 1.0f);
 
-	DefferedRenderPSOut OUT;
-	OUT.Diffuse = DiffuseColor * input.color;
-	OUT.Specular = float4(0.0f, 0.0f, 0.0f, 0.0f);
-	OUT.NormalWS = float4(1.0f, 1.0f, 1.0f, 0.0f);
-	return OUT;
+	return DiffuseColor * input.color;
 }

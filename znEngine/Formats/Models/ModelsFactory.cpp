@@ -44,25 +44,31 @@ const std::shared_ptr<IznModelsLoader> CznModelsFactory::GetLoaderForModel(const
 std::shared_ptr<IModel> CznModelsFactory::LoadModel(const std::string& ModelFileName, const IznLoaderParams* LoaderParams)
 {
 	// Find existsing cached
-	/*const auto& iter = m_ModelsByName.find(ModelFileName);
-	if (iter != m_ModelsByName.end())
 	{
-		if (auto model = iter->second.lock())
+		std::lock_guard<std::mutex> lock(m_LockMutex);
+		const auto& iter = m_ModelsByName.find(ModelFileName);
+		if (iter != m_ModelsByName.end())
 		{
-			return model;
+			if (auto model = iter->second.lock())
+			{
+				return model;
+			}
+			else
+			{
+				m_ModelsByName.erase(iter);
+			}
 		}
-		else
-		{
-			m_ModelsByName.erase(iter);
-		}
-	}*/
+	}
 
 	for (const auto& loader : m_ModelsLoaders)
 	{
 		if (loader->IsSupportedFormat(ModelFileName))
 		{
 			std::shared_ptr<IModel> model = loader->LoadModel(ModelFileName, LoaderParams);
-			//m_ModelsByName[ModelFileName] = model;
+			{
+				std::lock_guard<std::mutex> lock(m_LockMutex);
+				m_ModelsByName[ModelFileName] = model;
+			}
 			return model;
 		}
 	}
@@ -76,16 +82,20 @@ std::shared_ptr<IModel> CznModelsFactory::LoadModel(const std::shared_ptr<IFile>
 		throw CException("Can't load nullptr file.");
 
 	// Find existsing cached
-	const auto& iter = m_ModelsByName.find(ModelFile->Path_Name());
-	if (iter != m_ModelsByName.end())
 	{
-		if (auto model = iter->second.lock())
+		std::lock_guard<std::mutex> lock(m_LockMutex);
+
+		const auto& iter = m_ModelsByName.find(ModelFile->Path_Name());
+		if (iter != m_ModelsByName.end())
 		{
-			return model;
-		}
-		else
-		{
-			m_ModelsByName.erase(iter);
+			if (auto model = iter->second.lock())
+			{
+				return model;
+			}
+			else
+			{
+				m_ModelsByName.erase(iter);
+			}
 		}
 	}
 
@@ -94,7 +104,10 @@ std::shared_ptr<IModel> CznModelsFactory::LoadModel(const std::shared_ptr<IFile>
 		if (loader->IsSupportedFormat(ModelFile))
 		{
 			std::shared_ptr<IModel> model = loader->LoadModel(ModelFile, LoaderParams);
-			m_ModelsByName[ModelFile->Path_Name()] = model;
+			{
+				std::lock_guard<std::mutex> lock(m_LockMutex);
+				m_ModelsByName[ModelFile->Path_Name()] = model;
+			}
 			return model;
 		}
 	}

@@ -79,7 +79,7 @@ ZN_INTERFACE ZN_API ISceneNode
 	virtual void RaiseComponentMessage(const ISceneNodeComponent* Component, ComponentMessageType Message) const = 0;
 	virtual void RegisterComponents() = 0;
 
-	template<typename T> inline bool IsComponentExistsT()
+	template<typename T> inline bool IsComponentExistsT() const
 	{
 		return IsComponentExists(T::GetClassT());
 	}

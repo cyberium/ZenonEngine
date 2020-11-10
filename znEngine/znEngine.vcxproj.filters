@@ -181,6 +181,9 @@
     <Filter Include="Scene\RTS">
       <UniqueIdentifier>{9dc540cd-9f2d-49f0-a48a-2b158e64ef39}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Scene\Components\Particles">
+      <UniqueIdentifier>{6ea439f2-add0-4df0-b035-164aa9c343dd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -261,9 +264,6 @@
     </ClCompile>
     <ClCompile Include="Materials\UI_Texture_Material.cpp">
       <Filter>Materials\UI materials</Filter>
-    </ClCompile>
-    <ClCompile Include="Materials\MaterialParticle.cpp">
-      <Filter>Materials</Filter>
     </ClCompile>
     <ClCompile Include="..\Externals\reactphysics3d-0.7.1\src\body\Body.cpp">
       <Filter>Physics\reactphysics3d\body</Filter>
@@ -571,9 +571,6 @@
     <ClCompile Include="Scene\Components\ModelsComponent3D.cpp">
       <Filter>Scene\Components</Filter>
     </ClCompile>
-    <ClCompile Include="Scene\Components\ParticlesComponent3D.cpp">
-      <Filter>Scene\Components</Filter>
-    </ClCompile>
     <ClCompile Include="Scene\Components\Skeleton\SkeletonComponent.cpp">
       <Filter>Scene\Components\Skeleton</Filter>
     </ClCompile>
@@ -724,6 +721,9 @@
     <ClCompile Include="Passes\UI\UIControlConsolePass.cpp">
       <Filter>Passes\UI</Filter>
     </ClCompile>
+    <ClCompile Include="Scene\Components\Particles\ParticlesComponent.cpp">
+      <Filter>Scene\Components\Particles</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="common.h">
@@ -808,9 +808,6 @@
     </ClInclude>
     <ClInclude Include="Materials\UI_Texture_Material.h">
       <Filter>Materials\UI materials</Filter>
-    </ClInclude>
-    <ClInclude Include="Materials\MaterialParticle.h">
-      <Filter>Materials</Filter>
     </ClInclude>
     <ClInclude Include="..\Externals\reactphysics3d-0.7.1\src\body\Body.h">
       <Filter>Physics\reactphysics3d\body</Filter>
@@ -1178,9 +1175,6 @@
     <ClInclude Include="Scene\Components\ModelsComponent3D.h">
       <Filter>Scene\Components</Filter>
     </ClInclude>
-    <ClInclude Include="Scene\Components\ParticlesComponent3D.h">
-      <Filter>Scene\Components</Filter>
-    </ClInclude>
     <ClInclude Include="Scene\Components\Skeleton\SkeletonComponent.h">
       <Filter>Scene\Components\Skeleton</Filter>
     </ClInclude>
@@ -1336,6 +1330,9 @@
     </ClInclude>
     <ClInclude Include="Passes\UI\UIControlConsolePass.h">
       <Filter>Passes\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\Components\Particles\ParticlesComponent.h">
+      <Filter>Scene\Components\Particles</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

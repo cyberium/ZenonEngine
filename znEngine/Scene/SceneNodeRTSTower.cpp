@@ -5,7 +5,7 @@
 
 // Additional
 #include "Materials/MaterialModel.h"
-
+#include "Scene/Components/Particles/ParticlesComponent.h"
 
 
 //
@@ -14,7 +14,7 @@
 CSceneNodeRTSBullet::CSceneNodeRTSBullet(IScene & Scene)
 	: CSceneNode(Scene)
 	, m_Damage(1.0f)
-	, m_Speed(1.3f)
+	, m_Speed(0.3f)
 {}
 
 CSceneNodeRTSBullet::~CSceneNodeRTSBullet()
@@ -216,6 +216,25 @@ void CSceneNodeRTSTower::Update(const UpdateEventArgs & e)
 	bullet->SetTranslate(GetParent()->GetWorldTransfom() * glm::vec4(GetTranslation(), 1.0f));
 	bullet->SetTarget(std::dynamic_pointer_cast<ISceneNodeRTSUnit>(nearestNode));
 	bullet->GetComponentT<IModelsComponent3D>()->SetModel(m_MissileModel);
+
+	
+	{
+		std::shared_ptr<IParticleComponent3D> particlesComponent = MakeShared(CParticlesComponent, *bullet);
+		std::dynamic_pointer_cast<IParticleSystem>(particlesComponent)->SetTexture(GetBaseManager().GetManager<IznTexturesFactory>()->LoadTexture2D("star_01.png"));
+		bullet->AddComponentT(particlesComponent);
+
+		float areaSize = 40.0f;
+		Random r(time(0));
+		for (size_t i = 0; i < 1650; i++)
+		{
+			SParticle particle;
+			particle.Position = r.UnitVector3f() * areaSize;
+			float size = r.NextFloat() * 1.0f + 1.0f;
+			particle.Size = glm::vec2(size, size);
+			particle.Color = glm::vec4(r.NextFloat(), r.NextFloat(), r.NextFloat(), 1.0f);
+			std::dynamic_pointer_cast<IParticleSystem>(particlesComponent)->AddParticle(particle);
+		}
+	}
 
 	m_LastAttackTime = e.TotalTime;
 }

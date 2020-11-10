@@ -156,7 +156,7 @@ IBaseManager* WINAPI InitializeEngine(std::vector<std::string> Arguments, std::s
 		factory->AddClassFactory(sceneNodeUIFactory);
 
 		std::shared_ptr<CComponentsFactory> componentFactory = MakeShared(CComponentsFactory, *baseManager, "otSceneNodeComponent", otSceneNodeComponent);
-		componentFactory->AddClassCreator(MakeShared(CComponentsEngineCreator, *baseManager));
+		componentFactory->AddClassCreator(MakeShared(CComponentsCreator, *baseManager));
 		factory->AddClassFactory(componentFactory);
 	}
 

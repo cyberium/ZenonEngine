@@ -24,7 +24,7 @@
 #include "../znEngine/Scene/Components/LightComponent3D.h"
 #include "../znEngine/Scene/Components/ModelsComponent3D.h"
 #include "../znEngine/Scene/Components/CameraComponent3D.h"
-#include "../znEngine/Scene/Components/ParticlesComponent3D.h"
+#include "../znEngine/Scene/Components/Particles/ParticlesComponent.h"
 
 
 // SceneNodes
@@ -39,7 +39,6 @@
 #include "../znEngine/Materials/MaterialDebug.h"
 #include "../znEngine/Materials/MaterialTextured.h"
 #include "../znEngine/Materials/MaterialModel.h"
-#include "../znEngine/Materials/MaterialParticle.h"
 
 
 // Passes

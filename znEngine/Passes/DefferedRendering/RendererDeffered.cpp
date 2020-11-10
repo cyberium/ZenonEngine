@@ -75,10 +75,9 @@ void CRendererDeffered::Resize(uint32 NewWidth, uint32 NewHeight)
 {
 	m_Deffered_ScenePass->GetPipeline().GetRenderTarget()->Resize(NewWidth, NewHeight);
 	m_Deffered_UIQuadPass->GetPipeline().GetRenderTarget()->Resize(NewWidth, NewHeight);
+
 	if (m_Deffered_HDR)
 		m_Deffered_HDR->GetPipeline().GetRenderTarget()->Resize(NewWidth, NewHeight);
-
-	//m_FinalRenderTarget->Resize(NewWidth, NewHeight);
 }
 
 
@@ -113,7 +112,8 @@ void CRendererDeffered::Initialize(std::shared_ptr<IRenderTarget> OutputRenderTa
 	AddPass(m_SceneCreateTypelessListPass);
 	AddPass(m_Deffered_ScenePass);
 	AddPass(m_Deffered_Lights);
-	//AddPass(m_BaseManager.GetManager<IRenderPassFactory>()->CreateRenderPass("DebugPass", m_RenderDevice, outputRenderTargetWithCustomDepth, Viewport, m_Scene.lock()));
+	AddPass(MakeShared(CMaterial_Debug_Pass, m_RenderDevice, m_Scene)->ConfigurePipeline(outputRenderTargetWithCustomDepth, Viewport));
+	AddPass(MakeShared(CMaterialParticlePass, m_RenderDevice, m_Scene)->ConfigurePipeline(outputRenderTargetWithCustomDepth, Viewport));
 
 	// Final UI Pass
 	m_UIPasses.push_back(m_Deffered_UIQuadPass);

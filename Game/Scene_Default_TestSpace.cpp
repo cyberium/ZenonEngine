@@ -403,7 +403,7 @@ void CSceneDefault::Load3DOld()
 		auto particlesNode = m_RootForBoxes->CreateSceneNode<CSceneNode>();
 		particlesNode->SetName("Particles");
 		//particlesNode->GetComponent<IModelsComponent3D>()->AddModel(model);
-		auto particlesComponent = MakeShared(CParticlesComponent3D, *particlesNode);
+		auto particlesComponent = MakeShared(CParticlesComponent, *particlesNode);
 		particlesComponent->SetMaterial(material);
 		particlesNode->AddComponent(particlesComponent);
 

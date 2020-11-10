@@ -5,7 +5,7 @@
 
 Base3DPass::Base3DPass(IScene& scene)
     : ScenePassPipelined(scene)
-	, m_PerObjectParameter(nullptr)
+	//, m_PerObjectParameter(nullptr)
 {
 	m_PerObjectConstantBuffer = GetRenderDevice().GetObjectsFactory().CreateConstantBuffer(PerObject());
 }
@@ -36,7 +36,7 @@ std::shared_ptr<IRenderPassPipelined> Base3DPass::ConfigurePipeline(std::shared_
 //
 EVisitResult Base3DPass::Visit(const ISceneNode* SceneNode)
 {
-	BindPerObjectParameter(SceneNode->GetWorldTransfom());
+	BindPerObjectData(PerObject(SceneNode->GetWorldTransfom()));
 	return EVisitResult::AllowAll;
 }
 
@@ -62,18 +62,17 @@ EVisitResult Base3DPass::Visit(const IGeometry* Geometry, const IMaterial* Mater
 //
 // Protected
 //
-void Base3DPass::BindPerObjectParameter(const glm::mat4& PerObjectMatrix)
+void Base3DPass::BindPerObjectData(const PerObject& PerObject)
 {
-	PerObject perObject;
-	perObject.Model = PerObjectMatrix;
-	m_PerObjectConstantBuffer->Set(perObject);
+	m_PerObjectConstantBuffer->Set(PerObject);
 
-	if (m_PerObjectParameter == nullptr)
-		m_PerObjectParameter = &(GetPipeline().GetShaders().at(EShaderType::VertexShader)->GetShaderParameterByName("PerObject"));
-
-	if (false == m_PerObjectParameter->IsValid())
-		throw CException("PerObject parameter is invalid.");
-
-	m_PerObjectParameter->SetConstantBuffer(m_PerObjectConstantBuffer);
-	m_PerObjectParameter->Bind();
+	for (const auto& shaderIt : GetPipeline().GetShaders())
+	{
+		auto& perObjectParam = shaderIt.second->GetShaderParameterByName("PerObject");
+		if (perObjectParam.IsValid())
+		{
+			perObjectParam.SetConstantBuffer(m_PerObjectConstantBuffer);
+			perObjectParam.Bind();
+		}
+	}
 }

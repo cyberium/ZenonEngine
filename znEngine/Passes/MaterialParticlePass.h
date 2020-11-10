@@ -17,8 +17,6 @@ public:
 	EVisitResult Visit(const IParticleSystem* ParticlesSystem) override;
 
 private:
-	IShaderParameter*                  m_GeomShaderPerObjectParameter;
-
 	std::shared_ptr<IStructuredBuffer> m_GeomParticlesBuffer;
 	IShaderParameter*                  m_GeomShaderParticlesBufferParameter;
 	

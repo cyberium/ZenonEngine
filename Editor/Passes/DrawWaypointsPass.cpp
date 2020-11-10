@@ -64,7 +64,7 @@ EVisitResult CDrawWaypointsPass::Visit(const ISceneNode * node)
 	if (points.size() < 2)
 		return EVisitResult::AllowVisitChilds;
 
-	BindPerObjectParameter(glm::mat4(1.0f));
+	BindPerObjectData(PerObject());
 
 	m_WaypointGeometry = GetRenderDevice().GetPrimitivesFactory().CreateLines(pointsXYZ);
 

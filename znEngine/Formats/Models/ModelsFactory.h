@@ -18,6 +18,7 @@ public:
 
 private:
 	std::vector<std::shared_ptr<IznModelsLoader>> m_ModelsLoaders;
+	mutable std::mutex m_LockMutex;
 	std::unordered_map<std::string, std::weak_ptr<IModel>> m_ModelsByName;
 	IBaseManager& m_BaseManager;
 };

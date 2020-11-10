@@ -66,7 +66,7 @@ EVisitResult CDrawLightFrustumPass::Visit(const ISceneNode * node)
 EVisitResult CDrawLightFrustumPass::Visit(const ILight3D * Light)
 {
 	{
-		BindPerObjectParameter(glm::mat4(1.0f));
+		BindPerObjectData(PerObject());
 
 		auto geom = GetRenderDevice().GetPrimitivesFactory().CreateFrustum(Light->GetFrustum());
 
@@ -91,7 +91,7 @@ EVisitResult CDrawLightFrustumPass::Visit(const ILight3D * Light)
 		m = glm::rotate(m, n->GetRotation().y, glm::vec3(0, 1, 0));
 		m = glm::rotate(m, n->GetRotation().z, glm::vec3(0, 0, 1));
 
-		BindPerObjectParameter(m);
+		BindPerObjectData(m);
 
 
 		m_MaterialDebug->Bind(GetPipeline().GetShaders());
