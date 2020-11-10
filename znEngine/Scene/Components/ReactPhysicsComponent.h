@@ -1,6 +1,8 @@
 #pragma once
 
-#include <reactphysics3d.h>
+#pragma warning(push, 1)
+#include <reactphysics3d/reactphysics3d.h>
+#pragma warning(pop)
 
 class CReactPhysicsComponent
 	: public CComponentBase

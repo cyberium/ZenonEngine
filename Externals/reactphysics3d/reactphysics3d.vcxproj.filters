@@ -1,0 +1,609 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="body">
+      <UniqueIdentifier>{48fe9fe7-d2a1-4c62-9ffe-ace2d290267b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="collision">
+      <UniqueIdentifier>{a521afe4-c958-4601-afd0-3e003411fc6a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="components">
+      <UniqueIdentifier>{58c78e08-5b29-473a-b7b5-ec51821fb6aa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="constraint">
+      <UniqueIdentifier>{6a972fb5-c3b7-476c-95b5-05ac9a33037b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="engine">
+      <UniqueIdentifier>{190041a7-c098-4cb5-8c35-96ae6a349367}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="mathematics">
+      <UniqueIdentifier>{001985c6-1835-485b-9ec5-95c4b7d0ed04}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="memory">
+      <UniqueIdentifier>{2b34323c-04c0-44c4-9a11-50ca40305a22}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="systems">
+      <UniqueIdentifier>{7c438462-ace8-48f1-a72a-8eaa3167da7d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="utils">
+      <UniqueIdentifier>{592de0e5-6fe9-4080-8ea0-1ceae76dd532}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="collision\broadphase">
+      <UniqueIdentifier>{4885cf97-c9da-4dc6-b7e1-fdd1360fb8b8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="collision\narrowphase">
+      <UniqueIdentifier>{fe5d8d4b-72e4-44c1-811a-a3cdf7539155}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="collision\shapes">
+      <UniqueIdentifier>{d2006e95-f442-475a-a508-e509ce3d2466}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="collision\narrowphase\GJK">
+      <UniqueIdentifier>{ed2c20b6-4bdb-401d-8d97-5238ac574731}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="collision\narrowphase\SAT">
+      <UniqueIdentifier>{c3f530a4-9608-4e66-8b69-209e8faf3005}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="source\src\utils\DebugRenderer.cpp">
+      <Filter>utils</Filter>
+    </ClCompile>
+    <ClCompile Include="source\src\utils\DefaultLogger.cpp">
+      <Filter>utils</Filter>
+    </ClCompile>
+    <ClCompile Include="source\src\utils\Profiler.cpp">
+      <Filter>utils</Filter>
+    </ClCompile>
+    <ClCompile Include="source\src\systems\BroadPhaseSystem.cpp">
+      <Filter>systems</Filter>
+    </ClCompile>
+    <ClCompile Include="source\src\systems\CollisionDetectionSystem.cpp">
+      <Filter>systems</Filter>
+    </ClCompile>
+    <ClCompile Include="source\src\systems\ConstraintSolverSystem.cpp">
+      <Filter>systems</Filter>
+    </ClCompile>
+    <ClCompile Include="source\src\systems\ContactSolverSystem.cpp">
+      <Filter>systems</Filter>
+    </ClCompile>
+    <ClCompile Include="source\src\systems\DynamicsSystem.cpp">
+      <Filter>systems</Filter>
+    </ClCompile>
+    <ClCompile Include="source\src\systems\SolveBallAndSocketJointSystem.cpp">
+      <Filter>systems</Filter>
+    </ClCompile>
+    <ClCompile Include="source\src\systems\SolveFixedJointSystem.cpp">
+      <Filter>systems</Filter>
+    </ClCompile>
+    <ClCompile Include="source\src\systems\SolveHingeJointSystem.cpp">
+      <Filter>systems</Filter>
+    </ClCompile>
+    <ClCompile Include="source\src\systems\SolveSliderJointSystem.cpp">
+      <Filter>systems</Filter>
+    </ClCompile>
+    <ClCompile Include="source\src\memory\HeapAllocator.cpp">
+      <Filter>memory</Filter>
+    </ClCompile>
+    <ClCompile Include="source\src\memory\MemoryManager.cpp">
+      <Filter>memory</Filter>
+    </ClCompile>
+    <ClCompile Include="source\src\memory\PoolAllocator.cpp">
+      <Filter>memory</Filter>
+    </ClCompile>
+    <ClCompile Include="source\src\memory\SingleFrameAllocator.cpp">
+      <Filter>memory</Filter>
+    </ClCompile>
+    <ClCompile Include="source\src\mathematics\mathematics_functions.cpp">
+      <Filter>mathematics</Filter>
+    </ClCompile>
+    <ClCompile Include="source\src\mathematics\Matrix2x2.cpp">
+      <Filter>mathematics</Filter>
+    </ClCompile>
+    <ClCompile Include="source\src\mathematics\Matrix3x3.cpp">
+      <Filter>mathematics</Filter>
+    </ClCompile>
+    <ClCompile Include="source\src\mathematics\Quaternion.cpp">
+      <Filter>mathematics</Filter>
+    </ClCompile>
+    <ClCompile Include="source\src\mathematics\Transform.cpp">
+      <Filter>mathematics</Filter>
+    </ClCompile>
+    <ClCompile Include="source\src\mathematics\Vector2.cpp">
+      <Filter>mathematics</Filter>
+    </ClCompile>
+    <ClCompile Include="source\src\mathematics\Vector3.cpp">
+      <Filter>mathematics</Filter>
+    </ClCompile>
+    <ClCompile Include="source\src\engine\Entity.cpp">
+      <Filter>engine</Filter>
+    </ClCompile>
+    <ClCompile Include="source\src\engine\EntityManager.cpp">
+      <Filter>engine</Filter>
+    </ClCompile>
+    <ClCompile Include="source\src\engine\Island.cpp">
+      <Filter>engine</Filter>
+    </ClCompile>
+    <ClCompile Include="source\src\engine\Material.cpp">
+      <Filter>engine</Filter>
+    </ClCompile>
+    <ClCompile Include="source\src\engine\OverlappingPairs.cpp">
+      <Filter>engine</Filter>
+    </ClCompile>
+    <ClCompile Include="source\src\engine\PhysicsCommon.cpp">
+      <Filter>engine</Filter>
+    </ClCompile>
+    <ClCompile Include="source\src\engine\PhysicsWorld.cpp">
+      <Filter>engine</Filter>
+    </ClCompile>
+    <ClCompile Include="source\src\engine\Timer.cpp">
+      <Filter>engine</Filter>
+    </ClCompile>
+    <ClCompile Include="source\src\constraint\BallAndSocketJoint.cpp">
+      <Filter>constraint</Filter>
+    </ClCompile>
+    <ClCompile Include="source\src\constraint\ContactPoint.cpp">
+      <Filter>constraint</Filter>
+    </ClCompile>
+    <ClCompile Include="source\src\constraint\FixedJoint.cpp">
+      <Filter>constraint</Filter>
+    </ClCompile>
+    <ClCompile Include="source\src\constraint\HingeJoint.cpp">
+      <Filter>constraint</Filter>
+    </ClCompile>
+    <ClCompile Include="source\src\constraint\Joint.cpp">
+      <Filter>constraint</Filter>
+    </ClCompile>
+    <ClCompile Include="source\src\constraint\SliderJoint.cpp">
+      <Filter>constraint</Filter>
+    </ClCompile>
+    <ClCompile Include="source\src\components\BallAndSocketJointComponents.cpp">
+      <Filter>components</Filter>
+    </ClCompile>
+    <ClCompile Include="source\src\components\ColliderComponents.cpp">
+      <Filter>components</Filter>
+    </ClCompile>
+    <ClCompile Include="source\src\components\CollisionBodyComponents.cpp">
+      <Filter>components</Filter>
+    </ClCompile>
+    <ClCompile Include="source\src\components\Components.cpp">
+      <Filter>components</Filter>
+    </ClCompile>
+    <ClCompile Include="source\src\components\FixedJointComponents.cpp">
+      <Filter>components</Filter>
+    </ClCompile>
+    <ClCompile Include="source\src\components\HingeJointComponents.cpp">
+      <Filter>components</Filter>
+    </ClCompile>
+    <ClCompile Include="source\src\components\JointComponents.cpp">
+      <Filter>components</Filter>
+    </ClCompile>
+    <ClCompile Include="source\src\components\RigidBodyComponents.cpp">
+      <Filter>components</Filter>
+    </ClCompile>
+    <ClCompile Include="source\src\components\SliderJointComponents.cpp">
+      <Filter>components</Filter>
+    </ClCompile>
+    <ClCompile Include="source\src\components\TransformComponents.cpp">
+      <Filter>components</Filter>
+    </ClCompile>
+    <ClCompile Include="source\src\collision\Collider.cpp">
+      <Filter>collision</Filter>
+    </ClCompile>
+    <ClCompile Include="source\src\collision\CollisionCallback.cpp">
+      <Filter>collision</Filter>
+    </ClCompile>
+    <ClCompile Include="source\src\collision\ContactManifold.cpp">
+      <Filter>collision</Filter>
+    </ClCompile>
+    <ClCompile Include="source\src\collision\HalfEdgeStructure.cpp">
+      <Filter>collision</Filter>
+    </ClCompile>
+    <ClCompile Include="source\src\collision\OverlapCallback.cpp">
+      <Filter>collision</Filter>
+    </ClCompile>
+    <ClCompile Include="source\src\collision\PolygonVertexArray.cpp">
+      <Filter>collision</Filter>
+    </ClCompile>
+    <ClCompile Include="source\src\collision\PolyhedronMesh.cpp">
+      <Filter>collision</Filter>
+    </ClCompile>
+    <ClCompile Include="source\src\collision\RaycastInfo.cpp">
+      <Filter>collision</Filter>
+    </ClCompile>
+    <ClCompile Include="source\src\collision\TriangleMesh.cpp">
+      <Filter>collision</Filter>
+    </ClCompile>
+    <ClCompile Include="source\src\collision\TriangleVertexArray.cpp">
+      <Filter>collision</Filter>
+    </ClCompile>
+    <ClCompile Include="source\src\collision\shapes\AABB.cpp">
+      <Filter>collision\shapes</Filter>
+    </ClCompile>
+    <ClCompile Include="source\src\collision\shapes\BoxShape.cpp">
+      <Filter>collision\shapes</Filter>
+    </ClCompile>
+    <ClCompile Include="source\src\collision\shapes\CapsuleShape.cpp">
+      <Filter>collision\shapes</Filter>
+    </ClCompile>
+    <ClCompile Include="source\src\collision\shapes\CollisionShape.cpp">
+      <Filter>collision\shapes</Filter>
+    </ClCompile>
+    <ClCompile Include="source\src\collision\shapes\ConcaveMeshShape.cpp">
+      <Filter>collision\shapes</Filter>
+    </ClCompile>
+    <ClCompile Include="source\src\collision\shapes\ConcaveShape.cpp">
+      <Filter>collision\shapes</Filter>
+    </ClCompile>
+    <ClCompile Include="source\src\collision\shapes\ConvexMeshShape.cpp">
+      <Filter>collision\shapes</Filter>
+    </ClCompile>
+    <ClCompile Include="source\src\collision\shapes\ConvexPolyhedronShape.cpp">
+      <Filter>collision\shapes</Filter>
+    </ClCompile>
+    <ClCompile Include="source\src\collision\shapes\ConvexShape.cpp">
+      <Filter>collision\shapes</Filter>
+    </ClCompile>
+    <ClCompile Include="source\src\collision\shapes\HeightFieldShape.cpp">
+      <Filter>collision\shapes</Filter>
+    </ClCompile>
+    <ClCompile Include="source\src\collision\shapes\SphereShape.cpp">
+      <Filter>collision\shapes</Filter>
+    </ClCompile>
+    <ClCompile Include="source\src\collision\shapes\TriangleShape.cpp">
+      <Filter>collision\shapes</Filter>
+    </ClCompile>
+    <ClCompile Include="source\src\collision\narrowphase\CapsuleVsCapsuleAlgorithm.cpp">
+      <Filter>collision\narrowphase</Filter>
+    </ClCompile>
+    <ClCompile Include="source\src\collision\narrowphase\CapsuleVsCapsuleNarrowPhaseInfoBatch.cpp">
+      <Filter>collision\narrowphase</Filter>
+    </ClCompile>
+    <ClCompile Include="source\src\collision\narrowphase\CapsuleVsConvexPolyhedronAlgorithm.cpp">
+      <Filter>collision\narrowphase</Filter>
+    </ClCompile>
+    <ClCompile Include="source\src\collision\narrowphase\CollisionDispatch.cpp">
+      <Filter>collision\narrowphase</Filter>
+    </ClCompile>
+    <ClCompile Include="source\src\collision\narrowphase\ConvexPolyhedronVsConvexPolyhedronAlgorithm.cpp">
+      <Filter>collision\narrowphase</Filter>
+    </ClCompile>
+    <ClCompile Include="source\src\collision\narrowphase\NarrowPhaseInfoBatch.cpp">
+      <Filter>collision\narrowphase</Filter>
+    </ClCompile>
+    <ClCompile Include="source\src\collision\narrowphase\NarrowPhaseInput.cpp">
+      <Filter>collision\narrowphase</Filter>
+    </ClCompile>
+    <ClCompile Include="source\src\collision\narrowphase\SphereVsCapsuleAlgorithm.cpp">
+      <Filter>collision\narrowphase</Filter>
+    </ClCompile>
+    <ClCompile Include="source\src\collision\narrowphase\SphereVsCapsuleNarrowPhaseInfoBatch.cpp">
+      <Filter>collision\narrowphase</Filter>
+    </ClCompile>
+    <ClCompile Include="source\src\collision\narrowphase\SphereVsConvexPolyhedronAlgorithm.cpp">
+      <Filter>collision\narrowphase</Filter>
+    </ClCompile>
+    <ClCompile Include="source\src\collision\narrowphase\SphereVsSphereAlgorithm.cpp">
+      <Filter>collision\narrowphase</Filter>
+    </ClCompile>
+    <ClCompile Include="source\src\collision\narrowphase\SphereVsSphereNarrowPhaseInfoBatch.cpp">
+      <Filter>collision\narrowphase</Filter>
+    </ClCompile>
+    <ClCompile Include="source\src\collision\broadphase\DynamicAABBTree.cpp">
+      <Filter>collision\broadphase</Filter>
+    </ClCompile>
+    <ClCompile Include="source\src\collision\narrowphase\GJK\GJKAlgorithm.cpp">
+      <Filter>collision\narrowphase\GJK</Filter>
+    </ClCompile>
+    <ClCompile Include="source\src\collision\narrowphase\GJK\VoronoiSimplex.cpp">
+      <Filter>collision\narrowphase\GJK</Filter>
+    </ClCompile>
+    <ClCompile Include="source\src\collision\narrowphase\SAT\SATAlgorithm.cpp">
+      <Filter>collision\narrowphase\SAT</Filter>
+    </ClCompile>
+    <ClCompile Include="source\src\body\CollisionBody.cpp">
+      <Filter>body</Filter>
+    </ClCompile>
+    <ClCompile Include="source\src\body\RigidBody.cpp">
+      <Filter>body</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="source\include\reactphysics3d\configuration.h" />
+    <ClInclude Include="source\include\reactphysics3d\decimal.h" />
+    <ClInclude Include="source\include\reactphysics3d\reactphysics3d.h" />
+    <ClInclude Include="source\include\reactphysics3d\systems\BroadPhaseSystem.h">
+      <Filter>systems</Filter>
+    </ClInclude>
+    <ClInclude Include="source\include\reactphysics3d\systems\CollisionDetectionSystem.h">
+      <Filter>systems</Filter>
+    </ClInclude>
+    <ClInclude Include="source\include\reactphysics3d\systems\ConstraintSolverSystem.h">
+      <Filter>systems</Filter>
+    </ClInclude>
+    <ClInclude Include="source\include\reactphysics3d\systems\ContactSolverSystem.h">
+      <Filter>systems</Filter>
+    </ClInclude>
+    <ClInclude Include="source\include\reactphysics3d\systems\DynamicsSystem.h">
+      <Filter>systems</Filter>
+    </ClInclude>
+    <ClInclude Include="source\include\reactphysics3d\systems\SolveBallAndSocketJointSystem.h">
+      <Filter>systems</Filter>
+    </ClInclude>
+    <ClInclude Include="source\include\reactphysics3d\systems\SolveFixedJointSystem.h">
+      <Filter>systems</Filter>
+    </ClInclude>
+    <ClInclude Include="source\include\reactphysics3d\systems\SolveHingeJointSystem.h">
+      <Filter>systems</Filter>
+    </ClInclude>
+    <ClInclude Include="source\include\reactphysics3d\systems\SolveSliderJointSystem.h">
+      <Filter>systems</Filter>
+    </ClInclude>
+    <ClInclude Include="source\include\reactphysics3d\utils\DebugRenderer.h">
+      <Filter>utils</Filter>
+    </ClInclude>
+    <ClInclude Include="source\include\reactphysics3d\utils\DefaultLogger.h">
+      <Filter>utils</Filter>
+    </ClInclude>
+    <ClInclude Include="source\include\reactphysics3d\utils\Logger.h">
+      <Filter>utils</Filter>
+    </ClInclude>
+    <ClInclude Include="source\include\reactphysics3d\utils\Profiler.h">
+      <Filter>utils</Filter>
+    </ClInclude>
+    <ClInclude Include="source\include\reactphysics3d\memory\DefaultAllocator.h">
+      <Filter>memory</Filter>
+    </ClInclude>
+    <ClInclude Include="source\include\reactphysics3d\memory\HeapAllocator.h">
+      <Filter>memory</Filter>
+    </ClInclude>
+    <ClInclude Include="source\include\reactphysics3d\memory\MemoryAllocator.h">
+      <Filter>memory</Filter>
+    </ClInclude>
+    <ClInclude Include="source\include\reactphysics3d\memory\MemoryManager.h">
+      <Filter>memory</Filter>
+    </ClInclude>
+    <ClInclude Include="source\include\reactphysics3d\memory\PoolAllocator.h">
+      <Filter>memory</Filter>
+    </ClInclude>
+    <ClInclude Include="source\include\reactphysics3d\memory\SingleFrameAllocator.h">
+      <Filter>memory</Filter>
+    </ClInclude>
+    <ClInclude Include="source\include\reactphysics3d\mathematics\mathematics.h">
+      <Filter>mathematics</Filter>
+    </ClInclude>
+    <ClInclude Include="source\include\reactphysics3d\mathematics\mathematics_functions.h">
+      <Filter>mathematics</Filter>
+    </ClInclude>
+    <ClInclude Include="source\include\reactphysics3d\mathematics\Matrix2x2.h">
+      <Filter>mathematics</Filter>
+    </ClInclude>
+    <ClInclude Include="source\include\reactphysics3d\mathematics\Matrix3x3.h">
+      <Filter>mathematics</Filter>
+    </ClInclude>
+    <ClInclude Include="source\include\reactphysics3d\mathematics\Quaternion.h">
+      <Filter>mathematics</Filter>
+    </ClInclude>
+    <ClInclude Include="source\include\reactphysics3d\mathematics\Ray.h">
+      <Filter>mathematics</Filter>
+    </ClInclude>
+    <ClInclude Include="source\include\reactphysics3d\mathematics\Transform.h">
+      <Filter>mathematics</Filter>
+    </ClInclude>
+    <ClInclude Include="source\include\reactphysics3d\mathematics\Vector2.h">
+      <Filter>mathematics</Filter>
+    </ClInclude>
+    <ClInclude Include="source\include\reactphysics3d\mathematics\Vector3.h">
+      <Filter>mathematics</Filter>
+    </ClInclude>
+    <ClInclude Include="source\include\reactphysics3d\engine\Entity.h">
+      <Filter>engine</Filter>
+    </ClInclude>
+    <ClInclude Include="source\include\reactphysics3d\engine\EntityManager.h">
+      <Filter>engine</Filter>
+    </ClInclude>
+    <ClInclude Include="source\include\reactphysics3d\engine\EventListener.h">
+      <Filter>engine</Filter>
+    </ClInclude>
+    <ClInclude Include="source\include\reactphysics3d\engine\Island.h">
+      <Filter>engine</Filter>
+    </ClInclude>
+    <ClInclude Include="source\include\reactphysics3d\engine\Islands.h">
+      <Filter>engine</Filter>
+    </ClInclude>
+    <ClInclude Include="source\include\reactphysics3d\engine\Material.h">
+      <Filter>engine</Filter>
+    </ClInclude>
+    <ClInclude Include="source\include\reactphysics3d\engine\OverlappingPairs.h">
+      <Filter>engine</Filter>
+    </ClInclude>
+    <ClInclude Include="source\include\reactphysics3d\engine\PhysicsCommon.h">
+      <Filter>engine</Filter>
+    </ClInclude>
+    <ClInclude Include="source\include\reactphysics3d\engine\PhysicsWorld.h">
+      <Filter>engine</Filter>
+    </ClInclude>
+    <ClInclude Include="source\include\reactphysics3d\engine\Timer.h">
+      <Filter>engine</Filter>
+    </ClInclude>
+    <ClInclude Include="source\include\reactphysics3d\constraint\BallAndSocketJoint.h">
+      <Filter>constraint</Filter>
+    </ClInclude>
+    <ClInclude Include="source\include\reactphysics3d\constraint\ContactPoint.h">
+      <Filter>constraint</Filter>
+    </ClInclude>
+    <ClInclude Include="source\include\reactphysics3d\constraint\FixedJoint.h">
+      <Filter>constraint</Filter>
+    </ClInclude>
+    <ClInclude Include="source\include\reactphysics3d\constraint\HingeJoint.h">
+      <Filter>constraint</Filter>
+    </ClInclude>
+    <ClInclude Include="source\include\reactphysics3d\constraint\Joint.h">
+      <Filter>constraint</Filter>
+    </ClInclude>
+    <ClInclude Include="source\include\reactphysics3d\constraint\SliderJoint.h">
+      <Filter>constraint</Filter>
+    </ClInclude>
+    <ClInclude Include="source\include\reactphysics3d\components\BallAndSocketJointComponents.h">
+      <Filter>components</Filter>
+    </ClInclude>
+    <ClInclude Include="source\include\reactphysics3d\components\ColliderComponents.h">
+      <Filter>components</Filter>
+    </ClInclude>
+    <ClInclude Include="source\include\reactphysics3d\components\CollisionBodyComponents.h">
+      <Filter>components</Filter>
+    </ClInclude>
+    <ClInclude Include="source\include\reactphysics3d\components\Components.h">
+      <Filter>components</Filter>
+    </ClInclude>
+    <ClInclude Include="source\include\reactphysics3d\components\FixedJointComponents.h">
+      <Filter>components</Filter>
+    </ClInclude>
+    <ClInclude Include="source\include\reactphysics3d\components\HingeJointComponents.h">
+      <Filter>components</Filter>
+    </ClInclude>
+    <ClInclude Include="source\include\reactphysics3d\components\JointComponents.h">
+      <Filter>components</Filter>
+    </ClInclude>
+    <ClInclude Include="source\include\reactphysics3d\components\RigidBodyComponents.h">
+      <Filter>components</Filter>
+    </ClInclude>
+    <ClInclude Include="source\include\reactphysics3d\components\SliderJointComponents.h">
+      <Filter>components</Filter>
+    </ClInclude>
+    <ClInclude Include="source\include\reactphysics3d\components\TransformComponents.h">
+      <Filter>components</Filter>
+    </ClInclude>
+    <ClInclude Include="source\include\reactphysics3d\collision\broadphase\DynamicAABBTree.h">
+      <Filter>collision\broadphase</Filter>
+    </ClInclude>
+    <ClInclude Include="source\include\reactphysics3d\collision\narrowphase\GJK\GJKAlgorithm.h">
+      <Filter>collision\narrowphase\GJK</Filter>
+    </ClInclude>
+    <ClInclude Include="source\include\reactphysics3d\collision\narrowphase\GJK\VoronoiSimplex.h">
+      <Filter>collision\narrowphase\GJK</Filter>
+    </ClInclude>
+    <ClInclude Include="source\include\reactphysics3d\collision\narrowphase\SAT\SATAlgorithm.h">
+      <Filter>collision\narrowphase\SAT</Filter>
+    </ClInclude>
+    <ClInclude Include="source\include\reactphysics3d\collision\narrowphase\CapsuleVsCapsuleAlgorithm.h">
+      <Filter>collision\narrowphase</Filter>
+    </ClInclude>
+    <ClInclude Include="source\include\reactphysics3d\collision\narrowphase\CapsuleVsCapsuleNarrowPhaseInfoBatch.h">
+      <Filter>collision\narrowphase</Filter>
+    </ClInclude>
+    <ClInclude Include="source\include\reactphysics3d\collision\narrowphase\CapsuleVsConvexPolyhedronAlgorithm.h">
+      <Filter>collision\narrowphase</Filter>
+    </ClInclude>
+    <ClInclude Include="source\include\reactphysics3d\collision\narrowphase\CollisionDispatch.h">
+      <Filter>collision\narrowphase</Filter>
+    </ClInclude>
+    <ClInclude Include="source\include\reactphysics3d\collision\narrowphase\ConvexPolyhedronVsConvexPolyhedronAlgorithm.h">
+      <Filter>collision\narrowphase</Filter>
+    </ClInclude>
+    <ClInclude Include="source\include\reactphysics3d\collision\narrowphase\NarrowPhaseAlgorithm.h">
+      <Filter>collision\narrowphase</Filter>
+    </ClInclude>
+    <ClInclude Include="source\include\reactphysics3d\collision\narrowphase\NarrowPhaseInfoBatch.h">
+      <Filter>collision\narrowphase</Filter>
+    </ClInclude>
+    <ClInclude Include="source\include\reactphysics3d\collision\narrowphase\NarrowPhaseInput.h">
+      <Filter>collision\narrowphase</Filter>
+    </ClInclude>
+    <ClInclude Include="source\include\reactphysics3d\collision\narrowphase\SphereVsCapsuleAlgorithm.h">
+      <Filter>collision\narrowphase</Filter>
+    </ClInclude>
+    <ClInclude Include="source\include\reactphysics3d\collision\narrowphase\SphereVsCapsuleNarrowPhaseInfoBatch.h">
+      <Filter>collision\narrowphase</Filter>
+    </ClInclude>
+    <ClInclude Include="source\include\reactphysics3d\collision\narrowphase\SphereVsConvexPolyhedronAlgorithm.h">
+      <Filter>collision\narrowphase</Filter>
+    </ClInclude>
+    <ClInclude Include="source\include\reactphysics3d\collision\narrowphase\SphereVsSphereAlgorithm.h">
+      <Filter>collision\narrowphase</Filter>
+    </ClInclude>
+    <ClInclude Include="source\include\reactphysics3d\collision\narrowphase\SphereVsSphereNarrowPhaseInfoBatch.h">
+      <Filter>collision\narrowphase</Filter>
+    </ClInclude>
+    <ClInclude Include="source\include\reactphysics3d\collision\Collider.h">
+      <Filter>collision</Filter>
+    </ClInclude>
+    <ClInclude Include="source\include\reactphysics3d\collision\CollisionCallback.h">
+      <Filter>collision</Filter>
+    </ClInclude>
+    <ClInclude Include="source\include\reactphysics3d\collision\ContactManifold.h">
+      <Filter>collision</Filter>
+    </ClInclude>
+    <ClInclude Include="source\include\reactphysics3d\collision\ContactManifoldInfo.h">
+      <Filter>collision</Filter>
+    </ClInclude>
+    <ClInclude Include="source\include\reactphysics3d\collision\ContactPair.h">
+      <Filter>collision</Filter>
+    </ClInclude>
+    <ClInclude Include="source\include\reactphysics3d\collision\ContactPointInfo.h">
+      <Filter>collision</Filter>
+    </ClInclude>
+    <ClInclude Include="source\include\reactphysics3d\collision\HalfEdgeStructure.h">
+      <Filter>collision</Filter>
+    </ClInclude>
+    <ClInclude Include="source\include\reactphysics3d\collision\OverlapCallback.h">
+      <Filter>collision</Filter>
+    </ClInclude>
+    <ClInclude Include="source\include\reactphysics3d\collision\PolygonVertexArray.h">
+      <Filter>collision</Filter>
+    </ClInclude>
+    <ClInclude Include="source\include\reactphysics3d\collision\PolyhedronMesh.h">
+      <Filter>collision</Filter>
+    </ClInclude>
+    <ClInclude Include="source\include\reactphysics3d\collision\RaycastInfo.h">
+      <Filter>collision</Filter>
+    </ClInclude>
+    <ClInclude Include="source\include\reactphysics3d\collision\TriangleMesh.h">
+      <Filter>collision</Filter>
+    </ClInclude>
+    <ClInclude Include="source\include\reactphysics3d\collision\TriangleVertexArray.h">
+      <Filter>collision</Filter>
+    </ClInclude>
+    <ClInclude Include="source\include\reactphysics3d\collision\shapes\AABB.h">
+      <Filter>collision\shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="source\include\reactphysics3d\collision\shapes\BoxShape.h">
+      <Filter>collision\shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="source\include\reactphysics3d\collision\shapes\CapsuleShape.h">
+      <Filter>collision\shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="source\include\reactphysics3d\collision\shapes\CollisionShape.h">
+      <Filter>collision\shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="source\include\reactphysics3d\collision\shapes\ConcaveMeshShape.h">
+      <Filter>collision\shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="source\include\reactphysics3d\collision\shapes\ConcaveShape.h">
+      <Filter>collision\shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="source\include\reactphysics3d\collision\shapes\ConvexMeshShape.h">
+      <Filter>collision\shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="source\include\reactphysics3d\collision\shapes\ConvexPolyhedronShape.h">
+      <Filter>collision\shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="source\include\reactphysics3d\collision\shapes\ConvexShape.h">
+      <Filter>collision\shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="source\include\reactphysics3d\collision\shapes\HeightFieldShape.h">
+      <Filter>collision\shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="source\include\reactphysics3d\collision\shapes\SphereShape.h">
+      <Filter>collision\shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="source\include\reactphysics3d\collision\shapes\TriangleShape.h">
+      <Filter>collision\shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="source\include\reactphysics3d\body\CollisionBody.h">
+      <Filter>body</Filter>
+    </ClInclude>
+    <ClInclude Include="source\include\reactphysics3d\body\RigidBody.h">
+      <Filter>body</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

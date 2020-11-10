@@ -21,7 +21,7 @@ public:
 			std::string idNumber = DirtyName.substr(chIt + 1);
 
 			int num;
-			if (sscanf(idNumber.c_str(), "%d", &num) == 1)
+			if (sscanf_s(idNumber.c_str(), "%d", &num) == 1)
 				return std::make_pair(clearName, num);
 
 			return std::make_pair(clearName, 0);

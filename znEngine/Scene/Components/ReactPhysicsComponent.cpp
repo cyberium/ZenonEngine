@@ -3,6 +3,8 @@
 // General
 #include "ReactPhysicsComponent.h"
 
+#pragma comment(lib, "reactphysics3d.lib")
+
 using namespace rp3d;
 
 CReactPhysicsComponent::CReactPhysicsComponent(const ISceneNode& OwnerNode, rp3d::RigidBody * RPRigidBody)

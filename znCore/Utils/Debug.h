@@ -62,19 +62,3 @@ public:
 	CznRenderException(const wchar_t* WMessage, ...);
 	CznRenderException(std::wstring WMessage) : CException(WMessage) {}
 };
-
-#if 1
-#ifndef _DEBUG
-	#define _ASSERT(expr)   \
-	if ((!(expr)))          \
-	{                       \
-		throw CException("Assertion failed."); \
-	}
-
-	#define _ASSERT_EXPR(expr, msg)   \
-	if ((!(expr)))                    \
-	{                                 \
-		throw CException(msg);        \
-	} 
-#endif
-#endif

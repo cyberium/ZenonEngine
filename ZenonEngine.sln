@@ -58,6 +58,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libpng", "Externals\libpng\
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "freetype", "Externals\freetype\freetype.vcxproj", "{78B079BD-9FC7-4B9E-B4A6-96DA0F00248B}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "reactphysics3d", "Externals\reactphysics3d\reactphysics3d.vcxproj", "{33134F61-C1AD-4B6F-9999-503A9F140C52}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -116,6 +118,10 @@ Global
 		{78B079BD-9FC7-4B9E-B4A6-96DA0F00248B}.Debug|x64.Build.0 = Debug|x64
 		{78B079BD-9FC7-4B9E-B4A6-96DA0F00248B}.Release|x64.ActiveCfg = Release|x64
 		{78B079BD-9FC7-4B9E-B4A6-96DA0F00248B}.Release|x64.Build.0 = Release|x64
+		{33134F61-C1AD-4B6F-9999-503A9F140C52}.Debug|x64.ActiveCfg = Debug|x64
+		{33134F61-C1AD-4B6F-9999-503A9F140C52}.Debug|x64.Build.0 = Debug|x64
+		{33134F61-C1AD-4B6F-9999-503A9F140C52}.Release|x64.ActiveCfg = Release|x64
+		{33134F61-C1AD-4B6F-9999-503A9F140C52}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -129,6 +135,7 @@ Global
 		{AE3BC0AA-C469-4530-B761-C9777D3BE0D2} = {DFFFFFB9-E725-4935-8AEB-AD452223F7DB}
 		{7DB10B50-CE00-447A-B322-6844F05D2FCB} = {7117DD40-5090-4982-B565-034F60A0D3B1}
 		{78B079BD-9FC7-4B9E-B4A6-96DA0F00248B} = {7117DD40-5090-4982-B565-034F60A0D3B1}
+		{33134F61-C1AD-4B6F-9999-503A9F140C52} = {7117DD40-5090-4982-B565-034F60A0D3B1}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F9F36BB9-5089-4994-A982-BC672F2F36D0}

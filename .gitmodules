@@ -20,3 +20,7 @@
 	path = Externals/zlib/source
 	url = https://github.com/madler/zlib
 	branch = master
+[submodule "Externals/reactphysics3d/source"]
+	path = Externals/reactphysics3d/source
+	url = https://github.com/DanielChappuis/reactphysics3d
+	branch = master
