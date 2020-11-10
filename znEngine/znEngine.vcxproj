@@ -359,6 +359,7 @@
     <ClCompile Include="Scene\Camera\RTSCameraController.cpp" />
     <ClCompile Include="Scene\Components\Animation\AnimationComponent.cpp" />
     <ClCompile Include="Scene\Components\Particles\ParticlesComponent.cpp" />
+    <ClCompile Include="Scene\Components\Particles\ParticleSystem.cpp" />
     <ClCompile Include="Scene\Components\Skeleton\Skeleton.cpp" />
     <ClCompile Include="Scene\Components\Skeleton\SkeletonBone.cpp" />
     <ClCompile Include="Scene\Components\CameraComponent3D.cpp" />
@@ -567,6 +568,7 @@
     <ClInclude Include="Scene\Components\Animation\AnimatedValue.h" />
     <ClInclude Include="Scene\Components\Animation\AnimationComponent.h" />
     <ClInclude Include="Scene\Components\Particles\ParticlesComponent.h" />
+    <ClInclude Include="Scene\Components\Particles\ParticleSystem.h" />
     <ClInclude Include="Scene\Components\Skeleton\Skeleton.h" />
     <ClInclude Include="Scene\Components\Skeleton\SkeletonBone.h" />
     <ClInclude Include="Scene\Components\CameraComponent3D.h" />

@@ -724,6 +724,9 @@
     <ClCompile Include="Scene\Components\Particles\ParticlesComponent.cpp">
       <Filter>Scene\Components\Particles</Filter>
     </ClCompile>
+    <ClCompile Include="Scene\Components\Particles\ParticleSystem.cpp">
+      <Filter>Scene\Components\Particles</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="common.h">
@@ -1332,6 +1335,9 @@
       <Filter>Passes\UI</Filter>
     </ClInclude>
     <ClInclude Include="Scene\Components\Particles\ParticlesComponent.h">
+      <Filter>Scene\Components\Particles</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\Components\Particles\ParticleSystem.h">
       <Filter>Scene\Components\Particles</Filter>
     </ClInclude>
   </ItemGroup>
