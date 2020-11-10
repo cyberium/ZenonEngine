@@ -15,3 +15,7 @@
 	path = Externals/libpng/source
 	url = https://github.com/glennrp/libpng
 	branch = master
+[submodule "Externals/freetype/source"]
+	path = Externals/freetype/source
+	url = https://github.com/freetype/freetype2
+	branch = master
