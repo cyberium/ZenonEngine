@@ -6,7 +6,7 @@
 // Additional
 #include "Materials/MaterialModel.h"
 
-CPassForward_DoRenderSceneInstanced::CPassForward_DoRenderSceneInstanced(IRenderDevice& RenderDevice, const std::shared_ptr<CSceneCreateTypelessListPass>& SceneCreateTypelessListPass)
+CPassForward_DoRenderSceneInstanced::CPassForward_DoRenderSceneInstanced(IRenderDevice& RenderDevice, const std::shared_ptr<IRenderPassCreateTypelessList>& SceneCreateTypelessListPass)
 	: RenderPassPipelined(RenderDevice)
 	, m_SceneCreateTypelessListPass(SceneCreateTypelessListPass)
 {

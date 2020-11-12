@@ -113,6 +113,14 @@ void CznPluginsManager::InitializeAllPlugins()
 	}
 }
 
+std::vector<std::shared_ptr<IznPlugin>> CznPluginsManager::GetAllPlugins() const
+{
+	std::vector<std::shared_ptr<IznPlugin>> plugins;
+	for (const auto& it : m_Plugins)
+		plugins.push_back(it.Plugin);
+	return plugins;
+}
+
 void CznPluginsManager::AddPluginEventListener(std::shared_ptr<IznPluginsEventListener> PluginEventListener)
 {
 	if (PluginEventListener == nullptr)

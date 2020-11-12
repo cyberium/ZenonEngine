@@ -26,6 +26,17 @@ std::shared_ptr<IRenderPassPipelined> Base3DPass::ConfigurePipeline(std::shared_
 	GetPipeline().GetRasterizerState()->SetCullMode(IRasterizerState::CullMode::Back);
 	GetPipeline().GetRasterizerState()->SetFillMode(IRasterizerState::FillMode::Solid, IRasterizerState::FillMode::Solid);
 	GetPipeline().SetRenderTarget(RenderTarget);
+
+	auto sampler = GetRenderDevice().GetObjectsFactory().CreateSamplerState();
+	sampler->SetFilter(ISamplerState::MinFilter::MinLinear, ISamplerState::MagFilter::MagLinear, ISamplerState::MipFilter::MipLinear);
+	sampler->SetWrapMode(ISamplerState::WrapMode::Repeat, ISamplerState::WrapMode::Repeat);
+	GetPipeline().SetSampler(0, sampler);
+
+	auto samplerClamp = GetRenderDevice().GetObjectsFactory().CreateSamplerState();
+	samplerClamp->SetFilter(ISamplerState::MinFilter::MinLinear, ISamplerState::MagFilter::MagLinear, ISamplerState::MipFilter::MipLinear);
+	samplerClamp->SetWrapMode(ISamplerState::WrapMode::Clamp, ISamplerState::WrapMode::Clamp);
+	GetPipeline().SetSampler(1, samplerClamp);
+
 	return shared_from_this();
 }
 

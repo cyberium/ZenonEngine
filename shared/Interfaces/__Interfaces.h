@@ -12,7 +12,7 @@
 
 #define ZN_INTERFACE struct __declspec(novtable)
 
-
+#define ZN_GET_OBJECTCLASS(x) (UINT16_MAX - x##u)
 #define ZN_MAKE_OBJECTCLASS(x, y) const ObjectClass x = UINT16_MAX - y##u;
 #define ZN_OBJECTCLASS(x) static ObjectClass GetClassT() { return x; }
 

@@ -14,22 +14,22 @@ CSceneCreateTypelessListPass::~CSceneCreateTypelessListPass()
 //
 // CSceneCreateTypelessListPass
 //
-const std::vector<CSceneCreateTypelessListPass::SNodeElement>& CSceneCreateTypelessListPass::GetNodesList() const
+const std::vector<IRenderPassCreateTypelessList::SNodeElement>& CSceneCreateTypelessListPass::GetNodesList() const
 {
 	return m_NodesList;
 }
 
-const std::vector<CSceneCreateTypelessListPass::SModelElement>& CSceneCreateTypelessListPass::GetModelsList() const
+const std::vector<IRenderPassCreateTypelessList::SModelElement>& CSceneCreateTypelessListPass::GetModelsList() const
 {
 	return m_ModelsList;
 }
 
-const std::vector<CSceneCreateTypelessListPass::SGeometryElement>& CSceneCreateTypelessListPass::GetGeometryList() const
+const std::vector<IRenderPassCreateTypelessList::SGeometryElement>& CSceneCreateTypelessListPass::GetGeometryList() const
 {
 	return m_GeometryList;
 }
 
-const std::vector<CSceneCreateTypelessListPass::SLightElement>& CSceneCreateTypelessListPass::GetLightList() const
+const std::vector<IRenderPassCreateTypelessList::SLightElement>& CSceneCreateTypelessListPass::GetLightList() const
 {
 	return m_LightList;
 }

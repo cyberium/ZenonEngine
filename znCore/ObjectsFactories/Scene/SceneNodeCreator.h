@@ -2,7 +2,7 @@
 
 #include "../ObjectClassCreator.h"
 
-class CSceneNodeCreator
+class ZN_API CSceneNodeCreator
 	: public CObjectClassCreatorBase
 {
 public:

@@ -2,7 +2,7 @@
 
 #include "../ObjectClassCreator.h"
 
-class CUIControlCreator
+class ZN_API CUIControlCreator
 	: public CObjectClassCreatorBase
 {
 public:

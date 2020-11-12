@@ -76,15 +76,3 @@ ZN_INTERFACE ZN_API IComponentFactory
 		return std::dynamic_pointer_cast<T>(CreateComponent(ObjectClassKey, SceneNode));
 	}
 };
-
-
-//
-
-
-
-ZN_INTERFACE ZN_API ISceneNodeProvider
-{
-	virtual ~ISceneNodeProvider() {}
-
-	virtual void CreateInsances(const std::shared_ptr<ISceneNode>& Parent) const = 0;
-};

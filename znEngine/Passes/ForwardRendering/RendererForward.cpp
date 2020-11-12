@@ -120,9 +120,13 @@ void CRendererForward::Initialize(std::shared_ptr<IRenderTarget> OutputRenderTar
 	//AddPass(m_MaterialModelPassInstanced);
 	//AddPass(m_RTSGroundPassInstanced);
 
-	AddPass(MakeShared(CMaterial_Debug_Pass, m_RenderDevice, m_Scene)->ConfigurePipeline(OutputRenderTarget, Viewport));
+	for (const auto& it : m_BaseManager.GetManager<IznPluginsManager>()->GetAllPlugins())
+		if (auto ext = std::dynamic_pointer_cast<IRendererExtender>(it))
+			ext->Extend3DPasses(*this, m_RenderDevice, m_SceneCreateTypelessListPass, OutputRenderTarget, Viewport);
+
+	//AddPass(MakeShared(CMaterial_Debug_Pass, m_RenderDevice, m_Scene)->ConfigurePipeline(OutputRenderTarget, Viewport));
 	AddPass(MakeShared(CMaterialParticlePass, m_RenderDevice, m_Scene)->ConfigurePipeline(OutputRenderTarget, Viewport));
-	AddPass(MakeShared(CDrawBonesPass, m_Scene)->ConfigurePipeline(OutputRenderTarget, Viewport));
+	//AddPass(MakeShared(CDrawBonesPass, m_Scene)->ConfigurePipeline(OutputRenderTarget, Viewport));
 	
 	m_UIPasses.push_back(MakeShared(CUIFontPass, m_RenderDevice, m_Scene)->ConfigurePipeline(OutputRenderTarget, Viewport));
 	m_UIPasses.push_back(MakeShared(CUIColorPass, m_RenderDevice, m_Scene)->ConfigurePipeline(OutputRenderTarget, Viewport));

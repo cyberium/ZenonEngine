@@ -41,6 +41,7 @@ ZN_INTERFACE ZN_API	IznPluginsManager
 	virtual void									RemovePlugin(const std::string& PluginDLLName) = 0;
 
 	virtual void                                    InitializeAllPlugins() = 0;
+	virtual std::vector<std::shared_ptr<IznPlugin>> GetAllPlugins() const = 0;
 
 	virtual void                                    AddPluginEventListener(std::shared_ptr<IznPluginsEventListener> PluginEventListener) = 0;
 	virtual void                                    RemovePluginEventListener(std::shared_ptr<IznPluginsEventListener> PluginEventListener) = 0;

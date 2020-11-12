@@ -30,11 +30,12 @@ public:
 	virtual ~CznPluginsManager();
 
 	// IznPluginsManager
-	bool											AddPlugin(const std::string& PluginDLLName);
-	void											RemovePlugin(const std::string& PluginDLLName);
-	void											InitializeAllPlugins();
-	void                                            AddPluginEventListener(std::shared_ptr<IznPluginsEventListener> PluginEventListener);
-	void                                            RemovePluginEventListener(std::shared_ptr<IznPluginsEventListener> PluginEventListener);                               
+	bool											AddPlugin(const std::string& PluginDLLName) override;
+	void											RemovePlugin(const std::string& PluginDLLName) override;
+	void											InitializeAllPlugins() override;
+	std::vector<std::shared_ptr<IznPlugin>>         GetAllPlugins() const override;
+	void                                            AddPluginEventListener(std::shared_ptr<IznPluginsEventListener> PluginEventListener) override;
+	void                                            RemovePluginEventListener(std::shared_ptr<IznPluginsEventListener> PluginEventListener) override;
 
 private:
 	struct SPluginDescription

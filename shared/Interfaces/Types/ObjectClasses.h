@@ -21,6 +21,8 @@ const ObjectClass cLog                          = UINT16_MAX - 14u;
 const ObjectClass cPluginsManager               = UINT16_MAX - 15u;
 const ObjectClass cSettingsManager              = UINT16_MAX - 16u;
 
+// 50-99 custom
+
 //
 // 3D
 //
@@ -32,6 +34,7 @@ ZN_MAKE_OBJECTCLASS(cSceneNodeRTSUnit, 104);
 ZN_MAKE_OBJECTCLASS(cSceneNodeRTSBullet, 105);
 ZN_MAKE_OBJECTCLASS(cSceneNodeRTSTower, 106);
 
+// 150 - 199 custom
 
 //
 // UI

@@ -44,7 +44,7 @@ void CEditor3DPreviewScene::SetSceneNode(std::shared_ptr<ISceneNode> SceneNode)
 
 	Clean();
 
-	auto copy = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<CSceneNode3DFactory>()->CreateSceneNode3D(SceneNode->GetClass(), *this, m_SceneNode);
+	auto copy = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<CSceneNodeFactory>()->CreateSceneNode3D(SceneNode->GetClass(), *this, m_SceneNode);
 	SceneNode->CopyTo(copy);
 
 	BoundingBox bbox;

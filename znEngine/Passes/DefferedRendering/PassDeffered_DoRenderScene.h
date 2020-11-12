@@ -6,7 +6,7 @@ class ZN_API CPassDeffered_DoRenderScene
 	: public RenderPassPipelined
 {
 public:
-	CPassDeffered_DoRenderScene(IRenderDevice& RenderDevice, const std::shared_ptr<CSceneCreateTypelessListPass>& SceneCreateTypelessListPass);
+	CPassDeffered_DoRenderScene(IRenderDevice& RenderDevice, const std::shared_ptr<IRenderPassCreateTypelessList>& SceneCreateTypelessListPass);
 	virtual ~CPassDeffered_DoRenderScene();
 
 	// CPassDeffered_DoRenderScene
@@ -31,7 +31,7 @@ private:
 	std::shared_ptr<IRenderTarget> CreateGBuffer(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport);
 
 private:
-	std::shared_ptr<CSceneCreateTypelessListPass> m_SceneCreateTypelessListPass;
+	std::shared_ptr<IRenderPassCreateTypelessList> m_SceneCreateTypelessListPass;
 
 private:
 	std::shared_ptr<IConstantBuffer> m_PerObjectConstantBuffer;

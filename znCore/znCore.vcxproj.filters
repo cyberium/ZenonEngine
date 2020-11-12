@@ -97,6 +97,9 @@
     <Filter Include="Objects\Scene\Creator">
       <UniqueIdentifier>{38518e39-9c65-450e-8dd3-43c6493dcbd7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Objects\Render">
+      <UniqueIdentifier>{e4b2dafe-7b09-411a-878e-3dba2aec1453}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">

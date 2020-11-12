@@ -6,7 +6,7 @@ class CPassForward_DoRenderSceneInstanced
 	: public RenderPassPipelined
 {
 public:
-	CPassForward_DoRenderSceneInstanced(IRenderDevice& RenderDevice, const std::shared_ptr<CSceneCreateTypelessListPass>& SceneCreateTypelessListPass);
+	CPassForward_DoRenderSceneInstanced(IRenderDevice& RenderDevice, const std::shared_ptr<IRenderPassCreateTypelessList>& SceneCreateTypelessListPass);
 	virtual ~CPassForward_DoRenderSceneInstanced();
 
 	IShaderParameter* GetLightsShaderParameter() const;
@@ -26,5 +26,5 @@ private:
 	std::shared_ptr<IStructuredBuffer> m_InstancesBuffer;
 	size_t							   m_InstancesCnt;
 
-	std::shared_ptr<CSceneCreateTypelessListPass> m_SceneCreateTypelessListPass;
+	std::shared_ptr<IRenderPassCreateTypelessList> m_SceneCreateTypelessListPass;
 };

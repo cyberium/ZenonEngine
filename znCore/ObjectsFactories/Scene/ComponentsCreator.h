@@ -2,7 +2,7 @@
 
 #include "../ObjectClassCreator.h"
 
-class CComponentsCreator
+class ZN_API CComponentsCreator
 	: public CObjectClassCreatorBase
 {
 public:

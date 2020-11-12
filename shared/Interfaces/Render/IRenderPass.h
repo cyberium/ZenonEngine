@@ -1,10 +1,18 @@
 #pragma once
 
+#include "Types/RenderTypes.h"
+
 // FORWARD BEGIN
 class RenderEventArgs;
 ZN_INTERFACE IRenderTarget;
 ZN_INTERFACE IPipelineState;
 class Viewport;
+ZN_INTERFACE ISceneNode;
+ZN_INTERFACE IModel;
+ZN_INTERFACE IGeometry;
+ZN_INTERFACE IMaterial;
+ZN_INTERFACE ILight3D;
+ZN_INTERFACE IParticleSystem;
 // FORWARD END
 
 ZN_INTERFACE ZN_API IRenderPass 
@@ -41,6 +49,75 @@ ZN_INTERFACE ZN_API IRenderPassMultipipelinded
 };
 
 
+ZN_INTERFACE ZN_API IRenderPassCreateTypelessList
+	: public virtual IRenderPass
+{
+		struct ZN_API SNodeElement
+	{
+		SNodeElement(const ISceneNode* SceneNode)
+			: SceneNode(SceneNode)
+		{}
+
+		const ISceneNode* SceneNode;
+	};
+
+	struct ZN_API SModelElement
+	{
+		SModelElement(const ISceneNode* SceneNode, const IModel* Model)
+			: SceneNode(SceneNode)
+			, Model(Model)
+		{}
+
+		const ISceneNode* SceneNode;
+		const IModel* Model;
+	};
+
+	struct ZN_API SGeometryElement
+	{
+		SGeometryElement(const ISceneNode* Node, const IModel* Model, const IGeometry* Geometry, const IMaterial* Material, const SGeometryDrawArgs GeometryDrawArgs)
+			: Node(Node)
+			, Model(Model)
+			, Geometry(Geometry)
+			, Material(Material)
+			, GeometryDrawArgs(GeometryDrawArgs)
+		{}
+
+		const ISceneNode* Node;
+		const IModel* Model;
+		const IGeometry* Geometry;
+		const IMaterial* Material;
+		const SGeometryDrawArgs GeometryDrawArgs;
+	};
+
+	struct ZN_API SLightElement
+	{
+		SLightElement(const ISceneNode* SceneNode, const ILight3D* Light)
+			: SceneNode(SceneNode)
+			, Light(Light)
+		{}
+
+		const ISceneNode* SceneNode;
+		const ILight3D* Light;
+	};
+
+	struct ZN_API SParticleSystemElement
+	{
+		SParticleSystemElement(const ISceneNode* SceneNode, const IParticleSystem* ParticleSystem)
+			: SceneNode(SceneNode)
+			, ParticleSystem(ParticleSystem)
+		{}
+
+		const ISceneNode* SceneNode;
+		const IParticleSystem* ParticleSystem;
+	};
+
+	virtual ~IRenderPassCreateTypelessList() {}
+
+	virtual const std::vector<SNodeElement>& GetNodesList() const = 0;
+	virtual const std::vector<SModelElement>& GetModelsList() const = 0;
+	virtual const std::vector<SGeometryElement>& GetGeometryList() const = 0;
+	virtual const std::vector<SLightElement>& GetLightList() const = 0;
+};
 
 
 /*

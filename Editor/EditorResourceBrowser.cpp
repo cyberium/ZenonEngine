@@ -120,7 +120,7 @@ std::shared_ptr<IznTreeViewItem> CEditorResourceBrowser::CreateSceneNodeProtosFr
 			_ASSERT(false == reader->GetChilds().empty());
 			auto firstXMLChild = reader->GetChilds()[0];
 
-			auto sceneNodeProtoRoot = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<CSceneNode3DFactory>()->LoadSceneNode3DXML(firstXMLChild, m_Editor.Get3DFrame().GetScene());
+			auto sceneNodeProtoRoot = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<CSceneNodeFactory>()->LoadSceneNode3DXML(firstXMLChild, m_Editor.Get3DFrame().GetScene());
 			sceneNodeProtoRoot->MakeMeOrphan();
 			sceneNodes.push_back(MakeShared(CzNodeProtoTreeViewItemSource, sceneNodeProtoRoot));
 		}

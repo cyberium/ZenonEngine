@@ -24,7 +24,7 @@ bool CSceneCreateTypedListsPass::HasNodesList(ObjectClass SceneNodeType) const
 	return m_NodesList.find(SceneNodeType) != m_NodesList.end();
 }
 
-const std::vector<CSceneCreateTypelessListPass::SNodeElement>& CSceneCreateTypedListsPass::GetNodesList(ObjectClass SceneNodeType) const
+const std::vector<IRenderPassCreateTypelessList::SNodeElement>& CSceneCreateTypedListsPass::GetNodesList(ObjectClass SceneNodeType) const
 {
 	return m_NodesList.at(SceneNodeType);
 }
@@ -34,7 +34,7 @@ bool CSceneCreateTypedListsPass::HasModelsList(ObjectClass SceneNodeType) const
 	return m_ModelsList.find(SceneNodeType) != m_ModelsList.end();
 }
 
-const std::vector<CSceneCreateTypelessListPass::SModelElement>& CSceneCreateTypedListsPass::GetModelsList(ObjectClass SceneNodeType) const
+const std::vector<IRenderPassCreateTypelessList::SModelElement>& CSceneCreateTypedListsPass::GetModelsList(ObjectClass SceneNodeType) const
 {
 	return m_ModelsList.at(SceneNodeType);
 }
@@ -44,7 +44,7 @@ bool CSceneCreateTypedListsPass::HasGeometriesList(ObjectClass SceneNodeType) co
 	return m_GeometryList.find(SceneNodeType) != m_GeometryList.end();
 }
 
-const std::vector<CSceneCreateTypelessListPass::SGeometryElement>& CSceneCreateTypedListsPass::GetGeometriesList(ObjectClass SceneNodeType) const
+const std::vector<IRenderPassCreateTypelessList::SGeometryElement>& CSceneCreateTypedListsPass::GetGeometriesList(ObjectClass SceneNodeType) const
 {
 	return m_GeometryList.at(SceneNodeType);
 }
@@ -54,7 +54,7 @@ bool CSceneCreateTypedListsPass::HasParticleSystemsList(ObjectClass SceneNodeTyp
 	return m_ParticleSystemList.find(SceneNodeType) != m_ParticleSystemList.end();
 }
 
-const std::vector<CSceneCreateTypelessListPass::SParticleSystemElement>& CSceneCreateTypedListsPass::GetParticleSystemList(ObjectClass SceneNodeType) const
+const std::vector<IRenderPassCreateTypelessList::SParticleSystemElement>& CSceneCreateTypedListsPass::GetParticleSystemList(ObjectClass SceneNodeType) const
 {
 	return m_ParticleSystemList.at(SceneNodeType);
 }

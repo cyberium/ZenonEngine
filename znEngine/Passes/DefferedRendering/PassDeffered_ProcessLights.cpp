@@ -3,7 +3,7 @@
 // General
 #include "PassDeffered_ProcessLights.h"
 
-CPassDeffered_ProcessLights::CPassDeffered_ProcessLights(IRenderDevice& RenderDevice, const std::shared_ptr<CSceneCreateTypelessListPass>& SceneCreateTypelessListPass)
+CPassDeffered_ProcessLights::CPassDeffered_ProcessLights(IRenderDevice& RenderDevice, const std::shared_ptr<IRenderPassCreateTypelessList>& SceneCreateTypelessListPass)
 	: RenderPass(RenderDevice)
 	, m_SceneCreateTypelessListPass(SceneCreateTypelessListPass)
 {

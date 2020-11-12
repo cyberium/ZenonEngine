@@ -10,7 +10,7 @@ CSceneNodeRTSUnit::CSceneNodeRTSUnit(IScene & Scene)
 	: CSceneNode(Scene)
 	, m_Health(75.0f)
 	, m_MaxHealth(100.0f)
-	, m_Speed(0.25f)
+	, m_Speed(0.15f)
 	, m_PathCurrentPoint(0)
 {
 	// Unit properties
@@ -102,7 +102,12 @@ void CSceneNodeRTSUnit::Initialize()
 	SetScale(glm::vec3(1.0f));
 
 	auto model = GetBaseManager().GetManager<IznModelsFactory>()->LoadModel("models/cactus_tall.znmdl");
-	GetComponentT<IModelsComponent3D>()->SetModel(model);
+	//GetComponentT<IModelsComponent3D>()->SetModel(model);
+
+
+	auto m2Node = GetScene().CreateSceneNodeByClass<ISceneNode>(ZN_GET_OBJECTCLASS(150), shared_from_this());
+	m2Node->SetScale(glm::vec3(3.0f));
+	m2Node->SetName("M2Node");
 
 	//std::shared_ptr<IParticleComponent3D> particlesComponent = MakeShared(CParticlesComponent, *this);
 	//AddComponentT(particlesComponent);
@@ -129,7 +134,9 @@ void CSceneNodeRTSUnit::Update(const UpdateEventArgs & e)
 	newPosition += direction * GetMovementSpeed() * float(e.DeltaTimeMultiplier);
 
 	SetTranslate(newPosition);
-	SetRotationQuaternion(glm::conjugate(glm::toQuat(glm::lookAt(GetTranslation(), GetTranslation() + direction, glm::vec3(0.0f, 1.0f, 0.0f)))));
+	glm::quat t = glm::quat(glm::vec3(0, glm::half_pi<float>(), 0));
+	t *= glm::conjugate(glm::toQuat(glm::lookAt(GetTranslation(), GetTranslation() + direction, glm::vec3(0.0f, 1.0f, 0.0f))));
+	SetRotationQuaternion(t);
 
 	if (glm::distance(GetTranslation(), nextPoint->GetTranslation()) < GetMovementSpeed() * 2.0f)
 	{

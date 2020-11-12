@@ -75,7 +75,7 @@ std::shared_ptr<ISceneNode> GetSceneNodeFromDragData(IBaseManager& BaseManager, 
 
 	ISceneNode* ptrPtr = reinterpret_cast<ISceneNode*>(ptr);
 
-	auto copy = BaseManager.GetManager<IObjectsFactory>()->GetClassFactoryCast<CSceneNode3DFactory>()->CreateSceneNode3D(ptrPtr->GetClass(), Scene, Scene.GetRootSceneNode());
+	auto copy = BaseManager.GetManager<IObjectsFactory>()->GetClassFactoryCast<CSceneNodeFactory>()->CreateSceneNode3D(ptrPtr->GetClass(), Scene, Scene.GetRootSceneNode());
 	ptrPtr->CopyTo(copy);
 	return copy;
 }

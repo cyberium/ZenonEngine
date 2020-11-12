@@ -6,6 +6,7 @@ ZN_INTERFACE ISceneNode;
 ZN_INTERFACE IUIControl;
 ZN_INTERFACE IVisitor;
 class UpdateEventArgs;
+ZN_INTERFACE IObjectsFactory;
 ZN_INTERFACE ISceneNodeFactory;
 ZN_INTERFACE ISceneFinder;
 // FORWARD END
@@ -71,6 +72,12 @@ ZN_INTERFACE ZN_API IScene
 	//{
 	//	return GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeFactory>()->CreateSceneNode3D(Class, *this, Parent);
 	//}
+
+	template<class T>
+	inline std::shared_ptr<ISceneNode> CreateSceneNodeByClass(ObjectClass ObjectClass, std::shared_ptr<ISceneNode> Parent = nullptr)
+	{
+		return GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeFactory>()->CreateSceneNode3D(ObjectClass, *this, Parent);
+	}
 
 	template<class T>
 	inline std::shared_ptr<ISceneNode> CreateSceneNode(std::shared_ptr<ISceneNode> Parent = nullptr)

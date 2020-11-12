@@ -16,7 +16,7 @@ public:
 	};
 
 public:
-	CPassDeffered_ProcessLights(IRenderDevice& RenderDevice, const std::shared_ptr<CSceneCreateTypelessListPass>& BuildRenderListPass);
+	CPassDeffered_ProcessLights(IRenderDevice& RenderDevice, const std::shared_ptr<IRenderPassCreateTypelessList>& BuildRenderListPass);
 	virtual ~CPassDeffered_ProcessLights();
 
 	void CreateShadowPipeline();
@@ -49,7 +49,7 @@ private: // For shadow rendering
 	std::vector<SLightResult> m_LightResult;
 
 private:
-	std::shared_ptr<CSceneCreateTypelessListPass> m_SceneCreateTypelessListPass;
+	std::shared_ptr<IRenderPassCreateTypelessList> m_SceneCreateTypelessListPass;
 
 private: // consts
 	const float cShadowTextureSize = 4096.0f;

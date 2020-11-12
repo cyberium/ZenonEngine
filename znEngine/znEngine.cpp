@@ -54,11 +54,6 @@ std::string GetExePath()
 	return f.substr(0, f.find_last_of("\\/"));
 }
 
-std::string GetDLLPath()
-{
-	return GetExePath() + "\\Extensions\\";
-}
-
 #include <iostream>
 
 IBaseManager* WINAPI InitializeEngine(std::vector<std::string> Arguments, std::string PathToPlugins)
