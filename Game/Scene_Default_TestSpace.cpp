@@ -69,7 +69,7 @@ void CSceneDefault::Load3D()
 	//--------------------------------------------------------------------------
 	// Plane
 	//--------------------------------------------------------------------------
-	/*{
+	{
 		const float cPlaneSize = 240.0f;
 		const float cPlaneY = 0.0f;
 
@@ -80,13 +80,13 @@ void CSceneDefault::Load3D()
 		auto& modelPlane = GetRenderDevice().GetObjectsFactory().CreateModel();
 		modelPlane->AddConnection(textMaterial, GetRenderDevice().GetPrimitivesFactory().CreateCube());
 
-		auto node = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeFactory>()->CreateSceneNode3D(cSceneNode3D, *this, newRoot);
+		auto node = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeFactory>()->CreateSceneNode3D(cSceneNode3D, *this, GetRootSceneNode());
 		node->SetName("Ground");
 		node->SetTranslate(glm::vec3(0, -25, 0));
 		node->SetScale(glm::vec3(cPlaneSize, 5.0f, cPlaneSize));
-		node->GetComponent<IModelsComponent3D>()->SetModel(modelPlane);
+		node->GetComponentT<IModelsComponent3D>()->SetModel(modelPlane);
 		//node->GetComponent<IModelsComponent3D>()->SetCastShadows(false);
-	}*/
+	}
 
 
 
@@ -161,15 +161,15 @@ void CSceneDefault::Load3D()
 	// Orc with anims
 	//--------------------------------------------------------------------------
 	/*{
-		auto node = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeFactory>()->CreateSceneNode3D(cSceneNode3D, this, newRoot);
+		auto node = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeFactory>()->CreateSceneNode3D(cSceneNode3D, *this, GetRootSceneNode());
 		node->SetName("OrcAnimation");
 		node->SetTranslate(glm::vec3(0.0f, 0.0f, 0.0f));
 		//node->SetRotation(-glm::vec3(glm::half_pi<float>(), 0.0f, 0.0f));
 		//node->SetScale(glm::vec3(0.5f));
 
-		std::shared_ptr<CznFBXLoaderParams> fbxLoaderParams = MakeShared(CznFBXLoaderParams);
-		fbxLoaderParams->TexturesPathRoot = "Toon_RTS/models/textures/";
-		fbxLoaderParams->OverrideTexture = "WK_StandardUnits_generic.png";
+		CznFBXLoaderParams fbxLoaderParams;
+		fbxLoaderParams.TexturesPathRoot = "Toon_RTS/models/textures/";
+		fbxLoaderParams.OverrideTexture = "WK_StandardUnits_generic.png";
 
 		auto fbxModelsLoader = GetBaseManager().GetManager<IznModelsFactory>()->GetLoaderForModel("fbx");
 		_ASSERT(fbxModelsLoader != nullptr);
@@ -177,21 +177,22 @@ void CSceneDefault::Load3D()
 		_ASSERT(fbxSceneLoader != nullptr);
 		
 		// Original skeleton
-		auto originalSkeletonScene = fbxSceneLoader->LoadScene("Toon_RTS/models/WK_archer.FBX", fbxLoaderParams);
-		//node->GetComponent<IModelsComponent3D>()->SetModel(originalSkeletonScene->MergeModels());
+		//auto originalSkeletonScene = fbxSceneLoader->LoadScene("Toon_RTS/models/WK_archer.FBX", &fbxLoaderParams);
+		//node->GetComponentT<IModelsComponent3D>()->SetModel(originalSkeletonScene->MergeModels());
 
 		// Animated skeleton
-		auto animatedSkeletonScene = fbxSceneLoader->LoadScene("Toon_RTS/animation/archer/WK_archer_03_run2.FBX", fbxLoaderParams);
+		auto animatedSkeletonScene = fbxSceneLoader->LoadScene("Toon_RTS/animation/archer/WK_archer_03_run2.FBX", &fbxLoaderParams);
 		auto animatedSkeleton = animatedSkeletonScene->GetFBXSkeleton()->GetSkeleton();
 
-		auto originalSkeleton = originalSkeletonScene->GetFBXSkeleton()->GetSkeleton();
-		originalSkeleton.MergeWithOther(animatedSkeleton);
-		node->AddComponent<ISkeletonComponent3D>(MakeShared(CSkeletonComponent3D, *node, originalSkeleton));
-		
+		//auto originalSkeleton = originalSkeletonScene->GetFBXSkeleton()->GetSkeleton();
+		//originalSkeleton.MergeWithOther(animatedSkeleton);
+		//node->AddComponentT<ISkeletonComponent3D>(MakeShared(CSkeletonComponent3D, *node, originalSkeleton));
+		node->AddComponentT<ISkeletonComponent3D>(MakeShared(CSkeletonComponent3D, *node, animatedSkeleton));
+
 
 		// Animations
 		uint16 cntr = 0;
-		auto animationComponent = node->AddComponent<ISkeletonAnimationComponent>(MakeShared(CAnimatorComponent3D, *node));
+		auto animationComponent = node->AddComponentT<ISkeletonAnimationComponent>(MakeShared(CAnimationComponent3D, *node));
 		for (const auto& anim : animatedSkeletonScene->GetFBXAnimation()->GetAnimations())
 			animationComponent->AddAnimation(cntr++, anim);
 	}*/

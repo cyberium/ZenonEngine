@@ -35,16 +35,6 @@ glm::vec3 CSkeletonComponentBone3D::GetPivotPoint() const
 	return glm::vec3(0.0f);
 }
 
-const glm::mat4 & CSkeletonComponentBone3D::GetPivotMatrix() const
-{
-	return m_Bone.GlobalTransform;
-}
-
-const glm::vec3 & CSkeletonComponentBone3D::GetTranslate() const
-{
-	return m_Translate;
-}
-
 const glm::mat4& CSkeletonComponentBone3D::GetMatrix() const
 {
 	return m_Matrix;
@@ -85,20 +75,18 @@ void CSkeletonComponentBone3D::Calculate(const ISceneNode& Instance, const ICame
 	if (parentBone)
 		std::dynamic_pointer_cast<ISkeletonComponentBoneInternal3D>(parentBone)->Calculate(Instance, Camera);
 
-	//m_Translate = m_Bone.CalcTranslate(Instance);
+	//m_Matrix = m_M2Bone.calcMatrix(M2Instance, GlobalTime);
+	//m_RotateMatrix = m_M2Bone.calcRotationMatrix(M2Instance, GlobalTime);
 
-	//m_RotateMatrix = m_Bone.CalcRotate(Instance);
-	m_Matrix = m_Bone.CalcMatrix(Instance);
-	
 
 	if (parentBone)
 	{
-		//m_RotateMatrix = parentBone->GetRotateMatrix() * m_RotateMatrix;
 		m_Matrix = parentBone->GetMatrix() * m_Matrix;
+		m_RotateMatrix = parentBone->GetRotateMatrix() * m_RotateMatrix;
 	}
 
-	//if (m_Bone.IsBillboard())
-	//	m_Matrix = m_Matrix * m_M2Bone.calcBillboardMatrix(m_Matrix, Instance, Camera);
+	//if (m_M2Bone.IsBillboard())
+	//	m_Matrix = m_Matrix * m_M2Bone.calcBillboardMatrix(m_Matrix, M2Instance, Camera);
 
 	m_IsCalculated = true;
 }

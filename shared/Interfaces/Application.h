@@ -15,6 +15,10 @@ ZN_INTERFACE ZN_API IApplication
 	virtual int                             DoRun() = 0;
 	virtual void                            DoAfterRun() = 0;
 
+	virtual double                          GetGameDeltaTime() const = 0;
+	virtual double                          GetGameTime() const = 0;
+	virtual size_t                          GetFrameCounter() const = 0;
+
 	virtual IBaseManager&                   GetBaseManager() const = 0;
 	virtual IRenderDevice&                  GetRenderDevice() const = 0;
 };

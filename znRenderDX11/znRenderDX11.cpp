@@ -65,7 +65,7 @@ private:
 
 
 
-extern "C" __declspec(dllexport) IznPlugin* WINAPI GetPlugin(IBaseManager* BaseManager)
+IznPlugin* WINAPI GetPlugin(IBaseManager* BaseManager)
 {
 	return new CznRenderDX11Plugin(*BaseManager);
 }

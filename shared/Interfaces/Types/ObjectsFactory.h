@@ -11,11 +11,11 @@ ZN_INTERFACE ZN_API IObjectClassCreator
 {
 	virtual ~IObjectClassCreator() {}
 
-	virtual size_t GetSupportedClassCount() const = 0;
-	virtual ObjectClass GetSupportedClassKey(size_t Index) const = 0;
-	virtual std::string GetSupportedClassName(size_t Index) const = 0;
-	virtual CreationFunction_t GetSupportedClassFunction(size_t Index) const = 0;
-	virtual std::shared_ptr<IObject> CreateObject(size_t Index, const Guid& AssignedGuid, const IObjectCreationArgs* ObjectCreationArgs) = 0;
+	virtual bool IsCanCreate(ObjectClass ObjectClassKey) const = 0;
+	virtual const std::map<ObjectClass, std::pair<std::string, CreationFunction_t>>& GetSupportedClasses() const = 0;
+	virtual void AddClass(ObjectClass ObjectClassKey, std::string ObjectClassName, CreationFunction_t Func) = 0;
+	virtual void RemoveClass(ObjectClass ObjectClassKey) = 0;
+	virtual std::shared_ptr<IObject> CreateObject(ObjectClass ObjectClass, const Guid& AssignedGuid, const IObjectCreationArgs* ObjectCreationArgs) = 0;
 };
 
 ZN_INTERFACE ZN_API IObjectClassFactory
@@ -24,7 +24,7 @@ ZN_INTERFACE ZN_API IObjectClassFactory
 
 	virtual ~IObjectClassFactory() {}
 
-	virtual std::unordered_map<ObjectClass, std::shared_ptr<IObjectClassCreator>> GetClassCreators() const = 0;
+	virtual std::vector<std::shared_ptr<IObjectClassCreator>> GetClassCreators() const = 0;
 	virtual std::shared_ptr<IObjectClassCreator> GetClassCreator(ObjectClass ObjectClassKey) const = 0;
 	virtual void AddClassCreator(std::shared_ptr<IObjectClassCreator> Creator) = 0;
 	virtual void RemoveClassCreator(std::shared_ptr<IObjectClassCreator> Creator) = 0;

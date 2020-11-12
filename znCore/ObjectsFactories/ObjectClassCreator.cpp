@@ -12,39 +12,56 @@ CObjectClassCreatorBase::~CObjectClassCreatorBase()
 {
 }
 
+
+
 //
 // IObjectClassCreator
 //
-size_t CObjectClassCreatorBase::GetSupportedClassCount() const
+bool CObjectClassCreatorBase::IsCanCreate(ObjectClass ObjectClassKey) const
 {
-	return m_Keys.size();
+	return m_Keys.find(ObjectClassKey) != m_Keys.end();
 }
 
-ObjectClass CObjectClassCreatorBase::GetSupportedClassKey(size_t Index) const
+const std::map<ObjectClass, std::pair<std::string, CreationFunction_t>>& CObjectClassCreatorBase::GetSupportedClasses() const
 {
-	_ASSERT(Index < GetSupportedClassCount());
-	return std::get<1>(m_Keys.at(Index));
+	return m_Keys;
 }
 
-std::string CObjectClassCreatorBase::GetSupportedClassName(size_t Index) const
+void CObjectClassCreatorBase::AddClass(ObjectClass ObjectClassKey, std::string ObjectClassName, CreationFunction_t Func)
 {
-	_ASSERT(Index < GetSupportedClassCount());
-	return std::get<0>(m_Keys.at(Index));
+	const auto& it = m_Keys.find(ObjectClassKey);
+	if (it != m_Keys.end())
+		throw CException("ObjectClass '%d' already exists in ObjectClassCreator.");
+	m_Keys.insert(std::make_pair(ObjectClassKey, std::make_pair(ObjectClassName, Func)));
 }
 
-CreationFunction_t CObjectClassCreatorBase::GetSupportedClassFunction(size_t Index) const
+void CObjectClassCreatorBase::RemoveClass(ObjectClass ObjectClassKey)
 {
-	_ASSERT(Index < GetSupportedClassCount());
-	return std::get<2>(m_Keys.at(Index));
+	const auto& it = m_Keys.find(ObjectClassKey);
+	if (it == m_Keys.end())
+		throw CException("ObjectClass '%d' not found in ObjectClassCreator.");
+	m_Keys.erase(it);
 }
+
 
 
 //
 // Protected
 //
-void CObjectClassCreatorBase::AddKey(std::string ObjectName, ObjectClass ObjectClassKey, CreationFunction_t Func)
+const std::string & CObjectClassCreatorBase::GetObjectClassName(ObjectClass ObjectClass) const
 {
-	m_Keys.push_back(std::make_tuple(ObjectName, ObjectClassKey, Func));
+	const auto& it = m_Keys.find(ObjectClass);
+	if (it == m_Keys.end())
+		throw CException("ObjectClass '%d' not found in ObjectClassCreator.");
+	return it->second.first;
+}
+
+const CreationFunction_t & CObjectClassCreatorBase::GetObjectClassFunctorCretor(ObjectClass ObjectClass) const
+{
+	const auto& it = m_Keys.find(ObjectClass);
+	if (it == m_Keys.end())
+		throw CException("ObjectClass '%d' not found in ObjectClassCreator.");
+	return it->second.second;
 }
 
 IBaseManager & CObjectClassCreatorBase::GetBaseManager()

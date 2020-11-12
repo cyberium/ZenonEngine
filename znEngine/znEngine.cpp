@@ -12,8 +12,7 @@
 
 // Factories
 #include "RenderDeviceFactory.h"
-#include "Scene/Factory/ComponentsCreator.h"
-#include "Scene/Factory/SceneNodeCreator.h"
+#include "Scene/EngineSceneExtender.h"
 
 
 // Additional (Images)
@@ -148,17 +147,16 @@ IBaseManager* WINAPI InitializeEngine(std::vector<std::string> Arguments, std::s
 		std::shared_ptr<IObjectsFactory> factory = MakeShared(CObjectsFactory, *baseManager);
 		baseManager->AddManager<IObjectsFactory>(factory);
 
-		std::shared_ptr<CSceneNode3DFactory> sceneNode3DFactory = MakeShared(CSceneNode3DFactory, *baseManager, "otSceneNode", otSceneNode);
-		sceneNode3DFactory->AddClassCreator(MakeShared(CSceneNodeEngineCreator, *baseManager));
-		factory->AddClassFactory(sceneNode3DFactory);
+		std::shared_ptr<CSceneNodeFactory> sceneNodeFactory = MakeShared(CSceneNodeFactory, *baseManager, "otSceneNode", otSceneNode);
+		factory->AddClassFactory(sceneNodeFactory);
 
-		std::shared_ptr<CSceneNodeUIFactory> sceneNodeUIFactory = MakeShared(CSceneNodeUIFactory, *baseManager, "otUIControl", otUIControl);
-		sceneNodeUIFactory->AddClassCreator(MakeShared(CSceneNodeUIEngineCreator, *baseManager));
-		factory->AddClassFactory(sceneNodeUIFactory);
+		std::shared_ptr<CUIControlFactory> uiControlFactory = MakeShared(CUIControlFactory, *baseManager, "otUIControl", otUIControl);
+		factory->AddClassFactory(uiControlFactory);
 
 		std::shared_ptr<CComponentsFactory> componentFactory = MakeShared(CComponentsFactory, *baseManager, "otSceneNodeComponent", otSceneNodeComponent);
-		componentFactory->AddClassCreator(MakeShared(CComponentsCreator, *baseManager));
 		factory->AddClassFactory(componentFactory);
+
+		EngineSceneTypesExtender(*baseManager);
 	}
 
 	// Plugins
@@ -169,6 +167,7 @@ IBaseManager* WINAPI InitializeEngine(std::vector<std::string> Arguments, std::s
 				PathToPlugins = GetExePath();
 
 			pluginsManager->AddPlugin(PathToPlugins + "\\" + "znRenderDX11.dll");
+			pluginsManager->AddPlugin(PathToPlugins + "\\" + "znPluginM2Models.dll");
 		}
 		catch (const std::exception& e)
 		{

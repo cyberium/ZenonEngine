@@ -23,6 +23,9 @@ public:
 	void                            DoBeforeRun() override;
 	int                             DoRun() override;
 	void                            DoAfterRun() override;
+	double                          GetGameDeltaTime() const override;
+	double                          GetGameTime() const override;
+	size_t                          GetFrameCounter() const override;
 	IBaseManager&					GetBaseManager() const override;
 	IRenderDevice&                  GetRenderDevice() const override;
 

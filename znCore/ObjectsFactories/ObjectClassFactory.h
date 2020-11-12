@@ -8,7 +8,7 @@ public:
 	virtual ~CObjectClassFactory();
 	
 	// IObjectClassFactory
-	std::unordered_map<ObjectClass, std::shared_ptr<IObjectClassCreator>> GetClassCreators() const override final;
+	std::vector<std::shared_ptr<IObjectClassCreator>> GetClassCreators() const override final;
 	std::shared_ptr<IObjectClassCreator> GetClassCreator(ObjectClass ObjectClassKey) const override final;
 	void AddClassCreator(std::shared_ptr<IObjectClassCreator> Creator) override final;
 	void RemoveClassCreator(std::shared_ptr<IObjectClassCreator> Creator) override final;
@@ -30,6 +30,6 @@ private:
 	std::string m_TypeName;
 	ObjectType m_Type;
 	ObjectCounterType m_Counter;
-	std::unordered_map<ObjectClass, std::pair<size_t, std::shared_ptr<IObjectClassCreator>>> m_ClassCreators;
+	std::vector<std::shared_ptr<IObjectClassCreator>> m_ClassCreators;
 	IBaseManager& m_BaseManager;
 };

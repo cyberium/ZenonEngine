@@ -88,9 +88,6 @@
     <Filter Include="Scene\Components">
       <UniqueIdentifier>{766f4f63-5f82-4ace-9365-a0c2425a32d5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Scene\Factory">
-      <UniqueIdentifier>{42288e4e-a3cc-44e7-b889-8854e3ea2090}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Scene\Components\Skeleton">
       <UniqueIdentifier>{601eab62-08ec-461d-a53f-7a7ca845dfa0}</UniqueIdentifier>
     </Filter>
@@ -304,12 +301,6 @@
     <ClCompile Include="Scene\Nodes\UIWindow.cpp">
       <Filter>Scene\UI</Filter>
     </ClCompile>
-    <ClCompile Include="Scene\Factory\ComponentsCreator.cpp">
-      <Filter>Scene\Factory</Filter>
-    </ClCompile>
-    <ClCompile Include="Scene\Factory\SceneNodeCreator.cpp">
-      <Filter>Scene\Factory</Filter>
-    </ClCompile>
     <ClCompile Include="Scene\Components\CameraComponent3D.cpp">
       <Filter>Scene\Components</Filter>
     </ClCompile>
@@ -477,6 +468,9 @@
     </ClCompile>
     <ClCompile Include="Scene\Components\Particles\ParticleSystem.cpp">
       <Filter>Scene\Components\Particles</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\EngineSceneExtender.cpp">
+      <Filter>Scene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -649,12 +643,6 @@
     </ClInclude>
     <ClInclude Include="Scene\Nodes\UIWindow.h">
       <Filter>Scene\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="Scene\Factory\ComponentsCreator.h">
-      <Filter>Scene\Factory</Filter>
-    </ClInclude>
-    <ClInclude Include="Scene\Factory\SceneNodeCreator.h">
-      <Filter>Scene\Factory</Filter>
     </ClInclude>
     <ClInclude Include="Scene\Components\CameraComponent3D.h">
       <Filter>Scene\Components</Filter>
@@ -829,6 +817,9 @@
     </ClInclude>
     <ClInclude Include="Scene\Components\Particles\ParticleSystem.h">
       <Filter>Scene\Components\Particles</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\EngineSceneExtender.h">
+      <Filter>Scene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

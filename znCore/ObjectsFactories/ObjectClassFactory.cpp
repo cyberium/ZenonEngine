@@ -22,48 +22,37 @@ CObjectClassFactory::~CObjectClassFactory()
 
 
 
-std::unordered_map<ObjectClass, std::shared_ptr<IObjectClassCreator>> CObjectClassFactory::GetClassCreators() const
-{
-	std::unordered_map<ObjectClass, std::shared_ptr<IObjectClassCreator>> creators;
-	for (const auto& creator : m_ClassCreators)
-		creators.insert(std::make_pair(creator.first, creator.second.second));
-
-	return creators;
-}
-
 //
 // IObjectClassFactory
 //
+std::vector<std::shared_ptr<IObjectClassCreator>> CObjectClassFactory::GetClassCreators() const
+{
+	return m_ClassCreators;
+}
+
 std::shared_ptr<IObjectClassCreator> CObjectClassFactory::GetClassCreator(ObjectClass ObjectClassKey) const
 {
-	const auto& it = m_ClassCreators.find(ObjectClassKey);
-	if (it == m_ClassCreators.end())
-		throw CException("ClassFactory : ClassCreator '%d' not found.", ObjectClassKey);
-	return it->second.second;
+	for (const auto& crIt : m_ClassCreators)
+		if (crIt->IsCanCreate(ObjectClassKey))
+			return crIt;
+
+	throw CException("ClassFactory : ClassCreator '%d' not found.", ObjectClassKey);
 }
 
 void CObjectClassFactory::AddClassCreator(std::shared_ptr<IObjectClassCreator> Creator)
 {
-	for (size_t i = 0; i < Creator->GetSupportedClassCount(); i++)
-	{
-		auto classKey = Creator->GetSupportedClassKey(i);
-		const auto& it = m_ClassCreators.find(classKey);
-		if (it != m_ClassCreators.end())
-			throw CException("ClassFactory: ClassCreator '%d' already exists in ClassFactory '%d'.", classKey, GetType());
-		m_ClassCreators.insert(std::make_pair(classKey, std::make_pair(i, Creator)));
-	}
+	const auto& crIt = std::find(m_ClassCreators.begin(), m_ClassCreators.end(), Creator);
+	if (crIt != m_ClassCreators.end())
+		throw CException("ClassFactory: ClassCreator already exists in ClassFactory '%d'.", GetType());
+	m_ClassCreators.push_back(Creator);
 }
 
 void CObjectClassFactory::RemoveClassCreator(std::shared_ptr<IObjectClassCreator> Creator)
 {
-	for (size_t i = 0; i < Creator->GetSupportedClassCount(); i++)
-	{
-		auto classKey = Creator->GetSupportedClassKey(i);
-		const auto& it = m_ClassCreators.find(classKey);
-		if (it == m_ClassCreators.end())
-			throw CException("ClassFactory: Unable to remove ClassCreator '%d' because not found in ClassFactory '%d'.", classKey, GetType());
-		m_ClassCreators.erase(it);
-	}
+	const auto& crIt = std::find(m_ClassCreators.begin(), m_ClassCreators.end(), Creator);
+	if (crIt == m_ClassCreators.end())
+		throw CException("ClassFactory: Unable to remove ClassCreator because not found in ClassFactory '%d'.", GetType());
+	m_ClassCreators.erase(crIt);
 }
 
 std::string CObjectClassFactory::GetTypeName() const
@@ -83,15 +72,11 @@ Guid CObjectClassFactory::GenerateGuid(ObjectClass ObjectClassKey)
 
 std::shared_ptr<IObject> CObjectClassFactory::CreateObject(ObjectClass ObjectClassKey, const IObjectCreationArgs* ObjectCreationArgs)
 {
-	auto objectUUID = GenerateGuid(ObjectClassKey);
+	for (const auto& crIt : m_ClassCreators)
+		if (crIt->IsCanCreate(ObjectClassKey))
+			return crIt->CreateObject(ObjectClassKey, GenerateGuid(ObjectClassKey), ObjectCreationArgs);
 
-	auto it = m_ClassCreators.find(ObjectClassKey);
-	if (it == m_ClassCreators.end())
-		throw CException("ClassFactory: Unable find ClassCreator for '%d' in ClassFactory '%d'.", ObjectClassKey, GetType());
-	
-	size_t creatorIndex = it->second.first;
-	auto creatorObject = it->second.second;
-	return creatorObject->CreateObject(creatorIndex, objectUUID, ObjectCreationArgs);
+	throw CException("ClassFactory: Unable find ClassCreator for '%d' in ClassFactory '%d'.", ObjectClassKey, GetType());
 }
 
 

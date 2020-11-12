@@ -1,8 +1,8 @@
 #pragma once
 
-#include "ObjectClassFactory.h"
+#include "../ObjectClassFactory.h"
 
-class ZN_API CSceneNodeUIFactory
+class ZN_API CUIControlFactory
 	: public CObjectClassFactory
 	, public IUIControlFactory
 {
@@ -32,8 +32,8 @@ public:
 	};
 
 public:
-	CSceneNodeUIFactory(IBaseManager& BaseManager, const std::string& TypeName, ObjectType Type);
-	virtual ~CSceneNodeUIFactory();
+	CUIControlFactory(IBaseManager& BaseManager, const std::string& TypeName, ObjectType Type);
+	virtual ~CUIControlFactory();
 
 	// IUIControlFactory
 	std::shared_ptr<IUIControl> CreateSceneNodeUI(ObjectClass ObjectClassKey, IScene& Scene, const std::shared_ptr<IUIControl>& Parent) override;

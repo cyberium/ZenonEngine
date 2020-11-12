@@ -79,9 +79,6 @@
     <Filter Include="Objects">
       <UniqueIdentifier>{15e421b3-d1fd-4098-91e6-1d5660a87fc3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Objects\Typed creators">
-      <UniqueIdentifier>{97c61480-573e-483c-83a4-9732e99153ea}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Files\Storages">
       <UniqueIdentifier>{a7fc127f-95ba-42bf-a7ad-dea6aec0eb7a}</UniqueIdentifier>
     </Filter>
@@ -90,6 +87,15 @@
     </Filter>
     <Filter Include="Settings">
       <UniqueIdentifier>{bc1f0964-30fc-4288-a8ea-cb5bd992e806}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Objects\Scene">
+      <UniqueIdentifier>{97c61480-573e-483c-83a4-9732e99153ea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Objects\Scene\Factory">
+      <UniqueIdentifier>{c7a8c066-1dbf-4787-b809-d9739903b5aa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Objects\Scene\Creator">
+      <UniqueIdentifier>{38518e39-9c65-450e-8dd3-43c6493dcbd7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -222,9 +228,6 @@
     <ClCompile Include="ObjectsFactories\ObjectClassCreator.cpp">
       <Filter>Objects</Filter>
     </ClCompile>
-    <ClCompile Include="ObjectsFactories\SceneNode3DFactory.cpp">
-      <Filter>Objects\Typed creators</Filter>
-    </ClCompile>
     <ClCompile Include="ObjectsFactories\Object.cpp">
       <Filter>Objects</Filter>
     </ClCompile>
@@ -233,12 +236,6 @@
     </ClCompile>
     <ClCompile Include="XML\XMLWriter.cpp">
       <Filter>XML</Filter>
-    </ClCompile>
-    <ClCompile Include="ObjectsFactories\SceneNodeUIFactory.cpp">
-      <Filter>Objects\Typed creators</Filter>
-    </ClCompile>
-    <ClCompile Include="ObjectsFactories\ComponentsFactory.cpp">
-      <Filter>Objects\Typed creators</Filter>
     </ClCompile>
     <ClCompile Include="Settings\SettingsGroupBase.cpp">
       <Filter>Settings</Filter>
@@ -329,6 +326,24 @@
     </ClCompile>
     <ClCompile Include="Passes\RenderPassMultipipelined.cpp">
       <Filter>Passes</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjectsFactories\Scene\ComponentsFactory.cpp">
+      <Filter>Objects\Scene\Factory</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjectsFactories\Scene\SceneNodeFactory.cpp">
+      <Filter>Objects\Scene\Factory</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjectsFactories\Scene\UIControlFactory.cpp">
+      <Filter>Objects\Scene\Factory</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjectsFactories\Scene\ComponentsCreator.cpp">
+      <Filter>Objects\Scene\Creator</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjectsFactories\Scene\SceneNodeCreator.cpp">
+      <Filter>Objects\Scene\Creator</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjectsFactories\Scene\UIControlCreator.cpp">
+      <Filter>Objects\Scene\Creator</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -638,9 +653,6 @@
     <ClInclude Include="..\shared\Interfaces\Types\ObjectsFactory.h">
       <Filter>__Interfaces\Types</Filter>
     </ClInclude>
-    <ClInclude Include="ObjectsFactories\SceneNode3DFactory.h">
-      <Filter>Objects\Typed creators</Filter>
-    </ClInclude>
     <ClInclude Include="..\shared\Interfaces\Types\Guid.h">
       <Filter>__Interfaces\Types</Filter>
     </ClInclude>
@@ -652,12 +664,6 @@
     </ClInclude>
     <ClInclude Include="XML\XMLWriter.h">
       <Filter>XML</Filter>
-    </ClInclude>
-    <ClInclude Include="ObjectsFactories\SceneNodeUIFactory.h">
-      <Filter>Objects\Typed creators</Filter>
-    </ClInclude>
-    <ClInclude Include="ObjectsFactories\ComponentsFactory.h">
-      <Filter>Objects\Typed creators</Filter>
     </ClInclude>
     <ClInclude Include="Settings\SettingBase.h">
       <Filter>Settings</Filter>
@@ -805,6 +811,24 @@
     </ClInclude>
     <ClInclude Include="Passes\RenderPassMultipipelined.h">
       <Filter>Passes</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjectsFactories\Scene\ComponentsFactory.h">
+      <Filter>Objects\Scene\Factory</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjectsFactories\Scene\SceneNodeFactory.h">
+      <Filter>Objects\Scene\Factory</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjectsFactories\Scene\UIControlFactory.h">
+      <Filter>Objects\Scene\Factory</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjectsFactories\Scene\UIControlCreator.h">
+      <Filter>Objects\Scene\Creator</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjectsFactories\Scene\ComponentsCreator.h">
+      <Filter>Objects\Scene\Creator</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjectsFactories\Scene\SceneNodeCreator.h">
+      <Filter>Objects\Scene\Creator</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

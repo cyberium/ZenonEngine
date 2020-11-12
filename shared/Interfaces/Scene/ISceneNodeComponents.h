@@ -307,8 +307,6 @@ ZN_INTERFACE ZN_API ISkeletonComponentBone3D
 	virtual glm::vec3 GetPivotPoint() const = 0;
 
 	// Dynamic data
-	virtual const glm::mat4& GetPivotMatrix() const = 0;
-	virtual const glm::vec3& GetTranslate() const = 0;
 	virtual const glm::mat4& GetMatrix() const = 0;
 	virtual const glm::mat4& GetRotateMatrix() const = 0;
 };

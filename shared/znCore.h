@@ -25,9 +25,12 @@
 #include "../znCore/ObjectsFactories/ObjectsFactory.h"
 #include "../znCore/ObjectsFactories/ObjectClassFactory.h"
 #include "../znCore/ObjectsFactories/ObjectClassCreator.h"
-#include "../znCore/ObjectsFactories/SceneNode3DFactory.h"
-#include "../znCore/ObjectsFactories/SceneNodeUIFactory.h"
-#include "../znCore/ObjectsFactories/ComponentsFactory.h"
+#include "../znCore/ObjectsFactories/Scene/SceneNodeFactory.h"
+#include "../znCore/ObjectsFactories/Scene/UIControlFactory.h"
+#include "../znCore/ObjectsFactories/Scene/ComponentsFactory.h"
+#include "../znCore/ObjectsFactories/Scene/SceneNodeCreator.h"
+#include "../znCore/ObjectsFactories/Scene/UIControlCreator.h"
+#include "../znCore/ObjectsFactories/Scene/ComponentsCreator.h"
 
 // Scene
 #include "../znCore/Scene/ComponentBase.h"

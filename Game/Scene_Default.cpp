@@ -46,13 +46,13 @@ void CSceneDefault::Initialize()
 	{
 		auto lightNode = CreateSceneNode<ISceneNode>();
 		lightNode->SetName("Light2");
-		lightNode->SetTranslate(glm::vec3(150.0f, 150.0f, 150.0f));
+		lightNode->SetTranslate(glm::vec3(550.0f, 550.0f, 550.0f));
 		lightNode->SetRotation(glm::vec3(-0.5f, -0.5f, -0.5f));
 
 		lightNode->AddComponentT(GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<IComponentFactory>()->CreateComponentT<ILightComponent3D>(cSceneNodeLightComponent, *lightNode.get()));
 		lightNode->GetComponentT<ILightComponent3D>()->SetType(ELightType::Spot);
 		lightNode->GetComponentT<ILightComponent3D>()->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
-		lightNode->GetComponentT<ILightComponent3D>()->SetRange(350.0f);
+		lightNode->GetComponentT<ILightComponent3D>()->SetRange(5350.0f);
 		lightNode->GetComponentT<ILightComponent3D>()->SetIntensity(1.0f);
 		lightNode->GetComponentT<ILightComponent3D>()->SetSpotlightAngle(30.0f);
 	}
@@ -100,7 +100,7 @@ void CSceneDefault::Initialize()
 	defferedRenderer->Initialize(GetRenderWindow().GetRenderTarget(), &GetRenderWindow().GetViewport());
 	m_DefferedRenderrer = defferedRenderer;
 
-	SetRenderer(defferedRenderer);
+	SetRenderer(forwardRenderer);
 }
 
 void CSceneDefault::Finalize()

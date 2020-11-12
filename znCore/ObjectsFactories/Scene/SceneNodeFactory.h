@@ -1,8 +1,8 @@
 #pragma once
 
-#include "ObjectClassFactory.h"
+#include "../ObjectClassFactory.h"
 
-class ZN_API CSceneNode3DFactory
+class ZN_API CSceneNodeFactory
 	: public CObjectClassFactory
 	, public ISceneNodeFactory
 {
@@ -32,8 +32,8 @@ public:
 	};
 
 public:
-	CSceneNode3DFactory(IBaseManager& BaseManager, const std::string& TypeName, ObjectType Type);
-	virtual ~CSceneNode3DFactory();
+	CSceneNodeFactory(IBaseManager& BaseManager, const std::string& TypeName, ObjectType Type);
+	virtual ~CSceneNodeFactory();
 
 	// ISceneNodeFactory
 	std::shared_ptr<ISceneNode>   CreateSceneNode3D(ObjectClass ObjectClassKey, IScene& Scene, const std::shared_ptr<ISceneNode>& Parent) override;

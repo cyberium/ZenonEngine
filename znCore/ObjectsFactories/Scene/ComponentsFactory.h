@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ObjectClassFactory.h"
+#include "../ObjectClassFactory.h"
 
 class ZN_API CComponentsFactory
 	: public CObjectClassFactory

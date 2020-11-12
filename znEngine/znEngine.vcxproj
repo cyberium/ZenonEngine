@@ -100,8 +100,7 @@
     <ClCompile Include="Scene\Components\ReactPhysicsComponent.cpp" />
     <ClCompile Include="Scene\Components\Skeleton\SkeletonComponent.cpp" />
     <ClCompile Include="Scene\Components\Skeleton\SkeletonComponentBone.cpp" />
-    <ClCompile Include="Scene\Factory\ComponentsCreator.cpp" />
-    <ClCompile Include="Scene\Factory\SceneNodeCreator.cpp" />
+    <ClCompile Include="Scene\EngineSceneExtender.cpp" />
     <ClCompile Include="Scene\Nodes\UIBeizerLine.cpp" />
     <ClCompile Include="Scene\Nodes\UIButton.cpp" />
     <ClCompile Include="Scene\Nodes\UIColor.cpp" />
@@ -222,9 +221,8 @@
     <ClInclude Include="Scene\Components\ReactPhysicsComponent.h" />
     <ClInclude Include="Scene\Components\Skeleton\SkeletonComponent.h" />
     <ClInclude Include="Scene\Components\Skeleton\SkeletonComponentBone.h" />
+    <ClInclude Include="Scene\EngineSceneExtender.h" />
     <ClInclude Include="Scene\EngineSceneIntfs.h" />
-    <ClInclude Include="Scene\Factory\ComponentsCreator.h" />
-    <ClInclude Include="Scene\Factory\SceneNodeCreator.h" />
     <ClInclude Include="Scene\Nodes\UIBeizerLine.h" />
     <ClInclude Include="Scene\Nodes\UIButton.h" />
     <ClInclude Include="Scene\Nodes\UIColor.h" />

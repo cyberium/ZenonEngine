@@ -60,6 +60,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "freetype", "Externals\freet
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "reactphysics3d", "Externals\reactphysics3d\reactphysics3d.vcxproj", "{33134F61-C1AD-4B6F-9999-503A9F140C52}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "znPluginM2Models", "znPluginM2Models\znPluginM2Models.vcxproj", "{C077D800-0DBE-4CDA-A586-0E65821D9112}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -122,6 +124,10 @@ Global
 		{33134F61-C1AD-4B6F-9999-503A9F140C52}.Debug|x64.Build.0 = Debug|x64
 		{33134F61-C1AD-4B6F-9999-503A9F140C52}.Release|x64.ActiveCfg = Release|x64
 		{33134F61-C1AD-4B6F-9999-503A9F140C52}.Release|x64.Build.0 = Release|x64
+		{C077D800-0DBE-4CDA-A586-0E65821D9112}.Debug|x64.ActiveCfg = Debug|x64
+		{C077D800-0DBE-4CDA-A586-0E65821D9112}.Debug|x64.Build.0 = Debug|x64
+		{C077D800-0DBE-4CDA-A586-0E65821D9112}.Release|x64.ActiveCfg = Release|x64
+		{C077D800-0DBE-4CDA-A586-0E65821D9112}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -136,6 +142,7 @@ Global
 		{7DB10B50-CE00-447A-B322-6844F05D2FCB} = {7117DD40-5090-4982-B565-034F60A0D3B1}
 		{78B079BD-9FC7-4B9E-B4A6-96DA0F00248B} = {7117DD40-5090-4982-B565-034F60A0D3B1}
 		{33134F61-C1AD-4B6F-9999-503A9F140C52} = {7117DD40-5090-4982-B565-034F60A0D3B1}
+		{C077D800-0DBE-4CDA-A586-0E65821D9112} = {785AD952-99CE-49D7-AB38-96D921295F50}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F9F36BB9-5089-4994-A982-BC672F2F36D0}

@@ -8,17 +8,17 @@ public:
 	virtual ~CObjectClassCreatorBase();
 
 	// IObjectClassCreator
-	size_t GetSupportedClassCount() const override final;
-	ObjectClass GetSupportedClassKey(size_t Index) const override final;
-	std::string GetSupportedClassName(size_t Index) const override final;
-	CreationFunction_t GetSupportedClassFunction(size_t Index) const override final;
-	virtual std::shared_ptr<IObject> CreateObject(size_t Index, const Guid& AssignedGuid, const IObjectCreationArgs* ObjectCreationArgs) = 0;
+	bool IsCanCreate(ObjectClass ObjectClassKey) const override;
+	const std::map<ObjectClass, std::pair<std::string, CreationFunction_t>>& GetSupportedClasses() const override;
+	void AddClass(ObjectClass ObjectClassKey, std::string ObjectClassName, CreationFunction_t Func) override final;
+	void RemoveClass(ObjectClass ObjectClassKey) override final;
 
 protected:
-	void AddKey(std::string ObjectName, ObjectClass ObjectClassKey, CreationFunction_t Func);
+	const std::string& GetObjectClassName(ObjectClass ObjectClass) const;
+	const CreationFunction_t& GetObjectClassFunctorCretor(ObjectClass ObjectClass) const;
 	IBaseManager& GetBaseManager();
 
 private:
-	std::vector<std::tuple<std::string, ObjectClass, CreationFunction_t>> m_Keys;
+	std::map<ObjectClass, std::pair<std::string, CreationFunction_t>> m_Keys;
 	IBaseManager& m_BaseManager;
 };

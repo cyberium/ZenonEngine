@@ -70,8 +70,8 @@ ObjectType CObjectsFactory::GetObjectTypeByObjectClass(ObjectClass Class)
 {
 	for (const auto& fact : m_ClassFactories)
 		for (const auto& creator : fact.second->GetClassCreators())
-			for (size_t i = 0; i < creator.second->GetSupportedClassCount(); i++)
-				if (creator.second->GetSupportedClassKey(i) == Class)
+			for (const auto& clIt : creator->GetSupportedClasses())
+				if (clIt.first == Class)
 					return fact.second->GetType();
 	return otObject;
 }
@@ -98,9 +98,9 @@ std::string CObjectsFactory::GetObjectClassNameByObjectClass(ObjectClass Class)
 {
 	for (const auto& fact : m_ClassFactories)
 		for (const auto& creator : fact.second->GetClassCreators())
-			for (size_t i = 0; i < creator.second->GetSupportedClassCount(); i++)
-				if (creator.second->GetSupportedClassKey(i) == Class)
-					return creator.second->GetSupportedClassName(i);
+			for (const auto& clIt : creator->GetSupportedClasses())
+				if (clIt.first == Class)
+					return clIt.second.first;
 	return "Object";
 }
 
@@ -108,8 +108,8 @@ ObjectClass CObjectsFactory::GetObjectClassByObjectClassName(const std::string& 
 {
 	for (const auto& fact : m_ClassFactories)
 		for (const auto& creator : fact.second->GetClassCreators())
-			for (size_t i = 0; i < creator.second->GetSupportedClassCount(); i++)
-				if (creator.second->GetSupportedClassName(i) == ClassName)
-					return creator.second->GetSupportedClassKey(i);
+			for (const auto& clIt : creator->GetSupportedClasses())
+				if (clIt.second.first == ClassName)
+					return clIt.first;
 	return 0;
 }

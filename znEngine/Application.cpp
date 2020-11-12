@@ -141,6 +141,21 @@ void Application::DoAfterRun()
 	m_Windows.clear();
 }
 
+double Application::GetGameDeltaTime() const
+{
+	return m_GameDeltaTime;
+}
+
+double Application::GetGameTime() const
+{
+	return m_GameTime;
+}
+
+size_t Application::GetFrameCounter() const
+{
+	return m_FrameCounter;
+}
+
 IBaseManager& Application::GetBaseManager() const
 {
 	return m_BaseManager;
