@@ -1,0 +1,193 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="DBC\DBC__File.cpp" />
+    <ClCompile Include="DBC\DBC__Storage.cpp" />
+    <ClCompile Include="EngineExtenders\ImageBLP.cpp" />
+    <ClCompile Include="EngineExtenders\M2ModelsLoader.cpp" />
+    <ClCompile Include="M2\M2.cpp" />
+    <ClCompile Include="M2\M2_Animation.cpp" />
+    <ClCompile Include="M2\M2_Animator.cpp" />
+    <ClCompile Include="M2\M2_Base_Instance.cpp" />
+    <ClCompile Include="M2\M2_Comp_Materials.cpp" />
+    <ClCompile Include="M2\M2_Comp_Miscellaneous.cpp" />
+    <ClCompile Include="M2\M2_Comp_Skeleton.cpp" />
+    <ClCompile Include="M2\M2_ParticlesComponent.cpp" />
+    <ClCompile Include="M2\M2_ParticleSystem.cpp" />
+    <ClCompile Include="M2\M2_Part_Attachment.cpp" />
+    <ClCompile Include="M2\M2_Part_Bone.cpp" />
+    <ClCompile Include="M2\M2_Part_Camera.cpp" />
+    <ClCompile Include="M2\M2_Part_Color.cpp" />
+    <ClCompile Include="M2\M2_Part_Event.cpp" />
+    <ClCompile Include="M2\M2_Part_Light.cpp" />
+    <ClCompile Include="M2\M2_Part_Material.cpp" />
+    <ClCompile Include="M2\M2_Part_Texture.cpp" />
+    <ClCompile Include="M2\M2_Part_TextureTransform.cpp" />
+    <ClCompile Include="M2\M2_Part_TextureWeight.cpp" />
+    <ClCompile Include="M2\M2_RibbonEmitters.cpp" />
+    <ClCompile Include="M2\M2_SkeletonComponent.cpp" />
+    <ClCompile Include="M2\M2_Skin.cpp" />
+    <ClCompile Include="M2\M2_SkinSection.cpp" />
+    <ClCompile Include="M2\M2_Skin_Batch.cpp" />
+    <ClCompile Include="M2\RenderPass_M2.cpp" />
+    <ClCompile Include="M2\RenderPass_M2Instanced.cpp" />
+    <ClCompile Include="M2\ShaderResolver.cpp" />
+    <ClCompile Include="stdafx.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="WorldObjectsCreator.cpp" />
+    <ClCompile Include="znPluginM2Models.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="common.h" />
+    <ClInclude Include="DBC\DBC__File.h" />
+    <ClInclude Include="DBC\DBC__Macros.h" />
+    <ClInclude Include="DBC\DBC__Storage.h" />
+    <ClInclude Include="DBC\Tables\DBC_AnimationData.h" />
+    <ClInclude Include="EngineExtenders\ImageBLP.h" />
+    <ClInclude Include="EngineExtenders\M2ModelsLoader.h" />
+    <ClInclude Include="M2\M2.h" />
+    <ClInclude Include="M2\M2_Animated.h" />
+    <ClInclude Include="M2\M2_AnimatedConverters.h" />
+    <ClInclude Include="M2\M2_Animation.h" />
+    <ClInclude Include="M2\M2_Animator.h" />
+    <ClInclude Include="M2\M2_Base_Instance.h" />
+    <ClInclude Include="M2\M2_CommonTypes.h" />
+    <ClInclude Include="M2\M2_Comp_Materials.h" />
+    <ClInclude Include="M2\M2_Comp_Miscellaneous.h" />
+    <ClInclude Include="M2\M2_Comp_Skeleton.h" />
+    <ClInclude Include="M2\M2_Headers.h" />
+    <ClInclude Include="M2\M2_ParticlesComponent.h" />
+    <ClInclude Include="M2\M2_ParticleSystem.h" />
+    <ClInclude Include="M2\M2_Part_Attachment.h" />
+    <ClInclude Include="M2\M2_Part_Bone.h" />
+    <ClInclude Include="M2\M2_Part_Camera.h" />
+    <ClInclude Include="M2\M2_Part_Color.h" />
+    <ClInclude Include="M2\M2_Part_Event.h" />
+    <ClInclude Include="M2\M2_Part_Light.h" />
+    <ClInclude Include="M2\M2_Part_Material.h" />
+    <ClInclude Include="M2\M2_Part_Texture.h" />
+    <ClInclude Include="M2\M2_Part_TextureTransform.h" />
+    <ClInclude Include="M2\M2_Part_TextureWeight.h" />
+    <ClInclude Include="M2\M2_RibbonEmitters.h" />
+    <ClInclude Include="M2\M2_SkeletonComponent.h" />
+    <ClInclude Include="M2\M2_Skin.h" />
+    <ClInclude Include="M2\M2_SkinSection.h" />
+    <ClInclude Include="M2\M2_SkinTypes.h" />
+    <ClInclude Include="M2\M2_Skin_Batch.h" />
+    <ClInclude Include="M2\M2_Types.h" />
+    <ClInclude Include="M2\RenderPass_M2.h" />
+    <ClInclude Include="M2\RenderPass_M2Instanced.h" />
+    <ClInclude Include="M2\ShaderResolver.h" />
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="WorldObjectsCreator.h" />
+    <ClInclude Include="WowConsts.h" />
+    <ClInclude Include="WowTypes.h" />
+    <ClInclude Include="znPluginM2Models.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="znPluginM2Models.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Resources\shaders\M2.hlsl">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <FileType>Document</FileType>
+    </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="DBC\DBC__File.inl" />
+    <Text Include="Resources\AnimationData.dbc">
+      <FileType>Document</FileType>
+    </Text>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{C077D800-0DBE-4CDA-A586-0E65821D9112}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>znPluginM2Models</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <OutDir>$(SolutionDir)\bin_$(PlatformShortName)\$(Configuration)\</OutDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutDir>$(SolutionDir)\bin_$(PlatformShortName)\$(Configuration)\</OutDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>_DEBUG;_WINDOWS;_USRDLL;OW_ENGINE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..\shared;..\Externals;..\$(ProjectName)\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <TreatSpecificWarningsAsErrors>4172</TreatSpecificWarningsAsErrors>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <DisableSpecificWarnings>4251;4250;4715</DisableSpecificWarnings>
+    </ClCompile>
+    <ResourceCompile />
+    <PostBuildEvent />
+    <Link>
+      <AdditionalLibraryDirectories>$(SolutionDir)\bin_$(PlatformShortName)\$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
+      <GenerateDebugInformation>DebugFull</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <PreprocessorDefinitions>NDEBUG;_WINDOWS;_USRDLL;OW_ENGINE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..\shared;..\Externals;..\$(ProjectName)\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <TreatSpecificWarningsAsErrors>4172</TreatSpecificWarningsAsErrors>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <DisableSpecificWarnings>4251;4250;4715</DisableSpecificWarnings>
+    </ClCompile>
+    <ResourceCompile />
+    <PostBuildEvent />
+    <Link>
+      <AdditionalLibraryDirectories>$(SolutionDir)\bin_$(PlatformShortName)\$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

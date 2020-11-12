@@ -1,0 +1,292 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="znPluginM2Models.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="M2\M2.cpp">
+      <Filter>M2</Filter>
+    </ClCompile>
+    <ClCompile Include="M2\RenderPass_M2.cpp">
+      <Filter>M2</Filter>
+    </ClCompile>
+    <ClCompile Include="M2\RenderPass_M2Instanced.cpp">
+      <Filter>M2</Filter>
+    </ClCompile>
+    <ClCompile Include="M2\ShaderResolver.cpp">
+      <Filter>M2</Filter>
+    </ClCompile>
+    <ClCompile Include="M2\M2_Animation.cpp">
+      <Filter>M2\Animations</Filter>
+    </ClCompile>
+    <ClCompile Include="M2\M2_Comp_Materials.cpp">
+      <Filter>M2\Parts</Filter>
+    </ClCompile>
+    <ClCompile Include="M2\M2_Comp_Miscellaneous.cpp">
+      <Filter>M2\Parts</Filter>
+    </ClCompile>
+    <ClCompile Include="M2\M2_Comp_Skeleton.cpp">
+      <Filter>M2\Parts</Filter>
+    </ClCompile>
+    <ClCompile Include="M2\M2_Part_Attachment.cpp">
+      <Filter>M2\Parts</Filter>
+    </ClCompile>
+    <ClCompile Include="M2\M2_Part_Bone.cpp">
+      <Filter>M2\Parts</Filter>
+    </ClCompile>
+    <ClCompile Include="M2\M2_Part_Camera.cpp">
+      <Filter>M2\Parts</Filter>
+    </ClCompile>
+    <ClCompile Include="M2\M2_Part_Color.cpp">
+      <Filter>M2\Parts</Filter>
+    </ClCompile>
+    <ClCompile Include="M2\M2_Part_Event.cpp">
+      <Filter>M2\Parts</Filter>
+    </ClCompile>
+    <ClCompile Include="M2\M2_Part_Light.cpp">
+      <Filter>M2\Parts</Filter>
+    </ClCompile>
+    <ClCompile Include="M2\M2_Part_Material.cpp">
+      <Filter>M2\Parts</Filter>
+    </ClCompile>
+    <ClCompile Include="M2\M2_Part_Texture.cpp">
+      <Filter>M2\Parts</Filter>
+    </ClCompile>
+    <ClCompile Include="M2\M2_Part_TextureTransform.cpp">
+      <Filter>M2\Parts</Filter>
+    </ClCompile>
+    <ClCompile Include="M2\M2_Part_TextureWeight.cpp">
+      <Filter>M2\Parts</Filter>
+    </ClCompile>
+    <ClCompile Include="M2\M2_ParticleSystem.cpp">
+      <Filter>M2\Parts</Filter>
+    </ClCompile>
+    <ClCompile Include="M2\M2_RibbonEmitters.cpp">
+      <Filter>M2\Parts</Filter>
+    </ClCompile>
+    <ClCompile Include="M2\M2_SkeletonComponent.cpp">
+      <Filter>M2\SceneNode &amp; Components</Filter>
+    </ClCompile>
+    <ClCompile Include="M2\M2_Base_Instance.cpp">
+      <Filter>M2\SceneNode &amp; Components</Filter>
+    </ClCompile>
+    <ClCompile Include="M2\M2_SkinSection.cpp">
+      <Filter>M2\Skins</Filter>
+    </ClCompile>
+    <ClCompile Include="M2\M2_Skin_Batch.cpp">
+      <Filter>M2\Skins</Filter>
+    </ClCompile>
+    <ClCompile Include="M2\M2_Skin.cpp">
+      <Filter>M2\Skins</Filter>
+    </ClCompile>
+    <ClCompile Include="M2\M2_Animator.cpp">
+      <Filter>M2\Types</Filter>
+    </ClCompile>
+    <ClCompile Include="M2\M2_ParticlesComponent.cpp">
+      <Filter>M2\SceneNode &amp; Components</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineExtenders\ImageBLP.cpp">
+      <Filter>EngineExtenders</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineExtenders\M2ModelsLoader.cpp">
+      <Filter>EngineExtenders</Filter>
+    </ClCompile>
+    <ClCompile Include="DBC\DBC__File.cpp">
+      <Filter>DBC</Filter>
+    </ClCompile>
+    <ClCompile Include="DBC\DBC__Storage.cpp">
+      <Filter>DBC</Filter>
+    </ClCompile>
+    <ClCompile Include="WorldObjectsCreator.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="common.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="znPluginM2Models.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="M2\M2.h">
+      <Filter>M2</Filter>
+    </ClInclude>
+    <ClInclude Include="M2\RenderPass_M2.h">
+      <Filter>M2</Filter>
+    </ClInclude>
+    <ClInclude Include="M2\RenderPass_M2Instanced.h">
+      <Filter>M2</Filter>
+    </ClInclude>
+    <ClInclude Include="M2\ShaderResolver.h">
+      <Filter>M2</Filter>
+    </ClInclude>
+    <ClInclude Include="WowConsts.h" />
+    <ClInclude Include="WowTypes.h" />
+    <ClInclude Include="M2\M2_Animation.h">
+      <Filter>M2\Animations</Filter>
+    </ClInclude>
+    <ClInclude Include="M2\M2_Comp_Skeleton.h">
+      <Filter>M2\Parts</Filter>
+    </ClInclude>
+    <ClInclude Include="M2\M2_Comp_Materials.h">
+      <Filter>M2\Parts</Filter>
+    </ClInclude>
+    <ClInclude Include="M2\M2_Comp_Miscellaneous.h">
+      <Filter>M2\Parts</Filter>
+    </ClInclude>
+    <ClInclude Include="M2\M2_Part_Attachment.h">
+      <Filter>M2\Parts</Filter>
+    </ClInclude>
+    <ClInclude Include="M2\M2_Part_Bone.h">
+      <Filter>M2\Parts</Filter>
+    </ClInclude>
+    <ClInclude Include="M2\M2_Part_Camera.h">
+      <Filter>M2\Parts</Filter>
+    </ClInclude>
+    <ClInclude Include="M2\M2_Part_Color.h">
+      <Filter>M2\Parts</Filter>
+    </ClInclude>
+    <ClInclude Include="M2\M2_Part_Event.h">
+      <Filter>M2\Parts</Filter>
+    </ClInclude>
+    <ClInclude Include="M2\M2_Part_Light.h">
+      <Filter>M2\Parts</Filter>
+    </ClInclude>
+    <ClInclude Include="M2\M2_Part_Material.h">
+      <Filter>M2\Parts</Filter>
+    </ClInclude>
+    <ClInclude Include="M2\M2_Part_Texture.h">
+      <Filter>M2\Parts</Filter>
+    </ClInclude>
+    <ClInclude Include="M2\M2_Part_TextureTransform.h">
+      <Filter>M2\Parts</Filter>
+    </ClInclude>
+    <ClInclude Include="M2\M2_Part_TextureWeight.h">
+      <Filter>M2\Parts</Filter>
+    </ClInclude>
+    <ClInclude Include="M2\M2_ParticleSystem.h">
+      <Filter>M2\Parts</Filter>
+    </ClInclude>
+    <ClInclude Include="M2\M2_RibbonEmitters.h">
+      <Filter>M2\Parts</Filter>
+    </ClInclude>
+    <ClInclude Include="M2\M2_SkeletonComponent.h">
+      <Filter>M2\SceneNode &amp; Components</Filter>
+    </ClInclude>
+    <ClInclude Include="M2\M2_Base_Instance.h">
+      <Filter>M2\SceneNode &amp; Components</Filter>
+    </ClInclude>
+    <ClInclude Include="M2\M2_SkinSection.h">
+      <Filter>M2\Skins</Filter>
+    </ClInclude>
+    <ClInclude Include="M2\M2_Skin_Batch.h">
+      <Filter>M2\Skins</Filter>
+    </ClInclude>
+    <ClInclude Include="M2\M2_Skin.h">
+      <Filter>M2\Skins</Filter>
+    </ClInclude>
+    <ClInclude Include="M2\M2_SkinTypes.h">
+      <Filter>M2\Types</Filter>
+    </ClInclude>
+    <ClInclude Include="M2\M2_Types.h">
+      <Filter>M2\Types</Filter>
+    </ClInclude>
+    <ClInclude Include="M2\M2_Headers.h">
+      <Filter>M2\Types</Filter>
+    </ClInclude>
+    <ClInclude Include="M2\M2_CommonTypes.h">
+      <Filter>M2\Types</Filter>
+    </ClInclude>
+    <ClInclude Include="M2\M2_Animator.h">
+      <Filter>M2\Types</Filter>
+    </ClInclude>
+    <ClInclude Include="M2\M2_AnimatedConverters.h">
+      <Filter>M2\Types</Filter>
+    </ClInclude>
+    <ClInclude Include="M2\M2_Animated.h">
+      <Filter>M2\Types</Filter>
+    </ClInclude>
+    <ClInclude Include="M2\M2_ParticlesComponent.h">
+      <Filter>M2\SceneNode &amp; Components</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineExtenders\ImageBLP.h">
+      <Filter>EngineExtenders</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineExtenders\M2ModelsLoader.h">
+      <Filter>EngineExtenders</Filter>
+    </ClInclude>
+    <ClInclude Include="DBC\DBC__File.h">
+      <Filter>DBC</Filter>
+    </ClInclude>
+    <ClInclude Include="DBC\DBC__Macros.h">
+      <Filter>DBC</Filter>
+    </ClInclude>
+    <ClInclude Include="DBC\DBC__Storage.h">
+      <Filter>DBC</Filter>
+    </ClInclude>
+    <ClInclude Include="DBC\Tables\DBC_AnimationData.h">
+      <Filter>DBC\Tables</Filter>
+    </ClInclude>
+    <ClInclude Include="WorldObjectsCreator.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Common">
+      <UniqueIdentifier>{6b1a0d9c-ddbd-4f80-952a-0c31ebb112da}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="M2">
+      <UniqueIdentifier>{c81b6ef7-1016-450c-8fd5-aa4ff1d20536}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="M2\Animations">
+      <UniqueIdentifier>{04a67441-cba9-491d-a90a-d5a64e5dfad4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="M2\Parts">
+      <UniqueIdentifier>{73f37cfe-df03-4d29-a350-65e1a1bfaa27}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="M2\SceneNode &amp; Components">
+      <UniqueIdentifier>{01aa314b-4f68-4d1a-904a-e5f78eba6d05}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="M2\Skins">
+      <UniqueIdentifier>{7172a088-f382-4184-b908-bfe5f2b7f7aa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="M2\Types">
+      <UniqueIdentifier>{7f27a8c5-2fba-4ddb-bd4e-5558940e3064}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EngineExtenders">
+      <UniqueIdentifier>{c910d46e-ce68-4351-9f10-a21cc0a34808}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources">
+      <UniqueIdentifier>{d7210083-4a9d-4c7e-8bdb-9cc32ae9b892}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources\shaders">
+      <UniqueIdentifier>{2622a866-3aac-442a-a840-7573a69d4347}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DBC">
+      <UniqueIdentifier>{8a56b971-4bd1-40a5-8994-badef58f8b0f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="DBC\Tables">
+      <UniqueIdentifier>{d8203cd5-e3eb-403d-a6fb-cc8b8f8a8bbf}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="Resources\shaders\M2.hlsl">
+      <Filter>Resources\shaders</Filter>
+    </FxCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="znPluginM2Models.rc">
+      <Filter>Resources</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="DBC\DBC__File.inl">
+      <Filter>DBC</Filter>
+    </None>
+    <None Include="Resources\AnimationData.dbc">
+      <Filter>Resources</Filter>
+    </None>
+  </ItemGroup>
+</Project>
