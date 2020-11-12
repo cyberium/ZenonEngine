@@ -33,6 +33,7 @@ void CSkeletonBone::MergeWithOther(const CSkeletonBone & other)
 
 	GlobalTransform = other.GlobalTransform;
 	LocalTransform = other.LocalTransform;
+	LocalTransform222 = other.LocalTransform222;
 }
 
 bool CSkeletonBone::operator==(const CSkeletonBone & other) const
@@ -51,7 +52,7 @@ glm::mat4 CSkeletonBone::CalcMatrix(const ISceneNode& Instance) const
 
 		//m = LocalTransform;
 
-		glm::vec3 tr = glm::vec3(LocalTransform[3][0], LocalTransform[3][1], LocalTransform[3][2]);
+		//glm::vec3 tr = glm::vec3(LocalTransform[3][0], LocalTransform[3][1], LocalTransform[3][2]);
 
 		//m = glm::translate(m, tr);
 
@@ -62,7 +63,7 @@ glm::mat4 CSkeletonBone::CalcMatrix(const ISceneNode& Instance) const
 		//	m = m * newMatrix;
 		//}
 		//else
-			m = m * glm::translate(CalcTranslate(Instance));
+		m = m * glm::translate(CalcTranslate(Instance));
 
 
 
@@ -95,7 +96,7 @@ glm::mat4 CSkeletonBone::CalcMatrix(const ISceneNode& Instance) const
 		
 			//if (mM.IsUsesBySequence(animator->getSequenceIndex()))
 			//	m = m * mM.GetValue(animator->getSequenceIndex(), animator->getCurrentTime());
-		
+		m = LocalTransform;
 	}
 	
 

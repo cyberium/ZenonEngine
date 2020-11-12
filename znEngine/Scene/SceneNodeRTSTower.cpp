@@ -114,7 +114,7 @@ CSceneNodeRTSTower::CSceneNodeRTSTower(IScene & Scene)
 {
 	// Unit properties
 	{
-		/*auto towerPropsGroup = MakeShared(CPropertiesGroup, "Tower");
+		auto towerPropsGroup = MakeShared(CPropertiesGroup, "Tower");
 
 		auto AttackDamage = MakeShared(CPropertyWrapped<float>, "AttackDamage");
 		AttackDamage->SetValueSetter(std::bind(&CSceneNodeRTSTower::SetAttackDamage, this, std::placeholders::_1));
@@ -131,7 +131,7 @@ CSceneNodeRTSTower::CSceneNodeRTSTower(IScene & Scene)
 		AttackRange->SetValueGetter(std::bind(&CSceneNodeRTSTower::GetAttackRange, this));
 		towerPropsGroup->AddProperty(AttackRange);
 
-		GetProperties()->AddProperty(towerPropsGroup);*/
+		GetProperties()->AddProperty(towerPropsGroup);
 	}
 }
 

@@ -7,6 +7,8 @@
 
 // Additional
 #include "FBXDisplayCommon.h"
+#include "FBXDisplayLink.h"
+#include "FBXDisplayShape.h"
 #include "FBXUtils.h"
 
 
@@ -77,6 +79,9 @@ bool CFBXModel::Load(fbxsdk::FbxMesh* NativeMesh)
 	std::vector<glm::vec3> normals;
 	std::vector<glm::vec3> binormal;
 	std::vector<glm::vec3> tangent;*/
+
+	DisplayLink(NativeMesh);
+	DisplayShape(NativeMesh);
 
 	m_Vertices.clear();
 	for (int p = 0; p < NativeMesh->GetPolygonCount(); p++)
@@ -407,6 +412,8 @@ bool CFBXModel::Load(fbxsdk::FbxMesh* NativeMesh)
 	m_Geometry->AddVertexBuffer(BufferBinding("POSITION", 0), renderDevice.GetObjectsFactory().CreateVoidVertexBuffer(m_Vertices.data(), m_Vertices.size(), 0, sizeof(FBXVertex)));
 	m_Geometry->AddVertexBuffer(BufferBinding("TEXCOORD", 0), renderDevice.GetObjectsFactory().CreateVoidVertexBuffer(m_Vertices.data(), m_Vertices.size(), 12, sizeof(FBXVertex)));
 	m_Geometry->AddVertexBuffer(BufferBinding("NORMAL", 0), renderDevice.GetObjectsFactory().CreateVoidVertexBuffer(m_Vertices.data(), m_Vertices.size(), 12 + 8, sizeof(FBXVertex)));
+	m_Geometry->AddVertexBuffer(BufferBinding("BLENDWEIGHT", 0), renderDevice.GetObjectsFactory().CreateVoidVertexBuffer(m_Vertices.data(), m_Vertices.size(), 12 + 8 /*+ 12 + 12*/ + 12, sizeof(FBXVertex)));
+	m_Geometry->AddVertexBuffer(BufferBinding("BLENDINDICES", 0), renderDevice.GetObjectsFactory().CreateVoidVertexBuffer(m_Vertices.data(), m_Vertices.size(), 12 + 8 /*+ 12 + 12*/ + 12 + 16, sizeof(FBXVertex)));
 	m_Geometry->SetBounds(CalculateBounds(SGeometryDrawArgs(), m_Vertices)); // TODO: Fixme
 
 	MaterialLoad(NativeMesh);
@@ -555,9 +562,16 @@ void CFBXModel::SkeletonLoad(fbxsdk::FbxMesh* NativeMesh)
 		return;
 	}
 
+	const FbxVector4 lT = NativeMesh->GetNode()->GetGeometricTranslation(FbxNode::eSourcePivot);
+	const FbxVector4 lR = NativeMesh->GetNode()->GetGeometricRotation(FbxNode::eSourcePivot);
+	const FbxVector4 lS = NativeMesh->GetNode()->GetGeometricScaling(FbxNode::eSourcePivot);
+
+	FbxAMatrix geometryTransform = FbxAMatrix(lT, lR, lS);
+
+
 	for (int deformerIndex = 0; deformerIndex < NativeMesh->GetDeformerCount(); ++deformerIndex)
 	{
-		fbxsdk::FbxSkin* skin = reinterpret_cast<fbxsdk::FbxSkin*>(NativeMesh->GetDeformer(deformerIndex, fbxsdk::FbxDeformer::eSkin));
+		fbxsdk::FbxSkin* skin = static_cast<fbxsdk::FbxSkin*>(NativeMesh->GetDeformer(deformerIndex, fbxsdk::FbxDeformer::eSkin));
 		if (skin == nullptr)
 		{
 			Log::Warn("FBXMesh: Skin not found for model %s.", NativeMesh->GetName());
@@ -567,8 +581,18 @@ void CFBXModel::SkeletonLoad(fbxsdk::FbxMesh* NativeMesh)
 		for (int clusterIndex = 0; clusterIndex < skin->GetClusterCount(); ++clusterIndex)
 		{
 			fbxsdk::FbxCluster* cluster = skin->GetCluster(clusterIndex);
-			std::string jointname = cluster->GetLink()->GetName();
 
+			FbxAMatrix transformMatrix;
+			FbxAMatrix transformLinkMatrix;
+			FbxAMatrix globalBindposeInverseMatrix;
+
+			cluster->GetTransformMatrix(transformMatrix);
+			cluster->GetTransformLinkMatrix(transformLinkMatrix);
+			globalBindposeInverseMatrix = transformLinkMatrix.Inverse() * transformMatrix * geometryTransform;
+
+			//skeleton.mJoints[jointIndex].mGlobalBindposeInverse = globalBindposeInverseMatrix;
+
+			/*
 			// Global pose
 			fbxsdk::FbxAMatrix transformMatrix;
 			cluster->GetTransformMatrix(transformMatrix);
@@ -585,11 +609,15 @@ void CFBXModel::SkeletonLoad(fbxsdk::FbxMesh* NativeMesh)
 			for (uint32 i = 0; i < 4; i++)
 				for (uint32 j = 0; j < 4; j++)
 					globalBindposeInverseMatrixGLM[i][j] = globalBindposeInverseMatrix[i][j];
+					*/
+
+
+			std::string jointname = cluster->GetLink()->GetName();
 
 			auto& skeleton = m_FBXNode.GetFBXScene().GetFBXSkeleton()->GetSkeletonEditable();
 			size_t jointIndex = skeleton.GetBoneIndexByName(jointname);
 			auto& joint = skeleton.GetBoneByNameEditable(jointname);
-			joint.LocalTransform222 = globalBindposeInverseMatrixGLM;
+			joint.LocalTransform222 = ToGLMMat4(globalBindposeInverseMatrix);
 			//joint->Node = cluster->GetLink();
 			//joint->Mesh = NativeMesh;
 

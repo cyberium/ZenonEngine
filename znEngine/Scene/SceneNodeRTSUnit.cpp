@@ -104,8 +104,8 @@ void CSceneNodeRTSUnit::Initialize()
 	auto model = GetBaseManager().GetManager<IznModelsFactory>()->LoadModel("models/cactus_tall.znmdl");
 	GetComponentT<IModelsComponent3D>()->SetModel(model);
 
-	std::shared_ptr<IParticleComponent3D> particlesComponent = MakeShared(CParticlesComponent, *this);
-	AddComponentT(particlesComponent);
+	//std::shared_ptr<IParticleComponent3D> particlesComponent = MakeShared(CParticlesComponent, *this);
+	//AddComponentT(particlesComponent);
 }
 
 void CSceneNodeRTSUnit::Update(const UpdateEventArgs & e)

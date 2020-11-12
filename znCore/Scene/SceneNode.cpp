@@ -24,6 +24,21 @@ CSceneNode::CSceneNode(IScene& Scene)
 {
 	m_PropertiesGroup = MakeShared(CPropertiesGroup, "Properties", "Some important scene node 3d properties.");
 
+
+}
+
+CSceneNode::~CSceneNode()
+{
+	Log::Info("SceneNode '%s' deleted.", GetName().c_str());
+}
+
+
+
+//
+// ISceneNode
+//
+void CSceneNode::Initialize()
+{
 	// Name properties
 	{
 		std::shared_ptr<CPropertyWrapped<std::string>> nameProperty = MakeShared(CPropertyWrapped<std::string>, "Name", "Scene node name.");
@@ -37,12 +52,12 @@ CSceneNode::CSceneNode(IScene& Scene)
 	{
 		std::shared_ptr<IPropertiesGroup> propertiesGroup = MakeShared(CPropertiesGroup, "Transform", "Transorm of this 3D node. Like translation, rotation and scale.");
 
-		m_TranslateProperty = MakeShared(CPropertyWrappedVec3, "Translate", "Position of this node in world. Relative to parent.");
+		m_TranslateProperty = MakeShared(CPropertyWrappedVec3, "Translate", "Relative position to parent.");
 		m_TranslateProperty->SetValueSetter(std::bind(&CSceneNode::SetTranslate, this, std::placeholders::_1));
 		m_TranslateProperty->SetValueGetter(std::bind(&CSceneNode::GetTranslation, this));
 		propertiesGroup->AddProperty(m_TranslateProperty);
 
-		std::shared_ptr<CPropertyWrappedVec3> translateAbsProperty = MakeShared(CPropertyWrappedVec3, "TranslateAbsolute", "Position of this node in world. Relative to world zero.");
+		std::shared_ptr<CPropertyWrappedVec3> translateAbsProperty = MakeShared(CPropertyWrappedVec3, "TranslateAbsolute", "Absolute position in world.");
 		translateAbsProperty->SetSyntetic(true);
 		translateAbsProperty->SetValueSetter(std::bind(&CSceneNode::SetTranslateAbs, this, std::placeholders::_1));
 		translateAbsProperty->SetValueGetter(std::bind(&CSceneNode::GetTranslationAbs, this));
@@ -60,25 +75,10 @@ CSceneNode::CSceneNode(IScene& Scene)
 
 		GetProperties()->AddProperty(propertiesGroup);
 	}
-}
-
-CSceneNode::~CSceneNode()
-{
-	Log::Info("SceneNode '%s' deleted.", GetName().c_str());
-}
-
-
-
-//
-// ISceneNode
-//
-void CSceneNode::Initialize()
-{
-
 
 	// Actions
 	{
-		std::shared_ptr<CAction> removeAction = MakeShared(CAction, "Remove", "Remove this node from world. this action affected on childs!");
+		auto removeAction = MakeShared(CAction, "Remove", "Remove this node from world. this action affected on childs!");
 		removeAction->SetAction([this]() -> bool {
 			GetParent()->RemoveChild(shared_from_this());
 			return true;
@@ -177,8 +177,7 @@ glm::vec3 CSceneNode::GetTranslation() const
 
 void CSceneNode::SetTranslateAbs(const glm::vec3& Translate)
 {
-	glm::mat4 inverseWorld = glm::inverse(GetParentWorldTransform());
-	SetTranslate(inverseWorld * glm::vec4(Translate, 1.0f));
+	SetTranslate(glm::inverse(GetParentWorldTransform()) * glm::vec4(Translate, 1.0f));
 }
 
 glm::vec3 CSceneNode::GetTranslationAbs() const
@@ -258,9 +257,7 @@ glm::mat4 CSceneNode::GetParentWorldTransform() const
 
 void CSceneNode::SetWorldTransform(const glm::mat4& worldTransform)
 {
-	glm::mat4 inverseParentTransform = glm::inverse(GetParentWorldTransform());
-
-	SetLocalTransform(inverseParentTransform * worldTransform);
+	SetLocalTransform(glm::inverse(GetParentWorldTransform()) * worldTransform);
 }
 
 
@@ -356,7 +353,7 @@ void CSceneNode::SetName(const std::string& Name)
 {
 	std::string resultName = Name;
 
-	if (!GetGUID().IsEmpty())
+	if (false == GetGUID().IsEmpty())
 	{
 		if (auto parent = GetParent())
 		{
@@ -371,7 +368,7 @@ void CSceneNode::SetName(const std::string& Name)
 				});
 				if (childIt != childs.end())
 				{
-					resultName = GetClearName(resultName).first + "#" + std::to_string(GetGUID().GetCounter() + 1);
+					resultName = GetClearName(resultName).first + "#" + std::to_string(GetGUID().GetCounter());
 				}
 			} while (childIt != childs.end());
 
@@ -381,8 +378,6 @@ void CSceneNode::SetName(const std::string& Name)
 				return resultName == Child->GetName();
 			}) == childs.end());
 		}
-		else
-			_ASSERT(true);
 	}
 	
 	Object::SetName(resultName);

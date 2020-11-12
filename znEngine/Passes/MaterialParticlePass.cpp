@@ -41,11 +41,11 @@ std::shared_ptr<IRenderPassPipelined> CMaterialParticlePass::ConfigurePipeline(s
 	//g_pVertexShader->LoadInputLayoutFromCustomElements(elements);
 
 	// PIPELINES
-	GetPipeline().GetBlendState()->SetBlendMode(alphaBlending
-		/*IBlendState::BlendMode(true, false,
+	GetPipeline().GetBlendState()->SetBlendMode(//alphaBlending
+		IBlendState::BlendMode(true, false,
 		IBlendState::BlendFactor::SrcAlpha, IBlendState::BlendFactor::One,
 		IBlendState::BlendOperation::Add,
-		IBlendState::BlendFactor::SrcAlpha, IBlendState::BlendFactor::One)*/
+		IBlendState::BlendFactor::SrcAlpha, IBlendState::BlendFactor::One)
 	);
 	GetPipeline().GetDepthStencilState()->SetDepthMode(enableTestDisableWrites);
 	GetPipeline().GetRasterizerState()->SetCullMode(IRasterizerState::CullMode::Back);
@@ -104,20 +104,20 @@ EVisitResult CMaterialParticlePass::Visit(const IParticleSystem * ParticlesSyste
 	m_GeomShaderParticlesBufferParameter->SetStructuredBuffer(m_GeomParticlesBuffer);
 	m_GeomShaderParticlesBufferParameter->Bind();
 
-	// Blend state
-	if (ParticlesSystem->GetBlendState())
-		ParticlesSystem->GetBlendState()->Bind();
-
 	const auto& shaders = GetPipeline().GetShaders();
+	const auto& vertexShader = shaders.at(EShaderType::VertexShader).get();
+	const auto& pixelShader = shaders.at(EShaderType::PixelShader).get();
 
 	// Bind material
 	if (ParticlesSystem->GetTexture())
-		ParticlesSystem->GetTexture()->Bind(0, shaders.at(EShaderType::PixelShader).get(), IShaderParameter::Type::Texture);
+		ParticlesSystem->GetTexture()->Bind(0, pixelShader, IShaderParameter::Type::Texture);
 
 	// Draw geom
 	SGeometryDrawArgs args;
 	args.VertexCnt = partilces.size();
-	m_Geometry->Render(shaders.at(EShaderType::VertexShader).get(), args);
+	m_Geometry->Render(pixelShader, args);
+
+	m_GeomShaderParticlesBufferParameter->Unbind();
 
 	return EVisitResult::AllowAll;
 }

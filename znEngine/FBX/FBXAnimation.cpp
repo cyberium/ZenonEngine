@@ -167,7 +167,7 @@ void CFBXAnimation::DisplayCurveKeys(fbxsdk::FbxNode* pNode, fbxsdk::FbxAnimCurv
 
 		fbxsdk::FbxAnimCurveKey key = pCurve->KeyGet(i);
 		fbxsdk::FbxTime keyTime = key.GetTime();
-		fbxsdk::FbxLongLong keyTimeFrames = keyTime.GetFrameCount(fbxsdk::FbxTime::eFrames30);
+		fbxsdk::FbxLongLong keyTimeFrames = keyTime.GetFrameCount(fbxsdk::FbxTime::eFrames60);
 
 		if (AnimationIndex + 1 >= valueInt.m_Times.size())
 			valueInt.m_Times.resize(AnimationIndex + 1);

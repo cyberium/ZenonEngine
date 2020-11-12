@@ -10,7 +10,7 @@ namespace
 	inline std::string ValueToStringInternal(const char* Pattern, T Value)
 	{
 		char buff[cBufferSize];
-		if (sprintf_s(&buff[0], cBufferSize, (std::string("%") + Pattern).c_str(), Value) != 1)
+		if (sprintf_s(buff, cBufferSize, (std::string("%") + Pattern).c_str(), Value) <= 0)
 			throw CException("ValueToStringInternal: Unable to write '%s' value.", typeid(T).name());
 		return buff;
 	}
@@ -49,7 +49,7 @@ template<>
 inline std::string ValueToString(const glm::vec2& Value)
 {
 	char buff[cBufferSize];
-	if (sprintf_s(&buff[0], cBufferSize, "%f, %f", Value.x, Value.y) <= 0)
+	if (sprintf_s(buff, cBufferSize, "%f, %f", Value.x, Value.y) <= 0)
 		throw CException("Unable to write glm::vec2 value.");
 	return buff;
 }
@@ -58,7 +58,7 @@ template<>
 inline std::string ValueToString(const glm::vec3& Value)
 {
 	char buff[cBufferSize];
-	if (sprintf_s(&buff[0], cBufferSize, "%f, %f, %f", Value.x, Value.y, Value.z) <= 0)
+	if (sprintf_s(buff, cBufferSize, "%f, %f, %f", Value.x, Value.y, Value.z) <= 0)
 		throw CException("Unable to write glm::vec3 value.");
 	return buff;
 }
@@ -67,7 +67,7 @@ template<>
 inline std::string ValueToString(const glm::vec4& Value)
 {
 	char buff[cBufferSize];
-	if (sprintf_s(&buff[0], cBufferSize, "%f, %f, %f, %f", Value.x, Value.y, Value.z, Value.w) <= 0)
+	if (sprintf_s(buff, cBufferSize, "%f, %f, %f, %f", Value.x, Value.y, Value.z, Value.w) <= 0)
 		throw CException("Unable to write glm::vec4 value.");
 	return buff;
 }

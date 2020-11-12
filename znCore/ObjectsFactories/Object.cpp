@@ -3,20 +3,35 @@
 // General
 #include "Object.h"
 
-std::string Object::GetObjectTypeName() const
-{
-	if (m_BaseManager != nullptr)
-		return m_BaseManager->GetManager<IObjectsFactory>()->GetObjectTypeNameByObjectType(m_Guid.GetObjectType());
 
-	return "type" + std::to_string(m_Guid.GetObjectType());
-}
-std::string Object::GetObjectClassName() const
-{
-	if (m_BaseManager != nullptr)
-		return m_BaseManager->GetManager<IObjectsFactory>()->GetObjectClassNameByObjectClass(m_Guid.GetObjectClass());
 
-	return "class" + std::to_string(m_Guid.GetObjectClass());
+std::string Object::ConvertInputName(const std::string& OriginalName)
+{
+	/*std::locale loc2("en_US.UTF-8");
+	for (const auto& it : OriginalName)
+		if (false == std::isalnum(it, loc2))
+			throw CException("Object name '%s' is incorrect. Name must contains only characters and digits.");*/
+	return OriginalName;
 }
+
+std::pair<std::string, ObjectCounterType> Object::GetClearName(std::string DirtyName)
+{
+	auto chIt = DirtyName.find_last_of('#');
+	if (chIt != std::string::npos)
+	{
+		std::string clearName = DirtyName.substr(0, chIt);
+		std::string idNumber = DirtyName.substr(chIt + 1);
+
+		int num;
+		if (sscanf_s(idNumber.c_str(), "%d", &num) == 1)
+			return std::make_pair(clearName, num);
+
+		return std::make_pair(clearName, 0);
+	}
+
+	return std::make_pair(DirtyName, 0);
+}
+
 
 //
 // IObject
@@ -26,6 +41,22 @@ Guid Object::GetGUID() const
 	return m_Guid;
 }
 
+std::string Object::GetObjectTypeName() const
+{
+	if (m_BaseManager != nullptr)
+		return m_BaseManager->GetManager<IObjectsFactory>()->GetObjectTypeNameByObjectType(m_Guid.GetObjectType());
+
+	return "type" + std::to_string(m_Guid.GetObjectType());
+}
+
+std::string Object::GetObjectClassName() const
+{
+	if (m_BaseManager != nullptr)
+		return m_BaseManager->GetManager<IObjectsFactory>()->GetObjectClassNameByObjectClass(m_Guid.GetObjectClass());
+
+	return "class" + std::to_string(m_Guid.GetObjectClass());
+}
+
 std::string Object::GetName() const
 {
 	return m_Name;
@@ -33,7 +64,7 @@ std::string Object::GetName() const
 
 void Object::SetName(const std::string& Name)
 {
-	m_Name = Name;
+	m_Name = ConvertInputName(Name);
 }
 
 

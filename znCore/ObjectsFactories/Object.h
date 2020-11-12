@@ -6,29 +6,8 @@ class ZN_API Object
 	, public IObjectPrivate
 {
 public:
-
-	static std::string ConvertInputName(const std::string& OriginalName)
-	{
-		return OriginalName;
-	}
-
-	static std::pair<std::string, ObjectCounterType> GetClearName(std::string DirtyName)
-	{
-		auto chIt = DirtyName.find_last_of('#');
-		if (chIt != std::string::npos)
-		{
-			std::string clearName = DirtyName.substr(0, chIt);
-			std::string idNumber = DirtyName.substr(chIt + 1);
-
-			int num;
-			if (sscanf_s(idNumber.c_str(), "%d", &num) == 1)
-				return std::make_pair(clearName, num);
-
-			return std::make_pair(clearName, 0);
-		}
-
-		return std::make_pair(DirtyName, 0);
-	}
+	static std::string ConvertInputName(const std::string& OriginalName);
+	static std::pair<std::string, ObjectCounterType> GetClearName(std::string DirtyName);
 
 public:
 	// IObject

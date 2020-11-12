@@ -33,7 +33,7 @@ std::shared_ptr<IRenderPassPipelined> CPassForward_DoRenderScene::ConfigurePipel
 
 	if (GetRenderDevice().GetDeviceType() == RenderDeviceType::RenderDeviceType_DirectX11)
 	{
-		vertexShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::VertexShader, "3D/Model_Forward.hlsl", "VS_PTN");
+		vertexShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::VertexShader, "3D/Model_Forward.hlsl", "VS_PTNBB");
 		pixelShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::PixelShader, "3D/Model_Forward.hlsl", "PS_main");
 	}
 	vertexShader->LoadInputLayoutFromReflector();
@@ -100,11 +100,7 @@ EVisitResult CPassForward_DoRenderScene::Visit(const IGeometry * Geometry, const
 	if (objMaterial == nullptr)
 		return EVisitResult::Block;
 
-	//if (objMaterial->GetTexture(0) == nullptr || objMaterial->GetTexture(0)->IsTransparent() == true)
-	//	return false;
-	if (Material)
-		Material->Bind(GetRenderEventArgs().PipelineState->GetShaders());
-
+	objMaterial->Bind(GetRenderEventArgs().PipelineState->GetShaders());
 
 	if (m_ShaderBonesBufferParameter->IsValid())
 		m_ShaderBonesBufferParameter->Bind();
@@ -118,8 +114,7 @@ EVisitResult CPassForward_DoRenderScene::Visit(const IGeometry * Geometry, const
 	if (m_ShaderBonesBufferParameter->IsValid())
 		m_ShaderBonesBufferParameter->Unbind();
 
-	if (Material)
-		Material->Unbind(GetRenderEventArgs().PipelineState->GetShaders());
+	objMaterial->Unbind(GetRenderEventArgs().PipelineState->GetShaders());
 
 	return AllowAll;
 }

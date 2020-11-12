@@ -94,7 +94,10 @@ void CModelsComponent3D::Load(const std::shared_ptr<IXMLReader>& Reader)
 	CComponentBase::Load(Reader);
 
 	if (false == Reader->IsAttributeExists("FileName"))
-		throw CException("Model XML doesn't contains 'FileName' section. Node '%s'.", GetOwnerNode().GetName().c_str());
+	{
+		Log::Warn("Model XML doesn't contains 'FileName' section. Node '%s'.", GetOwnerNode().GetName().c_str());
+		return;
+	}
 
 	std::string fileName = Reader->GetStrAttribute("FileName");
 	if (false == GetBaseManager().GetManager<IFilesManager>()->IsFileExists(fileName))
@@ -117,7 +120,11 @@ void CModelsComponent3D::Save(const std::shared_ptr<IXMLWriter>& Writer) const
 
 	auto model = GetModel();
 	if (model == nullptr)
-		throw CException("Unable to save nullptr model. Node '%s'", GetOwnerNode().GetName().c_str());
+	{
+		Log::Warn("Unable to save nullptr model. Node '%s'", GetOwnerNode().GetName().c_str());
+		return;
+	}
+		
 
 	auto fileName = model->GetFileName();
 	if (fileName.empty())

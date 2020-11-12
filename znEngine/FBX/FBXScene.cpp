@@ -8,6 +8,8 @@
 // Additional
 #include "FBXStream.h"
 #include "FBXDisplayCommon.h"
+#include "FBXDisplayLink.h"
+#include "FBXDisplayAnimation.h"
 #include "FBXNode.h"
 #include "FBXSkeleton.h"
 #include "FBXAnimation.h"
@@ -163,6 +165,8 @@ bool CFBXScene::LoadFromFile(std::shared_ptr<IFile> File)
 	//	Log::Error("CFBXManager: Error while FbxGeometryConverter::SplitMeshesPerMaterial.");
 	//	return false;
 	//}
+
+	DisplayAnimation(m_NativeScene);
 
 	auto skeleton = MakeShared(CFBXSkeleton, m_BaseManager, *this);
 	skeleton->Load(m_NativeScene);

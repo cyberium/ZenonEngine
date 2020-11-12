@@ -113,10 +113,10 @@ void CRendererDeffered::Initialize(std::shared_ptr<IRenderTarget> OutputRenderTa
 	AddPass(m_Deffered_ScenePass);
 	AddPass(m_Deffered_Lights);
 	AddPass(MakeShared(CMaterial_Debug_Pass, m_RenderDevice, m_Scene)->ConfigurePipeline(outputRenderTargetWithCustomDepth, Viewport));
-	AddPass(MakeShared(CMaterialParticlePass, m_RenderDevice, m_Scene)->ConfigurePipeline(outputRenderTargetWithCustomDepth, Viewport));
-
+	
 	// Final UI Pass
-	m_UIPasses.push_back(m_Deffered_UIQuadPass);
+	AddPass(m_Deffered_UIQuadPass);
+	AddPass(MakeShared(CMaterialParticlePass, m_RenderDevice, m_Scene)->ConfigurePipeline(outputRenderTargetWithCustomDepth, Viewport));
 
 	// HDR
 	//AddPass(MakeShared(ClearRenderTargetPass, m_RenderDevice, HDRRenderTarget));

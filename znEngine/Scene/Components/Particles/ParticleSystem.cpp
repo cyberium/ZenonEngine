@@ -62,18 +62,18 @@ CParticleSystem::CParticleSystem(const ISceneNode& SceneNode)
 	, m_OwnerNode(SceneNode)
 
 	, m_LastParticleTime(0.0f)
-	, m_ParticleInterval(5.0f)
+	, m_ParticleInterval(25.0f)
 {
-	m_Lifetime = 3000.0f;
-	m_LifeTimeMiddlePoint = 0.5f;
+	m_Lifetime = 500.0f;
+	m_LifeTimeMiddlePoint = 0.7f;
 
 	m_Colors[0] = glm::vec4(1.0f, 0.0f, 0.0f, 1.0f);
 	m_Colors[1] = glm::vec4(0.0f, 1.0f, 0.0f, 1.0f);
 	m_Colors[2] = glm::vec4(0.0f, 0.0f, 1.0f, 1.0f);
 
-	m_Sizes[0] = glm::vec2(4.0f);
-	m_Sizes[1] = glm::vec2(2.0f);
-	m_Sizes[2] = glm::vec2(1.0f);
+	m_Sizes[0] = glm::vec2(2.0f);
+	m_Sizes[1] = glm::vec2(1.0f);
+	m_Sizes[2] = glm::vec2(0.5f);
 }
 
 CParticleSystem::~CParticleSystem()
@@ -147,9 +147,9 @@ void CParticleSystem::CreateNewParticle()
 	p.Position = m_OwnerNode.GetTranslationAbs();
 	p.StartPosition = p.Position;
 	p.Direction = glm::vec3(0.0f, 1.0f, 0.0f);
-	p.Direction = Random::UnitVector3f();// CalcSpreadMatrix(glm::two_pi<float>(), 0.0f, 1.0, 1.0f) * glm::vec4(1.0f, 1.0f, 1.0f, 0.0f);
+	//p.Direction = Random::UnitVector3f();// CalcSpreadMatrix(glm::two_pi<float>(), 0.0f, 1.0, 1.0f) * glm::vec4(1.0f, 1.0f, 1.0f, 0.0f);
 	p.Direction = glm::normalize(p.Direction);
-	p.Speed = 1.0 * Random::Range(0.5f, 1.5f);
+	p.Speed = 0.0 * Random::Range(0.5f, 1.5f);
 
 	m_CPUParticles.push_back(p);
 }
