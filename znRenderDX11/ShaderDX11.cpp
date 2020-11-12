@@ -53,7 +53,11 @@ bool ShaderDX11::LoadFromFile(EShaderType shaderType, const std::string& fileNam
 		std::string fullFileName = "shaders/" + fileName;
 		std::shared_ptr<IFile> file = m_RenderDeviceDX11.GetBaseManager().GetManager<IFilesManager>()->Open(fullFileName);
 		if (file == nullptr)
-			throw CznRenderException("Shader file '%s' not found.", fullFileName.c_str());
+		{
+			file = m_RenderDeviceDX11.GetBaseManager().GetManager<IFilesManager>()->Open(fileName);
+			if (file == nullptr)
+				throw CznRenderException("Shader file '%s' not found.", fullFileName.c_str());
+		}
 
 		std::string data;
 		if (!file->getText(&data))
