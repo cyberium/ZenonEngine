@@ -583,42 +583,25 @@ void CFBXModel::SkeletonLoad(fbxsdk::FbxMesh* NativeMesh)
 			fbxsdk::FbxCluster* cluster = skin->GetCluster(clusterIndex);
 
 			FbxAMatrix transformMatrix;
+			cluster->GetTransformMatrix(transformMatrix);
+
 			FbxAMatrix transformLinkMatrix;
+			cluster->GetTransformLinkMatrix(transformLinkMatrix);
+
 			FbxAMatrix globalBindposeInverseMatrix;
 
-			cluster->GetTransformMatrix(transformMatrix);
-			cluster->GetTransformLinkMatrix(transformLinkMatrix);
 			globalBindposeInverseMatrix = transformLinkMatrix.Inverse() * transformMatrix * geometryTransform;
-
-			//skeleton.mJoints[jointIndex].mGlobalBindposeInverse = globalBindposeInverseMatrix;
-
-			/*
-			// Global pose
-			fbxsdk::FbxAMatrix transformMatrix;
-			cluster->GetTransformMatrix(transformMatrix);
-
-			fbxsdk::FbxAMatrix transformLinkMatrix;
-			cluster->GetTransformLinkMatrix(transformLinkMatrix);
-
-			fbxsdk::FbxAMatrix transformAssociateModelMatrix;
-			cluster->GetTransformAssociateModelMatrix(transformAssociateModelMatrix);
-
-			fbxsdk::FbxAMatrix globalBindposeInverseMatrix = transformLinkMatrix.Inverse() * transformMatrix;
-
-			glm::mat4 globalBindposeInverseMatrixGLM;
-			for (uint32 i = 0; i < 4; i++)
-				for (uint32 j = 0; j < 4; j++)
-					globalBindposeInverseMatrixGLM[i][j] = globalBindposeInverseMatrix[i][j];
-					*/
-
 
 			std::string jointname = cluster->GetLink()->GetName();
 
 			size_t jointIndex = m_FBXNode.GetFBXScene().GetFBXSkeleton()->GetBoneIndexByName(jointname);
 			auto joint = m_FBXNode.GetFBXScene().GetFBXSkeleton()->GetBoneByName(jointname);
-			//joint->LocalTransform222 = ToGLMMat4(globalBindposeInverseMatrix);
-			//joint->Node = cluster->GetLink();
-			//joint->Mesh = NativeMesh;
+			
+			fbxsdk::FbxAMatrix pivotMatrix;
+			NativeMesh->GetPivot(pivotMatrix);
+			joint->SetPivotMatrix(ToGLMMat4(pivotMatrix));
+
+			joint->SetFuckingMatrix(ToGLMMat4(globalBindposeInverseMatrix));
 
 			std::map<int, std::vector<std::pair<float, size_t>>> weightIndexes;
 			for (int i = 0; i < cluster->GetControlPointIndicesCount(); ++i)

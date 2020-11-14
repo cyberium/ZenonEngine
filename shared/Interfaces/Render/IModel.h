@@ -20,7 +20,15 @@ ZN_INTERFACE ZN_API ISkeletonBone
 
 	virtual std::string GetName() const = 0;
 	virtual int32 GetParentIndex() const = 0;
-	virtual glm::vec3 GetPivotPoint() const = 0;
+	
+	virtual void SetLocalMatrix(const glm::mat4& Matrix) = 0;
+	virtual glm::mat4 GetLocalMatrix() const = 0;
+
+	virtual void SetPivotMatrix(const glm::mat4& Matrix) = 0;
+	virtual glm::mat4 GetPivotMatrix() const = 0;
+
+	virtual void SetFuckingMatrix(const glm::mat4& Matrix) = 0;
+	virtual glm::mat4 GetFuckingMatrix() const = 0;
 
 	virtual glm::mat4 CalcMatrix(const IModelsComponent3D* ModelsComponent) const = 0;
 	virtual glm::mat4 CalcRotateMatrix(const IModelsComponent3D* ModelsComponent) const = 0;

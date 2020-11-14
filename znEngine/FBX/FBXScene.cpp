@@ -254,9 +254,20 @@ std::shared_ptr<IModel> CFBXScene::MergeModels()
 		IRenderDevice& renderDevice = m_BaseManager.GetApplication().GetRenderDevice();
 		auto mergedModel = renderDevice.GetObjectsFactory().CreateModel();
 
+		for (const auto& b : GetFBXSkeleton()->GetBones())
+		{
+			mergedModel->AddBone(b);
+		}
+
+		for (const auto& a : GetFBXAnimation()->GetAnimations())
+		{
+			mergedModel->AddAnimation(0, a);
+		}
+
 		for (const auto& fbxModel : m_Models)
 		{
 			auto model = fbxModel->GetModel();
+
 			for (const auto& c : model->GetConnections())
 			{
 				mergedModel->AddConnection(c.Material, c.Geometry, c.GeometryDrawArgs);

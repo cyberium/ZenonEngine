@@ -52,9 +52,9 @@ private:
 	// Animation
 	uint16                      m_CurrentAnimationIndex;
 	const IAnimation*		    m_CurrentAnimation;
-	bool						m_IsLoop;
-	bool						m_IsStopped;
-	double						animtime;
+	bool						m_IsAnimationLooped;
+	bool						m_IsAnimationStopped;
+	double						m_AnimTime;
 	uint32						m_CurrentTime;
 	uint32						m_GlobalTime;
 };

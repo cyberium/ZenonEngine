@@ -279,7 +279,11 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="Resources\shaders\M2.hlsl" />
-    <Text Include="Resources\AnimationData.dbc" />
+    <Text Include="Resources\AnimationData.dbc">
+      <Filter>Resources</Filter>
+    </Text>
+    <Text Include="Resources\shaders\M2.hlsl">
+      <Filter>Resources\shaders</Filter>
+    </Text>
   </ItemGroup>
 </Project>

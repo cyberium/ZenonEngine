@@ -37,6 +37,9 @@ private:
 	std::shared_ptr<IConstantBuffer> m_PerObjectConstantBuffer;
 	IShaderParameter* m_PerObjectShaderParameter;
 
+	// Bones
+	IShaderParameter* m_ShaderBonesBufferParameter;
+
 private:
 	std::shared_ptr<ITexture> m_Texture0;
 	std::shared_ptr<ITexture> m_Texture1;

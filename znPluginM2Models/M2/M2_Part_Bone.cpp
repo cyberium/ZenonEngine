@@ -41,9 +41,32 @@ int32 SM2_Part_Bone_Wrapper::GetParentIndex() const
 	return m_M2Bone.parent_bone;
 }
 
-glm::vec3 SM2_Part_Bone_Wrapper::GetPivotPoint() const
+void SM2_Part_Bone_Wrapper::SetLocalMatrix(const glm::mat4 & Matrix)
 {
-	return Fix_XZmY(m_M2Bone.pivot);
+}
+
+glm::mat4 SM2_Part_Bone_Wrapper::GetLocalMatrix() const
+{
+	return glm::mat4();
+}
+
+void SM2_Part_Bone_Wrapper::SetPivotMatrix(const glm::mat4 & Matrix)
+{
+	throw CException("Not implemented!");
+}
+
+glm::mat4 SM2_Part_Bone_Wrapper::GetPivotMatrix() const
+{
+	return glm::translate(Fix_XZmY(m_M2Bone.pivot));
+}
+
+void SM2_Part_Bone_Wrapper::SetFuckingMatrix(const glm::mat4 & Matrix)
+{
+}
+
+glm::mat4 SM2_Part_Bone_Wrapper::GetFuckingMatrix() const
+{
+	return glm::mat4();
 }
 
 glm::mat4 SM2_Part_Bone_Wrapper::CalcMatrix(const IModelsComponent3D* ModelsComponent) const
@@ -51,7 +74,7 @@ glm::mat4 SM2_Part_Bone_Wrapper::CalcMatrix(const IModelsComponent3D* ModelsComp
 	glm::mat4 m(1.0f);
 	//if (IsInterpolated(ModelsComponent->GetCurrentAnimationIndex()))
 	//{
-		m = glm::translate(m, GetPivotPoint());
+		m *= GetPivotMatrix();
 
 		if (m_TranslateAnimated.IsUsesBySequence(ModelsComponent->GetCurrentAnimationIndex()))
 		{
@@ -68,7 +91,7 @@ glm::mat4 SM2_Part_Bone_Wrapper::CalcMatrix(const IModelsComponent3D* ModelsComp
 			m = glm::scale(m, m_ScaleAnimated.GetValue(ModelsComponent->GetCurrentAnimationIndex(), ModelsComponent->GetCurrentTime_(), m_M2Object.getSkeleton().getGlobalLoops(), ModelsComponent->GetGlobalTime()));
 		}
 
-		m = glm::translate(m, GetPivotPoint() * -1.0f);
+		m *= glm::inverse(GetPivotMatrix());
 		//}
 
 	return m;
@@ -88,7 +111,7 @@ glm::mat4 SM2_Part_Bone_Wrapper::calcBillboardMatrix(const glm::mat4& NodeWorldT
 	glm::mat4 m(1.0f);
 	_ASSERT(IsBillboard());
 
-	m = glm::translate(m, GetPivotPoint());
+	m *= GetPivotMatrix();
 	{
 		glm::mat4 W = m;
 		W = FinalBoneMatrix * W;
@@ -128,7 +151,7 @@ glm::mat4 SM2_Part_Bone_Wrapper::calcBillboardMatrix(const glm::mat4& NodeWorldT
 		m[2][1] = vRight.y;
 		m[2][2] = vRight.z;
 	}
-	m = glm::translate(m, GetPivotPoint() * -1.0f);
+	m *= glm::inverse(GetPivotMatrix());
 
 	return m;
 }

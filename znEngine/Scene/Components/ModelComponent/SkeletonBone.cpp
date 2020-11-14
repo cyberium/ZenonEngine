@@ -6,8 +6,9 @@
 CSkeletonBone::CSkeletonBone(const std::string & Name, int32 ParentIndex)
 	: Name(Name)
 	, ParentIndex(ParentIndex)
-	, GlobalTransform(glm::mat4(1.0f))
+	, PivotMatrix(glm::mat4(1.0f))
 	, LocalTransform(glm::mat4(1.0f))
+	, FuckingMatrix(glm::mat4(1.0f))
 {
 }
 
@@ -36,8 +37,10 @@ void CSkeletonBone::MergeWithOther(std::shared_ptr<ISkeletonBone> OtherBone)
 	sY.MergeWithOther(otherAsMe->sY);
 	sZ.MergeWithOther(otherAsMe->sZ);
 
-	GlobalTransform = otherAsMe->GlobalTransform;
+	m_CalculatedMatrixes.MergeWithOther(otherAsMe->m_CalculatedMatrixes);
+
 	LocalTransform = otherAsMe->LocalTransform;
+	PivotMatrix = otherAsMe->PivotMatrix;
 }
 
 std::string CSkeletonBone::GetName() const
@@ -45,36 +48,48 @@ std::string CSkeletonBone::GetName() const
 	return Name;
 }
 
-glm::vec3 CSkeletonBone::GetPivotPoint() const
-{
-	return glm::vec3(0.0f);
-}
-
 int32 CSkeletonBone::GetParentIndex() const
 {
 	return ParentIndex;
 }
 
+void CSkeletonBone::SetLocalMatrix(const glm::mat4 & Matrix)
+{
+	LocalTransform = Matrix;
+}
+
+glm::mat4 CSkeletonBone::GetLocalMatrix() const
+{
+	return LocalTransform;
+}
+
+void CSkeletonBone::SetPivotMatrix(const glm::mat4 & Matrix)
+{
+	PivotMatrix = Matrix;
+}
+
+glm::mat4 CSkeletonBone::GetPivotMatrix() const
+{
+	return PivotMatrix;
+}
+
+void CSkeletonBone::SetFuckingMatrix(const glm::mat4 & Matrix)
+{
+	FuckingMatrix = Matrix;
+}
+
+glm::mat4 CSkeletonBone::GetFuckingMatrix() const
+{
+	return FuckingMatrix;
+}
+
 glm::mat4 CSkeletonBone::CalcMatrix(const IModelsComponent3D* ModelsComponent) const
 {
-#if 0
 	glm::mat4 m(1.0f);
-	//m *= glm::inverse(GlobalTransform);
 
-	//m = LocalTransform;
+	m *= GetPivotMatrix();
 
-	//glm::vec3 tr = glm::vec3(LocalTransform[3][0], LocalTransform[3][1], LocalTransform[3][2]);
-
-	//m = glm::translate(m, tr);
-
-
-	//if (ParentIndex == -1)
-	//{
-	//	glm::mat4 newMatrix = glm::inverse(LocalTransform) * glm::translate(CalcTranslate(Instance));
-	//	m = m * newMatrix;
-	//}
-	//else
-
+	/*
 	{
 		glm::vec3 translate(0.0f);
 		if (pX.IsUsesBySequence(ModelsComponent->GetCurrentAnimationIndex()))
@@ -86,9 +101,8 @@ glm::mat4 CSkeletonBone::CalcMatrix(const IModelsComponent3D* ModelsComponent) c
 		if (pZ.IsUsesBySequence(ModelsComponent->GetCurrentAnimationIndex()))
 			translate.z = pZ.GetValue(ModelsComponent->GetCurrentAnimationIndex(), ModelsComponent->GetCurrentTime_());
 
-		m = m * glm::translate(translate);
+		m = glm::translate(m, translate);
 	}
-
 
 	{
 		glm::vec3 rotate(0.0f);
@@ -100,46 +114,23 @@ glm::mat4 CSkeletonBone::CalcMatrix(const IModelsComponent3D* ModelsComponent) c
 
 		if (rZ.IsUsesBySequence(ModelsComponent->GetCurrentAnimationIndex()))
 			rotate.z = rZ.GetValue(ModelsComponent->GetCurrentAnimationIndex(), ModelsComponent->GetCurrentTime_());
-	}
 
-	//if (ParentIndex == -1)
-	//{
-	//	glm::mat4 newMatrix = glm::inverse(glm::toMat4(glm::quat(LocalTransform))) * CalcRotate(Instance);
-	//	m = m * newMatrix;
-	//}
-	//else
-	//glm::vec3 orig = glm::radians(CalcRotate(Instance));
-	//m = m * glm::toMat4(glm::quat(orig));
-
-
-	//m *= CalcRotate(Instance);
-
-	/*if (sX.IsUsesBySequence(animator->getSequenceIndex()))
-	{
-		glm::vec3 s = glm::vec3(
-			sX.GetValue(animator->getSequenceIndex(), animator->getCurrentTime()),
-			sY.GetValue(animator->getSequenceIndex(), animator->getCurrentTime()),
-			sZ.GetValue(animator->getSequenceIndex(), animator->getCurrentTime())
-		);
-		m = glm::scale(m, s);
+		m *= glm::toMat4(glm::quat(rotate));
 	}*/
 
-	//m = glm::translate(m, tr);
+	
 
+	if (m_CalculatedMatrixes.IsUsesBySequence(ModelsComponent->GetCurrentAnimationIndex()))
+		m *= m_CalculatedMatrixes.GetValue(ModelsComponent->GetCurrentAnimationIndex(), ModelsComponent->GetCurrentTime_());
+	else
+		m *= LocalTransform;
 
-		//if (mM.IsUsesBySequence(animator->getSequenceIndex()))
-		//	m = m * mM.GetValue(animator->getSequenceIndex(), animator->getCurrentTime());
-	m = LocalTransform;
-
-
+	m *= glm::inverse(GetPivotMatrix());
 
 	return m;
-#endif
-
-	throw CException("Not implemented!");
 }
 
 glm::mat4 CSkeletonBone::CalcRotateMatrix(const IModelsComponent3D* ModelsComponent) const
 {
-	return glm::mat4();
+	return FuckingMatrix;
 }

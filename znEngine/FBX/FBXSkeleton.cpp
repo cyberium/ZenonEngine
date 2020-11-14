@@ -154,27 +154,12 @@ void CFBXSkeleton::ProcessSkeletonHeirarchyre(fbxsdk::FbxNode * node, int depth,
 	{
 		fbxsdk::FbxSkeleton* skeletonNode = node->GetSkeleton();
 
-		fbxsdk::FbxDouble3 lTranslation = node->LclTranslation.Get();
-		fbxsdk::FbxDouble3 lRotation = node->LclRotation.Get();
-		fbxsdk::FbxDouble3 lScaling = node->LclScaling.Get();
-
-
-		glm::mat4 localTransform(1.0f);
-
-		localTransform = glm::translate(localTransform, ToGLMVec3(node->LclTranslation));
-		//localTransform *= glm::orientate4(glm::radians(ToGLMVec3(node->LclRotation)));
-		localTransform = glm::scale(localTransform, ToGLMVec3(node->LclScaling));
-
-
-
 		std::shared_ptr<CSkeletonBone> bone = MakeShared(CSkeletonBone, node->GetName(), parentindex);
-		bone->GlobalTransform = ToGLMMat4(node->EvaluateGlobalTransform());
-
 
 		fbxsdk::FbxTime keyTime;
-		keyTime.SetFrame(24);
+		keyTime.SetFrame(15);
 
-		bone->LocalTransform = localTransform;//ToGLMMat4(node->EvaluateLocalTransform());
+		bone->LocalTransform = ToGLMMat4(node->EvaluateLocalTransform());
 		m_Bones.push_back(bone);
 
 		isFinded = true;

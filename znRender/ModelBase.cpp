@@ -68,15 +68,26 @@ const std::vector<IModel::SConnection>& ModelBase::GetConnections() const
 //
 void ModelBase::ApplyOtherSkeleton(std::shared_ptr<IModel> other)
 {
+
 	for (const auto& b : m_Bones)
 	{
 		auto otherBones = other->GetBones();
-		auto otherIt = std::find(otherBones.begin(), otherBones.end(), b);
-		if (otherIt == otherBones.end())
-			//throw CException("Unable find bone '%s'", b.Name.c_str());
-			continue;
+		auto otherIt = std::find_if(otherBones.begin(), otherBones.end(), [b](const std::shared_ptr<ISkeletonBone>& b2) {
+			return b2->GetName() == b->GetName() /*&& b2->GetParentIndex() == b->GetParentIndex()*/;
+		});
+		if (otherIt != otherBones.end())
+		{
+			b->MergeWithOther(*otherIt);
+			//AddBone(other);
+		}
+		else
+		{
 
-		b->MergeWithOther(*otherIt);
+		}
+			//throw CException("Unable find bone '%s'", b->GetName().c_str());
+			//continue;
+
+		
 	}
 }
 

@@ -223,6 +223,11 @@ public:
 	{
 		m_Type = other.m_Type;
 
+		m_Times = other.m_Times;
+		m_Values = other.m_Values;
+		m_ValuesHermiteIn = other.m_ValuesHermiteIn;
+		m_ValuesHermiteOut = other.m_ValuesHermiteOut;
+		/*
 		for (const auto& t : other.m_Times)
 			m_Times.push_back(t);
 
@@ -234,6 +239,7 @@ public:
 
 		for (const auto& v : other.m_ValuesHermiteOut)
 			m_ValuesHermiteOut.push_back(v);
+			*/
 	}
 
 private:

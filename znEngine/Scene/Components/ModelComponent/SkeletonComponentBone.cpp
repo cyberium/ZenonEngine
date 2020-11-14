@@ -93,7 +93,7 @@ void CSkeletonComponentBone3D::Calculate(const IModelsComponent3D* ModelsCompone
 	if (parentBone)
 	{
 		m_Matrix = parentBone->GetMatrix() * m_Matrix;
-		m_RotateMatrix = parentBone->GetRotateMatrix() * m_RotateMatrix;
+		//m_RotateMatrix = parentBone->GetRotateMatrix() * m_RotateMatrix;
 	}
 
 	m_IsCalculated = true;

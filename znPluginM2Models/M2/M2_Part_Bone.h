@@ -92,7 +92,12 @@ public:
 	void MergeWithOther(std::shared_ptr<ISkeletonBone> OtherBone) override;
 	std::string GetName() const override;
 	int32 GetParentIndex() const override;
-	glm::vec3 GetPivotPoint() const override;
+	void SetLocalMatrix(const glm::mat4& Matrix) override;
+	glm::mat4 GetLocalMatrix() const override;
+	void SetPivotMatrix(const glm::mat4& Matrix) override;
+	glm::mat4 GetPivotMatrix() const override;
+	void SetFuckingMatrix(const glm::mat4& Matrix) override;
+	glm::mat4 GetFuckingMatrix() const override;
 	glm::mat4 CalcMatrix(const IModelsComponent3D* ModelsComponent) const override;
 	glm::mat4 CalcRotateMatrix(const IModelsComponent3D* ModelsComponent) const override;
 

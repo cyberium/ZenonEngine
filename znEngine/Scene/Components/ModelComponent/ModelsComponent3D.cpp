@@ -9,9 +9,9 @@
 CModelsComponent3D::CModelsComponent3D(const ISceneNode& OwnerNode)
     : CComponentBase(OwnerNode)
 	, m_IsCastShadows(true)
-	, m_IsLoop(false)
-	, m_IsStopped(true)
-	, animtime(0.0)
+	, m_IsAnimationLooped(false)
+	, m_IsAnimationStopped(true)
+	, m_AnimTime(0.0)
 	, m_CurrentAnimation(nullptr)
 	, m_CurrentAnimationIndex(0)
 	, m_CurrentTime(0)
@@ -100,11 +100,11 @@ std::vector<glm::mat4> CModelsComponent3D::CreatePose(size_t BoneStartIndex, siz
 	if (BonesCount == 0)
 		BonesCount = m_Bones.size();
 
-	_ASSERT(BoneStartIndex + BonesCount < m_Bones.size());
+	_ASSERT(BoneStartIndex + BonesCount - 1 < m_Bones.size());
 	std::vector<glm::mat4> result;
 	result.reserve(BonesCount);
 	for (size_t i = BoneStartIndex; i < BoneStartIndex + BonesCount; i++)
-		result.push_back(m_Bones[i]->GetMatrix());
+		result.push_back(m_Bones[i]->GetMatrix() * m_Bones[i]->GetRotateMatrix());
 	return result;
 }
 
@@ -115,9 +115,12 @@ std::vector<glm::mat4> CModelsComponent3D::CreatePose(size_t BoneStartIndex, siz
 //
 void CModelsComponent3D::PlayAnimation(uint16 AnimationId, bool Loop)
 {
-	m_IsLoop = Loop;
-
 	const auto& animations = GetModel()->GetAnimations();
+	if (animations.empty())
+		return;
+
+	m_IsAnimationLooped = Loop;
+
 	const auto& animIt = animations.find(AnimationId);
 	if (animIt != animations.end())
 	{
@@ -132,12 +135,14 @@ void CModelsComponent3D::PlayAnimation(uint16 AnimationId, bool Loop)
 	}
 
 	m_CurrentTime = m_CurrentAnimation->GetFrameStart();
-	m_IsStopped = false;
-	animtime = 0.0;
+	m_IsAnimationStopped = false;
+	m_AnimTime = 0.0;
 }
 
 size_t CModelsComponent3D::GetCurrentAnimationIndex() const
 {
+	if (m_CurrentAnimation == nullptr)
+		return 0;
 	return m_CurrentAnimation->GetIndexInSequences();
 }
 
@@ -165,14 +170,14 @@ void CModelsComponent3D::Update(const UpdateEventArgs & e)
 		for (const auto& b : m_Bones)
 			std::dynamic_pointer_cast<ISkeletonComponentBoneInternal3D>(b)->Calculate(this, e.CameraForCulling);
 
-		//m_BonesList = CreatePose();
-		//m_StructuredBuffer->Set(m_BonesList);
+		m_BonesList = CreatePose();
+		m_StructuredBuffer->Set(m_BonesList);
 	}
 
-	if (false == m_IsStopped)
+	if (false == m_IsAnimationStopped)
 	{
-		animtime += e.DeltaTime ; // FIXME
-		m_CurrentTime = static_cast<uint32>(m_CurrentAnimation->GetFrameStart() + animtime);
+		m_AnimTime += e.DeltaTimeMultiplier ;//e.DeltaTime ; // FIXME
+		m_CurrentTime = static_cast<uint32>(m_CurrentAnimation->GetFrameStart() + m_AnimTime);
 		m_GlobalTime = static_cast<uint32>(e.TotalTime);
 
 		// Animation don't ended
@@ -184,14 +189,14 @@ void CModelsComponent3D::Update(const UpdateEventArgs & e)
 				m_CurrentAnimation = m_CurrentAnimation->getNextVariation();
 				m_CurrentTime = m_CurrentAnimation->getStart();
 				m_IsPlayed = false;
-				animtime = 0;
+				m_AnimTime = 0;
 				return;
 			}*/
 
 			m_CurrentTime = m_CurrentAnimation->GetFrameEnd() - 1;
-			m_IsStopped = true;
+			m_IsAnimationStopped = true;
 
-			if (m_IsLoop)
+			if (m_IsAnimationLooped)
 			{
 				PlayAnimation(m_CurrentAnimationIndex, true);
 			}

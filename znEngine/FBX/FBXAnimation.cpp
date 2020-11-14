@@ -105,26 +105,26 @@ void CFBXAnimation::DisplayChannels(fbxsdk::FbxNode* pNode, fbxsdk::FbxAnimLayer
 		fbxsdk::FbxLongLong longstart = start.GetFrameCount();
 		fbxsdk::FbxLongLong longend = end.GetFrameCount();
 
-		/*for (unsigned int i = 0; i < longend; i++)
+		for (unsigned int i = 0; i < longend; i++)
 		{
 			fbxsdk::FbxTime keyTime;
 			keyTime.SetFrame(i);
 
-			fbxsdk::FbxLongLong keyTimeFrames = keyTime.GetFrameCount(fbxsdk::FbxTime::eFrames30);
+			fbxsdk::FbxLongLong keyTimeFrames = keyTime.GetFrameCount(fbxsdk::FbxTime::eFrames60);
 
-			bone22->mM.m_Type = Interpolations::INTERPOLATION_LINEAR;
+			bone22->m_CalculatedMatrixes.m_Type = Interpolations::INTERPOLATION_LINEAR;
 
-			if (AnimationIndex + 1 >= bone22->mM.m_Times.size())
-				bone22->mM.m_Times.resize(AnimationIndex + 1);
-			bone22->mM.m_Times[AnimationIndex].push_back(keyTimeFrames);
+			if (AnimationIndex + 1 >= bone22->m_CalculatedMatrixes.m_Times.size())
+				bone22->m_CalculatedMatrixes.m_Times.resize(AnimationIndex + 1);
+			bone22->m_CalculatedMatrixes.m_Times[AnimationIndex].push_back(keyTimeFrames);
 
 			FbxAMatrix matGlobal = pNode->EvaluateLocalTransform(keyTime);
 			glm::mat4 glmMat = ToGLMMat4(matGlobal);
 
-			if (AnimationIndex + 1 >= bone22->mM.m_Values.size())
-				bone22->mM.m_Values.resize(AnimationIndex + 1);
-			bone22->mM.m_Values[AnimationIndex].push_back(glmMat);
-		}*/
+			if (AnimationIndex + 1 >= bone22->m_CalculatedMatrixes.m_Values.size())
+				bone22->m_CalculatedMatrixes.m_Values.resize(AnimationIndex + 1);
+			bone22->m_CalculatedMatrixes.m_Values[AnimationIndex].push_back(glmMat);
+		}
 
 		
 		
@@ -167,7 +167,7 @@ void CFBXAnimation::DisplayCurveKeys(fbxsdk::FbxNode* pNode, fbxsdk::FbxAnimCurv
 
 		fbxsdk::FbxAnimCurveKey key = pCurve->KeyGet(i);
 		fbxsdk::FbxTime keyTime = key.GetTime();
-		fbxsdk::FbxLongLong keyTimeFrames = keyTime.GetFrameCount(fbxsdk::FbxTime::eFrames60);
+		fbxsdk::FbxLongLong keyTimeFrames = keyTime.GetFrameCount(fbxsdk::FbxTime::eFrames120);
 
 		if (AnimationIndex + 1 >= valueInt.m_Times.size())
 			valueInt.m_Times.resize(AnimationIndex + 1);

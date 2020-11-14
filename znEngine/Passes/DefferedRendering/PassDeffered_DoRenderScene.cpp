@@ -79,9 +79,14 @@ std::shared_ptr<IRenderPassPipelined> CPassDeffered_DoRenderScene::ConfigurePipe
 	auto vertexShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::VertexShader, "3D/Model_Deffered.hlsl", "VS_PTN");
 	vertexShader->LoadInputLayoutFromReflector();
 
+	// Per object
 	m_PerObjectShaderParameter = &vertexShader->GetShaderParameterByName("PerObject");
 	_ASSERT(m_PerObjectShaderParameter->IsValid());
 	m_PerObjectShaderParameter->SetConstantBuffer(m_PerObjectConstantBuffer);
+
+	// Bones
+	m_ShaderBonesBufferParameter = &vertexShader->GetShaderParameterByName("Bones");
+	//_ASSERT(m_ShaderBonesBufferParameter->IsValid());
 
 	auto pixelShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::PixelShader, "3D/Model_Deffered.hlsl", "PS_main");
 
@@ -114,12 +119,17 @@ std::shared_ptr<IRenderPassPipelined> CPassDeffered_DoRenderScene::ConfigurePipe
 //
 // IVisitor
 //
-void CPassDeffered_DoRenderScene::DoRenderSceneNode(const ISceneNode * node)
+void CPassDeffered_DoRenderScene::DoRenderSceneNode(const ISceneNode * SceneNode)
 {
 	PerObject perObject;
-	perObject.Model = node->GetWorldTransfom();
+	perObject.Model = SceneNode->GetWorldTransfom();
 	m_PerObjectConstantBuffer->Set(perObject);
 	m_PerObjectShaderParameter->Bind();
+
+	auto modelsComponent = SceneNode->GetComponentT<IModelsComponent3D>();
+	if (modelsComponent != nullptr)
+		if (m_ShaderBonesBufferParameter->IsValid())
+			m_ShaderBonesBufferParameter->Set(modelsComponent->GetBonesBuffer());
 }
 
 void CPassDeffered_DoRenderScene::DoRenderGeometry(const IGeometry * Geometry, const IMaterial * Material, SGeometryDrawArgs GeometryDrawArgs)
