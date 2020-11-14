@@ -49,8 +49,8 @@ glm::vec3 SM2_Part_Bone_Wrapper::GetPivotPoint() const
 glm::mat4 SM2_Part_Bone_Wrapper::CalcMatrix(const IModelsComponent3D* ModelsComponent) const
 {
 	glm::mat4 m(1.0f);
-	if (IsInterpolated(ModelsComponent->GetCurrentAnimationIndex()))
-	{
+	//if (IsInterpolated(ModelsComponent->GetCurrentAnimationIndex()))
+	//{
 		m = glm::translate(m, GetPivotPoint());
 
 		if (m_TranslateAnimated.IsUsesBySequence(ModelsComponent->GetCurrentAnimationIndex()))
@@ -69,7 +69,7 @@ glm::mat4 SM2_Part_Bone_Wrapper::CalcMatrix(const IModelsComponent3D* ModelsComp
 		}
 
 		m = glm::translate(m, GetPivotPoint() * -1.0f);
-	}
+		//}
 
 	return m;
 }

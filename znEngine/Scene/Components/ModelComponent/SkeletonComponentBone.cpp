@@ -79,7 +79,13 @@ void CSkeletonComponentBone3D::Calculate(const IModelsComponent3D* ModelsCompone
 
 	auto parentBone = m_ParentBone.lock();
 	if (parentBone)
+	{
 		std::dynamic_pointer_cast<ISkeletonComponentBoneInternal3D>(parentBone)->Calculate(ModelsComponent, Camera);
+	}
+	else
+	{
+		_ASSERT(m_Bone->GetParentIndex() == -1);
+	}
 
 	m_Matrix = m_Bone->CalcMatrix(ModelsComponent);
 	m_RotateMatrix = m_Bone->CalcRotateMatrix(ModelsComponent);
@@ -95,6 +101,8 @@ void CSkeletonComponentBone3D::Calculate(const IModelsComponent3D* ModelsCompone
 
 void CSkeletonComponentBone3D::Reset()
 {
+	m_Matrix = glm::mat4(1.0f);
+	m_RotateMatrix = glm::mat4(1.0f);
 	m_IsCalculated = false;
 }
 

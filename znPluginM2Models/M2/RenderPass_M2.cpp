@@ -53,6 +53,7 @@ void CRenderPass_M2::DoRenderM2Model(const CM2_Base_Instance* M2SceneNode, const
 		if (false == M2SceneNode->isMeshEnabled(meshPartID))
 			continue;
 
+
 		geom->UpdateGeometryProps(GetRenderEventArgs(), M2SceneNode);
 
 		m_ShaderM2GeometryParameter->SetConstantBuffer(geom->GetGeometryPropsBuffer());

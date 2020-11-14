@@ -100,6 +100,7 @@ std::vector<glm::mat4> CModelsComponent3D::CreatePose(size_t BoneStartIndex, siz
 	if (BonesCount == 0)
 		BonesCount = m_Bones.size();
 
+	_ASSERT(BoneStartIndex + BonesCount < m_Bones.size());
 	std::vector<glm::mat4> result;
 	result.reserve(BonesCount);
 	for (size_t i = BoneStartIndex; i < BoneStartIndex + BonesCount; i++)
@@ -156,7 +157,7 @@ uint32 CModelsComponent3D::GetGlobalTime() const
 //
 void CModelsComponent3D::Update(const UpdateEventArgs & e)
 {
-	/*if (false == m_Bones.empty())
+	if (false == m_Bones.empty())
 	{
 		for (const auto& b : m_Bones)
 			std::dynamic_pointer_cast<ISkeletonComponentBoneInternal3D>(b)->Reset();
@@ -166,38 +167,35 @@ void CModelsComponent3D::Update(const UpdateEventArgs & e)
 
 		//m_BonesList = CreatePose();
 		//m_StructuredBuffer->Set(m_BonesList);
-	}*/
+	}
 
-	if (m_IsStopped)
-		return;
-
-	//if (m_CurrentAnimation == nullptr)
-	//	return;
-
-	animtime += e.DeltaTimeMultiplier; // FIXME
-	m_CurrentTime = static_cast<uint32>(m_CurrentAnimation->GetFrameStart() + animtime);
-	m_GlobalTime = static_cast<uint32>(e.TotalTime);
-
-	// Animation don't ended
-	if (m_CurrentTime < m_CurrentAnimation->GetFrameEnd())
-		return;
-
-	// Ended!
-	/*if (m_CurrentAnimation->hasNextVatianton())
+	if (false == m_IsStopped)
 	{
-		m_CurrentAnimation = m_CurrentAnimation->getNextVariation();
-		m_CurrentTime = m_CurrentAnimation->getStart();
-		m_IsPlayed = false;
-		animtime = 0;
-		return;
-	}*/
+		animtime += e.DeltaTimeMultiplier; // FIXME
+		m_CurrentTime = static_cast<uint32>(m_CurrentAnimation->GetFrameStart() + animtime);
+		m_GlobalTime = static_cast<uint32>(e.TotalTime);
 
-	m_CurrentTime = m_CurrentAnimation->GetFrameEnd() - 1;
-	m_IsStopped = true;
+		// Animation don't ended
+		if (m_CurrentTime >= m_CurrentAnimation->GetFrameEnd())
+		{
+			// Ended!
+			/*if (m_CurrentAnimation->hasNextVatianton())
+			{
+				m_CurrentAnimation = m_CurrentAnimation->getNextVariation();
+				m_CurrentTime = m_CurrentAnimation->getStart();
+				m_IsPlayed = false;
+				animtime = 0;
+				return;
+			}*/
 
-	if (m_IsLoop)
-	{
-		PlayAnimation(m_CurrentAnimationIndex, true);
+			m_CurrentTime = m_CurrentAnimation->GetFrameEnd() - 1;
+			m_IsStopped = true;
+
+			if (m_IsLoop)
+			{
+				PlayAnimation(m_CurrentAnimationIndex, true);
+			}
+		}
 	}
 }
 
