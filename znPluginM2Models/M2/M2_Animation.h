@@ -11,6 +11,7 @@ public:
 	virtual ~CM2_Animation();
 
 	// IAnimation
+	uint16 GetIndexInSequences() const override;
 	const std::string& GetName() const override;
 	uint32 GetFrameStart() const override;
 	uint32 GetFrameEnd() const override;

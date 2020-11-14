@@ -62,7 +62,7 @@ void CFBXAnimation::Load(fbxsdk::FbxScene * FBXScene)
 		fbxsdk::FbxTime start = takeinfo->mLocalTimeSpan.GetStart();
 		fbxsdk::FbxTime end = takeinfo->mLocalTimeSpan.GetStop();
 
-		std::shared_ptr<CAnimation> animation = MakeShared(CAnimation, lAnimStack->GetName(), start.GetFrameCount(fbxsdk::FbxTime::eFrames60), end.GetFrameCount(fbxsdk::FbxTime::eFrames60));
+		std::shared_ptr<CAnimation> animation = MakeShared(CAnimation, i, lAnimStack->GetName(), start.GetFrameCount(fbxsdk::FbxTime::eFrames60), end.GetFrameCount(fbxsdk::FbxTime::eFrames60));
 		m_Animations.push_back(animation);
 	}
 }

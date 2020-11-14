@@ -138,7 +138,7 @@ void CModelsComponent3D::PlayAnimation(uint16 AnimationId, bool Loop)
 
 size_t CModelsComponent3D::GetCurrentAnimationIndex() const
 {
-	return m_CurrentAnimationIndex;
+	return m_CurrentAnimation->GetIndexInSequences();
 }
 
 uint32 CModelsComponent3D::GetCurrentTime_() const

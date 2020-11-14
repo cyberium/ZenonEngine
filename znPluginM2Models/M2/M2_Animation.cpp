@@ -34,9 +34,15 @@ CM2_Animation::~CM2_Animation()
 }
 
 
+
 //
 // IAnimation
 //
+uint16 CM2_Animation::GetIndexInSequences() const
+{
+	return m_SequenceIndex;
+}
+
 const std::string & CM2_Animation::GetName() const
 {
 	return m_AnimationName;

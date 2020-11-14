@@ -31,6 +31,7 @@ ZN_INTERFACE ZN_API IAnimation
 {
 	virtual ~IAnimation() {}
 
+	virtual uint16 GetIndexInSequences() const = 0;
 	virtual const std::string& GetName() const = 0;
 	virtual uint32 GetFrameStart() const = 0;
 	virtual uint32 GetFrameEnd() const = 0;

@@ -35,7 +35,7 @@ bool CM2_Base_Instance::Load()
 	GetComponentT<IModelsComponent3D>()->SetModel(getM2().GetSkin());
 	
 	
-	GetComponentT<IModelsComponent3D>()->PlayAnimation(5, true);
+	GetComponentT<IModelsComponent3D>()->PlayAnimation(4, true);
 
 	UpdateLocalTransform();
 
