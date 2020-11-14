@@ -152,6 +152,37 @@ ZN_INTERFACE ZN_API IPortalsComponent3D
 
 
 //
+// SKELETON COMPONENT 3D
+//
+ZN_INTERFACE ZN_API ISkeletonComponentBone3D
+{
+	virtual ~ISkeletonComponentBone3D() {}
+
+	// Static data
+	virtual std::string GetName() const = 0;
+	virtual const std::weak_ptr<ISkeletonComponentBone3D>& GetParentBone() const = 0;
+	virtual const std::vector<std::shared_ptr<ISkeletonComponentBone3D>>& GetChilds() const = 0;
+	virtual glm::vec3 GetPivotPoint() const = 0;
+
+	// Dynamic data
+	virtual const glm::mat4& GetMatrix() const = 0;
+	virtual const glm::mat4& GetRotateMatrix() const = 0;
+};
+
+ZN_INTERFACE ZN_API ISkeletonComponentBoneInternal3D
+{
+	virtual ~ISkeletonComponentBoneInternal3D() {}
+
+	// Static data
+	virtual void AddChildInternal(const std::shared_ptr<ISkeletonComponentBone3D>& Child) = 0;
+	virtual void SetParentAndChildsInternals(const std::vector<std::shared_ptr<ISkeletonComponentBone3D>>& Bones) = 0;
+	virtual void Calculate(const IModelsComponent3D* ModelsComponent, const ICameraComponent3D* Camera) = 0;
+	virtual void Reset() = 0;
+};
+
+
+
+//
 // MODELS COMPONENT 3D
 //
 ZN_INTERFACE ZN_API IModelsComponent3D
@@ -163,8 +194,21 @@ ZN_INTERFACE ZN_API IModelsComponent3D
 	virtual void SetModel(const std::shared_ptr<IModel>& Model) = 0;
 	virtual void ResetModel() = 0;
 	virtual std::shared_ptr<IModel> GetModel() const = 0;
+
 	virtual void SetCastShadows(bool Value) = 0;
 	virtual bool IsCastShadows() const = 0;
+
+	// Bones functional
+	virtual std::shared_ptr<ISkeletonComponentBone3D> GetBone(size_t Index) const = 0;
+	virtual const std::vector<std::shared_ptr<ISkeletonComponentBone3D>>& GetBones() const = 0;
+	virtual std::shared_ptr<IStructuredBuffer> GetBonesBuffer() const = 0;
+	virtual std::vector<glm::mat4> CreatePose(size_t BoneStartIndex = 0, size_t BonesCount = 0) const = 0;
+
+	// Animation functional
+	virtual void PlayAnimation(uint16 AnimationId, bool Loop) = 0;
+	virtual size_t GetCurrentAnimationIndex() const = 0;
+	virtual uint32 GetCurrentTime_() const = 0;
+	virtual uint32 GetGlobalTime() const = 0;
 };
 const ComponentMessageType UUID_OnModelSetted = 30;
 
@@ -293,46 +337,7 @@ ZN_INTERFACE ZN_API ICameraComponent3D
 
 
 
-//
-// SKELETON COMPONENT 3D
-//
-ZN_INTERFACE ZN_API ISkeletonComponentBone3D
-{
-	virtual ~ISkeletonComponentBone3D() {}
 
-	// Static data
-	virtual std::string GetName() const = 0;
-	virtual const std::weak_ptr<ISkeletonComponentBone3D>& GetParentBone() const = 0;
-	virtual const std::vector<std::shared_ptr<ISkeletonComponentBone3D>>& GetChilds() const = 0;
-	virtual glm::vec3 GetPivotPoint() const = 0;
-
-	// Dynamic data
-	virtual const glm::mat4& GetMatrix() const = 0;
-	virtual const glm::mat4& GetRotateMatrix() const = 0;
-};
-
-ZN_INTERFACE ZN_API ISkeletonComponentBoneInternal3D
-{
-	virtual ~ISkeletonComponentBoneInternal3D() {}
-
-	// Static data
-	virtual void AddChildInternal(const std::shared_ptr<ISkeletonComponentBone3D>& Child) = 0;
-	virtual void SetParentAndChildsInternals(const std::vector<std::shared_ptr<ISkeletonComponentBone3D>>& Bones) = 0;
-	virtual void Calculate(const ISceneNode& Instance, const ICameraComponent3D* Camera) = 0;
-	virtual void Reset() = 0;
-};
-
-ZN_INTERFACE ZN_API ISkeletonComponent3D
-{
-	ZN_OBJECTCLASS(cSceneNodeSkeletonComponent);
-
-	virtual ~ISkeletonComponent3D() {}
-
-	virtual std::shared_ptr<ISkeletonComponentBone3D> GetBone(size_t Index) const = 0;
-	virtual const std::vector<std::shared_ptr<ISkeletonComponentBone3D>>& GetBones() const = 0;
-	virtual std::shared_ptr<IStructuredBuffer> GetBonesBuffer() const = 0;
-	virtual std::vector<glm::mat4> CreatePose(size_t BoneStartIndex = 0, size_t BonesCount = 0) const = 0;
-};
 
 
 
@@ -464,29 +469,4 @@ ZN_INTERFACE ZN_API IPhysicsComponent
 	virtual ~IPhysicsComponent() {}
 
 	virtual glm::vec3 GetPhysicsPosition() const = 0;
-};
-
-
-
-
-
-
-struct SAnimation
-{
-	std::string Name;
-	uint32 FrameStart;
-	uint32 FrameEnd;
-};
-
-
-ZN_INTERFACE ZN_API ISkeletonAnimationComponent
-{
-	ZN_OBJECTCLASS(cSceneNodeAnimationComponent);
-
-	virtual ~ISkeletonAnimationComponent() {}
-
-	virtual void AddAnimation(uint16 AnimationId, const SAnimation& Animation) = 0;
-	virtual void PlayAnimation(uint16 AnimationId, bool Loop) = 0;
-	virtual uint16 getSequenceIndex() const = 0;
-	virtual uint32 getCurrentTime() const = 0;
 };

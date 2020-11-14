@@ -88,9 +88,6 @@
     <Filter Include="Scene\Components">
       <UniqueIdentifier>{766f4f63-5f82-4ace-9365-a0c2425a32d5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Scene\Components\Skeleton">
-      <UniqueIdentifier>{601eab62-08ec-461d-a53f-7a7ca845dfa0}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Resources\Shaders_D3D\3D\Editor">
       <UniqueIdentifier>{00ac689d-c860-46b3-914f-57b3ff6e03a2}</UniqueIdentifier>
     </Filter>
@@ -99,9 +96,6 @@
     </Filter>
     <Filter Include="Formats\Models\Loaders">
       <UniqueIdentifier>{dce1f577-a935-4948-bb3c-cf3bd2f2b474}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Scene\Components\Animation">
-      <UniqueIdentifier>{d9a0290d-57dd-4ca4-b9fe-98a84cef49af}</UniqueIdentifier>
     </Filter>
     <Filter Include="Formats\Textures">
       <UniqueIdentifier>{764bb252-60db-4a7e-a0eb-109925bacd6e}</UniqueIdentifier>
@@ -135,6 +129,9 @@
     </Filter>
     <Filter Include="Scene\Components\Particles">
       <UniqueIdentifier>{6ea439f2-add0-4df0-b035-164aa9c343dd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scene\Components\ModelComponent">
+      <UniqueIdentifier>{c3a1a60d-2fe3-4d69-99d4-9d66ee4b05b0}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -310,15 +307,6 @@
     <ClCompile Include="Scene\Components\LightComponent3D.cpp">
       <Filter>Scene\Components</Filter>
     </ClCompile>
-    <ClCompile Include="Scene\Components\ModelsComponent3D.cpp">
-      <Filter>Scene\Components</Filter>
-    </ClCompile>
-    <ClCompile Include="Scene\Components\Skeleton\SkeletonComponent.cpp">
-      <Filter>Scene\Components\Skeleton</Filter>
-    </ClCompile>
-    <ClCompile Include="Scene\Components\Skeleton\SkeletonComponentBone.cpp">
-      <Filter>Scene\Components\Skeleton</Filter>
-    </ClCompile>
     <ClCompile Include="Scene\Camera\ArcBallCameraController.cpp">
       <Filter>Scene\Camera</Filter>
     </ClCompile>
@@ -348,15 +336,6 @@
     </ClCompile>
     <ClCompile Include="FBX\FBXNode.cpp">
       <Filter>FBX</Filter>
-    </ClCompile>
-    <ClCompile Include="Scene\Components\Skeleton\Skeleton.cpp">
-      <Filter>Scene\Components\Skeleton</Filter>
-    </ClCompile>
-    <ClCompile Include="Scene\Components\Skeleton\SkeletonBone.cpp">
-      <Filter>Scene\Components\Skeleton</Filter>
-    </ClCompile>
-    <ClCompile Include="Scene\Components\Animation\AnimationComponent.cpp">
-      <Filter>Scene\Components\Animation</Filter>
     </ClCompile>
     <ClCompile Include="Formats\Models\ModelsFactory.cpp">
       <Filter>Formats\Models</Filter>
@@ -471,6 +450,18 @@
     </ClCompile>
     <ClCompile Include="Scene\EngineSceneExtender.cpp">
       <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\Components\ModelComponent\ModelsComponent3D.cpp">
+      <Filter>Scene\Components\ModelComponent</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\Components\ModelComponent\SkeletonBone.cpp">
+      <Filter>Scene\Components\ModelComponent</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\Components\ModelComponent\SkeletonComponentBone.cpp">
+      <Filter>Scene\Components\ModelComponent</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\Components\ModelComponent\Animation.cpp">
+      <Filter>Scene\Components\ModelComponent</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -653,15 +644,6 @@
     <ClInclude Include="Scene\Components\LightComponent3D.h">
       <Filter>Scene\Components</Filter>
     </ClInclude>
-    <ClInclude Include="Scene\Components\ModelsComponent3D.h">
-      <Filter>Scene\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="Scene\Components\Skeleton\SkeletonComponent.h">
-      <Filter>Scene\Components\Skeleton</Filter>
-    </ClInclude>
-    <ClInclude Include="Scene\Components\Skeleton\SkeletonComponentBone.h">
-      <Filter>Scene\Components\Skeleton</Filter>
-    </ClInclude>
     <ClInclude Include="Scene\Camera\ArcBallCameraController.h">
       <Filter>Scene\Camera</Filter>
     </ClInclude>
@@ -691,18 +673,6 @@
     </ClInclude>
     <ClInclude Include="FBX\FBXNode.h">
       <Filter>FBX</Filter>
-    </ClInclude>
-    <ClInclude Include="Scene\Components\Skeleton\Skeleton.h">
-      <Filter>Scene\Components\Skeleton</Filter>
-    </ClInclude>
-    <ClInclude Include="Scene\Components\Skeleton\SkeletonBone.h">
-      <Filter>Scene\Components\Skeleton</Filter>
-    </ClInclude>
-    <ClInclude Include="Scene\Components\Animation\AnimatedValue.h">
-      <Filter>Scene\Components\Animation</Filter>
-    </ClInclude>
-    <ClInclude Include="Scene\Components\Animation\AnimationComponent.h">
-      <Filter>Scene\Components\Animation</Filter>
     </ClInclude>
     <ClInclude Include="Formats\Models\ModelsFactory.h">
       <Filter>Formats\Models</Filter>
@@ -820,6 +790,21 @@
     </ClInclude>
     <ClInclude Include="Scene\EngineSceneExtender.h">
       <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\Components\ModelComponent\AnimatedValue.h">
+      <Filter>Scene\Components\ModelComponent</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\Components\ModelComponent\ModelsComponent3D.h">
+      <Filter>Scene\Components\ModelComponent</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\Components\ModelComponent\SkeletonBone.h">
+      <Filter>Scene\Components\ModelComponent</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\Components\ModelComponent\SkeletonComponentBone.h">
+      <Filter>Scene\Components\ModelComponent</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\Components\ModelComponent\Animation.h">
+      <Filter>Scene\Components\ModelComponent</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

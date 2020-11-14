@@ -17,7 +17,6 @@
     <ClCompile Include="EngineExtenders\M2ModelsLoader.cpp" />
     <ClCompile Include="M2\M2.cpp" />
     <ClCompile Include="M2\M2_Animation.cpp" />
-    <ClCompile Include="M2\M2_Animator.cpp" />
     <ClCompile Include="M2\M2_Base_Instance.cpp" />
     <ClCompile Include="M2\M2_Comp_Materials.cpp" />
     <ClCompile Include="M2\M2_Comp_Miscellaneous.cpp" />
@@ -35,7 +34,6 @@
     <ClCompile Include="M2\M2_Part_TextureTransform.cpp" />
     <ClCompile Include="M2\M2_Part_TextureWeight.cpp" />
     <ClCompile Include="M2\M2_RibbonEmitters.cpp" />
-    <ClCompile Include="M2\M2_SkeletonComponent.cpp" />
     <ClCompile Include="M2\M2_Skin.cpp" />
     <ClCompile Include="M2\M2_SkinSection.cpp" />
     <ClCompile Include="M2\M2_Skin_Batch.cpp" />
@@ -61,7 +59,6 @@
     <ClInclude Include="M2\M2_Animated.h" />
     <ClInclude Include="M2\M2_AnimatedConverters.h" />
     <ClInclude Include="M2\M2_Animation.h" />
-    <ClInclude Include="M2\M2_Animator.h" />
     <ClInclude Include="M2\M2_Base_Instance.h" />
     <ClInclude Include="M2\M2_CommonTypes.h" />
     <ClInclude Include="M2\M2_Comp_Materials.h" />
@@ -81,7 +78,6 @@
     <ClInclude Include="M2\M2_Part_TextureTransform.h" />
     <ClInclude Include="M2\M2_Part_TextureWeight.h" />
     <ClInclude Include="M2\M2_RibbonEmitters.h" />
-    <ClInclude Include="M2\M2_SkeletonComponent.h" />
     <ClInclude Include="M2\M2_Skin.h" />
     <ClInclude Include="M2\M2_SkinSection.h" />
     <ClInclude Include="M2\M2_SkinTypes.h" />

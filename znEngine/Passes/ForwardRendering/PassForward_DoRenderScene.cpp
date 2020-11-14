@@ -68,10 +68,10 @@ EVisitResult CPassForward_DoRenderScene::Visit(const ISceneNode * SceneNode)
 {
 	if (SceneNode->GetClass() == cSceneNode3D || SceneNode->GetClass() == cSceneNodeRTSUnit || SceneNode->GetClass() == cSceneNodeRTSBullet)
 	{
-		auto skeletonComponent = SceneNode->GetComponentT<ISkeletonComponent3D>();
-		if (skeletonComponent != nullptr)
+		auto modelsComponent = SceneNode->GetComponentT<IModelsComponent3D>();
+		if (modelsComponent != nullptr)
 			if (m_ShaderBonesBufferParameter->IsValid())
-				m_ShaderBonesBufferParameter->Set(skeletonComponent->GetBonesBuffer());
+				m_ShaderBonesBufferParameter->Set(modelsComponent->GetBonesBuffer());
 
 		return Base3DPass::Visit(SceneNode);
 	}

@@ -198,6 +198,7 @@
     <ClInclude Include="..\shared\Interfaces\ModelsManager.h" />
     <ClInclude Include="..\shared\Interfaces\Render\IGeometry.h" />
     <ClInclude Include="..\shared\Interfaces\Render\IRenderTechnique.h" />
+    <ClInclude Include="..\shared\Interfaces\Render\ISkeleton.h" />
     <ClInclude Include="..\shared\Interfaces\Scene\ISceneNode.h" />
     <ClInclude Include="..\shared\Interfaces\Scene\IUIControl.h" />
     <ClInclude Include="..\shared\Interfaces\Scene\Types\Light.h" />

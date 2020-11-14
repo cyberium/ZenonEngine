@@ -50,7 +50,7 @@ const InputSemantic& ShaderInputLayoutDX11::GetSemantic(const BufferBinding & bi
 UINT ShaderInputLayoutDX11::GetSemanticSlot(const BufferBinding & binding) const
 {
 	for (auto& it : m_InputSemanticsDX11)
-		if ((::strcmp(it.second.Name.c_str(), binding.Name.c_str()) == 0) && it.second.Index == binding.Index)
+		if ((::_stricmp(it.second.Name.c_str(), binding.Name.c_str()) == 0) && it.second.Index == binding.Index)
 			return it.first;
 	return UINT_MAX;
 }

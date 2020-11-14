@@ -116,14 +116,30 @@ void CFBXSkeleton::Load(fbxsdk::FbxScene* FBXScene)
 	}
 }
 
-const CSkeleton& CFBXSkeleton::GetSkeleton() const
+
+
+//
+// IFBXSkeleton
+//
+size_t CFBXSkeleton::GetBoneIndexByName(const std::string & BoneName) const
 {
-	return m_Skeleton;
+	for (size_t i = 0; i < m_Bones.size(); ++i)
+		if (::_stricmp(m_Bones[i]->GetName().c_str(), BoneName.c_str()) == 0)
+			return i;
+	throw CException("Bone '%s' not found.", BoneName.c_str());
 }
 
-CSkeleton & CFBXSkeleton::GetSkeletonEditable()
+std::shared_ptr<ISkeletonBone> CFBXSkeleton::GetBoneByName(const std::string& BoneName) const
 {
-	return m_Skeleton;
+	for (size_t i = 0; i < m_Bones.size(); ++i)
+		if (::_stricmp(m_Bones[i]->GetName().c_str(), BoneName.c_str()) == 0)
+			return m_Bones[i];
+	throw CException("Bone '%s' not found.", BoneName.c_str());
+}
+
+const std::vector<std::shared_ptr<ISkeletonBone>>& CFBXSkeleton::GetBones() const
+{
+	return m_Bones;
 }
 
 
@@ -151,21 +167,21 @@ void CFBXSkeleton::ProcessSkeletonHeirarchyre(fbxsdk::FbxNode * node, int depth,
 
 
 
-		CSkeletonBone bone(node->GetName(), parentindex);
-		bone.GlobalTransform = ToGLMMat4(node->EvaluateGlobalTransform());
+		std::shared_ptr<CSkeletonBone> bone = MakeShared(CSkeletonBone, node->GetName(), parentindex);
+		bone->GlobalTransform = ToGLMMat4(node->EvaluateGlobalTransform());
 
 
 		fbxsdk::FbxTime keyTime;
 		keyTime.SetFrame(24);
 
-		bone.LocalTransform = localTransform;//ToGLMMat4(node->EvaluateLocalTransform());
-		m_Skeleton.AddBone(bone);
+		bone->LocalTransform = localTransform;//ToGLMMat4(node->EvaluateLocalTransform());
+		m_Bones.push_back(bone);
 
 		isFinded = true;
 	}
 
 	for (int i = 0; i < node->GetChildCount(); i++)
 	{
-		ProcessSkeletonHeirarchyre(node->GetChild(i), depth + 1, m_Skeleton.GetBones().size(), isFinded ? index : parentindex);
+		ProcessSkeletonHeirarchyre(node->GetChild(i), depth + 1, m_Bones.size(), isFinded ? index : parentindex);
 	}
 }

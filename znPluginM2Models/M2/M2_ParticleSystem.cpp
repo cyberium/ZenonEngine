@@ -134,8 +134,8 @@ void SM2_ParticleSystem_Wrapper::update(const CM2_Base_Instance* M2Instance, con
 	double deltaTime = e.DeltaTime / 1000.0;
 	uint32 globalTime = static_cast<uint32>(e.TotalTime);
 
-	uint32 sequence = M2Instance->getAnimator()->getSequenceIndex();
-	uint32 sequenceTime = M2Instance->getAnimator()->getCurrentTime();
+	uint32 sequence = M2Instance->GetModelsComponent()->GetCurrentAnimationIndex();
+	uint32 sequenceTime = M2Instance->GetModelsComponent()->GetCurrentTime_();
 
 	float grav = gravity.GetValue(sequence, sequenceTime, m_M2Object.getSkeleton().getGlobalLoops(), globalTime);
 	float deaccel = zSource.GetValue(sequence, sequenceTime, m_M2Object.getSkeleton().getGlobalLoops(), globalTime);
@@ -227,8 +227,8 @@ void SM2_ParticleSystem_Wrapper::CreateAndDeleteParticles(const CM2_Base_Instanc
 	double deltaTime = e.DeltaTime / 2000.0;
 	uint32 globalTime = static_cast<uint32>(e.TotalTime);
 	
-	uint32 sequence = M2Instance->getAnimator()->getSequenceIndex();
-	uint32 sequenceTime = M2Instance->getAnimator()->getCurrentTime();
+	uint32 sequence = M2Instance->GetModelsComponent()->GetCurrentAnimationIndex();
+	uint32 sequenceTime = M2Instance->GetModelsComponent()->GetCurrentTime_();
 
 	float frate = emissionRate.GetValue(sequence, sequenceTime, m_M2Object.getSkeleton().getGlobalLoops(), globalTime);
 	float flife = lifespan.GetValue(sequence, sequenceTime, m_M2Object.getSkeleton().getGlobalLoops(), globalTime);
@@ -320,7 +320,7 @@ CM2_ParticleObject SM2_ParticleSystem_Wrapper::DefaultGenerator_New(const CM2_Ba
 {
 	std::shared_ptr<ISkeletonComponentBone3D> bone;
 	if (GetBone() != -1)
-		bone = M2Instance->getSkeletonComponent()->GetBone(GetBone());
+		bone = M2Instance->GetModelsComponent()->GetBone(GetBone());
 
 	CM2_ParticleObject p;
 	p.pos = GetPosition();
@@ -353,7 +353,7 @@ CM2_ParticleObject SM2_ParticleSystem_Wrapper::PlaneGenerator_New(const CM2_Base
 {
 	std::shared_ptr<ISkeletonComponentBone3D> bone;
 	if (GetBone() != -1)
-		bone = M2Instance->getSkeletonComponent()->GetBone(GetBone());
+		bone = M2Instance->GetModelsComponent()->GetBone(GetBone());
 
 	CM2_ParticleObject p;
 
@@ -390,7 +390,7 @@ CM2_ParticleObject SM2_ParticleSystem_Wrapper::SphereGenerator_New(const CM2_Bas
 {
 	std::shared_ptr<ISkeletonComponentBone3D> bone;
 	if (GetBone() != -1)
-		bone = M2Instance->getSkeletonComponent()->GetBone(GetBone());
+		bone = M2Instance->GetModelsComponent()->GetBone(GetBone());
 
 	CM2_ParticleObject p;
 	glm::vec3 dir;

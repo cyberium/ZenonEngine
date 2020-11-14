@@ -149,7 +149,7 @@ public:
 		}
 	}
 
-	inline bool IsUsesBySequence(uint16 SequenceIndex) const
+	virtual bool IsUsesBySequence(uint16 SequenceIndex) const
 	{
 		if (IsStaticValue())
 			return true;
@@ -165,7 +165,7 @@ public:
 		return false;
 	}
 
-	inline T GetValue(uint16 SequenceIndex, uint32 time) const
+	virtual T GetValue(uint16 SequenceIndex, uint32 time) const
 	{
 		_ASSERT(IsUsesBySequence(SequenceIndex));
 

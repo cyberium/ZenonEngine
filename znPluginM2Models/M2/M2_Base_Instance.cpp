@@ -11,7 +11,6 @@ CM2_Base_Instance::CM2_Base_Instance(IScene& Scene, const std::shared_ptr<CM2>& 
 	, m_AttachmentType(M2_AttachmentType::NotAttached)
 	, m_Color(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f))
 	, m_Alpha(1.0f)
-	, m_Animator(nullptr)
 {
 }
 
@@ -30,19 +29,13 @@ CM2_Base_Instance::~CM2_Base_Instance()
 //
 bool CM2_Base_Instance::Load()
 {
-	if (getM2().isAnimated())
-		m_Animator = std::make_shared<CM2_Animator>(GetBaseManager(), getM2());
-
-	if (getM2().getSkeleton().hasBones())
-	{
-		m_SkeletonComponent = std::make_shared<CM2SkeletonComponent3D>(*this);
-		AddComponent(cSceneNodeSkeletonComponent, m_SkeletonComponent);
-	}
-
 	m_ParticleComponent = std::make_shared<CM2ParticlesComponent3D>(*this);
 	AddComponent(cSceneNodeParticleComponent, m_ParticleComponent);
 
 	GetComponentT<IModelsComponent3D>()->SetModel(getM2().GetSkin());
+	
+	
+	GetComponentT<IModelsComponent3D>()->PlayAnimation(4, true);
 
 	UpdateLocalTransform();
 
@@ -117,13 +110,7 @@ void CM2_Base_Instance::Update(const UpdateEventArgs & e)
 	//if (GetComponentT<IColliderComponent3D>()->IsCulled(e.Camera))
 	//	return;
 
-	if (m_Animator)
-		m_Animator->Update(e.TotalTime, e.DeltaTime);
-
-	if (m_ParticleComponent)
-		m_ParticleComponent->Update(e);
-
-
+	__super::Update(e);
 }
 
 void CM2_Base_Instance::Accept(IVisitor* visitor)
@@ -147,7 +134,7 @@ glm::mat4 CM2_Base_Instance::CalculateLocalTransform() const
 
 			uint16 boneIndex = parentM2Instance->getM2().getMiscellaneous().getAttachment(m_AttachmentType).GetBoneIndex();
 
-			const auto& bone = parentM2Instance->getSkeletonComponent()->GetBone(boneIndex);
+			const auto& bone = parentM2Instance->GetModelsComponent()->GetBone(boneIndex);
 			glm::mat4 relMatrix = glm::translate(bone->GetPivotPoint());
 
 			return bone->GetMatrix() * relMatrix;

@@ -47,6 +47,57 @@ const std::vector<ModelProxie::SConnection>& ModelProxie::GetConnections() const
 	return m_Model->GetConnections();
 }
 
+
+//
+// Skeleton
+//
+void ModelProxie::ApplyOtherSkeleton(std::shared_ptr<IModel> other)
+{
+	m_Model->ApplyOtherSkeleton(other);
+}
+
+void ModelProxie::AddBone(std::shared_ptr<ISkeletonBone> Bone)
+{
+	m_Model->AddBone(Bone);
+}
+
+std::shared_ptr<ISkeletonBone> ModelProxie::GetBone(size_t Index) const
+{
+	return m_Model->GetBone(Index);
+}
+
+size_t ModelProxie::GetBoneIndexByName(const std::string& BoneName) const
+{
+	return m_Model->GetBoneIndexByName(BoneName);
+}
+
+std::shared_ptr<ISkeletonBone> ModelProxie::GetBoneByName(const std::string& BoneName) const
+{
+	return m_Model->GetBoneByName(BoneName);
+}
+
+const std::vector<std::shared_ptr<ISkeletonBone>>& ModelProxie::GetBones() const
+{
+	return m_Model->GetBones();
+}
+
+
+
+//
+// Animation
+//
+void ModelProxie::AddAnimation(uint16 AnimationId, const std::shared_ptr<IAnimation>& Animation)
+{
+	m_Model->AddAnimation(AnimationId, Animation);
+}
+
+const Animations_t& ModelProxie::GetAnimations() const
+{
+	return m_Model->GetAnimations();
+}
+
+
+
 bool ModelProxie::Render() const
 {
 	return m_Model->Render();

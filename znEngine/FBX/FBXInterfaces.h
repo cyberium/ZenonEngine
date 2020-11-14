@@ -3,14 +3,12 @@
 ZN_INTERFACE IFBXScene;
 ZN_INTERFACE IFBXNode;
 
-#include "Scene/Components/Skeleton/Skeleton.h"
-
 
 ZN_INTERFACE ZN_API IFBXAnimation
 {
 	virtual ~IFBXAnimation() {}
 
-	virtual const std::vector<SAnimation>& GetAnimations() const = 0;
+	virtual const std::vector<std::shared_ptr<IAnimation>>& GetAnimations() const = 0;
 };
 
 ZN_INTERFACE ZN_API IFBXLight
@@ -39,8 +37,9 @@ ZN_INTERFACE ZN_API IFBXSkeleton
 {
 	virtual ~IFBXSkeleton() {}
 
-	virtual const CSkeleton& GetSkeleton() const = 0;
-	virtual CSkeleton& GetSkeletonEditable () = 0;
+	virtual size_t GetBoneIndexByName(const std::string& BoneName) const = 0;
+	virtual std::shared_ptr<ISkeletonBone> GetBoneByName(const std::string& BoneName) const = 0;
+	virtual const std::vector<std::shared_ptr<ISkeletonBone>>& GetBones() const = 0;
 };
 
 ZN_INTERFACE ZN_API IFBXNode

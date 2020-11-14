@@ -8,6 +8,8 @@
 #include "M2_Skin.h"
 
 // Additional
+#include "M2_Part_Bone.h"
+#include "M2_Animation.h"
 #include "M2_Part_Material.h"
 
 CM2_Skin::CM2_Skin(IBaseManager& BaseManager, IRenderDevice& RenderDevice, const CM2& M2Model, const SM2_SkinProfile& M2SkinProfile)
@@ -16,7 +18,9 @@ CM2_Skin::CM2_Skin(IBaseManager& BaseManager, IRenderDevice& RenderDevice, const
 	, m_RenderDevice(RenderDevice)
 	, m_M2Model(M2Model)
 	, m_M2SkinProfile(M2SkinProfile)
-{}
+{
+	
+}
 
 CM2_Skin::~CM2_Skin()
 {
@@ -79,8 +83,10 @@ void CM2_Skin::Load(const SM2_Header& M2Header, const std::shared_ptr<IFile>& Fi
 	//Log::Warn("t_bonesMax = %d", t_bonesMax);
 
 
-	// BATCHES
 
+	//
+	// BATCHES
+	//
 
 	const SM2_SkinBatch* skinBatchesProtos = (const SM2_SkinBatch*)(File->getData() + m_M2SkinProfile.batches.offset);
 	for (uint32 i = 0; i < m_M2SkinProfile.batches.size; i++)
@@ -102,6 +108,32 @@ void CM2_Skin::Load(const SM2_Header& M2Header, const std::shared_ptr<IFile>& Fi
 			return left->m_PriorityPlan < right->m_PriorityPlan;
 		});
 	}
+
+
+
+	//
+	// ANIMATIONS
+	//
+
+	const auto& sequences = m_M2Model.getSkeleton().GetSequences();
+	for (uint16 j = 0; j < sequences.size(); j++)
+	{
+		const auto& sequence = sequences[j];
+		if (sequence.variationIndex == 0)
+		{
+			const DBC_AnimationDataRecord* dbcAnimationRecord = m_BaseManager.GetManager<CDBCStorage>()->DBC_AnimationData()[sequence.__animID];
+			_ASSERT(dbcAnimationRecord != nullptr);
+
+			AddAnimation(sequence.__animID, std::make_shared<CM2_Animation>(m_M2Model, sequence, dbcAnimationRecord->Get_Name(), j));
+		}
+	}
+
+
+	//
+	// BONES
+	//
+	for (const auto& m2Bone : m_M2Model.getSkeleton().GetBones())
+		AddBone(m2Bone);
 }
 
 

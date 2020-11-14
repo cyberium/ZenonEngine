@@ -3,8 +3,7 @@
 #ifdef ZN_FBX_SDK_ENABLE
 #include <fbxsdk.h>
 
-#include "Scene/Components/Animation/AnimationComponent.h"
-#include "Scene/Components/Animation/AnimatedValue.h"
+#include "Scene/Components/ModelComponent/AnimatedValue.h"
 
 
 class ZN_API CFBXAnimation
@@ -17,7 +16,7 @@ public:
 	void Load(fbxsdk::FbxScene* FBXScene);
 
 	// IFBXAnimation
-	const std::vector<SAnimation>& GetAnimations() const override;
+	const std::vector<std::shared_ptr<IAnimation>>& GetAnimations() const override;
 
 private:
 	void DisplayAnimationRec(fbxsdk::FbxAnimLayer* pAnimLayer, fbxsdk::FbxNode* pNode, size_t AnimationIndex);
@@ -25,7 +24,7 @@ private:
 	void DisplayCurveKeys(fbxsdk::FbxNode* pNode, fbxsdk::FbxAnimCurve* pCurve, CznAnimatedValue<float>& valueInt, size_t AnimationIndex);
 
 private:
-	std::vector<SAnimation> m_Animations;
+	std::vector<std::shared_ptr<IAnimation>> m_Animations;
 	const IBaseManager& m_BaseManager;
 	const IFBXScene& m_FBXScene;
 };

@@ -181,7 +181,7 @@ class Rect;
 #include "Interfaces/Render/ICamera.h"
 #include "Interfaces/Render/IRenderPass.h"
 #include "Interfaces/Render/IRenderTechnique.h"
-
+#include "Interfaces/Render/ISkeleton.h"
 
 
 //---------------------------------------------------------//

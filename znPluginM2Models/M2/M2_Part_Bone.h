@@ -82,14 +82,21 @@ const char* const M2_GameBoneTypeNames[] =
 };
 
 class SM2_Part_Bone_Wrapper
+	: public ISkeletonBone
 {
 public:
 	SM2_Part_Bone_Wrapper(const CM2& M2Object, const std::shared_ptr<IFile>& File, const SM2_Bone& M2Bone);
 	virtual ~SM2_Part_Bone_Wrapper();
 
-	glm::mat4 calcMatrix(const CM2_Base_Instance& M2Instance, uint32 globalTime) const;
-	glm::mat4 calcRotationMatrix(const CM2_Base_Instance& M2Instance, uint32 globalTime) const;
-	glm::mat4 calcBillboardMatrix(const glm::mat4& CalculatedMatrix, const CM2_Base_Instance& M2Instance, const ICameraComponent3D* Camera) const;
+	// ISkeletonBone
+	void MergeWithOther(std::shared_ptr<ISkeletonBone> OtherBone) override;
+	std::string GetName() const override;
+	int32 GetParentIndex() const override;
+	glm::vec3 GetPivotPoint() const override;
+	glm::mat4 CalcMatrix(const IModelsComponent3D* ModelsComponent) const override;
+	glm::mat4 CalcRotateMatrix(const IModelsComponent3D* ModelsComponent) const override;
+
+	glm::mat4 calcBillboardMatrix(const glm::mat4& NodeWorldTransform, const glm::mat4& FinalBoneMatrix, const IModelsComponent3D* ModelsComponent, const ICameraComponent3D* Camera) const;
 
 	bool IsInterpolated(uint16 anim) const
 	{
@@ -110,7 +117,6 @@ public:
 	int32                               getGameBoneID() const { return m_M2Bone.key_bone_id; }
 	int16                               getParentBoneID() const { return m_M2Bone.parent_bone; }
 	uint16                              getSubmeshID() const { return m_M2Bone.submesh_id; }
-	glm::vec3                           getPivot() const { return Fix_XZmY(m_M2Bone.pivot); }
 
 private:
 	M2_Animated<glm::vec3>              m_TranslateAnimated;

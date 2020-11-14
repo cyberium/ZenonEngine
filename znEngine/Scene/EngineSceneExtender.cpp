@@ -6,9 +6,8 @@
 #include "Scene/Components/CameraComponent3D.h"
 #include "Scene/Components/ColliderComponent3D.h"
 #include "Scene/Components/LightComponent3D.h"
-#include "Scene/Components/ModelsComponent3D.h"
+#include "Scene/Components/ModelComponent/ModelsComponent3D.h"
 #include "Scene/Components/ReactPhysicsComponent.h"
-#include "Scene/Components/Skeleton/SkeletonComponent.h"
 #include "Scene/Components/Particles/ParticlesComponent.h"
 
 #include "Scene/Nodes/UIText.h"

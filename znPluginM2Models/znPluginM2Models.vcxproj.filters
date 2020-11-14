@@ -22,53 +22,11 @@
     <ClCompile Include="M2\M2_Animation.cpp">
       <Filter>M2\Animations</Filter>
     </ClCompile>
-    <ClCompile Include="M2\M2_Comp_Materials.cpp">
-      <Filter>M2\Parts</Filter>
-    </ClCompile>
-    <ClCompile Include="M2\M2_Comp_Miscellaneous.cpp">
-      <Filter>M2\Parts</Filter>
-    </ClCompile>
-    <ClCompile Include="M2\M2_Comp_Skeleton.cpp">
-      <Filter>M2\Parts</Filter>
-    </ClCompile>
-    <ClCompile Include="M2\M2_Part_Attachment.cpp">
-      <Filter>M2\Parts</Filter>
-    </ClCompile>
-    <ClCompile Include="M2\M2_Part_Bone.cpp">
-      <Filter>M2\Parts</Filter>
-    </ClCompile>
-    <ClCompile Include="M2\M2_Part_Camera.cpp">
-      <Filter>M2\Parts</Filter>
-    </ClCompile>
-    <ClCompile Include="M2\M2_Part_Color.cpp">
-      <Filter>M2\Parts</Filter>
-    </ClCompile>
-    <ClCompile Include="M2\M2_Part_Event.cpp">
-      <Filter>M2\Parts</Filter>
-    </ClCompile>
-    <ClCompile Include="M2\M2_Part_Light.cpp">
-      <Filter>M2\Parts</Filter>
-    </ClCompile>
-    <ClCompile Include="M2\M2_Part_Material.cpp">
-      <Filter>M2\Parts</Filter>
-    </ClCompile>
-    <ClCompile Include="M2\M2_Part_Texture.cpp">
-      <Filter>M2\Parts</Filter>
-    </ClCompile>
-    <ClCompile Include="M2\M2_Part_TextureTransform.cpp">
-      <Filter>M2\Parts</Filter>
-    </ClCompile>
-    <ClCompile Include="M2\M2_Part_TextureWeight.cpp">
-      <Filter>M2\Parts</Filter>
-    </ClCompile>
     <ClCompile Include="M2\M2_ParticleSystem.cpp">
       <Filter>M2\Parts</Filter>
     </ClCompile>
     <ClCompile Include="M2\M2_RibbonEmitters.cpp">
       <Filter>M2\Parts</Filter>
-    </ClCompile>
-    <ClCompile Include="M2\M2_SkeletonComponent.cpp">
-      <Filter>M2\SceneNode &amp; Components</Filter>
     </ClCompile>
     <ClCompile Include="M2\M2_Base_Instance.cpp">
       <Filter>M2\SceneNode &amp; Components</Filter>
@@ -81,9 +39,6 @@
     </ClCompile>
     <ClCompile Include="M2\M2_Skin.cpp">
       <Filter>M2\Skins</Filter>
-    </ClCompile>
-    <ClCompile Include="M2\M2_Animator.cpp">
-      <Filter>M2\Types</Filter>
     </ClCompile>
     <ClCompile Include="M2\M2_ParticlesComponent.cpp">
       <Filter>M2\SceneNode &amp; Components</Filter>
@@ -101,6 +56,45 @@
       <Filter>DBC</Filter>
     </ClCompile>
     <ClCompile Include="WorldObjectsCreator.cpp" />
+    <ClCompile Include="M2\M2_Comp_Skeleton.cpp">
+      <Filter>M2\Parts\Skeleton</Filter>
+    </ClCompile>
+    <ClCompile Include="M2\M2_Part_Bone.cpp">
+      <Filter>M2\Parts\Skeleton</Filter>
+    </ClCompile>
+    <ClCompile Include="M2\M2_Comp_Materials.cpp">
+      <Filter>M2\Parts\Material</Filter>
+    </ClCompile>
+    <ClCompile Include="M2\M2_Part_Material.cpp">
+      <Filter>M2\Parts\Material</Filter>
+    </ClCompile>
+    <ClCompile Include="M2\M2_Part_Texture.cpp">
+      <Filter>M2\Parts\Material</Filter>
+    </ClCompile>
+    <ClCompile Include="M2\M2_Part_Color.cpp">
+      <Filter>M2\Parts\Material</Filter>
+    </ClCompile>
+    <ClCompile Include="M2\M2_Part_TextureWeight.cpp">
+      <Filter>M2\Parts\Material</Filter>
+    </ClCompile>
+    <ClCompile Include="M2\M2_Part_TextureTransform.cpp">
+      <Filter>M2\Parts\Material</Filter>
+    </ClCompile>
+    <ClCompile Include="M2\M2_Comp_Miscellaneous.cpp">
+      <Filter>M2\Parts\Miscellaneous</Filter>
+    </ClCompile>
+    <ClCompile Include="M2\M2_Part_Attachment.cpp">
+      <Filter>M2\Parts\Miscellaneous</Filter>
+    </ClCompile>
+    <ClCompile Include="M2\M2_Part_Camera.cpp">
+      <Filter>M2\Parts\Miscellaneous</Filter>
+    </ClCompile>
+    <ClCompile Include="M2\M2_Part_Event.cpp">
+      <Filter>M2\Parts\Miscellaneous</Filter>
+    </ClCompile>
+    <ClCompile Include="M2\M2_Part_Light.cpp">
+      <Filter>M2\Parts\Miscellaneous</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="common.h">
@@ -129,53 +123,11 @@
     <ClInclude Include="M2\M2_Animation.h">
       <Filter>M2\Animations</Filter>
     </ClInclude>
-    <ClInclude Include="M2\M2_Comp_Skeleton.h">
-      <Filter>M2\Parts</Filter>
-    </ClInclude>
-    <ClInclude Include="M2\M2_Comp_Materials.h">
-      <Filter>M2\Parts</Filter>
-    </ClInclude>
-    <ClInclude Include="M2\M2_Comp_Miscellaneous.h">
-      <Filter>M2\Parts</Filter>
-    </ClInclude>
-    <ClInclude Include="M2\M2_Part_Attachment.h">
-      <Filter>M2\Parts</Filter>
-    </ClInclude>
-    <ClInclude Include="M2\M2_Part_Bone.h">
-      <Filter>M2\Parts</Filter>
-    </ClInclude>
-    <ClInclude Include="M2\M2_Part_Camera.h">
-      <Filter>M2\Parts</Filter>
-    </ClInclude>
-    <ClInclude Include="M2\M2_Part_Color.h">
-      <Filter>M2\Parts</Filter>
-    </ClInclude>
-    <ClInclude Include="M2\M2_Part_Event.h">
-      <Filter>M2\Parts</Filter>
-    </ClInclude>
-    <ClInclude Include="M2\M2_Part_Light.h">
-      <Filter>M2\Parts</Filter>
-    </ClInclude>
-    <ClInclude Include="M2\M2_Part_Material.h">
-      <Filter>M2\Parts</Filter>
-    </ClInclude>
-    <ClInclude Include="M2\M2_Part_Texture.h">
-      <Filter>M2\Parts</Filter>
-    </ClInclude>
-    <ClInclude Include="M2\M2_Part_TextureTransform.h">
-      <Filter>M2\Parts</Filter>
-    </ClInclude>
-    <ClInclude Include="M2\M2_Part_TextureWeight.h">
-      <Filter>M2\Parts</Filter>
-    </ClInclude>
     <ClInclude Include="M2\M2_ParticleSystem.h">
       <Filter>M2\Parts</Filter>
     </ClInclude>
     <ClInclude Include="M2\M2_RibbonEmitters.h">
       <Filter>M2\Parts</Filter>
-    </ClInclude>
-    <ClInclude Include="M2\M2_SkeletonComponent.h">
-      <Filter>M2\SceneNode &amp; Components</Filter>
     </ClInclude>
     <ClInclude Include="M2\M2_Base_Instance.h">
       <Filter>M2\SceneNode &amp; Components</Filter>
@@ -199,9 +151,6 @@
       <Filter>M2\Types</Filter>
     </ClInclude>
     <ClInclude Include="M2\M2_CommonTypes.h">
-      <Filter>M2\Types</Filter>
-    </ClInclude>
-    <ClInclude Include="M2\M2_Animator.h">
       <Filter>M2\Types</Filter>
     </ClInclude>
     <ClInclude Include="M2\M2_AnimatedConverters.h">
@@ -232,6 +181,45 @@
       <Filter>DBC\Tables</Filter>
     </ClInclude>
     <ClInclude Include="WorldObjectsCreator.h" />
+    <ClInclude Include="M2\M2_Comp_Skeleton.h">
+      <Filter>M2\Parts\Skeleton</Filter>
+    </ClInclude>
+    <ClInclude Include="M2\M2_Part_Bone.h">
+      <Filter>M2\Parts\Skeleton</Filter>
+    </ClInclude>
+    <ClInclude Include="M2\M2_Comp_Materials.h">
+      <Filter>M2\Parts\Material</Filter>
+    </ClInclude>
+    <ClInclude Include="M2\M2_Part_Material.h">
+      <Filter>M2\Parts\Material</Filter>
+    </ClInclude>
+    <ClInclude Include="M2\M2_Part_Texture.h">
+      <Filter>M2\Parts\Material</Filter>
+    </ClInclude>
+    <ClInclude Include="M2\M2_Part_Color.h">
+      <Filter>M2\Parts\Material</Filter>
+    </ClInclude>
+    <ClInclude Include="M2\M2_Part_TextureWeight.h">
+      <Filter>M2\Parts\Material</Filter>
+    </ClInclude>
+    <ClInclude Include="M2\M2_Part_TextureTransform.h">
+      <Filter>M2\Parts\Material</Filter>
+    </ClInclude>
+    <ClInclude Include="M2\M2_Comp_Miscellaneous.h">
+      <Filter>M2\Parts\Miscellaneous</Filter>
+    </ClInclude>
+    <ClInclude Include="M2\M2_Part_Attachment.h">
+      <Filter>M2\Parts\Miscellaneous</Filter>
+    </ClInclude>
+    <ClInclude Include="M2\M2_Part_Camera.h">
+      <Filter>M2\Parts\Miscellaneous</Filter>
+    </ClInclude>
+    <ClInclude Include="M2\M2_Part_Event.h">
+      <Filter>M2\Parts\Miscellaneous</Filter>
+    </ClInclude>
+    <ClInclude Include="M2\M2_Part_Light.h">
+      <Filter>M2\Parts\Miscellaneous</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Common">
@@ -270,11 +258,15 @@
     <Filter Include="DBC\Tables">
       <UniqueIdentifier>{d8203cd5-e3eb-403d-a6fb-cc8b8f8a8bbf}</UniqueIdentifier>
     </Filter>
-  </ItemGroup>
-  <ItemGroup>
-    <FxCompile Include="Resources\shaders\M2.hlsl">
-      <Filter>Resources\shaders</Filter>
-    </FxCompile>
+    <Filter Include="M2\Parts\Skeleton">
+      <UniqueIdentifier>{7b351389-7915-46b1-a816-0890dcc5b66c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="M2\Parts\Material">
+      <UniqueIdentifier>{ffaa792b-fcf2-4de9-a510-69e765210739}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="M2\Parts\Miscellaneous">
+      <UniqueIdentifier>{80e897d1-a041-4841-8c6c-6064c3a3352f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="znPluginM2Models.rc">
@@ -285,8 +277,9 @@
     <None Include="DBC\DBC__File.inl">
       <Filter>DBC</Filter>
     </None>
-    <None Include="Resources\AnimationData.dbc">
-      <Filter>Resources</Filter>
-    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Resources\shaders\M2.hlsl" />
+    <Text Include="Resources\AnimationData.dbc" />
   </ItemGroup>
 </Project>

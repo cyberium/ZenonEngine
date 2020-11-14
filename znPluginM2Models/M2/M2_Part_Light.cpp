@@ -47,22 +47,22 @@ SLight SM2_Part_Light_Wrapper::GetLight(const CM2_Base_Instance * M2Instance, ui
 	glm::vec4 diffuse = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
 	float attenStart = 1.0f, attenEnd = 150.0f;
 
-	if (const auto& animator = M2Instance->getAnimator())
+	if (const auto& animator = M2Instance->GetModelsComponent())
 	{
-		//if (ambColor.IsUsesBySequence(animator->getSequenceIndex()))
-		//	ambient.rgb = ambColor.GetValue(animator->getSequenceIndex(), animator->getCurrentTime(), m_M2Object.getSkeleton().getGlobalLoops(), globalTime);
-		//if (ambIntensity.IsUsesBySequence(animator->getSequenceIndex()))
-		//	ambient.a = ambIntensity.GetValue(animator->getSequenceIndex(), animator->getCurrentTime(), m_M2Object.getSkeleton().getGlobalLoops(), globalTime);
+		//if (ambColor.IsUsesBySequence(animator->GetCurrentAnimationIndex()))
+		//	ambient.rgb = ambColor.GetValue(animator->GetCurrentAnimationIndex(), animator->getCurrentTime(), m_M2Object.getSkeleton().getGlobalLoops(), globalTime);
+		//if (ambIntensity.IsUsesBySequence(animator->GetCurrentAnimationIndex()))
+		//	ambient.a = ambIntensity.GetValue(animator->GetCurrentAnimationIndex(), animator->getCurrentTime(), m_M2Object.getSkeleton().getGlobalLoops(), globalTime);
 		
-		if (diffColor.IsUsesBySequence(animator->getSequenceIndex()))
-			lightStruct.Color.rgb = diffColor.GetValue(animator->getSequenceIndex(), animator->getCurrentTime(), m_M2Object.getSkeleton().getGlobalLoops(), globalTime);
-		if (diffIntensity.IsUsesBySequence(animator->getSequenceIndex()))
-			lightStruct.Intensity = diffIntensity.GetValue(animator->getSequenceIndex(), animator->getCurrentTime(), m_M2Object.getSkeleton().getGlobalLoops(), globalTime);
+		if (diffColor.IsUsesBySequence(animator->GetCurrentAnimationIndex()))
+			lightStruct.Color.rgb = diffColor.GetValue(animator->GetCurrentAnimationIndex(), animator->GetCurrentTime_(), m_M2Object.getSkeleton().getGlobalLoops(), globalTime);
+		if (diffIntensity.IsUsesBySequence(animator->GetCurrentAnimationIndex()))
+			lightStruct.Intensity = diffIntensity.GetValue(animator->GetCurrentAnimationIndex(), animator->GetCurrentTime_(), m_M2Object.getSkeleton().getGlobalLoops(), globalTime);
 
-		if (attenuation_start.IsUsesBySequence(animator->getSequenceIndex()))
-			attenStart = attenuation_start.GetValue(animator->getSequenceIndex(), animator->getCurrentTime(), m_M2Object.getSkeleton().getGlobalLoops(), globalTime);
-		if (attenuation_end.IsUsesBySequence(animator->getSequenceIndex()))
-			attenEnd = attenuation_end.GetValue(animator->getSequenceIndex(), animator->getCurrentTime(), m_M2Object.getSkeleton().getGlobalLoops(), globalTime);
+		if (attenuation_start.IsUsesBySequence(animator->GetCurrentAnimationIndex()))
+			attenStart = attenuation_start.GetValue(animator->GetCurrentAnimationIndex(), animator->GetCurrentTime_(), m_M2Object.getSkeleton().getGlobalLoops(), globalTime);
+		if (attenuation_end.IsUsesBySequence(animator->GetCurrentAnimationIndex()))
+			attenEnd = attenuation_end.GetValue(animator->GetCurrentAnimationIndex(), animator->GetCurrentTime_(), m_M2Object.getSkeleton().getGlobalLoops(), globalTime);
 		lightStruct.Range = attenEnd;
 	}
 

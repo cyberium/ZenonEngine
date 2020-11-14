@@ -18,6 +18,18 @@ public:
 	void AddConnection(const std::shared_ptr<IMaterial>& Material, const std::shared_ptr<IGeometry>& Geometry, SGeometryDrawArgs GeometryDrawArgs = SGeometryDrawArgs()) override final;
 	const std::vector<SConnection>& GetConnections() const override final;
 
+	// Skeleton
+	void                                                      ApplyOtherSkeleton(std::shared_ptr<IModel> other) override;
+	void                                                      AddBone(const std::shared_ptr<ISkeletonBone> Bone) override;
+	std::shared_ptr<ISkeletonBone>                            GetBone(size_t Index) const override;
+	size_t                                                    GetBoneIndexByName(const std::string& BoneName) const override;
+	std::shared_ptr<ISkeletonBone>                            GetBoneByName(const std::string& BoneName) const override;
+	const std::vector<std::shared_ptr<ISkeletonBone>>&        GetBones() const override;
+
+	// Animations
+	void                                                      AddAnimation(uint16 AnimationId, const std::shared_ptr<IAnimation>& Animation) override;
+	const Animations_t&                                       GetAnimations() const override;
+
 	virtual bool Render() const override;
 	virtual void Accept(IVisitor* visitor) override;
 

@@ -17,16 +17,32 @@ public:
 	void									        AddConnection(const std::shared_ptr<IMaterial>& Material, const std::shared_ptr<IGeometry>& Geometry, SGeometryDrawArgs GeometryDrawArgs = SGeometryDrawArgs()) override;
 	const std::vector<SConnection>&                 GetConnections() const override;
 
+	// Skeleton
+	void                                            ApplyOtherSkeleton(std::shared_ptr<IModel> other) override;
+	void                                            AddBone(const std::shared_ptr<ISkeletonBone> Bone) override;
+	std::shared_ptr<ISkeletonBone>                  GetBone(size_t Index) const override;
+	size_t                                          GetBoneIndexByName(const std::string& BoneName) const override;
+	std::shared_ptr<ISkeletonBone>                  GetBoneByName(const std::string& BoneName) const override;
+	const std::vector<std::shared_ptr<ISkeletonBone>>& GetBones() const override;
+
+
+	// Animation
+	void                                            AddAnimation(uint16 AnimationId, const std::shared_ptr<IAnimation>& Animation);
+	const Animations_t&                             GetAnimations() const;
+
 	virtual void                                    Accept(IVisitor* visitor) override;
 
 protected:
 	void                                            UpdateBounds(const std::shared_ptr<IGeometry>& Geometry);
 
 protected:
-	BoundingBox m_BoundingBox;
-	std::vector<SConnection> m_Connections;
-	std::string m_FileName;
+	BoundingBox                                     m_BoundingBox;
+	std::vector<SConnection>                        m_Connections;
+	std::string                                     m_FileName;
 
-private: // Link to parent d3d11 device
-	IRenderDevice& m_RenderDevice;
+	std::vector<std::shared_ptr<ISkeletonBone>>     m_Bones;
+	Animations_t                                    m_Animations;
+
+private:
+	IRenderDevice&                                  m_RenderDevice;
 };

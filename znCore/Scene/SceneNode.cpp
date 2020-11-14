@@ -310,9 +310,12 @@ void CSceneNode::RegisterComponents()
 //
 // Others
 //
-void CSceneNode::Update(const UpdateEventArgs & e)
+void CSceneNode::Update(const UpdateEventArgs& e)
 {
-	// Do nothing...
+	const auto& components = GetComponents();
+	std::for_each(components.begin(), components.end(), [e](const std::pair<ObjectClass, std::shared_ptr<ISceneNodeComponent>>& ComponentMapIter) {
+		ComponentMapIter.second->Update(e);
+	});
 }
 
 void CSceneNode::Accept(IVisitor* visitor)

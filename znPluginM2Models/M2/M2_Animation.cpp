@@ -7,8 +7,8 @@
 #include "M2_Animation.h"
 
 CM2_Animation::CM2_Animation(const CM2& M2Model, const SM2_Sequence& Sequence, std::string AnimationName, uint16 IndexIntoSeq)
-	: m_AnimID(Sequence.__animID)
-	, m_AnimationName(AnimationName + "_" + std::to_string(IndexIntoSeq))
+	: /*m_AnimID(Sequence.__animID)
+	,*/ m_AnimationName(AnimationName + "_" + std::to_string(IndexIntoSeq))
 	, m_SequenceIndex(IndexIntoSeq)
 #if WOW_CLIENT_VERSION <= WOW_BC_2_4_3
 	, m_StartTimeStamp(Sequence.start_timestamp)
@@ -22,7 +22,7 @@ CM2_Animation::CM2_Animation(const CM2& M2Model, const SM2_Sequence& Sequence, s
 		_ASSERT(Sequence.variationNext >= 0 && Sequence.variationNext < M2Model.getSkeleton().GetSequences().size());
 		const SM2_Sequence& variationNextSequence = M2Model.getSkeleton().GetSequences()[Sequence.variationNext];
 
-		_ASSERT(variationNextSequence.__animID == m_AnimID);
+		//_ASSERT(variationNextSequence.__animID == m_AnimID);
 		//_ASSERT(variationNextSequence.variationIndex == Sequence.variationNext);
 		m_Next = std::make_unique<CM2_Animation>(M2Model, variationNextSequence, AnimationName, Sequence.variationNext);
 	}
@@ -31,4 +31,31 @@ CM2_Animation::CM2_Animation(const CM2& M2Model, const SM2_Sequence& Sequence, s
 CM2_Animation::~CM2_Animation()
 {
 
+}
+
+
+//
+// IAnimation
+//
+const std::string & CM2_Animation::GetName() const
+{
+	return m_AnimationName;
+}
+
+uint32 CM2_Animation::GetFrameStart() const
+{
+#if WOW_CLIENT_VERSION <= WOW_BC_2_4_3
+	return m_StartTimeStamp;
+#else
+	return 0;
+#endif
+}
+
+uint32 CM2_Animation::GetFrameEnd() const
+{
+#if WOW_CLIENT_VERSION <= WOW_BC_2_4_3
+	return m_EndTimeStamp;
+#else
+	return m_Duration;
+#endif
 }

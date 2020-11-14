@@ -833,6 +833,9 @@
     <ClInclude Include="ObjectsFactories\Scene\SceneNodeCreator.h">
       <Filter>Objects\Scene\Creator</Filter>
     </ClInclude>
+    <ClInclude Include="..\shared\Interfaces\Render\ISkeleton.h">
+      <Filter>__Interfaces\Render</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="Files\FormatsDescription.txt">

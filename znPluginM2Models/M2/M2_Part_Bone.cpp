@@ -21,60 +21,78 @@ SM2_Part_Bone_Wrapper::~SM2_Part_Bone_Wrapper()
 {
 }
 
-glm::mat4 SM2_Part_Bone_Wrapper::calcMatrix(const CM2_Base_Instance& M2Instance, uint32 globalTime) const
+
+
+//
+// ISkeletonBone
+//
+void SM2_Part_Bone_Wrapper::MergeWithOther(std::shared_ptr<ISkeletonBone> OtherBone)
+{
+	throw CException("Operation now supported.");
+}
+
+std::string SM2_Part_Bone_Wrapper::GetName() const
+{
+	return GetGameBoneName();
+}
+
+int32 SM2_Part_Bone_Wrapper::GetParentIndex() const
+{
+	return m_M2Bone.parent_bone;
+}
+
+glm::vec3 SM2_Part_Bone_Wrapper::GetPivotPoint() const
+{
+	return Fix_XZmY(m_M2Bone.pivot);
+}
+
+glm::mat4 SM2_Part_Bone_Wrapper::CalcMatrix(const IModelsComponent3D* ModelsComponent) const
 {
 	glm::mat4 m(1.0f);
-	if (const auto& animator = M2Instance.getAnimator())
+	if (IsInterpolated(ModelsComponent->GetCurrentAnimationIndex()))
 	{
-		if (IsInterpolated(animator->getSequenceIndex()))
+		m = glm::translate(m, GetPivotPoint());
+
+		if (m_TranslateAnimated.IsUsesBySequence(ModelsComponent->GetCurrentAnimationIndex()))
 		{
-			m = glm::translate(m, getPivot());
-
-			if (m_TranslateAnimated.IsUsesBySequence(animator->getSequenceIndex()))
-			{
-				m = glm::translate(m, m_TranslateAnimated.GetValue(animator->getSequenceIndex(), animator->getCurrentTime(), m_M2Object.getSkeleton().getGlobalLoops(), globalTime));
-			}
-
-			if (m_RotateAnimated.IsUsesBySequence(animator->getSequenceIndex()))
-			{
-				m *= glm::toMat4(m_RotateAnimated.GetValue(animator->getSequenceIndex(), animator->getCurrentTime(), m_M2Object.getSkeleton().getGlobalLoops(), globalTime));
-			}
-
-			if (m_ScaleAnimated.IsUsesBySequence(animator->getSequenceIndex()))
-			{
-				m = glm::scale(m, m_ScaleAnimated.GetValue(animator->getSequenceIndex(), animator->getCurrentTime(), m_M2Object.getSkeleton().getGlobalLoops(), globalTime));
-			}
-
-			m = glm::translate(m, getPivot() * -1.0f);
+			m = glm::translate(m, m_TranslateAnimated.GetValue(ModelsComponent->GetCurrentAnimationIndex(), ModelsComponent->GetCurrentTime_(), m_M2Object.getSkeleton().getGlobalLoops(), ModelsComponent->GetGlobalTime()));
 		}
+
+		if (m_RotateAnimated.IsUsesBySequence(ModelsComponent->GetCurrentAnimationIndex()))
+		{
+			m *= glm::toMat4(m_RotateAnimated.GetValue(ModelsComponent->GetCurrentAnimationIndex(), ModelsComponent->GetCurrentTime_(), m_M2Object.getSkeleton().getGlobalLoops(), ModelsComponent->GetGlobalTime()));
+		}
+
+		if (m_ScaleAnimated.IsUsesBySequence(ModelsComponent->GetCurrentAnimationIndex()))
+		{
+			m = glm::scale(m, m_ScaleAnimated.GetValue(ModelsComponent->GetCurrentAnimationIndex(), ModelsComponent->GetCurrentTime_(), m_M2Object.getSkeleton().getGlobalLoops(), ModelsComponent->GetGlobalTime()));
+		}
+
+		m = glm::translate(m, GetPivotPoint() * -1.0f);
 	}
 
 	return m;
 }
 
-glm::mat4 SM2_Part_Bone_Wrapper::calcRotationMatrix(const CM2_Base_Instance& M2Instance, uint32 globalTime) const
+glm::mat4 SM2_Part_Bone_Wrapper::CalcRotateMatrix(const IModelsComponent3D* ModelsComponent) const
 {
-	if (const auto& animator = M2Instance.getAnimator())
-	{
-		if (m_RotateAnimated.IsUsesBySequence(animator->getSequenceIndex()))
-		{
-			return glm::toMat4(m_RotateAnimated.GetValue(animator->getSequenceIndex(), animator->getCurrentTime(), m_M2Object.getSkeleton().getGlobalLoops(), globalTime));
-		}
-	}
+	if (m_RotateAnimated.IsUsesBySequence(ModelsComponent->GetCurrentAnimationIndex()))
+		return glm::toMat4(m_RotateAnimated.GetValue(ModelsComponent->GetCurrentAnimationIndex(), ModelsComponent->GetCurrentTime_(), m_M2Object.getSkeleton().getGlobalLoops(), ModelsComponent->GetGlobalTime()));
 
 	return glm::mat4(1.0f);
 }
 
-glm::mat4 SM2_Part_Bone_Wrapper::calcBillboardMatrix(const glm::mat4& CalculatedMatrix, const CM2_Base_Instance& M2Instance, const ICameraComponent3D* Camera) const
+
+glm::mat4 SM2_Part_Bone_Wrapper::calcBillboardMatrix(const glm::mat4& NodeWorldTransform, const glm::mat4& FinalBoneMatrix, const IModelsComponent3D* ModelsComponent, const ICameraComponent3D* Camera) const
 {
 	glm::mat4 m(1.0f);
 	_ASSERT(IsBillboard());
 
-	m = glm::translate(m, getPivot());
+	m = glm::translate(m, GetPivotPoint());
 	{
 		glm::mat4 W = m;
-		W = CalculatedMatrix * W;
-		W = M2Instance.GetWorldTransfom() * W;
+		W = FinalBoneMatrix * W;
+		W = NodeWorldTransform * W;
 
 		glm::mat4 VW = Camera->GetViewMatrix() * W;
 
@@ -110,7 +128,7 @@ glm::mat4 SM2_Part_Bone_Wrapper::calcBillboardMatrix(const glm::mat4& Calculated
 		m[2][1] = vRight.y;
 		m[2][2] = vRight.z;
 	}
-	m = glm::translate(m, getPivot() * -1.0f);
+	m = glm::translate(m, GetPivotPoint() * -1.0f);
 
 	return m;
 }

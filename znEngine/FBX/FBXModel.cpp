@@ -614,10 +614,9 @@ void CFBXModel::SkeletonLoad(fbxsdk::FbxMesh* NativeMesh)
 
 			std::string jointname = cluster->GetLink()->GetName();
 
-			auto& skeleton = m_FBXNode.GetFBXScene().GetFBXSkeleton()->GetSkeletonEditable();
-			size_t jointIndex = skeleton.GetBoneIndexByName(jointname);
-			auto& joint = skeleton.GetBoneByNameEditable(jointname);
-			joint.LocalTransform222 = ToGLMMat4(globalBindposeInverseMatrix);
+			size_t jointIndex = m_FBXNode.GetFBXScene().GetFBXSkeleton()->GetBoneIndexByName(jointname);
+			auto joint = m_FBXNode.GetFBXScene().GetFBXSkeleton()->GetBoneByName(jointname);
+			//joint->LocalTransform222 = ToGLMMat4(globalBindposeInverseMatrix);
 			//joint->Node = cluster->GetLink();
 			//joint->Mesh = NativeMesh;
 
