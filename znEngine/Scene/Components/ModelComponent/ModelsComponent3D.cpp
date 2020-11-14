@@ -171,7 +171,7 @@ void CModelsComponent3D::Update(const UpdateEventArgs & e)
 
 	if (false == m_IsStopped)
 	{
-		animtime += e.DeltaTimeMultiplier; // FIXME
+		animtime += e.DeltaTime ; // FIXME
 		m_CurrentTime = static_cast<uint32>(m_CurrentAnimation->GetFrameStart() + animtime);
 		m_GlobalTime = static_cast<uint32>(e.TotalTime);
 

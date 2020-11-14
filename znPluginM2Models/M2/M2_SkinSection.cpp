@@ -102,6 +102,15 @@ CM2_SkinSection::~CM2_SkinSection()
 	_aligned_free(m_Properties);
 }
 
+std::vector<glm::mat4> CreatePose(const CM2& M2, const IModelsComponent3D* ModelsComponent, size_t BoneStartIndex, size_t BonesCount)
+{
+	std::vector<glm::mat4> result;
+	result.reserve(BonesCount);
+	for (size_t i = BoneStartIndex; i < BoneStartIndex + BonesCount; i++)
+		result.push_back(ModelsComponent->GetBones()[M2.getSkeleton().getBoneLookupIndex(i)]->GetMatrix());
+	return result;
+}
+
 void CM2_SkinSection::UpdateGeometryProps(const RenderEventArgs& RenderEventArgs, const CM2_Base_Instance * M2Instance)
 {
 	bool isAnimated = m_M2Model.getSkeleton().hasBones() && m_M2Model.isAnimated();
@@ -131,7 +140,7 @@ void CM2_SkinSection::UpdateGeometryProps(const RenderEventArgs& RenderEventArgs
 		//	m_BonesList[i] = m_M2Model.getSkeleton().getBoneLookup(m_SkinSectionProto.bonesStartIndex + i)->getTransformMatrix();
 		//}
 
-		m_BonesList = M2Instance->GetModelsComponent()->CreatePose(m_SkinSectionProto.bonesStartIndex, m_SkinSectionProto.boneCount);
+		m_BonesList = CreatePose(m_M2Model, M2Instance->GetModelsComponent().get(), m_SkinSectionProto.bonesStartIndex, m_SkinSectionProto.boneCount);
 		_ASSERT(m_BonesList.size() == m_SkinSectionProto.boneCount);
 		m_BonesBuffer->Set(m_BonesList);
 	}
