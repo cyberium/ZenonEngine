@@ -4,8 +4,6 @@
 #include "FBXAnimation.h"
 
 // Additional
-#include "Scene/Components/ModelComponent/Animation.h"
-#include "Scene/Components/ModelComponent/SkeletonBone.h"
 #include "FBXUtils.h"
 
 CFBXAnimation::CFBXAnimation(const IBaseManager& BaseManager, const IFBXScene& FBXScene)
@@ -26,8 +24,7 @@ void CFBXAnimation::Load(fbxsdk::FbxScene * FBXScene)
 
 		FbxString lOutputString = "Animation Stack Name: ";
 		lOutputString += lAnimStack->GetName();
-		lOutputString += "\n";
-		FBXSDK_printf(lOutputString);
+		Log::Print(lOutputString);
 
 		int nbAnimLayers = lAnimStack->GetMemberCount<fbxsdk::FbxAnimLayer>();
 		lOutputString = "   contains ";
@@ -42,8 +39,7 @@ void CFBXAnimation::Load(fbxsdk::FbxScene * FBXScene)
 				lOutputString += "s";
 		}
 
-		lOutputString += "\n\n";
-		FBXSDK_printf(lOutputString);
+		Log::Print(lOutputString);
 
 		for (int l = 0; l < nbAnimLayers; l++)
 		{
@@ -77,15 +73,9 @@ void CFBXAnimation::DisplayAnimationRec(fbxsdk::FbxAnimLayer* pAnimLayer, fbxsdk
 	int lModelCount;
 	FbxString lOutputString;
 
-	lOutputString = "     Node Name: ";
-	lOutputString += pNode->GetName();
-	lOutputString += "\n\n";
-	FBXSDK_printf(lOutputString);
-
 	DisplayChannels(pNode, pAnimLayer, AnimationIndex);
-	FBXSDK_printf("\n");
 
-	for (lModelCount = 0; lModelCount < pNode->GetChildCount(); lModelCount++)
+	for (int lModelCount = 0; lModelCount < pNode->GetChildCount(); lModelCount++)
 	{
 		DisplayAnimationRec(pAnimLayer, pNode->GetChild(lModelCount), AnimationIndex);
 	}
@@ -93,68 +83,75 @@ void CFBXAnimation::DisplayAnimationRec(fbxsdk::FbxAnimLayer* pAnimLayer, fbxsdk
 
 void CFBXAnimation::DisplayChannels(fbxsdk::FbxNode* pNode, fbxsdk::FbxAnimLayer* pAnimLayer, size_t AnimationIndex)
 {
+	std::shared_ptr<ISkeletonBone> skeletonBone;
 	try
 	{
-		auto bone = m_FBXScene.GetFBXSkeleton()->GetBoneByName(pNode->GetName());
-		auto bone22 = std::static_pointer_cast<CSkeletonBone>(bone);
-
-		fbxsdk::FbxTimeSpan interval;
-		bool bResult = pNode->GetAnimationInterval(interval);
-		fbxsdk::FbxTime start = interval.GetStart();
-		fbxsdk::FbxTime end = interval.GetStop();
-		fbxsdk::FbxLongLong longstart = start.GetFrameCount();
-		fbxsdk::FbxLongLong longend = end.GetFrameCount();
-
-		for (unsigned int i = 0; i < longend; i++)
-		{
-			fbxsdk::FbxTime keyTime;
-			keyTime.SetFrame(i);
-
-			fbxsdk::FbxLongLong keyTimeFrames = keyTime.GetFrameCount(fbxsdk::FbxTime::eFrames60);
-
-			bone22->m_CalculatedMatrixes.m_Type = Interpolations::INTERPOLATION_LINEAR;
-
-			if (AnimationIndex + 1 >= bone22->m_CalculatedMatrixes.m_Times.size())
-				bone22->m_CalculatedMatrixes.m_Times.resize(AnimationIndex + 1);
-			bone22->m_CalculatedMatrixes.m_Times[AnimationIndex].push_back(keyTimeFrames);
-
-			FbxAMatrix matGlobal = pNode->EvaluateLocalTransform(keyTime);
-			glm::mat4 glmMat = ToGLMMat4(matGlobal);
-
-			if (AnimationIndex + 1 >= bone22->m_CalculatedMatrixes.m_Values.size())
-				bone22->m_CalculatedMatrixes.m_Values.resize(AnimationIndex + 1);
-			bone22->m_CalculatedMatrixes.m_Values[AnimationIndex].push_back(glmMat);
-		}
-
-		
-		
-		fbxsdk::FbxAnimCurve* curve = nullptr;
-
-		if (curve = pNode->LclTranslation.GetCurve(pAnimLayer, FBXSDK_CURVENODE_COMPONENT_X))
-			DisplayCurveKeys(pNode, curve,bone22->pX, AnimationIndex);
-		if (curve = pNode->LclTranslation.GetCurve(pAnimLayer, FBXSDK_CURVENODE_COMPONENT_Y))
-			DisplayCurveKeys(pNode, curve,bone22->pY, AnimationIndex);
-		if (curve = pNode->LclTranslation.GetCurve(pAnimLayer, FBXSDK_CURVENODE_COMPONENT_Z))
-			DisplayCurveKeys(pNode, curve,bone22->pZ, AnimationIndex);
-
-		if (curve = pNode->LclRotation.GetCurve(pAnimLayer, FBXSDK_CURVENODE_COMPONENT_X))
-			DisplayCurveKeys(pNode, curve,bone22->rX, AnimationIndex);
-		if (curve = pNode->LclRotation.GetCurve(pAnimLayer, FBXSDK_CURVENODE_COMPONENT_Y))
-			DisplayCurveKeys(pNode, curve,bone22->rY, AnimationIndex);
-		if (curve = pNode->LclRotation.GetCurve(pAnimLayer, FBXSDK_CURVENODE_COMPONENT_Z))
-			DisplayCurveKeys(pNode, curve,bone22->rZ, AnimationIndex);
-
-		if (curve = pNode->LclScaling.GetCurve(pAnimLayer, FBXSDK_CURVENODE_COMPONENT_X))
-			DisplayCurveKeys(pNode, curve,bone22->sX, AnimationIndex);
-		if (curve = pNode->LclScaling.GetCurve(pAnimLayer, FBXSDK_CURVENODE_COMPONENT_Y))
-			DisplayCurveKeys(pNode, curve,bone22->sY, AnimationIndex);
-		if (curve = pNode->LclScaling.GetCurve(pAnimLayer, FBXSDK_CURVENODE_COMPONENT_Z))
-			DisplayCurveKeys(pNode, curve,bone22->sZ, AnimationIndex);
+		skeletonBone = m_FBXScene.GetFBXSkeleton()->GetBoneByName(pNode->GetName());
 	}
 	catch (const CException& e)
 	{
-		Log::Error(e.MessageCStr());
+		Log::Warn("FBXAnimation: Node '%s' hasn't corresponding bone.", pNode->GetName());
+		return;
 	}
+
+	auto bone22 = std::static_pointer_cast<CSkeletonBone>(skeletonBone);
+
+	fbxsdk::FbxTimeSpan interval;
+	if (false == pNode->GetAnimationInterval(interval))
+	{
+		Log::Warn("FBXAnimation: Node '%s' hasn't animation interval.", pNode->GetName());
+		return;
+	}
+
+	fbxsdk::FbxLongLong longstart = interval.GetStart().GetFrameCount();
+	fbxsdk::FbxLongLong longend = interval.GetStop().GetFrameCount();
+
+	for (fbxsdk::FbxLongLong i = longstart; i < longend; i++)
+	{
+		fbxsdk::FbxTime keyTime;
+		keyTime.SetFrame(i);
+
+		fbxsdk::FbxLongLong keyTimeFrames = keyTime.GetFrameCount(fbxsdk::FbxTime::eFrames60);
+
+		bone22->m_CalculatedMatrixes.m_Type = Interpolations::INTERPOLATION_LINEAR;
+
+		if (AnimationIndex + 1 >= bone22->m_CalculatedMatrixes.m_Times.size())
+			bone22->m_CalculatedMatrixes.m_Times.resize(AnimationIndex + 1);
+		bone22->m_CalculatedMatrixes.m_Times[AnimationIndex].push_back(keyTimeFrames);
+
+		FbxAMatrix matGlobal = pNode->EvaluateLocalTransform(keyTime);
+		glm::mat4 glmMat = ToGLMMat4(matGlobal);
+
+		if (AnimationIndex + 1 >= bone22->m_CalculatedMatrixes.m_Values.size())
+			bone22->m_CalculatedMatrixes.m_Values.resize(AnimationIndex + 1);
+		bone22->m_CalculatedMatrixes.m_Values[AnimationIndex].push_back(glmMat);
+	}
+
+		
+	/*
+	fbxsdk::FbxAnimCurve* curve = nullptr;
+
+	if (curve = pNode->LclTranslation.GetCurve(pAnimLayer, FBXSDK_CURVENODE_COMPONENT_X))
+		DisplayCurveKeys(pNode, curve,bone22->pX, AnimationIndex);
+	if (curve = pNode->LclTranslation.GetCurve(pAnimLayer, FBXSDK_CURVENODE_COMPONENT_Y))
+		DisplayCurveKeys(pNode, curve,bone22->pY, AnimationIndex);
+	if (curve = pNode->LclTranslation.GetCurve(pAnimLayer, FBXSDK_CURVENODE_COMPONENT_Z))
+		DisplayCurveKeys(pNode, curve,bone22->pZ, AnimationIndex);
+
+	if (curve = pNode->LclRotation.GetCurve(pAnimLayer, FBXSDK_CURVENODE_COMPONENT_X))
+		DisplayCurveKeys(pNode, curve,bone22->rX, AnimationIndex);
+	if (curve = pNode->LclRotation.GetCurve(pAnimLayer, FBXSDK_CURVENODE_COMPONENT_Y))
+		DisplayCurveKeys(pNode, curve,bone22->rY, AnimationIndex);
+	if (curve = pNode->LclRotation.GetCurve(pAnimLayer, FBXSDK_CURVENODE_COMPONENT_Z))
+		DisplayCurveKeys(pNode, curve,bone22->rZ, AnimationIndex);
+
+	if (curve = pNode->LclScaling.GetCurve(pAnimLayer, FBXSDK_CURVENODE_COMPONENT_X))
+		DisplayCurveKeys(pNode, curve,bone22->sX, AnimationIndex);
+	if (curve = pNode->LclScaling.GetCurve(pAnimLayer, FBXSDK_CURVENODE_COMPONENT_Y))
+		DisplayCurveKeys(pNode, curve,bone22->sY, AnimationIndex);
+	if (curve = pNode->LclScaling.GetCurve(pAnimLayer, FBXSDK_CURVENODE_COMPONENT_Z))
+		DisplayCurveKeys(pNode, curve,bone22->sZ, AnimationIndex);
+	*/
 }
 
 void CFBXAnimation::DisplayCurveKeys(fbxsdk::FbxNode* pNode, fbxsdk::FbxAnimCurve* pCurve, CznAnimatedValue<float>& valueInt, size_t AnimationIndex)

@@ -2,7 +2,7 @@
 
 #ifdef ZN_FBX_SDK_ENABLE
 #include <fbxsdk.h>
-#include "FBX/FBXInterfaces.h"
+#include "FBXInterfaces.h"
 
 class CznFBXModelsLoader
 	: public IznModelsLoader

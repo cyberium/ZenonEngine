@@ -43,10 +43,6 @@ void DebugOutput_ConsoleWindows::Print(IDebugOutput::DebugMessageType Type, cons
 			_ASSERT(false);
 	}
 
-	// To VisualStudio debug
-	OutputDebugStringA(Message.c_str());
-	OutputDebugStringA("\n");
-
 	// To console
 	SetConsoleTextAttribute(m_ConsoleHandle, color);
 	std::cout << Message << std::endl;

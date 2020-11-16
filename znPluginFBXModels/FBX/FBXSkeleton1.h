@@ -2,8 +2,7 @@
 
 #ifdef ZN_FBX_SDK_ENABLE
 #include <fbxsdk.h>
-
-#include "Scene/Components/ModelComponent/SkeletonBone.h"
+#include "FBXInterfaces.h"
 
 class ZN_API CFBXSkeleton
 	: public IFBXSkeleton

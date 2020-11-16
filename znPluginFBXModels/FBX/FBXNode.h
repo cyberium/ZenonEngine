@@ -12,7 +12,7 @@ public:
 	CFBXNode(const IBaseManager& BaseManager, IFBXScene& FBXScene);
 	virtual ~CFBXNode();
 
-	void LoadNode(fbxsdk::FbxNode * NativeNode);
+	void LoadNode(fbxsdk::FbxNode * NativeNode, int pDepth = 0);
 	
 	// IFBXNode
 	const IFBXScene& GetFBXScene() const override;

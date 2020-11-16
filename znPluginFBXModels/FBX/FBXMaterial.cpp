@@ -66,7 +66,7 @@ void CFBXMaterial::Load(fbxsdk::FbxSurfaceMaterial* NativeMaterial)
 	{
 		volatile auto channelName = fbxsdk::FbxLayerElement::sTextureChannelNames[j];
 		fbxsdk::FbxProperty lProperty = surfacePhong->FindProperty(channelName);
-		if (!lProperty.IsValid())
+		if (false == lProperty.IsValid())
 		{
 			continue;
 		}

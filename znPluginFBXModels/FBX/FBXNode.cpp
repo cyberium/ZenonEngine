@@ -15,8 +15,6 @@
 
 #include "FBXUtils.h"
 
-#include "Materials/MaterialDebug.h"
-#include "Materials/MaterialTextured.h"
 
 CFBXNode::CFBXNode(const IBaseManager& BaseManager, IFBXScene& FBXScene)
 	: m_BaseManager(BaseManager)
@@ -31,10 +29,14 @@ CFBXNode::~CFBXNode()
 
 
 
-void CFBXNode::LoadNode(fbxsdk::FbxNode * NativeNode)
+void CFBXNode::LoadNode(fbxsdk::FbxNode * NativeNode, int pDepth)
 {
-	//if (m_FBXScene != nullptr)
-	//	throw CException("FBXSceneNode: Node '%s' already initialized.", GetName().c_str());
+	std::string nodeNameString;
+	for (int i = 0; i < pDepth; i++)
+		nodeNameString += "   ";
+
+	nodeNameString += NativeNode->GetName();
+	Log::Print(nodeNameString.c_str());
 
 	LoadParams(NativeNode);
 	LoadMaterials(NativeNode);

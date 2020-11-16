@@ -25,7 +25,6 @@
 // Additional (Models)
 #include "Formats/Models/ModelsFactory.h"
 #include "Formats/Models/EngineModelsLoader.h"
-#include "Formats/Models/FBXModelsLoader.h"
 
 
 // Additional (Materials)
@@ -85,12 +84,11 @@ IBaseManager* WINAPI InitializeEngine(std::vector<std::string> Arguments, std::s
 
 	// Files
 	{
-		std::shared_ptr<IFilesManager> filesManager = MakeShared(CFilesManager, *baseManager);
-		baseManager->AddManager<IFilesManager>(filesManager);
-		filesManager->AddStorage(EFilesStorageType::GAMEDATA,   MakeShared(CLocalFilesStorage, "O:/ZenonEngine_gamedata/"));
-		filesManager->AddStorage(EFilesStorageType::ADDITIONAL, MakeShared(CLibraryResourceFileStotage, GetModuleHandle(L"znEngine.dll")));
-		filesManager->AddStorage(EFilesStorageType::ADDITIONAL, MakeShared(CLocalFilesStorage, "gamedata/"));
-		filesManager->AddStorage(EFilesStorageType::ADDITIONAL, MakeShared(CLocalFilesStorage, "")); // Every access
+		baseManager->AddManager<IFilesManager>(MakeShared(CFilesManager, *baseManager));
+		baseManager->GetManager<IFilesManager>()->AddStorage(EFilesStorageType::GAMEDATA,   MakeShared(CLocalFilesStorage, "O:/ZenonEngine_gamedata/"));
+		baseManager->GetManager<IFilesManager>()->AddStorage(EFilesStorageType::ADDITIONAL, MakeShared(CLibraryResourceFileStotage, GetModuleHandle(L"znEngine.dll")));
+		baseManager->GetManager<IFilesManager>()->AddStorage(EFilesStorageType::ADDITIONAL, MakeShared(CLocalFilesStorage, "gamedata/"));
+		baseManager->GetManager<IFilesManager>()->AddStorage(EFilesStorageType::ADDITIONAL, MakeShared(CLocalFilesStorage, "")); // Every access
 	}
 
 
@@ -124,7 +122,6 @@ IBaseManager* WINAPI InitializeEngine(std::vector<std::string> Arguments, std::s
 	{
 		baseManager->AddManager<IznModelsFactory>(MakeShared(CznModelsFactory, *baseManager));
 		baseManager->GetManager<IznModelsFactory>()->AddModelsLoader(MakeShared(CznEngineModelsLoader, *baseManager));
-		baseManager->GetManager<IznModelsFactory>()->AddModelsLoader(MakeShared(CznFBXModelsLoader, *baseManager));
 	}
 
 
@@ -163,6 +160,7 @@ IBaseManager* WINAPI InitializeEngine(std::vector<std::string> Arguments, std::s
 
 			pluginsManager->AddPlugin(PathToPlugins + "\\" + "znRenderDX11.dll");
 			pluginsManager->AddPlugin(PathToPlugins + "\\" + "znPluginM2Models.dll");
+			pluginsManager->AddPlugin(PathToPlugins + "\\" + "znPluginFBXModels.dll");
 		}
 		catch (const std::exception& e)
 		{

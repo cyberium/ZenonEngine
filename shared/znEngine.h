@@ -19,6 +19,7 @@
 
 // Scene nodes components
 #include "../znEngine/Scene/Components/ModelComponent/AnimatedValue.h"
+#include "../znEngine/Scene/Components/ModelComponent/Animation.h"
 #include "../znEngine/Scene/Components/ModelComponent/SkeletonComponentBone.h"
 #include "../znEngine/Scene/Components/ColliderComponent3D.h"
 #include "../znEngine/Scene/Components/LightComponent3D.h"

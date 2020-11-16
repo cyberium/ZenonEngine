@@ -89,37 +89,6 @@ glm::mat4 CSkeletonBone::CalcMatrix(const IModelsComponent3D* ModelsComponent) c
 
 	m *= GetPivotMatrix();
 
-	/*
-	{
-		glm::vec3 translate(0.0f);
-		if (pX.IsUsesBySequence(ModelsComponent->GetCurrentAnimationIndex()))
-			translate.x = pX.GetValue(ModelsComponent->GetCurrentAnimationIndex(), ModelsComponent->GetCurrentTime_());
-
-		if (pY.IsUsesBySequence(ModelsComponent->GetCurrentAnimationIndex()))
-			translate.y = pY.GetValue(ModelsComponent->GetCurrentAnimationIndex(), ModelsComponent->GetCurrentTime_());
-
-		if (pZ.IsUsesBySequence(ModelsComponent->GetCurrentAnimationIndex()))
-			translate.z = pZ.GetValue(ModelsComponent->GetCurrentAnimationIndex(), ModelsComponent->GetCurrentTime_());
-
-		m = glm::translate(m, translate);
-	}
-
-	{
-		glm::vec3 rotate(0.0f);
-		if (rX.IsUsesBySequence(ModelsComponent->GetCurrentAnimationIndex()))
-			rotate.x = rX.GetValue(ModelsComponent->GetCurrentAnimationIndex(), ModelsComponent->GetCurrentTime_());
-
-		if (rY.IsUsesBySequence(ModelsComponent->GetCurrentAnimationIndex()))
-			rotate.y = rY.GetValue(ModelsComponent->GetCurrentAnimationIndex(), ModelsComponent->GetCurrentTime_());
-
-		if (rZ.IsUsesBySequence(ModelsComponent->GetCurrentAnimationIndex()))
-			rotate.z = rZ.GetValue(ModelsComponent->GetCurrentAnimationIndex(), ModelsComponent->GetCurrentTime_());
-
-		m *= glm::toMat4(glm::quat(rotate));
-	}*/
-
-	
-
 	if (m_CalculatedMatrixes.IsUsesBySequence(ModelsComponent->GetCurrentAnimationIndex()))
 		m *= m_CalculatedMatrixes.GetValue(ModelsComponent->GetCurrentAnimationIndex(), ModelsComponent->GetCurrentTime_());
 	else

@@ -14,20 +14,6 @@
     <ClCompile Include="AssyncLoader\LoadableObject.cpp" />
     <ClCompile Include="AssyncLoader\Loader.cpp" />
     <ClCompile Include="BaseManager.cpp" />
-    <ClCompile Include="FBX\FBXAnimation.cpp" />
-    <ClCompile Include="FBX\FBXDisplayAnimation.cpp" />
-    <ClCompile Include="FBX\FBXDisplayCache.cpp" />
-    <ClCompile Include="FBX\FBXDisplayCommon.cpp" />
-    <ClCompile Include="FBX\FBXDisplayLink.cpp" />
-    <ClCompile Include="FBX\FBXDisplayShape.cpp" />
-    <ClCompile Include="FBX\FBXLight.cpp" />
-    <ClCompile Include="FBX\FBXMaterial.cpp" />
-    <ClCompile Include="FBX\FBXModel.cpp" />
-    <ClCompile Include="FBX\FBXScene.cpp" />
-    <ClCompile Include="FBX\FBXNode.cpp" />
-    <ClCompile Include="FBX\FBXSkeleton.cpp" />
-    <ClCompile Include="FBX\FBXStream.cpp" />
-    <ClCompile Include="FBX\FBXUtils.cpp" />
     <ClCompile Include="Formats\Fonts\Font.cpp" />
     <ClCompile Include="Formats\Fonts\FontsManager.cpp" />
     <ClCompile Include="Formats\Images\DDSFormat.cpp" />
@@ -37,7 +23,6 @@
     <ClCompile Include="Formats\Images\ImagesFactory.cpp" />
     <ClCompile Include="Formats\Materials\MaterialsFactory.cpp" />
     <ClCompile Include="Formats\Models\EngineModelsLoader.cpp" />
-    <ClCompile Include="Formats\Models\FBXModelsLoader.cpp" />
     <ClCompile Include="Formats\Models\ModelsFactory.cpp" />
     <ClCompile Include="Formats\Textures\TexturesFactory.cpp" />
     <ClCompile Include="NativeWindows\NativeWindowFactory.cpp" />
@@ -130,21 +115,6 @@
     <ClInclude Include="AssyncLoader\LoadableObject.h" />
     <ClInclude Include="AssyncLoader\Loader.h" />
     <ClInclude Include="BaseManager.h" />
-    <ClInclude Include="FBX\FBXAnimation.h" />
-    <ClInclude Include="FBX\FBXDisplayAnimation.h" />
-    <ClInclude Include="FBX\FBXDisplayCache.h" />
-    <ClInclude Include="FBX\FBXDisplayCommon.h" />
-    <ClInclude Include="FBX\FBXDisplayLink.h" />
-    <ClInclude Include="FBX\FBXDisplayShape.h" />
-    <ClInclude Include="FBX\FBXInterfaces.h" />
-    <ClInclude Include="FBX\FBXLight.h" />
-    <ClInclude Include="FBX\FBXMaterial.h" />
-    <ClInclude Include="FBX\FBXModel.h" />
-    <ClInclude Include="FBX\FBXScene.h" />
-    <ClInclude Include="FBX\FBXNode.h" />
-    <ClInclude Include="FBX\FBXSkeleton.h" />
-    <ClInclude Include="FBX\FBXStream.h" />
-    <ClInclude Include="FBX\FBXUtils.h" />
     <ClInclude Include="Formats\Fonts\Font.h" />
     <ClInclude Include="Formats\Fonts\FontsManager.h" />
     <ClInclude Include="Formats\Images\DDSFormat.h" />
@@ -154,7 +124,6 @@
     <ClInclude Include="Formats\Images\ImagesFactory.h" />
     <ClInclude Include="Formats\Materials\MaterialsFactory.h" />
     <ClInclude Include="Formats\Models\EngineModelsLoader.h" />
-    <ClInclude Include="Formats\Models\FBXModelsLoader.h" />
     <ClInclude Include="Formats\Models\ModelsFactory.h" />
     <ClInclude Include="Formats\Textures\TexturesFactory.h" />
     <ClInclude Include="NativeWindows\NativeWindowFactory.h" />
@@ -404,7 +373,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>ZN_FBX_SDK_ENABLE1;_DEBUG;_WINDOWS;_USRDLL;OW_ENGINE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\shared\;..\Externals\;..\Externals\libpng\;..\Externals\libpng\source;..\Externals\freetype\source\include\;..\Externals\reactphysics3d\source\include\;..\znEngine\;$(ZN_FBX_SDK_PATH)include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\shared\;..\Externals\;..\Externals\libpng\;..\Externals\libpng\source;..\Externals\freetype\source\include\;..\Externals\reactphysics3d\source\include\;..\znEngine\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatSpecificWarningsAsErrors>4172</TreatSpecificWarningsAsErrors>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <DisableSpecificWarnings>4251;4250;4715</DisableSpecificWarnings>
@@ -415,7 +384,7 @@
 copy /Y "$(SolutionDir)Externals\BugTrap\BugTrapUD-x64.dll" "$(SolutionDir)bin_$(PlatformShortName)\$(Configuration)\BugTrapUD-x64.dll" </Command>
     </PostBuildEvent>
     <Link>
-      <AdditionalLibraryDirectories>$(SolutionDir)\bin_$(PlatformShortName)\$(Configuration)\;$(ZN_FBX_SDK_PATH)lib\vs2017\$(PlatformShortName)\$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)\bin_$(PlatformShortName)\$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>zlib.lib;znCore.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <GenerateDebugInformation>DebugFull</GenerateDebugInformation>
     </Link>
@@ -426,7 +395,7 @@ copy /Y "$(SolutionDir)Externals\BugTrap\BugTrapUD-x64.dll" "$(SolutionDir)bin_$
       <PrecompiledHeader>Use</PrecompiledHeader>
       <Optimization>MaxSpeed</Optimization>
       <PreprocessorDefinitions>ZN_FBX_SDK_ENABLE1;NDEBUG;_WINDOWS;_USRDLL;OW_ENGINE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\shared\;..\Externals\;..\Externals\libpng\;..\Externals\libpng\source;..\Externals\freetype\source\include\;..\Externals\reactphysics3d\source\include\;..\znEngine\;$(ZN_FBX_SDK_PATH)include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\shared\;..\Externals\;..\Externals\libpng\;..\Externals\libpng\source;..\Externals\freetype\source\include\;..\Externals\reactphysics3d\source\include\;..\znEngine\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <TreatSpecificWarningsAsErrors>4172</TreatSpecificWarningsAsErrors>
@@ -438,7 +407,7 @@ copy /Y "$(SolutionDir)Externals\BugTrap\BugTrapUD-x64.dll" "$(SolutionDir)bin_$
 copy /Y "$(SolutionDir)Externals\BugTrap\BugTrapU-x64.dll" "$(SolutionDir)bin_$(PlatformShortName)\$(Configuration)\BugTrapU-x64.dll" </Command>
     </PostBuildEvent>
     <Link>
-      <AdditionalLibraryDirectories>$(SolutionDir)\bin_$(PlatformShortName)\$(Configuration)\;$(ZN_FBX_SDK_PATH)lib\vs2017\$(PlatformShortName)\$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)\bin_$(PlatformShortName)\$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>zlib.lib;znCore.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>

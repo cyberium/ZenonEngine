@@ -145,13 +145,11 @@
     </ClCompile>
     <ClCompile Include="Utils\Convert.cpp" />
     <ClCompile Include="Utils\Debug.cpp" />
-    <ClCompile Include="Utils\HighResolutionTimer.cpp" />
     <ClCompile Include="Utils\Primitives\BoundingBox.cpp" />
     <ClCompile Include="Utils\Primitives\BoundingRect.cpp" />
     <ClCompile Include="Utils\Primitives\BoundingSphere.cpp" />
     <ClCompile Include="Utils\Primitives\Frustrum.cpp" />
     <ClCompile Include="Utils\Random.cpp" />
-    <ClCompile Include="Utils\Timer.cpp" />
     <ClCompile Include="Utils\Utils.cpp" />
     <ClCompile Include="XML\tinyxml.cpp" />
     <ClCompile Include="XML\tinyxmlerror.cpp" />
@@ -305,11 +303,8 @@
     <ClInclude Include="Utils\Debug.h" />
     <ClInclude Include="Utils\HighResolutionTimer.h" />
     <ClInclude Include="Utils\LockedQueue.h" />
-    <ClInclude Include="Utils\Macros.h" />
     <ClInclude Include="Utils\MapAssync.h" />
     <ClInclude Include="Utils\Math\MathCommon.h" />
-    <ClInclude Include="Utils\Math\MathTypes.h" />
-    <ClInclude Include="Utils\Math\Matrix.h" />
     <ClInclude Include="Utils\Primitives\BoundingBox.h" />
     <ClInclude Include="Utils\Primitives\BoundingRect.h" />
     <ClInclude Include="Utils\Primitives\BoundingSphere.h" />

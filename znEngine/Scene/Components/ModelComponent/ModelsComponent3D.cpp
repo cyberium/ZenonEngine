@@ -117,7 +117,10 @@ void CModelsComponent3D::PlayAnimation(uint16 AnimationId, bool Loop)
 {
 	const auto& animations = GetModel()->GetAnimations();
 	if (animations.empty())
+	{
+		Log::Error("ModelsComponent: Animation with id '%d' not found.", AnimationId);
 		return;
+	}
 
 	m_IsAnimationLooped = Loop;
 
@@ -283,8 +286,7 @@ void CModelsComponent3D::InitializeBones()
 {
 	for (const auto& b : GetModel()->GetBones())
 	{
-		auto bone = MakeShared(CSkeletonComponentBone3D, b);
-		AddBone(bone);
+		AddBone(MakeShared(CSkeletonComponentBone3D, b));
 	}
 
 	for (const auto& bone : GetBones())

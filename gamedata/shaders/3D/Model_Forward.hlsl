@@ -115,8 +115,8 @@ float4 PS_main(VertexShaderOutput IN) : SV_TARGET
 	float2 displacedTexCoord = ExtractDisplacement(Mat, IN.texCoord, IN.normalVS.xyz, IN.tangentVS.xyz, IN.binormalVS.xyz, float3(0.0f, 0.0f, 0.0f), IN.positionVS.xyz);
 	
 	float4 diffuseAndAlpha = ExtractDuffuseAndAlpha(Mat, displacedTexCoord);
-	if (diffuseAndAlpha.a < 0.05f)
-		discard;
+	//if (diffuseAndAlpha.a < 0.01f)
+	//	discard;
 		
 	//return diffuseAndAlpha;
 		

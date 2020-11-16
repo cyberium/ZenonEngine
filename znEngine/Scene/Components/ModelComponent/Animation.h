@@ -1,6 +1,6 @@
 #pragma once
 
-class CAnimation
+class ZN_API CAnimation
 	: public IAnimation
 {
 public:

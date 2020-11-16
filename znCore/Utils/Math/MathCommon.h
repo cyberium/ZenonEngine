@@ -20,65 +20,16 @@ namespace Math
 	const float NaN = *(float*)&MaxUInt32;
 };
 
-// -------------------------------------------------------------------------------------------------
-// General
-// -------------------------------------------------------------------------------------------------
-
-static inline float clamp(float f, float min, float max)
-{
-	if (f < min) f = min;
-	else if (f > max) f = max;
-
-	return f;
-}
-
-static inline float minf(float a, float b)
-{
-	return a < b ? a : b;
-}
-
-static inline float maxf(float a, float b)
-{
-	return a > b ? a : b;
-}
-
-static inline float fsel(float test, float a, float b)
-{
-	// Branchless selection
-	return test >= 0 ? a : b;
-}
-
-static inline void rotate(float x0, float y0, float *x, float *y, float angle)
-{
-	float xa = *x - x0;
-	float ya = *y - y0;
-	*x = xa * cosf(angle) - ya * sinf(angle) + x0;
-	*y = xa * sinf(angle) + ya * cosf(angle) + y0;
-}
-
-static inline int ftoi_t(double val)
-{
-	// Float to int conversion using truncation
-
-	return (int)val;
-}
-
-static inline int ftoi_r(double val)
-{
-	// Fast round (banker's round) using Sree Kotay's method
-	// This function is much faster than a naive cast from float to int
-
-	union
-	{
-		double dval;
-		int ival[2];
-	} u;
-
-	u.dval = val + 6755399441055744.0;  // Magic number: 2^52 * 1.5;
-	return u.ival[0];         // Needs to be [1] for big-endian
-}
-
-static inline glm::vec3 Fix_X0Z(const glm::vec3& _vec)
+inline glm::vec3 Fix_X0Z(const glm::vec3& _vec)
 {
 	return glm::vec3(_vec.x, 0.0f, _vec.z);
+}
+
+inline glm::vec3 extractScale(const glm::mat4& _m)
+{
+	glm::vec3 scale;
+	scale.x = glm::length(glm::vec3(_m[0][0], _m[0][1], _m[0][2])); // 1st column
+	scale.y = glm::length(glm::vec3(_m[1][0], _m[1][1], _m[1][2])); // 2nd column
+	scale.z = glm::length(glm::vec3(_m[2][0], _m[2][1], _m[2][2])); // 3rd columt
+	return scale;
 }

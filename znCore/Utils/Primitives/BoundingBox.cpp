@@ -139,8 +139,8 @@ void BoundingBox::transform(const glm::mat4& m)
 		{
 			float x = minA[j] * m[j][i];
 			float y = maxA[j] * m[j][i];
-			minB[i] += minf(x, y);
-			maxB[i] += maxf(x, y);
+			minB[i] += glm::min(x, y);
+			maxB[i] += glm::max(x, y);
 		}
 	}
 

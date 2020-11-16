@@ -67,9 +67,6 @@
     <Filter Include="Utils">
       <UniqueIdentifier>{26e6b957-d71f-4cc0-8359-23775776d608}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Utils\Math">
-      <UniqueIdentifier>{73bfe4fc-5b84-4989-b674-17022346fca1}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Utils\Primitives">
       <UniqueIdentifier>{ad05b562-1a9b-4ff3-9c39-cbf71fd061b2}</UniqueIdentifier>
     </Filter>
@@ -274,12 +271,6 @@
       <Filter>Utils</Filter>
     </ClCompile>
     <ClCompile Include="Utils\Utils.cpp">
-      <Filter>Utils</Filter>
-    </ClCompile>
-    <ClCompile Include="Utils\HighResolutionTimer.cpp">
-      <Filter>Utils</Filter>
-    </ClCompile>
-    <ClCompile Include="Utils\Timer.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
     <ClCompile Include="Settings\Actions.cpp">
@@ -686,15 +677,6 @@
     <ClInclude Include="Log\DebugOutput\DebugOutputLog.h">
       <Filter>Log\DebugOutput</Filter>
     </ClInclude>
-    <ClInclude Include="Utils\Math\MathCommon.h">
-      <Filter>Utils\Math</Filter>
-    </ClInclude>
-    <ClInclude Include="Utils\Math\MathTypes.h">
-      <Filter>Utils\Math</Filter>
-    </ClInclude>
-    <ClInclude Include="Utils\Math\Matrix.h">
-      <Filter>Utils\Math</Filter>
-    </ClInclude>
     <ClInclude Include="Utils\Primitives\BoundingBox.h">
       <Filter>Utils\Primitives</Filter>
     </ClInclude>
@@ -717,9 +699,6 @@
       <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="Utils\LockedQueue.h">
-      <Filter>Utils</Filter>
-    </ClInclude>
-    <ClInclude Include="Utils\Macros.h">
       <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="Utils\MapAssync.h">
@@ -835,6 +814,9 @@
     </ClInclude>
     <ClInclude Include="..\shared\Interfaces\Render\ISkeleton.h">
       <Filter>__Interfaces\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils\Math\MathCommon.h">
+      <Filter>Utils</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

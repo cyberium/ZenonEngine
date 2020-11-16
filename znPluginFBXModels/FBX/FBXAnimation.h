@@ -2,9 +2,7 @@
 
 #ifdef ZN_FBX_SDK_ENABLE
 #include <fbxsdk.h>
-
-#include "Scene/Components/ModelComponent/AnimatedValue.h"
-
+#include "FBXInterfaces.h"
 
 class ZN_API CFBXAnimation
 	: public IFBXAnimation

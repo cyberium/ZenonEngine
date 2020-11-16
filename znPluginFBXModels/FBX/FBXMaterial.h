@@ -4,8 +4,6 @@
 #include <fbxsdk.h>
 #include "FBXInterfaces.h"
 
-#include "Materials/MaterialModel.h"
-
 class ZN_API CFBXMaterial
 	: public MaterialModel
 	, public IFBXMaterial

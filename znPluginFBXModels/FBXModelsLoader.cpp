@@ -100,8 +100,7 @@ std::shared_ptr<IFBXScene> CznFBXModelsLoader::LoadScene(const std::shared_ptr<I
 	std::lock_guard<std::mutex> fbxLock(m_FBXManagerLock);
 	std::shared_ptr<CFBXScene> fbxScene = MakeShared(CFBXScene, m_BaseManager, m_FBXManager, LoaderParams);
 	ModelFile->seek(0);
-	if (false == fbxScene->LoadFromFile(ModelFile))
-		throw CException("FBXModelsLoade: Unable to load '%s'", ModelFile->Name().c_str());
+	fbxScene->LoadFromFile(ModelFile);
 	return fbxScene;
 }
 

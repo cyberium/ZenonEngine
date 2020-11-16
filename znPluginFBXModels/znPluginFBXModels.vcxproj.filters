@@ -1,0 +1,122 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="znPluginFBXModels.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="FBX\FBXAnimation.cpp">
+      <Filter>FBX</Filter>
+    </ClCompile>
+    <ClCompile Include="FBX\FBXDisplayAnimation.cpp">
+      <Filter>FBX</Filter>
+    </ClCompile>
+    <ClCompile Include="FBX\FBXDisplayCache.cpp">
+      <Filter>FBX</Filter>
+    </ClCompile>
+    <ClCompile Include="FBX\FBXDisplayCommon.cpp">
+      <Filter>FBX</Filter>
+    </ClCompile>
+    <ClCompile Include="FBX\FBXDisplayLink.cpp">
+      <Filter>FBX</Filter>
+    </ClCompile>
+    <ClCompile Include="FBX\FBXDisplayShape.cpp">
+      <Filter>FBX</Filter>
+    </ClCompile>
+    <ClCompile Include="FBX\FBXLight.cpp">
+      <Filter>FBX</Filter>
+    </ClCompile>
+    <ClCompile Include="FBX\FBXMaterial.cpp">
+      <Filter>FBX</Filter>
+    </ClCompile>
+    <ClCompile Include="FBX\FBXModel.cpp">
+      <Filter>FBX</Filter>
+    </ClCompile>
+    <ClCompile Include="FBX\FBXNode.cpp">
+      <Filter>FBX</Filter>
+    </ClCompile>
+    <ClCompile Include="FBX\FBXScene.cpp">
+      <Filter>FBX</Filter>
+    </ClCompile>
+    <ClCompile Include="FBX\FBXSkeleton.cpp">
+      <Filter>FBX</Filter>
+    </ClCompile>
+    <ClCompile Include="FBX\FBXStream.cpp">
+      <Filter>FBX</Filter>
+    </ClCompile>
+    <ClCompile Include="FBX\FBXUtils.cpp">
+      <Filter>FBX</Filter>
+    </ClCompile>
+    <ClCompile Include="FBXModelsLoader.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="common.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="znPluginFBXModels.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="FBX\FBXAnimation.h">
+      <Filter>FBX</Filter>
+    </ClInclude>
+    <ClInclude Include="FBX\FBXDisplayAnimation.h">
+      <Filter>FBX</Filter>
+    </ClInclude>
+    <ClInclude Include="FBX\FBXDisplayCache.h">
+      <Filter>FBX</Filter>
+    </ClInclude>
+    <ClInclude Include="FBX\FBXDisplayCommon.h">
+      <Filter>FBX</Filter>
+    </ClInclude>
+    <ClInclude Include="FBX\FBXDisplayLink.h">
+      <Filter>FBX</Filter>
+    </ClInclude>
+    <ClInclude Include="FBX\FBXDisplayShape.h">
+      <Filter>FBX</Filter>
+    </ClInclude>
+    <ClInclude Include="FBX\FBXLight.h">
+      <Filter>FBX</Filter>
+    </ClInclude>
+    <ClInclude Include="FBX\FBXMaterial.h">
+      <Filter>FBX</Filter>
+    </ClInclude>
+    <ClInclude Include="FBX\FBXModel.h">
+      <Filter>FBX</Filter>
+    </ClInclude>
+    <ClInclude Include="FBX\FBXNode.h">
+      <Filter>FBX</Filter>
+    </ClInclude>
+    <ClInclude Include="FBX\FBXScene.h">
+      <Filter>FBX</Filter>
+    </ClInclude>
+    <ClInclude Include="FBX\FBXSkeleton.h">
+      <Filter>FBX</Filter>
+    </ClInclude>
+    <ClInclude Include="FBX\FBXStream.h">
+      <Filter>FBX</Filter>
+    </ClInclude>
+    <ClInclude Include="FBX\FBXUtils.h">
+      <Filter>FBX</Filter>
+    </ClInclude>
+    <ClInclude Include="FBXModelsLoader.h" />
+    <ClInclude Include="FBXInterfaces.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Common">
+      <UniqueIdentifier>{5ff9c302-7de9-4924-a786-cba04d144655}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FBX">
+      <UniqueIdentifier>{a337118f-6799-43a4-8aed-86b5659d80fb}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="znPluginFBXModels.rc">
+      <Filter>Common</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+</Project>

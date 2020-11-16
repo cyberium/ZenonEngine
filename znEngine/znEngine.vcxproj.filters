@@ -43,15 +43,6 @@
     <Filter Include="Resources\Textures">
       <UniqueIdentifier>{f841afa5-fa24-4948-a5bb-cc5e7cd3ea2a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="FBX">
-      <UniqueIdentifier>{e7ba6856-f133-4afb-afe5-2b1fd89762b0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="FBX\Helpers">
-      <UniqueIdentifier>{820fdffa-02ef-44ad-96bc-2579ee0988fc}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="FBX\Parts">
-      <UniqueIdentifier>{d92e52e1-0d78-44d9-ba88-a6990c61358e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Passes\UI">
       <UniqueIdentifier>{46e412dd-bb55-422f-9cf7-d860c116b3c4}</UniqueIdentifier>
     </Filter>
@@ -93,9 +84,6 @@
     </Filter>
     <Filter Include="Formats\Models">
       <UniqueIdentifier>{79414a40-821a-439e-9cf4-85619b390ebb}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Formats\Models\Loaders">
-      <UniqueIdentifier>{dce1f577-a935-4948-bb3c-cf3bd2f2b474}</UniqueIdentifier>
     </Filter>
     <Filter Include="Formats\Textures">
       <UniqueIdentifier>{764bb252-60db-4a7e-a0eb-109925bacd6e}</UniqueIdentifier>
@@ -163,30 +151,6 @@
     <ClCompile Include="Materials\MaterialModel.cpp">
       <Filter>Materials</Filter>
     </ClCompile>
-    <ClCompile Include="FBX\FBXDisplayCache.cpp">
-      <Filter>FBX</Filter>
-    </ClCompile>
-    <ClCompile Include="FBX\FBXDisplayCommon.cpp">
-      <Filter>FBX</Filter>
-    </ClCompile>
-    <ClCompile Include="FBX\FBXDisplayLink.cpp">
-      <Filter>FBX</Filter>
-    </ClCompile>
-    <ClCompile Include="FBX\FBXDisplayShape.cpp">
-      <Filter>FBX</Filter>
-    </ClCompile>
-    <ClCompile Include="FBX\FBXScene.cpp">
-      <Filter>FBX</Filter>
-    </ClCompile>
-    <ClCompile Include="FBX\FBXStream.cpp">
-      <Filter>FBX\Helpers</Filter>
-    </ClCompile>
-    <ClCompile Include="FBX\FBXLight.cpp">
-      <Filter>FBX\Parts</Filter>
-    </ClCompile>
-    <ClCompile Include="FBX\FBXMaterial.cpp">
-      <Filter>FBX\Parts</Filter>
-    </ClCompile>
     <ClCompile Include="Formats\Images\ImageLoaderTemplate.cpp">
       <Filter>Formats\Images</Filter>
     </ClCompile>
@@ -210,18 +174,6 @@
     </ClCompile>
     <ClCompile Include="Materials\UI_Texture_Material.cpp">
       <Filter>Materials\UI materials</Filter>
-    </ClCompile>
-    <ClCompile Include="FBX\FBXDisplayAnimation.cpp">
-      <Filter>FBX</Filter>
-    </ClCompile>
-    <ClCompile Include="FBX\FBXSkeleton.cpp">
-      <Filter>FBX\Parts</Filter>
-    </ClCompile>
-    <ClCompile Include="FBX\FBXAnimation.cpp">
-      <Filter>FBX\Parts</Filter>
-    </ClCompile>
-    <ClCompile Include="FBX\FBXModel.cpp">
-      <Filter>FBX\Parts</Filter>
     </ClCompile>
     <ClCompile Include="Passes\Technical\BeginQueryPass.cpp">
       <Filter>Passes\Technical</Filter>
@@ -324,18 +276,6 @@
     </ClCompile>
     <ClCompile Include="Settings.cpp">
       <Filter>Managers</Filter>
-    </ClCompile>
-    <ClCompile Include="Formats\Models\EngineModelsLoader.cpp">
-      <Filter>Formats\Models\Loaders</Filter>
-    </ClCompile>
-    <ClCompile Include="Formats\Models\FBXModelsLoader.cpp">
-      <Filter>Formats\Models\Loaders</Filter>
-    </ClCompile>
-    <ClCompile Include="FBX\FBXUtils.cpp">
-      <Filter>FBX\Helpers</Filter>
-    </ClCompile>
-    <ClCompile Include="FBX\FBXNode.cpp">
-      <Filter>FBX</Filter>
     </ClCompile>
     <ClCompile Include="Formats\Models\ModelsFactory.cpp">
       <Filter>Formats\Models</Filter>
@@ -463,6 +403,9 @@
     <ClCompile Include="Scene\Components\ModelComponent\Animation.cpp">
       <Filter>Scene\Components\ModelComponent</Filter>
     </ClCompile>
+    <ClCompile Include="Formats\Models\EngineModelsLoader.cpp">
+      <Filter>Formats\Models</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="common.h">
@@ -496,30 +439,6 @@
     <ClInclude Include="Materials\MaterialModel.h">
       <Filter>Materials</Filter>
     </ClInclude>
-    <ClInclude Include="FBX\FBXDisplayCache.h">
-      <Filter>FBX</Filter>
-    </ClInclude>
-    <ClInclude Include="FBX\FBXDisplayCommon.h">
-      <Filter>FBX</Filter>
-    </ClInclude>
-    <ClInclude Include="FBX\FBXDisplayLink.h">
-      <Filter>FBX</Filter>
-    </ClInclude>
-    <ClInclude Include="FBX\FBXDisplayShape.h">
-      <Filter>FBX</Filter>
-    </ClInclude>
-    <ClInclude Include="FBX\FBXScene.h">
-      <Filter>FBX</Filter>
-    </ClInclude>
-    <ClInclude Include="FBX\FBXStream.h">
-      <Filter>FBX\Helpers</Filter>
-    </ClInclude>
-    <ClInclude Include="FBX\FBXLight.h">
-      <Filter>FBX\Parts</Filter>
-    </ClInclude>
-    <ClInclude Include="FBX\FBXMaterial.h">
-      <Filter>FBX\Parts</Filter>
-    </ClInclude>
     <ClInclude Include="ThreadPool.h" />
     <ClInclude Include="Formats\Images\ImageLoaderTemplate.h">
       <Filter>Formats\Images</Filter>
@@ -544,21 +463,6 @@
     </ClInclude>
     <ClInclude Include="Materials\UI_Texture_Material.h">
       <Filter>Materials\UI materials</Filter>
-    </ClInclude>
-    <ClInclude Include="FBX\FBXInterfaces.h">
-      <Filter>FBX</Filter>
-    </ClInclude>
-    <ClInclude Include="FBX\FBXDisplayAnimation.h">
-      <Filter>FBX</Filter>
-    </ClInclude>
-    <ClInclude Include="FBX\FBXSkeleton.h">
-      <Filter>FBX\Parts</Filter>
-    </ClInclude>
-    <ClInclude Include="FBX\FBXAnimation.h">
-      <Filter>FBX\Parts</Filter>
-    </ClInclude>
-    <ClInclude Include="FBX\FBXModel.h">
-      <Filter>FBX\Parts</Filter>
     </ClInclude>
     <ClInclude Include="Passes\Technical\BeginQueryPass.h">
       <Filter>Passes\Technical</Filter>
@@ -661,18 +565,6 @@
     </ClInclude>
     <ClInclude Include="Settings.h">
       <Filter>Managers</Filter>
-    </ClInclude>
-    <ClInclude Include="Formats\Models\FBXModelsLoader.h">
-      <Filter>Formats\Models\Loaders</Filter>
-    </ClInclude>
-    <ClInclude Include="Formats\Models\EngineModelsLoader.h">
-      <Filter>Formats\Models\Loaders</Filter>
-    </ClInclude>
-    <ClInclude Include="FBX\FBXUtils.h">
-      <Filter>FBX\Helpers</Filter>
-    </ClInclude>
-    <ClInclude Include="FBX\FBXNode.h">
-      <Filter>FBX</Filter>
     </ClInclude>
     <ClInclude Include="Formats\Models\ModelsFactory.h">
       <Filter>Formats\Models</Filter>
@@ -805,6 +697,9 @@
     </ClInclude>
     <ClInclude Include="Scene\Components\ModelComponent\Animation.h">
       <Filter>Scene\Components\ModelComponent</Filter>
+    </ClInclude>
+    <ClInclude Include="Formats\Models\EngineModelsLoader.h">
+      <Filter>Formats\Models</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -70,7 +70,7 @@ bool CFBXModel::Load(fbxsdk::FbxMesh* NativeMesh)
 		throw CException("FBXModel: There is no control points.");
 
 	NativeMesh->ComputeBBox();
-	if (!NativeMesh->GenerateNormals(true, true))
+	if (false == NativeMesh->GenerateNormals(true, true))
 		throw CException("Error while generate normals.");
 
 	/*DisplayMetaDataConnections(NativeMesh);
@@ -80,8 +80,8 @@ bool CFBXModel::Load(fbxsdk::FbxMesh* NativeMesh)
 	std::vector<glm::vec3> binormal;
 	std::vector<glm::vec3> tangent;*/
 
-	DisplayLink(NativeMesh);
-	DisplayShape(NativeMesh);
+	//DisplayLink(NativeMesh);
+	//DisplayShape(NativeMesh);
 
 	m_Vertices.clear();
 	for (int p = 0; p < NativeMesh->GetPolygonCount(); p++)

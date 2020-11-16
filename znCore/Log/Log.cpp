@@ -95,6 +95,10 @@ void CLog::PushMessageToAllDebugOutputs(IDebugOutput::DebugMessageType _type, co
 		vsnprintf(&buff[0], len + 1, _message, VaList);
 		buff.resize(len);
 
+		// To VisualStudio debug
+		OutputDebugStringA(buff.c_str());
+		OutputDebugStringA("\n");
+
 		// Add to log history
 		m_Messages.push_back(std::make_pair(_type, buff.c_str()));
 	}

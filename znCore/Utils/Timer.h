@@ -1,12 +1,24 @@
 #pragma once;
 
-class Timer
+class ZN_API Timer
 {
 public:
-	Timer();
+	Timer()
+	{
+		Reset();
+	}
 
-	void Reset();
-	float GetElapsedTime() const;
+	void Reset()
+	{
+		m_Previous = std::clock();
+	}
+	float GetElapsedTime() const
+	{
+		float currentTime = std::clock();
+		float deltaTime = currentTime - m_Previous;
+		m_Previous = currentTime;
+		return deltaTime;
+	}
 
 private:
 	mutable float m_Previous;

@@ -229,8 +229,8 @@ inline bool rayAABBIntersection
 
 	l1 = (BoundingBox.getMin().y - Ray.GetOrigin().y) / Ray.GetDirection().y;
 	l2 = (BoundingBox.getMax().y - Ray.GetOrigin().y) / Ray.GetDirection().y;
-	lmin = glm::max(minf(l1, l2), lmin);
-	lmax = glm::min(maxf(l1, l2), lmax);
+	lmin = glm::max(glm::min(l1, l2), lmin);
+	lmax = glm::min(glm::max(l1, l2), lmax);
 
 	l1 = (BoundingBox.getMin().z - Ray.GetOrigin().z) / Ray.GetDirection().z;
 	l2 = (BoundingBox.getMax().z - Ray.GetOrigin().z) / Ray.GetDirection().z;
@@ -264,9 +264,9 @@ inline float nearestDistToAABB
 	const glm::vec3 extent = (BoundingBox.getMax() - BoundingBox.getMin()) * 0.5f;
 
 	glm::vec3 nearestVec;
-	nearestVec.x = maxf(0, fabsf(pos.x - center.x) - extent.x);
-	nearestVec.y = maxf(0, fabsf(pos.y - center.y) - extent.y);
-	nearestVec.z = maxf(0, fabsf(pos.z - center.z) - extent.z);
+	nearestVec.x = glm::max(0.0f, glm::abs(pos.x - center.x) - extent.x);
+	nearestVec.y = glm::max(0.0f, glm::abs(pos.y - center.y) - extent.y);
+	nearestVec.z = glm::max(0.0f, glm::abs(pos.z - center.z) - extent.z);
 
 	return glm::length(nearestVec);
 }

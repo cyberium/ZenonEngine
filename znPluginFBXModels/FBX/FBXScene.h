@@ -13,7 +13,7 @@ public:
 	CFBXScene(const IBaseManager& BaseManager, fbxsdk::FbxManager* FBXManager, const IznLoaderParams* LoaderParams);
 	virtual ~CFBXScene();
 
-	bool LoadFromFile(std::shared_ptr<IFile> File);
+	void LoadFromFile(std::shared_ptr<IFile> File);
 	std::string GetPath() const;
 
 	// IFBXScene

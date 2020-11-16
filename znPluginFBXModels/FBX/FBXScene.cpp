@@ -21,7 +21,11 @@ CFBXScene::CFBXScene(const IBaseManager& BaseManager, fbxsdk::FbxManager* FBXMan
 {
 	fbxsdk::FbxScene* fbxScene = fbxsdk::FbxScene::Create(FBXManager, "Default FBX scene.");
 	if (fbxScene == nullptr)
-		throw CException("FBXManager: Unable to create FBX scene.");
+		throw CException("Unable to create FBX scene.");
+
+	int sdkVersionMajor, sdkVersionMinor, sdkVersionRevision;
+	fbxsdk::FbxManager::GetFileFormatVersion(sdkVersionMajor, sdkVersionMinor, sdkVersionRevision);
+	Log::Print("FBX file format version for this FBX SDK is %d.%d.%d", sdkVersionMajor, sdkVersionMinor, sdkVersionRevision);
 
 	m_NativeScene = fbxScene;
 }
@@ -32,48 +36,51 @@ CFBXScene::~CFBXScene()
 
 //------------------------------------------------------------------------------------------------------
 
-bool CFBXScene::LoadFromFile(std::shared_ptr<IFile> File)
+void CFBXScene::LoadFromFile(std::shared_ptr<IFile> File)
 {
-	int lFileMajor, lFileMinor, lFileRevision;
-	int lSDKMajor, lSDKMinor, lSDKRevision;
-	int lFileFormat = -1;
-	int i, lAnimStackCount;
-	bool lStatus;
-	
-	// Get the file version number generate by the FBX SDK.
-	fbxsdk::FbxManager::GetFileFormatVersion(lSDKMajor, lSDKMinor, lSDKRevision);
+	if (fbxsdk::FbxDocumentInfo* sceneInfo = m_NativeScene->GetSceneInfo())
+	{
+		Log::Print("-------------------- Meta-Data --------------------");
+		Log::Print("    Title: %s", sceneInfo->mTitle.Buffer());
+		Log::Print("    Subject: %s", sceneInfo->mSubject.Buffer());
+		Log::Print("    Author: %s", sceneInfo->mAuthor.Buffer());
+		Log::Print("    Keywords: %s", sceneInfo->mKeywords.Buffer());
+		Log::Print("    Revision: %s", sceneInfo->mRevision.Buffer());
+		Log::Print("    Comment: %s", sceneInfo->mComment.Buffer());
+	}
+
+
+
+
 
 	// Create an importer.
-	FbxImporter* lImporter = FbxImporter::Create(m_NativeScene->GetFbxManager(), "");
+	fbxsdk::FbxImporter* fbxImporter = fbxsdk::FbxImporter::Create(m_NativeScene->GetFbxManager(), "");
 
 	// Create wrapper for file
 	CFBXStream fbxStream(File, m_NativeScene->GetFbxManager()->GetIOPluginRegistry());
 	m_Path = File->Path();
 
 	// Initialize the importer by providing a filename.
-	const bool lImportStatus = lImporter->Initialize(&fbxStream, NULL, lFileFormat, m_NativeScene->GetFbxManager()->GetIOSettings());
-	lImporter->GetFileVersion(lFileMajor, lFileMinor, lFileRevision);
+	int fileFormat = -1;
+	bool importStatus = fbxImporter->Initialize(&fbxStream, NULL, fileFormat, m_NativeScene->GetFbxManager()->GetIOSettings());
+	
+	int fileVersionMajor, fileVersionMinor, fileVersionRevision;
+	fbxImporter->GetFileVersion(fileVersionMajor, fileVersionMinor, fileVersionRevision);
 
-	if (!lImportStatus)
+	if (false == importStatus)
 	{
-		FbxString error = lImporter->GetStatus().GetErrorString();
+		FbxString error = fbxImporter->GetStatus().GetErrorString();
 		Log::Print("Call to FbxImporter::Initialize() failed.");
 		Log::Print("Error returned: %s", error.Buffer());
 
-		if (lImporter->GetStatus().GetCode() == FbxStatus::eInvalidFileVersion)
-		{
-			Log::Print("FBX file format version for this FBX SDK is %d.%d.%d\n", lSDKMajor, lSDKMinor, lSDKRevision);
-			Log::Print("FBX file format version for file '%s' is %d.%d.%d\n\n", File->Path_Name().c_str(), lFileMajor, lFileMinor, lFileRevision);
-		}
-
-		return false;
+		if (fbxImporter->GetStatus().GetCode() == FbxStatus::eInvalidFileVersion)
+			Log::Print("FBX file format version for file '%s' is %d.%d.%d\n\n", File->Path_Name().c_str(), fileVersionMajor, fileVersionMinor, fileVersionRevision);
+		throw CException("Input failed.");
 	}
 
-	Log::Print("FBX file format version for this FBX SDK is %d.%d.%d", lSDKMajor, lSDKMinor, lSDKRevision);
-
-	if (lImporter->IsFBX())
+	if (fbxImporter->IsFBX())
 	{
-		Log::Print("FBX file format version for file '%s' is %d.%d.%d", File->Path_Name().c_str(), lFileMajor, lFileMinor, lFileRevision);
+		Log::Print("FBX file format version for file '%s' is %d.%d.%d", File->Path_Name().c_str(), fileVersionMajor, fileVersionMinor, fileVersionRevision);
 
 		// From this point, it is possible to access animation stack information without
 		// the expense of loading the entire file.
@@ -81,28 +88,24 @@ bool CFBXScene::LoadFromFile(std::shared_ptr<IFile> File)
 #if 1
 		Log::Print("Animation Stack Information");
 
-		lAnimStackCount = lImporter->GetAnimStackCount();
+		int lAnimStackCount = fbxImporter->GetAnimStackCount();
 
 		Log::Print("    Number of Animation Stacks: %d", lAnimStackCount);
-		Log::Print("    Current Animation Stack: '%s'", lImporter->GetActiveAnimStackName().Buffer());
-		Log::Print("\n");
+		Log::Print("    Current Animation Stack: '%s'", fbxImporter->GetActiveAnimStackName().Buffer());
 
-		for (i = 0; i < lAnimStackCount; i++)
+		for (int i = 0; i < lAnimStackCount; i++)
 		{
-			FbxTakeInfo* lTakeInfo = lImporter->GetTakeInfo(i);
+			fbxsdk::FbxTakeInfo* lTakeInfo = fbxImporter->GetTakeInfo(i);
 
 			Log::Print("    Animation Stack %d", i);
 			Log::Print("         Name: '%s'", lTakeInfo->mName.Buffer());
 			Log::Print("         Description: '%s'", lTakeInfo->mDescription.Buffer());
 
-			// Change the value of the import name if the animation stack should be imported 
-			// under a different name.
+			// Change the value of the import name if the animation stack should be imported under a different name.
 			Log::Print("         Import Name: '%s'", lTakeInfo->mImportName.Buffer());
 
-			// Set the value of the import state to false if the animation stack should be not
-			// be imported. 
+			// Set the value of the import state to false if the animation stack should be not be imported. 
 			Log::Print("         Import State: %s", lTakeInfo->mSelect ? "true" : "false");
-			Log::Print("\n");
 		}
 #endif
 
@@ -116,17 +119,11 @@ bool CFBXScene::LoadFromFile(std::shared_ptr<IFile> File)
 		m_NativeScene->GetFbxManager()->GetIOSettings()->SetBoolProp(IMP_FBX_GLOBAL_SETTINGS, true);
 	}
 
-	// Import the scene.
-	lStatus = lImporter->Import(m_NativeScene);
-	if (!lStatus)
-	{
-		Log::Print("Call to FbxImporter::Import() failed.");
-		Log::Print("Error returned: %s", lImporter->GetStatus().GetErrorString());
-		return lStatus;
-	}
+	if (false == fbxImporter->Import(m_NativeScene))
+		throw CException("FBXImporter: Failed to load scenen '%s'. Error: '%s'.", File->Path_Name().c_str(), fbxImporter->GetStatus().GetErrorString());
 
 #if 0
-	if (lStatus == false && lImporter->GetStatus().GetCode() == FbxStatus::ePasswordError)
+	if (status == false && fbxImporter->GetStatus().GetCode() == FbxStatus::ePasswordError)
 	{
 		Log::Print("Please enter password: ");
 
@@ -142,18 +139,18 @@ bool CFBXScene::LoadFromFile(std::shared_ptr<IFile> File)
 		m_FBXManager->GetIOSettings()->SetStringProp(IMP_FBX_PASSWORD, lString);
 		m_FBXManager->GetIOSettings()->SetBoolProp(IMP_FBX_PASSWORD_ENABLE, true);
 
-		lStatus = lImporter->Import(pScene);
+		status = fbxImporter->Import(pScene);
 
-		if (lStatus == false && lImporter->GetStatus().GetCode() == FbxStatus::ePasswordError)
+		if (status == false && fbxImporter->GetStatus().GetCode() == FbxStatus::ePasswordError)
 		{
 			Log::Print("\nPassword is wrong, import aborted.\n");
 		}
 	}
 #endif
 
-	lImporter->Destroy();
+	fbxImporter->Destroy();
 
-	FbxGeometryConverter converter(m_NativeScene->GetFbxManager());
+	fbxsdk::FbxGeometryConverter converter(m_NativeScene->GetFbxManager());
 
 	Timer t;
 	if (!converter.Triangulate(fbxsdk::FbxCast<fbxsdk::FbxScene>(m_NativeScene), true))
@@ -166,8 +163,6 @@ bool CFBXScene::LoadFromFile(std::shared_ptr<IFile> File)
 	//	return false;
 	//}
 
-	DisplayAnimation(m_NativeScene);
-
 	auto skeleton = MakeShared(CFBXSkeleton, m_BaseManager, *this);
 	skeleton->Load(m_NativeScene);
 	m_Skeleton = skeleton;
@@ -179,41 +174,7 @@ bool CFBXScene::LoadFromFile(std::shared_ptr<IFile> File)
 	auto root = MakeShared(CFBXNode, m_BaseManager, *this);
 	root->LoadNode(m_NativeScene->GetRootNode());
 	m_RootNode = root;
-
-	return lStatus;
 }
-
-
-//------------------------------------------------------------------------------------------------------
-/*
-bool CFBXScene::LoadNodes(IScene* Scene)
-{
-	DisplayMetaData(GetNativeScene());
-	DisplayHierarchy(GetNativeScene());
-
-	Log::Print("GEOMETRIES CNT = '%d'", m_NativeScene->GetGeometryCount());
-	for (int i = 0; i < m_NativeScene->GetGeometryCount(); i++)
-	{
-		fbxsdk::FbxGeometry* geom = m_NativeScene->GetGeometry(i);
-		Log::Print("%d GEOM NAME = '%s'", i, geom->GetNameOnly().Buffer());
-	}
-
-	return true;
-}
-
-std::shared_ptr<IModel> CFBXScene::ExtractModel()
-{
-	m_RootNode = MakeShared(CFBXNode, m_BaseManager, weak_from_this(), m_NativeScene->GetRootNode());
-	m_RootNode->LoadNode();
-
-	_ASSERT(m_RootNode->GetChilds().size() == 1);
-
-	auto modelsChild = std::dynamic_pointer_cast<CFBXNode>(m_RootNode->GetChilds().at(0));
-	_ASSERT(modelsChild->GetModel() != nullptr);
-
-	return modelsChild->GetModel();
-}
-*/
 
 //------------------------------------------------------------------------------------------------------
 

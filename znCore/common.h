@@ -3,10 +3,9 @@
 #include "Interfaces/__Interfaces.h"
 #include "Proxies/__Proxies.h"
 
-#include "Utils/Math/MathTypes.h"
+#include "Utils/Math/MathCommon.h"
 
 #include "Utils/Debug.h"
-#include "Utils/Macros.h"
 #include "Utils/Color.h"
 #include "Utils/Timer.h"
 #include "Utils/HighResolutionTimer.h"

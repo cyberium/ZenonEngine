@@ -24,7 +24,6 @@ CFBXLight::~CFBXLight()
 void CFBXLight::Load(fbxsdk::FbxLight * NativeLight)
 {
 	DisplayString("Light Name: ", (char *)NativeLight->GetName());
-	DisplayMetaDataConnections(NativeLight);
 
 	const char* lLightTypes[] = { "Point", "Directional", "Spot", "Area", "Volume" };
 	ELightType lightTypes[] = { ELightType::Point, ELightType::Directional, ELightType::Spot, ELightType::Unknown, ELightType::Unknown };

@@ -1,0 +1,138 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="FBXModelsLoader.cpp" />
+    <ClCompile Include="FBX\FBXAnimation.cpp" />
+    <ClCompile Include="FBX\FBXDisplayAnimation.cpp" />
+    <ClCompile Include="FBX\FBXDisplayCache.cpp" />
+    <ClCompile Include="FBX\FBXDisplayCommon.cpp" />
+    <ClCompile Include="FBX\FBXDisplayLink.cpp" />
+    <ClCompile Include="FBX\FBXDisplayShape.cpp" />
+    <ClCompile Include="FBX\FBXLight.cpp" />
+    <ClCompile Include="FBX\FBXMaterial.cpp" />
+    <ClCompile Include="FBX\FBXModel.cpp" />
+    <ClCompile Include="FBX\FBXNode.cpp" />
+    <ClCompile Include="FBX\FBXScene.cpp" />
+    <ClCompile Include="FBX\FBXSkeleton.cpp" />
+    <ClCompile Include="FBX\FBXStream.cpp" />
+    <ClCompile Include="FBX\FBXUtils.cpp" />
+    <ClCompile Include="stdafx.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="znPluginFBXModels.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="common.h" />
+    <ClInclude Include="FBXInterfaces.h" />
+    <ClInclude Include="FBXModelsLoader.h" />
+    <ClInclude Include="FBX\FBXAnimation.h" />
+    <ClInclude Include="FBX\FBXDisplayAnimation.h" />
+    <ClInclude Include="FBX\FBXDisplayCache.h" />
+    <ClInclude Include="FBX\FBXDisplayCommon.h" />
+    <ClInclude Include="FBX\FBXDisplayLink.h" />
+    <ClInclude Include="FBX\FBXDisplayShape.h" />
+    <ClInclude Include="FBX\FBXLight.h" />
+    <ClInclude Include="FBX\FBXMaterial.h" />
+    <ClInclude Include="FBX\FBXModel.h" />
+    <ClInclude Include="FBX\FBXNode.h" />
+    <ClInclude Include="FBX\FBXScene.h" />
+    <ClInclude Include="FBX\FBXSkeleton.h" />
+    <ClInclude Include="FBX\FBXStream.h" />
+    <ClInclude Include="FBX\FBXUtils.h" />
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="znPluginFBXModels.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="znPluginFBXModels.rc" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{C077D800-0DBE-4CDA-A5AA-0E65821D91DB}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>znPluginFBXModels</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <OutDir>$(SolutionDir)\bin_$(PlatformShortName)\$(Configuration)\</OutDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutDir>$(SolutionDir)\bin_$(PlatformShortName)\$(Configuration)\</OutDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>_DEBUG;_WINDOWS;_USRDLL;OW_ENGINE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..\shared;..\Externals;..\$(ProjectName)\;$(ZN_FBX_SDK_PATH)include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <TreatSpecificWarningsAsErrors>4172</TreatSpecificWarningsAsErrors>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <DisableSpecificWarnings>4251;4250;4715</DisableSpecificWarnings>
+    </ClCompile>
+    <ResourceCompile />
+    <PostBuildEvent />
+    <Link>
+      <AdditionalLibraryDirectories>$(SolutionDir)\bin_$(PlatformShortName)\$(Configuration)\;$(ZN_FBX_SDK_PATH)lib\vs2017\$(PlatformShortName)\$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
+      <GenerateDebugInformation>DebugFull</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <PreprocessorDefinitions>NDEBUG;_WINDOWS;_USRDLL;OW_ENGINE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..\shared;..\Externals;..\$(ProjectName)\;$(ZN_FBX_SDK_PATH)include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <TreatSpecificWarningsAsErrors>4172</TreatSpecificWarningsAsErrors>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <DisableSpecificWarnings>4251;4250;4715</DisableSpecificWarnings>
+    </ClCompile>
+    <ResourceCompile />
+    <PostBuildEvent />
+    <Link>
+      <AdditionalLibraryDirectories>$(SolutionDir)\bin_$(PlatformShortName)\$(Configuration)\;$(ZN_FBX_SDK_PATH)lib\vs2017\$(PlatformShortName)\$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

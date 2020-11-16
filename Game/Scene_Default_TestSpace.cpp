@@ -3,7 +3,7 @@
 // General
 #include "Scene_Default.h"
 
-
+#include "../znPluginFBXModels/FBXInterfaces.h"
 
 void CSceneDefault::Load3D()
 {
@@ -163,9 +163,9 @@ void CSceneDefault::Load3D()
 	{
 		auto node = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeFactory>()->CreateSceneNode3D(cSceneNode3D, *this, GetRootSceneNode());
 		node->SetName("OrcAnimation");
-		node->SetTranslate(glm::vec3(0.0f, 0.0f, 0.0f));
+		node->SetTranslate(glm::vec3(0.0f, 15.0f, 0.0f));
 		//node->SetRotation(-glm::vec3(glm::half_pi<float>(), 0.0f, 0.0f));
-		//node->SetScale(glm::vec3(0.5f));
+		node->SetScale(glm::vec3(0.33f));
 
 		CznFBXLoaderParams fbxLoaderParams;
 		fbxLoaderParams.TexturesPathRoot = "Toon_RTS/models/textures/";
@@ -182,13 +182,13 @@ void CSceneDefault::Load3D()
 		
 
 		// Animated skeleton
-		//auto animatedSkeletonModel = fbxSceneLoader->LoadScene("Toon_RTS/animation/archer/WK_archer_03_run2.FBX", &fbxLoaderParams)->MergeModels();
-		//originalSkeletonModel->ApplyOtherSkeleton(animatedSkeletonModel);
+		auto animatedSkeletonModel = fbxSceneLoader->LoadScene("Toon_RTS/animation/archer/WK_archer_03_run2.FBX", &fbxLoaderParams)->MergeModels();
+		originalSkeletonModel->ApplyOtherSkeleton(animatedSkeletonModel);
 
 		// Animations
-		//uint16 cntr = 0;
-		//for (const auto& anim : animatedSkeletonModel->GetAnimations())
-		//	originalSkeletonModel->AddAnimation(anim.first, anim.second);
+		uint16 cntr = 0;
+		for (const auto& anim : animatedSkeletonModel->GetAnimations())
+			originalSkeletonModel->AddAnimation(anim.first, anim.second);
 
 		node->GetComponentT<IModelsComponent3D>()->SetModel(originalSkeletonModel);
 		node->GetComponentT<IModelsComponent3D>()->PlayAnimation(0, true);
