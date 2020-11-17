@@ -12,14 +12,14 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FBXModelsLoader.cpp" />
-    <ClCompile Include="FBX\FBXAnimation.cpp" />
+    <ClCompile Include="FBX\FBXAnimations.cpp" />
     <ClCompile Include="FBX\FBXDisplayAnimation.cpp" />
     <ClCompile Include="FBX\FBXDisplayCache.cpp" />
     <ClCompile Include="FBX\FBXDisplayCommon.cpp" />
     <ClCompile Include="FBX\FBXDisplayLink.cpp" />
     <ClCompile Include="FBX\FBXDisplayShape.cpp" />
     <ClCompile Include="FBX\FBXLight.cpp" />
-    <ClCompile Include="FBX\FBXMaterial.cpp" />
+    <ClCompile Include="FBX\FBXMaterials.cpp" />
     <ClCompile Include="FBX\FBXModel.cpp" />
     <ClCompile Include="FBX\FBXNode.cpp" />
     <ClCompile Include="FBX\FBXScene.cpp" />
@@ -36,14 +36,14 @@
     <ClInclude Include="common.h" />
     <ClInclude Include="FBXInterfaces.h" />
     <ClInclude Include="FBXModelsLoader.h" />
-    <ClInclude Include="FBX\FBXAnimation.h" />
+    <ClInclude Include="FBX\FBXAnimations.h" />
     <ClInclude Include="FBX\FBXDisplayAnimation.h" />
     <ClInclude Include="FBX\FBXDisplayCache.h" />
     <ClInclude Include="FBX\FBXDisplayCommon.h" />
     <ClInclude Include="FBX\FBXDisplayLink.h" />
     <ClInclude Include="FBX\FBXDisplayShape.h" />
     <ClInclude Include="FBX\FBXLight.h" />
-    <ClInclude Include="FBX\FBXMaterial.h" />
+    <ClInclude Include="FBX\FBXMaterials.h" />
     <ClInclude Include="FBX\FBXModel.h" />
     <ClInclude Include="FBX\FBXNode.h" />
     <ClInclude Include="FBX\FBXScene.h" />

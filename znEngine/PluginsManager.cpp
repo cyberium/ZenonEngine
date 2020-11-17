@@ -72,7 +72,7 @@ bool CznPluginsManager::AddPlugin(const std::string& PluginDLLName)
 		throw std::exception(("Plugin[" + PluginDLLName + "]: " + e.what()).c_str());
 	}
 
-	Log::Green("Plugin[%s]: Successfully added.", PluginDLLName.c_str());
+	Log::Green("Plugin '%s' successfully added.", PluginDLLName.c_str());
 
 	return true;
 }
@@ -81,10 +81,7 @@ void CznPluginsManager::RemovePlugin(const std::string& PluginDLLName)
 {
 	const auto& iter = std::find_if(m_Plugins.begin(), m_Plugins.end(), [&PluginDLLName](const SPluginDescription& PluginDescription) -> bool { return PluginDescription.Path == PluginDLLName; });
 	if (iter == m_Plugins.end())
-	{
-		Log::Warn("Plguin not found.");
-		return;
-	}
+		throw CException("Plguin '%s' not found.", PluginDLLName.c_str());
 
 	iter->Plugin->Finalize();
 
@@ -95,7 +92,7 @@ void CznPluginsManager::RemovePlugin(const std::string& PluginDLLName)
 	iter->Plugin.reset();
 
 	if (::FreeLibrary(iter->HModule) == FALSE)
-		throw CException("CznPluginsManager: Failed to '::FreeLibrary()' for plugin '%s'.", iter->Path.c_str());
+		throw CException("Failed to '::FreeLibrary()' for plugin '%s'.", iter->Path.c_str());
 }
 
 void CznPluginsManager::InitializeAllPlugins()

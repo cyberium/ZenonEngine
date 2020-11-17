@@ -19,12 +19,11 @@ public:
 	const std::vector<std::shared_ptr<ISkeletonBone>>& GetBones() const override;
 
 protected:
-	void ProcessSkeletonHeirarchyre(fbxsdk::FbxNode * node, int depth, int index, int parentindex);
+	void ProcessSkeletonHeirarchyre(fbxsdk::FbxNode * Node, int depth, int index, int parentindex);
 
 private:
 	std::shared_ptr<ISkeletonBone> m_RootNode;
 	std::vector<std::shared_ptr<ISkeletonBone>> m_Bones;
-	
 
 private:
 	const IBaseManager& m_BaseManager;

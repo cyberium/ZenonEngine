@@ -101,6 +101,11 @@ void CSceneNodeRTSUnit::Initialize()
 
 	SetScale(glm::vec3(1.0f));
 
+
+
+
+#if 0
+
 	auto model = GetBaseManager().GetManager<IznModelsFactory>()->LoadModel("models/cactus_tall.znmdl");
 	//GetComponentT<IModelsComponent3D>()->SetModel(model);
 
@@ -108,6 +113,8 @@ void CSceneNodeRTSUnit::Initialize()
 	auto m2Node = GetScene().CreateSceneNodeByClass<ISceneNode>(ZN_GET_OBJECTCLASS(150), shared_from_this());
 	m2Node->SetScale(glm::vec3(3.0f));
 	m2Node->SetName("M2Node");
+
+#endif
 
 	//std::shared_ptr<IParticleComponent3D> particlesComponent = MakeShared(CParticlesComponent, *this);
 	//AddComponentT(particlesComponent);

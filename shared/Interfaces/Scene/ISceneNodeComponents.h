@@ -199,6 +199,7 @@ ZN_INTERFACE ZN_API IModelsComponent3D
 	virtual bool IsCastShadows() const = 0;
 
 	// Bones functional
+	virtual std::shared_ptr<ISkeletonComponentBone3D> GetRootBone() const = 0;
 	virtual std::shared_ptr<ISkeletonComponentBone3D> GetBone(size_t Index) const = 0;
 	virtual const std::vector<std::shared_ptr<ISkeletonComponentBone3D>>& GetBones() const = 0;
 	virtual std::shared_ptr<IStructuredBuffer> GetBonesBuffer() const = 0;

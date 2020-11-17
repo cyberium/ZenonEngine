@@ -78,6 +78,11 @@ bool CModelsComponent3D::IsCastShadows() const
 //
 // Bones functional
 //
+std::shared_ptr<ISkeletonComponentBone3D> CModelsComponent3D::GetRootBone() const
+{
+	return m_RootBone;
+}
+
 std::shared_ptr<ISkeletonComponentBone3D> CModelsComponent3D::GetBone(size_t Index) const
 {
 	if (Index >= m_Bones.size())
@@ -104,7 +109,10 @@ std::vector<glm::mat4> CModelsComponent3D::CreatePose(size_t BoneStartIndex, siz
 	std::vector<glm::mat4> result;
 	result.reserve(BonesCount);
 	for (size_t i = BoneStartIndex; i < BoneStartIndex + BonesCount; i++)
-		result.push_back(m_Bones[i]->GetMatrix() * m_Bones[i]->GetRotateMatrix());
+	{
+		glm::mat4 m = GetModel()->GetFixSkeleton() * m_Bones[i]->GetMatrix();
+		result.push_back(m * m_Bones[i]->GetRotateMatrix());
+	}
 	return result;
 }
 
@@ -284,9 +292,18 @@ void CModelsComponent3D::Save(const std::shared_ptr<IXMLWriter>& Writer) const
 //
 void CModelsComponent3D::InitializeBones()
 {
-	for (const auto& b : GetModel()->GetBones())
+	for (const auto& boneProto : GetModel()->GetBones())
 	{
-		AddBone(MakeShared(CSkeletonComponentBone3D, b));
+		std::shared_ptr<CSkeletonComponentBone3D> bone = MakeShared(CSkeletonComponentBone3D, boneProto);
+		AddBone(bone);
+
+		if (boneProto->GetParentIndex() == -1)
+		{
+			if (m_RootBone != nullptr)
+				throw CException("ModelComponent: Unable to set '%s' as root bone, because '%s' already root.", boneProto->GetName().c_str(), m_RootBone->GetName().c_str());
+			m_RootBone = bone;
+			Log::Green("ModelComponent: '%s' is root bone.", m_RootBone->GetName().c_str());
+		}
 	}
 
 	for (const auto& bone : GetBones())

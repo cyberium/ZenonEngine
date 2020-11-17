@@ -466,7 +466,7 @@ void CFBXModel::MaterialLoad(fbxsdk::FbxMesh* NativeMesh)
 	bool lIsAllSame = true;
 	for (int l = 0; l < NativeMesh->GetElementMaterialCount(); l++)
 	{
-		FbxGeometryElementMaterial* lMaterialElement = NativeMesh->GetElementMaterial(l);
+		fbxsdk::FbxGeometryElementMaterial* lMaterialElement = NativeMesh->GetElementMaterial(l);
 		if (lMaterialElement->GetMappingMode() == FbxGeometryElement::eByPolygon)
 		{
 			lIsAllSame = false;
@@ -485,15 +485,17 @@ void CFBXModel::MaterialLoad(fbxsdk::FbxMesh* NativeMesh)
 			//_ASSERT(NativeMesh->GetElementMaterialCount() == 1);
 			for (int l = 0; l < NativeMesh->GetElementMaterialCount(); l++)
 			{
-				FbxGeometryElementMaterial* lMaterialElement = NativeMesh->GetElementMaterial(l);
+				fbxsdk::FbxGeometryElementMaterial* lMaterialElement = NativeMesh->GetElementMaterial(l);
 				if (lMaterialElement->GetMappingMode() == FbxGeometryElement::eAllSame)
 				{
+					const char* matName = lMaterialElement->GetName();
+
 					int lMatId = lMaterialElement->GetIndexArray().GetAt(0);
 					_ASSERT(lMatId >= 0);
 
 					//FbxSurfaceMaterial* lMaterial = NativeMesh->GetNode()->GetMaterial(lMatId);
 
-					AddConnection(m_FBXNode.GetFBXMaterial(lMatId)->GetMaterial(), m_Geometry);
+					AddConnection(m_FBXNode.GetFBXScene().GetFBXMaterials()->GetMaterial(m_FBXNode.GetFBXMaterialNameByIndex(lMatId)), m_Geometry);
 				}
 				else
 				{
@@ -509,7 +511,7 @@ void CFBXModel::MaterialLoad(fbxsdk::FbxMesh* NativeMesh)
 			_ASSERT(NativeMesh->GetElementMaterialCount() == 1);
 			for (int l = 0; l < NativeMesh->GetElementMaterialCount(); l++)
 			{
-				FbxGeometryElementMaterial* lMaterialElement = NativeMesh->GetElementMaterial(l);
+				fbxsdk::FbxGeometryElementMaterial* lMaterialElement = NativeMesh->GetElementMaterial(l);
 				int lMatId = lMaterialElement->GetIndexArray().GetAt(polygonIndex);
 				_ASSERT(lMatId >= 0);
 
@@ -531,7 +533,7 @@ void CFBXModel::MaterialLoad(fbxsdk::FbxMesh* NativeMesh)
 			GeometryDrawArgs.VertexStartLocation = it.second.PolygonBegin * 3;
 			GeometryDrawArgs.VertexCnt = it.second.PolygonEnd * 3 - GeometryDrawArgs.VertexStartLocation + 3;
 
-			AddConnection(m_FBXNode.GetFBXMaterial(it.first)->GetMaterial(), m_Geometry, GeometryDrawArgs);
+			AddConnection(m_FBXNode.GetFBXScene().GetFBXMaterials()->GetMaterial(m_FBXNode.GetFBXMaterialNameByIndex(it.first)), m_Geometry, GeometryDrawArgs);
 
 			//Log::Info("Material with id '%d' added for (%d to %d)", it.first, GeometryDrawArgs.VertexStartLocation, GeometryDrawArgs.VertexCnt);
 		}
@@ -635,14 +637,6 @@ void CFBXModel::SkeletonLoad(fbxsdk::FbxMesh* NativeMesh)
 		}
 	}
 #endif
-}
-
-FBXVertex& CFBXModel::GetVertexByControlPointIndex(int Index)
-{
-	for (auto& v : m_Vertices)
-		if (v.controlPointIndex == Index)
-			return v;
-	throw CException("Vertex by control point %d not found.", Index);
 }
 
 /*void CFBXModel::DisplayMaterialMapping(fbxsdk::FbxGeometryElementMaterial* materialElement)

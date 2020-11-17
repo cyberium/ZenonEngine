@@ -41,26 +41,14 @@ void CSceneDefault::Load3D()
 	// Bistro
 	//--------------------------------------------------------------------------
 	/*{
-		if (false == GetBaseManager().GetManager<IFilesManager>()->IsFileExists("Bistro_v4/Bistro v4 Update/Bistro_v4/Bistro_Exterior.znmdl"))
-		{
-			std::shared_ptr<CznFBXLoaderParams> fbxLoaderParams = MakeShared(CznFBXLoaderParams);
-			fbxLoaderParams->TexturesPathRoot = "Bistro_v4/Bistro v4 Update/Bistro_v4/";
-			//fbxLoaderParams->TexturesTypeChange.insert(std::make_pair((uint8)MaterialModel::ETextureType::TextureAmbient, (uint8)MaterialModel::ETextureType::TextureSpecular));
-			//fbxLoaderParams->TexturesTypeChange.insert(std::make_pair((uint8)MaterialModel::ETextureType::TextureBump, (uint8)MaterialModel::ETextureType::TextureNormalMap));
+		auto znModel = GetBaseManager().GetManager<IznModelsFactory>()->LoadModel("Bistro_v4/Bistro_Interior.fbx");
 
-			auto fbxModel = GetBaseManager().GetManager<IznModelsFactory>()->LoadModel("Bistro_v4/Bistro v4 Update/Bistro_v4/Bistro_Exterior.fbx", fbxLoaderParams);
-			auto znMdlFile = GetBaseManager().GetManager<IznModelsFactory>()->SaveModel(fbxModel, "Bistro_v4/Bistro v4 Update/Bistro_v4/Bistro_Exterior.znmdl");
-			GetBaseManager().GetManager<IFilesManager>()->GetFilesStorage("ZenonGamedata2")->SaveFile(znMdlFile);
-		}
-
-
-		auto znModel = GetBaseManager().GetManager<IznModelsFactory>()->LoadModel("Bistro_v4/Bistro v4 Update/Bistro_v4/Bistro_Exterior.znmdl");
-
-		auto node = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeFactory>()->CreateSceneNode3D(cSceneNode3D, this, newRoot);
+		auto node = CreateSceneNode<ISceneNode>();
 		node->SetName("Bistro");
 		node->SetTranslate(glm::vec3(0, 0, 0));
-		node->SetScale(glm::vec3(1.0f));
-		node->GetComponent<IModelsComponent3D>()->SetModel(znModel);
+		node->SetRotation(glm::vec3(-glm::half_pi<float>(), 0.0f, 0.0f));
+		node->SetScale(glm::vec3(15.0f));
+		node->GetComponentT<IModelsComponent3D>()->SetModel(znModel);
 	}*/
 
 
@@ -163,7 +151,7 @@ void CSceneDefault::Load3D()
 	{
 		auto node = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeFactory>()->CreateSceneNode3D(cSceneNode3D, *this, GetRootSceneNode());
 		node->SetName("OrcAnimation");
-		node->SetTranslate(glm::vec3(0.0f, 15.0f, 0.0f));
+		node->SetTranslate(glm::vec3(0.0f, 0.0f, 0.0f));
 		//node->SetRotation(-glm::vec3(glm::half_pi<float>(), 0.0f, 0.0f));
 		node->SetScale(glm::vec3(0.33f));
 

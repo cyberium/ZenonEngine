@@ -88,12 +88,15 @@ glm::mat4 CSkeletonBone::CalcMatrix(const IModelsComponent3D* ModelsComponent) c
 	glm::mat4 m(1.0f);
 
 	m *= GetPivotMatrix();
+	{
+		if (ParentIndex == -1)
+			m *= glm::inverse(LocalTransform);
 
-	if (m_CalculatedMatrixes.IsUsesBySequence(ModelsComponent->GetCurrentAnimationIndex()))
-		m *= m_CalculatedMatrixes.GetValue(ModelsComponent->GetCurrentAnimationIndex(), ModelsComponent->GetCurrentTime_());
-	else
-		m *= LocalTransform;
-
+		if (m_CalculatedMatrixes.IsUsesBySequence(ModelsComponent->GetCurrentAnimationIndex()))
+			m *= m_CalculatedMatrixes.GetValue(ModelsComponent->GetCurrentAnimationIndex(), ModelsComponent->GetCurrentTime_());
+		else
+			m *= LocalTransform;
+	}
 	m *= glm::inverse(GetPivotMatrix());
 
 	return m;

@@ -61,6 +61,16 @@ void ModelProxie::AddBone(std::shared_ptr<ISkeletonBone> Bone)
 	m_Model->AddBone(Bone);
 }
 
+glm::mat4 ModelProxie::GetFixSkeleton() const
+{
+	return m_Model->GetFixSkeleton();
+}
+
+std::shared_ptr<ISkeletonBone> ModelProxie::GetRootBone() const
+{
+	return m_Model->GetRootBone();
+}
+
 std::shared_ptr<ISkeletonBone> ModelProxie::GetBone(size_t Index) const
 {
 	return m_Model->GetBone(Index);

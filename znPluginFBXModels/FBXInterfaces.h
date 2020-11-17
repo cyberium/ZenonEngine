@@ -27,6 +27,13 @@ ZN_INTERFACE ZN_API IFBXMaterial
 	virtual std::shared_ptr<IMaterial> GetMaterial() = 0;
 };
 
+ZN_INTERFACE ZN_API IFBXMaterials
+{
+	virtual ~IFBXMaterials() {}
+
+	virtual std::shared_ptr<IMaterial> GetMaterial(const std::string& MaterialName) const = 0;
+};
+
 ZN_INTERFACE ZN_API IFBXModel
 {
 	virtual ~IFBXModel() {}
@@ -53,7 +60,7 @@ ZN_INTERFACE ZN_API IFBXNode
 	virtual glm::mat4 GetParentWorldTransform() const = 0;
 	virtual std::weak_ptr<IFBXNode> GetParent() const = 0;
 	virtual const std::vector<std::shared_ptr<IFBXNode>>& GetChilds() const = 0;
-	virtual std::shared_ptr<IFBXMaterial> GetFBXMaterial(int Index) const = 0;
+	virtual std::string GetFBXMaterialNameByIndex(size_t Index) const = 0;
 	virtual std::shared_ptr<IFBXModel> GetFBXModel() const = 0;
 	virtual std::shared_ptr<IFBXLight> GetFBXLight() const = 0;
 };
@@ -62,10 +69,12 @@ ZN_INTERFACE ZN_API IFBXScene
 {
 	virtual ~IFBXScene() {}
 
+	virtual std::string GetFBXFilePath() const = 0;
 	virtual std::shared_ptr<IFBXNode> GetFBXRootNode() const = 0;
 	virtual const std::vector<std::shared_ptr<IFBXModel>>& GetFBXModels() const = 0;
 	virtual std::shared_ptr<IFBXSkeleton> GetFBXSkeleton() const = 0;
 	virtual std::shared_ptr<IFBXAnimation> GetFBXAnimation() const = 0;
+	virtual std::shared_ptr<IFBXMaterials> GetFBXMaterials() const = 0;
 	virtual const IznLoaderParams* GetLoaderParams() const = 0;
 	virtual std::shared_ptr<IModel> MergeModels() = 0;
 };

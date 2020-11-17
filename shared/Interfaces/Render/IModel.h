@@ -84,6 +84,8 @@ ZN_INTERFACE ZN_API IModel
 	// Skeleton
 	virtual void                                    ApplyOtherSkeleton(std::shared_ptr<IModel> other) = 0;
 	virtual void                                    AddBone(const std::shared_ptr<ISkeletonBone> Bone) = 0;
+	virtual glm::mat4                               GetFixSkeleton() const = 0;
+	virtual std::shared_ptr<ISkeletonBone>          GetRootBone() const = 0;
 	virtual std::shared_ptr<ISkeletonBone>          GetBone(size_t Index) const = 0;
 	virtual size_t                                  GetBoneIndexByName(const std::string& BoneName) const = 0;
 	virtual std::shared_ptr<ISkeletonBone>          GetBoneByName(const std::string& BoneName) const = 0;

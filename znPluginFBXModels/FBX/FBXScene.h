@@ -14,13 +14,15 @@ public:
 	virtual ~CFBXScene();
 
 	void LoadFromFile(std::shared_ptr<IFile> File);
-	std::string GetPath() const;
+	
 
 	// IFBXScene
+	std::string GetFBXFilePath() const;
 	std::shared_ptr<IFBXNode> GetFBXRootNode() const override;
 	const std::vector<std::shared_ptr<IFBXModel>>& GetFBXModels() const override;
 	std::shared_ptr<IFBXSkeleton> GetFBXSkeleton() const override;
 	std::shared_ptr<IFBXAnimation> GetFBXAnimation() const override;
+	std::shared_ptr<IFBXMaterials> GetFBXMaterials() const override;
 	const IznLoaderParams* GetLoaderParams() const override;
 	std::shared_ptr<IModel> MergeModels() override;
 
@@ -33,6 +35,7 @@ private:
 	std::vector<std::shared_ptr<IFBXModel>> m_Models;
 	std::shared_ptr<IFBXSkeleton> m_Skeleton;
 	std::shared_ptr<IFBXAnimation> m_Animation;
+	std::shared_ptr<IFBXMaterials> m_Materials;
 
 	std::shared_ptr<IModel> m_MergedModel;
 private:

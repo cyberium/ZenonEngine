@@ -16,6 +16,7 @@ public:
 	bool IsCastShadows() const  override;
 
 	// Skeleton functional
+	std::shared_ptr<ISkeletonComponentBone3D> GetRootBone() const override;
 	std::shared_ptr<ISkeletonComponentBone3D> GetBone(size_t Index) const override;
 	const std::vector<std::shared_ptr<ISkeletonComponentBone3D>>& GetBones() const override;
 	std::shared_ptr<IStructuredBuffer> GetBonesBuffer() const override;
@@ -45,6 +46,7 @@ private:
 	bool m_IsCastShadows;
 
 	// Bones
+	std::shared_ptr<ISkeletonComponentBone3D> m_RootBone;
 	std::vector<std::shared_ptr<ISkeletonComponentBone3D>> m_Bones;
 	std::vector<glm::mat4> m_BonesList;
 	std::shared_ptr<IStructuredBuffer> m_StructuredBuffer;

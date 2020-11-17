@@ -22,17 +22,21 @@ namespace
 CznFBXModelsLoader::CznFBXModelsLoader(IBaseManager& BaseManager)
 	: m_BaseManager(BaseManager)
 {
-	m_FBXManager = FbxManager::Create();
+	m_FBXManager = fbxsdk::FbxManager::Create();
 	if (m_FBXManager == nullptr)
-		throw CException("CFBXManager: Unable to create FBX Manager.");
+		throw CException("FBXManager: Unable to create FBX Manager.");
 
-	Log::Print("CFBXManager: Autodesk FBX SDK version %s", m_FBXManager->GetVersion());
+	Log::Print("FBXManager: FBX SDK version %s.", m_FBXManager->GetVersion());
 
-	FbxIOSettings* ios = FbxIOSettings::Create(m_FBXManager, IOSROOT);
+	int sdkVersionMajor, sdkVersionMinor, sdkVersionRevision;
+	fbxsdk::FbxManager::GetFileFormatVersion(sdkVersionMajor, sdkVersionMinor, sdkVersionRevision);
+	Log::Print("FBXManager: FBX file format version is %d.%d.%d.", sdkVersionMajor, sdkVersionMinor, sdkVersionRevision);
+
+	fbxsdk::FbxIOSettings* ios = fbxsdk::FbxIOSettings::Create(m_FBXManager, IOSROOT);
 	m_FBXManager->SetIOSettings(ios);
 
-	FbxString lPath = FbxGetApplicationDirectory();
-	m_FBXManager->LoadPluginsDirectory(lPath.Buffer());
+	//FbxString lPath = FbxGetApplicationDirectory();
+	//m_FBXManager->LoadPluginsDirectory(lPath.Buffer());
 }
 
 CznFBXModelsLoader::~CznFBXModelsLoader()

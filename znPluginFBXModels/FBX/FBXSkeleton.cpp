@@ -114,19 +114,17 @@ CFBXSkeleton::~CFBXSkeleton()
 //
 void CFBXSkeleton::Load(fbxsdk::FbxScene* FBXScene)
 {
-	Log::Print("FBXSkeleton: Loading...", m_Bones.size(), m_RootNode->GetName().c_str());
+	Log::Green("FBXSkeleton: Loading...");
 
-	for (int i = 0; i < FBXScene->GetRootNode()->GetChildCount(); i++)
-	{
-		fbxsdk::FbxNode* node = FBXScene->GetRootNode()->GetChild(i);
-		_ASSERT(node != nullptr);
-		ProcessSkeletonHeirarchyre(node, 0, 0, -1);
-	}
+	ProcessSkeletonHeirarchyre(FBXScene->GetRootNode(), 0, 0, -1);
 
 	if (m_Bones.size() > 0 && m_RootNode == nullptr)
 		throw CException("FBXSkeleton: There are '%d' bones in skeleton, but root bone is nullptr.");
 
-	Log::Print("FBXSkeleton: Loaded '%d' bones. Root bone: '%s'.", m_Bones.size(), m_RootNode->GetName().c_str());
+	if (m_Bones.empty() && m_RootNode == nullptr)
+		return;
+
+	Log::Green("FBXSkeleton: Loaded '%d' bones. Root bone: '%s'.", m_Bones.size(), m_RootNode->GetName().c_str());
 }
 
 
@@ -168,7 +166,7 @@ void CFBXSkeleton::ProcessSkeletonHeirarchyre(fbxsdk::FbxNode* node, int depth, 
 
 	if (node->GetNodeAttribute() && node->GetNodeAttribute()->GetAttributeType() && node->GetNodeAttribute()->GetAttributeType() == fbxsdk::FbxNodeAttribute::eSkeleton)
 	{
-		Log::Print("FBXSkeleton: %s'%s' is bone. Parent index: '%d'.", strOffset.c_str(), node->GetName(), parentindex);
+		Log::Info("FBXSkeleton: %s'%s' is bone. Parent index: '%d'.", strOffset.c_str(), node->GetName(), parentindex);
 
 		std::shared_ptr<CSkeletonBone> bone = MakeShared(CSkeletonBone, node->GetName(), parentindex);
 		bone->LocalTransform = ToGLMMat4(node->EvaluateLocalTransform());

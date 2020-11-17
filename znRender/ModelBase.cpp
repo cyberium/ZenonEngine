@@ -5,6 +5,7 @@
 
 ModelBase::ModelBase(IRenderDevice& RenderDevice)
 	: m_RenderDevice(RenderDevice)
+	, m_FixMatrix(1.0f)
 {
 	SetName("ModelBase");
 }
@@ -68,6 +69,7 @@ const std::vector<IModel::SConnection>& ModelBase::GetConnections() const
 //
 void ModelBase::ApplyOtherSkeleton(std::shared_ptr<IModel> other)
 {
+	m_FixMatrix = GetRootBone()->GetLocalMatrix();
 
 	for (const auto& b : m_Bones)
 	{
@@ -93,7 +95,25 @@ void ModelBase::ApplyOtherSkeleton(std::shared_ptr<IModel> other)
 
 void ModelBase::AddBone(std::shared_ptr<ISkeletonBone> Bone)
 {
+	if (Bone->GetParentIndex() == -1)
+	{
+		if (m_RootBone != nullptr)
+			throw CException("Model: Unable to set '%s' as root bone, because '%s' already root.", Bone->GetName().c_str(), m_RootBone->GetName().c_str());
+		m_RootBone = Bone;
+		Log::Green("Model: '%s' is root bone.", m_RootBone->GetName().c_str());
+	}
+
 	m_Bones.push_back(Bone);
+}
+
+glm::mat4 ModelBase::GetFixSkeleton() const
+{
+	return m_FixMatrix;
+}
+
+std::shared_ptr<ISkeletonBone> ModelBase::GetRootBone() const
+{
+	return m_RootBone;
 }
 
 std::shared_ptr<ISkeletonBone> ModelBase::GetBone(size_t Index) const

@@ -20,7 +20,7 @@ public:
 	glm::mat4 GetParentWorldTransform() const override;
 	std::weak_ptr<IFBXNode> GetParent() const override;
 	const std::vector<std::shared_ptr<IFBXNode>>& GetChilds() const override;
-	std::shared_ptr<IFBXMaterial> GetFBXMaterial(int Index) const override;
+	std::string GetFBXMaterialNameByIndex(size_t Index) const override;
 	std::shared_ptr<IFBXModel> GetFBXModel() const override;
 	std::shared_ptr<IFBXLight> GetFBXLight() const override;
 
@@ -37,7 +37,7 @@ private:
 	std::weak_ptr<CFBXNode> m_Parent;
 	std::vector<std::shared_ptr<IFBXNode>> m_Childs;
 
-	std::vector<std::shared_ptr<IFBXMaterial>> m_MaterialsArray;
+	std::vector<std::string> m_MaterialsMapping;
 	std::shared_ptr<IFBXModel> m_Model;
 	std::shared_ptr<IFBXLight> m_Light;
 

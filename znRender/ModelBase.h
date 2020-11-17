@@ -20,6 +20,8 @@ public:
 	// Skeleton
 	void                                            ApplyOtherSkeleton(std::shared_ptr<IModel> other) override;
 	void                                            AddBone(const std::shared_ptr<ISkeletonBone> Bone) override;
+	glm::mat4                                       GetFixSkeleton() const override;
+	std::shared_ptr<ISkeletonBone>                  GetRootBone() const override;
 	std::shared_ptr<ISkeletonBone>                  GetBone(size_t Index) const override;
 	size_t                                          GetBoneIndexByName(const std::string& BoneName) const override;
 	std::shared_ptr<ISkeletonBone>                  GetBoneByName(const std::string& BoneName) const override;
@@ -40,6 +42,8 @@ protected:
 	std::vector<SConnection>                        m_Connections;
 	std::string                                     m_FileName;
 
+	glm::mat4                                       m_FixMatrix;
+	std::shared_ptr<ISkeletonBone>                  m_RootBone;
 	std::vector<std::shared_ptr<ISkeletonBone>>     m_Bones;
 	Animations_t                                    m_Animations;
 

@@ -149,7 +149,7 @@ EVisitResult CDrawBonesPass::Visit(const ISceneNode * CSceneNode)
 			//glm::mat4 m = b->GetPivotMatrix();
 			//m = glm::scale(m, glm::vec3(4.0f));
 
-			BindPerObjectData(PerObject(CSceneNode->GetWorldTransfom() * b->GetMatrix()));
+			BindPerObjectData(PerObject(CSceneNode->GetWorldTransfom() * modelsComponent->GetModel()->GetFixSkeleton() * b->GetMatrix()));
 
 			const IShader* vertexShader = GetPipeline().GetShaders().at(EShaderType::VertexShader).get();
 			m_SphereGeometry->Render(vertexShader);

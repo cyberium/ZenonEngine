@@ -99,7 +99,7 @@ class ZN_API MaterialModel
 	: public MaterialProxieT<SMaterialModelProperties>
 {
 public:
-	enum class ZN_API ETextureType: uint32
+	enum ZN_API ETextureType: uint32
 	{
 		TextureDiffuse = 0,
 		TextureEmissive = 1,
@@ -118,6 +118,7 @@ public:
 	virtual ~MaterialModel();
 
 	void SetEmissiveColor(const glm::vec3& Color);
+
 	void SetAmbientColor(const glm::vec3& Color);
 	void SetDiffuseColor(const glm::vec3& Color);
 

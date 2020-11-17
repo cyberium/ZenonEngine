@@ -47,7 +47,6 @@ public:
 private:
 	void MaterialLoad(fbxsdk::FbxMesh* NativeMesh);
 	void SkeletonLoad(fbxsdk::FbxMesh* NativeMesh);
-	FBXVertex& GetVertexByControlPointIndex(int Index);
 	//void DisplayMaterialMapping(fbxsdk::FbxGeometryElementMaterial* materialElement);
 
 private:

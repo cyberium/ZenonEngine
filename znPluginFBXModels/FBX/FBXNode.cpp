@@ -9,7 +9,6 @@
 #include "FBXDisplayCommon.h"
 #include "FBXDisplayAnimation.h"
 
-#include "FBXMaterial.h"
 #include "FBXModel.h"
 #include "FBXLight.h"
 
@@ -31,13 +30,6 @@ CFBXNode::~CFBXNode()
 
 void CFBXNode::LoadNode(fbxsdk::FbxNode * NativeNode, int pDepth)
 {
-	std::string nodeNameString;
-	for (int i = 0; i < pDepth; i++)
-		nodeNameString += "   ";
-
-	nodeNameString += NativeNode->GetName();
-	Log::Print(nodeNameString.c_str());
-
 	LoadParams(NativeNode);
 	LoadMaterials(NativeNode);
 	LoadChilds(NativeNode);
@@ -86,9 +78,9 @@ const std::vector<std::shared_ptr<IFBXNode>>& CFBXNode::GetChilds() const
 	return m_Childs;
 }
 
-std::shared_ptr<IFBXMaterial> CFBXNode::GetFBXMaterial(int Index) const
+std::string CFBXNode::GetFBXMaterialNameByIndex(size_t Index) const const
 {
-	return m_MaterialsArray.at(Index);
+	return m_MaterialsMapping.at(Index);
 }
 
 std::shared_ptr<IFBXModel> CFBXNode::GetFBXModel() const
@@ -138,13 +130,8 @@ void CFBXNode::LoadChilds(fbxsdk::FbxNode * NativeNode)
 
 void CFBXNode::LoadMaterials(fbxsdk::FbxNode * NativeNode)
 {
-	Log::Print("FBXNode: Materials count '%d'.", NativeNode->GetMaterialCount());
 	for (int i = 0; i < NativeNode->GetMaterialCount(); i++)
-	{
-		std::shared_ptr<CFBXMaterial> znMaterial = MakeShared(CFBXMaterial, m_BaseManager, *this);
-		znMaterial->Load(NativeNode->GetMaterial(i));
-		m_MaterialsArray.push_back(znMaterial);
-	}
+		m_MaterialsMapping.push_back(NativeNode->GetMaterial(i)->GetName());
 }
 
 void CFBXNode::LoadAttributes(fbxsdk::FbxNode * NativeNode)

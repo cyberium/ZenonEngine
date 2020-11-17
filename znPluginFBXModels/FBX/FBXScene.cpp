@@ -12,7 +12,8 @@
 #include "FBXDisplayAnimation.h"
 #include "FBXNode.h"
 #include "FBXSkeleton.h"
-#include "FBXAnimation.h"
+#include "FBXAnimations.h"
+#include "FBXMaterials.h"
 
 CFBXScene::CFBXScene(const IBaseManager& BaseManager, fbxsdk::FbxManager* FBXManager, const IznLoaderParams* LoaderParams)
 	: m_BaseManager(BaseManager)
@@ -22,10 +23,6 @@ CFBXScene::CFBXScene(const IBaseManager& BaseManager, fbxsdk::FbxManager* FBXMan
 	fbxsdk::FbxScene* fbxScene = fbxsdk::FbxScene::Create(FBXManager, "Default FBX scene.");
 	if (fbxScene == nullptr)
 		throw CException("Unable to create FBX scene.");
-
-	int sdkVersionMajor, sdkVersionMinor, sdkVersionRevision;
-	fbxsdk::FbxManager::GetFileFormatVersion(sdkVersionMajor, sdkVersionMinor, sdkVersionRevision);
-	Log::Print("FBX file format version for this FBX SDK is %d.%d.%d", sdkVersionMajor, sdkVersionMinor, sdkVersionRevision);
 
 	m_NativeScene = fbxScene;
 }
@@ -38,22 +35,19 @@ CFBXScene::~CFBXScene()
 
 void CFBXScene::LoadFromFile(std::shared_ptr<IFile> File)
 {
+	Log::Green("FBXScene: Loading '%s' file.", File->Path_Name().c_str());
+
 	if (fbxsdk::FbxDocumentInfo* sceneInfo = m_NativeScene->GetSceneInfo())
 	{
-		Log::Print("-------------------- Meta-Data --------------------");
-		Log::Print("    Title: %s", sceneInfo->mTitle.Buffer());
-		Log::Print("    Subject: %s", sceneInfo->mSubject.Buffer());
-		Log::Print("    Author: %s", sceneInfo->mAuthor.Buffer());
-		Log::Print("    Keywords: %s", sceneInfo->mKeywords.Buffer());
-		Log::Print("    Revision: %s", sceneInfo->mRevision.Buffer());
-		Log::Print("    Comment: %s", sceneInfo->mComment.Buffer());
+		Log::Info("FBXScene: Title: '%s'.", sceneInfo->mTitle.Buffer());
+		Log::Info("FBXScene: Subject: '%s'.", sceneInfo->mSubject.Buffer());
+		Log::Info("FBXScene: Author: '%s'.", sceneInfo->mAuthor.Buffer());
+		Log::Info("FBXScene: Keywords: '%s'.", sceneInfo->mKeywords.Buffer());
+		Log::Info("FBXScene: Revision: '%s'.", sceneInfo->mRevision.Buffer());
+		Log::Info("FBXScene: Comment: '%s'.", sceneInfo->mComment.Buffer());
 	}
 
 
-
-
-
-	// Create an importer.
 	fbxsdk::FbxImporter* fbxImporter = fbxsdk::FbxImporter::Create(m_NativeScene->GetFbxManager(), "");
 
 	// Create wrapper for file
@@ -171,14 +165,21 @@ void CFBXScene::LoadFromFile(std::shared_ptr<IFile> File)
 	animation->Load(m_NativeScene);
 	m_Animation = animation;
 
+	auto fbxMaterials = MakeShared(CFBXMaterials, m_BaseManager, *this);
+	fbxMaterials->Load(m_NativeScene);
+	m_Materials = fbxMaterials;
+
 	auto root = MakeShared(CFBXNode, m_BaseManager, *this);
 	root->LoadNode(m_NativeScene->GetRootNode());
 	m_RootNode = root;
 }
 
-//------------------------------------------------------------------------------------------------------
 
-std::string CFBXScene::GetPath() const
+
+//
+// IFBXScene
+//
+std::string CFBXScene::GetFBXFilePath() const
 {
 	return m_Path;
 }
@@ -201,6 +202,11 @@ std::shared_ptr<IFBXSkeleton> CFBXScene::GetFBXSkeleton() const
 std::shared_ptr<IFBXAnimation> CFBXScene::GetFBXAnimation() const
 {
 	return m_Animation;
+}
+
+std::shared_ptr<IFBXMaterials> CFBXScene::GetFBXMaterials() const
+{
+	return m_Materials;
 }
 
 const IznLoaderParams* CFBXScene::GetLoaderParams() const const
