@@ -3,6 +3,9 @@
 // General
 #include "EngineModelsLoader.h"
 
+// Additional
+#include "Scene/Components/ModelComponent/Animation.h"
+#include "Scene/Components/ModelComponent/SkeletonBone.h"
 
 namespace
 {
@@ -89,11 +92,15 @@ std::shared_ptr<IModel> CznEngineModelsLoader::LoadModel(const std::shared_ptr<I
 	auto model = renderDevice.GetObjectsFactory().CreateModel();
 	model->SetFileName(ModelFile->Path_Name());
 
+	//
+	// Common data
 	BoundingBox bounds;
 	bounds.Load(ModelFile);
 	model->SetBounds(bounds);
 
 
+	//
+	// Load materials
 	std::vector<std::shared_ptr<IMaterial>> materials;
 	size_t materialsCount;
 	ModelFile->read(&materialsCount);
@@ -112,6 +119,8 @@ std::shared_ptr<IModel> CznEngineModelsLoader::LoadModel(const std::shared_ptr<I
 	}
 
 
+	//
+	// Load geometries
 	std::vector<std::shared_ptr<IGeometry>> geometries;
 	size_t geometriesCount;
 	ModelFile->read(&geometriesCount);
@@ -130,27 +139,67 @@ std::shared_ptr<IModel> CznEngineModelsLoader::LoadModel(const std::shared_ptr<I
 	}
 
 
-
-	std::vector<SConnectionIndexed> indexedConnections;
-	size_t indexedConnectionsCount;
-	ModelFile->read(&indexedConnectionsCount);
-	geometries.reserve(indexedConnectionsCount);
-	for (size_t i = 0; i < indexedConnectionsCount; i++)
+	//
+	// Load connections
 	{
-		size_t materialIndex;
-		ModelFile->read(&materialIndex);
+		size_t indexedConnectionsCount;
+		ModelFile->read(&indexedConnectionsCount);
+		for (size_t i = 0; i < indexedConnectionsCount; i++)
+		{
+			size_t materialIndex;
+			ModelFile->read(&materialIndex);
 
-		size_t geometryIndex;
-		ModelFile->read(&geometryIndex);
+			size_t geometryIndex;
+			ModelFile->read(&geometryIndex);
 
-		SGeometryDrawArgs drawArgs;
-		ModelFile->read(&drawArgs);
+			SGeometryDrawArgs drawArgs;
+			ModelFile->read(&drawArgs);
 
-		auto materialObject = materials[materialIndex];
-		auto geometryObject = geometries[geometryIndex];
+			auto materialObject = materials[materialIndex];
+			auto geometryObject = geometries[geometryIndex];
 
-		model->AddConnection(materialObject, geometryObject, drawArgs);
+			model->AddConnection(materialObject, geometryObject, drawArgs);
+		}
 	}
+
+
+	//
+	// Load animations
+	{
+		std::vector<std::shared_ptr<IAnimation>> animations;
+		size_t animationsCount;
+		if (ModelFile->read(&animationsCount))
+		{
+			animations.reserve(animationsCount);
+			for (size_t i = 0; i < animationsCount; i++)
+			{
+				std::shared_ptr<IAnimation> anim = MakeShared(CAnimation, ModelFile);
+				model->AddAnimation(anim->GetName(), anim);
+			}
+		}
+	}
+
+
+	//
+	// Load bones
+	{
+		std::vector<std::shared_ptr<IAnimation>> bones;
+		size_t bonesCount;
+		if (ModelFile->read(&bonesCount))
+		{
+			bones.reserve(bonesCount);
+			for (size_t i = 0; i < bonesCount; i++)
+			{
+				std::shared_ptr<ISkeletonBone> bone = MakeShared(CSkeletonBone, ModelFile);
+				model->AddBone(bone);
+			}
+		}
+	}
+
+	// Fix skeleton matrix
+	glm::mat4 fixSkeletonMatrix;
+	if (ModelFile->read(&fixSkeletonMatrix))
+		model->SetFixSkeleton(fixSkeletonMatrix);
 
 	return model;
 }
@@ -218,6 +267,33 @@ std::shared_ptr<IFile> CznEngineModelsLoader::SaveModel(const std::shared_ptr<IM
 		file->write(&c.GeometryIndex);
 		file->write(&c.GeometryDrawArgs);
 	}
+
+
+	//
+	// Save animations
+	const auto& animations = Model->GetAnimations();
+	size_t animationsCount = animations.size();
+	file->write(&animationsCount);
+	for (const auto& a : animations)
+	{
+		if (auto loadSave = std::dynamic_pointer_cast<IObjectLoadSave>(a.second))
+			loadSave->Save(file);
+	}
+
+	
+	//
+	// Save bones
+	const auto& bones = Model->GetBones();
+	size_t bonesCount = bones.size();
+	file->write(&bonesCount);
+	for (const auto& b : bones)
+	{
+		if (auto loadSave = std::dynamic_pointer_cast<IObjectLoadSave>(b))
+			loadSave->Save(file);
+	}
+
+	// Fix skeleton matrix
+	file->write(&Model->GetFixSkeleton());
 
 	return file;
 }

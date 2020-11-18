@@ -689,6 +689,19 @@ const std::vector<uint8>& TextureDX11::GetBuffer()
 	return m_Buffer;
 }
 
+
+
+//
+// ITextureInternal
+//
+void TextureDX11::SetFileName(const std::string & FileName)
+{
+	m_FileName = FileName;
+}
+
+
+
+
 ID3D11Resource* TextureDX11::GetTextureResource() const
 {
 	ID3D11Resource* resource = nullptr;

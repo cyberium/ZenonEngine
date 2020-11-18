@@ -3,6 +3,11 @@
 // General
 #include "SkeletonBone.h"
 
+CSkeletonBone::CSkeletonBone(const std::shared_ptr<IByteBuffer>& Buffer)
+{
+	Load(Buffer);
+}
+
 CSkeletonBone::CSkeletonBone(const std::string & Name, int32 ParentIndex)
 	: Name(Name)
 	, ParentIndex(ParentIndex)
@@ -40,7 +45,8 @@ void CSkeletonBone::MergeWithOther(std::shared_ptr<ISkeletonBone> OtherBone)
 	m_CalculatedMatrixes.MergeWithOther(otherAsMe->m_CalculatedMatrixes);
 
 	LocalTransform = otherAsMe->LocalTransform;
-	PivotMatrix = otherAsMe->PivotMatrix;
+	//PivotMatrix = otherAsMe->PivotMatrix;
+	//FuckingMatrix = otherAsMe->FuckingMatrix;
 }
 
 std::string CSkeletonBone::GetName() const
@@ -105,4 +111,46 @@ glm::mat4 CSkeletonBone::CalcMatrix(const IModelsComponent3D* ModelsComponent) c
 glm::mat4 CSkeletonBone::CalcRotateMatrix(const IModelsComponent3D* ModelsComponent) const
 {
 	return FuckingMatrix;
+}
+
+
+
+//
+// IObjectLoadSave
+//
+void CSkeletonBone::CopyTo(std::shared_ptr<IObject> Destination) const
+{
+	throw CException("Not implemented.");
+}
+
+void CSkeletonBone::Load(const std::shared_ptr<IByteBuffer>& Buffer)
+{
+	Buffer->readString(&Name);
+	Buffer->read(&ParentIndex);
+	Buffer->read(&LocalTransform);
+	Buffer->read(&PivotMatrix);
+	Buffer->read(&FuckingMatrix);
+
+	m_CalculatedMatrixes.Load(Buffer);
+}
+
+void CSkeletonBone::Save(const std::shared_ptr<IByteBuffer>& Buffer) const
+{
+	Buffer->writeString(Name);
+	Buffer->write(&ParentIndex);
+	Buffer->write(&LocalTransform);
+	Buffer->write(&PivotMatrix);
+	Buffer->write(&FuckingMatrix);
+
+	m_CalculatedMatrixes.Save(Buffer);
+}
+
+void CSkeletonBone::Load(const std::shared_ptr<IXMLReader>& Reader)
+{
+	throw CException("Not implemented.");
+}
+
+void CSkeletonBone::Save(const std::shared_ptr<IXMLWriter>& Writer) const
+{
+	throw CException("Not implemented.");
 }

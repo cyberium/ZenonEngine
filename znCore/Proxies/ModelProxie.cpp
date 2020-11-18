@@ -61,6 +61,11 @@ void ModelProxie::AddBone(std::shared_ptr<ISkeletonBone> Bone)
 	m_Model->AddBone(Bone);
 }
 
+void ModelProxie::SetFixSkeleton(const glm::mat4 & Matrix)
+{
+	m_Model->SetFixSkeleton(Matrix);
+}
+
 glm::mat4 ModelProxie::GetFixSkeleton() const
 {
 	return m_Model->GetFixSkeleton();
@@ -96,9 +101,9 @@ const std::vector<std::shared_ptr<ISkeletonBone>>& ModelProxie::GetBones() const
 //
 // Animation
 //
-void ModelProxie::AddAnimation(uint16 AnimationId, const std::shared_ptr<IAnimation>& Animation)
+void ModelProxie::AddAnimation(const std::string& AnimationName, const std::shared_ptr<IAnimation>& Animation)
 {
-	m_Model->AddAnimation(AnimationId, Animation);
+	m_Model->AddAnimation(AnimationName, Animation);
 }
 
 const Animations_t& ModelProxie::GetAnimations() const

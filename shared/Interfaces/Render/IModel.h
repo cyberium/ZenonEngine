@@ -39,14 +39,23 @@ ZN_INTERFACE ZN_API IAnimation
 {
 	virtual ~IAnimation() {}
 
-	virtual uint16 GetIndexInSequences() const = 0;
 	virtual const std::string& GetName() const = 0;
 	virtual uint32 GetFrameStart() const = 0;
 	virtual uint32 GetFrameEnd() const = 0;
+
+	virtual uint16 GetIndexInSequences() const = 0; // Index in bones animated value
 };
 
 
-typedef std::unordered_map<uint16, std::shared_ptr<IAnimation>> Animations_t;
+ZN_INTERFACE ZN_API IAnimationInternal
+{
+	virtual ~IAnimationInternal() {}
+
+	virtual void SetName(const std::string& Name) = 0;
+};
+
+
+typedef std::unordered_map<std::string, std::shared_ptr<IAnimation>> Animations_t;
 
 /**
   * ћодель представл€ет собой совокупность логически объединенной геометрии (например: геометри€ ножен стола и геометри€ столешницы),
@@ -84,6 +93,7 @@ ZN_INTERFACE ZN_API IModel
 	// Skeleton
 	virtual void                                    ApplyOtherSkeleton(std::shared_ptr<IModel> other) = 0;
 	virtual void                                    AddBone(const std::shared_ptr<ISkeletonBone> Bone) = 0;
+	virtual void                                    SetFixSkeleton(const glm::mat4& Matrix) = 0;
 	virtual glm::mat4                               GetFixSkeleton() const = 0;
 	virtual std::shared_ptr<ISkeletonBone>          GetRootBone() const = 0;
 	virtual std::shared_ptr<ISkeletonBone>          GetBone(size_t Index) const = 0;
@@ -92,7 +102,7 @@ ZN_INTERFACE ZN_API IModel
 	virtual const std::vector<std::shared_ptr<ISkeletonBone>>& GetBones() const = 0;
 
 	// Animations
-	virtual void                                    AddAnimation(uint16 AnimationId, const std::shared_ptr<IAnimation>& Animation) = 0;
+	virtual void                                    AddAnimation(const std::string& AnimationName, const std::shared_ptr<IAnimation>& Animation) = 0;
 	virtual const Animations_t&                     GetAnimations() const = 0;
 
 	virtual bool                                    Render() const = 0;

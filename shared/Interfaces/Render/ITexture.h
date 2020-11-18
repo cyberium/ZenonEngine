@@ -225,6 +225,14 @@ ZN_INTERFACE ZN_API ITexture
 	}
 };
 
+
+ZN_INTERFACE ZN_API ITextureInternal
+{
+	virtual ~ITextureInternal() {}
+
+	virtual void SetFileName(const std::string& FileName) = 0;
+};
+
 typedef std::vector<std::shared_ptr<ITexture>> TextureList;
 typedef std::unordered_map<uint8, std::shared_ptr<ITexture>> TextureMap;
 typedef std::unordered_map<std::string, std::shared_ptr<ITexture>> TextureNameMap;

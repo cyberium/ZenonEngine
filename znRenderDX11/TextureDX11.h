@@ -2,6 +2,7 @@
 
 class ZN_API TextureDX11 
 	: public ITexture
+	, public ITextureInternal
 	, public std::enable_shared_from_this<TextureDX11>
 {
 public:
@@ -36,7 +37,10 @@ public:
 	virtual void UnBind(uint32_t ID, const IShader* shader, IShaderParameter::Type parameterType) const override;
 	virtual void UnBind(uint32_t ID, EShaderType _shaderType, IShaderParameter::Type parameterType) const override;
 
-	const std::vector<uint8>& GetBuffer();
+	const std::vector<uint8>& GetBuffer() override;
+
+	// ITextureInternal
+	void SetFileName(const std::string& FileName) override;
 
 	// Gets the texture resource associated to this texture
 	ID3D11Resource* GetTextureResource() const;
@@ -112,7 +116,6 @@ private:
 	typedef std::vector<uint8> ColorBuffer;
 	ColorBuffer m_Buffer;
 
-	std::string m_TextureFileName;
 
 	mutable bool m_bIsDirty;
 

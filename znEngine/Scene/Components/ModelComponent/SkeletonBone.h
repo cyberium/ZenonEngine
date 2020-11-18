@@ -4,8 +4,10 @@
 
 class ZN_API CSkeletonBone
 	: public ISkeletonBone
+	, public IObjectLoadSave
 {
 public:
+	CSkeletonBone(const std::shared_ptr<IByteBuffer>& Buffer);
 	CSkeletonBone(const std::string& Name, int32 ParentIndex);
 	virtual ~CSkeletonBone();
 
@@ -25,6 +27,13 @@ public:
 
 	glm::mat4 CalcMatrix(const IModelsComponent3D* ModelsComponent) const override;
 	glm::mat4 CalcRotateMatrix(const IModelsComponent3D* ModelsComponent) const override;
+
+	// IObjectLoadSave
+	void CopyTo(std::shared_ptr<IObject> Destination) const override;
+	void Load(const std::shared_ptr<IByteBuffer>& Buffer) override;
+	void Save(const std::shared_ptr<IByteBuffer>& Buffer) const override;
+	void Load(const std::shared_ptr<IXMLReader>& Reader) override;
+	void Save(const std::shared_ptr<IXMLWriter>& Writer) const override;
 
 	std::string          Name;
 	int32                ParentIndex;

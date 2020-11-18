@@ -69,8 +69,6 @@ const std::vector<IModel::SConnection>& ModelBase::GetConnections() const
 //
 void ModelBase::ApplyOtherSkeleton(std::shared_ptr<IModel> other)
 {
-	m_FixMatrix = GetRootBone()->GetLocalMatrix();
-
 	for (const auto& b : m_Bones)
 	{
 		auto otherBones = other->GetBones();
@@ -100,10 +98,16 @@ void ModelBase::AddBone(std::shared_ptr<ISkeletonBone> Bone)
 		if (m_RootBone != nullptr)
 			throw CException("Model: Unable to set '%s' as root bone, because '%s' already root.", Bone->GetName().c_str(), m_RootBone->GetName().c_str());
 		m_RootBone = Bone;
+		m_FixMatrix = Bone->GetLocalMatrix();
 		Log::Green("Model: '%s' is root bone.", m_RootBone->GetName().c_str());
 	}
 
 	m_Bones.push_back(Bone);
+}
+
+void ModelBase::SetFixSkeleton(const glm::mat4 & Matrix)
+{
+	m_FixMatrix = Matrix;
 }
 
 glm::mat4 ModelBase::GetFixSkeleton() const
@@ -148,9 +152,13 @@ const std::vector<std::shared_ptr<ISkeletonBone>>& ModelBase::GetBones() const
 //
 // Animation
 //
-void ModelBase::AddAnimation(uint16 AnimationId, const std::shared_ptr<IAnimation>& Animation)
+void ModelBase::AddAnimation(const std::string& AnimationName, const std::shared_ptr<IAnimation>& Animation)
 {
-	m_Animations.insert(std::make_pair(AnimationId, Animation));
+	const auto& it = m_Animations.find(AnimationName);
+	if (it != m_Animations.end())
+		throw CException("Animation '%s' already exists in model '%s'", AnimationName.c_str(), GetFileName().c_str());
+	std::dynamic_pointer_cast<IAnimationInternal>(Animation)->SetName(AnimationName);
+	m_Animations.insert(std::make_pair(AnimationName, Animation));
 }
 
 const Animations_t& ModelBase::GetAnimations() const

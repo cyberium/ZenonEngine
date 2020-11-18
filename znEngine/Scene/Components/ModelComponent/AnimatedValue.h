@@ -203,7 +203,7 @@ public:
 			case Interpolations::INTERPOLATION_NONE:
 				return interpolateNone(r, pData.at(pos), pData.at(pos + 1));
 			case Interpolations::INTERPOLATION_LINEAR:
-				return interpolateNone<T>(r, pData.at(pos), pData.at(pos + 1));
+				return interpolateLinear<T>(r, pData.at(pos), pData.at(pos + 1));
 			case Interpolations::INTERPOLATION_HERMITE:
 				return interpolateHermite<T>(r, pData.at(pos), pData.at(pos + 1), m_ValuesHermiteIn[SequenceIndex].at(pos), m_ValuesHermiteOut[SequenceIndex].at(pos));
 			default:
@@ -223,23 +223,87 @@ public:
 	{
 		m_Type = other.m_Type;
 
-		m_Times = other.m_Times;
-		m_Values = other.m_Values;
-		m_ValuesHermiteIn = other.m_ValuesHermiteIn;
-		m_ValuesHermiteOut = other.m_ValuesHermiteOut;
-		/*
-		for (const auto& t : other.m_Times)
-			m_Times.push_back(t);
+		if (other.m_Times.size() == 1)
+			m_Times.push_back(other.m_Times[0]);
 
-		for (const auto& v : other.m_Values)
-			m_Values.push_back(v);
+		if (other.m_Values.size() == 1)
+			m_Values.push_back(other.m_Values[0]);
+		//m_ValuesHermiteIn = other.m_ValuesHermiteIn;
+		//m_ValuesHermiteOut = other.m_ValuesHermiteOut;
+	}
 
-		for (const auto& v : other.m_ValuesHermiteIn)
-			m_ValuesHermiteIn.push_back(v);
+	void Load(const std::shared_ptr<IByteBuffer>& ByteBuffer)
+	{
+		ByteBuffer->read(&m_Type);
 
-		for (const auto& v : other.m_ValuesHermiteOut)
-			m_ValuesHermiteOut.push_back(v);
-			*/
+		// Times
+		{
+			size_t timesCnt;
+			ByteBuffer->read(&timesCnt);
+			m_Times.resize(timesCnt);
+			for (size_t i = 0; i < timesCnt; i++)
+			{
+				size_t timesSequenseCnt;
+				ByteBuffer->read(&timesSequenseCnt);
+				m_Times[i].resize(timesSequenseCnt);
+				for (size_t s = 0; s < timesSequenseCnt; s++)
+				{
+					ByteBuffer->read(&m_Times[i][s]);
+				}
+			}
+		}
+
+		// Values
+		{
+			size_t valuesCnt;
+			ByteBuffer->read(&valuesCnt);
+			m_Values.resize(valuesCnt);
+			for (size_t i = 0; i < valuesCnt; i++)
+			{
+				size_t valuesSequenseCnt;
+				ByteBuffer->read(&valuesSequenseCnt);
+				m_Values[i].resize(valuesSequenseCnt);
+				for (size_t s = 0; s < valuesSequenseCnt; s++)
+				{
+					ByteBuffer->read(&m_Values[i][s]);
+				}
+			}
+		}
+	}
+
+	void Save(const std::shared_ptr<IByteBuffer>& ByteBuffer) const
+	{
+		ByteBuffer->write(&m_Type);
+
+		// Times
+		{
+			size_t timesCnt = m_Times.size();
+			ByteBuffer->write(&timesCnt);
+			for (size_t i = 0; i < timesCnt; i++)
+			{
+				size_t timesSequenseCnt = m_Times[i].size();
+				ByteBuffer->write(&timesSequenseCnt);
+				for (size_t s = 0; s < timesSequenseCnt; s++)
+				{
+					ByteBuffer->write(&m_Times[i][s]);
+				}
+			}
+		}
+
+		// Values
+		{
+			size_t valuesCnt = m_Values.size();
+			ByteBuffer->write(&valuesCnt);
+			for (size_t i = 0; i < valuesCnt; i++)
+			{
+				size_t valuesSequenseCnt = m_Values[i].size();
+				ByteBuffer->write(&valuesSequenseCnt);
+				for (size_t s = 0; s < valuesSequenseCnt; s++)
+				{
+					ByteBuffer->write(&m_Values[i][s]);
+				}
+			}
+		}
 	}
 
 private:

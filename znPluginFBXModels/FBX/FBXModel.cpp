@@ -112,56 +112,55 @@ bool CFBXModel::Load(fbxsdk::FbxMesh* NativeMesh)
 
 				switch (leUV->GetMappingMode())
 				{
+					case FbxGeometryElement::EMappingMode::eByControlPoint:
+					{
+						switch (leUV->GetReferenceMode())
+						{
+						case FbxGeometryElement::eDirect:
+						{
+							v.uv = glm::vec2(leUV->GetDirectArray().GetAt(lControlPointIndex)[0], leUV->GetDirectArray().GetAt(lControlPointIndex)[1]);
+						}
+						break;
+						case FbxGeometryElement::eIndexToDirect:
+						{
+							int id = leUV->GetIndexArray().GetAt(lControlPointIndex);
+							v.uv = glm::vec2(leUV->GetDirectArray().GetAt(id)[0], leUV->GetDirectArray().GetAt(id)[1]);
+						}
+						break;
+						default:
+							_ASSERT(false);
+							break; // other reference modes not shown here!
+						}
+					}
+					break;
 
-				case FbxGeometryElement::eByControlPoint:
-				{
-					switch (leUV->GetReferenceMode())
+					case FbxGeometryElement::EMappingMode::eByPolygonVertex:
 					{
-					case FbxGeometryElement::eDirect:
-					{
-						v.uv = glm::vec2(leUV->GetDirectArray().GetAt(lControlPointIndex)[0], leUV->GetDirectArray().GetAt(lControlPointIndex)[1]);
+						int lTextureUVIndex = NativeMesh->GetTextureUVIndex(p, j);
+						switch (leUV->GetReferenceMode())
+						{
+						case FbxGeometryElement::eDirect:
+						case FbxGeometryElement::eIndexToDirect:
+						{
+							v.uv = glm::vec2(leUV->GetDirectArray().GetAt(lTextureUVIndex)[0], leUV->GetDirectArray().GetAt(lTextureUVIndex)[1]);
+						}
+						break;
+						default:
+							_ASSERT(false);
+							break; // other reference modes not shown here!
+						}
 					}
 					break;
-					case FbxGeometryElement::eIndexToDirect:
-					{
-						int id = leUV->GetIndexArray().GetAt(lControlPointIndex);
-						v.uv = glm::vec2(leUV->GetDirectArray().GetAt(id)[0], leUV->GetDirectArray().GetAt(id)[1]);
-					}
-					break;
+
+					case FbxGeometryElement::EMappingMode::eByPolygon: // doesn't make much sense for UVs
+					case FbxGeometryElement::EMappingMode::eAllSame:   // doesn't make much sense for UVs
+					case FbxGeometryElement::EMappingMode::eNone:       // doesn't make much sense for UVs
+						_ASSERT(false);
+						break;
+
 					default:
 						_ASSERT(false);
-						break; // other reference modes not shown here!
-					}
-				}
-				break;
-
-				case FbxGeometryElement::eByPolygonVertex:
-				{
-					int lTextureUVIndex = NativeMesh->GetTextureUVIndex(p, j);
-					switch (leUV->GetReferenceMode())
-					{
-					case FbxGeometryElement::eDirect:
-					case FbxGeometryElement::eIndexToDirect:
-					{
-						v.uv = glm::vec2(leUV->GetDirectArray().GetAt(lTextureUVIndex)[0], leUV->GetDirectArray().GetAt(lTextureUVIndex)[1]);
-					}
-					break;
-					default:
-						_ASSERT(false);
-						break; // other reference modes not shown here!
-					}
-				}
-				break;
-
-				case FbxGeometryElement::eByPolygon: // doesn't make much sense for UVs
-				case FbxGeometryElement::eAllSame:   // doesn't make much sense for UVs
-				case FbxGeometryElement::eNone:       // doesn't make much sense for UVs
-					_ASSERT(false);
-					break;
-
-				default:
-					_ASSERT(false);
-					break;
+						break;
 				}
 			}
 
@@ -176,8 +175,7 @@ bool CFBXModel::Load(fbxsdk::FbxMesh* NativeMesh)
 				fbxsdk::FbxGeometryElementNormal* elem = NativeMesh->GetElementNormal(l);
 				switch (elem->GetMappingMode())
 				{
-
-				case FbxGeometryElement::eByControlPoint:
+				case FbxGeometryElement::EMappingMode::eByControlPoint:
 				{
 					switch (elem->GetReferenceMode())
 					{
@@ -199,7 +197,7 @@ bool CFBXModel::Load(fbxsdk::FbxMesh* NativeMesh)
 				}
 				break;
 
-				case FbxGeometryElement::eByPolygonVertex:
+				case FbxGeometryElement::EMappingMode::eByPolygonVertex:
 				{
 					int lTextureUVIndex = NativeMesh->GetTextureUVIndex(p, j);
 					switch (elem->GetReferenceMode())
@@ -222,9 +220,9 @@ bool CFBXModel::Load(fbxsdk::FbxMesh* NativeMesh)
 				}
 				break;
 
-				case FbxGeometryElement::eByPolygon: // doesn't make much sense for UVs
-				case FbxGeometryElement::eAllSame:   // doesn't make much sense for UVs
-				case FbxGeometryElement::eNone:       // doesn't make much sense for UVs
+				case FbxGeometryElement::EMappingMode::eByPolygon: // doesn't make much sense for UVs
+				case FbxGeometryElement::EMappingMode::eAllSame:   // doesn't make much sense for UVs
+				case FbxGeometryElement::EMappingMode::eNone:       // doesn't make much sense for UVs
 					_ASSERT(false);
 					break;
 
@@ -418,7 +416,7 @@ bool CFBXModel::Load(fbxsdk::FbxMesh* NativeMesh)
 
 	MaterialLoad(NativeMesh);
 
-	//m_Vertices.clear();
+	m_Vertices.clear();
 
 #if 0
 	if (!binormal.empty())
@@ -536,20 +534,6 @@ void CFBXModel::MaterialLoad(fbxsdk::FbxMesh* NativeMesh)
 			AddConnection(m_FBXNode.GetFBXScene().GetFBXMaterials()->GetMaterial(m_FBXNode.GetFBXMaterialNameByIndex(it.first)), m_Geometry, GeometryDrawArgs);
 
 			//Log::Info("Material with id '%d' added for (%d to %d)", it.first, GeometryDrawArgs.VertexStartLocation, GeometryDrawArgs.VertexCnt);
-		}
-	}
-}
-
-// Scale all the elements of a matrix.
-void MatrixScale(fbxsdk::FbxAMatrix& pMatrix, double pValue)
-{
-	int i, j;
-
-	for (i = 0; i < 4; i++)
-	{
-		for (j = 0; j < 4; j++)
-		{
-			pMatrix[i][j] *= pValue;
 		}
 	}
 }

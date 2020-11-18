@@ -228,7 +228,7 @@ std::shared_ptr<IModel> CFBXScene::MergeModels()
 
 		for (const auto& a : GetFBXAnimation()->GetAnimations())
 		{
-			mergedModel->AddAnimation(0, a);
+			mergedModel->AddAnimation(a->GetName(), a);
 		}
 
 		for (const auto& fbxModel : m_Models)

@@ -46,6 +46,8 @@ std::shared_ptr<ITexture> CznTexturesFactory::LoadTexture2D(const std::shared_pt
 	if (false == texture->LoadTextureFromImage(image))
 		return GetDefaultTexture();
 
+	std::dynamic_pointer_cast<ITextureInternal>(texture)->SetFileName(TextureFile->Path_Name());
+
 	m_TexturesByName[TextureFile->Path_Name()] = texture;
 	return texture;
 }

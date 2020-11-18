@@ -8,7 +8,7 @@
 
 bool TextureDX11::LoadTextureFromImage(const std::shared_ptr<IImage>& Image)
 {
-	m_BPP = Image->GetBitsPerPixel();
+	m_BPP = Image->GetBitsPerPixel(); 
 	//m_bIsTransparent = Image->IsTransperent(); // TODO: Fixme
 	m_TextureResourceFormat = DXGI_FORMAT_R8G8B8A8_UNORM;
 	m_TextureDimension = ITexture::Dimension::Texture2D;

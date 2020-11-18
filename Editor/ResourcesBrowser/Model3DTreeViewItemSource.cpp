@@ -3,6 +3,8 @@
 // General
 #include "Model3DTreeViewItemSource.h"
 
+// Additional
+#include "../znPluginFBXModels/FBXInterfaces.h"
 
 CznModel3DTreeViewItemSource::CznModel3DTreeViewItemSource(IBaseManager& BaseManager, std::string FileName)
 	: m_BaseManager(BaseManager)

@@ -21,6 +21,7 @@ public:
 	// Skeleton
 	void                                                      ApplyOtherSkeleton(std::shared_ptr<IModel> other) override;
 	void                                                      AddBone(const std::shared_ptr<ISkeletonBone> Bone) override;
+	void                                                      SetFixSkeleton(const glm::mat4& Matrix) override;
 	glm::mat4                                                 GetFixSkeleton() const override;
 	std::shared_ptr<ISkeletonBone>                            GetRootBone() const override;
 	std::shared_ptr<ISkeletonBone>                            GetBone(size_t Index) const override;
@@ -29,7 +30,7 @@ public:
 	const std::vector<std::shared_ptr<ISkeletonBone>>&        GetBones() const override;
 
 	// Animations
-	void                                                      AddAnimation(uint16 AnimationId, const std::shared_ptr<IAnimation>& Animation) override;
+	void                                                      AddAnimation(const std::string& AnimationName, const std::shared_ptr<IAnimation>& Animation) override;
 	const Animations_t&                                       GetAnimations() const override;
 
 	virtual bool Render() const override;

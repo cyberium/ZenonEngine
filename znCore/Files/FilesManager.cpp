@@ -38,6 +38,7 @@ std::shared_ptr<IFile> CFilesManager::Create(std::string FileName) const
 	{
 		Log::Error("Error while creating file '%s'.", FileName.c_str());
 		Log::Error("--->'%s'", e.MessageCStr());
+		throw;
 	}
 
 	return nullptr;
@@ -73,6 +74,7 @@ void CFilesManager::Delete(std::string FileName) const
 	{
 		Log::Error("Error while deleting file '%s'.", FileName.c_str());
 		Log::Error("--->'%s'", e.MessageCStr());
+		throw;
 	}
 }
 

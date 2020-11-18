@@ -207,6 +207,7 @@ ZN_INTERFACE ZN_API IModelsComponent3D
 
 	// Animation functional
 	virtual void PlayAnimation(uint16 AnimationId, bool Loop) = 0;
+	virtual void PlayAnimation(const std::string& AnimationName, bool Loop) = 0;
 	virtual size_t GetCurrentAnimationIndex() const = 0;
 	virtual uint32 GetCurrentTime_() const = 0;
 	virtual uint32 GetGlobalTime() const = 0;

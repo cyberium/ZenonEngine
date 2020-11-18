@@ -43,19 +43,43 @@ void CModelsComponent3D::SetModel(const std::shared_ptr<IModel>& Model)
 	if (m_Model != nullptr)
 		Log::Warn("Node '%s' already has model '%s'. Do you really want to replace it with '%s'?", GetOwnerNode().GetName().c_str(), m_Model->GetFileName().c_str(), Model->GetFileName().c_str());
 
-	m_Model = Model;
-	const auto& modelBounds = GetModel()->GetBounds();
+	
+	const auto& modelBounds = Model->GetBounds();
 	if (modelBounds.IsInfinite())
 		throw CException("Model '%s' with inifinity bounds can't be assigned to node '%s'.", Model->GetFileName().c_str(), GetOwnerNode().GetName().c_str());
 
+	ResetModel();
+
+	m_Model = Model;
+	GetComponentT<IColliderComponent3D>()->ExtendBounds(modelBounds);
+
 	InitializeBones();
 
-	GetComponentT<IColliderComponent3D>()->ExtendBounds(modelBounds);
+	try
+	{
+		PlayAnimation("run", true);
+	}
+	catch (...)
+	{
+
+	}
 }
 
 void CModelsComponent3D::ResetModel()
 {
 	m_Model.reset();
+
+	m_RootBone = nullptr;
+	m_Bones.clear();
+	m_BonesList.clear();
+
+	m_CurrentAnimationIndex = 0;
+	m_CurrentAnimation = nullptr;
+	m_IsAnimationLooped = false;
+	m_IsAnimationStopped = true;
+	m_AnimTime = 0.0;
+	m_CurrentTime = 0;
+	m_GlobalTime = 0;
 }
 
 std::shared_ptr<IModel> CModelsComponent3D::GetModel() const
@@ -123,28 +147,23 @@ std::vector<glm::mat4> CModelsComponent3D::CreatePose(size_t BoneStartIndex, siz
 //
 void CModelsComponent3D::PlayAnimation(uint16 AnimationId, bool Loop)
 {
+	throw CException("Not implemented.");
+}
+
+void CModelsComponent3D::PlayAnimation(const std::string & AnimationName, bool Loop)
+{
 	const auto& animations = GetModel()->GetAnimations();
 	if (animations.empty())
-	{
-		Log::Error("ModelsComponent: Animation with id '%d' not found.", AnimationId);
-		return;
-	}
+		throw CException("Animations list empty in Model '%s'.", GetModel()->GetFileName().c_str());
 
 	m_IsAnimationLooped = Loop;
 
-	const auto& animIt = animations.find(AnimationId);
-	if (animIt != animations.end())
-	{
-		m_CurrentAnimation = animIt->second.get();
-		m_CurrentAnimationIndex = animIt->first;
-	}
-	else
-	{
-		_ASSERT(animations.size() > 0);
-		m_CurrentAnimation = animations.begin()->second.get();
-		m_CurrentAnimationIndex = 0;
-	}
+	const auto& animIt = animations.find(AnimationName);
+	if (animIt == animations.end())
+		throw CException("Animation '%s' not found.", AnimationName.c_str());
 
+	m_CurrentAnimation = animIt->second.get();
+	m_CurrentAnimationIndex = std::distance(animations.begin(), animIt);
 	m_CurrentTime = m_CurrentAnimation->GetFrameStart();
 	m_IsAnimationStopped = false;
 	m_AnimTime = 0.0;
@@ -152,9 +171,10 @@ void CModelsComponent3D::PlayAnimation(uint16 AnimationId, bool Loop)
 
 size_t CModelsComponent3D::GetCurrentAnimationIndex() const
 {
-	if (m_CurrentAnimation == nullptr)
-		return 0;
-	return m_CurrentAnimation->GetIndexInSequences();
+	//if (m_CurrentAnimation == nullptr)
+	//	return 0;
+	//return m_CurrentAnimation->GetIndexInSequences(); For wow
+	return m_CurrentAnimationIndex;
 }
 
 uint32 CModelsComponent3D::GetCurrentTime_() const
@@ -187,12 +207,12 @@ void CModelsComponent3D::Update(const UpdateEventArgs & e)
 
 	if (false == m_IsAnimationStopped)
 	{
-		m_AnimTime += e.DeltaTimeMultiplier ;//e.DeltaTime ; // FIXME
+		m_AnimTime += e.DeltaTimeMultiplier;//e.DeltaTime ; // FIXME
 		m_CurrentTime = static_cast<uint32>(m_CurrentAnimation->GetFrameStart() + m_AnimTime);
 		m_GlobalTime = static_cast<uint32>(e.TotalTime);
 
 		// Animation don't ended
-		if (m_CurrentTime >= m_CurrentAnimation->GetFrameEnd())
+		if (m_CurrentTime >= m_CurrentAnimation->GetFrameEnd() - 1)
 		{
 			// Ended!
 			/*if (m_CurrentAnimation->hasNextVatianton())
@@ -209,7 +229,7 @@ void CModelsComponent3D::Update(const UpdateEventArgs & e)
 
 			if (m_IsAnimationLooped)
 			{
-				PlayAnimation(m_CurrentAnimationIndex, true);
+				PlayAnimation(m_CurrentAnimation->GetName(), true);
 			}
 		}
 	}
@@ -292,6 +312,8 @@ void CModelsComponent3D::Save(const std::shared_ptr<IXMLWriter>& Writer) const
 //
 void CModelsComponent3D::InitializeBones()
 {
+	m_RootBone = nullptr;
+
 	for (const auto& boneProto : GetModel()->GetBones())
 	{
 		std::shared_ptr<CSkeletonComponentBone3D> bone = MakeShared(CSkeletonComponentBone3D, boneProto);

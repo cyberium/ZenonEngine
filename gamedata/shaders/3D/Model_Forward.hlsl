@@ -118,7 +118,7 @@ float4 PS_main(VertexShaderOutput IN) : SV_TARGET
 	//if (diffuseAndAlpha.a < 0.01f)
 	//	discard;
 		
-	//return diffuseAndAlpha;
+	return diffuseAndAlpha;
 		
 	float4 ambient = ExtractAmbient(Mat, displacedTexCoord);
 	float4 emissive = ExtractEmissive(Mat, displacedTexCoord);

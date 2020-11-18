@@ -159,7 +159,7 @@ IBaseManager* WINAPI InitializeEngine(std::vector<std::string> Arguments, std::s
 				PathToPlugins = GetExePath();
 
 			pluginsManager->AddPlugin(PathToPlugins + "\\" + "znRenderDX11.dll");
-			pluginsManager->AddPlugin(PathToPlugins + "\\" + "znPluginM2Models.dll");
+			//pluginsManager->AddPlugin(PathToPlugins + "\\" + "znPluginM2Models.dll");
 			pluginsManager->AddPlugin(PathToPlugins + "\\" + "znPluginFBXModels.dll");
 		}
 		catch (const std::exception& e)

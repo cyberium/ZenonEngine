@@ -99,11 +99,6 @@ void CSceneNodeRTSUnit::Initialize()
 {
 	__super::Initialize();
 
-	SetScale(glm::vec3(1.0f));
-
-
-
-
 #if 0
 
 	auto model = GetBaseManager().GetManager<IznModelsFactory>()->LoadModel("models/cactus_tall.znmdl");
@@ -115,6 +110,13 @@ void CSceneNodeRTSUnit::Initialize()
 	m2Node->SetName("M2Node");
 
 #endif
+
+	SetScale(glm::vec3(0.08f));
+
+	auto znMdlFile = GetBaseManager().GetManager<IznModelsFactory>()->LoadModel("OrcWithAnims.znmdl");
+
+	GetComponentT<IModelsComponent3D>()->SetModel(znMdlFile);
+	GetComponentT<IModelsComponent3D>()->PlayAnimation("run", true);
 
 	//std::shared_ptr<IParticleComponent3D> particlesComponent = MakeShared(CParticlesComponent, *this);
 	//AddComponentT(particlesComponent);
@@ -140,9 +142,14 @@ void CSceneNodeRTSUnit::Update(const UpdateEventArgs & e)
 	glm::vec3 newPosition = GetTranslation();
 	newPosition += direction * GetMovementSpeed() * float(e.DeltaTimeMultiplier);
 
+	
+	
 	SetTranslate(newPosition);
-	glm::quat t = glm::quat(glm::vec3(0, glm::half_pi<float>(), 0));
+	
+	glm::quat t = glm::quat(glm::vec3(0, glm::pi<float>(), 0));
 	t *= glm::conjugate(glm::toQuat(glm::lookAt(GetTranslation(), GetTranslation() + direction, glm::vec3(0.0f, 1.0f, 0.0f))));
+	
+	
 	SetRotationQuaternion(t);
 
 	if (glm::distance(GetTranslation(), nextPoint->GetTranslation()) < GetMovementSpeed() * 2.0f)

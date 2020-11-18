@@ -24,6 +24,7 @@ public:
 
 	// Animation functional
 	void PlayAnimation(uint16 AnimationId, bool Loop) override;
+	void PlayAnimation(const std::string& AnimationName, bool Loop) override;
 	size_t GetCurrentAnimationIndex() const override;
 	uint32 GetCurrentTime_() const override;
 	uint32 GetGlobalTime() const override;

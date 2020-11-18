@@ -170,17 +170,41 @@ void CSceneDefault::Load3D()
 		
 
 		// Animated skeleton
-		auto animatedSkeletonModel = fbxSceneLoader->LoadScene("Toon_RTS/animation/archer/WK_archer_03_run2.FBX", &fbxLoaderParams)->MergeModels();
+		auto animatedSkeletonModel = fbxSceneLoader->LoadScene("Toon_RTS/animation/archer/WK_archer_03_run.FBX", &fbxLoaderParams)->MergeModels();
 		originalSkeletonModel->ApplyOtherSkeleton(animatedSkeletonModel);
-
-		// Animations
-		uint16 cntr = 0;
 		for (const auto& anim : animatedSkeletonModel->GetAnimations())
-			originalSkeletonModel->AddAnimation(anim.first, anim.second);
+			originalSkeletonModel->AddAnimation("run", anim.second);
+
+		//auto animatedSkeletonModel2 = fbxSceneLoader->LoadScene("Toon_RTS/animation/archer/WK_archer_10_death_A.FBX", &fbxLoaderParams)->MergeModels();
+		//originalSkeletonModel->ApplyOtherSkeleton(animatedSkeletonModel2);
+		//for (const auto& anim : animatedSkeletonModel2->GetAnimations())
+		//	originalSkeletonModel->AddAnimation("death", anim.second);
+
+		GetBaseManager().GetManager<IFilesManager>()->Delete("OrcWithAnims.znmdl");
+
+		auto znMdlFile = GetBaseManager().GetManager<IznModelsFactory>()->SaveModel(originalSkeletonModel, "OrcWithAnims.znmdl");
+		znMdlFile->Save();
 
 		node->GetComponentT<IModelsComponent3D>()->SetModel(originalSkeletonModel);
-		node->GetComponentT<IModelsComponent3D>()->PlayAnimation(0, true);
+		node->GetComponentT<IModelsComponent3D>()->PlayAnimation("run", true);
 	}
+
+
+	//--------------------------------------------------------------------------
+	// Orc with anims ZNMDL
+	//--------------------------------------------------------------------------
+	/*{
+		auto node = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeFactory>()->CreateSceneNode3D(cSceneNode3D, *this, GetRootSceneNode());
+		node->SetName("OrcAnimationZNMDL");
+		node->SetTranslate(glm::vec3(0.0f, 0.0f, 0.0f));
+		//node->SetRotation(-glm::vec3(glm::half_pi<float>(), 0.0f, 0.0f));
+		node->SetScale(glm::vec3(0.33f));
+
+		auto znMdlFile = GetBaseManager().GetManager<IznModelsFactory>()->LoadModel("OrcWithAnims.znmdl");
+
+		node->GetComponentT<IModelsComponent3D>()->SetModel(znMdlFile);
+		//node->GetComponentT<IModelsComponent3D>()->PlayAnimation("run", true);
+	}*/
 }
 
 
