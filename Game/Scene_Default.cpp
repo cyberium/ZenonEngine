@@ -92,6 +92,14 @@ void CSceneDefault::Initialize()
 
 	{
 		std::shared_ptr<IUIControl> commonControl = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<IUIControlFactory>()->CreateSceneNodeUI(cUIControlWindow, *this);
+		commonControl->SetTranslate(glm::vec2(200.0f));
+
+		std::shared_ptr<CUIControlButton> commonControlBtn = std::dynamic_pointer_cast<CUIControlButton>(GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<IUIControlFactory>()->CreateSceneNodeUI(cUIControlButton, *this, commonControl));
+		commonControlBtn->SetTexture(GetBaseManager().GetManager<IznTexturesFactory>()->LoadTexture2D("tower1.png"));
+
+		std::shared_ptr<CUIControlButton> commonControlBtn2 = std::dynamic_pointer_cast<CUIControlButton>(GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<IUIControlFactory>()->CreateSceneNodeUI(cUIControlButton, *this, commonControl));
+		commonControlBtn2->SetTranslate(glm::vec2(96.0f, 0.0f));
+		commonControlBtn2->SetTexture(GetBaseManager().GetManager<IznTexturesFactory>()->LoadTexture2D("tower2.png"));
 	}
 
 	//--------------------------------------------------------------------------

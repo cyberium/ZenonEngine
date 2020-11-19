@@ -33,7 +33,7 @@
 #include "../znEngine/Scene/SceneBase.h"
 #include "../znEngine/UIControls/UIControlCommon.h"
 #include "../znEngine/UIControls/UIControlText.h"
-
+#include "../znEngine/UIControls/UIControlButton.h"
 
 // Materials
 #include "../znEngine/Materials/MaterialDebug.h"

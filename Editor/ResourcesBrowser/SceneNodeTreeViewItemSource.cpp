@@ -36,7 +36,6 @@ size_t CznSceneNode3DTreeViewItemSource::GetChildsCount() const
 std::shared_ptr<IznTreeViewItem> CznSceneNode3DTreeViewItemSource::GetChild(size_t Index) const
 {
 	const auto& childs = m_SceneNode->GetChilds();
-	_ASSERT(Index < childs.size());
 	if (Index >= childs.size())
 		return nullptr;
 

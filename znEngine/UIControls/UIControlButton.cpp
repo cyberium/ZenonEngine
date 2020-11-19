@@ -1,7 +1,7 @@
 #include "stdafx.h"
 
 // General
-#include "UIControlWindow.h"
+#include "UIControlButton.h"
 
 
 namespace
@@ -23,19 +23,16 @@ namespace
 		glm::vec2 CellSize;
 	};
 
-	const SUISpreadsheetCell cUIWindowCell(glm::vec2(656, 0), glm::vec2(128.0f, 128.0f), glm::vec2(1193.0f, 1193.0f));
+	const SUISpreadsheetCell cUIWindowCell(glm::vec2(656.0f, 128.0f), glm::vec2(128.0f, 128.0f), glm::vec2(1193.0f, 1193.0f));
 }
 
 
-
-
-
-CUIControlWindow::CUIControlWindow(IScene& Scene)
+CUIControlButton::CUIControlButton(IScene& Scene)
 	: CUIControlCommon(Scene)
 {
 }
 
-CUIControlWindow::~CUIControlWindow()
+CUIControlButton::~CUIControlButton()
 {
 }
 
@@ -44,11 +41,29 @@ CUIControlWindow::~CUIControlWindow()
 //
 // CUIControl
 //
-void CUIControlWindow::Initialize()
+void CUIControlButton::Initialize()
 {
 	__super::Initialize();
 
-	CreateWindowGeometry(glm::vec2(128.0f * 3.0f, 85.0f));
+	m_ButtonContent = std::dynamic_pointer_cast<CUIControlCommon>(GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<IUIControlFactory>()->CreateSceneNodeUI(cUIControlCommon, GetScene(), shared_from_this()));
+
+	std::shared_ptr<CMaterialUIControl> contentMaterial = MakeShared(CMaterialUIControl, GetBaseManager().GetApplication().GetRenderDevice());
+	//contentMaterial->SetColor(glm::vec4(1.0f, 0.0f, 0.0f, 0.7f));
+
+	SSubgeometry subGeom;
+	subGeom.Translate = glm::vec2(14.0f, 14.0f);
+	subGeom.Size = glm::vec2(58);
+	subGeom.Material = contentMaterial;
+	subGeom.Geom = GetBaseManager().GetApplication().GetRenderDevice().GetPrimitivesFactory().CreateUIQuad(glm::vec2(1.0f));
+	m_ButtonContent->AddSubgeometry(subGeom);
+
+
+	CreateWindowGeometry(0.0f);
+}
+
+void CUIControlButton::SetTexture(std::shared_ptr<ITexture> Texture)
+{
+	m_ButtonContent->GetSubgeometries()[0].Material->SetTexture(Texture);
 }
 
 
@@ -56,7 +71,7 @@ void CUIControlWindow::Initialize()
 //
 // Protected
 //
-void CUIControlWindow::CreateWindowGeometry(glm::vec2 Size)
+void CUIControlButton::CreateWindowGeometry(float Width)
 {
 	glm::vec2 sizeDiv3 = cUIWindowCell.CellSize / 3.0f;
 	glm::vec2 sizeDiv3UV = cUIWindowCell.UVCellSize / 3.0f;
@@ -69,7 +84,7 @@ void CUIControlWindow::CreateWindowGeometry(glm::vec2 Size)
 	// Left-Top
 	{
 		SSubgeometry subGeom;
-		subGeom.Translate = glm::vec2(-sizeDiv3.x, -sizeDiv3.y);
+		subGeom.Translate = glm::vec2(0.0f, 0.0f);
 		subGeom.Size = sizeDiv3;
 		subGeom.Material = uiMaterial;
 		subGeom.Geom = GetBaseManager().GetApplication().GetRenderDevice().GetPrimitivesFactory().CreateUIQuad(glm::vec2(1.0f),
@@ -81,25 +96,10 @@ void CUIControlWindow::CreateWindowGeometry(glm::vec2 Size)
 
 
 
-	// Left
-	{
-		SSubgeometry subGeom;
-		subGeom.Translate = glm::vec2(-sizeDiv3.x, 0.0f);
-		subGeom.Size = glm::vec2(sizeDiv3.x, Size.y);
-		subGeom.Material = uiMaterial;
-		subGeom.Geom = GetBaseManager().GetApplication().GetRenderDevice().GetPrimitivesFactory().CreateUIQuad(glm::vec2(1.0f),
-			glm::vec2(cUIWindowCell.UVCellStart.x + 0.0f * sizeDiv3UV.x, cUIWindowCell.UVCellStart.y + 1.0f * sizeDiv3UV.y),
-			glm::vec2(cUIWindowCell.UVCellStart.x + 1.0f * sizeDiv3UV.x, cUIWindowCell.UVCellStart.y + 2.0f * sizeDiv3UV.y)
-		);
-		AddSubgeometry(subGeom);
-	}
-
-
-
 	// Left-Bottom
 	{
 		SSubgeometry subGeom;
-		subGeom.Translate = glm::vec2(-sizeDiv3.x, Size.y);
+		subGeom.Translate = glm::vec2(0.0f, sizeDiv3.y);
 		subGeom.Size = sizeDiv3;
 		subGeom.Material = uiMaterial;
 		subGeom.Geom = GetBaseManager().GetApplication().GetRenderDevice().GetPrimitivesFactory().CreateUIQuad(glm::vec2(1.0f),
@@ -114,27 +114,12 @@ void CUIControlWindow::CreateWindowGeometry(glm::vec2 Size)
 	// Right-Top
 	{
 		SSubgeometry subGeom;
-		subGeom.Translate = glm::vec2(Size.x, -sizeDiv3.y);
+		subGeom.Translate = glm::vec2(sizeDiv3.x + Width, 0.0f);
 		subGeom.Size = sizeDiv3;
 		subGeom.Material = uiMaterial;
 		subGeom.Geom = GetBaseManager().GetApplication().GetRenderDevice().GetPrimitivesFactory().CreateUIQuad(glm::vec2(1.0f),
-			glm::vec2(cUIWindowCell.UVCellStart.x + 2.0f * sizeDiv3UV.x, cUIWindowCell.UVCellStart.y + 0.0f * sizeDiv3UV.y),
+			glm::vec2(cUIWindowCell.UVCellStart.x + 2.0f * sizeDiv3UV.x, cUIWindowCell.UVCellStart.y),
 			glm::vec2(cUIWindowCell.UVCellStart.x + 3.0f * sizeDiv3UV.x, cUIWindowCell.UVCellStart.y + 1.0f * sizeDiv3UV.y)
-		);
-		AddSubgeometry(subGeom);
-	}
-
-
-
-	// Right
-	{
-		SSubgeometry subGeom;
-		subGeom.Translate = glm::vec2(Size.x, 0.0f);
-		subGeom.Size = glm::vec2(sizeDiv3.x, Size.y);
-		subGeom.Material = uiMaterial;
-		subGeom.Geom = GetBaseManager().GetApplication().GetRenderDevice().GetPrimitivesFactory().CreateUIQuad(glm::vec2(1.0f),
-			glm::vec2(cUIWindowCell.UVCellStart.x + 2.0f * sizeDiv3UV.x, cUIWindowCell.UVCellStart.y + 1.0f * sizeDiv3UV.y),
-			glm::vec2(cUIWindowCell.UVCellStart.x + 3.0f * sizeDiv3UV.x, cUIWindowCell.UVCellStart.y + 2.0f * sizeDiv3UV.y)
 		);
 		AddSubgeometry(subGeom);
 	}
@@ -144,7 +129,7 @@ void CUIControlWindow::CreateWindowGeometry(glm::vec2 Size)
 	// Right-Bottom
 	{
 		SSubgeometry subGeom;
-		subGeom.Translate = glm::vec2(Size.x, Size.y);
+		subGeom.Translate = glm::vec2(sizeDiv3.x + Width, sizeDiv3.x);
 		subGeom.Size = sizeDiv3;
 		subGeom.Material = uiMaterial;
 		subGeom.Geom = GetBaseManager().GetApplication().GetRenderDevice().GetPrimitivesFactory().CreateUIQuad(glm::vec2(1.0f),
@@ -159,8 +144,8 @@ void CUIControlWindow::CreateWindowGeometry(glm::vec2 Size)
 	// Top
 	{
 		SSubgeometry subGeom;
-		subGeom.Translate = glm::vec2(0.0f, -sizeDiv3.y);
-		subGeom.Size = glm::vec2(Size.x, sizeDiv3.y);
+		subGeom.Translate = glm::vec2(sizeDiv3.x, 0.0f);
+		subGeom.Size = glm::vec2(Width, sizeDiv3.y);
 		subGeom.Material = uiMaterial;
 		subGeom.Geom = GetBaseManager().GetApplication().GetRenderDevice().GetPrimitivesFactory().CreateUIQuad(glm::vec2(1.0f),
 			glm::vec2(cUIWindowCell.UVCellStart.x + 1.0f * sizeDiv3UV.x, cUIWindowCell.UVCellStart.y + 0.0f * sizeDiv3UV.y),
@@ -174,31 +159,12 @@ void CUIControlWindow::CreateWindowGeometry(glm::vec2 Size)
 	// Bottom
 	{
 		SSubgeometry subGeom;
-		subGeom.Translate = glm::vec2(0.0f, Size.y);
-		subGeom.Size = glm::vec2(Size.x, sizeDiv3.y);
+		subGeom.Translate = glm::vec2(sizeDiv3.x, sizeDiv3.y); 
+		subGeom.Size = glm::vec2(Width, sizeDiv3.y);
 		subGeom.Material = uiMaterial;
 		subGeom.Geom = GetBaseManager().GetApplication().GetRenderDevice().GetPrimitivesFactory().CreateUIQuad(glm::vec2(1.0f),
 			glm::vec2(cUIWindowCell.UVCellStart.x + 1.0f * sizeDiv3UV.x, cUIWindowCell.UVCellStart.y + 2.0f * sizeDiv3UV.y),
 			glm::vec2(cUIWindowCell.UVCellStart.x + 2.0f * sizeDiv3UV.x, cUIWindowCell.UVCellStart.y + 3.0f * sizeDiv3UV.y)
-		);
-		AddSubgeometry(subGeom);
-	}
-
-
-
-	// Center
-	{
-		std::shared_ptr<CMaterialUIControl> uiMaterialCenter = MakeShared(CMaterialUIControl, GetBaseManager().GetApplication().GetRenderDevice());
-		uiMaterialCenter->SetTexture(GetBaseManager().GetManager<IznTexturesFactory>()->LoadTexture2D("Interface Pack/Spritesheet/interfacePack_sheet@2.png"));
-		uiMaterialCenter->SetColor(glm::vec4(0.8f, 1.0f, 1.0f, 1.0f));
-
-		SSubgeometry subGeom;
-		subGeom.Translate = glm::vec2(0.0f, 0.0f);
-		subGeom.Size = glm::vec2(Size.x, Size.y);
-		subGeom.Material = uiMaterialCenter;
-		subGeom.Geom = GetBaseManager().GetApplication().GetRenderDevice().GetPrimitivesFactory().CreateUIQuad(glm::vec2(1.0f),
-			glm::vec2(cUIWindowCell.UVCellStart.x + 1.0f * sizeDiv3UV.x, cUIWindowCell.UVCellStart.y + 1.0f * sizeDiv3UV.y),
-			glm::vec2(cUIWindowCell.UVCellStart.x + 2.0f * sizeDiv3UV.x, cUIWindowCell.UVCellStart.y + 2.0f * sizeDiv3UV.y)
 		);
 		AddSubgeometry(subGeom);
 	}

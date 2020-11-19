@@ -349,30 +349,28 @@ std::shared_ptr<IGeometry> CRenderPrimitivesFactory::CreateTorus(float Radius, f
 
 std::shared_ptr<IGeometry> CRenderPrimitivesFactory::CreateQuad()
 {
-	glm::vec2 vertices[4];
-	vertices[0] = glm::vec2( 1.0f, 1.0f);
+	glm::vec2 vertices[6];
+	vertices[0] = glm::vec2(-1.0f, -1.0f);
 	vertices[1] = glm::vec2(-1.0f, 1.0f);
-	vertices[2] = glm::vec2(-1.0f, -1.0f);
-	vertices[3] = glm::vec2( 1.0f, -1.0f);
+	vertices[2] = glm::vec2(1.0f, -1.0f);
 
-	glm::vec2 texCoords[4];
-	texCoords[0] = glm::vec2(1.0f, 0.0f);
-	texCoords[1] = glm::vec2(0.0f, 0.0f);
-	texCoords[2] = glm::vec2(0.0f, 1.0f);
-	texCoords[3] = glm::vec2(1.0f, 1.0f);
+	vertices[3] = glm::vec2(1.0f, -1.0f);
+	vertices[4] = glm::vec2(-1.0f, 1.0f);
+	vertices[5] = glm::vec2(1.0f, 1.0f);
 
-	uint16 indices[6];
-	indices[0] = 1;
-	indices[1] = 0;
-	indices[2] = 2;
-	indices[3] = 2;
-	indices[4] = 0;
-	indices[5] = 3;
+	glm::vec2 texCoords[6];
+	texCoords[0] = glm::vec2(0.0f, 0.0f);
+	texCoords[1] = glm::vec2(0.0f, 1.0f);
+	texCoords[2] = glm::vec2(1.0f, 0.0f);
+
+	texCoords[3] = glm::vec2(1.0f, 0.0f);
+	texCoords[4] = glm::vec2(0.0f, 1.0f);
+	texCoords[5] = glm::vec2(1.0f, 1.0f);
 
 	std::shared_ptr<IGeometry> geometry = m_RenderDevice.GetObjectsFactory().CreateGeometry();
-	geometry->AddVertexBuffer(BufferBinding("POSITION", 0), m_RenderDevice.GetObjectsFactory().CreateVertexBuffer(vertices, 4));
-	geometry->AddVertexBuffer(BufferBinding("TEXCOORD", 0), m_RenderDevice.GetObjectsFactory().CreateVertexBuffer(texCoords, 4));
-	geometry->SetIndexBuffer(m_RenderDevice.GetObjectsFactory().CreateIndexBuffer(indices, 6));
+	geometry->AddVertexBuffer(BufferBinding("POSITION", 0), m_RenderDevice.GetObjectsFactory().CreateVertexBuffer(vertices, 6));
+	geometry->AddVertexBuffer(BufferBinding("TEXCOORD", 0), m_RenderDevice.GetObjectsFactory().CreateVertexBuffer(texCoords, 6));
+	//geometry->SetIndexBuffer(m_RenderDevice.GetObjectsFactory().CreateIndexBuffer(indices, 6));
 
 	return geometry;
 }

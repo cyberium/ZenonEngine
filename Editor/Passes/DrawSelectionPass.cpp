@@ -57,6 +57,8 @@ void CDrawSelectionPass::Render(RenderEventArgs& e)
 //
 std::shared_ptr<IRenderPassPipelined> CDrawSelectionPass::ConfigurePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport)
 {
+	__super::ConfigurePipeline(RenderTarget, Viewport);
+
 	m_QuadGeometry = GetRenderDevice().GetPrimitivesFactory().CreateBBox();
 
 	std::shared_ptr<IShader> vertexShader;

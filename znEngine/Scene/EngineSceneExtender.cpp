@@ -12,6 +12,7 @@
 
 #include "UIControls/UIControlCommon.h"
 #include "UIControls/UIControlWindow.h"
+#include "UIControls/UIControlButton.h"
 #include "UIControls/UIControlText.h"
 
 
@@ -103,6 +104,11 @@ void EngineSceneTypesExtender(IBaseManager& BaseManager)
 	uiControlEngineCreator->AddClass(cUIControlWindow, "UIContolWindow", [](const IObjectCreationArgs* ObjectCreationArgs) -> std::shared_ptr<IObject>
 	{
 		auto node = MakeShared(CUIControlWindow, static_cast<const IUIControlCreationArgs*>(ObjectCreationArgs)->GetScene());
+		return node;
+	});
+	uiControlEngineCreator->AddClass(cUIControlButton, "UIContolButton", [](const IObjectCreationArgs* ObjectCreationArgs) -> std::shared_ptr<IObject>
+	{
+		auto node = MakeShared(CUIControlButton, static_cast<const IUIControlCreationArgs*>(ObjectCreationArgs)->GetScene());
 		return node;
 	});
 

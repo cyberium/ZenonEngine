@@ -64,7 +64,7 @@ std::shared_ptr<IRenderPassPipelined> CPassDeffered_RenderUIQuad::ConfigurePipel
 	// PIPELINES
 	GetPipeline().GetBlendState()->SetBlendMode(additiveBlending);
 	GetPipeline().GetDepthStencilState()->SetDepthMode(disableDepthWrites);
-	GetPipeline().GetRasterizerState()->SetCullMode(IRasterizerState::CullMode::None);
+	//GetPipeline().GetRasterizerState()->SetCullMode(IRasterizerState::CullMode::Front);
 	GetPipeline().SetShader(EShaderType::VertexShader, vertexShader);
 	GetPipeline().SetShader(EShaderType::PixelShader, pixelShader);
 	

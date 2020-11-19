@@ -41,13 +41,17 @@ EVisitResult CUIControlPass::Visit(const IUIControl * node)
 {
 	if (const CUIControlCommon* textNode = dynamic_cast<const CUIControlCommon*>(node))
 	{
-		BaseUIPass::Visit(node);
-
 		const auto& shaders = GetPipeline().GetShaders();
 		const auto& vertexShader = shaders.at(EShaderType::VertexShader).get();
 
 		for (const auto& subGeom : textNode->GetSubgeometries())
 		{
+			PerObject perObject(node->GetWorldTransfom());
+			perObject.Model = glm::translate(perObject.Model, glm::vec3(subGeom.Translate.x, subGeom.Translate.y, 0.0f));
+			perObject.Model = glm::scale(perObject.Model, glm::vec3(subGeom.Size.x, subGeom.Size.y, 1.0f));
+
+			BindPerObjectData(perObject);
+
 			subGeom.Material->Bind(shaders);
 			subGeom.Geom->Render(vertexShader, SGeometryDrawArgs());
 			subGeom.Material->Unbind(shaders);

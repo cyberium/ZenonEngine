@@ -34,8 +34,6 @@ void CPassDeffered_ProcessLights::CreateShadowPipeline()
 	//shadowPipeline->GetRasterizerState()->SetDepthBias(0.0f, 1.1f);
 	shadowPipeline->GetRasterizerState()->SetCullMode(IRasterizerState::CullMode::Front);
 	shadowPipeline->GetRasterizerState()->SetFillMode(IRasterizerState::FillMode::Solid, IRasterizerState::FillMode::Solid);
-	//shadowPipeline->GetRasterizerState()->SetAntialiasedLineEnable(true);
-	//shadowPipeline->GetRasterizerState()->SetMultisampleEnabled(true);
 	shadowPipeline->SetRenderTarget(m_ShadowRenderTarget);
 	shadowPipeline->SetShader(EShaderType::VertexShader, vertexShader);
 	//shadowPipeline->SetShader(EShaderType::PixelShader, pixelShader);

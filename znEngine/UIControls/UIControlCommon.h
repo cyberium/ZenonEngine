@@ -22,7 +22,7 @@ public:
 	void Initialize() override;
 	const std::vector<CUIControlCommon::SSubgeometry>& GetSubgeometries() const;
 
-protected:
+//protected:
 	void AddSubgeometry(const SSubgeometry& Subgeometry);
 
 private:

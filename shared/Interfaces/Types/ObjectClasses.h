@@ -43,7 +43,7 @@ ZN_MAKE_OBJECTCLASS(cSceneNodeUI, 200);
 ZN_MAKE_OBJECTCLASS(cSceneNodeUI_Text, 201);
 ZN_MAKE_OBJECTCLASS(cUIControlCommon, 202);
 ZN_MAKE_OBJECTCLASS(cUIControlWindow, 203);
-
+ZN_MAKE_OBJECTCLASS(cUIControlButton, 204);
 
 //
 // 3D components

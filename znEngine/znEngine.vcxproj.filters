@@ -358,6 +358,9 @@
     <ClCompile Include="UIControls\UIControlWindow.cpp">
       <Filter>UIControls</Filter>
     </ClCompile>
+    <ClCompile Include="UIControls\UIControlButton.cpp">
+      <Filter>UIControls</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="common.h">
@@ -603,6 +606,9 @@
       <Filter>Passes</Filter>
     </ClInclude>
     <ClInclude Include="UIControls\UIControlWindow.h">
+      <Filter>UIControls</Filter>
+    </ClInclude>
+    <ClInclude Include="UIControls\UIControlButton.h">
       <Filter>UIControls</Filter>
     </ClInclude>
   </ItemGroup>

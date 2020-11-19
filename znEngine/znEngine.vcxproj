@@ -89,6 +89,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="UIControls\UIControlButton.cpp" />
     <ClCompile Include="UIControls\UIControlCommon.cpp" />
     <ClCompile Include="UIControls\UIControlText.cpp" />
     <ClCompile Include="UIControls\UIControlWindow.cpp" />
@@ -175,6 +176,7 @@
     <ClInclude Include="Settings\GroupVideo.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="ThreadPool.h" />
+    <ClInclude Include="UIControls\UIControlButton.h" />
     <ClInclude Include="UIControls\UIControlCommon.h" />
     <ClInclude Include="UIControls\UIControlText.h" />
     <ClInclude Include="UIControls\UIControlWindow.h" />

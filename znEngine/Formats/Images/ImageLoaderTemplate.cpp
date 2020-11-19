@@ -147,7 +147,7 @@ std::shared_ptr<IImage> CImageBase::ConvertAnyTo32Bit()
 
 		for (uint32 cols = 0; cols < m_Width; cols++)
 		{
-			for (uint32 ch = 0; ch < 4; ch++)
+			for (uint32 ch = 0; ch < 3; ch++)
 			{
 				uint32 sourceIndexOffset = std::min(ch, sourceBytesCnt - 1u);
 				destLine[FI_RGBA_RED + ch] = sourceLine[FI_RGBA_RED + sourceIndexOffset];
@@ -156,7 +156,7 @@ std::shared_ptr<IImage> CImageBase::ConvertAnyTo32Bit()
 			//destLine[FI_RGBA_RED] = sourceLine[FI_RGBA_RED];
 			//destLine[FI_RGBA_GREEN] = sourceLine[FI_RGBA_RED];
 			//destLine[FI_RGBA_BLUE] = sourceLine[FI_RGBA_RED];
-			//destLine[FI_RGBA_ALPHA] = 0xFF;
+			destLine[FI_RGBA_ALPHA] = 0xFF;
 
 			destLine += destImage->GetBitsPerPixel() / 8;
 			sourceLine += GetBitsPerPixel() / 8;

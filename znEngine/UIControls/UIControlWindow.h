@@ -11,4 +11,7 @@ public:
 
 	// CUIControl
 	void Initialize() override;
+
+protected:
+	void CreateWindowGeometry(glm::vec2 Size);
 };

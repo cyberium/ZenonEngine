@@ -157,13 +157,13 @@ std::shared_ptr<IznFont> FontsManager::Add(IRenderDevice& RenderDevice, const st
 		float texY1 = float(y - maxAscent) / float(imageHeight);
 		float texY2 = texY1 + float(charHeight) / float(imageHeight);
 
-		vertices.push_back(VertexPT(glm::vec3(charWidth[ch],  charHeight,  0.0f), glm::vec2(texX2, texY2)));
+		vertices.push_back(VertexPT(glm::vec3(0.0f,           0.0f,        0.0f), glm::vec2(texX1, texY1)));
 		vertices.push_back(VertexPT(glm::vec3(0.0f,           charHeight,  0.0f), glm::vec2(texX1, texY2)));
-		vertices.push_back(VertexPT(glm::vec3(0.0f,           0.0f,        0.0f), glm::vec2(texX1, texY1)));
-		
-		vertices.push_back(VertexPT(glm::vec3(0.0f,           0.0f,        0.0f), glm::vec2(texX1, texY1)));
-		vertices.push_back(VertexPT(glm::vec3(charWidth[ch],  charHeight,  0.0f), glm::vec2(texX2, texY2)));
 		vertices.push_back(VertexPT(glm::vec3(charWidth[ch],  0.0f,        0.0f), glm::vec2(texX2, texY1)));
+
+		vertices.push_back(VertexPT(glm::vec3(charWidth[ch],  0.0f,        0.0f), glm::vec2(texX2, texY1)));
+		vertices.push_back(VertexPT(glm::vec3(0.0f,           charHeight,  0.0f), glm::vec2(texX1, texY2)));
+		vertices.push_back(VertexPT(glm::vec3(charWidth[ch],  charHeight,  0.0f), glm::vec2(texX2, texY2)));
 		
 		for (uint32 row = 0; row < glyphSlot->bitmap.rows; ++row)
 		{

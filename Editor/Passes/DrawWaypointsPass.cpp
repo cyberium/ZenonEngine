@@ -26,6 +26,8 @@ void CDrawWaypointsPass::SetNeedRefresh()
 //
 std::shared_ptr<IRenderPassPipelined> CDrawWaypointsPass::ConfigurePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport)
 {
+	__super::ConfigurePipeline(RenderTarget, Viewport);
+
 	m_PointBox = GetRenderDevice().GetPrimitivesFactory().CreateCube();
 
 	std::shared_ptr<IShader> vertexShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::VertexShader, "3D/Debug.hlsl", "VS_main");
