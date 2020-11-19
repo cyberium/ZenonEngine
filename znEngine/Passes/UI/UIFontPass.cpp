@@ -44,6 +44,7 @@ std::shared_ptr<IRenderPassPipelined> CUIFontPass::ConfigurePipeline(std::shared
 	vertexShader->LoadInputLayoutFromReflector();
 
 	// Material
+	GetPipeline().GetRasterizerState()->SetCullMode(IRasterizerState::CullMode::Back);
 	GetPipeline().SetShader(EShaderType::VertexShader, vertexShader);
 	GetPipeline().SetShader(EShaderType::PixelShader, pixelShader);
 

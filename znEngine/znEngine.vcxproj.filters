@@ -334,12 +334,6 @@
     <ClCompile Include="Formats\Models\EngineModelsLoader.cpp">
       <Filter>Formats\Models</Filter>
     </ClCompile>
-    <ClCompile Include="UIControls\UIUtils.cpp">
-      <Filter>UIControls</Filter>
-    </ClCompile>
-    <ClCompile Include="UIControls\UIWindow.cpp">
-      <Filter>UIControls</Filter>
-    </ClCompile>
     <ClCompile Include="Materials\MaterialUIControl.cpp">
       <Filter>Materials\UI materials</Filter>
     </ClCompile>
@@ -360,6 +354,9 @@
     </ClCompile>
     <ClCompile Include="Passes\DebugPass.cpp">
       <Filter>Passes</Filter>
+    </ClCompile>
+    <ClCompile Include="UIControls\UIControlWindow.cpp">
+      <Filter>UIControls</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -584,12 +581,6 @@
     <ClInclude Include="Formats\Models\EngineModelsLoader.h">
       <Filter>Formats\Models</Filter>
     </ClInclude>
-    <ClInclude Include="UIControls\UIUtils.h">
-      <Filter>UIControls</Filter>
-    </ClInclude>
-    <ClInclude Include="UIControls\UIWindow.h">
-      <Filter>UIControls</Filter>
-    </ClInclude>
     <ClInclude Include="Materials\MaterialUIControl.h">
       <Filter>Materials\UI materials</Filter>
     </ClInclude>
@@ -610,6 +601,9 @@
     </ClInclude>
     <ClInclude Include="Passes\DebugPass.h">
       <Filter>Passes</Filter>
+    </ClInclude>
+    <ClInclude Include="UIControls\UIControlWindow.h">
+      <Filter>UIControls</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

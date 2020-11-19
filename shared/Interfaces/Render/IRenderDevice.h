@@ -33,14 +33,8 @@ ZN_INTERFACE ZN_API IRenderPrimitivesFactory
 	virtual std::shared_ptr<IGeometry> CreateTorus(float Radius = 5.0f, float Thickness = 1.0f) = 0;
 	virtual std::shared_ptr<IGeometry> CreateQuad() = 0;
 
-	// 3D meshes
-	virtual std::shared_ptr<IGeometry> Create3DQuad(float width = 10.0f, float height = 10.0f) = 0;
-	virtual std::shared_ptr<IGeometry> Create3DBeizerLine(glm::vec3 start = glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3 end = glm::vec3(500.0f, 0.0f, 500.0f)) = 0;
-
 	// UI meshes
-	virtual std::shared_ptr<IGeometry> CreateUIQuad(float width = 10.0f, float height = 10.0f) = 0;
-	virtual std::shared_ptr<IGeometry> CreateUIQuad2(glm::vec2 Size, glm::vec2 TexCoordStart, glm::vec2 TexCoordEnd) = 0;
-	virtual std::shared_ptr<IGeometry> CreateUIBeizerLine(glm::vec2 start = glm::vec2(0.0f, 0.0f), glm::vec2 end = glm::vec2(500.0f, 500.0f)) = 0;
+	virtual std::shared_ptr<IGeometry> CreateUIQuad(glm::vec2 Size, glm::vec2 TexCoordStart = glm::vec2(0.0f), glm::vec2 TexCoordEnd = glm::vec2(1.0f)) = 0;
 };
 
 

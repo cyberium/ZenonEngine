@@ -91,7 +91,7 @@ void CSceneDefault::Initialize()
 
 
 	{
-		std::shared_ptr<IUIControl> commonControl = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<IUIControlFactory>()->CreateSceneNodeUI(cUIControlCommon, *this);
+		std::shared_ptr<IUIControl> commonControl = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<IUIControlFactory>()->CreateSceneNodeUI(cUIControlWindow, *this);
 	}
 
 	//--------------------------------------------------------------------------

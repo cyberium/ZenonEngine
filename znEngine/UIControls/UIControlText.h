@@ -15,9 +15,6 @@ public:
 	glm::vec2                                       GetOffset() const;
 	glm::vec4                                       GetColor() const;
 
-	// CUIControl
-	virtual glm::vec2                               GetSize() const override;
-
 private:
 	std::shared_ptr<IznFont>                        m_Font;
 	std::shared_ptr<IPropertyT<std::string>>        m_TextProperty;

@@ -10,8 +10,10 @@
 #include "Scene/Components/ReactPhysicsComponent.h"
 #include "Scene/Components/Particles/ParticlesComponent.h"
 
-#include "UIControls/UIControlText.h"
 #include "UIControls/UIControlCommon.h"
+#include "UIControls/UIControlWindow.h"
+#include "UIControls/UIControlText.h"
+
 
 #include "Scene/SceneNodeRTSGround.h"
 #include "Scene/SceneNodeRTSPathAndPoint.h"
@@ -83,12 +85,12 @@ void EngineSceneTypesExtender(IBaseManager& BaseManager)
 	auto uiControlEngineCreator = MakeShared(CUIControlCreator, BaseManager);
 	BaseManager.GetManager<IObjectsFactory>()->GetClassFactory(otUIControl)->AddClassCreator(uiControlEngineCreator);
 
-	uiControlEngineCreator->AddClass(cSceneNodeUI, "CUIControl",  [](const IObjectCreationArgs* ObjectCreationArgs) -> std::shared_ptr<IObject>
+	uiControlEngineCreator->AddClass(cSceneNodeUI, "UIControl",  [](const IObjectCreationArgs* ObjectCreationArgs) -> std::shared_ptr<IObject>
 	{
 		auto node = MakeShared(CUIControl, static_cast<const IUIControlCreationArgs*>(ObjectCreationArgs)->GetScene());
 		return node;
 	});
-	uiControlEngineCreator->AddClass(cSceneNodeUI_Text, "SceneNodeUIText",  [](const IObjectCreationArgs* ObjectCreationArgs) -> std::shared_ptr<IObject>
+	uiControlEngineCreator->AddClass(cSceneNodeUI_Text, "UIControlText",  [](const IObjectCreationArgs* ObjectCreationArgs) -> std::shared_ptr<IObject>
 	{
 		auto node = MakeShared(CUIControlText, static_cast<const IUIControlCreationArgs*>(ObjectCreationArgs)->GetScene());
 		return node;
@@ -96,6 +98,11 @@ void EngineSceneTypesExtender(IBaseManager& BaseManager)
 	uiControlEngineCreator->AddClass(cUIControlCommon, "UIContolCommon", [](const IObjectCreationArgs* ObjectCreationArgs) -> std::shared_ptr<IObject>
 	{
 		auto node = MakeShared(CUIControlCommon, static_cast<const IUIControlCreationArgs*>(ObjectCreationArgs)->GetScene());
+		return node;
+	});
+	uiControlEngineCreator->AddClass(cUIControlWindow, "UIContolWindow", [](const IObjectCreationArgs* ObjectCreationArgs) -> std::shared_ptr<IObject>
+	{
+		auto node = MakeShared(CUIControlWindow, static_cast<const IUIControlCreationArgs*>(ObjectCreationArgs)->GetScene());
 		return node;
 	});
 

@@ -43,7 +43,6 @@ public:
     virtual bool                                    IsPointInBoundsAbs(const glm::vec2& Point) override;
 
 	virtual void                                    Accept(IVisitor* visitor) override;
-	virtual void                                    AcceptMesh(IVisitor* visitor) override;
 
 	// IObject
 	void                                            SetName(const std::string& Name) override final { Object::SetName(Name); };
@@ -71,6 +70,7 @@ public:
 protected:
 	IBaseManager&                                   GetBaseManager() const;
 	IRenderDevice&                                  GetRenderDevice() const;
+	void                                            SetSize(glm::vec2 Size);
 	virtual glm::mat4                               CalculateLocalTransform() const;
 	virtual void									UpdateLocalTransform();
 	virtual void									UpdateWorldTransform();
@@ -97,6 +97,8 @@ private:
 	glm::vec2										m_Translate;
 	glm::vec3										m_Rotate;
 	glm::vec2										m_Scale;
+	glm::vec2                                       m_Size;
+
 	glm::mat4										m_LocalTransform;
 	glm::mat4										m_InverseLocalTransform;
 	glm::mat4										m_WorldTransform;

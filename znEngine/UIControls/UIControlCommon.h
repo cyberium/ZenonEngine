@@ -18,16 +18,13 @@ public:
 	CUIControlCommon(IScene& Scene);
 	virtual ~CUIControlCommon();
 
-	void Initialize() override;
-
 	// CUIControl
-    virtual glm::vec2 GetSize() const override;
+	void Initialize() override;
 	const std::vector<CUIControlCommon::SSubgeometry>& GetSubgeometries() const;
 
+protected:
+	void AddSubgeometry(const SSubgeometry& Subgeometry);
+
 private:
-    glm::vec2                 m_Size;
-
 	std::vector<SSubgeometry> m_Subgeometries;
-
-	std::shared_ptr<IGeometry> m_DefaultQuadGeometry;
 };

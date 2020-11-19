@@ -12,6 +12,7 @@ CUIControl::CUIControl(IScene& Scene)
 	, m_Translate(glm::vec2(0.0f))
 	, m_Rotate(glm::vec3(0.0f))
 	, m_Scale(glm::vec2(1.0f))
+	, m_Size(glm::vec2(10.0f))
 
 	, m_LocalTransform(1.0f)
 	, m_InverseLocalTransform(1.0f)	// This is the inverse of the local -> world transform.
@@ -213,10 +214,10 @@ void CUIControl::Accept(IVisitor* visitor)
 {
 	EVisitResult visitResult = visitor->Visit(this);
 	
-	if (visitResult & EVisitResult::AllowVisitContent)
-	{
-		AcceptMesh(visitor);
-	}
+	//if (visitResult & EVisitResult::AllowVisitContent)
+	//{
+	//	AcceptMesh(visitor);
+	//}
 
 	if (visitResult & EVisitResult::AllowVisitChilds)
 	{
@@ -225,11 +226,6 @@ void CUIControl::Accept(IVisitor* visitor)
 			Child->Accept(visitor);
 		});
 	}
-}
-
-void CUIControl::AcceptMesh(IVisitor* visitor)
-{
-
 }
 
 
@@ -346,6 +342,11 @@ IBaseManager& CUIControl::GetBaseManager() const
 IRenderDevice & CUIControl::GetRenderDevice() const
 {
 	return GetScene().GetRenderDevice();
+}
+
+void CUIControl::SetSize(glm::vec2 Size)
+{
+	m_Size = Size;
 }
 
 glm::mat4 CUIControl::CalculateLocalTransform() const

@@ -27,6 +27,7 @@ std::shared_ptr<IRenderPassPipelined> CUIControlPass::ConfigurePipeline(std::sha
 	std::shared_ptr<IShader> pixelShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::PixelShader, "UI/UI_Texture.hlsl", "PS_main");
 
 	// Material
+	GetPipeline().GetRasterizerState()->SetCullMode(IRasterizerState::CullMode::Back);
 	GetPipeline().SetShader(EShaderType::VertexShader, vertexShader);
 	GetPipeline().SetShader(EShaderType::PixelShader, pixelShader);
 

@@ -9,7 +9,6 @@ cbuffer Material : register(b2)
 struct VSOut
 {
 	float4 position   : SV_POSITION;
-	float4 positionVS : POSITION;
 	float2 texCoord   : TEXCOORD0;
 };
 
@@ -21,8 +20,7 @@ VSOut VS_main(VSInputPT IN)
 
 	VSOut OUT;
 	OUT.position = mul(mvp, float4(IN.position, 1.0f));
-	OUT.positionVS = float4(IN.position, 1.0f);
-	OUT.texCoord = IN.texCoord;
+	OUT.texCoord = float2(IN.texCoord.x, 1.0f - IN.texCoord.y);
 	return OUT;
 }
 
@@ -30,7 +28,7 @@ float4 PS_main(VSOut IN) : SV_TARGET
 {
 	float4 resultColor = DiffuseColor;
 	if (HasDiffuseTexture)
-		resultColor *= DiffuseTexture.Sample(LinearClampSampler, float2(IN.texCoord.x, 1.0f - IN.texCoord.y));
+		resultColor *= DiffuseTexture.Sample(LinearClampSampler, IN.texCoord);
 	
     return resultColor;
 }

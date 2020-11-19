@@ -62,7 +62,7 @@ VertexShaderOutput VS_PTN(VSInputPTN IN
 	OUT.tangentVS = mul(mv, float4(tangent, 0.0f)).xyz;
 	OUT.binormalVS = mul(mv, float4(binormal, 0.0f)).xyz;
 	OUT.normalVS = mul(mv, float4(IN.normal, 0.0f)).xyz;
-	OUT.texCoord = IN.texCoord;
+	OUT.texCoord = float2(IN.texCoord.x, 1.0f - IN.texCoord.y);
 	return OUT;
 }
 
@@ -100,7 +100,7 @@ VertexShaderOutput VS_PTNBB(VSInputPTNBB IN)
 	VertexShaderOutput OUT;
 	OUT.position = mul(mvp, newVertex);
 	OUT.positionVS = mul(mv, newVertex).xyz;
-	OUT.texCoord = IN.texCoord;
+	OUT.texCoord = float2(IN.texCoord.x, 1.0f - IN.texCoord.y);
 	OUT.normalVS = mul(mv, float4(IN.normal, 0.0f)).xyz;
 	OUT.tangentVS = mul(mv, float4(tangent, 0.0f)).xyz;
 	OUT.binormalVS = mul(mv, float4(binormal, 0.0f)).xyz;

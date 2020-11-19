@@ -91,8 +91,7 @@
     </ClCompile>
     <ClCompile Include="UIControls\UIControlCommon.cpp" />
     <ClCompile Include="UIControls\UIControlText.cpp" />
-    <ClCompile Include="UIControls\UIUtils.cpp" />
-    <ClCompile Include="UIControls\UIWindow.cpp" />
+    <ClCompile Include="UIControls\UIControlWindow.cpp" />
     <ClCompile Include="znEngine.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -178,8 +177,7 @@
     <ClInclude Include="ThreadPool.h" />
     <ClInclude Include="UIControls\UIControlCommon.h" />
     <ClInclude Include="UIControls\UIControlText.h" />
-    <ClInclude Include="UIControls\UIUtils.h" />
-    <ClInclude Include="UIControls\UIWindow.h" />
+    <ClInclude Include="UIControls\UIControlWindow.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="znEngine.rc" />

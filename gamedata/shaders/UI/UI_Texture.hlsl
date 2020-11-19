@@ -12,7 +12,7 @@ float4 PS_main(VSOutputUI IN) : SV_TARGET
 {
 	float4 resultColor = DiffuseColor;
 	if (HasDiffuseTexture)
-		resultColor *= DiffuseTexture.Sample(LinearClampSampler, float2(IN.texCoord.x, 1.0f - IN.texCoord.y));
+		resultColor *= DiffuseTexture.Sample(LinearClampSampler, float2(IN.texCoord.x, IN.texCoord.y));
 	
     return resultColor;
 }

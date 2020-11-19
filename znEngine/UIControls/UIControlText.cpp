@@ -28,6 +28,9 @@ void CUIControlText::Initialize()
 	m_TextProperty = MakeShared(CProperty<std::string>);
 	m_TextProperty->SetName("Text");
 	m_TextProperty->Set(cDefaultText);
+	m_TextProperty->SetValueChangedCallback([this](const std::string& NewValue) {
+		SetSize(glm::vec2(GetFont()->GetWidth(NewValue), GetFont()->GetHeight()) + GetOffset() * 2.0f);
+	});
 	GetProperties()->AddProperty(m_TextProperty);
 
 	m_OffsetProperty = MakeShared(CProperty<glm::vec2>);
@@ -64,16 +67,4 @@ glm::vec2 CUIControlText::GetOffset() const
 glm::vec4 CUIControlText::GetColor() const
 {
 	return m_ColorProperty->Get();
-}
-
-
-
-//
-// CUIControl
-//
-glm::vec2 CUIControlText::GetSize() const
-{
-	float width = m_Font->GetWidth(GetText());
-	float height = m_Font->GetHeight();
-    return glm::vec2(width, height) + 2.0f * m_OffsetProperty->Get();
 }

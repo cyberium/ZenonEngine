@@ -243,7 +243,7 @@ std::shared_ptr<IByteBuffer> CImagePNG::SaveToMemory()
 
 	png_bytep* rowPtrs = ZN_NEW png_bytep[image->GetHeight()];
 	for (uint32 i = 0; i < image->GetHeight(); i++)
-		rowPtrs[image->GetHeight() - i - 1] = std::dynamic_pointer_cast<CImagePNG>(image)->GetLine(i);
+		rowPtrs[i] = std::dynamic_pointer_cast<CImagePNG>(image)->GetLine(i);
 
 	png_write_image(pngPtr, rowPtrs);
 

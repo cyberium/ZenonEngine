@@ -180,6 +180,6 @@ uint8* CImageBase::GetLine(uint32 Line) const
 {
 	_ASSERT(m_Data != nullptr);
 	_ASSERT(Line < m_Height);
-	return (uint8*)m_Data + ((m_Height - Line - 1) * m_Stride);
+	return (uint8*)m_Data + (Line * m_Stride);
 }
 

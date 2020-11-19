@@ -12,24 +12,12 @@ CUIControlCommon::~CUIControlCommon()
 
 
 
+//
+// CUIControl
+//
 void CUIControlCommon::Initialize()
 {
 	__super::Initialize();
-
-	//m_Material = MakeShared(CMaterialUIControl, GetBaseManager().GetApplication().GetRenderDevice());
-
-	//m_DefaultQuadGeometry = GetBaseManager().GetApplication().GetRenderDevice().GetPrimitivesFactory().CreateUIQuad(1.0f, 1.0f);
-	//m_DefaultQuadGeometry->SetBounds(BoundingBox(glm::vec3(-100.0f), glm::vec3(100.0f)));
-
-	//m_Mesh = GetBaseManager().GetApplication().GetRenderDevice().GetObjectsFactory().CreateModel();
-	//m_Mesh->AddConnection(m_Material, m_DefaultQuadGeometry);
-
-	//m_ColorProperty = MakeShared(CPropertyWrapped<glm::vec4>);
-	//m_ColorProperty->SetName("Color");
-	//m_ColorProperty->SetValueSetter(std::bind(&CUIControlCommon::SetColor, this, std::placeholders::_1));
-	//m_ColorProperty->SetValueGetter(std::bind(&CUIControlCommon::GetColor, this));
-	//GetProperties()->AddProperty(m_ColorProperty);
-
 
 	// <SubTexture height="128" width="128" y="502" x="528" name="panel_woodPaper.png"/> // 1193
 
@@ -41,21 +29,21 @@ void CUIControlCommon::Initialize()
 	subGeom.Size = glm::vec2(64);
 	subGeom.Material = MakeShared(CMaterialUIControl, GetBaseManager().GetApplication().GetRenderDevice());
 	subGeom.Material->SetTexture(GetBaseManager().GetManager<IznTexturesFactory>()->LoadTexture2D("Interface Pack/Spritesheet/interfacePack_sheet@2.png"));
-	subGeom.Geom = GetBaseManager().GetApplication().GetRenderDevice().GetPrimitivesFactory().CreateUIQuad2(glm::vec2(64.0f), texStart, texEnd);
-	m_Subgeometries.push_back(subGeom);
-}
-
-
-
-//
-// CUIControl
-//
-glm::vec2 CUIControlCommon::GetSize() const
-{
-    return m_Size;
+	subGeom.Geom = GetBaseManager().GetApplication().GetRenderDevice().GetPrimitivesFactory().CreateUIQuad(glm::vec2(64.0f), texStart, texEnd);
+	AddSubgeometry(subGeom);
 }
 
 const std::vector<CUIControlCommon::SSubgeometry>& CUIControlCommon::GetSubgeometries() const
 {
 	return m_Subgeometries;
+}
+
+
+
+//
+// Protected
+//
+void CUIControlCommon::AddSubgeometry(const SSubgeometry & Subgeometry)
+{
+	m_Subgeometries.push_back(Subgeometry);
 }

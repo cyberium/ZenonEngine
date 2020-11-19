@@ -47,9 +47,8 @@ ZN_INTERFACE ZN_API IUIControl
 	virtual BoundingRect                            GetBoundsAbs() = 0;
 	virtual bool                                    IsPointInBoundsAbs(const glm::vec2& Point) = 0;
 
-	// Allow a visitor to visit this node.
+	// Allow a visitor to visit this node
 	virtual void                                    Accept(IVisitor* visitor) = 0;
-	virtual void                                    AcceptMesh(IVisitor* visitor) = 0;
 };
 
 ZN_INTERFACE ZN_API IUIControlInternal
