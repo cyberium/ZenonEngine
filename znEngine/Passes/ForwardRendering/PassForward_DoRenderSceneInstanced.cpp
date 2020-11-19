@@ -80,34 +80,15 @@ void CPassForward_DoRenderSceneInstanced::Render(RenderEventArgs & e)
 //
 std::shared_ptr<IRenderPassPipelined> CPassForward_DoRenderSceneInstanced::ConfigurePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport)
 {
-	std::shared_ptr<IShader> vertexShader;
-	std::shared_ptr<IShader> pixelShader;
+	__super::ConfigurePipeline(RenderTarget, Viewport);
 
-	if (GetRenderDevice().GetDeviceType() == RenderDeviceType::RenderDeviceType_DirectX11)
-	{
-		vertexShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::VertexShader, "3D/Model_Forward.hlsl", "VS_PTN", { std::make_pair("INSTANCED", "1") });
-		pixelShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::PixelShader, "3D/Model_Forward.hlsl", "PS_main");
-	}
+	std::shared_ptr<IShader> vertexShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::VertexShader, "3D/Model_Forward.hlsl", "VS_PTN", { std::make_pair("INSTANCED", "1") });
+	std::shared_ptr<IShader> pixelShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::PixelShader, "3D/Model_Forward.hlsl", "PS_main");
 	vertexShader->LoadInputLayoutFromReflector();
 
 	// PIPELINES
-	GetPipeline().GetBlendState()->SetBlendMode(disableBlending);
-	GetPipeline().GetDepthStencilState()->SetDepthMode(enableDepthWrites);
-	GetPipeline().GetRasterizerState()->SetCullMode(IRasterizerState::CullMode::Back);
-	GetPipeline().GetRasterizerState()->SetFillMode(IRasterizerState::FillMode::Solid, IRasterizerState::FillMode::Solid);
-	GetPipeline().SetRenderTarget(RenderTarget);
 	GetPipeline().SetShader(EShaderType::VertexShader, vertexShader);
 	GetPipeline().SetShader(EShaderType::PixelShader, pixelShader);
-
-	auto sampler = GetRenderDevice().GetObjectsFactory().CreateSamplerState();
-	sampler->SetFilter(ISamplerState::MinFilter::MinLinear, ISamplerState::MagFilter::MagLinear, ISamplerState::MipFilter::MipLinear);
-	sampler->SetWrapMode(ISamplerState::WrapMode::Repeat, ISamplerState::WrapMode::Repeat);
-	GetPipeline().SetSampler(0, sampler);
-
-	auto samplerClamp = GetRenderDevice().GetObjectsFactory().CreateSamplerState();
-	samplerClamp->SetFilter(ISamplerState::MinFilter::MinLinear, ISamplerState::MagFilter::MagLinear, ISamplerState::MipFilter::MipLinear);
-	samplerClamp->SetWrapMode(ISamplerState::WrapMode::Clamp, ISamplerState::WrapMode::Clamp);
-	GetPipeline().SetSampler(1, samplerClamp);
 
 	m_ShaderBonesBufferParameter = &vertexShader->GetShaderParameterByName("Bones");
 	//_ASSERT(m_ShaderBonesBufferParameter->IsValid());

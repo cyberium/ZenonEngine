@@ -19,8 +19,4 @@ public:
 
 protected:
 	PerFrame GetPerFrameData() const override final;
-
-protected:
-	std::shared_ptr<IConstantBuffer> m_PerObjectConstantBuffer;
-	IShaderParameter* m_PerObjectParameter;
 };

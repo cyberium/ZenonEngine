@@ -41,9 +41,6 @@ std::shared_ptr<IRenderPassPipelined> CPassForward_DoRenderScene::ConfigurePipel
 	vertexShader->LoadInputLayoutFromReflector();
 
 	// PIPELINES
-	GetPipeline().GetBlendState()->SetBlendMode(disableBlending);
-	GetPipeline().GetDepthStencilState()->SetDepthMode(enableDepthWrites);
-	GetPipeline().GetRasterizerState()->SetCullMode(IRasterizerState::CullMode::Back);
 	GetPipeline().SetShader(EShaderType::VertexShader, vertexShader);
 	GetPipeline().SetShader(EShaderType::PixelShader, pixelShader);
 

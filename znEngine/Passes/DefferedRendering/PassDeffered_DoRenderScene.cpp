@@ -76,6 +76,8 @@ void CPassDeffered_DoRenderScene::Render(RenderEventArgs& e)
 //
 std::shared_ptr<IRenderPassPipelined> CPassDeffered_DoRenderScene::ConfigurePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport)
 {
+	__super::ConfigurePipeline(RenderTarget, Viewport);
+
 	auto vertexShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::VertexShader, "3D/Model_Deffered.hlsl", "VS_PTN");
 	vertexShader->LoadInputLayoutFromReflector();
 
@@ -91,25 +93,9 @@ std::shared_ptr<IRenderPassPipelined> CPassDeffered_DoRenderScene::ConfigurePipe
 	auto pixelShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::PixelShader, "3D/Model_Deffered.hlsl", "PS_main");
 
 	// PIPELINES
-	GetPipeline().GetBlendState()->SetBlendMode(disableBlending);
-	GetPipeline().GetDepthStencilState()->SetDepthMode(enableDepthWrites);
-	GetPipeline().GetRasterizerState()->SetCullMode(IRasterizerState::CullMode::Back);
-	GetPipeline().GetRasterizerState()->SetFillMode(IRasterizerState::FillMode::Solid, IRasterizerState::FillMode::Solid);
-	//GetPipeline().GetRasterizerState()->SetAntialiasedLineEnable(true);
-	//GetPipeline().GetRasterizerState()->SetMultisampleEnabled(true);
 	GetPipeline().SetRenderTarget(CreateGBuffer(RenderTarget, Viewport));
 	GetPipeline().SetShader(EShaderType::VertexShader, vertexShader);
 	GetPipeline().SetShader(EShaderType::PixelShader, pixelShader);
-
-	auto sampler = GetRenderDevice().GetObjectsFactory().CreateSamplerState();
-	sampler->SetFilter(ISamplerState::MinFilter::MinLinear, ISamplerState::MagFilter::MagLinear, ISamplerState::MipFilter::MipLinear);
-	sampler->SetWrapMode(ISamplerState::WrapMode::Repeat, ISamplerState::WrapMode::Repeat);
-	GetPipeline().SetSampler(0, sampler);
-
-	auto samplerClamp = GetRenderDevice().GetObjectsFactory().CreateSamplerState();
-	samplerClamp->SetFilter(ISamplerState::MinFilter::MinLinear, ISamplerState::MagFilter::MagLinear, ISamplerState::MipFilter::MipLinear);
-	samplerClamp->SetWrapMode(ISamplerState::WrapMode::Clamp, ISamplerState::WrapMode::Clamp);
-	GetPipeline().SetSampler(1, samplerClamp);
 
 	return shared_from_this();
 }

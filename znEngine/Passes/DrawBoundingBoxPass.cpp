@@ -3,6 +3,9 @@
 // General
 #include "DrawBoundingBoxPass.h"
 
+// Additional
+#include "Materials/MaterialDebug.h"
+
 CDrawBoundingBoxPass::CDrawBoundingBoxPass(IRenderDevice& RenderDevice, IScene& scene)
 	: Base3DPass(scene)
 {
@@ -19,7 +22,10 @@ CDrawBoundingBoxPass::~CDrawBoundingBoxPass()
 //
 std::shared_ptr<IRenderPassPipelined> CDrawBoundingBoxPass::ConfigurePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport)
 {
+	__super::ConfigurePipeline(RenderTarget, Viewport);
+
 	m_BBoxGeometry = GetRenderDevice().GetPrimitivesFactory().CreateBBox();
+	m_Material = MakeShared(MaterialDebug, GetRenderDevice());
 
 	std::shared_ptr<IShader> vertexShader;
 	std::shared_ptr<IShader> pixelShader;
@@ -32,11 +38,8 @@ std::shared_ptr<IRenderPassPipelined> CDrawBoundingBoxPass::ConfigurePipeline(st
 	vertexShader->LoadInputLayoutFromReflector();
 
 	// PIPELINES
-	GetPipeline().GetBlendState()->SetBlendMode(disableBlending);
-	GetPipeline().GetDepthStencilState()->SetDepthMode(enableDepthWrites);
 	GetPipeline().GetRasterizerState()->SetCullMode(IRasterizerState::CullMode::None);
 	GetPipeline().GetRasterizerState()->SetFillMode(IRasterizerState::FillMode::Wireframe, IRasterizerState::FillMode::Solid);
-	GetPipeline().SetRenderTarget(RenderTarget);
 	GetPipeline().SetShader(EShaderType::VertexShader, vertexShader);
 	GetPipeline().SetShader(EShaderType::PixelShader, pixelShader);
 
@@ -50,7 +53,7 @@ std::shared_ptr<IRenderPassPipelined> CDrawBoundingBoxPass::ConfigurePipeline(st
 //
 EVisitResult CDrawBoundingBoxPass::Visit(const ISceneNode * CSceneNode)
 {
-	const std::shared_ptr<IColliderComponent3D>& colliderComponent = CSceneNode->GetComponentT<IColliderComponent3D>();
+	std::shared_ptr<IColliderComponent3D> colliderComponent = CSceneNode->GetComponentT<IColliderComponent3D>();
 	if (colliderComponent == nullptr)
 		return EVisitResult::AllowVisitChilds;
 
@@ -62,11 +65,14 @@ EVisitResult CDrawBoundingBoxPass::Visit(const ISceneNode * CSceneNode)
 	glm::mat4 bboxMatrix = glm::mat4(1.0f);
 	bboxMatrix = glm::translate(bboxMatrix, bbox.getMin());
 	bboxMatrix = glm::scale(bboxMatrix, bbox.getMax() - bbox.getMin());
-
 	BindPerObjectData(PerObject(bboxMatrix));
 
-	const IShader* vertexShader = GetPipeline().GetShaders().at(EShaderType::VertexShader).get();
+	const auto& shaders = GetPipeline().GetShaders();
+	const auto& vertexShader = shaders.at(EShaderType::VertexShader).get();
+
+	m_Material->Bind(shaders);
 	m_BBoxGeometry->Render(vertexShader);
+	m_Material->Unbind(shaders);
 
 	return EVisitResult::AllowAll;
 }

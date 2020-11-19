@@ -7,16 +7,15 @@
 #include "Passes/Technical/ClearRenderTargetPass.h"
 #include "Passes/Technical/InvokeFunctionPass.h"
 
-#include "Passes/MaterialDebugPass.h"
-#include "Passes/MaterialTexturedPass.h"
-#include "Passes/MaterialParticlePass.h"
+#include "Passes/DebugPass.h"
+#include "Passes/ParticlesPass.h"
 #include "Passes/DrawBonesPass.h"
 #include "Passes/DrawBoundingBoxPass.h"
 
 #include "Passes/ForwardRendering/PassForward_DoRenderScene.h"
 
 #include "Passes/UI/UIFontPass.h"
-#include "Passes/UI/UIColorPass.h"
+#include "Passes/UI/UIControlPass.h"
 
 
 struct __declspec(align(16)) SLightVS
@@ -123,13 +122,13 @@ void CRendererForward::Initialize(std::shared_ptr<IRenderTarget> OutputRenderTar
 		if (auto ext = std::dynamic_pointer_cast<IRendererExtender>(it))
 			ext->Extend3DPasses(*this, m_RenderDevice, m_SceneCreateTypelessListPass, OutputRenderTarget, Viewport);
 
-	AddPass(MakeShared(CMaterial_Debug_Pass, m_RenderDevice, m_Scene)->ConfigurePipeline(OutputRenderTarget, Viewport));
-	AddPass(MakeShared(CMaterialParticlePass, m_RenderDevice, m_Scene)->ConfigurePipeline(OutputRenderTarget, Viewport));
+	AddPass(MakeShared(CDebugPass, m_RenderDevice, m_Scene)->ConfigurePipeline(OutputRenderTarget, Viewport));
+	AddPass(MakeShared(CParticlesPass, m_RenderDevice, m_Scene)->ConfigurePipeline(OutputRenderTarget, Viewport));
 	AddPass(MakeShared(CDrawBonesPass, m_Scene)->ConfigurePipeline(OutputRenderTarget, Viewport));
 	AddPass(MakeShared(CDrawBoundingBoxPass, m_RenderDevice, m_Scene)->ConfigurePipeline(OutputRenderTarget, Viewport));
 
 	m_UIPasses.push_back(MakeShared(CUIFontPass, m_RenderDevice, m_Scene)->ConfigurePipeline(OutputRenderTarget, Viewport));
-	m_UIPasses.push_back(MakeShared(CUIColorPass, m_RenderDevice, m_Scene)->ConfigurePipeline(OutputRenderTarget, Viewport));
+	m_UIPasses.push_back(MakeShared(CUIControlPass, m_RenderDevice, m_Scene)->ConfigurePipeline(OutputRenderTarget, Viewport));
 }
 
 void CRendererForward::DoUpdateLights()

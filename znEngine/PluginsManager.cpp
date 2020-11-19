@@ -14,9 +14,10 @@ CznPluginsManager::CznPluginsManager(IBaseManager& BaseManager)
 
 CznPluginsManager::~CznPluginsManager()
 {
-	for (const auto& pluginDescription : m_Plugins)
+
+	for (auto rIt = m_Plugins.rbegin(); rIt != m_Plugins.rend(); rIt++)
 	{
-		RemovePlugin(pluginDescription.Path);
+		RemovePlugin((*rIt).Path);
 	}
 
 	m_Plugins.clear();

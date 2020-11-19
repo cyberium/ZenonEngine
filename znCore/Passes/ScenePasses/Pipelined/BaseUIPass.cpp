@@ -5,9 +5,7 @@
 
 BaseUIPass::BaseUIPass(IScene& Scene)
 	: ScenePassPipelined(Scene)
-	, m_PerObjectParameter(nullptr)
 {
-	m_PerObjectConstantBuffer = GetRenderDevice().GetObjectsFactory().CreateConstantBuffer(PerObject());
 }
 
 BaseUIPass::~BaseUIPass()
@@ -21,11 +19,11 @@ BaseUIPass::~BaseUIPass()
 //
 std::shared_ptr<IRenderPassPipelined> BaseUIPass::ConfigurePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport)
 {
+	__super::ConfigurePipeline(RenderTarget, Viewport);
+	
 	GetPipeline().GetBlendState()->SetBlendMode(alphaBlending);
 	GetPipeline().GetDepthStencilState()->SetDepthMode(disableDepthWrites);
-	GetPipeline().GetRasterizerState()->SetCullMode(IRasterizerState::CullMode::None);
-	GetPipeline().GetRasterizerState()->SetFillMode(IRasterizerState::FillMode::Solid, IRasterizerState::FillMode::Solid);
-	GetPipeline().SetRenderTarget(RenderTarget);
+
 	return shared_from_this();
 }
 
@@ -36,19 +34,7 @@ std::shared_ptr<IRenderPassPipelined> BaseUIPass::ConfigurePipeline(std::shared_
 //
 EVisitResult BaseUIPass::Visit(const IUIControl* sceneNode)
 {
-	PerObject perObject;
-	perObject.Model = sceneNode->GetWorldTransfom();
-	m_PerObjectConstantBuffer->Set(perObject);
-
-	if (m_PerObjectParameter == nullptr)
-		m_PerObjectParameter = &(GetPipeline().GetShaders().at(EShaderType::VertexShader)->GetShaderParameterByName("PerObject"));
-
-	if (m_PerObjectParameter->IsValid() && m_PerObjectConstantBuffer != nullptr)
-	{
-		m_PerObjectParameter->SetConstantBuffer(m_PerObjectConstantBuffer);
-		m_PerObjectParameter->Bind();
-	}
-
+	BindPerObjectData(PerObject(sceneNode->GetWorldTransfom()));
 	return EVisitResult::AllowAll;
 }
 

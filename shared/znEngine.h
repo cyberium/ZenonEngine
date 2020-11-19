@@ -31,22 +31,18 @@
 // SceneNodes
 #include "../znEngine/Scene/EngineSceneIntfs.h"
 #include "../znEngine/Scene/SceneBase.h"
-#include "../znEngine/Scene/Nodes/UITexture.h"
-#include "../znEngine/Scene/Nodes/UIColor.h"
-#include "../znEngine/Scene/Nodes/UIText.h"
+#include "../znEngine/UIControls/UIControlCommon.h"
+#include "../znEngine/UIControls/UIControlText.h"
 
 
 // Materials
 #include "../znEngine/Materials/MaterialDebug.h"
-#include "../znEngine/Materials/MaterialTextured.h"
 #include "../znEngine/Materials/MaterialModel.h"
 
 
 // Passes
 #include "../znEngine/Passes/UI/UIFontPass.h"
-#include "../znEngine/Passes/UI/UIButtonPass.h"
-#include "../znEngine/Passes/UI/UIColorPass.h"
-#include "../znEngine/Passes/UI/UITexturePass.h"
+#include "../znEngine/Passes/UI/UIControlPass.h"
 
 
 
@@ -68,7 +64,7 @@
 #include "../znEngine/Passes/Technical/InvokeFunctionPass.h"
 
 #include "../znEngine/Passes/DrawBoundingBoxPass.h"
-#include "../znEngine/Passes/MaterialParticlePass.h"
+#include "../znEngine/Passes/ParticlesPass.h"
 
 #include "../znEngine/Formats/Fonts/FontsManager.h"
 #include "../znEngine/Formats/Images/DDSFormat.h"

@@ -1,7 +1,7 @@
 #include "stdafx.h"
 
 // General
-#include "UIControlConsole.h"
+#include "UIControlText.h"
 
 namespace
 {
@@ -10,16 +10,16 @@ namespace
 	const glm::vec4  cDefaultColor = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
 }
 
-CUIControlConsole::CUIControlConsole(IScene& Scene)
+CUIControlText::CUIControlText(IScene& Scene)
 	: CUIControl(Scene)
 {}
 
-CUIControlConsole::~CUIControlConsole()
+CUIControlText::~CUIControlText()
 {}
 
 
 
-void CUIControlConsole::Initialize()
+void CUIControlText::Initialize()
 {
 	__super::Initialize();
 
@@ -44,25 +44,24 @@ void CUIControlConsole::Initialize()
 
 
 //
-// CUIControlConsole
+// CUIControlText
 //
-
-std::shared_ptr<IznFont> CUIControlConsole::GetFont() const
+std::shared_ptr<IznFont> CUIControlText::GetFont() const
 {
     return m_Font;
 }
 
-std::string CUIControlConsole::GetText() const
+std::string CUIControlText::GetText() const
 {
 	return m_TextProperty->Get();
 }
 
-glm::vec2 CUIControlConsole::GetOffset() const
+glm::vec2 CUIControlText::GetOffset() const
 {
 	return m_OffsetProperty->Get();
 }
 
-glm::vec4 CUIControlConsole::GetColor() const
+glm::vec4 CUIControlText::GetColor() const
 {
 	return m_ColorProperty->Get();
 }
@@ -72,10 +71,9 @@ glm::vec4 CUIControlConsole::GetColor() const
 //
 // CUIControl
 //
-glm::vec2 CUIControlConsole::GetSize() const
+glm::vec2 CUIControlText::GetSize() const
 {
 	float width = m_Font->GetWidth(GetText());
 	float height = m_Font->GetHeight();
-
-    return glm::vec2(width, height) + 2.0f * GetOffset();
+    return glm::vec2(width, height) + 2.0f * m_OffsetProperty->Get();
 }

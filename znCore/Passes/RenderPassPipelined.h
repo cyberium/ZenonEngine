@@ -21,7 +21,7 @@ public:
 
 protected:
 	virtual PerFrame GetPerFrameData() const;
-	void BindPerFrameData() const;
+	virtual void BindPerFrameData() const;
 
 private:
 	std::shared_ptr<IPipelineState> m_Pipeline;

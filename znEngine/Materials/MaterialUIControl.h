@@ -2,9 +2,9 @@
 
 namespace
 {
-	__declspec(align(16)) struct SMaterialDebugProperties
+	__declspec(align(16)) struct SMaterialUIControlProperties
 	{
-		SMaterialDebugProperties()
+		SMaterialUIControlProperties()
 			: DiffuseColor(1.0f, 1.0f, 1.0f, 1.0f)
 			, HasTextureDiffuse(false)
 		{}
@@ -16,15 +16,16 @@ namespace
 	};
 }
 
-class ZN_API MaterialDebug 
-	: public MaterialProxieT<SMaterialDebugProperties>
+class ZN_API CMaterialUIControl
+	: public MaterialProxieT<SMaterialUIControlProperties>
 {
 public:
-	MaterialDebug(IRenderDevice& RenderDevice);
-	virtual ~MaterialDebug();
+	CMaterialUIControl(IRenderDevice& RenderDevice);
+	virtual ~CMaterialUIControl();
 
-	void SetDiffuseColor(const glm::vec4& diffuse);
-	glm::vec4 GetDiffuseColor() const;
+	// CMaterialUIControl
+	void SetColor(glm::vec4 color);
+	glm::vec4 GetColor() const;
 	void SetTexture(std::shared_ptr<ITexture> Texture);
 	std::shared_ptr<ITexture> GetTexture() const;
 };

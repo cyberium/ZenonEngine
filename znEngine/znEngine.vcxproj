@@ -37,7 +37,7 @@
     <ClCompile Include="Passes\ForwardRendering\PassForward_DoRenderScene.cpp" />
     <ClCompile Include="Passes\ForwardRendering\PassForward_DoRenderSceneInstanced.cpp" />
     <ClCompile Include="Passes\ForwardRendering\RendererForward.cpp" />
-    <ClCompile Include="Passes\MaterialParticlePass.cpp" />
+    <ClCompile Include="Passes\ParticlesPass.cpp" />
     <ClCompile Include="Passes\PostprocessRendering\Postprocess_HDR.cpp" />
     <ClCompile Include="Passes\RTSGround_Pass.cpp" />
     <ClCompile Include="Passes\Scene\BaseTypedList3DPass.cpp" />
@@ -53,19 +53,13 @@
     <ClCompile Include="Passes\Technical\InvokeFunctionPass.cpp" />
     <ClCompile Include="Passes\Technical\SetShaderParameterPass.cpp" />
     <ClCompile Include="Materials\MaterialDebug.cpp" />
-    <ClCompile Include="Materials\MaterialTextured.cpp" />
     <ClCompile Include="Materials\MaterialModel.cpp" />
-    <ClCompile Include="Materials\UI_Button_Material.cpp" />
-    <ClCompile Include="Materials\UI_Color_Material.cpp" />
+    <ClCompile Include="Materials\MaterialUIControl.cpp" />
     <ClCompile Include="Materials\UI_Line_Material.cpp" />
-    <ClCompile Include="Materials\UI_Texture_Material.cpp" />
-    <ClCompile Include="Passes\MaterialDebugPass.cpp" />
-    <ClCompile Include="Passes\MaterialTexturedPass.cpp" />
-    <ClCompile Include="Passes\UI\UIButtonPass.cpp" />
-    <ClCompile Include="Passes\UI\UIColorPass.cpp" />
-    <ClCompile Include="Passes\UI\UIControlConsolePass.cpp" />
+    <ClCompile Include="Passes\DebugPass.cpp" />
+    <ClCompile Include="Passes\UI\ConsolePass.cpp" />
     <ClCompile Include="Passes\UI\UIFontPass.cpp" />
-    <ClCompile Include="Passes\UI\UITexturePass.cpp" />
+    <ClCompile Include="Passes\UI\UIControlPass.cpp" />
     <ClCompile Include="PluginsManager.cpp" />
     <ClCompile Include="RenderDeviceFactory.cpp" />
     <ClCompile Include="Application.cpp" />
@@ -84,19 +78,6 @@
     <ClCompile Include="Scene\Components\LightComponent3D.cpp" />
     <ClCompile Include="Scene\Components\ReactPhysicsComponent.cpp" />
     <ClCompile Include="Scene\EngineSceneExtender.cpp" />
-    <ClCompile Include="Scene\Nodes\UIBeizerLine.cpp" />
-    <ClCompile Include="Scene\Nodes\UIButton.cpp" />
-    <ClCompile Include="Scene\Nodes\UIColor.cpp" />
-    <ClCompile Include="Scene\Nodes\UIContainerGarmoshka.cpp" />
-    <ClCompile Include="Scene\Nodes\UIContainerGarmoshkaCategory.cpp" />
-    <ClCompile Include="Scene\Nodes\UIContainerGarmoshkaCategoryHeader.cpp" />
-    <ClCompile Include="Scene\Nodes\UIContainerListBase.cpp" />
-    <ClCompile Include="Scene\Nodes\UIContainerListWithActivation.cpp" />
-    <ClCompile Include="Scene\Nodes\UIControlConsole.cpp" />
-    <ClCompile Include="Scene\Nodes\UIText.cpp" />
-    <ClCompile Include="Scene\Nodes\UITexture.cpp" />
-    <ClCompile Include="Scene\Nodes\UIUtils.cpp" />
-    <ClCompile Include="Scene\Nodes\UIWindow.cpp" />
     <ClCompile Include="Scene\SceneNodeRTSGround.cpp" />
     <ClCompile Include="Scene\SceneBase.cpp" />
     <ClCompile Include="Scene\SceneNodeRTSPathAndPoint.cpp" />
@@ -108,6 +89,10 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="UIControls\UIControlCommon.cpp" />
+    <ClCompile Include="UIControls\UIControlText.cpp" />
+    <ClCompile Include="UIControls\UIUtils.cpp" />
+    <ClCompile Include="UIControls\UIWindow.cpp" />
     <ClCompile Include="znEngine.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -138,7 +123,7 @@
     <ClInclude Include="Passes\ForwardRendering\PassForward_DoRenderScene.h" />
     <ClInclude Include="Passes\ForwardRendering\PassForward_DoRenderSceneInstanced.h" />
     <ClInclude Include="Passes\ForwardRendering\RendererForward.h" />
-    <ClInclude Include="Passes\MaterialParticlePass.h" />
+    <ClInclude Include="Passes\ParticlesPass.h" />
     <ClInclude Include="Passes\PostprocessRendering\Postprocess_HDR.h" />
     <ClInclude Include="Passes\RTSGround_Pass.h" />
     <ClInclude Include="Passes\Scene\BaseTypedList3DPass.h" />
@@ -154,19 +139,13 @@
     <ClInclude Include="Passes\Technical\InvokeFunctionPass.h" />
     <ClInclude Include="Passes\Technical\SetShaderParameterPass.h" />
     <ClInclude Include="Materials\MaterialDebug.h" />
-    <ClInclude Include="Materials\MaterialTextured.h" />
     <ClInclude Include="Materials\MaterialModel.h" />
-    <ClInclude Include="Materials\UI_Button_Material.h" />
-    <ClInclude Include="Materials\UI_Color_Material.h" />
+    <ClInclude Include="Materials\MaterialUIControl.h" />
     <ClInclude Include="Materials\UI_Line_Material.h" />
-    <ClInclude Include="Materials\UI_Texture_Material.h" />
-    <ClInclude Include="Passes\MaterialDebugPass.h" />
-    <ClInclude Include="Passes\MaterialTexturedPass.h" />
-    <ClInclude Include="Passes\UI\UIButtonPass.h" />
-    <ClInclude Include="Passes\UI\UIColorPass.h" />
-    <ClInclude Include="Passes\UI\UIControlConsolePass.h" />
+    <ClInclude Include="Passes\DebugPass.h" />
+    <ClInclude Include="Passes\UI\ConsolePass.h" />
     <ClInclude Include="Passes\UI\UIFontPass.h" />
-    <ClInclude Include="Passes\UI\UITexturePass.h" />
+    <ClInclude Include="Passes\UI\UIControlPass.h" />
     <ClInclude Include="PluginsManager.h" />
     <ClInclude Include="RenderDeviceFactory.h" />
     <ClInclude Include="Application.h" />
@@ -188,19 +167,6 @@
     <ClInclude Include="Scene\Components\ReactPhysicsComponent.h" />
     <ClInclude Include="Scene\EngineSceneExtender.h" />
     <ClInclude Include="Scene\EngineSceneIntfs.h" />
-    <ClInclude Include="Scene\Nodes\UIBeizerLine.h" />
-    <ClInclude Include="Scene\Nodes\UIButton.h" />
-    <ClInclude Include="Scene\Nodes\UIColor.h" />
-    <ClInclude Include="Scene\Nodes\UIContainerGarmoshka.h" />
-    <ClInclude Include="Scene\Nodes\UIContainerGarmoshkaCategory.h" />
-    <ClInclude Include="Scene\Nodes\UIContainerGarmoshkaCategoryHeader.h" />
-    <ClInclude Include="Scene\Nodes\UIContainerListBase.h" />
-    <ClInclude Include="Scene\Nodes\UIContainerListWithActivation.h" />
-    <ClInclude Include="Scene\Nodes\UIControlConsole.h" />
-    <ClInclude Include="Scene\Nodes\UIText.h" />
-    <ClInclude Include="Scene\Nodes\UITexture.h" />
-    <ClInclude Include="Scene\Nodes\UIUtils.h" />
-    <ClInclude Include="Scene\Nodes\UIWindow.h" />
     <ClInclude Include="Scene\SceneNodeRTSGround.h" />
     <ClInclude Include="Scene\SceneBase.h" />
     <ClInclude Include="Scene\SceneNodeRTSPathAndPoint.h" />
@@ -210,6 +176,10 @@
     <ClInclude Include="Settings\GroupVideo.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="ThreadPool.h" />
+    <ClInclude Include="UIControls\UIControlCommon.h" />
+    <ClInclude Include="UIControls\UIControlText.h" />
+    <ClInclude Include="UIControls\UIUtils.h" />
+    <ClInclude Include="UIControls\UIWindow.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="znEngine.rc" />

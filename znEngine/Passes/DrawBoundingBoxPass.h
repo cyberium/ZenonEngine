@@ -17,4 +17,5 @@ public:
 
 private:
 	std::shared_ptr<IGeometry> m_BBoxGeometry;
+	std::shared_ptr<IMaterial> m_Material;
 };

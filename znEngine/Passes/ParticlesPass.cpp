@@ -1,9 +1,9 @@
 #include "stdafx.h"
 
 // General
-#include "MaterialParticlePass.h"
+#include "ParticlesPass.h"
 
-CMaterialParticlePass::CMaterialParticlePass(IRenderDevice& RenderDevice, IScene& Scene)
+CParticlesPass::CParticlesPass(IRenderDevice& RenderDevice, IScene& Scene)
 	: Base3DPass(Scene)
 {
 	m_Geometry = GetRenderDevice().GetObjectsFactory().CreateGeometry();
@@ -12,7 +12,7 @@ CMaterialParticlePass::CMaterialParticlePass(IRenderDevice& RenderDevice, IScene
 	m_GeomParticlesBuffer = GetRenderDevice().GetObjectsFactory().CreateStructuredBuffer(nullptr, 1000, sizeof(SGPUParticle), EAccess::CPUWrite);
 }
 
-CMaterialParticlePass::~CMaterialParticlePass()
+CParticlesPass::~CParticlesPass()
 {}
 
 
@@ -20,8 +20,10 @@ CMaterialParticlePass::~CMaterialParticlePass()
 //
 // IRenderPassPipelined
 //
-std::shared_ptr<IRenderPassPipelined> CMaterialParticlePass::ConfigurePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport)
+std::shared_ptr<IRenderPassPipelined> CParticlesPass::ConfigurePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport)
 {
+	__super::ConfigurePipeline(RenderTarget, Viewport);
+
 	std::shared_ptr<IShader> vertexShader;
 	std::shared_ptr<IShader> geomShader;
 	std::shared_ptr<IShader> pixelShader;
@@ -48,9 +50,6 @@ std::shared_ptr<IRenderPassPipelined> CMaterialParticlePass::ConfigurePipeline(s
 		IBlendState::BlendFactor::SrcAlpha, IBlendState::BlendFactor::One)
 	);
 	GetPipeline().GetDepthStencilState()->SetDepthMode(enableTestDisableWrites);
-	GetPipeline().GetRasterizerState()->SetCullMode(IRasterizerState::CullMode::Back);
-	GetPipeline().GetRasterizerState()->SetFillMode(IRasterizerState::FillMode::Solid, IRasterizerState::FillMode::Solid);
-	GetPipeline().SetRenderTarget(RenderTarget);
 	GetPipeline().SetShader(EShaderType::VertexShader, vertexShader);
 	GetPipeline().SetShader(EShaderType::GeometryShader, geomShader);
 	GetPipeline().SetShader(EShaderType::PixelShader, pixelShader);
@@ -72,7 +71,7 @@ std::shared_ptr<IRenderPassPipelined> CMaterialParticlePass::ConfigurePipeline(s
 //
 // IVisitor
 //
-EVisitResult CMaterialParticlePass::Visit(const ISceneNode * SceneNode)
+EVisitResult CParticlesPass::Visit(const ISceneNode * SceneNode)
 {
 	if (false == SceneNode->IsComponentExistsT<IParticleComponent3D>())
 		return EVisitResult::AllowVisitChilds;
@@ -80,17 +79,17 @@ EVisitResult CMaterialParticlePass::Visit(const ISceneNode * SceneNode)
 	return EVisitResult::AllowAll;
 }
 
-EVisitResult CMaterialParticlePass::Visit(const IModel * Model)
+EVisitResult CParticlesPass::Visit(const IModel * Model)
 {
 	return EVisitResult::Block;
 }
 
-EVisitResult CMaterialParticlePass::Visit(const IGeometry * Geometry, const IMaterial* Material, SGeometryDrawArgs GeometryDrawArgs)
+EVisitResult CParticlesPass::Visit(const IGeometry * Geometry, const IMaterial* Material, SGeometryDrawArgs GeometryDrawArgs)
 {
 	return EVisitResult::Block;
 }
 
-EVisitResult CMaterialParticlePass::Visit(const IParticleSystem * ParticlesSystem)
+EVisitResult CParticlesPass::Visit(const IParticleSystem * ParticlesSystem)
 {
 	const auto& partilces = ParticlesSystem->GetGPUParticles();
 	if (partilces.empty())

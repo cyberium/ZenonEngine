@@ -1,11 +1,11 @@
 #pragma once
 
-class ZN_API CMaterialParticlePass 
+class ZN_API CParticlesPass 
 	: public Base3DPass
 {
 public:
-	CMaterialParticlePass(IRenderDevice& RenderDevice, IScene& Scene);
-	virtual ~CMaterialParticlePass();
+	CParticlesPass(IRenderDevice& RenderDevice, IScene& Scene);
+	virtual ~CParticlesPass();
 
 	// IRenderPassPipelined
 	std::shared_ptr<IRenderPassPipelined> ConfigurePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport* Viewport) override final;

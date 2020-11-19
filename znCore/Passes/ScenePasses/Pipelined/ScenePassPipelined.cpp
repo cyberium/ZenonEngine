@@ -6,7 +6,9 @@
 ScenePassPipelined::ScenePassPipelined(IScene& Scene)
 	: RenderPassPipelined(Scene.GetRenderDevice())
 	, m_Scene(Scene)
-{}
+{
+	m_PerObjectConstantBuffer = GetRenderDevice().GetObjectsFactory().CreateConstantBuffer(PerObject());
+}
 
 ScenePassPipelined::~ScenePassPipelined()
 {}
@@ -62,9 +64,25 @@ EVisitResult ScenePassPipelined::Visit(const IParticleSystem * ParticleSystem)
 }
 
 
+
 //
 // Protected
 //
+void ScenePassPipelined::BindPerObjectData(const PerObject& PerObject)
+{
+	m_PerObjectConstantBuffer->Set(PerObject);
+
+	for (const auto& shaderIt : GetPipeline().GetShaders())
+	{
+		auto& perObjectParam = shaderIt.second->GetShaderParameterByName("PerObject");
+		if (perObjectParam.IsValid())
+		{
+			perObjectParam.SetConstantBuffer(m_PerObjectConstantBuffer);
+			perObjectParam.Bind();
+		}
+	}
+}
+
 IScene& ScenePassPipelined::GetScene() const
 {
 	return m_Scene;

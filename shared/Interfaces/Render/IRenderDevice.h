@@ -39,6 +39,7 @@ ZN_INTERFACE ZN_API IRenderPrimitivesFactory
 
 	// UI meshes
 	virtual std::shared_ptr<IGeometry> CreateUIQuad(float width = 10.0f, float height = 10.0f) = 0;
+	virtual std::shared_ptr<IGeometry> CreateUIQuad2(glm::vec2 Size, glm::vec2 TexCoordStart, glm::vec2 TexCoordEnd) = 0;
 	virtual std::shared_ptr<IGeometry> CreateUIBeizerLine(glm::vec2 start = glm::vec2(0.0f, 0.0f), glm::vec2 end = glm::vec2(500.0f, 500.0f)) = 0;
 };
 

@@ -1,10 +1,8 @@
 #include "stdafx.h"
 
 // General
-#include "UIControlConsolePass.h"
+#include "ConsolePass.h"
 
-// Additional
-#include "Scene/Nodes/UIText.h"
 
 #if 0
 
@@ -115,12 +113,6 @@ std::shared_ptr<IRenderPassPipelined> CUIControlConsolePass::ConfigurePipeline(s
 	_ASSERT(m_FontBufferParameter->IsValid());
 	m_FontBufferParameter->SetConstantBuffer(m_FontBuffer);
 
-	// Create samplers
-	std::shared_ptr<ISamplerState> g_LinearClampSampler = GetRenderDevice().GetObjectsFactory().CreateSamplerState();
-	g_LinearClampSampler->SetFilter(ISamplerState::MinFilter::MinLinear, ISamplerState::MagFilter::MagLinear, ISamplerState::MipFilter::MipLinear);
-	g_LinearClampSampler->SetWrapMode(ISamplerState::WrapMode::Clamp, ISamplerState::WrapMode::Clamp, ISamplerState::WrapMode::Clamp);
-	GetPipeline().SetSampler(0, g_LinearClampSampler);
-
 	// Diryy hack!
 	GetPipeline().SetTexture(0, GetBaseManager().GetManager<IznFontsManager>()->GetMainFont()->GetTexture());
 
@@ -150,7 +142,7 @@ PerFrame CUIControlConsolePass::GetPerFrameData() const
 //
 EVisitResult CUIControlConsolePass::Visit(const IUIControl * node)
 {
-	const CUITextNode* textNode = dynamic_cast<const CUITextNode*>(node);
+	const CUIControlText* textNode = dynamic_cast<const CUIControlText*>(node);
 	if (textNode == nullptr)
 		return EVisitResult::AllowVisitChilds;
 

@@ -4,7 +4,7 @@
 #include "UIFontPass.h"
 
 // Additional
-#include "Scene/Nodes/UIText.h"
+#include "UIControls/UIControlText.h"
 
 
 CUIFontPass::CUIFontPass(IRenderDevice& RenderDevice, IScene& Scene)
@@ -43,12 +43,6 @@ std::shared_ptr<IRenderPassPipelined> CUIFontPass::ConfigurePipeline(std::shared
 
 	vertexShader->LoadInputLayoutFromReflector();
 
-	// Create samplers
-	std::shared_ptr<ISamplerState> linearClampSampler = GetRenderDevice().GetObjectsFactory().CreateSamplerState();
-	linearClampSampler->SetFilter(ISamplerState::MinFilter::MinLinear, ISamplerState::MagFilter::MagLinear, ISamplerState::MipFilter::MipLinear);
-	linearClampSampler->SetWrapMode(ISamplerState::WrapMode::Clamp, ISamplerState::WrapMode::Clamp, ISamplerState::WrapMode::Clamp);
-	GetPipeline().SetSampler(0, linearClampSampler);
-
 	// Material
 	GetPipeline().SetShader(EShaderType::VertexShader, vertexShader);
 	GetPipeline().SetShader(EShaderType::PixelShader, pixelShader);
@@ -63,7 +57,7 @@ std::shared_ptr<IRenderPassPipelined> CUIFontPass::ConfigurePipeline(std::shared
 //
 EVisitResult CUIFontPass::Visit(const IUIControl * node)
 {
-	const CUITextNode* textNode = dynamic_cast<const CUITextNode*>(node);
+	const CUIControlText* textNode = dynamic_cast<const CUIControlText*>(node);
 	if (textNode == nullptr)
 		return EVisitResult::AllowVisitChilds;
 

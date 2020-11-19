@@ -7,8 +7,7 @@
 RenderPassPipelined::RenderPassPipelined(IRenderDevice& RenderDevice)
     : RenderPass(RenderDevice)
 {
-	m_Pipeline = GetRenderDevice().GetObjectsFactory().CreatePipelineState();
-	m_PerFrameConstantBuffer = GetRenderDevice().GetObjectsFactory().CreateConstantBuffer(PerFrame());
+	
 }
 
 RenderPassPipelined::~RenderPassPipelined()
@@ -48,11 +47,25 @@ void RenderPassPipelined::PostRender(RenderEventArgs& e)
 //
 std::shared_ptr<IRenderPassPipelined> RenderPassPipelined::ConfigurePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport)
 {
+	m_Pipeline = GetRenderDevice().GetObjectsFactory().CreatePipelineState();
+	m_PerFrameConstantBuffer = GetRenderDevice().GetObjectsFactory().CreateConstantBuffer(PerFrame());
+
 	GetPipeline().GetBlendState()->SetBlendMode(disableBlending);
 	GetPipeline().GetDepthStencilState()->SetDepthMode(enableDepthWrites);
 	GetPipeline().GetRasterizerState()->SetCullMode(IRasterizerState::CullMode::None);
 	GetPipeline().GetRasterizerState()->SetFillMode(IRasterizerState::FillMode::Solid, IRasterizerState::FillMode::Solid);
 	GetPipeline().SetRenderTarget(RenderTarget);
+
+	auto linearSampler = GetRenderDevice().GetObjectsFactory().CreateSamplerState();
+	linearSampler->SetFilter(ISamplerState::MinFilter::MinLinear, ISamplerState::MagFilter::MagLinear, ISamplerState::MipFilter::MipLinear);
+	linearSampler->SetWrapMode(ISamplerState::WrapMode::Repeat, ISamplerState::WrapMode::Repeat);
+	GetPipeline().SetSampler(0, linearSampler);
+
+	auto clampSampler = GetRenderDevice().GetObjectsFactory().CreateSamplerState();
+	clampSampler->SetFilter(ISamplerState::MinFilter::MinLinear, ISamplerState::MagFilter::MagLinear, ISamplerState::MipFilter::MipLinear);
+	clampSampler->SetWrapMode(ISamplerState::WrapMode::Clamp, ISamplerState::WrapMode::Clamp);
+	GetPipeline().SetSampler(1, clampSampler);
+
 	return shared_from_this();
 }
 

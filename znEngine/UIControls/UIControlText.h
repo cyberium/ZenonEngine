@@ -1,22 +1,22 @@
 #pragma once
 
-class ZN_API CUIControlConsole
+class ZN_API CUIControlText
 	: public CUIControl
 {
 public:
-	CUIControlConsole(IScene& Scene);
-	virtual ~CUIControlConsole();
+	CUIControlText(IScene& Scene);
+	virtual ~CUIControlText();
 
 	void                                            Initialize() override;
 
-	// CUITextNode
+	// CUIControlText
 	std::shared_ptr<IznFont>                        GetFont() const;
 	std::string                                     GetText() const;
 	glm::vec2                                       GetOffset() const;
 	glm::vec4                                       GetColor() const;
 
 	// CUIControl
-	glm::vec2                                       GetSize() const override;
+	virtual glm::vec2                               GetSize() const override;
 
 private:
 	std::shared_ptr<IznFont>                        m_Font;

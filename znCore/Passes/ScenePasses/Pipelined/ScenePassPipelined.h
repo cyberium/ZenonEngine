@@ -23,8 +23,13 @@ public:
 	virtual EVisitResult Visit(const IParticleSystem* ParticleSystem) override;
 
 protected:
+	void BindPerObjectData(const PerObject& PerObject);
+
+protected:
 	IScene& GetScene() const;
 	
 private:
+	std::shared_ptr<IConstantBuffer> m_PerObjectConstantBuffer;
+	//IShaderParameter* m_PerObjectParameter;
 	IScene& m_Scene;
 };

@@ -18,6 +18,5 @@ public:
 private:
 	std::shared_ptr<IGeometry> m_ConeGeometry;
 	std::shared_ptr<IGeometry> m_SphereGeometry;
-	std::shared_ptr<IConstantBuffer> m_MaterialConstantBuffer;
-	IShaderParameter* m_MaterialParameter;
+	std::shared_ptr<IMaterial> m_Material;
 };

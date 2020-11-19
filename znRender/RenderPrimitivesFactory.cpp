@@ -482,6 +482,42 @@ std::shared_ptr<IGeometry> CRenderPrimitivesFactory::CreateUIQuad(float width, f
     return geometry;
 }
 
+std::shared_ptr<IGeometry> CRenderPrimitivesFactory::CreateUIQuad2(glm::vec2 Size, glm::vec2 TexCoordStart, glm::vec2 TexCoordEnd)
+{
+	glm::vec2 vertices[4];
+	vertices[0] = glm::vec2(Size.x, Size.y);
+	vertices[1] = glm::vec2(0.0f, Size.y);
+	vertices[2] = glm::vec2(0.0f, 0.0f);
+	vertices[3] = glm::vec2(Size.x, 0.0f);
+
+	glm::vec2 texCoords[4];
+	texCoords[0] = glm::vec2(TexCoordEnd.x, TexCoordStart.y);
+	texCoords[1] = glm::vec2(TexCoordStart.x, TexCoordStart.y);
+	texCoords[2] = glm::vec2(TexCoordStart.x, TexCoordEnd.y);
+	texCoords[3] = glm::vec2(TexCoordEnd.x, TexCoordEnd.y);
+
+	uint16 indices[6];
+	indices[0] = 1;
+	indices[1] = 0;
+	indices[2] = 2;
+	indices[3] = 2;
+	indices[4] = 0;
+	indices[5] = 3;
+
+	std::shared_ptr<IGeometry> geometry = m_RenderDevice.GetObjectsFactory().CreateGeometry();
+
+	std::shared_ptr<IBuffer> __vbPosition = m_RenderDevice.GetObjectsFactory().CreateVertexBuffer(vertices, 4);
+	geometry->AddVertexBuffer(BufferBinding("POSITION", 0), __vbPosition);
+
+	std::shared_ptr<IBuffer> __vbTexCoord = m_RenderDevice.GetObjectsFactory().CreateVertexBuffer(texCoords, 4);
+	geometry->AddVertexBuffer(BufferBinding("TEXCOORD", 0), __vbTexCoord);
+
+	std::shared_ptr<IBuffer> __ib = m_RenderDevice.GetObjectsFactory().CreateIndexBuffer(indices, 6);
+	geometry->SetIndexBuffer(__ib);
+
+	return geometry;
+}
+
 std::shared_ptr<IGeometry> CRenderPrimitivesFactory::CreateUIBeizerLine(glm::vec2 start, glm::vec2 end)
 {
 	glm::vec2 vertices[4];

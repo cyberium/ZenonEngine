@@ -76,7 +76,7 @@ void CSceneDefault::Initialize()
 	//--------------------------------------------------------------------------
 	// XML
 	//--------------------------------------------------------------------------
-	/*if (auto file = GetBaseManager().GetManager<IFilesManager>()->Open("RTS22656"))
+	if (auto file = GetBaseManager().GetManager<IFilesManager>()->Open("RTS22656"))
 	{
 		CXMLManager xml(GetBaseManager());
 		auto reader = xml.CreateReader(file);
@@ -87,11 +87,11 @@ void CSceneDefault::Initialize()
 
 		auto sceneNodeRTSUnit = CreateSceneNodeT<ISceneNodeRTSUnit>();
 		sceneNodeRTSUnit->SetPath(m_RTSUnitsPath);
-	}*/
+	}
 
 
 	{
-
+		std::shared_ptr<IUIControl> commonControl = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<IUIControlFactory>()->CreateSceneNodeUI(cUIControlCommon, *this);
 	}
 
 	//--------------------------------------------------------------------------

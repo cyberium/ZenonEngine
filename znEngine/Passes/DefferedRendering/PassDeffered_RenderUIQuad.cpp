@@ -50,6 +50,8 @@ void CPassDeffered_RenderUIQuad::Render(RenderEventArgs& e)
 //
 std::shared_ptr<IRenderPassPipelined> CPassDeffered_RenderUIQuad::ConfigurePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport)
 {
+	__super::ConfigurePipeline(RenderTarget, Viewport);
+
 	m_QuadGeometry = GetRenderDevice().GetPrimitivesFactory().CreateQuad();
 
 	auto samplesCnt = std::to_string(RenderTarget->GetTexture(IRenderTarget::AttachmentPoint::Color0)->GetSamplesCount());
@@ -63,23 +65,9 @@ std::shared_ptr<IRenderPassPipelined> CPassDeffered_RenderUIQuad::ConfigurePipel
 	GetPipeline().GetBlendState()->SetBlendMode(additiveBlending);
 	GetPipeline().GetDepthStencilState()->SetDepthMode(disableDepthWrites);
 	GetPipeline().GetRasterizerState()->SetCullMode(IRasterizerState::CullMode::None);
-	GetPipeline().GetRasterizerState()->SetFillMode(IRasterizerState::FillMode::Solid, IRasterizerState::FillMode::Solid);
-	//GetPipeline().GetRasterizerState()->SetAntialiasedLineEnable(true);
-	//GetPipeline().GetRasterizerState()->SetMultisampleEnabled(true);
-	GetPipeline().SetRenderTarget(RenderTarget);
 	GetPipeline().SetShader(EShaderType::VertexShader, vertexShader);
 	GetPipeline().SetShader(EShaderType::PixelShader, pixelShader);
 	
-	auto& sampler = GetRenderDevice().GetObjectsFactory().CreateSamplerState();
-	sampler->SetFilter(ISamplerState::MinFilter::MinLinear, ISamplerState::MagFilter::MagLinear, ISamplerState::MipFilter::MipLinear);
-	sampler->SetWrapMode(ISamplerState::WrapMode::Repeat, ISamplerState::WrapMode::Repeat);
-	GetPipeline().SetSampler(0, sampler);
-
-	auto& samplerClamp = GetRenderDevice().GetObjectsFactory().CreateSamplerState();
-	samplerClamp->SetFilter(ISamplerState::MinFilter::MinLinear, ISamplerState::MagFilter::MagLinear, ISamplerState::MipFilter::MipLinear);
-	samplerClamp->SetWrapMode(ISamplerState::WrapMode::Clamp, ISamplerState::WrapMode::Clamp);
-	GetPipeline().SetSampler(1, samplerClamp);
-
 	GetPipeline().SetTexture(0, m_DefferedRender->GetTexture0());
 	GetPipeline().SetTexture(1, m_DefferedRender->GetTexture1());
 	GetPipeline().SetTexture(2, m_DefferedRender->GetTexture2());

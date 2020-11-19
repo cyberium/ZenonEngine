@@ -1,11 +1,11 @@
 #pragma once
 
-class ZN_API CUITexturePass
+class ZN_API CUIControlPass
 	: public BaseUIPass
 {
 public:
-	CUITexturePass(IRenderDevice& RenderDevice, IScene& Scene);
-	virtual ~CUITexturePass();
+	CUIControlPass(IRenderDevice& RenderDevice, IScene& Scene);
+	virtual ~CUIControlPass();
 
 	// IRenderPassPipelined
 	virtual std::shared_ptr<IRenderPassPipelined> ConfigurePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport* Viewport) override;

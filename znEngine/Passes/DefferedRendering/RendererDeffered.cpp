@@ -5,14 +5,12 @@
 
 // Additional
 #include "Passes/Technical/ClearRenderTargetPass.h"
-#include "Passes/MaterialDebugPass.h"
-#include "Passes/MaterialTexturedPass.h"
-#include "Passes/MaterialParticlePass.h"
+#include "Passes/DebugPass.h"
+#include "Passes/ParticlesPass.h"
 #include "Passes/DrawBonesPass.h"
 
 #include "Passes/UI/UIFontPass.h"
-#include "Passes/UI/UIColorPass.h"
-#include "Passes/UI/UIControlConsolePass.h"
+#include "Passes/UI/UIControlPass.h"
 
 CRendererDeffered::CRendererDeffered(IBaseManager& BaseManager, IScene& Scene)
 	: m_BaseManager(BaseManager)
@@ -112,18 +110,18 @@ void CRendererDeffered::Initialize(std::shared_ptr<IRenderTarget> OutputRenderTa
 	AddPass(m_SceneCreateTypelessListPass);
 	AddPass(m_Deffered_ScenePass);
 	AddPass(m_Deffered_Lights);
-	AddPass(MakeShared(CMaterial_Debug_Pass, m_RenderDevice, m_Scene)->ConfigurePipeline(outputRenderTargetWithCustomDepth, Viewport));
+	AddPass(MakeShared(CDebugPass, m_RenderDevice, m_Scene)->ConfigurePipeline(outputRenderTargetWithCustomDepth, Viewport));
 	
 	// Final UI Pass
 	AddPass(m_Deffered_UIQuadPass);
-	AddPass(MakeShared(CMaterialParticlePass, m_RenderDevice, m_Scene)->ConfigurePipeline(outputRenderTargetWithCustomDepth, Viewport));
+	AddPass(MakeShared(CParticlesPass, m_RenderDevice, m_Scene)->ConfigurePipeline(outputRenderTargetWithCustomDepth, Viewport));
 
 	// HDR
 	//AddPass(MakeShared(ClearRenderTargetPass, m_RenderDevice, HDRRenderTarget));
 	//m_UIPasses.push_back(m_Deffered_HDR);
 
 	m_UIPasses.push_back(MakeShared(CUIFontPass, m_RenderDevice, m_Scene)->ConfigurePipeline(OutputRenderTarget, Viewport));
-	m_UIPasses.push_back(MakeShared(CUIColorPass, m_RenderDevice, m_Scene)->ConfigurePipeline(OutputRenderTarget, Viewport));
+	m_UIPasses.push_back(MakeShared(CUIControlPass, m_RenderDevice, m_Scene)->ConfigurePipeline(OutputRenderTarget, Viewport));
 	//m_UIPasses.push_back(MakeShared(CUIControlConsolePass, m_RenderDevice)->ConfigurePipeline(OutputRenderTarget, Viewport));
 }
 

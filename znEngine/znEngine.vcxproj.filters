@@ -109,9 +109,6 @@
     <Filter Include="NativeWindows">
       <UniqueIdentifier>{cfe67249-b3e6-463f-a7cd-5770ee4ab305}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Scene\UI">
-      <UniqueIdentifier>{534c42f8-3515-4f60-9bd4-92b1ed91c63d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Scene\RTS">
       <UniqueIdentifier>{9dc540cd-9f2d-49f0-a48a-2b158e64ef39}</UniqueIdentifier>
     </Filter>
@@ -121,6 +118,9 @@
     <Filter Include="Scene\Components\ModelComponent">
       <UniqueIdentifier>{c3a1a60d-2fe3-4d69-99d4-9d66ee4b05b0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="UIControls">
+      <UniqueIdentifier>{ca08ca0d-5e99-4bc3-950b-f78dc515d6ab}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -128,9 +128,6 @@
     </ClCompile>
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="Materials\MaterialDebug.cpp">
-      <Filter>Materials</Filter>
-    </ClCompile>
-    <ClCompile Include="Materials\MaterialTextured.cpp">
       <Filter>Materials</Filter>
     </ClCompile>
     <ClCompile Include="znEngine.cpp">
@@ -163,16 +160,7 @@
     <ClCompile Include="Formats\Fonts\FontsManager.cpp">
       <Filter>Formats\Fonts</Filter>
     </ClCompile>
-    <ClCompile Include="Materials\UI_Button_Material.cpp">
-      <Filter>Materials\UI materials</Filter>
-    </ClCompile>
-    <ClCompile Include="Materials\UI_Color_Material.cpp">
-      <Filter>Materials\UI materials</Filter>
-    </ClCompile>
     <ClCompile Include="Materials\UI_Line_Material.cpp">
-      <Filter>Materials\UI materials</Filter>
-    </ClCompile>
-    <ClCompile Include="Materials\UI_Texture_Material.cpp">
       <Filter>Materials\UI materials</Filter>
     </ClCompile>
     <ClCompile Include="Passes\Technical\BeginQueryPass.cpp">
@@ -213,42 +201,6 @@
     </ClCompile>
     <ClCompile Include="AssyncLoader\Loader.cpp">
       <Filter>Tools\AssyncLoader</Filter>
-    </ClCompile>
-    <ClCompile Include="Scene\Nodes\UIBeizerLine.cpp">
-      <Filter>Scene\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="Scene\Nodes\UIButton.cpp">
-      <Filter>Scene\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="Scene\Nodes\UIColor.cpp">
-      <Filter>Scene\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="Scene\Nodes\UIContainerGarmoshka.cpp">
-      <Filter>Scene\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="Scene\Nodes\UIContainerGarmoshkaCategory.cpp">
-      <Filter>Scene\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="Scene\Nodes\UIContainerGarmoshkaCategoryHeader.cpp">
-      <Filter>Scene\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="Scene\Nodes\UIContainerListBase.cpp">
-      <Filter>Scene\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="Scene\Nodes\UIContainerListWithActivation.cpp">
-      <Filter>Scene\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="Scene\Nodes\UIText.cpp">
-      <Filter>Scene\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="Scene\Nodes\UITexture.cpp">
-      <Filter>Scene\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="Scene\Nodes\UIUtils.cpp">
-      <Filter>Scene\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="Scene\Nodes\UIWindow.cpp">
-      <Filter>Scene\UI</Filter>
     </ClCompile>
     <ClCompile Include="Scene\Components\CameraComponent3D.cpp">
       <Filter>Scene\Components</Filter>
@@ -292,16 +244,7 @@
     <ClCompile Include="Formats\Images\ImagePNG.cpp">
       <Filter>Formats\Images\PNG</Filter>
     </ClCompile>
-    <ClCompile Include="Passes\UI\UIButtonPass.cpp">
-      <Filter>Passes\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="Passes\UI\UIColorPass.cpp">
-      <Filter>Passes\UI</Filter>
-    </ClCompile>
     <ClCompile Include="Passes\UI\UIFontPass.cpp">
-      <Filter>Passes\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="Passes\UI\UITexturePass.cpp">
       <Filter>Passes\UI</Filter>
     </ClCompile>
     <ClCompile Include="Formats\Textures\TexturesFactory.cpp">
@@ -337,15 +280,6 @@
     <ClCompile Include="Passes\DrawBoundingBoxPass.cpp">
       <Filter>Passes</Filter>
     </ClCompile>
-    <ClCompile Include="Passes\MaterialDebugPass.cpp">
-      <Filter>Passes</Filter>
-    </ClCompile>
-    <ClCompile Include="Passes\MaterialParticlePass.cpp">
-      <Filter>Passes</Filter>
-    </ClCompile>
-    <ClCompile Include="Passes\MaterialTexturedPass.cpp">
-      <Filter>Passes</Filter>
-    </ClCompile>
     <ClCompile Include="Passes\ForwardRendering\PassForward_DoRenderSceneInstanced.cpp">
       <Filter>Passes\ForwardRendering</Filter>
     </ClCompile>
@@ -376,12 +310,6 @@
     <ClCompile Include="Scene\SceneNodeRTSTower.cpp">
       <Filter>Scene\RTS</Filter>
     </ClCompile>
-    <ClCompile Include="Scene\Nodes\UIControlConsole.cpp">
-      <Filter>Scene\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="Passes\UI\UIControlConsolePass.cpp">
-      <Filter>Passes\UI</Filter>
-    </ClCompile>
     <ClCompile Include="Scene\Components\Particles\ParticlesComponent.cpp">
       <Filter>Scene\Components\Particles</Filter>
     </ClCompile>
@@ -406,6 +334,33 @@
     <ClCompile Include="Formats\Models\EngineModelsLoader.cpp">
       <Filter>Formats\Models</Filter>
     </ClCompile>
+    <ClCompile Include="UIControls\UIUtils.cpp">
+      <Filter>UIControls</Filter>
+    </ClCompile>
+    <ClCompile Include="UIControls\UIWindow.cpp">
+      <Filter>UIControls</Filter>
+    </ClCompile>
+    <ClCompile Include="Materials\MaterialUIControl.cpp">
+      <Filter>Materials\UI materials</Filter>
+    </ClCompile>
+    <ClCompile Include="Passes\UI\UIControlPass.cpp">
+      <Filter>Passes\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UIControls\UIControlCommon.cpp">
+      <Filter>UIControls</Filter>
+    </ClCompile>
+    <ClCompile Include="UIControls\UIControlText.cpp">
+      <Filter>UIControls</Filter>
+    </ClCompile>
+    <ClCompile Include="Passes\UI\ConsolePass.cpp">
+      <Filter>Passes\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Passes\ParticlesPass.cpp">
+      <Filter>Passes</Filter>
+    </ClCompile>
+    <ClCompile Include="Passes\DebugPass.cpp">
+      <Filter>Passes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="common.h">
@@ -419,9 +374,6 @@
       <Filter>Common</Filter>
     </ClInclude>
     <ClInclude Include="Materials\MaterialDebug.h">
-      <Filter>Materials</Filter>
-    </ClInclude>
-    <ClInclude Include="Materials\MaterialTextured.h">
       <Filter>Materials</Filter>
     </ClInclude>
     <ClInclude Include="Settings\GroupVideo.h">
@@ -452,16 +404,7 @@
     <ClInclude Include="Formats\Fonts\FontsManager.h">
       <Filter>Formats\Fonts</Filter>
     </ClInclude>
-    <ClInclude Include="Materials\UI_Button_Material.h">
-      <Filter>Materials\UI materials</Filter>
-    </ClInclude>
-    <ClInclude Include="Materials\UI_Color_Material.h">
-      <Filter>Materials\UI materials</Filter>
-    </ClInclude>
     <ClInclude Include="Materials\UI_Line_Material.h">
-      <Filter>Materials\UI materials</Filter>
-    </ClInclude>
-    <ClInclude Include="Materials\UI_Texture_Material.h">
       <Filter>Materials\UI materials</Filter>
     </ClInclude>
     <ClInclude Include="Passes\Technical\BeginQueryPass.h">
@@ -502,42 +445,6 @@
     </ClInclude>
     <ClInclude Include="AssyncLoader\Loader.h">
       <Filter>Tools\AssyncLoader</Filter>
-    </ClInclude>
-    <ClInclude Include="Scene\Nodes\UIBeizerLine.h">
-      <Filter>Scene\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="Scene\Nodes\UIButton.h">
-      <Filter>Scene\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="Scene\Nodes\UIColor.h">
-      <Filter>Scene\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="Scene\Nodes\UIContainerGarmoshka.h">
-      <Filter>Scene\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="Scene\Nodes\UIContainerGarmoshkaCategory.h">
-      <Filter>Scene\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="Scene\Nodes\UIContainerGarmoshkaCategoryHeader.h">
-      <Filter>Scene\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="Scene\Nodes\UIContainerListBase.h">
-      <Filter>Scene\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="Scene\Nodes\UIContainerListWithActivation.h">
-      <Filter>Scene\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="Scene\Nodes\UIText.h">
-      <Filter>Scene\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="Scene\Nodes\UITexture.h">
-      <Filter>Scene\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="Scene\Nodes\UIUtils.h">
-      <Filter>Scene\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="Scene\Nodes\UIWindow.h">
-      <Filter>Scene\UI</Filter>
     </ClInclude>
     <ClInclude Include="Scene\Components\CameraComponent3D.h">
       <Filter>Scene\Components</Filter>
@@ -581,16 +488,7 @@
     <ClInclude Include="Formats\Images\ImagePNG.h">
       <Filter>Formats\Images\PNG</Filter>
     </ClInclude>
-    <ClInclude Include="Passes\UI\UIButtonPass.h">
-      <Filter>Passes\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="Passes\UI\UIColorPass.h">
-      <Filter>Passes\UI</Filter>
-    </ClInclude>
     <ClInclude Include="Passes\UI\UIFontPass.h">
-      <Filter>Passes\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="Passes\UI\UITexturePass.h">
       <Filter>Passes\UI</Filter>
     </ClInclude>
     <ClInclude Include="Formats\Textures\TexturesFactory.h">
@@ -620,19 +518,10 @@
     <ClInclude Include="Passes\PostprocessRendering\Postprocess_HDR.h">
       <Filter>Passes\PostprocessRendering</Filter>
     </ClInclude>
-    <ClInclude Include="Passes\MaterialTexturedPass.h">
-      <Filter>Passes</Filter>
-    </ClInclude>
     <ClInclude Include="Passes\DrawBonesPass.h">
       <Filter>Passes</Filter>
     </ClInclude>
     <ClInclude Include="Passes\DrawBoundingBoxPass.h">
-      <Filter>Passes</Filter>
-    </ClInclude>
-    <ClInclude Include="Passes\MaterialDebugPass.h">
-      <Filter>Passes</Filter>
-    </ClInclude>
-    <ClInclude Include="Passes\MaterialParticlePass.h">
       <Filter>Passes</Filter>
     </ClInclude>
     <ClInclude Include="Passes\ForwardRendering\PassForward_DoRenderSceneInstanced.h">
@@ -668,12 +557,6 @@
     <ClInclude Include="Scene\SceneNodeRTSTower.h">
       <Filter>Scene\RTS</Filter>
     </ClInclude>
-    <ClInclude Include="Scene\Nodes\UIControlConsole.h">
-      <Filter>Scene\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="Passes\UI\UIControlConsolePass.h">
-      <Filter>Passes\UI</Filter>
-    </ClInclude>
     <ClInclude Include="Scene\Components\Particles\ParticlesComponent.h">
       <Filter>Scene\Components\Particles</Filter>
     </ClInclude>
@@ -700,6 +583,33 @@
     </ClInclude>
     <ClInclude Include="Formats\Models\EngineModelsLoader.h">
       <Filter>Formats\Models</Filter>
+    </ClInclude>
+    <ClInclude Include="UIControls\UIUtils.h">
+      <Filter>UIControls</Filter>
+    </ClInclude>
+    <ClInclude Include="UIControls\UIWindow.h">
+      <Filter>UIControls</Filter>
+    </ClInclude>
+    <ClInclude Include="Materials\MaterialUIControl.h">
+      <Filter>Materials\UI materials</Filter>
+    </ClInclude>
+    <ClInclude Include="Passes\UI\UIControlPass.h">
+      <Filter>Passes\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UIControls\UIControlCommon.h">
+      <Filter>UIControls</Filter>
+    </ClInclude>
+    <ClInclude Include="UIControls\UIControlText.h">
+      <Filter>UIControls</Filter>
+    </ClInclude>
+    <ClInclude Include="Passes\UI\ConsolePass.h">
+      <Filter>Passes\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Passes\ParticlesPass.h">
+      <Filter>Passes</Filter>
+    </ClInclude>
+    <ClInclude Include="Passes\DebugPass.h">
+      <Filter>Passes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

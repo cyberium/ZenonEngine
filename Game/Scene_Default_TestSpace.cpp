@@ -428,5 +428,5 @@ void CSceneDefault::Load3DOld()
 	//fbxSceneNode->InitializeFromFile("C:/Users/Alexander/Downloads/Assets/Toon_RTS/Orcs/models/Single_Mesh/Orc_SM_shaman.FBX");
 
 	//m_Technique3D.AddPass(GetBaseManager().GetManager<IRenderPassFactory>()->CreateRenderPass("TexturedMaterialPass", GetRenderDevice(), GetRenderWindow()->GetRenderTarget(), &GetRenderWindow()->GetViewport(), shared_from_this()));
-	//m_Technique3D.AddPass(MakeShared(CMaterialParticlePass, GetRenderDevice(), shared_from_this())->ConfigurePipeline(GetRenderWindow()->GetRenderTarget(), &GetRenderWindow()->GetViewport()));
+	//m_Technique3D.AddPass(MakeShared(CParticlesPass, GetRenderDevice(), shared_from_this())->ConfigurePipeline(GetRenderWindow()->GetRenderTarget(), &GetRenderWindow()->GetViewport()));
 }

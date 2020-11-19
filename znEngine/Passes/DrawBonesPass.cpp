@@ -9,7 +9,6 @@
 CDrawBonesPass::CDrawBonesPass(IScene& scene)
 	: Base3DPass(scene)
 {
-	m_MaterialConstantBuffer = GetRenderDevice().GetObjectsFactory().CreateConstantBuffer(SMaterialDebugProperties());
 }
 
 CDrawBonesPass::~CDrawBonesPass()
@@ -23,8 +22,11 @@ CDrawBonesPass::~CDrawBonesPass()
 //
 std::shared_ptr<IRenderPassPipelined> CDrawBonesPass::ConfigurePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport)
 {
+	__super::ConfigurePipeline(RenderTarget, Viewport);
+
 	m_ConeGeometry = GetRenderDevice().GetPrimitivesFactory().CreateCone();
 	m_SphereGeometry = GetRenderDevice().GetPrimitivesFactory().CreateSphere();
+	m_Material = MakeShared(MaterialDebug, GetRenderDevice());
 
 	std::shared_ptr<IShader> vertexShader;
 	std::shared_ptr<IShader> pixelShader;
@@ -37,42 +39,12 @@ std::shared_ptr<IRenderPassPipelined> CDrawBonesPass::ConfigurePipeline(std::sha
 	vertexShader->LoadInputLayoutFromReflector();
 
 	// PIPELINES
-	GetPipeline().GetBlendState()->SetBlendMode(disableBlending);
-	GetPipeline().GetDepthStencilState()->SetDepthMode(enableDepthWrites);
 	GetPipeline().GetRasterizerState()->SetCullMode(IRasterizerState::CullMode::None);
-	GetPipeline().GetRasterizerState()->SetFillMode(IRasterizerState::FillMode::Wireframe, IRasterizerState::FillMode::Solid);
-	GetPipeline().GetRasterizerState()->SetMultisampleEnabled(true);
-	GetPipeline().GetRasterizerState()->SetAntialiasedLineEnable(true);
-	GetPipeline().SetRenderTarget(RenderTarget);
+	GetPipeline().GetRasterizerState()->SetFillMode(IRasterizerState::FillMode::Wireframe, IRasterizerState::FillMode::Wireframe);
 	GetPipeline().SetShader(EShaderType::VertexShader, vertexShader);
 	GetPipeline().SetShader(EShaderType::PixelShader, pixelShader);
 
-	m_MaterialParameter = &(pixelShader->GetShaderParameterByName("Material"));
-	_ASSERT(m_MaterialParameter->IsValid());
-
 	return shared_from_this();
-}
-
-
-glm::quat LookAt(glm::vec3 Position, glm::vec3 LookAt)
-{
-	glm::vec3 lookVector = LookAt;
-	//assert(lookVector != Position);
-
-	glm::vec3 direction = glm::normalize(lookVector - Position);
-	float dot = glm::dot(glm::vec3(0, 1, 0), direction);
-	if (glm::abs(dot - (-1.0f)) < 0.000001f) 
-	{
-		return glm::angleAxis(glm::degrees(glm::pi<float>()), glm::vec3(0, 1, 0));
-	}
-	else if (glm::abs(dot - (1.0f)) < 0.000001f) 
-	{
-		return glm::quat();
-	}
-
-	float angle = -glm::degrees(glm::acos(dot));
-	glm::vec3 cross = glm::normalize(glm::cross(glm::vec3(0, 1, 0), direction));
-	return glm::normalize(glm::angleAxis(angle, cross));
 }
 
 
@@ -89,72 +61,19 @@ EVisitResult CDrawBonesPass::Visit(const ISceneNode * CSceneNode)
 	auto bones = modelsComponent->GetBones();
 	if (bones.empty())
 		return EVisitResult::AllowVisitChilds;
-
-	const IShader* pixelShader = GetPipeline().GetShaders().at(EShaderType::PixelShader).get();
 	
-	SMaterialDebugProperties props;
-	props.DiffuseColor = glm::vec4(1.0f);
-	m_MaterialConstantBuffer->Set(props);
+	const auto& shaders = GetPipeline().GetShaders();
+	const auto& vertexShader = shaders.at(EShaderType::VertexShader).get();
 
-	m_MaterialParameter->SetConstantBuffer(m_MaterialConstantBuffer);
-	m_MaterialParameter->Bind();
-
+	m_Material->Bind(shaders);
 
 	for (const auto& b : bones)
 	{
-
-		
-		/*
-		glm::vec3 mPos = glm::vec3(m[3][0], m[3][1], m[3][2]);
-
-		if (b->GetParentBone().lock())
-		{
-			glm::mat4 mP = b->GetParentBone().lock()->GetPivotMatrix();
-			glm::vec3 mPPos = glm::vec3(mP[3][0], mP[3][1], mP[3][2]);
-
-			m = glm::mat4(1.0f);
-			m = glm::translate(m, mPos);
-
-			//m = glm::rotate(m, glm::half_pi<float>(), glm::vec3(1, 0, 0));
-			//m = glm::rotate(m, m_Rotate.y, glm::vec3(0, 1, 0));
-			//m = glm::rotate(m, glm::half_pi<float>(), glm::vec3(0, 0, 1));
-
-			m *= glm::toMat4(LookAt(mPos, mPPos));
-
-			//glm::vec3 dir2 = glm::normalize(mPPos - mPos);
-			//m = m * glm::lookAt(mPos, mPos + dir2, glm::vec3(0.0f, 1.0f, 0.0f));
-
-			m = glm::scale(m, glm::vec3(2.0f, glm::length(glm::abs(mPPos - mPos)), 2.0f));
-		}
-		PerObject perObject;
-		perObject.Model = m;// ->GetMatrix();
-		m_PerObjectConstantBuffer->Set(perObject);
-
-		if (m_PerObjectParameter->IsValid() && m_PerObjectConstantBuffer != nullptr)
-		{
-			m_PerObjectParameter->SetConstantBuffer(m_PerObjectConstantBuffer);
-			m_PerObjectParameter->Bind();
-		}
-
-		m_ConeGeometry->Render(GetRenderEventArgs(), vertexShader);
-
-		*/
-		
-
-
-
-
-
-		{
-			//glm::mat4 m = b->GetPivotMatrix();
-			//m = glm::scale(m, glm::vec3(4.0f));
-
-			BindPerObjectData(PerObject(CSceneNode->GetWorldTransfom() * modelsComponent->GetModel()->GetFixSkeleton() * b->GetMatrix()));
-
-			const IShader* vertexShader = GetPipeline().GetShaders().at(EShaderType::VertexShader).get();
-			m_SphereGeometry->Render(vertexShader);
-		}
+		BindPerObjectData(PerObject(CSceneNode->GetWorldTransfom() * modelsComponent->GetModel()->GetFixSkeleton() * b->GetMatrix()));
+		m_SphereGeometry->Render(vertexShader);
 	}
+
+	m_Material->Unbind(shaders);
 
 	return EVisitResult::AllowAll;
 }

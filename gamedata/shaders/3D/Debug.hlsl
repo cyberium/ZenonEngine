@@ -1,66 +1,36 @@
 #include "CommonInclude.hlsl"
 
-struct VertexShaderOutput
+cbuffer Material : register(b2)
 {
-	float4 position       : SV_POSITION;
-	float3 color          : COLOR;
+    float4 DiffuseColor;
+	bool   HasDiffuseTexture;
 };
 
-
-cbuffer Material : register(b4)
+struct VSOut
 {
-	float4 DiffuseColor0;
+	float4 position   : SV_POSITION;
+	float4 positionVS : POSITION;
+	float2 texCoord   : TEXCOORD0;
 };
 
+Texture2D DiffuseTexture : register(t0);
 
-
-struct M2PerObject
+VSOut VS_main(VSInputPT IN)
 {
-	float4x4 Model;
-	float4   Color;
-};
-StructuredBuffer<M2PerObject> Instances : register(t3);
+	const float4x4 mvp = mul(PF.Projection, mul(PF.View, PO.Model));
 
-
-
-float4 VS_main(VSInputP IN) : SV_POSITION
-{
-	const float4x4 mv = mul(PF.View, PO.Model);
-	const float4x4 mvp = mul(PF.Projection, mv);
-
-	return mul(mvp, float4(IN.position.xyz, 1.0f));
+	VSOut OUT;
+	OUT.position = mul(mvp, float4(IN.position, 1.0f));
+	OUT.positionVS = float4(IN.position, 1.0f);
+	OUT.texCoord = IN.texCoord;
+	return OUT;
 }
 
-
-float4 VS_main_Inst(VSInputP IN, uint InstanceID : SV_InstanceID) : SV_POSITION
+float4 PS_main(VSOut IN) : SV_TARGET
 {
-	const float4x4 mv = mul(PF.View, Instances[InstanceID].Model);
-	const float4x4 mvp = mul(PF.Projection, mv);
-
-	return mul(mvp, float4(IN.position.xyz, 1.0f));
-}
-
-
-/*[maxvertexcount(2)]
-void GS_main(point VertexShaderOutput vertices[1], inout LineStream<VertexShaderOutput> lineStream)
-{
-	VertexShaderOutput v0;
-	v0.position = vertices[0].position;
-	v0.positionVS = vertices[0].positionVS;
-	v0.normalVS = vertices[0].normalVS;
-	v0.color = float3(1.0f, 1.0, 1.0);
-	lineStream.Append(v0);
-
-	VertexShaderOutput v1;
-	v1.position = vertices[0].position + mul(PF.Projection, float4(vertices[0].normalVS * 5.05f, 0.0f));
-	v1.positionVS = vertices[0].positionVS;
-	v1.normalVS = vertices[0].normalVS;
-	v1.color = float3(1.0f, 0.0, 0.0);
-	lineStream.Append(v1);
-}*/
-
-
-float4 PS_main() : SV_TARGET
-{
-	return DiffuseColor0;
+	float4 resultColor = DiffuseColor;
+	if (HasDiffuseTexture)
+		resultColor *= DiffuseTexture.Sample(LinearClampSampler, float2(IN.texCoord.x, 1.0f - IN.texCoord.y));
+	
+    return resultColor;
 }

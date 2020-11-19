@@ -10,8 +10,8 @@
 #include "Scene/Components/ReactPhysicsComponent.h"
 #include "Scene/Components/Particles/ParticlesComponent.h"
 
-#include "Scene/Nodes/UIText.h"
-#include "Scene/Nodes/UIColor.h"
+#include "UIControls/UIControlText.h"
+#include "UIControls/UIControlCommon.h"
 
 #include "Scene/SceneNodeRTSGround.h"
 #include "Scene/SceneNodeRTSPathAndPoint.h"
@@ -90,12 +90,12 @@ void EngineSceneTypesExtender(IBaseManager& BaseManager)
 	});
 	uiControlEngineCreator->AddClass(cSceneNodeUI_Text, "SceneNodeUIText",  [](const IObjectCreationArgs* ObjectCreationArgs) -> std::shared_ptr<IObject>
 	{
-		auto node = MakeShared(CUITextNode, static_cast<const IUIControlCreationArgs*>(ObjectCreationArgs)->GetScene());
+		auto node = MakeShared(CUIControlText, static_cast<const IUIControlCreationArgs*>(ObjectCreationArgs)->GetScene());
 		return node;
 	});
-	uiControlEngineCreator->AddClass(cSceneNodeUI_Color, "SceneNodeUIColor",  [](const IObjectCreationArgs* ObjectCreationArgs) -> std::shared_ptr<IObject>
+	uiControlEngineCreator->AddClass(cUIControlCommon, "UIContolCommon", [](const IObjectCreationArgs* ObjectCreationArgs) -> std::shared_ptr<IObject>
 	{
-		auto node = MakeShared(CUIColorNode, static_cast<const IUIControlCreationArgs*>(ObjectCreationArgs)->GetScene());
+		auto node = MakeShared(CUIControlCommon, static_cast<const IUIControlCreationArgs*>(ObjectCreationArgs)->GetScene());
 		return node;
 	});
 
