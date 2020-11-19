@@ -114,7 +114,7 @@ private:
 	std::shared_ptr<ICameraController>              m_CameraController;
 	std::shared_ptr<ISettingGroup>                  m_VideoSettings;
 
-	std::shared_ptr<IUIControl>                     m_StatisticText;
+	std::shared_ptr<IUIControlText>                 m_StatisticText;
 
 private: // Функционал по отложенному добавлению нод
 	std::mutex m_SceneChangeDelayEventsLock;

@@ -121,6 +121,9 @@
     <Filter Include="UIControls">
       <UniqueIdentifier>{ca08ca0d-5e99-4bc3-950b-f78dc515d6ab}</UniqueIdentifier>
     </Filter>
+    <Filter Include="UIControls\RTS">
+      <UniqueIdentifier>{2d7e3e30-b884-45ed-8046-256fb46d8935}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -355,11 +358,11 @@
     <ClCompile Include="Passes\DebugPass.cpp">
       <Filter>Passes</Filter>
     </ClCompile>
-    <ClCompile Include="UIControls\UIControlWindow.cpp">
-      <Filter>UIControls</Filter>
+    <ClCompile Include="UIControls\RTS\UIControlRTSTowerBtn.cpp">
+      <Filter>UIControls\RTS</Filter>
     </ClCompile>
-    <ClCompile Include="UIControls\UIControlButton.cpp">
-      <Filter>UIControls</Filter>
+    <ClCompile Include="UIControls\RTS\UIControlRTSTowersPanel.cpp">
+      <Filter>UIControls\RTS</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -605,11 +608,11 @@
     <ClInclude Include="Passes\DebugPass.h">
       <Filter>Passes</Filter>
     </ClInclude>
-    <ClInclude Include="UIControls\UIControlWindow.h">
-      <Filter>UIControls</Filter>
+    <ClInclude Include="UIControls\RTS\UIControlRTSTowerBtn.h">
+      <Filter>UIControls\RTS</Filter>
     </ClInclude>
-    <ClInclude Include="UIControls\UIControlButton.h">
-      <Filter>UIControls</Filter>
+    <ClInclude Include="UIControls\RTS\UIControlRTSTowersPanel.h">
+      <Filter>UIControls\RTS</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

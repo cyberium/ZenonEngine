@@ -47,11 +47,21 @@ void CUIControlText::Initialize()
 
 
 //
-// CUIControlText
+// IUIControlText
 //
+void CUIControlText::SetFont(std::shared_ptr<IznFont> Font)
+{
+	m_Font = Font;
+}
+
 std::shared_ptr<IznFont> CUIControlText::GetFont() const
 {
     return m_Font;
+}
+
+void CUIControlText::SetText(std::string Text)
+{
+	m_TextProperty->Set(Text);
 }
 
 std::string CUIControlText::GetText() const
@@ -59,9 +69,19 @@ std::string CUIControlText::GetText() const
 	return m_TextProperty->Get();
 }
 
+void CUIControlText::SetOffset(glm::vec2 Offset)
+{
+	m_OffsetProperty->Set(Offset);
+}
+
 glm::vec2 CUIControlText::GetOffset() const
 {
 	return m_OffsetProperty->Get();
+}
+
+void CUIControlText::SetColor(glm::vec4 Color)
+{
+	m_ColorProperty->Set(Color);
 }
 
 glm::vec4 CUIControlText::GetColor() const

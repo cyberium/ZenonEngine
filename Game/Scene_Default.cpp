@@ -91,15 +91,19 @@ void CSceneDefault::Initialize()
 
 
 	{
-		std::shared_ptr<IUIControl> commonControl = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<IUIControlFactory>()->CreateSceneNodeUI(cUIControlWindow, *this);
-		commonControl->SetTranslate(glm::vec2(200.0f));
+		std::shared_ptr<CUIControlRTSTowersPanel> commonControl = std::dynamic_pointer_cast<CUIControlRTSTowersPanel>(GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<IUIControlFactory>()->CreateSceneNodeUI(cUIControlRTSTowersPanel, *this));
+		
+		commonControl->AddTowerButton(GetBaseManager().GetManager<IznTexturesFactory>()->LoadTexture2D("t1.png"));
+		commonControl->AddTowerButton(GetBaseManager().GetManager<IznTexturesFactory>()->LoadTexture2D("t2.png"));
+		commonControl->AddTowerButton(GetBaseManager().GetManager<IznTexturesFactory>()->LoadTexture2D("tA.png"));
+		commonControl->AddTowerButton(GetBaseManager().GetManager<IznTexturesFactory>()->LoadTexture2D("tB.png"));
+		commonControl->AddTowerButton(GetBaseManager().GetManager<IznTexturesFactory>()->LoadTexture2D("tC.png"));
+		commonControl->AddTowerButton(GetBaseManager().GetManager<IznTexturesFactory>()->LoadTexture2D("tE.png"));
 
-		std::shared_ptr<CUIControlButton> commonControlBtn = std::dynamic_pointer_cast<CUIControlButton>(GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<IUIControlFactory>()->CreateSceneNodeUI(cUIControlButton, *this, commonControl));
-		commonControlBtn->SetTexture(GetBaseManager().GetManager<IznTexturesFactory>()->LoadTexture2D("tower1.png"));
-
-		std::shared_ptr<CUIControlButton> commonControlBtn2 = std::dynamic_pointer_cast<CUIControlButton>(GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<IUIControlFactory>()->CreateSceneNodeUI(cUIControlButton, *this, commonControl));
-		commonControlBtn2->SetTranslate(glm::vec2(96.0f, 0.0f));
-		commonControlBtn2->SetTexture(GetBaseManager().GetManager<IznTexturesFactory>()->LoadTexture2D("tower2.png"));
+		commonControl->SetTranslate(glm::vec2(
+			(GetRenderWindow().GetWindowWidth() / 2.0f) - (commonControl->GetSize().x / 2.0f), 
+			 GetRenderWindow().GetWindowHeight() - commonControl->GetSize().y)
+		);
 	}
 
 	//--------------------------------------------------------------------------

@@ -16,6 +16,7 @@ ZN_INTERFACE ZN_API IUIControl
 {
 	typedef std::vector<std::shared_ptr<IUIControl>> ControlsList;
 
+	ZN_OBJECTCLASS(cUIControl);
 	virtual ~IUIControl() {}
 
 	virtual void Initialize() = 0;

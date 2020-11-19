@@ -11,10 +11,11 @@
 #include "Scene/Components/Particles/ParticlesComponent.h"
 
 #include "UIControls/UIControlCommon.h"
-#include "UIControls/UIControlWindow.h"
-#include "UIControls/UIControlButton.h"
 #include "UIControls/UIControlText.h"
 
+// RTS
+#include "UIControls/RTS/UIControlRTSTowersPanel.h"
+#include "UIControls/RTS/UIControlRTSTowerBtn.h"
 
 #include "Scene/SceneNodeRTSGround.h"
 #include "Scene/SceneNodeRTSPathAndPoint.h"
@@ -86,12 +87,12 @@ void EngineSceneTypesExtender(IBaseManager& BaseManager)
 	auto uiControlEngineCreator = MakeShared(CUIControlCreator, BaseManager);
 	BaseManager.GetManager<IObjectsFactory>()->GetClassFactory(otUIControl)->AddClassCreator(uiControlEngineCreator);
 
-	uiControlEngineCreator->AddClass(cSceneNodeUI, "UIControl",  [](const IObjectCreationArgs* ObjectCreationArgs) -> std::shared_ptr<IObject>
+	uiControlEngineCreator->AddClass(cUIControl, "UIControl",  [](const IObjectCreationArgs* ObjectCreationArgs) -> std::shared_ptr<IObject>
 	{
 		auto node = MakeShared(CUIControl, static_cast<const IUIControlCreationArgs*>(ObjectCreationArgs)->GetScene());
 		return node;
 	});
-	uiControlEngineCreator->AddClass(cSceneNodeUI_Text, "UIControlText",  [](const IObjectCreationArgs* ObjectCreationArgs) -> std::shared_ptr<IObject>
+	uiControlEngineCreator->AddClass(cUIControlText, "UIControlText",  [](const IObjectCreationArgs* ObjectCreationArgs) -> std::shared_ptr<IObject>
 	{
 		auto node = MakeShared(CUIControlText, static_cast<const IUIControlCreationArgs*>(ObjectCreationArgs)->GetScene());
 		return node;
@@ -101,14 +102,14 @@ void EngineSceneTypesExtender(IBaseManager& BaseManager)
 		auto node = MakeShared(CUIControlCommon, static_cast<const IUIControlCreationArgs*>(ObjectCreationArgs)->GetScene());
 		return node;
 	});
-	uiControlEngineCreator->AddClass(cUIControlWindow, "UIContolWindow", [](const IObjectCreationArgs* ObjectCreationArgs) -> std::shared_ptr<IObject>
+	uiControlEngineCreator->AddClass(cUIControlRTSTowersPanel, "UIControlRTSTowersPanel", [](const IObjectCreationArgs* ObjectCreationArgs) -> std::shared_ptr<IObject>
 	{
-		auto node = MakeShared(CUIControlWindow, static_cast<const IUIControlCreationArgs*>(ObjectCreationArgs)->GetScene());
+		auto node = MakeShared(CUIControlRTSTowersPanel, static_cast<const IUIControlCreationArgs*>(ObjectCreationArgs)->GetScene());
 		return node;
 	});
-	uiControlEngineCreator->AddClass(cUIControlButton, "UIContolButton", [](const IObjectCreationArgs* ObjectCreationArgs) -> std::shared_ptr<IObject>
+	uiControlEngineCreator->AddClass(cUIControlRTSTowerBtn, "UIControlRTSTowerBtn", [](const IObjectCreationArgs* ObjectCreationArgs) -> std::shared_ptr<IObject>
 	{
-		auto node = MakeShared(CUIControlButton, static_cast<const IUIControlCreationArgs*>(ObjectCreationArgs)->GetScene());
+		auto node = MakeShared(CUIControlRTSTowerBtn, static_cast<const IUIControlCreationArgs*>(ObjectCreationArgs)->GetScene());
 		return node;
 	});
 

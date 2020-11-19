@@ -27,6 +27,8 @@ const ObjectClass cSettingsManager              = UINT16_MAX - 16u;
 // 3D
 //
 ZN_MAKE_OBJECTCLASS(cSceneNode3D, 100);
+
+// RTS
 ZN_MAKE_OBJECTCLASS(cSceneNodeRTSGround, 101);
 ZN_MAKE_OBJECTCLASS(cSceneNodeRTSPoint, 102);
 ZN_MAKE_OBJECTCLASS(cSceneNodeRTSPath, 103);
@@ -36,14 +38,20 @@ ZN_MAKE_OBJECTCLASS(cSceneNodeRTSTower, 106);
 
 // 150 - 199 custom
 
+
+
 //
 // UI
 //
-ZN_MAKE_OBJECTCLASS(cSceneNodeUI, 200);
-ZN_MAKE_OBJECTCLASS(cSceneNodeUI_Text, 201);
+ZN_MAKE_OBJECTCLASS(cUIControl, 200);
+
+ZN_MAKE_OBJECTCLASS(cUIControlText, 201);
 ZN_MAKE_OBJECTCLASS(cUIControlCommon, 202);
-ZN_MAKE_OBJECTCLASS(cUIControlWindow, 203);
-ZN_MAKE_OBJECTCLASS(cUIControlButton, 204);
+
+ZN_MAKE_OBJECTCLASS(cUIControlRTSTowersPanel, 203);
+ZN_MAKE_OBJECTCLASS(cUIControlRTSTowerBtn, 204);
+
+
 
 //
 // 3D components

@@ -78,10 +78,10 @@ void SceneBase::Initialize()
 	m_RootSceneNode->SetName("RootSceneNode");
 	std::dynamic_pointer_cast<ISceneNodeInternal>(m_RootSceneNode)->SetPersistanceInternal(true);
 
-	m_RootUIControl = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<IUIControlFactory>()->CreateSceneNodeUI(cSceneNodeUI, *this);
+	m_RootUIControl = CreateUIControlT<IUIControl>();
 	m_RootUIControl->SetName("RootUIControl");
 
-	m_StatisticText = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<IUIControlFactory>()->CreateSceneNodeUI(cSceneNodeUI_Text, *this, GetRootUIControl());
+	m_StatisticText = CreateUIControlT<IUIControlText>();
 	m_StatisticText->SetTranslate(glm::vec2(5.0f, 5.0f));
 	m_StatisticText->GetProperties()->GetPropertyT<std::string>("Text")->Set("");
 
@@ -301,7 +301,7 @@ void SceneBase::OnRender(RenderEventArgs & e)
 		fullText += "Frame Render: " + toStringPrec(GetRenderWindow().GetRenderDeltaTime()) + " ms\n";
 		fullText += "Frame Total : " + toStringPrec(GetRenderWindow().GetSummaDeltaTime()) + " ms\n";
 
-		m_StatisticText->GetProperties()->GetPropertyT<std::string>("Text")->Set(fullText);
+		m_StatisticText->SetText(fullText);
 
 		renderer->RenderUI(e);
 	}

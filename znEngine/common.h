@@ -1,3 +1,3 @@
 #pragma once
 
-#define ONLY_SIMPLE_UI
+#include "Scene/EngineSceneIntfs.h"

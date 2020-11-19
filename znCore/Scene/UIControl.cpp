@@ -187,7 +187,7 @@ glm::mat4 CUIControl::GetParentWorldTransform() const
 
 glm::vec2 CUIControl::GetSize() const
 {
-    return glm::vec2(Math::MaxFloat);
+    return m_Size;
 }
 
 BoundingRect CUIControl::GetBoundsAbs()

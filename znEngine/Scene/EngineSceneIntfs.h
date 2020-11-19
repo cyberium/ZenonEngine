@@ -159,3 +159,44 @@ ZN_INTERFACE ZN_API ISceneNodeRTSPath
 	virtual std::vector<std::shared_ptr<ISceneNodeRTSPoint>> GetPoints() const = 0;
 	virtual std::shared_ptr<ISceneNodeRTSPoint> GetPoint(size_t Index) const = 0;
 };
+
+class CMaterialUIControl; // TODO: Remove me
+
+ZN_INTERFACE ZN_API IUIControlCommon
+	: public virtual IUIControl
+{
+	struct SSubgeometry
+	{
+		glm::vec2                           Translate;
+		glm::vec2                           Size;
+		std::shared_ptr<CMaterialUIControl> Material;
+		std::shared_ptr<IGeometry>          Geom;
+	};
+
+	ZN_OBJECTCLASS(cUIControlCommon);
+	virtual ~IUIControlCommon() {}
+
+	virtual void AddSubgeometry(const IUIControlCommon::SSubgeometry& Subgeometry) = 0;
+	virtual const std::vector<IUIControlCommon::SSubgeometry>& GetSubgeometries() const = 0;
+	virtual void ClearSubgeometries() = 0;
+};
+
+
+ZN_INTERFACE ZN_API IUIControlText
+	: public virtual IUIControl
+{
+	ZN_OBJECTCLASS(cUIControlText);
+	virtual ~IUIControlText() {}
+
+	virtual void SetFont(std::shared_ptr<IznFont> Font) = 0;
+	virtual std::shared_ptr<IznFont> GetFont() const = 0;
+
+	virtual void SetText(std::string Text) = 0;
+	virtual std::string GetText() const = 0;
+
+	virtual void SetOffset(glm::vec2 Offset) = 0;
+	virtual glm::vec2 GetOffset() const = 0;
+
+	virtual void SetColor(glm::vec4 Color) = 0;
+	virtual glm::vec4 GetColor() const = 0;
+};

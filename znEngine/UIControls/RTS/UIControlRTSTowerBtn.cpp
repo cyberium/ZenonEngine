@@ -1,7 +1,7 @@
 #include "stdafx.h"
 
 // General
-#include "UIControlButton.h"
+#include "UIControlRTSTowerBtn.h"
 
 
 namespace
@@ -27,12 +27,12 @@ namespace
 }
 
 
-CUIControlButton::CUIControlButton(IScene& Scene)
+CUIControlRTSTowerBtn::CUIControlRTSTowerBtn(IScene& Scene)
 	: CUIControlCommon(Scene)
 {
 }
 
-CUIControlButton::~CUIControlButton()
+CUIControlRTSTowerBtn::~CUIControlRTSTowerBtn()
 {
 }
 
@@ -41,11 +41,11 @@ CUIControlButton::~CUIControlButton()
 //
 // CUIControl
 //
-void CUIControlButton::Initialize()
+void CUIControlRTSTowerBtn::Initialize()
 {
 	__super::Initialize();
 
-	m_ButtonContent = std::dynamic_pointer_cast<CUIControlCommon>(GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<IUIControlFactory>()->CreateSceneNodeUI(cUIControlCommon, GetScene(), shared_from_this()));
+	m_ButtonContent = GetScene().CreateUIControlT<IUIControlCommon>(shared_from_this());
 
 	std::shared_ptr<CMaterialUIControl> contentMaterial = MakeShared(CMaterialUIControl, GetBaseManager().GetApplication().GetRenderDevice());
 	//contentMaterial->SetColor(glm::vec4(1.0f, 0.0f, 0.0f, 0.7f));
@@ -57,11 +57,10 @@ void CUIControlButton::Initialize()
 	subGeom.Geom = GetBaseManager().GetApplication().GetRenderDevice().GetPrimitivesFactory().CreateUIQuad(glm::vec2(1.0f));
 	m_ButtonContent->AddSubgeometry(subGeom);
 
-
 	CreateWindowGeometry(0.0f);
 }
 
-void CUIControlButton::SetTexture(std::shared_ptr<ITexture> Texture)
+void CUIControlRTSTowerBtn::SetTowerTexture(std::shared_ptr<ITexture> Texture)
 {
 	m_ButtonContent->GetSubgeometries()[0].Material->SetTexture(Texture);
 }
@@ -71,15 +70,15 @@ void CUIControlButton::SetTexture(std::shared_ptr<ITexture> Texture)
 //
 // Protected
 //
-void CUIControlButton::CreateWindowGeometry(float Width)
+void CUIControlRTSTowerBtn::CreateWindowGeometry(float Width)
 {
 	glm::vec2 sizeDiv3 = cUIWindowCell.CellSize / 3.0f;
 	glm::vec2 sizeDiv3UV = cUIWindowCell.UVCellSize / 3.0f;
 
+	SetSize(sizeDiv3 + glm::vec2(Width, 0.0f) + sizeDiv3);
+
 	std::shared_ptr<CMaterialUIControl> uiMaterial = MakeShared(CMaterialUIControl, GetBaseManager().GetApplication().GetRenderDevice());
 	uiMaterial->SetTexture(GetBaseManager().GetManager<IznTexturesFactory>()->LoadTexture2D("Interface Pack/Spritesheet/interfacePack_sheet@2.png"));
-
-
 
 	// Left-Top
 	{
@@ -129,7 +128,7 @@ void CUIControlButton::CreateWindowGeometry(float Width)
 	// Right-Bottom
 	{
 		SSubgeometry subGeom;
-		subGeom.Translate = glm::vec2(sizeDiv3.x + Width, sizeDiv3.x);
+		subGeom.Translate = glm::vec2(sizeDiv3.x + Width, sizeDiv3.y);
 		subGeom.Size = sizeDiv3;
 		subGeom.Material = uiMaterial;
 		subGeom.Geom = GetBaseManager().GetApplication().GetRenderDevice().GetPrimitivesFactory().CreateUIQuad(glm::vec2(1.0f),

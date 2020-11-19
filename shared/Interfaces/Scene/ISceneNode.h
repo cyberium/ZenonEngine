@@ -28,7 +28,6 @@ ZN_INTERFACE ZN_API ISceneNode
 	typedef std::vector<std::shared_ptr<ISceneNode>> SceneNodesList;
 
 	ZN_OBJECTCLASS(cSceneNode3D)
-
 	virtual ~ISceneNode() {}
 
 	virtual void Initialize() = 0;

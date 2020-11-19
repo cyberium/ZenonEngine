@@ -89,6 +89,13 @@ void CSceneNode::Initialize()
 		});
 
 		GetProperties()->AddProperty(removeAction);
+
+
+		/*auto saveAsXMLAction = MakeShared(CAction, "Save as preset", "Save this node as ");
+		removeAction->SetAction([this]() -> bool {
+			GetParent()->RemoveChild(shared_from_this());
+			return true;
+		});*/
 	}
 }
 

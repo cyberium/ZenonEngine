@@ -67,11 +67,10 @@ ZN_INTERFACE ZN_API IScene
 	virtual void Accept(IVisitor* visitor) = 0;
 
 
-	// Templates
-	//inline std::shared_ptr<ISceneNode> CreateSceneNode(ObjectClass Class, std::shared_ptr<ISceneNode> Parent = nullptr)
-	//{
-	//	return GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeFactory>()->CreateSceneNode3D(Class, *this, Parent);
-	//}
+	//
+	// SceneNode
+	//
+
 
 	template<class T>
 	inline std::shared_ptr<ISceneNode> CreateSceneNodeByClass(ObjectClass ObjectClass, std::shared_ptr<ISceneNode> Parent = nullptr)
@@ -92,6 +91,32 @@ ZN_INTERFACE ZN_API IScene
 		//static_assert(std::is_convertible<T*, ISceneNode*>::value, "T must inherit ISceneNode as public.");
 		auto createdNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeFactory>()->CreateSceneNode3D(T::GetClassT(), *this, Parent);
 		return std::dynamic_pointer_cast<T>(createdNode);
+	}
+
+
+
+	//
+	// UIControl
+	//
+
+
+
+	template<class T>
+	inline std::shared_ptr<IUIControl> CreateUIControlByClass(ObjectClass ObjectClass, std::shared_ptr<IUIControl> Parent = nullptr)
+	{
+		return GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<IUIControlFactory>()->CreateSceneNodeUI(ObjectClass, *this, Parent);
+	}
+
+	template<class T>
+	inline std::shared_ptr<IUIControl> CreateUIControl(std::shared_ptr<IUIControl> Parent = nullptr)
+	{
+		return GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<IUIControlFactory>()->CreateSceneNodeUI(T::GetClassT(), *this, Parent);
+	}
+
+	template<class T>
+	inline std::shared_ptr<T> CreateUIControlT(std::shared_ptr<IUIControl> Parent = nullptr)
+	{
+		return std::dynamic_pointer_cast<T>(GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<IUIControlFactory>()->CreateSceneNodeUI(T::GetClassT(), *this, Parent));
 	}
 };
 

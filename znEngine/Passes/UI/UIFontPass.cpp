@@ -75,7 +75,7 @@ EVisitResult CUIFontPass::Visit(const IUIControl * node)
 	auto vertexShader = shaders.at(EShaderType::VertexShader).get();
 	auto pixelShader = shaders.at(EShaderType::PixelShader).get();
 
-	GetPipeline().SetTexture(0, font->GetTexture());
+	font->GetTexture()->Bind(0, pixelShader, IShaderParameter::Type::Texture);
 
 	fontGeometryInternal->Render_BindAllBuffers(vertexShader);
 	{
