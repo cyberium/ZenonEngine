@@ -26,16 +26,19 @@ IShaderParameter * CPassForward_DoRenderScene::GetLightsShaderParameter() const
 //
 // IRenderPassPipelined
 //
-std::shared_ptr<IRenderPassPipelined> CPassForward_DoRenderScene::ConfigurePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport)
+std::shared_ptr<IRenderPassPipelined> CPassForward_DoRenderScene::ConfigurePipeline(std::shared_ptr<IRenderTarget> RenderTarget)
 {
-	__super::ConfigurePipeline(RenderTarget, Viewport);
+	__super::ConfigurePipeline(RenderTarget);
 
 	std::shared_ptr<IShader> vertexShader;
 	std::shared_ptr<IShader> pixelShader;
 
 	if (GetRenderDevice().GetDeviceType() == RenderDeviceType::RenderDeviceType_DirectX11)
 	{
-		vertexShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::VertexShader, "3D/Model_Forward.hlsl", "VS_PTNBB");
+		IShader::ShaderMacros macroses;
+		macroses.insert(std::make_pair("SKELETON_ANIMATION", "1"));
+
+		vertexShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::VertexShader, "3D/ModelVS.hlsl", "VS_PTN", macroses);
 		pixelShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::PixelShader, "3D/Model_Forward.hlsl", "PS_main");
 	}
 	vertexShader->LoadInputLayoutFromReflector();
@@ -70,6 +73,9 @@ EVisitResult CPassForward_DoRenderScene::Visit(const ISceneNode * SceneNode)
 			if (m_ShaderBonesBufferParameter->IsValid())
 				m_ShaderBonesBufferParameter->Set(modelsComponent->GetBonesBuffer());
 
+		if (m_ShaderLightsBufferParameter->IsValid())
+			m_ShaderLightsBufferParameter->Bind();
+
 		return Base3DPass::Visit(SceneNode);
 	}
 
@@ -88,19 +94,7 @@ EVisitResult CPassForward_DoRenderScene::Visit(const IGeometry * Geometry, const
 		return EVisitResult::Block;
 
 	objMaterial->Bind(GetRenderEventArgs().PipelineState->GetShaders());
-
-	if (m_ShaderBonesBufferParameter->IsValid())
-		m_ShaderBonesBufferParameter->Bind();
-	if (m_ShaderLightsBufferParameter->IsValid())
-		m_ShaderLightsBufferParameter->Bind();
-
 	Geometry->Render(GetRenderEventArgs().PipelineState->GetShaders().at(EShaderType::VertexShader).get(), GeometryDrawArgs);
-
-	if (m_ShaderLightsBufferParameter->IsValid())
-		m_ShaderLightsBufferParameter->Unbind();
-	if (m_ShaderBonesBufferParameter->IsValid())
-		m_ShaderBonesBufferParameter->Unbind();
-
 	objMaterial->Unbind(GetRenderEventArgs().PipelineState->GetShaders());
 
 	return AllowAll;

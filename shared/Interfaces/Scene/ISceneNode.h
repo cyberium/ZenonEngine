@@ -4,7 +4,6 @@
 ZN_INTERFACE ISceneNodeComponent;
 ZN_INTERFACE IScene;
 ZN_INTERFACE ICameraComponent3D;
-class Viewport;
 ZN_INTERFACE IVisitor;
 class UpdateEventArgs;
 ZN_INTERFACE IColliderComponent3D;

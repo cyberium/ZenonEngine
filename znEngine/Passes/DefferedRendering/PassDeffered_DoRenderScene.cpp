@@ -74,11 +74,14 @@ void CPassDeffered_DoRenderScene::Render(RenderEventArgs& e)
 //
 // IRenderPassPipelined
 //
-std::shared_ptr<IRenderPassPipelined> CPassDeffered_DoRenderScene::ConfigurePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport)
+std::shared_ptr<IRenderPassPipelined> CPassDeffered_DoRenderScene::ConfigurePipeline(std::shared_ptr<IRenderTarget> RenderTarget)
 {
-	__super::ConfigurePipeline(RenderTarget, Viewport);
+	__super::ConfigurePipeline(RenderTarget);
 
-	auto vertexShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::VertexShader, "3D/Model_Deffered.hlsl", "VS_PTN");
+	IShader::ShaderMacros macroses;
+	macroses.insert(std::make_pair("SKELETON_ANIMATION", "1"));
+
+	auto vertexShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::VertexShader, "3D/ModelVS.hlsl", "VS_PTN", macroses);
 	vertexShader->LoadInputLayoutFromReflector();
 
 	// Per object
@@ -93,7 +96,7 @@ std::shared_ptr<IRenderPassPipelined> CPassDeffered_DoRenderScene::ConfigurePipe
 	auto pixelShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::PixelShader, "3D/Model_Deffered.hlsl", "PS_main");
 
 	// PIPELINES
-	GetPipeline().SetRenderTarget(CreateGBuffer(RenderTarget, Viewport));
+	GetPipeline().SetRenderTarget(CreateGBuffer(RenderTarget));
 	GetPipeline().SetShader(EShaderType::VertexShader, vertexShader);
 	GetPipeline().SetShader(EShaderType::PixelShader, pixelShader);
 
@@ -133,7 +136,7 @@ void CPassDeffered_DoRenderScene::DoRenderGeometry(const IGeometry * Geometry, c
 //
 // Private
 //
-std::shared_ptr<IRenderTarget> CPassDeffered_DoRenderScene::CreateGBuffer(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport)
+std::shared_ptr<IRenderTarget> CPassDeffered_DoRenderScene::CreateGBuffer(std::shared_ptr<IRenderTarget> RenderTarget)
 {
 	ITexture::TextureFormat colorTextureFormat
 	(
@@ -156,10 +159,10 @@ std::shared_ptr<IRenderTarget> CPassDeffered_DoRenderScene::CreateGBuffer(std::s
 		RenderTarget->GetSamplesCount(),
 		32, 32, 32, 32, 0, 0
 	);
-	m_Texture0 = GetRenderDevice().GetObjectsFactory().CreateTexture2D(Viewport->GetWidth(), Viewport->GetHeight(), 1, colorTextureFormat);
-	m_Texture1 = GetRenderDevice().GetObjectsFactory().CreateTexture2D(Viewport->GetWidth(), Viewport->GetHeight(), 1, colorTextureFormat);
-	m_Texture2 = GetRenderDevice().GetObjectsFactory().CreateTexture2D(Viewport->GetWidth(), Viewport->GetHeight(), 1, normalTextureFormat);
-	m_Texture3 = GetRenderDevice().GetObjectsFactory().CreateTexture2D(Viewport->GetWidth(), Viewport->GetHeight(), 1, positionTextureFormat);
+	m_Texture0 = GetRenderDevice().GetObjectsFactory().CreateTexture2D(RenderTarget->GetViewport().GetWidth(), RenderTarget->GetViewport().GetHeight(), 1, colorTextureFormat);
+	m_Texture1 = GetRenderDevice().GetObjectsFactory().CreateTexture2D(RenderTarget->GetViewport().GetWidth(), RenderTarget->GetViewport().GetHeight(), 1, colorTextureFormat);
+	m_Texture2 = GetRenderDevice().GetObjectsFactory().CreateTexture2D(RenderTarget->GetViewport().GetWidth(), RenderTarget->GetViewport().GetHeight(), 1, normalTextureFormat);
+	m_Texture3 = GetRenderDevice().GetObjectsFactory().CreateTexture2D(RenderTarget->GetViewport().GetWidth(), RenderTarget->GetViewport().GetHeight(), 1, positionTextureFormat);
 
 	// Depth/stencil buffer
 	ITexture::TextureFormat depthStencilTextureFormat(
@@ -167,7 +170,7 @@ std::shared_ptr<IRenderTarget> CPassDeffered_DoRenderScene::CreateGBuffer(std::s
 		ITexture::Type::UnsignedNormalized,
 		RenderTarget->GetSamplesCount(),
 		0, 0, 0, 0, 24, 8);
-	m_DepthStencilTexture = GetRenderDevice().GetObjectsFactory().CreateTexture2D(Viewport->GetWidth(), Viewport->GetHeight(), 1, depthStencilTextureFormat);
+	m_DepthStencilTexture = GetRenderDevice().GetObjectsFactory().CreateTexture2D(RenderTarget->GetViewport().GetWidth(), RenderTarget->GetViewport().GetHeight(), 1, depthStencilTextureFormat);
 
 	auto rt = GetRenderDevice().GetObjectsFactory().CreateRenderTarget();
 	rt->AttachTexture(IRenderTarget::AttachmentPoint::Color0, m_Texture0);

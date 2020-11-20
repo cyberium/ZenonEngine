@@ -24,9 +24,9 @@ void CDrawLightFrustumPass::SetNeedRefresh()
 //
 // IRenderPassPipelined
 //
-std::shared_ptr<IRenderPassPipelined> CDrawLightFrustumPass::ConfigurePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport)
+std::shared_ptr<IRenderPassPipelined> CDrawLightFrustumPass::ConfigurePipeline(std::shared_ptr<IRenderTarget> RenderTarget)
 {
-	__super::ConfigurePipeline(RenderTarget, Viewport);
+	__super::ConfigurePipeline(RenderTarget);
 
 	m_PointBox = GetRenderDevice().GetPrimitivesFactory().CreateCube();
 

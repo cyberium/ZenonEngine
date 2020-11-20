@@ -20,9 +20,9 @@ CDrawBoundingBoxPass::~CDrawBoundingBoxPass()
 //
 // IRenderPassPipelined
 //
-std::shared_ptr<IRenderPassPipelined> CDrawBoundingBoxPass::ConfigurePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport)
+std::shared_ptr<IRenderPassPipelined> CDrawBoundingBoxPass::ConfigurePipeline(std::shared_ptr<IRenderTarget> RenderTarget)
 {
-	__super::ConfigurePipeline(RenderTarget, Viewport);
+	__super::ConfigurePipeline(RenderTarget);
 
 	m_BBoxGeometry = GetRenderDevice().GetPrimitivesFactory().CreateBBox();
 	m_Material = MakeShared(MaterialDebug, GetRenderDevice());

@@ -27,7 +27,7 @@ public:
 	virtual ~CUIFontPass();
 
 	// IRenderPassPipelined
-	virtual std::shared_ptr<IRenderPassPipelined> ConfigurePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport* Viewport) override;
+	virtual std::shared_ptr<IRenderPassPipelined> ConfigurePipeline(std::shared_ptr<IRenderTarget> RenderTarget) override;
 
 	// IVisitor
 	virtual EVisitResult Visit(const IUIControl* node) override;

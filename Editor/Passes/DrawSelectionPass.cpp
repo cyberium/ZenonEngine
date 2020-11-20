@@ -55,9 +55,9 @@ void CDrawSelectionPass::Render(RenderEventArgs& e)
 //
 // IRenderPassPipelined
 //
-std::shared_ptr<IRenderPassPipelined> CDrawSelectionPass::ConfigurePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport)
+std::shared_ptr<IRenderPassPipelined> CDrawSelectionPass::ConfigurePipeline(std::shared_ptr<IRenderTarget> RenderTarget)
 {
-	__super::ConfigurePipeline(RenderTarget, Viewport);
+	__super::ConfigurePipeline(RenderTarget);
 
 	m_QuadGeometry = GetRenderDevice().GetPrimitivesFactory().CreateBBox();
 

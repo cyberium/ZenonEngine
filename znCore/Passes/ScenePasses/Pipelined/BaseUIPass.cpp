@@ -17,9 +17,9 @@ BaseUIPass::~BaseUIPass()
 //
 // IRenderPassPipelined
 //
-std::shared_ptr<IRenderPassPipelined> BaseUIPass::ConfigurePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport)
+std::shared_ptr<IRenderPassPipelined> BaseUIPass::ConfigurePipeline(std::shared_ptr<IRenderTarget> RenderTarget)
 {
-	__super::ConfigurePipeline(RenderTarget, Viewport);
+	__super::ConfigurePipeline(RenderTarget);
 	
 	GetPipeline().GetBlendState()->SetBlendMode(alphaBlending);
 	GetPipeline().GetDepthStencilState()->SetDepthMode(disableDepthWrites);

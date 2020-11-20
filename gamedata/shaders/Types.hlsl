@@ -82,37 +82,28 @@ struct VSInputPTN
 {
 	float3 position : POSITION;
 	float2 texCoord : TEXCOORD0;
-	float3 normal   : NORMAL;
-};
-
-struct VSInputPTNBB
-{
-	float3 position : POSITION;
-	float2 texCoord : TEXCOORD0;
-	float3 normal   : NORMAL;
-	float4 boneWeight: BLENDWEIGHT0;
-	uint4  boneIndex : BLENDINDICES0;
+	float3 normal   : NORMAL0;
 };
 
 struct VSInputPTNTB
 {
 	float3 position : POSITION;
 	float2 texCoord : TEXCOORD0;
-	float3 normal   : NORMAL;
+	float3 normal   : NORMAL0;
 	float3 tangent  : TANGENT;
 	float3 binormal : BINORMAL;
 };
 
-struct VSInputPTNTBBB
+struct VSOutput
 {
-	float3 position : POSITION;
-	float2 texCoord : TEXCOORD0;
-	float3 normal   : NORMAL;
-	float3 tangent  : TANGENT;
-	float3 binormal : BINORMAL;
-	float4 boneWeight: BLENDWEIGHT0;
-	uint4  boneIndex : BLENDINDICES0;
+	float4 position     : SV_POSITION;  // Clip space position.
+	float3 positionVS   : POSITION;     // View space position.
+	float2 texCoord     : TEXCOORD;     // Texture coordinate
+	float3 normalVS     : NORMAL;       // View space normal.
+	float3 tangentVS    : TANGENT;      // View space tangent.
+	float3 binormalVS   : BINORMAL;     // View space binormal.
 };
+
 
 //----------------------------------------------------------------------
 //-- Vertex input types (for UI)

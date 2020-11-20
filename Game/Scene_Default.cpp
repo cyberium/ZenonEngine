@@ -76,7 +76,7 @@ void CSceneDefault::Initialize()
 	//--------------------------------------------------------------------------
 	// XML
 	//--------------------------------------------------------------------------
-	if (auto file = GetBaseManager().GetManager<IFilesManager>()->Open("RTS22656"))
+	/*if (auto file = GetBaseManager().GetManager<IFilesManager>()->Open("RTS22656"))
 	{
 		CXMLManager xml(GetBaseManager());
 		auto reader = xml.CreateReader(file);
@@ -87,7 +87,7 @@ void CSceneDefault::Initialize()
 
 		auto sceneNodeRTSUnit = CreateSceneNodeT<ISceneNodeRTSUnit>();
 		sceneNodeRTSUnit->SetPath(m_RTSUnitsPath);
-	}
+	}*/
 
 
 	{
@@ -104,17 +104,18 @@ void CSceneDefault::Initialize()
 			(GetRenderWindow().GetWindowWidth() / 2.0f) - (commonControl->GetSize().x / 2.0f), 
 			 GetRenderWindow().GetWindowHeight() - commonControl->GetSize().y)
 		);
+		//commonControl->SetScale(glm::vec2(0.75f));
 	}
 
 	//--------------------------------------------------------------------------
 	// RENDERERS
 	//--------------------------------------------------------------------------
 	auto forwardRenderer = MakeShared(CRendererForward, GetBaseManager(), *this);
-	forwardRenderer->Initialize(GetRenderWindow().GetRenderTarget(), &GetRenderWindow().GetViewport());
+	forwardRenderer->Initialize(GetRenderWindow().GetRenderTarget());
 	m_ForwardRenderer = forwardRenderer;
 
 	auto defferedRenderer = MakeShared(CRendererDeffered, GetBaseManager(), *this);
-	defferedRenderer->Initialize(GetRenderWindow().GetRenderTarget(), &GetRenderWindow().GetViewport());
+	defferedRenderer->Initialize(GetRenderWindow().GetRenderTarget());
 	m_DefferedRenderrer = defferedRenderer;
 
 	SetRenderer(forwardRenderer);

@@ -157,7 +157,7 @@ void CSceneDefault::Load3D()
 
 		CznFBXLoaderParams fbxLoaderParams;
 		fbxLoaderParams.TexturesPathRoot = "Toon_RTS/models/textures/";
-		fbxLoaderParams.OverrideTexture = "WK_StandardUnits_generic.png";
+		fbxLoaderParams.OverrideTexture = "WK_StandardUnits_Blue.png";
 
 		auto fbxModelsLoader = GetBaseManager().GetManager<IznModelsFactory>()->GetLoaderForModel("fbx");
 		_ASSERT(fbxModelsLoader != nullptr);

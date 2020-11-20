@@ -42,7 +42,7 @@ void CEditorToolMoverRTS::Disable()
 	m_MoverRoot->SetTranslate(glm::vec3(Math::MinFloat));
 }
 
-void CEditorToolMoverRTS::DoInitialize3D(const std::shared_ptr<IRenderer>& Renderer, std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport)
+void CEditorToolMoverRTS::DoInitialize3D(const std::shared_ptr<IRenderer>& Renderer, std::shared_ptr<IRenderTarget> RenderTarget)
 {
 	m_MoverRoot = GetScene().CreateSceneNode<ISceneNode>();
 	m_MoverRoot->SetName("MoverRTSRoot");

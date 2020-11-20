@@ -2,7 +2,7 @@
 
 namespace
 {
-	__declspec(align(16)) struct SMaterialUIControlProperties
+	struct __declspec(align(16)) SMaterialUIControlProperties
 	{
 		SMaterialUIControlProperties()
 			: DiffuseColor(1.0f, 1.0f, 1.0f, 1.0f)

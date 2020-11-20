@@ -157,7 +157,7 @@ void CEditor3DPreviewScene::Initialize()
 	// Renderer
 	//
 	auto forwardrender = MakeShared(CRendererForward, GetBaseManager(), *this);
-	forwardrender->Initialize(GetRenderWindow().GetRenderTarget(), &GetRenderWindow().GetViewport());
+	forwardrender->Initialize(GetRenderWindow().GetRenderTarget());
 	SetRenderer(forwardrender);
 }
 

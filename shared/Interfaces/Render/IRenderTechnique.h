@@ -23,6 +23,6 @@ ZN_INTERFACE ZN_API IRendererExtender
 {
 	virtual ~IRendererExtender() {}
 
-	virtual void Extend3DPasses(IRenderer& Renderer, IRenderDevice& RenderDevice, IScene& Scene,                                                           std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport) const = 0;
-	virtual void Extend3DPasses(IRenderer& Renderer, IRenderDevice& RenderDevice, const std::shared_ptr<IRenderPassCreateTypelessList>& SceneNodeListPass, std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport) const = 0;
+	virtual void Extend3DPasses(IRenderer& Renderer, IRenderDevice& RenderDevice, IScene& Scene,                                                           std::shared_ptr<IRenderTarget> RenderTarget) const = 0;
+	virtual void Extend3DPasses(IRenderer& Renderer, IRenderDevice& RenderDevice, const std::shared_ptr<IRenderPassCreateTypelessList>& SceneNodeListPass, std::shared_ptr<IRenderTarget> RenderTarget) const = 0;
 };

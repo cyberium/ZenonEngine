@@ -44,9 +44,6 @@ public:
 
 	virtual void                                    Accept(IVisitor* visitor) override;
 
-	// IObject
-	void                                            SetName(const std::string& Name) override final { Object::SetName(Name); };
-
 	// UI events
 	void                                            SetOnClickCallback(std::function<void(const IUIControl* Node, glm::vec2)> OnClickCallback);
 

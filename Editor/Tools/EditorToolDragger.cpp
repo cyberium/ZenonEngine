@@ -27,7 +27,7 @@ void CEditorToolDragger::Disable()
 }
 
 
-void CEditorToolDragger::DoInitialize3D(const std::shared_ptr<IRenderer>& Renderer, std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport)
+void CEditorToolDragger::DoInitialize3D(const std::shared_ptr<IRenderer>& Renderer, std::shared_ptr<IRenderTarget> RenderTarget)
 {
 	m_DraggerTextUI = GetScene().CreateUIControlT<IUIControlText>(GetScene().GetRootUIControl());
 	m_DraggerTextUI->SetName("DraggedNodePositionTextUI.");

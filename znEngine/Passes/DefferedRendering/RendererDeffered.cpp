@@ -80,14 +80,14 @@ void CRendererDeffered::Resize(uint32 NewWidth, uint32 NewHeight)
 
 
 
-void CRendererDeffered::Initialize(std::shared_ptr<IRenderTarget> OutputRenderTarget, const Viewport * Viewport)
+void CRendererDeffered::Initialize(std::shared_ptr<IRenderTarget> OutputRenderTarget)
 {
 	AddPass(MakeShared(ClearRenderTargetPass, m_RenderDevice, OutputRenderTarget));
 	
 	m_SceneCreateTypelessListPass = MakeShared(CSceneCreateTypelessListPass, m_RenderDevice, m_Scene);
 
 	m_Deffered_ScenePass = MakeShared(CPassDeffered_DoRenderScene, m_RenderDevice, m_SceneCreateTypelessListPass);
-	m_Deffered_ScenePass->ConfigurePipeline(OutputRenderTarget, Viewport);
+	m_Deffered_ScenePass->ConfigurePipeline(OutputRenderTarget);
 
 	// GBuffer contains Depth and Stencil buffer with object. We may use this data.
 	auto outputRenderTargetWithCustomDepth = m_RenderDevice.GetObjectsFactory().CreateRenderTarget();
@@ -98,31 +98,31 @@ void CRendererDeffered::Initialize(std::shared_ptr<IRenderTarget> OutputRenderTa
 	m_Deffered_Lights = MakeShared(CPassDeffered_ProcessLights, m_RenderDevice, m_SceneCreateTypelessListPass);
 	m_Deffered_Lights->CreateShadowPipeline();
 
-	//auto HDRRenderTarget = CreateHDRRenderTarget(OutputRenderTarget, Viewport);
+	//auto HDRRenderTarget = CreateHDRRenderTarget(OutputRenderTarget);
 	//m_Deffered_HDR = MakeShared(CPassPostprocess_HDR, m_RenderDevice, HDRRenderTarget);
-	//m_Deffered_HDR->ConfigurePipeline(OutputRenderTarget, Viewport);
+	//m_Deffered_HDR->ConfigurePipeline(OutputRenderTarget);
 
 	m_Deffered_UIQuadPass = MakeShared(CPassDeffered_RenderUIQuad, m_RenderDevice, m_Deffered_ScenePass, m_Deffered_Lights);
-	m_Deffered_UIQuadPass->ConfigurePipeline(/*HDRRenderTarget*/OutputRenderTarget, Viewport);
+	m_Deffered_UIQuadPass->ConfigurePipeline(/*HDRRenderTarget*/OutputRenderTarget);
 
 
 
 	AddPass(m_SceneCreateTypelessListPass);
 	AddPass(m_Deffered_ScenePass);
 	AddPass(m_Deffered_Lights);
-	AddPass(MakeShared(CDebugPass, m_RenderDevice, m_Scene)->ConfigurePipeline(outputRenderTargetWithCustomDepth, Viewport));
+	AddPass(MakeShared(CDebugPass, m_RenderDevice, m_Scene)->ConfigurePipeline(outputRenderTargetWithCustomDepth));
 	
 	// Final UI Pass
 	AddPass(m_Deffered_UIQuadPass);
-	AddPass(MakeShared(CParticlesPass, m_RenderDevice, m_Scene)->ConfigurePipeline(outputRenderTargetWithCustomDepth, Viewport));
+	AddPass(MakeShared(CParticlesPass, m_RenderDevice, m_Scene)->ConfigurePipeline(outputRenderTargetWithCustomDepth));
 
 	// HDR
 	//AddPass(MakeShared(ClearRenderTargetPass, m_RenderDevice, HDRRenderTarget));
 	//m_UIPasses.push_back(m_Deffered_HDR);
 
-	m_UIPasses.push_back(MakeShared(CUIFontPass, m_RenderDevice, m_Scene)->ConfigurePipeline(OutputRenderTarget, Viewport));
-	m_UIPasses.push_back(MakeShared(CUIControlPass, m_RenderDevice, m_Scene)->ConfigurePipeline(OutputRenderTarget, Viewport));
-	//m_UIPasses.push_back(MakeShared(CUIControlConsolePass, m_RenderDevice)->ConfigurePipeline(OutputRenderTarget, Viewport));
+	m_UIPasses.push_back(MakeShared(CUIFontPass, m_RenderDevice, m_Scene)->ConfigurePipeline(OutputRenderTarget));
+	m_UIPasses.push_back(MakeShared(CUIControlPass, m_RenderDevice, m_Scene)->ConfigurePipeline(OutputRenderTarget));
+	//m_UIPasses.push_back(MakeShared(CUIControlConsolePass, m_RenderDevice)->ConfigurePipeline(OutputRenderTarget));
 }
 
 
@@ -130,7 +130,7 @@ void CRendererDeffered::Initialize(std::shared_ptr<IRenderTarget> OutputRenderTa
 //
 // Private
 //
-std::shared_ptr<IRenderTarget> CRendererDeffered::CreateHDRRenderTarget(std::shared_ptr<IRenderTarget> OutputRenderTarget, const Viewport * Viewport)
+std::shared_ptr<IRenderTarget> CRendererDeffered::CreateHDRRenderTarget(std::shared_ptr<IRenderTarget> OutputRenderTarget)
 {
 	ITexture::TextureFormat colorTextureFormat
 	(
@@ -139,7 +139,7 @@ std::shared_ptr<IRenderTarget> CRendererDeffered::CreateHDRRenderTarget(std::sha
 		OutputRenderTarget->GetSamplesCount(),
 		32, 32, 32, 32, 0, 0
 	);
-	auto texture = m_RenderDevice.GetObjectsFactory().CreateTexture2D(Viewport->GetWidth(), Viewport->GetHeight(), 1, colorTextureFormat);
+	auto texture = m_RenderDevice.GetObjectsFactory().CreateTexture2D(OutputRenderTarget->GetViewport().GetWidth(), OutputRenderTarget->GetViewport().GetHeight(), 1, colorTextureFormat);
 
 	// GBuffer contains Depth and Stencil buffer with object. We may use this data.
 	auto outputRenderTargetWithCustomDepth = m_RenderDevice.GetObjectsFactory().CreateRenderTarget();

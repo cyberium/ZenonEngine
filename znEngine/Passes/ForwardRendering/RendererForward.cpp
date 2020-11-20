@@ -93,7 +93,7 @@ void CRendererForward::Resize(uint32 NewWidth, uint32 NewHeight)
 	//m_FinalRenderTarget->Resize(NewWidth, NewHeight);
 }
 
-void CRendererForward::Initialize(std::shared_ptr<IRenderTarget> OutputRenderTarget, const Viewport * Viewport)
+void CRendererForward::Initialize(std::shared_ptr<IRenderTarget> OutputRenderTarget)
 {
 	AddPass(MakeShared(ClearRenderTargetPass, m_RenderDevice, OutputRenderTarget));
 
@@ -101,13 +101,13 @@ void CRendererForward::Initialize(std::shared_ptr<IRenderTarget> OutputRenderTar
 	AddPass(m_SceneCreateTypelessListPass);
 
 	m_MaterialModelPass = MakeShared(CPassForward_DoRenderScene, m_RenderDevice, m_Scene);
-	m_MaterialModelPass->ConfigurePipeline(OutputRenderTarget, Viewport);
+	m_MaterialModelPass->ConfigurePipeline(OutputRenderTarget);
 
 	//m_MaterialModelPassInstanced = MakeShared(CPassForward_DoRenderSceneInstanced, m_RenderDevice, m_SceneCreateTypelessListPass);
 	//m_MaterialModelPassInstanced->ConfigurePipeline(OutputRenderTarget, Viewport);
 
 	m_RTSGroundPassInstanced = MakeShared(CRTSGround_Pass, m_RenderDevice, m_Scene);
-	m_RTSGroundPassInstanced->ConfigurePipeline(OutputRenderTarget, Viewport);
+	m_RTSGroundPassInstanced->ConfigurePipeline(OutputRenderTarget);
 
 	std::shared_ptr<InvokeFunctionPass> invokePass = MakeShared(InvokeFunctionPass, m_RenderDevice, std::bind(&CRendererForward::DoUpdateLights, this));
 
@@ -120,15 +120,15 @@ void CRendererForward::Initialize(std::shared_ptr<IRenderTarget> OutputRenderTar
 
 	for (const auto& it : m_BaseManager.GetManager<IznPluginsManager>()->GetAllPlugins())
 		if (auto ext = std::dynamic_pointer_cast<IRendererExtender>(it))
-			ext->Extend3DPasses(*this, m_RenderDevice, m_SceneCreateTypelessListPass, OutputRenderTarget, Viewport);
+			ext->Extend3DPasses(*this, m_RenderDevice, m_SceneCreateTypelessListPass, OutputRenderTarget);
 
-	AddPass(MakeShared(CDebugPass, m_RenderDevice, m_Scene)->ConfigurePipeline(OutputRenderTarget, Viewport));
-	AddPass(MakeShared(CParticlesPass, m_RenderDevice, m_Scene)->ConfigurePipeline(OutputRenderTarget, Viewport));
-	AddPass(MakeShared(CDrawBonesPass, m_Scene)->ConfigurePipeline(OutputRenderTarget, Viewport));
+	AddPass(MakeShared(CDebugPass, m_RenderDevice, m_Scene)->ConfigurePipeline(OutputRenderTarget));
+	AddPass(MakeShared(CParticlesPass, m_RenderDevice, m_Scene)->ConfigurePipeline(OutputRenderTarget));
+	AddPass(MakeShared(CDrawBonesPass, m_Scene)->ConfigurePipeline(OutputRenderTarget));
 	//AddPass(MakeShared(CDrawBoundingBoxPass, m_RenderDevice, m_Scene)->ConfigurePipeline(OutputRenderTarget, Viewport));
 
-	m_UIPasses.push_back(MakeShared(CUIControlPass, m_RenderDevice, m_Scene)->ConfigurePipeline(OutputRenderTarget, Viewport));
-	m_UIPasses.push_back(MakeShared(CUIFontPass, m_RenderDevice, m_Scene)->ConfigurePipeline(OutputRenderTarget, Viewport));
+	m_UIPasses.push_back(MakeShared(CUIControlPass, m_RenderDevice, m_Scene)->ConfigurePipeline(OutputRenderTarget));
+	m_UIPasses.push_back(MakeShared(CUIFontPass, m_RenderDevice, m_Scene)->ConfigurePipeline(OutputRenderTarget));
 }
 
 void CRendererForward::DoUpdateLights()

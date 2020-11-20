@@ -22,9 +22,9 @@ CUIFontPass::~CUIFontPass()
 //
 // IRenderPassPipelined
 //
-std::shared_ptr<IRenderPassPipelined> CUIFontPass::ConfigurePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport)
+std::shared_ptr<IRenderPassPipelined> CUIFontPass::ConfigurePipeline(std::shared_ptr<IRenderTarget> RenderTarget)
 {
-	BaseUIPass::ConfigurePipeline(RenderTarget, Viewport);
+	BaseUIPass::ConfigurePipeline(RenderTarget);
 
 	// CreateShaders
 	std::shared_ptr<IShader> vertexShader;

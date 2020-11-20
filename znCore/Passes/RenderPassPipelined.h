@@ -16,7 +16,7 @@ public:
 	virtual void PostRender(RenderEventArgs& e);
     
 	// IRenderPassPipelined
-	virtual std::shared_ptr<IRenderPassPipelined> ConfigurePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport* Viewport) override;
+	virtual std::shared_ptr<IRenderPassPipelined> ConfigurePipeline(std::shared_ptr<IRenderTarget> RenderTarget) override;
 	virtual IPipelineState& GetPipeline() const override;
 
 protected:

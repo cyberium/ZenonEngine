@@ -80,10 +80,10 @@ void CEditorTools::DisableAll(ETool ExceptOfTool)
 //
 // 3D
 //
-void CEditorTools::DoInitialize3D(const std::shared_ptr<IRenderer>& Renderer, std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport)
+void CEditorTools::DoInitialize3D(const std::shared_ptr<IRenderer>& Renderer, std::shared_ptr<IRenderTarget> RenderTarget)
 {
 	for (const auto& it : m_Tools)
-		it.second->DoInitialize3D(Renderer, RenderTarget, Viewport);
+		it.second->DoInitialize3D(Renderer, RenderTarget);
 }
 
 bool CEditorTools::OnMousePressed(const MouseButtonEventArgs & e, const Ray & RayToWorld)

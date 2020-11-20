@@ -20,9 +20,9 @@ CDrawBonesPass::~CDrawBonesPass()
 //
 // IRenderPassPipelined
 //
-std::shared_ptr<IRenderPassPipelined> CDrawBonesPass::ConfigurePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport)
+std::shared_ptr<IRenderPassPipelined> CDrawBonesPass::ConfigurePipeline(std::shared_ptr<IRenderTarget> RenderTarget)
 {
-	__super::ConfigurePipeline(RenderTarget, Viewport);
+	__super::ConfigurePipeline(RenderTarget);
 
 	m_ConeGeometry = GetRenderDevice().GetPrimitivesFactory().CreateCone();
 	m_SphereGeometry = GetRenderDevice().GetPrimitivesFactory().CreateSphere();

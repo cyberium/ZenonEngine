@@ -23,10 +23,10 @@ public:
 	void Resize(uint32 NewWidth, uint32 NewHeight) override;
 
 
-	void Initialize(std::shared_ptr<IRenderTarget> OutputRenderTarget, const Viewport * Viewport);
+	void Initialize(std::shared_ptr<IRenderTarget> OutputRenderTarget);
 
 private:
-	std::shared_ptr<IRenderTarget> CreateHDRRenderTarget(std::shared_ptr<IRenderTarget> OutputRenderTarget, const Viewport * Viewport);
+	std::shared_ptr<IRenderTarget> CreateHDRRenderTarget(std::shared_ptr<IRenderTarget> OutputRenderTarget);
 
 private:
 	std::vector<std::shared_ptr<IRenderPass>> m_Passes;

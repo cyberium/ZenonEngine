@@ -6,7 +6,6 @@
 class RenderEventArgs;
 ZN_INTERFACE IRenderTarget;
 ZN_INTERFACE IPipelineState;
-class Viewport;
 ZN_INTERFACE ISceneNode;
 ZN_INTERFACE IModel;
 ZN_INTERFACE IGeometry;
@@ -33,7 +32,7 @@ ZN_INTERFACE ZN_API IRenderPassPipelined
 {
 	virtual ~IRenderPassPipelined() {}
 
-	virtual std::shared_ptr<IRenderPassPipelined> ConfigurePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport* Viewport) = 0;
+	virtual std::shared_ptr<IRenderPassPipelined> ConfigurePipeline(std::shared_ptr<IRenderTarget> RenderTarget) = 0;
 	virtual const IPipelineState& GetPipeline() const = 0;
 };
 

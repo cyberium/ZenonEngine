@@ -27,16 +27,16 @@ IShaderParameter * CRTSGround_Pass::GetLightsShaderParameter() const
 //
 // IRenderPassPipelined
 //
-std::shared_ptr<IRenderPassPipelined> CRTSGround_Pass::ConfigurePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport)
+std::shared_ptr<IRenderPassPipelined> CRTSGround_Pass::ConfigurePipeline(std::shared_ptr<IRenderTarget> RenderTarget)
 {
-	__super::ConfigurePipeline(RenderTarget, Viewport);
+	__super::ConfigurePipeline(RenderTarget);
 
 	std::shared_ptr<IShader> vertexShader;
 	std::shared_ptr<IShader> pixelShader;
 
 	if (GetRenderDevice().GetDeviceType() == RenderDeviceType::RenderDeviceType_DirectX11)
 	{
-		vertexShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::VertexShader, "3D/Model_Forward.hlsl", "VS_PTN", { std::make_pair("INSTANCED", "1") });
+		vertexShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::VertexShader, "3D/ModelVS.hlsl", "VS_PTN", { std::make_pair("INSTANCED", "1") });
 		pixelShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::PixelShader, "3D/Model_Forward.hlsl", "PS_main");
 	}
 	vertexShader->LoadInputLayoutFromReflector();
@@ -54,7 +54,7 @@ std::shared_ptr<IRenderPassPipelined> CRTSGround_Pass::ConfigurePipeline(std::sh
 	//_ASSERT(m_ShaderLightsBufferParameter->IsValid());
 
 	m_ShaderInstancesBufferParameter = &vertexShader->GetShaderParameterByName("Instances");
-	_ASSERT(m_ShaderInstancesBufferParameter->IsValid());
+	//_ASSERT(m_ShaderInstancesBufferParameter->IsValid());
 
 	return shared_from_this();
 }

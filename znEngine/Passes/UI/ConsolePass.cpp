@@ -95,9 +95,9 @@ void CUIControlConsolePass::Render(RenderEventArgs & e)
 //
 // IRenderPassPipelined
 //
-std::shared_ptr<IRenderPassPipelined> CUIControlConsolePass::ConfigurePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport)
+std::shared_ptr<IRenderPassPipelined> CUIControlConsolePass::ConfigurePipeline(std::shared_ptr<IRenderTarget> RenderTarget)
 {
-	RenderPassPipelined::ConfigurePipeline(RenderTarget, Viewport);
+	RenderPassPipelined::ConfigurePipeline(RenderTarget);
 
 	GetPipeline().GetBlendState()->SetBlendMode(alphaBlending);
 	GetPipeline().GetDepthStencilState()->SetDepthMode(disableDepthWrites);

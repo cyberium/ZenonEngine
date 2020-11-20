@@ -8,7 +8,7 @@ public:
 	virtual ~CDrawBoundingBoxPass();
 
 	// IRenderPassPipelined
-	std::shared_ptr<IRenderPassPipelined> ConfigurePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport* Viewport) override;
+	std::shared_ptr<IRenderPassPipelined> ConfigurePipeline(std::shared_ptr<IRenderTarget> RenderTarget) override;
 
 	// IVisitor
 	EVisitResult Visit(const ISceneNode * CSceneNode) override;

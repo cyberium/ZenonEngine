@@ -18,9 +18,9 @@ Base3DPass::~Base3DPass()
 //
 // IRenderPassPipelined
 //
-std::shared_ptr<IRenderPassPipelined> Base3DPass::ConfigurePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport)
+std::shared_ptr<IRenderPassPipelined> Base3DPass::ConfigurePipeline(std::shared_ptr<IRenderTarget> RenderTarget)
 {
-	__super::ConfigurePipeline(RenderTarget, Viewport);
+	__super::ConfigurePipeline(RenderTarget);
 
 	GetPipeline().GetBlendState()->SetBlendMode(disableBlending);
 	GetPipeline().GetDepthStencilState()->SetDepthMode(enableDepthWrites);

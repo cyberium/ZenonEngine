@@ -46,7 +46,7 @@ void CEditorToolRotatorRTS::Disable()
 	m_RotatorRoot->SetTranslate(glm::vec3(Math::MinFloat));
 }
 
-void CEditorToolRotatorRTS::DoInitialize3D(const std::shared_ptr<IRenderer>& Renderer, std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport)
+void CEditorToolRotatorRTS::DoInitialize3D(const std::shared_ptr<IRenderer>& Renderer, std::shared_ptr<IRenderTarget> RenderTarget)
 {
 	m_RotatorRoot = GetScene().CreateSceneNode<ISceneNode>();
 	m_RotatorRoot->SetName("RotatorRTSRoot");

@@ -21,23 +21,22 @@ public:
 	void Render(RenderEventArgs& e) override;
 
 	// IRenderPassPipelined
-	std::shared_ptr<IRenderPassPipelined> ConfigurePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport* Viewport) override;
+	std::shared_ptr<IRenderPassPipelined> ConfigurePipeline(std::shared_ptr<IRenderTarget> RenderTarget) override;
 
 	// IVisitor
 	void DoRenderSceneNode(const ISceneNode* SceneNode);
 	void DoRenderGeometry(const IGeometry* Geometry, const IMaterial* Material, SGeometryDrawArgs GeometryDrawArgs);
 
 private:
-	std::shared_ptr<IRenderTarget> CreateGBuffer(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport);
+	std::shared_ptr<IRenderTarget> CreateGBuffer(std::shared_ptr<IRenderTarget> RenderTarget);
 
 private:
 	std::shared_ptr<IRenderPassCreateTypelessList> m_SceneCreateTypelessListPass;
 
 private:
 	std::shared_ptr<IConstantBuffer> m_PerObjectConstantBuffer;
-	IShaderParameter* m_PerObjectShaderParameter;
 
-	// Bones
+	IShaderParameter* m_PerObjectShaderParameter;
 	IShaderParameter* m_ShaderBonesBufferParameter;
 
 private:

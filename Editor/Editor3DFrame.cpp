@@ -70,9 +70,9 @@ void CEditor3DFrame::Initialize()
 
 	{
 		auto forwardRenderer = MakeShared(CRendererForward, GetBaseManager(), *this);
-		forwardRenderer->Initialize(GetRenderWindow().GetRenderTarget(), &GetRenderWindow().GetViewport());
-		forwardRenderer->AddPass(MakeShared(CDrawToolsPass, GetRenderDevice(), *this)->ConfigurePipeline(GetRenderWindow().GetRenderTarget(), &GetRenderWindow().GetViewport()));
-		forwardRenderer->AddPass(MakeShared(CDrawLightFrustumPass, GetRenderDevice(), *this)->ConfigurePipeline(GetRenderWindow().GetRenderTarget(), &GetRenderWindow().GetViewport()));
+		forwardRenderer->Initialize(GetRenderWindow().GetRenderTarget());
+		forwardRenderer->AddPass(MakeShared(CDrawToolsPass, GetRenderDevice(), *this)->ConfigurePipeline(GetRenderWindow().GetRenderTarget()));
+		forwardRenderer->AddPass(MakeShared(CDrawLightFrustumPass, GetRenderDevice(), *this)->ConfigurePipeline(GetRenderWindow().GetRenderTarget()));
 		SetRenderer(forwardRenderer);
 	}
 
@@ -174,7 +174,7 @@ bool CEditor3DFrame::InitializeEditorFrame()
 
 void CEditor3DFrame::DoInitializeTools3D()
 {
-	GetEditor().GetTools().DoInitialize3D(GetRenderer(), GetRenderWindow().GetRenderTarget(), &GetRenderWindow().GetViewport());
+	GetEditor().GetTools().DoInitialize3D(GetRenderer(), GetRenderWindow().GetRenderTarget());
 }
 
 IScene& CEditor3DFrame::GetScene()

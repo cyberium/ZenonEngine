@@ -55,10 +55,10 @@ void CEditorToolWaypoints::DoInitializeUI(IEditorQtUIFrame & QtUIFrame)
 //
 // 3D
 //
-void CEditorToolWaypoints::DoInitialize3D(const std::shared_ptr<IRenderer>& Renderer, std::shared_ptr<IRenderTarget> RenderTarget, const Viewport * Viewport)
+void CEditorToolWaypoints::DoInitialize3D(const std::shared_ptr<IRenderer>& Renderer, std::shared_ptr<IRenderTarget> RenderTarget)
 {
 	auto m_DrawSelectionPass = MakeShared(CDrawWaypointsPass, GetRenderDevice(), GetScene());
-	m_DrawSelectionPass->ConfigurePipeline(RenderTarget, Viewport);
+	m_DrawSelectionPass->ConfigurePipeline(RenderTarget);
 	Renderer->AddPass(m_DrawSelectionPass);
 }
 

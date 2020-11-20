@@ -13,7 +13,7 @@ public:
 	void Render(RenderEventArgs& e) override;
 
 	// IRenderPassPipelined
-	virtual std::shared_ptr<IRenderPassPipelined> ConfigurePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport* Viewport) override;
+	virtual std::shared_ptr<IRenderPassPipelined> ConfigurePipeline(std::shared_ptr<IRenderTarget> RenderTarget) override;
 
 protected:
 	PerFrame GetPerFrameData() const override final;

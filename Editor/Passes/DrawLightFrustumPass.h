@@ -10,7 +10,7 @@ public:
 	void SetNeedRefresh();
 
 	// IRenderPassPipelined
-	std::shared_ptr<IRenderPassPipelined> ConfigurePipeline(std::shared_ptr<IRenderTarget> RenderTarget, const Viewport* Viewport) override final;
+	std::shared_ptr<IRenderPassPipelined> ConfigurePipeline(std::shared_ptr<IRenderTarget> RenderTarget) override final;
 
 	// IVisitor
 	EVisitResult Visit(const ISceneNode* node) override final;

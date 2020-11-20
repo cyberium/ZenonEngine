@@ -21,7 +21,7 @@ public:
 	void RenderUI(RenderEventArgs& renderEventArgs) override;
 	void Resize(uint32 NewWidth, uint32 NewHeight) override;
 
-	void Initialize(std::shared_ptr<IRenderTarget> OutputRenderTarget, const Viewport * Viewport);
+	void Initialize(std::shared_ptr<IRenderTarget> OutputRenderTarget);
 
 private:
 	void DoUpdateLights();
