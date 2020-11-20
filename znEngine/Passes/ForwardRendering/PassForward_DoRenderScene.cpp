@@ -73,9 +73,6 @@ EVisitResult CPassForward_DoRenderScene::Visit(const ISceneNode * SceneNode)
 			if (m_ShaderBonesBufferParameter->IsValid())
 				m_ShaderBonesBufferParameter->Set(modelsComponent->GetBonesBuffer());
 
-		if (m_ShaderLightsBufferParameter->IsValid())
-			m_ShaderLightsBufferParameter->Bind();
-
 		return Base3DPass::Visit(SceneNode);
 	}
 
@@ -93,9 +90,22 @@ EVisitResult CPassForward_DoRenderScene::Visit(const IGeometry * Geometry, const
 	if (objMaterial == nullptr)
 		return EVisitResult::Block;
 
-	objMaterial->Bind(GetRenderEventArgs().PipelineState->GetShaders());
-	Geometry->Render(GetRenderEventArgs().PipelineState->GetShaders().at(EShaderType::VertexShader).get(), GeometryDrawArgs);
-	objMaterial->Unbind(GetRenderEventArgs().PipelineState->GetShaders());
+	const auto& shaders = GetRenderEventArgs().PipelineState->GetShaders();
+	const auto& vertexShader = shaders.at(EShaderType::VertexShader).get();
+
+	if (m_ShaderBonesBufferParameter->IsValid())
+		m_ShaderBonesBufferParameter->Bind();
+	if (m_ShaderLightsBufferParameter->IsValid())
+		m_ShaderLightsBufferParameter->Bind();
+
+	objMaterial->Bind(shaders);
+	Geometry->Render(vertexShader, GeometryDrawArgs);
+	objMaterial->Unbind(shaders);
+
+	if (m_ShaderLightsBufferParameter->IsValid())
+		m_ShaderLightsBufferParameter->Unbind();
+	if (m_ShaderBonesBufferParameter->IsValid())
+		m_ShaderBonesBufferParameter->Unbind();
 
 	return AllowAll;
 }

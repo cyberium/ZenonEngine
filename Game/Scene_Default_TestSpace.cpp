@@ -189,7 +189,6 @@ void CSceneDefault::Load3D()
 		node->GetComponentT<IModelsComponent3D>()->PlayAnimation("run", true);
 	}
 
-
 	//--------------------------------------------------------------------------
 	// Orc with anims ZNMDL
 	//--------------------------------------------------------------------------

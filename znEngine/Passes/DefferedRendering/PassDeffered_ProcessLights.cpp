@@ -161,7 +161,7 @@ std::shared_ptr<ITexture> CPassDeffered_ProcessLights::CreateShadowTextureDepthS
 
 void CPassDeffered_ProcessLights::BindPerFrameParamsForCurrentIteration(const ILight3D * Light)
 {
-	const Viewport& viewport = m_ShadowPipeline->GetRenderTarget()->GetViewport();
+	const auto& viewport = m_ShadowPipeline->GetRenderTarget()->GetViewport();
 
 	PerFrame perFrame(
 		Light->GetViewMatrix(), 
@@ -169,7 +169,6 @@ void CPassDeffered_ProcessLights::BindPerFrameParamsForCurrentIteration(const IL
 		glm::vec2(viewport.GetWidth(), viewport.GetHeight())
 	);
 	m_PerFrameConstantBuffer->Set(perFrame);
-
 	m_PerFrameShaderParameter->Bind();
 }
 
@@ -178,6 +177,5 @@ void CPassDeffered_ProcessLights::BindPerObjectParamsForCurrentIteration(const I
 	PerObject perObject;
 	perObject.Model = SceneNode->GetWorldTransfom();
 	m_PerObjectConstantBuffer->Set(perObject);
-
 	m_PerObjectShaderParameter->Bind();
 }

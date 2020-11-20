@@ -96,6 +96,7 @@ std::shared_ptr<IRenderPassPipelined> CPassDeffered_DoRenderScene::ConfigurePipe
 	auto pixelShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::PixelShader, "3D/Model_Deffered.hlsl", "PS_main");
 
 	// PIPELINES
+	GetPipeline().GetRasterizerState()->SetCullMode(IRasterizerState::CullMode::Back);
 	GetPipeline().SetRenderTarget(CreateGBuffer(RenderTarget));
 	GetPipeline().SetShader(EShaderType::VertexShader, vertexShader);
 	GetPipeline().SetShader(EShaderType::PixelShader, pixelShader);
@@ -126,9 +127,15 @@ void CPassDeffered_DoRenderScene::DoRenderGeometry(const IGeometry * Geometry, c
 	const auto& shaders = GetRenderEventArgs().PipelineState->GetShaders();
 	const auto& vertexShader = shaders.at(EShaderType::VertexShader).get();
 
+	if (m_ShaderBonesBufferParameter->IsValid())
+		m_ShaderBonesBufferParameter->Bind();
+
 	Material->Bind(shaders);
 	Geometry->Render(vertexShader, GeometryDrawArgs);
 	Material->Unbind(shaders);
+
+	if (m_ShaderBonesBufferParameter->IsValid())
+		m_ShaderBonesBufferParameter->Unbind();
 }
 
 

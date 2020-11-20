@@ -65,8 +65,8 @@ bool CFBXModel::Load(fbxsdk::FbxMesh* NativeMesh)
 
 	SetName(NativeMesh->GetName());
 
-	FbxVector4* lControlPoints = NativeMesh->GetControlPoints();
-	if (lControlPoints == nullptr)
+	FbxVector4* fbxControlPoints = NativeMesh->GetControlPoints();
+	if (fbxControlPoints == nullptr)
 		throw CException("FBXModel: There is no control points.");
 
 	NativeMesh->ComputeBBox();
@@ -86,20 +86,20 @@ bool CFBXModel::Load(fbxsdk::FbxMesh* NativeMesh)
 	m_Vertices.clear();
 	for (int p = 0; p < NativeMesh->GetPolygonCount(); p++)
 	{
-		int lPolygonSize = NativeMesh->GetPolygonSize(p);
-		if (lPolygonSize > 3)
+		int polygonSize = NativeMesh->GetPolygonSize(p);
+		if (polygonSize > 3)
 		{
-			Log::Warn("FBXModel: Model '%s' has polygon with size '%d' insted of '3'.", GetName().c_str(), lPolygonSize);
-			lPolygonSize = 3;
+			Log::Warn("FBXModel: Model '%s' has polygon with size '%d' insted of '3'.", GetName().c_str(), polygonSize);
+			polygonSize = 3;
 		}
 
-		for (int j = 0; j < lPolygonSize; j++)
+		for (int j = 0; j < polygonSize; j++)
 		{
 			FBXVertex v = {};
 		
-			int lControlPointIndex = NativeMesh->GetPolygonVertex(p, j);
-			v.controlPointIndex = lControlPointIndex;
-			v.pos = glm::vec3(lControlPoints[lControlPointIndex][0], lControlPoints[lControlPointIndex][1], lControlPoints[lControlPointIndex][2]);
+			int controlPointIndex = NativeMesh->GetPolygonVertex(p, j);
+			v.controlPointIndex = controlPointIndex;
+			v.pos = glm::vec3(fbxControlPoints[controlPointIndex][0], fbxControlPoints[controlPointIndex][1], fbxControlPoints[controlPointIndex][2]);
 
 			//
 			// Textures
@@ -112,55 +112,53 @@ bool CFBXModel::Load(fbxsdk::FbxMesh* NativeMesh)
 
 				switch (leUV->GetMappingMode())
 				{
-					case FbxGeometryElement::EMappingMode::eByControlPoint:
+				case FbxGeometryElement::EMappingMode::eByControlPoint:
+				{
+					switch (leUV->GetReferenceMode())
 					{
-						switch (leUV->GetReferenceMode())
-						{
 						case FbxGeometryElement::eDirect:
 						{
-							v.uv = glm::vec2(leUV->GetDirectArray().GetAt(lControlPointIndex)[0], leUV->GetDirectArray().GetAt(lControlPointIndex)[1]);
+							v.uv = glm::vec2(leUV->GetDirectArray().GetAt(controlPointIndex)[0], leUV->GetDirectArray().GetAt(controlPointIndex)[1]);
 						}
 						break;
 						case FbxGeometryElement::eIndexToDirect:
 						{
-							int id = leUV->GetIndexArray().GetAt(lControlPointIndex);
+							int id = leUV->GetIndexArray().GetAt(controlPointIndex);
 							v.uv = glm::vec2(leUV->GetDirectArray().GetAt(id)[0], leUV->GetDirectArray().GetAt(id)[1]);
 						}
 						break;
-						default:
-							_ASSERT(false);
-							break; // other reference modes not shown here!
-						}
-					}
-					break;
 
-					case FbxGeometryElement::EMappingMode::eByPolygonVertex:
+						default:
+							throw CException("Unsupported reference mode '%d'", leUV->GetReferenceMode());
+					}
+				}
+				break;
+
+				case FbxGeometryElement::EMappingMode::eByPolygonVertex:
+				{
+					int lTextureUVIndex = NativeMesh->GetTextureUVIndex(p, j);
+					switch (leUV->GetReferenceMode())
 					{
-						int lTextureUVIndex = NativeMesh->GetTextureUVIndex(p, j);
-						switch (leUV->GetReferenceMode())
-						{
-						case FbxGeometryElement::eDirect:
+						//case FbxGeometryElement::eDirect:
+						//{
+						//	v.uv = glm::vec2(leUV->GetDirectArray().GetAt(lTextureUVIndex)[0], leUV->GetDirectArray().GetAt(lTextureUVIndex)[1]);
+						//}
+						//break;
 						case FbxGeometryElement::eIndexToDirect:
 						{
+							//int id = leUV->GetIndexArray().GetAt(lTextureUVIndex);
 							v.uv = glm::vec2(leUV->GetDirectArray().GetAt(lTextureUVIndex)[0], leUV->GetDirectArray().GetAt(lTextureUVIndex)[1]);
 						}
 						break;
+
 						default:
-							_ASSERT(false);
-							break; // other reference modes not shown here!
-						}
+							throw CException("Unsupported reference mode '%d'", leUV->GetReferenceMode());
 					}
-					break;
+				}
+				break;
 
-					case FbxGeometryElement::EMappingMode::eByPolygon: // doesn't make much sense for UVs
-					case FbxGeometryElement::EMappingMode::eAllSame:   // doesn't make much sense for UVs
-					case FbxGeometryElement::EMappingMode::eNone:       // doesn't make much sense for UVs
-						_ASSERT(false);
-						break;
-
-					default:
-						_ASSERT(false);
-						break;
+				default:
+					throw CException("Unsupported mapping mode '%d'", leUV->GetMappingMode());
 				}
 			}
 
@@ -179,64 +177,58 @@ bool CFBXModel::Load(fbxsdk::FbxMesh* NativeMesh)
 				{
 					switch (elem->GetReferenceMode())
 					{
-					case FbxGeometryElement::eDirect:
-					{
-						v.normal = glm::vec3(elem->GetDirectArray().GetAt(lControlPointIndex)[0], elem->GetDirectArray().GetAt(lControlPointIndex)[1], elem->GetDirectArray().GetAt(lControlPointIndex)[2]);
-					}
-					break;
-					case FbxGeometryElement::eIndexToDirect:
-					{
-						int id = elem->GetIndexArray().GetAt(lControlPointIndex);
-						v.normal = glm::vec3(elem->GetDirectArray().GetAt(id)[0], elem->GetDirectArray().GetAt(id)[1], elem->GetDirectArray().GetAt(id)[2]);
-					}
-					break;
-					default:
-						_ASSERT(false);
-						break; // other reference modes not shown here!
+						case FbxGeometryElement::eDirect:
+						{
+							v.normal = glm::vec3(elem->GetDirectArray().GetAt(controlPointIndex)[0], elem->GetDirectArray().GetAt(controlPointIndex)[1], elem->GetDirectArray().GetAt(controlPointIndex)[2]);
+						}
+						break;
+						//case FbxGeometryElement::eIndexToDirect:
+						//{
+						//	int id = elem->GetIndexArray().GetAt(controlPointIndex);
+						//	v.normal = glm::vec3(elem->GetDirectArray().GetAt(id)[0], elem->GetDirectArray().GetAt(id)[1], elem->GetDirectArray().GetAt(id)[2]);
+						//}
+						//break;
+
+						default:
+							throw CException("Unsupported reference mode '%d'", elem->GetReferenceMode());
 					}
 				}
 				break;
 
-				case FbxGeometryElement::EMappingMode::eByPolygonVertex:
+				/*case FbxGeometryElement::EMappingMode::eByPolygonVertex:
 				{
-					int lTextureUVIndex = NativeMesh->GetTextureUVIndex(p, j);
+					int lTextureUVIndex = NativeMesh->GetPolygonVertexNormal(p, j);
 					switch (elem->GetReferenceMode())
 					{
-					case FbxGeometryElement::eDirect:
-					{
-						v.normal = glm::vec3(elem->GetDirectArray().GetAt(lTextureUVIndex)[0], elem->GetDirectArray().GetAt(lTextureUVIndex)[1], elem->GetDirectArray().GetAt(lTextureUVIndex)[2]);
-					}
-					break;
-					case FbxGeometryElement::eIndexToDirect:
-					{
-						int id = elem->GetIndexArray().GetAt(lTextureUVIndex);
-						v.normal = glm::vec3(elem->GetDirectArray().GetAt(id)[0], elem->GetDirectArray().GetAt(id)[1], elem->GetDirectArray().GetAt(id)[2]);
-					}
-					break;
-					default:
-						_ASSERT(false);
-						break; // other reference modes not shown here!
+						case FbxGeometryElement::eDirect:
+						{
+							v.normal = glm::vec3(elem->GetDirectArray().GetAt(lTextureUVIndex)[0], elem->GetDirectArray().GetAt(lTextureUVIndex)[1], elem->GetDirectArray().GetAt(lTextureUVIndex)[2]);
+						}
+						break;
+						case FbxGeometryElement::eIndexToDirect:
+						{
+							int id = elem->GetIndexArray().GetAt(lTextureUVIndex);
+							v.normal = glm::vec3(elem->GetDirectArray().GetAt(id)[0], elem->GetDirectArray().GetAt(id)[1], elem->GetDirectArray().GetAt(id)[2]);
+						}
+						break;
+						default:
+							_ASSERT(false);
+							break; // other reference modes not shown here!
 					}
 				}
-				break;
-
-				case FbxGeometryElement::EMappingMode::eByPolygon: // doesn't make much sense for UVs
-				case FbxGeometryElement::EMappingMode::eAllSame:   // doesn't make much sense for UVs
-				case FbxGeometryElement::EMappingMode::eNone:       // doesn't make much sense for UVs
-					_ASSERT(false);
-					break;
+				break;*/
 
 				default:
-					_ASSERT(false);
-					break;
+					throw CException("Unsupported mapping mode '%d'", elem->GetMappingMode());
 				}
 			}
 
+#if 0
 
 			//
 			// Binormal
 			//
-			/*cnt = NativeMesh->GetElementBinormalCount();
+			cnt = NativeMesh->GetElementBinormalCount();
 			if (cnt > 1) cnt = 1;
 			for (int l = 0; l < cnt; ++l)
 			{
@@ -250,12 +242,12 @@ bool CFBXModel::Load(fbxsdk::FbxMesh* NativeMesh)
 					{
 					case FbxGeometryElement::eDirect:
 					{
-						v.binormal = glm::vec3(elem->GetDirectArray().GetAt(lControlPointIndex)[0], elem->GetDirectArray().GetAt(lControlPointIndex)[1], elem->GetDirectArray().GetAt(lControlPointIndex)[2]);
+						v.binormal = glm::vec3(elem->GetDirectArray().GetAt(controlPointIndex)[0], elem->GetDirectArray().GetAt(lControlPointIndex)[1], elem->GetDirectArray().GetAt(lControlPointIndex)[2]);
 					}
 					break;
 					case FbxGeometryElement::eIndexToDirect:
 					{
-						int id = elem->GetIndexArray().GetAt(lControlPointIndex);
+						int id = elem->GetIndexArray().GetAt(controlPointIndex);
 						v.binormal = glm::vec3(elem->GetDirectArray().GetAt(id)[0], elem->GetDirectArray().GetAt(id)[1], elem->GetDirectArray().GetAt(id)[2]);
 					}
 					break;
@@ -266,7 +258,7 @@ bool CFBXModel::Load(fbxsdk::FbxMesh* NativeMesh)
 				}
 				break;
 
-				case FbxGeometryElement::eByPolygonVertex:
+				/*case FbxGeometryElement::eByPolygonVertex:
 				{
 					int lTextureUVIndex = NativeMesh->GetTextureUVIndex(p, j);
 					switch (elem->GetReferenceMode())
@@ -288,19 +280,19 @@ bool CFBXModel::Load(fbxsdk::FbxMesh* NativeMesh)
 				case FbxGeometryElement::eAllSame:   // doesn't make much sense for UVs
 				case FbxGeometryElement::eNone:       // doesn't make much sense for UVs
 					_ASSERT(false);
-					break;
+					break;*/
 
 				default:
 					_ASSERT(false);
 					break;
 				}
-			}*/
+			}
 
 
 			//
 			// Tangent
 			//
-			/*cnt = NativeMesh->GetElementTangentCount();
+			cnt = NativeMesh->GetElementTangentCount();
 			if (cnt > 1) cnt = 1;
 			for (int l = 0; l < cnt; ++l)
 			{
@@ -314,12 +306,12 @@ bool CFBXModel::Load(fbxsdk::FbxMesh* NativeMesh)
 					{
 					case FbxGeometryElement::eDirect:
 					{
-						v.tangent = glm::vec3(elem->GetDirectArray().GetAt(lControlPointIndex)[0], elem->GetDirectArray().GetAt(lControlPointIndex)[1], elem->GetDirectArray().GetAt(lControlPointIndex)[2]);
+						v.tangent = glm::vec3(elem->GetDirectArray().GetAt(controlPointIndex)[0], elem->GetDirectArray().GetAt(lControlPointIndex)[1], elem->GetDirectArray().GetAt(lControlPointIndex)[2]);
 					}
 					break;
 					case FbxGeometryElement::eIndexToDirect:
 					{
-						int id = elem->GetIndexArray().GetAt(lControlPointIndex);
+						int id = elem->GetIndexArray().GetAt(controlPointIndex);
 						v.tangent = glm::vec3(elem->GetDirectArray().GetAt(id)[0], elem->GetDirectArray().GetAt(id)[1], elem->GetDirectArray().GetAt(id)[2]);
 					}
 					break;
@@ -330,7 +322,7 @@ bool CFBXModel::Load(fbxsdk::FbxMesh* NativeMesh)
 				}
 				break;
 
-				case FbxGeometryElement::eByPolygonVertex:
+				/*case FbxGeometryElement::eByPolygonVertex:
 				{
 					int lTextureUVIndex = NativeMesh->GetTextureUVIndex(p, j);
 					switch (elem->GetReferenceMode())
@@ -352,13 +344,15 @@ bool CFBXModel::Load(fbxsdk::FbxMesh* NativeMesh)
 				case FbxGeometryElement::eAllSame:   // doesn't make much sense for UVs
 				case FbxGeometryElement::eNone:       // doesn't make much sense for UVs
 					_ASSERT(false);
-					break;
+					break;*/
 
 				default:
 					_ASSERT(false);
 					break;
 				}
-			}*/
+			}
+
+#endif
 
 			m_Vertices.push_back(v);
 		}
