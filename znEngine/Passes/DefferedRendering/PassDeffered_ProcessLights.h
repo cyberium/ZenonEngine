@@ -35,13 +35,14 @@ protected:
 	void BindPerFrameParamsForCurrentIteration(const ILight3D * Light);
 	void BindPerObjectParamsForCurrentIteration(const ISceneNode* SceneNode);
 
-private: // Pass light params
+private:
 	std::shared_ptr<IConstantBuffer> m_PerObjectConstantBuffer;
 	IShaderParameter* m_PerObjectShaderParameter;
 
-protected:
 	std::shared_ptr<IConstantBuffer> m_PerFrameConstantBuffer;
 	IShaderParameter* m_PerFrameShaderParameter;
+
+	IShaderParameter* m_ShaderBonesBufferParameter;
 
 private: // For shadow rendering
 	std::shared_ptr<IPipelineState> m_ShadowPipeline;

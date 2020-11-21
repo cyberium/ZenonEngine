@@ -104,8 +104,11 @@ ZN_INTERFACE ZN_API ISceneNodeRTSUnit
 	virtual void SetMovementSpeed(float Speed) = 0;
 	virtual float GetMovementSpeed() const = 0;
 
-	virtual void DealDamage(float Damage) = 0;
+
 	virtual void SetPath(std::shared_ptr<ISceneNodeRTSPath> Path) = 0;
+	virtual void SetLastPathPointReached(std::function<void(const ISceneNodeRTSUnit* Unit)> Func) = 0;
+	virtual void DealDamage(float Damage) = 0;
+	virtual bool IsDead() = 0;
 };
 
 

@@ -19,10 +19,15 @@ public:
 	void SetPath(std::shared_ptr<ISceneNodeRTSPath> Path) override;
 	void SetLastPathPointReached(std::function<void(const ISceneNodeRTSUnit* Unit)> Func);
 	void DealDamage(float Damage) override;
+	bool IsDead() override;
 
 	// ISceneNode
 	void Initialize() override;
 	void Update(const UpdateEventArgs& e) override;
+
+protected:
+	
+	void OnDeath();
 
 private:
 	float m_Health;

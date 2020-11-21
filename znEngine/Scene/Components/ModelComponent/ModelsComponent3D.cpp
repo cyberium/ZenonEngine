@@ -8,14 +8,18 @@
 
 CModelsComponent3D::CModelsComponent3D(const ISceneNode& OwnerNode)
     : CComponentBase(OwnerNode)
+	
+	// Model
 	, m_IsCastShadows(true)
+
+	// Bones
+
+	// Animations
 	, m_IsAnimationLooped(false)
-	, m_IsAnimationStopped(true)
-	, m_AnimTime(0.0)
+	, m_IsAnimationPaused(false)
 	, m_CurrentAnimation(nullptr)
 	, m_CurrentAnimationIndex(0)
-	, m_CurrentTime(0)
-	, m_GlobalTime(0)
+	, m_CurrentTime(0.0)
 {
 	GetProperties()->SetName("ModelsComponent"); // TODO: ObjectClassName
 
@@ -59,18 +63,8 @@ void CModelsComponent3D::SetModel(const std::shared_ptr<IModel>& Model)
 void CModelsComponent3D::ResetModel()
 {
 	m_Model.reset();
-
-	m_RootBone = nullptr;
-	m_Bones.clear();
-	m_BonesList.clear();
-
-	m_CurrentAnimationIndex = 0;
-	m_CurrentAnimation = nullptr;
-	m_IsAnimationLooped = false;
-	m_IsAnimationStopped = true;
-	m_AnimTime = 0.0;
-	m_CurrentTime = 0;
-	m_GlobalTime = 0;
+	ResetBones();
+	ResetAnimation();
 }
 
 std::shared_ptr<IModel> CModelsComponent3D::GetModel() const
@@ -136,28 +130,27 @@ std::vector<glm::mat4> CModelsComponent3D::CreatePose(size_t BoneStartIndex, siz
 //
 // Animation functional
 //
-void CModelsComponent3D::PlayAnimation(uint16 AnimationId, bool Loop)
-{
-	throw CException("Not implemented.");
-}
-
 void CModelsComponent3D::PlayAnimation(const std::string & AnimationName, bool Loop)
 {
 	const auto& animations = GetModel()->GetAnimations();
 	if (animations.empty())
 		throw CException("Animations list empty in Model '%s'.", GetModel()->GetFileName().c_str());
 
-	m_IsAnimationLooped = Loop;
-
 	const auto& animIt = animations.find(AnimationName);
 	if (animIt == animations.end())
 		throw CException("Animation '%s' not found.", AnimationName.c_str());
 
+	m_IsAnimationLooped = Loop;
+	m_IsAnimationPaused = false;
 	m_CurrentAnimation = animIt->second.get();
 	m_CurrentAnimationIndex = std::distance(animations.begin(), animIt);
-	m_CurrentTime = m_CurrentAnimation->GetFrameStart();
-	m_IsAnimationStopped = false;
-	m_AnimTime = 0.0;
+	m_CurrentTime = 0.0;
+}
+
+void CModelsComponent3D::SetAnimationEndedCallback(std::function<void(const IAnimation*)> Func)
+{
+	_ASSERT(m_OnAnimationEnded == nullptr);
+	m_OnAnimationEnded = Func;
 }
 
 size_t CModelsComponent3D::GetCurrentAnimationIndex() const
@@ -168,15 +161,13 @@ size_t CModelsComponent3D::GetCurrentAnimationIndex() const
 	return m_CurrentAnimationIndex;
 }
 
-uint32 CModelsComponent3D::GetCurrentTime_() const
+uint32 CModelsComponent3D::GetCurrentAnimationFrame() const
 {
-	return m_CurrentTime;
+	uint32 currentAnimationFrame = m_CurrentAnimation->GetFrameStart() + static_cast<uint32>(glm::round(m_CurrentTime));
+	_ASSERT(currentAnimationFrame < m_CurrentAnimation->GetFrameEnd());
+	return currentAnimationFrame;
 }
 
-uint32 CModelsComponent3D::GetGlobalTime() const
-{
-	return m_GlobalTime;
-}
 
 
 //
@@ -196,15 +187,16 @@ void CModelsComponent3D::Update(const UpdateEventArgs & e)
 		m_StructuredBuffer->Set(m_BonesList);
 	}
 
-	if (false == m_IsAnimationStopped)
+	if ((m_CurrentAnimation != nullptr) && (false == m_IsAnimationPaused))
 	{
-		m_AnimTime += e.DeltaTimeMultiplier;//e.DeltaTime ; // FIXME
-		m_CurrentTime = static_cast<uint32>(m_CurrentAnimation->GetFrameStart() + m_AnimTime);
-		m_GlobalTime = static_cast<uint32>(e.TotalTime);
+		m_CurrentTime += e.DeltaTimeMultiplier;
 
 		// Animation don't ended
-		if (m_CurrentTime >= m_CurrentAnimation->GetFrameEnd() - 1)
+		if (m_CurrentTime >= m_CurrentAnimation->GetFrameEnd())
 		{
+			if (m_OnAnimationEnded)
+				m_OnAnimationEnded(m_CurrentAnimation);
+
 			// Ended!
 			/*if (m_CurrentAnimation->hasNextVatianton())
 			{
@@ -215,12 +207,13 @@ void CModelsComponent3D::Update(const UpdateEventArgs & e)
 				return;
 			}*/
 
-			m_CurrentTime = m_CurrentAnimation->GetFrameEnd() - 1;
-			m_IsAnimationStopped = true;
-
 			if (m_IsAnimationLooped)
 			{
 				PlayAnimation(m_CurrentAnimation->GetName(), true);
+			}
+			else
+			{
+				PauseAnimation();
 			}
 		}
 	}
@@ -301,6 +294,9 @@ void CModelsComponent3D::Save(const std::shared_ptr<IXMLWriter>& Writer) const
 //
 // Protected
 //
+
+// Bones
+
 void CModelsComponent3D::InitializeBones()
 {
 	m_RootBone = nullptr;
@@ -332,4 +328,29 @@ void CModelsComponent3D::InitializeBones()
 void CModelsComponent3D::AddBone(std::shared_ptr<ISkeletonComponentBone3D> Bone)
 {
 	m_Bones.push_back(Bone);
+}
+
+void CModelsComponent3D::ResetBones()
+{
+	m_RootBone = nullptr;
+	m_Bones.clear();
+	m_BonesList.clear();
+}
+
+
+
+// Animations
+
+void CModelsComponent3D::PauseAnimation()
+{
+	m_IsAnimationPaused = true;
+}
+
+void CModelsComponent3D::ResetAnimation()
+{
+	m_CurrentAnimationIndex = 0;
+	m_CurrentAnimation = nullptr;
+	m_IsAnimationLooped = false;
+	m_IsAnimationPaused = false;
+	m_CurrentTime = 0.0;
 }

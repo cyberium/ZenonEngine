@@ -19,7 +19,10 @@ void CPassDeffered_ProcessLights::CreateShadowPipeline()
 {
 	m_ShadowRenderTarget = CreateShadowRT();
 
-	auto vertexShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::VertexShader, "3D/Shadow.hlsl", "VS_Shadow");
+	IShader::ShaderMacros macroses;
+	macroses.insert(std::make_pair("SKELETON_ANIMATION", "1"));
+
+	auto vertexShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::VertexShader, "3D/ModelVS.hlsl", "VS_PTN", macroses);
 	vertexShader->LoadInputLayoutFromReflector();
 
 	//auto pixelShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::PixelShader, "3D/Shadow.hlsl", "PS_Shadow");
@@ -47,6 +50,10 @@ void CPassDeffered_ProcessLights::CreateShadowPipeline()
 	m_PerFrameShaderParameter = &vertexShader->GetShaderParameterByName("PerFrame");
 	_ASSERT(m_PerFrameShaderParameter->IsValid());
 	m_PerFrameShaderParameter->SetConstantBuffer(m_PerFrameConstantBuffer);
+
+	// Bones
+	m_ShaderBonesBufferParameter = &vertexShader->GetShaderParameterByName("Bones");
+	//_ASSERT(m_ShaderBonesBufferParameter->IsValid());
 }
 
 
@@ -89,7 +96,27 @@ void CPassDeffered_ProcessLights::Render(RenderEventArgs& e)
 				if (false == geometryIt.Node->GetComponentT<IModelsComponent3D>()->IsCastShadows())
 					continue;
 
+				// Bones begin
+				auto modelsComponent = geometryIt.Node->GetComponentT<IModelsComponent3D>();
+				if (modelsComponent != nullptr)
+				{
+					if (m_ShaderBonesBufferParameter->IsValid())
+					{
+						m_ShaderBonesBufferParameter->Set(modelsComponent->GetBonesBuffer());
+						m_ShaderBonesBufferParameter->Bind();
+					}
+				}
+
 				geometryIt.Geometry->Render(m_ShadowPipeline->GetShaders().at(EShaderType::VertexShader).get(), geometryIt.GeometryDrawArgs);
+
+				// Bones end
+				if (modelsComponent != nullptr)
+				{
+					if (m_ShaderBonesBufferParameter->IsValid())
+					{
+						m_ShaderBonesBufferParameter->Unbind();
+					}
+				}
 			}
 
 

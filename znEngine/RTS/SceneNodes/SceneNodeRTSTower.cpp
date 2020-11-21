@@ -103,7 +103,12 @@ void CSceneNodeRTSTower::Update(const UpdateEventArgs & e)
 		return;
 
 	glm::vec3 sourcePoint = GetParent()->GetWorldTransfom() * glm::vec4(GetTranslation(), 1.0f);
-	auto nodes = GetScene().GetFinder().FindNearestNodes(sourcePoint, GetAttackRange(), [](const std::shared_ptr<ISceneNode>& Node) -> bool {return Node->GetClass() == cSceneNodeRTSUnit; });
+	auto nodes = GetScene().GetFinder().FindNearestNodes(sourcePoint, GetAttackRange(), [](const std::shared_ptr<ISceneNode>& Node) -> bool {
+		if (Node->GetClass() == cSceneNodeRTSUnit)
+			if (auto rtsUnit = std::dynamic_pointer_cast<ISceneNodeRTSUnit>(Node))
+				return false == rtsUnit->IsDead();
+		return false;
+	});
 	if (nodes.empty())
 		return;
 

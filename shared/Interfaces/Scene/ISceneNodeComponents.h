@@ -206,11 +206,10 @@ ZN_INTERFACE ZN_API IModelsComponent3D
 	virtual std::vector<glm::mat4> CreatePose(size_t BoneStartIndex = 0, size_t BonesCount = 0) const = 0;
 
 	// Animation functional
-	virtual void PlayAnimation(uint16 AnimationId, bool Loop) = 0;
 	virtual void PlayAnimation(const std::string& AnimationName, bool Loop) = 0;
+	virtual void SetAnimationEndedCallback(std::function<void(const IAnimation*)> Func) = 0;
 	virtual size_t GetCurrentAnimationIndex() const = 0;
-	virtual uint32 GetCurrentTime_() const = 0;
-	virtual uint32 GetGlobalTime() const = 0;
+	virtual uint32 GetCurrentAnimationFrame() const = 0;
 };
 const ComponentMessageType UUID_OnModelSetted = 30;
 

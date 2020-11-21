@@ -22,7 +22,7 @@ public:
 
 protected:
 	void CreateUnitsModels();
-	std::shared_ptr<IModel> CreateUnitModel(std::string ModelName, std::string AnimationName);
+	std::shared_ptr<IModel> CreateUnitModel(std::string ModelName, std::string RunAnimationName, std::string DeathAnimationName);
 	void CreateUnit();
 	bool OnTowerButtonClicked(const STowerDescription& TowerDesription);
 

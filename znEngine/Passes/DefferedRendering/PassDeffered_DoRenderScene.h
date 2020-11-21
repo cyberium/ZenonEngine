@@ -35,8 +35,8 @@ private:
 
 private:
 	std::shared_ptr<IConstantBuffer> m_PerObjectConstantBuffer;
-
 	IShaderParameter* m_PerObjectShaderParameter;
+
 	IShaderParameter* m_ShaderBonesBufferParameter;
 
 private:

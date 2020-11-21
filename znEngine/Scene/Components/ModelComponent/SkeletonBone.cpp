@@ -99,7 +99,7 @@ glm::mat4 CSkeletonBone::CalcMatrix(const IModelsComponent3D* ModelsComponent) c
 			m *= glm::inverse(LocalTransform);
 
 		if (m_CalculatedMatrixes.IsUsesBySequence(ModelsComponent->GetCurrentAnimationIndex()))
-			m *= m_CalculatedMatrixes.GetValue(ModelsComponent->GetCurrentAnimationIndex(), ModelsComponent->GetCurrentTime_());
+			m *= m_CalculatedMatrixes.GetValue(ModelsComponent->GetCurrentAnimationIndex(), ModelsComponent->GetCurrentAnimationFrame());
 		else
 			m *= LocalTransform;
 	}

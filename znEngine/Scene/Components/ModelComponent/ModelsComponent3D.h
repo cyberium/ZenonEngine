@@ -23,11 +23,10 @@ public:
 	std::vector<glm::mat4> CreatePose(size_t BoneStartIndex = 0, size_t BonesCount = 0) const override;
 
 	// Animation functional
-	void PlayAnimation(uint16 AnimationId, bool Loop) override;
 	void PlayAnimation(const std::string& AnimationName, bool Loop) override;
+	void SetAnimationEndedCallback(std::function<void(const IAnimation*)> Func) override;
 	size_t GetCurrentAnimationIndex() const override;
-	uint32 GetCurrentTime_() const override;
-	uint32 GetGlobalTime() const override;
+	uint32 GetCurrentAnimationFrame() const override;
 
 	// CComponentBase
 	void Update(const UpdateEventArgs& e) override;
@@ -41,6 +40,10 @@ public:
 protected:
 	virtual void InitializeBones();
 	virtual void AddBone(std::shared_ptr<ISkeletonComponentBone3D> Bone);
+
+	void ResetBones();
+	void PauseAnimation();
+	void ResetAnimation();
 
 private:
 	std::shared_ptr<IModel> m_Model;
@@ -56,8 +59,7 @@ private:
 	uint16                      m_CurrentAnimationIndex;
 	const IAnimation*		    m_CurrentAnimation;
 	bool						m_IsAnimationLooped;
-	bool						m_IsAnimationStopped;
-	double						m_AnimTime;
-	uint32						m_CurrentTime;
-	uint32						m_GlobalTime;
+	bool                        m_IsAnimationPaused;
+	double						m_CurrentTime;
+	std::function<void(const IAnimation*)> m_OnAnimationEnded;
 };

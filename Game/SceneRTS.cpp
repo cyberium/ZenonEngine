@@ -168,7 +168,7 @@ void CSceneRTS::CreateUnitsModels()
 {
 	{
 		SRTSWave wave0;
-		wave0.Model = CreateUnitModel("Toon_RTS/models/WK_archer.FBX", "Toon_RTS/animation/archer/WK_archer_03_run.FBX");
+		wave0.Model = CreateUnitModel("Toon_RTS/models/WK_archer.FBX", "Toon_RTS/animation/archer/WK_archer_03_run.FBX", "Toon_RTS/animation/archer/WK_archer_10_death_A.FBX");
 		wave0.Count = 5;
 		wave0.IndervalMS = 1500;
 		m_RTSWaves.push_back(wave0);
@@ -176,7 +176,7 @@ void CSceneRTS::CreateUnitsModels()
 
 	{
 		SRTSWave wave1;
-		wave1.Model = CreateUnitModel("Toon_RTS/models/WK_catapult.FBX", "Toon_RTS/animation/catapult/WK_catapult_02_move.FBX");
+		wave1.Model = CreateUnitModel("Toon_RTS/models/WK_catapult.FBX", "Toon_RTS/animation/catapult/WK_catapult_02_move.FBX", "Toon_RTS/animation/catapult/WK_catapult_04_death.FBX");
 		wave1.Count = 5;
 		wave1.IndervalMS = 1500;
 		m_RTSWaves.push_back(wave1);
@@ -184,7 +184,7 @@ void CSceneRTS::CreateUnitsModels()
 
 	{
 		SRTSWave wave2;
-		wave2.Model = CreateUnitModel("Toon_RTS/models/WK_cavalry.FBX", "Toon_RTS/animation/cavalry/WK_cavalry_sword_03_run.FBX");
+		wave2.Model = CreateUnitModel("Toon_RTS/models/WK_cavalry.FBX", "Toon_RTS/animation/cavalry/WK_cavalry_sword_03_run.FBX", "Toon_RTS/animation/cavalry/WK_cavalry_sword_09_death_A.FBX");
 		wave2.Count = 5;
 		wave2.IndervalMS = 1500;
 		m_RTSWaves.push_back(wave2);
@@ -192,7 +192,7 @@ void CSceneRTS::CreateUnitsModels()
 
 	{
 		SRTSWave wave3;
-		wave3.Model = CreateUnitModel("Toon_RTS/models/WK_heavy_infantry.FBX", "Toon_RTS/animation/heavy_infantry/WK_heavy_infantry_03_run.FBX");
+		wave3.Model = CreateUnitModel("Toon_RTS/models/WK_heavy_infantry.FBX", "Toon_RTS/animation/heavy_infantry/WK_heavy_infantry_03_run.FBX", "Toon_RTS/animation/heavy_infantry/WK_heavy_infantry_09_death_A.FBX");
 		wave3.Count = 5;
 		wave3.IndervalMS = 1500;
 		m_RTSWaves.push_back(wave3);
@@ -201,7 +201,7 @@ void CSceneRTS::CreateUnitsModels()
 
 }
 
-std::shared_ptr<IModel> CSceneRTS::CreateUnitModel(std::string ModelName, std::string RunAnimationName)
+std::shared_ptr<IModel> CSceneRTS::CreateUnitModel(std::string ModelName, std::string RunAnimationName, std::string DeathAnimationName)
 {
 	auto filesManager = GetBaseManager().GetManager<IFilesManager>();
 
@@ -223,18 +223,18 @@ std::shared_ptr<IModel> CSceneRTS::CreateUnitModel(std::string ModelName, std::s
 	_ASSERT(fbxSceneLoader != nullptr);
 
 	// Original skeleton
-	auto originalSkeletonModel = fbxSceneLoader->LoadScene(modelFile /*"Toon_RTS/models/WK_archer.FBX"*/, &fbxLoaderParams)->MergeModels();
+	auto originalSkeletonModel = fbxSceneLoader->LoadScene(modelFile, &fbxLoaderParams)->MergeModels();
 
 	// Animated skeleton
-	auto animatedSkeletonModel = fbxSceneLoader->LoadScene(animationFile /*"Toon_RTS/animation/archer/WK_archer_03_run.FBX"*/, &fbxLoaderParams)->MergeModels();
+	auto animatedSkeletonModel = fbxSceneLoader->LoadScene(animationFile, &fbxLoaderParams)->MergeModels();
 	originalSkeletonModel->ApplyOtherSkeleton(animatedSkeletonModel);
 	for (const auto& anim : animatedSkeletonModel->GetAnimations())
 		originalSkeletonModel->AddAnimation("run", anim.second);
 
-	//auto animatedSkeletonModel2 = fbxSceneLoader->LoadScene("Toon_RTS/animation/archer/WK_archer_10_death_A.FBX", &fbxLoaderParams)->MergeModels();
-	//originalSkeletonModel->ApplyOtherSkeleton(animatedSkeletonModel2);
-	//for (const auto& anim : animatedSkeletonModel2->GetAnimations())
-	//	originalSkeletonModel->AddAnimation("death", anim.second);
+	auto animatedSkeletonModel2 = fbxSceneLoader->LoadScene(DeathAnimationName, &fbxLoaderParams)->MergeModels();
+	originalSkeletonModel->ApplyOtherSkeleton(animatedSkeletonModel2);
+	for (const auto& anim : animatedSkeletonModel2->GetAnimations())
+		originalSkeletonModel->AddAnimation("death", anim.second);
 
 	std::string znModelFilename = modelFile->Name_NoExtension() + ".znmdl";
 	if (filesManager->IsFileExists(znModelFilename))

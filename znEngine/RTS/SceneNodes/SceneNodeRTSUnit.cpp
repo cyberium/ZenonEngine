@@ -90,10 +90,18 @@ void CSceneNodeRTSUnit::SetLastPathPointReached(std::function<void(const ISceneN
 
 void CSceneNodeRTSUnit::DealDamage(float Damage)
 {
+	if (IsDead())
+		return;
+
 	_ASSERT(Damage > 0.0f);
 	m_Health -= Damage;
 	if (m_Health <= 0.0f)
-		MakeMeOrphan();
+		OnDeath();
+}
+
+bool CSceneNodeRTSUnit::IsDead()
+{
+	return m_Health <= 0.0f;
 }
 
 
@@ -120,6 +128,9 @@ void CSceneNodeRTSUnit::Update(const UpdateEventArgs & e)
 {
 	__super::Update(e);
 
+	if (IsDead())
+		return;
+
 	if (m_Path == nullptr)
 		return;
 
@@ -129,6 +140,7 @@ void CSceneNodeRTSUnit::Update(const UpdateEventArgs & e)
 		if (m_OnLastPathPointReached)
 			m_OnLastPathPointReached(this);
 		MakeMeOrphan();
+		// TODO: Remove
 		return;
 	}
 
@@ -149,4 +161,17 @@ void CSceneNodeRTSUnit::Update(const UpdateEventArgs & e)
 	{
 		m_PathCurrentPoint++;
 	}
+}
+
+
+
+//
+// Protected
+//
+void CSceneNodeRTSUnit::OnDeath()
+{
+	GetComponentT<IModelsComponent3D>()->PlayAnimation("death", false);
+	GetComponentT<IModelsComponent3D>()->SetAnimationEndedCallback([this](const IAnimation* Animation) {
+		MakeMeOrphan();
+	});
 }
