@@ -51,33 +51,13 @@ void CUIControlRTSTowersPanel::Initialize()
 	//<SubTexture name="button_rectangleWood.png" x="320" y="1152" width="80" height="40"/>
 
 
-
-}
-
-void CUIControlRTSTowersPanel::AddTowerButton(std::shared_ptr<ITexture> RTSTowerBtnTexture)
-{
-	std::shared_ptr<CUIControlRTSTowerBtn> towerBtnNode = GetScene().CreateUIControlT<CUIControlRTSTowerBtn>(shared_from_this());
-	towerBtnNode->SetTowerTexture(RTSTowerBtnTexture);
-	m_TowerButtons.push_back(towerBtnNode);
-
-	const float cDiff = 15.0f;
-
-	for (size_t i = 0; i < m_TowerButtons.size(); i++)
-	{
-		const auto& towerBtnNode = m_TowerButtons.at(i);
-		towerBtnNode->SetTranslate(glm::vec2((towerBtnNode->GetSize().x + cDiff) * i, 0.0f));
-	}
-
-	ClearSubgeometries();
-	CreateWindowGeometry(glm::vec2(towerBtnNode->GetSize().x * m_TowerButtons.size() + (cDiff * (m_TowerButtons.size() - 1)), 85.0f));
-	
 	// Gold counter
 	{
-		std::shared_ptr<IUIControlCommon> goldPanel = GetScene().CreateUIControlT<IUIControlCommon>(shared_from_this());
+		std::shared_ptr<IUIControlCommon> goldPanel = GetScene().CreateUIControlTCast<IUIControlCommon>(shared_from_this());
 		goldPanel->SetTranslate(glm::vec2(-15.0f, -55.0f));
 
 		{
-			std::shared_ptr<IUIControlText> goldText = GetScene().CreateUIControlT<IUIControlText>(goldPanel);
+			std::shared_ptr<IUIControlText> goldText = GetScene().CreateUIControlTCast<IUIControlText>(goldPanel);
 			goldText->SetTranslate(glm::vec2(10.0f, 8.0f));
 			goldText->SetFont(GetBaseManager().GetManager<IznFontsManager>()->Add(GetRenderDevice(), "IDB_FONT_CONSOLAS", 20));
 			goldText->SetText("888 $");
@@ -98,6 +78,29 @@ void CUIControlRTSTowersPanel::AddTowerButton(std::shared_ptr<ITexture> RTSTower
 			goldPanel->AddSubgeometry(subGeom);
 		}
 	}
+}
+
+void CUIControlRTSTowersPanel::AddTowerButton(std::shared_ptr<ITexture> RTSTowerBtnTexture)
+{
+	std::shared_ptr<CUIControlRTSTowerBtn> towerBtnNode = GetScene().CreateUIControlTCast<CUIControlRTSTowerBtn>(shared_from_this());
+	towerBtnNode->SetTowerTexture(RTSTowerBtnTexture);
+	m_TowerButtons.push_back(towerBtnNode);
+
+	const float cDiff = 15.0f;
+
+	for (size_t i = 0; i < m_TowerButtons.size(); i++)
+	{
+		const auto& towerBtnNode = m_TowerButtons.at(i);
+		towerBtnNode->SetTranslate(glm::vec2((towerBtnNode->GetSize().x + cDiff) * i, 0.0f));
+	}
+
+	ClearSubgeometries();
+	CreateWindowGeometry(glm::vec2(towerBtnNode->GetSize().x * m_TowerButtons.size() + (cDiff * (m_TowerButtons.size() - 1)), 85.0f));
+}
+
+const std::vector<std::shared_ptr<CUIControlRTSTowerBtn>>& CUIControlRTSTowersPanel::GetTowerButtons()
+{
+	return m_TowerButtons;
 }
 
 

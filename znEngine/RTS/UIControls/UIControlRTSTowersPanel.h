@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../UIControlCommon.h"
-#include "../RTS/UIControlRTSTowerBtn.h"
+#include "../../UIControls/UIControlCommon.h"
+#include "UIControlRTSTowerBtn.h"
 
 class ZN_API CUIControlRTSTowersPanel
 	: public CUIControlCommon
@@ -16,6 +16,7 @@ public:
 
 
 	void AddTowerButton(std::shared_ptr<ITexture> RTSTowerBtnTexture);
+	const std::vector<std::shared_ptr<CUIControlRTSTowerBtn>>& GetTowerButtons();
 
 protected:
 	void CreateWindowGeometry(glm::vec2 Size);

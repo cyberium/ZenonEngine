@@ -1,7 +1,5 @@
 #pragma once
 
-#include "EngineSceneIntfs.h"
-
 class CSceneNodeRTSGround
 	: public CSceneNode
 	, public ISceneNodeRTSGround

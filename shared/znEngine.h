@@ -29,7 +29,7 @@
 
 
 // SceneNodes
-#include "../znEngine/Scene/EngineSceneIntfs.h"
+#include "../znEngine/EngineIntfs.h"
 #include "../znEngine/Scene/SceneBase.h"
 
 
@@ -38,8 +38,8 @@
 #include "../znEngine/UIControls/UIControlText.h"
 
 // UIControls: RTS
-#include "../znEngine/UIControls/RTS/UIControlRTSTowersPanel.h"
-#include "../znEngine/UIControls/RTS/UIControlRTSTowerBtn.h"
+#include "../znEngine/RTS/UIControls/UIControlRTSTowersPanel.h"
+#include "../znEngine/RTS/UIControls/UIControlRTSTowerBtn.h"
 
 
 
@@ -77,8 +77,3 @@
 #include "../znEngine/Formats/Fonts/FontsManager.h"
 #include "../znEngine/Formats/Images/DDSFormat.h"
 #include "../znEngine/Formats/Images/ImageLoaderTemplate.h"
-
-/*
- * Initialize improtant managers and plugins
- */
-ZN_API IBaseManager* WINAPI InitializeEngine(std::vector<std::string> Arguments, std::string PathToPlugins);

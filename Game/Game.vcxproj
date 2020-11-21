@@ -11,10 +11,12 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="SceneRTS.h" />
     <ClInclude Include="Scene_Default.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="SceneRTS.cpp" />
     <ClCompile Include="Scene_Default.cpp" />
     <ClCompile Include="Scene_Default_TestSpace.cpp" />
     <ClCompile Include="stdafx.cpp">

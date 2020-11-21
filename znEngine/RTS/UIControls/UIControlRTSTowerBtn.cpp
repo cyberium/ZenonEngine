@@ -45,7 +45,7 @@ void CUIControlRTSTowerBtn::Initialize()
 {
 	__super::Initialize();
 
-	m_ButtonContent = GetScene().CreateUIControlT<IUIControlCommon>(shared_from_this());
+	m_ButtonContent = GetScene().CreateUIControlTCast<IUIControlCommon>(shared_from_this());
 
 	std::shared_ptr<CMaterialUIControl> contentMaterial = MakeShared(CMaterialUIControl, GetBaseManager().GetApplication().GetRenderDevice());
 	//contentMaterial->SetColor(glm::vec4(1.0f, 0.0f, 0.0f, 0.7f));

@@ -69,7 +69,6 @@
     <ClCompile Include="ZenonWidgets\ZenonWindow3D\ZenonWindow3D.cpp">
       <Filter>Widgets\ZenonWindow3D</Filter>
     </ClCompile>
-    <ClCompile Include="main.cpp" />
     <ClCompile Include="Editor3DFrame.cpp">
       <Filter>3D</Filter>
     </ClCompile>
@@ -179,6 +178,9 @@
     </ClCompile>
     <ClCompile Include="ResourcesBrowser\VirtualFolderTreeViewItemSource.cpp">
       <Filter>ResourcesBrowser</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>Common</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

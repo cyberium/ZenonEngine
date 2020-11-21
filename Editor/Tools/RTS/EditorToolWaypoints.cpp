@@ -73,7 +73,7 @@ bool CEditorToolWaypoints::OnMousePressed(const MouseButtonEventArgs & e, const 
 	{
 		if (m_CurrectWaypointsNode == nullptr)
 		{
-			m_CurrectWaypointsNode = GetScene().CreateSceneNodeT<ISceneNodeRTSPath>(GetEditor().Get3DFrame().GetEditedRootNode3D());
+			m_CurrectWaypointsNode = GetScene().CreateSceneNodeTCast<ISceneNodeRTSPath>(GetEditor().Get3DFrame().GetEditedRootNode3D());
 			m_CurrectWaypointsNode->SetName("Waypoint");
 			AddPoint(mousePos);
 		}

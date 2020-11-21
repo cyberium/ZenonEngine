@@ -48,7 +48,7 @@ void CEditorToolRotatorRTS::Disable()
 
 void CEditorToolRotatorRTS::DoInitialize3D(const std::shared_ptr<IRenderer>& Renderer, std::shared_ptr<IRenderTarget> RenderTarget)
 {
-	m_RotatorRoot = GetScene().CreateSceneNode<ISceneNode>();
+	m_RotatorRoot = GetScene().CreateSceneNodeT<ISceneNode>();
 	m_RotatorRoot->SetName("RotatorRTSRoot");
 
 	auto geom = GetRenderDevice().GetPrimitivesFactory().CreateTorus(1.0f, 0.05f);
@@ -58,7 +58,7 @@ void CEditorToolRotatorRTS::DoInitialize3D(const std::shared_ptr<IRenderer>& Ren
 	auto modelY = GetRenderDevice().GetObjectsFactory().CreateModel();
 	modelY->AddConnection(materialY, geom);
 
-	m_RotatorY = GetScene().CreateSceneNode<ISceneNode>(m_RotatorRoot);
+	m_RotatorY = GetScene().CreateSceneNodeT<ISceneNode>(m_RotatorRoot);
 	m_RotatorY->SetName("RotatorRTSY");
 	m_RotatorY->GetComponentT<IModelsComponent3D>()->SetModel(modelY);
 }

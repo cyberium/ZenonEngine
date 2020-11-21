@@ -54,15 +54,6 @@ void CModelsComponent3D::SetModel(const std::shared_ptr<IModel>& Model)
 	GetComponentT<IColliderComponent3D>()->ExtendBounds(modelBounds);
 
 	InitializeBones();
-
-	try
-	{
-		PlayAnimation("run", true);
-	}
-	catch (...)
-	{
-
-	}
 }
 
 void CModelsComponent3D::ResetModel()

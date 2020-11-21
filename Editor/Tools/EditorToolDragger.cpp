@@ -29,7 +29,7 @@ void CEditorToolDragger::Disable()
 
 void CEditorToolDragger::DoInitialize3D(const std::shared_ptr<IRenderer>& Renderer, std::shared_ptr<IRenderTarget> RenderTarget)
 {
-	m_DraggerTextUI = GetScene().CreateUIControlT<IUIControlText>(GetScene().GetRootUIControl());
+	m_DraggerTextUI = GetScene().CreateUIControlTCast<IUIControlText>(GetScene().GetRootUIControl());
 	m_DraggerTextUI->SetName("DraggedNodePositionTextUI.");
 	m_DraggerTextUI->GetProperties()->GetPropertyT<std::string>("Text")->Set("");
 
@@ -96,7 +96,7 @@ void CEditorToolDragger::DragEnterEvent(const SDragData& Data)
 		if (model == nullptr)
 			return;
 
-		m_DraggerNode = GetScene().CreateSceneNode<ISceneNode>();
+		m_DraggerNode = GetScene().CreateSceneNodeT<ISceneNode>();
 		m_DraggerNode->SetName(model->GetName());
 		m_DraggerNode->GetComponentT<IModelsComponent3D>()->SetModel(model);
 	}

@@ -3,6 +3,10 @@
 // General
 #include "SceneBase.h"
 
+// Additional
+#include "Passes/ForwardRendering/RendererForward.h"
+#include "Passes/DefferedRendering/RendererDeffered.h"
+
 #include <sstream>
 #include <iomanip>
 
@@ -71,20 +75,29 @@ void SceneBase::Initialize()
 {
 	m_VideoSettings = GetBaseManager().GetManager<ISettings>()->GetGroup("Video");
 
-	m_FrameQuery = GetRenderDevice().GetObjectsFactory().CreateQuery(IQuery::QueryType::Timer, 1);
-	m_TestQuery = GetRenderDevice().GetObjectsFactory().CreateQuery(IQuery::QueryType::CountSamples, 1);
-
-	m_RootSceneNode = CreateSceneNode<ISceneNode>();
+	m_RootSceneNode = CreateSceneNodeT<ISceneNode>();
 	m_RootSceneNode->SetName("RootSceneNode");
 	std::dynamic_pointer_cast<ISceneNodeInternal>(m_RootSceneNode)->SetPersistanceInternal(true);
 
-	m_RootUIControl = CreateUIControlT<IUIControl>();
+	m_RootUIControl = CreateUIControlTCast<IUIControl>();
 	m_RootUIControl->SetName("RootUIControl");
 
-	m_StatisticText = CreateUIControlT<IUIControlText>();
+	m_StatisticText = CreateUIControlTCast<IUIControlText>();
 	m_StatisticText->SetTranslate(glm::vec2(5.0f, 5.0f));
 	m_StatisticText->GetProperties()->GetPropertyT<std::string>("Text")->Set("");
 
+	//--------------------------------------------------------------------------
+	// RENDERERS
+	//--------------------------------------------------------------------------
+	auto forwardRenderer = MakeShared(CRendererForward, GetBaseManager(), *this);
+	forwardRenderer->Initialize(GetRenderWindow().GetRenderTarget());
+	m_ForwardRenderer = forwardRenderer;
+
+	auto defferedRenderer = MakeShared(CRendererDeffered, GetBaseManager(), *this);
+	defferedRenderer->Initialize(GetRenderWindow().GetRenderTarget());
+	m_DefferedRenderrer = defferedRenderer;
+
+	SetRenderer(forwardRenderer);
 }
 
 void SceneBase::Finalize()
@@ -289,19 +302,7 @@ void SceneBase::OnRender(RenderEventArgs & e)
 
 	// UI render
 	{
-		glm::vec3 cameraPos = e.Camera->GetTranslation();
-		glm::vec3 cameraRot = e.Camera->GetDirection();
-
-		std::string fullText = "FPS Engine: " + toStringPrec(uint64(1000.0 / e.DeltaTime)) + "\n";
-		fullText += "FPS Window: " + toStringPrec(uint64(1000.0 / double(GetRenderWindow().GetSummaDeltaTime()))) + "\n";
-		fullText += "CamPos: (" + toStringPrec(cameraPos.x) + ", " + toStringPrec(cameraPos.y) + ", " + toStringPrec(cameraPos.z) + ")\n";
-		fullText += "CamRot: yaw " + toStringPrec(e.Camera->GetYaw()) + ", pitch " + toStringPrec(e.Camera->GetPitch()) + "\n";
-		fullText += "CamRot: (" + toStringPrec(cameraRot.x) + ", " + toStringPrec(cameraRot.y) + ", " + toStringPrec(cameraRot.z) + ")\n";
-		fullText += "Frame Update: " + toStringPrec(GetRenderWindow().GetUpdateDeltaTime()) + " ms\n";
-		fullText += "Frame Render: " + toStringPrec(GetRenderWindow().GetRenderDeltaTime()) + " ms\n";
-		fullText += "Frame Total : " + toStringPrec(GetRenderWindow().GetSummaDeltaTime()) + " ms\n";
-
-		m_StatisticText->SetText(fullText);
+		m_StatisticText->SetText(GetStatisticsString(e));
 
 		renderer->RenderUI(e);
 	}
@@ -325,40 +326,57 @@ void SceneBase::OnWindowResize(ResizeEventArgs & e)
 
 bool SceneBase::OnWindowKeyPressed(KeyEventArgs & e)
 {
-	if (GetCameraController())
-		GetCameraController()->OnKeyPressed(e);
-
 	if (GetRootUIControl())
-		return DoKeyPressed_Rec(GetRootUIControl(), e);
+		if (DoKeyPressed_Rec(GetRootUIControl(), e))
+			return true;
+
+	if (GetCameraController())
+		if (GetCameraController()->OnKeyPressed(e))
+			return true;
+
+	if (e.Key == KeyCode::R)
+	{
+		SetRenderer(m_DefferedRenderrer);
+		return true;
+	}
+	else if (e.Key == KeyCode::T)
+	{
+		SetRenderer(m_ForwardRenderer);
+		return true;
+	}
 
 	return false;
 }
 
 void SceneBase::OnWindowKeyReleased(KeyEventArgs & e)
 {
-	if (GetCameraController())
-		GetCameraController()->OnKeyReleased(e);
-
 	if (GetRootUIControl())
 		DoKeyReleased_Rec(GetRootUIControl(), e);
+
+	if (GetCameraController())
+		GetCameraController()->OnKeyReleased(e);
 }
 
 // Mouse events
 
 void SceneBase::OnWindowMouseMoved(MouseMotionEventArgs & e)
 {
+	if (GetRootUIControl())
+		DoMouseMoved_Rec(GetRootUIControl(), e);
+
 	OnMouseMoved(e, GetCameraController()->ScreenToRay(GetRenderWindow().GetViewport(), e.GetPoint()));
 
 	if (GetCameraController() == nullptr)
 		throw CException("You must set CameraController to scene!");
 	GetCameraController()->OnMouseMoved(e);
-
-	if (GetRootUIControl())
-		DoMouseMoved_Rec(GetRootUIControl(), e);
 }
 
 bool SceneBase::OnWindowMouseButtonPressed(MouseButtonEventArgs & e)
 {
+	if (GetRootUIControl())
+		if (DoMouseButtonPressed_Rec(GetRootUIControl(), e))
+			return true;
+
 	if (OnMousePressed(e, GetCameraController()->ScreenToRay(GetRenderWindow().GetViewport(), e.GetPoint())))
 		return true;
 
@@ -366,32 +384,29 @@ bool SceneBase::OnWindowMouseButtonPressed(MouseButtonEventArgs & e)
 		throw CException("You must set CameraController to scene!");
 	GetCameraController()->OnMouseButtonPressed(e);
 
-	if (GetRootUIControl())
-		return DoMouseButtonPressed_Rec(GetRootUIControl(), e);
-
 	return false;
 }
 
 void SceneBase::OnWindowMouseButtonReleased(MouseButtonEventArgs & e)
 {
+	if (GetRootUIControl())
+		DoMouseButtonReleased_Rec(GetRootUIControl(), e);
+
 	OnMouseReleased(e, GetCameraController()->ScreenToRay(GetRenderWindow().GetViewport(), e.GetPoint()));
 
 	if (GetCameraController() == nullptr)
 		throw CException("You must set CameraController to scene!");
 	GetCameraController()->OnMouseButtonReleased(e);
-
-	if (GetRootUIControl())
-		DoMouseButtonReleased_Rec(GetRootUIControl(), e);
 }
 
 bool SceneBase::OnWindowMouseWheel(MouseWheelEventArgs & e)
 {
-	if (GetCameraController())
-		if (GetCameraController()->OnMouseWheel(e))
-			return true;
-
 	if (GetRootUIControl())
 		if (DoMouseWheel_Rec(GetRootUIControl(), e))
+			return true;
+
+	if (GetCameraController())
+		if (GetCameraController()->OnMouseWheel(e))
 			return true;
 
 	return false;
@@ -419,7 +434,7 @@ void SceneBase::LoadFromFile(const std::string& FileName)
 		ResetScene();
 
 		auto root = GetRootSceneNode();
-		auto tempFakeRoot = CreateSceneNode<ISceneNode>(root);
+		auto tempFakeRoot = CreateSceneNodeT<ISceneNode>(root);
 		tempFakeRoot->SetName("TempFakeRoot");
 
 		auto newRootNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeFactory>()->LoadSceneNode3DXML(xmlRootChild, *this, tempFakeRoot);
@@ -549,7 +564,7 @@ void SceneBase::RaiseSceneChangeEvent(ESceneChangeType SceneChangeType, const st
 {
 	if (m_SceneEventsBlocked)
 	{
-		Log::Info("SceneEvent '%d' blocked. Parent '%s', Child '%s'.", SceneChangeType, ParentNode->GetName().c_str(), ChildNode->GetName().c_str());
+		Log::Print("SceneEvent '%d' blocked. Parent '%s', Child '%s'.", SceneChangeType, ParentNode->GetName().c_str(), ChildNode->GetName().c_str());
 		return;
 	}
 
@@ -685,4 +700,20 @@ bool SceneBase::DoMouseWheel_Rec(const std::shared_ptr<IUIControl>& Node, MouseW
 	}
 
 	return false;
+}
+
+std::string SceneBase::GetStatisticsString(const UpdateEventArgs& e) const
+{
+	glm::vec3 cameraPos = e.Camera->GetTranslation();
+	glm::vec3 cameraRot = e.Camera->GetDirection();
+
+	std::string fullText = "FPS Engine: " + toStringPrec(uint64(1000.0 / e.DeltaTime)) + "\n";
+	fullText += "FPS Window: " + toStringPrec(uint64(1000.0 / double(GetRenderWindow().GetSummaDeltaTime()))) + "\n";
+	fullText += "CamPos: (" + toStringPrec(cameraPos.x) + ", " + toStringPrec(cameraPos.y) + ", " + toStringPrec(cameraPos.z) + ")\n";
+	fullText += "CamRot: yaw " + toStringPrec(e.Camera->GetYaw()) + ", pitch " + toStringPrec(e.Camera->GetPitch()) + "\n";
+	fullText += "CamRot: (" + toStringPrec(cameraRot.x) + ", " + toStringPrec(cameraRot.y) + ", " + toStringPrec(cameraRot.z) + ")\n";
+	fullText += "Frame Update: " + toStringPrec(GetRenderWindow().GetUpdateDeltaTime()) + " ms\n";
+	fullText += "Frame Render: " + toStringPrec(GetRenderWindow().GetRenderDeltaTime()) + " ms\n";
+	fullText += "Frame Total : " + toStringPrec(GetRenderWindow().GetSummaDeltaTime()) + " ms\n";
+	return fullText;
 }

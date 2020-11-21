@@ -14,10 +14,18 @@ CznPluginsManager::CznPluginsManager(IBaseManager& BaseManager)
 
 CznPluginsManager::~CznPluginsManager()
 {
-
 	for (auto rIt = m_Plugins.rbegin(); rIt != m_Plugins.rend(); rIt++)
 	{
-		RemovePlugin((*rIt).Path);
+		const auto& plugin = (*rIt);
+		try
+		{
+			RemovePlugin(plugin.Path);
+		}
+		catch (const CException& e)
+		{
+			Log::Error("Error while removing plugin '%s'.", plugin.Path.c_str());
+			Log::Error("--->%s", e.MessageCStr());
+		}
 	}
 
 	m_Plugins.clear();

@@ -14,13 +14,14 @@
 #include "UIControls/UIControlText.h"
 
 // RTS
-#include "UIControls/RTS/UIControlRTSTowersPanel.h"
-#include "UIControls/RTS/UIControlRTSTowerBtn.h"
+#include "RTS/UIControls/UIControlRTSTowersPanel.h"
+#include "RTS/UIControls/UIControlRTSTowerBtn.h"
 
-#include "Scene/SceneNodeRTSGround.h"
-#include "Scene/SceneNodeRTSPathAndPoint.h"
-#include "Scene/SceneNodeRTSUnit.h"
-#include "Scene/SceneNodeRTSTower.h"
+#include "RTS/SceneNodes/SceneNodeRTSGround.h"
+#include "RTS/SceneNodes/SceneNodeRTSPathAndPoint.h"
+#include "RTS/SceneNodes/SceneNodeRTSUnit.h"
+#include "RTS/SceneNodes/SceneNodeRTSBullet.h"
+#include "RTS/SceneNodes/SceneNodeRTSTower.h"
 
 void EngineSceneTypesExtender(IBaseManager& BaseManager)
 {

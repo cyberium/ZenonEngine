@@ -1,31 +1,26 @@
 #include "stdafx.h"
 
 // Gerenal
-#include "Scene_Default.h"
+#include "SceneRTS.h"
 
-CSceneDefault::CSceneDefault(IBaseManager& BaseManager, IRenderWindow& RenderWindow)
+CSceneRTS::CSceneRTS(IBaseManager& BaseManager, IRenderWindow& RenderWindow)
 	: SceneBase(BaseManager, RenderWindow)
-	//, m_World(rp3d::Vector3(0.0f, -9.81f, 0.0f))
 {
-	// Change the number of iterations of the velocity solver
-	//m_World.setNbIterationsVelocitySolver(15);
-	// Change the number of iterations of the position solver
-	//m_World.setNbIterationsPositionSolver(8);
 
 }
 
-CSceneDefault::~CSceneDefault()
+CSceneRTS::~CSceneRTS()
 {
-	Log::Info("Scene destroyed.");
+	Log::Info("SceneRTS destroyed");
 }
 
 
 //
 // IGameState
 //
-void CSceneDefault::Initialize()
+void CSceneRTS::Initialize()
 {
-	__super::Initialize();
+	SceneBase::Initialize();
 
 	// Light
 	/*{
@@ -71,8 +66,6 @@ void CSceneDefault::Initialize()
 		GetCameraController()->GetCamera()->SetPitch(-45);
 	}
 
-	Load3D();
-
 	//--------------------------------------------------------------------------
 	// XML
 	//--------------------------------------------------------------------------
@@ -81,29 +74,53 @@ void CSceneDefault::Initialize()
 		CXMLManager xml(GetBaseManager());
 		auto reader = xml.CreateReader(file);
 		auto rootNodeXML = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeFactory>()->LoadSceneNode3DXML(reader->GetChilds()[0], *this);
+
+		m_RTSUnitsPath = std::dynamic_pointer_cast<ISceneNodeRTSPath>(rootNodeXML->GetChild("Waypoint"));
+		_ASSERT(m_RTSUnitsPath != nullptr);
+
+		auto sceneNodeRTSUnit = CreateSceneNodeTCast<ISceneNodeRTSUnit>();
+		sceneNodeRTSUnit->SetPath(m_RTSUnitsPath);
 	}
+
+
+	{
+		std::shared_ptr<CUIControlRTSTowersPanel> commonControl = std::dynamic_pointer_cast<CUIControlRTSTowersPanel>(GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<IUIControlFactory>()->CreateSceneNodeUI(cUIControlRTSTowersPanel, *this));
+		
+		commonControl->AddTowerButton(GetBaseManager().GetManager<IznTexturesFactory>()->LoadTexture2D("t1.png"));
+		commonControl->AddTowerButton(GetBaseManager().GetManager<IznTexturesFactory>()->LoadTexture2D("t2.png"));
+		commonControl->AddTowerButton(GetBaseManager().GetManager<IznTexturesFactory>()->LoadTexture2D("tA.png"));
+		commonControl->AddTowerButton(GetBaseManager().GetManager<IznTexturesFactory>()->LoadTexture2D("tB.png"));
+		commonControl->AddTowerButton(GetBaseManager().GetManager<IznTexturesFactory>()->LoadTexture2D("tC.png"));
+		commonControl->AddTowerButton(GetBaseManager().GetManager<IznTexturesFactory>()->LoadTexture2D("tE.png"));
+
+		commonControl->SetTranslate(glm::vec2(
+			(GetRenderWindow().GetWindowWidth() / 2.0f) - (commonControl->GetSize().x / 2.0f), 
+			 GetRenderWindow().GetWindowHeight() - commonControl->GetSize().y)
+		);
+		//commonControl->SetScale(glm::vec2(0.75f));
+	}
+
+
 }
 
-void CSceneDefault::Finalize()
+void CSceneRTS::Finalize()
 {
 	// Insert code here
 
 	SceneBase::Finalize();
 }
 
-void CSceneDefault::OnUpdate(UpdateEventArgs & e)
+void CSceneRTS::OnUpdate(UpdateEventArgs & e)
 {
-
-
 	__super::OnUpdate(e);
 }
 
-bool CSceneDefault::OnMousePressed(const MouseButtonEventArgs & e, const Ray& RayToWorld)
+bool CSceneRTS::OnMousePressed(const MouseButtonEventArgs& e, const Ray& RayToWorld)
 {
-	return false;
+	return __super::OnMousePressed(e, RayToWorld);
 }
 
-void CSceneDefault::OnMouseMoved(const MouseMotionEventArgs & e, const Ray & RayToWorld)
+void CSceneRTS::OnMouseMoved(const MouseMotionEventArgs& e, const Ray & RayToWorld)
 {
 }
 
@@ -112,12 +129,12 @@ void CSceneDefault::OnMouseMoved(const MouseMotionEventArgs & e, const Ray & Ray
 //
 // Keyboard events
 //
-bool CSceneDefault::OnWindowKeyPressed(KeyEventArgs & e)
+bool CSceneRTS::OnWindowKeyPressed(KeyEventArgs & e)
 {
 	return SceneBase::OnWindowKeyPressed(e);
 }
 
-void CSceneDefault::OnWindowKeyReleased(KeyEventArgs & e)
+void CSceneRTS::OnWindowKeyReleased(KeyEventArgs & e)
 {
 	SceneBase::OnWindowKeyReleased(e);
 }

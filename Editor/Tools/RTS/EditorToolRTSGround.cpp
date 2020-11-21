@@ -136,7 +136,7 @@ void CRTSGround::DoInitializeUI(IEditorQtUIFrame & QtUIFrame)
 //
 void CRTSGround::DoInitialize3D(const std::shared_ptr<IRenderer>& Renderer, std::shared_ptr<IRenderTarget> RenderTarget)
 {
-	//auto groundRootSceneNode = GetScene().CreateSceneNode<ISceneNodeRTSGround>(GetEditor().Get3DFrame().GetEditedRootNode3D());
+	//auto groundRootSceneNode = GetScene().CreateSceneNodeT<ISceneNodeRTSGround>(GetEditor().Get3DFrame().GetEditedRootNode3D());
 	//groundRootSceneNode->SetName("GroundRoot");
 	//m_GroundRoot = std::dynamic_pointer_cast<ISceneNodeRTSGround>(groundRootSceneNode);
 

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../UIControlCommon.h"
+#include "../../UIControls/UIControlCommon.h"
 
 class ZN_API CUIControlRTSTowerBtn
 	: public CUIControlCommon

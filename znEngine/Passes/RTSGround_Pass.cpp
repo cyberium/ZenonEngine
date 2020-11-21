@@ -4,7 +4,6 @@
 #include "RTSGround_Pass.h"
 
 // Additional
-#include "Scene/EngineSceneIntfs.h"
 #include "Materials/MaterialModel.h"
 
 CRTSGround_Pass::CRTSGround_Pass(IRenderDevice& RenderDevice, IScene& scene)

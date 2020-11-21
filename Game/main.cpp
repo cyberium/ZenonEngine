@@ -2,31 +2,26 @@
 
 // Additional
 #include "Scene_Default.h"
-
+#include "SceneRTS.h"
 
 #include "BugTrap/BugTrap.h"
 
 
-static IBaseManager* BaseManager = nullptr;
-
-
 void main_internal(int argumentCount, char* arguments[])
 {
-	// 1. Initialize engine and some improtant managers
-	BaseManager = InitializeEngine(Utils::ArgumentsToVector(argumentCount, arguments), "");
+	Application app(Utils::ArgumentsToVector(argumentCount, arguments), ::GetModuleHandle(NULL));
 	
-	Application app(*BaseManager, ::GetModuleHandle(NULL));
 	CNativeWindowFactory nativeWindowFactory(&app);
 
-	ULONG windowWidth = BaseManager->GetManager<ISettings>()->GetGroup("Video")->GetSettingT<glm::vec2>("WindowSize")->Get().x;
-	ULONG windowHeight = BaseManager->GetManager<ISettings>()->GetGroup("Video")->GetSettingT<glm::vec2>("WindowSize")->Get().y;
+	ULONG windowWidth = app.GetBaseManager().GetManager<ISettings>()->GetGroup("Video")->GetSettingT<glm::vec2>("WindowSize")->Get().x;
+	ULONG windowHeight = app.GetBaseManager().GetManager<ISettings>()->GetGroup("Video")->GetSettingT<glm::vec2>("WindowSize")->Get().y;
 
 	IRenderDevice& renderDevice = app.CreateRenderDevice(RenderDeviceType::RenderDeviceType_DirectX11);
 
-	BaseManager->AddManager<IznFontsManager>(MakeShared(FontsManager, renderDevice, *BaseManager));
+	app.GetBaseManager().AddManager<IznFontsManager>(MakeShared(FontsManager, renderDevice, app.GetBaseManager()));
 
 	{
-		BaseManager->GetManager<ILoader>()->Start();
+		app.GetBaseManager().GetManager<ILoader>()->Start();
 
 		{
 			std::unique_ptr<IznNativeWindow> nativeWindow = nativeWindowFactory.CreateWindowInstance(L"Zenon Engine", windowWidth, windowHeight);
@@ -34,7 +29,7 @@ void main_internal(int argumentCount, char* arguments[])
 			const auto& renderWindow = renderDevice.GetObjectsFactory().CreateRenderWindow(std::move(nativeWindow), true);
 			app.AddRenderWindow(renderWindow);
 
-			std::shared_ptr<IScene> scene = MakeShared(CSceneDefault, *BaseManager, *renderWindow);
+			std::shared_ptr<IScene> scene = MakeShared(CSceneRTS, app.GetBaseManager(), *renderWindow);
 			renderWindow->SetRenderWindowEventListener(std::dynamic_pointer_cast<IRenderWindowEventListener>(scene));
 			renderWindow->SetNativeWindowEventListener(std::dynamic_pointer_cast<IznNativeWindowEventListener>(scene));
 			scene->Initialize();
@@ -72,9 +67,6 @@ int main(int argumentCount, char* arguments[])
 	//BT_SetSupportURL(L"http://www.your-web-site.com");
 
 	main_internal(argumentCount, arguments);		
-
-	if (BaseManager)
-		delete BaseManager;
 
 	return 0;
 }

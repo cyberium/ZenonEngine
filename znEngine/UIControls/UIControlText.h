@@ -1,7 +1,5 @@
 #pragma once
 
-#include "../Scene/EngineSceneIntfs.h"
-
 class ZN_API CUIControlText
 	: public CUIControl
 	, public IUIControlText

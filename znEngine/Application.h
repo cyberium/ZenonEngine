@@ -5,8 +5,8 @@ class ZN_API Application
 	, public IApplication_WindowsSpecific
 {
 public:
-	Application(IBaseManager& BaseManager);
-	Application(IBaseManager& BaseManager, HINSTANCE hInstance);
+	Application(std::vector<std::string> Arguments);
+	Application(std::vector<std::string> Arguments, HINSTANCE hInstance);
 	virtual ~Application();
 
 	// Default query
@@ -32,6 +32,11 @@ public:
 	// IApplication_WindowsSpecific
 	HINSTANCE                       GetHInstance() const override;
 
+
+protected:
+	void InitializeEngineInternal();
+
+
 private:
 	bool m_IsInitialized;
 	bool m_IsRunning;
@@ -40,7 +45,7 @@ private:
 	double m_GameTime;
 	size_t m_FrameCounter;
 
-	IBaseManager& m_BaseManager;
+	std::unique_ptr<IBaseManager> m_BaseManager;
 	std::unique_ptr<IRenderDevice> m_RenderDevice;
 	std::vector<std::shared_ptr<IRenderWindow>> m_Windows;
 

@@ -5,14 +5,18 @@
       <Filter>Common</Filter>
     </ClInclude>
     <ClInclude Include="Scene_Default.h" />
+    <ClInclude Include="SceneRTS.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp" />
     <ClCompile Include="stdafx.cpp">
       <Filter>Common</Filter>
     </ClCompile>
     <ClCompile Include="Scene_Default.cpp" />
     <ClCompile Include="Scene_Default_TestSpace.cpp" />
+    <ClCompile Include="SceneRTS.cpp" />
+    <ClCompile Include="main.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Common">
@@ -20,6 +24,8 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="Game.rc" />
+    <ResourceCompile Include="Game.rc">
+      <Filter>Common</Filter>
+    </ResourceCompile>
   </ItemGroup>
 </Project>

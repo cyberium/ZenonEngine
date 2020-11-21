@@ -32,12 +32,15 @@ public:
 	void                                            SetCameraController(std::shared_ptr<ICameraController> CameraController) override;
 	std::shared_ptr<ICameraController>              GetCameraController() const override;
 
+
 	// Visit funcitonal
 	void                                            Accept(IVisitor* visitor) override;
+
 
 	// ISceneInternal
 	void                                            AddChildInternal(const std::shared_ptr<ISceneNode>& ParentNode, const std::shared_ptr<ISceneNode>& ChildNode) override;
 	void                                            RemoveChildInternal(const std::shared_ptr<ISceneNode>& ParentNode, const std::shared_ptr<ISceneNode>& ChildNode) override;
+
 
 	// IRenderWindowEventListener
 	virtual void                                    OnUpdate(UpdateEventArgs& e) override;
@@ -99,35 +102,38 @@ private:
 	void                                            DoMouseButtonReleased_Rec(const std::shared_ptr<IUIControl>& Node, MouseButtonEventArgs& e);
 	bool                                            DoMouseWheel_Rec(const std::shared_ptr<IUIControl>& Node, MouseWheelEventArgs& e);
 
+	std::string                                     GetStatisticsString(const UpdateEventArgs& e) const;
+
 private:
 	std::shared_ptr<ISceneNode>                     m_RootSceneNode;
 	std::shared_ptr<IUIControl>                     m_RootUIControl;
 
-	std::shared_ptr<IRenderer>                      m_Renderer;
-
 	CSceneFinder                                    m_Finder;
 
-	std::shared_ptr<IQuery>                         m_FrameQuery;
-	std::shared_ptr<IQuery>                         m_TestQuery;
-	double                                          m_FrameTime;
+	//std::shared_ptr<IQuery>                         m_FrameQuery;
+	//std::shared_ptr<IQuery>                         m_TestQuery;
+	//double                                          m_FrameTime;
 
 	std::shared_ptr<ICameraController>              m_CameraController;
 	std::shared_ptr<ISettingGroup>                  m_VideoSettings;
 
 	std::shared_ptr<IUIControlText>                 m_StatisticText;
 
-private: // Функционал по отложенному добавлению нод
-	std::mutex m_SceneChangeDelayEventsLock;
-	std::vector<SSceneChangeDelayEvent> m_SceneChangeDelayEvents;
+	std::shared_ptr<IRenderer>                      m_Renderer;
+	std::shared_ptr<IRenderer>                      m_ForwardRenderer;
+	std::shared_ptr<IRenderer>                      m_DefferedRenderrer;
 
-	std::mutex m_ChildModifyLock;
+private: // Delay add/remove events
+	std::mutex                                      m_SceneChangeDelayEventsLock;
+	std::vector<SSceneChangeDelayEvent>             m_SceneChangeDelayEvents;
+	std::mutex                                      m_ChildModifyLock;
 
+private: // Events
 	bool m_SceneEventsBlocked;
-	std::vector<ISceneEventsListener*> m_EventListeners;
+	std::vector<ISceneEventsListener*>              m_EventListeners;
 
 private: // Quick access
 	IBaseManager&                                   m_BaseManager;
 	IRenderDevice&                                  m_RenderDevice;
 	IRenderWindow&                                  m_RenderWindow;
-	std::mutex                                      m_SceneMutex;
 };

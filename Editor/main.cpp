@@ -10,96 +10,78 @@
 #include "Editor3DFrame.h"
 #include "Editor3DPreviewScene.h"
 
-static IBaseManager* BaseManager = nullptr;
-
 void main_internal(int argc, char *argv[])
 {
-	// 1. Initialize engine and some improtant managers
-	BaseManager = InitializeEngine(Utils::ArgumentsToVector(argc, argv), "");
+	Application app(Utils::ArgumentsToVector(argc, argv), ::GetModuleHandle(NULL));
+	CNativeWindowFactory nativeWindowFactory(&app);
 
-	//try
-	//{
-		// 3. Create application
-		Application app(*BaseManager, ::GetModuleHandle(NULL));
-		CNativeWindowFactory nativeWindowFactory(&app);
+	IRenderDevice& renderDevice = app.CreateRenderDevice(RenderDeviceType::RenderDeviceType_DirectX11);
+	app.GetBaseManager().AddManager<IznFontsManager>(MakeShared(FontsManager, renderDevice, app.GetBaseManager()));
 
-		IRenderDevice& renderDevice = app.CreateRenderDevice(RenderDeviceType::RenderDeviceType_DirectX11);
-		BaseManager->AddManager<IznFontsManager>(MakeShared(FontsManager, renderDevice, *BaseManager));
+	app.GetBaseManager().GetManager<ILoader>()->Start();
 
-		BaseManager->GetManager<ILoader>()->Start();
-
-		QApplication qtApplication(argc, argv);
-		CEditor editor(*BaseManager);
-		CEditorUIFrame editorUI(editor);
+	QApplication qtApplication(argc, argv);
+	CEditor editor(app.GetBaseManager());
+	CEditorUIFrame editorUI(editor);
 		
-		// 'Editor3D' scene
-		{
-			auto nativeWindow = nativeWindowFactory.CreateWindowProxy(*editorUI.getMainEditor());
-			auto renderWindow = renderDevice.GetObjectsFactory().CreateRenderWindow(std::move(nativeWindow), true);
-
-			app.AddRenderWindow(renderWindow);
-
-			std::shared_ptr<CEditor3DFrame> editorScene = MakeShared(CEditor3DFrame, editor, *renderWindow);
-			editorScene->AddSceneEventsListener(&editorUI);
-			editorScene->Initialize();
-
-			renderWindow->SetRenderWindowEventListener(std::dynamic_pointer_cast<IRenderWindowEventListener>(editorScene));
-			renderWindow->SetNativeWindowEventListener(std::dynamic_pointer_cast<IznNativeWindowEventListener>(editorScene));
-		}
-
-		// 'Preview' scene
-		{
-			auto nativeWindow = nativeWindowFactory.CreateWindowProxy(*editorUI.getModelPreview());
-			auto renderWindow = renderDevice.GetObjectsFactory().CreateRenderWindow(std::move(nativeWindow), true);
-
-			app.AddRenderWindow(renderWindow);
-
-			std::shared_ptr<CEditor3DPreviewScene> sceneForPreview = MakeShared(CEditor3DPreviewScene, editor, *renderWindow);
-			sceneForPreview->Initialize();
-
-			renderWindow->SetRenderWindowEventListener(std::dynamic_pointer_cast<IRenderWindowEventListener>(sceneForPreview));
-			renderWindow->SetNativeWindowEventListener(std::dynamic_pointer_cast<IznNativeWindowEventListener>(sceneForPreview));
-		}
-
-		editor.GetUIFrame().InitializeEditorFrame();
-		editor.Get3DFrame().InitializeEditorFrame();
-		editor.GetTools().Initialize();
-
-
-		editorUI.showMaximized();
-
-
-		std::shared_ptr<IDebugOutput> debugOutput(editorUI.getUI().LogViewer);
-		BaseManager->GetManager<ILog>()->AddDebugOutput(debugOutput);
-		
-		QTimer timer(&editorUI);
-		editorUI.connect(&timer, &QTimer::timeout, &editorUI, [&app] {
-			app.DoRun();
-		});
-
-		app.DoBeforeRun();
-		{
-			timer.start();
-			{
-				QApplication::exec();
-			}
-			timer.stop();
-		}
-		app.DoAfterRun();
-
-		BaseManager->GetManager<ILog>()->DeleteDebugOutput(debugOutput);
-
-		QApplication::closeAllWindows();
-
-	/*}
-	catch (const CznRenderException& e)
+	// 'Editor3D' scene
 	{
-		Log::Fatal("RenderError: %s", e.MessageCStr());
+		auto nativeWindow = nativeWindowFactory.CreateWindowProxy(*editorUI.getMainEditor());
+		auto renderWindow = renderDevice.GetObjectsFactory().CreateRenderWindow(std::move(nativeWindow), true);
+
+		app.AddRenderWindow(renderWindow);
+
+		std::shared_ptr<CEditor3DFrame> editorScene = MakeShared(CEditor3DFrame, editor, *renderWindow);
+		editorScene->AddSceneEventsListener(&editorUI);
+		editorScene->Initialize();
+
+		renderWindow->SetRenderWindowEventListener(std::dynamic_pointer_cast<IRenderWindowEventListener>(editorScene));
+		renderWindow->SetNativeWindowEventListener(std::dynamic_pointer_cast<IznNativeWindowEventListener>(editorScene));
 	}
-	catch (const CException& e)
+
+	// 'Preview' scene
 	{
-		Log::Fatal("EngienError: %s", e.MessageCStr());
-	}*/
+		auto nativeWindow = nativeWindowFactory.CreateWindowProxy(*editorUI.getModelPreview());
+		auto renderWindow = renderDevice.GetObjectsFactory().CreateRenderWindow(std::move(nativeWindow), true);
+
+		app.AddRenderWindow(renderWindow);
+
+		std::shared_ptr<CEditor3DPreviewScene> sceneForPreview = MakeShared(CEditor3DPreviewScene, editor, *renderWindow);
+		sceneForPreview->Initialize();
+
+		renderWindow->SetRenderWindowEventListener(std::dynamic_pointer_cast<IRenderWindowEventListener>(sceneForPreview));
+		renderWindow->SetNativeWindowEventListener(std::dynamic_pointer_cast<IznNativeWindowEventListener>(sceneForPreview));
+	}
+
+	editor.GetUIFrame().InitializeEditorFrame();
+	editor.Get3DFrame().InitializeEditorFrame();
+	editor.GetTools().Initialize();
+
+
+	editorUI.showMaximized();
+
+
+	std::shared_ptr<IDebugOutput> debugOutput(editorUI.getUI().LogViewer);
+	app.GetBaseManager().GetManager<ILog>()->AddDebugOutput(debugOutput);
+		
+	QTimer timer(&editorUI);
+	editorUI.connect(&timer, &QTimer::timeout, &editorUI, [&app] {
+		app.DoRun();
+	});
+
+	app.DoBeforeRun();
+	{
+		timer.start();
+		{
+			QApplication::exec();
+		}
+		timer.stop();
+	}
+	app.DoAfterRun();
+
+	app.GetBaseManager().GetManager<ILog>()->DeleteDebugOutput(debugOutput);
+
+	QApplication::closeAllWindows();
 }
 
 
@@ -117,13 +99,7 @@ int main(int argumentCount, char* arguments[])
 	//BT_SetSupportServer(L"localhost", 9999);
 	//BT_SetSupportURL(L"http://www.your-web-site.com");
 
-
 	main_internal(argumentCount, arguments);		
-
-	if (BaseManager)
-		delete BaseManager;
-
-	//_CrtMemDumpAllObjectsSince(NULL);
 
 	return 0;
 }

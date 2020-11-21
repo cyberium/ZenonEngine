@@ -109,9 +109,6 @@
     <Filter Include="NativeWindows">
       <UniqueIdentifier>{cfe67249-b3e6-463f-a7cd-5770ee4ab305}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Scene\RTS">
-      <UniqueIdentifier>{9dc540cd-9f2d-49f0-a48a-2b158e64ef39}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Scene\Components\Particles">
       <UniqueIdentifier>{6ea439f2-add0-4df0-b035-164aa9c343dd}</UniqueIdentifier>
     </Filter>
@@ -121,8 +118,14 @@
     <Filter Include="UIControls">
       <UniqueIdentifier>{ca08ca0d-5e99-4bc3-950b-f78dc515d6ab}</UniqueIdentifier>
     </Filter>
-    <Filter Include="UIControls\RTS">
-      <UniqueIdentifier>{2d7e3e30-b884-45ed-8046-256fb46d8935}</UniqueIdentifier>
+    <Filter Include="RTS">
+      <UniqueIdentifier>{aeb8e771-0c99-43f8-90d0-022b36ed969b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="RTS\UIControls">
+      <UniqueIdentifier>{918822c0-1868-4ae4-8065-6bca34a7d382}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="RTS\SceneNodes">
+      <UniqueIdentifier>{c3a8c0f5-b6b8-4595-ac3f-02f1677df404}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -132,9 +135,6 @@
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="Materials\MaterialDebug.cpp">
       <Filter>Materials</Filter>
-    </ClCompile>
-    <ClCompile Include="znEngine.cpp">
-      <Filter>Common</Filter>
     </ClCompile>
     <ClCompile Include="Settings\GroupVideo.cpp">
       <Filter>Settings</Filter>
@@ -301,18 +301,6 @@
     <ClCompile Include="NativeWindows\NativeWindowFactory.cpp">
       <Filter>NativeWindows</Filter>
     </ClCompile>
-    <ClCompile Include="Scene\SceneNodeRTSPathAndPoint.cpp">
-      <Filter>Scene\RTS</Filter>
-    </ClCompile>
-    <ClCompile Include="Scene\SceneNodeRTSGround.cpp">
-      <Filter>Scene\RTS</Filter>
-    </ClCompile>
-    <ClCompile Include="Scene\SceneNodeRTSUnit.cpp">
-      <Filter>Scene\RTS</Filter>
-    </ClCompile>
-    <ClCompile Include="Scene\SceneNodeRTSTower.cpp">
-      <Filter>Scene\RTS</Filter>
-    </ClCompile>
     <ClCompile Include="Scene\Components\Particles\ParticlesComponent.cpp">
       <Filter>Scene\Components\Particles</Filter>
     </ClCompile>
@@ -358,12 +346,28 @@
     <ClCompile Include="Passes\DebugPass.cpp">
       <Filter>Passes</Filter>
     </ClCompile>
-    <ClCompile Include="UIControls\RTS\UIControlRTSTowerBtn.cpp">
-      <Filter>UIControls\RTS</Filter>
+    <ClCompile Include="RTS\UIControls\UIControlRTSTowerBtn.cpp">
+      <Filter>RTS\UIControls</Filter>
     </ClCompile>
-    <ClCompile Include="UIControls\RTS\UIControlRTSTowersPanel.cpp">
-      <Filter>UIControls\RTS</Filter>
+    <ClCompile Include="RTS\UIControls\UIControlRTSTowersPanel.cpp">
+      <Filter>RTS\UIControls</Filter>
     </ClCompile>
+    <ClCompile Include="RTS\SceneNodes\SceneNodeRTSGround.cpp">
+      <Filter>RTS\SceneNodes</Filter>
+    </ClCompile>
+    <ClCompile Include="RTS\SceneNodes\SceneNodeRTSPathAndPoint.cpp">
+      <Filter>RTS\SceneNodes</Filter>
+    </ClCompile>
+    <ClCompile Include="RTS\SceneNodes\SceneNodeRTSTower.cpp">
+      <Filter>RTS\SceneNodes</Filter>
+    </ClCompile>
+    <ClCompile Include="RTS\SceneNodes\SceneNodeRTSUnit.cpp">
+      <Filter>RTS\SceneNodes</Filter>
+    </ClCompile>
+    <ClCompile Include="RTS\SceneNodes\SceneNodeRTSBullet.cpp">
+      <Filter>RTS\SceneNodes</Filter>
+    </ClCompile>
+    <ClCompile Include="ApplicationInitializer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="common.h">
@@ -533,9 +537,6 @@
     <ClInclude Include="Passes\Scene\BaseTypedList3DPass.h">
       <Filter>Passes\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="Scene\EngineSceneIntfs.h">
-      <Filter>Scene</Filter>
-    </ClInclude>
     <ClInclude Include="Passes\RTSGround_Pass.h">
       <Filter>Passes</Filter>
     </ClInclude>
@@ -547,18 +548,6 @@
     </ClInclude>
     <ClInclude Include="NativeWindows\NativeWindowFactory.h">
       <Filter>NativeWindows</Filter>
-    </ClInclude>
-    <ClInclude Include="Scene\SceneNodeRTSPathAndPoint.h">
-      <Filter>Scene\RTS</Filter>
-    </ClInclude>
-    <ClInclude Include="Scene\SceneNodeRTSGround.h">
-      <Filter>Scene\RTS</Filter>
-    </ClInclude>
-    <ClInclude Include="Scene\SceneNodeRTSUnit.h">
-      <Filter>Scene\RTS</Filter>
-    </ClInclude>
-    <ClInclude Include="Scene\SceneNodeRTSTower.h">
-      <Filter>Scene\RTS</Filter>
     </ClInclude>
     <ClInclude Include="Scene\Components\Particles\ParticlesComponent.h">
       <Filter>Scene\Components\Particles</Filter>
@@ -608,11 +597,27 @@
     <ClInclude Include="Passes\DebugPass.h">
       <Filter>Passes</Filter>
     </ClInclude>
-    <ClInclude Include="UIControls\RTS\UIControlRTSTowerBtn.h">
-      <Filter>UIControls\RTS</Filter>
+    <ClInclude Include="EngineIntfs.h" />
+    <ClInclude Include="RTS\UIControls\UIControlRTSTowerBtn.h">
+      <Filter>RTS\UIControls</Filter>
     </ClInclude>
-    <ClInclude Include="UIControls\RTS\UIControlRTSTowersPanel.h">
-      <Filter>UIControls\RTS</Filter>
+    <ClInclude Include="RTS\UIControls\UIControlRTSTowersPanel.h">
+      <Filter>RTS\UIControls</Filter>
+    </ClInclude>
+    <ClInclude Include="RTS\SceneNodes\SceneNodeRTSGround.h">
+      <Filter>RTS\SceneNodes</Filter>
+    </ClInclude>
+    <ClInclude Include="RTS\SceneNodes\SceneNodeRTSPathAndPoint.h">
+      <Filter>RTS\SceneNodes</Filter>
+    </ClInclude>
+    <ClInclude Include="RTS\SceneNodes\SceneNodeRTSTower.h">
+      <Filter>RTS\SceneNodes</Filter>
+    </ClInclude>
+    <ClInclude Include="RTS\SceneNodes\SceneNodeRTSUnit.h">
+      <Filter>RTS\SceneNodes</Filter>
+    </ClInclude>
+    <ClInclude Include="RTS\SceneNodes\SceneNodeRTSBullet.h">
+      <Filter>RTS\SceneNodes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

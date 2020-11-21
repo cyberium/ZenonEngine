@@ -11,6 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="ApplicationInitializer.cpp" />
     <ClCompile Include="AssyncLoader\LoadableObject.cpp" />
     <ClCompile Include="AssyncLoader\Loader.cpp" />
     <ClCompile Include="BaseManager.cpp" />
@@ -63,6 +64,13 @@
     <ClCompile Include="PluginsManager.cpp" />
     <ClCompile Include="RenderDeviceFactory.cpp" />
     <ClCompile Include="Application.cpp" />
+    <ClCompile Include="RTS\SceneNodes\SceneNodeRTSBullet.cpp" />
+    <ClCompile Include="RTS\SceneNodes\SceneNodeRTSGround.cpp" />
+    <ClCompile Include="RTS\SceneNodes\SceneNodeRTSPathAndPoint.cpp" />
+    <ClCompile Include="RTS\SceneNodes\SceneNodeRTSTower.cpp" />
+    <ClCompile Include="RTS\SceneNodes\SceneNodeRTSUnit.cpp" />
+    <ClCompile Include="RTS\UIControls\UIControlRTSTowerBtn.cpp" />
+    <ClCompile Include="RTS\UIControls\UIControlRTSTowersPanel.cpp" />
     <ClCompile Include="Scene\Camera\ArcBallCameraController.cpp" />
     <ClCompile Include="Scene\Camera\CameraControllerBase.cpp" />
     <ClCompile Include="Scene\Camera\FreeCameraController.cpp" />
@@ -78,28 +86,22 @@
     <ClCompile Include="Scene\Components\LightComponent3D.cpp" />
     <ClCompile Include="Scene\Components\ReactPhysicsComponent.cpp" />
     <ClCompile Include="Scene\EngineSceneExtender.cpp" />
-    <ClCompile Include="Scene\SceneNodeRTSGround.cpp" />
     <ClCompile Include="Scene\SceneBase.cpp" />
-    <ClCompile Include="Scene\SceneNodeRTSPathAndPoint.cpp" />
-    <ClCompile Include="Scene\SceneNodeRTSTower.cpp" />
-    <ClCompile Include="Scene\SceneNodeRTSUnit.cpp" />
     <ClCompile Include="Settings.cpp" />
     <ClCompile Include="Settings\GroupVideo.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="UIControls\RTS\UIControlRTSTowerBtn.cpp" />
-    <ClCompile Include="UIControls\RTS\UIControlRTSTowersPanel.cpp" />
     <ClCompile Include="UIControls\UIControlCommon.cpp" />
     <ClCompile Include="UIControls\UIControlText.cpp" />
-    <ClCompile Include="znEngine.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\shared\znEngine.h" />
     <ClInclude Include="AssyncLoader\LoadableObject.h" />
     <ClInclude Include="AssyncLoader\Loader.h" />
     <ClInclude Include="BaseManager.h" />
+    <ClInclude Include="EngineIntfs.h" />
     <ClInclude Include="Formats\Fonts\Font.h" />
     <ClInclude Include="Formats\Fonts\FontsManager.h" />
     <ClInclude Include="Formats\Images\DDSFormat.h" />
@@ -150,6 +152,13 @@
     <ClInclude Include="RenderDeviceFactory.h" />
     <ClInclude Include="Application.h" />
     <ClInclude Include="common.h" />
+    <ClInclude Include="RTS\SceneNodes\SceneNodeRTSBullet.h" />
+    <ClInclude Include="RTS\SceneNodes\SceneNodeRTSGround.h" />
+    <ClInclude Include="RTS\SceneNodes\SceneNodeRTSPathAndPoint.h" />
+    <ClInclude Include="RTS\SceneNodes\SceneNodeRTSTower.h" />
+    <ClInclude Include="RTS\SceneNodes\SceneNodeRTSUnit.h" />
+    <ClInclude Include="RTS\UIControls\UIControlRTSTowerBtn.h" />
+    <ClInclude Include="RTS\UIControls\UIControlRTSTowersPanel.h" />
     <ClInclude Include="Scene\Camera\ArcBallCameraController.h" />
     <ClInclude Include="Scene\Camera\CameraControllerBase.h" />
     <ClInclude Include="Scene\Camera\FreeCameraController.h" />
@@ -166,18 +175,11 @@
     <ClInclude Include="Scene\Components\LightComponent3D.h" />
     <ClInclude Include="Scene\Components\ReactPhysicsComponent.h" />
     <ClInclude Include="Scene\EngineSceneExtender.h" />
-    <ClInclude Include="Scene\EngineSceneIntfs.h" />
-    <ClInclude Include="Scene\SceneNodeRTSGround.h" />
     <ClInclude Include="Scene\SceneBase.h" />
-    <ClInclude Include="Scene\SceneNodeRTSPathAndPoint.h" />
-    <ClInclude Include="Scene\SceneNodeRTSTower.h" />
-    <ClInclude Include="Scene\SceneNodeRTSUnit.h" />
     <ClInclude Include="Settings.h" />
     <ClInclude Include="Settings\GroupVideo.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="ThreadPool.h" />
-    <ClInclude Include="UIControls\RTS\UIControlRTSTowerBtn.h" />
-    <ClInclude Include="UIControls\RTS\UIControlRTSTowersPanel.h" />
     <ClInclude Include="UIControls\UIControlCommon.h" />
     <ClInclude Include="UIControls\UIControlText.h" />
   </ItemGroup>

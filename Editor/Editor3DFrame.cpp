@@ -33,7 +33,7 @@ CEditor3DFrame::~CEditor3DFrame()
 //
 void CEditor3DFrame::Initialize()
 {
-	SceneBase::Initialize();
+	__super::Initialize();
 
 	GetRootSceneNode()->AddChild(m_EditedScene->GetRootSceneNode());
 
@@ -41,7 +41,7 @@ void CEditor3DFrame::Initialize()
 
 	// Light
 	{
-		auto lightNode = CreateSceneNode<ISceneNode>();
+		auto lightNode = CreateSceneNodeT<ISceneNode>();
 		lightNode->SetName("Light");
 		lightNode->SetTranslate(rtsCenter);
 		lightNode->SetRotation(glm::vec3(-0.5f));
@@ -56,7 +56,7 @@ void CEditor3DFrame::Initialize()
 
 	// Camera
 	{
-		auto cameraNode = CreateSceneNode<ISceneNode>();
+		auto cameraNode = CreateSceneNodeT<ISceneNode>();
 		cameraNode->SetName("Camera");
 		cameraNode->AddComponentT(GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<IComponentFactory>()->CreateComponentT<ICameraComponent3D>(cSceneNodeCameraComponent, *cameraNode));
 
@@ -67,15 +67,6 @@ void CEditor3DFrame::Initialize()
 		GetCameraController()->GetCamera()->SetYaw(225);
 		GetCameraController()->GetCamera()->SetPitch(-45);
 	}
-
-	{
-		auto forwardRenderer = MakeShared(CRendererForward, GetBaseManager(), *this);
-		forwardRenderer->Initialize(GetRenderWindow().GetRenderTarget());
-		forwardRenderer->AddPass(MakeShared(CDrawToolsPass, GetRenderDevice(), *this)->ConfigurePipeline(GetRenderWindow().GetRenderTarget()));
-		forwardRenderer->AddPass(MakeShared(CDrawLightFrustumPass, GetRenderDevice(), *this)->ConfigurePipeline(GetRenderWindow().GetRenderTarget()));
-		SetRenderer(forwardRenderer);
-	}
-
 }
 
 void CEditor3DFrame::Finalize()
@@ -119,7 +110,7 @@ IEditor& CEditor3DFrame::GetEditor() const
 bool CEditor3DFrame::InitializeEditorFrame()
 {
 	{
-		auto node = CreateSceneNode<ISceneNode>();
+		auto node = CreateSceneNodeT<ISceneNode>();
 		node->SetName("GridNodeX1");
 		node->SetTranslate(glm::vec3(0.0f));
 		node->SetScale(glm::vec3(1.0f));
@@ -136,7 +127,7 @@ bool CEditor3DFrame::InitializeEditorFrame()
 	}
 
 	{
-		auto node = CreateSceneNode<ISceneNode>();
+		auto node = CreateSceneNodeT<ISceneNode>();
 		node->SetName("GridNodeX10");
 		node->SetTranslate(glm::vec3(0.0f, 0.00f, 0.0f));
 		node->SetScale(glm::vec3(10.0f));
@@ -153,7 +144,7 @@ bool CEditor3DFrame::InitializeEditorFrame()
 	}
 
 	{
-		auto node = CreateSceneNode<ISceneNode>();
+		auto node = CreateSceneNodeT<ISceneNode>();
 		node->SetName("GridNodeX100");
 		node->SetTranslate(glm::vec3(0.0f, 0.00f, 0.0f));
 		node->SetScale(glm::vec3(100.0f));

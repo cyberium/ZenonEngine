@@ -105,7 +105,7 @@ void CSceneNodeRTSUnit::Initialize()
 	//GetComponentT<IModelsComponent3D>()->SetModel(model);
 
 
-	auto m2Node = GetScene().CreateSceneNodeByClass<ISceneNode>(ZN_GET_OBJECTCLASS(150), shared_from_this());
+	auto m2Node = GetScene().CreateSceneNode<ISceneNode>(ZN_GET_OBJECTCLASS(150), shared_from_this());
 	m2Node->SetScale(glm::vec3(3.0f));
 	m2Node->SetName("M2Node");
 

@@ -3,35 +3,35 @@
 // Genreal
 #include "Application.h"
 
-Application::Application(IBaseManager& BaseManager)
-	: m_BaseManager(BaseManager)
-	, m_IsInitialized(false)
+// Additional
+#include "znEngine.h"
+
+Application::Application(std::vector<std::string> Arguments)
+	: m_IsInitialized(false)
 	, m_IsRunning(false)
 	, m_GameDeltaTime(0.0)
     , m_GameTime(0.0)
     , m_FrameCounter(0L)
 {
 	m_HInstance = ::GetModuleHandle(NULL);
-
-	dynamic_cast<IBaseManagerInternal&>(m_BaseManager).SetApplicationInternal(this);
+	InitializeEngineInternal();
 }
 
-Application::Application(IBaseManager& BaseManager, HINSTANCE hInstance)
-	: m_BaseManager(BaseManager)
-	, m_IsInitialized(false)
+
+Application::Application(std::vector<std::string> Arguments, HINSTANCE hInstance)
+	: m_IsInitialized(false)
 	, m_IsRunning(false)
 	, m_GameDeltaTime(0.0)
 	, m_GameTime(0.0)
 	, m_FrameCounter(0L)
 {
 	m_HInstance = hInstance;
-
-	dynamic_cast<IBaseManagerInternal&>(m_BaseManager).SetApplicationInternal(this);
+	InitializeEngineInternal();
 }
+
 
 Application::~Application()
 {
-	dynamic_cast<IBaseManagerInternal&>(m_BaseManager).SetApplicationInternal(nullptr);
 }
 
 
@@ -58,7 +58,7 @@ void Application::Stop()
 
 IRenderDevice& Application::CreateRenderDevice(RenderDeviceType DeviceType)
 {
-	m_RenderDevice = m_BaseManager.GetManager<IznRenderDeviceFactory>()->GetRenderDeviceCreator(DeviceType).CreateRenderDevice();
+	m_RenderDevice = GetBaseManager().GetManager<IznRenderDeviceFactory>()->GetRenderDeviceCreator(DeviceType).CreateRenderDevice();
 	return GetRenderDevice();
 }
 
@@ -119,7 +119,7 @@ int Application::DoRun()
 		DispatchMessageW(&msg);
 	}
 
-	m_BaseManager.GetManager<ILog>()->PushAllMessages();
+	m_BaseManager->GetManager<ILog>()->PushAllMessages();
 
 	UpdateEventArgs updateArgs(m_GameDeltaTime, m_GameTime, m_FrameCounter);
 	for (const auto& w : m_Windows)
@@ -158,7 +158,7 @@ size_t Application::GetFrameCounter() const
 
 IBaseManager& Application::GetBaseManager() const
 {
-	return m_BaseManager;
+	return *(m_BaseManager.get());
 }
 
 IRenderDevice& Application::GetRenderDevice() const

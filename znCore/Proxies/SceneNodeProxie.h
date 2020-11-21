@@ -78,9 +78,9 @@ public:
 	}
 
 	template<typename T, typename... Args>
-	inline std::shared_ptr<T> CreateSceneNode(Args &&... _Args)
+	inline std::shared_ptr<T> CreateSceneNodeT(Args &&... _Args)
 	{
-		return ISceneNode::CreateSceneNode<T>(std::forward<Args>(_Args)...);
+		return ISceneNode::CreateSceneNodeT<T>(std::forward<Args>(_Args)...);
 	}
 
 protected:

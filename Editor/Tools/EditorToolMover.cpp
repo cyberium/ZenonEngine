@@ -41,7 +41,7 @@ void CEditorToolMover::Disable()
 
 void CEditorToolMover::DoInitialize3D(const std::shared_ptr<IRenderer>& Renderer, std::shared_ptr<IRenderTarget> RenderTarget)
 {
-	m_MoverRoot = GetScene().CreateSceneNode<ISceneNode>();
+	m_MoverRoot = GetScene().CreateSceneNodeT<ISceneNode>();
 	m_MoverRoot->SetName("Mover");
 
 	auto model = GetBaseManager().GetManager<IznModelsFactory>()->LoadModel("arrow.FBX");
@@ -62,19 +62,19 @@ void CEditorToolMover::DoInitialize3D(const std::shared_ptr<IRenderer>& Renderer
 	auto modelZ = GetRenderDevice().GetObjectsFactory().CreateModel();
 	modelZ->AddConnection(materialZ, geom);
 
-	m_MoverX = GetScene().CreateSceneNode<ISceneNode>(m_MoverRoot); 
+	m_MoverX = GetScene().CreateSceneNodeT<ISceneNode>(m_MoverRoot); 
 	m_MoverX->SetName("Mover_X");
 	m_MoverX->SetTranslate(glm::vec3(1.0f, 0.0f, 0.0f));
 	m_MoverX->SetRotation(glm::vec3(0.0f, glm::half_pi<float>(), 0.0f));
 	m_MoverX->GetComponentT<IModelsComponent3D>()->SetModel(modelX);
 
-	m_MoverY = GetScene().CreateSceneNode<ISceneNode>(m_MoverRoot);
+	m_MoverY = GetScene().CreateSceneNodeT<ISceneNode>(m_MoverRoot);
 	m_MoverY->SetName("Mover_Y");
 	m_MoverY->SetTranslate(glm::vec3(0.0f, 1.0f, 0.0f));
 	m_MoverY->SetRotation(glm::vec3(-glm::half_pi<float>(), 0.0f, 0.0f));
 	m_MoverY->GetComponentT<IModelsComponent3D>()->SetModel(modelY);
 
-	m_MoverZ = GetScene().CreateSceneNode<ISceneNode>(m_MoverRoot);
+	m_MoverZ = GetScene().CreateSceneNodeT<ISceneNode>(m_MoverRoot);
 	m_MoverZ->SetName("Mover_Z");
 	m_MoverZ->SetTranslate(glm::vec3(0.0f, 0.0f, 1.0f));
 	m_MoverZ->SetRotation(glm::vec3(0.0f, 0.0f, 0.0f));

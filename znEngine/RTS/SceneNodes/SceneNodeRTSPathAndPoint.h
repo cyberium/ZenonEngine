@@ -1,8 +1,5 @@
 #pragma once
 
-#include "EngineSceneIntfs.h"
-
-
 //
 // CSceneNodeRTSPoint
 //
@@ -14,6 +11,7 @@ public:
 	CSceneNodeRTSPoint(IScene& Scene);
 	virtual ~CSceneNodeRTSPoint();
 };
+
 
 
 //
