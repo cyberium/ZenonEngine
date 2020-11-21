@@ -79,6 +79,14 @@ ZN_INTERFACE ZN_API IScene
 	}
 
 	template<class T>
+	inline std::shared_ptr<T> CreateSceneNodeCast(ObjectClass ObjectClass, std::shared_ptr<ISceneNode> Parent = nullptr)
+	{
+		static_assert(std::is_convertible<T*, ISceneNode*>::value, "T must inherit ISceneNode as public.");
+		auto createdNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeFactory>()->CreateSceneNode3D(ObjectClass, *this, Parent);
+		return std::dynamic_pointer_cast<T>(createdNode);
+	}
+
+	template<class T>
 	inline std::shared_ptr<ISceneNode> CreateSceneNodeT(std::shared_ptr<ISceneNode> Parent = nullptr)
 	{
 		static_assert(std::is_convertible<T*, ISceneNode*>::value, "T must inherit ISceneNode as public.");

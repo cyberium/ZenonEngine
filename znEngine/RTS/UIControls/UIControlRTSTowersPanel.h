@@ -3,6 +3,15 @@
 #include "../../UIControls/UIControlCommon.h"
 #include "UIControlRTSTowerBtn.h"
 
+struct STowerDescription
+{
+	std::string                            Name;
+	uint32                                 Cost;
+
+	std::string                            XMLPath;
+	std::shared_ptr<CUIControlRTSTowerBtn> UIButton;
+};
+
 class ZN_API CUIControlRTSTowersPanel
 	: public CUIControlCommon
 {
@@ -14,13 +23,15 @@ public:
 	// CUIControl
 	void Initialize() override;
 
-
-	void AddTowerButton(std::shared_ptr<ITexture> RTSTowerBtnTexture);
-	const std::vector<std::shared_ptr<CUIControlRTSTowerBtn>>& GetTowerButtons();
+	void AddTowerButton(std::string Name, std::string TowerXMLName, std::string TowerTextureName, uint32 TowerCost);
+	const std::vector<STowerDescription>& GetTowerButtons();
+	void SetTowerButtonClickCallback(std::function<bool(const STowerDescription&)> Func);
 
 protected:
 	void CreateWindowGeometry(glm::vec2 Size);
+	void OnTowerButtonClick(const IUIControl* Node, glm::vec2 PosInsideButton);
 
 private:
-	std::vector<std::shared_ptr<CUIControlRTSTowerBtn>> m_TowerButtons;
+	std::vector<STowerDescription> m_TowerButtons;
+	std::function<bool(const STowerDescription&)> m_OnTowerButtonClicked;
 };

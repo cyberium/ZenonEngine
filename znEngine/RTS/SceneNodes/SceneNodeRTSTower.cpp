@@ -111,15 +111,15 @@ void CSceneNodeRTSTower::Update(const UpdateEventArgs & e)
 	auto nearestNode = firstNodeIt->second;
 	_ASSERT(firstNodeIt->first < GetAttackRange());
 
-	auto bullet = GetScene().CreateSceneNodeTCast<ISceneNodeRTSBullet>();
+	auto bullet = GetScene().CreateSceneNodeCast<ISceneNodeRTSBullet>(cSceneNodeRTSBullet);
 	bullet->SetTranslate(GetParent()->GetWorldTransfom() * glm::vec4(GetTranslation(), 1.0f));
 	bullet->SetTarget(std::dynamic_pointer_cast<ISceneNodeRTSUnit>(nearestNode));
 	bullet->GetComponentT<IModelsComponent3D>()->SetModel(m_MissileModel);
 
 	
 	{
-		std::shared_ptr<IParticleComponent3D> particlesComponent = MakeShared(CParticlesComponent, *bullet);
-		bullet->AddComponentT(particlesComponent);
+		std::shared_ptr<IParticleComponent3D> particles = MakeShared(CParticlesComponent, *bullet);
+		bullet->AddComponentT(particles);
 	}
 
 	m_LastAttackTime = e.TotalTime;

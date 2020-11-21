@@ -10,7 +10,7 @@
 
 CSceneNodeRTSBullet::CSceneNodeRTSBullet(IScene & Scene)
 	: CSceneNode(Scene)
-	, m_Damage(1.0f)
+	, m_Damage(10.0f)
 	, m_Speed(1.0f)
 {}
 
@@ -68,16 +68,17 @@ void CSceneNodeRTSBullet::Update(const UpdateEventArgs & e)
 
 	if (m_Target == nullptr)
 		MakeMeOrphan();
-
+	
+	float speedMult = GetSpeed() * float(e.DeltaTimeMultiplier);
 
 	glm::vec3 destinationPoint = GetDestinationPoint();
 	glm::vec3 direction = glm::normalize(destinationPoint - GetTranslation());
 
 	glm::vec3 newPosition = GetTranslation();
-	newPosition += direction * GetSpeed() * float(e.DeltaTimeMultiplier);
+	newPosition += direction * speedMult;
 	SetTranslate(newPosition);
 
-	if (glm::distance(GetTranslation(), destinationPoint) < GetSpeed() * 2.0f)
+	if (glm::distance(GetTranslation(), destinationPoint) < speedMult * 2.0f)
 	{
 		m_Target->DealDamage(GetDamage());
 		MakeMeOrphan();

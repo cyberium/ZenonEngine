@@ -167,8 +167,6 @@ void CSceneDefault::Load3D()
 		// Original skeleton
 		auto originalSkeletonModel = fbxSceneLoader->LoadScene("Toon_RTS/models/WK_archer.FBX", &fbxLoaderParams)->MergeModels();
 		
-		
-
 		// Animated skeleton
 		auto animatedSkeletonModel = fbxSceneLoader->LoadScene("Toon_RTS/animation/archer/WK_archer_03_run.FBX", &fbxLoaderParams)->MergeModels();
 		originalSkeletonModel->ApplyOtherSkeleton(animatedSkeletonModel);

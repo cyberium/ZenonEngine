@@ -82,12 +82,18 @@ void CSceneNodeRTSUnit::SetPath(std::shared_ptr<ISceneNodeRTSPath> Path)
 	SetTranslate(Path->GetPoints()[0]->GetTranslation());
 }
 
+void CSceneNodeRTSUnit::SetLastPathPointReached(std::function<void(const ISceneNodeRTSUnit* Unit)> Func)
+{
+	_ASSERT(m_OnLastPathPointReached == nullptr);
+	m_OnLastPathPointReached = Func;
+}
+
 void CSceneNodeRTSUnit::DealDamage(float Damage)
 {
 	_ASSERT(Damage > 0.0f);
 	m_Health -= Damage;
-	//if (m_Health < 0.0f)
-	//	MakeMeOrphan();
+	if (m_Health <= 0.0f)
+		MakeMeOrphan();
 }
 
 
@@ -99,24 +105,12 @@ void CSceneNodeRTSUnit::Initialize()
 {
 	__super::Initialize();
 
-#if 0
+	//SetScale(glm::vec3(0.08f));
 
-	auto model = GetBaseManager().GetManager<IznModelsFactory>()->LoadModel("models/cactus_tall.znmdl");
-	//GetComponentT<IModelsComponent3D>()->SetModel(model);
+	//auto znMdlFile = GetBaseManager().GetManager<IznModelsFactory>()->LoadModel("OrcWithAnims.znmdl");
 
-
-	auto m2Node = GetScene().CreateSceneNode<ISceneNode>(ZN_GET_OBJECTCLASS(150), shared_from_this());
-	m2Node->SetScale(glm::vec3(3.0f));
-	m2Node->SetName("M2Node");
-
-#endif
-
-	SetScale(glm::vec3(0.08f));
-
-	auto znMdlFile = GetBaseManager().GetManager<IznModelsFactory>()->LoadModel("OrcWithAnims.znmdl");
-
-	GetComponentT<IModelsComponent3D>()->SetModel(znMdlFile);
-	GetComponentT<IModelsComponent3D>()->PlayAnimation("run", true);
+	//GetComponentT<IModelsComponent3D>()->SetModel(znMdlFile);
+	//GetComponentT<IModelsComponent3D>()->PlayAnimation("run", true);
 
 	//std::shared_ptr<IParticleComponent3D> particlesComponent = MakeShared(CParticlesComponent, *this);
 	//AddComponentT(particlesComponent);
@@ -132,8 +126,9 @@ void CSceneNodeRTSUnit::Update(const UpdateEventArgs & e)
 	auto nextPoint = m_Path->GetPoint(m_PathCurrentPoint + 1);
 	if (nextPoint == nullptr)
 	{
-		SetTranslate(m_Path->GetPoint(0)->GetTranslation());
-		m_PathCurrentPoint = 0;
+		if (m_OnLastPathPointReached)
+			m_OnLastPathPointReached(this);
+		MakeMeOrphan();
 		return;
 	}
 
@@ -142,17 +137,15 @@ void CSceneNodeRTSUnit::Update(const UpdateEventArgs & e)
 	glm::vec3 newPosition = GetTranslation();
 	newPosition += direction * GetMovementSpeed() * float(e.DeltaTimeMultiplier);
 
-	
-	
+	// Translations
 	SetTranslate(newPosition);
 	
+	// Rotation
 	glm::quat t = glm::quat(glm::vec3(0, glm::pi<float>(), 0));
 	t *= glm::conjugate(glm::toQuat(glm::lookAt(GetTranslation(), GetTranslation() + direction, glm::vec3(0.0f, 1.0f, 0.0f))));
-	
-	
 	SetRotationQuaternion(t);
 
-	if (glm::distance(GetTranslation(), nextPoint->GetTranslation()) < GetMovementSpeed() * 2.0f)
+	if (glm::distance(GetTranslation(), nextPoint->GetTranslation()) < GetMovementSpeed() * float(e.DeltaTimeMultiplier) * 2.0f)
 	{
 		m_PathCurrentPoint++;
 	}

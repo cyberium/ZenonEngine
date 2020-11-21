@@ -45,7 +45,7 @@ public:
 	virtual void                                    Accept(IVisitor* visitor) override;
 
 	// UI events
-	void                                            SetOnClickCallback(std::function<void(const IUIControl* Node, glm::vec2)> OnClickCallback);
+	void                                            SetOnClickCallback(std::function<void(const IUIControl* Node, glm::vec2 PosInsideButton)> OnClickCallback);
 
 	// Input events
 	virtual bool                                    OnKeyPressed(KeyEventArgs& e);

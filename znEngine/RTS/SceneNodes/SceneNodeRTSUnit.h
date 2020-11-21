@@ -17,6 +17,7 @@ public:
 	float GetMovementSpeed() const override;
 
 	void SetPath(std::shared_ptr<ISceneNodeRTSPath> Path) override;
+	void SetLastPathPointReached(std::function<void(const ISceneNodeRTSUnit* Unit)> Func);
 	void DealDamage(float Damage) override;
 
 	// ISceneNode
@@ -28,5 +29,6 @@ private:
 	float m_MaxHealth;
 	float m_Speed;
 	std::shared_ptr<ISceneNodeRTSPath> m_Path;
+	std::function<void(const ISceneNodeRTSUnit* Unit)> m_OnLastPathPointReached;
 	size_t m_PathCurrentPoint;
 };

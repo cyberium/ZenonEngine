@@ -39,6 +39,7 @@
 
 #include "ThreadPool.h"
 
+
 namespace
 {
 	std::string GetExeFileName()
@@ -54,6 +55,7 @@ namespace
 		return f.substr(0, f.find_last_of("\\/"));
 	}
 }
+
 
 void Application::InitializeEngineInternal()
 {
@@ -93,14 +95,12 @@ void Application::InitializeEngineInternal()
 	}
 
 
-
 	// Render stuff
 	{
 		std::shared_ptr<IznRenderDeviceFactory> renderDeviceFactory = MakeShared(CznRenderDeviceFactory, GetBaseManager());
 		GetBaseManager().AddManager<IznRenderDeviceFactory>(renderDeviceFactory);
 		pluginsManager->AddPluginEventListener(std::dynamic_pointer_cast<IznPluginsEventListener>(renderDeviceFactory));
 	}
-
 
 
 	// Images
@@ -111,12 +111,10 @@ void Application::InitializeEngineInternal()
 	}
 
 
-
 	// Materials
 	{
 		GetBaseManager().AddManager<IMaterialsFactory>(MakeShared(CMaterialsFactory, GetBaseManager()));
 	}
-
 
 
 	// Models
@@ -124,7 +122,6 @@ void Application::InitializeEngineInternal()
 		GetBaseManager().AddManager<IznModelsFactory>(MakeShared(CznModelsFactory, GetBaseManager()));
 		GetBaseManager().GetManager<IznModelsFactory>()->AddModelsLoader(MakeShared(CznEngineModelsLoader, GetBaseManager()));
 	}
-
 
 
 	// Textures
@@ -152,18 +149,25 @@ void Application::InitializeEngineInternal()
 		EngineSceneTypesExtender(GetBaseManager());
 	}
 
+
 	// Plugins
 	{
-		try
+		std::vector<std::string> plugins;
+		plugins.push_back("znRenderDX11.dll");
+		//plugins.push_back("znPluginM2Models.dll");
+		plugins.push_back("znPluginFBXModels.dll");
+
+		for (const auto& p : plugins)
 		{
-			std::string pathToPlugins = GetExePath();
-			pluginsManager->AddPlugin(pathToPlugins + "\\" + "znRenderDX11.dll");
-			//pluginsManager->AddPlugin(pathToPlugins + "\\" + "znPluginM2Models.dll");
-			pluginsManager->AddPlugin(pathToPlugins + "\\" + "znPluginFBXModels.dll");
-		}
-		catch (const std::exception& e)
-		{
-			Log::Error("Error while initialize plugin: %s", e.what());
+			try
+			{
+				pluginsManager->AddPlugin(GetExePath() + "\\" + p);
+			}
+			catch (const CException& e)
+			{
+				Log::Error("Error while initialize plugin '%s'.", p.c_str());
+				Log::Error("--->%s", e.MessageCStr());
+			}
 		}
 
 		pluginsManager->InitializeAllPlugins();
