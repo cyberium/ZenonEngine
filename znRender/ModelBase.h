@@ -6,6 +6,7 @@
 
 class ZN_API ModelBase 
 	: public IModel
+	, public IModelInternal
 	, public Object
 {
 public:
@@ -22,6 +23,7 @@ public:
 	// Skeleton
 	void                                            AddSkeletonAnimation(std::shared_ptr<IModel> SkeletonAnimation) override;
 	const SSkeletonAnimation&                       GetSkeletonAnimation(size_t Index) override;
+	const std::vector<SSkeletonAnimation>&          GetSkeletonAnimations() const override;
 
 	void                                            ApplyOtherSkeleton(std::shared_ptr<IModel> other) override;
 	void                                            AddBone(const std::shared_ptr<ISkeletonBone> Bone) override;
@@ -39,6 +41,9 @@ public:
 	const Animations_t&                             GetAnimations() const;
 
 	virtual void                                    Accept(IVisitor* visitor) override;
+
+	// IModelInternal
+	void                                            AddSkeletonAnimationInternal(const SSkeletonAnimation& SkeletonAnimation) override;
 
 protected:
 	void                                            UpdateBounds(const std::shared_ptr<IGeometry>& Geometry);

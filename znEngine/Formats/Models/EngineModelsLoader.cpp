@@ -164,6 +164,26 @@ std::shared_ptr<IModel> CznEngineModelsLoader::LoadModel(const std::shared_ptr<I
 
 
 	//
+	// Load skeleton animations
+	{
+		std::vector<std::shared_ptr<IAnimation>> skeletonAnimations;
+		size_t skeletonAnimationsCount;
+		if (ModelFile->read(&skeletonAnimationsCount))
+		{
+			skeletonAnimations.reserve(skeletonAnimationsCount);
+			for (size_t i = 0; i < skeletonAnimationsCount; i++)
+			{
+				glm::mat4 matrix;
+				ModelFile->read(&matrix);
+				SSkeletonAnimation skeletonAnimation;
+				skeletonAnimation.RootBoneLocalTransform = matrix;
+				std::dynamic_pointer_cast<IModelInternal>(model)->AddSkeletonAnimationInternal(skeletonAnimation);
+			}
+		}
+	}
+
+
+	//
 	// Load animations
 	{
 		std::vector<std::shared_ptr<IAnimation>> animations;
@@ -259,37 +279,56 @@ std::shared_ptr<IFile> CznEngineModelsLoader::SaveModel(const std::shared_ptr<IM
 
 	//
 	// Save connections
-	size_t connectionsCount = indexedConnections.size();
-	file->write(&connectionsCount);
-	for (const auto& c : indexedConnections)
 	{
-		file->write(&c.MaterialIndex);
-		file->write(&c.GeometryIndex);
-		file->write(&c.GeometryDrawArgs);
+		size_t connectionsCount = indexedConnections.size();
+		file->write(&connectionsCount);
+		for (const auto& c : indexedConnections)
+		{
+			file->write(&c.MaterialIndex);
+			file->write(&c.GeometryIndex);
+			file->write(&c.GeometryDrawArgs);
+		}
+	}
+
+
+	//
+	// Save skeleton animations
+	{
+		const auto& skeletonAnimations = Model->GetSkeletonAnimations();
+		size_t skeletonAnimationsCount = skeletonAnimations.size();
+		file->write(&skeletonAnimationsCount);
+		for (const auto& sa : skeletonAnimations)
+		{
+			file->write(&sa.RootBoneLocalTransform);
+		}
 	}
 
 
 	//
 	// Save animations
-	const auto& animations = Model->GetAnimations();
-	size_t animationsCount = animations.size();
-	file->write(&animationsCount);
-	for (const auto& a : animations)
 	{
-		if (auto loadSave = std::dynamic_pointer_cast<IObjectLoadSave>(a.second))
-			loadSave->Save(file);
+		const auto& animations = Model->GetAnimations();
+		size_t animationsCount = animations.size();
+		file->write(&animationsCount);
+		for (const auto& a : animations)
+		{
+			if (auto loadSave = std::dynamic_pointer_cast<IObjectLoadSave>(a.second))
+				loadSave->Save(file);
+		}
 	}
 
 	
 	//
 	// Save bones
-	const auto& bones = Model->GetBones();
-	size_t bonesCount = bones.size();
-	file->write(&bonesCount);
-	for (const auto& b : bones)
 	{
-		if (auto loadSave = std::dynamic_pointer_cast<IObjectLoadSave>(b))
-			loadSave->Save(file);
+		const auto& bones = Model->GetBones();
+		size_t bonesCount = bones.size();
+		file->write(&bonesCount);
+		for (const auto& b : bones)
+		{
+			if (auto loadSave = std::dynamic_pointer_cast<IObjectLoadSave>(b))
+				loadSave->Save(file);
+		}
 	}
 
 	// Fix skeleton matrix

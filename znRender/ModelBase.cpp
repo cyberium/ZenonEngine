@@ -80,6 +80,11 @@ const SSkeletonAnimation& ModelBase::GetSkeletonAnimation(size_t Index)
 	return m_Skeletons.at(Index);
 }
 
+const std::vector<SSkeletonAnimation>& ModelBase::GetSkeletonAnimations() const
+{
+	return m_Skeletons;
+}
+
 void ModelBase::ApplyOtherSkeleton(std::shared_ptr<IModel> other)
 {
 	for (const auto& b : m_Bones)
@@ -196,6 +201,16 @@ void ModelBase::Accept(IVisitor* visitor)
 			connection.Geometry->Accept(visitor, connection.Material.get(), connection.GeometryDrawArgs);
 		}
 	}
+}
+
+
+
+//
+// IModelInternal
+//
+void ModelBase::AddSkeletonAnimationInternal(const SSkeletonAnimation& SkeletonAnimation)
+{
+	m_Skeletons.push_back(SkeletonAnimation);
 }
 
 

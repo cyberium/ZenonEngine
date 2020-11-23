@@ -96,6 +96,8 @@ ZN_INTERFACE ZN_API IModel
 	// Skeleton
 	virtual void                                    AddSkeletonAnimation(std::shared_ptr<IModel> SkeletonAnimation) = 0;
 	virtual const SSkeletonAnimation&               GetSkeletonAnimation(size_t Index) = 0;
+	virtual const std::vector<SSkeletonAnimation>&  GetSkeletonAnimations() const = 0;
+
 	virtual void                                    ApplyOtherSkeleton(std::shared_ptr<IModel> other) = 0;
 	virtual void                                    AddBone(const std::shared_ptr<ISkeletonBone> Bone) = 0;
 	virtual void                                    SetFixSkeleton(const glm::mat4& Matrix) = 0;
@@ -117,4 +119,12 @@ ZN_INTERFACE ZN_API IModel
 	virtual void                                    Accept(IVisitor* visitor) = 0;
 };
 typedef std::shared_ptr<IModel> IModelPtr;
+
+
+ZN_INTERFACE ZN_API IModelInternal
+{
+	virtual ~IModelInternal() {}
+
+	virtual void AddSkeletonAnimationInternal(const SSkeletonAnimation& SkeletonAnimation) = 0;
+};
 

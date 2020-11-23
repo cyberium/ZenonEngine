@@ -66,7 +66,7 @@ void CSkeletonComponentBone3D::SetParentAndChildsInternals(const std::vector<std
 	if (parentIndex != -1)
 	{
 		_ASSERT(m_ParentBone.lock() == nullptr);
-		_ASSERT(m_Bone->GetParentIndex() < Bones.size());
+		_ASSERT(m_ProtoBone->GetParentIndex() < Bones.size());
 		auto parentBone = Bones[parentIndex];
 		std::dynamic_pointer_cast<ISkeletonComponentBoneInternal3D>(parentBone)->AddChildInternal(shared_from_this());
 		m_ParentBone = parentBone;
@@ -85,7 +85,7 @@ void CSkeletonComponentBone3D::Calculate(const IModelsComponent3D* ModelsCompone
 	}
 	else
 	{
-		_ASSERT(m_Bone->GetParentIndex() == -1);
+		_ASSERT(m_ProtoBone->GetParentIndex() == -1);
 	}
 
 	m_Matrix = m_ProtoBone->CalcMatrix(ModelsComponent);

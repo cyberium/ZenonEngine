@@ -21,6 +21,7 @@ public:
 	// Skeleton
 	void                                                      AddSkeletonAnimation(std::shared_ptr<IModel> SkeletonAnimation) override;
 	const SSkeletonAnimation&                                 GetSkeletonAnimation(size_t Index) override;
+	const std::vector<SSkeletonAnimation>&                    GetSkeletonAnimations() const override;
 
 	void                                                      ApplyOtherSkeleton(std::shared_ptr<IModel> other) override;
 	void                                                      AddBone(const std::shared_ptr<ISkeletonBone> Bone) override;

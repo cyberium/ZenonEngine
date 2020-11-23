@@ -228,11 +228,13 @@ std::shared_ptr<IModel> CSceneRTS::CreateUnitModel(std::string ModelName, std::s
 	// Animated skeleton
 	auto animatedSkeletonModel = fbxSceneLoader->LoadScene(animationFile, &fbxLoaderParams)->MergeModels();
 	originalSkeletonModel->ApplyOtherSkeleton(animatedSkeletonModel);
+	originalSkeletonModel->AddSkeletonAnimation(animatedSkeletonModel);
 	for (const auto& anim : animatedSkeletonModel->GetAnimations())
 		originalSkeletonModel->AddAnimation("run", anim.second);
 
 	auto animatedSkeletonModel2 = fbxSceneLoader->LoadScene(DeathAnimationName, &fbxLoaderParams)->MergeModels();
 	originalSkeletonModel->ApplyOtherSkeleton(animatedSkeletonModel2);
+	originalSkeletonModel->AddSkeletonAnimation(animatedSkeletonModel2);
 	for (const auto& anim : animatedSkeletonModel2->GetAnimations())
 		originalSkeletonModel->AddAnimation("death", anim.second);
 

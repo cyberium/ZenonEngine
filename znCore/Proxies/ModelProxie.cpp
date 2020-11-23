@@ -62,6 +62,11 @@ const SSkeletonAnimation & ModelProxie::GetSkeletonAnimation(size_t Index)
 	return m_Model->GetSkeletonAnimation(Index);
 }
 
+const std::vector<SSkeletonAnimation>& ModelProxie::GetSkeletonAnimations() const
+{
+	return m_Model->GetSkeletonAnimations();
+}
+
 void ModelProxie::ApplyOtherSkeleton(std::shared_ptr<IModel> other)
 {
 	m_Model->ApplyOtherSkeleton(other);
