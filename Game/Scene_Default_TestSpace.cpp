@@ -170,13 +170,15 @@ void CSceneDefault::Load3D()
 		// Animated skeleton
 		auto animatedSkeletonModel = fbxSceneLoader->LoadScene("Toon_RTS/animation/archer/WK_archer_03_run.FBX", &fbxLoaderParams)->MergeModels();
 		originalSkeletonModel->ApplyOtherSkeleton(animatedSkeletonModel);
+		originalSkeletonModel->AddSkeletonAnimation(animatedSkeletonModel);
 		for (const auto& anim : animatedSkeletonModel->GetAnimations())
 			originalSkeletonModel->AddAnimation("run", anim.second);
 
-		//auto animatedSkeletonModel2 = fbxSceneLoader->LoadScene("Toon_RTS/animation/archer/WK_archer_10_death_A.FBX", &fbxLoaderParams)->MergeModels();
-		//originalSkeletonModel->ApplyOtherSkeleton(animatedSkeletonModel2);
-		//for (const auto& anim : animatedSkeletonModel2->GetAnimations())
-		//	originalSkeletonModel->AddAnimation("death", anim.second);
+		auto animatedSkeletonModel2 = fbxSceneLoader->LoadScene("Toon_RTS/animation/archer/WK_archer_10_death_A.FBX", &fbxLoaderParams)->MergeModels();
+		originalSkeletonModel->ApplyOtherSkeleton(animatedSkeletonModel2);
+		originalSkeletonModel->AddSkeletonAnimation(animatedSkeletonModel2);
+		for (const auto& anim : animatedSkeletonModel2->GetAnimations())
+			originalSkeletonModel->AddAnimation("death", anim.second);
 
 		GetBaseManager().GetManager<IFilesManager>()->Delete("OrcWithAnims.znmdl");
 

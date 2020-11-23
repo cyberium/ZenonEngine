@@ -67,6 +67,19 @@ const std::vector<IModel::SConnection>& ModelBase::GetConnections() const
 //
 // Skeleton
 //
+void ModelBase::AddSkeletonAnimation(std::shared_ptr<IModel> SkeletonAnimation)
+{
+	SSkeletonAnimation skeletonAnimation;
+	skeletonAnimation.RootBoneLocalTransform = SkeletonAnimation->GetRootBone()->GetLocalMatrix();
+	m_Skeletons.push_back(skeletonAnimation);
+}
+
+const SSkeletonAnimation& ModelBase::GetSkeletonAnimation(size_t Index)
+{
+	_ASSERT(Index < m_Skeletons.size());
+	return m_Skeletons.at(Index);
+}
+
 void ModelBase::ApplyOtherSkeleton(std::shared_ptr<IModel> other)
 {
 	for (const auto& b : m_Bones)

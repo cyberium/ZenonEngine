@@ -535,7 +535,6 @@ void CFBXModel::MaterialLoad(fbxsdk::FbxMesh* NativeMesh)
 
 void CFBXModel::SkeletonLoad(fbxsdk::FbxMesh* NativeMesh)
 {
-#if 1
 	FbxVector4* controlPoints = NativeMesh->GetControlPoints();
 	if (controlPoints == nullptr)
 	{
@@ -569,9 +568,7 @@ void CFBXModel::SkeletonLoad(fbxsdk::FbxMesh* NativeMesh)
 			FbxAMatrix transformLinkMatrix;
 			cluster->GetTransformLinkMatrix(transformLinkMatrix);
 
-			FbxAMatrix globalBindposeInverseMatrix;
-
-			globalBindposeInverseMatrix = transformLinkMatrix.Inverse() * transformMatrix * geometryTransform;
+			FbxAMatrix globalBindposeInverseMatrix = transformLinkMatrix.Inverse() * transformMatrix * geometryTransform;
 
 			std::string jointname = cluster->GetLink()->GetName();
 
@@ -615,36 +612,6 @@ void CFBXModel::SkeletonLoad(fbxsdk::FbxMesh* NativeMesh)
 			}
 		}
 	}
-#endif
 }
-
-/*void CFBXModel::DisplayMaterialMapping(fbxsdk::FbxGeometryElementMaterial* materialElement)
-{
-	const char* lMappingTypes[] = { "None", "By Control Point", "By Polygon Vertex", "By Polygon", "By Edge", "All Same" };
-	const char* lReferenceMode[] = { "Direct", "Index", "Index to Direct" };
-
-
-	DisplayString("           Mapping: ", lMappingTypes[materialElement->GetMappingMode()]);
-	DisplayString("           ReferenceMode: ", lReferenceMode[materialElement->GetReferenceMode()]);
-
-	if (materialElement->GetReferenceMode() == FbxGeometryElement::eDirect)
-	{
-
-	}
-	else if (materialElement->GetReferenceMode() == FbxGeometryElement::eIndexToDirect)
-	{
-		FbxString lString;
-
-		lString = "           Indices: ";
-
-		for (int i = 0; i < materialElement->GetIndexArray().GetCount(); i++)
-		{
-			lString += materialElement->GetIndexArray().GetAt(i);
-			lString += ", ";
-		}
-
-		Log::Print(lString);
-	}
-}*/
 
 #endif

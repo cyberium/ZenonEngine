@@ -2,6 +2,8 @@
 
 #include "GeometryBase.h"
 
+
+
 class ZN_API ModelBase 
 	: public IModel
 	, public Object
@@ -18,6 +20,9 @@ public:
 	const std::vector<SConnection>&                 GetConnections() const override;
 
 	// Skeleton
+	void                                            AddSkeletonAnimation(std::shared_ptr<IModel> SkeletonAnimation) override;
+	const SSkeletonAnimation&                       GetSkeletonAnimation(size_t Index) override;
+
 	void                                            ApplyOtherSkeleton(std::shared_ptr<IModel> other) override;
 	void                                            AddBone(const std::shared_ptr<ISkeletonBone> Bone) override;
 	void                                            SetFixSkeleton(const glm::mat4& Matrix) override;
@@ -47,6 +52,7 @@ protected:
 	glm::mat4                                       m_FixMatrix;
 	std::shared_ptr<ISkeletonBone>                  m_RootBone;
 	std::vector<std::shared_ptr<ISkeletonBone>>     m_Bones;
+	std::vector<SSkeletonAnimation>                 m_Skeletons;
 
 	// Animations
 	Animations_t                                    m_Animations;

@@ -19,6 +19,9 @@ public:
 	const std::vector<SConnection>& GetConnections() const override final;
 
 	// Skeleton
+	void                                                      AddSkeletonAnimation(std::shared_ptr<IModel> SkeletonAnimation) override;
+	const SSkeletonAnimation&                                 GetSkeletonAnimation(size_t Index) override;
+
 	void                                                      ApplyOtherSkeleton(std::shared_ptr<IModel> other) override;
 	void                                                      AddBone(const std::shared_ptr<ISkeletonBone> Bone) override;
 	void                                                      SetFixSkeleton(const glm::mat4& Matrix) override;

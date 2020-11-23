@@ -94,7 +94,7 @@ void CFBXAnimation::DisplayChannels(fbxsdk::FbxNode* FBXNode, fbxsdk::FbxAnimSta
 	fbxsdk::FbxLongLong animationStartFrame = animationInterval.GetStart().GetFrameCount();
 	fbxsdk::FbxLongLong animationEndFrame = animationInterval.GetStop().GetFrameCount();
 
-	for (fbxsdk::FbxLongLong i = animationStartFrame; i < animationEndFrame; i++)
+	for (fbxsdk::FbxLongLong i = animationStartFrame; i <= animationEndFrame; i++)
 	{
 		fbxsdk::FbxTime keyTime;
 		keyTime.SetFrame(i);

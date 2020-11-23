@@ -319,9 +319,6 @@
     <ClInclude Include="XML\XMLReader.h" />
     <ClInclude Include="XML\XMLWriter.h" />
   </ItemGroup>
-  <ItemGroup>
-    <Text Include="Files\FormatsDescription.txt" />
-  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{A4E6F769-0036-4128-A409-495D9207F587}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>

@@ -48,9 +48,20 @@ const std::vector<ModelProxie::SConnection>& ModelProxie::GetConnections() const
 }
 
 
+
 //
 // Skeleton
 //
+void ModelProxie::AddSkeletonAnimation(std::shared_ptr<IModel> SkeletonAnimation)
+{
+	m_Model->AddSkeletonAnimation(SkeletonAnimation);
+}
+
+const SSkeletonAnimation & ModelProxie::GetSkeletonAnimation(size_t Index)
+{
+	return m_Model->GetSkeletonAnimation(Index);
+}
+
 void ModelProxie::ApplyOtherSkeleton(std::shared_ptr<IModel> other)
 {
 	m_Model->ApplyOtherSkeleton(other);

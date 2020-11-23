@@ -13,15 +13,13 @@ public:
 
 	// ISkeletonBone
 	void MergeWithOther(std::shared_ptr<ISkeletonBone> OtherBone) override;
+
 	std::string GetName() const override;
 	int32 GetParentIndex() const override;
-
 	void SetLocalMatrix(const glm::mat4& Matrix) override;
 	glm::mat4 GetLocalMatrix() const override;
-
 	void SetPivotMatrix(const glm::mat4& Matrix) override;
 	glm::mat4 GetPivotMatrix() const override;
-
 	void SetFuckingMatrix(const glm::mat4& Matrix) override;
 	glm::mat4 GetFuckingMatrix() const override;
 
@@ -35,14 +33,18 @@ public:
 	void Load(const std::shared_ptr<IXMLReader>& Reader) override;
 	void Save(const std::shared_ptr<IXMLWriter>& Writer) const override;
 
-	std::string          Name;
-	int32                ParentIndex;
+protected:
+	bool IsRootBone() const;
 
-	glm::mat4            LocalTransform;
-	glm::mat4            PivotMatrix;
-	glm::mat4            FuckingMatrix;
+private:
+	std::string          m_Name;
+	int32                m_ParentIndex;
+
+	glm::mat4            m_LocalTransform;
+	glm::mat4            m_PivotMatrix;
+	glm::mat4            m_FuckingMatrix;
 	
-
+public:
 	CznAnimatedValue<float> pX, pY, pZ;
 	CznAnimatedValue<float> rX, rY, rZ;
 	CznAnimatedValue<float> sX, sY, sZ;

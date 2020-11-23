@@ -26,7 +26,7 @@ public:
 	void Reset() override;
 
 protected:
-	std::shared_ptr<ISkeletonBone>                 m_Bone;
+	std::shared_ptr<ISkeletonBone>                 m_ProtoBone;
 	std::weak_ptr<ISkeletonComponentBone3D>        m_ParentBone;
 	std::vector<std::shared_ptr<ISkeletonComponentBone3D>> m_Childs;
 	glm::vec3                                      m_PivotPoint;

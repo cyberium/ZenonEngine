@@ -169,7 +169,7 @@ void CFBXSkeleton::ProcessSkeletonHeirarchyre(fbxsdk::FbxNode* node, int depth, 
 		Log::Info("FBXSkeleton: %s'%s' is bone. Parent index: '%d'.", strOffset.c_str(), node->GetName(), parentindex);
 
 		std::shared_ptr<CSkeletonBone> bone = MakeShared(CSkeletonBone, node->GetName(), parentindex);
-		bone->LocalTransform = ToGLMMat4(node->EvaluateLocalTransform());
+		bone->SetLocalMatrix(ToGLMMat4(node->EvaluateLocalTransform()));
 		m_Bones.push_back(bone);
 
 		// Root

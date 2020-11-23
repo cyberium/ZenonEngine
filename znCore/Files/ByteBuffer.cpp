@@ -6,8 +6,8 @@
 #include "ByteBufferHelper.h"
 
 
-CByteBuffer::CByteBuffer() :
-	m_CurrentPosition(0)
+CByteBuffer::CByteBuffer() 
+	: m_CurrentPosition(0)
 {}
 
 CByteBuffer::CByteBuffer(const CByteBuffer& _other)
@@ -107,7 +107,6 @@ bool CByteBuffer::readString(std::string* String)
 {
 	return Utils::ByteBufferHelper::readString(this, String);
 }
-
 
 void CByteBuffer::writeLine(const std::string& String)
 {

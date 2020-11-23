@@ -10,7 +10,10 @@ class RenderEventArgs;
 ZN_INTERFACE IModelsComponent3D;
 // FORWARD END
 
-
+struct ZN_API SSkeletonAnimation
+{
+	glm::mat4 RootBoneLocalTransform;
+};
 
 ZN_INTERFACE ZN_API ISkeletonBone
 {
@@ -91,6 +94,8 @@ ZN_INTERFACE ZN_API IModel
 	virtual const std::vector<SConnection>&         GetConnections() const = 0;
 
 	// Skeleton
+	virtual void                                    AddSkeletonAnimation(std::shared_ptr<IModel> SkeletonAnimation) = 0;
+	virtual const SSkeletonAnimation&               GetSkeletonAnimation(size_t Index) = 0;
 	virtual void                                    ApplyOtherSkeleton(std::shared_ptr<IModel> other) = 0;
 	virtual void                                    AddBone(const std::shared_ptr<ISkeletonBone> Bone) = 0;
 	virtual void                                    SetFixSkeleton(const glm::mat4& Matrix) = 0;

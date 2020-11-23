@@ -45,8 +45,6 @@ inline glm::quat interpolateLinear<glm::quat>(const float r, const glm::quat& v1
 	return glm::slerp(v1, v2, r);
 }
 
-
-
 template<class T>
 inline T interpolateHermite(const float r, const T& v1, const T& v2, const T& in, const T& out)
 {
@@ -94,7 +92,7 @@ class CznAnimatedValue
 {
 public:
 	CznAnimatedValue()
-		: m_Type(Interpolations::INTERPOLATION_LINEAR)
+		: m_Type(Interpolations::INTERPOLATION_NONE)
 	{}
 
 	inline void Initialize(const AnimatedTrack<D>& b)
@@ -124,8 +122,6 @@ public:
 			m_Times[j].assign(times, times + pHeadTimes[j].size);
 
 			_ASSERT(values != nullptr);
-
-
 
 			for (uint32 i = 0; i < pHeadValues[j].size; i++)
 			{
@@ -210,7 +206,7 @@ public:
 				_ASSERT_EXPR(false, "M2_Animated: Unknown interpolation type.");
 			}
 		}
-		else if (!pData.empty())
+		else if (false == pData.empty())
 		{
 			return pData.at(0);
 		}

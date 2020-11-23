@@ -76,25 +76,21 @@ void CSceneDefault::Initialize()
 	//--------------------------------------------------------------------------
 	// XML
 	//--------------------------------------------------------------------------
-	if (auto file = GetBaseManager().GetManager<IFilesManager>()->Open("RTS22656"))
+	/*if (auto file = GetBaseManager().GetManager<IFilesManager>()->Open("RTS22656"))
 	{
 		CXMLManager xml(GetBaseManager());
 		auto reader = xml.CreateReader(file);
 		auto rootNodeXML = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeFactory>()->LoadSceneNode3DXML(reader->GetChilds()[0], *this);
-	}
+	}*/
 }
 
 void CSceneDefault::Finalize()
 {
-	// Insert code here
-
 	SceneBase::Finalize();
 }
 
 void CSceneDefault::OnUpdate(UpdateEventArgs & e)
 {
-
-
 	__super::OnUpdate(e);
 }
 

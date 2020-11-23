@@ -164,7 +164,11 @@ size_t CModelsComponent3D::GetCurrentAnimationIndex() const
 uint32 CModelsComponent3D::GetCurrentAnimationFrame() const
 {
 	uint32 currentAnimationFrame = m_CurrentAnimation->GetFrameStart() + static_cast<uint32>(glm::round(m_CurrentTime));
-	_ASSERT(currentAnimationFrame < m_CurrentAnimation->GetFrameEnd());
+	if (currentAnimationFrame >= m_CurrentAnimation->GetFrameEnd())
+	{
+		_ASSERT(m_CurrentAnimation->GetFrameEnd() != 0);
+		currentAnimationFrame = m_CurrentAnimation->GetFrameEnd() - 1;
+	}
 	return currentAnimationFrame;
 }
 
@@ -189,11 +193,15 @@ void CModelsComponent3D::Update(const UpdateEventArgs & e)
 
 	if ((m_CurrentAnimation != nullptr) && (false == m_IsAnimationPaused))
 	{
-		m_CurrentTime += e.DeltaTimeMultiplier;
-
 		// Animation don't ended
-		if (m_CurrentTime >= m_CurrentAnimation->GetFrameEnd())
+		if (m_CurrentTime < m_CurrentAnimation->GetFrameEnd())
 		{
+			m_CurrentTime += e.DeltaTimeMultiplier;
+		}
+		else
+		{
+			m_CurrentTime = m_CurrentAnimation->GetFrameEnd() - 1;
+
 			if (m_OnAnimationEnded)
 				m_OnAnimationEnded(m_CurrentAnimation);
 

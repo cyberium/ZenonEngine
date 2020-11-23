@@ -9,11 +9,11 @@ CSkeletonBone::CSkeletonBone(const std::shared_ptr<IByteBuffer>& Buffer)
 }
 
 CSkeletonBone::CSkeletonBone(const std::string & Name, int32 ParentIndex)
-	: Name(Name)
-	, ParentIndex(ParentIndex)
-	, PivotMatrix(glm::mat4(1.0f))
-	, LocalTransform(glm::mat4(1.0f))
-	, FuckingMatrix(glm::mat4(1.0f))
+	: m_Name(Name)
+	, m_ParentIndex(ParentIndex)
+	, m_PivotMatrix(glm::mat4(1.0f))
+	, m_LocalTransform(glm::mat4(1.0f))
+	, m_FuckingMatrix(glm::mat4(1.0f))
 {
 }
 
@@ -25,7 +25,7 @@ CSkeletonBone::~CSkeletonBone()
 
 //
 // ISkeletonBone
-//
+//-
 void CSkeletonBone::MergeWithOther(std::shared_ptr<ISkeletonBone> OtherBone)
 {
 	auto otherAsMe = std::static_pointer_cast<CSkeletonBone>(OtherBone);
@@ -44,49 +44,49 @@ void CSkeletonBone::MergeWithOther(std::shared_ptr<ISkeletonBone> OtherBone)
 
 	m_CalculatedMatrixes.MergeWithOther(otherAsMe->m_CalculatedMatrixes);
 
-	LocalTransform = otherAsMe->LocalTransform;
+	//m_LocalTransform = otherAsMe->m_LocalTransform;
 	//PivotMatrix = otherAsMe->PivotMatrix;
 	//FuckingMatrix = otherAsMe->FuckingMatrix;
 }
 
 std::string CSkeletonBone::GetName() const
 {
-	return Name;
+	return m_Name;
 }
 
 int32 CSkeletonBone::GetParentIndex() const
 {
-	return ParentIndex;
+	return m_ParentIndex;
 }
 
 void CSkeletonBone::SetLocalMatrix(const glm::mat4 & Matrix)
 {
-	LocalTransform = Matrix;
+	m_LocalTransform = Matrix;
 }
 
 glm::mat4 CSkeletonBone::GetLocalMatrix() const
 {
-	return LocalTransform;
+	return m_LocalTransform;
 }
 
 void CSkeletonBone::SetPivotMatrix(const glm::mat4 & Matrix)
 {
-	PivotMatrix = Matrix;
+	m_PivotMatrix = Matrix;
 }
 
 glm::mat4 CSkeletonBone::GetPivotMatrix() const
 {
-	return PivotMatrix;
+	return m_PivotMatrix;
 }
 
 void CSkeletonBone::SetFuckingMatrix(const glm::mat4 & Matrix)
 {
-	FuckingMatrix = Matrix;
+	m_FuckingMatrix = Matrix;
 }
 
 glm::mat4 CSkeletonBone::GetFuckingMatrix() const
 {
-	return FuckingMatrix;
+	return m_FuckingMatrix;
 }
 
 glm::mat4 CSkeletonBone::CalcMatrix(const IModelsComponent3D* ModelsComponent) const
@@ -95,13 +95,15 @@ glm::mat4 CSkeletonBone::CalcMatrix(const IModelsComponent3D* ModelsComponent) c
 
 	m *= GetPivotMatrix();
 	{
-		if (ParentIndex == -1)
-			m *= glm::inverse(LocalTransform);
+		size_t currentAnimationIndex = ModelsComponent->GetCurrentAnimationIndex();
 
-		if (m_CalculatedMatrixes.IsUsesBySequence(ModelsComponent->GetCurrentAnimationIndex()))
+		if (m_ParentIndex == -1)
+			m *= glm::inverse(ModelsComponent->GetModel()->GetSkeletonAnimation(currentAnimationIndex).RootBoneLocalTransform);
+
+		if (m_CalculatedMatrixes.IsUsesBySequence(currentAnimationIndex))
 			m *= m_CalculatedMatrixes.GetValue(ModelsComponent->GetCurrentAnimationIndex(), ModelsComponent->GetCurrentAnimationFrame());
 		else
-			m *= LocalTransform;
+			m *= m_LocalTransform;
 	}
 	m *= glm::inverse(GetPivotMatrix());
 
@@ -110,7 +112,7 @@ glm::mat4 CSkeletonBone::CalcMatrix(const IModelsComponent3D* ModelsComponent) c
 
 glm::mat4 CSkeletonBone::CalcRotateMatrix(const IModelsComponent3D* ModelsComponent) const
 {
-	return FuckingMatrix;
+	return m_FuckingMatrix;
 }
 
 
@@ -125,22 +127,22 @@ void CSkeletonBone::CopyTo(std::shared_ptr<IObject> Destination) const
 
 void CSkeletonBone::Load(const std::shared_ptr<IByteBuffer>& Buffer)
 {
-	Buffer->readString(&Name);
-	Buffer->read(&ParentIndex);
-	Buffer->read(&LocalTransform);
-	Buffer->read(&PivotMatrix);
-	Buffer->read(&FuckingMatrix);
+	Buffer->readString(&m_Name);
+	Buffer->read(&m_ParentIndex);
+	Buffer->read(&m_LocalTransform);
+	Buffer->read(&m_PivotMatrix);
+	Buffer->read(&m_FuckingMatrix);
 
 	m_CalculatedMatrixes.Load(Buffer);
 }
 
 void CSkeletonBone::Save(const std::shared_ptr<IByteBuffer>& Buffer) const
 {
-	Buffer->writeString(Name);
-	Buffer->write(&ParentIndex);
-	Buffer->write(&LocalTransform);
-	Buffer->write(&PivotMatrix);
-	Buffer->write(&FuckingMatrix);
+	Buffer->writeString(m_Name);
+	Buffer->write(&m_ParentIndex);
+	Buffer->write(&m_LocalTransform);
+	Buffer->write(&m_PivotMatrix);
+	Buffer->write(&m_FuckingMatrix);
 
 	m_CalculatedMatrixes.Save(Buffer);
 }
@@ -153,4 +155,14 @@ void CSkeletonBone::Load(const std::shared_ptr<IXMLReader>& Reader)
 void CSkeletonBone::Save(const std::shared_ptr<IXMLWriter>& Writer) const
 {
 	throw CException("Not implemented.");
+}
+
+
+
+//
+// Private
+//
+bool CSkeletonBone::IsRootBone() const
+{
+	return m_ParentIndex == -1;
 }

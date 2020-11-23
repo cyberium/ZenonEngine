@@ -819,9 +819,4 @@
       <Filter>Utils</Filter>
     </ClInclude>
   </ItemGroup>
-  <ItemGroup>
-    <Text Include="Files\FormatsDescription.txt">
-      <Filter>Files</Filter>
-    </Text>
-  </ItemGroup>
 </Project>
