@@ -80,12 +80,22 @@ void CUIControlRTSTowersPanel::Initialize()
 	}
 }
 
-void CUIControlRTSTowersPanel::AddTowerButton(std::string Name, std::string TowerXMLName, std::string TowerTextureName, uint32 TowerCost)
+void CUIControlRTSTowersPanel::AddTowerButton(std::string Name, std::string TowerXMLName, std::string TowerTextureName, uint32 TowerCost, IScene& Scene)
 {
 	STowerDescription towerDescription;
 	towerDescription.Name = Name;
 	towerDescription.Cost = TowerCost;
 	towerDescription.XMLPath = TowerXMLName;
+
+	{
+		CXMLManager xmlManager(GetBaseManager());
+		auto reader = xmlManager.CreateReaderFromFile(TowerXMLName);
+		_ASSERT(false == reader->GetChilds().empty());
+		auto firstXMLChild = reader->GetChilds()[0];
+
+		towerDescription.SceneNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<CSceneNodeFactory>()->LoadSceneNode3DXML(firstXMLChild, Scene);
+		towerDescription.SceneNode->MakeMeOrphan();
+	}
 
 	std::shared_ptr<CUIControlRTSTowerBtn> towerBtnNode = GetScene().CreateUIControlTCast<CUIControlRTSTowerBtn>(shared_from_this());
 	towerBtnNode->SetTowerTexture(GetBaseManager().GetManager<IznTexturesFactory>()->LoadTexture2D(TowerTextureName));

@@ -59,15 +59,15 @@ bool CznModel3DTreeViewItemSource::Load()
 		if (m_FileName.empty())
 			throw CException("Filename is emprty.");
 
-		auto pathAndNameExtension = Utils::GetFilenamePathAndNameExtension(m_FileName);
-		auto pathNameAndExtension = Utils::GetFilenamePathNameAndExtension(m_FileName);
-		if (pathNameAndExtension.second == "fbx")
+		auto fileNameStruct = Utils::SplitFilename(m_FileName);
+		if (fileNameStruct.Extension == "fbx")
 		{
-			std::string convertedModelName = pathNameAndExtension.first + ".znmdl";
+			std::string convertedModelName = fileNameStruct.Path + fileNameStruct.NameWithoutExtension + ".znmdl";
+
 			if (filesManager->IsFileExists(convertedModelName)) // .znmdl file exists. Load it.
 			{
 				m_Model = GetBaseManager().GetManager<IznModelsFactory>()->LoadModel(convertedModelName);
-				m_Model->SetName(pathAndNameExtension.second);
+				m_Model->SetName(fileNameStruct.NameWithoutExtension);
 				Log::Info("Model '%s' loaded.", m_FileName.c_str());
 				return true;
 			}
@@ -91,24 +91,23 @@ bool CznModel3DTreeViewItemSource::Load()
 				znModelFile->Save();
 				
 				m_Model = GetBaseManager().GetManager<IznModelsFactory>()->LoadModel(znModelFile);
-				m_Model->SetName(pathAndNameExtension.second);
+				m_Model->SetName(fileNameStruct.NameWithoutExtension);
 				Log::Info("Model '%s' loaded.", m_FileName.c_str());
 				return true;
 			}
 		}
-		else if (pathNameAndExtension.second == "znmdl")
+		else if (fileNameStruct.Extension == "znmdl")
 		{
-			if (filesManager->IsFileExists(m_FileName)) // znMDL file exists. Load it.
-			{
-				m_Model = GetBaseManager().GetManager<IznModelsFactory>()->LoadModel(m_FileName);
-				m_Model->SetName(pathAndNameExtension.second);
-				Log::Info("Model '%s' loaded.", m_FileName.c_str());
-				return true;
-			}
+			_ASSERT(filesManager->IsFileExists(m_FileName));
+
+			m_Model = GetBaseManager().GetManager<IznModelsFactory>()->LoadModel(m_FileName);
+			m_Model->SetName(fileNameStruct.NameWithoutExtension);
+			Log::Info("Model '%s' loaded.", m_FileName.c_str());
+			return true;
 		}
 		else
 		{
-			throw CException("Model '%s' has unsupported extension '%s'.", m_FileName.c_str(), pathNameAndExtension.second.c_str());
+			throw CException("Model '%s' has unsupported extension '%s'.", m_FileName.c_str(), fileNameStruct.Extension.c_str());
 		}
 	}
 	catch (const CException& e)
@@ -130,11 +129,6 @@ bool CznModel3DTreeViewItemSource::Delete()
 //
 // Protected
 //
-std::shared_ptr<IFile> CznModel3DTreeViewItemSource::ConvertFBXToZNMDL(const std::string & FbxFilename)
-{
-	return std::shared_ptr<IFile>();
-}
-
 IBaseManager & CznModel3DTreeViewItemSource::GetBaseManager() const
 {
 	return m_BaseManager;

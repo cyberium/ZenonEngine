@@ -117,7 +117,7 @@ std::shared_ptr<IXMLReader> CXMLManager::CreateReaderFromString(const std::strin
 
 std::shared_ptr<IXMLReader> CXMLManager::CreateReaderFromFile(const std::string& FileName)
 {
-	std::shared_ptr<IFile> file = m_BaseManager.GetManager<IFilesManager>()->Create(FileName);
+	std::shared_ptr<IFile> file = m_BaseManager.GetManager<IFilesManager>()->Open(FileName);
 	return CreateReaderFromFile(file);
 }
 

@@ -13,6 +13,9 @@ CSceneRTS::CSceneRTS(IBaseManager& BaseManager, IRenderWindow& RenderWindow)
 	, m_RTSCurrentWave(0)
 	, m_RTSCurrentWaveUnit(0)
 	, m_LastUnitTime(0.0f)
+
+	// Tower creation
+	, m_CurrentTowerNode(nullptr)
 {
 
 }
@@ -91,12 +94,12 @@ void CSceneRTS::Initialize()
 
 	{
 		m_UIControlRTSTowersPanel = CreateUIControlTCast<CUIControlRTSTowersPanel>();
-		m_UIControlRTSTowersPanel->AddTowerButton("Tower 1", "sceneNodesProtos/tower1.xml", "sceneNodesProtos/tower1.png", 100);
-		m_UIControlRTSTowersPanel->AddTowerButton("Tower 2", "sceneNodesProtos/tower2.xml", "sceneNodesProtos/tower2.png", 100);
-		m_UIControlRTSTowersPanel->AddTowerButton("Tower A", "sceneNodesProtos/towerA.xml", "sceneNodesProtos/towerA.png", 100);
-		m_UIControlRTSTowersPanel->AddTowerButton("Tower B", "sceneNodesProtos/towerB.xml", "sceneNodesProtos/towerB.png", 100);
-		m_UIControlRTSTowersPanel->AddTowerButton("Tower C", "sceneNodesProtos/towerC.xml", "sceneNodesProtos/towerC.png", 100);
-		m_UIControlRTSTowersPanel->AddTowerButton("Tower E", "sceneNodesProtos/towerE.xml", "sceneNodesProtos/towerE.png", 100);
+		m_UIControlRTSTowersPanel->AddTowerButton("Tower 1", "sceneNodesProtos/tower1.xml", "sceneNodesProtos/tower1.png", 100, *this);
+		m_UIControlRTSTowersPanel->AddTowerButton("Tower 2", "sceneNodesProtos/tower2.xml", "sceneNodesProtos/tower2.png", 100, *this);
+		m_UIControlRTSTowersPanel->AddTowerButton("Tower A", "sceneNodesProtos/towerA.xml", "sceneNodesProtos/towerA.png", 100, *this);
+		m_UIControlRTSTowersPanel->AddTowerButton("Tower B", "sceneNodesProtos/towerB.xml", "sceneNodesProtos/towerB.png", 100, *this);
+		m_UIControlRTSTowersPanel->AddTowerButton("Tower C", "sceneNodesProtos/towerC.xml", "sceneNodesProtos/towerC.png", 100, *this);
+		m_UIControlRTSTowersPanel->AddTowerButton("Tower E", "sceneNodesProtos/towerE.xml", "sceneNodesProtos/towerE.png", 100, *this);
 
 		m_UIControlRTSTowersPanel->SetTranslate(glm::vec2(
 			(GetRenderWindow().GetWindowWidth() / 2.0f) - (m_UIControlRTSTowersPanel->GetSize().x / 2.0f),
@@ -138,11 +141,22 @@ void CSceneRTS::OnUpdate(UpdateEventArgs & e)
 
 bool CSceneRTS::OnMousePressed(const MouseButtonEventArgs& e, const Ray& RayToWorld)
 {
+	if (e.Button == MouseButton::Left)
+	{
+		CreateTower();
+	}
+	else if (e.Button == MouseButton::Right)
+	{
+		CancelTower();
+	}
 	return __super::OnMousePressed(e, RayToWorld);
 }
 
 void CSceneRTS::OnMouseMoved(const MouseMotionEventArgs& e, const Ray & RayToWorld)
 {
+	MoveTower(RayToWorld);
+
+	__super::OnMouseMoved(e, RayToWorld);
 }
 
 
@@ -279,7 +293,86 @@ void CSceneRTS::CreateUnit()
 
 }
 
-bool CSceneRTS::OnTowerButtonClicked(const STowerDescription & TowerDesription)
+void CSceneRTS::CreateTower()
 {
+	if (m_CurrentTowerNode == nullptr)
+		return;
+
+	auto createdTower = std::dynamic_pointer_cast<ISceneNode>(m_CurrentTowerNode->Copy());
+
+	m_CurrentTowerNode->MakeMeOrphan();
+	m_CurrentTowerNode.reset();
+}
+
+void CSceneRTS::CancelTower()
+{
+	if (m_CurrentTowerNode == nullptr)
+		return;
+
+	m_CurrentTowerNode->MakeMeOrphan();
+	m_CurrentTowerNode.reset();
+}
+
+void CSceneRTS::MoveTower(const Ray& RayToWorld)
+{
+	if (m_CurrentTowerNode == nullptr)
+		return;
+
+	auto nodes = GetFinder().FindIntersection(RayToWorld, [](const std::shared_ptr<ISceneNode>& Node) -> bool {
+		return Node->GetName().find("tile") != std::string::npos;
+	}, GetRootSceneNode());
+	if (nodes.empty())
+		return;
+
+	auto nearestNode = nodes.begin()->second;
+	_ASSERT(nearestNode != nullptr);
+
+	auto nearestTileBounds = nearestNode->GetComponentT<IColliderComponent3D>();
+	auto bounds = nearestTileBounds->GetWorldBounds();
+	glm::vec3 center = bounds.getCenter();
+
+	if (auto collider = m_CurrentTowerNode->GetComponentT<IColliderComponent3D>())
+	{
+		const auto& colliderBounds = collider->GetBounds();
+		if (false == colliderBounds.IsInfinite())
+		{
+			//auto pos = GetCameraController()->RayToPlane(RayToWorld, Plane(glm::vec3(0.0f, 1.0f, 0.0f), collider->GetBounds().getCenter().y));
+			m_CurrentTowerNode->SetTranslate(center);
+			return;
+		}
+	}
+
+	if (center.y != 1.0f)
+		printf("s");
+
+	//auto pos = GetCameraController()->RayToPlane(RayToWorld, Plane(glm::vec3(0.0f, 1.0f, 0.0f), 0.0f));
+	m_CurrentTowerNode->SetTranslateAbs(center);
+}
+
+namespace
+{
+	void ChangeMaterialRecursive(std::shared_ptr<IMaterial> Material, std::shared_ptr<ISceneNode> Node)
+	{
+		if (auto modelsComponent = Node->GetComponentT<IModelsComponent3D>())
+		{
+			if (auto model = modelsComponent->GetModel())
+			{
+				for (auto& connection : model->GetConnections())
+				{
+					//connection.Material = Material;
+				}
+			}
+		}
+	}
+}
+
+bool CSceneRTS::OnTowerButtonClicked(const STowerDescription& TowerDesription)
+{
+	if (m_CurrentTowerNode)
+		m_CurrentTowerNode->MakeMeOrphan();
+
+	m_CurrentTowerNode = std::dynamic_pointer_cast<ISceneNode>(TowerDesription.SceneNode->Copy());
+	
+
 	return true;
 }

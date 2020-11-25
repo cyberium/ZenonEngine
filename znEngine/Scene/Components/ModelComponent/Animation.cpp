@@ -61,6 +61,11 @@ void CAnimation::SetName(const std::string & Name)
 //
 // IObjectLoadSave
 //
+std::shared_ptr<IObject> CAnimation::Copy() const
+{
+	throw CException("Not implemented.");
+}
+
 void CAnimation::CopyTo(std::shared_ptr<IObject> Destination) const
 {
 	throw CException("Not implemented.");

@@ -63,9 +63,10 @@ public:
 	virtual void                                    Accept(IVisitor* visitor) override;
 
 	// IObject
-	void                                            SetName(const std::string& Name) override;
+	//void                                            SetName(const std::string& Name) override;
 
 	// IObjectLoadSave
+	virtual std::shared_ptr<IObject>                Copy() const override;
 	virtual void                                    CopyTo(std::shared_ptr<IObject> Destination) const override;
 	virtual void									Load(const std::shared_ptr<IXMLReader>& Reader) override;
 	virtual void									Save(const std::shared_ptr<IXMLWriter>& Writer) const override;

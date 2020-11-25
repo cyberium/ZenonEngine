@@ -4,11 +4,13 @@
 #include "MaterialBase.h"
 
 MaterialBase::MaterialBase(IRenderDevice& RenderDevice)
-	: m_BufferSize(0)
+	: Object(RenderDevice.GetBaseManager())
+	, m_BufferSize(0)
 	, m_RenderDevice(RenderDevice)
 	, m_Dirty(true)
 	, m_MaterialData(nullptr)
 {
+	m_Properties = MakeShared(CPropertiesGroup, "Properties", "Material properties");
 }
 
 MaterialBase::~MaterialBase()
@@ -49,6 +51,11 @@ const std::shared_ptr<ISamplerState>& MaterialBase::GetSampler(uint8 ID) const
 		throw CznRenderException("MaterialBase: Sampler with index '%d' not found in material '%s'.", ID, GetName().c_str());
 
     return iter->second;
+}
+
+std::shared_ptr<IPropertiesGroup> MaterialBase::GetProperties() const
+{
+	return m_Properties;
 }
 
 
@@ -180,6 +187,13 @@ void MaterialBase::Save(const std::shared_ptr<IByteBuffer>& ByteBuffer) const
 
 void MaterialBase::Load(const std::shared_ptr<IXMLReader>& Reader)
 {
+	//
+	// Properties
+	throw CException("Not implemented.");
+
+
+	//
+	// Textures
 	auto texturesReader = Reader->GetChild("Textures");
 	for (const auto& texture : texturesReader->GetChilds())
 	{
@@ -208,6 +222,12 @@ void MaterialBase::Load(const std::shared_ptr<IXMLReader>& Reader)
 
 void MaterialBase::Save(const std::shared_ptr<IXMLWriter>& Writer) const
 {
+	// Properties
+	throw CException("Not implemented.");
+
+
+	//
+	// Textures
 	auto texturesWriter = Writer->CreateChild("Textures");
 	for (const auto& texture : m_Textures)
 	{

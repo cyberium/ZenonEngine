@@ -3,6 +3,8 @@
 // General
 #include "SceneNode.h"
 
+// Additional
+#include "ObjectsFactories/Scene/SceneNodeFactory.h"
 #include "XML/XMLManager.h"
 
 CSceneNode::CSceneNode(IScene& Scene)
@@ -134,10 +136,10 @@ const CSceneNode::SceneNodesList& CSceneNode::GetChilds() const
 
 std::shared_ptr<ISceneNode> CSceneNode::GetChild(std::string Name) const
 {
-	std::string currClearName = GetClearName(Name).first;
+	std::string currClearName = /*GetClearName(*/Name/*).first*/;
 	for (const auto& ch : GetChilds())
 	{
-		std::string childClearName = GetClearName(ch->GetName()).first;
+		std::string childClearName = /*GetClearName(*/ch->GetName()/*).first*/;
 		if (childClearName == currClearName)
 			return ch;
 	}
@@ -357,8 +359,7 @@ void CSceneNode::Accept(IVisitor* visitor)
 //
 // IObject
 //
-
-void CSceneNode::SetName(const std::string& Name)
+/*void CSceneNode::SetName(const std::string& Name)
 {
 	std::string resultName = Name;
 
@@ -390,12 +391,20 @@ void CSceneNode::SetName(const std::string& Name)
 	}
 	
 	Object::SetName(resultName);
-}
+}*/
+
 
 
 //
 // IObjectLoadSave
 //
+std::shared_ptr<IObject> CSceneNode::Copy() const
+{
+	auto sameObject = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeFactory>()->CreateSceneNode3D(GetGUID().GetObjectClass(), m_Scene);
+	CopyTo(sameObject);
+	return sameObject;
+}
+
 void CSceneNode::CopyTo(std::shared_ptr<IObject> Destination) const
 {
 	Object::CopyTo(Destination);

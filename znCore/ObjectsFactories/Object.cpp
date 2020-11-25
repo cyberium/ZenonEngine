@@ -4,7 +4,7 @@
 #include "Object.h"
 
 
-
+#if 0
 std::string Object::ConvertInputName(const std::string& OriginalName)
 {
 	/*std::locale loc2("en_US.UTF-8");
@@ -31,7 +31,7 @@ std::pair<std::string, ObjectCounterType> Object::GetClearName(std::string Dirty
 
 	return std::make_pair(DirtyName, 0);
 }
-
+#endif
 
 //
 // IObject
@@ -64,7 +64,7 @@ std::string Object::GetName() const
 
 void Object::SetName(const std::string& Name)
 {
-	m_Name = ConvertInputName(Name);
+	m_Name = Name;
 }
 
 
@@ -72,6 +72,11 @@ void Object::SetName(const std::string& Name)
 //
 // IObjectLoadSave
 //
+std::shared_ptr<IObject> Object::Copy() const
+{
+	throw CException("Not implemented.");
+}
+
 void Object::CopyTo(std::shared_ptr<IObject> Destination) const
 {
 	if (GetGUID().GetObjectClass() != Destination->GetGUID().GetObjectClass() || GetGUID().GetObjectType() != Destination->GetGUID().GetObjectType())
@@ -98,7 +103,7 @@ void Object::Load(const std::shared_ptr<IXMLReader>& Reader)
 	if (name.empty())
 		throw CException("XML node '%s' contains 'Name' attribute, but this attribute is empty.", Reader->GetName().c_str());
 
-	auto clearName = GetClearName(name).first;
+	auto clearName = /*GetClearName(*/name/*).first*/;
 	if (clearName.empty())
 		throw CException("XML node '%s' contains 'Name' attribute with value '%s', but this value is not correct name.", Reader->GetName().c_str(), name.c_str());
 
@@ -107,7 +112,7 @@ void Object::Load(const std::shared_ptr<IXMLReader>& Reader)
 
 void Object::Save(const std::shared_ptr<IXMLWriter>& Writer) const
 {
-	auto clearName = GetClearName(m_Name).first;
+	auto clearName = /*GetClearName(*/m_Name/*).first*/;
 	if (clearName.empty())
 		return;
 

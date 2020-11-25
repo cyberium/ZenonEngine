@@ -120,6 +120,11 @@ glm::mat4 CSkeletonBone::CalcRotateMatrix(const IModelsComponent3D* ModelsCompon
 //
 // IObjectLoadSave
 //
+std::shared_ptr<IObject> CSkeletonBone::Copy() const
+{
+	throw CException("Not implemented.");
+}
+
 void CSkeletonBone::CopyTo(std::shared_ptr<IObject> Destination) const
 {
 	throw CException("Not implemented.");

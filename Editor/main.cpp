@@ -15,6 +15,8 @@ void main_internal(int argc, char *argv[])
 	Application app(Utils::ArgumentsToVector(argc, argv), ::GetModuleHandle(NULL));
 	CNativeWindowFactory nativeWindowFactory(&app);
 
+	app.GetBaseManager().GetManager<IFilesManager>()->AddStorage(EFilesStorageType::GAMEDATA, MakeShared(CLocalFilesStorage, ""));
+
 	IRenderDevice& renderDevice = app.CreateRenderDevice(RenderDeviceType::RenderDeviceType_DirectX11);
 	app.GetBaseManager().AddManager<IznFontsManager>(MakeShared(FontsManager, renderDevice, app.GetBaseManager()));
 

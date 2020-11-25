@@ -23,6 +23,37 @@ MaterialModel::MaterialModel(const IBaseManager& BaseManager)
 	: MaterialProxieT(BaseManager.GetApplication().GetRenderDevice(), "MaterialModel")
 	, m_BaseManager(BaseManager)
 {
+	// Ambient
+	{
+		auto prop = MakeShared(CPropertyWrappedVec3, "AmbientColor", "descr", glm::vec3(0.0f));
+		prop->SetValueSetter(std::bind(&MaterialModel::SetAmbientColor, this, std::placeholders::_1));
+		prop->SetValueGetter(std::bind(&MaterialModel::GetAmbientColor, this));
+		GetProperties()->AddProperty(prop);
+	}
+
+	// Diffuse
+	{
+		auto prop = MakeShared(CPropertyWrappedVec3, "DiffuseColor", "descr", glm::vec3(1.0f));
+		prop->SetValueSetter(std::bind(&MaterialModel::SetDiffuseColor, this, std::placeholders::_1));
+		prop->SetValueGetter(std::bind(&MaterialModel::GetDiffuseColor, this));
+		GetProperties()->AddProperty(prop);
+	}
+
+	// Specular
+	{
+		auto prop = MakeShared(CPropertyWrappedVec3, "SpecularColor", "descr", glm::vec3(1.0f));
+		prop->SetValueSetter(std::bind(&MaterialModel::SetSpecularColor, this, std::placeholders::_1));
+		prop->SetValueGetter(std::bind(&MaterialModel::GetSpecularColor, this));
+		GetProperties()->AddProperty(prop);
+	}
+
+	// Emissive
+	{
+		auto prop = MakeShared(CPropertyWrappedVec3, "EmissiveColor", "descr", glm::vec3(1.0f));
+		prop->SetValueSetter(std::bind(&MaterialModel::SetEmissiveColor, this, std::placeholders::_1));
+		prop->SetValueGetter(std::bind(&MaterialModel::GetEmissiveColor, this));
+		GetProperties()->AddProperty(prop);
+	}
 }
 
 MaterialModel::~MaterialModel()
@@ -32,10 +63,15 @@ MaterialModel::~MaterialModel()
 
 
 
-void MaterialModel::SetAmbientColor(const glm::vec3 & Color)
+void MaterialModel::SetAmbientColor(glm::vec3 Color)
 {
 	MaterialData().Ambient = Color;
 	MarkMaterialDataDirty();
+}
+
+glm::vec3 MaterialModel::GetAmbientColor() const
+{
+	return MaterialDataReadOnly().Ambient;
 }
 
 void MaterialModel::SetAmbientFactor(float Factor)
@@ -44,10 +80,17 @@ void MaterialModel::SetAmbientFactor(float Factor)
 	MarkMaterialDataDirty();
 }
 
-void MaterialModel::SetDiffuseColor(const glm::vec3 & Color)
+
+
+void MaterialModel::SetDiffuseColor(glm::vec3 Color)
 {
 	MaterialData().Diffuse = Color;
 	MarkMaterialDataDirty();
+}
+
+glm::vec3 MaterialModel::GetDiffuseColor() const
+{
+	return MaterialDataReadOnly().Diffuse;
 }
 
 void MaterialModel::SetDiffuseFactor(float Factor)
@@ -56,10 +99,17 @@ void MaterialModel::SetDiffuseFactor(float Factor)
 	MarkMaterialDataDirty();
 }
 
-void MaterialModel::SetSpecularColor(const glm::vec3 & Color)
+
+
+void MaterialModel::SetSpecularColor(glm::vec3 Color)
 {
 	MaterialData().Specular = Color;
 	MarkMaterialDataDirty();
+}
+
+glm::vec3 MaterialModel::GetSpecularColor() const
+{
+	return MaterialDataReadOnly().Specular;
 }
 
 void MaterialModel::SetSpecularFactor(float Factor)
@@ -68,10 +118,17 @@ void MaterialModel::SetSpecularFactor(float Factor)
 	MarkMaterialDataDirty();
 }
 
-void MaterialModel::SetEmissiveColor(const glm::vec3 & Color)
+
+
+void MaterialModel::SetEmissiveColor(glm::vec3 Color)
 {
 	MaterialData().Emissive = Color;
 	MarkMaterialDataDirty();
+}
+
+glm::vec3 MaterialModel::GetEmissiveColor() const
+{
+	return MaterialDataReadOnly().Emissive;
 }
 
 void MaterialModel::SetEmissiveFactor(float Factor)
@@ -179,6 +236,8 @@ const std::shared_ptr<ITexture>& MaterialModel::GetTexture(ETextureType TextureT
 //
 void MaterialModel::Load(const std::shared_ptr<IXMLReader>& Reader)
 {
+	GetProperties()->Load(Reader);
+
 	auto texturesReader = Reader->GetChild("Textures");
 	for (const auto& textureNode : texturesReader->GetChilds())
 	{
@@ -205,6 +264,8 @@ void MaterialModel::Load(const std::shared_ptr<IXMLReader>& Reader)
 
 void MaterialModel::Save(const std::shared_ptr<IXMLWriter>& Writer) const
 {
+	GetProperties()->Save(Writer);
+
 	auto texturesWriter = Writer->CreateChild("Textures");
 	for (size_t i = 0; i < ETextureType::Count; i++)
 	{

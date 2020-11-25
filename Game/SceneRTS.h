@@ -24,6 +24,11 @@ protected:
 	void CreateUnitsModels();
 	std::shared_ptr<IModel> CreateUnitModel(std::string ModelName, std::string RunAnimationName, std::string DeathAnimationName);
 	void CreateUnit();
+
+	void CreateTower();
+	void CancelTower();
+	void MoveTower(const Ray& RayToWorld);
+
 	bool OnTowerButtonClicked(const STowerDescription& TowerDesription);
 
 private:
@@ -42,4 +47,6 @@ private:
 	size_t                 m_RTSCurrentWaveUnit;
 	float                  m_LastUnitTime;
 
+	// Tower creating
+	std::shared_ptr<ISceneNode> m_CurrentTowerNode;
 };

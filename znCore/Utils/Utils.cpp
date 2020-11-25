@@ -67,36 +67,37 @@ namespace Utils
 		return newFilePath;
 	}
 
-	std::pair<std::string, std::string> GetFilenamePathAndNameExtension(const std::string & FilePath)
+	ZN_API SFileName SplitFilename(const std::string & FilePath)
 	{
 		std::string fixedFilename = FixFilePath(FilePath);
+
+		SFileName fileNameStruct;
 
 		auto lastSlashPos = fixedFilename.find_last_of('/');
 		if (lastSlashPos != std::string::npos)
 		{
-			std::string path = fixedFilename.substr(0, lastSlashPos + 1);
-			std::string name = fixedFilename.substr(lastSlashPos + 1);
-			return std::make_pair(path, name);
+			fileNameStruct.Path = fixedFilename.substr(0, lastSlashPos + 1);
+			fileNameStruct.Name = fixedFilename.substr(lastSlashPos + 1);
+		}
+		else
+		{
+			fileNameStruct.Path = "";
+			fileNameStruct.Name = fixedFilename;
 		}
 
-		return std::make_pair("", fixedFilename);
-	}
-
-	std::pair<std::string, std::string> GetFilenamePathNameAndExtension(const std::string& FilePath)
-	{
-		std::string fixedFilename = FixFilePath(FilePath);
-
-		auto lastPointPos = fixedFilename.find_last_of('.');
+		auto lastPointPos = fileNameStruct.Name.find_last_of('.');
 		if (lastPointPos != std::string::npos)
 		{
-			std::string nameWithoutExtension = fixedFilename.substr(0, lastPointPos);
-			std::string extension = fixedFilename.substr(lastPointPos + 1);
-			extension = Utils::ToLower(extension);
-
-			return std::make_pair(nameWithoutExtension, extension);
+			fileNameStruct.NameWithoutExtension = fileNameStruct.Name.substr(0, lastPointPos);
+			fileNameStruct.Extension = Utils::ToLower(fileNameStruct.Name.substr(lastPointPos + 1));
+		}
+		else
+		{
+			fileNameStruct.NameWithoutExtension = fixedFilename;
+			fileNameStruct.Extension = "";
 		}
 
-		return std::make_pair(fixedFilename, "");
+		return fileNameStruct;
 	}
 
 	std::string GetExecutablePath()
@@ -163,6 +164,105 @@ namespace Utils
 		stream.write(Content.c_str(), Content.size());
 		stream.flush();
 		stream.close();
+	}
+
+	static const std::string base64_chars =
+		"ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+		"abcdefghijklmnopqrstuvwxyz"
+		"0123456789+/";
+
+
+	static inline bool is_base64(BYTE c) 
+	{
+		return (isalnum(c) || (c == '+') || (c == '/'));
+	}
+
+	std::string Base64_Encode(const uint8* buf, size_t bufLen) 
+	{
+		std::string ret;
+		int i = 0;
+		int j = 0;
+		BYTE char_array_3[3];
+		BYTE char_array_4[4];
+
+		while (bufLen--) 
+		{
+			char_array_3[i++] = *(buf++);
+			if (i == 3) 
+			{
+				char_array_4[0] = (char_array_3[0] & 0xfc) >> 2;
+				char_array_4[1] = ((char_array_3[0] & 0x03) << 4) + ((char_array_3[1] & 0xf0) >> 4);
+				char_array_4[2] = ((char_array_3[1] & 0x0f) << 2) + ((char_array_3[2] & 0xc0) >> 6);
+				char_array_4[3] = char_array_3[2] & 0x3f;
+
+				for (i = 0; (i < 4); i++)
+					ret += base64_chars[char_array_4[i]];
+				i = 0;
+			}
+		}
+
+		if (i)
+		{
+			for (j = i; j < 3; j++)
+				char_array_3[j] = '\0';
+
+			char_array_4[0] = (char_array_3[0] & 0xfc) >> 2;
+			char_array_4[1] = ((char_array_3[0] & 0x03) << 4) + ((char_array_3[1] & 0xf0) >> 4);
+			char_array_4[2] = ((char_array_3[1] & 0x0f) << 2) + ((char_array_3[2] & 0xc0) >> 6);
+			char_array_4[3] = char_array_3[2] & 0x3f;
+
+			for (j = 0; (j < i + 1); j++)
+				ret += base64_chars[char_array_4[j]];
+
+			while ((i++ < 3))
+				ret += '=';
+		}
+
+		return ret;
+	}
+
+	std::vector<uint8> Base64_Decode(const std::string& String)
+	{
+		int in_len = String.size();
+		int i = 0;
+		int j = 0;
+		int in_ = 0;
+		uint8 char_array_4[4], char_array_3[3];
+		std::vector<uint8> ret;
+
+		while (in_len-- && (String[in_] != '=') && is_base64(String[in_]))
+		{
+			char_array_4[i++] = String[in_]; in_++;
+			if (i == 4) 
+			{
+				for (i = 0; i < 4; i++)
+					char_array_4[i] = base64_chars.find(char_array_4[i]);
+
+				char_array_3[0] = (char_array_4[0] << 2) + ((char_array_4[1] & 0x30) >> 4);
+				char_array_3[1] = ((char_array_4[1] & 0xf) << 4) + ((char_array_4[2] & 0x3c) >> 2);
+				char_array_3[2] = ((char_array_4[2] & 0x3) << 6) + char_array_4[3];
+
+				for (i = 0; (i < 3); i++)
+					ret.push_back(char_array_3[i]);
+				i = 0;
+			}
+		}
+
+		if (i) {
+			for (j = i; j < 4; j++)
+				char_array_4[j] = 0;
+
+			for (j = 0; j < 4; j++)
+				char_array_4[j] = base64_chars.find(char_array_4[j]);
+
+			char_array_3[0] = (char_array_4[0] << 2) + ((char_array_4[1] & 0x30) >> 4);
+			char_array_3[1] = ((char_array_4[1] & 0xf) << 4) + ((char_array_4[2] & 0x3c) >> 2);
+			char_array_3[2] = ((char_array_4[2] & 0x3) << 6) + char_array_4[3];
+
+			for (j = 0; (j < i - 1); j++) ret.push_back(char_array_3[j]);
+		}
+
+		return ret;
 	}
 
 	std::string FloatToString(const float Value, const int N)

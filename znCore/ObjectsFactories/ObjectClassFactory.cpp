@@ -8,7 +8,7 @@
 #include "XML/XMLManager.h"
 
 const uint32 cObjectBinarySignatureBegin = 0x01231000;
-const const char* cObjectXMLSignatureBegin = "Object";
+const char* cObjectXMLSignatureBegin = "Object";
 
 CObjectClassFactory::CObjectClassFactory(IBaseManager& BaseManager, const std::string& TypeName, ObjectType Type)
 	: m_BaseManager(BaseManager)
@@ -105,19 +105,30 @@ Guid CObjectClassFactory::ReadGUID(const std::shared_ptr<IByteBuffer>& Bytes)
 {
 	auto pos = Bytes->getPos();
 
-	uint32 storedSignature = 0;
-	Bytes->read(&storedSignature);
-	if (storedSignature != cObjectBinarySignatureBegin)
-		throw CException("ObjectsFactory: Bytes is not ZenonObject.");
+	try
+	{
+		uint32 storedSignature = 0;
+		if (false == Bytes->read(&storedSignature))
+			throw CException("Incorrect bytes size.");
 
-	uint64 guidUInt = 0;
-	Bytes->read(&guidUInt);
-	Guid storedGuid(guidUInt);
-	if (storedGuid.GetObjectType() != GetType())
-		throw CException("ObjectsFactory: Stored factory mismatch!.");
+		if (storedSignature != cObjectBinarySignatureBegin)
+			throw CException("Bytes is not ZenonObject.");
 
-	Bytes->seek(pos);
-	return storedGuid;
+		uint64 guidUInt = 0;
+		if (false == Bytes->read(&guidUInt))
+			throw CException("Incorrect bytes size.");
+
+		Guid storedGuid(guidUInt);
+		if (storedGuid.GetObjectType() != GetType())
+			throw CException("Stored factory mismatch!.");
+
+		return storedGuid;
+	}
+	catch (const CException& e)
+	{
+		Bytes->seek(pos);
+		throw;
+	}
 }
 
 std::shared_ptr<IByteBuffer> CObjectClassFactory::WriteGUID(Guid Guid)

@@ -5,19 +5,19 @@ namespace
 	__declspec(align(16)) struct SMaterialModelProperties
 	{
 		SMaterialModelProperties()
-			: Ambient(glm::vec3(0.0f, 0.0f, 0.0f))
+			: Ambient(glm::vec3(0.0f))
 			, AmbientFactor(0.0f)
 
-			, Diffuse(glm::vec3(0.0f, 0.0f, 0.0f))
+			, Diffuse(glm::vec3(1.0f))
 			, DiffuseFactor(1.0f)
 
-			, Specular(glm::vec3(1.0f, 1.0f, 1.0f))
+			, Specular(glm::vec3(1.0f))
 			, SpecularFactor(1.0f)
 
-			, Emissive(glm::vec3(0.0f, 0.0f, 0.0f))
+			, Emissive(glm::vec3(0.0f))
 			, EmissiveFactor(1.0f)
 
-			, Reflection(glm::vec3(0.0f, 0.0f, 0.0f))
+			, Reflection(glm::vec3(0.0f))
 			, ReflectionFactor(1.0f)
 
 			, HasTextureAmbient(false)
@@ -94,16 +94,24 @@ public:
 	MaterialModel(const IBaseManager& BaseManage);
 	virtual ~MaterialModel();
 
-	void SetAmbientColor(const glm::vec3& Color);
+	void SetAmbientColor(glm::vec3 Color);
+	glm::vec3 GetAmbientColor() const;
+
 	void SetAmbientFactor(float Factor);
 
-	void SetDiffuseColor(const glm::vec3& Color);
+	void SetDiffuseColor(glm::vec3 Color);
+	glm::vec3 GetDiffuseColor() const;
+
 	void SetDiffuseFactor(float Factor);
 
-	void SetSpecularColor(const glm::vec3& Color);
+	void SetSpecularColor(glm::vec3 Color);
+	glm::vec3 GetSpecularColor() const;
+	
 	void SetSpecularFactor(float Factor);
 
-	void SetEmissiveColor(const glm::vec3& Color);
+	void SetEmissiveColor(glm::vec3 Color);
+	glm::vec3 GetEmissiveColor() const;
+
 	void SetEmissiveFactor(float Factor);
 
 	void SetShininess(float Factor);

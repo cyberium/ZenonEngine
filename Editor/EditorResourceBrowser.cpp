@@ -113,10 +113,8 @@ std::shared_ptr<IznTreeViewItem> CEditorResourceBrowser::CreateSceneNodeProtosFr
 	{
 		try
 		{
-			auto file = GetBaseManager().GetManager<IFilesManager>()->Open(fileName);
-
 			CXMLManager xmlManager(GetBaseManager());
-			auto reader = xmlManager.CreateReaderFromFile(file);
+			auto reader = xmlManager.CreateReaderFromFile(fileName);
 			_ASSERT(false == reader->GetChilds().empty());
 			auto firstXMLChild = reader->GetChilds()[0];
 

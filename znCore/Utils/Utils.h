@@ -11,15 +11,26 @@ namespace Utils
 
 	ZN_API std::vector<std::string> ArgumentsToVector(int argumentsCount, char* arguments[]);
 
-
+	// Filename
 	ZN_API std::string FixFilePath(const std::string& FilePath);
-	ZN_API std::pair<std::string, std::string> GetFilenamePathAndNameExtension(const std::string& FilePath);
-	ZN_API std::pair<std::string, std::string> GetFilenamePathNameAndExtension(const std::string& FilePath);
+	struct ZN_API SFileName
+	{
+		std::string Path;
+		std::string Name;
+		std::string NameWithoutExtension;
+		std::string Extension;
+	};
+	ZN_API SFileName SplitFilename(const std::string& FilePath);
 
+	// Files
 	ZN_API std::string GetExecutablePath();
 	ZN_API std::string GetWorkingDirectory();
 	ZN_API std::string LoadLocalFile(std::string FileName);
 	ZN_API void        SaveToLocalFile(std::string FileName, const std::string& Content);
+
+	// Base64
+	ZN_API std::string        Base64_Encode(const uint8* buf, size_t bufLen);
+	ZN_API std::vector<uint8> Base64_Decode(const std::string& String);
 
 	ZN_API std::string FloatToString(const float Value, const int N = 3);
 };

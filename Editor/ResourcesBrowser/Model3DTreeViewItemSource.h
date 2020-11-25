@@ -20,9 +20,6 @@ public:
 	bool Delete() override;
 
 protected:
-	std::shared_ptr<IFile> ConvertFBXToZNMDL(const std::string& FbxFilename);
-
-protected:
 	IBaseManager& GetBaseManager() const;
 
 private:

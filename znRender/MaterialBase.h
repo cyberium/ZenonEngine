@@ -16,6 +16,8 @@ public:
 	virtual void  SetSampler(uint8 ID, const std::shared_ptr<ISamplerState> samplerState) override;
     virtual const std::shared_ptr<ISamplerState>& GetSampler(uint8 ID) const override;
 
+	std::shared_ptr<IPropertiesGroup> GetProperties() const override;
+
 	virtual void Bind(const ShaderMap& shaders) const override;
 	virtual void Unbind(const ShaderMap& shaders) const override;
 
@@ -32,16 +34,17 @@ public:
 	void Save(const std::shared_ptr<IXMLWriter>& Writer) const override;
 
 private:
-	void         FinalizeMaterialData();
+	void                             FinalizeMaterialData();
 
 protected:
 	size_t                           m_BufferSize;
 	TextureMap                       m_Textures;
     SamplersMap                      m_Samplers;
+	std::shared_ptr<IPropertiesGroup>m_Properties;
 	void*                            m_MaterialData;
 	std::shared_ptr<IConstantBuffer> m_ConstantBuffer;
 	mutable bool                     m_Dirty;
 
 private:
-	IRenderDevice& m_RenderDevice;
+	IRenderDevice&                   m_RenderDevice;
 };

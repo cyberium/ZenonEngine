@@ -20,6 +20,7 @@ public:
 	void SetName(const std::string& Name) override;
 
 	// IObjectLoadSave
+	std::shared_ptr<IObject> Copy() const override;
 	void CopyTo(std::shared_ptr<IObject> Destination) const override;
 	void Load(const std::shared_ptr<IByteBuffer>& Buffer) override;
 	void Save(const std::shared_ptr<IByteBuffer>& Buffer) const override;

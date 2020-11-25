@@ -6,8 +6,8 @@ class ZN_API Object
 	, public IObjectPrivate
 {
 public:
-	static std::string ConvertInputName(const std::string& OriginalName);
-	static std::pair<std::string, ObjectCounterType> GetClearName(std::string DirtyName);
+	//static std::string ConvertInputName(const std::string& OriginalName);
+	//static std::pair<std::string, ObjectCounterType> GetClearName(std::string DirtyName);
 
 public:
 	// IObject
@@ -18,6 +18,7 @@ public:
 	virtual void SetName(const std::string& Name) override;
 
 	// IObjectLoadSave
+	virtual std::shared_ptr<IObject> Copy() const override;
 	virtual void CopyTo(std::shared_ptr<IObject> Destination) const override;
 	virtual void Load(const std::shared_ptr<IByteBuffer>& Buffer) override;
 	virtual void Save(const std::shared_ptr<IByteBuffer>& Buffer) const override;

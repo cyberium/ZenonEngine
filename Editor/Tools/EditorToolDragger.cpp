@@ -83,7 +83,6 @@ void CEditorToolDragger::DragEnterEvent(const SDragData& Data)
 	m_IsDraggingPermanentCreation = Data.IsCtrl;
 
 	EDragDataSourceType dragDataSourceType = GetDragDataSourceType(Data.Buffer);
-
 	if (dragDataSourceType == EDragDataSourceType::SceneNodeProto)
 	{
 		std::shared_ptr<ISceneNode> sceneNode = GetSceneNodeFromDragData(GetBaseManager(), GetScene(), Data.Buffer);

@@ -4,7 +4,8 @@
 #include "ModelBase.h"
 
 ModelBase::ModelBase(IRenderDevice& RenderDevice)
-	: m_RenderDevice(RenderDevice)
+	: Object(RenderDevice.GetBaseManager())
+	, m_RenderDevice(RenderDevice)
 	, m_FixMatrix(1.0f)
 {
 	SetName("ModelBase");

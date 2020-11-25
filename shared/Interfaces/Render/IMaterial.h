@@ -1,9 +1,9 @@
 #pragma once
 
 // FORWARD BEGIN
-ZN_INTERFACE IShader;
 ZN_INTERFACE ITexture;
 ZN_INTERFACE ISamplerState;
+ZN_INTERFACE IPropertiesGroup;
 // FORWARD END
 
 ZN_INTERFACE ZN_API IMaterial 
@@ -18,6 +18,8 @@ ZN_INTERFACE ZN_API IMaterial
 	virtual void SetSampler(uint8 ID, const std::shared_ptr<ISamplerState> samplerState) = 0;
 	virtual const std::shared_ptr<ISamplerState>& GetSampler(uint8 ID) const = 0;
 	
+	virtual std::shared_ptr<IPropertiesGroup> GetProperties() const = 0;
+
 	virtual void Bind(const ShaderMap& shaders) const = 0;
 	virtual void Unbind(const ShaderMap& shaders) const = 0;
 };

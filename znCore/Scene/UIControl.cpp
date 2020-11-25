@@ -86,10 +86,10 @@ const CUIControl::ControlsList& CUIControl::GetChilds() const
 
 std::shared_ptr<IUIControl> CUIControl::GetChild(std::string Name) const
 {
-	std::string currClearName = GetClearName(Name).first;
+	std::string currClearName = /*GetClearName(*/Name/*).first*/;
 	for (const auto& ch : GetChilds())
 	{
-		std::string childClearName = GetClearName(ch->GetName()).first;
+		std::string childClearName = /*GetClearName(*/ch->GetName()/*).first*/;
 		if (childClearName == currClearName)
 			return ch;
 	}

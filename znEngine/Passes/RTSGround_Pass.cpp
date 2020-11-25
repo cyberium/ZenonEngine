@@ -65,9 +65,6 @@ std::shared_ptr<IRenderPassPipelined> CRTSGround_Pass::ConfigurePipeline(std::sh
 //
 EVisitResult CRTSGround_Pass::Visit(const ISceneNode * SceneNode)
 {
-	if (Object::GetClearName(SceneNode->GetName()).first == "GroundRoot")
-		printf("Asd");
-
 	if (SceneNode->GetClass() != cSceneNodeRTSGround)
 		return EVisitResult::AllowVisitChilds;
 

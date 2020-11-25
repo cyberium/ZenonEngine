@@ -25,7 +25,7 @@ ETreeViewItemType CznSceneNode3DTreeViewItemSource::GetType() const
 
 std::string CznSceneNode3DTreeViewItemSource::GetText() const
 {
-	return m_SceneNode->GetName();
+	return m_SceneNode->GetName() /*+ "#" + std::to_string(m_SceneNode->GetGUID().GetCounter())*/;
 }
 
 size_t CznSceneNode3DTreeViewItemSource::GetChildsCount() const
