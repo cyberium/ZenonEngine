@@ -111,6 +111,8 @@ EVisitResult CUIFontPass::Visit(const IUIControl * node)
 	}
 	fontGeometryInternal->Render_UnbindAllBuffers(vertexShader);
 
+	font->GetTexture()->UnBind(0, pixelShader, IShaderParameter::Type::Texture);
+
 	return EVisitResult::AllowVisitChilds;
 }
 

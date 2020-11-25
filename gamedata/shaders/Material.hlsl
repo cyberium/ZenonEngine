@@ -1,10 +1,6 @@
 
 struct MaterialModel
 {
-	float3 Emissive;					// Emissive color property.
-	float EmissiveFactor;				// Emissive factor property. This factor is used to attenuate the emissive color.
-	// 16
-
 	float3 Ambient;					    // Ambient color property.
 	float AmbientFactor;				// Ambient factor property. This factor is used to attenuate the ambient color.
 	// 16
@@ -12,62 +8,47 @@ struct MaterialModel
 	float3 Diffuse;					    // Diffuse color property.
 	float DiffuseFactor;				// Diffuse factor property. This factor is used to attenuate the diffuse color.
 	// 16
-
-	float3 NormalMap;				    // NormalMap property. This property can be used to specify the distortion of the surface normals and create the illusion of a bumpy surface.
-	float Shininess;                    // Shininess property. This property controls the aspect of the shiny spot. It is the specular exponent in the Phong illumination model.
-	// 16
-
-	float3 Bump;						// Bump property. This property is used to distort the surface normal and create the illusion of a bumpy surface.
-	float BumpFactor;					// Bump factor property. This factor is used to make a surface more or less bumpy.
-	// 16
-
-	float3 TransparentColor;			// Transparent color property.
-	float TransparencyFactor;			// Transparency factor property. This property is used to make a surface more or less opaque (0 = opaque, 1 = transparent).
-	// 16
-
-	float3 DisplacementColor;           // Displacement color property.
-	float DisplacementFactor;			// Displacement factor property.
-	// 16
-
-	float3 VectorDisplacementColor;     // Vector displacement color property.
-	float VectorDisplacementFactor;		// Vector displacement factor property.
-	// 16
-
+			    
 	float3 Specular;					// Specular property.
 	float SpecularFactor;				// Specular factor property. This factor is used to  attenuate the specular color.
+	// 16
+
+	float3 Emissive;					// Emissive color property.
+	float EmissiveFactor;				// Emissive factor property. This factor is used to attenuate the emissive color.
 	// 16
 
 	float3 Reflection;				    // Reflection color property. This property is used to implement reflection mapping.
 	float ReflectionFactor;				// Reflection factor property. This property is used to attenuate the reflection color.
 	// 16
-	// 160
 
-	bool HasTextureDiffuse;
-	bool HasTextureEmissive;
 	bool HasTextureAmbient;
+	bool HasTextureDiffuse;
 	bool HasTextureSpecular;
+	bool HasTextureEmissive;
 	// 16
 
 	bool HasTextureShininess;
-	bool HasTextureNormalMap;
-	bool HasTextureBump;
+	bool HasTextureNormalMap;           // NormalMap property. This property can be used to specify the distortion of the surface normals and create the illusion of a bumpy surface.
+	bool HasTextureBump;                // Bump property. This property is used to distort the surface normal and create the illusion of a bumpy surface.
 	bool HasTextureTransparency;
 	// 16
 
 	bool HasTextureReflection;
 	bool HasTextureDisplacement;
-	float2 Padding;
+	float Shininess;                    // Shininess property. This property controls the aspect of the shiny spot. It is the specular exponent in the Phong illumination model.
+	float BumpFactor;					// Bump factor property. This factor is used to make a surface more or less bumpy.
 };
 
+Texture2D TextureAmbient                  : register(t0);
+Texture2D TextureDiffuse                  : register(t1);
+Texture2D TextureSpecular                 : register(t2);
+Texture2D TextureEmissive                 : register(t3);
 
-Texture2D TextureDiffuse                  : register(t0);
-Texture2D TextureEmissive                 : register(t1);
-Texture2D TextureAmbient                  : register(t2);
-Texture2D TextureSpecular                 : register(t3);
 Texture2D TextureShininess                : register(t4);
 Texture2D TextureNormalMap                : register(t5);
 Texture2D TextureBump                     : register(t6);
 Texture2D TextureTransparency             : register(t7);
+
 Texture2D TextureReflection               : register(t8);
 Texture2D TextureDisplacement             : register(t9);
 

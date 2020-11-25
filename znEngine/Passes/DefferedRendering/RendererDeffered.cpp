@@ -71,11 +71,13 @@ void CRendererDeffered::RenderUI(RenderEventArgs & renderEventArgs)
 
 void CRendererDeffered::Resize(uint32 NewWidth, uint32 NewHeight)
 {
-	m_Deffered_ScenePass->GetPipeline().GetRenderTarget()->Resize(NewWidth, NewHeight);
-	m_Deffered_UIQuadPass->GetPipeline().GetRenderTarget()->Resize(NewWidth, NewHeight);
+	for (const auto& pass : m_Passes)
+		if (auto renderPassPipelined = std::dynamic_pointer_cast<IRenderPassPipelined>(pass))
+			renderPassPipelined->GetPipeline().GetRenderTarget()->Resize(NewWidth, NewHeight);
 
-	if (m_Deffered_HDR)
-		m_Deffered_HDR->GetPipeline().GetRenderTarget()->Resize(NewWidth, NewHeight);
+	for (const auto& pass : m_UIPasses)
+		if (auto renderPassPipelined = std::dynamic_pointer_cast<IRenderPassPipelined>(pass))
+			renderPassPipelined->GetPipeline().GetRenderTarget()->Resize(NewWidth, NewHeight);
 }
 
 
@@ -113,6 +115,7 @@ void CRendererDeffered::Initialize(std::shared_ptr<IRenderTarget> OutputRenderTa
 	AddPass(m_Deffered_UIQuadPass);
 	AddPass(MakeShared(CDebugPass, m_RenderDevice, m_Scene)->ConfigurePipeline(outputRenderTargetWithCustomDepth));
 	AddPass(MakeShared(CParticlesPass, m_RenderDevice, m_Scene)->ConfigurePipeline(outputRenderTargetWithCustomDepth));
+	AddPass(MakeShared(CDrawBonesPass, m_Scene)->ConfigurePipeline(outputRenderTargetWithCustomDepth));
 
 	// HDR
 	//AddPass(MakeShared(ClearRenderTargetPass, m_RenderDevice, HDRRenderTarget));

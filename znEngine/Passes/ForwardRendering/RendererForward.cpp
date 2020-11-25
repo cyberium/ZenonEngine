@@ -86,11 +86,13 @@ void CRendererForward::RenderUI(RenderEventArgs & renderEventArgs)
 
 void CRendererForward::Resize(uint32 NewWidth, uint32 NewHeight)
 {
-	std::dynamic_pointer_cast<IRenderPassPipelined>(m_MaterialModelPass)->GetPipeline().GetRenderTarget()->Resize(NewWidth, NewHeight);
-	//std::dynamic_pointer_cast<IRenderPassPipelined>(m_MaterialModelPassInstanced)->GetPipeline().GetRenderTarget()->Resize(NewWidth, NewHeight);
-	std::dynamic_pointer_cast<IRenderPassPipelined>(m_RTSGroundPassInstanced)->GetPipeline().GetRenderTarget()->Resize(NewWidth, NewHeight);
+	for (const auto& pass : m_Passes)
+		if (auto renderPassPipelined = std::dynamic_pointer_cast<IRenderPassPipelined>(pass))
+			renderPassPipelined->GetPipeline().GetRenderTarget()->Resize(NewWidth, NewHeight);
 
-	//m_FinalRenderTarget->Resize(NewWidth, NewHeight);
+	for (const auto& pass : m_UIPasses)
+		if (auto renderPassPipelined = std::dynamic_pointer_cast<IRenderPassPipelined>(pass))
+			renderPassPipelined->GetPipeline().GetRenderTarget()->Resize(NewWidth, NewHeight);
 }
 
 void CRendererForward::Initialize(std::shared_ptr<IRenderTarget> OutputRenderTarget)

@@ -3,6 +3,9 @@
 // General
 #include "EditorTools.h"
 
+// Additional
+#include "Passes/DrawToolsPass.h"
+
 CEditorTools::CEditorTools(IEditor& Editor)
 	: m_Editor(Editor)
 {
@@ -84,6 +87,10 @@ void CEditorTools::DoInitialize3D(const std::shared_ptr<IRenderer>& Renderer, st
 {
 	for (const auto& it : m_Tools)
 		it.second->DoInitialize3D(Renderer, RenderTarget);
+
+	auto drawToolsPass = MakeShared(CDrawToolsPass, m_Editor.GetRenderDevice(), m_Editor.Get3DFrame().GetScene());
+	drawToolsPass->ConfigurePipeline(RenderTarget);
+	Renderer->AddPass(drawToolsPass);
 }
 
 bool CEditorTools::OnMousePressed(const MouseButtonEventArgs & e, const Ray & RayToWorld)

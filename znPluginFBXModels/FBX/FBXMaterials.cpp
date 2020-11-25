@@ -22,9 +22,7 @@ namespace
 		{ fbxsdk::FbxLayerElement::EType::eTextureShininess, MaterialModel::ETextureType::TextureShininess },
 		{ fbxsdk::FbxLayerElement::EType::eTextureNormalMap, MaterialModel::ETextureType::TextureNormalMap },
 		{ fbxsdk::FbxLayerElement::EType::eTextureBump, MaterialModel::ETextureType::TextureBump },
-		{ fbxsdk::FbxLayerElement::EType::eTextureTransparency, MaterialModel::ETextureType::TextureTransparency },
-		{ fbxsdk::FbxLayerElement::EType::eTextureReflection, MaterialModel::ETextureType::TextureReflection},
-		{ fbxsdk::FbxLayerElement::EType::eTextureDisplacement, MaterialModel::ETextureType::TextureDisplacement}
+		{ fbxsdk::FbxLayerElement::EType::eTextureReflection, MaterialModel::ETextureType::TextureReflection}
 	};
 
 	MaterialModel::ETextureType GetEngineTextureTypeByFBXLayerType(fbxsdk::FbxLayerElement::EType FBXType)
@@ -106,20 +104,17 @@ std::shared_ptr<MaterialModel> CFBXMaterials::LoadMaterial(fbxsdk::FbxSurfaceMat
 
 void CFBXMaterials::LoadPhongMaterialsProperties(fbxsdk::FbxSurfacePhong * FBXSurfacePhong, std::shared_ptr<MaterialModel> Material)
 {
-	Material->SetEmissiveColor(ToGLMVec3(FBXSurfacePhong->Emissive));
-	//MaterialData().EmissiveFactor = ToFloat(FBXSurfacePhong->EmissiveFactor);
-
 	Material->SetAmbientColor(ToGLMVec3(FBXSurfacePhong->Ambient));
-	//MaterialData().AmbientFactor = ToFloat(FBXSurfacePhong->AmbientFactor);
+	Material->SetAmbientFactor(ToFloat(FBXSurfacePhong->AmbientFactor));
 
 	Material->SetDiffuseColor(ToGLMVec3(FBXSurfacePhong->Diffuse));
-	//MaterialData().DiffuseFactor = ToFloat(FBXSurfacePhong->DiffuseFactor);
+	Material->SetDiffuseFactor(ToFloat(FBXSurfacePhong->DiffuseFactor));
+
+	Material->SetSpecularColor(ToGLMVec3(FBXSurfacePhong->Specular));
+	Material->SetSpecularFactor(ToFloat(FBXSurfacePhong->SpecularFactor)) /** 16.0f*/;
 
 	//MaterialData().NormalMap = ToGLMVec3(FBXSurfacePhong->NormalMap);
 	//MaterialData().Shininess = ToFloat(FBXSurfacePhong->Shininess);
-
-	Material->SetBump(ToGLMVec3(FBXSurfacePhong->Bump));
-	Material->SetBumpFactor(ToFloat(FBXSurfacePhong->BumpFactor));
 
 	//MaterialData().TransparentColor = ToGLMVec3(FBXSurfacePhong->TransparentColor);
 	//MaterialData().TransparencyFactor = ToFloat(FBXSurfacePhong->TransparencyFactor);
@@ -130,11 +125,14 @@ void CFBXMaterials::LoadPhongMaterialsProperties(fbxsdk::FbxSurfacePhong * FBXSu
 	//MaterialData().VectorDisplacementColor = ToGLMVec3(FBXSurfacePhong->VectorDisplacementColor);
 	//MaterialData().VectorDisplacementFactor = ToFloat(FBXSurfacePhong->VectorDisplacementFactor);
 
-	Material->SetSpecularColor(ToGLMVec3(FBXSurfacePhong->Specular));
-	Material->SetSpecularFactor(ToFloat(FBXSurfacePhong->SpecularFactor)) /** 16.0f*/;
+	//Material->SetEmissiveColor(ToGLMVec3(FBXSurfacePhong->Emissive));
+	//MaterialData().EmissiveFactor = ToFloat(FBXSurfacePhong->EmissiveFactor);
 
-	Material->SetReflectionColor(ToGLMVec3(FBXSurfacePhong->Reflection));
-	Material->SetReflectionFactor(ToFloat(FBXSurfacePhong->ReflectionFactor));
+	//Material->SetBump(ToGLMVec3(FBXSurfacePhong->Bump));
+	Material->SetBumpFactor(ToFloat(FBXSurfacePhong->BumpFactor));
+
+	//Material->SetReflectionColor(ToGLMVec3(FBXSurfacePhong->Reflection));
+	//Material->SetReflectionFactor(ToFloat(FBXSurfacePhong->ReflectionFactor));
 }
 
 void CFBXMaterials::LoadMaterialsTextures(fbxsdk::FbxSurfacePhong * FBXSurfacePhong, std::shared_ptr<MaterialModel> Material)

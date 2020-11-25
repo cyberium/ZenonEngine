@@ -167,6 +167,10 @@ void CSceneDefault::Load3D()
 		// Original skeleton
 		auto originalSkeletonModel = fbxSceneLoader->LoadScene("Toon_RTS/models/WK_archer.FBX", &fbxLoaderParams)->MergeModels();
 		
+		// Fix materials
+		//for (const auto& connection : originalSkeletonModel->GetConnections())
+		//	std::dynamic_pointer_cast<MaterialModel>(connection.Material)->SetDiffuseFactor(2.0f);
+
 		// Animated skeleton
 		auto animatedSkeletonModel = fbxSceneLoader->LoadScene("Toon_RTS/animation/archer/WK_archer_03_run.FBX", &fbxLoaderParams)->MergeModels();
 		originalSkeletonModel->ApplyOtherSkeleton(animatedSkeletonModel);
@@ -180,9 +184,11 @@ void CSceneDefault::Load3D()
 		for (const auto& anim : animatedSkeletonModel2->GetAnimations())
 			originalSkeletonModel->AddAnimation("death", anim.second);
 
-		GetBaseManager().GetManager<IFilesManager>()->Delete("OrcWithAnims.znmdl");
-
-		auto znMdlFile = GetBaseManager().GetManager<IznModelsFactory>()->SaveModel(originalSkeletonModel, "OrcWithAnims.znmdl");
+		std::string znModelFilename = "OrcWithAnims.znmdl";
+		if (GetBaseManager().GetManager<IFilesManager>()->IsFileExists(znModelFilename))
+			GetBaseManager().GetManager<IFilesManager>()->Delete(znModelFilename);
+	
+		auto znMdlFile = GetBaseManager().GetManager<IznModelsFactory>()->SaveModel(originalSkeletonModel, znModelFilename);
 		znMdlFile->Save();
 
 		node->GetComponentT<IModelsComponent3D>()->SetModel(originalSkeletonModel);

@@ -104,8 +104,6 @@ void ModelBase::ApplyOtherSkeleton(std::shared_ptr<IModel> other)
 		}
 			//throw CException("Unable find bone '%s'", b->GetName().c_str());
 			//continue;
-
-		
 	}
 }
 

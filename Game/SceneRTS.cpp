@@ -49,11 +49,12 @@ void CSceneRTS::Initialize()
 	{
 		auto lightNode = CreateSceneNodeT<ISceneNode>();
 		lightNode->SetName("Light2");
-		lightNode->SetTranslate(glm::vec3(550.0f, 550.0f, 550.0f));
+		lightNode->SetTranslate(glm::vec3(150.0f, 150.0f, 150.0f));
 		lightNode->SetRotation(glm::vec3(-0.5f, -0.5f, -0.5f));
 
 		lightNode->AddComponentT(GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<IComponentFactory>()->CreateComponentT<ILightComponent3D>(cSceneNodeLightComponent, *lightNode.get()));
 		lightNode->GetComponentT<ILightComponent3D>()->SetType(ELightType::Spot);
+		lightNode->GetComponentT<ILightComponent3D>()->SetAmbientColor(glm::vec3(0.25f));
 		lightNode->GetComponentT<ILightComponent3D>()->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
 		lightNode->GetComponentT<ILightComponent3D>()->SetRange(1350.0f);
 		lightNode->GetComponentT<ILightComponent3D>()->SetIntensity(1.0f);
@@ -224,6 +225,11 @@ std::shared_ptr<IModel> CSceneRTS::CreateUnitModel(std::string ModelName, std::s
 
 	// Original skeleton
 	auto originalSkeletonModel = fbxSceneLoader->LoadScene(modelFile, &fbxLoaderParams)->MergeModels();
+	
+	// Fix materials
+	for (const auto& connection : originalSkeletonModel->GetConnections())
+		std::dynamic_pointer_cast<MaterialModel>(connection.Material)->SetDiffuseFactor(2.0f);
+
 
 	// Animated skeleton
 	auto animatedSkeletonModel = fbxSceneLoader->LoadScene(animationFile, &fbxLoaderParams)->MergeModels();

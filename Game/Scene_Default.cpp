@@ -51,6 +51,7 @@ void CSceneDefault::Initialize()
 
 		lightNode->AddComponentT(GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<IComponentFactory>()->CreateComponentT<ILightComponent3D>(cSceneNodeLightComponent, *lightNode.get()));
 		lightNode->GetComponentT<ILightComponent3D>()->SetType(ELightType::Spot);
+		lightNode->GetComponentT<ILightComponent3D>()->SetAmbientColor(glm::vec3(0.25f));
 		lightNode->GetComponentT<ILightComponent3D>()->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
 		lightNode->GetComponentT<ILightComponent3D>()->SetRange(1350.0f);
 		lightNode->GetComponentT<ILightComponent3D>()->SetIntensity(1.0f);

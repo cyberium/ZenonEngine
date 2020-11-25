@@ -4,15 +4,17 @@
 #include "MaterialModel.h"
 
 const char* cTextureTypeNames[] =
-{
-	"Diffuse",
-	"Emissive",
+{ 
 	"Ambient",
+	"Diffuse",
 	"Specular",
+	"Emissive",
+
 	"Shininess",
 	"NormalMap",
 	"Bump",
 	"Transparency",
+	
 	"Reflection",
 	"Displacement"
 };
@@ -28,15 +30,17 @@ MaterialModel::~MaterialModel()
 
 }
 
-void MaterialModel::SetEmissiveColor(const glm::vec3 & Color)
-{
-	MaterialData().Emissive = Color;
-	MarkMaterialDataDirty();
-}
+
 
 void MaterialModel::SetAmbientColor(const glm::vec3 & Color)
 {
 	MaterialData().Ambient = Color;
+	MarkMaterialDataDirty();
+}
+
+void MaterialModel::SetAmbientFactor(float Factor)
+{
+	MaterialData().AmbientFactor = Factor;
 	MarkMaterialDataDirty();
 }
 
@@ -46,15 +50,9 @@ void MaterialModel::SetDiffuseColor(const glm::vec3 & Color)
 	MarkMaterialDataDirty();
 }
 
-void MaterialModel::SetBump(const glm::vec3 & Color)
+void MaterialModel::SetDiffuseFactor(float Factor)
 {
-	MaterialData().Bump = Color;
-	MarkMaterialDataDirty();
-}
-
-void MaterialModel::SetBumpFactor(float Factor)
-{
-	MaterialData().BumpFactor = Factor;
+	MaterialData().DiffuseFactor = Factor;
 	MarkMaterialDataDirty();
 }
 
@@ -70,43 +68,59 @@ void MaterialModel::SetSpecularFactor(float Factor)
 	MarkMaterialDataDirty();
 }
 
-void MaterialModel::SetReflectionColor(const glm::vec3 & Color)
+void MaterialModel::SetEmissiveColor(const glm::vec3 & Color)
 {
-	MaterialData().Reflection = Color;
+	MaterialData().Emissive = Color;
 	MarkMaterialDataDirty();
 }
 
-void MaterialModel::SetReflectionFactor(float Factor)
+void MaterialModel::SetEmissiveFactor(float Factor)
 {
-	MaterialData().ReflectionFactor = Factor;
+	MaterialData().EmissiveFactor = Factor;
 	MarkMaterialDataDirty();
 }
+
+
+
+void MaterialModel::SetShininess(float Factor)
+{
+	MaterialData().Shininess = Factor;
+	MarkMaterialDataDirty();
+}
+
+void MaterialModel::SetBumpFactor(float Factor)
+{
+	MaterialData().BumpFactor = Factor;
+	MarkMaterialDataDirty();
+}
+
+
 
 void MaterialModel::SetTexture(ETextureType TextureType, std::shared_ptr<ITexture> texture)
 {
 	switch (TextureType)
 	{
-		case ETextureType::TextureDiffuse:
-		{
-			MaterialData().HasTextureDiffuse = true;
-			MarkMaterialDataDirty();
-		}
-		break;
-		case ETextureType::TextureEmissive:
-		{
-			MaterialData().HasTextureEmissive = true;
-			MarkMaterialDataDirty();
-		}
-		break;
 		case ETextureType::TextureAmbient:
 		{
 			MaterialData().HasTextureAmbient = true;
 			MarkMaterialDataDirty();
 		}
 		break;
+		case ETextureType::TextureDiffuse:
+		{
+			MaterialData().HasTextureDiffuse = true;
+			MarkMaterialDataDirty();
+		}
+		break;
 		case ETextureType::TextureSpecular:
 		{
 			MaterialData().HasTextureSpecular = true;
+			MarkMaterialDataDirty();
+		}
+		break;
+		case ETextureType::TextureEmissive:
+		{
+			MaterialData().HasTextureEmissive = true;
 			MarkMaterialDataDirty();
 		}
 		break;
@@ -202,7 +216,7 @@ void MaterialModel::Save(const std::shared_ptr<IXMLWriter>& Writer) const
 		if (textureFileName.empty())
 			throw CException("Empty filename for texture with ID '%d'.", i);
 
-		auto textureWriter = texturesWriter->CreateChild(GetTextureTypeNameByTextureID(i));
+		auto textureWriter = texturesWriter->CreateChild(GetTextureTypeNameByTextureID(static_cast<MaterialModel::ETextureType>(i)));
 		textureWriter->SetValue(textureFileName);
 	}
 }
@@ -214,19 +228,10 @@ void MaterialModel::Save(const std::shared_ptr<IXMLWriter>& Writer) const
 //
 void MaterialModel::PrintInfo()
 {
-	Log::Info("--------------------------------------------------");
-	Log::Info("MaterialModel: ");
-	Log::Info("Emissive: [%f, %f, %f]. Factor [%f].", MaterialData().Emissive.r, MaterialData().Emissive.g, MaterialData().Emissive.b, MaterialData().EmissiveFactor);
 	Log::Info("Ambient: [%f, %f, %f]. Factor [%f].", MaterialData().Ambient.r, MaterialData().Ambient.g, MaterialData().Ambient.b, MaterialData().AmbientFactor);
 	Log::Info("Diffuse: [%f, %f, %f]. Factor [%f].", MaterialData().Diffuse.r, MaterialData().Diffuse.g, MaterialData().Diffuse.b, MaterialData().DiffuseFactor);
-	Log::Info("NormalMap: [%f, %f, %f]. Shrineses [%f].", MaterialData().NormalMap.r, MaterialData().NormalMap.g, MaterialData().NormalMap.b, MaterialData().Shininess);
-	Log::Info("Bump: [%f, %f, %f]. Factor [%f].", MaterialData().Bump.r, MaterialData().Bump.g, MaterialData().Bump.b, MaterialData().BumpFactor);
-	Log::Info("TransparentColor: [%f, %f, %f]. Factor [%f].", MaterialData().TransparentColor.r, MaterialData().TransparentColor.g, MaterialData().TransparentColor.b, MaterialData().TransparencyFactor);
-	Log::Info("DisplacementColor: [%f, %f, %f]. Factor [%f].", MaterialData().DisplacementColor.r, MaterialData().DisplacementColor.g, MaterialData().DisplacementColor.b, MaterialData().DisplacementFactor);
-	Log::Info("VectorDisplacementColor: [%f, %f, %f]. Factor [%f].", MaterialData().VectorDisplacementColor.r, MaterialData().VectorDisplacementColor.g, MaterialData().VectorDisplacementColor.b, MaterialData().VectorDisplacementFactor);
 	Log::Info("Specular: [%f, %f, %f]. Factor [%f].", MaterialData().Specular.r, MaterialData().Specular.g, MaterialData().Specular.b, MaterialData().SpecularFactor);
-	Log::Info("VectorDisplacementColor: [%f, %f, %f]. Factor [%f].", MaterialData().Reflection.r, MaterialData().Reflection.g, MaterialData().Reflection.b, MaterialData().ReflectionFactor);
-	Log::Info("");
+	Log::Info("Emissive: [%f, %f, %f]. Factor [%f].", MaterialData().Emissive.r, MaterialData().Emissive.g, MaterialData().Emissive.b, MaterialData().EmissiveFactor);
 }
 
 std::string MaterialModel::GetTextureTypeNameByTextureID(ETextureType ID) const

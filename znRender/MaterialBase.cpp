@@ -125,30 +125,27 @@ void MaterialBase::Load(const std::shared_ptr<IByteBuffer>& ByteBuffer)
 	//Log::Info("Material: Load '%d' textures.", texturesCount);
 	for (size_t i = 0; i < texturesCount; i++)
 	{
-		uint8 textureIndex;
-		ByteBuffer->read(&textureIndex);
-
+		uint8 textureID;
+		ByteBuffer->read(&textureID);
 		std::string textureFileName;
 		ByteBuffer->readString(&textureFileName);
+
+		if (m_Textures.find(textureID) != m_Textures.end())
+		{
+			Log::Error("MaterialBase: Texture with index '%d' already set.", textureID);
+			continue;
+		}
 
 		auto texture = m_RenderDevice.GetBaseManager().GetManager<IznTexturesFactory>()->LoadTexture2D(textureFileName);
 		if (texture == nullptr)
 		{
-			Log::Error("MaterialBase: Unable load texture: '%s' with index '%d' for material '%s'.", textureFileName.c_str(), textureIndex, GetName().c_str());
+			Log::Error("MaterialBase: Unable load texture: '%s' with index '%d' for material '%s'.", textureFileName.c_str(), textureID, GetName().c_str());
 			texture = m_RenderDevice.GetBaseManager().GetManager<IznTexturesFactory>()->GetDefaultTexture();
 		}
 
-		if (m_Textures.find(textureIndex) != m_Textures.end())
-		{
-			Log::Error("MaterialBase: Texture with index '%d' already set.", textureIndex);
-			continue;
-		}
-
-		SetTexture(textureIndex, texture);
+		SetTexture(textureID, texture);
 		//Log::Info("Material: Load '%s' texture '%s'.", GetTextureTypeName(textureIndex).c_str(), textureFileName.c_str());
 	}
-
-	MarkMaterialDataDirty();
 }
 
 void MaterialBase::Save(const std::shared_ptr<IByteBuffer>& ByteBuffer) const

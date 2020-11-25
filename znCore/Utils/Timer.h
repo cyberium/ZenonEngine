@@ -12,14 +12,14 @@ public:
 	{
 		m_Previous = std::clock();
 	}
-	float GetElapsedTime() const
+	long GetElapsedTime() const
 	{
-		float currentTime = std::clock();
-		float deltaTime = currentTime - m_Previous;
+		long currentTime = std::clock();
+		long deltaTime = currentTime - m_Previous;
 		m_Previous = currentTime;
 		return deltaTime;
 	}
 
 private:
-	mutable float m_Previous;
+	mutable long m_Previous;
 };
