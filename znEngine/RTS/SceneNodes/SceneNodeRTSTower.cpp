@@ -18,19 +18,19 @@ CSceneNodeRTSTower::CSceneNodeRTSTower(IScene & Scene)
 {
 	// Unit properties
 	{
-		auto towerPropsGroup = MakeShared(CPropertiesGroup, "Tower");
+		auto towerPropsGroup = MakeShared(CPropertiesGroup, "Tower", "descr");
 
-		auto AttackDamage = MakeShared(CPropertyWrapped<float>, "AttackDamage");
+		auto AttackDamage = MakeShared(CPropertyWrapped<float>, "AttackDamage", "descr", 10.0f);
 		AttackDamage->SetValueSetter(std::bind(&CSceneNodeRTSTower::SetAttackDamage, this, std::placeholders::_1));
 		AttackDamage->SetValueGetter(std::bind(&CSceneNodeRTSTower::GetAttackDamage, this));
 		towerPropsGroup->AddProperty(AttackDamage);
 
-		auto AttackInterval = MakeShared(CPropertyWrapped<float>, "AttackInterval");
+		auto AttackInterval = MakeShared(CPropertyWrapped<float>, "AttackInterval", "descr", 1.0f);
 		AttackInterval->SetValueSetter(std::bind(&CSceneNodeRTSTower::SetAttackInterval, this, std::placeholders::_1));
 		AttackInterval->SetValueGetter(std::bind(&CSceneNodeRTSTower::GetAttackInterval, this));
 		towerPropsGroup->AddProperty(AttackInterval);
 
-		auto AttackRange = MakeShared(CPropertyWrapped<float>, "AttackRange");
+		auto AttackRange = MakeShared(CPropertyWrapped<float>, "AttackRange", "descr", 250.0f);
 		AttackRange->SetValueSetter(std::bind(&CSceneNodeRTSTower::SetAttackRange, this, std::placeholders::_1));
 		AttackRange->SetValueGetter(std::bind(&CSceneNodeRTSTower::GetAttackRange, this));
 		towerPropsGroup->AddProperty(AttackRange);

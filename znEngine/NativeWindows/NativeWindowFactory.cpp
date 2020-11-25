@@ -75,7 +75,7 @@ CNativeWindowFactory::CNativeWindowFactory(IApplication_WindowsSpecific * Applic
 CNativeWindowFactory::~CNativeWindowFactory()
 {
 	if (::UnregisterClassW(cZenonWindowClassName, m_Application_WindowsSpecific->GetHInstance()) == FALSE)
-		throw CException("CNativeWindowFactory: Failed to unregister render window class.");
+		Log::Error("CNativeWindowFactory: Failed to unregister render window class.");
 }
 
 
@@ -83,12 +83,12 @@ CNativeWindowFactory::~CNativeWindowFactory()
 //
 // IWindowCreator
 //
-std::unique_ptr<IznNativeWindow> CNativeWindowFactory::CreateWindowInstance(LPCWSTR WindowName, LONG Width, LONG Height) const
+std::unique_ptr<IznNativeWindow> CNativeWindowFactory::CreateWindowInstance(const std::string& WindowName, glm::ivec2 WindowSize) const
 {
 	int screenWidth = ::GetSystemMetrics(SM_CXSCREEN);
 	int screenHeight = ::GetSystemMetrics(SM_CYSCREEN);
 
-	RECT windowRect = { 0, 0, Width, Height };
+	RECT windowRect = { 0, 0, WindowSize.x, WindowSize.y};
 	if (::AdjustWindowRect(&windowRect, WS_OVERLAPPEDWINDOW, FALSE) == FALSE)
 		throw CException("CNativeWindowFactory: Failed to AdjustWindowRect.");
 
@@ -102,7 +102,7 @@ std::unique_ptr<IznNativeWindow> CNativeWindowFactory::CreateWindowInstance(LPCW
 	(
 		NULL,
 		cZenonWindowClassName,
-		WindowName,
+		Resources::utf8_to_utf16(WindowName).c_str(),
 		WS_OVERLAPPEDWINDOW,
 		windowX, windowY, windowWidth, windowHeight,
 		NULL,

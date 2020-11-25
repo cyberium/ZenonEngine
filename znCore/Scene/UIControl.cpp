@@ -39,7 +39,7 @@ void CUIControl::Initialize()
 {
 	// Name properties
 	{
-		std::shared_ptr<CPropertyWrapped<std::string>> nameProperty = MakeShared(CPropertyWrapped<std::string>, "Name", "Scene node name.");
+		std::shared_ptr<CPropertyWrapped<std::string>> nameProperty = MakeShared(CPropertyWrapped<std::string>, "Name", "Scene node name.", "");
 		nameProperty->SetValueSetter(std::bind(&Object::SetName, this, std::placeholders::_1));
 		nameProperty->SetValueGetter(std::bind(&Object::GetName, this));
 		GetProperties()->AddProperty(nameProperty);

@@ -932,9 +932,9 @@ TiXmlDocument& TiXmlDocument::operator=(const TiXmlDocument& copy)
 }
 
 
-bool TiXmlDocument::LoadFile(std::shared_ptr<IFile> File, TiXmlEncoding encoding)
+bool TiXmlDocument::LoadFile(std::shared_ptr<IByteBuffer> ByteBuffer, TiXmlEncoding encoding)
 {
-	if (File == nullptr)
+	if (ByteBuffer == nullptr)
 	{
 		SetError(TIXML_ERROR_OPENING_FILE, 0, 0, TIXML_ENCODING_UNKNOWN);
 		return false;
@@ -945,7 +945,7 @@ bool TiXmlDocument::LoadFile(std::shared_ptr<IFile> File, TiXmlEncoding encoding
 	location.Clear();
 
 	// Strange case, but good to handle up front.
-	if (File->getSize() <= 0)
+	if (ByteBuffer->getSize() <= 0)
 	{
 		SetError(TIXML_ERROR_DOCUMENT_EMPTY, 0, 0, TIXML_ENCODING_UNKNOWN);
 		return false;
@@ -972,10 +972,10 @@ bool TiXmlDocument::LoadFile(std::shared_ptr<IFile> File, TiXmlEncoding encoding
 	}
 	*/
 
-	char* buf = new char[File->getSize() + 1];
+	char* buf = new char[ByteBuffer->getSize() + 1];
 	buf[0] = 0;
 
-	if (!File->readBytes(buf, File->getSize()))
+	if (false == ByteBuffer->readBytes(buf, ByteBuffer->getSize()))
 	{
 		delete[] buf;
 		SetError(TIXML_ERROR_OPENING_FILE, 0, 0, TIXML_ENCODING_UNKNOWN);
@@ -998,11 +998,11 @@ bool TiXmlDocument::LoadFile(std::shared_ptr<IFile> File, TiXmlEncoding encoding
 	const char CR = 0x0d;
 	const char LF = 0x0a;
 
-	buf[File->getSize()] = 0;
+	buf[ByteBuffer->getSize()] = 0;
 	while (*p)
 	{
-		assert(p < (buf + File->getSize()));
-		assert(q <= (buf + File->getSize()));
+		assert(p < (buf + ByteBuffer->getSize()));
+		assert(q <= (buf + ByteBuffer->getSize()));
 		assert(q <= p);
 
 		if (*p == CR)
@@ -1019,7 +1019,7 @@ bool TiXmlDocument::LoadFile(std::shared_ptr<IFile> File, TiXmlEncoding encoding
 			*q++ = *p++;
 		}
 	}
-	assert(q <= (buf + File->getSize()));
+	assert(q <= (buf + ByteBuffer->getSize()));
 	*q = 0;
 
 	Parse(buf, 0, encoding);

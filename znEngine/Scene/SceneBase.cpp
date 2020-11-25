@@ -7,29 +7,6 @@
 #include "Passes/ForwardRendering/RendererForward.h"
 #include "Passes/DefferedRendering/RendererDeffered.h"
 
-#include <sstream>
-#include <iomanip>
-
-namespace
-{
-	template <typename T>
-	std::string toStringPrec(const T Value, const int N = 3)
-	{
-		std::string strVal(std::to_string(Value));
-		const auto& it = strVal.find('.');
-		if (it == std::string::npos)
-			return strVal;
-
-		size_t offset = it + 1;
-		if (offset + N < strVal.length())
-			offset += N;
-		else
-			offset += strVal.length() - offset;
-
-		return strVal.substr(0, offset);
-	}
-}
-
 SceneBase::SceneBase(IBaseManager& BaseManager, IRenderWindow& RenderWindow)
 	: m_BaseManager(BaseManager)
 	, m_RenderDevice(BaseManager.GetApplication().GetRenderDevice())
@@ -73,8 +50,6 @@ const ISceneFinder& SceneBase::GetFinder() const
 
 void SceneBase::Initialize()
 {
-	m_VideoSettings = GetBaseManager().GetManager<ISettings>()->GetGroup("Video");
-
 	m_RootSceneNode = CreateSceneNodeT<ISceneNode>();
 	m_RootSceneNode->SetName("RootSceneNode");
 	std::dynamic_pointer_cast<ISceneNodeInternal>(m_RootSceneNode)->SetPersistanceInternal(true);
@@ -428,7 +403,7 @@ void SceneBase::LoadFromFile(const std::string& FileName)
 			throw CException("Scene file '%s' not found.", FileName.c_str());
 
 		CXMLManager xml(GetBaseManager());
-		auto xmlReader = xml.CreateReader(file);
+		auto xmlReader = xml.CreateReaderFromFile(file);
 		auto xmlRootChild = xmlReader->GetChilds()[0];
 
 		ResetScene();
@@ -707,13 +682,13 @@ std::string SceneBase::GetStatisticsString(const UpdateEventArgs& e) const
 	glm::vec3 cameraPos = e.Camera->GetTranslation();
 	glm::vec3 cameraRot = e.Camera->GetDirection();
 
-	std::string fullText = "FPS Engine: " + toStringPrec(uint64(1000.0 / e.DeltaTime)) + "\n";
-	fullText += "FPS Window: " + toStringPrec(uint64(1000.0 / double(GetRenderWindow().GetSummaDeltaTime()))) + "\n";
-	fullText += "CamPos: (" + toStringPrec(cameraPos.x) + ", " + toStringPrec(cameraPos.y) + ", " + toStringPrec(cameraPos.z) + ")\n";
-	fullText += "CamRot: yaw " + toStringPrec(e.Camera->GetYaw()) + ", pitch " + toStringPrec(e.Camera->GetPitch()) + "\n";
-	fullText += "CamRot: (" + toStringPrec(cameraRot.x) + ", " + toStringPrec(cameraRot.y) + ", " + toStringPrec(cameraRot.z) + ")\n";
-	fullText += "Frame Update: " + toStringPrec(GetRenderWindow().GetUpdateDeltaTime()) + " ms\n";
-	fullText += "Frame Render: " + toStringPrec(GetRenderWindow().GetRenderDeltaTime()) + " ms\n";
-	fullText += "Frame Total : " + toStringPrec(GetRenderWindow().GetSummaDeltaTime()) + " ms\n";
+	std::string fullText = "FPS Engine: " + Utils::FloatToString(uint64(1000.0 / e.DeltaTime)) + "\n";
+	fullText += "FPS Window: " + Utils::FloatToString(uint64(1000.0 / double(GetRenderWindow().GetSummaDeltaTime()))) + "\n";
+	fullText += "CamPos: (" + Utils::FloatToString(cameraPos.x) + ", " + Utils::FloatToString(cameraPos.y) + ", " + Utils::FloatToString(cameraPos.z) + ")\n";
+	fullText += "CamRot: yaw " + Utils::FloatToString(e.Camera->GetYaw()) + ", pitch " + Utils::FloatToString(e.Camera->GetPitch()) + "\n";
+	fullText += "CamRot: (" + Utils::FloatToString(cameraRot.x) + ", " + Utils::FloatToString(cameraRot.y) + ", " + Utils::FloatToString(cameraRot.z) + ")\n";
+	fullText += "Frame Update: " + Utils::FloatToString(GetRenderWindow().GetUpdateDeltaTime()) + " ms\n";
+	fullText += "Frame Render: " + Utils::FloatToString(GetRenderWindow().GetRenderDeltaTime()) + " ms\n";
+	fullText += "Frame Total : " + Utils::FloatToString(GetRenderWindow().GetSummaDeltaTime()) + " ms\n";
 	return fullText;
 }

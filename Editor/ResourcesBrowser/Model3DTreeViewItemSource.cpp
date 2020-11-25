@@ -50,7 +50,7 @@ std::shared_ptr<IObject> CznModel3DTreeViewItemSource::GetObject_() const
 bool CznModel3DTreeViewItemSource::Load()
 {
 	auto filesManager = m_BaseManager.GetManager<IFilesManager>();
-	auto gameDataStorage = filesManager->GetStorage(EFilesStorageType::GAMEDATA);
+	auto gameDataStorage = filesManager->GetStorage(EFilesStorageType::USERDATA);
 	auto gameDataStorageEx = std::dynamic_pointer_cast<IznFilesStorageExtended>(gameDataStorage);
 	_ASSERT(gameDataStorageEx != nullptr);
 

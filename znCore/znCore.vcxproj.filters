@@ -82,9 +82,6 @@
     <Filter Include="__Interfaces\Managers">
       <UniqueIdentifier>{a1b8f907-e42a-4a76-838d-0f07d9b66144}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Settings">
-      <UniqueIdentifier>{bc1f0964-30fc-4288-a8ea-cb5bd992e806}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Objects\Scene">
       <UniqueIdentifier>{97c61480-573e-483c-83a4-9732e99153ea}</UniqueIdentifier>
     </Filter>
@@ -96,6 +93,9 @@
     </Filter>
     <Filter Include="Objects\Render">
       <UniqueIdentifier>{e4b2dafe-7b09-411a-878e-3dba2aec1453}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Properties">
+      <UniqueIdentifier>{bc1f0964-30fc-4288-a8ea-cb5bd992e806}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -237,9 +237,6 @@
     <ClCompile Include="XML\XMLWriter.cpp">
       <Filter>XML</Filter>
     </ClCompile>
-    <ClCompile Include="Settings\SettingsGroupBase.cpp">
-      <Filter>Settings</Filter>
-    </ClCompile>
     <ClCompile Include="Log\Console\Console.cpp">
       <Filter>Log\Console</Filter>
     </ClCompile>
@@ -272,12 +269,6 @@
     </ClCompile>
     <ClCompile Include="Utils\Utils.cpp">
       <Filter>Utils</Filter>
-    </ClCompile>
-    <ClCompile Include="Settings\Actions.cpp">
-      <Filter>Settings</Filter>
-    </ClCompile>
-    <ClCompile Include="Settings\Properties.cpp">
-      <Filter>Settings</Filter>
     </ClCompile>
     <ClCompile Include="Log\Log.cpp">
       <Filter>Log</Filter>
@@ -312,12 +303,6 @@
     <ClCompile Include="Utils\Convert.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
-    <ClCompile Include="Settings\PropertyBase.cpp">
-      <Filter>Settings</Filter>
-    </ClCompile>
-    <ClCompile Include="Settings\PropertyGroup.cpp">
-      <Filter>Settings</Filter>
-    </ClCompile>
     <ClCompile Include="Passes\RenderPassMultipipelined.cpp">
       <Filter>Passes</Filter>
     </ClCompile>
@@ -338,6 +323,18 @@
     </ClCompile>
     <ClCompile Include="ObjectsFactories\Scene\UIControlCreator.cpp">
       <Filter>Objects\Scene\Creator</Filter>
+    </ClCompile>
+    <ClCompile Include="Properties\Properties.cpp">
+      <Filter>Properties</Filter>
+    </ClCompile>
+    <ClCompile Include="Properties\PropertyAction.cpp">
+      <Filter>Properties</Filter>
+    </ClCompile>
+    <ClCompile Include="Properties\PropertyBase.cpp">
+      <Filter>Properties</Filter>
+    </ClCompile>
+    <ClCompile Include="Properties\PropertyGroup.cpp">
+      <Filter>Properties</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -659,12 +656,6 @@
     <ClInclude Include="XML\XMLWriter.h">
       <Filter>XML</Filter>
     </ClInclude>
-    <ClInclude Include="Settings\SettingBase.h">
-      <Filter>Settings</Filter>
-    </ClInclude>
-    <ClInclude Include="Settings\SettingsGroupBase.h">
-      <Filter>Settings</Filter>
-    </ClInclude>
     <ClInclude Include="Log\Console\Console.h">
       <Filter>Log\Console</Filter>
     </ClInclude>
@@ -715,12 +706,6 @@
     </ClInclude>
     <ClInclude Include="Utils\Timer.h">
       <Filter>Utils</Filter>
-    </ClInclude>
-    <ClInclude Include="Settings\Actions.h">
-      <Filter>Settings</Filter>
-    </ClInclude>
-    <ClInclude Include="Settings\Properties.h">
-      <Filter>Settings</Filter>
     </ClInclude>
     <ClInclude Include="Log\Log.h">
       <Filter>Log</Filter>
@@ -785,12 +770,6 @@
     <ClInclude Include="Utils\Convert.h">
       <Filter>Utils</Filter>
     </ClInclude>
-    <ClInclude Include="Settings\PropertyBase.h">
-      <Filter>Settings</Filter>
-    </ClInclude>
-    <ClInclude Include="Settings\PropertyGroup.h">
-      <Filter>Settings</Filter>
-    </ClInclude>
     <ClInclude Include="Passes\RenderPassMultipipelined.h">
       <Filter>Passes</Filter>
     </ClInclude>
@@ -817,6 +796,18 @@
     </ClInclude>
     <ClInclude Include="Utils\Math\MathCommon.h">
       <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Properties\Properties.h">
+      <Filter>Properties</Filter>
+    </ClInclude>
+    <ClInclude Include="Properties\PropertyAction.h">
+      <Filter>Properties</Filter>
+    </ClInclude>
+    <ClInclude Include="Properties\PropertyBase.h">
+      <Filter>Properties</Filter>
+    </ClInclude>
+    <ClInclude Include="Properties\PropertyGroup.h">
+      <Filter>Properties</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

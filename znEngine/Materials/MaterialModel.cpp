@@ -161,11 +161,50 @@ const std::shared_ptr<ITexture>& MaterialModel::GetTexture(ETextureType TextureT
 
 
 //
-// IMaterial
+// IObjectLoadSave
 //
-std::string MaterialModel::GetTextureTypeName(uint8 ID) const
+void MaterialModel::Load(const std::shared_ptr<IXMLReader>& Reader)
 {
-	return cTextureTypeNames[ID];
+	auto texturesReader = Reader->GetChild("Textures");
+	for (const auto& textureNode : texturesReader->GetChilds())
+	{
+		MaterialModel::ETextureType textureID = GetTextureIDByTextureTypeName(textureNode->GetName().c_str());
+
+		if (__super::GetTexture(textureID) != nullptr)
+		{
+			Log::Error("MaterialModel: Texture with ID '%d' already set.", textureID);
+			continue;
+		}
+
+		std::string textureFileName = textureNode->GetValue();
+
+		auto texture = m_BaseManager.GetManager<IznTexturesFactory>()->LoadTexture2D(textureFileName);
+		if (texture == nullptr)
+		{
+			Log::Error("MaterialModel: Unable load texture: '%s' with ID '%d' for material '%s'.", textureFileName.c_str(), textureID, GetName().c_str());
+			texture = m_BaseManager.GetManager<IznTexturesFactory>()->GetDefaultTexture();
+		}
+
+		SetTexture(textureID, texture);
+	}
+}
+
+void MaterialModel::Save(const std::shared_ptr<IXMLWriter>& Writer) const
+{
+	auto texturesWriter = Writer->CreateChild("Textures");
+	for (size_t i = 0; i < ETextureType::Count; i++)
+	{
+		auto texture = __super::GetTexture(i);
+		if (texture == nullptr)
+			continue;
+
+		const auto textureFileName = texture->GetFilename();
+		if (textureFileName.empty())
+			throw CException("Empty filename for texture with ID '%d'.", i);
+
+		auto textureWriter = texturesWriter->CreateChild(GetTextureTypeNameByTextureID(i));
+		textureWriter->SetValue(textureFileName);
+	}
 }
 
 
@@ -188,4 +227,20 @@ void MaterialModel::PrintInfo()
 	Log::Info("Specular: [%f, %f, %f]. Factor [%f].", MaterialData().Specular.r, MaterialData().Specular.g, MaterialData().Specular.b, MaterialData().SpecularFactor);
 	Log::Info("VectorDisplacementColor: [%f, %f, %f]. Factor [%f].", MaterialData().Reflection.r, MaterialData().Reflection.g, MaterialData().Reflection.b, MaterialData().ReflectionFactor);
 	Log::Info("");
+}
+
+std::string MaterialModel::GetTextureTypeNameByTextureID(ETextureType ID) const
+{
+	for (size_t i = 0; i < ETextureType::Count; i++)
+		if (i == ID)
+			return cTextureTypeNames[i];
+	throw CException("Unknown texture ID '%d'.", ID);
+}
+
+MaterialModel::ETextureType MaterialModel::GetTextureIDByTextureTypeName(const char * TypeName) const
+{
+	for (size_t i = 0; i < ETextureType::Count; i++)
+		if (::stricmp(cTextureTypeNames[i], TypeName) == 0)
+			return static_cast<MaterialModel::ETextureType>(i);
+	throw CException("Unknown texture type name '%s'.", TypeName);
 }

@@ -24,7 +24,7 @@ CModelsComponent3D::CModelsComponent3D(const ISceneNode& OwnerNode)
 	GetProperties()->SetName("ModelsComponent"); // TODO: ObjectClassName
 
 	{
-		auto minBounds = MakeShared(CPropertyWrapped<bool>, "CastShadows");
+		auto minBounds = MakeShared(CPropertyWrapped<bool>, "CastShadows", "Is this model can cast shadows", true);
 		minBounds->SetValueSetter(std::bind(&CModelsComponent3D::SetCastShadows, this, std::placeholders::_1));
 		minBounds->SetValueGetter(std::bind(&CModelsComponent3D::IsCastShadows, this));
 		GetProperties()->AddProperty(minBounds);

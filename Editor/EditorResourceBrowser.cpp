@@ -104,7 +104,7 @@ std::shared_ptr<IznTreeViewItem> CEditorResourceBrowser::CreateSceneNodeProtosFr
 {
 	std::vector<std::shared_ptr<IznTreeViewItem>> sceneNodes;
 
-	auto gameDataStorage = GetBaseManager().GetManager<IFilesManager>()->GetStorage(EFilesStorageType::GAMEDATA);
+	auto gameDataStorage = GetBaseManager().GetManager<IFilesManager>()->GetStorage(EFilesStorageType::USERDATA);
 	auto gameDataStorageEx = std::dynamic_pointer_cast<IznFilesStorageExtended>(gameDataStorage);
 	_ASSERT(gameDataStorageEx != nullptr);
 
@@ -116,7 +116,7 @@ std::shared_ptr<IznTreeViewItem> CEditorResourceBrowser::CreateSceneNodeProtosFr
 			auto file = GetBaseManager().GetManager<IFilesManager>()->Open(fileName);
 
 			CXMLManager xmlManager(GetBaseManager());
-			auto reader = xmlManager.CreateReader(file);
+			auto reader = xmlManager.CreateReaderFromFile(file);
 			_ASSERT(false == reader->GetChilds().empty());
 			auto firstXMLChild = reader->GetChilds()[0];
 
@@ -127,7 +127,7 @@ std::shared_ptr<IznTreeViewItem> CEditorResourceBrowser::CreateSceneNodeProtosFr
 		catch (const CException& e)
 		{
 			Log::Error("Error while loading '%s' SceneNodeProto.", fileName.c_str());
-			Log::Error(e.MessageCStr());
+			Log::Error("--->%s", e.MessageCStr());
 		}
 	}
 
@@ -140,7 +140,7 @@ std::shared_ptr<IznTreeViewItem> CEditorResourceBrowser::CreateSceneNodeProtosFr
 std::shared_ptr<IznTreeViewItem> CEditorResourceBrowser::CreateModelsFromFolder(const std::string & FolderName)
 {
 	std::vector<std::shared_ptr<IznTreeViewItem>> models;
-	auto gameDataStorage = GetBaseManager().GetManager<IFilesManager>()->GetStorage(EFilesStorageType::GAMEDATA);
+	auto gameDataStorage = GetBaseManager().GetManager<IFilesManager>()->GetStorage(EFilesStorageType::USERDATA);
 	auto gameDataStorageEx = std::dynamic_pointer_cast<IznFilesStorageExtended>(gameDataStorage);
 	_ASSERT(gameDataStorageEx != nullptr);
 

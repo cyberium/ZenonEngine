@@ -10,7 +10,7 @@ public:
 	//
 	// IWindowCreator
 	//
-	std::unique_ptr<IznNativeWindow> CreateWindowInstance(LPCWSTR WindowName, LONG Width, LONG Height) const override;
+	std::unique_ptr<IznNativeWindow> CreateWindowInstance(const std::string& WindowName, glm::ivec2 WindowSize) const override;
 	std::unique_ptr<IznNativeWindow> CreateWindowProxy(IznNativeWindow& SourceNativeWindow) const override;
 
 private:

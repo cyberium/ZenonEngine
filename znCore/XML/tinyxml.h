@@ -1401,7 +1401,7 @@ public:
 
 	virtual ~TiXmlDocument() {}
 
-	bool LoadFile(std::shared_ptr<IFile> File, TiXmlEncoding encoding = TIXML_DEFAULT_ENCODING);
+	bool LoadFile(std::shared_ptr<IByteBuffer> ByteBuffer, TiXmlEncoding encoding = TIXML_DEFAULT_ENCODING);
 
 	/** Parse the given null terminated block of xml data. Passing in an encoding to this
 		method (either TIXML_ENCODING_LEGACY or TIXML_ENCODING_UTF8 will force TinyXml

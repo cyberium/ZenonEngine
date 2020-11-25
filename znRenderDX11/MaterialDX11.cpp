@@ -11,50 +11,32 @@ MaterialDX11::MaterialDX11(IRenderDeviceDX11& RenderDeviceDX11)
 MaterialDX11::~MaterialDX11()
 {}
 
+
+
+//
+// IMaterial
+//
 void MaterialDX11::Bind(const ShaderMap& shaders) const
 {
     MaterialBase::Bind(shaders);
 
-	// means shader in Pipeline state
-	if (m_Shaders.empty())
-	{
-		for (const auto& shader : shaders)
-		{
-			BindForShader(shader.second.get());
-		}
-	}
-	else
-	{
-		_ASSERT(false);
-		for (const auto& shader : m_Shaders)
-		{
-			shader.second->Bind();
-			BindForShader(shader.second.get());
-		}
-	}
+	for (const auto& shader : shaders)
+		BindForShader(shader.second.get());
 }
 
 void MaterialDX11::Unbind(const ShaderMap& shaders) const
 {
-	if (m_Shaders.empty())
-	{
-		for (const auto& shader : shaders)
-		{
-			UnbindForShader(shader.second.get());
-		}
-	}
-	else
-	{
-		_ASSERT(false);
-		for (const auto& it : m_Shaders)
-		{
-			UnbindForShader(it.second.get());
-		}
-	}
+	for (const auto& shader : shaders)
+		UnbindForShader(shader.second.get());
 
     MaterialBase::Unbind(shaders);
 }
 
+
+
+//
+// Private
+//
 void MaterialDX11::BindForShader(const IShader* shader) const
 {
 	_ASSERT_EXPR(shader != nullptr, L"Shader must be not null.");

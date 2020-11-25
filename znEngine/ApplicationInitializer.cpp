@@ -6,7 +6,9 @@
 // Additional
 #include "BaseManager.h"
 #include "PluginsManager.h"
-#include "Settings.h"
+
+#include "Settings/Settings.h"
+
 #include "AssyncLoader/Loader.h"
 
 
@@ -35,26 +37,8 @@
 #include "Formats/Textures/TexturesFactory.h"
 
 
-#include "Settings/GroupVideo.h"
-
 #include "ThreadPool.h"
 
-
-namespace
-{
-	std::string GetExeFileName()
-	{
-		char buffer[MAX_PATH];
-		GetModuleFileNameA(NULL, buffer, MAX_PATH);
-		return buffer;
-	}
-
-	std::string GetExePath()
-	{
-		std::string f = GetExeFileName();
-		return f.substr(0, f.find_last_of("\\/"));
-	}
-}
 
 
 void Application::InitializeEngineInternal()
@@ -77,23 +61,45 @@ void Application::InitializeEngineInternal()
 	GetBaseManager().AddManager<IznPluginsManager>(pluginsManager);
 
 
-	// Settings
-	{
-		std::shared_ptr<ISettings> settings = MakeShared(CSettings, GetBaseManager());
-		GetBaseManager().AddManager<ISettings>(settings);
-		settings->AddGroup("Video", MakeShared(CGroupVideo));
-	}
-
-
 	// Files
 	{
 		GetBaseManager().AddManager<IFilesManager>(MakeShared(CFilesManager, GetBaseManager()));
-		GetBaseManager().GetManager<IFilesManager>()->AddStorage(EFilesStorageType::GAMEDATA, MakeShared(CLocalFilesStorage, "O:/ZenonEngine_gamedata/"));
-		GetBaseManager().GetManager<IFilesManager>()->AddStorage(EFilesStorageType::ADDITIONAL, MakeShared(CLibraryResourceFileStotage, GetModuleHandle(L"znEngine.dll")));
-		GetBaseManager().GetManager<IFilesManager>()->AddStorage(EFilesStorageType::ADDITIONAL, MakeShared(CLocalFilesStorage, "gamedata/"));
-		GetBaseManager().GetManager<IFilesManager>()->AddStorage(EFilesStorageType::ADDITIONAL, MakeShared(CLocalFilesStorage, "")); // Every access
+		GetBaseManager().GetManager<IFilesManager>()->AddStorage(EFilesStorageType::USERDATA, MakeShared(CLocalFilesStorage, "O:/ZenonEngine_userdata/"));
+		GetBaseManager().GetManager<IFilesManager>()->AddStorage(EFilesStorageType::GAMEDATA, MakeShared(CLibraryResourceFileStotage, GetModuleHandle(L"znEngine.dll")));
+		GetBaseManager().GetManager<IFilesManager>()->AddStorage(EFilesStorageType::GAMEDATA, MakeShared(CLocalFilesStorage, "gamedata/"));
 	}
 
+
+	// Settings
+	{
+		GetBaseManager().AddManager<ISettings>(MakeShared(CSettings, GetBaseManager()));
+
+		// Video
+		{
+			auto settingsVideo = MakeShared(CPropertiesGroup, "Video", "Graphics settings.");
+			settingsVideo->AddProperty(MakeShared(CProperty<glm::vec2>, "WindowSize", "Size of render windows", glm::vec2(600, 480)));
+			settingsVideo->AddProperty(MakeShared(CProperty<bool>, "VSyncEnabled", "Enable or disable vertical synchronization", true));
+			settingsVideo->AddProperty(MakeShared(CProperty<bool>, "MultisampleEnabled", "Enable or disable multisampling.", true));
+
+			settingsVideo->GetPropertyT<glm::vec2>("WindowSize")->Set(glm::vec2(1280, 1024));
+			settingsVideo->GetPropertyT<bool>("VSyncEnabled")->Set(false);
+			settingsVideo->GetPropertyT<bool>("MultisampleEnabled")->Set(false);
+
+			GetBaseManager().GetManager<ISettings>()->AddGroup(settingsVideo);
+		}
+
+		// Files
+		{
+			auto settingsFilesystem = MakeShared(CPropertiesGroup, "FileSystem", "descr");
+			settingsFilesystem->AddProperty(MakeShared(CProperty<std::string>, "UserdataPath", "desc", "userdata/"));
+
+			settingsFilesystem->GetPropertyT<std::string>("UserdataPath")->Set("O:/ZenonEngine_userdata/");
+
+			GetBaseManager().GetManager<ISettings>()->AddGroup(settingsFilesystem);
+		}
+
+		GetBaseManager().GetManager<ISettings>()->Load();
+	}
 
 	// Render stuff
 	{
@@ -161,7 +167,7 @@ void Application::InitializeEngineInternal()
 		{
 			try
 			{
-				pluginsManager->AddPlugin(GetExePath() + "\\" + p);
+				pluginsManager->AddPlugin(Utils::GetExecutablePath() + "\\" + p);
 			}
 			catch (const CException& e)
 			{

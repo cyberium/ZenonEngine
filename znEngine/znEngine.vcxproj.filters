@@ -136,9 +136,6 @@
     <ClCompile Include="Materials\MaterialDebug.cpp">
       <Filter>Materials</Filter>
     </ClCompile>
-    <ClCompile Include="Settings\GroupVideo.cpp">
-      <Filter>Settings</Filter>
-    </ClCompile>
     <ClCompile Include="RenderDeviceFactory.cpp">
       <Filter>Managers</Filter>
     </ClCompile>
@@ -228,9 +225,6 @@
     </ClCompile>
     <ClCompile Include="Scene\Components\ReactPhysicsComponent.cpp">
       <Filter>Scene\Components</Filter>
-    </ClCompile>
-    <ClCompile Include="Settings.cpp">
-      <Filter>Managers</Filter>
     </ClCompile>
     <ClCompile Include="Formats\Models\ModelsFactory.cpp">
       <Filter>Formats\Models</Filter>
@@ -368,6 +362,9 @@
       <Filter>RTS\SceneNodes</Filter>
     </ClCompile>
     <ClCompile Include="ApplicationInitializer.cpp" />
+    <ClCompile Include="Settings\Settings.cpp">
+      <Filter>Settings</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="common.h">
@@ -382,9 +379,6 @@
     </ClInclude>
     <ClInclude Include="Materials\MaterialDebug.h">
       <Filter>Materials</Filter>
-    </ClInclude>
-    <ClInclude Include="Settings\GroupVideo.h">
-      <Filter>Settings</Filter>
     </ClInclude>
     <ClInclude Include="RenderDeviceFactory.h">
       <Filter>Managers</Filter>
@@ -476,9 +470,6 @@
     </ClInclude>
     <ClInclude Include="Scene\Components\ReactPhysicsComponent.h">
       <Filter>Scene\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="Settings.h">
-      <Filter>Managers</Filter>
     </ClInclude>
     <ClInclude Include="Formats\Models\ModelsFactory.h">
       <Filter>Formats\Models</Filter>
@@ -618,6 +609,9 @@
     </ClInclude>
     <ClInclude Include="RTS\SceneNodes\SceneNodeRTSBullet.h">
       <Filter>RTS\SceneNodes</Filter>
+    </ClInclude>
+    <ClInclude Include="Settings\Settings.h">
+      <Filter>Settings</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

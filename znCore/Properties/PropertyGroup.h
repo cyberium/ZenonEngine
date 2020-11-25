@@ -7,11 +7,12 @@ class ZN_API CPropertiesGroup
 	, public IPropertiesGroup
 {
 public:
-	CPropertiesGroup();
-	CPropertiesGroup(std::string Name, std::string Description = "");
+	CPropertiesGroup(std::string Name, std::string Description);
 	virtual ~CPropertiesGroup();
 
 	// IProperty
+	void ResetToDefault() override;
+	bool IsDefault() const override;
 	void FromString(const std::string& String, bool BlockCallback) override;
 	std::string ToString() const override;
 	void Load(const std::shared_ptr<IXMLReader>& Reader) override;
@@ -24,7 +25,7 @@ public:
 
 private:
 	std::string                GetPropertyTypeName(const IProperty* Property) const;
-	std::shared_ptr<IProperty> CreatePropetyByType(std::string TypeName);
+	std::shared_ptr<IProperty> CreateNewPropety(std::string PropertyName, std::string TypeName);
 
 private:
 	std::unordered_map<std::string, std::shared_ptr<IProperty>> m_Properties;

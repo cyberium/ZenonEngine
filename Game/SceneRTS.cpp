@@ -80,7 +80,7 @@ void CSceneRTS::Initialize()
 	if (auto file = GetBaseManager().GetManager<IFilesManager>()->Open("RTS22656"))
 	{
 		CXMLManager xml(GetBaseManager());
-		auto reader = xml.CreateReader(file);
+		auto reader = xml.CreateReaderFromFile(file);
 		auto rootNodeXML = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeFactory>()->LoadSceneNode3DXML(reader->GetChilds()[0], *this);
 
 		m_RTSUnitsPath = std::dynamic_pointer_cast<ISceneNodeRTSPath>(rootNodeXML->GetChild("Waypoint"));

@@ -10,9 +10,18 @@ namespace Utils
 	ZN_API std::string ToUpper(const std::string& _string);
 
 	ZN_API std::vector<std::string> ArgumentsToVector(int argumentsCount, char* arguments[]);
+
+
 	ZN_API std::string FixFilePath(const std::string& FilePath);
 	ZN_API std::pair<std::string, std::string> GetFilenamePathAndNameExtension(const std::string& FilePath);
 	ZN_API std::pair<std::string, std::string> GetFilenamePathNameAndExtension(const std::string& FilePath);
+
+	ZN_API std::string GetExecutablePath();
+	ZN_API std::string GetWorkingDirectory();
+	ZN_API std::string LoadLocalFile(std::string FileName);
+	ZN_API void        SaveToLocalFile(std::string FileName, const std::string& Content);
+
+	ZN_API std::string FloatToString(const float Value, const int N = 3);
 };
 
 

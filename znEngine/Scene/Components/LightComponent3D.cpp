@@ -8,17 +8,17 @@ CLightComponent3D::CLightComponent3D(const ISceneNode& OwnerNode)
 {
 	GetProperties()->SetName("LightComponent");
 
-	std::shared_ptr<CPropertyWrapped<ColorRBG>> ambientColor = MakeShared(CPropertyWrapped<ColorRBG>, "AmbientColor", "Ambient color part of the light.");
+	std::shared_ptr<CPropertyWrapped<ColorRBG>> ambientColor = MakeShared(CPropertyWrapped<ColorRBG>, "AmbientColor", "descr", glm::vec3(0.2f));
 	ambientColor->SetValueSetter(std::bind(&CLightComponent3D::SetAmbientColor, this, std::placeholders::_1));
 	ambientColor->SetValueGetter(std::bind(&CLightComponent3D::GetAmbientColor, this));
 	GetProperties()->AddProperty(ambientColor);
 
-	std::shared_ptr<CPropertyWrappedColor> diffuseColor = MakeShared(CPropertyWrappedColor, "DiffuseColor", "Ambient color part of the light.");
+	std::shared_ptr<CPropertyWrappedColor> diffuseColor = MakeShared(CPropertyWrappedColor, "DiffuseColor", "descr", glm::vec3(1.0f));
 	diffuseColor->SetValueSetter(std::bind(&CLightComponent3D::SetColor, this, std::placeholders::_1));
 	diffuseColor->SetValueGetter(std::bind(&CLightComponent3D::GetColor, this));
 	GetProperties()->AddProperty(diffuseColor);
 
-	std::shared_ptr<CPropertyWrapped<float>> range = MakeShared(CPropertyWrapped<float>, "Range", "Range of this light.");
+	std::shared_ptr<CPropertyWrapped<float>> range = MakeShared(CPropertyWrapped<float>, "Range", "descr", 1000.0f);
 	range->SetValueSetter(std::bind(&CLightComponent3D::SetRange, this, std::placeholders::_1));
 	range->SetValueGetter(std::bind(&CLightComponent3D::GetRange, this));
 	GetProperties()->AddProperty(range);

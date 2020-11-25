@@ -7,7 +7,7 @@ public:
 	MaterialDX11(IRenderDeviceDX11& RenderDeviceDX11);
 	virtual ~MaterialDX11();
 
-    // MaterialBase
+    // IMaterial
     void Bind(const ShaderMap& shaders) const override final;
     void Unbind(const ShaderMap& shaders) const override final;
 

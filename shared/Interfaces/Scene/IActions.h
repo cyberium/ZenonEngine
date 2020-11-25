@@ -14,6 +14,8 @@ ZN_INTERFACE ZN_API IProperty
 	virtual void        SetDescription(const std::string& Description) = 0;
 	virtual void        SetSyntetic(bool Value) = 0;
 	virtual bool        IsSyntetic() const = 0;
+	virtual void        ResetToDefault() = 0;
+	virtual bool        IsDefault() const = 0;
 	virtual void        FromString(const std::string& String, bool BlockCallback = false) = 0;
 	virtual std::string ToString() const = 0;
 	virtual void        Load(const std::shared_ptr<IXMLReader>& Reader) = 0;
@@ -40,6 +42,7 @@ ZN_INTERFACE ZN_API IPropertyT
 
 	virtual void Set(T Value, bool BlockCallback = false) = 0;
 	virtual T Get() const = 0;
+	virtual T GetDefaultValue() const = 0;
 
 	virtual void SetValueChangedCallback(std::function<void(const T&)> ValueChangedCallback) = 0;
 };

@@ -3,16 +3,11 @@
 // General
 #include "ComponentBase.h"
 
-// Additional
-#include "Settings/Properties.h"
-#include "Settings/PropertyGroup.h"
-#include "Settings/Actions.h"
-
 CComponentBase::CComponentBase(const ISceneNode& OwnerNode)
     : Object(OwnerNode.GetScene().GetBaseManager())
 	, m_OwnerNode(OwnerNode)
 {
-	m_Properties = MakeShared(CPropertiesGroup);
+	m_Properties = MakeShared(CPropertiesGroup, "ComponentBaseProperties", "descr");
 }
 
 CComponentBase::~CComponentBase()

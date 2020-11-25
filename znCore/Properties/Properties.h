@@ -1,6 +1,5 @@
 #pragma once
 
-
 #include "Utils/Convert.h"
 #include "PropertyBase.h"
 #include "PropertyGroup.h"
@@ -12,14 +11,10 @@ class CProperty
 	, public IPropertyValueChangedCallback
 {
 public:
-	CProperty()
-	{}
-	CProperty(std::string Name, std::string Description = "")
+	CProperty(std::string Name, std::string Description, T DefaultValue)
 		: CPropertiesGroup(Name, Description)
-	{}
-	CProperty(std::string Name, std::string Description, T Value)
-		: CPropertiesGroup(Name, Description)
-		, m_Value(Value)
+		, m_Value(DefaultValue)
+		, m_DefaultValue(DefaultValue)
 	{}
 	virtual ~CProperty()
 	{}
@@ -27,6 +22,16 @@ public:
 	//
 	// IProperty
 	//
+	void ResetToDefault() override
+	{
+		Set(GetDefaultValue());
+	}
+
+	bool IsDefault() const override
+	{
+		return Get() == GetDefaultValue();
+	}
+
 	void FromString(const std::string& String, bool BlockCallback) override
 	{
 		T propertyValue = StringToValue<T>(String);
@@ -80,6 +85,11 @@ public:
 		return m_Value;
 	}
 
+	T GetDefaultValue() const override
+	{
+		return m_DefaultValue;
+	}
+
 	void SetValueChangedCallback(std::function<void(const T&)> ValueChangedCallback) override
 	{
 		m_ValueChangedCallback = ValueChangedCallback;
@@ -100,6 +110,7 @@ public:
 
 protected:
 	T m_Value;
+	T m_DefaultValue;
 	std::function<void(const T&)> m_ValueChangedCallback;
 };
 
@@ -114,11 +125,8 @@ class CPropertyWrapped
 	: public CProperty<T>
 {
 public:
-	CPropertyWrapped()
-		: CProperty<T>()
-	{}
-	CPropertyWrapped(std::string Name, std::string Description = "")
-		: CProperty<T>(Name, Description)
+	CPropertyWrapped(std::string Name, std::string Description, T DefaultValue)
+		: CProperty<T>(Name, Description, DefaultValue)
 	{}
 	virtual ~CPropertyWrapped()
 	{}
@@ -176,22 +184,22 @@ class CPropertyWrappedVec3
 	: public CPropertyWrapped<glm::vec3>
 {
 public:
-	CPropertyWrappedVec3(std::string Name, std::string Description = "")
-		: CPropertyWrapped<glm::vec3>(Name, Description)
+	CPropertyWrappedVec3(std::string Name, std::string Description, glm::vec3 DefaultValue)
+		: CPropertyWrapped<glm::vec3>(Name, Description, DefaultValue)
 	{
-		auto xProperty = MakeShared(CPropertyWrapped<float>, "X");
+		auto xProperty = MakeShared(CPropertyWrapped<float>, "X", "The 'X' component of Vector3", DefaultValue.x);
 		xProperty->SetSyntetic(true);
 		xProperty->SetValueSetter(std::bind(&CPropertyWrappedVec3::SetT, this, 0, std::placeholders::_1));
 		xProperty->SetValueGetter(std::bind(&CPropertyWrappedVec3::GetT, this, 0));
 		AddProperty(xProperty);
 
-		auto yProperty = MakeShared(CPropertyWrapped<float>, "Y");
+		auto yProperty = MakeShared(CPropertyWrapped<float>, "Y", "The 'Y' component of Vector3", DefaultValue.y);
 		yProperty->SetSyntetic(true);
 		yProperty->SetValueSetter(std::bind(&CPropertyWrappedVec3::SetT, this, 1, std::placeholders::_1));
 		yProperty->SetValueGetter(std::bind(&CPropertyWrappedVec3::GetT, this, 1));
 		AddProperty(yProperty);
 
-		auto zProperty = MakeShared(CPropertyWrapped<float>, "Z");
+		auto zProperty = MakeShared(CPropertyWrapped<float>, "Z", "The 'Z' component of Vector3", DefaultValue.z);
 		zProperty->SetSyntetic(true);
 		zProperty->SetValueSetter(std::bind(&CPropertyWrappedVec3::SetT, this, 2, std::placeholders::_1));
 		zProperty->SetValueGetter(std::bind(&CPropertyWrappedVec3::GetT, this, 2));
@@ -233,7 +241,7 @@ class CPropertyWrappedColor
 	: public CPropertyWrapped<ColorRBG>
 {
 public:
-	CPropertyWrappedColor(std::string Name, std::string Description = "")
-		: CPropertyWrapped<ColorRBG>(Name, Description)
+	CPropertyWrappedColor(std::string Name, std::string Description, ColorRBG DefaultValue = ColorRBG(1.0f, 1.0f, 1.0f))
+		: CPropertyWrapped<ColorRBG>(Name, Description, DefaultValue)
 	{}
 };

@@ -25,22 +25,16 @@ void CUIControlText::Initialize()
 
 	m_Font = GetBaseManager().GetManager<IznFontsManager>()->GetMainFont();
 
-	m_TextProperty = MakeShared(CProperty<std::string>);
-	m_TextProperty->SetName("Text");
-	m_TextProperty->Set(cDefaultText);
+	m_TextProperty = MakeShared(CProperty<std::string>, "Text", "Text of this node", cDefaultText);
 	m_TextProperty->SetValueChangedCallback([this](const std::string& NewValue) {
 		SetSize(glm::vec2(GetFont()->GetWidth(NewValue), GetFont()->GetHeight()) + GetOffset() * 2.0f);
 	});
 	GetProperties()->AddProperty(m_TextProperty);
 
-	m_OffsetProperty = MakeShared(CProperty<glm::vec2>);
-	m_OffsetProperty->SetName("Offset");
-	m_OffsetProperty->Set(cDefaultOffset);
+	m_OffsetProperty = MakeShared(CProperty<glm::vec2>, "Offset", "Offset of first string character relatieve to local transform.", cDefaultOffset);
 	GetProperties()->AddProperty(m_OffsetProperty);
 
-	m_ColorProperty = MakeShared(CProperty<glm::vec4>);
-	m_ColorProperty->SetName("Color");
-	m_ColorProperty->Set(cDefaultColor);
+	m_ColorProperty = MakeShared(CProperty<glm::vec4>, "Color", "Color of text", cDefaultColor);
 	GetProperties()->AddProperty(m_ColorProperty);
 }
 

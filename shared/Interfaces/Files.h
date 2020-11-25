@@ -106,9 +106,8 @@ ZN_INTERFACE ZN_API IznFilesStorageExtended
 
 enum class ZN_API EFilesStorageType
 {
-	GAMEDATA = 0,
-	USERDATA,
-	ADDITIONAL
+	USERDATA = 0,
+	GAMEDATA
 };
 
 ZN_INTERFACE ZN_API IFilesManager 

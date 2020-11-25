@@ -77,6 +77,6 @@ ZN_INTERFACE ZN_API IznNativeWindowFactory
 {
 	virtual ~IznNativeWindowFactory() {}
 
-	virtual std::unique_ptr<IznNativeWindow> CreateWindowInstance(LPCWSTR WindowName, LONG Width, LONG Height) const = 0;
+	virtual std::unique_ptr<IznNativeWindow> CreateWindowInstance(const std::string& WindowName, glm::ivec2 WindowSize) const = 0;
 	virtual std::unique_ptr<IznNativeWindow> CreateWindowProxy(IznNativeWindow& SourceNativeWindow) const = 0;
 };

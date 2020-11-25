@@ -41,7 +41,7 @@ void CSceneNode::Initialize()
 {
 	// Name properties
 	{
-		std::shared_ptr<CPropertyWrapped<std::string>> nameProperty = MakeShared(CPropertyWrapped<std::string>, "Name", "Scene node name.");
+		std::shared_ptr<CPropertyWrapped<std::string>> nameProperty = MakeShared(CPropertyWrapped<std::string>, "Name", "Scene node name.", "");
 		nameProperty->SetSyntetic(true);
 		nameProperty->SetValueSetter(std::bind(&Object::SetName, this, std::placeholders::_1));
 		nameProperty->SetValueGetter(std::bind(&Object::GetName, this));
@@ -52,23 +52,23 @@ void CSceneNode::Initialize()
 	{
 		std::shared_ptr<IPropertiesGroup> propertiesGroup = MakeShared(CPropertiesGroup, "Transform", "Transorm of this 3D node. Like translation, rotation and scale.");
 
-		m_TranslateProperty = MakeShared(CPropertyWrappedVec3, "Translate", "Relative position to parent.");
+		m_TranslateProperty = MakeShared(CPropertyWrappedVec3, "Translate", "Relative position to parent.", glm::vec3(0.0f));
 		m_TranslateProperty->SetValueSetter(std::bind(&CSceneNode::SetTranslate, this, std::placeholders::_1));
 		m_TranslateProperty->SetValueGetter(std::bind(&CSceneNode::GetTranslation, this));
 		propertiesGroup->AddProperty(m_TranslateProperty);
 
-		std::shared_ptr<CPropertyWrappedVec3> translateAbsProperty = MakeShared(CPropertyWrappedVec3, "TranslateAbsolute", "Absolute position in world.");
+		std::shared_ptr<CPropertyWrappedVec3> translateAbsProperty = MakeShared(CPropertyWrappedVec3, "TranslateAbsolute", "Absolute position in world.", glm::vec3(0.0f));
 		translateAbsProperty->SetSyntetic(true);
 		translateAbsProperty->SetValueSetter(std::bind(&CSceneNode::SetTranslateAbs, this, std::placeholders::_1));
 		translateAbsProperty->SetValueGetter(std::bind(&CSceneNode::GetTranslationAbs, this));
 		propertiesGroup->AddProperty(translateAbsProperty);
 
-		std::shared_ptr<CPropertyWrappedVec3> rotationProperty = MakeShared(CPropertyWrappedVec3, "Rotate", "Rotation of this node. Relative to parent.");
+		std::shared_ptr<CPropertyWrappedVec3> rotationProperty = MakeShared(CPropertyWrappedVec3, "Rotate", "Rotation of this node. Relative to parent.", glm::vec3(0.0f));
 		rotationProperty->SetValueSetter(std::bind(&CSceneNode::SetRotation, this, std::placeholders::_1));
 		rotationProperty->SetValueGetter(std::bind(&CSceneNode::GetRotation, this));
 		propertiesGroup->AddProperty(rotationProperty);
 
-		std::shared_ptr<CPropertyWrappedVec3> scaleProperty = MakeShared(CPropertyWrappedVec3, "Scale", "Scale of this node. Relative to parent.");
+		std::shared_ptr<CPropertyWrappedVec3> scaleProperty = MakeShared(CPropertyWrappedVec3, "Scale", "Scale of this node. Relative to parent.", glm::vec3(1.0f));
 		scaleProperty->SetValueSetter(std::bind(&CSceneNode::SetScale, this, std::placeholders::_1));
 		scaleProperty->SetValueGetter(std::bind(&CSceneNode::GetScale, this));
 		propertiesGroup->AddProperty(scaleProperty);
@@ -148,7 +148,6 @@ bool CSceneNode::IsPersistance() const
 {
 	return m_IsPersistance;
 }
-
 
 std::shared_ptr<IPropertiesGroup> CSceneNode::GetProperties() const
 {

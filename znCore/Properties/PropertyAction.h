@@ -7,11 +7,12 @@ class ZN_API CAction
 	, public IPropertyAction
 {
 public:
-	CAction();
-	CAction(std::string Name, std::string Description = "");
+	CAction(std::string Name, std::string Description);
 	virtual ~CAction();
 
 	// IProperty
+	void ResetToDefault() override;
+	bool IsDefault() const override;
 	void FromString(const std::string& String, bool BlockCallback = false) override;
 	std::string ToString() const override;
 	

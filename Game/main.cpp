@@ -13,9 +13,6 @@ void main_internal(int argumentCount, char* arguments[])
 	
 	CNativeWindowFactory nativeWindowFactory(&app);
 
-	ULONG windowWidth = app.GetBaseManager().GetManager<ISettings>()->GetGroup("Video")->GetSettingT<glm::vec2>("WindowSize")->Get().x;
-	ULONG windowHeight = app.GetBaseManager().GetManager<ISettings>()->GetGroup("Video")->GetSettingT<glm::vec2>("WindowSize")->Get().y;
-
 	IRenderDevice& renderDevice = app.CreateRenderDevice(RenderDeviceType::RenderDeviceType_DirectX11);
 
 	app.GetBaseManager().AddManager<IznFontsManager>(MakeShared(FontsManager, renderDevice, app.GetBaseManager()));
@@ -24,7 +21,8 @@ void main_internal(int argumentCount, char* arguments[])
 		app.GetBaseManager().GetManager<ILoader>()->Start();
 
 		{
-			std::unique_ptr<IznNativeWindow> nativeWindow = nativeWindowFactory.CreateWindowInstance(L"Zenon Engine", windowWidth, windowHeight);
+			glm::ivec2 windowSize = app.GetBaseManager().GetManager<ISettings>()->GetGroup("Video")->GetPropertyT<glm::vec2>("WindowSize")->Get();
+			std::unique_ptr<IznNativeWindow> nativeWindow = nativeWindowFactory.CreateWindowInstance("Zenon Engine", windowSize);
 
 			const auto& renderWindow = renderDevice.GetObjectsFactory().CreateRenderWindow(std::move(nativeWindow), true);
 			app.AddRenderWindow(renderWindow);

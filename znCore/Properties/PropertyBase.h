@@ -4,7 +4,6 @@ class ZN_API CPropertyBase
 	: virtual public IProperty
 {
 public:
-	CPropertyBase();
 	CPropertyBase(std::string Name, std::string Description);
 	virtual ~CPropertyBase();
 

@@ -15,19 +15,19 @@ CSceneNodeRTSUnit::CSceneNodeRTSUnit(IScene & Scene)
 {
 	// Unit properties
 	{
-		auto unitPropsGroup = MakeShared(CPropertiesGroup, "Unit");
+		auto unitPropsGroup = MakeShared(CPropertiesGroup, "Unit", "descr");
 
-		auto health = MakeShared(CPropertyWrapped<float>, "Health");
+		auto health = MakeShared(CPropertyWrapped<float>, "Health", "descr", 100.0f);
 		health->SetValueSetter(std::bind(&CSceneNodeRTSUnit::SetHealth, this, std::placeholders::_1));
 		health->SetValueGetter(std::bind(&CSceneNodeRTSUnit::GetHealth, this));
 		unitPropsGroup->AddProperty(health);
 
-		auto maxHealth = MakeShared(CPropertyWrapped<float>, "MaxHealth");
+		auto maxHealth = MakeShared(CPropertyWrapped<float>, "MaxHealth", "descr", 100.0f);
 		maxHealth->SetValueSetter(std::bind(&CSceneNodeRTSUnit::SetMaxHealth, this, std::placeholders::_1));
 		maxHealth->SetValueGetter(std::bind(&CSceneNodeRTSUnit::GetMaxHealth, this));
 		unitPropsGroup->AddProperty(maxHealth);
 
-		auto movementSpeed = MakeShared(CPropertyWrapped<float>, "MovementSpeed");
+		auto movementSpeed = MakeShared(CPropertyWrapped<float>, "MovementSpeed", "descr", 1.0f);
 		movementSpeed->SetValueSetter(std::bind(&CSceneNodeRTSUnit::SetMovementSpeed, this, std::placeholders::_1));
 		movementSpeed->SetValueGetter(std::bind(&CSceneNodeRTSUnit::GetMovementSpeed, this));
 		unitPropsGroup->AddProperty(movementSpeed);

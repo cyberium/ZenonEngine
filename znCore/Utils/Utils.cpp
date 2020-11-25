@@ -3,6 +3,11 @@
 // General
 #include "Utils.h"
 
+// Additional
+#include <sstream>
+#include <iomanip>
+#include <filesystem>
+
 namespace Utils
 {
 	std::string Trim(std::string& s, const std::string& delimiters)
@@ -92,6 +97,88 @@ namespace Utils
 		}
 
 		return std::make_pair(fixedFilename, "");
+	}
+
+	std::string GetExecutablePath()
+	{
+		char buffer[MAX_PATH];
+		if (FALSE == GetModuleFileNameA(NULL, buffer, MAX_PATH))
+			throw CException("Error while 'GetModuleFileName'.");
+		std::string f(buffer);
+		return f.substr(0, f.find_last_of("\\/"));
+	}
+
+	std::string GetWorkingDirectory()
+	{
+		return std::experimental::filesystem::current_path().string();
+	}
+
+	std::string LoadLocalFile(std::string FileName)
+	{
+		std::string fileName = GetWorkingDirectory() + "//" + FileName;
+
+		std::ifstream stream;
+		stream.open(fileName, std::ios::binary);
+		if (false == stream.is_open())
+			throw CException("Unable to open file '%s'.", FileName.c_str());
+
+		// FileSize
+		stream.seekg(0, stream.end);
+		uint32_t fileSize = uint32_t(stream.tellg());
+		stream.seekg(0, stream.beg);
+
+		std::string content;
+		content.resize(fileSize, '\0');
+
+		stream.read(reinterpret_cast<char*>(&content[0]), fileSize);
+
+		std::streamsize readedBytes = stream.gcount();
+		if (readedBytes < fileSize)
+		{
+			stream.close();
+			throw CException("File '%s' stream reading error. Readed '%d' of '%d'.", fileName.c_str(), static_cast<uint64>(readedBytes), fileSize);
+		}
+
+		stream.close();
+		return content;
+	}
+
+	void SaveToLocalFile(std::string FileName, const std::string& Content)
+	{
+		std::string fileName = GetWorkingDirectory() + "//" + FileName;
+
+		if (std::experimental::filesystem::exists(fileName))
+		{
+			Log::Warn("SaveToLocalFile: File '%s' already exists and will be removed.", fileName.c_str());
+
+			if (false == std::experimental::filesystem::remove(fileName))
+				throw CException("Unable to remove '%s' file.", fileName.c_str());
+		}
+
+		std::ofstream stream;
+		stream.open(fileName, std::ios::binary);
+		if (false == stream.is_open())
+			throw CException("Unable to open ofstream '%s'.", fileName.c_str());
+
+		stream.write(Content.c_str(), Content.size());
+		stream.flush();
+		stream.close();
+	}
+
+	std::string FloatToString(const float Value, const int N)
+	{
+		std::string strVal(std::to_string(Value));
+		const auto& it = strVal.find('.');
+		if (it == std::string::npos)
+			return strVal;
+
+		size_t offset = it + 1;
+		if (offset + N < strVal.length())
+			offset += N;
+		else
+			offset += strVal.length() - offset;
+
+		return strVal.substr(0, offset);
 	}
 }
 

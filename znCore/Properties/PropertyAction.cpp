@@ -1,13 +1,7 @@
 #include "stdafx.h"
 
 // General
-#include "Actions.h"
-
-CAction::CAction()
-	: CPropertyBase()
-{
-	SetSyntetic(true);
-}
+#include "PropertyAction.h"
 
 CAction::CAction(std::string Name, std::string Description)
 	: CPropertyBase(Name, Description)
@@ -23,14 +17,24 @@ CAction::~CAction()
 //
 // IProperty
 //
+void CAction::ResetToDefault()
+{
+	throw CException("TODO: CAction ResetToDefault.");
+}
+
+bool CAction::IsDefault() const
+{
+	throw CException("TODO: CAction IsDefault.");
+}
+
 void CAction::FromString(const std::string& String, bool BlockCallback)
 {
-	throw CException("Incorrect behaviour");
+	throw CException("TODO: CAction FromString.");
 }
 
 std::string CAction::ToString() const
 {
-	throw CException("Incorrect behaviour");
+	throw CException("TODO: CAction ToString.");
 }
 
 

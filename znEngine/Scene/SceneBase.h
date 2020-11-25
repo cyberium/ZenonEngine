@@ -110,12 +110,7 @@ private:
 
 	CSceneFinder                                    m_Finder;
 
-	//std::shared_ptr<IQuery>                         m_FrameQuery;
-	//std::shared_ptr<IQuery>                         m_TestQuery;
-	//double                                          m_FrameTime;
-
 	std::shared_ptr<ICameraController>              m_CameraController;
-	std::shared_ptr<ISettingGroup>                  m_VideoSettings;
 
 	std::shared_ptr<IUIControlText>                 m_StatisticText;
 

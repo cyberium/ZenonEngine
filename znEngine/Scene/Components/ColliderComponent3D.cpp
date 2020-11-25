@@ -12,12 +12,12 @@ CColliderComponent3D::CColliderComponent3D(const ISceneNode& OwnerNode)
 	GetProperties()->SetName("ColliderComponent");
 
 	{
-		auto minBounds = MakeShared(CPropertyWrappedVec3, "BBoxMin", "");
+		auto minBounds = MakeShared(CPropertyWrappedVec3, "BBoxMin", "descr", glm::vec3(-10.0f));
 		minBounds->SetValueSetter(std::bind(&CColliderComponent3D::SetMinBounds, this, std::placeholders::_1));
 		minBounds->SetValueGetter(std::bind(&CColliderComponent3D::GetMinBounds, this));
 		GetProperties()->AddProperty(minBounds);
 
-		auto maxBounds = MakeShared(CPropertyWrappedVec3, "BBoxMax", "");
+		auto maxBounds = MakeShared(CPropertyWrappedVec3, "BBoxMax", "descr", glm::vec3(10.0f));
 		maxBounds->SetValueSetter(std::bind(&CColliderComponent3D::SetMaxBounds, this, std::placeholders::_1));
 		maxBounds->SetValueGetter(std::bind(&CColliderComponent3D::GetMaxBounds, this));
 		GetProperties()->AddProperty(maxBounds);

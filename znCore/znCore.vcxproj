@@ -126,6 +126,10 @@
     <ClCompile Include="Passes\ScenePasses\Pipelined\BaseUIPass.cpp" />
     <ClCompile Include="Passes\ScenePasses\Pipelined\ScenePassPipelined.cpp" />
     <ClCompile Include="Passes\ScenePasses\ScenePass.cpp" />
+    <ClCompile Include="Properties\Properties.cpp" />
+    <ClCompile Include="Properties\PropertyAction.cpp" />
+    <ClCompile Include="Properties\PropertyBase.cpp" />
+    <ClCompile Include="Properties\PropertyGroup.cpp" />
     <ClCompile Include="Proxies\GeometryProxie.cpp" />
     <ClCompile Include="Proxies\MaterialProxie.cpp" />
     <ClCompile Include="Proxies\ModelProxie.cpp" />
@@ -134,11 +138,6 @@
     <ClCompile Include="Scene\SceneFinder.cpp" />
     <ClCompile Include="Scene\SceneNode.cpp" />
     <ClCompile Include="Scene\UIControl.cpp" />
-    <ClCompile Include="Settings\Actions.cpp" />
-    <ClCompile Include="Settings\Properties.cpp" />
-    <ClCompile Include="Settings\PropertyBase.cpp" />
-    <ClCompile Include="Settings\PropertyGroup.cpp" />
-    <ClCompile Include="Settings\SettingsGroupBase.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
@@ -282,6 +281,10 @@
     <ClInclude Include="Passes\ScenePasses\Pipelined\BaseUIPass.h" />
     <ClInclude Include="Passes\ScenePasses\Pipelined\ScenePassPipelined.h" />
     <ClInclude Include="Passes\ScenePasses\ScenePass.h" />
+    <ClInclude Include="Properties\Properties.h" />
+    <ClInclude Include="Properties\PropertyAction.h" />
+    <ClInclude Include="Properties\PropertyBase.h" />
+    <ClInclude Include="Properties\PropertyGroup.h" />
     <ClInclude Include="Proxies\GeometryProxie.h" />
     <ClInclude Include="Proxies\MaterialProxie.h" />
     <ClInclude Include="Proxies\MaterialProxieT.h" />
@@ -292,12 +295,6 @@
     <ClInclude Include="Scene\SceneFinder.h" />
     <ClInclude Include="Scene\SceneNode.h" />
     <ClInclude Include="Scene\UIControl.h" />
-    <ClInclude Include="Settings\Actions.h" />
-    <ClInclude Include="Settings\Properties.h" />
-    <ClInclude Include="Settings\PropertyBase.h" />
-    <ClInclude Include="Settings\PropertyGroup.h" />
-    <ClInclude Include="Settings\SettingBase.h" />
-    <ClInclude Include="Settings\SettingsGroupBase.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Utils\Convert.h" />
     <ClInclude Include="Utils\Debug.h" />

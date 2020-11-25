@@ -12,7 +12,6 @@ public:
 	// IMaterial
 	virtual void  SetTexture(uint8 ID, const std::shared_ptr<ITexture> texture) override;
 	virtual const std::shared_ptr<ITexture>& GetTexture(uint8 ID) const override;
-	virtual std::string GetTextureTypeName(uint8 ID) const override;
 	
 	virtual void  SetSampler(uint8 ID, const std::shared_ptr<ISamplerState> samplerState) override;
     virtual const std::shared_ptr<ISamplerState>& GetSampler(uint8 ID) const override;
@@ -38,7 +37,6 @@ private:
 protected:
 	size_t                           m_BufferSize;
 	TextureMap                       m_Textures;
-	ShaderMap                        m_Shaders;
     SamplersMap                      m_Samplers;
 	void*                            m_MaterialData;
 	std::shared_ptr<IConstantBuffer> m_ConstantBuffer;

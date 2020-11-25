@@ -101,16 +101,18 @@ class ZN_API MaterialModel
 public:
 	enum ZN_API ETextureType: uint32
 	{
-		TextureDiffuse = 0,
-		TextureEmissive = 1,
-		TextureAmbient = 2,
-		TextureSpecular = 3,
-		TextureShininess = 4,
-		TextureNormalMap = 5,
-		TextureBump = 6,
-		TextureTransparency = 7,
-		TextureReflection = 8,
-		TextureDisplacement = 9
+		TextureDiffuse       = 0,
+		TextureEmissive      = 1,
+		TextureAmbient       = 2,
+		TextureSpecular      = 3,
+		TextureShininess     = 4,
+		TextureNormalMap     = 5,
+		TextureBump          = 6,
+		TextureTransparency  = 7,
+		TextureReflection    = 8,
+		TextureDisplacement  = 9,
+		
+		Count
 	};
 
 public:
@@ -131,14 +133,17 @@ public:
 	void SetReflectionColor(const glm::vec3& Color);
 	void SetReflectionFactor(float Factor);
 
-	virtual void SetTexture(ETextureType TextureType, std::shared_ptr<ITexture> texture);
-	virtual const std::shared_ptr<ITexture>& GetTexture(ETextureType TextureType) const;
+	void SetTexture(ETextureType TextureType, std::shared_ptr<ITexture> texture);
+	const std::shared_ptr<ITexture>& GetTexture(ETextureType TextureType) const;
 
-	// IMaterial
-	virtual std::string GetTextureTypeName(uint8 ID) const override;
+	// IObjectLoadSave
+	void Load(const std::shared_ptr<IXMLReader>& Reader) override;
+	void Save(const std::shared_ptr<IXMLWriter>& Writer) const override;
 	
 protected:
 	void PrintInfo();
+	std::string GetTextureTypeNameByTextureID(ETextureType ID) const;
+	ETextureType GetTextureIDByTextureTypeName(const char* TypeName) const;
 
 protected:
 	const IBaseManager& m_BaseManager;

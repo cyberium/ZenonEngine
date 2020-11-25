@@ -36,11 +36,6 @@ const std::shared_ptr<ITexture>& MaterialBase::GetTexture(uint8 ID) const
 	return iter->second;
 }
 
-std::string MaterialBase::GetTextureTypeName(uint8 ID) const
-{
-	return "Type" + std::to_string(ID);
-}
-
 void MaterialBase::SetSampler(uint8 ID, const std::shared_ptr<ISamplerState> samplerState)
 {
 	m_Samplers[ID] = samplerState;
@@ -188,12 +183,45 @@ void MaterialBase::Save(const std::shared_ptr<IByteBuffer>& ByteBuffer) const
 
 void MaterialBase::Load(const std::shared_ptr<IXMLReader>& Reader)
 {
-	_ASSERT(false);
+	auto texturesReader = Reader->GetChild("Textures");
+	for (const auto& texture : texturesReader->GetChilds())
+	{
+		_ASSERT(texture->GetName() == "Texture");
+		uint8 textureID = texture->GetUInt8Attribute("Index");
+
+		if (m_Textures.find(textureID) != m_Textures.end())
+		{
+			Log::Error("MaterialBase: Texture with ID '%d' already set.", textureID);
+			continue;
+		}
+
+		std::string textureFileName = texture->GetValue();
+
+		auto texture = m_RenderDevice.GetBaseManager().GetManager<IznTexturesFactory>()->LoadTexture2D(textureFileName);
+		if (texture == nullptr)
+		{
+			Log::Error("MaterialBase: Unable load texture: '%s' with ID '%d' for material '%s'.", textureFileName.c_str(), textureID, GetName().c_str());
+			texture = m_RenderDevice.GetBaseManager().GetManager<IznTexturesFactory>()->GetDefaultTexture();
+		}
+
+		SetTexture(textureID, texture);
+		//Log::Info("Material: Load '%s' texture '%s'.", GetTextureTypeName(textureIndex).c_str(), textureFileName.c_str());
+	}
 }
 
 void MaterialBase::Save(const std::shared_ptr<IXMLWriter>& Writer) const
 {
-	_ASSERT(false);
+	auto texturesWriter = Writer->CreateChild("Textures");
+	for (const auto& texture : m_Textures)
+	{
+		auto textureWriter = texturesWriter->CreateChild("Texture");
+		textureWriter->SetUInt8Attribute(texture.first, "Index");
+
+		const auto fileName = texture.second->GetFilename();
+		if (fileName.empty())
+			throw CException("Empty filename for texture with ID '%d'.", texture.first);
+		textureWriter->SetValue(fileName);
+	}
 }
 
 

@@ -4,9 +4,14 @@
 #include "XMLManager.h"
 
 // Additional
+#include "Files/File.h"
+
+// Additional (TiXML)
 #include "tinyxml.h"
 #include "XMLReader.h"
 #include "XMLWriter.h"
+
+
 
 namespace
 {
@@ -67,7 +72,7 @@ namespace
 
 	void CheckTinyXMLError(const std::shared_ptr<TiXmlDocument>& TiniXMLDocument)
 	{
-		if (!TiniXMLDocument->Error())
+		if (false == TiniXMLDocument->Error())
 			return;
 		throw CException("TinyXMLError: %s. ID: '%d', Row: '%d', Col: '%d'.", TiniXMLDocument->ErrorDesc(), TiniXMLDocument->ErrorId(), TiniXMLDocument->ErrorRow(), TiniXMLDocument->ErrorCol());
 	}
@@ -89,10 +94,37 @@ CXMLManager::~CXMLManager()
 {
 }
 
-std::shared_ptr<IXMLReader> CXMLManager::CreateReader(std::shared_ptr<IFile> File)
+
+
+//
+// IXML
+//
+std::shared_ptr<IXMLReader> CXMLManager::CreateReaderFromString(const std::string& String)
+{
+	std::shared_ptr<IByteBuffer> byteBuffer = MakeShared(CByteBuffer);
+	byteBuffer->writeString(String);
+	byteBuffer->seek(0);
+
+	std::shared_ptr<TiXmlDocument> xmlDocument = MakeShared(TiXmlDocument);
+	xmlDocument->LoadFile(byteBuffer);
+	CheckTinyXMLError(xmlDocument);
+
+	const TiXmlElement* root = xmlDocument->FirstChildElement();
+	_ASSERT_EXPR(root->ValueStr() == cXMLRootNodeSignature, L"All ZenonEngine xml file must contains root node with specified name.");
+
+	return CreateXMLReader(root);
+}
+
+std::shared_ptr<IXMLReader> CXMLManager::CreateReaderFromFile(const std::string& FileName)
+{
+	std::shared_ptr<IFile> file = m_BaseManager.GetManager<IFilesManager>()->Create(FileName);
+	return CreateReaderFromFile(file);
+}
+
+std::shared_ptr<IXMLReader> CXMLManager::CreateReaderFromFile(std::shared_ptr<IFile> File)
 {
 	std::shared_ptr<TiXmlDocument> xmlDocument = MakeShared(TiXmlDocument);
-	bool loadOkay = xmlDocument->LoadFile(File);
+	xmlDocument->LoadFile(File);
 	CheckTinyXMLError(xmlDocument);
 
 	const TiXmlElement* root = xmlDocument->FirstChildElement();
@@ -104,6 +136,7 @@ std::shared_ptr<IXMLReader> CXMLManager::CreateReader(std::shared_ptr<IFile> Fil
 std::shared_ptr<IXMLWriter> CXMLManager::CreateWriter()
 {
 	std::shared_ptr<TiXmlDocument> xmlDocument = MakeShared(TiXmlDocument);
+	
 	TiXmlDeclaration * decl = ZN_NEW TiXmlDeclaration("1.0", "", "");
 	xmlDocument->LinkEndChild(decl);
 
@@ -119,13 +152,7 @@ std::shared_ptr<IXMLWriter> CXMLManager::CreateWriter(const std::string & NodeNa
 }
 
 
-std::shared_ptr<IFile> CXMLManager::SaveWriterToFile(const std::shared_ptr<IXMLWriter>& Writer, const std::string& FileName)
-{
-	std::shared_ptr<IFile> file = m_BaseManager.GetManager<IFilesManager>()->Create(FileName);
-	return SaveWriterToFile(Writer, file);
-}
-
-std::shared_ptr<IFile> CXMLManager::SaveWriterToFile(const std::shared_ptr<IXMLWriter>& Writer, const std::shared_ptr<IFile>& File)
+std::string CXMLManager::SaveWriterToString(const std::shared_ptr<IXMLWriter>& Writer)
 {
 	std::shared_ptr<TiXmlDocument> xmlDocument = MakeShared(TiXmlDocument);
 	TiXmlDeclaration * decl = ZN_NEW TiXmlDeclaration("1.0", "", "");
@@ -137,7 +164,18 @@ std::shared_ptr<IFile> CXMLManager::SaveWriterToFile(const std::shared_ptr<IXMLW
 	xmlDocument->Accept(&printer);
 	CheckTinyXMLError(xmlDocument);
 
-	File->writeBytes(printer.CStr(), printer.Size());
+	return std::string(printer.CStr(), printer.Size());
+}
 
+std::shared_ptr<IFile> CXMLManager::SaveWriterToFile(const std::shared_ptr<IXMLWriter>& Writer, const std::string& FileName)
+{
+	std::shared_ptr<IFile> file = m_BaseManager.GetManager<IFilesManager>()->Create(FileName);
+	return SaveWriterToFile(Writer, file);
+}
+
+std::shared_ptr<IFile> CXMLManager::SaveWriterToFile(const std::shared_ptr<IXMLWriter>& Writer, const std::shared_ptr<IFile>& File)
+{
+	std::string xmlContent = SaveWriterToString(Writer);
+	File->writeString(xmlContent);
 	return File;
 }

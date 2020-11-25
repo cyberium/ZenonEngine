@@ -3,12 +3,6 @@
 // General
 #include "PropertyBase.h"
 
-CPropertyBase::CPropertyBase()
-	: m_Name("PropertyName")
-	, m_Description("PropertyDescription")
-	, m_IsSyntetic(false)
-{}
-
 CPropertyBase::CPropertyBase(std::string Name, std::string Description)
 	: m_Name(Name)
 	, m_Description(Description)

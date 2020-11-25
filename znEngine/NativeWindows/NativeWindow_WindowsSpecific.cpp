@@ -62,8 +62,7 @@ void CNativeWindow_WindowsSpecific::SetWindowTitle(const std::string& WindowName
 
 std::string CNativeWindow_WindowsSpecific::GetWindowTitle() const
 {
-	return "Test";
-	std::wstring title(GetWindowTextLength(m_HWnd) + 1, L'\0');
+	std::wstring title(GetWindowTextLengthW(m_HWnd) + 1, L'\0');
 	GetWindowTextW(m_HWnd, &title[0], title.size());
 	return Resources::utf16_to_utf8(title);
 }

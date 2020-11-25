@@ -139,6 +139,9 @@ void Application::DoAfterRun()
 		if (auto applicationEventsListener = std::dynamic_pointer_cast<IApplicationEventsListener>(w))
 			applicationEventsListener->OnExit(EventArgs());
 	m_Windows.clear();
+
+	// Save settings
+	GetBaseManager().GetManager<ISettings>()->Save();
 }
 
 double Application::GetGameDeltaTime() const

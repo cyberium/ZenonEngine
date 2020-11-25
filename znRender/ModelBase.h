@@ -35,12 +35,12 @@ public:
 	std::shared_ptr<ISkeletonBone>                  GetBoneByName(const std::string& BoneName) const override;
 	const std::vector<std::shared_ptr<ISkeletonBone>>& GetBones() const override;
 
-
 	// Animation
 	void                                            AddAnimation(const std::string& AnimationName, const std::shared_ptr<IAnimation>& Animation);
 	const Animations_t&                             GetAnimations() const;
 
 	virtual void                                    Accept(IVisitor* visitor) override;
+
 
 	// IModelInternal
 	void                                            AddSkeletonAnimationInternal(const SSkeletonAnimation& SkeletonAnimation) override;

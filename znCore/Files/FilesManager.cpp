@@ -28,7 +28,7 @@ std::shared_ptr<IFile> CFilesManager::Create(std::string FileName) const
 
 	auto filesStorageEx = std::dynamic_pointer_cast<IznFilesStorageExtended>(GetGamedataStorage());
 	if (filesStorageEx == nullptr)
-		throw CException("For 'Create' operation GAMEDATA must supports IznFilesStorageExtended. Filename '%s'.", FileName.c_str());
+		throw CException("For 'Create' operation USERDATA must supports IznFilesStorageExtended. Filename '%s'.", FileName.c_str());
 
 	try
 	{
@@ -64,7 +64,7 @@ void CFilesManager::Delete(std::string FileName) const
 
 	auto filesStorageEx = std::dynamic_pointer_cast<IznFilesStorageExtended>(GetGamedataStorage());
 	if (filesStorageEx == nullptr)
-		throw CException("For 'Delete' operation GAMEDATA must supports IznFilesStorageExtended. Filename '%s'.", FileName.c_str());
+		throw CException("For 'Delete' operation USERDATA must supports IznFilesStorageExtended. Filename '%s'.", FileName.c_str());
 
 	try
 	{
@@ -105,9 +105,9 @@ bool CFilesManager::IsFileExists(std::string FileName) const
 
 void CFilesManager::AddStorage(EFilesStorageType FilesStorageType, std::shared_ptr<IznFilesStorage> Storage)
 {
-	if (FilesStorageType == EFilesStorageType::GAMEDATA)
-		if (auto gameDataStorage = GetStorage(EFilesStorageType::GAMEDATA))
-			throw CException("Unable to register second GAMEDATA storage.");
+	if (FilesStorageType == EFilesStorageType::USERDATA)
+		if (auto gameDataStorage = GetStorage(EFilesStorageType::USERDATA))
+			throw CException("Unable to register second USERDATA storage.");
 
 	m_Storages.push_back(std::make_pair(FilesStorageType, Storage));
 }
@@ -142,8 +142,8 @@ std::shared_ptr<IznFilesStorage> CFilesManager::GetStorage(EFilesStorageType Fil
 //
 std::shared_ptr<IznFilesStorage> CFilesManager::GetGamedataStorage() const
 {
-	auto gamedataStorage = GetStorage(EFilesStorageType::GAMEDATA);
+	auto gamedataStorage = GetStorage(EFilesStorageType::USERDATA);
 	if (gamedataStorage == nullptr)
-		throw CException("GAMEDATA storage doen't found.");
+		throw CException("USERDATA storage doen't found.");
 	return gamedataStorage;
 }
