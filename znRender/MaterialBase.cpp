@@ -198,7 +198,7 @@ void MaterialBase::Load(const std::shared_ptr<IXMLReader>& Reader)
 	for (const auto& texture : texturesReader->GetChilds())
 	{
 		_ASSERT(texture->GetName() == "Texture");
-		uint8 textureID = texture->GetUInt8Attribute("Index");
+		uint8 textureID = texture->GetUIntAttribute("Index");
 
 		if (m_Textures.find(textureID) != m_Textures.end())
 		{
@@ -232,7 +232,7 @@ void MaterialBase::Save(const std::shared_ptr<IXMLWriter>& Writer) const
 	for (const auto& texture : m_Textures)
 	{
 		auto textureWriter = texturesWriter->CreateChild("Texture");
-		textureWriter->SetUInt8Attribute(texture.first, "Index");
+		textureWriter->SetUIntAttribute(texture.first, "Index");
 
 		const auto fileName = texture.second->GetFilename();
 		if (fileName.empty())

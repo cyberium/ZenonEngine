@@ -75,42 +75,12 @@ std::string CXMLReader::GetStrAttribute(const std::string & AttributeName) const
 }
 
 
-int8 CXMLReader::GetInt8Attribute(const std::string & AttributeName) const
-{
-	return StringToValue<int8>(GetStrAttribute(AttributeName));
-}
-
-uint8 CXMLReader::GetUInt8Attribute(const std::string & AttributeName) const
-{
-	return StringToValue<uint8>(GetStrAttribute(AttributeName));
-}
-
-int16 CXMLReader::GetInt16Attribute(const std::string & AttributeName) const
-{
-	return StringToValue<int16>(GetStrAttribute(AttributeName));
-}
-
-uint16 CXMLReader::GetUInt16Attribute(const std::string & AttributeName) const
-{
-	return StringToValue<uint16>(GetStrAttribute(AttributeName));
-}
-
-int32 CXMLReader::GetInt32Attribute(const std::string & AttributeName) const
-{
-	return StringToValue<int32>(GetStrAttribute(AttributeName));
-}
-
-uint32 CXMLReader::GetUInt32Attribute(const std::string & AttributeName) const
-{
-	return StringToValue<uint32>(GetStrAttribute(AttributeName));
-}
-
-int64 CXMLReader::GetInt64Attribute(const std::string & AttributeName) const
+int64 CXMLReader::GetIntAttribute(const std::string & AttributeName) const
 {
 	return StringToValue<int64>(GetStrAttribute(AttributeName));
 }
 
-uint64 CXMLReader::GetUInt64Attribute(const std::string & AttributeName) const
+uint64 CXMLReader::GetUIntAttribute(const std::string & AttributeName) const
 {
 	return StringToValue<uint64>(GetStrAttribute(AttributeName));
 }
@@ -145,42 +115,12 @@ glm::vec4 CXMLReader::GetVec4Attribute(const std::string & AttributeName) const
 //
 // Values
 //
-int8 CXMLReader::GetInt8() const
-{
-	return StringToValue<int8>(GetValue());
-}
-
-uint8 CXMLReader::GetUInt8() const
-{
-	return StringToValue<uint8>(GetValue());
-}
-
-int16 CXMLReader::GetInt16() const
-{
-	return StringToValue<int16>(GetValue());
-}
-
-uint16 CXMLReader::GetUInt16() const
-{
-	return StringToValue<uint16>(GetValue());
-}
-
-int32 CXMLReader::GetInt32() const
-{
-	return StringToValue<int32>(GetValue());
-}
-
-uint32 CXMLReader::GetUInt32() const
-{
-	return StringToValue<uint32>(GetValue());
-}
-
-int64 CXMLReader::GetInt64() const
+int64 CXMLReader::GetInt() const
 {
 	return StringToValue<int64>(GetValue());
 }
 
-uint64 CXMLReader::GetUInt64() const
+uint64 CXMLReader::GetUInt() const
 {
 	return StringToValue<uint64>(GetValue());
 }

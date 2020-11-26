@@ -70,42 +70,12 @@ void CXMLWriter::SetStrAttribute(std::string AttributeValue, const std::string& 
 	m_Attributes.push_back(std::make_pair(AttributeName, AttributeValue));
 }
 
-void CXMLWriter::SetInt8Attribute(int8 AttributeValue, const std::string & AttributeName)
+void CXMLWriter::SetIntAttribute(int64 AttributeValue, const std::string & AttributeName)
 {
 	SetStrAttribute(ValueToString(AttributeValue), AttributeName);
 }
 
-void CXMLWriter::SetUInt8Attribute(uint8 AttributeValue, const std::string & AttributeName)
-{
-	SetStrAttribute(ValueToString(AttributeValue), AttributeName);
-}
-
-void CXMLWriter::SetInt16Attribute(int16 AttributeValue, const std::string & AttributeName)
-{
-	SetStrAttribute(ValueToString(AttributeValue), AttributeName);
-}
-
-void CXMLWriter::SetUInt16Attribute(uint16 AttributeValue, const std::string & AttributeName)
-{
-	SetStrAttribute(ValueToString(AttributeValue), AttributeName);
-}
-
-void CXMLWriter::SetInt32Attribute(int32 AttributeValue, const std::string & AttributeName)
-{
-	SetStrAttribute(ValueToString(AttributeValue), AttributeName);
-}
-
-void CXMLWriter::SetUInt32Attribute(uint32 AttributeValue, const std::string & AttributeName)
-{
-	SetStrAttribute(ValueToString(AttributeValue), AttributeName);
-}
-
-void CXMLWriter::SetInt64Attribute(int64 AttributeValue, const std::string & AttributeName)
-{
-	SetStrAttribute(ValueToString(AttributeValue), AttributeName);
-}
-
-void CXMLWriter::SetUInt64Attribute(uint64 AttributeValue, const std::string & AttributeName)
+void CXMLWriter::SetUIntAttribute(uint64 AttributeValue, const std::string & AttributeName)
 {
 	SetStrAttribute(ValueToString(AttributeValue), AttributeName);
 }
@@ -150,42 +120,12 @@ void CXMLWriter::SetValue(const std::string& Value)
 	m_Value = Value;
 }
 
-void CXMLWriter::SetInt8(int8 Value)
+void CXMLWriter::SetInt(int64 Value)
 {
 	SetValue(ValueToString(Value));
 }
 
-void CXMLWriter::SetUInt8(uint8 Value)
-{
-	SetValue(ValueToString(Value));
-}
-
-void CXMLWriter::SetInt16(int16 Value)
-{
-	SetValue(ValueToString(Value));
-}
-
-void CXMLWriter::SetUInt16(uint16 Value)
-{
-	SetValue(ValueToString(Value));
-}
-
-void CXMLWriter::SetInt32(int32 Value)
-{
-	SetValue(ValueToString(Value));
-}
-
-void CXMLWriter::SetUInt32(uint32 Value)
-{
-	SetValue(ValueToString(Value));
-}
-
-void CXMLWriter::SetInt64(int64 Value)
-{
-	SetValue(ValueToString(Value));
-}
-
-void CXMLWriter::SetUInt64(uint64 Value)
+void CXMLWriter::SetUInt(uint64 Value)
 {
 	SetValue(ValueToString(Value));
 }

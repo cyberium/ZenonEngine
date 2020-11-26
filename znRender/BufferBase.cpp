@@ -74,14 +74,63 @@ void CBufferBase::Save(const std::shared_ptr<IByteBuffer>& ByteBuffer) const
 	}
 }
 
+namespace
+{
+	std::string BufferTypeToString(IBuffer::BufferType BufferType)
+	{
+		switch (BufferType)
+		{
+			case IBuffer::BufferType::Unknown:
+				return "Unknown";
+			case IBuffer::BufferType::VertexBuffer:
+				return "VertexBuffer";
+			case IBuffer::BufferType::IndexBuffer:
+				return "IndexBuffer";
+			case IBuffer::BufferType::StructuredBuffer:
+				return "StructuredBuffer";
+			case IBuffer::BufferType::ConstantBuffer:
+				return "ConstantBuffer";
+		}
+		throw CException("Buffer type '%d' is invalid.", BufferType);
+	}
+
+	IBuffer::BufferType BufferTypeFromString(const std::string& BufferType)
+	{
+		if (BufferType == "Unknown")
+			return IBuffer::BufferType::Unknown;
+		else if (BufferType == "VertexBuffer")
+			return IBuffer::BufferType::VertexBuffer;
+		else if(BufferType == "IndexBuffer")
+			return IBuffer::BufferType::IndexBuffer;
+		else if(BufferType == "StructuredBuffer")
+			return IBuffer::BufferType::StructuredBuffer;
+		else if (BufferType == "ConstantBuffer")
+			return IBuffer::BufferType::ConstantBuffer;
+		throw CException("Buffer type '%s' is invalid.", BufferType.c_str());
+	}
+}
+
 void CBufferBase::Load(const std::shared_ptr<IXMLReader>& Reader)
 {
-	_ASSERT(false);
+	IBuffer::BufferType bufferType = BufferTypeFromString(Reader->GetName());
+	uint32 count = Reader->GetUIntAttribute("Size");
+	uint32 offset = Reader->GetUIntAttribute("Offset");
+	uint32 stride = Reader->GetUIntAttribute("Stride");
+	std::vector<uint8> data = Utils::Base64_Decode(Reader->GetValue());
+
+	m_BufferType = bufferType;
+	InitializeBufferBase(data.data(), count, offset, stride);
 }
 
 void CBufferBase::Save(const std::shared_ptr<IXMLWriter>& Writer) const
 {
-	_ASSERT(false);
+	Writer->SetName(BufferTypeToString(m_BufferType));
+	Writer->SetUIntAttribute(m_Count, "Size");
+	Writer->SetUIntAttribute(m_Offset, "Offset");
+	Writer->SetUIntAttribute(m_Stride, "Stride");
+
+	const auto& data = GetData();
+	Writer->SetValue(Utils::Base64_Encode(data.data(), data.size()));
 }
 
 

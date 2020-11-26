@@ -18,6 +18,8 @@ public:
 	virtual void SetSampler(uint8 ID, const std::shared_ptr<ISamplerState> samplerState) override;
     virtual const std::shared_ptr<ISamplerState>& GetSampler(uint8 ID) const override;
     
+	std::shared_ptr<IPropertiesGroup> GetProperties() const override;
+
 	virtual void Bind(const ShaderMap& shaders) const override;
 	virtual void Unbind(const ShaderMap& shaders) const override;
 

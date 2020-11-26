@@ -152,9 +152,9 @@ void CSceneNodeRTSGround::Load(const std::shared_ptr<IXMLReader>& Reader)
 	{
 		for (const auto& ch : childsWriter->GetChilds())
 		{
-			int32 x = ch->GetInt32Attribute("X");
-			int32 z = ch->GetInt32Attribute("Z");
-			ERTSCellType type = (ERTSCellType)ch->GetUInt8Attribute("Type");
+			int32 x = ch->GetIntAttribute("X");
+			int32 z = ch->GetIntAttribute("Z");
+			ERTSCellType type = (ERTSCellType)ch->GetUIntAttribute("Type");
 
 			SRTSCellCoords coords = SRTSCellCoords(x, z);
 			_ASSERT(coords.IsCorrect());
@@ -175,10 +175,10 @@ void CSceneNodeRTSGround::Save(const std::shared_ptr<IXMLWriter>& Writer) const
 		{
 			CXMLManager xmlManager(GetBaseManager());
 			auto cellWriter = xmlManager.CreateWriter("RTSCell");
-			cellWriter->SetInt32Attribute(x, "X");
-			cellWriter->SetInt32Attribute(z, "Z");
+			cellWriter->SetIntAttribute(x, "X");
+			cellWriter->SetIntAttribute(z, "Z");
 
-			cellWriter->SetUInt8Attribute((int8)m_Cells[x][z].Type, "Type");
+			cellWriter->SetUIntAttribute((int8)m_Cells[x][z].Type, "Type");
 
 			rtsCellsWriter->AddChild(cellWriter);
 		}

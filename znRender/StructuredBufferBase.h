@@ -34,6 +34,8 @@ protected:
 	// IObjectLoadSave
 	void Load(const std::shared_ptr<IByteBuffer>& ByteBuffer) override;
 	void Save(const std::shared_ptr<IByteBuffer>& ByteBuffer) const override;
+	void Load(const std::shared_ptr<IXMLReader>& Reader) override;
+	void Save(const std::shared_ptr<IXMLWriter>& Writer) const override;
 
 protected:
 	EAccess GetAccess() const;

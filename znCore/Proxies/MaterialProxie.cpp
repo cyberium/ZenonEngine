@@ -40,6 +40,11 @@ const std::shared_ptr<ISamplerState>& MaterialProxie::GetSampler(uint8 ID) const
     return m_Material->GetSampler(ID);
 }
 
+std::shared_ptr<IPropertiesGroup> MaterialProxie::GetProperties() const
+{
+	return m_Material->GetProperties();
+}
+
 void MaterialProxie::Bind(const ShaderMap& shaders) const
 {
 	m_Material->Bind(shaders);
