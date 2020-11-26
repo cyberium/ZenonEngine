@@ -20,6 +20,10 @@ public:
 	std::shared_ptr<IModel> LoadModel(const std::shared_ptr<IFile>& ModelFile, const IznLoaderParams* LoaderParams) const override;
 	std::shared_ptr<IFile> SaveModel(const std::shared_ptr<IModel>& Model, const std::string& FileName) const override;
 
+	std::shared_ptr<IModel> LoadModelXML(const std::string& ModelFileName, const IznLoaderParams* LoaderParams = nullptr) const override;
+	std::shared_ptr<IModel> LoadModelXML(const std::shared_ptr<IFile>& ModelFile, const IznLoaderParams* LoaderParams = nullptr) const override;
+	std::shared_ptr<IFile> SaveModelXML(const std::shared_ptr<IModel>& Model, const std::string& FileName) const override;
+
 	// IFBXSceneLoader
 	std::shared_ptr<IFBXScene> LoadScene(const std::string& ModelFileName, const IznLoaderParams* LoaderParams) const override;
 	std::shared_ptr<IFBXScene> LoadScene(const std::shared_ptr<IFile>& ModelFile, const IznLoaderParams* LoaderParams) const override;

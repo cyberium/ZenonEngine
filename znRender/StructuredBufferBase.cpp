@@ -61,13 +61,13 @@ namespace
 {
 	std::string AccessToString(EAccess Access)
 	{
-		std::string result = "";
+		std::string result = "None";
 		if ((Access & EAccess::GPUWrite) != 0)
-			result += "GPUWrite";
+			result += "|GPUWrite";
 		if ((Access & EAccess::CPURead) != 0)
-			result += "CPURead";
+			result += "|CPURead";
 		if ((Access & EAccess::CPUWrite) != 0)
-			result += "CPUWrite";
+			result += "|CPUWrite";
 		return result;
 	}
 

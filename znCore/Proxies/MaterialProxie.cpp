@@ -25,7 +25,7 @@ void MaterialProxie::SetTexture(uint8 type, const std::shared_ptr<ITexture> text
 	m_Material->SetTexture(type, texture);
 }
 
-const std::shared_ptr<ITexture>& MaterialProxie::GetTexture(uint8 ID) const
+std::shared_ptr<ITexture> MaterialProxie::GetTexture(uint8 ID) const
 {
 	return m_Material->GetTexture(ID);
 }
@@ -35,7 +35,7 @@ void MaterialProxie::SetSampler(uint8 ID, const std::shared_ptr<ISamplerState> s
 	m_Material->SetSampler(ID, samplerState);
 }
 
-const std::shared_ptr<ISamplerState>& MaterialProxie::GetSampler(uint8 ID) const
+std::shared_ptr<ISamplerState> MaterialProxie::GetSampler(uint8 ID) const
 {
     return m_Material->GetSampler(ID);
 }

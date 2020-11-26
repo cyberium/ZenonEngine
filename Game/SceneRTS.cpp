@@ -258,16 +258,31 @@ std::shared_ptr<IModel> CSceneRTS::CreateUnitModel(std::string ModelName, std::s
 	for (const auto& anim : animatedSkeletonModel2->GetAnimations())
 		originalSkeletonModel->AddAnimation("death", anim.second);
 
-	std::string znModelFilename = modelFile->Name_NoExtension() + ".znmdl";
-	if (filesManager->IsFileExists(znModelFilename))
-		filesManager->Delete(znModelFilename);
+	std::shared_ptr<IFile> modelResult = nullptr;
+	{
+		std::string znModelFilename = modelFile->Name_NoExtension() + ".znmdl";
+		if (filesManager->IsFileExists(znModelFilename))
+			filesManager->Delete(znModelFilename);
 
-	auto znMdlFile = GetBaseManager().GetManager<IznModelsFactory>()->SaveModel(originalSkeletonModel, znModelFilename);
-	znMdlFile->Save();
+		auto znMdlFile = GetBaseManager().GetManager<IznModelsFactory>()->SaveModel(originalSkeletonModel, znModelFilename);
+		znMdlFile->Save();
+
+		modelResult = znMdlFile;
+	}
+
+	{
+		std::string znModelFilename = modelFile->Name_NoExtension() + ".xml";
+		if (filesManager->IsFileExists(znModelFilename))
+			filesManager->Delete(znModelFilename);
+
+		auto znmdlModelsLoader = GetBaseManager().GetManager<IznModelsFactory>()->GetLoaderForModel("znmdl");
+		auto znMdlXMLFile = znmdlModelsLoader->SaveModelXML(originalSkeletonModel, modelFile->Name_NoExtension() + ".xml");
+		znMdlXMLFile->Save();
+	}
 
 	//node->GetComponentT<IModelsComponent3D>()->SetModel(originalSkeletonModel);
 	//node->GetComponentT<IModelsComponent3D>()->PlayAnimation("run", true);
-	return GetBaseManager().GetManager<IznModelsFactory>()->LoadModel(znMdlFile);
+	return GetBaseManager().GetManager<IznModelsFactory>()->LoadModel(modelResult);
 }
 
 void CSceneRTS::CreateUnit()

@@ -56,6 +56,11 @@ void GeometryBase::Accept(IVisitor * visitor, const IMaterial* Material, SGeomet
 	visitor->Visit(this, Material, GeometryDrawArgs);
 }
 
+
+
+//
+// IObjectLoadSave
+//
 void GeometryBase::Load(const std::shared_ptr<IByteBuffer>& ByteBuffer)
 {
 	BoundingBox bounds;
@@ -139,12 +144,120 @@ void GeometryBase::Save(const std::shared_ptr<IByteBuffer>& ByteBuffer) const
 	}
 }
 
+namespace
+{
+	std::string PrimitiveTopologyToString(PrimitiveTopology PrimitiveTopology)
+	{
+		switch (PrimitiveTopology)
+		{
+		case PrimitiveTopology::PointList:
+			return "PointList";
+		case PrimitiveTopology::LineList:
+			return "LineList";
+		case PrimitiveTopology::LineStrip:
+			return "LineStrip";
+		case PrimitiveTopology::TriangleList:
+			return "TriangleList";
+		case PrimitiveTopology::TriangleStrip:
+			return "TriangleStrip";
+		}
+		throw CException("Primitive topology '%d' is invalid.", PrimitiveTopology);
+	}
+
+	PrimitiveTopology PrimitiveTopologyFromString(const std::string& PrimitiveTopology)
+	{
+		if (PrimitiveTopology == "PointList")
+			return PrimitiveTopology::PointList;
+		else if (PrimitiveTopology == "LineList")
+			return PrimitiveTopology::LineList;
+		else if(PrimitiveTopology == "LineStrip")
+			return PrimitiveTopology::LineStrip;
+		else if (PrimitiveTopology == "TriangleList")
+			return PrimitiveTopology::TriangleList;
+		else if (PrimitiveTopology == "TriangleStrip")
+			return PrimitiveTopology::TriangleStrip;
+		throw CException("Primitive topology '%s' is invalid.", PrimitiveTopology.c_str());
+	}
+}
+
+void GeometryBase::Load(const std::shared_ptr<IXMLReader>& Reader)
+{
+	BoundingBox bounds;
+	bounds.Load(Reader);
+	SetBounds(bounds);
+
+	m_PrimitiveTopology = PrimitiveTopologyFromString(Reader->GetStrAttribute("PrimitiveTopology"));
+
+	if (Reader->IsChildExists("VertexBuffers"))
+	{
+		auto vertexBuffersXML = Reader->GetChild("VertexBuffers");
+		for (const auto& vertexBufferBindingXML : vertexBuffersXML->GetChilds())
+		{
+			BufferBinding bufferBinding(vertexBufferBindingXML->GetName(), vertexBufferBindingXML->GetUIntAttribute("Index"));
+
+			auto vertexBufferXML = vertexBufferBindingXML->GetChilds().front();
+			std::shared_ptr<IBuffer> vertexBuffer = m_RenderDevice.GetObjectsFactory().LoadVoidBuffer(vertexBufferXML);
+			AddVertexBuffer(bufferBinding, vertexBuffer);
+		}
+	}
+
+	if (Reader->IsChildExists("VertexBuffer"))
+	{
+		auto vertexBufferXML = Reader->GetChilds().front();
+		std::shared_ptr<IBuffer> vertexBuffer = m_RenderDevice.GetObjectsFactory().LoadVoidBuffer(vertexBufferXML);
+		SetVertexBuffer(vertexBuffer);
+	}
+
+	if (Reader->IsChildExists("IndexBuffer"))
+	{
+		auto indexBufferXML = Reader->GetChilds().front();
+		std::shared_ptr<IBuffer> indexBuffer = m_RenderDevice.GetObjectsFactory().LoadVoidBuffer(indexBufferXML);
+		SetIndexBuffer(indexBuffer);
+	}
+}
+
+void GeometryBase::Save(const std::shared_ptr<IXMLWriter>& Writer) const
+{
+	BoundingBox geometryBBox = GetBounds();
+	geometryBBox.Save(Writer);
+
+	Writer->SetStrAttribute(PrimitiveTopologyToString(m_PrimitiveTopology), "PrimitiveTopology");
+
+	if (false == m_VertexBuffers.empty())
+	{
+		auto vertexBuffersXML = Writer->CreateChild("VertexBuffers");
+
+		for (const auto& vertexBuffer : m_VertexBuffers)
+		{
+			auto vertexBufferBindingXML = vertexBuffersXML->CreateChild(vertexBuffer.first.Name);
+			vertexBufferBindingXML->SetUIntAttribute(vertexBuffer.first.Index, "Index");
+
+			auto vertexBufferXML = vertexBufferBindingXML->CreateChild("buffer_TEMP");
+			std::dynamic_pointer_cast<IObjectLoadSave>(vertexBuffer.second)->Save(vertexBufferXML);
+		}
+	}
+
+	if (m_VertexBuffer)
+	{
+		auto vertexbufferXML = Writer->CreateChild("VertexBuffer");
+
+		auto bufferXML = vertexbufferXML->CreateChild("buffer_TEMP");
+		std::dynamic_pointer_cast<IObjectLoadSave>(m_VertexBuffer)->Save(bufferXML);
+	}
+
+	if (m_pIndexBuffer)
+	{
+		auto indexBufferXML = Writer->CreateChild("IndexBuffer");
+
+		auto bufferXML = indexBufferXML->CreateChild("buffer_TEMP");
+		std::dynamic_pointer_cast<IObjectLoadSave>(m_pIndexBuffer)->Save(bufferXML);
+	}
+}
 
 
 //
 // Protected
 //
-
 SGeometryDrawArgs GeometryBase::FixGeometryDrawArgs(const SGeometryDrawArgs & GeometryDrawArgs) const
 {
 	SGeometryDrawArgs fixedArgs;

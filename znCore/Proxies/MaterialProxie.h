@@ -13,10 +13,10 @@ public:
 
 	// IMaterial
 	virtual void SetTexture(uint8 type, const std::shared_ptr<ITexture> texture) override;
-	virtual const std::shared_ptr<ITexture>& GetTexture(uint8 ID) const override;
+	virtual std::shared_ptr<ITexture> GetTexture(uint8 ID) const override;
 
 	virtual void SetSampler(uint8 ID, const std::shared_ptr<ISamplerState> samplerState) override;
-    virtual const std::shared_ptr<ISamplerState>& GetSampler(uint8 ID) const override;
+    virtual std::shared_ptr<ISamplerState> GetSampler(uint8 ID) const override;
     
 	std::shared_ptr<IPropertiesGroup> GetProperties() const override;
 

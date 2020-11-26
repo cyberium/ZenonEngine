@@ -118,7 +118,7 @@ public:
 	void SetBumpFactor(float Factor);
 
 	void SetTexture(ETextureType TextureType, std::shared_ptr<ITexture> texture);
-	const std::shared_ptr<ITexture>& GetTexture(ETextureType TextureType) const;
+	std::shared_ptr<ITexture> GetTexture(ETextureType TextureType) const;
 
 	// IObjectLoadSave
 	void Load(const std::shared_ptr<IXMLReader>& Reader) override;

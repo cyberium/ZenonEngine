@@ -19,9 +19,15 @@ ZN_INTERFACE ZN_API IznModelsLoader
 	virtual std::string GetName() const = 0;
 	virtual bool IsSupportedFormat(const std::string& ModelFileName) const = 0;
 	virtual bool IsSupportedFormat(const std::shared_ptr<IFile>& ModelFile) const = 0;
+
 	virtual std::shared_ptr<IModel> LoadModel(const std::string& ModelFileName, const IznLoaderParams* LoaderParams = nullptr) const = 0;
 	virtual std::shared_ptr<IModel> LoadModel(const std::shared_ptr<IFile>& ModelFile, const IznLoaderParams* LoaderParams = nullptr) const = 0;
+
+	virtual std::shared_ptr<IModel> LoadModelXML(const std::string& ModelFileName, const IznLoaderParams* LoaderParams = nullptr) const = 0;
+	virtual std::shared_ptr<IModel> LoadModelXML(const std::shared_ptr<IFile>& ModelFile, const IznLoaderParams* LoaderParams = nullptr) const = 0;
+
 	virtual std::shared_ptr<IFile> SaveModel(const std::shared_ptr<IModel>& Model, const std::string& FileName) const = 0;
+	virtual std::shared_ptr<IFile> SaveModelXML(const std::shared_ptr<IModel>& Model, const std::string& FileName) const = 0;
 };
 
 

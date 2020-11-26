@@ -89,10 +89,16 @@ void CAnimation::Save(const std::shared_ptr<IByteBuffer>& Buffer) const
 
 void CAnimation::Load(const std::shared_ptr<IXMLReader>& Reader)
 {
-	throw CException("Not implemented.");
+	m_Name = Reader->GetStrAttribute("Name");
+	m_FrameStart = Reader->GetUIntAttribute("Start");
+	m_FrameEnd = Reader->GetUIntAttribute("End");
+	m_IndexIntoSequences = Reader->GetUIntAttribute("IndexIntoSequences");
 }
 
 void CAnimation::Save(const std::shared_ptr<IXMLWriter>& Writer) const
 {
-	throw CException("Not implemented.");
+	Writer->SetStrAttribute(m_Name, "Name");
+	Writer->SetUIntAttribute(m_FrameStart, "Start");
+	Writer->SetUIntAttribute(m_FrameEnd, "End");
+	Writer->SetUIntAttribute(m_IndexIntoSequences, "IndexIntoSequences");
 }

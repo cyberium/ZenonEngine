@@ -35,6 +35,10 @@ public:
 	std::shared_ptr<IConstantBuffer>    LoadConstantBuffer(const std::shared_ptr<IByteBuffer>& ByteBuffer) override;
 	std::shared_ptr<IStructuredBuffer>  LoadStructuredBuffer(const std::shared_ptr<IByteBuffer>& ByteBuffer) override;
 
+	std::shared_ptr<IBuffer>            LoadVoidBuffer(const std::shared_ptr<IXMLReader>& Reader) override;
+	std::shared_ptr<IConstantBuffer>    LoadConstantBuffer(const std::shared_ptr<IXMLReader>& Reader) override;
+	std::shared_ptr<IStructuredBuffer>  LoadStructuredBuffer(const std::shared_ptr<IXMLReader>& Reader) override;
+
 private:
 	IRenderDeviceDX11& m_RenderDeviceDX11;
 	std::recursive_mutex m_LockMutex;

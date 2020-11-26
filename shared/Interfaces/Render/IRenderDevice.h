@@ -97,6 +97,10 @@ ZN_INTERFACE ZN_API IRenderObjectsFactory
 	virtual std::shared_ptr<IConstantBuffer>    LoadConstantBuffer(const std::shared_ptr<IByteBuffer>& ByteBuffer) = 0;
 	virtual std::shared_ptr<IStructuredBuffer>  LoadStructuredBuffer(const std::shared_ptr<IByteBuffer>& ByteBuffer) = 0;
 
+	virtual std::shared_ptr<IBuffer>            LoadVoidBuffer(const std::shared_ptr<IXMLReader>& Reader) = 0;
+	virtual std::shared_ptr<IConstantBuffer>    LoadConstantBuffer(const std::shared_ptr<IXMLReader>& Reader) = 0;
+	virtual std::shared_ptr<IStructuredBuffer>  LoadStructuredBuffer(const std::shared_ptr<IXMLReader>& Reader) = 0;
+
 	// Templates
 
 	template <typename T>

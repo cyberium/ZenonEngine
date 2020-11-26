@@ -224,7 +224,7 @@ void MaterialModel::SetTexture(ETextureType TextureType, std::shared_ptr<ITextur
 	MaterialProxie::SetTexture((uint32)TextureType, texture);
 }
 
-const std::shared_ptr<ITexture>& MaterialModel::GetTexture(ETextureType TextureType) const
+std::shared_ptr<ITexture> MaterialModel::GetTexture(ETextureType TextureType) const
 {
 	return MaterialProxie::GetTexture((uint32)TextureType);
 }

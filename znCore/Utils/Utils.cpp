@@ -4,6 +4,8 @@
 #include "Utils.h"
 
 // Additional
+#include "Files/ByteBuffer.h"
+
 #include <sstream>
 #include <iomanip>
 #include <filesystem>
@@ -279,6 +281,44 @@ namespace Utils
 			offset += strVal.length() - offset;
 
 		return strVal.substr(0, offset);
+	}
+
+	std::string MatrixToString(const glm::mat4& Matrix)
+	{
+		char buffer[MAX_PATH];
+		if (sprintf_s(buffer, "[%.3f %.3f %.3f %.3f] [%.3f %.3f %.3f %.3f] [%.3f %.3f %.3f %.3f] [%.3f %.3f %.3f %.3f]",
+			Matrix[0][0], Matrix[0][1], Matrix[0][2], Matrix[0][3],
+			Matrix[1][0], Matrix[1][1], Matrix[1][2], Matrix[1][3],
+			Matrix[2][0], Matrix[2][1], Matrix[2][2], Matrix[2][3],
+			Matrix[3][0], Matrix[3][1], Matrix[3][2], Matrix[3][3]) <= 0)
+			throw CException("Error");
+		return buffer;
+	}
+
+	glm::mat4 StringToMatrix(const std::string& String)
+	{
+		glm::mat4 matrix;
+		if (sscanf_s(String.c_str(), "[%.3f %.3f %.3f %.3f] [%.3f %.3f %.3f %.3f] [%.3f %.3f %.3f %.3f] [%.3f %.3f %.3f %.3f]",
+			matrix[0][0], matrix[0][1], matrix[0][2], matrix[0][3],
+			matrix[1][0], matrix[1][1], matrix[1][2], matrix[1][3],
+			matrix[2][0], matrix[2][1], matrix[2][2], matrix[2][3],
+			matrix[3][0], matrix[3][1], matrix[3][2], matrix[3][3]) != 16)
+			throw CException("Error");
+		return matrix;
+	}
+
+	std::string MatrixToBase64(const glm::mat4& Matrix)
+	{
+		CByteBuffer byteBuffer;
+		byteBuffer.write(&Matrix);
+		return Base64_Encode(byteBuffer.getData(), byteBuffer.getSize());
+	}
+	glm::mat4 Base64ToMatrix(const std::string& Base64)
+	{
+		CByteBuffer byteBuffer(Base64_Decode(Base64));
+		glm::mat4 matrix;
+		byteBuffer.read(&matrix);
+		return matrix;
 	}
 }
 

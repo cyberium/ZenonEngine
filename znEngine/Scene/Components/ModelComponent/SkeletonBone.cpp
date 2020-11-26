@@ -148,7 +148,6 @@ void CSkeletonBone::Save(const std::shared_ptr<IByteBuffer>& Buffer) const
 	Buffer->write(&m_LocalTransform);
 	Buffer->write(&m_PivotMatrix);
 	Buffer->write(&m_FuckingMatrix);
-
 	m_CalculatedMatrixes.Save(Buffer);
 }
 
@@ -159,7 +158,16 @@ void CSkeletonBone::Load(const std::shared_ptr<IXMLReader>& Reader)
 
 void CSkeletonBone::Save(const std::shared_ptr<IXMLWriter>& Writer) const
 {
-	throw CException("Not implemented.");
+	Writer->SetStrAttribute(m_Name, "Name");
+	Writer->SetIntAttribute(m_ParentIndex, "ParentIndex");
+	Writer->SetStrAttribute(Utils::MatrixToString(m_LocalTransform), "LocalTransform");
+	Writer->SetStrAttribute(Utils::MatrixToString(m_PivotMatrix), "PivotMatrix");
+	Writer->SetStrAttribute(Utils::MatrixToString(m_FuckingMatrix), "FuckingMatrix");
+
+	std::shared_ptr<CByteBuffer> byteBuffer = MakeShared(CByteBuffer);
+	m_CalculatedMatrixes.Save(byteBuffer);
+	Writer->SetValue(Utils::Base64_Encode(byteBuffer->getData(), byteBuffer->getSize()));
+
 }
 
 

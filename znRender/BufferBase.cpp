@@ -159,7 +159,7 @@ std::vector<uint8>& CBufferBase::GetDataEx()
 
 void CBufferBase::SetData(const void * data, size_t dataSize)
 {
-	if (!m_Data.empty())
+	if (false == m_Data.empty())
 		m_Data.clear();
 
 	if (data != nullptr)

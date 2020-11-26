@@ -29,11 +29,11 @@ void MaterialBase::SetTexture(uint8 ID, const std::shared_ptr<ITexture> texture)
 	m_Dirty = true;
 }
 
-const std::shared_ptr<ITexture>& MaterialBase::GetTexture(uint8 ID) const
+std::shared_ptr<ITexture> MaterialBase::GetTexture(uint8 ID) const
 {
 	const auto& iter = m_Textures.find(ID);
 	if (iter == m_Textures.end())
-		throw CznRenderException("MaterialBase: Texture with index '%d' not found in material '%s'.", ID, GetName().c_str());
+		return nullptr;//throw CznRenderException("MaterialBase: Texture with index '%d' not found in material '%s'.", ID, GetName().c_str());
 
 	return iter->second;
 }
@@ -44,7 +44,7 @@ void MaterialBase::SetSampler(uint8 ID, const std::shared_ptr<ISamplerState> sam
 	m_Dirty = true;
 }
 
-const std::shared_ptr<ISamplerState>& MaterialBase::GetSampler(uint8 ID) const
+std::shared_ptr<ISamplerState> MaterialBase::GetSampler(uint8 ID) const
 {
     const auto& iter = m_Samplers.find(ID);
     if (iter == m_Samplers.end())
