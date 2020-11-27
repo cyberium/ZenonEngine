@@ -69,9 +69,9 @@ CParticleSystem::CParticleSystem(const ISceneNode& SceneNode)
 	m_Lifetime = 500.0f;
 	m_LifeTimeMiddlePoint = 0.7f;
 
-	m_Colors[0] = glm::vec4(1.0f, 0.0f, 0.0f, 1.0f);
-	m_Colors[1] = glm::vec4(0.0f, 1.0f, 0.0f, 1.0f);
-	m_Colors[2] = glm::vec4(0.0f, 0.0f, 1.0f, 1.0f);
+	m_Colors[0] = glm::vec4(10.0f, 0.0f, 0.0f, 1.0f);
+	m_Colors[1] = glm::vec4(0.0f, 10.0f, 0.0f, 1.0f);
+	m_Colors[2] = glm::vec4(0.0f, 0.0f, 10.0f, 1.0f);
 
 	m_Sizes[0] = glm::vec2(2.0f);
 	m_Sizes[1] = glm::vec2(1.0f);

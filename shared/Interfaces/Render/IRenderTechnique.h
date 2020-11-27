@@ -9,13 +9,13 @@ ZN_INTERFACE ZN_API IRenderer
 {
 	virtual ~IRenderer() {}
 
-    virtual uint32 AddPass(std::shared_ptr<IRenderPass> pass) = 0;
-	virtual IRenderPass* GetPass(uint32 ID) const = 0;
+    virtual void Add3DPass(std::shared_ptr<IRenderPass> pass) = 0;
+	virtual void AddUIPass(std::shared_ptr<IRenderPass> pass) = 0;
 
 	virtual void Render3D(RenderEventArgs& renderEventArgs) = 0;
 	virtual void RenderUI(RenderEventArgs& renderEventArgs) = 0;
 
-	virtual void Resize(uint32 NewWidth, uint32 NewHeight) = 0;
+	virtual void Resize(glm::ivec2 Size) = 0;
 };
 
 

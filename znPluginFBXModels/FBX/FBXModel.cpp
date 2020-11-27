@@ -14,6 +14,14 @@
 
 namespace
 {
+	template <typename T>
+	void ExtractLocalVertexBufferFromGlobal(const void* Data, size_t DataSize, size_t Offset, size_t Stride, std::vector<T> * Result)
+	{
+		_ASSERT(Result != nullptr);
+		for (size_t e = 0; e < DataSize; e += Stride)
+			Result->push_back(reinterpret_cast<T&>(*((uint8*)Data + e + Offset)));
+	}
+
 	BoundingBox CalculateBounds(const SGeometryDrawArgs& DrawArgs, const std::vector<FBXVertex>& Vertices)
 	{
 		glm::vec3 min(Math::MaxFloat);
@@ -52,6 +60,7 @@ CFBXModel::CFBXModel(const IBaseManager& BaseManager, const IFBXNode& FBXNode)
 	: ModelProxie(BaseManager.GetApplication().GetRenderDevice().GetObjectsFactory().CreateModel())
 	, m_BaseManager(BaseManager)
 	, m_FBXNode(FBXNode)
+	, m_HasBoneWeights(false)
 {
 }
 
@@ -65,6 +74,7 @@ bool CFBXModel::Load(fbxsdk::FbxMesh* NativeMesh)
 
 	SetName(NativeMesh->GetName());
 
+	int fbxControlPointsCount = NativeMesh->GetControlPointsCount();
 	FbxVector4* fbxControlPoints = NativeMesh->GetControlPoints();
 	if (fbxControlPoints == nullptr)
 		throw CException("FBXModel: There is no control points.");
@@ -72,6 +82,14 @@ bool CFBXModel::Load(fbxsdk::FbxMesh* NativeMesh)
 	NativeMesh->ComputeBBox();
 	if (false == NativeMesh->GenerateNormals(true, true))
 		throw CException("Error while generate normals.");
+
+
+	/*for (int c = 0; c < fbxControlPointsCount; c++)
+	{
+		FBXVertex v = {};
+		v.pos = glm::vec3(fbxControlPoints[c][0], fbxControlPoints[c][1], fbxControlPoints[c][2]);
+	}*/
+
 
 	/*DisplayMetaDataConnections(NativeMesh);
 	std::vector<glm::vec3> vertices;
@@ -401,12 +419,42 @@ bool CFBXModel::Load(fbxsdk::FbxMesh* NativeMesh)
 
 	IRenderDevice& renderDevice = m_BaseManager.GetApplication().GetRenderDevice();
 	m_Geometry = renderDevice.GetObjectsFactory().CreateGeometry();
-	m_Geometry->AddVertexBuffer(BufferBinding("POSITION", 0), renderDevice.GetObjectsFactory().CreateVoidVertexBuffer(m_Vertices.data(), m_Vertices.size(), 0, sizeof(FBXVertex)));
-	m_Geometry->AddVertexBuffer(BufferBinding("TEXCOORD", 0), renderDevice.GetObjectsFactory().CreateVoidVertexBuffer(m_Vertices.data(), m_Vertices.size(), 12, sizeof(FBXVertex)));
-	m_Geometry->AddVertexBuffer(BufferBinding("NORMAL", 0), renderDevice.GetObjectsFactory().CreateVoidVertexBuffer(m_Vertices.data(), m_Vertices.size(), 12 + 8, sizeof(FBXVertex)));
-	
-	m_Geometry->AddVertexBuffer(BufferBinding("BLENDWEIGHT", 0), renderDevice.GetObjectsFactory().CreateVoidVertexBuffer(m_Vertices.data(), m_Vertices.size(), 12 + 8 /*+ 12 + 12*/ + 12, sizeof(FBXVertex)));
-	m_Geometry->AddVertexBuffer(BufferBinding("BLENDINDICES", 0), renderDevice.GetObjectsFactory().CreateVoidVertexBuffer(m_Vertices.data(), m_Vertices.size(), 12 + 8 /*+ 12 + 12*/ + 12 + 16, sizeof(FBXVertex)));
+
+	{
+		std::vector<glm::vec3> positions;
+		ExtractLocalVertexBufferFromGlobal<glm::vec3>(m_Vertices.data(), m_Vertices.size() * sizeof(FBXVertex), 0, sizeof(FBXVertex), &positions);
+		m_Geometry->AddVertexBuffer(BufferBinding("POSITION", 0), renderDevice.GetObjectsFactory().CreateVertexBuffer(positions));
+	}
+
+	{
+		std::vector<glm::vec2> texcoords;
+		ExtractLocalVertexBufferFromGlobal<glm::vec2>(m_Vertices.data(), m_Vertices.size() * sizeof(FBXVertex), sizeof(glm::vec3), sizeof(FBXVertex), &texcoords);
+		m_Geometry->AddVertexBuffer(BufferBinding("TEXCOORD", 0), renderDevice.GetObjectsFactory().CreateVertexBuffer(texcoords));
+	}
+
+	{
+		std::vector<glm::vec3> normals;
+		ExtractLocalVertexBufferFromGlobal<glm::vec3>(m_Vertices.data(), m_Vertices.size() * sizeof(FBXVertex), sizeof(glm::vec3) + sizeof(glm::vec2) , sizeof(FBXVertex), &normals);
+		m_Geometry->AddVertexBuffer(BufferBinding("NORMAL", 0), renderDevice.GetObjectsFactory().CreateVertexBuffer(normals));
+	}
+
+	if (m_HasBoneWeights)
+	{
+		{
+			std::vector<glm::vec4> blendWeights;
+			ExtractLocalVertexBufferFromGlobal<glm::vec4>(m_Vertices.data(), m_Vertices.size() * sizeof(FBXVertex), sizeof(glm::vec3) + sizeof(glm::vec2) + sizeof(glm::vec3), sizeof(FBXVertex), &blendWeights);
+			m_Geometry->AddVertexBuffer(BufferBinding("BLENDWEIGHT", 0), renderDevice.GetObjectsFactory().CreateVertexBuffer(blendWeights));
+		}
+
+		{
+			std::vector<glm::uvec4> blendIndices;
+			ExtractLocalVertexBufferFromGlobal<glm::uvec4>(m_Vertices.data(), m_Vertices.size() * sizeof(FBXVertex), sizeof(glm::vec3) + sizeof(glm::vec2) + sizeof(glm::vec3) + sizeof(glm::vec4), sizeof(FBXVertex), &blendIndices);
+			m_Geometry->AddVertexBuffer(BufferBinding("BLENDINDICES", 0), renderDevice.GetObjectsFactory().CreateVertexBuffer(blendIndices));
+		}
+
+	}
+
+	//m_Geometry->SetVertexBuffer(renderDevice.GetObjectsFactory().CreateVoidVertexBuffer(m_Vertices.data(), m_Vertices.size(), 0, sizeof(FBXVertex)));
 	m_Geometry->SetBounds(CalculateBounds(SGeometryDrawArgs(), m_Vertices)); // TODO: Fixme
 
 	MaterialLoad(NativeMesh);
@@ -545,11 +593,13 @@ void CFBXModel::SkeletonLoad(fbxsdk::FbxMesh* NativeMesh)
 	const FbxVector4 lT = NativeMesh->GetNode()->GetGeometricTranslation(FbxNode::eSourcePivot);
 	const FbxVector4 lR = NativeMesh->GetNode()->GetGeometricRotation(FbxNode::eSourcePivot);
 	const FbxVector4 lS = NativeMesh->GetNode()->GetGeometricScaling(FbxNode::eSourcePivot);
-
 	FbxAMatrix geometryTransform = FbxAMatrix(lT, lR, lS);
 
+	int deformersCount = NativeMesh->GetDeformerCount();
+	if (deformersCount == 0)
+		return;
 
-	for (int deformerIndex = 0; deformerIndex < NativeMesh->GetDeformerCount(); ++deformerIndex)
+	for (int deformerIndex = 0; deformerIndex < deformersCount; deformerIndex++)
 	{
 		fbxsdk::FbxSkin* skin = static_cast<fbxsdk::FbxSkin*>(NativeMesh->GetDeformer(deformerIndex, fbxsdk::FbxDeformer::eSkin));
 		if (skin == nullptr)
@@ -606,6 +656,7 @@ void CFBXModel::SkeletonLoad(fbxsdk::FbxMesh* NativeMesh)
 						{
 							v.indexes[i] = w.second[i].second;
 							v.weights[i] = w.second[i].first;
+							m_HasBoneWeights = true;
 						}
 					}
 				}

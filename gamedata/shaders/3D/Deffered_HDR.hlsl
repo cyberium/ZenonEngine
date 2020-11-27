@@ -42,18 +42,16 @@ float4 PS_ScreenQuad(float4 position : SV_POSITION
 	float4 sourceColor = Texture0.Load(int3(texCoord, 0));
 #endif
 
-    const float gamma = 1.2f;
-	const float exposure = 1.5f;
+    const float gamma = 1.0f;
+	const float exposure = 0.6f;
 
     // тональная компрессия с экспозицией
-    //float3 mapped = float3(1.0f, 1.0f, 1.0f) - exp(-sourceColor.rgb * exposure);
-	
+    float3 mapped = float3(1.0f, 1.0f, 1.0f) - exp(-sourceColor.rgb * exposure);
     // гамма-коррекция
-    //mapped = pow(mapped, float3(1.0f, 1.0f, 1.0f) / gamma);
+    mapped = pow(mapped, float3(1.0f, 1.0f, 1.0f) / gamma);
 
     // тональная компрессия
-    float3 mapped = sourceColor.rgb / (sourceColor.rgb + float3(1.0f, 1.0f, 1.0f));
-	
+    //float3 mapped = sourceColor.rgb / (sourceColor.rgb + float3(1.0f, 1.0f, 1.0f));
     // гамма-коррекция
     //mapped = pow(mapped, float3(1.0f, 1.0f, 1.0f) / gamma);
 

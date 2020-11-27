@@ -171,6 +171,8 @@ public:
 
 	int Width;
 	int Height;
+
+	glm::ivec2 GetSize() const { return glm::ivec2(Width, Height); }
 };
 
 

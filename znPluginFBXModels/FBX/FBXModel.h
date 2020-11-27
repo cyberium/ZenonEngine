@@ -51,6 +51,7 @@ private:
 
 private:
 	std::vector<FBXVertex> m_Vertices;
+	bool m_HasBoneWeights;
 	std::shared_ptr<IGeometry> m_Geometry;
 
 	const IBaseManager& m_BaseManager;

@@ -30,7 +30,12 @@ std::shared_ptr<IRenderPassPipelined> CDebugPass::ConfigurePipeline(std::shared_
 		vertexShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::VertexShader, "3D/Debug.hlsl", "VS_main");
 		pixelShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::PixelShader, "3D/Debug.hlsl", "PS_main");
 	}
-	vertexShader->LoadInputLayoutFromReflector();
+	//vertexShader->LoadInputLayoutFromReflector();
+
+	std::vector<SCustomInputElement> customElements;
+	customElements.push_back({ 0,  0, ECustomVertexElementType::FLOAT3, ECustomVertexElementUsage::POSITION,     0 });
+	customElements.push_back({ 0, 12, ECustomVertexElementType::FLOAT2, ECustomVertexElementUsage::TEXCOORD,     0 });
+	vertexShader->LoadInputLayoutFromCustomElements(customElements);
 
 	// PIPELINES
 	GetPipeline().GetRasterizerState()->SetCullMode(IRasterizerState::CullMode::None);

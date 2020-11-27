@@ -242,8 +242,10 @@ std::shared_ptr<IModel> CSceneRTS::CreateUnitModel(std::string ModelName, std::s
 	
 	// Fix materials
 	for (const auto& connection : originalSkeletonModel->GetConnections())
-		std::dynamic_pointer_cast<MaterialModel>(connection.Material)->SetDiffuseFactor(2.0f);
-
+	{
+		std::dynamic_pointer_cast<MaterialModel>(connection.Material)->SetDiffuseColor(glm::vec3(1.0f));
+		std::dynamic_pointer_cast<MaterialModel>(connection.Material)->SetDiffuseFactor(1.0f);
+	}
 
 	// Animated skeleton
 	auto animatedSkeletonModel = fbxSceneLoader->LoadScene(animationFile, &fbxLoaderParams)->MergeModels();

@@ -14,7 +14,7 @@
 #include "../znCore/Log/Console/Console.h"
 
 // Passes
-#include "../znCore/Passes/RenderTechnique.h"
+#include "../znCore/Passes/RendererBase.h"
 #include "../znCore/Passes/RenderPass.h"
 #include "../znCore/Passes/RenderPassPipelined.h"
 #include "../znCore/Passes/ScenePasses/ScenePass.h"

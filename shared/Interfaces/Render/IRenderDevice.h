@@ -24,7 +24,6 @@ ZN_INTERFACE ZN_API IRenderPrimitivesFactory
 	virtual std::shared_ptr<IGeometry> CreateLines(size_t count = 100) = 0;
 	virtual std::shared_ptr<IGeometry> CreateLines(const std::vector<glm::vec3>& Points) = 0;
 	virtual std::shared_ptr<IGeometry> CreatePlane(const glm::vec3& N = glm::vec3(0, 1, 0)) = 0; // Create a plane in 3D.
-	virtual std::shared_ptr<IGeometry> CreateScreenQuad(float left = 0.0f, float right = 1.0f, float bottom = 0.0f, float top = 1.0f, float z = 0.0f) = 0; // Create a screen-space quad that can be used to render full-screen post-process effects to the screen.
 	virtual std::shared_ptr<IGeometry> CreateSphere(float Radius = 1.0f) = 0;
 	virtual std::shared_ptr<IGeometry> CreateCube() = 0;
 	virtual std::shared_ptr<IGeometry> CreateBBox() = 0;

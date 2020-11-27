@@ -108,9 +108,6 @@
     <ClCompile Include="Proxies\SceneNodeProxie.cpp">
       <Filter>__Proxies</Filter>
     </ClCompile>
-    <ClCompile Include="Passes\RenderTechnique.cpp">
-      <Filter>Passes</Filter>
-    </ClCompile>
     <ClCompile Include="Scene\ComponentBase.cpp">
       <Filter>Scene</Filter>
     </ClCompile>
@@ -336,6 +333,9 @@
     <ClCompile Include="Properties\PropertyGroup.cpp">
       <Filter>Properties</Filter>
     </ClCompile>
+    <ClCompile Include="Passes\RendererBase.cpp">
+      <Filter>Passes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="common.h">
@@ -478,9 +478,6 @@
     </ClInclude>
     <ClInclude Include="Proxies\__Proxies.h">
       <Filter>__Proxies</Filter>
-    </ClInclude>
-    <ClInclude Include="Passes\RenderTechnique.h">
-      <Filter>Passes</Filter>
     </ClInclude>
     <ClInclude Include="Scene\ComponentBase.h">
       <Filter>Scene</Filter>
@@ -808,6 +805,9 @@
     </ClInclude>
     <ClInclude Include="Properties\PropertyGroup.h">
       <Filter>Properties</Filter>
+    </ClInclude>
+    <ClInclude Include="Passes\RendererBase.h">
+      <Filter>Passes</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

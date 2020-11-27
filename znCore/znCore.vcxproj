@@ -121,7 +121,7 @@
     <ClCompile Include="Passes\RenderPass.cpp" />
     <ClCompile Include="Passes\RenderPassMultipipelined.cpp" />
     <ClCompile Include="Passes\RenderPassPipelined.cpp" />
-    <ClCompile Include="Passes\RenderTechnique.cpp" />
+    <ClCompile Include="Passes\RendererBase.cpp" />
     <ClCompile Include="Passes\ScenePasses\Pipelined\Base3DPass.cpp" />
     <ClCompile Include="Passes\ScenePasses\Pipelined\BaseUIPass.cpp" />
     <ClCompile Include="Passes\ScenePasses\Pipelined\ScenePassPipelined.cpp" />
@@ -276,7 +276,7 @@
     <ClInclude Include="Passes\RenderPass.h" />
     <ClInclude Include="Passes\RenderPassMultipipelined.h" />
     <ClInclude Include="Passes\RenderPassPipelined.h" />
-    <ClInclude Include="Passes\RenderTechnique.h" />
+    <ClInclude Include="Passes\RendererBase.h" />
     <ClInclude Include="Passes\ScenePasses\Pipelined\Base3DPass.h" />
     <ClInclude Include="Passes\ScenePasses\Pipelined\BaseUIPass.h" />
     <ClInclude Include="Passes\ScenePasses\Pipelined\ScenePassPipelined.h" />

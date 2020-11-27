@@ -28,6 +28,8 @@ void CPassPostprocess_HDR::Render(RenderEventArgs& e)
 //
 std::shared_ptr<IRenderPassPipelined> CPassPostprocess_HDR::ConfigurePipeline(std::shared_ptr<IRenderTarget> RenderTarget)
 {
+	__super::ConfigurePipeline(RenderTarget);
+
 	m_QuadGeometry = GetRenderDevice().GetPrimitivesFactory().CreateQuad();
 
 	auto samplesCnt = std::to_string(RenderTarget->GetTexture(IRenderTarget::AttachmentPoint::Color0)->GetSamplesCount());

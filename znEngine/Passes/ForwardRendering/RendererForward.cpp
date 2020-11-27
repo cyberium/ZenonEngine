@@ -1,11 +1,14 @@
 #include "stdafx.h"
 
+#define ENABLE_HDR
+
 // General
 #include "RendererForward.h"
 
 // Additional
 #include "Passes/Technical/ClearRenderTargetPass.h"
 #include "Passes/Technical/InvokeFunctionPass.h"
+#include "Passes/PostprocessRendering/Postprocess_HDR.h"
 
 #include "Passes/DebugPass.h"
 #include "Passes/ParticlesPass.h"
@@ -27,9 +30,7 @@ struct __declspec(align(16)) SLightVS
 
 
 CRendererForward::CRendererForward(IBaseManager& BaseManager, IScene& Scene)
-	: m_BaseManager(BaseManager)
-	, m_RenderDevice(BaseManager.GetApplication().GetRenderDevice())
-	, m_Scene(Scene)
+	: RendererBase(BaseManager, Scene)
 {
 	m_LightsBuffer = m_RenderDevice.GetObjectsFactory().CreateStructuredBuffer(nullptr, 1, sizeof(SLightVS), EAccess::CPUWrite);
 }
@@ -40,99 +41,92 @@ CRendererForward::~CRendererForward()
 
 
 
-//
-// IRenderer
-//
-uint32 CRendererForward::AddPass(std::shared_ptr<IRenderPass> pass)
-{
-	_ASSERT_EXPR(pass, L"Pass must not be nullptr.");
-	m_Passes.push_back(pass);
-	return static_cast<uint32>(m_Passes.size()) - 1;
-}
-
-IRenderPass * CRendererForward::GetPass(uint32 ID) const
-{
-	if (ID < m_Passes.size())
-		return m_Passes[ID].get();
-
-	return nullptr;
-}
-
-void CRendererForward::Render3D(RenderEventArgs & renderEventArgs)
-{
-	for (auto pass : m_Passes)
-	{
-		if (pass && pass->IsEnabled())
-		{
-			pass->PreRender(renderEventArgs);
-			pass->Render(renderEventArgs);
-			pass->PostRender(renderEventArgs);
-		}
-	}
-}
-
-void CRendererForward::RenderUI(RenderEventArgs & renderEventArgs)
-{
-	for (auto pass : m_UIPasses)
-	{
-		if (pass && pass->IsEnabled())
-		{
-			pass->PreRender(renderEventArgs);
-			pass->Render(renderEventArgs);
-			pass->PostRender(renderEventArgs);
-		}
-	}
-}
-
-void CRendererForward::Resize(uint32 NewWidth, uint32 NewHeight)
-{
-	for (const auto& pass : m_Passes)
-		if (auto renderPassPipelined = std::dynamic_pointer_cast<IRenderPassPipelined>(pass))
-			renderPassPipelined->GetPipeline().GetRenderTarget()->Resize(NewWidth, NewHeight);
-
-	for (const auto& pass : m_UIPasses)
-		if (auto renderPassPipelined = std::dynamic_pointer_cast<IRenderPassPipelined>(pass))
-			renderPassPipelined->GetPipeline().GetRenderTarget()->Resize(NewWidth, NewHeight);
-}
-
 void CRendererForward::Initialize(std::shared_ptr<IRenderTarget> OutputRenderTarget)
 {
-	AddPass(MakeShared(ClearRenderTargetPass, m_RenderDevice, OutputRenderTarget));
+#ifdef ENABLE_HDR
+	auto HDRRenderTarget = CreateHDRRenderTarget(OutputRenderTarget);
+#endif
 
 	m_SceneCreateTypelessListPass = MakeShared(CSceneCreateTypelessListPass, m_RenderDevice, m_Scene);
-	AddPass(m_SceneCreateTypelessListPass);
 
 	m_MaterialModelPass = MakeShared(CPassForward_DoRenderScene, m_RenderDevice, m_Scene);
-	m_MaterialModelPass->ConfigurePipeline(OutputRenderTarget);
+	m_MaterialModelPass->ConfigurePipeline(
+#ifdef ENABLE_HDR
+		HDRRenderTarget
+#else
+		OutputRenderTarget
+#endif
+	);
 
 	//m_MaterialModelPassInstanced = MakeShared(CPassForward_DoRenderSceneInstanced, m_RenderDevice, m_SceneCreateTypelessListPass);
 	//m_MaterialModelPassInstanced->ConfigurePipeline(OutputRenderTarget, Viewport);
 
-	m_RTSGroundPassInstanced = MakeShared(CRTSGround_Pass, m_RenderDevice, m_Scene);
-	m_RTSGroundPassInstanced->ConfigurePipeline(OutputRenderTarget);
 
-	std::shared_ptr<InvokeFunctionPass> invokePass = MakeShared(InvokeFunctionPass, m_RenderDevice, std::bind(&CRendererForward::DoUpdateLights, this));
+	//
+	// BEFORE SCENE
+	//
+	Add3DPass(MakeShared(ClearRenderTargetPass, m_RenderDevice, OutputRenderTarget));
+#ifdef ENABLE_HDR
+	Add3DPass(MakeShared(ClearRenderTargetPass, m_RenderDevice, HDRRenderTarget));
+#endif
 
-	
-	AddPass(m_SceneCreateTypelessListPass);
-	AddPass(invokePass);
-	AddPass(m_MaterialModelPass);
+
+	//
+	// SCENE
+	//
+	Add3DPass(m_SceneCreateTypelessListPass);
+	Add3DPass(MakeShared(InvokeFunctionPass, m_RenderDevice, std::bind(&CRendererForward::DoUpdateLights, this)));
+	Add3DPass(m_MaterialModelPass);
 	//AddPass(m_MaterialModelPassInstanced);
-	//AddPass(m_RTSGroundPassInstanced);
+
 
 	for (const auto& it : m_BaseManager.GetManager<IznPluginsManager>()->GetAllPlugins())
 		if (auto ext = std::dynamic_pointer_cast<IRendererExtender>(it))
 			ext->Extend3DPasses(*this, m_RenderDevice, m_SceneCreateTypelessListPass, OutputRenderTarget);
 
-	AddPass(MakeShared(CDebugPass, m_RenderDevice, m_Scene)->ConfigurePipeline(OutputRenderTarget));
-	AddPass(MakeShared(CParticlesPass, m_RenderDevice, m_Scene)->ConfigurePipeline(OutputRenderTarget));
-	AddPass(MakeShared(CDrawBonesPass, m_Scene)->ConfigurePipeline(OutputRenderTarget));
+
+	//
+	// AFTER SCENE
+	//
+	Add3DPass(MakeShared(CParticlesPass, m_RenderDevice, m_Scene)->ConfigurePipeline(
+#ifdef ENABLE_HDR
+		HDRRenderTarget
+#else
+		OutputRenderTarget
+#endif
+	));
+
+
+
+	//
+	// POSTPROCESS
+	//
+#ifdef ENABLE_HDR
+	Add3DPass(MakeShared(CPassPostprocess_HDR, m_RenderDevice, HDRRenderTarget)->ConfigurePipeline(OutputRenderTarget));
+#endif
+
+
+
+	//
+	// DEBUG
+	//
+	Add3DPass(MakeShared(CDebugPass, m_RenderDevice, m_Scene)->ConfigurePipeline(OutputRenderTarget));
+	Add3DPass(MakeShared(CDrawBonesPass, m_Scene)->ConfigurePipeline(OutputRenderTarget));
 	//AddPass(MakeShared(CDrawBoundingBoxPass, m_RenderDevice, m_Scene)->ConfigurePipeline(OutputRenderTarget, Viewport));
 
-	m_UIPasses.push_back(MakeShared(CUIControlPass, m_RenderDevice, m_Scene)->ConfigurePipeline(OutputRenderTarget));
-	m_UIPasses.push_back(MakeShared(CUIFontPass, m_RenderDevice, m_Scene)->ConfigurePipeline(OutputRenderTarget));
+
+	//
+	// UI
+	//
+	AddUIPass(MakeShared(CUIControlPass, m_RenderDevice, m_Scene)->ConfigurePipeline(OutputRenderTarget));
+	AddUIPass(MakeShared(CUIFontPass, m_RenderDevice, m_Scene)->ConfigurePipeline(OutputRenderTarget));
 }
 
+
+
+//
+// Private
+//
 void CRendererForward::DoUpdateLights()
 {
 	std::vector<SLightVS> lightsVS;
@@ -159,5 +153,22 @@ void CRendererForward::DoUpdateLights()
 
 	m_MaterialModelPass->GetLightsShaderParameter()->Set(m_LightsBuffer);
 	//m_MaterialModelPassInstanced->GetLightsShaderParameter()->Set(m_LightsBuffer);
-	m_RTSGroundPassInstanced->GetLightsShaderParameter()->Set(m_LightsBuffer);
+}
+
+std::shared_ptr<IRenderTarget> CRendererForward::CreateHDRRenderTarget(std::shared_ptr<IRenderTarget> OutputRenderTarget)
+{
+	ITexture::TextureFormat colorTextureFormat
+	(
+		ITexture::Components::RGBA,
+		ITexture::Type::Float,
+		OutputRenderTarget->GetSamplesCount(),
+		32, 32, 32, 32, 0, 0
+	);
+	auto texture = m_RenderDevice.GetObjectsFactory().CreateTexture2D(OutputRenderTarget->GetViewport().GetWidth(), OutputRenderTarget->GetViewport().GetHeight(), 1, colorTextureFormat);
+
+	// GBuffer contains Depth and Stencil buffer with object. We may use this data.
+	auto outputRenderTargetWithCustomDepth = m_RenderDevice.GetObjectsFactory().CreateRenderTarget();
+	outputRenderTargetWithCustomDepth->AttachTexture(IRenderTarget::AttachmentPoint::Color0, texture);
+	outputRenderTargetWithCustomDepth->AttachTexture(IRenderTarget::AttachmentPoint::DepthStencil, OutputRenderTarget->GetTexture(IRenderTarget::AttachmentPoint::DepthStencil));
+	return outputRenderTargetWithCustomDepth;
 }

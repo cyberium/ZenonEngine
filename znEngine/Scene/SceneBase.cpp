@@ -294,7 +294,7 @@ void SceneBase::OnWindowResize(ResizeEventArgs & e)
 		GetCameraController()->OnResize(e);
 
 	if (m_Renderer)
-		m_Renderer->Resize(e.Width, e.Height);
+		m_Renderer->Resize(e.GetSize());
 }
 
 // Keyboard events
