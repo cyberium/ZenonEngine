@@ -496,14 +496,6 @@ std::shared_ptr<IModel> CFBXModel::GetModel()
 //
 void CFBXModel::MaterialLoad(fbxsdk::FbxMesh* NativeMesh)
 {
-	struct SPolygonConnectionInfo
-	{
-		int PolygonBegin;
-		int PolygonEnd;
-	};
-	std::unordered_map<int, SPolygonConnectionInfo> polygonConnectionInfos;
-
-
 	bool lIsAllSame = true;
 	for (int l = 0; l < NativeMesh->GetElementMaterialCount(); l++)
 	{
@@ -547,6 +539,13 @@ void CFBXModel::MaterialLoad(fbxsdk::FbxMesh* NativeMesh)
 	}
 	else
 	{
+		struct SPolygonConnectionInfo
+		{
+			int PolygonBegin;
+			int PolygonEnd;
+		};
+		std::unordered_map<int, SPolygonConnectionInfo> polygonConnectionInfos;
+
 		for (int polygonIndex = 0; polygonIndex < NativeMesh->GetPolygonCount(); polygonIndex++)
 		{
 			_ASSERT(NativeMesh->GetElementMaterialCount() == 1);
@@ -556,7 +555,7 @@ void CFBXModel::MaterialLoad(fbxsdk::FbxMesh* NativeMesh)
 				int lMatId = lMaterialElement->GetIndexArray().GetAt(polygonIndex);
 				_ASSERT(lMatId >= 0);
 
-				std::unordered_map<int, SPolygonConnectionInfo>::iterator it = polygonConnectionInfos.find(lMatId);
+				const auto& it = polygonConnectionInfos.find(lMatId);
 				if (it == polygonConnectionInfos.end())
 				{
 					polygonConnectionInfos.insert(std::make_pair(lMatId, SPolygonConnectionInfo{ polygonIndex, polygonIndex }));

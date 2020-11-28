@@ -17,6 +17,10 @@ public:
 	void Load(const std::shared_ptr<IXMLReader>& Reader) override;
 	void Save(const std::shared_ptr<IXMLWriter>& Writer) const override;
 
+protected:
+	std::string                GetPropertyTypeName(const IProperty* Property) const;
+	std::shared_ptr<IProperty> CreateNewPropety(std::string PropertyName, std::string TypeName);
+
 private:
 	std::string m_Name;
 	std::string m_Description;

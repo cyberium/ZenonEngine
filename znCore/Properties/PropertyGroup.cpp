@@ -66,6 +66,7 @@ void CPropertiesGroup::Save(const std::shared_ptr<IXMLWriter>& Writer) const
 {
 	__super::Save(Writer);
 
+
 	for (const auto& prop : GetProperties())
 	{
 		const auto& propObjet = prop.second;
@@ -76,7 +77,6 @@ void CPropertiesGroup::Save(const std::shared_ptr<IXMLWriter>& Writer) const
 			continue;
 
 		auto propertyWriter = Writer->CreateChild(propObjet->GetName());
-		propertyWriter->SetStrAttribute(GetPropertyTypeName(propObjet.get()), "Type");
 		propObjet->Save(propertyWriter);
 	}
 }
@@ -103,47 +103,4 @@ std::shared_ptr<IProperty> CPropertiesGroup::GetProperty(const std::string& Prop
 const std::unordered_map<std::string, std::shared_ptr<IProperty>>& CPropertiesGroup::GetProperties() const
 {
 	return m_Properties;
-}
-
-
-//
-// Private
-//
-std::string CPropertiesGroup::GetPropertyTypeName(const IProperty* Property) const
-{
-	if (Property == nullptr)
-		throw CException("Property is nullptr.");
-
-	if (dynamic_cast<const CProperty<float>*>(Property))
-		return "Float";
-	else if (dynamic_cast<const CProperty<glm::vec2>*>(Property))
-		return "Vec2";
-	else if (dynamic_cast<const CProperty<glm::vec3>*>(Property) || dynamic_cast<const CPropertyWrapped<glm::vec3>*>(Property))
-		return "Vec3";
-	else if (dynamic_cast<const CProperty<glm::vec4>*>(Property))
-		return "Vec4";
-	else if (dynamic_cast<const CProperty<std::string>*>(Property))
-		return "String";
-	else if (dynamic_cast<const CPropertiesGroup*>(Property))
-		return "Group";
-	else
-		throw CException("Unknown property type '%s'", GetName().c_str());
-}
-
-std::shared_ptr<IProperty> CPropertiesGroup::CreateNewPropety(std::string PropertyName, std::string TypeName)
-{
-	if (TypeName == "Float")
-		return MakeShared(CProperty<float>, PropertyName, "someDescription", 0.0f);
-	else if (TypeName == "Vec2")
-		return MakeShared(CProperty<glm::vec2>, PropertyName, "someDescription", glm::vec2(0.0f));
-	else if (TypeName == "Vec3")
-		return MakeShared(CProperty<glm::vec3>, PropertyName, "someDescription", glm::vec3(0.0f));
-	else if (TypeName == "Vec4")
-		return MakeShared(CProperty<glm::vec4>, PropertyName, "someDescription", glm::vec4(0.0f));
-	else if (TypeName == "String")
-		return MakeShared(CProperty<std::string>, PropertyName, "someDescription", "");
-	else if (TypeName == "Group")
-		return MakeShared(CPropertiesGroup, PropertyName, "someDescription");
-	else
-		throw CException("Unknown property type '%s'", TypeName);
 }

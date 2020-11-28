@@ -34,6 +34,7 @@ namespace Utils
 
 	ZN_API std::string FloatToString(const float Value, const int N = 3);
 	ZN_API std::string MatrixToString(const glm::mat4& Matrix);
+	ZN_API glm::mat4   StringToMatrix(const std::string& String);
 
 	ZN_API std::string MatrixToBase64(const glm::mat4& Matrix);
 	ZN_API glm::mat4   Base64ToMatrix(const std::string& Base64);

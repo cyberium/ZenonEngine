@@ -24,9 +24,5 @@ public:
 	const std::unordered_map<std::string, std::shared_ptr<IProperty>>& GetProperties() const override;
 
 private:
-	std::string                GetPropertyTypeName(const IProperty* Property) const;
-	std::shared_ptr<IProperty> CreateNewPropety(std::string PropertyName, std::string TypeName);
-
-private:
 	std::unordered_map<std::string, std::shared_ptr<IProperty>> m_Properties;
 };

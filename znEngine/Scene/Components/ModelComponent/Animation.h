@@ -6,6 +6,7 @@ class ZN_API CAnimation
 	, public IObjectLoadSave
 {
 public:
+	CAnimation(const std::shared_ptr<IXMLReader>& Reader);
 	CAnimation(const std::shared_ptr<IByteBuffer>& Buffer);
 	CAnimation(uint16 IndexIntoSequences, const std::string& Name, uint32 FrameStart, uint32 FrameEnd);
 	virtual ~CAnimation();

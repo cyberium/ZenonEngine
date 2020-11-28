@@ -3,6 +3,11 @@
 // General
 #include "SkeletonBone.h"
 
+CSkeletonBone::CSkeletonBone(const std::shared_ptr<IXMLReader>& Reader)
+{
+	Load(Reader);
+}
+
 CSkeletonBone::CSkeletonBone(const std::shared_ptr<IByteBuffer>& Buffer)
 {
 	Load(Buffer);

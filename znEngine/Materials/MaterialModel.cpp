@@ -49,7 +49,7 @@ MaterialModel::MaterialModel(const IBaseManager& BaseManager)
 
 	// Emissive
 	{
-		auto prop = MakeShared(CPropertyWrappedVec3, "EmissiveColor", "descr", glm::vec3(1.0f));
+		auto prop = MakeShared(CPropertyWrappedVec3, "EmissiveColor", "descr", glm::vec3(0.0f));
 		prop->SetValueSetter(std::bind(&MaterialModel::SetEmissiveColor, this, std::placeholders::_1));
 		prop->SetValueGetter(std::bind(&MaterialModel::GetEmissiveColor, this));
 		GetProperties()->AddProperty(prop);
@@ -236,7 +236,10 @@ std::shared_ptr<ITexture> MaterialModel::GetTexture(ETextureType TextureType) co
 //
 void MaterialModel::Load(const std::shared_ptr<IXMLReader>& Reader)
 {
-	GetProperties()->Load(Reader);
+	SetName(Reader->GetStrAttribute("Name"));
+
+	auto propertiesReaderXML = Reader->GetChild("Properties");
+	GetProperties()->Load(propertiesReaderXML);
 
 	auto texturesReader = Reader->GetChild("Textures");
 	for (const auto& textureNode : texturesReader->GetChilds())
@@ -264,7 +267,10 @@ void MaterialModel::Load(const std::shared_ptr<IXMLReader>& Reader)
 
 void MaterialModel::Save(const std::shared_ptr<IXMLWriter>& Writer) const
 {
-	GetProperties()->Save(Writer);
+	Writer->SetStrAttribute(GetName(), "Name");
+
+	auto propertiesWriterXML = Writer->CreateChild("Properties");
+	GetProperties()->Save(propertiesWriterXML);
 
 	auto texturesWriter = Writer->CreateChild("Textures");
 	for (size_t i = 0; i < ETextureType::Count; i++)

@@ -90,7 +90,7 @@ void CEditorTools::DoInitialize3D(const std::shared_ptr<IRenderer>& Renderer, st
 
 	auto drawToolsPass = MakeShared(CDrawToolsPass, m_Editor.GetRenderDevice(), m_Editor.Get3DFrame().GetScene());
 	drawToolsPass->ConfigurePipeline(RenderTarget);
-	Renderer->AddPass(drawToolsPass);
+	Renderer->Add3DPass(drawToolsPass);
 }
 
 bool CEditorTools::OnMousePressed(const MouseButtonEventArgs & e, const Ray & RayToWorld)

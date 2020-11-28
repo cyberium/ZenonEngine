@@ -298,11 +298,11 @@ namespace Utils
 	glm::mat4 StringToMatrix(const std::string& String)
 	{
 		glm::mat4 matrix;
-		if (sscanf_s(String.c_str(), "[%.3f %.3f %.3f %.3f] [%.3f %.3f %.3f %.3f] [%.3f %.3f %.3f %.3f] [%.3f %.3f %.3f %.3f]",
-			matrix[0][0], matrix[0][1], matrix[0][2], matrix[0][3],
-			matrix[1][0], matrix[1][1], matrix[1][2], matrix[1][3],
-			matrix[2][0], matrix[2][1], matrix[2][2], matrix[2][3],
-			matrix[3][0], matrix[3][1], matrix[3][2], matrix[3][3]) != 16)
+		if (sscanf_s(String.c_str(), "[%f %f %f %f] [%f %f %f %f] [%f %f %f %f] [%f %f %f %f]",
+			&matrix[0][0], &matrix[0][1], &matrix[0][2], &matrix[0][3],
+			&matrix[1][0], &matrix[1][1], &matrix[1][2], &matrix[1][3],
+			&matrix[2][0], &matrix[2][1], &matrix[2][2], &matrix[2][3],
+			&matrix[3][0], &matrix[3][1], &matrix[3][2], &matrix[3][3]) != 16)
 			throw CException("Error");
 		return matrix;
 	}

@@ -282,65 +282,49 @@ std::shared_ptr<IModel> CznEngineModelsLoader::LoadModelXML(const std::shared_pt
 	//
 	// Common data
 	BoundingBox bounds;
-	bounds.Load(ModelFile);
+	bounds.Load(modelReader);
 	model->SetBounds(bounds);
 
 
 	//
 	// Load materials
 	std::vector<std::shared_ptr<IMaterial>> materials;
-	size_t materialsCount;
-	ModelFile->read(&materialsCount);
-	materials.reserve(materialsCount);
-	for (size_t i = 0; i < materialsCount; i++)
+	if (modelReader->IsChildExists("Materials"))
 	{
-		auto material = m_BaseManager.GetManager<IMaterialsFactory>()->CreateMaterial("MaterialModel");
-		if (auto materialAsLoadableFromFile = std::dynamic_pointer_cast<IObjectLoadSave>(material))
+		for (const auto& materialsReaderXML : modelReader->GetChild("Materials")->GetChilds())
 		{
-			materialAsLoadableFromFile->Load(ModelFile);
+			auto material = m_BaseManager.GetManager<IMaterialsFactory>()->CreateMaterial("MaterialModel");
+			std::dynamic_pointer_cast<IObjectLoadSave>(material)->Load(materialsReaderXML);
+			materials.push_back(material);
 		}
-		else
-			throw CException("Material '%s' is not supports 'IObjectLoadSave'.", material->GetName().c_str());
-
-		materials.push_back(material);
 	}
 
 
 	//
 	// Load geometries
 	std::vector<std::shared_ptr<IGeometry>> geometries;
-	size_t geometriesCount;
-	ModelFile->read(&geometriesCount);
-	geometries.reserve(geometriesCount);
-	for (size_t i = 0; i < geometriesCount; i++)
+	if (modelReader->IsChildExists("Geometries"))
 	{
-		auto geometry = renderDevice.GetObjectsFactory().CreateGeometry();
-		if (auto geometryAsLoadableFromFile = std::dynamic_pointer_cast<IObjectLoadSave>(geometry))
+		for (const auto& geometryReaderXML : modelReader->GetChild("Geometries")->GetChilds())
 		{
-			geometryAsLoadableFromFile->Load(ModelFile);
+			auto geometry = renderDevice.GetObjectsFactory().CreateGeometry();
+			std::dynamic_pointer_cast<IObjectLoadSave>(geometry)->Load(geometryReaderXML);
+			geometries.push_back(geometry);
 		}
-		else
-			throw CException("Geometry '%s' is not supports 'IObjectLoadSave'.", geometry->GetName().c_str());
-
-		geometries.push_back(geometry);
 	}
 
 
 	//
 	// Load connections
+	if (modelReader->IsChildExists("Connections"))
 	{
-		size_t indexedConnectionsCount;
-		ModelFile->read(&indexedConnectionsCount);
-		for (size_t i = 0; i < indexedConnectionsCount; i++)
+		for (const auto& connectionReaderXML : modelReader->GetChild("Connections")->GetChilds())
 		{
-			size_t materialIndex;
-			ModelFile->read(&materialIndex);
-
-			size_t geometryIndex;
-			ModelFile->read(&geometryIndex);
+			size_t materialIndex = connectionReaderXML->GetUIntAttribute("Material");
+			size_t geometryIndex = connectionReaderXML->GetUIntAttribute("Geometry");
 
 			SGeometryDrawArgs drawArgs;
-			ModelFile->read(&drawArgs);
+			LoadGeometryDrawArgs(drawArgs, connectionReaderXML);
 
 			auto materialObject = materials[materialIndex];
 			auto geometryObject = geometries[geometryIndex];
@@ -352,61 +336,41 @@ std::shared_ptr<IModel> CznEngineModelsLoader::LoadModelXML(const std::shared_pt
 
 	//
 	// Load skeleton animations
+	if (modelReader->IsChildExists("SkeletonAnimations"))
 	{
-		std::vector<std::shared_ptr<IAnimation>> skeletonAnimations;
-		size_t skeletonAnimationsCount;
-		if (ModelFile->read(&skeletonAnimationsCount))
+		for (const auto& skeletonAnimationReaderXML : modelReader->GetChild("SkeletonAnimations")->GetChilds())
 		{
-			skeletonAnimations.reserve(skeletonAnimationsCount);
-			for (size_t i = 0; i < skeletonAnimationsCount; i++)
-			{
-				glm::mat4 matrix;
-				ModelFile->read(&matrix);
-				SSkeletonAnimation skeletonAnimation;
-				skeletonAnimation.RootBoneLocalTransform = matrix;
-				std::dynamic_pointer_cast<IModelInternal>(model)->AddSkeletonAnimationInternal(skeletonAnimation);
-			}
+			SSkeletonAnimation skeletonAnimation;
+			skeletonAnimation.RootBoneLocalTransform = Utils::StringToMatrix(skeletonAnimationReaderXML->GetValue());
+			std::dynamic_pointer_cast<IModelInternal>(model)->AddSkeletonAnimationInternal(skeletonAnimation);
 		}
 	}
 
 
 	//
 	// Load animations
+	if (modelReader->IsChildExists("Animations"))
 	{
-		std::vector<std::shared_ptr<IAnimation>> animations;
-		size_t animationsCount;
-		if (ModelFile->read(&animationsCount))
+		for (const auto& animationReaderXML : modelReader->GetChild("Animations")->GetChilds())
 		{
-			animations.reserve(animationsCount);
-			for (size_t i = 0; i < animationsCount; i++)
-			{
-				std::shared_ptr<IAnimation> anim = MakeShared(CAnimation, ModelFile);
-				model->AddAnimation(anim->GetName(), anim);
-			}
+			std::shared_ptr<IAnimation> anim = MakeShared(CAnimation, animationReaderXML);
+			model->AddAnimation(anim->GetName(), anim);
 		}
 	}
 
 
 	//
 	// Load bones
+	if (modelReader->IsChildExists("Bones"))
 	{
-		std::vector<std::shared_ptr<IAnimation>> bones;
-		size_t bonesCount;
-		if (ModelFile->read(&bonesCount))
+		for (const auto& boneReaderXML : modelReader->GetChild("Bones")->GetChilds())
 		{
-			bones.reserve(bonesCount);
-			for (size_t i = 0; i < bonesCount; i++)
-			{
-				std::shared_ptr<ISkeletonBone> bone = MakeShared(CSkeletonBone, ModelFile);
-				model->AddBone(bone);
-			}
+			std::shared_ptr<ISkeletonBone> bone = MakeShared(CSkeletonBone, boneReaderXML);
+			model->AddBone(bone);
 		}
 	}
 
-	// Fix skeleton matrix
-	glm::mat4 fixSkeletonMatrix;
-	if (ModelFile->read(&fixSkeletonMatrix))
-		model->SetFixSkeleton(fixSkeletonMatrix);
+	model->SetFixSkeleton(Utils::StringToMatrix(modelReader->GetStrAttribute("FixSkeletonMatrix")));
 
 	return model;
 }
@@ -554,7 +518,7 @@ std::shared_ptr<IFile> CznEngineModelsLoader::SaveModelXML(const std::shared_ptr
 		auto materialsWriterXML = modelWriter->CreateChild("Materials");
 		for (const auto& m : materials)
 		{
-			auto materialWriterXML = materialsWriterXML->CreateChild("Material");
+			auto materialWriterXML = materialsWriterXML->CreateChild("MaterialModel");
 			std::dynamic_pointer_cast<IObjectLoadSave>(m)->Save(materialWriterXML);
 		}
 	}
@@ -576,6 +540,7 @@ std::shared_ptr<IFile> CznEngineModelsLoader::SaveModelXML(const std::shared_ptr
 	// Save connections
 	{
 		auto connectionsWriterXML = modelWriter->CreateChild("Connections");
+		_ASSERT(false == indexedConnections.empty());
 		for (const auto& c : indexedConnections)
 		{
 			auto connectionWriterXML = connectionsWriterXML->CreateChild("Connection");
@@ -589,9 +554,11 @@ std::shared_ptr<IFile> CznEngineModelsLoader::SaveModelXML(const std::shared_ptr
 
 	//
 	// Save skeleton animations
+	const auto& skeletonAnimations = Model->GetSkeletonAnimations();
+	if (false == skeletonAnimations.empty())
 	{
 		auto skeletonAnimationsWriterXML = modelWriter->CreateChild("SkeletonAnimations");
-		for (const auto& sa : Model->GetSkeletonAnimations())
+		for (const auto& sa : skeletonAnimations)
 		{
 			auto skeletonAnimationWriterXML = skeletonAnimationsWriterXML->CreateChild("SkeletonAnimation");
 			skeletonAnimationWriterXML->SetValue(Utils::MatrixToString(sa.RootBoneLocalTransform));
@@ -601,9 +568,11 @@ std::shared_ptr<IFile> CznEngineModelsLoader::SaveModelXML(const std::shared_ptr
 
 	//
 	// Save animations
+	const auto& animations = Model->GetAnimations();
+	if (false == animations.empty())
 	{
 		auto animationsWriterXML = modelWriter->CreateChild("Animations");
-		for (const auto& a : Model->GetAnimations())
+		for (const auto& a : animations)
 		{
 			auto animationWriterXML = animationsWriterXML->CreateChild("Animation");
 			std::dynamic_pointer_cast<IObjectLoadSave>(a.second)->Save(animationWriterXML);
@@ -613,9 +582,11 @@ std::shared_ptr<IFile> CznEngineModelsLoader::SaveModelXML(const std::shared_ptr
 
 	//
 	// Save bones
+	const auto& bones = Model->GetBones();
+	if (false == bones.empty())
 	{
 		auto bonesWriterXML = modelWriter->CreateChild("Bones");
-		for (const auto& b : Model->GetBones())
+		for (const auto& b : bones)
 		{
 			auto boneWriterXML = bonesWriterXML->CreateChild("Bone");
 			std::dynamic_pointer_cast<IObjectLoadSave>(b)->Save(boneWriterXML);

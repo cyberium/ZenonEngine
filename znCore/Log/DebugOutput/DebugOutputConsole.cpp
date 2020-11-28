@@ -6,22 +6,39 @@
 // Additional
 #include <iostream>
 
-DebugOutput_ConsoleWindows::DebugOutput_ConsoleWindows()
+namespace
+{
+	enum ConsoleWindowsColor : uint16
+	{
+		GRAY = 8,
+		BLUE = 9,
+		GREEN = 10,
+		LIGHTBLUE = 11,
+		RED = 12,
+		PINK = 13,
+		YELLOW = 14,
+		WHITE = 15
+	};
+}
+
+CDebugOutputConsole::CDebugOutputConsole()
 {
 	m_ConsoleHandle = GetStdHandle(STD_OUTPUT_HANDLE);
 	m_DefaultConsoleColor = ConsoleWindowsColor::GRAY;
-
 }
 
-DebugOutput_ConsoleWindows::~DebugOutput_ConsoleWindows()
+CDebugOutputConsole::~CDebugOutputConsole()
 {}
 
-//
 
-void DebugOutput_ConsoleWindows::Print(IDebugOutput::DebugMessageType Type, const std::string& Message)
+
+//
+// IDebugOutput
+//
+void CDebugOutputConsole::Print(IDebugOutput::DebugMessageType Type, const std::string& Message)
 {
 	// Set color
-	unsigned short color;
+	uint16 color;
 	switch (Type)
 	{
 		case IDebugOutput::DebugMessageType::TYPE_INFO:

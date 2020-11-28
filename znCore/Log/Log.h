@@ -11,8 +11,8 @@ public:
 	virtual ~CLog();
 
 	// ILog
-	bool AddDebugOutput(std::shared_ptr<IDebugOutput> DebugOutput) override;
-	bool DeleteDebugOutput(std::shared_ptr<IDebugOutput> DebugOutput) override;
+	void AddDebugOutput(std::shared_ptr<IDebugOutput> DebugOutput) override;
+	void DeleteDebugOutput(std::shared_ptr<IDebugOutput> DebugOutput) override;
 	void PushAllMessages() override;
 
 private:
@@ -20,7 +20,7 @@ private:
 
 private:
 	std::vector<std::pair<IDebugOutput::DebugMessageType, std::string>> m_Messages;
-	size_t m_LastPushedMessageIndex;
+	//size_t m_LastPushedMessageIndex;
 	std::vector<std::shared_ptr<IDebugOutput>> m_DebugOutputs;
 	std::mutex m_Mutex;
 };

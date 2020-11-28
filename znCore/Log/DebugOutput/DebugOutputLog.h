@@ -1,10 +1,11 @@
 #pragma once
 
-class DebugOutput_Log : public IDebugOutput
+class CDebugOutputLog
+	: public IDebugOutput
 {
 public:
-	DebugOutput_Log();
-	virtual ~DebugOutput_Log();
+	CDebugOutputLog();
+	virtual ~CDebugOutputLog();
 
 	// IDebugOutput
 	void Print(IDebugOutput::DebugMessageType Type, const std::string& Message);

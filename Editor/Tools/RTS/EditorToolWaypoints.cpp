@@ -59,7 +59,7 @@ void CEditorToolWaypoints::DoInitialize3D(const std::shared_ptr<IRenderer>& Rend
 {
 	auto m_DrawSelectionPass = MakeShared(CDrawWaypointsPass, GetRenderDevice(), GetScene());
 	m_DrawSelectionPass->ConfigurePipeline(RenderTarget);
-	Renderer->AddPass(m_DrawSelectionPass);
+	Renderer->Add3DPass(m_DrawSelectionPass);
 }
 
 bool CEditorToolWaypoints::OnMousePressed(const MouseButtonEventArgs & e, const Ray & RayToWorld)

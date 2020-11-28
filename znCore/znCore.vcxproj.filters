@@ -359,9 +359,6 @@
     <ClInclude Include="..\shared\Interfaces\Console.h">
       <Filter>__Interfaces</Filter>
     </ClInclude>
-    <ClInclude Include="..\shared\Interfaces\DebugOutput.h">
-      <Filter>__Interfaces</Filter>
-    </ClInclude>
     <ClInclude Include="..\shared\Interfaces\Files.h">
       <Filter>__Interfaces</Filter>
     </ClInclude>

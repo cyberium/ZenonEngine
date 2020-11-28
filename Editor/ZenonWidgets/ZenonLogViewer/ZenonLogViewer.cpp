@@ -6,6 +6,7 @@
 ZenonLogViewer::ZenonLogViewer(QWidget * parent)
 	: QPlainTextEdit(parent)
 	, m_Editor(nullptr)
+	, m_LastPushedMessageIndex(0)
 {
 }
 
@@ -53,4 +54,19 @@ void ZenonLogViewer::Print(IDebugOutput::DebugMessageType Type, const std::strin
 	message = message.append("</font>");
 
 	appendHtml(message.c_str());
+}
+
+
+
+//
+// IDebugOutputInternal
+//
+void ZenonLogViewer::SetLastPushedIndex(size_t Index)
+{
+	m_LastPushedMessageIndex = Index;
+}
+
+size_t ZenonLogViewer::GetLastPushedIndex() const
+{
+	return m_LastPushedMessageIndex;
 }

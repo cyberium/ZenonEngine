@@ -7,6 +7,7 @@ class ZN_API CSkeletonBone
 	, public IObjectLoadSave
 {
 public:
+	CSkeletonBone(const std::shared_ptr<IXMLReader>& Reader);
 	CSkeletonBone(const std::shared_ptr<IByteBuffer>& Buffer);
 	CSkeletonBone(const std::string& Name, int32 ParentIndex);
 	virtual ~CSkeletonBone();

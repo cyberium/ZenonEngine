@@ -1,6 +1,6 @@
 #include "stdafx.h"
 
-#define ENABLE_HDR
+//#define ENABLE_HDR
 
 // General
 #include "RendererForward.h"

@@ -131,7 +131,7 @@ void CEditorToolSelector::DoInitialize3D(const std::shared_ptr<IRenderer>& Rende
 
 	m_DrawSelectionPass = MakeShared(CDrawSelectionPass, GetRenderDevice(), *this);
 	m_DrawSelectionPass->ConfigurePipeline(RenderTarget);
-	Renderer->AddPass(m_DrawSelectionPass);
+	Renderer->Add3DPass(m_DrawSelectionPass);
 }
 
 bool CEditorToolSelector::OnMousePressed(const MouseButtonEventArgs & e, const Ray & RayToWorld)

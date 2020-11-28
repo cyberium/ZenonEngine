@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 <xml>
-	<Settings>
+	<Settings Type="Group">
 		<Video Type="Group">
 			<WindowSize Type="Vec2">1280.000000, 1024.000000</WindowSize>
 			<VSyncEnabled Type="Group">false</VSyncEnabled>

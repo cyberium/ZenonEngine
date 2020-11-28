@@ -203,14 +203,14 @@ void GeometryBase::Load(const std::shared_ptr<IXMLReader>& Reader)
 
 	if (Reader->IsChildExists("VertexBuffer"))
 	{
-		auto vertexBufferXML = Reader->GetChilds().front();
+		auto vertexBufferXML = Reader->GetChild("VertexBuffer");
 		std::shared_ptr<IBuffer> vertexBuffer = m_RenderDevice.GetObjectsFactory().LoadVoidBuffer(vertexBufferXML);
 		SetVertexBuffer(vertexBuffer);
 	}
 
 	if (Reader->IsChildExists("IndexBuffer"))
 	{
-		auto indexBufferXML = Reader->GetChilds().front();
+		auto indexBufferXML = Reader->GetChild("IndexBuffer");
 		std::shared_ptr<IBuffer> indexBuffer = m_RenderDevice.GetObjectsFactory().LoadVoidBuffer(indexBufferXML);
 		SetIndexBuffer(indexBuffer);
 	}

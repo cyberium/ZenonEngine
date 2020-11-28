@@ -216,7 +216,6 @@
     <ClInclude Include="..\shared\Interfaces\BaseManager.h" />
     <ClInclude Include="..\shared\Interfaces\CameraController.h" />
     <ClInclude Include="..\shared\Interfaces\Console.h" />
-    <ClInclude Include="..\shared\Interfaces\DebugOutput.h" />
     <ClInclude Include="..\shared\Interfaces\Files.h" />
     <ClInclude Include="..\shared\Interfaces\Loader.h" />
     <ClInclude Include="..\shared\Interfaces\Log.h" />

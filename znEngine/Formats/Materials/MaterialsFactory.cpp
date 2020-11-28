@@ -35,5 +35,5 @@ std::shared_ptr<IMaterial> CMaterialsFactory::CreateMaterial(std::string ObjectT
 		return MakeShared(MaterialModel, m_BaseManager);
 	}
 
-	return std::shared_ptr<IMaterial>();
+	throw CException("Unknown material type '%s'.", ObjectType);
 }

@@ -62,9 +62,18 @@ bool CznModel3DTreeViewItemSource::Load()
 		auto fileNameStruct = Utils::SplitFilename(m_FileName);
 		if (fileNameStruct.Extension == "fbx")
 		{
+			std::string convertedModelNameXML = fileNameStruct.Path + fileNameStruct.NameWithoutExtension + ".xml";
 			std::string convertedModelName = fileNameStruct.Path + fileNameStruct.NameWithoutExtension + ".znmdl";
 
-			if (filesManager->IsFileExists(convertedModelName)) // .znmdl file exists. Load it.
+			if (filesManager->IsFileExists(convertedModelName))
+			{
+				auto znmdlModelsLoader = GetBaseManager().GetManager<IznModelsFactory>()->GetLoaderForModel("znmdl");
+				m_Model = znmdlModelsLoader->LoadModelXML(convertedModelNameXML);
+				m_Model->SetName(fileNameStruct.NameWithoutExtension);
+				Log::Info("Model '%s' loaded.", m_FileName.c_str());
+				return true;
+			}
+			else if (filesManager->IsFileExists(convertedModelName)) // .znmdl file exists. Load it.
 			{
 				m_Model = GetBaseManager().GetManager<IznModelsFactory>()->LoadModel(convertedModelName);
 				m_Model->SetName(fileNameStruct.NameWithoutExtension);
@@ -89,6 +98,21 @@ bool CznModel3DTreeViewItemSource::Load()
 
 				auto znModelFile = GetBaseManager().GetManager<IznModelsFactory>()->SaveModel(fbxModel, convertedModelName);
 				znModelFile->Save();
+
+
+				// Save XML
+				{
+					auto fileNameStruct = Utils::SplitFilename(m_FileName);
+
+					std::string znModelFilename = fileNameStruct.Path + fileNameStruct.NameWithoutExtension + ".xml";
+					if (filesManager->IsFileExists(znModelFilename))
+						filesManager->Delete(znModelFilename);
+
+					auto znmdlModelsLoader = GetBaseManager().GetManager<IznModelsFactory>()->GetLoaderForModel("znmdl");
+					auto znMdlXMLFile = znmdlModelsLoader->SaveModelXML(fbxModel, znModelFilename);
+					znMdlXMLFile->Save();
+				}
+
 				
 				m_Model = GetBaseManager().GetManager<IznModelsFactory>()->LoadModel(znModelFile);
 				m_Model->SetName(fileNameStruct.NameWithoutExtension);

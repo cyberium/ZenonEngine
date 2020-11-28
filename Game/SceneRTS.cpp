@@ -220,14 +220,6 @@ std::shared_ptr<IModel> CSceneRTS::CreateUnitModel(std::string ModelName, std::s
 {
 	auto filesManager = GetBaseManager().GetManager<IFilesManager>();
 
-	std::shared_ptr<IFile> modelFile = filesManager->Open(ModelName);
-	std::shared_ptr<IFile> animationFile = filesManager->Open(RunAnimationName);
-
-	//auto node = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeFactory>()->CreateSceneNode3D(cSceneNode3D, *this, GetRootSceneNode());
-	//node->SetName(modelFile->Name_NoExtension());
-	//node->SetTranslate(glm::vec3(0.0f, 0.0f, 0.0f));
-	//node->SetScale(glm::vec3(0.33f));
-
 	CznFBXLoaderParams fbxLoaderParams;
 	fbxLoaderParams.TexturesPathRoot = "Toon_RTS/models/textures/";
 	fbxLoaderParams.OverrideTexture = "WK_StandardUnits_Blue.png";
@@ -238,6 +230,7 @@ std::shared_ptr<IModel> CSceneRTS::CreateUnitModel(std::string ModelName, std::s
 	_ASSERT(fbxSceneLoader != nullptr);
 
 	// Original skeleton
+	std::shared_ptr<IFile> modelFile = filesManager->Open(ModelName);
 	auto originalSkeletonModel = fbxSceneLoader->LoadScene(modelFile, &fbxLoaderParams)->MergeModels();
 	
 	// Fix materials
@@ -248,6 +241,7 @@ std::shared_ptr<IModel> CSceneRTS::CreateUnitModel(std::string ModelName, std::s
 	}
 
 	// Animated skeleton
+	std::shared_ptr<IFile> animationFile = filesManager->Open(RunAnimationName);
 	auto animatedSkeletonModel = fbxSceneLoader->LoadScene(animationFile, &fbxLoaderParams)->MergeModels();
 	originalSkeletonModel->ApplyOtherSkeleton(animatedSkeletonModel);
 	originalSkeletonModel->AddSkeletonAnimation(animatedSkeletonModel);
@@ -282,8 +276,6 @@ std::shared_ptr<IModel> CSceneRTS::CreateUnitModel(std::string ModelName, std::s
 		znMdlXMLFile->Save();
 	}
 
-	//node->GetComponentT<IModelsComponent3D>()->SetModel(originalSkeletonModel);
-	//node->GetComponentT<IModelsComponent3D>()->PlayAnimation("run", true);
 	return GetBaseManager().GetManager<IznModelsFactory>()->LoadModel(modelResult);
 }
 

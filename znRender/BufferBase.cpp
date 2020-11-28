@@ -3,6 +3,8 @@
 // General
 #include "BufferBase.h"
 
+#include <zlib/source/zlib.h>
+
 CBufferBase::CBufferBase(IRenderDevice& RenderDevice, IBuffer::BufferType ByfferType)
 	: m_RenderDevice(RenderDevice)
 	, m_BufferType(ByfferType)
@@ -118,7 +120,12 @@ void CBufferBase::Load(const std::shared_ptr<IXMLReader>& Reader)
 	uint32 stride = Reader->GetUIntAttribute("Stride");
 	std::vector<uint8> data = Utils::Base64_Decode(Reader->GetValue());
 
+	//uncompress()
+
+
 	m_BufferType = bufferType;
+
+
 	InitializeBufferBase(data.data(), count, offset, stride);
 }
 
@@ -131,6 +138,18 @@ void CBufferBase::Save(const std::shared_ptr<IXMLWriter>& Writer) const
 
 	const auto& data = GetData();
 	Writer->SetValue(Utils::Base64_Encode(data.data(), data.size()));
+
+	/*{
+		unsigned long compressedSize = compressBound(m_Data.size());
+
+		std::vector<uint8> compressed;
+		compressed.resize(compressedSize);
+		if (compress(compressed.data(), &compressedSize, data.data(), data.size()) != Z_OK)
+			throw CException("ZLIB Compress error.");
+		compressed.resize(compressedSize);
+
+		Writer->SetValue(Utils::Base64_Encode(compressed.data(), compressed.size()));
+	}*/
 }
 
 

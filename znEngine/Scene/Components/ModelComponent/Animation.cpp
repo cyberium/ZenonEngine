@@ -3,6 +3,11 @@
 // General
 #include "Animation.h"
 
+CAnimation::CAnimation(const std::shared_ptr<IXMLReader>& Reader)
+{
+	Load(Reader);
+}
+
 CAnimation::CAnimation(const std::shared_ptr<IByteBuffer>& Buffer)
 {
 	Load(Buffer);
