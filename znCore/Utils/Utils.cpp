@@ -95,7 +95,7 @@ namespace Utils
 		}
 		else
 		{
-			fileNameStruct.NameWithoutExtension = fixedFilename;
+			fileNameStruct.NameWithoutExtension = fileNameStruct.Name;
 			fileNameStruct.Extension = "";
 		}
 

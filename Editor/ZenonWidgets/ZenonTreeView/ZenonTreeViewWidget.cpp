@@ -76,17 +76,6 @@ void ZenonTreeViewWidget::AddToRoot(const std::vector<std::shared_ptr<IznTreeVie
 	m_LockForSelectionChangedEvent = false;
 }
 
-/*void ZenonTreeViewWidget::SetRootItems(const std::vector<std::shared_ptr<IznTreeViewItemSource>>& RootItems)
-{
-	m_LockForSelectionChangedEvent = true;
-
-	this->reset();
-	m_Model->SetChildRootItemsData(RootItems);
-	this->expandAll();
-
-	m_LockForSelectionChangedEvent = false;
-}*/
-
 void ZenonTreeViewWidget::ClearSelection()
 {
 	m_LockForSelectionChangedEvent = true;

@@ -2,13 +2,13 @@
 
 #include "ZenonWidgets/ZenonTreeView/TreeViewItem.h"
 
-class CznModel3DTreeViewItemSource
+class CModelTreeViewItem
 	: public CznTreeViewItem
 	, public CLoadableObject
 {
 public:
-	CznModel3DTreeViewItemSource(IBaseManager& BaseManager, std::string FileName);
-	virtual ~CznModel3DTreeViewItemSource();
+	CModelTreeViewItem(IBaseManager& BaseManager, std::string FileName);
+	virtual ~CModelTreeViewItem();
 
 	// IznTreeViewItem
 	ETreeViewItemType GetType() const override;

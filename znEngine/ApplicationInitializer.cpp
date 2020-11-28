@@ -26,8 +26,8 @@
 
 // Additional (Models)
 #include "Formats/Models/ModelsFactory.h"
-#include "Formats/Models/EngineModelsLoader.h"
-
+#include "Formats/Models/ModelsLoader_znmdl.h"
+#include "Formats/Models/ModelsLoader_znxmdl.h"
 
 // Additional (Materials)
 #include "Formats/Materials/MaterialsFactory.h"
@@ -126,7 +126,8 @@ void Application::InitializeEngineInternal()
 	// Models
 	{
 		GetBaseManager().AddManager<IznModelsFactory>(MakeShared(CznModelsFactory, GetBaseManager()));
-		GetBaseManager().GetManager<IznModelsFactory>()->AddModelsLoader(MakeShared(CznEngineModelsLoader, GetBaseManager()));
+		GetBaseManager().GetManager<IznModelsFactory>()->AddModelsLoader(MakeShared(CModelsLoader_znmdl, GetBaseManager()));
+		GetBaseManager().GetManager<IznModelsFactory>()->AddModelsLoader(MakeShared(CModelsLoader_znxmdl, GetBaseManager()));
 	}
 
 

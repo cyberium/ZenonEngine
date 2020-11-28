@@ -31,6 +31,15 @@ ZN_INTERFACE IznTreeViewItem
 };
 
 
+ZN_INTERFACE IznTreeViewItemFolder
+{
+	virtual ~IznTreeViewItemFolder() {}
+
+	virtual void AddChild(std::shared_ptr<IznTreeViewItem> Child) = 0;
+	virtual void ClearChilds() = 0;
+};
+
+
 ZN_INTERFACE IznTreeViewItemInternal
 {
 	virtual ~IznTreeViewItemInternal() {}
@@ -38,16 +47,3 @@ ZN_INTERFACE IznTreeViewItemInternal
 	virtual void                                   SetParent(IznTreeViewItem * Parent) = 0;
 	virtual void                                   ClearCache() = 0;
 };
-
-
-
-/*ZN_INTERFACE IznTreeViewItemSource
-{
-	virtual ~IznTreeViewItemSource() {}
-
-	virtual ETreeViewItemType                      GetType() const = 0;
-	virtual std::string                            GetName() const = 0;
-	virtual size_t                                 GetChildsCount() const = 0;
-	virtual std::shared_ptr<IznTreeViewItemSource> GetChild(size_t Index) const = 0;
-	virtual std::shared_ptr<IObject>               Object() const = 0;
-};*/

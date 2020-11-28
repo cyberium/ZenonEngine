@@ -61,6 +61,9 @@
     <Filter Include="ResourcesBrowser">
       <UniqueIdentifier>{0190977d-9e8d-4905-8354-6f12520d08bd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ResourcesBrowser\Resources">
+      <UniqueIdentifier>{947fb2a1-e948-48d3-b147-64ae9fa95879}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -167,20 +170,23 @@
     <ClCompile Include="ZenonWidgets\ZenonPropertiesEditor\QT\qtbuttonpropertybrowser.cpp">
       <Filter>Widgets\ZenonPropertiesEditor\QT</Filter>
     </ClCompile>
-    <ClCompile Include="ResourcesBrowser\Model3DTreeViewItemSource.cpp">
-      <Filter>ResourcesBrowser</Filter>
-    </ClCompile>
-    <ClCompile Include="ResourcesBrowser\NodeProtoTreeViewItemSource.cpp">
-      <Filter>ResourcesBrowser</Filter>
-    </ClCompile>
-    <ClCompile Include="ResourcesBrowser\SceneNodeTreeViewItemSource.cpp">
-      <Filter>ResourcesBrowser</Filter>
-    </ClCompile>
-    <ClCompile Include="ResourcesBrowser\VirtualFolderTreeViewItemSource.cpp">
-      <Filter>ResourcesBrowser</Filter>
-    </ClCompile>
     <ClCompile Include="main.cpp">
       <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourcesBrowser\ResourcesFilesystem.cpp">
+      <Filter>ResourcesBrowser</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourcesBrowser\ModelTreeViewItem.cpp">
+      <Filter>ResourcesBrowser\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourcesBrowser\FolderTreeViewItem.cpp">
+      <Filter>ResourcesBrowser</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourcesBrowser\SceneNodeTreeViewItem.cpp">
+      <Filter>ResourcesBrowser</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourcesBrowser\NodeProtoTreeViewItem.cpp">
+      <Filter>ResourcesBrowser\Resources</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -279,17 +285,23 @@
     <ClInclude Include="Passes\DrawLightFrustumPass.h">
       <Filter>3D\Passes</Filter>
     </ClInclude>
-    <ClInclude Include="ResourcesBrowser\Model3DTreeViewItemSource.h">
+    <ClInclude Include="ResourcesBrowser\ResourcesFilesystem.h">
       <Filter>ResourcesBrowser</Filter>
     </ClInclude>
-    <ClInclude Include="ResourcesBrowser\NodeProtoTreeViewItemSource.h">
+    <ClInclude Include="ResourcesBrowser\ResourcesFilesystemIntfs.h">
       <Filter>ResourcesBrowser</Filter>
     </ClInclude>
-    <ClInclude Include="ResourcesBrowser\SceneNodeTreeViewItemSource.h">
+    <ClInclude Include="ResourcesBrowser\ModelTreeViewItem.h">
+      <Filter>ResourcesBrowser\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourcesBrowser\FolderTreeViewItem.h">
       <Filter>ResourcesBrowser</Filter>
     </ClInclude>
-    <ClInclude Include="ResourcesBrowser\VirtualFolderTreeViewItemSource.h">
+    <ClInclude Include="ResourcesBrowser\SceneNodeTreeViewItem.h">
       <Filter>ResourcesBrowser</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourcesBrowser\NodeProtoTreeViewItem.h">
+      <Filter>ResourcesBrowser\Resources</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

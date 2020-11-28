@@ -316,9 +316,6 @@
     <ClCompile Include="Scene\Components\ModelComponent\Animation.cpp">
       <Filter>Scene\Components\ModelComponent</Filter>
     </ClCompile>
-    <ClCompile Include="Formats\Models\EngineModelsLoader.cpp">
-      <Filter>Formats\Models</Filter>
-    </ClCompile>
     <ClCompile Include="Materials\MaterialUIControl.cpp">
       <Filter>Materials\UI materials</Filter>
     </ClCompile>
@@ -364,6 +361,15 @@
     <ClCompile Include="ApplicationInitializer.cpp" />
     <ClCompile Include="Settings\Settings.cpp">
       <Filter>Settings</Filter>
+    </ClCompile>
+    <ClCompile Include="Formats\Models\ModelsLoader_znmdl.cpp">
+      <Filter>Formats\Models</Filter>
+    </ClCompile>
+    <ClCompile Include="Formats\Models\ModelsLoader_znxmdl.cpp">
+      <Filter>Formats\Models</Filter>
+    </ClCompile>
+    <ClCompile Include="Formats\Models\ModelsLoaderHelper.cpp">
+      <Filter>Formats\Models</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -564,9 +570,6 @@
     <ClInclude Include="Scene\Components\ModelComponent\Animation.h">
       <Filter>Scene\Components\ModelComponent</Filter>
     </ClInclude>
-    <ClInclude Include="Formats\Models\EngineModelsLoader.h">
-      <Filter>Formats\Models</Filter>
-    </ClInclude>
     <ClInclude Include="Materials\MaterialUIControl.h">
       <Filter>Materials\UI materials</Filter>
     </ClInclude>
@@ -612,6 +615,15 @@
     </ClInclude>
     <ClInclude Include="Settings\Settings.h">
       <Filter>Settings</Filter>
+    </ClInclude>
+    <ClInclude Include="Formats\Models\ModelsLoader_znmdl.h">
+      <Filter>Formats\Models</Filter>
+    </ClInclude>
+    <ClInclude Include="Formats\Models\ModelsLoader_znxmdl.h">
+      <Filter>Formats\Models</Filter>
+    </ClInclude>
+    <ClInclude Include="Formats\Models\ModelsLoaderHelper.h">
+      <Filter>Formats\Models</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

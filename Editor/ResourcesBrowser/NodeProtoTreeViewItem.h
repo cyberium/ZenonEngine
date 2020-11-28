@@ -3,14 +3,14 @@
 #include "EditorInterfaces.h"
 #include "ZenonWidgets/ZenonTreeView/TreeViewItem.h"
 
-class CzNodeProtoTreeViewItemSource
+class CNodeProtoTreeViewItem
 	: public CznTreeViewItem
 {
 public:
-	CzNodeProtoTreeViewItemSource(const std::shared_ptr<ISceneNode>& SceneNode);
-	virtual ~CzNodeProtoTreeViewItemSource();
+	CNodeProtoTreeViewItem(const std::shared_ptr<ISceneNode>& SceneNode);
+	virtual ~CNodeProtoTreeViewItem();
 
-	// IznTreeViewItemSource
+	// IznTreeViewItem
 	ETreeViewItemType GetType() const override;
 	std::string GetText() const override;
 	std::shared_ptr<IObject> GetObject_() const override;

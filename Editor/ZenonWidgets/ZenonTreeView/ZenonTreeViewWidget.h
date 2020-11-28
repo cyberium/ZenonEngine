@@ -22,7 +22,6 @@ public:
 	void Refresh();
 	void AddToRoot(const std::shared_ptr<IznTreeViewItem>& RootItem, bool DeleteExisting = false);
 	void AddToRoot(const std::vector<std::shared_ptr<IznTreeViewItem>>& RootItems, bool DeleteExisting = false);
-	//void SetRootItems(const std::vector<std::shared_ptr<IznTreeViewItemSource>>& RootItems);
 
 	void ClearSelection();
 	void SelectItem(const std::shared_ptr<IObject>& Item, bool NeedClear = true);

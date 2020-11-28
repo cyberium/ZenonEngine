@@ -1,6 +1,7 @@
 #pragma once
 
 #include "EditorQtInterfaces.h"
+#include "ResourcesBrowser/ResourcesFilesystemIntfs.h"
 
 class CEditorResourceBrowser
 {
@@ -10,9 +11,6 @@ public:
 
 	// CEditorResourceBrowser
 	void Initialize();
-
-	std::shared_ptr<IznTreeViewItem> CreateSceneNodeProtosFromFolder(const std::string& FolderName);
-	std::shared_ptr<IznTreeViewItem> CreateModelsFromFolder(const std::string& FolderName);
 
 	void InitializeSceneBrowser();
 	void UpdateSceneBrowser();

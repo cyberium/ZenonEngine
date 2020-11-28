@@ -2,23 +2,24 @@
 
 #include "ZenonWidgets/ZenonTreeView/TreeViewItem.h"
 
-class CznVirtualFolderTreeViewItemSource
+class CFolderTreeViewItem
 	: public CznTreeViewItem
+	, public IznTreeViewItemFolder
 {
 public:
-	CznVirtualFolderTreeViewItemSource(const std::string& VirtualFolderName);
-	virtual ~CznVirtualFolderTreeViewItemSource();
+	CFolderTreeViewItem(const std::string& VirtualFolderName);
+	virtual ~CFolderTreeViewItem();
 
-	// CznVirtualFolderTreeViewItemSource
-	void AddChild(std::shared_ptr<IznTreeViewItem> Child);
-	void ClearChilds();
-
-	// IznTreeViewItemSource
+	// IznTreeViewItem
 	ETreeViewItemType GetType() const override;
 	std::string GetText() const override;
 	size_t GetChildsCount() const override;
 	std::shared_ptr<IznTreeViewItem> GetChild(size_t Index) const override;
 	std::shared_ptr<IObject> GetObject_() const override;
+
+	// IznTreeViewItemFolder
+	void AddChild(std::shared_ptr<IznTreeViewItem> Child);
+	void ClearChilds();
 
 private:
 	std::string m_VirtualFolderName;

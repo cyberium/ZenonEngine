@@ -138,10 +138,11 @@
     <ClCompile Include="Passes\DrawSelectionPass.cpp" />
     <ClCompile Include="Passes\DrawToolsPass.cpp" />
     <ClCompile Include="Passes\DrawWaypointsPass.cpp" />
-    <ClCompile Include="ResourcesBrowser\Model3DTreeViewItemSource.cpp" />
-    <ClCompile Include="ResourcesBrowser\NodeProtoTreeViewItemSource.cpp" />
-    <ClCompile Include="ResourcesBrowser\SceneNodeTreeViewItemSource.cpp" />
-    <ClCompile Include="ResourcesBrowser\VirtualFolderTreeViewItemSource.cpp" />
+    <ClCompile Include="ResourcesBrowser\ModelTreeViewItem.cpp" />
+    <ClCompile Include="ResourcesBrowser\NodeProtoTreeViewItem.cpp" />
+    <ClCompile Include="ResourcesBrowser\ResourcesFilesystem.cpp" />
+    <ClCompile Include="ResourcesBrowser\SceneNodeTreeViewItem.cpp" />
+    <ClCompile Include="ResourcesBrowser\FolderTreeViewItem.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
@@ -229,10 +230,12 @@
     <ClInclude Include="Passes\DrawSelectionPass.h" />
     <ClInclude Include="Passes\DrawToolsPass.h" />
     <ClInclude Include="Passes\DrawWaypointsPass.h" />
-    <ClInclude Include="ResourcesBrowser\Model3DTreeViewItemSource.h" />
-    <ClInclude Include="ResourcesBrowser\NodeProtoTreeViewItemSource.h" />
-    <ClInclude Include="ResourcesBrowser\SceneNodeTreeViewItemSource.h" />
-    <ClInclude Include="ResourcesBrowser\VirtualFolderTreeViewItemSource.h" />
+    <ClInclude Include="ResourcesBrowser\ModelTreeViewItem.h" />
+    <ClInclude Include="ResourcesBrowser\NodeProtoTreeViewItem.h" />
+    <ClInclude Include="ResourcesBrowser\ResourcesFilesystem.h" />
+    <ClInclude Include="ResourcesBrowser\ResourcesFilesystemIntfs.h" />
+    <ClInclude Include="ResourcesBrowser\SceneNodeTreeViewItem.h" />
+    <ClInclude Include="ResourcesBrowser\FolderTreeViewItem.h" />
     <ClInclude Include="Tools\EditorToolBase.h" />
     <ClInclude Include="Tools\EditorToolDragger.h" />
     <ClInclude Include="Tools\EditorToolMover.h" />

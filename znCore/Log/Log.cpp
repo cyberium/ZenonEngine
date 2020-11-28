@@ -65,7 +65,6 @@ void CLog::DeleteDebugOutput(std::shared_ptr<IDebugOutput> DebugOutput)
 
 void CLog::PushAllMessages()
 {
-	
 	for (const auto& debugOutput : m_DebugOutputs)
 	{
 		if (auto debugOutputInternal = std::dynamic_pointer_cast<IDebugOutputInternal>(debugOutput))

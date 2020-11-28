@@ -2,14 +2,14 @@
 
 #include "ZenonWidgets/ZenonTreeView/TreeViewItem.h"
 
-class CznSceneNode3DTreeViewItemSource
+class CSceneNodeTreeViewItem
 	: public CznTreeViewItem
 {
 public:
-	CznSceneNode3DTreeViewItemSource(std::shared_ptr<ISceneNode> SceneNode, const IznTreeViewItem* Parent);
-	virtual ~CznSceneNode3DTreeViewItemSource();
+	CSceneNodeTreeViewItem(std::shared_ptr<ISceneNode> SceneNode, const IznTreeViewItem* Parent);
+	virtual ~CSceneNodeTreeViewItem();
 
-	// IznTreeViewItemSource
+	// IznTreeViewItem
 	ETreeViewItemType GetType() const override;
 	std::string GetText() const override ;
 	size_t GetChildsCount() const override;

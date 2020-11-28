@@ -4,10 +4,95 @@
 #include "EditorResourceBrowser.h"
 
 #include "DragUtils.h"
-#include "ResourcesBrowser/VirtualFolderTreeViewItemSource.h"
-#include "ResourcesBrowser/Model3DTreeViewItemSource.h"
-#include "ResourcesBrowser/NodeProtoTreeViewItemSource.h"
-#include "ResourcesBrowser/SceneNodeTreeViewItemSource.h"
+#include "ResourcesBrowser/FolderTreeViewItem.h"
+#include "ResourcesBrowser/ModelTreeViewItem.h"
+#include "ResourcesBrowser/NodeProtoTreeViewItem.h"
+#include "ResourcesBrowser/SceneNodeTreeViewItem.h"
+
+#include "ResourcesBrowser/ResourcesFilesystem.h"
+
+
+/*
+  Engine formats:
+    Models:
+	  *.dds - Texture
+	  *.png - Texture
+
+	  *.znxobj - xml ZenonEngine object
+
+	  *.znxscn - xml ZenonEngine scene
+
+	  *.znxmat - xml material
+	
+	  *.znxgtr - xml geometry
+
+	  *.fbx    - model
+
+	  *.znmdl  - binary model
+	  *.znxmdl - xml model
+*/
+
+namespace
+{
+	std::shared_ptr<IznTreeViewItem> ResourceFileToTreeView(IEditor& Editor, std::shared_ptr<IResourceFile> ResourceFile)
+	{
+		if (ResourceFile->IsDirectory())
+		{
+			auto directoryTreeViewItem = MakeShared(CFolderTreeViewItem, ResourceFile->GetFilenameStruct().NameWithoutExtension);
+
+			for (const auto& childResourceFile : ResourceFile->GetChilds())
+			{
+				auto treeViewItem = ResourceFileToTreeView(Editor, childResourceFile);
+				if (treeViewItem != nullptr)
+					directoryTreeViewItem->AddChild(treeViewItem);
+			}
+
+			return directoryTreeViewItem;
+		}
+		else if (ResourceFile->IsFile())
+		{
+			_ASSERT(ResourceFile->GetChilds().empty());
+
+			const auto& fileNameStruct = ResourceFile->GetFilenameStruct();
+			if (fileNameStruct.Extension == "znmdl" || fileNameStruct.Extension == "znxmdl")
+			{
+				auto modelTreeViewItem = MakeShared(CModelTreeViewItem, Editor.GetBaseManager(), fileNameStruct.ToString());
+				Editor.GetBaseManager().GetManager<ILoader>()->AddToLoadQueue(modelTreeViewItem);
+
+				//t->Load();
+				//t->SetState(ILoadable::ELoadableState::Loaded);
+
+				return modelTreeViewItem;
+			}
+			else if (fileNameStruct.Extension == "znobj")
+			{
+				try
+				{
+					CXMLManager xmlManager(Editor.GetBaseManager());
+					auto reader = xmlManager.CreateReaderFromFile(fileNameStruct.ToString());
+					_ASSERT(false == reader->GetChilds().empty());
+					auto firstXMLChild = reader->GetChilds()[0];
+
+					auto sceneNodeProtoRoot = Editor.GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<CSceneNodeFactory>()->LoadSceneNode3DXML(firstXMLChild, Editor.Get3DFrame().GetScene());
+					sceneNodeProtoRoot->MakeMeOrphan();
+
+					auto nodeProtoTreeViewItem = MakeShared(CNodeProtoTreeViewItem, sceneNodeProtoRoot);
+
+					return nodeProtoTreeViewItem;
+				}
+				catch (const CException& e)
+				{
+					Log::Error("Error while loading '%s' NodeProto.", fileNameStruct.ToString().c_str());
+					Log::Error("--->%s", e.MessageCStr());
+				}
+			}
+			else
+				Log::Warn("Resource file '%s' has unsupported format.", fileNameStruct.ToString().c_str());
+		}
+
+		return nullptr;
+	}
+}
 
 
 
@@ -94,75 +179,18 @@ void CEditorResourceBrowser::Initialize()
 		return false;
 	});
 
-	GetEditorQtUIFrame().getCollectionViewer()->AddToRoot(CreateModelsFromFolder("models"));
-	GetEditorQtUIFrame().getCollectionViewer()->AddToRoot(CreateModelsFromFolder("models_td"));
-	GetEditorQtUIFrame().getCollectionViewer()->AddToRoot(CreateModelsFromFolder("models_food"));
-	GetEditorQtUIFrame().getCollectionViewer()->AddToRoot(CreateSceneNodeProtosFromFolder("sceneNodesProtos"));
-}
+	CResourceFilesystem fileSystem;
+	fileSystem.Initailize("O:/ZenonEngine_userdata");
+	fileSystem.PrintFilesystem();
 
-std::shared_ptr<IznTreeViewItem> CEditorResourceBrowser::CreateSceneNodeProtosFromFolder(const std::string & FolderName)
-{
-	std::vector<std::shared_ptr<IznTreeViewItem>> sceneNodes;
-
-	auto gameDataStorage = GetBaseManager().GetManager<IFilesManager>()->GetStorage(EFilesStorageType::USERDATA);
-	auto gameDataStorageEx = std::dynamic_pointer_cast<IznFilesStorageExtended>(gameDataStorage);
-	_ASSERT(gameDataStorageEx != nullptr);
-
-	auto fileNames = gameDataStorageEx->GetAllFilesInFolder(FolderName, ".xml");
-	for (const auto& fileName : fileNames)
+	GetEditorQtUIFrame().getCollectionViewer()->Refresh();
+	for (const auto& resourceFile : fileSystem.GetRootFile()->GetChilds())
 	{
-		try
-		{
-			CXMLManager xmlManager(GetBaseManager());
-			auto reader = xmlManager.CreateReaderFromFile(fileName);
-			_ASSERT(false == reader->GetChilds().empty());
-			auto firstXMLChild = reader->GetChilds()[0];
-
-			auto sceneNodeProtoRoot = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<CSceneNodeFactory>()->LoadSceneNode3DXML(firstXMLChild, m_Editor.Get3DFrame().GetScene());
-			sceneNodeProtoRoot->MakeMeOrphan();
-			sceneNodes.push_back(MakeShared(CzNodeProtoTreeViewItemSource, sceneNodeProtoRoot));
-		}
-		catch (const CException& e)
-		{
-			Log::Error("Error while loading '%s' SceneNodeProto.", fileName.c_str());
-			Log::Error("--->%s", e.MessageCStr());
-		}
+		auto treeViewItem = ResourceFileToTreeView(m_Editor, resourceFile);
+		if (treeViewItem != nullptr)
+			GetEditorQtUIFrame().getCollectionViewer()->AddToRoot(treeViewItem);
 	}
-
-	auto modelsFolders = MakeShared(CznVirtualFolderTreeViewItemSource, FolderName);
-	for (const auto& m : sceneNodes)
-		modelsFolders->AddChild(m);
-	return modelsFolders;
 }
-
-std::shared_ptr<IznTreeViewItem> CEditorResourceBrowser::CreateModelsFromFolder(const std::string & FolderName)
-{
-	std::vector<std::shared_ptr<IznTreeViewItem>> models;
-	auto gameDataStorage = GetBaseManager().GetManager<IFilesManager>()->GetStorage(EFilesStorageType::USERDATA);
-	auto gameDataStorageEx = std::dynamic_pointer_cast<IznFilesStorageExtended>(gameDataStorage);
-	_ASSERT(gameDataStorageEx != nullptr);
-
-	auto fileNames = gameDataStorageEx->GetAllFilesInFolder(FolderName, ".fbx");
-	for (const auto& fbxFileName : fileNames)
-	{
-		auto t = MakeShared(CznModel3DTreeViewItemSource, GetBaseManager(), fbxFileName);
-		m_Editor.GetBaseManager().GetManager<ILoader>()->AddToLoadQueue(t);
-		//t->Load();
-		//t->SetState(ILoadable::ELoadableState::Loaded);
-		models.push_back(t);
-	}
-
-	auto modelsFolders = MakeShared(CznVirtualFolderTreeViewItemSource, FolderName);
-	for (const auto& m : models)
-		modelsFolders->AddChild(m);
-
-	Log::Error("Resource Browser: All models from '%s' loaded.", FolderName.c_str());
-
-	return modelsFolders;
-}
-
-
-
 
 void CEditorResourceBrowser::InitializeSceneBrowser()
 {
@@ -213,7 +241,7 @@ void CEditorResourceBrowser::UpdateSceneBrowser()
 {
 	if (false == IsAttachedTest)
 	{
-		auto sceneNode3DSource = MakeShared(CznSceneNode3DTreeViewItemSource, m_Editor.Get3DFrame().GetEditedRootNode3D(), nullptr);
+		auto sceneNode3DSource = MakeShared(CSceneNodeTreeViewItem, m_Editor.Get3DFrame().GetEditedRootNode3D(), nullptr);
 		GetEditorQtUIFrame().getSceneViewer()->AddToRoot(sceneNode3DSource, true);
 		IsAttachedTest = true;
 	}

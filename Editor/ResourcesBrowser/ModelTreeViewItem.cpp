@@ -1,32 +1,32 @@
 #include "stdafx.h"
 
 // General
-#include "Model3DTreeViewItemSource.h"
+#include "ModelTreeViewItem.h"
 
 // Additional
 #include "../znPluginFBXModels/FBXInterfaces.h"
 
-CznModel3DTreeViewItemSource::CznModel3DTreeViewItemSource(IBaseManager& BaseManager, std::string FileName)
+CModelTreeViewItem::CModelTreeViewItem(IBaseManager& BaseManager, std::string FileName)
 	: m_BaseManager(BaseManager)
 	, m_FileName(FileName)
 {
 }
 
-CznModel3DTreeViewItemSource::~CznModel3DTreeViewItemSource()
+CModelTreeViewItem::~CModelTreeViewItem()
 {
 }
 
 
 
 //
-// IznTreeViewItemSource
+// IznTreeViewItem
 //
-ETreeViewItemType CznModel3DTreeViewItemSource::GetType() const
+ETreeViewItemType CModelTreeViewItem::GetType() const
 {
 	return ETreeViewItemType::Model;
 }
 
-std::string CznModel3DTreeViewItemSource::GetText() const
+std::string CModelTreeViewItem::GetText() const
 {
 	if (GetState() != ILoadable::ELoadableState::Loaded)
 		return m_FileName;
@@ -35,7 +35,7 @@ std::string CznModel3DTreeViewItemSource::GetText() const
 	return m_Model->GetName();
 }
 
-std::shared_ptr<IObject> CznModel3DTreeViewItemSource::GetObject_() const
+std::shared_ptr<IObject> CModelTreeViewItem::GetObject_() const
 {
 	if (GetState() != ILoadable::ELoadableState::Loaded)
 		return nullptr;
@@ -47,7 +47,7 @@ std::shared_ptr<IObject> CznModel3DTreeViewItemSource::GetObject_() const
 //
 // ILoadable
 //
-bool CznModel3DTreeViewItemSource::Load()
+bool CModelTreeViewItem::Load()
 {
 	auto filesManager = m_BaseManager.GetManager<IFilesManager>();
 	auto gameDataStorage = filesManager->GetStorage(EFilesStorageType::USERDATA);
@@ -60,15 +60,14 @@ bool CznModel3DTreeViewItemSource::Load()
 			throw CException("Filename is emprty.");
 
 		auto fileNameStruct = Utils::SplitFilename(m_FileName);
+		std::string convertedModelName = fileNameStruct.Path + fileNameStruct.NameWithoutExtension + ".znmdl";
+		std::string convertedModelNameXML = fileNameStruct.Path + fileNameStruct.NameWithoutExtension + ".znxmdl";
+
 		if (fileNameStruct.Extension == "fbx")
 		{
-			std::string convertedModelNameXML = fileNameStruct.Path + fileNameStruct.NameWithoutExtension + ".xml";
-			std::string convertedModelName = fileNameStruct.Path + fileNameStruct.NameWithoutExtension + ".znmdl";
-
-			if (filesManager->IsFileExists(convertedModelName))
+			if (filesManager->IsFileExists(convertedModelNameXML))
 			{
-				auto znmdlModelsLoader = GetBaseManager().GetManager<IznModelsFactory>()->GetLoaderForModel("znmdl");
-				m_Model = znmdlModelsLoader->LoadModelXML(convertedModelNameXML);
+				m_Model = GetBaseManager().GetManager<IznModelsFactory>()->LoadModel(convertedModelNameXML);
 				m_Model->SetName(fileNameStruct.NameWithoutExtension);
 				Log::Info("Model '%s' loaded.", m_FileName.c_str());
 				return true;
@@ -96,22 +95,14 @@ bool CznModel3DTreeViewItemSource::Load()
 
 				IModelPtr fbxModel = GetBaseManager().GetManager<IznModelsFactory>()->LoadModel(m_FileName, &loader);
 
+
+				// Save znmdl
 				auto znModelFile = GetBaseManager().GetManager<IznModelsFactory>()->SaveModel(fbxModel, convertedModelName);
 				znModelFile->Save();
 
 
-				// Save XML
-				{
-					auto fileNameStruct = Utils::SplitFilename(m_FileName);
-
-					std::string znModelFilename = fileNameStruct.Path + fileNameStruct.NameWithoutExtension + ".xml";
-					if (filesManager->IsFileExists(znModelFilename))
-						filesManager->Delete(znModelFilename);
-
-					auto znmdlModelsLoader = GetBaseManager().GetManager<IznModelsFactory>()->GetLoaderForModel("znmdl");
-					auto znMdlXMLFile = znmdlModelsLoader->SaveModelXML(fbxModel, znModelFilename);
-					znMdlXMLFile->Save();
-				}
+				// Save znxmdl
+				GetBaseManager().GetManager<IznModelsFactory>()->SaveModel(fbxModel, convertedModelNameXML)->Save();;
 
 				
 				m_Model = GetBaseManager().GetManager<IznModelsFactory>()->LoadModel(znModelFile);
@@ -120,7 +111,7 @@ bool CznModel3DTreeViewItemSource::Load()
 				return true;
 			}
 		}
-		else if (fileNameStruct.Extension == "znmdl")
+		else if (fileNameStruct.Extension == "znmdl" || fileNameStruct.Extension == "znxmdl")
 		{
 			_ASSERT(filesManager->IsFileExists(m_FileName));
 
@@ -143,7 +134,7 @@ bool CznModel3DTreeViewItemSource::Load()
 	return false;
 }
 
-bool CznModel3DTreeViewItemSource::Delete()
+bool CModelTreeViewItem::Delete()
 {
 	return false;
 }
@@ -153,7 +144,7 @@ bool CznModel3DTreeViewItemSource::Delete()
 //
 // Protected
 //
-IBaseManager & CznModel3DTreeViewItemSource::GetBaseManager() const
+IBaseManager & CModelTreeViewItem::GetBaseManager() const
 {
 	return m_BaseManager;
 }

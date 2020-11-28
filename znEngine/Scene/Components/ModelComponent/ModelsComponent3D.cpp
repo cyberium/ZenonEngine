@@ -163,6 +163,9 @@ size_t CModelsComponent3D::GetCurrentAnimationIndex() const
 
 uint32 CModelsComponent3D::GetCurrentAnimationFrame() const
 {
+	if (m_CurrentAnimation == nullptr)
+		return 0;
+
 	uint32 currentAnimationFrame = m_CurrentAnimation->GetFrameStart() + static_cast<uint32>(glm::round(m_CurrentTime));
 	if (currentAnimationFrame >= m_CurrentAnimation->GetFrameEnd())
 	{

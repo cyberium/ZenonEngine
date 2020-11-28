@@ -19,6 +19,11 @@ namespace Utils
 		std::string Name;
 		std::string NameWithoutExtension;
 		std::string Extension;
+
+		std::string ToString() const
+		{
+			return Path + "/" + NameWithoutExtension + "." + Extension;
+		}
 	};
 	ZN_API SFileName SplitFilename(const std::string& FilePath);
 

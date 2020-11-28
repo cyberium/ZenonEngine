@@ -86,21 +86,6 @@ std::shared_ptr<IFile> CznFBXModelsLoader::SaveModel(const std::shared_ptr<IMode
 	throw CException("Operation not supported.");
 }
 
-std::shared_ptr<IModel> CznFBXModelsLoader::LoadModelXML(const std::string & ModelFileName, const IznLoaderParams * LoaderParams) const
-{
-	throw CException("Not implemented.");
-}
-
-std::shared_ptr<IModel> CznFBXModelsLoader::LoadModelXML(const std::shared_ptr<IFile>& ModelFile, const IznLoaderParams * LoaderParams) const
-{
-	throw CException("Not implemented.");
-}
-
-std::shared_ptr<IFile> CznFBXModelsLoader::SaveModelXML(const std::shared_ptr<IModel>& Model, const std::string & FileName) const
-{
-	throw CException("Not implemented.");
-}
-
 
 
 //

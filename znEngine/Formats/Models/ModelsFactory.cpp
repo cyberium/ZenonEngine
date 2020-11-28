@@ -117,18 +117,24 @@ std::shared_ptr<IModel> CznModelsFactory::LoadModel(const std::shared_ptr<IFile>
 
 std::shared_ptr<IFile> CznModelsFactory::SaveModel(const std::shared_ptr<IModel>& Model, const std::string& FileName)
 {
-	_ASSERT(Model != nullptr);
-	_ASSERT(FileName.size() > 0);
+	if (Model == nullptr)
+		throw CException("Can't load nullptr file.");
+
+	if (FileName.empty())
+		throw CException("Filename is empty.");
 	
-	auto file = m_BaseManager.GetManager<IFilesManager>()->Create(FileName);
+	auto filesManager = m_BaseManager.GetManager<IFilesManager>();
+	if (filesManager->IsFileExists(FileName))
+	{
+		Log::Warn("ModelsFactory: Model file '%s' already exists. It will be deleted.", FileName.c_str());
+		filesManager->Delete(FileName);
+	}
+
+	auto file = filesManager->Create(FileName);
 
 	for (const auto& loader : m_ModelsLoaders)
-	{
 		if (loader->IsSupportedFormat(file))
-		{
 			return loader->SaveModel(Model, FileName);
-		}
-	}
 
 	throw CException("The loader for model '%s' doesn't exists.", FileName.c_str());
 }
