@@ -47,6 +47,7 @@
     <ClCompile Include="Passes\Scene\BaseTypedList3DPass.cpp" />
     <ClCompile Include="Passes\Scene\SceneCreateTypedListsPass.cpp" />
     <ClCompile Include="Passes\Scene\SceneCreateTypelessListPass.cpp" />
+    <ClCompile Include="Passes\SkyboxPass.cpp" />
     <ClCompile Include="Passes\Technical\BeginQueryPass.cpp" />
     <ClCompile Include="Passes\Technical\ClearRenderTargetPass.cpp" />
     <ClCompile Include="Passes\Technical\CopyBufferPass.cpp" />
@@ -136,6 +137,7 @@
     <ClInclude Include="Passes\Scene\BaseTypedList3DPass.h" />
     <ClInclude Include="Passes\Scene\SceneCreateTypedListsPass.h" />
     <ClInclude Include="Passes\Scene\SceneCreateTypelessListPass.h" />
+    <ClInclude Include="Passes\SkyboxPass.h" />
     <ClInclude Include="Passes\Technical\BeginQueryPass.h" />
     <ClInclude Include="Passes\Technical\ClearRenderTargetPass.h" />
     <ClInclude Include="Passes\Technical\CopyBufferPass.h" />

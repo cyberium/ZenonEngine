@@ -1,6 +1,6 @@
 #include "stdafx.h"
 
-//#define ENABLE_HDR
+#define ENABLE_HDR
 
 // General
 #include "RendererForward.h"
@@ -15,6 +15,7 @@
 #include "Passes/DrawBonesPass.h"
 #include "Passes/DrawBoundingBoxPass.h"
 
+#include "Passes/SkyboxPass.h"
 #include "Passes/ForwardRendering/PassForward_DoRenderScene.h"
 
 #include "Passes/UI/UIFontPass.h"
@@ -69,7 +70,7 @@ void CRendererForward::Initialize(std::shared_ptr<IRenderTarget> OutputRenderTar
 #ifdef ENABLE_HDR
 	Add3DPass(MakeShared(ClearRenderTargetPass, m_RenderDevice, HDRRenderTarget));
 #endif
-
+	Add3DPass(MakeShared(CSkyboxPass, m_RenderDevice)->ConfigurePipeline(HDRRenderTarget));
 
 	//
 	// SCENE

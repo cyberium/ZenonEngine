@@ -13,6 +13,8 @@
 #include "Passes/ParticlesPass.h"
 #include "Passes/DrawBonesPass.h"
 
+#include "Passes/SkyboxPass.h"
+
 #include "Passes/UI/UIFontPass.h"
 #include "Passes/UI/UIControlPass.h"
 
@@ -64,7 +66,6 @@ void CRendererDeffered::Initialize(std::shared_ptr<IRenderTarget> OutputRenderTa
 	Add3DPass(MakeShared(ClearRenderTargetPass, m_RenderDevice, HDRRenderTarget));
 #endif
 
-
 	//
 	// SCENE
 	//
@@ -97,6 +98,7 @@ void CRendererDeffered::Initialize(std::shared_ptr<IRenderTarget> OutputRenderTa
 	//
 	// DEBUG & TECHNICAL
 	//
+	Add3DPass(MakeShared(CSkyboxPass, m_RenderDevice)->ConfigurePipeline(outputRenderTargetWithCustomDepth));
 	Add3DPass(MakeShared(CDebugPass, m_RenderDevice, m_Scene)->ConfigurePipeline(outputRenderTargetWithCustomDepth));
 	Add3DPass(MakeShared(CDrawBonesPass, m_Scene)->ConfigurePipeline(outputRenderTargetWithCustomDepth));
 	

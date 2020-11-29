@@ -49,7 +49,7 @@ std::shared_ptr<IRenderPassPipelined> CPassForward_DoRenderScene::ConfigurePipel
 	vertexShader->LoadInputLayoutFromCustomElements(customElements);*/
 
 	// PIPELINES
-	GetPipeline().GetRasterizerState()->SetCullMode(IRasterizerState::CullMode::None);
+	//GetPipeline().GetRasterizerState()->SetCullMode(IRasterizerState::CullMode::None);
 	GetPipeline().SetShader(EShaderType::VertexShader, vertexShader);
 	GetPipeline().SetShader(EShaderType::PixelShader, pixelShader);
 

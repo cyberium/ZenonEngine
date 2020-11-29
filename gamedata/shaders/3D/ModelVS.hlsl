@@ -69,9 +69,9 @@ VSOutput VS_PTN(VSInputPTN IN
 	// Enviorement mapping in View space
 	//const float4x4 modelInverseTransposeVS = inverse(m);
 	//const float3 nnVS = normalize(mul(OUT.normalVS, (float3x3)modelInverseTransposeVS));
-	const float3 refl = mul((float3x3)PF.InverseView, reflect(-normalize(float3(0.0f, 0.0f, 0.0f) - OUT.positionVS), normalize(OUT.normalVS)));
+	//const float3 refl = mul((float3x3)PF.InverseView, reflect(-normalize(float3(0.0f, 0.0f, 0.0f) - OUT.positionVS), normalize(OUT.normalVS)));
 	
-	OUT.positionWS = refl;
+	//OUT.positionWS = refl;
 	
 	return OUT;
 }

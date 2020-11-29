@@ -78,29 +78,6 @@ void CSceneRTS::Initialize()
 		GetCameraController()->GetCamera()->SetPitch(-45);
 	}
 
-	//--------------------------------------------------------------------------
-	// SkyBox
-	//--------------------------------------------------------------------------
-	{
-		const float cPlaneSize = 2240.0f;
-		const float cPlaneY = 0.0f;
-
-		std::shared_ptr<MaterialModel> textMaterial = MakeShared(MaterialModel, GetBaseManager());
-		textMaterial->SetDiffuseColor(glm::vec3(0.3f, 0.3f, 1.0f));
-		textMaterial->SetSpecularColor(glm::vec3(1.0f, 1.0f, 1.0f));
-
-		auto& modelPlane = GetRenderDevice().GetObjectsFactory().CreateModel();
-		modelPlane->AddConnection(textMaterial, GetRenderDevice().GetPrimitivesFactory().CreateSphere());
-
-		auto node = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeFactory>()->CreateSceneNode3D(cSceneNode3D, *this, GetRootSceneNode());
-		node->SetName("Ground");
-		node->SetTranslate(glm::vec3(0, 0, 0));
-		node->SetScale(glm::vec3(cPlaneSize, cPlaneSize, cPlaneSize));
-		node->GetComponentT<IModelsComponent3D>()->SetModel(modelPlane);
-		//node->GetComponent<IModelsComponent3D>()->SetCastShadows(false);
-	}
-
-
 
 	//--------------------------------------------------------------------------
 	// Sphere
@@ -110,7 +87,7 @@ void CSceneRTS::Initialize()
 		const float cPlaneY = 0.0f;
 
 		std::shared_ptr<MaterialModel> textMaterial = MakeShared(MaterialModel, GetBaseManager());
-		textMaterial->SetDiffuseColor(glm::vec3(0.3f, 0.3f, 1.0f));
+		textMaterial->SetDiffuseColor(glm::vec3(1.0f, 1.0f, 1.0f));
 		textMaterial->SetSpecularColor(glm::vec3(1.0f, 1.0f, 1.0f));
 		textMaterial->SetEnviorementMappingEnable(true);
 

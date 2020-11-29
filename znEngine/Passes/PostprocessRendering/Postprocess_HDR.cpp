@@ -40,7 +40,7 @@ std::shared_ptr<IRenderPassPipelined> CPassPostprocess_HDR::ConfigurePipeline(st
 	auto pixelShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::PixelShader, "3D/Deffered_HDR.hlsl", "PS_ScreenQuad", { {"MULTISAMPLED", samplesCnt.c_str() }});
 
 	// PIPELINES
-	GetPipeline().GetBlendState()->SetBlendMode(additiveBlending);
+	GetPipeline().GetBlendState()->SetBlendMode(disableBlending);
 	GetPipeline().GetDepthStencilState()->SetDepthMode(disableDepthWrites);
 	GetPipeline().GetRasterizerState()->SetCullMode(IRasterizerState::CullMode::None);
 	GetPipeline().GetRasterizerState()->SetFillMode(IRasterizerState::FillMode::Solid, IRasterizerState::FillMode::Solid);
