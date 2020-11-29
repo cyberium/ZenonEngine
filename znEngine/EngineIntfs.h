@@ -168,7 +168,7 @@ class CMaterialUIControl; // TODO: Remove me
 ZN_INTERFACE ZN_API IUIControlCommon
 	: public virtual IUIControl
 {
-	struct SSubgeometry
+	struct ZN_API SSubgeometry
 	{
 		glm::vec2                           Translate;
 		glm::vec2                           Size;

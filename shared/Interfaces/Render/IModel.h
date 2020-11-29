@@ -118,7 +118,6 @@ ZN_INTERFACE ZN_API IModel
 
 	virtual void                                    Accept(IVisitor* visitor) = 0;
 };
-typedef std::shared_ptr<IModel> IModelPtr;
 
 
 ZN_INTERFACE ZN_API IModelInternal

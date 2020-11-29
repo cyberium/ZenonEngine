@@ -26,6 +26,7 @@ void main_internal(int argc, char *argv[])
 	CEditor editor(app.GetBaseManager());
 	CEditorUIFrame editorUI(editor);
 		
+
 	// 'Editor3D' scene
 	{
 		auto nativeWindow = nativeWindowFactory.CreateWindowProxy(*editorUI.getMainEditor());

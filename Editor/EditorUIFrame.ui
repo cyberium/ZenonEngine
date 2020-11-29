@@ -118,7 +118,7 @@
             </property>
             <property name="icon">
              <iconset resource="EditorUIFrame.qrc">
-              <normaloff>:/MainEditor/Resources/Icons/select.png</normaloff>:/MainEditor/Resources/Icons/select.png</iconset>
+              <normaloff>:/Main/Resources/Icons/select.png</normaloff>:/Main/Resources/Icons/select.png</iconset>
             </property>
             <property name="iconSize">
              <size>
@@ -141,7 +141,7 @@
             </property>
             <property name="icon">
              <iconset resource="EditorUIFrame.qrc">
-              <normaloff>:/MainEditor/Resources/Icons/translate.png</normaloff>:/MainEditor/Resources/Icons/translate.png</iconset>
+              <normaloff>:/Main/Resources/Icons/translate.png</normaloff>:/Main/Resources/Icons/translate.png</iconset>
             </property>
             <property name="iconSize">
              <size>
@@ -164,7 +164,7 @@
             </property>
             <property name="icon">
              <iconset resource="EditorUIFrame.qrc">
-              <normaloff>:/MainEditor/Resources/Icons/rotate.png</normaloff>:/MainEditor/Resources/Icons/rotate.png</iconset>
+              <normaloff>:/Main/Resources/Icons/rotate.png</normaloff>:/Main/Resources/Icons/rotate.png</iconset>
             </property>
             <property name="iconSize">
              <size>
@@ -187,7 +187,7 @@
             </property>
             <property name="icon">
              <iconset resource="EditorUIFrame.qrc">
-              <normaloff>:/MainEditor/Resources/Icons/scale.png</normaloff>:/MainEditor/Resources/Icons/scale.png</iconset>
+              <normaloff>:/Main/Resources/Icons/scale.png</normaloff>:/Main/Resources/Icons/scale.png</iconset>
             </property>
             <property name="iconSize">
              <size>
@@ -210,7 +210,7 @@
             </property>
             <property name="icon">
              <iconset resource="EditorUIFrame.qrc">
-              <normaloff>:/MainEditor/Resources/Icons/translateRTS.png</normaloff>:/MainEditor/Resources/Icons/translateRTS.png</iconset>
+              <normaloff>:/Main/Resources/Icons/translateRTS.png</normaloff>:/Main/Resources/Icons/translateRTS.png</iconset>
             </property>
             <property name="iconSize">
              <size>
@@ -233,7 +233,7 @@
             </property>
             <property name="icon">
              <iconset resource="EditorUIFrame.qrc">
-              <normaloff>:/MainEditor/Resources/Icons/rotateRTS.png</normaloff>:/MainEditor/Resources/Icons/rotateRTS.png</iconset>
+              <normaloff>:/Main/Resources/Icons/rotateRTS.png</normaloff>:/Main/Resources/Icons/rotateRTS.png</iconset>
             </property>
             <property name="iconSize">
              <size>
@@ -547,9 +547,6 @@
          <verstretch>0</verstretch>
         </sizepolicy>
        </property>
-       <property name="selectionMode">
-        <enum>QAbstractItemView::ExtendedSelection</enum>
-       </property>
        <property name="selectionBehavior">
         <enum>QAbstractItemView::SelectItems</enum>
        </property>
@@ -708,12 +705,6 @@
        <property name="acceptDrops">
         <bool>false</bool>
        </property>
-       <property name="dragEnabled">
-        <bool>false</bool>
-       </property>
-       <property name="selectionMode">
-        <enum>QAbstractItemView::SingleSelection</enum>
-       </property>
        <property name="selectionBehavior">
         <enum>QAbstractItemView::SelectItems</enum>
        </property>
@@ -728,9 +719,6 @@
        </property>
        <property name="rootIsDecorated">
         <bool>false</bool>
-       </property>
-       <property name="itemsExpandable">
-        <bool>true</bool>
        </property>
        <attribute name="headerVisible">
         <bool>false</bool>
@@ -753,8 +741,8 @@
        </property>
        <property name="maximumSize">
         <size>
-         <width>450</width>
-         <height>450</height>
+         <width>400</width>
+         <height>400</height>
         </size>
        </property>
       </widget>

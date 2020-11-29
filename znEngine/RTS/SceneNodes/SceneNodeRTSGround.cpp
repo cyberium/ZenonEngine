@@ -44,7 +44,7 @@ bool CSceneNodeRTSGround::AddCell(ERTSCellType CellType, SRTSCellCoords Coords)
 
 	cell.Type = CellType;
 
-	IModelPtr model = nullptr;
+	std::shared_ptr<IModel> model = nullptr;
 	/*if (CellType == ERTSCellType::ctEmpty)
 	{
 		cell.Model = nullptr;

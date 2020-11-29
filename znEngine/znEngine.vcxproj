@@ -18,6 +18,7 @@
     <ClCompile Include="Formats\Fonts\Font.cpp" />
     <ClCompile Include="Formats\Fonts\FontsManager.cpp" />
     <ClCompile Include="Formats\Images\DDSFormat.cpp" />
+    <ClCompile Include="Formats\Images\ImageBase.cpp" />
     <ClCompile Include="Formats\Images\ImageDDS.cpp" />
     <ClCompile Include="Formats\Images\ImageLoaderTemplate.cpp" />
     <ClCompile Include="Formats\Images\ImagePNG.cpp" />
@@ -106,6 +107,7 @@
     <ClInclude Include="Formats\Fonts\Font.h" />
     <ClInclude Include="Formats\Fonts\FontsManager.h" />
     <ClInclude Include="Formats\Images\DDSFormat.h" />
+    <ClInclude Include="Formats\Images\ImageBase.h" />
     <ClInclude Include="Formats\Images\ImageDDS.h" />
     <ClInclude Include="Formats\Images\ImageLoaderTemplate.h" />
     <ClInclude Include="Formats\Images\ImagePNG.h" />

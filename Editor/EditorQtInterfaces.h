@@ -21,8 +21,9 @@ ZN_INTERFACE IEditorToolUI
 	virtual ~IEditorToolUI() {}
 
 	virtual void DoInitializeUI(IEditorQtUIFrame& QtUIFrame) = 0;
+
 	virtual void DropEvent(const glm::vec2& Position) = 0;
-	virtual void DragEnterEvent(const SDragData& Data) = 0;
+	virtual bool DragEnterEvent(const SDragData& Data) = 0;
 	virtual void DragMoveEvent(const glm::vec2& Position) = 0;
 	virtual void DragLeaveEvent() = 0;
 };

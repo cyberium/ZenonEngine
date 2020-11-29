@@ -132,6 +132,10 @@ std::vector<glm::mat4> CModelsComponent3D::CreatePose(size_t BoneStartIndex, siz
 //
 void CModelsComponent3D::PlayAnimation(const std::string & AnimationName, bool Loop)
 {
+	auto model = GetModel();
+	if (model == nullptr)
+		throw CException("Node '%s' don't contains model.", GetOwnerNode().GetName().c_str());
+
 	const auto& animations = GetModel()->GetAnimations();
 	if (animations.empty())
 		throw CException("Animations list empty in Model '%s'.", GetModel()->GetFileName().c_str());

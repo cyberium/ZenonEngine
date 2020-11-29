@@ -170,8 +170,16 @@ void CSceneNodeRTSUnit::Update(const UpdateEventArgs & e)
 //
 void CSceneNodeRTSUnit::OnDeath()
 {
-	GetComponentT<IModelsComponent3D>()->PlayAnimation("death", false);
-	GetComponentT<IModelsComponent3D>()->SetAnimationEndedCallback([this](const IAnimation* Animation) {
-		MakeMeOrphan();
-	});
+	try
+	{
+		GetComponentT<IModelsComponent3D>()->PlayAnimation("death", false);
+		GetComponentT<IModelsComponent3D>()->SetAnimationEndedCallback([this](const IAnimation* Animation) {
+			MakeMeOrphan();
+		});
+	}
+	catch (const CException& e)
+	{
+		Log::Error("Unit::OnDeath error.");
+		Log::Error("--->%s", e.MessageCStr());
+	}
 }

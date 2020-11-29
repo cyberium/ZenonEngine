@@ -4,7 +4,7 @@
 #include "FontsManager.h"
 
 // Additional
-#include "Formats/Images/ImageLoaderTemplate.h"
+#include "Formats/Images/ImageBase.h"
 
 // FreeType
 #include <freetype/config/ftheader.h>

@@ -45,10 +45,18 @@ ZN_INTERFACE ZN_API	IObjectLoadSave
 {
 	virtual ~IObjectLoadSave() {}
 
-	virtual std::shared_ptr<IObject> Copy() const = 0;
-	virtual void CopyTo(std::shared_ptr<IObject> Destination) const = 0;
-	virtual void Load(const std::shared_ptr<IByteBuffer>& Buffer) = 0;
-	virtual void Save(const std::shared_ptr<IByteBuffer>& Buffer) const = 0;
-	virtual void Load(const std::shared_ptr<IXMLReader>& Reader) = 0;
-	virtual void Save(const std::shared_ptr<IXMLWriter>& Writer) const = 0;
+	virtual std::shared_ptr<IObject>  Copy() const = 0;
+	virtual void                      CopyTo(std::shared_ptr<IObject> Destination) const = 0;
+	virtual void                      Load(const std::shared_ptr<IByteBuffer>& Buffer) = 0;
+	virtual void                      Save(const std::shared_ptr<IByteBuffer>& Buffer) const = 0;
+	virtual void                      Load(const std::shared_ptr<IXMLReader>& Reader) = 0;
+	virtual void                      Save(const std::shared_ptr<IXMLWriter>& Writer) const = 0;
+
+	// Templates
+
+	template <typename T>
+	inline std::shared_ptr<T> CopyCast() const
+	{
+		return std::dynamic_pointer_cast<T>(Copy());
+	}
 };

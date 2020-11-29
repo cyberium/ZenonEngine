@@ -13,6 +13,7 @@ public:
 	// IznTreeViewItem
 	ETreeViewItemType GetType() const override;
 	std::string GetText() const override;
+	std::string GetIconName() const override;
 	size_t GetChildsCount() const override;
 	std::shared_ptr<IznTreeViewItem> GetChild(size_t Index) const override;
 	std::shared_ptr<IObject> GetObject_() const override;

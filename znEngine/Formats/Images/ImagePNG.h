@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ImageLoaderTemplate.h"
+#include "ImageBase.h"
 
 class CImagePNG
 	: public CImageBase

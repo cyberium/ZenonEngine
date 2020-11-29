@@ -27,6 +27,11 @@ std::string CFolderTreeViewItem::GetText() const
 	return m_VirtualFolderName;
 }
 
+std::string CFolderTreeViewItem::GetIconName() const
+{
+	return "folder";
+}
+
 size_t CFolderTreeViewItem::GetChildsCount() const
 {
 	return m_Childs.size();

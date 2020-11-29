@@ -105,7 +105,7 @@ public:
 	{}
 
 	std::string TexturesPathRoot;
-	std::string OverrideTexture;
+	std::unordered_map<std::string, std::string> OverrideTextureByMaterial;
 	std::unordered_map<uint8, uint8> TexturesTypeChange;
 	bool MakeCenterIsX0Z;
 	bool ApplyFullTransform;

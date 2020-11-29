@@ -202,7 +202,7 @@ void CFBXMaterials::LoadMaterialsTextures(fbxsdk::FbxSurfacePhong * FBXSurfacePh
 					textureType = (MaterialModel::ETextureType)it->second;
 			}
 
-			auto texture = LoadTexture(fbxTexture);
+			auto texture = LoadTexture(Material, fbxTexture);
 
 			Material->SetTexture(textureType, texture);
 		}
@@ -211,7 +211,7 @@ void CFBXMaterials::LoadMaterialsTextures(fbxsdk::FbxSurfacePhong * FBXSurfacePh
 	}
 }
 
-std::shared_ptr<ITexture> CFBXMaterials::LoadTexture(fbxsdk::FbxTexture * Texture)
+std::shared_ptr<ITexture> CFBXMaterials::LoadTexture(std::shared_ptr<MaterialModel> OwnerMaterial,  fbxsdk::FbxTexture * Texture)
 {
 	Log::Print("FBXMaterials:       Loading texture '%s'.", Texture->GetName());
 
@@ -234,9 +234,11 @@ std::shared_ptr<ITexture> CFBXMaterials::LoadTexture(fbxsdk::FbxTexture * Textur
 	auto loaderParams = m_FBXScene.GetLoaderParams();
 	if (auto loaderFBXParams = dynamic_cast<const CznFBXLoaderParams*>(loaderParams))
 	{
-		std::string overrridenTexture = loaderFBXParams->OverrideTexture;
-		if (overrridenTexture.size() > 0)
-			relativeFileName = overrridenTexture;
+		const auto& overrideMaterial = loaderFBXParams->OverrideTextureByMaterial.find(OwnerMaterial->GetName());
+		if (overrideMaterial != loaderFBXParams->OverrideTextureByMaterial.end())
+		{
+			relativeFileName = overrideMaterial->second;
+		}
 
 		std::string texturesRoot = loaderFBXParams->TexturesPathRoot;
 		if (texturesRoot.size() > 0)

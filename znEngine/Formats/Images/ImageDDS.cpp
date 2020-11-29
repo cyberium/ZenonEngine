@@ -127,7 +127,7 @@ bool CImageDDS::LoadRGB(const DDSURFACEDESC2& desc, std::shared_ptr<IFile> io)
 	m_BitsPerPixel = (uint32)desc.ddpfPixelFormat.dwRGBBitCount;
 	m_Stride = m_Width * (m_BitsPerPixel / 8);
 	m_IsTransperent = (desc.ddpfPixelFormat.dwFlags & DDPF_ALPHAPIXELS) == 1; // TODO: Fixme
-	m_Data = ZN_NEW uint8[m_Height * m_Stride];
+	m_Data.resize(m_Height * m_Stride);
 
 	// read the file
 	int filePitch = (desc.dwFlags & DDSD_PITCH) ? (int)desc.dwPitchOrLinearSize : m_Stride;
@@ -148,7 +148,7 @@ bool CImageDDS::LoadDXT(int type, const DDSURFACEDESC2& desc, std::shared_ptr<IF
 	m_BitsPerPixel = 32;
 	m_Stride = m_Width * (m_BitsPerPixel / 8);
 	m_IsTransperent = (desc.ddpfPixelFormat.dwFlags & DDPF_ALPHAPIXELS) == 1; // TODO: Fixme
-	m_Data = ZN_NEW uint8[m_Height * m_Stride];
+	m_Data.resize(m_Height * m_Stride);
 
 	switch (type)
 	{

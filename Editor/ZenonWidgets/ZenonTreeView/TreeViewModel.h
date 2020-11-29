@@ -33,7 +33,9 @@ public:
 
 private:
 	IznTreeViewItem* getItem(const QModelIndex& index) const;
+	QIcon* GetIcon(const std::string& IconName) const;
 
 private:
 	std::shared_ptr<IznTreeViewItem> m_RootItem;
+	mutable std::unordered_map<std::string, std::shared_ptr<QIcon>> m_BrowserIconsCache;
 };

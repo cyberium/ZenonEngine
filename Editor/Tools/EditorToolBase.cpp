@@ -55,8 +55,9 @@ void CEditorToolBase::DropEvent(const glm::vec2 & Position)
 {
 }
 
-void CEditorToolBase::DragEnterEvent(const SDragData & Data)
+bool CEditorToolBase::DragEnterEvent(const SDragData & Data)
 {
+	return false;
 }
 
 void CEditorToolBase::DragMoveEvent(const glm::vec2 & Position)

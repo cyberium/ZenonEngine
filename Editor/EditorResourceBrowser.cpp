@@ -8,6 +8,7 @@
 #include "ResourcesBrowser/ModelTreeViewItem.h"
 #include "ResourcesBrowser/NodeProtoTreeViewItem.h"
 #include "ResourcesBrowser/SceneNodeTreeViewItem.h"
+#include "ResourcesBrowser/TextureTreeViewItem.h"
 
 #include "ResourcesBrowser/ResourcesFilesystem.h"
 
@@ -39,13 +40,13 @@ namespace
 		if (ResourceFile->IsDirectory())
 		{
 			auto directoryTreeViewItem = MakeShared(CFolderTreeViewItem, ResourceFile->GetFilenameStruct().NameWithoutExtension);
-
 			for (const auto& childResourceFile : ResourceFile->GetChilds())
-			{
-				auto treeViewItem = ResourceFileToTreeView(Editor, childResourceFile);
-				if (treeViewItem != nullptr)
+				if (auto treeViewItem = ResourceFileToTreeView(Editor, childResourceFile))
 					directoryTreeViewItem->AddChild(treeViewItem);
-			}
+
+			// Skip empty directories
+			if (directoryTreeViewItem->GetChildsCount() == 0)
+				return nullptr;
 
 			return directoryTreeViewItem;
 		}
@@ -76,15 +77,18 @@ namespace
 					auto sceneNodeProtoRoot = Editor.GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<CSceneNodeFactory>()->LoadSceneNode3DXML(firstXMLChild, Editor.Get3DFrame().GetScene());
 					sceneNodeProtoRoot->MakeMeOrphan();
 
-					auto nodeProtoTreeViewItem = MakeShared(CNodeProtoTreeViewItem, sceneNodeProtoRoot);
-
-					return nodeProtoTreeViewItem;
+					return MakeShared(CNodeProtoTreeViewItem, sceneNodeProtoRoot);
 				}
 				catch (const CException& e)
 				{
 					Log::Error("Error while loading '%s' NodeProto.", fileNameStruct.ToString().c_str());
 					Log::Error("--->%s", e.MessageCStr());
 				}
+			}
+			else if (fileNameStruct.Extension == "dds" || fileNameStruct.Extension == "png")
+			{
+				auto texture = Editor.GetBaseManager().GetManager<IznTexturesFactory>()->LoadTexture2D(fileNameStruct.ToString());
+				return MakeShared(CTextureTreeViewItem, texture);
 			}
 			else
 				Log::Warn("Resource file '%s' has unsupported format.", fileNameStruct.ToString().c_str());
@@ -136,6 +140,14 @@ void CEditorResourceBrowser::Initialize()
 			m_Editor.Get3DPreviewFrame().SetModel(modelObject);
 			return true;
 		}
+		else if (sourceObject->GetType() == ETreeViewItemType::Texture)
+		{
+			auto textureObject = std::dynamic_pointer_cast<ITexture>(object);
+			if (textureObject == nullptr)
+				return false;
+			m_Editor.Get3DPreviewFrame().SetTexture(textureObject);
+			return true;
+		}
 		
 		return false;
 	});
@@ -155,6 +167,9 @@ void CEditorResourceBrowser::Initialize()
 		if (object == nullptr)
 			return false;
 
+		//
+		// Node proto
+		//
 		if (sourceObject->GetType() == ETreeViewItemType::SceneNodeProto)
 		{
 			auto objectAsModelAsSceneNodeProto = std::dynamic_pointer_cast<ISceneNode>(object);
@@ -165,13 +180,32 @@ void CEditorResourceBrowser::Initialize()
 			m_Editor.GetTools().Enable(ETool::EToolDragger);
 			return true;
 		}
+
+
+		//
+		// Model
+		//
 		else if (sourceObject->GetType() == ETreeViewItemType::Model)
 		{
-			IModelPtr objectAsModel = std::dynamic_pointer_cast<IModel>(object);
+			std::shared_ptr<IModel> objectAsModel = std::dynamic_pointer_cast<IModel>(object);
 			if (objectAsModel == nullptr)
 				return false;
 
 			CreateDragDataFromModel(objectAsModel, Value);
+			m_Editor.GetTools().Enable(ETool::EToolDragger);
+			return true;
+		}
+
+		//
+		// Texture
+		//
+		else if (sourceObject->GetType() == ETreeViewItemType::Texture)
+		{
+			std::shared_ptr<ITexture> objectAsTexture = std::dynamic_pointer_cast<ITexture>(object);
+			if (objectAsTexture == nullptr)
+				return false;
+
+			CreateDragDataFromTexture(objectAsTexture, Value);
 			m_Editor.GetTools().Enable(ETool::EToolDragger);
 			return true;
 		}
@@ -185,11 +219,8 @@ void CEditorResourceBrowser::Initialize()
 
 	GetEditorQtUIFrame().getCollectionViewer()->Refresh();
 	for (const auto& resourceFile : fileSystem.GetRootFile()->GetChilds())
-	{
-		auto treeViewItem = ResourceFileToTreeView(m_Editor, resourceFile);
-		if (treeViewItem != nullptr)
+		if (auto treeViewItem = ResourceFileToTreeView(m_Editor, resourceFile))
 			GetEditorQtUIFrame().getCollectionViewer()->AddToRoot(treeViewItem);
-	}
 }
 
 void CEditorResourceBrowser::InitializeSceneBrowser()

@@ -27,6 +27,11 @@ std::string CznTreeViewItem::GetText() const
 	return "Unknown";
 }
 
+std::string CznTreeViewItem::GetIconName() const
+{
+	return "file-empty";
+}
+
 size_t CznTreeViewItem::GetChildsCount() const
 {
 	return 0;

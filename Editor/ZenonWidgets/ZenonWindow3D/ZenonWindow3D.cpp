@@ -214,10 +214,11 @@ void ZenonWindow3D::dragEnterEvent(QDragEnterEvent * event)
 			dragData.ScreenPosition = glm::vec2(event->pos().x(), event->pos().y());
 			dragData.IsCtrl = (event->keyboardModifiers() & Qt::KeyboardModifier::ControlModifier) != 0;
 
-			m_Editor->GetTools().DragEnterEvent(dragData);
-
-			event->setDropAction(Qt::DropAction::MoveAction);
-			event->acceptProposedAction();
+			if (m_Editor->GetTools().DragEnterEvent(dragData))
+			{
+				//event->setDropAction(Qt::DropAction::MoveAction);
+				event->acceptProposedAction();
+			}
 		//}
 		//catch (const CException& e)
 		//{

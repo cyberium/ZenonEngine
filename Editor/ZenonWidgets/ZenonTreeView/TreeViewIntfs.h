@@ -23,6 +23,7 @@ ZN_INTERFACE IznTreeViewItem
 
 	virtual ETreeViewItemType                      GetType() const = 0;
 	virtual std::string                            GetText() const = 0;
+	virtual std::string                            GetIconName() const = 0;
 	virtual size_t                                 GetChildsCount() const = 0;
 	virtual std::shared_ptr<IznTreeViewItem>       GetChild(size_t Index) const = 0;
 	virtual const IznTreeViewItem*                 GetParent() const = 0;

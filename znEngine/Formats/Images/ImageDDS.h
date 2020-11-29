@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ImageLoaderTemplate.h"
+#include "ImageBase.h"
 #include "DDSFormat.h"
 
 class CImageDDS

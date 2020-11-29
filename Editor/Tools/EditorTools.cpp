@@ -141,11 +141,13 @@ void CEditorTools::DropEvent(const glm::vec2 & Position)
 			it.second->DropEvent(Position);
 }
 
-void CEditorTools::DragEnterEvent(const SDragData & Data)
+bool CEditorTools::DragEnterEvent(const SDragData & Data)
 {
 	for (const auto& it : m_Tools)
 		if (it.second->IsEnabled())
-			it.second->DragEnterEvent(Data);
+			if (it.second->DragEnterEvent(Data))
+				return true;
+	return false;
 }
 
 void CEditorTools::DragMoveEvent(const glm::vec2 & Position)

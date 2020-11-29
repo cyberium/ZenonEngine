@@ -143,6 +143,7 @@
     <ClCompile Include="ResourcesBrowser\ResourcesFilesystem.cpp" />
     <ClCompile Include="ResourcesBrowser\SceneNodeTreeViewItem.cpp" />
     <ClCompile Include="ResourcesBrowser\FolderTreeViewItem.cpp" />
+    <ClCompile Include="ResourcesBrowser\TextureTreeViewItem.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
@@ -236,6 +237,7 @@
     <ClInclude Include="ResourcesBrowser\ResourcesFilesystemIntfs.h" />
     <ClInclude Include="ResourcesBrowser\SceneNodeTreeViewItem.h" />
     <ClInclude Include="ResourcesBrowser\FolderTreeViewItem.h" />
+    <ClInclude Include="ResourcesBrowser\TextureTreeViewItem.h" />
     <ClInclude Include="Tools\EditorToolBase.h" />
     <ClInclude Include="Tools\EditorToolDragger.h" />
     <ClInclude Include="Tools\EditorToolMover.h" />

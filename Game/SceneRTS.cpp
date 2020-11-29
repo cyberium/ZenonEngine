@@ -94,12 +94,12 @@ void CSceneRTS::Initialize()
 
 	{
 		m_UIControlRTSTowersPanel = CreateUIControlTCast<CUIControlRTSTowersPanel>();
-		m_UIControlRTSTowersPanel->AddTowerButton("Tower 1", "sceneNodesProtos/tower1.xml", "sceneNodesProtos/tower1.png", 100, *this);
-		m_UIControlRTSTowersPanel->AddTowerButton("Tower 2", "sceneNodesProtos/tower2.xml", "sceneNodesProtos/tower2.png", 100, *this);
-		m_UIControlRTSTowersPanel->AddTowerButton("Tower A", "sceneNodesProtos/towerA.xml", "sceneNodesProtos/towerA.png", 100, *this);
-		m_UIControlRTSTowersPanel->AddTowerButton("Tower B", "sceneNodesProtos/towerB.xml", "sceneNodesProtos/towerB.png", 100, *this);
-		m_UIControlRTSTowersPanel->AddTowerButton("Tower C", "sceneNodesProtos/towerC.xml", "sceneNodesProtos/towerC.png", 100, *this);
-		m_UIControlRTSTowersPanel->AddTowerButton("Tower E", "sceneNodesProtos/towerE.xml", "sceneNodesProtos/towerE.png", 100, *this);
+		m_UIControlRTSTowersPanel->AddTowerButton("Tower 1", "sceneNodesProtos/tower1.znobj", "sceneNodesProtos/tower1.png", 100, *this);
+		m_UIControlRTSTowersPanel->AddTowerButton("Tower 2", "sceneNodesProtos/tower2.znobj", "sceneNodesProtos/tower2.png", 100, *this);
+		m_UIControlRTSTowersPanel->AddTowerButton("Tower A", "sceneNodesProtos/towerA.znobj", "sceneNodesProtos/towerA.png", 100, *this);
+		m_UIControlRTSTowersPanel->AddTowerButton("Tower B", "sceneNodesProtos/towerB.znobj", "sceneNodesProtos/towerB.png", 100, *this);
+		m_UIControlRTSTowersPanel->AddTowerButton("Tower C", "sceneNodesProtos/towerC.znobj", "sceneNodesProtos/towerC.png", 100, *this);
+		m_UIControlRTSTowersPanel->AddTowerButton("Tower E", "sceneNodesProtos/towerE.znobj", "sceneNodesProtos/towerE.png", 100, *this);
 
 		m_UIControlRTSTowersPanel->SetTranslate(glm::vec2(
 			(GetRenderWindow().GetWindowWidth() / 2.0f) - (m_UIControlRTSTowersPanel->GetSize().x / 2.0f),
@@ -222,7 +222,8 @@ std::shared_ptr<IModel> CSceneRTS::CreateUnitModel(std::string ModelName, std::s
 
 	CznFBXLoaderParams fbxLoaderParams;
 	fbxLoaderParams.TexturesPathRoot = "Toon_RTS/models/textures/";
-	fbxLoaderParams.OverrideTexture = "WK_StandardUnits_Blue.png";
+	fbxLoaderParams.OverrideTextureByMaterial["WK_StandardUnits_Blue"] = "WK_StandardUnits_Blue.png";
+	fbxLoaderParams.OverrideTextureByMaterial["WK_Horse"] = "WK_Horse_A.png";
 
 	auto fbxModelsLoader = GetBaseManager().GetManager<IznModelsFactory>()->GetLoaderForModel("fbx");
 	_ASSERT(fbxModelsLoader != nullptr);

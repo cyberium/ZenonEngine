@@ -13,6 +13,8 @@ SceneBase::SceneBase(IBaseManager& BaseManager, IRenderWindow& RenderWindow)
 	, m_RenderWindow(RenderWindow)
 	, m_Finder(*this)
 
+	, m_EnableStatistics(true)
+
 	, m_SceneEventsBlocked(false)
 {
 
@@ -277,7 +279,8 @@ void SceneBase::OnRender(RenderEventArgs & e)
 
 	// UI render
 	{
-		m_StatisticText->SetText(GetStatisticsString(e));
+		if (m_EnableStatistics)
+			m_StatisticText->SetText(GetStatisticsString(e));
 
 		renderer->RenderUI(e);
 	}
@@ -553,6 +556,11 @@ void SceneBase::RaiseSceneChangeEvent(ESceneChangeType SceneChangeType, const st
 		for (const auto& el : m_EventListeners)
 			el->OnSceneNodeRemoved(ParentNode, ChildNode);
 	}
+}
+
+void SceneBase::ShowStatistics(bool Value)
+{
+	m_EnableStatistics = Value;
 }
 
 

@@ -91,6 +91,7 @@ protected:
 	void                                            UnblockSceneEvents();
 	void                                            RaiseSceneChangeEvent(ESceneChangeType SceneChangeType, const std::shared_ptr<ISceneNode>& ParentNode, const std::shared_ptr<ISceneNode>& ChildNode);
 
+	void                                            ShowStatistics(bool Value);
 
 private:
 	void                                            DoUpdate_Rec(const std::shared_ptr<ISceneNode>& Node, const UpdateEventArgs& e);
@@ -101,7 +102,7 @@ private:
 	bool                                            DoMouseButtonPressed_Rec(const std::shared_ptr<IUIControl>& Node, MouseButtonEventArgs& e);
 	void                                            DoMouseButtonReleased_Rec(const std::shared_ptr<IUIControl>& Node, MouseButtonEventArgs& e);
 	bool                                            DoMouseWheel_Rec(const std::shared_ptr<IUIControl>& Node, MouseWheelEventArgs& e);
-
+      
 	std::string                                     GetStatisticsString(const UpdateEventArgs& e) const;
 
 private:
@@ -112,6 +113,7 @@ private:
 
 	std::shared_ptr<ICameraController>              m_CameraController;
 
+	bool                                            m_EnableStatistics;
 	std::shared_ptr<IUIControlText>                 m_StatisticText;
 
 	std::shared_ptr<IRenderer>                      m_Renderer;

@@ -188,6 +188,9 @@
     <ClCompile Include="ResourcesBrowser\NodeProtoTreeViewItem.cpp">
       <Filter>ResourcesBrowser\Resources</Filter>
     </ClCompile>
+    <ClCompile Include="ResourcesBrowser\TextureTreeViewItem.cpp">
+      <Filter>ResourcesBrowser\Resources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -301,6 +304,9 @@
       <Filter>ResourcesBrowser</Filter>
     </ClInclude>
     <ClInclude Include="ResourcesBrowser\NodeProtoTreeViewItem.h">
+      <Filter>ResourcesBrowser\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourcesBrowser\TextureTreeViewItem.h">
       <Filter>ResourcesBrowser\Resources</Filter>
     </ClInclude>
   </ItemGroup>

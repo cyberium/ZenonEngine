@@ -121,12 +121,19 @@ QVariant CznQTTreeViewModel::data(const QModelIndex& index, int role) const
 	{
 		return QVariant(item->GetText().c_str());
 	}
-	/*else if (role == Qt::DecorationRole)
+	else if (role == Qt::DecorationRole)
 	{
-		QPixmap pixmap(QSize(18, 18));
-		pixmap.fill(QColor(88, 255, 88));
-		return QVariant(pixmap);
-	}*/
+		const std::string& iconName = item->GetIconName();
+		if (iconName.empty())
+			return QVariant();
+
+		auto icon = GetIcon(item->GetIconName());
+		return QVariant(*icon);
+
+		//QPixmap pixmap(QSize(18, 18));
+		//pixmap.fill(QColor(88, 255, 88));
+		//return QVariant(pixmap);
+	}
 
 	return QVariant();
 }
@@ -207,4 +214,17 @@ IznTreeViewItem* CznQTTreeViewModel::getItem(const QModelIndex& index) const
 		return item;
 
 	return m_RootItem.get();
+}
+
+QIcon* CznQTTreeViewModel::GetIcon(const std::string& IconName) const
+{
+	const auto& iconIt = m_BrowserIconsCache.find(IconName);
+	if (iconIt != m_BrowserIconsCache.end())
+		return iconIt->second.get();
+
+	std::shared_ptr<QIcon> icon = MakeShared(QIcon);
+	icon->addFile(QString::fromUtf8((":/Browser/Resources/Browser/" + IconName + ".png").c_str()), QSize(), QIcon::Normal, QIcon::Off);
+ 	m_BrowserIconsCache.insert(std::make_pair(IconName, icon));
+
+	return icon.get();
 }

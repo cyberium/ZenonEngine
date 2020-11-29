@@ -78,7 +78,7 @@ void CEditorToolDragger::DropEvent(const glm::vec2& Position)
 		Clear();
 }
 
-void CEditorToolDragger::DragEnterEvent(const SDragData& Data)
+bool CEditorToolDragger::DragEnterEvent(const SDragData& Data)
 {
 	m_IsDraggingPermanentCreation = Data.IsCtrl;
 
@@ -91,18 +91,28 @@ void CEditorToolDragger::DragEnterEvent(const SDragData& Data)
 	}
 	else if (dragDataSourceType == EDragDataSourceType::Model)
 	{
-		IModelPtr model = GetModelFromDragData(GetBaseManager(), Data.Buffer);
+		std::shared_ptr<IModel> model = GetModelFromDragData(GetBaseManager(), Data.Buffer);
 		if (model == nullptr)
-			return;
+			return false;
 
 		m_DraggerNode = GetScene().CreateSceneNodeT<ISceneNode>();
 		m_DraggerNode->SetName(model->GetName());
 		m_DraggerNode->GetComponentT<IModelsComponent3D>()->SetModel(model);
 	}
+	/*else if (dragDataSourceType == EDragDataSourceType::Texture)
+	{
+		std::shared_ptr<ITexture> texture = GetTextureFromDragData(GetBaseManager(), Data.Buffer);
+		if (texture == nullptr)
+			return;
+
+		m_DraggerNode = GetScene().CreateSceneNodeT<ISceneNode>();
+		m_DraggerNode->SetName(model->GetName());
+		m_DraggerNode->GetComponentT<IModelsComponent3D>()->SetModel(model);
+	}*/
 	else
 	{
 		Log::Warn("EditorToolDragger don't support '%d' drag data source type.", dragDataSourceType);
-		return;
+		return false;
 	}
 
 	auto ray = GetScene().GetCameraController()->ScreenToRay(GetScene().GetRenderWindow().GetViewport(), Data.ScreenPosition);
@@ -113,12 +123,13 @@ void CEditorToolDragger::DragEnterEvent(const SDragData& Data)
 		{
 			auto pos = GetScene().GetCameraController()->RayToPlane(ray, Plane(glm::vec3(0.0f, 1.0f, 0.0f), m_DraggerNode->GetComponentT<IColliderComponent3D>()->GetBounds().getCenter().y));
 			m_DraggerNode->SetTranslate(pos);
-			return;
+			return true;
 		}
 	}
 
 	auto pos = GetScene().GetCameraController()->RayToPlane(ray, Plane(glm::vec3(0.0f, 1.0f, 0.0f), 0.0f));
 	m_DraggerNode->SetTranslate(pos);
+	return true;
 }
 
 void CEditorToolDragger::DragMoveEvent(const glm::vec2& Position)

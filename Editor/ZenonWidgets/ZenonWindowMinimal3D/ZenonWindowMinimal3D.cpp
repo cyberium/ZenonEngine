@@ -25,7 +25,7 @@ ZenonWindowMinimal3DWidget::~ZenonWindowMinimal3DWidget()
 //
 void ZenonWindowMinimal3DWidget::SetWindowTitle(const std::string& WindowName)
 {
-	_ASSERT(false);
+	throw CException("Not implemented");
 }
 
 std::string ZenonWindowMinimal3DWidget::GetWindowTitle() const
@@ -43,7 +43,7 @@ size_t ZenonWindowMinimal3DWidget::GetWindowHeight() const
 	return geometry().height();
 }
 
-void ZenonWindowMinimal3DWidget::SetCursorPosition(const glm::ivec2 & CursorPosition)
+void ZenonWindowMinimal3DWidget::SetCursorPosition(const glm::ivec2& CursorPosition)
 {
 	throw CException("Not implemented");
 }

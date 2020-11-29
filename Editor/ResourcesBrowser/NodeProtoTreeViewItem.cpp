@@ -27,6 +27,11 @@ std::string CNodeProtoTreeViewItem::GetText() const
 	return m_SceneNode->GetName();
 }
 
+std::string CNodeProtoTreeViewItem::GetIconName() const
+{
+	return "node";
+}
+
 std::shared_ptr<IObject> CNodeProtoTreeViewItem::GetObject_() const
 {
 	return m_SceneNode;

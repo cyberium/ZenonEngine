@@ -3,6 +3,7 @@
 class ZN_API TextureDX11 
 	: public ITexture
 	, public ITextureInternal
+	, public Object
 	, public std::enable_shared_from_this<TextureDX11>
 {
 public:
@@ -21,7 +22,7 @@ public:
 
 	uint16 GetWidth() const override;
 	uint16 GetHeight() const override;
-	glm::ivec2 GetSize() const override;
+	glm::uvec2 GetSize() const override;
 	uint16 GetDepth() const override;
 	uint8 GetBPP() const override;
 	uint8 GetSamplesCount() const override;

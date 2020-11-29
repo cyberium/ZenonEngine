@@ -64,7 +64,7 @@ ZN_INTERFACE IEditorTools
 	// UI
 	virtual void DoInitializeUI(IEditorQtUIFrame& QtUIFrame) = 0;
 	virtual void DropEvent(const glm::vec2& Position) = 0;
-	virtual void DragEnterEvent(const SDragData& Data) = 0;
+	virtual bool DragEnterEvent(const SDragData& Data) = 0;
 	virtual void DragMoveEvent(const glm::vec2& Position) = 0;
 	virtual void DragLeaveEvent() = 0;
 
@@ -207,7 +207,8 @@ ZN_INTERFACE IEditor3DPreviewFrame
 	virtual ~IEditor3DPreviewFrame() {}
 
 	virtual void SetSceneNode(std::shared_ptr<ISceneNode> SceneNode) = 0;
-	virtual void SetModel(IModelPtr Model) = 0;
+	virtual void SetModel(std::shared_ptr<IModel> Model) = 0;
+	virtual void SetTexture(std::shared_ptr<ITexture> Texture) = 0;
 };
 
 

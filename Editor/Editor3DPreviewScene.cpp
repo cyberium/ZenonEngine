@@ -44,8 +44,8 @@ void CEditor3DPreviewScene::SetSceneNode(std::shared_ptr<ISceneNode> SceneNode)
 
 	Clean();
 
-	auto copy = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<CSceneNodeFactory>()->CreateSceneNode3D(SceneNode->GetClass(), *this, m_SceneNode);
-	SceneNode->CopyTo(copy);
+	auto copy = SceneNode->CopyCast<ISceneNode>();
+	m_SceneNode->AddChild(copy);
 
 	BoundingBox bbox;
 	ExtendsBoundsRecursive(bbox, copy);
@@ -63,7 +63,7 @@ void CEditor3DPreviewScene::SetSceneNode(std::shared_ptr<ISceneNode> SceneNode)
 
 }
 
-void CEditor3DPreviewScene::SetModel(IModelPtr Model)
+void CEditor3DPreviewScene::SetModel(std::shared_ptr<IModel> Model)
 {
 	_ASSERT(Model != nullptr);
 
@@ -83,6 +83,69 @@ void CEditor3DPreviewScene::SetModel(IModelPtr Model)
 	GetCameraController()->GetCamera()->SetDirection(glm::vec3(-0.5f));
 }
 
+namespace
+{
+	std::pair<glm::vec2, glm::vec2> CalculateTextureSize(const glm::uvec2& TextureSize, const glm::uvec2& ViewportSize)
+	{
+		glm::vec2 newSize(32.0f);
+		glm::vec2 newPosition(0.0f);
+
+		glm::vec2 viewport(ViewportSize);
+		if (ViewportSize.x > ViewportSize.y)
+			viewport.x = ViewportSize.y;
+		else if (ViewportSize.x < ViewportSize.y)
+			viewport.y = ViewportSize.x;
+
+		if (TextureSize.x > TextureSize.y)
+		{
+			float koeff = static_cast<float>(viewport.x) / static_cast<float>(TextureSize.x);
+			newSize.x = static_cast<float>(TextureSize.x) * koeff;
+			newSize.y = static_cast<float>(TextureSize.y) * koeff;
+			newPosition.x = 0.0f;
+			newPosition.y = (ViewportSize.y - newSize.y) / 2.0f;
+		}
+		else if (TextureSize.x < TextureSize.y)
+		{
+			float koeff = static_cast<float>(viewport.y) / static_cast<float>(TextureSize.y);
+			newSize.x = static_cast<float>(TextureSize.x) * koeff;
+			newSize.y = static_cast<float>(TextureSize.y) * koeff;
+			newPosition.x = (ViewportSize.x - newSize.x) / 2.0f;
+			newPosition.y = 0.0f;
+		}
+		else
+		{
+			float koeffX = static_cast<float>(viewport.x) / static_cast<float>(TextureSize.x);
+			float koeffY = static_cast<float>(viewport.y) / static_cast<float>(TextureSize.y);
+			newSize.x = static_cast<float>(TextureSize.x) * koeffX;
+			newSize.y = static_cast<float>(TextureSize.y) * koeffY;
+			newPosition.x = (ViewportSize.x - newSize.x) / 2.0f;
+			newPosition.y = (ViewportSize.y - newSize.y) / 2.0f;
+		}
+
+		return std::make_pair(newSize, newPosition);
+	}
+}
+
+void CEditor3DPreviewScene::SetTexture(std::shared_ptr<ITexture> Texture)
+{
+	_ASSERT(Texture != nullptr);
+
+	Clean();
+
+	std::shared_ptr<CMaterialUIControl> contentMaterial = MakeShared(CMaterialUIControl, GetBaseManager().GetApplication().GetRenderDevice());
+	contentMaterial->SetTexture(Texture);
+
+	auto textureBounds = CalculateTextureSize(Texture->GetSize(), GetRenderWindow().GetViewport().GetSize());
+
+	IUIControlCommon::SSubgeometry subGeom;
+	subGeom.Translate = textureBounds.second;
+	subGeom.Size = textureBounds.first;
+	subGeom.Material = contentMaterial;
+	subGeom.Geom = GetBaseManager().GetApplication().GetRenderDevice().GetPrimitivesFactory().CreateUIQuad(glm::vec2(1.0f));
+
+	m_TextureNode->AddSubgeometry(subGeom);
+}
+
 
 
 //
@@ -91,6 +154,8 @@ void CEditor3DPreviewScene::SetModel(IModelPtr Model)
 void CEditor3DPreviewScene::Initialize()
 {
 	SceneBase::Initialize();
+
+	ShowStatistics(false);
 
 	// Light
 	{
@@ -122,19 +187,25 @@ void CEditor3DPreviewScene::Initialize()
 		GetCameraController()->GetCamera()->SetPitch(-45);
 	}
 
-
+	// SceneNode
 	{
 		m_SceneNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeFactory>()->CreateSceneNode3D(cSceneNode3D, *this);
 		m_SceneNode->SetName("SceneNodeProtoPreview");
 	}
 
+	// Model
 	{
 		m_ModelNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeFactory>()->CreateSceneNode3D(cSceneNode3D, *this);
 		m_ModelNode->SetName("NodeModelPreview");
 	}
 
-
+	// Texture
 	{
+		m_TextureNode = CreateUIControlTCast<IUIControlCommon>(nullptr);
+	}
+
+
+	/*{
 		auto node = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeFactory>()->CreateSceneNode3D(cSceneNode3D, *this);
 		node->SetName("GridNodeX10");
 		node->SetTranslate(glm::vec3(0.0f, 0.03f, 0.0f));
@@ -149,8 +220,7 @@ void CEditor3DPreviewScene::Initialize()
 		model->AddConnection(mat, geom);
 
 		node->GetComponentT<IModelsComponent3D>()->SetModel(model);
-	}
-
+	}*/
 
 
 	//
@@ -189,5 +259,10 @@ void CEditor3DPreviewScene::Clean()
 		auto modelComponent = m_ModelNode->GetComponentT<IModelsComponent3D>();
 		if (modelComponent->GetModel())
 			modelComponent->ResetModel();
+	}
+
+	if (m_TextureNode != nullptr)
+	{
+		m_TextureNode->ClearSubgeometries();
 	}
 }

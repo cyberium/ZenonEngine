@@ -371,6 +371,9 @@
     <ClCompile Include="Formats\Models\ModelsLoaderHelper.cpp">
       <Filter>Formats\Models</Filter>
     </ClCompile>
+    <ClCompile Include="Formats\Images\ImageBase.cpp">
+      <Filter>Formats\Images</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="common.h">
@@ -624,6 +627,9 @@
     </ClInclude>
     <ClInclude Include="Formats\Models\ModelsLoaderHelper.h">
       <Filter>Formats\Models</Filter>
+    </ClInclude>
+    <ClInclude Include="Formats\Images\ImageBase.h">
+      <Filter>Formats\Images</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

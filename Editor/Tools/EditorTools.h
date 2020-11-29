@@ -36,7 +36,7 @@ public:
 	// UI
 	virtual void DoInitializeUI(IEditorQtUIFrame& QtUIFrame) override;
 	virtual void DropEvent(const glm::vec2& Position) override;
-	virtual void DragEnterEvent(const SDragData& Data) override;
+	virtual bool DragEnterEvent(const SDragData& Data) override;
 	virtual void DragMoveEvent(const glm::vec2& Position) override;
 	virtual void DragLeaveEvent() override;
 

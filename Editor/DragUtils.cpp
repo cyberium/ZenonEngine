@@ -23,7 +23,7 @@ void CreateDragDataFromSceneNode(const std::shared_ptr<ISceneNode>& Node, CByteB
 	//ByteBuffer->AppendPackedUInt64(Node->GetGUID());
 }
 
-void CreateDragDataFromModel(const IModelPtr& Model, CByteBuffer * ByteBuffer)
+void CreateDragDataFromModel(const std::shared_ptr<IModel>& Model, CByteBuffer * ByteBuffer)
 {
 	if (Model == nullptr)
 		throw CException("Unable create drag data from IModel, because IModel is nullptr.");
@@ -42,6 +42,24 @@ void CreateDragDataFromModel(const IModelPtr& Model, CByteBuffer * ByteBuffer)
 	ByteBuffer->writeString(Model->GetFileName());
 }
 
+void CreateDragDataFromTexture(const std::shared_ptr<ITexture>& Texture, CByteBuffer * ByteBuffer)
+{
+	if (Texture == nullptr)
+		throw CException("Unable create drag data from IModel, because IModel is nullptr.");
+
+	if (ByteBuffer == nullptr || ByteBuffer->getSize() > 0 || ByteBuffer->getPos() > 0)
+		throw CException("Unable create drag data from '%s' IModel, because ByteBuffer is not empty.", Texture->GetFilename().c_str());
+
+	// 4 bytes - sourceType
+	EDragDataSourceType sourceType = EDragDataSourceType::Texture;
+	ByteBuffer->write(&sourceType);
+
+	// Model filename
+	ByteBuffer->writeString(Texture->GetFilename());
+}
+
+
+
 EDragDataSourceType GetDragDataSourceType(const CByteBuffer & ByteBuffer)
 {
 	if (ByteBuffer.getSize() == 0 || ByteBuffer.getPos() > 0)
@@ -55,6 +73,8 @@ EDragDataSourceType GetDragDataSourceType(const CByteBuffer & ByteBuffer)
 
 	return static_cast<EDragDataSourceType>(sourceTypeInt);
 }
+
+
 
 std::shared_ptr<ISceneNode> GetSceneNodeFromDragData(IBaseManager& BaseManager, IScene& Scene, const CByteBuffer& ByteBuffer)
 {
@@ -104,13 +124,46 @@ std::shared_ptr<IModel> GetModelFromDragData(IBaseManager& BaseManager, const CB
 
 	try
 	{
-		IModelPtr model = BaseManager.GetManager<IznModelsFactory>()->LoadModel(modelFileName);
+		std::shared_ptr<IModel> model = BaseManager.GetManager<IznModelsFactory>()->LoadModel(modelFileName);
 		model->SetName(modelName);
 		return model;
 	}
 	catch (const CException& e)
 	{
 		Log::Error("Unable to create IModel with name '%s' and filename '%s' from drag data.", modelName.c_str(), modelFileName.c_str());
+		Log::Error("--->%s", e.MessageCStr());
+	}
+
+	return nullptr;
+}
+
+std::shared_ptr<ITexture> GetTextureFromDragData(IBaseManager & BaseManager, const CByteBuffer & ByteBuffer)
+{
+	if (ByteBuffer.getSize() == 0 || ByteBuffer.getPos() > 0)
+		throw CException("Incorrect drag data ByteBuffer.");
+
+	CByteBuffer byteBufferCopy(ByteBuffer);
+
+	uint32 sourceTypeInt;
+	if (false == byteBufferCopy.read(&sourceTypeInt))
+		throw CException("Incorrect drag data Buffer for ITexture.");
+	EDragDataSourceType sourceType = static_cast<EDragDataSourceType>(sourceTypeInt);
+	if (sourceType != EDragDataSourceType::Texture)
+		throw CException("Drag data type '%d' is not ITexture drag data.", sourceTypeInt);
+
+	std::string textureFilename;
+	if (false == byteBufferCopy.readString(&textureFilename))
+		throw CException("Incorrect drag data ByteBuffer.");
+
+	try
+	{
+		std::shared_ptr<ITexture> texture = BaseManager.GetManager<IznTexturesFactory>()->LoadTexture2D(textureFilename);
+		texture->SetName(textureFilename);
+		return texture;
+	}
+	catch (const CException& e)
+	{
+		Log::Error("Unable to create ITexture with filename '%s' from drag data.", textureFilename.c_str());
 		Log::Error("--->%s", e.MessageCStr());
 	}
 

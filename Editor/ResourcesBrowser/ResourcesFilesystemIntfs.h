@@ -3,13 +3,7 @@
 enum class EResourceFileType
 {
 	File,
-	Directory,
-
-	SceneNode,
-	Model,
-	Geometry,
-	Material,
-	Texture
+	Directory
 };
 
 

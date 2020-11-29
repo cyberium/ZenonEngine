@@ -21,7 +21,7 @@ protected:
 	std::shared_ptr<MaterialModel>  LoadMaterial(fbxsdk::FbxSurfaceMaterial* FBXMaterial);
 	void                            LoadPhongMaterialsProperties(fbxsdk::FbxSurfacePhong* FBXSurfacePhong, std::shared_ptr<MaterialModel> Material);
 	void                            LoadMaterialsTextures(fbxsdk::FbxSurfacePhong* FBXSurfacePhong, std::shared_ptr<MaterialModel> Material);
-	std::shared_ptr<ITexture>       LoadTexture(fbxsdk::FbxTexture* Texture);
+	std::shared_ptr<ITexture>       LoadTexture(std::shared_ptr<MaterialModel> OwnerMaterial, fbxsdk::FbxTexture* Texture);
 
 private:
 	std::unordered_map<std::string, std::shared_ptr<IMaterial>> m_Materials;

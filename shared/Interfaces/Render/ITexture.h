@@ -8,6 +8,7 @@ ZN_INTERFACE IShaderParameterSource;
 
 ZN_INTERFACE ZN_API ITexture
 	: public IShaderParameterSource
+	, public virtual IObject
 {
 	enum class ZN_API Dimension
 	{
@@ -143,7 +144,7 @@ ZN_INTERFACE ZN_API ITexture
 
 	virtual uint16_t GetWidth() const = 0;      // Get the width of the textures in texels.
 	virtual uint16_t GetHeight() const = 0;     // Get the height of the texture in texles.
-	virtual glm::ivec2 GetSize() const = 0;     // Get the 2d size of the texture in texles.
+	virtual glm::uvec2 GetSize() const = 0;     // Get the 2d size of the texture in texles.
 	virtual uint16_t GetDepth() const = 0;      // Get the cube faces for cubemap textures.
 	virtual uint8 GetBPP() const = 0;           // Get the bits-per-pixel of the texture.
 	virtual uint8 GetSamplesCount() const = 0;  // Get samples count for this texture
@@ -224,7 +225,6 @@ ZN_INTERFACE ZN_API ITexture
 		return *reinterpret_cast<T*>(pixel);
 	}
 };
-
 
 ZN_INTERFACE ZN_API ITextureInternal
 {

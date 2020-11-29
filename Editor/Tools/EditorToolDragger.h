@@ -22,7 +22,7 @@ public:
 	// IEditorToolUI
 	void DoInitializeUI(IEditorQtUIFrame& QtUIFrame) override;
 	void DropEvent(const glm::vec2& Position) override;
-	void DragEnterEvent(const SDragData& Data) override;
+	bool DragEnterEvent(const SDragData& Data) override;
 	void DragMoveEvent(const glm::vec2& Position) override;
 	void DragLeaveEvent() override;
 
