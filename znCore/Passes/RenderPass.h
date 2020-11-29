@@ -22,10 +22,11 @@ struct __declspec(align(16)) ZN_API PerFrame
 		, InverseProjectionView(glm::mat4(1.0f))
 		, ScreenDimensions(glm::vec2(1.0f))
 	{}
-	explicit PerFrame(glm::mat4 ViewMatrix, glm::mat4 ProjectionMatrix, glm::vec2 ScreenDimensions)
+	explicit PerFrame(glm::mat4 ViewMatrix, glm::mat4 ProjectionMatrix, glm::vec2 ScreenDimensions, glm::vec3 CameraWorldDirection)
 		: View(ViewMatrix)
 		, Projection(ProjectionMatrix)
 		, ScreenDimensions(ScreenDimensions)
+		, CameraWorldDirection(CameraWorldDirection)
 	{
 		InverseView = glm::inverse(View);
 		InverseProjection = glm::inverse(Projection);
@@ -38,6 +39,8 @@ struct __declspec(align(16)) ZN_API PerFrame
 	glm::mat4 InverseProjection;
 	glm::mat4 InverseProjectionView;
 	glm::vec2 ScreenDimensions;
+	glm::vec2 __padding;
+	glm::vec3 CameraWorldDirection;
 };
 
 

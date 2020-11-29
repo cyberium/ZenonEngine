@@ -74,7 +74,8 @@ PerFrame RenderPassMultipipelined::GetPerFrameData(IPipelineState& Pipeline) con
 	PerFrame perFrame(
 		camera->GetViewMatrix(),
 		camera->GetProjectionMatrix(),
-		Pipeline.GetRenderTarget()->GetViewport().GetSize()
+		Pipeline.GetRenderTarget()->GetViewport().GetSize(),
+		camera->GetDirection()
 	);
 	return perFrame;
 }

@@ -11,8 +11,14 @@ cbuffer Material : register(b2)
 StructuredBuffer<LightVS> LightsVS : register(t10);
 
 
+TextureCube TextureSky : register(t15);
+
+
 float4 PS_main(VSOutput IN) : SV_TARGET
 {
+	if (Mat.IsEnviorementMappingEnable)
+		return TextureSky.Sample(LinearClampSampler, normalize(IN.positionWS));
+	
 	float2 displacedTexCoord = ExtractDisplacement(Mat, IN.texCoord, IN.normalVS.xyz, IN.tangentVS.xyz, IN.binormalVS.xyz, float3(0.0f, 0.0f, 0.0f), IN.positionVS.xyz);
 	
 	float4 diffuseAndAlpha = ExtractDuffuseAndAlpha(Mat, displacedTexCoord);

@@ -37,6 +37,8 @@ struct MaterialModel
 	bool HasTextureDisplacement;
 	float Shininess;                    // Shininess property. This property controls the aspect of the shiny spot. It is the specular exponent in the Phong illumination model.
 	float BumpFactor;					// Bump factor property. This factor is used to make a surface more or less bumpy.
+	
+	bool IsEnviorementMappingEnable;
 };
 
 Texture2D TextureAmbient                  : register(t0);
@@ -51,7 +53,6 @@ Texture2D TextureTransparency             : register(t7);
 
 Texture2D TextureReflection               : register(t8);
 Texture2D TextureDisplacement             : register(t9);
-
 
 
 //----------------------------------------------------------------------

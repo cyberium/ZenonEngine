@@ -49,7 +49,7 @@ VSOutput VS_PTN(VSInputPTN IN
 
 	const float4x4 mv = mul(PF.View, PO.Model);
 	const float4x4 mvp = mul(PF.Projection, mv);
-
+	
 	const float3 tangent = ComputeTangent(IN.normal);
 	const float3 binormal = ComputeBinormal(IN.normal, tangent);
 
@@ -60,5 +60,18 @@ VSOutput VS_PTN(VSInputPTN IN
 	OUT.normalVS = mul(mv, float4(IN.normal, 0.0f)).xyz;
 	OUT.tangentVS = mul(mv, float4(tangent, 0.0f)).xyz;
 	OUT.binormalVS = mul(mv, float4(binormal, 0.0f)).xyz;
+	
+	// Enviorement mapping in World space
+	//const float4x4 modelInverseTranspose = transpose(inverse(m));
+	//const float3 nn = normalize(mul(IN.normal, (float3x3)modelInverseTranspose));
+	//const float3 refl = reflect(-normalize(GetCameraPosition() - vertexPosition), normalize(nn));
+	
+	// Enviorement mapping in View space
+	//const float4x4 modelInverseTransposeVS = inverse(m);
+	//const float3 nnVS = normalize(mul(OUT.normalVS, (float3x3)modelInverseTransposeVS));
+	const float3 refl = mul((float3x3)PF.InverseView, reflect(-normalize(float3(0.0f, 0.0f, 0.0f) - OUT.positionVS), normalize(OUT.normalVS)));
+	
+	OUT.positionWS = refl;
+	
 	return OUT;
 }

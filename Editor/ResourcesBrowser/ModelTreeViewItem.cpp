@@ -107,7 +107,7 @@ bool CModelTreeViewItem::Load()
 
 
 				// Save znxmdl
-				GetBaseManager().GetManager<IznModelsFactory>()->SaveModel(fbxModel, convertedModelNameXML)->Save();;
+				GetBaseManager().GetManager<IznModelsFactory>()->SaveModel(fbxModel, convertedModelNameXML)->Save();
 
 				
 				m_Model = GetBaseManager().GetManager<IznModelsFactory>()->LoadModel(znModelFile);

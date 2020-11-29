@@ -55,13 +55,13 @@ namespace
 			_ASSERT(ResourceFile->GetChilds().empty());
 
 			const auto& fileNameStruct = ResourceFile->GetFilenameStruct();
-			if (fileNameStruct.Extension == "znmdl" || fileNameStruct.Extension == "znxmdl")
+			if (fileNameStruct.Extension == "znmdl" || fileNameStruct.Extension == "znxmdl" || fileNameStruct.Extension == "fbx")
 			{
 				auto modelTreeViewItem = MakeShared(CModelTreeViewItem, Editor.GetBaseManager(), fileNameStruct.ToString());
-				Editor.GetBaseManager().GetManager<ILoader>()->AddToLoadQueue(modelTreeViewItem);
+				//Editor.GetBaseManager().GetManager<ILoader>()->AddToLoadQueue(modelTreeViewItem);
 
-				//t->Load();
-				//t->SetState(ILoadable::ELoadableState::Loaded);
+				modelTreeViewItem->Load();
+				modelTreeViewItem->SetState(ILoadable::ELoadableState::Loaded);
 
 				return modelTreeViewItem;
 			}

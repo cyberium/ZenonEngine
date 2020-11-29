@@ -1,5 +1,5 @@
 #include "Types.hlsl"
-
+#include "MatrixUtils.hlsl"
 
 //----------------------------------------------------------------------
 //-- Global objects

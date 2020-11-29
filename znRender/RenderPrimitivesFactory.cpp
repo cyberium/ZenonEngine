@@ -168,7 +168,7 @@ std::shared_ptr<IGeometry> CRenderPrimitivesFactory::CreateCube()
 {
 	DirectX::VertexCollection vertices;
 	DirectX::IndexCollection indices;
-	DirectX::ComputeBox(vertices, indices, DirectX::XMFLOAT3(1.0f, 1.0f, 1.0f), false, false);
+	DirectX::ComputeBox(vertices, indices, DirectX::XMFLOAT3(1.0f, 1.0f, 1.0f), true, false);
 
 	std::shared_ptr<IGeometry> geometry = m_RenderDevice.GetObjectsFactory().CreateGeometry();
 

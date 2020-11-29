@@ -202,7 +202,8 @@ void CPassDeffered_ProcessLights::BindPerFrameParamsForCurrentIteration(const IL
 	PerFrame perFrame(
 		Light->GetViewMatrix(), 
 		Light->GetProjectionMatrix(), 
-		glm::vec2(viewport.GetWidth(), viewport.GetHeight())
+		glm::vec2(viewport.GetWidth(), viewport.GetHeight()),
+		glm::vec3(0.0f, 0.0f, 0.0f) // TODO FIXME
 	);
 	m_PerFrameConstantBuffer->Set(perFrame);
 	m_PerFrameShaderParameter->Bind();

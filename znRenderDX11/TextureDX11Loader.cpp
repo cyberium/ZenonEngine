@@ -377,7 +377,7 @@ bool TextureDX11::LoadTextureCube(const std::vector<std::shared_ptr<IImage>>& Im
 	m_ShaderResourceViewFormatSupport = m_RenderTargetViewFormatSupport = m_TextureResourceFormatSupport;
 
 	// Can mipmaps be automatically generated for this texture format?
-	m_NeedGenerateMipmaps = false;// !m_bDynamic && (m_ShaderResourceViewFormatSupport & D3D11_FORMAT_SUPPORT_MIP_AUTOGEN) != 0;
+	m_NeedGenerateMipmaps = false; // !m_bDynamic && (m_ShaderResourceViewFormatSupport & D3D11_FORMAT_SUPPORT_MIP_AUTOGEN) != 0;
 
 
 	// Load the texture data into a GPU texture.
@@ -404,24 +404,17 @@ bool TextureDX11::LoadTextureCube(const std::vector<std::shared_ptr<IImage>>& Im
 	if (m_NeedGenerateMipmaps)
 	{
 		CHECK_HR_MSG(m_RenderDeviceDX11.GetDeviceD3D11()->CreateTexture2D(&textureDesc, NULL, &m_DX11Texture2D), L"Failed to create texture with mipmaps.");
-
-		//m_RenderDeviceDX11.GetDeviceContextD3D11()->UpdateSubresource(m_DX11Texture2D, 0, nullptr, m_Buffer.data(), m_Pitch, 0);
 	}
 	else
 	{
-		/*D3D11_SUBRESOURCE_DATA subresourceData = { };
-		subresourceData.pSysMem = Image->GetData();
-		subresourceData.SysMemPitch = Image->GetStride();
-		subresourceData.SysMemSlicePitch = 0;*/
-		//CHECK_HR_MSG(m_RenderDeviceDX11.GetDeviceD3D11()->CreateTexture2D(&textureDesc, &subresourceData, &m_DX11Texture2D), L"Failed to create texture.");
 		CHECK_HR_MSG(m_RenderDeviceDX11.GetDeviceD3D11()->CreateTexture2D(&textureDesc, NULL, &m_DX11Texture2D), L"Failed to create texture with mipmaps.");
+	}
 
-		size_t index = 0;
-		for (const auto& image : Images)
-		{
-			UINT res = D3D11CalcSubresource(0, index++, 1);
-			m_RenderDeviceDX11.GetDeviceContextD3D11()->UpdateSubresource(m_DX11Texture2D, res, nullptr, image->GetData(), m_Pitch, image->GetDataSize());
-		}
+	size_t index = 0;
+	for (const auto& image : Images)
+	{
+		UINT res = D3D11CalcSubresource(0, index++, 1);
+		m_RenderDeviceDX11.GetDeviceContextD3D11()->UpdateSubresource(m_DX11Texture2D, res, nullptr, image->GetData(), m_Pitch, image->GetDataSize());
 	}
 
 	// Create a Shader resource view for the texture.
@@ -434,6 +427,10 @@ bool TextureDX11::LoadTextureCube(const std::vector<std::shared_ptr<IImage>>& Im
 
 		CHECK_HR_MSG(m_RenderDeviceDX11.GetDeviceD3D11()->CreateShaderResourceView(m_DX11Texture2D, &resourceViewDesc, &m_DX11ShaderResourceView), L"Failed to create texture resource view.");
 	}
+
+
+	if (m_NeedGenerateMipmaps)
+		m_RenderDeviceDX11.GetDeviceContextD3D11()->GenerateMips(m_DX11ShaderResourceView);
 
 	m_Buffer.resize(Images[0]->GetHeight() * Images[0]->GetStride());
 	m_Buffer.assign(Images[0]->GetData(), Images[0]->GetData() + (Images[0]->GetHeight() * Images[0]->GetStride()));

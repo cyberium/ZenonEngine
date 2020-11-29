@@ -34,6 +34,8 @@ namespace
 			, HasTextureDisplacement(false)
 			, Shininess(12.0f)
 			, BumpFactor(1.0f)
+
+			, IsEnviorementMappingEnable(false)
 		{}
 
 		glm::vec3 Ambient;					// Ambient color property.
@@ -65,6 +67,9 @@ namespace
 		uint32 HasTextureDisplacement;
 		float Shininess;                    // Shininess property. This property controls the aspect of the shiny spot. It is the specular exponent in the Phong illumination model.
 		float BumpFactor;					// Bump factor property. This factor is used to make a surface more or less bumpy.
+
+		uint32 IsEnviorementMappingEnable;
+		glm::vec3 __padding;
 	};
 }
 
@@ -116,6 +121,8 @@ public:
 
 	void SetShininess(float Factor);
 	void SetBumpFactor(float Factor);
+
+	void SetEnviorementMappingEnable(bool Value);
 
 	void SetTexture(ETextureType TextureType, std::shared_ptr<ITexture> texture);
 	std::shared_ptr<ITexture> GetTexture(ETextureType TextureType) const;

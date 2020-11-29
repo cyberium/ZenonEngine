@@ -58,7 +58,7 @@ void CSceneDefault::Load3D()
 	// Plane
 	//--------------------------------------------------------------------------
 	{
-		const float cPlaneSize = 240.0f;
+		const float cPlaneSize = 5240.0f;
 		const float cPlaneY = 0.0f;
 
 		std::shared_ptr<MaterialModel> textMaterial = MakeShared(MaterialModel, GetBaseManager());
@@ -71,7 +71,7 @@ void CSceneDefault::Load3D()
 		auto node = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeFactory>()->CreateSceneNode3D(cSceneNode3D, *this, GetRootSceneNode());
 		node->SetName("Ground");
 		node->SetTranslate(glm::vec3(0, 0, 0));
-		node->SetScale(glm::vec3(cPlaneSize, 1.0f, cPlaneSize));
+		node->SetScale(glm::vec3(cPlaneSize, cPlaneSize, cPlaneSize));
 		node->GetComponentT<IModelsComponent3D>()->SetModel(modelPlane);
 		//node->GetComponent<IModelsComponent3D>()->SetCastShadows(false);
 	}

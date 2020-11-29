@@ -53,6 +53,7 @@ struct PerFrame
 	float4x4 InverseProjection;
 	float4x4 InverseViewProjection;
 	float2   ScreenDimensions;
+	float3   CameraWorldDirection;
 };
 
 
@@ -97,7 +98,8 @@ struct VSInputPTNTB
 struct VSOutput
 {
 	float4 position     : SV_POSITION;  // Clip space position.
-	float3 positionVS   : POSITION;     // View space position.
+	float3 positionVS   : POSITION0;     // View space position.
+	float3 positionWS   : POSITION1;     // World space position.
 	float2 texCoord     : TEXCOORD;     // Texture coordinate
 	float3 normalVS     : NORMAL;       // View space normal.
 	float3 tangentVS    : TANGENT;      // View space tangent.

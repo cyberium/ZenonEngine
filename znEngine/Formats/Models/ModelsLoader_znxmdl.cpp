@@ -8,6 +8,8 @@
 #include "Scene/Components/ModelComponent/SkeletonBone.h"
 #include "ModelsLoaderHelper.h"
 
+#include "Materials/MaterialModel.h"
+
 namespace
 {
 	const char * cLoaderSupportedExtension = "znxmdl";
@@ -82,6 +84,9 @@ std::shared_ptr<IModel> CModelsLoader_znxmdl::LoadModel(const std::shared_ptr<IF
 			auto material = m_BaseManager.GetManager<IMaterialsFactory>()->CreateMaterial("MaterialModel");
 			std::dynamic_pointer_cast<IObjectLoadSave>(material)->Load(materialsReaderXML);
 			materials.push_back(material);
+
+			if (material->GetName() == "water")
+				std::dynamic_pointer_cast<MaterialModel>(material)->SetEnviorementMappingEnable(true);
 		}
 	}
 
@@ -213,7 +218,7 @@ std::shared_ptr<IFile> CModelsLoader_znxmdl::SaveModel(const std::shared_ptr<IMo
 	// Save connections
 	{
 		auto connectionsWriterXML = modelWriter->CreateChild("Connections");
-		_ASSERT(false == indexedConnections.empty());
+		//_ASSERT(false == indexedConnections.empty());
 		for (const auto& c : indexedConnections)
 		{
 			auto connectionWriterXML = connectionsWriterXML->CreateChild("Connection");
