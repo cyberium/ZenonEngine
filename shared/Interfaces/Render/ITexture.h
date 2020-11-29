@@ -117,7 +117,7 @@ ZN_INTERFACE ZN_API ITexture
 	/**
 	 * Load a cubemap texture from a file path.
 	 */
-	virtual bool LoadTextureCube(const std::string& fileName) = 0;
+	virtual bool LoadTextureCube(const std::vector<std::shared_ptr<IImage>>& Images) = 0;
 
 	/**
 	 * Generate mip maps for a texture.

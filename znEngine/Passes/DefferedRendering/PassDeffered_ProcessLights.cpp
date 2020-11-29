@@ -19,10 +19,7 @@ void CPassDeffered_ProcessLights::CreateShadowPipeline()
 {
 	m_ShadowRenderTarget = CreateShadowRT();
 
-	IShader::ShaderMacros macroses;
-	macroses.insert(std::make_pair("SKELETON_ANIMATION", "1"));
-
-	auto vertexShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::VertexShader, "3D/ModelVS.hlsl", "VS_PTN", macroses);
+	auto vertexShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::VertexShader, "3D/ModelVS.hlsl", "VS_PTN", { { "SKELETON_ANIMATION", "1" } });
 	vertexShader->LoadInputLayoutFromReflector();
 
 	/*std::vector<SCustomInputElement> customElements;
@@ -100,9 +97,13 @@ void CPassDeffered_ProcessLights::Render(RenderEventArgs& e)
 
 			for (const auto& geometryIt : m_SceneCreateTypelessListPass->GetGeometryList())
 			{
-				BindPerObjectParamsForCurrentIteration(geometryIt.Node);
+				if (false == geometryIt.Node->IsEnabled())
+					continue;
+
 				if (false == geometryIt.Node->GetComponentT<IModelsComponent3D>()->IsCastShadows())
 					continue;
+
+				BindPerObjectParamsForCurrentIteration(geometryIt.Node);
 
 				// Bones begin
 				auto modelsComponent = geometryIt.Node->GetComponentT<IModelsComponent3D>();
@@ -209,8 +210,6 @@ void CPassDeffered_ProcessLights::BindPerFrameParamsForCurrentIteration(const IL
 
 void CPassDeffered_ProcessLights::BindPerObjectParamsForCurrentIteration(const ISceneNode * SceneNode)
 {
-	PerObject perObject;
-	perObject.Model = SceneNode->GetWorldTransfom();
-	m_PerObjectConstantBuffer->Set(perObject);
+	m_PerObjectConstantBuffer->Set(PerObject(SceneNode->GetWorldTransfom()));
 	m_PerObjectShaderParameter->Bind();
 }

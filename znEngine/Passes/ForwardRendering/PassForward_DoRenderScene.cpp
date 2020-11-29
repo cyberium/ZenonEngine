@@ -35,10 +35,7 @@ std::shared_ptr<IRenderPassPipelined> CPassForward_DoRenderScene::ConfigurePipel
 
 	if (GetRenderDevice().GetDeviceType() == RenderDeviceType::RenderDeviceType_DirectX11)
 	{
-		IShader::ShaderMacros macroses;
-		macroses.insert(std::make_pair("SKELETON_ANIMATION", "1"));
-
-		vertexShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::VertexShader, "3D/ModelVS.hlsl", "VS_PTN", macroses);
+		vertexShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::VertexShader, "3D/ModelVS.hlsl", "VS_PTN", { { "SKELETON_ANIMATION", "1" } });
 		pixelShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::PixelShader, "3D/Model_Forward.hlsl", "PS_main");
 	}
 	vertexShader->LoadInputLayoutFromReflector();

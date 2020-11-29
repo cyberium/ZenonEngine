@@ -11,6 +11,8 @@ CSceneNode::CSceneNode(IScene& Scene)
 	: Object(Scene.GetBaseManager())
 	, m_Scene(Scene)
 
+	, m_IsEnabled(true)
+
 	, m_IsPersistance(false)
 
 	, m_TranslateLocal(0.0f)
@@ -103,6 +105,18 @@ void CSceneNode::Initialize()
 
 void CSceneNode::Finalize()
 {}
+
+
+
+void CSceneNode::SetEnabled(bool Value)
+{
+	m_IsEnabled = Value;
+}
+
+bool CSceneNode::IsEnabled() const
+{
+	return m_IsEnabled;
+}
 
 
 
@@ -320,6 +334,8 @@ void CSceneNode::RegisterComponents()
 //
 void CSceneNode::Update(const UpdateEventArgs& e)
 {
+	_ASSERT(IsEnabled());
+
 	const auto& components = GetComponents();
 	std::for_each(components.begin(), components.end(), [e](const std::pair<ObjectClass, std::shared_ptr<ISceneNodeComponent>>& ComponentMapIter) {
 		ComponentMapIter.second->Update(e);
@@ -331,7 +347,9 @@ void CSceneNode::Accept(IVisitor* visitor)
 	//if (const auto& loadableObject = dynamic_cast<ILoadable*>(this))
 	//	if (loadableObject->GetState() != ILoadable::ELoadableState::Loaded)
 	//		return;
-	
+
+	_ASSERT(IsEnabled());
+
 	EVisitResult visitResult = visitor->Visit(this);
 
 	if (visitResult & EVisitResult::AllowVisitContent)

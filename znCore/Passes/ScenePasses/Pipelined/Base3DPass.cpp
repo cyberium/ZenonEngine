@@ -38,6 +38,9 @@ std::shared_ptr<IRenderPassPipelined> Base3DPass::ConfigurePipeline(std::shared_
 //
 EVisitResult Base3DPass::Visit(const ISceneNode* SceneNode)
 {
+	if (false == SceneNode->IsEnabled())
+		return EVisitResult::Block;
+
 	BindPerObjectData(PerObject(SceneNode->GetWorldTransfom()));
 	return EVisitResult::AllowAll;
 }

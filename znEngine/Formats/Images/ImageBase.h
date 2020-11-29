@@ -21,6 +21,7 @@ public:
 	uint32 GetStride() const override;
 	bool IsTransperent() const override;
 	const uint8* GetData() const override;
+	size_t GetDataSize() const override;
 	void Resize(uint32 NewWidth, uint32 NewHeight) override;
 	uint8* GetDataEx() override;
 	std::shared_ptr<IImage> ConvertAnyTo32Bit() override;

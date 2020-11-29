@@ -15,6 +15,9 @@ public:
 	virtual void                                    Initialize() override;
 	virtual void                                    Finalize() override;
 
+	virtual void                                    SetEnabled(bool Value) override;
+	virtual bool                                    IsEnabled() const override;
+
 	// Childs functional
 	virtual void                                    AddChild(std::shared_ptr<ISceneNode> childNode) override final;
 	virtual void                                    RemoveChild(std::shared_ptr<ISceneNode> childNode) override final;
@@ -93,6 +96,8 @@ private:
 
 private:
 	IScene&                                         m_Scene;
+
+	bool                                            m_IsEnabled;
 
 	glm::vec3										m_TranslateLocal;
 	std::shared_ptr<CPropertyWrappedVec3>           m_TranslateProperty;

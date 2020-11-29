@@ -111,6 +111,8 @@ void CSceneRTS::Initialize()
 
 		//commonControl->SetScale(glm::vec2(0.75f));
 	}
+	
+
 
 	CreateUnitsModels();
 }

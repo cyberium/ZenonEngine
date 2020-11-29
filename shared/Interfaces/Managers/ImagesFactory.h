@@ -17,6 +17,7 @@ ZN_INTERFACE ZN_API IImage
 	virtual uint32 GetStride() const = 0;
 	virtual bool IsTransperent() const = 0;
 	virtual const uint8* GetData() const = 0;
+	virtual size_t GetDataSize() const = 0;
 	virtual void Resize(uint32 NewWidth, uint32 NewHeight) = 0;
 	virtual uint8* GetDataEx() = 0;
 	virtual std::shared_ptr<IImage> ConvertAnyTo32Bit() = 0;

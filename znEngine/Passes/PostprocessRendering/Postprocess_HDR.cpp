@@ -34,10 +34,10 @@ std::shared_ptr<IRenderPassPipelined> CPassPostprocess_HDR::ConfigurePipeline(st
 
 	auto samplesCnt = std::to_string(RenderTarget->GetTexture(IRenderTarget::AttachmentPoint::Color0)->GetSamplesCount());
 
-	auto vertexShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::VertexShader, "3D/Deffered_HDR.hlsl", "VS_ScreenQuad", { {"MULTISAMPLED", samplesCnt } });
+	auto vertexShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::VertexShader, "3D/Deffered_HDR.hlsl", "VS_ScreenQuad", { {"MULTISAMPLED", samplesCnt.c_str() } });
 	vertexShader->LoadInputLayoutFromReflector();
 
-	auto pixelShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::PixelShader, "3D/Deffered_HDR.hlsl", "PS_ScreenQuad", { {"MULTISAMPLED", samplesCnt }});
+	auto pixelShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::PixelShader, "3D/Deffered_HDR.hlsl", "PS_ScreenQuad", { {"MULTISAMPLED", samplesCnt.c_str() }});
 
 	// PIPELINES
 	GetPipeline().GetBlendState()->SetBlendMode(additiveBlending);

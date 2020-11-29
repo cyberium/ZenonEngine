@@ -32,6 +32,9 @@ ZN_INTERFACE ZN_API ISceneNode
 	virtual void Initialize() = 0;
 	virtual void Finalize() = 0;
 
+	virtual void SetEnabled(bool Value) = 0;
+	virtual bool IsEnabled() const = 0;
+
 	virtual void AddChild(std::shared_ptr<ISceneNode> childNode) = 0;
 	virtual void RemoveChild(std::shared_ptr<ISceneNode> childNode) = 0;
 	virtual void MakeMeOrphan() = 0;

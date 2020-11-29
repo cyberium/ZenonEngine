@@ -16,11 +16,17 @@ ZN_INTERFACE ZN_API IShader
 	 */
 	virtual EShaderType GetShaderType() const = 0;
 
+	struct ZN_API SShaderMacro
+	{
+		const char* MacrosName;
+		const char* ValueStr;
+	};
+
 	/**
 	 * A shader macro consists of a macro name and a definition.
 	 * Use this to pass macro definitions to the shader compiler.
 	 */
-	typedef std::map< std::string, std::string > ShaderMacros;
+	typedef std::vector<SShaderMacro> ShaderMacros;
 
 
 	/**
@@ -32,7 +38,7 @@ ZN_INTERFACE ZN_API IShader
 	 * To use the latest supported profile, specify "latest" here.
 	 * @return True if the shader was loaded correctly, or False otherwise.
 	 */
-	virtual bool LoadFromFile(EShaderType type, const std::string& fileName, const ShaderMacros& shaderMacros, const std::string& entryPoint, IShaderInputLayout* _customLayout) = 0;
+	virtual bool LoadFromFile(EShaderType type, std::string fileName, ShaderMacros shaderMacros, std::string entryPoint) = 0;
 
 	/**
 	 * Calculate shader input layout

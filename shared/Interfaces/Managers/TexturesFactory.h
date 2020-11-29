@@ -17,6 +17,8 @@ ZN_INTERFACE ZN_API	IznTexturesFactory
 	virtual std::shared_ptr<ITexture> LoadTexture2D(const std::string& TextureFileName) = 0;
 	virtual std::shared_ptr<ITexture> LoadTexture2D(const std::shared_ptr<IFile>& TextureFile) = 0;
 
+	virtual std::shared_ptr<ITexture> LoadTextureCube(const std::vector<std::string>& TextureFilenames) = 0;
+
 	virtual std::shared_ptr<IFile> SaveTexture(const std::shared_ptr<ITexture>& Texture, const std::string& FileName) const = 0;
 
 	virtual std::shared_ptr<ITexture> GetDefaultTexture() = 0;

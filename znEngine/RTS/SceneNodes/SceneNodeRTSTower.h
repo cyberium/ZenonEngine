@@ -27,5 +27,4 @@ private:
 	float m_AttackDamage;
 	float m_AttackInterval;
 	float m_AttackRange;
-	std::shared_ptr<IModel> m_MissileModel;
 };

@@ -54,6 +54,17 @@ MaterialModel::MaterialModel(const IBaseManager& BaseManager)
 		prop->SetValueGetter(std::bind(&MaterialModel::GetEmissiveColor, this));
 		GetProperties()->AddProperty(prop);
 	}
+
+	std::vector<std::string> names;
+	names.push_back("sky+x.png");
+	names.push_back("sky-x.png");
+	names.push_back("sky+x.png");
+	names.push_back("sky-x.png");
+	names.push_back("sky+x.png");
+	names.push_back("sky-x.png");
+	auto textureCube = m_BaseManager.GetManager<IznTexturesFactory>()->LoadTextureCube(names);
+	std::dynamic_pointer_cast<ITextureInternal>(textureCube)->SetFileName("s");
+	__super::SetTexture(15, textureCube);
 }
 
 MaterialModel::~MaterialModel()

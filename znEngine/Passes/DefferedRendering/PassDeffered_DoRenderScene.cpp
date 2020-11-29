@@ -64,6 +64,9 @@ void CPassDeffered_DoRenderScene::Render(RenderEventArgs& e)
 		{
 			if (it.Node->GetClass() == cSceneNode3D || it.Node->GetClass() == cSceneNodeRTSUnit || it.Node->GetClass() == cSceneNodeRTSBullet)
 			{
+				if (false == it.Node->IsEnabled())
+					continue;
+
 				DoRenderSceneNode(it.Node);
 				DoRenderGeometry(it.Geometry, materialModel, it.GeometryDrawArgs);
 			}
@@ -78,10 +81,7 @@ std::shared_ptr<IRenderPassPipelined> CPassDeffered_DoRenderScene::ConfigurePipe
 {
 	__super::ConfigurePipeline(RenderTarget);
 
-	IShader::ShaderMacros macroses;
-	macroses.insert(std::make_pair("SKELETON_ANIMATION", "1"));
-
-	auto vertexShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::VertexShader, "3D/ModelVS.hlsl", "VS_PTN", macroses);
+	auto vertexShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::VertexShader, "3D/ModelVS.hlsl", "VS_PTN", { { "SKELETON_ANIMATION", "1" } });
 	vertexShader->LoadInputLayoutFromReflector();
 
 	/*std::vector<SCustomInputElement> customElements;
@@ -119,9 +119,7 @@ std::shared_ptr<IRenderPassPipelined> CPassDeffered_DoRenderScene::ConfigurePipe
 //
 void CPassDeffered_DoRenderScene::DoRenderSceneNode(const ISceneNode * SceneNode)
 {
-	PerObject perObject;
-	perObject.Model = SceneNode->GetWorldTransfom();
-	m_PerObjectConstantBuffer->Set(perObject);
+	m_PerObjectConstantBuffer->Set(PerObject(SceneNode->GetWorldTransfom()));
 	m_PerObjectShaderParameter->Bind();
 
 	auto modelsComponent = SceneNode->GetComponentT<IModelsComponent3D>();

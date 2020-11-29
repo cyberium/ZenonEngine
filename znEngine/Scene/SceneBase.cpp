@@ -570,6 +570,9 @@ void SceneBase::ShowStatistics(bool Value)
 //
 void SceneBase::DoUpdate_Rec(const std::shared_ptr<ISceneNode>& Node, const UpdateEventArgs & e)
 {
+	if (false == Node->IsEnabled())
+		return;
+
 	const auto& components = Node->GetComponents();
 	std::for_each(components.begin(), components.end(), [&e](const std::pair<ObjectClass, std::shared_ptr<ISceneNodeComponent>>& Component)
 	{

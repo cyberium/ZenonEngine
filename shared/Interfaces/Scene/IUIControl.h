@@ -18,8 +18,8 @@ ZN_INTERFACE ZN_API IUIControl
 	ZN_OBJECTCLASS(cUIControl);
 	virtual ~IUIControl() {}
 
-	virtual void Initialize() = 0;
-	virtual void Finalize() = 0;
+	virtual void                                    Initialize() = 0;
+	virtual void                                    Finalize() = 0;
 	
 	// Childs functional
 	virtual void                                    AddChild(const std::shared_ptr<IUIControl>& childNode) = 0;

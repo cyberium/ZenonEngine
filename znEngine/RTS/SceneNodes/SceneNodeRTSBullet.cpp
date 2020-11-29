@@ -60,6 +60,25 @@ float CSceneNodeRTSBullet::GetSpeed() const
 void CSceneNodeRTSBullet::Initialize()
 {
 	__super::Initialize();
+
+	// Model
+	{
+		auto missileGeom = GetRenderDevice().GetPrimitivesFactory().CreateSphere();
+
+		std::shared_ptr<MaterialModel> missileMaterial = MakeShared(MaterialModel, GetBaseManager());
+		missileMaterial->SetDiffuseColor(glm::vec3(1.0f, 0.6f, 0.4f));
+
+		auto bulletModel = GetRenderDevice().GetObjectsFactory().CreateModel();
+		bulletModel->AddConnection(missileMaterial, missileGeom);
+
+		GetComponentT<IModelsComponent3D>()->SetModel(bulletModel);
+	}
+
+	// Particles
+	{
+		std::shared_ptr<IParticleComponent3D> particles = MakeShared(CParticlesComponent, *this);
+		AddComponentT(particles);
+	}
 }
 
 void CSceneNodeRTSBullet::Update(const UpdateEventArgs & e)

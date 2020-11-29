@@ -40,9 +40,8 @@ void ShaderDX11::Destroy()
 	m_ShaderParameters.clear();
 }
 
-bool ShaderDX11::LoadFromFile(EShaderType shaderType, const std::string& fileName, const ShaderMacros& shaderMacros, const std::string& entryPoint, IShaderInputLayout* _customLayout)
+bool ShaderDX11::LoadFromFile(EShaderType shaderType, std::string fileName, ShaderMacros shaderMacros, std::string entryPoint)
 {
-
 	HRESULT hr;
 	{
 		D3D_FEATURE_LEVEL featureLevel = m_RenderDeviceDX11.GetDeviceD3D11()->GetFeatureLevel();
@@ -65,8 +64,8 @@ bool ShaderDX11::LoadFromFile(EShaderType shaderType, const std::string& fileNam
 
 		std::vector<D3D_SHADER_MACRO> macros;
 		for (const auto& macro : shaderMacros)
-			macros.push_back({ macro.first.c_str(), macro.second.c_str() });
-		macros.push_back({ 0, 0 });
+			macros.push_back({ macro.MacrosName, macro.ValueStr });
+		macros.push_back({ nullptr, nullptr });
 
 	
 		CShaderDX11Include shaderInclude(m_RenderDeviceDX11.GetBaseManager());

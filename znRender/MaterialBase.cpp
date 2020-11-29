@@ -177,7 +177,7 @@ void MaterialBase::Save(const std::shared_ptr<IByteBuffer>& ByteBuffer) const
 			throw CException("Empty filename for m_Texture[%d].", texture.first);
 
 		// Тупая проверка. Но для меня сейчас это надежда найти всякую хуйню с менеджером тексутр.
-		_ASSERT(m_RenderDevice.GetBaseManager().GetManager<IznTexturesFactory>()->LoadTexture2D(fileName) == texture.second);
+		//_ASSERT(m_RenderDevice.GetBaseManager().GetManager<IznTexturesFactory>()->LoadTexture2D(fileName) == texture.second);
 
 		ByteBuffer->write(&texture.first);
 		ByteBuffer->writeString(fileName);

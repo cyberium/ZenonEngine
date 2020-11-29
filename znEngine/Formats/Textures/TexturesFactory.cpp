@@ -52,6 +52,20 @@ std::shared_ptr<ITexture> CznTexturesFactory::LoadTexture2D(const std::shared_pt
 	return texture;
 }
 
+std::shared_ptr<ITexture> CznTexturesFactory::LoadTextureCube(const std::vector<std::string>& TextureFilenames)
+{
+	std::vector<std::shared_ptr<IImage>> images;
+	for (const auto& f : TextureFilenames)
+		images.push_back(m_BaseManager.GetManager<IImagesFactory>()->CreateImage(f));
+
+	IRenderDevice& renderDevice = m_BaseManager.GetApplication().GetRenderDevice();
+	std::shared_ptr<ITexture> texture = renderDevice.GetObjectsFactory().CreateEmptyTexture();
+	if (false == texture->LoadTextureCube(images))
+		return GetDefaultTexture();
+
+	return texture;
+}
+
 std::shared_ptr<IFile> CznTexturesFactory::SaveTexture(const std::shared_ptr<ITexture>& Texture, const std::string & FileName) const
 {
 	return std::shared_ptr<IFile>();

@@ -31,7 +31,7 @@ bool TextureDX11::LoadTextureFromImage(const std::shared_ptr<IImage>& Image)
 	m_ShaderResourceViewFormatSupport = m_RenderTargetViewFormatSupport = m_TextureResourceFormatSupport;
 
 	// Can mipmaps be automatically generated for this texture format?
-	m_NeedGenerateMipmaps = !m_bDynamic && (m_ShaderResourceViewFormatSupport & D3D11_FORMAT_SUPPORT_MIP_AUTOGEN) != 0;
+	m_NeedGenerateMipmaps = false; //!m_bDynamic && (m_ShaderResourceViewFormatSupport & D3D11_FORMAT_SUPPORT_MIP_AUTOGEN) != 0;
 
 
 	// Load the texture data into a GPU texture.
@@ -57,7 +57,14 @@ bool TextureDX11::LoadTextureFromImage(const std::shared_ptr<IImage>& Image)
 
 	if (m_NeedGenerateMipmaps)
 	{
+		//D3D11_SUBRESOURCE_DATA subresourceData = { };
+		//subresourceData.pSysMem = Image->GetData();
+		//subresourceData.SysMemPitch = Image->GetStride();
+		//subresourceData.SysMemSlicePitch = 0;
+
 		CHECK_HR_MSG(m_RenderDeviceDX11.GetDeviceD3D11()->CreateTexture2D(&textureDesc, NULL, &m_DX11Texture2D), L"Failed to create texture with mipmaps.");
+
+		m_RenderDeviceDX11.GetDeviceContextD3D11()->UpdateSubresource(m_DX11Texture2D, 0, nullptr, Image->GetData(), m_Pitch, Image->GetDataSize());
 	}
 	else
 	{
@@ -65,6 +72,7 @@ bool TextureDX11::LoadTextureFromImage(const std::shared_ptr<IImage>& Image)
 		subresourceData.pSysMem = Image->GetData();
 		subresourceData.SysMemPitch = Image->GetStride();
 		subresourceData.SysMemSlicePitch = 0;
+
 		CHECK_HR_MSG(m_RenderDeviceDX11.GetDeviceD3D11()->CreateTexture2D(&textureDesc, &subresourceData, &m_DX11Texture2D), L"Failed to create texture.");
 	}
 
@@ -78,6 +86,9 @@ bool TextureDX11::LoadTextureFromImage(const std::shared_ptr<IImage>& Image)
 
 		CHECK_HR_MSG(m_RenderDeviceDX11.GetDeviceD3D11()->CreateShaderResourceView(m_DX11Texture2D, &resourceViewDesc, &m_DX11ShaderResourceView), L"Failed to create texture resource view.");
 	}
+
+	if (m_NeedGenerateMipmaps)
+		m_RenderDeviceDX11.GetDeviceContextD3D11()->GenerateMips(m_DX11ShaderResourceView);
 
 	m_Buffer.resize(Image->GetHeight() * Image->GetStride());
 	m_Buffer.assign(Image->GetData(), Image->GetData() + (Image->GetHeight() * Image->GetStride()));
@@ -334,50 +345,102 @@ bool TextureDX11::LoadTexture2D(const std::string& fileName)
 
 #endif
 
-bool TextureDX11::LoadTextureCube(const std::string& fileName)
+bool TextureDX11::LoadTextureCube(const std::vector<std::shared_ptr<IImage>>& Images)
 {
-	/*fs::path filePath( fileName );
-	if ( !fs::exists( filePath ) || !fs::is_regular_file( filePath ) )
+	// 0 - +X
+	// 1 - -X
+	// 2 - +Y
+	// 3 - -Y
+	// 4 - +Z
+	// 5 - -Z
+
+	m_BPP = Images[0]->GetBitsPerPixel();
+	//m_bIsTransparent = Image->IsTransperent(); // TODO: Fixme
+	m_TextureResourceFormat = DXGI_FORMAT_R8G8B8A8_UNORM;
+	m_TextureDimension = ITexture::Dimension::TextureCube;
+	m_TextureWidth = Images[0]->GetWidth();
+	m_TextureHeight = Images[0]->GetHeight();
+	m_NumSlices = 6;
+	m_Pitch = Images[0]->GetStride();
+
+	m_ShaderResourceViewFormat = m_RenderTargetViewFormat = m_TextureResourceFormat;
+	m_SampleDesc = GetSupportedSampleCount(m_TextureResourceFormat, 1);
+
+	CHECK_HR(m_RenderDeviceDX11.GetDeviceD3D11()->CheckFormatSupport(m_TextureResourceFormat, &m_TextureResourceFormatSupport));
+
+	if ((m_TextureResourceFormatSupport & D3D11_FORMAT_SUPPORT_TEXTURE2D) == 0)
 	{
-		throw CznRenderException( "Could not load texture: " + filePath.std::string() );
+		ReportTextureFormatError(m_TextureFormat, "Unsupported texture format for 2D textures.");
 		return false;
 	}
 
-	m_TextureFileName = fileName;
-	m_DependencyTracker = DependencyTracker( fileName );
-	// Try to load the dependency file for the texture asset.
-	if ( !m_DependencyTracker.Load() )
+	m_ShaderResourceViewFormatSupport = m_RenderTargetViewFormatSupport = m_TextureResourceFormatSupport;
+
+	// Can mipmaps be automatically generated for this texture format?
+	m_NeedGenerateMipmaps = false;// !m_bDynamic && (m_ShaderResourceViewFormatSupport & D3D11_FORMAT_SUPPORT_MIP_AUTOGEN) != 0;
+
+
+	// Load the texture data into a GPU texture.
+	D3D11_TEXTURE2D_DESC textureDesc = { };
+	textureDesc.Width = m_TextureWidth;
+	textureDesc.Height = m_TextureHeight;
+	textureDesc.MipLevels = m_NeedGenerateMipmaps ? 0 : 1;
+	textureDesc.ArraySize = m_NumSlices;
+	textureDesc.Format = m_TextureResourceFormat;
+	textureDesc.SampleDesc.Count = 1;
+	textureDesc.SampleDesc.Quality = 0;
+	textureDesc.Usage = D3D11_USAGE_DEFAULT;
+	if ((m_ShaderResourceViewFormatSupport & D3D11_FORMAT_SUPPORT_SHADER_SAMPLE) != 0)
 	{
-		// If loading failed, likely, the dependency tracker file
-		// does not exist. Save the default dependency tracker.
-		m_DependencyTracker.Save();
+		textureDesc.BindFlags |= D3D11_BIND_SHADER_RESOURCE;
+	}
+	if ((m_RenderTargetViewFormatSupport & D3D11_FORMAT_SUPPORT_RENDER_TARGET) != 0)
+	{
+		textureDesc.BindFlags |= D3D11_BIND_RENDER_TARGET;
+	}
+	textureDesc.CPUAccessFlags = 0;
+	textureDesc.MiscFlags = (m_NeedGenerateMipmaps ? D3D11_RESOURCE_MISC_GENERATE_MIPS : 0) | D3D11_RESOURCE_MISC_TEXTURECUBE;
+
+	if (m_NeedGenerateMipmaps)
+	{
+		CHECK_HR_MSG(m_RenderDeviceDX11.GetDeviceD3D11()->CreateTexture2D(&textureDesc, NULL, &m_DX11Texture2D), L"Failed to create texture with mipmaps.");
+
+		//m_RenderDeviceDX11.GetDeviceContextD3D11()->UpdateSubresource(m_DX11Texture2D, 0, nullptr, m_Buffer.data(), m_Pitch, 0);
+	}
+	else
+	{
+		/*D3D11_SUBRESOURCE_DATA subresourceData = { };
+		subresourceData.pSysMem = Image->GetData();
+		subresourceData.SysMemPitch = Image->GetStride();
+		subresourceData.SysMemSlicePitch = 0;*/
+		//CHECK_HR_MSG(m_RenderDeviceDX11.GetDeviceD3D11()->CreateTexture2D(&textureDesc, &subresourceData, &m_DX11Texture2D), L"Failed to create texture.");
+		CHECK_HR_MSG(m_RenderDeviceDX11.GetDeviceD3D11()->CreateTexture2D(&textureDesc, NULL, &m_DX11Texture2D), L"Failed to create texture with mipmaps.");
+
+		size_t index = 0;
+		for (const auto& image : Images)
+		{
+			UINT res = D3D11CalcSubresource(0, index++, 1);
+			m_RenderDeviceDX11.GetDeviceContextD3D11()->UpdateSubresource(m_DX11Texture2D, res, nullptr, image->GetData(), m_Pitch, image->GetDataSize());
+		}
 	}
 
-	m_DependencyTracker.SetLastLoadTime();
-
-	// Try to determine the file type from the image file.
-	FREE_IMAGE_FORMAT fif = FreeImage_GetFileTypeU( filePath.c_str() );
-	if ( fif == FIF_UNKNOWN )
+	// Create a Shader resource view for the texture.
 	{
-		fif = FreeImage_GetFIFFromFilenameU( filePath.c_str() );
+		D3D11_SHADER_RESOURCE_VIEW_DESC resourceViewDesc = {};
+		resourceViewDesc.Format = m_ShaderResourceViewFormat;
+		resourceViewDesc.ViewDimension = D3D_SRV_DIMENSION_TEXTURECUBE;
+		resourceViewDesc.TextureCube.MipLevels = m_NeedGenerateMipmaps ? -1 : 1;
+		resourceViewDesc.TextureCube.MostDetailedMip = 0;
+
+		CHECK_HR_MSG(m_RenderDeviceDX11.GetDeviceD3D11()->CreateShaderResourceView(m_DX11Texture2D, &resourceViewDesc, &m_DX11ShaderResourceView), L"Failed to create texture resource view.");
 	}
 
-	if ( fif == FIF_UNKNOWN || !FreeImage_FIFSupportsReading( fif ) )
-	{
-		throw CznRenderException( "Unknow file format: " + filePath.std::string() );
-		return false;
-	}
+	m_Buffer.resize(Images[0]->GetHeight() * Images[0]->GetStride());
+	m_Buffer.assign(Images[0]->GetData(), Images[0]->GetData() + (Images[0]->GetHeight() * Images[0]->GetStride()));
 
-	FIMULTIBITMAP* dib = FreeImage_OpenMultiBitmap( fif, filePath.std::string().c_str(), FALSE, TRUE, TRUE );
-	if ( dib == nullptr || FreeImage_GetPageCount( dib ) == 0 )
-	{
-		throw CznRenderException( "Failed to load image: " + filePath.std::string() );
-		return false;
-	}
+	m_bIsDirty = true;
 
-	int pageCount = FreeImage_GetPageCount( dib );*/
-
-	// TODO: DDS cubemap loading with FreeImage?
+	return true;
 
 	return false;
 }

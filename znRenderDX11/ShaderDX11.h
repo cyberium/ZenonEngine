@@ -11,7 +11,7 @@ public:
 	virtual ~ShaderDX11();
 
 	// IShader
-	bool LoadFromFile(EShaderType type, const std::string& fileName, const ShaderMacros& shaderMacros, const std::string& entryPoint, IShaderInputLayout* _customLayout) override final;
+	bool LoadFromFile(EShaderType type, std::string fileName, ShaderMacros shaderMacros, std::string entryPoint) override final;
 	
 	bool LoadInputLayoutFromReflector() override final;
 	bool LoadInputLayoutFromCustomElements(const std::vector<SCustomInputElement>& declIn) override final;

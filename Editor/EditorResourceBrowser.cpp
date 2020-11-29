@@ -85,7 +85,7 @@ namespace
 					Log::Error("--->%s", e.MessageCStr());
 				}
 			}
-			else if (fileNameStruct.Extension == "dds" || fileNameStruct.Extension == "png")
+			else if (/*fileNameStruct.Extension == "dds"  ||*/ fileNameStruct.Extension == "png")
 			{
 				auto texture = Editor.GetBaseManager().GetManager<IznTexturesFactory>()->LoadTexture2D(fileNameStruct.ToString());
 				return MakeShared(CTextureTreeViewItem, texture);

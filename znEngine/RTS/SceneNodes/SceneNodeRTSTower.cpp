@@ -85,14 +85,6 @@ float CSceneNodeRTSTower::GetAttackRange() const
 void CSceneNodeRTSTower::Initialize()
 {
 	__super::Initialize();
-
-	auto geom = GetRenderDevice().GetPrimitivesFactory().CreateSphere();
-
-	std::shared_ptr<MaterialModel> textMaterial = MakeShared(MaterialModel, GetBaseManager());
-	textMaterial->SetDiffuseColor(glm::vec3(1.0f, 0.6f, 0.4f));
-
-	m_MissileModel = GetRenderDevice().GetObjectsFactory().CreateModel();
-	m_MissileModel->AddConnection(textMaterial, geom);
 }
 
 void CSceneNodeRTSTower::Update(const UpdateEventArgs & e)
@@ -119,13 +111,6 @@ void CSceneNodeRTSTower::Update(const UpdateEventArgs & e)
 	auto bullet = GetScene().CreateSceneNodeCast<ISceneNodeRTSBullet>(cSceneNodeRTSBullet);
 	bullet->SetTranslate(GetParent()->GetWorldTransfom() * glm::vec4(GetTranslation(), 1.0f));
 	bullet->SetTarget(std::dynamic_pointer_cast<ISceneNodeRTSUnit>(nearestNode));
-	bullet->GetComponentT<IModelsComponent3D>()->SetModel(m_MissileModel);
-
-	
-	{
-		std::shared_ptr<IParticleComponent3D> particles = MakeShared(CParticlesComponent, *bullet);
-		bullet->AddComponentT(particles);
-	}
 
 	m_LastAttackTime = e.TotalTime;
 }

@@ -16,7 +16,7 @@ public:
 	const std::string& GetFilename() const override;
 	bool LoadTextureFromImage(const std::shared_ptr<IImage>& Image);
 	bool LoadTexture2D(const std::string& fileName);
-	bool LoadTextureCube(const std::string& fileName);
+	bool LoadTextureCube(const std::vector<std::shared_ptr<IImage>>& Images);
 
 	void GenerateMipMaps();
 

@@ -538,8 +538,7 @@ void TextureDX11::Bind(uint32_t ID, EShaderType _shaderType, IShaderParameter::T
 {
 	if (m_bIsDirty)
 	{
-		m_RenderDeviceDX11.GetDeviceContextD3D11()->UpdateSubresource(m_DX11Texture2D, 0, nullptr, m_Buffer.data(), m_Pitch, 0);
-		m_RenderDeviceDX11.GetDeviceContextD3D11()->GenerateMips(m_DX11ShaderResourceView);
+
 
 		const_cast<TextureDX11*>(this)->m_Buffer.clear();
 

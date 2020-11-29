@@ -239,7 +239,7 @@ std::shared_ptr<IShader> CRenderObjectsFactoryDX11::LoadShader(EShaderType type,
 	std::lock_guard<std::recursive_mutex> locker(m_LockMutex);
 
 	std::shared_ptr<IShader> object = MakeShared(ShaderDX11, m_RenderDeviceDX11);
-	object->LoadFromFile(type, fileName, shaderMacros, entryPoint, _customLayout);
+	object->LoadFromFile(type, fileName, shaderMacros, entryPoint);
 	m_Shaders.insert(std::make_pair(GenerateRenderObjectID(), object));
 	return object;
 }

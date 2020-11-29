@@ -64,6 +64,11 @@ const uint8* CImageBase::GetData() const
 	return m_Data.data();
 }
 
+size_t CImageBase::GetDataSize() const
+{
+	return m_Stride * GetHeight();
+}
+
 void CImageBase::Resize(uint32 NewWidth, uint32 NewHeight)
 {
 	size_t bytesPerPixel = m_BitsPerPixel / 8;
