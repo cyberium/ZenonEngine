@@ -193,7 +193,7 @@ std::shared_ptr<IznFont> FontsManager::Add(IRenderDevice& RenderDevice, const st
 
 	// Font texture
 	std::shared_ptr<ITexture> texture = RenderDevice.GetObjectsFactory().CreateEmptyTexture();
-	texture->LoadTextureFromImage(fontImage);
+	texture->LoadTexture2DFromImage(fontImage);
 
 	FT_Done_Face(face);
 	FT_Done_FreeType(ftLibrary);

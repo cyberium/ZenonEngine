@@ -54,34 +54,8 @@ std::shared_ptr<IRenderPassPipelined> CSkyboxPass::ConfigurePipeline(std::shared
 	m_PerObjectShaderParameter->SetConstantBuffer(m_PerObjectConstantBuffer);
 
 
-	{
-		std::vector<std::string> names;
-		names.push_back("skybox_Right.png");
-		names.push_back("skybox_Left.png");
-		names.push_back("skybox_Top.png");
-		names.push_back("skybox_Bottom.png");
-		names.push_back("skybox_Front.png");
-		names.push_back("skybox_Back.png");
-
-		// 0 - +X
-		// 1 - -X
-		// 2 - +Y
-		// 3 - -Y
-		// 4 - +Z
-		// 5 - -Z
-
-		/*std::vector<std::string> names;
-		names.push_back("Skybox2_PlusX.png");
-		names.push_back("Skybox2_MinusX.png");
-		names.push_back("Skybox2_PlusY.png");
-		names.push_back("Skybox2_MinusZ.png");
-		names.push_back("Skybox2_PlusZ.png");
-		names.push_back("Skybox2_MinusZ.png");*/
-
-		auto textureCube = GetBaseManager().GetManager<IznTexturesFactory>()->LoadTextureCube(names);
-		std::dynamic_pointer_cast<ITextureInternal>(textureCube)->SetFileName("s");
-		GetPipeline().SetTexture(0, textureCube);
-	}
+	auto textureCube = GetBaseManager().GetManager<IznTexturesFactory>()->LoadTextureCube("Skybox2.png");
+	GetPipeline().SetTexture(0, textureCube);
 
 	return shared_from_this();
 }

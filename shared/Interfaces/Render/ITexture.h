@@ -99,25 +99,13 @@ ZN_INTERFACE ZN_API ITexture
 
 	virtual ~ITexture() {}
 
-	/**
-	 * Get texture Filename (if presented)
-	 */
 	virtual const std::string& GetFilename() const = 0;
 
-	/**
-	 * Load a 2D custom texture
-	 */
-	virtual bool LoadTextureFromImage(const std::shared_ptr<IImage>& Image) = 0;
+	virtual void LoadTexture2D(const std::string& FileName) = 0;
+	virtual void LoadTexture2DFromImage(const std::shared_ptr<IImage>& Image) = 0;
 
-	/**
-	 * Load a 2D texture from a file path.
-	 */
-	virtual bool LoadTexture2D(const std::string& fileName) = 0;
-
-	/**
-	 * Load a cubemap texture from a file path.
-	 */
-	virtual bool LoadTextureCube(const std::vector<std::shared_ptr<IImage>>& Images) = 0;
+	virtual void LoadTextureCube(const std::string& FileName) = 0;
+	virtual void LoadTextureCubeFromImages(const std::vector<std::shared_ptr<IImage>>& Images) = 0;
 
 	/**
 	 * Generate mip maps for a texture.

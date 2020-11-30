@@ -54,17 +54,8 @@ MaterialModel::MaterialModel(const IBaseManager& BaseManager)
 		prop->SetValueGetter(std::bind(&MaterialModel::GetEmissiveColor, this));
 		GetProperties()->AddProperty(prop);
 	}
-
-	std::vector<std::string> names;
-	names.push_back("skybox_Right.png");
-	names.push_back("skybox_Left.png");
-	names.push_back("skybox_Top.png");
-	names.push_back("skybox_Bottom.png");
-	names.push_back("skybox_Front.png");
-	names.push_back("skybox_Back.png");
 	
-	auto textureCube = m_BaseManager.GetManager<IznTexturesFactory>()->LoadTextureCube(names);
-	std::dynamic_pointer_cast<ITextureInternal>(textureCube)->SetFileName("s");
+	auto textureCube = m_BaseManager.GetManager<IznTexturesFactory>()->LoadTextureCube("Skybox2.png");
 	__super::SetTexture(15, textureCube);
 }
 
@@ -162,6 +153,8 @@ void MaterialModel::SetBumpFactor(float Factor)
 	MaterialData().BumpFactor = Factor;
 	MarkMaterialDataDirty();
 }
+
+
 
 void MaterialModel::SetEnviorementMappingEnable(bool Value)
 {

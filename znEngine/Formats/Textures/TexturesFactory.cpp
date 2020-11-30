@@ -42,27 +42,45 @@ std::shared_ptr<ITexture> CznTexturesFactory::LoadTexture2D(const std::shared_pt
 		return GetDefaultTexture();
 
 	IRenderDevice& renderDevice = m_BaseManager.GetApplication().GetRenderDevice();
-	std::shared_ptr<ITexture> texture = renderDevice.GetObjectsFactory().CreateEmptyTexture();
-	if (false == texture->LoadTextureFromImage(image))
+	auto texture = renderDevice.GetObjectsFactory().CreateEmptyTexture();
+
+	try
+	{
+		texture->LoadTexture2DFromImage(image);		
+	}
+	catch (const CException& e)
+	{
+		Log::Error("TexturesFactory: Error while loading 2D texture '%s'.", TextureFile->Path_Name());
+		Log::Error("--->%s", e.MessageCStr());
 		return GetDefaultTexture();
+	}
 
 	std::dynamic_pointer_cast<ITextureInternal>(texture)->SetFileName(TextureFile->Path_Name());
-
 	m_TexturesByName[TextureFile->Path_Name()] = texture;
 	return texture;
 }
 
-std::shared_ptr<ITexture> CznTexturesFactory::LoadTextureCube(const std::vector<std::string>& TextureFilenames)
+std::shared_ptr<ITexture> CznTexturesFactory::LoadTextureCube(const std::string& CubeTextureFilename)
 {
-	std::vector<std::shared_ptr<IImage>> images;
-	for (const auto& f : TextureFilenames)
-		images.push_back(m_BaseManager.GetManager<IImagesFactory>()->CreateImage(f));
+	if (auto textureFromCache = TryGetTextureFromCache(CubeTextureFilename))
+		return textureFromCache;
 
 	IRenderDevice& renderDevice = m_BaseManager.GetApplication().GetRenderDevice();
-	std::shared_ptr<ITexture> texture = renderDevice.GetObjectsFactory().CreateEmptyTexture();
-	if (false == texture->LoadTextureCube(images))
-		return GetDefaultTexture();
+	auto texture = renderDevice.GetObjectsFactory().CreateEmptyTexture();
 
+	try
+    {
+		texture->LoadTextureCube(CubeTextureFilename);
+	}
+	catch (const CException& e)
+	{
+		Log::Error("TexturesFactory: Error while loading Cube texture '%s'.", CubeTextureFilename);
+		Log::Error("--->%s", e.MessageCStr());
+		return GetDefaultTexture();
+	}
+
+	std::dynamic_pointer_cast<ITextureInternal>(texture)->SetFileName(CubeTextureFilename);
+	m_TexturesByName[CubeTextureFilename] = texture;
 	return texture;
 }
 

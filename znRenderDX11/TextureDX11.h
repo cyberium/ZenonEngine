@@ -14,9 +14,12 @@ public:
 
 	// ITexture
 	const std::string& GetFilename() const override;
-	bool LoadTextureFromImage(const std::shared_ptr<IImage>& Image);
-	bool LoadTexture2D(const std::string& fileName);
-	bool LoadTextureCube(const std::vector<std::shared_ptr<IImage>>& Images);
+
+	void LoadTexture2D(const std::string& FileName) override;
+	void LoadTexture2DFromImage(const std::shared_ptr<IImage>& Image) override;
+
+	void LoadTextureCube(const std::string& FileName) override;
+	void LoadTextureCubeFromImages(const std::vector<std::shared_ptr<IImage>>& Images) override;
 
 	void GenerateMipMaps();
 

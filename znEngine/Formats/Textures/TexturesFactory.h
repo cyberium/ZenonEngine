@@ -11,7 +11,7 @@ public:
 	virtual std::shared_ptr<ITexture> LoadTexture2D(const std::string& TextureFileName) override;
 	virtual std::shared_ptr<ITexture> LoadTexture2D(const std::shared_ptr<IFile>& TextureFile) override;
 
-	virtual std::shared_ptr<ITexture> LoadTextureCube(const std::vector<std::string>& TextureFilenames) override;
+	virtual std::shared_ptr<ITexture> LoadTextureCube(const std::string& CubeTextureFilename) override;
 
 	virtual std::shared_ptr<IFile> SaveTexture(const std::shared_ptr<ITexture>& Texture, const std::string& FileName) const override;
 	
