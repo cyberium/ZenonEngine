@@ -62,18 +62,15 @@ EVisitResult CDrawBonesPass::Visit(const ISceneNode * CSceneNode)
 	if (bones.empty())
 		return EVisitResult::AllowVisitChilds;
 	
-	const auto& shaders = GetPipeline().GetShaders();
-	const auto& vertexShader = shaders.at(EShaderType::VertexShader).get();
-
-	m_Material->Bind(shaders);
+	m_Material->Bind(GetRenderEventArgs().PipelineState->GetPixelShaderPtr());
 
 	for (const auto& b : bones)
 	{
 		BindPerObjectData(PerObject(CSceneNode->GetWorldTransfom() * modelsComponent->GetModel()->GetFixSkeleton() * b->GetMatrix()));
-		m_SphereGeometry->Render(vertexShader);
+		m_SphereGeometry->Render(GetRenderEventArgs().PipelineState->GetVertexShaderPtr());
 	}
 
-	m_Material->Unbind(shaders);
+	m_Material->Unbind(GetRenderEventArgs().PipelineState->GetPixelShaderPtr());
 
 	return EVisitResult::AllowAll;
 }

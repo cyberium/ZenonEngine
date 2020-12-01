@@ -42,7 +42,7 @@ float4 PS_main(VSOutput IN) : SV_TARGET
 	MaterialForLight matForLight;
 	matForLight.SpecularFactor = specular.a;
 	
-	LightingResult lit = DoLighting(LightsVS, matForLight, eyePos, positionVS, normalVS);
+	SLightingResult lit = DoLighting(LightsVS, matForLight, eyePos, positionVS, normalVS);
 
 	float3 ambientLight  = diffuseAndAlpha.rgb * lit.Ambient.rgb;
 	float3 diffuseLight  = diffuseAndAlpha.rgb * lit.Diffuse.rgb;

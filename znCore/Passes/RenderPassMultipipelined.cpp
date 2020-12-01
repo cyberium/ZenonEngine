@@ -86,11 +86,11 @@ void RenderPassMultipipelined::BindPerFrameData(IPipelineState& Pipeline) const
 
 	for (const auto& shaderIt : Pipeline.GetShaders())
 	{
-		auto& perFrameParam = shaderIt.second->GetShaderParameterByName("PerFrame");
-		if (perFrameParam.IsValid())
+		auto* perFrameParam = shaderIt.second->GetShaderParameterByName("PerFrame");
+		if (perFrameParam)
 		{
-			perFrameParam.SetConstantBuffer(m_PerFrameConstantBuffer);
-			perFrameParam.Bind();
+			perFrameParam->SetConstantBuffer(m_PerFrameConstantBuffer);
+			perFrameParam->Bind();
 		}
 	}
 }

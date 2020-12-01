@@ -49,10 +49,10 @@ std::shared_ptr<IRenderPassPipelined> CRTSGround_Pass::ConfigurePipeline(std::sh
 	GetPipeline().SetShader(EShaderType::VertexShader, vertexShader);
 	GetPipeline().SetShader(EShaderType::PixelShader, pixelShader);
 
-	m_ShaderLightsBufferParameter = &pixelShader->GetShaderParameterByName("LightsVS");
+	m_ShaderLightsBufferParameter = pixelShader->GetShaderParameterByName("LightsVS");
 	//_ASSERT(m_ShaderLightsBufferParameter->IsValid());
 
-	m_ShaderInstancesBufferParameter = &vertexShader->GetShaderParameterByName("Instances");
+	m_ShaderInstancesBufferParameter = vertexShader->GetShaderParameterByName("Instances");
 	//_ASSERT(m_ShaderInstancesBufferParameter->IsValid());
 
 	return shared_from_this();
@@ -96,19 +96,17 @@ EVisitResult CRTSGround_Pass::Visit(const ISceneNode * SceneNode)
 		m_ShaderInstancesBufferParameter->SetStructuredBuffer(m_InstancesBuffer);
 		m_ShaderInstancesBufferParameter->Bind();
 
-		const IShader* vertexShader = GetPipeline().GetShader(EShaderType::VertexShader).get();
-
 		for (const auto& c : it.first->GetConnections())
 		{
 			if (c.Material)
-				c.Material->Bind(GetRenderEventArgs().PipelineState->GetShaders());
+				c.Material->Bind(GetRenderEventArgs().PipelineState->GetPixelShaderPtr());
 
 			SGeometryDrawArgs args = c.GeometryDrawArgs;
 			args.InstanceCnt = instances.size();
-			c.Geometry->Render(vertexShader, args);
+			c.Geometry->Render(GetRenderEventArgs().PipelineState->GetVertexShaderPtr(), args);
 
 			if (c.Material)
-				c.Material->Unbind(GetRenderEventArgs().PipelineState->GetShaders());
+				c.Material->Unbind(GetRenderEventArgs().PipelineState->GetPixelShaderPtr());
 		}
 
 		m_ShaderInstancesBufferParameter->Unbind();

@@ -16,7 +16,7 @@ ConstantBufferDX11::~ConstantBufferDX11()
 //
 // IBuffer
 //
-bool ConstantBufferDX11::Bind(uint32 id, const IShader* shader, IShaderParameter::Type parameterType) const
+bool ConstantBufferDX11::Bind(uint32 id, const IShader* shader, IShaderParameter::EType parameterType) const
 {
 	if (m_bIsDirty)
 	{
@@ -53,7 +53,7 @@ bool ConstantBufferDX11::Bind(uint32 id, const IShader* shader, IShaderParameter
 	return true;
 }
 
-void ConstantBufferDX11::UnBind(uint32 id, const IShader* shader, IShaderParameter::Type parameterType) const
+void ConstantBufferDX11::UnBind(uint32 id, const IShader* shader, IShaderParameter::EType parameterType) const
 {
 	ID3D11Buffer* pBuffers[] = { nullptr };
 

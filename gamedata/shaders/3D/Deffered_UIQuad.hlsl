@@ -103,7 +103,7 @@ float4 PS_DeferredLighting(VS_Output VSOut
 	const float4 PView = ScreenToView(float4(texCoord, depth, 1.0f));
 	float4 normal = normalize(float4(normalVS.xyz, 0.0f));
 
-	LightingResult lit = DoLightingSingle(CurrentLightVS, matForLight, eyePos, PView, normal);
+	SLightingResult lit = DoLightingSingle(CurrentLightVS, matForLight, eyePos, PView, normal);
 	
 	float3 ambientLight  = diffuseAndAlpha.rgb * lit.Ambient.rgb;
 	float3 diffuseLight  = diffuseAndAlpha.rgb * lit.Diffuse.rgb;

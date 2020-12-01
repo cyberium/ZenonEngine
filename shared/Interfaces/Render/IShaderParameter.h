@@ -14,7 +14,7 @@ ZN_INTERFACE ZN_API IShaderParameterSource
 
 ZN_INTERFACE ZN_API IShaderParameter
 {
-	enum class ZN_API Type
+	enum class ZN_API EType
 	{
 		Invalid,    // Invalid parameter. Doesn't store a type.
 		Texture,    // Texture.
@@ -26,11 +26,7 @@ ZN_INTERFACE ZN_API IShaderParameter
 
 	virtual ~IShaderParameter() {}
 
-	// Get the type of the stored parameter.
-	virtual Type GetParameterType() const = 0;
-
-	// Test to see if this is a valid shader parameter.
-	virtual bool IsValid() const = 0;
+	virtual EType GetType() const = 0;
 
 	virtual void SetSource(std::shared_ptr<IShaderParameterSource> ShaderParameterSource) = 0;
 	virtual std::shared_ptr<IShaderParameterSource> GetSource() const = 0;
@@ -56,13 +52,13 @@ ZN_INTERFACE ZN_API IShaderParameter
 	template <typename T>
 	inline void Set(std::shared_ptr<T> value)
 	{
-		_ASSERT(false);
+		static_assert(false, "This function must be specialized.");
 	}
 
 	template <typename T>
 	inline const std::shared_ptr<T>& Get() const
 	{
-		_ASSERT(false);
+		static_assert(false, "This function must be specialized.");
 	}
 };
 

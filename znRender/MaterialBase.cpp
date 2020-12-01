@@ -59,7 +59,7 @@ std::shared_ptr<IPropertiesGroup> MaterialBase::GetProperties() const
 }
 
 
-void MaterialBase::Bind(const ShaderMap& shaders) const
+void MaterialBase::Bind(const IShader* PixelShader) const
 {
 	if (m_Dirty)
 	{
@@ -70,7 +70,7 @@ void MaterialBase::Bind(const ShaderMap& shaders) const
 	}
 }
 
-void MaterialBase::Unbind(const ShaderMap& shaders) const
+void MaterialBase::Unbind(const IShader* PixelShader) const
 {
 
 }

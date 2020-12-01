@@ -7,8 +7,8 @@ public:
 	virtual	~SamplerStateDX11();
 
     // SamplerState
-	void Bind(uint32_t ID, const IShader* shader, IShaderParameter::Type parameterType) const override final;
-	void UnBind(uint32_t ID, const IShader* shader, IShaderParameter::Type parameterType) const override final;
+	void Bind(uint32_t ID, const IShader* shader, IShaderParameter::EType parameterType) const override final;
+	void UnBind(uint32_t ID, const IShader* shader, IShaderParameter::EType parameterType) const override final;
 
 private:
 	mutable ATL::CComPtr<ID3D11SamplerState> m_pSamplerState;

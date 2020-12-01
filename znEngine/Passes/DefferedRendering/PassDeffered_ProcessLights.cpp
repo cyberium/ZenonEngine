@@ -48,16 +48,16 @@ void CPassDeffered_ProcessLights::CreateShadowPipeline()
 
 	m_ShadowPipeline = shadowPipeline;
 
-	m_PerObjectShaderParameter = &vertexShader->GetShaderParameterByName("PerObject");
+	m_PerObjectShaderParameter = vertexShader->GetShaderParameterByName("PerObject");
 	_ASSERT(m_PerObjectShaderParameter->IsValid());
 	m_PerObjectShaderParameter->SetConstantBuffer(m_PerObjectConstantBuffer);
 
-	m_PerFrameShaderParameter = &vertexShader->GetShaderParameterByName("PerFrame");
+	m_PerFrameShaderParameter = vertexShader->GetShaderParameterByName("PerFrame");
 	_ASSERT(m_PerFrameShaderParameter->IsValid());
 	m_PerFrameShaderParameter->SetConstantBuffer(m_PerFrameConstantBuffer);
 
 	// Bones
-	m_ShaderBonesBufferParameter = &vertexShader->GetShaderParameterByName("Bones");
+	m_ShaderBonesBufferParameter = vertexShader->GetShaderParameterByName("Bones");
 	//_ASSERT(m_ShaderBonesBufferParameter->IsValid());
 }
 
@@ -109,7 +109,7 @@ void CPassDeffered_ProcessLights::Render(RenderEventArgs& e)
 				auto modelsComponent = geometryIt.Node->GetComponentT<IModelsComponent3D>();
 				if (modelsComponent != nullptr)
 				{
-					if (m_ShaderBonesBufferParameter->IsValid())
+					if (m_ShaderBonesBufferParameter)
 					{
 						m_ShaderBonesBufferParameter->Set(modelsComponent->GetBonesBuffer());
 						m_ShaderBonesBufferParameter->Bind();
@@ -121,7 +121,7 @@ void CPassDeffered_ProcessLights::Render(RenderEventArgs& e)
 				// Bones end
 				if (modelsComponent != nullptr)
 				{
-					if (m_ShaderBonesBufferParameter->IsValid())
+					if (m_ShaderBonesBufferParameter)
 					{
 						m_ShaderBonesBufferParameter->Unbind();
 					}

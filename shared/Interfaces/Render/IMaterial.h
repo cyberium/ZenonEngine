@@ -20,8 +20,8 @@ ZN_INTERFACE ZN_API IMaterial
 	
 	virtual std::shared_ptr<IPropertiesGroup> GetProperties() const = 0;
 
-	virtual void Bind(const ShaderMap& shaders) const = 0;
-	virtual void Unbind(const ShaderMap& shaders) const = 0;
+	virtual void Bind(const IShader* PixelShader) const = 0;
+	virtual void Unbind(const IShader* PixelShader) const = 0;
 };
 
 typedef std::map<std::string, std::shared_ptr<IMaterial>> MaterialNameMap;

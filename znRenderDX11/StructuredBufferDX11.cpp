@@ -15,7 +15,7 @@ StructuredBufferDX11::~StructuredBufferDX11()
 //
 // IBuffer
 //
-bool StructuredBufferDX11::Bind(uint32 ID, const IShader* shader, IShaderParameter::Type parameterType) const
+bool StructuredBufferDX11::Bind(uint32 ID, const IShader* shader, IShaderParameter::EType parameterType) const
 {
 	if (m_bIsDirty)
 	{
@@ -23,7 +23,7 @@ bool StructuredBufferDX11::Bind(uint32 ID, const IShader* shader, IShaderParamet
 		m_bIsDirty = false;
 	}
 
-	if (parameterType == IShaderParameter::Type::Buffer && m_pSRV)
+	if (parameterType == IShaderParameter::EType::Buffer && m_pSRV)
 	{
 		ID3D11ShaderResourceView* srv[] = { m_pSRV };
 
@@ -49,7 +49,7 @@ bool StructuredBufferDX11::Bind(uint32 ID, const IShader* shader, IShaderParamet
 			break;
 		}
 	}
-	else if (parameterType == IShaderParameter::Type::RWBuffer && m_pUAV)
+	else if (parameterType == IShaderParameter::EType::RWBuffer && m_pUAV)
 	{
 		ID3D11UnorderedAccessView* uav[] = { m_pUAV };
 		switch (shader->GetShaderType())
@@ -63,12 +63,12 @@ bool StructuredBufferDX11::Bind(uint32 ID, const IShader* shader, IShaderParamet
 	return true;
 }
 
-void StructuredBufferDX11::UnBind(uint32 ID, const IShader* shader, IShaderParameter::Type parameterType) const
+void StructuredBufferDX11::UnBind(uint32 ID, const IShader* shader, IShaderParameter::EType parameterType) const
 {
 	ID3D11UnorderedAccessView* uav[] = { nullptr };
 	ID3D11ShaderResourceView* srv[] = { nullptr };
 
-	if (parameterType == IShaderParameter::Type::Buffer)
+	if (parameterType == IShaderParameter::EType::Buffer)
 	{
 		switch (shader->GetShaderType())
 		{
@@ -92,7 +92,7 @@ void StructuredBufferDX11::UnBind(uint32 ID, const IShader* shader, IShaderParam
 			break;
 		}
 	}
-	else if (parameterType == IShaderParameter::Type::RWBuffer)
+	else if (parameterType == IShaderParameter::EType::RWBuffer)
 	{
 		switch (shader->GetShaderType())
 		{

@@ -55,7 +55,7 @@ std::shared_ptr<IRenderPassPipelined> CParticlesPass::ConfigurePipeline(std::sha
 	GetPipeline().SetShader(EShaderType::PixelShader, pixelShader);
 
 	// 'Particles' in geom shader
-	m_GeomShaderParticlesBufferParameter = &geomShader->GetShaderParameterByName("Particles");
+	m_GeomShaderParticlesBufferParameter = geomShader->GetShaderParameterByName("Particles");
 	_ASSERT(m_GeomShaderParticlesBufferParameter->IsValid());
 
 	auto sampler = GetRenderDevice().GetObjectsFactory().CreateSamplerState();
@@ -109,7 +109,7 @@ EVisitResult CParticlesPass::Visit(const IParticleSystem * ParticlesSystem)
 
 	// Bind material
 	if (ParticlesSystem->GetTexture())
-		ParticlesSystem->GetTexture()->Bind(0, pixelShader, IShaderParameter::Type::Texture);
+		ParticlesSystem->GetTexture()->Bind(0, pixelShader, IShaderParameter::EType::Texture);
 
 	// Draw geom
 	SGeometryDrawArgs args;

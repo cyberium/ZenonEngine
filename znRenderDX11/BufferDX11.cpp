@@ -35,7 +35,7 @@ BufferDX11::~BufferDX11()
 //
 // IBuffer
 //
-bool BufferDX11::Bind(uint32 id, const IShader* shader, IShaderParameter::Type parameterType) const
+bool BufferDX11::Bind(uint32 id, const IShader* shader, IShaderParameter::EType parameterType) const
 {
 	ID3D11Buffer* buffers[] = { m_pBuffer };
 	UINT offsets[] = { GetElementOffset() };
@@ -56,7 +56,7 @@ bool BufferDX11::Bind(uint32 id, const IShader* shader, IShaderParameter::Type p
 	return true;
 }
 
-void BufferDX11::UnBind(uint32 id, const IShader* shader, IShaderParameter::Type parameterType) const
+void BufferDX11::UnBind(uint32 id, const IShader* shader, IShaderParameter::EType parameterType) const
 {
 	ID3D11Buffer* buffers[] = { nullptr };
 	UINT offsets[] = { 0 };

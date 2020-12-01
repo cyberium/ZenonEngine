@@ -75,7 +75,7 @@ EVisitResult CUIFontPass::Visit(const IUIControl * node)
 	auto vertexShader = shaders.at(EShaderType::VertexShader).get();
 	auto pixelShader = shaders.at(EShaderType::PixelShader).get();
 
-	font->GetTexture()->Bind(0, pixelShader, IShaderParameter::Type::Texture);
+	font->GetTexture()->Bind(0, pixelShader, IShaderParameter::EType::Texture);
 
 	fontGeometryInternal->Render_BindAllBuffers(vertexShader);
 	{
@@ -111,7 +111,7 @@ EVisitResult CUIFontPass::Visit(const IUIControl * node)
 	}
 	fontGeometryInternal->Render_UnbindAllBuffers(vertexShader);
 
-	font->GetTexture()->UnBind(0, pixelShader, IShaderParameter::Type::Texture);
+	font->GetTexture()->UnBind(0, pixelShader, IShaderParameter::EType::Texture);
 
 	return EVisitResult::AllowVisitChilds;
 }
@@ -127,11 +127,11 @@ void CUIFontPass::BindPerCharacterData(const SFontPerCharacterData& PerCharacter
 
 	for (const auto& shaderIt : GetPipeline().GetShaders())
 	{
-		auto& perFrameParam = shaderIt.second->GetShaderParameterByName("PerCharacterData");
-		if (perFrameParam.IsValid())
+		auto* perCharacterParam = shaderIt.second->GetShaderParameterByName("PerCharacterData");
+		if (perCharacterParam)
 		{
-			perFrameParam.SetConstantBuffer(m_FontBuffer);
-			perFrameParam.Bind();
+			perCharacterParam->SetConstantBuffer(m_FontBuffer);
+			perCharacterParam->Bind();
 		}
 	}
 }

@@ -138,25 +138,25 @@ bool ShaderDX11::LoadFromFile(EShaderType shaderType, std::string fileName, Shad
 		D3D11_SHADER_INPUT_BIND_DESC bindDesc = { };
 		CHECK_HR(shaderReflector->GetResourceBindingDesc(i, &bindDesc));
 
-		IShaderParameter::Type parameterType = IShaderParameter::Type::Invalid;
+		IShaderParameter::EType parameterType = IShaderParameter::EType::Invalid;
 
 		switch (bindDesc.Type)
 		{
 		case D3D_SIT_TEXTURE:
-			parameterType = IShaderParameter::Type::Texture;
+			parameterType = IShaderParameter::EType::Texture;
 			break;
 		case D3D_SIT_SAMPLER:
-			parameterType = IShaderParameter::Type::Sampler;
+			parameterType = IShaderParameter::EType::Sampler;
 			break;
 		case D3D_SIT_CBUFFER:
 		case D3D_SIT_STRUCTURED:
-			parameterType = IShaderParameter::Type::Buffer;
+			parameterType = IShaderParameter::EType::Buffer;
 			break;
 		case D3D_SIT_UAV_RWSTRUCTURED:
-			parameterType = IShaderParameter::Type::RWBuffer;
+			parameterType = IShaderParameter::EType::RWBuffer;
 			break;
 		case D3D_SIT_UAV_RWTYPED:
-			parameterType = IShaderParameter::Type::RWTexture;
+			parameterType = IShaderParameter::EType::RWTexture;
 			break;
 		}
 

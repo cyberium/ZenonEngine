@@ -102,8 +102,8 @@ ZN_INTERFACE ZN_API ISamplerState
 	virtual void SetMaxAnisotropy(uint8_t maxAnisotropy) = 0;
 	virtual uint8_t GetMaxAnisotropy() const = 0;
 
-	virtual void Bind(uint32_t ID, const IShader* shader, IShaderParameter::Type parameterType) const = 0;
-	virtual void UnBind(uint32_t ID, const IShader* shader, IShaderParameter::Type parameterType) const = 0;
+	virtual void Bind(uint32_t ID, const IShader* shader, IShaderParameter::EType parameterType) const = 0;
+	virtual void UnBind(uint32_t ID, const IShader* shader, IShaderParameter::EType parameterType) const = 0;
 };
 
 typedef std::vector<std::shared_ptr<ISamplerState>> SamplerList;

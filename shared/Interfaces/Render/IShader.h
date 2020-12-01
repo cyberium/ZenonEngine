@@ -5,79 +5,34 @@ ZN_INTERFACE IShaderParameter;
 ZN_INTERFACE IShaderInputLayout;
 // FORWARD END
 
+struct ZN_API SShaderMacro
+{
+	const char* MacrosName;
+	const char* ValueStr;
+};
+
 ZN_INTERFACE ZN_API IShader
 {
 	typedef std::map<std::string, std::shared_ptr<IShaderParameter>> ParameterMap;
+	typedef std::vector<SShaderMacro> ShaderMacros;
 
 	virtual ~IShader() {}
 
-	/**
-	 * What type of shader is this?
-	 */
 	virtual EShaderType GetShaderType() const = 0;
 
-	struct ZN_API SShaderMacro
-	{
-		const char* MacrosName;
-		const char* ValueStr;
-	};
-
-	/**
-	 * A shader macro consists of a macro name and a definition.
-	 * Use this to pass macro definitions to the shader compiler.
-	 */
-	typedef std::vector<SShaderMacro> ShaderMacros;
-
-
-	/**
-	 * Load a shader from a file.
-	 * @param type: The type of shader to load.
-	 * @param fileName: The path to the shader file to load.
-	 * @param entryPoint: The name of the entry-point function to be used by this shader.
-	 * @param profile: The shader profile to use to compile this shader.
-	 * To use the latest supported profile, specify "latest" here.
-	 * @return True if the shader was loaded correctly, or False otherwise.
-	 */
 	virtual bool LoadFromFile(EShaderType type, std::string fileName, ShaderMacros shaderMacros, std::string entryPoint) = 0;
 
-	/**
-	 * Calculate shader input layout
-	 */
 	virtual bool LoadInputLayoutFromReflector() = 0;
 	virtual bool LoadInputLayoutFromCustomElements(const std::vector<SCustomInputElement>& declIn) = 0;
 
-	/**
-	 * Get a shader input layout description
-	 */
 	virtual IShaderInputLayout& GetInputLayout() const = 0;
-
-	/**
-	 * Get a reference to a parameter defined in the shader.
-	 * @param name: The name of the parameter as defined in the shader file.
-	 * @return A reference to the ShaderParameter. If the parameter with the specified name
-	 * is not found in the shader, then this function will return an invalid shader parameter.
-	 * You can check for validity using the IShaderParameter::IsValid method.
-	 */
-	virtual IShaderParameter& GetShaderParameterByName(const std::string& name) const = 0;
-
-	/**
-	 * Bind this shader for use in the rendering pipeline.
-	 */
+	virtual IShaderParameter* GetShaderParameterByName(const std::string& name) const = 0;
+	
 	virtual void Bind() const = 0;
-
-	/**
-	 * Unbind the shader from the rendering pipeline.
-	 */
 	virtual void UnBind() const = 0;
 
-	/**
-	 * Dispatch a compute shader. If this shader does not refer to a compute
-	 * shader, this function does nothing.
-	 * TODO: Refactor this into a Command (and CommandBuffer).
-	 */
 	virtual void Dispatch(const glm::uvec3& numGroups) = 0;
 };
 
 typedef std::vector<std::shared_ptr<IShader>> ShaderList;
 typedef std::map<EShaderType, std::shared_ptr<IShader>> ShaderMap;
-typedef std::map<std::string, std::shared_ptr<IShader>> ShaderNameMap;

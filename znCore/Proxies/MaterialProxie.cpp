@@ -45,14 +45,14 @@ std::shared_ptr<IPropertiesGroup> MaterialProxie::GetProperties() const
 	return m_Material->GetProperties();
 }
 
-void MaterialProxie::Bind(const ShaderMap& shaders) const
+void MaterialProxie::Bind(const IShader* PixelShader) const
 {
-	m_Material->Bind(shaders);
+	m_Material->Bind(PixelShader);
 }
 
-void MaterialProxie::Unbind(const ShaderMap& shaders) const
+void MaterialProxie::Unbind(const IShader* PixelShader) const
 {
-	m_Material->Unbind(shaders);
+	m_Material->Unbind(PixelShader);
 }
 
 

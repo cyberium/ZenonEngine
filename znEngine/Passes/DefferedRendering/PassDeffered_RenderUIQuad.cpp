@@ -102,11 +102,11 @@ void CPassDeffered_RenderUIQuad::BindLightParamsForCurrentIteration(const Render
 	{
 		m_LightResultConstantBuffer->Set(lightResult);
 
-		auto& lightParam = GetPipeline().GetShader(EShaderType::PixelShader)->GetShaderParameterByName("LightResult");
-		if (lightParam.IsValid())
+		auto* lightParam = GetPipeline().GetPixelShaderPtr()->GetShaderParameterByName("LightResult");
+		if (lightParam)
 		{
-			lightParam.SetConstantBuffer(m_LightResultConstantBuffer);
-			lightParam.Bind();
+			lightParam->SetConstantBuffer(m_LightResultConstantBuffer);
+			lightParam->Bind();
 		}
 		else
 		{
@@ -117,11 +117,11 @@ void CPassDeffered_RenderUIQuad::BindLightParamsForCurrentIteration(const Render
 
 
 	{
-		auto& shadowTexture = GetPipeline().GetShader(EShaderType::PixelShader)->GetShaderParameterByName("TextureShadow");
-		if (shadowTexture.IsValid() && LightResult.IsCastShadow && LightResult.ShadowTexture != nullptr)
+		auto* shadowTexture = GetPipeline().GetPixelShaderPtr()->GetShaderParameterByName("TextureShadow");
+		if (shadowTexture && LightResult.IsCastShadow && LightResult.ShadowTexture != nullptr)
 		{
-			shadowTexture.SetTexture(LightResult.ShadowTexture);
-			shadowTexture.Bind();
+			shadowTexture->SetTexture(LightResult.ShadowTexture);
+			shadowTexture->Bind();
 		}
 		else
 		{

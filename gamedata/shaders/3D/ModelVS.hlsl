@@ -19,6 +19,7 @@ VSOutput VS_PTN(VSInputPTN IN
 #endif
 )
 {
+
 #ifdef SKELETON_ANIMATION
 	float4 vertexPosition = float4(0.0f, 0.0f, 0.0f, 0.0f);
 

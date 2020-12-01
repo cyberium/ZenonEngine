@@ -41,7 +41,7 @@ struct MaterialForLight
 
 
 // This lighting result is returned by the lighting functions for each light type.
-struct LightingResult
+struct SLightingResult
 {
 	float4 Ambient;
 	float4 Diffuse;
@@ -98,9 +98,9 @@ float DoSpotCone(LightVS light, float4 L)
 	return smoothstep(minCos, maxCos, cosAngle);
 }
 
-LightingResult DoPointLight(LightVS light, MaterialForLight mat, float4 V, float4 P, float4 N)
+SLightingResult DoPointLight(LightVS light, MaterialForLight mat, float4 V, float4 P, float4 N)
 {
-	LightingResult result;
+	SLightingResult result;
 
 	float4 L = light.LightPositionVS - P;
 	float distance = length(L);
@@ -115,9 +115,9 @@ LightingResult DoPointLight(LightVS light, MaterialForLight mat, float4 V, float
 	return result;
 }
 
-LightingResult DoDirectionalLight(LightVS light, MaterialForLight mat, float4 V, float4 P, float4 N)
+SLightingResult DoDirectionalLight(LightVS light, MaterialForLight mat, float4 V, float4 P, float4 N)
 {
-	LightingResult result;
+	SLightingResult result;
 
 	float4 L = normalize(-light.LightDirectionVS);
 
@@ -128,9 +128,9 @@ LightingResult DoDirectionalLight(LightVS light, MaterialForLight mat, float4 V,
 	return result;
 }
 
-LightingResult DoSpotLight(LightVS light, MaterialForLight mat, float4 V, float4 P, float4 N)
+SLightingResult DoSpotLight(LightVS light, MaterialForLight mat, float4 V, float4 P, float4 N)
 {
-	LightingResult result;
+	SLightingResult result;
 
 	float4 L = light.LightPositionVS - P;
 	float distance = length(L);
@@ -146,9 +146,9 @@ LightingResult DoSpotLight(LightVS light, MaterialForLight mat, float4 V, float4
 	return result;
 }
 
-LightingResult DoLightingSingle(LightVS light, MaterialForLight mat, float4 eyePos, float4 P, float4 N)
+SLightingResult DoLightingSingle(LightVS light, MaterialForLight mat, float4 eyePos, float4 P, float4 N)
 {
-	LightingResult lightingResult = (LightingResult)0;
+	SLightingResult lightingResult = (SLightingResult)0;
 	if (light.Struct.Type == UNKNOWN)
 		return lightingResult;
 
@@ -173,12 +173,12 @@ LightingResult DoLightingSingle(LightVS light, MaterialForLight mat, float4 eyeP
 	return lightingResult;
 }
 
-LightingResult DoLighting(StructuredBuffer<LightVS> lights, MaterialForLight mat, float4 eyePos, float4 P, float4 N)
+SLightingResult DoLighting(StructuredBuffer<LightVS> lights, MaterialForLight mat, float4 eyePos, float4 P, float4 N)
 {
-	LightingResult totalLightingResult = (LightingResult)0;
+	SLightingResult totalLightingResult = (SLightingResult)0;
 	for (int i = 0; i < NUM_LIGHTS; ++i)
 	{
-		LightingResult lightingResult = DoLightingSingle(lights[i], mat, eyePos, P, N);
+		SLightingResult lightingResult = DoLightingSingle(lights[i], mat, eyePos, P, N);
 		totalLightingResult.Ambient += lightingResult.Ambient;
 		totalLightingResult.Diffuse += lightingResult.Diffuse;
 		totalLightingResult.Specular += lightingResult.Specular;

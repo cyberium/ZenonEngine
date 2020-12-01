@@ -70,9 +70,9 @@ void CBaseList3DPass::DoRenderSceneNode(const ISceneNode * SceneNode)
 	m_PerObjectConstantBuffer->Set(perObject);
 
 	if (m_PerObjectParameter == nullptr)
-		m_PerObjectParameter = &(GetPipeline().GetShaders().at(EShaderType::VertexShader)->GetShaderParameterByName("PerObject"));
+		m_PerObjectParameter = (GetPipeline().GetVertexShaderPtr()->GetShaderParameterByName("PerObject"));
 
-	if (m_PerObjectParameter->IsValid() && m_PerObjectConstantBuffer != nullptr)
+	if (m_PerObjectParameter && m_PerObjectConstantBuffer != nullptr)
 	{
 		m_PerObjectParameter->SetConstantBuffer(m_PerObjectConstantBuffer);
 		m_PerObjectParameter->Bind();
@@ -87,12 +87,12 @@ void CBaseList3DPass::DoRenderModel(const IModel * Model)
 void CBaseList3DPass::DoRenderGeometry(const IGeometry * Geometry, const IMaterial * Material, SGeometryDrawArgs GeometryDrawArgs)
 {
 	if (Material)
-		Material->Bind(GetRenderEventArgs().PipelineState->GetShaders());
+		Material->Bind(GetRenderEventArgs().PipelineState->GetPixelShaderPtr());
 
-	Geometry->Render(GetRenderEventArgs().PipelineState->GetShaders().at(EShaderType::VertexShader).get(), GeometryDrawArgs);
+	Geometry->Render(GetRenderEventArgs().PipelineState->GetVertexShaderPtr(), GeometryDrawArgs);
 
 	if (Material)
-		Material->Unbind(GetRenderEventArgs().PipelineState->GetShaders());
+		Material->Unbind(GetRenderEventArgs().PipelineState->GetPixelShaderPtr());
 }
 
 

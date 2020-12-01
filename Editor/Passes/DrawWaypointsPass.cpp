@@ -70,12 +70,9 @@ EVisitResult CDrawWaypointsPass::Visit(const ISceneNode * node)
 
 	m_WaypointGeometry = GetRenderDevice().GetPrimitivesFactory().CreateLines(pointsXYZ);
 
-	m_MaterialDebug->Bind(GetPipeline().GetShaders());
-	{
-		const IShader* vertexShader = GetPipeline().GetShader(EShaderType::VertexShader).get();
-		m_WaypointGeometry->Render(vertexShader);
-	}
-	m_MaterialDebug->Unbind(GetPipeline().GetShaders());
+	m_MaterialDebug->Bind(GetPipeline().GetPixelShaderPtr());
+	m_WaypointGeometry->Render(GetPipeline().GetVertexShaderPtr());
+	m_MaterialDebug->Unbind(GetPipeline().GetPixelShaderPtr());
 
 	return EVisitResult::AllowVisitChilds;
 }

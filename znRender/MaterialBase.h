@@ -10,16 +10,16 @@ public:
 	virtual ~MaterialBase();
 
 	// IMaterial
-	virtual void  SetTexture(uint8 ID, const std::shared_ptr<ITexture> texture) override;
+	virtual void SetTexture(uint8 ID, const std::shared_ptr<ITexture> texture) override;
 	virtual std::shared_ptr<ITexture> GetTexture(uint8 ID) const override;
 	
-	virtual void  SetSampler(uint8 ID, const std::shared_ptr<ISamplerState> samplerState) override;
+	virtual void SetSampler(uint8 ID, const std::shared_ptr<ISamplerState> samplerState) override;
     virtual std::shared_ptr<ISamplerState> GetSampler(uint8 ID) const override;
 
 	std::shared_ptr<IPropertiesGroup> GetProperties() const override;
 
-	virtual void Bind(const ShaderMap& shaders) const override;
-	virtual void Unbind(const ShaderMap& shaders) const override;
+	virtual void Bind(const IShader* PixelShader) const override;
+	virtual void Unbind(const IShader* PixelShader) const override;
 
 	// IMaterialDataOwner
 	void         InitializeMaterialData(size_t BufferSize) override;

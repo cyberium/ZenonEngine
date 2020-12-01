@@ -35,11 +35,8 @@ public:
 	virtual void Copy(const std::shared_ptr<ITexture>& other);
 	virtual void Clear(ClearFlags clearFlags = ClearFlags::All, const glm::vec4& color = glm::vec4(0), float depth = 1.0f, uint8 stencil = 0);
 
-	virtual void Bind(uint32_t ID, const IShader* shader, IShaderParameter::Type parameterType) const override;
-	virtual void Bind(uint32_t ID, EShaderType _shaderType, IShaderParameter::Type parameterType) const override;
-
-	virtual void UnBind(uint32_t ID, const IShader* shader, IShaderParameter::Type parameterType) const override;
-	virtual void UnBind(uint32_t ID, EShaderType _shaderType, IShaderParameter::Type parameterType) const override;
+	virtual void Bind(uint32_t ID, const IShader* shader, IShaderParameter::EType parameterType) const override;
+	virtual void UnBind(uint32_t ID, const IShader* shader, IShaderParameter::EType parameterType) const override;
 
 	const std::vector<uint8>& GetBuffer() override;
 

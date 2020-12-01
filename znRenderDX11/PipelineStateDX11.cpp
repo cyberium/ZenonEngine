@@ -40,7 +40,7 @@ void PipelineStateDX11::Bind()
 				const auto& texture = textureIt.second;
 				_ASSERT(texture != nullptr);
 
-				texture->Bind((uint32_t)textureIt.first, shader.get(), IShaderParameter::Type::Texture);
+				texture->Bind((uint32_t)textureIt.first, shader.get(), IShaderParameter::EType::Texture);
 			}
 
 			for (const auto& samplerStateIt : m_Samplers)
@@ -48,7 +48,7 @@ void PipelineStateDX11::Bind()
 				const auto& samplerState = samplerStateIt.second;
 				_ASSERT(samplerState != nullptr);
 
-				samplerState->Bind((uint32_t)samplerStateIt.first, shader.get(), IShaderParameter::Type::Sampler);
+				samplerState->Bind((uint32_t)samplerStateIt.first, shader.get(), IShaderParameter::EType::Sampler);
 			}
 		}
 	}
@@ -67,14 +67,14 @@ void PipelineStateDX11::UnBind()
 			{
 				const auto& texture = textureIt.second;
 				_ASSERT(texture != nullptr);
-				texture->UnBind((uint32_t)textureIt.first, shader.get(), IShaderParameter::Type::Texture);
+				texture->UnBind((uint32_t)textureIt.first, shader.get(), IShaderParameter::EType::Texture);
 			}
 
 			for (const auto& samplerStateIt : m_Samplers)
 			{
 				const auto& samplerState = samplerStateIt.second;
 				_ASSERT(samplerState != nullptr);
-				samplerState->UnBind((uint32_t)samplerStateIt.first, shader.get(), IShaderParameter::Type::Sampler);
+				samplerState->UnBind((uint32_t)samplerStateIt.first, shader.get(), IShaderParameter::EType::Sampler);
 			}
 		}
 

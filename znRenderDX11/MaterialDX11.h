@@ -8,8 +8,8 @@ public:
 	virtual ~MaterialDX11();
 
     // IMaterial
-    void Bind(const ShaderMap& shaders) const override final;
-    void Unbind(const ShaderMap& shaders) const override final;
+    void Bind(const IShader* PixelShader) const override final;
+    void Unbind(const IShader* PixelShader) const override final;
 
 private:
 	void BindForShader(const IShader* shader) const;

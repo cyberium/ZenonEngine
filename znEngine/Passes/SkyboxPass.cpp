@@ -49,7 +49,7 @@ std::shared_ptr<IRenderPassPipelined> CSkyboxPass::ConfigurePipeline(std::shared
 	GetPipeline().SetShader(EShaderType::PixelShader, pixelShader);
 
 	// Per object
-	m_PerObjectShaderParameter = &vertexShader->GetShaderParameterByName("PerObject");
+	m_PerObjectShaderParameter = vertexShader->GetShaderParameterByName("PerObject");
 	_ASSERT(m_PerObjectShaderParameter->IsValid());
 	m_PerObjectShaderParameter->SetConstantBuffer(m_PerObjectConstantBuffer);
 

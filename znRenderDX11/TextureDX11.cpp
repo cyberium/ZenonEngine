@@ -529,17 +529,10 @@ void TextureDX11::Clear(ClearFlags clearFlags, const glm::vec4& color, float dep
 	}
 }
 
-void TextureDX11::Bind(uint32_t ID, const IShader* shader, IShaderParameter::Type parameterType) const
-{
-	Bind(ID, shader->GetShaderType(), parameterType);
-}
-
-void TextureDX11::Bind(uint32_t ID, EShaderType _shaderType, IShaderParameter::Type parameterType) const
+void TextureDX11::Bind(uint32_t ID, const IShader* shader, IShaderParameter::EType parameterType) const
 {
 	if (m_bIsDirty)
 	{
-
-
 		const_cast<TextureDX11*>(this)->m_Buffer.clear();
 
 		/*if (m_bDynamic && m_DX11Texture2D)
@@ -569,9 +562,9 @@ void TextureDX11::Bind(uint32_t ID, EShaderType _shaderType, IShaderParameter::T
 	ID3D11ShaderResourceView* srv[] = { m_DX11ShaderResourceView };
 	ID3D11UnorderedAccessView* uav[] = { m_DX11UnorderedAccessView };
 
-	if (parameterType == IShaderParameter::Type::Texture && m_DX11ShaderResourceView)
+	if (parameterType == IShaderParameter::EType::Texture && m_DX11ShaderResourceView)
 	{
-		switch (_shaderType)
+		switch (shader->GetShaderType())
 		{
 		case EShaderType::VertexShader:
 			m_RenderDeviceDX11.GetDeviceContextD3D11()->VSSetShaderResources(ID, 1, srv);
@@ -593,9 +586,9 @@ void TextureDX11::Bind(uint32_t ID, EShaderType _shaderType, IShaderParameter::T
 			break;
 		}
 	}
-	else if (parameterType == IShaderParameter::Type::RWTexture && m_DX11UnorderedAccessView)
+	else if (parameterType == IShaderParameter::EType::RWTexture && m_DX11UnorderedAccessView)
 	{
-		switch (_shaderType)
+		switch (shader->GetShaderType())
 		{
 		case EShaderType::ComputeShader:
 			m_RenderDeviceDX11.GetDeviceContextD3D11()->CSSetUnorderedAccessViews(ID, 1, uav, nullptr);
@@ -604,20 +597,14 @@ void TextureDX11::Bind(uint32_t ID, EShaderType _shaderType, IShaderParameter::T
 	}
 }
 
-
-void TextureDX11::UnBind(uint32_t ID, const IShader* shader, IShaderParameter::Type parameterType) const
-{
-	UnBind(ID, shader->GetShaderType(), parameterType);
-}
-
-void TextureDX11::UnBind(uint32_t ID, EShaderType _shaderType, IShaderParameter::Type parameterType) const
+void TextureDX11::UnBind(uint32_t ID, const IShader * Shader, IShaderParameter::EType parameterType) const
 {
 	ID3D11ShaderResourceView* srv[] = { nullptr };
 	ID3D11UnorderedAccessView* uav[] = { nullptr };
 
-	if (parameterType == IShaderParameter::Type::Texture)
+	if (parameterType == IShaderParameter::EType::Texture)
 	{
-		switch (_shaderType)
+		switch (Shader->GetShaderType())
 		{
 		case EShaderType::VertexShader:
 			m_RenderDeviceDX11.GetDeviceContextD3D11()->VSSetShaderResources(ID, 1, srv);
@@ -639,9 +626,9 @@ void TextureDX11::UnBind(uint32_t ID, EShaderType _shaderType, IShaderParameter:
 			break;
 		}
 	}
-	else if (parameterType == IShaderParameter::Type::RWTexture)
+	else if (parameterType == IShaderParameter::EType::RWTexture)
 	{
-		switch (_shaderType)
+		switch (Shader->GetShaderType())
 		{
 		case EShaderType::ComputeShader:
 			m_RenderDeviceDX11.GetDeviceContextD3D11()->CSSetUnorderedAccessViews(ID, 1, uav, nullptr);

@@ -22,7 +22,7 @@ SamplerStateDX11::~SamplerStateDX11()
 //
 // SamplerState 
 //
-void SamplerStateDX11::Bind(uint32_t ID, const IShader* shader, IShaderParameter::Type parameterType) const
+void SamplerStateDX11::Bind(uint32_t ID, const IShader* shader, IShaderParameter::EType parameterType) const
 {
     if (m_bIsDirty)
     {
@@ -72,7 +72,7 @@ void SamplerStateDX11::Bind(uint32_t ID, const IShader* shader, IShaderParameter
     }
 }
 
-void SamplerStateDX11::UnBind(uint32_t ID, const IShader* shader, IShaderParameter::Type parameterType) const
+void SamplerStateDX11::UnBind(uint32_t ID, const IShader* shader, IShaderParameter::EType parameterType) const
 {
     ID3D11SamplerState* pSamplers[] = { nullptr };
 

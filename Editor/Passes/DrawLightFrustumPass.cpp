@@ -72,12 +72,9 @@ EVisitResult CDrawLightFrustumPass::Visit(const ILight3D * Light)
 
 		auto geom = GetRenderDevice().GetPrimitivesFactory().CreateFrustum(Light->GetFrustum());
 
-		m_MaterialDebug->Bind(GetPipeline().GetShaders());
-		{
-			const IShader* vertexShader = GetPipeline().GetShader(EShaderType::VertexShader).get();
-			geom->Render(vertexShader);
-		}
-		m_MaterialDebug->Unbind(GetPipeline().GetShaders());
+		m_MaterialDebug->Bind(GetPipeline().GetPixelShaderPtr());
+		geom->Render(GetPipeline().GetVertexShaderPtr());
+		m_MaterialDebug->Unbind(GetPipeline().GetPixelShaderPtr());
 	}
 
 	/*{

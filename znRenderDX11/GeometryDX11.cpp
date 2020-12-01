@@ -58,7 +58,7 @@ void GeometryDX11::Render_BindAllBuffers(const IShader * VertexShader) const
 {
 	if (m_VertexBuffer != nullptr)
 	{
-		m_VertexBuffer->Bind(0, VertexShader, IShaderParameter::Type::Buffer);
+		m_VertexBuffer->Bind(0, VertexShader, IShaderParameter::EType::Buffer);
 	}
 	else
 	{
@@ -77,12 +77,12 @@ void GeometryDX11::Render_BindAllBuffers(const IShader * VertexShader) const
 		{
 			UINT slotID = VertexShader->GetInputLayout().GetSemanticSlot(buffer.first);
 			if (slotID != UINT_MAX)
-				buffer.second->Bind(slotID, VertexShader, IShaderParameter::Type::Buffer);
+				buffer.second->Bind(slotID, VertexShader, IShaderParameter::EType::Buffer);
 		}
 	}
 
 	if (m_pIndexBuffer != NULL)
-		m_pIndexBuffer->Bind(0, VertexShader, IShaderParameter::Type::Buffer);
+		m_pIndexBuffer->Bind(0, VertexShader, IShaderParameter::EType::Buffer);
 }
 
 void GeometryDX11::Render_Draw(const SGeometryDrawArgs GeometryDrawArgs) const
@@ -118,11 +118,11 @@ void GeometryDX11::Render_Draw(const SGeometryDrawArgs GeometryDrawArgs) const
 void GeometryDX11::Render_UnbindAllBuffers(const IShader * VertexShader) const
 {
 	if (m_pIndexBuffer != NULL)
-		m_pIndexBuffer->UnBind(0, VertexShader, IShaderParameter::Type::Buffer);
+		m_pIndexBuffer->UnBind(0, VertexShader, IShaderParameter::EType::Buffer);
 
 	if (m_VertexBuffer != nullptr)
 	{
-		m_VertexBuffer->UnBind(0, VertexShader, IShaderParameter::Type::Buffer);
+		m_VertexBuffer->UnBind(0, VertexShader, IShaderParameter::EType::Buffer);
 	}
 	else
 	{
@@ -130,7 +130,7 @@ void GeometryDX11::Render_UnbindAllBuffers(const IShader * VertexShader) const
 		{
 			UINT slotID = VertexShader->GetInputLayout().GetSemanticSlot(buffer.first);
 			if (slotID != UINT_MAX)
-				buffer.second->UnBind(slotID, VertexShader, IShaderParameter::Type::Buffer);
+				buffer.second->UnBind(slotID, VertexShader, IShaderParameter::EType::Buffer);
 			//else
 			//	_ASSERT(false);
 		}

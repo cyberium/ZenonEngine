@@ -41,9 +41,6 @@ EVisitResult CUIControlPass::Visit(const IUIControl * node)
 {
 	if (const CUIControlCommon* textNode = dynamic_cast<const CUIControlCommon*>(node))
 	{
-		const auto& shaders = GetPipeline().GetShaders();
-		const auto& vertexShader = shaders.at(EShaderType::VertexShader).get();
-
 		for (const auto& subGeom : textNode->GetSubgeometries())
 		{
 			PerObject perObject(node->GetWorldTransfom());
@@ -52,9 +49,9 @@ EVisitResult CUIControlPass::Visit(const IUIControl * node)
 
 			BindPerObjectData(perObject);
 
-			subGeom.Material->Bind(shaders);
-			subGeom.Geom->Render(vertexShader, SGeometryDrawArgs());
-			subGeom.Material->Unbind(shaders);
+			subGeom.Material->Bind(GetRenderEventArgs().PipelineState->GetPixelShaderPtr());
+			subGeom.Geom->Render(GetRenderEventArgs().PipelineState->GetVertexShaderPtr(), SGeometryDrawArgs());
+			subGeom.Material->Unbind(GetRenderEventArgs().PipelineState->GetPixelShaderPtr());
 		}
 
 		return EVisitResult::AllowVisitChilds;

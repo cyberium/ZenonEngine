@@ -18,8 +18,8 @@ ZN_INTERFACE ZN_API IBuffer
 
 	virtual ~IBuffer() {}
 
-	virtual bool Bind(uint32 id, const IShader* shader, IShaderParameter::Type parameterType) const = 0;
-	virtual void UnBind(uint32 id, const IShader* shader, IShaderParameter::Type parameterType) const = 0;
+	virtual bool Bind(uint32 id, const IShader* shader, IShaderParameter::EType parameterType) const = 0;
+	virtual void UnBind(uint32 id, const IShader* shader, IShaderParameter::EType parameterType) const = 0;
 
 	virtual void Copy(const IBuffer* Other) const = 0;
 

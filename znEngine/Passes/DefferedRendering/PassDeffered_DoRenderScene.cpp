@@ -93,12 +93,12 @@ std::shared_ptr<IRenderPassPipelined> CPassDeffered_DoRenderScene::ConfigurePipe
 	vertexShader->LoadInputLayoutFromCustomElements(customElements);*/
 
 	// Per object
-	m_PerObjectShaderParameter = &vertexShader->GetShaderParameterByName("PerObject");
+	m_PerObjectShaderParameter = vertexShader->GetShaderParameterByName("PerObject");
 	_ASSERT(m_PerObjectShaderParameter->IsValid());
 	m_PerObjectShaderParameter->SetConstantBuffer(m_PerObjectConstantBuffer);
 
 	// Bones
-	m_ShaderBonesBufferParameter = &vertexShader->GetShaderParameterByName("Bones");
+	m_ShaderBonesBufferParameter = vertexShader->GetShaderParameterByName("Bones");
 	//_ASSERT(m_ShaderBonesBufferParameter->IsValid());
 
 	auto pixelShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::PixelShader, "3D/Model_Deffered.hlsl", "PS_main");
@@ -124,23 +124,20 @@ void CPassDeffered_DoRenderScene::DoRenderSceneNode(const ISceneNode * SceneNode
 
 	auto modelsComponent = SceneNode->GetComponentT<IModelsComponent3D>();
 	if (modelsComponent != nullptr)
-		if (m_ShaderBonesBufferParameter->IsValid())
+		if (m_ShaderBonesBufferParameter)
 			m_ShaderBonesBufferParameter->Set(modelsComponent->GetBonesBuffer());
 }
 
 void CPassDeffered_DoRenderScene::DoRenderGeometry(const IGeometry * Geometry, const IMaterial * Material, SGeometryDrawArgs GeometryDrawArgs)
 {
-	const auto& shaders = GetRenderEventArgs().PipelineState->GetShaders();
-	const auto& vertexShader = shaders.at(EShaderType::VertexShader).get();
-
-	if (m_ShaderBonesBufferParameter->IsValid())
+	if (m_ShaderBonesBufferParameter)
 		m_ShaderBonesBufferParameter->Bind();
 
-	Material->Bind(shaders);
-	Geometry->Render(vertexShader, GeometryDrawArgs);
-	Material->Unbind(shaders);
+	Material->Bind(GetRenderEventArgs().PipelineState->GetPixelShaderPtr());
+	Geometry->Render(GetRenderEventArgs().PipelineState->GetVertexShaderPtr(), GeometryDrawArgs);
+	Material->Unbind(GetRenderEventArgs().PipelineState->GetPixelShaderPtr());
 
-	if (m_ShaderBonesBufferParameter->IsValid())
+	if (m_ShaderBonesBufferParameter)
 		m_ShaderBonesBufferParameter->Unbind();
 }
 

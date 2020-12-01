@@ -5,12 +5,11 @@ class ZN_API ShaderParameterBase
 {
 public:
 	ShaderParameterBase();
-	ShaderParameterBase(const std::string& name, UINT slotID, IShader* shader, Type parameterType);
+	ShaderParameterBase(const std::string& name, UINT slotID, IShader* shader, EType parameterType);
     virtual ~ShaderParameterBase();
 
 	// IShaderParameter
-	Type GetParameterType() const;
-	bool IsValid() const;
+	EType GetType() const override;
 	void SetSource(std::shared_ptr<IShaderParameterSource> ShaderParameterSource) override final;
 	std::shared_ptr<IShaderParameterSource> GetSource() const override final;
 	void SetConstantBuffer(std::shared_ptr<IConstantBuffer> constantBuffer) override final;
@@ -29,7 +28,7 @@ private:
 	std::string             m_Name;
 	UINT                    m_uiSlotID;
 	const IShader*          m_Shader;
-	Type                    m_ParameterType;
+	EType                   m_ParameterType;
 
 	std::shared_ptr<IConstantBuffer>  m_pConstantBuffer;
 	std::shared_ptr<ITexture>         m_pTexture;

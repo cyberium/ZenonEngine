@@ -74,11 +74,11 @@ void ScenePassPipelined::BindPerObjectData(const PerObject& PerObject)
 
 	for (const auto& shaderIt : GetPipeline().GetShaders())
 	{
-		auto& perObjectParam = shaderIt.second->GetShaderParameterByName("PerObject");
-		if (perObjectParam.IsValid())
+		auto* perObjectParam = shaderIt.second->GetShaderParameterByName("PerObject");
+		if (perObjectParam)
 		{
-			perObjectParam.SetConstantBuffer(m_PerObjectConstantBuffer);
-			perObjectParam.Bind();
+			perObjectParam->SetConstantBuffer(m_PerObjectConstantBuffer);
+			perObjectParam->Bind();
 		}
 	}
 }

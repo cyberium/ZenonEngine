@@ -20,8 +20,8 @@ public:
     
 	std::shared_ptr<IPropertiesGroup> GetProperties() const override;
 
-	virtual void Bind(const ShaderMap& shaders) const override;
-	virtual void Unbind(const ShaderMap& shaders) const override;
+	virtual void Bind(const IShader* PixelShader) const override;
+	virtual void Unbind(const IShader* PixelShader) const override;
 
 	// IObjectLoadSave
 	void Load(const std::shared_ptr<IByteBuffer>& Buffer) override;

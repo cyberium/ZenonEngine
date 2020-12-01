@@ -8,8 +8,8 @@ public:
 	virtual ~StructuredBufferDX11();
 
 	// IBuffer
-	bool Bind(uint32 id, const IShader* shader, IShaderParameter::Type parameterType) const override;
-	void UnBind(uint32 id, const IShader* shader, IShaderParameter::Type parameterType) const override;
+	bool Bind(uint32 id, const IShader* shader, IShaderParameter::EType parameterType) const override;
+	void UnBind(uint32 id, const IShader* shader, IShaderParameter::EType parameterType) const override;
 	void Copy(const IBuffer* other) const override;
 
 	// IStructuredBuffer

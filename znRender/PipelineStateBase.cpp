@@ -5,6 +5,8 @@
 
 
 PipelineStateBase::PipelineStateBase()
+	: m_VertexShader(nullptr)
+	, m_PixelShader(nullptr)
 {
 }
 
@@ -17,23 +19,37 @@ PipelineStateBase::~PipelineStateBase()
 //
 // IPipelineState
 //
-void PipelineStateBase::SetShader(EShaderType type, const std::shared_ptr<IShader> pShader)
+void PipelineStateBase::SetShader(EShaderType type, std::shared_ptr<IShader> Shader)
 {
-	m_Shaders[type] = pShader;
+	m_Shaders[type] = Shader;
+
+	if (type == EShaderType::VertexShader)
+		m_VertexShader = Shader.get();
+	else if (type == EShaderType::PixelShader)
+		m_PixelShader = Shader.get();
 }
 
 const std::shared_ptr<IShader>& PipelineStateBase::GetShader(EShaderType type) const
 {
 	const auto& iter = m_Shaders.find(type);
 	if (iter == m_Shaders.end())
-		throw CException(L"Shader not found.");
-
+		throw CException("Shader '%d' not found.", type);
 	return iter->second;
 }
 
 const ShaderMap& PipelineStateBase::GetShaders() const
 {
 	return m_Shaders;
+}
+
+const IShader * PipelineStateBase::GetVertexShaderPtr() const
+{
+	return m_VertexShader;
+}
+
+const IShader * PipelineStateBase::GetPixelShaderPtr() const
+{
+	return m_PixelShader;
 }
 
 void PipelineStateBase::SetTexture(uint8 ID, const std::shared_ptr < ITexture> texture)
@@ -45,8 +61,7 @@ const std::shared_ptr<ITexture>& PipelineStateBase::GetTexture(uint8 ID) const
 {
 	const auto& itr = m_Textures.find(ID);
 	if (itr == m_Textures.end())
-		throw CException(L"Texture not found.");
-
+		throw CException(L"Texture with id '%d' not found.", ID);
 	return itr->second;
 }
 
@@ -64,8 +79,7 @@ const std::shared_ptr<ISamplerState>& PipelineStateBase::GetSampler(uint8 ID) co
 {
 	const auto& itr = m_Samplers.find(ID);
 	if (itr == m_Samplers.end())
-		throw CException(L"Sampler not found.");
-
+		throw CException(L"Sampler with id not found.", ID);
 	return itr->second;
 }
 

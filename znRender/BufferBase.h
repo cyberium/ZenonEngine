@@ -17,8 +17,8 @@ public:
 
 protected:
 	// IBuffer
-	virtual bool Bind(uint32 id, const IShader* shader, IShaderParameter::Type parameterType) const = 0;
-	virtual void UnBind(uint32 id, const IShader* shader, IShaderParameter::Type parameterType) const = 0;
+	virtual bool Bind(uint32 id, const IShader* shader, IShaderParameter::EType parameterType) const = 0;
+	virtual void UnBind(uint32 id, const IShader* shader, IShaderParameter::EType parameterType) const = 0;
 	virtual void Copy(const IBuffer* other) const = 0;
 	BufferType GetBufferType() const override;
 	uint32 GetElementCount() const override;

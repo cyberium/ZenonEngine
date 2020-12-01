@@ -67,12 +67,9 @@ EVisitResult CDrawBoundingBoxPass::Visit(const ISceneNode * CSceneNode)
 	bboxMatrix = glm::scale(bboxMatrix, bbox.getMax() - bbox.getMin());
 	BindPerObjectData(PerObject(bboxMatrix));
 
-	const auto& shaders = GetPipeline().GetShaders();
-	const auto& vertexShader = shaders.at(EShaderType::VertexShader).get();
-
-	m_Material->Bind(shaders);
-	m_BBoxGeometry->Render(vertexShader);
-	m_Material->Unbind(shaders);
+	m_Material->Bind(GetRenderEventArgs().PipelineState->GetPixelShaderPtr());
+	m_BBoxGeometry->Render(GetRenderEventArgs().PipelineState->GetVertexShaderPtr());
+	m_Material->Unbind(GetRenderEventArgs().PipelineState->GetPixelShaderPtr());
 
 	return EVisitResult::AllowAll;
 }

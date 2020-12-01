@@ -6,10 +6,8 @@
 // Additional
 #include "ShaderParameterBase.h"
 
-static ShaderParameterBase gs_InvalidShaderParameter;
-
-ShaderBase::ShaderBase() :
-	m_Type(EShaderType::UnknownShaderType)
+ShaderBase::ShaderBase() 
+	: m_Type(EShaderType::UnknownShaderType)
 {
 }
 
@@ -26,11 +24,11 @@ IShaderInputLayout& ShaderBase::GetInputLayout() const
     return *m_InputLayout;
 }
 
-IShaderParameter& ShaderBase::GetShaderParameterByName(const std::string& name) const
+IShaderParameter* ShaderBase::GetShaderParameterByName(const std::string& name) const
 {
 	const auto& iter = m_ShaderParameters.find(name);
     if (iter == m_ShaderParameters.end())
-		return gs_InvalidShaderParameter;
+		return nullptr;
 
-    return *iter->second;    
+    return iter->second.get();    
 }

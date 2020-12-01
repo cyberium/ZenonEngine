@@ -53,13 +53,13 @@ std::shared_ptr<IRenderPassPipelined> CPassForward_DoRenderScene::ConfigurePipel
 	GetPipeline().SetShader(EShaderType::VertexShader, vertexShader);
 	GetPipeline().SetShader(EShaderType::PixelShader, pixelShader);
 
-	m_ShaderBonesBufferParameter = &vertexShader->GetShaderParameterByName("Bones");
+	m_ShaderBonesBufferParameter = vertexShader->GetShaderParameterByName("Bones");
 	//_ASSERT(m_ShaderBonesBufferParameter->IsValid());
 
-	m_ShaderLightsBufferParameter = &pixelShader->GetShaderParameterByName("LightsVS");
+	m_ShaderLightsBufferParameter = pixelShader->GetShaderParameterByName("LightsVS");
 	//_ASSERT(m_ShaderLightsBufferParameter->IsValid());
 
-	m_ShaderInstancesBufferParameter = &vertexShader->GetShaderParameterByName("Instances");
+	m_ShaderInstancesBufferParameter = vertexShader->GetShaderParameterByName("Instances");
 	//_ASSERT(m_ShaderInstancesBufferParameter->IsValid());
 
 	return shared_from_this();
@@ -76,7 +76,7 @@ EVisitResult CPassForward_DoRenderScene::Visit(const ISceneNode * SceneNode)
 	{
 		auto modelsComponent = SceneNode->GetComponentT<IModelsComponent3D>();
 		if (modelsComponent != nullptr)
-			if (m_ShaderBonesBufferParameter->IsValid())
+			if (m_ShaderBonesBufferParameter)
 				m_ShaderBonesBufferParameter->Set(modelsComponent->GetBonesBuffer());
 
 		return Base3DPass::Visit(SceneNode);
@@ -99,18 +99,18 @@ EVisitResult CPassForward_DoRenderScene::Visit(const IGeometry * Geometry, const
 	const auto& shaders = GetRenderEventArgs().PipelineState->GetShaders();
 	const auto& vertexShader = shaders.at(EShaderType::VertexShader).get();
 
-	if (m_ShaderBonesBufferParameter->IsValid())
+	if (m_ShaderBonesBufferParameter)
 		m_ShaderBonesBufferParameter->Bind();
-	if (m_ShaderLightsBufferParameter->IsValid())
+	if (m_ShaderLightsBufferParameter)
 		m_ShaderLightsBufferParameter->Bind();
 
-	objMaterial->Bind(shaders);
-	Geometry->Render(vertexShader, GeometryDrawArgs);
-	objMaterial->Unbind(shaders);
+	objMaterial->Bind(GetRenderEventArgs().PipelineState->GetPixelShaderPtr());
+	Geometry->Render(GetRenderEventArgs().PipelineState->GetVertexShaderPtr(), GeometryDrawArgs);
+	objMaterial->Unbind(GetRenderEventArgs().PipelineState->GetPixelShaderPtr());
 
-	if (m_ShaderLightsBufferParameter->IsValid())
+	if (m_ShaderLightsBufferParameter)
 		m_ShaderLightsBufferParameter->Unbind();
-	if (m_ShaderBonesBufferParameter->IsValid())
+	if (m_ShaderBonesBufferParameter)
 		m_ShaderBonesBufferParameter->Unbind();
 
 	return AllowAll;

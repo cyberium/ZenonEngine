@@ -10,7 +10,7 @@ public:
 	// IShader
 	EShaderType GetShaderType() const override final;
 	IShaderInputLayout& GetInputLayout() const override final;
-	IShaderParameter& GetShaderParameterByName(const std::string& name) const override final;
+	IShaderParameter* GetShaderParameterByName(const std::string& name) const override final;
 	
 protected:
 	EShaderType	                        m_Type;

@@ -1,7 +1,7 @@
 #include "CommonInclude.hlsl"
 
 
-struct Particle
+struct SParticle
 {
 	float3 Position;
 	float __padding0;
@@ -52,7 +52,7 @@ cbuffer Material                     : register(b2)
 };
 
 Texture2D DiffuseTexture             : register(t0 );
-StructuredBuffer<Particle> Particles : register(t10);
+StructuredBuffer<SParticle> Particles : register(t10);
 
 
 
@@ -68,11 +68,6 @@ float3 TransformPoint(const float3 Point, const float4x4 Matrix)
 	return mul(Matrix, float4(Point, 1.0f)).xyz;
 }
 
-float3 TransformPoint2(const float3 Point, const float4x4 Matrix)
-{
-	return mul(Matrix, float4(Point, 0.0f)).xyz;
-}
-
 float3 ExtractScaleMatrix(const float4x4 Matrix)
 {
 	float3 scale;
@@ -85,7 +80,7 @@ float3 ExtractScaleMatrix(const float4x4 Matrix)
 [maxvertexcount(4)]
 void GS_Billboard(point GeometryShaderInput input[1], inout TriangleStream<PixelShaderInput> OutputStream)
 {
-	Particle p = Particles[input[0].VertexID];
+	SParticle p = Particles[input[0].VertexID];
 
 	float3 transformePosition = TransformPoint(p.Position, PO.Model);
 

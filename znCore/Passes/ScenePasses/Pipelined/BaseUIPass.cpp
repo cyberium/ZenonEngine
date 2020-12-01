@@ -46,12 +46,9 @@ EVisitResult BaseUIPass::Visit(const IModel * Model)
 
 EVisitResult BaseUIPass::Visit(const IGeometry* Geometry, const IMaterial* Material, SGeometryDrawArgs GeometryDrawArgs)
 {
-	const auto& shaders = GetPipeline().GetShaders();
-	const auto& vertexShader = shaders.at(EShaderType::VertexShader).get();
-
-	Material->Bind(shaders);
-	Geometry->Render(vertexShader, GeometryDrawArgs);
-	Material->Unbind(shaders);
+	Material->Bind(GetRenderEventArgs().PipelineState->GetPixelShaderPtr());
+	Geometry->Render(GetRenderEventArgs().PipelineState->GetVertexShaderPtr(), GeometryDrawArgs);
+	Material->Unbind(GetRenderEventArgs().PipelineState->GetPixelShaderPtr());
 
 	return EVisitResult::AllowAll;
 }

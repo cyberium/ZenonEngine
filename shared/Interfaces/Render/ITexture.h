@@ -179,21 +179,9 @@ ZN_INTERFACE ZN_API ITexture
 	 */
 	virtual void Clear(ClearFlags clearFlags = ClearFlags::All, const glm::vec4& color = glm::vec4(0), float depth = 1.0f, uint8 stencil = 0) = 0;
 
-	/**
-	 * Bind this texture for use by the shaders.
-	 */
-	virtual void Bind(uint32_t ID, const IShader* shader, IShaderParameter::Type parameterType) const = 0;
-	virtual void Bind(uint32_t ID, EShaderType _shaderType, IShaderParameter::Type parameterType) const = 0;
+	virtual void Bind(uint32_t ID, const IShader* Shader, IShaderParameter::EType parameterType) const = 0;
+	virtual void UnBind(uint32_t ID, const IShader* Shader, IShaderParameter::EType parameterType) const = 0;
 
-	/**
-	 * Unbind the texture.
-	 */
-	virtual void UnBind(uint32_t ID, const IShader* shader, IShaderParameter::Type parameterType) const = 0;
-	virtual void UnBind(uint32_t ID, EShaderType _shaderType, IShaderParameter::Type parameterType) const = 0;
-
-	/**
-	 * Get texture data
-	 */
 	virtual const std::vector<uint8>& GetBuffer() = 0;
 
 	// Template specizalizations

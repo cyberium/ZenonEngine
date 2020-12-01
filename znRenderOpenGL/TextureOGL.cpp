@@ -429,12 +429,12 @@ void TextureOGL::Bind(uint32_t ID, const IShader* shader, IShaderParameter::Type
 
 }
 
-void TextureOGL::Bind(uint32_t ID, EShaderType _shaderType, IShaderParameter::Type parameterType) const
+void TextureOGL::Bind(uint32_t ID, EShaderType _shaderType, IShaderParameter::EType parameterType) const
 {
 	_ASSERT(false);
 }
 
-void TextureOGL::UnBind(uint32_t ID, const IShader* shader, IShaderParameter::Type parameterType) const
+void TextureOGL::UnBind(uint32_t ID, const IShader* shader, IShaderParameter::EType parameterType) const
 {
 	const ShaderOGL* pShader = dynamic_cast<const ShaderOGL*>(shader);
 	_ASSERT(pShader != NULL);
