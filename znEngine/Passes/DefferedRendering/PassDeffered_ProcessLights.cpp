@@ -116,7 +116,7 @@ void CPassDeffered_ProcessLights::Render(RenderEventArgs& e)
 					}
 				}
 
-				geometryIt.Geometry->Render(m_ShadowPipeline->GetShaders().at(EShaderType::VertexShader).get(), geometryIt.GeometryDrawArgs);
+				geometryIt.Geometry->Render(m_ShadowPipeline->GetVertexShaderPtr(), geometryIt.GeometryDrawArgs);
 
 				// Bones end
 				if (modelsComponent != nullptr)

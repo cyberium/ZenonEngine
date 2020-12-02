@@ -42,6 +42,10 @@
     <ClCompile Include="Passes\ForwardRendering\PassForward_DoRenderSceneInstanced.cpp" />
     <ClCompile Include="Passes\ForwardRendering\RendererForward.cpp" />
     <ClCompile Include="Passes\ParticlesPass.cpp" />
+    <ClCompile Include="Passes\PostprocessRendering\PostprocessBase.cpp" />
+    <ClCompile Include="Passes\PostprocessRendering\Postprocess_Gauss.cpp" />
+    <ClCompile Include="Passes\PostprocessRendering\Postprocess_CopyTexture.cpp" />
+    <ClCompile Include="Passes\PostprocessRendering\Postprocess_Glow.cpp" />
     <ClCompile Include="Passes\PostprocessRendering\Postprocess_HDR.cpp" />
     <ClCompile Include="Passes\RTSGround_Pass.cpp" />
     <ClCompile Include="Passes\Scene\BaseTypedList3DPass.cpp" />
@@ -132,6 +136,10 @@
     <ClInclude Include="Passes\ForwardRendering\PassForward_DoRenderSceneInstanced.h" />
     <ClInclude Include="Passes\ForwardRendering\RendererForward.h" />
     <ClInclude Include="Passes\ParticlesPass.h" />
+    <ClInclude Include="Passes\PostprocessRendering\PostprocessBase.h" />
+    <ClInclude Include="Passes\PostprocessRendering\Postprocess_Gauss.h" />
+    <ClInclude Include="Passes\PostprocessRendering\Postprocess_CopyTexture.h" />
+    <ClInclude Include="Passes\PostprocessRendering\Postprocess_Glow.h" />
     <ClInclude Include="Passes\PostprocessRendering\Postprocess_HDR.h" />
     <ClInclude Include="Passes\RTSGround_Pass.h" />
     <ClInclude Include="Passes\Scene\BaseTypedList3DPass.h" />

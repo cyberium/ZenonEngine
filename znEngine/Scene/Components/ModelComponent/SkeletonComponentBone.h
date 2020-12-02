@@ -15,9 +15,9 @@ public:
 	std::string GetName() const override;
 	const std::weak_ptr<ISkeletonComponentBone3D>& GetParentBone() const override;
 	const std::vector<std::shared_ptr<ISkeletonComponentBone3D>>& GetChilds() const override;
-	glm::vec3 GetPivotPoint() const override;
-	const glm::mat4& GetMatrix() const override;
-	const glm::mat4& GetRotateMatrix() const override;
+	const ISkeletonBone& GetProtoBone() const override;
+	
+	const glm::mat4& GetCalculatedMatrix() const override;
 
 	// ISkeletonComponentBoneInternal3D
 	void AddChildInternal(const std::shared_ptr<ISkeletonComponentBone3D>& Child) override;
@@ -26,11 +26,11 @@ public:
 	void Reset() override;
 
 protected:
-	std::shared_ptr<ISkeletonBone>                 m_ProtoBone;
-	std::weak_ptr<ISkeletonComponentBone3D>        m_ParentBone;
+	std::shared_ptr<ISkeletonBone>                         m_ProtoBone;
+	std::weak_ptr<ISkeletonComponentBone3D>                m_ParentBone;
 	std::vector<std::shared_ptr<ISkeletonComponentBone3D>> m_Childs;
-	glm::vec3                                      m_PivotPoint;
-	glm::mat4                                      m_Matrix;
-	glm::mat4                                      m_RotateMatrix;
-	bool                                           m_IsCalculated;
+
+	// Dynamic
+	glm::mat4                                              m_CalculatedMatrix;
+	bool                                                   m_IsCalculated;
 };

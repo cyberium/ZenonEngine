@@ -3,53 +3,33 @@
 // General
 #include "Postprocess_HDR.h"
 
-CPassPostprocess_HDR::CPassPostprocess_HDR(IRenderDevice& RenderDevice, std::shared_ptr<IRenderTarget> HDRRenderTarget)
-	: RenderPassPipelined(RenderDevice)
-	, m_HDRRenderTarget(HDRRenderTarget)
+CPassPostprocess_HDR::CPassPostprocess_HDR(IRenderDevice& RenderDevice, std::shared_ptr<ITexture> InputTexture)
+	: CPassPostprocessBase(RenderDevice, InputTexture)
 {}
 
 CPassPostprocess_HDR::~CPassPostprocess_HDR()
 {}
 
-
-
-//
-// IRenderPass
-//
-void CPassPostprocess_HDR::Render(RenderEventArgs& e)
+std::shared_ptr<IRenderTarget> CPassPostprocess_HDR::LoadRenderTarget(std::shared_ptr<IRenderTarget> OriginalRenderTarget)
 {
-	m_QuadGeometry->Render(GetPipeline().GetShaders().at(EShaderType::VertexShader).get());
+	auto newRenderTarget = CreateRenderTarget(OriginalRenderTarget);
+	SetOutputTexture(newRenderTarget->GetTexture(IRenderTarget::AttachmentPoint::Color0));
+	return newRenderTarget;
 }
 
-
-
-//
-// IRenderPassPipelined
-//
-std::shared_ptr<IRenderPassPipelined> CPassPostprocess_HDR::ConfigurePipeline(std::shared_ptr<IRenderTarget> RenderTarget)
+std::shared_ptr<IShader> CPassPostprocess_HDR::LoadVertexShader()
 {
-	__super::ConfigurePipeline(RenderTarget);
+	auto samplesCnt = std::to_string(GetPipeline().GetRenderTarget()->GetTexture(IRenderTarget::AttachmentPoint::Color0)->GetSamplesCount());
 
-	m_QuadGeometry = GetRenderDevice().GetPrimitivesFactory().CreateQuad();
-
-	auto samplesCnt = std::to_string(RenderTarget->GetTexture(IRenderTarget::AttachmentPoint::Color0)->GetSamplesCount());
-
-	auto vertexShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::VertexShader, "3D/Deffered_HDR.hlsl", "VS_ScreenQuad", { {"MULTISAMPLED", samplesCnt.c_str() } });
+	auto vertexShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::VertexShader, "3D/PostprocessHDR.hlsl", "VS_ScreenQuad", { {"MULTISAMPLED", samplesCnt.c_str() } });
 	vertexShader->LoadInputLayoutFromReflector();
+	return vertexShader;
+}
 
-	auto pixelShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::PixelShader, "3D/Deffered_HDR.hlsl", "PS_ScreenQuad", { {"MULTISAMPLED", samplesCnt.c_str() }});
+std::shared_ptr<IShader> CPassPostprocess_HDR::LoadPixelShader()
+{
+	auto samplesCnt = std::to_string(GetPipeline().GetRenderTarget()->GetTexture(IRenderTarget::AttachmentPoint::Color0)->GetSamplesCount());
 
-	// PIPELINES
-	GetPipeline().GetBlendState()->SetBlendMode(disableBlending);
-	GetPipeline().GetDepthStencilState()->SetDepthMode(disableDepthWrites);
-	GetPipeline().GetRasterizerState()->SetCullMode(IRasterizerState::CullMode::None);
-	GetPipeline().GetRasterizerState()->SetFillMode(IRasterizerState::FillMode::Solid, IRasterizerState::FillMode::Solid);
-	GetPipeline().SetRenderTarget(RenderTarget);
-	GetPipeline().SetShader(EShaderType::VertexShader, vertexShader);
-	GetPipeline().SetShader(EShaderType::PixelShader, pixelShader);
-	
-	GetPipeline().SetTexture(0, m_HDRRenderTarget->GetTexture(IRenderTarget::AttachmentPoint::Color0));
-	//GetPipeline().SetTexture(1, m_HDRRenderTarget->GetTexture(IRenderTarget::AttachmentPoint::DepthStencil));
-
-	return shared_from_this();
+	auto pixelShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::PixelShader, "3D/PostprocessHDR.hlsl", "PS_ScreenQuad", { {"MULTISAMPLED", samplesCnt.c_str() } });
+	return pixelShader;
 }

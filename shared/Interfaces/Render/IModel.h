@@ -30,11 +30,10 @@ ZN_INTERFACE ZN_API ISkeletonBone
 	virtual void SetPivotMatrix(const glm::mat4& Matrix) = 0;
 	virtual glm::mat4 GetPivotMatrix() const = 0;
 
-	virtual void SetFuckingMatrix(const glm::mat4& Matrix) = 0;
-	virtual glm::mat4 GetFuckingMatrix() const = 0;
+	virtual void SetSkinMatrix(const glm::mat4& Matrix) = 0;
+	virtual glm::mat4 GetSkinMatrix() const = 0;
 
-	virtual glm::mat4 CalcMatrix(const IModelsComponent3D* ModelsComponent) const = 0;
-	virtual glm::mat4 CalcRotateMatrix(const IModelsComponent3D* ModelsComponent) const = 0;
+	virtual glm::mat4 CalculateBontMatrix(const IModelsComponent3D* ModelsComponent) const = 0;
 };
 
 
@@ -100,8 +99,6 @@ ZN_INTERFACE ZN_API IModel
 
 	virtual void                                    ApplyOtherSkeleton(std::shared_ptr<IModel> other) = 0;
 	virtual void                                    AddBone(const std::shared_ptr<ISkeletonBone> Bone) = 0;
-	virtual void                                    SetFixSkeleton(const glm::mat4& Matrix) = 0;
-	virtual glm::mat4                               GetFixSkeleton() const = 0;
 	virtual std::shared_ptr<ISkeletonBone>          GetRootBone() const = 0;
 	virtual std::shared_ptr<ISkeletonBone>          GetBone(size_t Index) const = 0;
 	virtual size_t                                  GetBoneIndexByName(const std::string& BoneName) const = 0;

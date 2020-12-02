@@ -162,11 +162,10 @@ ZN_INTERFACE ZN_API ISkeletonComponentBone3D
 	virtual std::string GetName() const = 0;
 	virtual const std::weak_ptr<ISkeletonComponentBone3D>& GetParentBone() const = 0;
 	virtual const std::vector<std::shared_ptr<ISkeletonComponentBone3D>>& GetChilds() const = 0;
-	virtual glm::vec3 GetPivotPoint() const = 0;
+	virtual const ISkeletonBone& GetProtoBone() const = 0;
 
 	// Dynamic data
-	virtual const glm::mat4& GetMatrix() const = 0;
-	virtual const glm::mat4& GetRotateMatrix() const = 0;
+	virtual const glm::mat4& GetCalculatedMatrix() const = 0;
 };
 
 ZN_INTERFACE ZN_API ISkeletonComponentBoneInternal3D

@@ -18,7 +18,7 @@ CSkeletonBone::CSkeletonBone(const std::string & Name, int32 ParentIndex)
 	, m_ParentIndex(ParentIndex)
 	, m_PivotMatrix(glm::mat4(1.0f))
 	, m_LocalTransform(glm::mat4(1.0f))
-	, m_FuckingMatrix(glm::mat4(1.0f))
+	, m_SkinMatrix(glm::mat4(1.0f))
 {
 }
 
@@ -84,17 +84,17 @@ glm::mat4 CSkeletonBone::GetPivotMatrix() const
 	return m_PivotMatrix;
 }
 
-void CSkeletonBone::SetFuckingMatrix(const glm::mat4 & Matrix)
+void CSkeletonBone::SetSkinMatrix(const glm::mat4 & Matrix)
 {
-	m_FuckingMatrix = Matrix;
+	m_SkinMatrix = Matrix;
 }
 
-glm::mat4 CSkeletonBone::GetFuckingMatrix() const
+glm::mat4 CSkeletonBone::GetSkinMatrix() const
 {
-	return m_FuckingMatrix;
+	return m_SkinMatrix;
 }
 
-glm::mat4 CSkeletonBone::CalcMatrix(const IModelsComponent3D* ModelsComponent) const
+glm::mat4 CSkeletonBone::CalculateBontMatrix(const IModelsComponent3D* ModelsComponent) const
 {
 	glm::mat4 m(1.0f);
 
@@ -113,11 +113,6 @@ glm::mat4 CSkeletonBone::CalcMatrix(const IModelsComponent3D* ModelsComponent) c
 	m *= glm::inverse(GetPivotMatrix());
 
 	return m;
-}
-
-glm::mat4 CSkeletonBone::CalcRotateMatrix(const IModelsComponent3D* ModelsComponent) const
-{
-	return m_FuckingMatrix;
 }
 
 
@@ -141,7 +136,7 @@ void CSkeletonBone::Load(const std::shared_ptr<IByteBuffer>& Buffer)
 	Buffer->read(&m_ParentIndex);
 	Buffer->read(&m_LocalTransform);
 	Buffer->read(&m_PivotMatrix);
-	Buffer->read(&m_FuckingMatrix);
+	Buffer->read(&m_SkinMatrix);
 
 	m_CalculatedMatrixes.Load(Buffer);
 }
@@ -152,7 +147,7 @@ void CSkeletonBone::Save(const std::shared_ptr<IByteBuffer>& Buffer) const
 	Buffer->write(&m_ParentIndex);
 	Buffer->write(&m_LocalTransform);
 	Buffer->write(&m_PivotMatrix);
-	Buffer->write(&m_FuckingMatrix);
+	Buffer->write(&m_SkinMatrix);
 	m_CalculatedMatrixes.Save(Buffer);
 }
 
@@ -162,7 +157,7 @@ void CSkeletonBone::Load(const std::shared_ptr<IXMLReader>& Reader)
 	m_ParentIndex = Reader->GetIntAttribute("ParentIndex");
 	m_LocalTransform = Utils::StringToMatrix(Reader->GetStrAttribute("LocalTransform"));
 	m_PivotMatrix = Utils::StringToMatrix(Reader->GetStrAttribute("PivotMatrix"));
-	m_FuckingMatrix = Utils::StringToMatrix(Reader->GetStrAttribute("FuckingMatrix"));
+	m_SkinMatrix = Utils::StringToMatrix(Reader->GetStrAttribute("FuckingMatrix"));
 
 	std::shared_ptr<CByteBuffer> byteBuffer = MakeShared(CByteBuffer, Utils::Base64_Decode(Reader->GetValue()));
 	m_CalculatedMatrixes.Load(byteBuffer);
@@ -174,7 +169,7 @@ void CSkeletonBone::Save(const std::shared_ptr<IXMLWriter>& Writer) const
 	Writer->SetIntAttribute(m_ParentIndex, "ParentIndex");
 	Writer->SetStrAttribute(Utils::MatrixToString(m_LocalTransform), "LocalTransform");
 	Writer->SetStrAttribute(Utils::MatrixToString(m_PivotMatrix), "PivotMatrix");
-	Writer->SetStrAttribute(Utils::MatrixToString(m_FuckingMatrix), "FuckingMatrix");
+	Writer->SetStrAttribute(Utils::MatrixToString(m_SkinMatrix), "FuckingMatrix");
 
 	std::shared_ptr<CByteBuffer> byteBuffer = MakeShared(CByteBuffer);
 	m_CalculatedMatrixes.Save(byteBuffer);

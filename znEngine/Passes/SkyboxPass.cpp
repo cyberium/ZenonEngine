@@ -74,5 +74,5 @@ void CSkyboxPass::Render(RenderEventArgs & e)
 	m_PerObjectConstantBuffer->Set(PerObject(matrix));
 	m_PerObjectShaderParameter->Bind();
 
-	m_SkyGeometry->Render(GetPipeline().GetShaders().at(EShaderType::VertexShader).get());
+	m_SkyGeometry->Render(GetPipeline().GetVertexShaderPtr());
 }

@@ -187,11 +187,6 @@ std::shared_ptr<IModel> CModelsLoader_znmdl::LoadModel(const std::shared_ptr<IFi
 		}
 	}
 
-	// Fix skeleton matrix
-	glm::mat4 fixSkeletonMatrix;
-	if (ModelFile->read(&fixSkeletonMatrix))
-		model->SetFixSkeleton(fixSkeletonMatrix);
-
 	return model;
 }
 
@@ -301,9 +296,6 @@ std::shared_ptr<IFile> CModelsLoader_znmdl::SaveModel(const std::shared_ptr<IMod
 				loadSave->Save(file);
 		}
 	}
-
-	// Fix skeleton matrix
-	file->write(&Model->GetFixSkeleton());
 
 	return file;
 }

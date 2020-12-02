@@ -60,7 +60,7 @@ void CSceneRTS::Initialize()
 		lightNode->GetComponentT<ILightComponent3D>()->SetAmbientColor(glm::vec3(0.25f));
 		lightNode->GetComponentT<ILightComponent3D>()->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
 		lightNode->GetComponentT<ILightComponent3D>()->SetRange(1350.0f);
-		lightNode->GetComponentT<ILightComponent3D>()->SetIntensity(1.0f);
+		lightNode->GetComponentT<ILightComponent3D>()->SetIntensity(1.3f);
 		lightNode->GetComponentT<ILightComponent3D>()->SetSpotlightAngle(30.0f);
 	}
 
@@ -355,7 +355,7 @@ void CSceneRTS::MoveTower(const Ray& RayToWorld)
 		return;
 
 	auto nodes = GetFinder().FindIntersection(RayToWorld, [](const std::shared_ptr<ISceneNode>& Node) -> bool {
-		return Node->GetName().find("tile") != std::string::npos;
+		return Node->GetName() == "tile";
 	}, GetRootSceneNode());
 	if (nodes.empty())
 		return;

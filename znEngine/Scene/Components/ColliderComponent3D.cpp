@@ -5,7 +5,7 @@
 
 CColliderComponent3D::CColliderComponent3D(const ISceneNode& OwnerNode)
 	: CComponentBase(OwnerNode)
-	, m_CullStrategy(ECullStrategy::None)
+	, m_CullStrategy(ECullStrategy::ByFrustrum)
 	, m_CullDistance(99999.0f) // Don't use FloatMax
 	, m_DebugDraw(true)
 {

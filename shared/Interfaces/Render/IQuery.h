@@ -27,19 +27,8 @@ ZN_INTERFACE ZN_API IQuery
 
 	virtual ~IQuery() {}
 
-	/**
-	 * Begin a GPU query.
-	 */
 	virtual void Begin(int64_t frame = 0L) = 0;
-
-	/**
-	 * End the GPU query.
-	 */
 	virtual void End(int64_t frame = 0L) = 0;
-
-	/**
-	 * Check to see if the query results are available.
-	 */
 	virtual bool QueryResultAvailable(int64_t frame = 0L) = 0;
 
 	/**
@@ -63,5 +52,3 @@ ZN_INTERFACE ZN_API IQuery
 	 */
 	virtual uint8_t GetBufferCount() const = 0;
 };
-
-typedef std::vector<IQuery*> QueryList;

@@ -39,11 +39,9 @@ void CDrawSelectionPass::Render(RenderEventArgs& e)
 		m_ShaderInstancesBufferParameter->SetStructuredBuffer(m_InstancesBuffer);
 		m_ShaderInstancesBufferParameter->Bind();
 		{
-			const IShader* vertexShader = GetPipeline().GetShader(EShaderType::VertexShader).get();
-
 			SGeometryDrawArgs args;
 			args.InstanceCnt = m_InstancesCnt;
-			m_QuadGeometry->Render(vertexShader, args);
+			m_QuadGeometry->Render(GetPipeline().GetVertexShaderPtr(), args);
 
 		}
 		m_ShaderInstancesBufferParameter->Unbind();

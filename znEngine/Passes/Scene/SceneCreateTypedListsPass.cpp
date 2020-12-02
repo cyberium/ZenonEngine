@@ -88,13 +88,9 @@ EVisitResult CSceneCreateTypedListsPass::Visit(const ISceneNode * SceneNode)
 		return EVisitResult::AllowVisitChilds;
 
 	// TODO Here?
-	if (const auto& colliderComponent = SceneNode->GetComponentT<IColliderComponent3D>())
-	{
+	if (auto colliderComponent = SceneNode->GetComponentT<IColliderComponent3D>())
 		if (colliderComponent->IsCulled(GetRenderEventArgs().CameraForCulling))
-		{
 			return EVisitResult::Block;
-		}
-	}
 
 	m_LastSceneNode = SceneNode;
 	m_NodesList[sceneNodeClass].push_back(CSceneCreateTypelessListPass::SNodeElement(SceneNode));

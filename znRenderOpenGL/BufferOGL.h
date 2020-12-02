@@ -6,8 +6,8 @@ public:
 	BufferOGL(UINT bindFlags, const void* data, size_t count, UINT offset, UINT stride);
 	~BufferOGL();
 
-	virtual bool Bind(uint32 id, const IShader* shader, IShaderParameter::Type parameterType) const override;
-	virtual void UnBind(uint32 id, const IShader* shader, IShaderParameter::Type parameterType) const override;
+	virtual bool Bind(uint32 id, const IShader* shader, IShaderParameter::EType parameterType) const override;
+	virtual void UnBind(uint32 id, const IShader* shader, IShaderParameter::EType parameterType) const override;
 
 	virtual void Copy(IBuffer* other);
 

@@ -21,11 +21,10 @@ public:
 	glm::mat4 GetLocalMatrix() const override;
 	void SetPivotMatrix(const glm::mat4& Matrix) override;
 	glm::mat4 GetPivotMatrix() const override;
-	void SetFuckingMatrix(const glm::mat4& Matrix) override;
-	glm::mat4 GetFuckingMatrix() const override;
+	void SetSkinMatrix(const glm::mat4& Matrix) override;
+	glm::mat4 GetSkinMatrix() const override;
 
-	glm::mat4 CalcMatrix(const IModelsComponent3D* ModelsComponent) const override;
-	glm::mat4 CalcRotateMatrix(const IModelsComponent3D* ModelsComponent) const override;
+	glm::mat4 CalculateBontMatrix(const IModelsComponent3D* ModelsComponent) const override;
 
 	// IObjectLoadSave
 	std::shared_ptr<IObject> Copy() const override;
@@ -44,7 +43,7 @@ private:
 
 	glm::mat4            m_LocalTransform;
 	glm::mat4            m_PivotMatrix;
-	glm::mat4            m_FuckingMatrix;
+	glm::mat4            m_SkinMatrix;
 	
 public:
 	CznAnimatedValue<float> pX, pY, pZ;

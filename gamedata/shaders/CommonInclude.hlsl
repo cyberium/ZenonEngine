@@ -194,3 +194,17 @@ float3 GetCameraUp()
 {
 	return float3(PF.InverseView[0][1], PF.InverseView[1][1], PF.InverseView[2][1]);
 }
+
+float3 ExtractScaleMatrix(const float4x4 Matrix)
+{
+	float3 scale;
+	scale.x = length(float3(Matrix[0][0], Matrix[0][1], Matrix[0][2])); // 1st column
+	scale.y = length(float3(Matrix[1][0], Matrix[1][1], Matrix[1][2])); // 2nd column
+	scale.z = length(float3(Matrix[2][0], Matrix[2][1], Matrix[2][2])); // 3rd columt
+	return scale;
+}
+
+int2 GetTextureSize(Texture2D TextureObj)
+{
+}
+

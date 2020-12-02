@@ -628,7 +628,7 @@ void CFBXModel::SkeletonLoad(fbxsdk::FbxMesh* NativeMesh)
 			NativeMesh->GetPivot(pivotMatrix);
 			joint->SetPivotMatrix(ToGLMMat4(pivotMatrix));
 
-			joint->SetFuckingMatrix(ToGLMMat4(globalBindposeInverseMatrix));
+			joint->SetSkinMatrix(ToGLMMat4(globalBindposeInverseMatrix));
 
 			std::map<int, std::vector<std::pair<float, size_t>>> weightIndexes;
 			for (int i = 0; i < cluster->GetControlPointIndicesCount(); ++i)

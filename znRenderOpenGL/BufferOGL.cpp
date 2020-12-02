@@ -25,14 +25,14 @@ BufferOGL::~BufferOGL()
 	glDeleteBuffers(1, &m_GLObj);
 }
 
-bool BufferOGL::Bind(uint32 id, const IShader* shader, IShaderParameter::Type parameterType) const
+bool BufferOGL::Bind(uint32 id, const IShader* shader, IShaderParameter::EType parameterType) const
 {
 	glBindBuffer(m_BindFlags, m_GLObj);
 
 	return true;
 }
 
-void BufferOGL::UnBind(uint32 id, const IShader* shader, IShaderParameter::Type parameterType) const
+void BufferOGL::UnBind(uint32 id, const IShader* shader, IShaderParameter::EType parameterType) const
 {
 	glBindBuffer(m_BindFlags, 0);
 }

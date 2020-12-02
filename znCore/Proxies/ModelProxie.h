@@ -25,8 +25,6 @@ public:
 
 	void                                                      ApplyOtherSkeleton(std::shared_ptr<IModel> other) override;
 	void                                                      AddBone(const std::shared_ptr<ISkeletonBone> Bone) override;
-	void                                                      SetFixSkeleton(const glm::mat4& Matrix) override;
-	glm::mat4                                                 GetFixSkeleton() const override;
 	std::shared_ptr<ISkeletonBone>                            GetRootBone() const override;
 	std::shared_ptr<ISkeletonBone>                            GetBone(size_t Index) const override;
 	size_t                                                    GetBoneIndexByName(const std::string& BoneName) const override;

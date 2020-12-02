@@ -66,7 +66,8 @@ EVisitResult CDrawBonesPass::Visit(const ISceneNode * CSceneNode)
 
 	for (const auto& b : bones)
 	{
-		BindPerObjectData(PerObject(CSceneNode->GetWorldTransfom() * modelsComponent->GetModel()->GetFixSkeleton() * b->GetMatrix()));
+		const glm::mat4& rootBoneMatrix = modelsComponent->GetModel()->GetRootBone()->GetLocalMatrix();
+		BindPerObjectData(PerObject(CSceneNode->GetWorldTransfom() * rootBoneMatrix * b->GetCalculatedMatrix()));
 		m_SphereGeometry->Render(GetRenderEventArgs().PipelineState->GetVertexShaderPtr());
 	}
 

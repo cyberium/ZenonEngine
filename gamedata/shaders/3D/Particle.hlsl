@@ -1,6 +1,5 @@
 #include "CommonInclude.hlsl"
 
-
 struct SParticle
 {
 	float3 Position;
@@ -24,17 +23,12 @@ struct SParticle
 //
 // Structs
 //
-struct VertexShaderInput
-{
-	uint VertexID : SV_VertexID;
-};
-
-struct GeometryShaderInput
+struct SVSOutput
 {
 	uint VertexID : POSITION;
 };
 
-struct PixelShaderInput
+struct SPSInput
 {
 	float4 position : SV_POSITION;
 	float2 texcoord : TEXCOORD0;
@@ -42,47 +36,25 @@ struct PixelShaderInput
 };
 
 
-
-//
-// Uniforms
-//
-cbuffer Material                     : register(b2)
-{
-	float4 DiffuseColor0;
-};
-
-Texture2D DiffuseTexture             : register(t0 );
+Texture2D DiffuseTexture             : register(t0);
 StructuredBuffer<SParticle> Particles : register(t10);
 
 
 
-GeometryShaderInput VS_main(VertexShaderInput VertexIN)
+SVSOutput VS_main(uint VertexID : SV_VertexID)
 {
-	GeometryShaderInput ghi;
-	ghi.VertexID = VertexIN.VertexID;
-	return ghi;
+	SVSOutput vsOutput;
+	vsOutput.VertexID = VertexID;
+	return vsOutput;
 }
 
-float3 TransformPoint(const float3 Point, const float4x4 Matrix)
-{
-	return mul(Matrix, float4(Point, 1.0f)).xyz;
-}
-
-float3 ExtractScaleMatrix(const float4x4 Matrix)
-{
-	float3 scale;
-	scale.x = length(float3(Matrix[0][0], Matrix[0][1], Matrix[0][2])); // 1st column
-	scale.y = length(float3(Matrix[1][0], Matrix[1][1], Matrix[1][2])); // 2nd column
-	scale.z = length(float3(Matrix[2][0], Matrix[2][1], Matrix[2][2])); // 3rd columt
-	return scale;
-}
 
 [maxvertexcount(4)]
-void GS_Billboard(point GeometryShaderInput input[1], inout TriangleStream<PixelShaderInput> OutputStream)
+void GS_Billboard(point SVSOutput VSOutput[1], inout TriangleStream<SPSInput> OutputStream)
 {
-	SParticle p = Particles[input[0].VertexID];
+	SParticle p = Particles[VSOutput[0].VertexID];
 
-	float3 transformePosition = TransformPoint(p.Position, PO.Model);
+	float3 transformePosition = mul(PO.Model, float4(p.Position, 1.0f)).xyz;
 
 	float3 planeNormal = transformePosition - GetCameraPosition();
 	planeNormal = normalize(planeNormal);
@@ -93,10 +65,10 @@ void GS_Billboard(point GeometryShaderInput input[1], inout TriangleStream<Pixel
 	rightVector *= (p.Size.x / 2.0f);
 	upVector *= (p.Size.y / 2.0f);
 
-	float3 scale = ExtractScaleMatrix(PO.Model);
-	float scaleLength = length(scale);
-	rightVector *= scale.x * scaleLength.x;
-	upVector *= scale.y * scaleLength.x;
+	//float3 scale = ExtractScaleMatrix(PO.Model);
+	//float scaleLength = length(scale);
+	//rightVector *= scale.x * scaleLength.x;
+	//upVector *= scale.y * scaleLength.x;
 
 	// Create the billboards quad
 	float3 vert[4];
@@ -112,14 +84,13 @@ void GS_Billboard(point GeometryShaderInput input[1], inout TriangleStream<Pixel
 	texCoord[2] = float2(p.TexCoordBegin.x, p.TexCoordBegin.y);
 	texCoord[3] = float2(p.TexCoordEnd.x,   p.TexCoordBegin.y);
 
-	//const float4x4 mv = mul(PF.View, PO.Model);
-	const float4x4 mvp = mul(PF.Projection, PF.View);
+	const float4x4 vp = mul(PF.Projection, PF.View);
 
 	// Now we "append" or add the vertices to the outgoing stream list
-	PixelShaderInput outputVert;
 	for (int i = 0; i < 4; i++)
 	{
-		outputVert.position = mul(mvp, float4(vert[i], 1.0f));
+		SPSInput outputVert = (SPSInput)0;
+		outputVert.position = mul(vp, float4(vert[i], 1.0f));
 		outputVert.texcoord = texCoord[i];
 		outputVert.color = p.Color;
 
@@ -127,11 +98,11 @@ void GS_Billboard(point GeometryShaderInput input[1], inout TriangleStream<Pixel
 	}
 }
 
-float4 PS_main(PixelShaderInput input) : SV_TARGET
+float4 PS_main(SPSInput PSInput) : SV_TARGET
 {
-	float4 DiffuseColor = DiffuseTexture.Sample(LinearClampSampler, float2(input.texcoord.x, 1.0f - input.texcoord.y));
+	float4 DiffuseColor = DiffuseTexture.Sample(LinearClampSampler, float2(PSInput.texcoord.x, 1.0f - PSInput.texcoord.y));
 	//if (DiffuseColor.a < 0.01)
 	//	DiffuseColor = float4(0.0f, 0.0f, 0.0f, 1.0f);
 
-	return DiffuseColor * input.color;
+	return DiffuseColor * PSInput.color;
 }

@@ -115,21 +115,10 @@ void ModelBase::AddBone(std::shared_ptr<ISkeletonBone> Bone)
 		if (m_RootBone != nullptr)
 			throw CException("Model: Unable to set '%s' as root bone, because '%s' already root.", Bone->GetName().c_str(), m_RootBone->GetName().c_str());
 		m_RootBone = Bone;
-		m_FixMatrix = Bone->GetLocalMatrix();
 		Log::Green("Model: '%s' is root bone.", m_RootBone->GetName().c_str());
 	}
 
 	m_Bones.push_back(Bone);
-}
-
-void ModelBase::SetFixSkeleton(const glm::mat4 & Matrix)
-{
-	m_FixMatrix = Matrix;
-}
-
-glm::mat4 ModelBase::GetFixSkeleton() const
-{
-	return m_FixMatrix;
 }
 
 std::shared_ptr<ISkeletonBone> ModelBase::GetRootBone() const

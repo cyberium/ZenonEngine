@@ -161,8 +161,6 @@ std::shared_ptr<IModel> CModelsLoader_znxmdl::LoadModel(const std::shared_ptr<IF
 		}
 	}
 
-	model->SetFixSkeleton(Utils::StringToMatrix(modelReader->GetStrAttribute("FixSkeletonMatrix")));
-
 	return model;
 }
 
@@ -270,9 +268,6 @@ std::shared_ptr<IFile> CModelsLoader_znxmdl::SaveModel(const std::shared_ptr<IMo
 			std::dynamic_pointer_cast<IObjectLoadSave>(b)->Save(boneWriterXML);
 		}
 	}
-
-	// Fix skeleton matrix
-	modelWriter->SetStrAttribute(Utils::MatrixToString(Model->GetFixSkeleton()), "FixSkeletonMatrix");
 
 	auto file = m_BaseManager.GetManager<IFilesManager>()->Create(FileName);
 	xml.SaveWriterToFile(rootWriter, file);

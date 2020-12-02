@@ -5,9 +5,7 @@
 
 CSkeletonComponentBone3D::CSkeletonComponentBone3D(const std::shared_ptr<ISkeletonBone>& Bone)
 	: m_ProtoBone(Bone)
-	, m_PivotPoint(glm::vec3(0.0f))
-	, m_Matrix(glm::mat4(1.0f))
-	, m_RotateMatrix(glm::mat4(1.0f))
+	, m_CalculatedMatrix(glm::mat4(1.0f))
 	, m_IsCalculated(false)
 {
 }
@@ -35,20 +33,17 @@ const std::vector<std::shared_ptr<ISkeletonComponentBone3D>>& CSkeletonComponent
 	return m_Childs;
 }
 
-glm::vec3 CSkeletonComponentBone3D::GetPivotPoint() const
+const ISkeletonBone& CSkeletonComponentBone3D::GetProtoBone() const
 {
-	return m_PivotPoint;
+	return *(m_ProtoBone.get());
 }
 
-const glm::mat4& CSkeletonComponentBone3D::GetMatrix() const
+const glm::mat4& CSkeletonComponentBone3D::GetCalculatedMatrix() const
 {
-	return m_Matrix;
+	return m_CalculatedMatrix;
 }
 
-const glm::mat4& CSkeletonComponentBone3D::GetRotateMatrix() const
-{
-	return m_RotateMatrix;
-}
+
 
 //
 // ISkeletonBoneInternal3D
@@ -88,22 +83,17 @@ void CSkeletonComponentBone3D::Calculate(const IModelsComponent3D* ModelsCompone
 		_ASSERT(m_ProtoBone->GetParentIndex() == -1);
 	}
 
-	m_Matrix = m_ProtoBone->CalcMatrix(ModelsComponent);
-	m_RotateMatrix = m_ProtoBone->CalcRotateMatrix(ModelsComponent);
+	m_CalculatedMatrix = m_ProtoBone->CalculateBontMatrix(ModelsComponent);
 
 	if (parentBone)
-	{
-		m_Matrix = parentBone->GetMatrix() * m_Matrix;
-		//m_RotateMatrix = parentBone->GetRotateMatrix() * m_RotateMatrix;
-	}
+		m_CalculatedMatrix = parentBone->GetCalculatedMatrix() * m_CalculatedMatrix;
 
 	m_IsCalculated = true;
 }
 
 void CSkeletonComponentBone3D::Reset()
 {
-	m_Matrix = glm::mat4(1.0f);
-	m_RotateMatrix = glm::mat4(1.0f);
+	m_CalculatedMatrix = glm::mat4(1.0f);
 	m_IsCalculated = false;
 }
 

@@ -77,16 +77,6 @@ void ModelProxie::AddBone(std::shared_ptr<ISkeletonBone> Bone)
 	m_Model->AddBone(Bone);
 }
 
-void ModelProxie::SetFixSkeleton(const glm::mat4 & Matrix)
-{
-	m_Model->SetFixSkeleton(Matrix);
-}
-
-glm::mat4 ModelProxie::GetFixSkeleton() const
-{
-	return m_Model->GetFixSkeleton();
-}
-
 std::shared_ptr<ISkeletonBone> ModelProxie::GetRootBone() const
 {
 	return m_Model->GetRootBone();

@@ -114,14 +114,13 @@ std::vector<glm::mat4> CModelsComponent3D::CreatePose(size_t BoneStartIndex, siz
 	if (BonesCount == 0)
 		BonesCount = m_Bones.size();
 
+	const glm::mat4& rootBoneMatrix = GetModel()->GetRootBone()->GetLocalMatrix();
+
 	_ASSERT(BoneStartIndex + BonesCount - 1 < m_Bones.size());
 	std::vector<glm::mat4> result;
 	result.reserve(BonesCount);
 	for (size_t i = BoneStartIndex; i < BoneStartIndex + BonesCount; i++)
-	{
-		glm::mat4 m = GetModel()->GetFixSkeleton() * m_Bones[i]->GetMatrix();
-		result.push_back(m * m_Bones[i]->GetRotateMatrix());
-	}
+		result.push_back(rootBoneMatrix * m_Bones[i]->GetCalculatedMatrix() * m_Bones[i]->GetProtoBone().GetSkinMatrix());
 	return result;
 }
 
@@ -186,6 +185,8 @@ uint32 CModelsComponent3D::GetCurrentAnimationFrame() const
 //
 void CModelsComponent3D::Update(const UpdateEventArgs & e)
 {
+	__super::Update(e);
+
 	if (false == m_Bones.empty())
 	{
 		for (const auto& b : m_Bones)
