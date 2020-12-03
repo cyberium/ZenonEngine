@@ -54,7 +54,6 @@ Texture2D TextureTransparency             : register(t7);
 Texture2D TextureReflection               : register(t8);
 Texture2D TextureDisplacement             : register(t9);
 
-
 //----------------------------------------------------------------------
 //-- Bump & Normal mapping
 //----------------------------------------------------------------------

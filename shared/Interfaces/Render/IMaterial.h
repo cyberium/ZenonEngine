@@ -61,4 +61,7 @@ ZN_INTERFACE ZN_API IMaterialsFactory
 	virtual void RemoveMaterialsCreator(std::shared_ptr<IMaterialsCreator> Creator) = 0;
 
 	virtual std::shared_ptr<IMaterial> CreateMaterial(std::string ClassName) const = 0;
+	virtual std::shared_ptr<IMaterial> AddMaterial(std::shared_ptr<IMaterial> Material) = 0;
+
+	virtual void PrintMaterials() const = 0;
 };

@@ -37,20 +37,10 @@ CPassPostprocess_Gauss::~CPassPostprocess_Gauss()
 // 
 void CPassPostprocess_Gauss::Render(RenderEventArgs & e)
 {
-	//{
-	//	m_GaussConstantBuffer->Set(SGauss(true));
-	//	m_GaussShaderParameter->Bind();
-	//	__super::Render(e);
-	//	m_GaussShaderParameter->Unbind();
-	//}
-
-
-	{
-		m_GaussConstantBuffer->Set(SGauss(m_IsHorizontal));
-		m_GaussShaderParameter->Bind();
-		__super::Render(e);
-		m_GaussShaderParameter->Unbind();
-	}
+	m_GaussConstantBuffer->Set(SGauss(m_IsHorizontal));
+	m_GaussShaderParameter->Bind();
+	__super::Render(e);
+	m_GaussShaderParameter->Unbind();
 }
 
 
@@ -77,7 +67,7 @@ std::shared_ptr<IShader> CPassPostprocess_Gauss::LoadPixelShader()
 	auto pixelShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::PixelShader, "3D/PostprocessGauss.hlsl", "PS_ScreenQuad", { {"MULTISAMPLED", samplesCnt.c_str() } });
 	
 	m_GaussShaderParameter = pixelShader->GetShaderParameterByName("Parameters");
-	_ASSERT(m_GaussShaderParameter->IsValid());
+	_ASSERT(m_GaussShaderParameter);
 	m_GaussShaderParameter->SetConstantBuffer(m_GaussConstantBuffer);
 
 	return pixelShader;

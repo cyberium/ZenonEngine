@@ -48,6 +48,13 @@ std::shared_ptr<IRenderPassPipelined> CPassPostprocessBase::ConfigurePipeline(st
 
 	// PIPELINES
 	GetPipeline().GetBlendState()->SetBlendMode(additiveBlending);
+	/*GetPipeline().GetBlendState()->SetBlendMode(//alphaBlending
+		IBlendState::BlendMode(true, false,
+			IBlendState::BlendFactor::SrcAlpha, IBlendState::BlendFactor::One,
+			IBlendState::BlendOperation::Add,
+			IBlendState::BlendFactor::SrcAlpha, IBlendState::BlendFactor::One)
+	);*/
+	//GetPipeline().GetBlendState()->SetBlendMode(alphaBlending);
 	GetPipeline().GetDepthStencilState()->SetDepthMode(disableDepthWrites);
 	GetPipeline().SetRenderTarget(LoadRenderTarget(RenderTarget));
 	
@@ -68,7 +75,7 @@ std::shared_ptr<IRenderTarget> CPassPostprocessBase::CreateRenderTarget(std::sha
 		ITexture::Components::RGBA,
 		ITexture::Type::Float,
 		RenderTarget->GetSamplesCount(),
-		32, 32, 32, 32, 0, 0
+		16, 16, 16, 16, 0, 0
 	);
 	auto outputTexture = GetRenderDevice().GetObjectsFactory().CreateTexture2D(RenderTarget->GetViewport().GetWidth(), RenderTarget->GetViewport().GetHeight(), 1, colorTextureFormat);
 

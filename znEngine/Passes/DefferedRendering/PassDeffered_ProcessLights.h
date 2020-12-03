@@ -47,6 +47,8 @@ private:
 private: // For shadow rendering
 	std::shared_ptr<IPipelineState> m_ShadowPipeline;
 	std::shared_ptr<IRenderTarget> m_ShadowRenderTarget;
+
+private: // Result
 	std::vector<SLightResult> m_LightResult;
 
 private:

@@ -3,6 +3,8 @@
 // General
 #include "UIControlRTSTowerBtn.h"
 
+// Additional
+#include "Materials/MaterialModel.h"
 
 namespace
 {
@@ -63,6 +65,22 @@ void CUIControlRTSTowerBtn::Initialize()
 void CUIControlRTSTowerBtn::SetTowerTexture(std::shared_ptr<ITexture> Texture)
 {
 	m_ButtonContent->GetSubgeometries()[0].Material->SetTexture(Texture);
+}
+
+void CUIControlRTSTowerBtn::OnMouseEntered()
+{
+	for (auto& subGeometry : GetSubgeometries())
+	{
+		std::dynamic_pointer_cast<CMaterialUIControl>(subGeometry.Material)->SetColor(glm::vec4(0.7f, 0.7f, 0.7f, 1.0f));
+	}
+}
+
+void CUIControlRTSTowerBtn::OnMouseLeaved()
+{
+	for (auto& subGeometry : GetSubgeometries())
+	{
+		std::dynamic_pointer_cast<CMaterialUIControl>(subGeometry.Material)->SetColor(glm::vec4(1.0f));
+	}
 }
 
 

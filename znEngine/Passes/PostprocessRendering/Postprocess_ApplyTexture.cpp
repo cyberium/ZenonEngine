@@ -1,23 +1,23 @@
 #include "stdafx.h"
 
 // General
-#include "Postprocess_CopyTexture.h"
+#include "Postprocess_ApplyTexture.h"
 
-CPassPostprocess_CopyTexture::CPassPostprocess_CopyTexture(IRenderDevice& RenderDevice, std::shared_ptr<ITexture> InputTexture)
+CPassPostprocess_ApplyTexture::CPassPostprocess_ApplyTexture(IRenderDevice& RenderDevice, std::shared_ptr<ITexture> InputTexture)
 	: CPassPostprocessBase(RenderDevice, InputTexture)
 {}
 
-CPassPostprocess_CopyTexture::~CPassPostprocess_CopyTexture()
+CPassPostprocess_ApplyTexture::~CPassPostprocess_ApplyTexture()
 {}
 
 
-std::shared_ptr<IRenderTarget> CPassPostprocess_CopyTexture::LoadRenderTarget(std::shared_ptr<IRenderTarget> OriginalRenderTarget)
+std::shared_ptr<IRenderTarget> CPassPostprocess_ApplyTexture::LoadRenderTarget(std::shared_ptr<IRenderTarget> OriginalRenderTarget)
 {
 	SetOutputTexture(OriginalRenderTarget->GetTexture(IRenderTarget::AttachmentPoint::Color0));
 	return OriginalRenderTarget;
 }
 
-std::shared_ptr<IShader> CPassPostprocess_CopyTexture::LoadVertexShader()
+std::shared_ptr<IShader> CPassPostprocess_ApplyTexture::LoadVertexShader()
 {
 	auto samplesCnt = std::to_string(GetPipeline().GetRenderTarget()->GetTexture(IRenderTarget::AttachmentPoint::Color0)->GetSamplesCount());
 
@@ -26,7 +26,7 @@ std::shared_ptr<IShader> CPassPostprocess_CopyTexture::LoadVertexShader()
 	return vertexShader;
 }
 
-std::shared_ptr<IShader> CPassPostprocess_CopyTexture::LoadPixelShader()
+std::shared_ptr<IShader> CPassPostprocess_ApplyTexture::LoadPixelShader()
 {
 	auto samplesCnt = std::to_string(GetPipeline().GetRenderTarget()->GetTexture(IRenderTarget::AttachmentPoint::Color0)->GetSamplesCount());
 

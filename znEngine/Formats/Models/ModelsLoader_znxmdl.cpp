@@ -83,10 +83,14 @@ std::shared_ptr<IModel> CModelsLoader_znxmdl::LoadModel(const std::shared_ptr<IF
 		{
 			auto material = m_BaseManager.GetManager<IMaterialsFactory>()->CreateMaterial("MaterialModel");
 			std::dynamic_pointer_cast<IObjectLoadSave>(material)->Load(materialsReaderXML);
+			m_BaseManager.GetManager<IMaterialsFactory>()->AddMaterial(material);
 			materials.push_back(material);
 
 			if (material->GetName() == "water")
 				std::dynamic_pointer_cast<MaterialModel>(material)->SetEnviorementMappingEnable(true);
+
+			if (material->GetName() == "crystal")
+				std::dynamic_pointer_cast<MaterialModel>(material)->SetEmissiveColor(std::dynamic_pointer_cast<MaterialModel>(material)->GetDiffuseColor());
 		}
 	}
 

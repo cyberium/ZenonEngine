@@ -39,3 +39,8 @@ void CUIControlCommon::ClearSubgeometries()
 {
 	m_Subgeometries.clear();
 }
+
+std::vector<CUIControlCommon::SSubgeometry>& CUIControlCommon::GetSubgeometries()
+{
+	return m_Subgeometries;
+}

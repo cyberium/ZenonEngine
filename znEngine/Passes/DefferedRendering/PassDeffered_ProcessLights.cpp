@@ -19,49 +19,56 @@ void CPassDeffered_ProcessLights::CreateShadowPipeline()
 {
 	m_ShadowRenderTarget = CreateShadowRT();
 
-	auto vertexShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::VertexShader, "3D/ModelVS.hlsl", "VS_PTN", { { "SKELETON_ANIMATION", "1" } });
-	vertexShader->LoadInputLayoutFromReflector();
+	auto shadowPipeline = GetRenderDevice().GetObjectsFactory().CreatePipelineState();
 
-	/*std::vector<SCustomInputElement> customElements;
-	customElements.push_back({ 0,  0, ECustomVertexElementType::FLOAT3, ECustomVertexElementUsage::POSITION,     0 });
-	customElements.push_back({ 0, 12, ECustomVertexElementType::FLOAT2, ECustomVertexElementUsage::TEXCOORD,     0 });
-	customElements.push_back({ 0, 20, ECustomVertexElementType::FLOAT3, ECustomVertexElementUsage::NORMAL,       0 });
-	customElements.push_back({ 0, 32, ECustomVertexElementType::FLOAT4, ECustomVertexElementUsage::BLENDWEIGHT,  0 });
-	customElements.push_back({ 0, 48, ECustomVertexElementType::UINT4,  ECustomVertexElementUsage::BLENDINDICES, 0 });
-	vertexShader->LoadInputLayoutFromCustomElements(customElements);*/
+	// Vertex shader
+	{
+		auto vertexShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::VertexShader, "3D/ModelVS.hlsl", "VS_PTN", { { "SKELETON_ANIMATION", "1" } });
+		vertexShader->LoadInputLayoutFromReflector();
 
-	//auto pixelShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::PixelShader, "3D/Shadow.hlsl", "PS_Shadow");
+		/*std::vector<SCustomInputElement> customElements;
+		customElements.push_back({ 0,  0, ECustomVertexElementType::FLOAT3, ECustomVertexElementUsage::POSITION,     0 });
+		customElements.push_back({ 0, 12, ECustomVertexElementType::FLOAT2, ECustomVertexElementUsage::TEXCOORD,     0 });
+		customElements.push_back({ 0, 20, ECustomVertexElementType::FLOAT3, ECustomVertexElementUsage::NORMAL,       0 });
+		customElements.push_back({ 0, 32, ECustomVertexElementType::FLOAT4, ECustomVertexElementUsage::BLENDWEIGHT,  0 });
+		customElements.push_back({ 0, 48, ECustomVertexElementType::UINT4,  ECustomVertexElementUsage::BLENDINDICES, 0 });
+		vertexShader->LoadInputLayoutFromCustomElements(customElements);*/
+
+		m_PerObjectShaderParameter = vertexShader->GetShaderParameterByName("PerObject");
+		_ASSERT(m_PerObjectShaderParameter);
+		m_PerObjectShaderParameter->SetConstantBuffer(m_PerObjectConstantBuffer);
+
+		m_PerFrameShaderParameter = vertexShader->GetShaderParameterByName("PerFrame");
+		_ASSERT(m_PerFrameShaderParameter);
+		m_PerFrameShaderParameter->SetConstantBuffer(m_PerFrameConstantBuffer);
+
+		// Bones
+		m_ShaderBonesBufferParameter = vertexShader->GetShaderParameterByName("Bones");
+		//_ASSERT(m_ShaderBonesBufferParameter->IsValid());
+
+		shadowPipeline->SetShader(EShaderType::VertexShader, vertexShader);
+	}
+
+
+	// Pixel shader
+	{
+		//auto pixelShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::PixelShader, "3D/Shadow.hlsl", "PS_Shadow");
+		//shadowPipeline->SetShader(EShaderType::PixelShader, pixelShader);
+	}
 
 	IBlendState::BlendMode disableBlending = IBlendState::BlendMode(false);
 	IDepthStencilState::DepthMode enableDepthWrites = IDepthStencilState::DepthMode(true, IDepthStencilState::DepthWrite::Enable);
 
 	// PIPELINES
-	auto shadowPipeline = GetRenderDevice().GetObjectsFactory().CreatePipelineState();
 	shadowPipeline->GetBlendState()->SetBlendMode(disableBlending);
 	shadowPipeline->GetDepthStencilState()->SetDepthMode(enableDepthWrites);
 	//shadowPipeline->GetRasterizerState()->SetDepthBias(0.0f, 1.1f);
 	shadowPipeline->GetRasterizerState()->SetCullMode(IRasterizerState::CullMode::Front);
 	shadowPipeline->GetRasterizerState()->SetFillMode(IRasterizerState::FillMode::Solid, IRasterizerState::FillMode::Solid);
 	shadowPipeline->SetRenderTarget(m_ShadowRenderTarget);
-	shadowPipeline->SetShader(EShaderType::VertexShader, vertexShader);
-	//shadowPipeline->SetShader(EShaderType::PixelShader, pixelShader);
-
+	
 	m_ShadowPipeline = shadowPipeline;
-
-	m_PerObjectShaderParameter = vertexShader->GetShaderParameterByName("PerObject");
-	_ASSERT(m_PerObjectShaderParameter->IsValid());
-	m_PerObjectShaderParameter->SetConstantBuffer(m_PerObjectConstantBuffer);
-
-	m_PerFrameShaderParameter = vertexShader->GetShaderParameterByName("PerFrame");
-	_ASSERT(m_PerFrameShaderParameter->IsValid());
-	m_PerFrameShaderParameter->SetConstantBuffer(m_PerFrameConstantBuffer);
-
-	// Bones
-	m_ShaderBonesBufferParameter = vertexShader->GetShaderParameterByName("Bones");
-	//_ASSERT(m_ShaderBonesBufferParameter->IsValid());
 }
-
-
 
 const std::vector<CPassDeffered_ProcessLights::SLightResult>& CPassDeffered_ProcessLights::GetLightResult() const
 {
@@ -100,31 +107,28 @@ void CPassDeffered_ProcessLights::Render(RenderEventArgs& e)
 				if (false == geometryIt.Node->IsEnabled())
 					continue;
 
-				if (false == geometryIt.Node->GetComponentT<IModelsComponent3D>()->IsCastShadows())
+				auto modelsComponent = geometryIt.Node->GetComponentT<IModelsComponent3D>();
+				if (modelsComponent == nullptr)
+					continue;
+
+				if (false == modelsComponent->IsCastShadows())
 					continue;
 
 				BindPerObjectParamsForCurrentIteration(geometryIt.Node);
 
 				// Bones begin
-				auto modelsComponent = geometryIt.Node->GetComponentT<IModelsComponent3D>();
-				if (modelsComponent != nullptr)
+				if (m_ShaderBonesBufferParameter)
 				{
-					if (m_ShaderBonesBufferParameter)
-					{
-						m_ShaderBonesBufferParameter->Set(modelsComponent->GetBonesBuffer());
-						m_ShaderBonesBufferParameter->Bind();
-					}
+					m_ShaderBonesBufferParameter->Set(modelsComponent->GetBonesBuffer());
+					m_ShaderBonesBufferParameter->Bind();
 				}
 
 				geometryIt.Geometry->Render(m_ShadowPipeline->GetVertexShaderPtr(), geometryIt.GeometryDrawArgs);
 
 				// Bones end
-				if (modelsComponent != nullptr)
+				if (m_ShaderBonesBufferParameter)
 				{
-					if (m_ShaderBonesBufferParameter)
-					{
-						m_ShaderBonesBufferParameter->Unbind();
-					}
+					m_ShaderBonesBufferParameter->Unbind();
 				}
 			}
 
@@ -174,6 +178,7 @@ std::shared_ptr<IRenderTarget> CPassDeffered_ProcessLights::CreateShadowRT()
 
 std::shared_ptr<ITexture> CPassDeffered_ProcessLights::CreateShadowTexture0() const
 {
+	// Color buffer
 	ITexture::TextureFormat colorTextureFormat(
 		ITexture::Components::R,
 		ITexture::Type::Float,
@@ -202,8 +207,7 @@ void CPassDeffered_ProcessLights::BindPerFrameParamsForCurrentIteration(const IL
 	PerFrame perFrame(
 		Light->GetViewMatrix(), 
 		Light->GetProjectionMatrix(), 
-		glm::vec2(viewport.GetWidth(), viewport.GetHeight()),
-		glm::vec3(0.0f, 0.0f, 0.0f) // TODO FIXME
+		viewport.GetSize()
 	);
 	m_PerFrameConstantBuffer->Set(perFrame);
 	m_PerFrameShaderParameter->Bind();

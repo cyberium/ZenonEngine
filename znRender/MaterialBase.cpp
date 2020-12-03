@@ -137,6 +137,12 @@ void MaterialBase::Load(const std::shared_ptr<IByteBuffer>& ByteBuffer)
 		std::string textureFileName;
 		ByteBuffer->readString(&textureFileName);
 
+		// TODO: Fixme
+		if (textureID >= 10)
+		{
+			continue;
+		}
+
 		if (m_Textures.find(textureID) != m_Textures.end())
 		{
 			Log::Error("MaterialBase: Texture with index '%d' already set.", textureID);

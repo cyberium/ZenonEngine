@@ -60,6 +60,7 @@ void main_internal(int argc, char *argv[])
 	editor.Get3DFrame().InitializeEditorFrame();
 	editor.GetTools().Initialize();
 
+	app.GetBaseManager().GetManager<IMaterialsFactory>()->PrintMaterials();
 
 	editorUI.showMaximized();
 

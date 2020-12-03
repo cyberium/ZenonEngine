@@ -60,7 +60,7 @@ void CSceneRTS::Initialize()
 		lightNode->GetComponentT<ILightComponent3D>()->SetAmbientColor(glm::vec3(0.25f));
 		lightNode->GetComponentT<ILightComponent3D>()->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
 		lightNode->GetComponentT<ILightComponent3D>()->SetRange(1350.0f);
-		lightNode->GetComponentT<ILightComponent3D>()->SetIntensity(1.3f);
+		lightNode->GetComponentT<ILightComponent3D>()->SetIntensity(1.0f);
 		lightNode->GetComponentT<ILightComponent3D>()->SetSpotlightAngle(30.0f);
 	}
 
@@ -139,7 +139,7 @@ void CSceneRTS::Initialize()
 		m_UIControlRTSTowersPanel->SetTowerButtonClickCallback(std::bind(&CSceneRTS::OnTowerButtonClicked, this, std::placeholders::_1));
 
 
-		//commonControl->SetScale(glm::vec2(0.75f));
+		m_UIControlRTSTowersPanel->SetScale(glm::vec2(0.5f));
 	}
 	
 
@@ -251,6 +251,11 @@ void CSceneRTS::CreateUnitsModels()
 std::shared_ptr<IModel> CSceneRTS::CreateUnitModel(std::string ModelName, std::string RunAnimationName, std::string DeathAnimationName)
 {
 	auto filesManager = GetBaseManager().GetManager<IFilesManager>();
+
+	auto fileNameStruct = Utils::SplitFilename(ModelName);
+	auto existingXMLModel = fileNameStruct.NameWithoutExtension + ".znxmdl";
+	if (filesManager->IsFileExists(existingXMLModel))
+		return GetBaseManager().GetManager<IznModelsFactory>()->LoadModel(existingXMLModel);
 
 	CznFBXLoaderParams fbxLoaderParams;
 	fbxLoaderParams.TexturesPathRoot = "Toon_RTS/models/textures/";

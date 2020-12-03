@@ -124,10 +124,10 @@ const glm::vec2& CUIControl::GetTranslation() const
 
 glm::vec2 CUIControl::GetTranslationAbs() const
 {
-	glm::vec2 parentTranslate = glm::vec2(0.0f, 0.0f);
+	glm::vec2 resultTranslate = glm::vec2(0.0f, 0.0f);
 	if (auto parent = GetParent())
-		parentTranslate = parent->GetTranslationAbs();
-	return parentTranslate + GetTranslation();
+		return parent->GetTranslationAbs() + GetTranslation() * parent->GetScaleAbs();
+	return GetTranslation();
 }
 
 void CUIControl::SetRotation(const glm::vec3& _rotate)

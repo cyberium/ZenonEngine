@@ -92,7 +92,7 @@ public:
 		TextureReflection    = 8,
 		TextureDisplacement  = 9,
 		
-		Count
+		Count                = 10
 	};
 
 public:

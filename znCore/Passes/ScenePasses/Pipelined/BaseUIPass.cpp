@@ -65,8 +65,7 @@ PerFrame BaseUIPass::GetPerFrameData() const
 	PerFrame perFrame(
 		glm::mat4(1.0f),
 		viewport.GetOrthoMatix(), 
-		glm::vec2(viewport.GetSize()),
-		glm::vec3(0.0f)
+		viewport.GetSize()
 	);
 	return perFrame;
 }

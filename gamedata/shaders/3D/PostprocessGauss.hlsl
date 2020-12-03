@@ -13,7 +13,7 @@ float4 DoPostrocessEffect(float4 SourceColor, int2 TexCoord, uint SampleIndex)
 	
     if (IsHorizontal)
     {
-        for (int i = 1; i < 5; ++i)
+        for (int i = 1; i < 5; i++)
         {
             result += GetTextureColor(TexCoord + int2(i, 0), SampleIndex).rgb * weight[i];
             result += GetTextureColor(TexCoord - int2(i, 0), SampleIndex).rgb * weight[i];
@@ -21,7 +21,7 @@ float4 DoPostrocessEffect(float4 SourceColor, int2 TexCoord, uint SampleIndex)
     }
     else
     {
-        for (int i = 1; i < 5; ++i)
+        for (int i = 1; i < 5; i++)
         {
             result += GetTextureColor(TexCoord + int2(0, i), SampleIndex).rgb * weight[i];
             result += GetTextureColor(TexCoord - int2(0, i), SampleIndex).rgb * weight[i];

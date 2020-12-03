@@ -16,6 +16,11 @@ CPassForward_DoRenderScene::~CPassForward_DoRenderScene()
 {}
 
 
+void CPassForward_DoRenderScene::SetEnviorementTexture(std::shared_ptr<ITexture> Texture)
+{
+	GetPipeline().SetTexture(15, Texture);
+}
+
 IShaderParameter * CPassForward_DoRenderScene::GetLightsShaderParameter() const
 {
 	return m_ShaderLightsBufferParameter;
@@ -30,37 +35,36 @@ std::shared_ptr<IRenderPassPipelined> CPassForward_DoRenderScene::ConfigurePipel
 {
 	__super::ConfigurePipeline(RenderTarget);
 
-	std::shared_ptr<IShader> vertexShader;
-	std::shared_ptr<IShader> pixelShader;
 
-	if (GetRenderDevice().GetDeviceType() == RenderDeviceType::RenderDeviceType_DirectX11)
+	// Vertex shader
 	{
-		vertexShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::VertexShader, "3D/ModelVS.hlsl", "VS_PTN", { { "SKELETON_ANIMATION", "1" } });
-		pixelShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::PixelShader, "3D/Model_Forward.hlsl", "PS_main");
+		std::shared_ptr<IShader> vertexShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::VertexShader, "3D/ModelVS.hlsl", "VS_PTN", { { "SKELETON_ANIMATION", "1" } });
+		vertexShader->LoadInputLayoutFromReflector();
+		/*std::vector<SCustomInputElement> customElements;
+		customElements.push_back({ 0,  0, ECustomVertexElementType::FLOAT3, ECustomVertexElementUsage::POSITION,     0 });
+		customElements.push_back({ 0, 12, ECustomVertexElementType::FLOAT2, ECustomVertexElementUsage::TEXCOORD,     0 });
+		customElements.push_back({ 0, 20, ECustomVertexElementType::FLOAT3, ECustomVertexElementUsage::NORMAL,       0 });
+		customElements.push_back({ 0, 32, ECustomVertexElementType::FLOAT4, ECustomVertexElementUsage::BLENDWEIGHT,  0 });
+		customElements.push_back({ 0, 48, ECustomVertexElementType::UINT4,  ECustomVertexElementUsage::BLENDINDICES, 0 });
+		vertexShader->LoadInputLayoutFromCustomElements(customElements);*/
+
+		m_ShaderBonesBufferParameter = vertexShader->GetShaderParameterByName("Bones");
+		_ASSERT(m_ShaderBonesBufferParameter);
+
+		GetPipeline().SetShader(EShaderType::VertexShader, vertexShader);
 	}
-	vertexShader->LoadInputLayoutFromReflector();
 
-	/*std::vector<SCustomInputElement> customElements;
-	customElements.push_back({ 0,  0, ECustomVertexElementType::FLOAT3, ECustomVertexElementUsage::POSITION,     0 });
-	customElements.push_back({ 0, 12, ECustomVertexElementType::FLOAT2, ECustomVertexElementUsage::TEXCOORD,     0 });
-	customElements.push_back({ 0, 20, ECustomVertexElementType::FLOAT3, ECustomVertexElementUsage::NORMAL,       0 });
-	customElements.push_back({ 0, 32, ECustomVertexElementType::FLOAT4, ECustomVertexElementUsage::BLENDWEIGHT,  0 });
-	customElements.push_back({ 0, 48, ECustomVertexElementType::UINT4,  ECustomVertexElementUsage::BLENDINDICES, 0 });
-	vertexShader->LoadInputLayoutFromCustomElements(customElements);*/
 
-	// PIPELINES
-	//GetPipeline().GetRasterizerState()->SetCullMode(IRasterizerState::CullMode::None);
-	GetPipeline().SetShader(EShaderType::VertexShader, vertexShader);
-	GetPipeline().SetShader(EShaderType::PixelShader, pixelShader);
+	// Pixel shader
+	{
+		std::shared_ptr<IShader> pixelShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::PixelShader, "3D/Model_Forward.hlsl", "PS_main");
 
-	m_ShaderBonesBufferParameter = vertexShader->GetShaderParameterByName("Bones");
-	//_ASSERT(m_ShaderBonesBufferParameter->IsValid());
+		m_ShaderLightsBufferParameter = pixelShader->GetShaderParameterByName("LightsVS");
+		_ASSERT(m_ShaderLightsBufferParameter);
 
-	m_ShaderLightsBufferParameter = pixelShader->GetShaderParameterByName("LightsVS");
-	//_ASSERT(m_ShaderLightsBufferParameter->IsValid());
-
-	m_ShaderInstancesBufferParameter = vertexShader->GetShaderParameterByName("Instances");
-	//_ASSERT(m_ShaderInstancesBufferParameter->IsValid());
+		GetPipeline().SetShader(EShaderType::PixelShader, pixelShader);
+	}
+	
 
 	return shared_from_this();
 }
@@ -100,9 +104,6 @@ EVisitResult CPassForward_DoRenderScene::Visit(const IGeometry * Geometry, const
 	const MaterialModel* objMaterial = dynamic_cast<const MaterialModel*>(Material);
 	if (objMaterial == nullptr)
 		return EVisitResult::Block;
-
-	const auto& shaders = GetRenderEventArgs().PipelineState->GetShaders();
-	const auto& vertexShader = shaders.at(EShaderType::VertexShader).get();
 
 	if (m_ShaderBonesBufferParameter)
 		m_ShaderBonesBufferParameter->Bind();

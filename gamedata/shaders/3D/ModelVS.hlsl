@@ -58,21 +58,9 @@ VSOutput VS_PTN(VSInputPTN IN
 	OUT.position = mul(mvp, vertexPosition);
 	OUT.positionVS = mul(mv, vertexPosition).xyz;
 	OUT.texCoord = float2(IN.texCoord.x, 1.0f - IN.texCoord.y);
-	OUT.normalVS = mul(mv, float4(IN.normal, 0.0f)).xyz;
-	OUT.tangentVS = mul(mv, float4(tangent, 0.0f)).xyz;
-	OUT.binormalVS = mul(mv, float4(binormal, 0.0f)).xyz;
-	
-	// Enviorement mapping in World space
-	//const float4x4 modelInverseTranspose = transpose(inverse(m));
-	//const float3 nn = normalize(mul(IN.normal, (float3x3)modelInverseTranspose));
-	//const float3 refl = reflect(-normalize(GetCameraPosition() - vertexPosition), normalize(nn));
-	
-	// Enviorement mapping in View space
-	//const float4x4 modelInverseTransposeVS = inverse(m);
-	//const float3 nnVS = normalize(mul(OUT.normalVS, (float3x3)modelInverseTransposeVS));
-	//const float3 refl = mul((float3x3)PF.InverseView, reflect(-normalize(float3(0.0f, 0.0f, 0.0f) - OUT.positionVS), normalize(OUT.normalVS)));
-	
-	//OUT.positionWS = refl;
-	
+	OUT.normalVS = mul((float3x3)mv, IN.normal).xyz;
+	OUT.tangentVS = mul((float3x3)mv, tangent).xyz;
+	OUT.binormalVS = mul((float3x3)mv, binormal).xyz;
+		
 	return OUT;
 }

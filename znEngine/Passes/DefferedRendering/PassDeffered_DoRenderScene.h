@@ -9,6 +9,8 @@ public:
 	CPassDeffered_DoRenderScene(IRenderDevice& RenderDevice, const std::shared_ptr<IRenderPassCreateTypelessList>& SceneCreateTypelessListPass);
 	virtual ~CPassDeffered_DoRenderScene();
 
+	void SetEnviorementTexture(std::shared_ptr<ITexture> Texture);
+
 	// CPassDeffered_DoRenderScene
 	std::shared_ptr<ITexture> GetTexture0() const;
 	std::shared_ptr<ITexture> GetTexture1() const;

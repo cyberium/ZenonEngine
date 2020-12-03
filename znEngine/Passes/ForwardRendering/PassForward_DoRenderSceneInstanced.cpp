@@ -95,7 +95,7 @@ std::shared_ptr<IRenderPassPipelined> CPassForward_DoRenderSceneInstanced::Confi
 	//_ASSERT(m_ShaderLightsBufferParameter->IsValid());
 
 	m_ShaderInstancesBufferParameter = vertexShader->GetShaderParameterByName("Instances");
-	_ASSERT(m_ShaderInstancesBufferParameter->IsValid());
+	_ASSERT(m_ShaderInstancesBufferParameter);
 
 	return shared_from_this();
 }

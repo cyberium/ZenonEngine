@@ -91,8 +91,7 @@ PerFrame RenderPassPipelined::GetPerFrameData() const
 	PerFrame perFrame(
 		camera->GetViewMatrix(),
 		camera->GetProjectionMatrix(),
-		pipeline->GetRenderTarget()->GetViewport().GetSize(),
-		camera->GetDirection()
+		pipeline->GetRenderTarget()->GetViewport().GetSize()
 	);
 	return perFrame;
 }

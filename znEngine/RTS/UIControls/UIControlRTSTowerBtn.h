@@ -16,6 +16,10 @@ public:
 	// CUIControlButton
 	void SetTowerTexture(std::shared_ptr<ITexture> Texture);
 
+	// Syntetic events
+	void OnMouseEntered() override;
+	void OnMouseLeaved() override;
+
 protected:
 	void CreateWindowGeometry(float Width);
 

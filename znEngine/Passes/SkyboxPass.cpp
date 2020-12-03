@@ -17,6 +17,13 @@ CSkyboxPass::~CSkyboxPass()
 
 
 
+std::shared_ptr<ITexture> CSkyboxPass::GetSkyboxCubeTexture() const
+{
+	return m_SkyCubeTexture;
+}
+
+
+
 //
 // IRenderPassPipelined
 //
@@ -50,12 +57,12 @@ std::shared_ptr<IRenderPassPipelined> CSkyboxPass::ConfigurePipeline(std::shared
 
 	// Per object
 	m_PerObjectShaderParameter = vertexShader->GetShaderParameterByName("PerObject");
-	_ASSERT(m_PerObjectShaderParameter->IsValid());
+	_ASSERT(m_PerObjectShaderParameter);
 	m_PerObjectShaderParameter->SetConstantBuffer(m_PerObjectConstantBuffer);
 
 
-	auto textureCube = GetBaseManager().GetManager<IznTexturesFactory>()->LoadTextureCube("Skybox2.png");
-	GetPipeline().SetTexture(0, textureCube);
+	m_SkyCubeTexture = GetBaseManager().GetManager<IznTexturesFactory>()->LoadTextureCube("Skybox2.png");
+	GetPipeline().SetTexture(0, m_SkyCubeTexture);
 
 	return shared_from_this();
 }

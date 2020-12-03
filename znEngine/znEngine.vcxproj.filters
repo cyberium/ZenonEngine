@@ -380,13 +380,16 @@
     <ClCompile Include="Passes\PostprocessRendering\Postprocess_Glow.cpp">
       <Filter>Passes\PostprocessRendering</Filter>
     </ClCompile>
-    <ClCompile Include="Passes\PostprocessRendering\Postprocess_CopyTexture.cpp">
-      <Filter>Passes\PostprocessRendering</Filter>
-    </ClCompile>
     <ClCompile Include="Passes\PostprocessRendering\PostprocessBase.cpp">
       <Filter>Passes\PostprocessRendering</Filter>
     </ClCompile>
     <ClCompile Include="Passes\PostprocessRendering\Postprocess_Gauss.cpp">
+      <Filter>Passes\PostprocessRendering</Filter>
+    </ClCompile>
+    <ClCompile Include="Passes\PostprocessRendering\Postprocess_ApplyTexture.cpp">
+      <Filter>Passes\PostprocessRendering</Filter>
+    </ClCompile>
+    <ClCompile Include="Passes\PostprocessRendering\Postprocess_AccumTextures.cpp">
       <Filter>Passes\PostprocessRendering</Filter>
     </ClCompile>
   </ItemGroup>
@@ -652,13 +655,16 @@
     <ClInclude Include="Passes\PostprocessRendering\Postprocess_Glow.h">
       <Filter>Passes\PostprocessRendering</Filter>
     </ClInclude>
-    <ClInclude Include="Passes\PostprocessRendering\Postprocess_CopyTexture.h">
-      <Filter>Passes\PostprocessRendering</Filter>
-    </ClInclude>
     <ClInclude Include="Passes\PostprocessRendering\PostprocessBase.h">
       <Filter>Passes\PostprocessRendering</Filter>
     </ClInclude>
     <ClInclude Include="Passes\PostprocessRendering\Postprocess_Gauss.h">
+      <Filter>Passes\PostprocessRendering</Filter>
+    </ClInclude>
+    <ClInclude Include="Passes\PostprocessRendering\Postprocess_ApplyTexture.h">
+      <Filter>Passes\PostprocessRendering</Filter>
+    </ClInclude>
+    <ClInclude Include="Passes\PostprocessRendering\Postprocess_AccumTextures.h">
       <Filter>Passes\PostprocessRendering</Filter>
     </ClInclude>
   </ItemGroup>

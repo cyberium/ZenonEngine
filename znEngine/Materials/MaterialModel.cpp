@@ -54,9 +54,6 @@ MaterialModel::MaterialModel(const IBaseManager& BaseManager)
 		prop->SetValueGetter(std::bind(&MaterialModel::GetEmissiveColor, this));
 		GetProperties()->AddProperty(prop);
 	}
-	
-	auto textureCube = m_BaseManager.GetManager<IznTexturesFactory>()->LoadTextureCube("Skybox2.png");
-	__super::SetTexture(15, textureCube);
 }
 
 MaterialModel::~MaterialModel()

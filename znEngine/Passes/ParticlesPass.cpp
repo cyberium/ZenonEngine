@@ -56,7 +56,7 @@ std::shared_ptr<IRenderPassPipelined> CParticlesPass::ConfigurePipeline(std::sha
 
 	// 'Particles' in geom shader
 	m_GeomShaderParticlesBufferParameter = geomShader->GetShaderParameterByName("Particles");
-	_ASSERT(m_GeomShaderParticlesBufferParameter->IsValid());
+	_ASSERT(m_GeomShaderParticlesBufferParameter);
 
 	auto sampler = GetRenderDevice().GetObjectsFactory().CreateSamplerState();
 	sampler->SetFilter(ISamplerState::MinFilter::MinLinear, ISamplerState::MagFilter::MagLinear, ISamplerState::MipFilter::MipLinear);

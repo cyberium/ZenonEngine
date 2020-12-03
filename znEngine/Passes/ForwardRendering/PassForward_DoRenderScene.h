@@ -7,6 +7,7 @@ public:
 	CPassForward_DoRenderScene(IRenderDevice& RenderDevice, IScene& Scene);
 	virtual ~CPassForward_DoRenderScene();
 
+	void SetEnviorementTexture(std::shared_ptr<ITexture> Texture);
 	IShaderParameter* GetLightsShaderParameter() const;
 
 	// IRenderPassPipelined
@@ -20,5 +21,4 @@ public:
 private:
 	IShaderParameter* m_ShaderBonesBufferParameter;
 	IShaderParameter* m_ShaderLightsBufferParameter;
-	IShaderParameter* m_ShaderInstancesBufferParameter;
 };

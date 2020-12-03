@@ -7,12 +7,8 @@ cbuffer Material : register(b2)
 	MaterialModel Mat;
 };
 
-
-StructuredBuffer<LightVS> LightsVS : register(t10);
-
-
+StructuredBuffer<LightVS> LightsVS : register(t14);
 TextureCube TextureSky : register(t15);
-
 
 float4 PS_main(VSOutput IN) : SV_TARGET
 {
@@ -25,13 +21,11 @@ float4 PS_main(VSOutput IN) : SV_TARGET
 	if (Mat.IsEnviorementMappingEnable)
 	{
 		const float3 refl = mul((float3x3)PF.InverseView, reflect(-normalize(float3(0.0f, 0.0f, 0.0f) - IN.positionVS), normalize(IN.normalVS)));
-		return diffuseAndAlpha * TextureSky.Sample(LinearClampSampler, normalize(refl));
+		
+		diffuseAndAlpha *= TextureSky.Sample(LinearClampSampler, normalize(refl));
 	}
-		
-	//diffuseAndAlpha *= 2.0f;
-	//return diffuseAndAlpha;
-		
-	float4 ambient = ExtractAmbient(Mat, displacedTexCoord);
+	
+	//float4 ambient = ExtractAmbient(Mat, displacedTexCoord);
 	float4 emissive = ExtractEmissive(Mat, displacedTexCoord);
 	float4 specular = ExtractSpecular(Mat, displacedTexCoord);
 	
@@ -46,10 +40,7 @@ float4 PS_main(VSOutput IN) : SV_TARGET
 
 	float3 ambientLight  = diffuseAndAlpha.rgb * lit.Ambient.rgb;
 	float3 diffuseLight  = diffuseAndAlpha.rgb * lit.Diffuse.rgb;
-	float3 specularLight = specular.rgb        * lit.Specular;
+	float3 specularLight = specular.rgb        * lit.Specular.rgb;
 
-	//return diffuseAndAlpha;
-
-	float4 colorResult = float4(ambientLight + diffuseLight + specularLight, 1.0f);
-	return colorResult;
+	return float4(ambientLight + diffuseLight + specularLight + emissive.rgb, 1.0f);
 }

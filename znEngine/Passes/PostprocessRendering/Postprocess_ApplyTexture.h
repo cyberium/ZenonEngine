@@ -2,12 +2,12 @@
 
 #include "PostprocessBase.h"
 
-class ZN_API CPassPostprocess_CopyTexture
+class ZN_API CPassPostprocess_ApplyTexture
 	: public CPassPostprocessBase
 {
 public:
-	CPassPostprocess_CopyTexture(IRenderDevice& RenderDevice, std::shared_ptr<ITexture> InputTexture);
-	virtual ~CPassPostprocess_CopyTexture();
+	CPassPostprocess_ApplyTexture(IRenderDevice& RenderDevice, std::shared_ptr<ITexture> InputTexture);
+	virtual ~CPassPostprocess_ApplyTexture();
 
 protected:
 	std::shared_ptr<IRenderTarget> LoadRenderTarget(std::shared_ptr<IRenderTarget> OriginalRenderTarget) override;

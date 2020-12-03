@@ -18,6 +18,9 @@ public:
 	const std::vector<SSubgeometry>& GetSubgeometries() const override;
 	void ClearSubgeometries();
 
+protected:
+	std::vector<SSubgeometry>& GetSubgeometries();
+
 private:
 	std::vector<SSubgeometry> m_Subgeometries;
 };

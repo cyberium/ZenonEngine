@@ -10,7 +10,8 @@
 #include "Passes/PostprocessRendering/Postprocess_HDR.h"
 #include "Passes/PostprocessRendering/Postprocess_Glow.h"
 #include "Passes/PostprocessRendering/Postprocess_Gauss.h"
-#include "Passes/PostprocessRendering/Postprocess_CopyTexture.h"
+#include "Passes/PostprocessRendering/Postprocess_AccumTextures.h"
+#include "Passes/PostprocessRendering/Postprocess_ApplyTexture.h"
 
 #include "Passes/DebugPass.h"
 #include "Passes/ParticlesPass.h"
@@ -36,8 +37,12 @@ void CRendererDeffered::Initialize(std::shared_ptr<IRenderTarget> OutputRenderTa
 {
 	m_SceneCreateTypelessListPass = MakeShared(CSceneCreateTypelessListPass, m_RenderDevice, m_Scene);
 
+	auto skyboxPass = MakeShared(CSkyboxPass, m_RenderDevice);
+	skyboxPass->ConfigurePipeline(OutputRenderTarget);
+
 	m_Deffered_ScenePass = MakeShared(CPassDeffered_DoRenderScene, m_RenderDevice, m_SceneCreateTypelessListPass);
 	m_Deffered_ScenePass->ConfigurePipeline(OutputRenderTarget);
+	m_Deffered_ScenePass->SetEnviorementTexture(skyboxPass->GetSkyboxCubeTexture());
 
 	// GBuffer contains Depth and Stencil buffer with object. We may use this data.
 	auto outputRenderTargetWithCustomDepth = m_RenderDevice.GetObjectsFactory().CreateRenderTarget();
@@ -59,7 +64,6 @@ void CRendererDeffered::Initialize(std::shared_ptr<IRenderTarget> OutputRenderTa
 		OutputRenderTarget
 #endif
 	);
-
 
 	//
 	// BEFORE SCENE
@@ -95,33 +99,28 @@ void CRendererDeffered::Initialize(std::shared_ptr<IRenderTarget> OutputRenderTa
 	//
 	auto inputTexture = HDRRenderTarget->GetTexture(IRenderTarget::AttachmentPoint::Color0);
 #ifdef ENABLE_HDR
-	{
-		//auto hdrPass2 = MakeShared(CPassPostprocess_HDR, m_RenderDevice, inputTexture);
-		//hdrPass2->ConfigurePipeline(OutputRenderTarget);
-		//Add3DPass(hdrPass2);
+	auto glowPass = MakeShared(CPassPostprocess_Glow, m_RenderDevice, inputTexture);
+	glowPass->ConfigurePipeline(OutputRenderTarget);
+	Add3DPass(glowPass);
 
-		Add3DPass(MakeShared(CPassPostprocess_CopyTexture, m_RenderDevice, inputTexture/*hdrPass2->GetOutputTexture()*/)->ConfigurePipeline(OutputRenderTarget));
-	}
+	auto gaussHorizontal = MakeShared(CPassPostprocess_Gauss, m_RenderDevice, glowPass->GetOutputTexture(), true);
+	gaussHorizontal->ConfigurePipeline(OutputRenderTarget);
+	Add3DPass(gaussHorizontal);
 
-	{
-		auto glowPass = MakeShared(CPassPostprocess_Glow, m_RenderDevice, inputTexture);
-		glowPass->ConfigurePipeline(OutputRenderTarget);
-		Add3DPass(glowPass);
+	auto gaussVertical = MakeShared(CPassPostprocess_Gauss, m_RenderDevice, gaussHorizontal->GetOutputTexture(), false);
+	gaussVertical->ConfigurePipeline(OutputRenderTarget);
+	Add3DPass(gaussVertical);
 
-		auto gaussHorizontal = MakeShared(CPassPostprocess_Gauss, m_RenderDevice, glowPass->GetOutputTexture(), true);
-		gaussHorizontal->ConfigurePipeline(OutputRenderTarget);
-		Add3DPass(gaussHorizontal);
+	auto accumTextures = MakeShared(CPassPostprocess_AccumTextures, m_RenderDevice, std::vector<std::shared_ptr<ITexture>>({ inputTexture, gaussVertical->GetOutputTexture() }));
+	accumTextures->ConfigurePipeline(OutputRenderTarget);
+	Add3DPass(accumTextures);
 
-		auto gaussVertical = MakeShared(CPassPostprocess_Gauss, m_RenderDevice, gaussHorizontal->GetOutputTexture(), false);
-		gaussVertical->ConfigurePipeline(OutputRenderTarget);
-		Add3DPass(gaussVertical);
+	//auto hdrPass = MakeShared(CPassPostprocess_HDR, m_RenderDevice, accumTextures->GetOutputTexture());
+	//hdrPass->ConfigurePipeline(OutputRenderTarget);
+	//Add3DPass(hdrPass);
 
-		//auto hdrPass = MakeShared(CPassPostprocess_HDR, m_RenderDevice, blurPass->GetOutputTexture());
-		//hdrPass->ConfigurePipeline(OutputRenderTarget);
-		//Add3DPass(hdrPass);
+	Add3DPass(MakeShared(CPassPostprocess_ApplyTexture, m_RenderDevice, accumTextures->GetOutputTexture())->ConfigurePipeline(OutputRenderTarget));
 
-		Add3DPass(MakeShared(CPassPostprocess_CopyTexture, m_RenderDevice, gaussVertical->GetOutputTexture()/*hdrPass->GetOutputTexture()*/)->ConfigurePipeline(OutputRenderTarget));
-	}
 #endif
 
 
@@ -152,7 +151,7 @@ std::shared_ptr<IRenderTarget> CRendererDeffered::CreateHDRRenderTarget(std::sha
 		ITexture::Components::RGBA,
 		ITexture::Type::Float,
 		OutputRenderTarget->GetSamplesCount(),
-		32, 32, 32, 32, 0, 0
+		16, 16, 16, 16, 0, 0
 	);
 	auto texture = m_RenderDevice.GetObjectsFactory().CreateTexture2D(OutputRenderTarget->GetViewport().GetWidth(), OutputRenderTarget->GetViewport().GetHeight(), 1, colorTextureFormat);
 

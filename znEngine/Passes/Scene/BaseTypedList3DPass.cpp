@@ -65,9 +65,7 @@ void CBaseList3DPass::Render(RenderEventArgs & e)
 //
 void CBaseList3DPass::DoRenderSceneNode(const ISceneNode * SceneNode)
 {
-	PerObject perObject;
-	perObject.Model = SceneNode->GetWorldTransfom();
-	m_PerObjectConstantBuffer->Set(perObject);
+	m_PerObjectConstantBuffer->Set(PerObject(SceneNode->GetWorldTransfom()));
 
 	if (m_PerObjectParameter == nullptr)
 		m_PerObjectParameter = (GetPipeline().GetVertexShaderPtr()->GetShaderParameterByName("PerObject"));
@@ -86,13 +84,9 @@ void CBaseList3DPass::DoRenderModel(const IModel * Model)
 
 void CBaseList3DPass::DoRenderGeometry(const IGeometry * Geometry, const IMaterial * Material, SGeometryDrawArgs GeometryDrawArgs)
 {
-	if (Material)
-		Material->Bind(GetRenderEventArgs().PipelineState->GetPixelShaderPtr());
-
+	Material->Bind(GetRenderEventArgs().PipelineState->GetPixelShaderPtr());
 	Geometry->Render(GetRenderEventArgs().PipelineState->GetVertexShaderPtr(), GeometryDrawArgs);
-
-	if (Material)
-		Material->Unbind(GetRenderEventArgs().PipelineState->GetPixelShaderPtr());
+	Material->Unbind(GetRenderEventArgs().PipelineState->GetPixelShaderPtr());
 }
 
 

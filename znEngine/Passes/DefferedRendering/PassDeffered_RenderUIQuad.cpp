@@ -31,7 +31,6 @@ CPassDeffered_RenderUIQuad::~CPassDeffered_RenderUIQuad()
 //
 // IRenderPass
 //
-
 void CPassDeffered_RenderUIQuad::Render(RenderEventArgs& e)
 {
 	for (const auto& lightResult : m_Deffered_Lights->GetLightResult())
@@ -58,15 +57,14 @@ std::shared_ptr<IRenderPassPipelined> CPassDeffered_RenderUIQuad::ConfigurePipel
 
 	auto vertexShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::VertexShader, "3D/Deffered_UIQuad.hlsl", "VS_ScreenQuad", { {"MULTISAMPLED", samplesCnt.c_str() } });
 	vertexShader->LoadInputLayoutFromReflector();
+	GetPipeline().SetShader(EShaderType::VertexShader, vertexShader);
 
 	auto pixelShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::PixelShader, "3D/Deffered_UIQuad.hlsl", "PS_DeferredLighting", { {"MULTISAMPLED", samplesCnt.c_str() }});
+	GetPipeline().SetShader(EShaderType::PixelShader, pixelShader);
 
 	// PIPELINES
 	GetPipeline().GetBlendState()->SetBlendMode(additiveBlending);
 	GetPipeline().GetDepthStencilState()->SetDepthMode(disableDepthWrites);
-	//GetPipeline().GetRasterizerState()->SetCullMode(IRasterizerState::CullMode::Front);
-	GetPipeline().SetShader(EShaderType::VertexShader, vertexShader);
-	GetPipeline().SetShader(EShaderType::PixelShader, pixelShader);
 	
 	GetPipeline().SetTexture(0, m_DefferedRender->GetTexture0());
 	GetPipeline().SetTexture(1, m_DefferedRender->GetTexture1());

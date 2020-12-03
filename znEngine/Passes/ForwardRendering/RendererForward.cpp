@@ -11,7 +11,8 @@
 #include "Passes/PostprocessRendering/Postprocess_HDR.h"
 #include "Passes/PostprocessRendering/Postprocess_Glow.h"
 #include "Passes/PostprocessRendering/Postprocess_Gauss.h"
-#include "Passes/PostprocessRendering/Postprocess_CopyTexture.h"
+#include "Passes/PostprocessRendering/Postprocess_AccumTextures.h"
+#include "Passes/PostprocessRendering/Postprocess_ApplyTexture.h"
 
 #include "Passes/DebugPass.h"
 #include "Passes/ParticlesPass.h"
@@ -53,6 +54,9 @@ void CRendererForward::Initialize(std::shared_ptr<IRenderTarget> OutputRenderTar
 
 	m_SceneCreateTypelessListPass = MakeShared(CSceneCreateTypelessListPass, m_RenderDevice, m_Scene);
 
+	auto skyboxPass = MakeShared(CSkyboxPass, m_RenderDevice);
+	skyboxPass->ConfigurePipeline(HDRRenderTarget);
+
 	m_MaterialModelPass = MakeShared(CPassForward_DoRenderScene, m_RenderDevice, m_Scene);
 	m_MaterialModelPass->ConfigurePipeline(
 #ifdef ENABLE_HDR
@@ -61,6 +65,7 @@ void CRendererForward::Initialize(std::shared_ptr<IRenderTarget> OutputRenderTar
 		OutputRenderTarget
 #endif
 	);
+	m_MaterialModelPass->SetEnviorementTexture(skyboxPass->GetSkyboxCubeTexture());
 
 	//m_MaterialModelPassInstanced = MakeShared(CPassForward_DoRenderSceneInstanced, m_RenderDevice, m_SceneCreateTypelessListPass);
 	//m_MaterialModelPassInstanced->ConfigurePipeline(OutputRenderTarget, Viewport);
@@ -73,7 +78,8 @@ void CRendererForward::Initialize(std::shared_ptr<IRenderTarget> OutputRenderTar
 #ifdef ENABLE_HDR
 	Add3DPass(MakeShared(ClearRenderTargetPass, m_RenderDevice, HDRRenderTarget));
 #endif
-	Add3DPass(MakeShared(CSkyboxPass, m_RenderDevice)->ConfigurePipeline(HDRRenderTarget));
+
+	Add3DPass(skyboxPass);
 
 	//
 	// SCENE
@@ -108,33 +114,29 @@ void CRendererForward::Initialize(std::shared_ptr<IRenderTarget> OutputRenderTar
 	auto inputTexture = HDRRenderTarget->GetTexture(IRenderTarget::AttachmentPoint::Color0);
 
 #ifdef ENABLE_HDR
-	{
-		//auto hdrPass2 = MakeShared(CPassPostprocess_HDR, m_RenderDevice, inputTexture);
-		//hdrPass2->ConfigurePipeline(OutputRenderTarget);
-		//Add3DPass(hdrPass2);
 
-		//Add3DPass(MakeShared(CPassPostprocess_CopyTexture, m_RenderDevice, inputTexture/*hdrPass2->GetOutputTexture()*/)->ConfigurePipeline(OutputRenderTarget));
-	}
+	auto glowPass = MakeShared(CPassPostprocess_Glow, m_RenderDevice, inputTexture);
+	glowPass->ConfigurePipeline(OutputRenderTarget);
+	Add3DPass(glowPass);
 
-	{
-		auto glowPass = MakeShared(CPassPostprocess_Glow, m_RenderDevice, inputTexture);
-		glowPass->ConfigurePipeline(OutputRenderTarget);
-		Add3DPass(glowPass);
+	auto gaussHorizontal = MakeShared(CPassPostprocess_Gauss, m_RenderDevice, glowPass->GetOutputTexture(), true);
+	gaussHorizontal->ConfigurePipeline(OutputRenderTarget);
+	Add3DPass(gaussHorizontal);
 
-		auto gaussHorizontal = MakeShared(CPassPostprocess_Gauss, m_RenderDevice, glowPass->GetOutputTexture(), true);
-		gaussHorizontal->ConfigurePipeline(OutputRenderTarget);
-		Add3DPass(gaussHorizontal);
+	auto gaussVertical = MakeShared(CPassPostprocess_Gauss, m_RenderDevice, gaussHorizontal->GetOutputTexture(), false);
+	gaussVertical->ConfigurePipeline(OutputRenderTarget);
+	Add3DPass(gaussVertical);
 
-		auto gaussVertical = MakeShared(CPassPostprocess_Gauss, m_RenderDevice, gaussHorizontal->GetOutputTexture(), false);
-		gaussVertical->ConfigurePipeline(OutputRenderTarget);
-		Add3DPass(gaussVertical);
+	auto accumTextures = MakeShared(CPassPostprocess_AccumTextures, m_RenderDevice, std::vector<std::shared_ptr<ITexture>>({ inputTexture, gaussVertical->GetOutputTexture() }));
+	accumTextures->ConfigurePipeline(OutputRenderTarget);
+	Add3DPass(accumTextures);
 
-		//auto hdrPass = MakeShared(CPassPostprocess_HDR, m_RenderDevice, blurPass->GetOutputTexture());
-		//hdrPass->ConfigurePipeline(OutputRenderTarget);
-		//Add3DPass(hdrPass);
+	//auto hdrPass = MakeShared(CPassPostprocess_HDR, m_RenderDevice, accumTextures->GetOutputTexture());
+	//hdrPass->ConfigurePipeline(OutputRenderTarget);
+	//Add3DPass(hdrPass);
 
-		Add3DPass(MakeShared(CPassPostprocess_CopyTexture, m_RenderDevice, gaussVertical->GetOutputTexture()/*hdrPass->GetOutputTexture()*/)->ConfigurePipeline(OutputRenderTarget));
-	}
+	Add3DPass(MakeShared(CPassPostprocess_ApplyTexture, m_RenderDevice, gaussVertical->GetOutputTexture())->ConfigurePipeline(OutputRenderTarget));
+
 #endif
 
 
@@ -194,7 +196,7 @@ std::shared_ptr<IRenderTarget> CRendererForward::CreateHDRRenderTarget(std::shar
 		ITexture::Components::RGBA,
 		ITexture::Type::Float,
 		OutputRenderTarget->GetSamplesCount(),
-		32, 32, 32, 32, 0, 0
+		16, 16, 16, 16, 0, 0
 	);
 	auto texture = m_RenderDevice.GetObjectsFactory().CreateTexture2D(OutputRenderTarget->GetViewport().GetWidth(), OutputRenderTarget->GetViewport().GetHeight(), 1, colorTextureFormat);
 

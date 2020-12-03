@@ -79,13 +79,8 @@ std::shared_ptr<IModel> CModelsLoader_znmdl::LoadModel(const std::shared_ptr<IFi
 	for (size_t i = 0; i < materialsCount; i++)
 	{
 		auto material = m_BaseManager.GetManager<IMaterialsFactory>()->CreateMaterial("MaterialModel");
-		if (auto materialAsLoadableFromFile = std::dynamic_pointer_cast<IObjectLoadSave>(material))
-		{
-			materialAsLoadableFromFile->Load(ModelFile);
-		}
-		else
-			throw CException("Material '%s' is not supports 'IObjectLoadSave'.", material->GetName().c_str());
-
+		std::dynamic_pointer_cast<IObjectLoadSave>(material)->Load(ModelFile);
+		m_BaseManager.GetManager<IMaterialsFactory>()->AddMaterial(material);
 		materials.push_back(material);
 	}
 
