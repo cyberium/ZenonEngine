@@ -52,20 +52,15 @@ std::shared_ptr<IRenderPassPipelined> CDrawLightFrustumPass::ConfigurePipeline(s
 	return shared_from_this();
 }
 
-const ISceneNode* n;
-
-EVisitResult CDrawLightFrustumPass::Visit(const ISceneNode * node)
+EVisitResult CDrawLightFrustumPass::Visit(const std::shared_ptr<ISceneNode>& node)
 {
 	if (auto lightComp = node->GetComponentT<ILightComponent3D>())
-	{
-		n = node;
 		return EVisitResult::AllowVisitContent;
-	}
 	
 	return EVisitResult::AllowVisitChilds;
 }
 
-EVisitResult CDrawLightFrustumPass::Visit(const ILight3D * Light)
+EVisitResult CDrawLightFrustumPass::Visit(const std::shared_ptr<ILight3D>& Light)
 {
 	{
 		BindPerObjectData(PerObject());
@@ -76,30 +71,6 @@ EVisitResult CDrawLightFrustumPass::Visit(const ILight3D * Light)
 		geom->Render(GetPipeline().GetVertexShaderPtr());
 		m_MaterialDebug->Unbind(GetPipeline().GetPixelShaderPtr());
 	}
-
-	/*{
-		float range = Light->GetLightStruct().Range;
-		float rad = range * glm::atan(glm::radians(Light->GetLightStruct().SpotlightAngle));
-
-		auto geom = GetRenderDevice().GetPrimitivesFactory().CreateCone(rad, range);
-
-
-		glm::mat4 m(1.0f);
-		m = glm::translate(m, n->GetTranslation() + n->GetRotation() * glm::vec3(0.0f, range / 2.0f, 0.0f));
-		m = glm::rotate(m, n->GetRotation().x, glm::vec3(1, 0, 0));
-		m = glm::rotate(m, n->GetRotation().y, glm::vec3(0, 1, 0));
-		m = glm::rotate(m, n->GetRotation().z, glm::vec3(0, 0, 1));
-
-		BindPerObjectData(m);
-
-
-		m_MaterialDebug->Bind(GetPipeline().GetShaders());
-		{
-			const IShader* vertexShader = GetPipeline().GetShader(EShaderType::VertexShader).get();
-			geom->Render(GetRenderEventArgs(), vertexShader);
-		}
-		m_MaterialDebug->Unbind(GetPipeline().GetShaders());
-	}*/
 
 	return EVisitResult::AllowAll;
 }

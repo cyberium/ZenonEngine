@@ -9,7 +9,7 @@ CUIControl::CUIControl(IScene& Scene)
 
 	, m_IsMouseOnNode(false)
 
-	, m_Translate(glm::vec2(0.0f))
+	, m_Position(glm::vec2(0.0f))
 	, m_Rotate(glm::vec3(0.0f))
 	, m_Scale(glm::vec2(1.0f))
 	, m_Size(glm::vec2(10.0f))
@@ -111,32 +111,36 @@ IScene& CUIControl::GetScene() const
 	return m_Scene;
 }
 
-void CUIControl::SetTranslate(const glm::vec2& _translate)
+void CUIControl::SetPosition(glm::vec2 Position)
 {
-	m_Translate = _translate;
-	UpdateLocalTransform();
+	throw CException("Not implemented!");
 }
 
-const glm::vec2& CUIControl::GetTranslation() const
+glm::vec2 CUIControl::GetPosition() const
 {
-	return m_Translate;
-}
-
-glm::vec2 CUIControl::GetTranslationAbs() const
-{
-	glm::vec2 resultTranslate = glm::vec2(0.0f, 0.0f);
 	if (auto parent = GetParent())
-		return parent->GetTranslationAbs() + GetTranslation() * parent->GetScaleAbs();
-	return GetTranslation();
+		return parent->GetPosition() + GetLocalPosition() * parent->GetScaleAbs();
+	return GetLocalPosition();
 }
 
-void CUIControl::SetRotation(const glm::vec3& _rotate)
+void CUIControl::SetLocalPosition(glm::vec2 Position)
 {
-	m_Rotate = _rotate;
-
+	m_Position = Position;
 	UpdateLocalTransform();
 }
-const glm::vec3& CUIControl::GetRotation() const
+
+glm::vec2 CUIControl::GetLocalPosition() const
+{
+	return m_Position;
+}
+
+void CUIControl::SetRotation(glm::vec3 Rotation)
+{
+	m_Rotate = Rotation;
+	UpdateLocalTransform();
+}
+
+glm::vec3 CUIControl::GetRotation() const
 {
 	return m_Rotate;
 }
@@ -144,7 +148,6 @@ const glm::vec3& CUIControl::GetRotation() const
 void CUIControl::SetScale(const glm::vec2& _scale)
 {
 	m_Scale = _scale;
-
 	UpdateLocalTransform();
 }
 
@@ -155,10 +158,9 @@ const glm::vec2& CUIControl::GetScale() const
 
 glm::vec2 CUIControl::GetScaleAbs() const
 {
-	glm::vec2 parentScale = glm::vec2(1.0f);
 	if (auto parent = GetParent())
-		parentScale = parent->GetScaleAbs();
-	return parentScale * GetScale();
+		return parent->GetScaleAbs() * GetScale();
+	return GetScale();
 }
 
 glm::mat4 CUIControl::GetLocalTransform() const
@@ -173,10 +175,9 @@ glm::mat4 CUIControl::GetWorldTransfom() const
 
 glm::mat4 CUIControl::GetParentWorldTransform() const
 {
-	glm::mat4 parentTransform(1.0f);
 	if (auto parent = GetParent())
-		parentTransform = parent->GetWorldTransfom();
-	return parentTransform;
+		return parent->GetWorldTransfom();
+	return glm::mat4(1.0f);;
 }
 
 
@@ -192,7 +193,7 @@ glm::vec2 CUIControl::GetSize() const
 
 BoundingRect CUIControl::GetBoundsAbs()
 {
-    BoundingRect boundRect = BoundingRect(GetTranslationAbs(), GetTranslationAbs() + GetSize() * GetScaleAbs());
+    BoundingRect boundRect = BoundingRect(GetPosition(), GetPosition() + GetSize() * GetScaleAbs());
 
     //for (auto ch : GetChilds())
     //    boundRect.makeUnion(ch->GetBoundsAbs());
@@ -212,7 +213,7 @@ bool CUIControl::IsPointInBoundsAbs(const glm::vec2& Point)
 //
 void CUIControl::Accept(IVisitor* visitor)
 {
-	EVisitResult visitResult = visitor->Visit(this);
+	EVisitResult visitResult = visitor->Visit(shared_from_this());
 	
 	//if (visitResult & EVisitResult::AllowVisitContent)
 	//{
@@ -263,7 +264,7 @@ bool CUIControl::OnMouseButtonPressed(MouseButtonEventArgs & e)
 	// Raise event
 	if (m_OnClickCallback)
 	{
-		m_OnClickCallback(this, glm::vec2(e.X, e.Y) - GetTranslationAbs());
+		m_OnClickCallback(this, glm::vec2(e.X, e.Y) - GetPosition());
 		return true;
 	}
 
@@ -352,7 +353,7 @@ void CUIControl::SetSize(glm::vec2 Size)
 glm::mat4 CUIControl::CalculateLocalTransform() const
 {
 	glm::mat4 localTransform(1.0f);
-	localTransform = glm::translate(localTransform, glm::vec3(m_Translate, 0.0f));
+	localTransform = glm::translate(localTransform, glm::vec3(m_Position, 0.0f));
 	localTransform = glm::rotate(localTransform, m_Rotate.x, glm::vec3(1, 0, 0));
 	localTransform = glm::rotate(localTransform, m_Rotate.y, glm::vec3(0, 1, 0));
 	localTransform = glm::rotate(localTransform, m_Rotate.z, glm::vec3(0, 0, 1));

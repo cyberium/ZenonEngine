@@ -21,6 +21,10 @@ public:
 	void Update(const UpdateEventArgs& e) override;
 
 private:
+	std::shared_ptr<ISceneNodeRTSUnit> GetCurrentTarget();
+
+private:
+	std::shared_ptr<ISceneNodeRTSUnit> m_CurrentTarget;
 	float m_LastAttackTime;
 
 private:

@@ -131,7 +131,7 @@ void CSceneRTS::Initialize()
 		m_UIControlRTSTowersPanel->AddTowerButton("Tower C", "sceneNodesProtos/towerC.znobj", "sceneNodesProtos/towerC.png", 100, *this);
 		m_UIControlRTSTowersPanel->AddTowerButton("Tower E", "sceneNodesProtos/towerE.znobj", "sceneNodesProtos/towerE.png", 100, *this);
 
-		m_UIControlRTSTowersPanel->SetTranslate(glm::vec2(
+		m_UIControlRTSTowersPanel->SetLocalPosition(glm::vec2(
 			(GetRenderWindow().GetWindowWidth() / 2.0f) - (m_UIControlRTSTowersPanel->GetSize().x / 2.0f),
 			 GetRenderWindow().GetWindowHeight() - m_UIControlRTSTowersPanel->GetSize().y)
 		);
@@ -159,7 +159,10 @@ void CSceneRTS::OnUpdate(UpdateEventArgs & e)
 	__super::OnUpdate(e);
 
 	if (m_RTSCurrentWave >= m_RTSWaves.size())
+	{
+		m_RTSCurrentWave = 0;
 		return;
+	}
 
 	const auto& currentWave = m_RTSWaves.at(m_RTSCurrentWave);
 

@@ -119,7 +119,7 @@ ZN_INTERFACE ZN_API ISceneNodeRTSBullet
 	virtual ~ISceneNodeRTSBullet() {}
 
 	virtual void SetTarget(std::shared_ptr<ISceneNodeRTSUnit> Target) = 0;
-	virtual std::shared_ptr<ISceneNode> GetTarget() const = 0;
+	virtual std::shared_ptr<ISceneNodeRTSUnit> GetTarget() const = 0;
 	virtual void SetDamage(float Damage) = 0;
 	virtual float GetDamage() const = 0;
 	virtual void SetSpeed(float Speed) = 0;

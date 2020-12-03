@@ -63,12 +63,12 @@ std::shared_ptr<IRenderPassPipelined> CRTSGround_Pass::ConfigurePipeline(std::sh
 //
 // IVisitor
 //
-EVisitResult CRTSGround_Pass::Visit(const ISceneNode * SceneNode)
+EVisitResult CRTSGround_Pass::Visit(const std::shared_ptr<ISceneNode>& SceneNode)
 {
 	if (SceneNode->GetClass() != cSceneNodeRTSGround)
 		return EVisitResult::AllowVisitChilds;
 
-	const ISceneNodeRTSGround* rtsGround = dynamic_cast<const ISceneNodeRTSGround*>(SceneNode);
+	auto rtsGround = std::dynamic_pointer_cast<ISceneNodeRTSGround>(SceneNode);
 	_ASSERT(rtsGround != nullptr);
 
 	std::unordered_map<const IModel*, std::vector<PerObject>> modelPriorMap;

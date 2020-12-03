@@ -71,7 +71,7 @@ std::shared_ptr<IRenderPassPipelined> CParticlesPass::ConfigurePipeline(std::sha
 //
 // IVisitor
 //
-EVisitResult CParticlesPass::Visit(const ISceneNode * SceneNode)
+EVisitResult CParticlesPass::Visit(const std::shared_ptr<ISceneNode>& SceneNode)
 {
 	if (false == SceneNode->IsComponentExistsT<IParticleComponent3D>())
 		return EVisitResult::AllowVisitChilds;
@@ -79,17 +79,17 @@ EVisitResult CParticlesPass::Visit(const ISceneNode * SceneNode)
 	return EVisitResult::AllowAll;
 }
 
-EVisitResult CParticlesPass::Visit(const IModel * Model)
+EVisitResult CParticlesPass::Visit(const std::shared_ptr<IModel>& Model)
 {
 	return EVisitResult::Block;
 }
 
-EVisitResult CParticlesPass::Visit(const IGeometry * Geometry, const IMaterial* Material, SGeometryDrawArgs GeometryDrawArgs)
+EVisitResult CParticlesPass::Visit(const std::shared_ptr<IGeometry>& Geometry, const std::shared_ptr<IMaterial>& Material, SGeometryDrawArgs GeometryDrawArgs)
 {
 	return EVisitResult::Block;
 }
 
-EVisitResult CParticlesPass::Visit(const IParticleSystem * ParticlesSystem)
+EVisitResult CParticlesPass::Visit(const std::shared_ptr<IParticleSystem>& ParticlesSystem)
 {
 	const auto& partilces = ParticlesSystem->GetGPUParticles();
 	if (partilces.empty())

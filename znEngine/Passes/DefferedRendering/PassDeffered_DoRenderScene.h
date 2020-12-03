@@ -26,8 +26,8 @@ public:
 	std::shared_ptr<IRenderPassPipelined> ConfigurePipeline(std::shared_ptr<IRenderTarget> RenderTarget) override;
 
 	// IVisitor
-	void DoRenderSceneNode(const ISceneNode* SceneNode);
-	void DoRenderGeometry(const IGeometry* Geometry, const IMaterial* Material, SGeometryDrawArgs GeometryDrawArgs);
+	void DoRenderSceneNode(const std::shared_ptr<const ISceneNode>& SceneNode);
+	void DoRenderGeometry(const std::shared_ptr<const IGeometry>& Geometry, const std::shared_ptr<const IMaterial>& Material, SGeometryDrawArgs GeometryDrawArgs);
 
 private:
 	std::shared_ptr<IRenderTarget> CreateGBuffer(std::shared_ptr<IRenderTarget> RenderTarget);

@@ -13,7 +13,7 @@ public:
 
 	// ISceneNodeRTSBullet
 	void SetTarget(std::shared_ptr<ISceneNodeRTSUnit> Target) override;
-	std::shared_ptr<ISceneNode> GetTarget() const override;
+	std::shared_ptr<ISceneNodeRTSUnit> GetTarget() const override;
 	void SetDamage(float Damage) override;
 	float GetDamage() const override;
 	void SetSpeed(float Speed) override;
@@ -24,10 +24,11 @@ public:
 	void Update(const UpdateEventArgs& e) override;
 
 private:
-	glm::vec3 GetDestinationPoint() const;
+	glm::vec3 GetDestinationPoint();
 
 private:
-	std::shared_ptr<ISceneNodeRTSUnit> m_Target;
+	std::weak_ptr<ISceneNodeRTSUnit> m_Target;
+	glm::vec3 m_TargetLastPosition;
 	float m_Damage;
 	float m_Speed;
 };

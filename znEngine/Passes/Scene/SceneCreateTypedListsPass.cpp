@@ -79,7 +79,7 @@ void CSceneCreateTypedListsPass::Render(RenderEventArgs & e)
 //
 // IVisitor
 //
-EVisitResult CSceneCreateTypedListsPass::Visit(const ISceneNode * SceneNode)
+EVisitResult CSceneCreateTypedListsPass::Visit(const std::shared_ptr<ISceneNode>& SceneNode)
 {
 	_ASSERT(SceneNode != nullptr);
 
@@ -97,7 +97,7 @@ EVisitResult CSceneCreateTypedListsPass::Visit(const ISceneNode * SceneNode)
 	return EVisitResult::AllowAll;
 }
 
-EVisitResult CSceneCreateTypedListsPass::Visit(const IModel * Model)
+EVisitResult CSceneCreateTypedListsPass::Visit(const std::shared_ptr<IModel>& Model)
 {
 	_ASSERT(m_LastSceneNode != nullptr);
 	_ASSERT(m_LastSceneNode->GetClass() >= 0);
@@ -107,7 +107,7 @@ EVisitResult CSceneCreateTypedListsPass::Visit(const IModel * Model)
 	return EVisitResult::AllowAll;
 }
 
-EVisitResult CSceneCreateTypedListsPass::Visit(const IGeometry * Geometry, const IMaterial * Material, SGeometryDrawArgs GeometryDrawArgs)
+EVisitResult CSceneCreateTypedListsPass::Visit(const std::shared_ptr<IGeometry>& Geometry, const std::shared_ptr<IMaterial>& Material, SGeometryDrawArgs GeometryDrawArgs)
 {
 	_ASSERT(m_LastSceneNode != nullptr);
 	_ASSERT(m_LastSceneNode->GetClass() > 0);
@@ -117,7 +117,7 @@ EVisitResult CSceneCreateTypedListsPass::Visit(const IGeometry * Geometry, const
 	return EVisitResult::AllowAll;
 }
 
-EVisitResult CSceneCreateTypedListsPass::Visit(const ILight3D * light)
+EVisitResult CSceneCreateTypedListsPass::Visit(const std::shared_ptr<ILight3D>& light)
 {
 	_ASSERT(m_LastSceneNode != nullptr);
 	_ASSERT(m_LastSceneNode->GetClass() > 0);
@@ -127,7 +127,7 @@ EVisitResult CSceneCreateTypedListsPass::Visit(const ILight3D * light)
 	return EVisitResult::AllowAll;
 }
 
-EVisitResult CSceneCreateTypedListsPass::Visit(const IParticleSystem * ParticleSystem)
+EVisitResult CSceneCreateTypedListsPass::Visit(const std::shared_ptr<IParticleSystem>& ParticleSystem)
 {
 	_ASSERT(m_LastSceneNode != nullptr);
 	_ASSERT(m_LastSceneNode->GetClass() > 0);

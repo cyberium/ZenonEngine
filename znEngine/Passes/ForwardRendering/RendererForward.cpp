@@ -135,7 +135,7 @@ void CRendererForward::Initialize(std::shared_ptr<IRenderTarget> OutputRenderTar
 	//hdrPass->ConfigurePipeline(OutputRenderTarget);
 	//Add3DPass(hdrPass);
 
-	Add3DPass(MakeShared(CPassPostprocess_ApplyTexture, m_RenderDevice, gaussVertical->GetOutputTexture())->ConfigurePipeline(OutputRenderTarget));
+	Add3DPass(MakeShared(CPassPostprocess_ApplyTexture, m_RenderDevice, accumTextures->GetOutputTexture())->ConfigurePipeline(OutputRenderTarget));
 
 #endif
 
@@ -166,8 +166,8 @@ void CRendererForward::DoUpdateLights()
 	std::vector<SLightVS> lightsVS;
 	for (const auto& light : m_SceneCreateTypelessListPass->GetLightList())
 	{
-		const ISceneNode* lightOwner = light.SceneNode;
-		const SLight& lightStruct = light.Light->GetLightStruct();
+		auto lightOwner = light.SceneNode;
+		const auto& lightStruct = light.Light->GetLightStruct();
 
 		SLightVS lightVS;
 		lightVS.Light = lightStruct;

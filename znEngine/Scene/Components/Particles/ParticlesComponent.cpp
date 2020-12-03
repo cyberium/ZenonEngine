@@ -13,7 +13,7 @@ CParticlesComponent::CParticlesComponent(const ISceneNode & SceneNode)
 	GetProperties()->SetName("ParticlesComponent");
 
 	m_ParticleSystem = MakeShared(CParticleSystem, GetOwnerNode());
-	m_ParticleSystem->SetTexture(GetBaseManager().GetManager<IznTexturesFactory>()->LoadTexture2D("Particles/smoke_05.png"));
+	m_ParticleSystem->SetTexture(GetBaseManager().GetManager<IznTexturesFactory>()->LoadTexture2D("star_09.png"));
 }
 
 CParticlesComponent::~CParticlesComponent()
@@ -46,5 +46,5 @@ void CParticlesComponent::Update(const UpdateEventArgs & e)
 void CParticlesComponent::Accept(IVisitor * visitor)
 {
 	_ASSERT(m_ParticleSystem);
-	visitor->Visit(m_ParticleSystem.get());
+	visitor->Visit(m_ParticleSystem);
 }

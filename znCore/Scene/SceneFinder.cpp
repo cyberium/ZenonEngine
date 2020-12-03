@@ -68,15 +68,20 @@ namespace
 		}
 	}
 
-	void FillNearestSceneNodesMap(const std::shared_ptr<ISceneNode>& Parent, glm::vec3 Position, float Distance, std::map<float, std::shared_ptr<ISceneNode>> * NearestSceneNodes)
+	void FillNearestSceneNodesMapRecursive(const std::shared_ptr<ISceneNode>& Parent, glm::vec3 Position, float Distance, std::map<float, std::shared_ptr<ISceneNode>> * NearestSceneNodes)
 	{
 		const auto& childs = Parent->GetChilds();
 		for (const auto& it : childs)
 		{
-			FillNearestSceneNodesMap(it, Position, Distance, NearestSceneNodes);
+			FillNearestSceneNodesMapRecursive(it, Position, Distance, NearestSceneNodes);
 
-			glm::vec3 nodeTranslate = it->GetTranslation();
-			nodeTranslate = (Parent->GetWorldTransfom() * glm::vec4(nodeTranslate, 1.0f)).xyz;
+			glm::vec3 nodeTranslate = it->GetTranslationAbs();
+			if (auto colliderComponent = it->GetComponentT<IColliderComponent3D>())
+			{
+				const auto& worldBounds = colliderComponent->GetWorldBounds();
+				if (false == worldBounds.IsInfinite())
+					nodeTranslate = worldBounds.getCenter();
+			}
 
 			const float distanceToPoint = glm::length(Position - nodeTranslate);
 			if (distanceToPoint >= Distance)
@@ -84,17 +89,22 @@ namespace
 			NearestSceneNodes->insert(std::make_pair(distanceToPoint, it));
 		}
 	}
-	void FillNearestSceneNodesMap2D(const std::shared_ptr<ISceneNode>& Parent, glm::vec3 Position, float Distance, std::map<float, std::shared_ptr<ISceneNode>> * NearestSceneNodes)
+	void FillNearestSceneNodesMap2DRecursive(const std::shared_ptr<ISceneNode>& Parent, glm::vec3 Position, float Distance, std::map<float, std::shared_ptr<ISceneNode>> * NearestSceneNodes)
 	{
 		const auto& childs = Parent->GetChilds();
 		for (const auto& it : childs)
 		{
-			FillNearestSceneNodesMap(it, Position, Distance, NearestSceneNodes);
+			FillNearestSceneNodesMap2DRecursive(it, Position, Distance, NearestSceneNodes);
 
-			glm::vec3 nodeTranslate = it->GetTranslation();
-			nodeTranslate = (Parent->GetWorldTransfom() * glm::vec4(nodeTranslate, 1.0f)).xyz;
+			glm::vec3 nodeTranslate = it->GetTranslationAbs();
+			if (auto colliderComponent = it->GetComponentT<IColliderComponent3D>())
+			{
+				const auto& worldBounds = colliderComponent->GetWorldBounds();
+				if (false == worldBounds.IsInfinite())
+					nodeTranslate = worldBounds.getCenter();
+			}
 
-			const float distanceToPoint = glm::length(glm::vec2(Position.x, Position.z) - glm::vec2(nodeTranslate.x, nodeTranslate.z));
+			const float distanceToPoint = glm::length(Position.xz - nodeTranslate.xz);
 			if (distanceToPoint >= Distance)
 				continue;
 			NearestSceneNodes->insert(std::make_pair(distanceToPoint, it));
@@ -135,7 +145,7 @@ CSceneFinder::~CSceneFinder()
 std::map<float, std::shared_ptr<ISceneNode>> CSceneFinder::FindNearestNodes(glm::vec3 Position, float Distance, std::function<bool(std::shared_ptr<ISceneNode>)> Filter, std::shared_ptr<ISceneNode> RootForFinder) const
 {
 	std::map<float, std::shared_ptr<ISceneNode>> intersectedNodes;
-	FillNearestSceneNodesMap2D(RootForFinder ? RootForFinder : m_Scene.GetRootSceneNode(), Position, Distance, &intersectedNodes);
+	FillNearestSceneNodesMap2DRecursive(RootForFinder ? RootForFinder : m_Scene.GetRootSceneNode(), Position, Distance, &intersectedNodes);
 	//FillNearestSceneNodesMap(RootForFinder ? RootForFinder : m_Scene.GetRootSceneNode(), Position, Distance, &intersectedNodes);
 
 	if (Filter)

@@ -37,9 +37,9 @@ std::shared_ptr<IRenderPassPipelined> CUIControlPass::ConfigurePipeline(std::sha
 //
 // IVisitor
 //
-EVisitResult CUIControlPass::Visit(const IUIControl * node)
+EVisitResult CUIControlPass::Visit(const std::shared_ptr<IUIControl>& node)
 {
-	if (const CUIControlCommon* textNode = dynamic_cast<const CUIControlCommon*>(node))
+	if (auto textNode = std::dynamic_pointer_cast<const CUIControlCommon>(node))
 	{
 		for (const auto& subGeom : textNode->GetSubgeometries())
 		{
@@ -60,7 +60,7 @@ EVisitResult CUIControlPass::Visit(const IUIControl * node)
 	return EVisitResult::AllowVisitChilds;
 }
 
-EVisitResult CUIControlPass::Visit(const IModel * Model)
+EVisitResult CUIControlPass::Visit(const std::shared_ptr<IModel>& Model)
 {
 	//return __super::Visit(Model);
 	return EVisitResult::Block;

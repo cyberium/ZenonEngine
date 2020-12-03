@@ -51,21 +51,21 @@ std::shared_ptr<IRenderPassPipelined> CDebugPass::ConfigurePipeline(std::shared_
 //
 // IVisitor
 //
-EVisitResult CDebugPass::Visit(const ISceneNode * SceneNode)
+EVisitResult CDebugPass::Visit(const std::shared_ptr<ISceneNode>& SceneNode)
 {
 	if (SceneNode->GetClass() != cSceneNode3D && SceneNode->GetClass() != cSceneNodeRTSPoint && SceneNode->GetClass() != cSceneNodeRTSBullet)
 		return EVisitResult::AllowVisitChilds;
 	return Base3DPass::Visit(SceneNode);
 }
 
-EVisitResult CDebugPass::Visit(const IModel * Model)
+EVisitResult CDebugPass::Visit(const std::shared_ptr<IModel>& Model)
 {
 	return Base3DPass::Visit(Model);
 }
 
-EVisitResult CDebugPass::Visit(const IGeometry * Geometry, const IMaterial* Material, SGeometryDrawArgs GeometryDrawArgs)
+EVisitResult CDebugPass::Visit(const std::shared_ptr<IGeometry>& Geometry, const std::shared_ptr<IMaterial>& Material, SGeometryDrawArgs GeometryDrawArgs)
 {
-	const MaterialDebug* objMaterial = dynamic_cast<const MaterialDebug*>(Material);
+	auto objMaterial = std::dynamic_pointer_cast<MaterialDebug>(Material);
 	if (objMaterial == nullptr)
 		return EVisitResult::Block;
 

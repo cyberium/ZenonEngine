@@ -94,25 +94,59 @@ void CSceneNodeRTSTower::Update(const UpdateEventArgs & e)
 	if (m_LastAttackTime + m_AttackInterval > e.TotalTime)
 		return;
 
-	glm::vec3 sourcePoint = GetParent()->GetWorldTransfom() * glm::vec4(GetTranslation(), 1.0f);
-	auto nodes = GetScene().GetFinder().FindNearestNodes(sourcePoint, GetAttackRange(), [](const std::shared_ptr<ISceneNode>& Node) -> bool {
+	auto currentTarget = GetCurrentTarget();
+	if (currentTarget == nullptr)
+		return;
+
+	auto bullet = GetScene().CreateSceneNodeCast<ISceneNodeRTSBullet>(cSceneNodeRTSBullet);
+	bullet->SetTranslate(GetTranslationAbs());
+	bullet->SetTarget(currentTarget);
+
+	m_LastAttackTime = e.TotalTime;
+}
+
+std::shared_ptr<ISceneNodeRTSUnit> CSceneNodeRTSTower::GetCurrentTarget()
+{
+	if (m_CurrentTarget != nullptr)
+	{
+		glm::vec3 nodeTranslate = m_CurrentTarget->GetTranslationAbs();
+		if (auto colliderComponent = m_CurrentTarget->GetComponentT<IColliderComponent3D>())
+		{
+			const auto& worldBounds = colliderComponent->GetWorldBounds();
+			if (false == worldBounds.IsInfinite())
+				nodeTranslate = worldBounds.getCenter();
+		}
+
+		// Dead targets - is not targets
+		if (m_CurrentTarget->IsDead())
+			m_CurrentTarget = nullptr;
+
+		// Target out of attack range
+		else if (glm::length(GetTranslationAbs().xz - nodeTranslate.xz) > GetAttackRange())
+			m_CurrentTarget = nullptr;
+	}
+
+	if (m_CurrentTarget != nullptr)
+		return m_CurrentTarget;
+
+	// Find nodes in attack range
+	auto nodes = GetScene().GetFinder().FindNearestNodes(GetTranslationAbs(), GetAttackRange(), [](const std::shared_ptr<ISceneNode>& Node) -> bool {
 		if (Node->GetClass() == cSceneNodeRTSUnit)
 			if (auto rtsUnit = std::dynamic_pointer_cast<ISceneNodeRTSUnit>(Node))
 				return false == rtsUnit->IsDead();
 		return false;
 	});
-	if (nodes.empty())
-		return;
 
-	auto firstNodeIt = nodes.begin();
-	auto nearestNode = firstNodeIt->second;
-	_ASSERT(firstNodeIt->first < GetAttackRange());
+	// First node - is our result
+	if (false == nodes.empty())
+	{
+		auto firstNodeIt = nodes.begin();
+		_ASSERT(firstNodeIt->first < GetAttackRange());
 
-	auto bullet = GetScene().CreateSceneNodeCast<ISceneNodeRTSBullet>(cSceneNodeRTSBullet);
-	bullet->SetTranslate(GetParent()->GetWorldTransfom() * glm::vec4(GetTranslation(), 1.0f));
-	bullet->SetTarget(std::dynamic_pointer_cast<ISceneNodeRTSUnit>(nearestNode));
+		m_CurrentTarget = std::dynamic_pointer_cast<ISceneNodeRTSUnit>(firstNodeIt->second);
+	}
 
-	m_LastAttackTime = e.TotalTime;
+	return m_CurrentTarget;
 }
 
 

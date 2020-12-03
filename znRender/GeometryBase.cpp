@@ -51,9 +51,9 @@ PrimitiveTopology GeometryBase::GetPrimitiveTopology() const
 	return m_PrimitiveTopology;
 }
 
-void GeometryBase::Accept(IVisitor * visitor, const IMaterial* Material, SGeometryDrawArgs GeometryDrawArgs)
+void GeometryBase::Accept(IVisitor * visitor, const std::shared_ptr<IMaterial>& Material, SGeometryDrawArgs GeometryDrawArgs)
 {
-	visitor->Visit(this, Material, GeometryDrawArgs);
+	visitor->Visit(shared_from_this(), Material, GeometryDrawArgs);
 }
 
 

@@ -52,7 +52,7 @@ std::shared_ptr<IRenderPassPipelined> CDrawBonesPass::ConfigurePipeline(std::sha
 //
 // IVisitor
 //
-EVisitResult CDrawBonesPass::Visit(const ISceneNode * CSceneNode)
+EVisitResult CDrawBonesPass::Visit(const std::shared_ptr<ISceneNode>& CSceneNode)
 {
 	std::shared_ptr<IModelsComponent3D> modelsComponent = CSceneNode->GetComponentT<IModelsComponent3D>();
 	if (modelsComponent == nullptr)
@@ -76,12 +76,12 @@ EVisitResult CDrawBonesPass::Visit(const ISceneNode * CSceneNode)
 	return EVisitResult::AllowAll;
 }
 
-EVisitResult CDrawBonesPass::Visit(const IModel * Model)
+EVisitResult CDrawBonesPass::Visit(const std::shared_ptr<IModel>& Model)
 {
 	return EVisitResult::Block;
 }
 
-EVisitResult CDrawBonesPass::Visit(const IGeometry * Geometry, const IMaterial * Material, SGeometryDrawArgs GeometryDrawArgs)
+EVisitResult CDrawBonesPass::Visit(const std::shared_ptr<IGeometry>& Geometry, const std::shared_ptr<IMaterial>& Material, SGeometryDrawArgs GeometryDrawArgs)
 {
 	return EVisitResult::Block;
 }

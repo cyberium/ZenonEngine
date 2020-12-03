@@ -166,7 +166,7 @@ void CLightComponent3D::Accept(IVisitor* visitor)
 {
 	if (GetType() == ELightType::Unknown)
 		return;
-	visitor->Visit((const ILight3D*) this);
+	visitor->Visit(std::dynamic_pointer_cast<ILight3D>(shared_from_this()));
 }
 
 

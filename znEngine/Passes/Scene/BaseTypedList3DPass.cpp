@@ -63,7 +63,7 @@ void CBaseList3DPass::Render(RenderEventArgs & e)
 //
 // IVisitor
 //
-void CBaseList3DPass::DoRenderSceneNode(const ISceneNode * SceneNode)
+void CBaseList3DPass::DoRenderSceneNode(const std::shared_ptr<const ISceneNode>& SceneNode)
 {
 	m_PerObjectConstantBuffer->Set(PerObject(SceneNode->GetWorldTransfom()));
 
@@ -77,12 +77,12 @@ void CBaseList3DPass::DoRenderSceneNode(const ISceneNode * SceneNode)
 	}
 }
 
-void CBaseList3DPass::DoRenderModel(const IModel * Model)
+void CBaseList3DPass::DoRenderModel(const std::shared_ptr<const IModel>& Model)
 {
 	Model->Render();
 }
 
-void CBaseList3DPass::DoRenderGeometry(const IGeometry * Geometry, const IMaterial * Material, SGeometryDrawArgs GeometryDrawArgs)
+void CBaseList3DPass::DoRenderGeometry(const std::shared_ptr<const IGeometry>& Geometry, const std::shared_ptr<const IMaterial>& Material, SGeometryDrawArgs GeometryDrawArgs)
 {
 	Material->Bind(GetRenderEventArgs().PipelineState->GetPixelShaderPtr());
 	Geometry->Render(GetRenderEventArgs().PipelineState->GetVertexShaderPtr(), GeometryDrawArgs);

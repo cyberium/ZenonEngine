@@ -126,7 +126,7 @@ bool ModelProxie::Render() const
 
 void ModelProxie::Accept(IVisitor* visitor)
 {
-	EVisitResult visitResult = visitor->Visit(this);
+	EVisitResult visitResult = visitor->Visit(shared_from_this());
 
 	if (visitResult & EVisitResult::AllowVisitContent)
 	{
@@ -137,7 +137,7 @@ void ModelProxie::Accept(IVisitor* visitor)
 	{
 		for (const auto& connection : GetConnections())
 		{
-			connection.Geometry->Accept(visitor, connection.Material.get(), connection.GeometryDrawArgs);
+			connection.Geometry->Accept(visitor, connection.Material, connection.GeometryDrawArgs);
 		}
 	}
 }

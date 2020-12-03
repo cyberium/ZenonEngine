@@ -36,7 +36,7 @@ std::shared_ptr<IRenderPassPipelined> Base3DPass::ConfigurePipeline(std::shared_
 //
 // IVisitor
 //
-EVisitResult Base3DPass::Visit(const ISceneNode* SceneNode)
+EVisitResult Base3DPass::Visit(const std::shared_ptr<ISceneNode>& SceneNode)
 {
 	if (false == SceneNode->IsEnabled())
 		return EVisitResult::Block;
@@ -45,13 +45,13 @@ EVisitResult Base3DPass::Visit(const ISceneNode* SceneNode)
 	return EVisitResult::AllowAll;
 }
 
-EVisitResult Base3DPass::Visit(const IModel * Model)
+EVisitResult Base3DPass::Visit(const std::shared_ptr<IModel>& Model)
 {
 	Model->Render();
 	return EVisitResult::AllowAll;
 }
 
-EVisitResult Base3DPass::Visit(const IGeometry* Geometry, const IMaterial* Material, SGeometryDrawArgs GeometryDrawArgs)
+EVisitResult Base3DPass::Visit(const std::shared_ptr<IGeometry>& Geometry, const std::shared_ptr<IMaterial>& Material, SGeometryDrawArgs GeometryDrawArgs)
 {
 	Material->Bind(GetRenderEventArgs().PipelineState->GetPixelShaderPtr());
 	Geometry->Render(GetRenderEventArgs().PipelineState->GetVertexShaderPtr(), GeometryDrawArgs);

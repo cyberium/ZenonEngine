@@ -23,17 +23,21 @@ public:
 	virtual std::shared_ptr<IUIControl>             GetChild(std::string Name) const override;
 
 	// Actions & Properties
-	virtual std::shared_ptr<IPropertiesGroup>       GetProperties() const final;
-	virtual IScene&                                 GetScene() const final;
+	std::shared_ptr<IPropertiesGroup>               GetProperties() const final;
+	IScene&                                         GetScene() const final;
 
-	void											SetTranslate(const glm::vec2& _translate) override;
-	const glm::vec2&								GetTranslation() const override;
-	glm::vec2										GetTranslationAbs() const override;
-	void											SetRotation(const glm::vec3& _rotate) override;
-	const glm::vec3&								GetRotation() const override;
+	void											SetPosition(glm::vec2 Position) override;
+	glm::vec2										GetPosition() const override;
+	void											SetLocalPosition(glm::vec2 Position) override;
+	glm::vec2										GetLocalPosition() const override;
+
+	void											SetRotation(glm::vec3 Rotation) override;
+	glm::vec3								        GetRotation() const override;
+
 	void											SetScale(const glm::vec2& _scale) override;
 	const glm::vec2&								GetScale() const override;
 	glm::vec2										GetScaleAbs() const override;
+
 	virtual glm::mat4								GetLocalTransform() const override;
 	virtual glm::mat4								GetWorldTransfom() const override;
 	virtual glm::mat4								GetParentWorldTransform() const;
@@ -91,7 +95,7 @@ private:
 	IScene&                                         m_Scene;
 
 private:
-	glm::vec2										m_Translate;
+	glm::vec2										m_Position;
 	glm::vec3										m_Rotate;
 	glm::vec2										m_Scale;
 	glm::vec2                                       m_Size;

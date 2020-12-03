@@ -19,7 +19,7 @@ public:
 	void                 SetPrimitiveTopology(PrimitiveTopology Topology) override;
 	PrimitiveTopology    GetPrimitiveTopology() const override;
 
-	virtual void         Accept(IVisitor* visitor, const IMaterial* Material, SGeometryDrawArgs GeometryDrawArgs = SGeometryDrawArgs()) override;
+	virtual void         Accept(IVisitor* visitor, const std::shared_ptr<IMaterial>& Material, SGeometryDrawArgs GeometryDrawArgs = SGeometryDrawArgs()) override;
 
 	// IObjectLoadSave
 	void                 Load(const std::shared_ptr<IByteBuffer>& ByteBuffer) override;

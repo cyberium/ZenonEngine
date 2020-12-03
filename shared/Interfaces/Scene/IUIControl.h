@@ -32,14 +32,20 @@ ZN_INTERFACE ZN_API IUIControl
 	virtual std::shared_ptr<IPropertiesGroup>       GetProperties() const = 0;
 	virtual IScene&                                 GetScene() const = 0;
 
-	virtual void                                    SetTranslate(const glm::vec2& _translate) = 0;
-	virtual const glm::vec2&                        GetTranslation() const = 0;
-	virtual glm::vec2                               GetTranslationAbs() const = 0;
-	virtual void                                    SetRotation(const glm::vec3& _rotate) = 0;
-	virtual const glm::vec3&                        GetRotation() const = 0;
+	virtual void                                    SetPosition(glm::vec2 Position) = 0;
+	virtual glm::vec2                               GetPosition() const = 0;
+
+	virtual void                                    SetLocalPosition(glm::vec2 Position) = 0;
+	virtual glm::vec2                               GetLocalPosition() const = 0;
+
+	virtual void                                    SetRotation(glm::vec3 Rotation) = 0;
+	virtual glm::vec3                               GetRotation() const = 0;
+
 	virtual void                                    SetScale(const glm::vec2& _scale) = 0;
 	virtual const glm::vec2&                        GetScale() const = 0;
+
 	virtual glm::vec2                               GetScaleAbs() const = 0;
+
 	virtual glm::mat4                               GetLocalTransform() const = 0;
 	virtual glm::mat4                               GetWorldTransfom() const = 0;
 	virtual glm::mat4								GetParentWorldTransform() const = 0;

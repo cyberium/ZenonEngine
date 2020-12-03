@@ -53,27 +53,27 @@ ZN_INTERFACE ZN_API IRenderPassCreateTypelessList
 {
 		struct ZN_API SNodeElement
 	{
-		SNodeElement(const ISceneNode* SceneNode)
+		SNodeElement(const std::shared_ptr<const ISceneNode>& SceneNode)
 			: SceneNode(SceneNode)
 		{}
 
-		const ISceneNode* SceneNode;
+		const std::shared_ptr<const ISceneNode> SceneNode;
 	};
 
 	struct ZN_API SModelElement
 	{
-		SModelElement(const ISceneNode* SceneNode, const IModel* Model)
+		SModelElement(const std::shared_ptr<const ISceneNode>& SceneNode, const std::shared_ptr<const IModel>& Model)
 			: SceneNode(SceneNode)
 			, Model(Model)
 		{}
 
-		const ISceneNode* SceneNode;
-		const IModel* Model;
+		const std::shared_ptr<const ISceneNode> SceneNode;
+		const std::shared_ptr<const IModel> Model;
 	};
 
 	struct ZN_API SGeometryElement
 	{
-		SGeometryElement(const ISceneNode* Node, const IModel* Model, const IGeometry* Geometry, const IMaterial* Material, const SGeometryDrawArgs GeometryDrawArgs)
+		SGeometryElement(const std::shared_ptr<const ISceneNode>& Node, const std::shared_ptr<const IModel>& Model, const std::shared_ptr<const IGeometry>& Geometry, const std::shared_ptr<const IMaterial>& Material, const SGeometryDrawArgs GeometryDrawArgs)
 			: Node(Node)
 			, Model(Model)
 			, Geometry(Geometry)
@@ -81,33 +81,33 @@ ZN_INTERFACE ZN_API IRenderPassCreateTypelessList
 			, GeometryDrawArgs(GeometryDrawArgs)
 		{}
 
-		const ISceneNode* Node;
-		const IModel* Model;
-		const IGeometry* Geometry;
-		const IMaterial* Material;
+		const std::shared_ptr<const ISceneNode> Node;
+		const std::shared_ptr<const IModel> Model;
+		const std::shared_ptr<const IGeometry> Geometry;
+		const std::shared_ptr<const IMaterial> Material;
 		const SGeometryDrawArgs GeometryDrawArgs;
 	};
 
 	struct ZN_API SLightElement
 	{
-		SLightElement(const ISceneNode* SceneNode, const ILight3D* Light)
+		SLightElement(const std::shared_ptr<const ISceneNode>& SceneNode, const std::shared_ptr<const ILight3D>& Light)
 			: SceneNode(SceneNode)
 			, Light(Light)
 		{}
 
-		const ISceneNode* SceneNode;
-		const ILight3D* Light;
+		const std::shared_ptr<const ISceneNode> SceneNode;
+		const std::shared_ptr<const ILight3D> Light;
 	};
 
 	struct ZN_API SParticleSystemElement
 	{
-		SParticleSystemElement(const ISceneNode* SceneNode, const IParticleSystem* ParticleSystem)
+		SParticleSystemElement(const std::shared_ptr<const ISceneNode>& SceneNode, const std::shared_ptr<IParticleSystem>& ParticleSystem)
 			: SceneNode(SceneNode)
 			, ParticleSystem(ParticleSystem)
 		{}
 
-		const ISceneNode* SceneNode;
-		const IParticleSystem* ParticleSystem;
+		const std::shared_ptr<const ISceneNode> SceneNode;
+		const std::shared_ptr<const IParticleSystem> ParticleSystem;
 	};
 
 	virtual ~IRenderPassCreateTypelessList() {}

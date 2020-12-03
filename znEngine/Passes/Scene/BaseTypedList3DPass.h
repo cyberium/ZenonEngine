@@ -15,9 +15,9 @@ public:
 	void Render(RenderEventArgs& e);
 
 	// IVisitor
-	virtual void DoRenderSceneNode(const ISceneNode* SceneNode);
-	virtual void DoRenderModel(const IModel* Model);
-	virtual void DoRenderGeometry(const IGeometry* Geometry, const IMaterial* Material, SGeometryDrawArgs GeometryDrawArgs);
+	virtual void DoRenderSceneNode(const std::shared_ptr<const ISceneNode>& SceneNode);
+	virtual void DoRenderModel(const std::shared_ptr<const IModel>& Model);
+	virtual void DoRenderGeometry(const std::shared_ptr<const IGeometry>& Geometry, const std::shared_ptr<const IMaterial>& Material, SGeometryDrawArgs GeometryDrawArgs);
 
 protected:
 	const std::shared_ptr<CSceneCreateTypedListsPass>& GetSceneNodeListPass() const;

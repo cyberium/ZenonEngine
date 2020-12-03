@@ -56,9 +56,9 @@ std::shared_ptr<IRenderPassPipelined> CUIFontPass::ConfigurePipeline(std::shared
 //
 // IVisitor
 //
-EVisitResult CUIFontPass::Visit(const IUIControl * node)
+EVisitResult CUIFontPass::Visit(const std::shared_ptr<IUIControl>& node)
 {
-	const CUIControlText* textNode = dynamic_cast<const CUIControlText*>(node);
+	auto textNode = std::dynamic_pointer_cast<CUIControlText>(node);
 	if (textNode == nullptr)
 		return EVisitResult::AllowVisitChilds;
 

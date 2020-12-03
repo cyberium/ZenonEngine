@@ -85,7 +85,7 @@ void CPassDeffered_RenderUIQuad::BindLightParamsForCurrentIteration(const Render
 	const ICameraComponent3D* camera = e.Camera;
 	_ASSERT(camera != nullptr);
 
-	const ISceneNode* lightOwner = LightResult.SceneNode;
+	auto lightOwner = LightResult.SceneNode;
 
 	SDefferedLightResult lightResult;
 	lightResult.Light = LightResult.LightNode->GetLightStruct();

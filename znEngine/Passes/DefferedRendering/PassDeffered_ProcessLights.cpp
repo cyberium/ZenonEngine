@@ -200,7 +200,7 @@ std::shared_ptr<ITexture> CPassDeffered_ProcessLights::CreateShadowTextureDepthS
 	return GetRenderDevice().GetObjectsFactory().CreateTexture2D(cShadowTextureSize, cShadowTextureSize, 1, depthStencilTextureFormat);
 }
 
-void CPassDeffered_ProcessLights::BindPerFrameParamsForCurrentIteration(const ILight3D * Light)
+void CPassDeffered_ProcessLights::BindPerFrameParamsForCurrentIteration(const std::shared_ptr<const ILight3D>& Light)
 {
 	const auto& viewport = m_ShadowPipeline->GetRenderTarget()->GetViewport();
 
@@ -213,7 +213,7 @@ void CPassDeffered_ProcessLights::BindPerFrameParamsForCurrentIteration(const IL
 	m_PerFrameShaderParameter->Bind();
 }
 
-void CPassDeffered_ProcessLights::BindPerObjectParamsForCurrentIteration(const ISceneNode * SceneNode)
+void CPassDeffered_ProcessLights::BindPerObjectParamsForCurrentIteration(const std::shared_ptr<const ISceneNode>& SceneNode)
 {
 	m_PerObjectConstantBuffer->Set(PerObject(SceneNode->GetWorldTransfom()));
 	m_PerObjectShaderParameter->Bind();

@@ -74,7 +74,7 @@ std::shared_ptr<IRenderPassPipelined> CPassForward_DoRenderScene::ConfigurePipel
 //
 // IVisitor
 //
-EVisitResult CPassForward_DoRenderScene::Visit(const ISceneNode * SceneNode)
+EVisitResult CPassForward_DoRenderScene::Visit(const std::shared_ptr<ISceneNode>& SceneNode)
 {
 	// TODO Here?
 	if (auto colliderComponent = SceneNode->GetComponentT<IColliderComponent3D>())
@@ -94,14 +94,14 @@ EVisitResult CPassForward_DoRenderScene::Visit(const ISceneNode * SceneNode)
 	return EVisitResult::AllowVisitChilds;
 }
 
-EVisitResult CPassForward_DoRenderScene::Visit(const IModel * Model)
+EVisitResult CPassForward_DoRenderScene::Visit(const std::shared_ptr<IModel>& Model)
 {
 	return Base3DPass::Visit(Model);
 }
 
-EVisitResult CPassForward_DoRenderScene::Visit(const IGeometry * Geometry, const IMaterial* Material, SGeometryDrawArgs GeometryDrawArgs)
+EVisitResult CPassForward_DoRenderScene::Visit(const std::shared_ptr<IGeometry>& Geometry, const std::shared_ptr<IMaterial>& Material, SGeometryDrawArgs GeometryDrawArgs)
 {
-	const MaterialModel* objMaterial = dynamic_cast<const MaterialModel*>(Material);
+	auto objMaterial = std::dynamic_pointer_cast<MaterialModel>(Material);
 	if (objMaterial == nullptr)
 		return EVisitResult::Block;
 

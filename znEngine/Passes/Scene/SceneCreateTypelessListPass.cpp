@@ -54,7 +54,7 @@ void CSceneCreateTypelessListPass::Render(RenderEventArgs & e)
 //
 // IVisitor
 //
-EVisitResult CSceneCreateTypelessListPass::Visit(const ISceneNode * SceneNode)
+EVisitResult CSceneCreateTypelessListPass::Visit(const std::shared_ptr<ISceneNode>& SceneNode)
 {
 	// TODO Here?
 	if (auto colliderComponent = SceneNode->GetComponentT<IColliderComponent3D>())
@@ -65,7 +65,7 @@ EVisitResult CSceneCreateTypelessListPass::Visit(const ISceneNode * SceneNode)
 	return EVisitResult::AllowAll;
 }
 
-EVisitResult CSceneCreateTypelessListPass::Visit(const IModel * Model)
+EVisitResult CSceneCreateTypelessListPass::Visit(const std::shared_ptr<IModel>& Model)
 {
 	_ASSERT(! m_NodesList.empty());
 	const auto& lastNodeElement = m_NodesList.back();
@@ -74,7 +74,7 @@ EVisitResult CSceneCreateTypelessListPass::Visit(const IModel * Model)
 	return EVisitResult::AllowAll;
 }
 
-EVisitResult CSceneCreateTypelessListPass::Visit(const IGeometry * Geometry, const IMaterial * Material, SGeometryDrawArgs GeometryDrawArgs)
+EVisitResult CSceneCreateTypelessListPass::Visit(const std::shared_ptr<IGeometry>& Geometry, const std::shared_ptr<IMaterial>& Material, SGeometryDrawArgs GeometryDrawArgs)
 {
 	_ASSERT(! m_ModelsList.empty());
 	const auto& lastModelElement = m_ModelsList.back();
@@ -83,7 +83,7 @@ EVisitResult CSceneCreateTypelessListPass::Visit(const IGeometry * Geometry, con
 	return EVisitResult::AllowAll;
 }
 
-EVisitResult CSceneCreateTypelessListPass::Visit(const ILight3D * light)
+EVisitResult CSceneCreateTypelessListPass::Visit(const std::shared_ptr<ILight3D>& light)
 {
 	_ASSERT(! m_NodesList.empty());
 	const auto& lastNodeElement = m_NodesList.back();

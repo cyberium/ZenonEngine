@@ -49,7 +49,7 @@ ZN_INTERFACE ZN_API IGeometry
 	virtual void Render(const IShader* VertexShader, const SGeometryDrawArgs GeometryDrawArgs = SGeometryDrawArgs()) const = 0;
 	
 	// For IVisitor
-	virtual void Accept(IVisitor* visitor, const IMaterial* Material, SGeometryDrawArgs GeometryDrawArgs = SGeometryDrawArgs()) = 0;
+	virtual void Accept(IVisitor* visitor, const std::shared_ptr<IMaterial>& Material, SGeometryDrawArgs GeometryDrawArgs = SGeometryDrawArgs()) = 0;
 };
 
 

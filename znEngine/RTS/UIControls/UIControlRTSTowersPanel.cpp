@@ -54,11 +54,11 @@ void CUIControlRTSTowersPanel::Initialize()
 	// Gold counter
 	{
 		std::shared_ptr<IUIControlCommon> goldPanel = GetScene().CreateUIControlTCast<IUIControlCommon>(shared_from_this());
-		goldPanel->SetTranslate(glm::vec2(-15.0f, -55.0f));
+		goldPanel->SetLocalPosition(glm::vec2(-15.0f, -55.0f));
 
 		{
 			std::shared_ptr<IUIControlText> goldText = GetScene().CreateUIControlTCast<IUIControlText>(goldPanel);
-			goldText->SetTranslate(glm::vec2(10.0f, 8.0f));
+			goldText->SetLocalPosition(glm::vec2(10.0f, 8.0f));
 			goldText->SetFont(GetBaseManager().GetManager<IznFontsManager>()->Add(GetRenderDevice(), "IDB_FONT_CONSOLAS", 20));
 			goldText->SetText("888 $");
 			goldText->SetColor(glm::vec4(0.2f, 0.3f, 0.1f, 1.0f));
@@ -109,7 +109,7 @@ void CUIControlRTSTowersPanel::AddTowerButton(std::string Name, std::string Towe
 	for (size_t i = 0; i < m_TowerButtons.size(); i++)
 	{
 		const auto& towerBtnNode = m_TowerButtons.at(i);
-		towerBtnNode.UIButton->SetTranslate(glm::vec2((towerBtnNode.UIButton->GetSize().x + cDiff) * i, 0.0f));
+		towerBtnNode.UIButton->SetLocalPosition(glm::vec2((towerBtnNode.UIButton->GetSize().x + cDiff) * i, 0.0f));
 	}
 
 	glm::vec2 panelSize = glm::vec2(towerBtnNode->GetSize().x * m_TowerButtons.size(), 85.0f);

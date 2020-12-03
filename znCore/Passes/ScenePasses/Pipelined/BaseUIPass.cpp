@@ -32,19 +32,19 @@ std::shared_ptr<IRenderPassPipelined> BaseUIPass::ConfigurePipeline(std::shared_
 //
 // IVisitor
 //
-EVisitResult BaseUIPass::Visit(const IUIControl* sceneNode)
+EVisitResult BaseUIPass::Visit(const std::shared_ptr<IUIControl>& sceneNode)
 {
 	BindPerObjectData(PerObject(sceneNode->GetWorldTransfom()));
 	return EVisitResult::AllowAll;
 }
 
-EVisitResult BaseUIPass::Visit(const IModel * Model)
+EVisitResult BaseUIPass::Visit(const std::shared_ptr<IModel>& Model)
 {
 	Model->Render();
 	return EVisitResult::AllowAll;
 }
 
-EVisitResult BaseUIPass::Visit(const IGeometry* Geometry, const IMaterial* Material, SGeometryDrawArgs GeometryDrawArgs)
+EVisitResult BaseUIPass::Visit(const std::shared_ptr<IGeometry>& Geometry, const std::shared_ptr<IMaterial>& Material, SGeometryDrawArgs GeometryDrawArgs)
 {
 	Material->Bind(GetRenderEventArgs().PipelineState->GetPixelShaderPtr());
 	Geometry->Render(GetRenderEventArgs().PipelineState->GetVertexShaderPtr(), GeometryDrawArgs);

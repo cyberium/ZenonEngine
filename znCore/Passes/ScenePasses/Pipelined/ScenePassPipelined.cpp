@@ -28,37 +28,37 @@ void ScenePassPipelined::Render(RenderEventArgs& e)
 //
 // IVisitor
 //
-EVisitResult ScenePassPipelined::Visit(const ISceneNode* node)
+EVisitResult ScenePassPipelined::Visit(const std::shared_ptr<ISceneNode>& node)
 {
 	return EVisitResult::Block;
 }
 
-EVisitResult ScenePassPipelined::Visit(const IUIControl* node)
+EVisitResult ScenePassPipelined::Visit(const std::shared_ptr<IUIControl>& node)
 {
 	return EVisitResult::Block;
 }
 
-EVisitResult ScenePassPipelined::Visit(const IModel* Model)
+EVisitResult ScenePassPipelined::Visit(const std::shared_ptr<IModel>& Model)
 {
 	return EVisitResult::Block;
 }
 
-EVisitResult ScenePassPipelined::Visit(const IGeometry * Geometry, const IMaterial* Material, SGeometryDrawArgs GeometryDrawArgs)
+EVisitResult ScenePassPipelined::Visit(const std::shared_ptr<IGeometry>& Geometry, const std::shared_ptr<IMaterial>& Material, SGeometryDrawArgs GeometryDrawArgs)
 {
 	return EVisitResult::Block;
 }
 
-EVisitResult ScenePassPipelined::Visit(const ISceneNodeComponent * Component)
+EVisitResult ScenePassPipelined::Visit(const std::shared_ptr<ISceneNodeComponent>& Component)
 {
 	return EVisitResult::Block;
 }
 
-EVisitResult ScenePassPipelined::Visit(const ILight3D* light)
+EVisitResult ScenePassPipelined::Visit(const std::shared_ptr<ILight3D>& light)
 {
 	return EVisitResult::Block;
 }
 
-EVisitResult ScenePassPipelined::Visit(const IParticleSystem * ParticleSystem)
+EVisitResult ScenePassPipelined::Visit(const std::shared_ptr<IParticleSystem>& ParticleSystem)
 {
 	return EVisitResult::Block;
 }

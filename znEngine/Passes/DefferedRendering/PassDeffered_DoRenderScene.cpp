@@ -67,7 +67,7 @@ void CPassDeffered_DoRenderScene::Render(RenderEventArgs& e)
 		if (false == it.Node->IsEnabled())
 			continue;
 
-		if (dynamic_cast<const MaterialModel*>(it.Material) == nullptr)
+		if (std::dynamic_pointer_cast<const MaterialModel>(it.Material) == nullptr)
 			continue;
 
 		if (it.Node->GetClass() == cSceneNode3D || it.Node->GetClass() == cSceneNodeRTSUnit || it.Node->GetClass() == cSceneNodeRTSBullet)
@@ -128,7 +128,7 @@ std::shared_ptr<IRenderPassPipelined> CPassDeffered_DoRenderScene::ConfigurePipe
 //
 // IVisitor
 //
-void CPassDeffered_DoRenderScene::DoRenderSceneNode(const ISceneNode * SceneNode)
+void CPassDeffered_DoRenderScene::DoRenderSceneNode(const std::shared_ptr<const ISceneNode>& SceneNode)
 {
 	m_PerObjectConstantBuffer->Set(PerObject(SceneNode->GetWorldTransfom()));
 	m_PerObjectShaderParameter->Bind();
@@ -139,7 +139,7 @@ void CPassDeffered_DoRenderScene::DoRenderSceneNode(const ISceneNode * SceneNode
 			m_ShaderBonesBufferParameter->Set(modelsComponent->GetBonesBuffer());
 }
 
-void CPassDeffered_DoRenderScene::DoRenderGeometry(const IGeometry * Geometry, const IMaterial * Material, SGeometryDrawArgs GeometryDrawArgs)
+void CPassDeffered_DoRenderScene::DoRenderGeometry(const std::shared_ptr<const IGeometry>& Geometry, const std::shared_ptr<const IMaterial>& Material, SGeometryDrawArgs GeometryDrawArgs)
 {
 	if (m_ShaderBonesBufferParameter)
 		m_ShaderBonesBufferParameter->Bind();

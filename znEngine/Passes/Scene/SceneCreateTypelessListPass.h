@@ -18,10 +18,10 @@ public:
 	void Render(RenderEventArgs& e) override;
 
 	// IVisitor
-	EVisitResult Visit(const ISceneNode* SceneNode) override;
-	EVisitResult Visit(const IModel* Model) override;
-	EVisitResult Visit(const IGeometry* Geometry, const IMaterial* Material, SGeometryDrawArgs GeometryDrawArgs = SGeometryDrawArgs()) override;
-	EVisitResult Visit(const ILight3D* light) override;
+	EVisitResult Visit(const std::shared_ptr<ISceneNode>& SceneNode) override;
+	EVisitResult Visit(const std::shared_ptr<IModel>& Model) override;
+	EVisitResult Visit(const std::shared_ptr<IGeometry>& Geometry, const std::shared_ptr<IMaterial>& Material, SGeometryDrawArgs GeometryDrawArgs = SGeometryDrawArgs()) override;
+	EVisitResult Visit(const std::shared_ptr<ILight3D>& light) override;
 
 private:
 	std::vector<SNodeElement> m_NodesList;

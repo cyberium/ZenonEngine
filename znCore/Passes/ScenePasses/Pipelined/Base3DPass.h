@@ -13,7 +13,7 @@ public:
 	virtual std::shared_ptr<IRenderPassPipelined> ConfigurePipeline(std::shared_ptr<IRenderTarget> RenderTarget) override;
 
 	// IVisitor
-	virtual EVisitResult Visit(const ISceneNode* SceneNode) override;
-	virtual EVisitResult Visit(const IModel* Model) override;
-	virtual EVisitResult Visit(const IGeometry* Geometry, const IMaterial* Material, SGeometryDrawArgs GeometryDrawArgs = SGeometryDrawArgs()) override;
+	virtual EVisitResult Visit(const std::shared_ptr<ISceneNode>& SceneNode) override;
+	virtual EVisitResult Visit(const std::shared_ptr<IModel>& Model) override;
+	virtual EVisitResult Visit(const std::shared_ptr<IGeometry>& Geometry, const std::shared_ptr<IMaterial>& Material, SGeometryDrawArgs GeometryDrawArgs = SGeometryDrawArgs()) override;
 };

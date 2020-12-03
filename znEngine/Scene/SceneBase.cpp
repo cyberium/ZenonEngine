@@ -60,7 +60,7 @@ void SceneBase::Initialize()
 	m_RootUIControl->SetName("RootUIControl");
 
 	m_StatisticText = CreateUIControlTCast<IUIControlText>();
-	m_StatisticText->SetTranslate(glm::vec2(5.0f, 5.0f));
+	m_StatisticText->SetLocalPosition(glm::vec2(5.0f, 5.0f));
 	m_StatisticText->GetProperties()->GetPropertyT<std::string>("Text")->Set("");
 
 	//--------------------------------------------------------------------------

@@ -9,14 +9,18 @@ public:
 
 	// IParticleSystem
 	void Update(const UpdateEventArgs& e) override;
+
 	const std::vector<SGPUParticle>& GetGPUParticles() const override;
+
 	void SetTexture(const std::shared_ptr<ITexture>& Texture) override;
 	std::shared_ptr<ITexture> GetTexture() const override;
+
 	std::shared_ptr<IBlendState> GetBlendState() const override;
 
 protected:
 	void CreateNewParticle();
 	void UpdateParticle(SCPUParticle& CPUParticle, const UpdateEventArgs & e);
+
 
 private:
 	float m_Lifetime;

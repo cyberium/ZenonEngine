@@ -34,11 +34,11 @@ ZN_INTERFACE ZN_API IVisitor
 {
 	virtual ~IVisitor() {}
 
-	virtual EVisitResult Visit(const ISceneNode* SceneNode) = 0;
-	virtual EVisitResult Visit(const IUIControl* SceneNode) = 0;
-	virtual EVisitResult Visit(const IModel* Model) = 0;
-	virtual EVisitResult Visit(const IGeometry* Geometry, const IMaterial* Material, SGeometryDrawArgs GeometryDrawArgs = SGeometryDrawArgs()) = 0;
-	virtual EVisitResult Visit(const ISceneNodeComponent* Component) = 0;
-	virtual EVisitResult Visit(const ILight3D* Light) = 0;
-	virtual EVisitResult Visit(const IParticleSystem* ParticleSystem) = 0;
+	virtual EVisitResult Visit(const std::shared_ptr<ISceneNode>& SceneNode) = 0;
+	virtual EVisitResult Visit(const std::shared_ptr<IUIControl>& SceneNode) = 0;
+	virtual EVisitResult Visit(const std::shared_ptr<IModel>& Model) = 0;
+	virtual EVisitResult Visit(const std::shared_ptr<IGeometry>& Geometry, const std::shared_ptr<IMaterial>& Material, SGeometryDrawArgs GeometryDrawArgs = SGeometryDrawArgs()) = 0;
+	virtual EVisitResult Visit(const std::shared_ptr<ISceneNodeComponent>& Component) = 0;
+	virtual EVisitResult Visit(const std::shared_ptr<ILight3D>& Light) = 0;
+	virtual EVisitResult Visit(const std::shared_ptr<IParticleSystem>& ParticleSystem) = 0;
 };

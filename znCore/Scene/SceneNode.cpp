@@ -350,7 +350,7 @@ void CSceneNode::Accept(IVisitor* visitor)
 
 	_ASSERT(IsEnabled());
 
-	EVisitResult visitResult = visitor->Visit(this);
+	EVisitResult visitResult = visitor->Visit(shared_from_this());
 
 	if (visitResult & EVisitResult::AllowVisitContent)
 	{

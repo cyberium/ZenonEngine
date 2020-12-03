@@ -59,9 +59,9 @@ void GeometryProxie::Render(const IShader * VertexShader, const SGeometryDrawArg
 	m_Geometry->Render(VertexShader, GeometryDrawArgs);
 }
 
-void GeometryProxie::Accept(IVisitor * visitor, const IMaterial * Material, SGeometryDrawArgs GeometryDrawArgs)
+void GeometryProxie::Accept(IVisitor * visitor, const std::shared_ptr<IMaterial>& Material, SGeometryDrawArgs GeometryDrawArgs)
 {
-	visitor->Visit(this, Material, GeometryDrawArgs);
+	visitor->Visit(shared_from_this(), Material, GeometryDrawArgs);
 }
 
 

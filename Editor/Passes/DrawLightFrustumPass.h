@@ -13,8 +13,8 @@ public:
 	std::shared_ptr<IRenderPassPipelined> ConfigurePipeline(std::shared_ptr<IRenderTarget> RenderTarget) override final;
 
 	// IVisitor
-	EVisitResult Visit(const ISceneNode* node) override final;
-	EVisitResult Visit(const ILight3D* Light) override final;
+	EVisitResult Visit(const std::shared_ptr<ISceneNode>& node) override final;
+	EVisitResult Visit(const std::shared_ptr<ILight3D>& Light) override final;
 
 protected:
 	bool                               m_IsDirty;

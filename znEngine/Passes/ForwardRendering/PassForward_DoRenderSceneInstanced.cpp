@@ -34,7 +34,7 @@ void CPassForward_DoRenderSceneInstanced::Render(RenderEventArgs & e)
 	{
 		if (it.SceneNode->GetClass() != cSceneNode3D)
 			continue;
-		modelPriorMap[it.Model].push_back(it.SceneNode);
+		modelPriorMap[it.Model.get()].push_back(it.SceneNode.get());
 	}
 
 	for (const auto& it : modelPriorMap)

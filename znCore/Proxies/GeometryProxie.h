@@ -25,7 +25,7 @@ public:
 
 	virtual void Render(const IShader* VertexShader, const SGeometryDrawArgs GeometryDrawArgs = SGeometryDrawArgs()) const override;
 
-	virtual void Accept(IVisitor* visitor, const IMaterial* Material, SGeometryDrawArgs GeometryDrawArgs = SGeometryDrawArgs()) override;
+	virtual void Accept(IVisitor* visitor, const std::shared_ptr<IMaterial>& Material, SGeometryDrawArgs GeometryDrawArgs = SGeometryDrawArgs()) override;
 
 	// IGeometryInternal
 	void Render_BindAllBuffers(const IShader* VertexShader) const override final;
