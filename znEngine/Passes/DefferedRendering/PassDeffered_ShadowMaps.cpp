@@ -1,9 +1,9 @@
 #include "stdafx.h"
 
 // General
-#include "PassDeffered_ProcessLights.h"
+#include "PassDeffered_ShadowMaps.h"
 
-CPassDeffered_ProcessLights::CPassDeffered_ProcessLights(IRenderDevice& RenderDevice, const std::shared_ptr<IRenderPassCreateTypelessList>& SceneCreateTypelessListPass)
+CPassDeffered_ShadowMaps::CPassDeffered_ShadowMaps(IRenderDevice& RenderDevice, const std::shared_ptr<IRenderPassCreateTypelessList>& SceneCreateTypelessListPass)
 	: RenderPass(RenderDevice)
 	, m_SceneCreateTypelessListPass(SceneCreateTypelessListPass)
 {
@@ -11,11 +11,11 @@ CPassDeffered_ProcessLights::CPassDeffered_ProcessLights(IRenderDevice& RenderDe
 	m_PerFrameConstantBuffer = GetRenderDevice().GetObjectsFactory().CreateConstantBuffer(PerFrame());
 }
 
-CPassDeffered_ProcessLights::~CPassDeffered_ProcessLights()
+CPassDeffered_ShadowMaps::~CPassDeffered_ShadowMaps()
 {
 }
 
-void CPassDeffered_ProcessLights::CreateShadowPipeline()
+void CPassDeffered_ShadowMaps::CreateShadowPipeline()
 {
 	m_ShadowRenderTarget = CreateShadowRT();
 
@@ -64,13 +64,12 @@ void CPassDeffered_ProcessLights::CreateShadowPipeline()
 	shadowPipeline->GetDepthStencilState()->SetDepthMode(enableDepthWrites);
 	//shadowPipeline->GetRasterizerState()->SetDepthBias(0.0f, 1.1f);
 	shadowPipeline->GetRasterizerState()->SetCullMode(IRasterizerState::CullMode::Front);
-	shadowPipeline->GetRasterizerState()->SetFillMode(IRasterizerState::FillMode::Solid, IRasterizerState::FillMode::Solid);
 	shadowPipeline->SetRenderTarget(m_ShadowRenderTarget);
 	
 	m_ShadowPipeline = shadowPipeline;
 }
 
-const std::vector<CPassDeffered_ProcessLights::SLightResult>& CPassDeffered_ProcessLights::GetLightResult() const
+const std::vector<CPassDeffered_ShadowMaps::SLightResult>& CPassDeffered_ShadowMaps::GetLightResult() const
 {
 	return m_LightResult;
 }
@@ -80,88 +79,50 @@ const std::vector<CPassDeffered_ProcessLights::SLightResult>& CPassDeffered_Proc
 //
 // IRenderPass
 //
-void CPassDeffered_ProcessLights::PreRender(RenderEventArgs& e)
+void CPassDeffered_ShadowMaps::PreRender(RenderEventArgs& e)
 {
 	RenderPass::PreRender(e);
 
-	for (auto& it : m_LightResult)
-	{
-		it.IsLightEnabled = false;
-	}
+	m_CurrentShadowMapTexture = 0;
+	m_LightResult.clear();
 }
 
-void CPassDeffered_ProcessLights::Render(RenderEventArgs& e)
+void CPassDeffered_ShadowMaps::Render(RenderEventArgs& e)
 {
 	for (auto& l : m_LightResult)
 		l.IsEnabled = false;
 
-	for (size_t i = 0; i < m_SceneCreateTypelessListPass->GetLightList().size(); i++)
+	for (const auto& lightIt : m_SceneCreateTypelessListPass->GetLightList())
 	{
-		const auto& lightIt = m_SceneCreateTypelessListPass->GetLightList().at(i);
+		SLightResult lightResult;
+		lightResult.IsEnabled = true;
+		lightResult.SceneNode = lightIt.SceneNode;
+		lightResult.LightNode = lightIt.Light;
+		lightResult.IsLightEnabled = lightIt.Light->IsEnabled();
+		lightResult.IsCastShadow = lightIt.Light->IsCastShadows();
 
-		m_ShadowPipeline->Bind();
+		if (lightResult.IsCastShadow)
 		{
-			m_ShadowRenderTarget->Clear(ClearFlags::All, glm::vec4(0.0f), 1.0f);
-
-			BindPerFrameParamsForCurrentIteration(lightIt.Light);
-
-			for (const auto& geometryIt : m_SceneCreateTypelessListPass->GetGeometryList())
+			m_ShadowPipeline->Bind();
 			{
-				if (false == geometryIt.Node->IsEnabled())
-					continue;
+				m_ShadowRenderTarget->Clear(ClearFlags::All, glm::vec4(0.0f), 1.0f);
 
-				auto modelsComponent = geometryIt.Node->GetComponentT<IModelsComponent3D>();
-				if (modelsComponent == nullptr)
-					continue;
+				BindPerFrameParamsForCurrentIteration(lightIt.Light);
 
-				if (false == modelsComponent->IsCastShadows())
-					continue;
+				RenderScene();
 
-				BindPerObjectParamsForCurrentIteration(geometryIt.Node);
-
-				// Bones begin
-				if (m_ShaderBonesBufferParameter)
-				{
-					m_ShaderBonesBufferParameter->Set(modelsComponent->GetBonesBuffer());
-					m_ShaderBonesBufferParameter->Bind();
-				}
-
-				geometryIt.Geometry->Render(m_ShadowPipeline->GetVertexShaderPtr(), geometryIt.GeometryDrawArgs);
-
-				// Bones end
-				if (m_ShaderBonesBufferParameter)
-				{
-					m_ShaderBonesBufferParameter->Unbind();
-				}
+				auto shadowTexture = GetShadowMapTexture();
+				shadowTexture->Copy(m_ShadowRenderTarget->GetTexture(IRenderTarget::AttachmentPoint::DepthStencil));
+				lightResult.ShadowTexture = shadowTexture;
 			}
-
-			if (i < m_LightResult.size())
-			{
-				SLightResult& lightResult = m_LightResult.at(i);
-				lightResult.IsEnabled = true;
-				lightResult.SceneNode = lightIt.SceneNode;
-				lightResult.LightNode = lightIt.Light;
-				lightResult.IsLightEnabled = true;
-				lightResult.IsCastShadow = true;
-				lightResult.ShadowTexture->Copy(m_ShadowRenderTarget->GetTexture(IRenderTarget::AttachmentPoint::DepthStencil));
-			}
-			else
-			{
-				SLightResult lightResult;
-				lightResult.IsEnabled = true;
-				lightResult.SceneNode = lightIt.SceneNode;
-				lightResult.LightNode = lightIt.Light;
-				lightResult.IsLightEnabled = true;
-				lightResult.IsCastShadow = true;
-				lightResult.ShadowTexture = CreateShadowTextureDepthStencil();
-				m_LightResult.push_back(lightResult);
-			}
+			m_ShadowPipeline->UnBind();
 		}
-		m_ShadowPipeline->UnBind();
+
+		m_LightResult.push_back(lightResult);
 	}
 }
 
-void CPassDeffered_ProcessLights::PostRender(RenderEventArgs& e)
+void CPassDeffered_ShadowMaps::PostRender(RenderEventArgs& e)
 {
 	RenderPass::PostRender(e);
 }
@@ -171,7 +132,7 @@ void CPassDeffered_ProcessLights::PostRender(RenderEventArgs& e)
 //
 // Protected
 //
-std::shared_ptr<IRenderTarget> CPassDeffered_ProcessLights::CreateShadowRT()
+std::shared_ptr<IRenderTarget> CPassDeffered_ShadowMaps::CreateShadowRT()
 {
 	std::shared_ptr<IRenderTarget> rt = GetRenderDevice().GetObjectsFactory().CreateRenderTarget();
 	//rt->AttachTexture(IRenderTarget::AttachmentPoint::Color0, CreateShadowTexture0());
@@ -180,7 +141,7 @@ std::shared_ptr<IRenderTarget> CPassDeffered_ProcessLights::CreateShadowRT()
 	return rt;
 }
 
-std::shared_ptr<ITexture> CPassDeffered_ProcessLights::CreateShadowTexture0() const
+std::shared_ptr<ITexture> CPassDeffered_ShadowMaps::CreateShadowTexture0() const
 {
 	// Color buffer
 	ITexture::TextureFormat colorTextureFormat(
@@ -192,7 +153,7 @@ std::shared_ptr<ITexture> CPassDeffered_ProcessLights::CreateShadowTexture0() co
 	return GetRenderDevice().GetObjectsFactory().CreateTexture2D(cShadowTextureSize, cShadowTextureSize, 1, colorTextureFormat);
 }
 
-std::shared_ptr<ITexture> CPassDeffered_ProcessLights::CreateShadowTextureDepthStencil() const
+std::shared_ptr<ITexture> CPassDeffered_ShadowMaps::CreateShadowTextureDepthStencil() const
 {
 	// Depth/stencil buffer
 	ITexture::TextureFormat depthStencilTextureFormat(
@@ -204,7 +165,40 @@ std::shared_ptr<ITexture> CPassDeffered_ProcessLights::CreateShadowTextureDepthS
 	return GetRenderDevice().GetObjectsFactory().CreateTexture2D(cShadowTextureSize, cShadowTextureSize, 1, depthStencilTextureFormat);
 }
 
-void CPassDeffered_ProcessLights::BindPerFrameParamsForCurrentIteration(const std::shared_ptr<const ILight3D>& Light)
+void CPassDeffered_ShadowMaps::RenderScene()
+{
+	for (const auto& geometryIt : m_SceneCreateTypelessListPass->GetGeometryList())
+	{
+		if (false == geometryIt.Node->IsEnabled())
+			continue;
+
+		auto modelsComponent = geometryIt.Node->GetComponentT<IModelsComponent3D>();
+		if (modelsComponent == nullptr)
+			continue;
+
+		if (false == modelsComponent->IsCastShadows())
+			continue;
+
+		BindPerObjectParamsForCurrentIteration(geometryIt.Node);
+
+		// Bones begin
+		if (m_ShaderBonesBufferParameter)
+		{
+			m_ShaderBonesBufferParameter->Set(modelsComponent->GetBonesBuffer());
+			m_ShaderBonesBufferParameter->Bind();
+		}
+
+		geometryIt.Geometry->Render(m_ShadowPipeline->GetVertexShaderPtr(), geometryIt.GeometryDrawArgs);
+
+		// Bones end
+		if (m_ShaderBonesBufferParameter)
+		{
+			m_ShaderBonesBufferParameter->Unbind();
+		}
+	}
+}
+
+void CPassDeffered_ShadowMaps::BindPerFrameParamsForCurrentIteration(const std::shared_ptr<const ILight3D>& Light)
 {
 	const auto& viewport = m_ShadowPipeline->GetRenderTarget()->GetViewport();
 
@@ -217,8 +211,21 @@ void CPassDeffered_ProcessLights::BindPerFrameParamsForCurrentIteration(const st
 	m_PerFrameShaderParameter->Bind();
 }
 
-void CPassDeffered_ProcessLights::BindPerObjectParamsForCurrentIteration(const std::shared_ptr<const ISceneNode>& SceneNode)
+void CPassDeffered_ShadowMaps::BindPerObjectParamsForCurrentIteration(const std::shared_ptr<const ISceneNode>& SceneNode)
 {
 	m_PerObjectConstantBuffer->Set(PerObject(SceneNode->GetWorldTransfom()));
 	m_PerObjectShaderParameter->Bind();
+}
+
+std::shared_ptr<ITexture> CPassDeffered_ShadowMaps::GetShadowMapTexture()
+{
+	// Out of bounds. Add new texture.
+	if (m_CurrentShadowMapTexture >= m_ShadowMapsTexturesCache.size())
+	{
+		auto newShadowMapTexture = CreateShadowTextureDepthStencil();
+		m_ShadowMapsTexturesCache.push_back(newShadowMapTexture);
+	}
+	
+	_ASSERT(m_CurrentShadowMapTexture < m_ShadowMapsTexturesCache.size());
+	return m_ShadowMapsTexturesCache.at(m_CurrentShadowMapTexture++);
 }

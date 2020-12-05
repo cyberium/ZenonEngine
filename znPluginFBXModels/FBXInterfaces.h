@@ -17,7 +17,7 @@ ZN_INTERFACE ZN_API IFBXLight
 {
 	virtual ~IFBXLight() {}
 
-	virtual const SLight& GetLight() const = 0;
+	virtual const SGPULight& GetLight() const = 0;
 };
 
 ZN_INTERFACE ZN_API IFBXMaterial

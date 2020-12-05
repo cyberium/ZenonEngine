@@ -1,6 +1,6 @@
 #pragma once
 
-class /*__declspec(UUID_LightComponent)*/ ZN_API CLightComponent3D
+class ZN_API CLightComponent3D
 	: public ILightComponent3D
 	, public ILight3D
 	, public CComponentBase
@@ -24,10 +24,14 @@ public:
 	float GetSpotlightAngle() const override;
 
 	// ILight3D
+	void SetEnabled(bool Value) override;
+	bool IsEnabled() const override;
+	void SetCastShadows(bool Value) override;
+	bool IsCastShadows() const override;
 	glm::mat4 GetViewMatrix() const override;
 	glm::mat4 GetProjectionMatrix() const override;
 	Frustum GetFrustum() const override;
-	const SLight& GetLightStruct() const override;
+	const SGPULight& GetGPULightStruct() const override;
 
     // ISceneNodeComponent
     void Accept(IVisitor* visitor) override;
@@ -38,5 +42,7 @@ public:
 	void Save(const std::shared_ptr<IXMLWriter>& Writer) const override;
 
 private:
-	SLight* m_LightStruct;
+	bool m_IsEnabled;
+	bool m_IsCastShadows;
+	SGPULight* m_LightStruct;
 };

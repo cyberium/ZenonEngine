@@ -26,18 +26,25 @@
 #include "Passes/UI/UIControlPass.h"
 
 
-struct __declspec(align(16)) SLightVS
+struct __declspec(align(16)) SGPULightVS
 {
-	SLight Light;
-	glm::vec4 LightPositionVS;
-	glm::vec4 LightDirectionVS;
+	SGPULight  Light;
+	// 48 bytes
+	glm::vec4  LightPositionVS;
+	// 16 bytes
+	glm::vec4  LightDirectionVS;
+	// 16 bytes
+	uint32      IsEnabled;
+	uint32      IsCastShadow;
+	glm::vec2   __padding;
+	// 16 bytes
 };
 
 
 CRendererForward::CRendererForward(IBaseManager& BaseManager, IScene& Scene)
 	: RendererBase(BaseManager, Scene)
 {
-	m_LightsBuffer = m_RenderDevice.GetObjectsFactory().CreateStructuredBuffer(nullptr, 1, sizeof(SLightVS), EAccess::CPUWrite);
+	m_LightsBuffer = m_RenderDevice.GetObjectsFactory().CreateStructuredBuffer(nullptr, 1, sizeof(SGPULightVS), EAccess::CPUWrite);
 }
 
 CRendererForward::~CRendererForward()
@@ -114,7 +121,7 @@ void CRendererForward::Initialize(std::shared_ptr<IRenderTarget> OutputRenderTar
 	auto inputTexture = HDRRenderTarget->GetTexture(IRenderTarget::AttachmentPoint::Color0);
 
 #ifdef ENABLE_HDR
-
+	/*
 	auto glowPass = MakeShared(CPassPostprocess_Glow, m_RenderDevice, inputTexture);
 	glowPass->ConfigurePipeline(OutputRenderTarget);
 	Add3DPass(glowPass);
@@ -136,7 +143,9 @@ void CRendererForward::Initialize(std::shared_ptr<IRenderTarget> OutputRenderTar
 	//Add3DPass(hdrPass);
 
 	Add3DPass(MakeShared(CPassPostprocess_ApplyTexture, m_RenderDevice, accumTextures->GetOutputTexture())->ConfigurePipeline(OutputRenderTarget));
+	*/
 
+	Add3DPass(MakeShared(CPassPostprocess_ApplyTexture, m_RenderDevice, inputTexture)->ConfigurePipeline(OutputRenderTarget));
 #endif
 
 
@@ -163,16 +172,18 @@ void CRendererForward::Initialize(std::shared_ptr<IRenderTarget> OutputRenderTar
 //
 void CRendererForward::DoUpdateLights()
 {
-	std::vector<SLightVS> lightsVS;
-	for (const auto& light : m_SceneCreateTypelessListPass->GetLightList())
+	std::vector<SGPULightVS> lightsVS;
+	for (const auto& lightIt : m_SceneCreateTypelessListPass->GetLightList())
 	{
-		auto lightOwner = light.SceneNode;
-		const auto& lightStruct = light.Light->GetLightStruct();
+		auto lightOwner = lightIt.SceneNode;
+		const auto& lightStruct = lightIt.Light->GetGPULightStruct();
 
-		SLightVS lightVS;
+		SGPULightVS lightVS;
 		lightVS.Light = lightStruct;
-		lightVS.LightPositionVS = m_Scene.GetCameraController()->GetCamera()->GetViewMatrix() * glm::vec4(lightOwner->GetPosition(), 1.0f);
+		lightVS.LightPositionVS                 = m_Scene.GetCameraController()->GetCamera()->GetViewMatrix() * glm::vec4(lightOwner->GetPosition(), 1.0f);
 		lightVS.LightDirectionVS = glm::normalize(m_Scene.GetCameraController()->GetCamera()->GetViewMatrix() * glm::vec4(lightOwner->GetRotationEuler(), 0.0f));
+		lightVS.IsEnabled = lightIt.Light->IsEnabled();
+		lightVS.IsCastShadow = lightIt.Light->IsCastShadows();
 		lightsVS.push_back(lightVS);
 	}
 
@@ -198,11 +209,10 @@ std::shared_ptr<IRenderTarget> CRendererForward::CreateHDRRenderTarget(std::shar
 		OutputRenderTarget->GetSamplesCount(),
 		16, 16, 16, 16, 0, 0
 	);
-	auto texture = m_RenderDevice.GetObjectsFactory().CreateTexture2D(OutputRenderTarget->GetViewport().GetWidth(), OutputRenderTarget->GetViewport().GetHeight(), 1, colorTextureFormat);
+	auto colorTexture = m_RenderDevice.GetObjectsFactory().CreateTexture2D(OutputRenderTarget->GetViewport().GetWidth(), OutputRenderTarget->GetViewport().GetHeight(), 1, colorTextureFormat);
 
-	// GBuffer contains Depth and Stencil buffer with object. We may use this data.
 	auto outputRenderTargetWithCustomDepth = m_RenderDevice.GetObjectsFactory().CreateRenderTarget();
-	outputRenderTargetWithCustomDepth->AttachTexture(IRenderTarget::AttachmentPoint::Color0, texture);
+	outputRenderTargetWithCustomDepth->AttachTexture(IRenderTarget::AttachmentPoint::Color0, colorTexture);
 	outputRenderTargetWithCustomDepth->AttachTexture(IRenderTarget::AttachmentPoint::DepthStencil, OutputRenderTarget->GetTexture(IRenderTarget::AttachmentPoint::DepthStencil));
 	return outputRenderTargetWithCustomDepth;
 }

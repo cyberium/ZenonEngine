@@ -12,8 +12,8 @@ CFBXLight::CFBXLight(const IBaseManager& BaseManager, const IFBXNode& FBXNode)
 	: m_BaseManager(BaseManager)
 	, m_FBXNode(FBXNode)
 {
-	m_Light = (SLight*)_aligned_malloc(sizeof(SLight), 16);
-	*m_Light = SLight();
+	m_Light = (SGPULight*)_aligned_malloc(sizeof(SGPULight), 16);
+	*m_Light = SGPULight();
 }
 
 CFBXLight::~CFBXLight()
@@ -26,7 +26,7 @@ void CFBXLight::Load(fbxsdk::FbxLight * NativeLight)
 	DisplayString("Light Name: ", (char *)NativeLight->GetName());
 
 	const char* lLightTypes[] = { "Point", "Directional", "Spot", "Area", "Volume" };
-	ELightType lightTypes[] = { ELightType::Point, ELightType::Directional, ELightType::Spot, ELightType::Unknown, ELightType::Unknown };
+	ELightType lightTypes[] = { ELightType::Point, ELightType::Directional, ELightType::Spot/*, ELightType::Unknown, ELightType::Unknown*/ };
 
 	DisplayString("    Type: ", lLightTypes[NativeLight->LightType.Get()]);
 	DisplayBool("    Cast Light: ", NativeLight->CastLight.Get());
@@ -75,7 +75,7 @@ void CFBXLight::Load(fbxsdk::FbxLight * NativeLight)
 	m_Light->Range = NativeLight->Intensity.Get() / 40.0f;
 }
 
-const SLight& CFBXLight::GetLight() const
+const SGPULight& CFBXLight::GetLight() const
 {
 	return *m_Light;
 }

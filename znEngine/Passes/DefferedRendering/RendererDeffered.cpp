@@ -44,14 +44,14 @@ void CRendererDeffered::Initialize(std::shared_ptr<IRenderTarget> OutputRenderTa
 	m_RenderScenePass->ConfigurePipeline(OutputRenderTarget);
 	m_RenderScenePass->SetEnviorementTexture(skyboxPass->GetSkyboxCubeTexture());
 
-	m_Deffered_Lights = MakeShared(CPassDeffered_ProcessLights, m_RenderDevice, m_SceneCreateTypelessListPass);
-	m_Deffered_Lights->CreateShadowPipeline();
+	m_ShadowMapsPass = MakeShared(CPassDeffered_ShadowMaps, m_RenderDevice, m_SceneCreateTypelessListPass);
+	m_ShadowMapsPass->CreateShadowPipeline();
 
 #ifdef ENABLE_HDR
 	auto HDRRenderTarget = CreateHDRRenderTarget(m_RenderScenePass->GetGBufferRenderTarget());
 #endif
 
-	m_Deffered_UIQuadPass = MakeShared(CPassDeffered_RenderUIQuad, m_RenderDevice, m_RenderScenePass, m_Deffered_Lights);
+	m_Deffered_UIQuadPass = MakeShared(CPassDeffered_RenderUIQuad, m_RenderDevice, m_RenderScenePass, m_ShadowMapsPass);
 	m_Deffered_UIQuadPass->ConfigurePipeline(OutputRenderTarget);
 
 	//
@@ -67,7 +67,7 @@ void CRendererDeffered::Initialize(std::shared_ptr<IRenderTarget> OutputRenderTa
 	//
 	Add3DPass(m_SceneCreateTypelessListPass);
 	Add3DPass(m_RenderScenePass);
-	Add3DPass(m_Deffered_Lights);
+	Add3DPass(m_ShadowMapsPass);
 	Add3DPass(m_Deffered_UIQuadPass);
 
 
@@ -89,6 +89,7 @@ void CRendererDeffered::Initialize(std::shared_ptr<IRenderTarget> OutputRenderTa
 	auto inputTexture = HDRRenderTarget->GetTexture(IRenderTarget::AttachmentPoint::Color0);
 
 #ifdef ENABLE_HDR
+	/*
 	auto glowPass = MakeShared(CPassPostprocess_Glow, m_RenderDevice, inputTexture);
 	glowPass->ConfigurePipeline(OutputRenderTarget);
 	Add3DPass(glowPass);
@@ -110,7 +111,9 @@ void CRendererDeffered::Initialize(std::shared_ptr<IRenderTarget> OutputRenderTa
 	//Add3DPass(hdrPass);
 
 	Add3DPass(MakeShared(CPassPostprocess_ApplyTexture, m_RenderDevice, accumTextures->GetOutputTexture())->ConfigurePipeline(OutputRenderTarget));
+	*/
 
+	Add3DPass(MakeShared(CPassPostprocess_ApplyTexture, m_RenderDevice, inputTexture)->ConfigurePipeline(OutputRenderTarget));
 #endif
 
 

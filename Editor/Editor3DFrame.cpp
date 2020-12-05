@@ -42,16 +42,20 @@ void CEditor3DFrame::Initialize()
 	// Light
 	{
 		auto lightNode = CreateSceneNodeT<ISceneNode>();
-		lightNode->SetName("Light");
-		lightNode->SetPosition(rtsCenter);
-		lightNode->SetRotationEuler(glm::vec3(-0.5f));
+		lightNode->SetName("Light2");
+		lightNode->SetLocalPosition(glm::vec3(150.0f, 150.0f, 150.0f));
+		lightNode->SetRotationEuler(glm::vec3(-0.5f, -0.5f, -0.5f));
 
-		lightNode->AddComponentT(GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<IComponentFactory>()->CreateComponentT<ILightComponent3D>(cSceneNodeLightComponent, *lightNode.get()));
-		lightNode->GetComponentT<ILightComponent3D>()->SetType(ELightType::Spot);
-		lightNode->GetComponentT<ILightComponent3D>()->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
-		lightNode->GetComponentT<ILightComponent3D>()->SetRange(350.0f);
-		lightNode->GetComponentT<ILightComponent3D>()->SetIntensity(1.0f);
-		lightNode->GetComponentT<ILightComponent3D>()->SetSpotlightAngle(30.0f);
+		auto lightComponent = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<IComponentFactory>()->CreateComponentT<CLightComponent3D>(cSceneNodeLightComponent, *lightNode.get());
+		lightComponent->SetCastShadows(true);
+		lightComponent->SetType(ELightType::Spot);
+		lightComponent->SetAmbientColor(glm::vec3(0.25f));
+		lightComponent->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
+		lightComponent->SetRange(1000.0f);
+		lightComponent->SetIntensity(1.2f);
+		lightComponent->SetSpotlightAngle(45.0f);
+
+		lightNode->AddComponent(cSceneNodeLightComponent, lightComponent);
 	}
 
 	// Camera
@@ -67,8 +71,6 @@ void CEditor3DFrame::Initialize()
 		GetCameraController()->GetCamera()->SetYaw(225);
 		GetCameraController()->GetCamera()->SetPitch(-45);
 	}
-
-	SetRenderer(m_Ren)
 }
 
 void CEditor3DFrame::Finalize()

@@ -225,23 +225,24 @@ enum class ZN_API ELightType : uint32_t // Don't delete uint32_t becouse mapped 
 {
 	Point = 0,
 	Spot,
-	Directional,
-	Unknown
+	Directional
 };
 
-struct __declspec(align(16)) ZN_API SLight
+struct __declspec(align(16)) ZN_API SGPULight
 {
-	SLight()
+	SGPULight()
 		: AmbientColor(0.1f, 0.1f, 0.1f, 1.0f)
 		, Color(1.0f, 1.0f, 1.0f, 1.0f)
-		, Type(ELightType::Unknown)
+		, Type(ELightType::Point)
 		, Range(5000.0f)
 		, Intensity(1.0f)
 		, SpotlightAngle(45.0f)
 	{}
 
 	glm::vec4 AmbientColor;// Ambient color of the light.
+	//--------------------------------------------------------------(16 bytes )
 	glm::vec4 Color;       // Color of the light. Diffuse and specular colors are not separated.
+	//--------------------------------------------------------------(16 bytes )
 	ELightType Type; // The type of the light.
 	float Range; // The range of the light.
 	float Intensity; // The intensity of the light.
@@ -253,10 +254,14 @@ ZN_INTERFACE ZN_API ILight3D
 {
 	virtual ~ILight3D() {}
 
+	virtual void SetEnabled(bool Value) = 0;
+	virtual bool IsEnabled() const = 0;
+	virtual void SetCastShadows(bool Value) = 0;
+	virtual bool IsCastShadows() const = 0;
 	virtual glm::mat4 GetViewMatrix() const = 0;
 	virtual glm::mat4 GetProjectionMatrix() const = 0;
 	virtual Frustum GetFrustum() const = 0;
-	virtual const SLight& GetLightStruct() const = 0;
+	virtual const SGPULight& GetGPULightStruct() const = 0;
 };
 
 ZN_INTERFACE ZN_API ILightComponent3D
@@ -348,7 +353,7 @@ ZN_INTERFACE ZN_API ICameraComponent3D
 //
 // PARTICLE COMPONENT 3D
 //
-struct __declspec(novtable, align(16)) ZN_API SGPUParticle
+struct __declspec(align(16)) ZN_API SGPUParticle
 {
 	SGPUParticle()
 		: Position(glm::vec3(0.0f))

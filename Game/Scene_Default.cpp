@@ -46,16 +46,19 @@ void CSceneDefault::Initialize()
 	{
 		auto lightNode = CreateSceneNodeT<ISceneNode>();
 		lightNode->SetName("Light2");
-		lightNode->SetPosition(glm::vec3(550.0f, 550.0f, 550.0f));
+		lightNode->SetLocalPosition(glm::vec3(150.0f, 150.0f, 150.0f));
 		lightNode->SetRotationEuler(glm::vec3(-0.5f, -0.5f, -0.5f));
 
-		lightNode->AddComponentT(GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<IComponentFactory>()->CreateComponentT<ILightComponent3D>(cSceneNodeLightComponent, *lightNode.get()));
-		lightNode->GetComponentT<ILightComponent3D>()->SetType(ELightType::Spot);
-		lightNode->GetComponentT<ILightComponent3D>()->SetAmbientColor(glm::vec3(0.25f));
-		lightNode->GetComponentT<ILightComponent3D>()->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
-		lightNode->GetComponentT<ILightComponent3D>()->SetRange(1350.0f);
-		lightNode->GetComponentT<ILightComponent3D>()->SetIntensity(1.0f);
-		lightNode->GetComponentT<ILightComponent3D>()->SetSpotlightAngle(30.0f);
+		auto lightComponent = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<IComponentFactory>()->CreateComponentT<CLightComponent3D>(cSceneNodeLightComponent, *lightNode.get());
+		lightComponent->SetCastShadows(true);
+		lightComponent->SetType(ELightType::Spot);
+		lightComponent->SetAmbientColor(glm::vec3(0.25f));
+		lightComponent->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
+		lightComponent->SetRange(1350.0f);
+		lightComponent->SetIntensity(1.0f);
+		lightComponent->SetSpotlightAngle(30.0f);
+
+		lightNode->AddComponent(cSceneNodeLightComponent, lightComponent);
 	}
 
 	// Camera

@@ -7,7 +7,7 @@ cbuffer Material : register(b2)
 	MaterialModel Mat;
 };
 
-StructuredBuffer<LightVS> LightsVS : register(t14);
+StructuredBuffer<SGPULightVS> GPULightsVS : register(t14);
 TextureCube TextureSky : register(t15);
 
 float4 PS_main(VSOutput IN) : SV_TARGET
@@ -36,7 +36,7 @@ float4 PS_main(VSOutput IN) : SV_TARGET
 	MaterialForLight matForLight;
 	matForLight.SpecularFactor = specular.a;
 	
-	SLightingResult lit = DoLighting(LightsVS, matForLight, eyePos, positionVS, normalVS);
+	SLightingResult lit = DoLighting(GPULightsVS, matForLight, eyePos, positionVS, normalVS);
 
 	float3 ambientLight  = diffuseAndAlpha.rgb * lit.Ambient.rgb;
 	float3 diffuseLight  = diffuseAndAlpha.rgb * lit.Diffuse.rgb;

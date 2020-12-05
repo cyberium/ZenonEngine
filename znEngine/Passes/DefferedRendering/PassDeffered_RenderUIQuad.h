@@ -1,13 +1,13 @@
 #pragma once
 
 #include "PassDeffered_DoRenderScene.h"
-#include "PassDeffered_ProcessLights.h"
+#include "PassDeffered_ShadowMaps.h"
 
 class ZN_API CPassDeffered_RenderUIQuad
 	: public RenderPassPipelined
 {
 public:
-	CPassDeffered_RenderUIQuad(IRenderDevice& RenderDevice, std::shared_ptr<CPassDeffered_DoRenderScene> DefferedRender, std::shared_ptr<CPassDeffered_ProcessLights> DefferedRenderPrepareLights);
+	CPassDeffered_RenderUIQuad(IRenderDevice& RenderDevice, std::shared_ptr<CPassDeffered_DoRenderScene> DefferedRender, std::shared_ptr<CPassDeffered_ShadowMaps> DefferedRenderPrepareLights);
 	virtual ~CPassDeffered_RenderUIQuad();
 
 	// IRenderPass
@@ -18,7 +18,7 @@ public:
 
 
 protected:
-	void BindLightParamsForCurrentIteration(const RenderEventArgs& e, const CPassDeffered_ProcessLights::SLightResult& LightResult);
+	void BindLightParamsForCurrentIteration(const RenderEventArgs& e, const CPassDeffered_ShadowMaps::SLightResult& LightResult);
 
 
 private: // Pass light params
@@ -27,7 +27,7 @@ private: // Pass light params
 
 private:
 	std::shared_ptr<CPassDeffered_DoRenderScene> m_DefferedRender;
-	std::shared_ptr<CPassDeffered_ProcessLights> m_Deffered_Lights;
+	std::shared_ptr<CPassDeffered_ShadowMaps> m_Deffered_Lights;
 
 	std::shared_ptr<IGeometry> m_QuadGeometry;
 };

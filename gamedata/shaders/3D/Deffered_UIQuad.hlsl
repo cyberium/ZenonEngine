@@ -19,12 +19,14 @@ struct VS_Output
 };
 
 
-cbuffer LightResult : register(b4)
+cbuffer GPUDefferedLightVS : register(b4)
 {
-	LightVS  CurrentLightVS;
-	float4x4 LightViewMatrix;
-	float4x4 LightProjectionMatrix;
-	bool     IsShadowEnabled;
+	SGPULightVS CurrentLightVS;
+	//--------------------------------------------------------------( 96 bytes )
+	float4x4    LightViewMatrix;
+	//--------------------------------------------------------------( 64 bytes )
+	float4x4    LightProjectionMatrix;
+	//--------------------------------------------------------------( 64 bytes )
 };
 
 
@@ -108,14 +110,17 @@ float4 PS_DeferredLighting(VS_Output VSOut
 	float3 ambientLight  = diffuseAndAlpha.rgb * lit.Ambient.rgb;
 	float3 diffuseLight  = diffuseAndAlpha.rgb * lit.Diffuse.rgb;
 	float3 specularLight = specular.rgb        * lit.Specular.rgb;
-		
-	const float4 PModel = mul(PF.InverseView, PView);
-	float shadowFactor = IsShadowed(LightProjectionMatrix, LightViewMatrix, TextureShadow, PModel);
-	shadowFactor -= 0.1f;
-	shadowFactor = saturate(shadowFactor);
 	
-	if (shadowFactor > 0.0f)
-		return float4(ambientLight + (diffuseLight + specularLight) * (1.0f - shadowFactor), 1.0f);
+	if (CurrentLightVS.IsCastShadow)
+	{
+		const float4 PModel = mul(PF.InverseView, PView);
+		float shadowFactor = IsShadowed(LightProjectionMatrix, LightViewMatrix, TextureShadow, PModel);
+		shadowFactor -= 0.1f;
+		shadowFactor = saturate(shadowFactor);
 		
+		if (shadowFactor > 0.0f)
+			return float4(ambientLight + (diffuseLight + specularLight) * (1.0f - shadowFactor), 1.0f);
+	}
+	
 	return float4(ambientLight + diffuseLight + specularLight, 1.0f);
 }

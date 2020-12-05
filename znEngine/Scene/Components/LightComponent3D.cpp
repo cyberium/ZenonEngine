@@ -5,6 +5,8 @@
 
 CLightComponent3D::CLightComponent3D(const ISceneNode& OwnerNode)
     : CComponentBase(OwnerNode)
+	, m_IsEnabled(true)
+	, m_IsCastShadows(false)
 {
 	GetProperties()->SetName("LightComponent");
 
@@ -23,8 +25,8 @@ CLightComponent3D::CLightComponent3D(const ISceneNode& OwnerNode)
 	range->SetValueGetter(std::bind(&CLightComponent3D::GetRange, this));
 	GetProperties()->AddProperty(range);
 
-	m_LightStruct = (SLight*)_aligned_malloc(sizeof(SLight), 16);
-	*m_LightStruct = SLight();
+	m_LightStruct = (SGPULight*)_aligned_malloc(sizeof(SGPULight), 16);
+	*m_LightStruct = SGPULight();
 }
 
 CLightComponent3D::~CLightComponent3D()
@@ -103,6 +105,26 @@ float CLightComponent3D::GetSpotlightAngle() const
 //
 // ILight3D
 //
+void CLightComponent3D::SetEnabled(bool Value)
+{
+	m_IsEnabled = Value;
+}
+
+bool CLightComponent3D::IsEnabled() const
+{
+	return m_IsEnabled;
+}
+
+void CLightComponent3D::SetCastShadows(bool Value)
+{
+	m_IsCastShadows = Value;
+}
+
+bool CLightComponent3D::IsCastShadows() const
+{
+	return m_IsCastShadows;
+}
+
 glm::mat4 CLightComponent3D::GetViewMatrix() const
 {
 	const glm::vec3& ownerTranslate = GetOwnerNode().GetPosition();
@@ -152,7 +174,7 @@ Frustum CLightComponent3D::GetFrustum() const
 	return frustum;
 }
 
-const SLight& CLightComponent3D::GetLightStruct() const
+const SGPULight& CLightComponent3D::GetGPULightStruct() const
 {
 	return *m_LightStruct;
 }
@@ -164,8 +186,9 @@ const SLight& CLightComponent3D::GetLightStruct() const
 //
 void CLightComponent3D::Accept(IVisitor* visitor)
 {
-	if (GetType() == ELightType::Unknown)
+	if (false == IsEnabled())
 		return;
+
 	visitor->Visit(std::dynamic_pointer_cast<ILight3D>(shared_from_this()));
 }
 

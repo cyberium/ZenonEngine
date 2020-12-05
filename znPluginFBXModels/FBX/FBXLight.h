@@ -14,10 +14,10 @@ public:
 	void Load(fbxsdk::FbxLight* NativeLight);
 
 	// IFBXLight
-	const SLight& GetLight() const override;
+	const SGPULight& GetLight() const override;
 
 private:
-	SLight* m_Light;
+	SGPULight* m_Light;
 	const IBaseManager& m_BaseManager;
 	const IFBXNode& m_FBXNode;
 };

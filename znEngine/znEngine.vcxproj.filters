@@ -253,9 +253,6 @@
     <ClCompile Include="Passes\DefferedRendering\PassDeffered_DoRenderScene.cpp">
       <Filter>Passes\DefferedRendering</Filter>
     </ClCompile>
-    <ClCompile Include="Passes\DefferedRendering\PassDeffered_ProcessLights.cpp">
-      <Filter>Passes\DefferedRendering</Filter>
-    </ClCompile>
     <ClCompile Include="Passes\DefferedRendering\PassDeffered_RenderUIQuad.cpp">
       <Filter>Passes\DefferedRendering</Filter>
     </ClCompile>
@@ -392,6 +389,9 @@
     <ClCompile Include="Passes\PostprocessRendering\Postprocess_AccumTextures.cpp">
       <Filter>Passes\PostprocessRendering</Filter>
     </ClCompile>
+    <ClCompile Include="Passes\DefferedRendering\PassDeffered_ShadowMaps.cpp">
+      <Filter>Passes\DefferedRendering</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="common.h">
@@ -523,9 +523,6 @@
       <Filter>Scene</Filter>
     </ClInclude>
     <ClInclude Include="Passes\DefferedRendering\PassDeffered_DoRenderScene.h">
-      <Filter>Passes\DefferedRendering</Filter>
-    </ClInclude>
-    <ClInclude Include="Passes\DefferedRendering\PassDeffered_ProcessLights.h">
       <Filter>Passes\DefferedRendering</Filter>
     </ClInclude>
     <ClInclude Include="Passes\DefferedRendering\PassDeffered_RenderUIQuad.h">
@@ -666,6 +663,9 @@
     </ClInclude>
     <ClInclude Include="Passes\PostprocessRendering\Postprocess_AccumTextures.h">
       <Filter>Passes\PostprocessRendering</Filter>
+    </ClInclude>
+    <ClInclude Include="Passes\DefferedRendering\PassDeffered_ShadowMaps.h">
+      <Filter>Passes\DefferedRendering</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -4,22 +4,38 @@
 #include "PassDeffered_RenderUIQuad.h"
 
 
-struct __declspec(align(16)) SDefferedLightResult
+struct __declspec(align(16)) SGPULightVS
 {
-	SLight     Light;
+	SGPULight  Light;
+	// 48 bytes
 	glm::vec4  LightPositionVS;
+	// 16 bytes
 	glm::vec4  LightDirectionVS;
-	glm::mat4  LightViewMatrix;
-	glm::mat4  LightProjectionMatrix;
+	// 16 bytes
+	uint32      IsEnabled;
+	uint32      IsCastShadow;
+	glm::vec2   __padding;
+	// 16 bytes
+};
+
+struct __declspec(align(16)) SGPUDefferedLightVS
+{
+	SGPULightVS LightVS;
+	// 96 bytes
+	glm::mat4   LightViewMatrix;
+	// 64 bytes
+	glm::mat4   LightProjectionMatrix;
+	// 64 bytes
+
 };
 
 
-CPassDeffered_RenderUIQuad::CPassDeffered_RenderUIQuad(IRenderDevice& RenderDevice, std::shared_ptr<CPassDeffered_DoRenderScene> DefferedRender, std::shared_ptr<CPassDeffered_ProcessLights> DefferedRenderPrepareLights)
+CPassDeffered_RenderUIQuad::CPassDeffered_RenderUIQuad(IRenderDevice& RenderDevice, std::shared_ptr<CPassDeffered_DoRenderScene> DefferedRender, std::shared_ptr<CPassDeffered_ShadowMaps> DefferedRenderPrepareLights)
 	: RenderPassPipelined(RenderDevice)
 	, m_DefferedRender(DefferedRender)
 	, m_Deffered_Lights(DefferedRenderPrepareLights)
 {
-	m_LightResultConstantBuffer = GetRenderDevice().GetObjectsFactory().CreateConstantBuffer(SDefferedLightResult());
+	m_LightResultConstantBuffer = GetRenderDevice().GetObjectsFactory().CreateConstantBuffer(SGPUDefferedLightVS());
 }
 
 CPassDeffered_RenderUIQuad::~CPassDeffered_RenderUIQuad()
@@ -84,27 +100,30 @@ std::shared_ptr<IRenderPassPipelined> CPassDeffered_RenderUIQuad::ConfigurePipel
 //
 // Protected
 //
-void CPassDeffered_RenderUIQuad::BindLightParamsForCurrentIteration(const RenderEventArgs& e, const CPassDeffered_ProcessLights::SLightResult& LightResult)
+void CPassDeffered_RenderUIQuad::BindLightParamsForCurrentIteration(const RenderEventArgs& e, const CPassDeffered_ShadowMaps::SLightResult& LightResult)
 {
 	const ICameraComponent3D* camera = e.Camera;
 	_ASSERT(camera != nullptr);
 
 	auto lightOwner = LightResult.SceneNode;
 
-	SDefferedLightResult lightResult;
-	lightResult.Light = LightResult.LightNode->GetLightStruct();
-	// From World space to camera space
-	lightResult.LightPositionVS        = camera->GetViewMatrix() * glm::vec4(lightOwner->GetPosition(),  1.0f);
-	lightResult.LightDirectionVS       = glm::normalize(camera->GetViewMatrix() * glm::vec4(lightOwner->GetRotationEuler(), 0.0f));
+	SGPUDefferedLightVS lightResult;
+
+	// GPULightVS
+	lightResult.LightVS.Light = LightResult.LightNode->GetGPULightStruct();
+	lightResult.LightVS.LightPositionVS =                 camera->GetViewMatrix() * glm::vec4(lightOwner->GetPosition(), 1.0f);
+	lightResult.LightVS.LightDirectionVS = glm::normalize(camera->GetViewMatrix() * glm::vec4(lightOwner->GetRotationEuler(), 0.0f));
+	lightResult.LightVS.IsEnabled = LightResult.IsEnabled;
+	lightResult.LightVS.IsCastShadow = LightResult.IsCastShadow;
+
+	// GPUDefferedLightVS
 	lightResult.LightViewMatrix        = LightResult.LightNode->GetViewMatrix();
 	lightResult.LightProjectionMatrix  = LightResult.LightNode->GetProjectionMatrix();
-
-
 
 	{
 		m_LightResultConstantBuffer->Set(lightResult);
 
-		auto* lightParam = GetPipeline().GetPixelShaderPtr()->GetShaderParameterByName("LightResult");
+		auto* lightParam = GetPipeline().GetPixelShaderPtr()->GetShaderParameterByName("GPUDefferedLightVS");
 		if (lightParam)
 		{
 			lightParam->SetConstantBuffer(m_LightResultConstantBuffer);
