@@ -57,7 +57,7 @@ void CEditor3DPreviewScene::SetSceneNode(std::shared_ptr<ISceneNode> SceneNode)
 
 	float radius = bbox.getRadius();
 
-	m_SceneNode->SetTranslate(-bbox.getCenter());
+	m_SceneNode->SetPosition(-bbox.getCenter());
 	GetCameraController()->GetCamera()->SetTranslation(glm::vec3(radius * 1.5f));
 	GetCameraController()->GetCamera()->SetDirection(glm::vec3(-0.5f));
 
@@ -78,7 +78,7 @@ void CEditor3DPreviewScene::SetModel(std::shared_ptr<IModel> Model)
 	const auto& modelBBox = Model->GetBounds();
 	float radius = modelBBox.getRadius();
 
-	m_ModelNode->SetTranslate(- modelBBox.getCenter());
+	m_ModelNode->SetPosition(- modelBBox.getCenter());
 	GetCameraController()->GetCamera()->SetTranslation(glm::vec3(radius * 1.5f));
 	GetCameraController()->GetCamera()->SetDirection(glm::vec3(-0.5f));
 }
@@ -161,8 +161,8 @@ void CEditor3DPreviewScene::Initialize()
 	{
 		auto lightNode = CreateSceneNodeT<ISceneNode>();
 		lightNode->SetName("Light");
-		lightNode->SetTranslate(glm::vec3(250.0f, 250.0f, 250.0f));
-		lightNode->SetRotation(glm::vec3(-0.9f, -0.9f, -0.9f));
+		lightNode->SetPosition(glm::vec3(250.0f, 250.0f, 250.0f));
+		lightNode->SetRotationEuler(glm::vec3(-0.9f, -0.9f, -0.9f));
 
 		lightNode->AddComponentT(GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<IComponentFactory>()->CreateComponentT<ILightComponent3D>(cSceneNodeLightComponent, *lightNode.get()));
 		lightNode->GetComponentT<ILightComponent3D>()->SetType(ELightType::Spot);

@@ -10,7 +10,7 @@ CSceneNodeRTSUnit::CSceneNodeRTSUnit(IScene & Scene)
 	: CSceneNode(Scene)
 	, m_Health(75.0f)
 	, m_MaxHealth(100.0f)
-	, m_Speed(0.15f)
+	, m_Speed(0.35f)
 	, m_PathCurrentPoint(0)
 {
 	// Unit properties
@@ -79,7 +79,7 @@ void CSceneNodeRTSUnit::SetPath(std::shared_ptr<ISceneNodeRTSPath> Path)
 {
 	m_Path = Path;
 	m_PathCurrentPoint = 0;
-	SetTranslate(Path->GetPoints()[0]->GetTranslation());
+	SetPosition(Path->GetPoints()[0]->GetPosition());
 }
 
 void CSceneNodeRTSUnit::SetLastPathPointReached(std::function<void(const ISceneNodeRTSUnit* Unit)> Func)
@@ -144,20 +144,20 @@ void CSceneNodeRTSUnit::Update(const UpdateEventArgs & e)
 		return;
 	}
 
-	glm::vec3 direction = glm::normalize(nextPoint->GetTranslation() - GetTranslation());
+	glm::vec3 direction = glm::normalize(nextPoint->GetPosition() - GetPosition());
 
-	glm::vec3 newPosition = GetTranslation();
+	glm::vec3 newPosition = GetPosition();
 	newPosition += direction * GetMovementSpeed() * float(e.DeltaTimeMultiplier);
 
 	// Translations
-	SetTranslate(newPosition);
+	SetPosition(newPosition);
 	
 	// Rotation
 	glm::quat t = glm::quat(glm::vec3(0, glm::pi<float>(), 0));
-	t *= glm::conjugate(glm::toQuat(glm::lookAt(GetTranslation(), GetTranslation() + direction, glm::vec3(0.0f, 1.0f, 0.0f))));
+	t *= glm::conjugate(glm::toQuat(glm::lookAt(GetPosition(), GetPosition() + direction, glm::vec3(0.0f, 1.0f, 0.0f))));
 	SetRotationQuaternion(t);
 
-	if (glm::distance(GetTranslation(), nextPoint->GetTranslation()) < GetMovementSpeed() * float(e.DeltaTimeMultiplier) * 2.0f)
+	if (glm::distance(GetPosition(), nextPoint->GetPosition()) < GetMovementSpeed() * float(e.DeltaTimeMultiplier) * 2.0f)
 	{
 		m_PathCurrentPoint++;
 	}

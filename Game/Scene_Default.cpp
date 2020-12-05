@@ -46,8 +46,8 @@ void CSceneDefault::Initialize()
 	{
 		auto lightNode = CreateSceneNodeT<ISceneNode>();
 		lightNode->SetName("Light2");
-		lightNode->SetTranslate(glm::vec3(550.0f, 550.0f, 550.0f));
-		lightNode->SetRotation(glm::vec3(-0.5f, -0.5f, -0.5f));
+		lightNode->SetPosition(glm::vec3(550.0f, 550.0f, 550.0f));
+		lightNode->SetRotationEuler(glm::vec3(-0.5f, -0.5f, -0.5f));
 
 		lightNode->AddComponentT(GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<IComponentFactory>()->CreateComponentT<ILightComponent3D>(cSceneNodeLightComponent, *lightNode.get()));
 		lightNode->GetComponentT<ILightComponent3D>()->SetType(ELightType::Spot);

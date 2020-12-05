@@ -27,8 +27,11 @@ private:
 	glm::vec3 GetDestinationPoint();
 
 private:
-	std::weak_ptr<ISceneNodeRTSUnit> m_Target;
-	glm::vec3 m_TargetLastPosition;
 	float m_Damage;
 	float m_Speed;
+
+	std::weak_ptr<ISceneNodeRTSUnit> m_Target;
+	glm::vec3 m_TargetLastPosition;
+
+	std::shared_ptr<IParticleSystem> m_ParticleSystem;
 };

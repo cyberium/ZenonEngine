@@ -48,12 +48,17 @@ void CSceneRTS::Initialize()
 		lightNode->GetComponent<ILightComponent3D>()->SetSpotlightAngle(45.0f);
 	}*/
 
+	std::shared_ptr<IParticleComponent3D> particles = MakeShared(CParticlesComponent, *GetRootSceneNode());
+	GetRootSceneNode()->AddComponentT(particles);
+
+	
+
 	// Light
 	{
 		auto lightNode = CreateSceneNodeT<ISceneNode>();
 		lightNode->SetName("Light2");
-		lightNode->SetTranslate(glm::vec3(150.0f, 150.0f, 150.0f));
-		lightNode->SetRotation(glm::vec3(-0.5f, -0.5f, -0.5f));
+		lightNode->SetLocalPosition(glm::vec3(150.0f, 150.0f, 150.0f));
+		lightNode->SetRotationEuler(glm::vec3(-0.5f, -0.5f, -0.5f));
 
 		lightNode->AddComponentT(GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<IComponentFactory>()->CreateComponentT<ILightComponent3D>(cSceneNodeLightComponent, *lightNode.get()));
 		lightNode->GetComponentT<ILightComponent3D>()->SetType(ELightType::Spot);
@@ -96,7 +101,7 @@ void CSceneRTS::Initialize()
 
 		auto node = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeFactory>()->CreateSceneNode3D(cSceneNode3D, *this, GetRootSceneNode());
 		node->SetName("Sphere");
-		node->SetTranslate(glm::vec3(0, 75.0f, 0));
+		node->SetLocalPosition(glm::vec3(0, 175.0f, 0));
 		node->SetScale(glm::vec3(cPlaneSize, cPlaneSize, cPlaneSize));
 		node->GetComponentT<IModelsComponent3D>()->SetModel(modelPlane);
 		//node->GetComponent<IModelsComponent3D>()->SetCastShadows(false);
@@ -320,7 +325,7 @@ void CSceneRTS::CreateUnit()
 
 	auto newRTSUnit = CreateSceneNodeCast<ISceneNodeRTSUnit>(cSceneNodeRTSUnit);
 	newRTSUnit->SetName("RTSUnit");
-	newRTSUnit->SetTranslate(glm::vec3(0.0f, 0.0f, 0.0f));
+	newRTSUnit->SetLocalPosition(glm::vec3(0.0f, 0.0f, 0.0f));
 	newRTSUnit->SetScale(glm::vec3(0.08f));
 	newRTSUnit->GetComponentT<IModelsComponent3D>()->SetModel(currentWave.Model);
 	newRTSUnit->GetComponentT<IModelsComponent3D>()->PlayAnimation("run", true);
@@ -381,7 +386,7 @@ void CSceneRTS::MoveTower(const Ray& RayToWorld)
 		if (false == colliderBounds.IsInfinite())
 		{
 			//auto pos = GetCameraController()->RayToPlane(RayToWorld, Plane(glm::vec3(0.0f, 1.0f, 0.0f), collider->GetBounds().getCenter().y));
-			m_CurrentTowerNode->SetTranslate(center);
+			m_CurrentTowerNode->SetLocalPosition(center);
 			return;
 		}
 	}
@@ -390,7 +395,7 @@ void CSceneRTS::MoveTower(const Ray& RayToWorld)
 		printf("s");
 
 	//auto pos = GetCameraController()->RayToPlane(RayToWorld, Plane(glm::vec3(0.0f, 1.0f, 0.0f), 0.0f));
-	m_CurrentTowerNode->SetTranslateAbs(center);
+	m_CurrentTowerNode->SetPosition(center);
 }
 
 namespace

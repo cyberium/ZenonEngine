@@ -40,30 +40,19 @@ void CRendererDeffered::Initialize(std::shared_ptr<IRenderTarget> OutputRenderTa
 	auto skyboxPass = MakeShared(CSkyboxPass, m_RenderDevice);
 	skyboxPass->ConfigurePipeline(OutputRenderTarget);
 
-	m_Deffered_ScenePass = MakeShared(CPassDeffered_DoRenderScene, m_RenderDevice, m_SceneCreateTypelessListPass);
-	m_Deffered_ScenePass->ConfigurePipeline(OutputRenderTarget);
-	m_Deffered_ScenePass->SetEnviorementTexture(skyboxPass->GetSkyboxCubeTexture());
-
-	// GBuffer contains Depth and Stencil buffer with object. We may use this data.
-	auto outputRenderTargetWithCustomDepth = m_RenderDevice.GetObjectsFactory().CreateRenderTarget();
-	outputRenderTargetWithCustomDepth->AttachTexture(IRenderTarget::AttachmentPoint::Color0, OutputRenderTarget->GetTexture(IRenderTarget::AttachmentPoint::Color0));
-	outputRenderTargetWithCustomDepth->AttachTexture(IRenderTarget::AttachmentPoint::DepthStencil, m_Deffered_ScenePass->GetTextureDepthStencil());
+	m_RenderScenePass = MakeShared(CPassDeffered_DoRenderScene, m_RenderDevice, m_SceneCreateTypelessListPass);
+	m_RenderScenePass->ConfigurePipeline(OutputRenderTarget);
+	m_RenderScenePass->SetEnviorementTexture(skyboxPass->GetSkyboxCubeTexture());
 
 	m_Deffered_Lights = MakeShared(CPassDeffered_ProcessLights, m_RenderDevice, m_SceneCreateTypelessListPass);
 	m_Deffered_Lights->CreateShadowPipeline();
 
 #ifdef ENABLE_HDR
-	auto HDRRenderTarget = CreateHDRRenderTarget(OutputRenderTarget);
+	auto HDRRenderTarget = CreateHDRRenderTarget(m_RenderScenePass->GetGBufferRenderTarget());
 #endif
 
-	m_Deffered_UIQuadPass = MakeShared(CPassDeffered_RenderUIQuad, m_RenderDevice, m_Deffered_ScenePass, m_Deffered_Lights);
-	m_Deffered_UIQuadPass->ConfigurePipeline(
-#ifdef ENABLE_HDR
-		HDRRenderTarget
-#else
-		OutputRenderTarget
-#endif
-	);
+	m_Deffered_UIQuadPass = MakeShared(CPassDeffered_RenderUIQuad, m_RenderDevice, m_RenderScenePass, m_Deffered_Lights);
+	m_Deffered_UIQuadPass->ConfigurePipeline(OutputRenderTarget);
 
 	//
 	// BEFORE SCENE
@@ -77,7 +66,7 @@ void CRendererDeffered::Initialize(std::shared_ptr<IRenderTarget> OutputRenderTa
 	// SCENE
 	//
 	Add3DPass(m_SceneCreateTypelessListPass);
-	Add3DPass(m_Deffered_ScenePass);
+	Add3DPass(m_RenderScenePass);
 	Add3DPass(m_Deffered_Lights);
 	Add3DPass(m_Deffered_UIQuadPass);
 
@@ -98,6 +87,7 @@ void CRendererDeffered::Initialize(std::shared_ptr<IRenderTarget> OutputRenderTa
 	// POSTPROCESS
 	//
 	auto inputTexture = HDRRenderTarget->GetTexture(IRenderTarget::AttachmentPoint::Color0);
+
 #ifdef ENABLE_HDR
 	auto glowPass = MakeShared(CPassPostprocess_Glow, m_RenderDevice, inputTexture);
 	glowPass->ConfigurePipeline(OutputRenderTarget);
@@ -127,6 +117,12 @@ void CRendererDeffered::Initialize(std::shared_ptr<IRenderTarget> OutputRenderTa
 	//
 	// DEBUG & TECHNICAL
 	//
+
+	// GBuffer contains Depth and Stencil buffer with object. We may use this data.
+	auto outputRenderTargetWithCustomDepth = m_RenderDevice.GetObjectsFactory().CreateRenderTarget();
+	outputRenderTargetWithCustomDepth->AttachTexture(IRenderTarget::AttachmentPoint::Color0, OutputRenderTarget->GetTexture(IRenderTarget::AttachmentPoint::Color0));
+	outputRenderTargetWithCustomDepth->AttachTexture(IRenderTarget::AttachmentPoint::DepthStencil, m_RenderScenePass->GetTextureDepthStencil());
+
 	Add3DPass(MakeShared(CSkyboxPass, m_RenderDevice)->ConfigurePipeline(outputRenderTargetWithCustomDepth));
 	Add3DPass(MakeShared(CDebugPass, m_RenderDevice, m_Scene)->ConfigurePipeline(outputRenderTargetWithCustomDepth));
 	//Add3DPass(MakeShared(CDrawBonesPass, m_Scene)->ConfigurePipeline(outputRenderTargetWithCustomDepth));
@@ -156,8 +152,8 @@ std::shared_ptr<IRenderTarget> CRendererDeffered::CreateHDRRenderTarget(std::sha
 	auto texture = m_RenderDevice.GetObjectsFactory().CreateTexture2D(OutputRenderTarget->GetViewport().GetWidth(), OutputRenderTarget->GetViewport().GetHeight(), 1, colorTextureFormat);
 
 	// GBuffer contains Depth and Stencil buffer with object. We may use this data.
-	auto outputRenderTargetWithCustomDepth = m_RenderDevice.GetObjectsFactory().CreateRenderTarget();
-	outputRenderTargetWithCustomDepth->AttachTexture(IRenderTarget::AttachmentPoint::Color0, texture);
-	outputRenderTargetWithCustomDepth->AttachTexture(IRenderTarget::AttachmentPoint::DepthStencil, OutputRenderTarget->GetTexture(IRenderTarget::AttachmentPoint::DepthStencil));
-	return outputRenderTargetWithCustomDepth;
+	auto rt = m_RenderDevice.GetObjectsFactory().CreateRenderTarget();
+	rt->AttachTexture(IRenderTarget::AttachmentPoint::Color0, texture);
+	rt->AttachTexture(IRenderTarget::AttachmentPoint::DepthStencil, OutputRenderTarget->GetTexture(IRenderTarget::AttachmentPoint::DepthStencil));
+	return rt;
 }

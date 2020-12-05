@@ -43,8 +43,8 @@ void CEditor3DFrame::Initialize()
 	{
 		auto lightNode = CreateSceneNodeT<ISceneNode>();
 		lightNode->SetName("Light");
-		lightNode->SetTranslate(rtsCenter);
-		lightNode->SetRotation(glm::vec3(-0.5f));
+		lightNode->SetPosition(rtsCenter);
+		lightNode->SetRotationEuler(glm::vec3(-0.5f));
 
 		lightNode->AddComponentT(GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<IComponentFactory>()->CreateComponentT<ILightComponent3D>(cSceneNodeLightComponent, *lightNode.get()));
 		lightNode->GetComponentT<ILightComponent3D>()->SetType(ELightType::Spot);
@@ -67,6 +67,8 @@ void CEditor3DFrame::Initialize()
 		GetCameraController()->GetCamera()->SetYaw(225);
 		GetCameraController()->GetCamera()->SetPitch(-45);
 	}
+
+	SetRenderer(m_Ren)
 }
 
 void CEditor3DFrame::Finalize()
@@ -112,7 +114,7 @@ bool CEditor3DFrame::InitializeEditorFrame()
 	{
 		auto node = CreateSceneNodeT<ISceneNode>();
 		node->SetName("GridNodeX1");
-		node->SetTranslate(glm::vec3(0.0f));
+		node->SetPosition(glm::vec3(0.0f));
 		node->SetScale(glm::vec3(1.0f));
 
 		auto geom = GetRenderDevice().GetPrimitivesFactory().CreateLines();
@@ -129,7 +131,7 @@ bool CEditor3DFrame::InitializeEditorFrame()
 	{
 		auto node = CreateSceneNodeT<ISceneNode>();
 		node->SetName("GridNodeX10");
-		node->SetTranslate(glm::vec3(0.0f, 0.00f, 0.0f));
+		node->SetPosition(glm::vec3(0.0f, 0.00f, 0.0f));
 		node->SetScale(glm::vec3(10.0f));
 
 		auto geom = GetRenderDevice().GetPrimitivesFactory().CreateLines();
@@ -146,7 +148,7 @@ bool CEditor3DFrame::InitializeEditorFrame()
 	{
 		auto node = CreateSceneNodeT<ISceneNode>();
 		node->SetName("GridNodeX100");
-		node->SetTranslate(glm::vec3(0.0f, 0.00f, 0.0f));
+		node->SetPosition(glm::vec3(0.0f, 0.00f, 0.0f));
 		node->SetScale(glm::vec3(100.0f));
 
 		auto geom = GetRenderDevice().GetPrimitivesFactory().CreateLines(10);

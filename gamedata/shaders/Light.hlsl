@@ -2,11 +2,6 @@
 // Lights functions
 //
 
-#ifndef NUM_LIGHTS
-#pragma message( "NUM_LIGHTS undefined. Default to 1.")
-#define NUM_LIGHTS 1
-#endif
-
 #define POINT_LIGHT 0
 #define SPOT_LIGHT 1
 #define DIRECTIONAL_LIGHT 2
@@ -176,7 +171,12 @@ SLightingResult DoLightingSingle(LightVS light, MaterialForLight mat, float4 eye
 SLightingResult DoLighting(StructuredBuffer<LightVS> lights, MaterialForLight mat, float4 eyePos, float4 P, float4 N)
 {
 	SLightingResult totalLightingResult = (SLightingResult)0;
-	for (int i = 0; i < NUM_LIGHTS; ++i)
+	
+	uint numStructs;
+	uint stride;
+	lights.GetDimensions(numStructs, stride);
+	
+	for (int i = 0; i < numStructs; ++i)
 	{
 		SLightingResult lightingResult = DoLightingSingle(lights[i], mat, eyePos, P, N);
 		totalLightingResult.Ambient += lightingResult.Ambient;

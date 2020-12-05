@@ -70,7 +70,7 @@ std::shared_ptr<IRenderPassPipelined> CDrawSelectionPass::ConfigurePipeline(std:
 	vertexShader->LoadInputLayoutFromReflector();
 
 	m_ShaderInstancesBufferParameter = vertexShader->GetShaderParameterByName("Instances");
-	_ASSERT(m_ShaderInstancesBufferParameter->IsValid());
+	_ASSERT(m_ShaderInstancesBufferParameter);
 
 	// PIPELINES
 	GetPipeline().GetBlendState()->SetBlendMode(disableBlending);

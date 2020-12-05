@@ -75,7 +75,7 @@ namespace
 		{
 			FillNearestSceneNodesMapRecursive(it, Position, Distance, NearestSceneNodes);
 
-			glm::vec3 nodeTranslate = it->GetTranslationAbs();
+			glm::vec3 nodeTranslate = it->GetPosition();
 			if (auto colliderComponent = it->GetComponentT<IColliderComponent3D>())
 			{
 				const auto& worldBounds = colliderComponent->GetWorldBounds();
@@ -96,7 +96,7 @@ namespace
 		{
 			FillNearestSceneNodesMap2DRecursive(it, Position, Distance, NearestSceneNodes);
 
-			glm::vec3 nodeTranslate = it->GetTranslationAbs();
+			glm::vec3 nodeTranslate = it->GetPosition();
 			if (auto colliderComponent = it->GetComponentT<IColliderComponent3D>())
 			{
 				const auto& worldBounds = colliderComponent->GetWorldBounds();

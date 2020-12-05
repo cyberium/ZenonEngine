@@ -11,9 +11,6 @@ CParticlesComponent::CParticlesComponent(const ISceneNode & SceneNode)
 
 {
 	GetProperties()->SetName("ParticlesComponent");
-
-	m_ParticleSystem = MakeShared(CParticleSystem, GetOwnerNode());
-	m_ParticleSystem->SetTexture(GetBaseManager().GetManager<IznTexturesFactory>()->LoadTexture2D("star_09.png"));
 }
 
 CParticlesComponent::~CParticlesComponent()
@@ -25,10 +22,31 @@ CParticlesComponent::~CParticlesComponent()
 //
 // IParticleComponent3D
 //
-const std::shared_ptr<IParticleSystem>& CParticlesComponent::GetParticleSystem() const
+void CParticlesComponent::Attach(std::shared_ptr<IParticleSystem> ParticleSystem)
 {
-	return m_ParticleSystem;
+	auto it = std::find(m_ParticleSystems.begin(), m_ParticleSystems.end(), ParticleSystem);
+	if (it != m_ParticleSystems.end())
+		throw CException("Particle system already exists.");
+
+	m_ParticleSystems.push_back(ParticleSystem);
 }
+
+std::shared_ptr<IParticleSystem> CParticlesComponent::Detach(std::shared_ptr<IParticleSystem> ParticleSystem)
+{
+	auto it = std::find(m_ParticleSystems.begin(), m_ParticleSystems.end(), ParticleSystem);
+	if (it == m_ParticleSystems.end())
+		return nullptr;
+
+	auto particleSystem = *it;
+	m_ParticleSystems.erase(it);
+	return particleSystem;
+}
+
+const std::vector<std::shared_ptr<IParticleSystem>>& CParticlesComponent::GetParticleSystems() const
+{
+	return m_ParticleSystems;
+}
+
 
 
 
@@ -39,12 +57,40 @@ void CParticlesComponent::Update(const UpdateEventArgs & e)
 {
 	__super::Update(e);
 
-	_ASSERT(m_ParticleSystem);
-	m_ParticleSystem->Update(e);
+	ClearUnusedParticlesSystem();
+
+	for (const auto& particleSystem : m_ParticleSystems)
+	{
+		_ASSERT(particleSystem != nullptr);
+		particleSystem->Update(e);
+	}
 }
 
 void CParticlesComponent::Accept(IVisitor * visitor)
 {
-	_ASSERT(m_ParticleSystem);
-	visitor->Visit(m_ParticleSystem);
+	for (const auto& particleSystem : m_ParticleSystems)
+	{
+		_ASSERT(particleSystem != nullptr);
+		visitor->Visit(particleSystem);
+	}	
+}
+
+
+
+//
+// Private
+//
+void CParticlesComponent::ClearUnusedParticlesSystem()
+{
+	for (auto it = m_ParticleSystems.begin(); it != m_ParticleSystems.end(); )
+	{
+		const auto& particleSystem = *it;
+		if (false == particleSystem->IsEnableCreatingNewParticles() && particleSystem->GetGPUParticles().empty())
+		{
+			it = m_ParticleSystems.erase(it);
+			continue;
+		}
+
+		it++;
+	}
 }

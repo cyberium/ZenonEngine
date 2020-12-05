@@ -8,6 +8,7 @@ class ZN_API CPassDeffered_ProcessLights
 public:
 	struct SLightResult
 	{
+		bool IsEnabled;
 		std::shared_ptr<const ISceneNode> SceneNode;
 		std::shared_ptr<const ILight3D> LightNode;
 		bool                       IsLightEnabled;

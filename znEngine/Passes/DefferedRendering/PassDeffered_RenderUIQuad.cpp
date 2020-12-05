@@ -35,6 +35,9 @@ void CPassDeffered_RenderUIQuad::Render(RenderEventArgs& e)
 {
 	for (const auto& lightResult : m_Deffered_Lights->GetLightResult())
 	{
+		if (false == lightResult.IsEnabled)
+			continue;
+
 		// Once per light
 		BindLightParamsForCurrentIteration(e, lightResult);
 
@@ -54,6 +57,7 @@ std::shared_ptr<IRenderPassPipelined> CPassDeffered_RenderUIQuad::ConfigurePipel
 	m_QuadGeometry = GetRenderDevice().GetPrimitivesFactory().CreateQuad();
 
 	auto samplesCnt = std::to_string(RenderTarget->GetTexture(IRenderTarget::AttachmentPoint::Color0)->GetSamplesCount());
+
 
 	auto vertexShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::VertexShader, "3D/Deffered_UIQuad.hlsl", "VS_ScreenQuad", { {"MULTISAMPLED", samplesCnt.c_str() } });
 	vertexShader->LoadInputLayoutFromReflector();
@@ -90,8 +94,8 @@ void CPassDeffered_RenderUIQuad::BindLightParamsForCurrentIteration(const Render
 	SDefferedLightResult lightResult;
 	lightResult.Light = LightResult.LightNode->GetLightStruct();
 	// From World space to camera space
-	lightResult.LightPositionVS        = camera->GetViewMatrix() * glm::vec4(lightOwner->GetTranslation(),  1.0f);
-	lightResult.LightDirectionVS       = glm::normalize(camera->GetViewMatrix() * glm::vec4(lightOwner->GetRotation(), 0.0f));
+	lightResult.LightPositionVS        = camera->GetViewMatrix() * glm::vec4(lightOwner->GetPosition(),  1.0f);
+	lightResult.LightDirectionVS       = glm::normalize(camera->GetViewMatrix() * glm::vec4(lightOwner->GetRotationEuler(), 0.0f));
 	lightResult.LightViewMatrix        = LightResult.LightNode->GetViewMatrix();
 	lightResult.LightProjectionMatrix  = LightResult.LightNode->GetProjectionMatrix();
 

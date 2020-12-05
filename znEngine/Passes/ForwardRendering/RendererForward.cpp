@@ -171,8 +171,8 @@ void CRendererForward::DoUpdateLights()
 
 		SLightVS lightVS;
 		lightVS.Light = lightStruct;
-		lightVS.LightPositionVS = m_Scene.GetCameraController()->GetCamera()->GetViewMatrix() * glm::vec4(lightOwner->GetTranslation(), 1.0f);
-		lightVS.LightDirectionVS = glm::normalize(m_Scene.GetCameraController()->GetCamera()->GetViewMatrix() * glm::vec4(lightOwner->GetRotation(), 0.0f));
+		lightVS.LightPositionVS = m_Scene.GetCameraController()->GetCamera()->GetViewMatrix() * glm::vec4(lightOwner->GetPosition(), 1.0f);
+		lightVS.LightDirectionVS = glm::normalize(m_Scene.GetCameraController()->GetCamera()->GetViewMatrix() * glm::vec4(lightOwner->GetRotationEuler(), 0.0f));
 		lightsVS.push_back(lightVS);
 	}
 

@@ -105,8 +105,8 @@ float CLightComponent3D::GetSpotlightAngle() const
 //
 glm::mat4 CLightComponent3D::GetViewMatrix() const
 {
-	const glm::vec3& ownerTranslate = GetOwnerNode().GetTranslation();
-	const glm::vec3& ownerRotation = GetOwnerNode().GetRotation();
+	const glm::vec3& ownerTranslate = GetOwnerNode().GetPosition();
+	const glm::vec3& ownerRotation = GetOwnerNode().GetRotationEuler();
 
 	if (m_LightStruct->Type == ELightType::Point)
 	{

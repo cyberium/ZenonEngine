@@ -58,24 +58,27 @@ namespace
 
 
 CParticleSystem::CParticleSystem(const ISceneNode& SceneNode)
-	: m_GravityDirection(glm::vec3(0.0f, -1.0f, 0.0f))
-	, m_GravityValue(0.1f)
+	: m_IsEnableCreatingNewParticles(true)
+	, m_Texture(nullptr)
+
+	, m_GravityDirection(glm::vec3(0.0f, -1.0f, 0.0f))
+	, m_GravityValue(0.0f)
 	, m_Deaccelerate(0.02f)
 	, m_OwnerNode(SceneNode)
 
 	, m_LastParticleTime(0.0f)
 	, m_ParticleInterval(15.0f)
 {
-	m_Lifetime = 1000.0f;
+	m_Lifetime = 700.0f;
 	m_LifeTimeMiddlePoint = 0.5f;
 
-	m_Colors[0] = glm::vec4(10.0f, 0.0f, 0.0f, 1.0f);
-	m_Colors[1] = glm::vec4(0.0f, 10.0f, 0.0f, 1.0f);
-	m_Colors[2] = glm::vec4(0.0f, 0.0f, 10.0f, 1.0f);
+	m_Colors[0] = glm::vec4(5.0f, 0.0f, 0.0f, 1.0f);
+	m_Colors[1] = glm::vec4(3.0f, 3.0f, 0.0f, 1.0f);
+	m_Colors[2] = glm::vec4(0.0f, 5.0f, 0.0f, 1.0f);
 
-	m_Sizes[0] = glm::vec2(3.0f);
-	m_Sizes[1] = glm::vec2(1.0f);
-	m_Sizes[2] = glm::vec2(0.5f);
+	m_Sizes[0] = glm::vec2(4.0f);
+	m_Sizes[1] = glm::vec2(2.0f);
+	m_Sizes[2] = glm::vec2(0.1f);
 }
 
 CParticleSystem::~CParticleSystem()
@@ -107,7 +110,7 @@ void CParticleSystem::Update(const UpdateEventArgs & e)
 	for (size_t i = 0; i < m_CPUParticles.size(); i++)
 		m_GPUParticles[i] = m_CPUParticles.at(i).ToGPUParticle();
 
-	if (m_LastParticleTime + m_ParticleInterval < e.TotalTime)
+	if (IsEnableCreatingNewParticles() && (m_LastParticleTime + m_ParticleInterval < e.TotalTime))
 	{
 		CreateNewParticle();
 		m_LastParticleTime = e.TotalTime;
@@ -118,6 +121,16 @@ void CParticleSystem::Update(const UpdateEventArgs & e)
 const std::vector<SGPUParticle>& CParticleSystem::GetGPUParticles() const
 {
 	return m_GPUParticles;
+}
+
+void CParticleSystem::SetEnableCreatingNewParticles(bool Value)
+{
+	m_IsEnableCreatingNewParticles = Value;
+}
+
+bool CParticleSystem::IsEnableCreatingNewParticles() const
+{
+	return m_IsEnableCreatingNewParticles;
 }
 
 void CParticleSystem::SetTexture(const std::shared_ptr<ITexture>& Material)
@@ -146,7 +159,7 @@ void CParticleSystem::CreateNewParticle()
 	p.Color = m_Colors[0];
 	p.Size = m_Sizes[0];
 
-	p.Position = m_OwnerNode.GetTranslationAbs();
+	p.Position = m_OwnerNode.GetPosition();
 	p.StartPosition = p.Position;
 	p.Direction = glm::vec3(0.0f, 1.0f, 0.0f);
 	//p.Direction = Random::UnitVector3f();// CalcSpreadMatrix(glm::two_pi<float>(), 0.0f, 1.0, 1.0f) * glm::vec4(1.0f, 1.0f, 1.0f, 0.0f);
@@ -170,7 +183,7 @@ void CParticleSystem::UpdateParticle(SCPUParticle& P, const UpdateEventArgs & e)
 		P.Speed = speed;
 	}
 
-	if (P.Position.y > 0.0f)
+	if (P.Position.y > 1.5f)
 		P.Position += (P.Direction * P.Speed * float(e.DeltaTimeMultiplier)) + (m_GravityDirection * m_GravityValue * float(e.DeltaTimeMultiplier));
 }
 

@@ -25,7 +25,7 @@ void CEditorToolMoverRTS::Enable()
 	if (auto node = GetEditor().GetFirstSelectedNode())
 	{
 		m_MovingNode = node;
-		m_MoverRoot->SetTranslate(node->GetTranslation());
+		m_MoverRoot->SetPosition(node->GetPosition());
 		m_MoverRoot->SetScale(glm::vec3(node->GetComponentT<IColliderComponent3D>()->GetBounds().getRadius() * 1.0f / 50.0f));
 	}
 }
@@ -39,7 +39,7 @@ void CEditorToolMoverRTS::Disable()
 	Clear();
 
 	m_MovingNode.reset();
-	m_MoverRoot->SetTranslate(glm::vec3(Math::MinFloat));
+	m_MoverRoot->SetPosition(glm::vec3(Math::MinFloat));
 }
 
 void CEditorToolMoverRTS::DoInitialize3D(const std::shared_ptr<IRenderer>& Renderer, std::shared_ptr<IRenderTarget> RenderTarget)
@@ -68,12 +68,12 @@ void CEditorToolMoverRTS::DoInitialize3D(const std::shared_ptr<IRenderer>& Rende
 
 	m_MoverX = GetScene().CreateSceneNodeT<ISceneNode>(m_MoverRoot);
 	m_MoverX->SetName("MoverRTSX");
-	m_MoverX->SetRotation(glm::vec3(0.0f, glm::half_pi<float>(), 0.0f));
+	m_MoverX->SetRotationEuler(glm::vec3(0.0f, glm::half_pi<float>(), 0.0f));
 	m_MoverX->GetComponentT<IModelsComponent3D>()->SetModel(modelX);
 
 	m_MoverZ = GetScene().CreateSceneNodeT<ISceneNode>(m_MoverRoot);
 	m_MoverZ->SetName("RotatorRTSZ");
-	m_MoverZ->SetRotation(glm::vec3(0.0f, 0.0f, 0.0f));
+	m_MoverZ->SetRotationEuler(glm::vec3(0.0f, 0.0f, 0.0f));
 	m_MoverZ->GetComponentT<IModelsComponent3D>()->SetModel(modelZ);
 }
 
@@ -90,13 +90,13 @@ bool CEditorToolMoverRTS::OnMousePressed(const MouseButtonEventArgs & e, const R
 		return false;
 
 	{
-		auto pos = GetScene().GetCameraController()->RayToPlane(RayToWorld, Plane(glm::vec3(0.0f, 1.0f, 0.0f), movingNode->GetTranslation().y));
+		auto pos = GetScene().GetCameraController()->RayToPlane(RayToWorld, Plane(glm::vec3(0.0f, 1.0f, 0.0f), movingNode->GetPosition().y));
 		auto cameraPosX0Z = GetScene().GetCameraController()->GetCamera()->GetTranslation();
 		cameraPosX0Z = glm::vec3(cameraPosX0Z.x, 0.0f, cameraPosX0Z.z);
-		auto movedObjectPosX0Z = glm::vec3(movingNode->GetTranslation().x, 0.0f, movingNode->GetTranslation().z);
+		auto movedObjectPosX0Z = glm::vec3(movingNode->GetPosition().x, 0.0f, movingNode->GetPosition().z);
 		auto planeNormal = glm::normalize(movedObjectPosX0Z - cameraPosX0Z);
 		auto posYYY = GetScene().GetCameraController()->RayToPlane(RayToWorld, Plane(planeNormal, 0.0f));
-		m_MoverOffset = m_MoverRoot->GetTranslation() - glm::vec3(pos.x, posYYY.y, pos.z);
+		m_MoverOffset = m_MoverRoot->GetPosition() - glm::vec3(pos.x, posYYY.y, pos.z);
 	}
 
 	for (const auto& it : nodes)
@@ -134,7 +134,7 @@ void CEditorToolMoverRTS::OnMouseMoved(const MouseMotionEventArgs & e, const Ray
 	if (movingNode == nullptr)
 		return;
 
-	glm::vec3 oldPos = movingNode->GetTranslation();
+	glm::vec3 oldPos = movingNode->GetPosition();
 	glm::vec3 newPos = glm::vec3(0.0f);
 
 	auto mousePos = GetScene().GetCameraController()->RayToPlane(RayToWorld, Plane(glm::vec3(0.0f, 1.0f, 0.0f), oldPos.y));
@@ -150,8 +150,8 @@ void CEditorToolMoverRTS::OnMouseMoved(const MouseMotionEventArgs & e, const Ray
 	glm::vec3 fixed3DTranslate = GetEditor().GetTools().GetToolT<IEditorToolMover>(ETool::EToolMover).FixBoxCoords(newPos);
 
 	glm::vec2 fixed2DTranslate = glm::vec2(fixed3DTranslate.xz);
-	movingNode->SetTranslate(glm::vec3(fixed2DTranslate.x, oldPos.y, fixed2DTranslate.y));
-	m_MoverRoot->SetTranslate(movingNode->GetTranslation());
+	movingNode->SetPosition(glm::vec3(fixed2DTranslate.x, oldPos.y, fixed2DTranslate.y));
+	m_MoverRoot->SetPosition(movingNode->GetPosition());
 
 	// Refresh selection bounds
 	GetEditor().GetTools().GetToolT<IEditorToolSelector>(ETool::EToolSelector).SelectNode(movingNode);

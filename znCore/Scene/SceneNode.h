@@ -32,26 +32,31 @@ public:
 	IScene&											GetScene() const override final;
 
 	// Transform functional
-	void											SetTranslate(const glm::vec3& Translate) override;
-	void                                            AddTranslate(const glm::vec3& Translate) override;
-	glm::vec3								        GetTranslation() const override;
-	void                                            SetTranslateAbs(const glm::vec3& Translate) override;
-	glm::vec3                                       GetTranslationAbs() const override;
-	void											SetRotation(const glm::vec3& _rotate) override;
-	glm::vec3                                       GetRotation() const override;
-	void											SetRotationQuaternion(const glm::quat& _rotate) override;
-	glm::quat								        GetRotationQuaternion() const override;
-	void											SetScale(const glm::vec3& _scale) override;
+	void                                            SetPosition(glm::vec3 Position) override;
+	glm::vec3                                       GetPosition() const override;
+
+	void                                            SetLocalPosition(glm::vec3 LocalPosition) override;
+	glm::vec3                                       GetLocalPosition() const override;
+
+	void                                            SetDirection(glm::vec3 Direction) override;
+	glm::vec3                                       GetDirection() const override;
+	void                                            SetRotationEuler(glm::vec3 Rotation) override;
+	glm::vec3                                       GetRotationEuler() const override;
+	void                                            SetRotationQuaternion(glm::quat Rotation) override;
+	glm::quat                                       GetRotationQuaternion() const override;
+	ISceneNode::ERotationKind                       GetRotationKind() const override;
+
+	void											SetScale(glm::vec3 Scale) override;
 	glm::vec3								        GetScale() const override;
 
-	virtual glm::mat4								GetLocalTransform() const;
-	virtual glm::mat4								GetInverseLocalTransform() const;
-	virtual void									SetLocalTransform(const glm::mat4& localTransform);
-
-	virtual glm::mat4								GetWorldTransfom() const;
-	virtual glm::mat4								GetInverseWorldTransform() const;
-	virtual glm::mat4								GetParentWorldTransform() const;
-	virtual void									SetWorldTransform(const glm::mat4& worldTransform);
+	void											SetLocalTransform(const glm::mat4& localTransform);
+	glm::mat4										GetLocalTransform() const;
+	glm::mat4										GetInverseLocalTransform() const;
+	
+	void											SetWorldTransform(const glm::mat4& worldTransform);
+	glm::mat4										GetWorldTransfom() const;
+	glm::mat4										GetInverseWorldTransform() const;
+	glm::mat4										GetParentWorldTransform() const;
 
 	// Components engine
 	bool                                            IsComponentExists(ObjectClass ComponentID) const override;
@@ -99,12 +104,15 @@ private:
 
 	bool                                            m_IsEnabled;
 
-	glm::vec3										m_TranslateLocal;
-	std::shared_ptr<CPropertyWrappedVec3>           m_TranslateProperty;
-	glm::vec3										m_Rotate;
-	glm::quat										m_RotateQuat;
-	bool											m_IsRotateQuat;
+	glm::vec3										m_PositionLocal;
+	std::shared_ptr<CPropertyWrappedVec3>           m_PositionProperty;
+
+	glm::vec3										m_Rotation;
+	glm::quat										m_RotationQuaternion;
+	ERotationKind                                   m_RotationKind;
+	
 	glm::vec3										m_Scale;
+
 	glm::mat4										m_LocalTransform;
 	glm::mat4										m_InverseLocalTransform;
 	glm::mat4										m_WorldTransform;

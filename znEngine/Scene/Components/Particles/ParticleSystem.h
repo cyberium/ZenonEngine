@@ -12,6 +12,9 @@ public:
 
 	const std::vector<SGPUParticle>& GetGPUParticles() const override;
 
+	void SetEnableCreatingNewParticles(bool Value) override;
+	bool IsEnableCreatingNewParticles() const override;
+
 	void SetTexture(const std::shared_ptr<ITexture>& Texture) override;
 	std::shared_ptr<ITexture> GetTexture() const override;
 
@@ -22,7 +25,7 @@ protected:
 	void UpdateParticle(SCPUParticle& CPUParticle, const UpdateEventArgs & e);
 
 
-private:
+public:
 	float m_Lifetime;
 	float m_LifeTimeMiddlePoint;
 	glm::vec4 m_Colors[3];
@@ -32,6 +35,8 @@ private:
 private:
 	std::vector<SCPUParticle> m_CPUParticles;
 	std::vector<SGPUParticle> m_GPUParticles;
+
+	bool m_IsEnableCreatingNewParticles;
 	std::shared_ptr<ITexture> m_Texture;
 
 	glm::vec3 m_GravityDirection;

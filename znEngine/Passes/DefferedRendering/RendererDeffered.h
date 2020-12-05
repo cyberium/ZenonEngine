@@ -20,7 +20,8 @@ private:
 
 private:
 	std::shared_ptr<IRenderPassCreateTypelessList> m_SceneCreateTypelessListPass;
-	std::shared_ptr<CPassDeffered_DoRenderScene> m_Deffered_ScenePass;
+
+	std::shared_ptr<CPassDeffered_DoRenderScene> m_RenderScenePass;
 	std::shared_ptr<CPassDeffered_ProcessLights> m_Deffered_Lights;
 	std::shared_ptr<CPassDeffered_RenderUIQuad> m_Deffered_UIQuadPass;
 };

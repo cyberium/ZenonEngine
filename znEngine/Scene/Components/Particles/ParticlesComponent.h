@@ -9,12 +9,17 @@ public:
 	virtual ~CParticlesComponent();
 
 	// IParticleComponent3D
-	const std::shared_ptr<IParticleSystem>& GetParticleSystem() const override;
+	void Attach(std::shared_ptr<IParticleSystem> ParticleSystem) override;
+	std::shared_ptr<IParticleSystem> Detach(std::shared_ptr<IParticleSystem> ParticleSystem) override;
+	const std::vector<std::shared_ptr<IParticleSystem>>& GetParticleSystems() const override;
 
 	// ISceneNodeComponent
 	virtual void Update(const UpdateEventArgs& e) override;
 	virtual void Accept(IVisitor* visitor) override;
 
 private:
-	std::shared_ptr<IParticleSystem> m_ParticleSystem;
+	void ClearUnusedParticlesSystem();
+
+private:
+	std::vector<std::shared_ptr<IParticleSystem>> m_ParticleSystems;
 };

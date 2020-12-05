@@ -113,7 +113,8 @@ IScene& CUIControl::GetScene() const
 
 void CUIControl::SetPosition(glm::vec2 Position)
 {
-	throw CException("Not implemented!");
+	m_Position = glm::inverse(GetParentWorldTransform()) * glm::vec4(Position, 0.0f, 1.0f);
+	UpdateLocalTransform();
 }
 
 glm::vec2 CUIControl::GetPosition() const

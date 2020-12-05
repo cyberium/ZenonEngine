@@ -17,6 +17,7 @@ public:
 	std::shared_ptr<ITexture> GetTexture2() const;
 	std::shared_ptr<ITexture> GetTexture3() const;
 	std::shared_ptr<ITexture> GetTextureDepthStencil() const;
+	std::shared_ptr<IRenderTarget> GetGBufferRenderTarget() const;
 
 	// IRenderPass
 	void PreRender(RenderEventArgs& e) override;
@@ -42,9 +43,5 @@ private:
 	IShaderParameter* m_ShaderBonesBufferParameter;
 
 private:
-	std::shared_ptr<ITexture> m_Texture0;
-	std::shared_ptr<ITexture> m_Texture1;
-	std::shared_ptr<ITexture> m_Texture2;
-	std::shared_ptr<ITexture> m_Texture3;
-	std::shared_ptr<ITexture> m_DepthStencilTexture;
+	std::shared_ptr<IRenderTarget> m_GBufferRenderTarget;
 };

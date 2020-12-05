@@ -49,14 +49,14 @@ std::shared_ptr<IRenderPassPipelined> CDrawToolsPass::ConfigurePipeline(std::sha
 //
 // IVisitor
 //
-EVisitResult CDrawToolsPass::Visit(const IModel * Model)
+EVisitResult CDrawToolsPass::Visit(const std::shared_ptr<IModel>& Model)
 {
 	return Base3DPass::Visit(Model);
 }
 
 EVisitResult CDrawToolsPass::Visit(const std::shared_ptr<IGeometry>& Geometry, const std::shared_ptr<IMaterial>& Material, SGeometryDrawArgs GeometryDrawArgs)
 {
-	const MaterialEditorTool* objMaterial = dynamic_cast<const MaterialEditorTool*>(Material);
+	auto objMaterial = std::dynamic_pointer_cast<MaterialEditorTool>(Material);
 	if (objMaterial == nullptr)
 		return EVisitResult::Block;
 

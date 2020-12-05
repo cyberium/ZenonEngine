@@ -92,6 +92,9 @@ void CPassDeffered_ProcessLights::PreRender(RenderEventArgs& e)
 
 void CPassDeffered_ProcessLights::Render(RenderEventArgs& e)
 {
+	for (auto& l : m_LightResult)
+		l.IsEnabled = false;
+
 	for (size_t i = 0; i < m_SceneCreateTypelessListPass->GetLightList().size(); i++)
 	{
 		const auto& lightIt = m_SceneCreateTypelessListPass->GetLightList().at(i);
@@ -132,10 +135,10 @@ void CPassDeffered_ProcessLights::Render(RenderEventArgs& e)
 				}
 			}
 
-
 			if (i < m_LightResult.size())
 			{
 				SLightResult& lightResult = m_LightResult.at(i);
+				lightResult.IsEnabled = true;
 				lightResult.SceneNode = lightIt.SceneNode;
 				lightResult.LightNode = lightIt.Light;
 				lightResult.IsLightEnabled = true;
@@ -145,6 +148,7 @@ void CPassDeffered_ProcessLights::Render(RenderEventArgs& e)
 			else
 			{
 				SLightResult lightResult;
+				lightResult.IsEnabled = true;
 				lightResult.SceneNode = lightIt.SceneNode;
 				lightResult.LightNode = lightIt.Light;
 				lightResult.IsLightEnabled = true;

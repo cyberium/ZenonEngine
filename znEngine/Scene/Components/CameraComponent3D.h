@@ -46,8 +46,8 @@ public:
 	virtual void OnMessage(const ISceneNodeComponent* Component, ComponentMessageType Message) override;
 
 protected:
-	glm::vec3 EulerAnglesToDirectionVector(float Yaw, float Pitch);
-	void DirectionVectorToEulerAngles(const glm::vec3& Direction);
+	glm::vec3 AnglesToRotation(float Yaw, float Pitch);
+	void RotationToAngles(const glm::vec3& Direction);
 
 	void UpdateView();
 	void UpdateProjectionView();

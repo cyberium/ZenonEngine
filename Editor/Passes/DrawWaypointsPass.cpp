@@ -51,16 +51,16 @@ std::shared_ptr<IRenderPassPipelined> CDrawWaypointsPass::ConfigurePipeline(std:
 	return shared_from_this();
 }
 
-EVisitResult CDrawWaypointsPass::Visit(const ISceneNode * node)
+EVisitResult CDrawWaypointsPass::Visit(const std::shared_ptr<ISceneNode>& node)
 {
-	auto waypointSceneNode = dynamic_cast<const ISceneNodeRTSPath*>(node);
+	auto waypointSceneNode = std::dynamic_pointer_cast<ISceneNodeRTSPath>(node);
 	if (waypointSceneNode == nullptr)
 		return EVisitResult::AllowVisitChilds;
 
 	const auto& points = waypointSceneNode->GetPoints();
 	std::vector<glm::vec3> pointsXYZ;
 	std::for_each(points.begin(), points.end(), [&pointsXYZ](const std::shared_ptr<ISceneNodeRTSPoint>& Point) {
-		pointsXYZ.push_back(Point->GetTranslation());
+		pointsXYZ.push_back(Point->GetPosition());
 	});
 
 	if (points.size() < 2)
@@ -77,7 +77,7 @@ EVisitResult CDrawWaypointsPass::Visit(const ISceneNode * node)
 	return EVisitResult::AllowVisitChilds;
 }
 
-EVisitResult CDrawWaypointsPass::Visit(const IModel * Model)
+EVisitResult CDrawWaypointsPass::Visit(const std::shared_ptr<IModel>& Model)
 {
 	_ASSERT(false);
 	return EVisitResult::Block;

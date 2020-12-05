@@ -26,6 +26,13 @@ ZN_INTERFACE ZN_API ISceneNode
 {
 	typedef std::vector<std::shared_ptr<ISceneNode>> SceneNodesList;
 
+	enum ZN_API ERotationKind : size_t
+	{
+		Euler = 0,
+		Quaternion,
+		Direction
+	};
+
 	ZN_OBJECTCLASS(cSceneNode3D)
 	virtual ~ISceneNode() {}
 
@@ -47,31 +54,35 @@ ZN_INTERFACE ZN_API ISceneNode
 	virtual IScene& GetScene() const = 0;
 
 	// Transform functional
-	virtual void SetTranslate(const glm::vec3& Translate) = 0;
-	virtual void AddTranslate(const glm::vec3& Translate) = 0;
-	virtual glm::vec3 GetTranslation() const = 0;
+	virtual void SetPosition(glm::vec3 Position) = 0;
+	virtual glm::vec3 GetPosition() const = 0;
 
-	virtual void SetTranslateAbs(const glm::vec3& Translate) = 0;
-	virtual glm::vec3 GetTranslationAbs() const = 0;
+	virtual void SetLocalPosition(glm::vec3 LocalPosition) = 0;
+	virtual glm::vec3 GetLocalPosition() const = 0;
 
-	virtual void SetRotation(const glm::vec3& _rotate) = 0;
-	virtual glm::vec3 GetRotation() const = 0;
+	virtual void SetDirection(glm::vec3 Direction) = 0;
+	virtual glm::vec3 GetDirection() const = 0;
 
-	virtual void SetRotationQuaternion(const glm::quat& _rotate) = 0;
+	virtual void SetRotationEuler(glm::vec3 Rotation) = 0;
+	virtual glm::vec3 GetRotationEuler() const = 0;
+	
+	virtual void SetRotationQuaternion(glm::quat Rotation) = 0;
 	virtual glm::quat GetRotationQuaternion() const = 0;
 
-	virtual void SetScale(const glm::vec3& _scale) = 0;
+	virtual ISceneNode::ERotationKind GetRotationKind() const = 0;
+
+	virtual void SetScale(glm::vec3 Scale) = 0;
 	virtual glm::vec3 GetScale() const = 0;
 
+	virtual void SetLocalTransform(const glm::mat4& localTransform) = 0;
 	virtual glm::mat4 GetLocalTransform() const = 0;
 	virtual glm::mat4 GetInverseLocalTransform() const = 0;
-	virtual void SetLocalTransform(const glm::mat4& localTransform) = 0;
-
+	
+	virtual void SetWorldTransform(const glm::mat4& worldTransform) = 0;
 	virtual glm::mat4 GetWorldTransfom() const = 0;
 	virtual glm::mat4 GetInverseWorldTransform() const = 0;
 	virtual glm::mat4 GetParentWorldTransform() const = 0;
-	virtual void SetWorldTransform(const glm::mat4& worldTransform) = 0;
-
+	
 	// Components engine
 	virtual bool IsComponentExists(ObjectClass ComponentID) const = 0;
 	virtual std::shared_ptr<ISceneNodeComponent> GetComponent(ObjectClass ComponentID) const = 0;

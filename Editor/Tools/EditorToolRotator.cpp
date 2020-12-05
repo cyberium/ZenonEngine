@@ -25,7 +25,7 @@ void CEditorToolRotator::Enable()
 	if (auto node = GetEditor().GetFirstSelectedNode())
 	{
 		m_RotatingNode = node;
-		m_RotatorRoot->SetTranslate(node->GetTranslation());
+		m_RotatorRoot->SetPosition(node->GetPosition());
 		m_RotatorRoot->SetScale(glm::vec3(node->GetComponentT<IColliderComponent3D>()->GetBounds().getRadius()));
 	}
 }
@@ -38,7 +38,7 @@ void CEditorToolRotator::Disable()
 
 	Clear();
 	m_RotatingNode.reset();
-	m_RotatorRoot->SetTranslate(glm::vec3(Math::MinFloat));
+	m_RotatorRoot->SetPosition(glm::vec3(Math::MinFloat));
 }
 
 void CEditorToolRotator::DoInitialize3D(const std::shared_ptr<IRenderer>& Renderer, std::shared_ptr<IRenderTarget> RenderTarget)
@@ -78,7 +78,7 @@ void CEditorToolRotator::DoInitialize3D(const std::shared_ptr<IRenderer>& Render
 
 	m_RotatorX = GetScene().CreateSceneNodeT<ISceneNode>(m_RotatorRoot);
 	m_RotatorX->SetName("RotatorX");
-	m_RotatorX->SetRotation(glm::vec3(0.0f, 0.0f, glm::half_pi<float>()));
+	m_RotatorX->SetRotationEuler(glm::vec3(0.0f, 0.0f, glm::half_pi<float>()));
 	m_RotatorX->GetComponentT<IModelsComponent3D>()->SetModel(modelX);
 
 	m_RotatorY = GetScene().CreateSceneNodeT<ISceneNode>(m_RotatorRoot);
@@ -87,7 +87,7 @@ void CEditorToolRotator::DoInitialize3D(const std::shared_ptr<IRenderer>& Render
 
 	m_RotatorZ = GetScene().CreateSceneNodeT<ISceneNode>(m_RotatorRoot);
 	m_RotatorZ->SetName("RotatorZ");
-	m_RotatorZ->SetRotation(glm::vec3(glm::half_pi<float>(), 0.0f, 0.0f));
+	m_RotatorZ->SetRotationEuler(glm::vec3(glm::half_pi<float>(), 0.0f, 0.0f));
 	m_RotatorZ->GetComponentT<IModelsComponent3D>()->SetModel(modelZ);
 }
 
@@ -136,7 +136,7 @@ void CEditorToolRotator::OnMouseMoved(const MouseMotionEventArgs & e, const Ray 
 	if (rotatingNode == nullptr)
 		return;
 
-	glm::vec3 newRot = rotatingNode->GetRotation();
+	glm::vec3 newRot = rotatingNode->GetRotationEuler();
 
 	if (m_RotatorNumber == EMoverDirection::X)
 	{
@@ -151,7 +151,7 @@ void CEditorToolRotator::OnMouseMoved(const MouseMotionEventArgs & e, const Ray 
 		newRot.z += e.RelY / 360.0f;
 	}
 
-	rotatingNode->SetRotation(newRot);
+	rotatingNode->SetRotationEuler(newRot);
 
 	// Refresh selection bounds
 	dynamic_cast<IEditorToolSelector&>(GetEditor().GetTools().GetTool(ETool::EToolSelector)).SelectNode(rotatingNode);

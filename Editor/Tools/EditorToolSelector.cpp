@@ -145,7 +145,7 @@ bool CEditorToolSelector::OnMousePressed(const MouseButtonEventArgs & e, const R
 		if (e.Shift)
 		{
 			m_SelectionPrevPos = e.GetPoint();
-			m_SelectionTexture->SetTranslate(e.GetPoint());
+			m_SelectionTexture->SetPosition(e.GetPoint());
 			m_IsSelecting2D = true;
 			return true;
 		}
@@ -213,7 +213,7 @@ void CEditorToolSelector::OnMouseMoved(const MouseMotionEventArgs & e, const Ray
 {
 	if (m_IsSelecting2D)
 	{
-		glm::vec2 scale = e.GetPoint() - m_SelectionTexture->GetTranslation();
+		glm::vec2 scale = e.GetPoint() - m_SelectionTexture->GetPosition();
 		m_SelectionTexture->SetScale(scale);
 	}
 }

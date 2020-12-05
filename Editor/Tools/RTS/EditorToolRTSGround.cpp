@@ -105,7 +105,7 @@ void CRTSGround::Disable()
 {
 	CEditorToolBase::Disable();
 
-	m_GroundSelectorNode->SetTranslate(glm::vec3(Math::MinFloat));
+	m_GroundSelectorNode->SetPosition(glm::vec3(Math::MinFloat));
 
 	SetNodeType(ERTSCellType::ctGround);
 	//dynamic_cast<IEditorQtUIFrame&>(GetEditor().GetUIFrame()).getUI().RTSEditor_GroundBtn->setChecked(IsEnabled());
@@ -192,7 +192,7 @@ void CRTSGround::OnMouseMoved(const MouseMotionEventArgs & e, const Ray & RayToW
 	if (m_GroundSelectorNode)
 	{
 
-		m_GroundSelectorNode->SetTranslate(m_GroundRoot->PositionToPosition(mousePos, 10.0f));
+		m_GroundSelectorNode->SetPosition(m_GroundRoot->PositionToPosition(mousePos, 10.0f));
 	}
 
 	if (e.LeftButton)

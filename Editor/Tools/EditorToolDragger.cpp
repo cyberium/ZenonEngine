@@ -122,13 +122,13 @@ bool CEditorToolDragger::DragEnterEvent(const SDragData& Data)
 		if (false == colliderBounds.IsInfinite())
 		{
 			auto pos = GetScene().GetCameraController()->RayToPlane(ray, Plane(glm::vec3(0.0f, 1.0f, 0.0f), m_DraggerNode->GetComponentT<IColliderComponent3D>()->GetBounds().getCenter().y));
-			m_DraggerNode->SetTranslate(pos);
+			m_DraggerNode->SetPosition(pos);
 			return true;
 		}
 	}
 
 	auto pos = GetScene().GetCameraController()->RayToPlane(ray, Plane(glm::vec3(0.0f, 1.0f, 0.0f), 0.0f));
-	m_DraggerNode->SetTranslate(pos);
+	m_DraggerNode->SetPosition(pos);
 	return true;
 }
 
@@ -170,13 +170,13 @@ void CEditorToolDragger::MoveDraggedNode(const glm::vec2& MousePos)
 
 	pos = dynamic_cast<IEditorToolMover&>(GetEditor().GetTools().GetTool(ETool::EToolMover)).FixBoxCoords(pos);
 
-	m_DraggerNode->SetTranslate(pos);
+	m_DraggerNode->SetPosition(pos);
 
 	// Refresh dragged bounds
 	GetEditor().GetTools().GetToolT<IEditorToolSelector>(ETool::EToolSelector).SelectNode(m_DraggerNode);
 
 	m_DraggerTextUI->GetProperties()->GetPropertyT<std::string>("Text")->Set("Pos: " + std::to_string(pos.x) + ", " + std::to_string(pos.y) + ", " + std::to_string(pos.z));
-	m_DraggerTextUI->SetTranslate(MousePos + glm::vec2(0.0f, -15.0f));
+	m_DraggerTextUI->SetPosition(MousePos + glm::vec2(0.0f, -15.0f));
 }
 
 void CEditorToolDragger::CreateCopyDraggedNode()
@@ -187,7 +187,7 @@ void CEditorToolDragger::CreateCopyDraggedNode()
 	auto copiedNode = GetScene().GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeFactory>()->CreateSceneNode3D(m_DraggerNode->GetClass(), GetScene());
 	m_DraggerNode->CopyTo(copiedNode);
 
-	copiedNode->SetTranslate(m_DraggerNode->GetTranslation());
+	copiedNode->SetPosition(m_DraggerNode->GetPosition());
 
 	// TODO: Maybe to selected node?
 	GetEditor().Get3DFrame().GetEditedRootNode3D()->AddChild(copiedNode);

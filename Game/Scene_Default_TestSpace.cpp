@@ -70,7 +70,7 @@ void CSceneDefault::Load3D()
 
 		auto node = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeFactory>()->CreateSceneNode3D(cSceneNode3D, *this, GetRootSceneNode());
 		node->SetName("Ground");
-		node->SetTranslate(glm::vec3(0, 0, 0));
+		node->SetPosition(glm::vec3(0, 0, 0));
 		node->SetScale(glm::vec3(cPlaneSize, cPlaneSize, cPlaneSize));
 		node->GetComponentT<IModelsComponent3D>()->SetModel(modelPlane);
 		//node->GetComponent<IModelsComponent3D>()->SetCastShadows(false);
@@ -151,7 +151,7 @@ void CSceneDefault::Load3D()
 	{
 		auto node = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeFactory>()->CreateSceneNode3D(cSceneNode3D, *this, GetRootSceneNode());
 		node->SetName("OrcAnimation");
-		node->SetTranslate(glm::vec3(0.0f, 0.0f, 0.0f));
+		node->SetPosition(glm::vec3(0.0f, 0.0f, 0.0f));
 		//node->SetRotation(-glm::vec3(glm::half_pi<float>(), 0.0f, 0.0f));
 		node->SetScale(glm::vec3(0.33f));
 

@@ -7,16 +7,18 @@
 #include "Materials/MaterialModel.h"
 
 #include "Scene/Components/LightComponent3D.h"
-#include "Scene/Components/Particles/ParticlesComponent.h"
 
+#include "Scene/Components/Particles/ParticlesComponent.h"
+#include "Scene/Components/Particles/ParticleSystem.h"
 
 CSceneNodeRTSBullet::CSceneNodeRTSBullet(IScene & Scene)
 	: CSceneNode(Scene)
 
-	, m_TargetLastPosition(0.0f)
-
 	, m_Damage(10.0f)
 	, m_Speed(1.0f)
+
+	, m_Target(std::weak_ptr<ISceneNodeRTSUnit>())
+	, m_TargetLastPosition(0.0f)
 {}
 
 CSceneNodeRTSBullet::~CSceneNodeRTSBullet()
@@ -30,6 +32,19 @@ CSceneNodeRTSBullet::~CSceneNodeRTSBullet()
 void CSceneNodeRTSBullet::SetTarget(std::shared_ptr<ISceneNodeRTSUnit> Target)
 {
 	m_Target = Target;
+
+	// TODO: Move me
+	{
+		std::shared_ptr<IParticleComponent3D> particles = MakeShared(CParticlesComponent, *this);
+		AddComponentT(particles);
+
+		m_ParticleSystem = MakeShared(CParticleSystem, *this);
+		m_ParticleSystem->SetTexture(GetBaseManager().GetManager<IznTexturesFactory>()->LoadTexture2D("star_09.png"));
+
+		//std::dynamic_pointer_cast<CParticleSystem>(m_ParticleSystem)->m_Lifetime = glm::length(Target->GetTranslationAbs().xz - GetTranslationAbs().xz) / GetSpeed() * 60.0f;
+
+		particles->Attach(m_ParticleSystem);
+	}
 }
 
 std::shared_ptr<ISceneNodeRTSUnit> CSceneNodeRTSBullet::GetTarget() const
@@ -90,15 +105,9 @@ void CSceneNodeRTSBullet::Initialize()
 		AddComponentT(GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<IComponentFactory>()->CreateComponentT<ILightComponent3D>(cSceneNodeLightComponent, *this));
 		GetComponentT<ILightComponent3D>()->SetType(ELightType::Point);
 		GetComponentT<ILightComponent3D>()->SetAmbientColor(glm::vec3(0.0f));
-		GetComponentT<ILightComponent3D>()->SetColor(glm::vec3(1.0f, 0.7f, 0.5f));
-		GetComponentT<ILightComponent3D>()->SetRange(150.0f);
-		GetComponentT<ILightComponent3D>()->SetIntensity(1.0f);
-	}
-
-	// Particles
-	{
-		std::shared_ptr<IParticleComponent3D> particles = MakeShared(CParticlesComponent, *this);
-		AddComponentT(particles);
+		GetComponentT<ILightComponent3D>()->SetColor(glm::vec3(1.0f, 0.6f, 0.0f));
+		GetComponentT<ILightComponent3D>()->SetRange(7.0f);
+		GetComponentT<ILightComponent3D>()->SetIntensity(2.5f);
 	}
 }
 
@@ -108,21 +117,27 @@ void CSceneNodeRTSBullet::Update(const UpdateEventArgs & e)
 	
 	glm::vec3 destinationPoint = GetDestinationPoint();
 	
-	glm::vec3 direction = glm::normalize(destinationPoint - GetTranslationAbs());
+	glm::vec3 direction = glm::normalize(destinationPoint - GetPosition());
 
 	float speedMult = GetSpeed() * float(e.DeltaTimeMultiplier);
 
-	glm::vec3 newPosition = GetTranslationAbs();
+	glm::vec3 newPosition = GetPosition();
 	newPosition += direction * speedMult;
-	SetTranslate(newPosition);
+	SetPosition(newPosition);
 
-	if (glm::distance(GetTranslationAbs(), destinationPoint) < speedMult * 2.0f)
+	if (glm::distance(GetPosition(), destinationPoint) < speedMult * 2.0f)
 	{
 		if (auto target = GetTarget())
 			target->DealDamage(GetDamage());
 		
 		// After we reach position, deal damage
 		MakeMeOrphan();
+
+		m_ParticleSystem->SetEnableCreatingNewParticles(false);
+
+		auto particleSystem = GetComponentT<IParticleComponent3D>()->Detach(m_ParticleSystem);
+		_ASSERT(particleSystem != nullptr);
+		GetScene().GetRootSceneNode()->GetComponentT<IParticleComponent3D>()->Attach(particleSystem);
 	}
 }
 
@@ -138,7 +153,7 @@ glm::vec3 CSceneNodeRTSBullet::GetDestinationPoint()
 		return m_TargetLastPosition;
 	}
 
-	m_TargetLastPosition = target->GetTranslationAbs();
+	m_TargetLastPosition = target->GetPosition();
 	if (auto collider = target->GetComponentT<IColliderComponent3D>())
 	{
 		const auto& worldBounds = collider->GetWorldBounds();
@@ -146,5 +161,5 @@ glm::vec3 CSceneNodeRTSBullet::GetDestinationPoint()
 			m_TargetLastPosition = worldBounds.getCenter();
 	}
 
-	return m_TargetLastPosition;
+	return m_TargetLastPosition + glm::vec3(0.0f, 2.0f, 0.0f);
 }

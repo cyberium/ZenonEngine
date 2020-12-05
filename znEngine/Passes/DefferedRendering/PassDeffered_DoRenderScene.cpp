@@ -27,27 +27,32 @@ void CPassDeffered_DoRenderScene::SetEnviorementTexture(std::shared_ptr<ITexture
 //
 std::shared_ptr<ITexture> CPassDeffered_DoRenderScene::GetTexture0() const
 {
-	return m_Texture0;
+	return m_GBufferRenderTarget->GetTexture(IRenderTarget::AttachmentPoint::Color0);
 }
 
 std::shared_ptr<ITexture> CPassDeffered_DoRenderScene::GetTexture1() const
 {
-	return m_Texture1;
+	return m_GBufferRenderTarget->GetTexture(IRenderTarget::AttachmentPoint::Color1);
 }
 
 std::shared_ptr<ITexture> CPassDeffered_DoRenderScene::GetTexture2() const
 {
-	return m_Texture2;
+	return m_GBufferRenderTarget->GetTexture(IRenderTarget::AttachmentPoint::Color2);
 }
 
 std::shared_ptr<ITexture> CPassDeffered_DoRenderScene::GetTexture3() const
 {
-	return m_Texture3;
+	return m_GBufferRenderTarget->GetTexture(IRenderTarget::AttachmentPoint::Color3);
 }
 
 std::shared_ptr<ITexture> CPassDeffered_DoRenderScene::GetTextureDepthStencil() const
 {
-	return m_DepthStencilTexture;
+	return m_GBufferRenderTarget->GetTexture(IRenderTarget::AttachmentPoint::DepthStencil);
+}
+
+std::shared_ptr<IRenderTarget> CPassDeffered_DoRenderScene::GetGBufferRenderTarget() const
+{
+	return m_GBufferRenderTarget;
 }
 
 //
@@ -118,7 +123,10 @@ std::shared_ptr<IRenderPassPipelined> CPassDeffered_DoRenderScene::ConfigurePipe
 
 	// PIPELINES
 	GetPipeline().GetRasterizerState()->SetCullMode(IRasterizerState::CullMode::Back);
-	GetPipeline().SetRenderTarget(CreateGBuffer(RenderTarget));
+
+	m_GBufferRenderTarget = CreateGBuffer(RenderTarget);
+
+	GetPipeline().SetRenderTarget(m_GBufferRenderTarget);
 	
 	return shared_from_this();
 }
@@ -167,10 +175,10 @@ std::shared_ptr<IRenderTarget> CPassDeffered_DoRenderScene::CreateGBuffer(std::s
 		16, 16, 16, 16, 0, 0
 	);
 
-	m_Texture0 = GetRenderDevice().GetObjectsFactory().CreateTexture2D(RenderTarget->GetViewport().GetWidth(), RenderTarget->GetViewport().GetHeight(), 1, colorTextureFormat);
-	m_Texture1 = GetRenderDevice().GetObjectsFactory().CreateTexture2D(RenderTarget->GetViewport().GetWidth(), RenderTarget->GetViewport().GetHeight(), 1, colorTextureFormat);
-	m_Texture2 = GetRenderDevice().GetObjectsFactory().CreateTexture2D(RenderTarget->GetViewport().GetWidth(), RenderTarget->GetViewport().GetHeight(), 1, colorTextureFormat);
-	m_Texture3 = GetRenderDevice().GetObjectsFactory().CreateTexture2D(RenderTarget->GetViewport().GetWidth(), RenderTarget->GetViewport().GetHeight(), 1, colorTextureFormat);
+	auto m_Texture0 = GetRenderDevice().GetObjectsFactory().CreateTexture2D(RenderTarget->GetViewport().GetWidth(), RenderTarget->GetViewport().GetHeight(), 1, colorTextureFormat);
+	auto m_Texture1 = GetRenderDevice().GetObjectsFactory().CreateTexture2D(RenderTarget->GetViewport().GetWidth(), RenderTarget->GetViewport().GetHeight(), 1, colorTextureFormat);
+	auto m_Texture2 = GetRenderDevice().GetObjectsFactory().CreateTexture2D(RenderTarget->GetViewport().GetWidth(), RenderTarget->GetViewport().GetHeight(), 1, colorTextureFormat);
+	auto m_Texture3 = GetRenderDevice().GetObjectsFactory().CreateTexture2D(RenderTarget->GetViewport().GetWidth(), RenderTarget->GetViewport().GetHeight(), 1, colorTextureFormat);
 
 	// Depth/stencil buffer
 	ITexture::TextureFormat depthStencilTextureFormat(
@@ -178,7 +186,7 @@ std::shared_ptr<IRenderTarget> CPassDeffered_DoRenderScene::CreateGBuffer(std::s
 		ITexture::Type::UnsignedNormalized,
 		RenderTarget->GetSamplesCount(),
 		0, 0, 0, 0, 24, 8);
-	m_DepthStencilTexture = GetRenderDevice().GetObjectsFactory().CreateTexture2D(RenderTarget->GetViewport().GetWidth(), RenderTarget->GetViewport().GetHeight(), 1, depthStencilTextureFormat);
+	auto m_DepthStencilTexture = GetRenderDevice().GetObjectsFactory().CreateTexture2D(RenderTarget->GetViewport().GetWidth(), RenderTarget->GetViewport().GetHeight(), 1, depthStencilTextureFormat);
 
 	auto rt = GetRenderDevice().GetObjectsFactory().CreateRenderTarget();
 	rt->AttachTexture(IRenderTarget::AttachmentPoint::Color0, m_Texture0);

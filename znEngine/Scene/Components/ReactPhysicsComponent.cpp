@@ -62,7 +62,7 @@ void Test()
 void CReactPhysicsComponent::Update(const UpdateEventArgs & e)
 {
 	ISceneNode& sceneNode3D = const_cast<ISceneNode&>(GetOwnerNode());
-	sceneNode3D.SetTranslate(GetPhysicsPosition());
+	sceneNode3D.SetPosition(GetPhysicsPosition());
 
 	const auto& rot = m_RPRigidBody->getTransform().getOrientation();
 	//sceneNode3D.SetRotation(glm::vec3(rot.x, rot.y, rot.z));

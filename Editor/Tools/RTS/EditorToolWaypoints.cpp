@@ -116,9 +116,9 @@ void CEditorToolWaypoints::OnMouseMoved(const MouseMotionEventArgs & e, const Ra
 	//pos = dynamic_cast<IEditorToolMover&>(GetEditor().GetTools().GetTool(ETool::EToolMover)).FixBoxCoords(pos);
 
 	auto lastPoint = m_CurrectWaypointsNode->GetLastPoint();
-	lastPoint->SetTranslate(pos);
+	lastPoint->SetPosition(pos);
 
-	m_LastCreatedPoint->SetTranslate(pos);
+	m_LastCreatedPoint->SetPosition(pos);
 }
 
 void CEditorToolWaypoints::OnNodeSelected(const std::shared_ptr<ISceneNode> SelectedNode)

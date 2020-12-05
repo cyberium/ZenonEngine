@@ -32,7 +32,7 @@ std::shared_ptr<ISceneNodeRTSPoint> CSceneNodeRTSPath::AddPoint(glm::vec3 XYZ)
 {
 	auto point = GetScene().CreateSceneNodeCast<ISceneNodeRTSPoint>(cSceneNodeRTSPoint);
 	point->SetName("Point");
-	point->SetTranslate(XYZ);
+	point->SetPosition(XYZ);
 	point->GetComponentT<IColliderComponent3D>()->SetBounds(BoundingBox(glm::vec3(-2.5f), glm::vec3(2.5f)));
 	return point;
 }
