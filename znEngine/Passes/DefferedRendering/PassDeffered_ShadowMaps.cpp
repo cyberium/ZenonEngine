@@ -170,7 +170,7 @@ void CPassDeffered_ShadowMaps::RenderScene()
 		if (false == geometryIt.Node->IsEnabled())
 			continue;
 
-		auto modelsComponent = geometryIt.Node->GetComponentT<IModelsComponent3D>();
+		auto modelsComponent = geometryIt.Node->GetComponentT<IModelComponent>();
 		if (modelsComponent == nullptr)
 			continue;
 

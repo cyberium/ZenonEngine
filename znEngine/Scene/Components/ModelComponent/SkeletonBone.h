@@ -24,7 +24,7 @@ public:
 	void SetSkinMatrix(const glm::mat4& Matrix) override;
 	glm::mat4 GetSkinMatrix() const override;
 
-	glm::mat4 CalculateBontMatrix(const IModelsComponent3D* ModelsComponent) const override;
+	glm::mat4 CalculateBontMatrix(const IModelComponent* ModelsComponent) const override;
 
 	// IObjectLoadSave
 	std::shared_ptr<IObject> Copy() const override;

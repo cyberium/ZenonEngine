@@ -1,13 +1,13 @@
 #pragma once
 
-class ZN_API CLightComponent3D
+class ZN_API CLightComponent
 	: public ILightComponent3D
 	, public ILight3D
 	, public CComponentBase
 {
 public:
-    CLightComponent3D(const ISceneNode& OwnerNode);
-    virtual ~CLightComponent3D();
+    CLightComponent(const ISceneNode& OwnerNode);
+    virtual ~CLightComponent();
 
 	// ILightComponent3D
 	void SetAmbientColor(glm::vec3 Value) override;

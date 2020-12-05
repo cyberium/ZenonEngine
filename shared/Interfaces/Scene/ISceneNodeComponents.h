@@ -39,7 +39,7 @@ const ComponentMessageType UUID_OnWorldTransformChanged = 3;
 //
 // COLLIDER COMPONENT 3D
 //
-ZN_INTERFACE ZN_API IColliderComponent3D
+ZN_INTERFACE ZN_API IColliderComponent
 {
 	enum class ZN_API ECullStrategy
 	{
@@ -53,7 +53,7 @@ ZN_INTERFACE ZN_API IColliderComponent3D
 
 	ZN_OBJECTCLASS(cSceneNodeColliderComponent);
 
-	virtual ~IColliderComponent3D() {}
+	virtual ~IColliderComponent() {}
 
 	virtual void SetBounds(BoundingBox Bounds) = 0;
 	virtual void ExtendBounds(BoundingBox Bounds) = 0;
@@ -175,7 +175,7 @@ ZN_INTERFACE ZN_API ISkeletonComponentBoneInternal3D
 	// Static data
 	virtual void AddChildInternal(const std::shared_ptr<ISkeletonComponentBone3D>& Child) = 0;
 	virtual void SetParentAndChildsInternals(const std::vector<std::shared_ptr<ISkeletonComponentBone3D>>& Bones) = 0;
-	virtual void Calculate(const IModelsComponent3D* ModelsComponent, const ICameraComponent3D* Camera) = 0;
+	virtual void Calculate(const IModelComponent* ModelsComponent, const ICameraComponent3D* Camera) = 0;
 	virtual void Reset() = 0;
 };
 
@@ -184,11 +184,11 @@ ZN_INTERFACE ZN_API ISkeletonComponentBoneInternal3D
 //
 // MODELS COMPONENT 3D
 //
-ZN_INTERFACE ZN_API IModelsComponent3D
+ZN_INTERFACE ZN_API IModelComponent
 {
 	ZN_OBJECTCLASS(cSceneNodeModelsComponent);
 
-	virtual ~IModelsComponent3D() {}
+	virtual ~IModelComponent() {}
 
 	virtual void SetModel(const std::shared_ptr<IModel>& Model) = 0;
 	virtual void ResetModel() = 0;
@@ -207,6 +207,7 @@ ZN_INTERFACE ZN_API IModelsComponent3D
 	// Animation functional
 	virtual void PlayAnimation(const std::string& AnimationName, bool Loop) = 0;
 	virtual void SetAnimationEndedCallback(std::function<void(const IAnimation*)> Func) = 0;
+	virtual bool IsAnimationPlayed() const = 0;
 	virtual size_t GetCurrentAnimationIndex() const = 0;
 	virtual uint32 GetCurrentAnimationFrame() const = 0;
 };

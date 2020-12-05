@@ -26,7 +26,7 @@ void CEditorToolRotator::Enable()
 	{
 		m_RotatingNode = node;
 		m_RotatorRoot->SetPosition(node->GetPosition());
-		m_RotatorRoot->SetScale(glm::vec3(node->GetComponentT<IColliderComponent3D>()->GetBounds().getRadius()));
+		m_RotatorRoot->SetScale(glm::vec3(node->GetComponentT<IColliderComponent>()->GetBounds().getRadius()));
 	}
 }
 
@@ -54,7 +54,7 @@ void CEditorToolRotator::DoInitialize3D(const std::shared_ptr<IRenderer>& Render
 
 		auto rotatorSphere = GetScene().CreateSceneNodeT<ISceneNode>(m_RotatorRoot);
 		rotatorSphere->SetName("RotatorSphere");
-		rotatorSphere->GetComponentT<IModelsComponent3D>()->SetModel(modelSphere);
+		rotatorSphere->GetComponentT<IModelComponent>()->SetModel(modelSphere);
 	}
 
 
@@ -79,16 +79,16 @@ void CEditorToolRotator::DoInitialize3D(const std::shared_ptr<IRenderer>& Render
 	m_RotatorX = GetScene().CreateSceneNodeT<ISceneNode>(m_RotatorRoot);
 	m_RotatorX->SetName("RotatorX");
 	m_RotatorX->SetRotationEuler(glm::vec3(0.0f, 0.0f, glm::half_pi<float>()));
-	m_RotatorX->GetComponentT<IModelsComponent3D>()->SetModel(modelX);
+	m_RotatorX->GetComponentT<IModelComponent>()->SetModel(modelX);
 
 	m_RotatorY = GetScene().CreateSceneNodeT<ISceneNode>(m_RotatorRoot);
 	m_RotatorY->SetName("RotatorY");
-	m_RotatorY->GetComponentT<IModelsComponent3D>()->SetModel(modelY);
+	m_RotatorY->GetComponentT<IModelComponent>()->SetModel(modelY);
 
 	m_RotatorZ = GetScene().CreateSceneNodeT<ISceneNode>(m_RotatorRoot);
 	m_RotatorZ->SetName("RotatorZ");
 	m_RotatorZ->SetRotationEuler(glm::vec3(glm::half_pi<float>(), 0.0f, 0.0f));
-	m_RotatorZ->GetComponentT<IModelsComponent3D>()->SetModel(modelZ);
+	m_RotatorZ->GetComponentT<IModelComponent>()->SetModel(modelZ);
 }
 
 bool CEditorToolRotator::OnMousePressed(const MouseButtonEventArgs & e, const Ray & RayToWorld)

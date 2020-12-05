@@ -3,10 +3,10 @@
 // General
 #include "EngineSceneExtender.h"
 
-#include "Scene/Components/CameraComponent3D.h"
-#include "Scene/Components/ColliderComponent3D.h"
-#include "Scene/Components/LightComponent3D.h"
-#include "Scene/Components/ModelComponent/ModelsComponent3D.h"
+#include "Scene/Components/CameraComponent.h"
+#include "Scene/Components/ColliderComponent.h"
+#include "Scene/Components/LightComponent.h"
+#include "Scene/Components/ModelComponent/ModelComponent.h"
 #include "Scene/Components/ReactPhysicsComponent.h"
 #include "Scene/Components/Particles/ParticlesComponent.h"
 
@@ -14,6 +14,7 @@
 #include "UIControls/UIControlText.h"
 
 // RTS
+#include "RTS/UIControls/UIControlRTSResourcesPanel.h"
 #include "RTS/UIControls/UIControlRTSTowersPanel.h"
 #include "RTS/UIControls/UIControlRTSTowerBtn.h"
 
@@ -55,7 +56,7 @@ void EngineSceneTypesExtender(IBaseManager& BaseManager)
 	{
 		auto& scene = static_cast<const ISceneNodeCreationArgs*>(ObjectCreationArgs)->GetScene();
 		auto node = MakeShared(CSceneNodeRTSPoint, scene);
-		node->AddComponentT(scene.GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<IComponentFactory>()->CreateComponentT<IColliderComponent3D>(cSceneNodeColliderComponent, *node));
+		node->AddComponentT(scene.GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<IComponentFactory>()->CreateComponentT<IColliderComponent>(cSceneNodeColliderComponent, *node));
 		return node;
 	});
 
@@ -103,6 +104,11 @@ void EngineSceneTypesExtender(IBaseManager& BaseManager)
 		auto node = MakeShared(CUIControlCommon, static_cast<const IUIControlCreationArgs*>(ObjectCreationArgs)->GetScene());
 		return node;
 	});
+	uiControlEngineCreator->AddClass(cUIControlRTSResourcesPanel, "UIControlRTSResourcesPanel", [](const IObjectCreationArgs* ObjectCreationArgs) -> std::shared_ptr<IObject>
+	{
+		auto node = MakeShared(CUIControlRTSResourcesPanel, static_cast<const IUIControlCreationArgs*>(ObjectCreationArgs)->GetScene());
+		return node;
+	});
 	uiControlEngineCreator->AddClass(cUIControlRTSTowersPanel, "UIControlRTSTowersPanel", [](const IObjectCreationArgs* ObjectCreationArgs) -> std::shared_ptr<IObject>
 	{
 		auto node = MakeShared(CUIControlRTSTowersPanel, static_cast<const IUIControlCreationArgs*>(ObjectCreationArgs)->GetScene());
@@ -128,11 +134,11 @@ void EngineSceneTypesExtender(IBaseManager& BaseManager)
 	});
 	componentsEngineCreator->AddClass(cSceneNodeColliderComponent, "ColliderComponent",  [](const IObjectCreationArgs* ObjectCreationArgs) -> std::shared_ptr<IObject>
 	{
-		return MakeShared(CColliderComponent3D, static_cast<const IComponentCreationArgs*>(ObjectCreationArgs)->GetSceneNode());
+		return MakeShared(CColliderComponent, static_cast<const IComponentCreationArgs*>(ObjectCreationArgs)->GetSceneNode());
 	});
 	componentsEngineCreator->AddClass(cSceneNodeModelsComponent, "ModelsComponent",  [](const IObjectCreationArgs* ObjectCreationArgs) -> std::shared_ptr<IObject>
 	{
-		return MakeShared(CModelsComponent3D, static_cast<const IComponentCreationArgs*>(ObjectCreationArgs)->GetSceneNode());
+		return MakeShared(CModelComponent, static_cast<const IComponentCreationArgs*>(ObjectCreationArgs)->GetSceneNode());
 	});
 	componentsEngineCreator->AddClass(cSceneNodeSkeletonComponent, "SkeletonComponent",  [](const IObjectCreationArgs* ObjectCreationArgs) -> std::shared_ptr<IObject>
 	{
@@ -152,10 +158,10 @@ void EngineSceneTypesExtender(IBaseManager& BaseManager)
 	});
 	componentsEngineCreator->AddClass(cSceneNodeLightComponent, "LightComponent",  [](const IObjectCreationArgs* ObjectCreationArgs) -> std::shared_ptr<IObject>
 	{
-		return MakeShared(CLightComponent3D, static_cast<const IComponentCreationArgs*>(ObjectCreationArgs)->GetSceneNode());
+		return MakeShared(CLightComponent, static_cast<const IComponentCreationArgs*>(ObjectCreationArgs)->GetSceneNode());
 	});
 	componentsEngineCreator->AddClass(cSceneNodeCameraComponent, "CameraComponent",  [](const IObjectCreationArgs* ObjectCreationArgs) -> std::shared_ptr<IObject>
 	{
-		return MakeShared(CCameraComponent3D, static_cast<const IComponentCreationArgs*>(ObjectCreationArgs)->GetSceneNode());
+		return MakeShared(CCameraComponent, static_cast<const IComponentCreationArgs*>(ObjectCreationArgs)->GetSceneNode());
 	});
 }

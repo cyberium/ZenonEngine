@@ -1,9 +1,9 @@
 #include "stdafx.h"
 
 // General
-#include "CameraComponent3D.h"
+#include "CameraComponent.h"
 
-CCameraComponent3D::CCameraComponent3D(const ISceneNode& OwnerNode)
+CCameraComponent::CCameraComponent(const ISceneNode& OwnerNode)
     : CComponentBase(OwnerNode)
 	, m_RightDirection(0)
 	, m_UpDirection(glm::vec3(0.0f, 1.0f, 0.0f))
@@ -14,17 +14,17 @@ CCameraComponent3D::CCameraComponent3D(const ISceneNode& OwnerNode)
 	GetProperties()->SetName("CameraComponent");
 
 	m_Yaw_XProperty = MakeShared(CPropertyWrapped<float>, "Yaw", "Rotation around the Y axis (in degrees).", 225.0f);
-	m_Yaw_XProperty->SetValueSetter(std::bind(&CCameraComponent3D::SetYaw, this, std::placeholders::_1));
-	m_Yaw_XProperty->SetValueGetter(std::bind(&CCameraComponent3D::GetYaw, this));
+	m_Yaw_XProperty->SetValueSetter(std::bind(&CCameraComponent::SetYaw, this, std::placeholders::_1));
+	m_Yaw_XProperty->SetValueGetter(std::bind(&CCameraComponent::GetYaw, this));
 	GetProperties()->AddProperty(m_Yaw_XProperty);
 
 	m_Pitch_YProperty = MakeShared(CPropertyWrapped<float>, "Pitch", "Rotation around the X and Y axis (in degrees).", -45.0f);
-	m_Pitch_YProperty->SetValueSetter(std::bind(&CCameraComponent3D::SetPitch, this, std::placeholders::_1));
-	m_Pitch_YProperty->SetValueGetter(std::bind(&CCameraComponent3D::GetPitch, this));
+	m_Pitch_YProperty->SetValueSetter(std::bind(&CCameraComponent::SetPitch, this, std::placeholders::_1));
+	m_Pitch_YProperty->SetValueGetter(std::bind(&CCameraComponent::GetPitch, this));
 	GetProperties()->AddProperty(m_Pitch_YProperty);
 }
 
-CCameraComponent3D::~CCameraComponent3D()
+CCameraComponent::~CCameraComponent()
 {
 
 }
@@ -34,7 +34,7 @@ CCameraComponent3D::~CCameraComponent3D()
 //
 // ICameraComponent3D
 //
-void CCameraComponent3D::DoMoveFront(float Value)
+void CCameraComponent::DoMoveFront(float Value)
 {
 	if (Value == 0.0f)
 		return;
@@ -43,7 +43,7 @@ void CCameraComponent3D::DoMoveFront(float Value)
 	m_View_Dirty = true;
 }
 
-void CCameraComponent3D::DoMoveBack(float Value)
+void CCameraComponent::DoMoveBack(float Value)
 {
 	if (Value == 0.0f)
 		return;
@@ -52,7 +52,7 @@ void CCameraComponent3D::DoMoveBack(float Value)
 	m_View_Dirty = true;
 }
 
-void CCameraComponent3D::DoMoveLeft(float Value)
+void CCameraComponent::DoMoveLeft(float Value)
 {
 	if (Value == 0.0f)
 		return;
@@ -61,7 +61,7 @@ void CCameraComponent3D::DoMoveLeft(float Value)
 	m_View_Dirty = true;
 }
 
-void CCameraComponent3D::DoMoveRight(float Value)
+void CCameraComponent::DoMoveRight(float Value)
 {
 	if (Value == 0.0f)
 		return;
@@ -70,31 +70,31 @@ void CCameraComponent3D::DoMoveRight(float Value)
 	m_View_Dirty = true;
 }
 
-void CCameraComponent3D::SetTranslation(glm::vec3 Translation)
+void CCameraComponent::SetTranslation(glm::vec3 Translation)
 {
 	ISceneNode& sceneNode3D = const_cast<ISceneNode&>(GetOwnerNode());
 	sceneNode3D.SetPosition(Translation);
 	m_View_Dirty = true;
 }
 
-glm::vec3 CCameraComponent3D::GetTranslation() const
+glm::vec3 CCameraComponent::GetTranslation() const
 {
 	return GetOwnerNode().GetPosition();
 }
 
-void CCameraComponent3D::SetDirection(glm::vec3 Direction)
+void CCameraComponent::SetDirection(glm::vec3 Direction)
 {
 	ISceneNode& sceneNode3D = const_cast<ISceneNode&>(GetOwnerNode());
 	sceneNode3D.SetRotationEuler(Direction);
 	m_View_Dirty = true;
 }
 
-glm::vec3 CCameraComponent3D::GetDirection() const
+glm::vec3 CCameraComponent::GetDirection() const
 {
 	return GetOwnerNode().GetRotationEuler();
 }
 
-void CCameraComponent3D::SetYaw(float Yaw)
+void CCameraComponent::SetYaw(float Yaw)
 {
 	m_Yaw_X = Yaw;
 	if (m_Yaw_X > 360.0f)
@@ -110,17 +110,17 @@ void CCameraComponent3D::SetYaw(float Yaw)
 	m_View_Dirty = true;
 }
 
-void CCameraComponent3D::AddYaw(float Yaw)
+void CCameraComponent::AddYaw(float Yaw)
 {
 	SetYaw(m_Yaw_X + Yaw);
 }
 
-float CCameraComponent3D::GetYaw() const
+float CCameraComponent::GetYaw() const
 {
 	return m_Yaw_X;
 }
 
-void CCameraComponent3D::SetPitch(float Pitch)
+void CCameraComponent::SetPitch(float Pitch)
 {
 	m_Pitch_Y = Pitch;
 	if (m_Pitch_Y > cPitchUpperBorder)
@@ -136,17 +136,17 @@ void CCameraComponent3D::SetPitch(float Pitch)
 	m_View_Dirty = true;
 }
 
-void CCameraComponent3D::AddPitch(float Pitch)
+void CCameraComponent::AddPitch(float Pitch)
 {
 	SetPitch(m_Pitch_Y + Pitch);
 }
 
-float CCameraComponent3D::GetPitch() const
+float CCameraComponent::GetPitch() const
 {
 	return m_Pitch_Y;
 }
 
-void CCameraComponent3D::SetPerspectiveProjection(float fovy, float aspect, float zNear, float zFar)
+void CCameraComponent::SetPerspectiveProjection(float fovy, float aspect, float zNear, float zFar)
 {
 	m_Perspective_FOV = fovy;
 
@@ -158,7 +158,7 @@ void CCameraComponent3D::SetPerspectiveProjection(float fovy, float aspect, floa
 	m_Inverse_Projection = glm::inverse(m_Projection);
 }
 
-void CCameraComponent3D::SetOrthographicProjection(float aspect, float left, float right, float top, float bottom, float zNear, float zFar)
+void CCameraComponent::SetOrthographicProjection(float aspect, float left, float right, float top, float bottom, float zNear, float zFar)
 {
 	m_Orthographic_Left = left;
 	m_Orthographic_Right = right;
@@ -179,34 +179,34 @@ void CCameraComponent3D::SetOrthographicProjection(float aspect, float left, flo
 	m_Inverse_Projection = glm::inverse(m_Projection);
 }
 
-const glm::mat4& CCameraComponent3D::GetViewMatrix() const
+const glm::mat4& CCameraComponent::GetViewMatrix() const
 {
-	const_cast<CCameraComponent3D*>(this)->UpdateView();
+	const_cast<CCameraComponent*>(this)->UpdateView();
 	return m_View;
 }
 
-const glm::mat4 & CCameraComponent3D::GetInverseViewMatrix() const
+const glm::mat4 & CCameraComponent::GetInverseViewMatrix() const
 {
-	const_cast<CCameraComponent3D*>(this)->UpdateView();
+	const_cast<CCameraComponent*>(this)->UpdateView();
 	return m_Inverse_View;
 }
 
-const glm::mat4& CCameraComponent3D::GetProjectionMatrix() const
+const glm::mat4& CCameraComponent::GetProjectionMatrix() const
 {
 	return m_Projection;
 }
 
-const glm::mat4& CCameraComponent3D::GetInverseProjectionMatrix() const
+const glm::mat4& CCameraComponent::GetInverseProjectionMatrix() const
 {
 	return m_Inverse_Projection;
 }
 
-const Frustum & CCameraComponent3D::GetFrustum() const
+const Frustum & CCameraComponent::GetFrustum() const
 {
 	return m_Frustum;
 }
 
-const glm::vec3 & CCameraComponent3D::GetCameraUpDirection() const
+const glm::vec3 & CCameraComponent::GetCameraUpDirection() const
 {
 	return m_UpDirection;
 }
@@ -216,7 +216,7 @@ const glm::vec3 & CCameraComponent3D::GetCameraUpDirection() const
 //
 // ISceneNodeComponent
 //
-void CCameraComponent3D::OnMessage(const ISceneNodeComponent* Component, ComponentMessageType Message)
+void CCameraComponent::OnMessage(const ISceneNodeComponent* Component, ComponentMessageType Message)
 {
 	if (Component == nullptr && Message == UUID_OnWorldTransformChanged)
 	{
@@ -229,7 +229,7 @@ void CCameraComponent3D::OnMessage(const ISceneNodeComponent* Component, Compone
 //
 // Protected
 //
-glm::vec3 CCameraComponent3D::AnglesToRotation(float Yaw, float Pitch)
+glm::vec3 CCameraComponent::AnglesToRotation(float Yaw, float Pitch)
 {
 	// Calculate the new Front vector
 	glm::vec3 direction = { 0.0f, 0.0f, 0.0f };
@@ -245,7 +245,7 @@ glm::vec3 CCameraComponent3D::AnglesToRotation(float Yaw, float Pitch)
 	return direction;
 }
 
-void CCameraComponent3D::RotationToAngles(const glm::vec3& Direction)
+void CCameraComponent::RotationToAngles(const glm::vec3& Direction)
 {
 	// https://gamedev.stackexchange.com/questions/172147/convert-3d-direction-vectors-to-yaw-pitch-roll-angles
 
@@ -280,16 +280,16 @@ void CCameraComponent3D::RotationToAngles(const glm::vec3& Direction)
 		pitchDegress = cPitchBottomBorder;
 
 	if (glm::abs(m_Yaw_X - yawDegrees) > 1.0f)
-		_ASSERT_EXPR(false, "CCameraComponent3D: Error m_Yaw_X");
+		_ASSERT_EXPR(false, "CCameraComponent: Error m_Yaw_X");
 
 	if (glm::abs(m_Pitch_Y - pitchDegress) > 1.0f)
-		_ASSERT_EXPR(false, "CCameraComponent3D: Error m_Pitch_Y");
+		_ASSERT_EXPR(false, "CCameraComponent: Error m_Pitch_Y");
 
 	//SetYaw(m_Yaw_X2);
 	//SetPitch(m_Pitch_Y2);
 }
 
-void CCameraComponent3D::UpdateView()
+void CCameraComponent::UpdateView()
 {
 	if (false == m_View_Dirty)
 		return;

@@ -54,7 +54,7 @@ std::shared_ptr<IRenderPassPipelined> CDrawBonesPass::ConfigurePipeline(std::sha
 //
 EVisitResult CDrawBonesPass::Visit(const std::shared_ptr<ISceneNode>& CSceneNode)
 {
-	std::shared_ptr<IModelsComponent3D> modelsComponent = CSceneNode->GetComponentT<IModelsComponent3D>();
+	std::shared_ptr<IModelComponent> modelsComponent = CSceneNode->GetComponentT<IModelComponent>();
 	if (modelsComponent == nullptr)
 		return EVisitResult::AllowVisitChilds;
 

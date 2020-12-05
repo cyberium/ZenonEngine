@@ -1,12 +1,12 @@
 #include "stdafx.h"
 
 // General
-#include "ModelsComponent3D.h"
+#include "ModelComponent.h"
 
 // Additional
 #include "SkeletonComponentBone.h"
 
-CModelsComponent3D::CModelsComponent3D(const ISceneNode& OwnerNode)
+CModelComponent::CModelComponent(const ISceneNode& OwnerNode)
     : CComponentBase(OwnerNode)
 	
 	// Model
@@ -25,59 +25,66 @@ CModelsComponent3D::CModelsComponent3D(const ISceneNode& OwnerNode)
 
 	{
 		auto minBounds = MakeShared(CPropertyWrapped<bool>, "CastShadows", "Is this model can cast shadows", true);
-		minBounds->SetValueSetter(std::bind(&CModelsComponent3D::SetCastShadows, this, std::placeholders::_1));
-		minBounds->SetValueGetter(std::bind(&CModelsComponent3D::IsCastShadows, this));
+		minBounds->SetValueSetter(std::bind(&CModelComponent::SetCastShadows, this, std::placeholders::_1));
+		minBounds->SetValueGetter(std::bind(&CModelComponent::IsCastShadows, this));
 		GetProperties()->AddProperty(minBounds);
 	}
 }
 
-CModelsComponent3D::~CModelsComponent3D()
+CModelComponent::~CModelComponent()
 {}
 
 
 
 //
-// IModelsComponent3D
+// IModelComponent
 //
-void CModelsComponent3D::SetModel(const std::shared_ptr<IModel>& Model)
+void CModelComponent::SetModel(const std::shared_ptr<IModel>& Model)
 {
 	if (Model == nullptr)
 		throw CException("Nullptr model can't be assigned to node '%s'.", GetOwnerNode().GetName().c_str());
 
 	if (m_Model != nullptr)
+	{
 		Log::Warn("Node '%s' already has model '%s'. Do you really want to replace it with '%s'?", GetOwnerNode().GetName().c_str(), m_Model->GetFileName().c_str(), Model->GetFileName().c_str());
+		ResetModel();
+	}
 
-	
-	const auto& modelBounds = Model->GetBounds();
+	auto modelBounds = Model->GetBounds();
 	if (modelBounds.IsInfinite())
 		throw CException("Model '%s' with inifinity bounds can't be assigned to node '%s'.", Model->GetFileName().c_str(), GetOwnerNode().GetName().c_str());
 
-	ResetModel();
-
 	m_Model = Model;
-	GetComponentT<IColliderComponent3D>()->ExtendBounds(modelBounds);
-
 	InitializeBones();
+
+	/*if (auto rootBone = GetModel()->GetRootBone())
+	{
+		modelBounds.transform(rootBone->GetLocalMatrix());	
+	}*/
+
+	GetComponentT<IColliderComponent>()->SetBounds(modelBounds);
+
+
 }
 
-void CModelsComponent3D::ResetModel()
+void CModelComponent::ResetModel()
 {
 	m_Model.reset();
 	ResetBones();
 	ResetAnimation();
 }
 
-std::shared_ptr<IModel> CModelsComponent3D::GetModel() const
+std::shared_ptr<IModel> CModelComponent::GetModel() const
 {
 	return m_Model;
 }
 
-void CModelsComponent3D::SetCastShadows(bool Value)
+void CModelComponent::SetCastShadows(bool Value)
 {
 	m_IsCastShadows = Value;
 }
 
-bool CModelsComponent3D::IsCastShadows() const
+bool CModelComponent::IsCastShadows() const
 {
 	return m_IsCastShadows;
 }
@@ -87,29 +94,29 @@ bool CModelsComponent3D::IsCastShadows() const
 //
 // Bones functional
 //
-std::shared_ptr<ISkeletonComponentBone3D> CModelsComponent3D::GetRootBone() const
+std::shared_ptr<ISkeletonComponentBone3D> CModelComponent::GetRootBone() const
 {
 	return m_RootBone;
 }
 
-std::shared_ptr<ISkeletonComponentBone3D> CModelsComponent3D::GetBone(size_t Index) const
+std::shared_ptr<ISkeletonComponentBone3D> CModelComponent::GetBone(size_t Index) const
 {
 	if (Index >= m_Bones.size())
 		return nullptr;
 	return m_Bones.at(Index);
 }
 
-const std::vector<std::shared_ptr<ISkeletonComponentBone3D>>& CModelsComponent3D::GetBones() const
+const std::vector<std::shared_ptr<ISkeletonComponentBone3D>>& CModelComponent::GetBones() const
 {
 	return m_Bones;
 }
 
-std::shared_ptr<IStructuredBuffer> CModelsComponent3D::GetBonesBuffer() const
+std::shared_ptr<IStructuredBuffer> CModelComponent::GetBonesBuffer() const
 {
 	return m_StructuredBuffer;
 }
 
-std::vector<glm::mat4> CModelsComponent3D::CreatePose(size_t BoneStartIndex, size_t BonesCount) const
+std::vector<glm::mat4> CModelComponent::CreatePose(size_t BoneStartIndex, size_t BonesCount) const
 {
 	if (BonesCount == 0)
 		BonesCount = m_Bones.size();
@@ -129,7 +136,7 @@ std::vector<glm::mat4> CModelsComponent3D::CreatePose(size_t BoneStartIndex, siz
 //
 // Animation functional
 //
-void CModelsComponent3D::PlayAnimation(const std::string & AnimationName, bool Loop)
+void CModelComponent::PlayAnimation(const std::string & AnimationName, bool Loop)
 {
 	auto model = GetModel();
 	if (model == nullptr)
@@ -150,21 +157,23 @@ void CModelsComponent3D::PlayAnimation(const std::string & AnimationName, bool L
 	m_CurrentTime = 0.0;
 }
 
-void CModelsComponent3D::SetAnimationEndedCallback(std::function<void(const IAnimation*)> Func)
+void CModelComponent::SetAnimationEndedCallback(std::function<void(const IAnimation*)> Func)
 {
 	_ASSERT(m_OnAnimationEnded == nullptr);
 	m_OnAnimationEnded = Func;
 }
 
-size_t CModelsComponent3D::GetCurrentAnimationIndex() const
+bool CModelComponent::IsAnimationPlayed() const
 {
-	//if (m_CurrentAnimation == nullptr)
-	//	return 0;
-	//return m_CurrentAnimation->GetIndexInSequences(); For wow
+	return m_CurrentAnimation != nullptr;
+}
+
+size_t CModelComponent::GetCurrentAnimationIndex() const
+{
 	return m_CurrentAnimationIndex;
 }
 
-uint32 CModelsComponent3D::GetCurrentAnimationFrame() const
+uint32 CModelComponent::GetCurrentAnimationFrame() const
 {
 	if (m_CurrentAnimation == nullptr)
 		return 0;
@@ -183,7 +192,7 @@ uint32 CModelsComponent3D::GetCurrentAnimationFrame() const
 //
 // ISceneNodeComponent
 //
-void CModelsComponent3D::Update(const UpdateEventArgs & e)
+void CModelComponent::Update(const UpdateEventArgs & e)
 {
 	__super::Update(e);
 
@@ -235,7 +244,7 @@ void CModelsComponent3D::Update(const UpdateEventArgs & e)
 	}
 }
 
-void CModelsComponent3D::Accept(IVisitor* visitor)
+void CModelComponent::Accept(IVisitor* visitor)
 {
 	if (GetModel())
 		GetModel()->Accept(visitor);
@@ -246,11 +255,11 @@ void CModelsComponent3D::Accept(IVisitor* visitor)
 //
 // IObjectSaveLoad
 //
-void CModelsComponent3D::CopyTo(std::shared_ptr<IObject> Destination) const
+void CModelComponent::CopyTo(std::shared_ptr<IObject> Destination) const
 {
 	CComponentBase::CopyTo(Destination);
 
-	auto destCast = std::dynamic_pointer_cast<CModelsComponent3D>(Destination);
+	auto destCast = std::dynamic_pointer_cast<CModelComponent>(Destination);
 
 	if (m_Model != nullptr)
 		destCast->SetModel(m_Model);
@@ -258,7 +267,7 @@ void CModelsComponent3D::CopyTo(std::shared_ptr<IObject> Destination) const
 	destCast->SetCastShadows(m_IsCastShadows);
 }
 
-void CModelsComponent3D::Load(const std::shared_ptr<IXMLReader>& Reader)
+void CModelComponent::Load(const std::shared_ptr<IXMLReader>& Reader)
 {
 	CComponentBase::Load(Reader);
 
@@ -283,7 +292,7 @@ void CModelsComponent3D::Load(const std::shared_ptr<IXMLReader>& Reader)
 	}
 }
 
-void CModelsComponent3D::Save(const std::shared_ptr<IXMLWriter>& Writer) const
+void CModelComponent::Save(const std::shared_ptr<IXMLWriter>& Writer) const
 {
 	CComponentBase::Save(Writer);
 
@@ -313,7 +322,7 @@ void CModelsComponent3D::Save(const std::shared_ptr<IXMLWriter>& Writer) const
 
 // Bones
 
-void CModelsComponent3D::InitializeBones()
+void CModelComponent::InitializeBones()
 {
 	m_RootBone = nullptr;
 
@@ -322,6 +331,7 @@ void CModelsComponent3D::InitializeBones()
 		std::shared_ptr<CSkeletonComponentBone3D> bone = MakeShared(CSkeletonComponentBone3D, boneProto);
 		AddBone(bone);
 
+		// Resolve root bone
 		if (boneProto->GetParentIndex() == -1)
 		{
 			if (m_RootBone != nullptr)
@@ -341,12 +351,12 @@ void CModelsComponent3D::InitializeBones()
 	}
 }
 
-void CModelsComponent3D::AddBone(std::shared_ptr<ISkeletonComponentBone3D> Bone)
+void CModelComponent::AddBone(std::shared_ptr<ISkeletonComponentBone3D> Bone)
 {
 	m_Bones.push_back(Bone);
 }
 
-void CModelsComponent3D::ResetBones()
+void CModelComponent::ResetBones()
 {
 	m_RootBone = nullptr;
 	m_Bones.clear();
@@ -357,12 +367,12 @@ void CModelsComponent3D::ResetBones()
 
 // Animations
 
-void CModelsComponent3D::PauseAnimation()
+void CModelComponent::PauseAnimation()
 {
 	m_IsAnimationPaused = true;
 }
 
-void CModelsComponent3D::ResetAnimation()
+void CModelComponent::ResetAnimation()
 {
 	m_CurrentAnimationIndex = 0;
 	m_CurrentAnimation = nullptr;

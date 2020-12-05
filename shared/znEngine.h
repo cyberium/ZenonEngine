@@ -21,10 +21,10 @@
 #include "../znEngine/Scene/Components/ModelComponent/AnimatedValue.h"
 #include "../znEngine/Scene/Components/ModelComponent/Animation.h"
 #include "../znEngine/Scene/Components/ModelComponent/SkeletonComponentBone.h"
-#include "../znEngine/Scene/Components/ColliderComponent3D.h"
-#include "../znEngine/Scene/Components/LightComponent3D.h"
-#include "../znEngine/Scene/Components/ModelComponent/ModelsComponent3D.h"
-#include "../znEngine/Scene/Components/CameraComponent3D.h"
+#include "../znEngine/Scene/Components/ColliderComponent.h"
+#include "../znEngine/Scene/Components/LightComponent.h"
+#include "../znEngine/Scene/Components/ModelComponent/ModelComponent.h"
+#include "../znEngine/Scene/Components/CameraComponent.h"
 #include "../znEngine/Scene/Components/Particles/ParticlesComponent.h"
 
 
@@ -38,6 +38,7 @@
 #include "../znEngine/UIControls/UIControlText.h"
 
 // UIControls: RTS
+#include "../znEngine/RTS/UIControls/UIControlRTSResourcesPanel.h"
 #include "../znEngine/RTS/UIControls/UIControlRTSTowersPanel.h"
 #include "../znEngine/RTS/UIControls/UIControlRTSTowerBtn.h"
 

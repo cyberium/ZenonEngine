@@ -1,14 +1,14 @@
 #pragma once
 
-class ZN_API CModelsComponent3D
-	: public IModelsComponent3D
+class ZN_API CModelComponent
+	: public IModelComponent
 	, public CComponentBase
 {
 public:
-	CModelsComponent3D(const ISceneNode& OwnerNode);
-    virtual ~CModelsComponent3D();
+	CModelComponent(const ISceneNode& OwnerNode);
+    virtual ~CModelComponent();
 
-	// IModelsComponent3D
+	// IModelComponent
     void SetModel(const std::shared_ptr<IModel>& Model) override;
 	void ResetModel() override;
     std::shared_ptr<IModel> GetModel() const override;
@@ -25,6 +25,7 @@ public:
 	// Animation functional
 	void PlayAnimation(const std::string& AnimationName, bool Loop) override;
 	void SetAnimationEndedCallback(std::function<void(const IAnimation*)> Func) override;
+	bool IsAnimationPlayed() const override;
 	size_t GetCurrentAnimationIndex() const override;
 	uint32 GetCurrentAnimationFrame() const override;
 

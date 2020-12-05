@@ -41,7 +41,7 @@ CUIControlRTSTowerBtn::~CUIControlRTSTowerBtn()
 
 
 //
-// CUIControl
+// CUIControlCommon
 //
 void CUIControlRTSTowerBtn::Initialize()
 {
@@ -58,6 +58,38 @@ void CUIControlRTSTowerBtn::Initialize()
 	subGeom.Material = contentMaterial;
 	subGeom.Geom = GetBaseManager().GetApplication().GetRenderDevice().GetPrimitivesFactory().CreateUIQuad(glm::vec2(1.0f));
 	m_ButtonContent->AddSubgeometry(subGeom);
+
+
+	// Gold counter
+	{
+		std::shared_ptr<IUIControlCommon> goldPanel = GetScene().CreateUIControlTCast<IUIControlCommon>(shared_from_this());
+		goldPanel->SetLocalPosition(glm::vec2(40.0f, 66.0f));
+		goldPanel->SetScale(glm::vec2(0.66f));
+
+		{
+			std::shared_ptr<IUIControlText> goldText = GetScene().CreateUIControlTCast<IUIControlText>(goldPanel);
+			goldText->SetLocalPosition(glm::vec2(10.0f, 5.0f));
+			goldText->SetFont(GetBaseManager().GetManager<IznFontsManager>()->Add(GetRenderDevice(), "IDB_FONT_CONSOLAS", 28));
+			goldText->SetText("888$");
+			goldText->SetColor(glm::vec4(0.6f, 0.6f, 0.0f, 1.0f));
+		}
+
+		{
+			std::shared_ptr<CMaterialUIControl> goldPanelMaterial = MakeShared(CMaterialUIControl, GetBaseManager().GetApplication().GetRenderDevice());
+			goldPanelMaterial->SetTexture(GetBaseManager().GetManager<IznTexturesFactory>()->LoadTexture2D("Interface Pack/Spritesheet/interfacePack_sheet@2.png"));
+
+			SUISpreadsheetCell goldPanelCell(glm::vec2(320.0f, 1152.0f), glm::vec2(80.0f, 40.0f), glm::vec2(1193.0f, 1193.0f));
+
+			SSubgeometry subGeom;
+			subGeom.Translate = glm::vec2(0.0f, 0.0f);
+			subGeom.Size = goldPanelCell.CellSize;
+			subGeom.Material = goldPanelMaterial;
+			subGeom.Geom = GetBaseManager().GetApplication().GetRenderDevice().GetPrimitivesFactory().CreateUIQuad(glm::vec2(1.0f), goldPanelCell.UVCellStart, goldPanelCell.UVCellEnd);
+			goldPanel->AddSubgeometry(subGeom);
+		}
+	}
+
+
 
 	CreateWindowGeometry(0.0f);
 }

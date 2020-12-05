@@ -202,15 +202,6 @@
     <ClCompile Include="AssyncLoader\Loader.cpp">
       <Filter>Tools\AssyncLoader</Filter>
     </ClCompile>
-    <ClCompile Include="Scene\Components\CameraComponent3D.cpp">
-      <Filter>Scene\Components</Filter>
-    </ClCompile>
-    <ClCompile Include="Scene\Components\ColliderComponent3D.cpp">
-      <Filter>Scene\Components</Filter>
-    </ClCompile>
-    <ClCompile Include="Scene\Components\LightComponent3D.cpp">
-      <Filter>Scene\Components</Filter>
-    </ClCompile>
     <ClCompile Include="Scene\Camera\ArcBallCameraController.cpp">
       <Filter>Scene\Camera</Filter>
     </ClCompile>
@@ -300,9 +291,6 @@
     </ClCompile>
     <ClCompile Include="Scene\EngineSceneExtender.cpp">
       <Filter>Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="Scene\Components\ModelComponent\ModelsComponent3D.cpp">
-      <Filter>Scene\Components\ModelComponent</Filter>
     </ClCompile>
     <ClCompile Include="Scene\Components\ModelComponent\SkeletonBone.cpp">
       <Filter>Scene\Components\ModelComponent</Filter>
@@ -395,6 +383,21 @@
     <ClCompile Include="Passes\DrawLightFrustumPass.cpp">
       <Filter>Passes</Filter>
     </ClCompile>
+    <ClCompile Include="Scene\Components\LightComponent.cpp">
+      <Filter>Scene\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\Components\CameraComponent.cpp">
+      <Filter>Scene\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\Components\ColliderComponent.cpp">
+      <Filter>Scene\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\Components\ModelComponent\ModelComponent.cpp">
+      <Filter>Scene\Components\ModelComponent</Filter>
+    </ClCompile>
+    <ClCompile Include="RTS\UIControls\UIControlRTSResourcesPanel.cpp">
+      <Filter>RTS\UIControls</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="common.h">
@@ -476,15 +479,6 @@
     </ClInclude>
     <ClInclude Include="AssyncLoader\Loader.h">
       <Filter>Tools\AssyncLoader</Filter>
-    </ClInclude>
-    <ClInclude Include="Scene\Components\CameraComponent3D.h">
-      <Filter>Scene\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="Scene\Components\ColliderComponent3D.h">
-      <Filter>Scene\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="Scene\Components\LightComponent3D.h">
-      <Filter>Scene\Components</Filter>
     </ClInclude>
     <ClInclude Include="Scene\Camera\ArcBallCameraController.h">
       <Filter>Scene\Camera</Filter>
@@ -579,9 +573,6 @@
     <ClInclude Include="Scene\Components\ModelComponent\AnimatedValue.h">
       <Filter>Scene\Components\ModelComponent</Filter>
     </ClInclude>
-    <ClInclude Include="Scene\Components\ModelComponent\ModelsComponent3D.h">
-      <Filter>Scene\Components\ModelComponent</Filter>
-    </ClInclude>
     <ClInclude Include="Scene\Components\ModelComponent\SkeletonBone.h">
       <Filter>Scene\Components\ModelComponent</Filter>
     </ClInclude>
@@ -672,6 +663,21 @@
     </ClInclude>
     <ClInclude Include="Passes\DrawLightFrustumPass.h">
       <Filter>Passes</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\Components\LightComponent.h">
+      <Filter>Scene\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\Components\CameraComponent.h">
+      <Filter>Scene\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\Components\ColliderComponent.h">
+      <Filter>Scene\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\Components\ModelComponent\ModelComponent.h">
+      <Filter>Scene\Components\ModelComponent</Filter>
+    </ClInclude>
+    <ClInclude Include="RTS\UIControls\UIControlRTSResourcesPanel.h">
+      <Filter>RTS\UIControls</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

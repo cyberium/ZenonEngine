@@ -107,7 +107,7 @@ void CEditorToolWaypoints::OnMouseMoved(const MouseMotionEventArgs & e, const Ra
 	if (m_LastCreatedPoint == nullptr)
 		return;
 
-	auto bounds = m_LastCreatedPoint->GetComponentT<IColliderComponent3D>()->GetBounds();
+	auto bounds = m_LastCreatedPoint->GetComponentT<IColliderComponent>()->GetBounds();
 	_ASSERT(false == bounds.IsInfinite());
 
 	auto pos = GetScene().GetCameraController()->RayToPlane(RayToWorld, Plane(glm::vec3(0.0f, 1.0f, 0.0f), bounds.getMax().y / 2.0f + 2.0f));

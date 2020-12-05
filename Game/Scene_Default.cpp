@@ -49,7 +49,7 @@ void CSceneDefault::Initialize()
 		lightNode->SetLocalPosition(glm::vec3(150.0f, 150.0f, 150.0f));
 		lightNode->SetRotationEuler(glm::vec3(-0.5f, -0.5f, -0.5f));
 
-		auto lightComponent = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<IComponentFactory>()->CreateComponentT<CLightComponent3D>(cSceneNodeLightComponent, *lightNode.get());
+		auto lightComponent = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<IComponentFactory>()->CreateComponentT<CLightComponent>(cSceneNodeLightComponent, *lightNode.get());
 		lightComponent->SetCastShadows(true);
 		lightComponent->SetType(ELightType::Spot);
 		lightComponent->SetAmbientColor(glm::vec3(0.25f));

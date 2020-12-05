@@ -97,7 +97,7 @@ bool CEditorToolDragger::DragEnterEvent(const SDragData& Data)
 
 		m_DraggerNode = GetScene().CreateSceneNodeT<ISceneNode>();
 		m_DraggerNode->SetName(model->GetName());
-		m_DraggerNode->GetComponentT<IModelsComponent3D>()->SetModel(model);
+		m_DraggerNode->GetComponentT<IModelComponent>()->SetModel(model);
 	}
 	/*else if (dragDataSourceType == EDragDataSourceType::Texture)
 	{
@@ -107,7 +107,7 @@ bool CEditorToolDragger::DragEnterEvent(const SDragData& Data)
 
 		m_DraggerNode = GetScene().CreateSceneNodeT<ISceneNode>();
 		m_DraggerNode->SetName(model->GetName());
-		m_DraggerNode->GetComponentT<IModelsComponent3D>()->SetModel(model);
+		m_DraggerNode->GetComponentT<IModelComponent>()->SetModel(model);
 	}*/
 	else
 	{
@@ -116,12 +116,12 @@ bool CEditorToolDragger::DragEnterEvent(const SDragData& Data)
 	}
 
 	auto ray = GetScene().GetCameraController()->ScreenToRay(GetScene().GetRenderWindow().GetViewport(), Data.ScreenPosition);
-	if (auto collider = m_DraggerNode->GetComponentT<IColliderComponent3D>())
+	if (auto collider = m_DraggerNode->GetComponentT<IColliderComponent>())
 	{
 		const auto& colliderBounds = collider->GetBounds();
 		if (false == colliderBounds.IsInfinite())
 		{
-			auto pos = GetScene().GetCameraController()->RayToPlane(ray, Plane(glm::vec3(0.0f, 1.0f, 0.0f), m_DraggerNode->GetComponentT<IColliderComponent3D>()->GetBounds().getCenter().y));
+			auto pos = GetScene().GetCameraController()->RayToPlane(ray, Plane(glm::vec3(0.0f, 1.0f, 0.0f), m_DraggerNode->GetComponentT<IColliderComponent>()->GetBounds().getCenter().y));
 			m_DraggerNode->SetPosition(pos);
 			return true;
 		}
@@ -158,7 +158,7 @@ void CEditorToolDragger::MoveDraggedNode(const glm::vec2& MousePos)
 	auto ray = GetScene().GetCameraController()->ScreenToRay(GetScene().GetRenderWindow().GetViewport(), MousePos);
 
 	BoundingBox bounds(glm::vec3(-1.0f), glm::vec3(1.0f));
-	if (auto collider = m_DraggerNode->GetComponentT<IColliderComponent3D>())
+	if (auto collider = m_DraggerNode->GetComponentT<IColliderComponent>())
 	{
 		const auto& colliderBounds = collider->GetBounds();
 		if (false == colliderBounds.IsInfinite())

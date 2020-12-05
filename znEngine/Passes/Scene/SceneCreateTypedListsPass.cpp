@@ -88,7 +88,7 @@ EVisitResult CSceneCreateTypedListsPass::Visit(const std::shared_ptr<ISceneNode>
 		return EVisitResult::AllowVisitChilds;
 
 	// TODO Here?
-	if (auto colliderComponent = SceneNode->GetComponentT<IColliderComponent3D>())
+	if (auto colliderComponent = SceneNode->GetComponentT<IColliderComponent>())
 		if (colliderComponent->IsCulled(GetRenderEventArgs().CameraForCulling))
 			return EVisitResult::Block;
 

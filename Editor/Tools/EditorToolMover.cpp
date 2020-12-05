@@ -66,19 +66,19 @@ void CEditorToolMover::DoInitialize3D(const std::shared_ptr<IRenderer>& Renderer
 	m_MoverX->SetName("Mover_X");
 	m_MoverX->SetPosition(glm::vec3(1.0f, 0.0f, 0.0f));
 	m_MoverX->SetRotationEuler(glm::vec3(0.0f, glm::half_pi<float>(), 0.0f));
-	m_MoverX->GetComponentT<IModelsComponent3D>()->SetModel(modelX);
+	m_MoverX->GetComponentT<IModelComponent>()->SetModel(modelX);
 
 	m_MoverY = GetScene().CreateSceneNodeT<ISceneNode>(m_MoverRoot);
 	m_MoverY->SetName("Mover_Y");
 	m_MoverY->SetPosition(glm::vec3(0.0f, 1.0f, 0.0f));
 	m_MoverY->SetRotationEuler(glm::vec3(-glm::half_pi<float>(), 0.0f, 0.0f));
-	m_MoverY->GetComponentT<IModelsComponent3D>()->SetModel(modelY);
+	m_MoverY->GetComponentT<IModelComponent>()->SetModel(modelY);
 
 	m_MoverZ = GetScene().CreateSceneNodeT<ISceneNode>(m_MoverRoot);
 	m_MoverZ->SetName("Mover_Z");
 	m_MoverZ->SetPosition(glm::vec3(0.0f, 0.0f, 1.0f));
 	m_MoverZ->SetRotationEuler(glm::vec3(0.0f, 0.0f, 0.0f));
-	m_MoverZ->GetComponentT<IModelsComponent3D>()->SetModel(modelZ);
+	m_MoverZ->GetComponentT<IModelComponent>()->SetModel(modelZ);
 }
 
 bool CEditorToolMover::OnMousePressed(const MouseButtonEventArgs & e, const Ray & RayToWorld)
@@ -179,7 +179,7 @@ void CEditorToolMover::OnNodeSelected(const std::shared_ptr<ISceneNode> Selected
 	m_MoverRoot->SetPosition(SelectedNode->GetPosition());
 
 	float scaleForMoverTool = 1.0f / 50.0f;
-	if (auto colliderComponent = SelectedNode->GetComponentT<IColliderComponent3D>())
+	if (auto colliderComponent = SelectedNode->GetComponentT<IColliderComponent>())
 	{
 		const BoundingBox& colliderBounds = colliderComponent->GetBounds();
 		if (false == colliderBounds.IsInfinite())

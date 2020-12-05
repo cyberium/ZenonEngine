@@ -142,7 +142,7 @@ void CPassDeffered_DoRenderScene::DoRenderSceneNode(const std::shared_ptr<const 
 	m_PerObjectConstantBuffer->Set(PerObject(SceneNode->GetWorldTransfom()));
 	m_PerObjectShaderParameter->Bind();
 
-	auto modelsComponent = SceneNode->GetComponentT<IModelsComponent3D>();
+	auto modelsComponent = SceneNode->GetComponentT<IModelComponent>();
 	if (modelsComponent != nullptr)
 		if (m_ShaderBonesBufferParameter)
 			m_ShaderBonesBufferParameter->Set(modelsComponent->GetBonesBuffer());

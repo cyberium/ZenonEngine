@@ -60,7 +60,7 @@ void CSceneRTS::Initialize()
 		lightNode->SetLocalPosition(glm::vec3(150.0f, 150.0f, 150.0f));
 		lightNode->SetRotationEuler(glm::vec3(-0.5f, -0.5f, -0.5f));
 
-		auto lightComponent = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<IComponentFactory>()->CreateComponentT<CLightComponent3D>(cSceneNodeLightComponent, *lightNode.get());
+		auto lightComponent = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<IComponentFactory>()->CreateComponentT<CLightComponent>(cSceneNodeLightComponent, *lightNode.get());
 		lightComponent->SetCastShadows(true);
 		lightComponent->SetType(ELightType::Directional);
 		lightComponent->SetAmbientColor(glm::vec3(0.25f));
@@ -111,8 +111,8 @@ void CSceneRTS::Initialize()
 		node->SetName("Sphere");
 		node->SetLocalPosition(glm::vec3(0, 175.0f, 0));
 		node->SetScale(glm::vec3(cPlaneSize, cPlaneSize, cPlaneSize));
-		node->GetComponentT<IModelsComponent3D>()->SetModel(modelPlane);
-		//node->GetComponent<IModelsComponent3D>()->SetCastShadows(false);
+		node->GetComponentT<IModelComponent>()->SetModel(modelPlane);
+		//node->GetComponent<IModelComponent>()->SetCastShadows(false);
 	}
 
 
@@ -124,7 +124,7 @@ void CSceneRTS::Initialize()
 	//--------------------------------------------------------------------------
 	// XML
 	//--------------------------------------------------------------------------
-	if (auto file = GetBaseManager().GetManager<IFilesManager>()->Open("RTS2265611"))
+	if (auto file = GetBaseManager().GetManager<IFilesManager>()->Open("RTS2265612"))
 	{
 		CXMLManager xml(GetBaseManager());
 		auto reader = xml.CreateReaderFromFile(file);
@@ -134,6 +134,14 @@ void CSceneRTS::Initialize()
 		_ASSERT(m_RTSUnitsPath != nullptr);
 	}
 
+
+
+	{
+		auto uiControlRTSResourcesPanel = CreateUIControlTCast<CUIControlRTSResourcesPanel>();
+
+		uiControlRTSResourcesPanel->SetLocalPosition(glm::vec2((GetRenderWindow().GetWindowWidth() / 2.0f) - (uiControlRTSResourcesPanel->GetSize().x / 2.0f), 0.0f));
+		uiControlRTSResourcesPanel->SetScale(glm::vec2(0.5f));
+	}
 
 	{
 		m_UIControlRTSTowersPanel = CreateUIControlTCast<CUIControlRTSTowersPanel>();
@@ -146,13 +154,13 @@ void CSceneRTS::Initialize()
 
 		m_UIControlRTSTowersPanel->SetLocalPosition(glm::vec2(
 			(GetRenderWindow().GetWindowWidth() / 2.0f) - (m_UIControlRTSTowersPanel->GetSize().x / 2.0f),
-			 GetRenderWindow().GetWindowHeight() - m_UIControlRTSTowersPanel->GetSize().y)
+			 GetRenderWindow().GetWindowHeight() - m_UIControlRTSTowersPanel->GetSize().y / 1.5f)
 		);
 
 		m_UIControlRTSTowersPanel->SetTowerButtonClickCallback(std::bind(&CSceneRTS::OnTowerButtonClicked, this, std::placeholders::_1));
 
 
-		m_UIControlRTSTowersPanel->SetScale(glm::vec2(0.5f));
+		//m_UIControlRTSTowersPanel->SetScale(glm::vec2(0.5f));
 	}
 	
 
@@ -268,10 +276,10 @@ std::shared_ptr<IModel> CSceneRTS::CreateUnitModel(std::string ModelName, std::s
 {
 	auto filesManager = GetBaseManager().GetManager<IFilesManager>();
 
-	auto fileNameStruct = Utils::SplitFilename(ModelName);
+	/*auto fileNameStruct = Utils::SplitFilename(ModelName);
 	auto existingXMLModel = fileNameStruct.NameWithoutExtension + ".znxmdl";
 	if (filesManager->IsFileExists(existingXMLModel))
-		return GetBaseManager().GetManager<IznModelsFactory>()->LoadModel(existingXMLModel);
+		return GetBaseManager().GetManager<IznModelsFactory>()->LoadModel(existingXMLModel);*/
 
 	CznFBXLoaderParams fbxLoaderParams;
 	fbxLoaderParams.TexturesPathRoot = "Toon_RTS/models/textures/";
@@ -335,8 +343,15 @@ void CSceneRTS::CreateUnit()
 	newRTSUnit->SetName("RTSUnit");
 	newRTSUnit->SetLocalPosition(glm::vec3(0.0f, 0.0f, 0.0f));
 	newRTSUnit->SetScale(glm::vec3(0.08f));
-	newRTSUnit->GetComponentT<IModelsComponent3D>()->SetModel(currentWave.Model);
-	newRTSUnit->GetComponentT<IModelsComponent3D>()->PlayAnimation("run", true);
+	newRTSUnit->GetComponentT<IModelComponent>()->SetModel(currentWave.Model);
+	try
+	{
+		newRTSUnit->GetComponentT<IModelComponent>()->PlayAnimation("run", true);
+	}
+	catch (const CException& e)
+	{
+
+	}
 	newRTSUnit->SetPath(m_RTSUnitsPath);
 
 	// Change wave
@@ -384,11 +399,11 @@ void CSceneRTS::MoveTower(const Ray& RayToWorld)
 	auto nearestNode = nodes.begin()->second;
 	_ASSERT(nearestNode != nullptr);
 
-	auto nearestTileBounds = nearestNode->GetComponentT<IColliderComponent3D>();
+	auto nearestTileBounds = nearestNode->GetComponentT<IColliderComponent>();
 	auto bounds = nearestTileBounds->GetWorldBounds();
 	glm::vec3 center = bounds.getCenter();
 
-	if (auto collider = m_CurrentTowerNode->GetComponentT<IColliderComponent3D>())
+	if (auto collider = m_CurrentTowerNode->GetComponentT<IColliderComponent>())
 	{
 		const auto& colliderBounds = collider->GetBounds();
 		if (false == colliderBounds.IsInfinite())
@@ -410,7 +425,7 @@ namespace
 {
 	void ChangeMaterialRecursive(std::shared_ptr<IMaterial> Material, std::shared_ptr<ISceneNode> Node)
 	{
-		if (auto modelsComponent = Node->GetComponentT<IModelsComponent3D>())
+		if (auto modelsComponent = Node->GetComponentT<IModelComponent>())
 		{
 			if (auto model = modelsComponent->GetModel())
 			{

@@ -1,12 +1,12 @@
 #pragma once
 
-class ZN_API CCameraComponent3D
+class ZN_API CCameraComponent
 	: public ICameraComponent3D
 	, public CComponentBase
 {
 public:
-	CCameraComponent3D(const ISceneNode& OwnerNode);
-    virtual ~CCameraComponent3D();
+	CCameraComponent(const ISceneNode& OwnerNode);
+    virtual ~CCameraComponent();
 
 	// ICameraComponent3D
 	void DoMoveFront(float Value = 1.0f);

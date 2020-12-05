@@ -7,7 +7,7 @@
 ZN_INTERFACE IMaterial;
 ZN_INTERFACE IGeometry;
 class RenderEventArgs;
-ZN_INTERFACE IModelsComponent3D;
+ZN_INTERFACE IModelComponent;
 // FORWARD END
 
 struct ZN_API SSkeletonAnimation
@@ -33,7 +33,7 @@ ZN_INTERFACE ZN_API ISkeletonBone
 	virtual void SetSkinMatrix(const glm::mat4& Matrix) = 0;
 	virtual glm::mat4 GetSkinMatrix() const = 0;
 
-	virtual glm::mat4 CalculateBontMatrix(const IModelsComponent3D* ModelsComponent) const = 0;
+	virtual glm::mat4 CalculateBontMatrix(const IModelComponent* ModelsComponent) const = 0;
 };
 
 

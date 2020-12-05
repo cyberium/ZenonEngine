@@ -9,7 +9,7 @@ namespace
 {
 	void FillIntersectedModelsMap(const std::shared_ptr<ISceneNode>& Owner, const Ray& Ray, std::map<float, std::shared_ptr<IModel>> * intersectedModels)
 	{
-		auto modelsComponent = Owner->GetComponentT<IModelsComponent3D>();
+		auto modelsComponent = Owner->GetComponentT<IModelComponent>();
 		if (modelsComponent == nullptr)
 			return;
 
@@ -33,7 +33,7 @@ namespace
 
 	void FillIntersectedModelsList(const std::shared_ptr<ISceneNode>& Owner, const Frustum& Frustum, std::vector<std::shared_ptr<IModel>> * intersectedModels)
 	{
-		auto modelsComponent = Owner->GetComponentT<IModelsComponent3D>();
+		auto modelsComponent = Owner->GetComponentT<IModelComponent>();
 		if (modelsComponent == nullptr)
 			return;
 
@@ -57,7 +57,7 @@ namespace
 		{
 			FillIntersectedSceneNodesList(it, Frustum, intersectedNodes);
 
-			if (auto collider = it->GetComponentT<IColliderComponent3D>())
+			if (auto collider = it->GetComponentT<IColliderComponent>())
 			{
 				if (collider->GetBounds().IsInfinite())
 					continue;
@@ -76,7 +76,7 @@ namespace
 			FillNearestSceneNodesMapRecursive(it, Position, Distance, NearestSceneNodes);
 
 			glm::vec3 nodeTranslate = it->GetPosition();
-			if (auto colliderComponent = it->GetComponentT<IColliderComponent3D>())
+			if (auto colliderComponent = it->GetComponentT<IColliderComponent>())
 			{
 				const auto& worldBounds = colliderComponent->GetWorldBounds();
 				if (false == worldBounds.IsInfinite())
@@ -97,7 +97,7 @@ namespace
 			FillNearestSceneNodesMap2DRecursive(it, Position, Distance, NearestSceneNodes);
 
 			glm::vec3 nodeTranslate = it->GetPosition();
-			if (auto colliderComponent = it->GetComponentT<IColliderComponent3D>())
+			if (auto colliderComponent = it->GetComponentT<IColliderComponent>())
 			{
 				const auto& worldBounds = colliderComponent->GetWorldBounds();
 				if (false == worldBounds.IsInfinite())
@@ -118,7 +118,7 @@ namespace
 		{
 			FillIntersectedSceneNodesMap(it, Ray, intersectedNodes);
 
-			if (auto collider = it->GetComponentT<IColliderComponent3D>())
+			if (auto collider = it->GetComponentT<IColliderComponent>())
 			{
 				if (collider->GetBounds().IsInfinite())
 					continue;

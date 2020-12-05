@@ -149,8 +149,8 @@ void CRTSGround::DoInitialize3D(const std::shared_ptr<IRenderer>& Renderer, std:
 
 	m_GroundSelectorNode = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeFactory>()->CreateSceneNode3D(cSceneNode3D, GetScene());
 	m_GroundSelectorNode->SetName("GroundSelectedNode");
-	m_GroundSelectorNode->GetComponentT<IModelsComponent3D>()->SetModel(modelY);
-	m_GroundSelectorNode->GetComponentT<IColliderComponent3D>()->SetBounds(geom->GetBounds());
+	m_GroundSelectorNode->GetComponentT<IModelComponent>()->SetModel(modelY);
+	m_GroundSelectorNode->GetComponentT<IColliderComponent>()->SetBounds(geom->GetBounds());
 }
 
 bool CRTSGround::OnMousePressed(const MouseButtonEventArgs & e, const Ray & RayToWorld)

@@ -122,8 +122,8 @@ void CSceneNodeRTSUnit::Initialize()
 
 	//auto znMdlFile = GetBaseManager().GetManager<IznModelsFactory>()->LoadModel("OrcWithAnims.znmdl");
 
-	//GetComponentT<IModelsComponent3D>()->SetModel(znMdlFile);
-	//GetComponentT<IModelsComponent3D>()->PlayAnimation("run", true);
+	//GetComponentT<IModelComponent>()->SetModel(znMdlFile);
+	//GetComponentT<IModelComponent>()->PlayAnimation("run", true);
 
 	//std::shared_ptr<IParticleComponent3D> particlesComponent = MakeShared(CParticlesComponent, *this);
 	//AddComponentT(particlesComponent);
@@ -192,8 +192,8 @@ void CSceneNodeRTSUnit::OnDeath()
 {
 	try
 	{
-		GetComponentT<IModelsComponent3D>()->PlayAnimation("death", false);
-		GetComponentT<IModelsComponent3D>()->SetAnimationEndedCallback([this](const IAnimation* Animation) {
+		GetComponentT<IModelComponent>()->PlayAnimation("death", false);
+		GetComponentT<IModelComponent>()->SetAnimationEndedCallback([this](const IAnimation* Animation) {
 			m_IsNeedMoveDown = true;
 			m_MoveDownHeight = GetPosition().y - 5.0f;
 		});

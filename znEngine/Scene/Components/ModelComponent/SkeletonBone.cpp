@@ -94,21 +94,28 @@ glm::mat4 CSkeletonBone::GetSkinMatrix() const
 	return m_SkinMatrix;
 }
 
-glm::mat4 CSkeletonBone::CalculateBontMatrix(const IModelsComponent3D* ModelsComponent) const
+glm::mat4 CSkeletonBone::CalculateBontMatrix(const IModelComponent* ModelsComponent) const
 {
 	glm::mat4 m(1.0f);
 
 	m *= GetPivotMatrix();
 	{
-		size_t currentAnimationIndex = ModelsComponent->GetCurrentAnimationIndex();
+		if (ModelsComponent->IsAnimationPlayed())
+		{
+			size_t currentAnimationIndex = ModelsComponent->GetCurrentAnimationIndex();
 
-		if (m_ParentIndex == -1)
-			m *= glm::inverse(ModelsComponent->GetModel()->GetSkeletonAnimation(currentAnimationIndex).RootBoneLocalTransform);
+			if (m_ParentIndex == -1)
+				m *= glm::inverse(ModelsComponent->GetModel()->GetSkeletonAnimation(currentAnimationIndex).RootBoneLocalTransform);
 
-		if (m_CalculatedMatrixes.IsUsesBySequence(currentAnimationIndex))
-			m *= m_CalculatedMatrixes.GetValue(ModelsComponent->GetCurrentAnimationIndex(), ModelsComponent->GetCurrentAnimationFrame());
+			if (m_CalculatedMatrixes.IsUsesBySequence(currentAnimationIndex))
+				m *= m_CalculatedMatrixes.GetValue(ModelsComponent->GetCurrentAnimationIndex(), ModelsComponent->GetCurrentAnimationFrame());
+			else
+				m *= m_LocalTransform;
+		}
 		else
+		{
 			m *= m_LocalTransform;
+		}
 	}
 	m *= glm::inverse(GetPivotMatrix());
 

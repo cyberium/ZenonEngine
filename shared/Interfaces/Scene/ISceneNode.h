@@ -6,8 +6,8 @@ ZN_INTERFACE IScene;
 ZN_INTERFACE ICameraComponent3D;
 ZN_INTERFACE IVisitor;
 class UpdateEventArgs;
-ZN_INTERFACE IColliderComponent3D;
-ZN_INTERFACE IColliderComponent3D;
+ZN_INTERFACE IColliderComponent;
+ZN_INTERFACE IColliderComponent;
 // FORWARD END
 
 

@@ -33,7 +33,7 @@ void CSceneDefault::Load3D()
 		node->SetName("Sponza");
 		node->SetTranslate(glm::vec3(0, 0, 0));
 		node->SetScale(glm::vec3(1.0f));
-		node->GetComponent<IModelsComponent3D>()->SetModel(znModel);
+		node->GetComponent<IModelComponent>()->SetModel(znModel);
 	}*/
 
 
@@ -48,7 +48,7 @@ void CSceneDefault::Load3D()
 		node->SetTranslate(glm::vec3(0, 0, 0));
 		node->SetRotation(glm::vec3(-glm::half_pi<float>(), 0.0f, 0.0f));
 		node->SetScale(glm::vec3(15.0f));
-		node->GetComponentT<IModelsComponent3D>()->SetModel(znModel);
+		node->GetComponentT<IModelComponent>()->SetModel(znModel);
 	}*/
 
 
@@ -72,8 +72,8 @@ void CSceneDefault::Load3D()
 		node->SetName("Ground");
 		node->SetPosition(glm::vec3(0, 0, 0));
 		node->SetScale(glm::vec3(cPlaneSize, cPlaneSize, cPlaneSize));
-		node->GetComponentT<IModelsComponent3D>()->SetModel(modelPlane);
-		//node->GetComponent<IModelsComponent3D>()->SetCastShadows(false);
+		node->GetComponentT<IModelComponent>()->SetModel(modelPlane);
+		//node->GetComponent<IModelComponent>()->SetCastShadows(false);
 	}
 
 
@@ -96,7 +96,7 @@ void CSceneDefault::Load3D()
 		node->SetName("Sphere");
 		node->SetTranslate(glm::vec3(-10, 15, -10));
 		node->SetScale(glm::vec3(15.0f));
-		node->GetComponent<IModelsComponent3D>()->SetModel(modelPlane);
+		node->GetComponent<IModelComponent>()->SetModel(modelPlane);
 	}*/
 
 
@@ -122,8 +122,8 @@ void CSceneDefault::Load3D()
 		node->SetName("Sphere2");
 		node->SetTranslate(glm::vec3(-10, 15, 16 * i));
 		node->SetScale(glm::vec3(15.0f));
-		node->GetComponent<IModelsComponent3D>()->SetModel(modelPlane);
-		//node->GetComponent<IModelsComponent3D>()->SetCastShadows(false);
+		node->GetComponent<IModelComponent>()->SetModel(modelPlane);
+		//node->GetComponent<IModelComponent>()->SetCastShadows(false);
 	}*/
 
 
@@ -142,7 +142,7 @@ void CSceneDefault::Load3D()
 		node->SetTranslate(glm::vec3(0.0f, 0.0f, 0.0f));
 		node->SetRotation(-glm::vec3(glm::half_pi<float>(), 0.0f, 0.0f));
 		node->SetScale(glm::vec3(0.5f));
-		node->GetComponent<IModelsComponent3D>()->SetModel(znModel);
+		node->GetComponent<IModelComponent>()->SetModel(znModel);
 	}*/
 
 	//--------------------------------------------------------------------------
@@ -191,8 +191,8 @@ void CSceneDefault::Load3D()
 		auto znMdlFile = GetBaseManager().GetManager<IznModelsFactory>()->SaveModel(originalSkeletonModel, znModelFilename);
 		znMdlFile->Save();
 
-		node->GetComponentT<IModelsComponent3D>()->SetModel(originalSkeletonModel);
-		node->GetComponentT<IModelsComponent3D>()->PlayAnimation("run", true);
+		node->GetComponentT<IModelComponent>()->SetModel(originalSkeletonModel);
+		node->GetComponentT<IModelComponent>()->PlayAnimation("run", true);
 	}
 
 	//--------------------------------------------------------------------------
@@ -207,7 +207,7 @@ void CSceneDefault::Load3D()
 
 		auto znMdlFile = GetBaseManager().GetManager<IznModelsFactory>()->LoadModel("OrcWithAnims.znmdl");
 
-		node->GetComponentT<IModelsComponent3D>()->SetModel(znMdlFile);
-		//node->GetComponentT<IModelsComponent3D>()->PlayAnimation("run", true);
+		node->GetComponentT<IModelComponent>()->SetModel(znMdlFile);
+		//node->GetComponentT<IModelComponent>()->PlayAnimation("run", true);
 	}*/
 }

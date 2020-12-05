@@ -22,7 +22,7 @@ public:
 	// ISkeletonComponentBoneInternal3D
 	void AddChildInternal(const std::shared_ptr<ISkeletonComponentBone3D>& Child) override;
 	void SetParentAndChildsInternals(const std::vector<std::shared_ptr<ISkeletonComponentBone3D>>& Bones) override;
-	void Calculate(const IModelsComponent3D* ModelsComponent, const ICameraComponent3D* Camera) override;
+	void Calculate(const IModelComponent* ModelsComponent, const ICameraComponent3D* Camera) override;
 	void Reset() override;
 
 protected:

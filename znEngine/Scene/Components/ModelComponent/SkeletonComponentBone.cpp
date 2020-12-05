@@ -68,7 +68,7 @@ void CSkeletonComponentBone3D::SetParentAndChildsInternals(const std::vector<std
 	}
 }
 
-void CSkeletonComponentBone3D::Calculate(const IModelsComponent3D* ModelsComponent, const ICameraComponent3D* Camera)
+void CSkeletonComponentBone3D::Calculate(const IModelComponent* ModelsComponent, const ICameraComponent3D* Camera)
 {
 	if (m_IsCalculated)
 		return;

@@ -1,9 +1,9 @@
 #include "stdafx.h"
 
 // General
-#include "LightComponent3D.h"
+#include "LightComponent.h"
 
-CLightComponent3D::CLightComponent3D(const ISceneNode& OwnerNode)
+CLightComponent::CLightComponent(const ISceneNode& OwnerNode)
     : CComponentBase(OwnerNode)
 	, m_IsEnabled(true)
 	, m_IsCastShadows(false)
@@ -11,25 +11,25 @@ CLightComponent3D::CLightComponent3D(const ISceneNode& OwnerNode)
 	GetProperties()->SetName("LightComponent");
 
 	std::shared_ptr<CPropertyWrapped<ColorRBG>> ambientColor = MakeShared(CPropertyWrapped<ColorRBG>, "AmbientColor", "descr", glm::vec3(0.2f));
-	ambientColor->SetValueSetter(std::bind(&CLightComponent3D::SetAmbientColor, this, std::placeholders::_1));
-	ambientColor->SetValueGetter(std::bind(&CLightComponent3D::GetAmbientColor, this));
+	ambientColor->SetValueSetter(std::bind(&CLightComponent::SetAmbientColor, this, std::placeholders::_1));
+	ambientColor->SetValueGetter(std::bind(&CLightComponent::GetAmbientColor, this));
 	GetProperties()->AddProperty(ambientColor);
 
 	std::shared_ptr<CPropertyWrappedColor> diffuseColor = MakeShared(CPropertyWrappedColor, "DiffuseColor", "descr", glm::vec3(1.0f));
-	diffuseColor->SetValueSetter(std::bind(&CLightComponent3D::SetColor, this, std::placeholders::_1));
-	diffuseColor->SetValueGetter(std::bind(&CLightComponent3D::GetColor, this));
+	diffuseColor->SetValueSetter(std::bind(&CLightComponent::SetColor, this, std::placeholders::_1));
+	diffuseColor->SetValueGetter(std::bind(&CLightComponent::GetColor, this));
 	GetProperties()->AddProperty(diffuseColor);
 
 	std::shared_ptr<CPropertyWrapped<float>> range = MakeShared(CPropertyWrapped<float>, "Range", "descr", 1000.0f);
-	range->SetValueSetter(std::bind(&CLightComponent3D::SetRange, this, std::placeholders::_1));
-	range->SetValueGetter(std::bind(&CLightComponent3D::GetRange, this));
+	range->SetValueSetter(std::bind(&CLightComponent::SetRange, this, std::placeholders::_1));
+	range->SetValueGetter(std::bind(&CLightComponent::GetRange, this));
 	GetProperties()->AddProperty(range);
 
 	m_LightStruct = (SGPULight*)_aligned_malloc(sizeof(SGPULight), 16);
 	*m_LightStruct = SGPULight();
 }
 
-CLightComponent3D::~CLightComponent3D()
+CLightComponent::~CLightComponent()
 {
 	if (m_LightStruct != nullptr)
 		_aligned_free(m_LightStruct);
@@ -40,62 +40,62 @@ CLightComponent3D::~CLightComponent3D()
 //
 // ILightComponent3D
 //
-void CLightComponent3D::SetAmbientColor(glm::vec3 Value)
+void CLightComponent::SetAmbientColor(glm::vec3 Value)
 {
 	m_LightStruct->AmbientColor = glm::vec4(Value, 1.0f);
 }
 
-glm::vec3 CLightComponent3D::GetAmbientColor() const
+glm::vec3 CLightComponent::GetAmbientColor() const
 {
 	return m_LightStruct->AmbientColor.rgb;
 }
 
-void CLightComponent3D::SetColor(glm::vec3 Value)
+void CLightComponent::SetColor(glm::vec3 Value)
 {
 	m_LightStruct->Color = glm::vec4(Value, 1.0f);
 }
 
-glm::vec3 CLightComponent3D::GetColor() const
+glm::vec3 CLightComponent::GetColor() const
 {
 	return m_LightStruct->Color.rgb();
 }
 
-void CLightComponent3D::SetType(ELightType Value)
+void CLightComponent::SetType(ELightType Value)
 {
 	m_LightStruct->Type = Value;
 }
 
-ELightType CLightComponent3D::GetType() const
+ELightType CLightComponent::GetType() const
 {
 	return m_LightStruct->Type;
 }
 
-void CLightComponent3D::SetRange(float Value)
+void CLightComponent::SetRange(float Value)
 {
 	m_LightStruct->Range = Value;
 }
 
-float CLightComponent3D::GetRange() const
+float CLightComponent::GetRange() const
 {
 	return m_LightStruct->Range;
 }
 
-void CLightComponent3D::SetIntensity(float Value)
+void CLightComponent::SetIntensity(float Value)
 {
 	m_LightStruct->Intensity = Value;
 }
 
-float CLightComponent3D::GetIntensity() const
+float CLightComponent::GetIntensity() const
 {
 	return m_LightStruct->Intensity;
 }
 
-void CLightComponent3D::SetSpotlightAngle(float Value)
+void CLightComponent::SetSpotlightAngle(float Value)
 {
 	m_LightStruct->SpotlightAngle = Value;
 }
 
-float CLightComponent3D::GetSpotlightAngle() const
+float CLightComponent::GetSpotlightAngle() const
 {
 	return m_LightStruct->SpotlightAngle;
 }
@@ -105,27 +105,27 @@ float CLightComponent3D::GetSpotlightAngle() const
 //
 // ILight3D
 //
-void CLightComponent3D::SetEnabled(bool Value)
+void CLightComponent::SetEnabled(bool Value)
 {
 	m_IsEnabled = Value;
 }
 
-bool CLightComponent3D::IsEnabled() const
+bool CLightComponent::IsEnabled() const
 {
 	return m_IsEnabled;
 }
 
-void CLightComponent3D::SetCastShadows(bool Value)
+void CLightComponent::SetCastShadows(bool Value)
 {
 	m_IsCastShadows = Value;
 }
 
-bool CLightComponent3D::IsCastShadows() const
+bool CLightComponent::IsCastShadows() const
 {
 	return m_IsCastShadows;
 }
 
-glm::mat4 CLightComponent3D::GetViewMatrix() const
+glm::mat4 CLightComponent::GetViewMatrix() const
 {
 	const glm::vec3& ownerTranslate = GetOwnerNode().GetPosition();
 	const glm::vec3& ownerRotation = GetOwnerNode().GetRotationEuler();
@@ -143,10 +143,10 @@ glm::mat4 CLightComponent3D::GetViewMatrix() const
 		return glm::lookAt(- glm::normalize(ownerRotation) * 1.0f, glm::vec3(0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 	}
 
-	return glm::mat4(1.0f);
+	throw CException("Unknown light type '%d'.", m_LightStruct->Type);
 }
 
-glm::mat4 CLightComponent3D::GetProjectionMatrix() const
+glm::mat4 CLightComponent::GetProjectionMatrix() const
 {
 	if (m_LightStruct->Type == ELightType::Point)
 	{
@@ -165,14 +165,14 @@ glm::mat4 CLightComponent3D::GetProjectionMatrix() const
 	throw CException("Unknown light type '%d'.", m_LightStruct->Type);
 }
 
-Frustum CLightComponent3D::GetFrustum() const
+Frustum CLightComponent::GetFrustum() const
 {
 	Frustum frustum;
 	frustum.buildViewFrustum(GetViewMatrix(), GetProjectionMatrix());
 	return frustum;
 }
 
-const SGPULight& CLightComponent3D::GetGPULightStruct() const
+const SGPULight& CLightComponent::GetGPULightStruct() const
 {
 	return *m_LightStruct;
 }
@@ -182,7 +182,7 @@ const SGPULight& CLightComponent3D::GetGPULightStruct() const
 //
 // ISceneNodeComponent
 //
-void CLightComponent3D::Accept(IVisitor* visitor)
+void CLightComponent::Accept(IVisitor* visitor)
 {
 	if (false == IsEnabled())
 		return;
@@ -224,11 +224,11 @@ namespace
 	}
 }
 
-void CLightComponent3D::CopyTo(std::shared_ptr<IObject> Destination) const
+void CLightComponent::CopyTo(std::shared_ptr<IObject> Destination) const
 {
 	CComponentBase::CopyTo(Destination);
 
-	auto destCast = std::dynamic_pointer_cast<CLightComponent3D>(Destination);
+	auto destCast = std::dynamic_pointer_cast<CLightComponent>(Destination);
 
 	destCast->SetAmbientColor(GetAmbientColor());
 	destCast->SetColor(GetColor());
@@ -238,7 +238,7 @@ void CLightComponent3D::CopyTo(std::shared_ptr<IObject> Destination) const
 	destCast->SetSpotlightAngle(GetSpotlightAngle());
 }
 
-void CLightComponent3D::Load(const std::shared_ptr<IXMLReader>& Reader)
+void CLightComponent::Load(const std::shared_ptr<IXMLReader>& Reader)
 {
 	CComponentBase::Load(Reader);
 
@@ -289,7 +289,7 @@ void CLightComponent3D::Load(const std::shared_ptr<IXMLReader>& Reader)
 	}
 }
 
-void CLightComponent3D::Save(const std::shared_ptr<IXMLWriter>& Writer) const
+void CLightComponent::Save(const std::shared_ptr<IXMLWriter>& Writer) const
 {
 	CComponentBase::Save(Writer);
 

@@ -76,13 +76,13 @@ std::shared_ptr<IRenderPassPipelined> CPassForward_DoRenderScene::ConfigurePipel
 EVisitResult CPassForward_DoRenderScene::Visit(const std::shared_ptr<ISceneNode>& SceneNode)
 {
 	// TODO Here?
-	//if (auto colliderComponent = SceneNode->GetComponentT<IColliderComponent3D>())
+	//if (auto colliderComponent = SceneNode->GetComponentT<IColliderComponent>())
 	//	if (colliderComponent->IsCulled(GetRenderEventArgs().CameraForCulling))
 	//		return EVisitResult::Block;
 
 	if (SceneNode->GetClass() == cSceneNode3D || SceneNode->GetClass() == cSceneNodeRTSUnit || SceneNode->GetClass() == cSceneNodeRTSBullet)
 	{
-		auto modelsComponent = SceneNode->GetComponentT<IModelsComponent3D>();
+		auto modelsComponent = SceneNode->GetComponentT<IModelComponent>();
 		if (modelsComponent != nullptr)
 			if (m_ShaderBonesBufferParameter)
 				m_ShaderBonesBufferParameter->Set(modelsComponent->GetBonesBuffer());

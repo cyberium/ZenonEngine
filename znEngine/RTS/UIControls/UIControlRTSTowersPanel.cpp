@@ -42,7 +42,7 @@ CUIControlRTSTowersPanel::~CUIControlRTSTowersPanel()
 
 
 //
-// CUIControl
+// CUIControlCommon
 //
 void CUIControlRTSTowersPanel::Initialize()
 {
@@ -52,7 +52,7 @@ void CUIControlRTSTowersPanel::Initialize()
 
 
 	// Gold counter
-	{
+	/*{
 		std::shared_ptr<IUIControlCommon> goldPanel = GetScene().CreateUIControlTCast<IUIControlCommon>(shared_from_this());
 		goldPanel->SetLocalPosition(glm::vec2(-15.0f, -55.0f));
 
@@ -77,7 +77,7 @@ void CUIControlRTSTowersPanel::Initialize()
 			subGeom.Geom = GetBaseManager().GetApplication().GetRenderDevice().GetPrimitivesFactory().CreateUIQuad(glm::vec2(1.0f), goldPanelCell.UVCellStart, goldPanelCell.UVCellEnd);
 			goldPanel->AddSubgeometry(subGeom);
 		}
-	}
+	}*/
 }
 
 void CUIControlRTSTowersPanel::AddTowerButton(std::string Name, std::string TowerXMLName, std::string TowerTextureName, uint32 TowerCost, IScene& Scene)

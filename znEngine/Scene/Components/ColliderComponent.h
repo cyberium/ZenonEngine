@@ -1,14 +1,14 @@
 #pragma once
 
-class ZN_API CColliderComponent3D
-	: public IColliderComponent3D
+class ZN_API CColliderComponent
+	: public IColliderComponent
 	, public CComponentBase
 {
 public:
-	CColliderComponent3D(const ISceneNode& OwnerNode);
-    virtual ~CColliderComponent3D();
+	CColliderComponent(const ISceneNode& OwnerNode);
+    virtual ~CColliderComponent();
 
-    // IColliderComponent3D
+    // IColliderComponent
 	void SetBounds(BoundingBox Bounds) override;
 	void ExtendBounds(BoundingBox Bounds) override;
 	const BoundingBox& GetBounds() const override;

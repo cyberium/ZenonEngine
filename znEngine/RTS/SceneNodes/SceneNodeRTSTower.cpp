@@ -110,7 +110,7 @@ std::shared_ptr<ISceneNodeRTSUnit> CSceneNodeRTSTower::GetCurrentTarget()
 	if (m_CurrentTarget != nullptr)
 	{
 		glm::vec3 nodeTranslate = m_CurrentTarget->GetPosition();
-		if (auto colliderComponent = m_CurrentTarget->GetComponentT<IColliderComponent3D>())
+		if (auto colliderComponent = m_CurrentTarget->GetComponentT<IColliderComponent>())
 		{
 			const auto& worldBounds = colliderComponent->GetWorldBounds();
 			if (false == worldBounds.IsInfinite())

@@ -53,7 +53,7 @@ std::shared_ptr<IRenderPassPipelined> CDrawBoundingBoxPass::ConfigurePipeline(st
 //
 EVisitResult CDrawBoundingBoxPass::Visit(const std::shared_ptr<ISceneNode>& CSceneNode)
 {
-	std::shared_ptr<IColliderComponent3D> colliderComponent = CSceneNode->GetComponentT<IColliderComponent3D>();
+	std::shared_ptr<IColliderComponent> colliderComponent = CSceneNode->GetComponentT<IColliderComponent>();
 	if (colliderComponent == nullptr)
 		return EVisitResult::AllowVisitChilds;
 

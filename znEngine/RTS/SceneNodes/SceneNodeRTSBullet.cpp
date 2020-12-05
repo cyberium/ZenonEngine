@@ -6,8 +6,6 @@
 // Additional
 #include "Materials/MaterialModel.h"
 
-#include "Scene/Components/LightComponent3D.h"
-
 #include "Scene/Components/Particles/ParticlesComponent.h"
 #include "Scene/Components/Particles/ParticleSystem.h"
 
@@ -98,7 +96,7 @@ void CSceneNodeRTSBullet::Initialize()
 		auto bulletModel = GetRenderDevice().GetObjectsFactory().CreateModel();
 		bulletModel->AddConnection(missileMaterial, missileGeom);
 
-		GetComponentT<IModelsComponent3D>()->SetModel(bulletModel);
+		GetComponentT<IModelComponent>()->SetModel(bulletModel);
 	}*/
 
 	{
@@ -154,7 +152,7 @@ glm::vec3 CSceneNodeRTSBullet::GetDestinationPoint()
 	}
 
 	m_TargetLastPosition = target->GetPosition();
-	if (auto collider = target->GetComponentT<IColliderComponent3D>())
+	if (auto collider = target->GetComponentT<IColliderComponent>())
 	{
 		const auto& worldBounds = collider->GetWorldBounds();
 		if (false == worldBounds.IsInfinite())
