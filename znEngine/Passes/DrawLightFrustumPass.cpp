@@ -3,6 +3,9 @@
 // General
 #include "DrawLightFrustumPass.h"
 
+// Additional
+#include "Materials/MaterialDebug.h"
+
 const float cBBoxSizeIncrement = 0.05f;
 
 CDrawLightFrustumPass::CDrawLightFrustumPass(IRenderDevice& RenderDevice, IScene& Scene)
@@ -30,25 +33,28 @@ std::shared_ptr<IRenderPassPipelined> CDrawLightFrustumPass::ConfigurePipeline(s
 
 	m_PointBox = GetRenderDevice().GetPrimitivesFactory().CreateCube();
 
-	std::shared_ptr<IShader> vertexShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::VertexShader, "3D/Debug.hlsl", "VS_main");
-	vertexShader->LoadInputLayoutFromReflector();
+	{
+		std::shared_ptr<IShader> vertexShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::VertexShader, "3D/Debug.hlsl", "VS_main");
+		vertexShader->LoadInputLayoutFromReflector();
+		GetPipeline().SetShader(EShaderType::VertexShader, vertexShader);
+	}
 
-	std::shared_ptr<IShader> pixelShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::PixelShader, "3D/Debug.hlsl", "PS_main");
-	
+	{
+		std::shared_ptr<IShader> pixelShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::PixelShader, "3D/Debug.hlsl", "PS_main");
+		GetPipeline().SetShader(EShaderType::PixelShader, pixelShader);
+	}
+
 	//m_ShaderInstancesBufferParameter = &vertexShader->GetShaderParameterByName("Instances");
 	//_ASSERT(m_ShaderInstancesBufferParameter->IsValid());
 
-	m_MaterialDebug = MakeShared(MaterialDebug, GetRenderDevice());
-	m_MaterialDebug->SetDiffuseColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+	auto material = MakeShared(MaterialDebug, GetRenderDevice());
+	material->SetDiffuseColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+	m_MaterialDebug = material;
 
 	// PIPELINES
 	GetPipeline().GetBlendState()->SetBlendMode(alphaBlending);
 	GetPipeline().GetDepthStencilState()->SetDepthMode(enableDepthWrites);
-	GetPipeline().GetRasterizerState()->SetCullMode(IRasterizerState::CullMode::Back);
-	GetPipeline().GetRasterizerState()->SetFillMode(IRasterizerState::FillMode::Solid, IRasterizerState::FillMode::Solid);
-	GetPipeline().SetRenderTarget(RenderTarget);
-	GetPipeline().SetShader(EShaderType::VertexShader, vertexShader);
-	GetPipeline().SetShader(EShaderType::PixelShader, pixelShader);
+	GetPipeline().GetRasterizerState()->SetCullMode(IRasterizerState::CullMode::Back);	
 	return shared_from_this();
 }
 
@@ -62,6 +68,12 @@ EVisitResult CDrawLightFrustumPass::Visit(const std::shared_ptr<ISceneNode>& nod
 
 EVisitResult CDrawLightFrustumPass::Visit(const std::shared_ptr<ILight3D>& Light)
 {
+	if (false == Light->IsEnabled())
+		return EVisitResult::Block;
+
+	if (Light->GetGPULightStruct().Type == ELightType::Point)
+		return EVisitResult::Block;
+
 	{
 		BindPerObjectData(PerObject());
 

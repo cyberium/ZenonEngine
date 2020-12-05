@@ -184,7 +184,7 @@ void CEditor3DPreviewScene::Initialize()
 
 		SetCameraController(MakeShared(CFreeCameraController));
 		GetCameraController()->SetCamera(cameraNode->GetComponentT<ICameraComponent3D>());
-		GetCameraController()->GetCamera()->SetPerspectiveProjection(ICameraComponent3D::EPerspectiveProjectionHand::Right, 75.0f, static_cast<float>(GetRenderWindow().GetWindowWidth()) / static_cast<float>(GetRenderWindow().GetWindowHeight()), 1.0f, 5000.0f);
+		GetCameraController()->GetCamera()->SetPerspectiveProjection(75.0f, static_cast<float>(GetRenderWindow().GetWindowWidth()) / static_cast<float>(GetRenderWindow().GetWindowHeight()), 1.0f, 5000.0f);
 		GetCameraController()->GetCamera()->SetTranslation(glm::vec3(15.0f * 2.0f));
 		GetCameraController()->GetCamera()->SetDirection(glm::vec3(-0.5f));
 		GetCameraController()->GetCamera()->SetYaw(225);

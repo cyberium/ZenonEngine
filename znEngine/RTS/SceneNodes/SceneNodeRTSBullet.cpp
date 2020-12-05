@@ -105,9 +105,9 @@ void CSceneNodeRTSBullet::Initialize()
 		AddComponentT(GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<IComponentFactory>()->CreateComponentT<ILightComponent3D>(cSceneNodeLightComponent, *this));
 		GetComponentT<ILightComponent3D>()->SetType(ELightType::Point);
 		GetComponentT<ILightComponent3D>()->SetAmbientColor(glm::vec3(0.0f));
-		GetComponentT<ILightComponent3D>()->SetColor(glm::vec3(1.0f, 0.6f, 0.0f));
-		GetComponentT<ILightComponent3D>()->SetRange(7.0f);
-		GetComponentT<ILightComponent3D>()->SetIntensity(2.5f);
+		GetComponentT<ILightComponent3D>()->SetColor(glm::vec3(1.0f, 0.8f, 0.4f));
+		GetComponentT<ILightComponent3D>()->SetRange(25.0f);
+		GetComponentT<ILightComponent3D>()->SetIntensity(1.0f);
 	}
 }
 

@@ -62,11 +62,11 @@ void CSceneRTS::Initialize()
 
 		auto lightComponent = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<IComponentFactory>()->CreateComponentT<CLightComponent3D>(cSceneNodeLightComponent, *lightNode.get());
 		lightComponent->SetCastShadows(true);
-		lightComponent->SetType(ELightType::Spot);
+		lightComponent->SetType(ELightType::Directional);
 		lightComponent->SetAmbientColor(glm::vec3(0.25f));
 		lightComponent->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
-		lightComponent->SetRange(1350.0f);
-		lightComponent->SetIntensity(1.0f);
+		lightComponent->SetRange(1000.0f);
+		lightComponent->SetIntensity(0.77f);
 		lightComponent->SetSpotlightAngle(30.0f);
 
 		lightNode->AddComponent(cSceneNodeLightComponent, lightComponent);
@@ -74,16 +74,21 @@ void CSceneRTS::Initialize()
 
 	// Camera
 	{
+		float aspect = static_cast<float>(GetRenderWindow().GetWindowWidth()) / static_cast<float>(GetRenderWindow().GetWindowHeight());
+
 		auto cameraNode = CreateSceneNodeT<ISceneNode>();
 		cameraNode->SetName("Camera");
 		cameraNode->AddComponentT(GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<IComponentFactory>()->CreateComponentT<ICameraComponent3D>(cSceneNodeCameraComponent, *cameraNode));
 
 		SetCameraController(MakeShared(CFreeCameraController));
 		GetCameraController()->SetCamera(cameraNode->GetComponentT<ICameraComponent3D>());
-		GetCameraController()->GetCamera()->SetPerspectiveProjection(ICameraComponent3D::EPerspectiveProjectionHand::Right, 75.0f, static_cast<float>(GetRenderWindow().GetWindowWidth()) / static_cast<float>(GetRenderWindow().GetWindowHeight()), 1.0f, 5000.0f);
-		GetCameraController()->GetCamera()->SetTranslation(glm::vec3(100.0f));
-		GetCameraController()->GetCamera()->SetYaw(225);
-		GetCameraController()->GetCamera()->SetPitch(-45);
+		GetCameraController()->GetCamera()->SetPerspectiveProjection(75.0f, static_cast<float>(GetRenderWindow().GetWindowWidth()) / static_cast<float>(GetRenderWindow().GetWindowHeight()), 1.0f, 5000.0f);
+		//GetCameraController()->GetCamera()->SetOrthographicProjection(aspect, -55, 55, 55, -55, -10.0f, 1.0f);
+		
+		GetCameraController()->GetCamera()->SetTranslation(glm::vec3(0.0f));
+		GetCameraController()->GetCamera()->SetDirection(glm::vec3(-0.5f, -0.5f, -0.5f));
+		//GetCameraController()->GetCamera()->SetYaw(0);
+		//GetCameraController()->GetCamera()->SetPitch(-45);
 	}
 
 

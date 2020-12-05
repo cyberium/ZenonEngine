@@ -10,7 +10,6 @@ CCameraComponent3D::CCameraComponent3D(const ISceneNode& OwnerNode)
 	, m_Yaw_X(0.0f)
 	, m_Pitch_Y(0.0f)
 	, m_View_Dirty(true)
-	, m_ProjectionView_Dirty(true)
 {
 	GetProperties()->SetName("CameraComponent");
 
@@ -147,35 +146,36 @@ float CCameraComponent3D::GetPitch() const
 	return m_Pitch_Y;
 }
 
-void CCameraComponent3D::SetPerspectiveProjection(EPerspectiveProjectionHand PerspectiveProjectionHand, float fovy, float aspect, float zNear, float zFar)
+void CCameraComponent3D::SetPerspectiveProjection(float fovy, float aspect, float zNear, float zFar)
 {
 	m_Perspective_FOV = fovy;
-	m_Perspective_Aspect = aspect;
+
+	m_Aspect = aspect;
 	m_Near = zNear;
 	m_Far = zFar;
 
-	if (PerspectiveProjectionHand == EPerspectiveProjectionHand::Right)
-	{
-		m_Projection = glm::perspectiveRH_NO(glm::radians(fovy), aspect, zNear, zFar);
-	}
-	else
-	{
-		m_Projection = glm::perspectiveLH_NO(glm::radians(fovy), aspect, zNear, zFar);
-	}
-
+	m_Projection = glm::perspectiveRH_ZO(glm::radians(fovy), aspect, zNear, zFar);
 	m_Inverse_Projection = glm::inverse(m_Projection);
 }
 
-void CCameraComponent3D::SetOrthographicProjection(float left, float right, float top, float bottom, float zNear, float zFar)
+void CCameraComponent3D::SetOrthographicProjection(float aspect, float left, float right, float top, float bottom, float zNear, float zFar)
 {
 	m_Orthographic_Left = left;
 	m_Orthographic_Right = right;
 	m_Orthographic_Top = top;
 	m_Orthographic_Bottom = bottom;
+
+	m_Aspect = aspect;
+
 	m_Near = zNear;
 	m_Far = zFar;
 
-	m_Projection = glm::ortho<float>(m_Orthographic_Left, m_Orthographic_Right, m_Orthographic_Top, m_Orthographic_Bottom, m_Near, m_Far);
+
+	const float t = 50.0f;
+	m_Projection = glm::orthoRH_ZO<float>(-t, t, -t, t, 0.0f, 100.0f);
+
+	//m_Projection = glm::orthoRH_NO<float>(m_Orthographic_Left, m_Orthographic_Right, (m_Orthographic_Bottom / m_Aspect), (m_Orthographic_Top / m_Aspect), m_Near, m_Far);
+	
 	m_Inverse_Projection = glm::inverse(m_Projection);
 }
 
@@ -201,18 +201,6 @@ const glm::mat4& CCameraComponent3D::GetInverseProjectionMatrix() const
 	return m_Inverse_Projection;
 }
 
-const glm::mat4 & CCameraComponent3D::GetProjectionViewMatrix() const
-{
-	const_cast<CCameraComponent3D*>(this)->UpdateProjectionView();
-	return m_ProjectionView;
-}
-
-const glm::mat4 & CCameraComponent3D::GetInverseProjectionViewMatrix() const
-{
-	const_cast<CCameraComponent3D*>(this)->UpdateProjectionView();
-	return m_Inverse_ProjectionView;
-}
-
 const Frustum & CCameraComponent3D::GetFrustum() const
 {
 	return m_Frustum;
@@ -233,8 +221,6 @@ void CCameraComponent3D::OnMessage(const ISceneNodeComponent* Component, Compone
 	if (Component == nullptr && Message == UUID_OnWorldTransformChanged)
 	{
 		UpdateView();
-		UpdateProjectionView();
-		m_View_Dirty = true;
 	}
 }
 
@@ -308,23 +294,13 @@ void CCameraComponent3D::UpdateView()
 	if (false == m_View_Dirty)
 		return;
 
+	//m_View = glm::lookAt(-GetOwnerNode().GetRotationEuler() * 20.0f, glm::vec3(0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+	//m_View = glm::lookAt(glm::vec3(0.5f), glm::vec3(0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+
 	m_View = glm::lookAt(GetOwnerNode().GetPosition(), GetOwnerNode().GetPosition() + GetOwnerNode().GetRotationEuler(), m_UpDirection);
 	m_Inverse_View = glm::inverse(m_View);
 
 	m_Frustum.buildViewFrustum(m_View, m_Projection);
 
 	m_View_Dirty = false;
-	m_ProjectionView_Dirty = true;
-}
-
-void CCameraComponent3D::UpdateProjectionView()
-{
-	UpdateView();
-
-	if (false == m_ProjectionView_Dirty)
-		return;
-
-	m_ProjectionView = m_Projection * m_View;
-	m_Inverse_ProjectionView = glm::inverse(m_ProjectionView);
-	m_ProjectionView_Dirty = false;
 }

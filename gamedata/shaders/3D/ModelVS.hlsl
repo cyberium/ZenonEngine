@@ -22,6 +22,7 @@ VSOutput VS_PTN(VSInputPTN IN
 
 #ifdef SKELETON_ANIMATION
 	float4 vertexPosition = float4(0.0f, 0.0f, 0.0f, 0.0f);
+	float3 vertexNormal = float3(0.0f, 0.0f, 0.0f);
 
 	bool atLeastOneBone = false;
 	for (uint i = 0; i < 4; i++)
@@ -29,15 +30,22 @@ VSOutput VS_PTN(VSInputPTN IN
 		const float boneWeight = BoneWeights[i];
 		if (boneWeight > 0.0f)
 		{
+			const float4x4 boneMatrix = Bones[BoneIndexes[i]];
+			
 			atLeastOneBone = true;
-			vertexPosition += mul(Bones[BoneIndexes[i]], float4(IN.position, 1.0f) * boneWeight);
+			vertexPosition += mul(           boneMatrix, float4(IN.position, 1.0f) * boneWeight);
+			vertexNormal   += mul((float3x3) boneMatrix,        IN.normal          * boneWeight);
 		}
 	}
 	
 	if (false == atLeastOneBone)
+	{
 		vertexPosition = float4(IN.position, 1.0f);
+		vertexNormal = IN.normal;
+	}
 #else
 	float4 vertexPosition = float4(IN.position, 1.0f);
+	float3 vertexNormal = IN.normal;
 #endif
 
 
@@ -51,14 +59,14 @@ VSOutput VS_PTN(VSInputPTN IN
 	const float4x4 mv = mul(PF.View, PO.Model);
 	const float4x4 mvp = mul(PF.Projection, mv);
 	
-	const float3 tangent = ComputeTangent(IN.normal);
-	const float3 binormal = ComputeBinormal(IN.normal, tangent);
+	const float3 tangent = ComputeTangent(vertexNormal);
+	const float3 binormal = ComputeBinormal(vertexNormal, tangent);
 
 	VSOutput OUT;
 	OUT.position = mul(mvp, vertexPosition);
 	OUT.positionVS = mul(mv, vertexPosition).xyz;
 	OUT.texCoord = float2(IN.texCoord.x, 1.0f - IN.texCoord.y);
-	OUT.normalVS = mul((float3x3)mv, IN.normal).xyz;
+	OUT.normalVS = mul((float3x3)mv, vertexNormal).xyz;
 	OUT.tangentVS = mul((float3x3)mv, tangent).xyz;
 	OUT.binormalVS = mul((float3x3)mv, binormal).xyz;
 		

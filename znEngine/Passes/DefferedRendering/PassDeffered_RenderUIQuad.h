@@ -18,12 +18,16 @@ public:
 
 
 protected:
-	void BindLightParamsForCurrentIteration(const RenderEventArgs& e, const CPassDeffered_ShadowMaps::SLightResult& LightResult);
+	void FillLightParamsForCurrentIteration(const RenderEventArgs& e, const CPassDeffered_ShadowMaps::SLightResult& LightResult);
 
 
-private: // Pass light params
-	std::shared_ptr<IConstantBuffer> m_LightResultConstantBuffer;
+private: 
+	// GPUDefferedLightVS
+	std::shared_ptr<IConstantBuffer> m_GPUDefferedLightVSBuffer;
+	IShaderParameter* m_GPUDefferedLightVSParameter;
 
+	// ShadowMapTexture
+	IShaderParameter* m_ShadowMapTextureParameter;
 
 private:
 	std::shared_ptr<CPassDeffered_DoRenderScene> m_DefferedRender;

@@ -296,12 +296,6 @@ ZN_INTERFACE ZN_API ILightComponent3D
 //
 ZN_INTERFACE ZN_API ICameraComponent3D
 {
-	enum class ZN_API EPerspectiveProjectionHand
-	{
-		Left = 0,
-		Right
-	};
-
 	ZN_OBJECTCLASS(cSceneNodeCameraComponent);
 
 	virtual ~ICameraComponent3D() {}
@@ -324,17 +318,14 @@ ZN_INTERFACE ZN_API ICameraComponent3D
 	virtual void AddPitch(float Pitch) = 0;
 	virtual float GetPitch() const = 0;
 
-	virtual void SetPerspectiveProjection(EPerspectiveProjectionHand PerspectiveProjectionHand, float fovy, float aspect, float zNear, float zFar) = 0;
-	virtual void SetOrthographicProjection(float left, float right, float top, float bottom, float zNear, float zFar) = 0;
+	virtual void SetPerspectiveProjection(float fovy, float aspect, float zNear, float zFar) = 0;
+	virtual void SetOrthographicProjection(float aspect, float left, float right, float top, float bottom, float zNear, float zFar) = 0;
 
 	virtual const glm::mat4& GetViewMatrix() const = 0;
 	virtual const glm::mat4& GetInverseViewMatrix() const = 0;
 
 	virtual const glm::mat4& GetProjectionMatrix() const = 0;
 	virtual const glm::mat4& GetInverseProjectionMatrix() const = 0;
-
-	virtual const glm::mat4& GetProjectionViewMatrix() const = 0;
-	virtual const glm::mat4& GetInverseProjectionViewMatrix() const = 0;
 
 	virtual const Frustum& GetFrustum() const = 0;
 	virtual const glm::vec3& GetCameraUpDirection() const = 0;

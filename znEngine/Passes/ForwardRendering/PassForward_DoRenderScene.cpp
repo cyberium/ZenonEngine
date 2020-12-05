@@ -64,7 +64,6 @@ std::shared_ptr<IRenderPassPipelined> CPassForward_DoRenderScene::ConfigurePipel
 
 		GetPipeline().SetShader(EShaderType::PixelShader, pixelShader);
 	}
-	
 
 	return shared_from_this();
 }
@@ -77,9 +76,9 @@ std::shared_ptr<IRenderPassPipelined> CPassForward_DoRenderScene::ConfigurePipel
 EVisitResult CPassForward_DoRenderScene::Visit(const std::shared_ptr<ISceneNode>& SceneNode)
 {
 	// TODO Here?
-	if (auto colliderComponent = SceneNode->GetComponentT<IColliderComponent3D>())
-		if (colliderComponent->IsCulled(GetRenderEventArgs().CameraForCulling))
-			return EVisitResult::Block;
+	//if (auto colliderComponent = SceneNode->GetComponentT<IColliderComponent3D>())
+	//	if (colliderComponent->IsCulled(GetRenderEventArgs().CameraForCulling))
+	//		return EVisitResult::Block;
 
 	if (SceneNode->GetClass() == cSceneNode3D || SceneNode->GetClass() == cSceneNodeRTSUnit || SceneNode->GetClass() == cSceneNodeRTSBullet)
 	{

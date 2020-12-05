@@ -132,17 +132,15 @@ glm::mat4 CLightComponent3D::GetViewMatrix() const
 
 	if (m_LightStruct->Type == ELightType::Point)
 	{
-		return glm::mat4(1.0f);
+		throw CException("Not implemented.");
 	}
 	else if (m_LightStruct->Type == ELightType::Spot)
 	{
-		return glm::lookAt(ownerTranslate, ownerTranslate + ownerRotation * 100.0f, glm::vec3(0.0f, 1.0f, 0.0f));
+		return glm::lookAt(ownerTranslate, ownerTranslate + ownerRotation, glm::vec3(0.0f, 1.0f, 0.0f));
 	}
 	else if (m_LightStruct->Type == ELightType::Directional)
 	{
-		//glm::vec3 position = -m_LightStruct->DirectionWS.xyz();
-		//position *= 100.0f;
-		return glm::lookAt(glm::vec3(10.0f), glm::vec3(10.0f) + ownerRotation * 100.0f, glm::vec3(0.0f, 1.0f, 0.0f));
+		return glm::lookAt(- glm::normalize(ownerRotation) * 1.0f, glm::vec3(0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 	}
 
 	return glm::mat4(1.0f);
@@ -152,19 +150,19 @@ glm::mat4 CLightComponent3D::GetProjectionMatrix() const
 {
 	if (m_LightStruct->Type == ELightType::Point)
 	{
-		return glm::mat4(1.0f);
+		throw CException("Not implemented.");
 	}
 	else if (m_LightStruct->Type == ELightType::Spot)
 	{
-		return glm::perspective(glm::radians(m_LightStruct->SpotlightAngle), 1.0f, 1.0f, m_LightStruct->Range);
+		return glm::perspectiveRH_ZO(glm::radians(m_LightStruct->SpotlightAngle), 1.0f, 1.0f, m_LightStruct->Range);
 	}
 	else if (m_LightStruct->Type == ELightType::Directional)
 	{
-		const float t = 500.0f;
-		return glm::ortho<float>(-t, t, -t, t, -500, 500);
+		const float t = 100.0f;
+		return glm::orthoRH_ZO<float>(-t, t, -t, t, -200.0f, 200.0f);
 	}
 	
-	return glm::mat4(1.0f);
+	throw CException("Unknown light type '%d'.", m_LightStruct->Type);
 }
 
 Frustum CLightComponent3D::GetFrustum() const

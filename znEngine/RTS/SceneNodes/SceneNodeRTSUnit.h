@@ -26,14 +26,20 @@ public:
 	void Update(const UpdateEventArgs& e) override;
 
 protected:
-	
 	void OnDeath();
 
 private:
+	// Stats
 	float m_Health;
 	float m_MaxHealth;
 	float m_Speed;
+
+	// Path
 	std::shared_ptr<ISceneNodeRTSPath> m_Path;
 	std::function<void(const ISceneNodeRTSUnit* Unit)> m_OnLastPathPointReached;
 	size_t m_PathCurrentPoint;
+
+	// Death
+	bool m_IsNeedMoveDown;
+	float m_MoveDownHeight;
 };

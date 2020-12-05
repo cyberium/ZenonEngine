@@ -57,11 +57,12 @@ void CPassDeffered_ShadowMaps::CreateShadowPipeline()
 	}
 
 	IBlendState::BlendMode disableBlending = IBlendState::BlendMode(false);
-	IDepthStencilState::DepthMode enableDepthWrites = IDepthStencilState::DepthMode(true, IDepthStencilState::DepthWrite::Enable);
+	IDepthStencilState::DepthMode enableDepthWrites2 = IDepthStencilState::DepthMode(true, IDepthStencilState::DepthWrite::Enable);
 
 	// PIPELINES
+	//shadowPipeline->GetRasterizerState()->SetDepthClipEnabled(false);
 	shadowPipeline->GetBlendState()->SetBlendMode(disableBlending);
-	shadowPipeline->GetDepthStencilState()->SetDepthMode(enableDepthWrites);
+	shadowPipeline->GetDepthStencilState()->SetDepthMode(enableDepthWrites2);
 	//shadowPipeline->GetRasterizerState()->SetDepthBias(0.0f, 1.1f);
 	shadowPipeline->GetRasterizerState()->SetCullMode(IRasterizerState::CullMode::Front);
 	shadowPipeline->SetRenderTarget(m_ShadowRenderTarget);
@@ -89,13 +90,10 @@ void CPassDeffered_ShadowMaps::PreRender(RenderEventArgs& e)
 
 void CPassDeffered_ShadowMaps::Render(RenderEventArgs& e)
 {
-	for (auto& l : m_LightResult)
-		l.IsEnabled = false;
-
 	for (const auto& lightIt : m_SceneCreateTypelessListPass->GetLightList())
 	{
 		SLightResult lightResult;
-		lightResult.IsEnabled = true;
+		lightResult.IsEnabled = lightIt.Light->IsEnabled();
 		lightResult.SceneNode = lightIt.SceneNode;
 		lightResult.LightNode = lightIt.Light;
 		lightResult.IsLightEnabled = lightIt.Light->IsEnabled();
@@ -105,7 +103,7 @@ void CPassDeffered_ShadowMaps::Render(RenderEventArgs& e)
 		{
 			m_ShadowPipeline->Bind();
 			{
-				m_ShadowRenderTarget->Clear(ClearFlags::All, glm::vec4(0.0f), 1.0f);
+				m_ShadowRenderTarget->Clear();
 
 				BindPerFrameParamsForCurrentIteration(lightIt.Light);
 

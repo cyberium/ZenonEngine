@@ -27,17 +27,14 @@ public:
 	void AddPitch(float Pitch) override;
 	float GetPitch() const override;
 
-	void SetPerspectiveProjection(EPerspectiveProjectionHand PerspectiveProjectionHand, float fovy, float aspect, float zNear, float zFar) override;
-	void SetOrthographicProjection(float left, float right, float top, float bottom, float zNear, float zFar) override;
+	void SetPerspectiveProjection(float fovy, float aspect, float zNear, float zFar) override;
+	void SetOrthographicProjection(float aspect, float left, float right, float top, float bottom, float zNear, float zFar) override;
 
 	const glm::mat4& GetViewMatrix() const override;
 	const glm::mat4& GetInverseViewMatrix() const override;
 
 	const glm::mat4& GetProjectionMatrix() const override;
 	const glm::mat4& GetInverseProjectionMatrix() const override;
-
-	const glm::mat4& GetProjectionViewMatrix() const override;
-	const glm::mat4& GetInverseProjectionViewMatrix() const override;
 
 	const Frustum& GetFrustum() const;
 	const glm::vec3& GetCameraUpDirection() const override;
@@ -50,7 +47,6 @@ protected:
 	void RotationToAngles(const glm::vec3& Direction);
 
 	void UpdateView();
-	void UpdateProjectionView();
 
 private: // Properties engine
 	std::shared_ptr<CPropertyWrapped<float>>        m_Yaw_XProperty;
@@ -71,16 +67,12 @@ private:
 	glm::mat4                                       m_Projection;
 	glm::mat4                                       m_Inverse_Projection;
 
-	glm::mat4                                       m_ProjectionView;
-	glm::mat4                                       m_Inverse_ProjectionView;
-	bool                                            m_ProjectionView_Dirty;
-
 	Frustum                                         m_Frustum;
 
 
 	// Perspective projection
 	float                                           m_Perspective_FOV;
-	float                                           m_Perspective_Aspect;
+	float                                           m_Aspect;
 
 	// Orthographic projection
 	float                                           m_Orthographic_Left;

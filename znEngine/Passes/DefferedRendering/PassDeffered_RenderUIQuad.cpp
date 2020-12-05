@@ -35,7 +35,7 @@ CPassDeffered_RenderUIQuad::CPassDeffered_RenderUIQuad(IRenderDevice& RenderDevi
 	, m_DefferedRender(DefferedRender)
 	, m_Deffered_Lights(DefferedRenderPrepareLights)
 {
-	m_LightResultConstantBuffer = GetRenderDevice().GetObjectsFactory().CreateConstantBuffer(SGPUDefferedLightVS());
+	m_GPUDefferedLightVSBuffer = GetRenderDevice().GetObjectsFactory().CreateConstantBuffer(SGPUDefferedLightVS());
 }
 
 CPassDeffered_RenderUIQuad::~CPassDeffered_RenderUIQuad()
@@ -54,10 +54,15 @@ void CPassDeffered_RenderUIQuad::Render(RenderEventArgs& e)
 		if (false == lightResult.IsEnabled)
 			continue;
 
-		// Once per light
-		BindLightParamsForCurrentIteration(e, lightResult);
+		FillLightParamsForCurrentIteration(e, lightResult);
+
+		m_GPUDefferedLightVSParameter->Bind();
+		m_ShadowMapTextureParameter->Bind();
 
 		m_QuadGeometry->Render(GetPipeline().GetVertexShaderPtr());
+
+		m_ShadowMapTextureParameter->Unbind();
+		m_GPUDefferedLightVSParameter->Unbind();
 	}
 }
 
@@ -74,13 +79,25 @@ std::shared_ptr<IRenderPassPipelined> CPassDeffered_RenderUIQuad::ConfigurePipel
 
 	auto samplesCnt = std::to_string(RenderTarget->GetTexture(IRenderTarget::AttachmentPoint::Color0)->GetSamplesCount());
 
+	{
+		auto vertexShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::VertexShader, "3D/Deffered_UIQuad.hlsl", "VS_ScreenQuad", { {"MULTISAMPLED", samplesCnt.c_str() } });
+		vertexShader->LoadInputLayoutFromReflector();
+		GetPipeline().SetShader(EShaderType::VertexShader, vertexShader);
+	}
 
-	auto vertexShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::VertexShader, "3D/Deffered_UIQuad.hlsl", "VS_ScreenQuad", { {"MULTISAMPLED", samplesCnt.c_str() } });
-	vertexShader->LoadInputLayoutFromReflector();
-	GetPipeline().SetShader(EShaderType::VertexShader, vertexShader);
 
-	auto pixelShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::PixelShader, "3D/Deffered_UIQuad.hlsl", "PS_DeferredLighting", { {"MULTISAMPLED", samplesCnt.c_str() }});
-	GetPipeline().SetShader(EShaderType::PixelShader, pixelShader);
+	{
+		auto pixelShader = GetRenderDevice().GetObjectsFactory().LoadShader(EShaderType::PixelShader, "3D/Deffered_UIQuad.hlsl", "PS_DeferredLighting", { {"MULTISAMPLED", samplesCnt.c_str() } });
+		
+		m_GPUDefferedLightVSParameter = pixelShader->GetShaderParameterByName("GPUDefferedLightVS");
+		_ASSERT(m_GPUDefferedLightVSParameter);
+
+		m_ShadowMapTextureParameter = pixelShader->GetShaderParameterByName("ShadowMapTexture");
+		_ASSERT(m_ShadowMapTextureParameter);
+
+		GetPipeline().SetShader(EShaderType::PixelShader, pixelShader);
+	}
+
 
 	// PIPELINES
 	GetPipeline().GetBlendState()->SetBlendMode(additiveBlending);
@@ -100,7 +117,7 @@ std::shared_ptr<IRenderPassPipelined> CPassDeffered_RenderUIQuad::ConfigurePipel
 //
 // Protected
 //
-void CPassDeffered_RenderUIQuad::BindLightParamsForCurrentIteration(const RenderEventArgs& e, const CPassDeffered_ShadowMaps::SLightResult& LightResult)
+void CPassDeffered_RenderUIQuad::FillLightParamsForCurrentIteration(const RenderEventArgs& e, const CPassDeffered_ShadowMaps::SLightResult& LightResult)
 {
 	const ICameraComponent3D* camera = e.Camera;
 	_ASSERT(camera != nullptr);
@@ -117,36 +134,19 @@ void CPassDeffered_RenderUIQuad::BindLightParamsForCurrentIteration(const Render
 	lightResult.LightVS.IsCastShadow = LightResult.IsCastShadow;
 
 	// GPUDefferedLightVS
-	lightResult.LightViewMatrix        = LightResult.LightNode->GetViewMatrix();
-	lightResult.LightProjectionMatrix  = LightResult.LightNode->GetProjectionMatrix();
-
+	if (LightResult.IsCastShadow)
 	{
-		m_LightResultConstantBuffer->Set(lightResult);
-
-		auto* lightParam = GetPipeline().GetPixelShaderPtr()->GetShaderParameterByName("GPUDefferedLightVS");
-		if (lightParam)
-		{
-			lightParam->SetConstantBuffer(m_LightResultConstantBuffer);
-			lightParam->Bind();
-		}
-		else
-		{
-			//_ASSERT(false);
-		}
+		lightResult.LightViewMatrix = LightResult.LightNode->GetViewMatrix();
+		lightResult.LightProjectionMatrix = LightResult.LightNode->GetProjectionMatrix();
 	}
 
+	// GPUDefferedLightVS
+	m_GPUDefferedLightVSBuffer->Set(lightResult);
+	m_GPUDefferedLightVSParameter->SetConstantBuffer(m_GPUDefferedLightVSBuffer);
 
-
+	// ShadowMapTexture
+	if (LightResult.IsCastShadow)
 	{
-		auto* shadowTexture = GetPipeline().GetPixelShaderPtr()->GetShaderParameterByName("TextureShadow");
-		if (shadowTexture && LightResult.IsCastShadow && LightResult.ShadowTexture != nullptr)
-		{
-			shadowTexture->SetTexture(LightResult.ShadowTexture);
-			shadowTexture->Bind();
-		}
-		else
-		{
-			//_ASSERT(false);
-		}
+		m_ShadowMapTextureParameter->SetTexture(LightResult.ShadowTexture);
 	}
 }

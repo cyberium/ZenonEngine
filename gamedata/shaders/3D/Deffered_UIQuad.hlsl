@@ -44,7 +44,7 @@ Texture2D                         Texture2            : register(t3); // Positio
 Texture2D                         TextureDepthStencil : register(t4);
 #endif
 
-Texture2D                         TextureShadow       : register(t5);
+Texture2D                         ShadowMapTexture    : register(t5);
 
 
 VS_Output VS_ScreenQuad(VS_Input IN)
@@ -114,7 +114,7 @@ float4 PS_DeferredLighting(VS_Output VSOut
 	if (CurrentLightVS.IsCastShadow)
 	{
 		const float4 PModel = mul(PF.InverseView, PView);
-		float shadowFactor = IsShadowed(LightProjectionMatrix, LightViewMatrix, TextureShadow, PModel);
+		float shadowFactor = IsShadowed(LightProjectionMatrix, LightViewMatrix, ShadowMapTexture, PModel);
 		shadowFactor -= 0.1f;
 		shadowFactor = saturate(shadowFactor);
 		

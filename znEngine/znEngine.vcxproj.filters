@@ -106,9 +106,6 @@
     <Filter Include="Passes\PostprocessRendering">
       <UniqueIdentifier>{8de667f2-5bea-4474-83be-ccf5b2a060e0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="NativeWindows">
-      <UniqueIdentifier>{cfe67249-b3e6-463f-a7cd-5770ee4ab305}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Scene\Components\Particles">
       <UniqueIdentifier>{6ea439f2-add0-4df0-b035-164aa9c343dd}</UniqueIdentifier>
     </Filter>
@@ -126,6 +123,9 @@
     </Filter>
     <Filter Include="RTS\SceneNodes">
       <UniqueIdentifier>{c3a8c0f5-b6b8-4595-ac3f-02f1677df404}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="NativeWindows">
+      <UniqueIdentifier>{cfe67249-b3e6-463f-a7cd-5770ee4ab305}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -391,6 +391,9 @@
     </ClCompile>
     <ClCompile Include="Passes\DefferedRendering\PassDeffered_ShadowMaps.cpp">
       <Filter>Passes\DefferedRendering</Filter>
+    </ClCompile>
+    <ClCompile Include="Passes\DrawLightFrustumPass.cpp">
+      <Filter>Passes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -666,6 +669,9 @@
     </ClInclude>
     <ClInclude Include="Passes\DefferedRendering\PassDeffered_ShadowMaps.h">
       <Filter>Passes\DefferedRendering</Filter>
+    </ClInclude>
+    <ClInclude Include="Passes\DrawLightFrustumPass.h">
+      <Filter>Passes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

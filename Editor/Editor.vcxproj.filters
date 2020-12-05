@@ -149,9 +149,6 @@
     <ClCompile Include="Tools\RTS\EditorToolWaypoints.cpp">
       <Filter>Tools\RTS</Filter>
     </ClCompile>
-    <ClCompile Include="Passes\DrawLightFrustumPass.cpp">
-      <Filter>3D\Passes</Filter>
-    </ClCompile>
     <ClCompile Include="ZenonWidgets\ZenonPropertiesEditor\QT\qtpropertybrowser.cpp">
       <Filter>Widgets\ZenonPropertiesEditor\QT</Filter>
     </ClCompile>
@@ -284,9 +281,6 @@
     </ClInclude>
     <ClInclude Include="Tools\RTS\EditorToolWaypoints.h">
       <Filter>Tools\RTS</Filter>
-    </ClInclude>
-    <ClInclude Include="Passes\DrawLightFrustumPass.h">
-      <Filter>3D\Passes</Filter>
     </ClInclude>
     <ClInclude Include="ResourcesBrowser\ResourcesFilesystem.h">
       <Filter>ResourcesBrowser</Filter>

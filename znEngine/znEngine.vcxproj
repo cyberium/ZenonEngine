@@ -38,6 +38,7 @@
     <ClCompile Include="Passes\DefferedRendering\RendererDeffered.cpp" />
     <ClCompile Include="Passes\DrawBonesPass.cpp" />
     <ClCompile Include="Passes\DrawBoundingBoxPass.cpp" />
+    <ClCompile Include="Passes\DrawLightFrustumPass.cpp" />
     <ClCompile Include="Passes\ForwardRendering\PassForward_DoRenderScene.cpp" />
     <ClCompile Include="Passes\ForwardRendering\PassForward_DoRenderSceneInstanced.cpp" />
     <ClCompile Include="Passes\ForwardRendering\RendererForward.cpp" />
@@ -133,6 +134,7 @@
     <ClInclude Include="Passes\DefferedRendering\RendererDeffered.h" />
     <ClInclude Include="Passes\DrawBonesPass.h" />
     <ClInclude Include="Passes\DrawBoundingBoxPass.h" />
+    <ClInclude Include="Passes\DrawLightFrustumPass.h" />
     <ClInclude Include="Passes\ForwardRendering\PassForward_DoRenderScene.h" />
     <ClInclude Include="Passes\ForwardRendering\PassForward_DoRenderSceneInstanced.h" />
     <ClInclude Include="Passes\ForwardRendering\RendererForward.h" />

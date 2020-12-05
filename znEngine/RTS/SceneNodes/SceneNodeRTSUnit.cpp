@@ -10,8 +10,13 @@ CSceneNodeRTSUnit::CSceneNodeRTSUnit(IScene & Scene)
 	: CSceneNode(Scene)
 	, m_Health(75.0f)
 	, m_MaxHealth(100.0f)
-	, m_Speed(0.35f)
+	, m_Speed(0.15f)
+
+	// Path
 	, m_PathCurrentPoint(0)
+
+	// MoveDown
+	, m_IsNeedMoveDown(false)
 {
 	// Unit properties
 	{
@@ -129,7 +134,22 @@ void CSceneNodeRTSUnit::Update(const UpdateEventArgs & e)
 	__super::Update(e);
 
 	if (IsDead())
+	{
+		if (m_IsNeedMoveDown)
+		{
+			auto currentPosition = GetPosition();
+			if (currentPosition.y < m_MoveDownHeight)
+			{
+				MakeMeOrphan();
+				return;
+			}
+
+			currentPosition.y -= 0.05f * float(e.DeltaTimeMultiplier);
+			SetPosition(currentPosition);
+		}
+
 		return;
+	}
 
 	if (m_Path == nullptr)
 		return;
@@ -174,7 +194,8 @@ void CSceneNodeRTSUnit::OnDeath()
 	{
 		GetComponentT<IModelsComponent3D>()->PlayAnimation("death", false);
 		GetComponentT<IModelsComponent3D>()->SetAnimationEndedCallback([this](const IAnimation* Animation) {
-			MakeMeOrphan();
+			m_IsNeedMoveDown = true;
+			m_MoveDownHeight = GetPosition().y - 5.0f;
 		});
 	}
 	catch (const CException& e)

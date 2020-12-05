@@ -122,6 +122,7 @@ std::shared_ptr<IRenderPassPipelined> CPassDeffered_DoRenderScene::ConfigurePipe
 
 
 	// PIPELINES
+	GetPipeline().GetRasterizerState()->SetDepthClipEnabled(false);
 	GetPipeline().GetRasterizerState()->SetCullMode(IRasterizerState::CullMode::Back);
 
 	m_GBufferRenderTarget = CreateGBuffer(RenderTarget);

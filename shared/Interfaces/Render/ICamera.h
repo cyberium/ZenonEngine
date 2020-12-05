@@ -24,7 +24,7 @@ ZN_INTERFACE ZN_API ICamera
     virtual glm::mat4                               GetProjectionMatrix() const = 0;
     virtual glm::mat4                               GetViewProjectionInverseMatrix() const = 0;
 
-	virtual void                                    SetPerspectiveProjection(EPerspectiveProjectionHand ProjectionHand, float fovy, float aspect, float zNear, float zFar) = 0;
+	virtual void                                    SetPerspectiveProjection(float fovy, float aspect, float zNear, float zFar) = 0;
 	virtual void                                    SetOrthographicProjection(float left, float right, float top, float bottom) = 0;
 };
 

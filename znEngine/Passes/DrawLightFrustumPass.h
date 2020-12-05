@@ -19,7 +19,7 @@ public:
 protected:
 	bool                               m_IsDirty;
 
-	std::shared_ptr<MaterialDebug>     m_MaterialDebug;
+	std::shared_ptr<IMaterial>         m_MaterialDebug;
 
 	std::shared_ptr<IGeometry>         m_PointBox;
 	IShaderParameter*                  m_ShaderInstancesBufferParameter;

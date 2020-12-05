@@ -33,6 +33,7 @@ typedef unsigned long long uint64;
 #pragma warning( push )
 #pragma warning( disable : 4201) // warning C4201: nonstandard extension used : nameless struct/union
 #define GLM_FORCE_SWIZZLE
+#define GLM_FORCE_DEPTH_ZERO_TO_ONE
 #include <glm/glm/glm.hpp>
 #include <glm/glm/gtc/constants.hpp>
 #include <glm/glm/gtc/type_ptr.hpp>

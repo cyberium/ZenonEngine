@@ -8,6 +8,7 @@
 // Additional
 #include "Passes/Technical/ClearRenderTargetPass.h"
 #include "Passes/Technical/InvokeFunctionPass.h"
+
 #include "Passes/PostprocessRendering/Postprocess_HDR.h"
 #include "Passes/PostprocessRendering/Postprocess_Glow.h"
 #include "Passes/PostprocessRendering/Postprocess_Gauss.h"
@@ -18,6 +19,7 @@
 #include "Passes/ParticlesPass.h"
 #include "Passes/DrawBonesPass.h"
 #include "Passes/DrawBoundingBoxPass.h"
+#include "Passes/DrawLightFrustumPass.h"
 
 #include "Passes/SkyboxPass.h"
 #include "Passes/ForwardRendering/PassForward_DoRenderScene.h"
@@ -155,8 +157,8 @@ void CRendererForward::Initialize(std::shared_ptr<IRenderTarget> OutputRenderTar
 	//
 	Add3DPass(MakeShared(CDebugPass, m_RenderDevice, m_Scene)->ConfigurePipeline(OutputRenderTarget));
 	//Add3DPass(MakeShared(CDrawBonesPass, m_Scene)->ConfigurePipeline(OutputRenderTarget));
-	//AddPass(MakeShared(CDrawBoundingBoxPass, m_RenderDevice, m_Scene)->ConfigurePipeline(OutputRenderTarget, Viewport));
-
+	//Add3DPass(MakeShared(CDrawBoundingBoxPass, m_RenderDevice, m_Scene)->ConfigurePipeline(OutputRenderTarget));
+	Add3DPass(MakeShared(CDrawLightFrustumPass, m_RenderDevice, m_Scene)->ConfigurePipeline(OutputRenderTarget));
 
 	//
 	// UI
