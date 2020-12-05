@@ -118,15 +118,15 @@ float2 DoDisplacementMapping(float3x3 TBN, Texture2D tex, sampler s, float2 uv, 
     float2 P = viewDir.xy * height_scale; 
     float2 deltaTexCoords = P / numLayers;
 	
-	float2 currentTexCoords = uv;
-	float currentDepthMapValue = (1.0f - tex.Sample(s, currentTexCoords).r);
+	float2 currentTexCoords = float2(uv.x, 1.0 - uv.y);
+	float currentDepthMapValue = (tex.Sample(s, currentTexCoords).r);
 	
 	int iter = 0;
 	float currentLayerDepth = 0.0f;
 	while(currentLayerDepth < currentDepthMapValue)
 	{
 		currentTexCoords -= deltaTexCoords;
-		currentDepthMapValue = (1.0f - tex.Sample(s, currentTexCoords).r);
+		currentDepthMapValue = (tex.Sample(s, currentTexCoords).r);
 		currentLayerDepth += layerDepth;
 		
 		if (iter++ > 32)
@@ -138,7 +138,7 @@ float2 DoDisplacementMapping(float3x3 TBN, Texture2D tex, sampler s, float2 uv, 
 
 	// находим значения глубин до и после нахождения пересечения для использования в линейной интерполяции
 	float afterDepth  = currentDepthMapValue - currentLayerDepth;
-	float beforeDepth = (1.0f - tex.Sample(s, prevTexCoords).r) - currentLayerDepth + layerDepth;
+	float beforeDepth = (tex.Sample(s, prevTexCoords).r) - currentLayerDepth + layerDepth;
 	 
 	// интерполяция текстурных координат 
 	float weight = afterDepth / (afterDepth - beforeDepth);
