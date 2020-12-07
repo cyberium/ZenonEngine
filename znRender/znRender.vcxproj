@@ -92,6 +92,7 @@
     <ClCompile Include="SamplerStateBase.cpp" />
     <ClCompile Include="ShaderBase.cpp" />
     <ClCompile Include="ShaderInputLayoutBase.cpp" />
+    <ClCompile Include="ShaderInputSemanticBase.cpp" />
     <ClCompile Include="ShaderParameterBase.cpp" />
     <ClCompile Include="ShadersUtils.cpp" />
     <ClCompile Include="stdafx.cpp">
@@ -119,6 +120,7 @@
     <ClInclude Include="SamplerStateBase.h" />
     <ClInclude Include="ShaderBase.h" />
     <ClInclude Include="ShaderInputLayoutBase.h" />
+    <ClInclude Include="ShaderInputSemanticBase.h" />
     <ClInclude Include="ShaderParameterBase.h" />
     <ClInclude Include="ShadersUtils.h" />
     <ClInclude Include="stdafx.h" />

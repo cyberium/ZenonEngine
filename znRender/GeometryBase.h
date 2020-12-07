@@ -34,7 +34,7 @@ protected:
 	BoundingBox               m_Bounds;
 	BuffersMap                m_VertexBuffers;
 	std::shared_ptr<IBuffer>  m_VertexBuffer;
-	std::shared_ptr<IBuffer>  m_pIndexBuffer;
+	std::shared_ptr<IBuffer>  m_IndexBuffer;
 	PrimitiveTopology         m_PrimitiveTopology;
 
 private: // Link to parent d3d11 device

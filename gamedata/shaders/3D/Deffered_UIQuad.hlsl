@@ -122,5 +122,8 @@ float4 PS_DeferredLighting(VS_Output VSOut
 			return float4(ambientLight + (diffuseLight + specularLight) * (1.0f - shadowFactor), 1.0f);
 	}
 	
-	return float4(ambientLight + diffuseLight + specularLight, 1.0f);
+	float3 resultColor = ambientLight + diffuseLight + specularLight;
+	resultColor += positionVS.rgb;
+	
+	return float4(resultColor, 1.0f);
 }

@@ -10,7 +10,6 @@
     <ClCompile Include="ShadersUtils.cpp">
       <Filter>Shaders</Filter>
     </ClCompile>
-    <ClCompile Include="ShaderParameterBase.cpp" />
     <ClCompile Include="BlendStateBase.cpp">
       <Filter>Pipeline</Filter>
     </ClCompile>
@@ -21,8 +20,6 @@
       <Filter>Pipeline</Filter>
     </ClCompile>
     <ClCompile Include="SamplerStateBase.cpp" />
-    <ClCompile Include="ShaderBase.cpp" />
-    <ClCompile Include="ShaderInputLayoutBase.cpp" />
     <ClCompile Include="MaterialBase.cpp" />
     <ClCompile Include="RenderWindowBase.cpp" />
     <ClCompile Include="GeometryBase.cpp" />
@@ -45,6 +42,18 @@
     <ClCompile Include="StructuredBufferBase.cpp">
       <Filter>Buffers</Filter>
     </ClCompile>
+    <ClCompile Include="ShaderBase.cpp">
+      <Filter>Shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="ShaderInputLayoutBase.cpp">
+      <Filter>Shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="ShaderParameterBase.cpp">
+      <Filter>Shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="ShaderInputSemanticBase.cpp">
+      <Filter>Shaders</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="common.h">
@@ -62,7 +71,6 @@
     <ClInclude Include="ShadersUtils.h">
       <Filter>Shaders</Filter>
     </ClInclude>
-    <ClInclude Include="ShaderParameterBase.h" />
     <ClInclude Include="BlendStateBase.h">
       <Filter>Pipeline</Filter>
     </ClInclude>
@@ -73,8 +81,6 @@
       <Filter>Pipeline</Filter>
     </ClInclude>
     <ClInclude Include="SamplerStateBase.h" />
-    <ClInclude Include="ShaderBase.h" />
-    <ClInclude Include="ShaderInputLayoutBase.h" />
     <ClInclude Include="MaterialBase.h" />
     <ClInclude Include="RenderWindowBase.h" />
     <ClInclude Include="GeometryBase.h" />
@@ -96,6 +102,18 @@
     </ClInclude>
     <ClInclude Include="StructuredBufferBase.h">
       <Filter>Buffers</Filter>
+    </ClInclude>
+    <ClInclude Include="ShaderParameterBase.h">
+      <Filter>Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="ShaderBase.h">
+      <Filter>Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="ShaderInputLayoutBase.h">
+      <Filter>Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="ShaderInputSemanticBase.h">
+      <Filter>Shaders</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

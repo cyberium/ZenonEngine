@@ -398,6 +398,9 @@
     <ClCompile Include="RTS\UIControls\UIControlRTSResourcesPanel.cpp">
       <Filter>RTS\UIControls</Filter>
     </ClCompile>
+    <ClCompile Include="Passes\PostprocessRendering\Postprocess_RenderGlowSceneObjects.cpp">
+      <Filter>Passes\PostprocessRendering</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="common.h">
@@ -678,6 +681,9 @@
     </ClInclude>
     <ClInclude Include="RTS\UIControls\UIControlRTSResourcesPanel.h">
       <Filter>RTS\UIControls</Filter>
+    </ClInclude>
+    <ClInclude Include="Passes\PostprocessRendering\Postprocess_RenderGlowSceneObjects.h">
+      <Filter>Passes\PostprocessRendering</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

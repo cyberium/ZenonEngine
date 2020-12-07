@@ -66,7 +66,7 @@ void CSceneRTS::Initialize()
 		lightComponent->SetAmbientColor(glm::vec3(0.25f));
 		lightComponent->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
 		lightComponent->SetRange(1000.0f);
-		lightComponent->SetIntensity(0.77f);
+		lightComponent->SetIntensity(1.0077f);
 		lightComponent->SetSpotlightAngle(30.0f);
 
 		lightNode->AddComponent(cSceneNodeLightComponent, lightComponent);
@@ -153,9 +153,9 @@ void CSceneRTS::Initialize()
 		m_UIControlRTSTowersPanel->AddTowerButton("Tower E", "sceneNodesProtos/towerE.znobj", "sceneNodesProtos/towerE.png", 100, *this);
 
 		m_UIControlRTSTowersPanel->SetLocalPosition(glm::vec2(
-			(GetRenderWindow().GetWindowWidth() / 2.0f) - (m_UIControlRTSTowersPanel->GetSize().x / 2.0f),
-			 GetRenderWindow().GetWindowHeight() - m_UIControlRTSTowersPanel->GetSize().y / 1.5f)
-		);
+			 (GetRenderWindow().GetWindowWidth() - m_UIControlRTSTowersPanel->GetSize().x),
+			 GetRenderWindow().GetWindowHeight() / 2.0f - (m_UIControlRTSTowersPanel->GetSize().y / 2.0f)
+		));
 
 		m_UIControlRTSTowersPanel->SetTowerButtonClickCallback(std::bind(&CSceneRTS::OnTowerButtonClicked, this, std::placeholders::_1));
 

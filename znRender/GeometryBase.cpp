@@ -6,7 +6,7 @@
 GeometryBase::GeometryBase(IRenderDevice& RenderDevice)
 	: m_RenderDevice(RenderDevice)
 	, m_VertexBuffer(nullptr)
-	, m_pIndexBuffer(nullptr)
+	, m_IndexBuffer(nullptr)
 	, m_PrimitiveTopology(PrimitiveTopology::TriangleList)
 {
 }
@@ -38,7 +38,7 @@ void GeometryBase::SetVertexBuffer(const std::shared_ptr<IBuffer>& GlobalVertexB
 
 void GeometryBase::SetIndexBuffer(const std::shared_ptr<IBuffer>& IndeBuffer)
 {
-    m_pIndexBuffer = IndeBuffer;
+	m_IndexBuffer = IndeBuffer;
 }
 
 void GeometryBase::SetPrimitiveTopology(PrimitiveTopology Topology)
@@ -131,11 +131,11 @@ void GeometryBase::Save(const std::shared_ptr<IByteBuffer>& ByteBuffer) const
 			_ASSERT(false);
 	}
 
-	uint8 isIndexBufferExists = (m_pIndexBuffer != nullptr) ? 0x01 : 0x00;
+	uint8 isIndexBufferExists = (m_IndexBuffer != nullptr) ? 0x01 : 0x00;
 	ByteBuffer->write(&isIndexBufferExists);
 	if (isIndexBufferExists)
 	{
-		if (const auto& loadableFromFile = std::dynamic_pointer_cast<IObjectLoadSave>(m_pIndexBuffer))
+		if (const auto& loadableFromFile = std::dynamic_pointer_cast<IObjectLoadSave>(m_IndexBuffer))
 		{
 			loadableFromFile->Save(ByteBuffer);
 		}
@@ -245,12 +245,12 @@ void GeometryBase::Save(const std::shared_ptr<IXMLWriter>& Writer) const
 		std::dynamic_pointer_cast<IObjectLoadSave>(m_VertexBuffer)->Save(bufferXML);
 	}
 
-	if (m_pIndexBuffer)
+	if (m_IndexBuffer)
 	{
 		auto indexBufferXML = Writer->CreateChild("IndexBuffer");
 
 		auto bufferXML = indexBufferXML->CreateChild("buffer_TEMP");
-		std::dynamic_pointer_cast<IObjectLoadSave>(m_pIndexBuffer)->Save(bufferXML);
+		std::dynamic_pointer_cast<IObjectLoadSave>(m_IndexBuffer)->Save(bufferXML);
 	}
 }
 
@@ -264,8 +264,8 @@ SGeometryDrawArgs GeometryBase::FixGeometryDrawArgs(const SGeometryDrawArgs & Ge
 
 	fixedArgs.IndexStartLocation = GeometryDrawArgs.IndexStartLocation;
 	fixedArgs.IndexCnt = GeometryDrawArgs.IndexCnt;
-	if (fixedArgs.IndexCnt == UINT_MAX && m_pIndexBuffer != nullptr)
-		fixedArgs.IndexCnt = m_pIndexBuffer->GetElementCount();
+	if (fixedArgs.IndexCnt == UINT_MAX && m_IndexBuffer != nullptr)
+		fixedArgs.IndexCnt = m_IndexBuffer->GetElementCount();
 
 	fixedArgs.VertexStartLocation = GeometryDrawArgs.VertexStartLocation;
 	fixedArgs.VertexCnt = GeometryDrawArgs.VertexCnt;

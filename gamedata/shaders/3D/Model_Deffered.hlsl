@@ -31,9 +31,9 @@ DefferedRenderPSOut PS_main(VSOutput IN) : SV_TARGET
 	float4 normalVS = ExtractNormal(Mat, float2(displacedTexCoord.x, displacedTexCoord.y), IN.normalVS, IN.tangentVS, IN.binormalVS);
 
 	DefferedRenderPSOut OUT;
-	OUT.Diffuse = diffuseAndAlpha + emissive;
+	OUT.Diffuse = diffuseAndAlpha;
 	OUT.Specular = float4(specular.rgb, packedSpecularFactor);
 	OUT.NormalVS = float4(normalVS.xyz, 0.0f);
-	OUT.PositionVS = float4(IN.positionVS, 1.0f);
+	OUT.PositionVS = emissive; //float4(IN.positionVS, 1.0f);
 	return OUT;
 }

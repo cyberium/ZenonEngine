@@ -151,7 +151,6 @@ class Rect;
 //---------------------------------------------------------//
 #include "Interfaces/Render/Types/RenderTypes.h"
 #include "Interfaces/Render/Types/CustomVertexElement.h"
-#include "Interfaces/Render/Types/InputSemantic.h"
 #include "Interfaces/Render/Types/Ray.h"
 #include "Interfaces/Render/Types/RaycastHit.h"
 #include "Interfaces/Render/Types/Viewport.h"

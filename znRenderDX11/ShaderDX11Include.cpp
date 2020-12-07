@@ -13,11 +13,12 @@ CShaderDX11Include::~CShaderDX11Include()
 HRESULT CShaderDX11Include::Open(D3D_INCLUDE_TYPE IncludeType, LPCSTR pFileName, LPCVOID pParentData, LPCVOID * ppData, UINT * pBytes)
 {
 	_ASSERT(IncludeType == D3D_INCLUDE_LOCAL || IncludeType == D3D_INCLUDE_SYSTEM);
+
 	try
 	{
 		std::shared_ptr<IFile> file = m_BaseManager.GetManager<IFilesManager>()->Open(std::string("shaders/") + pFileName);
 		if (file == nullptr)
-			throw CException(L"CShaderDX11Include: File '%s' not found.", pFileName);
+			throw CException(L"ShaderDX11Include: File '%s' not found.", pFileName);
 
 		size_t fileSize = file->getSize();
 		if (fileSize > 0)

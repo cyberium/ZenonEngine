@@ -1,22 +1,6 @@
 #pragma once
 
-
-struct InputSemanticDX11
-	: InputSemantic
-{
-	InputSemanticDX11(const std::string& Name, uint32 Index, DXGI_FORMAT Format)
-		: InputSemantic(Name, Index)
-		, Format(Format)
-	{}
-
-	DXGI_FORMAT Format;
-
-	inline bool operator==(const InputSemanticDX11& rhs) const
-	{
-		return __super::operator==(rhs) && (Format == rhs.Format);
-	}
-};
-
+#include "ShaderInputSemanticDX11.h"
 
 class ZN_API ShaderInputLayoutDX11 
 	: public ShaderInputLayoutBase
@@ -27,19 +11,19 @@ public:
 
     // IShaderInputLayout
     bool HasSemantic(const BufferBinding& binding) const override;
-    const InputSemantic& GetSemantic(const BufferBinding& binding) const override;
-    UINT GetSemanticSlot(const BufferBinding& binding) const override;
+    const IShaderInputSemantic* GetSemantic(const BufferBinding& binding) const override;
+    uint32 GetSemanticSlot(const BufferBinding& binding) const override;
 	size_t GetSemanticsCount() const override;
-	const InputSemantic& GetSemantic(size_t Index) const override;
-	UINT GetSemanticSlot(size_t Index) const override;
+	const IShaderInputSemantic* GetSemantic(size_t Index) const override;
+	uint32 GetSemanticSlot(size_t Index) const override;
 
 	// ShaderInputLayoutDX11
-	bool LoadFromReflector(ID3DBlob * pShaderBlob, ID3D11ShaderReflection * pReflector);
-	bool LoadFromCustomElements(ID3DBlob * pShaderBlob, const std::vector<SCustomInputElement>& CustomElements);
+	void LoadFromReflector(ID3DBlob * pShaderBlob, ID3D11ShaderReflection * pReflector);
+	void LoadFromCustomElements(ID3DBlob * pShaderBlob, const std::vector<SCustomInputElement>& CustomElements);
 	ID3D11InputLayout* GetInputLayout() const;
 
 private:
-	std::map<UINT, InputSemanticDX11> m_InputSemanticsDX11;
+	std::map<UINT, std::shared_ptr<IShaderInputSemanticDX>> m_InputSemanticsDX11;
 	ATL::CComPtr<ID3D11InputLayout> m_pInputLayout;
 
 private: // Link to parent d3d11 device

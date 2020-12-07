@@ -109,12 +109,12 @@ void CUIControlRTSTowersPanel::AddTowerButton(std::string Name, std::string Towe
 	for (size_t i = 0; i < m_TowerButtons.size(); i++)
 	{
 		const auto& towerBtnNode = m_TowerButtons.at(i);
-		towerBtnNode.UIButton->SetLocalPosition(glm::vec2((towerBtnNode.UIButton->GetSize().x + cDiff) * i, 0.0f));
+		towerBtnNode.UIButton->SetLocalPosition(glm::vec2(0.0f, (towerBtnNode.UIButton->GetSize().y + cDiff) * i));
 	}
 
-	glm::vec2 panelSize = glm::vec2(towerBtnNode->GetSize().x * m_TowerButtons.size(), 85.0f);
+	glm::vec2 panelSize = glm::vec2(85.0f, towerBtnNode->GetSize().y * m_TowerButtons.size());
 	if (m_TowerButtons.size() > 1)
-		panelSize.x += cDiff * (m_TowerButtons.size() - 1);
+		panelSize.y += cDiff * (m_TowerButtons.size() - 1);
 
 	CreateWindowGeometry(panelSize);
 }

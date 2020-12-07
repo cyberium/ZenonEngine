@@ -428,9 +428,6 @@
     <ClInclude Include="..\shared\Interfaces\Render\Types\CustomVertexElement.h">
       <Filter>__Interfaces\Render\Types</Filter>
     </ClInclude>
-    <ClInclude Include="..\shared\Interfaces\Render\Types\InputSemantic.h">
-      <Filter>__Interfaces\Render\Types</Filter>
-    </ClInclude>
     <ClInclude Include="..\shared\Interfaces\Render\Types\Viewport.h">
       <Filter>__Interfaces\Render\Types</Filter>
     </ClInclude>

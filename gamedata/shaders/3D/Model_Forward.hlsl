@@ -21,7 +21,6 @@ float4 PS_main(VSOutput IN) : SV_TARGET
 	if (Mat.IsEnviorementMappingEnable)
 	{
 		const float3 refl = mul((float3x3)PF.InverseView, reflect(-normalize(float3(0.0f, 0.0f, 0.0f) - IN.positionVS), normalize(IN.normalVS)));
-		
 		diffuseAndAlpha *= TextureSky.Sample(LinearClampSampler, normalize(refl));
 	}
 	
@@ -32,7 +31,7 @@ float4 PS_main(VSOutput IN) : SV_TARGET
 	float4 eyePos = { 0.0f, 0.0f, 0.0f, 1.0f };
 	float4 positionVS = float4(IN.positionVS, 1.0f);
 	float4 normalVS = ExtractNormal(Mat, displacedTexCoord, IN.normalVS, IN.tangentVS, IN.binormalVS);
-	
+		
 	MaterialForLight matForLight;
 	matForLight.SpecularFactor = specular.a;
 	
@@ -42,5 +41,8 @@ float4 PS_main(VSOutput IN) : SV_TARGET
 	float3 diffuseLight  = diffuseAndAlpha.rgb * lit.Diffuse.rgb;
 	float3 specularLight = specular.rgb        * lit.Specular.rgb;
 
-	return float4(ambientLight + diffuseLight + specularLight + emissive.rgb, 1.0f);
+	float3 resultColor = ambientLight + diffuseLight + specularLight;
+	//resultColor += emissive.rgb;
+	
+	return float4(resultColor, 1.0f);
 }

@@ -1,4 +1,7 @@
 
+#define DISPLACEMENT_HEIGHT 0.035f
+#define DISPLACEMENT_LAYERS_COUNT 32u
+
 struct MaterialModel
 {
 	float3 Ambient;					    // Ambient color property.
@@ -98,47 +101,46 @@ float4 DoBumpMapping(float3x3 TBN, Texture2D tex, sampler s, float2 uv, float bu
 }
 
 
-float2 DoDisplacementMapping(float3x3 TBN, Texture2D tex, sampler s, float2 uv, float3 viewPosVS, float3 fragPosVS)
+float2 DoDisplacementMapping(float3x3 TBN, Texture2D tex, sampler s, float2 uv, float3 viewPosition, float3 pixelPosition)
 {
-	float height_scale = 0.035f;
+	const float3 viewDirection = normalize(viewPosition - pixelPosition);
+	const float3 viewDirTBN = mul(TBN, viewDirection);
 	
-	float3 viewDirW = normalize(viewPosVS - fragPosVS);
-	float3 viewDir = mul(TBN, viewDirW);
-	
-		
-	//const float minLayers = 8.0;
-	//const float maxLayers = 32.0;
-	//const float numLayers = lerp(maxLayers, minLayers, abs(dot(float3(0.0f, 1.0f, 0.0f), viewDir)));
-
-	const float numLayers = 32;
-	
-    const float layerDepth = 1.0f / numLayers;
+    const float layerDepth = 1.0f / DISPLACEMENT_LAYERS_COUNT;
 		
     // величина шага смещения текстурных координат на каждом слое расчитывается на основе вектора P
-    float2 P = viewDir.xy * height_scale; 
-    float2 deltaTexCoords = P / numLayers;
+    float2 P = viewDirTBN.xy * DISPLACEMENT_HEIGHT; 
+    float2 deltaTexCoords = P / DISPLACEMENT_LAYERS_COUNT;
 	
-	float2 currentTexCoords = float2(uv.x, 1.0 - uv.y);
-	float currentDepthMapValue = (tex.Sample(s, currentTexCoords).r);
-	
-	int iter = 0;
+	float2 currentTexCoords = uv;
+	float currentDepthMapValue = (1.0 - tex.Sample(s, currentTexCoords).r);
 	float currentLayerDepth = 0.0f;
-	while(currentLayerDepth < currentDepthMapValue)
+	
+	for (uint i = 0u; i < DISPLACEMENT_LAYERS_COUNT; i++)
 	{
-		currentTexCoords -= deltaTexCoords;
-		currentDepthMapValue = (tex.Sample(s, currentTexCoords).r);
-		currentLayerDepth += layerDepth;
-		
-		if (iter++ > 32)
+		if (currentLayerDepth >= currentDepthMapValue)
 			break;
+			
+		currentTexCoords -= deltaTexCoords;
+		currentDepthMapValue = (1.0 - tex.Sample(s, currentTexCoords).r);
+		currentLayerDepth += layerDepth;
 	}
+	
+	/*uint iter = 0u;
+	while (currentLayerDepth < currentDepthMapValue)
+	{
+
+		
+		if (iter++ > DISPLACEMENT_LAYERS_COUNT)
+			break;
+	}*/
 
 	// находим текстурные координаты перед найденной точкой пересечения, т.е. делаем "шаг назад"
 	float2 prevTexCoords = currentTexCoords + deltaTexCoords;
 
 	// находим значения глубин до и после нахождения пересечения для использования в линейной интерполяции
 	float afterDepth  = currentDepthMapValue - currentLayerDepth;
-	float beforeDepth = (tex.Sample(s, prevTexCoords).r) - currentLayerDepth + layerDepth;
+	float beforeDepth = (1.0 - tex.Sample(s, prevTexCoords).r) - currentLayerDepth + layerDepth;
 	 
 	// интерполяция текстурных координат 
 	float weight = afterDepth / (afterDepth - beforeDepth);
@@ -220,10 +222,9 @@ float4 ExtractNormal(MaterialModel mat, float2 TexCoord, float3 normalVS, float3
 	// Normal mapping
 	if (mat.HasTextureNormalMap)
 	{
-		// For scense with normal mapping, I don't have to invert the binormal.
-		float3x3 TBN = float3x3(normalize(tangentVS),
-								normalize(binormalVS),
-								normalize(normalVS));
+		float3x3 TBN = float3x3(normalize(  tangentVS),
+								normalize( binormalVS),
+								normalize(  normalVS));
 
 		return DoNormalMapping(TBN, TextureNormalMap, LinearRepeatSampler, TexCoord);
 	}
@@ -231,7 +232,6 @@ float4 ExtractNormal(MaterialModel mat, float2 TexCoord, float3 normalVS, float3
 	// Bump mapping
 	if (mat.HasTextureBump)
 	{
-		// For most scenes using bump mapping, I have to invert the binormal.
 		float3x3 TBN = float3x3(normalize( tangentVS),
 								normalize(-binormalVS),
 								normalize( normalVS));
@@ -242,22 +242,17 @@ float4 ExtractNormal(MaterialModel mat, float2 TexCoord, float3 normalVS, float3
 	return normalize(float4(normalVS, 0.0f));
 }
 
-float2 ExtractDisplacement(MaterialModel mat, float2 TexCoord, float3 normalVS, float3 tangentVS, float3 binormalVS, float3 cameraPosVS, float3 positionVS)
+float2 ExtractDisplacement(MaterialModel mat, float2 TexCoord, float3 normalVS, float3 tangentVS, float3 binormalVS, float3 viewPositionVS, float3 pixelPositionVS)
 {
 	if (mat.HasTextureDisplacement)
 	{
-		float3 normalWS = mul(PF.InverseView, float4(normalVS.xyz, 0.0f));
-		float3 tangentWS = mul(PF.InverseView, float4(tangentVS.xyz, 0.0f));
-		float3 binormalWS = mul(PF.InverseView, float4(binormalVS.xyz, 0.0f));
-		float3 viewPosWS = mul(PF.InverseView, float4(cameraPosVS.xyz, 1.0f));
-		float3 positionWS = mul(PF.InverseView, float4(positionVS.xyz, 1.0f));
-	
-		// For most scenes using bump mapping, I have to invert the binormal.
-		float3x3 TBN = float3x3(normalize( tangentWS),
-								normalize( binormalWS),
-								normalize( normalWS));
+		float3x3 TBN = float3x3(
+			normalize(  tangentVS),
+			normalize(- binormalVS),
+			normalize(  normalVS)
+		);
 
-		float2 newTexCoords = DoDisplacementMapping(TBN, TextureDisplacement, LinearRepeatSampler, TexCoord, viewPosWS, positionWS);
+		float2 newTexCoords = DoDisplacementMapping(TBN, TextureDisplacement, LinearRepeatSampler, TexCoord, viewPositionVS, pixelPositionVS);
 		if(newTexCoords.x > 1.0 || newTexCoords.y > 1.0 || newTexCoords.x < 0.0 || newTexCoords.y < 0.0)
 			discard; 
 		return newTexCoords;

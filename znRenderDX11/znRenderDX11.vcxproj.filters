@@ -7,7 +7,6 @@
     <ClCompile Include="QueryDX11.cpp" />
     <ClCompile Include="RenderTargetDX11.cpp" />
     <ClCompile Include="RenderWindowDX11.cpp" />
-    <ClCompile Include="ShaderDX11.cpp" />
     <ClCompile Include="TextureDX11.cpp" />
     <ClCompile Include="BufferDX11.cpp">
       <Filter>Buffers</Filter>
@@ -32,7 +31,6 @@
     </ClCompile>
     <ClCompile Include="SamplerStateDX11.cpp" />
     <ClCompile Include="MaterialDX11.cpp" />
-    <ClCompile Include="ShaderInputLayoutDX11.cpp" />
     <ClCompile Include="znRenderDX11.cpp">
       <Filter>Common</Filter>
     </ClCompile>
@@ -45,9 +43,20 @@
       <Filter>RenderDevice</Filter>
     </ClCompile>
     <ClCompile Include="ModelDX11.cpp" />
-    <ClCompile Include="ShaderDX11Include.cpp" />
+    <ClCompile Include="ShaderInputLayoutDX11.cpp">
+      <Filter>Shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="ShaderDX11Include.cpp">
+      <Filter>Shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="ShaderDX11.cpp">
+      <Filter>Shaders</Filter>
+    </ClCompile>
     <ClCompile Include="CustomElementsToDX11.cpp">
-      <Filter>Converters</Filter>
+      <Filter>Shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="ShaderInputSemanticDX11.cpp">
+      <Filter>Shaders</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -57,7 +66,6 @@
     <ClInclude Include="QueryDX11.h" />
     <ClInclude Include="RenderTargetDX11.h" />
     <ClInclude Include="RenderWindowDX11.h" />
-    <ClInclude Include="ShaderDX11.h" />
     <ClInclude Include="TextureDX11.h" />
     <ClInclude Include="BufferDX11.h">
       <Filter>Buffers</Filter>
@@ -83,7 +91,6 @@
     <ClInclude Include="TextureDX11Translate.h" />
     <ClInclude Include="SamplerStateDX11.h" />
     <ClInclude Include="MaterialDX11.h" />
-    <ClInclude Include="ShaderInputLayoutDX11.h" />
     <ClInclude Include="GeometryDX11.h" />
     <ClInclude Include="RenderDeviceDX11.h">
       <Filter>RenderDevice</Filter>
@@ -92,9 +99,20 @@
       <Filter>RenderDevice</Filter>
     </ClInclude>
     <ClInclude Include="ModelDX11.h" />
-    <ClInclude Include="ShaderDX11Include.h" />
+    <ClInclude Include="ShaderInputLayoutDX11.h">
+      <Filter>Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="ShaderDX11Include.h">
+      <Filter>Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="ShaderDX11.h">
+      <Filter>Shaders</Filter>
+    </ClInclude>
     <ClInclude Include="CustomElementsToDX11.h">
-      <Filter>Converters</Filter>
+      <Filter>Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="ShaderInputSemanticDX11.h">
+      <Filter>Shaders</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -107,11 +125,11 @@
     <Filter Include="Pipeline">
       <UniqueIdentifier>{40b4cb14-a721-4704-9395-cfec84d76208}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Converters">
-      <UniqueIdentifier>{3dde30a2-8db8-4a81-a32e-d315ee685f1e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="RenderDevice">
       <UniqueIdentifier>{64533011-77e6-4d1c-8216-d862bdb20e3b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shaders">
+      <UniqueIdentifier>{59fed96e-530c-4065-8bed-06417d65afc0}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -15,6 +15,8 @@
 #include "Passes/PostprocessRendering/Postprocess_AccumTextures.h"
 #include "Passes/PostprocessRendering/Postprocess_ApplyTexture.h"
 
+#include "Passes/PostprocessRendering/Postprocess_RenderGlowSceneObjects.h"
+
 #include "Passes/DebugPass.h"
 #include "Passes/ParticlesPass.h"
 #include "Passes/DrawBonesPass.h"
@@ -123,12 +125,19 @@ void CRendererForward::Initialize(std::shared_ptr<IRenderTarget> OutputRenderTar
 	auto inputTexture = HDRRenderTarget->GetTexture(IRenderTarget::AttachmentPoint::Color0);
 
 #ifdef ENABLE_HDR
-	/*
-	auto glowPass = MakeShared(CPassPostprocess_Glow, m_RenderDevice, inputTexture);
-	glowPass->ConfigurePipeline(OutputRenderTarget);
-	Add3DPass(glowPass);
+	
+	auto glowEmissiveRT = CreateHDRRenderTarget(HDRRenderTarget);
+	Add3DPass(MakeShared(ClearRenderTargetPass, m_RenderDevice, glowEmissiveRT, ClearFlags::Color));
 
-	auto gaussHorizontal = MakeShared(CPassPostprocess_Gauss, m_RenderDevice, glowPass->GetOutputTexture(), true);
+	auto glowEmissivePass = MakeShared(CPassPostprocess_RenderGlowSceneObjects, m_RenderDevice, m_Scene);
+	glowEmissivePass->ConfigurePipeline(glowEmissiveRT);
+	Add3DPass(glowEmissivePass);
+
+	//auto glowPass = MakeShared(CPassPostprocess_Glow, m_RenderDevice, inputTexture);
+	//glowPass->ConfigurePipeline(OutputRenderTarget);
+	//Add3DPass(glowPass);
+
+	auto gaussHorizontal = MakeShared(CPassPostprocess_Gauss, m_RenderDevice, glowEmissiveRT->GetTexture(IRenderTarget::AttachmentPoint::Color0)/*glowPass->GetOutputTexture()*/, true);
 	gaussHorizontal->ConfigurePipeline(OutputRenderTarget);
 	Add3DPass(gaussHorizontal);
 
@@ -145,9 +154,8 @@ void CRendererForward::Initialize(std::shared_ptr<IRenderTarget> OutputRenderTar
 	//Add3DPass(hdrPass);
 
 	Add3DPass(MakeShared(CPassPostprocess_ApplyTexture, m_RenderDevice, accumTextures->GetOutputTexture())->ConfigurePipeline(OutputRenderTarget));
-	*/
-
-	Add3DPass(MakeShared(CPassPostprocess_ApplyTexture, m_RenderDevice, inputTexture)->ConfigurePipeline(OutputRenderTarget));
+	
+	//Add3DPass(MakeShared(CPassPostprocess_ApplyTexture, m_RenderDevice, inputTexture)->ConfigurePipeline(OutputRenderTarget));
 #endif
 
 
@@ -159,6 +167,8 @@ void CRendererForward::Initialize(std::shared_ptr<IRenderTarget> OutputRenderTar
 	//Add3DPass(MakeShared(CDrawBonesPass, m_Scene)->ConfigurePipeline(OutputRenderTarget));
 	//Add3DPass(MakeShared(CDrawBoundingBoxPass, m_RenderDevice, m_Scene)->ConfigurePipeline(OutputRenderTarget));
 	Add3DPass(MakeShared(CDrawLightFrustumPass, m_RenderDevice, m_Scene)->ConfigurePipeline(OutputRenderTarget));
+
+
 
 	//
 	// UI
@@ -198,7 +208,8 @@ void CRendererForward::DoUpdateLights()
 	else
 		m_LightsBuffer->Set(lightsVS);
 
-	m_MaterialModelPass->GetLightsShaderParameter()->Set(m_LightsBuffer);
+	if (m_MaterialModelPass->GetLightsShaderParameter())
+		m_MaterialModelPass->GetLightsShaderParameter()->Set(m_LightsBuffer);
 	//m_MaterialModelPassInstanced->GetLightsShaderParameter()->Set(m_LightsBuffer);
 }
 

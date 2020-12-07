@@ -74,5 +74,11 @@ void CUIControlRTSResourcesPanel::Initialize()
 	subGeom.Geom = GetBaseManager().GetApplication().GetRenderDevice().GetPrimitivesFactory().CreateUIQuad(glm::vec2(1.0f), cUIWindowCell.UVCellStart, cUIWindowCell.UVCellEnd);
 	AddSubgeometry(subGeom);
 
+	subGeom.Translate = glm::vec2(0, cUIWindowCell.CellSize.y - 18);
+	subGeom.Size = cUIWindowCell.CellSize;
+	subGeom.Material = material;
+	subGeom.Geom = GetBaseManager().GetApplication().GetRenderDevice().GetPrimitivesFactory().CreateUIQuad(glm::vec2(1.0f), cUIWindowCell.UVCellStart, cUIWindowCell.UVCellEnd);
+	AddSubgeometry(subGeom);
+
 	SetSize(cUIWindowCell.CellSize);
 }

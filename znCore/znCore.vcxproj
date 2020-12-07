@@ -242,7 +242,6 @@
     <ClInclude Include="..\shared\Interfaces\Render\ITexture.h" />
     <ClInclude Include="..\shared\Interfaces\Render\Types\RenderTypes.h" />
     <ClInclude Include="..\shared\Interfaces\Render\Types\CustomVertexElement.h" />
-    <ClInclude Include="..\shared\Interfaces\Render\Types\InputSemantic.h" />
     <ClInclude Include="..\shared\Interfaces\Render\Types\Ray.h" />
     <ClInclude Include="..\shared\Interfaces\Render\Types\RaycastHit.h" />
     <ClInclude Include="..\shared\Interfaces\Render\Types\Viewport.h" />

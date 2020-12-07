@@ -60,7 +60,7 @@ void CUIControlRTSTowerBtn::Initialize()
 	m_ButtonContent->AddSubgeometry(subGeom);
 
 
-	// Gold counter
+	// Cost
 	{
 		std::shared_ptr<IUIControlCommon> goldPanel = GetScene().CreateUIControlTCast<IUIControlCommon>(shared_from_this());
 		goldPanel->SetLocalPosition(glm::vec2(40.0f, 66.0f));

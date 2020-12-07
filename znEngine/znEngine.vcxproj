@@ -49,6 +49,7 @@
     <ClCompile Include="Passes\PostprocessRendering\Postprocess_ApplyTexture.cpp" />
     <ClCompile Include="Passes\PostprocessRendering\Postprocess_Glow.cpp" />
     <ClCompile Include="Passes\PostprocessRendering\Postprocess_HDR.cpp" />
+    <ClCompile Include="Passes\PostprocessRendering\Postprocess_RenderGlowSceneObjects.cpp" />
     <ClCompile Include="Passes\RTSGround_Pass.cpp" />
     <ClCompile Include="Passes\Scene\BaseTypedList3DPass.cpp" />
     <ClCompile Include="Passes\Scene\SceneCreateTypedListsPass.cpp" />
@@ -146,6 +147,7 @@
     <ClInclude Include="Passes\PostprocessRendering\Postprocess_ApplyTexture.h" />
     <ClInclude Include="Passes\PostprocessRendering\Postprocess_Glow.h" />
     <ClInclude Include="Passes\PostprocessRendering\Postprocess_HDR.h" />
+    <ClInclude Include="Passes\PostprocessRendering\Postprocess_RenderGlowSceneObjects.h" />
     <ClInclude Include="Passes\RTSGround_Pass.h" />
     <ClInclude Include="Passes\Scene\BaseTypedList3DPass.h" />
     <ClInclude Include="Passes\Scene\SceneCreateTypedListsPass.h" />

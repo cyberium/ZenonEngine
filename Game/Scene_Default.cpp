@@ -51,7 +51,7 @@ void CSceneDefault::Initialize()
 
 		auto lightComponent = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<IComponentFactory>()->CreateComponentT<CLightComponent>(cSceneNodeLightComponent, *lightNode.get());
 		lightComponent->SetCastShadows(true);
-		lightComponent->SetType(ELightType::Spot);
+		lightComponent->SetType(ELightType::Directional);
 		lightComponent->SetAmbientColor(glm::vec3(0.25f));
 		lightComponent->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
 		lightComponent->SetRange(1350.0f);

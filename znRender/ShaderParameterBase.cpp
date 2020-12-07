@@ -3,18 +3,6 @@
 // General
 #include "ShaderParameterBase.h"
 
-ShaderParameterBase::ShaderParameterBase()
-	: m_Name("<emprty>")
-	, m_uiSlotID(UINT_MAX)
-	, m_Shader(nullptr)
-	, m_ParameterType(EType::Invalid)
-
-	, m_pConstantBuffer(nullptr)
-	, m_pTexture(nullptr)
-	, m_pSamplerState(nullptr)
-	, m_pStructuredBuffer(nullptr)
-{}
-
 ShaderParameterBase::ShaderParameterBase(const std::string& name, UINT slotID, IShader* shader, EType parameterType)
 	: m_Name(name)
 	, m_uiSlotID(slotID)

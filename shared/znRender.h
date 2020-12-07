@@ -23,6 +23,8 @@
 #include "../znRender/RenderObjectsFactory.h"
 #include "../znRender/RenderWindowBase.h"
 #include "../znRender/SamplerStateBase.h"
+
 #include "../znRender/ShaderBase.h"
+#include "../znRender/ShaderInputSemanticBase.h"
 #include "../znRender/ShaderInputLayoutBase.h"
 #include "../znRender/ShaderParameterBase.h"

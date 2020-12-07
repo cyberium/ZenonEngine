@@ -7,9 +7,6 @@
 #include "CustomElementsToDX11.h"
 
 
-static InputSemantic gs_InvalidShaderSemantic;
-
-
 // FORWARD BEGIN
 DXGI_FORMAT GetDXGIFormat(const D3D11_SIGNATURE_PARAMETER_DESC& paramDesc);
 // FORWARD END
@@ -33,24 +30,24 @@ ShaderInputLayoutDX11::~ShaderInputLayoutDX11()
 bool ShaderInputLayoutDX11::HasSemantic(const BufferBinding& binding) const
 {
 	for (const auto& it : m_InputSemanticsDX11)
-		if (it.second.Name == binding.Name && it.second.Index == binding.Index)
+		if ((::_stricmp(it.second->GetName().c_str(), binding.Name.c_str()) == 0) && it.second->GetIndex() == binding.Index)
 			return true;
 
 	return false;
 }
 
-const InputSemantic& ShaderInputLayoutDX11::GetSemantic(const BufferBinding & binding) const
+const IShaderInputSemantic* ShaderInputLayoutDX11::GetSemantic(const BufferBinding& binding) const
 {
 	for (auto& it : m_InputSemanticsDX11)
-		if (it.second.Name == binding.Name && it.second.Index == binding.Index)
-			return it.second;
-	return gs_InvalidShaderSemantic;
+		if ((::_stricmp(it.second->GetName().c_str(), binding.Name.c_str()) == 0) && it.second->GetIndex() == binding.Index)
+			return it.second.get();
+	return nullptr;
 }
 
-UINT ShaderInputLayoutDX11::GetSemanticSlot(const BufferBinding & binding) const
+uint32 ShaderInputLayoutDX11::GetSemanticSlot(const BufferBinding & binding) const
 {
 	for (auto& it : m_InputSemanticsDX11)
-		if ((::_stricmp(it.second.Name.c_str(), binding.Name.c_str()) == 0) && it.second.Index == binding.Index)
+		if ((::_stricmp(it.second->GetName().c_str(), binding.Name.c_str()) == 0) && it.second->GetIndex() == binding.Index)
 			return it.first;
 	return UINT_MAX;
 }
@@ -60,16 +57,16 @@ size_t ShaderInputLayoutDX11::GetSemanticsCount() const
 	return m_InputSemanticsDX11.size();
 }
 
-const InputSemantic & ShaderInputLayoutDX11::GetSemantic(size_t Index) const
+const IShaderInputSemantic* ShaderInputLayoutDX11::GetSemantic(size_t Index) const
 {
 	auto iter = m_InputSemanticsDX11.begin();
 	std::advance(iter, Index);
 	if (iter != m_InputSemanticsDX11.end())
-		return iter->second;
-	return gs_InvalidShaderSemantic;
+		return iter->second.get();
+	return nullptr;
 }
 
-UINT ShaderInputLayoutDX11::GetSemanticSlot(size_t Index) const
+uint32 ShaderInputLayoutDX11::GetSemanticSlot(size_t Index) const
 {
 	auto iter = m_InputSemanticsDX11.begin();
 	std::advance(iter, Index);
@@ -83,7 +80,7 @@ UINT ShaderInputLayoutDX11::GetSemanticSlot(size_t Index) const
 //
 // ShaderInputLayoutDX11
 //
-bool ShaderInputLayoutDX11::LoadFromReflector(ID3DBlob * pShaderBlob, ID3D11ShaderReflection * pReflector)
+void ShaderInputLayoutDX11::LoadFromReflector(ID3DBlob * pShaderBlob, ID3D11ShaderReflection * pReflector)
 {
 	// Query input parameters and build the input layout
 	D3D11_SHADER_DESC shaderDescription = {};
@@ -107,7 +104,7 @@ bool ShaderInputLayoutDX11::LoadFromReflector(ID3DBlob * pShaderBlob, ID3D11Shad
 
 		_ASSERT(inputElement.Format != DXGI_FORMAT_UNKNOWN);
 
-		m_InputSemanticsDX11.insert(std::make_pair(i, InputSemanticDX11(inputElement.SemanticName, inputElement.SemanticIndex, inputElement.Format)));
+		m_InputSemanticsDX11.insert(std::make_pair(i, MakeShared(CShaderInputSemanticDX11, inputElement.SemanticName, inputElement.SemanticIndex, inputElement.Format)));
 	}
 
 	_ASSERT(inputElements.size() > 0);
@@ -118,25 +115,18 @@ bool ShaderInputLayoutDX11::LoadFromReflector(ID3DBlob * pShaderBlob, ID3D11Shad
 	//std::vector<D3D11_INPUT_ELEMENT_DESC> dx11InputElements = CustomElements::DX11::CustomToDX11(customInputElements);
 
 	CHECK_HR_MSG(m_RenderDeviceDX11.GetDeviceD3D11()->CreateInputLayout(inputElements.data(), (UINT)inputElements.size(), pShaderBlob->GetBufferPointer(), pShaderBlob->GetBufferSize(), &m_pInputLayout), L"Failed to create input layout.");
-
-	return true;
 }
 
-bool ShaderInputLayoutDX11::LoadFromCustomElements(ID3DBlob * pShaderBlob, const std::vector<SCustomInputElement>& CustomElements)
+void ShaderInputLayoutDX11::LoadFromCustomElements(ID3DBlob * pShaderBlob, const std::vector<SCustomInputElement>& CustomElements)
 {
 	std::vector<D3D11_INPUT_ELEMENT_DESC> dx11InputElements = CustomElements::DX11::CustomToDX11(CustomElements);
 	for (uint32 i = 0; i < dx11InputElements.size(); i++)
-		m_InputSemanticsDX11.insert(std::make_pair(i, InputSemanticDX11(dx11InputElements[i].SemanticName, dx11InputElements[i].SemanticIndex, dx11InputElements[i].Format)));
+		m_InputSemanticsDX11.insert(std::make_pair(i, MakeShared(CShaderInputSemanticDX11, dx11InputElements[i].SemanticName, dx11InputElements[i].SemanticIndex, dx11InputElements[i].Format)));
 
 	_ASSERT(dx11InputElements.size() > 0);
 	CHECK_HR_MSG(m_RenderDeviceDX11.GetDeviceD3D11()->CreateInputLayout(dx11InputElements.data(), (UINT)dx11InputElements.size(), pShaderBlob->GetBufferPointer(), pShaderBlob->GetBufferSize(), &m_pInputLayout), L"Failed to create input layout.");
-
-	return true;
 }
 
-//
-// ShaderInputLayoutDX11
-//
 ID3D11InputLayout* ShaderInputLayoutDX11::GetInputLayout() const
 {
 	return m_pInputLayout;

@@ -62,27 +62,16 @@ void GeometryDX11::Render_BindAllBuffers(const IShader * VertexShader) const
 	}
 	else
 	{
-		/*size_t inputSemanticsCount = VertexShader->GetInputLayout().GetSemanticsCount();
-		for (auto i = 0; i < inputSemanticsCount; i++)
-		{
-			const auto& s = VertexShader->GetInputLayout().GetSemantic(i);
-
-
-			const auto& sSlot = VertexShader->GetInputLayout().GetSemanticSlot(i);
-			_ASSERT(s != UINT_MAX);
-
-		}*/
-
 		for (const auto& buffer : m_VertexBuffers)
 		{
-			UINT slotID = VertexShader->GetInputLayout().GetSemanticSlot(buffer.first);
-			if (slotID != UINT_MAX)
-				buffer.second->Bind(slotID, VertexShader, IShaderParameter::EType::Buffer);
+			uint32 semanticSlot = VertexShader->GetInputLayout().GetSemanticSlot(buffer.first);
+			if (semanticSlot != UINT_MAX)
+				buffer.second->Bind(semanticSlot, VertexShader, IShaderParameter::EType::Buffer);
 		}
 	}
 
-	if (m_pIndexBuffer != NULL)
-		m_pIndexBuffer->Bind(0, VertexShader, IShaderParameter::EType::Buffer);
+	if (m_IndexBuffer != NULL)
+		m_IndexBuffer->Bind(0, VertexShader, IShaderParameter::EType::Buffer);
 }
 
 void GeometryDX11::Render_Draw(const SGeometryDrawArgs GeometryDrawArgs) const
@@ -91,7 +80,7 @@ void GeometryDX11::Render_Draw(const SGeometryDrawArgs GeometryDrawArgs) const
 
 	m_RenderDeviceDX11.GetDeviceContextD3D11()->IASetPrimitiveTopology(PrimitiveTopologyToDX11PrimitiveTopology(GetPrimitiveTopology()));
 
-	if (m_pIndexBuffer != NULL)
+	if (m_IndexBuffer != NULL)
 	{
 		if (args.InstanceCnt != UINT32_MAX)
 		{
@@ -117,8 +106,8 @@ void GeometryDX11::Render_Draw(const SGeometryDrawArgs GeometryDrawArgs) const
 
 void GeometryDX11::Render_UnbindAllBuffers(const IShader * VertexShader) const
 {
-	if (m_pIndexBuffer != NULL)
-		m_pIndexBuffer->UnBind(0, VertexShader, IShaderParameter::EType::Buffer);
+	if (m_IndexBuffer != NULL)
+		m_IndexBuffer->UnBind(0, VertexShader, IShaderParameter::EType::Buffer);
 
 	if (m_VertexBuffer != nullptr)
 	{
@@ -128,9 +117,9 @@ void GeometryDX11::Render_UnbindAllBuffers(const IShader * VertexShader) const
 	{
 		for (const auto& buffer : m_VertexBuffers)
 		{
-			UINT slotID = VertexShader->GetInputLayout().GetSemanticSlot(buffer.first);
-			if (slotID != UINT_MAX)
-				buffer.second->UnBind(slotID, VertexShader, IShaderParameter::EType::Buffer);
+			uint32 semanticSlot = VertexShader->GetInputLayout().GetSemanticSlot(buffer.first);
+			if (semanticSlot != UINT_MAX)
+				buffer.second->UnBind(semanticSlot, VertexShader, IShaderParameter::EType::Buffer);
 			//else
 			//	_ASSERT(false);
 		}
