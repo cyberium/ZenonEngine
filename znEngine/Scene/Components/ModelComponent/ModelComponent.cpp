@@ -121,7 +121,7 @@ std::vector<glm::mat4> CModelComponent::CreatePose(size_t BoneStartIndex, size_t
 	if (BonesCount == 0)
 		BonesCount = m_Bones.size();
 
-	const glm::mat4& rootBoneMatrix = GetModel()->GetRootBone()->GetLocalMatrix();
+	const glm::mat4& rootBoneMatrix = GetModel()->GetSkeleton()->GetRootBone()->GetLocalMatrix();
 
 	_ASSERT(BoneStartIndex + BonesCount - 1 < m_Bones.size());
 	std::vector<glm::mat4> result;
@@ -166,6 +166,11 @@ void CModelComponent::SetAnimationEndedCallback(std::function<void(const IAnimat
 bool CModelComponent::IsAnimationPlayed() const
 {
 	return m_CurrentAnimation != nullptr;
+}
+
+const IAnimation * CModelComponent::GetCurrentAnimation() const
+{
+	return m_CurrentAnimation;
 }
 
 size_t CModelComponent::GetCurrentAnimationIndex() const
@@ -325,8 +330,12 @@ void CModelComponent::Save(const std::shared_ptr<IXMLWriter>& Writer) const
 void CModelComponent::InitializeBones()
 {
 	m_RootBone = nullptr;
+	m_Bones.clear();
 
-	for (const auto& boneProto : GetModel()->GetBones())
+	if (GetModel()->GetSkeleton() == nullptr)
+		return;
+
+	for (const auto& boneProto : GetModel()->GetSkeleton()->GetBones())
 	{
 		std::shared_ptr<CSkeletonComponentBone3D> bone = MakeShared(CSkeletonComponentBone3D, boneProto);
 		AddBone(bone);

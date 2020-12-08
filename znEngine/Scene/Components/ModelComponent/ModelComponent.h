@@ -26,6 +26,7 @@ public:
 	void PlayAnimation(const std::string& AnimationName, bool Loop) override;
 	void SetAnimationEndedCallback(std::function<void(const IAnimation*)> Func) override;
 	bool IsAnimationPlayed() const override;
+	const IAnimation* GetCurrentAnimation() const override;
 	size_t GetCurrentAnimationIndex() const override;
 	uint32 GetCurrentAnimationFrame() const override;
 

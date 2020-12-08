@@ -4,8 +4,6 @@
 #include "ModelsLoader_znxmdl.h"
 
 // Additional
-#include "Scene/Components/ModelComponent/Animation.h"
-#include "Scene/Components/ModelComponent/SkeletonBone.h"
 #include "ModelsLoaderHelper.h"
 
 #include "Materials/MaterialModel.h"
@@ -130,20 +128,7 @@ std::shared_ptr<IModel> CModelsLoader_znxmdl::LoadModel(const std::shared_ptr<IF
 
 
 	//
-	// Load skeleton animations
-	if (modelReader->IsChildExists("SkeletonAnimations"))
-	{
-		for (const auto& skeletonAnimationReaderXML : modelReader->GetChild("SkeletonAnimations")->GetChilds())
-		{
-			SSkeletonAnimation skeletonAnimation;
-			skeletonAnimation.RootBoneLocalTransform = Utils::StringToMatrix(skeletonAnimationReaderXML->GetValue());
-			std::dynamic_pointer_cast<IModelInternal>(model)->AddSkeletonAnimationInternal(skeletonAnimation);
-		}
-	}
-
-
-	//
-	// Load animations
+	// Animations
 	if (modelReader->IsChildExists("Animations"))
 	{
 		for (const auto& animationReaderXML : modelReader->GetChild("Animations")->GetChilds())
@@ -155,15 +140,14 @@ std::shared_ptr<IModel> CModelsLoader_znxmdl::LoadModel(const std::shared_ptr<IF
 
 
 	//
-	// Load bones
-	if (modelReader->IsChildExists("Bones"))
+	// Skeleton
+	if (modelReader->IsChildExists("Skeleton"))
 	{
-		for (const auto& boneReaderXML : modelReader->GetChild("Bones")->GetChilds())
-		{
-			std::shared_ptr<ISkeletonBone> bone = MakeShared(CSkeletonBone, boneReaderXML);
-			model->AddBone(bone);
-		}
+		auto skeleton = MakeShared(CSkeleton);
+		std::dynamic_pointer_cast<IObjectLoadSave>(skeleton)->Load(modelReader->GetChild("Skeleton"));
+		std::dynamic_pointer_cast<IModelInternal>(model)->SetSkeleton(skeleton);
 	}
+
 
 	return model;
 }
@@ -233,20 +217,6 @@ std::shared_ptr<IFile> CModelsLoader_znxmdl::SaveModel(const std::shared_ptr<IMo
 
 
 	//
-	// Save skeleton animations
-	const auto& skeletonAnimations = Model->GetSkeletonAnimations();
-	if (false == skeletonAnimations.empty())
-	{
-		auto skeletonAnimationsWriterXML = modelWriter->CreateChild("SkeletonAnimations");
-		for (const auto& sa : skeletonAnimations)
-		{
-			auto skeletonAnimationWriterXML = skeletonAnimationsWriterXML->CreateChild("SkeletonAnimation");
-			skeletonAnimationWriterXML->SetValue(Utils::MatrixToString(sa.RootBoneLocalTransform));
-		}
-	}
-
-
-	//
 	// Save animations
 	const auto& animations = Model->GetAnimations();
 	if (false == animations.empty())
@@ -262,16 +232,12 @@ std::shared_ptr<IFile> CModelsLoader_znxmdl::SaveModel(const std::shared_ptr<IMo
 
 	//
 	// Save bones
-	const auto& bones = Model->GetBones();
-	if (false == bones.empty())
+	if (auto skeleton = Model->GetSkeleton())
 	{
-		auto bonesWriterXML = modelWriter->CreateChild("Bones");
-		for (const auto& b : bones)
-		{
-			auto boneWriterXML = bonesWriterXML->CreateChild("Bone");
-			std::dynamic_pointer_cast<IObjectLoadSave>(b)->Save(boneWriterXML);
-		}
+		auto bonesWriterXML = modelWriter->CreateChild("Skeleton");
+		std::dynamic_pointer_cast<IObjectLoadSave>(skeleton)->Save(bonesWriterXML);
 	}
+
 
 	auto file = m_BaseManager.GetManager<IFilesManager>()->Create(FileName);
 	xml.SaveWriterToFile(rootWriter, file);

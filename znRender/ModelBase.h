@@ -2,8 +2,6 @@
 
 #include "GeometryBase.h"
 
-
-
 class ZN_API ModelBase 
 	: public IModel
 	, public IModelInternal
@@ -21,17 +19,7 @@ public:
 	const std::vector<SConnection>&                 GetConnections() const override;
 
 	// Skeleton
-	void                                            AddSkeletonAnimation(std::shared_ptr<IModel> SkeletonAnimation) override;
-	const SSkeletonAnimation&                       GetSkeletonAnimation(size_t Index) override;
-	const std::vector<SSkeletonAnimation>&          GetSkeletonAnimations() const override;
-
-	void                                            ApplyOtherSkeleton(std::shared_ptr<IModel> other) override;
-	void                                            AddBone(const std::shared_ptr<ISkeletonBone> Bone) override;
-	std::shared_ptr<ISkeletonBone>                  GetRootBone() const override;
-	std::shared_ptr<ISkeletonBone>                  GetBone(size_t Index) const override;
-	size_t                                          GetBoneIndexByName(const std::string& BoneName) const override;
-	std::shared_ptr<ISkeletonBone>                  GetBoneByName(const std::string& BoneName) const override;
-	const std::vector<std::shared_ptr<ISkeletonBone>>& GetBones() const override;
+	const std::shared_ptr<ISkeleton>&               GetSkeleton() const override;
 
 	// Animation
 	void                                            AddAnimation(const std::string& AnimationName, const std::shared_ptr<IAnimation>& Animation);
@@ -41,7 +29,7 @@ public:
 
 
 	// IModelInternal
-	void                                            AddSkeletonAnimationInternal(const SSkeletonAnimation& SkeletonAnimation) override;
+	void                                            SetSkeleton(std::shared_ptr<ISkeleton> Skeleton) override;
 
 protected:
 	void                                            UpdateBounds(const std::shared_ptr<IGeometry>& Geometry);
@@ -51,11 +39,8 @@ protected:
 	std::vector<SConnection>                        m_Connections;
 	std::string                                     m_FileName;
 
-	// Bones & skeleton
-	glm::mat4                                       m_FixMatrix;
-	std::shared_ptr<ISkeletonBone>                  m_RootBone;
-	std::vector<std::shared_ptr<ISkeletonBone>>     m_Bones;
-	std::vector<SSkeletonAnimation>                 m_Skeletons;
+	// Skeleton
+	std::shared_ptr<ISkeleton>                      m_Skeleton;
 
 	// Animations
 	Animations_t                                    m_Animations;

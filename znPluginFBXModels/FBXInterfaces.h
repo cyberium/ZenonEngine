@@ -46,6 +46,7 @@ ZN_INTERFACE ZN_API IFBXSkeleton
 {
 	virtual ~IFBXSkeleton() {}
 
+	virtual std::shared_ptr<ISkeletonBone> GetRootBone() const = 0;
 	virtual size_t GetBoneIndexByName(const std::string& BoneName) const = 0;
 	virtual std::shared_ptr<ISkeletonBone> GetBoneByName(const std::string& BoneName) const = 0;
 	virtual const std::vector<std::shared_ptr<ISkeletonBone>>& GetBones() const = 0;

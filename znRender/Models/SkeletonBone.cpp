@@ -31,29 +31,6 @@ CSkeletonBone::~CSkeletonBone()
 //
 // ISkeletonBone
 //-
-void CSkeletonBone::MergeWithOther(std::shared_ptr<ISkeletonBone> OtherBone)
-{
-	auto otherAsMe = std::static_pointer_cast<CSkeletonBone>(OtherBone);
-
-	pX.MergeWithOther(otherAsMe->pX);
-	pY.MergeWithOther(otherAsMe->pY);
-	pZ.MergeWithOther(otherAsMe->pZ);
-
-	rX.MergeWithOther(otherAsMe->rX);
-	rY.MergeWithOther(otherAsMe->rY);
-	rZ.MergeWithOther(otherAsMe->rZ);
-
-	sX.MergeWithOther(otherAsMe->sX);
-	sY.MergeWithOther(otherAsMe->sY);
-	sZ.MergeWithOther(otherAsMe->sZ);
-
-	m_CalculatedMatrixes.MergeWithOther(otherAsMe->m_CalculatedMatrixes);
-
-	//m_LocalTransform = otherAsMe->m_LocalTransform;
-	//PivotMatrix = otherAsMe->PivotMatrix;
-	//FuckingMatrix = otherAsMe->FuckingMatrix;
-}
-
 std::string CSkeletonBone::GetName() const
 {
 	return m_Name;
@@ -102,19 +79,33 @@ glm::mat4 CSkeletonBone::CalculateBontMatrix(const IModelComponent* ModelsCompon
 	{
 		if (ModelsComponent->IsAnimationPlayed())
 		{
-			size_t currentAnimationIndex = ModelsComponent->GetCurrentAnimationIndex();
+			const IAnimation* currentAnimation = ModelsComponent->GetCurrentAnimation();
+			_ASSERT(currentAnimation != nullptr);
 
-			if (m_ParentIndex == -1)
-				m *= glm::inverse(ModelsComponent->GetModel()->GetSkeletonAnimation(currentAnimationIndex).RootBoneLocalTransform);
+			const auto& skeletonAnimation = currentAnimation->GetSkeletonAnimation();
+			if (skeletonAnimation != nullptr)
+			{
+				if (IsRootBone())
+					m *= glm::inverse(currentAnimation->GetSkeletonAnimation()->GetRootBoneMatrix());
 
-			if (m_CalculatedMatrixes.IsUsesBySequence(currentAnimationIndex))
-				m *= m_CalculatedMatrixes.GetValue(ModelsComponent->GetCurrentAnimationIndex(), ModelsComponent->GetCurrentAnimationFrame());
+				size_t currentAnimationIndex = ModelsComponent->GetCurrentAnimationFrame();
+				if (skeletonAnimation->IsBoneAnimated(GetName(), currentAnimationIndex))
+				{
+					m *= skeletonAnimation->CalculateBoneMatrix(GetName(), currentAnimationIndex);
+				}
+				else
+				{
+					m *= GetLocalMatrix();
+				}
+			}
 			else
-				m *= m_LocalTransform;
+			{
+				m *= GetLocalMatrix();
+			}
 		}
 		else
 		{
-			m *= m_LocalTransform;
+			m *= GetLocalMatrix();
 		}
 	}
 	m *= glm::inverse(GetPivotMatrix());
@@ -145,7 +136,7 @@ void CSkeletonBone::Load(const std::shared_ptr<IByteBuffer>& Buffer)
 	Buffer->read(&m_PivotMatrix);
 	Buffer->read(&m_SkinMatrix);
 
-	m_CalculatedMatrixes.Load(Buffer);
+	//m_CalculatedMatrixes.Load(Buffer);
 }
 
 void CSkeletonBone::Save(const std::shared_ptr<IByteBuffer>& Buffer) const
@@ -155,7 +146,8 @@ void CSkeletonBone::Save(const std::shared_ptr<IByteBuffer>& Buffer) const
 	Buffer->write(&m_LocalTransform);
 	Buffer->write(&m_PivotMatrix);
 	Buffer->write(&m_SkinMatrix);
-	m_CalculatedMatrixes.Save(Buffer);
+	
+	//m_CalculatedMatrixes.Save(Buffer);
 }
 
 void CSkeletonBone::Load(const std::shared_ptr<IXMLReader>& Reader)
@@ -166,8 +158,8 @@ void CSkeletonBone::Load(const std::shared_ptr<IXMLReader>& Reader)
 	m_PivotMatrix = Utils::StringToMatrix(Reader->GetStrAttribute("PivotMatrix"));
 	m_SkinMatrix = Utils::StringToMatrix(Reader->GetStrAttribute("FuckingMatrix"));
 
-	std::shared_ptr<CByteBuffer> byteBuffer = MakeShared(CByteBuffer, Utils::Base64_Decode(Reader->GetValue()));
-	m_CalculatedMatrixes.Load(byteBuffer);
+	//std::shared_ptr<CByteBuffer> byteBuffer = MakeShared(CByteBuffer, Utils::Base64_Decode(Reader->GetValue()));
+	//m_CalculatedMatrixes.Load(byteBuffer);
 }
 
 void CSkeletonBone::Save(const std::shared_ptr<IXMLWriter>& Writer) const
@@ -178,9 +170,9 @@ void CSkeletonBone::Save(const std::shared_ptr<IXMLWriter>& Writer) const
 	Writer->SetStrAttribute(Utils::MatrixToString(m_PivotMatrix), "PivotMatrix");
 	Writer->SetStrAttribute(Utils::MatrixToString(m_SkinMatrix), "FuckingMatrix");
 
-	std::shared_ptr<CByteBuffer> byteBuffer = MakeShared(CByteBuffer);
-	m_CalculatedMatrixes.Save(byteBuffer);
-	Writer->SetValue(Utils::Base64_Encode(byteBuffer->getData(), byteBuffer->getSize()));
+	//std::shared_ptr<CByteBuffer> byteBuffer = MakeShared(CByteBuffer);
+	//m_CalculatedMatrixes.Save(byteBuffer);
+	//Writer->SetValue(Utils::Base64_Encode(byteBuffer->getData(), byteBuffer->getSize()));
 
 }
 

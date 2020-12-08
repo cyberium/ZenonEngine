@@ -132,6 +132,11 @@ void CFBXSkeleton::Load(fbxsdk::FbxScene* FBXScene)
 //
 // IFBXSkeleton
 //
+std::shared_ptr<ISkeletonBone> CFBXSkeleton::GetRootBone() const
+{
+	return m_RootNode;
+}
+
 size_t CFBXSkeleton::GetBoneIndexByName(const std::string & BoneName) const
 {
 	for (size_t i = 0; i < m_Bones.size(); ++i)

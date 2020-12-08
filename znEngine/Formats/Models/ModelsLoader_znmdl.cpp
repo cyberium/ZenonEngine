@@ -4,8 +4,6 @@
 #include "ModelsLoader_znmdl.h"
 
 // Additional
-#include "Scene/Components/ModelComponent/Animation.h"
-#include "Scene/Components/ModelComponent/SkeletonBone.h"
 #include "ModelsLoaderHelper.h"
 
 namespace
@@ -128,35 +126,12 @@ std::shared_ptr<IModel> CModelsLoader_znmdl::LoadModel(const std::shared_ptr<IFi
 		}
 	}
 
-
-	//
-	// Load skeleton animations
-	{
-		std::vector<std::shared_ptr<IAnimation>> skeletonAnimations;
-		size_t skeletonAnimationsCount;
-		if (ModelFile->read(&skeletonAnimationsCount))
-		{
-			skeletonAnimations.reserve(skeletonAnimationsCount);
-			for (size_t i = 0; i < skeletonAnimationsCount; i++)
-			{
-				glm::mat4 matrix;
-				ModelFile->read(&matrix);
-				SSkeletonAnimation skeletonAnimation;
-				skeletonAnimation.RootBoneLocalTransform = matrix;
-				std::dynamic_pointer_cast<IModelInternal>(model)->AddSkeletonAnimationInternal(skeletonAnimation);
-			}
-		}
-	}
-
-
 	//
 	// Load animations
 	{
-		std::vector<std::shared_ptr<IAnimation>> animations;
 		size_t animationsCount;
 		if (ModelFile->read(&animationsCount))
 		{
-			animations.reserve(animationsCount);
 			for (size_t i = 0; i < animationsCount; i++)
 			{
 				std::shared_ptr<IAnimation> anim = MakeShared(CAnimation, ModelFile);
@@ -167,17 +142,16 @@ std::shared_ptr<IModel> CModelsLoader_znmdl::LoadModel(const std::shared_ptr<IFi
 
 
 	//
-	// Load bones
+	// Skeleton
 	{
-		std::vector<std::shared_ptr<IAnimation>> bones;
-		size_t bonesCount;
-		if (ModelFile->read(&bonesCount))
+		uint32 skeletonExists;
+		if (ModelFile->read(&skeletonExists))
 		{
-			bones.reserve(bonesCount);
-			for (size_t i = 0; i < bonesCount; i++)
+			if (skeletonExists == 1)
 			{
-				std::shared_ptr<ISkeletonBone> bone = MakeShared(CSkeletonBone, ModelFile);
-				model->AddBone(bone);
+				auto skeleton = MakeShared(CSkeleton);
+				std::dynamic_pointer_cast<IObjectLoadSave>(skeleton)->Load(ModelFile);
+				std::dynamic_pointer_cast<IModelInternal>(model)->SetSkeleton(skeleton);
 			}
 		}
 	}
@@ -253,19 +227,6 @@ std::shared_ptr<IFile> CModelsLoader_znmdl::SaveModel(const std::shared_ptr<IMod
 
 
 	//
-	// Save skeleton animations
-	{
-		const auto& skeletonAnimations = Model->GetSkeletonAnimations();
-		size_t skeletonAnimationsCount = skeletonAnimations.size();
-		file->write(&skeletonAnimationsCount);
-		for (const auto& sa : skeletonAnimations)
-		{
-			file->write(&sa.RootBoneLocalTransform);
-		}
-	}
-
-
-	//
 	// Save animations
 	{
 		const auto& animations = Model->GetAnimations();
@@ -280,15 +241,14 @@ std::shared_ptr<IFile> CModelsLoader_znmdl::SaveModel(const std::shared_ptr<IMod
 
 	
 	//
-	// Save bones
+	// Skeleton
 	{
-		const auto& bones = Model->GetBones();
-		size_t bonesCount = bones.size();
-		file->write(&bonesCount);
-		for (const auto& b : bones)
+		if (auto skeleton = Model->GetSkeleton())
 		{
-			if (auto loadSave = std::dynamic_pointer_cast<IObjectLoadSave>(b))
-				loadSave->Save(file);
+			uint32 skeletonExists = 1;
+			file->write(&skeletonExists);
+
+			std::dynamic_pointer_cast<IObjectLoadSave>(skeleton)->Save(file);
 		}
 	}
 

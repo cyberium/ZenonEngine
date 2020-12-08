@@ -14,6 +14,7 @@ public:
 	void Load(fbxsdk::FbxScene* FBXScene);
 
 	// IFBXSkeleton
+	std::shared_ptr<ISkeletonBone> GetRootBone() const override;
 	size_t GetBoneIndexByName(const std::string& BoneName) const override;
 	std::shared_ptr<ISkeletonBone> GetBoneByName(const std::string& BoneName) const override;
 	const std::vector<std::shared_ptr<ISkeletonBone>>& GetBones() const override;

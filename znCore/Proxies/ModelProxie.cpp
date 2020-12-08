@@ -52,54 +52,9 @@ const std::vector<ModelProxie::SConnection>& ModelProxie::GetConnections() const
 //
 // Skeleton
 //
-void ModelProxie::AddSkeletonAnimation(std::shared_ptr<IModel> SkeletonAnimation)
+const std::shared_ptr<ISkeleton>& ModelProxie::GetSkeleton() const
 {
-	m_Model->AddSkeletonAnimation(SkeletonAnimation);
-}
-
-const SSkeletonAnimation & ModelProxie::GetSkeletonAnimation(size_t Index)
-{
-	return m_Model->GetSkeletonAnimation(Index);
-}
-
-const std::vector<SSkeletonAnimation>& ModelProxie::GetSkeletonAnimations() const
-{
-	return m_Model->GetSkeletonAnimations();
-}
-
-void ModelProxie::ApplyOtherSkeleton(std::shared_ptr<IModel> other)
-{
-	m_Model->ApplyOtherSkeleton(other);
-}
-
-void ModelProxie::AddBone(std::shared_ptr<ISkeletonBone> Bone)
-{
-	m_Model->AddBone(Bone);
-}
-
-std::shared_ptr<ISkeletonBone> ModelProxie::GetRootBone() const
-{
-	return m_Model->GetRootBone();
-}
-
-std::shared_ptr<ISkeletonBone> ModelProxie::GetBone(size_t Index) const
-{
-	return m_Model->GetBone(Index);
-}
-
-size_t ModelProxie::GetBoneIndexByName(const std::string& BoneName) const
-{
-	return m_Model->GetBoneIndexByName(BoneName);
-}
-
-std::shared_ptr<ISkeletonBone> ModelProxie::GetBoneByName(const std::string& BoneName) const
-{
-	return m_Model->GetBoneByName(BoneName);
-}
-
-const std::vector<std::shared_ptr<ISkeletonBone>>& ModelProxie::GetBones() const
-{
-	return m_Model->GetBones();
+	return m_Model->GetSkeleton();
 }
 
 

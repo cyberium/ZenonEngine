@@ -43,11 +43,9 @@ public:
 	const IFBXNode& GetOwner() const override;
 	std::shared_ptr<IModel> GetModel() override;
 	
-
 private:
 	void MaterialLoad(fbxsdk::FbxMesh* NativeMesh);
 	void SkeletonLoad(fbxsdk::FbxMesh* NativeMesh);
-	//void DisplayMaterialMapping(fbxsdk::FbxGeometryElementMaterial* materialElement);
 
 private:
 	std::vector<FBXVertex> m_Vertices;

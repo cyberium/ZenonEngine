@@ -12,13 +12,15 @@ public:
 	virtual ~CAnimation();
 
 	// IAnimation
-	uint16 GetIndexInSequences() const override;
 	const std::string& GetName() const override;
 	uint32 GetFrameStart() const override;
 	uint32 GetFrameEnd() const override;
+	uint16 GetIndexInSequences() const override;
+	std::shared_ptr<ISkeletonAnimation> GetSkeletonAnimation() const override;
 
 	// IAnimationInternal
 	void SetName(const std::string& Name) override;
+	void SetSkeletonAnimation(std::shared_ptr<ISkeletonAnimation> SkeletonAnimation) override;
 
 	// IObjectLoadSave
 	std::shared_ptr<IObject> Copy() const override;
@@ -33,4 +35,7 @@ private:
 	uint32 m_FrameStart;
 	uint32 m_FrameEnd;
 	uint16 m_IndexIntoSequences;
+
+	// Animation kinds
+	std::shared_ptr<ISkeletonAnimation> m_SkeletonAnimation;
 };

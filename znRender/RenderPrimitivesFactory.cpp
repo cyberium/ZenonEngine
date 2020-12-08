@@ -265,16 +265,6 @@ std::shared_ptr<IGeometry> CRenderPrimitivesFactory::CreateFrustum(const Frustum
 }
 
 
-void Test()
-{
-	Frustum f;
-
-
-
-
-}
-
-
 std::shared_ptr<IGeometry> CRenderPrimitivesFactory::CreateCone(float diameter, float height)
 {
 	DirectX::VertexCollection vertices;

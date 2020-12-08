@@ -30,7 +30,7 @@ CAnimation::~CAnimation()
 //
 // IAnimation
 //
-const std::string & CAnimation::GetName() const
+const std::string& CAnimation::GetName() const
 {
 	return m_Name;
 }
@@ -50,6 +50,11 @@ uint16 CAnimation::GetIndexInSequences() const
 	return m_IndexIntoSequences;
 }
 
+std::shared_ptr<ISkeletonAnimation> CAnimation::GetSkeletonAnimation() const
+{
+	return m_SkeletonAnimation;
+}
+
 
 
 //
@@ -59,6 +64,14 @@ void CAnimation::SetName(const std::string & Name)
 {
 	_ASSERT(false == Name.empty());
 	m_Name = Name;
+}
+
+void CAnimation::SetSkeletonAnimation(std::shared_ptr<ISkeletonAnimation> SkeletonAnimation)
+{
+	_ASSERT(SkeletonAnimation != nullptr);
+	_ASSERT(m_SkeletonAnimation == nullptr);
+
+	m_SkeletonAnimation = SkeletonAnimation;
 }
 
 
@@ -82,6 +95,15 @@ void CAnimation::Load(const std::shared_ptr<IByteBuffer>& Buffer)
 	Buffer->read(&m_FrameStart);
 	Buffer->read(&m_FrameEnd);
 	Buffer->read(&m_IndexIntoSequences);
+
+	/*uint32 skeletonExists;
+	if (Buffer->read(&skeletonExists))
+	{
+		if (skeletonExists == 1)
+		{
+
+		}
+	}*/
 }
 
 void CAnimation::Save(const std::shared_ptr<IByteBuffer>& Buffer) const
@@ -90,6 +112,14 @@ void CAnimation::Save(const std::shared_ptr<IByteBuffer>& Buffer) const
 	Buffer->write(&m_FrameStart);
 	Buffer->write(&m_FrameEnd);
 	Buffer->write(&m_IndexIntoSequences);
+
+	/*if (auto skeletonAnimation = GetSkeletonAnimation())
+	{
+		uint32 skeletonExists = 1;
+		Buffer->write(&skeletonExists);
+
+		std::dynamic_pointer_cast<IObjectLoadSave>(skeletonAnimation)->Save(Buffer);
+	}*/
 }
 
 void CAnimation::Load(const std::shared_ptr<IXMLReader>& Reader)
@@ -106,4 +136,10 @@ void CAnimation::Save(const std::shared_ptr<IXMLWriter>& Writer) const
 	Writer->SetUIntAttribute(m_FrameStart, "Start");
 	Writer->SetUIntAttribute(m_FrameEnd, "End");
 	Writer->SetUIntAttribute(m_IndexIntoSequences, "IndexIntoSequences");
+
+	/*if (auto skeletonAnimation = GetSkeletonAnimation())
+	{
+		auto skeletonAnimationWriter = Writer->CreateChild("SkeletonAnimation");
+		std::
+	}*/
 }

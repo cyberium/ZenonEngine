@@ -153,13 +153,11 @@ void CSceneRTS::Initialize()
 		m_UIControlRTSTowersPanel->AddTowerButton("Tower E", "sceneNodesProtos/towerE.znobj", "sceneNodesProtos/towerE.png", 100, *this);
 
 		m_UIControlRTSTowersPanel->SetLocalPosition(glm::vec2(
-			 (GetRenderWindow().GetWindowWidth() - m_UIControlRTSTowersPanel->GetSize().x),
+			(GetRenderWindow().GetWindowWidth()         -  m_UIControlRTSTowersPanel->GetSize().x),
 			 GetRenderWindow().GetWindowHeight() / 2.0f - (m_UIControlRTSTowersPanel->GetSize().y / 2.0f)
 		));
 
 		m_UIControlRTSTowersPanel->SetTowerButtonClickCallback(std::bind(&CSceneRTS::OnTowerButtonClicked, this, std::placeholders::_1));
-
-
 		//m_UIControlRTSTowersPanel->SetScale(glm::vec2(0.5f));
 	}
 	
@@ -305,14 +303,10 @@ std::shared_ptr<IModel> CSceneRTS::CreateUnitModel(std::string ModelName, std::s
 	// Animated skeleton
 	std::shared_ptr<IFile> animationFile = filesManager->Open(RunAnimationName);
 	auto animatedSkeletonModel = fbxSceneLoader->LoadScene(animationFile, &fbxLoaderParams)->MergeModels();
-	originalSkeletonModel->ApplyOtherSkeleton(animatedSkeletonModel);
-	originalSkeletonModel->AddSkeletonAnimation(animatedSkeletonModel);
 	for (const auto& anim : animatedSkeletonModel->GetAnimations())
 		originalSkeletonModel->AddAnimation("run", anim.second);
 
 	auto animatedSkeletonModel2 = fbxSceneLoader->LoadScene(DeathAnimationName, &fbxLoaderParams)->MergeModels();
-	originalSkeletonModel->ApplyOtherSkeleton(animatedSkeletonModel2);
-	originalSkeletonModel->AddSkeletonAnimation(animatedSkeletonModel2);
 	for (const auto& anim : animatedSkeletonModel2->GetAnimations())
 		originalSkeletonModel->AddAnimation("death", anim.second);
 

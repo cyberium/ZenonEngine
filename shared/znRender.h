@@ -28,3 +28,9 @@
 #include "../znRender/ShaderInputSemanticBase.h"
 #include "../znRender/ShaderInputLayoutBase.h"
 #include "../znRender/ShaderParameterBase.h"
+
+#include "../znRender/Models/AnimatedValueSingle.h"
+#include "../znRender/Models/Animation.h"
+#include "../znRender/Models/Skeleton.h"
+#include "../znRender/Models/SkeletonAnimation.h"
+#include "../znRender/Models/SkeletonBone.h"

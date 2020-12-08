@@ -19,21 +19,11 @@ public:
 	const std::vector<SConnection>& GetConnections() const override final;
 
 	// Skeleton
-	void                                                      AddSkeletonAnimation(std::shared_ptr<IModel> SkeletonAnimation) override;
-	const SSkeletonAnimation&                                 GetSkeletonAnimation(size_t Index) override;
-	const std::vector<SSkeletonAnimation>&                    GetSkeletonAnimations() const override;
-
-	void                                                      ApplyOtherSkeleton(std::shared_ptr<IModel> other) override;
-	void                                                      AddBone(const std::shared_ptr<ISkeletonBone> Bone) override;
-	std::shared_ptr<ISkeletonBone>                            GetRootBone() const override;
-	std::shared_ptr<ISkeletonBone>                            GetBone(size_t Index) const override;
-	size_t                                                    GetBoneIndexByName(const std::string& BoneName) const override;
-	std::shared_ptr<ISkeletonBone>                            GetBoneByName(const std::string& BoneName) const override;
-	const std::vector<std::shared_ptr<ISkeletonBone>>&        GetBones() const override;
+	const std::shared_ptr<ISkeleton>& GetSkeleton() const override;
 
 	// Animations
-	void                                                      AddAnimation(const std::string& AnimationName, const std::shared_ptr<IAnimation>& Animation) override;
-	const Animations_t&                                       GetAnimations() const override;
+	void AddAnimation(const std::string& AnimationName, const std::shared_ptr<IAnimation>& Animation) override;
+	const Animations_t& GetAnimations() const override;
 
 	virtual bool Render() const override;
 	virtual void Accept(IVisitor* visitor) override;

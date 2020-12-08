@@ -87,9 +87,7 @@
     <ClCompile Include="Scene\Camera\CameraControllerBase.cpp" />
     <ClCompile Include="Scene\Camera\FreeCameraController.cpp" />
     <ClCompile Include="Scene\Camera\RTSCameraController.cpp" />
-    <ClCompile Include="Scene\Components\ModelComponent\Animation.cpp" />
     <ClCompile Include="Scene\Components\ModelComponent\ModelComponent.cpp" />
-    <ClCompile Include="Scene\Components\ModelComponent\SkeletonBone.cpp" />
     <ClCompile Include="Scene\Components\ModelComponent\SkeletonComponentBone.cpp" />
     <ClCompile Include="Scene\Components\Particles\ParticlesComponent.cpp" />
     <ClCompile Include="Scene\Components\Particles\ParticleSystem.cpp" />
@@ -186,10 +184,7 @@
     <ClInclude Include="Scene\Camera\CameraControllerBase.h" />
     <ClInclude Include="Scene\Camera\FreeCameraController.h" />
     <ClInclude Include="Scene\Camera\RTSCameraController.h" />
-    <ClInclude Include="Scene\Components\ModelComponent\AnimatedValue.h" />
-    <ClInclude Include="Scene\Components\ModelComponent\Animation.h" />
     <ClInclude Include="Scene\Components\ModelComponent\ModelComponent.h" />
-    <ClInclude Include="Scene\Components\ModelComponent\SkeletonBone.h" />
     <ClInclude Include="Scene\Components\ModelComponent\SkeletonComponentBone.h" />
     <ClInclude Include="Scene\Components\Particles\ParticlesComponent.h" />
     <ClInclude Include="Scene\Components\Particles\ParticleSystem.h" />

@@ -3,8 +3,6 @@
 // General
 #include "ParticleSystem.h"
 
-// Additional
-#include "Scene/Components/ModelComponent/AnimatedValue.h"
 
 namespace
 {

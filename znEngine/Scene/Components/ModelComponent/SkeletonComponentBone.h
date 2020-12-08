@@ -1,7 +1,5 @@
 #pragma once
 
-#include "SkeletonBone.h"
-
 class ZN_API CSkeletonComponentBone3D
 	: public ISkeletonComponentBone3D
 	, public ISkeletonComponentBoneInternal3D

@@ -18,10 +18,11 @@ public:
 	const std::vector<std::shared_ptr<IAnimation>>& GetAnimations() const override;
 
 private:
-	void DisplayAnimationRec(fbxsdk::FbxNode* FBXNode, fbxsdk::FbxAnimStack* FBXAnimStack, fbxsdk::FbxAnimLayer* FBXAnimLayer, size_t FBXLayerIndex);
-	void DisplayChannels(fbxsdk::FbxNode* FBXNode, fbxsdk::FbxAnimStack* FBXAnimStack, fbxsdk::FbxAnimLayer* FBXAnimLayer, size_t FBXLayerIndex);
+	void ProcessNodeRec(fbxsdk::FbxNode* FBXNode, fbxsdk::FbxAnimStack* FBXAnimStack, size_t FBXStackIndex, fbxsdk::FbxAnimLayer* FBXAnimLayer, size_t FBXLayerIndex, const std::shared_ptr<CAnimation>& Animation);
+	void ProcessLayerForNode(fbxsdk::FbxNode* FBXNode, fbxsdk::FbxAnimStack* FBXAnimStack, size_t FBXStackIndex, fbxsdk::FbxAnimLayer* FBXAnimLayer, size_t FBXLayerIndex, const std::shared_ptr<CAnimation>& Animation);
+	void ProcessLayerForSkeletonNode(fbxsdk::FbxNode* FBXNode, fbxsdk::FbxAnimStack* FBXAnimStack, size_t FBXStackIndex, fbxsdk::FbxAnimLayer* FBXAnimLayer, size_t FBXLayerIndex, const std::shared_ptr<CAnimation>& Animation);
 
-	void DisplayCurveKeys(fbxsdk::FbxNode* FBXNode, fbxsdk::FbxAnimCurve* pCurve, CznAnimatedValue<float>& valueInt, size_t AnimationIndex);
+	//void DisplayCurveKeys(fbxsdk::FbxNode* FBXNode, fbxsdk::FbxAnimCurve* pCurve, CznAnimatedValue<float>& valueInt, size_t AnimationIndex);
 
 private:
 	std::vector<std::shared_ptr<IAnimation>> m_Animations;

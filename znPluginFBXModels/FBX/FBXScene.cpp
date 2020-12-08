@@ -221,10 +221,17 @@ std::shared_ptr<IModel> CFBXScene::MergeModels()
 		IRenderDevice& renderDevice = m_BaseManager.GetApplication().GetRenderDevice();
 		auto mergedModel = renderDevice.GetObjectsFactory().CreateModel();
 
-		for (const auto& b : GetFBXSkeleton()->GetBones())
+		if (false == GetFBXSkeleton()->GetBones().empty())
 		{
-			mergedModel->AddBone(b);
+			auto skeleton = MakeShared(CSkeleton);
+			skeleton->SetRootBoneLocalTranform(GetFBXSkeleton()->GetRootBone()->GetLocalMatrix());
+			
+			for (const auto& b : GetFBXSkeleton()->GetBones())
+				skeleton->AddBone(b);
+
+			std::dynamic_pointer_cast<IModelInternal>(mergedModel)->SetSkeleton(skeleton);
 		}
+		
 
 		for (const auto& a : GetFBXAnimation()->GetAnimations())
 		{

@@ -208,6 +208,7 @@ ZN_INTERFACE ZN_API IModelComponent
 	virtual void PlayAnimation(const std::string& AnimationName, bool Loop) = 0;
 	virtual void SetAnimationEndedCallback(std::function<void(const IAnimation*)> Func) = 0;
 	virtual bool IsAnimationPlayed() const = 0;
+	virtual const IAnimation* GetCurrentAnimation() const = 0;
 	virtual size_t GetCurrentAnimationIndex() const = 0;
 	virtual uint32 GetCurrentAnimationFrame() const = 0;
 };

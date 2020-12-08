@@ -3,10 +3,13 @@
 // General
 #include "ModelBase.h"
 
+// Additional
+#include "Models/SkeletonAnimation.h"
+
+
 ModelBase::ModelBase(IRenderDevice& RenderDevice)
 	: Object(RenderDevice.GetBaseManager())
 	, m_RenderDevice(RenderDevice)
-	, m_FixMatrix(1.0f)
 {
 	SetName("ModelBase");
 }
@@ -40,7 +43,7 @@ BoundingBox ModelBase::GetBounds() const
 		for (const auto& c : m_Connections)
 			newBBox.makeUnion(c.Geometry->GetBounds());
 
-		if (!newBBox.IsInfinite())
+		if (false == newBBox.IsInfinite())
 			const_cast<ModelBase*>(this)->SetBounds(newBBox);
 	}
 	return m_BoundingBox;
@@ -68,24 +71,13 @@ const std::vector<IModel::SConnection>& ModelBase::GetConnections() const
 //
 // Skeleton
 //
-void ModelBase::AddSkeletonAnimation(std::shared_ptr<IModel> SkeletonAnimation)
+const std::shared_ptr<ISkeleton>& ModelBase::GetSkeleton() const
 {
-	SSkeletonAnimation skeletonAnimation;
-	skeletonAnimation.RootBoneLocalTransform = SkeletonAnimation->GetRootBone()->GetLocalMatrix();
-	m_Skeletons.push_back(skeletonAnimation);
+	return m_Skeleton;
 }
 
-const SSkeletonAnimation& ModelBase::GetSkeletonAnimation(size_t Index)
-{
-	_ASSERT(Index < m_Skeletons.size());
-	return m_Skeletons.at(Index);
-}
 
-const std::vector<SSkeletonAnimation>& ModelBase::GetSkeletonAnimations() const
-{
-	return m_Skeletons;
-}
-
+#if 0
 void ModelBase::ApplyOtherSkeleton(std::shared_ptr<IModel> other)
 {
 	for (const auto& b : m_Bones)
@@ -107,51 +99,8 @@ void ModelBase::ApplyOtherSkeleton(std::shared_ptr<IModel> other)
 			//continue;
 	}
 }
+#endif
 
-void ModelBase::AddBone(std::shared_ptr<ISkeletonBone> Bone)
-{
-	if (Bone->GetParentIndex() == -1)
-	{
-		if (m_RootBone != nullptr)
-			throw CException("Model: Unable to set '%s' as root bone, because '%s' already root.", Bone->GetName().c_str(), m_RootBone->GetName().c_str());
-		m_RootBone = Bone;
-		Log::Green("Model: '%s' is root bone.", m_RootBone->GetName().c_str());
-	}
-
-	m_Bones.push_back(Bone);
-}
-
-std::shared_ptr<ISkeletonBone> ModelBase::GetRootBone() const
-{
-	return m_RootBone;
-}
-
-std::shared_ptr<ISkeletonBone> ModelBase::GetBone(size_t Index) const
-{
-	_ASSERT(Index < m_Bones.size());
-	return m_Bones.at(Index);
-}
-
-size_t ModelBase::GetBoneIndexByName(const std::string& BoneName) const
-{
-	for (size_t i = 0; i < m_Bones.size(); ++i)
-		if (::_stricmp(m_Bones[i]->GetName().c_str(), BoneName.c_str()) == 0)
-			return i;
-	throw CException("Bone '%s' not found.", BoneName.c_str());
-}
-
-std::shared_ptr<ISkeletonBone> ModelBase::GetBoneByName(const std::string& BoneName) const
-{
-	for (size_t i = 0; i < m_Bones.size(); ++i)
-		if (::_stricmp(m_Bones[i]->GetName().c_str(), BoneName.c_str()) == 0)
-			return m_Bones[i];
-	throw CException("Bone '%s' not found.", BoneName.c_str());
-}
-
-const std::vector<std::shared_ptr<ISkeletonBone>>& ModelBase::GetBones() const
-{
-	return m_Bones;
-}
 
 
 
@@ -196,9 +145,9 @@ void ModelBase::Accept(IVisitor* visitor)
 //
 // IModelInternal
 //
-void ModelBase::AddSkeletonAnimationInternal(const SSkeletonAnimation& SkeletonAnimation)
+void ModelBase::SetSkeleton(std::shared_ptr<ISkeleton> Skeleton)
 {
-	m_Skeletons.push_back(SkeletonAnimation);
+	m_Skeleton = Skeleton;
 }
 
 

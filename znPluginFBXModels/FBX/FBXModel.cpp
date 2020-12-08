@@ -603,7 +603,7 @@ void CFBXModel::SkeletonLoad(fbxsdk::FbxMesh* NativeMesh)
 		fbxsdk::FbxSkin* skin = static_cast<fbxsdk::FbxSkin*>(NativeMesh->GetDeformer(deformerIndex, fbxsdk::FbxDeformer::eSkin));
 		if (skin == nullptr)
 		{
-			Log::Warn("FBXMesh: Skin not found for model %s.", NativeMesh->GetName());
+			Log::Warn("FBXMesh: Skin not found for model '%s'.", NativeMesh->GetName());
 			continue;
 		}
 

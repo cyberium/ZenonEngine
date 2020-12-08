@@ -1,6 +1,6 @@
 #pragma once
 
-#include "AnimatedValue.h"
+#include "AnimatedValueSingle.h"
 
 class ZN_API CSkeletonBone
 	: public ISkeletonBone
@@ -13,8 +13,6 @@ public:
 	virtual ~CSkeletonBone();
 
 	// ISkeletonBone
-	void MergeWithOther(std::shared_ptr<ISkeletonBone> OtherBone) override;
-
 	std::string GetName() const override;
 	int32 GetParentIndex() const override;
 	void SetLocalMatrix(const glm::mat4& Matrix) override;
@@ -44,11 +42,4 @@ private:
 	glm::mat4            m_LocalTransform;
 	glm::mat4            m_PivotMatrix;
 	glm::mat4            m_SkinMatrix;
-	
-public:
-	CznAnimatedValue<float> pX, pY, pZ;
-	CznAnimatedValue<float> rX, rY, rZ;
-	CznAnimatedValue<float> sX, sY, sZ;
-
-	CznAnimatedValue<glm::mat4> m_CalculatedMatrixes;
 };

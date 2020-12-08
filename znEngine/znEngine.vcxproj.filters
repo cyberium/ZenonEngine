@@ -292,13 +292,7 @@
     <ClCompile Include="Scene\EngineSceneExtender.cpp">
       <Filter>Scene</Filter>
     </ClCompile>
-    <ClCompile Include="Scene\Components\ModelComponent\SkeletonBone.cpp">
-      <Filter>Scene\Components\ModelComponent</Filter>
-    </ClCompile>
     <ClCompile Include="Scene\Components\ModelComponent\SkeletonComponentBone.cpp">
-      <Filter>Scene\Components\ModelComponent</Filter>
-    </ClCompile>
-    <ClCompile Include="Scene\Components\ModelComponent\Animation.cpp">
       <Filter>Scene\Components\ModelComponent</Filter>
     </ClCompile>
     <ClCompile Include="Materials\MaterialUIControl.cpp">
@@ -573,16 +567,7 @@
     <ClInclude Include="Scene\EngineSceneExtender.h">
       <Filter>Scene</Filter>
     </ClInclude>
-    <ClInclude Include="Scene\Components\ModelComponent\AnimatedValue.h">
-      <Filter>Scene\Components\ModelComponent</Filter>
-    </ClInclude>
-    <ClInclude Include="Scene\Components\ModelComponent\SkeletonBone.h">
-      <Filter>Scene\Components\ModelComponent</Filter>
-    </ClInclude>
     <ClInclude Include="Scene\Components\ModelComponent\SkeletonComponentBone.h">
-      <Filter>Scene\Components\ModelComponent</Filter>
-    </ClInclude>
-    <ClInclude Include="Scene\Components\ModelComponent\Animation.h">
       <Filter>Scene\Components\ModelComponent</Filter>
     </ClInclude>
     <ClInclude Include="Materials\MaterialUIControl.h">

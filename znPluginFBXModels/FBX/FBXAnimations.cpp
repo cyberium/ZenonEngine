@@ -35,20 +35,28 @@ void CFBXAnimation::Load(fbxsdk::FbxScene* FBXScene)
 
 		int fbxAnimationsLayersCount = fbxAnimationStack->GetMemberCount<fbxsdk::FbxAnimLayer>();
 		Log::Print("FBXAnimation:    Animation stack '%s' contains '%d' layers.", fbxAnimationStack->GetName(), fbxAnimationsStacksCount);
+		if (fbxAnimationsLayersCount != 1)
+			throw CException("Animation stack '%d' contains '%d' layers, but now supported only 1 layer.", s, fbxAnimationsLayersCount);
+
+		fbxsdk::FbxString animationStackName = fbxAnimationStack->GetName();
+		fbxsdk::FbxTakeInfo* takeinfo = FBXScene->GetTakeInfo(animationStackName);
+
+		fbxsdk::FbxTime start = takeinfo->mLocalTimeSpan.GetStart();
+		fbxsdk::FbxLongLong startAsFrames = start.GetFrameCount(fbxsdk::FbxTime::eFrames60);
+		
+		fbxsdk::FbxTime end = takeinfo->mLocalTimeSpan.GetStop();
+		fbxsdk::FbxLongLong endAsFrames = end.GetFrameCount(fbxsdk::FbxTime::eFrames60);
+
+		std::shared_ptr<CAnimation> animation = MakeShared(CAnimation, s, animationStackName.Buffer(), startAsFrames, endAsFrames);
+
 		for (int l = 0; l < fbxAnimationsLayersCount; l++)
 		{
 			fbxsdk::FbxAnimLayer* fbxAnimationLayer = fbxAnimationStack->GetMember<fbxsdk::FbxAnimLayer>(l);
 			Log::Print("FBXAnimation:       Process '%s' animation layer.", fbxAnimationLayer->GetName());
 
-			DisplayAnimationRec(FBXScene->GetRootNode(), fbxAnimationStack, fbxAnimationLayer, l);
+			ProcessNodeRec(FBXScene->GetRootNode(), fbxAnimationStack, s, fbxAnimationLayer, l, animation);
 		}
 
-		fbxsdk::FbxString animstackname = fbxAnimationStack->GetName();
-		fbxsdk::FbxTakeInfo* takeinfo = FBXScene->GetTakeInfo(animstackname);
-		fbxsdk::FbxTime start = takeinfo->mLocalTimeSpan.GetStart();
-		fbxsdk::FbxTime end = takeinfo->mLocalTimeSpan.GetStop();
-
-		std::shared_ptr<CAnimation> animation = MakeShared(CAnimation, s, fbxAnimationStack->GetName(), start.GetFrameCount(fbxsdk::FbxTime::eFrames60), end.GetFrameCount(fbxsdk::FbxTime::eFrames60));
 		m_Animations.push_back(animation);
 	}
 
@@ -61,59 +69,39 @@ const std::vector<std::shared_ptr<IAnimation>>& CFBXAnimation::GetAnimations() c
 	return m_Animations;
 }
 
-void CFBXAnimation::DisplayAnimationRec(fbxsdk::FbxNode* FBXNode, fbxsdk::FbxAnimStack* FBXAnimStack, fbxsdk::FbxAnimLayer* FBXAnimLayer, size_t FBXLayerIndex)
+void CFBXAnimation::ProcessNodeRec(fbxsdk::FbxNode* FBXNode, fbxsdk::FbxAnimStack* FBXAnimStack, size_t FBXStackIndex, fbxsdk::FbxAnimLayer* FBXAnimLayer, size_t FBXLayerIndex, const std::shared_ptr<CAnimation>& Animation)
 {
-	DisplayChannels(FBXNode, FBXAnimStack, FBXAnimLayer, FBXLayerIndex);
+	ProcessLayerForNode(FBXNode, FBXAnimStack, FBXStackIndex, FBXAnimLayer, FBXLayerIndex, Animation);
 
 	for (int i = 0; i < FBXNode->GetChildCount(); i++)
-		DisplayAnimationRec(FBXNode->GetChild(i), FBXAnimStack, FBXAnimLayer, FBXLayerIndex);
+		ProcessNodeRec(FBXNode->GetChild(i), FBXAnimStack, FBXStackIndex, FBXAnimLayer, FBXLayerIndex, Animation);
 }
 
-void CFBXAnimation::DisplayChannels(fbxsdk::FbxNode* FBXNode, fbxsdk::FbxAnimStack* FBXAnimStack, fbxsdk::FbxAnimLayer* FBXAnimLayer, size_t FBXLayerIndex)
+void CFBXAnimation::ProcessLayerForNode(fbxsdk::FbxNode* FBXNode, fbxsdk::FbxAnimStack* FBXAnimStack, size_t FBXStackIndex, fbxsdk::FbxAnimLayer* FBXAnimLayer, size_t FBXLayerIndex, const std::shared_ptr<CAnimation>& Animation)
 {
-	std::shared_ptr<ISkeletonBone> skeletonBone;
-	try
+	if (FBXNode == nullptr)
 	{
-		skeletonBone = m_FBXScene.GetFBXSkeleton()->GetBoneByName(FBXNode->GetName());
-	}
-	catch (const CException& e)
-	{
-		Log::Warn("FBXAnimation:       Node '%s' hasn't corresponding bone.", FBXNode->GetName());
+		Log::Warn("FBXAnimation:       Node is nullptr.");
 		return;
 	}
 
-	auto skeletonBonePrivateAccess = std::static_pointer_cast<CSkeletonBone>(skeletonBone);
-
-	fbxsdk::FbxTimeSpan animationInterval;
-	if (false == FBXNode->GetAnimationInterval(animationInterval, FBXAnimStack, FBXLayerIndex))
+	if (FBXNode->GetNodeAttribute() == nullptr)
 	{
-		Log::Warn("FBXAnimation:       Node '%s' hasn't animation interval.", FBXNode->GetName());
+		Log::Warn("FBXAnimation:       Node '%s' hasn't attribute.", FBXNode->GetName());
 		return;
 	}
 
-	fbxsdk::FbxLongLong animationStartFrame = animationInterval.GetStart().GetFrameCount();
-	fbxsdk::FbxLongLong animationEndFrame = animationInterval.GetStop().GetFrameCount();
 
-	for (fbxsdk::FbxLongLong i = animationStartFrame; i <= animationEndFrame; i++)
+	if (FBXNode->GetNodeAttribute()->GetAttributeType() == fbxsdk::FbxNodeAttribute::eSkeleton)
 	{
-		fbxsdk::FbxTime keyTime;
-		keyTime.SetFrame(i);
-
-		// Type
-		skeletonBonePrivateAccess->m_CalculatedMatrixes.m_Type = Interpolations::INTERPOLATION_LINEAR;
-
-		// Times
-		if (FBXLayerIndex + 1 >= skeletonBonePrivateAccess->m_CalculatedMatrixes.m_Times.size())
-			skeletonBonePrivateAccess->m_CalculatedMatrixes.m_Times.resize(FBXLayerIndex + 1);
-		skeletonBonePrivateAccess->m_CalculatedMatrixes.m_Times[FBXLayerIndex].push_back(keyTime.GetFrameCount(fbxsdk::FbxTime::eFrames60));
-
-		// Value
-		if (FBXLayerIndex + 1 >= skeletonBonePrivateAccess->m_CalculatedMatrixes.m_Values.size())
-			skeletonBonePrivateAccess->m_CalculatedMatrixes.m_Values.resize(FBXLayerIndex + 1);
-		skeletonBonePrivateAccess->m_CalculatedMatrixes.m_Values[FBXLayerIndex].push_back(ToGLMMat4(FBXNode->EvaluateLocalTransform(keyTime)));
+		ProcessLayerForSkeletonNode(FBXNode, FBXAnimStack, FBXStackIndex, FBXAnimLayer, FBXLayerIndex, Animation);
+	}
+	else
+	{
+		Log::Warn("FBXAnimation:       Node '%s'. Attribute type '%d' is not processed.", FBXNode->GetName(), FBXNode->GetNodeAttribute()->GetAttributeType());
+		return;
 	}
 
-		
 #if 0
 	fbxsdk::FbxAnimCurve* curve = nullptr;
 
@@ -140,6 +128,60 @@ void CFBXAnimation::DisplayChannels(fbxsdk::FbxNode* FBXNode, fbxsdk::FbxAnimSta
 #endif
 }
 
+void CFBXAnimation::ProcessLayerForSkeletonNode(fbxsdk::FbxNode * FBXNode, fbxsdk::FbxAnimStack * FBXAnimStack, size_t FBXStackIndex, fbxsdk::FbxAnimLayer * FBXAnimLayer, size_t FBXLayerIndex, const std::shared_ptr<CAnimation>& Animation)
+{
+	fbxsdk::FbxTimeSpan animationInterval;
+	if (false == FBXNode->GetAnimationInterval(animationInterval, FBXAnimStack, FBXLayerIndex))
+	{
+		Log::Error("FBXAnimation:       Node '%s' hasn't animation interval.", FBXNode->GetName());
+		return;
+	}
+
+	std::shared_ptr<ISkeletonBone> skeletonBone = nullptr;
+
+	try
+	{
+		skeletonBone = m_FBXScene.GetFBXSkeleton()->GetBoneByName(FBXNode->GetName());
+	}
+	catch (const CException& e)
+	{
+		Log::Warn("FBXAnimation:       Node '%s' hasn't corresponding bone.", FBXNode->GetName());
+		return;
+	}
+
+	auto skeletonAnimation = Animation->GetSkeletonAnimation();
+	if (skeletonAnimation == nullptr)
+	{
+		skeletonAnimation = MakeShared(CSkeletonAnimation);
+		Animation->SetSkeletonAnimation(skeletonAnimation);
+	}
+	auto skeletonAnimationInternal = std::dynamic_pointer_cast<CSkeletonAnimation>(skeletonAnimation);
+
+	fbxsdk::FbxLongLong animationStartFrame = animationInterval.GetStart().GetFrameCount();
+	fbxsdk::FbxLongLong animationEndFrame = animationInterval.GetStop().GetFrameCount();
+
+	CznAnimatedValue<glm::mat4> boneAnimatedValue;
+	boneAnimatedValue.m_InterpolationType = Interpolations::Linear;
+
+	for (fbxsdk::FbxLongLong i = animationStartFrame; i <= animationEndFrame; i++)
+	{
+		fbxsdk::FbxTime keyTime;
+		keyTime.SetFrame(i);
+		fbxsdk::FbxLongLong keyTimeAsFrames = keyTime.GetFrameCount(fbxsdk::FbxTime::eFrames60);
+
+		// Times
+		boneAnimatedValue.m_Times.push_back(keyTimeAsFrames);
+
+		// Value
+		boneAnimatedValue.m_Values.push_back(ToGLMMat4(FBXNode->EvaluateLocalTransform(keyTime)));
+	}
+
+	if (skeletonBone->GetParentIndex() == -1) // TODO: IsRoot
+		skeletonAnimationInternal->SetRootBoneMatrix(skeletonBone->GetLocalMatrix());
+	skeletonAnimationInternal->AddBone(skeletonBone->GetName(), boneAnimatedValue);
+}
+
+#if 0
 void CFBXAnimation::DisplayCurveKeys(fbxsdk::FbxNode* FBXNode, fbxsdk::FbxAnimCurve* pCurve, CznAnimatedValue<float>& valueInt, size_t FBXLayerIndex)
 {
 	int keysCount = pCurve->KeyGetCount();
@@ -204,3 +246,4 @@ void CFBXAnimation::DisplayCurveKeys(fbxsdk::FbxNode* FBXNode, fbxsdk::FbxAnimCu
 		}*/
 	}
 }
+#endif
