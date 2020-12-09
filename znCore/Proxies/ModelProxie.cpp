@@ -17,24 +17,14 @@ ModelProxie::~ModelProxie()
 //
 // IModel
 //
-void ModelProxie::SetBounds(const BoundingBox & Bounds)
+std::string ModelProxie::GetFileName() const
 {
-	m_Model->SetBounds(Bounds);
+	return m_Model->GetFileName();
 }
 
 BoundingBox ModelProxie::GetBounds() const
 {
 	return m_Model->GetBounds();
-}
-
-void ModelProxie::SetFileName(const std::string & FileName)
-{
-	m_Model->SetFileName(FileName);
-}
-
-std::string ModelProxie::GetFileName() const
-{
-	return m_Model->GetFileName();
 }
 
 void ModelProxie::AddConnection(const std::shared_ptr<IMaterial>& Material, const std::shared_ptr<IGeometry>& Geometry, SGeometryDrawArgs GeometryDrawArgs)
@@ -135,4 +125,9 @@ void ModelProxie::Save(const std::shared_ptr<IXMLWriter>& Writer) const
 const std::shared_ptr<IModel> ModelProxie::GetModel() const
 {
 	return m_Model;
+}
+
+const std::shared_ptr<IModelInternal> ModelProxie::GetModelInternal() const
+{
+	return std::dynamic_pointer_cast<IModelInternal>(m_Model);
 }

@@ -116,11 +116,10 @@ void CSkeletonAnimation::Load(const std::shared_ptr<IXMLReader>& Reader)
 
 	for (const auto& childIt : Reader->GetChilds())
 	{
-		std::string boneName = childIt->GetName();
-		std::shared_ptr<CByteBuffer> byteBuffer = MakeShared(CByteBuffer, Utils::Base64_Decode(Reader->GetValue()));
+		std::string boneName = childIt->GetStrAttribute("Name");
 
 		CznAnimatedValue<glm::mat4> animatedValue;
-		animatedValue.Load(byteBuffer);
+		animatedValue.Load(MakeShared(CByteBuffer, Utils::Base64_Decode(childIt->GetValue())));
 
 		m_BonesTransformAnimation.insert(std::make_pair(boneName, animatedValue));
 	}
@@ -132,7 +131,10 @@ void CSkeletonAnimation::Save(const std::shared_ptr<IXMLWriter>& Writer) const
 
 	for (const auto& boneTransformAnimationsIt : m_BonesTransformAnimation)
 	{
-		auto boneTransformAnimationWriterXML = Writer->CreateChild(boneTransformAnimationsIt.first);
+		auto boneTransformAnimationWriterXML = Writer->CreateChild("Bone");
+
+		boneTransformAnimationWriterXML->SetStrAttribute(boneTransformAnimationsIt.first, "Name");
+
 		std::shared_ptr<CByteBuffer> byteBuffer = MakeShared(CByteBuffer);
 		boneTransformAnimationsIt.second.Save(byteBuffer);
 		boneTransformAnimationWriterXML->SetValue(Utils::Base64_Encode(byteBuffer->getData(), byteBuffer->getSize()));

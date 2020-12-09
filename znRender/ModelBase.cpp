@@ -17,19 +17,14 @@ ModelBase::ModelBase(IRenderDevice& RenderDevice)
 ModelBase::~ModelBase()
 {}
 
-void ModelBase::SetFileName(const std::string & FileName)
-{
-	m_FileName = FileName;
-}
 
+
+//
+// IModel
+//
 std::string ModelBase::GetFileName() const
 {
 	return m_FileName;
-}
-
-void ModelBase::SetBounds(const BoundingBox& Bounds)
-{
-	m_BoundingBox = Bounds;
 }
 
 BoundingBox ModelBase::GetBounds() const
@@ -77,32 +72,6 @@ const std::shared_ptr<ISkeleton>& ModelBase::GetSkeleton() const
 }
 
 
-#if 0
-void ModelBase::ApplyOtherSkeleton(std::shared_ptr<IModel> other)
-{
-	for (const auto& b : m_Bones)
-	{
-		auto otherBones = other->GetBones();
-		auto otherIt = std::find_if(otherBones.begin(), otherBones.end(), [b](const std::shared_ptr<ISkeletonBone>& b2) {
-			return b2->GetName() == b->GetName() /*&& b2->GetParentIndex() == b->GetParentIndex()*/;
-		});
-		if (otherIt != otherBones.end())
-		{
-			b->MergeWithOther(*otherIt);
-			//AddBone(other);
-		}
-		else
-		{
-
-		}
-			//throw CException("Unable find bone '%s'", b->GetName().c_str());
-			//continue;
-	}
-}
-#endif
-
-
-
 
 //
 // Animation
@@ -120,7 +89,6 @@ const Animations_t& ModelBase::GetAnimations() const
 {
 	return m_Animations;
 }
-
 
 void ModelBase::Accept(IVisitor* visitor)
 {
@@ -145,6 +113,16 @@ void ModelBase::Accept(IVisitor* visitor)
 //
 // IModelInternal
 //
+void ModelBase::SetFileName(const std::string & FileName)
+{
+	m_FileName = FileName;
+}
+
+void ModelBase::SetBounds(const BoundingBox& Bounds)
+{
+	m_BoundingBox = Bounds;
+}
+
 void ModelBase::SetSkeleton(std::shared_ptr<ISkeleton> Skeleton)
 {
 	m_Skeleton = Skeleton;

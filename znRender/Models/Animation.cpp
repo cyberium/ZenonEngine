@@ -3,6 +3,9 @@
 // General
 #include "Animation.h"
 
+// Additional
+#include "SkeletonAnimation.h"
+
 CAnimation::CAnimation(const std::shared_ptr<IXMLReader>& Reader)
 {
 	Load(Reader);
@@ -96,14 +99,14 @@ void CAnimation::Load(const std::shared_ptr<IByteBuffer>& Buffer)
 	Buffer->read(&m_FrameEnd);
 	Buffer->read(&m_IndexIntoSequences);
 
-	/*uint32 skeletonExists;
-	if (Buffer->read(&skeletonExists))
+	uint32 isSkeletonAnimationExists;
+	Buffer->read(&isSkeletonAnimationExists);
+	if (isSkeletonAnimationExists)
 	{
-		if (skeletonExists == 1)
-		{
-
-		}
-	}*/
+		auto skeletonAnimation = MakeShared(CSkeletonAnimation);
+		std::dynamic_pointer_cast<IObjectLoadSave>(skeletonAnimation)->Load(Buffer);
+		SetSkeletonAnimation(skeletonAnimation);
+	}
 }
 
 void CAnimation::Save(const std::shared_ptr<IByteBuffer>& Buffer) const
@@ -113,13 +116,10 @@ void CAnimation::Save(const std::shared_ptr<IByteBuffer>& Buffer) const
 	Buffer->write(&m_FrameEnd);
 	Buffer->write(&m_IndexIntoSequences);
 
-	/*if (auto skeletonAnimation = GetSkeletonAnimation())
-	{
-		uint32 skeletonExists = 1;
-		Buffer->write(&skeletonExists);
-
-		std::dynamic_pointer_cast<IObjectLoadSave>(skeletonAnimation)->Save(Buffer);
-	}*/
+	uint32 isSkeletonAnimationExists = GetSkeletonAnimation() != nullptr;
+	Buffer->write(&isSkeletonAnimationExists);
+	if (isSkeletonAnimationExists)
+		std::dynamic_pointer_cast<IObjectLoadSave>(GetSkeletonAnimation())->Save(Buffer);
 }
 
 void CAnimation::Load(const std::shared_ptr<IXMLReader>& Reader)
@@ -128,6 +128,15 @@ void CAnimation::Load(const std::shared_ptr<IXMLReader>& Reader)
 	m_FrameStart = Reader->GetUIntAttribute("Start");
 	m_FrameEnd = Reader->GetUIntAttribute("End");
 	m_IndexIntoSequences = Reader->GetUIntAttribute("IndexIntoSequences");
+
+	if (Reader->IsChildExists("SkeletonAnimtion"))
+	{
+		auto skeletonAnimationReaderXML = Reader->GetChild("SkeletonAnimtion");
+
+		auto skeletonAnimation = MakeShared(CSkeletonAnimation);
+		std::dynamic_pointer_cast<IObjectLoadSave>(skeletonAnimation)->Load(skeletonAnimationReaderXML);
+		SetSkeletonAnimation(skeletonAnimation);
+	}
 }
 
 void CAnimation::Save(const std::shared_ptr<IXMLWriter>& Writer) const
@@ -137,9 +146,9 @@ void CAnimation::Save(const std::shared_ptr<IXMLWriter>& Writer) const
 	Writer->SetUIntAttribute(m_FrameEnd, "End");
 	Writer->SetUIntAttribute(m_IndexIntoSequences, "IndexIntoSequences");
 
-	/*if (auto skeletonAnimation = GetSkeletonAnimation())
+	if (GetSkeletonAnimation() != nullptr)
 	{
-		auto skeletonAnimationWriter = Writer->CreateChild("SkeletonAnimation");
-		std::
-	}*/
+		auto skeletonAnimationWriterXML = Writer->CreateChild("SkeletonAnimtion");
+		std::dynamic_pointer_cast<IObjectLoadSave>(GetSkeletonAnimation())->Save(skeletonAnimationWriterXML);
+	}
 }

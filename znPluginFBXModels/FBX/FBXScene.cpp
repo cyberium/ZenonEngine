@@ -220,6 +220,7 @@ std::shared_ptr<IModel> CFBXScene::MergeModels()
 	{
 		IRenderDevice& renderDevice = m_BaseManager.GetApplication().GetRenderDevice();
 		auto mergedModel = renderDevice.GetObjectsFactory().CreateModel();
+		auto mergedModelInternal = std::dynamic_pointer_cast<IModelInternal>(mergedModel);
 
 		if (false == GetFBXSkeleton()->GetBones().empty())
 		{
@@ -249,7 +250,7 @@ std::shared_ptr<IModel> CFBXScene::MergeModels()
 
 			auto bbox = mergedModel->GetBounds();
 			bbox.makeUnion(model->GetBounds());
-			mergedModel->SetBounds(bbox);
+			mergedModelInternal->SetBounds(bbox);
 		}
 
 		m_MergedModel = mergedModel;

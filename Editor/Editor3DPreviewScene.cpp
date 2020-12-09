@@ -75,11 +75,16 @@ void CEditor3DPreviewScene::SetModel(std::shared_ptr<IModel> Model)
 
 	modelComponent->SetModel(Model);
 
-	const auto& modelBBox = Model->GetBounds();
-	float radius = modelBBox.getRadius();
+	// Play first animation
+	if (false == Model->GetAnimations().empty())
+		modelComponent->PlayAnimation(Model->GetAnimations().begin()->second->GetName(), true);
+
+	auto modelBBox = Model->GetBounds();
+	if (modelBBox.IsInfinite())
+		modelBBox = BoundingBox(glm::vec3(-25.0f), glm::vec3(25.0f));
 
 	m_ModelNode->SetPosition(- modelBBox.getCenter());
-	GetCameraController()->GetCamera()->SetTranslation(glm::vec3(radius * 1.5f));
+	GetCameraController()->GetCamera()->SetTranslation(glm::vec3(modelBBox.getRadius() * 1.5f));
 	GetCameraController()->GetCamera()->SetDirection(glm::vec3(-0.5f));
 }
 
@@ -209,10 +214,10 @@ void CEditor3DPreviewScene::Initialize()
 	}
 
 
-	/*{
+	{
 		auto node = GetBaseManager().GetManager<IObjectsFactory>()->GetClassFactoryCast<ISceneNodeFactory>()->CreateSceneNode3D(cSceneNode3D, *this);
 		node->SetName("GridNodeX10");
-		node->SetTranslate(glm::vec3(0.0f, 0.03f, 0.0f));
+		node->SetPosition(glm::vec3(0.0f, 0.03f, 0.0f));
 		node->SetScale(glm::vec3(10.0f));
 
 		auto geom = GetRenderDevice().GetPrimitivesFactory().CreateLines();
@@ -224,7 +229,7 @@ void CEditor3DPreviewScene::Initialize()
 		model->AddConnection(mat, geom);
 
 		node->GetComponentT<IModelComponent>()->SetModel(model);
-	}*/
+	}
 
 
 	//

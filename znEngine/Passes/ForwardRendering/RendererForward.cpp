@@ -126,18 +126,18 @@ void CRendererForward::Initialize(std::shared_ptr<IRenderTarget> OutputRenderTar
 
 #ifdef ENABLE_HDR
 	
-	auto glowEmissiveRT = CreateHDRRenderTarget(HDRRenderTarget);
-	Add3DPass(MakeShared(ClearRenderTargetPass, m_RenderDevice, glowEmissiveRT, ClearFlags::Color));
+	//auto glowEmissiveRT = CreateHDRRenderTarget(HDRRenderTarget);
+	//Add3DPass(MakeShared(ClearRenderTargetPass, m_RenderDevice, glowEmissiveRT, ClearFlags::Color));
 
-	auto glowEmissivePass = MakeShared(CPassPostprocess_RenderGlowSceneObjects, m_RenderDevice, m_Scene);
-	glowEmissivePass->ConfigurePipeline(glowEmissiveRT);
-	Add3DPass(glowEmissivePass);
+	//auto glowEmissivePass = MakeShared(CPassPostprocess_RenderGlowSceneObjects, m_RenderDevice, m_Scene);
+	//glowEmissivePass->ConfigurePipeline(glowEmissiveRT);
+	//Add3DPass(glowEmissivePass);
 
-	//auto glowPass = MakeShared(CPassPostprocess_Glow, m_RenderDevice, inputTexture);
-	//glowPass->ConfigurePipeline(OutputRenderTarget);
-	//Add3DPass(glowPass);
+	auto glowPass = MakeShared(CPassPostprocess_Glow, m_RenderDevice, inputTexture);
+	glowPass->ConfigurePipeline(OutputRenderTarget);
+	Add3DPass(glowPass);
 
-	auto gaussHorizontal = MakeShared(CPassPostprocess_Gauss, m_RenderDevice, glowEmissiveRT->GetTexture(IRenderTarget::AttachmentPoint::Color0)/*glowPass->GetOutputTexture()*/, true);
+	auto gaussHorizontal = MakeShared(CPassPostprocess_Gauss, m_RenderDevice, glowPass->GetOutputTexture(), true);
 	gaussHorizontal->ConfigurePipeline(OutputRenderTarget);
 	Add3DPass(gaussHorizontal);
 
@@ -164,7 +164,7 @@ void CRendererForward::Initialize(std::shared_ptr<IRenderTarget> OutputRenderTar
 	// DEBUG
 	//
 	Add3DPass(MakeShared(CDebugPass, m_RenderDevice, m_Scene)->ConfigurePipeline(OutputRenderTarget));
-	//Add3DPass(MakeShared(CDrawBonesPass, m_Scene)->ConfigurePipeline(OutputRenderTarget));
+	Add3DPass(MakeShared(CDrawBonesPass, m_Scene)->ConfigurePipeline(OutputRenderTarget));
 	//Add3DPass(MakeShared(CDrawBoundingBoxPass, m_RenderDevice, m_Scene)->ConfigurePipeline(OutputRenderTarget));
 	Add3DPass(MakeShared(CDrawLightFrustumPass, m_RenderDevice, m_Scene)->ConfigurePipeline(OutputRenderTarget));
 

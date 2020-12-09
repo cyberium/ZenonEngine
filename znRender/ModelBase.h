@@ -11,16 +11,13 @@ public:
 	ModelBase(IRenderDevice& RenderDevice);
 	virtual ~ModelBase();
 
-	void                                            SetFileName(const std::string& FileName) override;
+	// IModel
 	std::string                                     GetFileName() const override;
-	void                                            SetBounds(const BoundingBox& Bounds) override;
 	BoundingBox                                     GetBounds() const override;
 	void									        AddConnection(const std::shared_ptr<IMaterial>& Material, const std::shared_ptr<IGeometry>& Geometry, SGeometryDrawArgs GeometryDrawArgs = SGeometryDrawArgs()) override;
 	const std::vector<SConnection>&                 GetConnections() const override;
-
 	// Skeleton
 	const std::shared_ptr<ISkeleton>&               GetSkeleton() const override;
-
 	// Animation
 	void                                            AddAnimation(const std::string& AnimationName, const std::shared_ptr<IAnimation>& Animation);
 	const Animations_t&                             GetAnimations() const;
@@ -29,7 +26,9 @@ public:
 
 
 	// IModelInternal
-	void                                            SetSkeleton(std::shared_ptr<ISkeleton> Skeleton) override;
+	void SetFileName(const std::string& FileName) override;
+	void SetBounds(const BoundingBox& Bounds) override;
+	void SetSkeleton(std::shared_ptr<ISkeleton> Skeleton) override;
 
 protected:
 	void                                            UpdateBounds(const std::shared_ptr<IGeometry>& Geometry);

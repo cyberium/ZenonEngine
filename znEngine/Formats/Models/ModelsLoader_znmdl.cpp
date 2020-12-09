@@ -59,13 +59,15 @@ std::shared_ptr<IModel> CModelsLoader_znmdl::LoadModel(const std::shared_ptr<IFi
 	ModelFile->seek(0);
 
 	auto model = renderDevice.GetObjectsFactory().CreateModel();
-	model->SetFileName(ModelFile->Path_Name());
+	auto modelInternal = std::dynamic_pointer_cast<IModelInternal>(model);
+
+	modelInternal->SetFileName(ModelFile->Path_Name());
 
 	//
 	// Common data
 	BoundingBox bounds;
 	bounds.Load(ModelFile);
-	model->SetBounds(bounds);
+	modelInternal->SetBounds(bounds);
 
 
 	//
@@ -144,15 +146,15 @@ std::shared_ptr<IModel> CModelsLoader_znmdl::LoadModel(const std::shared_ptr<IFi
 	//
 	// Skeleton
 	{
-		uint32 skeletonExists;
-		if (ModelFile->read(&skeletonExists))
+		uint32 isSkeletonExists;
+		ModelFile->read(&isSkeletonExists);
+
+		if (isSkeletonExists)
 		{
-			if (skeletonExists == 1)
-			{
-				auto skeleton = MakeShared(CSkeleton);
-				std::dynamic_pointer_cast<IObjectLoadSave>(skeleton)->Load(ModelFile);
-				std::dynamic_pointer_cast<IModelInternal>(model)->SetSkeleton(skeleton);
-			}
+			auto skeleton = MakeShared(CSkeleton);
+			std::dynamic_pointer_cast<IObjectLoadSave>(skeleton)->Load(ModelFile);
+
+			modelInternal->SetSkeleton(skeleton);
 		}
 	}
 
@@ -243,13 +245,11 @@ std::shared_ptr<IFile> CModelsLoader_znmdl::SaveModel(const std::shared_ptr<IMod
 	//
 	// Skeleton
 	{
-		if (auto skeleton = Model->GetSkeleton())
-		{
-			uint32 skeletonExists = 1;
-			file->write(&skeletonExists);
+		uint32 isSkeletonExists = Model->GetSkeleton() != nullptr;
+		file->write(&isSkeletonExists);
 
-			std::dynamic_pointer_cast<IObjectLoadSave>(skeleton)->Save(file);
-		}
+		if (isSkeletonExists)
+			std::dynamic_pointer_cast<IObjectLoadSave>(Model->GetSkeleton())->Save(file);
 	}
 
 	return file;

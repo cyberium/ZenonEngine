@@ -11,10 +11,8 @@ public:
 	virtual ~ModelProxie();
 
 	// IModel
-	virtual void SetBounds(const BoundingBox& Bounds) override;
-	virtual BoundingBox GetBounds() const override;
-	void SetFileName(const std::string& FileName) override;
 	std::string GetFileName() const override;
+	BoundingBox GetBounds() const override;
 	void AddConnection(const std::shared_ptr<IMaterial>& Material, const std::shared_ptr<IGeometry>& Geometry, SGeometryDrawArgs GeometryDrawArgs = SGeometryDrawArgs()) override final;
 	const std::vector<SConnection>& GetConnections() const override final;
 
@@ -36,6 +34,7 @@ public:
 
 protected:
 	const std::shared_ptr<IModel> GetModel() const;
+	const std::shared_ptr<IModelInternal> GetModelInternal() const;
 
 private:
 	std::shared_ptr<IModel> m_Model;

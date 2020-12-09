@@ -57,7 +57,9 @@ void BoundingBox::clear()
 bool BoundingBox::IsInfinite() const
 {
 	return (m_Min.x == Math::MinFloat) || (m_Min.y == Math::MinFloat) || (m_Min.z == Math::MinFloat) ||
-		   (m_Max.x == Math::MaxFloat) || (m_Max.y == Math::MaxFloat) || (m_Max.z == Math::MaxFloat);
+		   (m_Max.x == Math::MaxFloat) || (m_Max.y == Math::MaxFloat) || (m_Max.z == Math::MaxFloat) ||
+		   (m_Min.x == Math::MaxFloat) || (m_Min.y == Math::MaxFloat) || (m_Min.z == Math::MaxFloat) ||
+		   (m_Max.x == Math::MinFloat) || (m_Max.y == Math::MinFloat) || (m_Max.z == Math::MinFloat);
 }
 
 void BoundingBox::setMin(const glm::vec3& _min)

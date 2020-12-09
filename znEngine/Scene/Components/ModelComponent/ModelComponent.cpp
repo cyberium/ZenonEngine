@@ -52,7 +52,11 @@ void CModelComponent::SetModel(const std::shared_ptr<IModel>& Model)
 
 	auto modelBounds = Model->GetBounds();
 	if (modelBounds.IsInfinite())
-		throw CException("Model '%s' with inifinity bounds can't be assigned to node '%s'.", Model->GetFileName().c_str(), GetOwnerNode().GetName().c_str());
+	{
+		modelBounds = BoundingBox(glm::vec3(-25.0f), glm::vec3(25.0f));
+		std::dynamic_pointer_cast<IModelInternal>(Model)->SetBounds(modelBounds);
+	//	throw CException("Model '%s' with inifinity bounds can't be assigned to node '%s'.", Model->GetFileName().c_str(), GetOwnerNode().GetName().c_str());
+	}
 
 	m_Model = Model;
 	InitializeBones();

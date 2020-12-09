@@ -399,7 +399,7 @@ bool CFBXModel::Load(fbxsdk::FbxMesh* NativeMesh)
 	}
 
 	BoundingBox bbox(bboxMin, bboxMax);
-	SetBounds(bbox);
+	GetModelInternal()->SetBounds(bbox);
 
 	auto loaderParams = m_FBXNode.GetFBXScene().GetLoaderParams();
 	if (auto loaderFBXParams = dynamic_cast<const CznFBXLoaderParams*>(loaderParams))
@@ -412,7 +412,7 @@ bool CFBXModel::Load(fbxsdk::FbxMesh* NativeMesh)
 			for (auto& verts : m_Vertices)
 				verts.pos -= offset;
 
-			SetBounds(BoundingBox(bbox.getMin() - offset, bbox.getMax() - offset));
+			GetModelInternal()->SetBounds(BoundingBox(bbox.getMin() - offset, bbox.getMax() - offset));
 		}
 	}
 

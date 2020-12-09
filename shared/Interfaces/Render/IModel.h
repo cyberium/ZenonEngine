@@ -124,11 +124,9 @@ ZN_INTERFACE ZN_API IModel
 
 	virtual ~IModel() {}
 
-	virtual void                                    SetBounds(const BoundingBox& Bounds) = 0;
-	virtual BoundingBox                             GetBounds() const = 0;
 
-	virtual void                                    SetFileName(const std::string& FileName) = 0;
-	virtual std::string                             GetFileName() const = 0;
+	virtual std::string                             GetFileName() const = 0;	
+	virtual BoundingBox                             GetBounds() const = 0;
 
 	// Add pair geometry[+GeometryPart] - Material
 	virtual void									AddConnection(const std::shared_ptr<IMaterial>& Material, const std::shared_ptr<IGeometry>& Geometry, SGeometryDrawArgs GeometryDrawArgs = SGeometryDrawArgs()) = 0;
@@ -144,7 +142,6 @@ ZN_INTERFACE ZN_API IModel
 	virtual bool                                    Render() const = 0;
 
 	// For IVisitor
-
 	virtual void                                    Accept(IVisitor* visitor) = 0;
 };
 
@@ -153,6 +150,8 @@ ZN_INTERFACE ZN_API IModelInternal
 {
 	virtual ~IModelInternal() {}
 
+	virtual void SetFileName(const std::string& FileName) = 0;
+	virtual void SetBounds(const BoundingBox& Bounds) = 0;
 	virtual void SetSkeleton(std::shared_ptr<ISkeleton> Skeleton) = 0;
 };
 

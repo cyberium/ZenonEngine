@@ -100,11 +100,15 @@ glm::mat4 CSkeletonBone::CalculateBontMatrix(const IModelComponent* ModelsCompon
 			}
 			else
 			{
+				if (IsRootBone())
+					m *= glm::inverse(ModelsComponent->GetModel()->GetSkeleton()->GetRootBoneLocalTransform());
 				m *= GetLocalMatrix();
 			}
 		}
 		else
 		{
+			if (IsRootBone())
+				m *= glm::inverse(ModelsComponent->GetModel()->GetSkeleton()->GetRootBoneLocalTransform());
 			m *= GetLocalMatrix();
 		}
 	}

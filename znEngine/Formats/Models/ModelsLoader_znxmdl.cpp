@@ -60,16 +60,18 @@ std::shared_ptr<IModel> CModelsLoader_znxmdl::LoadModel(const std::shared_ptr<IF
 
 	CXMLManager xml(m_BaseManager);
 	auto rootReader = xml.CreateReaderFromFile(ModelFile);
+
 	auto modelReader = rootReader->GetChild("Model");
 
 	auto model = renderDevice.GetObjectsFactory().CreateModel();
-	model->SetFileName(ModelFile->Path_Name());
+	auto modelInternal = std::dynamic_pointer_cast<IModelInternal>(model);
+	modelInternal->SetFileName(ModelFile->Path_Name());
 
 	//
 	// Common data
 	BoundingBox bounds;
 	bounds.Load(modelReader);
-	model->SetBounds(bounds);
+	modelInternal->SetBounds(bounds);
 
 
 	//
@@ -145,7 +147,7 @@ std::shared_ptr<IModel> CModelsLoader_znxmdl::LoadModel(const std::shared_ptr<IF
 	{
 		auto skeleton = MakeShared(CSkeleton);
 		std::dynamic_pointer_cast<IObjectLoadSave>(skeleton)->Load(modelReader->GetChild("Skeleton"));
-		std::dynamic_pointer_cast<IModelInternal>(model)->SetSkeleton(skeleton);
+		modelInternal->SetSkeleton(skeleton);
 	}
 
 
